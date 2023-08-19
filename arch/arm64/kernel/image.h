@@ -97,7 +97,10 @@ __efistub_strlen		= __pi_strlen;
 __efistub_strnlen		= __pi_strnlen;
 __efistub_strcmp		= __pi_strcmp;
 __efistub_strncmp		= __pi_strncmp;
+<<<<<<< HEAD
 __efistub_strrchr		= __pi_strrchr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __efistub___flush_dcache_area	= __pi___flush_dcache_area;
 
 #ifdef CONFIG_KASAN

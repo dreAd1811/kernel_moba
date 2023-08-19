@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the Genmai board
  *
  * Copyright (C) 2013-14 Renesas Solutions Corp.
  * Copyright (C) 2014 Wolfram Sang, Sang Engineering <wsa@sang-engineering.com>
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public License
+ * version 2.  This program is licensed "as is" without any warranty of any
+ * kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -120,7 +130,11 @@
 	pinctrl-0 = <&i2c2_pins>;
 
 	eeprom@50 {
+<<<<<<< HEAD
 		compatible = "renesas,r1ex24128", "atmel,24c128";
+=======
+		compatible = "renesas,24c128", "atmel,24c128";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x50>;
 		pagesize = <64>;
 	};

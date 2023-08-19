@@ -557,7 +557,11 @@ static struct dma_async_tx_descriptor *sa11x0_dma_prep_slave_sg(
 		}
 	}
 
+<<<<<<< HEAD
 	txd = kzalloc(struct_size(txd, sg, j), GFP_ATOMIC);
+=======
+	txd = kzalloc(sizeof(*txd) + j * sizeof(txd->sg[0]), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!txd) {
 		dev_dbg(chan->device->dev, "vchan %p: kzalloc failed\n", &c->vc);
 		return NULL;
@@ -627,7 +631,11 @@ static struct dma_async_tx_descriptor *sa11x0_dma_prep_dma_cyclic(
 	if (sglen == 0)
 		return NULL;
 
+<<<<<<< HEAD
 	txd = kzalloc(struct_size(txd, sg, sglen), GFP_ATOMIC);
+=======
+	txd = kzalloc(sizeof(*txd) + sglen * sizeof(txd->sg[0]), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!txd) {
 		dev_dbg(chan->device->dev, "vchan %p: kzalloc failed\n", &c->vc);
 		return NULL;
@@ -823,6 +831,7 @@ static const struct sa11x0_dma_channel_desc chan_desc[] = {
 	CD(Ser4SSPRc, DDAR_RW),
 };
 
+<<<<<<< HEAD
 static const struct dma_slave_map sa11x0_dma_map[] = {
 	{ "sa11x0-ir", "tx", "Ser2ICPTr" },
 	{ "sa11x0-ir", "rx", "Ser2ICPRc" },
@@ -830,6 +839,8 @@ static const struct dma_slave_map sa11x0_dma_map[] = {
 	{ "sa11x0-ssp", "rx", "Ser4SSPRc" },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sa11x0_dma_init_dmadev(struct dma_device *dmadev,
 	struct device *dev)
 {
@@ -916,10 +927,13 @@ static int sa11x0_dma_probe(struct platform_device *pdev)
 	spin_lock_init(&d->lock);
 	INIT_LIST_HEAD(&d->chan_pending);
 
+<<<<<<< HEAD
 	d->slave.filter.fn = sa11x0_dma_filter_fn;
 	d->slave.filter.mapcnt = ARRAY_SIZE(sa11x0_dma_map);
 	d->slave.filter.map = sa11x0_dma_map;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	d->base = ioremap(res->start, resource_size(res));
 	if (!d->base) {
 		ret = -ENOMEM;

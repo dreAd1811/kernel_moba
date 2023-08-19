@@ -4,9 +4,12 @@ config MEDIA_CEC_RC
 	depends on CEC_CORE=m || RC_CORE=y
 	---help---
 	  Pass on CEC remote control messages to the RC framework.
+<<<<<<< HEAD
 
 config CEC_PIN_ERROR_INJ
 	bool "Enable CEC error injection support"
 	depends on CEC_PIN && DEBUG_FS
 	---help---
 	  This option enables CEC error injection using debugfs.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

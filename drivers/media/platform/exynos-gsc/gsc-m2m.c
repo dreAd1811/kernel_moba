@@ -298,7 +298,13 @@ static int gsc_m2m_querycap(struct file *file, void *fh,
 	strlcpy(cap->card, GSC_MODULE_NAME " gscaler", sizeof(cap->card));
 	snprintf(cap->bus_info, sizeof(cap->bus_info), "platform:%s",
 		 dev_name(&gsc->pdev->dev));
+<<<<<<< HEAD
 	cap->device_caps = V4L2_CAP_STREAMING | V4L2_CAP_VIDEO_M2M_MPLANE;
+=======
+	cap->device_caps = V4L2_CAP_STREAMING | V4L2_CAP_VIDEO_M2M_MPLANE |
+		V4L2_CAP_VIDEO_CAPTURE_MPLANE |	V4L2_CAP_VIDEO_OUTPUT_MPLANE;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cap->capabilities = cap->device_caps | V4L2_CAP_DEVICE_CAPS;
 	return 0;
 }
@@ -705,15 +711,26 @@ static int gsc_m2m_release(struct file *file)
 	return 0;
 }
 
+<<<<<<< HEAD
 static __poll_t gsc_m2m_poll(struct file *file,
+=======
+static unsigned int gsc_m2m_poll(struct file *file,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct poll_table_struct *wait)
 {
 	struct gsc_ctx *ctx = fh_to_ctx(file->private_data);
 	struct gsc_dev *gsc = ctx->gsc_dev;
+<<<<<<< HEAD
 	__poll_t ret;
 
 	if (mutex_lock_interruptible(&gsc->lock))
 		return EPOLLERR;
+=======
+	unsigned int ret;
+
+	if (mutex_lock_interruptible(&gsc->lock))
+		return -ERESTARTSYS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_m2m_poll(file, ctx->m2m_ctx, wait);
 	mutex_unlock(&gsc->lock);

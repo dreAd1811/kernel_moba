@@ -436,6 +436,10 @@ static const struct iio_chan_spec srf08_channels[] = {
 static const struct iio_info srf08_info = {
 	.read_raw = srf08_read_raw,
 	.attrs = &srf08_attribute_group,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -444,6 +448,10 @@ static const struct iio_info srf08_info = {
  */
 static const struct iio_info srf02_info = {
 	.read_raw = srf08_read_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int srf08_probe(struct i2c_client *client,

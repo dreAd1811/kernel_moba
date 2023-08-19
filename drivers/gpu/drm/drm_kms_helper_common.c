@@ -26,7 +26,10 @@
  */
 
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <drm/drmP.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "drm_crtc_helper_internal.h"
 
@@ -34,6 +37,7 @@ MODULE_AUTHOR("David Airlie, Jesse Barnes");
 MODULE_DESCRIPTION("DRM KMS helper");
 MODULE_LICENSE("GPL and additional rights");
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_DRM_LOAD_EDID_FIRMWARE)
 
 /* Backward compatibility for drm_kms_helper.edid_firmware */
@@ -61,6 +65,8 @@ MODULE_PARM_DESC(edid_firmware,
 
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init drm_kms_helper_init(void)
 {
 	int ret;

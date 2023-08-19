@@ -44,6 +44,10 @@ config VIDEO_PVRUSB2_DVB
 	select MEDIA_TUNER_SIMPLE if MEDIA_SUBDRV_AUTOSELECT
 	select MEDIA_TUNER_TDA8290 if MEDIA_SUBDRV_AUTOSELECT
 	---help---
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This option enables a DVB interface for the pvrusb2 driver.
 	  If your device does not support digital television, this
 	  feature will have no affect on the driver's operation.

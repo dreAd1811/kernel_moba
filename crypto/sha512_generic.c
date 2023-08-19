@@ -23,6 +23,7 @@
 #include <asm/byteorder.h>
 #include <asm/unaligned.h>
 
+<<<<<<< HEAD
 const u8 sha384_zero_message_hash[SHA384_DIGEST_SIZE] = {
 	0x38, 0xb0, 0x60, 0xa7, 0x51, 0xac, 0x96, 0x38,
 	0x4c, 0xd9, 0x32, 0x7e, 0xb1, 0xb1, 0xe3, 0x6a,
@@ -45,6 +46,8 @@ const u8 sha512_zero_message_hash[SHA512_DIGEST_SIZE] = {
 };
 EXPORT_SYMBOL_GPL(sha512_zero_message_hash);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u64 Ch(u64 x, u64 y, u64 z)
 {
         return z ^ (x & (y ^ z));
@@ -193,7 +196,11 @@ static struct shash_alg sha512_algs[2] = { {
 	.base		=	{
 		.cra_name	=	"sha512",
 		.cra_driver_name =	"sha512-generic",
+<<<<<<< HEAD
 		.cra_priority	=	100,
+=======
+		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	=	SHA512_BLOCK_SIZE,
 		.cra_module	=	THIS_MODULE,
 	}
@@ -207,7 +214,11 @@ static struct shash_alg sha512_algs[2] = { {
 	.base		=	{
 		.cra_name	=	"sha384",
 		.cra_driver_name =	"sha384-generic",
+<<<<<<< HEAD
 		.cra_priority	=	100,
+=======
+		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	=	SHA384_BLOCK_SIZE,
 		.cra_module	=	THIS_MODULE,
 	}

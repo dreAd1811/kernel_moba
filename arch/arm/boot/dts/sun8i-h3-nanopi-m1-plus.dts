@@ -45,6 +45,7 @@
 / {
 	model = "FriendlyArm NanoPi M1 Plus";
 	compatible = "friendlyarm,nanopi-m1-plus", "allwinner,sun8i-h3";
+<<<<<<< HEAD
 
 	aliases {
 		serial1 = &uart3;
@@ -67,6 +68,8 @@
 		pinctrl-names = "default";
 		reset-gpios = <&r_pio 0 7 GPIO_ACTIVE_LOW>; /* PL7 */
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &ehci1 {
@@ -77,6 +80,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &emac {
 	pinctrl-names = "default";
 	pinctrl-0 = <&emac_rgmii_pins>;
@@ -127,6 +131,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ohci1 {
 	status = "okay";
 };
@@ -134,9 +140,12 @@
 &ohci2 {
 	status = "okay";
 };
+<<<<<<< HEAD
 
 &uart3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart3_pins>, <&uart3_rts_cts_pins>;
 	status = "okay";
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

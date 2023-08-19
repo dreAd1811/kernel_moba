@@ -212,7 +212,12 @@ ENDPROC(coprocessor_restore)
 ENTRY(fast_coprocessor_double)
 
 	wsr	a0, excsave1
+<<<<<<< HEAD
 	call0	unrecoverable_exception
+=======
+	movi	a0, unrecoverable_exception
+	callx0	a0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENDPROC(fast_coprocessor_double)
 

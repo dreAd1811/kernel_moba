@@ -38,12 +38,20 @@
 #define MIN_GAP (SZ_128M)
 #define MAX_GAP	(STACK_TOP/6*5)
 
+<<<<<<< HEAD
 static int mmap_is_legacy(struct rlimit *rlim_stack)
+=======
+static int mmap_is_legacy(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (current->personality & ADDR_COMPAT_LAYOUT)
 		return 1;
 
+<<<<<<< HEAD
 	if (rlim_stack->rlim_cur == RLIM_INFINITY)
+=======
+	if (rlimit(RLIMIT_STACK) == RLIM_INFINITY)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	return sysctl_legacy_va_layout;
@@ -62,6 +70,7 @@ unsigned long arch_mmap_rnd(void)
 	return rnd << PAGE_SHIFT;
 }
 
+<<<<<<< HEAD
 static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
 {
 	unsigned long gap = rlim_stack->rlim_cur;
@@ -70,6 +79,12 @@ static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
 	/* Account for stack randomization if necessary */
 	if (current->flags & PF_RANDOMIZE)
 		pad += (STACK_RND_MASK << PAGE_SHIFT);
+=======
+static unsigned long mmap_base(unsigned long rnd)
+{
+	unsigned long gap = rlimit(RLIMIT_STACK);
+	unsigned long pad = (STACK_RND_MASK << PAGE_SHIFT) + stack_guard_gap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Values close to RLIM_INFINITY can overflow. */
 	if (gap + pad > gap)
@@ -87,7 +102,11 @@ static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
  * This function, called very early during the creation of a new process VM
  * image, sets up which VM layout function to use:
  */
+<<<<<<< HEAD
 void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+=======
+void arch_pick_mmap_layout(struct mm_struct *mm)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long random_factor = 0UL;
 
@@ -98,11 +117,19 @@ void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
 	 * Fall back to the standard layout if the personality bit is set, or
 	 * if the expected stack growth is unlimited:
 	 */
+<<<<<<< HEAD
 	if (mmap_is_legacy(rlim_stack)) {
 		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
 		mm->get_unmapped_area = arch_get_unmapped_area;
 	} else {
 		mm->mmap_base = mmap_base(random_factor, rlim_stack);
+=======
+	if (mmap_is_legacy()) {
+		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
+		mm->get_unmapped_area = arch_get_unmapped_area;
+	} else {
+		mm->mmap_base = mmap_base(random_factor);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
 	}
 }

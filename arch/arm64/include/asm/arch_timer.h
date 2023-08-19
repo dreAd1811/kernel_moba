@@ -52,7 +52,10 @@ struct arch_timer_erratum_workaround {
 	const char *desc;
 	u32 (*read_cntp_tval_el0)(void);
 	u32 (*read_cntv_tval_el0)(void);
+<<<<<<< HEAD
 	u64 (*read_cntpct_el0)(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 (*read_cntvct_el0)(void);
 	int (*set_next_event_phys)(unsigned long, struct clock_event_device *);
 	int (*set_next_event_virt)(unsigned long, struct clock_event_device *);
@@ -145,6 +148,7 @@ static inline u32 arch_timer_get_cntkctl(void)
 static inline void arch_timer_set_cntkctl(u32 cntkctl)
 {
 	write_sysreg(cntkctl, cntkctl_el1);
+<<<<<<< HEAD
 	isb();
 }
 
@@ -175,10 +179,22 @@ static inline u64 arch_counter_get_cntpct(void)
 	cnt = arch_timer_reg_read_stable(cntpct_el0);
 	arch_counter_enforce_ordering(cnt);
 	return cnt;
+=======
+}
+
+static inline u64 arch_counter_get_cntpct(void)
+{
+	/*
+	 * AArch64 kernel and user space mandate the use of CNTVCT.
+	 */
+	BUG();
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline u64 arch_counter_get_cntvct(void)
 {
+<<<<<<< HEAD
 	u64 cnt;
 
 	isb();
@@ -189,6 +205,12 @@ static inline u64 arch_counter_get_cntvct(void)
 
 #undef arch_counter_enforce_ordering
 
+=======
+	isb();
+	return arch_timer_reg_read_stable(cntvct_el0);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int arch_timer_arch_init(void)
 {
 	return 0;

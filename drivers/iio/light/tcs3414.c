@@ -241,6 +241,10 @@ static const struct iio_info tcs3414_info = {
 	.read_raw = tcs3414_read_raw,
 	.write_raw = tcs3414_write_raw,
 	.attrs = &tcs3414_attribute_group,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int tcs3414_buffer_preenable(struct iio_dev *indio_dev)

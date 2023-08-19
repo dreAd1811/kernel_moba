@@ -9,9 +9,13 @@
 
 #include <linux/clk.h>
 #include <linux/host1x.h>
+<<<<<<< HEAD
 #include <linux/iommu.h>
 #include <linux/module.h>
 #include <linux/of_device.h>
+=======
+#include <linux/module.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/reset.h>
 
@@ -21,12 +25,16 @@
 #include "gem.h"
 #include "gr3d.h"
 
+<<<<<<< HEAD
 struct gr3d_soc {
 	unsigned int version;
 };
 
 struct gr3d {
 	struct iommu_group *group;
+=======
+struct gr3d {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tegra_drm_client client;
 	struct host1x_channel *channel;
 	struct clk *clk_secondary;
@@ -34,8 +42,11 @@ struct gr3d {
 	struct reset_control *rst_secondary;
 	struct reset_control *rst;
 
+<<<<<<< HEAD
 	const struct gr3d_soc *soc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DECLARE_BITMAP(addr_regs, GR3D_NUM_REGS);
 };
 
@@ -50,12 +61,16 @@ static int gr3d_init(struct host1x_client *client)
 	struct drm_device *dev = dev_get_drvdata(client->parent);
 	unsigned long flags = HOST1X_SYNCPT_HAS_BASE;
 	struct gr3d *gr3d = to_gr3d(drm);
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gr3d->channel = host1x_channel_request(client->dev);
 	if (!gr3d->channel)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	client->syncpts[0] = host1x_syncpt_request(client, flags);
 	if (!client->syncpts[0]) {
 		err = -ENOMEM;
@@ -85,6 +100,15 @@ free:
 put:
 	host1x_channel_put(gr3d->channel);
 	return err;
+=======
+	client->syncpts[0] = host1x_syncpt_request(client->dev, flags);
+	if (!client->syncpts[0]) {
+		host1x_channel_put(gr3d->channel);
+		return -ENOMEM;
+	}
+
+	return tegra_drm_register_client(dev->dev_private, drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gr3d_exit(struct host1x_client *client)
@@ -98,7 +122,10 @@ static int gr3d_exit(struct host1x_client *client)
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	host1x_client_iommu_detach(client, gr3d->group);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host1x_syncpt_free(client->syncpts[0]);
 	host1x_channel_put(gr3d->channel);
 
@@ -158,6 +185,7 @@ static const struct tegra_drm_client_ops gr3d_ops = {
 	.submit = tegra_drm_submit,
 };
 
+<<<<<<< HEAD
 static const struct gr3d_soc tegra20_gr3d_soc = {
 	.version = 0x20,
 };
@@ -174,6 +202,12 @@ static const struct of_device_id tegra_gr3d_match[] = {
 	{ .compatible = "nvidia,tegra114-gr3d", .data = &tegra114_gr3d_soc },
 	{ .compatible = "nvidia,tegra30-gr3d", .data = &tegra30_gr3d_soc },
 	{ .compatible = "nvidia,tegra20-gr3d", .data = &tegra20_gr3d_soc },
+=======
+static const struct of_device_id tegra_gr3d_match[] = {
+	{ .compatible = "nvidia,tegra114-gr3d" },
+	{ .compatible = "nvidia,tegra30-gr3d" },
+	{ .compatible = "nvidia,tegra20-gr3d" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, tegra_gr3d_match);
@@ -295,8 +329,11 @@ static int gr3d_probe(struct platform_device *pdev)
 	if (!gr3d)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	gr3d->soc = of_device_get_match_data(&pdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	syncpts = devm_kzalloc(&pdev->dev, sizeof(*syncpts), GFP_KERNEL);
 	if (!syncpts)
 		return -ENOMEM;
@@ -354,7 +391,10 @@ static int gr3d_probe(struct platform_device *pdev)
 	gr3d->client.base.num_syncpts = 1;
 
 	INIT_LIST_HEAD(&gr3d->client.list);
+<<<<<<< HEAD
 	gr3d->client.version = gr3d->soc->version;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gr3d->client.ops = &gr3d_ops;
 
 	err = host1x_client_register(&gr3d->client.base);

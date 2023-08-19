@@ -56,13 +56,17 @@
 #include <rdma/ib_mad.h>
 #include <rdma/ib_user_mad.h>
 
+<<<<<<< HEAD
 #include "core_priv.h"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Roland Dreier");
 MODULE_DESCRIPTION("InfiniBand userspace MAD packet access");
 MODULE_LICENSE("Dual BSD/GPL");
 
 enum {
+<<<<<<< HEAD
 	IB_UMAD_MAX_PORTS  = RDMA_MAX_PORTS,
 	IB_UMAD_MAX_AGENTS = 32,
 
@@ -71,6 +75,13 @@ enum {
 	IB_UMAD_NUM_FIXED_MINOR = 64,
 	IB_UMAD_NUM_DYNAMIC_MINOR = IB_UMAD_MAX_PORTS - IB_UMAD_NUM_FIXED_MINOR,
 	IB_ISSM_MINOR_BASE        = IB_UMAD_NUM_FIXED_MINOR,
+=======
+	IB_UMAD_MAX_PORTS  = 64,
+	IB_UMAD_MAX_AGENTS = 32,
+
+	IB_UMAD_MAJOR      = 231,
+	IB_UMAD_MINOR_BASE = 0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -133,12 +144,18 @@ struct ib_umad_packet {
 
 static struct class *umad_class;
 
+<<<<<<< HEAD
 static const dev_t base_umad_dev = MKDEV(IB_UMAD_MAJOR, IB_UMAD_MINOR_BASE);
 static const dev_t base_issm_dev = MKDEV(IB_UMAD_MAJOR, IB_UMAD_MINOR_BASE) +
 				   IB_UMAD_NUM_FIXED_MINOR;
 static dev_t dynamic_umad_dev;
 static dev_t dynamic_issm_dev;
 
+=======
+static const dev_t base_dev = MKDEV(IB_UMAD_MAJOR, IB_UMAD_MINOR_BASE);
+
+static DEFINE_SPINLOCK(port_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DECLARE_BITMAP(dev_map, IB_UMAD_MAX_PORTS);
 
 static void ib_umad_add_one(struct ib_device *device);
@@ -242,7 +259,12 @@ static void recv_handler(struct ib_mad_agent *agent,
 	 * On OPA devices it is okay to lose the upper 16 bits of LID as this
 	 * information is obtained elsewhere. Mask off the upper 16 bits.
 	 */
+<<<<<<< HEAD
 	if (rdma_cap_opa_mad(agent->device, agent->port_num))
+=======
+	if (agent->device->port_immutable[agent->port_num].core_cap_flags &
+	    RDMA_CORE_PORT_INTEL_OPA)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		packet->mad.hdr.lid = ib_lid_be16(0xFFFF &
 						  mad_recv_wc->wc->slid);
 	else
@@ -254,6 +276,7 @@ static void recv_handler(struct ib_mad_agent *agent,
 	if (packet->mad.hdr.grh_present) {
 		struct rdma_ah_attr ah_attr;
 		const struct ib_global_route *grh;
+<<<<<<< HEAD
 		int ret;
 
 		ret = ib_init_ah_attr_from_wc(agent->device, agent->port_num,
@@ -262,6 +285,12 @@ static void recv_handler(struct ib_mad_agent *agent,
 					      &ah_attr);
 		if (ret)
 			goto err2;
+=======
+
+		ib_init_ah_from_wc(agent->device, agent->port_num,
+				   mad_recv_wc->wc, mad_recv_wc->recv_buf.grh,
+				   &ah_attr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		grh = rdma_ah_read_grh(&ah_attr);
 		packet->mad.hdr.gid_index = grh->sgid_index;
@@ -269,7 +298,10 @@ static void recv_handler(struct ib_mad_agent *agent,
 		packet->mad.hdr.traffic_class = grh->traffic_class;
 		memcpy(packet->mad.hdr.gid, &grh->dgid, 16);
 		packet->mad.hdr.flow_label = cpu_to_be32(grh->flow_label);
+<<<<<<< HEAD
 		rdma_destroy_ah_attr(&ah_attr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (queue_packet(file, agent, packet))
@@ -528,7 +560,11 @@ static ssize_t ib_umad_write(struct file *filp, const char __user *buf,
 		rdma_ah_set_dgid_raw(&ah_attr, packet->mad.hdr.gid);
 	}
 
+<<<<<<< HEAD
 	ah = rdma_create_user_ah(agent->qp->pd, &ah_attr, NULL);
+=======
+	ah = rdma_create_ah(agent->qp->pd, &ah_attr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ah)) {
 		ret = PTR_ERR(ah);
 		goto err_up;
@@ -630,17 +666,29 @@ err:
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t ib_umad_poll(struct file *filp, struct poll_table_struct *wait)
+=======
+static unsigned int ib_umad_poll(struct file *filp, struct poll_table_struct *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ib_umad_file *file = filp->private_data;
 
 	/* we will always be able to post a MAD send */
+<<<<<<< HEAD
 	__poll_t mask = EPOLLOUT | EPOLLWRNORM;
+=======
+	unsigned int mask = POLLOUT | POLLWRNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(filp, &file->recv_wait, wait);
 
 	if (!list_empty(&file->recv_list))
+<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
+=======
+		mask |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }
@@ -1155,11 +1203,38 @@ static DEVICE_ATTR(port, S_IRUGO, show_port, NULL);
 static CLASS_ATTR_STRING(abi_version, S_IRUGO,
 			 __stringify(IB_USER_MAD_ABI_VERSION));
 
+<<<<<<< HEAD
+=======
+static dev_t overflow_maj;
+static DECLARE_BITMAP(overflow_map, IB_UMAD_MAX_PORTS);
+static int find_overflow_devnum(struct ib_device *device)
+{
+	int ret;
+
+	if (!overflow_maj) {
+		ret = alloc_chrdev_region(&overflow_maj, 0, IB_UMAD_MAX_PORTS * 2,
+					  "infiniband_mad");
+		if (ret) {
+			dev_err(&device->dev,
+				"couldn't register dynamic device number\n");
+			return ret;
+		}
+	}
+
+	ret = find_first_zero_bit(overflow_map, IB_UMAD_MAX_PORTS);
+	if (ret >= IB_UMAD_MAX_PORTS)
+		return -1;
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ib_umad_init_port(struct ib_device *device, int port_num,
 			     struct ib_umad_device *umad_dev,
 			     struct ib_umad_port *port)
 {
 	int devnum;
+<<<<<<< HEAD
 	dev_t base_umad;
 	dev_t base_issm;
 
@@ -1175,6 +1250,28 @@ static int ib_umad_init_port(struct ib_device *device, int port_num,
 		base_umad = devnum + base_umad_dev;
 		base_issm = devnum + base_issm_dev;
 	}
+=======
+	dev_t base;
+
+	spin_lock(&port_lock);
+	devnum = find_first_zero_bit(dev_map, IB_UMAD_MAX_PORTS);
+	if (devnum >= IB_UMAD_MAX_PORTS) {
+		spin_unlock(&port_lock);
+		devnum = find_overflow_devnum(device);
+		if (devnum < 0)
+			return -1;
+
+		spin_lock(&port_lock);
+		port->dev_num = devnum + IB_UMAD_MAX_PORTS;
+		base = devnum + overflow_maj;
+		set_bit(devnum, overflow_map);
+	} else {
+		port->dev_num = devnum;
+		base = devnum + base_dev;
+		set_bit(devnum, dev_map);
+	}
+	spin_unlock(&port_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	port->ib_dev   = device;
 	port->port_num = port_num;
@@ -1186,7 +1283,11 @@ static int ib_umad_init_port(struct ib_device *device, int port_num,
 	port->cdev.owner = THIS_MODULE;
 	cdev_set_parent(&port->cdev, &umad_dev->kobj);
 	kobject_set_name(&port->cdev.kobj, "umad%d", port->dev_num);
+<<<<<<< HEAD
 	if (cdev_add(&port->cdev, base_umad, 1))
+=======
+	if (cdev_add(&port->cdev, base, 1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_cdev;
 
 	port->dev = device_create(umad_class, device->dev.parent,
@@ -1200,11 +1301,19 @@ static int ib_umad_init_port(struct ib_device *device, int port_num,
 	if (device_create_file(port->dev, &dev_attr_port))
 		goto err_dev;
 
+<<<<<<< HEAD
+=======
+	base += IB_UMAD_MAX_PORTS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cdev_init(&port->sm_cdev, &umad_sm_fops);
 	port->sm_cdev.owner = THIS_MODULE;
 	cdev_set_parent(&port->sm_cdev, &umad_dev->kobj);
 	kobject_set_name(&port->sm_cdev.kobj, "issm%d", port->dev_num);
+<<<<<<< HEAD
 	if (cdev_add(&port->sm_cdev, base_issm, 1))
+=======
+	if (cdev_add(&port->sm_cdev, base, 1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_sm_cdev;
 
 	port->sm_dev = device_create(umad_class, device->dev.parent,
@@ -1231,7 +1340,14 @@ err_dev:
 
 err_cdev:
 	cdev_del(&port->cdev);
+<<<<<<< HEAD
 	clear_bit(devnum, dev_map);
+=======
+	if (port->dev_num < IB_UMAD_MAX_PORTS)
+		clear_bit(devnum, dev_map);
+	else
+		clear_bit(devnum, overflow_map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return -1;
 }
@@ -1265,7 +1381,15 @@ static void ib_umad_kill_port(struct ib_umad_port *port)
 	}
 
 	mutex_unlock(&port->file_mutex);
+<<<<<<< HEAD
 	clear_bit(port->dev_num, dev_map);
+=======
+
+	if (port->dev_num < IB_UMAD_MAX_PORTS)
+		clear_bit(port->dev_num, dev_map);
+	else
+		clear_bit(port->dev_num - IB_UMAD_MAX_PORTS, overflow_map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ib_umad_add_one(struct ib_device *device)
@@ -1341,14 +1465,19 @@ static int __init ib_umad_init(void)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = register_chrdev_region(base_umad_dev,
 				     IB_UMAD_NUM_FIXED_MINOR * 2,
+=======
+	ret = register_chrdev_region(base_dev, IB_UMAD_MAX_PORTS * 2,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     "infiniband_mad");
 	if (ret) {
 		pr_err("couldn't register device number\n");
 		goto out;
 	}
 
+<<<<<<< HEAD
 	ret = alloc_chrdev_region(&dynamic_umad_dev, 0,
 				  IB_UMAD_NUM_DYNAMIC_MINOR * 2,
 				  "infiniband_mad");
@@ -1358,6 +1487,8 @@ static int __init ib_umad_init(void)
 	}
 	dynamic_issm_dev = dynamic_umad_dev + IB_UMAD_NUM_DYNAMIC_MINOR;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	umad_class = class_create(THIS_MODULE, "infiniband_mad");
 	if (IS_ERR(umad_class)) {
 		ret = PTR_ERR(umad_class);
@@ -1385,12 +1516,16 @@ out_class:
 	class_destroy(umad_class);
 
 out_chrdev:
+<<<<<<< HEAD
 	unregister_chrdev_region(dynamic_umad_dev,
 				 IB_UMAD_NUM_DYNAMIC_MINOR * 2);
 
 out_alloc:
 	unregister_chrdev_region(base_umad_dev,
 				 IB_UMAD_NUM_FIXED_MINOR * 2);
+=======
+	unregister_chrdev_region(base_dev, IB_UMAD_MAX_PORTS * 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	return ret;
@@ -1400,10 +1535,16 @@ static void __exit ib_umad_cleanup(void)
 {
 	ib_unregister_client(&umad_client);
 	class_destroy(umad_class);
+<<<<<<< HEAD
 	unregister_chrdev_region(base_umad_dev,
 				 IB_UMAD_NUM_FIXED_MINOR * 2);
 	unregister_chrdev_region(dynamic_umad_dev,
 				 IB_UMAD_NUM_DYNAMIC_MINOR * 2);
+=======
+	unregister_chrdev_region(base_dev, IB_UMAD_MAX_PORTS * 2);
+	if (overflow_maj)
+		unregister_chrdev_region(overflow_maj, IB_UMAD_MAX_PORTS * 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(ib_umad_init);

@@ -58,10 +58,14 @@ static inline void release_thread(struct task_struct *task)
 {
 }
 
+<<<<<<< HEAD
 static inline void mm_copy_segments(struct mm_struct *from_mm,
 				    struct mm_struct *new_mm)
 {
 }
+=======
+#define init_stack	(init_thread_union.stack)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * User space process size: 3GB (default).

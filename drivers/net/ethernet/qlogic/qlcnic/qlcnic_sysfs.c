@@ -1177,6 +1177,7 @@ static ssize_t qlcnic_83xx_sysfs_flash_write_handler(struct file *filp,
 }
 
 static const struct device_attribute dev_attr_bridged_mode = {
+<<<<<<< HEAD
 	.attr = { .name = "bridged_mode", .mode = 0644 },
 	.show = qlcnic_show_bridged_mode,
 	.store = qlcnic_store_bridged_mode,
@@ -1184,74 +1185,123 @@ static const struct device_attribute dev_attr_bridged_mode = {
 
 static const struct device_attribute dev_attr_diag_mode = {
 	.attr = { .name = "diag_mode", .mode = 0644 },
+=======
+       .attr = {.name = "bridged_mode", .mode = (S_IRUGO | S_IWUSR)},
+       .show = qlcnic_show_bridged_mode,
+       .store = qlcnic_store_bridged_mode,
+};
+
+static const struct device_attribute dev_attr_diag_mode = {
+	.attr = {.name = "diag_mode", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = qlcnic_show_diag_mode,
 	.store = qlcnic_store_diag_mode,
 };
 
 static const struct device_attribute dev_attr_beacon = {
+<<<<<<< HEAD
 	.attr = { .name = "beacon", .mode = 0644 },
+=======
+	.attr = {.name = "beacon", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = qlcnic_show_beacon,
 	.store = qlcnic_store_beacon,
 };
 
 static const struct bin_attribute bin_attr_crb = {
+<<<<<<< HEAD
 	.attr = { .name = "crb", .mode = 0644 },
+=======
+	.attr = {.name = "crb", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_sysfs_read_crb,
 	.write = qlcnic_sysfs_write_crb,
 };
 
 static const struct bin_attribute bin_attr_mem = {
+<<<<<<< HEAD
 	.attr = { .name = "mem", .mode = 0644 },
+=======
+	.attr = {.name = "mem", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_sysfs_read_mem,
 	.write = qlcnic_sysfs_write_mem,
 };
 
 static const struct bin_attribute bin_attr_npar_config = {
+<<<<<<< HEAD
 	.attr = { .name = "npar_config", .mode = 0644 },
+=======
+	.attr = {.name = "npar_config", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_sysfs_read_npar_config,
 	.write = qlcnic_sysfs_write_npar_config,
 };
 
 static const struct bin_attribute bin_attr_pci_config = {
+<<<<<<< HEAD
 	.attr = { .name = "pci_config", .mode = 0644 },
+=======
+	.attr = {.name = "pci_config", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_sysfs_read_pci_config,
 	.write = NULL,
 };
 
 static const struct bin_attribute bin_attr_port_stats = {
+<<<<<<< HEAD
 	.attr = { .name = "port_stats", .mode = 0644 },
+=======
+	.attr = {.name = "port_stats", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_sysfs_get_port_stats,
 	.write = qlcnic_sysfs_clear_port_stats,
 };
 
 static const struct bin_attribute bin_attr_esw_stats = {
+<<<<<<< HEAD
 	.attr = { .name = "esw_stats", .mode = 0644 },
+=======
+	.attr = {.name = "esw_stats", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_sysfs_get_esw_stats,
 	.write = qlcnic_sysfs_clear_esw_stats,
 };
 
 static const struct bin_attribute bin_attr_esw_config = {
+<<<<<<< HEAD
 	.attr = { .name = "esw_config", .mode = 0644 },
+=======
+	.attr = {.name = "esw_config", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_sysfs_read_esw_config,
 	.write = qlcnic_sysfs_write_esw_config,
 };
 
 static const struct bin_attribute bin_attr_pm_config = {
+<<<<<<< HEAD
 	.attr = { .name = "pm_config", .mode = 0644 },
+=======
+	.attr = {.name = "pm_config", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_sysfs_read_pm_config,
 	.write = qlcnic_sysfs_write_pm_config,
 };
 
 static const struct bin_attribute bin_attr_flash = {
+<<<<<<< HEAD
 	.attr = { .name = "flash", .mode = 0644 },
+=======
+	.attr = {.name = "flash", .mode = (S_IRUGO | S_IWUSR)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size = 0,
 	.read = qlcnic_83xx_sysfs_flash_read_handler,
 	.write = qlcnic_83xx_sysfs_flash_write_handler,
@@ -1278,7 +1328,11 @@ static ssize_t qlcnic_hwmon_show_temp(struct device *dev,
 }
 
 /* hwmon-sysfs attributes */
+<<<<<<< HEAD
 static SENSOR_DEVICE_ATTR(temp1_input, 0444,
+=======
+static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  qlcnic_hwmon_show_temp, NULL, 1);
 
 static struct attribute *qlcnic_hwmon_attrs[] = {

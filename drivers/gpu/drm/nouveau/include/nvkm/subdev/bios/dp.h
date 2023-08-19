@@ -1,10 +1,13 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef __NVBIOS_DP_H__
 #define __NVBIOS_DP_H__
+<<<<<<< HEAD
 
 u16
 nvbios_dp_table(struct nvkm_bios *bios, u8 *ver, u8 *hdr, u8 *cnt, u8 *len);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nvbios_dpout {
 	u16 type;
 	u16 mask;

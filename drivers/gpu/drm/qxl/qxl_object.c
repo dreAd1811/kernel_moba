@@ -109,7 +109,11 @@ int qxl_bo_create(struct qxl_device *qdev,
 	qxl_ttm_placement_from_domain(bo, domain, pinned);
 
 	r = ttm_bo_init(&qdev->mman.bdev, &bo->tbo, size, type,
+<<<<<<< HEAD
 			&bo->placement, 0, !kernel, size,
+=======
+			&bo->placement, 0, !kernel, NULL, size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			NULL, NULL, &qxl_ttm_bo_destroy);
 	if (unlikely(r != 0)) {
 		if (r != -ERESTARTSYS)
@@ -211,19 +215,30 @@ void qxl_bo_unref(struct qxl_bo **bo)
 	if ((*bo) == NULL)
 		return;
 
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(&(*bo)->gem_base);
+=======
+	drm_gem_object_unreference_unlocked(&(*bo)->gem_base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*bo = NULL;
 }
 
 struct qxl_bo *qxl_bo_ref(struct qxl_bo *bo)
 {
+<<<<<<< HEAD
 	drm_gem_object_get(&bo->gem_base);
+=======
+	drm_gem_object_reference(&bo->gem_base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bo;
 }
 
 static int __qxl_bo_pin(struct qxl_bo *bo, u32 domain, u64 *gpu_addr)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, false };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *ddev = bo->gem_base.dev;
 	int r;
 
@@ -234,7 +249,11 @@ static int __qxl_bo_pin(struct qxl_bo *bo, u32 domain, u64 *gpu_addr)
 		return 0;
 	}
 	qxl_ttm_placement_from_domain(bo, domain, true);
+<<<<<<< HEAD
 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+=======
+	r = ttm_bo_validate(&bo->tbo, &bo->placement, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (likely(r == 0)) {
 		bo->pin_count = 1;
 		if (gpu_addr != NULL)
@@ -247,7 +266,10 @@ static int __qxl_bo_pin(struct qxl_bo *bo, u32 domain, u64 *gpu_addr)
 
 static int __qxl_bo_unpin(struct qxl_bo *bo)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, false };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *ddev = bo->gem_base.dev;
 	int r, i;
 
@@ -260,7 +282,11 @@ static int __qxl_bo_unpin(struct qxl_bo *bo)
 		return 0;
 	for (i = 0; i < bo->placement.num_placement; i++)
 		bo->placements[i].flags &= ~TTM_PL_FLAG_NO_EVICT;
+<<<<<<< HEAD
 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+=======
+	r = ttm_bo_validate(&bo->tbo, &bo->placement, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(r != 0))
 		dev_err(ddev->dev, "%p validate failed for unpin\n", bo);
 	return r;
@@ -318,7 +344,11 @@ void qxl_bo_force_delete(struct qxl_device *qdev)
 		list_del_init(&bo->list);
 		mutex_unlock(&qdev->gem.mutex);
 		/* this should unref the ttm bo */
+<<<<<<< HEAD
 		drm_gem_object_put_unlocked(&bo->gem_base);
+=======
+		drm_gem_object_unreference_unlocked(&bo->gem_base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

@@ -5,6 +5,7 @@ Masahide NAKAMURA <nakam@linux-ipv6.org>
 
 Transformation Statistics
 -------------------------
+<<<<<<< HEAD
 
 The xfrm_proc code is a set of statistics showing numbers of packets
 dropped by the transformation code and why.  These counters are defined
@@ -14,6 +15,15 @@ as part of the linux private MIB.  These counters can be viewed in
 
 Inbound errors
 ~~~~~~~~~~~~~~
+=======
+xfrm_proc is a statistics shown factor dropped by transformation
+for developer.
+It is a counter designed from current transformation source code
+and defined like linux private MIB.
+
+Inbound statistics
+~~~~~~~~~~~~~~~~~~
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 XfrmInError:
 	All errors which is not matched others
 XfrmInBufferError:
@@ -48,10 +58,13 @@ XfrmInPolBlock:
 	Policy discards
 XfrmInPolError:
 	Policy error
+<<<<<<< HEAD
 XfrmAcquireError:
 	State hasn't been fully acquired before use
 XfrmFwdHdrError:
 	Forward routing of a packet is not allowed
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Outbound errors
 ~~~~~~~~~~~~~~~
@@ -78,5 +91,8 @@ XfrmOutPolDead:
 	Policy is dead
 XfrmOutPolError:
 	Policy error
+<<<<<<< HEAD
 XfrmOutStateInvalid:
 	State is invalid, perhaps expired
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

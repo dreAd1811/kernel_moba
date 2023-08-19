@@ -19,6 +19,10 @@
 #include <linux/gfp.h>
 #include <linux/delay.h>
 #include <linux/init.h>
+<<<<<<< HEAD
+=======
+#include <linux/pci.h>		/* for hppa_dma_ops and pcxl_dma_ops */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/initrd.h>
 #include <linux/swap.h>
 #include <linux/unistd.h>
@@ -33,7 +37,10 @@
 #include <asm/mmzone.h>
 #include <asm/sections.h>
 #include <asm/msgbuf.h>
+<<<<<<< HEAD
 #include <asm/sparsemem.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern int  data_start;
 extern void parisc_kernel_start(void);	/* Kernel entry point in head.S */
@@ -50,6 +57,14 @@ pmd_t pmd0[PTRS_PER_PMD] __attribute__ ((__section__ (".data..vm0.pmd"), aligned
 pgd_t swapper_pg_dir[PTRS_PER_PGD] __attribute__ ((__section__ (".data..vm0.pgd"), aligned(PAGE_SIZE)));
 pte_t pg0[PT_INITIAL * PTRS_PER_PTE] __attribute__ ((__section__ (".data..vm0.pte"), aligned(PAGE_SIZE)));
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DISCONTIGMEM
+struct node_map_data node_data[MAX_NUMNODES] __read_mostly;
+signed char pfnnid_map[PFNNID_MAP_MAX] __read_mostly;
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct resource data_resource = {
 	.name	= "Kernel data",
 	.flags	= IORESOURCE_BUSY | IORESOURCE_SYSTEM_RAM,
@@ -73,8 +88,13 @@ static struct resource sysram_resources[MAX_PHYSMEM_RANGES] __read_mostly;
  * information retrieved in kernel/inventory.c.
  */
 
+<<<<<<< HEAD
 physmem_range_t pmem_ranges[MAX_PHYSMEM_RANGES] __initdata;
 int npmem_ranges __initdata;
+=======
+physmem_range_t pmem_ranges[MAX_PHYSMEM_RANGES] __read_mostly;
+int npmem_ranges __read_mostly;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * get_memblock() allocates pages via memblock.
@@ -107,7 +127,11 @@ static void * __init get_memblock(unsigned long size)
 }
 
 #ifdef CONFIG_64BIT
+<<<<<<< HEAD
 #define MAX_MEM         (1UL << MAX_PHYSMEM_BITS)
+=======
+#define MAX_MEM         (~0UL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* !CONFIG_64BIT */
 #define MAX_MEM         (3584U*1024U*1024U)
 #endif /* !CONFIG_64BIT */
@@ -146,7 +170,11 @@ static void __init mem_limit_func(void)
 static void __init setup_bootmem(void)
 {
 	unsigned long mem_max;
+<<<<<<< HEAD
 #ifndef CONFIG_SPARSEMEM
+=======
+#ifndef CONFIG_DISCONTIGMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	physmem_range_t pmem_holes[MAX_PHYSMEM_RANGES - 1];
 	int npmem_holes;
 #endif
@@ -164,13 +192,18 @@ static void __init setup_bootmem(void)
 		int j;
 
 		for (j = i; j > 0; j--) {
+<<<<<<< HEAD
 			physmem_range_t tmp;
+=======
+			unsigned long tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (pmem_ranges[j-1].start_pfn <
 			    pmem_ranges[j].start_pfn) {
 
 				break;
 			}
+<<<<<<< HEAD
 			tmp = pmem_ranges[j-1];
 			pmem_ranges[j-1] = pmem_ranges[j];
 			pmem_ranges[j] = tmp;
@@ -178,6 +211,18 @@ static void __init setup_bootmem(void)
 	}
 
 #ifndef CONFIG_SPARSEMEM
+=======
+			tmp = pmem_ranges[j-1].start_pfn;
+			pmem_ranges[j-1].start_pfn = pmem_ranges[j].start_pfn;
+			pmem_ranges[j].start_pfn = tmp;
+			tmp = pmem_ranges[j-1].pages;
+			pmem_ranges[j-1].pages = pmem_ranges[j].pages;
+			pmem_ranges[j].pages = tmp;
+		}
+	}
+
+#ifndef CONFIG_DISCONTIGMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Throw out ranges that are too far apart (controlled by
 	 * MAX_GAP).
@@ -189,7 +234,11 @@ static void __init setup_bootmem(void)
 			 pmem_ranges[i-1].pages) > MAX_GAP) {
 			npmem_ranges = i;
 			printk("Large gap in memory detected (%ld pages). "
+<<<<<<< HEAD
 			       "Consider turning on CONFIG_SPARSEMEM\n",
+=======
+			       "Consider turning on CONFIG_DISCONTIGMEM\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       pmem_ranges[i].start_pfn -
 			       (pmem_ranges[i-1].start_pfn +
 			        pmem_ranges[i-1].pages));
@@ -254,8 +303,14 @@ static void __init setup_bootmem(void)
 
 	printk(KERN_INFO "Total Memory: %ld MB\n",mem_max >> 20);
 
+<<<<<<< HEAD
 #ifndef CONFIG_SPARSEMEM
 	/* Merge the ranges, keeping track of the holes */
+=======
+#ifndef CONFIG_DISCONTIGMEM
+	/* Merge the ranges, keeping track of the holes */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		unsigned long end_pfn;
 		unsigned long hole_pages;
@@ -278,6 +333,21 @@ static void __init setup_bootmem(void)
 	}
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DISCONTIGMEM
+	for (i = 0; i < MAX_PHYSMEM_RANGES; i++) {
+		memset(NODE_DATA(i), 0, sizeof(pg_data_t));
+	}
+	memset(pfnnid_map, 0xff, sizeof(pfnnid_map));
+
+	for (i = 0; i < npmem_ranges; i++) {
+		node_set_state(i, N_NORMAL_MEMORY);
+		node_set_online(i);
+	}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Initialize and free the full range of memory in each range.
 	 */
@@ -318,7 +388,11 @@ static void __init setup_bootmem(void)
 	memblock_reserve(__pa(KERNEL_BINARY_TEXT_START),
 			(unsigned long)(_end - KERNEL_BINARY_TEXT_START));
 
+<<<<<<< HEAD
 #ifndef CONFIG_SPARSEMEM
+=======
+#ifndef CONFIG_DISCONTIGMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* reserve the holes */
 
@@ -364,9 +438,12 @@ static void __init setup_bootmem(void)
 
 	/* Initialize Page Deallocation Table (PDT) and check for bad memory. */
 	pdc_pdt_init();
+<<<<<<< HEAD
 
 	memblock_allow_resize();
 	memblock_dump_all();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init parisc_text_address(unsigned long vaddr)
@@ -494,7 +571,11 @@ static void __init map_pages(unsigned long start_vaddr,
 	}
 }
 
+<<<<<<< HEAD
 void __ref free_initmem(void)
+=======
+void free_initmem(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long init_begin = (unsigned long)__init_begin;
 	unsigned long init_end = (unsigned long)__init_end;
@@ -590,6 +671,7 @@ void __init mem_init(void)
 			> BITS_PER_LONG);
 
 	high_memory = __va((max_pfn << PAGE_SHIFT));
+<<<<<<< HEAD
 	set_max_mapnr(page_to_pfn(virt_to_page(high_memory - 1)) + 1);
 	free_all_bootmem();
 
@@ -615,6 +697,32 @@ void __init mem_init(void)
 	       "      .init : 0x%px - 0x%px   (%4ld kB)\n"
 	       "      .data : 0x%px - 0x%px   (%4ld kB)\n"
 	       "      .text : 0x%px - 0x%px   (%4ld kB)\n",
+=======
+	set_max_mapnr(max_low_pfn);
+	free_all_bootmem();
+
+#ifdef CONFIG_PA11
+	if (hppa_dma_ops == &pcxl_dma_ops) {
+		pcxl_dma_start = (unsigned long)SET_MAP_OFFSET(MAP_START);
+		parisc_vmalloc_start = SET_MAP_OFFSET(pcxl_dma_start
+						+ PCXL_DMA_MAP_SIZE);
+	} else {
+		pcxl_dma_start = 0;
+		parisc_vmalloc_start = SET_MAP_OFFSET(MAP_START);
+	}
+#else
+	parisc_vmalloc_start = SET_MAP_OFFSET(MAP_START);
+#endif
+
+	mem_init_print_info(NULL);
+#ifdef CONFIG_DEBUG_KERNEL /* double-sanity-check paranoia */
+	printk("virtual kernel memory layout:\n"
+	       "    vmalloc : 0x%p - 0x%p   (%4ld MB)\n"
+	       "    memory  : 0x%p - 0x%p   (%4ld MB)\n"
+	       "      .init : 0x%p - 0x%p   (%4ld kB)\n"
+	       "      .data : 0x%p - 0x%p   (%4ld kB)\n"
+	       "      .text : 0x%p - 0x%p   (%4ld kB)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	       (void*)VMALLOC_START, (void*)VMALLOC_END,
 	       (VMALLOC_END - VMALLOC_START) >> 20,
@@ -694,6 +802,7 @@ static void __init gateway_init(void)
 		  PAGE_SIZE, PAGE_GATEWAY, 1);
 }
 
+<<<<<<< HEAD
 static void __init parisc_bootmem_free(void)
 {
 	unsigned long zones_size[MAX_NR_ZONES] = { 0, };
@@ -721,12 +830,19 @@ static void __init parisc_bootmem_free(void)
 
 void __init paging_init(void)
 {
+=======
+void __init paging_init(void)
+{
+	int i;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	setup_bootmem();
 	pagetable_init();
 	gateway_init();
 	flush_cache_all_local(); /* start with known state */
 	flush_tlb_all_local(NULL);
 
+<<<<<<< HEAD
 	/*
 	 * Mark all memblocks as present for sparsemem using
 	 * memory_present() and then initialize sparsemem.
@@ -734,6 +850,29 @@ void __init paging_init(void)
 	memblocks_present();
 	sparse_init();
 	parisc_bootmem_free();
+=======
+	for (i = 0; i < npmem_ranges; i++) {
+		unsigned long zones_size[MAX_NR_ZONES] = { 0, };
+
+		zones_size[ZONE_NORMAL] = pmem_ranges[i].pages;
+
+#ifdef CONFIG_DISCONTIGMEM
+		/* Need to initialize the pfnnid_map before we can initialize
+		   the zone */
+		{
+		    int j;
+		    for (j = (pmem_ranges[i].start_pfn >> PFNNID_SHIFT);
+			 j <= ((pmem_ranges[i].start_pfn + pmem_ranges[i].pages) >> PFNNID_SHIFT);
+			 j++) {
+			pfnnid_map[j] = i;
+		    }
+		}
+#endif
+
+		free_area_init_node(i, zones_size,
+				pmem_ranges[i].start_pfn, NULL);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_PA20

@@ -55,13 +55,56 @@
 
 int ocrdma_query_pkey(struct ib_device *ibdev, u8 port, u16 index, u16 *pkey)
 {
+<<<<<<< HEAD
 	if (index > 1)
+=======
+	if (index > 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	*pkey = 0xffff;
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int ocrdma_query_gid(struct ib_device *ibdev, u8 port,
+		     int index, union ib_gid *sgid)
+{
+	int ret;
+	struct ocrdma_dev *dev;
+
+	dev = get_ocrdma_dev(ibdev);
+	memset(sgid, 0, sizeof(*sgid));
+	if (index >= OCRDMA_MAX_SGID)
+		return -EINVAL;
+
+	ret = ib_get_cached_gid(ibdev, port, index, sgid, NULL);
+	if (ret == -EAGAIN) {
+		memcpy(sgid, &zgid, sizeof(*sgid));
+		return 0;
+	}
+
+	return ret;
+}
+
+int ocrdma_add_gid(struct ib_device *device,
+		   u8 port_num,
+		   unsigned int index,
+		   const union ib_gid *gid,
+		   const struct ib_gid_attr *attr,
+		   void **context) {
+	return  0;
+}
+
+int  ocrdma_del_gid(struct ib_device *device,
+		    u8 port_num,
+		    unsigned int index,
+		    void **context) {
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ocrdma_query_device(struct ib_device *ibdev, struct ib_device_attr *attr,
 			struct ib_udata *uhw)
 {
@@ -89,8 +132,12 @@ int ocrdma_query_device(struct ib_device *ibdev, struct ib_device_attr *attr,
 					IB_DEVICE_SYS_IMAGE_GUID |
 					IB_DEVICE_LOCAL_DMA_LKEY |
 					IB_DEVICE_MEM_MGT_EXTENSIONS;
+<<<<<<< HEAD
 	attr->max_send_sge = dev->attr.max_send_sge;
 	attr->max_recv_sge = dev->attr.max_recv_sge;
+=======
+	attr->max_sge = min(dev->attr.max_send_sge, dev->attr.max_recv_sge);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	attr->max_sge_rd = dev->attr.max_rdma_sge;
 	attr->max_cq = dev->attr.max_cq;
 	attr->max_cqe = dev->attr.max_cqe;
@@ -197,10 +244,18 @@ int ocrdma_query_port(struct ib_device *ibdev,
 	props->sm_lid = 0;
 	props->sm_sl = 0;
 	props->state = port_state;
+<<<<<<< HEAD
 	props->port_cap_flags = IB_PORT_CM_SUP | IB_PORT_REINIT_SUP |
 				IB_PORT_DEVICE_MGMT_SUP |
 				IB_PORT_VENDOR_CLASS_SUP;
 	props->ip_gids = true;
+=======
+	props->port_cap_flags =
+	    IB_PORT_CM_SUP |
+	    IB_PORT_REINIT_SUP |
+	    IB_PORT_DEVICE_MGMT_SUP | IB_PORT_VENDOR_CLASS_SUP |
+	    IB_PORT_IP_BASED_GIDS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	props->gid_tbl_len = OCRDMA_MAX_SGID;
 	props->pkey_tbl_len = 1;
 	props->bad_pkey_cntr = 0;
@@ -427,7 +482,11 @@ retry:
 static inline int is_ucontext_pd(struct ocrdma_ucontext *uctx,
 				 struct ocrdma_pd *pd)
 {
+<<<<<<< HEAD
 	return (uctx->cntxt_pd == pd);
+=======
+	return (uctx->cntxt_pd == pd ? true : false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int _ocrdma_dealloc_pd(struct ocrdma_dev *dev,
@@ -516,12 +575,21 @@ struct ib_ucontext *ocrdma_alloc_ucontext(struct ib_device *ibdev,
 	INIT_LIST_HEAD(&ctx->mm_head);
 	mutex_init(&ctx->mm_list_lock);
 
+<<<<<<< HEAD
 	ctx->ah_tbl.va = dma_zalloc_coherent(&pdev->dev, map_len,
 					     &ctx->ah_tbl.pa, GFP_KERNEL);
+=======
+	ctx->ah_tbl.va = dma_alloc_coherent(&pdev->dev, map_len,
+					    &ctx->ah_tbl.pa, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ctx->ah_tbl.va) {
 		kfree(ctx);
 		return ERR_PTR(-ENOMEM);
 	}
+<<<<<<< HEAD
+=======
+	memset(ctx->ah_tbl.va, 0, map_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->ah_tbl.len = map_len;
 
 	memset(&resp, 0, sizeof(resp));
@@ -843,19 +911,32 @@ static int ocrdma_build_pbl_tbl(struct ocrdma_dev *dev, struct ocrdma_hw_mr *mr)
 	void *va;
 	dma_addr_t pa;
 
+<<<<<<< HEAD
 	mr->pbl_table = kcalloc(mr->num_pbls, sizeof(struct ocrdma_pbl),
 				GFP_KERNEL);
+=======
+	mr->pbl_table = kzalloc(sizeof(struct ocrdma_pbl) *
+				mr->num_pbls, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!mr->pbl_table)
 		return -ENOMEM;
 
 	for (i = 0; i < mr->num_pbls; i++) {
+<<<<<<< HEAD
 		va = dma_zalloc_coherent(&pdev->dev, dma_len, &pa, GFP_KERNEL);
+=======
+		va = dma_alloc_coherent(&pdev->dev, dma_len, &pa, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!va) {
 			ocrdma_free_mr_pbl_tbl(dev, mr);
 			status = -ENOMEM;
 			break;
 		}
+<<<<<<< HEAD
+=======
+		memset(va, 0, dma_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mr->pbl_table[i].va = va;
 		mr->pbl_table[i].pa = pa;
 	}
@@ -1323,12 +1404,20 @@ static void ocrdma_set_qp_db(struct ocrdma_dev *dev, struct ocrdma_qp *qp,
 static int ocrdma_alloc_wr_id_tbl(struct ocrdma_qp *qp)
 {
 	qp->wqe_wr_id_tbl =
+<<<<<<< HEAD
 	    kcalloc(qp->sq.max_cnt, sizeof(*(qp->wqe_wr_id_tbl)),
+=======
+	    kzalloc(sizeof(*(qp->wqe_wr_id_tbl)) * qp->sq.max_cnt,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    GFP_KERNEL);
 	if (qp->wqe_wr_id_tbl == NULL)
 		return -ENOMEM;
 	qp->rqe_wr_id_tbl =
+<<<<<<< HEAD
 	    kcalloc(qp->rq.max_cnt, sizeof(u64), GFP_KERNEL);
+=======
+	    kzalloc(sizeof(u64) * qp->rq.max_cnt, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (qp->rqe_wr_id_tbl == NULL)
 		return -ENOMEM;
 
@@ -1774,6 +1863,7 @@ int ocrdma_destroy_qp(struct ib_qp *ibqp)
 	 * protect against proessing in-flight CQEs for this QP.
 	 */
 	spin_lock_irqsave(&qp->sq_cq->cq_lock, flags);
+<<<<<<< HEAD
 	if (qp->rq_cq && (qp->rq_cq != qp->sq_cq)) {
 		spin_lock(&qp->rq_cq->cq_lock);
 		ocrdma_del_qpn_map(dev, qp);
@@ -1781,6 +1871,15 @@ int ocrdma_destroy_qp(struct ib_qp *ibqp)
 	} else {
 		ocrdma_del_qpn_map(dev, qp);
 	}
+=======
+	if (qp->rq_cq && (qp->rq_cq != qp->sq_cq))
+		spin_lock(&qp->rq_cq->cq_lock);
+
+	ocrdma_del_qpn_map(dev, qp);
+
+	if (qp->rq_cq && (qp->rq_cq != qp->sq_cq))
+		spin_unlock(&qp->rq_cq->cq_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&qp->sq_cq->cq_lock, flags);
 
 	if (!pd->uctx) {
@@ -1865,16 +1964,25 @@ struct ib_srq *ocrdma_create_srq(struct ib_pd *ibpd,
 
 	if (udata == NULL) {
 		status = -ENOMEM;
+<<<<<<< HEAD
 		srq->rqe_wr_id_tbl = kcalloc(srq->rq.max_cnt, sizeof(u64),
 					     GFP_KERNEL);
+=======
+		srq->rqe_wr_id_tbl = kzalloc(sizeof(u64) * srq->rq.max_cnt,
+			    GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (srq->rqe_wr_id_tbl == NULL)
 			goto arm_err;
 
 		srq->bit_fields_len = (srq->rq.max_cnt / 32) +
 		    (srq->rq.max_cnt % 32 ? 1 : 0);
 		srq->idx_bit_fields =
+<<<<<<< HEAD
 		    kmalloc_array(srq->bit_fields_len, sizeof(u32),
 				  GFP_KERNEL);
+=======
+		    kmalloc(srq->bit_fields_len * sizeof(u32), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (srq->idx_bit_fields == NULL)
 			goto arm_err;
 		memset(srq->idx_bit_fields, 0xff,
@@ -1953,7 +2061,11 @@ int ocrdma_destroy_srq(struct ib_srq *ibsrq)
 /* unprivileged verbs and their support functions. */
 static void ocrdma_build_ud_hdr(struct ocrdma_qp *qp,
 				struct ocrdma_hdr_wqe *hdr,
+<<<<<<< HEAD
 				const struct ib_send_wr *wr)
+=======
+				struct ib_send_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ocrdma_ewqe_ud_hdr *ud_hdr =
 		(struct ocrdma_ewqe_ud_hdr *)(hdr + 1);
@@ -2000,7 +2112,11 @@ static inline uint32_t ocrdma_sglist_len(struct ib_sge *sg_list, int num_sge)
 static int ocrdma_build_inline_sges(struct ocrdma_qp *qp,
 				    struct ocrdma_hdr_wqe *hdr,
 				    struct ocrdma_sge *sge,
+<<<<<<< HEAD
 				    const struct ib_send_wr *wr, u32 wqe_size)
+=======
+				    struct ib_send_wr *wr, u32 wqe_size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	char *dpp_addr;
@@ -2038,7 +2154,11 @@ static int ocrdma_build_inline_sges(struct ocrdma_qp *qp,
 }
 
 static int ocrdma_build_send(struct ocrdma_qp *qp, struct ocrdma_hdr_wqe *hdr,
+<<<<<<< HEAD
 			     const struct ib_send_wr *wr)
+=======
+			     struct ib_send_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int status;
 	struct ocrdma_sge *sge;
@@ -2057,7 +2177,11 @@ static int ocrdma_build_send(struct ocrdma_qp *qp, struct ocrdma_hdr_wqe *hdr,
 }
 
 static int ocrdma_build_write(struct ocrdma_qp *qp, struct ocrdma_hdr_wqe *hdr,
+<<<<<<< HEAD
 			      const struct ib_send_wr *wr)
+=======
+			      struct ib_send_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int status;
 	struct ocrdma_sge *ext_rw = (struct ocrdma_sge *)(hdr + 1);
@@ -2075,7 +2199,11 @@ static int ocrdma_build_write(struct ocrdma_qp *qp, struct ocrdma_hdr_wqe *hdr,
 }
 
 static void ocrdma_build_read(struct ocrdma_qp *qp, struct ocrdma_hdr_wqe *hdr,
+<<<<<<< HEAD
 			      const struct ib_send_wr *wr)
+=======
+			      struct ib_send_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ocrdma_sge *ext_rw = (struct ocrdma_sge *)(hdr + 1);
 	struct ocrdma_sge *sge = ext_rw + 1;
@@ -2105,7 +2233,11 @@ static int get_encoded_page_size(int pg_sz)
 
 static int ocrdma_build_reg(struct ocrdma_qp *qp,
 			    struct ocrdma_hdr_wqe *hdr,
+<<<<<<< HEAD
 			    const struct ib_reg_wr *wr)
+=======
+			    struct ib_reg_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 fbo;
 	struct ocrdma_ewqe_fr *fast_reg = (struct ocrdma_ewqe_fr *)(hdr + 1);
@@ -2166,8 +2298,13 @@ static void ocrdma_ring_sq_db(struct ocrdma_qp *qp)
 	iowrite32(val, qp->sq_db);
 }
 
+<<<<<<< HEAD
 int ocrdma_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		     const struct ib_send_wr **bad_wr)
+=======
+int ocrdma_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
+		     struct ib_send_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int status = 0;
 	struct ocrdma_qp *qp = get_ocrdma_qp(ibqp);
@@ -2210,7 +2347,10 @@ int ocrdma_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		case IB_WR_SEND_WITH_IMM:
 			hdr->cw |= (OCRDMA_FLAG_IMM << OCRDMA_WQE_FLAGS_SHIFT);
 			hdr->immdt = ntohl(wr->ex.imm_data);
+<<<<<<< HEAD
 			/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case IB_WR_SEND:
 			hdr->cw |= (OCRDMA_SEND << OCRDMA_WQE_OPCODE_SHIFT);
 			ocrdma_build_send(qp, hdr, wr);
@@ -2224,7 +2364,10 @@ int ocrdma_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		case IB_WR_RDMA_WRITE_WITH_IMM:
 			hdr->cw |= (OCRDMA_FLAG_IMM << OCRDMA_WQE_FLAGS_SHIFT);
 			hdr->immdt = ntohl(wr->ex.imm_data);
+<<<<<<< HEAD
 			/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case IB_WR_RDMA_WRITE:
 			hdr->cw |= (OCRDMA_WRITE << OCRDMA_WQE_OPCODE_SHIFT);
 			status = ocrdma_build_write(qp, hdr, wr);
@@ -2278,8 +2421,13 @@ static void ocrdma_ring_rq_db(struct ocrdma_qp *qp)
 	iowrite32(val, qp->rq_db);
 }
 
+<<<<<<< HEAD
 static void ocrdma_build_rqe(struct ocrdma_hdr_wqe *rqe,
 			     const struct ib_recv_wr *wr, u16 tag)
+=======
+static void ocrdma_build_rqe(struct ocrdma_hdr_wqe *rqe, struct ib_recv_wr *wr,
+			     u16 tag)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 wqe_size = 0;
 	struct ocrdma_sge *sge;
@@ -2299,8 +2447,13 @@ static void ocrdma_build_rqe(struct ocrdma_hdr_wqe *rqe,
 	ocrdma_cpu_to_le32(rqe, wqe_size);
 }
 
+<<<<<<< HEAD
 int ocrdma_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 		     const struct ib_recv_wr **bad_wr)
+=======
+int ocrdma_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
+		     struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int status = 0;
 	unsigned long flags;
@@ -2369,8 +2522,13 @@ static void ocrdma_ring_srq_db(struct ocrdma_srq *srq)
 	iowrite32(val, srq->db + OCRDMA_DB_GEN2_SRQ_OFFSET);
 }
 
+<<<<<<< HEAD
 int ocrdma_post_srq_recv(struct ib_srq *ibsrq, const struct ib_recv_wr *wr,
 			 const struct ib_recv_wr **bad_wr)
+=======
+int ocrdma_post_srq_recv(struct ib_srq *ibsrq, struct ib_recv_wr *wr,
+			 struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int status = 0;
 	unsigned long flags;

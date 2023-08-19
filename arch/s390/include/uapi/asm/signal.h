@@ -97,6 +97,7 @@ typedef unsigned long sigset_t;
 #include <asm-generic/signal-defs.h>
 
 #ifndef __KERNEL__
+<<<<<<< HEAD
 
 /*
  * There are two system calls in regard to sigaction, sys_rt_sigaction
@@ -114,14 +115,30 @@ typedef unsigned long sigset_t;
  * The current struct sigaction uapi definition below is suitable for the
  * sys_rt_sigaction system call only.
  */
+=======
+/* Here we must cater to libcs that poke about in kernel headers.  */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct sigaction {
         union {
           __sighandler_t _sa_handler;
           void (*_sa_sigaction)(int, struct siginfo *, void *);
         } _u;
+<<<<<<< HEAD
         unsigned long sa_flags;
         void (*sa_restorer)(void);
 	sigset_t sa_mask;
+=======
+#ifndef __s390x__ /* lovely */
+        sigset_t sa_mask;
+        unsigned long sa_flags;
+        void (*sa_restorer)(void);
+#else  /* __s390x__ */
+        unsigned long sa_flags;
+        void (*sa_restorer)(void);
+	sigset_t sa_mask;
+#endif /* __s390x__ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define sa_handler      _u._sa_handler

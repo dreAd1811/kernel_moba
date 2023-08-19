@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0+ */
 /*
  * em28xx.h - driver for Empia EM2800/EM2820/2840 USB video capture devices
@@ -18,13 +19,41 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+=======
+/*
+   em28xx.h - driver for Empia EM2800/EM2820/2840 USB video capture devices
+
+   Copyright (C) 2005 Markus Rechberger <mrechberger@gmail.com>
+		      Ludovico Cavedon <cavedon@sssup.it>
+		      Mauro Carvalho Chehab <mchehab@infradead.org>
+   Copyright (C) 2012 Frank Schäfer <fschaefer.oss@googlemail.com>
+
+   Based on the em2800 driver from Sascha Sommer <saschasommer@freenet.de>
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _EM28XX_H
 #define _EM28XX_H
 
+<<<<<<< HEAD
 #include <linux/bitfield.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EM28XX_VERSION "0.2.2"
 #define DRIVER_DESC    "Empia em28xx device driver"
 
@@ -148,7 +177,10 @@
 #define EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_DVB  99
 #define EM28174_BOARD_HAUPPAUGE_WINTV_DUALHD_01595 100
 #define EM2884_BOARD_TERRATEC_H6		  101
+<<<<<<< HEAD
 #define EM2882_BOARD_ZOLID_HYBRID_TV_STICK		102
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Limits minimum and default number of buffers */
 #define EM28XX_MIN_BUF 4
@@ -166,7 +198,11 @@
 #define EM28XX_STOP_AUDIO       0
 
 /* maximum number of em28xx boards */
+<<<<<<< HEAD
 #define EM28XX_MAXBOARDS DVB_MAX_ADAPTERS /* All adapters could be em28xx */
+=======
+#define EM28XX_MAXBOARDS 4 /*FIXME: should be bigger */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* maximum number of frames that can be queued */
 #define EM28XX_NUM_FRAMES 5
@@ -180,32 +216,65 @@
 /* max number of I2C buses on em28xx devices */
 #define NUM_I2C_BUSES	2
 
+<<<<<<< HEAD
 /*
  * isoc transfers: number of packets for each buffer
  * windows requests only 64 packets .. so we better do the same
  * this is what I found out for all alternate numbers there!
+=======
+/* isoc transfers: number of packets for each buffer
+   windows requests only 64 packets .. so we better do the same
+   this is what I found out for all alternate numbers there!
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define EM28XX_NUM_ISOC_PACKETS 64
 #define EM28XX_DVB_NUM_ISOC_PACKETS 64
 
+<<<<<<< HEAD
 /*
  * bulk transfers: transfer buffer size = packet size * packet multiplier
  * USB 2.0 spec says bulk packet size is always 512 bytes
+=======
+/* bulk transfers: transfer buffer size = packet size * packet multiplier
+   USB 2.0 spec says bulk packet size is always 512 bytes
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define EM28XX_BULK_PACKET_MULTIPLIER 384
 #define EM28XX_DVB_BULK_PACKET_MULTIPLIER 94
 
 #define EM28XX_INTERLACED_DEFAULT 1
 
+<<<<<<< HEAD
+=======
+/*
+ * Time in msecs to wait for i2c xfers to finish.
+ * 35ms is the maximum time a SMBUS device could wait when
+ * clock stretching is used. As the transfer itself will take
+ * some time to happen, set it to 35 ms.
+ *
+ * Ok, I2C doesn't specify any limit. So, eventually, we may need
+ * to increase this timeout.
+ *
+ * FIXME: this assumes that an I2C message is not longer than 1ms.
+ * This is actually dependent on the I2C bus speed, although most
+ * devices use a 100kHz clock. So, this assumtion is true most of
+ * the time.
+ */
+#define EM28XX_I2C_XFER_TIMEOUT		36
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* time in msecs to wait for AC97 xfers to finish */
 #define EM28XX_AC97_XFER_TIMEOUT	100
 
 /* max. number of button state polling addresses */
 #define EM28XX_NUM_BUTTON_ADDRESSES_MAX		5
 
+<<<<<<< HEAD
 #define PRIMARY_TS	0
 #define SECONDARY_TS	1
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum em28xx_mode {
 	EM28XX_SUSPEND,
 	EM28XX_ANALOG_MODE,
@@ -214,6 +283,7 @@ enum em28xx_mode {
 
 struct em28xx;
 
+<<<<<<< HEAD
 /**
  * struct em28xx_usb_bufs - Contains URB-related buffer data
  *
@@ -291,6 +361,66 @@ struct em28xx_buffer {
 	unsigned int		pos;
 
 	char			*vb_buf;
+=======
+struct em28xx_usb_bufs {
+		/* max packet size of isoc transaction */
+	int				max_pkt_size;
+
+		/* number of packets in each buffer */
+	int				num_packets;
+
+		/* number of allocated urbs */
+	int				num_bufs;
+
+		/* urb for isoc/bulk transfers */
+	struct urb			**urb;
+
+		/* transfer buffers for isoc/bulk transfer */
+	char				**transfer_buffer;
+};
+
+struct em28xx_usb_ctl {
+		/* isoc/bulk transfer buffers for analog mode */
+	struct em28xx_usb_bufs		analog_bufs;
+
+		/* isoc/bulk transfer buffers for digital mode */
+	struct em28xx_usb_bufs		digital_bufs;
+
+		/* Stores already requested buffers */
+	struct em28xx_buffer	*vid_buf;
+	struct em28xx_buffer	*vbi_buf;
+
+		/* copy data from URB */
+	int (*urb_data_copy)(struct em28xx *dev, struct urb *urb);
+
+};
+
+/* Struct to enumberate video formats */
+struct em28xx_fmt {
+	char  *name;
+	u32   fourcc;          /* v4l2 format id */
+	int   depth;
+	int   reg;
+};
+
+/* buffer for one video frame */
+struct em28xx_buffer {
+	/* common v4l buffer stuff -- must be first */
+	struct vb2_v4l2_buffer vb;
+	struct list_head list;
+
+	void *mem;
+	unsigned int length;
+	int top_field;
+
+	/* counter to control buffer fill */
+	unsigned int pos;
+	/* NOTE; in interlaced mode, this value is reset to zero at
+	 * the start of each new field (not frame !)		   */
+
+	/* pointer to vmalloc memory address in vb */
+	char *vb_buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct em28xx_dmaqueue {
@@ -332,6 +462,7 @@ enum em28xx_usb_audio_type {
 	EM28XX_USB_AUDIO_VENDOR,
 };
 
+<<<<<<< HEAD
 /**
  * em28xx_amux - describes the type of audio input used by em28xx
  *
@@ -378,6 +509,22 @@ enum em28xx_amux {
 
 	/* Some less-common mixer setups */
 	EM28XX_AMUX_VIDEO2,
+=======
+/* em28xx has two audio inputs: tuner and line in.
+   However, on most devices, an auxiliary AC97 codec device is used.
+   The AC97 device may have several different inputs and outputs,
+   depending on their model. So, it is possible to use AC97 mixer to
+   address more than two different entries.
+ */
+enum em28xx_amux {
+	/* This is the only entry for em28xx tuner input */
+	EM28XX_AMUX_VIDEO,	/* em28xx tuner, AC97 mixer Video */
+
+	EM28XX_AMUX_LINE_IN,	/* AC97 mixer Line In */
+
+	/* Some less-common mixer setups */
+	EM28XX_AMUX_VIDEO2,	/* em28xx Line in, AC97 mixer Video */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	EM28XX_AMUX_PHONE,
 	EM28XX_AMUX_MIC,
 	EM28XX_AMUX_CD,
@@ -387,6 +534,7 @@ enum em28xx_amux {
 
 enum em28xx_aout {
 	/* AC97 outputs */
+<<<<<<< HEAD
 	EM28XX_AOUT_MASTER = BIT(0),
 	EM28XX_AOUT_LINE   = BIT(1),
 	EM28XX_AOUT_MONO   = BIT(2),
@@ -395,6 +543,16 @@ enum em28xx_aout {
 
 	/* PCM IN Mixer - used by AC97_RECORD_SELECT register */
 	EM28XX_AOUT_PCM_IN = BIT(7),
+=======
+	EM28XX_AOUT_MASTER = 1 << 0,
+	EM28XX_AOUT_LINE   = 1 << 1,
+	EM28XX_AOUT_MONO   = 1 << 2,
+	EM28XX_AOUT_LFE    = 1 << 3,
+	EM28XX_AOUT_SURR   = 1 << 4,
+
+	/* PCM IN Mixer - used by AC97_RECORD_SELECT register */
+	EM28XX_AOUT_PCM_IN = 1 << 7,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Bits 10-8 are used to indicate the PCM IN record select */
 	EM28XX_AOUT_PCM_MIC_PCM = 0 << 8,
@@ -423,7 +581,11 @@ struct em28xx_input {
 	unsigned int vmux;
 	enum em28xx_amux amux;
 	enum em28xx_aout aout;
+<<<<<<< HEAD
 	const struct em28xx_reg_seq *gpio;
+=======
+	struct em28xx_reg_seq *gpio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define INPUT(nr) (&em28xx_boards[dev->model].input[nr])
@@ -481,23 +643,37 @@ struct em28xx_board {
 	int vchannels;
 	int tuner_type;
 	int tuner_addr;
+<<<<<<< HEAD
 	unsigned int def_i2c_bus;	/* Default I2C bus */
+=======
+	unsigned def_i2c_bus;	/* Default I2C bus */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* i2c flags */
 	unsigned int tda9887_conf;
 
 	/* GPIO sequences */
+<<<<<<< HEAD
 	const struct em28xx_reg_seq *dvb_gpio;
 	const struct em28xx_reg_seq *suspend_gpio;
 	const struct em28xx_reg_seq *tuner_gpio;
 	const struct em28xx_reg_seq *mute_gpio;
+=======
+	struct em28xx_reg_seq *dvb_gpio;
+	struct em28xx_reg_seq *suspend_gpio;
+	struct em28xx_reg_seq *tuner_gpio;
+	struct em28xx_reg_seq *mute_gpio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int is_em2800:1;
 	unsigned int has_msp34xx:1;
 	unsigned int mts_firmware:1;
 	unsigned int max_range_640_480:1;
 	unsigned int has_dvb:1;
+<<<<<<< HEAD
 	unsigned int has_dual_ts:1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int is_webcam:1;
 	unsigned int valid:1;
 	unsigned int has_ir_i2c:1;
@@ -517,7 +693,11 @@ struct em28xx_board {
 	struct em28xx_led	  *leds;
 
 	/* Buttons */
+<<<<<<< HEAD
 	const struct em28xx_button *buttons;
+=======
+	struct em28xx_button	  *buttons;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct em28xx_eeprom {
@@ -560,8 +740,13 @@ struct em28xx_v4l2 {
 	/* Videobuf2 */
 	struct vb2_queue vb_vidq;
 	struct vb2_queue vb_vbiq;
+<<<<<<< HEAD
 	struct mutex vb_queue_lock;	/* Protects vb_vidq */
 	struct mutex vb_vbi_queue_lock;	/* Protects vb_vbiq */
+=======
+	struct mutex vb_queue_lock;
+	struct mutex vb_vbi_queue_lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u8 vinmode;
 	u8 vinctl;
@@ -587,8 +772,13 @@ struct em28xx_v4l2 {
 	/* Frame properties */
 	int width;		/* current frame width */
 	int height;		/* current frame height */
+<<<<<<< HEAD
 	unsigned int hscale;	/* horizontal scale factor (see datasheet) */
 	unsigned int vscale;	/* vertical scale factor (see datasheet) */
+=======
+	unsigned hscale;	/* horizontal scale factor (see datasheet) */
+	unsigned vscale;	/* vertical scale factor (see datasheet) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int vbi_width;
 	unsigned int vbi_height; /* lines per field */
 
@@ -606,7 +796,11 @@ struct em28xx_v4l2 {
 
 struct em28xx_audio {
 	char name[50];
+<<<<<<< HEAD
 	unsigned int num_urb;
+=======
+	unsigned num_urb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char **transfer_buffer;
 	struct urb **urb;
 	struct usb_device *udev;
@@ -619,7 +813,11 @@ struct em28xx_audio {
 	size_t period;
 
 	int users;
+<<<<<<< HEAD
 	spinlock_t slock;		/* Protects struct em28xx_audio */
+=======
+	spinlock_t slock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Controls streaming */
 	struct work_struct wq_trigger;	/* trigger to start/stop audio */
@@ -637,7 +835,11 @@ enum em28xx_i2c_algo_type {
 struct em28xx_i2c_bus {
 	struct em28xx *dev;
 
+<<<<<<< HEAD
 	unsigned int bus;
+=======
+	unsigned bus;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum em28xx_i2c_algo_type algo_type;
 };
 
@@ -645,12 +847,17 @@ struct em28xx_i2c_bus {
 struct em28xx {
 	struct kref ref;
 
+<<<<<<< HEAD
 	// Sub-module data
+=======
+	/* Sub-module data */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct em28xx_v4l2 *v4l2;
 	struct em28xx_dvb *dvb;
 	struct em28xx_audio adev;
 	struct em28xx_IR *ir;
 
+<<<<<<< HEAD
 	// generic device properties
 	int model;		// index in the device_data struct
 	int devno;		// marks the number of this device
@@ -672,10 +879,30 @@ struct em28xx {
 	enum em28xx_sensor em28xx_sensor;	// camera specific
 
 	// Some older em28xx chips needs a waiting time after writing
+=======
+	/* generic device properties */
+	int model;		/* index in the device_data struct */
+	int devno;		/* marks the number of this device */
+	enum em28xx_chip_id chip_id;
+
+	unsigned int is_em25xx:1;	/* em25xx/em276x/7x/8x family bridge */
+	unsigned char disconnected:1;	/* device has been diconnected */
+	unsigned int has_video:1;
+	unsigned int is_audio_only:1;
+	enum em28xx_int_audio_type int_audio_type;
+	enum em28xx_usb_audio_type usb_audio_type;
+
+	struct em28xx_board board;
+
+	enum em28xx_sensor em28xx_sensor;	/* camera specific */
+
+	/* Some older em28xx chips needs a waiting time after writing */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int wait_after_write;
 
 	struct list_head	devlist;
 
+<<<<<<< HEAD
 	u32 i2s_speed;		// I2S speed for audio digital stream
 
 	struct em28xx_audio_mode audio_mode;
@@ -683,11 +910,21 @@ struct em28xx {
 	int tuner_type;		// type of the tuner
 
 	// i2c i/o
+=======
+	u32 i2s_speed;		/* I2S speed for audio digital stream */
+
+	struct em28xx_audio_mode audio_mode;
+
+	int tuner_type;		/* type of the tuner */
+
+	/* i2c i/o */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_adapter i2c_adap[NUM_I2C_BUSES];
 	struct i2c_client i2c_client[NUM_I2C_BUSES];
 	struct em28xx_i2c_bus i2c_bus[NUM_I2C_BUSES];
 
 	unsigned char eeprom_addrwidth_16bit:1;
+<<<<<<< HEAD
 	unsigned int def_i2c_bus;	// Default I2C bus
 	unsigned int cur_i2c_bus;	// Current I2C bus
 	struct rt_mutex i2c_bus_lock;
@@ -752,6 +989,65 @@ struct em28xx {
 	char urb_buf[URB_MAX_CTRL_SIZE];	// urb control msg buffer
 
 	// helper funcs that call usb_control_msg
+=======
+	unsigned def_i2c_bus;	/* Default I2C bus */
+	unsigned cur_i2c_bus;	/* Current I2C bus */
+	struct rt_mutex i2c_bus_lock;
+
+	/* video for linux */
+	unsigned int ctl_input;	/* selected input */
+	unsigned int ctl_ainput;/* selected audio input */
+	unsigned int ctl_aoutput;/* selected audio output */
+	int mute;
+	int volume;
+
+	unsigned long hash;	/* eeprom hash - for boards with generic ID */
+	unsigned long i2c_hash;	/* i2c devicelist hash -
+				   for boards with generic ID */
+
+	struct work_struct         request_module_wk;
+
+	/* locks */
+	struct mutex lock;
+	struct mutex ctrl_urb_lock;	/* protects urb_buf */
+
+	/* resources in use */
+	unsigned int resources;
+
+	/* eeprom content */
+	u8 *eedata;
+	u16 eedata_len;
+
+	/* Isoc control struct */
+	struct em28xx_dmaqueue vidq;
+	struct em28xx_dmaqueue vbiq;
+	struct em28xx_usb_ctl usb_ctl;
+	spinlock_t slock;
+
+	/* usb transfer */
+	struct usb_interface *intf;	/* the usb interface */
+	u8 ifnum;		/* number of the assigned usb interface */
+	u8 analog_ep_isoc;	/* address of isoc endpoint for analog */
+	u8 analog_ep_bulk;	/* address of bulk endpoint for analog */
+	u8 dvb_ep_isoc;		/* address of isoc endpoint for DVB */
+	u8 dvb_ep_bulk;		/* address of bulk endpoint for DVB */
+	int alt;		/* alternate setting */
+	int max_pkt_size;	/* max packet size of the selected ep at alt */
+	int packet_multiplier;	/* multiplier for wMaxPacketSize, used for
+				   URB buffer size definition */
+	int num_alt;		/* number of alternative settings */
+	unsigned int *alt_max_pkt_size_isoc; /* array of isoc wMaxPacketSize */
+	unsigned int analog_xfer_bulk:1;	/* use bulk instead of isoc
+						   transfers for analog      */
+	int dvb_alt_isoc;	/* alternate setting for DVB isoc transfers */
+	unsigned int dvb_max_pkt_size_isoc;	/* isoc max packet size of the
+						   selected DVB ep at dvb_alt */
+	unsigned int dvb_xfer_bulk:1;		/* use bulk instead of isoc
+						   transfers for DVB          */
+	char urb_buf[URB_MAX_CTRL_SIZE];	/* urb control msg buffer */
+
+	/* helper funcs that call usb_control_msg */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*em28xx_write_regs)(struct em28xx *dev, u16 reg,
 				 char *buf, int len);
 	int (*em28xx_read_reg)(struct em28xx *dev, u16 reg);
@@ -763,14 +1059,24 @@ struct em28xx {
 
 	enum em28xx_mode mode;
 
+<<<<<<< HEAD
 	// Button state polling
+=======
+	/* Button state polling */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct delayed_work buttons_query_work;
 	u8 button_polling_addresses[EM28XX_NUM_BUTTON_ADDRESSES_MAX];
 	u8 button_polling_last_values[EM28XX_NUM_BUTTON_ADDRESSES_MAX];
 	u8 num_button_polling_addresses;
+<<<<<<< HEAD
 	u16 button_polling_interval; // [ms]
 	// Snapshot button input device
 	char snapshot_button_path[30];	// path of the input dev
+=======
+	u16 button_polling_interval; /* [ms] */
+	/* Snapshot button input device */
+	char snapshot_button_path[30];	/* path of the input dev */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct input_dev *sbutton_input_dev;
 
 #ifdef CONFIG_MEDIA_CONTROLLER
@@ -778,9 +1084,12 @@ struct em28xx {
 	struct media_entity input_ent[MAX_EM28XX_INPUT];
 	struct media_pad input_pad[MAX_EM28XX_INPUT];
 #endif
+<<<<<<< HEAD
 
 	struct em28xx	*dev_next;
 	int ts;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define kref_to_dev(d) container_of(d, struct em28xx, ref)
@@ -789,6 +1098,7 @@ struct em28xx_ops {
 	struct list_head next;
 	char *name;
 	int id;
+<<<<<<< HEAD
 	int (*init)(struct em28xx *dev);
 	int (*fini)(struct em28xx *dev);
 	int (*suspend)(struct em28xx *dev);
@@ -800,6 +1110,19 @@ void em28xx_do_i2c_scan(struct em28xx *dev, unsigned int bus);
 int  em28xx_i2c_register(struct em28xx *dev, unsigned int bus,
 			 enum em28xx_i2c_algo_type algo_type);
 int  em28xx_i2c_unregister(struct em28xx *dev, unsigned int bus);
+=======
+	int (*init)(struct em28xx *);
+	int (*fini)(struct em28xx *);
+	int (*suspend)(struct em28xx *);
+	int (*resume)(struct em28xx *);
+};
+
+/* Provided by em28xx-i2c.c */
+void em28xx_do_i2c_scan(struct em28xx *dev, unsigned bus);
+int  em28xx_i2c_register(struct em28xx *dev, unsigned bus,
+			 enum em28xx_i2c_algo_type algo_type);
+int  em28xx_i2c_unregister(struct em28xx *dev, unsigned bus);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Provided by em28xx-core.c */
 int em28xx_read_reg_req_len(struct em28xx *dev, u8 req, u16 reg,
@@ -833,7 +1156,11 @@ int em28xx_init_usb_xfer(struct em28xx *dev, enum em28xx_mode mode,
 void em28xx_uninit_usb_xfer(struct em28xx *dev, enum em28xx_mode mode);
 void em28xx_stop_urbs(struct em28xx *dev);
 int em28xx_set_mode(struct em28xx *dev, enum em28xx_mode set_mode);
+<<<<<<< HEAD
 int em28xx_gpio_set(struct em28xx *dev, const struct em28xx_reg_seq *gpio);
+=======
+int em28xx_gpio_set(struct em28xx *dev, struct em28xx_reg_seq *gpio);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int em28xx_register_extension(struct em28xx_ops *dev);
 void em28xx_unregister_extension(struct em28xx_ops *dev);
 void em28xx_init_extension(struct em28xx *dev);
@@ -842,7 +1169,11 @@ int em28xx_suspend_extension(struct em28xx *dev);
 int em28xx_resume_extension(struct em28xx *dev);
 
 /* Provided by em28xx-cards.c */
+<<<<<<< HEAD
 extern const struct em28xx_board em28xx_boards[];
+=======
+extern struct em28xx_board em28xx_boards[];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct usb_device_id em28xx_id_table[];
 int em28xx_tuner_callback(void *ptr, int component, int command, int arg);
 void em28xx_setup_xc3028(struct em28xx *dev, struct xc2028_ctrl *ctl);

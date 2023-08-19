@@ -32,7 +32,10 @@
 #include <linux/ceph/osd_client.h>
 #include <linux/ceph/mon_client.h>
 #include <linux/ceph/cls_lock_client.h>
+<<<<<<< HEAD
 #include <linux/ceph/striper.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/ceph/decode.h>
 #include <linux/parser.h>
 #include <linux/bsearch.h>
@@ -52,6 +55,18 @@
 #define RBD_DEBUG	/* Activate rbd_assert() calls */
 
 /*
+<<<<<<< HEAD
+=======
+ * The basic unit of block I/O is a sector.  It is interpreted in a
+ * number of contexts in Linux (blk, bio, genhd), but the default is
+ * universally 512 bytes.  These symbols are just slightly more
+ * meaningful than the bare numbers they represent.
+ */
+#define	SECTOR_SHIFT	9
+#define	SECTOR_SIZE	(1ULL << SECTOR_SHIFT)
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Increment the given counter and return its updated value.
  * If the counter is already 0 it will not be incremented.
  * If the counter is already at its maximum value returns
@@ -61,7 +76,11 @@ static int atomic_inc_return_safe(atomic_t *v)
 {
 	unsigned int counter;
 
+<<<<<<< HEAD
 	counter = (unsigned int)atomic_fetch_add_unless(v, 1, 0);
+=======
+	counter = (unsigned int)__atomic_add_unless(v, 1, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (counter <= (unsigned int)INT_MAX)
 		return (int)counter;
 
@@ -181,7 +200,10 @@ struct rbd_image_header {
 struct rbd_spec {
 	u64		pool_id;
 	const char	*pool_name;
+<<<<<<< HEAD
 	const char	*pool_ns;	/* NULL if default, never "" */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	const char	*image_id;
 	const char	*image_name;
@@ -202,6 +224,7 @@ struct rbd_client {
 };
 
 struct rbd_img_request;
+<<<<<<< HEAD
 
 enum obj_request_type {
 	OBJ_REQUEST_NODATA = 1,
@@ -259,24 +282,111 @@ struct rbd_obj_request {
 	};
 	struct bio_vec		*copyup_bvecs;
 	u32			copyup_bvec_count;
+=======
+typedef void (*rbd_img_callback_t)(struct rbd_img_request *);
+
+#define	BAD_WHICH	U32_MAX		/* Good which or bad which, which? */
+
+struct rbd_obj_request;
+typedef void (*rbd_obj_callback_t)(struct rbd_obj_request *);
+
+enum obj_request_type {
+	OBJ_REQUEST_NODATA, OBJ_REQUEST_BIO, OBJ_REQUEST_PAGES
+};
+
+enum obj_operation_type {
+	OBJ_OP_WRITE,
+	OBJ_OP_READ,
+	OBJ_OP_DISCARD,
+};
+
+enum obj_req_flags {
+	OBJ_REQ_DONE,		/* completion flag: not done = 0, done = 1 */
+	OBJ_REQ_IMG_DATA,	/* object usage: standalone = 0, image = 1 */
+	OBJ_REQ_KNOWN,		/* EXISTS flag valid: no = 0, yes = 1 */
+	OBJ_REQ_EXISTS,		/* target exists: no = 0, yes = 1 */
+};
+
+struct rbd_obj_request {
+	u64			object_no;
+	u64			offset;		/* object start byte */
+	u64			length;		/* bytes from offset */
+	unsigned long		flags;
+
+	/*
+	 * An object request associated with an image will have its
+	 * img_data flag set; a standalone object request will not.
+	 *
+	 * A standalone object request will have which == BAD_WHICH
+	 * and a null obj_request pointer.
+	 *
+	 * An object request initiated in support of a layered image
+	 * object (to check for its existence before a write) will
+	 * have which == BAD_WHICH and a non-null obj_request pointer.
+	 *
+	 * Finally, an object request for rbd image data will have
+	 * which != BAD_WHICH, and will have a non-null img_request
+	 * pointer.  The value of which will be in the range
+	 * 0..(img_request->obj_request_count-1).
+	 */
+	union {
+		struct rbd_obj_request	*obj_request;	/* STAT op */
+		struct {
+			struct rbd_img_request	*img_request;
+			u64			img_offset;
+			/* links for img_request->obj_requests list */
+			struct list_head	links;
+		};
+	};
+	u32			which;		/* posn image request list */
+
+	enum obj_request_type	type;
+	union {
+		struct bio	*bio_list;
+		struct {
+			struct page	**pages;
+			u32		page_count;
+		};
+	};
+	struct page		**copyup_pages;
+	u32			copyup_page_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct ceph_osd_request	*osd_req;
 
 	u64			xferred;	/* bytes transferred */
 	int			result;
 
+<<<<<<< HEAD
+=======
+	rbd_obj_callback_t	callback;
+	struct completion	completion;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kref		kref;
 };
 
 enum img_req_flags {
+<<<<<<< HEAD
 	IMG_REQ_CHILD,		/* initiator: block = 0, child image = 1 */
 	IMG_REQ_LAYERED,	/* ENOENT handling: normal = 0, layered = 1 */
+=======
+	IMG_REQ_WRITE,		/* I/O direction: read = 0, write = 1 */
+	IMG_REQ_CHILD,		/* initiator: block = 0, child image = 1 */
+	IMG_REQ_LAYERED,	/* ENOENT handling: normal = 0, layered = 1 */
+	IMG_REQ_DISCARD,	/* discard: normal = 0, discard request = 1 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct rbd_img_request {
 	struct rbd_device	*rbd_dev;
+<<<<<<< HEAD
 	enum obj_operation_type	op_type;
 	enum obj_request_type	data_type;
+=======
+	u64			offset;	/* starting image byte offset */
+	u64			length;	/* byte count from offset */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long		flags;
 	union {
 		u64			snap_id;	/* for reads */
@@ -286,6 +396,7 @@ struct rbd_img_request {
 		struct request		*rq;		/* block request */
 		struct rbd_obj_request	*obj_request;	/* obj req initiator */
 	};
+<<<<<<< HEAD
 	spinlock_t		completion_lock;
 	u64			xferred;/* aggregate bytes transferred */
 	int			result;	/* first nonzero obj_request result */
@@ -293,14 +404,34 @@ struct rbd_img_request {
 	struct list_head	object_extents;	/* obj_req.ex structs */
 	u32			obj_request_count;
 	u32			pending_count;
+=======
+	struct page		**copyup_pages;
+	u32			copyup_page_count;
+	spinlock_t		completion_lock;/* protects next_completion */
+	u32			next_completion;
+	rbd_img_callback_t	callback;
+	u64			xferred;/* aggregate bytes transferred */
+	int			result;	/* first nonzero obj_request result */
+
+	u32			obj_request_count;
+	struct list_head	obj_requests;	/* rbd_obj_request structs */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct kref		kref;
 };
 
 #define for_each_obj_request(ireq, oreq) \
+<<<<<<< HEAD
 	list_for_each_entry(oreq, &(ireq)->object_extents, ex.oe_item)
 #define for_each_obj_request_safe(ireq, oreq, n) \
 	list_for_each_entry_safe(oreq, n, &(ireq)->object_extents, ex.oe_item)
+=======
+	list_for_each_entry(oreq, &(ireq)->obj_requests, links)
+#define for_each_obj_request_from(ireq, oreq) \
+	list_for_each_entry_from(oreq, &(ireq)->obj_requests, links)
+#define for_each_obj_request_safe(ireq, oreq, n) \
+	list_for_each_entry_safe_reverse(oreq, n, &(ireq)->obj_requests, links)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum rbd_watch_state {
 	RBD_WATCH_STATE_UNREGISTERED,
@@ -323,6 +454,10 @@ struct rbd_client_id {
 struct rbd_mapping {
 	u64                     size;
 	u64                     features;
+<<<<<<< HEAD
+=======
+	bool			read_only;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -416,17 +551,33 @@ static DEFINE_SPINLOCK(rbd_client_list_lock);
 static struct kmem_cache	*rbd_img_request_cache;
 static struct kmem_cache	*rbd_obj_request_cache;
 
+<<<<<<< HEAD
+=======
+static struct bio_set		*rbd_bio_clone;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rbd_major;
 static DEFINE_IDA(rbd_dev_id_ida);
 
 static struct workqueue_struct *rbd_wq;
 
 /*
+<<<<<<< HEAD
  * single-major requires >= 0.75 version of userspace rbd utility.
  */
 static bool single_major = true;
 module_param(single_major, bool, 0444);
 MODULE_PARM_DESC(single_major, "Use a single major number for all rbd devices (default: true)");
+=======
+ * Default to false for now, as single-major requires >= 0.75 version of
+ * userspace rbd utility.
+ */
+static bool single_major = false;
+module_param(single_major, bool, S_IRUGO);
+MODULE_PARM_DESC(single_major, "Use a single major number for all rbd devices (default: false)");
+
+static int rbd_img_request_submit(struct rbd_img_request *img_request);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t rbd_add(struct bus_type *bus, const char *buf,
 		       size_t count);
@@ -437,6 +588,10 @@ static ssize_t rbd_add_single_major(struct bus_type *bus, const char *buf,
 static ssize_t rbd_remove_single_major(struct bus_type *bus, const char *buf,
 				       size_t count);
 static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth);
+<<<<<<< HEAD
+=======
+static void rbd_spec_put(struct rbd_spec *spec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int rbd_dev_id_to_minor(int dev_id)
 {
@@ -469,11 +624,19 @@ static ssize_t rbd_supported_features_show(struct bus_type *bus, char *buf)
 	return sprintf(buf, "0x%llx\n", RBD_FEATURES_SUPPORTED);
 }
 
+<<<<<<< HEAD
 static BUS_ATTR(add, 0200, NULL, rbd_add);
 static BUS_ATTR(remove, 0200, NULL, rbd_remove);
 static BUS_ATTR(add_single_major, 0200, NULL, rbd_add_single_major);
 static BUS_ATTR(remove_single_major, 0200, NULL, rbd_remove_single_major);
 static BUS_ATTR(supported_features, 0444, rbd_supported_features_show, NULL);
+=======
+static BUS_ATTR(add, S_IWUSR, NULL, rbd_add);
+static BUS_ATTR(remove, S_IWUSR, NULL, rbd_remove);
+static BUS_ATTR(add_single_major, S_IWUSR, NULL, rbd_add_single_major);
+static BUS_ATTR(remove_single_major, S_IWUSR, NULL, rbd_remove_single_major);
+static BUS_ATTR(supported_features, S_IRUGO, rbd_supported_features_show, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *rbd_bus_attrs[] = {
 	&bus_attr_add.attr,
@@ -555,6 +718,12 @@ void rbd_warn(struct rbd_device *rbd_dev, const char *fmt, ...)
 #  define rbd_assert(expr)	((void) 0)
 #endif /* !RBD_DEBUG */
 
+<<<<<<< HEAD
+=======
+static void rbd_osd_copyup_callback(struct rbd_obj_request *obj_request);
+static int rbd_img_obj_request_submit(struct rbd_obj_request *obj_request);
+static void rbd_img_parent_read(struct rbd_obj_request *obj_request);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rbd_dev_remove_parent(struct rbd_device *rbd_dev);
 
 static int rbd_dev_refresh(struct rbd_device *rbd_dev);
@@ -573,6 +742,12 @@ static int rbd_open(struct block_device *bdev, fmode_t mode)
 	struct rbd_device *rbd_dev = bdev->bd_disk->private_data;
 	bool removing = false;
 
+<<<<<<< HEAD
+=======
+	if ((mode & FMODE_WRITE) && rbd_dev->mapping.read_only)
+		return -EROFS;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irq(&rbd_dev->lock);
 	if (test_bit(RBD_DEV_FLAG_REMOVING, &rbd_dev->flags))
 		removing = true;
@@ -602,6 +777,7 @@ static void rbd_release(struct gendisk *disk, fmode_t mode)
 
 static int rbd_ioctl_set_ro(struct rbd_device *rbd_dev, unsigned long arg)
 {
+<<<<<<< HEAD
 	int ro;
 
 	if (get_user(ro, (int __user *)arg))
@@ -613,13 +789,52 @@ static int rbd_ioctl_set_ro(struct rbd_device *rbd_dev, unsigned long arg)
 
 	/* Let blkdev_roset() handle it */
 	return -ENOTTY;
+=======
+	int ret = 0;
+	int val;
+	bool ro;
+	bool ro_changed = false;
+
+	/* get_user() may sleep, so call it before taking rbd_dev->lock */
+	if (get_user(val, (int __user *)(arg)))
+		return -EFAULT;
+
+	ro = val ? true : false;
+	/* Snapshot doesn't allow to write*/
+	if (rbd_dev->spec->snap_id != CEPH_NOSNAP && !ro)
+		return -EROFS;
+
+	spin_lock_irq(&rbd_dev->lock);
+	/* prevent others open this device */
+	if (rbd_dev->open_count > 1) {
+		ret = -EBUSY;
+		goto out;
+	}
+
+	if (rbd_dev->mapping.read_only != ro) {
+		rbd_dev->mapping.read_only = ro;
+		ro_changed = true;
+	}
+
+out:
+	spin_unlock_irq(&rbd_dev->lock);
+	/* set_disk_ro() may sleep, so call it after releasing rbd_dev->lock */
+	if (ret == 0 && ro_changed)
+		set_disk_ro(rbd_dev->disk, ro ? 1 : 0);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rbd_ioctl(struct block_device *bdev, fmode_t mode,
 			unsigned int cmd, unsigned long arg)
 {
 	struct rbd_device *rbd_dev = bdev->bd_disk->private_data;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (cmd) {
 	case BLKROSET:
@@ -733,25 +948,37 @@ static struct rbd_client *rbd_client_find(struct ceph_options *ceph_opts)
  */
 enum {
 	Opt_queue_depth,
+<<<<<<< HEAD
 	Opt_lock_timeout,
 	Opt_last_int,
 	/* int args above */
 	Opt_pool_ns,
+=======
+	Opt_last_int,
+	/* int args above */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	Opt_last_string,
 	/* string args above */
 	Opt_read_only,
 	Opt_read_write,
 	Opt_lock_on_read,
 	Opt_exclusive,
+<<<<<<< HEAD
 	Opt_notrim,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	Opt_err
 };
 
 static match_table_t rbd_opts_tokens = {
 	{Opt_queue_depth, "queue_depth=%d"},
+<<<<<<< HEAD
 	{Opt_lock_timeout, "lock_timeout=%d"},
 	/* int args above */
 	{Opt_pool_ns, "_pool_ns=%s"},
+=======
+	/* int args above */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* string args above */
 	{Opt_read_only, "read_only"},
 	{Opt_read_only, "ro"},		/* Alternate spelling */
@@ -759,12 +986,16 @@ static match_table_t rbd_opts_tokens = {
 	{Opt_read_write, "rw"},		/* Alternate spelling */
 	{Opt_lock_on_read, "lock_on_read"},
 	{Opt_exclusive, "exclusive"},
+<<<<<<< HEAD
 	{Opt_notrim, "notrim"},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{Opt_err, NULL}
 };
 
 struct rbd_options {
 	int	queue_depth;
+<<<<<<< HEAD
 	unsigned long	lock_timeout;
 	bool	read_only;
 	bool	lock_on_read;
@@ -787,6 +1018,21 @@ struct parse_rbd_opts_ctx {
 static int parse_rbd_opts_token(char *c, void *private)
 {
 	struct parse_rbd_opts_ctx *pctx = private;
+=======
+	bool	read_only;
+	bool	lock_on_read;
+	bool	exclusive;
+};
+
+#define RBD_QUEUE_DEPTH_DEFAULT	BLKDEV_MAX_RQ
+#define RBD_READ_ONLY_DEFAULT	false
+#define RBD_LOCK_ON_READ_DEFAULT false
+#define RBD_EXCLUSIVE_DEFAULT	false
+
+static int parse_rbd_opts_token(char *c, void *private)
+{
+	struct rbd_options *rbd_opts = private;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	substring_t argstr[MAX_OPT_ARGS];
 	int token, intval, ret;
 
@@ -794,7 +1040,11 @@ static int parse_rbd_opts_token(char *c, void *private)
 	if (token < Opt_last_int) {
 		ret = match_int(&argstr[0], &intval);
 		if (ret < 0) {
+<<<<<<< HEAD
 			pr_err("bad option arg (not int) at '%s'\n", c);
+=======
+			pr_err("bad mount option arg (not int) at '%s'\n", c);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 		dout("got int token %d val %d\n", token, intval);
@@ -810,6 +1060,7 @@ static int parse_rbd_opts_token(char *c, void *private)
 			pr_err("queue_depth out of range\n");
 			return -EINVAL;
 		}
+<<<<<<< HEAD
 		pctx->opts->queue_depth = intval;
 		break;
 	case Opt_lock_timeout:
@@ -840,6 +1091,21 @@ static int parse_rbd_opts_token(char *c, void *private)
 		break;
 	case Opt_notrim:
 		pctx->opts->trim = false;
+=======
+		rbd_opts->queue_depth = intval;
+		break;
+	case Opt_read_only:
+		rbd_opts->read_only = true;
+		break;
+	case Opt_read_write:
+		rbd_opts->read_only = false;
+		break;
+	case Opt_lock_on_read:
+		rbd_opts->lock_on_read = true;
+		break;
+	case Opt_exclusive:
+		rbd_opts->exclusive = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		/* libceph prints "bad option" msg */
@@ -864,6 +1130,29 @@ static char* obj_op_name(enum obj_operation_type op_type)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * Get a ceph client with specific addr and configuration, if one does
+ * not exist create it.  Either way, ceph_opts is consumed by this
+ * function.
+ */
+static struct rbd_client *rbd_get_client(struct ceph_options *ceph_opts)
+{
+	struct rbd_client *rbdc;
+
+	mutex_lock_nested(&client_mutex, SINGLE_DEPTH_NESTING);
+	rbdc = rbd_client_find(ceph_opts);
+	if (rbdc)	/* using an existing client */
+		ceph_destroy_options(ceph_opts);
+	else
+		rbdc = rbd_client_create(ceph_opts);
+	mutex_unlock(&client_mutex);
+
+	return rbdc;
+}
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Destroy ceph client
  *
  * Caller must hold rbd_client_list_lock.
@@ -891,6 +1180,7 @@ static void rbd_put_client(struct rbd_client *rbdc)
 		kref_put(&rbdc->kref, rbd_client_release);
 }
 
+<<<<<<< HEAD
 static int wait_for_latest_osdmap(struct ceph_client *client)
 {
 	u64 newest_epoch;
@@ -941,6 +1231,8 @@ static struct rbd_client *rbd_get_client(struct ceph_options *ceph_opts)
 	return rbdc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool rbd_image_format_valid(u32 image_format)
 {
 	return image_format == 1 || image_format == 2;
@@ -1260,6 +1552,7 @@ static void rbd_dev_mapping_clear(struct rbd_device *rbd_dev)
 	rbd_dev->mapping.features = 0;
 }
 
+<<<<<<< HEAD
 static void zero_bvec(struct bio_vec *bv)
 {
 	void *buf;
@@ -1313,6 +1606,274 @@ static void rbd_obj_zero_range(struct rbd_obj_request *obj_req, u32 off,
 	}
 }
 
+=======
+static u64 rbd_segment_offset(struct rbd_device *rbd_dev, u64 offset)
+{
+	u64 segment_size = rbd_obj_bytes(&rbd_dev->header);
+
+	return offset & (segment_size - 1);
+}
+
+static u64 rbd_segment_length(struct rbd_device *rbd_dev,
+				u64 offset, u64 length)
+{
+	u64 segment_size = rbd_obj_bytes(&rbd_dev->header);
+
+	offset &= segment_size - 1;
+
+	rbd_assert(length <= U64_MAX - offset);
+	if (offset + length > segment_size)
+		length = segment_size - offset;
+
+	return length;
+}
+
+/*
+ * bio helpers
+ */
+
+static void bio_chain_put(struct bio *chain)
+{
+	struct bio *tmp;
+
+	while (chain) {
+		tmp = chain;
+		chain = chain->bi_next;
+		bio_put(tmp);
+	}
+}
+
+/*
+ * zeros a bio chain, starting at specific offset
+ */
+static void zero_bio_chain(struct bio *chain, int start_ofs)
+{
+	struct bio_vec bv;
+	struct bvec_iter iter;
+	unsigned long flags;
+	void *buf;
+	int pos = 0;
+
+	while (chain) {
+		bio_for_each_segment(bv, chain, iter) {
+			if (pos + bv.bv_len > start_ofs) {
+				int remainder = max(start_ofs - pos, 0);
+				buf = bvec_kmap_irq(&bv, &flags);
+				memset(buf + remainder, 0,
+				       bv.bv_len - remainder);
+				flush_dcache_page(bv.bv_page);
+				bvec_kunmap_irq(buf, &flags);
+			}
+			pos += bv.bv_len;
+		}
+
+		chain = chain->bi_next;
+	}
+}
+
+/*
+ * similar to zero_bio_chain(), zeros data defined by a page array,
+ * starting at the given byte offset from the start of the array and
+ * continuing up to the given end offset.  The pages array is
+ * assumed to be big enough to hold all bytes up to the end.
+ */
+static void zero_pages(struct page **pages, u64 offset, u64 end)
+{
+	struct page **page = &pages[offset >> PAGE_SHIFT];
+
+	rbd_assert(end > offset);
+	rbd_assert(end - offset <= (u64)SIZE_MAX);
+	while (offset < end) {
+		size_t page_offset;
+		size_t length;
+		unsigned long flags;
+		void *kaddr;
+
+		page_offset = offset & ~PAGE_MASK;
+		length = min_t(size_t, PAGE_SIZE - page_offset, end - offset);
+		local_irq_save(flags);
+		kaddr = kmap_atomic(*page);
+		memset(kaddr + page_offset, 0, length);
+		flush_dcache_page(*page);
+		kunmap_atomic(kaddr);
+		local_irq_restore(flags);
+
+		offset += length;
+		page++;
+	}
+}
+
+/*
+ * Clone a portion of a bio, starting at the given byte offset
+ * and continuing for the number of bytes indicated.
+ */
+static struct bio *bio_clone_range(struct bio *bio_src,
+					unsigned int offset,
+					unsigned int len,
+					gfp_t gfpmask)
+{
+	struct bio *bio;
+
+	bio = bio_clone_fast(bio_src, gfpmask, rbd_bio_clone);
+	if (!bio)
+		return NULL;	/* ENOMEM */
+
+	bio_advance(bio, offset);
+	bio->bi_iter.bi_size = len;
+
+	return bio;
+}
+
+/*
+ * Clone a portion of a bio chain, starting at the given byte offset
+ * into the first bio in the source chain and continuing for the
+ * number of bytes indicated.  The result is another bio chain of
+ * exactly the given length, or a null pointer on error.
+ *
+ * The bio_src and offset parameters are both in-out.  On entry they
+ * refer to the first source bio and the offset into that bio where
+ * the start of data to be cloned is located.
+ *
+ * On return, bio_src is updated to refer to the bio in the source
+ * chain that contains first un-cloned byte, and *offset will
+ * contain the offset of that byte within that bio.
+ */
+static struct bio *bio_chain_clone_range(struct bio **bio_src,
+					unsigned int *offset,
+					unsigned int len,
+					gfp_t gfpmask)
+{
+	struct bio *bi = *bio_src;
+	unsigned int off = *offset;
+	struct bio *chain = NULL;
+	struct bio **end;
+
+	/* Build up a chain of clone bios up to the limit */
+
+	if (!bi || off >= bi->bi_iter.bi_size || !len)
+		return NULL;		/* Nothing to clone */
+
+	end = &chain;
+	while (len) {
+		unsigned int bi_size;
+		struct bio *bio;
+
+		if (!bi) {
+			rbd_warn(NULL, "bio_chain exhausted with %u left", len);
+			goto out_err;	/* EINVAL; ran out of bio's */
+		}
+		bi_size = min_t(unsigned int, bi->bi_iter.bi_size - off, len);
+		bio = bio_clone_range(bi, off, bi_size, gfpmask);
+		if (!bio)
+			goto out_err;	/* ENOMEM */
+
+		*end = bio;
+		end = &bio->bi_next;
+
+		off += bi_size;
+		if (off == bi->bi_iter.bi_size) {
+			bi = bi->bi_next;
+			off = 0;
+		}
+		len -= bi_size;
+	}
+	*bio_src = bi;
+	*offset = off;
+
+	return chain;
+out_err:
+	bio_chain_put(chain);
+
+	return NULL;
+}
+
+/*
+ * The default/initial value for all object request flags is 0.  For
+ * each flag, once its value is set to 1 it is never reset to 0
+ * again.
+ */
+static void obj_request_img_data_set(struct rbd_obj_request *obj_request)
+{
+	if (test_and_set_bit(OBJ_REQ_IMG_DATA, &obj_request->flags)) {
+		struct rbd_device *rbd_dev;
+
+		rbd_dev = obj_request->img_request->rbd_dev;
+		rbd_warn(rbd_dev, "obj_request %p already marked img_data",
+			obj_request);
+	}
+}
+
+static bool obj_request_img_data_test(struct rbd_obj_request *obj_request)
+{
+	smp_mb();
+	return test_bit(OBJ_REQ_IMG_DATA, &obj_request->flags) != 0;
+}
+
+static void obj_request_done_set(struct rbd_obj_request *obj_request)
+{
+	if (test_and_set_bit(OBJ_REQ_DONE, &obj_request->flags)) {
+		struct rbd_device *rbd_dev = NULL;
+
+		if (obj_request_img_data_test(obj_request))
+			rbd_dev = obj_request->img_request->rbd_dev;
+		rbd_warn(rbd_dev, "obj_request %p already marked done",
+			obj_request);
+	}
+}
+
+static bool obj_request_done_test(struct rbd_obj_request *obj_request)
+{
+	smp_mb();
+	return test_bit(OBJ_REQ_DONE, &obj_request->flags) != 0;
+}
+
+/*
+ * This sets the KNOWN flag after (possibly) setting the EXISTS
+ * flag.  The latter is set based on the "exists" value provided.
+ *
+ * Note that for our purposes once an object exists it never goes
+ * away again.  It's possible that the response from two existence
+ * checks are separated by the creation of the target object, and
+ * the first ("doesn't exist") response arrives *after* the second
+ * ("does exist").  In that case we ignore the second one.
+ */
+static void obj_request_existence_set(struct rbd_obj_request *obj_request,
+				bool exists)
+{
+	if (exists)
+		set_bit(OBJ_REQ_EXISTS, &obj_request->flags);
+	set_bit(OBJ_REQ_KNOWN, &obj_request->flags);
+	smp_mb();
+}
+
+static bool obj_request_known_test(struct rbd_obj_request *obj_request)
+{
+	smp_mb();
+	return test_bit(OBJ_REQ_KNOWN, &obj_request->flags) != 0;
+}
+
+static bool obj_request_exists_test(struct rbd_obj_request *obj_request)
+{
+	smp_mb();
+	return test_bit(OBJ_REQ_EXISTS, &obj_request->flags) != 0;
+}
+
+static bool obj_request_overlaps_parent(struct rbd_obj_request *obj_request)
+{
+	struct rbd_device *rbd_dev = obj_request->img_request->rbd_dev;
+
+	return obj_request->img_offset <
+	    round_up(rbd_dev->parent_overlap, rbd_obj_bytes(&rbd_dev->header));
+}
+
+static void rbd_obj_request_get(struct rbd_obj_request *obj_request)
+{
+	dout("%s: obj %p (was %d)\n", __func__, obj_request,
+		kref_read(&obj_request->kref));
+	kref_get(&obj_request->kref);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rbd_obj_request_destroy(struct kref *kref);
 static void rbd_obj_request_put(struct rbd_obj_request *obj_request)
 {
@@ -1329,13 +1890,25 @@ static void rbd_img_request_get(struct rbd_img_request *img_request)
 	kref_get(&img_request->kref);
 }
 
+<<<<<<< HEAD
+=======
+static bool img_request_child_test(struct rbd_img_request *img_request);
+static void rbd_parent_request_destroy(struct kref *kref);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rbd_img_request_destroy(struct kref *kref);
 static void rbd_img_request_put(struct rbd_img_request *img_request)
 {
 	rbd_assert(img_request != NULL);
 	dout("%s: img %p (was %d)\n", __func__, img_request,
 		kref_read(&img_request->kref));
+<<<<<<< HEAD
 	kref_put(&img_request->kref, rbd_img_request_destroy);
+=======
+	if (img_request_child_test(img_request))
+		kref_put(&img_request->kref, rbd_parent_request_destroy);
+	else
+		kref_put(&img_request->kref, rbd_img_request_destroy);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void rbd_img_obj_request_add(struct rbd_img_request *img_request,
@@ -1345,14 +1918,26 @@ static inline void rbd_img_obj_request_add(struct rbd_img_request *img_request,
 
 	/* Image request now owns object's original reference */
 	obj_request->img_request = img_request;
+<<<<<<< HEAD
 	img_request->obj_request_count++;
 	img_request->pending_count++;
 	dout("%s: img %p obj %p\n", __func__, img_request, obj_request);
+=======
+	obj_request->which = img_request->obj_request_count;
+	rbd_assert(!obj_request_img_data_test(obj_request));
+	obj_request_img_data_set(obj_request);
+	rbd_assert(obj_request->which != BAD_WHICH);
+	img_request->obj_request_count++;
+	list_add_tail(&obj_request->links, &img_request->obj_requests);
+	dout("%s: img %p obj %p w=%u\n", __func__, img_request, obj_request,
+		obj_request->which);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void rbd_img_obj_request_del(struct rbd_img_request *img_request,
 					struct rbd_obj_request *obj_request)
 {
+<<<<<<< HEAD
 	dout("%s: img %p obj %p\n", __func__, img_request, obj_request);
 	list_del(&obj_request->ex.oe_item);
 	rbd_assert(img_request->obj_request_count > 0);
@@ -1361,21 +1946,139 @@ static inline void rbd_img_obj_request_del(struct rbd_img_request *img_request,
 	rbd_obj_request_put(obj_request);
 }
 
+=======
+	rbd_assert(obj_request->which != BAD_WHICH);
+
+	dout("%s: img %p obj %p w=%u\n", __func__, img_request, obj_request,
+		obj_request->which);
+	list_del(&obj_request->links);
+	rbd_assert(img_request->obj_request_count > 0);
+	img_request->obj_request_count--;
+	rbd_assert(obj_request->which == img_request->obj_request_count);
+	obj_request->which = BAD_WHICH;
+	rbd_assert(obj_request_img_data_test(obj_request));
+	rbd_assert(obj_request->img_request == img_request);
+	obj_request->img_request = NULL;
+	obj_request->callback = NULL;
+	rbd_obj_request_put(obj_request);
+}
+
+static bool obj_request_type_valid(enum obj_request_type type)
+{
+	switch (type) {
+	case OBJ_REQUEST_NODATA:
+	case OBJ_REQUEST_BIO:
+	case OBJ_REQUEST_PAGES:
+		return true;
+	default:
+		return false;
+	}
+}
+
+static void rbd_img_obj_callback(struct rbd_obj_request *obj_request);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rbd_obj_request_submit(struct rbd_obj_request *obj_request)
 {
 	struct ceph_osd_request *osd_req = obj_request->osd_req;
 
 	dout("%s %p object_no %016llx %llu~%llu osd_req %p\n", __func__,
+<<<<<<< HEAD
 	     obj_request, obj_request->ex.oe_objno, obj_request->ex.oe_off,
 	     obj_request->ex.oe_len, osd_req);
 	ceph_osdc_start_request(osd_req->r_osdc, osd_req, false);
 }
 
+=======
+	     obj_request, obj_request->object_no, obj_request->offset,
+	     obj_request->length, osd_req);
+	if (obj_request_img_data_test(obj_request)) {
+		WARN_ON(obj_request->callback != rbd_img_obj_callback);
+		rbd_img_request_get(obj_request->img_request);
+	}
+	ceph_osdc_start_request(osd_req->r_osdc, osd_req, false);
+}
+
+static void rbd_img_request_complete(struct rbd_img_request *img_request)
+{
+
+	dout("%s: img %p\n", __func__, img_request);
+
+	/*
+	 * If no error occurred, compute the aggregate transfer
+	 * count for the image request.  We could instead use
+	 * atomic64_cmpxchg() to update it as each object request
+	 * completes; not clear which way is better off hand.
+	 */
+	if (!img_request->result) {
+		struct rbd_obj_request *obj_request;
+		u64 xferred = 0;
+
+		for_each_obj_request(img_request, obj_request)
+			xferred += obj_request->xferred;
+		img_request->xferred = xferred;
+	}
+
+	if (img_request->callback)
+		img_request->callback(img_request);
+	else
+		rbd_img_request_put(img_request);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The default/initial value for all image request flags is 0.  Each
  * is conditionally set to 1 at image request initialization time
  * and currently never change thereafter.
  */
+<<<<<<< HEAD
+=======
+static void img_request_write_set(struct rbd_img_request *img_request)
+{
+	set_bit(IMG_REQ_WRITE, &img_request->flags);
+	smp_mb();
+}
+
+static bool img_request_write_test(struct rbd_img_request *img_request)
+{
+	smp_mb();
+	return test_bit(IMG_REQ_WRITE, &img_request->flags) != 0;
+}
+
+/*
+ * Set the discard flag when the img_request is an discard request
+ */
+static void img_request_discard_set(struct rbd_img_request *img_request)
+{
+	set_bit(IMG_REQ_DISCARD, &img_request->flags);
+	smp_mb();
+}
+
+static bool img_request_discard_test(struct rbd_img_request *img_request)
+{
+	smp_mb();
+	return test_bit(IMG_REQ_DISCARD, &img_request->flags) != 0;
+}
+
+static void img_request_child_set(struct rbd_img_request *img_request)
+{
+	set_bit(IMG_REQ_CHILD, &img_request->flags);
+	smp_mb();
+}
+
+static void img_request_child_clear(struct rbd_img_request *img_request)
+{
+	clear_bit(IMG_REQ_CHILD, &img_request->flags);
+	smp_mb();
+}
+
+static bool img_request_child_test(struct rbd_img_request *img_request)
+{
+	smp_mb();
+	return test_bit(IMG_REQ_CHILD, &img_request->flags) != 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void img_request_layered_set(struct rbd_img_request *img_request)
 {
 	set_bit(IMG_REQ_LAYERED, &img_request->flags);
@@ -1394,6 +2097,7 @@ static bool img_request_layered_test(struct rbd_img_request *img_request)
 	return test_bit(IMG_REQ_LAYERED, &img_request->flags) != 0;
 }
 
+<<<<<<< HEAD
 static bool rbd_obj_is_entire(struct rbd_obj_request *obj_req)
 {
 	struct rbd_device *rbd_dev = obj_req->img_request->rbd_dev;
@@ -1451,13 +2155,218 @@ static void rbd_osd_req_callback(struct ceph_osd_request *osd_req)
 		obj_req->xferred = 0;
 
 	rbd_obj_handle_request(obj_req);
+=======
+static enum obj_operation_type
+rbd_img_request_op_type(struct rbd_img_request *img_request)
+{
+	if (img_request_write_test(img_request))
+		return OBJ_OP_WRITE;
+	else if (img_request_discard_test(img_request))
+		return OBJ_OP_DISCARD;
+	else
+		return OBJ_OP_READ;
+}
+
+static void
+rbd_img_obj_request_read_callback(struct rbd_obj_request *obj_request)
+{
+	u64 xferred = obj_request->xferred;
+	u64 length = obj_request->length;
+
+	dout("%s: obj %p img %p result %d %llu/%llu\n", __func__,
+		obj_request, obj_request->img_request, obj_request->result,
+		xferred, length);
+	/*
+	 * ENOENT means a hole in the image.  We zero-fill the entire
+	 * length of the request.  A short read also implies zero-fill
+	 * to the end of the request.  An error requires the whole
+	 * length of the request to be reported finished with an error
+	 * to the block layer.  In each case we update the xferred
+	 * count to indicate the whole request was satisfied.
+	 */
+	rbd_assert(obj_request->type != OBJ_REQUEST_NODATA);
+	if (obj_request->result == -ENOENT) {
+		if (obj_request->type == OBJ_REQUEST_BIO)
+			zero_bio_chain(obj_request->bio_list, 0);
+		else
+			zero_pages(obj_request->pages, 0, length);
+		obj_request->result = 0;
+	} else if (xferred < length && !obj_request->result) {
+		if (obj_request->type == OBJ_REQUEST_BIO)
+			zero_bio_chain(obj_request->bio_list, xferred);
+		else
+			zero_pages(obj_request->pages, xferred, length);
+	}
+	obj_request->xferred = length;
+	obj_request_done_set(obj_request);
+}
+
+static void rbd_obj_request_complete(struct rbd_obj_request *obj_request)
+{
+	dout("%s: obj %p cb %p\n", __func__, obj_request,
+		obj_request->callback);
+	if (obj_request->callback)
+		obj_request->callback(obj_request);
+	else
+		complete_all(&obj_request->completion);
+}
+
+static void rbd_obj_request_error(struct rbd_obj_request *obj_request, int err)
+{
+	obj_request->result = err;
+	obj_request->xferred = 0;
+	/*
+	 * kludge - mirror rbd_obj_request_submit() to match a put in
+	 * rbd_img_obj_callback()
+	 */
+	if (obj_request_img_data_test(obj_request)) {
+		WARN_ON(obj_request->callback != rbd_img_obj_callback);
+		rbd_img_request_get(obj_request->img_request);
+	}
+	obj_request_done_set(obj_request);
+	rbd_obj_request_complete(obj_request);
+}
+
+static void rbd_osd_read_callback(struct rbd_obj_request *obj_request)
+{
+	struct rbd_img_request *img_request = NULL;
+	struct rbd_device *rbd_dev = NULL;
+	bool layered = false;
+
+	if (obj_request_img_data_test(obj_request)) {
+		img_request = obj_request->img_request;
+		layered = img_request && img_request_layered_test(img_request);
+		rbd_dev = img_request->rbd_dev;
+	}
+
+	dout("%s: obj %p img %p result %d %llu/%llu\n", __func__,
+		obj_request, img_request, obj_request->result,
+		obj_request->xferred, obj_request->length);
+	if (layered && obj_request->result == -ENOENT &&
+			obj_request->img_offset < rbd_dev->parent_overlap)
+		rbd_img_parent_read(obj_request);
+	else if (img_request)
+		rbd_img_obj_request_read_callback(obj_request);
+	else
+		obj_request_done_set(obj_request);
+}
+
+static void rbd_osd_write_callback(struct rbd_obj_request *obj_request)
+{
+	dout("%s: obj %p result %d %llu\n", __func__, obj_request,
+		obj_request->result, obj_request->length);
+	/*
+	 * There is no such thing as a successful short write.  Set
+	 * it to our originally-requested length.
+	 */
+	obj_request->xferred = obj_request->length;
+	obj_request_done_set(obj_request);
+}
+
+static void rbd_osd_discard_callback(struct rbd_obj_request *obj_request)
+{
+	dout("%s: obj %p result %d %llu\n", __func__, obj_request,
+		obj_request->result, obj_request->length);
+	/*
+	 * There is no such thing as a successful short discard.  Set
+	 * it to our originally-requested length.
+	 */
+	obj_request->xferred = obj_request->length;
+	/* discarding a non-existent object is not a problem */
+	if (obj_request->result == -ENOENT)
+		obj_request->result = 0;
+	obj_request_done_set(obj_request);
+}
+
+/*
+ * For a simple stat call there's nothing to do.  We'll do more if
+ * this is part of a write sequence for a layered image.
+ */
+static void rbd_osd_stat_callback(struct rbd_obj_request *obj_request)
+{
+	dout("%s: obj %p\n", __func__, obj_request);
+	obj_request_done_set(obj_request);
+}
+
+static void rbd_osd_call_callback(struct rbd_obj_request *obj_request)
+{
+	dout("%s: obj %p\n", __func__, obj_request);
+
+	if (obj_request_img_data_test(obj_request))
+		rbd_osd_copyup_callback(obj_request);
+	else
+		obj_request_done_set(obj_request);
+}
+
+static void rbd_osd_req_callback(struct ceph_osd_request *osd_req)
+{
+	struct rbd_obj_request *obj_request = osd_req->r_priv;
+	u16 opcode;
+
+	dout("%s: osd_req %p\n", __func__, osd_req);
+	rbd_assert(osd_req == obj_request->osd_req);
+	if (obj_request_img_data_test(obj_request)) {
+		rbd_assert(obj_request->img_request);
+		rbd_assert(obj_request->which != BAD_WHICH);
+	} else {
+		rbd_assert(obj_request->which == BAD_WHICH);
+	}
+
+	if (osd_req->r_result < 0)
+		obj_request->result = osd_req->r_result;
+
+	/*
+	 * We support a 64-bit length, but ultimately it has to be
+	 * passed to the block layer, which just supports a 32-bit
+	 * length field.
+	 */
+	obj_request->xferred = osd_req->r_ops[0].outdata_len;
+	rbd_assert(obj_request->xferred < (u64)UINT_MAX);
+
+	opcode = osd_req->r_ops[0].op;
+	switch (opcode) {
+	case CEPH_OSD_OP_READ:
+		rbd_osd_read_callback(obj_request);
+		break;
+	case CEPH_OSD_OP_SETALLOCHINT:
+		rbd_assert(osd_req->r_ops[1].op == CEPH_OSD_OP_WRITE ||
+			   osd_req->r_ops[1].op == CEPH_OSD_OP_WRITEFULL);
+		/* fall through */
+	case CEPH_OSD_OP_WRITE:
+	case CEPH_OSD_OP_WRITEFULL:
+		rbd_osd_write_callback(obj_request);
+		break;
+	case CEPH_OSD_OP_STAT:
+		rbd_osd_stat_callback(obj_request);
+		break;
+	case CEPH_OSD_OP_DELETE:
+	case CEPH_OSD_OP_TRUNCATE:
+	case CEPH_OSD_OP_ZERO:
+		rbd_osd_discard_callback(obj_request);
+		break;
+	case CEPH_OSD_OP_CALL:
+		rbd_osd_call_callback(obj_request);
+		break;
+	default:
+		rbd_warn(NULL, "unexpected OSD op: object_no %016llx opcode %d",
+			 obj_request->object_no, opcode);
+		break;
+	}
+
+	if (obj_request_done_test(obj_request))
+		rbd_obj_request_complete(obj_request);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rbd_osd_req_format_read(struct rbd_obj_request *obj_request)
 {
 	struct ceph_osd_request *osd_req = obj_request->osd_req;
 
+<<<<<<< HEAD
 	osd_req->r_flags = CEPH_OSD_FLAG_READ;
+=======
+	rbd_assert(obj_request_img_data_test(obj_request));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	osd_req->r_snapid = obj_request->img_request->snap_id;
 }
 
@@ -1465,6 +2374,7 @@ static void rbd_osd_req_format_write(struct rbd_obj_request *obj_request)
 {
 	struct ceph_osd_request *osd_req = obj_request->osd_req;
 
+<<<<<<< HEAD
 	osd_req->r_flags = CEPH_OSD_FLAG_WRITE;
 	ktime_get_real_ts64(&osd_req->r_mtime);
 	osd_req->r_data_offset = obj_request->ex.oe_off;
@@ -1475,11 +2385,24 @@ rbd_osd_req_create(struct rbd_obj_request *obj_req, unsigned int num_ops)
 {
 	struct rbd_img_request *img_req = obj_req->img_request;
 	struct rbd_device *rbd_dev = img_req->rbd_dev;
+=======
+	ktime_get_real_ts(&osd_req->r_mtime);
+	osd_req->r_data_offset = obj_request->offset;
+}
+
+static struct ceph_osd_request *
+__rbd_osd_req_create(struct rbd_device *rbd_dev,
+		     struct ceph_snap_context *snapc,
+		     int num_ops, unsigned int flags,
+		     struct rbd_obj_request *obj_request)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ceph_osd_client *osdc = &rbd_dev->rbd_client->client->osdc;
 	struct ceph_osd_request *req;
 	const char *name_format = rbd_dev->image_format == 1 ?
 				      RBD_V1_DATA_FORMAT : RBD_V2_DATA_FORMAT;
 
+<<<<<<< HEAD
 	req = ceph_osdc_alloc_request(osdc,
 			(rbd_img_is_write(img_req) ? img_req->snapc : NULL),
 			num_ops, false, GFP_NOIO);
@@ -1498,6 +2421,19 @@ rbd_osd_req_create(struct rbd_obj_request *obj_req, unsigned int num_ops)
 
 	if (ceph_oid_aprintf(&req->r_base_oid, GFP_NOIO, name_format,
 			rbd_dev->header.object_prefix, obj_req->ex.oe_objno))
+=======
+	req = ceph_osdc_alloc_request(osdc, snapc, num_ops, false, GFP_NOIO);
+	if (!req)
+		return NULL;
+
+	req->r_flags = flags;
+	req->r_callback = rbd_osd_req_callback;
+	req->r_priv = obj_request;
+
+	req->r_base_oloc.pool = rbd_dev->layout.pool_id;
+	if (ceph_oid_aprintf(&req->r_base_oid, GFP_NOIO, name_format,
+			rbd_dev->header.object_prefix, obj_request->object_no))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_req;
 
 	if (ceph_osdc_alloc_messages(req, GFP_NOIO))
@@ -1510,20 +2446,98 @@ err_req:
 	return NULL;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Create an osd request.  A read request has one osd op (read).
+ * A write request has either one (watch) or two (hint+write) osd ops.
+ * (All rbd data writes are prefixed with an allocation hint op, but
+ * technically osd watch is a write request, hence this distinction.)
+ */
+static struct ceph_osd_request *rbd_osd_req_create(
+					struct rbd_device *rbd_dev,
+					enum obj_operation_type op_type,
+					unsigned int num_ops,
+					struct rbd_obj_request *obj_request)
+{
+	struct ceph_snap_context *snapc = NULL;
+
+	if (obj_request_img_data_test(obj_request) &&
+		(op_type == OBJ_OP_DISCARD || op_type == OBJ_OP_WRITE)) {
+		struct rbd_img_request *img_request = obj_request->img_request;
+		if (op_type == OBJ_OP_WRITE) {
+			rbd_assert(img_request_write_test(img_request));
+		} else {
+			rbd_assert(img_request_discard_test(img_request));
+		}
+		snapc = img_request->snapc;
+	}
+
+	rbd_assert(num_ops == 1 || ((op_type == OBJ_OP_WRITE) && num_ops == 2));
+
+	return __rbd_osd_req_create(rbd_dev, snapc, num_ops,
+	    (op_type == OBJ_OP_WRITE || op_type == OBJ_OP_DISCARD) ?
+	    CEPH_OSD_FLAG_WRITE : CEPH_OSD_FLAG_READ, obj_request);
+}
+
+/*
+ * Create a copyup osd request based on the information in the object
+ * request supplied.  A copyup request has two or three osd ops, a
+ * copyup method call, potentially a hint op, and a write or truncate
+ * or zero op.
+ */
+static struct ceph_osd_request *
+rbd_osd_req_create_copyup(struct rbd_obj_request *obj_request)
+{
+	struct rbd_img_request *img_request;
+	int num_osd_ops = 3;
+
+	rbd_assert(obj_request_img_data_test(obj_request));
+	img_request = obj_request->img_request;
+	rbd_assert(img_request);
+	rbd_assert(img_request_write_test(img_request) ||
+			img_request_discard_test(img_request));
+
+	if (img_request_discard_test(img_request))
+		num_osd_ops = 2;
+
+	return __rbd_osd_req_create(img_request->rbd_dev,
+				    img_request->snapc, num_osd_ops,
+				    CEPH_OSD_FLAG_WRITE, obj_request);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rbd_osd_req_destroy(struct ceph_osd_request *osd_req)
 {
 	ceph_osdc_put_request(osd_req);
 }
 
+<<<<<<< HEAD
 static struct rbd_obj_request *rbd_obj_request_create(void)
 {
 	struct rbd_obj_request *obj_request;
 
+=======
+static struct rbd_obj_request *
+rbd_obj_request_create(enum obj_request_type type)
+{
+	struct rbd_obj_request *obj_request;
+
+	rbd_assert(obj_request_type_valid(type));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	obj_request = kmem_cache_zalloc(rbd_obj_request_cache, GFP_NOIO);
 	if (!obj_request)
 		return NULL;
 
+<<<<<<< HEAD
 	ceph_object_extent_init(&obj_request->ex);
+=======
+	obj_request->which = BAD_WHICH;
+	obj_request->type = type;
+	INIT_LIST_HEAD(&obj_request->links);
+	init_completion(&obj_request->completion);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kref_init(&obj_request->kref);
 
 	dout("%s %p\n", __func__, obj_request);
@@ -1533,12 +2547,16 @@ static struct rbd_obj_request *rbd_obj_request_create(void)
 static void rbd_obj_request_destroy(struct kref *kref)
 {
 	struct rbd_obj_request *obj_request;
+<<<<<<< HEAD
 	u32 i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	obj_request = container_of(kref, struct rbd_obj_request, kref);
 
 	dout("%s: obj %p\n", __func__, obj_request);
 
+<<<<<<< HEAD
 	if (obj_request->osd_req)
 		rbd_osd_req_destroy(obj_request->osd_req);
 
@@ -1561,6 +2579,29 @@ static void rbd_obj_request_destroy(struct kref *kref)
 				__free_page(obj_request->copyup_bvecs[i].bv_page);
 		}
 		kfree(obj_request->copyup_bvecs);
+=======
+	rbd_assert(obj_request->img_request == NULL);
+	rbd_assert(obj_request->which == BAD_WHICH);
+
+	if (obj_request->osd_req)
+		rbd_osd_req_destroy(obj_request->osd_req);
+
+	rbd_assert(obj_request_type_valid(obj_request->type));
+	switch (obj_request->type) {
+	case OBJ_REQUEST_NODATA:
+		break;		/* Nothing to do */
+	case OBJ_REQUEST_BIO:
+		if (obj_request->bio_list)
+			bio_chain_put(obj_request->bio_list);
+		break;
+	case OBJ_REQUEST_PAGES:
+		/* img_data requests don't own their page array */
+		if (obj_request->pages &&
+		    !obj_request_img_data_test(obj_request))
+			ceph_release_page_vector(obj_request->pages,
+						obj_request->page_count);
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kmem_cache_free(rbd_obj_request_cache, obj_request);
@@ -1635,11 +2676,16 @@ static bool rbd_dev_parent_get(struct rbd_device *rbd_dev)
  */
 static struct rbd_img_request *rbd_img_request_create(
 					struct rbd_device *rbd_dev,
+<<<<<<< HEAD
+=======
+					u64 offset, u64 length,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					enum obj_operation_type op_type,
 					struct ceph_snap_context *snapc)
 {
 	struct rbd_img_request *img_request;
 
+<<<<<<< HEAD
 	img_request = kmem_cache_zalloc(rbd_img_request_cache, GFP_NOIO);
 	if (!img_request)
 		return NULL;
@@ -1660,6 +2706,39 @@ static struct rbd_img_request *rbd_img_request_create(
 
 	dout("%s: rbd_dev %p %s -> img %p\n", __func__, rbd_dev,
 	     obj_op_name(op_type), img_request);
+=======
+	img_request = kmem_cache_alloc(rbd_img_request_cache, GFP_NOIO);
+	if (!img_request)
+		return NULL;
+
+	img_request->rq = NULL;
+	img_request->rbd_dev = rbd_dev;
+	img_request->offset = offset;
+	img_request->length = length;
+	img_request->flags = 0;
+	if (op_type == OBJ_OP_DISCARD) {
+		img_request_discard_set(img_request);
+		img_request->snapc = snapc;
+	} else if (op_type == OBJ_OP_WRITE) {
+		img_request_write_set(img_request);
+		img_request->snapc = snapc;
+	} else {
+		img_request->snap_id = rbd_dev->spec->snap_id;
+	}
+	if (rbd_dev_parent_get(rbd_dev))
+		img_request_layered_set(img_request);
+	spin_lock_init(&img_request->completion_lock);
+	img_request->next_completion = 0;
+	img_request->callback = NULL;
+	img_request->result = 0;
+	img_request->obj_request_count = 0;
+	INIT_LIST_HEAD(&img_request->obj_requests);
+	kref_init(&img_request->kref);
+
+	dout("%s: rbd_dev %p %s %llu/%llu -> img %p\n", __func__, rbd_dev,
+		obj_op_name(op_type), offset, length, img_request);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return img_request;
 }
 
@@ -1682,12 +2761,18 @@ static void rbd_img_request_destroy(struct kref *kref)
 		rbd_dev_parent_put(img_request->rbd_dev);
 	}
 
+<<<<<<< HEAD
 	if (rbd_img_is_write(img_request))
+=======
+	if (img_request_write_test(img_request) ||
+		img_request_discard_test(img_request))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ceph_put_snap_context(img_request->snapc);
 
 	kmem_cache_free(rbd_img_request_cache, img_request);
 }
 
+<<<<<<< HEAD
 static void prune_extents(struct ceph_file_extent *img_extents,
 			  u32 *num_img_extents, u64 overlap)
 {
@@ -1774,6 +2859,608 @@ static int __rbd_obj_setup_stat(struct rbd_obj_request *obj_req,
 				unsigned int which)
 {
 	struct page **pages;
+=======
+static struct rbd_img_request *rbd_parent_request_create(
+					struct rbd_obj_request *obj_request,
+					u64 img_offset, u64 length)
+{
+	struct rbd_img_request *parent_request;
+	struct rbd_device *rbd_dev;
+
+	rbd_assert(obj_request->img_request);
+	rbd_dev = obj_request->img_request->rbd_dev;
+
+	parent_request = rbd_img_request_create(rbd_dev->parent, img_offset,
+						length, OBJ_OP_READ, NULL);
+	if (!parent_request)
+		return NULL;
+
+	img_request_child_set(parent_request);
+	rbd_obj_request_get(obj_request);
+	parent_request->obj_request = obj_request;
+
+	return parent_request;
+}
+
+static void rbd_parent_request_destroy(struct kref *kref)
+{
+	struct rbd_img_request *parent_request;
+	struct rbd_obj_request *orig_request;
+
+	parent_request = container_of(kref, struct rbd_img_request, kref);
+	orig_request = parent_request->obj_request;
+
+	parent_request->obj_request = NULL;
+	rbd_obj_request_put(orig_request);
+	img_request_child_clear(parent_request);
+
+	rbd_img_request_destroy(kref);
+}
+
+static bool rbd_img_obj_end_request(struct rbd_obj_request *obj_request)
+{
+	struct rbd_img_request *img_request;
+	unsigned int xferred;
+	int result;
+	bool more;
+
+	rbd_assert(obj_request_img_data_test(obj_request));
+	img_request = obj_request->img_request;
+
+	rbd_assert(obj_request->xferred <= (u64)UINT_MAX);
+	xferred = (unsigned int)obj_request->xferred;
+	result = obj_request->result;
+	if (result) {
+		struct rbd_device *rbd_dev = img_request->rbd_dev;
+		enum obj_operation_type op_type;
+
+		if (img_request_discard_test(img_request))
+			op_type = OBJ_OP_DISCARD;
+		else if (img_request_write_test(img_request))
+			op_type = OBJ_OP_WRITE;
+		else
+			op_type = OBJ_OP_READ;
+
+		rbd_warn(rbd_dev, "%s %llx at %llx (%llx)",
+			obj_op_name(op_type), obj_request->length,
+			obj_request->img_offset, obj_request->offset);
+		rbd_warn(rbd_dev, "  result %d xferred %x",
+			result, xferred);
+		if (!img_request->result)
+			img_request->result = result;
+		/*
+		 * Need to end I/O on the entire obj_request worth of
+		 * bytes in case of error.
+		 */
+		xferred = obj_request->length;
+	}
+
+	if (img_request_child_test(img_request)) {
+		rbd_assert(img_request->obj_request != NULL);
+		more = obj_request->which < img_request->obj_request_count - 1;
+	} else {
+		blk_status_t status = errno_to_blk_status(result);
+
+		rbd_assert(img_request->rq != NULL);
+
+		more = blk_update_request(img_request->rq, status, xferred);
+		if (!more)
+			__blk_mq_end_request(img_request->rq, status);
+	}
+
+	return more;
+}
+
+static void rbd_img_obj_callback(struct rbd_obj_request *obj_request)
+{
+	struct rbd_img_request *img_request;
+	u32 which = obj_request->which;
+	bool more = true;
+
+	rbd_assert(obj_request_img_data_test(obj_request));
+	img_request = obj_request->img_request;
+
+	dout("%s: img %p obj %p\n", __func__, img_request, obj_request);
+	rbd_assert(img_request != NULL);
+	rbd_assert(img_request->obj_request_count > 0);
+	rbd_assert(which != BAD_WHICH);
+	rbd_assert(which < img_request->obj_request_count);
+
+	spin_lock_irq(&img_request->completion_lock);
+	if (which != img_request->next_completion)
+		goto out;
+
+	for_each_obj_request_from(img_request, obj_request) {
+		rbd_assert(more);
+		rbd_assert(which < img_request->obj_request_count);
+
+		if (!obj_request_done_test(obj_request))
+			break;
+		more = rbd_img_obj_end_request(obj_request);
+		which++;
+	}
+
+	rbd_assert(more ^ (which == img_request->obj_request_count));
+	img_request->next_completion = which;
+out:
+	spin_unlock_irq(&img_request->completion_lock);
+	rbd_img_request_put(img_request);
+
+	if (!more)
+		rbd_img_request_complete(img_request);
+}
+
+/*
+ * Add individual osd ops to the given ceph_osd_request and prepare
+ * them for submission. num_ops is the current number of
+ * osd operations already to the object request.
+ */
+static void rbd_img_obj_request_fill(struct rbd_obj_request *obj_request,
+				struct ceph_osd_request *osd_request,
+				enum obj_operation_type op_type,
+				unsigned int num_ops)
+{
+	struct rbd_img_request *img_request = obj_request->img_request;
+	struct rbd_device *rbd_dev = img_request->rbd_dev;
+	u64 object_size = rbd_obj_bytes(&rbd_dev->header);
+	u64 offset = obj_request->offset;
+	u64 length = obj_request->length;
+	u64 img_end;
+	u16 opcode;
+
+	if (op_type == OBJ_OP_DISCARD) {
+		if (!offset && length == object_size &&
+		    (!img_request_layered_test(img_request) ||
+		     !obj_request_overlaps_parent(obj_request))) {
+			opcode = CEPH_OSD_OP_DELETE;
+		} else if ((offset + length == object_size)) {
+			opcode = CEPH_OSD_OP_TRUNCATE;
+		} else {
+			down_read(&rbd_dev->header_rwsem);
+			img_end = rbd_dev->header.image_size;
+			up_read(&rbd_dev->header_rwsem);
+
+			if (obj_request->img_offset + length == img_end)
+				opcode = CEPH_OSD_OP_TRUNCATE;
+			else
+				opcode = CEPH_OSD_OP_ZERO;
+		}
+	} else if (op_type == OBJ_OP_WRITE) {
+		if (!offset && length == object_size)
+			opcode = CEPH_OSD_OP_WRITEFULL;
+		else
+			opcode = CEPH_OSD_OP_WRITE;
+		osd_req_op_alloc_hint_init(osd_request, num_ops,
+					object_size, object_size);
+		num_ops++;
+	} else {
+		opcode = CEPH_OSD_OP_READ;
+	}
+
+	if (opcode == CEPH_OSD_OP_DELETE)
+		osd_req_op_init(osd_request, num_ops, opcode, 0);
+	else
+		osd_req_op_extent_init(osd_request, num_ops, opcode,
+				       offset, length, 0, 0);
+
+	if (obj_request->type == OBJ_REQUEST_BIO)
+		osd_req_op_extent_osd_data_bio(osd_request, num_ops,
+					obj_request->bio_list, length);
+	else if (obj_request->type == OBJ_REQUEST_PAGES)
+		osd_req_op_extent_osd_data_pages(osd_request, num_ops,
+					obj_request->pages, length,
+					offset & ~PAGE_MASK, false, false);
+
+	/* Discards are also writes */
+	if (op_type == OBJ_OP_WRITE || op_type == OBJ_OP_DISCARD)
+		rbd_osd_req_format_write(obj_request);
+	else
+		rbd_osd_req_format_read(obj_request);
+}
+
+/*
+ * Split up an image request into one or more object requests, each
+ * to a different object.  The "type" parameter indicates whether
+ * "data_desc" is the pointer to the head of a list of bio
+ * structures, or the base of a page array.  In either case this
+ * function assumes data_desc describes memory sufficient to hold
+ * all data described by the image request.
+ */
+static int rbd_img_request_fill(struct rbd_img_request *img_request,
+					enum obj_request_type type,
+					void *data_desc)
+{
+	struct rbd_device *rbd_dev = img_request->rbd_dev;
+	struct rbd_obj_request *obj_request = NULL;
+	struct rbd_obj_request *next_obj_request;
+	struct bio *bio_list = NULL;
+	unsigned int bio_offset = 0;
+	struct page **pages = NULL;
+	enum obj_operation_type op_type;
+	u64 img_offset;
+	u64 resid;
+
+	dout("%s: img %p type %d data_desc %p\n", __func__, img_request,
+		(int)type, data_desc);
+
+	img_offset = img_request->offset;
+	resid = img_request->length;
+	rbd_assert(resid > 0);
+	op_type = rbd_img_request_op_type(img_request);
+
+	if (type == OBJ_REQUEST_BIO) {
+		bio_list = data_desc;
+		rbd_assert(img_offset ==
+			   bio_list->bi_iter.bi_sector << SECTOR_SHIFT);
+	} else if (type == OBJ_REQUEST_PAGES) {
+		pages = data_desc;
+	}
+
+	while (resid) {
+		struct ceph_osd_request *osd_req;
+		u64 object_no = img_offset >> rbd_dev->header.obj_order;
+		u64 offset = rbd_segment_offset(rbd_dev, img_offset);
+		u64 length = rbd_segment_length(rbd_dev, img_offset, resid);
+
+		obj_request = rbd_obj_request_create(type);
+		if (!obj_request)
+			goto out_unwind;
+
+		obj_request->object_no = object_no;
+		obj_request->offset = offset;
+		obj_request->length = length;
+
+		/*
+		 * set obj_request->img_request before creating the
+		 * osd_request so that it gets the right snapc
+		 */
+		rbd_img_obj_request_add(img_request, obj_request);
+
+		if (type == OBJ_REQUEST_BIO) {
+			unsigned int clone_size;
+
+			rbd_assert(length <= (u64)UINT_MAX);
+			clone_size = (unsigned int)length;
+			obj_request->bio_list =
+					bio_chain_clone_range(&bio_list,
+								&bio_offset,
+								clone_size,
+								GFP_NOIO);
+			if (!obj_request->bio_list)
+				goto out_unwind;
+		} else if (type == OBJ_REQUEST_PAGES) {
+			unsigned int page_count;
+
+			obj_request->pages = pages;
+			page_count = (u32)calc_pages_for(offset, length);
+			obj_request->page_count = page_count;
+			if ((offset + length) & ~PAGE_MASK)
+				page_count--;	/* more on last page */
+			pages += page_count;
+		}
+
+		osd_req = rbd_osd_req_create(rbd_dev, op_type,
+					(op_type == OBJ_OP_WRITE) ? 2 : 1,
+					obj_request);
+		if (!osd_req)
+			goto out_unwind;
+
+		obj_request->osd_req = osd_req;
+		obj_request->callback = rbd_img_obj_callback;
+		obj_request->img_offset = img_offset;
+
+		rbd_img_obj_request_fill(obj_request, osd_req, op_type, 0);
+
+		img_offset += length;
+		resid -= length;
+	}
+
+	return 0;
+
+out_unwind:
+	for_each_obj_request_safe(img_request, obj_request, next_obj_request)
+		rbd_img_obj_request_del(img_request, obj_request);
+
+	return -ENOMEM;
+}
+
+static void
+rbd_osd_copyup_callback(struct rbd_obj_request *obj_request)
+{
+	struct rbd_img_request *img_request;
+	struct rbd_device *rbd_dev;
+	struct page **pages;
+	u32 page_count;
+
+	dout("%s: obj %p\n", __func__, obj_request);
+
+	rbd_assert(obj_request->type == OBJ_REQUEST_BIO ||
+		obj_request->type == OBJ_REQUEST_NODATA);
+	rbd_assert(obj_request_img_data_test(obj_request));
+	img_request = obj_request->img_request;
+	rbd_assert(img_request);
+
+	rbd_dev = img_request->rbd_dev;
+	rbd_assert(rbd_dev);
+
+	pages = obj_request->copyup_pages;
+	rbd_assert(pages != NULL);
+	obj_request->copyup_pages = NULL;
+	page_count = obj_request->copyup_page_count;
+	rbd_assert(page_count);
+	obj_request->copyup_page_count = 0;
+	ceph_release_page_vector(pages, page_count);
+
+	/*
+	 * We want the transfer count to reflect the size of the
+	 * original write request.  There is no such thing as a
+	 * successful short write, so if the request was successful
+	 * we can just set it to the originally-requested length.
+	 */
+	if (!obj_request->result)
+		obj_request->xferred = obj_request->length;
+
+	obj_request_done_set(obj_request);
+}
+
+static void
+rbd_img_obj_parent_read_full_callback(struct rbd_img_request *img_request)
+{
+	struct rbd_obj_request *orig_request;
+	struct ceph_osd_request *osd_req;
+	struct rbd_device *rbd_dev;
+	struct page **pages;
+	enum obj_operation_type op_type;
+	u32 page_count;
+	int img_result;
+	u64 parent_length;
+
+	rbd_assert(img_request_child_test(img_request));
+
+	/* First get what we need from the image request */
+
+	pages = img_request->copyup_pages;
+	rbd_assert(pages != NULL);
+	img_request->copyup_pages = NULL;
+	page_count = img_request->copyup_page_count;
+	rbd_assert(page_count);
+	img_request->copyup_page_count = 0;
+
+	orig_request = img_request->obj_request;
+	rbd_assert(orig_request != NULL);
+	rbd_assert(obj_request_type_valid(orig_request->type));
+	img_result = img_request->result;
+	parent_length = img_request->length;
+	rbd_assert(img_result || parent_length == img_request->xferred);
+	rbd_img_request_put(img_request);
+
+	rbd_assert(orig_request->img_request);
+	rbd_dev = orig_request->img_request->rbd_dev;
+	rbd_assert(rbd_dev);
+
+	/*
+	 * If the overlap has become 0 (most likely because the
+	 * image has been flattened) we need to free the pages
+	 * and re-submit the original write request.
+	 */
+	if (!rbd_dev->parent_overlap) {
+		ceph_release_page_vector(pages, page_count);
+		rbd_obj_request_submit(orig_request);
+		return;
+	}
+
+	if (img_result)
+		goto out_err;
+
+	/*
+	 * The original osd request is of no use to use any more.
+	 * We need a new one that can hold the three ops in a copyup
+	 * request.  Allocate the new copyup osd request for the
+	 * original request, and release the old one.
+	 */
+	img_result = -ENOMEM;
+	osd_req = rbd_osd_req_create_copyup(orig_request);
+	if (!osd_req)
+		goto out_err;
+	rbd_osd_req_destroy(orig_request->osd_req);
+	orig_request->osd_req = osd_req;
+	orig_request->copyup_pages = pages;
+	orig_request->copyup_page_count = page_count;
+
+	/* Initialize the copyup op */
+
+	osd_req_op_cls_init(osd_req, 0, CEPH_OSD_OP_CALL, "rbd", "copyup");
+	osd_req_op_cls_request_data_pages(osd_req, 0, pages, parent_length, 0,
+						false, false);
+
+	/* Add the other op(s) */
+
+	op_type = rbd_img_request_op_type(orig_request->img_request);
+	rbd_img_obj_request_fill(orig_request, osd_req, op_type, 1);
+
+	/* All set, send it off. */
+
+	rbd_obj_request_submit(orig_request);
+	return;
+
+out_err:
+	ceph_release_page_vector(pages, page_count);
+	rbd_obj_request_error(orig_request, img_result);
+}
+
+/*
+ * Read from the parent image the range of data that covers the
+ * entire target of the given object request.  This is used for
+ * satisfying a layered image write request when the target of an
+ * object request from the image request does not exist.
+ *
+ * A page array big enough to hold the returned data is allocated
+ * and supplied to rbd_img_request_fill() as the "data descriptor."
+ * When the read completes, this page array will be transferred to
+ * the original object request for the copyup operation.
+ *
+ * If an error occurs, it is recorded as the result of the original
+ * object request in rbd_img_obj_exists_callback().
+ */
+static int rbd_img_obj_parent_read_full(struct rbd_obj_request *obj_request)
+{
+	struct rbd_device *rbd_dev = obj_request->img_request->rbd_dev;
+	struct rbd_img_request *parent_request = NULL;
+	u64 img_offset;
+	u64 length;
+	struct page **pages = NULL;
+	u32 page_count;
+	int result;
+
+	rbd_assert(rbd_dev->parent != NULL);
+
+	/*
+	 * Determine the byte range covered by the object in the
+	 * child image to which the original request was to be sent.
+	 */
+	img_offset = obj_request->img_offset - obj_request->offset;
+	length = rbd_obj_bytes(&rbd_dev->header);
+
+	/*
+	 * There is no defined parent data beyond the parent
+	 * overlap, so limit what we read at that boundary if
+	 * necessary.
+	 */
+	if (img_offset + length > rbd_dev->parent_overlap) {
+		rbd_assert(img_offset < rbd_dev->parent_overlap);
+		length = rbd_dev->parent_overlap - img_offset;
+	}
+
+	/*
+	 * Allocate a page array big enough to receive the data read
+	 * from the parent.
+	 */
+	page_count = (u32)calc_pages_for(0, length);
+	pages = ceph_alloc_page_vector(page_count, GFP_NOIO);
+	if (IS_ERR(pages)) {
+		result = PTR_ERR(pages);
+		pages = NULL;
+		goto out_err;
+	}
+
+	result = -ENOMEM;
+	parent_request = rbd_parent_request_create(obj_request,
+						img_offset, length);
+	if (!parent_request)
+		goto out_err;
+
+	result = rbd_img_request_fill(parent_request, OBJ_REQUEST_PAGES, pages);
+	if (result)
+		goto out_err;
+
+	parent_request->copyup_pages = pages;
+	parent_request->copyup_page_count = page_count;
+	parent_request->callback = rbd_img_obj_parent_read_full_callback;
+
+	result = rbd_img_request_submit(parent_request);
+	if (!result)
+		return 0;
+
+	parent_request->copyup_pages = NULL;
+	parent_request->copyup_page_count = 0;
+	parent_request->obj_request = NULL;
+	rbd_obj_request_put(obj_request);
+out_err:
+	if (pages)
+		ceph_release_page_vector(pages, page_count);
+	if (parent_request)
+		rbd_img_request_put(parent_request);
+	return result;
+}
+
+static void rbd_img_obj_exists_callback(struct rbd_obj_request *obj_request)
+{
+	struct rbd_obj_request *orig_request;
+	struct rbd_device *rbd_dev;
+	int result;
+
+	rbd_assert(!obj_request_img_data_test(obj_request));
+
+	/*
+	 * All we need from the object request is the original
+	 * request and the result of the STAT op.  Grab those, then
+	 * we're done with the request.
+	 */
+	orig_request = obj_request->obj_request;
+	obj_request->obj_request = NULL;
+	rbd_obj_request_put(orig_request);
+	rbd_assert(orig_request);
+	rbd_assert(orig_request->img_request);
+
+	result = obj_request->result;
+	obj_request->result = 0;
+
+	dout("%s: obj %p for obj %p result %d %llu/%llu\n", __func__,
+		obj_request, orig_request, result,
+		obj_request->xferred, obj_request->length);
+	rbd_obj_request_put(obj_request);
+
+	/*
+	 * If the overlap has become 0 (most likely because the
+	 * image has been flattened) we need to re-submit the
+	 * original request.
+	 */
+	rbd_dev = orig_request->img_request->rbd_dev;
+	if (!rbd_dev->parent_overlap) {
+		rbd_obj_request_submit(orig_request);
+		return;
+	}
+
+	/*
+	 * Our only purpose here is to determine whether the object
+	 * exists, and we don't want to treat the non-existence as
+	 * an error.  If something else comes back, transfer the
+	 * error to the original request and complete it now.
+	 */
+	if (!result) {
+		obj_request_existence_set(orig_request, true);
+	} else if (result == -ENOENT) {
+		obj_request_existence_set(orig_request, false);
+	} else {
+		goto fail_orig_request;
+	}
+
+	/*
+	 * Resubmit the original request now that we have recorded
+	 * whether the target object exists.
+	 */
+	result = rbd_img_obj_request_submit(orig_request);
+	if (result)
+		goto fail_orig_request;
+
+	return;
+
+fail_orig_request:
+	rbd_obj_request_error(orig_request, result);
+}
+
+static int rbd_img_obj_exists_submit(struct rbd_obj_request *obj_request)
+{
+	struct rbd_device *rbd_dev = obj_request->img_request->rbd_dev;
+	struct rbd_obj_request *stat_request;
+	struct page **pages;
+	u32 page_count;
+	size_t size;
+	int ret;
+
+	stat_request = rbd_obj_request_create(OBJ_REQUEST_PAGES);
+	if (!stat_request)
+		return -ENOMEM;
+
+	stat_request->object_no = obj_request->object_no;
+
+	stat_request->osd_req = rbd_osd_req_create(rbd_dev, OBJ_OP_READ, 1,
+						   stat_request);
+	if (!stat_request->osd_req) {
+		ret = -ENOMEM;
+		goto fail_stat_request;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The response data for a STAT call consists of:
@@ -1783,6 +3470,7 @@ static int __rbd_obj_setup_stat(struct rbd_obj_request *obj_req,
 	 *         le32 tv_nsec;
 	 *     } mtime;
 	 */
+<<<<<<< HEAD
 	pages = ceph_alloc_page_vector(1, GFP_NOIO);
 	if (IS_ERR(pages))
 		return PTR_ERR(pages);
@@ -2238,10 +3926,109 @@ static int rbd_img_fill_from_bvecs(struct rbd_img_request *img_req,
 static void rbd_img_request_submit(struct rbd_img_request *img_request)
 {
 	struct rbd_obj_request *obj_request;
+=======
+	size = sizeof (__le64) + sizeof (__le32) + sizeof (__le32);
+	page_count = (u32)calc_pages_for(0, size);
+	pages = ceph_alloc_page_vector(page_count, GFP_NOIO);
+	if (IS_ERR(pages)) {
+		ret = PTR_ERR(pages);
+		goto fail_stat_request;
+	}
+
+	osd_req_op_init(stat_request->osd_req, 0, CEPH_OSD_OP_STAT, 0);
+	osd_req_op_raw_data_in_pages(stat_request->osd_req, 0, pages, size, 0,
+				     false, false);
+
+	rbd_obj_request_get(obj_request);
+	stat_request->obj_request = obj_request;
+	stat_request->pages = pages;
+	stat_request->page_count = page_count;
+	stat_request->callback = rbd_img_obj_exists_callback;
+
+	rbd_obj_request_submit(stat_request);
+	return 0;
+
+fail_stat_request:
+	rbd_obj_request_put(stat_request);
+	return ret;
+}
+
+static bool img_obj_request_simple(struct rbd_obj_request *obj_request)
+{
+	struct rbd_img_request *img_request = obj_request->img_request;
+	struct rbd_device *rbd_dev = img_request->rbd_dev;
+
+	/* Reads */
+	if (!img_request_write_test(img_request) &&
+	    !img_request_discard_test(img_request))
+		return true;
+
+	/* Non-layered writes */
+	if (!img_request_layered_test(img_request))
+		return true;
+
+	/*
+	 * Layered writes outside of the parent overlap range don't
+	 * share any data with the parent.
+	 */
+	if (!obj_request_overlaps_parent(obj_request))
+		return true;
+
+	/*
+	 * Entire-object layered writes - we will overwrite whatever
+	 * parent data there is anyway.
+	 */
+	if (!obj_request->offset &&
+	    obj_request->length == rbd_obj_bytes(&rbd_dev->header))
+		return true;
+
+	/*
+	 * If the object is known to already exist, its parent data has
+	 * already been copied.
+	 */
+	if (obj_request_known_test(obj_request) &&
+	    obj_request_exists_test(obj_request))
+		return true;
+
+	return false;
+}
+
+static int rbd_img_obj_request_submit(struct rbd_obj_request *obj_request)
+{
+	rbd_assert(obj_request_img_data_test(obj_request));
+	rbd_assert(obj_request_type_valid(obj_request->type));
+	rbd_assert(obj_request->img_request);
+
+	if (img_obj_request_simple(obj_request)) {
+		rbd_obj_request_submit(obj_request);
+		return 0;
+	}
+
+	/*
+	 * It's a layered write.  The target object might exist but
+	 * we may not know that yet.  If we know it doesn't exist,
+	 * start by reading the data for the full target object from
+	 * the parent so we can use it for a copyup to the target.
+	 */
+	if (obj_request_known_test(obj_request))
+		return rbd_img_obj_parent_read_full(obj_request);
+
+	/* We don't know whether the target exists.  Go find out. */
+
+	return rbd_img_obj_exists_submit(obj_request);
+}
+
+static int rbd_img_request_submit(struct rbd_img_request *img_request)
+{
+	struct rbd_obj_request *obj_request;
+	struct rbd_obj_request *next_obj_request;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dout("%s: img %p\n", __func__, img_request);
 
 	rbd_img_request_get(img_request);
+<<<<<<< HEAD
 	for_each_obj_request(img_request, obj_request)
 		rbd_obj_request_submit(obj_request);
 
@@ -2615,6 +4402,117 @@ again:
 		goto again;
 	}
 	rbd_img_end_request(img_req);
+=======
+	for_each_obj_request_safe(img_request, obj_request, next_obj_request) {
+		ret = rbd_img_obj_request_submit(obj_request);
+		if (ret)
+			goto out_put_ireq;
+	}
+
+out_put_ireq:
+	rbd_img_request_put(img_request);
+	return ret;
+}
+
+static void rbd_img_parent_read_callback(struct rbd_img_request *img_request)
+{
+	struct rbd_obj_request *obj_request;
+	struct rbd_device *rbd_dev;
+	u64 obj_end;
+	u64 img_xferred;
+	int img_result;
+
+	rbd_assert(img_request_child_test(img_request));
+
+	/* First get what we need from the image request and release it */
+
+	obj_request = img_request->obj_request;
+	img_xferred = img_request->xferred;
+	img_result = img_request->result;
+	rbd_img_request_put(img_request);
+
+	/*
+	 * If the overlap has become 0 (most likely because the
+	 * image has been flattened) we need to re-submit the
+	 * original request.
+	 */
+	rbd_assert(obj_request);
+	rbd_assert(obj_request->img_request);
+	rbd_dev = obj_request->img_request->rbd_dev;
+	if (!rbd_dev->parent_overlap) {
+		rbd_obj_request_submit(obj_request);
+		return;
+	}
+
+	obj_request->result = img_result;
+	if (obj_request->result)
+		goto out;
+
+	/*
+	 * We need to zero anything beyond the parent overlap
+	 * boundary.  Since rbd_img_obj_request_read_callback()
+	 * will zero anything beyond the end of a short read, an
+	 * easy way to do this is to pretend the data from the
+	 * parent came up short--ending at the overlap boundary.
+	 */
+	rbd_assert(obj_request->img_offset < U64_MAX - obj_request->length);
+	obj_end = obj_request->img_offset + obj_request->length;
+	if (obj_end > rbd_dev->parent_overlap) {
+		u64 xferred = 0;
+
+		if (obj_request->img_offset < rbd_dev->parent_overlap)
+			xferred = rbd_dev->parent_overlap -
+					obj_request->img_offset;
+
+		obj_request->xferred = min(img_xferred, xferred);
+	} else {
+		obj_request->xferred = img_xferred;
+	}
+out:
+	rbd_img_obj_request_read_callback(obj_request);
+	rbd_obj_request_complete(obj_request);
+}
+
+static void rbd_img_parent_read(struct rbd_obj_request *obj_request)
+{
+	struct rbd_img_request *img_request;
+	int result;
+
+	rbd_assert(obj_request_img_data_test(obj_request));
+	rbd_assert(obj_request->img_request != NULL);
+	rbd_assert(obj_request->result == (s32) -ENOENT);
+	rbd_assert(obj_request_type_valid(obj_request->type));
+
+	/* rbd_read_finish(obj_request, obj_request->length); */
+	img_request = rbd_parent_request_create(obj_request,
+						obj_request->img_offset,
+						obj_request->length);
+	result = -ENOMEM;
+	if (!img_request)
+		goto out_err;
+
+	if (obj_request->type == OBJ_REQUEST_BIO)
+		result = rbd_img_request_fill(img_request, OBJ_REQUEST_BIO,
+						obj_request->bio_list);
+	else
+		result = rbd_img_request_fill(img_request, OBJ_REQUEST_PAGES,
+						obj_request->pages);
+	if (result)
+		goto out_err;
+
+	img_request->callback = rbd_img_parent_read_callback;
+	result = rbd_img_request_submit(img_request);
+	if (result)
+		goto out_err;
+
+	return;
+out_err:
+	if (img_request)
+		rbd_img_request_put(img_request);
+	obj_request->result = result;
+	obj_request->xferred = 0;
+	obj_request_done_set(obj_request);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct rbd_client_id rbd_empty_cid;
@@ -2718,8 +4616,13 @@ static int __rbd_notify_op_lock(struct rbd_device *rbd_dev,
 {
 	struct ceph_osd_client *osdc = &rbd_dev->rbd_client->client->osdc;
 	struct rbd_client_id cid = rbd_get_cid(rbd_dev);
+<<<<<<< HEAD
 	char buf[4 + 8 + 8 + CEPH_ENCODING_START_BLK_LEN];
 	int buf_size = sizeof(buf);
+=======
+	int buf_size = 4 + 8 + 8 + CEPH_ENCODING_START_BLK_LEN;
+	char buf[buf_size];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *p = buf;
 
 	dout("%s rbd_dev %p notify_op %d\n", __func__, rbd_dev, notify_op);
@@ -3237,8 +5140,13 @@ static void __rbd_acknowledge_notify(struct rbd_device *rbd_dev,
 				     u64 notify_id, u64 cookie, s32 *result)
 {
 	struct ceph_osd_client *osdc = &rbd_dev->rbd_client->client->osdc;
+<<<<<<< HEAD
 	char buf[4 + CEPH_ENCODING_START_BLK_LEN];
 	int buf_size = sizeof(buf);
+=======
+	int buf_size = 4 + CEPH_ENCODING_START_BLK_LEN;
+	char buf[buf_size];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (result) {
@@ -3426,6 +5334,13 @@ static void cancel_tasks_sync(struct rbd_device *rbd_dev)
 	cancel_work_sync(&rbd_dev->unlock_work);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * header_rwsem must not be held to avoid a deadlock with
+ * rbd_dev_refresh() when flushing notifies.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rbd_unregister_watch(struct rbd_device *rbd_dev)
 {
 	WARN_ON(waitqueue_active(&rbd_dev->lock_waitq));
@@ -3514,7 +5429,11 @@ static void rbd_reregister_watch(struct work_struct *work)
 
 	ret = rbd_dev_refresh(rbd_dev);
 	if (ret)
+<<<<<<< HEAD
 		rbd_warn(rbd_dev, "reregistration refresh failed: %d", ret);
+=======
+		rbd_warn(rbd_dev, "reregisteration refresh failed: %d", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -3577,6 +5496,7 @@ static int rbd_obj_method_sync(struct rbd_device *rbd_dev,
 /*
  * lock_rwsem must be held for read
  */
+<<<<<<< HEAD
 static int rbd_wait_state_locked(struct rbd_device *rbd_dev, bool may_acquire)
 {
 	DEFINE_WAIT(wait);
@@ -3593,6 +5513,11 @@ static int rbd_wait_state_locked(struct rbd_device *rbd_dev, bool may_acquire)
 		rbd_warn(rbd_dev, "exclusive lock required");
 		return -EROFS;
 	}
+=======
+static void rbd_wait_state_locked(struct rbd_device *rbd_dev)
+{
+	DEFINE_WAIT(wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		/*
@@ -3604,6 +5529,7 @@ static int rbd_wait_state_locked(struct rbd_device *rbd_dev, bool may_acquire)
 		prepare_to_wait_exclusive(&rbd_dev->lock_waitq, &wait,
 					  TASK_UNINTERRUPTIBLE);
 		up_read(&rbd_dev->lock_rwsem);
+<<<<<<< HEAD
 		timeout = schedule_timeout(ceph_timeout_jiffies(
 						rbd_dev->opts->lock_timeout));
 		down_read(&rbd_dev->lock_rwsem);
@@ -3620,6 +5546,14 @@ static int rbd_wait_state_locked(struct rbd_device *rbd_dev, bool may_acquire)
 
 	finish_wait(&rbd_dev->lock_waitq, &wait);
 	return ret;
+=======
+		schedule();
+		down_read(&rbd_dev->lock_rwsem);
+	} while (rbd_dev->lock_state != RBD_LOCK_STATE_LOCKED &&
+		 !test_bit(RBD_DEV_FLAG_BLACKLISTED, &rbd_dev->flags));
+
+	finish_wait(&rbd_dev->lock_waitq, &wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rbd_queue_workfn(struct work_struct *work)
@@ -3660,8 +5594,20 @@ static void rbd_queue_workfn(struct work_struct *work)
 		goto err_rq;
 	}
 
+<<<<<<< HEAD
 	rbd_assert(op_type == OBJ_OP_READ ||
 		   rbd_dev->spec->snap_id == CEPH_NOSNAP);
+=======
+	/* Only reads are allowed to a read-only device */
+
+	if (op_type != OBJ_OP_READ) {
+		if (rbd_dev->mapping.read_only) {
+			result = -EROFS;
+			goto err_rq;
+		}
+		rbd_assert(rbd_dev->spec->snap_id == CEPH_NOSNAP);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Quit early if the mapped snapshot no longer exists.  It's
@@ -3705,6 +5651,7 @@ static void rbd_queue_workfn(struct work_struct *work)
 	    (op_type != OBJ_OP_READ || rbd_dev->opts->lock_on_read);
 	if (must_be_locked) {
 		down_read(&rbd_dev->lock_rwsem);
+<<<<<<< HEAD
 		result = rbd_wait_state_locked(rbd_dev,
 					       !rbd_dev->opts->exclusive);
 		if (result)
@@ -3712,6 +5659,25 @@ static void rbd_queue_workfn(struct work_struct *work)
 	}
 
 	img_request = rbd_img_request_create(rbd_dev, op_type, snapc);
+=======
+		if (rbd_dev->lock_state != RBD_LOCK_STATE_LOCKED &&
+		    !test_bit(RBD_DEV_FLAG_BLACKLISTED, &rbd_dev->flags)) {
+			if (rbd_dev->opts->exclusive) {
+				rbd_warn(rbd_dev, "exclusive lock required");
+				result = -EROFS;
+				goto err_unlock;
+			}
+			rbd_wait_state_locked(rbd_dev);
+		}
+		if (test_bit(RBD_DEV_FLAG_BLACKLISTED, &rbd_dev->flags)) {
+			result = -EBLACKLISTED;
+			goto err_unlock;
+		}
+	}
+
+	img_request = rbd_img_request_create(rbd_dev, offset, length, op_type,
+					     snapc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!img_request) {
 		result = -ENOMEM;
 		goto err_unlock;
@@ -3720,6 +5686,7 @@ static void rbd_queue_workfn(struct work_struct *work)
 	snapc = NULL; /* img_request consumes a ref */
 
 	if (op_type == OBJ_OP_DISCARD)
+<<<<<<< HEAD
 		result = rbd_img_fill_nodata(img_request, offset, length);
 	else
 		result = rbd_img_fill_from_bio(img_request, offset, length,
@@ -3728,6 +5695,20 @@ static void rbd_queue_workfn(struct work_struct *work)
 		goto err_img_request;
 
 	rbd_img_request_submit(img_request);
+=======
+		result = rbd_img_request_fill(img_request, OBJ_REQUEST_NODATA,
+					      NULL);
+	else
+		result = rbd_img_request_fill(img_request, OBJ_REQUEST_BIO,
+					      rq->bio);
+	if (result)
+		goto err_img_request;
+
+	result = rbd_img_request_submit(img_request);
+	if (result)
+		goto err_img_request;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (must_be_locked)
 		up_read(&rbd_dev->lock_rwsem);
 	return;
@@ -3960,8 +5941,12 @@ static int rbd_init_disk(struct rbd_device *rbd_dev)
 {
 	struct gendisk *disk;
 	struct request_queue *q;
+<<<<<<< HEAD
 	unsigned int objset_bytes =
 	    rbd_dev->layout.object_size * rbd_dev->layout.stripe_count;
+=======
+	u64 segment_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	/* create gendisk info */
@@ -3998,6 +5983,7 @@ static int rbd_init_disk(struct rbd_device *rbd_dev)
 		goto out_tag_set;
 	}
 
+<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_NONROT, q);
 	/* QUEUE_FLAG_ADD_RANDOM is off by default for blk-mq */
 
@@ -4014,6 +6000,26 @@ static int rbd_init_disk(struct rbd_device *rbd_dev)
 		blk_queue_max_discard_sectors(q, objset_bytes >> SECTOR_SHIFT);
 		blk_queue_max_write_zeroes_sectors(q, objset_bytes >> SECTOR_SHIFT);
 	}
+=======
+	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, q);
+	/* QUEUE_FLAG_ADD_RANDOM is off by default for blk-mq */
+
+	/* set io sizes to object size */
+	segment_size = rbd_obj_bytes(&rbd_dev->header);
+	blk_queue_max_hw_sectors(q, segment_size / SECTOR_SIZE);
+	q->limits.max_sectors = queue_max_hw_sectors(q);
+	blk_queue_max_segments(q, USHRT_MAX);
+	blk_queue_max_segment_size(q, segment_size);
+	blk_queue_io_min(q, segment_size);
+	blk_queue_io_opt(q, segment_size);
+
+	/* enable the discard support */
+	queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, q);
+	q->limits.discard_granularity = segment_size;
+	q->limits.discard_alignment = segment_size;
+	blk_queue_max_discard_sectors(q, segment_size / SECTOR_SIZE);
+	blk_queue_max_write_zeroes_sectors(q, segment_size / SECTOR_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ceph_test_opt(rbd_dev->rbd_client->client, NOCRC))
 		q->backing_dev_info->capabilities |= BDI_CAP_STABLE_WRITES;
@@ -4139,6 +6145,7 @@ static ssize_t rbd_pool_id_show(struct device *dev,
 			(unsigned long long) rbd_dev->spec->pool_id);
 }
 
+<<<<<<< HEAD
 static ssize_t rbd_pool_ns_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
 {
@@ -4147,6 +6154,8 @@ static ssize_t rbd_pool_ns_show(struct device *dev,
 	return sprintf(buf, "%s\n", rbd_dev->spec->pool_ns ?: "");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t rbd_name_show(struct device *dev,
 			     struct device_attribute *attr, char *buf)
 {
@@ -4207,13 +6216,19 @@ static ssize_t rbd_parent_show(struct device *dev,
 
 		count += sprintf(&buf[count], "%s"
 			    "pool_id %llu\npool_name %s\n"
+<<<<<<< HEAD
 			    "pool_ns %s\n"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    "image_id %s\nimage_name %s\n"
 			    "snap_id %llu\nsnap_name %s\n"
 			    "overlap %llu\n",
 			    !count ? "" : "\n", /* first? */
 			    spec->pool_id, spec->pool_name,
+<<<<<<< HEAD
 			    spec->pool_ns ?: "",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    spec->image_id, spec->image_name ?: "(unknown)",
 			    spec->snap_id, spec->snap_name,
 			    rbd_dev->parent_overlap);
@@ -4237,6 +6252,7 @@ static ssize_t rbd_image_refresh(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(size, 0444, rbd_size_show, NULL);
 static DEVICE_ATTR(features, 0444, rbd_features_show, NULL);
 static DEVICE_ATTR(major, 0444, rbd_major_show, NULL);
@@ -4254,6 +6270,24 @@ static DEVICE_ATTR(refresh, 0200, NULL, rbd_image_refresh);
 static DEVICE_ATTR(current_snap, 0444, rbd_snap_show, NULL);
 static DEVICE_ATTR(snap_id, 0444, rbd_snap_id_show, NULL);
 static DEVICE_ATTR(parent, 0444, rbd_parent_show, NULL);
+=======
+static DEVICE_ATTR(size, S_IRUGO, rbd_size_show, NULL);
+static DEVICE_ATTR(features, S_IRUGO, rbd_features_show, NULL);
+static DEVICE_ATTR(major, S_IRUGO, rbd_major_show, NULL);
+static DEVICE_ATTR(minor, S_IRUGO, rbd_minor_show, NULL);
+static DEVICE_ATTR(client_addr, S_IRUGO, rbd_client_addr_show, NULL);
+static DEVICE_ATTR(client_id, S_IRUGO, rbd_client_id_show, NULL);
+static DEVICE_ATTR(cluster_fsid, S_IRUGO, rbd_cluster_fsid_show, NULL);
+static DEVICE_ATTR(config_info, S_IRUSR, rbd_config_info_show, NULL);
+static DEVICE_ATTR(pool, S_IRUGO, rbd_pool_show, NULL);
+static DEVICE_ATTR(pool_id, S_IRUGO, rbd_pool_id_show, NULL);
+static DEVICE_ATTR(name, S_IRUGO, rbd_name_show, NULL);
+static DEVICE_ATTR(image_id, S_IRUGO, rbd_image_id_show, NULL);
+static DEVICE_ATTR(refresh, S_IWUSR, NULL, rbd_image_refresh);
+static DEVICE_ATTR(current_snap, S_IRUGO, rbd_snap_show, NULL);
+static DEVICE_ATTR(snap_id, S_IRUGO, rbd_snap_id_show, NULL);
+static DEVICE_ATTR(parent, S_IRUGO, rbd_parent_show, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *rbd_attrs[] = {
 	&dev_attr_size.attr,
@@ -4266,7 +6300,10 @@ static struct attribute *rbd_attrs[] = {
 	&dev_attr_config_info.attr,
 	&dev_attr_pool.attr,
 	&dev_attr_pool_id.attr,
+<<<<<<< HEAD
 	&dev_attr_pool_ns.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&dev_attr_name.attr,
 	&dev_attr_image_id.attr,
 	&dev_attr_current_snap.attr,
@@ -4327,7 +6364,10 @@ static void rbd_spec_free(struct kref *kref)
 	struct rbd_spec *spec = container_of(kref, struct rbd_spec, kref);
 
 	kfree(spec->pool_name);
+<<<<<<< HEAD
 	kfree(spec->pool_ns);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(spec->image_id);
 	kfree(spec->image_name);
 	kfree(spec->snap_name);
@@ -4386,12 +6426,15 @@ static struct rbd_device *__rbd_dev_create(struct rbd_client *rbdc,
 	rbd_dev->header.data_pool_id = CEPH_NOPOOL;
 	ceph_oid_init(&rbd_dev->header_oid);
 	rbd_dev->header_oloc.pool = spec->pool_id;
+<<<<<<< HEAD
 	if (spec->pool_ns) {
 		WARN_ON(!*spec->pool_ns);
 		rbd_dev->header_oloc.pool_ns =
 		    ceph_find_or_create_string(spec->pool_ns,
 					       strlen(spec->pool_ns));
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&rbd_dev->watch_mutex);
 	rbd_dev->watch_state = RBD_WATCH_STATE_UNREGISTERED;
@@ -4586,6 +6629,7 @@ static int rbd_dev_v2_features(struct rbd_device *rbd_dev)
 						&rbd_dev->header.features);
 }
 
+<<<<<<< HEAD
 struct parent_image_info {
 	u64		pool_id;
 	const char	*pool_ns;
@@ -4742,12 +6786,27 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
 {
 	struct rbd_spec *parent_spec;
 	struct parent_image_info pii = { 0 };
+=======
+static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
+{
+	struct rbd_spec *parent_spec;
+	size_t size;
+	void *reply_buf = NULL;
+	__le64 snapid;
+	void *p;
+	void *end;
+	u64 pool_id;
+	char *image_id;
+	u64 snap_id;
+	u64 overlap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	parent_spec = rbd_spec_alloc();
 	if (!parent_spec)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = get_parent_info(rbd_dev, &pii);
 	if (ret)
 		goto out_err;
@@ -4757,6 +6816,31 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
 	     pii.has_overlap, pii.overlap);
 
 	if (pii.pool_id == CEPH_NOPOOL || !pii.has_overlap) {
+=======
+	size = sizeof (__le64) +				/* pool_id */
+		sizeof (__le32) + RBD_IMAGE_ID_LEN_MAX +	/* image_id */
+		sizeof (__le64) +				/* snap_id */
+		sizeof (__le64);				/* overlap */
+	reply_buf = kmalloc(size, GFP_KERNEL);
+	if (!reply_buf) {
+		ret = -ENOMEM;
+		goto out_err;
+	}
+
+	snapid = cpu_to_le64(rbd_dev->spec->snap_id);
+	ret = rbd_obj_method_sync(rbd_dev, &rbd_dev->header_oid,
+				  &rbd_dev->header_oloc, "get_parent",
+				  &snapid, sizeof(snapid), reply_buf, size);
+	dout("%s: rbd_obj_method_sync returned %d\n", __func__, ret);
+	if (ret < 0)
+		goto out_err;
+
+	p = reply_buf;
+	end = reply_buf + ret;
+	ret = -ERANGE;
+	ceph_decode_64_safe(&p, end, pool_id, out_err);
+	if (pool_id == CEPH_NOPOOL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Either the parent never existed, or we have
 		 * record of it but the image got flattened so it no
@@ -4765,10 +6849,13 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
 		 * overlap to 0.  The effect of this is that all new
 		 * requests will be treated as if the image had no
 		 * parent.
+<<<<<<< HEAD
 		 *
 		 * If !pii.has_overlap, the parent image spec is not
 		 * applicable.  It's there to avoid duplication in each
 		 * snapshot record.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		if (rbd_dev->parent_overlap) {
 			rbd_dev->parent_overlap = 0;
@@ -4783,18 +6870,36 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
 	/* The ceph file layout needs to fit pool id in 32 bits */
 
 	ret = -EIO;
+<<<<<<< HEAD
 	if (pii.pool_id > (u64)U32_MAX) {
 		rbd_warn(NULL, "parent pool id too large (%llu > %u)",
 			(unsigned long long)pii.pool_id, U32_MAX);
 		goto out_err;
 	}
 
+=======
+	if (pool_id > (u64)U32_MAX) {
+		rbd_warn(NULL, "parent pool id too large (%llu > %u)",
+			(unsigned long long)pool_id, U32_MAX);
+		goto out_err;
+	}
+
+	image_id = ceph_extract_encoded_string(&p, end, NULL, GFP_KERNEL);
+	if (IS_ERR(image_id)) {
+		ret = PTR_ERR(image_id);
+		goto out_err;
+	}
+	ceph_decode_64_safe(&p, end, snap_id, out_err);
+	ceph_decode_64_safe(&p, end, overlap, out_err);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The parent won't change (except when the clone is
 	 * flattened, already handled that).  So we only need to
 	 * record the parent spec we have not already done so.
 	 */
 	if (!rbd_dev->parent_spec) {
+<<<<<<< HEAD
 		parent_spec->pool_id = pii.pool_id;
 		if (pii.pool_ns && *pii.pool_ns) {
 			parent_spec->pool_ns = pii.pool_ns;
@@ -4806,13 +6911,26 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
 
 		rbd_dev->parent_spec = parent_spec;
 		parent_spec = NULL;	/* rbd_dev now owns this */
+=======
+		parent_spec->pool_id = pool_id;
+		parent_spec->image_id = image_id;
+		parent_spec->snap_id = snap_id;
+		rbd_dev->parent_spec = parent_spec;
+		parent_spec = NULL;	/* rbd_dev now owns this */
+	} else {
+		kfree(image_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
 	 * We always update the parent overlap.  If it's zero we issue
 	 * a warning, as we will proceed as if there was no parent.
 	 */
+<<<<<<< HEAD
 	if (!pii.overlap) {
+=======
+	if (!overlap) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (parent_spec) {
 			/* refresh, careful to warn just once */
 			if (rbd_dev->parent_overlap)
@@ -4823,14 +6941,24 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
 			rbd_warn(rbd_dev, "clone is standalone (overlap 0)");
 		}
 	}
+<<<<<<< HEAD
 	rbd_dev->parent_overlap = pii.overlap;
+=======
+	rbd_dev->parent_overlap = overlap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	ret = 0;
 out_err:
+<<<<<<< HEAD
 	kfree(pii.pool_ns);
 	kfree(pii.image_id);
 	rbd_spec_put(parent_spec);
+=======
+	kfree(reply_buf);
+	rbd_spec_put(parent_spec);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -4842,6 +6970,12 @@ static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev)
 	} __attribute__ ((packed)) striping_info_buf = { 0 };
 	size_t size = sizeof (striping_info_buf);
 	void *p;
+<<<<<<< HEAD
+=======
+	u64 obj_size;
+	u64 stripe_unit;
+	u64 stripe_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = rbd_obj_method_sync(rbd_dev, &rbd_dev->header_oid,
@@ -4853,9 +6987,37 @@ static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev)
 	if (ret < size)
 		return -ERANGE;
 
+<<<<<<< HEAD
 	p = &striping_info_buf;
 	rbd_dev->header.stripe_unit = ceph_decode_64(&p);
 	rbd_dev->header.stripe_count = ceph_decode_64(&p);
+=======
+	/*
+	 * We don't actually support the "fancy striping" feature
+	 * (STRIPINGV2) yet, but if the striping sizes are the
+	 * defaults the behavior is the same as before.  So find
+	 * out, and only fail if the image has non-default values.
+	 */
+	ret = -EINVAL;
+	obj_size = rbd_obj_bytes(&rbd_dev->header);
+	p = &striping_info_buf;
+	stripe_unit = ceph_decode_64(&p);
+	if (stripe_unit != obj_size) {
+		rbd_warn(rbd_dev, "unsupported stripe unit "
+				"(got %llu want %llu)",
+				stripe_unit, obj_size);
+		return -EINVAL;
+	}
+	stripe_count = ceph_decode_64(&p);
+	if (stripe_count != 1) {
+		rbd_warn(rbd_dev, "unsupported stripe count "
+				"(got %llu want 1)", stripe_count);
+		return -EINVAL;
+	}
+	rbd_dev->header.stripe_unit = stripe_unit;
+	rbd_dev->header.stripe_count = stripe_count;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -5315,7 +7477,12 @@ static int rbd_add_parse_args(const char *buf,
 	const char *mon_addrs;
 	char *snap_name;
 	size_t mon_addrs_size;
+<<<<<<< HEAD
 	struct parse_rbd_opts_ctx pctx = { 0 };
+=======
+	struct rbd_spec *spec = NULL;
+	struct rbd_options *rbd_opts = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ceph_options *copts;
 	int ret;
 
@@ -5339,6 +7506,7 @@ static int rbd_add_parse_args(const char *buf,
 		goto out_err;
 	}
 
+<<<<<<< HEAD
 	pctx.spec = rbd_spec_alloc();
 	if (!pctx.spec)
 		goto out_mem;
@@ -5347,14 +7515,31 @@ static int rbd_add_parse_args(const char *buf,
 	if (!pctx.spec->pool_name)
 		goto out_mem;
 	if (!*pctx.spec->pool_name) {
+=======
+	spec = rbd_spec_alloc();
+	if (!spec)
+		goto out_mem;
+
+	spec->pool_name = dup_token(&buf, NULL);
+	if (!spec->pool_name)
+		goto out_mem;
+	if (!*spec->pool_name) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rbd_warn(NULL, "no pool name provided");
 		goto out_err;
 	}
 
+<<<<<<< HEAD
 	pctx.spec->image_name = dup_token(&buf, NULL);
 	if (!pctx.spec->image_name)
 		goto out_mem;
 	if (!*pctx.spec->image_name) {
+=======
+	spec->image_name = dup_token(&buf, NULL);
+	if (!spec->image_name)
+		goto out_mem;
+	if (!*spec->image_name) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rbd_warn(NULL, "no image name provided");
 		goto out_err;
 	}
@@ -5375,6 +7560,7 @@ static int rbd_add_parse_args(const char *buf,
 	if (!snap_name)
 		goto out_mem;
 	*(snap_name + len) = '\0';
+<<<<<<< HEAD
 	pctx.spec->snap_name = snap_name;
 
 	/* Initialize all rbd options to the defaults */
@@ -5393,6 +7579,24 @@ static int rbd_add_parse_args(const char *buf,
 	copts = ceph_parse_options(options, mon_addrs,
 				   mon_addrs + mon_addrs_size - 1,
 				   parse_rbd_opts_token, &pctx);
+=======
+	spec->snap_name = snap_name;
+
+	/* Initialize all rbd options to the defaults */
+
+	rbd_opts = kzalloc(sizeof (*rbd_opts), GFP_KERNEL);
+	if (!rbd_opts)
+		goto out_mem;
+
+	rbd_opts->read_only = RBD_READ_ONLY_DEFAULT;
+	rbd_opts->queue_depth = RBD_QUEUE_DEPTH_DEFAULT;
+	rbd_opts->lock_on_read = RBD_LOCK_ON_READ_DEFAULT;
+	rbd_opts->exclusive = RBD_EXCLUSIVE_DEFAULT;
+
+	copts = ceph_parse_options(options, mon_addrs,
+					mon_addrs + mon_addrs_size - 1,
+					parse_rbd_opts_token, rbd_opts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(copts)) {
 		ret = PTR_ERR(copts);
 		goto out_err;
@@ -5400,20 +7604,66 @@ static int rbd_add_parse_args(const char *buf,
 	kfree(options);
 
 	*ceph_opts = copts;
+<<<<<<< HEAD
 	*opts = pctx.opts;
 	*rbd_spec = pctx.spec;
+=======
+	*opts = rbd_opts;
+	*rbd_spec = spec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 out_mem:
 	ret = -ENOMEM;
 out_err:
+<<<<<<< HEAD
 	kfree(pctx.opts);
 	rbd_spec_put(pctx.spec);
+=======
+	kfree(rbd_opts);
+	rbd_spec_put(spec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(options);
 
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Return pool id (>= 0) or a negative error code.
+ */
+static int rbd_add_get_pool_id(struct rbd_client *rbdc, const char *pool_name)
+{
+	struct ceph_options *opts = rbdc->client->options;
+	u64 newest_epoch;
+	int tries = 0;
+	int ret;
+
+again:
+	ret = ceph_pg_poolid_by_name(rbdc->client->osdc.osdmap, pool_name);
+	if (ret == -ENOENT && tries++ < 1) {
+		ret = ceph_monc_get_version(&rbdc->client->monc, "osdmap",
+					    &newest_epoch);
+		if (ret < 0)
+			return ret;
+
+		if (rbdc->client->osdc.osdmap->epoch < newest_epoch) {
+			ceph_osdc_maybe_request_map(&rbdc->client->osdc);
+			(void) ceph_monc_wait_osdmap(&rbdc->client->monc,
+						     newest_epoch,
+						     opts->mount_timeout);
+			goto again;
+		} else {
+			/* the osdmap we have is new enough */
+			return -ENOENT;
+		}
+	}
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rbd_dev_image_unlock(struct rbd_device *rbd_dev)
 {
 	down_write(&rbd_dev->lock_rwsem);
@@ -5424,8 +7674,11 @@ static void rbd_dev_image_unlock(struct rbd_device *rbd_dev)
 
 static int rbd_add_acquire_lock(struct rbd_device *rbd_dev)
 {
+<<<<<<< HEAD
 	int ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(rbd_dev->header.features & RBD_FEATURE_EXCLUSIVE_LOCK)) {
 		rbd_warn(rbd_dev, "exclusive-lock feature is not enabled");
 		return -EINVAL;
@@ -5433,9 +7686,15 @@ static int rbd_add_acquire_lock(struct rbd_device *rbd_dev)
 
 	/* FIXME: "rbd map --exclusive" should be in interruptible */
 	down_read(&rbd_dev->lock_rwsem);
+<<<<<<< HEAD
 	ret = rbd_wait_state_locked(rbd_dev, true);
 	up_read(&rbd_dev->lock_rwsem);
 	if (ret) {
+=======
+	rbd_wait_state_locked(rbd_dev);
+	up_read(&rbd_dev->lock_rwsem);
+	if (test_bit(RBD_DEV_FLAG_BLACKLISTED, &rbd_dev->flags)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rbd_warn(rbd_dev, "failed to acquire exclusive lock");
 		return -EROFS;
 	}
@@ -5676,7 +7935,11 @@ static int rbd_dev_device_setup(struct rbd_device *rbd_dev)
 		goto err_out_disk;
 
 	set_capacity(rbd_dev->disk, rbd_dev->mapping.size / SECTOR_SIZE);
+<<<<<<< HEAD
 	set_disk_ro(rbd_dev->disk, rbd_dev->opts->read_only);
+=======
+	set_disk_ro(rbd_dev->disk, rbd_dev->mapping.read_only);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = dev_set_name(&rbd_dev->dev, "%d", rbd_dev->dev_id);
 	if (ret)
@@ -5718,9 +7981,16 @@ static int rbd_dev_header_name(struct rbd_device *rbd_dev)
 
 static void rbd_dev_image_release(struct rbd_device *rbd_dev)
 {
+<<<<<<< HEAD
 	rbd_dev_unprobe(rbd_dev);
 	if (rbd_dev->opts)
 		rbd_unregister_watch(rbd_dev);
+=======
+	if (rbd_dev->opts)
+		rbd_unregister_watch(rbd_dev);
+
+	rbd_dev_unprobe(rbd_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rbd_dev->image_format = 0;
 	kfree(rbd_dev->spec->image_id);
 	rbd_dev->spec->image_id = NULL;
@@ -5731,6 +8001,12 @@ static void rbd_dev_image_release(struct rbd_device *rbd_dev)
  * device.  If this image is the one being mapped (i.e., not a
  * parent), initiate a watch on its header object before using that
  * object to get detailed information about the rbd image.
+<<<<<<< HEAD
+=======
+ *
+ * On success, returns with header_rwsem held for write if called
+ * with @depth == 0.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
 {
@@ -5754,18 +8030,32 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
 		ret = rbd_register_watch(rbd_dev);
 		if (ret) {
 			if (ret == -ENOENT)
+<<<<<<< HEAD
 				pr_info("image %s/%s%s%s does not exist\n",
 					rbd_dev->spec->pool_name,
 					rbd_dev->spec->pool_ns ?: "",
 					rbd_dev->spec->pool_ns ? "/" : "",
+=======
+				pr_info("image %s/%s does not exist\n",
+					rbd_dev->spec->pool_name,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					rbd_dev->spec->image_name);
 			goto err_out_format;
 		}
 	}
 
+<<<<<<< HEAD
 	ret = rbd_dev_header_info(rbd_dev);
 	if (ret)
 		goto err_out_watch;
+=======
+	if (!depth)
+		down_write(&rbd_dev->header_rwsem);
+
+	ret = rbd_dev_header_info(rbd_dev);
+	if (ret)
+		goto err_out_probe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If this image is the one being mapped, we have pool name and
@@ -5779,10 +8069,15 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
 		ret = rbd_spec_fill_names(rbd_dev);
 	if (ret) {
 		if (ret == -ENOENT)
+<<<<<<< HEAD
 			pr_info("snap %s/%s%s%s@%s does not exist\n",
 				rbd_dev->spec->pool_name,
 				rbd_dev->spec->pool_ns ?: "",
 				rbd_dev->spec->pool_ns ? "/" : "",
+=======
+			pr_info("snap %s/%s@%s does not exist\n",
+				rbd_dev->spec->pool_name,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rbd_dev->spec->image_name,
 				rbd_dev->spec->snap_name);
 		goto err_out_probe;
@@ -5811,10 +8106,18 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
 	return 0;
 
 err_out_probe:
+<<<<<<< HEAD
 	rbd_dev_unprobe(rbd_dev);
 err_out_watch:
 	if (!depth)
 		rbd_unregister_watch(rbd_dev);
+=======
+	if (!depth)
+		up_write(&rbd_dev->header_rwsem);
+	if (!depth)
+		rbd_unregister_watch(rbd_dev);
+	rbd_dev_unprobe(rbd_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_out_format:
 	rbd_dev->image_format = 0;
 	kfree(rbd_dev->spec->image_id);
@@ -5831,6 +8134,10 @@ static ssize_t do_rbd_add(struct bus_type *bus,
 	struct rbd_options *rbd_opts = NULL;
 	struct rbd_spec *spec = NULL;
 	struct rbd_client *rbdc;
+<<<<<<< HEAD
+=======
+	bool read_only;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	if (!try_module_get(THIS_MODULE))
@@ -5848,7 +8155,11 @@ static ssize_t do_rbd_add(struct bus_type *bus,
 	}
 
 	/* pick the pool */
+<<<<<<< HEAD
 	rc = ceph_pg_poolid_by_name(rbdc->client->osdc.osdmap, spec->pool_name);
+=======
+	rc = rbd_add_get_pool_id(rbdc, spec->pool_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc < 0) {
 		if (rc == -ENOENT)
 			pr_info("pool %s does not exist\n", spec->pool_name);
@@ -5871,6 +8182,7 @@ static ssize_t do_rbd_add(struct bus_type *bus,
 		goto err_out_rbd_dev;
 	}
 
+<<<<<<< HEAD
 	down_write(&rbd_dev->header_rwsem);
 	rc = rbd_dev_image_probe(rbd_dev, 0);
 	if (rc < 0) {
@@ -5881,6 +8193,18 @@ static ssize_t do_rbd_add(struct bus_type *bus,
 	/* If we are mapping a snapshot it must be marked read-only */
 	if (rbd_dev->spec->snap_id != CEPH_NOSNAP)
 		rbd_dev->opts->read_only = true;
+=======
+	rc = rbd_dev_image_probe(rbd_dev, 0);
+	if (rc < 0)
+		goto err_out_rbd_dev;
+
+	/* If we are mapping a snapshot it must be marked read-only */
+
+	read_only = rbd_dev->opts->read_only;
+	if (rbd_dev->spec->snap_id != CEPH_NOSNAP)
+		read_only = true;
+	rbd_dev->mapping.read_only = read_only;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = rbd_dev_device_setup(rbd_dev);
 	if (rc)
@@ -6099,8 +8423,21 @@ static int rbd_slab_init(void)
 	if (!rbd_obj_request_cache)
 		goto out_err;
 
+<<<<<<< HEAD
 	return 0;
 
+=======
+	rbd_assert(!rbd_bio_clone);
+	rbd_bio_clone = bioset_create(BIO_POOL_SIZE, 0, 0);
+	if (!rbd_bio_clone)
+		goto out_err_clone;
+
+	return 0;
+
+out_err_clone:
+	kmem_cache_destroy(rbd_obj_request_cache);
+	rbd_obj_request_cache = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_err:
 	kmem_cache_destroy(rbd_img_request_cache);
 	rbd_img_request_cache = NULL;
@@ -6116,6 +8453,13 @@ static void rbd_slab_exit(void)
 	rbd_assert(rbd_img_request_cache);
 	kmem_cache_destroy(rbd_img_request_cache);
 	rbd_img_request_cache = NULL;
+<<<<<<< HEAD
+=======
+
+	rbd_assert(rbd_bio_clone);
+	bioset_free(rbd_bio_clone);
+	rbd_bio_clone = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init rbd_init(void)

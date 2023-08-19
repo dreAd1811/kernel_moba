@@ -3276,6 +3276,7 @@ static void rs_add_debugfs(void *priv, void *priv_sta,
 {
 	struct iwl_lq_sta *lq_sta = priv_sta;
 	lq_sta->rs_sta_dbgfs_scale_table_file =
+<<<<<<< HEAD
 		debugfs_create_file("rate_scale_table", 0600, dir,
 				    lq_sta, &rs_sta_dbgfs_scale_table_ops);
 	lq_sta->rs_sta_dbgfs_stats_table_file =
@@ -3287,6 +3288,19 @@ static void rs_add_debugfs(void *priv, void *priv_sta,
 	lq_sta->rs_sta_dbgfs_tx_agg_tid_en_file =
 		debugfs_create_u8("tx_agg_tid_enable", 0600, dir,
 				  &lq_sta->tx_agg_tid_en);
+=======
+		debugfs_create_file("rate_scale_table", S_IRUSR | S_IWUSR, dir,
+				lq_sta, &rs_sta_dbgfs_scale_table_ops);
+	lq_sta->rs_sta_dbgfs_stats_table_file =
+		debugfs_create_file("rate_stats_table", S_IRUSR, dir,
+			lq_sta, &rs_sta_dbgfs_stats_table_ops);
+	lq_sta->rs_sta_dbgfs_rate_scale_data_file =
+		debugfs_create_file("rate_scale_data", S_IRUSR, dir,
+			lq_sta, &rs_sta_dbgfs_rate_scale_data_ops);
+	lq_sta->rs_sta_dbgfs_tx_agg_tid_en_file =
+		debugfs_create_u8("tx_agg_tid_enable", S_IRUSR | S_IWUSR, dir,
+		&lq_sta->tx_agg_tid_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 

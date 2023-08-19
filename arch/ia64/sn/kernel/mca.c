@@ -72,7 +72,11 @@ static void sn_cpei_handler(int irq, void *devid, struct pt_regs *regs)
 	ia64_sn_plat_cpei_handler();
 }
 
+<<<<<<< HEAD
 static void sn_cpei_timer_handler(struct timer_list *unused)
+=======
+static void sn_cpei_timer_handler(unsigned long dummy)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	sn_cpei_handler(-1, NULL, NULL);
 	mod_timer(&sn_cpei_timer, jiffies + CPEI_INTERVAL);
@@ -80,8 +84,14 @@ static void sn_cpei_timer_handler(struct timer_list *unused)
 
 void sn_init_cpei_timer(void)
 {
+<<<<<<< HEAD
 	timer_setup(&sn_cpei_timer, sn_cpei_timer_handler, 0);
 	sn_cpei_timer.expires = jiffies + CPEI_INTERVAL;
+=======
+	init_timer(&sn_cpei_timer);
+	sn_cpei_timer.expires = jiffies + CPEI_INTERVAL;
+	sn_cpei_timer.function = sn_cpei_timer_handler;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&sn_cpei_timer);
 }
 

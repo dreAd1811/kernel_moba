@@ -1,8 +1,26 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FPGA to SDRAM Bridge Driver for Altera SoCFPGA Devices
  *
  *  Copyright (C) 2013-2016 Altera Corporation, All Rights Reserved.
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -95,7 +113,10 @@ static int alt_fpga_bridge_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct alt_fpga2sdram_data *priv;
+<<<<<<< HEAD
 	struct fpga_bridge *br;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 enable;
 	struct regmap *sysmgr;
 	int ret = 0;
@@ -121,6 +142,7 @@ static int alt_fpga_bridge_probe(struct platform_device *pdev)
 	/* Get f2s bridge configuration saved in handoff register */
 	regmap_read(sysmgr, SYSMGR_ISWGRP_HANDOFF3, &priv->mask);
 
+<<<<<<< HEAD
 	br = fpga_bridge_create(dev, F2S_BRIDGE_NAME,
 				&altera_fpga2sdram_br_ops, priv);
 	if (!br)
@@ -133,6 +155,12 @@ static int alt_fpga_bridge_probe(struct platform_device *pdev)
 		fpga_bridge_free(br);
 		return ret;
 	}
+=======
+	ret = fpga_bridge_register(dev, F2S_BRIDGE_NAME,
+				   &altera_fpga2sdram_br_ops, priv);
+	if (ret)
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(dev, "driver initialized with handoff %08x\n", priv->mask);
 
@@ -144,7 +172,11 @@ static int alt_fpga_bridge_probe(struct platform_device *pdev)
 				 (enable ? "enabling" : "disabling"));
 			ret = _alt_fpga2sdram_enable_set(priv, enable);
 			if (ret) {
+<<<<<<< HEAD
 				fpga_bridge_unregister(br);
+=======
+				fpga_bridge_unregister(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return ret;
 			}
 		}
@@ -155,9 +187,13 @@ static int alt_fpga_bridge_probe(struct platform_device *pdev)
 
 static int alt_fpga_bridge_remove(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct fpga_bridge *br = platform_get_drvdata(pdev);
 
 	fpga_bridge_unregister(br);
+=======
+	fpga_bridge_unregister(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

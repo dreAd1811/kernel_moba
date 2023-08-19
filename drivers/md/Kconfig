@@ -178,7 +178,11 @@ config MD_FAULTY
 
 
 config MD_CLUSTER
+<<<<<<< HEAD
 	tristate "Cluster Support for MD"
+=======
+	tristate "Cluster Support for MD (EXPERIMENTAL)"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on BLK_DEV_MD
 	depends on DLM
 	default n
@@ -188,8 +192,12 @@ config MD_CLUSTER
 	nodes in the cluster can access the MD devices simultaneously.
 
 	This brings the redundancy (and uptime) of RAID levels across the
+<<<<<<< HEAD
 	nodes of the cluster. Currently, it can work with raid1 and raid10
 	(limited support).
+=======
+	nodes of the cluster.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	If unsure, say N.
 
@@ -201,7 +209,11 @@ config BLK_DEV_DM_BUILTIN
 config BLK_DEV_DM
 	tristate "Device mapper support"
 	select BLK_DEV_DM_BUILTIN
+<<<<<<< HEAD
 	depends on DAX || DAX=n
+=======
+	select DAX
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  Device-mapper is a low level volume manager.  It works by allowing
 	  people to specify mappings for ranges of logical sectors.  Various
@@ -269,6 +281,7 @@ config DM_BIO_PRISON
 
 source "drivers/md/persistent-data/Kconfig"
 
+<<<<<<< HEAD
 config DM_UNSTRIPED
        tristate "Unstriped target"
        depends on BLK_DEV_DM
@@ -276,6 +289,8 @@ config DM_UNSTRIPED
 	  Unstripes I/O so it is issued solely on a single drive in a HW
 	  RAID0 or dm-striped target.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DM_CRYPT
 	tristate "Crypt target support"
 	depends on BLK_DEV_DM
@@ -295,6 +310,7 @@ config DM_CRYPT
 	  If unsure, say N.
 
 config DM_DEFAULT_KEY
+<<<<<<< HEAD
 	tristate "Default-key crypt target support"
 	depends on BLK_DEV_DM
 	depends on PFK
@@ -310,6 +326,27 @@ config DM_DEFAULT_KEY
 	  called dm-default-key.
 
 	  If unsure, say N.
+=======
+	tristate "Default-key target support"
+	depends on BLK_DEV_DM
+	depends on BLK_INLINE_ENCRYPTION
+	# dm-default-key doesn't require -o inlinecrypt, but it does currently
+	# rely on the inline encryption hooks being built into the kernel.
+	depends on FS_ENCRYPTION_INLINE_CRYPT
+	help
+	  This device-mapper target allows you to create a device that
+	  assigns a default encryption key to bios that aren't for the
+	  contents of an encrypted file.
+
+	  This ensures that all blocks on-disk will be encrypted with
+	  some key, without the performance hit of file contents being
+	  encrypted twice when fscrypt (File-Based Encryption) is used.
+
+	  It is only appropriate to use dm-default-key when key
+	  configuration is tightly controlled, like it is in Android,
+	  such that all fscrypt keys are at least as hard to compromise
+	  as the default key.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config DM_SNAPSHOT
        tristate "Snapshot target"
@@ -351,6 +388,7 @@ config DM_CACHE_SMQ
          of less memory utilization, improved performance and increased
          adaptability in the face of changing workloads.
 
+<<<<<<< HEAD
 config DM_WRITECACHE
 	tristate "Writecache target"
 	depends on BLK_DEV_DM
@@ -362,6 +400,8 @@ config DM_WRITECACHE
 	   The writecache target doesn't cache reads because reads are supposed
 	   to be cached in standard RAM.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DM_ERA
        tristate "Era target (EXPERIMENTAL)"
        depends on BLK_DEV_DM
@@ -496,6 +536,7 @@ config DM_VERITY
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
 config DM_VERITY_HASH_PREFETCH_MIN_SIZE_128
 	bool "Prefetch size 128"
 
@@ -520,6 +561,8 @@ config DM_VERITY_AVB
 	  specified on the kernel command-line when non-transient error
 	  occurs (followed by a panic).
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DM_VERITY_FEC
 	bool "Verity forward error correction support"
 	depends on DM_VERITY
@@ -600,6 +643,18 @@ config DM_ZONED
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
+=======
+config DM_VERITY_AVB
+	tristate "Support AVB specific verity error behavior"
+	depends on DM_VERITY
+	---help---
+	  Enables Android Verified Boot platform-specific error
+	  behavior. In particular, it will modify the vbmeta partition
+	  specified on the kernel command-line when non-transient error
+	  occurs (followed by a panic).
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DM_ANDROID_VERITY
 	bool "Android verity target support"
 	depends on BLK_DEV_DM=y
@@ -610,6 +665,10 @@ config DM_ANDROID_VERITY
 	depends on KEYS
 	depends on ASYMMETRIC_KEY_TYPE
 	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+<<<<<<< HEAD
+=======
+	depends on MD_LINEAR=y
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select DM_VERITY_HASH_PREFETCH_MIN_SIZE_128
 	---help---
 	  This device-mapper target is virtually a VERITY target. This

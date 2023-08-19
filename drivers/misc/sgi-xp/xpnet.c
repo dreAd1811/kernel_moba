@@ -407,7 +407,11 @@ xpnet_send(struct sk_buff *skb, struct xpnet_pending_msg *queued_msg,
  * destination partid.  If the destination partid octets are 0xffff,
  * this packet is to be broadcast to all connected partitions.
  */
+<<<<<<< HEAD
 static netdev_tx_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 xpnet_dev_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
 {
 	struct xpnet_pending_msg *queued_msg;
@@ -520,9 +524,14 @@ xpnet_init(void)
 
 	dev_info(xpnet, "registering network device %s\n", XPNET_DEVICE_NAME);
 
+<<<<<<< HEAD
 	xpnet_broadcast_partitions = kcalloc(BITS_TO_LONGS(xp_max_npartitions),
 					     sizeof(long),
 					     GFP_KERNEL);
+=======
+	xpnet_broadcast_partitions = kzalloc(BITS_TO_LONGS(xp_max_npartitions) *
+					     sizeof(long), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (xpnet_broadcast_partitions == NULL)
 		return -ENOMEM;
 

@@ -279,7 +279,11 @@ int cxio_create_qp(struct cxio_rdev *rdev_p, u32 kernel_domain,
 	if (!wq->qpid)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	wq->rq = kcalloc(depth, sizeof(struct t3_swrq), GFP_KERNEL);
+=======
+	wq->rq = kzalloc(depth * sizeof(struct t3_swrq), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!wq->rq)
 		goto err1;
 
@@ -287,7 +291,11 @@ int cxio_create_qp(struct cxio_rdev *rdev_p, u32 kernel_domain,
 	if (!wq->rq_addr)
 		goto err2;
 
+<<<<<<< HEAD
 	wq->sq = kcalloc(depth, sizeof(struct t3_swsq), GFP_KERNEL);
+=======
+	wq->sq = kzalloc(depth * sizeof(struct t3_swsq), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!wq->sq)
 		goto err3;
 
@@ -404,10 +412,19 @@ static void insert_sq_cqe(struct t3_wq *wq, struct t3_cq *cq,
 
 int cxio_flush_sq(struct t3_wq *wq, struct t3_cq *cq, int count)
 {
+<<<<<<< HEAD
 	__u32 ptr = wq->sq_rptr + count;
 	int flushed = 0;
 	struct t3_swsq *sqp = wq->sq + Q_PTR2IDX(ptr, wq->sq_size_log2);
 
+=======
+	__u32 ptr;
+	int flushed = 0;
+	struct t3_swsq *sqp = wq->sq + Q_PTR2IDX(wq->sq_rptr, wq->sq_size_log2);
+
+	ptr = wq->sq_rptr + count;
+	sqp = wq->sq + Q_PTR2IDX(ptr, wq->sq_size_log2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (ptr != wq->sq_wptr) {
 		sqp->signaled = 0;
 		insert_sq_cqe(wq, cq, sqp);

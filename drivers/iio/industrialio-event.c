@@ -80,7 +80,11 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp)
 
 		copied = kfifo_put(&ev_int->det_events, ev);
 		if (copied != 0)
+<<<<<<< HEAD
 			wake_up_poll(&ev_int->wait, EPOLLIN);
+=======
+			wake_up_poll(&ev_int->wait, POLLIN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -92,15 +96,26 @@ EXPORT_SYMBOL(iio_push_event);
  * @filep:	File structure pointer to identify the device
  * @wait:	Poll table pointer to add the wait queue on
  *
+<<<<<<< HEAD
  * Return: (EPOLLIN | EPOLLRDNORM) if data is available for reading
  *	   or a negative error code on failure
  */
 static __poll_t iio_event_poll(struct file *filep,
+=======
+ * Return: (POLLIN | POLLRDNORM) if data is available for reading
+ *	   or a negative error code on failure
+ */
+static unsigned int iio_event_poll(struct file *filep,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     struct poll_table_struct *wait)
 {
 	struct iio_dev *indio_dev = filep->private_data;
 	struct iio_event_interface *ev_int = indio_dev->event_interface;
+<<<<<<< HEAD
 	__poll_t events = 0;
+=======
+	unsigned int events = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!indio_dev->info)
 		return events;
@@ -108,7 +123,11 @@ static __poll_t iio_event_poll(struct file *filep,
 	poll_wait(filep, &ev_int->wait, wait);
 
 	if (!kfifo_is_empty(&ev_int->det_events))
+<<<<<<< HEAD
 		events = EPOLLIN | EPOLLRDNORM;
+=======
+		events = POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return events;
 }

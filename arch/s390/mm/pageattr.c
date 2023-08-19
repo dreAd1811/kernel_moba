@@ -14,7 +14,11 @@
 
 static inline unsigned long sske_frame(unsigned long addr, unsigned char skey)
 {
+<<<<<<< HEAD
 	asm volatile(".insn rrf,0xb22b0000,%[skey],%[addr],1,0"
+=======
+	asm volatile(".insn rrf,0xb22b0000,%[skey],%[addr],9,0"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     : [addr] "+a" (addr) : [skey] "d" (skey));
 	return addr;
 }
@@ -23,6 +27,11 @@ void __storage_key_init_range(unsigned long start, unsigned long end)
 {
 	unsigned long boundary, size;
 
+<<<<<<< HEAD
+=======
+	if (!PAGE_DEFAULT_KEY)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (start < end) {
 		if (MACHINE_HAS_EDAT1) {
 			/* set storage keys for a 1MB frame */
@@ -35,7 +44,11 @@ void __storage_key_init_range(unsigned long start, unsigned long end)
 				continue;
 			}
 		}
+<<<<<<< HEAD
 		page_set_storage_key(start, PAGE_DEFAULT_KEY, 1);
+=======
+		page_set_storage_key(start, PAGE_DEFAULT_KEY, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		start += PAGE_SIZE;
 	}
 }

@@ -131,8 +131,13 @@ static int tda826x_get_frequency(struct dvb_frontend *fe, u32 *frequency)
 static const struct dvb_tuner_ops tda826x_tuner_ops = {
 	.info = {
 		.name = "Philips TDA826X",
+<<<<<<< HEAD
 		.frequency_min_hz =  950 * MHz,
 		.frequency_max_hz = 2175 * MHz
+=======
+		.frequency_min = 950000,
+		.frequency_max = 2175000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.release = tda826x_release,
 	.sleep = tda826x_sleep,

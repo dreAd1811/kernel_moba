@@ -143,7 +143,11 @@ static int imx_ldb_connector_get_modes(struct drm_connector *connector)
 		imx_ldb_ch->edid = drm_get_edid(connector, imx_ldb_ch->ddc);
 
 	if (imx_ldb_ch->edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(connector,
+=======
+		drm_mode_connector_update_edid_property(connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							imx_ldb_ch->edid);
 		num_modes = drm_add_edid_modes(connector, imx_ldb_ch->edid);
 	}
@@ -471,7 +475,12 @@ static int imx_ldb_register(struct drm_device *drm,
 		drm_connector_init(drm, &imx_ldb_ch->connector,
 				&imx_ldb_connector_funcs,
 				DRM_MODE_CONNECTOR_LVDS);
+<<<<<<< HEAD
 		drm_connector_attach_encoder(&imx_ldb_ch->connector, encoder);
+=======
+		drm_mode_connector_attach_encoder(&imx_ldb_ch->connector,
+				encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (imx_ldb_ch->panel) {

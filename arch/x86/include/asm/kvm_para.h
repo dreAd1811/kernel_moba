@@ -7,6 +7,10 @@
 #include <uapi/asm/kvm_para.h>
 
 extern void kvmclock_init(void);
+<<<<<<< HEAD
+=======
+extern int kvm_register_clock(char *txt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_KVM_GUEST
 bool kvm_check_and_clear_guest_paused(void);
@@ -87,7 +91,11 @@ static inline long kvm_hypercall4(unsigned int nr, unsigned long p1,
 #ifdef CONFIG_KVM_GUEST
 bool kvm_para_available(void);
 unsigned int kvm_arch_para_features(void);
+<<<<<<< HEAD
 unsigned int kvm_arch_para_hints(void);
+=======
+void __init kvm_guest_init(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void kvm_async_pf_task_wait(u32 token, int interrupt_kernel);
 void kvm_async_pf_task_wake(u32 token);
 u32 kvm_read_and_reset_pf_reason(void);
@@ -102,6 +110,10 @@ static inline void kvm_spinlock_init(void)
 #endif /* CONFIG_PARAVIRT_SPINLOCKS */
 
 #else /* CONFIG_KVM_GUEST */
+<<<<<<< HEAD
+=======
+#define kvm_guest_init() do {} while (0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define kvm_async_pf_task_wait(T, I) do {} while(0)
 #define kvm_async_pf_task_wake(T) do {} while(0)
 
@@ -115,11 +127,14 @@ static inline unsigned int kvm_arch_para_features(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline unsigned int kvm_arch_para_hints(void)
 {
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 kvm_read_and_reset_pf_reason(void)
 {
 	return 0;

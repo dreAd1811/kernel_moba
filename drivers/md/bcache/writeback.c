@@ -18,6 +18,7 @@
 #include <trace/events/bcache.h>
 
 /* Rate limiting */
+<<<<<<< HEAD
 static uint64_t __calc_target_rate(struct cached_dev *dc)
 {
 	struct cache_set *c = dc->disk.c;
@@ -154,11 +155,67 @@ static bool set_at_max_writeback_rate(struct cache_set *c,
 	return true;
 }
 
+=======
+
+static void __update_writeback_rate(struct cached_dev *dc)
+{
+	struct cache_set *c = dc->disk.c;
+	uint64_t cache_sectors = c->nbuckets * c->sb.bucket_size -
+				bcache_flash_devs_sectors_dirty(c);
+	uint64_t cache_dirty_target =
+		div_u64(cache_sectors * dc->writeback_percent, 100);
+
+	int64_t target = div64_u64(cache_dirty_target * bdev_sectors(dc->bdev),
+				   c->cached_dev_sectors);
+
+	/* PD controller */
+
+	int64_t dirty = bcache_dev_sectors_dirty(&dc->disk);
+	int64_t derivative = dirty - dc->disk.sectors_dirty_last;
+	int64_t proportional = dirty - target;
+	int64_t change;
+
+	dc->disk.sectors_dirty_last = dirty;
+
+	/* Scale to sectors per second */
+
+	proportional *= dc->writeback_rate_update_seconds;
+	proportional = div_s64(proportional, dc->writeback_rate_p_term_inverse);
+
+	derivative = div_s64(derivative, dc->writeback_rate_update_seconds);
+
+	derivative = ewma_add(dc->disk.sectors_dirty_derivative, derivative,
+			      (dc->writeback_rate_d_term /
+			       dc->writeback_rate_update_seconds) ?: 1, 0);
+
+	derivative *= dc->writeback_rate_d_term;
+	derivative = div_s64(derivative, dc->writeback_rate_p_term_inverse);
+
+	change = proportional + derivative;
+
+	/* Don't increase writeback rate if the device isn't keeping up */
+	if (change > 0 &&
+	    time_after64(local_clock(),
+			 dc->writeback_rate.next + NSEC_PER_MSEC))
+		change = 0;
+
+	dc->writeback_rate.rate =
+		clamp_t(int64_t, (int64_t) dc->writeback_rate.rate + change,
+			1, NSEC_PER_MSEC);
+
+	dc->writeback_rate_proportional = proportional;
+	dc->writeback_rate_derivative = derivative;
+	dc->writeback_rate_change = change;
+	dc->writeback_rate_target = target;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void update_writeback_rate(struct work_struct *work)
 {
 	struct cached_dev *dc = container_of(to_delayed_work(work),
 					     struct cached_dev,
 					     writeback_rate_update);
+<<<<<<< HEAD
 	struct cache_set *c = dc->disk.c;
 
 	/*
@@ -217,6 +274,22 @@ static void update_writeback_rate(struct work_struct *work)
 
 static unsigned int writeback_delay(struct cached_dev *dc,
 				    unsigned int sectors)
+=======
+
+	down_read(&dc->writeback_lock);
+
+	if (atomic_read(&dc->has_dirty) &&
+	    dc->writeback_percent)
+		__update_writeback_rate(dc);
+
+	up_read(&dc->writeback_lock);
+
+	schedule_delayed_work(&dc->writeback_rate_update,
+			      dc->writeback_rate_update_seconds * HZ);
+}
+
+static unsigned writeback_delay(struct cached_dev *dc, unsigned sectors)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (test_bit(BCACHE_DEV_DETACHING, &dc->disk.flags) ||
 	    !dc->writeback_percent)
@@ -228,7 +301,10 @@ static unsigned int writeback_delay(struct cached_dev *dc,
 struct dirty_io {
 	struct closure		cl;
 	struct cached_dev	*dc;
+<<<<<<< HEAD
 	uint16_t		sequence;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bio		bio;
 };
 
@@ -250,7 +326,10 @@ static void dirty_init(struct keybuf_key *w)
 static void dirty_io_destructor(struct closure *cl)
 {
 	struct dirty_io *io = container_of(cl, struct dirty_io, cl);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(io);
 }
 
@@ -265,7 +344,11 @@ static void write_dirty_finish(struct closure *cl)
 	/* This is kind of a dumb way of signalling errors. */
 	if (KEY_DIRTY(&w->key)) {
 		int ret;
+<<<<<<< HEAD
 		unsigned int i;
+=======
+		unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct keylist keys;
 
 		bch_keylist_init(&keys);
@@ -298,10 +381,15 @@ static void dirty_endio(struct bio *bio)
 	struct keybuf_key *w = bio->bi_private;
 	struct dirty_io *io = w->private;
 
+<<<<<<< HEAD
 	if (bio->bi_status) {
 		SET_KEY_DIRTY(&w->key, false);
 		bch_count_backing_io_errors(io->dc, bio);
 	}
+=======
+	if (bio->bi_status)
+		SET_KEY_DIRTY(&w->key, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	closure_put(&io->cl);
 }
@@ -310,6 +398,7 @@ static void write_dirty(struct closure *cl)
 {
 	struct dirty_io *io = container_of(cl, struct dirty_io, cl);
 	struct keybuf_key *w = io->bio.bi_private;
+<<<<<<< HEAD
 	struct cached_dev *dc = io->dc;
 
 	uint16_t next_sequence;
@@ -351,6 +440,16 @@ static void write_dirty(struct closure *cl)
 
 	atomic_set(&dc->writeback_sequence_next, next_sequence);
 	closure_wake_up(&dc->writeback_ordering_wait);
+=======
+
+	dirty_init(w);
+	bio_set_op_attrs(&io->bio, REQ_OP_WRITE, 0);
+	io->bio.bi_iter.bi_sector = KEY_START(&w->key);
+	bio_set_dev(&io->bio, io->dc->bdev);
+	io->bio.bi_end_io	= dirty_endio;
+
+	closure_bio_submit(&io->bio, cl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	continue_at(cl, write_dirty_finish, io->dc->writeback_write_wq);
 }
@@ -360,10 +459,15 @@ static void read_dirty_endio(struct bio *bio)
 	struct keybuf_key *w = bio->bi_private;
 	struct dirty_io *io = w->private;
 
+<<<<<<< HEAD
 	/* is_read = 1 */
 	bch_count_io_errors(PTR_CACHE(io->dc->disk.c, &w->key, 0),
 			    bio->bi_status, 1,
 			    "reading dirty data from cache");
+=======
+	bch_count_io_errors(PTR_CACHE(io->dc->disk.c, &w->key, 0),
+			    bio->bi_status, "reading dirty data from cache");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dirty_endio(bio);
 }
@@ -372,13 +476,18 @@ static void read_dirty_submit(struct closure *cl)
 {
 	struct dirty_io *io = container_of(cl, struct dirty_io, cl);
 
+<<<<<<< HEAD
 	closure_bio_submit(io->dc->disk.c, &io->bio, cl);
+=======
+	closure_bio_submit(&io->bio, cl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	continue_at(cl, write_dirty, io->dc->writeback_write_wq);
 }
 
 static void read_dirty(struct cached_dev *dc)
 {
+<<<<<<< HEAD
 	unsigned int delay = 0;
 	struct keybuf_key *next, *keys[MAX_WRITEBACKS_IN_PASS], *w;
 	size_t size;
@@ -389,6 +498,13 @@ static void read_dirty(struct cached_dev *dc)
 
 	BUG_ON(!llist_empty(&dc->writeback_ordering_wait.list));
 	atomic_set(&dc->writeback_sequence_next, sequence);
+=======
+	unsigned delay = 0;
+	struct keybuf_key *w;
+	struct dirty_io *io;
+	struct closure cl;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	closure_init_stack(&cl);
 
 	/*
@@ -396,6 +512,7 @@ static void read_dirty(struct cached_dev *dc)
 	 * mempools.
 	 */
 
+<<<<<<< HEAD
 	next = bch_keybuf_next(&dc->writeback_keys);
 
 	while (!kthread_should_stop() &&
@@ -484,6 +601,47 @@ static void read_dirty(struct cached_dev *dc)
 			schedule_timeout_interruptible(delay);
 			delay = writeback_delay(dc, 0);
 		}
+=======
+	while (!kthread_should_stop()) {
+
+		w = bch_keybuf_next(&dc->writeback_keys);
+		if (!w)
+			break;
+
+		BUG_ON(ptr_stale(dc->disk.c, &w->key, 0));
+
+		if (KEY_START(&w->key) != dc->last_read ||
+		    jiffies_to_msecs(delay) > 50)
+			while (!kthread_should_stop() && delay)
+				delay = schedule_timeout_interruptible(delay);
+
+		dc->last_read	= KEY_OFFSET(&w->key);
+
+		io = kzalloc(sizeof(struct dirty_io) + sizeof(struct bio_vec)
+			     * DIV_ROUND_UP(KEY_SIZE(&w->key), PAGE_SECTORS),
+			     GFP_KERNEL);
+		if (!io)
+			goto err;
+
+		w->private	= io;
+		io->dc		= dc;
+
+		dirty_init(w);
+		bio_set_op_attrs(&io->bio, REQ_OP_READ, 0);
+		io->bio.bi_iter.bi_sector = PTR_OFFSET(&w->key, 0);
+		bio_set_dev(&io->bio, PTR_CACHE(dc->disk.c, &w->key, 0)->bdev);
+		io->bio.bi_end_io	= read_dirty_endio;
+
+		if (bio_alloc_pages(&io->bio, GFP_KERNEL))
+			goto err_free;
+
+		trace_bcache_writeback(&w->key);
+
+		down(&dc->in_flight);
+		closure_call(&io->cl, read_dirty_submit, NULL, &cl);
+
+		delay = writeback_delay(dc, KEY_SIZE(&w->key));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (0) {
@@ -502,23 +660,38 @@ err:
 
 /* Scan for dirty data */
 
+<<<<<<< HEAD
 void bcache_dev_sectors_dirty_add(struct cache_set *c, unsigned int inode,
 				  uint64_t offset, int nr_sectors)
 {
 	struct bcache_device *d = c->devices[inode];
 	unsigned int stripe_offset, stripe, sectors_dirty;
+=======
+void bcache_dev_sectors_dirty_add(struct cache_set *c, unsigned inode,
+				  uint64_t offset, int nr_sectors)
+{
+	struct bcache_device *d = c->devices[inode];
+	unsigned stripe_offset, stripe, sectors_dirty;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!d)
 		return;
 
+<<<<<<< HEAD
 	if (UUID_FLASH_ONLY(&c->uuids[inode]))
 		atomic_long_add(nr_sectors, &c->flash_dev_dirty_sectors);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stripe = offset_to_stripe(d, offset);
 	stripe_offset = offset & (d->stripe_size - 1);
 
 	while (nr_sectors) {
+<<<<<<< HEAD
 		int s = min_t(unsigned int, abs(nr_sectors),
+=======
+		int s = min_t(unsigned, abs(nr_sectors),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      d->stripe_size - stripe_offset);
 
 		if (nr_sectors < 0)
@@ -542,9 +715,13 @@ void bcache_dev_sectors_dirty_add(struct cache_set *c, unsigned int inode,
 
 static bool dirty_pred(struct keybuf *buf, struct bkey *k)
 {
+<<<<<<< HEAD
 	struct cached_dev *dc = container_of(buf,
 					     struct cached_dev,
 					     writeback_keys);
+=======
+	struct cached_dev *dc = container_of(buf, struct cached_dev, writeback_keys);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(KEY_INODE(k) != dc->disk.id);
 
@@ -554,7 +731,11 @@ static bool dirty_pred(struct keybuf *buf, struct bkey *k)
 static void refill_full_stripes(struct cached_dev *dc)
 {
 	struct keybuf *buf = &dc->writeback_keys;
+<<<<<<< HEAD
 	unsigned int start_stripe, stripe, next_stripe;
+=======
+	unsigned start_stripe, stripe, next_stripe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool wrapped = false;
 
 	stripe = offset_to_stripe(&dc->disk, KEY_OFFSET(&buf->last_scanned));
@@ -641,6 +822,7 @@ static bool refill_dirty(struct cached_dev *dc)
 static int bch_writeback_thread(void *arg)
 {
 	struct cached_dev *dc = arg;
+<<<<<<< HEAD
 	struct cache_set *c = dc->disk.c;
 	bool searched_full_index;
 
@@ -648,6 +830,11 @@ static int bch_writeback_thread(void *arg)
 
 	while (!kthread_should_stop() &&
 	       !test_bit(CACHE_SET_IO_DISABLE, &c->flags)) {
+=======
+	bool searched_full_index;
+
+	while (!kthread_should_stop()) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		down_write(&dc->writeback_lock);
 		set_current_state(TASK_INTERRUPTIBLE);
 		/*
@@ -661,10 +848,16 @@ static int bch_writeback_thread(void *arg)
 		    (!atomic_read(&dc->has_dirty) || !dc->writeback_running)) {
 			up_write(&dc->writeback_lock);
 
+<<<<<<< HEAD
 			if (kthread_should_stop() ||
 			    test_bit(CACHE_SET_IO_DISABLE, &c->flags)) {
 				set_current_state(TASK_RUNNING);
 				break;
+=======
+			if (kthread_should_stop()) {
+				set_current_state(TASK_RUNNING);
+				return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			schedule();
@@ -677,6 +870,10 @@ static int bch_writeback_thread(void *arg)
 		if (searched_full_index &&
 		    RB_EMPTY_ROOT(&dc->writeback_keys.keys)) {
 			atomic_set(&dc->has_dirty, 0);
+<<<<<<< HEAD
+=======
+			cached_dev_put(dc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			SET_BDEV_STATE(&dc->sb, BDEV_STATE_CLEAN);
 			bch_write_bdev_super(dc, NULL);
 			/*
@@ -693,6 +890,7 @@ static int bch_writeback_thread(void *arg)
 
 		up_write(&dc->writeback_lock);
 
+<<<<<<< HEAD
 		read_dirty(dc);
 
 		if (searched_full_index) {
@@ -715,10 +913,26 @@ static int bch_writeback_thread(void *arg)
 	cached_dev_put(dc);
 	wait_for_kthread_stop();
 
+=======
+		bch_ratelimit_reset(&dc->writeback_rate);
+		read_dirty(dc);
+
+		if (searched_full_index) {
+			unsigned delay = dc->writeback_delay * HZ;
+
+			while (delay &&
+			       !kthread_should_stop() &&
+			       !test_bit(BCACHE_DEV_DETACHING, &dc->disk.flags))
+				delay = schedule_timeout_interruptible(delay);
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 /* Init */
+<<<<<<< HEAD
 #define INIT_KEYS_EACH_TIME	500000
 #define INIT_KEYS_SLEEP_MS	100
 
@@ -727,6 +941,12 @@ struct sectors_dirty_init {
 	unsigned int	inode;
 	size_t		count;
 	struct bkey	start;
+=======
+
+struct sectors_dirty_init {
+	struct btree_op	op;
+	unsigned	inode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sectors_dirty_init_fn(struct btree_op *_op, struct btree *b,
@@ -741,6 +961,7 @@ static int sectors_dirty_init_fn(struct btree_op *_op, struct btree *b,
 		bcache_dev_sectors_dirty_add(b->c, KEY_INODE(k),
 					     KEY_START(k), KEY_SIZE(k));
 
+<<<<<<< HEAD
 	op->count++;
 	if (atomic_read(&b->c->search_inflight) &&
 	    !(op->count % INIT_KEYS_EACH_TIME)) {
@@ -748,12 +969,15 @@ static int sectors_dirty_init_fn(struct btree_op *_op, struct btree *b,
 		return -EAGAIN;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return MAP_CONTINUE;
 }
 
 void bch_sectors_dirty_init(struct bcache_device *d)
 {
 	struct sectors_dirty_init op;
+<<<<<<< HEAD
 	int ret;
 
 	bch_btree_op_init(&op.op, -1);
@@ -772,6 +996,16 @@ void bch_sectors_dirty_init(struct bcache_device *d)
 			break;
 		}
 	} while (ret == -EAGAIN);
+=======
+
+	bch_btree_op_init(&op.op, -1);
+	op.inode = d->id;
+
+	bch_btree_map_keys(&op.op, d->c, &KEY(op.inode, 0, 0),
+			   sectors_dirty_init_fn, 0);
+
+	d->sectors_dirty_last = bcache_dev_sectors_dirty(d);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void bch_cached_dev_writeback_init(struct cached_dev *dc)
@@ -784,6 +1018,7 @@ void bch_cached_dev_writeback_init(struct cached_dev *dc)
 	dc->writeback_running		= true;
 	dc->writeback_percent		= 10;
 	dc->writeback_delay		= 30;
+<<<<<<< HEAD
 	atomic_long_set(&dc->writeback_rate.rate, 1024);
 	dc->writeback_rate_minimum	= 8;
 
@@ -792,6 +1027,14 @@ void bch_cached_dev_writeback_init(struct cached_dev *dc)
 	dc->writeback_rate_i_term_inverse = 10000;
 
 	WARN_ON(test_and_clear_bit(BCACHE_DEV_WB_RUNNING, &dc->disk.flags));
+=======
+	dc->writeback_rate.rate		= 1024;
+
+	dc->writeback_rate_update_seconds = 5;
+	dc->writeback_rate_d_term	= 30;
+	dc->writeback_rate_p_term_inverse = 6000;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_DELAYED_WORK(&dc->writeback_rate_update, update_writeback_rate);
 }
 
@@ -802,6 +1045,7 @@ int bch_cached_dev_writeback_start(struct cached_dev *dc)
 	if (!dc->writeback_write_wq)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	cached_dev_get(dc);
 	dc->writeback_thread = kthread_create(bch_writeback_thread, dc,
 					      "bcache_writeback");
@@ -812,6 +1056,13 @@ int bch_cached_dev_writeback_start(struct cached_dev *dc)
 	}
 
 	WARN_ON(test_and_set_bit(BCACHE_DEV_WB_RUNNING, &dc->disk.flags));
+=======
+	dc->writeback_thread = kthread_create(bch_writeback_thread, dc,
+					      "bcache_writeback");
+	if (IS_ERR(dc->writeback_thread))
+		return PTR_ERR(dc->writeback_thread);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	schedule_delayed_work(&dc->writeback_rate_update,
 			      dc->writeback_rate_update_seconds * HZ);
 

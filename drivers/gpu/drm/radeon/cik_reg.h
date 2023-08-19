@@ -147,6 +147,11 @@
 
 #define CIK_LB_DESKTOP_HEIGHT                     0x6b0c
 
+<<<<<<< HEAD
+=======
+#define KFD_CIK_SDMA_QUEUE_OFFSET		0x200
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SQ_IND_INDEX					0x8DE0
 #define SQ_CMD						0x8DEC
 #define SQ_IND_DATA					0x8DE4

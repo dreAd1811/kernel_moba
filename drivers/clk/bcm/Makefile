@@ -9,7 +9,10 @@ obj-$(CONFIG_ARCH_BCM2835)	+= clk-bcm2835.o
 obj-$(CONFIG_ARCH_BCM2835)	+= clk-bcm2835-aux.o
 obj-$(CONFIG_ARCH_BCM_53573)	+= clk-bcm53573-ilp.o
 obj-$(CONFIG_CLK_BCM_CYGNUS)	+= clk-cygnus.o
+<<<<<<< HEAD
 obj-$(CONFIG_CLK_BCM_HR2)	+= clk-hr2.o
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_CLK_BCM_NSP)	+= clk-nsp.o
 obj-$(CONFIG_CLK_BCM_NS2)	+= clk-ns2.o
 obj-$(CONFIG_CLK_BCM_SR)	+= clk-sr.o

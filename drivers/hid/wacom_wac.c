@@ -255,7 +255,11 @@ static int wacom_dtu_irq(struct wacom_wac *wacom)
 
 static int wacom_dtus_irq(struct wacom_wac *wacom)
 {
+<<<<<<< HEAD
 	unsigned char *data = wacom->data;
+=======
+	char *data = wacom->data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct input_dev *input = wacom->pen_input;
 	unsigned short prox, pressure = 0;
 
@@ -576,7 +580,11 @@ static int wacom_intuos_pad(struct wacom_wac *wacom)
 		strip2 = ((data[3] & 0x1f) << 8) | data[4];
 	}
 
+<<<<<<< HEAD
 	prox = (buttons & ~(~0U << nbuttons)) | (keys & ~(~0U << nkeys)) |
+=======
+	prox = (buttons & ~(~0 << nbuttons)) | (keys & ~(~0 << nkeys)) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       (ring1 & 0x80) | (ring2 & 0x80) | strip1 | strip2;
 
 	wacom_report_numbered_buttons(input, nbuttons, buttons);
@@ -1214,12 +1222,18 @@ static int wacom_wac_finger_count_touches(struct wacom_wac *wacom)
 
 static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
 {
+<<<<<<< HEAD
 	int pen_frame_len, pen_frames;
+=======
+	const int pen_frame_len = 14;
+	const int pen_frames = 7;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct input_dev *pen_input = wacom->pen_input;
 	unsigned char *data = wacom->data;
 	int i;
 
+<<<<<<< HEAD
 	if (wacom->features.type == INTUOSP2_BT) {
 		wacom->serial[0] = get_unaligned_le64(&data[99]);
 		wacom->id[0]     = get_unaligned_le16(&data[107]);
@@ -1232,6 +1246,10 @@ static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
 		pen_frames = 4;
 	}
 
+=======
+	wacom->serial[0] = get_unaligned_le64(&data[99]);
+	wacom->id[0]     = get_unaligned_le16(&data[107]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wacom->serial[0] >> 52 == 1) {
 		/* Add back in missing bits of ID for non-USI pens */
 		wacom->id[0] |= (wacom->serial[0] >> 32) & 0xFFFFF;
@@ -1259,6 +1277,15 @@ static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
 		}
 
 		if (range) {
+<<<<<<< HEAD
+=======
+			/* Fix rotation alignment: userspace expects zero at left */
+			int16_t rotation = (int16_t)get_unaligned_le16(&frame[9]);
+			rotation += 1800/4;
+			if (rotation > 899)
+				rotation -= 1800;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!wacom->tool[0]) { /* first in range */
 				/* Going into range select tool */
 				if (invert)
@@ -1271,6 +1298,7 @@ static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
 
 			input_report_abs(pen_input, ABS_X, get_unaligned_le16(&frame[1]));
 			input_report_abs(pen_input, ABS_Y, get_unaligned_le16(&frame[3]));
+<<<<<<< HEAD
 
 			if (wacom->features.type == INTUOSP2_BT) {
 				/* Fix rotation alignment: userspace expects zero at left */
@@ -1300,6 +1328,16 @@ static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
 				input_report_abs(pen_input, ABS_DISTANCE,
 						 range ? frame[7] : wacom->features.distance_max);
 			}
+=======
+			input_report_abs(pen_input, ABS_TILT_X, (char)frame[7]);
+			input_report_abs(pen_input, ABS_TILT_Y, (char)frame[8]);
+			input_report_abs(pen_input, ABS_Z, rotation);
+			input_report_abs(pen_input, ABS_WHEEL, get_unaligned_le16(&frame[11]));
+		}
+		if (wacom->tool[0]) {
+			input_report_abs(pen_input, ABS_PRESSURE, get_unaligned_le16(&frame[5]));
+			input_report_abs(pen_input, ABS_DISTANCE, range ? frame[13] : wacom->features.distance_max);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			input_report_key(pen_input, BTN_TOUCH, frame[0] & 0x09);
 			input_report_key(pen_input, BTN_STYLUS, frame[0] & 0x02);
@@ -1422,6 +1460,7 @@ static void wacom_intuos_pro2_bt_battery(struct wacom_wac *wacom)
 			     battery_status, chg, 1, chg);
 }
 
+<<<<<<< HEAD
 static void wacom_intuos_gen3_bt_pad(struct wacom_wac *wacom)
 {
 	struct input_dev *pad_input = wacom->pad_input;
@@ -1449,17 +1488,24 @@ static void wacom_intuos_gen3_bt_battery(struct wacom_wac *wacom)
 			     battery_status, chg, 1, chg);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int wacom_intuos_pro2_bt_irq(struct wacom_wac *wacom, size_t len)
 {
 	unsigned char *data = wacom->data;
 
+<<<<<<< HEAD
 	if (data[0] != 0x80 && data[0] != 0x81) {
+=======
+	if (data[0] != 0x80) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_dbg(wacom->pen_input->dev.parent,
 			"%s: received unknown report #%d\n", __func__, data[0]);
 		return 0;
 	}
 
 	wacom_intuos_pro2_bt_pen(wacom);
+<<<<<<< HEAD
 	if (wacom->features.type == INTUOSP2_BT) {
 		wacom_intuos_pro2_bt_touch(wacom);
 		wacom_intuos_pro2_bt_pad(wacom);
@@ -1468,6 +1514,11 @@ static int wacom_intuos_pro2_bt_irq(struct wacom_wac *wacom, size_t len)
 		wacom_intuos_gen3_bt_pad(wacom);
 		wacom_intuos_gen3_bt_battery(wacom);
 	}
+=======
+	wacom_intuos_pro2_bt_touch(wacom);
+	wacom_intuos_pro2_bt_pad(wacom);
+	wacom_intuos_pro2_bt_battery(wacom);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1757,8 +1808,12 @@ int wacom_equivalent_usage(int usage)
 		    usage == WACOM_HID_WD_TOUCHSTRIP ||
 		    usage == WACOM_HID_WD_TOUCHSTRIP2 ||
 		    usage == WACOM_HID_WD_TOUCHRING ||
+<<<<<<< HEAD
 		    usage == WACOM_HID_WD_TOUCHRINGSTATUS ||
 		    usage == WACOM_HID_WD_REPORT_VALID) {
+=======
+		    usage == WACOM_HID_WD_TOUCHRINGSTATUS) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return usage;
 		}
 
@@ -2113,7 +2168,11 @@ static void wacom_wac_pad_pre_report(struct hid_device *hdev,
 }
 
 static void wacom_wac_pad_report(struct hid_device *hdev,
+<<<<<<< HEAD
 		struct hid_report *report, struct hid_field *field)
+=======
+		struct hid_report *report)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wacom *wacom = hid_get_drvdata(hdev);
 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
@@ -2121,12 +2180,21 @@ static void wacom_wac_pad_report(struct hid_device *hdev,
 	bool active = wacom_wac->hid_data.inrange_state != 0;
 
 	/* report prox for expresskey events */
+<<<<<<< HEAD
 	if (wacom_wac->hid_data.pad_input_event_flag) {
+=======
+	if ((wacom_equivalent_usage(report->field[0]->physical) == HID_DG_TABLETFUNCTIONKEY) &&
+	    wacom_wac->hid_data.pad_input_event_flag) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		input_event(input, EV_ABS, ABS_MISC, active ? PAD_DEVICE_ID : 0);
 		input_sync(input);
 		if (!active)
 			wacom_wac->hid_data.pad_input_event_flag = false;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
@@ -2179,6 +2247,7 @@ static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
 		wacom_map_usage(input, usage, field, EV_KEY, BTN_STYLUS2, 0);
 		break;
 	case HID_DG_TOOLSERIALNUMBER:
+<<<<<<< HEAD
 		features->quirks |= WACOM_QUIRK_TOOLSERIAL;
 		wacom_map_usage(input, usage, field, EV_MSC, MSC_SERIAL, 0);
 
@@ -2202,6 +2271,9 @@ static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
 				}
 			}
 		}
+=======
+		wacom_map_usage(input, usage, field, EV_MSC, MSC_SERIAL, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case WACOM_HID_WD_SENSE:
 		features->quirks |= WACOM_QUIRK_SENSE;
@@ -2209,6 +2281,7 @@ static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
 		break;
 	case WACOM_HID_WD_SERIALHI:
 		wacom_map_usage(input, usage, field, EV_ABS, ABS_MISC, 0);
+<<<<<<< HEAD
 
 		if (!(features->quirks & WACOM_QUIRK_AESPEN)) {
 			set_bit(EV_KEY, input->evbit);
@@ -2221,6 +2294,17 @@ static void wacom_wac_pen_usage_mapping(struct hid_device *hdev,
 				input_set_capability(input, EV_KEY, BTN_TOOL_MOUSE);
 				input_set_capability(input, EV_KEY, BTN_TOOL_LENS);
 			}
+=======
+		set_bit(EV_KEY, input->evbit);
+		input_set_capability(input, EV_KEY, BTN_TOOL_PEN);
+		input_set_capability(input, EV_KEY, BTN_TOOL_RUBBER);
+		input_set_capability(input, EV_KEY, BTN_TOOL_BRUSH);
+		input_set_capability(input, EV_KEY, BTN_TOOL_PENCIL);
+		input_set_capability(input, EV_KEY, BTN_TOOL_AIRBRUSH);
+		if (!(features->device_type & WACOM_DEVICETYPE_DIRECT)) {
+			input_set_capability(input, EV_KEY, BTN_TOOL_MOUSE);
+			input_set_capability(input, EV_KEY, BTN_TOOL_LENS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	case WACOM_HID_WD_FINGERWHEEL:
@@ -2238,9 +2322,12 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 	struct input_dev *input = wacom_wac->pen_input;
 	unsigned equivalent_usage = wacom_equivalent_usage(usage->hid);
 
+<<<<<<< HEAD
 	if (wacom_wac->is_invalid_bt_frame)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (equivalent_usage) {
 	case HID_GD_Z:
 		/*
@@ -2262,6 +2349,7 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 	case HID_DG_TIPSWITCH:
 		wacom_wac->hid_data.tipswitch |= value;
 		return;
+<<<<<<< HEAD
 	case HID_DG_BARRELSWITCH:
 		wacom_wac->hid_data.barrelswitch = value;
 		return;
@@ -2272,6 +2360,12 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 		if (value) {
 			wacom_wac->serial[0] = (wacom_wac->serial[0] & ~0xFFFFFFFFULL);
 			wacom_wac->serial[0] |= (__u32)value;
+=======
+	case HID_DG_TOOLSERIALNUMBER:
+		if (value) {
+			wacom_wac->serial[0] = (wacom_wac->serial[0] & ~0xFFFFFFFFULL);
+			wacom_wac->serial[0] |= wacom_s32tou(value, field->report_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		return;
 	case HID_DG_TWIST:
@@ -2287,15 +2381,26 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 		return;
 	case WACOM_HID_WD_SERIALHI:
 		if (value) {
+<<<<<<< HEAD
 			wacom_wac->serial[0] = (wacom_wac->serial[0] & 0xFFFFFFFF);
 			wacom_wac->serial[0] |= ((__u64)value) << 32;
+=======
+			__u32 raw_value = wacom_s32tou(value, field->report_size);
+
+			wacom_wac->serial[0] = (wacom_wac->serial[0] & 0xFFFFFFFF);
+			wacom_wac->serial[0] |= ((__u64)raw_value) << 32;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Non-USI EMR devices may contain additional tool type
 			 * information here. See WACOM_HID_WD_TOOLTYPE case for
 			 * more details.
 			 */
 			if (value >> 20 == 1) {
+<<<<<<< HEAD
 				wacom_wac->id[0] |= value & 0xFFFFF;
+=======
+				wacom_wac->id[0] |= raw_value & 0xFFFFF;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		return;
@@ -2307,7 +2412,11 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 		 * bitwise OR so the complete value can be built
 		 * up over time :(
 		 */
+<<<<<<< HEAD
 		wacom_wac->id[0] |= value;
+=======
+		wacom_wac->id[0] |= wacom_s32tou(value, field->report_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	case WACOM_HID_WD_OFFSETLEFT:
 		if (features->offset_left && value != features->offset_left)
@@ -2337,9 +2446,12 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 				 features->offset_bottom);
 		features->offset_bottom = value;
 		return;
+<<<<<<< HEAD
 	case WACOM_HID_WD_REPORT_VALID:
 		wacom_wac->is_invalid_bt_frame = !value;
 		return;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* send pen events only when touch is up or forced out
@@ -2348,20 +2460,31 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
 	if (!usage->type || delay_pen_events(wacom_wac))
 		return;
 
+<<<<<<< HEAD
 	/* send pen events only when the pen is in range */
 	if (wacom_wac->hid_data.inrange_state)
 		input_event(input, usage->type, usage->code, value);
 	else if (wacom_wac->shared->stylus_in_proximity && !wacom_wac->hid_data.sense_state)
 		input_event(input, usage->type, usage->code, 0);
+=======
+	/* send pen events only when the pen is in/entering/leaving proximity */
+	if (!wacom_wac->hid_data.inrange_state && !wacom_wac->tool[0])
+		return;
+
+	input_event(input, usage->type, usage->code, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void wacom_wac_pen_pre_report(struct hid_device *hdev,
 		struct hid_report *report)
 {
+<<<<<<< HEAD
 	struct wacom *wacom = hid_get_drvdata(hdev);
 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
 
 	wacom_wac->is_invalid_bt_frame = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 }
 
@@ -2371,6 +2494,7 @@ static void wacom_wac_pen_report(struct hid_device *hdev,
 	struct wacom *wacom = hid_get_drvdata(hdev);
 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
 	struct input_dev *input = wacom_wac->pen_input;
+<<<<<<< HEAD
 	bool range = wacom_wac->hid_data.inrange_state;
 	bool sense = wacom_wac->hid_data.sense_state;
 
@@ -2379,6 +2503,13 @@ static void wacom_wac_pen_report(struct hid_device *hdev,
 
 	if (!wacom_wac->tool[0] && range) { /* first in range */
 		/* Going into range select tool */
+=======
+	bool prox = wacom_wac->hid_data.inrange_state;
+	bool range = wacom_wac->hid_data.sense_state;
+
+	if (!wacom_wac->tool[0] && prox) { /* first in prox */
+		/* Going into proximity select tool */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (wacom_wac->hid_data.invert_state)
 			wacom_wac->tool[0] = BTN_TOOL_RUBBER;
 		else if (wacom_wac->id[0])
@@ -2388,6 +2519,7 @@ static void wacom_wac_pen_report(struct hid_device *hdev,
 	}
 
 	/* keep pen state for touch events */
+<<<<<<< HEAD
 	wacom_wac->shared->stylus_in_proximity = sense;
 
 	if (!delay_pen_events(wacom_wac) && wacom_wac->tool[0]) {
@@ -2398,6 +2530,12 @@ static void wacom_wac_pen_report(struct hid_device *hdev,
 		input_report_key(input, BTN_STYLUS, sw_state == 1);
 		input_report_key(input, BTN_STYLUS2, sw_state == 2);
 		input_report_key(input, BTN_STYLUS3, sw_state == 3);
+=======
+	wacom_wac->shared->stylus_in_proximity = range;
+
+	if (!delay_pen_events(wacom_wac) && wacom_wac->tool[0]) {
+		int id = wacom_wac->id[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Non-USI EMR tools should have their IDs mangled to
@@ -2413,10 +2551,17 @@ static void wacom_wac_pen_report(struct hid_device *hdev,
 		 */
 		input_report_key(input, BTN_TOUCH,
 				wacom_wac->hid_data.tipswitch);
+<<<<<<< HEAD
 		input_report_key(input, wacom_wac->tool[0], sense);
 		if (wacom_wac->serial[0]) {
 			input_event(input, EV_MSC, MSC_SERIAL, wacom_wac->serial[0]);
 			input_report_abs(input, ABS_MISC, sense ? id : 0);
+=======
+		input_report_key(input, wacom_wac->tool[0], prox);
+		if (wacom_wac->serial[0]) {
+			input_event(input, EV_MSC, MSC_SERIAL, wacom_wac->serial[0]);
+			input_report_abs(input, ABS_MISC, prox ? id : 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		wacom_wac->hid_data.tipswitch = false;
@@ -2424,7 +2569,11 @@ static void wacom_wac_pen_report(struct hid_device *hdev,
 		input_sync(input);
 	}
 
+<<<<<<< HEAD
 	if (!sense) {
+=======
+	if (!prox) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wacom_wac->tool[0] = 0;
 		wacom_wac->id[0] = 0;
 		wacom_wac->serial[0] = 0;
@@ -2683,6 +2832,7 @@ void wacom_wac_event(struct hid_device *hdev, struct hid_field *field,
 		wacom_wac_finger_event(hdev, field, usage, value);
 }
 
+<<<<<<< HEAD
 static void wacom_report_events(struct hid_device *hdev,
 				struct hid_report *report, int collection_index,
 				int field_index)
@@ -2690,6 +2840,13 @@ static void wacom_report_events(struct hid_device *hdev,
 	int r;
 
 	for (r = field_index; r < report->maxfield; r++) {
+=======
+static void wacom_report_events(struct hid_device *hdev, struct hid_report *report)
+{
+	int r;
+
+	for (r = 0; r < report->maxfield; r++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct hid_field *field;
 		unsigned count, n;
 
@@ -2699,6 +2856,7 @@ static void wacom_report_events(struct hid_device *hdev,
 		if (!(HID_MAIN_ITEM_VARIABLE & field->flags))
 			continue;
 
+<<<<<<< HEAD
 		for (n = 0 ; n < count; n++) {
 			if (field->usage[n].collection_index == collection_index)
 				wacom_wac_event(hdev, field, &field->usage[n],
@@ -2716,6 +2874,32 @@ static int wacom_wac_collection(struct hid_device *hdev, struct hid_report *repo
 	struct wacom *wacom = hid_get_drvdata(hdev);
 
 	wacom_report_events(hdev, report, collection_index, field_index);
+=======
+		for (n = 0; n < count; n++)
+			wacom_wac_event(hdev, field, &field->usage[n], field->value[n]);
+	}
+}
+
+void wacom_wac_report(struct hid_device *hdev, struct hid_report *report)
+{
+	struct wacom *wacom = hid_get_drvdata(hdev);
+	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
+	struct hid_field *field = report->field[0];
+
+	if (wacom_wac->features.type != HID_GENERIC)
+		return;
+
+	wacom_wac_battery_pre_report(hdev, report);
+
+	if (WACOM_PAD_FIELD(field) && wacom->wacom_wac.pad_input)
+		wacom_wac_pad_pre_report(hdev, report);
+	else if (WACOM_PEN_FIELD(field) && wacom->wacom_wac.pen_input)
+		wacom_wac_pen_pre_report(hdev, report);
+	else if (WACOM_FINGER_FIELD(field) && wacom->wacom_wac.touch_input)
+		wacom_wac_finger_pre_report(hdev, report);
+
+	wacom_report_events(hdev, report);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Non-input reports may be sent prior to the device being
@@ -2725,6 +2909,7 @@ static int wacom_wac_collection(struct hid_device *hdev, struct hid_report *repo
 	 * processing functions.
 	 */
 	if (report->type != HID_INPUT_REPORT)
+<<<<<<< HEAD
 		return -1;
 
 	if (WACOM_PEN_FIELD(field) && wacom->wacom_wac.pen_input)
@@ -2785,6 +2970,18 @@ void wacom_wac_report(struct hid_device *hdev, struct hid_report *report)
 
 	if (true_pad && wacom->wacom_wac.pad_input)
 		wacom_wac_pad_report(hdev, report, field);
+=======
+		return;
+
+	wacom_wac_battery_report(hdev, report);
+
+	if (WACOM_PAD_FIELD(field) && wacom->wacom_wac.pad_input)
+		wacom_wac_pad_report(hdev, report);
+	else if (WACOM_PEN_FIELD(field) && wacom->wacom_wac.pen_input)
+		wacom_wac_pen_report(hdev, report);
+	else if (WACOM_FINGER_FIELD(field) && wacom->wacom_wac.touch_input)
+		wacom_wac_finger_report(hdev, report);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int wacom_bpt_touch(struct wacom_wac *wacom)
@@ -2923,13 +3120,18 @@ static int wacom_bpt_pen(struct wacom_wac *wacom)
 	struct wacom_features *features = &wacom->features;
 	struct input_dev *input = wacom->pen_input;
 	unsigned char *data = wacom->data;
+<<<<<<< HEAD
 	int x = 0, y = 0, p = 0, d = 0;
 	bool pen = false, btn1 = false, btn2 = false;
 	bool range, prox, rdy;
+=======
+	int prox = 0, x = 0, y = 0, p = 0, d = 0, pen = 0, btn1 = 0, btn2 = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (data[0] != WACOM_REPORT_PENABLED)
 	    return 0;
 
+<<<<<<< HEAD
 	range = (data[1] & 0x80) == 0x80;
 	prox = (data[1] & 0x40) == 0x40;
 	rdy = (data[1] & 0x20) == 0x20;
@@ -2948,6 +3150,21 @@ static int wacom_bpt_pen(struct wacom_wac *wacom)
 		x = le16_to_cpup((__le16 *)&data[2]);
 		y = le16_to_cpup((__le16 *)&data[4]);
 
+=======
+	prox = (data[1] & 0x20) == 0x20;
+
+	/*
+	 * All reports shared between PEN and RUBBER tool must be
+	 * forced to a known starting value (zero) when transitioning to
+	 * out-of-prox.
+	 *
+	 * If not reset then, to userspace, it will look like lost events
+	 * if new tool comes in-prox with same values as previous tool sent.
+	 *
+	 * Hardware does report zero in most out-of-prox cases but not all.
+	 */
+	if (!wacom->shared->stylus_in_proximity) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (data[1] & 0x08) {
 			wacom->tool[0] = BTN_TOOL_RUBBER;
 			wacom->id[0] = ERASER_DEVICE_ID;
@@ -2955,9 +3172,22 @@ static int wacom_bpt_pen(struct wacom_wac *wacom)
 			wacom->tool[0] = BTN_TOOL_PEN;
 			wacom->id[0] = STYLUS_DEVICE_ID;
 		}
+<<<<<<< HEAD
 		wacom->reporting_data = true;
 	}
 	if (range) {
+=======
+	}
+
+	wacom->shared->stylus_in_proximity = prox;
+	if (delay_pen_events(wacom))
+		return 0;
+
+	if (prox) {
+		x = le16_to_cpup((__le16 *)&data[2]);
+		y = le16_to_cpup((__le16 *)&data[4]);
+		p = le16_to_cpup((__le16 *)&data[6]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Convert distance from out prox to distance from tablet.
 		 * distance will be greater than distance_max once
@@ -2966,10 +3196,18 @@ static int wacom_bpt_pen(struct wacom_wac *wacom)
 		 */
 		if (data[8] <= features->distance_max)
 			d = features->distance_max - data[8];
+<<<<<<< HEAD
+=======
+
+		pen = data[1] & 0x01;
+		btn1 = data[1] & 0x02;
+		btn2 = data[1] & 0x04;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		wacom->id[0] = 0;
 	}
 
+<<<<<<< HEAD
 	if (wacom->reporting_data) {
 		input_report_key(input, BTN_TOUCH, pen);
 		input_report_key(input, BTN_STYLUS, btn1);
@@ -2989,6 +3227,19 @@ static int wacom_bpt_pen(struct wacom_wac *wacom)
 	if (!range) {
 		wacom->reporting_data = false;
 	}
+=======
+	input_report_key(input, BTN_TOUCH, pen);
+	input_report_key(input, BTN_STYLUS, btn1);
+	input_report_key(input, BTN_STYLUS2, btn2);
+
+	input_report_abs(input, ABS_X, x);
+	input_report_abs(input, ABS_Y, y);
+	input_report_abs(input, ABS_PRESSURE, p);
+	input_report_abs(input, ABS_DISTANCE, d);
+
+	input_report_key(input, wacom->tool[0], prox); /* PEN or RUBBER */
+	input_report_abs(input, ABS_MISC, wacom->id[0]); /* TOOL ID */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 1;
 }
@@ -3253,7 +3504,10 @@ void wacom_wac_irq(struct wacom_wac *wacom_wac, size_t len)
 		break;
 
 	case INTUOSP2_BT:
+<<<<<<< HEAD
 	case INTUOSHT3_BT:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sync = wacom_intuos_pro2_bt_irq(wacom_wac, len);
 		break;
 
@@ -3364,7 +3618,10 @@ static void wacom_setup_intuos(struct wacom_wac *wacom_wac)
 
 void wacom_setup_device_quirks(struct wacom *wacom)
 {
+<<<<<<< HEAD
 	struct wacom_wac *wacom_wac = &wacom->wacom_wac;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct wacom_features *features = &wacom->wacom_wac.features;
 
 	/* The pen and pad share the same interface on most devices */
@@ -3440,12 +3697,15 @@ void wacom_setup_device_quirks(struct wacom *wacom)
 		features->quirks |= WACOM_QUIRK_BATTERY;
 	}
 
+<<<<<<< HEAD
 	if (features->type == INTUOSHT3_BT) {
 		features->device_type |= WACOM_DEVICETYPE_PEN |
 					 WACOM_DEVICETYPE_PAD;
 		features->quirks |= WACOM_QUIRK_BATTERY;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (features->type) {
 	case PL:
 	case DTU:
@@ -3494,6 +3754,7 @@ void wacom_setup_device_quirks(struct wacom *wacom)
 
 	if (features->type == REMOTE)
 		features->device_type |= WACOM_DEVICETYPE_WL_MONITOR;
+<<<<<<< HEAD
 
 	/* HID descriptor for DTK-2451 / DTH-2452 claims to report lots
 	 * of things it shouldn't. Lets fix up the damage...
@@ -3512,6 +3773,8 @@ void wacom_setup_device_quirks(struct wacom *wacom)
 		__clear_bit(MSC_SERIAL, wacom_wac->pen_input->mscbit);
 		__clear_bit(EV_MSC, wacom_wac->pen_input->evbit);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int wacom_setup_pen_input_capabilities(struct input_dev *input_dev,
@@ -3529,11 +3792,17 @@ int wacom_setup_pen_input_capabilities(struct input_dev *input_dev,
 	else
 		__set_bit(INPUT_PROP_POINTER, input_dev->propbit);
 
+<<<<<<< HEAD
 	if (features->type == HID_GENERIC) {
 		/* setup has already been done; apply otherwise-undetectible quirks */
 		input_set_capability(input_dev, EV_KEY, BTN_STYLUS3);
 		return 0;
 	}
+=======
+	if (features->type == HID_GENERIC)
+		/* setup has already been done */
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__set_bit(BTN_TOUCH, input_dev->keybit);
 	__set_bit(ABS_MISC, input_dev->absbit);
@@ -3658,9 +3927,13 @@ int wacom_setup_pen_input_capabilities(struct input_dev *input_dev,
 	case BAMBOO_PT:
 	case BAMBOO_PEN:
 	case INTUOSHT2:
+<<<<<<< HEAD
 	case INTUOSHT3_BT:
 		if (features->type == INTUOSHT2 ||
 		    features->type == INTUOSHT3_BT) {
+=======
+		if (features->type == INTUOSHT2) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wacom_setup_basic_pro_pen(wacom_wac);
 		} else {
 			__clear_bit(ABS_MISC, input_dev->absbit);
@@ -4084,7 +4357,10 @@ int wacom_setup_pad_input_capabilities(struct input_dev *input_dev,
 		input_set_abs_params(input_dev, ABS_WHEEL, 0, 71, 0, 0);
 		break;
 
+<<<<<<< HEAD
 	case INTUOSHT3_BT:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HID_GENERIC:
 		break;
 
@@ -4408,6 +4684,7 @@ static const struct wacom_features wacom_features_0x5E =
 	  .check_for_hid_type = true, .hid_type = HID_TYPE_USBNONE };
 static const struct wacom_features wacom_features_0x90 =
 	{ "Wacom ISDv4 90", 26202, 16325, 255, 0,
+<<<<<<< HEAD
 	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES }; /* Pen-only */
 static const struct wacom_features wacom_features_0x93 =
 	{ "Wacom ISDv4 93", 26202, 16325, 255, 0,
@@ -4421,6 +4698,21 @@ static const struct wacom_features wacom_features_0x9A =
 static const struct wacom_features wacom_features_0x9F =
 	{ "Wacom ISDv4 9F", 26202, 16325, 255, 0,
 	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES, .touch_max = 1 };
+=======
+	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+static const struct wacom_features wacom_features_0x93 =
+	{ "Wacom ISDv4 93", 26202, 16325, 255, 0,
+	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+static const struct wacom_features wacom_features_0x97 =
+	{ "Wacom ISDv4 97", 26202, 16325, 511, 0,
+	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+static const struct wacom_features wacom_features_0x9A =
+	{ "Wacom ISDv4 9A", 26202, 16325, 255, 0,
+	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+static const struct wacom_features wacom_features_0x9F =
+	{ "Wacom ISDv4 9F", 26202, 16325, 255, 0,
+	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct wacom_features wacom_features_0xE2 =
 	{ "Wacom ISDv4 E2", 26202, 16325, 255, 0,
 	  TABLETPC2FG, WACOM_INTUOS_RES, WACOM_INTUOS_RES, .touch_max = 2 };
@@ -4435,6 +4727,7 @@ static const struct wacom_features wacom_features_0xE6 =
 	  TABLETPC2FG, WACOM_INTUOS_RES, WACOM_INTUOS_RES, .touch_max = 2 };
 static const struct wacom_features wacom_features_0xEC =
 	{ "Wacom ISDv4 EC", 25710, 14500, 255, 0,
+<<<<<<< HEAD
 	  TABLETPC,    WACOM_INTUOS_RES, WACOM_INTUOS_RES }; /* Pen-only */
 static const struct wacom_features wacom_features_0xED =
 	{ "Wacom ISDv4 ED", 26202, 16325, 255, 0,
@@ -4442,6 +4735,15 @@ static const struct wacom_features wacom_features_0xED =
 static const struct wacom_features wacom_features_0xEF =
 	{ "Wacom ISDv4 EF", 26202, 16325, 255, 0,
 	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES }; /* Pen-only */
+=======
+	  TABLETPC,    WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+static const struct wacom_features wacom_features_0xED =
+	{ "Wacom ISDv4 ED", 26202, 16325, 255, 0,
+	  TABLETPCE, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+static const struct wacom_features wacom_features_0xEF =
+	{ "Wacom ISDv4 EF", 26202, 16325, 255, 0,
+	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct wacom_features wacom_features_0x100 =
 	{ "Wacom ISDv4 100", 26202, 16325, 255, 0,
 	  MTTPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
@@ -4459,10 +4761,17 @@ static const struct wacom_features wacom_features_0x10F =
 	  MTTPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
 static const struct wacom_features wacom_features_0x116 =
 	{ "Wacom ISDv4 116", 26202, 16325, 255, 0,
+<<<<<<< HEAD
 	  TABLETPCE, WACOM_INTUOS_RES, WACOM_INTUOS_RES, .touch_max = 1 };
 static const struct wacom_features wacom_features_0x12C =
 	{ "Wacom ISDv4 12C", 27848, 15752, 2047, 0,
 	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES }; /* Pen-only */
+=======
+	  TABLETPCE, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+static const struct wacom_features wacom_features_0x12C =
+	{ "Wacom ISDv4 12C", 27848, 15752, 2047, 0,
+	  TABLETPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct wacom_features wacom_features_0x4001 =
 	{ "Wacom ISDv4 4001", 26202, 16325, 255, 0,
 	  MTTPC, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
@@ -4613,6 +4922,7 @@ static const struct wacom_features wacom_features_0x360 =
 static const struct wacom_features wacom_features_0x361 =
 	{ "Wacom Intuos Pro L", 62200, 43200, 8191, 63,
 	  INTUOSP2_BT, WACOM_INTUOS3_RES, WACOM_INTUOS3_RES, 9, .touch_max = 10 };
+<<<<<<< HEAD
 static const struct wacom_features wacom_features_0x377 =
 	{ "Wacom Intuos BT S", 15200, 9500, 4095, 63,
 	  INTUOSHT3_BT, WACOM_INTUOS_RES, WACOM_INTUOS_RES, 4 };
@@ -4625,6 +4935,8 @@ static const struct wacom_features wacom_features_0x37A =
 static const struct wacom_features wacom_features_0x37B =
 	{ "Wacom One by Wacom M", 21600, 13500, 2047, 63,
 	  BAMBOO_PEN, WACOM_INTUOS_RES, WACOM_INTUOS_RES };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct wacom_features wacom_features_HID_ANY_ID =
 	{ "Wacom HID", .type = HID_GENERIC, .oVid = HID_ANY_ID, .oPid = HID_ANY_ID };
@@ -4793,10 +5105,13 @@ const struct hid_device_id wacom_ids[] = {
 	{ USB_DEVICE_WACOM(0x343) },
 	{ BT_DEVICE_WACOM(0x360) },
 	{ BT_DEVICE_WACOM(0x361) },
+<<<<<<< HEAD
 	{ BT_DEVICE_WACOM(0x377) },
 	{ BT_DEVICE_WACOM(0x379) },
 	{ USB_DEVICE_WACOM(0x37A) },
 	{ USB_DEVICE_WACOM(0x37B) },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ USB_DEVICE_WACOM(0x4001) },
 	{ USB_DEVICE_WACOM(0x4004) },
 	{ USB_DEVICE_WACOM(0x5000) },

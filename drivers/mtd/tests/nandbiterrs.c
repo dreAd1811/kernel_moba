@@ -151,7 +151,11 @@ static int read_page(int log)
 	memcpy(&oldstats, &mtd->ecc_stats, sizeof(oldstats));
 
 	err = mtd_read(mtd, offset, mtd->writesize, &read, rbuffer);
+<<<<<<< HEAD
 	if (!err || err == -EUCLEAN)
+=======
+	if (err == -EUCLEAN)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = mtd->ecc_stats.corrected - oldstats.corrected;
 
 	if (err < 0 || read != mtd->writesize) {

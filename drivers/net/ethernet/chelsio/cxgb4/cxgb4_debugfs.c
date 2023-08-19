@@ -45,10 +45,13 @@
 #include "cxgb4_debugfs.h"
 #include "clip_tbl.h"
 #include "l2t.h"
+<<<<<<< HEAD
 #include "cudbg_if.h"
 #include "cudbg_lib_common.h"
 #include "cudbg_entity.h"
 #include "cudbg_lib.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* generic seq_file support for showing a table of size rows x width. */
 static void *seq_tab_get_idx(struct seq_tab *tb, loff_t pos)
@@ -70,8 +73,12 @@ static void *seq_tab_start(struct seq_file *seq, loff_t *pos)
 static void *seq_tab_next(struct seq_file *seq, void *v, loff_t *pos)
 {
 	v = seq_tab_get_idx(seq->private, *pos + 1);
+<<<<<<< HEAD
 	if (v)
 		++*pos;
+=======
+	++(*pos);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return v;
 }
 
@@ -873,7 +880,11 @@ static int cctrl_tbl_show(struct seq_file *seq, void *v)
 	u16 (*incr)[NCCTRL_WIN];
 	struct adapter *adap = seq->private;
 
+<<<<<<< HEAD
 	incr = kmalloc_array(NMTUS, sizeof(*incr), GFP_KERNEL);
+=======
+	incr = kmalloc(sizeof(*incr) * NMTUS, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!incr)
 		return -ENOMEM;
 
@@ -1743,7 +1754,11 @@ static int mps_tcam_show(struct seq_file *seq, void *v)
 			 */
 			if (lookup_type && (lookup_type != DATALKPTYPE_M)) {
 				/* Inner header VNI */
+<<<<<<< HEAD
 				vniy = (data2 & DATAVIDH2_F) |
+=======
+				vniy = ((data2 & DATAVIDH2_F) << 23) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       (DATAVIDH1_G(data2) << 16) | VIDL_G(val);
 				dip_hit = data2 & DATADIPHIT_F;
 			} else {
@@ -1753,7 +1768,10 @@ static int mps_tcam_show(struct seq_file *seq, void *v)
 			port_num = DATAPORTNUM_G(data2);
 
 			/* Read tcamx. Change the control param */
+<<<<<<< HEAD
 			vnix = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctl |= CTLXYBITSEL_V(1);
 			t4_write_reg(adap, MPS_CLS_TCAM_DATA2_CTL_A, ctl);
 			val = t4_read_reg(adap, MPS_CLS_TCAM_DATA1_A);
@@ -1762,7 +1780,11 @@ static int mps_tcam_show(struct seq_file *seq, void *v)
 			data2 = t4_read_reg(adap, MPS_CLS_TCAM_DATA2_CTL_A);
 			if (lookup_type && (lookup_type != DATALKPTYPE_M)) {
 				/* Inner header VNI mask */
+<<<<<<< HEAD
 				vnix = (data2 & DATAVIDH2_F) |
+=======
+				vnix = ((data2 & DATAVIDH2_F) << 23) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       (DATAVIDH1_G(data2) << 16) | VIDL_G(val);
 			}
 		} else {
@@ -1835,8 +1857,12 @@ static int mps_tcam_show(struct seq_file *seq, void *v)
 					   addr[1], addr[2], addr[3],
 					   addr[4], addr[5],
 					   (unsigned long long)mask,
+<<<<<<< HEAD
 					   vniy, (vnix | vniy),
 					   dip_hit ? 'Y' : 'N',
+=======
+					   vniy, vnix, dip_hit ? 'Y' : 'N',
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   port_num,
 					   (cls_lo & T6_SRAM_VLD_F) ? 'Y' : 'N',
 					   PORTMAP_G(cls_hi),
@@ -2023,12 +2049,20 @@ static int rss_show(struct seq_file *seq, void *v, int idx)
 
 static int rss_open(struct inode *inode, struct file *file)
 {
+<<<<<<< HEAD
 	struct adapter *adap = inode->i_private;
 	int ret, nentries;
 	struct seq_tab *p;
 
 	nentries = t4_chip_rss_size(adap);
 	p = seq_open_tab(file, nentries / 8, 8 * sizeof(u16), 0, rss_show);
+=======
+	int ret;
+	struct seq_tab *p;
+	struct adapter *adap = inode->i_private;
+
+	p = seq_open_tab(file, RSS_NENTRIES / 8, 8 * sizeof(u16), 0, rss_show);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!p)
 		return -ENOMEM;
 
@@ -2218,7 +2252,11 @@ static int rss_key_show(struct seq_file *seq, void *v)
 {
 	u32 key[10];
 
+<<<<<<< HEAD
 	t4_read_rss_key(seq->private, key, true);
+=======
+	t4_read_rss_key(seq->private, key);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(seq, "%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x\n",
 		   key[9], key[8], key[7], key[6], key[5], key[4], key[3],
 		   key[2], key[1], key[0]);
@@ -2255,7 +2293,11 @@ static ssize_t rss_key_write(struct file *file, const char __user *buf,
 		}
 	}
 
+<<<<<<< HEAD
 	t4_write_rss_key(adap, key, -1, true);
+=======
+	t4_write_rss_key(adap, key, -1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
@@ -2332,6 +2374,7 @@ static int rss_pf_config_open(struct inode *inode, struct file *file)
 		return -ENOMEM;
 
 	pfconf = (struct rss_pf_conf *)p->data;
+<<<<<<< HEAD
 	rss_pf_map = t4_read_rss_pf_map(adapter, true);
 	rss_pf_mask = t4_read_rss_pf_mask(adapter, true);
 	for (pf = 0; pf < 8; pf++) {
@@ -2339,6 +2382,14 @@ static int rss_pf_config_open(struct inode *inode, struct file *file)
 		pfconf[pf].rss_pf_mask = rss_pf_mask;
 		t4_read_rss_pf_config(adapter, pf, &pfconf[pf].rss_pf_config,
 				      true);
+=======
+	rss_pf_map = t4_read_rss_pf_map(adapter);
+	rss_pf_mask = t4_read_rss_pf_mask(adapter);
+	for (pf = 0; pf < 8; pf++) {
+		pfconf[pf].rss_pf_map = rss_pf_map;
+		pfconf[pf].rss_pf_mask = rss_pf_mask;
+		t4_read_rss_pf_config(adapter, pf, &pfconf[pf].rss_pf_config);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -2401,7 +2452,11 @@ static int rss_vf_config_open(struct inode *inode, struct file *file)
 	vfconf = (struct rss_vf_conf *)p->data;
 	for (vf = 0; vf < vfcount; vf++) {
 		t4_read_rss_vf_config(adapter, vf, &vfconf[vf].rss_vf_vfl,
+<<<<<<< HEAD
 				      &vfconf[vf].rss_vf_vfh, true);
+=======
+				      &vfconf[vf].rss_vf_vfh);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -2414,6 +2469,7 @@ static const struct file_operations rss_vf_config_debugfs_fops = {
 	.release = seq_release_private
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_CHELSIO_T4_DCB
 extern char *dcb_ver_array[];
 
@@ -2642,6 +2698,8 @@ static const struct file_operations resources_debugfs_fops = {
 	.release = seq_release,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * ethqset2pinfo - return port_info of an Ethernet Queue Set
  * @adap: the adapter
@@ -2664,6 +2722,7 @@ static inline struct port_info *ethqset2pinfo(struct adapter *adap, int qset)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static int sge_qinfo_uld_txq_entries(const struct adapter *adap, int uld)
 {
 	const struct sge_uld_txq_info *utxq_info = adap->sge.uld_txq_info[uld];
@@ -2722,6 +2781,18 @@ static int sge_qinfo_show(struct seq_file *seq, void *v)
 			uld_ciq_entries[i] = sge_qinfo_uld_ciq_entries(adap, i);
 		}
 	}
+=======
+static int sge_qinfo_show(struct seq_file *seq, void *v)
+{
+	struct adapter *adap = seq->private;
+	int eth_entries = DIV_ROUND_UP(adap->sge.ethqsets, 4);
+	int ofld_entries = DIV_ROUND_UP(adap->sge.ofldqsets, 4);
+	int ctrl_entries = DIV_ROUND_UP(MAX_CTRL_QUEUES, 4);
+	int i, r = (uintptr_t)v - 1;
+	int ofld_idx = r - eth_entries;
+	int ctrl_idx =  ofld_idx - ofld_entries;
+	int fq_idx =  ctrl_idx - ctrl_entries;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (r)
 		seq_putc(seq, '\n');
@@ -2743,10 +2814,16 @@ do { \
 
 	if (r < eth_entries) {
 		int base_qset = r * 4;
+<<<<<<< HEAD
 		const struct sge_eth_rxq *rx = &s->ethrxq[base_qset];
 		const struct sge_eth_txq *tx = &s->ethtxq[base_qset];
 
 		n = min(4, s->ethqsets - 4 * r);
+=======
+		const struct sge_eth_rxq *rx = &adap->sge.ethrxq[base_qset];
+		const struct sge_eth_txq *tx = &adap->sge.ethtxq[base_qset];
+		int n = min(4, adap->sge.ethqsets - 4 * r);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		S("QType:", "Ethernet");
 		S("Interface:",
@@ -2771,7 +2848,12 @@ do { \
 		R("RspQ CIDX:", rspq.cidx);
 		R("RspQ Gen:", rspq.gen);
 		S3("u", "Intr delay:", qtimer_val(adap, &rx[i].rspq));
+<<<<<<< HEAD
 		S3("u", "Intr pktcnt:", s->counter_val[rx[i].rspq.pktcnt_idx]);
+=======
+		S3("u", "Intr pktcnt:",
+		   adap->sge.counter_val[rx[i].rspq.pktcnt_idx]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		R("FL ID:", fl.cntxt_id);
 		R("FL size:", fl.size - 8);
 		R("FL pend:", fl.pend_cred);
@@ -2796,6 +2878,7 @@ do { \
 		RL("FLLow:", fl.low);
 		RL("FLStarving:", fl.starving);
 
+<<<<<<< HEAD
 		goto unlock;
 	}
 
@@ -2986,6 +3069,11 @@ do { \
 		const struct sge_ctrl_txq *tx = &s->ctrlq[r * 4];
 
 		n = min(4, adap->params.nports - 4 * r);
+=======
+	} else if (ctrl_idx < ctrl_entries) {
+		const struct sge_ctrl_txq *tx = &adap->sge.ctrlq[ctrl_idx * 4];
+		int n = min(4, adap->params.nports - 4 * ctrl_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		S("QType:", "Control");
 		T("TxQ ID:", q.cntxt_id);
@@ -2995,6 +3083,7 @@ do { \
 		T("TxQ PIDX:", q.pidx);
 		TL("TxQFull:", q.stops);
 		TL("TxQRestarts:", q.restarts);
+<<<<<<< HEAD
 
 		goto unlock;
 	}
@@ -3002,6 +3091,10 @@ do { \
 	r -= ctrl_entries;
 	if (r < 1) {
 		const struct sge_rspq *evtq = &s->fw_evtq;
+=======
+	} else if (fq_idx == 0) {
+		const struct sge_rspq *evtq = &adap->sge.fw_evtq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		seq_printf(seq, "%-12s %16s\n", "QType:", "FW event queue");
 		seq_printf(seq, "%-12s %16u\n", "RspQ ID:", evtq->abs_id);
@@ -3012,6 +3105,7 @@ do { \
 		seq_printf(seq, "%-12s %16u\n", "Intr delay:",
 			   qtimer_val(adap, evtq));
 		seq_printf(seq, "%-12s %16u\n", "Intr pktcnt:",
+<<<<<<< HEAD
 			   s->counter_val[evtq->pktcnt_idx]);
 
 		goto unlock;
@@ -3019,6 +3113,10 @@ do { \
 
 unlock:
 	mutex_unlock(&uld_mutex);
+=======
+			   adap->sge.counter_val[evtq->pktcnt_idx]);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef R
 #undef RL
 #undef T
@@ -3032,6 +3130,7 @@ unlock:
 
 static int sge_queue_entries(const struct adapter *adap)
 {
+<<<<<<< HEAD
 	int tot_uld_entries = 0;
 	int i;
 
@@ -3047,6 +3146,10 @@ static int sge_queue_entries(const struct adapter *adap)
 
 	return DIV_ROUND_UP(adap->sge.ethqsets, 4) +
 	       tot_uld_entries +
+=======
+	return DIV_ROUND_UP(adap->sge.ethqsets, 4) +
+	       DIV_ROUND_UP(adap->sge.ofldqsets, 4) +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       DIV_ROUND_UP(MAX_CTRL_QUEUES, 4) + 1;
 }
 
@@ -3103,7 +3206,11 @@ int mem_open(struct inode *inode, struct file *file)
 
 	file->private_data = inode->i_private;
 
+<<<<<<< HEAD
 	mem = (uintptr_t)file->private_data & 0x7;
+=======
+	mem = (uintptr_t)file->private_data & 0x3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adap = file->private_data - mem;
 
 	(void)t4_fwcache(adap, FW_PARAM_DEV_FWCACHE_FLUSH);
@@ -3116,7 +3223,11 @@ static ssize_t mem_read(struct file *file, char __user *buf, size_t count,
 {
 	loff_t pos = *ppos;
 	loff_t avail = file_inode(file)->i_size;
+<<<<<<< HEAD
 	unsigned int mem = (uintptr_t)file->private_data & 0x7;
+=======
+	unsigned int mem = (uintptr_t)file->private_data & 3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct adapter *adap = file->private_data - mem;
 	__be32 *data;
 	int ret;
@@ -3157,14 +3268,20 @@ static const struct file_operations mem_debugfs_fops = {
 
 static int tid_info_show(struct seq_file *seq, void *v)
 {
+<<<<<<< HEAD
 	unsigned int tid_start = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct adapter *adap = seq->private;
 	const struct tid_info *t = &adap->tids;
 	enum chip_type chip = CHELSIO_CHIP_VERSION(adap->params.chip);
 
+<<<<<<< HEAD
 	if (chip > CHELSIO_T5)
 		tid_start = t4_read_reg(adap, LE_DB_ACTIVE_TABLE_START_INDEX_A);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (t4_read_reg(adap, LE_DB_CONFIG_A) & HASHEN_F) {
 		unsigned int sb;
 		seq_printf(seq, "Connections in use: %u\n",
@@ -3176,8 +3293,13 @@ static int tid_info_show(struct seq_file *seq, void *v)
 			sb = t4_read_reg(adap, LE_DB_SRVR_START_INDEX_A);
 
 		if (sb) {
+<<<<<<< HEAD
 			seq_printf(seq, "TID range: %u..%u/%u..%u", tid_start,
 				   sb - 1, adap->tids.hash_base,
+=======
+			seq_printf(seq, "TID range: 0..%u/%u..%u", sb - 1,
+				   adap->tids.hash_base,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   t->ntids - 1);
 			seq_printf(seq, ", in use: %u/%u\n",
 				   atomic_read(&t->tids_in_use),
@@ -3202,8 +3324,12 @@ static int tid_info_show(struct seq_file *seq, void *v)
 		seq_printf(seq, "Connections in use: %u\n",
 			   atomic_read(&t->conns_in_use));
 
+<<<<<<< HEAD
 		seq_printf(seq, "TID range: %u..%u", tid_start,
 			   tid_start + t->ntids - 1);
+=======
+		seq_printf(seq, "TID range: 0..%u", t->ntids - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_printf(seq, ", in use: %u\n",
 			   atomic_read(&t->tids_in_use));
 	}
@@ -3238,7 +3364,11 @@ DEFINE_SIMPLE_DEBUGFS_FILE(tid_info);
 static void add_debugfs_mem(struct adapter *adap, const char *name,
 			    unsigned int idx, unsigned int size_mb)
 {
+<<<<<<< HEAD
 	debugfs_create_file_size(name, 0400, adap->debugfs_root,
+=======
+	debugfs_create_file_size(name, S_IRUSR, adap->debugfs_root,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 (void *)adap + idx, &mem_debugfs_fops,
 				 size_mb << 20);
 }
@@ -3294,6 +3424,21 @@ static const struct file_operations blocked_fl_fops = {
 	.llseek  = generic_file_llseek,
 };
 
+<<<<<<< HEAD
+=======
+struct mem_desc {
+	unsigned int base;
+	unsigned int limit;
+	unsigned int idx;
+};
+
+static int mem_desc_cmp(const void *a, const void *b)
+{
+	return ((const struct mem_desc *)a)->base -
+	       ((const struct mem_desc *)b)->base;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mem_region_show(struct seq_file *seq, const char *name,
 			    unsigned int from, unsigned int to)
 {
@@ -3307,6 +3452,7 @@ static void mem_region_show(struct seq_file *seq, const char *name,
 static int meminfo_show(struct seq_file *seq, void *v)
 {
 	static const char * const memory[] = { "EDC0:", "EDC1:", "MC:",
+<<<<<<< HEAD
 					       "MC0:", "MC1:", "HMA:"};
 	struct adapter *adap = seq->private;
 	struct cudbg_meminfo meminfo;
@@ -3363,6 +3509,252 @@ static int meminfo_show(struct seq_file *seq, void *v)
 			   i, meminfo.loopback_used[i],
 			   meminfo.loopback_alloc[i]);
 
+=======
+					"MC0:", "MC1:"};
+	static const char * const region[] = {
+		"DBQ contexts:", "IMSG contexts:", "FLM cache:", "TCBs:",
+		"Pstructs:", "Timers:", "Rx FL:", "Tx FL:", "Pstruct FL:",
+		"Tx payload:", "Rx payload:", "LE hash:", "iSCSI region:",
+		"TDDP region:", "TPT region:", "STAG region:", "RQ region:",
+		"RQUDP region:", "PBL region:", "TXPBL region:",
+		"DBVFIFO region:", "ULPRX state:", "ULPTX state:",
+		"On-chip queues:"
+	};
+
+	int i, n;
+	u32 lo, hi, used, alloc;
+	struct mem_desc avail[4];
+	struct mem_desc mem[ARRAY_SIZE(region) + 3];      /* up to 3 holes */
+	struct mem_desc *md = mem;
+	struct adapter *adap = seq->private;
+
+	for (i = 0; i < ARRAY_SIZE(mem); i++) {
+		mem[i].limit = 0;
+		mem[i].idx = i;
+	}
+
+	/* Find and sort the populated memory ranges */
+	i = 0;
+	lo = t4_read_reg(adap, MA_TARGET_MEM_ENABLE_A);
+	if (lo & EDRAM0_ENABLE_F) {
+		hi = t4_read_reg(adap, MA_EDRAM0_BAR_A);
+		avail[i].base = EDRAM0_BASE_G(hi) << 20;
+		avail[i].limit = avail[i].base + (EDRAM0_SIZE_G(hi) << 20);
+		avail[i].idx = 0;
+		i++;
+	}
+	if (lo & EDRAM1_ENABLE_F) {
+		hi = t4_read_reg(adap, MA_EDRAM1_BAR_A);
+		avail[i].base = EDRAM1_BASE_G(hi) << 20;
+		avail[i].limit = avail[i].base + (EDRAM1_SIZE_G(hi) << 20);
+		avail[i].idx = 1;
+		i++;
+	}
+
+	if (is_t5(adap->params.chip)) {
+		if (lo & EXT_MEM0_ENABLE_F) {
+			hi = t4_read_reg(adap, MA_EXT_MEMORY0_BAR_A);
+			avail[i].base = EXT_MEM0_BASE_G(hi) << 20;
+			avail[i].limit =
+				avail[i].base + (EXT_MEM0_SIZE_G(hi) << 20);
+			avail[i].idx = 3;
+			i++;
+		}
+		if (lo & EXT_MEM1_ENABLE_F) {
+			hi = t4_read_reg(adap, MA_EXT_MEMORY1_BAR_A);
+			avail[i].base = EXT_MEM1_BASE_G(hi) << 20;
+			avail[i].limit =
+				avail[i].base + (EXT_MEM1_SIZE_G(hi) << 20);
+			avail[i].idx = 4;
+			i++;
+		}
+	} else {
+		if (lo & EXT_MEM_ENABLE_F) {
+			hi = t4_read_reg(adap, MA_EXT_MEMORY_BAR_A);
+			avail[i].base = EXT_MEM_BASE_G(hi) << 20;
+			avail[i].limit =
+				avail[i].base + (EXT_MEM_SIZE_G(hi) << 20);
+			avail[i].idx = 2;
+			i++;
+		}
+	}
+	if (!i)                                    /* no memory available */
+		return 0;
+	sort(avail, i, sizeof(struct mem_desc), mem_desc_cmp, NULL);
+
+	(md++)->base = t4_read_reg(adap, SGE_DBQ_CTXT_BADDR_A);
+	(md++)->base = t4_read_reg(adap, SGE_IMSG_CTXT_BADDR_A);
+	(md++)->base = t4_read_reg(adap, SGE_FLM_CACHE_BADDR_A);
+	(md++)->base = t4_read_reg(adap, TP_CMM_TCB_BASE_A);
+	(md++)->base = t4_read_reg(adap, TP_CMM_MM_BASE_A);
+	(md++)->base = t4_read_reg(adap, TP_CMM_TIMER_BASE_A);
+	(md++)->base = t4_read_reg(adap, TP_CMM_MM_RX_FLST_BASE_A);
+	(md++)->base = t4_read_reg(adap, TP_CMM_MM_TX_FLST_BASE_A);
+	(md++)->base = t4_read_reg(adap, TP_CMM_MM_PS_FLST_BASE_A);
+
+	/* the next few have explicit upper bounds */
+	md->base = t4_read_reg(adap, TP_PMM_TX_BASE_A);
+	md->limit = md->base - 1 +
+		    t4_read_reg(adap, TP_PMM_TX_PAGE_SIZE_A) *
+		    PMTXMAXPAGE_G(t4_read_reg(adap, TP_PMM_TX_MAX_PAGE_A));
+	md++;
+
+	md->base = t4_read_reg(adap, TP_PMM_RX_BASE_A);
+	md->limit = md->base - 1 +
+		    t4_read_reg(adap, TP_PMM_RX_PAGE_SIZE_A) *
+		    PMRXMAXPAGE_G(t4_read_reg(adap, TP_PMM_RX_MAX_PAGE_A));
+	md++;
+
+	if (t4_read_reg(adap, LE_DB_CONFIG_A) & HASHEN_F) {
+		if (CHELSIO_CHIP_VERSION(adap->params.chip) <= CHELSIO_T5) {
+			hi = t4_read_reg(adap, LE_DB_TID_HASHBASE_A) / 4;
+			md->base = t4_read_reg(adap, LE_DB_HASH_TID_BASE_A);
+		 } else {
+			hi = t4_read_reg(adap, LE_DB_HASH_TID_BASE_A);
+			md->base = t4_read_reg(adap,
+					       LE_DB_HASH_TBL_BASE_ADDR_A);
+		}
+		md->limit = 0;
+	} else {
+		md->base = 0;
+		md->idx = ARRAY_SIZE(region);  /* hide it */
+	}
+	md++;
+
+#define ulp_region(reg) do { \
+	md->base = t4_read_reg(adap, ULP_ ## reg ## _LLIMIT_A);\
+	(md++)->limit = t4_read_reg(adap, ULP_ ## reg ## _ULIMIT_A); \
+} while (0)
+
+	ulp_region(RX_ISCSI);
+	ulp_region(RX_TDDP);
+	ulp_region(TX_TPT);
+	ulp_region(RX_STAG);
+	ulp_region(RX_RQ);
+	ulp_region(RX_RQUDP);
+	ulp_region(RX_PBL);
+	ulp_region(TX_PBL);
+#undef ulp_region
+	md->base = 0;
+	md->idx = ARRAY_SIZE(region);
+	if (!is_t4(adap->params.chip)) {
+		u32 size = 0;
+		u32 sge_ctrl = t4_read_reg(adap, SGE_CONTROL2_A);
+		u32 fifo_size = t4_read_reg(adap, SGE_DBVFIFO_SIZE_A);
+
+		if (is_t5(adap->params.chip)) {
+			if (sge_ctrl & VFIFO_ENABLE_F)
+				size = DBVFIFO_SIZE_G(fifo_size);
+		} else {
+			size = T6_DBVFIFO_SIZE_G(fifo_size);
+		}
+
+		if (size) {
+			md->base = BASEADDR_G(t4_read_reg(adap,
+					SGE_DBVFIFO_BADDR_A));
+			md->limit = md->base + (size << 2) - 1;
+		}
+	}
+
+	md++;
+
+	md->base = t4_read_reg(adap, ULP_RX_CTX_BASE_A);
+	md->limit = 0;
+	md++;
+	md->base = t4_read_reg(adap, ULP_TX_ERR_TABLE_BASE_A);
+	md->limit = 0;
+	md++;
+
+	md->base = adap->vres.ocq.start;
+	if (adap->vres.ocq.size)
+		md->limit = md->base + adap->vres.ocq.size - 1;
+	else
+		md->idx = ARRAY_SIZE(region);  /* hide it */
+	md++;
+
+	/* add any address-space holes, there can be up to 3 */
+	for (n = 0; n < i - 1; n++)
+		if (avail[n].limit < avail[n + 1].base)
+			(md++)->base = avail[n].limit;
+	if (avail[n].limit)
+		(md++)->base = avail[n].limit;
+
+	n = md - mem;
+	sort(mem, n, sizeof(struct mem_desc), mem_desc_cmp, NULL);
+
+	for (lo = 0; lo < i; lo++)
+		mem_region_show(seq, memory[avail[lo].idx], avail[lo].base,
+				avail[lo].limit - 1);
+
+	seq_putc(seq, '\n');
+	for (i = 0; i < n; i++) {
+		if (mem[i].idx >= ARRAY_SIZE(region))
+			continue;                        /* skip holes */
+		if (!mem[i].limit)
+			mem[i].limit = i < n - 1 ? mem[i + 1].base - 1 : ~0;
+		mem_region_show(seq, region[mem[i].idx], mem[i].base,
+				mem[i].limit);
+	}
+
+	seq_putc(seq, '\n');
+	lo = t4_read_reg(adap, CIM_SDRAM_BASE_ADDR_A);
+	hi = t4_read_reg(adap, CIM_SDRAM_ADDR_SIZE_A) + lo - 1;
+	mem_region_show(seq, "uP RAM:", lo, hi);
+
+	lo = t4_read_reg(adap, CIM_EXTMEM2_BASE_ADDR_A);
+	hi = t4_read_reg(adap, CIM_EXTMEM2_ADDR_SIZE_A) + lo - 1;
+	mem_region_show(seq, "uP Extmem2:", lo, hi);
+
+	lo = t4_read_reg(adap, TP_PMM_RX_MAX_PAGE_A);
+	seq_printf(seq, "\n%u Rx pages of size %uKiB for %u channels\n",
+		   PMRXMAXPAGE_G(lo),
+		   t4_read_reg(adap, TP_PMM_RX_PAGE_SIZE_A) >> 10,
+		   (lo & PMRXNUMCHN_F) ? 2 : 1);
+
+	lo = t4_read_reg(adap, TP_PMM_TX_MAX_PAGE_A);
+	hi = t4_read_reg(adap, TP_PMM_TX_PAGE_SIZE_A);
+	seq_printf(seq, "%u Tx pages of size %u%ciB for %u channels\n",
+		   PMTXMAXPAGE_G(lo),
+		   hi >= (1 << 20) ? (hi >> 20) : (hi >> 10),
+		   hi >= (1 << 20) ? 'M' : 'K', 1 << PMTXNUMCHN_G(lo));
+	seq_printf(seq, "%u p-structs\n\n",
+		   t4_read_reg(adap, TP_CMM_MM_MAX_PSTRUCT_A));
+
+	for (i = 0; i < 4; i++) {
+		if (CHELSIO_CHIP_VERSION(adap->params.chip) > CHELSIO_T5)
+			lo = t4_read_reg(adap, MPS_RX_MAC_BG_PG_CNT0_A + i * 4);
+		else
+			lo = t4_read_reg(adap, MPS_RX_PG_RSV0_A + i * 4);
+		if (is_t5(adap->params.chip)) {
+			used = T5_USED_G(lo);
+			alloc = T5_ALLOC_G(lo);
+		} else {
+			used = USED_G(lo);
+			alloc = ALLOC_G(lo);
+		}
+		/* For T6 these are MAC buffer groups */
+		seq_printf(seq, "Port %d using %u pages out of %u allocated\n",
+			   i, used, alloc);
+	}
+	for (i = 0; i < adap->params.arch.nchan; i++) {
+		if (CHELSIO_CHIP_VERSION(adap->params.chip) > CHELSIO_T5)
+			lo = t4_read_reg(adap,
+					 MPS_RX_LPBK_BG_PG_CNT0_A + i * 4);
+		else
+			lo = t4_read_reg(adap, MPS_RX_PG_RSV4_A + i * 4);
+		if (is_t5(adap->params.chip)) {
+			used = T5_USED_G(lo);
+			alloc = T5_ALLOC_G(lo);
+		} else {
+			used = USED_G(lo);
+			alloc = ALLOC_G(lo);
+		}
+		/* For T6 these are MAC buffer groups */
+		seq_printf(seq,
+			   "Loopback %d using %u pages out of %u allocated\n",
+			   i, used, alloc);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3396,8 +3788,11 @@ static int chcr_show(struct seq_file *seq, void *v)
 		   atomic_read(&adap->chcr_stats.error));
 	seq_printf(seq, "Fallback: %10u \n",
 		   atomic_read(&adap->chcr_stats.fallback));
+<<<<<<< HEAD
 	seq_printf(seq, "IPSec PDU: %10u\n",
 		   atomic_read(&adap->chcr_stats.ipsec_cnt));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3414,6 +3809,7 @@ static const struct file_operations chcr_stats_debugfs_fops = {
         .llseek  = seq_lseek,
         .release = single_release,
 };
+<<<<<<< HEAD
 
 #define PRINT_ADAP_STATS(string, value) \
 	seq_printf(seq, "%-25s %-20llu\n", (string), \
@@ -3577,6 +3973,8 @@ static int tp_stats_show(struct seq_file *seq, void *v)
 
 DEFINE_SIMPLE_DEBUGFS_FILE(tp_stats);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Add an array of Debug FS files.
  */
 void add_debugfs_files(struct adapter *adap,
@@ -3600,6 +3998,7 @@ int t4_setup_debugfs(struct adapter *adap)
 	struct dentry *de;
 
 	static struct t4_debugfs_entry t4_debugfs_files[] = {
+<<<<<<< HEAD
 		{ "cim_la", &cim_la_fops, 0400, 0 },
 		{ "cim_pif_la", &cim_pif_la_fops, 0400, 0 },
 		{ "cim_ma_la", &cim_ma_la_fops, 0400, 0 },
@@ -3657,13 +4056,72 @@ int t4_setup_debugfs(struct adapter *adap)
 		{ "meminfo", &meminfo_fops, 0400, 0 },
 		{ "crypto", &chcr_stats_debugfs_fops, 0400, 0 },
 		{ "tp_stats", &tp_stats_debugfs_fops, 0400, 0 },
+=======
+		{ "cim_la", &cim_la_fops, S_IRUSR, 0 },
+		{ "cim_pif_la", &cim_pif_la_fops, S_IRUSR, 0 },
+		{ "cim_ma_la", &cim_ma_la_fops, S_IRUSR, 0 },
+		{ "cim_qcfg", &cim_qcfg_fops, S_IRUSR, 0 },
+		{ "clk", &clk_debugfs_fops, S_IRUSR, 0 },
+		{ "devlog", &devlog_fops, S_IRUSR, 0 },
+		{ "mboxlog", &mboxlog_fops, S_IRUSR, 0 },
+		{ "mbox0", &mbox_debugfs_fops, S_IRUSR | S_IWUSR, 0 },
+		{ "mbox1", &mbox_debugfs_fops, S_IRUSR | S_IWUSR, 1 },
+		{ "mbox2", &mbox_debugfs_fops, S_IRUSR | S_IWUSR, 2 },
+		{ "mbox3", &mbox_debugfs_fops, S_IRUSR | S_IWUSR, 3 },
+		{ "mbox4", &mbox_debugfs_fops, S_IRUSR | S_IWUSR, 4 },
+		{ "mbox5", &mbox_debugfs_fops, S_IRUSR | S_IWUSR, 5 },
+		{ "mbox6", &mbox_debugfs_fops, S_IRUSR | S_IWUSR, 6 },
+		{ "mbox7", &mbox_debugfs_fops, S_IRUSR | S_IWUSR, 7 },
+		{ "trace0", &mps_trc_debugfs_fops, S_IRUSR | S_IWUSR, 0 },
+		{ "trace1", &mps_trc_debugfs_fops, S_IRUSR | S_IWUSR, 1 },
+		{ "trace2", &mps_trc_debugfs_fops, S_IRUSR | S_IWUSR, 2 },
+		{ "trace3", &mps_trc_debugfs_fops, S_IRUSR | S_IWUSR, 3 },
+		{ "l2t", &t4_l2t_fops, S_IRUSR, 0},
+		{ "mps_tcam", &mps_tcam_debugfs_fops, S_IRUSR, 0 },
+		{ "rss", &rss_debugfs_fops, S_IRUSR, 0 },
+		{ "rss_config", &rss_config_debugfs_fops, S_IRUSR, 0 },
+		{ "rss_key", &rss_key_debugfs_fops, S_IRUSR, 0 },
+		{ "rss_pf_config", &rss_pf_config_debugfs_fops, S_IRUSR, 0 },
+		{ "rss_vf_config", &rss_vf_config_debugfs_fops, S_IRUSR, 0 },
+		{ "sge_qinfo", &sge_qinfo_debugfs_fops, S_IRUSR, 0 },
+		{ "ibq_tp0",  &cim_ibq_fops, S_IRUSR, 0 },
+		{ "ibq_tp1",  &cim_ibq_fops, S_IRUSR, 1 },
+		{ "ibq_ulp",  &cim_ibq_fops, S_IRUSR, 2 },
+		{ "ibq_sge0", &cim_ibq_fops, S_IRUSR, 3 },
+		{ "ibq_sge1", &cim_ibq_fops, S_IRUSR, 4 },
+		{ "ibq_ncsi", &cim_ibq_fops, S_IRUSR, 5 },
+		{ "obq_ulp0", &cim_obq_fops, S_IRUSR, 0 },
+		{ "obq_ulp1", &cim_obq_fops, S_IRUSR, 1 },
+		{ "obq_ulp2", &cim_obq_fops, S_IRUSR, 2 },
+		{ "obq_ulp3", &cim_obq_fops, S_IRUSR, 3 },
+		{ "obq_sge",  &cim_obq_fops, S_IRUSR, 4 },
+		{ "obq_ncsi", &cim_obq_fops, S_IRUSR, 5 },
+		{ "tp_la", &tp_la_fops, S_IRUSR, 0 },
+		{ "ulprx_la", &ulprx_la_fops, S_IRUSR, 0 },
+		{ "sensors", &sensors_debugfs_fops, S_IRUSR, 0 },
+		{ "pm_stats", &pm_stats_debugfs_fops, S_IRUSR, 0 },
+		{ "tx_rate", &tx_rate_debugfs_fops, S_IRUSR, 0 },
+		{ "cctrl", &cctrl_tbl_debugfs_fops, S_IRUSR, 0 },
+#if IS_ENABLED(CONFIG_IPV6)
+		{ "clip_tbl", &clip_tbl_debugfs_fops, S_IRUSR, 0 },
+#endif
+		{ "tids", &tid_info_debugfs_fops, S_IRUSR, 0},
+		{ "blocked_fl", &blocked_fl_fops, S_IRUSR | S_IWUSR, 0 },
+		{ "meminfo", &meminfo_fops, S_IRUSR, 0 },
+		{ "crypto", &chcr_stats_debugfs_fops, S_IRUSR, 0 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* Debug FS nodes common to all T5 and later adapters.
 	 */
 	static struct t4_debugfs_entry t5_debugfs_files[] = {
+<<<<<<< HEAD
 		{ "obq_sge_rx_q0", &cim_obq_fops, 0400, 6 },
 		{ "obq_sge_rx_q1", &cim_obq_fops, 0400, 7 },
+=======
+		{ "obq_sge_rx_q0", &cim_obq_fops, S_IRUSR, 6 },
+		{ "obq_sge_rx_q1", &cim_obq_fops, S_IRUSR, 7 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	add_debugfs_files(adap,
@@ -3700,6 +4158,7 @@ int t4_setup_debugfs(struct adapter *adap)
 			add_debugfs_mem(adap, "mc", MEM_MC,
 					EXT_MEM_SIZE_G(size));
 		}
+<<<<<<< HEAD
 
 		if (i & HMA_MUX_F) {
 			size = t4_read_reg(adap, MA_EXT_MEMORY1_BAR_A);
@@ -3713,6 +4172,15 @@ int t4_setup_debugfs(struct adapter *adap)
 	debugfs_create_bool("use_backdoor", 0600,
 			    adap->debugfs_root, &adap->use_bd);
 	debugfs_create_bool("trace_rss", 0600,
+=======
+	}
+
+	de = debugfs_create_file_size("flash", S_IRUSR, adap->debugfs_root, adap,
+				      &flash_debugfs_fops, adap->params.sf_size);
+	debugfs_create_bool("use_backdoor", S_IWUSR | S_IRUSR,
+			    adap->debugfs_root, &adap->use_bd);
+	debugfs_create_bool("trace_rss", S_IWUSR | S_IRUSR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    adap->debugfs_root, &adap->trace_rss);
 
 	return 0;

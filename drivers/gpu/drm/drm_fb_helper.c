@@ -30,7 +30,10 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include <linux/console.h>
+<<<<<<< HEAD
 #include <linux/dma-buf.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/sysrq.h>
 #include <linux/slab.h>
@@ -42,7 +45,10 @@
 #include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
 
+<<<<<<< HEAD
 #include "drm_crtc_internal.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "drm_crtc_helper_internal.h"
 
 static bool drm_fbdev_emulation = true;
@@ -56,6 +62,7 @@ MODULE_PARM_DESC(drm_fbdev_overalloc,
 		 "Overallocation of the fbdev buffer (%) [default="
 		 __MODULE_STRING(CONFIG_DRM_FBDEV_OVERALLOC) "]");
 
+<<<<<<< HEAD
 /*
  * In order to keep user-space compatibility, we want in certain use-cases
  * to keep leaking the fbdev physical address to the user-space program
@@ -75,6 +82,8 @@ MODULE_PARM_DESC(fbdev_emulation,
 		 "Allow unsafe leaking fbdev physical smem address [default=false]");
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static LIST_HEAD(kernel_fb_helper_list);
 static DEFINE_MUTEX(kernel_fb_helper_lock);
 
@@ -86,6 +95,7 @@ static DEFINE_MUTEX(kernel_fb_helper_lock);
  * helper functions used by many drivers to implement the kernel mode setting
  * interfaces.
  *
+<<<<<<< HEAD
  * Drivers that support a dumb buffer with a virtual address and mmap support,
  * should try out the generic fbdev emulation using drm_fbdev_generic_setup().
  *
@@ -106,6 +116,21 @@ static DEFINE_MUTEX(kernel_fb_helper_lock);
  *
  * For suspend/resume consider using drm_mode_config_helper_suspend() and
  * drm_mode_config_helper_resume() which takes care of fbdev as well.
+=======
+ * Initialization is done as a four-step process with drm_fb_helper_prepare(),
+ * drm_fb_helper_init(), drm_fb_helper_single_add_all_connectors() and
+ * drm_fb_helper_initial_config(). Drivers with fancier requirements than the
+ * default behaviour can override the third step with their own code.
+ * Teardown is done with drm_fb_helper_fini() after the fbdev device is
+ * unregisters using drm_fb_helper_unregister_fbi().
+ *
+ * At runtime drivers should restore the fbdev console by calling
+ * drm_fb_helper_restore_fbdev_mode_unlocked() from their &drm_driver.lastclose
+ * callback.  They should also notify the fb helper code from updates to the
+ * output configuration by calling drm_fb_helper_hotplug_event(). For easier
+ * integration with the output polling code in drm_crtc_helper.c the modeset
+ * code provides a &drm_mode_config_funcs.output_poll_changed callback.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * All other functions exported by the fb helper library can be used to
  * implement the fbdev driver interface by the driver.
@@ -130,8 +155,12 @@ static DEFINE_MUTEX(kernel_fb_helper_lock);
  * always run in process context since the fb_*() function could be running in
  * atomic context. If drm_fb_helper_deferred_io() is used as the deferred_io
  * callback it will also schedule dirty_work with the damage collected from the
+<<<<<<< HEAD
  * mmap page writes. Drivers can use drm_fb_helper_defio_init() to setup
  * deferred I/O (coupled with drm_fb_helper_fbdev_teardown()).
+=======
+ * mmap page writes.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define drm_fb_helper_for_each_connector(fbh, i__) \
@@ -179,9 +208,12 @@ int drm_fb_helper_add_one_connector(struct drm_fb_helper *fb_helper,
 {
 	int err;
 
+<<<<<<< HEAD
 	if (!fb_helper)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&fb_helper->lock);
 	err = __drm_fb_helper_add_one_connector(fb_helper, connector);
 	mutex_unlock(&fb_helper->lock);
@@ -193,7 +225,11 @@ EXPORT_SYMBOL(drm_fb_helper_add_one_connector);
 /**
  * drm_fb_helper_single_add_all_connectors() - add all connectors to fbdev
  * 					       emulation helper
+<<<<<<< HEAD
  * @fb_helper: fbdev initialized with drm_fb_helper_init, can be NULL
+=======
+ * @fb_helper: fbdev initialized with drm_fb_helper_init
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This functions adds all the available connectors for use with the given
  * fb_helper. This is a separate step to allow drivers to freely assign
@@ -206,11 +242,16 @@ EXPORT_SYMBOL(drm_fb_helper_add_one_connector);
  */
 int drm_fb_helper_single_add_all_connectors(struct drm_fb_helper *fb_helper)
 {
+<<<<<<< HEAD
 	struct drm_device *dev;
+=======
+	struct drm_device *dev = fb_helper->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_connector *connector;
 	struct drm_connector_list_iter conn_iter;
 	int i, ret = 0;
 
+<<<<<<< HEAD
 	if (!drm_fbdev_emulation || !fb_helper)
 		return 0;
 
@@ -222,6 +263,14 @@ int drm_fb_helper_single_add_all_connectors(struct drm_fb_helper *fb_helper)
 		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
 			continue;
 
+=======
+	if (!drm_fbdev_emulation)
+		return 0;
+
+	mutex_lock(&fb_helper->lock);
+	drm_connector_list_iter_begin(dev, &conn_iter);
+	drm_for_each_connector_iter(connector, &conn_iter) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = __drm_fb_helper_add_one_connector(fb_helper, connector);
 		if (ret)
 			goto fail;
@@ -282,9 +331,12 @@ int drm_fb_helper_remove_one_connector(struct drm_fb_helper *fb_helper,
 {
 	int err;
 
+<<<<<<< HEAD
 	if (!fb_helper)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&fb_helper->lock);
 	err = __drm_fb_helper_remove_one_connector(fb_helper, connector);
 	mutex_unlock(&fb_helper->lock);
@@ -390,10 +442,17 @@ EXPORT_SYMBOL(drm_fb_helper_debug_leave);
 static int restore_fbdev_mode_atomic(struct drm_fb_helper *fb_helper, bool active)
 {
 	struct drm_device *dev = fb_helper->dev;
+<<<<<<< HEAD
 	struct drm_plane_state *plane_state;
 	struct drm_plane *plane;
 	struct drm_atomic_state *state;
 	int i, ret;
+=======
+	struct drm_plane *plane;
+	struct drm_atomic_state *state;
+	int i, ret;
+	unsigned int plane_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_modeset_acquire_ctx ctx;
 
 	drm_modeset_acquire_init(&ctx, 0);
@@ -406,7 +465,14 @@ static int restore_fbdev_mode_atomic(struct drm_fb_helper *fb_helper, bool activ
 
 	state->acquire_ctx = &ctx;
 retry:
+<<<<<<< HEAD
 	drm_for_each_plane(plane, dev) {
+=======
+	plane_mask = 0;
+	drm_for_each_plane(plane, dev) {
+		struct drm_plane_state *plane_state;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		plane_state = drm_atomic_get_plane_state(state, plane);
 		if (IS_ERR(plane_state)) {
 			ret = PTR_ERR(plane_state);
@@ -415,6 +481,12 @@ retry:
 
 		plane_state->rotation = DRM_MODE_ROTATE_0;
 
+<<<<<<< HEAD
+=======
+		plane->old_fb = plane->fb;
+		plane_mask |= 1 << drm_plane_index(plane);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* disable non-primary: */
 		if (plane->type == DRM_PLANE_TYPE_PRIMARY)
 			continue;
@@ -426,11 +498,14 @@ retry:
 
 	for (i = 0; i < fb_helper->crtc_count; i++) {
 		struct drm_mode_set *mode_set = &fb_helper->crtc_info[i].mode_set;
+<<<<<<< HEAD
 		struct drm_plane *primary = mode_set->crtc->primary;
 
 		/* Cannot fail as we've already gotten the plane state above */
 		plane_state = drm_atomic_get_new_plane_state(state, primary);
 		plane_state->rotation = fb_helper->crtc_info[i].rotation;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = __drm_atomic_helper_set_config(mode_set, state);
 		if (ret != 0)
@@ -451,6 +526,11 @@ retry:
 	ret = drm_atomic_commit(state);
 
 out_state:
+<<<<<<< HEAD
+=======
+	drm_atomic_clean_old_fb(dev, plane_mask, ret);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret == -EDEADLK)
 		goto backoff;
 
@@ -521,7 +601,11 @@ static int restore_fbdev_mode(struct drm_fb_helper *fb_helper)
 
 /**
  * drm_fb_helper_restore_fbdev_mode_unlocked - restore fbdev configuration
+<<<<<<< HEAD
  * @fb_helper: driver-allocated fbdev helper, can be NULL
+=======
+ * @fb_helper: fbcon to restore
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This should be called from driver's drm &drm_driver.lastclose callback
  * when implementing an fbcon on top of kms using this helper. This ensures that
@@ -535,7 +619,11 @@ int drm_fb_helper_restore_fbdev_mode_unlocked(struct drm_fb_helper *fb_helper)
 	bool do_delayed;
 	int ret;
 
+<<<<<<< HEAD
 	if (!drm_fbdev_emulation || !fb_helper)
+=======
+	if (!drm_fbdev_emulation)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	if (READ_ONCE(fb_helper->deferred_setup))
@@ -764,6 +852,7 @@ static void drm_fb_helper_resume_worker(struct work_struct *work)
 	console_unlock();
 }
 
+<<<<<<< HEAD
 static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
 					  struct drm_clip_rect *clip)
 {
@@ -782,6 +871,8 @@ static void drm_fb_helper_dirty_blit_real(struct drm_fb_helper *fb_helper,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void drm_fb_helper_dirty_work(struct work_struct *work)
 {
 	struct drm_fb_helper *helper = container_of(work, struct drm_fb_helper,
@@ -797,12 +888,17 @@ static void drm_fb_helper_dirty_work(struct work_struct *work)
 	spin_unlock_irqrestore(&helper->dirty_lock, flags);
 
 	/* call dirty callback only when it has been really touched */
+<<<<<<< HEAD
 	if (clip_copy.x1 < clip_copy.x2 && clip_copy.y1 < clip_copy.y2) {
 		/* Generic fbdev uses a shadow buffer */
 		if (helper->buffer)
 			drm_fb_helper_dirty_blit_real(helper, &clip_copy);
 		helper->fb->funcs->dirty(helper->fb, NULL, 0, 0, &clip_copy, 1);
 	}
+=======
+	if (clip_copy.x1 < clip_copy.x2 && clip_copy.y1 < clip_copy.y2)
+		helper->fb->funcs->dirty(helper->fb, NULL, 0, 0, &clip_copy, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -852,10 +948,15 @@ int drm_fb_helper_init(struct drm_device *dev,
 	struct drm_mode_config *config = &dev->mode_config;
 	int i;
 
+<<<<<<< HEAD
 	if (!drm_fbdev_emulation) {
 		dev->fb_helper = fb_helper;
 		return 0;
 	}
+=======
+	if (!drm_fbdev_emulation)
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!max_conn_count)
 		return -EINVAL;
@@ -882,7 +983,10 @@ int drm_fb_helper_init(struct drm_device *dev,
 		if (!fb_helper->crtc_info[i].mode_set.connectors)
 			goto out_free;
 		fb_helper->crtc_info[i].mode_set.num_connectors = 0;
+<<<<<<< HEAD
 		fb_helper->crtc_info[i].rotation = DRM_MODE_ROTATE_0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	i = 0;
@@ -891,8 +995,11 @@ int drm_fb_helper_init(struct drm_device *dev,
 		i++;
 	}
 
+<<<<<<< HEAD
 	dev->fb_helper = fb_helper;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 out_free:
 	drm_fb_helper_crtc_free(fb_helper);
@@ -947,7 +1054,11 @@ EXPORT_SYMBOL(drm_fb_helper_alloc_fbi);
 
 /**
  * drm_fb_helper_unregister_fbi - unregister fb_info framebuffer device
+<<<<<<< HEAD
  * @fb_helper: driver-allocated fbdev helper, can be NULL
+=======
+ * @fb_helper: driver-allocated fbdev helper
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * A wrapper around unregister_framebuffer, to release the fb_info
  * framebuffer device. This must be called before releasing all resources for
@@ -962,7 +1073,11 @@ EXPORT_SYMBOL(drm_fb_helper_unregister_fbi);
 
 /**
  * drm_fb_helper_fini - finialize a &struct drm_fb_helper
+<<<<<<< HEAD
  * @fb_helper: driver-allocated fbdev helper, can be NULL
+=======
+ * @fb_helper: driver-allocated fbdev helper
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This cleans up all remaining resources associated with @fb_helper. Must be
  * called after drm_fb_helper_unlink_fbi() was called.
@@ -971,6 +1086,7 @@ void drm_fb_helper_fini(struct drm_fb_helper *fb_helper)
 {
 	struct fb_info *info;
 
+<<<<<<< HEAD
 	if (!fb_helper)
 		return;
 
@@ -982,6 +1098,11 @@ void drm_fb_helper_fini(struct drm_fb_helper *fb_helper)
 	cancel_work_sync(&fb_helper->resume_work);
 	cancel_work_sync(&fb_helper->dirty_work);
 
+=======
+	if (!drm_fbdev_emulation || !fb_helper)
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info = fb_helper->fbdev;
 	if (info) {
 		if (info->cmap.len)
@@ -990,6 +1111,12 @@ void drm_fb_helper_fini(struct drm_fb_helper *fb_helper)
 	}
 	fb_helper->fbdev = NULL;
 
+<<<<<<< HEAD
+=======
+	cancel_work_sync(&fb_helper->resume_work);
+	cancel_work_sync(&fb_helper->dirty_work);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&kernel_fb_helper_lock);
 	if (!list_empty(&fb_helper->kernel_fb_list)) {
 		list_del(&fb_helper->kernel_fb_list);
@@ -1006,7 +1133,11 @@ EXPORT_SYMBOL(drm_fb_helper_fini);
 
 /**
  * drm_fb_helper_unlink_fbi - wrapper around unlink_framebuffer
+<<<<<<< HEAD
  * @fb_helper: driver-allocated fbdev helper, can be NULL
+=======
+ * @fb_helper: driver-allocated fbdev helper
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * A wrapper around unlink_framebuffer implemented by fbdev core
  */
@@ -1071,6 +1202,7 @@ void drm_fb_helper_deferred_io(struct fb_info *info,
 EXPORT_SYMBOL(drm_fb_helper_deferred_io);
 
 /**
+<<<<<<< HEAD
  * drm_fb_helper_defio_init - fbdev deferred I/O initialization
  * @fb_helper: driver-allocated fbdev helper
  *
@@ -1114,6 +1246,8 @@ int drm_fb_helper_defio_init(struct drm_fb_helper *fb_helper)
 EXPORT_SYMBOL(drm_fb_helper_defio_init);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_fb_helper_sys_read - wrapper around fb_sys_read
  * @info: fb_info struct pointer
  * @buf: userspace buffer to read from framebuffer memory
@@ -1205,7 +1339,11 @@ EXPORT_SYMBOL(drm_fb_helper_sys_imageblit);
  * @info: fbdev registered by the helper
  * @rect: info about rectangle to fill
  *
+<<<<<<< HEAD
  * A wrapper around cfb_fillrect implemented by fbdev core
+=======
+ * A wrapper around cfb_imageblit implemented by fbdev core
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void drm_fb_helper_cfb_fillrect(struct fb_info *info,
 				const struct fb_fillrect *rect)
@@ -1250,7 +1388,11 @@ EXPORT_SYMBOL(drm_fb_helper_cfb_imageblit);
 
 /**
  * drm_fb_helper_set_suspend - wrapper around fb_set_suspend
+<<<<<<< HEAD
  * @fb_helper: driver-allocated fbdev helper, can be NULL
+=======
+ * @fb_helper: driver-allocated fbdev helper
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @suspend: whether to suspend or resume
  *
  * A wrapper around fb_set_suspend implemented by fbdev core.
@@ -1267,7 +1409,11 @@ EXPORT_SYMBOL(drm_fb_helper_set_suspend);
 /**
  * drm_fb_helper_set_suspend_unlocked - wrapper around fb_set_suspend that also
  *                                      takes the console lock
+<<<<<<< HEAD
  * @fb_helper: driver-allocated fbdev helper, can be NULL
+=======
+ * @fb_helper: driver-allocated fbdev helper
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @suspend: whether to suspend or resume
  *
  * A wrapper around fb_set_suspend() that takes the console lock. If the lock
@@ -1392,7 +1538,11 @@ static struct drm_property_blob *setcmap_new_gamma_lut(struct drm_crtc *crtc,
 	if (IS_ERR(gamma_lut))
 		return gamma_lut;
 
+<<<<<<< HEAD
 	lut = gamma_lut->data;
+=======
+	lut = (struct drm_color_lut *)gamma_lut->data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cmap->start || cmap->len != size) {
 		u16 *r = crtc->gamma_store;
 		u16 *g = r + crtc->gamma_size;
@@ -1702,7 +1852,11 @@ int drm_fb_helper_check_var(struct fb_var_screeninfo *var,
 	 * Changes struct fb_var_screeninfo are currently not pushed back
 	 * to KMS, hence fail if different settings are requested.
 	 */
+<<<<<<< HEAD
 	if (var->bits_per_pixel != fb->format->cpp[0] * 8 ||
+=======
+	if (var->bits_per_pixel > fb->format->cpp[0] * 8 ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    var->xres > fb->width || var->yres > fb->height ||
 	    var->xres_virtual > fb->width || var->yres_virtual > fb->height) {
 		DRM_DEBUG("fb requested width/height/bpp can't fit in current fb "
@@ -1728,6 +1882,14 @@ int drm_fb_helper_check_var(struct fb_var_screeninfo *var,
 	}
 
 	/*
+<<<<<<< HEAD
+=======
+	 * Likewise, bits_per_pixel should be rounded up to a supported value.
+	 */
+	var->bits_per_pixel = fb->format->cpp[0] * 8;
+
+	/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * drm fbdev emulation doesn't support changing the pixel format at all,
 	 * so reject all pixel format changing requests.
 	 */
@@ -1975,7 +2137,10 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	strcpy(fb_helper->fb->comm, "[fbcon]");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2136,9 +2301,12 @@ static bool drm_connector_enabled(struct drm_connector *connector, bool strict)
 {
 	bool enable;
 
+<<<<<<< HEAD
 	if (connector->display_info.non_desktop)
 		return false;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (strict)
 		enable = connector->status == connector_status_connected;
 	else
@@ -2158,8 +2326,12 @@ static void drm_enable_connectors(struct drm_fb_helper *fb_helper,
 		connector = fb_helper->connector_info[i]->connector;
 		enabled[i] = drm_connector_enabled(connector, true);
 		DRM_DEBUG_KMS("connector %d enabled? %s\n", connector->base.id,
+<<<<<<< HEAD
 			      connector->display_info.non_desktop ? "non desktop" : enabled[i] ? "yes" : "no");
 
+=======
+			  enabled[i] ? "yes" : "no");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		any_enabled |= enabled[i];
 	}
 
@@ -2210,11 +2382,15 @@ static bool drm_target_cloned(struct drm_fb_helper *fb_helper,
 		for (j = 0; j < i; j++) {
 			if (!enabled[j])
 				continue;
+<<<<<<< HEAD
 			if (!drm_mode_match(modes[j], modes[i],
 					    DRM_MODE_MATCH_TIMINGS |
 					    DRM_MODE_MATCH_CLOCK |
 					    DRM_MODE_MATCH_FLAGS |
 					    DRM_MODE_MATCH_3D_FLAGS))
+=======
+			if (!drm_mode_equal(modes[j], modes[i]))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				can_clone = false;
 		}
 	}
@@ -2234,11 +2410,15 @@ static bool drm_target_cloned(struct drm_fb_helper *fb_helper,
 
 		fb_helper_conn = fb_helper->connector_info[i];
 		list_for_each_entry(mode, &fb_helper_conn->connector->modes, head) {
+<<<<<<< HEAD
 			if (drm_mode_match(mode, dmt_mode,
 					   DRM_MODE_MATCH_TIMINGS |
 					   DRM_MODE_MATCH_CLOCK |
 					   DRM_MODE_MATCH_FLAGS |
 					   DRM_MODE_MATCH_3D_FLAGS))
+=======
+			if (drm_mode_equal(mode, dmt_mode))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				modes[i] = mode;
 		}
 		if (!modes[i])
@@ -2357,6 +2537,7 @@ retry:
 	return true;
 }
 
+<<<<<<< HEAD
 static bool connector_has_possible_crtc(struct drm_connector *connector,
 					struct drm_crtc *crtc)
 {
@@ -2371,6 +2552,8 @@ static bool connector_has_possible_crtc(struct drm_connector *connector,
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int drm_pick_crtcs(struct drm_fb_helper *fb_helper,
 			  struct drm_fb_helper_crtc **best_crtcs,
 			  struct drm_display_mode **modes,
@@ -2378,6 +2561,11 @@ static int drm_pick_crtcs(struct drm_fb_helper *fb_helper,
 {
 	int c, o;
 	struct drm_connector *connector;
+<<<<<<< HEAD
+=======
+	const struct drm_connector_helper_funcs *connector_funcs;
+	struct drm_encoder *encoder;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int my_score, best_score, score;
 	struct drm_fb_helper_crtc **crtcs, *crtc;
 	struct drm_fb_helper_connector *fb_helper_conn;
@@ -2393,7 +2581,11 @@ static int drm_pick_crtcs(struct drm_fb_helper *fb_helper,
 	if (modes[n] == NULL)
 		return best_score;
 
+<<<<<<< HEAD
 	crtcs = kcalloc(fb_helper->connector_count,
+=======
+	crtcs = kzalloc(fb_helper->connector_count *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sizeof(struct drm_fb_helper_crtc *), GFP_KERNEL);
 	if (!crtcs)
 		return best_score;
@@ -2406,6 +2598,25 @@ static int drm_pick_crtcs(struct drm_fb_helper *fb_helper,
 	if (drm_has_preferred_mode(fb_helper_conn, width, height))
 		my_score++;
 
+<<<<<<< HEAD
+=======
+	connector_funcs = connector->helper_private;
+
+	/*
+	 * If the DRM device implements atomic hooks and ->best_encoder() is
+	 * NULL we fallback to the default drm_atomic_helper_best_encoder()
+	 * helper.
+	 */
+	if (drm_drv_uses_atomic_modeset(fb_helper->dev) &&
+	    !connector_funcs->best_encoder)
+		encoder = drm_atomic_helper_best_encoder(connector);
+	else
+		encoder = connector_funcs->best_encoder(connector);
+
+	if (!encoder)
+		goto out;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * select a crtc for this connector and then attempt to configure
 	 * remaining connectors
@@ -2413,8 +2624,12 @@ static int drm_pick_crtcs(struct drm_fb_helper *fb_helper,
 	for (c = 0; c < fb_helper->crtc_count; c++) {
 		crtc = &fb_helper->crtc_info[c];
 
+<<<<<<< HEAD
 		if (!connector_has_possible_crtc(connector,
 						 crtc->mode_set.crtc))
+=======
+		if ((encoder->possible_crtcs & (1 << c)) == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		for (o = 0; o < n; o++)
@@ -2441,11 +2656,16 @@ static int drm_pick_crtcs(struct drm_fb_helper *fb_helper,
 			       sizeof(struct drm_fb_helper_crtc *));
 		}
 	}
+<<<<<<< HEAD
 
+=======
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(crtcs);
 	return best_score;
 }
 
+<<<<<<< HEAD
 /*
  * This function checks if rotation is necessary because of panel orientation
  * and if it is, if it is supported.
@@ -2502,6 +2722,8 @@ static void drm_setup_crtc_rotation(struct drm_fb_helper *fb_helper,
 	fb_helper->sw_rotations |= DRM_MODE_ROTATE_0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void drm_setup_crtcs(struct drm_fb_helper *fb_helper,
 			    u32 width, u32 height)
 {
@@ -2561,7 +2783,10 @@ static void drm_setup_crtcs(struct drm_fb_helper *fb_helper,
 		drm_fb_helper_modeset_release(fb_helper,
 					      &fb_helper->crtc_info[i].mode_set);
 
+<<<<<<< HEAD
 	fb_helper->sw_rotations = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_fb_helper_for_each_connector(fb_helper, i) {
 		struct drm_display_mode *mode = modes[i];
 		struct drm_fb_helper_crtc *fb_crtc = crtcs[i];
@@ -2581,7 +2806,10 @@ static void drm_setup_crtcs(struct drm_fb_helper *fb_helper,
 			modeset->mode = drm_mode_duplicate(dev,
 							   fb_crtc->desired_mode);
 			drm_connector_get(connector);
+<<<<<<< HEAD
 			drm_setup_crtc_rotation(fb_helper, fb_crtc, connector);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			modeset->connectors[modeset->num_connectors++] = connector;
 			modeset->x = offset->x;
 			modeset->y = offset->y;
@@ -2623,6 +2851,7 @@ static void drm_setup_crtcs_fb(struct drm_fb_helper *fb_helper)
 		}
 	}
 	mutex_unlock(&fb_helper->dev->mode_config.mutex);
+<<<<<<< HEAD
 
 	switch (fb_helper->sw_rotations) {
 	case DRM_MODE_ROTATE_0:
@@ -2645,6 +2874,8 @@ static void drm_setup_crtcs_fb(struct drm_fb_helper *fb_helper)
 		 */
 		info->fbcon_rotate_hint = FB_ROTATE_UR;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Note: Drops fb_helper->lock before returning. */
@@ -2760,7 +2991,11 @@ EXPORT_SYMBOL(drm_fb_helper_initial_config);
 /**
  * drm_fb_helper_hotplug_event - respond to a hotplug notification by
  *                               probing all the outputs attached to the fb
+<<<<<<< HEAD
  * @fb_helper: driver-allocated fbdev helper, can be NULL
+=======
+ * @fb_helper: the drm_fb_helper
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Scan the connectors attached to the fb_helper and try to put together a
  * setup after notification of a change in output configuration.
@@ -2782,7 +3017,11 @@ int drm_fb_helper_hotplug_event(struct drm_fb_helper *fb_helper)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	if (!drm_fbdev_emulation || !fb_helper)
+=======
+	if (!drm_fbdev_emulation)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	mutex_lock(&fb_helper->lock);
@@ -2810,6 +3049,7 @@ int drm_fb_helper_hotplug_event(struct drm_fb_helper *fb_helper)
 }
 EXPORT_SYMBOL(drm_fb_helper_hotplug_event);
 
+<<<<<<< HEAD
 /**
  * drm_fb_helper_fbdev_setup() - Setup fbdev emulation
  * @dev: DRM device
@@ -3248,6 +3488,8 @@ int drm_fbdev_generic_setup(struct drm_device *dev, unsigned int preferred_bpp)
 }
 EXPORT_SYMBOL(drm_fbdev_generic_setup);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The Kconfig DRM_KMS_HELPER selects FRAMEBUFFER_CONSOLE (if !EXPERT)
  * but the module doesn't depend on any fb console symbols.  At least
  * attempt to load fbcon to avoid leaving the system without a usable console.

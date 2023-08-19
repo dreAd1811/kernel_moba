@@ -43,6 +43,11 @@
 #define GRF_SOC_CON9		0x6224
 #define DP_SEL_VOP_LIT		BIT(12)
 #define GRF_SOC_CON26		0x6268
+<<<<<<< HEAD
+=======
+#define UPHY_SEL_BIT		3
+#define UPHY_SEL_MASK		BIT(19)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DPTX_HPD_SEL		(3 << 12)
 #define DPTX_HPD_DEL		(2 << 12)
 #define DPTX_HPD_SEL_MASK	(3 << 28)
@@ -274,15 +279,34 @@ static int cdn_dp_connector_get_modes(struct drm_connector *connector)
 
 		dp->sink_has_audio = drm_detect_monitor_audio(edid);
 		ret = drm_add_edid_modes(connector, edid);
+<<<<<<< HEAD
 		if (ret)
 			drm_connector_update_edid_property(connector,
 								edid);
+=======
+		if (ret) {
+			drm_mode_connector_update_edid_property(connector,
+								edid);
+			drm_edid_to_eld(connector, edid);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&dp->lock);
 
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static struct drm_encoder *
+cdn_dp_connector_best_encoder(struct drm_connector *connector)
+{
+	struct cdn_dp_device *dp = connector_to_dp(connector);
+
+	return &dp->encoder;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cdn_dp_connector_mode_valid(struct drm_connector *connector,
 				       struct drm_display_mode *mode)
 {
@@ -334,6 +358,10 @@ static int cdn_dp_connector_mode_valid(struct drm_connector *connector,
 
 static struct drm_connector_helper_funcs cdn_dp_connector_helper_funcs = {
 	.get_modes = cdn_dp_connector_get_modes,
+<<<<<<< HEAD
+=======
+	.best_encoder = cdn_dp_connector_best_encoder,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mode_valid = cdn_dp_connector_mode_valid,
 };
 
@@ -392,6 +420,14 @@ static int cdn_dp_enable_phy(struct cdn_dp_device *dp, struct cdn_dp_port *port)
 	union extcon_property_value property;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	ret = cdn_dp_grf_write(dp, GRF_SOC_CON26,
+			       (port->id << UPHY_SEL_BIT) | UPHY_SEL_MASK);
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!port->phy_enabled) {
 		ret = phy_power_on(port->phy);
 		if (ret) {
@@ -1062,7 +1098,11 @@ static int cdn_dp_bind(struct device *dev, struct device *master, void *data)
 
 	drm_connector_helper_add(connector, &cdn_dp_connector_helper_funcs);
 
+<<<<<<< HEAD
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("failed to attach connector and encoder\n");
 		goto err_free_connector;

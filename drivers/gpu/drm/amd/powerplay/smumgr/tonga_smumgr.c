@@ -33,6 +33,7 @@
 #include "smu/smu_7_1_2_d.h"
 #include "smu/smu_7_1_2_sh_mask.h"
 #include "cgs_common.h"
+<<<<<<< HEAD
 #include "smu7_smumgr.h"
 
 #include "smu7_dyn_defaults.h"
@@ -94,18 +95,33 @@ static const uint8_t tonga_clock_stretch_amount_conversion[2][6] = {
 };
 
 static int tonga_start_in_protection_mode(struct pp_hwmgr *hwmgr)
+=======
+#include "tonga_smc.h"
+#include "smu7_smumgr.h"
+
+
+static int tonga_start_in_protection_mode(struct pp_smumgr *smumgr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int result;
 
 	/* Assert reset */
+<<<<<<< HEAD
 	PHM_WRITE_VFPF_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
 		SMC_SYSCON_RESET_CNTL, rst_reg, 1);
 
 	result = smu7_upload_smu_firmware_image(hwmgr);
+=======
+	SMUM_WRITE_VFPF_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
+		SMC_SYSCON_RESET_CNTL, rst_reg, 1);
+
+	result = smu7_upload_smu_firmware_image(smumgr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (result)
 		return result;
 
 	/* Clear status */
+<<<<<<< HEAD
 	cgs_write_ind_register(hwmgr->device, CGS_IND_REG__SMC,
 		ixSMU_STATUS, 0);
 
@@ -126,11 +142,34 @@ static int tonga_start_in_protection_mode(struct pp_hwmgr *hwmgr)
 		ixFIRMWARE_FLAGS, 0);
 
 	PHM_WAIT_VFPF_INDIRECT_FIELD(hwmgr, SMC_IND,
+=======
+	cgs_write_ind_register(smumgr->device, CGS_IND_REG__SMC,
+		ixSMU_STATUS, 0);
+
+	/* Enable clock */
+	SMUM_WRITE_VFPF_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
+		SMC_SYSCON_CLOCK_CNTL_0, ck_disable, 0);
+
+	/* De-assert reset */
+	SMUM_WRITE_VFPF_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
+		SMC_SYSCON_RESET_CNTL, rst_reg, 0);
+
+	/* Set SMU Auto Start */
+	SMUM_WRITE_VFPF_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
+		SMU_INPUT_DATA, AUTO_START, 1);
+
+	/* Clear firmware interrupt enable flag */
+	cgs_write_ind_register(smumgr->device, CGS_IND_REG__SMC,
+		ixFIRMWARE_FLAGS, 0);
+
+	SMUM_WAIT_VFPF_INDIRECT_FIELD(smumgr, SMC_IND,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RCU_UC_EVENTS, INTERRUPTS_ENABLED, 1);
 
 	/**
 	 * Call Test SMU message with 0x20000 offset to trigger SMU start
 	 */
+<<<<<<< HEAD
 	smu7_send_msg_to_smc_offset(hwmgr);
 
 	/* Wait for done bit to be set */
@@ -139,23 +178,43 @@ static int tonga_start_in_protection_mode(struct pp_hwmgr *hwmgr)
 
 	/* Check pass/failed indicator */
 	if (1 != PHM_READ_VFPF_INDIRECT_FIELD(hwmgr->device,
+=======
+	smu7_send_msg_to_smc_offset(smumgr);
+
+	/* Wait for done bit to be set */
+	SMUM_WAIT_VFPF_INDIRECT_FIELD_UNEQUAL(smumgr, SMC_IND,
+		SMU_STATUS, SMU_DONE, 0);
+
+	/* Check pass/failed indicator */
+	if (1 != SMUM_READ_VFPF_INDIRECT_FIELD(smumgr->device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				CGS_IND_REG__SMC, SMU_STATUS, SMU_PASS)) {
 		pr_err("SMU Firmware start failed\n");
 		return -EINVAL;
 	}
 
 	/* Wait for firmware to initialize */
+<<<<<<< HEAD
 	PHM_WAIT_VFPF_INDIRECT_FIELD(hwmgr, SMC_IND,
+=======
+	SMUM_WAIT_VFPF_INDIRECT_FIELD(smumgr, SMC_IND,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		FIRMWARE_FLAGS, INTERRUPTS_ENABLED, 1);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tonga_start_in_non_protection_mode(struct pp_hwmgr *hwmgr)
+=======
+
+static int tonga_start_in_non_protection_mode(struct pp_smumgr *smumgr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int result = 0;
 
 	/* wait for smc boot up */
+<<<<<<< HEAD
 	PHM_WAIT_VFPF_INDIRECT_FIELD_UNEQUAL(hwmgr, SMC_IND,
 		RCU_UC_EVENTS, boot_seq_done, 0);
 
@@ -168,11 +227,26 @@ static int tonga_start_in_non_protection_mode(struct pp_hwmgr *hwmgr)
 		SMC_SYSCON_RESET_CNTL, rst_reg, 1);
 
 	result = smu7_upload_smu_firmware_image(hwmgr);
+=======
+	SMUM_WAIT_VFPF_INDIRECT_FIELD_UNEQUAL(smumgr, SMC_IND,
+		RCU_UC_EVENTS, boot_seq_done, 0);
+
+	/*Clear firmware interrupt enable flag*/
+	cgs_write_ind_register(smumgr->device, CGS_IND_REG__SMC,
+		ixFIRMWARE_FLAGS, 0);
+
+
+	SMUM_WRITE_VFPF_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
+		SMC_SYSCON_RESET_CNTL, rst_reg, 1);
+
+	result = smu7_upload_smu_firmware_image(smumgr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (result != 0)
 		return result;
 
 	/* Set smc instruct start point at 0x0 */
+<<<<<<< HEAD
 	smu7_program_jump_on_start(hwmgr);
 
 
@@ -185,16 +259,35 @@ static int tonga_start_in_non_protection_mode(struct pp_hwmgr *hwmgr)
 
 	/* Wait for firmware to initialize */
 	PHM_WAIT_VFPF_INDIRECT_FIELD(hwmgr, SMC_IND,
+=======
+	smu7_program_jump_on_start(smumgr);
+
+
+	SMUM_WRITE_VFPF_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
+		SMC_SYSCON_CLOCK_CNTL_0, ck_disable, 0);
+
+	/*De-assert reset*/
+	SMUM_WRITE_VFPF_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
+		SMC_SYSCON_RESET_CNTL, rst_reg, 0);
+
+	/* Wait for firmware to initialize */
+	SMUM_WAIT_VFPF_INDIRECT_FIELD(smumgr, SMC_IND,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		FIRMWARE_FLAGS, INTERRUPTS_ENABLED, 1);
 
 	return result;
 }
 
+<<<<<<< HEAD
 static int tonga_start_smu(struct pp_hwmgr *hwmgr)
+=======
+static int tonga_start_smu(struct pp_smumgr *smumgr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int result;
 
 	/* Only start SMC if SMC RAM is not running */
+<<<<<<< HEAD
 	if (!smu7_is_smc_ram_running(hwmgr) && hwmgr->not_vf) {
 		/*Check if SMU is running in protected mode*/
 		if (0 == PHM_READ_VFPF_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
@@ -204,24 +297,55 @@ static int tonga_start_smu(struct pp_hwmgr *hwmgr)
 				return result;
 		} else {
 			result = tonga_start_in_protection_mode(hwmgr);
+=======
+	if (!(smu7_is_smc_ram_running(smumgr) ||
+		cgs_is_virtualization_enabled(smumgr->device))) {
+		/*Check if SMU is running in protected mode*/
+		if (0 == SMUM_READ_VFPF_INDIRECT_FIELD(smumgr->device, CGS_IND_REG__SMC,
+					SMU_FIRMWARE, SMU_MODE)) {
+			result = tonga_start_in_non_protection_mode(smumgr);
+			if (result)
+				return result;
+		} else {
+			result = tonga_start_in_protection_mode(smumgr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (result)
 				return result;
 		}
 	}
 
+<<<<<<< HEAD
 	result = smu7_request_smu_load_fw(hwmgr);
+=======
+	result = smu7_request_smu_load_fw(smumgr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return result;
 }
 
+<<<<<<< HEAD
 static int tonga_smu_init(struct pp_hwmgr *hwmgr)
 {
 	struct tonga_smumgr *tonga_priv = NULL;
+=======
+/**
+ * Write a 32bit value to the SMC SRAM space.
+ * ALL PARAMETERS ARE IN HOST BYTE ORDER.
+ * @param    smumgr  the address of the powerplay hardware manager.
+ * @param    smcAddress the address in the SMC RAM to access.
+ * @param    value to write to the SMC SRAM.
+ */
+static int tonga_smu_init(struct pp_smumgr *smumgr)
+{
+	struct tonga_smumgr *tonga_priv = NULL;
+	int  i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tonga_priv = kzalloc(sizeof(struct tonga_smumgr), GFP_KERNEL);
 	if (tonga_priv == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	hwmgr->smu_backend = tonga_priv;
 
 	if (smu7_init(hwmgr)) {
@@ -3224,6 +3348,16 @@ static int tonga_update_dpm_settings(struct pp_hwmgr *hwmgr,
 		if (!data->mclk_dpm_key_disabled)
 			smum_send_msg_to_smc(hwmgr, PPSMC_MSG_MCLKDPM_UnfreezeLevel);
 	}
+=======
+	smumgr->backend = tonga_priv;
+
+	if (smu7_init(smumgr))
+		return -EINVAL;
+
+	for (i = 0; i < SMU72_MAX_LEVELS_GRAPHICS; i++)
+		tonga_priv->activity_target[i] = 30;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3249,5 +3383,9 @@ const struct pp_smumgr_func tonga_smu_funcs = {
 	.get_mac_definition = tonga_get_mac_definition,
 	.initialize_mc_reg_table = tonga_initialize_mc_reg_table,
 	.is_dpm_running = tonga_is_dpm_running,
+<<<<<<< HEAD
 	.update_dpm_settings = tonga_update_dpm_settings,
+=======
+	.populate_requested_graphic_levels = tonga_populate_requested_graphic_levels,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

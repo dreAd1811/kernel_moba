@@ -64,11 +64,23 @@ struct mips_perf_event {
 	#define CNTR_EVEN	0x55555555
 	#define CNTR_ODD	0xaaaaaaaa
 	#define CNTR_ALL	0xffffffff
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MIPS_MT_SMP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum {
 		T  = 0,
 		V  = 1,
 		P  = 2,
 	} range;
+<<<<<<< HEAD
+=======
+#else
+	#define T
+	#define V
+	#define P
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct mips_perf_event raw_event;
@@ -123,14 +135,28 @@ static struct mips_pmu mipspmu;
 
 
 #ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
+<<<<<<< HEAD
+=======
+static int cpu_has_mipsmt_pertccounters;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_RWLOCK(pmuint_rwlock);
 
 #if defined(CONFIG_CPU_BMIPS5000)
 #define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
 			 0 : (smp_processor_id() & MIPS_CPUID_TO_COUNTER_MASK))
 #else
+<<<<<<< HEAD
 #define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
 			 0 : cpu_vpe_id(&current_cpu_data))
+=======
+/*
+ * FIXME: For VSMP, vpe_id() is redefined for Perf-events, because
+ * cpu_data[cpuid].vpe_id reports 0 for _both_ CPUs.
+ */
+#define vpe_id()	(cpu_has_mipsmt_pertccounters ? \
+			 0 : smp_processor_id())
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /* Copied from op_model_mipsxx.c */
@@ -317,9 +343,13 @@ static int mipsxx_pmu_alloc_counter(struct cpu_hw_events *cpuc,
 
 static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
 {
+<<<<<<< HEAD
 	struct perf_event *event = container_of(evt, struct perf_event, hw);
 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
 	unsigned int range = evt->event_base >> 24;
+=======
+	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARN_ON(idx < 0 || idx >= mipspmu.num_counters);
 
@@ -327,6 +357,7 @@ static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
 		(evt->config_base & M_PERFCTL_CONFIG_MASK) |
 		/* Make sure interrupt enabled. */
 		MIPS_PERFCTRL_IE;
+<<<<<<< HEAD
 
 	if (IS_ENABLED(CONFIG_CPU_BMIPS5000)) {
 		/* enable the counter for the calling thread */
@@ -351,6 +382,13 @@ static void mipsxx_pmu_enable_event(struct hw_perf_event *evt, int idx)
 		cpuc->saved_ctrl[idx] |= ctrl;
 		pr_debug("Enabling perf counter for CPU%d\n", cpu);
 	}
+=======
+	if (IS_ENABLED(CONFIG_CPU_BMIPS5000))
+		/* enable the counter for the calling thread */
+		cpuc->saved_ctrl[idx] |=
+			(1 << (12 + vpe_id())) | BRCM_PERFCTRL_TC;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We do not actually let the counter run. Leave it until start().
 	 */
@@ -664,6 +702,7 @@ static unsigned int mipspmu_perf_event_encode(const struct mips_perf_event *pev)
  * event_id.
  */
 #ifdef CONFIG_MIPS_MT_SMP
+<<<<<<< HEAD
 	if (num_possible_cpus() > 1)
 		return ((unsigned int)pev->range << 24) |
 			(pev->cntr_mask & 0xffff00) |
@@ -672,6 +711,15 @@ static unsigned int mipspmu_perf_event_encode(const struct mips_perf_event *pev)
 #endif /* CONFIG_MIPS_MT_SMP */
 		return ((pev->cntr_mask & 0xffff00) |
 			(pev->event_id & 0xff));
+=======
+	return ((unsigned int)pev->range << 24) |
+		(pev->cntr_mask & 0xffff00) |
+		(pev->event_id & 0xff);
+#else
+	return (pev->cntr_mask & 0xffff00) |
+		(pev->event_id & 0xff);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct mips_perf_event *mipspmu_map_general_event(int idx)
@@ -721,7 +769,11 @@ static int validate_group(struct perf_event *event)
 	if (mipsxx_pmu_alloc_counter(&fake_cpuc, &leader->hw) < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	for_each_sibling_event(sibling, leader) {
+=======
+	list_for_each_entry(sibling, &leader->sibling_list, group_entry) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mipsxx_pmu_alloc_counter(&fake_cpuc, &sibling->hw) < 0)
 			return -EINVAL;
 	}
@@ -1275,6 +1327,40 @@ static const struct mips_perf_event xlp_cache_map
 },
 };
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MIPS_MT_SMP
+static void check_and_calc_range(struct perf_event *event,
+				 const struct mips_perf_event *pev)
+{
+	struct hw_perf_event *hwc = &event->hw;
+
+	if (event->cpu >= 0) {
+		if (pev->range > V) {
+			/*
+			 * The user selected an event that is processor
+			 * wide, while expecting it to be VPE wide.
+			 */
+			hwc->config_base |= M_TC_EN_ALL;
+		} else {
+			/*
+			 * FIXME: cpu_data[event->cpu].vpe_id reports 0
+			 * for both CPUs.
+			 */
+			hwc->config_base |= M_PERFCTL_VPEID(event->cpu);
+			hwc->config_base |= M_TC_EN_VPE;
+		}
+	} else
+		hwc->config_base |= M_TC_EN_ALL;
+}
+#else
+static void check_and_calc_range(struct perf_event *event,
+				 const struct mips_perf_event *pev)
+{
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __hw_perf_event_init(struct perf_event *event)
 {
 	struct perf_event_attr *attr = &event->attr;
@@ -1310,6 +1396,13 @@ static int __hw_perf_event_init(struct perf_event *event)
 	 */
 	hwc->config_base = MIPS_PERFCTRL_IE;
 
+<<<<<<< HEAD
+=======
+	/* Calculate range bits and validate it. */
+	if (num_possible_cpus() > 1)
+		check_and_calc_range(event, pev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hwc->event_base = mipspmu_perf_event_encode(pev);
 	if (PERF_TYPE_RAW == event->attr.type)
 		mutex_unlock(&raw_event_mutex);
@@ -1698,6 +1791,10 @@ init_hw_perf_events(void)
 	}
 
 #ifdef CONFIG_MIPS_PERF_SHARED_TC_COUNTERS
+<<<<<<< HEAD
+=======
+	cpu_has_mipsmt_pertccounters = read_c0_config7() & (1<<19);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cpu_has_mipsmt_pertccounters)
 		counters = counters_total_to_per_cpu(counters);
 #endif

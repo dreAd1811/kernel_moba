@@ -372,8 +372,11 @@ void __init find_legacy_serial_ports(void)
 
 	/* Now find out if one of these is out firmware console */
 	path = of_get_property(of_chosen, "linux,stdout-path", NULL);
+<<<<<<< HEAD
 	if (path == NULL)
 		path = of_get_property(of_chosen, "stdout-path", NULL);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (path != NULL) {
 		stdout = of_find_node_by_path(path);
 		if (stdout)
@@ -597,10 +600,15 @@ static int __init check_legacy_serial_console(void)
 	/* We are getting a weird phandle from OF ... */
 	/* ... So use the full path instead */
 	name = of_get_property(of_chosen, "linux,stdout-path", NULL);
+<<<<<<< HEAD
 	if (name == NULL)
 		name = of_get_property(of_chosen, "stdout-path", NULL);
 	if (name == NULL) {
 		DBG(" no stdout-path !\n");
+=======
+	if (name == NULL) {
+		DBG(" no linux,stdout-path !\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 	prom_stdout = of_find_node_by_path(name);

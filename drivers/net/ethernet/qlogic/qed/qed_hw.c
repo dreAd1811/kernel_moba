@@ -360,6 +360,7 @@ void qed_port_unpretend(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt)
 	       *(u32 *)&p_ptt->pxp.pretend);
 }
 
+<<<<<<< HEAD
 void qed_port_fid_pretend(struct qed_hwfn *p_hwfn,
 			  struct qed_ptt *p_ptt, u8 port_id, u16 fid)
 {
@@ -380,6 +381,8 @@ void qed_port_fid_pretend(struct qed_hwfn *p_hwfn,
 	       *(u32 *)&p_ptt->pxp.pretend);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u32 qed_vfid_to_concrete(struct qed_hwfn *p_hwfn, u8 vfid)
 {
 	u32 concrete_fid = 0;
@@ -827,6 +830,7 @@ int qed_dmae_host2host(struct qed_hwfn *p_hwfn,
 	return rc;
 }
 
+<<<<<<< HEAD
 int qed_dmae_sanity(struct qed_hwfn *p_hwfn,
 		    struct qed_ptt *p_ptt, const char *phase)
 {
@@ -895,3 +899,5 @@ out:
 	dma_free_coherent(&p_hwfn->cdev->pdev->dev, 2 * size, p_virt, p_phys);
 	return rc;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

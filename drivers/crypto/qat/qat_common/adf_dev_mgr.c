@@ -228,8 +228,16 @@ int adf_devmgr_add_dev(struct adf_accel_dev *accel_dev,
 		list_add_tail(&map->list, &vfs_table);
 	} else if (accel_dev->is_vf && pf) {
 		/* VF on host */
+<<<<<<< HEAD
 		struct vf_id_map *map;
 
+=======
+		struct adf_accel_vf_info *vf_info;
+		struct vf_id_map *map;
+
+		vf_info = pf->pf.vf_info + adf_get_vf_id(accel_dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map = adf_find_vf(adf_get_vf_num(accel_dev));
 		if (map) {
 			struct vf_id_map *next;

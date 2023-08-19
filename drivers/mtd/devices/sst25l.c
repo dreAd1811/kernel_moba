@@ -195,6 +195,10 @@ static int sst25l_erase(struct mtd_info *mtd, struct erase_info *instr)
 		err = sst25l_erase_sector(flash, addr);
 		if (err) {
 			mutex_unlock(&flash->lock);
+<<<<<<< HEAD
+=======
+			instr->state = MTD_ERASE_FAILED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(&flash->spi->dev, "Erase failed\n");
 			return err;
 		}
@@ -204,6 +208,11 @@ static int sst25l_erase(struct mtd_info *mtd, struct erase_info *instr)
 
 	mutex_unlock(&flash->lock);
 
+<<<<<<< HEAD
+=======
+	instr->state = MTD_ERASE_DONE;
+	mtd_erase_callback(instr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -394,8 +403,14 @@ static int sst25l_probe(struct spi_device *spi)
 	      flash->mtd.numeraseregions);
 
 
+<<<<<<< HEAD
 	ret = mtd_device_register(&flash->mtd, data ? data->parts : NULL,
 				  data ? data->nr_parts : 0);
+=======
+	ret = mtd_device_parse_register(&flash->mtd, NULL, NULL,
+					data ? data->parts : NULL,
+					data ? data->nr_parts : 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return -ENODEV;
 

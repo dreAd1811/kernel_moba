@@ -1,6 +1,23 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: ISC */
 /* Copyright (c) 2012-2016,2018-2019, The Linux Foundation.
  * All rights reserved.
+=======
+/*
+ * Copyright (c) 2012-2016,2018-2021, The Linux Foundation. All rights reserved.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef WIL6210_TXRX_EDMA_H
@@ -13,9 +30,16 @@
 #define WIL_SRING_SIZE_ORDER_MAX	(WIL_RING_SIZE_ORDER_MAX)
 /* RX sring order should be bigger than RX ring order */
 #define WIL_RX_SRING_SIZE_ORDER_DEFAULT	(12)
+<<<<<<< HEAD
 #define WIL_TX_SRING_SIZE_ORDER_DEFAULT	(14)
 #define WIL_RX_BUFF_ARR_SIZE_DEFAULT (2600)
 
+=======
+#define WIL_TX_SRING_SIZE_ORDER_DEFAULT	(12)
+#define WIL_RX_BUFF_ARR_SIZE_DEFAULT (2600)
+
+#define WIL_DEFAULT_RX_STATUS_RING_ID 0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WIL_RX_DESC_RING_ID 0
 #define WIL_RX_STATUS_IRQ_IDX 0
 #define WIL_TX_STATUS_IRQ_IDX 1
@@ -47,6 +71,12 @@
 
 #define WIL_RX_EDMA_MID_VALID_BIT		BIT(22)
 
+<<<<<<< HEAD
+=======
+#define WIL_RX_EDMA_AMSDU_BASIC_MASK		0x1
+#define WIL_RX_EDMA_DS_TYPE_WDS			0x3
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WIL_EDMA_DESC_TX_MAC_CFG_0_QID_POS 16
 #define WIL_EDMA_DESC_TX_MAC_CFG_0_QID_LEN 6
 
@@ -354,12 +384,15 @@ static inline u8 wil_rx_status_get_mcs(void *msg)
 			    16, 21);
 }
 
+<<<<<<< HEAD
 static inline u8 wil_rx_status_get_cb_mode(void *msg)
 {
 	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d1,
 			    22, 23);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u16 wil_rx_status_get_flow_id(void *msg)
 {
 	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d0,
@@ -369,7 +402,11 @@ static inline u16 wil_rx_status_get_flow_id(void *msg)
 static inline u8 wil_rx_status_get_mcast(void *msg)
 {
 	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d0,
+<<<<<<< HEAD
 			    26, 26);
+=======
+			    25, 26);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -409,6 +446,15 @@ static inline u8 wil_rx_status_get_tid(void *msg)
 		return val & WIL_RX_EDMA_DLPF_LU_MISS_CID_TID_MASK;
 }
 
+<<<<<<< HEAD
+=======
+static inline int wil_rx_status_get_desc_rdy_bit(void *msg)
+{
+	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d0,
+			    31, 31);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int wil_rx_status_get_eop(void *msg) /* EoP = End of Packet */
 {
 	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d0,
@@ -457,6 +503,24 @@ static inline int wil_rx_status_get_fc1(struct wil6210_priv *wil, void *msg)
 			    0, 5) << 2;
 }
 
+<<<<<<< HEAD
+=======
+static inline int wil_rx_status_get_ds_type(struct wil6210_priv *wil, void *msg)
+{
+	if (wil->use_compressed_rx_status)
+		return 0;
+
+	return WIL_GET_BITS(((struct wil_rx_status_extended *)msg)->ext.d0,
+			    19, 20);
+}
+
+static inline int wil_rx_status_is_basic_amsdu(void *msg)
+{
+	return (WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d1,
+			     28, 29) == WIL_RX_EDMA_AMSDU_BASIC_MASK);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline __le16 wil_rx_status_get_seq(struct wil6210_priv *wil, void *msg)
 {
 	if (wil->use_compressed_rx_status)
@@ -505,6 +569,7 @@ static inline int wil_rx_status_get_l4_rx_status(void *msg)
 			    5, 6);
 }
 
+<<<<<<< HEAD
 /* L4	L3	Expected result
  * 0	0	Ok. No L3 and no L4 known protocols found.
  *		Treated as L2 packet. (no offloads on this packet)
@@ -544,6 +609,8 @@ static inline int wil_rx_status_get_checksum(void *msg,
 	return CHECKSUM_NONE;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int wil_rx_status_get_security(void *msg)
 {
 	return WIL_GET_BITS(((struct wil_rx_status_compressed *)msg)->d0,
@@ -596,6 +663,7 @@ int wil_tx_sring_handler(struct wil6210_priv *wil,
 			 struct wil_status_ring *sring);
 void wil_rx_handle_edma(struct wil6210_priv *wil, int *quota);
 void wil_init_txrx_ops_edma(struct wil6210_priv *wil);
+<<<<<<< HEAD
 int wil_find_free_sring(struct wil6210_priv *wil);
 int wil_init_rx_desc_ring(struct wil6210_priv *wil, u16 desc_ring_size,
 			  int status_ring_id);
@@ -605,6 +673,8 @@ void wil_sring_free(struct wil6210_priv *wil, struct wil_status_ring *sring);
 void wil_ring_free_edma(struct wil6210_priv *wil, struct wil_ring *ring);
 int wil_tx_desc_map_edma(union wil_tx_desc *desc, dma_addr_t pa, u32 len,
 			 int ring_index);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* WIL6210_TXRX_EDMA_H */
 

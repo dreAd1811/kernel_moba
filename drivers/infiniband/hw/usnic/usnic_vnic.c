@@ -312,7 +312,11 @@ static int usnic_vnic_alloc_res_chunk(struct usnic_vnic *vnic,
 	}
 
 	chunk->cnt = chunk->free_cnt = cnt;
+<<<<<<< HEAD
 	chunk->res = kcalloc(cnt, sizeof(*(chunk->res)), GFP_KERNEL);
+=======
+	chunk->res = kzalloc(sizeof(*(chunk->res))*cnt, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!chunk->res)
 		return -ENOMEM;
 

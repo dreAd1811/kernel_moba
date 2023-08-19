@@ -406,7 +406,11 @@ static void *bsd_alloc (unsigned char *options, int opt_len, int decomp)
  * Allocate space for the dictionary. This may be more than one page in
  * length.
  */
+<<<<<<< HEAD
     db->dict = vmalloc(array_size(hsize, sizeof(struct bsd_dict)));
+=======
+    db->dict = vmalloc(hsize * sizeof(struct bsd_dict));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     if (!db->dict)
       {
 	bsd_free (db);
@@ -425,7 +429,11 @@ static void *bsd_alloc (unsigned char *options, int opt_len, int decomp)
  */
     else
       {
+<<<<<<< HEAD
         db->lens = vmalloc(array_size(sizeof(db->lens[0]), (maxmaxcode + 1)));
+=======
+        db->lens = vmalloc((maxmaxcode + 1) * sizeof(db->lens[0]));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!db->lens)
 	  {
 	    bsd_free (db);

@@ -26,6 +26,7 @@ typedef enum lg_chip_t {
 		LGDT3303
 }lg_chip_type;
 
+<<<<<<< HEAD
 /**
  * struct lgdt330x_config - contains lgdt330x configuration
  *
@@ -61,6 +62,36 @@ static inline
 struct dvb_frontend *lgdt330x_attach(const struct lgdt330x_config *config,
 				     u8 demod_address,
 				     struct i2c_adapter *i2c)
+=======
+struct lgdt330x_config
+{
+	/* The demodulator's i2c address */
+	u8 demod_address;
+
+	/* LG demodulator chip LGDT3302 or LGDT3303 */
+	lg_chip_type demod_chip;
+
+	/* MPEG hardware interface - 0:parallel 1:serial */
+	int serial_mpeg;
+
+	/* PLL interface */
+	int (*pll_rf_set) (struct dvb_frontend* fe, int index);
+
+	/* Need to set device param for start_dma */
+	int (*set_ts_params)(struct dvb_frontend* fe, int is_punctured);
+
+	/* Flip the polarity of the mpeg data transfer clock using alternate init data
+	 * This option applies ONLY to LGDT3303 - 0:disabled (default) 1:enabled */
+	int clock_polarity_flip;
+};
+
+#if IS_REACHABLE(CONFIG_DVB_LGDT330X)
+extern struct dvb_frontend* lgdt330x_attach(const struct lgdt330x_config* config,
+					    struct i2c_adapter* i2c);
+#else
+static inline struct dvb_frontend* lgdt330x_attach(const struct lgdt330x_config* config,
+					    struct i2c_adapter* i2c)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	printk(KERN_WARNING "%s: driver disabled by Kconfig\n", __func__);
 	return NULL;

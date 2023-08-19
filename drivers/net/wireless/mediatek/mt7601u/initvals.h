@@ -139,7 +139,10 @@ static const struct mt76_reg_pair mac_common_vals[] = {
 	{ MT_TXOP_HLDR_ET,		0x00000002 },
 	{ MT_XIFS_TIME_CFG,		0x33a41010 },
 	{ MT_PWR_PIN_CFG,		0x00000000 },
+<<<<<<< HEAD
 	{ MT_PN_PAD_MODE,		0x00000001 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct mt76_reg_pair mac_chip_vals[] = {

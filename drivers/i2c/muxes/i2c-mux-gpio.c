@@ -10,7 +10,11 @@
 
 #include <linux/i2c.h>
 #include <linux/i2c-mux.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-mux-gpio.h>
+=======
+#include <linux/i2c-mux-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/module.h>
 #include <linux/slab.h>
@@ -88,8 +92,13 @@ static int i2c_mux_gpio_probe_dt(struct gpiomux *mux,
 
 	mux->data.n_values = of_get_child_count(np);
 
+<<<<<<< HEAD
 	values = devm_kcalloc(&pdev->dev,
 			      mux->data.n_values, sizeof(*mux->data.values),
+=======
+	values = devm_kzalloc(&pdev->dev,
+			      sizeof(*mux->data.values) * mux->data.n_values,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      GFP_KERNEL);
 	if (!values) {
 		dev_err(&pdev->dev, "Cannot allocate values array");
@@ -111,9 +120,14 @@ static int i2c_mux_gpio_probe_dt(struct gpiomux *mux,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	gpios = devm_kcalloc(&pdev->dev,
 			     mux->data.n_gpios, sizeof(*mux->data.gpios),
 			     GFP_KERNEL);
+=======
+	gpios = devm_kzalloc(&pdev->dev,
+			     sizeof(*mux->data.gpios) * mux->data.n_gpios, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gpios) {
 		dev_err(&pdev->dev, "Cannot allocate gpios array");
 		return -ENOMEM;

@@ -15,5 +15,9 @@ menuconfig ARCH_TEGRA
 	select RESET_CONTROLLER
 	select SOC_BUS
 	select ZONE_DMA if ARM_LPAE
+<<<<<<< HEAD
+=======
+	select ARCH_DMA_ADDR_T_64BIT if ARM_LPAE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This enables support for NVIDIA Tegra based systems.

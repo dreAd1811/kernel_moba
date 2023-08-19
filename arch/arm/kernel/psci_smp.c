@@ -47,13 +47,27 @@
  *
  */
 
+<<<<<<< HEAD
 extern void secondary_startup(void);
+=======
+#ifdef CONFIG_THUMB2_KERNEL
+#define secondary_start secondary_startup_arm
+extern void secondary_startup_arm(void);
+#else
+#define secondary_start secondary_startup
+extern void secondary_startup(void);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int psci_boot_secondary(unsigned int cpu, struct task_struct *idle)
 {
 	if (psci_ops.cpu_on)
 		return psci_ops.cpu_on(cpu_logical_map(cpu),
+<<<<<<< HEAD
 					virt_to_idmap(&secondary_startup));
+=======
+					virt_to_idmap(&secondary_start));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENODEV;
 }
 
@@ -98,12 +112,20 @@ int psci_cpu_kill(unsigned int cpu)
 	for (i = 0; i < 10; i++) {
 		err = psci_ops.affinity_info(cpu_logical_map(cpu), 0);
 		if (err == PSCI_0_2_AFFINITY_LEVEL_OFF) {
+<<<<<<< HEAD
 			pr_info("CPU%d killed.\n", cpu);
+=======
+			pr_debug("CPU%d killed.\n", cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 1;
 		}
 
 		msleep(10);
+<<<<<<< HEAD
 		pr_info("Retrying again to check for CPU kill\n");
+=======
+		pr_debug("Retrying again to check for CPU kill\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pr_warn("CPU%d may not have shut down cleanly (AFFINITY_INFO reports %d)\n",
@@ -112,6 +134,14 @@ int psci_cpu_kill(unsigned int cpu)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+bool psci_cpu_can_disable(unsigned int cpu)
+{
+	return true;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 bool __init psci_smp_available(void)
@@ -126,5 +156,9 @@ const struct smp_operations psci_smp_ops __initconst = {
 	.cpu_disable		= psci_cpu_disable,
 	.cpu_die		= psci_cpu_die,
 	.cpu_kill		= psci_cpu_kill,
+<<<<<<< HEAD
+=======
+	.cpu_can_disable	= psci_cpu_can_disable,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 };

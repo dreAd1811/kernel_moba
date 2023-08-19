@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * FTS Capacitive touch screen controller (FingerTipS)
  *
  * Copyright (C) 2016-2019, STMicroelectronics Limited.
+=======
+/*
+ * FTS Capacitive touch screen controller (FingerTipS)
+ *
+ * Copyright (C) 2016-2018, STMicroelectronics Limited.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Authors: AMG(Analog Mems Group) <marco.cali@st.com>
  *
  *
@@ -316,7 +323,11 @@ int readSelfSenseGlobalData(u16 *address, struct SelfSenseData *global)
 int readSelfSenseNodeData(u16 address, struct SelfSenseData *node)
 {
 	int size = node->header.force_node * 2 + node->header.sense_node * 2;
+<<<<<<< HEAD
 	u8 *data;
+=======
+	u8 data[size];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	node->ix2_fm = (u8 *)kmalloc_array(node->header.force_node,
 				sizeof(u8), GFP_KERNEL);
@@ -354,6 +365,7 @@ int readSelfSenseNodeData(u16 address, struct SelfSenseData *node)
 
 	logError(0, "%s Node Data to read %d bytes\n", tag, size);
 
+<<<<<<< HEAD
 	data = (u8 *)kmalloc_array(size, sizeof(u8), GFP_KERNEL);
 	if (data == NULL) {
 		logError(1, "%s %s: ERROR %02X", tag, __func__, ERROR_ALLOC);
@@ -364,6 +376,8 @@ int readSelfSenseNodeData(u16 address, struct SelfSenseData *node)
 		return ERROR_ALLOC;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (readCmdU16(FTS_CMD_FRAMEBUFFER_R, address, data, size,
 		DUMMY_FRAMEBUFFER) < 0) {
 		logError(1, "%s %s: ERROR %02X\n", tag, __func__, ERROR_I2C_R);
@@ -371,7 +385,10 @@ int readSelfSenseNodeData(u16 address, struct SelfSenseData *node)
 		kfree(node->cx2_fm);
 		kfree(node->ix2_sn);
 		kfree(node->cx2_sn);
+<<<<<<< HEAD
 		kfree(data);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERROR_I2C_R;
 	}
 
@@ -387,8 +404,11 @@ int readSelfSenseNodeData(u16 address, struct SelfSenseData *node)
 		&data[node->header.force_node * 2 + node->header.sense_node],
 		node->header.sense_node);
 
+<<<<<<< HEAD
 	kfree(data);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return OK;
 }
 

@@ -17,9 +17,12 @@
 #include <linux/regmap.h>
 #include <linux/mutex.h>
 #include <linux/mii.h>
+<<<<<<< HEAD
 #include <linux/phy.h>
 #include <linux/if_bridge.h>
 #include <linux/etherdevice.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "lan9303.h"
 
@@ -60,7 +63,10 @@
 #define LAN9303_SWITCH_CSR_CMD_LANES (BIT(19) | BIT(18) | BIT(17) | BIT(16))
 #define LAN9303_VIRT_PHY_BASE 0x70
 #define LAN9303_VIRT_SPECIAL_CTRL 0x77
+<<<<<<< HEAD
 #define  LAN9303_VIRT_SPECIAL_TURBO BIT(10) /*Turbo MII Enable*/
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*13.4 Switch Fabric Control and Status Registers
  * Accessed indirectly via SWITCH_CSR_CMD, SWITCH_CSR_DATA.
@@ -125,6 +131,7 @@
 #define LAN9303_MAC_RX_CFG_2 0x0c01
 #define LAN9303_MAC_TX_CFG_2 0x0c40
 #define LAN9303_SWE_ALR_CMD 0x1800
+<<<<<<< HEAD
 # define LAN9303_ALR_CMD_MAKE_ENTRY    BIT(2)
 # define LAN9303_ALR_CMD_GET_FIRST     BIT(1)
 # define LAN9303_ALR_CMD_GET_NEXT      BIT(0)
@@ -140,6 +147,8 @@
 #define LAN9303_SWE_ALR_RD_DAT_1 0x1806
 #define LAN9303_SWE_ALR_CMD_STS 0x1808
 # define ALR_STS_MAKE_PEND     BIT(0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LAN9303_SWE_VLAN_CMD 0x180b
 # define LAN9303_SWE_VLAN_CMD_RNW BIT(5)
 # define LAN9303_SWE_VLAN_CMD_PVIDNVLAN BIT(4)
@@ -153,8 +162,11 @@
 # define LAN9303_SWE_VLAN_UNTAG_PORT0 BIT(12)
 #define LAN9303_SWE_VLAN_CMD_STS 0x1810
 #define LAN9303_SWE_GLB_INGRESS_CFG 0x1840
+<<<<<<< HEAD
 # define LAN9303_SWE_GLB_INGR_IGMP_TRAP BIT(7)
 # define LAN9303_SWE_GLB_INGR_IGMP_PORT(p) BIT(10 + p)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LAN9303_SWE_PORT_STATE 0x1843
 # define LAN9303_SWE_PORT_STATE_FORWARDING_PORT2 (0)
 # define LAN9303_SWE_PORT_STATE_LEARNING_PORT2 BIT(5)
@@ -165,7 +177,10 @@
 # define LAN9303_SWE_PORT_STATE_FORWARDING_PORT0 (0)
 # define LAN9303_SWE_PORT_STATE_LEARNING_PORT0 BIT(1)
 # define LAN9303_SWE_PORT_STATE_BLOCKING_PORT0 BIT(0)
+<<<<<<< HEAD
 # define LAN9303_SWE_PORT_STATE_DISABLED_PORT0 (3)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LAN9303_SWE_PORT_MIRROR 0x1846
 # define LAN9303_SWE_PORT_MIRROR_SNIFF_ALL BIT(8)
 # define LAN9303_SWE_PORT_MIRROR_SNIFFER_PORT2 BIT(7)
@@ -176,9 +191,13 @@
 # define LAN9303_SWE_PORT_MIRROR_MIRRORED_PORT0 BIT(2)
 # define LAN9303_SWE_PORT_MIRROR_ENABLE_RX_MIRRORING BIT(1)
 # define LAN9303_SWE_PORT_MIRROR_ENABLE_TX_MIRRORING BIT(0)
+<<<<<<< HEAD
 # define LAN9303_SWE_PORT_MIRROR_DISABLED 0
 #define LAN9303_SWE_INGRESS_PORT_TYPE 0x1847
 #define  LAN9303_SWE_INGRESS_PORT_TYPE_VLAN 3
+=======
+#define LAN9303_SWE_INGRESS_PORT_TYPE 0x1847
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LAN9303_BM_CFG 0x1c00
 #define LAN9303_BM_EGRSS_PORT_TYPE 0x1c0c
 # define LAN9303_BM_EGRSS_PORT_TYPE_SPECIAL_TAG_PORT2 (BIT(17) | BIT(16))
@@ -249,6 +268,7 @@ static int lan9303_read(struct regmap *regmap, unsigned int offset, u32 *reg)
 	return -EIO;
 }
 
+<<<<<<< HEAD
 static int lan9303_read_wait(struct lan9303 *chip, int offset, u32 mask)
 {
 	int i;
@@ -271,6 +291,8 @@ static int lan9303_read_wait(struct lan9303 *chip, int offset, u32 mask)
 	return -ETIMEDOUT;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lan9303_virt_phy_reg_read(struct lan9303 *chip, int regnum)
 {
 	int ret;
@@ -296,8 +318,27 @@ static int lan9303_virt_phy_reg_write(struct lan9303 *chip, int regnum, u16 val)
 
 static int lan9303_indirect_phy_wait_for_completion(struct lan9303 *chip)
 {
+<<<<<<< HEAD
 	return lan9303_read_wait(chip, LAN9303_PMI_ACCESS,
 				 LAN9303_PMI_ACCESS_MII_BUSY);
+=======
+	int ret, i;
+	u32 reg;
+
+	for (i = 0; i < 25; i++) {
+		ret = lan9303_read(chip->regmap, LAN9303_PMI_ACCESS, &reg);
+		if (ret) {
+			dev_err(chip->dev,
+				"Failed to read pmi access status: %d\n", ret);
+			return ret;
+		}
+		if (!(reg & LAN9303_PMI_ACCESS_MII_BUSY))
+			return 0;
+		msleep(1);
+	}
+
+	return -EIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int lan9303_indirect_phy_read(struct lan9303 *chip, int addr, int regnum)
@@ -374,8 +415,27 @@ EXPORT_SYMBOL_GPL(lan9303_indirect_phy_ops);
 
 static int lan9303_switch_wait_for_completion(struct lan9303 *chip)
 {
+<<<<<<< HEAD
 	return lan9303_read_wait(chip, LAN9303_SWITCH_CSR_CMD,
 				 LAN9303_SWITCH_CSR_CMD_BUSY);
+=======
+	int ret, i;
+	u32 reg;
+
+	for (i = 0; i < 25; i++) {
+		ret = lan9303_read(chip->regmap, LAN9303_SWITCH_CSR_CMD, &reg);
+		if (ret) {
+			dev_err(chip->dev,
+				"Failed to read csr command status: %d\n", ret);
+			return ret;
+		}
+		if (!(reg & LAN9303_SWITCH_CSR_CMD_BUSY))
+			return 0;
+		msleep(1);
+	}
+
+	return -EIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int lan9303_write_switch_reg(struct lan9303 *chip, u16 regnum, u32 val)
@@ -446,6 +506,7 @@ on_error:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int lan9303_write_switch_reg_mask(struct lan9303 *chip, u16 regnum,
 					 u32 val, u32 mask)
 {
@@ -461,6 +522,8 @@ static int lan9303_write_switch_reg_mask(struct lan9303 *chip, u16 regnum,
 	return lan9303_write_switch_reg(chip, regnum, reg);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lan9303_write_switch_port(struct lan9303 *chip, int port,
 				     u16 regnum, u32 val)
 {
@@ -479,8 +542,12 @@ static int lan9303_detect_phy_setup(struct lan9303 *chip)
 {
 	int reg;
 
+<<<<<<< HEAD
 	/* Calculate chip->phy_addr_base:
 	 * Depending on the 'phy_addr_sel_strap' setting, the three phys are
+=======
+	/* depending on the 'phy_addr_sel_strap' setting, the three phys are
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * using IDs 0-1-2 or IDs 1-2-3. We cannot read back the
 	 * 'phy_addr_sel_strap' setting directly, so we need a test, which
 	 * configuration is active:
@@ -495,14 +562,25 @@ static int lan9303_detect_phy_setup(struct lan9303 *chip)
 		return reg;
 	}
 
+<<<<<<< HEAD
 	chip->phy_addr_base = reg != 0 && reg != 0xffff;
 
 	dev_dbg(chip->dev, "Phy setup '%s' detected\n",
 		chip->phy_addr_base ? "1-2-3" : "0-1-2");
+=======
+	if ((reg != 0) && (reg != 0xffff))
+		chip->phy_addr_sel_strap = 1;
+	else
+		chip->phy_addr_sel_strap = 0;
+
+	dev_dbg(chip->dev, "Phy setup '%s' detected\n",
+		chip->phy_addr_sel_strap ? "1-2-3" : "0-1-2");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Map ALR-port bits to port bitmap, and back */
 static const int alrport_2_portmap[] = {1, 2, 4, 0, 3, 5, 6, 7 };
 static const int portmap_2_alrport[] = {3, 0, 1, 4, 2, 5, 6, 7 };
@@ -724,6 +802,8 @@ out:
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lan9303_disable_processing_port(struct lan9303 *chip,
 					   unsigned int port)
 {
@@ -760,6 +840,7 @@ static int lan9303_enable_processing_port(struct lan9303 *chip,
 				LAN9303_MAC_TX_CFG_X_TX_ENABLE);
 }
 
+<<<<<<< HEAD
 /* forward special tagged packets from port 0 to port 1 *or* port 2 */
 static int lan9303_setup_tagging(struct lan9303 *chip)
 {
@@ -780,16 +861,25 @@ static int lan9303_setup_tagging(struct lan9303 *chip)
 	return lan9303_write_switch_reg(chip, LAN9303_BM_EGRSS_PORT_TYPE, val);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* We want a special working switch:
  * - do not forward packets between port 1 and 2
  * - forward everything from port 1 to port 0
  * - forward everything from port 2 to port 0
+<<<<<<< HEAD
+=======
+ * - forward special tagged packets from port 0 to port 1 *or* port 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int lan9303_separate_ports(struct lan9303 *chip)
 {
 	int ret;
 
+<<<<<<< HEAD
 	lan9303_alr_del_port(chip, eth_stp_addr, 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = lan9303_write_switch_reg(chip, LAN9303_SWE_PORT_MIRROR,
 				LAN9303_SWE_PORT_MIRROR_SNIFFER_PORT0 |
 				LAN9303_SWE_PORT_MIRROR_MIRRORED_PORT1 |
@@ -799,6 +889,25 @@ static int lan9303_separate_ports(struct lan9303 *chip)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	/* enable defining the destination port via special VLAN tagging
+	 * for port 0
+	 */
+	ret = lan9303_write_switch_reg(chip, LAN9303_SWE_INGRESS_PORT_TYPE,
+				       0x03);
+	if (ret)
+		return ret;
+
+	/* tag incoming packets at port 1 and 2 on their way to port 0 to be
+	 * able to discover their source port
+	 */
+	ret = lan9303_write_switch_reg(chip, LAN9303_BM_EGRSS_PORT_TYPE,
+			LAN9303_BM_EGRSS_PORT_TYPE_SPECIAL_TAG_PORT0);
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* prevent port 1 and 2 from forwarding packets by their own */
 	return lan9303_write_switch_reg(chip, LAN9303_SWE_PORT_STATE,
 				LAN9303_SWE_PORT_STATE_FORWARDING_PORT0 |
@@ -806,6 +915,7 @@ static int lan9303_separate_ports(struct lan9303 *chip)
 				LAN9303_SWE_PORT_STATE_BLOCKING_PORT2);
 }
 
+<<<<<<< HEAD
 static void lan9303_bridge_ports(struct lan9303 *chip)
 {
 	/* ports bridged: remove mirroring */
@@ -821,12 +931,23 @@ static void lan9303_handle_reset(struct lan9303 *chip)
 {
 	if (!chip->reset_gpio)
 		return;
+=======
+static int lan9303_handle_reset(struct lan9303 *chip)
+{
+	if (!chip->reset_gpio)
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (chip->reset_duration != 0)
 		msleep(chip->reset_duration);
 
 	/* release (deassert) reset and activate the device */
 	gpiod_set_value_cansleep(chip->reset_gpio, 0);
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* stop processing packets for all ports */
@@ -863,7 +984,11 @@ static int lan9303_check_device(struct lan9303 *chip)
 	if ((reg >> 16) != LAN9303_CHIP_ID) {
 		dev_err(chip->dev, "expecting LAN9303 chip, but found: %X\n",
 			reg >> 16);
+<<<<<<< HEAD
 		return -ENODEV;
+=======
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* The default state of the LAN9303 device is to forward packets between
@@ -891,8 +1016,12 @@ static int lan9303_check_device(struct lan9303 *chip)
 
 /* ---------------------------- DSA -----------------------------------*/
 
+<<<<<<< HEAD
 static enum dsa_tag_protocol lan9303_get_tag_protocol(struct dsa_switch *ds,
 						      int port)
+=======
+static enum dsa_tag_protocol lan9303_get_tag_protocol(struct dsa_switch *ds)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return DSA_TAG_PROTO_LAN9303;
 }
@@ -908,10 +1037,13 @@ static int lan9303_setup(struct dsa_switch *ds)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	ret = lan9303_setup_tagging(chip);
 	if (ret)
 		dev_err(chip->dev, "failed to setup port tagging %d\n", ret);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = lan9303_separate_ports(chip);
 	if (ret)
 		dev_err(chip->dev, "failed to separate ports %d\n", ret);
@@ -920,6 +1052,7 @@ static int lan9303_setup(struct dsa_switch *ds)
 	if (ret)
 		dev_err(chip->dev, "failed to re-enable switching %d\n", ret);
 
+<<<<<<< HEAD
 	/* Trap IGMP to port 0 */
 	ret = lan9303_write_switch_reg_mask(chip, LAN9303_SWE_GLB_INGRESS_CFG,
 					    LAN9303_SWE_GLB_INGR_IGMP_TRAP |
@@ -929,6 +1062,8 @@ static int lan9303_setup(struct dsa_switch *ds)
 	if (ret)
 		dev_err(chip->dev, "failed to setup IGMP trap %d\n", ret);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -977,6 +1112,7 @@ static const struct lan9303_mib_desc lan9303_mib[] = {
 	{ .offset = LAN9303_MAC_TX_LATECOL_0, .name = "TxLateCol", },
 };
 
+<<<<<<< HEAD
 static void lan9303_get_strings(struct dsa_switch *ds, int port,
 				u32 stringset, uint8_t *data)
 {
@@ -985,6 +1121,12 @@ static void lan9303_get_strings(struct dsa_switch *ds, int port,
 	if (stringset != ETH_SS_STATS)
 		return;
 
+=======
+static void lan9303_get_strings(struct dsa_switch *ds, int port, uint8_t *data)
+{
+	unsigned int u;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (u = 0; u < ARRAY_SIZE(lan9303_mib); u++) {
 		strncpy(data + u * ETH_GSTRING_LEN, lan9303_mib[u].name,
 			ETH_GSTRING_LEN);
@@ -1011,18 +1153,27 @@ static void lan9303_get_ethtool_stats(struct dsa_switch *ds, int port,
 	}
 }
 
+<<<<<<< HEAD
 static int lan9303_get_sset_count(struct dsa_switch *ds, int port, int sset)
 {
 	if (sset != ETH_SS_STATS)
 		return 0;
 
+=======
+static int lan9303_get_sset_count(struct dsa_switch *ds)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ARRAY_SIZE(lan9303_mib);
 }
 
 static int lan9303_phy_read(struct dsa_switch *ds, int phy, int regnum)
 {
 	struct lan9303 *chip = ds->priv;
+<<<<<<< HEAD
 	int phy_base = chip->phy_addr_base;
+=======
+	int phy_base = chip->phy_addr_sel_strap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (phy == phy_base)
 		return lan9303_virt_phy_reg_read(chip, regnum);
@@ -1036,7 +1187,11 @@ static int lan9303_phy_write(struct dsa_switch *ds, int phy, int regnum,
 			     u16 val)
 {
 	struct lan9303 *chip = ds->priv;
+<<<<<<< HEAD
 	int phy_base = chip->phy_addr_base;
+=======
+	int phy_base = chip->phy_addr_sel_strap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (phy == phy_base)
 		return lan9303_virt_phy_reg_write(chip, regnum, val);
@@ -1046,6 +1201,7 @@ static int lan9303_phy_write(struct dsa_switch *ds, int phy, int regnum,
 	return chip->ops->phy_write(chip, phy, regnum, val);
 }
 
+<<<<<<< HEAD
 static void lan9303_adjust_link(struct dsa_switch *ds, int port,
 				struct phy_device *phydev)
 {
@@ -1083,12 +1239,28 @@ static void lan9303_adjust_link(struct dsa_switch *ds, int port,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lan9303_port_enable(struct dsa_switch *ds, int port,
 			       struct phy_device *phy)
 {
 	struct lan9303 *chip = ds->priv;
 
+<<<<<<< HEAD
 	return lan9303_enable_processing_port(chip, port);
+=======
+	/* enable internal packet processing */
+	switch (port) {
+	case 1:
+	case 2:
+		return lan9303_enable_processing_port(chip, port);
+	default:
+		dev_dbg(chip->dev,
+			"Error: request to power up invalid port %d\n", port);
+	}
+
+	return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void lan9303_port_disable(struct dsa_switch *ds, int port,
@@ -1096,6 +1268,7 @@ static void lan9303_port_disable(struct dsa_switch *ds, int port,
 {
 	struct lan9303 *chip = ds->priv;
 
+<<<<<<< HEAD
 	lan9303_disable_processing_port(chip, port);
 	lan9303_phy_write(ds, chip->phy_addr_base + port, MII_BMCR, BMCR_PDOWN);
 }
@@ -1258,6 +1431,20 @@ static int lan9303_port_mdb_del(struct dsa_switch *ds, int port,
 	lan9303_alr_del_port(chip, mdb->addr, port);
 
 	return 0;
+=======
+	/* disable internal packet processing */
+	switch (port) {
+	case 1:
+	case 2:
+		lan9303_disable_processing_port(chip, port);
+		lan9303_phy_write(ds, chip->phy_addr_sel_strap + port,
+				  MII_BMCR, BMCR_PDOWN);
+		break;
+	default:
+		dev_dbg(chip->dev,
+			"Error: request to power down invalid port %d\n", port);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct dsa_switch_ops lan9303_switch_ops = {
@@ -1266,11 +1453,15 @@ static const struct dsa_switch_ops lan9303_switch_ops = {
 	.get_strings = lan9303_get_strings,
 	.phy_read = lan9303_phy_read,
 	.phy_write = lan9303_phy_write,
+<<<<<<< HEAD
 	.adjust_link = lan9303_adjust_link,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_ethtool_stats = lan9303_get_ethtool_stats,
 	.get_sset_count = lan9303_get_sset_count,
 	.port_enable = lan9303_port_enable,
 	.port_disable = lan9303_port_disable,
+<<<<<<< HEAD
 	.port_bridge_join       = lan9303_port_bridge_join,
 	.port_bridge_leave      = lan9303_port_bridge_leave,
 	.port_stp_state_set     = lan9303_port_stp_state_set,
@@ -1281,35 +1472,55 @@ static const struct dsa_switch_ops lan9303_switch_ops = {
 	.port_mdb_prepare       = lan9303_port_mdb_prepare,
 	.port_mdb_add           = lan9303_port_mdb_add,
 	.port_mdb_del           = lan9303_port_mdb_del,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int lan9303_register_switch(struct lan9303 *chip)
 {
+<<<<<<< HEAD
 	int base;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chip->ds = dsa_switch_alloc(chip->dev, LAN9303_NUM_PORTS);
 	if (!chip->ds)
 		return -ENOMEM;
 
 	chip->ds->priv = chip;
 	chip->ds->ops = &lan9303_switch_ops;
+<<<<<<< HEAD
 	base = chip->phy_addr_base;
 	chip->ds->phys_mii_mask = GENMASK(LAN9303_NUM_PORTS - 1 + base, base);
+=======
+	chip->ds->phys_mii_mask = chip->phy_addr_sel_strap ? 0xe : 0x7;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return dsa_register_switch(chip->ds);
 }
 
+<<<<<<< HEAD
 static int lan9303_probe_reset_gpio(struct lan9303 *chip,
+=======
+static void lan9303_probe_reset_gpio(struct lan9303 *chip,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_node *np)
 {
 	chip->reset_gpio = devm_gpiod_get_optional(chip->dev, "reset",
 						   GPIOD_OUT_LOW);
+<<<<<<< HEAD
 	if (IS_ERR(chip->reset_gpio))
 		return PTR_ERR(chip->reset_gpio);
 
 	if (!chip->reset_gpio) {
 		dev_dbg(chip->dev, "No reset GPIO defined\n");
 		return 0;
+=======
+
+	if (!chip->reset_gpio) {
+		dev_dbg(chip->dev, "No reset GPIO defined\n");
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	chip->reset_duration = 200;
@@ -1324,8 +1535,11 @@ static int lan9303_probe_reset_gpio(struct lan9303 *chip,
 	/* A sane reset duration should not be longer than 1s */
 	if (chip->reset_duration > 1000)
 		chip->reset_duration = 1000;
+<<<<<<< HEAD
 
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int lan9303_probe(struct lan9303 *chip, struct device_node *np)
@@ -1333,6 +1547,7 @@ int lan9303_probe(struct lan9303 *chip, struct device_node *np)
 	int ret;
 
 	mutex_init(&chip->indirect_mutex);
+<<<<<<< HEAD
 	mutex_init(&chip->alr_mutex);
 
 	ret = lan9303_probe_reset_gpio(chip, np);
@@ -1341,6 +1556,15 @@ int lan9303_probe(struct lan9303 *chip, struct device_node *np)
 
 	lan9303_handle_reset(chip);
 
+=======
+
+	lan9303_probe_reset_gpio(chip, np);
+
+	ret = lan9303_handle_reset(chip);
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = lan9303_check_device(chip);
 	if (ret)
 		return ret;

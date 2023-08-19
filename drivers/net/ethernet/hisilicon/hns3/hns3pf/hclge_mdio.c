@@ -1,5 +1,16 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 // Copyright (c) 2016-2017 Hisilicon Limited.
+=======
+/*
+ * Copyright (c) 2016~2017 Hisilicon Limited.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/etherdevice.h>
 #include <linux/kernel.h>
@@ -8,6 +19,7 @@
 #include "hclge_main.h"
 #include "hclge_mdio.h"
 
+<<<<<<< HEAD
 #define HCLGE_PHY_SUPPORTED_FEATURES	(SUPPORTED_Autoneg | \
 					 SUPPORTED_TP | \
 					 SUPPORTED_Pause | \
@@ -16,6 +28,8 @@
 					 PHY_100BT_FEATURES | \
 					 PHY_1000BT_FEATURES)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum hclge_mdio_c22_op_seq {
 	HCLGE_MDIO_C22_WRITE = 1,
 	HCLGE_MDIO_C22_READ = 2
@@ -54,13 +68,17 @@ static int hclge_mdio_write(struct mii_bus *bus, int phyid, int regnum,
 	struct hclge_desc desc;
 	int ret;
 
+<<<<<<< HEAD
 	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_MDIO_CONFIG, false);
 
 	mdio_cmd = (struct hclge_mdio_cfg_cmd *)desc.data;
 
+<<<<<<< HEAD
 	hnae3_set_field(mdio_cmd->phyid, HCLGE_MDIO_PHYID_M,
 			HCLGE_MDIO_PHYID_S, phyid);
 	hnae3_set_field(mdio_cmd->phyad, HCLGE_MDIO_PHYREG_M,
@@ -71,6 +89,18 @@ static int hclge_mdio_write(struct mii_bus *bus, int phyid, int regnum,
 			HCLGE_MDIO_CTRL_ST_S, 1);
 	hnae3_set_field(mdio_cmd->ctrl_bit, HCLGE_MDIO_CTRL_OP_M,
 			HCLGE_MDIO_CTRL_OP_S, HCLGE_MDIO_C22_WRITE);
+=======
+	hnae_set_field(mdio_cmd->phyid, HCLGE_MDIO_PHYID_M,
+		       HCLGE_MDIO_PHYID_S, phyid);
+	hnae_set_field(mdio_cmd->phyad, HCLGE_MDIO_PHYREG_M,
+		       HCLGE_MDIO_PHYREG_S, regnum);
+
+	hnae_set_bit(mdio_cmd->ctrl_bit, HCLGE_MDIO_CTRL_START_B, 1);
+	hnae_set_field(mdio_cmd->ctrl_bit, HCLGE_MDIO_CTRL_ST_M,
+		       HCLGE_MDIO_CTRL_ST_S, 1);
+	hnae_set_field(mdio_cmd->ctrl_bit, HCLGE_MDIO_CTRL_OP_M,
+		       HCLGE_MDIO_CTRL_OP_S, HCLGE_MDIO_C22_WRITE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mdio_cmd->data_wr = cpu_to_le16(data);
 
@@ -92,13 +122,17 @@ static int hclge_mdio_read(struct mii_bus *bus, int phyid, int regnum)
 	struct hclge_desc desc;
 	int ret;
 
+<<<<<<< HEAD
 	if (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_MDIO_CONFIG, true);
 
 	mdio_cmd = (struct hclge_mdio_cfg_cmd *)desc.data;
 
+<<<<<<< HEAD
 	hnae3_set_field(mdio_cmd->phyid, HCLGE_MDIO_PHYID_M,
 			HCLGE_MDIO_PHYID_S, phyid);
 	hnae3_set_field(mdio_cmd->phyad, HCLGE_MDIO_PHYREG_M,
@@ -109,6 +143,18 @@ static int hclge_mdio_read(struct mii_bus *bus, int phyid, int regnum)
 			HCLGE_MDIO_CTRL_ST_S, 1);
 	hnae3_set_field(mdio_cmd->ctrl_bit, HCLGE_MDIO_CTRL_OP_M,
 			HCLGE_MDIO_CTRL_OP_S, HCLGE_MDIO_C22_READ);
+=======
+	hnae_set_field(mdio_cmd->phyid, HCLGE_MDIO_PHYID_M,
+		       HCLGE_MDIO_PHYID_S, phyid);
+	hnae_set_field(mdio_cmd->phyad, HCLGE_MDIO_PHYREG_M,
+		       HCLGE_MDIO_PHYREG_S, regnum);
+
+	hnae_set_bit(mdio_cmd->ctrl_bit, HCLGE_MDIO_CTRL_START_B, 1);
+	hnae_set_field(mdio_cmd->ctrl_bit, HCLGE_MDIO_CTRL_ST_M,
+		       HCLGE_MDIO_CTRL_ST_S, 1);
+	hnae_set_field(mdio_cmd->ctrl_bit, HCLGE_MDIO_CTRL_OP_M,
+		       HCLGE_MDIO_CTRL_OP_S, HCLGE_MDIO_C22_READ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Read out phy data */
 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
@@ -119,7 +165,11 @@ static int hclge_mdio_read(struct mii_bus *bus, int phyid, int regnum)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (hnae3_get_bit(le16_to_cpu(mdio_cmd->sta), HCLGE_MDIO_STA_B)) {
+=======
+	if (hnae_get_bit(le16_to_cpu(mdio_cmd->sta), HCLGE_MDIO_STA_B)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&hdev->pdev->dev, "mdio read data error\n");
 		return -EIO;
 	}
@@ -134,11 +184,16 @@ int hclge_mac_mdio_config(struct hclge_dev *hdev)
 	struct mii_bus *mdio_bus;
 	int ret;
 
+<<<<<<< HEAD
 	if (hdev->hw.mac.phy_addr >= PHY_MAX_ADDR) {
 		dev_err(&hdev->pdev->dev, "phy_addr(%d) is too large.\n",
 			hdev->hw.mac.phy_addr);
 		return -EINVAL;
 	}
+=======
+	if (hdev->hw.mac.phy_addr >= PHY_MAX_ADDR)
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mdio_bus = devm_mdiobus_alloc(&hdev->pdev->dev);
 	if (!mdio_bus)
@@ -187,6 +242,7 @@ static void hclge_mac_adjust_link(struct net_device *netdev)
 	ret = hclge_cfg_mac_speed_dup(hdev, speed, duplex);
 	if (ret)
 		netdev_err(netdev, "failed to adjust link.\n");
+<<<<<<< HEAD
 
 	ret = hclge_cfg_flowctrl(hdev);
 	if (ret)
@@ -194,6 +250,11 @@ static void hclge_mac_adjust_link(struct net_device *netdev)
 }
 
 int hclge_mac_connect_phy(struct hclge_dev *hdev)
+=======
+}
+
+int hclge_mac_start_phy(struct hclge_dev *hdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *netdev = hdev->vport[0].nic.netdev;
 	struct phy_device *phydev = hdev->hw.mac.phydev;
@@ -212,12 +273,17 @@ int hclge_mac_connect_phy(struct hclge_dev *hdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	phydev->supported &= HCLGE_PHY_SUPPORTED_FEATURES;
 	phydev->advertising = phydev->supported;
+=======
+	phy_start(phydev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 void hclge_mac_disconnect_phy(struct hclge_dev *hdev)
 {
 	struct phy_device *phydev = hdev->hw.mac.phydev;
@@ -238,6 +304,8 @@ void hclge_mac_start_phy(struct hclge_dev *hdev)
 	phy_start(phydev);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void hclge_mac_stop_phy(struct hclge_dev *hdev)
 {
 	struct net_device *netdev = hdev->vport[0].nic.netdev;
@@ -247,4 +315,8 @@ void hclge_mac_stop_phy(struct hclge_dev *hdev)
 		return;
 
 	phy_stop(phydev);
+<<<<<<< HEAD
+=======
+	phy_disconnect(phydev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

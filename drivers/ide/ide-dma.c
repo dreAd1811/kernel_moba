@@ -180,6 +180,10 @@ EXPORT_SYMBOL_GPL(ide_dma_unmap_sg);
 void ide_dma_off_quietly(ide_drive_t *drive)
 {
 	drive->dev_flags &= ~IDE_DFLAG_USING_DMA;
+<<<<<<< HEAD
+=======
+	ide_toggle_bounce(drive, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drive->hwif->dma_ops->dma_host_set(drive, 0);
 }
@@ -210,6 +214,10 @@ EXPORT_SYMBOL(ide_dma_off);
 void ide_dma_on(ide_drive_t *drive)
 {
 	drive->dev_flags |= IDE_DFLAG_USING_DMA;
+<<<<<<< HEAD
+=======
+	ide_toggle_bounce(drive, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drive->hwif->dma_ops->dma_host_set(drive, 1);
 }

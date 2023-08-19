@@ -24,8 +24,11 @@
 #ifndef __SI_H__
 #define __SI_H__
 
+<<<<<<< HEAD
 #define SI_FLUSH_GPU_TLB_NUM_WREG	2
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void si_srbm_select(struct amdgpu_device *adev,
 		     u32 me, u32 pipe, u32 queue, u32 vmid);
 int si_set_ip_blocks(struct amdgpu_device *adev);

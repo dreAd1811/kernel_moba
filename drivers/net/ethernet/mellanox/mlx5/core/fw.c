@@ -32,9 +32,15 @@
 
 #include <linux/mlx5/driver.h>
 #include <linux/mlx5/cmd.h>
+<<<<<<< HEAD
 #include <linux/mlx5/eswitch.h>
 #include <linux/module.h>
 #include "mlx5_core.h"
+=======
+#include <linux/module.h>
+#include "mlx5_core.h"
+#include "eswitch.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "../../mlxfw/mlxfw.h"
 
 static int mlx5_cmd_query_adapter(struct mlx5_core_dev *dev, u32 *out,
@@ -107,6 +113,7 @@ static int mlx5_get_mcam_reg(struct mlx5_core_dev *dev)
 				   MLX5_MCAM_REGS_FIRST_128);
 }
 
+<<<<<<< HEAD
 static int mlx5_get_qcam_reg(struct mlx5_core_dev *dev)
 {
 	return mlx5_query_qcam_reg(dev, dev->caps.qcam,
@@ -114,6 +121,8 @@ static int mlx5_get_qcam_reg(struct mlx5_core_dev *dev)
 				   MLX5_QCAM_REGS_FIRST_128);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_query_hca_caps(struct mlx5_core_dev *dev)
 {
 	int err;
@@ -184,15 +193,19 @@ int mlx5_query_hca_caps(struct mlx5_core_dev *dev)
 			return err;
 	}
 
+<<<<<<< HEAD
 	if (MLX5_CAP_GEN(dev, debug))
 		mlx5_core_get_caps(dev, MLX5_CAP_DEBUG);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (MLX5_CAP_GEN(dev, pcam_reg))
 		mlx5_get_pcam_reg(dev);
 
 	if (MLX5_CAP_GEN(dev, mcam_reg))
 		mlx5_get_mcam_reg(dev);
 
+<<<<<<< HEAD
 	if (MLX5_CAP_GEN(dev, qcam_reg))
 		mlx5_get_qcam_reg(dev);
 
@@ -219,6 +232,17 @@ int mlx5_cmd_init_hca(struct mlx5_core_dev *dev, uint32_t *sw_owner_id)
 				       sw_owner_id[i]);
 	}
 
+=======
+	return 0;
+}
+
+int mlx5_cmd_init_hca(struct mlx5_core_dev *dev)
+{
+	u32 out[MLX5_ST_SZ_DW(init_hca_out)] = {0};
+	u32 in[MLX5_ST_SZ_DW(init_hca_in)]   = {0};
+
+	MLX5_SET(init_hca_in, in, opcode, MLX5_CMD_OP_INIT_HCA);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mlx5_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
 }
 
@@ -252,7 +276,11 @@ int mlx5_cmd_force_teardown_hca(struct mlx5_core_dev *dev)
 
 	force_state = MLX5_GET(teardown_hca_out, out, force_state);
 	if (force_state == MLX5_TEARDOWN_HCA_OUT_FORCE_STATE_FAIL) {
+<<<<<<< HEAD
 		mlx5_core_warn(dev, "teardown with force mode failed, doing normal teardown\n");
+=======
+		mlx5_core_err(dev, "teardown with force mode failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 

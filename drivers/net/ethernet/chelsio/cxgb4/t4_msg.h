@@ -50,9 +50,13 @@ enum {
 	CPL_RX_DATA_ACK       = 0xD,
 	CPL_TX_PKT            = 0xE,
 	CPL_L2T_WRITE_REQ     = 0x12,
+<<<<<<< HEAD
 	CPL_SMT_WRITE_REQ     = 0x14,
 	CPL_TID_RELEASE       = 0x1A,
 	CPL_SRQ_TABLE_REQ     = 0x1C,
+=======
+	CPL_TID_RELEASE       = 0x1A,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CPL_TX_DATA_ISO	      = 0x1F,
 
 	CPL_CLOSE_LISTSRV_RPL = 0x20,
@@ -62,7 +66,10 @@ enum {
 	CPL_PEER_CLOSE        = 0x26,
 	CPL_ABORT_REQ_RSS     = 0x2B,
 	CPL_ABORT_RPL_RSS     = 0x2D,
+<<<<<<< HEAD
 	CPL_SMT_WRITE_RPL     = 0x2E,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	CPL_RX_PHYS_ADDR      = 0x30,
 	CPL_CLOSE_CON_RPL     = 0x32,
@@ -82,15 +89,22 @@ enum {
 	CPL_RX_ISCSI_CMP      = 0x45,
 	CPL_TRACE_PKT_T5      = 0x48,
 	CPL_RX_ISCSI_DDP      = 0x49,
+<<<<<<< HEAD
 	CPL_RX_TLS_CMP        = 0x4E,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	CPL_RDMA_READ_REQ     = 0x60,
 
 	CPL_PASS_OPEN_REQ6    = 0x81,
 	CPL_ACT_OPEN_REQ6     = 0x83,
 
+<<<<<<< HEAD
 	CPL_TX_TLS_PDU        = 0x88,
 	CPL_TX_TLS_SFO        = 0x89,
+=======
+	CPL_TX_TLS_PDU     =    0x88,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CPL_TX_SEC_PDU        = 0x8A,
 	CPL_TX_TLS_ACK        = 0x8B,
 
@@ -100,19 +114,28 @@ enum {
 	CPL_RX_MPS_PKT        = 0xAF,
 
 	CPL_TRACE_PKT         = 0xB0,
+<<<<<<< HEAD
 	CPL_TLS_DATA          = 0xB1,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CPL_ISCSI_DATA	      = 0xB2,
 
 	CPL_FW4_MSG           = 0xC0,
 	CPL_FW4_PLD           = 0xC1,
 	CPL_FW4_ACK           = 0xC3,
+<<<<<<< HEAD
 	CPL_SRQ_TABLE_RPL     = 0xCC,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	CPL_RX_PHYS_DSGL      = 0xD0,
 
 	CPL_FW6_MSG           = 0xE0,
 	CPL_FW6_PLD           = 0xE1,
+<<<<<<< HEAD
 	CPL_TX_TNL_LSO        = 0xEC,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CPL_TX_PKT_LSO        = 0xED,
 	CPL_TX_PKT_XT         = 0xEE,
 
@@ -141,8 +164,11 @@ enum CPL_error {
 	CPL_ERR_KEEPALV_NEG_ADVICE = 37,
 	CPL_ERR_ABORT_FAILED       = 42,
 	CPL_ERR_IWARP_FLM          = 50,
+<<<<<<< HEAD
 	CPL_CONTAINS_READ_RPL      = 60,
 	CPL_CONTAINS_WRITE_RPL     = 61,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum {
@@ -158,7 +184,10 @@ enum {
 	ULP_MODE_RDMA          = 4,
 	ULP_MODE_TCPDDP	       = 5,
 	ULP_MODE_FCOE          = 6,
+<<<<<<< HEAD
 	ULP_MODE_TLS           = 8,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum {
@@ -206,7 +235,10 @@ union opcode_tid {
 /* partitioning of TID fields that also carry a queue id */
 #define TID_TID_S    0
 #define TID_TID_M    0x3fff
+<<<<<<< HEAD
 #define TID_TID_V(x) ((x) << TID_TID_S)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TID_TID_G(x) (((x) >> TID_TID_S) & TID_TID_M)
 
 #define TID_QID_S    14
@@ -296,7 +328,10 @@ struct work_request_hdr {
 
 #define RX_CHANNEL_S    26
 #define RX_CHANNEL_V(x) ((x) << RX_CHANNEL_S)
+<<<<<<< HEAD
 #define RX_CHANNEL_F	RX_CHANNEL_V(1U)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define WND_SCALE_EN_S    28
 #define WND_SCALE_EN_V(x) ((x) << WND_SCALE_EN_S)
@@ -326,10 +361,13 @@ struct cpl_pass_open_req {
 #define DELACK_V(x) ((x) << DELACK_S)
 #define DELACK_F    DELACK_V(1U)
 
+<<<<<<< HEAD
 #define NON_OFFLOAD_S		7
 #define NON_OFFLOAD_V(x)	((x) << NON_OFFLOAD_S)
 #define NON_OFFLOAD_F		NON_OFFLOAD_V(1U)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DSCP_S    22
 #define DSCP_M    0x3F
 #define DSCP_V(x) ((x) << DSCP_S)
@@ -698,8 +736,13 @@ struct cpl_set_tcb_field {
 };
 
 /* cpl_set_tcb_field.word_cookie fields */
+<<<<<<< HEAD
 #define TCB_WORD_S	0
 #define TCB_WORD_V(x)	((x) << TCB_WORD_S)
+=======
+#define TCB_WORD_S    0
+#define TCB_WORD(x)   ((x) << TCB_WORD_S)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TCB_COOKIE_S    5
 #define TCB_COOKIE_M    0x7
@@ -752,6 +795,7 @@ struct cpl_abort_req_rss {
 	u8 status;
 };
 
+<<<<<<< HEAD
 struct cpl_abort_req_rss6 {
 	union opcode_tid ot;
 	__be32 srqidx_status;
@@ -767,6 +811,8 @@ struct cpl_abort_req_rss6 {
 #define ABORT_RSS_SRQIDX_V(x) ((x) << ABORT_RSS_SRQIDX_S)
 #define ABORT_RSS_SRQIDX_G(x) (((x) >> ABORT_RSS_SRQIDX_S) & ABORT_RSS_SRQIDX_M)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cpl_abort_req {
 	WR_HDR;
 	union opcode_tid ot;
@@ -782,11 +828,14 @@ struct cpl_abort_rpl_rss {
 	u8 status;
 };
 
+<<<<<<< HEAD
 struct cpl_abort_rpl_rss6 {
 	union opcode_tid ot;
 	__be32 srqidx_status;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cpl_abort_rpl {
 	WR_HDR;
 	union opcode_tid ot;
@@ -1232,11 +1281,14 @@ struct cpl_rx_pkt {
 #define T6_COMPR_RXERR_SUM_V(x) ((x) << T6_COMPR_RXERR_SUM_S)
 #define T6_COMPR_RXERR_SUM_F    T6_COMPR_RXERR_SUM_V(1U)
 
+<<<<<<< HEAD
 #define T6_RX_TNLHDR_LEN_S    8
 #define T6_RX_TNLHDR_LEN_M    0xFF
 #define T6_RX_TNLHDR_LEN_V(x) ((x) << T6_RX_TNLHDR_LEN_S)
 #define T6_RX_TNLHDR_LEN_G(x) (((x) >> T6_RX_TNLHDR_LEN_S) & T6_RX_TNLHDR_LEN_M)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cpl_trace_pkt {
 	u8 opcode;
 	u8 intf;
@@ -1308,6 +1360,7 @@ struct cpl_l2t_write_rpl {
 	u8 rsvd[3];
 };
 
+<<<<<<< HEAD
 struct cpl_smt_write_req {
 	WR_HDR;
 	union opcode_tid ot;
@@ -1346,6 +1399,8 @@ struct cpl_smt_write_rpl {
 #define SMTW_NORPL_V(x)	((x) << SMTW_NORPL_S)
 #define SMTW_NORPL_F	SMTW_NORPL_V(1U)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cpl_rdma_terminate {
 	union opcode_tid ot;
 	__be16 rsvd;
@@ -1453,6 +1508,7 @@ struct cpl_tx_data {
 #define T6_TX_FORCE_V(x)	((x) << T6_TX_FORCE_S)
 #define T6_TX_FORCE_F		T6_TX_FORCE_V(1U)
 
+<<<<<<< HEAD
 #define TX_SHOVE_S    14
 #define TX_SHOVE_V(x) ((x) << TX_SHOVE_S)
 
@@ -1461,6 +1517,8 @@ struct cpl_tx_data {
 #define TX_ULP_MODE_V(x) ((x) << TX_ULP_MODE_S)
 #define TX_ULP_MODE_G(x) (((x) >> TX_ULP_MODE_S) & TX_ULP_MODE_M)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	ULP_TX_MEM_READ = 2,
 	ULP_TX_MEM_WRITE = 3,
@@ -1471,13 +1529,18 @@ enum {
 	ULP_TX_SC_NOOP = 0x80,
 	ULP_TX_SC_IMM  = 0x81,
 	ULP_TX_SC_DSGL = 0x82,
+<<<<<<< HEAD
 	ULP_TX_SC_ISGL = 0x83,
 	ULP_TX_SC_MEMRD = 0x86
+=======
+	ULP_TX_SC_ISGL = 0x83
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define ULPTX_CMD_S    24
 #define ULPTX_CMD_V(x) ((x) << ULPTX_CMD_S)
 
+<<<<<<< HEAD
 #define ULPTX_LEN16_S    0
 #define ULPTX_LEN16_M    0xFF
 #define ULPTX_LEN16_V(x) ((x) << ULPTX_LEN16_S)
@@ -1486,6 +1549,8 @@ enum {
 #define ULP_TX_SC_MORE_V(x) ((x) << ULP_TX_SC_MORE_S)
 #define ULP_TX_SC_MORE_F  ULP_TX_SC_MORE_V(1U)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ulptx_sge_pair {
 	__be32 len[2];
 	__be64 addr[2];
@@ -1531,6 +1596,7 @@ struct ulp_txpkt {
 #define ULP_TXPKT_RO_V(x) ((x) << ULP_TXPKT_RO_S)
 #define ULP_TXPKT_RO_F ULP_TXPKT_RO_V(1U)
 
+<<<<<<< HEAD
 enum cpl_tx_tnl_lso_type {
 	TX_TNL_TYPE_OPAQUE,
 	TX_TNL_TYPE_NVGRE,
@@ -1694,6 +1760,8 @@ struct cpl_tx_tnl_lso {
 	(((x) >> CPL_TX_TNL_LSO_IPV6_S) & CPL_TX_TNL_LSO_IPV6_M)
 #define CPL_TX_TNL_LSO_IPV6_F		CPL_TX_TNL_LSO_IPV6_V(1U)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ULP_TX_SC_MORE_S 23
 #define ULP_TX_SC_MORE_V(x) ((x) << ULP_TX_SC_MORE_S)
 #define ULP_TX_SC_MORE_F  ULP_TX_SC_MORE_V(1U)
@@ -2163,6 +2231,7 @@ enum {
 	X_CPL_RX_MPS_PKT_TYPE_QFC   = 1 << 2,
 	X_CPL_RX_MPS_PKT_TYPE_PTP   = 1 << 3
 };
+<<<<<<< HEAD
 
 struct cpl_srq_table_req {
 	WR_HDR;
@@ -2305,4 +2374,6 @@ struct cpl_rx_tls_cmp {
 #define CPL_RX_TLS_CMP_LENGTH_V(x)      ((x) << CPL_RX_TLS_CMP_LENGTH_S)
 #define CPL_RX_TLS_CMP_LENGTH_G(x)      \
 	(((x) >> CPL_RX_TLS_CMP_LENGTH_S) & CPL_RX_TLS_CMP_LENGTH_M)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif  /* __T4_MSG_H */

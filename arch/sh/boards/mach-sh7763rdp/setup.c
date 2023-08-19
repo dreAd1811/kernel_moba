@@ -87,6 +87,10 @@ static struct resource sh_eth_resources[] = {
 
 static struct sh_eth_plat_data sh7763_eth_pdata = {
 	.phy = 1,
+<<<<<<< HEAD
+=======
+	.edmac_endian = EDMAC_LITTLE_ENDIAN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.phy_interface = PHY_INTERFACE_MODE_MII,
 };
 

@@ -871,6 +871,7 @@ ENTRY(sun4v_m7_set_perfreg)
 	retl
 	nop
 ENDPROC(sun4v_m7_set_perfreg)
+<<<<<<< HEAD
 
 	/* %o0: address of CCB array
 	 * %o1: size (in bytes) of CCB array
@@ -928,3 +929,5 @@ ENTRY(sun4v_ccb_kill)
 	 sth	%o1, [%g1]
 ENDPROC(sun4v_ccb_kill)
 EXPORT_SYMBOL(sun4v_ccb_kill)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

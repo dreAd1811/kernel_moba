@@ -51,7 +51,11 @@
 		#size-cells = <2>;
 		ranges;
 
+<<<<<<< HEAD
 		ramoops@21f00000 {
+=======
+		ramoops@0x21f00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ramoops";
 			reg = <0x0 0x21f00000 0x0 0x00100000>;
 			record-size	= <0x00020000>;
@@ -322,7 +326,10 @@
 		dwmmc_2: dwmmc2@f723f000 {
 			bus-width = <0x4>;
 			non-removable;
+<<<<<<< HEAD
 			cap-power-off-card;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vmmc-supply = <&reg_vdd_3v3>;
 			mmc-pwrseq = <&wl1835_pwrseq>;
 
@@ -361,7 +368,10 @@
 		user_led1 {
 			label = "user_led1";
 			gpios = <&gpio4 3 0>; /* <&gpio_user_led_4>; */
+<<<<<<< HEAD
 			panic-indicator;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			linux,default-trigger = "cpu0";
 		};
 

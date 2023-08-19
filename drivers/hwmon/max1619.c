@@ -303,6 +303,7 @@ static const struct i2c_device_id max1619_id[] = {
 };
 MODULE_DEVICE_TABLE(i2c, max1619_id);
 
+<<<<<<< HEAD
 #ifdef CONFIG_OF
 static const struct of_device_id max1619_of_match[] = {
 	{ .compatible = "maxim,max1619", },
@@ -312,11 +313,16 @@ static const struct of_device_id max1619_of_match[] = {
 MODULE_DEVICE_TABLE(of, max1619_of_match);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct i2c_driver max1619_driver = {
 	.class		= I2C_CLASS_HWMON,
 	.driver = {
 		.name	= "max1619",
+<<<<<<< HEAD
 		.of_match_table = of_match_ptr(max1619_of_match),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= max1619_probe,
 	.id_table	= max1619_id,

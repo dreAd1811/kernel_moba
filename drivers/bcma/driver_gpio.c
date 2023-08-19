@@ -113,7 +113,11 @@ static irqreturn_t bcma_gpio_irq_handler(int irq, void *dev_id)
 		return IRQ_NONE;
 
 	for_each_set_bit(gpio, &irqs, gc->ngpio)
+<<<<<<< HEAD
 		generic_handle_irq(irq_find_mapping(gc->irq.domain, gpio));
+=======
+		generic_handle_irq(irq_find_mapping(gc->irqdomain, gpio));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bcma_chipco_gpio_polarity(cc, irqs, val & irqs);
 
 	return IRQ_HANDLED;

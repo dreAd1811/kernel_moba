@@ -23,10 +23,18 @@
 #include "amdgpu.h"
 #include "gfxhub_v1_0.h"
 
+<<<<<<< HEAD
 #include "gc/gc_9_0_offset.h"
 #include "gc/gc_9_0_sh_mask.h"
 #include "gc/gc_9_0_default.h"
 #include "vega10_enum.h"
+=======
+#include "vega10/soc15ip.h"
+#include "vega10/GC/gc_9_0_offset.h"
+#include "vega10/GC/gc_9_0_sh_mask.h"
+#include "vega10/GC/gc_9_0_default.h"
+#include "vega10/vega10_enum.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "soc15_common.h"
 
@@ -40,7 +48,11 @@ static void gfxhub_v1_0_init_gart_pt_regs(struct amdgpu_device *adev)
 	uint64_t value;
 
 	BUG_ON(adev->gart.table_addr & (~0x0000FFFFFFFFF000ULL));
+<<<<<<< HEAD
 	value = adev->gart.table_addr - adev->gmc.vram_start
+=======
+	value = adev->gart.table_addr - adev->mc.vram_start
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		+ adev->vm_manager.vram_base_offset;
 	value &= 0x0000FFFFFFFFF000ULL;
 	value |= 0x1; /*valid bit*/
@@ -57,6 +69,7 @@ static void gfxhub_v1_0_init_gart_aperture_regs(struct amdgpu_device *adev)
 	gfxhub_v1_0_init_gart_pt_regs(adev);
 
 	WREG32_SOC15(GC, 0, mmVM_CONTEXT0_PAGE_TABLE_START_ADDR_LO32,
+<<<<<<< HEAD
 		     (u32)(adev->gmc.gart_start >> 12));
 	WREG32_SOC15(GC, 0, mmVM_CONTEXT0_PAGE_TABLE_START_ADDR_HI32,
 		     (u32)(adev->gmc.gart_start >> 44));
@@ -65,6 +78,16 @@ static void gfxhub_v1_0_init_gart_aperture_regs(struct amdgpu_device *adev)
 		     (u32)(adev->gmc.gart_end >> 12));
 	WREG32_SOC15(GC, 0, mmVM_CONTEXT0_PAGE_TABLE_END_ADDR_HI32,
 		     (u32)(adev->gmc.gart_end >> 44));
+=======
+		     (u32)(adev->mc.gart_start >> 12));
+	WREG32_SOC15(GC, 0, mmVM_CONTEXT0_PAGE_TABLE_START_ADDR_HI32,
+		     (u32)(adev->mc.gart_start >> 44));
+
+	WREG32_SOC15(GC, 0, mmVM_CONTEXT0_PAGE_TABLE_END_ADDR_LO32,
+		     (u32)(adev->mc.gart_end >> 12));
+	WREG32_SOC15(GC, 0, mmVM_CONTEXT0_PAGE_TABLE_END_ADDR_HI32,
+		     (u32)(adev->mc.gart_end >> 44));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
@@ -78,12 +101,21 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
 
 	/* Program the system aperture low logical page number. */
 	WREG32_SOC15(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
+<<<<<<< HEAD
 		     adev->gmc.vram_start >> 18);
 	WREG32_SOC15(GC, 0, mmMC_VM_SYSTEM_APERTURE_HIGH_ADDR,
 		     adev->gmc.vram_end >> 18);
 
 	/* Set default page address. */
 	value = adev->vram_scratch.gpu_addr - adev->gmc.vram_start
+=======
+		     adev->mc.vram_start >> 18);
+	WREG32_SOC15(GC, 0, mmMC_VM_SYSTEM_APERTURE_HIGH_ADDR,
+		     adev->mc.vram_end >> 18);
+
+	/* Set default page address. */
+	value = adev->vram_scratch.gpu_addr - adev->mc.vram_start
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		+ adev->vm_manager.vram_base_offset;
 	WREG32_SOC15(GC, 0, mmMC_VM_SYSTEM_APERTURE_DEFAULT_ADDR_LSB,
 		     (u32)(value >> 12));
@@ -92,9 +124,15 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
 
 	/* Program "protection fault". */
 	WREG32_SOC15(GC, 0, mmVM_L2_PROTECTION_FAULT_DEFAULT_ADDR_LO32,
+<<<<<<< HEAD
 		     (u32)(adev->dummy_page_addr >> 12));
 	WREG32_SOC15(GC, 0, mmVM_L2_PROTECTION_FAULT_DEFAULT_ADDR_HI32,
 		     (u32)((u64)adev->dummy_page_addr >> 44));
+=======
+		     (u32)(adev->dummy_page.addr >> 12));
+	WREG32_SOC15(GC, 0, mmVM_L2_PROTECTION_FAULT_DEFAULT_ADDR_HI32,
+		     (u32)((u64)adev->dummy_page.addr >> 44));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WREG32_FIELD15(GC, 0, VM_L2_PROTECTION_FAULT_CNTL2,
 		       ACTIVE_PAGE_MIGRATION_PTE_READ_RETRY, 1);
@@ -143,6 +181,7 @@ static void gfxhub_v1_0_init_cache_regs(struct amdgpu_device *adev)
 	WREG32_SOC15(GC, 0, mmVM_L2_CNTL2, tmp);
 
 	tmp = mmVM_L2_CNTL3_DEFAULT;
+<<<<<<< HEAD
 	if (adev->gmc.translate_further) {
 		tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3, BANK_SELECT, 12);
 		tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3,
@@ -152,6 +191,10 @@ static void gfxhub_v1_0_init_cache_regs(struct amdgpu_device *adev)
 		tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3,
 				    L2_CACHE_BIGK_FRAGMENT_SIZE, 6);
 	}
+=======
+	tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3, BANK_SELECT, 9);
+	tmp = REG_SET_FIELD(tmp, VM_L2_CNTL3, L2_CACHE_BIGK_FRAGMENT_SIZE, 6);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32_SOC15(GC, 0, mmVM_L2_CNTL3, tmp);
 
 	tmp = mmVM_L2_CNTL4_DEFAULT;
@@ -189,6 +232,7 @@ static void gfxhub_v1_0_disable_identity_aperture(struct amdgpu_device *adev)
 
 static void gfxhub_v1_0_setup_vmid_config(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	unsigned num_level, block_size;
 	uint32_t tmp;
 	int i;
@@ -199,11 +243,16 @@ static void gfxhub_v1_0_setup_vmid_config(struct amdgpu_device *adev)
 		num_level -= 1;
 	else
 		block_size -= 9;
+=======
+	int i;
+	uint32_t tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i <= 14; i++) {
 		tmp = RREG32_SOC15_OFFSET(GC, 0, mmVM_CONTEXT1_CNTL, i);
 		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL, ENABLE_CONTEXT, 1);
 		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL, PAGE_TABLE_DEPTH,
+<<<<<<< HEAD
 				    num_level);
 		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
 				    RANGE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);
@@ -223,6 +272,26 @@ static void gfxhub_v1_0_setup_vmid_config(struct amdgpu_device *adev)
 		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
 				    PAGE_TABLE_BLOCK_SIZE,
 				    block_size);
+=======
+				    adev->vm_manager.num_level);
+		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
+				RANGE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);
+		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
+				DUMMY_PAGE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);
+		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
+				PDE0_PROTECTION_FAULT_ENABLE_DEFAULT, 1);
+		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
+				VALID_PROTECTION_FAULT_ENABLE_DEFAULT, 1);
+		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
+				READ_PROTECTION_FAULT_ENABLE_DEFAULT, 1);
+		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
+				WRITE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);
+		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
+				EXECUTE_PROTECTION_FAULT_ENABLE_DEFAULT, 1);
+		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
+				PAGE_TABLE_BLOCK_SIZE,
+				adev->vm_manager.block_size - 9);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Send no-retry XNACK on fault to suppress VM fault storm. */
 		tmp = REG_SET_FIELD(tmp, VM_CONTEXT1_CNTL,
 				    RETRY_PERMISSION_OR_INVALID_PAGE_FAULT, 0);
@@ -257,9 +326,15 @@ int gfxhub_v1_0_gart_enable(struct amdgpu_device *adev)
 		 * SRIOV driver need to program them
 		 */
 		WREG32_SOC15(GC, 0, mmMC_VM_FB_LOCATION_BASE,
+<<<<<<< HEAD
 			     adev->gmc.vram_start >> 24);
 		WREG32_SOC15(GC, 0, mmMC_VM_FB_LOCATION_TOP,
 			     adev->gmc.vram_end >> 24);
+=======
+			     adev->mc.vram_start >> 24);
+		WREG32_SOC15(GC, 0, mmMC_VM_FB_LOCATION_TOP,
+			     adev->mc.vram_end >> 24);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* GART Enable. */
@@ -334,12 +409,15 @@ void gfxhub_v1_0_set_fault_enable_default(struct amdgpu_device *adev,
 			WRITE_PROTECTION_FAULT_ENABLE_DEFAULT, value);
 	tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,
 			EXECUTE_PROTECTION_FAULT_ENABLE_DEFAULT, value);
+<<<<<<< HEAD
 	if (!value) {
 		tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,
 				CRASH_ON_NO_RETRY_FAULT, 1);
 		tmp = REG_SET_FIELD(tmp, VM_L2_PROTECTION_FAULT_CNTL,
 				CRASH_ON_RETRY_FAULT, 1);
     }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32_SOC15(GC, 0, mmVM_L2_PROTECTION_FAULT_CNTL, tmp);
 }
 

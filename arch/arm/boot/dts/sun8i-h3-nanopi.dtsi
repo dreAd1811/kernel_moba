@@ -81,7 +81,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&sw_r_npi>;
 
+<<<<<<< HEAD
 		k1 {
+=======
+		k1@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "k1";
 			linux,code = <KEY_POWER>;
 			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
@@ -95,7 +99,14 @@
 
 &mmc0 {
 	bus-width = <4>;
+<<<<<<< HEAD
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
+=======
+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
+	cd-inverted;
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 	vmmc-supply = <&reg_vcc3v3>;
 };
@@ -105,19 +116,31 @@
 };
 
 &pio {
+<<<<<<< HEAD
 	leds_npi: led_pins {
+=======
+	leds_npi: led_pins@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PA10";
 		function = "gpio_out";
 	};
 };
 
 &r_pio {
+<<<<<<< HEAD
 	leds_r_npi: led_pins {
+=======
+	leds_r_npi: led_pins@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PL10";
 		function = "gpio_out";
 	};
 
+<<<<<<< HEAD
 	sw_r_npi: key_pins {
+=======
+	sw_r_npi: key_pins@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PL3";
 		function = "gpio_in";
 	};

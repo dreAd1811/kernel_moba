@@ -233,8 +233,12 @@ static int intel_quark_gpio_setup(struct pci_dev *pdev, struct mfd_cell *cell)
 	pdata->properties->idx		= 0;
 	pdata->properties->ngpio	= INTEL_QUARK_MFD_NGPIO;
 	pdata->properties->gpio_base	= INTEL_QUARK_MFD_GPIO_BASE;
+<<<<<<< HEAD
 	pdata->properties->irq[0]	= pdev->irq;
 	pdata->properties->has_irq	= true;
+=======
+	pdata->properties->irq		= pdev->irq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pdata->properties->irq_shared	= true;
 
 	cell->platform_data = pdata;

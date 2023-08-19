@@ -1,8 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for common parts of Salvator-X board variants
  *
  * Copyright (C) 2015-2016 Renesas Electronics Corp.
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public License
+ * version 2.  This program is licensed "as is" without any warranty of any
+ * kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -33,7 +43,11 @@
 / {
 	aliases {
 		serial0 = &scif2;
+<<<<<<< HEAD
 		serial1 = &hscif1;
+=======
+		serial1 = &scif1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ethernet0 = &avb;
 	};
 
@@ -49,7 +63,11 @@
 		 */
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
+<<<<<<< HEAD
 		clock-frequency = <12288000>;
+=======
+		clock-frequency = <11289600>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	backlight: backlight {
@@ -63,6 +81,7 @@
 		enable-gpios = <&gpio6 7 GPIO_ACTIVE_HIGH>;
 	};
 
+<<<<<<< HEAD
 	cvbs-in {
 		compatible = "composite-video-connector";
 		label = "CVBS IN";
@@ -86,6 +105,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_1p8v: regulator0 {
 		compatible = "regulator-fixed";
 		regulator-name = "fixed-1.8V";
@@ -267,8 +288,13 @@
 &avb {
 	pinctrl-0 = <&avb_pins>;
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	phy-handle = <&phy0>;
 	phy-mode = "rgmii-txid";
+=======
+	renesas,no-ether-link;
+	phy-handle = <&phy0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	phy0: ethernet-phy@0 {
@@ -280,6 +306,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &csi20 {
 	status = "okay";
 
@@ -311,6 +338,8 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &du {
 	pinctrl-0 = <&du_pins>;
 	pinctrl-names = "default";
@@ -326,7 +355,10 @@
 };
 
 &ehci0 {
+<<<<<<< HEAD
 	dr_mode = "otg";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -338,6 +370,7 @@
 	clock-frequency = <32768>;
 };
 
+<<<<<<< HEAD
 &hscif1 {
 	pinctrl-0 = <&hscif1_pins>;
 	pinctrl-names = "default";
@@ -349,6 +382,9 @@
 
 &hsusb {
 	dr_mode = "otg";
+=======
+&hsusb {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -397,6 +433,7 @@
 &i2c4 {
 	status = "okay";
 
+<<<<<<< HEAD
 	pca9654: gpio@20 {
 		compatible = "onnn,pca9654";
 		reg = <0x20>;
@@ -404,6 +441,8 @@
 		#gpio-cells = <2>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	csa_vdd: adc@7c {
 		compatible = "maxim,max9611";
 		reg = <0x7c>;
@@ -417,6 +456,7 @@
 
 		shunt-resistor-micro-ohms = <5000>;
 	};
+<<<<<<< HEAD
 
 	video-receiver@70 {
 		compatible = "adi,adv7482";
@@ -466,10 +506,13 @@
 			};
 		};
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &i2c_dvfs {
 	status = "okay";
+<<<<<<< HEAD
 
 	pmic: pmic@30 {
 		pinctrl-0 = <&irq0_pins>;
@@ -506,6 +549,11 @@
 
 &ohci0 {
 	dr_mode = "otg";
+=======
+};
+
+&ohci0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -531,12 +579,22 @@
 
 	avb_pins: avb {
 		mux {
+<<<<<<< HEAD
 			groups = "avb_link", "avb_mdio", "avb_mii";
 			function = "avb";
 		};
 
 		pins_mdio {
 			groups = "avb_mdio";
+=======
+			groups = "avb_link", "avb_phy_int", "avb_mdc",
+				 "avb_mii";
+			function = "avb";
+		};
+
+		pins_mdc {
+			groups = "avb_mdc";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			drive-strength = <24>;
 		};
 
@@ -552,21 +610,27 @@
 		function = "du";
 	};
 
+<<<<<<< HEAD
 	hscif1_pins: hscif1 {
 		groups = "hscif1_data_a", "hscif1_ctrl_a";
 		function = "hscif1";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c2_pins: i2c2 {
 		groups = "i2c2_a";
 		function = "i2c2";
 	};
 
+<<<<<<< HEAD
 	irq0_pins: irq0 {
 		groups = "intc_ex_irq0";
 		function = "intc_ex";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pwm1_pins: pwm1 {
 		groups = "pwm1_a";
 		function = "pwm1";
@@ -600,13 +664,21 @@
 	};
 
 	sdhi2_pins: sd2 {
+<<<<<<< HEAD
 		groups = "sdhi2_data8", "sdhi2_ctrl", "sdhi2_ds";
+=======
+		groups = "sdhi2_data8", "sdhi2_ctrl";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		function = "sdhi2";
 		power-source = <3300>;
 	};
 
 	sdhi2_pins_uhs: sd2_uhs {
+<<<<<<< HEAD
 		groups = "sdhi2_data8", "sdhi2_ctrl", "sdhi2_ds";
+=======
+		groups = "sdhi2_data8", "sdhi2_ctrl";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		function = "sdhi2";
 		power-source = <1800>;
 	};
@@ -655,11 +727,14 @@
 			bias-pull-down;
 		};
 	};
+<<<<<<< HEAD
 
 	usb30_pins: usb30 {
 		groups = "usb30";
 		function = "usb30";
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pwm1 {
@@ -722,8 +797,12 @@
 	pinctrl-names = "default";
 
 	uart-has-rtscts;
+<<<<<<< HEAD
 	/* Please only enable hscif1 or scif1 */
 	/* status = "okay"; */
+=======
+	status = "okay";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &scif2 {
@@ -762,7 +841,10 @@
 	bus-width = <8>;
 	mmc-hs200-1_8v;
 	non-removable;
+<<<<<<< HEAD
 	fixed-emmc-driver-type = <1>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -784,10 +866,13 @@
 	shared-pin;
 };
 
+<<<<<<< HEAD
 &usb_extal_clk {
 	clock-frequency = <50000000>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usb2_phy0 {
 	pinctrl-0 = <&usb0_pins>;
 	pinctrl-names = "default";
@@ -803,6 +888,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usb3_peri0 {
 	phys = <&usb3_phy0>;
 	phy-names = "usb";
@@ -851,13 +937,19 @@
 };
 
 &rwdt {
+=======
+&wdt0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timeout-sec = <60>;
 	status = "okay";
 };
 
 &xhci0 {
+<<<<<<< HEAD
 	pinctrl-0 = <&usb30_pins>;
 	pinctrl-names = "default";
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };

@@ -7,7 +7,11 @@
 *	under the terms of the GNU General Public License as published by the Free
 *	Software Foundation, version 2.
 *
+<<<<<<< HEAD
 * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
+=======
+* see Documentation/dvb/README.dvb-usb for more information
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 */
 
 #define DVB_USB_LOG_PREFIX "opera"
@@ -453,7 +457,11 @@ static int opera1_xilinx_load_firmware(struct usb_device *dev,
 	info("start downloading fpga firmware %s",filename);
 
 	if ((ret = request_firmware(&fw, filename, &dev->dev)) != 0) {
+<<<<<<< HEAD
 		err("did not find the firmware file '%s'. You can use <kernel_dir>/scripts/get_dvb_firmware to get the firmware",
+=======
+		err("did not find the firmware file. (%s) Please see linux/Documentation/dvb/ for more details on firmware-problems.",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			filename);
 		return ret;
 	} else {

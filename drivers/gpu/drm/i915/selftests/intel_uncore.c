@@ -61,6 +61,7 @@ static int intel_fw_table_check(const struct intel_forcewake_range *ranges,
 
 static int intel_shadow_table_check(void)
 {
+<<<<<<< HEAD
 	struct {
 		const i915_reg_t *regs;
 		unsigned int size;
@@ -85,6 +86,22 @@ static int intel_shadow_table_check(void)
 
 			prev = offset;
 		}
+=======
+	const i915_reg_t *reg = gen8_shadowed_regs;
+	unsigned int i;
+	s32 prev;
+
+	for (i = 0, prev = -1; i < ARRAY_SIZE(gen8_shadowed_regs); i++, reg++) {
+		u32 offset = i915_mmio_reg_offset(*reg);
+
+		if (prev >= (s32)offset) {
+			pr_err("%s: entry[%d]:(%x) is before previous (%x)\n",
+			       __func__, i, offset, prev);
+			return -EINVAL;
+		}
+
+		prev = offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -100,7 +117,10 @@ int intel_uncore_mock_selftests(void)
 		{ __vlv_fw_ranges, ARRAY_SIZE(__vlv_fw_ranges), false },
 		{ __chv_fw_ranges, ARRAY_SIZE(__chv_fw_ranges), false },
 		{ __gen9_fw_ranges, ARRAY_SIZE(__gen9_fw_ranges), true },
+<<<<<<< HEAD
 		{ __gen11_fw_ranges, ARRAY_SIZE(__gen11_fw_ranges), true },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	int err, i;
 
@@ -131,6 +151,7 @@ static int intel_uncore_check_forcewake_domains(struct drm_i915_private *dev_pri
 	    !IS_CHERRYVIEW(dev_priv))
 		return 0;
 
+<<<<<<< HEAD
 	/*
 	 * This test may lockup the machine or cause GPU hangs afterwards.
 	 */
@@ -138,6 +159,15 @@ static int intel_uncore_check_forcewake_domains(struct drm_i915_private *dev_pri
 		return 0;
 
 	valid = kcalloc(BITS_TO_LONGS(FW_RANGE), sizeof(*valid),
+=======
+	if (IS_VALLEYVIEW(dev_priv)) /* XXX system lockup! */
+		return 0;
+
+	if (IS_BROADWELL(dev_priv)) /* XXX random GPU hang afterwards! */
+		return 0;
+
+	valid = kzalloc(BITS_TO_LONGS(FW_RANGE) * sizeof(*valid),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GFP_KERNEL);
 	if (!valid)
 		return -ENOMEM;
@@ -159,10 +189,14 @@ static int intel_uncore_check_forcewake_domains(struct drm_i915_private *dev_pri
 	for_each_set_bit(offset, valid, FW_RANGE) {
 		i915_reg_t reg = { offset };
 
+<<<<<<< HEAD
 		iosf_mbi_punit_acquire();
 		intel_uncore_forcewake_reset(dev_priv);
 		iosf_mbi_punit_release();
 
+=======
+		intel_uncore_forcewake_reset(dev_priv, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		check_for_unclaimed_mmio(dev_priv);
 
 		(void)I915_READ(reg);

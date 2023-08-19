@@ -137,9 +137,15 @@ static void igorplugusb_cmd(struct igorplugusb *ir, int cmd)
 		dev_err(ir->dev, "submit urb failed: %d", ret);
 }
 
+<<<<<<< HEAD
 static void igorplugusb_timer(struct timer_list *t)
 {
 	struct igorplugusb *ir = from_timer(ir, t, timer);
+=======
+static void igorplugusb_timer(unsigned long data)
+{
+	struct igorplugusb *ir = (struct igorplugusb *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	igorplugusb_cmd(ir, GET_INFRACODE);
 }
@@ -174,7 +180,11 @@ static int igorplugusb_probe(struct usb_interface *intf,
 
 	ir->dev = &intf->dev;
 
+<<<<<<< HEAD
 	timer_setup(&ir->timer, igorplugusb_timer, 0);
+=======
+	setup_timer(&ir->timer, igorplugusb_timer, (unsigned long)ir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ir->request.bRequest = GET_INFRACODE;
 	ir->request.bRequestType = USB_TYPE_VENDOR | USB_DIR_IN;
@@ -245,7 +255,11 @@ static void igorplugusb_disconnect(struct usb_interface *intf)
 	usb_free_urb(ir->urb);
 }
 
+<<<<<<< HEAD
 static const struct usb_device_id igorplugusb_table[] = {
+=======
+static struct usb_device_id igorplugusb_table[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Igor Plug USB (Atmel's Manufact. ID) */
 	{ USB_DEVICE(0x03eb, 0x0002) },
 	/* Fit PC2 Infrared Adapter */

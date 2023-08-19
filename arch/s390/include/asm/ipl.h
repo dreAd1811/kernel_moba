@@ -13,7 +13,11 @@
 #include <asm/cio.h>
 #include <asm/setup.h>
 
+<<<<<<< HEAD
 #define NSS_NAME_SIZE	8
+=======
+#define IPL_PARMBLOCK_ORIGIN	0x2000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define IPL_PARM_BLK_FCP_LEN (sizeof(struct ipl_list_hdr) + \
 			      sizeof(struct ipl_block_fcp))
@@ -27,6 +31,13 @@
 
 #define IPL_MAX_SUPPORTED_VERSION (0)
 
+<<<<<<< HEAD
+=======
+#define IPL_PARMBLOCK_START	((struct ipl_parameter_block *) \
+				 IPL_PARMBLOCK_ORIGIN)
+#define IPL_PARMBLOCK_SIZE	(IPL_PARMBLOCK_START->hdr.len)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ipl_list_hdr {
 	u32 len;
 	u8  reserved1[3];
@@ -77,21 +88,49 @@ struct ipl_parameter_block {
 	union {
 		struct ipl_block_fcp fcp;
 		struct ipl_block_ccw ccw;
+<<<<<<< HEAD
 		char raw[PAGE_SIZE - sizeof(struct ipl_list_hdr)];
 	} ipl_info;
 } __packed __aligned(PAGE_SIZE);
 
+=======
+	} ipl_info;
+} __packed __aligned(PAGE_SIZE);
+
+/*
+ * IPL validity flags
+ */
+extern u32 ipl_flags;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct save_area;
 struct save_area * __init save_area_alloc(bool is_boot_cpu);
 struct save_area * __init save_area_boot_cpu(void);
 void __init save_area_add_regs(struct save_area *, void *regs);
 void __init save_area_add_vxrs(struct save_area *, __vector128 *vxrs);
 
+<<<<<<< HEAD
 extern void s390_reset_system(void);
 extern void ipl_store_parameters(void);
 extern size_t append_ipl_vmparm(char *, size_t);
 extern size_t append_ipl_scpdata(char *, size_t);
 
+=======
+extern void do_reipl(void);
+extern void do_halt(void);
+extern void do_poff(void);
+extern void ipl_verify_parameters(void);
+extern void ipl_update_parameters(void);
+extern size_t append_ipl_vmparm(char *, size_t);
+extern size_t append_ipl_scpdata(char *, size_t);
+
+enum {
+	IPL_DEVNO_VALID		= 1,
+	IPL_PARMBLOCK_VALID	= 2,
+	IPL_NSS_VALID		= 4,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum ipl_type {
 	IPL_TYPE_UNKNOWN	= 1,
 	IPL_TYPE_CCW		= 2,
@@ -120,7 +159,10 @@ struct ipl_info
 
 extern struct ipl_info ipl_info;
 extern void setup_ipl(void);
+<<<<<<< HEAD
 extern void set_os_info_reipl_block(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * DIAG 308 support

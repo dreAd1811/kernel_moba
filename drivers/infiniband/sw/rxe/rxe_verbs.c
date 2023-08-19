@@ -77,6 +77,43 @@ out:
 	return rc;
 }
 
+<<<<<<< HEAD
+=======
+static int rxe_query_gid(struct ib_device *device,
+			 u8 port_num, int index, union ib_gid *gid)
+{
+	int ret;
+
+	if (index > RXE_PORT_GID_TBL_LEN)
+		return -EINVAL;
+
+	ret = ib_get_cached_gid(device, port_num, index, gid, NULL);
+	if (ret == -EAGAIN) {
+		memcpy(gid, &zgid, sizeof(*gid));
+		return 0;
+	}
+
+	return ret;
+}
+
+static int rxe_add_gid(struct ib_device *device, u8 port_num, unsigned int
+		       index, const union ib_gid *gid,
+		       const struct ib_gid_attr *attr, void **context)
+{
+	if (index >= RXE_PORT_GID_TBL_LEN)
+		return -EINVAL;
+	return 0;
+}
+
+static int rxe_del_gid(struct ib_device *device, u8 port_num, unsigned int
+		       index, void **context)
+{
+	if (index >= RXE_PORT_GID_TBL_LEN)
+		return -EINVAL;
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct net_device *rxe_get_netdev(struct ib_device *device,
 					 u8 port_num)
 {
@@ -222,11 +259,36 @@ static int rxe_dealloc_pd(struct ib_pd *ibpd)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void rxe_init_av(struct rxe_dev *rxe, struct rdma_ah_attr *attr,
 			struct rxe_av *av)
 {
 	rxe_av_from_attr(rdma_ah_get_port_num(attr), av, attr);
 	rxe_av_fill_ip_info(av, attr);
+=======
+static int rxe_init_av(struct rxe_dev *rxe, struct rdma_ah_attr *attr,
+		       struct rxe_av *av)
+{
+	int err;
+	union ib_gid sgid;
+	struct ib_gid_attr sgid_attr;
+
+	err = ib_get_cached_gid(&rxe->ib_dev, rdma_ah_get_port_num(attr),
+				rdma_ah_read_grh(attr)->sgid_index, &sgid,
+				&sgid_attr);
+	if (err) {
+		pr_err("Failed to query sgid. err = %d\n", err);
+		return err;
+	}
+
+	err = rxe_av_from_attr(rxe, rdma_ah_get_port_num(attr), av, attr);
+	if (!err)
+		err = rxe_av_fill_ip_info(rxe, av, attr, &sgid_attr, &sgid);
+
+	if (sgid_attr.ndev)
+		dev_put(sgid_attr.ndev);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct ib_ah *rxe_create_ah(struct ib_pd *ibpd,
@@ -241,17 +303,41 @@ static struct ib_ah *rxe_create_ah(struct ib_pd *ibpd,
 
 	err = rxe_av_chk_attr(rxe, attr);
 	if (err)
+<<<<<<< HEAD
 		return ERR_PTR(err);
 
 	ah = rxe_alloc(&rxe->ah_pool);
 	if (!ah)
 		return ERR_PTR(-ENOMEM);
+=======
+		goto err1;
+
+	ah = rxe_alloc(&rxe->ah_pool);
+	if (!ah) {
+		err = -ENOMEM;
+		goto err1;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rxe_add_ref(pd);
 	ah->pd = pd;
 
+<<<<<<< HEAD
 	rxe_init_av(rxe, attr, &ah->av);
 	return &ah->ibah;
+=======
+	err = rxe_init_av(rxe, attr, &ah->av);
+	if (err)
+		goto err2;
+
+	return &ah->ibah;
+
+err2:
+	rxe_drop_ref(pd);
+	rxe_drop_ref(ah);
+err1:
+	return ERR_PTR(err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rxe_modify_ah(struct ib_ah *ibah, struct rdma_ah_attr *attr)
@@ -264,17 +350,32 @@ static int rxe_modify_ah(struct ib_ah *ibah, struct rdma_ah_attr *attr)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	rxe_init_av(rxe, attr, &ah->av);
+=======
+	err = rxe_init_av(rxe, attr, &ah->av);
+	if (err)
+		return err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int rxe_query_ah(struct ib_ah *ibah, struct rdma_ah_attr *attr)
 {
+<<<<<<< HEAD
+=======
+	struct rxe_dev *rxe = to_rdev(ibah->device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rxe_ah *ah = to_rah(ibah);
 
 	memset(attr, 0, sizeof(*attr));
 	attr->type = ibah->type;
+<<<<<<< HEAD
 	rxe_av_to_attr(&ah->av, attr);
+=======
+	rxe_av_to_attr(rxe, &ah->av, attr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -287,7 +388,11 @@ static int rxe_destroy_ah(struct ib_ah *ibah)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int post_one_recv(struct rxe_rq *rq, const struct ib_recv_wr *ibwr)
+=======
+static int post_one_recv(struct rxe_rq *rq, struct ib_recv_wr *ibwr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 	int i;
@@ -343,6 +448,7 @@ static struct ib_srq *rxe_create_srq(struct ib_pd *ibpd,
 	struct rxe_pd *pd = to_rpd(ibpd);
 	struct rxe_srq *srq;
 	struct ib_ucontext *context = udata ? ibpd->uobject->context : NULL;
+<<<<<<< HEAD
 	struct rxe_create_srq_resp __user *uresp = NULL;
 
 	if (udata) {
@@ -350,6 +456,8 @@ static struct ib_srq *rxe_create_srq(struct ib_pd *ibpd,
 			return ERR_PTR(-EINVAL);
 		uresp = udata->outbuf;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = rxe_srq_chk_attr(rxe, NULL, &init->attr, IB_SRQ_INIT_MASK);
 	if (err)
@@ -365,7 +473,11 @@ static struct ib_srq *rxe_create_srq(struct ib_pd *ibpd,
 	rxe_add_ref(pd);
 	srq->pd = pd;
 
+<<<<<<< HEAD
 	err = rxe_srq_from_init(rxe, srq, init, context, uresp);
+=======
+	err = rxe_srq_from_init(rxe, srq, init, context, udata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err2;
 
@@ -386,6 +498,7 @@ static int rxe_modify_srq(struct ib_srq *ibsrq, struct ib_srq_attr *attr,
 	int err;
 	struct rxe_srq *srq = to_rsrq(ibsrq);
 	struct rxe_dev *rxe = to_rdev(ibsrq->device);
+<<<<<<< HEAD
 	struct rxe_modify_srq_cmd ucmd = {};
 
 	if (udata) {
@@ -396,12 +509,18 @@ static int rxe_modify_srq(struct ib_srq *ibsrq, struct ib_srq_attr *attr,
 		if (err)
 			return err;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = rxe_srq_chk_attr(rxe, srq, attr, mask);
 	if (err)
 		goto err1;
 
+<<<<<<< HEAD
 	err = rxe_srq_from_attr(rxe, srq, attr, mask, &ucmd);
+=======
+	err = rxe_srq_from_attr(rxe, srq, attr, mask, udata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err1;
 
@@ -438,8 +557,13 @@ static int rxe_destroy_srq(struct ib_srq *ibsrq)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rxe_post_srq_recv(struct ib_srq *ibsrq, const struct ib_recv_wr *wr,
 			     const struct ib_recv_wr **bad_wr)
+=======
+static int rxe_post_srq_recv(struct ib_srq *ibsrq, struct ib_recv_wr *wr,
+			     struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 	unsigned long flags;
@@ -470,6 +594,7 @@ static struct ib_qp *rxe_create_qp(struct ib_pd *ibpd,
 	struct rxe_dev *rxe = to_rdev(ibpd->device);
 	struct rxe_pd *pd = to_rpd(ibpd);
 	struct rxe_qp *qp;
+<<<<<<< HEAD
 	struct rxe_create_qp_resp __user *uresp = NULL;
 
 	if (udata) {
@@ -477,6 +602,8 @@ static struct ib_qp *rxe_create_qp(struct ib_pd *ibpd,
 			return ERR_PTR(-EINVAL);
 		uresp = udata->outbuf;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = rxe_qp_chk_init(rxe, init);
 	if (err)
@@ -498,7 +625,11 @@ static struct ib_qp *rxe_create_qp(struct ib_pd *ibpd,
 
 	rxe_add_index(qp);
 
+<<<<<<< HEAD
 	err = rxe_qp_from_init(rxe, qp, pd, init, uresp, ibpd);
+=======
+	err = rxe_qp_from_init(rxe, qp, pd, init, udata, ibpd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err3;
 
@@ -554,7 +685,11 @@ static int rxe_destroy_qp(struct ib_qp *ibqp)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int validate_send_wr(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
+=======
+static int validate_send_wr(struct rxe_qp *qp, struct ib_send_wr *ibwr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    unsigned int mask, unsigned int length)
 {
 	int num_sge = ibwr->num_sge;
@@ -582,7 +717,11 @@ err1:
 }
 
 static void init_send_wr(struct rxe_qp *qp, struct rxe_send_wr *wr,
+<<<<<<< HEAD
 			 const struct ib_send_wr *ibwr)
+=======
+			 struct ib_send_wr *ibwr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	wr->wr_id = ibwr->wr_id;
 	wr->num_sge = ibwr->num_sge;
@@ -602,7 +741,10 @@ static void init_send_wr(struct rxe_qp *qp, struct rxe_send_wr *wr,
 		switch (wr->opcode) {
 		case IB_WR_RDMA_WRITE_WITH_IMM:
 			wr->ex.imm_data = ibwr->ex.imm_data;
+<<<<<<< HEAD
 			/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case IB_WR_RDMA_READ:
 		case IB_WR_RDMA_WRITE:
 			wr->wr.rdma.remote_addr = rdma_wr(ibwr)->remote_addr;
@@ -637,7 +779,11 @@ static void init_send_wr(struct rxe_qp *qp, struct rxe_send_wr *wr,
 	}
 }
 
+<<<<<<< HEAD
 static int init_send_wqe(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
+=======
+static int init_send_wqe(struct rxe_qp *qp, struct ib_send_wr *ibwr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 unsigned int mask, unsigned int length,
 			 struct rxe_send_wqe *wqe)
 {
@@ -685,7 +831,11 @@ static int init_send_wqe(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int post_one_send(struct rxe_qp *qp, const struct ib_send_wr *ibwr,
+=======
+static int post_one_send(struct rxe_qp *qp, struct ib_send_wr *ibwr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 unsigned int mask, u32 length)
 {
 	int err;
@@ -726,13 +876,22 @@ err1:
 	return err;
 }
 
+<<<<<<< HEAD
 static int rxe_post_send_kernel(struct rxe_qp *qp, const struct ib_send_wr *wr,
 				const struct ib_send_wr **bad_wr)
+=======
+static int rxe_post_send_kernel(struct rxe_qp *qp, struct ib_send_wr *wr,
+				struct ib_send_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 	unsigned int mask;
 	unsigned int length = 0;
 	int i;
+<<<<<<< HEAD
+=======
+	int must_sched;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (wr) {
 		mask = wr_opcode_mask(wr->opcode, qp);
@@ -762,15 +921,31 @@ static int rxe_post_send_kernel(struct rxe_qp *qp, const struct ib_send_wr *wr,
 		wr = wr->next;
 	}
 
+<<<<<<< HEAD
 	rxe_run_task(&qp->req.task, 1);
+=======
+	/*
+	 * Must sched in case of GSI QP because ib_send_mad() hold irq lock,
+	 * and the requester call ip_local_out_sk() that takes spin_lock_bh.
+	 */
+	must_sched = (qp_type(qp) == IB_QPT_GSI) ||
+			(queue_count(qp->sq.queue) > 1);
+
+	rxe_run_task(&qp->req.task, must_sched);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(qp->req.state == QP_STATE_ERROR))
 		rxe_run_task(&qp->comp.task, 1);
 
 	return err;
 }
 
+<<<<<<< HEAD
 static int rxe_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 			 const struct ib_send_wr **bad_wr)
+=======
+static int rxe_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
+			 struct ib_send_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rxe_qp *qp = to_rqp(ibqp);
 
@@ -792,8 +967,13 @@ static int rxe_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		return rxe_post_send_kernel(qp, wr, bad_wr);
 }
 
+<<<<<<< HEAD
 static int rxe_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 			 const struct ib_recv_wr **bad_wr)
+=======
+static int rxe_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
+			 struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 	struct rxe_qp *qp = to_rqp(ibqp);
@@ -840,6 +1020,7 @@ static struct ib_cq *rxe_create_cq(struct ib_device *dev,
 	int err;
 	struct rxe_dev *rxe = to_rdev(dev);
 	struct rxe_cq *cq;
+<<<<<<< HEAD
 	struct rxe_create_cq_resp __user *uresp = NULL;
 
 	if (udata) {
@@ -847,11 +1028,17 @@ static struct ib_cq *rxe_create_cq(struct ib_device *dev,
 			return ERR_PTR(-EINVAL);
 		uresp = udata->outbuf;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (attr->flags)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	err = rxe_cq_chk_attr(rxe, NULL, attr->cqe, attr->comp_vector);
+=======
+	err = rxe_cq_chk_attr(rxe, NULL, attr->cqe, attr->comp_vector, udata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err1;
 
@@ -862,7 +1049,11 @@ static struct ib_cq *rxe_create_cq(struct ib_device *dev,
 	}
 
 	err = rxe_cq_from_init(rxe, cq, attr->cqe, attr->comp_vector,
+<<<<<<< HEAD
 			       context, uresp);
+=======
+			       context, udata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err2;
 
@@ -889,6 +1080,7 @@ static int rxe_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
 	int err;
 	struct rxe_cq *cq = to_rcq(ibcq);
 	struct rxe_dev *rxe = to_rdev(ibcq->device);
+<<<<<<< HEAD
 	struct rxe_resize_cq_resp __user *uresp = NULL;
 
 	if (udata) {
@@ -902,6 +1094,14 @@ static int rxe_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata)
 		goto err1;
 
 	err = rxe_cq_resize_queue(cq, cqe, uresp);
+=======
+
+	err = rxe_cq_chk_attr(rxe, cq, cqe, 0, udata);
+	if (err)
+		goto err1;
+
+	err = rxe_cq_resize_queue(cq, cqe, udata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err1;
 
@@ -975,7 +1175,11 @@ static struct ib_mr *rxe_get_dma_mr(struct ib_pd *ibpd, int access)
 
 	rxe_add_ref(pd);
 
+<<<<<<< HEAD
 	err = rxe_mem_init_dma(pd, access, mr);
+=======
+	err = rxe_mem_init_dma(rxe, pd, access, mr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err2;
 
@@ -1010,7 +1214,11 @@ static struct ib_mr *rxe_reg_user_mr(struct ib_pd *ibpd,
 
 	rxe_add_ref(pd);
 
+<<<<<<< HEAD
 	err = rxe_mem_init_user(pd, start, length, iova,
+=======
+	err = rxe_mem_init_user(rxe, pd, start, length, iova,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				access, udata, mr);
 	if (err)
 		goto err3;
@@ -1058,7 +1266,11 @@ static struct ib_mr *rxe_alloc_mr(struct ib_pd *ibpd,
 
 	rxe_add_ref(pd);
 
+<<<<<<< HEAD
 	err = rxe_mem_init_fast(pd, max_num_sg, mr);
+=======
+	err = rxe_mem_init_fast(rxe, pd, max_num_sg, mr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err2;
 
@@ -1157,7 +1369,10 @@ int rxe_register_device(struct rxe_dev *rxe)
 	int err;
 	int i;
 	struct ib_device *dev = &rxe->ib_dev;
+<<<<<<< HEAD
 	struct crypto_shash *tfm;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	strlcpy(dev->name, "rxe%d", IB_DEVICE_NAME_MAX);
 	strlcpy(dev->node_desc, "rxe", sizeof(dev->node_desc));
@@ -1213,7 +1428,14 @@ int rxe_register_device(struct rxe_dev *rxe)
 	dev->query_port = rxe_query_port;
 	dev->modify_port = rxe_modify_port;
 	dev->get_link_layer = rxe_get_link_layer;
+<<<<<<< HEAD
 	dev->get_netdev = rxe_get_netdev;
+=======
+	dev->query_gid = rxe_query_gid;
+	dev->get_netdev = rxe_get_netdev;
+	dev->add_gid = rxe_add_gid;
+	dev->del_gid = rxe_del_gid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->query_pkey = rxe_query_pkey;
 	dev->alloc_ucontext = rxe_alloc_ucontext;
 	dev->dealloc_ucontext = rxe_dealloc_ucontext;
@@ -1252,6 +1474,7 @@ int rxe_register_device(struct rxe_dev *rxe)
 	dev->get_hw_stats = rxe_ib_get_hw_stats;
 	dev->alloc_hw_stats = rxe_ib_alloc_hw_stats;
 
+<<<<<<< HEAD
 	tfm = crypto_alloc_shash("crc32", 0, 0);
 	if (IS_ERR(tfm)) {
 		pr_err("failed to allocate crc algorithm err:%ld\n",
@@ -1261,6 +1484,15 @@ int rxe_register_device(struct rxe_dev *rxe)
 	rxe->tfm = tfm;
 
 	dev->driver_id = RDMA_DRIVER_RXE;
+=======
+	rxe->tfm = crypto_alloc_shash("crc32", 0, 0);
+	if (IS_ERR(rxe->tfm)) {
+		pr_err("failed to allocate crc algorithm err:%ld\n",
+		       PTR_ERR(rxe->tfm));
+		return PTR_ERR(rxe->tfm);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = ib_register_device(dev, NULL);
 	if (err) {
 		pr_warn("%s failed with error %d\n", __func__, err);

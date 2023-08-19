@@ -28,7 +28,10 @@ extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
 
 extern void smp_call_online_cpu(void (*func)(void *), void *);
 extern void smp_call_ipl_cpu(void (*func)(void *), void *);
+<<<<<<< HEAD
 extern void smp_emergency_stop(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern int smp_find_processor_id(u16 address);
 extern int smp_store_status(int cpu);
@@ -54,10 +57,13 @@ static inline void smp_call_online_cpu(void (*func)(void *), void *data)
 	func(data);
 }
 
+<<<<<<< HEAD
 static inline void smp_emergency_stop(void)
 {
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int smp_find_processor_id(u16 address) { return 0; }
 static inline int smp_store_status(int cpu) { return 0; }
 static inline int smp_vcpu_scheduled(int cpu) { return 1; }

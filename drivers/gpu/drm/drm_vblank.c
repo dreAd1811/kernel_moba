@@ -78,20 +78,44 @@
 
 static bool
 drm_get_last_vbltimestamp(struct drm_device *dev, unsigned int pipe,
+<<<<<<< HEAD
 			  ktime_t *tvblank, bool in_vblank_irq);
 
 static unsigned int drm_timestamp_precision = 20;  /* Default to 20 usecs. */
 
+=======
+			  struct timeval *tvblank, bool in_vblank_irq);
+
+static unsigned int drm_timestamp_precision = 20;  /* Default to 20 usecs. */
+
+/*
+ * Default to use monotonic timestamps for wait-for-vblank and page-flip
+ * complete events.
+ */
+unsigned int drm_timestamp_monotonic = 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int drm_vblank_offdelay = 5000;    /* Default to 5000 msecs. */
 
 module_param_named(vblankoffdelay, drm_vblank_offdelay, int, 0600);
 module_param_named(timestamp_precision_usec, drm_timestamp_precision, int, 0600);
+<<<<<<< HEAD
 MODULE_PARM_DESC(vblankoffdelay, "Delay until vblank irq auto-disable [msecs] (0: never disable, <0: disable immediately)");
 MODULE_PARM_DESC(timestamp_precision_usec, "Max. error on timestamps [usecs]");
 
 static void store_vblank(struct drm_device *dev, unsigned int pipe,
 			 u32 vblank_count_inc,
 			 ktime_t t_vblank, u32 last)
+=======
+module_param_named(timestamp_monotonic, drm_timestamp_monotonic, int, 0600);
+MODULE_PARM_DESC(vblankoffdelay, "Delay until vblank irq auto-disable [msecs] (0: never disable, <0: disable immediately)");
+MODULE_PARM_DESC(timestamp_precision_usec, "Max. error on timestamps [usecs]");
+MODULE_PARM_DESC(timestamp_monotonic, "Use monotonic timestamps");
+
+static void store_vblank(struct drm_device *dev, unsigned int pipe,
+			 u32 vblank_count_inc,
+			 struct timeval *t_vblank, u32 last)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
 
@@ -100,11 +124,16 @@ static void store_vblank(struct drm_device *dev, unsigned int pipe,
 	vblank->last = last;
 
 	write_seqlock(&vblank->seqlock);
+<<<<<<< HEAD
 	vblank->time = t_vblank;
+=======
+	vblank->time = *t_vblank;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vblank->count += vblank_count_inc;
 	write_sequnlock(&vblank->seqlock);
 }
 
+<<<<<<< HEAD
 static u32 drm_max_vblank_count(struct drm_device *dev, unsigned int pipe)
 {
 	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
@@ -112,13 +141,19 @@ static u32 drm_max_vblank_count(struct drm_device *dev, unsigned int pipe)
 	return vblank->max_vblank_count ?: dev->max_vblank_count;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * "No hw counter" fallback implementation of .get_vblank_counter() hook,
  * if there is no useable hardware frame counter available.
  */
 static u32 drm_vblank_no_hw_counter(struct drm_device *dev, unsigned int pipe)
 {
+<<<<<<< HEAD
 	WARN_ON_ONCE(drm_max_vblank_count(dev, pipe) != 0);
+=======
+	WARN_ON_ONCE(dev->max_vblank_count != 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -127,9 +162,12 @@ static u32 __get_vblank_counter(struct drm_device *dev, unsigned int pipe)
 	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
 		struct drm_crtc *crtc = drm_crtc_from_index(dev, pipe);
 
+<<<<<<< HEAD
 		if (WARN_ON(!crtc))
 			return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (crtc->funcs->get_vblank_counter)
 			return crtc->funcs->get_vblank_counter(crtc);
 	}
@@ -153,7 +191,11 @@ static void drm_reset_vblank_timestamp(struct drm_device *dev, unsigned int pipe
 {
 	u32 cur_vblank;
 	bool rc;
+<<<<<<< HEAD
 	ktime_t t_vblank;
+=======
+	struct timeval t_vblank;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int count = DRM_TIMESTAMP_MAXRETRIES;
 
 	spin_lock(&dev->vblank_time_lock);
@@ -173,13 +215,21 @@ static void drm_reset_vblank_timestamp(struct drm_device *dev, unsigned int pipe
 	 * interrupt and assign 0 for now, to mark the vblanktimestamp as invalid.
 	 */
 	if (!rc)
+<<<<<<< HEAD
 		t_vblank = 0;
+=======
+		t_vblank = (struct timeval) {0, 0};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * +1 to make sure user will never see the same
 	 * vblank counter value before and after a modeset
 	 */
+<<<<<<< HEAD
 	store_vblank(dev, pipe, 1, t_vblank, cur_vblank);
+=======
+	store_vblank(dev, pipe, 1, &t_vblank, cur_vblank);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock(&dev->vblank_time_lock);
 }
@@ -202,10 +252,16 @@ static void drm_update_vblank_count(struct drm_device *dev, unsigned int pipe,
 	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
 	u32 cur_vblank, diff;
 	bool rc;
+<<<<<<< HEAD
 	ktime_t t_vblank;
 	int count = DRM_TIMESTAMP_MAXRETRIES;
 	int framedur_ns = vblank->framedur_ns;
 	u32 max_vblank_count = drm_max_vblank_count(dev, pipe);
+=======
+	struct timeval t_vblank;
+	int count = DRM_TIMESTAMP_MAXRETRIES;
+	int framedur_ns = vblank->framedur_ns;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Interrupts were disabled prior to this call, so deal with counter
@@ -224,11 +280,23 @@ static void drm_update_vblank_count(struct drm_device *dev, unsigned int pipe,
 		rc = drm_get_last_vbltimestamp(dev, pipe, &t_vblank, in_vblank_irq);
 	} while (cur_vblank != __get_vblank_counter(dev, pipe) && --count > 0);
 
+<<<<<<< HEAD
 	if (max_vblank_count) {
 		/* trust the hw counter when it's around */
 		diff = (cur_vblank - vblank->last) & max_vblank_count;
 	} else if (rc && framedur_ns) {
 		u64 diff_ns = ktime_to_ns(ktime_sub(t_vblank, vblank->time));
+=======
+	if (dev->max_vblank_count != 0) {
+		/* trust the hw counter when it's around */
+		diff = (cur_vblank - vblank->last) & dev->max_vblank_count;
+	} else if (rc && framedur_ns) {
+		const struct timeval *t_old;
+		u64 diff_ns;
+
+		t_old = &vblank->time;
+		diff_ns = timeval_to_ns(&t_vblank) - timeval_to_ns(t_old);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Figure out how many vblanks we've missed based
@@ -262,7 +330,11 @@ static void drm_update_vblank_count(struct drm_device *dev, unsigned int pipe,
 	}
 
 	DRM_DEBUG_VBL("updating vblank count on crtc %u:"
+<<<<<<< HEAD
 		      " current=%llu, diff=%u, hw=%u hw_last=%u\n",
+=======
+		      " current=%u, diff=%u, hw=%u hw_last=%u\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      pipe, vblank->count, diff, cur_vblank, vblank->last);
 
 	if (diff == 0) {
@@ -277,12 +349,21 @@ static void drm_update_vblank_count(struct drm_device *dev, unsigned int pipe,
 	 * for now, to mark the vblanktimestamp as invalid.
 	 */
 	if (!rc && !in_vblank_irq)
+<<<<<<< HEAD
 		t_vblank = 0;
 
 	store_vblank(dev, pipe, diff, t_vblank, cur_vblank);
 }
 
 static u64 drm_vblank_count(struct drm_device *dev, unsigned int pipe)
+=======
+		t_vblank = (struct timeval) {0, 0};
+
+	store_vblank(dev, pipe, diff, &t_vblank, cur_vblank);
+}
+
+static u32 drm_vblank_count(struct drm_device *dev, unsigned int pipe)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
 
@@ -303,11 +384,19 @@ static u64 drm_vblank_count(struct drm_device *dev, unsigned int pipe)
  * This is mostly useful for hardware that can obtain the scanout position, but
  * doesn't have a hardware frame counter.
  */
+<<<<<<< HEAD
 u64 drm_crtc_accurate_vblank_count(struct drm_crtc *crtc)
 {
 	struct drm_device *dev = crtc->dev;
 	unsigned int pipe = drm_crtc_index(crtc);
 	u64 vblank;
+=======
+u32 drm_crtc_accurate_vblank_count(struct drm_crtc *crtc)
+{
+	struct drm_device *dev = crtc->dev;
+	unsigned int pipe = drm_crtc_index(crtc);
+	u32 vblank;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	WARN_ONCE(drm_debug & DRM_UT_VBL && !dev->driver->get_vblank_timestamp,
@@ -329,9 +418,12 @@ static void __disable_vblank(struct drm_device *dev, unsigned int pipe)
 	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
 		struct drm_crtc *crtc = drm_crtc_from_index(dev, pipe);
 
+<<<<<<< HEAD
 		if (WARN_ON(!crtc))
 			return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (crtc->funcs->disable_vblank) {
 			crtc->funcs->disable_vblank(crtc);
 			return;
@@ -361,6 +453,7 @@ void drm_vblank_disable_and_save(struct drm_device *dev, unsigned int pipe)
 	spin_lock_irqsave(&dev->vblank_time_lock, irqflags);
 
 	/*
+<<<<<<< HEAD
 	 * Update vblank count and disable vblank interrupts only if the
 	 * interrupts were enabled. This avoids calling the ->disable_vblank()
 	 * operation in atomic context with the hardware potentially runtime
@@ -371,11 +464,25 @@ void drm_vblank_disable_and_save(struct drm_device *dev, unsigned int pipe)
 
 	/*
 	 * Update the count and timestamp to maintain the
+=======
+	 * Only disable vblank interrupts if they're enabled. This avoids
+	 * calling the ->disable_vblank() operation in atomic context with the
+	 * hardware potentially runtime suspended.
+	 */
+	if (vblank->enabled) {
+		__disable_vblank(dev, pipe);
+		vblank->enabled = false;
+	}
+
+	/*
+	 * Always update the count and timestamp to maintain the
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * appearance that the counter has been ticking all along until
 	 * this time. This makes the count account for the entire time
 	 * between drm_crtc_vblank_on() and drm_crtc_vblank_off().
 	 */
 	drm_update_vblank_count(dev, pipe, false);
+<<<<<<< HEAD
 	__disable_vblank(dev, pipe);
 	vblank->enabled = false;
 
@@ -386,6 +493,15 @@ out:
 static void vblank_disable_fn(struct timer_list *t)
 {
 	struct drm_vblank_crtc *vblank = from_timer(vblank, t, disable_timer);
+=======
+
+	spin_unlock_irqrestore(&dev->vblank_time_lock, irqflags);
+}
+
+static void vblank_disable_fn(unsigned long arg)
+{
+	struct drm_vblank_crtc *vblank = (void *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *dev = vblank->dev;
 	unsigned int pipe = vblank->pipe;
 	unsigned long irqflags;
@@ -452,7 +568,12 @@ int drm_vblank_init(struct drm_device *dev, unsigned int num_crtcs)
 		vblank->dev = dev;
 		vblank->pipe = i;
 		init_waitqueue_head(&vblank->queue);
+<<<<<<< HEAD
 		timer_setup(&vblank->disable_timer, vblank_disable_fn, 0);
+=======
+		setup_timer(&vblank->disable_timer, vblank_disable_fn,
+			    (unsigned long)vblank);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seqlock_init(&vblank->seqlock);
 	}
 
@@ -559,7 +680,11 @@ EXPORT_SYMBOL(drm_calc_timestamping_constants);
  * @pipe: index of CRTC whose vblank timestamp to retrieve
  * @max_error: Desired maximum allowable error in timestamps (nanosecs)
  *             On return contains true maximum error of timestamp
+<<<<<<< HEAD
  * @vblank_time: Pointer to time which should receive the timestamp
+=======
+ * @vblank_time: Pointer to struct timeval which should receive the timestamp
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @in_vblank_irq:
  *     True when called from drm_crtc_handle_vblank().  Some drivers
  *     need to apply some workarounds for gpu-specific vblank irq quirks
@@ -587,10 +712,17 @@ EXPORT_SYMBOL(drm_calc_timestamping_constants);
 bool drm_calc_vbltimestamp_from_scanoutpos(struct drm_device *dev,
 					   unsigned int pipe,
 					   int *max_error,
+<<<<<<< HEAD
 					   ktime_t *vblank_time,
 					   bool in_vblank_irq)
 {
 	struct timespec64 ts_etime, ts_vblank_time;
+=======
+					   struct timeval *vblank_time,
+					   bool in_vblank_irq)
+{
+	struct timeval tv_etime;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ktime_t stime, etime;
 	bool vbl_status;
 	struct drm_crtc *crtc;
@@ -679,6 +811,7 @@ bool drm_calc_vbltimestamp_from_scanoutpos(struct drm_device *dev,
 	delta_ns = div_s64(1000000LL * (vpos * mode->crtc_htotal + hpos),
 			   mode->crtc_clock);
 
+<<<<<<< HEAD
 	/* Subtract time delta from raw timestamp to get final
 	 * vblank_time timestamp for end of vblank.
 	 */
@@ -695,17 +828,50 @@ bool drm_calc_vbltimestamp_from_scanoutpos(struct drm_device *dev,
 		      (u64)ts_etime.tv_sec, ts_etime.tv_nsec / 1000,
 		      (u64)ts_vblank_time.tv_sec, ts_vblank_time.tv_nsec / 1000,
 		      duration_ns / 1000, i);
+=======
+	if (!drm_timestamp_monotonic)
+		etime = ktime_mono_to_real(etime);
+
+	/* save this only for debugging purposes */
+	tv_etime = ktime_to_timeval(etime);
+	/* Subtract time delta from raw timestamp to get final
+	 * vblank_time timestamp for end of vblank.
+	 */
+	etime = ktime_sub_ns(etime, delta_ns);
+	*vblank_time = ktime_to_timeval(etime);
+
+	DRM_DEBUG_VBL("crtc %u : v p(%d,%d)@ %ld.%ld -> %ld.%ld [e %d us, %d rep]\n",
+		      pipe, hpos, vpos,
+		      (long)tv_etime.tv_sec, (long)tv_etime.tv_usec,
+		      (long)vblank_time->tv_sec, (long)vblank_time->tv_usec,
+		      duration_ns/1000, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
 EXPORT_SYMBOL(drm_calc_vbltimestamp_from_scanoutpos);
 
+<<<<<<< HEAD
+=======
+static struct timeval get_drm_timestamp(void)
+{
+	ktime_t now;
+
+	now = drm_timestamp_monotonic ? ktime_get() : ktime_get_real();
+	return ktime_to_timeval(now);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_get_last_vbltimestamp - retrieve raw timestamp for the most recent
  *                             vblank interval
  * @dev: DRM device
  * @pipe: index of CRTC whose vblank timestamp to retrieve
+<<<<<<< HEAD
  * @tvblank: Pointer to target time which should receive the timestamp
+=======
+ * @tvblank: Pointer to target struct timeval which should receive the timestamp
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @in_vblank_irq:
  *     True when called from drm_crtc_handle_vblank().  Some drivers
  *     need to apply some workarounds for gpu-specific vblank irq quirks
@@ -723,7 +889,11 @@ EXPORT_SYMBOL(drm_calc_vbltimestamp_from_scanoutpos);
  */
 static bool
 drm_get_last_vbltimestamp(struct drm_device *dev, unsigned int pipe,
+<<<<<<< HEAD
 			  ktime_t *tvblank, bool in_vblank_irq)
+=======
+			  struct timeval *tvblank, bool in_vblank_irq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	bool ret = false;
 
@@ -739,7 +909,11 @@ drm_get_last_vbltimestamp(struct drm_device *dev, unsigned int pipe,
 	 * Return current monotonic/gettimeofday timestamp as best estimate.
 	 */
 	if (!ret)
+<<<<<<< HEAD
 		*tvblank = ktime_get();
+=======
+		*tvblank = get_drm_timestamp();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -757,12 +931,17 @@ drm_get_last_vbltimestamp(struct drm_device *dev, unsigned int pipe,
  * Returns:
  * The software vblank counter.
  */
+<<<<<<< HEAD
 u64 drm_crtc_vblank_count(struct drm_crtc *crtc)
+=======
+u32 drm_crtc_vblank_count(struct drm_crtc *crtc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return drm_vblank_count(crtc->dev, drm_crtc_index(crtc));
 }
 EXPORT_SYMBOL(drm_crtc_vblank_count);
 
+<<<<<<< HEAD
 /**
  * drm_vblank_count_and_time - retrieve "cooked" vblank counter value and the
  *     system timestamp corresponding to that vblank counter value.
@@ -786,6 +965,17 @@ static u64 drm_vblank_count_and_time(struct drm_device *dev, unsigned int pipe,
 
 	if (WARN_ON(pipe >= dev->num_crtcs)) {
 		*vblanktime = 0;
+=======
+static u32 drm_vblank_count_and_time(struct drm_device *dev, unsigned int pipe,
+				     struct timeval *vblanktime)
+{
+	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
+	u32 vblank_count;
+	unsigned int seq;
+
+	if (WARN_ON(pipe >= dev->num_crtcs)) {
+		*vblanktime = (struct timeval) { 0 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -802,15 +992,24 @@ static u64 drm_vblank_count_and_time(struct drm_device *dev, unsigned int pipe,
  * drm_crtc_vblank_count_and_time - retrieve "cooked" vblank counter value
  *     and the system timestamp corresponding to that vblank counter value
  * @crtc: which counter to retrieve
+<<<<<<< HEAD
  * @vblanktime: Pointer to time to receive the vblank timestamp.
+=======
+ * @vblanktime: Pointer to struct timeval to receive the vblank timestamp.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Fetches the "cooked" vblank count value that represents the number of
  * vblank events since the system was booted, including lost events due to
  * modesetting activity. Returns corresponding system timestamp of the time
  * of the vblank interval that corresponds to the current vblank counter value.
  */
+<<<<<<< HEAD
 u64 drm_crtc_vblank_count_and_time(struct drm_crtc *crtc,
 				   ktime_t *vblanktime)
+=======
+u32 drm_crtc_vblank_count_and_time(struct drm_crtc *crtc,
+				   struct timeval *vblanktime)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return drm_vblank_count_and_time(crtc->dev, drm_crtc_index(crtc),
 					 vblanktime);
@@ -819,6 +1018,7 @@ EXPORT_SYMBOL(drm_crtc_vblank_count_and_time);
 
 static void send_vblank_event(struct drm_device *dev,
 		struct drm_pending_vblank_event *e,
+<<<<<<< HEAD
 		u64 seq, ktime_t now)
 {
 	struct timespec64 tv;
@@ -843,6 +1043,17 @@ static void send_vblank_event(struct drm_device *dev,
 		break;
 	}
 	trace_drm_vblank_event_delivered(e->base.file_priv, e->pipe, seq);
+=======
+		unsigned long seq, struct timeval *now)
+{
+	e->event.sequence = seq;
+	e->event.tv_sec = now->tv_sec;
+	e->event.tv_usec = now->tv_usec;
+
+	trace_drm_vblank_event_delivered(e->base.file_priv, e->pipe,
+					 e->event.sequence);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_send_event_locked(dev, &e->base);
 }
 
@@ -893,7 +1104,12 @@ void drm_crtc_arm_vblank_event(struct drm_crtc *crtc,
 	assert_spin_locked(&dev->event_lock);
 
 	e->pipe = pipe;
+<<<<<<< HEAD
 	e->sequence = drm_crtc_accurate_vblank_count(crtc) + 1;
+=======
+	e->event.sequence = drm_crtc_accurate_vblank_count(crtc) + 1;
+	e->event.crtc_id = crtc->base.id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_add_tail(&e->base.link, &dev->vblank_event_list);
 }
 EXPORT_SYMBOL(drm_crtc_arm_vblank_event);
@@ -913,19 +1129,32 @@ void drm_crtc_send_vblank_event(struct drm_crtc *crtc,
 				struct drm_pending_vblank_event *e)
 {
 	struct drm_device *dev = crtc->dev;
+<<<<<<< HEAD
 	u64 seq;
 	unsigned int pipe = drm_crtc_index(crtc);
 	ktime_t now;
+=======
+	unsigned int seq, pipe = drm_crtc_index(crtc);
+	struct timeval now;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->num_crtcs > 0) {
 		seq = drm_vblank_count_and_time(dev, pipe, &now);
 	} else {
 		seq = 0;
 
+<<<<<<< HEAD
 		now = ktime_get();
 	}
 	e->pipe = pipe;
 	send_vblank_event(dev, e, seq, now);
+=======
+		now = get_drm_timestamp();
+	}
+	e->pipe = pipe;
+	e->event.crtc_id = crtc->base.id;
+	send_vblank_event(dev, e, seq, &now);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_crtc_send_vblank_event);
 
@@ -934,9 +1163,12 @@ static int __enable_vblank(struct drm_device *dev, unsigned int pipe)
 	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
 		struct drm_crtc *crtc = drm_crtc_from_index(dev, pipe);
 
+<<<<<<< HEAD
 		if (WARN_ON(!crtc))
 			return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (crtc->funcs->enable_vblank)
 			return crtc->funcs->enable_vblank(crtc);
 	}
@@ -1039,7 +1271,11 @@ static void drm_vblank_put(struct drm_device *dev, unsigned int pipe)
 		if (drm_vblank_offdelay == 0)
 			return;
 		else if (drm_vblank_offdelay < 0)
+<<<<<<< HEAD
 			vblank_disable_fn(&vblank->disable_timer);
+=======
+			vblank_disable_fn((unsigned long)vblank);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else if (!dev->vblank_disable_immediate)
 			mod_timer(&vblank->disable_timer,
 				  jiffies + ((drm_vblank_offdelay * HZ)/1000));
@@ -1074,7 +1310,11 @@ void drm_wait_one_vblank(struct drm_device *dev, unsigned int pipe)
 {
 	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
 	int ret;
+<<<<<<< HEAD
 	u64 last;
+=======
+	u32 last;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(pipe >= dev->num_crtcs))
 		return;
@@ -1126,10 +1366,16 @@ void drm_crtc_vblank_off(struct drm_crtc *crtc)
 	unsigned int pipe = drm_crtc_index(crtc);
 	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
 	struct drm_pending_vblank_event *e, *t;
+<<<<<<< HEAD
 
 	ktime_t now;
 	unsigned long irqflags;
 	u64 seq;
+=======
+	struct timeval now;
+	unsigned long irqflags;
+	unsigned int seq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(pipe >= dev->num_crtcs))
 		return;
@@ -1164,11 +1410,19 @@ void drm_crtc_vblank_off(struct drm_crtc *crtc)
 		if (e->pipe != pipe)
 			continue;
 		DRM_DEBUG("Sending premature vblank event on disable: "
+<<<<<<< HEAD
 			  "wanted %llu, current %llu\n",
 			  e->sequence, seq);
 		list_del(&e->base.link);
 		drm_vblank_put(dev, pipe);
 		send_vblank_event(dev, e, seq, now);
+=======
+			  "wanted %u, current %u\n",
+			  e->event.sequence, seq);
+		list_del(&e->base.link);
+		drm_vblank_put(dev, pipe);
+		send_vblank_event(dev, e, seq, &now);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock_irqrestore(&dev->event_lock, irqflags);
 
@@ -1213,6 +1467,7 @@ void drm_crtc_vblank_reset(struct drm_crtc *crtc)
 EXPORT_SYMBOL(drm_crtc_vblank_reset);
 
 /**
+<<<<<<< HEAD
  * drm_crtc_set_max_vblank_count - configure the hw max vblank counter value
  * @crtc: CRTC in question
  * @max_vblank_count: max hardware vblank counter value
@@ -1244,6 +1499,8 @@ void drm_crtc_set_max_vblank_count(struct drm_crtc *crtc,
 EXPORT_SYMBOL(drm_crtc_set_max_vblank_count);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_crtc_vblank_on - enable vblank events on a CRTC
  * @crtc: CRTC in question
  *
@@ -1285,6 +1542,7 @@ void drm_crtc_vblank_on(struct drm_crtc *crtc)
 }
 EXPORT_SYMBOL(drm_crtc_vblank_on);
 
+<<<<<<< HEAD
 /**
  * drm_vblank_restore - estimate missed vblanks and update vblank count.
  * @dev: DRM device
@@ -1350,6 +1608,8 @@ void drm_crtc_vblank_restore(struct drm_crtc *crtc)
 }
 EXPORT_SYMBOL(drm_crtc_vblank_restore);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void drm_legacy_vblank_pre_modeset(struct drm_device *dev,
 					  unsigned int pipe)
 {
@@ -1433,21 +1693,34 @@ int drm_legacy_modeset_ctl_ioctl(struct drm_device *dev, void *data,
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline bool vblank_passed(u64 seq, u64 ref)
+=======
+static inline bool vblank_passed(u32 seq, u32 ref)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (seq - ref) <= (1 << 23);
 }
 
 static int drm_queue_vblank_event(struct drm_device *dev, unsigned int pipe,
+<<<<<<< HEAD
 				  u64 req_seq,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  union drm_wait_vblank *vblwait,
 				  struct drm_file *file_priv)
 {
 	struct drm_vblank_crtc *vblank = &dev->vblank[pipe];
 	struct drm_pending_vblank_event *e;
+<<<<<<< HEAD
 	ktime_t now;
 	unsigned long flags;
 	u64 seq;
+=======
+	struct timeval now;
+	unsigned long flags;
+	unsigned int seq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	e = kzalloc(sizeof(*e), GFP_KERNEL);
@@ -1458,6 +1731,7 @@ static int drm_queue_vblank_event(struct drm_device *dev, unsigned int pipe,
 
 	e->pipe = pipe;
 	e->event.base.type = DRM_EVENT_VBLANK;
+<<<<<<< HEAD
 	e->event.base.length = sizeof(e->event.vbl);
 	e->event.vbl.user_data = vblwait->request.signal;
 	e->event.vbl.crtc_id = 0;
@@ -1466,6 +1740,10 @@ static int drm_queue_vblank_event(struct drm_device *dev, unsigned int pipe,
 		if (crtc)
 			e->event.vbl.crtc_id = crtc->base.id;
 	}
+=======
+	e->event.base.length = sizeof(e->event);
+	e->event.user_data = vblwait->request.signal;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&dev->event_lock, flags);
 
@@ -1488,6 +1766,7 @@ static int drm_queue_vblank_event(struct drm_device *dev, unsigned int pipe,
 
 	seq = drm_vblank_count_and_time(dev, pipe, &now);
 
+<<<<<<< HEAD
 	DRM_DEBUG("event on vblank count %llu, current %llu, crtc %u\n",
 		  req_seq, seq, pipe);
 
@@ -1497,11 +1776,27 @@ static int drm_queue_vblank_event(struct drm_device *dev, unsigned int pipe,
 	if (vblank_passed(seq, req_seq)) {
 		drm_vblank_put(dev, pipe);
 		send_vblank_event(dev, e, seq, now);
+=======
+	DRM_DEBUG("event on vblank count %u, current %u, crtc %u\n",
+		  vblwait->request.sequence, seq, pipe);
+
+	trace_drm_vblank_event_queued(file_priv, pipe,
+				      vblwait->request.sequence);
+
+	e->event.sequence = vblwait->request.sequence;
+	if (vblank_passed(seq, vblwait->request.sequence)) {
+		drm_vblank_put(dev, pipe);
+		send_vblank_event(dev, e, seq, &now);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vblwait->reply.sequence = seq;
 	} else {
 		/* drm_handle_vblank_events will call drm_vblank_put */
 		list_add_tail(&e->base.link, &dev->vblank_event_list);
+<<<<<<< HEAD
 		vblwait->reply.sequence = req_seq;
+=======
+		vblwait->reply.sequence = vblwait->request.sequence;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_unlock_irqrestore(&dev->event_lock, flags);
@@ -1527,6 +1822,7 @@ static bool drm_wait_vblank_is_query(union drm_wait_vblank *vblwait)
 					  _DRM_VBLANK_NEXTONMISS));
 }
 
+<<<<<<< HEAD
 /*
  * Widen a 32-bit param to 64-bits.
  *
@@ -1560,6 +1856,8 @@ static void drm_wait_vblank_reply(struct drm_device *dev, unsigned int pipe,
 	reply->tval_usec = ts.tv_nsec / 1000;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
 			  struct drm_file *file_priv)
 {
@@ -1567,9 +1865,14 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
 	struct drm_vblank_crtc *vblank;
 	union drm_wait_vblank *vblwait = data;
 	int ret;
+<<<<<<< HEAD
 	u64 req_seq, seq;
 	unsigned int pipe_index;
 	unsigned int flags, pipe, high_pipe;
+=======
+	unsigned int pipe_index;
+	unsigned int flags, seq, pipe, high_pipe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dev->irq_enabled)
 		return -EINVAL;
@@ -1620,7 +1923,16 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
 	if (dev->vblank_disable_immediate &&
 	    drm_wait_vblank_is_query(vblwait) &&
 	    READ_ONCE(vblank->enabled)) {
+<<<<<<< HEAD
 		drm_wait_vblank_reply(dev, pipe, &vblwait->reply);
+=======
+		struct timeval now;
+
+		vblwait->reply.sequence =
+			drm_vblank_count_and_time(dev, pipe, &now);
+		vblwait->reply.tval_sec = now.tv_sec;
+		vblwait->reply.tval_usec = now.tv_usec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1633,12 +1945,18 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
 
 	switch (vblwait->request.type & _DRM_VBLANK_TYPES_MASK) {
 	case _DRM_VBLANK_RELATIVE:
+<<<<<<< HEAD
 		req_seq = seq + vblwait->request.sequence;
 		vblwait->request.sequence = req_seq;
 		vblwait->request.type &= ~_DRM_VBLANK_RELATIVE;
 		break;
 	case _DRM_VBLANK_ABSOLUTE:
 		req_seq = widen_32_to_64(vblwait->request.sequence, seq);
+=======
+		vblwait->request.sequence += seq;
+		vblwait->request.type &= ~_DRM_VBLANK_RELATIVE;
+	case _DRM_VBLANK_ABSOLUTE:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		ret = -EINVAL;
@@ -1646,16 +1964,22 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
 	}
 
 	if ((flags & _DRM_VBLANK_NEXTONMISS) &&
+<<<<<<< HEAD
 	    vblank_passed(seq, req_seq)) {
 		req_seq = seq + 1;
 		vblwait->request.type &= ~_DRM_VBLANK_NEXTONMISS;
 		vblwait->request.sequence = req_seq;
 	}
+=======
+	    vblank_passed(seq, vblwait->request.sequence))
+		vblwait->request.sequence = seq + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (flags & _DRM_VBLANK_EVENT) {
 		/* must hold on to the vblank ref until the event fires
 		 * drm_vblank_put will be called asynchronously
 		 */
+<<<<<<< HEAD
 		return drm_queue_vblank_event(dev, pipe, req_seq, vblwait, file_priv);
 	}
 
@@ -1665,11 +1989,30 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
 		DRM_WAIT_ON(ret, vblank->queue, 3 * HZ,
 			    vblank_passed(drm_vblank_count(dev, pipe),
 					  req_seq) ||
+=======
+		return drm_queue_vblank_event(dev, pipe, vblwait, file_priv);
+	}
+
+	if (vblwait->request.sequence != seq) {
+		DRM_DEBUG("waiting on vblank count %u, crtc %u\n",
+			  vblwait->request.sequence, pipe);
+		DRM_WAIT_ON(ret, vblank->queue, 3 * HZ,
+			    vblank_passed(drm_vblank_count(dev, pipe),
+					  vblwait->request.sequence) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    !READ_ONCE(vblank->enabled));
 	}
 
 	if (ret != -EINTR) {
+<<<<<<< HEAD
 		drm_wait_vblank_reply(dev, pipe, &vblwait->reply);
+=======
+		struct timeval now;
+
+		vblwait->reply.sequence = drm_vblank_count_and_time(dev, pipe, &now);
+		vblwait->reply.tval_sec = now.tv_sec;
+		vblwait->reply.tval_usec = now.tv_usec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		DRM_DEBUG("crtc %d returning %u to client\n",
 			  pipe, vblwait->reply.sequence);
@@ -1685,8 +2028,13 @@ done:
 static void drm_handle_vblank_events(struct drm_device *dev, unsigned int pipe)
 {
 	struct drm_pending_vblank_event *e, *t;
+<<<<<<< HEAD
 	ktime_t now;
 	u64 seq;
+=======
+	struct timeval now;
+	unsigned int seq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	assert_spin_locked(&dev->event_lock);
 
@@ -1695,6 +2043,7 @@ static void drm_handle_vblank_events(struct drm_device *dev, unsigned int pipe)
 	list_for_each_entry_safe(e, t, &dev->vblank_event_list, base.link) {
 		if (e->pipe != pipe)
 			continue;
+<<<<<<< HEAD
 		if (!vblank_passed(seq, e->sequence))
 			continue;
 
@@ -1704,6 +2053,17 @@ static void drm_handle_vblank_events(struct drm_device *dev, unsigned int pipe)
 		list_del(&e->base.link);
 		drm_vblank_put(dev, pipe);
 		send_vblank_event(dev, e, seq, now);
+=======
+		if (!vblank_passed(seq, e->event.sequence))
+			continue;
+
+		DRM_DEBUG("vblank event on %u, current %u\n",
+			  e->event.sequence, seq);
+
+		list_del(&e->base.link);
+		drm_vblank_put(dev, pipe);
+		send_vblank_event(dev, e, seq, &now);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	trace_drm_vblank_event(pipe, seq);
@@ -1766,7 +2126,11 @@ bool drm_handle_vblank(struct drm_device *dev, unsigned int pipe)
 	spin_unlock_irqrestore(&dev->event_lock, irqflags);
 
 	if (disable_irq)
+<<<<<<< HEAD
 		vblank_disable_fn(&vblank->disable_timer);
+=======
+		vblank_disable_fn((unsigned long)vblank);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -1789,6 +2153,7 @@ bool drm_crtc_handle_vblank(struct drm_crtc *crtc)
 	return drm_handle_vblank(crtc->dev, drm_crtc_index(crtc));
 }
 EXPORT_SYMBOL(drm_crtc_handle_vblank);
+<<<<<<< HEAD
 
 /*
  * Get crtc VBLANK count.
@@ -1952,3 +2317,5 @@ err_free:
 	kfree(e);
 	return ret;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

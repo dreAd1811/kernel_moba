@@ -55,7 +55,11 @@ const struct clk_ops tegra_clk_sync_source_ops = {
 };
 
 struct clk *tegra_clk_register_sync_source(const char *name,
+<<<<<<< HEAD
 					   unsigned long max_rate)
+=======
+		unsigned long rate, unsigned long max_rate)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tegra_clk_sync_source *sync;
 	struct clk_init_data init;
@@ -67,6 +71,10 @@ struct clk *tegra_clk_register_sync_source(const char *name,
 		return ERR_PTR(-ENOMEM);
 	}
 
+<<<<<<< HEAD
+=======
+	sync->rate = rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sync->max_rate = max_rate;
 
 	init.ops = &tegra_clk_sync_source_ops;

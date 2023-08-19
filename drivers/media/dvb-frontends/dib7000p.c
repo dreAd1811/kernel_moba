@@ -16,8 +16,13 @@
 #include <linux/mutex.h>
 #include <asm/div64.h>
 
+<<<<<<< HEAD
 #include <media/dvb_math.h>
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_math.h"
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "dib7000p.h"
 
@@ -809,7 +814,11 @@ static int dib7000p_set_dds(struct dib7000p_state *state, s32 offset_khz)
 {
 	u32 internal = dib7000p_get_internal_freq(state);
 	s32 unit_khz_dds_val;
+<<<<<<< HEAD
 	u32 abs_offset_khz = abs(offset_khz);
+=======
+	u32 abs_offset_khz = ABS(offset_khz);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 dds = state->cfg.bw->ifreq & 0x1ffffff;
 	u8 invert = !!(state->cfg.bw->ifreq & (1 << 25));
 	if (internal == 0) {
@@ -2018,10 +2027,17 @@ static int dib7000pc_detection(struct i2c_adapter *i2c_adap)
 	};
 	int ret = 0;
 
+<<<<<<< HEAD
 	tx = kzalloc(2, GFP_KERNEL);
 	if (!tx)
 		return -ENOMEM;
 	rx = kzalloc(2, GFP_KERNEL);
+=======
+	tx = kzalloc(2*sizeof(u8), GFP_KERNEL);
+	if (!tx)
+		return -ENOMEM;
+	rx = kzalloc(2*sizeof(u8), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rx) {
 		ret = -ENOMEM;
 		goto rx_memory_error;
@@ -2824,9 +2840,15 @@ static const struct dvb_frontend_ops dib7000p_ops = {
 	.delsys = { SYS_DVBT },
 	.info = {
 		 .name = "DiBcom 7000PC",
+<<<<<<< HEAD
 		 .frequency_min_hz =  44250 * kHz,
 		 .frequency_max_hz = 867250 * kHz,
 		 .frequency_stepsize_hz = 62500,
+=======
+		 .frequency_min = 44250000,
+		 .frequency_max = 867250000,
+		 .frequency_stepsize = 62500,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 .caps = FE_CAN_INVERSION_AUTO |
 		 FE_CAN_FEC_1_2 | FE_CAN_FEC_2_3 | FE_CAN_FEC_3_4 |
 		 FE_CAN_FEC_5_6 | FE_CAN_FEC_7_8 | FE_CAN_FEC_AUTO |

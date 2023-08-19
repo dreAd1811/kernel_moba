@@ -109,6 +109,7 @@ nvkm_cstate_valid(struct nvkm_clk *clk, struct nvkm_cstate *cstate,
 
 static struct nvkm_cstate *
 nvkm_cstate_find_best(struct nvkm_clk *clk, struct nvkm_pstate *pstate,
+<<<<<<< HEAD
 		      struct nvkm_cstate *cstate)
 {
 	struct nvkm_device *device = clk->subdev.device;
@@ -120,6 +121,20 @@ nvkm_cstate_find_best(struct nvkm_clk *clk, struct nvkm_pstate *pstate,
 
 	if (!volt)
 		return cstate;
+=======
+		      struct nvkm_cstate *start)
+{
+	struct nvkm_device *device = clk->subdev.device;
+	struct nvkm_volt *volt = device->volt;
+	struct nvkm_cstate *cstate;
+	int max_volt;
+
+	if (!pstate || !start)
+		return NULL;
+
+	if (!volt)
+		return start;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	max_volt = volt->max_uv;
 	if (volt->max0_id != 0xff)
@@ -132,7 +147,12 @@ nvkm_cstate_find_best(struct nvkm_clk *clk, struct nvkm_pstate *pstate,
 		max_volt = min(max_volt,
 			       nvkm_volt_map(volt, volt->max2_id, clk->temp));
 
+<<<<<<< HEAD
 	list_for_each_entry_from_reverse(cstate, &pstate->list, head) {
+=======
+	for (cstate = start; &cstate->head != &pstate->list;
+	     cstate = list_entry(cstate->head.prev, typeof(*cstate), head)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (nvkm_cstate_valid(clk, cstate, max_volt, clk->temp))
 			break;
 	}

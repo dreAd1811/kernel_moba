@@ -43,12 +43,36 @@ static int psp_early_init(void *handle)
 
 	switch (adev->asic_type) {
 	case CHIP_VEGA10:
+<<<<<<< HEAD
 	case CHIP_VEGA12:
 	case CHIP_VEGA20:
 		psp_v3_1_set_psp_funcs(psp);
 		break;
 	case CHIP_RAVEN:
 		psp_v10_0_set_psp_funcs(psp);
+=======
+		psp->init_microcode = psp_v3_1_init_microcode;
+		psp->bootloader_load_sysdrv = psp_v3_1_bootloader_load_sysdrv;
+		psp->bootloader_load_sos = psp_v3_1_bootloader_load_sos;
+		psp->prep_cmd_buf = psp_v3_1_prep_cmd_buf;
+		psp->ring_init = psp_v3_1_ring_init;
+		psp->ring_create = psp_v3_1_ring_create;
+		psp->ring_destroy = psp_v3_1_ring_destroy;
+		psp->cmd_submit = psp_v3_1_cmd_submit;
+		psp->compare_sram_data = psp_v3_1_compare_sram_data;
+		psp->smu_reload_quirk = psp_v3_1_smu_reload_quirk;
+		break;
+	case CHIP_RAVEN:
+#if 0
+		psp->init_microcode = psp_v10_0_init_microcode;
+#endif
+		psp->prep_cmd_buf = psp_v10_0_prep_cmd_buf;
+		psp->ring_init = psp_v10_0_ring_init;
+		psp->ring_create = psp_v10_0_ring_create;
+		psp->ring_destroy = psp_v10_0_ring_destroy;
+		psp->cmd_submit = psp_v10_0_cmd_submit;
+		psp->compare_sram_data = psp_v10_0_compare_sram_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
@@ -56,9 +80,12 @@ static int psp_early_init(void *handle)
 
 	psp->adev = adev;
 
+<<<<<<< HEAD
 	if (adev->firmware.load_type != AMDGPU_FW_LOAD_PSP)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -79,6 +106,7 @@ static int psp_sw_init(void *handle)
 
 static int psp_sw_fini(void *handle)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
 	if (adev->firmware.load_type != AMDGPU_FW_LOAD_PSP)
@@ -88,6 +116,8 @@ static int psp_sw_fini(void *handle)
 	adev->psp.sos_fw = NULL;
 	release_firmware(adev->psp.asd_fw);
 	adev->psp.asd_fw = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -256,6 +286,7 @@ static int psp_asd_load(struct psp_context *psp)
 
 static int psp_hw_start(struct psp_context *psp)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = psp->adev;
 	int ret;
 
@@ -268,6 +299,17 @@ static int psp_hw_start(struct psp_context *psp)
 		if (ret)
 			return ret;
 	}
+=======
+	int ret;
+
+	ret = psp_bootloader_load_sysdrv(psp);
+	if (ret)
+		return ret;
+
+	ret = psp_bootloader_load_sos(psp);
+	if (ret)
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = psp_ring_create(psp, PSP_RING_TYPE__KM);
 	if (ret)
@@ -329,26 +371,43 @@ static int psp_load_fw(struct amdgpu_device *adev)
 	int ret;
 	struct psp_context *psp = &adev->psp;
 
+<<<<<<< HEAD
 	if (amdgpu_sriov_vf(adev) && adev->in_gpu_reset != 0)
 		goto skip_memalloc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	psp->cmd = kzalloc(sizeof(struct psp_gfx_cmd_resp), GFP_KERNEL);
 	if (!psp->cmd)
 		return -ENOMEM;
 
 	ret = amdgpu_bo_create_kernel(adev, PSP_1_MEG, PSP_1_MEG,
+<<<<<<< HEAD
 					AMDGPU_GEM_DOMAIN_GTT,
 					&psp->fw_pri_bo,
 					&psp->fw_pri_mc_addr,
 					&psp->fw_pri_buf);
+=======
+				      AMDGPU_GEM_DOMAIN_GTT,
+				      &psp->fw_pri_bo,
+				      &psp->fw_pri_mc_addr,
+				      &psp->fw_pri_buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto failed;
 
 	ret = amdgpu_bo_create_kernel(adev, PSP_FENCE_BUFFER_SIZE, PAGE_SIZE,
+<<<<<<< HEAD
 					AMDGPU_GEM_DOMAIN_VRAM,
 					&psp->fence_buf_bo,
 					&psp->fence_buf_mc_addr,
 					&psp->fence_buf);
+=======
+				      AMDGPU_GEM_DOMAIN_VRAM,
+				      &psp->fence_buf_bo,
+				      &psp->fence_buf_mc_addr,
+				      &psp->fence_buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto failed_mem2;
 
@@ -373,7 +432,10 @@ static int psp_load_fw(struct amdgpu_device *adev)
 	if (ret)
 		goto failed_mem;
 
+<<<<<<< HEAD
 skip_memalloc:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = psp_hw_start(psp);
 	if (ret)
 		goto failed_mem;
@@ -463,6 +525,7 @@ static int psp_hw_fini(void *handle)
 
 static int psp_suspend(void *handle)
 {
+<<<<<<< HEAD
 	int ret;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 	struct psp_context *psp = &adev->psp;
@@ -476,6 +539,8 @@ static int psp_suspend(void *handle)
 		return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -510,6 +575,7 @@ failed:
 	return ret;
 }
 
+<<<<<<< HEAD
 int psp_gpu_reset(struct amdgpu_device *adev)
 {
 	if (adev->firmware.load_type != AMDGPU_FW_LOAD_PSP)
@@ -518,6 +584,8 @@ int psp_gpu_reset(struct amdgpu_device *adev)
 	return psp_mode1_reset(&adev->psp);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool psp_check_fw_loading_status(struct amdgpu_device *adev,
 					enum AMDGPU_UCODE_ID ucode_type)
 {
@@ -561,7 +629,10 @@ const struct amd_ip_funcs psp_ip_funcs = {
 	.suspend = psp_suspend,
 	.resume = psp_resume,
 	.is_idle = NULL,
+<<<<<<< HEAD
 	.check_soft_reset = NULL,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.wait_for_idle = NULL,
 	.soft_reset = NULL,
 	.set_clockgating_state = psp_set_clockgating_state,

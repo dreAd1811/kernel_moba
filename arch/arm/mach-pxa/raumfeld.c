@@ -32,7 +32,11 @@
 #include <linux/pwm.h>
 #include <linux/pwm_backlight.h>
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
+=======
+#include <linux/i2c/pxa-i2c.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spi/spi.h>
 #include <linux/spi/spi_gpio.h>
 #include <linux/lis3lv02d.h>
@@ -346,9 +350,17 @@ static struct mtd_partition raumfeld_nand_partitions[] = {
 };
 
 static struct pxa3xx_nand_platform_data raumfeld_nand_info = {
+<<<<<<< HEAD
 	.keep_config	= 1,
 	.parts		= raumfeld_nand_partitions,
 	.nr_parts	= ARRAY_SIZE(raumfeld_nand_partitions),
+=======
+	.enable_arbiter	= 1,
+	.keep_config	= 1,
+	.num_cs		= 1,
+	.parts[0]	= raumfeld_nand_partitions,
+	.nr_parts[0]	= ARRAY_SIZE(raumfeld_nand_partitions),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -376,9 +388,15 @@ static struct gpiod_lookup_table raumfeld_rotary_gpios_table = {
 };
 
 static const struct property_entry raumfeld_rotary_properties[] __initconst = {
+<<<<<<< HEAD
 	PROPERTY_ENTRY_U32("rotary-encoder,steps-per-period", 24),
 	PROPERTY_ENTRY_U32("linux,axis",		      REL_X),
 	PROPERTY_ENTRY_U32("rotary-encoder,relative_axis",    1),
+=======
+	PROPERTY_ENTRY_INTEGER("rotary-encoder,steps-per-period", u32, 24),
+	PROPERTY_ENTRY_INTEGER("linux,axis",			  u32, REL_X),
+	PROPERTY_ENTRY_INTEGER("rotary-encoder,relative_axis",	  u32, 1),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 
@@ -504,6 +522,7 @@ static void w1_enable_external_pullup(int enable)
 	msleep(100);
 }
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table raumfeld_w1_gpiod_table = {
 	.dev_id = "w1-gpio",
 	.table = {
@@ -514,6 +533,13 @@ static struct gpiod_lookup_table raumfeld_w1_gpiod_table = {
 
 static struct w1_gpio_platform_data w1_gpio_platform_data = {
 	.enable_external_pullup = w1_enable_external_pullup,
+=======
+static struct w1_gpio_platform_data w1_gpio_platform_data = {
+	.pin			= GPIO_ONE_WIRE,
+	.is_open_drain		= 0,
+	.enable_external_pullup	= w1_enable_external_pullup,
+	.ext_pullup_enable_pin	= -EINVAL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_device raumfeld_w1_gpio_device = {
@@ -526,14 +552,21 @@ static struct platform_device raumfeld_w1_gpio_device = {
 static void __init raumfeld_w1_init(void)
 {
 	int ret = gpio_request(GPIO_W1_PULLUP_ENABLE,
+<<<<<<< HEAD
 			        "W1 external pullup enable");
+=======
+				"W1 external pullup enable");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret < 0)
 		pr_warn("Unable to request GPIO_W1_PULLUP_ENABLE\n");
 	else
 		gpio_direction_output(GPIO_W1_PULLUP_ENABLE, 0);
 
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&raumfeld_w1_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_device_register(&raumfeld_w1_gpio_device);
 }
 
@@ -644,6 +677,12 @@ static void __init raumfeld_lcd_init(void)
  */
 
 static struct spi_gpio_platform_data raumfeld_spi_platform_data = {
+<<<<<<< HEAD
+=======
+	.sck		= GPIO_SPI_CLK,
+	.mosi		= GPIO_SPI_MOSI,
+	.miso		= GPIO_SPI_MISO,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.num_chipselect	= 3,
 };
 
@@ -655,6 +694,7 @@ static struct platform_device raumfeld_spi_device = {
 	}
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table raumfeld_spi_gpiod_table = {
 	.dev_id         = "spi_gpio",
 	.table          = {
@@ -674,6 +714,8 @@ static struct gpiod_lookup_table raumfeld_spi_gpiod_table = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct lis3lv02d_platform_data lis3_pdata = {
 	.click_flags 	= LIS3_CLICK_SINGLE_X |
 			  LIS3_CLICK_SINGLE_Y |
@@ -694,6 +736,10 @@ static struct lis3lv02d_platform_data lis3_pdata = {
 	.max_speed_hz	= 10000,		\
 	.bus_num	= 0,			\
 	.chip_select	= 0,			\
+<<<<<<< HEAD
+=======
+	.controller_data = (void *) GPIO_SPDIF_CS,	\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define SPI_LIS3	\
@@ -702,6 +748,10 @@ static struct lis3lv02d_platform_data lis3_pdata = {
 	.max_speed_hz	= 1000000,		\
 	.bus_num	= 0,			\
 	.chip_select	= 1,			\
+<<<<<<< HEAD
+=======
+	.controller_data = (void *) GPIO_ACCEL_CS,	\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.platform_data	= &lis3_pdata,		\
 	.irq		= PXA_GPIO_TO_IRQ(GPIO_ACCEL_IRQ),	\
 }
@@ -712,6 +762,10 @@ static struct lis3lv02d_platform_data lis3_pdata = {
 	.max_speed_hz	= 1000000,		\
 	.bus_num	= 0,			\
 	.chip_select	= 2,			\
+<<<<<<< HEAD
+=======
+	.controller_data = (void *) GPIO_MCLK_DAC_CS,	\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct spi_board_info connector_spi_devices[] __initdata = {
@@ -1077,7 +1131,10 @@ static void __init raumfeld_common_init(void)
 	else
 		gpio_direction_output(GPIO_SHUTDOWN_SUPPLY, 0);
 
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&raumfeld_spi_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_add_devices(ARRAY_AND_SIZE(raumfeld_common_devices));
 	i2c_register_board_info(1, &raumfeld_pwri2c_board_info, 1);
 }

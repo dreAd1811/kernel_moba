@@ -119,4 +119,8 @@ properties of futexes, and all four combinations are possible: futex,
 robust-futex, PI-futex, robust+PI-futex.
 
 More details about priority inheritance can be found in
+<<<<<<< HEAD
 Documentation/locking/rt-mutex.txt.
+=======
+Documentation/rt-mutex.txt.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

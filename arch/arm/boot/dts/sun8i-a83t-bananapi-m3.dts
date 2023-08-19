@@ -44,6 +44,10 @@
 
 /dts-v1/;
 #include "sun8i-a83t.dtsi"
+<<<<<<< HEAD
+=======
+#include "sunxi-common-regulators.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/gpio/gpio.h>
 
@@ -52,13 +56,17 @@
 	compatible = "sinovoip,bpi-m3", "allwinner,sun8i-a83t";
 
 	aliases {
+<<<<<<< HEAD
 		ethernet0 = &emac;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		serial0 = &uart0;
 	};
 
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
+<<<<<<< HEAD
 
 	connector {
 		compatible = "hdmi-connector";
@@ -117,6 +125,8 @@
 
 &de {
 	status = "okay";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &ehci0 {
@@ -126,6 +136,7 @@
 	/* TODO GL830 USB-to-SATA bridge downstream w/ GPIO power controls */
 };
 
+<<<<<<< HEAD
 &emac {
 	pinctrl-names = "default";
 	pinctrl-0 = <&emac_rgmii_pins>;
@@ -185,6 +196,22 @@
 	pinctrl-0 = <&mmc2_8bit_emmc_pins>;
 	vmmc-supply = <&reg_dcdc1>;
 	vqmmc-supply = <&reg_dcdc1>;
+=======
+&mmc0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc0_pins>;
+	vmmc-supply = <&reg_vcc3v3>;
+	bus-width = <4>;
+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>; /* PF6 */
+	cd-inverted;
+	status = "okay";
+};
+
+&mmc2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc2_8bit_emmc_pins>;
+	vmmc-supply = <&reg_vcc3v3>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus-width = <8>;
 	non-removable;
 	cap-mmc-hw-reset;
@@ -199,10 +226,13 @@
 		reg = <0x3a3>;
 		interrupt-parent = <&r_intc>;
 		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
+<<<<<<< HEAD
 		eldoin-supply = <&reg_dcdc1>;
 		fldoin-supply = <&reg_dcdc5>;
 		swin-supply = <&reg_dcdc1>;
 		x-powers,drive-vbus-en;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	ac100: codec@e89 {
@@ -230,6 +260,7 @@
 	};
 };
 
+<<<<<<< HEAD
 #include "axp81x.dtsi"
 
 &reg_aldo1 {
@@ -350,6 +381,19 @@
 	 */
 	regulator-enable-ramp-delay = <100000>;
 	regulator-name = "vcc-ephy";
+=======
+&reg_usb1_vbus {
+	gpio = <&pio 3 24 GPIO_ACTIVE_HIGH>; /* PD24 */
+	status = "okay";
+};
+
+&reg_vcc3v0 {
+	status = "disabled";
+};
+
+&reg_vcc5v0 {
+	status = "disabled";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart0 {

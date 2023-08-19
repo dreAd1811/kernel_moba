@@ -212,21 +212,42 @@ static void
 amdgpu_connector_update_scratch_regs(struct drm_connector *connector,
 				      enum drm_connector_status status)
 {
+<<<<<<< HEAD
 	struct drm_encoder *best_encoder;
 	struct drm_encoder *encoder;
+=======
+	struct drm_encoder *best_encoder = NULL;
+	struct drm_encoder *encoder = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct drm_connector_helper_funcs *connector_funcs = connector->helper_private;
 	bool connected;
 	int i;
 
 	best_encoder = connector_funcs->best_encoder(connector);
 
+<<<<<<< HEAD
 	drm_connector_for_each_possible_encoder(connector, encoder, i) {
+=======
+	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
+		if (connector->encoder_ids[i] == 0)
+			break;
+
+		encoder = drm_encoder_find(connector->dev, NULL,
+					connector->encoder_ids[i]);
+		if (!encoder)
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((encoder == best_encoder) && (status == connector_status_connected))
 			connected = true;
 		else
 			connected = false;
 
 		amdgpu_atombios_encoder_set_bios_scratch_regs(connector, encoder, connected);
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -237,11 +258,25 @@ amdgpu_connector_find_encoder(struct drm_connector *connector,
 	struct drm_encoder *encoder;
 	int i;
 
+<<<<<<< HEAD
 	drm_connector_for_each_possible_encoder(connector, encoder, i) {
 		if (encoder->encoder_type == encoder_type)
 			return encoder;
 	}
 
+=======
+	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
+		if (connector->encoder_ids[i] == 0)
+			break;
+		encoder = drm_encoder_find(connector->dev, NULL,
+					connector->encoder_ids[i]);
+		if (!encoder)
+			continue;
+
+		if (encoder->encoder_type == encoder_type)
+			return encoder;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
 
@@ -324,8 +359,15 @@ static void amdgpu_connector_free_edid(struct drm_connector *connector)
 {
 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
 
+<<<<<<< HEAD
 	kfree(amdgpu_connector->edid);
 	amdgpu_connector->edid = NULL;
+=======
+	if (amdgpu_connector->edid) {
+		kfree(amdgpu_connector->edid);
+		amdgpu_connector->edid = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int amdgpu_connector_ddc_get_modes(struct drm_connector *connector)
@@ -334,17 +376,27 @@ static int amdgpu_connector_ddc_get_modes(struct drm_connector *connector)
 	int ret;
 
 	if (amdgpu_connector->edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, amdgpu_connector->edid);
 		ret = drm_add_edid_modes(connector, amdgpu_connector->edid);
 		return ret;
 	}
 	drm_connector_update_edid_property(connector, NULL);
+=======
+		drm_mode_connector_update_edid_property(connector, amdgpu_connector->edid);
+		ret = drm_add_edid_modes(connector, amdgpu_connector->edid);
+		drm_edid_to_eld(connector, amdgpu_connector->edid);
+		return ret;
+	}
+	drm_mode_connector_update_edid_property(connector, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static struct drm_encoder *
 amdgpu_connector_best_single_encoder(struct drm_connector *connector)
 {
+<<<<<<< HEAD
 	struct drm_encoder *encoder;
 	int i;
 
@@ -352,6 +404,13 @@ amdgpu_connector_best_single_encoder(struct drm_connector *connector)
 	drm_connector_for_each_possible_encoder(connector, encoder, i)
 		return encoder;
 
+=======
+	int enc_id = connector->encoder_ids[0];
+
+	/* pick the encoder ids */
+	if (enc_id)
+		return drm_encoder_find(connector->dev, NULL, enc_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
 
@@ -678,7 +737,11 @@ static int amdgpu_connector_lvds_get_modes(struct drm_connector *connector)
 	return ret;
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status amdgpu_connector_lvds_mode_valid(struct drm_connector *connector,
+=======
+static int amdgpu_connector_lvds_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct drm_display_mode *mode)
 {
 	struct drm_encoder *encoder = amdgpu_connector_best_single_encoder(connector);
@@ -830,7 +893,11 @@ static int amdgpu_connector_vga_get_modes(struct drm_connector *connector)
 	return ret;
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status amdgpu_connector_vga_mode_valid(struct drm_connector *connector,
+=======
+static int amdgpu_connector_vga_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct drm_display_mode *mode)
 {
 	struct drm_device *dev = connector->dev;
@@ -865,7 +932,11 @@ amdgpu_connector_vga_detect(struct drm_connector *connector, bool force)
 		ret = connector_status_disconnected;
 
 	if (amdgpu_connector->ddc_bus)
+<<<<<<< HEAD
 		dret = amdgpu_display_ddc_probe(amdgpu_connector, false);
+=======
+		dret = amdgpu_ddc_probe(amdgpu_connector, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dret) {
 		amdgpu_connector->detected_by_load = false;
 		amdgpu_connector_free_edid(connector);
@@ -972,8 +1043,14 @@ amdgpu_connector_dvi_detect(struct drm_connector *connector, bool force)
 	struct drm_device *dev = connector->dev;
 	struct amdgpu_device *adev = dev->dev_private;
 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
+<<<<<<< HEAD
 	const struct drm_encoder_helper_funcs *encoder_funcs;
 	int r;
+=======
+	struct drm_encoder *encoder = NULL;
+	const struct drm_encoder_helper_funcs *encoder_funcs;
+	int i, r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum drm_connector_status ret = connector_status_disconnected;
 	bool dret = false, broken_edid = false;
 
@@ -989,7 +1066,11 @@ amdgpu_connector_dvi_detect(struct drm_connector *connector, bool force)
 	}
 
 	if (amdgpu_connector->ddc_bus)
+<<<<<<< HEAD
 		dret = amdgpu_display_ddc_probe(amdgpu_connector, false);
+=======
+		dret = amdgpu_ddc_probe(amdgpu_connector, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dret) {
 		amdgpu_connector->detected_by_load = false;
 		amdgpu_connector_free_edid(connector);
@@ -1063,10 +1144,21 @@ amdgpu_connector_dvi_detect(struct drm_connector *connector, bool force)
 
 	/* find analog encoder */
 	if (amdgpu_connector->dac_load_detect) {
+<<<<<<< HEAD
 		struct drm_encoder *encoder;
 		int i;
 
 		drm_connector_for_each_possible_encoder(connector, encoder, i) {
+=======
+		for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
+			if (connector->encoder_ids[i] == 0)
+				break;
+
+			encoder = drm_encoder_find(connector->dev, NULL, connector->encoder_ids[i]);
+			if (!encoder)
+				continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (encoder->encoder_type != DRM_MODE_ENCODER_DAC &&
 			    encoder->encoder_type != DRM_MODE_ENCODER_TVDAC)
 				continue;
@@ -1114,11 +1206,26 @@ exit:
 static struct drm_encoder *
 amdgpu_connector_dvi_encoder(struct drm_connector *connector)
 {
+<<<<<<< HEAD
 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
 	struct drm_encoder *encoder;
 	int i;
 
 	drm_connector_for_each_possible_encoder(connector, encoder, i) {
+=======
+	int enc_id = connector->encoder_ids[0];
+	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);
+	struct drm_encoder *encoder;
+	int i;
+	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
+		if (connector->encoder_ids[i] == 0)
+			break;
+
+		encoder = drm_encoder_find(connector->dev, NULL, connector->encoder_ids[i]);
+		if (!encoder)
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (amdgpu_connector->use_digital == true) {
 			if (encoder->encoder_type == DRM_MODE_ENCODER_TMDS)
 				return encoder;
@@ -1133,9 +1240,14 @@ amdgpu_connector_dvi_encoder(struct drm_connector *connector)
 
 	/* then check use digitial */
 	/* pick the first one */
+<<<<<<< HEAD
 	drm_connector_for_each_possible_encoder(connector, encoder, i)
 		return encoder;
 
+=======
+	if (enc_id)
+		return drm_encoder_find(connector->dev, NULL, enc_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
 
@@ -1148,7 +1260,11 @@ static void amdgpu_connector_dvi_force(struct drm_connector *connector)
 		amdgpu_connector->use_digital = true;
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
+=======
+static int amdgpu_connector_dvi_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct drm_display_mode *mode)
 {
 	struct drm_device *dev = connector->dev;
@@ -1272,7 +1388,19 @@ u16 amdgpu_connector_encoder_get_dp_bridge_encoder_id(struct drm_connector *conn
 	struct amdgpu_encoder *amdgpu_encoder;
 	int i;
 
+<<<<<<< HEAD
 	drm_connector_for_each_possible_encoder(connector, encoder, i) {
+=======
+	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
+		if (connector->encoder_ids[i] == 0)
+			break;
+
+		encoder = drm_encoder_find(connector->dev, NULL,
+					connector->encoder_ids[i]);
+		if (!encoder)
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		amdgpu_encoder = to_amdgpu_encoder(encoder);
 
 		switch (amdgpu_encoder->encoder_id) {
@@ -1294,7 +1422,18 @@ static bool amdgpu_connector_encoder_is_hbr2(struct drm_connector *connector)
 	int i;
 	bool found = false;
 
+<<<<<<< HEAD
 	drm_connector_for_each_possible_encoder(connector, encoder, i) {
+=======
+	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
+		if (connector->encoder_ids[i] == 0)
+			break;
+		encoder = drm_encoder_find(connector->dev, NULL,
+					connector->encoder_ids[i]);
+		if (!encoder)
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		amdgpu_encoder = to_amdgpu_encoder(encoder);
 		if (amdgpu_encoder->caps & ATOM_ENCODER_CAP_RECORD_HBR2)
 			found = true;
@@ -1371,8 +1510,12 @@ amdgpu_connector_dp_detect(struct drm_connector *connector, bool force)
 			/* setup ddc on the bridge */
 			amdgpu_atombios_encoder_setup_ext_encoder_ddc(encoder);
 			/* bridge chips are always aux */
+<<<<<<< HEAD
 			/* try DDC */
 			if (amdgpu_display_ddc_probe(amdgpu_connector, true))
+=======
+			if (amdgpu_ddc_probe(amdgpu_connector, true)) /* try DDC */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = connector_status_connected;
 			else if (amdgpu_connector->dac_load_detect) { /* try load detection */
 				const struct drm_encoder_helper_funcs *encoder_funcs = encoder->helper_private;
@@ -1392,8 +1535,12 @@ amdgpu_connector_dp_detect(struct drm_connector *connector, bool force)
 					ret = connector_status_connected;
 			} else {
 				/* try non-aux ddc (DP to DVI/HDMI/etc. adapter) */
+<<<<<<< HEAD
 				if (amdgpu_display_ddc_probe(amdgpu_connector,
 							     false))
+=======
+				if (amdgpu_ddc_probe(amdgpu_connector, false))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ret = connector_status_connected;
 			}
 		}
@@ -1409,7 +1556,11 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status amdgpu_connector_dp_mode_valid(struct drm_connector *connector,
+=======
+static int amdgpu_connector_dp_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct drm_display_mode *mode)
 {
 	struct amdgpu_connector *amdgpu_connector = to_amdgpu_connector(connector);

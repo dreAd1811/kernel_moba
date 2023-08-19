@@ -209,8 +209,15 @@ static int send_control_msg(struct usb_device *udev, u8 request, u16 value,
 	int status;
 
 	unsigned char *transfer_buffer = kmalloc(size, GFP_KERNEL);
+<<<<<<< HEAD
 	if (!transfer_buffer)
 		return -ENOMEM;
+=======
+	if (!transfer_buffer) {
+		dev_err(&udev->dev, "kmalloc(%d) failed\n", size);
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(transfer_buffer, cp, size);
 
@@ -385,9 +392,15 @@ static int buffer_prepare(struct videobuf_queue *vq, struct videobuf_buffer *vb,
 						  vb);
 	int rc;
 
+<<<<<<< HEAD
 	DBG("%s, field=%d, fmt name = %s\n", __func__, field,
 	    cam->fmt ? cam->fmt->name : "");
 	if (!cam->fmt)
+=======
+	DBG("%s, field=%d, fmt name = %s\n", __func__, field, cam->fmt != NULL ?
+	    cam->fmt->name : "");
+	if (cam->fmt == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	buf->vb.size = cam->width * cam->height * (cam->fmt->depth >> 3);
@@ -517,7 +530,12 @@ static void zr364xx_fillbuff(struct zr364xx_camera *cam,
 		printk(KERN_ERR KBUILD_MODNAME ": =======no frame\n");
 		return;
 	}
+<<<<<<< HEAD
 	DBG("%s: Buffer %p size= %d\n", __func__, vbuf, pos);
+=======
+	DBG("%s: Buffer 0x%08lx size= %d\n", __func__,
+		(unsigned long)vbuf, pos);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* tell v4l buffer was filled */
 
 	buf->vb.field_count = cam->frame_count * 2;
@@ -703,7 +721,12 @@ static int zr364xx_vidioc_querycap(struct file *file, void *priv,
 	struct zr364xx_camera *cam = video_drvdata(file);
 
 	strlcpy(cap->driver, DRIVER_DESC, sizeof(cap->driver));
+<<<<<<< HEAD
 	strlcpy(cap->card, cam->udev->product, sizeof(cap->card));
+=======
+	if (cam->udev->product)
+		strlcpy(cap->card, cam->udev->product, sizeof(cap->card));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	strlcpy(cap->bus_info, dev_name(&cam->udev->dev),
 		sizeof(cap->bus_info));
 	cap->device_caps = V4L2_CAP_VIDEO_CAPTURE |
@@ -786,7 +809,11 @@ static int zr364xx_vidioc_try_fmt_vid_cap(struct file *file, void *priv,
 	struct zr364xx_camera *cam = video_drvdata(file);
 	char pixelformat_name[5];
 
+<<<<<<< HEAD
 	if (!cam)
+=======
+	if (cam == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	if (f->fmt.pix.pixelformat != V4L2_PIX_FMT_JPEG) {
@@ -816,7 +843,11 @@ static int zr364xx_vidioc_g_fmt_vid_cap(struct file *file, void *priv,
 {
 	struct zr364xx_camera *cam;
 
+<<<<<<< HEAD
 	if (!file)
+=======
+	if (file == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	cam = video_drvdata(file);
 
@@ -978,13 +1009,21 @@ static void read_pipe_completion(struct urb *purb)
 
 	pipe_info = purb->context;
 	_DBG("%s %p, status %d\n", __func__, purb, purb->status);
+<<<<<<< HEAD
 	if (!pipe_info) {
+=======
+	if (pipe_info == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_ERR KBUILD_MODNAME ": no context!\n");
 		return;
 	}
 
 	cam = pipe_info->cam;
+<<<<<<< HEAD
 	if (!cam) {
+=======
+	if (cam == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_ERR KBUILD_MODNAME ": no context!\n");
 		return;
 	}
@@ -1068,7 +1107,11 @@ static void zr364xx_stop_readpipe(struct zr364xx_camera *cam)
 {
 	struct zr364xx_pipeinfo *pipe_info;
 
+<<<<<<< HEAD
 	if (!cam) {
+=======
+	if (cam == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_ERR KBUILD_MODNAME ": invalid device\n");
 		return;
 	}
@@ -1272,11 +1315,19 @@ static int zr364xx_mmap(struct file *file, struct vm_area_struct *vma)
 	struct zr364xx_camera *cam = video_drvdata(file);
 	int ret;
 
+<<<<<<< HEAD
 	if (!cam) {
 		DBG("%s: cam == NULL\n", __func__);
 		return -ENODEV;
 	}
 	DBG("mmap called, vma=%p\n", vma);
+=======
+	if (cam == NULL) {
+		DBG("%s: cam == NULL\n", __func__);
+		return -ENODEV;
+	}
+	DBG("mmap called, vma=0x%08lx\n", (unsigned long)vma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = videobuf_mmap_mapper(&cam->vb_vidq, vma);
 
@@ -1286,12 +1337,20 @@ static int zr364xx_mmap(struct file *file, struct vm_area_struct *vma)
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t zr364xx_poll(struct file *file,
+=======
+static unsigned int zr364xx_poll(struct file *file,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       struct poll_table_struct *wait)
 {
 	struct zr364xx_camera *cam = video_drvdata(file);
 	struct videobuf_queue *q = &cam->vb_vidq;
+<<<<<<< HEAD
 	__poll_t res = v4l2_ctrl_poll(file, wait);
+=======
+	unsigned res = v4l2_ctrl_poll(file, wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	_DBG("%s\n", __func__);
 
@@ -1356,7 +1415,11 @@ static int zr364xx_board_init(struct zr364xx_camera *cam)
 
 	pipe->transfer_buffer = kzalloc(pipe->transfer_size,
 					GFP_KERNEL);
+<<<<<<< HEAD
 	if (!pipe->transfer_buffer) {
+=======
+	if (pipe->transfer_buffer == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DBG("out of memory!\n");
 		return -ENOMEM;
 	}
@@ -1372,7 +1435,11 @@ static int zr364xx_board_init(struct zr364xx_camera *cam)
 		DBG("valloc %p, idx %lu, pdata %p\n",
 			&cam->buffer.frame[i], i,
 			cam->buffer.frame[i].lpvbits);
+<<<<<<< HEAD
 		if (!cam->buffer.frame[i].lpvbits) {
+=======
+		if (cam->buffer.frame[i].lpvbits == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			printk(KERN_INFO KBUILD_MODNAME ": out of memory. Using less frames\n");
 			break;
 		}
@@ -1420,9 +1487,17 @@ static int zr364xx_probe(struct usb_interface *intf,
 		 le16_to_cpu(udev->descriptor.idVendor),
 		 le16_to_cpu(udev->descriptor.idProduct));
 
+<<<<<<< HEAD
 	cam = kzalloc(sizeof(*cam), GFP_KERNEL);
 	if (!cam)
 		return -ENOMEM;
+=======
+	cam = kzalloc(sizeof(struct zr364xx_camera), GFP_KERNEL);
+	if (cam == NULL) {
+		dev_err(&udev->dev, "cam: out of memory !\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cam->v4l2_dev.release = zr364xx_release;
 	err = v4l2_device_register(&intf->dev, &cam->v4l2_dev);

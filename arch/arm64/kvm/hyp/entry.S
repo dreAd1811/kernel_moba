@@ -31,7 +31,16 @@
 	.text
 	.pushsection	.hyp.text, "ax"
 
+<<<<<<< HEAD
 .macro save_callee_saved_regs ctxt
+=======
+/*
+ * We treat x18 as callee-saved as the host may use it as a platform
+ * register (e.g. for shadow call stack).
+ */
+.macro save_callee_saved_regs ctxt
+	str	x18,      [\ctxt, #CPU_XREG_OFFSET(18)]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stp	x19, x20, [\ctxt, #CPU_XREG_OFFSET(19)]
 	stp	x21, x22, [\ctxt, #CPU_XREG_OFFSET(21)]
 	stp	x23, x24, [\ctxt, #CPU_XREG_OFFSET(23)]
@@ -41,6 +50,11 @@
 .endm
 
 .macro restore_callee_saved_regs ctxt
+<<<<<<< HEAD
+=======
+	// We require \ctxt is not x18-x28
+	ldr	x18,      [\ctxt, #CPU_XREG_OFFSET(18)]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ldp	x19, x20, [\ctxt, #CPU_XREG_OFFSET(19)]
 	ldp	x21, x22, [\ctxt, #CPU_XREG_OFFSET(21)]
 	ldp	x23, x24, [\ctxt, #CPU_XREG_OFFSET(23)]
@@ -57,11 +71,16 @@ ENTRY(__guest_enter)
 	// x0: vcpu
 	// x1: host context
 	// x2-x17: clobbered by macros
+<<<<<<< HEAD
 	// x18: guest context
+=======
+	// x29: guest context
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	// Store the host regs
 	save_callee_saved_regs x1
 
+<<<<<<< HEAD
 	add	x18, x0, #VCPU_CONTEXT
 
 	// Restore guest regs x0-x17
@@ -80,6 +99,23 @@ ENTRY(__guest_enter)
 
 	// Restore guest reg x18
 	ldr	x18,      [x18, #CPU_XREG_OFFSET(18)]
+=======
+	add	x29, x0, #VCPU_CONTEXT
+
+	// Restore guest regs x0-x17
+	ldp	x0, x1,   [x29, #CPU_XREG_OFFSET(0)]
+	ldp	x2, x3,   [x29, #CPU_XREG_OFFSET(2)]
+	ldp	x4, x5,   [x29, #CPU_XREG_OFFSET(4)]
+	ldp	x6, x7,   [x29, #CPU_XREG_OFFSET(6)]
+	ldp	x8, x9,   [x29, #CPU_XREG_OFFSET(8)]
+	ldp	x10, x11, [x29, #CPU_XREG_OFFSET(10)]
+	ldp	x12, x13, [x29, #CPU_XREG_OFFSET(12)]
+	ldp	x14, x15, [x29, #CPU_XREG_OFFSET(14)]
+	ldp	x16, x17, [x29, #CPU_XREG_OFFSET(16)]
+
+	// Restore guest regs x18-x29, lr
+	restore_callee_saved_regs x29
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	// Do not touch any register after this!
 	eret
@@ -101,7 +137,11 @@ ENTRY(__guest_exit)
 	// Retrieve the guest regs x0-x1 from the stack
 	ldp	x2, x3, [sp], #16	// x0, x1
 
+<<<<<<< HEAD
 	// Store the guest regs x0-x1 and x4-x18
+=======
+	// Store the guest regs x0-x1 and x4-x17
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stp	x2, x3,   [x1, #CPU_XREG_OFFSET(0)]
 	stp	x4, x5,   [x1, #CPU_XREG_OFFSET(4)]
 	stp	x6, x7,   [x1, #CPU_XREG_OFFSET(6)]
@@ -110,9 +150,14 @@ ENTRY(__guest_exit)
 	stp	x12, x13, [x1, #CPU_XREG_OFFSET(12)]
 	stp	x14, x15, [x1, #CPU_XREG_OFFSET(14)]
 	stp	x16, x17, [x1, #CPU_XREG_OFFSET(16)]
+<<<<<<< HEAD
 	str	x18,      [x1, #CPU_XREG_OFFSET(18)]
 
 	// Store the guest regs x19-x29, lr
+=======
+
+	// Store the guest regs x18-x29, lr
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	save_callee_saved_regs x1
 
 	get_host_ctxt	x2, x3
@@ -120,6 +165,7 @@ ENTRY(__guest_exit)
 	// Now restore the host regs
 	restore_callee_saved_regs x2
 
+<<<<<<< HEAD
 alternative_if ARM64_HAS_RAS_EXTN
 	// If we have the RAS extensions we can consume a pending error
 	// without an unmask-SError and isb.
@@ -131,6 +177,8 @@ alternative_if ARM64_HAS_RAS_EXTN
 	orr	x0, x0, #(1<<ARM_EXIT_WITH_SERROR_BIT)
 1:	ret
 alternative_else
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	// If we have a pending asynchronous abort, now is the
 	// time to find out. From your VAXorcist book, page 666:
 	// "Threaten me not, oh Evil one!  For I speak with
@@ -141,9 +189,13 @@ alternative_else
 	mov	x5, x0
 
 	dsb	sy		// Synchronize against in-flight ld/st
+<<<<<<< HEAD
 	nop
 	msr	daifclr, #4	// Unmask aborts
 alternative_endif
+=======
+	msr	daifclr, #4	// Unmask aborts
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	// This is our single instruction exception window. A pending
 	// SError is guaranteed to occur at the earliest when we unmask
@@ -166,3 +218,49 @@ abort_guest_exit_end:
 	orr	x0, x0, x5
 1:	ret
 ENDPROC(__guest_exit)
+<<<<<<< HEAD
+=======
+
+ENTRY(__fpsimd_guest_restore)
+	// x0: esr
+	// x1: vcpu
+	// x2-x29,lr: vcpu regs
+	// vcpu x0-x1 on the stack
+	stp	x2, x3, [sp, #-16]!
+	stp	x4, lr, [sp, #-16]!
+
+alternative_if_not ARM64_HAS_VIRT_HOST_EXTN
+	mrs	x2, cptr_el2
+	bic	x2, x2, #CPTR_EL2_TFP
+	msr	cptr_el2, x2
+alternative_else
+	mrs	x2, cpacr_el1
+	orr	x2, x2, #CPACR_EL1_FPEN
+	msr	cpacr_el1, x2
+alternative_endif
+	isb
+
+	mov	x3, x1
+
+	ldr	x0, [x3, #VCPU_HOST_CONTEXT]
+	kern_hyp_va x0
+	add	x0, x0, #CPU_GP_REG_OFFSET(CPU_FP_REGS)
+	bl	__fpsimd_save_state
+
+	add	x2, x3, #VCPU_CONTEXT
+	add	x0, x2, #CPU_GP_REG_OFFSET(CPU_FP_REGS)
+	bl	__fpsimd_restore_state
+
+	// Skip restoring fpexc32 for AArch64 guests
+	mrs	x1, hcr_el2
+	tbnz	x1, #HCR_RW_SHIFT, 1f
+	ldr	x4, [x3, #VCPU_FPEXC32_EL2]
+	msr	fpexc32_el2, x4
+1:
+	ldp	x4, lr, [sp], #16
+	ldp	x2, x3, [sp], #16
+	ldp	x0, x1, [sp], #16
+
+	eret
+ENDPROC(__fpsimd_guest_restore)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

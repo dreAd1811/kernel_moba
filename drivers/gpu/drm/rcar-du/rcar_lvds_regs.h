@@ -26,8 +26,15 @@
 
 #define LVDCR1				0x0004
 #define LVDCR1_CKSEL			(1 << 15)		/* Gen2 only */
+<<<<<<< HEAD
 #define LVDCR1_CHSTBY(n)		(3 << (2 + (n) * 2))
 #define LVDCR1_CLKSTBY			(3 << 0)
+=======
+#define LVDCR1_CHSTBY_GEN2(n)		(3 << (2 + (n) * 2))	/* Gen2 only */
+#define LVDCR1_CHSTBY_GEN3(n)		(1 << (2 + (n) * 2))	/* Gen3 only */
+#define LVDCR1_CLKSTBY_GEN2		(3 << 0)		/* Gen2 only */
+#define LVDCR1_CLKSTBY_GEN3		(1 << 0)		/* Gen3 only */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define LVDPLLCR			0x0008
 #define LVDPLLCR_CEEN			(1 << 14)

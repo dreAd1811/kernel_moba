@@ -382,7 +382,11 @@ ret_from_fork:
 		R26.L = #LO(do_work_pending);
 		R0 = #VM_INT_DISABLE;
 	}
+<<<<<<< HEAD
 	if P0 jump check_work_pending
+=======
+	if (P0) jump check_work_pending
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		R0 = R25;
 		callr R24

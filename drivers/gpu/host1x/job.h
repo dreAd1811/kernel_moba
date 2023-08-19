@@ -20,10 +20,17 @@
 #define __HOST1X_JOB_H
 
 struct host1x_job_gather {
+<<<<<<< HEAD
 	unsigned int words;
 	dma_addr_t base;
 	struct host1x_bo *bo;
 	unsigned int offset;
+=======
+	u32 words;
+	dma_addr_t base;
+	struct host1x_bo *bo;
+	u32 offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool handled;
 };
 

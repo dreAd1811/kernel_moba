@@ -30,6 +30,7 @@ void i915_check_vgpu(struct drm_i915_private *dev_priv);
 
 bool intel_vgpu_has_full_48bit_ppgtt(struct drm_i915_private *dev_priv);
 
+<<<<<<< HEAD
 static inline bool
 intel_vgpu_has_hwsp_emulation(struct drm_i915_private *dev_priv)
 {
@@ -42,6 +43,8 @@ intel_vgpu_has_huge_gtt(struct drm_i915_private *dev_priv)
 	return dev_priv->vgpu.caps & VGT_CAPS_HUGE_GTT;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int intel_vgt_balloon(struct drm_i915_private *dev_priv);
 void intel_vgt_deballoon(struct drm_i915_private *dev_priv);
 

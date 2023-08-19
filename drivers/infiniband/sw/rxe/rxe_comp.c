@@ -136,9 +136,15 @@ static enum ib_wc_opcode wr_to_wc_opcode(enum ib_wr_opcode opcode)
 	}
 }
 
+<<<<<<< HEAD
 void retransmit_timer(struct timer_list *t)
 {
 	struct rxe_qp *qp = from_timer(qp, t, retrans_timer);
+=======
+void retransmit_timer(unsigned long data)
+{
+	struct rxe_qp *qp = (struct rxe_qp *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (qp->valid) {
 		qp->comp.timeout = 1;
@@ -253,6 +259,20 @@ static inline enum comp_state check_ack(struct rxe_qp *qp,
 	case IB_OPCODE_RC_RDMA_READ_RESPONSE_MIDDLE:
 		if (pkt->opcode != IB_OPCODE_RC_RDMA_READ_RESPONSE_MIDDLE &&
 		    pkt->opcode != IB_OPCODE_RC_RDMA_READ_RESPONSE_LAST) {
+<<<<<<< HEAD
+=======
+			/* read retries of partial data may restart from
+			 * read response first or response only.
+			 */
+			if ((pkt->psn == wqe->first_psn &&
+			     pkt->opcode ==
+			     IB_OPCODE_RC_RDMA_READ_RESPONSE_FIRST) ||
+			    (wqe->first_psn == wqe->last_psn &&
+			     pkt->opcode ==
+			     IB_OPCODE_RC_RDMA_READ_RESPONSE_ONLY))
+				break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return COMPST_ERROR;
 		}
 		break;
@@ -270,8 +290,13 @@ static inline enum comp_state check_ack(struct rxe_qp *qp,
 		if ((syn & AETH_TYPE_MASK) != AETH_ACK)
 			return COMPST_ERROR;
 
+<<<<<<< HEAD
 		/* fall through */
 		/* (IB_OPCODE_RC_RDMA_READ_RESPONSE_MIDDLE doesn't have an AETH)
+=======
+		/* Fall through (IB_OPCODE_RC_RDMA_READ_RESPONSE_MIDDLE
+		 * doesn't have an AETH)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 	case IB_OPCODE_RC_RDMA_READ_RESPONSE_MIDDLE:
 		if (wqe->wr.opcode != IB_WR_RDMA_READ &&
@@ -356,9 +381,16 @@ static inline enum comp_state do_read(struct rxe_qp *qp,
 				      struct rxe_pkt_info *pkt,
 				      struct rxe_send_wqe *wqe)
 {
+<<<<<<< HEAD
 	int ret;
 
 	ret = copy_data(qp->pd, IB_ACCESS_LOCAL_WRITE,
+=======
+	struct rxe_dev *rxe = to_rdev(qp->ibqp.device);
+	int ret;
+
+	ret = copy_data(rxe, qp->pd, IB_ACCESS_LOCAL_WRITE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			&wqe->dma, payload_addr(pkt),
 			payload_size(pkt), to_mem_obj, NULL);
 	if (ret)
@@ -374,11 +406,19 @@ static inline enum comp_state do_atomic(struct rxe_qp *qp,
 					struct rxe_pkt_info *pkt,
 					struct rxe_send_wqe *wqe)
 {
+<<<<<<< HEAD
+=======
+	struct rxe_dev *rxe = to_rdev(qp->ibqp.device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	u64 atomic_orig = atmack_orig(pkt);
 
+<<<<<<< HEAD
 	ret = copy_data(qp->pd, IB_ACCESS_LOCAL_WRITE,
+=======
+	ret = copy_data(rxe, qp->pd, IB_ACCESS_LOCAL_WRITE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			&wqe->dma, &atomic_orig,
 			sizeof(u64), to_mem_obj, NULL);
 	if (ret)
@@ -499,11 +539,19 @@ static inline enum comp_state complete_wqe(struct rxe_qp *qp,
 					   struct rxe_pkt_info *pkt,
 					   struct rxe_send_wqe *wqe)
 {
+<<<<<<< HEAD
 	qp->comp.opcode = -1;
 
 	if (pkt) {
 		if (psn_compare(pkt->psn, qp->comp.psn) >= 0)
 			qp->comp.psn = (pkt->psn + 1) & BTH_PSN_MASK;
+=======
+	if (pkt && wqe->state == wqe_state_pending) {
+		if (psn_compare(wqe->last_psn, qp->comp.psn) >= 0) {
+			qp->comp.psn = (wqe->last_psn + 1) & BTH_PSN_MASK;
+			qp->comp.opcode = -1;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (qp->req.wait_psn) {
 			qp->req.wait_psn = 0;
@@ -660,6 +708,10 @@ int rxe_completer(void *arg)
 			    qp->qp_timeout_jiffies)
 				mod_timer(&qp->retrans_timer,
 					  jiffies + qp->qp_timeout_jiffies);
+<<<<<<< HEAD
+=======
+			WARN_ON_ONCE(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto exit;
 
 		case COMPST_ERROR_RETRY:
@@ -673,6 +725,10 @@ int rxe_completer(void *arg)
 
 			/* there is nothing to retry in this case */
 			if (!wqe || (wqe->state == wqe_state_posted)) {
+<<<<<<< HEAD
+=======
+				WARN_ON_ONCE(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto exit;
 			}
 
@@ -701,6 +757,10 @@ int rxe_completer(void *arg)
 					skb = NULL;
 				}
 
+<<<<<<< HEAD
+=======
+				WARN_ON_ONCE(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto exit;
 
 			} else {
@@ -744,6 +804,10 @@ int rxe_completer(void *arg)
 				skb = NULL;
 			}
 
+<<<<<<< HEAD
+=======
+			WARN_ON_ONCE(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto exit;
 		}
 	}

@@ -659,12 +659,19 @@ EXPORT_SYMBOL_GPL(drm_display_mode_to_videomode);
  * drm_bus_flags_from_videomode - extract information about pixelclk and
  * DE polarity from videomode and store it in a separate variable
  * @vm: videomode structure to use
+<<<<<<< HEAD
  * @bus_flags: information about pixelclk, sync and DE polarity will be stored
  * here
  *
  * Sets DRM_BUS_FLAG_DE_(LOW|HIGH),  DRM_BUS_FLAG_PIXDATA_(POS|NEG)EDGE and
  * DISPLAY_FLAGS_SYNC_(POS|NEG)EDGE in @bus_flags according to DISPLAY_FLAGS
  * found in @vm
+=======
+ * @bus_flags: information about pixelclk and DE polarity will be stored here
+ *
+ * Sets DRM_BUS_FLAG_DE_(LOW|HIGH) and DRM_BUS_FLAG_PIXDATA_(POS|NEG)EDGE
+ * in @bus_flags according to DISPLAY_FLAGS found in @vm
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void drm_bus_flags_from_videomode(const struct videomode *vm, u32 *bus_flags)
 {
@@ -674,11 +681,14 @@ void drm_bus_flags_from_videomode(const struct videomode *vm, u32 *bus_flags)
 	if (vm->flags & DISPLAY_FLAGS_PIXDATA_NEGEDGE)
 		*bus_flags |= DRM_BUS_FLAG_PIXDATA_NEGEDGE;
 
+<<<<<<< HEAD
 	if (vm->flags & DISPLAY_FLAGS_SYNC_POSEDGE)
 		*bus_flags |= DRM_BUS_FLAG_SYNC_POSEDGE;
 	if (vm->flags & DISPLAY_FLAGS_SYNC_NEGEDGE)
 		*bus_flags |= DRM_BUS_FLAG_SYNC_NEGEDGE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vm->flags & DISPLAY_FLAGS_DE_LOW)
 		*bus_flags |= DRM_BUS_FLAG_DE_LOW;
 	if (vm->flags & DISPLAY_FLAGS_DE_HIGH)
@@ -691,7 +701,11 @@ EXPORT_SYMBOL_GPL(drm_bus_flags_from_videomode);
  * of_get_drm_display_mode - get a drm_display_mode from devicetree
  * @np: device_node with the timing specification
  * @dmode: will be set to the return value
+<<<<<<< HEAD
  * @bus_flags: information about pixelclk, sync and DE polarity
+=======
+ * @bus_flags: information about pixelclk and DE polarity
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @index: index into the list of display timings in devicetree
  *
  * This function is expensive and should only be used, if only one mode is to be
@@ -780,10 +794,15 @@ EXPORT_SYMBOL(drm_mode_hsync);
 int drm_mode_vrefresh(const struct drm_display_mode *mode)
 {
 	int refresh = 0;
+<<<<<<< HEAD
+=======
+	unsigned int calc_val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mode->vrefresh > 0)
 		refresh = mode->vrefresh;
 	else if (mode->htotal > 0 && mode->vtotal > 0) {
+<<<<<<< HEAD
 		unsigned int num, den;
 
 		num = mode->clock * 1000;
@@ -797,6 +816,21 @@ int drm_mode_vrefresh(const struct drm_display_mode *mode)
 			den *= mode->vscan;
 
 		refresh = DIV_ROUND_CLOSEST(num, den);
+=======
+		int vtotal;
+		vtotal = mode->vtotal;
+		/* work out vrefresh the value will be x1000 */
+		calc_val = (mode->clock * 1000);
+		calc_val /= mode->htotal;
+		refresh = (calc_val + vtotal / 2) / vtotal;
+
+		if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+			refresh *= 2;
+		if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+			refresh /= 2;
+		if (mode->vscan > 1)
+			refresh /= mode->vscan;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return refresh;
 }
@@ -839,7 +873,11 @@ EXPORT_SYMBOL(drm_mode_get_hv_timing);
  */
 void drm_mode_set_crtcinfo(struct drm_display_mode *p, int adjust_flags)
 {
+<<<<<<< HEAD
 	if (!p)
+=======
+	if ((p == NULL) || ((p->type & DRM_MODE_TYPE_CRTC_C) == DRM_MODE_TYPE_BUILTIN))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	p->crtc_clock = p->clock;
@@ -946,6 +984,7 @@ struct drm_display_mode *drm_mode_duplicate(struct drm_device *dev,
 }
 EXPORT_SYMBOL(drm_mode_duplicate);
 
+<<<<<<< HEAD
 static bool drm_mode_match_timings(const struct drm_display_mode *mode1,
 				   const struct drm_display_mode *mode2)
 {
@@ -1039,6 +1078,8 @@ bool drm_mode_match(const struct drm_display_mode *mode1,
 }
 EXPORT_SYMBOL(drm_mode_match);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_mode_equal - test modes for equality
  * @mode1: first mode
@@ -1049,6 +1090,7 @@ EXPORT_SYMBOL(drm_mode_match);
  * Returns:
  * True if the modes are equal, false otherwise.
  */
+<<<<<<< HEAD
 bool drm_mode_equal(const struct drm_display_mode *mode1,
 		    const struct drm_display_mode *mode2)
 {
@@ -1058,6 +1100,25 @@ bool drm_mode_equal(const struct drm_display_mode *mode1,
 			      DRM_MODE_MATCH_FLAGS |
 			      DRM_MODE_MATCH_3D_FLAGS|
 			      DRM_MODE_MATCH_ASPECT_RATIO);
+=======
+bool drm_mode_equal(const struct drm_display_mode *mode1, const struct drm_display_mode *mode2)
+{
+	if (!mode1 && !mode2)
+		return true;
+
+	if (!mode1 || !mode2)
+		return false;
+
+	/* do clock check convert to PICOS so fb modes get matched
+	 * the same */
+	if (mode1->clock && mode2->clock) {
+		if (KHZ2PICOS(mode1->clock) != KHZ2PICOS(mode2->clock))
+			return false;
+	} else if (mode1->clock != mode2->clock)
+		return false;
+
+	return drm_mode_equal_no_clocks(mode1, mode2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_mode_equal);
 
@@ -1072,6 +1133,7 @@ EXPORT_SYMBOL(drm_mode_equal);
  * Returns:
  * True if the modes are equal, false otherwise.
  */
+<<<<<<< HEAD
 bool drm_mode_equal_no_clocks(const struct drm_display_mode *mode1,
 			      const struct drm_display_mode *mode2)
 {
@@ -1079,6 +1141,15 @@ bool drm_mode_equal_no_clocks(const struct drm_display_mode *mode1,
 			      DRM_MODE_MATCH_TIMINGS |
 			      DRM_MODE_MATCH_FLAGS |
 			      DRM_MODE_MATCH_3D_FLAGS);
+=======
+bool drm_mode_equal_no_clocks(const struct drm_display_mode *mode1, const struct drm_display_mode *mode2)
+{
+	if ((mode1->flags & DRM_MODE_FLAG_3D_MASK) !=
+	    (mode2->flags & DRM_MODE_FLAG_3D_MASK))
+		return false;
+
+	return drm_mode_equal_no_clocks_no_stereo(mode1, mode2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_mode_equal_no_clocks);
 
@@ -1096,6 +1167,7 @@ EXPORT_SYMBOL(drm_mode_equal_no_clocks);
 bool drm_mode_equal_no_clocks_no_stereo(const struct drm_display_mode *mode1,
 					const struct drm_display_mode *mode2)
 {
+<<<<<<< HEAD
 	return drm_mode_match(mode1, mode2,
 			      DRM_MODE_MATCH_TIMINGS |
 			      DRM_MODE_MATCH_FLAGS);
@@ -1114,6 +1186,39 @@ drm_mode_validate_basic(const struct drm_display_mode *mode)
 	if ((mode->flags & DRM_MODE_FLAG_3D_MASK) > DRM_MODE_FLAG_3D_MAX)
 		return MODE_BAD;
 
+=======
+	if (mode1->hdisplay == mode2->hdisplay &&
+	    mode1->hsync_start == mode2->hsync_start &&
+	    mode1->hsync_end == mode2->hsync_end &&
+	    mode1->htotal == mode2->htotal &&
+	    mode1->hskew == mode2->hskew &&
+	    mode1->vdisplay == mode2->vdisplay &&
+	    mode1->vsync_start == mode2->vsync_start &&
+	    mode1->vsync_end == mode2->vsync_end &&
+	    mode1->vtotal == mode2->vtotal &&
+	    mode1->vscan == mode2->vscan &&
+	    (mode1->flags & ~DRM_MODE_FLAG_3D_MASK) ==
+	     (mode2->flags & ~DRM_MODE_FLAG_3D_MASK))
+		return true;
+
+	return false;
+}
+EXPORT_SYMBOL(drm_mode_equal_no_clocks_no_stereo);
+
+/**
+ * drm_mode_validate_basic - make sure the mode is somewhat sane
+ * @mode: mode to check
+ *
+ * Check that the mode timings are at least somewhat reasonable.
+ * Any hardware specific limits are left up for each driver to check.
+ *
+ * Returns:
+ * The mode status
+ */
+enum drm_mode_status
+drm_mode_validate_basic(const struct drm_display_mode *mode)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mode->clock == 0)
 		return MODE_CLOCK_LOW;
 
@@ -1131,6 +1236,7 @@ drm_mode_validate_basic(const struct drm_display_mode *mode)
 
 	return MODE_OK;
 }
+<<<<<<< HEAD
 
 /**
  * drm_mode_validate_driver - make sure the mode is somewhat sane
@@ -1160,6 +1266,9 @@ drm_mode_validate_driver(struct drm_device *dev,
 		return MODE_OK;
 }
 EXPORT_SYMBOL(drm_mode_validate_driver);
+=======
+EXPORT_SYMBOL(drm_mode_validate_basic);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_mode_validate_size - make sure modes adhere to size constraints
@@ -1264,7 +1373,11 @@ static const char * const drm_mode_status_names[] = {
 
 #undef MODE_STATUS
 
+<<<<<<< HEAD
 const char *drm_get_mode_status_name(enum drm_mode_status status)
+=======
+static const char *drm_get_mode_status_name(enum drm_mode_status status)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int index = status + 3;
 
@@ -1353,7 +1466,11 @@ void drm_mode_sort(struct list_head *mode_list)
 EXPORT_SYMBOL(drm_mode_sort);
 
 /**
+<<<<<<< HEAD
  * drm_connector_list_update - update the mode list for the connector
+=======
+ * drm_mode_connector_list_update - update the mode list for the connector
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @connector: the connector to update
  *
  * This moves the modes from the @connector probed_modes list
@@ -1363,7 +1480,11 @@ EXPORT_SYMBOL(drm_mode_sort);
  * This is just a helper functions doesn't validate any modes itself and also
  * doesn't prune any invalid modes. Callers need to do that themselves.
  */
+<<<<<<< HEAD
 void drm_connector_list_update(struct drm_connector *connector)
+=======
+void drm_mode_connector_list_update(struct drm_connector *connector)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_display_mode *pmode, *pt;
 
@@ -1412,7 +1533,11 @@ void drm_connector_list_update(struct drm_connector *connector)
 		}
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(drm_connector_list_update);
+=======
+EXPORT_SYMBOL(drm_mode_connector_list_update);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_mode_parse_command_line_for_connector - parse command line modeline for connector
@@ -1425,9 +1550,15 @@ EXPORT_SYMBOL(drm_connector_list_update);
  * modeline in fb_mode_option will be parsed instead.
  *
  * This uses the same parameters as the fb modedb.c, except for an extra
+<<<<<<< HEAD
  * force-enable, force-enable-digital and force-disable bit at the end::
  *
  *	<xres>x<yres>[M][R][-<bpp>][@<refresh>][i][m][eDd]
+=======
+ * force-enable, force-enable-digital and force-disable bit at the end:
+ *
+ * <xres>x<yres>[M][R][-<bpp>][@<refresh>][i][m][eDd]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The intermediate drm_cmdline_mode structure is required to store additional
  * options from the command line modline like the force-enable/disable flag.
@@ -1655,6 +1786,7 @@ void drm_mode_convert_to_umode(struct drm_mode_modeinfo *out,
 	out->vrefresh = in->vrefresh;
 	out->flags = in->flags;
 	out->type = in->type;
+<<<<<<< HEAD
 
 	switch (in->picture_aspect_ratio) {
 	case HDMI_PICTURE_ASPECT_4_3:
@@ -1675,13 +1807,18 @@ void drm_mode_convert_to_umode(struct drm_mode_modeinfo *out,
 		break;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	strncpy(out->name, in->name, DRM_DISPLAY_MODE_LEN);
 	out->name[DRM_DISPLAY_MODE_LEN-1] = 0;
 }
 
 /**
  * drm_crtc_convert_umode - convert a modeinfo into a drm_display_mode
+<<<<<<< HEAD
  * @dev: drm device
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @out: drm_display_mode to return to the user
  * @in: drm_mode_modeinfo to use
  *
@@ -1691,12 +1828,27 @@ void drm_mode_convert_to_umode(struct drm_mode_modeinfo *out,
  * Returns:
  * Zero on success, negative errno on failure.
  */
+<<<<<<< HEAD
 int drm_mode_convert_umode(struct drm_device *dev,
 			   struct drm_display_mode *out,
 			   const struct drm_mode_modeinfo *in)
 {
 	if (in->clock > INT_MAX || in->vrefresh > INT_MAX)
 		return -ERANGE;
+=======
+int drm_mode_convert_umode(struct drm_display_mode *out,
+			   const struct drm_mode_modeinfo *in)
+{
+	int ret = -EINVAL;
+
+	if (in->clock > INT_MAX || in->vrefresh > INT_MAX) {
+		ret = -ERANGE;
+		goto out;
+	}
+
+	if ((in->flags & DRM_MODE_FLAG_3D_MASK) > DRM_MODE_FLAG_3D_MAX)
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	out->clock = in->clock;
 	out->hdisplay = in->hdisplay;
@@ -1711,6 +1863,7 @@ int drm_mode_convert_umode(struct drm_device *dev,
 	out->vscan = in->vscan;
 	out->vrefresh = in->vrefresh;
 	out->flags = in->flags;
+<<<<<<< HEAD
 	/*
 	 * Old xf86-video-vmware (possibly others too) used to
 	 * leave 'type' unititialized. Just ignore any bits we
@@ -1752,6 +1905,22 @@ int drm_mode_convert_umode(struct drm_device *dev,
 	drm_mode_set_crtcinfo(out, CRTC_INTERLACE_HALVE_V);
 
 	return 0;
+=======
+	out->type = in->type;
+	strncpy(out->name, in->name, DRM_DISPLAY_MODE_LEN);
+	out->name[DRM_DISPLAY_MODE_LEN-1] = 0;
+
+	out->status = drm_mode_validate_basic(out);
+	if (out->status != MODE_OK)
+		goto out;
+
+	drm_mode_set_crtcinfo(out, CRTC_INTERLACE_HALVE_V);
+
+	ret = 0;
+
+out:
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

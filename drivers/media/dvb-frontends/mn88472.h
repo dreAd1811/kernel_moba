@@ -19,21 +19,36 @@
 
 #include <linux/dvb/frontend.h>
 
+<<<<<<< HEAD
 /* Define old names for backward compatibility */
 #define VARIABLE_TS_CLOCK   MN88472_TS_CLK_VARIABLE
 #define FIXED_TS_CLOCK      MN88472_TS_CLK_FIXED
 #define SERIAL_TS_MODE      MN88472_TS_MODE_SERIAL
 #define PARALLEL_TS_MODE    MN88472_TS_MODE_PARALLEL
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct mn88472_config - Platform data for the mn88472 driver
  * @xtal: Clock frequency.
  * @ts_mode: TS mode.
  * @ts_clock: TS clock config.
  * @i2c_wr_max: Max number of bytes driver writes to I2C at once.
+<<<<<<< HEAD
  * @fe: pointer to a frontend pointer
  * @get_dvb_frontend: Get DVB frontend callback.
  */
+=======
+ * @get_dvb_frontend: Get DVB frontend.
+ */
+
+/* Define old names for backward compatibility */
+#define VARIABLE_TS_CLOCK   MN88472_TS_CLK_VARIABLE
+#define FIXED_TS_CLOCK      MN88472_TS_CLK_FIXED
+#define SERIAL_TS_MODE      MN88472_TS_MODE_SERIAL
+#define PARALLEL_TS_MODE    MN88472_TS_MODE_PARALLEL
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mn88472_config {
 	unsigned int xtal;
 

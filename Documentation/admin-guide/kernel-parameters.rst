@@ -89,6 +89,10 @@ parameter is applicable::
 	APM	Advanced Power Management support is enabled.
 	ARM	ARM architecture is enabled.
 	AX25	Appropriate AX.25 support is enabled.
+<<<<<<< HEAD
+=======
+	BLACKFIN Blackfin architecture is enabled.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CLK	Common clock infrastructure is enabled.
 	CMA	Contiguous Memory Area support is enabled.
 	DRM	Direct Rendering Management support is enabled.
@@ -108,7 +112,10 @@ parameter is applicable::
 	IPV6	IPv6 support is enabled.
 	ISAPNP	ISA PnP code is enabled.
 	ISDN	Appropriate ISDN support is enabled.
+<<<<<<< HEAD
 	ISOL	CPU Isolation is enabled.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	JOY	Appropriate joystick support is enabled.
 	KGDB	Kernel debugger support is enabled.
 	KVM	Kernel Virtual Machine support is enabled.
@@ -209,3 +216,12 @@ Todo
 ----
 
 	Add more DRM drivers.
+<<<<<<< HEAD
+=======
+
+eipv4=	[KNL] Sets ipv4 address at boot up for early ethernet.
+
+eipv6=	[KNL] Sets ipv6 address at boot up for early ethernet.
+
+ermac=	[KNL] Sets mac address at boot up for early ethernet.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -29,6 +29,7 @@ struct mpic_timer {
 
 #ifdef CONFIG_MPIC_TIMER
 struct mpic_timer *mpic_request_timer(irq_handler_t fn,  void *dev,
+<<<<<<< HEAD
 		time64_t time);
 void mpic_start_timer(struct mpic_timer *handle);
 void mpic_stop_timer(struct mpic_timer *handle);
@@ -40,6 +41,19 @@ struct mpic_timer *mpic_request_timer(irq_handler_t fn,  void *dev,
 void mpic_start_timer(struct mpic_timer *handle) { }
 void mpic_stop_timer(struct mpic_timer *handle) { }
 void mpic_get_remain_time(struct mpic_timer *handle, time64_t *time) { }
+=======
+		const struct timeval *time);
+void mpic_start_timer(struct mpic_timer *handle);
+void mpic_stop_timer(struct mpic_timer *handle);
+void mpic_get_remain_time(struct mpic_timer *handle, struct timeval *time);
+void mpic_free_timer(struct mpic_timer *handle);
+#else
+struct mpic_timer *mpic_request_timer(irq_handler_t fn,  void *dev,
+		const struct timeval *time) { return NULL; }
+void mpic_start_timer(struct mpic_timer *handle) { }
+void mpic_stop_timer(struct mpic_timer *handle) { }
+void mpic_get_remain_time(struct mpic_timer *handle, struct timeval *time) { }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mpic_free_timer(struct mpic_timer *handle) { }
 #endif
 

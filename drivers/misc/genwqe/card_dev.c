@@ -227,7 +227,11 @@ static void genwqe_remove_mappings(struct genwqe_file *cfile)
 			kfree(dma_map);
 		} else if (dma_map->type == GENWQE_MAPPING_SGL_TEMP) {
 			/* we use dma_map statically from the request */
+<<<<<<< HEAD
 			genwqe_user_vunmap(cd, dma_map);
+=======
+			genwqe_user_vunmap(cd, dma_map, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -250,7 +254,11 @@ static void genwqe_remove_pinnings(struct genwqe_file *cfile)
 		 * deleted.
 		 */
 		list_del_init(&dma_map->pin_list);
+<<<<<<< HEAD
 		genwqe_user_vunmap(cd, dma_map);
+=======
+		genwqe_user_vunmap(cd, dma_map, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(dma_map);
 	}
 }
@@ -305,12 +313,20 @@ static int genwqe_open(struct inode *inode, struct file *filp)
 {
 	struct genwqe_dev *cd;
 	struct genwqe_file *cfile;
+<<<<<<< HEAD
+=======
+	struct pci_dev *pci_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cfile = kzalloc(sizeof(*cfile), GFP_KERNEL);
 	if (cfile == NULL)
 		return -ENOMEM;
 
 	cd = container_of(inode->i_cdev, struct genwqe_dev, cdev_genwqe);
+<<<<<<< HEAD
+=======
+	pci_dev = cd->pci_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cfile->cd = cd;
 	cfile->filp = filp;
 	cfile->client = NULL;
@@ -791,7 +807,11 @@ static int genwqe_pin_mem(struct genwqe_file *cfile, struct genwqe_mem *m)
 		return -ENOMEM;
 
 	genwqe_mapping_init(dma_map, GENWQE_MAPPING_SGL_PINNED);
+<<<<<<< HEAD
 	rc = genwqe_user_vmap(cd, dma_map, (void *)map_addr, map_size);
+=======
+	rc = genwqe_user_vmap(cd, dma_map, (void *)map_addr, map_size, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc != 0) {
 		dev_err(&pci_dev->dev,
 			"[%s] genwqe_user_vmap rc=%d\n", __func__, rc);
@@ -821,7 +841,11 @@ static int genwqe_unpin_mem(struct genwqe_file *cfile, struct genwqe_mem *m)
 		return -ENOENT;
 
 	genwqe_del_pin(cfile, dma_map);
+<<<<<<< HEAD
 	genwqe_user_vunmap(cd, dma_map);
+=======
+	genwqe_user_vunmap(cd, dma_map, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dma_map);
 	return 0;
 }
@@ -842,7 +866,11 @@ static int ddcb_cmd_cleanup(struct genwqe_file *cfile, struct ddcb_requ *req)
 
 		if (dma_mapping_used(dma_map)) {
 			__genwqe_del_mapping(cfile, dma_map);
+<<<<<<< HEAD
 			genwqe_user_vunmap(cd, dma_map);
+=======
+			genwqe_user_vunmap(cd, dma_map, req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (req->sgls[i].sgl != NULL)
 			genwqe_free_sync_sgl(cd, &req->sgls[i]);
@@ -865,6 +893,10 @@ static int ddcb_cmd_fixups(struct genwqe_file *cfile, struct ddcb_requ *req)
 	struct genwqe_dev *cd = cfile->cd;
 	struct genwqe_ddcb_cmd *cmd = &req->cmd;
 	struct dma_mapping *m;
+<<<<<<< HEAD
+=======
+	const char *type = "UNKNOWN";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0, asiv_offs = 0x00; asiv_offs <= 0x58;
 	     i++, asiv_offs += 0x08) {
@@ -933,19 +965,32 @@ static int ddcb_cmd_fixups(struct genwqe_file *cfile, struct ddcb_requ *req)
 
 			m = genwqe_search_pin(cfile, u_addr, u_size, NULL);
 			if (m != NULL) {
+<<<<<<< HEAD
 				page_offs = (u_addr -
 					     (u64)m->u_vaddr)/PAGE_SIZE;
 			} else {
+=======
+				type = "PINNING";
+				page_offs = (u_addr -
+					     (u64)m->u_vaddr)/PAGE_SIZE;
+			} else {
+				type = "MAPPING";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				m = &req->dma_mappings[i];
 
 				genwqe_mapping_init(m,
 						    GENWQE_MAPPING_SGL_TEMP);
+<<<<<<< HEAD
 
 				if (ats_flags == ATS_TYPE_SGL_RD)
 					m->write = 0;
 
 				rc = genwqe_user_vmap(cd, m, (void *)u_addr,
 						      u_size);
+=======
+				rc = genwqe_user_vmap(cd, m, (void *)u_addr,
+						      u_size, req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (rc != 0)
 					goto err_out;
 
@@ -956,7 +1001,11 @@ static int ddcb_cmd_fixups(struct genwqe_file *cfile, struct ddcb_requ *req)
 			/* create genwqe style scatter gather list */
 			rc = genwqe_alloc_sync_sgl(cd, &req->sgls[i],
 						   (void __user *)u_addr,
+<<<<<<< HEAD
 						   u_size, m->write);
+=======
+						   u_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (rc != 0)
 				goto err_out;
 
@@ -1009,6 +1058,10 @@ static int do_execute_ddcb(struct genwqe_file *cfile,
 {
 	int rc;
 	struct genwqe_ddcb_cmd *cmd;
+<<<<<<< HEAD
+=======
+	struct ddcb_requ *req;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct genwqe_dev *cd = cfile->cd;
 	struct file *filp = cfile->filp;
 
@@ -1016,6 +1069,11 @@ static int do_execute_ddcb(struct genwqe_file *cfile,
 	if (cmd == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	req = container_of(cmd, struct ddcb_requ, cmd);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (copy_from_user(cmd, (void __user *)arg, sizeof(*cmd))) {
 		ddcb_requ_free(cmd);
 		return -EFAULT;
@@ -1340,7 +1398,11 @@ static int genwqe_inform_and_stop_processes(struct genwqe_dev *cd)
 	rc = genwqe_kill_fasync(cd, SIGIO);
 	if (rc > 0) {
 		/* give kill_timeout seconds to close file descriptors ... */
+<<<<<<< HEAD
 		for (i = 0; (i < GENWQE_KILL_TIMEOUT) &&
+=======
+		for (i = 0; (i < genwqe_kill_timeout) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     genwqe_open_files(cd); i++) {
 			dev_info(&pci_dev->dev, "  %d sec ...", i);
 
@@ -1358,7 +1420,11 @@ static int genwqe_inform_and_stop_processes(struct genwqe_dev *cd)
 		rc = genwqe_terminate(cd);
 		if (rc) {
 			/* Give kill_timout more seconds to end processes */
+<<<<<<< HEAD
 			for (i = 0; (i < GENWQE_KILL_TIMEOUT) &&
+=======
+			for (i = 0; (i < genwqe_kill_timeout) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     genwqe_open_files(cd); i++) {
 				dev_warn(&pci_dev->dev, "  %d sec ...", i);
 

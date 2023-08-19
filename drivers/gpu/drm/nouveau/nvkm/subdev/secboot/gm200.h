@@ -29,8 +29,14 @@ struct gm200_secboot {
 	struct nvkm_secboot base;
 
 	/* Instance block & address space used for HS FW execution */
+<<<<<<< HEAD
 	struct nvkm_memory *inst;
 	struct nvkm_vmm *vmm;
+=======
+	struct nvkm_gpuobj *inst;
+	struct nvkm_gpuobj *pgd;
+	struct nvkm_vm *vm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #define gm200_secboot(sb) container_of(sb, struct gm200_secboot, base)
 

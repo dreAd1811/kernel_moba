@@ -265,6 +265,10 @@ MODULE_DEVICE_TABLE(i2c, pismo_id);
 static struct i2c_driver pismo_driver = {
 	.driver	= {
 		.name	= "pismo",
+<<<<<<< HEAD
+=======
+		.owner	= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= pismo_probe,
 	.remove		= pismo_remove,

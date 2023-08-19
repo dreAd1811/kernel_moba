@@ -5,6 +5,7 @@
 
 menu "Accelerometers"
 
+<<<<<<< HEAD
 config ADIS16201
         tristate "Analog Devices ADIS16201 Dual-Axis Digital Inclinometer and Accelerometer"
         depends on SPI
@@ -29,6 +30,8 @@ config ADIS16209
           To compile this driver as a module, say M here: the module will be
           called adis16209.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ADXL345
 	tristate
 
@@ -40,7 +43,11 @@ config ADXL345_I2C
 	select REGMAP_I2C
 	help
 	  Say Y here if you want to build support for the Analog Devices
+<<<<<<< HEAD
 	  ADXL345 or ADXL375 3-axis digital accelerometer.
+=======
+	  ADXL345 3-axis digital accelerometer.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the module
 	  will be called adxl345_i2c and you will also get adxl345_core
@@ -54,7 +61,11 @@ config ADXL345_SPI
 	select REGMAP_SPI
 	help
 	  Say Y here if you want to build support for the Analog Devices
+<<<<<<< HEAD
 	  ADXL345 or ADXL375 3-axis digital accelerometer.
+=======
+	  ADXL345 3-axis digital accelerometer.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the module
 	  will be called adxl345_spi and you will also get adxl345_core
@@ -172,6 +183,7 @@ config HID_SENSOR_ACCEL_3D
 	  To compile this driver as a module, choose M here: the
 	  module will be called hid-sensor-accel-3d.
 
+<<<<<<< HEAD
 config IIO_CROS_EC_ACCEL_LEGACY
 	tristate "ChromeOS EC Legacy Accelerometer Sensor"
 	select IIO_BUFFER
@@ -183,6 +195,8 @@ config IIO_CROS_EC_ACCEL_LEGACY
 	  Sensor data is retrieved through IO memory.
 	  Newer devices should use IIO_CROS_EC_SENSORS.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IIO_ST_ACCEL_3AXIS
 	tristate "STMicroelectronics accelerometers 3-Axis Driver"
 	depends on (I2C || SPI_MASTER) && SYSFS
@@ -254,8 +268,13 @@ config KXCJK1013
 	select IIO_TRIGGERED_BUFFER
 	help
 	  Say Y here if you want to build a driver for the Kionix KXCJK-1013
+<<<<<<< HEAD
 	  triaxial acceleration sensor. This driver also supports KXCJ9-1008,
 	  KXTJ2-1009 and KXTF9.
+=======
+	  triaxial acceleration sensor. This driver also supports KXCJ9-1008
+	  and KXTJ2-1009.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the module will
 	  be called kxcjk-1013.

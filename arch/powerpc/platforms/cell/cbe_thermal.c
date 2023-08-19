@@ -49,7 +49,10 @@
 #include <linux/device.h>
 #include <linux/kernel.h>
 #include <linux/cpu.h>
+<<<<<<< HEAD
 #include <linux/stringify.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/spu.h>
 #include <asm/io.h>
 #include <asm/prom.h>

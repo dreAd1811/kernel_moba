@@ -53,9 +53,12 @@ enum {
  * @gpio_reset: GPIO connected to the sensor's reset pin
  * @lock: mutex protecting the structure's members below
  * @format: media bus format at the sensor's source pad
+<<<<<<< HEAD
  * @clock: pointer to &struct clk.
  * @clock_frequency: clock frequency
  * @power_count: stores state if device is powered
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct s5k6a3 {
 	struct device *dev;

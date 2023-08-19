@@ -64,9 +64,12 @@ static int mt7601u_add_interface(struct ieee80211_hw *hw,
 	 */
 	mvif->idx = idx;
 
+<<<<<<< HEAD
 	if (!ether_addr_equal(dev->macaddr, vif->addr))
 		mt7601u_set_macaddr(dev, vif->addr);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->wcid_mask[wcid / BITS_PER_LONG] & BIT(wcid % BITS_PER_LONG))
 		return -ENOSPC;
 	dev->wcid_mask[wcid / BITS_PER_LONG] |= BIT(wcid % BITS_PER_LONG);
@@ -288,12 +291,15 @@ mt7601u_sw_scan_complete(struct ieee80211_hw *hw,
 
 	mt7601u_agc_restore(dev);
 	clear_bit(MT7601U_STATE_SCANNING, &dev->state);
+<<<<<<< HEAD
 
 	ieee80211_queue_delayed_work(dev->hw, &dev->cal_work,
 				     MT_CALIBRATE_INTERVAL);
 	if (dev->freq_cal.enabled)
 		ieee80211_queue_delayed_work(dev->hw, &dev->freq_cal.work,
 					     MT_FREQ_CAL_INIT_DELAY);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -308,6 +314,7 @@ mt7601u_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 	int idx = key->keyidx;
 	int ret;
 
+<<<<<<< HEAD
 	/* fall back to sw encryption for unsupported ciphers */
 	switch (key->cipher) {
 	case WLAN_CIPHER_SUITE_WEP40:
@@ -319,6 +326,8 @@ mt7601u_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 		return -EOPNOTSUPP;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cmd == SET_KEY) {
 		key->hw_key_idx = wcid->idx;
 		wcid->hw_key_idx = idx;

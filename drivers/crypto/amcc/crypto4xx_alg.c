@@ -26,6 +26,7 @@
 #include <crypto/internal/hash.h>
 #include <linux/dma-mapping.h>
 #include <crypto/algapi.h>
+<<<<<<< HEAD
 #include <crypto/aead.h>
 #include <crypto/aes.h>
 #include <crypto/gcm.h>
@@ -35,6 +36,13 @@
 #include "crypto4xx_reg_def.h"
 #include "crypto4xx_core.h"
 #include "crypto4xx_sa.h"
+=======
+#include <crypto/aes.h>
+#include <crypto/sha.h>
+#include "crypto4xx_reg_def.h"
+#include "crypto4xx_sa.h"
+#include "crypto4xx_core.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void set_dynamic_sa_command_0(struct dynamic_sa_ctl *sa, u32 save_h,
 				     u32 save_iv, u32 ld_h, u32 ld_iv,
@@ -66,7 +74,10 @@ static void set_dynamic_sa_command_1(struct dynamic_sa_ctl *sa, u32 cm,
 	sa->sa_command_1.bf.crypto_mode9_8 = cm & 3;
 	sa->sa_command_1.bf.feedback_mode = cfb,
 	sa->sa_command_1.bf.sa_rev = 1;
+<<<<<<< HEAD
 	sa->sa_command_1.bf.hmac_muting = hmac_mc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sa->sa_command_1.bf.extended_seq_num = esn;
 	sa->sa_command_1.bf.seq_num_mask = sn_mask;
 	sa->sa_command_1.bf.mutable_bit_proc = mute;
@@ -75,6 +86,7 @@ static void set_dynamic_sa_command_1(struct dynamic_sa_ctl *sa, u32 cm,
 	sa->sa_command_1.bf.copy_hdr = cp_hdr;
 }
 
+<<<<<<< HEAD
 static inline int crypto4xx_crypt(struct skcipher_request *req,
 				  const unsigned int ivlen, bool decrypt,
 				  bool check_blocksize)
@@ -122,36 +134,82 @@ int crypto4xx_encrypt_iv_block(struct skcipher_request *req)
 int crypto4xx_decrypt_iv_block(struct skcipher_request *req)
 {
 	return crypto4xx_crypt(req, AES_IV_SIZE, true, true);
+=======
+int crypto4xx_encrypt(struct ablkcipher_request *req)
+{
+	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(req->base.tfm);
+
+	ctx->direction = DIR_OUTBOUND;
+	ctx->hash_final = 0;
+	ctx->is_hash = 0;
+	ctx->pd_ctl = 0x1;
+
+	return crypto4xx_build_pd(&req->base, ctx, req->src, req->dst,
+				  req->nbytes, req->info,
+				  get_dynamic_sa_iv_size(ctx));
+}
+
+int crypto4xx_decrypt(struct ablkcipher_request *req)
+{
+	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(req->base.tfm);
+
+	ctx->direction = DIR_INBOUND;
+	ctx->hash_final = 0;
+	ctx->is_hash = 0;
+	ctx->pd_ctl = 1;
+
+	return crypto4xx_build_pd(&req->base, ctx, req->src, req->dst,
+				  req->nbytes, req->info,
+				  get_dynamic_sa_iv_size(ctx));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  * AES Functions
  */
+<<<<<<< HEAD
 static int crypto4xx_setkey_aes(struct crypto_skcipher *cipher,
+=======
+static int crypto4xx_setkey_aes(struct crypto_ablkcipher *cipher,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				const u8 *key,
 				unsigned int keylen,
 				unsigned char cm,
 				u8 fb)
 {
+<<<<<<< HEAD
 	struct crypto4xx_ctx *ctx = crypto_skcipher_ctx(cipher);
+=======
+	struct crypto_tfm *tfm = crypto_ablkcipher_tfm(cipher);
+	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(tfm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dynamic_sa_ctl *sa;
 	int    rc;
 
 	if (keylen != AES_KEYSIZE_256 &&
 		keylen != AES_KEYSIZE_192 && keylen != AES_KEYSIZE_128) {
+<<<<<<< HEAD
 		crypto_skcipher_set_flags(cipher,
+=======
+		crypto_ablkcipher_set_flags(cipher,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				CRYPTO_TFM_RES_BAD_KEY_LEN);
 		return -EINVAL;
 	}
 
 	/* Create SA */
+<<<<<<< HEAD
 	if (ctx->sa_in || ctx->sa_out)
+=======
+	if (ctx->sa_in_dma_addr || ctx->sa_out_dma_addr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		crypto4xx_free_sa(ctx);
 
 	rc = crypto4xx_alloc_sa(ctx, SA_AES128_LEN + (keylen-16) / 4);
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	/* Setup SA */
 	sa = ctx->sa_in;
 
@@ -159,6 +217,22 @@ static int crypto4xx_setkey_aes(struct crypto_skcipher *cipher,
 				 SA_NOT_SAVE_IV : SA_SAVE_IV),
 				 SA_NOT_LOAD_HASH, (cm == CRYPTO_MODE_ECB ?
 				 SA_LOAD_IV_FROM_SA : SA_LOAD_IV_FROM_STATE),
+=======
+	if (ctx->state_record_dma_addr == 0) {
+		rc = crypto4xx_alloc_state_record(ctx);
+		if (rc) {
+			crypto4xx_free_sa(ctx);
+			return rc;
+		}
+	}
+	/* Setup SA */
+	sa = (struct dynamic_sa_ctl *) ctx->sa_in;
+	ctx->hash_final = 0;
+
+	set_dynamic_sa_command_0(sa, SA_NOT_SAVE_HASH, (cm == CRYPTO_MODE_CBC ?
+				 SA_SAVE_IV : SA_NOT_SAVE_IV),
+				 SA_LOAD_HASH_FROM_SA, SA_LOAD_IV_FROM_STATE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 SA_NO_HEADER_PROC, SA_HASH_ALG_NULL,
 				 SA_CIPHER_ALG_AES, SA_PAD_TYPE_ZERO,
 				 SA_OP_GROUP_BASIC, SA_OPCODE_DECRYPT,
@@ -169,6 +243,7 @@ static int crypto4xx_setkey_aes(struct crypto_skcipher *cipher,
 				 SA_SEQ_MASK_OFF, SA_MC_ENABLE,
 				 SA_NOT_COPY_PAD, SA_NOT_COPY_PAYLOAD,
 				 SA_NOT_COPY_HDR);
+<<<<<<< HEAD
 	crypto4xx_memcpy_to_le32(get_dynamic_sa_key_field(sa),
 				 key, keylen);
 	sa->sa_contents.w = SA_AES_CONTENTS | (keylen << 2);
@@ -182,17 +257,37 @@ static int crypto4xx_setkey_aes(struct crypto_skcipher *cipher,
 	 * it's the DIR_(IN|OUT)BOUND that matters
 	 */
 	sa->sa_command_0.bf.opcode = SA_OPCODE_ENCRYPT;
+=======
+	crypto4xx_memcpy_le(ctx->sa_in + get_dynamic_sa_offset_key_field(ctx),
+			    key, keylen);
+	sa->sa_contents = SA_AES_CONTENTS | (keylen << 2);
+	sa->sa_command_1.bf.key_len = keylen >> 3;
+	ctx->is_hash = 0;
+	ctx->direction = DIR_INBOUND;
+	memcpy(ctx->sa_in + get_dynamic_sa_offset_state_ptr_field(ctx),
+			(void *)&ctx->state_record_dma_addr, 4);
+	ctx->offset_to_sr_ptr = get_dynamic_sa_offset_state_ptr_field(ctx);
+
+	memcpy(ctx->sa_out, ctx->sa_in, ctx->sa_len * 4);
+	sa = (struct dynamic_sa_ctl *) ctx->sa_out;
+	sa->sa_command_0.bf.dir = DIR_OUTBOUND;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 int crypto4xx_setkey_aes_cbc(struct crypto_skcipher *cipher,
+=======
+int crypto4xx_setkey_aes_cbc(struct crypto_ablkcipher *cipher,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     const u8 *key, unsigned int keylen)
 {
 	return crypto4xx_setkey_aes(cipher, key, keylen, CRYPTO_MODE_CBC,
 				    CRYPTO_FEEDBACK_MODE_NO_FB);
 }
 
+<<<<<<< HEAD
 int crypto4xx_setkey_aes_cfb(struct crypto_skcipher *cipher,
 			     const u8 *key, unsigned int keylen)
 {
@@ -656,6 +751,8 @@ int crypto4xx_decrypt_aes_gcm(struct aead_request *req)
 	return crypto4xx_crypt_aes_gcm(req, true);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * HASH SHA1 Functions
  */
@@ -665,6 +762,7 @@ static int crypto4xx_hash_alg_init(struct crypto_tfm *tfm,
 				   unsigned char hm)
 {
 	struct crypto_alg *alg = tfm->__crt_alg;
+<<<<<<< HEAD
 	struct crypto4xx_alg *my_alg;
 	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(tfm);
 	struct dynamic_sa_hash160 *sa;
@@ -676,28 +774,72 @@ static int crypto4xx_hash_alg_init(struct crypto_tfm *tfm,
 
 	/* Create SA */
 	if (ctx->sa_in || ctx->sa_out)
+=======
+	struct crypto4xx_alg *my_alg = crypto_alg_to_crypto4xx_alg(alg);
+	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(tfm);
+	struct dynamic_sa_ctl *sa;
+	struct dynamic_sa_hash160 *sa_in;
+	int rc;
+
+	ctx->dev   = my_alg->dev;
+	ctx->is_hash = 1;
+	ctx->hash_final = 0;
+
+	/* Create SA */
+	if (ctx->sa_in_dma_addr || ctx->sa_out_dma_addr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		crypto4xx_free_sa(ctx);
 
 	rc = crypto4xx_alloc_sa(ctx, sa_len);
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	crypto_ahash_set_reqsize(__crypto_ahash_cast(tfm),
 				 sizeof(struct crypto4xx_ctx));
 	sa = (struct dynamic_sa_hash160 *)ctx->sa_in;
 	set_dynamic_sa_command_0(&sa->ctrl, SA_SAVE_HASH, SA_NOT_SAVE_IV,
+=======
+	if (ctx->state_record_dma_addr == 0) {
+		crypto4xx_alloc_state_record(ctx);
+		if (!ctx->state_record_dma_addr) {
+			crypto4xx_free_sa(ctx);
+			return -ENOMEM;
+		}
+	}
+
+	crypto_ahash_set_reqsize(__crypto_ahash_cast(tfm),
+				 sizeof(struct crypto4xx_ctx));
+	sa = (struct dynamic_sa_ctl *) ctx->sa_in;
+	set_dynamic_sa_command_0(sa, SA_SAVE_HASH, SA_NOT_SAVE_IV,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 SA_NOT_LOAD_HASH, SA_LOAD_IV_FROM_SA,
 				 SA_NO_HEADER_PROC, ha, SA_CIPHER_ALG_NULL,
 				 SA_PAD_TYPE_ZERO, SA_OP_GROUP_BASIC,
 				 SA_OPCODE_HASH, DIR_INBOUND);
+<<<<<<< HEAD
 	set_dynamic_sa_command_1(&sa->ctrl, 0, SA_HASH_MODE_HASH,
+=======
+	set_dynamic_sa_command_1(sa, 0, SA_HASH_MODE_HASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 CRYPTO_FEEDBACK_MODE_NO_FB, SA_EXTENDED_SN_OFF,
 				 SA_SEQ_MASK_OFF, SA_MC_ENABLE,
 				 SA_NOT_COPY_PAD, SA_NOT_COPY_PAYLOAD,
 				 SA_NOT_COPY_HDR);
+<<<<<<< HEAD
 	/* Need to zero hash digest in SA */
 	memset(sa->inner_digest, 0, sizeof(sa->inner_digest));
 	memset(sa->outer_digest, 0, sizeof(sa->outer_digest));
+=======
+	ctx->direction = DIR_INBOUND;
+	sa->sa_contents = SA_HASH160_CONTENTS;
+	sa_in = (struct dynamic_sa_hash160 *) ctx->sa_in;
+	/* Need to zero hash digest in SA */
+	memset(sa_in->inner_digest, 0, sizeof(sa_in->inner_digest));
+	memset(sa_in->outer_digest, 0, sizeof(sa_in->outer_digest));
+	sa_in->state_ptr = ctx->state_record_dma_addr;
+	ctx->offset_to_sr_ptr = get_dynamic_sa_offset_state_ptr_field(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -708,17 +850,27 @@ int crypto4xx_hash_init(struct ahash_request *req)
 	int ds;
 	struct dynamic_sa_ctl *sa;
 
+<<<<<<< HEAD
 	sa = ctx->sa_in;
+=======
+	sa = (struct dynamic_sa_ctl *) ctx->sa_in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ds = crypto_ahash_digestsize(
 			__crypto_ahash_cast(req->base.tfm));
 	sa->sa_command_0.bf.digest_len = ds >> 2;
 	sa->sa_command_0.bf.load_hash_state = SA_LOAD_HASH_FROM_SA;
+<<<<<<< HEAD
+=======
+	ctx->is_hash = 1;
+	ctx->direction = DIR_INBOUND;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 int crypto4xx_hash_update(struct ahash_request *req)
 {
+<<<<<<< HEAD
 	struct crypto_ahash *ahash = crypto_ahash_reqtfm(req);
 	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(req->base.tfm);
 	struct scatterlist dst;
@@ -729,6 +881,18 @@ int crypto4xx_hash_update(struct ahash_request *req)
 	return crypto4xx_build_pd(&req->base, ctx, req->src, &dst,
 				  req->nbytes, NULL, 0, ctx->sa_in,
 				  ctx->sa_len, 0, NULL);
+=======
+	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(req->base.tfm);
+
+	ctx->is_hash = 1;
+	ctx->hash_final = 0;
+	ctx->pd_ctl = 0x11;
+	ctx->direction = DIR_INBOUND;
+
+	return crypto4xx_build_pd(&req->base, ctx, req->src,
+				  (struct scatterlist *) req->result,
+				  req->nbytes, NULL, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int crypto4xx_hash_final(struct ahash_request *req)
@@ -738,6 +902,7 @@ int crypto4xx_hash_final(struct ahash_request *req)
 
 int crypto4xx_hash_digest(struct ahash_request *req)
 {
+<<<<<<< HEAD
 	struct crypto_ahash *ahash = crypto_ahash_reqtfm(req);
 	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(req->base.tfm);
 	struct scatterlist dst;
@@ -748,6 +913,17 @@ int crypto4xx_hash_digest(struct ahash_request *req)
 	return crypto4xx_build_pd(&req->base, ctx, req->src, &dst,
 				  req->nbytes, NULL, 0, ctx->sa_in,
 				  ctx->sa_len, 0, NULL);
+=======
+	struct crypto4xx_ctx *ctx = crypto_tfm_ctx(req->base.tfm);
+
+	ctx->hash_final = 1;
+	ctx->pd_ctl = 0x11;
+	ctx->direction = DIR_INBOUND;
+
+	return crypto4xx_build_pd(&req->base, ctx, req->src,
+				  (struct scatterlist *) req->result,
+				  req->nbytes, NULL, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -758,3 +934,8 @@ int crypto4xx_sha1_alg_init(struct crypto_tfm *tfm)
 	return crypto4xx_hash_alg_init(tfm, SA_HASH160_LEN, SA_HASH_ALG_SHA1,
 				       SA_HASH_MODE_HASH);
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

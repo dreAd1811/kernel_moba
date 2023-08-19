@@ -111,8 +111,11 @@ struct ioatdma_chan {
 	#define IOAT_RUN 5
 	#define IOAT_CHAN_ACTIVE 6
 	struct timer_list timer;
+<<<<<<< HEAD
 	#define COMPLETION_TIMEOUT msecs_to_jiffies(100)
 	#define IDLE_TIMEOUT msecs_to_jiffies(2000)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	#define RESET_DELAY msecs_to_jiffies(100)
 	struct ioatdma_device *ioat_dma;
 	dma_addr_t completion_dma;
@@ -406,9 +409,16 @@ enum dma_status
 ioat_tx_status(struct dma_chan *c, dma_cookie_t cookie,
 		struct dma_tx_state *txstate);
 void ioat_cleanup_event(unsigned long data);
+<<<<<<< HEAD
 void ioat_timer_event(struct timer_list *t);
 int ioat_check_space_lock(struct ioatdma_chan *ioat_chan, int num_descs);
 void ioat_issue_pending(struct dma_chan *chan);
+=======
+void ioat_timer_event(unsigned long data);
+int ioat_check_space_lock(struct ioatdma_chan *ioat_chan, int num_descs);
+void ioat_issue_pending(struct dma_chan *chan);
+void ioat_timer_event(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* IOAT Init functions */
 bool is_bwd_ioat(struct pci_dev *pdev);

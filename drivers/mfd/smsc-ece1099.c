@@ -37,9 +37,18 @@ static int smsc_i2c_probe(struct i2c_client *i2c,
 	int devid, rev, venid_l, venid_h;
 	int ret;
 
+<<<<<<< HEAD
 	smsc = devm_kzalloc(&i2c->dev, sizeof(*smsc), GFP_KERNEL);
 	if (!smsc)
 		return -ENOMEM;
+=======
+	smsc = devm_kzalloc(&i2c->dev, sizeof(struct smsc),
+				GFP_KERNEL);
+	if (!smsc) {
+		dev_err(&i2c->dev, "smsc mfd driver memory allocation failed\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	smsc->regmap = devm_regmap_init_i2c(i2c, &smsc_regmap_config);
 	if (IS_ERR(smsc->regmap))

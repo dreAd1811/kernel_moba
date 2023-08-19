@@ -238,6 +238,19 @@ static void xenon_voltage_switch(struct sdhci_host *host)
 {
 	/* Wait for 5ms after set 1.8V signal enable bit */
 	usleep_range(5000, 5500);
+<<<<<<< HEAD
+=======
+
+	/*
+	 * For some reason the controller's Host Control2 register reports
+	 * the bit representing 1.8V signaling as 0 when read after it was
+	 * written as 1. Subsequent read reports 1.
+	 *
+	 * Since this may cause some issues, do an empty read of the Host
+	 * Control2 register here to circumvent this.
+	 */
+	sdhci_readw(host, SDHCI_HOST_CONTROL2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct sdhci_ops sdhci_xenon_ops = {

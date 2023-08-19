@@ -110,7 +110,11 @@ do {									\
 /* Interface Mode Register (IF_MODE) */
 
 #define IF_MODE_MASK		0x00000003 /* 30-31 Mask on i/f mode bits */
+<<<<<<< HEAD
 #define IF_MODE_XGMII		0x00000000 /* 30-31 XGMII (10G) interface */
+=======
+#define IF_MODE_10G		0x00000000 /* 30-31 10G interface */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IF_MODE_GMII		0x00000002 /* 30-31 GMII (1G) interface */
 #define IF_MODE_RGMII		0x00000004
 #define IF_MODE_RGMII_AUTO	0x00008000
@@ -350,7 +354,10 @@ struct fman_mac {
 	struct fman_rev_info fm_rev_info;
 	bool basex_if;
 	struct phy_device *pcsphy;
+<<<<<<< HEAD
 	bool allmulti_enabled;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void add_addr_in_paddr(struct memac_regs __iomem *regs, u8 *adr,
@@ -440,7 +447,11 @@ static int init(struct memac_regs __iomem *regs, struct memac_cfg *cfg,
 	tmp = 0;
 	switch (phy_if) {
 	case PHY_INTERFACE_MODE_XGMII:
+<<<<<<< HEAD
 		tmp |= IF_MODE_XGMII;
+=======
+		tmp |= IF_MODE_10G;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		tmp |= IF_MODE_GMII;
@@ -941,6 +952,7 @@ int memac_add_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr)
 	return 0;
 }
 
+<<<<<<< HEAD
 int memac_set_allmulti(struct fman_mac *memac, bool enable)
 {
 	u32 entry;
@@ -969,6 +981,8 @@ int memac_set_tstamp(struct fman_mac *memac, bool enable)
 	return 0; /* Always enabled. */
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int memac_del_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr)
 {
 	struct memac_regs __iomem *regs = memac->regs;
@@ -992,12 +1006,17 @@ int memac_del_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr)
 			break;
 		}
 	}
+<<<<<<< HEAD
 
 	if (!memac->allmulti_enabled) {
 		if (list_empty(&memac->multicast_addr_hash->lsts[hash]))
 			iowrite32be(hash & ~HASH_CTRL_MCAST_EN,
 				    &regs->hashtable_ctrl);
 	}
+=======
+	if (list_empty(&memac->multicast_addr_hash->lsts[hash]))
+		iowrite32be(hash & ~HASH_CTRL_MCAST_EN, &regs->hashtable_ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2015-2017,2019 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2015-2017,2019-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _ADRENO_A5XX_H_
@@ -8,6 +22,7 @@
 
 #include "a5xx_reg.h"
 
+<<<<<<< HEAD
 /**
  * struct adreno_a5xx_core - a5xx specific GPU core definitions
  */
@@ -38,6 +53,8 @@ struct adreno_a5xx_core {
 	u32 vbif_count;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A5XX_IRQ_FLAGS \
 	{ BIT(A5XX_INT_RBBM_GPU_IDLE), "RBBM_GPU_IDLE" }, \
 	{ BIT(A5XX_INT_RBBM_AHB_ERROR), "RBBM_AHB_ERR" }, \
@@ -134,7 +151,11 @@ void a5xx_crashdump_init(struct adreno_device *adreno_dev);
 
 void a5xx_hwcg_set(struct adreno_device *adreno_dev, bool on);
 
+<<<<<<< HEAD
 #define A5XX_CP_RB_CNTL_DEFAULT (((ilog2(4) << 8) & 0x1F00) | \
+=======
+#define A5XX_CP_RB_CNTL_DEFAULT ((1 << 27) | ((ilog2(4) << 8) & 0x1F00) | \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(ilog2(KGSL_RB_DWORDS >> 1) & 0x3F))
 /* GPMU interrupt multiplexor */
 #define FW_INTR_INFO			(0)
@@ -243,6 +264,7 @@ static inline bool lm_on(struct adreno_device *adreno_dev)
 		test_bit(ADRENO_LM_CTRL, &adreno_dev->pwrctrl_flag);
 }
 
+<<<<<<< HEAD
 /**
  * to_a5xx_core - return the a5xx specific GPU core struct
  * @adreno_dev: An Adreno GPU device handle
@@ -258,6 +280,8 @@ to_a5xx_core(struct adreno_device *adreno_dev)
 	return container_of(core, struct adreno_a5xx_core, base);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Preemption functions */
 void a5xx_preemption_trigger(struct adreno_device *adreno_dev);
 void a5xx_preemption_schedule(struct adreno_device *adreno_dev);
@@ -275,5 +299,10 @@ unsigned int a5xx_preemption_pre_ibsubmit(
 
 
 void a5xx_preempt_callback(struct adreno_device *adreno_dev, int bit);
+<<<<<<< HEAD
 
+=======
+size_t a5xx_snapshot_preemption(struct kgsl_device *device, u8 *buf,
+		size_t remain, void *priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

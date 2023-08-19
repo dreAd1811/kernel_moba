@@ -22,7 +22,10 @@
 #include <linux/i2c.h>
 #include <linux/iio/iio.h>
 #include <linux/iio/buffer.h>
+<<<<<<< HEAD
 #include <linux/iio/trigger.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/iio/triggered_buffer.h>
 #include <linux/iio/trigger_consumer.h>
 #include <linux/module.h>
@@ -32,7 +35,11 @@
 #define CCS811_ALG_RESULT_DATA	0x02
 #define CCS811_RAW_DATA		0x03
 #define CCS811_HW_ID		0x20
+<<<<<<< HEAD
 #define CCS811_HW_ID_VALUE	0x81
+=======
+#define CCS881_HW_ID_VALUE	0x81
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CCS811_HW_VERSION	0x21
 #define CCS811_HW_VERSION_VALUE	0x10
 #define CCS811_HW_VERSION_MASK	0xF0
@@ -60,8 +67,11 @@
 #define CCS811_MODE_IAQ_60SEC	0x30
 #define CCS811_MODE_RAW_DATA	0x40
 
+<<<<<<< HEAD
 #define CCS811_MEAS_MODE_INTERRUPT	BIT(3)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CCS811_VOLTAGE_MASK	0x3FF
 
 struct ccs811_reading {
@@ -69,15 +79,22 @@ struct ccs811_reading {
 	__be16 voc;
 	u8 status;
 	u8 error;
+<<<<<<< HEAD
 	__be16 raw_data;
+=======
+	__be16 resistance;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __attribute__((__packed__));
 
 struct ccs811_data {
 	struct i2c_client *client;
 	struct mutex lock; /* Protect readings */
 	struct ccs811_reading buffer;
+<<<<<<< HEAD
 	struct iio_trigger *drdy_trig;
 	bool drdy_trig_on;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct iio_chan_spec ccs811_channels[] = {
@@ -200,25 +217,39 @@ static int ccs811_read_raw(struct iio_dev *indio_dev,
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
+<<<<<<< HEAD
 		ret = iio_device_claim_direct_mode(indio_dev);
 		if (ret)
 			return ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&data->lock);
 		ret = ccs811_get_measurement(data);
 		if (ret < 0) {
 			mutex_unlock(&data->lock);
+<<<<<<< HEAD
 			iio_device_release_direct_mode(indio_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 
 		switch (chan->type) {
 		case IIO_VOLTAGE:
+<<<<<<< HEAD
 			*val = be16_to_cpu(data->buffer.raw_data) &
+=======
+			*val = be16_to_cpu(data->buffer.resistance) &
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   CCS811_VOLTAGE_MASK;
 			ret = IIO_VAL_INT;
 			break;
 		case IIO_CURRENT:
+<<<<<<< HEAD
 			*val = be16_to_cpu(data->buffer.raw_data) >> 10;
+=======
+			*val = be16_to_cpu(data->buffer.resistance) >> 10;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = IIO_VAL_INT;
 			break;
 		case IIO_CONCENTRATION:
@@ -239,7 +270,10 @@ static int ccs811_read_raw(struct iio_dev *indio_dev,
 			ret = -EINVAL;
 		}
 		mutex_unlock(&data->lock);
+<<<<<<< HEAD
 		iio_device_release_direct_mode(indio_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return ret;
 
@@ -276,6 +310,7 @@ static int ccs811_read_raw(struct iio_dev *indio_dev,
 
 static const struct iio_info ccs811_info = {
 	.read_raw = ccs811_read_raw,
+<<<<<<< HEAD
 };
 
 static int ccs811_set_trigger_state(struct iio_trigger *trig,
@@ -301,6 +336,9 @@ static int ccs811_set_trigger_state(struct iio_trigger *trig,
 
 static const struct iio_trigger_ops ccs811_trigger_ops = {
 	.set_trigger_state = ccs811_set_trigger_state,
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static irqreturn_t ccs811_trigger_handler(int irq, void *p)
@@ -328,6 +366,7 @@ err:
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static irqreturn_t ccs811_data_rdy_trigger_poll(int irq, void *private)
 {
 	struct iio_dev *indio_dev = private;
@@ -339,6 +378,8 @@ static irqreturn_t ccs811_data_rdy_trigger_poll(int irq, void *private)
 	return IRQ_HANDLED;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ccs811_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
@@ -356,7 +397,11 @@ static int ccs811_probe(struct i2c_client *client,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	if (ret != CCS811_HW_ID_VALUE) {
+=======
+	if (ret != CCS881_HW_ID_VALUE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&client->dev, "hardware id doesn't match CCS81x\n");
 		return -ENODEV;
 	}
@@ -387,11 +432,15 @@ static int ccs811_probe(struct i2c_client *client,
 	indio_dev->dev.parent = &client->dev;
 	indio_dev->name = id->name;
 	indio_dev->info = &ccs811_info;
+<<<<<<< HEAD
 	indio_dev->modes = INDIO_DIRECT_MODE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev->channels = ccs811_channels;
 	indio_dev->num_channels = ARRAY_SIZE(ccs811_channels);
 
+<<<<<<< HEAD
 	if (client->irq > 0) {
 		ret = devm_request_threaded_irq(&client->dev, client->irq,
 						ccs811_data_rdy_trigger_poll,
@@ -423,12 +472,18 @@ static int ccs811_probe(struct i2c_client *client,
 			goto err_poweroff;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = iio_triggered_buffer_setup(indio_dev, NULL,
 					 ccs811_trigger_handler, NULL);
 
 	if (ret < 0) {
 		dev_err(&client->dev, "triggered buffer setup failed\n");
+<<<<<<< HEAD
 		goto err_trigger_unregister;
+=======
+		goto err_poweroff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = iio_device_register(indio_dev);
@@ -440,9 +495,12 @@ static int ccs811_probe(struct i2c_client *client,
 
 err_buffer_cleanup:
 	iio_triggered_buffer_cleanup(indio_dev);
+<<<<<<< HEAD
 err_trigger_unregister:
 	if (data->drdy_trig)
 		iio_trigger_unregister(data->drdy_trig);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_poweroff:
 	i2c_smbus_write_byte_data(client, CCS811_MEAS_MODE, CCS811_MODE_IDLE);
 
@@ -452,12 +510,18 @@ err_poweroff:
 static int ccs811_remove(struct i2c_client *client)
 {
 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+<<<<<<< HEAD
 	struct ccs811_data *data = iio_priv(indio_dev);
 
 	iio_device_unregister(indio_dev);
 	iio_triggered_buffer_cleanup(indio_dev);
 	if (data->drdy_trig)
 		iio_trigger_unregister(data->drdy_trig);
+=======
+
+	iio_device_unregister(indio_dev);
+	iio_triggered_buffer_cleanup(indio_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return i2c_smbus_write_byte_data(client, CCS811_MEAS_MODE,
 					 CCS811_MODE_IDLE);

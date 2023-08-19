@@ -236,6 +236,7 @@ when used from another part of the kernel.
                                |
                                '---------------> HASH2
 
+<<<<<<< HEAD
 Note that it is perfectly legal to "abandon" a request object:
 - call .init() and then (as many times) .update()
 - _not_ call any of .final(), .finup() or .export() at any point in future
@@ -244,6 +245,8 @@ In other words implementations should mind the resource allocation and clean-up.
 No resources related to request objects should remain allocated after a call
 to .init() or .update(), since there might be no chance to free them.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Specifics Of Asynchronous HASH Transformation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

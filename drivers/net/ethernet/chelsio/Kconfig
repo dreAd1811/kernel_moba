@@ -69,7 +69,10 @@ config CHELSIO_T4
 	depends on PCI && (IPV6 || IPV6=n)
 	select FW_LOADER
 	select MDIO
+<<<<<<< HEAD
 	select ZLIB_DEFLATE
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This driver supports Chelsio T4, T5 & T6 based gigabit, 10Gb Ethernet
 	  adapter and T5/T6 based 40Gb and T6 based 25Gb, 50Gb and 100Gb

@@ -37,7 +37,12 @@ struct cpufreq_arm_bL_ops {
 	void (*free_opp_table)(const struct cpumask *cpumask);
 };
 
+<<<<<<< HEAD
 int bL_cpufreq_register(const struct cpufreq_arm_bL_ops *ops);
 void bL_cpufreq_unregister(const struct cpufreq_arm_bL_ops *ops);
+=======
+int bL_cpufreq_register(struct cpufreq_arm_bL_ops *ops);
+void bL_cpufreq_unregister(struct cpufreq_arm_bL_ops *ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* CPUFREQ_ARM_BIG_LITTLE_H */

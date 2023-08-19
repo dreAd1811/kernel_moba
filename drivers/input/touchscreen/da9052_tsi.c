@@ -26,6 +26,10 @@ struct da9052_tsi {
 	struct da9052 *da9052;
 	struct input_dev *dev;
 	struct delayed_work ts_pen_work;
+<<<<<<< HEAD
+=======
+	struct mutex mutex;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool stopped;
 	bool adc_on;
 };

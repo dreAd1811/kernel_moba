@@ -412,10 +412,16 @@ static int v4l2_flash_init_controls(struct v4l2_flash *v4l2_flash,
 	struct v4l2_ctrl_config *ctrl_cfg;
 	int i, ret, num_ctrls = 0;
 
+<<<<<<< HEAD
 	v4l2_flash->ctrls = devm_kcalloc(v4l2_flash->sd.dev,
 					STROBE_SOURCE + 1,
 					sizeof(*v4l2_flash->ctrls),
 					GFP_KERNEL);
+=======
+	v4l2_flash->ctrls = devm_kzalloc(v4l2_flash->sd.dev,
+					sizeof(*v4l2_flash->ctrls) *
+					(STROBE_SOURCE + 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!v4l2_flash->ctrls)
 		return -ENOMEM;
 

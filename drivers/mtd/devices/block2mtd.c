@@ -88,12 +88,26 @@ static int block2mtd_erase(struct mtd_info *mtd, struct erase_info *instr)
 	size_t len = instr->len;
 	int err;
 
+<<<<<<< HEAD
 	mutex_lock(&dev->write_mutex);
 	err = _block2mtd_erase(dev, from, len);
 	mutex_unlock(&dev->write_mutex);
 	if (err)
 		pr_err("erase failed err = %d\n", err);
 
+=======
+	instr->state = MTD_ERASING;
+	mutex_lock(&dev->write_mutex);
+	err = _block2mtd_erase(dev, from, len);
+	mutex_unlock(&dev->write_mutex);
+	if (err) {
+		pr_err("erase failed err = %d\n", err);
+		instr->state = MTD_ERASE_FAILED;
+	} else
+		instr->state = MTD_ERASE_DONE;
+
+	mtd_erase_callback(instr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -220,7 +234,11 @@ static struct block2mtd_dev *add_device(char *devname, int erase_size,
 	int i;
 #endif
 	const fmode_t mode = FMODE_READ | FMODE_WRITE | FMODE_EXCL;
+<<<<<<< HEAD
 	struct block_device *bdev;
+=======
+	struct block_device *bdev = ERR_PTR(-ENODEV);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct block2mtd_dev *dev;
 	char *name;
 

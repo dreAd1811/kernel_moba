@@ -31,6 +31,7 @@ void ppc_enable_pmcs(void);
 
 #ifdef CONFIG_PPC_BOOK3S_64
 #include <asm/lppaca.h>
+<<<<<<< HEAD
 #include <asm/firmware.h>
 
 static inline void ppc_set_pmu_inuse(int inuse)
@@ -46,6 +47,12 @@ static inline void ppc_set_pmu_inuse(int inuse)
 #endif
 	}
 #endif
+=======
+
+static inline void ppc_set_pmu_inuse(int inuse)
+{
+	get_lppaca()->pmcregs_in_use = inuse;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern void power4_enable_pmcs(void);

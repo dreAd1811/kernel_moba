@@ -24,7 +24,11 @@
 #include <linux/pm.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
+=======
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bitops.h>
 #include <linux/platform_data/gpio-omap.h>
 
@@ -77,8 +81,11 @@ struct gpio_bank {
 	bool workaround_enabled;
 
 	void (*set_dataout)(struct gpio_bank *bank, unsigned gpio, int enable);
+<<<<<<< HEAD
 	void (*set_dataout_multiple)(struct gpio_bank *bank,
 				     unsigned long *mask, unsigned long *bits);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*get_context_loss_count)(struct device *dev);
 
 	struct omap_gpio_reg_offs *regs;
@@ -163,6 +170,7 @@ static int omap_get_gpio_dataout(struct gpio_bank *bank, int offset)
 	return (readl_relaxed(reg) & (BIT(offset))) != 0;
 }
 
+<<<<<<< HEAD
 /* set multiple data out values using dedicate set/clear register */
 static void omap_set_gpio_dataout_reg_multiple(struct gpio_bank *bank,
 					       unsigned long *mask,
@@ -208,6 +216,8 @@ static unsigned long omap_get_gpio_dataout_multiple(struct gpio_bank *bank,
 	return readl_relaxed(reg) & *mask;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void omap_gpio_rmw(void __iomem *base, u32 reg, u32 mask, bool set)
 {
 	int l = readl_relaxed(base + reg);
@@ -793,7 +803,11 @@ static irqreturn_t omap_gpio_irq_handler(int irq, void *gpiobank)
 
 			raw_spin_lock_irqsave(&bank->wa_lock, wa_lock_flags);
 
+<<<<<<< HEAD
 			generic_handle_irq(irq_find_mapping(bank->chip.irq.domain,
+=======
+			generic_handle_irq(irq_find_mapping(bank->chip.irqdomain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							    bit));
 
 			raw_spin_unlock_irqrestore(&bank->wa_lock,
@@ -1027,6 +1041,7 @@ static int omap_gpio_output(struct gpio_chip *chip, unsigned offset, int value)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int omap_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
 				  unsigned long *bits)
 {
@@ -1047,6 +1062,8 @@ static int omap_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int omap_gpio_debounce(struct gpio_chip *chip, unsigned offset,
 			      unsigned debounce)
 {
@@ -1091,6 +1108,7 @@ static void omap_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
 	raw_spin_unlock_irqrestore(&bank->lock, flags);
 }
 
+<<<<<<< HEAD
 static void omap_gpio_set_multiple(struct gpio_chip *chip, unsigned long *mask,
 				   unsigned long *bits)
 {
@@ -1102,6 +1120,8 @@ static void omap_gpio_set_multiple(struct gpio_chip *chip, unsigned long *mask,
 	raw_spin_unlock_irqrestore(&bank->lock, flags);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*---------------------------------------------------------------------*/
 
 static void omap_gpio_show_rev(struct gpio_bank *bank)
@@ -1148,9 +1168,13 @@ static void omap_gpio_mod_init(struct gpio_bank *bank)
 
 static int omap_gpio_chip_init(struct gpio_bank *bank, struct irq_chip *irqc)
 {
+<<<<<<< HEAD
 	struct gpio_irq_chip *irq;
 	static int gpio;
 	const char *label;
+=======
+	static int gpio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int irq_base = 0;
 	int ret;
 
@@ -1163,26 +1187,49 @@ static int omap_gpio_chip_init(struct gpio_bank *bank, struct irq_chip *irqc)
 	bank->chip.get_direction = omap_gpio_get_direction;
 	bank->chip.direction_input = omap_gpio_input;
 	bank->chip.get = omap_gpio_get;
+<<<<<<< HEAD
 	bank->chip.get_multiple = omap_gpio_get_multiple;
 	bank->chip.direction_output = omap_gpio_output;
 	bank->chip.set_config = omap_gpio_set_config;
 	bank->chip.set = omap_gpio_set;
 	bank->chip.set_multiple = omap_gpio_set_multiple;
+=======
+	bank->chip.direction_output = omap_gpio_output;
+	bank->chip.set_config = omap_gpio_set_config;
+	bank->chip.set = omap_gpio_set;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bank->is_mpuio) {
 		bank->chip.label = "mpuio";
 		if (bank->regs->wkup_en)
 			bank->chip.parent = &omap_mpuio_device.dev;
 		bank->chip.base = OMAP_MPUIO(0);
 	} else {
+<<<<<<< HEAD
 		label = devm_kasprintf(bank->chip.parent, GFP_KERNEL, "gpio-%d-%d",
 				       gpio, gpio + bank->width - 1);
 		if (!label)
 			return -ENOMEM;
 		bank->chip.label = label;
+=======
+		bank->chip.label = "gpio";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bank->chip.base = gpio;
 	}
 	bank->chip.ngpio = bank->width;
 
+<<<<<<< HEAD
+=======
+	ret = gpiochip_add_data(&bank->chip, bank);
+	if (ret) {
+		dev_err(bank->chip.parent,
+			"Could not register gpio chip %d\n", ret);
+		return ret;
+	}
+
+	if (!bank->is_mpuio)
+		gpio += bank->width;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARCH_OMAP1
 	/*
 	 * REVISIT: Once we have OMAP1 supporting SPARSE_IRQ, we can drop
@@ -1203,6 +1250,7 @@ static int omap_gpio_chip_init(struct gpio_bank *bank, struct irq_chip *irqc)
 			irqc->irq_set_wake = NULL;
 	}
 
+<<<<<<< HEAD
 	irq = &bank->chip.irq;
 	irq->chip = irqc;
 	irq->handler = handle_bad_irq;
@@ -1218,15 +1266,33 @@ static int omap_gpio_chip_init(struct gpio_bank *bank, struct irq_chip *irqc)
 		return ret;
 	}
 
+=======
+	ret = gpiochip_irqchip_add(&bank->chip, irqc,
+				   irq_base, handle_bad_irq,
+				   IRQ_TYPE_NONE);
+
+	if (ret) {
+		dev_err(bank->chip.parent,
+			"Couldn't add irqchip to gpiochip %d\n", ret);
+		gpiochip_remove(&bank->chip);
+		return -ENODEV;
+	}
+
+	gpiochip_set_chained_irqchip(&bank->chip, irqc, bank->irq, NULL);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = devm_request_irq(bank->chip.parent, bank->irq,
 			       omap_gpio_irq_handler,
 			       0, dev_name(bank->chip.parent), bank);
 	if (ret)
 		gpiochip_remove(&bank->chip);
 
+<<<<<<< HEAD
 	if (!bank->is_mpuio)
 		gpio += bank->width;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1249,9 +1315,17 @@ static int omap_gpio_probe(struct platform_device *pdev)
 	if (!pdata)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	bank = devm_kzalloc(dev, sizeof(*bank), GFP_KERNEL);
 	if (!bank)
 		return -ENOMEM;
+=======
+	bank = devm_kzalloc(dev, sizeof(struct gpio_bank), GFP_KERNEL);
+	if (!bank) {
+		dev_err(dev, "Memory alloc failed\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	irqc = devm_kzalloc(dev, sizeof(*irqc), GFP_KERNEL);
 	if (!irqc)
@@ -1301,6 +1375,7 @@ static int omap_gpio_probe(struct platform_device *pdev)
 				pdata->get_context_loss_count;
 	}
 
+<<<<<<< HEAD
 	if (bank->regs->set_dataout && bank->regs->clr_dataout) {
 		bank->set_dataout = omap_set_gpio_dataout_reg;
 		bank->set_dataout_multiple = omap_set_gpio_dataout_reg_multiple;
@@ -1309,6 +1384,12 @@ static int omap_gpio_probe(struct platform_device *pdev)
 		bank->set_dataout_multiple =
 				omap_set_gpio_dataout_mask_multiple;
 	}
+=======
+	if (bank->regs->set_dataout && bank->regs->clr_dataout)
+		bank->set_dataout = omap_set_gpio_dataout_reg;
+	else
+		bank->set_dataout = omap_set_gpio_dataout_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	raw_spin_lock_init(&bank->lock);
 	raw_spin_lock_init(&bank->wa_lock);

@@ -159,10 +159,16 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			.mask = 0x80,
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x22,
 				.mask = 0x10,
 			},
+=======
+			.addr = 0x22,
+			.mask_int1 = 0x10,
+			.mask_int2 = 0x00,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.addr_ihl = 0x25,
 			.mask_ihl = 0x02,
 			.stat_drdy = {
@@ -233,6 +239,7 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			.mask = 0x80,
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x22,
 				.mask = 0x02,
@@ -247,6 +254,15 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			},
 			.addr_ihl = 0x22,
 			.mask_ihl = 0x80,
+=======
+			.addr = 0x22,
+			.mask_int1 = 0x02,
+			.mask_int2 = 0x10,
+			.addr_ihl = 0x22,
+			.mask_ihl = 0x80,
+			.addr_od = 0x22,
+			.mask_od = 0x40,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.stat_drdy = {
 				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
 				.mask = 0x07,
@@ -327,10 +343,16 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			.mask = 0x08,
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x23,
 				.mask = 0x80,
 			},
+=======
+			.addr = 0x23,
+			.mask_int1 = 0x80,
+			.mask_int2 = 0x00,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.addr_ihl = 0x23,
 			.mask_ihl = 0x40,
 			.stat_drdy = {
@@ -405,10 +427,15 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			.mask = 0x01,
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x21,
 				.mask = 0x04,
 			},
+=======
+			.addr = 0x21,
+			.mask_int1 = 0x04,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.stat_drdy = {
 				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
 				.mask = 0x07,
@@ -467,6 +494,7 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			},
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x22,
 				.mask = 0x04,
@@ -481,6 +509,15 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			},
 			.addr_ihl = 0x22,
 			.mask_ihl = 0x80,
+=======
+			.addr = 0x22,
+			.mask_int1 = 0x04,
+			.mask_int2 = 0x20,
+			.addr_ihl = 0x22,
+			.mask_ihl = 0x80,
+			.addr_od = 0x22,
+			.mask_od = 0x40,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.stat_drdy = {
 				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
 				.mask = 0x07,
@@ -546,6 +583,7 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			.mask = 0x80,
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x22,
 				.mask = 0x02,
@@ -554,6 +592,11 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 				.addr = 0x22,
 				.mask = 0x10,
 			},
+=======
+			.addr = 0x22,
+			.mask_int1 = 0x02,
+			.mask_int2 = 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.addr_ihl = 0x22,
 			.mask_ihl = 0x80,
 		},
@@ -605,10 +648,15 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 		.bdu = {
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x21,
 				.mask = 0x04,
 			},
+=======
+			.addr = 0x21,
+			.mask_int1 = 0x04,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.stat_drdy = {
 				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
 				.mask = 0x07,
@@ -678,10 +726,16 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 			},
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x22,
 				.mask = 0x10,
 			},
+=======
+			.addr = 0x22,
+			.mask_int1 = 0x10,
+			.mask_int2 = 0x00,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.addr_ihl = 0x25,
 			.mask_ihl = 0x02,
 			.stat_drdy = {
@@ -696,6 +750,7 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 		.multi_read_bit = true,
 		.bootime = 2,
 	},
+<<<<<<< HEAD
 	{
 		.wai = 0x44,
 		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
@@ -829,6 +884,8 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
 		.multi_read_bit = false,
 		.bootime = 2,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int st_accel_read_raw(struct iio_dev *indio_dev,
@@ -901,6 +958,10 @@ static const struct attribute_group st_accel_attribute_group = {
 };
 
 static const struct iio_info accel_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &st_accel_attribute_group,
 	.read_raw = &st_accel_read_raw,
 	.write_raw = &st_accel_write_raw,
@@ -909,6 +970,10 @@ static const struct iio_info accel_info = {
 
 #ifdef CONFIG_IIO_TRIGGER
 static const struct iio_trigger_ops st_accel_trigger_ops = {
+<<<<<<< HEAD
+=======
+	.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = ST_ACCEL_TRIGGER_SET_STATE,
 	.validate_device = st_sensors_validate_device,
 };

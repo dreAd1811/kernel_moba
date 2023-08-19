@@ -34,6 +34,56 @@ static unsigned long max_gap;
 /* physical address where the bootmem map is located */
 unsigned long bootmap_start;
 
+<<<<<<< HEAD
+=======
+/**
+ * find_bootmap_location - callback to find a memory area for the bootmap
+ * @start: start of region
+ * @end: end of region
+ * @arg: unused callback data
+ *
+ * Find a place to put the bootmap and return its starting address in
+ * bootmap_start.  This address must be page-aligned.
+ */
+static int __init
+find_bootmap_location (u64 start, u64 end, void *arg)
+{
+	u64 needed = *(unsigned long *)arg;
+	u64 range_start, range_end, free_start;
+	int i;
+
+#if IGNORE_PFN0
+	if (start == PAGE_OFFSET) {
+		start += PAGE_SIZE;
+		if (start >= end)
+			return 0;
+	}
+#endif
+
+	free_start = PAGE_OFFSET;
+
+	for (i = 0; i < num_rsvd_regions; i++) {
+		range_start = max(start, free_start);
+		range_end   = min(end, rsvd_region[i].start & PAGE_MASK);
+
+		free_start = PAGE_ALIGN(rsvd_region[i].end);
+
+		if (range_end <= range_start)
+			continue; /* skip over empty range */
+
+		if (range_end - range_start >= needed) {
+			bootmap_start = __pa(range_start);
+			return -1;	/* done */
+		}
+
+		/* nothing more available in this segment */
+		if (range_end == end)
+			return 0;
+	}
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SMP
 static void *cpu_data;
 /**
@@ -149,6 +199,11 @@ setup_per_cpu_areas(void)
 void __init
 find_memory (void)
 {
+<<<<<<< HEAD
+=======
+	unsigned long bootmap_size;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reserve_memory();
 
 	/* first find highest page frame number */
@@ -156,12 +211,30 @@ find_memory (void)
 	max_low_pfn = 0;
 	efi_memmap_walk(find_max_min_low_pfn, NULL);
 	max_pfn = max_low_pfn;
+<<<<<<< HEAD
 
 #ifdef CONFIG_VIRTUAL_MEM_MAP
 	efi_memmap_walk(filter_memory, register_active_ranges);
 #else
 	memblock_add_node(0, PFN_PHYS(max_low_pfn), 0);
 #endif
+=======
+	/* how many bytes to cover all the pages */
+	bootmap_size = bootmem_bootmap_pages(max_pfn) << PAGE_SHIFT;
+
+	/* look for a location to hold the bootmap */
+	bootmap_start = ~0UL;
+	efi_memmap_walk(find_bootmap_location, &bootmap_size);
+	if (bootmap_start == ~0UL)
+		panic("Cannot find %ld bytes for bootmap\n", bootmap_size);
+
+	bootmap_size = init_bootmem_node(NODE_DATA(0),
+			(bootmap_start >> PAGE_SHIFT), 0, max_pfn);
+
+	/* Free all available memory, then mark bootmem-map as being in use. */
+	efi_memmap_walk(filter_rsvd_memory, free_bootmem);
+	reserve_bootmem(bootmap_start, bootmap_size, BOOTMEM_DEFAULT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	find_initrd();
 
@@ -179,16 +252,30 @@ paging_init (void)
 	unsigned long max_zone_pfns[MAX_NR_ZONES];
 
 	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
+<<<<<<< HEAD
 #ifdef CONFIG_ZONE_DMA32
 	max_dma = virt_to_phys((void *) MAX_DMA_ADDRESS) >> PAGE_SHIFT;
 	max_zone_pfns[ZONE_DMA32] = max_dma;
+=======
+#ifdef CONFIG_ZONE_DMA
+	max_dma = virt_to_phys((void *) MAX_DMA_ADDRESS) >> PAGE_SHIFT;
+	max_zone_pfns[ZONE_DMA] = max_dma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
 
 #ifdef CONFIG_VIRTUAL_MEM_MAP
+<<<<<<< HEAD
 	efi_memmap_walk(find_largest_hole, (u64 *)&max_gap);
 	if (max_gap < LARGE_GAP) {
 		vmem_map = (struct page *) 0;
+=======
+	efi_memmap_walk(filter_memory, register_active_ranges);
+	efi_memmap_walk(find_largest_hole, (u64 *)&max_gap);
+	if (max_gap < LARGE_GAP) {
+		vmem_map = (struct page *) 0;
+		free_area_init_nodes(max_zone_pfns);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		unsigned long map_size;
 
@@ -206,10 +293,21 @@ paging_init (void)
 		 */
 		NODE_DATA(0)->node_mem_map = vmem_map +
 			find_min_pfn_with_active_regions();
+<<<<<<< HEAD
 
 		printk("Virtual mem_map starts at 0x%p\n", mem_map);
 	}
 #endif /* !CONFIG_VIRTUAL_MEM_MAP */
 	free_area_init_nodes(max_zone_pfns);
+=======
+		free_area_init_nodes(max_zone_pfns);
+
+		printk("Virtual mem_map starts at 0x%p\n", mem_map);
+	}
+#else /* !CONFIG_VIRTUAL_MEM_MAP */
+	memblock_add_node(0, PFN_PHYS(max_low_pfn), 0);
+	free_area_init_nodes(max_zone_pfns);
+#endif /* !CONFIG_VIRTUAL_MEM_MAP */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	zero_page_memmap_ptr = virt_to_page(ia64_imva(empty_zero_page));
 }

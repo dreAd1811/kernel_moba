@@ -57,7 +57,10 @@
 #include <net/addrconf.h>
 #include <net/ip6_route.h>
 #include <net/ip_fib.h>
+<<<<<<< HEAD
 #include <net/secure_seq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/tcp.h>
 #include <asm/checksum.h>
 
@@ -93,9 +96,20 @@ void i40iw_free_sqbuf(struct i40iw_sc_vsi *vsi, void *bufp)
 static u8 i40iw_derive_hw_ird_setting(u16 cm_ird)
 {
 	u8 encoded_ird_size;
+<<<<<<< HEAD
 
 	/* ird_size field is encoded in qp_ctx */
 	switch (cm_ird ? roundup_pow_of_two(cm_ird) : 0) {
+=======
+	u8 pof2_cm_ird = 1;
+
+	/* round-off to next powerof2 */
+	while (pof2_cm_ird < cm_ird)
+		pof2_cm_ird *= 2;
+
+	/* ird_size field is encoded in qp_ctx */
+	switch (pof2_cm_ird) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I40IW_HW_IRD_SETTING_64:
 		encoded_ird_size = 3;
 		break;
@@ -129,8 +143,11 @@ static void i40iw_record_ird_ord(struct i40iw_cm_node *cm_node, u32 conn_ird,
 
 	if (conn_ord > I40IW_MAX_ORD_SIZE)
 		conn_ord = I40IW_MAX_ORD_SIZE;
+<<<<<<< HEAD
 	else if (!conn_ord && cm_node->send_rdma0_op == SEND_RDMA_READ_ZERO)
 		conn_ord = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cm_node->ird_size = conn_ird;
 	cm_node->ord_size = conn_ord;
@@ -540,7 +557,11 @@ static struct i40iw_puda_buf *i40iw_form_cm_frame(struct i40iw_cm_node *cm_node,
  * i40iw_send_reset - Send RST packet
  * @cm_node: connection's node
  */
+<<<<<<< HEAD
 int i40iw_send_reset(struct i40iw_cm_node *cm_node)
+=======
+static int i40iw_send_reset(struct i40iw_cm_node *cm_node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40iw_puda_buf *sqbuf;
 	int flags = SET_RST | SET_ACK;
@@ -1184,6 +1205,7 @@ static void i40iw_handle_close_entry(struct i40iw_cm_node *cm_node, u32 rem_node
 }
 
 /**
+<<<<<<< HEAD
  * i40iw_build_timer_list - Add cm_nodes to timer list
  * @timer_list: ptr to timer list
  * @hte: ptr to accelerated or non-accelerated list
@@ -1208,6 +1230,12 @@ static void i40iw_build_timer_list(struct list_head *timer_list,
  * @pass: Pointing to cm_core
  */
 static void i40iw_cm_timer_tick(struct timer_list *t)
+=======
+ * i40iw_cm_timer_tick - system's timer expired callback
+ * @pass: Pointing to cm_core
+ */
+static void i40iw_cm_timer_tick(unsigned long pass)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long nexttimeout = jiffies + I40IW_LONG_TIME;
 	struct i40iw_cm_node *cm_node;
@@ -1215,18 +1243,37 @@ static void i40iw_cm_timer_tick(struct timer_list *t)
 	struct list_head *list_core_temp;
 	struct i40iw_sc_vsi *vsi;
 	struct list_head *list_node;
+<<<<<<< HEAD
 	struct i40iw_cm_core *cm_core = from_timer(cm_core, t, tcp_timer);
 	u32 settimer = 0;
 	unsigned long timetosend;
+=======
+	struct i40iw_cm_core *cm_core = (struct i40iw_cm_core *)pass;
+	u32 settimer = 0;
+	unsigned long timetosend;
+	struct i40iw_sc_dev *dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	struct list_head timer_list;
 
 	INIT_LIST_HEAD(&timer_list);
+<<<<<<< HEAD
 
 	spin_lock_irqsave(&cm_core->ht_lock, flags);
 	i40iw_build_timer_list(&timer_list, &cm_core->non_accelerated_list);
 	i40iw_build_timer_list(&timer_list, &cm_core->accelerated_list);
+=======
+	spin_lock_irqsave(&cm_core->ht_lock, flags);
+
+	list_for_each_safe(list_node, list_core_temp, &cm_core->connected_nodes) {
+		cm_node = container_of(list_node, struct i40iw_cm_node, list);
+		if (cm_node->close_entry || cm_node->send_entry) {
+			atomic_inc(&cm_node->ref_count);
+			list_add(&cm_node->timer_entry, &timer_list);
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&cm_core->ht_lock, flags);
 
 	list_for_each_safe(list_node, list_core_temp, &timer_list) {
@@ -1280,6 +1327,7 @@ static void i40iw_cm_timer_tick(struct timer_list *t)
 			spin_lock_irqsave(&cm_node->retrans_list_lock, flags);
 			goto done;
 		}
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&cm_node->retrans_list_lock, flags);
 
 		vsi = &cm_node->iwdev->vsi;
@@ -1289,6 +1337,15 @@ static void i40iw_cm_timer_tick(struct timer_list *t)
 			i40iw_puda_send_buf(vsi->ilq, send_entry->sqbuf);
 			cm_node->cm_core->stats_pkt_retrans++;
 		}
+=======
+		cm_node->cm_core->stats_pkt_retrans++;
+		spin_unlock_irqrestore(&cm_node->retrans_list_lock, flags);
+
+		vsi = &cm_node->iwdev->vsi;
+		dev = cm_node->dev;
+		atomic_inc(&send_entry->sqbuf->refcount);
+		i40iw_puda_send_buf(vsi->ilq, send_entry->sqbuf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&cm_node->retrans_list_lock, flags);
 		if (send_entry->send_retrans) {
 			send_entry->retranscount--;
@@ -1422,22 +1479,33 @@ static int i40iw_send_fin(struct i40iw_cm_node *cm_node)
  * @loc_port: local tcp port num
  * @loc_addr: loc ip addr
  * @add_refcnt: flag to increment refcount of cm_node
+<<<<<<< HEAD
  * @accelerated_list: flag for accelerated vs non-accelerated list to search
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct i40iw_cm_node *i40iw_find_node(struct i40iw_cm_core *cm_core,
 				      u16 rem_port,
 				      u32 *rem_addr,
 				      u16 loc_port,
 				      u32 *loc_addr,
+<<<<<<< HEAD
 				      bool add_refcnt,
 				      bool accelerated_list)
+=======
+				      bool add_refcnt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct list_head *hte;
 	struct i40iw_cm_node *cm_node;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	hte = accelerated_list ?
 	      &cm_core->accelerated_list : &cm_core->non_accelerated_list;
+=======
+	hte = &cm_core->connected_nodes;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* walk list and find cm_node associated with this session ID */
 	spin_lock_irqsave(&cm_core->ht_lock, flags);
@@ -1506,19 +1574,32 @@ static struct i40iw_cm_listener *i40iw_find_listener(
 static void i40iw_add_hte_node(struct i40iw_cm_core *cm_core,
 			       struct i40iw_cm_node *cm_node)
 {
+<<<<<<< HEAD
+=======
+	struct list_head *hte;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	if (!cm_node || !cm_core) {
 		i40iw_pr_err("cm_node or cm_core == NULL\n");
 		return;
 	}
+<<<<<<< HEAD
 
 	spin_lock_irqsave(&cm_core->ht_lock, flags);
 	list_add_tail(&cm_node->list, &cm_core->non_accelerated_list);
+=======
+	spin_lock_irqsave(&cm_core->ht_lock, flags);
+
+	/* get a handle on the hash table element (list head for this slot) */
+	hte = &cm_core->connected_nodes;
+	list_add_tail(&cm_node->list, hte);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&cm_core->ht_lock, flags);
 }
 
 /**
+<<<<<<< HEAD
  * i40iw_find_port - find port that matches reference port
  * @hte: ptr to accelerated or non-accelerated list
  * @accelerated_list: flag for accelerated vs non-accelerated list
@@ -1562,6 +1643,43 @@ bool i40iw_port_in_use(struct i40iw_cm_core *cm_core, u16 port)
 	spin_unlock_irqrestore(&cm_core->listen_list_lock, flags);
 
 	return false;
+=======
+ * i40iw_port_in_use - determine if port is in use
+ * @port: port number
+ * @active_side: flag for listener side vs active side
+ */
+static bool i40iw_port_in_use(struct i40iw_cm_core *cm_core, u16 port, bool active_side)
+{
+	struct i40iw_cm_listener *listen_node;
+	struct i40iw_cm_node *cm_node;
+	unsigned long flags;
+	bool ret = false;
+
+	if (active_side) {
+		/* search connected node list */
+		spin_lock_irqsave(&cm_core->ht_lock, flags);
+		list_for_each_entry(cm_node, &cm_core->connected_nodes, list) {
+			if (cm_node->loc_port == port) {
+				ret = true;
+				break;
+			}
+		}
+			if (!ret)
+				clear_bit(port, cm_core->active_side_ports);
+		spin_unlock_irqrestore(&cm_core->ht_lock, flags);
+	} else {
+		spin_lock_irqsave(&cm_core->listen_list_lock, flags);
+		list_for_each_entry(listen_node, &cm_core->listen_nodes, list) {
+			if (listen_node->loc_port == port) {
+				ret = true;
+				break;
+			}
+		}
+		spin_unlock_irqrestore(&cm_core->listen_list_lock, flags);
+	}
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1689,7 +1807,11 @@ static enum i40iw_status_code i40iw_add_mqh_6(struct i40iw_device *iwdev,
 	unsigned long flags;
 
 	rtnl_lock();
+<<<<<<< HEAD
 	for_each_netdev_rcu(&init_net, ip_dev) {
+=======
+	for_each_netdev(&init_net, ip_dev) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((((rdma_vlan_dev_vlan_id(ip_dev) < I40IW_NO_VLAN) &&
 		      (rdma_vlan_dev_real_dev(ip_dev) == iwdev->netdev)) ||
 		     (ip_dev == iwdev->netdev)) && (ip_dev->flags & IFF_UP)) {
@@ -1781,7 +1903,11 @@ static enum i40iw_status_code i40iw_add_mqh_4(
 					    &ifa->ifa_address,
 					    rdma_vlan_dev_vlan_id(dev),
 					    dev->dev_addr);
+<<<<<<< HEAD
 				child_listen_node = kzalloc(sizeof(*child_listen_node), GFP_KERNEL);
+=======
+				child_listen_node = kzalloc(sizeof(*child_listen_node), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				cm_parent_listen_node->cm_core->stats_listen_nodes_created++;
 				i40iw_debug(&iwdev->sc_dev,
 					    I40IW_DEBUG_CM,
@@ -1853,11 +1979,17 @@ static int i40iw_dec_refcnt_listen(struct i40iw_cm_core *cm_core,
 	INIT_LIST_HEAD(&reset_list);
 	if (free_hanging_nodes) {
 		spin_lock_irqsave(&cm_core->ht_lock, flags);
+<<<<<<< HEAD
 		list_for_each_safe(list_pos,
 				   list_temp, &cm_core->non_accelerated_list) {
 			cm_node = container_of(list_pos, struct i40iw_cm_node, list);
 			if ((cm_node->listener == listener) &&
 			    !cm_node->accelerated) {
+=======
+		list_for_each_safe(list_pos, list_temp, &cm_core->connected_nodes) {
+			cm_node = container_of(list_pos, struct i40iw_cm_node, list);
+			if ((cm_node->listener == listener) && !cm_node->accelerated) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				atomic_inc(&cm_node->ref_count);
 				list_add(&cm_node->reset_entry, &reset_list);
 			}
@@ -1910,7 +2042,11 @@ static int i40iw_dec_refcnt_listen(struct i40iw_cm_core *cm_core,
 		spin_unlock_irqrestore(&cm_core->listen_list_lock, flags);
 
 		if (listener->iwdev) {
+<<<<<<< HEAD
 			if (apbvt_del)
+=======
+			if (apbvt_del && !i40iw_port_in_use(cm_core, listener->loc_port, false))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				i40iw_manage_apbvt(listener->iwdev,
 						   listener->loc_port,
 						   I40IW_MANAGE_APBVT_DEL);
@@ -2086,7 +2222,11 @@ static int i40iw_addr_resolve_neigh_ipv6(struct i40iw_device *iwdev,
 	if (netif_is_bond_slave(netdev))
 		netdev = netdev_master_upper_dev_get(netdev);
 
+<<<<<<< HEAD
 	neigh = dst_neigh_lookup(dst, dst_addr.sin6_addr.in6_u.u6_addr32);
+=======
+	neigh = dst_neigh_lookup(dst, &dst_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rcu_read_lock();
 	if (neigh) {
@@ -2165,6 +2305,10 @@ static struct i40iw_cm_node *i40iw_make_cm_node(
 				   struct i40iw_cm_listener *listener)
 {
 	struct i40iw_cm_node *cm_node;
+<<<<<<< HEAD
+=======
+	struct timespec ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int oldarpindex;
 	int arpindex;
 	struct net_device *netdev = iwdev->netdev;
@@ -2205,7 +2349,10 @@ static struct i40iw_cm_node *i40iw_make_cm_node(
 	cm_node->cm_id = cm_info->cm_id;
 	ether_addr_copy(cm_node->loc_mac, netdev->dev_addr);
 	spin_lock_init(&cm_node->retrans_list_lock);
+<<<<<<< HEAD
 	cm_node->ack_rcvd = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_set(&cm_node->ref_count, 1);
 	/* associate our parent CM core */
@@ -2214,6 +2361,7 @@ static struct i40iw_cm_node *i40iw_make_cm_node(
 	cm_node->tcp_cntxt.rcv_wscale = I40IW_CM_DEFAULT_RCV_WND_SCALE;
 	cm_node->tcp_cntxt.rcv_wnd =
 			I40IW_CM_DEFAULT_RCV_WND_SCALED >> I40IW_CM_DEFAULT_RCV_WND_SCALE;
+<<<<<<< HEAD
 	if (cm_node->ipv4) {
 		cm_node->tcp_cntxt.loc_seq_num = secure_tcp_seq(htonl(cm_node->loc_addr[0]),
 							htonl(cm_node->rem_addr[0]),
@@ -2234,6 +2382,11 @@ static struct i40iw_cm_node *i40iw_make_cm_node(
 							htons(cm_node->rem_port));
 		cm_node->tcp_cntxt.mss = iwdev->vsi.mtu - I40IW_MTU_TO_MSS_IPV6;
 	}
+=======
+	ts = current_kernel_time();
+	cm_node->tcp_cntxt.loc_seq_num = ts.tv_nsec;
+	cm_node->tcp_cntxt.mss = iwdev->vsi.mss;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cm_node->iwdev = iwdev;
 	cm_node->dev = &iwdev->sc_dev;
@@ -2306,7 +2459,11 @@ static void i40iw_rem_ref_cm_node(struct i40iw_cm_node *cm_node)
 	if (cm_node->listener) {
 		i40iw_dec_refcnt_listen(cm_core, cm_node->listener, 0, true);
 	} else {
+<<<<<<< HEAD
 		if (cm_node->apbvt_set) {
+=======
+		if (!i40iw_port_in_use(cm_core, cm_node->loc_port, true) && cm_node->apbvt_set) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i40iw_manage_apbvt(cm_node->iwdev,
 					   cm_node->loc_port,
 					   I40IW_MANAGE_APBVT_DEL);
@@ -2448,7 +2605,10 @@ static void i40iw_handle_rst_pkt(struct i40iw_cm_node *cm_node,
 	case I40IW_CM_STATE_FIN_WAIT1:
 	case I40IW_CM_STATE_LAST_ACK:
 		cm_node->cm_id->rem_ref(cm_node->cm_id);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I40IW_CM_STATE_TIME_WAIT:
 		cm_node->state = I40IW_CM_STATE_CLOSED;
 		i40iw_rem_ref_cm_node(cm_node);
@@ -2762,10 +2922,14 @@ static int i40iw_handle_ack_pkt(struct i40iw_cm_node *cm_node,
 		cm_node->tcp_cntxt.rem_ack_num = ntohl(tcph->ack_seq);
 		if (datasize) {
 			cm_node->tcp_cntxt.rcv_nxt = inc_sequence + datasize;
+<<<<<<< HEAD
 			cm_node->ack_rcvd = false;
 			i40iw_handle_rcv_mpa(cm_node, rbuf);
 		} else {
 			cm_node->ack_rcvd = true;
+=======
+			i40iw_handle_rcv_mpa(cm_node, rbuf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	case I40IW_CM_STATE_LISTENING:
@@ -2880,7 +3044,11 @@ static struct i40iw_cm_listener *i40iw_make_listen_node(
 
 	if (!listener) {
 		/* create a CM listen node (1/2 node to compare incoming traffic to) */
+<<<<<<< HEAD
 		listener = kzalloc(sizeof(*listener), GFP_KERNEL);
+=======
+		listener = kzalloc(sizeof(*listener), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!listener)
 			return NULL;
 		cm_core->stats_listen_nodes_created++;
@@ -2917,13 +3085,23 @@ static struct i40iw_cm_listener *i40iw_make_listen_node(
  * i40iw_create_cm_node - make a connection node with params
  * @cm_core: cm's core
  * @iwdev: iwarp device structure
+<<<<<<< HEAD
  * @conn_param: upper layer connection parameters
+=======
+ * @private_data_len: len to provate data for mpa request
+ * @private_data: pointer to private data for connection
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cm_info: quad info for connection
  */
 static struct i40iw_cm_node *i40iw_create_cm_node(
 					struct i40iw_cm_core *cm_core,
 					struct i40iw_device *iwdev,
+<<<<<<< HEAD
 					struct iw_cm_conn_param *conn_param,
+=======
+					u16 private_data_len,
+					void *private_data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct i40iw_cm_info *cm_info)
 {
 	struct i40iw_cm_node *cm_node;
@@ -2931,9 +3109,12 @@ static struct i40iw_cm_node *i40iw_create_cm_node(
 	struct i40iw_cm_node *loopback_remotenode;
 	struct i40iw_cm_info loopback_cm_info;
 
+<<<<<<< HEAD
 	u16 private_data_len = conn_param->private_data_len;
 	const void *private_data = conn_param->private_data;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* create a CM connection node */
 	cm_node = i40iw_make_cm_node(cm_core, iwdev, cm_info, NULL);
 	if (!cm_node)
@@ -2942,8 +3123,11 @@ static struct i40iw_cm_node *i40iw_create_cm_node(
 	cm_node->tcp_cntxt.client = 1;
 	cm_node->tcp_cntxt.rcv_wscale = I40IW_CM_DEFAULT_RCV_WND_SCALE;
 
+<<<<<<< HEAD
 	i40iw_record_ird_ord(cm_node, conn_param->ird, conn_param->ord);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!memcmp(cm_info->loc_addr, cm_info->rem_addr, sizeof(cm_info->loc_addr))) {
 		loopback_remotelistener = i40iw_find_listener(
 						cm_core,
@@ -2977,10 +3161,13 @@ static struct i40iw_cm_node *i40iw_create_cm_node(
 			       private_data_len);
 			loopback_remotenode->pdata.size = private_data_len;
 
+<<<<<<< HEAD
 			if (loopback_remotenode->ord_size > cm_node->ird_size)
 				loopback_remotenode->ord_size =
 					cm_node->ird_size;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cm_node->state = I40IW_CM_STATE_OFFLOADED;
 			cm_node->tcp_cntxt.rcv_nxt =
 				loopback_remotenode->tcp_cntxt.loc_seq_num;
@@ -2993,6 +3180,11 @@ static struct i40iw_cm_node *i40iw_create_cm_node(
 			loopback_remotenode->tcp_cntxt.snd_wnd = cm_node->tcp_cntxt.rcv_wnd;
 			cm_node->tcp_cntxt.snd_wscale = loopback_remotenode->tcp_cntxt.rcv_wscale;
 			loopback_remotenode->tcp_cntxt.snd_wscale = cm_node->tcp_cntxt.rcv_wscale;
+<<<<<<< HEAD
+=======
+			loopback_remotenode->state = I40IW_CM_STATE_MPAREQ_RCVD;
+			i40iw_create_event(loopback_remotenode, I40IW_CM_EVENT_MPA_REQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		return cm_node;
 	}
@@ -3185,8 +3377,12 @@ void i40iw_receive_ilq(struct i40iw_sc_vsi *vsi, struct i40iw_puda_buf *rbuf)
 				  cm_info.rem_addr,
 				  cm_info.loc_port,
 				  cm_info.loc_addr,
+<<<<<<< HEAD
 				  true,
 				  false);
+=======
+				  true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cm_node) {
 		/* Only type of packet accepted are for */
@@ -3244,6 +3440,7 @@ void i40iw_setup_cm_core(struct i40iw_device *iwdev)
 	cm_core->iwdev = iwdev;
 	cm_core->dev = &iwdev->sc_dev;
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&cm_core->accelerated_list);
 	INIT_LIST_HEAD(&cm_core->non_accelerated_list);
 	INIT_LIST_HEAD(&cm_core->listen_nodes);
@@ -3253,6 +3450,16 @@ void i40iw_setup_cm_core(struct i40iw_device *iwdev)
 	spin_lock_init(&cm_core->ht_lock);
 	spin_lock_init(&cm_core->listen_list_lock);
 	spin_lock_init(&cm_core->apbvt_lock);
+=======
+	INIT_LIST_HEAD(&cm_core->connected_nodes);
+	INIT_LIST_HEAD(&cm_core->listen_nodes);
+
+	setup_timer(&cm_core->tcp_timer, i40iw_cm_timer_tick,
+		    (unsigned long)cm_core);
+
+	spin_lock_init(&cm_core->ht_lock);
+	spin_lock_init(&cm_core->listen_list_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cm_core->event_wq = alloc_ordered_workqueue("iwewq",
 						    WQ_MEM_RECLAIM);
@@ -3629,7 +3836,10 @@ int i40iw_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 	struct i40iw_qp *iwqp;
 	struct i40iw_device *iwdev;
 	struct i40iw_sc_dev *dev;
+<<<<<<< HEAD
 	struct i40iw_cm_core *cm_core;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40iw_cm_node *cm_node;
 	struct ib_qp_attr attr;
 	int passive_state;
@@ -3639,7 +3849,10 @@ int i40iw_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 	struct i40iw_kmem_info accept;
 	enum i40iw_status_code status;
 	u64 tagged_offset;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&attr, 0, sizeof(attr));
 	ibqp = i40iw_get_qp(cm_id->device, conn_param->qpn);
@@ -3649,7 +3862,10 @@ int i40iw_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 	iwqp = to_iwqp(ibqp);
 	iwdev = iwqp->iwdev;
 	dev = &iwdev->sc_dev;
+<<<<<<< HEAD
 	cm_core = &iwdev->cm_core;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cm_node = (struct i40iw_cm_node *)cm_id->provider_data;
 
 	if (((struct sockaddr_in *)&cm_id->local_addr)->sin_family == AF_INET) {
@@ -3739,6 +3955,7 @@ int i40iw_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 	cm_id->add_ref(cm_id);
 	i40iw_add_ref(&iwqp->ibqp);
 
+<<<<<<< HEAD
 	attr.qp_state = IB_QPS_RTS;
 	cm_node->qhash_set = false;
 	i40iw_modify_qp(&iwqp->ibqp, &attr, IB_QP_STATE, NULL);
@@ -3753,6 +3970,13 @@ int i40iw_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 	if (status)
 		i40iw_debug(dev, I40IW_DEBUG_CM, "error sending cm event - ESTABLISHED\n");
 
+=======
+	i40iw_send_cm_event(cm_node, cm_id, IW_CM_EVENT_ESTABLISHED, 0);
+
+	attr.qp_state = IB_QPS_RTS;
+	cm_node->qhash_set = false;
+	i40iw_modify_qp(&iwqp->ibqp, &attr, IB_QP_STATE, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cm_node->loopbackpartner) {
 		cm_node->loopbackpartner->pdata.size = conn_param->private_data_len;
 
@@ -3763,6 +3987,10 @@ int i40iw_accept(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		i40iw_create_event(cm_node->loopbackpartner, I40IW_CM_EVENT_CONNECTED);
 	}
 
+<<<<<<< HEAD
+=======
+	cm_node->accelerated = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cm_node->accept_pend) {
 		atomic_dec(&cm_node->listener->pend_accepts_cnt);
 		cm_node->accept_pend = 0;
@@ -3820,6 +4048,10 @@ int i40iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 	struct sockaddr_in6 *laddr6;
 	struct sockaddr_in6 *raddr6;
 	int ret = 0;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ibqp = i40iw_get_qp(cm_id->device, conn_param->qpn);
 	if (!ibqp)
@@ -3870,7 +4102,13 @@ int i40iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		    __func__, cm_id->tos, cm_info.user_pri);
 	cm_id->add_ref(cm_id);
 	cm_node = i40iw_create_cm_node(&iwdev->cm_core, iwdev,
+<<<<<<< HEAD
 				       conn_param, &cm_info);
+=======
+				       conn_param->private_data_len,
+				       (void *)conn_param->private_data,
+				       &cm_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_ERR(cm_node)) {
 		ret = PTR_ERR(cm_node);
@@ -3890,6 +4128,7 @@ int i40iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		cm_node->qhash_set = true;
 	}
 
+<<<<<<< HEAD
 	if (i40iw_manage_apbvt(iwdev, cm_info.loc_port,
 			       I40IW_MANAGE_APBVT_ADD)) {
 		ret =  -EINVAL;
@@ -3897,6 +4136,25 @@ int i40iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 	}
 
 	cm_node->apbvt_set = true;
+=======
+	spin_lock_irqsave(&iwdev->cm_core.ht_lock, flags);
+	if (!test_and_set_bit(cm_info.loc_port, iwdev->cm_core.active_side_ports)) {
+		spin_unlock_irqrestore(&iwdev->cm_core.ht_lock, flags);
+		if (i40iw_manage_apbvt(iwdev, cm_info.loc_port, I40IW_MANAGE_APBVT_ADD)) {
+			ret =  -EINVAL;
+			goto err;
+		}
+	} else {
+		spin_unlock_irqrestore(&iwdev->cm_core.ht_lock, flags);
+	}
+
+	cm_node->apbvt_set = true;
+	i40iw_record_ird_ord(cm_node, conn_param->ird, conn_param->ord);
+	if (cm_node->send_rdma0_op == SEND_RDMA_READ_ZERO &&
+	    !cm_node->ord_size)
+		cm_node->ord_size = 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwqp->cm_node = cm_node;
 	cm_node->iwqp = iwqp;
 	iwqp->cm_id = cm_id;
@@ -3909,12 +4167,15 @@ int i40iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 			goto err;
 	}
 
+<<<<<<< HEAD
 	if (cm_node->loopbackpartner) {
 		cm_node->loopbackpartner->state = I40IW_CM_STATE_MPAREQ_RCVD;
 		i40iw_create_event(cm_node->loopbackpartner,
 				   I40IW_CM_EVENT_MPA_REQ);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40iw_debug(cm_node->dev,
 		    I40IW_DEBUG_CM,
 		    "Api - connect(): port=0x%04x, cm_node=%p, cm_id = %p.\n",
@@ -4071,12 +4332,18 @@ static void i40iw_cm_event_connected(struct i40iw_cm_event *event)
 {
 	struct i40iw_qp *iwqp;
 	struct i40iw_device *iwdev;
+<<<<<<< HEAD
 	struct i40iw_cm_core *cm_core;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40iw_cm_node *cm_node;
 	struct i40iw_sc_dev *dev;
 	struct ib_qp_attr attr;
 	struct iw_cm_id *cm_id;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status;
 	bool read0;
 
@@ -4085,7 +4352,10 @@ static void i40iw_cm_event_connected(struct i40iw_cm_event *event)
 	iwqp = (struct i40iw_qp *)cm_id->provider_data;
 	iwdev = to_iwdev(iwqp->ibqp.device);
 	dev = &iwdev->sc_dev;
+<<<<<<< HEAD
 	cm_core = &iwdev->cm_core;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (iwqp->destroyed) {
 		status = -ETIMEDOUT;
@@ -4098,12 +4368,19 @@ static void i40iw_cm_event_connected(struct i40iw_cm_event *event)
 	dev->iw_priv_qp_ops->qp_send_rtt(&iwqp->sc_qp, read0);
 	if (iwqp->page)
 		kunmap(iwqp->page);
+<<<<<<< HEAD
+=======
+	status = i40iw_send_cm_event(cm_node, cm_id, IW_CM_EVENT_CONNECT_REPLY, 0);
+	if (status)
+		i40iw_pr_err("send cm event\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&attr, 0, sizeof(attr));
 	attr.qp_state = IB_QPS_RTS;
 	cm_node->qhash_set = false;
 	i40iw_modify_qp(&iwqp->ibqp, &attr, IB_QP_STATE, NULL);
 
+<<<<<<< HEAD
 	cm_node->accelerated = true;
 	spin_lock_irqsave(&cm_core->ht_lock, flags);
 	list_move_tail(&cm_node->list, &cm_core->accelerated_list);
@@ -4112,6 +4389,9 @@ static void i40iw_cm_event_connected(struct i40iw_cm_event *event)
 				     0);
 	if (status)
 		i40iw_debug(dev, I40IW_DEBUG_CM, "error sending cm event - CONNECT_REPLY\n");
+=======
+	cm_node->accelerated = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return;
 
@@ -4291,6 +4571,7 @@ set_qhash:
 }
 
 /**
+<<<<<<< HEAD
  * i40iw_cm_teardown_connections - teardown QPs
  * @iwdev: device pointer
  * @ipaddr: Pointer to IPv4 or IPv6 address
@@ -4301,12 +4582,19 @@ set_qhash:
 void i40iw_cm_teardown_connections(struct i40iw_device *iwdev, u32 *ipaddr,
 				   struct i40iw_cm_info *nfo,
 				   bool disconnect_all)
+=======
+ * i40iw_cm_disconnect_all - disconnect all connected qp's
+ * @iwdev: device pointer
+ */
+void i40iw_cm_disconnect_all(struct i40iw_device *iwdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40iw_cm_core *cm_core = &iwdev->cm_core;
 	struct list_head *list_core_temp;
 	struct list_head *list_node;
 	struct i40iw_cm_node *cm_node;
 	unsigned long flags;
+<<<<<<< HEAD
 	struct list_head teardown_list;
 	struct ib_qp_attr attr;
 
@@ -4339,6 +4627,22 @@ void i40iw_cm_teardown_connections(struct i40iw_device *iwdev, u32 *ipaddr,
 	list_for_each_safe(list_node, list_core_temp, &teardown_list) {
 		cm_node = container_of(list_node, struct i40iw_cm_node,
 				       teardown_entry);
+=======
+	struct list_head connected_list;
+	struct ib_qp_attr attr;
+
+	INIT_LIST_HEAD(&connected_list);
+	spin_lock_irqsave(&cm_core->ht_lock, flags);
+	list_for_each_safe(list_node, list_core_temp, &cm_core->connected_nodes) {
+		cm_node = container_of(list_node, struct i40iw_cm_node, list);
+		atomic_inc(&cm_node->ref_count);
+		list_add(&cm_node->connected_entry, &connected_list);
+	}
+	spin_unlock_irqrestore(&cm_core->ht_lock, flags);
+
+	list_for_each_safe(list_node, list_core_temp, &connected_list) {
+		cm_node = container_of(list_node, struct i40iw_cm_node, connected_entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		attr.qp_state = IB_QPS_ERR;
 		i40iw_modify_qp(&cm_node->iwqp->ibqp, &attr, IB_QP_STATE, NULL);
 		if (iwdev->reset)
@@ -4367,9 +4671,12 @@ void i40iw_if_notify(struct i40iw_device *iwdev, struct net_device *netdev,
 	enum i40iw_quad_hash_manage_type op =
 		ifup ? I40IW_QHASH_MANAGE_TYPE_ADD : I40IW_QHASH_MANAGE_TYPE_DELETE;
 
+<<<<<<< HEAD
 	nfo.vlan_id = vlan_id;
 	nfo.ipv4 = ipv4;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Disable or enable qhash for listeners */
 	spin_lock_irqsave(&cm_core->listen_list_lock, flags);
 	list_for_each_entry(listen_node, &cm_core->listen_nodes, list) {
@@ -4379,6 +4686,11 @@ void i40iw_if_notify(struct i40iw_device *iwdev, struct net_device *netdev,
 			memcpy(nfo.loc_addr, listen_node->loc_addr,
 			       sizeof(nfo.loc_addr));
 			nfo.loc_port = listen_node->loc_port;
+<<<<<<< HEAD
+=======
+			nfo.ipv4 = listen_node->ipv4;
+			nfo.vlan_id = listen_node->vlan_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nfo.user_pri = listen_node->user_pri;
 			if (!list_empty(&listen_node->child_listen_list)) {
 				i40iw_qhash_ctrl(iwdev,
@@ -4400,7 +4712,13 @@ void i40iw_if_notify(struct i40iw_device *iwdev, struct net_device *netdev,
 	}
 	spin_unlock_irqrestore(&cm_core->listen_list_lock, flags);
 
+<<<<<<< HEAD
 	/* teardown connected qp's on ifdown */
 	if (!ifup)
 		i40iw_cm_teardown_connections(iwdev, ipaddr, &nfo, false);
+=======
+	/* disconnect any connected qp's on ifdown */
+	if (!ifup)
+		i40iw_cm_disconnect_all(iwdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

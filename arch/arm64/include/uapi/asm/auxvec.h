@@ -19,8 +19,13 @@
 
 /* vDSO location */
 #define AT_SYSINFO_EHDR	33
+<<<<<<< HEAD
 #define AT_MINSIGSTKSZ	51	/* stack needed for signal delivery */
 
 #define AT_VECTOR_SIZE_ARCH 2 /* entries in ARCH_DLINFO */
+=======
+
+#define AT_VECTOR_SIZE_ARCH 1 /* entries in ARCH_DLINFO */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

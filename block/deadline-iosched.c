@@ -50,6 +50,11 @@ struct deadline_data {
 	int front_merges;
 };
 
+<<<<<<< HEAD
+=======
+static void deadline_move_request(struct deadline_data *, struct request *);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct rb_root *
 deadline_rb_root(struct deadline_data *dd, struct request *rq)
 {
@@ -98,12 +103,15 @@ deadline_add_request(struct request_queue *q, struct request *rq)
 	struct deadline_data *dd = q->elevator->elevator_data;
 	const int data_dir = rq_data_dir(rq);
 
+<<<<<<< HEAD
 	/*
 	 * This may be a requeue of a write request that has locked its
 	 * target zone. If it is the case, this releases the zone lock.
 	 */
 	blk_req_zone_write_unlock(rq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	deadline_add_rq_rb(dd, rq);
 
 	/*
@@ -194,12 +202,15 @@ deadline_move_to_dispatch(struct deadline_data *dd, struct request *rq)
 {
 	struct request_queue *q = rq->q;
 
+<<<<<<< HEAD
 	/*
 	 * For a zoned block device, write requests must write lock their
 	 * target zone.
 	 */
 	blk_req_zone_write_lock(rq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	deadline_remove_request(q, rq);
 	elv_dispatch_add_tail(q, rq);
 }
@@ -241,6 +252,7 @@ static inline int deadline_check_fifo(struct deadline_data *dd, int ddir)
 }
 
 /*
+<<<<<<< HEAD
  * For the specified data direction, return the next request to dispatch using
  * arrival ordered lists.
  */
@@ -304,6 +316,8 @@ deadline_next_request(struct deadline_data *dd, int data_dir)
 }
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * deadline_dispatch_requests selects the best request according to
  * read/write expire, fifo_batch, etc
  */
@@ -312,15 +326,26 @@ static int deadline_dispatch_requests(struct request_queue *q, int force)
 	struct deadline_data *dd = q->elevator->elevator_data;
 	const int reads = !list_empty(&dd->fifo_list[READ]);
 	const int writes = !list_empty(&dd->fifo_list[WRITE]);
+<<<<<<< HEAD
 	struct request *rq, *next_rq;
+=======
+	struct request *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int data_dir;
 
 	/*
 	 * batches are currently reads XOR writes
 	 */
+<<<<<<< HEAD
 	rq = deadline_next_request(dd, WRITE);
 	if (!rq)
 		rq = deadline_next_request(dd, READ);
+=======
+	if (dd->next_rq[WRITE])
+		rq = dd->next_rq[WRITE];
+	else
+		rq = dd->next_rq[READ];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rq && dd->batching < dd->fifo_batch)
 		/* we have a next request are still entitled to batch */
@@ -334,8 +359,12 @@ static int deadline_dispatch_requests(struct request_queue *q, int force)
 	if (reads) {
 		BUG_ON(RB_EMPTY_ROOT(&dd->sort_list[READ]));
 
+<<<<<<< HEAD
 		if (deadline_fifo_request(dd, WRITE) &&
 		    (dd->starved++ >= dd->writes_starved))
+=======
+		if (writes && (dd->starved++ >= dd->writes_starved))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto dispatch_writes;
 
 		data_dir = READ;
@@ -364,19 +393,28 @@ dispatch_find_request:
 	/*
 	 * we are not running a batch, find best request for selected data_dir
 	 */
+<<<<<<< HEAD
 	next_rq = deadline_next_request(dd, data_dir);
 	if (deadline_check_fifo(dd, data_dir) || !next_rq) {
+=======
+	if (deadline_check_fifo(dd, data_dir) || !dd->next_rq[data_dir]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * A deadline has expired, the last request was in the other
 		 * direction, or we have run out of higher-sectored requests.
 		 * Start again from the request with the earliest expiry time.
 		 */
+<<<<<<< HEAD
 		rq = deadline_fifo_request(dd, data_dir);
+=======
+		rq = rq_entry_fifo(dd->fifo_list[data_dir].next);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * The last req was the same dir and we have a next request in
 		 * sort order. No expired requests so continue on from here.
 		 */
+<<<<<<< HEAD
 		rq = next_rq;
 	}
 
@@ -387,6 +425,11 @@ dispatch_find_request:
 	if (!rq)
 		return 0;
 
+=======
+		rq = dd->next_rq[data_dir];
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->batching = 0;
 
 dispatch_request:
@@ -399,6 +442,7 @@ dispatch_request:
 	return 1;
 }
 
+<<<<<<< HEAD
 /*
  * For zoned block devices, write unlock the target zone of completed
  * write requests.
@@ -409,6 +453,8 @@ deadline_completed_request(struct request_queue *q, struct request *rq)
 	blk_req_zone_write_unlock(rq);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void deadline_exit_queue(struct elevator_queue *e)
 {
 	struct deadline_data *dd = e->elevator_data;
@@ -512,7 +558,12 @@ STORE_FUNCTION(deadline_fifo_batch_store, &dd->fifo_batch, 0, INT_MAX, 0);
 #undef STORE_FUNCTION
 
 #define DD_ATTR(name) \
+<<<<<<< HEAD
 	__ATTR(name, 0644, deadline_##name##_show, deadline_##name##_store)
+=======
+	__ATTR(name, S_IRUGO|S_IWUSR, deadline_##name##_show, \
+				      deadline_##name##_store)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct elv_fs_entry deadline_attrs[] = {
 	DD_ATTR(read_expire),
@@ -529,7 +580,10 @@ static struct elevator_type iosched_deadline = {
 		.elevator_merged_fn =		deadline_merged_request,
 		.elevator_merge_req_fn =	deadline_merged_requests,
 		.elevator_dispatch_fn =		deadline_dispatch_requests,
+<<<<<<< HEAD
 		.elevator_completed_req_fn =	deadline_completed_request,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.elevator_add_req_fn =		deadline_add_request,
 		.elevator_former_req_fn =	elv_rb_former_request,
 		.elevator_latter_req_fn =	elv_rb_latter_request,

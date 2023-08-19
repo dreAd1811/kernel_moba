@@ -81,7 +81,12 @@ static void dwmac1000_dma_axi(void __iomem *ioaddr, struct stmmac_axi *axi)
 }
 
 static void dwmac1000_dma_init(void __iomem *ioaddr,
+<<<<<<< HEAD
 			       struct stmmac_dma_cfg *dma_cfg, int atds)
+=======
+			       struct stmmac_dma_cfg *dma_cfg,
+			       u32 dma_tx, u32 dma_rx, int atds)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 value = readl(ioaddr + DMA_BUS_MODE);
 	int txpbl = dma_cfg->txpbl ?: dma_cfg->pbl;
@@ -118,6 +123,7 @@ static void dwmac1000_dma_init(void __iomem *ioaddr,
 
 	/* Mask interrupts by writing to CSR7 */
 	writel(DMA_INTR_DEFAULT_MASK, ioaddr + DMA_INTR_ENA);
+<<<<<<< HEAD
 }
 
 static void dwmac1000_dma_init_rx(void __iomem *ioaddr,
@@ -134,6 +140,14 @@ static void dwmac1000_dma_init_tx(void __iomem *ioaddr,
 {
 	/* TX descriptor base address list must be written into DMA CSR4 */
 	writel(dma_tx_phy, ioaddr + DMA_TX_BASE_ADDR);
+=======
+
+	/* RX/TX descriptor base address lists must be written into
+	 * DMA CSR3 and CSR4, respectively
+	 */
+	writel(dma_tx, ioaddr + DMA_TX_BASE_ADDR);
+	writel(dma_rx, ioaddr + DMA_RCV_BASE_ADDR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 dwmac1000_configure_fc(u32 csr6, int rxfifosz)
@@ -157,6 +171,7 @@ static u32 dwmac1000_configure_fc(u32 csr6, int rxfifosz)
 	return csr6;
 }
 
+<<<<<<< HEAD
 static void dwmac1000_dma_operation_mode_rx(void __iomem *ioaddr, int mode,
 					    u32 channel, int fifosz, u8 qmode)
 {
@@ -191,6 +206,14 @@ static void dwmac1000_dma_operation_mode_tx(void __iomem *ioaddr, int mode,
 	u32 csr6 = readl(ioaddr + DMA_CONTROL);
 
 	if (mode == SF_DMA_MODE) {
+=======
+static void dwmac1000_dma_operation_mode(void __iomem *ioaddr, int txmode,
+					 int rxmode, int rxfifosz)
+{
+	u32 csr6 = readl(ioaddr + DMA_CONTROL);
+
+	if (txmode == SF_DMA_MODE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("GMAC: enable TX store and forward mode\n");
 		/* Transmit COE type 2 cannot be done in cut-through mode. */
 		csr6 |= DMA_CONTROL_TSF;
@@ -199,6 +222,7 @@ static void dwmac1000_dma_operation_mode_tx(void __iomem *ioaddr, int mode,
 		 */
 		csr6 |= DMA_CONTROL_OSF;
 	} else {
+<<<<<<< HEAD
 		pr_debug("GMAC: disabling TX SF (threshold %d)\n", mode);
 		csr6 &= ~DMA_CONTROL_TSF;
 		csr6 &= DMA_CONTROL_TC_TX_MASK;
@@ -210,11 +234,47 @@ static void dwmac1000_dma_operation_mode_tx(void __iomem *ioaddr, int mode,
 		else if (mode <= 128)
 			csr6 |= DMA_CONTROL_TTC_128;
 		else if (mode <= 192)
+=======
+		pr_debug("GMAC: disabling TX SF (threshold %d)\n", txmode);
+		csr6 &= ~DMA_CONTROL_TSF;
+		csr6 &= DMA_CONTROL_TC_TX_MASK;
+		/* Set the transmit threshold */
+		if (txmode <= 32)
+			csr6 |= DMA_CONTROL_TTC_32;
+		else if (txmode <= 64)
+			csr6 |= DMA_CONTROL_TTC_64;
+		else if (txmode <= 128)
+			csr6 |= DMA_CONTROL_TTC_128;
+		else if (txmode <= 192)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			csr6 |= DMA_CONTROL_TTC_192;
 		else
 			csr6 |= DMA_CONTROL_TTC_256;
 	}
 
+<<<<<<< HEAD
+=======
+	if (rxmode == SF_DMA_MODE) {
+		pr_debug("GMAC: enable RX store and forward mode\n");
+		csr6 |= DMA_CONTROL_RSF;
+	} else {
+		pr_debug("GMAC: disable RX SF mode (threshold %d)\n", rxmode);
+		csr6 &= ~DMA_CONTROL_RSF;
+		csr6 &= DMA_CONTROL_TC_RX_MASK;
+		if (rxmode <= 32)
+			csr6 |= DMA_CONTROL_RTC_32;
+		else if (rxmode <= 64)
+			csr6 |= DMA_CONTROL_RTC_64;
+		else if (rxmode <= 96)
+			csr6 |= DMA_CONTROL_RTC_96;
+		else
+			csr6 |= DMA_CONTROL_RTC_128;
+	}
+
+	/* Configure flow control based on rx fifo size */
+	csr6 = dwmac1000_configure_fc(csr6, rxfifosz);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(csr6, ioaddr + DMA_CONTROL);
 }
 
@@ -273,12 +333,18 @@ static void dwmac1000_rx_watchdog(void __iomem *ioaddr, u32 riwt,
 const struct stmmac_dma_ops dwmac1000_dma_ops = {
 	.reset = dwmac_dma_reset,
 	.init = dwmac1000_dma_init,
+<<<<<<< HEAD
 	.init_rx_chan = dwmac1000_dma_init_rx,
 	.init_tx_chan = dwmac1000_dma_init_tx,
 	.axi = dwmac1000_dma_axi,
 	.dump_regs = dwmac1000_dump_dma_regs,
 	.dma_rx_mode = dwmac1000_dma_operation_mode_rx,
 	.dma_tx_mode = dwmac1000_dma_operation_mode_tx,
+=======
+	.axi = dwmac1000_dma_axi,
+	.dump_regs = dwmac1000_dump_dma_regs,
+	.dma_mode = dwmac1000_dma_operation_mode,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable_dma_transmission = dwmac_enable_dma_transmission,
 	.enable_dma_irq = dwmac_enable_dma_irq,
 	.disable_dma_irq = dwmac_disable_dma_irq,

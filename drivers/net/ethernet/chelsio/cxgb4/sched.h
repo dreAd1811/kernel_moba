@@ -42,8 +42,13 @@
 
 #define FW_SCHED_CLS_NONE 0xffffffff
 
+<<<<<<< HEAD
 /* Max rate that can be set to a scheduling class is 100 Gbps */
 #define SCHED_MAX_RATE_KBPS 100000000U
+=======
+/* Max rate that can be set to a scheduling class is 10 Gbps */
+#define SCHED_MAX_RATE_KBPS 10000000U
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	SCHED_STATE_ACTIVE,

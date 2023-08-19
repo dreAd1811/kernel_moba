@@ -27,8 +27,13 @@
 
 #define LIQUIDIO_PACKAGE ""
 #define LIQUIDIO_BASE_MAJOR_VERSION 1
+<<<<<<< HEAD
 #define LIQUIDIO_BASE_MINOR_VERSION 7
 #define LIQUIDIO_BASE_MICRO_VERSION 2
+=======
+#define LIQUIDIO_BASE_MINOR_VERSION 6
+#define LIQUIDIO_BASE_MICRO_VERSION 1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LIQUIDIO_BASE_VERSION   __stringify(LIQUIDIO_BASE_MAJOR_VERSION) "." \
 				__stringify(LIQUIDIO_BASE_MINOR_VERSION)
 #define LIQUIDIO_MICRO_VERSION  "." __stringify(LIQUIDIO_BASE_MICRO_VERSION)
@@ -84,17 +89,23 @@ enum octeon_tag_type {
 #define OPCODE_NIC_IF_CFG              0x09
 #define OPCODE_NIC_VF_DRV_NOTICE       0x0A
 #define OPCODE_NIC_INTRMOD_PARAMS      0x0B
+<<<<<<< HEAD
 #define OPCODE_NIC_QCOUNT_UPDATE       0x12
 #define OPCODE_NIC_SET_TRUSTED_VF	0x13
 #define OPCODE_NIC_SYNC_OCTEON_TIME	0x14
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VF_DRV_LOADED                  1
 #define VF_DRV_REMOVED                -1
 #define VF_DRV_MACADDR_CHANGED         2
 
+<<<<<<< HEAD
 #define OPCODE_NIC_VF_REP_PKT          0x15
 #define OPCODE_NIC_VF_REP_CMD          0x16
 #define OPCODE_NIC_UBOOT_CTL           0x17
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CORE_DRV_TEST_SCATTER_OP    0xFFF5
 
 /* Application codes advertised by the core driver initialization packet. */
@@ -115,10 +126,13 @@ enum octeon_tag_type {
 
 #define SCR2_BIT_FW_LOADED	    63
 
+<<<<<<< HEAD
 /* App specific capabilities from firmware to pf driver */
 #define LIQUIDIO_TIME_SYNC_CAP 0x1
 #define LIQUIDIO_SWITCHDEV_CAP 0x2
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 incr_index(u32 index, u32 count, u32 max)
 {
 	if ((index + count) >= max)
@@ -195,8 +209,12 @@ static inline void add_sg_size(struct octeon_sg_entry *sg_entry,
 
 #define   OCTNET_MAX_FRM_SIZE        (16000 + OCTNET_FRM_HEADER_SIZE)
 
+<<<<<<< HEAD
 #define   OCTNET_DEFAULT_MTU         (1500)
 #define   OCTNET_DEFAULT_FRM_SIZE  (OCTNET_DEFAULT_MTU + OCTNET_FRM_HEADER_SIZE)
+=======
+#define   OCTNET_DEFAULT_FRM_SIZE    (1500 + OCTNET_FRM_HEADER_SIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /** NIC Commands are sent using this Octeon Input Queue */
 #define   OCTNET_CMD_Q                0
@@ -250,9 +268,12 @@ static inline void add_sg_size(struct octeon_sg_entry *sg_entry,
 #define   OCTNET_CMD_VLAN_FILTER_ENABLE 0x1
 #define   OCTNET_CMD_VLAN_FILTER_DISABLE 0x0
 
+<<<<<<< HEAD
 #define   SEAPI_CMD_SPEED_SET           0x2
 #define   SEAPI_CMD_SPEED_GET           0x3
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   LIO_CMD_WAIT_TM 100
 
 /* RX(packets coming from wire) Checksum verification flags */
@@ -682,11 +703,17 @@ union oct_link_status {
 		u64 if_mode:5;
 		u64 pause:1;
 		u64 flashing:1;
+<<<<<<< HEAD
 		u64 phy_type:5;
 		u64 reserved:10;
 #else
 		u64 reserved:10;
 		u64 phy_type:5;
+=======
+		u64 reserved:15;
+#else
+		u64 reserved:15;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64 flashing:1;
 		u64 pause:1;
 		u64 if_mode:5;
@@ -699,12 +726,15 @@ union oct_link_status {
 	} s;
 };
 
+<<<<<<< HEAD
 enum lio_phy_type {
 	LIO_PHY_PORT_TP = 0x0,
 	LIO_PHY_PORT_FIBRE = 0x1,
 	LIO_PHY_PORT_UNKNOWN,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /** The txpciq info passed to host from the firmware */
 
 union oct_txpciq {
@@ -717,6 +747,7 @@ union oct_txpciq {
 		u64 pkind:6;
 		u64 use_qpg:1;
 		u64 qpg:11;
+<<<<<<< HEAD
 		u64 reserved0:10;
 		u64 ctrl_qpg:11;
 		u64 reserved:9;
@@ -724,6 +755,11 @@ union oct_txpciq {
 		u64 reserved:9;
 		u64 ctrl_qpg:11;
 		u64 reserved0:10;
+=======
+		u64 reserved:30;
+#else
+		u64 reserved:30;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64 qpg:11;
 		u64 use_qpg:1;
 		u64 pkind:6;
@@ -784,6 +820,7 @@ struct liquidio_if_cfg_info {
 /** Stats for each NIC port in RX direction. */
 struct nic_rx_stats {
 	/* link-level stats */
+<<<<<<< HEAD
 	u64 total_rcvd;		/* Received packets */
 	u64 bytes_rcvd;		/* Octets of received packets */
 	u64 total_bcst;		/* Number of non-dropped L2 broadcast packets */
@@ -802,14 +839,31 @@ struct nic_rx_stats {
 	u64 red_drops;		/* Packets dropped by RED due to buffer
 				 * exhaustion
 				 **/
+=======
+	u64 total_rcvd;
+	u64 bytes_rcvd;
+	u64 total_bcst;
+	u64 total_mcst;
+	u64 runts;
+	u64 ctl_rcvd;
+	u64 fifo_err;      /* Accounts for over/under-run of buffers */
+	u64 dmac_drop;
+	u64 fcs_err;
+	u64 jabber_err;
+	u64 l2_err;
+	u64 frame_err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* firmware stats */
 	u64 fw_total_rcvd;
 	u64 fw_total_fwd;
 	u64 fw_total_fwd_bytes;
+<<<<<<< HEAD
 	u64 fw_total_mcast;
 	u64 fw_total_bcast;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 fw_err_pko;
 	u64 fw_err_link;
 	u64 fw_err_drop;
@@ -820,11 +874,19 @@ struct nic_rx_stats {
 	u64 fw_lro_pkts;   /* Number of packets that are LROed      */
 	u64 fw_lro_octs;   /* Number of octets that are LROed       */
 	u64 fw_total_lro;  /* Number of LRO packets formed          */
+<<<<<<< HEAD
 	u64 fw_lro_aborts; /* Number of times LRO of packet aborted */
 	u64 fw_lro_aborts_port;
 	u64 fw_lro_aborts_seq;
 	u64 fw_lro_aborts_tsval;
 	u64 fw_lro_aborts_timer;	/* Timer setting error */
+=======
+	u64 fw_lro_aborts; /* Number of times lRO of packet aborted */
+	u64 fw_lro_aborts_port;
+	u64 fw_lro_aborts_seq;
+	u64 fw_lro_aborts_tsval;
+	u64 fw_lro_aborts_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* intrmod: packet forward rate */
 	u64 fwd_rate;
 };
@@ -832,6 +894,7 @@ struct nic_rx_stats {
 /** Stats for each NIC port in RX direction. */
 struct nic_tx_stats {
 	/* link-level stats */
+<<<<<<< HEAD
 	u64 total_pkts_sent;		/* Total frames sent on the interface */
 	u64 total_bytes_sent;		/* Total octets sent on the interface */
 	u64 mcast_pkts_sent;		/* Packets sent to the multicast DMAC */
@@ -861,13 +924,30 @@ struct nic_tx_stats {
 	u64 total_collisions;		/* Packets dropped due to excessive
 					 * collisions
 					 **/
+=======
+	u64 total_pkts_sent;
+	u64 total_bytes_sent;
+	u64 mcast_pkts_sent;
+	u64 bcast_pkts_sent;
+	u64 ctl_sent;
+	u64 one_collision_sent;   /* Packets sent after one collision*/
+	u64 multi_collision_sent; /* Packets sent after multiple collision*/
+	u64 max_collision_fail;   /* Packets not sent due to max collisions */
+	u64 max_deferral_fail;   /* Packets not sent due to max deferrals */
+	u64 fifo_err;       /* Accounts for over/under-run of buffers */
+	u64 runts;
+	u64 total_collisions; /* Total number of collisions detected */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* firmware stats */
 	u64 fw_total_sent;
 	u64 fw_total_fwd;
 	u64 fw_total_fwd_bytes;
+<<<<<<< HEAD
 	u64 fw_total_mcast_sent;
 	u64 fw_total_bcast_sent;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 fw_err_pko;
 	u64 fw_err_link;
 	u64 fw_err_drop;
@@ -907,7 +987,10 @@ static inline int opcode_slow_path(union octeon_rh *rh)
 #define VITESSE_PHY_GPIO_LOW      0x3
 #define LED_IDENTIFICATION_ON     0x1
 #define LED_IDENTIFICATION_OFF    0x0
+<<<<<<< HEAD
 #define LIO23XX_COPPERHEAD_LED_GPIO 0x2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct oct_mdio_cmd {
 	u64 op;
@@ -957,6 +1040,7 @@ union oct_nic_if_cfg {
 	} s;
 };
 
+<<<<<<< HEAD
 struct lio_trusted_vf {
 	uint64_t active: 1;
 	uint64_t id : 8;
@@ -1019,4 +1103,6 @@ struct lio_vf_rep_resp {
 	u8  status;
 	u8  rsvd[7];
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

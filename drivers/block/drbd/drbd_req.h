@@ -269,7 +269,11 @@ enum drbd_req_state_bits {
 static inline void drbd_req_make_private_bio(struct drbd_request *req, struct bio *bio_src)
 {
 	struct bio *bio;
+<<<<<<< HEAD
 	bio = bio_clone_fast(bio_src, GFP_NOIO, &drbd_io_bio_set);
+=======
+	bio = bio_clone_fast(bio_src, GFP_NOIO, drbd_io_bio_set);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	req->private_bio = bio;
 
@@ -294,7 +298,11 @@ extern int __req_mod(struct drbd_request *req, enum drbd_req_event what,
 		struct bio_and_error *m);
 extern void complete_master_bio(struct drbd_device *device,
 		struct bio_and_error *m);
+<<<<<<< HEAD
 extern void request_timer_fn(struct timer_list *t);
+=======
+extern void request_timer_fn(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void tl_restart(struct drbd_connection *connection, enum drbd_req_event what);
 extern void _tl_restart(struct drbd_connection *connection, enum drbd_req_event what);
 extern void tl_abort_disk_io(struct drbd_device *device);

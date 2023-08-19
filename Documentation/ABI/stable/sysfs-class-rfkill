@@ -11,7 +11,11 @@ KernelVersion:	v2.6.22
 Contact:	linux-wireless@vger.kernel.org,
 Description: 	The rfkill class subsystem folder.
 		Each registered rfkill driver is represented by an rfkillX
+<<<<<<< HEAD
 		subfolder (X being an integer >= 0).
+=======
+		subfolder (X being an integer > 0).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 What:		/sys/class/rfkill/rfkill[0-9]+/name
@@ -48,8 +52,13 @@ Contact:	linux-wireless@vger.kernel.org
 Description: 	Current state of the transmitter.
 		This file was scheduled to be removed in 2014, but due to its
 		large number of users it will be sticking around for a bit
+<<<<<<< HEAD
 		longer. Despite it being marked as stable, the newer "hard" and
 		"soft" interfaces should be preferred, since it is not possible
+=======
+		longer. Despite it being marked as stabe, the newer "hard" and
+		"soft" interfaces should be preffered, since it is not possible
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		to express the 'soft and hard block' state of the rfkill driver
 		through this interface. There will likely be another attempt to
 		remove it in the future.

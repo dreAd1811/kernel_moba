@@ -37,6 +37,7 @@
 #define HNS_ROCE_CMD_TIMEOUT_MSECS	10000
 
 enum {
+<<<<<<< HEAD
 	/* QPC BT commands */
 	HNS_ROCE_CMD_WRITE_QPC_BT0	= 0x0,
 	HNS_ROCE_CMD_WRITE_QPC_BT1	= 0x1,
@@ -101,6 +102,8 @@ enum {
 };
 
 enum {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* TPT commands */
 	HNS_ROCE_CMD_SW2HW_MPT		= 0xd,
 	HNS_ROCE_CMD_HW2SW_MPT		= 0xf,

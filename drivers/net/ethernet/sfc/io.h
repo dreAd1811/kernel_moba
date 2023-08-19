@@ -222,6 +222,7 @@ static inline void efx_reado_table(struct efx_nic *efx, efx_oword_t *value,
 	efx_reado(efx, value, reg + index * sizeof(efx_oword_t));
 }
 
+<<<<<<< HEAD
 /* default VI stride (step between per-VI registers) is 8K */
 #define EFX_DEFAULT_VI_STRIDE 0x2000
 
@@ -231,12 +232,24 @@ static inline unsigned int efx_paged_reg(struct efx_nic *efx, unsigned int page,
 {
 	return page * efx->vi_stride + reg;
 }
+=======
+/* Page size used as step between per-VI registers */
+#define EFX_VI_PAGE_SIZE 0x2000
+
+/* Calculate offset to page-mapped register */
+#define EFX_PAGED_REG(page, reg) \
+	((page) * EFX_VI_PAGE_SIZE + (reg))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Write the whole of RX_DESC_UPD or TX_DESC_UPD */
 static inline void _efx_writeo_page(struct efx_nic *efx, efx_oword_t *value,
 				    unsigned int reg, unsigned int page)
 {
+<<<<<<< HEAD
 	reg = efx_paged_reg(efx, page, reg);
+=======
+	reg = EFX_PAGED_REG(page, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_vdbg(efx, hw, efx->net_dev,
 		   "writing register %x with " EFX_OWORD_FMT "\n", reg,
@@ -265,7 +278,11 @@ static inline void
 _efx_writed_page(struct efx_nic *efx, const efx_dword_t *value,
 		 unsigned int reg, unsigned int page)
 {
+<<<<<<< HEAD
 	efx_writed(efx, value, efx_paged_reg(efx, page, reg));
+=======
+	efx_writed(efx, value, EFX_PAGED_REG(page, reg));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #define efx_writed_page(efx, value, reg, page)				\
 	_efx_writed_page(efx, value,					\
@@ -291,10 +308,17 @@ static inline void _efx_writed_page_locked(struct efx_nic *efx,
 
 	if (page == 0) {
 		spin_lock_irqsave(&efx->biu_lock, flags);
+<<<<<<< HEAD
 		efx_writed(efx, value, efx_paged_reg(efx, page, reg));
 		spin_unlock_irqrestore(&efx->biu_lock, flags);
 	} else {
 		efx_writed(efx, value, efx_paged_reg(efx, page, reg));
+=======
+		efx_writed(efx, value, EFX_PAGED_REG(page, reg));
+		spin_unlock_irqrestore(&efx->biu_lock, flags);
+	} else {
+		efx_writed(efx, value, EFX_PAGED_REG(page, reg));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 #define efx_writed_page_locked(efx, value, reg, page)			\

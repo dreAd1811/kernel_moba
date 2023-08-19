@@ -125,7 +125,10 @@ static void __do_user_fault(struct task_struct *tsk, unsigned long addr,
 	tsk->thread.address = addr;
 	tsk->thread.error_code = fsr;
 	tsk->thread.trap_no = 14;
+<<<<<<< HEAD
 	clear_siginfo(&si);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	si.si_signo = sig;
 	si.si_errno = 0;
 	si.si_code = code;
@@ -168,11 +171,19 @@ static inline bool access_error(unsigned int fsr, struct vm_area_struct *vma)
 	return vma->vm_flags & mask ? false : true;
 }
 
+<<<<<<< HEAD
 static vm_fault_t __do_pf(struct mm_struct *mm, unsigned long addr,
 		unsigned int fsr, unsigned int flags, struct task_struct *tsk)
 {
 	struct vm_area_struct *vma;
 	vm_fault_t fault;
+=======
+static int __do_pf(struct mm_struct *mm, unsigned long addr, unsigned int fsr,
+		unsigned int flags, struct task_struct *tsk)
+{
+	struct vm_area_struct *vma;
+	int fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vma = find_vma(mm, addr);
 	fault = VM_FAULT_BADMAP;
@@ -209,8 +220,12 @@ static int do_pf(unsigned long addr, unsigned int fsr, struct pt_regs *regs)
 {
 	struct task_struct *tsk;
 	struct mm_struct *mm;
+<<<<<<< HEAD
 	int sig, code;
 	vm_fault_t fault;
+=======
+	int fault, sig, code;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
 	tsk = current;
@@ -474,7 +489,10 @@ asmlinkage void do_DataAbort(unsigned long addr, unsigned int fsr,
 	printk(KERN_ALERT "Unhandled fault: %s (0x%03x) at 0x%08lx\n",
 	       inf->name, fsr, addr);
 
+<<<<<<< HEAD
 	clear_siginfo(&info);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.si_signo = inf->sig;
 	info.si_errno = 0;
 	info.si_code = inf->code;
@@ -494,7 +512,10 @@ asmlinkage void do_PrefetchAbort(unsigned long addr,
 	printk(KERN_ALERT "Unhandled prefetch abort: %s (0x%03x) at 0x%08lx\n",
 	       inf->name, ifsr, addr);
 
+<<<<<<< HEAD
 	clear_siginfo(&info);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.si_signo = inf->sig;
 	info.si_errno = 0;
 	info.si_code = inf->code;

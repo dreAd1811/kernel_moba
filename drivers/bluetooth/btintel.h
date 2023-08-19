@@ -69,6 +69,7 @@ struct intel_secure_send_result {
 	__u8     status;
 } __packed;
 
+<<<<<<< HEAD
 struct intel_reset {
 	__u8     reset_type;
 	__u8     patch_enable;
@@ -77,6 +78,8 @@ struct intel_reset {
 	__le32   boot_param;
 } __packed;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if IS_ENABLED(CONFIG_BT_INTEL)
 
 int btintel_check_bdaddr(struct hci_dev *hdev);
@@ -97,11 +100,15 @@ int btintel_read_version(struct hci_dev *hdev, struct intel_version *ver);
 
 struct regmap *btintel_regmap_init(struct hci_dev *hdev, u16 opcode_read,
 				   u16 opcode_write);
+<<<<<<< HEAD
 int btintel_send_intel_reset(struct hci_dev *hdev, u32 boot_param);
 int btintel_read_boot_params(struct hci_dev *hdev,
 			     struct intel_boot_params *params);
 int btintel_download_firmware(struct hci_dev *dev, const struct firmware *fw,
 			      u32 *boot_param);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 
 static inline int btintel_check_bdaddr(struct hci_dev *hdev)
@@ -177,6 +184,7 @@ static inline struct regmap *btintel_regmap_init(struct hci_dev *hdev,
 {
 	return ERR_PTR(-EINVAL);
 }
+<<<<<<< HEAD
 
 static inline int btintel_send_intel_reset(struct hci_dev *hdev,
 					   u32 reset_param)
@@ -196,4 +204,6 @@ static inline int btintel_download_firmware(struct hci_dev *dev,
 {
 	return -EOPNOTSUPP;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

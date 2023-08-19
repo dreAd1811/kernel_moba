@@ -339,7 +339,11 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
 				continue;
 			if (card->ext_csd.partition_setting_completed == 0) {
 				pr_warn("%s: has partition size defined without partition complete\n",
+<<<<<<< HEAD
 					mmc_hostname(card->host));
+=======
+				mmc_hostname(card->host));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			}
 			part_size =
@@ -358,6 +362,7 @@ static void mmc_manage_gp_partitions(struct mmc_card *card, u8 *ext_csd)
 	}
 }
 
+<<<<<<< HEAD
 /* check whether the eMMC card supports HPI */
 void mmc_check_hpi_support(struct mmc_card *card, u8 *ext_csd)
 {
@@ -405,6 +410,8 @@ void mmc_check_bkops_support(struct mmc_card *card, u8 *ext_csd)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Minimum partition switch timeout in milliseconds */
 #define MMC_MIN_PART_SWITCH_TIME	300
 
@@ -570,7 +577,28 @@ static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
 			ext_csd[EXT_CSD_PWR_CL_DDR_200_360];
 	}
 
+<<<<<<< HEAD
 	mmc_check_hpi_support(card, ext_csd);
+=======
+	/* check whether the eMMC card supports HPI */
+	if ((ext_csd[EXT_CSD_HPI_FEATURES] & 0x1) &&
+		!(card->quirks & MMC_QUIRK_BROKEN_HPI)) {
+		card->ext_csd.hpi = 1;
+		if (ext_csd[EXT_CSD_HPI_FEATURES] & 0x2)
+			card->ext_csd.hpi_cmd = MMC_STOP_TRANSMISSION;
+		else
+			card->ext_csd.hpi_cmd = MMC_SEND_STATUS;
+		/*
+		 * Indicate the maximum timeout to close
+		 * a command interrupted by HPI
+		 */
+		card->ext_csd.out_of_int_time =
+			ext_csd[EXT_CSD_OUT_OF_INTERRUPT_TIME] * 10;
+		pr_info("%s: Out-of-interrupt timeout is %d[ms]\n",
+				mmc_hostname(card->host),
+				card->ext_csd.out_of_int_time);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (card->ext_csd.rev >= 5) {
 		/* Adjust production date as per JEDEC JESD84-B451 */
@@ -578,7 +606,29 @@ static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
 			card->cid.year += 16;
 
 		/* check whether the eMMC card supports BKOPS */
+<<<<<<< HEAD
 		mmc_check_bkops_support(card, ext_csd);
+=======
+		if (!mmc_card_broken_hpi(card) &&
+		    (ext_csd[EXT_CSD_BKOPS_SUPPORT] & 0x1) &&
+				card->ext_csd.hpi) {
+			card->ext_csd.bkops = 1;
+			card->ext_csd.man_bkops_en =
+					(ext_csd[EXT_CSD_BKOPS_EN] &
+						EXT_CSD_MANUAL_BKOPS_MASK);
+			card->ext_csd.raw_bkops_status =
+				ext_csd[EXT_CSD_BKOPS_STATUS];
+			if (card->ext_csd.man_bkops_en)
+				pr_debug("%s: MAN_BKOPS_EN bit is set\n",
+					mmc_hostname(card->host));
+			card->ext_csd.auto_bkops_en =
+					(ext_csd[EXT_CSD_BKOPS_EN] &
+						EXT_CSD_AUTO_BKOPS_MASK);
+			if (card->ext_csd.auto_bkops_en)
+				pr_debug("%s: AUTO_BKOPS_EN bit is set\n",
+					mmc_hostname(card->host));
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* check whether the eMMC card supports HPI */
 		if (!mmc_card_broken_hpi(card) &&
@@ -659,15 +709,50 @@ static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
 		} else {
 			card->ext_csd.data_tag_unit_size = 0;
 		}
+<<<<<<< HEAD
 
 		card->ext_csd.max_packed_writes =
 			ext_csd[EXT_CSD_MAX_PACKED_WRITES];
 		card->ext_csd.max_packed_reads =
 			ext_csd[EXT_CSD_MAX_PACKED_READS];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		card->ext_csd.data_sector_size = 512;
 	}
 
+<<<<<<< HEAD
+=======
+	if (card->ext_csd.rev >= 7) {
+		/* Enhance Strobe is supported since v5.1 which rev should be
+		 * 8 but some eMMC devices can support it with rev 7. So handle
+		 * Enhance Strobe here.
+		 */
+		card->ext_csd.strobe_support = ext_csd[EXT_CSD_STROBE_SUPPORT];
+		card->ext_csd.cmdq_support = ext_csd[EXT_CSD_CMDQ_SUPPORT];
+		card->ext_csd.fw_version = ext_csd[EXT_CSD_FIRMWARE_VERSION];
+		pr_info("%s: eMMC FW version: 0x%02x\n",
+			mmc_hostname(card->host),
+			card->ext_csd.fw_version);
+		if (card->ext_csd.cmdq_support) {
+			/*
+			 * Queue Depth = N + 1,
+			 * see JEDEC JESD84-B51 section 7.4.19
+			 */
+			card->ext_csd.cmdq_depth =
+				ext_csd[EXT_CSD_CMDQ_DEPTH] + 1;
+			pr_info("%s: CMDQ supported: depth: %d\n",
+				mmc_hostname(card->host),
+				card->ext_csd.cmdq_depth);
+		}
+	} else {
+		card->ext_csd.cmdq_support = 0;
+		card->ext_csd.cmdq_depth = 0;
+		card->ext_csd.barrier_support = 0;
+		card->ext_csd.cache_flush_policy = 0;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* eMMC v5 or later */
 	if (card->ext_csd.rev >= 7) {
 		memcpy(card->ext_csd.fwrev, &ext_csd[EXT_CSD_FIRMWARE_VERSION],
@@ -681,10 +766,13 @@ static int mmc_decode_ext_csd(struct mmc_card *card, u8 *ext_csd)
 			ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_A];
 		card->ext_csd.device_life_time_est_typ_b =
 			ext_csd[EXT_CSD_DEVICE_LIFE_TIME_EST_TYP_B];
+<<<<<<< HEAD
 		card->ext_csd.fw_version = ext_csd[EXT_CSD_FIRMWARE_VERSION];
 		pr_info("%s: eMMC FW version: 0x%02x\n",
 				mmc_hostname(card->host),
 				card->ext_csd.fw_version);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* eMMC v5.1 or later */
@@ -723,7 +811,12 @@ static int mmc_read_ext_csd(struct mmc_card *card)
 	err = mmc_get_ext_csd(card, &ext_csd);
 	if (err) {
 		pr_err("%s: %s: mmc_get_ext_csd() fails %d\n",
+<<<<<<< HEAD
 			mmc_hostname(host), __func__, err);
+=======
+				mmc_hostname(host), __func__, err);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* If the host or the card can't do the switch,
 		 * fail more gracefully. */
 		if ((err != -EINVAL)
@@ -852,7 +945,10 @@ MMC_DEV_ATTR(enhanced_rpmb_supported, "%#x\n",
 		card->ext_csd.enhanced_rpmb_supported);
 MMC_DEV_ATTR(rel_sectors, "%#x\n", card->ext_csd.rel_sectors);
 MMC_DEV_ATTR(ocr, "0x%08x\n", card->ocr);
+<<<<<<< HEAD
 MMC_DEV_ATTR(rca, "0x%04x\n", card->rca);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MMC_DEV_ATTR(cmdq_en, "%d\n", card->ext_csd.cmdq_en);
 
 static ssize_t mmc_fwrev_show(struct device *dev,
@@ -910,7 +1006,10 @@ static struct attribute *mmc_std_attrs[] = {
 	&dev_attr_enhanced_rpmb_supported.attr,
 	&dev_attr_rel_sectors.attr,
 	&dev_attr_ocr.attr,
+<<<<<<< HEAD
 	&dev_attr_rca.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&dev_attr_dsr.attr,
 	&dev_attr_cmdq_en.attr,
 	NULL,
@@ -1294,6 +1393,7 @@ static int mmc_select_hs400(struct mmc_card *card)
 	mmc_set_bus_speed(card);
 
 	if (card->ext_csd.strobe_support && host->ops->enhanced_strobe) {
+<<<<<<< HEAD
 		err = host->ops->enhanced_strobe(host);
 		if (!err)
 			host->ios.enhanced_strobe = true;
@@ -1301,6 +1401,20 @@ static int mmc_select_hs400(struct mmc_card *card)
 			host->ops->execute_tuning) {
 		err = host->ops->execute_tuning(host,
 				MMC_SEND_TUNING_BLOCK_HS200);
+=======
+		mmc_host_clk_hold(host);
+		err = host->ops->enhanced_strobe(host);
+		if (!err)
+			host->ios.enhanced_strobe = true;
+		mmc_host_clk_release(host);
+	} else if ((host->caps2 & MMC_CAP2_HS400_POST_TUNING) &&
+			host->ops->execute_tuning) {
+		mmc_host_clk_hold(host);
+		err = host->ops->execute_tuning(host,
+				MMC_SEND_TUNING_BLOCK_HS200);
+		mmc_host_clk_release(host);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			pr_warn("%s: tuning execution failed\n",
 				mmc_hostname(host));
@@ -1362,9 +1476,12 @@ int mmc_hs400_to_hs200(struct mmc_card *card)
 
 	mmc_set_timing(host, MMC_TIMING_MMC_HS);
 
+<<<<<<< HEAD
 	if (host->ops->hs400_downgrade)
 		host->ops->hs400_downgrade(host);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mmc_switch_status(card);
 	if (err)
 		goto out_err;
@@ -1391,10 +1508,13 @@ int mmc_hs400_to_hs200(struct mmc_card *card)
 
 	mmc_set_bus_speed(card);
 
+<<<<<<< HEAD
 	/* Prepare tuning for HS400 mode. */
 	if (host->ops->prepare_hs400_tuning)
 		host->ops->prepare_hs400_tuning(host, &host->ios);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out_err:
@@ -1405,12 +1525,17 @@ out_err:
 
 static void mmc_select_driver_type(struct mmc_card *card)
 {
+<<<<<<< HEAD
 	int card_drv_type, drive_strength, drv_type = 0;
 	int fixed_drv_type = card->host->fixed_drv_type;
+=======
+	int card_drv_type, drive_strength, drv_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	card_drv_type = card->ext_csd.raw_driver_strength |
 			mmc_driver_type_mask(0);
 
+<<<<<<< HEAD
 	if (fixed_drv_type >= 0)
 		drive_strength = card_drv_type & mmc_driver_type_mask(fixed_drv_type)
 				 ? fixed_drv_type : 0;
@@ -1418,6 +1543,11 @@ static void mmc_select_driver_type(struct mmc_card *card)
 		drive_strength = mmc_select_drive_strength(card,
 							   card->ext_csd.hs200_max_dtr,
 							   card_drv_type, &drv_type);
+=======
+	drive_strength = mmc_select_drive_strength(card,
+						   card->ext_csd.hs200_max_dtr,
+						   card_drv_type, &drv_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	card->drive_strength = drive_strength;
 
@@ -1447,12 +1577,17 @@ static int mmc_select_hs400es(struct mmc_card *card)
 		goto out_err;
 
 	err = mmc_select_bus_width(card);
+<<<<<<< HEAD
 	if (err != MMC_BUS_WIDTH_8) {
 		pr_err("%s: switch to 8bit bus width failed, err:%d\n",
 			mmc_hostname(host), err);
 		err = err < 0 ? err : -ENOTSUPP;
 		goto out_err;
 	}
+=======
+	if (err < 0)
+		goto out_err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Switch card to HS mode */
 	err = __mmc_switch(card, EXT_CSD_CMD_SET_NORMAL,
@@ -1658,6 +1793,49 @@ static int mmc_hs200_tuning(struct mmc_card *card)
 	return mmc_execute_tuning(card);
 }
 
+<<<<<<< HEAD
+=======
+static int mmc_select_cmdq(struct mmc_card *card)
+{
+	struct mmc_host *host = card->host;
+	int ret = 0;
+
+	if (!host->cmdq_ops) {
+		pr_err("%s: host controller doesn't support CMDQ\n",
+		       mmc_hostname(host));
+		return 0;
+	}
+
+	ret = mmc_set_blocklen(card, MMC_CARD_CMDQ_BLK_SIZE);
+	if (ret)
+		goto out;
+
+	ret = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL, EXT_CSD_CMDQ_MODE_EN, 1,
+			 card->ext_csd.generic_cmd6_time);
+	if (ret)
+		goto out;
+
+	mmc_card_set_cmdq(card);
+	mmc_host_clk_hold(card->host);
+	ret = host->cmdq_ops->enable(card->host);
+	if (ret) {
+		mmc_host_clk_release(card->host);
+		pr_err("%s: failed (%d) enabling CMDQ on host\n",
+			mmc_hostname(host), ret);
+		mmc_card_clr_cmdq(card);
+		ret = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL,
+				EXT_CSD_CMDQ_MODE_EN, 0,
+				card->ext_csd.generic_cmd6_time);
+		goto out;
+	}
+
+	mmc_host_clk_release(card->host);
+	pr_info_once("%s: CMDQ enabled on card\n", mmc_hostname(host));
+out:
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mmc_select_hs_ddr52(struct mmc_host *host)
 {
 	int err;
@@ -1766,7 +1944,11 @@ static int mmc_scale_high(struct mmc_host *host)
 		return err;
 	}
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mmc_set_clock_bus_speed(struct mmc_card *card, unsigned long freq)
@@ -1850,6 +2032,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static int mmc_change_bus_speed_deferred(struct mmc_host *host,
 							unsigned long *freq)
 {
@@ -1912,6 +2095,8 @@ void mmc_init_setup_scaling(struct mmc_card *card,
 		card->clk_scaling_highest = card->csd.max_dtr;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Handle the detection and initialisation of a card.
  *
@@ -1939,6 +2124,10 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 	 * respond.
 	 * mmc_go_idle is needed for eMMC that are asleep
 	 */
+<<<<<<< HEAD
+=======
+reinit:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_go_idle(host);
 
 	/* The extra bit indicates that we support high capacity */
@@ -1954,8 +2143,16 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 	 */
 	if (mmc_host_is_spi(host)) {
 		err = mmc_spi_set_crc(host, use_spi_crc);
+<<<<<<< HEAD
 		if (err)
 			goto err;
+=======
+		if (err) {
+			pr_err("%s: %s: mmc_spi_set_crc() fails %d\n",
+					mmc_hostname(host), __func__, err);
+			goto err;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -2081,6 +2278,12 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 
 		/* Erase size depends on CSD and Extended CSD */
 		mmc_set_erase_size(card);
+<<<<<<< HEAD
+=======
+
+		if (card->ext_csd.sectors && (rocr & MMC_CARD_SECTOR_ADDR))
+			mmc_card_set_blockaddr(card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Enable ERASE_GRP_DEF. This bit is lost after a reset or power off. */
@@ -2091,7 +2294,11 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 
 		if (err && err != -EBADMSG) {
 			pr_err("%s: %s: mmc_switch() for ERASE_GRP_DEF fails %d\n",
+<<<<<<< HEAD
 					mmc_hostname(host), __func__, err);
+=======
+				mmc_hostname(host), __func__, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto free_card;
 		}
 
@@ -2129,7 +2336,11 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 			goto free_card;
 		}
 		card->part_curr = card->ext_csd.part_config &
+<<<<<<< HEAD
 					EXT_CSD_PART_CONFIG_ACC_MASK;
+=======
+				  EXT_CSD_PART_CONFIG_ACC_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -2142,7 +2353,11 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 				 card->ext_csd.generic_cmd6_time);
 		if (err && err != -EBADMSG) {
 			pr_err("%s: %s: mmc_switch() for POWER_ON PON fails %d\n",
+<<<<<<< HEAD
 					mmc_hostname(host), __func__, err);
+=======
+				mmc_hostname(host), __func__, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto free_card;
 		}
 
@@ -2160,7 +2375,11 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 	err = mmc_select_timing(card);
 	if (err) {
 		pr_err("%s: %s: mmc_select_timing() fails %d\n",
+<<<<<<< HEAD
 				mmc_hostname(host), __func__, err);
+=======
+					mmc_hostname(host), __func__, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free_card;
 	}
 
@@ -2182,7 +2401,19 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 		}
 	}
 
+<<<<<<< HEAD
 	mmc_init_setup_scaling(card, host);
+=======
+	card->clk_scaling_lowest = host->f_min;
+	if ((card->mmc_avail_type & EXT_CSD_CARD_TYPE_HS400) ||
+			(card->mmc_avail_type & EXT_CSD_CARD_TYPE_HS200))
+		card->clk_scaling_highest = card->ext_csd.hs200_max_dtr;
+	else if ((card->mmc_avail_type & EXT_CSD_CARD_TYPE_HS) ||
+			(card->mmc_avail_type & EXT_CSD_CARD_TYPE_DDR_52))
+		card->clk_scaling_highest = card->ext_csd.hs_max_dtr;
+	else
+		card->clk_scaling_highest = card->csd.max_dtr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Choose the power class with selected bus interface
@@ -2212,15 +2443,33 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * If cache size is higher than 0, this indicates
 	 * the existence of cache and it can be turned on.
+=======
+	 * If cache size is higher than 0, this indicates the existence of cache
+	 * and it can be turned on. Note that some eMMCs from Micron has been
+	 * reported to need ~800 ms timeout, while enabling the cache after
+	 * sudden power failure tests. Let's extend the timeout to a minimum of
+	 * DEFAULT_CACHE_EN_TIMEOUT_MS and do it for all cards.
+	 * If HPI is not supported then cache shouldn't be enabled.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (!mmc_card_broken_hpi(card) && card->ext_csd.cache_size > 0) {
 		if (card->ext_csd.hpi_en &&
 			(!(card->quirks & MMC_QUIRK_CACHE_DISABLE))) {
+<<<<<<< HEAD
 			err = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL,
 					EXT_CSD_CACHE_CTRL, 1,
 					card->ext_csd.generic_cmd6_time);
+=======
+			unsigned int timeout_ms = MIN_CACHE_EN_TIMEOUT_MS;
+
+			timeout_ms = max(card->ext_csd.generic_cmd6_time,
+					 timeout_ms);
+			err = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL,
+					EXT_CSD_CACHE_CTRL, 1, timeout_ms);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (err && err != -EBADMSG) {
 				pr_err("%s: %s: fail on CACHE_CTRL ON %d\n",
 					mmc_hostname(host), __func__, err);
@@ -2259,6 +2508,7 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Enable Command Queue if supported. Note that Packed Commands cannot
 	 * be used with Command Queue.
 	 */
@@ -2276,12 +2526,15 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 		}
 	}
 	/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * In some cases (e.g. RPMB or mmc_test), the Command Queue must be
 	 * disabled for a time, so a flag is needed to indicate to re-enable the
 	 * Command Queue.
 	 */
 	card->reenable_cmdq = card->ext_csd.cmdq_en;
 
+<<<<<<< HEAD
 	if (card->ext_csd.cmdq_en && !host->cqe_enabled) {
 		err = host->cqe_ops->cqe_enable(host, card);
 		if (err) {
@@ -2306,6 +2559,39 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
 		host->card = card;
 	if (host->ops->enter_dbg_mode)
 		host->ops->enter_dbg_mode(host);
+=======
+	if (!oldcard)
+		host->card = card;
+
+	/*
+	 * Start auto bkops, if supported.
+	 *
+	 * Note: This leaves the possibility of having both manual and
+	 * auto bkops running in parallel. The runtime implementation
+	 * will allow this, but ignore bkops exceptions on the premises
+	 * that auto bkops will eventually kick in and the device will
+	 * handle bkops without START_BKOPS from the host.
+	 */
+	if (mmc_card_support_auto_bkops(card)) {
+		/*
+		 * Ignore the return value of setting auto bkops.
+		 * If it failed, will run in backward compatible mode.
+		 */
+		(void)mmc_set_auto_bkops(card, true);
+	}
+
+	if (card->ext_csd.cmdq_support && (card->host->caps2 &
+					   MMC_CAP2_CMD_QUEUE)) {
+		err = mmc_select_cmdq(card);
+		if (err) {
+			pr_err("%s: selecting CMDQ mode: failed: %d\n",
+					   mmc_hostname(card->host), err);
+			card->ext_csd.cmdq_support = 0;
+			oldcard = card;
+			goto reinit;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -2328,9 +2614,45 @@ static int mmc_sleepawake(struct mmc_host *host, bool sleep)
 {
 	struct mmc_command cmd = {};
 	struct mmc_card *card = host->card;
+<<<<<<< HEAD
 	unsigned int timeout_ms = DIV_ROUND_UP(card->ext_csd.sa_timeout, 10000);
 	int err;
 
+=======
+	unsigned int timeout_ms;
+	int err;
+
+	if (!card) {
+		pr_err("%s: %s: invalid card\n", mmc_hostname(host), __func__);
+		return -EINVAL;
+	}
+
+	timeout_ms = DIV_ROUND_UP(card->ext_csd.sa_timeout, 10000);
+	if (card->ext_csd.rev >= 3 &&
+		card->part_curr == EXT_CSD_PART_CONFIG_ACC_RPMB) {
+		u8 part_config = card->ext_csd.part_config;
+
+		/*
+		 * If the last access before suspend is RPMB access, then
+		 * switch to default part config so that sleep command CMD5
+		 * and deselect CMD7 can be sent to the card.
+		 */
+		part_config &= ~EXT_CSD_PART_CONFIG_ACC_MASK;
+		err = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL,
+				 EXT_CSD_PART_CONFIG,
+				 part_config,
+				 card->ext_csd.part_time);
+		if (err) {
+			pr_err("%s: %s: failed to switch to default part config %x\n",
+				mmc_hostname(host), __func__, part_config);
+			return err;
+		}
+		card->ext_csd.part_config = part_config;
+		card->part_curr = card->ext_csd.part_config &
+				  EXT_CSD_PART_CONFIG_ACC_MASK;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Re-tuning can't be done once the card is deselected */
 	mmc_retune_hold(host);
 
@@ -2416,15 +2738,25 @@ int mmc_send_pon(struct mmc_card *card)
 	if (!mmc_can_poweroff_notify(card))
 		goto out;
 
+<<<<<<< HEAD
 	mmc_get_card(card, NULL);
+=======
+	mmc_get_card(card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (card->pon_type & MMC_LONG_PON)
 		err = mmc_poweroff_notify(host->card, EXT_CSD_POWER_OFF_LONG);
 	else if (card->pon_type & MMC_SHRT_PON)
 		err = mmc_poweroff_notify(host->card, EXT_CSD_POWER_OFF_SHORT);
 	if (err)
+<<<<<<< HEAD
 		pr_warn("%s: error %d sending PON type %u\n",
 			mmc_hostname(host), err, card->pon_type);
 	mmc_put_card(card, NULL);
+=======
+		pr_warn("%s: error %d sending PON type %u",
+			mmc_hostname(host), err, card->pon_type);
+	mmc_put_card(card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return err;
 }
@@ -2434,9 +2766,17 @@ out:
  */
 static void mmc_remove(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	mmc_exit_clk_scaling(host);
 	unregister_reboot_notifier(&host->card->reboot_notify);
 	mmc_remove_card(host->card);
+=======
+	unregister_reboot_notifier(&host->card->reboot_notify);
+
+	mmc_exit_clk_scaling(host);
+	mmc_remove_card(host->card);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_claim_host(host);
 	host->card = NULL;
 	mmc_release_host(host);
@@ -2457,14 +2797,22 @@ static void mmc_detect(struct mmc_host *host)
 {
 	int err;
 
+<<<<<<< HEAD
 	mmc_get_card(host->card, NULL);
+=======
+	mmc_get_card(host->card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Just check if our card has been removed.
 	 */
 	err = _mmc_detect_card_removed(host);
 
+<<<<<<< HEAD
 	mmc_put_card(host->card, NULL);
+=======
+	mmc_put_card(host->card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err) {
 		mmc_remove(host);
@@ -2507,7 +2855,11 @@ static int mmc_test_awake_ext_csd(struct mmc_host *host)
 	struct mmc_card *card = host->card;
 
 	err = mmc_get_ext_csd(card, &ext_csd);
+<<<<<<< HEAD
 	if (err) {
+=======
+	if (err || !ext_csd) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("%s: %s: mmc_get_ext_csd failed (%d)\n",
 			mmc_hostname(host), __func__, err);
 		return err;
@@ -2541,17 +2893,27 @@ static int mmc_test_awake_ext_csd(struct mmc_host *host)
 
 static int _mmc_suspend(struct mmc_host *host, bool is_suspend)
 {
+<<<<<<< HEAD
 	int err = 0;
+=======
+	int err = 0, ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mmc_suspend_clk_scaling(host);
 	if (err) {
 		pr_err("%s: %s: fail to suspend clock scaling (%d)\n",
 			mmc_hostname(host), __func__, err);
+<<<<<<< HEAD
+=======
+		if (host->card->cmdq_init)
+			wake_up(&host->cmdq_ctx.wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 
 	mmc_claim_host(host);
 
+<<<<<<< HEAD
 	mmc_log_string(host, "Enter\n");
 
 	if (mmc_card_suspended(host->card))
@@ -2561,26 +2923,97 @@ static int _mmc_suspend(struct mmc_host *host, bool is_suspend)
 		err = mmc_stop_bkops(host->card);
 		if (err)
 			goto out;
+=======
+	if (mmc_card_suspended(host->card))
+		goto out;
+
+	if (host->card->cmdq_init) {
+		BUG_ON(host->cmdq_ctx.active_reqs);
+
+		err = mmc_cmdq_halt(host, true);
+		if (err) {
+			pr_err("%s: halt: failed: %d\n", __func__, err);
+			goto out;
+		}
+		mmc_host_clk_hold(host);
+		host->cmdq_ops->disable(host, true);
+		mmc_host_clk_release(host);
+	}
+
+	if (mmc_card_doing_bkops(host->card)) {
+		err = mmc_stop_bkops(host->card);
+		if (err)
+			goto out_err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = mmc_flush_cache(host->card);
 	if (err)
+<<<<<<< HEAD
 		goto out;
 
 	if (mmc_can_sleepawake(host)) {
 		memcpy(&host->cached_ios, &host->ios, sizeof(host->cached_ios));
 		mmc_cache_card_ext_csd(host);
 		err = mmc_sleepawake(host, true);
+=======
+		goto out_err;
+
+	if (mmc_can_sleepawake(host)) {
+		/*
+		 * For caching host->ios to cached_ios we need to
+		 * make sure that clocks are not gated otherwise
+		 * cached_ios->clock will be 0.
+		 */
+		mmc_host_clk_hold(host);
+		memcpy(&host->cached_ios, &host->ios,
+			sizeof(host->cached_ios));
+		mmc_cache_card_ext_csd(host);
+		err = mmc_sleepawake(host, true);
+		mmc_host_clk_release(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (!mmc_host_is_spi(host)) {
 		err = mmc_deselect_cards(host);
 	}
 
+<<<<<<< HEAD
 	if (!err) {
 		mmc_power_off(host);
 		mmc_card_set_suspended(host->card);
 	}
 out:
 	mmc_log_string(host, "Exit err: %d\n", err);
+=======
+	if (err)
+		goto out_err;
+	mmc_power_off(host);
+	mmc_card_set_suspended(host->card);
+
+	goto out;
+
+out_err:
+	/*
+	 * In case of err let's put controller back in cmdq mode and unhalt
+	 * the controller.
+	 * We expect cmdq_enable and unhalt won't return any error
+	 * since it is anyway enabling few registers.
+	 */
+	if (host->card->cmdq_init) {
+		mmc_host_clk_hold(host);
+		ret = host->cmdq_ops->enable(host);
+		if (ret)
+			pr_err("%s: %s: enabling CMDQ mode failed (%d)\n",
+				mmc_hostname(host), __func__, ret);
+		mmc_host_clk_release(host);
+		mmc_cmdq_halt(host, false);
+	}
+
+out:
+	/* Kick CMDQ thread to process any requests came in while suspending */
+	if (host->card->cmdq_init)
+		wake_up(&host->cmdq_ctx.wait);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_release_host(host);
 	if (err)
 		mmc_resume_clk_scaling(host);
@@ -2600,6 +3033,11 @@ static int mmc_partial_init(struct mmc_host *host)
 	mmc_set_clock(host, host->cached_ios.clock);
 	mmc_set_bus_mode(host, host->cached_ios.bus_mode);
 
+<<<<<<< HEAD
+=======
+	mmc_host_clk_hold(host);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mmc_card_hs400(card)) {
 		if (card->ext_csd.strobe_support && host->ops->enhanced_strobe)
 			err = host->ops->enhanced_strobe(host);
@@ -2635,6 +3073,7 @@ static int mmc_partial_init(struct mmc_host *host)
 	pr_debug("%s: %s: reading and comparing ext_csd successful\n",
 		mmc_hostname(host), __func__);
 
+<<<<<<< HEAD
 	/*
 	 * Enable Command Queue if supported. Note that Packed Commands cannot
 	 * be used with Command Queue.
@@ -2671,6 +3110,23 @@ static int mmc_partial_init(struct mmc_host *host)
 out:
 	pr_debug("%s: %s: done partial init (%d)\n",
 		mmc_hostname(host), __func__, err);
+=======
+	if (card->ext_csd.cmdq_support && (card->host->caps2 &
+					   MMC_CAP2_CMD_QUEUE)) {
+		err = mmc_select_cmdq(card);
+		if (err) {
+			pr_warn("%s: %s: enabling CMDQ mode failed (%d)\n",
+					mmc_hostname(card->host),
+					__func__, err);
+		}
+	}
+out:
+	mmc_host_clk_release(host);
+
+	pr_debug("%s: %s: done partial init (%d)\n",
+		mmc_hostname(host), __func__, err);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -2682,6 +3138,10 @@ static int mmc_suspend(struct mmc_host *host)
 	int err;
 	ktime_t start = ktime_get();
 
+<<<<<<< HEAD
+=======
+	MMC_TRACE(host, "%s: Enter\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = _mmc_suspend(host, true);
 	if (!err) {
 		pm_runtime_disable(&host->card->dev);
@@ -2690,6 +3150,10 @@ static int mmc_suspend(struct mmc_host *host)
 
 	trace_mmc_suspend(mmc_hostname(host), err,
 			ktime_to_us(ktime_sub(ktime_get(), start)));
+<<<<<<< HEAD
+=======
+	MMC_TRACE(host, "%s: Exit err: %d\n", __func__, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -2699,8 +3163,13 @@ static int mmc_suspend(struct mmc_host *host)
  */
 static int _mmc_resume(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	int err = -EINVAL;
 	int retries = 3;
+=======
+	int err = 0;
+	int retries;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmc_claim_host(host);
 
@@ -2709,8 +3178,13 @@ static int _mmc_resume(struct mmc_host *host)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	mmc_log_string(host, "Enter\n");
 	mmc_power_up(host, host->card->ocr);
+=======
+	mmc_power_up(host, host->card->ocr);
+	retries = 3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (retries) {
 		if (mmc_can_sleepawake(host)) {
 			err = mmc_sleepawake(host, false);
@@ -2718,6 +3192,7 @@ static int _mmc_resume(struct mmc_host *host)
 				err = mmc_partial_init(host);
 			if (err)
 				pr_err("%s: %s: awake failed (%d), fallback to full init\n",
+<<<<<<< HEAD
 						mmc_hostname(host), __func__,
 						err);
 		}
@@ -2740,12 +3215,45 @@ static int _mmc_resume(struct mmc_host *host)
 	mmc_card_clr_suspended(host->card);
 
 	mmc_log_string(host, "Exit err %d\n", err);
+=======
+					mmc_hostname(host), __func__, err);
+		}
+
+		if (err)
+			err = mmc_init_card(host, host->card->ocr, host->card);
+
+		if (err) {
+			pr_err("%s: MMC card re-init failed rc = %d (retries = %d)\n",
+				mmc_hostname(host), err, retries);
+			retries--;
+			mmc_power_off(host);
+			usleep_range(5000, 5500);
+			mmc_power_up(host, host->card->ocr);
+			mmc_select_voltage(host, host->card->ocr);
+			continue;
+		}
+		break;
+	}
+	if (!err && mmc_card_cmdq(host->card)) {
+		err = mmc_cmdq_halt(host, false);
+		if (err)
+			pr_err("%s: un-halt: failed: %d\n", __func__, err);
+	}
+	if (!err && mmc_card_cmdq(host->card)) {
+		err = mmc_cmdq_halt(host, false);
+		if (err)
+			pr_err("%s: un-halt: failed: %d\n", __func__, err);
+	}
+	mmc_card_clr_suspended(host->card);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_release_host(host);
 
 	err = mmc_resume_clk_scaling(host);
 	if (err)
 		pr_err("%s: %s: fail to resume clock scaling (%d)\n",
 			mmc_hostname(host), __func__, err);
+<<<<<<< HEAD
 out:
 	return err;
 }
@@ -2770,6 +3278,9 @@ static int _mmc_deferred_resume(struct mmc_host *host)
 	if (err)
 		pr_err("%s: %s: fail to resume clock scaling (%d)\n",
 			mmc_hostname(host), __func__, err);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return err;
 }
@@ -2779,6 +3290,7 @@ out:
  */
 static int mmc_shutdown(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	int err = 0;
 	struct mmc_card *card = host->card;
 
@@ -2791,10 +3303,16 @@ static int mmc_shutdown(struct mmc_host *host)
 		err = _mmc_resume(host);
 
 	/*
+=======
+	struct mmc_card *card = host->card;
+
+	/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * Exit clock scaling so that it doesn't kick in after
 	 * power off notification is sent
 	 */
 	if (host->caps2 & MMC_CAP2_CLK_SCALE)
+<<<<<<< HEAD
 		mmc_exit_clk_scaling(host);
 
 	/* send power off notification */
@@ -2803,6 +3321,13 @@ static int mmc_shutdown(struct mmc_host *host)
 
 	mmc_log_string(host, "done err %d\n", err);
 	return err;
+=======
+		mmc_exit_clk_scaling(card->host);
+	/* send power off notification */
+	if (mmc_card_mmc(card))
+		mmc_send_pon(card);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -2811,20 +3336,30 @@ static int mmc_shutdown(struct mmc_host *host)
 static int mmc_resume(struct mmc_host *host)
 {
 	int err = 0;
+<<<<<<< HEAD
 	ktime_t start = ktime_get();
 
+=======
+
+	MMC_TRACE(host, "%s: Enter\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = _mmc_resume(host);
 	pm_runtime_set_active(&host->card->dev);
 	pm_runtime_mark_last_busy(&host->card->dev);
 	pm_runtime_enable(&host->card->dev);
+<<<<<<< HEAD
 	trace_mmc_resume(mmc_hostname(host), err,
 			ktime_to_us(ktime_sub(ktime_get(), start)));
 
 	mmc_log_string(host, "Done\n");
+=======
+	MMC_TRACE(host, "%s: Exit err: %d\n", __func__, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
+<<<<<<< HEAD
 /*
  * Callback for deferred resume.
  */
@@ -2840,6 +3375,64 @@ static int mmc_deferred_resume(struct mmc_host *host)
 	mmc_log_string(host, "Done\n");
 
 	return err;
+=======
+#define MAX_DEFER_SUSPEND_COUNTER 20
+static bool mmc_process_bkops(struct mmc_host *host)
+{
+	int err = 0;
+	bool is_running = false;
+	u32 status;
+
+	mmc_claim_host(host);
+	if (mmc_card_cmdq(host->card)) {
+		BUG_ON(host->cmdq_ctx.active_reqs);
+
+		err = mmc_cmdq_halt(host, true);
+		if (err) {
+			pr_err("%s: halt: failed: %d\n", __func__, err);
+			goto unhalt;
+		}
+	}
+
+	if (mmc_card_doing_bkops(host->card)) {
+		/* check that manual bkops finished */
+		err = mmc_send_status(host->card, &status);
+		if (err) {
+			pr_err("%s: Get card status fail\n", __func__);
+			goto unhalt;
+		}
+		if (R1_CURRENT_STATE(status) != R1_STATE_PRG) {
+			mmc_card_clr_doing_bkops(host->card);
+			goto unhalt;
+		}
+	} else {
+		mmc_check_bkops(host->card);
+	}
+
+	if (host->card->bkops.needs_bkops &&
+			!mmc_card_support_auto_bkops(host->card))
+		mmc_start_manual_bkops(host->card);
+
+unhalt:
+	if (mmc_card_cmdq(host->card)) {
+		err = mmc_cmdq_halt(host, false);
+		if (err)
+			pr_err("%s: unhalt: failed: %d\n", __func__, err);
+	}
+	mmc_release_host(host);
+
+	if (host->card->bkops.needs_bkops ||
+			mmc_card_doing_bkops(host->card)) {
+		if (host->card->bkops.retry_counter++ <
+				MAX_DEFER_SUSPEND_COUNTER) {
+			host->card->bkops.needs_check = true;
+			is_running = true;
+		} else {
+			host->card->bkops.retry_counter = 0;
+		}
+	}
+	return is_running;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -2853,14 +3446,30 @@ static int mmc_runtime_suspend(struct mmc_host *host)
 	if (!(host->caps & MMC_CAP_AGGRESSIVE_PM))
 		return 0;
 
+<<<<<<< HEAD
+=======
+	if (mmc_process_bkops(host)) {
+		pm_runtime_mark_last_busy(&host->card->dev);
+		pr_debug("%s: defered, need bkops\n", __func__);
+		return -EBUSY;
+	}
+
+	MMC_TRACE(host, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = _mmc_suspend(host, true);
 	if (err)
 		pr_err("%s: error %d doing aggressive suspend\n",
 			mmc_hostname(host), err);
+<<<<<<< HEAD
 	trace_mmc_runtime_suspend(mmc_hostname(host), err,
 			ktime_to_us(ktime_sub(ktime_get(), start)));
 
 	mmc_log_string(host, "done err %d\n", err);
+=======
+
+	trace_mmc_runtime_suspend(mmc_hostname(host), err,
+			ktime_to_us(ktime_sub(ktime_get(), start)));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -2872,6 +3481,10 @@ static int mmc_runtime_resume(struct mmc_host *host)
 	int err;
 	ktime_t start = ktime_get();
 
+<<<<<<< HEAD
+=======
+	MMC_TRACE(host, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = _mmc_resume(host);
 	if (err && err != -ENOMEDIUM)
 		pr_err("%s: error %d doing runtime resume\n",
@@ -2879,8 +3492,13 @@ static int mmc_runtime_resume(struct mmc_host *host)
 
 	trace_mmc_runtime_resume(mmc_hostname(host), err,
 			ktime_to_us(ktime_sub(ktime_get(), start)));
+<<<<<<< HEAD
 	mmc_log_string(host, "done err %d\n", err);
 	return 0;
+=======
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mmc_can_reset(struct mmc_card *card)
@@ -2893,11 +3511,16 @@ static int mmc_can_reset(struct mmc_card *card)
 	return 1;
 }
 
+<<<<<<< HEAD
 static int _mmc_hw_reset(struct mmc_host *host)
+=======
+static int mmc_reset(struct mmc_host *host)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mmc_card *card = host->card;
 	int ret;
 
+<<<<<<< HEAD
 	/*
 	 * In the case of recovery, we can't expect flushing the cache to work
 	 * always, but we have a go and ignore errors.
@@ -2916,12 +3539,24 @@ static int _mmc_hw_reset(struct mmc_host *host)
 		mmc_power_cycle(host, card->ocr);
 		/* Set initial state and call mmc_set_ios */
 		mmc_set_initial_state(host);
+=======
+	if ((host->caps & MMC_CAP_HW_RESET) && host->ops->hw_reset &&
+	     mmc_can_reset(card)) {
+		mmc_host_clk_hold(host);
+		/* If the card accept RST_n signal, send it. */
+		mmc_set_clock(host, host->f_init);
+		host->ops->hw_reset(host);
+		/* Set initial state and call mmc_set_ios */
+		mmc_set_initial_state(host);
+		mmc_host_clk_release(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* Do a brute force power cycle */
 		mmc_power_cycle(host, card->ocr);
 		mmc_pwrseq_reset(host);
 	}
 
+<<<<<<< HEAD
 	/* Suspend clk scaling to avoid switching frequencies intermittently */
 	ret = mmc_suspend_clk_scaling(host);
 	if (ret) {
@@ -2930,6 +3565,8 @@ static int _mmc_hw_reset(struct mmc_host *host)
 		return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (host->inlinecrypt_support)
 		host->inlinecrypt_reset_needed = true;
 
@@ -2940,11 +3577,80 @@ static int _mmc_hw_reset(struct mmc_host *host)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = mmc_resume_clk_scaling(host);
 	if (ret) {
 		pr_err("%s: %s: fail to resume clock scaling (%d)\n",
 				mmc_hostname(host), __func__, ret);
 	}
+=======
+	return ret;
+}
+
+static int mmc_pre_hibernate(struct mmc_host *host)
+{
+	int ret = 0;
+
+	mmc_get_card(host->card);
+	host->cached_caps2 = host->caps2;
+
+	/*
+	 * Increase usage_count of card and host device till
+	 * hibernation is over. This will ensure they will not runtime suspend.
+	 */
+	pm_runtime_get_noresume(mmc_dev(host));
+	pm_runtime_get_noresume(&host->card->dev);
+
+	if (!mmc_can_scale_clk(host))
+		goto out;
+	/*
+	 * Suspend clock scaling and mask host capability so that
+	 * we will run in max frequency during:
+	 *	1. Hibernation preparation and image creation
+	 *	2. After finding hibernation image during reboot
+	 *	3. Once hibernation image is loaded and till hibernation
+	 *	restore is complete.
+	 */
+	if (host->clk_scaling.enable)
+		mmc_suspend_clk_scaling(host);
+	host->caps2 &= ~MMC_CAP2_CLK_SCALE;
+	host->clk_scaling.state = MMC_LOAD_HIGH;
+	ret = mmc_clk_update_freq(host, host->card->clk_scaling_highest,
+				host->clk_scaling.state);
+	if (ret)
+		pr_err("%s: %s: Setting clk frequency to max failed: %d\n",
+				mmc_hostname(host), __func__, ret);
+out:
+	mmc_host_clk_hold(host);
+	mmc_put_card(host->card);
+	return ret;
+}
+
+static int mmc_post_hibernate(struct mmc_host *host)
+{
+	int ret = 0;
+
+	mmc_get_card(host->card);
+	if (!(host->cached_caps2 & MMC_CAP2_CLK_SCALE))
+		goto enable_pm;
+	/* Enable the clock scaling and set the host capability */
+	host->caps2 |= MMC_CAP2_CLK_SCALE;
+	if (!host->clk_scaling.enable)
+		ret = mmc_resume_clk_scaling(host);
+	if (ret)
+		pr_err("%s: %s: Resuming clk scaling failed: %d\n",
+				mmc_hostname(host), __func__, ret);
+enable_pm:
+	/*
+	 * Reduce usage count of card and host device so that they may
+	 * runtime suspend.
+	 */
+	pm_runtime_put_noidle(&host->card->dev);
+	pm_runtime_put_noidle(mmc_dev(host));
+
+	mmc_host_clk_release(host);
+	mmc_put_card(host->card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2953,6 +3659,7 @@ static const struct mmc_bus_ops mmc_ops = {
 	.detect = mmc_detect,
 	.suspend = mmc_suspend,
 	.resume = mmc_resume,
+<<<<<<< HEAD
 	.deferred_resume = mmc_deferred_resume,
 	.runtime_suspend = mmc_runtime_suspend,
 	.runtime_resume = mmc_runtime_resume,
@@ -2961,6 +3668,16 @@ static const struct mmc_bus_ops mmc_ops = {
 	.hw_reset = _mmc_hw_reset,
 	.change_bus_speed = mmc_change_bus_speed,
 	.change_bus_speed_deferred = mmc_change_bus_speed_deferred,
+=======
+	.runtime_suspend = mmc_runtime_suspend,
+	.runtime_resume = mmc_runtime_resume,
+	.alive = mmc_alive,
+	.change_bus_speed = mmc_change_bus_speed,
+	.reset = mmc_reset,
+	.shutdown = mmc_shutdown,
+	.pre_hibernate = mmc_pre_hibernate,
+	.post_hibernate = mmc_post_hibernate
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*

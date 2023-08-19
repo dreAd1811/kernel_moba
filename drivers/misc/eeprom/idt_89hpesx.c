@@ -938,7 +938,11 @@ static ssize_t idt_dbgfs_csr_write(struct file *filep, const char __user *ubuf,
 {
 	struct idt_89hpesx_dev *pdev = filep->private_data;
 	char *colon_ch, *csraddr_str, *csrval_str;
+<<<<<<< HEAD
 	int ret, csraddr_len;
+=======
+	int ret, csraddr_len, csrval_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 csraddr, csrval;
 	char *buf;
 
@@ -964,7 +968,11 @@ static ssize_t idt_dbgfs_csr_write(struct file *filep, const char __user *ubuf,
 	if (colon_ch != NULL) {
 		csraddr_len = colon_ch - buf;
 		csraddr_str =
+<<<<<<< HEAD
 			kmalloc(csraddr_len + 1, GFP_KERNEL);
+=======
+			kmalloc(sizeof(char)*(csraddr_len + 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (csraddr_str == NULL) {
 			ret = -ENOMEM;
 			goto free_buf;
@@ -974,10 +982,18 @@ static ssize_t idt_dbgfs_csr_write(struct file *filep, const char __user *ubuf,
 		csraddr_str[csraddr_len] = '\0';
 		/* Register value must follow the colon */
 		csrval_str = colon_ch + 1;
+<<<<<<< HEAD
+=======
+		csrval_len = strnlen(csrval_str, count - csraddr_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else /* if (str_colon == NULL) */ {
 		csraddr_str = (char *)buf; /* Just to shut warning up */
 		csraddr_len = strnlen(csraddr_str, count);
 		csrval_str = NULL;
+<<<<<<< HEAD
+=======
+		csrval_len = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Convert CSR address to u32 value */
@@ -1128,7 +1144,11 @@ static void idt_get_fw_data(struct idt_89hpesx_dev *pdev)
 
 	device_for_each_child_node(dev, fwnode) {
 		ee_id = idt_ee_match_id(fwnode);
+<<<<<<< HEAD
 		if (!ee_id) {
+=======
+		if (IS_ERR_OR_NULL(ee_id)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_warn(dev, "Skip unsupported EEPROM device");
 			continue;
 		} else

@@ -204,14 +204,26 @@ static void *get_send_wqe(struct mlx4_ib_qp *qp, int n)
 
 /*
  * Stamp a SQ WQE so that it is invalid if prefetched by marking the
+<<<<<<< HEAD
  * first four bytes of every 64 byte chunk with 0xffffffff, except for
  * the very first chunk of the WQE.
  */
 static void stamp_send_wqe(struct mlx4_ib_qp *qp, int n)
+=======
+ * first four bytes of every 64 byte chunk with
+ *     0x7FFFFFF | (invalid_ownership_value << 31).
+ *
+ * When the max work request size is less than or equal to the WQE
+ * basic block size, as an optimization, we can stamp all WQEs with
+ * 0xffffffff, and skip the very first chunk of each WQE.
+ */
+static void stamp_send_wqe(struct mlx4_ib_qp *qp, int n, int size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	__be32 *wqe;
 	int i;
 	int s;
+<<<<<<< HEAD
 	void *buf;
 	struct mlx4_wqe_ctrl_seg *ctrl;
 
@@ -224,6 +236,81 @@ static void stamp_send_wqe(struct mlx4_ib_qp *qp, int n)
 	}
 }
 
+=======
+	int ind;
+	void *buf;
+	__be32 stamp;
+	struct mlx4_wqe_ctrl_seg *ctrl;
+
+	if (qp->sq_max_wqes_per_wr > 1) {
+		s = roundup(size, 1U << qp->sq.wqe_shift);
+		for (i = 0; i < s; i += 64) {
+			ind = (i >> qp->sq.wqe_shift) + n;
+			stamp = ind & qp->sq.wqe_cnt ? cpu_to_be32(0x7fffffff) :
+						       cpu_to_be32(0xffffffff);
+			buf = get_send_wqe(qp, ind & (qp->sq.wqe_cnt - 1));
+			wqe = buf + (i & ((1 << qp->sq.wqe_shift) - 1));
+			*wqe = stamp;
+		}
+	} else {
+		ctrl = buf = get_send_wqe(qp, n & (qp->sq.wqe_cnt - 1));
+		s = (ctrl->qpn_vlan.fence_size & 0x3f) << 4;
+		for (i = 64; i < s; i += 64) {
+			wqe = buf + i;
+			*wqe = cpu_to_be32(0xffffffff);
+		}
+	}
+}
+
+static void post_nop_wqe(struct mlx4_ib_qp *qp, int n, int size)
+{
+	struct mlx4_wqe_ctrl_seg *ctrl;
+	struct mlx4_wqe_inline_seg *inl;
+	void *wqe;
+	int s;
+
+	ctrl = wqe = get_send_wqe(qp, n & (qp->sq.wqe_cnt - 1));
+	s = sizeof(struct mlx4_wqe_ctrl_seg);
+
+	if (qp->ibqp.qp_type == IB_QPT_UD) {
+		struct mlx4_wqe_datagram_seg *dgram = wqe + sizeof *ctrl;
+		struct mlx4_av *av = (struct mlx4_av *)dgram->av;
+		memset(dgram, 0, sizeof *dgram);
+		av->port_pd = cpu_to_be32((qp->port << 24) | to_mpd(qp->ibqp.pd)->pdn);
+		s += sizeof(struct mlx4_wqe_datagram_seg);
+	}
+
+	/* Pad the remainder of the WQE with an inline data segment. */
+	if (size > s) {
+		inl = wqe + s;
+		inl->byte_count = cpu_to_be32(1 << 31 | (size - s - sizeof *inl));
+	}
+	ctrl->srcrb_flags = 0;
+	ctrl->qpn_vlan.fence_size = size / 16;
+	/*
+	 * Make sure descriptor is fully written before setting ownership bit
+	 * (because HW can start executing as soon as we do).
+	 */
+	wmb();
+
+	ctrl->owner_opcode = cpu_to_be32(MLX4_OPCODE_NOP | MLX4_WQE_CTRL_NEC) |
+		(n & qp->sq.wqe_cnt ? cpu_to_be32(1 << 31) : 0);
+
+	stamp_send_wqe(qp, n + qp->sq_spare_wqes, size);
+}
+
+/* Post NOP WQE to prevent wrap-around in the middle of WR */
+static inline unsigned pad_wraparound(struct mlx4_ib_qp *qp, int ind)
+{
+	unsigned s = qp->sq.wqe_cnt - (ind & (qp->sq.wqe_cnt - 1));
+	if (unlikely(s < qp->sq_max_wqes_per_wr)) {
+		post_nop_wqe(qp, ind, s << qp->sq.wqe_shift);
+		ind += s;
+	}
+	return ind;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mlx4_ib_qp_event(struct mlx4_qp *qp, enum mlx4_event type)
 {
 	struct ib_event event;
@@ -368,7 +455,12 @@ static int set_rq_size(struct mlx4_ib_dev *dev, struct ib_qp_cap *cap,
 }
 
 static int set_kernel_sq_size(struct mlx4_ib_dev *dev, struct ib_qp_cap *cap,
+<<<<<<< HEAD
 			      enum mlx4_ib_qp_type type, struct mlx4_ib_qp *qp)
+=======
+			      enum mlx4_ib_qp_type type, struct mlx4_ib_qp *qp,
+			      bool shrink_wqe)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int s;
 
@@ -395,6 +487,7 @@ static int set_kernel_sq_size(struct mlx4_ib_dev *dev, struct ib_qp_cap *cap,
 	if (s > dev->dev->caps.max_sq_desc_sz)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	qp->sq.wqe_shift = ilog2(roundup_pow_of_two(s));
 
 	/*
@@ -409,6 +502,72 @@ static int set_kernel_sq_size(struct mlx4_ib_dev *dev, struct ib_qp_cap *cap,
 		(min(dev->dev->caps.max_sq_desc_sz,
 		     (1 << qp->sq.wqe_shift)) -
 		 send_wqe_overhead(type, qp->flags)) /
+=======
+	/*
+	 * Hermon supports shrinking WQEs, such that a single work
+	 * request can include multiple units of 1 << wqe_shift.  This
+	 * way, work requests can differ in size, and do not have to
+	 * be a power of 2 in size, saving memory and speeding up send
+	 * WR posting.  Unfortunately, if we do this then the
+	 * wqe_index field in CQEs can't be used to look up the WR ID
+	 * anymore, so we do this only if selective signaling is off.
+	 *
+	 * Further, on 32-bit platforms, we can't use vmap() to make
+	 * the QP buffer virtually contiguous.  Thus we have to use
+	 * constant-sized WRs to make sure a WR is always fully within
+	 * a single page-sized chunk.
+	 *
+	 * Finally, we use NOP work requests to pad the end of the
+	 * work queue, to avoid wrap-around in the middle of WR.  We
+	 * set NEC bit to avoid getting completions with error for
+	 * these NOP WRs, but since NEC is only supported starting
+	 * with firmware 2.2.232, we use constant-sized WRs for older
+	 * firmware.
+	 *
+	 * And, since MLX QPs only support SEND, we use constant-sized
+	 * WRs in this case.
+	 *
+	 * We look for the smallest value of wqe_shift such that the
+	 * resulting number of wqes does not exceed device
+	 * capabilities.
+	 *
+	 * We set WQE size to at least 64 bytes, this way stamping
+	 * invalidates each WQE.
+	 */
+	if (shrink_wqe && dev->dev->caps.fw_ver >= MLX4_FW_VER_WQE_CTRL_NEC &&
+	    qp->sq_signal_bits && BITS_PER_LONG == 64 &&
+	    type != MLX4_IB_QPT_SMI && type != MLX4_IB_QPT_GSI &&
+	    !(type & (MLX4_IB_QPT_PROXY_SMI_OWNER | MLX4_IB_QPT_PROXY_SMI |
+		      MLX4_IB_QPT_PROXY_GSI | MLX4_IB_QPT_TUN_SMI_OWNER)))
+		qp->sq.wqe_shift = ilog2(64);
+	else
+		qp->sq.wqe_shift = ilog2(roundup_pow_of_two(s));
+
+	for (;;) {
+		qp->sq_max_wqes_per_wr = DIV_ROUND_UP(s, 1U << qp->sq.wqe_shift);
+
+		/*
+		 * We need to leave 2 KB + 1 WR of headroom in the SQ to
+		 * allow HW to prefetch.
+		 */
+		qp->sq_spare_wqes = (2048 >> qp->sq.wqe_shift) + qp->sq_max_wqes_per_wr;
+		qp->sq.wqe_cnt = roundup_pow_of_two(cap->max_send_wr *
+						    qp->sq_max_wqes_per_wr +
+						    qp->sq_spare_wqes);
+
+		if (qp->sq.wqe_cnt <= dev->dev->caps.max_wqes)
+			break;
+
+		if (qp->sq_max_wqes_per_wr <= 1)
+			return -EINVAL;
+
+		++qp->sq.wqe_shift;
+	}
+
+	qp->sq.max_gs = (min(dev->dev->caps.max_sq_desc_sz,
+			     (qp->sq_max_wqes_per_wr << qp->sq.wqe_shift)) -
+			 send_wqe_overhead(type, qp->flags)) /
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sizeof (struct mlx4_wqe_data_seg);
 
 	qp->buf_size = (qp->rq.wqe_cnt << qp->rq.wqe_shift) +
@@ -422,7 +581,11 @@ static int set_kernel_sq_size(struct mlx4_ib_dev *dev, struct ib_qp_cap *cap,
 	}
 
 	cap->max_send_wr  = qp->sq.max_post =
+<<<<<<< HEAD
 		qp->sq.wqe_cnt - qp->sq_spare_wqes;
+=======
+		(qp->sq.wqe_cnt - qp->sq_spare_wqes) / qp->sq_max_wqes_per_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cap->max_send_sge = min(qp->sq.max_gs,
 				min(dev->dev->caps.max_sq_sg,
 				    dev->dev->caps.max_rq_sg));
@@ -457,8 +620,13 @@ static int alloc_proxy_bufs(struct ib_device *dev, struct mlx4_ib_qp *qp)
 	int i;
 
 	qp->sqp_proxy_rcv =
+<<<<<<< HEAD
 		kmalloc_array(qp->rq.wqe_cnt, sizeof(struct mlx4_ib_buf),
 			      GFP_KERNEL);
+=======
+		kmalloc(sizeof (struct mlx4_ib_buf) * qp->rq.wqe_cnt,
+			GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!qp->sqp_proxy_rcv)
 		return -ENOMEM;
 	for (i = 0; i < qp->rq.wqe_cnt; i++) {
@@ -557,8 +725,12 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
 					  MLX4_IB_RX_HASH_SRC_PORT_TCP	|
 					  MLX4_IB_RX_HASH_DST_PORT_TCP	|
 					  MLX4_IB_RX_HASH_SRC_PORT_UDP	|
+<<<<<<< HEAD
 					  MLX4_IB_RX_HASH_DST_PORT_UDP  |
 					  MLX4_IB_RX_HASH_INNER)) {
+=======
+					  MLX4_IB_RX_HASH_DST_PORT_UDP)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("RX Hash fields_mask has unsupported mask (0x%llx)\n",
 			 ucmd->rx_hash_fields_mask);
 		return (-EOPNOTSUPP);
@@ -619,6 +791,7 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
 		return (-EOPNOTSUPP);
 	}
 
+<<<<<<< HEAD
 	if (ucmd->rx_hash_fields_mask & MLX4_IB_RX_HASH_INNER) {
 		if (dev->dev->caps.tunnel_offload_mode ==
 		    MLX4_TUNNEL_OFFLOAD_MODE_VXLAN) {
@@ -637,6 +810,12 @@ static int set_qp_rss(struct mlx4_ib_dev *dev, struct mlx4_ib_rss *rss_ctx,
 }
 
 static int create_qp_rss(struct mlx4_ib_dev *dev,
+=======
+	return 0;
+}
+
+static int create_qp_rss(struct mlx4_ib_dev *dev, struct ib_pd *ibpd,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 struct ib_qp_init_attr *init_attr,
 			 struct mlx4_ib_create_qp_rss *ucmd,
 			 struct mlx4_ib_qp *qp)
@@ -759,7 +938,11 @@ static struct ib_qp *_mlx4_ib_create_qp_rss(struct ib_pd *pd,
 	qp->pri.vid = 0xFFFF;
 	qp->alt.vid = 0xFFFF;
 
+<<<<<<< HEAD
 	err = create_qp_rss(to_mdev(pd->device), init_attr, &ucmd, qp);
+=======
+	err = create_qp_rss(to_mdev(pd->device), pd, init_attr, &ucmd, qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		kfree(qp);
 		return ERR_PTR(err);
@@ -861,6 +1044,10 @@ static int create_qp_common(struct mlx4_ib_dev *dev, struct ib_pd *pd,
 {
 	int qpn;
 	int err;
+<<<<<<< HEAD
+=======
+	struct ib_qp_cap backup_cap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx4_ib_sqp *sqp = NULL;
 	struct mlx4_ib_qp *qp;
 	enum mlx4_ib_qp_type qp_type = (enum mlx4_ib_qp_type) init_attr->qp_type;
@@ -948,8 +1135,11 @@ static int create_qp_common(struct mlx4_ib_dev *dev, struct ib_pd *pd,
 			struct mlx4_ib_create_wq wq;
 		} ucmd;
 		size_t copy_len;
+<<<<<<< HEAD
 		int shift;
 		int n;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		copy_len = (src == MLX4_IB_QP_SRC) ?
 			   sizeof(struct mlx4_ib_create_qp) :
@@ -980,6 +1170,7 @@ static int create_qp_common(struct mlx4_ib_dev *dev, struct ib_pd *pd,
 			qp->inl_recv_sz = ucmd.qp.inl_recv_sz;
 		}
 
+<<<<<<< HEAD
 		if (init_attr->create_flags & IB_QP_CREATE_SCATTER_FCS) {
 			if (!(dev->dev->caps.flags &
 			      MLX4_DEV_CAP_FLAG_FCS_KEEP)) {
@@ -991,6 +1182,8 @@ static int create_qp_common(struct mlx4_ib_dev *dev, struct ib_pd *pd,
 			qp->flags |= MLX4_IB_QP_SCATTER_FCS;
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = set_rq_size(dev, &init_attr->cap, !!pd->uobject,
 				  qp_has_rq(init_attr), qp, qp->inl_recv_sz);
 		if (err)
@@ -1023,10 +1216,15 @@ static int create_qp_common(struct mlx4_ib_dev *dev, struct ib_pd *pd,
 			goto err;
 		}
 
+<<<<<<< HEAD
 		n = ib_umem_page_count(qp->umem);
 		shift = mlx4_ib_umem_calc_optimal_mtt_size(qp->umem, 0, &n);
 		err = mlx4_mtt_init(dev->dev, n, shift, &qp->mtt);
 
+=======
+		err = mlx4_mtt_init(dev->dev, ib_umem_page_count(qp->umem),
+				    qp->umem->page_shift, &qp->mtt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto err_buf;
 
@@ -1061,7 +1259,13 @@ static int create_qp_common(struct mlx4_ib_dev *dev, struct ib_pd *pd,
 				goto err;
 		}
 
+<<<<<<< HEAD
 		err = set_kernel_sq_size(dev, &init_attr->cap, qp_type, qp);
+=======
+		memcpy(&backup_cap, &init_attr->cap, sizeof(backup_cap));
+		err = set_kernel_sq_size(dev, &init_attr->cap,
+					 qp_type, qp, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto err;
 
@@ -1073,10 +1277,27 @@ static int create_qp_common(struct mlx4_ib_dev *dev, struct ib_pd *pd,
 			*qp->db.db = 0;
 		}
 
+<<<<<<< HEAD
 		if (mlx4_buf_alloc(dev->dev, qp->buf_size,  PAGE_SIZE * 2,
 				   &qp->buf)) {
 			err = -ENOMEM;
 			goto err_db;
+=======
+		if (mlx4_buf_alloc(dev->dev, qp->buf_size, qp->buf_size,
+				   &qp->buf)) {
+			memcpy(&init_attr->cap, &backup_cap,
+			       sizeof(backup_cap));
+			err = set_kernel_sq_size(dev, &init_attr->cap, qp_type,
+						 qp, false);
+			if (err)
+				goto err_db;
+
+			if (mlx4_buf_alloc(dev->dev, qp->buf_size,
+					   PAGE_SIZE * 2, &qp->buf)) {
+				err = -ENOMEM;
+				goto err_db;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		err = mlx4_mtt_init(dev->dev, qp->buf.npages, qp->buf.page_shift,
@@ -1730,10 +1951,16 @@ static int _mlx4_set_path(struct mlx4_ib_dev *dev,
 	if (rdma_ah_get_ah_flags(ah) & IB_AH_GRH) {
 		const struct ib_global_route *grh = rdma_ah_read_grh(ah);
 		int real_sgid_index =
+<<<<<<< HEAD
 			mlx4_ib_gid_index_to_real_index(dev, grh->sgid_attr);
 
 		if (real_sgid_index < 0)
 			return real_sgid_index;
+=======
+			mlx4_ib_gid_index_to_real_index(dev, port,
+							grh->sgid_index);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (real_sgid_index >= dev->dev->caps.gid_table_len[port]) {
 			pr_err("sgid_index (%u) too large. max is %d\n",
 			       real_sgid_index, dev->dev->caps.gid_table_len[port] - 1);
@@ -2046,7 +2273,10 @@ static int __mlx4_ib_modify_qp(void *src, enum mlx4_ib_source_type src_type,
 {
 	struct ib_uobject *ibuobject;
 	struct ib_srq  *ibsrq;
+<<<<<<< HEAD
 	const struct ib_gid_attr *gid_attr = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_rwq_ind_table *rwq_ind_tbl;
 	enum ib_qp_type qp_type;
 	struct mlx4_ib_dev *dev;
@@ -2117,9 +2347,12 @@ static int __mlx4_ib_modify_qp(void *src, enum mlx4_ib_source_type src_type,
 	if (qp->inl_recv_sz)
 		context->param3 |= cpu_to_be32(1 << 25);
 
+<<<<<<< HEAD
 	if (qp->flags & MLX4_IB_QP_SCATTER_FCS)
 		context->param3 |= cpu_to_be32(1 << 29);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (qp_type == IB_QPT_GSI || qp_type == IB_QPT_SMI)
 		context->mtu_msgmax = (IB_MTU_4096 << 5) | 11;
 	else if (qp_type == IB_QPT_RAW_PACKET)
@@ -2227,17 +2460,43 @@ static int __mlx4_ib_modify_qp(void *src, enum mlx4_ib_source_type src_type,
 	if (attr_mask & IB_QP_AV) {
 		u8 port_num = mlx4_is_bonded(dev->dev) ? 1 :
 			attr_mask & IB_QP_PORT ? attr->port_num : qp->port;
+<<<<<<< HEAD
 		u16 vlan = 0xffff;
 		u8 smac[ETH_ALEN];
+=======
+		union ib_gid gid;
+		struct ib_gid_attr gid_attr = {.gid_type = IB_GID_TYPE_IB};
+		u16 vlan = 0xffff;
+		u8 smac[ETH_ALEN];
+		int status = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int is_eth =
 			rdma_cap_eth_ah(&dev->ib_dev, port_num) &&
 			rdma_ah_get_ah_flags(&attr->ah_attr) & IB_AH_GRH;
 
 		if (is_eth) {
+<<<<<<< HEAD
 			gid_attr = attr->ah_attr.grh.sgid_attr;
 			vlan = rdma_vlan_dev_vlan_id(gid_attr->ndev);
 			memcpy(smac, gid_attr->ndev->dev_addr, ETH_ALEN);
 		}
+=======
+			int index =
+				rdma_ah_read_grh(&attr->ah_attr)->sgid_index;
+
+			status = ib_get_cached_gid(&dev->ib_dev, port_num,
+						   index, &gid, &gid_attr);
+			if (!status && !memcmp(&gid, &zgid, sizeof(gid)))
+				status = -ENOENT;
+			if (!status && gid_attr.ndev) {
+				vlan = rdma_vlan_dev_vlan_id(gid_attr.ndev);
+				memcpy(smac, gid_attr.ndev->dev_addr, ETH_ALEN);
+				dev_put(gid_attr.ndev);
+			}
+		}
+		if (status)
+			goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (mlx4_set_path(dev, attr, attr_mask, qp, &context->pri_path,
 				  port_num, vlan, smac))
@@ -2248,7 +2507,11 @@ static int __mlx4_ib_modify_qp(void *src, enum mlx4_ib_source_type src_type,
 
 		if (is_eth &&
 		    (cur_state == IB_QPS_INIT && new_state == IB_QPS_RTR)) {
+<<<<<<< HEAD
 			u8 qpc_roce_mode = gid_type_to_qpc(gid_attr->gid_type);
+=======
+			u8 qpc_roce_mode = gid_type_to_qpc(gid_attr.gid_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (qpc_roce_mode == MLX4_QPC_ROCE_MODE_UNDEFINED) {
 				err = -EINVAL;
@@ -2453,9 +2716,17 @@ static int __mlx4_ib_modify_qp(void *src, enum mlx4_ib_source_type src_type,
 		for (i = 0; i < qp->sq.wqe_cnt; ++i) {
 			ctrl = get_send_wqe(qp, i);
 			ctrl->owner_opcode = cpu_to_be32(1 << 31);
+<<<<<<< HEAD
 			ctrl->qpn_vlan.fence_size =
 				1 << (qp->sq.wqe_shift - 4);
 			stamp_send_wqe(qp, i);
+=======
+			if (qp->sq_max_wqes_per_wr == 1)
+				ctrl->qpn_vlan.fence_size =
+						1 << (qp->sq.wqe_shift - 4);
+
+			stamp_send_wqe(qp, i, 1 << qp->sq.wqe_shift);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -2794,7 +3065,11 @@ static int vf_get_qp0_qkey(struct mlx4_dev *dev, int qpn, u32 *qkey)
 }
 
 static int build_sriov_qp0_header(struct mlx4_ib_sqp *sqp,
+<<<<<<< HEAD
 				  const struct ib_ud_wr *wr,
+=======
+				  struct ib_ud_wr *wr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  void *wqe, unsigned *mlx_seg_len)
 {
 	struct mlx4_ib_dev *mdev = to_mdev(sqp->qp.ibqp.device);
@@ -2807,6 +3082,10 @@ static int build_sriov_qp0_header(struct mlx4_ib_sqp *sqp,
 	int send_size;
 	int header_size;
 	int spc;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	if (wr->wr.opcode != IB_WR_SEND)
@@ -2841,7 +3120,13 @@ static int build_sriov_qp0_header(struct mlx4_ib_sqp *sqp,
 
 	sqp->ud_header.lrh.virtual_lane    = 0;
 	sqp->ud_header.bth.solicited_event = !!(wr->wr.send_flags & IB_SEND_SOLICITED);
+<<<<<<< HEAD
 	ib_get_cached_pkey(ib_dev, sqp->qp.port, 0, &pkey);
+=======
+	err = ib_get_cached_pkey(ib_dev, sqp->qp.port, 0, &pkey);
+	if (err)
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sqp->ud_header.bth.pkey = cpu_to_be16(pkey);
 	if (sqp->qp.mlx4_ib_qp_type == MLX4_IB_QPT_TUN_SMI_OWNER)
 		sqp->ud_header.bth.destination_qpn = cpu_to_be32(wr->remote_qpn);
@@ -2935,14 +3220,22 @@ static int fill_gid_by_hw_index(struct mlx4_ib_dev *ibdev, u8 port_num,
 	memcpy(gid, &port_gid_table->gids[index].gid, sizeof(*gid));
 	*gid_type = port_gid_table->gids[index].gid_type;
 	spin_unlock_irqrestore(&iboe->lock, flags);
+<<<<<<< HEAD
 	if (rdma_is_zero_gid(gid))
+=======
+	if (!memcmp(gid, &zgid, sizeof(*gid)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOENT;
 
 	return 0;
 }
 
 #define MLX4_ROCEV2_QP1_SPORT 0xC000
+<<<<<<< HEAD
 static int build_mlx_header(struct mlx4_ib_sqp *sqp, const struct ib_ud_wr *wr,
+=======
+static int build_mlx_header(struct mlx4_ib_sqp *sqp, struct ib_ud_wr *wr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    void *wqe, unsigned *mlx_seg_len)
 {
 	struct ib_device *ib_dev = sqp->qp.ibqp.device;
@@ -3038,8 +3331,15 @@ static int build_mlx_header(struct mlx4_ib_sqp *sqp, const struct ib_ud_wr *wr,
 					to_mdev(ib_dev)->sriov.demux[sqp->qp.port - 1].
 						       guid_cache[ah->av.ib.gid_index];
 			} else {
+<<<<<<< HEAD
 				sqp->ud_header.grh.source_gid =
 					ah->ibah.sgid_attr->gid;
+=======
+				ib_get_cached_gid(ib_dev,
+						  be32_to_cpu(ah->av.ib.port_pd) >> 24,
+						  ah->av.ib.gid_index,
+						  &sqp->ud_header.grh.source_gid, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		memcpy(sqp->ud_header.grh.destination_gid.raw,
@@ -3128,9 +3428,20 @@ static int build_mlx_header(struct mlx4_ib_sqp *sqp, const struct ib_ud_wr *wr,
 	}
 	sqp->ud_header.bth.solicited_event = !!(wr->wr.send_flags & IB_SEND_SOLICITED);
 	if (!sqp->qp.ibqp.qp_num)
+<<<<<<< HEAD
 		ib_get_cached_pkey(ib_dev, sqp->qp.port, sqp->pkey_index, &pkey);
 	else
 		ib_get_cached_pkey(ib_dev, sqp->qp.port, wr->pkey_index, &pkey);
+=======
+		err = ib_get_cached_pkey(ib_dev, sqp->qp.port, sqp->pkey_index,
+					 &pkey);
+	else
+		err = ib_get_cached_pkey(ib_dev, sqp->qp.port, wr->pkey_index,
+					 &pkey);
+	if (err)
+		return err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sqp->ud_header.bth.pkey = cpu_to_be16(pkey);
 	sqp->ud_header.bth.destination_qpn = cpu_to_be32(wr->remote_qpn);
 	sqp->ud_header.bth.psn = cpu_to_be32((sqp->send_psn++) & ((1 << 24) - 1));
@@ -3224,7 +3535,11 @@ static __be32 convert_access(int acc)
 }
 
 static void set_reg_seg(struct mlx4_wqe_fmr_seg *fseg,
+<<<<<<< HEAD
 			const struct ib_reg_wr *wr)
+=======
+			struct ib_reg_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx4_ib_mr *mr = to_mmr(wr->mr);
 
@@ -3254,7 +3569,11 @@ static __always_inline void set_raddr_seg(struct mlx4_wqe_raddr_seg *rseg,
 }
 
 static void set_atomic_seg(struct mlx4_wqe_atomic_seg *aseg,
+<<<<<<< HEAD
 			   const struct ib_atomic_wr *wr)
+=======
+		struct ib_atomic_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (wr->wr.opcode == IB_WR_ATOMIC_CMP_AND_SWP) {
 		aseg->swap_add = cpu_to_be64(wr->swap);
@@ -3270,7 +3589,11 @@ static void set_atomic_seg(struct mlx4_wqe_atomic_seg *aseg,
 }
 
 static void set_masked_atomic_seg(struct mlx4_wqe_masked_atomic_seg *aseg,
+<<<<<<< HEAD
 				  const struct ib_atomic_wr *wr)
+=======
+				  struct ib_atomic_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	aseg->swap_add		= cpu_to_be64(wr->swap);
 	aseg->swap_add_mask	= cpu_to_be64(wr->swap_mask);
@@ -3279,7 +3602,11 @@ static void set_masked_atomic_seg(struct mlx4_wqe_masked_atomic_seg *aseg,
 }
 
 static void set_datagram_seg(struct mlx4_wqe_datagram_seg *dseg,
+<<<<<<< HEAD
 			     const struct ib_ud_wr *wr)
+=======
+			     struct ib_ud_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	memcpy(dseg->av, &to_mah(wr->ah)->av, sizeof (struct mlx4_av));
 	dseg->dqpn = cpu_to_be32(wr->remote_qpn);
@@ -3290,7 +3617,11 @@ static void set_datagram_seg(struct mlx4_wqe_datagram_seg *dseg,
 
 static void set_tunnel_datagram_seg(struct mlx4_ib_dev *dev,
 				    struct mlx4_wqe_datagram_seg *dseg,
+<<<<<<< HEAD
 				    const struct ib_ud_wr *wr,
+=======
+				    struct ib_ud_wr *wr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    enum mlx4_ib_qp_type qpt)
 {
 	union mlx4_ext_av *av = &to_mah(wr->ah)->av;
@@ -3312,8 +3643,12 @@ static void set_tunnel_datagram_seg(struct mlx4_ib_dev *dev,
 	dseg->qkey = cpu_to_be32(IB_QP_SET_QKEY);
 }
 
+<<<<<<< HEAD
 static void build_tunnel_header(const struct ib_ud_wr *wr, void *wqe,
 				unsigned *mlx_seg_len)
+=======
+static void build_tunnel_header(struct ib_ud_wr *wr, void *wqe, unsigned *mlx_seg_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx4_wqe_inline_seg *inl = wqe;
 	struct mlx4_ib_tunnel_header hdr;
@@ -3396,9 +3731,15 @@ static void __set_data_seg(struct mlx4_wqe_data_seg *dseg, struct ib_sge *sg)
 	dseg->addr       = cpu_to_be64(sg->addr);
 }
 
+<<<<<<< HEAD
 static int build_lso_seg(struct mlx4_wqe_lso_seg *wqe,
 			 const struct ib_ud_wr *wr, struct mlx4_ib_qp *qp,
 			 unsigned *lso_seg_len, __be32 *lso_hdr_sz, __be32 *blh)
+=======
+static int build_lso_seg(struct mlx4_wqe_lso_seg *wqe, struct ib_ud_wr *wr,
+			 struct mlx4_ib_qp *qp, unsigned *lso_seg_len,
+			 __be32 *lso_hdr_sz, __be32 *blh)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned halign = ALIGN(sizeof *wqe + wr->hlen, 16);
 
@@ -3416,7 +3757,11 @@ static int build_lso_seg(struct mlx4_wqe_lso_seg *wqe,
 	return 0;
 }
 
+<<<<<<< HEAD
 static __be32 send_ieth(const struct ib_send_wr *wr)
+=======
+static __be32 send_ieth(struct ib_send_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (wr->opcode) {
 	case IB_WR_SEND_WITH_IMM:
@@ -3438,8 +3783,13 @@ static void add_zero_len_inline(void *wqe)
 	inl->byte_count = cpu_to_be32(1 << 31);
 }
 
+<<<<<<< HEAD
 static int _mlx4_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 			      const struct ib_send_wr **bad_wr, bool drain)
+=======
+int mlx4_ib_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
+		      struct ib_send_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx4_ib_qp *qp = to_mqp(ibqp);
 	void *wqe;
@@ -3449,6 +3799,10 @@ static int _mlx4_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 	int nreq;
 	int err = 0;
 	unsigned ind;
+<<<<<<< HEAD
+=======
+	int uninitialized_var(stamp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int uninitialized_var(size);
 	unsigned uninitialized_var(seglen);
 	__be32 dummy;
@@ -3478,8 +3832,12 @@ static int _mlx4_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 	}
 
 	spin_lock_irqsave(&qp->sq.lock, flags);
+<<<<<<< HEAD
 	if (mdev->dev->persist->state & MLX4_DEVICE_STATE_INTERNAL_ERROR &&
 	    !drain) {
+=======
+	if (mdev->dev->persist->state & MLX4_DEVICE_STATE_INTERNAL_ERROR) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EIO;
 		*bad_wr = wr;
 		nreq = 0;
@@ -3721,14 +4079,32 @@ static int _mlx4_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		ctrl->owner_opcode = mlx4_ib_opcode[wr->opcode] |
 			(ind & qp->sq.wqe_cnt ? cpu_to_be32(1 << 31) : 0) | blh;
 
+<<<<<<< HEAD
+=======
+		stamp = ind + qp->sq_spare_wqes;
+		ind += DIV_ROUND_UP(size * 16, 1U << qp->sq.wqe_shift);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We can improve latency by not stamping the last
 		 * send queue WQE until after ringing the doorbell, so
 		 * only stamp here if there are still more WQEs to post.
+<<<<<<< HEAD
 		 */
 		if (wr->next)
 			stamp_send_wqe(qp, ind + qp->sq_spare_wqes);
 		ind++;
+=======
+		 *
+		 * Same optimization applies to padding with NOP wqe
+		 * in case of WQE shrinking (used to prevent wrap-around
+		 * in the middle of WR).
+		 */
+		if (wr->next) {
+			stamp_send_wqe(qp, stamp, size * 16);
+			ind = pad_wraparound(qp, ind);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
@@ -3741,8 +4117,13 @@ out:
 		 */
 		wmb();
 
+<<<<<<< HEAD
 		writel_relaxed(qp->doorbell_qpn,
 			to_mdev(ibqp->device)->uar_map + MLX4_SEND_DOORBELL);
+=======
+		writel(qp->doorbell_qpn,
+		       to_mdev(ibqp->device)->uar_map + MLX4_SEND_DOORBELL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Make sure doorbells don't leak out of SQ spinlock
@@ -3750,8 +4131,14 @@ out:
 		 */
 		mmiowb();
 
+<<<<<<< HEAD
 		stamp_send_wqe(qp, ind + qp->sq_spare_wqes - 1);
 
+=======
+		stamp_send_wqe(qp, stamp, size * 16);
+
+		ind = pad_wraparound(qp, ind);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qp->sq_next_wqe = ind;
 	}
 
@@ -3760,6 +4147,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 int mlx4_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		      const struct ib_send_wr **bad_wr)
 {
@@ -3768,6 +4156,10 @@ int mlx4_ib_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 
 static int _mlx4_ib_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 			      const struct ib_recv_wr **bad_wr, bool drain)
+=======
+int mlx4_ib_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
+		      struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx4_ib_qp *qp = to_mqp(ibqp);
 	struct mlx4_wqe_data_seg *scat;
@@ -3782,8 +4174,12 @@ static int _mlx4_ib_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 	max_gs = qp->rq.max_gs;
 	spin_lock_irqsave(&qp->rq.lock, flags);
 
+<<<<<<< HEAD
 	if (mdev->dev->persist->state & MLX4_DEVICE_STATE_INTERNAL_ERROR &&
 	    !drain) {
+=======
+	if (mdev->dev->persist->state & MLX4_DEVICE_STATE_INTERNAL_ERROR) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EIO;
 		*bad_wr = wr;
 		nreq = 0;
@@ -3854,12 +4250,15 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 int mlx4_ib_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 		      const struct ib_recv_wr **bad_wr)
 {
 	return _mlx4_ib_post_recv(ibqp, wr, bad_wr, false);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline enum ib_qp_state to_ib_qp_state(enum mlx4_qp_state mlx4_state)
 {
 	switch (mlx4_state) {
@@ -4077,7 +4476,11 @@ struct ib_wq *mlx4_ib_create_wq(struct ib_pd *pd,
 		return ERR_PTR(-EOPNOTSUPP);
 	}
 
+<<<<<<< HEAD
 	if (init_attr->create_flags & ~IB_WQ_FLAGS_SCATTER_FCS) {
+=======
+	if (init_attr->create_flags) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("unsupported create_flags %u\n",
 			 init_attr->create_flags);
 		return ERR_PTR(-EOPNOTSUPP);
@@ -4098,9 +4501,12 @@ struct ib_wq *mlx4_ib_create_wq(struct ib_pd *pd,
 	ib_qp_init_attr.recv_cq = init_attr->cq;
 	ib_qp_init_attr.send_cq = ib_qp_init_attr.recv_cq; /* Dummy CQ */
 
+<<<<<<< HEAD
 	if (init_attr->create_flags & IB_WQ_FLAGS_SCATTER_FCS)
 		ib_qp_init_attr.create_flags |= IB_QP_CREATE_SCATTER_FCS;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = create_qp_common(dev, pd, MLX4_IB_RWQ_SRC, &ib_qp_init_attr,
 			       udata, 0, &qp);
 	if (err) {
@@ -4325,6 +4731,7 @@ int mlx4_ib_destroy_rwq_ind_table(struct ib_rwq_ind_table *ib_rwq_ind_tbl)
 	kfree(ib_rwq_ind_tbl);
 	return 0;
 }
+<<<<<<< HEAD
 
 struct mlx4_ib_drain_cqe {
 	struct ib_cqe cqe;
@@ -4454,3 +4861,5 @@ void mlx4_ib_drain_rq(struct ib_qp *qp)
 
 	handle_drain_completion(cq, &rdrain, dev);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

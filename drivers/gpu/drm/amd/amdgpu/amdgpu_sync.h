@@ -41,6 +41,7 @@ struct amdgpu_sync {
 
 void amdgpu_sync_create(struct amdgpu_sync *sync);
 int amdgpu_sync_fence(struct amdgpu_device *adev, struct amdgpu_sync *sync,
+<<<<<<< HEAD
 		      struct dma_fence *f, bool explicit);
 int amdgpu_sync_resv(struct amdgpu_device *adev,
 		     struct amdgpu_sync *sync,
@@ -51,6 +52,16 @@ struct dma_fence *amdgpu_sync_peek_fence(struct amdgpu_sync *sync,
 				     struct amdgpu_ring *ring);
 struct dma_fence *amdgpu_sync_get_fence(struct amdgpu_sync *sync, bool *explicit);
 int amdgpu_sync_clone(struct amdgpu_sync *source, struct amdgpu_sync *clone);
+=======
+		      struct dma_fence *f);
+int amdgpu_sync_resv(struct amdgpu_device *adev,
+		     struct amdgpu_sync *sync,
+		     struct reservation_object *resv,
+		     void *owner);
+struct dma_fence *amdgpu_sync_peek_fence(struct amdgpu_sync *sync,
+				     struct amdgpu_ring *ring);
+struct dma_fence *amdgpu_sync_get_fence(struct amdgpu_sync *sync);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_sync_wait(struct amdgpu_sync *sync, bool intr);
 void amdgpu_sync_free(struct amdgpu_sync *sync);
 int amdgpu_sync_init(void);

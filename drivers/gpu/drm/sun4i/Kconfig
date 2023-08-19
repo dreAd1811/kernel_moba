@@ -1,6 +1,10 @@
 config DRM_SUN4I
 	tristate "DRM Support for Allwinner A10 Display Engine"
+<<<<<<< HEAD
 	depends on DRM && (ARM || ARM64) && COMMON_CLK
+=======
+	depends on DRM && ARM && COMMON_CLK
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARCH_SUNXI || COMPILE_TEST
 	select DRM_GEM_CMA_HELPER
 	select DRM_KMS_HELPER
@@ -40,6 +44,7 @@ config DRM_SUN4I_BACKEND
 	  do some alpha blending and feed graphics to TCON. If M is
 	  selected the module will be called sun4i-backend.
 
+<<<<<<< HEAD
 config DRM_SUN6I_DSI
 	tristate "Allwinner A31 MIPI-DSI Controller Support"
 	default MACH_SUN8I
@@ -59,6 +64,8 @@ config DRM_SUN8I_DW_HDMI
 	  DesignWare HDMI controller with custom HDMI PHY. If M is
 	  selected the module will be called sun8i_dw_hdmi.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DRM_SUN8I_MIXER
 	tristate "Support for Allwinner Display Engine 2.0 Mixer"
 	default MACH_SUN8I
@@ -68,6 +75,7 @@ config DRM_SUN8I_MIXER
 	  graphics mixture and feed graphics to TCON, If M is
 	  selected the module will be called sun8i-mixer.
 
+<<<<<<< HEAD
 config DRM_SUN8I_TCON_TOP
 	tristate
 	default DRM_SUN4I if DRM_SUN8I_MIXER!=n
@@ -75,4 +83,6 @@ config DRM_SUN8I_TCON_TOP
 	  TCON TOP is responsible for configuring display pipeline for
 	  HTMI, TVE and LCD.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif

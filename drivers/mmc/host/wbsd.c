@@ -268,29 +268,67 @@ static inline int wbsd_next_sg(struct wbsd_host *host)
 	return host->num_sg;
 }
 
+<<<<<<< HEAD
 static inline char *wbsd_map_sg(struct wbsd_host *host)
 {
 	return kmap_atomic(sg_page(host->cur_sg)) + host->cur_sg->offset;
+=======
+static inline char *wbsd_sg_to_buffer(struct wbsd_host *host)
+{
+	return sg_virt(host->cur_sg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void wbsd_sg_to_dma(struct wbsd_host *host, struct mmc_data *data)
 {
+<<<<<<< HEAD
 	size_t len = 0;
 	int i;
 
 	for (i = 0; i < data->sg_len; i++)
 		len += data->sg[i].length;
 	sg_copy_to_buffer(data->sg, data->sg_len, host->dma_buffer, len);
+=======
+	unsigned int len, i;
+	struct scatterlist *sg;
+	char *dmabuf = host->dma_buffer;
+	char *sgbuf;
+
+	sg = data->sg;
+	len = data->sg_len;
+
+	for (i = 0; i < len; i++) {
+		sgbuf = sg_virt(&sg[i]);
+		memcpy(dmabuf, sgbuf, sg[i].length);
+		dmabuf += sg[i].length;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void wbsd_dma_to_sg(struct wbsd_host *host, struct mmc_data *data)
 {
+<<<<<<< HEAD
 	size_t len = 0;
 	int i;
 
 	for (i = 0; i < data->sg_len; i++)
 		len += data->sg[i].length;
 	sg_copy_from_buffer(data->sg, data->sg_len, host->dma_buffer, len);
+=======
+	unsigned int len, i;
+	struct scatterlist *sg;
+	char *dmabuf = host->dma_buffer;
+	char *sgbuf;
+
+	sg = data->sg;
+	len = data->sg_len;
+
+	for (i = 0; i < len; i++) {
+		sgbuf = sg_virt(&sg[i]);
+		memcpy(sgbuf, dmabuf, sg[i].length);
+		dmabuf += sg[i].length;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -404,7 +442,11 @@ static void wbsd_empty_fifo(struct wbsd_host *host)
 {
 	struct mmc_data *data = host->mrq->cmd->data;
 	char *buffer;
+<<<<<<< HEAD
 	int i, idx, fsr, fifo;
+=======
+	int i, fsr, fifo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Handle excessive data.
@@ -412,8 +454,12 @@ static void wbsd_empty_fifo(struct wbsd_host *host)
 	if (host->num_sg == 0)
 		return;
 
+<<<<<<< HEAD
 	buffer = wbsd_map_sg(host) + host->offset;
 	idx = 0;
+=======
+	buffer = wbsd_sg_to_buffer(host) + host->offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Drain the fifo. This has a tendency to loop longer
@@ -432,7 +478,12 @@ static void wbsd_empty_fifo(struct wbsd_host *host)
 			fifo = 1;
 
 		for (i = 0; i < fifo; i++) {
+<<<<<<< HEAD
 			buffer[idx++] = inb(host->base + WBSD_DFR);
+=======
+			*buffer = inb(host->base + WBSD_DFR);
+			buffer++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			host->offset++;
 			host->remain--;
 
@@ -442,19 +493,29 @@ static void wbsd_empty_fifo(struct wbsd_host *host)
 			 * End of scatter list entry?
 			 */
 			if (host->remain == 0) {
+<<<<<<< HEAD
 				kunmap_atomic(buffer);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/*
 				 * Get next entry. Check if last.
 				 */
 				if (!wbsd_next_sg(host))
 					return;
 
+<<<<<<< HEAD
 				buffer = wbsd_map_sg(host);
 				idx = 0;
 			}
 		}
 	}
 	kunmap_atomic(buffer);
+=======
+				buffer = wbsd_sg_to_buffer(host);
+			}
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * This is a very dirty hack to solve a
@@ -469,7 +530,11 @@ static void wbsd_fill_fifo(struct wbsd_host *host)
 {
 	struct mmc_data *data = host->mrq->cmd->data;
 	char *buffer;
+<<<<<<< HEAD
 	int i, idx, fsr, fifo;
+=======
+	int i, fsr, fifo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Check that we aren't being called after the
@@ -478,8 +543,12 @@ static void wbsd_fill_fifo(struct wbsd_host *host)
 	if (host->num_sg == 0)
 		return;
 
+<<<<<<< HEAD
 	buffer = wbsd_map_sg(host) + host->offset;
 	idx = 0;
+=======
+	buffer = wbsd_sg_to_buffer(host) + host->offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Fill the fifo. This has a tendency to loop longer
@@ -498,7 +567,12 @@ static void wbsd_fill_fifo(struct wbsd_host *host)
 			fifo = 15;
 
 		for (i = 16; i > fifo; i--) {
+<<<<<<< HEAD
 			outb(buffer[idx], host->base + WBSD_DFR);
+=======
+			outb(*buffer, host->base + WBSD_DFR);
+			buffer++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			host->offset++;
 			host->remain--;
 
@@ -508,19 +582,29 @@ static void wbsd_fill_fifo(struct wbsd_host *host)
 			 * End of scatter list entry?
 			 */
 			if (host->remain == 0) {
+<<<<<<< HEAD
 				kunmap_atomic(buffer);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/*
 				 * Get next entry. Check if last.
 				 */
 				if (!wbsd_next_sg(host))
 					return;
 
+<<<<<<< HEAD
 				buffer = wbsd_map_sg(host);
 				idx = 0;
 			}
 		}
 	}
 	kunmap_atomic(buffer);
+=======
+				buffer = wbsd_sg_to_buffer(host);
+			}
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The controller stops sending interrupts for
@@ -948,9 +1032,15 @@ static const struct mmc_host_ops wbsd_ops = {
  * Helper function to reset detection ignore
  */
 
+<<<<<<< HEAD
 static void wbsd_reset_ignore(struct timer_list *t)
 {
 	struct wbsd_host *host = from_timer(host, t, ignore_timer);
+=======
+static void wbsd_reset_ignore(unsigned long data)
+{
+	struct wbsd_host *host = (struct wbsd_host *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(host == NULL);
 
@@ -1216,7 +1306,13 @@ static int wbsd_alloc_mmc(struct device *dev)
 	/*
 	 * Set up timers
 	 */
+<<<<<<< HEAD
 	timer_setup(&host->ignore_timer, wbsd_reset_ignore, 0);
+=======
+	init_timer(&host->ignore_timer);
+	host->ignore_timer.data = (unsigned long)host;
+	host->ignore_timer.function = wbsd_reset_ignore;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Maximum number of segments. Worst case is one sector per segment

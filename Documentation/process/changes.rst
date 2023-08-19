@@ -29,11 +29,17 @@ you probably needn't concern yourself with isdn4k-utils.
 ====================== ===============  ========================================
         Program        Minimal version       Command to check the version
 ====================== ===============  ========================================
+<<<<<<< HEAD
 GNU C                  4.6              gcc --version
 GNU make               3.81             make --version
 binutils               2.20             ld -v
 flex                   2.5.35           flex --version
 bison                  2.0              bison --version
+=======
+GNU C                  3.2              gcc --version
+GNU make               3.81             make --version
+binutils               2.20             ld -v
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 util-linux             2.10o            fdformat --version
 kmod                   13               depmod -V
 e2fsprogs              1.41.4           e2fsck -V
@@ -78,6 +84,7 @@ Binutils
 --------
 
 The build system has, as of 4.13, switched to using thin archives (`ar T`)
+<<<<<<< HEAD
 rather than incremental linking (`ld -r`) for built-in.a intermediate steps.
 This requires binutils 2.20 or newer.
 
@@ -102,6 +109,11 @@ Bison
 Since Linux 4.16, the build system generates parsers
 during build.  This requires bison 2.0 or later.
 
+=======
+rather than incremental linking (`ld -r`) for built-in.o intermediate steps.
+This requires binutils 2.20 or newer.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Perl
 ----
 
@@ -350,6 +362,7 @@ Binutils
 
 - <https://www.kernel.org/pub/linux/devel/binutils/>
 
+<<<<<<< HEAD
 Flex
 ----
 
@@ -360,6 +373,8 @@ Bison
 
 - <ftp://ftp.gnu.org/gnu/bison/>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 OpenSSL
 -------
 
@@ -433,7 +448,11 @@ udev
 FUSE
 ----
 
+<<<<<<< HEAD
 - <https://github.com/libfuse/libfuse/releases>
+=======
+- <http://sourceforge.net/projects/fuse>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 mcelog
 ------

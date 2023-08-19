@@ -27,7 +27,10 @@
 #include <linux/module.h>
 #include <linux/input.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/irq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/async.h>
 #include <linux/i2c.h>
@@ -45,6 +48,10 @@
 
 /* Device, Driver information */
 #define DEVICE_NAME	"elants_i2c"
+<<<<<<< HEAD
+=======
+#define DRV_VERSION	"1.0.9"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Convert from rows or columns into resolution */
 #define ELAN_TS_RESOLUTION(n, m)   (((n) - 1) * (m))
@@ -999,7 +1006,11 @@ static ssize_t show_iap_mode(struct device *dev,
 				"Normal" : "Recovery");
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(calibrate);
+=======
+static DEVICE_ATTR(calibrate, S_IWUSR, NULL, calibrate_store);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEVICE_ATTR(iap_mode, S_IRUGO, show_iap_mode, NULL);
 static DEVICE_ATTR(update_fw, S_IWUSR, NULL, write_update_fw);
 
@@ -1070,6 +1081,16 @@ static const struct attribute_group elants_attribute_group = {
 	.attrs = elants_attributes,
 };
 
+<<<<<<< HEAD
+=======
+static void elants_i2c_remove_sysfs_group(void *_data)
+{
+	struct elants_data *ts = _data;
+
+	sysfs_remove_group(&ts->client->dev.kobj, &elants_attribute_group);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int elants_i2c_power_on(struct elants_data *ts)
 {
 	int error;
@@ -1261,6 +1282,7 @@ static int elants_i2c_probe(struct i2c_client *client,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Platform code (ACPI, DTS) should normally set up interrupt
 	 * for us, but in case it did not let's fall back to using falling
 	 * edge to be compatible with older Chromebooks.
@@ -1268,6 +1290,12 @@ static int elants_i2c_probe(struct i2c_client *client,
 	irqflags = irq_get_trigger_type(client->irq);
 	if (!irqflags)
 		irqflags = IRQF_TRIGGER_FALLING;
+=======
+	 * Systems using device tree should set up interrupt via DTS,
+	 * the rest will use the default falling edge interrupts.
+	 */
+	irqflags = client->dev.of_node ? 0 : IRQF_TRIGGER_FALLING;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	error = devm_request_threaded_irq(&client->dev, client->irq,
 					  NULL, elants_i2c_irq,
@@ -1285,13 +1313,30 @@ static int elants_i2c_probe(struct i2c_client *client,
 	if (!client->dev.of_node)
 		device_init_wakeup(&client->dev, true);
 
+<<<<<<< HEAD
 	error = devm_device_add_group(&client->dev, &elants_attribute_group);
+=======
+	error = sysfs_create_group(&client->dev.kobj, &elants_attribute_group);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error) {
 		dev_err(&client->dev, "failed to create sysfs attributes: %d\n",
 			error);
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	error = devm_add_action(&client->dev,
+				elants_i2c_remove_sysfs_group, ts);
+	if (error) {
+		elants_i2c_remove_sysfs_group(ts);
+		dev_err(&client->dev,
+			"Failed to add sysfs cleanup action: %d\n",
+			error);
+		return error;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1405,4 +1450,8 @@ module_i2c_driver(elants_i2c_driver);
 
 MODULE_AUTHOR("Scott Liu <scott.liu@emc.com.tw>");
 MODULE_DESCRIPTION("Elan I2c Touchscreen driver");
+<<<<<<< HEAD
+=======
+MODULE_VERSION(DRV_VERSION);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

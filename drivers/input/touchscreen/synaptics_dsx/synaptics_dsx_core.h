@@ -3,6 +3,10 @@
  *
  * Copyright (C) 2012-2016 Synaptics Incorporated. All rights reserved.
  *
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
  * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
  *
@@ -40,8 +44,12 @@
 #define SYNAPTICS_DSX_DRIVER_VERSION 0x2070
 
 #include <linux/version.h>
+<<<<<<< HEAD
 #ifdef CONFIG_DRM
 //#include <linux/msm_drm_notify.h>
+=======
+#ifdef CONFIG_FB
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/notifier.h>
 #include <linux/fb.h>
 #endif
@@ -49,11 +57,14 @@
 #include <linux/earlysuspend.h>
 #endif
 
+<<<<<<< HEAD
 #include <drm/drm_panel.h>
 #define CONFIG_HAPTIC_CALLBACK
 #ifdef CONFIG_HAPTIC_CALLBACK
 #include <linux/aw8697.h>
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if (LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 38))
 #define KERNEL_ABOVE_2_6_38
 #endif
@@ -67,6 +78,7 @@
 #else
 #define sstrtoul(...) strict_strtoul(__VA_ARGS__)
 #endif
+<<<<<<< HEAD
 #define SYNA_TOUCH_EXT_PROC   1
 /*
 #define F51_DISCRETE_FORCE
@@ -76,6 +88,16 @@
 #define CAL_DATA_SIZE 144
 #endif
 #define SYNA_TDDI
+=======
+/*
+*#define F51_DISCRETE_FORCE
+*#ifdef F51_DISCRETE_FORCE
+*#define FORCE_LEVEL_ADDR 0x0419
+*#define FORCE_LEVEL_MAX 255
+*#define CAL_DATA_SIZE 144
+*#endif
+*#define SYNA_TDDI
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 */
 #define PDT_PROPS (0X00EF)
 #define PDT_START (0x00E9)
@@ -131,8 +153,15 @@
 #define MASK_2BIT 0x03
 #define MASK_1BIT 0x01
 
+<<<<<<< HEAD
 #define ESD_WATCHDOG
 #define ESD_TIMER 2000
+=======
+#define PINCTRL_STATE_ACTIVE    "pmx_ts_active"
+#define PINCTRL_STATE_SUSPEND   "pmx_ts_suspend"
+#define PINCTRL_STATE_RELEASE   "pmx_ts_release"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum exp_fn {
 	RMI_DEV = 0,
 	RMI_FW_UPDATER,
@@ -145,8 +174,11 @@ enum exp_fn {
 	RMI_LAST,
 };
 
+<<<<<<< HEAD
 extern struct drm_panel *active_panel;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * struct synaptics_rmi4_fn_desc - function descriptor fields in PDT entry
  * @query_base_addr: base address for query registers
@@ -337,6 +369,10 @@ struct synaptics_rmi4_device_info {
  * @sensor_max_y: maximum y coordinate for 2D touch
  * @force_min: minimum force value
  * @force_max: maximum force value
+<<<<<<< HEAD
+=======
+ * @set_wakeup_gesture: location of set wakeup gesture
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @flash_prog_mode: flag to indicate flash programming mode status
  * @irq_enabled: flag to indicate attention interrupt enable status
  * @fingers_on_2d: flag to indicate presence of fingers in 2D area
@@ -358,6 +394,10 @@ struct synaptics_rmi4_device_info {
  * @report_touch: pointer to touch reporting function
  */
 struct synaptics_rmi4_data {
+<<<<<<< HEAD
+=======
+	bool initialized;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct platform_device *pdev;
 	struct input_dev *input_dev;
 	struct input_dev *stylus_dev;
@@ -374,6 +414,7 @@ struct synaptics_rmi4_data {
 	struct mutex rmi4_irq_enable_mutex;
 	struct delayed_work rb_work;
 	struct workqueue_struct *rb_workqueue;
+<<<<<<< HEAD
 #ifdef CONFIG_DRM
 	struct notifier_block drm_notifier;
 	struct work_struct reset_work;
@@ -381,6 +422,20 @@ struct synaptics_rmi4_data {
 #endif
 	struct delayed_work esd_watchdog_work;
 	struct workqueue_struct *esd_watchdog_workqueue;
+=======
+	struct work_struct rmi4_probe_work;
+	struct workqueue_struct *rmi4_probe_wq;
+	struct completion drm_init_done;
+	struct pinctrl *ts_pinctrl;
+	struct pinctrl_state *pinctrl_state_active;
+	struct pinctrl_state *pinctrl_state_suspend;
+	struct pinctrl_state *pinctrl_state_release;
+#ifdef CONFIG_FB
+	struct notifier_block fb_notifier;
+	struct work_struct reset_work;
+	struct workqueue_struct *reset_workqueue;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_HAS_EARLYSUSPEND
 	struct early_suspend early_suspend;
 #endif
@@ -410,11 +465,20 @@ struct synaptics_rmi4_data {
 	int sensor_max_y;
 	int force_min;
 	int force_max;
+<<<<<<< HEAD
+=======
+	int set_wakeup_gesture;
+	int avdd_status;
+	int vdd_status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool flash_prog_mode;
 	bool irq_enabled;
 	bool fingers_on_2d;
 	bool suspend;
+<<<<<<< HEAD
 	bool is_sleep;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool sensor_sleep;
 	bool stay_awake;
 	bool fb_ready;
@@ -430,6 +494,7 @@ struct synaptics_rmi4_data {
 			bool rebuild);
 	int (*irq_enable)(struct synaptics_rmi4_data *rmi4_data, bool enable,
 			bool attn_only);
+<<<<<<< HEAD
 	void (*sleep_enable)(struct synaptics_rmi4_data *rmi4_data,
 			bool enable);
 	void (*report_touch)(struct synaptics_rmi4_data *rmi4_data,
@@ -439,6 +504,12 @@ struct synaptics_rmi4_data {
 	struct tp_point_event tp_event;
 /* Haptic Tp event notify end */
 #endif
+=======
+	int (*sleep_enable)(struct synaptics_rmi4_data *rmi4_data,
+			bool enable);
+	void (*report_touch)(struct synaptics_rmi4_data *rmi4_data,
+			struct synaptics_rmi4_fn *fhandler);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct synaptics_dsx_bus_access {

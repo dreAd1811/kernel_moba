@@ -194,6 +194,13 @@ static int pb0100_start(struct sd *sd)
 	alt = usb_altnum_to_altsetting(intf, sd->gspca_dev.alt);
 	if (!alt)
 		return -ENODEV;
+<<<<<<< HEAD
+=======
+
+	if (alt->desc.bNumEndpoints < 1)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	packet_size = le16_to_cpu(alt->endpoint[0].desc.wMaxPacketSize);
 
 	/* If we don't have enough bandwidth use a lower framerate */
@@ -229,7 +236,11 @@ static int pb0100_start(struct sd *sd)
 	}
 
 	err = stv06xx_write_sensor(sd, PB_CONTROL, BIT(5)|BIT(3)|BIT(1));
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Started stream, status: %d\n", err);
+=======
+	PDEBUG(D_STREAM, "Started stream, status: %d", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (err < 0) ? err : 0;
 }
@@ -247,7 +258,11 @@ static int pb0100_stop(struct sd *sd)
 	/* Set bit 1 to zero */
 	err = stv06xx_write_sensor(sd, PB_CONTROL, BIT(5)|BIT(3));
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Halting stream\n");
+=======
+	PDEBUG(D_STREAM, "Halting stream");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return (err < 0) ? err : 0;
 }
@@ -332,8 +347,12 @@ static int pb0100_set_gain(struct gspca_dev *gspca_dev, __s32 val)
 	err = stv06xx_write_sensor(sd, PB_G1GAIN, val);
 	if (!err)
 		err = stv06xx_write_sensor(sd, PB_G2GAIN, val);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set green gain to %d, status: %d\n",
 		  val, err);
+=======
+	PDEBUG(D_CONF, "Set green gain to %d, status: %d", val, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!err)
 		err = pb0100_set_red_balance(gspca_dev, ctrls->red->val);
@@ -356,8 +375,12 @@ static int pb0100_set_red_balance(struct gspca_dev *gspca_dev, __s32 val)
 		val = 255;
 
 	err = stv06xx_write_sensor(sd, PB_RGAIN, val);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set red gain to %d, status: %d\n",
 		  val, err);
+=======
+	PDEBUG(D_CONF, "Set red gain to %d, status: %d", val, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -375,8 +398,12 @@ static int pb0100_set_blue_balance(struct gspca_dev *gspca_dev, __s32 val)
 		val = 255;
 
 	err = stv06xx_write_sensor(sd, PB_BGAIN, val);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set blue gain to %d, status: %d\n",
 		  val, err);
+=======
+	PDEBUG(D_CONF, "Set blue gain to %d, status: %d", val, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -387,8 +414,12 @@ static int pb0100_set_exposure(struct gspca_dev *gspca_dev, __s32 val)
 	int err;
 
 	err = stv06xx_write_sensor(sd, PB_RINTTIME, val);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set exposure to %d, status: %d\n",
 		  val, err);
+=======
+	PDEBUG(D_CONF, "Set exposure to %d, status: %d", val, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -408,8 +439,13 @@ static int pb0100_set_autogain(struct gspca_dev *gspca_dev, __s32 val)
 		val = 0;
 
 	err = stv06xx_write_sensor(sd, PB_EXPGAIN, val);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set autogain to %d (natural: %d), status: %d\n",
 		  val, ctrls->natural->val, err);
+=======
+	PDEBUG(D_CONF, "Set autogain to %d (natural: %d), status: %d",
+	       val, ctrls->natural->val, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -430,8 +466,12 @@ static int pb0100_set_autogain_target(struct gspca_dev *gspca_dev, __s32 val)
 	if (!err)
 		err = stv06xx_write_sensor(sd, PB_R22, darkpixels);
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set autogain target to %d, status: %d\n",
 		  val, err);
+=======
+	PDEBUG(D_CONF, "Set autogain target to %d, status: %d", val, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }

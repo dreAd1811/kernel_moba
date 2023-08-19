@@ -6,7 +6,11 @@
  * ELF register definitions..
  */
 
+<<<<<<< HEAD
 #include <linux/types.h>
+=======
+#include <asm/ptrace.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define EM_PARISC 15
 
@@ -169,12 +173,22 @@ typedef struct elf64_fdesc {
 	__u64	gp;
 } Elf64_Fdesc;
 
+<<<<<<< HEAD
+=======
+#ifdef __KERNEL__
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_64BIT
 #define Elf_Fdesc	Elf64_Fdesc
 #else
 #define Elf_Fdesc	Elf32_Fdesc
 #endif /*CONFIG_64BIT*/
 
+<<<<<<< HEAD
+=======
+#endif /*__KERNEL__*/
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Legal values for p_type field of Elf32_Phdr/Elf64_Phdr.  */
 
 #define PT_HP_TLS		(PT_LOOS + 0x0)
@@ -209,6 +223,7 @@ typedef struct elf64_fdesc {
 #define PF_HP_SBP		0x08000000
 
 /*
+<<<<<<< HEAD
  * This yields a string that ld.so will use to load implementation
  * specific libraries for optimization.  This is more specific in
  * intent than poking at uname or /proc/cpuinfo.
@@ -226,12 +241,35 @@ typedef struct elf64_fdesc {
 
 #ifdef CONFIG_64BIT
 #define ELF_CLASS	ELFCLASS64
+=======
+ * The following definitions are those for 32-bit ELF binaries on a 32-bit
+ * kernel and for 64-bit binaries on a 64-bit kernel.  To run 32-bit binaries
+ * on a 64-bit kernel, arch/parisc/kernel/binfmt_elf32.c defines these
+ * macros appropriately and then #includes binfmt_elf.c, which then includes
+ * this file.
+ */
+#ifndef ELF_CLASS
+
+/*
+ * This is used to ensure we don't load something for the wrong architecture.
+ *
+ * Note that this header file is used by default in fs/binfmt_elf.c. So
+ * the following macros are for the default case. However, for the 64
+ * bit kernel we also support 32 bit parisc binaries. To do that
+ * arch/parisc/kernel/binfmt_elf32.c defines its own set of these
+ * macros, and then it includes fs/binfmt_elf.c to provide an alternate
+ * elf binary handler for 32 bit binaries (on the 64 bit kernel).
+ */
+#ifdef CONFIG_64BIT
+#define ELF_CLASS   ELFCLASS64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define ELF_CLASS	ELFCLASS32
 #endif
 
 typedef unsigned long elf_greg_t;
 
+<<<<<<< HEAD
 #define SET_PERSONALITY(ex) \
 ({	\
 	set_personality((current->personality & ~PER_MASK) | PER_LINUX); \
@@ -250,6 +288,20 @@ typedef unsigned long elf_greg_t;
 		current->thread.task_size = DEFAULT_TASK_SIZE32; \
 	} else clear_thread_flag(TIF_32BIT); \
  })
+=======
+/*
+ * This yields a string that ld.so will use to load implementation
+ * specific libraries for optimization.  This is more specific in
+ * intent than poking at uname or /proc/cpuinfo.
+ */
+
+#define ELF_PLATFORM  ("PARISC\0")
+
+#define SET_PERSONALITY(ex) \
+	set_personality((current->personality & ~PER_MASK) | PER_LINUX); \
+	current->thread.map_base = DEFAULT_MAP_BASE; \
+	current->thread.task_size = DEFAULT_TASK_SIZE \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Fill in general registers in a core dump.  This saves pretty
@@ -276,12 +328,19 @@ typedef unsigned long elf_greg_t;
 
 #define ELF_CORE_COPY_REGS(dst, pt)	\
 	memset(dst, 0, sizeof(dst));	/* don't leak any "random" bits */ \
+<<<<<<< HEAD
 	{	int i; \
 		for (i = 0; i < 32; i++) dst[i] = pt->gr[i]; \
 		for (i = 0; i < 8; i++) dst[32 + i] = pt->sr[i]; \
 	} \
 	dst[40] = pt->iaoq[0]; dst[41] = pt->iaoq[1]; \
 	dst[42] = pt->iasq[0]; dst[43] = pt->iasq[1]; \
+=======
+	memcpy(dst + 0, pt->gr, 32 * sizeof(elf_greg_t)); \
+	memcpy(dst + 32, pt->sr, 8 * sizeof(elf_greg_t)); \
+	memcpy(dst + 40, pt->iaoq, 2 * sizeof(elf_greg_t)); \
+	memcpy(dst + 42, pt->iasq, 2 * sizeof(elf_greg_t)); \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dst[44] = pt->sar;   dst[45] = pt->iir; \
 	dst[46] = pt->isr;   dst[47] = pt->ior; \
 	dst[48] = mfctl(22); dst[49] = mfctl(0); \
@@ -293,7 +352,11 @@ typedef unsigned long elf_greg_t;
 	dst[60] = mfctl(12); dst[61] = mfctl(13); \
 	dst[62] = mfctl(10); dst[63] = mfctl(15);
 
+<<<<<<< HEAD
 #define CORE_DUMP_USE_REGSET
+=======
+#endif /* ! ELF_CLASS */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ELF_NGREG 80	/* We only need 64 at present, but leave space
 			   for expansion. */
@@ -311,10 +374,14 @@ extern int dump_task_fpu (struct task_struct *, elf_fpregset_t *);
 struct pt_regs;	/* forward declaration... */
 
 
+<<<<<<< HEAD
 #define elf_check_arch(x)		\
 	((x)->e_machine == EM_PARISC && (x)->e_ident[EI_CLASS] == ELF_CLASS)
 #define compat_elf_check_arch(x)	\
 	((x)->e_machine == EM_PARISC && (x)->e_ident[EI_CLASS] == ELFCLASS32)
+=======
+#define elf_check_arch(x) ((x)->e_machine == EM_PARISC && (x)->e_ident[EI_CLASS] == ELF_CLASS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * These are used to set parameters in the core dumps.

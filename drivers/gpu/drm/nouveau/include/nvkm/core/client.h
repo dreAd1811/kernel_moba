@@ -17,8 +17,12 @@ struct nvkm_client {
 	void *data;
 	int (*ntfy)(const void *, u32, const void *, u32);
 
+<<<<<<< HEAD
 	struct list_head umem;
 	spinlock_t lock;
+=======
+	struct nvkm_vm *vm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int  nvkm_client_new(const char *name, u64 device, const char *cfg,

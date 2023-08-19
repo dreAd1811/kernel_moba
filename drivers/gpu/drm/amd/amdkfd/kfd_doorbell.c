@@ -24,6 +24,7 @@
 #include <linux/mman.h>
 #include <linux/slab.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/idr.h>
 
 /*
@@ -33,6 +34,19 @@
 
 static DEFINE_IDA(doorbell_ida);
 static unsigned int max_doorbell_slices;
+=======
+
+/*
+ * This extension supports a kernel level doorbells management for
+ * the kernel queues.
+ * Basically the last doorbells page is devoted to kernel queues
+ * and that's assures that any user process won't get access to the
+ * kernel doorbells page
+ */
+
+#define KERNEL_DOORBELL_PASID 1
+#define KFD_SIZE_OF_DOORBELL_IN_BYTES 4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Each device exposes a doorbell aperture, a PCI MMIO aperture that
@@ -49,9 +63,15 @@ static unsigned int max_doorbell_slices;
  */
 
 /* # of doorbell bytes allocated for each process. */
+<<<<<<< HEAD
 size_t kfd_doorbell_process_slice(struct kfd_dev *kfd)
 {
 	return roundup(kfd->device_info->doorbell_size *
+=======
+static inline size_t doorbell_process_allocation(void)
+{
+	return roundup(KFD_SIZE_OF_DOORBELL_IN_BYTES *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			KFD_MAX_NUM_OF_QUEUES_PER_PROCESS,
 			PAGE_SIZE);
 }
@@ -71,15 +91,24 @@ int kfd_doorbell_init(struct kfd_dev *kfd)
 
 	doorbell_start_offset =
 			roundup(kfd->shared_resources.doorbell_start_offset,
+<<<<<<< HEAD
 					kfd_doorbell_process_slice(kfd));
 
 	doorbell_aperture_size =
 			rounddown(kfd->shared_resources.doorbell_aperture_size,
 					kfd_doorbell_process_slice(kfd));
+=======
+					doorbell_process_allocation());
+
+	doorbell_aperture_size =
+			rounddown(kfd->shared_resources.doorbell_aperture_size,
+					doorbell_process_allocation());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (doorbell_aperture_size > doorbell_start_offset)
 		doorbell_process_limit =
 			(doorbell_aperture_size - doorbell_start_offset) /
+<<<<<<< HEAD
 						kfd_doorbell_process_slice(kfd);
 	else
 		return -ENOSPC;
@@ -87,14 +116,26 @@ int kfd_doorbell_init(struct kfd_dev *kfd)
 	if (!max_doorbell_slices ||
 	    doorbell_process_limit < max_doorbell_slices)
 		max_doorbell_slices = doorbell_process_limit;
+=======
+						doorbell_process_allocation();
+	else
+		doorbell_process_limit = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfd->doorbell_base = kfd->shared_resources.doorbell_physical_address +
 				doorbell_start_offset;
 
 	kfd->doorbell_id_offset = doorbell_start_offset / sizeof(u32);
+<<<<<<< HEAD
 
 	kfd->doorbell_kernel_ptr = ioremap(kfd->doorbell_base,
 					   kfd_doorbell_process_slice(kfd));
+=======
+	kfd->doorbell_process_limit = doorbell_process_limit - 1;
+
+	kfd->doorbell_kernel_ptr = ioremap(kfd->doorbell_base,
+						doorbell_process_allocation());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!kfd->doorbell_kernel_ptr)
 		return -ENOMEM;
@@ -115,7 +156,12 @@ int kfd_doorbell_init(struct kfd_dev *kfd)
 	pr_debug("doorbell aperture size  == 0x%08lX\n",
 			kfd->shared_resources.doorbell_aperture_size);
 
+<<<<<<< HEAD
 	pr_debug("doorbell kernel address == %p\n", kfd->doorbell_kernel_ptr);
+=======
+	pr_debug("doorbell kernel address == 0x%08lX\n",
+			(uintptr_t)kfd->doorbell_kernel_ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -126,16 +172,32 @@ void kfd_doorbell_fini(struct kfd_dev *kfd)
 		iounmap(kfd->doorbell_kernel_ptr);
 }
 
+<<<<<<< HEAD
 int kfd_doorbell_mmap(struct kfd_dev *dev, struct kfd_process *process,
 		      struct vm_area_struct *vma)
 {
 	phys_addr_t address;
+=======
+int kfd_doorbell_mmap(struct kfd_process *process, struct vm_area_struct *vma)
+{
+	phys_addr_t address;
+	struct kfd_dev *dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * For simplicitly we only allow mapping of the entire doorbell
 	 * allocation of a single device & process.
 	 */
+<<<<<<< HEAD
 	if (vma->vm_end - vma->vm_start != kfd_doorbell_process_slice(dev))
+=======
+	if (vma->vm_end - vma->vm_start != doorbell_process_allocation())
+		return -EINVAL;
+
+	/* Find kfd device according to gpu id */
+	dev = kfd_device_by_id(vma->vm_pgoff);
+	if (!dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	/* Calculate physical address of doorbell */
@@ -152,19 +214,31 @@ int kfd_doorbell_mmap(struct kfd_dev *dev, struct kfd_process *process,
 		 "     vm_flags            == 0x%04lX\n"
 		 "     size                == 0x%04lX\n",
 		 (unsigned long long) vma->vm_start, address, vma->vm_flags,
+<<<<<<< HEAD
 		 kfd_doorbell_process_slice(dev));
+=======
+		 doorbell_process_allocation());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	return io_remap_pfn_range(vma,
 				vma->vm_start,
 				address >> PAGE_SHIFT,
+<<<<<<< HEAD
 				kfd_doorbell_process_slice(dev),
+=======
+				doorbell_process_allocation(),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				vma->vm_page_prot);
 }
 
 
 /* get kernel iomem pointer for a doorbell */
+<<<<<<< HEAD
 void __iomem *kfd_get_kernel_doorbell(struct kfd_dev *kfd,
+=======
+u32 __iomem *kfd_get_kernel_doorbell(struct kfd_dev *kfd,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					unsigned int *doorbell_off)
 {
 	u32 inx;
@@ -179,6 +253,7 @@ void __iomem *kfd_get_kernel_doorbell(struct kfd_dev *kfd,
 	if (inx >= KFD_MAX_NUM_OF_QUEUES_PER_PROCESS)
 		return NULL;
 
+<<<<<<< HEAD
 	inx *= kfd->device_info->doorbell_size / sizeof(u32);
 
 	/*
@@ -191,6 +266,19 @@ void __iomem *kfd_get_kernel_doorbell(struct kfd_dev *kfd,
 			"     doorbell offset   == 0x%08X\n"
 			"     doorbell index    == 0x%x\n",
 		*doorbell_off, inx);
+=======
+	/*
+	 * Calculating the kernel doorbell offset using "faked" kernel
+	 * pasid that allocated for kernel queues only
+	 */
+	*doorbell_off = KERNEL_DOORBELL_PASID * (doorbell_process_allocation() /
+							sizeof(u32)) + inx;
+
+	pr_debug("Get kernel queue doorbell\n"
+			 "     doorbell offset   == 0x%08X\n"
+			 "     kernel address    == 0x%08lX\n",
+		*doorbell_off, (uintptr_t)(kfd->doorbell_kernel_ptr + inx));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return kfd->doorbell_kernel_ptr + inx;
 }
@@ -199,14 +287,19 @@ void kfd_release_kernel_doorbell(struct kfd_dev *kfd, u32 __iomem *db_addr)
 {
 	unsigned int inx;
 
+<<<<<<< HEAD
 	inx = (unsigned int)(db_addr - kfd->doorbell_kernel_ptr)
 		* sizeof(u32) / kfd->device_info->doorbell_size;
+=======
+	inx = (unsigned int)(db_addr - kfd->doorbell_kernel_ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&kfd->doorbell_mutex);
 	__clear_bit(inx, kfd->doorbell_available_index);
 	mutex_unlock(&kfd->doorbell_mutex);
 }
 
+<<<<<<< HEAD
 void write_kernel_doorbell(void __iomem *db, u32 value)
 {
 	if (db) {
@@ -239,13 +332,43 @@ unsigned int kfd_doorbell_id_to_offset(struct kfd_dev *kfd,
 		process->doorbell_index
 		* kfd_doorbell_process_slice(kfd) / sizeof(u32) +
 		doorbell_id * kfd->device_info->doorbell_size / sizeof(u32);
+=======
+inline void write_kernel_doorbell(u32 __iomem *db, u32 value)
+{
+	if (db) {
+		writel(value, db);
+		pr_debug("Writing %d to doorbell address 0x%p\n", value, db);
+	}
+}
+
+/*
+ * queue_ids are in the range [0,MAX_PROCESS_QUEUES) and are mapped 1:1
+ * to doorbells with the process's doorbell page
+ */
+unsigned int kfd_queue_id_to_doorbell(struct kfd_dev *kfd,
+					struct kfd_process *process,
+					unsigned int queue_id)
+{
+	/*
+	 * doorbell_id_offset accounts for doorbells taken by KGD.
+	 * pasid * doorbell_process_allocation/sizeof(u32) adjusts
+	 * to the process's doorbells
+	 */
+	return kfd->doorbell_id_offset +
+		process->pasid * (doorbell_process_allocation()/sizeof(u32)) +
+		queue_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 uint64_t kfd_get_number_elems(struct kfd_dev *kfd)
 {
 	uint64_t num_of_elems = (kfd->shared_resources.doorbell_aperture_size -
 				kfd->shared_resources.doorbell_start_offset) /
+<<<<<<< HEAD
 					kfd_doorbell_process_slice(kfd) + 1;
+=======
+					doorbell_process_allocation() + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return num_of_elems;
 
@@ -255,6 +378,7 @@ phys_addr_t kfd_get_process_doorbells(struct kfd_dev *dev,
 					struct kfd_process *process)
 {
 	return dev->doorbell_base +
+<<<<<<< HEAD
 		process->doorbell_index * kfd_doorbell_process_slice(dev);
 }
 
@@ -272,4 +396,7 @@ void kfd_free_process_doorbells(struct kfd_process *process)
 {
 	if (process->doorbell_index)
 		ida_simple_remove(&doorbell_ida, process->doorbell_index);
+=======
+		process->pasid * doorbell_process_allocation();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

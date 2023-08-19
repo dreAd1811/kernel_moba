@@ -280,7 +280,11 @@ static void ipi_send_msg_one(int cpu, enum ipi_msg_type msg)
 	 * and read back old value
 	 */
 	do {
+<<<<<<< HEAD
 		new = old = READ_ONCE(*ipi_data_ptr);
+=======
+		new = old = ACCESS_ONCE(*ipi_data_ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		new |= 1U << msg;
 	} while (cmpxchg(ipi_data_ptr, old, new) != old);
 

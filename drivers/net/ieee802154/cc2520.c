@@ -517,7 +517,11 @@ cc2520_tx(struct ieee802154_hw *hw, struct sk_buff *skb)
 	}
 
 	spin_lock_irqsave(&priv->lock, flags);
+<<<<<<< HEAD
 	WARN_ON(priv->is_tx);
+=======
+	BUG_ON(priv->is_tx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->is_tx = 1;
 	spin_unlock_irqrestore(&priv->lock, flags);
 
@@ -643,12 +647,21 @@ cc2520_set_channel(struct ieee802154_hw *hw, u8 page, u8 channel)
 
 	dev_dbg(&priv->spi->dev, "trying to set channel\n");
 
+<<<<<<< HEAD
 	WARN_ON(page != 0);
 	WARN_ON(channel < CC2520_MINCHANNEL);
 	WARN_ON(channel > CC2520_MAXCHANNEL);
 
 	ret = cc2520_write_register(priv, CC2520_FREQCTRL,
 				    11 + 5 * (channel - 11));
+=======
+	BUG_ON(page != 0);
+	BUG_ON(channel < CC2520_MINCHANNEL);
+	BUG_ON(channel > CC2520_MAXCHANNEL);
+
+	ret = cc2520_write_register(priv, CC2520_FREQCTRL,
+				    11 + 5*(channel - 11));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -663,14 +676,23 @@ cc2520_filter(struct ieee802154_hw *hw,
 	if (changed & IEEE802154_AFILT_PANID_CHANGED) {
 		u16 panid = le16_to_cpu(filt->pan_id);
 
+<<<<<<< HEAD
 		dev_vdbg(&priv->spi->dev, "%s called for pan id\n", __func__);
+=======
+		dev_vdbg(&priv->spi->dev,
+			 "cc2520_filter called for pan id\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = cc2520_write_ram(priv, CC2520RAM_PANID,
 				       sizeof(panid), (u8 *)&panid);
 	}
 
 	if (changed & IEEE802154_AFILT_IEEEADDR_CHANGED) {
 		dev_vdbg(&priv->spi->dev,
+<<<<<<< HEAD
 			 "%s called for IEEE addr\n", __func__);
+=======
+			 "cc2520_filter called for IEEE addr\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = cc2520_write_ram(priv, CC2520RAM_IEEEADDR,
 				       sizeof(filt->ieee_addr),
 				       (u8 *)&filt->ieee_addr);
@@ -679,7 +701,12 @@ cc2520_filter(struct ieee802154_hw *hw,
 	if (changed & IEEE802154_AFILT_SADDR_CHANGED) {
 		u16 addr = le16_to_cpu(filt->short_addr);
 
+<<<<<<< HEAD
 		dev_vdbg(&priv->spi->dev, "%s called for saddr\n", __func__);
+=======
+		dev_vdbg(&priv->spi->dev,
+			 "cc2520_filter called for saddr\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = cc2520_write_ram(priv, CC2520RAM_SHORTADDR,
 				       sizeof(addr), (u8 *)&addr);
 	}
@@ -688,7 +715,11 @@ cc2520_filter(struct ieee802154_hw *hw,
 		u8 frmfilt0;
 
 		dev_vdbg(&priv->spi->dev,
+<<<<<<< HEAD
 			 "%s called for panc change\n", __func__);
+=======
+			 "cc2520_filter called for panc change\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		cc2520_read_register(priv, CC2520_FRMFILT0, &frmfilt0);
 
@@ -927,7 +958,10 @@ static int cc2520_get_platform_data(struct spi_device *spi,
 
 	if (!np) {
 		struct cc2520_platform_data *spi_pdata = spi->dev.platform_data;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!spi_pdata)
 			return -ENOENT;
 		*pdata = *spi_pdata;

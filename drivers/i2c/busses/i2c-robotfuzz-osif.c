@@ -62,6 +62,7 @@ static int osif_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
 {
 	struct osif_priv *priv = adapter->algo_data;
 	struct i2c_msg *pmsg;
+<<<<<<< HEAD
 	int ret;
 	int i;
 
@@ -72,14 +73,35 @@ static int osif_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
 			ret = osif_usb_read(adapter, OSIFI2C_READ,
 					    pmsg->flags, pmsg->addr,
 					    pmsg->buf, pmsg->len);
+=======
+	int ret = 0;
+	int i, cmd;
+
+	for (i = 0; ret >= 0 && i < num; i++) {
+		pmsg = &msgs[i];
+
+		if (pmsg->flags & I2C_M_RD) {
+			cmd = OSIFI2C_READ;
+
+			ret = osif_usb_read(adapter, cmd, pmsg->flags,
+					    pmsg->addr, pmsg->buf,
+					    pmsg->len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret != pmsg->len) {
 				dev_err(&adapter->dev, "failure reading data\n");
 				return -EREMOTEIO;
 			}
 		} else {
+<<<<<<< HEAD
 			ret = osif_usb_write(adapter, OSIFI2C_WRITE,
 					     pmsg->flags, pmsg->addr,
 					     pmsg->buf, pmsg->len);
+=======
+			cmd = OSIFI2C_WRITE;
+
+			ret = osif_usb_write(adapter, cmd, pmsg->flags,
+					     pmsg->addr, pmsg->buf, pmsg->len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret != pmsg->len) {
 				dev_err(&adapter->dev, "failure writing data\n");
 				return -EREMOTEIO;

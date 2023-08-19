@@ -35,6 +35,7 @@
 
 #define SENSOR_NAME "ov5647"
 
+<<<<<<< HEAD
 #define MIPI_CTRL00_CLOCK_LANE_GATE		BIT(5)
 #define MIPI_CTRL00_BUS_IDLE			BIT(2)
 #define MIPI_CTRL00_CLOCK_LANE_DISABLE		BIT(0)
@@ -47,6 +48,11 @@
 #define OV5647_REG_FRAME_OFF_NUMBER	0x4202
 #define OV5647_REG_MIPI_CTRL00		0x4800
 #define OV5647_REG_MIPI_CTRL14		0x4814
+=======
+#define OV5647_SW_RESET		0x0103
+#define OV5647_REG_CHIPID_H	0x300A
+#define OV5647_REG_CHIPID_L	0x300B
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define REG_TERM 0xfffe
 #define VAL_TERM 0xfe
@@ -250,18 +256,27 @@ static int ov5647_set_virtual_channel(struct v4l2_subdev *sd, int channel)
 	u8 channel_id;
 	int ret;
 
+<<<<<<< HEAD
 	ret = ov5647_read(sd, OV5647_REG_MIPI_CTRL14, &channel_id);
+=======
+	ret = ov5647_read(sd, 0x4814, &channel_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
 	channel_id &= ~(3 << 6);
+<<<<<<< HEAD
 	return ov5647_write(sd, OV5647_REG_MIPI_CTRL14, channel_id | (channel << 6));
+=======
+	return ov5647_write(sd, 0x4814, channel_id | (channel << 6));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ov5647_stream_on(struct v4l2_subdev *sd)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = ov5647_write(sd, OV5647_REG_MIPI_CTRL00, MIPI_CTRL00_BUS_IDLE);
 	if (ret < 0)
 		return ret;
@@ -271,12 +286,20 @@ static int ov5647_stream_on(struct v4l2_subdev *sd)
 		return ret;
 
 	return ov5647_write(sd, OV5640_REG_PAD_OUT, 0x00);
+=======
+	ret = ov5647_write(sd, 0x4202, 0x00);
+	if (ret < 0)
+		return ret;
+
+	return ov5647_write(sd, 0x300D, 0x00);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ov5647_stream_off(struct v4l2_subdev *sd)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = ov5647_write(sd, OV5647_REG_MIPI_CTRL00, MIPI_CTRL00_CLOCK_LANE_GATE
 			   | MIPI_CTRL00_BUS_IDLE | MIPI_CTRL00_CLOCK_LANE_DISABLE);
 	if (ret < 0)
@@ -287,6 +310,13 @@ static int ov5647_stream_off(struct v4l2_subdev *sd)
 		return ret;
 
 	return ov5647_write(sd, OV5640_REG_PAD_OUT, 0x01);
+=======
+	ret = ov5647_write(sd, 0x4202, 0x0f);
+	if (ret < 0)
+		return ret;
+
+	return ov5647_write(sd, 0x300D, 0x01);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int set_sw_standby(struct v4l2_subdev *sd, bool standby)
@@ -294,7 +324,11 @@ static int set_sw_standby(struct v4l2_subdev *sd, bool standby)
 	int ret;
 	u8 rdval;
 
+<<<<<<< HEAD
 	ret = ov5647_read(sd, OV5647_SW_STANDBY, &rdval);
+=======
+	ret = ov5647_read(sd, 0x0100, &rdval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -303,7 +337,11 @@ static int set_sw_standby(struct v4l2_subdev *sd, bool standby)
 	else
 		rdval |= 0x01;
 
+<<<<<<< HEAD
 	return ov5647_write(sd, OV5647_SW_STANDBY, rdval);
+=======
+	return ov5647_write(sd, 0x0100, rdval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __sensor_init(struct v4l2_subdev *sd)
@@ -312,7 +350,11 @@ static int __sensor_init(struct v4l2_subdev *sd)
 	u8 resetval, rdval;
 	struct i2c_client *client = v4l2_get_subdevdata(sd);
 
+<<<<<<< HEAD
 	ret = ov5647_read(sd, OV5647_SW_STANDBY, &rdval);
+=======
+	ret = ov5647_read(sd, 0x0100, &rdval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -327,21 +369,33 @@ static int __sensor_init(struct v4l2_subdev *sd)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = ov5647_read(sd, OV5647_SW_STANDBY, &resetval);
+=======
+	ret = ov5647_read(sd, 0x0100, &resetval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
 	if (!(resetval & 0x01)) {
 		dev_err(&client->dev, "Device was in SW standby");
+<<<<<<< HEAD
 		ret = ov5647_write(sd, OV5647_SW_STANDBY, 0x01);
+=======
+		ret = ov5647_write(sd, 0x0100, 0x01);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * stream off to make the clock lane into LP-11 state.
 	 */
 	return ov5647_stream_off(sd);
+=======
+	return ov5647_write(sd, 0x4800, 0x04);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ov5647_sensor_power(struct v4l2_subdev *sd, int on)
@@ -428,8 +482,13 @@ static int ov5647_sensor_set_register(struct v4l2_subdev *sd,
 }
 #endif
 
+<<<<<<< HEAD
 /*
  * Subdev core operations registration
+=======
+/**
+ * @short Subdev core operations registration
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static const struct v4l2_subdev_core_ops ov5647_subdev_core_ops = {
 	.s_power		= ov5647_sensor_power,

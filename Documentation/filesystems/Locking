@@ -21,7 +21,12 @@ prototypes:
 	char *(*d_dname)((struct dentry *dentry, char *buffer, int buflen);
 	struct vfsmount *(*d_automount)(struct path *path);
 	int (*d_manage)(const struct path *, bool);
+<<<<<<< HEAD
 	struct dentry *(*d_real)(struct dentry *, const struct inode *);
+=======
+	struct dentry *(*d_real)(struct dentry *, const struct inode *,
+				 unsigned int, unsigned int);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 locking rules:
 		rename_lock	->d_lock	may block	rcu-walk
@@ -63,11 +68,16 @@ prototypes:
 	void (*update_time)(struct inode *, struct timespec *, int);
 	int (*atomic_open)(struct inode *, struct dentry *,
 				struct file *, unsigned open_flag,
+<<<<<<< HEAD
 				umode_t create_mode);
+=======
+				umode_t create_mode, int *opened);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*tmpfile) (struct inode *, struct dentry *, umode_t);
 
 locking rules:
 	all may block
+<<<<<<< HEAD
 		i_rwsem(inode)
 lookup:		shared
 create:		exclusive
@@ -81,18 +91,42 @@ rename:		exclusive (all)	(see below)
 readlink:	no
 get_link:	no
 setattr:	exclusive
+=======
+		i_mutex(inode)
+lookup:		yes
+create:		yes
+link:		yes (both)
+mknod:		yes
+symlink:	yes
+mkdir:		yes
+unlink:		yes (both)
+rmdir:		yes (both)	(see below)
+rename:	yes (all)	(see below)
+readlink:	no
+get_link:	no
+setattr:	yes
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 permission:	no (may not block if called in rcu-walk mode)
 get_acl:	no
 getattr:	no
 listxattr:	no
 fiemap:		no
 update_time:	no
+<<<<<<< HEAD
 atomic_open:	exclusive
 tmpfile:	no
 
 
 	Additionally, ->rmdir(), ->unlink() and ->rename() have ->i_rwsem
 	exclusive on victim.
+=======
+atomic_open:	yes
+tmpfile:	no
+
+
+	Additionally, ->rmdir(), ->unlink() and ->rename() have ->i_mutex on
+victim.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cross-directory ->rename() has (per-superblock) ->s_vfs_rename_sem.
 
 See Documentation/filesystems/directory-locking for more detailed discussion
@@ -110,10 +144,17 @@ prototypes:
 
 locking rules:
 	all may block
+<<<<<<< HEAD
 		i_rwsem(inode)
 list:		no
 get:		no
 set:		exclusive
+=======
+		i_mutex(inode)
+list:		no
+get:		no
+set:		yes
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 --------------------------- super_operations ---------------------------
 prototypes:
@@ -216,14 +257,23 @@ prototypes:
 locking rules:
 	All except set_page_dirty and freepage may block
 
+<<<<<<< HEAD
 			PageLocked(page)	i_rwsem
+=======
+			PageLocked(page)	i_mutex
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 writepage:		yes, unlocks (see below)
 readpage:		yes, unlocks
 writepages:
 set_page_dirty		no
 readpages:
+<<<<<<< HEAD
 write_begin:		locks the page		exclusive
 write_end:		yes, unlocks		exclusive
+=======
+write_begin:		locks the page		yes
+write_end:		yes, unlocks		yes
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bmap:
 invalidatepage:		yes
 releasepage:		yes
@@ -438,8 +488,12 @@ prototypes:
 	ssize_t (*read_iter) (struct kiocb *, struct iov_iter *);
 	ssize_t (*write_iter) (struct kiocb *, struct iov_iter *);
 	int (*iterate) (struct file *, struct dir_context *);
+<<<<<<< HEAD
 	int (*iterate_shared) (struct file *, struct dir_context *);
 	__poll_t (*poll) (struct file *, struct poll_table_struct *);
+=======
+	unsigned int (*poll) (struct file *, struct poll_table_struct *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);
 	long (*compat_ioctl) (struct file *, unsigned int, unsigned long);
 	int (*mmap) (struct file *, struct vm_area_struct *);
@@ -480,10 +534,13 @@ mutex or just to use i_size_read() instead.
 Note: this does not protect the file->f_pos against concurrent modifications
 since this is something the userspace has to take care about.
 
+<<<<<<< HEAD
 ->iterate() is called with i_rwsem exclusive.
 
 ->iterate_shared() is called with i_rwsem at least shared.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ->fasync() is responsible for maintaining the FASYNC bit in filp->f_flags.
 Most instances call fasync_helper(), which does that maintenance, so it's
 not normally something one needs to worry about.  Return values > 0 will be
@@ -531,9 +588,15 @@ More details about quota locking can be found in fs/dquot.c.
 prototypes:
 	void (*open)(struct vm_area_struct*);
 	void (*close)(struct vm_area_struct*);
+<<<<<<< HEAD
 	vm_fault_t (*fault)(struct vm_area_struct*, struct vm_fault *);
 	vm_fault_t (*page_mkwrite)(struct vm_area_struct *, struct vm_fault *);
 	vm_fault_t (*pfn_mkwrite)(struct vm_area_struct *, struct vm_fault *);
+=======
+	int (*fault)(struct vm_area_struct*, struct vm_fault *);
+	int (*page_mkwrite)(struct vm_area_struct *, struct vm_fault *);
+	int (*pfn_mkwrite)(struct vm_area_struct *, struct vm_fault *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*access)(struct vm_area_struct *, unsigned long, void*, int, int);
 
 locking rules:

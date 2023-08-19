@@ -51,10 +51,17 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include "altera-ci.h"
 #include <media/dvb_ca_en50221.h>
+=======
+#include <dvb_demux.h>
+#include <dvb_frontend.h>
+#include "altera-ci.h"
+#include "dvb_ca_en50221.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* FPGA regs */
 #define NETUP_CI_INT_CTRL	0x00
@@ -346,7 +353,11 @@ static int altera_ci_slot_reset(struct dvb_ca_en50221 *en50221, int slot)
 	mutex_unlock(&inter->fpga_mutex);
 
 	for (;;) {
+<<<<<<< HEAD
 		msleep(50);
+=======
+		mdelay(50);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mutex_lock(&inter->fpga_mutex);
 

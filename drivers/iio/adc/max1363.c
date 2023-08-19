@@ -1029,6 +1029,10 @@ static int max1363_update_scan_mode(struct iio_dev *indio_dev,
 
 static const struct iio_info max1238_info = {
 	.read_raw = &max1363_read_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.update_scan_mode = &max1363_update_scan_mode,
 };
 
@@ -1039,6 +1043,10 @@ static const struct iio_info max1363_info = {
 	.write_event_config = &max1363_write_event_config,
 	.read_raw = &max1363_read_raw,
 	.update_scan_mode = &max1363_update_scan_mode,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.event_attrs = &max1363_event_attribute_group,
 };
 
@@ -1453,10 +1461,15 @@ static int max1363_alloc_scan_masks(struct iio_dev *indio_dev)
 	int i;
 
 	masks = devm_kzalloc(&indio_dev->dev,
+<<<<<<< HEAD
 			array3_size(BITS_TO_LONGS(MAX1363_MAX_CHANNELS),
 				    sizeof(long),
 				    st->chip_info->num_modes + 1),
 			GFP_KERNEL);
+=======
+			BITS_TO_LONGS(MAX1363_MAX_CHANNELS) * sizeof(long) *
+			(st->chip_info->num_modes + 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!masks)
 		return -ENOMEM;
 
@@ -1577,6 +1590,10 @@ static int max1363_probe(struct i2c_client *client,
 	struct max1363_state *st;
 	struct iio_dev *indio_dev;
 	struct regulator *vref;
+<<<<<<< HEAD
+=======
+	const struct of_device_id *match;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev = devm_iio_device_alloc(&client->dev,
 					  sizeof(struct max1363_state));
@@ -1603,8 +1620,16 @@ static int max1363_probe(struct i2c_client *client,
 	/* this is only used for device removal purposes */
 	i2c_set_clientdata(client, indio_dev);
 
+<<<<<<< HEAD
 	st->chip_info = of_device_get_match_data(&client->dev);
 	if (!st->chip_info)
+=======
+	match = of_match_device(of_match_ptr(max1363_of_match),
+				&client->dev);
+	if (match)
+		st->chip_info = of_device_get_match_data(&client->dev);
+	else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		st->chip_info = &max1363_chip_info_tbl[id->driver_data];
 	st->client = client;
 

@@ -114,6 +114,15 @@ static struct devprobe2 m68k_probes[] __initdata = {
 #ifdef CONFIG_MVME147_NET	/* MVME147 internal Ethernet */
 	{mvme147lance_probe, 0},
 #endif
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MAC8390           /* NuBus NS8390-based cards */
+	{mac8390_probe, 0},
+#endif
+#ifdef CONFIG_MAC89x0
+	{mac89x0_probe, 0},
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{NULL, 0},
 };
 

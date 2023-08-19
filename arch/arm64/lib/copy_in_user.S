@@ -77,5 +77,9 @@ ENDPROC(__arch_copy_in_user)
 	.section .fixup,"ax"
 	.align	2
 9998:	sub	x0, end, dst			// bytes not copied
+<<<<<<< HEAD
+=======
+	uaccess_disable_not_uao x3, x4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret
 	.previous

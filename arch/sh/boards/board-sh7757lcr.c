@@ -76,6 +76,10 @@ static struct resource sh_eth0_resources[] = {
 
 static struct sh_eth_plat_data sh7757_eth0_pdata = {
 	.phy = 1,
+<<<<<<< HEAD
+=======
+	.edmac_endian = EDMAC_LITTLE_ENDIAN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_mdio_gate = sh7757_eth_set_mdio_gate,
 };
 
@@ -103,6 +107,10 @@ static struct resource sh_eth1_resources[] = {
 
 static struct sh_eth_plat_data sh7757_eth1_pdata = {
 	.phy = 1,
+<<<<<<< HEAD
+=======
+	.edmac_endian = EDMAC_LITTLE_ENDIAN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_mdio_gate = sh7757_eth_set_mdio_gate,
 };
 
@@ -146,6 +154,10 @@ static struct resource sh_eth_giga0_resources[] = {
 
 static struct sh_eth_plat_data sh7757_eth_giga0_pdata = {
 	.phy = 18,
+<<<<<<< HEAD
+=======
+	.edmac_endian = EDMAC_LITTLE_ENDIAN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_mdio_gate = sh7757_eth_giga_set_mdio_gate,
 	.phy_interface = PHY_INTERFACE_MODE_RGMII_ID,
 };
@@ -179,6 +191,10 @@ static struct resource sh_eth_giga1_resources[] = {
 
 static struct sh_eth_plat_data sh7757_eth_giga1_pdata = {
 	.phy = 19,
+<<<<<<< HEAD
+=======
+	.edmac_endian = EDMAC_LITTLE_ENDIAN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_mdio_gate = sh7757_eth_giga_set_mdio_gate,
 	.phy_interface = PHY_INTERFACE_MODE_RGMII_ID,
 };

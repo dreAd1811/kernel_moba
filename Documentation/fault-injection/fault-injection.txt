@@ -1,7 +1,11 @@
 Fault injection capabilities infrastructure
 ===========================================
 
+<<<<<<< HEAD
 See also drivers/md/md-faulty.c and "every_nth" module option for scsi_debug.
+=======
+See also drivers/md/faulty.c and "every_nth" module option for scsi_debug.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Available fault injection capabilities
@@ -30,6 +34,7 @@ o fail_mmc_request
   injects MMC data errors on devices permitted by setting
   debugfs entries under /sys/kernel/debug/mmc0/fail_mmc_request
 
+<<<<<<< HEAD
 o fail_function
 
   injects error return on specific functions, which are marked by
@@ -44,6 +49,8 @@ o NVMe fault injection
   retry flag can be set via the debugfs.
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Configure fault-injection capabilities behavior
 -----------------------------------------------
 
@@ -137,6 +144,7 @@ configuration of fault-injection capabilities.
 	default is 'N', setting it to 'Y' will disable failure injections
 	when dealing with private (address space) futexes.
 
+<<<<<<< HEAD
 - /sys/kernel/debug/fail_function/inject:
 
 	Format: { 'function-name' | '!function-name' | '' }
@@ -160,6 +168,8 @@ configuration of fault-injection capabilities.
 	function for given function. This will be created when
 	user specifies new injection entry.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 o Boot option
 
 In order to inject faults while debugfs is not available (early boot time),
@@ -305,6 +315,7 @@ trap "echo 0 > /sys/kernel/debug/$FAILTYPE/probability" SIGINT SIGTERM EXIT
 echo "Injecting errors into the module $module... (interrupt to stop)"
 sleep 1000000
 
+<<<<<<< HEAD
 ------------------------------------------------------------------------------
 
 o Inject open_ctree error while btrfs mount
@@ -344,6 +355,8 @@ losetup -d $DEVICE
 rm testfile.img
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Tool to run command with failslab or fail_page_alloc
 ----------------------------------------------------
 In order to make it easier to accomplish the tasks mentioned above, we can use

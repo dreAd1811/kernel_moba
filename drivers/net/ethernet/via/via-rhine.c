@@ -995,8 +995,13 @@ static int rhine_init_one_common(struct device *hwdev, u32 quirks,
 	else
 		name = "Rhine III";
 
+<<<<<<< HEAD
 	netdev_info(dev, "VIA %s at %p, %pM, IRQ %d\n",
 		    name, ioaddr, dev->dev_addr, rp->irq);
+=======
+	netdev_info(dev, "VIA %s at 0x%lx, %pM, IRQ %d\n",
+		    name, (long)ioaddr, dev->dev_addr, rp->irq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_set_drvdata(hwdev, dev);
 

@@ -51,9 +51,12 @@
 
 #define INTEL_GVT_OPREGION_PAGES	2
 #define INTEL_GVT_OPREGION_SIZE		(INTEL_GVT_OPREGION_PAGES * PAGE_SIZE)
+<<<<<<< HEAD
 #define INTEL_GVT_OPREGION_VBT_OFFSET	0x400
 #define INTEL_GVT_OPREGION_VBT_SIZE	\
 		(INTEL_GVT_OPREGION_SIZE - INTEL_GVT_OPREGION_VBT_OFFSET)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define VGT_SPRSTRIDE(pipe)	_PIPE(pipe, _SPRA_STRIDE, _PLANE_STRIDE_2_B)
 
@@ -74,7 +77,11 @@
 #define RB_HEAD_OFF_MASK	((1U << 21) - (1U << 2))
 #define RB_TAIL_OFF_MASK	((1U << 21) - (1U << 3))
 #define RB_TAIL_SIZE_MASK	((1U << 21) - (1U << 12))
+<<<<<<< HEAD
 #define _RING_CTL_BUF_SIZE(ctl) (((ctl) & RB_TAIL_SIZE_MASK) + \
 		I915_GTT_PAGE_SIZE)
+=======
+#define _RING_CTL_BUF_SIZE(ctl) (((ctl) & RB_TAIL_SIZE_MASK) + GTT_PAGE_SIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

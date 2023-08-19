@@ -26,6 +26,7 @@ menuconfig TCG_TPM
 
 if TCG_TPM
 
+<<<<<<< HEAD
 config HW_RANDOM_TPM
 	bool "TPM HW Random Number Generator support"
 	depends on TCG_TPM && HW_RANDOM && !(TCG_TPM=y && HW_RANDOM=m)
@@ -37,6 +38,8 @@ config HW_RANDOM_TPM
 
 	  If unsure, say Y.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config TCG_TIS_CORE
 	tristate
 	---help---
@@ -157,7 +160,10 @@ config TCG_CRB
 config TCG_VTPM_PROXY
 	tristate "VTPM Proxy Interface"
 	depends on TCG_TPM
+<<<<<<< HEAD
 	select ANON_INODES
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This driver proxies for an emulated TPM (vTPM) running in userspace.
 	  A device /dev/vtpmx is provided that creates a device pair

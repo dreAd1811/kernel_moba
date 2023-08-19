@@ -1,10 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Multiplexer driver for Analog Devices ADG792A/G Triple 4:1 mux
  *
  * Copyright (C) 2017 Axentia Technologies AB
  *
  * Author: Peter Rosin <peda@axentia.se>
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/err.h>
@@ -58,7 +68,12 @@ static const struct mux_control_ops adg792a_ops = {
 	.set = adg792a_set,
 };
 
+<<<<<<< HEAD
 static int adg792a_probe(struct i2c_client *i2c)
+=======
+static int adg792a_probe(struct i2c_client *i2c,
+			 const struct i2c_device_id *id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = &i2c->dev;
 	struct mux_chip *mux_chip;
@@ -143,7 +158,11 @@ static struct i2c_driver adg792a_driver = {
 		.name		= "adg792a",
 		.of_match_table = of_match_ptr(adg792a_of_match),
 	},
+<<<<<<< HEAD
 	.probe_new	= adg792a_probe,
+=======
+	.probe		= adg792a_probe,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id_table	= adg792a_id,
 };
 module_i2c_driver(adg792a_driver);

@@ -29,7 +29,10 @@
  * This is crypto api shash wrappers to crc32_le.
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/crc32.h>
 #include <crypto/internal/hash.h>
 #include <linux/init.h>
@@ -40,6 +43,14 @@
 #define CHKSUM_BLOCK_SIZE	1
 #define CHKSUM_DIGEST_SIZE	4
 
+<<<<<<< HEAD
+=======
+static u32 __crc32_le(u32 crc, unsigned char const *p, size_t len)
+{
+	return crc32_le(crc, p, len);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /** No default init with ~0 */
 static int crc32_cra_init(struct crypto_tfm *tfm)
 {
@@ -50,6 +61,10 @@ static int crc32_cra_init(struct crypto_tfm *tfm)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Setting the seed allows arbitrary accumulators and flexible XOR policy
  * If your algorithm starts with ~0, then XOR with ~0 before you set
@@ -64,7 +79,11 @@ static int crc32_setkey(struct crypto_shash *hash, const u8 *key,
 		crypto_shash_set_flags(hash, CRYPTO_TFM_RES_BAD_KEY_LEN);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	*mctx = get_unaligned_le32(key);
+=======
+	*mctx = le32_to_cpup((__le32 *)key);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -83,7 +102,11 @@ static int crc32_update(struct shash_desc *desc, const u8 *data,
 {
 	u32 *crcp = shash_desc_ctx(desc);
 
+<<<<<<< HEAD
 	*crcp = crc32_le(*crcp, data, len);
+=======
+	*crcp = __crc32_le(*crcp, data, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -91,7 +114,11 @@ static int crc32_update(struct shash_desc *desc, const u8 *data,
 static int __crc32_finup(u32 *crcp, const u8 *data, unsigned int len,
 			 u8 *out)
 {
+<<<<<<< HEAD
 	put_unaligned_le32(crc32_le(*crcp, data, len), out);
+=======
+	*(__le32 *)out = cpu_to_le32(__crc32_le(*crcp, data, len));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -105,7 +132,11 @@ static int crc32_final(struct shash_desc *desc, u8 *out)
 {
 	u32 *crcp = shash_desc_ctx(desc);
 
+<<<<<<< HEAD
 	put_unaligned_le32(*crcp, out);
+=======
+	*(__le32 *)out = cpu_to_le32p(crcp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

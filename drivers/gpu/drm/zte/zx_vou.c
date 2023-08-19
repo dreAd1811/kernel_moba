@@ -627,10 +627,16 @@ void zx_vou_layer_enable(struct drm_plane *plane)
 	zx_writel_mask(vou->osd + OSD_CTRL0, bits->enable, bits->enable);
 }
 
+<<<<<<< HEAD
 void zx_vou_layer_disable(struct drm_plane *plane,
 			  struct drm_plane_state *old_state)
 {
 	struct zx_crtc *zcrtc = to_zx_crtc(old_state->crtc);
+=======
+void zx_vou_layer_disable(struct drm_plane *plane)
+{
+	struct zx_crtc *zcrtc = to_zx_crtc(plane->crtc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct zx_vou_hw *vou = zcrtc->vou;
 	struct zx_plane *zplane = to_zx_plane(plane);
 	const struct vou_layer_bits *bits = zplane->bits;

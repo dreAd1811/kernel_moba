@@ -45,8 +45,13 @@
  *
  */
 
+<<<<<<< HEAD
 #define RDI_DEV_ENTRY(rdi)   __string(dev, rvt_get_ibdev_name(rdi))
 #define RDI_DEV_ASSIGN(rdi)  __assign_str(dev, rvt_get_ibdev_name(rdi))
+=======
+#define RDI_DEV_ENTRY(rdi)   __string(dev, rdi->driver_f.get_card_name(rdi))
+#define RDI_DEV_ASSIGN(rdi)  __assign_str(dev, rdi->driver_f.get_card_name(rdi))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "trace_rvt.h"
 #include "trace_qp.h"

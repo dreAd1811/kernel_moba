@@ -107,7 +107,11 @@ struct RECEPTION_STATISTICS_PER_SLICES_S {
 
 int smsdvb_debugfs_create(struct smsdvb_client_t *client);
 void smsdvb_debugfs_release(struct smsdvb_client_t *client);
+<<<<<<< HEAD
 void smsdvb_debugfs_register(void);
+=======
+int smsdvb_debugfs_register(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void smsdvb_debugfs_unregister(void);
 
 #else
@@ -119,7 +123,14 @@ static inline int smsdvb_debugfs_create(struct smsdvb_client_t *client)
 
 static inline void smsdvb_debugfs_release(struct smsdvb_client_t *client) {}
 
+<<<<<<< HEAD
 static inline void smsdvb_debugfs_register(void) {}
+=======
+static inline int smsdvb_debugfs_register(void)
+{
+	return 0;
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void smsdvb_debugfs_unregister(void) {};
 

@@ -229,7 +229,11 @@ static int mmp_clk_mix_determine_rate(struct clk_hw *hw,
 			parent_rate = clk_hw_get_rate(parent);
 			mix_rate = parent_rate / item->divisor;
 			gap = abs(mix_rate - req->rate);
+<<<<<<< HEAD
 			if (!parent_best || gap < gap_best) {
+=======
+			if (parent_best == NULL || gap < gap_best) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				parent_best = parent;
 				parent_rate_best = parent_rate;
 				mix_rate_best = mix_rate;
@@ -247,7 +251,11 @@ static int mmp_clk_mix_determine_rate(struct clk_hw *hw,
 				div = _get_div(mix, j);
 				mix_rate = parent_rate / div;
 				gap = abs(mix_rate - req->rate);
+<<<<<<< HEAD
 				if (!parent_best || gap < gap_best) {
+=======
+				if (parent_best == NULL || gap < gap_best) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					parent_best = parent;
 					parent_rate_best = parent_rate;
 					mix_rate_best = mix_rate;
@@ -451,8 +459,16 @@ struct clk *mmp_clk_register_mix(struct device *dev,
 	size_t table_bytes;
 
 	mix = kzalloc(sizeof(*mix), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!mix)
 		return ERR_PTR(-ENOMEM);
+=======
+	if (!mix) {
+		pr_err("%s:%s: could not allocate mmp mix clk\n",
+			__func__, name);
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init.name = name;
 	init.flags = flags | CLK_GET_RATE_NOCACHE;
@@ -464,9 +480,18 @@ struct clk *mmp_clk_register_mix(struct device *dev,
 	if (config->table) {
 		table_bytes = sizeof(*config->table) * config->table_size;
 		mix->table = kmemdup(config->table, table_bytes, GFP_KERNEL);
+<<<<<<< HEAD
 		if (!mix->table)
 			goto free_mix;
 
+=======
+		if (!mix->table) {
+			pr_err("%s:%s: could not allocate mmp mix table\n",
+				__func__, name);
+			kfree(mix);
+			return ERR_PTR(-ENOMEM);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mix->table_size = config->table_size;
 	}
 
@@ -475,8 +500,16 @@ struct clk *mmp_clk_register_mix(struct device *dev,
 		mix->mux_table = kmemdup(config->mux_table, table_bytes,
 					 GFP_KERNEL);
 		if (!mix->mux_table) {
+<<<<<<< HEAD
 			kfree(mix->table);
 			goto free_mix;
+=======
+			pr_err("%s:%s: could not allocate mmp mix mux-table\n",
+				__func__, name);
+			kfree(mix->table);
+			kfree(mix);
+			return ERR_PTR(-ENOMEM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -500,8 +533,11 @@ struct clk *mmp_clk_register_mix(struct device *dev,
 	}
 
 	return clk;
+<<<<<<< HEAD
 
 free_mix:
 	kfree(mix);
 	return ERR_PTR(-ENOMEM);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

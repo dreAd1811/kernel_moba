@@ -75,8 +75,12 @@ static struct wf_control *fan_slots;
 static struct wf_control *cpufreq_clamp;
 
 /* Set to kick the control loop into life */
+<<<<<<< HEAD
 static int wf_smu_all_controls_ok, wf_smu_all_sensors_ok;
 static bool wf_smu_started;
+=======
+static int wf_smu_all_controls_ok, wf_smu_all_sensors_ok, wf_smu_started;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool wf_smu_overtemp;
 
 /* Failure handling.. could be nicer */
@@ -200,7 +204,11 @@ static void wf_smu_create_cpu_fans(void)
 	wf_cpu_pid_init(&wf_smu_cpu_fans->pid, &pid_param);
 
 	DBG("wf: CPU Fan control initialized.\n");
+<<<<<<< HEAD
 	DBG("    ttarget=%d.%03d, tmax=%d.%03d, min=%d RPM, max=%d RPM\n",
+=======
+	DBG("    ttarged=%d.%03d, tmax=%d.%03d, min=%d RPM, max=%d RPM\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    FIX32TOPRINT(pid_param.ttarget), FIX32TOPRINT(pid_param.tmax),
 	    pid_param.min, pid_param.max);
 
@@ -468,7 +476,11 @@ static void wf_smu_tick(void)
 		wf_smu_create_drive_fans();
 		wf_smu_create_slots_fans();
 		wf_smu_create_cpu_fans();
+<<<<<<< HEAD
 		wf_smu_started = true;
+=======
+		wf_smu_started = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Skipping ticks */

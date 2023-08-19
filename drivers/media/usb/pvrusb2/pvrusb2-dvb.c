@@ -18,7 +18,11 @@
 #include <linux/freezer.h>
 #include <linux/slab.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <media/dvbdev.h>
+=======
+#include "dvbdev.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "pvrusb2-debug.h"
 #include "pvrusb2-hdw-internal.h"
 #include "pvrusb2-hdw.h"

@@ -111,6 +111,18 @@ static void i915_gem_dmabuf_vunmap(struct dma_buf *dma_buf, void *vaddr)
 	i915_gem_object_unpin_map(obj);
 }
 
+<<<<<<< HEAD
+=======
+static void *i915_gem_dmabuf_kmap_atomic(struct dma_buf *dma_buf, unsigned long page_num)
+{
+	return NULL;
+}
+
+static void i915_gem_dmabuf_kunmap_atomic(struct dma_buf *dma_buf, unsigned long page_num, void *addr)
+{
+
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *i915_gem_dmabuf_kmap(struct dma_buf *dma_buf, unsigned long page_num)
 {
 	struct drm_i915_gem_object *obj = dma_buf_to_obj(dma_buf);
@@ -216,7 +228,13 @@ static const struct dma_buf_ops i915_dmabuf_ops =  {
 	.unmap_dma_buf = i915_gem_unmap_dma_buf,
 	.release = drm_gem_dmabuf_release,
 	.map = i915_gem_dmabuf_kmap,
+<<<<<<< HEAD
 	.unmap = i915_gem_dmabuf_kunmap,
+=======
+	.map_atomic = i915_gem_dmabuf_kmap_atomic,
+	.unmap = i915_gem_dmabuf_kunmap,
+	.unmap_atomic = i915_gem_dmabuf_kunmap_atomic,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mmap = i915_gem_dmabuf_mmap,
 	.vmap = i915_gem_dmabuf_vmap,
 	.vunmap = i915_gem_dmabuf_vunmap,
@@ -245,6 +263,7 @@ struct dma_buf *i915_gem_prime_export(struct drm_device *dev,
 	return drm_gem_dmabuf_export(dev, &exp_info);
 }
 
+<<<<<<< HEAD
 static int i915_gem_object_get_pages_dmabuf(struct drm_i915_gem_object *obj)
 {
 	struct sg_table *pages;
@@ -260,6 +279,13 @@ static int i915_gem_object_get_pages_dmabuf(struct drm_i915_gem_object *obj)
 	__i915_gem_object_set_pages(obj, pages, sg_page_sizes);
 
 	return 0;
+=======
+static struct sg_table *
+i915_gem_object_get_pages_dmabuf(struct drm_i915_gem_object *obj)
+{
+	return dma_buf_map_attachment(obj->base.import_attach,
+				      DMA_BIDIRECTIONAL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void i915_gem_object_put_pages_dmabuf(struct drm_i915_gem_object *obj,
@@ -319,8 +345,13 @@ struct drm_gem_object *i915_gem_prime_import(struct drm_device *dev,
 	 * write-combined buffer or a delay through the chipset for GTT
 	 * writes that do require us to treat GTT as a separate cache domain.)
 	 */
+<<<<<<< HEAD
 	obj->read_domains = I915_GEM_DOMAIN_GTT;
 	obj->write_domain = 0;
+=======
+	obj->base.read_domains = I915_GEM_DOMAIN_GTT;
+	obj->base.write_domain = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &obj->base;
 

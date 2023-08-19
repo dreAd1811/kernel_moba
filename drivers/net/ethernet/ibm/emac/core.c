@@ -199,18 +199,32 @@ static void __emac_set_multicast_list(struct emac_instance *dev);
 
 static inline int emac_phy_supports_gige(int phy_mode)
 {
+<<<<<<< HEAD
 	return  phy_interface_mode_is_rgmii(phy_mode) ||
 		phy_mode == PHY_INTERFACE_MODE_GMII ||
 		phy_mode == PHY_INTERFACE_MODE_SGMII ||
 		phy_mode == PHY_INTERFACE_MODE_TBI ||
 		phy_mode == PHY_INTERFACE_MODE_RTBI;
+=======
+	return  phy_mode == PHY_MODE_GMII ||
+		phy_mode == PHY_MODE_RGMII ||
+		phy_mode == PHY_MODE_SGMII ||
+		phy_mode == PHY_MODE_TBI ||
+		phy_mode == PHY_MODE_RTBI;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int emac_phy_gpcs(int phy_mode)
 {
+<<<<<<< HEAD
 	return  phy_mode == PHY_INTERFACE_MODE_SGMII ||
 		phy_mode == PHY_INTERFACE_MODE_TBI ||
 		phy_mode == PHY_INTERFACE_MODE_RTBI;
+=======
+	return  phy_mode == PHY_MODE_SGMII ||
+		phy_mode == PHY_MODE_TBI ||
+		phy_mode == PHY_MODE_RTBI;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void emac_tx_enable(struct emac_instance *dev)
@@ -516,9 +530,12 @@ static u32 __emac4_calc_base_mr1(struct emac_instance *dev, int tx_size, int rx_
 	case 16384:
 		ret |= EMAC4_MR1_TFS_16K;
 		break;
+<<<<<<< HEAD
 	case 8192:
 		ret |= EMAC4_MR1_TFS_8K;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 4096:
 		ret |= EMAC4_MR1_TFS_4K;
 		break;
@@ -534,9 +551,12 @@ static u32 __emac4_calc_base_mr1(struct emac_instance *dev, int tx_size, int rx_
 	case 16384:
 		ret |= EMAC4_MR1_RFS_16K;
 		break;
+<<<<<<< HEAD
 	case 8192:
 		ret |= EMAC4_MR1_RFS_8K;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 4096:
 		ret |= EMAC4_MR1_RFS_4K;
 		break;
@@ -2876,7 +2896,11 @@ static int emac_init_config(struct emac_instance *dev)
 	/* PHY mode needs some decoding */
 	dev->phy_mode = of_get_phy_mode(np);
 	if (dev->phy_mode < 0)
+<<<<<<< HEAD
 		dev->phy_mode = PHY_INTERFACE_MODE_NA;
+=======
+		dev->phy_mode = PHY_MODE_NA;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check EMAC version */
 	if (of_device_is_compatible(np, "ibm,emac4sync")) {
@@ -3179,7 +3203,11 @@ static int emac_probe(struct platform_device *ofdev)
 	printk(KERN_INFO "%s: EMAC-%d %pOF, MAC %pM\n",
 	       ndev->name, dev->cell_index, np, ndev->dev_addr);
 
+<<<<<<< HEAD
 	if (dev->phy_mode == PHY_INTERFACE_MODE_SGMII)
+=======
+	if (dev->phy_mode == PHY_MODE_SGMII)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_NOTICE "%s: in SGMII mode\n", ndev->name);
 
 	if (dev->phy.address >= 0)

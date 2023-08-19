@@ -126,7 +126,10 @@ static struct m5mols_scenemode m5mols_default_scenemode[] = {
 
 /**
  * m5mols_do_scenemode() - Change current scenemode
+<<<<<<< HEAD
  * @info: M-5MOLS driver data structure
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @mode:	Desired mode of the scenemode
  *
  * WARNING: The execution order is important. Do not change the order.

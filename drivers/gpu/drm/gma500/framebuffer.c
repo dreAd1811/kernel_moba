@@ -33,7 +33,10 @@
 #include <drm/drm.h>
 #include <drm/drm_crtc.h>
 #include <drm/drm_fb_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "psb_drv.h"
 #include "psb_intel_reg.h"
@@ -41,9 +44,20 @@
 #include "framebuffer.h"
 #include "gtt.h"
 
+<<<<<<< HEAD
 static const struct drm_framebuffer_funcs psb_fb_funcs = {
 	.destroy = drm_gem_fb_destroy,
 	.create_handle = drm_gem_fb_create_handle,
+=======
+static void psb_user_framebuffer_destroy(struct drm_framebuffer *fb);
+static int psb_user_framebuffer_create_handle(struct drm_framebuffer *fb,
+					      struct drm_file *file_priv,
+					      unsigned int *handle);
+
+static const struct drm_framebuffer_funcs psb_fb_funcs = {
+	.destroy = psb_user_framebuffer_destroy,
+	.create_handle = psb_user_framebuffer_create_handle,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define CMAP_TOHW(_val, _width) ((((_val) << (_width)) + 0x7FFF - (_val)) >> 16)
@@ -92,28 +106,44 @@ static int psbfb_pan(struct fb_var_screeninfo *var, struct fb_info *info)
 	struct psb_fbdev *fbdev = info->par;
 	struct psb_framebuffer *psbfb = &fbdev->pfb;
 	struct drm_device *dev = psbfb->base.dev;
+<<<<<<< HEAD
 	struct gtt_range *gtt = to_gtt_range(psbfb->base.obj[0]);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 *	We have to poke our nose in here. The core fb code assumes
 	 *	panning is part of the hardware that can be invoked before
 	 *	the actual fb is mapped. In our case that isn't quite true.
 	 */
+<<<<<<< HEAD
 	if (gtt->npage) {
 		/* GTT roll shifts in 4K pages, we need to shift the right
 		   number of pages */
 		int pages = info->fix.line_length >> 12;
 		psb_gtt_roll(dev, gtt, var->yoffset * pages);
+=======
+	if (psbfb->gtt->npage) {
+		/* GTT roll shifts in 4K pages, we need to shift the right
+		   number of pages */
+		int pages = info->fix.line_length >> 12;
+		psb_gtt_roll(dev, psbfb->gtt, var->yoffset * pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
         return 0;
 }
 
+<<<<<<< HEAD
 static vm_fault_t psbfb_vm_fault(struct vm_fault *vmf)
+=======
+static int psbfb_vm_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct psb_framebuffer *psbfb = vma->vm_private_data;
 	struct drm_device *dev = psbfb->base.dev;
 	struct drm_psb_private *dev_priv = dev->dev_private;
+<<<<<<< HEAD
 	struct gtt_range *gtt = to_gtt_range(psbfb->base.obj[0]);
 	int page_num;
 	int i;
@@ -122,6 +152,15 @@ static vm_fault_t psbfb_vm_fault(struct vm_fault *vmf)
 	unsigned long pfn;
 	unsigned long phys_addr = (unsigned long)dev_priv->stolen_base +
 				  gtt->offset;
+=======
+	int page_num;
+	int i;
+	unsigned long address;
+	int ret;
+	unsigned long pfn;
+	unsigned long phys_addr = (unsigned long)dev_priv->stolen_base +
+				  psbfb->gtt->offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	page_num = vma_pages(vma);
 	address = vmf->address - (vmf->pgoff << PAGE_SHIFT);
@@ -131,6 +170,7 @@ static vm_fault_t psbfb_vm_fault(struct vm_fault *vmf)
 	for (i = 0; i < page_num; i++) {
 		pfn = (phys_addr >> PAGE_SHIFT);
 
+<<<<<<< HEAD
 		ret = vmf_insert_mixed(vma, address,
 				__pfn_to_pfn_t(pfn, PFN_DEV));
 		if (unlikely(ret & VM_FAULT_ERROR))
@@ -139,6 +179,20 @@ static vm_fault_t psbfb_vm_fault(struct vm_fault *vmf)
 		phys_addr += PAGE_SIZE;
 	}
 	return ret;
+=======
+		ret = vm_insert_mixed(vma, address,
+				__pfn_to_pfn_t(pfn, PFN_DEV));
+		if (unlikely((ret == -EBUSY) || (ret != 0 && i > 0)))
+			break;
+		else if (unlikely(ret != 0)) {
+			ret = (ret == -ENOMEM) ? VM_FAULT_OOM : VM_FAULT_SIGBUS;
+			return ret;
+		}
+		address += PAGE_SIZE;
+		phys_addr += PAGE_SIZE;
+	}
+	return VM_FAULT_NOPAGE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void psbfb_vm_open(struct vm_area_struct *vma)
@@ -240,7 +294,11 @@ static int psb_framebuffer_init(struct drm_device *dev,
 		return -EINVAL;
 
 	drm_helper_mode_fill_fb_struct(dev, &fb->base, mode_cmd);
+<<<<<<< HEAD
 	fb->base.obj[0] = &gt->gem;
+=======
+	fb->gtt = gt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_framebuffer_init(dev, &fb->base, &psb_fb_funcs);
 	if (ret) {
 		dev_err(dev->dev, "framebuffer init failed: %d\n", ret);
@@ -480,6 +538,10 @@ static int psbfb_probe(struct drm_fb_helper *helper,
 		container_of(helper, struct psb_fbdev, psb_fb_helper);
 	struct drm_device *dev = psb_fbdev->psb_fb_helper.dev;
 	struct drm_psb_private *dev_priv = dev->dev_private;
+<<<<<<< HEAD
+=======
+	unsigned int fb_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int bytespp;
 
 	bytespp = sizes->surface_bpp / 8;
@@ -489,8 +551,16 @@ static int psbfb_probe(struct drm_fb_helper *helper,
 	/* If the mode will not fit in 32bit then switch to 16bit to get
 	   a console on full resolution. The X mode setting server will
 	   allocate its own 32bit GEM framebuffer */
+<<<<<<< HEAD
 	if (ALIGN(sizes->fb_width * bytespp, 64) * sizes->fb_height >
 	                dev_priv->vram_stolen_size) {
+=======
+	fb_size = ALIGN(sizes->surface_width * bytespp, 64) *
+		  sizes->surface_height;
+	fb_size = ALIGN(fb_size, PAGE_SIZE);
+
+	if (fb_size > dev_priv->vram_stolen_size) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
                 sizes->surface_bpp = 16;
                 sizes->surface_depth = 16;
         }
@@ -512,8 +582,13 @@ static int psb_fbdev_destroy(struct drm_device *dev, struct psb_fbdev *fbdev)
 	drm_framebuffer_unregister_private(&psbfb->base);
 	drm_framebuffer_cleanup(&psbfb->base);
 
+<<<<<<< HEAD
 	if (psbfb->base.obj[0])
 		drm_gem_object_put_unlocked(psbfb->base.obj[0]);
+=======
+	if (psbfb->gtt)
+		drm_gem_object_unreference_unlocked(&psbfb->gtt->gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -570,9 +645,60 @@ static void psb_fbdev_fini(struct drm_device *dev)
 	dev_priv->fbdev = NULL;
 }
 
+<<<<<<< HEAD
 static const struct drm_mode_config_funcs psb_mode_funcs = {
 	.fb_create = psb_user_framebuffer_create,
 	.output_poll_changed = drm_fb_helper_output_poll_changed,
+=======
+static void psbfb_output_poll_changed(struct drm_device *dev)
+{
+	struct drm_psb_private *dev_priv = dev->dev_private;
+	struct psb_fbdev *fbdev = (struct psb_fbdev *)dev_priv->fbdev;
+	drm_fb_helper_hotplug_event(&fbdev->psb_fb_helper);
+}
+
+/**
+ *	psb_user_framebuffer_create_handle - add hamdle to a framebuffer
+ *	@fb: framebuffer
+ *	@file_priv: our DRM file
+ *	@handle: returned handle
+ *
+ *	Our framebuffer object is a GTT range which also contains a GEM
+ *	object. We need to turn it into a handle for userspace. GEM will do
+ *	the work for us
+ */
+static int psb_user_framebuffer_create_handle(struct drm_framebuffer *fb,
+					      struct drm_file *file_priv,
+					      unsigned int *handle)
+{
+	struct psb_framebuffer *psbfb = to_psb_fb(fb);
+	struct gtt_range *r = psbfb->gtt;
+	return drm_gem_handle_create(file_priv, &r->gem, handle);
+}
+
+/**
+ *	psb_user_framebuffer_destroy	-	destruct user created fb
+ *	@fb: framebuffer
+ *
+ *	User framebuffers are backed by GEM objects so all we have to do is
+ *	clean up a bit and drop the reference, GEM will handle the fallout
+ */
+static void psb_user_framebuffer_destroy(struct drm_framebuffer *fb)
+{
+	struct psb_framebuffer *psbfb = to_psb_fb(fb);
+	struct gtt_range *r = psbfb->gtt;
+
+	/* Let DRM do its clean up */
+	drm_framebuffer_cleanup(fb);
+	/*  We are no longer using the resource in GEM */
+	drm_gem_object_unreference_unlocked(&r->gem);
+	kfree(fb);
+}
+
+static const struct drm_mode_config_funcs psb_mode_funcs = {
+	.fb_create = psb_user_framebuffer_create,
+	.output_poll_changed = psbfb_output_poll_changed,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void psb_setup_outputs(struct drm_device *dev)

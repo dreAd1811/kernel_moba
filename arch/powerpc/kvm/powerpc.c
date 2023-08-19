@@ -33,15 +33,22 @@
 #include <asm/cputable.h>
 #include <linux/uaccess.h>
 #include <asm/kvm_ppc.h>
+<<<<<<< HEAD
+=======
+#include <asm/tlbflush.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cputhreads.h>
 #include <asm/irqflags.h>
 #include <asm/iommu.h>
 #include <asm/switch_to.h>
 #include <asm/xive.h>
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_PSERIES
 #include <asm/hvcall.h>
 #include <asm/plpar_wrappers.h>
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "timing.h"
 #include "irq.h"
@@ -559,7 +566,10 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 #ifdef CONFIG_KVM_XICS
 	case KVM_CAP_IRQ_XICS:
 #endif
+<<<<<<< HEAD
 	case KVM_CAP_PPC_GET_CPU_CHAR:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = 1;
 		break;
 
@@ -602,7 +612,12 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 		r = !!(hv_enabled && radix_enabled());
 		break;
 	case KVM_CAP_PPC_MMU_HASH_V3:
+<<<<<<< HEAD
 		r = !!(hv_enabled && cpu_has_feature(CPU_FTR_ARCH_300));
+=======
+		r = !!(hv_enabled && !radix_enabled() &&
+		       cpu_has_feature(CPU_FTR_ARCH_300));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 #endif
 	case KVM_CAP_SYNC_MMU:
@@ -648,7 +663,12 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 		r = 1;
 		break;
 	case KVM_CAP_SPAPR_RESIZE_HPT:
+<<<<<<< HEAD
 		r = !!hv_enabled;
+=======
+		/* Disable this on POWER9 until code handles new HPTE format */
+		r = !!hv_enabled && !cpu_has_feature(CPU_FTR_ARCH_300);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 #endif
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
@@ -656,12 +676,18 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
 		r = hv_enabled;
 		break;
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	case KVM_CAP_PPC_HTM:
 		r = !!(cur_cpu_spec->cpu_user_features2 & PPC_FEATURE2_HTM) ||
 		     (hv_enabled && cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST));
 		break;
 #endif
+=======
+	case KVM_CAP_PPC_HTM:
+		r = cpu_has_feature(CPU_FTR_TM_COMP) && hv_enabled;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		r = 0;
 		break;
@@ -890,10 +916,17 @@ static inline void kvmppc_set_vsr_dword(struct kvm_vcpu *vcpu,
 	if (offset == -1)
 		return;
 
+<<<<<<< HEAD
 	if (index >= 32) {
 		val.vval = VCPU_VSX_VR(vcpu, index - 32);
 		val.vsxval[offset] = gpr;
 		VCPU_VSX_VR(vcpu, index - 32) = val.vval;
+=======
+	if (vcpu->arch.mmio_vsx_tx_sx_enabled) {
+		val.vval = VCPU_VSX_VR(vcpu, index);
+		val.vsxval[offset] = gpr;
+		VCPU_VSX_VR(vcpu, index) = val.vval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		VCPU_VSX_FPR(vcpu, index, offset) = gpr;
 	}
@@ -905,17 +938,26 @@ static inline void kvmppc_set_vsr_dword_dump(struct kvm_vcpu *vcpu,
 	union kvmppc_one_reg val;
 	int index = vcpu->arch.io_gpr & KVM_MMIO_REG_MASK;
 
+<<<<<<< HEAD
 	if (index >= 32) {
 		val.vval = VCPU_VSX_VR(vcpu, index - 32);
 		val.vsxval[0] = gpr;
 		val.vsxval[1] = gpr;
 		VCPU_VSX_VR(vcpu, index - 32) = val.vval;
+=======
+	if (vcpu->arch.mmio_vsx_tx_sx_enabled) {
+		val.vval = VCPU_VSX_VR(vcpu, index);
+		val.vsxval[0] = gpr;
+		val.vsxval[1] = gpr;
+		VCPU_VSX_VR(vcpu, index) = val.vval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		VCPU_VSX_FPR(vcpu, index, 0) = gpr;
 		VCPU_VSX_FPR(vcpu, index, 1) = gpr;
 	}
 }
 
+<<<<<<< HEAD
 static inline void kvmppc_set_vsr_word_dump(struct kvm_vcpu *vcpu,
 	u32 gpr)
 {
@@ -936,6 +978,8 @@ static inline void kvmppc_set_vsr_word_dump(struct kvm_vcpu *vcpu,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void kvmppc_set_vsr_word(struct kvm_vcpu *vcpu,
 	u32 gpr32)
 {
@@ -947,10 +991,17 @@ static inline void kvmppc_set_vsr_word(struct kvm_vcpu *vcpu,
 	if (offset == -1)
 		return;
 
+<<<<<<< HEAD
 	if (index >= 32) {
 		val.vval = VCPU_VSX_VR(vcpu, index - 32);
 		val.vsx32val[offset] = gpr32;
 		VCPU_VSX_VR(vcpu, index - 32) = val.vval;
+=======
+	if (vcpu->arch.mmio_vsx_tx_sx_enabled) {
+		val.vval = VCPU_VSX_VR(vcpu, index);
+		val.vsx32val[offset] = gpr32;
+		VCPU_VSX_VR(vcpu, index) = val.vval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		dword_offset = offset / 2;
 		word_offset = offset % 2;
@@ -961,6 +1012,7 @@ static inline void kvmppc_set_vsr_word(struct kvm_vcpu *vcpu,
 }
 #endif /* CONFIG_VSX */
 
+<<<<<<< HEAD
 #ifdef CONFIG_ALTIVEC
 static inline int kvmppc_get_vmx_offset_generic(struct kvm_vcpu *vcpu,
 		int index, int element_size)
@@ -1069,6 +1121,8 @@ static inline void kvmppc_set_vmx_byte(struct kvm_vcpu *vcpu,
 }
 #endif /* CONFIG_ALTIVEC */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PPC_FPU
 static inline u64 sp_to_dp(u32 fprs)
 {
@@ -1150,9 +1204,12 @@ static void kvmppc_complete_mmio_load(struct kvm_vcpu *vcpu,
 		kvmppc_set_gpr(vcpu, vcpu->arch.io_gpr, gpr);
 		break;
 	case KVM_MMIO_REG_FPR:
+<<<<<<< HEAD
 		if (vcpu->kvm->arch.kvm_ops->giveup_ext)
 			vcpu->kvm->arch.kvm_ops->giveup_ext(vcpu, MSR_FP);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		VCPU_FPR(vcpu, vcpu->arch.io_gpr & KVM_MMIO_REG_MASK) = gpr;
 		break;
 #ifdef CONFIG_PPC_BOOK3S
@@ -1166,6 +1223,7 @@ static void kvmppc_complete_mmio_load(struct kvm_vcpu *vcpu,
 #endif
 #ifdef CONFIG_VSX
 	case KVM_MMIO_REG_VSX:
+<<<<<<< HEAD
 		if (vcpu->kvm->arch.kvm_ops->giveup_ext)
 			vcpu->kvm->arch.kvm_ops->giveup_ext(vcpu, MSR_VSX);
 
@@ -1196,6 +1254,15 @@ static void kvmppc_complete_mmio_load(struct kvm_vcpu *vcpu,
 		else if (vcpu->arch.mmio_copy_type ==
 				KVMPPC_VMX_COPY_BYTE)
 			kvmppc_set_vmx_byte(vcpu, gpr);
+=======
+		if (vcpu->arch.mmio_vsx_copy_type == KVMPPC_VSX_COPY_DWORD)
+			kvmppc_set_vsr_dword(vcpu, gpr);
+		else if (vcpu->arch.mmio_vsx_copy_type == KVMPPC_VSX_COPY_WORD)
+			kvmppc_set_vsr_word(vcpu, gpr);
+		else if (vcpu->arch.mmio_vsx_copy_type ==
+				KVMPPC_VSX_COPY_DWORD_LOAD_DUMP)
+			kvmppc_set_vsr_dword_dump(vcpu, gpr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 #endif
 	default:
@@ -1271,9 +1338,17 @@ int kvmppc_handle_vsx_load(struct kvm_run *run, struct kvm_vcpu *vcpu,
 {
 	enum emulation_result emulated = EMULATE_DONE;
 
+<<<<<<< HEAD
 	/* Currently, mmio_vsx_copy_nums only allowed to be 4 or less */
 	if (vcpu->arch.mmio_vsx_copy_nums > 4)
 		return EMULATE_FAIL;
+=======
+	/* Currently, mmio_vsx_copy_nums only allowed to be less than 4 */
+	if ( (vcpu->arch.mmio_vsx_copy_nums > 4) ||
+		(vcpu->arch.mmio_vsx_copy_nums < 0) ) {
+		return EMULATE_FAIL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (vcpu->arch.mmio_vsx_copy_nums) {
 		emulated = __kvmppc_handle_load(run, vcpu, rt, bytes,
@@ -1358,7 +1433,11 @@ static inline int kvmppc_get_vsr_data(struct kvm_vcpu *vcpu, int rs, u64 *val)
 	u32 dword_offset, word_offset;
 	union kvmppc_one_reg reg;
 	int vsx_offset = 0;
+<<<<<<< HEAD
 	int copy_type = vcpu->arch.mmio_copy_type;
+=======
+	int copy_type = vcpu->arch.mmio_vsx_copy_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int result = 0;
 
 	switch (copy_type) {
@@ -1371,10 +1450,17 @@ static inline int kvmppc_get_vsr_data(struct kvm_vcpu *vcpu, int rs, u64 *val)
 			break;
 		}
 
+<<<<<<< HEAD
 		if (rs < 32) {
 			*val = VCPU_VSX_FPR(vcpu, rs, vsx_offset);
 		} else {
 			reg.vval = VCPU_VSX_VR(vcpu, rs - 32);
+=======
+		if (!vcpu->arch.mmio_vsx_tx_sx_enabled) {
+			*val = VCPU_VSX_FPR(vcpu, rs, vsx_offset);
+		} else {
+			reg.vval = VCPU_VSX_VR(vcpu, rs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*val = reg.vsxval[vsx_offset];
 		}
 		break;
@@ -1388,13 +1474,21 @@ static inline int kvmppc_get_vsr_data(struct kvm_vcpu *vcpu, int rs, u64 *val)
 			break;
 		}
 
+<<<<<<< HEAD
 		if (rs < 32) {
+=======
+		if (!vcpu->arch.mmio_vsx_tx_sx_enabled) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dword_offset = vsx_offset / 2;
 			word_offset = vsx_offset % 2;
 			reg.vsxval[0] = VCPU_VSX_FPR(vcpu, rs, dword_offset);
 			*val = reg.vsx32val[word_offset];
 		} else {
+<<<<<<< HEAD
 			reg.vval = VCPU_VSX_VR(vcpu, rs - 32);
+=======
+			reg.vval = VCPU_VSX_VR(vcpu, rs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*val = reg.vsx32val[vsx_offset];
 		}
 		break;
@@ -1415,9 +1509,17 @@ int kvmppc_handle_vsx_store(struct kvm_run *run, struct kvm_vcpu *vcpu,
 
 	vcpu->arch.io_gpr = rs;
 
+<<<<<<< HEAD
 	/* Currently, mmio_vsx_copy_nums only allowed to be 4 or less */
 	if (vcpu->arch.mmio_vsx_copy_nums > 4)
 		return EMULATE_FAIL;
+=======
+	/* Currently, mmio_vsx_copy_nums only allowed to be less than 4 */
+	if ( (vcpu->arch.mmio_vsx_copy_nums > 4) ||
+		(vcpu->arch.mmio_vsx_copy_nums < 0) ) {
+		return EMULATE_FAIL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (vcpu->arch.mmio_vsx_copy_nums) {
 		if (kvmppc_get_vsr_data(vcpu, rs, &val) == -1)
@@ -1473,6 +1575,7 @@ static int kvmppc_emulate_mmio_vsx_loadstore(struct kvm_vcpu *vcpu,
 }
 #endif /* CONFIG_VSX */
 
+<<<<<<< HEAD
 #ifdef CONFIG_ALTIVEC
 int kvmppc_handle_vmx_load(struct kvm_run *run, struct kvm_vcpu *vcpu,
 		unsigned int rt, unsigned int bytes, int is_default_endian)
@@ -1652,6 +1755,8 @@ static int kvmppc_emulate_mmio_vmx_loadstore(struct kvm_vcpu *vcpu,
 }
 #endif /* CONFIG_ALTIVEC */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kvm_vcpu_ioctl_get_one_reg(struct kvm_vcpu *vcpu, struct kvm_one_reg *reg)
 {
 	int r = 0;
@@ -1753,8 +1858,11 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
 {
 	int r;
 
+<<<<<<< HEAD
 	vcpu_load(vcpu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vcpu->mmio_needed) {
 		vcpu->mmio_needed = 0;
 		if (!vcpu->mmio_is_write)
@@ -1769,6 +1877,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
 			r = kvmppc_emulate_mmio_vsx_loadstore(vcpu, run);
 			if (r == RESUME_HOST) {
 				vcpu->mmio_needed = 1;
+<<<<<<< HEAD
 				goto out;
 			}
 		}
@@ -1784,6 +1893,9 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
 			if (r == RESUME_HOST) {
 				vcpu->mmio_needed = 1;
 				goto out;
+=======
+				return r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 #endif
@@ -1817,10 +1929,13 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
 
 	kvm_sigset_deactivate(vcpu);
 
+<<<<<<< HEAD
 #ifdef CONFIG_ALTIVEC
 out:
 #endif
 	vcpu_put(vcpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -1968,6 +2083,7 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 long kvm_arch_vcpu_async_ioctl(struct file *filp,
 			       unsigned int ioctl, unsigned long arg)
 {
@@ -1983,6 +2099,8 @@ long kvm_arch_vcpu_async_ioctl(struct file *filp,
 	return -ENOIOCTLCMD;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 long kvm_arch_vcpu_ioctl(struct file *filp,
                          unsigned int ioctl, unsigned long arg)
 {
@@ -1991,15 +2109,33 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
 	long r;
 
 	switch (ioctl) {
+<<<<<<< HEAD
+=======
+	case KVM_INTERRUPT: {
+		struct kvm_interrupt irq;
+		r = -EFAULT;
+		if (copy_from_user(&irq, argp, sizeof(irq)))
+			goto out;
+		r = kvm_vcpu_ioctl_interrupt(vcpu, &irq);
+		goto out;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case KVM_ENABLE_CAP:
 	{
 		struct kvm_enable_cap cap;
 		r = -EFAULT;
+<<<<<<< HEAD
 		vcpu_load(vcpu);
 		if (copy_from_user(&cap, argp, sizeof(cap)))
 			goto out;
 		r = kvm_vcpu_ioctl_enable_cap(vcpu, &cap);
 		vcpu_put(vcpu);
+=======
+		if (copy_from_user(&cap, argp, sizeof(cap)))
+			goto out;
+		r = kvm_vcpu_ioctl_enable_cap(vcpu, &cap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -2021,11 +2157,17 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
 	case KVM_DIRTY_TLB: {
 		struct kvm_dirty_tlb dirty;
 		r = -EFAULT;
+<<<<<<< HEAD
 		vcpu_load(vcpu);
 		if (copy_from_user(&dirty, argp, sizeof(dirty)))
 			goto out;
 		r = kvm_vcpu_ioctl_dirty_tlb(vcpu, &dirty);
 		vcpu_put(vcpu);
+=======
+		if (copy_from_user(&dirty, argp, sizeof(dirty)))
+			goto out;
+		r = kvm_vcpu_ioctl_dirty_tlb(vcpu, &dirty);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 #endif
@@ -2037,7 +2179,11 @@ out:
 	return r;
 }
 
+<<<<<<< HEAD
 vm_fault_t kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+=======
+int kvm_arch_vcpu_fault(struct kvm_vcpu *vcpu, struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return VM_FAULT_SIGBUS;
 }
@@ -2134,6 +2280,7 @@ static int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
 	return r;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 /*
  * These functions check whether the underlying hardware is safe
@@ -2252,6 +2399,8 @@ static int kvmppc_get_cpu_char(struct kvm_ppc_cpu_char *cp)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 long kvm_arch_vm_ioctl(struct file *filp,
                        unsigned int ioctl, unsigned long arg)
 {
@@ -2354,6 +2503,7 @@ long kvm_arch_vm_ioctl(struct file *filp,
 			r = -EFAULT;
 		break;
 	}
+<<<<<<< HEAD
 	case KVM_PPC_GET_CPU_CHAR: {
 		struct kvm_ppc_cpu_char cpuchar;
 
@@ -2362,6 +2512,8 @@ long kvm_arch_vm_ioctl(struct file *filp,
 			r = -EFAULT;
 		break;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default: {
 		struct kvm *kvm = filp->private_data;
 		r = kvm->arch.kvm_ops->arch_vm_ioctl(filp, ioctl, arg);

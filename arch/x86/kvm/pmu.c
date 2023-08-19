@@ -244,6 +244,7 @@ int kvm_pmu_is_valid_msr_idx(struct kvm_vcpu *vcpu, unsigned idx)
 	return kvm_x86_ops->pmu_ops->is_valid_msr_idx(vcpu, idx);
 }
 
+<<<<<<< HEAD
 bool is_vmware_backdoor_pmc(u32 pmc_idx)
 {
 	switch (pmc_idx) {
@@ -278,10 +279,13 @@ static int kvm_pmu_rdpmc_vmware(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
 {
 	bool fast_mode = idx & (1u << 31);
 	struct kvm_pmc *pmc;
+<<<<<<< HEAD
 	u64 mask = fast_mode ? ~0u : ~0ull;
 
 	if (is_vmware_backdoor_pmc(idx))
@@ -292,6 +296,19 @@ int kvm_pmu_rdpmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *data)
 		return 1;
 
 	*data = pmc_read_counter(pmc) & mask;
+=======
+	u64 ctr_val;
+
+	pmc = kvm_x86_ops->pmu_ops->msr_idx_to_pmc(vcpu, idx);
+	if (!pmc)
+		return 1;
+
+	ctr_val = pmc_read_counter(pmc);
+	if (fast_mode)
+		ctr_val = (u32)ctr_val;
+
+	*data = ctr_val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -6,6 +6,35 @@
 #include <linux/ide.h>
 #include <linux/bitops.h>
 
+<<<<<<< HEAD
+=======
+/**
+ *	ide_toggle_bounce	-	handle bounce buffering
+ *	@drive: drive to update
+ *	@on: on/off boolean
+ *
+ *	Enable or disable bounce buffering for the device. Drives move
+ *	between PIO and DMA and that changes the rules we need.
+ */
+
+void ide_toggle_bounce(ide_drive_t *drive, int on)
+{
+	u64 addr = BLK_BOUNCE_HIGH;	/* dma64_addr_t */
+
+	if (!PCI_DMA_BUS_IS_PHYS) {
+		addr = BLK_BOUNCE_ANY;
+	} else if (on && drive->media == ide_disk) {
+		struct device *dev = drive->hwif->dev;
+
+		if (dev && dev->dma_mask)
+			addr = *dev->dma_mask;
+	}
+
+	if (drive->queue)
+		blk_queue_bounce_limit(drive->queue, addr);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u64 ide_get_lba_addr(struct ide_cmd *cmd, int lba48)
 {
 	struct ide_taskfile *tf = &cmd->tf;

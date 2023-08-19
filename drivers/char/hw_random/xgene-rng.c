@@ -100,9 +100,15 @@ struct xgene_rng_dev {
 	struct clk *clk;
 };
 
+<<<<<<< HEAD
 static void xgene_rng_expired_timer(struct timer_list *t)
 {
 	struct xgene_rng_dev *ctx = from_timer(ctx, t, failure_timer);
+=======
+static void xgene_rng_expired_timer(unsigned long arg)
+{
+	struct xgene_rng_dev *ctx = (struct xgene_rng_dev *) arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clear failure counter as timer expired */
 	disable_irq(ctx->irq);
@@ -113,6 +119,11 @@ static void xgene_rng_expired_timer(struct timer_list *t)
 
 static void xgene_rng_start_timer(struct xgene_rng_dev *ctx)
 {
+<<<<<<< HEAD
+=======
+	ctx->failure_timer.data = (unsigned long) ctx;
+	ctx->failure_timer.function = xgene_rng_expired_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->failure_timer.expires = jiffies + 120 * HZ;
 	add_timer(&ctx->failure_timer);
 }
@@ -290,7 +301,11 @@ static int xgene_rng_init(struct hwrng *rng)
 	struct xgene_rng_dev *ctx = (struct xgene_rng_dev *) rng->priv;
 
 	ctx->failure_cnt = 0;
+<<<<<<< HEAD
 	timer_setup(&ctx->failure_timer, xgene_rng_expired_timer, 0);
+=======
+	init_timer(&ctx->failure_timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx->revision = readl(ctx->csr_base + RNG_EIP_REV);
 

@@ -454,7 +454,11 @@ static ssize_t pwm1_enable_store(struct device *dev,
 	}
 
 	result = read_u8_from_i2c(client, REG_FAN_CONF1, &conf_reg);
+<<<<<<< HEAD
 	if (result) {
+=======
+	if (result < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		count = result;
 		goto err;
 	}

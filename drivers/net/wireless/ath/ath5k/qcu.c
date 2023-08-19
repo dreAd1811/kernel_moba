@@ -327,6 +327,11 @@ ath5k_hw_reset_tx_queue(struct ath5k_hw *ah, unsigned int queue)
 
 	AR5K_ASSERT_ENTRY(queue, ah->ah_capabilities.cap_queues.q_tx_num);
 
+<<<<<<< HEAD
+=======
+	tq = &ah->ah_txq[queue];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Skip if queue inactive or if we are on AR5210
 	 * that doesn't have QCU/DCU */
 	if ((ah->ah_version == AR5K_AR5210) ||

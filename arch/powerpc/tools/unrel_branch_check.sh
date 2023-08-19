@@ -18,14 +18,22 @@ vmlinux="$2"
 #__end_interrupts should be located within the first 64K
 
 end_intr=0x$(
+<<<<<<< HEAD
 "$objdump" -R "$vmlinux" -d --start-address=0xc000000000000000		\
+=======
+$objdump -R "$vmlinux" -d --start-address=0xc000000000000000           \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 --stop-address=0xc000000000010000 |
 grep '\<__end_interrupts>:' |
 awk '{print $1}'
 )
 
 BRANCHES=$(
+<<<<<<< HEAD
 "$objdump" -R "$vmlinux" -D --start-address=0xc000000000000000		\
+=======
+$objdump -R "$vmlinux" -D --start-address=0xc000000000000000           \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		--stop-address=${end_intr} |
 grep -e "^c[0-9a-f]*:[[:space:]]*\([0-9a-f][0-9a-f][[:space:]]\)\{4\}[[:space:]]*b" |
 grep -v '\<__start_initialization_multiplatform>' |

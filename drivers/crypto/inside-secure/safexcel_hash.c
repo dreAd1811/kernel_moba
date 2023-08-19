@@ -1,17 +1,34 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) 2017 Marvell
  *
  * Antoine Tenart <antoine.tenart@free-electrons.com>
+<<<<<<< HEAD
  */
 
 #include <crypto/hmac.h>
 #include <crypto/md5.h>
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public
+ * License version 2. This program is licensed "as is" without any
+ * warranty of any kind, whether express or implied.
+ */
+
+#include <crypto/hmac.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <crypto/sha.h>
 #include <linux/device.h>
 #include <linux/dma-mapping.h>
 #include <linux/dmapool.h>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "safexcel.h"
 
 struct safexcel_ahash_ctx {
@@ -19,9 +36,16 @@ struct safexcel_ahash_ctx {
 	struct safexcel_crypto_priv *priv;
 
 	u32 alg;
+<<<<<<< HEAD
 
 	u32 ipad[SHA512_DIGEST_SIZE / sizeof(u32)];
 	u32 opad[SHA512_DIGEST_SIZE / sizeof(u32)];
+=======
+	u32 digest;
+
+	u32 ipad[SHA1_DIGEST_SIZE / sizeof(u32)];
+	u32 opad[SHA1_DIGEST_SIZE / sizeof(u32)];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct safexcel_ahash_req {
@@ -31,6 +55,7 @@ struct safexcel_ahash_req {
 	bool needs_inv;
 
 	int nents;
+<<<<<<< HEAD
 	dma_addr_t result_dma;
 
 	u32 digest;
@@ -55,6 +80,26 @@ static inline u64 safexcel_queued_len(struct safexcel_ahash_req *req)
 
 	return req->len[0] - req->processed[0];
 }
+=======
+
+	u8 state_sz;    /* expected sate size, only set once */
+	u32 state[SHA256_DIGEST_SIZE / sizeof(u32)];
+
+	u64 len;
+	u64 processed;
+
+	u8 cache[SHA256_BLOCK_SIZE] __aligned(sizeof(u32));
+	u8 cache_next[SHA256_BLOCK_SIZE] __aligned(sizeof(u32));
+};
+
+struct safexcel_ahash_export_state {
+	u64 len;
+	u64 processed;
+
+	u32 state[SHA256_DIGEST_SIZE / sizeof(u32)];
+	u8 cache[SHA256_BLOCK_SIZE];
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void safexcel_hash_token(struct safexcel_command_desc *cdesc,
 				u32 input_length, u32 result_length)
@@ -78,13 +123,20 @@ static void safexcel_hash_token(struct safexcel_command_desc *cdesc,
 static void safexcel_context_control(struct safexcel_ahash_ctx *ctx,
 				     struct safexcel_ahash_req *req,
 				     struct safexcel_command_desc *cdesc,
+<<<<<<< HEAD
 				     unsigned int digestsize)
 {
 	struct safexcel_crypto_priv *priv = ctx->priv;
+=======
+				     unsigned int digestsize,
+				     unsigned int blocksize)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	cdesc->control_data.control0 |= CONTEXT_CONTROL_TYPE_HASH_OUT;
 	cdesc->control_data.control0 |= ctx->alg;
+<<<<<<< HEAD
 	cdesc->control_data.control0 |= req->digest;
 
 	if (req->digest == CONTEXT_CONTROL_DIGEST_PRECOMPUTED) {
@@ -92,13 +144,23 @@ static void safexcel_context_control(struct safexcel_ahash_ctx *ctx,
 			if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_MD5)
 				cdesc->control_data.control0 |= CONTEXT_CONTROL_SIZE(5);
 			else if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA1)
+=======
+	cdesc->control_data.control0 |= ctx->digest;
+
+	if (ctx->digest == CONTEXT_CONTROL_DIGEST_PRECOMPUTED) {
+		if (req->processed) {
+			if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				cdesc->control_data.control0 |= CONTEXT_CONTROL_SIZE(6);
 			else if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA224 ||
 				 ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA256)
 				cdesc->control_data.control0 |= CONTEXT_CONTROL_SIZE(9);
+<<<<<<< HEAD
 			else if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA384 ||
 				 ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA512)
 				cdesc->control_data.control0 |= CONTEXT_CONTROL_SIZE(17);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			cdesc->control_data.control1 |= CONTEXT_CONTROL_DIGEST_CNT;
 		} else {
@@ -113,6 +175,7 @@ static void safexcel_context_control(struct safexcel_ahash_ctx *ctx,
 		 * fields. Do this now as we need it to setup the first command
 		 * descriptor.
 		 */
+<<<<<<< HEAD
 		if (req->processed[0] || req->processed[1]) {
 			for (i = 0; i < digestsize / sizeof(u32); i++)
 				ctx->base.ctxr->data[i] = cpu_to_le32(req->state[i]);
@@ -142,6 +205,21 @@ static void safexcel_context_control(struct safexcel_ahash_ctx *ctx,
 		memcpy(ctx->base.ctxr->data, ctx->ipad, req->state_sz);
 		memcpy(ctx->base.ctxr->data + req->state_sz / sizeof(u32),
 		       ctx->opad, req->state_sz);
+=======
+		if (req->processed) {
+			for (i = 0; i < digestsize / sizeof(u32); i++)
+				ctx->base.ctxr->data[i] = cpu_to_le32(req->state[i]);
+
+			if (req->finish)
+				ctx->base.ctxr->data[i] = cpu_to_le32(req->processed / blocksize);
+		}
+	} else if (ctx->digest == CONTEXT_CONTROL_DIGEST_HMAC) {
+		cdesc->control_data.control0 |= CONTEXT_CONTROL_SIZE(10);
+
+		memcpy(ctx->base.ctxr->data, ctx->ipad, digestsize);
+		memcpy(ctx->base.ctxr->data + digestsize / sizeof(u32),
+		       ctx->opad, digestsize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -153,26 +231,51 @@ static int safexcel_handle_req_result(struct safexcel_crypto_priv *priv, int rin
 	struct ahash_request *areq = ahash_request_cast(async);
 	struct crypto_ahash *ahash = crypto_ahash_reqtfm(areq);
 	struct safexcel_ahash_req *sreq = ahash_request_ctx(areq);
+<<<<<<< HEAD
 	u64 cache_len;
 
 	*ret = 0;
 
+=======
+	int cache_len, result_sz = sreq->state_sz;
+
+	*ret = 0;
+
+	spin_lock_bh(&priv->ring[ring].egress_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdesc = safexcel_ring_next_rptr(priv, &priv->ring[ring].rdr);
 	if (IS_ERR(rdesc)) {
 		dev_err(priv->dev,
 			"hash: result: could not retrieve the result descriptor\n");
 		*ret = PTR_ERR(rdesc);
+<<<<<<< HEAD
 	} else {
 		*ret = safexcel_rdesc_check_errors(priv, rdesc);
 	}
 
 	safexcel_complete(priv, ring);
+=======
+	} else if (rdesc->result_data.error_code) {
+		dev_err(priv->dev,
+			"hash: result: result descriptor error (%d)\n",
+			rdesc->result_data.error_code);
+		*ret = -EINVAL;
+	}
+
+	safexcel_complete(priv, ring);
+	spin_unlock_bh(&priv->ring[ring].egress_lock);
+
+	if (sreq->finish)
+		result_sz = crypto_ahash_digestsize(ahash);
+	memcpy(sreq->state, areq->result, result_sz);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sreq->nents) {
 		dma_unmap_sg(priv->dev, areq->src, sreq->nents, DMA_TO_DEVICE);
 		sreq->nents = 0;
 	}
 
+<<<<<<< HEAD
 	if (sreq->result_dma) {
 		dma_unmap_single(priv->dev, sreq->result_dma, sreq->state_sz,
 				 DMA_FROM_DEVICE);
@@ -190,6 +293,11 @@ static int safexcel_handle_req_result(struct safexcel_crypto_priv *priv, int rin
 		       crypto_ahash_digestsize(ahash));
 
 	cache_len = safexcel_queued_len(sreq);
+=======
+	safexcel_free_context(priv, async, sreq->state_sz);
+
+	cache_len = sreq->len - sreq->processed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cache_len)
 		memcpy(sreq->cache, sreq->cache_next, cache_len);
 
@@ -199,6 +307,10 @@ static int safexcel_handle_req_result(struct safexcel_crypto_priv *priv, int rin
 }
 
 static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
+<<<<<<< HEAD
+=======
+				   struct safexcel_request *request,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   int *commands, int *results)
 {
 	struct ahash_request *areq = ahash_request_cast(async);
@@ -209,10 +321,16 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
 	struct safexcel_command_desc *cdesc, *first_cdesc = NULL;
 	struct safexcel_result_desc *rdesc;
 	struct scatterlist *sg;
+<<<<<<< HEAD
 	int i, extra, n_cdesc = 0, ret = 0;
 	u64 queued, len, cache_len;
 
 	queued = len = safexcel_queued_len(req);
+=======
+	int i, queued, len, cache_len, extra, n_cdesc = 0, ret = 0;
+
+	queued = len = req->len - req->processed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (queued <= crypto_ahash_blocksize(ahash))
 		cache_len = queued;
 	else
@@ -245,6 +363,7 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
 		}
 	}
 
+<<<<<<< HEAD
 	/* Add a command descriptor for the cached data, if any */
 	if (cache_len) {
 		req->cache_dma = dma_map_single(priv->dev, req->cache,
@@ -256,6 +375,30 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
 		first_cdesc = safexcel_add_cdesc(priv, ring, 1,
 						 (cache_len == len),
 						 req->cache_dma, cache_len, len,
+=======
+	spin_lock_bh(&priv->ring[ring].egress_lock);
+
+	/* Add a command descriptor for the cached data, if any */
+	if (cache_len) {
+		ctx->base.cache = kzalloc(cache_len, EIP197_GFP_FLAGS(*async));
+		if (!ctx->base.cache) {
+			ret = -ENOMEM;
+			goto unlock;
+		}
+		memcpy(ctx->base.cache, req->cache, cache_len);
+		ctx->base.cache_dma = dma_map_single(priv->dev, ctx->base.cache,
+						     cache_len, DMA_TO_DEVICE);
+		if (dma_mapping_error(priv->dev, ctx->base.cache_dma)) {
+			ret = -EINVAL;
+			goto free_cache;
+		}
+
+		ctx->base.cache_sz = cache_len;
+		first_cdesc = safexcel_add_cdesc(priv, ring, 1,
+						 (cache_len == len),
+						 ctx->base.cache_dma,
+						 cache_len, len,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 ctx->base.ctxr_dma);
 		if (IS_ERR(first_cdesc)) {
 			ret = PTR_ERR(first_cdesc);
@@ -281,7 +424,11 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
 		int sglen = sg_dma_len(sg);
 
 		/* Do not overflow the request */
+<<<<<<< HEAD
 		if (queued < sglen)
+=======
+		if (queued - sglen < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sglen = queued;
 
 		cdesc = safexcel_add_cdesc(priv, ring, !n_cdesc,
@@ -289,7 +436,11 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
 					   sglen, len, ctx->base.ctxr_dma);
 		if (IS_ERR(cdesc)) {
 			ret = PTR_ERR(cdesc);
+<<<<<<< HEAD
 			goto unmap_sg;
+=======
+			goto cdesc_rollback;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		n_cdesc++;
 
@@ -303,11 +454,17 @@ static int safexcel_ahash_send_req(struct crypto_async_request *async, int ring,
 
 send_command:
 	/* Setup the context options */
+<<<<<<< HEAD
 	safexcel_context_control(ctx, req, first_cdesc, req->state_sz);
+=======
+	safexcel_context_control(ctx, req, first_cdesc, req->state_sz,
+				 crypto_ahash_blocksize(ahash));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add the token */
 	safexcel_hash_token(first_cdesc, len, req->state_sz);
 
+<<<<<<< HEAD
 	req->result_dma = dma_map_single(priv->dev, req->state, req->state_sz,
 					 DMA_FROM_DEVICE);
 	if (dma_mapping_error(priv->dev, req->result_dma)) {
@@ -328,26 +485,66 @@ send_command:
 	req->processed[0] += len;
 	if (req->processed[0] < len)
 		req->processed[1]++;
+=======
+	ctx->base.result_dma = dma_map_single(priv->dev, areq->result,
+					      req->state_sz, DMA_FROM_DEVICE);
+	if (dma_mapping_error(priv->dev, ctx->base.result_dma)) {
+		ret = -EINVAL;
+		goto cdesc_rollback;
+	}
+
+	/* Add a result descriptor */
+	rdesc = safexcel_add_rdesc(priv, ring, 1, 1, ctx->base.result_dma,
+				   req->state_sz);
+	if (IS_ERR(rdesc)) {
+		ret = PTR_ERR(rdesc);
+		goto cdesc_rollback;
+	}
+
+	spin_unlock_bh(&priv->ring[ring].egress_lock);
+
+	req->processed += len;
+	request->req = &areq->base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*commands = n_cdesc;
 	*results = 1;
 	return 0;
 
+<<<<<<< HEAD
 unmap_result:
 	dma_unmap_single(priv->dev, req->result_dma, req->state_sz,
 			 DMA_FROM_DEVICE);
 unmap_sg:
 	dma_unmap_sg(priv->dev, areq->src, req->nents, DMA_TO_DEVICE);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cdesc_rollback:
 	for (i = 0; i < n_cdesc; i++)
 		safexcel_ring_rollback_wptr(priv, &priv->ring[ring].cdr);
 unmap_cache:
+<<<<<<< HEAD
 	if (req->cache_dma) {
 		dma_unmap_single(priv->dev, req->cache_dma, req->cache_sz,
 				 DMA_TO_DEVICE);
 		req->cache_sz = 0;
 	}
 
+=======
+	if (ctx->base.cache_dma) {
+		dma_unmap_single(priv->dev, ctx->base.cache_dma,
+				 ctx->base.cache_sz, DMA_TO_DEVICE);
+		ctx->base.cache_sz = 0;
+	}
+free_cache:
+	if (ctx->base.cache) {
+		kfree(ctx->base.cache);
+		ctx->base.cache = NULL;
+	}
+
+unlock:
+	spin_unlock_bh(&priv->ring[ring].egress_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -355,6 +552,7 @@ static inline bool safexcel_ahash_needs_inv_get(struct ahash_request *areq)
 {
 	struct safexcel_ahash_ctx *ctx = crypto_ahash_ctx(crypto_ahash_reqtfm(areq));
 	struct safexcel_ahash_req *req = ahash_request_ctx(areq);
+<<<<<<< HEAD
 	unsigned int state_w_sz = req->state_sz / sizeof(u32);
 	u64 processed;
 	int i;
@@ -362,11 +560,22 @@ static inline bool safexcel_ahash_needs_inv_get(struct ahash_request *areq)
 	processed = req->processed[0] / EIP197_COUNTER_BLOCK_SIZE;
 	processed += (0xffffffff / EIP197_COUNTER_BLOCK_SIZE) * req->processed[1];
 
+=======
+	struct crypto_ahash *ahash = crypto_ahash_reqtfm(areq);
+	unsigned int state_w_sz = req->state_sz / sizeof(u32);
+	int i;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < state_w_sz; i++)
 		if (ctx->base.ctxr->data[i] != cpu_to_le32(req->state[i]))
 			return true;
 
+<<<<<<< HEAD
 	if (ctx->base.ctxr->data[state_w_sz] != cpu_to_le32(processed))
+=======
+	if (ctx->base.ctxr->data[state_w_sz] !=
+	    cpu_to_le32(req->processed / crypto_ahash_blocksize(ahash)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 
 	return false;
@@ -385,16 +594,32 @@ static int safexcel_handle_inv_result(struct safexcel_crypto_priv *priv,
 
 	*ret = 0;
 
+<<<<<<< HEAD
+=======
+	spin_lock_bh(&priv->ring[ring].egress_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdesc = safexcel_ring_next_rptr(priv, &priv->ring[ring].rdr);
 	if (IS_ERR(rdesc)) {
 		dev_err(priv->dev,
 			"hash: invalidate: could not retrieve the result descriptor\n");
 		*ret = PTR_ERR(rdesc);
+<<<<<<< HEAD
 	} else {
 		*ret = safexcel_rdesc_check_errors(priv, rdesc);
 	}
 
 	safexcel_complete(priv, ring);
+=======
+	} else if (rdesc->result_data.error_code) {
+		dev_err(priv->dev,
+			"hash: invalidate: result descriptor error (%d)\n",
+			rdesc->result_data.error_code);
+		*ret = -EINVAL;
+	}
+
+	safexcel_complete(priv, ring);
+	spin_unlock_bh(&priv->ring[ring].egress_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ctx->base.exit_inv) {
 		dma_pool_free(priv->context_pool, ctx->base.ctxr,
@@ -414,8 +639,13 @@ static int safexcel_handle_inv_result(struct safexcel_crypto_priv *priv,
 	if (enq_ret != -EINPROGRESS)
 		*ret = enq_ret;
 
+<<<<<<< HEAD
 	queue_work(priv->ring[ring].workqueue,
 		   &priv->ring[ring].work_data.work);
+=======
+	if (!priv->ring[ring].need_dequeue)
+		safexcel_dequeue(priv, ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*should_complete = false;
 
@@ -430,8 +660,11 @@ static int safexcel_handle_result(struct safexcel_crypto_priv *priv, int ring,
 	struct safexcel_ahash_req *req = ahash_request_ctx(areq);
 	int err;
 
+<<<<<<< HEAD
 	BUG_ON(!(priv->flags & EIP197_TRC_CACHE) && req->needs_inv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (req->needs_inv) {
 		req->needs_inv = false;
 		err = safexcel_handle_inv_result(priv, ring, async,
@@ -445,14 +678,24 @@ static int safexcel_handle_result(struct safexcel_crypto_priv *priv, int ring,
 }
 
 static int safexcel_ahash_send_inv(struct crypto_async_request *async,
+<<<<<<< HEAD
 				   int ring, int *commands, int *results)
+=======
+				   int ring, struct safexcel_request *request,
+				   int *commands, int *results)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ahash_request *areq = ahash_request_cast(async);
 	struct safexcel_ahash_ctx *ctx = crypto_ahash_ctx(crypto_ahash_reqtfm(areq));
 	int ret;
 
+<<<<<<< HEAD
 	ret = safexcel_invalidate_cache(async, ctx->priv,
 					ctx->base.ctxr_dma, ring);
+=======
+	ret = safexcel_invalidate_cache(async, &ctx->base, ctx->priv,
+					ctx->base.ctxr_dma, ring, request);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret))
 		return ret;
 
@@ -463,17 +706,30 @@ static int safexcel_ahash_send_inv(struct crypto_async_request *async,
 }
 
 static int safexcel_ahash_send(struct crypto_async_request *async,
+<<<<<<< HEAD
 			       int ring, int *commands, int *results)
+=======
+			       int ring, struct safexcel_request *request,
+			       int *commands, int *results)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ahash_request *areq = ahash_request_cast(async);
 	struct safexcel_ahash_req *req = ahash_request_ctx(areq);
 	int ret;
 
 	if (req->needs_inv)
+<<<<<<< HEAD
 		ret = safexcel_ahash_send_inv(async, ring, commands, results);
 	else
 		ret = safexcel_ahash_send_req(async, ring, commands, results);
 
+=======
+		ret = safexcel_ahash_send_inv(async, ring, request,
+					      commands, results);
+	else
+		ret = safexcel_ahash_send_req(async, ring, request,
+					      commands, results);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -481,7 +737,11 @@ static int safexcel_ahash_exit_inv(struct crypto_tfm *tfm)
 {
 	struct safexcel_ahash_ctx *ctx = crypto_tfm_ctx(tfm);
 	struct safexcel_crypto_priv *priv = ctx->priv;
+<<<<<<< HEAD
 	EIP197_REQUEST_ON_STACK(req, ahash, EIP197_AHASH_REQ_SIZE);
+=======
+	AHASH_REQUEST_ON_STACK(req, __crypto_ahash_cast(tfm));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct safexcel_ahash_req *rctx = ahash_request_ctx(req);
 	struct safexcel_inv_result result = {};
 	int ring = ctx->base.ring;
@@ -502,8 +762,13 @@ static int safexcel_ahash_exit_inv(struct crypto_tfm *tfm)
 	crypto_enqueue_request(&priv->ring[ring].queue, &req->base);
 	spin_unlock_bh(&priv->ring[ring].queue_lock);
 
+<<<<<<< HEAD
 	queue_work(priv->ring[ring].workqueue,
 		   &priv->ring[ring].work_data.work);
+=======
+	if (!priv->ring[ring].need_dequeue)
+		safexcel_dequeue(priv, ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wait_for_completion(&result.completion);
 
@@ -516,13 +781,17 @@ static int safexcel_ahash_exit_inv(struct crypto_tfm *tfm)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* safexcel_ahash_cache: cache data until at least one request can be sent to
  * the engine, aka. when there is at least 1 block size in the pipe.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int safexcel_ahash_cache(struct ahash_request *areq)
 {
 	struct safexcel_ahash_req *req = ahash_request_ctx(areq);
 	struct crypto_ahash *ahash = crypto_ahash_reqtfm(areq);
+<<<<<<< HEAD
 	u64 queued, cache_len;
 
 	/* queued: everything accepted by the driver which will be handled by
@@ -534,6 +803,12 @@ static int safexcel_ahash_cache(struct ahash_request *areq)
 	 * tot sz handled by update() - last req sz - tot sz handled by send()
 	 */
 	cache_len = queued - areq->nbytes;
+=======
+	int queued, cache_len;
+
+	cache_len = req->len - areq->nbytes - req->processed;
+	queued = req->len - req->processed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * In case there isn't enough bytes to proceed (less than a
@@ -546,7 +821,11 @@ static int safexcel_ahash_cache(struct ahash_request *areq)
 		return areq->nbytes;
 	}
 
+<<<<<<< HEAD
 	/* We couldn't cache all the data */
+=======
+	/* We could'nt cache all the data */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -E2BIG;
 }
 
@@ -559,6 +838,7 @@ static int safexcel_ahash_enqueue(struct ahash_request *areq)
 
 	req->needs_inv = false;
 
+<<<<<<< HEAD
 	if (ctx->base.ctxr) {
 		if (priv->flags & EIP197_TRC_CACHE && !ctx->base.needs_inv &&
 		    (req->processed[0] || req->processed[1]) &&
@@ -570,6 +850,12 @@ static int safexcel_ahash_enqueue(struct ahash_request *areq)
 			 */
 			ctx->base.needs_inv = safexcel_ahash_needs_inv_get(areq);
 
+=======
+	if (req->processed && ctx->digest == CONTEXT_CONTROL_DIGEST_PRECOMPUTED)
+		ctx->base.needs_inv = safexcel_ahash_needs_inv_get(areq);
+
+	if (ctx->base.ctxr) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ctx->base.needs_inv) {
 			ctx->base.needs_inv = false;
 			req->needs_inv = true;
@@ -589,14 +875,23 @@ static int safexcel_ahash_enqueue(struct ahash_request *areq)
 	ret = crypto_enqueue_request(&priv->ring[ring].queue, &areq->base);
 	spin_unlock_bh(&priv->ring[ring].queue_lock);
 
+<<<<<<< HEAD
 	queue_work(priv->ring[ring].workqueue,
 		   &priv->ring[ring].work_data.work);
+=======
+	if (!priv->ring[ring].need_dequeue)
+		safexcel_dequeue(priv, ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
 static int safexcel_ahash_update(struct ahash_request *areq)
 {
+<<<<<<< HEAD
+=======
+	struct safexcel_ahash_ctx *ctx = crypto_ahash_ctx(crypto_ahash_reqtfm(areq));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct safexcel_ahash_req *req = ahash_request_ctx(areq);
 	struct crypto_ahash *ahash = crypto_ahash_reqtfm(areq);
 
@@ -604,9 +899,13 @@ static int safexcel_ahash_update(struct ahash_request *areq)
 	if (!areq->nbytes)
 		return 0;
 
+<<<<<<< HEAD
 	req->len[0] += areq->nbytes;
 	if (req->len[0] < areq->nbytes)
 		req->len[1]++;
+=======
+	req->len += areq->nbytes;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	safexcel_ahash_cache(areq);
 
@@ -614,14 +913,22 @@ static int safexcel_ahash_update(struct ahash_request *areq)
 	 * We're not doing partial updates when performing an hmac request.
 	 * Everything will be handled by the final() call.
 	 */
+<<<<<<< HEAD
 	if (req->digest == CONTEXT_CONTROL_DIGEST_HMAC)
+=======
+	if (ctx->digest == CONTEXT_CONTROL_DIGEST_HMAC)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (req->hmac)
 		return safexcel_ahash_enqueue(areq);
 
 	if (!req->last_req &&
+<<<<<<< HEAD
 	    safexcel_queued_len(req) > crypto_ahash_blocksize(ahash))
+=======
+	    req->len - req->processed > crypto_ahash_blocksize(ahash))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return safexcel_ahash_enqueue(areq);
 
 	return 0;
@@ -636,11 +943,16 @@ static int safexcel_ahash_final(struct ahash_request *areq)
 	req->finish = true;
 
 	/* If we have an overall 0 length request */
+<<<<<<< HEAD
 	if (!req->len[0] && !req->len[1] && !areq->nbytes) {
 		if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_MD5)
 			memcpy(areq->result, md5_zero_message_hash,
 			       MD5_DIGEST_SIZE);
 		else if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA1)
+=======
+	if (!(req->len + areq->nbytes)) {
+		if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			memcpy(areq->result, sha1_zero_message_hash,
 			       SHA1_DIGEST_SIZE);
 		else if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA224)
@@ -649,12 +961,15 @@ static int safexcel_ahash_final(struct ahash_request *areq)
 		else if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA256)
 			memcpy(areq->result, sha256_zero_message_hash,
 			       SHA256_DIGEST_SIZE);
+<<<<<<< HEAD
 		else if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA384)
 			memcpy(areq->result, sha384_zero_message_hash,
 			       SHA384_DIGEST_SIZE);
 		else if (ctx->alg == CONTEXT_CONTROL_CRYPTO_ALG_SHA512)
 			memcpy(areq->result, sha512_zero_message_hash,
 			       SHA512_DIGEST_SIZE);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return 0;
 	}
@@ -679,6 +994,7 @@ static int safexcel_ahash_export(struct ahash_request *areq, void *out)
 	struct safexcel_ahash_req *req = ahash_request_ctx(areq);
 	struct safexcel_ahash_export_state *export = out;
 
+<<<<<<< HEAD
 	export->len[0] = req->len[0];
 	export->len[1] = req->len[1];
 	export->processed[0] = req->processed[0];
@@ -687,6 +1003,13 @@ static int safexcel_ahash_export(struct ahash_request *areq, void *out)
 	export->digest = req->digest;
 
 	memcpy(export->state, req->state, req->state_sz);
+=======
+	export->len = req->len;
+	export->processed = req->processed;
+
+	memcpy(export->state, req->state, req->state_sz);
+	memset(export->cache, 0, crypto_ahash_blocksize(ahash));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(export->cache, req->cache, crypto_ahash_blocksize(ahash));
 
 	return 0;
@@ -703,12 +1026,17 @@ static int safexcel_ahash_import(struct ahash_request *areq, const void *in)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	req->len[0] = export->len[0];
 	req->len[1] = export->len[1];
 	req->processed[0] = export->processed[0];
 	req->processed[1] = export->processed[1];
 
 	req->digest = export->digest;
+=======
+	req->len = export->len;
+	req->processed = export->processed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(req->cache, export->cache, crypto_ahash_blocksize(ahash));
 	memcpy(req->state, export->state, req->state_sz);
@@ -746,7 +1074,11 @@ static int safexcel_sha1_init(struct ahash_request *areq)
 	req->state[4] = SHA1_H4;
 
 	ctx->alg = CONTEXT_CONTROL_CRYPTO_ALG_SHA1;
+<<<<<<< HEAD
 	req->digest = CONTEXT_CONTROL_DIGEST_PRECOMPUTED;
+=======
+	ctx->digest = CONTEXT_CONTROL_DIGEST_PRECOMPUTED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->state_sz = SHA1_DIGEST_SIZE;
 
 	return 0;
@@ -772,6 +1104,7 @@ static void safexcel_ahash_cra_exit(struct crypto_tfm *tfm)
 	if (!ctx->base.ctxr)
 		return;
 
+<<<<<<< HEAD
 	if (priv->flags & EIP197_TRC_CACHE) {
 		ret = safexcel_ahash_exit_inv(tfm);
 		if (ret)
@@ -780,11 +1113,19 @@ static void safexcel_ahash_cra_exit(struct crypto_tfm *tfm)
 		dma_pool_free(priv->context_pool, ctx->base.ctxr,
 			      ctx->base.ctxr_dma);
 	}
+=======
+	ret = safexcel_ahash_exit_inv(tfm);
+	if (ret)
+		dev_warn(priv->dev, "hash: invalidation error %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct safexcel_alg_template safexcel_alg_sha1 = {
 	.type = SAFEXCEL_ALG_TYPE_AHASH,
+<<<<<<< HEAD
 	.engines = EIP97IES | EIP197B | EIP197D,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.alg.ahash = {
 		.init = safexcel_sha1_init,
 		.update = safexcel_ahash_update,
@@ -814,10 +1155,17 @@ struct safexcel_alg_template safexcel_alg_sha1 = {
 
 static int safexcel_hmac_sha1_init(struct ahash_request *areq)
 {
+<<<<<<< HEAD
 	struct safexcel_ahash_req *req = ahash_request_ctx(areq);
 
 	safexcel_sha1_init(areq);
 	req->digest = CONTEXT_CONTROL_DIGEST_HMAC;
+=======
+	struct safexcel_ahash_ctx *ctx = crypto_ahash_ctx(crypto_ahash_reqtfm(areq));
+
+	safexcel_sha1_init(areq);
+	ctx->digest = CONTEXT_CONTROL_DIGEST_HMAC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -919,7 +1267,11 @@ static int safexcel_hmac_init_iv(struct ahash_request *areq,
 	req->last_req = true;
 
 	ret = crypto_ahash_update(areq);
+<<<<<<< HEAD
 	if (ret && ret != -EINPROGRESS && ret != -EBUSY)
+=======
+	if (ret && ret != -EINPROGRESS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	wait_for_completion_interruptible(&result.completion);
@@ -929,8 +1281,13 @@ static int safexcel_hmac_init_iv(struct ahash_request *areq,
 	return crypto_ahash_export(areq, state);
 }
 
+<<<<<<< HEAD
 int safexcel_hmac_setkey(const char *alg, const u8 *key, unsigned int keylen,
 			 void *istate, void *ostate)
+=======
+static int safexcel_hmac_setkey(const char *alg, const u8 *key,
+				unsigned int keylen, void *istate, void *ostate)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ahash_request *areq;
 	struct crypto_ahash *tfm;
@@ -938,7 +1295,12 @@ int safexcel_hmac_setkey(const char *alg, const u8 *key, unsigned int keylen,
 	u8 *ipad, *opad;
 	int ret;
 
+<<<<<<< HEAD
 	tfm = crypto_alloc_ahash(alg, 0, 0);
+=======
+	tfm = crypto_alloc_ahash(alg, CRYPTO_ALG_TYPE_AHASH,
+				 CRYPTO_ALG_TYPE_AHASH_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(tfm))
 		return PTR_ERR(tfm);
 
@@ -951,7 +1313,11 @@ int safexcel_hmac_setkey(const char *alg, const u8 *key, unsigned int keylen,
 	crypto_ahash_clear_flags(tfm, ~0);
 	blocksize = crypto_tfm_alg_blocksize(crypto_ahash_tfm(tfm));
 
+<<<<<<< HEAD
 	ipad = kcalloc(2, blocksize, GFP_KERNEL);
+=======
+	ipad = kzalloc(2 * blocksize, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ipad) {
 		ret = -ENOMEM;
 		goto free_request;
@@ -979,6 +1345,7 @@ free_ahash:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int safexcel_hmac_alg_setkey(struct crypto_ahash *tfm, const u8 *key,
 				    unsigned int keylen, const char *alg,
 				    unsigned int state_sz)
@@ -1004,10 +1371,34 @@ static int safexcel_hmac_alg_setkey(struct crypto_ahash *tfm, const u8 *key,
 
 	memcpy(ctx->ipad, &istate.state, state_sz);
 	memcpy(ctx->opad, &ostate.state, state_sz);
+=======
+static int safexcel_hmac_sha1_setkey(struct crypto_ahash *tfm, const u8 *key,
+				     unsigned int keylen)
+{
+	struct safexcel_ahash_ctx *ctx = crypto_tfm_ctx(crypto_ahash_tfm(tfm));
+	struct safexcel_ahash_export_state istate, ostate;
+	int ret, i;
+
+	ret = safexcel_hmac_setkey("safexcel-sha1", key, keylen, &istate, &ostate);
+	if (ret)
+		return ret;
+
+	for (i = 0; i < SHA1_DIGEST_SIZE / sizeof(u32); i++) {
+		if (ctx->ipad[i] != le32_to_cpu(istate.state[i]) ||
+		    ctx->opad[i] != le32_to_cpu(ostate.state[i])) {
+			ctx->base.needs_inv = true;
+			break;
+		}
+	}
+
+	memcpy(ctx->ipad, &istate.state, SHA1_DIGEST_SIZE);
+	memcpy(ctx->opad, &ostate.state, SHA1_DIGEST_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int safexcel_hmac_sha1_setkey(struct crypto_ahash *tfm, const u8 *key,
 				     unsigned int keylen)
 {
@@ -1018,6 +1409,10 @@ static int safexcel_hmac_sha1_setkey(struct crypto_ahash *tfm, const u8 *key,
 struct safexcel_alg_template safexcel_alg_hmac_sha1 = {
 	.type = SAFEXCEL_ALG_TYPE_AHASH,
 	.engines = EIP97IES | EIP197B | EIP197D,
+=======
+struct safexcel_alg_template safexcel_alg_hmac_sha1 = {
+	.type = SAFEXCEL_ALG_TYPE_AHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.alg.ahash = {
 		.init = safexcel_hmac_sha1_init,
 		.update = safexcel_ahash_update,
@@ -1063,7 +1458,11 @@ static int safexcel_sha256_init(struct ahash_request *areq)
 	req->state[7] = SHA256_H7;
 
 	ctx->alg = CONTEXT_CONTROL_CRYPTO_ALG_SHA256;
+<<<<<<< HEAD
 	req->digest = CONTEXT_CONTROL_DIGEST_PRECOMPUTED;
+=======
+	ctx->digest = CONTEXT_CONTROL_DIGEST_PRECOMPUTED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->state_sz = SHA256_DIGEST_SIZE;
 
 	return 0;
@@ -1081,7 +1480,10 @@ static int safexcel_sha256_digest(struct ahash_request *areq)
 
 struct safexcel_alg_template safexcel_alg_sha256 = {
 	.type = SAFEXCEL_ALG_TYPE_AHASH,
+<<<<<<< HEAD
 	.engines = EIP97IES | EIP197B | EIP197D,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.alg.ahash = {
 		.init = safexcel_sha256_init,
 		.update = safexcel_ahash_update,
@@ -1126,7 +1528,11 @@ static int safexcel_sha224_init(struct ahash_request *areq)
 	req->state[7] = SHA224_H7;
 
 	ctx->alg = CONTEXT_CONTROL_CRYPTO_ALG_SHA224;
+<<<<<<< HEAD
 	req->digest = CONTEXT_CONTROL_DIGEST_PRECOMPUTED;
+=======
+	ctx->digest = CONTEXT_CONTROL_DIGEST_PRECOMPUTED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->state_sz = SHA256_DIGEST_SIZE;
 
 	return 0;
@@ -1144,7 +1550,10 @@ static int safexcel_sha224_digest(struct ahash_request *areq)
 
 struct safexcel_alg_template safexcel_alg_sha224 = {
 	.type = SAFEXCEL_ALG_TYPE_AHASH,
+<<<<<<< HEAD
 	.engines = EIP97IES | EIP197B | EIP197D,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.alg.ahash = {
 		.init = safexcel_sha224_init,
 		.update = safexcel_ahash_update,
@@ -1171,6 +1580,7 @@ struct safexcel_alg_template safexcel_alg_sha224 = {
 		},
 	},
 };
+<<<<<<< HEAD
 
 static int safexcel_hmac_sha224_setkey(struct crypto_ahash *tfm, const u8 *key,
 				       unsigned int keylen)
@@ -1657,3 +2067,5 @@ struct safexcel_alg_template safexcel_alg_hmac_md5 = {
 		},
 	},
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -56,6 +56,7 @@
 			next-level-cache = <&L2>;
 			clocks = <&a9pll>;
 			clock-names = "cpu";
+<<<<<<< HEAD
 			operating-points = <
 				/* kHz    ignored */
 				 1300000  1000000
@@ -66,6 +67,8 @@
 				  200000  1000000
 			>;
 			clock-latency = <100000>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu@902 {
@@ -75,6 +78,7 @@
 			next-level-cache = <&L2>;
 			clocks = <&a9pll>;
 			clock-names = "cpu";
+<<<<<<< HEAD
 			operating-points = <
 				/* kHz    ignored */
 				 1300000  1000000
@@ -85,6 +89,8 @@
 				  200000  1000000
 			>;
 			clock-latency = <100000>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		cpu@903 {
@@ -94,6 +100,7 @@
 			next-level-cache = <&L2>;
 			clocks = <&a9pll>;
 			clock-names = "cpu";
+<<<<<<< HEAD
 			operating-points = <
 				/* kHz    ignored */
 				 1300000  1000000
@@ -104,6 +111,8 @@
 				  200000  1000000
 			>;
 			clock-latency = <100000>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 

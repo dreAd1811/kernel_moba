@@ -285,13 +285,21 @@ static const struct sil24_cerr_info {
 	[PORT_CERR_INCONSISTENT] = { AC_ERR_HSM, ATA_EH_RESET,
 				     "protocol mismatch" },
 	[PORT_CERR_DIRECTION]	= { AC_ERR_HSM, ATA_EH_RESET,
+<<<<<<< HEAD
 				    "data direction mismatch" },
+=======
+				    "data directon mismatch" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[PORT_CERR_UNDERRUN]	= { AC_ERR_HSM, ATA_EH_RESET,
 				    "ran out of SGEs while writing" },
 	[PORT_CERR_OVERRUN]	= { AC_ERR_HSM, ATA_EH_RESET,
 				    "ran out of SGEs while reading" },
 	[PORT_CERR_PKT_PROT]	= { AC_ERR_HSM, ATA_EH_RESET,
+<<<<<<< HEAD
 				    "invalid data direction for ATAPI CDB" },
+=======
+				    "invalid data directon for ATAPI CDB" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[PORT_CERR_SGT_BOUNDARY] = { AC_ERR_SYSTEM, ATA_EH_RESET,
 				     "SGT not on qword boundary" },
 	[PORT_CERR_SGT_TGTABRT]	= { AC_ERR_HOST_BUS, ATA_EH_RESET,
@@ -849,7 +857,11 @@ static void sil24_qc_prep(struct ata_queued_cmd *qc)
 	struct sil24_sge *sge;
 	u16 ctrl = 0;
 
+<<<<<<< HEAD
 	cb = &pp->cmd_block[sil24_tag(qc->hw_tag)];
+=======
+	cb = &pp->cmd_block[sil24_tag(qc->tag)];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ata_is_atapi(qc->tf.protocol)) {
 		prb = &cb->ata.prb;
@@ -891,7 +903,11 @@ static unsigned int sil24_qc_issue(struct ata_queued_cmd *qc)
 	struct ata_port *ap = qc->ap;
 	struct sil24_port_priv *pp = ap->private_data;
 	void __iomem *port = sil24_port_base(ap);
+<<<<<<< HEAD
 	unsigned int tag = sil24_tag(qc->hw_tag);
+=======
+	unsigned int tag = sil24_tag(qc->tag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t paddr;
 	void __iomem *activate;
 
@@ -911,7 +927,11 @@ static unsigned int sil24_qc_issue(struct ata_queued_cmd *qc)
 
 static bool sil24_qc_fill_rtf(struct ata_queued_cmd *qc)
 {
+<<<<<<< HEAD
 	sil24_read_tf(qc->ap, qc->hw_tag, &qc->result_tf);
+=======
+	sil24_read_tf(qc->ap, qc->tag, &qc->result_tf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 

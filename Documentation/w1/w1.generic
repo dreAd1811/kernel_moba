@@ -76,7 +76,11 @@ See struct w1_bus_master definition in w1.h for details.
 
 w1 master sysfs interface
 ------------------------------------------------------------------
+<<<<<<< HEAD
 <xx-xxxxxxxxxxxx>  - A directory for a found device. The format is family-serial
+=======
+<xx-xxxxxxxxxxxxx> - A directory for a found device. The format is family-serial
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bus                - (standard) symlink to the w1 bus
 driver             - (standard) symlink to the w1 driver
 w1_master_add      - (rw) manually register a slave device

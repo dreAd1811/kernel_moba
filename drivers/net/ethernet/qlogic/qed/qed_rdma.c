@@ -134,12 +134,17 @@ static bool qed_bmap_is_empty(struct qed_bmap *bmap)
 	return bmap->max_count == find_first_bit(bmap->bitmap, bmap->max_count);
 }
 
+<<<<<<< HEAD
 static u32 qed_rdma_get_sb_id(void *p_hwfn, u32 rel_sb_id)
+=======
+u32 qed_rdma_get_sb_id(void *p_hwfn, u32 rel_sb_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* First sb id for RoCE is after all the l2 sb */
 	return FEAT_NUM((struct qed_hwfn *)p_hwfn, QED_PF_L2_QUE) + rel_sb_id;
 }
 
+<<<<<<< HEAD
 int qed_rdma_info_alloc(struct qed_hwfn *p_hwfn)
 {
 	struct qed_rdma_info *p_rdma_info;
@@ -163,15 +168,32 @@ void qed_rdma_info_free(struct qed_hwfn *p_hwfn)
 static int qed_rdma_alloc(struct qed_hwfn *p_hwfn)
 {
 	struct qed_rdma_info *p_rdma_info = p_hwfn->p_rdma_info;
+=======
+static int qed_rdma_alloc(struct qed_hwfn *p_hwfn,
+			  struct qed_ptt *p_ptt,
+			  struct qed_rdma_start_in_params *params)
+{
+	struct qed_rdma_info *p_rdma_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 num_cons, num_tasks;
 	int rc = -ENOMEM;
 
 	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "Allocating RDMA\n");
 
+<<<<<<< HEAD
 	if (QED_IS_IWARP_PERSONALITY(p_hwfn))
 		p_rdma_info->proto = PROTOCOLID_IWARP;
 	else
 		p_rdma_info->proto = PROTOCOLID_ROCE;
+=======
+	/* Allocate a struct with current pf rdma info */
+	p_rdma_info = kzalloc(sizeof(*p_rdma_info), GFP_KERNEL);
+	if (!p_rdma_info)
+		return rc;
+
+	p_hwfn->p_rdma_info = p_rdma_info;
+	p_rdma_info->proto = PROTOCOLID_ROCE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	num_cons = qed_cxt_get_proto_cid_count(p_hwfn, p_rdma_info->proto,
 					       NULL);
@@ -195,7 +217,11 @@ static int qed_rdma_alloc(struct qed_hwfn *p_hwfn)
 	/* Allocate a struct with device params and fill it */
 	p_rdma_info->dev = kzalloc(sizeof(*p_rdma_info->dev), GFP_KERNEL);
 	if (!p_rdma_info->dev)
+<<<<<<< HEAD
 		return rc;
+=======
+		goto free_rdma_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate a struct with port params and fill it */
 	p_rdma_info->port = kzalloc(sizeof(*p_rdma_info->port), GFP_KERNEL);
@@ -221,11 +247,19 @@ static int qed_rdma_alloc(struct qed_hwfn *p_hwfn)
 		goto free_pd_map;
 	}
 
+<<<<<<< HEAD
 	/* Allocate bitmap for cq's. The maximum number of CQs is bound to
 	 * the number of connections we support. (num_qps in iWARP or
 	 * num_qps/2 in RoCE).
 	 */
 	rc = qed_rdma_bmap_alloc(p_hwfn, &p_rdma_info->cq_map, num_cons, "CQ");
+=======
+	/* Allocate bitmap for cq's. The maximum number of CQs is bounded to
+	 * twice the number of QPs.
+	 */
+	rc = qed_rdma_bmap_alloc(p_hwfn, &p_rdma_info->cq_map,
+				 p_rdma_info->num_qps * 2, "CQ");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		DP_VERBOSE(p_hwfn, QED_MSG_RDMA,
 			   "Failed to allocate cq bitmap, rc = %d\n", rc);
@@ -234,6 +268,7 @@ static int qed_rdma_alloc(struct qed_hwfn *p_hwfn)
 
 	/* Allocate bitmap for toggle bit for cq icids
 	 * We toggle the bit every time we create or resize cq for a given icid.
+<<<<<<< HEAD
 	 * Size needs to equal the size of the cq bmap.
 	 */
 	rc = qed_rdma_bmap_alloc(p_hwfn, &p_rdma_info->toggle_bits,
@@ -241,6 +276,15 @@ static int qed_rdma_alloc(struct qed_hwfn *p_hwfn)
 	if (rc) {
 		DP_VERBOSE(p_hwfn, QED_MSG_RDMA,
 			   "Failed to allocate toggle bits, rc = %d\n", rc);
+=======
+	 * The maximum number of CQs is bounded to  twice the number of QPs.
+	 */
+	rc = qed_rdma_bmap_alloc(p_hwfn, &p_rdma_info->toggle_bits,
+				 p_rdma_info->num_qps * 2, "Toggle");
+	if (rc) {
+		DP_VERBOSE(p_hwfn, QED_MSG_RDMA,
+			   "Failed to allocate toogle bits, rc = %d\n", rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free_cq_map;
 	}
 
@@ -271,6 +315,7 @@ static int qed_rdma_alloc(struct qed_hwfn *p_hwfn)
 		goto free_cid_map;
 	}
 
+<<<<<<< HEAD
 	/* Allocate bitmap for srqs */
 	p_rdma_info->num_srqs = qed_cxt_get_srq_count(p_hwfn);
 	rc = qed_rdma_bmap_alloc(p_hwfn, &p_rdma_info->srq_map,
@@ -281,19 +326,28 @@ static int qed_rdma_alloc(struct qed_hwfn *p_hwfn)
 		goto free_real_cid_map;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (QED_IS_IWARP_PERSONALITY(p_hwfn))
 		rc = qed_iwarp_alloc(p_hwfn);
 
 	if (rc)
+<<<<<<< HEAD
 		goto free_srq_map;
+=======
+		goto free_cid_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "Allocation successful\n");
 	return 0;
 
+<<<<<<< HEAD
 free_srq_map:
 	kfree(p_rdma_info->srq_map.bitmap);
 free_real_cid_map:
 	kfree(p_rdma_info->real_cid_map.bitmap);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 free_cid_map:
 	kfree(p_rdma_info->cid_map.bitmap);
 free_tid_map:
@@ -310,6 +364,11 @@ free_rdma_port:
 	kfree(p_rdma_info->port);
 free_rdma_dev:
 	kfree(p_rdma_info->dev);
+<<<<<<< HEAD
+=======
+free_rdma_info:
+	kfree(p_rdma_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
@@ -375,6 +434,7 @@ static void qed_rdma_resc_free(struct qed_hwfn *p_hwfn)
 	qed_rdma_bmap_free(p_hwfn, &p_hwfn->p_rdma_info->cq_map, 1);
 	qed_rdma_bmap_free(p_hwfn, &p_hwfn->p_rdma_info->toggle_bits, 0);
 	qed_rdma_bmap_free(p_hwfn, &p_hwfn->p_rdma_info->tid_map, 1);
+<<<<<<< HEAD
 	qed_rdma_bmap_free(p_hwfn, &p_hwfn->p_rdma_info->srq_map, 1);
 	qed_rdma_bmap_free(p_hwfn, &p_hwfn->p_rdma_info->real_cid_map, 1);
 
@@ -396,15 +456,27 @@ static void qed_rdma_free_tid(void *rdma_cxt, u32 itid)
 static void qed_rdma_free_reserved_lkey(struct qed_hwfn *p_hwfn)
 {
 	qed_rdma_free_tid(p_hwfn, p_hwfn->p_rdma_info->dev->reserved_lkey);
+=======
+
+	kfree(p_rdma_info->port);
+	kfree(p_rdma_info->dev);
+
+	kfree(p_rdma_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_rdma_free(struct qed_hwfn *p_hwfn)
 {
 	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "Freeing RDMA\n");
 
+<<<<<<< HEAD
 	qed_rdma_free_reserved_lkey(p_hwfn);
 	qed_cxt_free_proto_ilt(p_hwfn, p_hwfn->p_rdma_info->proto);
 	qed_rdma_resc_free(p_hwfn);
+=======
+	qed_rdma_resc_free(p_hwfn);
+	qed_cxt_free_proto_ilt(p_hwfn, p_hwfn->p_rdma_info->proto);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_rdma_get_guid(struct qed_hwfn *p_hwfn, u8 *guid)
@@ -455,12 +527,15 @@ static void qed_rdma_init_devinfo(struct qed_hwfn *p_hwfn,
 	if (cdev->rdma_max_sge)
 		dev->max_sge = min_t(u32, cdev->rdma_max_sge, dev->max_sge);
 
+<<<<<<< HEAD
 	dev->max_srq_sge = QED_RDMA_MAX_SGE_PER_SRQ_WQE;
 	if (p_hwfn->cdev->rdma_max_srq_sge) {
 		dev->max_srq_sge = min_t(u32,
 					 p_hwfn->cdev->rdma_max_srq_sge,
 					 dev->max_srq_sge);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->max_inline = ROCE_REQ_MAX_INLINE_DATA_SIZE;
 
 	dev->max_inline = (cdev->rdma_max_inline) ?
@@ -504,8 +579,11 @@ static void qed_rdma_init_devinfo(struct qed_hwfn *p_hwfn,
 	dev->max_mr_mw_fmr_size = dev->max_mr_mw_fmr_pbl * PAGE_SIZE;
 	dev->max_pkey = QED_RDMA_MAX_P_KEY;
 
+<<<<<<< HEAD
 	dev->max_srq = p_hwfn->p_rdma_info->num_srqs;
 	dev->max_srq_wr = QED_RDMA_MAX_SRQ_WQE_ELEM;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->max_qp_resp_rd_atomic_resc = RDMA_RING_PAGE_SIZE /
 					  (RDMA_RESP_RD_ATOMIC_ELM_SIZE * 2);
 	dev->max_qp_req_rd_atomic_resc = RDMA_RING_PAGE_SIZE /
@@ -601,6 +679,7 @@ static int qed_rdma_start_fw(struct qed_hwfn *p_hwfn,
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	if (QED_IS_IWARP_PERSONALITY(p_hwfn)) {
 		qed_iwarp_init_fw_ramrod(p_hwfn,
 					 &p_ent->ramrod.iwarp_init_func);
@@ -608,6 +687,12 @@ static int qed_rdma_start_fw(struct qed_hwfn *p_hwfn,
 	} else {
 		p_ramrod = &p_ent->ramrod.roce_init_func.rdma;
 	}
+=======
+	if (QED_IS_IWARP_PERSONALITY(p_hwfn))
+		p_ramrod = &p_ent->ramrod.iwarp_init_func.rdma;
+	else
+		p_ramrod = &p_ent->ramrod.roce_init_func.rdma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p_params_header = &p_ramrod->params_header;
 	p_params_header->cnq_start_offset = (u8)RESC_START(p_hwfn,
@@ -665,6 +750,12 @@ static int qed_rdma_reserve_lkey(struct qed_hwfn *p_hwfn)
 {
 	struct qed_rdma_device *dev = p_hwfn->p_rdma_info->dev;
 
+<<<<<<< HEAD
+=======
+	/* The first DPI is reserved for the Kernel */
+	__set_bit(0, p_hwfn->p_rdma_info->dpi_map.bitmap);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Tid 0 will be used as the key for "reserved MR".
 	 * The driver should allocate memory for it so it can be loaded but no
 	 * ramrod should be passed on it.
@@ -687,6 +778,11 @@ static int qed_rdma_setup(struct qed_hwfn *p_hwfn,
 
 	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "RDMA setup\n");
 
+<<<<<<< HEAD
+=======
+	spin_lock_init(&p_hwfn->p_rdma_info->lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qed_rdma_init_devinfo(p_hwfn, params);
 	qed_rdma_init_port(p_hwfn);
 	qed_rdma_init_events(p_hwfn, params);
@@ -712,7 +808,11 @@ static int qed_rdma_setup(struct qed_hwfn *p_hwfn,
 	return qed_rdma_start_fw(p_hwfn, params, p_ptt);
 }
 
+<<<<<<< HEAD
 static int qed_rdma_stop(void *rdma_cxt)
+=======
+int qed_rdma_stop(void *rdma_cxt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_hwfn *p_hwfn = (struct qed_hwfn *)rdma_cxt;
 	struct rdma_close_func_ramrod_data *p_ramrod;
@@ -733,7 +833,11 @@ static int qed_rdma_stop(void *rdma_cxt)
 	/* Disable RoCE search */
 	qed_wr(p_hwfn, p_ptt, p_hwfn->rdma_prs_search_reg, 0);
 	p_hwfn->b_rdma_enabled_in_prs = false;
+<<<<<<< HEAD
 	p_hwfn->p_rdma_info->active = 0;
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qed_wr(p_hwfn, p_ptt, PRS_REG_ROCE_DEST_QP_MAX_PF, 0);
 
 	ll2_ethertype_en = qed_rd(p_hwfn, p_ptt, PRS_REG_LIGHT_L2_ETHERTYPE_EN);
@@ -842,6 +946,20 @@ static struct qed_rdma_device *qed_rdma_query_device(void *rdma_cxt)
 	return p_hwfn->p_rdma_info->dev;
 }
 
+<<<<<<< HEAD
+=======
+static void qed_rdma_free_tid(void *rdma_cxt, u32 itid)
+{
+	struct qed_hwfn *p_hwfn = (struct qed_hwfn *)rdma_cxt;
+
+	DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "itid = %08x\n", itid);
+
+	spin_lock_bh(&p_hwfn->p_rdma_info->lock);
+	qed_bmap_release_id(p_hwfn, &p_hwfn->p_rdma_info->tid_map, itid);
+	spin_unlock_bh(&p_hwfn->p_rdma_info->lock);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qed_rdma_cnq_prod_update(void *rdma_cxt, u8 qz_offset, u16 prod)
 {
 	struct qed_hwfn *p_hwfn;
@@ -1242,8 +1360,12 @@ qed_rdma_create_qp(void *rdma_cxt,
 	u8 max_stats_queues;
 	int rc;
 
+<<<<<<< HEAD
 	if (!rdma_cxt || !in_params || !out_params ||
 	    !p_hwfn->p_rdma_info->active) {
+=======
+	if (!rdma_cxt || !in_params || !out_params || !p_hwfn->p_rdma_info) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DP_ERR(p_hwfn->cdev,
 		       "qed roce create qp failed due to NULL entry (rdma_cxt=%p, in=%p, out=%p, roce_info=?\n",
 		       rdma_cxt, in_params, out_params);
@@ -1515,13 +1637,24 @@ qed_rdma_register_tid(void *rdma_cxt,
 	case QED_RDMA_TID_FMR:
 		tid_type = RDMA_TID_FMR;
 		break;
+<<<<<<< HEAD
 	case QED_RDMA_TID_MW:
 		tid_type = RDMA_TID_MW;
+=======
+	case QED_RDMA_TID_MW_TYPE1:
+		tid_type = RDMA_TID_MW_TYPE1;
+		break;
+	case QED_RDMA_TID_MW_TYPE2A:
+		tid_type = RDMA_TID_MW_TYPE2A;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		rc = -EINVAL;
 		DP_VERBOSE(p_hwfn, QED_MSG_RDMA, "rc = %d\n", rc);
+<<<<<<< HEAD
 		qed_sp_destroy_request(p_hwfn, p_ent);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 	SET_FIELD(p_ramrod->flags1,
@@ -1549,6 +1682,10 @@ qed_rdma_register_tid(void *rdma_cxt,
 			  RDMA_REGISTER_TID_RAMROD_DATA_DIF_ON_HOST_FLG, 1);
 		DMA_REGPAIR_LE(p_ramrod->dif_error_addr,
 			       params->dif_error_addr);
+<<<<<<< HEAD
+=======
+		DMA_REGPAIR_LE(p_ramrod->dif_runt_addr, params->dif_runt_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rc = qed_spq_post(p_hwfn, p_ent, &fw_return_code);
@@ -1656,6 +1793,7 @@ static void *qed_rdma_get_rdma_ctx(struct qed_dev *cdev)
 	return QED_LEADING_HWFN(cdev);
 }
 
+<<<<<<< HEAD
 static int qed_rdma_modify_srq(void *rdma_cxt,
 			       struct qed_rdma_modify_srq_in_params *in_params)
 {
@@ -1805,12 +1943,19 @@ err:
 	return rc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool qed_rdma_allocated_qps(struct qed_hwfn *p_hwfn)
 {
 	bool result;
 
+<<<<<<< HEAD
 	/* if rdma wasn't activated yet, naturally there are no qps */
 	if (!p_hwfn->p_rdma_info->active)
+=======
+	/* if rdma info has not been allocated, naturally there are no qps */
+	if (!p_hwfn->p_rdma_info)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	spin_lock_bh(&p_hwfn->p_rdma_info->lock);
@@ -1856,7 +2001,11 @@ static int qed_rdma_start(void *rdma_cxt,
 	if (!p_ptt)
 		goto err;
 
+<<<<<<< HEAD
 	rc = qed_rdma_alloc(p_hwfn);
+=======
+	rc = qed_rdma_alloc(p_hwfn, p_ptt, params);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		goto err1;
 
@@ -1865,7 +2014,10 @@ static int qed_rdma_start(void *rdma_cxt,
 		goto err2;
 
 	qed_ptt_release(p_hwfn, p_ptt);
+<<<<<<< HEAD
 	p_hwfn->p_rdma_info->active = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 
@@ -1951,9 +2103,12 @@ static const struct qed_rdma_ops qed_rdma_ops_pass = {
 	.rdma_free_tid = &qed_rdma_free_tid,
 	.rdma_register_tid = &qed_rdma_register_tid,
 	.rdma_deregister_tid = &qed_rdma_deregister_tid,
+<<<<<<< HEAD
 	.rdma_create_srq = &qed_rdma_create_srq,
 	.rdma_modify_srq = &qed_rdma_modify_srq,
 	.rdma_destroy_srq = &qed_rdma_destroy_srq,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ll2_acquire_connection = &qed_ll2_acquire_connection,
 	.ll2_establish_connection = &qed_ll2_establish_connection,
 	.ll2_terminate_connection = &qed_ll2_terminate_connection,

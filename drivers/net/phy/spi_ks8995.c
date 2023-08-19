@@ -425,7 +425,11 @@ static void ks8995_parse_dt(struct ks8995_switch *ks)
 static const struct bin_attribute ks8995_registers_attr = {
 	.attr = {
 		.name   = "registers",
+<<<<<<< HEAD
 		.mode   = 0600,
+=======
+		.mode   = S_IRUSR | S_IWUSR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.size   = KS8995_REGS_SIZE,
 	.read   = ks8995_registers_read,

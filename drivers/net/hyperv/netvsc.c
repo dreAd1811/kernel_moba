@@ -35,7 +35,10 @@
 #include <asm/sync_bitops.h>
 
 #include "hyperv_net.h"
+<<<<<<< HEAD
 #include "netvsc_trace.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Switch the data path from the synthetic interface to the VF
@@ -57,8 +60,11 @@ void netvsc_switch_datapath(struct net_device *ndev, bool vf)
 		init_pkt->msg.v4_msg.active_dp.active_datapath =
 			NVSP_DATAPATH_SYNTHETIC;
 
+<<<<<<< HEAD
 	trace_nvsp_send(ndev, init_pkt);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmbus_sendpacket(dev->channel, init_pkt,
 			       sizeof(struct nvsp_message),
 			       (unsigned long)init_pkt,
@@ -84,7 +90,11 @@ static void netvsc_subchan_work(struct work_struct *w)
 
 	rdev = nvdev->extension;
 	if (rdev) {
+<<<<<<< HEAD
 		ret = rndis_set_subchannel(rdev->ndev, nvdev, NULL);
+=======
+		ret = rndis_set_subchannel(rdev->ndev, nvdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret == 0) {
 			netif_device_attach(rdev->ndev);
 		} else {
@@ -111,7 +121,11 @@ static struct netvsc_device *alloc_net_device(void)
 	init_waitqueue_head(&net_device->wait_drain);
 	net_device->destroy = false;
 	net_device->tx_disable = false;
+<<<<<<< HEAD
 
+=======
+	atomic_set(&net_device->open_cnt, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	net_device->max_pkt = RNDIS_MAX_PKT_DEFAULT;
 	net_device->pkt_align = RNDIS_PKT_ALIGN_DEFAULT;
 
@@ -145,9 +159,15 @@ static void free_netvsc_device_rcu(struct netvsc_device *nvdev)
 }
 
 static void netvsc_revoke_recv_buf(struct hv_device *device,
+<<<<<<< HEAD
 				   struct netvsc_device *net_device,
 				   struct net_device *ndev)
 {
+=======
+				   struct netvsc_device *net_device)
+{
+	struct net_device *ndev = hv_get_drvdata(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvsp_message *revoke_packet;
 	int ret;
 
@@ -167,8 +187,11 @@ static void netvsc_revoke_recv_buf(struct hv_device *device,
 		revoke_packet->msg.v1_msg.
 		revoke_recv_buf.id = NETVSC_RECEIVE_BUFFER_ID;
 
+<<<<<<< HEAD
 		trace_nvsp_send(ndev, revoke_packet);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = vmbus_sendpacket(device->channel,
 				       revoke_packet,
 				       sizeof(struct nvsp_message),
@@ -195,9 +218,15 @@ static void netvsc_revoke_recv_buf(struct hv_device *device,
 }
 
 static void netvsc_revoke_send_buf(struct hv_device *device,
+<<<<<<< HEAD
 				   struct netvsc_device *net_device,
 				   struct net_device *ndev)
 {
+=======
+				   struct netvsc_device *net_device)
+{
+	struct net_device *ndev = hv_get_drvdata(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvsp_message *revoke_packet;
 	int ret;
 
@@ -217,8 +246,11 @@ static void netvsc_revoke_send_buf(struct hv_device *device,
 		revoke_packet->msg.v1_msg.revoke_send_buf.id =
 			NETVSC_SEND_BUFFER_ID;
 
+<<<<<<< HEAD
 		trace_nvsp_send(ndev, revoke_packet);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = vmbus_sendpacket(device->channel,
 				       revoke_packet,
 				       sizeof(struct nvsp_message),
@@ -246,9 +278,15 @@ static void netvsc_revoke_send_buf(struct hv_device *device,
 }
 
 static void netvsc_teardown_recv_gpadl(struct hv_device *device,
+<<<<<<< HEAD
 				       struct netvsc_device *net_device,
 				       struct net_device *ndev)
 {
+=======
+				       struct netvsc_device *net_device)
+{
+	struct net_device *ndev = hv_get_drvdata(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (net_device->recv_buf_gpadl_handle) {
@@ -268,9 +306,15 @@ static void netvsc_teardown_recv_gpadl(struct hv_device *device,
 }
 
 static void netvsc_teardown_send_gpadl(struct hv_device *device,
+<<<<<<< HEAD
 				       struct netvsc_device *net_device,
 				       struct net_device *ndev)
 {
+=======
+				       struct netvsc_device *net_device)
+{
+	struct net_device *ndev = hv_get_drvdata(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (net_device->send_buf_gpadl_handle) {
@@ -332,8 +376,11 @@ static int netvsc_init_buf(struct hv_device *device,
 		goto cleanup;
 	}
 
+<<<<<<< HEAD
 	net_device->recv_buf_size = buf_size;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Establish the gpadl handle for this buffer on this
 	 * channel.  Note: This call uses the vmbus connection rather
@@ -357,8 +404,11 @@ static int netvsc_init_buf(struct hv_device *device,
 	init_packet->msg.v1_msg.
 		send_recv_buf.id = NETVSC_RECEIVE_BUFFER_ID;
 
+<<<<<<< HEAD
 	trace_nvsp_send(ndev, init_packet);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Send the gpadl notification request */
 	ret = vmbus_sendpacket(device->channel, init_packet,
 			       sizeof(struct nvsp_message),
@@ -438,8 +488,11 @@ static int netvsc_init_buf(struct hv_device *device,
 		net_device->send_buf_gpadl_handle;
 	init_packet->msg.v1_msg.send_send_buf.id = NETVSC_SEND_BUFFER_ID;
 
+<<<<<<< HEAD
 	trace_nvsp_send(ndev, init_packet);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Send the gpadl notification request */
 	ret = vmbus_sendpacket(device->channel, init_packet,
 			       sizeof(struct nvsp_message),
@@ -487,10 +540,17 @@ static int netvsc_init_buf(struct hv_device *device,
 	goto exit;
 
 cleanup:
+<<<<<<< HEAD
 	netvsc_revoke_recv_buf(device, net_device, ndev);
 	netvsc_revoke_send_buf(device, net_device, ndev);
 	netvsc_teardown_recv_gpadl(device, net_device, ndev);
 	netvsc_teardown_send_gpadl(device, net_device, ndev);
+=======
+	netvsc_revoke_recv_buf(device, net_device);
+	netvsc_revoke_send_buf(device, net_device);
+	netvsc_teardown_recv_gpadl(device, net_device);
+	netvsc_teardown_send_gpadl(device, net_device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 exit:
 	return ret;
@@ -509,7 +569,10 @@ static int negotiate_nvsp_ver(struct hv_device *device,
 	init_packet->hdr.msg_type = NVSP_MSG_TYPE_INIT;
 	init_packet->msg.init_msg.init.min_protocol_ver = nvsp_ver;
 	init_packet->msg.init_msg.init.max_protocol_ver = nvsp_ver;
+<<<<<<< HEAD
 	trace_nvsp_send(ndev, init_packet);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Send the init request */
 	ret = vmbus_sendpacket(device->channel, init_packet,
@@ -543,8 +606,11 @@ static int negotiate_nvsp_ver(struct hv_device *device,
 		init_packet->msg.v2_msg.send_ndis_config.capability.teaming = 1;
 	}
 
+<<<<<<< HEAD
 	trace_nvsp_send(ndev, init_packet);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = vmbus_sendpacket(device->channel, init_packet,
 				sizeof(struct nvsp_message),
 				(unsigned long)init_packet,
@@ -557,11 +623,17 @@ static int netvsc_connect_vsp(struct hv_device *device,
 			      struct netvsc_device *net_device,
 			      const struct netvsc_device_info *device_info)
 {
+<<<<<<< HEAD
 	struct net_device *ndev = hv_get_drvdata(device);
 	static const u32 ver_list[] = {
 		NVSP_PROTOCOL_VERSION_1, NVSP_PROTOCOL_VERSION_2,
 		NVSP_PROTOCOL_VERSION_4, NVSP_PROTOCOL_VERSION_5,
 		NVSP_PROTOCOL_VERSION_6, NVSP_PROTOCOL_VERSION_61
+=======
+	const u32 ver_list[] = {
+		NVSP_PROTOCOL_VERSION_1, NVSP_PROTOCOL_VERSION_2,
+		NVSP_PROTOCOL_VERSION_4, NVSP_PROTOCOL_VERSION_5
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	struct nvsp_message *init_packet;
 	int ndis_version, i, ret;
@@ -599,8 +671,11 @@ static int netvsc_connect_vsp(struct hv_device *device,
 		send_ndis_ver.ndis_minor_ver =
 				ndis_version & 0xFFFF;
 
+<<<<<<< HEAD
 	trace_nvsp_send(ndev, init_packet);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Send the init request */
 	ret = vmbus_sendpacket(device->channel, init_packet,
 				sizeof(struct nvsp_message),
@@ -631,6 +706,7 @@ void netvsc_device_remove(struct hv_device *device)
 	 * Revoke receive buffer. If host is pre-Win2016 then tear down
 	 * receive buffer GPADL. Do the same for send buffer.
 	 */
+<<<<<<< HEAD
 	netvsc_revoke_recv_buf(device, net_device, ndev);
 	if (vmbus_proto_version < VERSION_WIN10)
 		netvsc_teardown_recv_gpadl(device, net_device, ndev);
@@ -638,6 +714,15 @@ void netvsc_device_remove(struct hv_device *device)
 	netvsc_revoke_send_buf(device, net_device, ndev);
 	if (vmbus_proto_version < VERSION_WIN10)
 		netvsc_teardown_send_gpadl(device, net_device, ndev);
+=======
+	netvsc_revoke_recv_buf(device, net_device);
+	if (vmbus_proto_version < VERSION_WIN10)
+		netvsc_teardown_recv_gpadl(device, net_device);
+
+	netvsc_revoke_send_buf(device, net_device);
+	if (vmbus_proto_version < VERSION_WIN10)
+		netvsc_teardown_send_gpadl(device, net_device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	RCU_INIT_POINTER(net_device_ctx->nvdev, NULL);
 
@@ -659,8 +744,13 @@ void netvsc_device_remove(struct hv_device *device)
 	 * here after VMBus is closed.
 	*/
 	if (vmbus_proto_version >= VERSION_WIN10) {
+<<<<<<< HEAD
 		netvsc_teardown_recv_gpadl(device, net_device, ndev);
 		netvsc_teardown_send_gpadl(device, net_device, ndev);
+=======
+		netvsc_teardown_recv_gpadl(device, net_device);
+		netvsc_teardown_send_gpadl(device, net_device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Release all resources */
@@ -670,20 +760,48 @@ void netvsc_device_remove(struct hv_device *device)
 #define RING_AVAIL_PERCENT_HIWATER 20
 #define RING_AVAIL_PERCENT_LOWATER 10
 
+<<<<<<< HEAD
+=======
+/*
+ * Get the percentage of available bytes to write in the ring.
+ * The return value is in range from 0 to 100.
+ */
+static inline u32 hv_ringbuf_avail_percent(
+		struct hv_ring_buffer_info *ring_info)
+{
+	u32 avail_read, avail_write;
+
+	hv_get_ringbuffer_availbytes(ring_info, &avail_read, &avail_write);
+
+	return avail_write * 100 / ring_info->ring_datasize;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void netvsc_free_send_slot(struct netvsc_device *net_device,
 					 u32 index)
 {
 	sync_change_bit(index, net_device->send_section_map);
 }
 
+<<<<<<< HEAD
 static void netvsc_send_tx_complete(struct net_device *ndev,
 				    struct netvsc_device *net_device,
 				    struct vmbus_channel *channel,
+=======
+static void netvsc_send_tx_complete(struct netvsc_device *net_device,
+				    struct vmbus_channel *incoming_channel,
+				    struct hv_device *device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    const struct vmpacket_descriptor *desc,
 				    int budget)
 {
 	struct sk_buff *skb = (struct sk_buff *)(unsigned long)desc->trans_id;
+<<<<<<< HEAD
 	struct net_device_context *ndev_ctx = netdev_priv(ndev);
+=======
+	struct net_device *ndev = hv_get_drvdata(device);
+	struct vmbus_channel *channel = device->channel;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 q_idx = 0;
 	int queue_sends;
 
@@ -697,6 +815,10 @@ static void netvsc_send_tx_complete(struct net_device *ndev,
 		if (send_index != NETVSC_INVALID_INDEX)
 			netvsc_free_send_slot(net_device, send_index);
 		q_idx = packet->q_idx;
+<<<<<<< HEAD
+=======
+		channel = incoming_channel;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		tx_stats = &net_device->chan_table[q_idx].tx_stats;
 
@@ -718,14 +840,21 @@ static void netvsc_send_tx_complete(struct net_device *ndev,
 		struct netdev_queue *txq = netdev_get_tx_queue(ndev, q_idx);
 
 		if (netif_tx_queue_stopped(txq) && !net_device->tx_disable &&
+<<<<<<< HEAD
 		    (hv_get_avail_to_write_percent(&channel->outbound) >
 		     RING_AVAIL_PERCENT_HIWATER || queue_sends < 1)) {
 			netif_tx_wake_queue(txq);
 			ndev_ctx->eth_stats.wake_queue++;
+=======
+		    (hv_ringbuf_avail_percent(&channel->outbound) > RING_AVAIL_PERCENT_HIWATER ||
+		     queue_sends < 1)) {
+			netif_tx_wake_queue(txq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
 
+<<<<<<< HEAD
 static void netvsc_send_completion(struct net_device *ndev,
 				   struct netvsc_device *net_device,
 				   struct vmbus_channel *incoming_channel,
@@ -733,6 +862,16 @@ static void netvsc_send_completion(struct net_device *ndev,
 				   int budget)
 {
 	const struct nvsp_message *nvsp_packet = hv_pkt_data(desc);
+=======
+static void netvsc_send_completion(struct netvsc_device *net_device,
+				   struct vmbus_channel *incoming_channel,
+				   struct hv_device *device,
+				   const struct vmpacket_descriptor *desc,
+				   int budget)
+{
+	struct nvsp_message *nvsp_packet = hv_pkt_data(desc);
+	struct net_device *ndev = hv_get_drvdata(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (nvsp_packet->hdr.msg_type) {
 	case NVSP_MSG_TYPE_INIT_COMPLETE:
@@ -746,8 +885,13 @@ static void netvsc_send_completion(struct net_device *ndev,
 		break;
 
 	case NVSP_MSG1_TYPE_SEND_RNDIS_PKT_COMPLETE:
+<<<<<<< HEAD
 		netvsc_send_tx_complete(ndev, net_device, incoming_channel,
 					desc, budget);
+=======
+		netvsc_send_tx_complete(net_device, incoming_channel,
+					device, desc, budget);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	default:
@@ -782,10 +926,18 @@ static void netvsc_copy_to_send_buf(struct netvsc_device *net_device,
 	char *dest = start + (section_index * net_device->send_section_size)
 		     + pend_size;
 	int i;
+<<<<<<< HEAD
 	u32 padding = 0;
 	u32 page_count = packet->cp_partial ? packet->rmsg_pgcnt :
 		packet->page_buf_cnt;
 	u32 remain;
+=======
+	u32 msg_size = 0;
+	u32 padding = 0;
+	u32 remain = packet->total_data_buflen % net_device->pkt_align;
+	u32 page_count = packet->cp_partial ? packet->rmsg_pgcnt :
+		packet->page_buf_cnt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add padding */
 	remain = packet->total_data_buflen & (net_device->pkt_align - 1);
@@ -801,11 +953,22 @@ static void netvsc_copy_to_send_buf(struct netvsc_device *net_device,
 		u32 len = pb[i].len;
 
 		memcpy(dest, (src + offset), len);
+<<<<<<< HEAD
 		dest += len;
 	}
 
 	if (padding)
 		memset(dest, 0, padding);
+=======
+		msg_size += len;
+		dest += len;
+	}
+
+	if (padding) {
+		memset(dest, 0, padding);
+		msg_size += padding;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int netvsc_send_pkt(
@@ -816,17 +979,28 @@ static inline int netvsc_send_pkt(
 	struct sk_buff *skb)
 {
 	struct nvsp_message nvmsg;
+<<<<<<< HEAD
 	struct nvsp_1_message_send_rndis_packet *rpkt =
+=======
+	struct nvsp_1_message_send_rndis_packet * const rpkt =
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		&nvmsg.msg.v1_msg.send_rndis_pkt;
 	struct netvsc_channel * const nvchan =
 		&net_device->chan_table[packet->q_idx];
 	struct vmbus_channel *out_channel = nvchan->channel;
 	struct net_device *ndev = hv_get_drvdata(device);
+<<<<<<< HEAD
 	struct net_device_context *ndev_ctx = netdev_priv(ndev);
 	struct netdev_queue *txq = netdev_get_tx_queue(ndev, packet->q_idx);
 	u64 req_id;
 	int ret;
 	u32 ring_avail = hv_get_avail_to_write_percent(&out_channel->outbound);
+=======
+	struct netdev_queue *txq = netdev_get_tx_queue(ndev, packet->q_idx);
+	u64 req_id;
+	int ret;
+	u32 ring_avail = hv_ringbuf_avail_percent(&out_channel->outbound);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvmsg.hdr.msg_type = NVSP_MSG1_TYPE_SEND_RNDIS_PKT;
 	if (skb)
@@ -845,8 +1019,11 @@ static inline int netvsc_send_pkt(
 	if (out_channel->rescind)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	trace_nvsp_send_pkt(ndev, out_channel, rpkt);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (packet->page_buf_cnt) {
 		if (packet->cp_partial)
 			pb += packet->rmsg_pgcnt;
@@ -865,6 +1042,7 @@ static inline int netvsc_send_pkt(
 	if (ret == 0) {
 		atomic_inc_return(&nvchan->queue_sends);
 
+<<<<<<< HEAD
 		if (ring_avail < RING_AVAIL_PERCENT_LOWATER) {
 			netif_tx_stop_queue(txq);
 			ndev_ctx->eth_stats.stop_queue++;
@@ -872,6 +1050,17 @@ static inline int netvsc_send_pkt(
 	} else if (ret == -EAGAIN) {
 		netif_tx_stop_queue(txq);
 		ndev_ctx->eth_stats.stop_queue++;
+=======
+		if (ring_avail < RING_AVAIL_PERCENT_LOWATER)
+			netif_tx_stop_queue(txq);
+	} else if (ret == -EAGAIN) {
+		netif_tx_stop_queue(txq);
+		if (atomic_read(&nvchan->queue_sends) < 1 &&
+		    !net_device->tx_disable) {
+			netif_tx_wake_queue(txq);
+			ret = -ENOSPC;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		netdev_err(ndev,
 			   "Unable to send packet pages %u len %u, ret %d\n",
@@ -879,6 +1068,7 @@ static inline int netvsc_send_pkt(
 			   ret);
 	}
 
+<<<<<<< HEAD
 	if (netif_tx_queue_stopped(txq) &&
 	    atomic_read(&nvchan->queue_sends) < 1 &&
 	    !net_device->tx_disable) {
@@ -888,6 +1078,8 @@ static inline int netvsc_send_pkt(
 			ret = -ENOSPC;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1116,11 +1308,20 @@ static void enq_receive_complete(struct net_device *ndev,
 
 static int netvsc_receive(struct net_device *ndev,
 			  struct netvsc_device *net_device,
+<<<<<<< HEAD
 			  struct vmbus_channel *channel,
 			  const struct vmpacket_descriptor *desc,
 			  const struct nvsp_message *nvsp)
 {
 	struct net_device_context *net_device_ctx = netdev_priv(ndev);
+=======
+			  struct net_device_context *net_device_ctx,
+			  struct hv_device *device,
+			  struct vmbus_channel *channel,
+			  const struct vmpacket_descriptor *desc,
+			  struct nvsp_message *nvsp)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct vmtransfer_page_packet_header *vmxferpage_packet
 		= container_of(desc, const struct vmtransfer_page_packet_header, d);
 	u16 q_idx = channel->offermsg.offer.sub_channel_index;
@@ -1149,6 +1350,7 @@ static int netvsc_receive(struct net_device *ndev,
 
 	/* Each range represents 1 RNDIS pkt that contains 1 ethernet frame */
 	for (i = 0; i < count; i++) {
+<<<<<<< HEAD
 		u32 offset = vmxferpage_packet->ranges[i].byte_offset;
 		u32 buflen = vmxferpage_packet->ranges[i].byte_count;
 		void *data;
@@ -1173,6 +1375,15 @@ static int netvsc_receive(struct net_device *ndev,
 
 		if (unlikely(ret != NVSP_STAT_SUCCESS))
 			status = NVSP_STAT_FAIL;
+=======
+		void *data = recv_buf
+			+ vmxferpage_packet->ranges[i].byte_offset;
+		u32 buflen = vmxferpage_packet->ranges[i].byte_count;
+
+		/* Pass it to the upper layer */
+		status = rndis_filter_receive(ndev, net_device, device,
+					      channel, data, buflen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	enq_receive_complete(ndev, net_device, q_idx,
@@ -1181,12 +1392,22 @@ static int netvsc_receive(struct net_device *ndev,
 	return count;
 }
 
+<<<<<<< HEAD
 static void netvsc_send_table(struct net_device *ndev,
 			      const struct nvsp_message *nvmsg)
 {
 	struct net_device_context *net_device_ctx = netdev_priv(ndev);
 	u32 count, *tab;
 	int i;
+=======
+static void netvsc_send_table(struct hv_device *hdev,
+			      struct nvsp_message *nvmsg)
+{
+	struct net_device *ndev = hv_get_drvdata(hdev);
+	struct net_device_context *net_device_ctx = netdev_priv(ndev);
+	int i;
+	u32 count, *tab;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	count = nvmsg->msg.v5_msg.send_table.count;
 	if (count != VRSS_SEND_TAB_SIZE) {
@@ -1201,6 +1422,7 @@ static void netvsc_send_table(struct net_device *ndev,
 		net_device_ctx->tx_table[i] = tab[i];
 }
 
+<<<<<<< HEAD
 static void netvsc_send_vf(struct net_device *ndev,
 			   const struct nvsp_message *nvmsg)
 {
@@ -1223,6 +1445,26 @@ static  void netvsc_receive_inband(struct net_device *ndev,
 
 	case NVSP_MSG4_TYPE_SEND_VF_ASSOCIATION:
 		netvsc_send_vf(ndev, nvmsg);
+=======
+static void netvsc_send_vf(struct net_device_context *net_device_ctx,
+			   struct nvsp_message *nvmsg)
+{
+	net_device_ctx->vf_alloc = nvmsg->msg.v4_msg.vf_assoc.allocated;
+	net_device_ctx->vf_serial = nvmsg->msg.v4_msg.vf_assoc.serial;
+}
+
+static inline void netvsc_receive_inband(struct hv_device *hdev,
+				 struct net_device_context *net_device_ctx,
+				 struct nvsp_message *nvmsg)
+{
+	switch (nvmsg->hdr.msg_type) {
+	case NVSP_MSG5_TYPE_SEND_INDIRECTION_TABLE:
+		netvsc_send_table(hdev, nvmsg);
+		break;
+
+	case NVSP_MSG4_TYPE_SEND_VF_ASSOCIATION:
+		netvsc_send_vf(net_device_ctx, nvmsg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
@@ -1234,6 +1476,7 @@ static int netvsc_process_raw_pkt(struct hv_device *device,
 				  const struct vmpacket_descriptor *desc,
 				  int budget)
 {
+<<<<<<< HEAD
 	const struct nvsp_message *nvmsg = hv_pkt_data(desc);
 
 	trace_nvsp_recv(ndev, channel, nvmsg);
@@ -1241,16 +1484,33 @@ static int netvsc_process_raw_pkt(struct hv_device *device,
 	switch (desc->type) {
 	case VM_PKT_COMP:
 		netvsc_send_completion(ndev, net_device, channel,
+=======
+	struct net_device_context *net_device_ctx = netdev_priv(ndev);
+	struct nvsp_message *nvmsg = hv_pkt_data(desc);
+
+	switch (desc->type) {
+	case VM_PKT_COMP:
+		netvsc_send_completion(net_device, channel, device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       desc, budget);
 		break;
 
 	case VM_PKT_DATA_USING_XFER_PAGES:
+<<<<<<< HEAD
 		return netvsc_receive(ndev, net_device, channel,
 				      desc, nvmsg);
 		break;
 
 	case VM_PKT_DATA_INBAND:
 		netvsc_receive_inband(ndev, nvmsg);
+=======
+		return netvsc_receive(ndev, net_device, net_device_ctx,
+				      device, channel, desc, nvmsg);
+		break;
+
+	case VM_PKT_DATA_INBAND:
+		netvsc_receive_inband(device, net_device_ctx, nvmsg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	default:
@@ -1343,6 +1603,10 @@ struct netvsc_device *netvsc_device_add(struct hv_device *device,
 				const struct netvsc_device_info *device_info)
 {
 	int i, ret = 0;
+<<<<<<< HEAD
+=======
+	int ring_size = device_info->ring_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct netvsc_device *net_device;
 	struct net_device *ndev = hv_get_drvdata(device);
 	struct net_device_context *net_device_ctx = netdev_priv(ndev);
@@ -1354,6 +1618,11 @@ struct netvsc_device *netvsc_device_add(struct hv_device *device,
 	for (i = 0; i < VRSS_SEND_TAB_SIZE; i++)
 		net_device_ctx->tx_table[i] = 0;
 
+<<<<<<< HEAD
+=======
+	net_device->ring_size = ring_size;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Because the device uses NAPI, all the interrupt batching and
 	 * control is done via Net softirq, not the channel handling
 	 */
@@ -1380,9 +1649,16 @@ struct netvsc_device *netvsc_device_add(struct hv_device *device,
 		       netvsc_poll, NAPI_POLL_WEIGHT);
 
 	/* Open the channel */
+<<<<<<< HEAD
 	ret = vmbus_open(device->channel, netvsc_ring_bytes,
 			 netvsc_ring_bytes,  NULL, 0,
 			 netvsc_channel_cb, net_device->chan_table);
+=======
+	ret = vmbus_open(device->channel, ring_size * PAGE_SIZE,
+			 ring_size * PAGE_SIZE, NULL, 0,
+			 netvsc_channel_cb,
+			 net_device->chan_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret != 0) {
 		netdev_err(ndev, "unable to open channel: %d\n", ret);

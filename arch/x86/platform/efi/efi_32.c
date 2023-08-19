@@ -85,7 +85,16 @@ pgd_t * __init efi_call_phys_prolog(void)
 
 void __init efi_call_phys_epilog(pgd_t *save_pgd)
 {
+<<<<<<< HEAD
 	load_fixmap_gdt(0);
+=======
+	struct desc_ptr gdt_descr;
+
+	gdt_descr.address = (unsigned long)get_cpu_gdt_rw(0);
+	gdt_descr.size = GDT_SIZE - 1;
+	load_gdt(&gdt_descr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	load_cr3(save_pgd);
 	__flush_tlb_all();
 }

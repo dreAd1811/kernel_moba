@@ -476,6 +476,7 @@ void __init ar7_init_clocks(void)
 	/* adjust vbus clock rate */
 	vbus_clk.rate = bus_clk.rate / 2;
 }
+<<<<<<< HEAD
 
 /* dummy functions, should not be called */
 long clk_round_rate(struct clk *clk, unsigned long rate)
@@ -505,3 +506,5 @@ struct clk *clk_get_parent(struct clk *clk)
 	return NULL;
 }
 EXPORT_SYMBOL(clk_get_parent);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

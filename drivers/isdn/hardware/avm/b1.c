@@ -72,7 +72,11 @@ avmcard *b1_alloc_card(int nr_controllers)
 	if (!card)
 		return NULL;
 
+<<<<<<< HEAD
 	cinfo = kcalloc(nr_controllers, sizeof(*cinfo), GFP_KERNEL);
+=======
+	cinfo = kzalloc(sizeof(*cinfo) * nr_controllers, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cinfo) {
 		kfree(card);
 		return NULL;
@@ -637,7 +641,11 @@ irqreturn_t b1_interrupt(int interrupt, void *devptr)
 }
 
 /* ------------------------------------------------------------- */
+<<<<<<< HEAD
 int b1_proc_show(struct seq_file *m, void *v)
+=======
+static int b1ctl_proc_show(struct seq_file *m, void *v)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct capi_ctr *ctrl = m->private;
 	avmctrl_info *cinfo = (avmctrl_info *)(ctrl->driverdata);
@@ -699,7 +707,24 @@ int b1_proc_show(struct seq_file *m, void *v)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(b1_proc_show);
+=======
+
+static int b1ctl_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, b1ctl_proc_show, PDE_DATA(inode));
+}
+
+const struct file_operations b1ctl_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= b1ctl_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+EXPORT_SYMBOL(b1ctl_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ------------------------------------------------------------- */
 

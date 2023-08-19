@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/io.h>
@@ -10,7 +23,10 @@
 #include <linux/completion.h>
 #include <linux/platform_device.h>
 #include <linux/mailbox_controller.h>
+<<<<<<< HEAD
 #include <linux/mailbox_client.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_irq.h>
@@ -162,6 +178,10 @@ struct qmp_mbox {
 	struct completion ch_complete;
 	struct delayed_work dwork;
 	struct qmp_device *mdev;
+<<<<<<< HEAD
+=======
+	bool suspend_flag;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -201,10 +221,15 @@ struct qmp_device {
 	u32 tx_irq_count;
 	u32 rx_irq_count;
 
+<<<<<<< HEAD
 	struct mbox_client mbox_client;
 	struct mbox_chan *mbox_chan;
 
 	void *ilc;
+=======
+	void *ilc;
+	bool early_boot;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -218,6 +243,7 @@ static void send_irq(struct qmp_device *mdev)
 	 * before the interrupt is triggered
 	 */
 	wmb();
+<<<<<<< HEAD
 
 	if (mdev->mbox_chan) {
 		mbox_send_message(mdev->mbox_chan, NULL);
@@ -225,6 +251,9 @@ static void send_irq(struct qmp_device *mdev)
 	} else {
 		writel_relaxed(mdev->irq_mask, mdev->tx_irq_reg);
 	}
+=======
+	writel_relaxed(mdev->irq_mask, mdev->tx_irq_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdev->tx_irq_count++;
 }
 
@@ -337,12 +366,21 @@ static int qmp_startup(struct mbox_chan *chan)
 	if (!mbox)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = wait_for_completion_timeout(&mbox->link_complete,
 					  msecs_to_jiffies(QMP_TOUT_MS));
 	if (!ret)
 		return -EAGAIN;
 
 	mutex_lock(&mbox->state_lock);
+=======
+	mutex_lock(&mbox->state_lock);
+	if (!completion_done(&mbox->link_complete)) {
+		mutex_unlock(&mbox->state_lock);
+		return -EAGAIN;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mbox->local_state == LINK_CONNECTED) {
 		set_mcore_ch(mbox, QMP_MBOX_CH_CONNECTED);
 		mbox->local_state = LOCAL_CONNECTING;
@@ -380,7 +418,11 @@ static int qmp_send_data(struct mbox_chan *chan, void *data)
 	u32 size;
 	int i;
 
+<<<<<<< HEAD
 	if (!mbox || !data || mbox->local_state != CHANNEL_CONNECTED)
+=======
+	if (!mbox || !data || !completion_done(&mbox->ch_complete))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	mdev = mbox->mdev;
@@ -574,6 +616,19 @@ static void __qmp_rx_worker(struct qmp_mbox *mbox)
 		mbox->local_state = LINK_CONNECTED;
 		complete_all(&mbox->link_complete);
 		QMP_INFO(mdev->ilc, "Set to link connected\n");
+<<<<<<< HEAD
+=======
+		/*
+		 * If link connection happened after hibernation
+		 * manualy trigger the channel open procedure since client
+		 * won't try to re-open the channel
+		 */
+		if (mbox->suspend_flag == true) {
+			set_mcore_ch(mbox, QMP_MBOX_CH_CONNECTED);
+			mbox->local_state = LOCAL_CONNECTING;
+			send_irq(mbox->mdev);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case LINK_CONNECTED:
 		if (desc.ucore.ch_state == desc.ucore.ch_state_ack) {
@@ -857,11 +912,16 @@ static int qmp_mbox_init(struct device_node *n, struct qmp_device *mdev)
 	mbox->tx_sent = false;
 	mbox->num_assigned = 0;
 	INIT_DELAYED_WORK(&mbox->dwork, qmp_notify_timeout);
+<<<<<<< HEAD
+=======
+	mbox->suspend_flag = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mdev_add_mbox(mdev, mbox);
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qmp_parse_ipc(struct platform_device *pdev)
 {
 	struct qmp_device *mdev = platform_get_drvdata(pdev);
@@ -890,6 +950,8 @@ static int qmp_parse_ipc(struct platform_device *pdev)
 	}
 	return 0;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * qmp_edge_init() - Parse the device tree information for QMP, map io
@@ -902,7 +964,11 @@ static int qmp_edge_init(struct platform_device *pdev)
 {
 	struct qmp_device *mdev = platform_get_drvdata(pdev);
 	struct device_node *node = pdev->dev.of_node;
+<<<<<<< HEAD
 	struct resource *msgram_r;
+=======
+	struct resource *msgram_r, *tx_irq_reg_r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *key;
 	int rc;
 
@@ -920,6 +986,7 @@ static int qmp_edge_init(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	mdev->mbox_client.dev = &pdev->dev;
 	mdev->mbox_client.knows_txdone = true;
 	mdev->mbox_chan = mbox_request_channel(&mdev->mbox_client, 0);
@@ -932,6 +999,20 @@ static int qmp_edge_init(struct platform_device *pdev)
 		rc = qmp_parse_ipc(pdev);
 		if (rc)
 			return rc;
+=======
+	key = "irq-reg-base";
+	tx_irq_reg_r = platform_get_resource_byname(pdev, IORESOURCE_MEM, key);
+	if (!tx_irq_reg_r) {
+		pr_err("%s: missing key %s\n", __func__, key);
+		return -ENODEV;
+	}
+
+	key = "qcom,irq-mask";
+	rc = of_property_read_u32(node, key, &mdev->irq_mask);
+	if (rc) {
+		pr_err("%s: missing key %s\n", __func__, key);
+		return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	key = "interrupts";
@@ -942,9 +1023,17 @@ static int qmp_edge_init(struct platform_device *pdev)
 	}
 
 	mdev->dev = &pdev->dev;
+<<<<<<< HEAD
 	mdev->msgram = devm_ioremap_nocache(&pdev->dev, msgram_r->start,
 						resource_size(msgram_r));
 	if (!mdev->msgram)
+=======
+	mdev->tx_irq_reg = devm_ioremap_nocache(&pdev->dev, tx_irq_reg_r->start,
+						resource_size(tx_irq_reg_r));
+	mdev->msgram = devm_ioremap_nocache(&pdev->dev, msgram_r->start,
+						resource_size(msgram_r));
+	if (!mdev->msgram || !mdev->tx_irq_reg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 
 	INIT_LIST_HEAD(&mdev->mboxes);
@@ -970,6 +1059,11 @@ static int qmp_mbox_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	dev_set_drvdata(&pdev->dev, mdev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdev->ilc = ipc_log_context_create(QMP_IPC_LOG_PAGE_CNT, mdev->name, 0);
 
 	kthread_init_work(&mdev->kwork, rx_worker);
@@ -992,12 +1086,58 @@ static int qmp_mbox_probe(struct platform_device *pdev)
 			mdev->rx_irq_line, ret);
 
 	/* Trigger fake RX in case of missed interrupt */
+<<<<<<< HEAD
 	if (of_property_read_bool(edge_node, "qcom,early-boot"))
+=======
+	if (of_property_read_bool(edge_node, "qcom,early-boot")) {
+		mdev->early_boot = true;
+		qmp_irq_handler(0, mdev);
+	}
+
+	return 0;
+}
+
+static int qmp_mbox_suspend(struct device *dev)
+{
+	return 0;
+}
+
+static int qmp_mbox_resume(struct device *dev)
+{
+	struct qmp_device *mdev = dev_get_drvdata(dev);
+	struct qmp_mbox *mbox;
+
+	list_for_each_entry(mbox, &mdev->mboxes, list) {
+		mbox->local_state = LINK_DISCONNECTED;
+		init_completion(&mbox->link_complete);
+		init_completion(&mbox->ch_complete);
+		mbox->tx_sent = false;
+		/*
+		 * set suspend flag to indicate self channel open is required
+		 * after restore operation
+		 */
+		mbox->suspend_flag = true;
+		/* Release rx packet buffer */
+		if (mbox->rx_pkt.data) {
+			devm_kfree(mdev->dev, mbox->rx_pkt.data);
+			mbox->rx_pkt.data = NULL;
+		}
+	}
+	if (mdev->early_boot)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qmp_irq_handler(0, mdev);
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static const struct dev_pm_ops qmp_mbox_pm_ops = {
+	.freeze_late = qmp_mbox_suspend,
+	.restore_early = qmp_mbox_resume,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver qmp_mbox_driver = {
 	.probe = qmp_mbox_probe,
 	.remove = qmp_mbox_remove,
@@ -1005,6 +1145,10 @@ static struct platform_driver qmp_mbox_driver = {
 		.name = "qmp_mbox",
 		.owner = THIS_MODULE,
 		.of_match_table = qmp_mbox_match_table,
+<<<<<<< HEAD
+=======
+		.pm = &qmp_mbox_pm_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

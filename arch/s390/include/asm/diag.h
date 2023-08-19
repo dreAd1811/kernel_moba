@@ -229,11 +229,15 @@ struct diag204_x_phys_block {
 } __packed;
 
 enum diag26c_sc {
+<<<<<<< HEAD
 	DIAG26C_PORT_VNIC    = 0x00000024,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DIAG26C_MAC_SERVICES = 0x00000030
 };
 
 enum diag26c_version {
+<<<<<<< HEAD
 	DIAG26C_VERSION2	 = 0x00000002,	/* z/VM 5.4.0 */
 	DIAG26C_VERSION6_VM65918 = 0x00020006	/* z/VM 6.4.0 + VM65918 */
 };
@@ -278,6 +282,11 @@ struct diag26c_vnic_resp {
 	u8	dev_info3[28];
 } __packed __aligned(8);
 
+=======
+	DIAG26C_VERSION2 = 0x00000002	/* z/VM 5.4.0 */
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DIAG26C_GET_MAC	0x0000
 struct diag26c_mac_req {
 	u32	resp_buf_len;

@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/init.h>
@@ -17,7 +30,10 @@
 #include <linux/sched/signal.h>
 #include <linux/debugfs.h>
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <soc/qcom/qtee_shmbridge.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SDMX_MAJOR_VERSION_MATCH	(8)
 
@@ -51,6 +67,7 @@
 #define SDMX_SECTION_BUFFER_SIZE	(64*1024)
 #define SDMX_PCR_BUFFER_SIZE		(64*1024)
 
+<<<<<<< HEAD
 /* TODO: Convert below parameters to sysfs tunables */
 /* Number of demux devices, has default of linux configuration */
 static int mpq_demux_device_num = CONFIG_DVB_MPQ_NUM_DMX_DEVICES;
@@ -60,6 +77,30 @@ static int video_nonsecure_ion_heap = ION_SYSTEM_HEAP_ID;
 static int mpq_sdmx_scramble_even = 0x2;
 /* Value of TS packet scramble bits field for odd key */
 static int mpq_sdmx_scramble_odd = 0x3;
+=======
+/* Number of demux devices, has default of linux configuration */
+static int mpq_demux_device_num = CONFIG_DVB_MPQ_NUM_DMX_DEVICES;
+module_param(mpq_demux_device_num, int, 0444);
+
+/* ION heap IDs used for allocating video output buffer */
+static int video_secure_ion_heap = ION_CP_MM_HEAP_ID;
+module_param(video_secure_ion_heap, int, 0644);
+MODULE_PARM_DESC(video_secure_ion_heap,
+		"ION heap for secure video buffer allocation");
+
+static int video_nonsecure_ion_heap = ION_SYSTEM_HEAP_ID;
+module_param(video_nonsecure_ion_heap, int, 0644);
+MODULE_PARM_DESC(video_nonsecure_ion_heap,
+		"ION heap for non-secure video buffer allocation");
+
+/* Value of TS packet scramble bits field for even key */
+static int mpq_sdmx_scramble_even = 0x2;
+module_param(mpq_sdmx_scramble_even, int, 0644);
+
+/* Value of TS packet scramble bits field for odd key */
+static int mpq_sdmx_scramble_odd = 0x3;
+module_param(mpq_sdmx_scramble_odd, int, 0644);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Default action (discard or pass) taken when scramble bit is not one of the
@@ -67,12 +108,24 @@ static int mpq_sdmx_scramble_odd = 0x3;
  * When set packets will be discarded, otherwise passed through.
  */
 static int mpq_sdmx_scramble_default_discard = 1;
+<<<<<<< HEAD
 
 /* Max number of TS packets allowed as input for a single sdmx process */
 static int mpq_sdmx_proc_limit = MAX_TS_PACKETS_FOR_SDMX_PROCESS;
 
 /* Debug flag for secure demux process */
 static int mpq_sdmx_debug;
+=======
+module_param(mpq_sdmx_scramble_default_discard, int, 0644);
+
+/* Max number of TS packets allowed as input for a single sdmx process */
+static int mpq_sdmx_proc_limit = MAX_TS_PACKETS_FOR_SDMX_PROCESS;
+module_param(mpq_sdmx_proc_limit, int, 0644);
+
+/* Debug flag for secure demux process */
+static int mpq_sdmx_debug;
+module_param(mpq_sdmx_debug, int, 0644);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Indicates whether the demux should search for frame boundaries
@@ -80,12 +133,24 @@ static int mpq_sdmx_debug;
  * only video PES packet payloads as-is.
  */
 static int video_framing = 1;
+<<<<<<< HEAD
 
 /* TSIF operation mode: 1 = TSIF_MODE_1,  2 = TSIF_MODE_2, 3 = TSIF_LOOPBACK */
 static int tsif_mode = 2;
 
 /* Inverse TSIF clock signal */
 static int clock_inv;
+=======
+module_param(video_framing, int, 0644);
+
+/* TSIF operation mode: 1 = TSIF_MODE_1,  2 = TSIF_MODE_2, 3 = TSIF_LOOPBACK */
+static int tsif_mode = 2;
+module_param(tsif_mode, int, 0644);
+
+/* Inverse TSIF clock signal */
+static int clock_inv;
+module_param(clock_inv, int, 0644);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Global data-structure for managing demux devices */
 static struct
@@ -466,6 +531,15 @@ static inline void mpq_dmx_update_sdmx_stat(struct mpq_demux *mpq_demux,
 		mpq_demux->sdmx_process_time_max = process_time;
 }
 
+<<<<<<< HEAD
+=======
+static int mpq_sdmx_log_level_open(struct inode *inode, struct file *file)
+{
+	file->private_data = inode->i_private;
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t mpq_sdmx_log_level_read(struct file *fp,
 	char __user *user_buffer, size_t count, loff_t *position)
 {
@@ -508,7 +582,11 @@ static ssize_t mpq_sdmx_log_level_write(struct file *fp,
 	if (level < SDMX_LOG_NO_PRINT || level > SDMX_LOG_VERBOSE)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	mutex_lock_interruptible(&mpq_demux->mutex);
+=======
+	mutex_lock(&mpq_demux->mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mpq_demux->sdmx_log_level = level;
 	if (mpq_demux->sdmx_session_handle != SDMX_INVALID_SESSION_HANDLE) {
 		ret = sdmx_set_log_level(mpq_demux->sdmx_session_handle,
@@ -527,7 +605,11 @@ static ssize_t mpq_sdmx_log_level_write(struct file *fp,
 }
 
 static const struct file_operations sdmx_debug_fops = {
+<<<<<<< HEAD
 	.open = simple_open,
+=======
+	.open = mpq_sdmx_log_level_open,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read = mpq_sdmx_log_level_read,
 	.write = mpq_sdmx_log_level_write,
 	.owner = THIS_MODULE,
@@ -805,6 +887,10 @@ int mpq_dmx_plugin_init(mpq_dmx_init dmx_init_func,
 	if (!mpq_dmx_info.devices) {
 		result = -ENOMEM;
 		goto init_failed;
+<<<<<<< HEAD
+=======
+		goto init_failed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Initialize and register all demux devices to the system */
@@ -819,8 +905,11 @@ int mpq_dmx_plugin_init(mpq_dmx_init dmx_init_func,
 
 		mutex_init(&mpq_demux->mutex);
 
+<<<<<<< HEAD
 		dma_set_mask(&mpq_demux->pdev->dev, DMA_BIT_MASK(48));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mpq_demux->num_secure_feeds = 0;
 		mpq_demux->num_active_feeds = 0;
 		mpq_demux->sdmx_filter_count = 0;
@@ -938,7 +1027,11 @@ void mpq_dmx_plugin_exit(void)
 
 int mpq_dmx_set_source(
 		struct dmx_demux *demux,
+<<<<<<< HEAD
 		const enum dmx_source_t *src)
+=======
+		const dmx_source_t *src)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	int dvr_index;
@@ -1081,7 +1174,11 @@ int mpq_dmx_reuse_decoder_buffer(struct dvb_demux_feed *feed, int cookie)
 		struct mpq_streambuffer *stream_buffer;
 		int ret;
 
+<<<<<<< HEAD
 		mutex_lock_interruptible(&mpq_demux->mutex);
+=======
+		mutex_lock(&mpq_demux->mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mpq_feed = feed->priv;
 		feed_data = &mpq_feed->video_info;
 
@@ -1108,6 +1205,7 @@ int mpq_dmx_reuse_decoder_buffer(struct dvb_demux_feed *feed, int cookie)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static int mpq_sdmx_destroy_shm_bridge_callback(struct dma_buf *dmabuf,
 		void *dtor_data)
 {
@@ -1219,6 +1317,8 @@ exit:
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * Handles the details of internal decoder buffer allocation via ION.
  * Internal helper function.
@@ -1295,6 +1395,7 @@ static int mpq_dmx_init_internal_buffers(
 	feed_data->buffer_desc.desc[0].size = size;
 	feed_data->buffer_desc.desc[0].read_ptr = 0;
 	feed_data->buffer_desc.desc[0].write_ptr = 0;
+<<<<<<< HEAD
 
 	ret = mpq_sdmx_create_shm_bridge(dbuf->dmabuf, dbuf->sgt);
 	if (ret) {
@@ -1302,6 +1403,8 @@ static int mpq_dmx_init_internal_buffers(
 		return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_detach:
@@ -1352,7 +1455,11 @@ static int mpq_dmx_init_external_buffers(
 	}
 
 	for (i = 0; i < feed_data->buffer_desc.decoder_buffers_num; i++) {
+<<<<<<< HEAD
 		if (!is_secure_feed) {
+=======
+		if (is_secure_feed == false) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mpq_dmx_vaddr_map(dec_buffs->handles[i], &buff.pa,
 				&buff.va, &buff.sgt, &buff.attach,
 				&buff.len, &buff.dmabuf);
@@ -1363,8 +1470,13 @@ static int mpq_dmx_init_external_buffers(
 				__func__, i);
 				goto init_failed;
 			}
+<<<<<<< HEAD
 			memcpy(&feed_data->buffer_desc.buff_dma_info[i], &buff,
 					sizeof(struct ion_dma_buff_info));
+=======
+		memcpy(&feed_data->buffer_desc.buff_dma_info[i], &buff,
+			sizeof(struct ion_dma_buff_info));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		} else {
 			mpq_dmx_paddr_map(dec_buffs->handles[i], &buff.pa,
@@ -1798,6 +1910,7 @@ struct dvb_demux_feed *mpq_dmx_peer_rec_feed(struct dvb_demux_feed *feed)
 
 static int mpq_sdmx_alloc_data_buf(struct mpq_feed *mpq_feed, size_t size)
 {
+<<<<<<< HEAD
 	int ret = 0;
 	struct sdmx_buff_descriptor *desc = &mpq_feed->data_desc;
 	struct qtee_shm *shminfo = NULL;
@@ -1821,6 +1934,22 @@ static int mpq_sdmx_alloc_data_buf(struct mpq_feed *mpq_feed, size_t size)
 		return ret;
 	}
 
+=======
+	struct mpq_demux *mpq_demux = mpq_feed->mpq_demux;
+	int ret = 0;
+	struct sdmx_buff_descriptor *desc = &mpq_feed->data_desc;
+
+	desc->virt_base = dma_alloc_coherent(&mpq_demux->pdev->dev,
+					    size, &desc->phys_base,
+					    GFP_KERNEL);
+	if (IS_ERR_OR_NULL(desc->virt_base)) {
+		ret = PTR_ERR(desc->virt_base);
+		MPQ_DVB_ERR_PRINT("%s: dma_alloc_coherent failed ret = %d\n",
+							__func__, ret);
+		return ret;
+	}
+	desc->size = size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dvb_ringbuffer_init(&mpq_feed->sdmx_buf, desc->virt_base, size);
 	mpq_feed->sdmx_dma_buff.va = desc->virt_base;
 
@@ -1829,15 +1958,25 @@ static int mpq_sdmx_alloc_data_buf(struct mpq_feed *mpq_feed, size_t size)
 
 static int mpq_sdmx_free_data_buf(struct mpq_feed *mpq_feed)
 {
+<<<<<<< HEAD
 	struct sdmx_buff_descriptor *desc = &mpq_feed->data_desc;
 
 	qtee_shmbridge_free_shm((struct qtee_shm *) desc->user);
 	vfree(desc->user);
 	MPQ_DVB_DBG_PRINT("%s: = qtee_shmbridge_free\n", __func__);
+=======
+	struct mpq_demux *mpq_demux = mpq_feed->mpq_demux;
+	struct sdmx_buff_descriptor *desc = &mpq_feed->data_desc;
+
+	dma_free_coherent(&mpq_demux->pdev->dev,
+			  desc->size, desc->virt_base,
+			  desc->phys_base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(desc, 0, sizeof(struct sdmx_buff_descriptor));
 	return 0;
 }
+<<<<<<< HEAD
 
 static int mpq_sdmx_init_metadata_buffer(struct mpq_demux *mpq_demux,
 		struct mpq_feed *feed,
@@ -1859,6 +1998,19 @@ static int mpq_sdmx_init_metadata_buffer(struct mpq_demux *mpq_demux,
 	desc->virt_base = shminfo->vaddr;
 	desc->user = (void *)shminfo;
 
+=======
+static int mpq_sdmx_init_metadata_buffer(struct mpq_demux *mpq_demux,
+	struct mpq_feed *feed, struct sdmx_buff_descr *metadata_buff_desc)
+{
+
+	int ret = 0;
+	struct sdmx_buff_descriptor *desc = &feed->metadata_desc;
+
+	desc->virt_base = dma_alloc_coherent(&mpq_demux->pdev->dev,
+					    SDMX_METADATA_BUFFER_SIZE,
+					    &desc->phys_base,
+					    GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR_OR_NULL(desc->virt_base)) {
 		ret = PTR_ERR(desc->virt_base);
 		MPQ_DVB_ERR_PRINT(
@@ -1878,16 +2030,30 @@ static int mpq_sdmx_init_metadata_buffer(struct mpq_demux *mpq_demux,
 
 static int mpq_sdmx_terminate_metadata_buffer(struct mpq_feed *mpq_feed)
 {
+<<<<<<< HEAD
 	struct sdmx_buff_descriptor *desc = &mpq_feed->metadata_desc;
 
 	qtee_shmbridge_free_shm((struct qtee_shm *) desc->user);
 	vfree(desc->user);
 	MPQ_DVB_DBG_PRINT("%s: = qtee_shmbridge_free\n", __func__);
+=======
+
+	struct mpq_demux *mpq_demux = mpq_feed->mpq_demux;
+
+	struct sdmx_buff_descriptor *desc = &mpq_feed->metadata_desc;
+
+	dma_free_coherent(&mpq_demux->pdev->dev,
+			  desc->size, desc->virt_base,
+			  desc->phys_base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(desc, 0, sizeof(struct sdmx_buff_descriptor));
 	return 0;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mpq_dmx_terminate_feed(struct dvb_demux_feed *feed)
 {
 	int ret = 0;
@@ -2067,7 +2233,11 @@ static int mpq_dmx_decoder_fullness_check(
 	}
 
 	if (lock_feed) {
+<<<<<<< HEAD
 		mutex_trylock(&mpq_demux->mutex);
+=======
+		mutex_lock(&mpq_demux->mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (!mutex_is_locked(&mpq_demux->mutex)) {
 		MPQ_DVB_ERR_PRINT(
 				"%s: Mutex should have been locked\n",
@@ -2106,7 +2276,11 @@ static int mpq_dmx_decoder_fullness_check(
 			if (!signal_pending(current)) {
 				mutex_unlock(&mpq_demux->mutex);
 				schedule();
+<<<<<<< HEAD
 				mutex_trylock(&mpq_demux->mutex);
+=======
+				mutex_lock(&mpq_demux->mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 			}
 
@@ -3693,12 +3867,15 @@ static int mpq_sdmx_get_buffer_chunks(struct mpq_demux *mpq_demux,
 		actual_buff_size -= chunk_size;
 	}
 
+<<<<<<< HEAD
 	ret = mpq_sdmx_create_shm_bridge(buff_info->dmabuf, buff_info->sgt);
 	if (ret) {
 		MPQ_DVB_ERR_PRINT("%s mpq_sdmx_create_shm_bridge failed\n");
 		return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3722,7 +3899,11 @@ static int mpq_sdmx_init_data_buffer(struct mpq_demux *mpq_demux,
 			*buf_mode = SDMX_LINEAR_GROUP_BUF;
 		*num_buffers = feed_data->buffer_desc.decoder_buffers_num;
 
+<<<<<<< HEAD
 		MPQ_DVB_ERR_PRINT("%s: video feed case no of buffers=%zu\n",
+=======
+		MPQ_DVB_ERR_PRINT("%s: video feed case no of buffers=%u\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  __func__, *num_buffers);
 
 		for (i = 0; i < *num_buffers; i++) {
@@ -4164,6 +4345,10 @@ static int mpq_sdmx_invalidate_buffer(struct mpq_feed *mpq_feed)
 {
 	struct dvb_demux_feed *feed = mpq_feed->dvb_demux_feed;
 	struct dvb_ringbuffer *buffer;
+<<<<<<< HEAD
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dvb_dmx_is_video_feed(feed)) {
 		if (dvb_dmx_is_sec_feed(feed) ||
@@ -4175,7 +4360,11 @@ static int mpq_sdmx_invalidate_buffer(struct mpq_feed *mpq_feed)
 				feed->feed.ts.buffer.ringbuff;
 		}
 	}
+<<<<<<< HEAD
 	return 0;
+=======
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mpq_sdmx_prepare_filter_status(struct mpq_demux *mpq_demux,
@@ -4315,7 +4504,11 @@ static int mpq_sdmx_section_filtering(struct mpq_feed *mpq_feed,
 		mpq_feed->sdmx_buf.size) {
 		feed->cb.sec(&mpq_feed->sdmx_buf.data[mpq_feed->sdmx_buf.pread],
 			header->payload_length,
+<<<<<<< HEAD
 			NULL, 0, &f->filter, &feed->buffer_flags);
+=======
+			NULL, 0, &f->filter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		int split = mpq_feed->sdmx_buf.size - mpq_feed->sdmx_buf.pread;
 
@@ -4323,7 +4516,11 @@ static int mpq_sdmx_section_filtering(struct mpq_feed *mpq_feed,
 			split,
 			&mpq_feed->sdmx_buf.data[0],
 			header->payload_length - split,
+<<<<<<< HEAD
 			&f->filter, &feed->buffer_flags);
+=======
+			&f->filter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;

@@ -18,7 +18,10 @@
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct egpio_chip {
 	int              reg_start;
@@ -321,8 +324,13 @@ static int __init egpio_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, ei);
 
 	ei->nchips = pdata->num_chips;
+<<<<<<< HEAD
 	ei->chip = devm_kcalloc(&pdev->dev,
 				ei->nchips, sizeof(struct egpio_chip),
+=======
+	ei->chip = devm_kzalloc(&pdev->dev,
+				sizeof(struct egpio_chip) * ei->nchips,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!ei->chip) {
 		ret = -ENOMEM;

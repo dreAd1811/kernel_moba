@@ -65,7 +65,10 @@
 
 #include <linux/elf.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <linux/kernel.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 const char *outfilename;
 
@@ -152,7 +155,11 @@ extern void bad_put_le(void);
 	PLE(x, val, 64, PLE(x, val, 32, PLE(x, val, 16, LAST_PLE(x, val))))
 
 
+<<<<<<< HEAD
 #define NSYMS ARRAY_SIZE(required_syms)
+=======
+#define NSYMS (sizeof(required_syms) / sizeof(required_syms[0]))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define BITSFUNC3(name, bits, suffix) name##bits##suffix
 #define BITSFUNC2(name, bits, suffix) BITSFUNC3(name, bits, suffix)

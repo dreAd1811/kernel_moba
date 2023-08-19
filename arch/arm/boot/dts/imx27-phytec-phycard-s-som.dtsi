@@ -17,7 +17,11 @@
 	model = "Phytec pca100";
 	compatible = "phytec,imx27-pca100", "fsl,imx27";
 
+<<<<<<< HEAD
 	memory@a0000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0xa0000000 0x08000000>; /* 128MB */
 	};
 };

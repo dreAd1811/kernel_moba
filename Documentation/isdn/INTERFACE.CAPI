@@ -18,7 +18,11 @@ corresponding hardware driver. Kernel CAPI then forwards CAPI messages in both
 directions between the application and the hardware driver.
 
 Format and semantics of CAPI messages are specified in the CAPI 2.0 standard.
+<<<<<<< HEAD
 This standard is freely available from https://www.capi.org.
+=======
+This standard is freely available from http://www.capi.org.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 2. Driver and Device Registration

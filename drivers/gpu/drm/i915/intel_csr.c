@@ -35,6 +35,7 @@
  */
 
 #define I915_CSR_GLK "i915/glk_dmc_ver1_04.bin"
+<<<<<<< HEAD
 MODULE_FIRMWARE(I915_CSR_GLK);
 #define GLK_CSR_VERSION_REQUIRED	CSR_VERSION(1, 4)
 
@@ -49,11 +50,32 @@ MODULE_FIRMWARE(I915_CSR_KBL);
 #define I915_CSR_SKL "i915/skl_dmc_ver1_27.bin"
 MODULE_FIRMWARE(I915_CSR_SKL);
 #define SKL_CSR_VERSION_REQUIRED	CSR_VERSION(1, 27)
+=======
+#define GLK_CSR_VERSION_REQUIRED	CSR_VERSION(1, 4)
+
+#define I915_CSR_CNL "i915/cnl_dmc_ver1_04.bin"
+#define CNL_CSR_VERSION_REQUIRED	CSR_VERSION(1, 4)
+
+#define I915_CSR_KBL "i915/kbl_dmc_ver1_01.bin"
+MODULE_FIRMWARE(I915_CSR_KBL);
+#define KBL_CSR_VERSION_REQUIRED	CSR_VERSION(1, 1)
+
+#define I915_CSR_SKL "i915/skl_dmc_ver1_26.bin"
+MODULE_FIRMWARE(I915_CSR_SKL);
+#define SKL_CSR_VERSION_REQUIRED	CSR_VERSION(1, 26)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define I915_CSR_BXT "i915/bxt_dmc_ver1_07.bin"
 MODULE_FIRMWARE(I915_CSR_BXT);
 #define BXT_CSR_VERSION_REQUIRED	CSR_VERSION(1, 7)
 
+<<<<<<< HEAD
+=======
+#define FIRMWARE_URL  "https://01.org/linuxgraphics/downloads/firmware"
+
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CSR_MAX_FW_SIZE			0x2FFF
 #define CSR_DEFAULT_FW_OFFSET		0xFFFFFFFF
@@ -200,7 +222,10 @@ intel_get_stepping_info(struct drm_i915_private *dev_priv)
 		si = bxt_stepping_info;
 	} else {
 		size = 0;
+<<<<<<< HEAD
 		si = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (INTEL_REVID(dev_priv) < size)
@@ -251,6 +276,7 @@ void intel_csr_load_program(struct drm_i915_private *dev_priv)
 	}
 
 	fw_size = dev_priv->csr.dmc_fw_size;
+<<<<<<< HEAD
 	assert_rpm_wakelock_held(dev_priv);
 
 	preempt_disable();
@@ -259,6 +285,10 @@ void intel_csr_load_program(struct drm_i915_private *dev_priv)
 		I915_WRITE_FW(CSR_PROGRAM(i), payload[i]);
 
 	preempt_enable();
+=======
+	for (i = 0; i < fw_size; i++)
+		I915_WRITE(CSR_PROGRAM(i), payload[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < dev_priv->csr.mmio_count; i++) {
 		I915_WRITE(dev_priv->csr.mmioaddr[i],
@@ -297,18 +327,26 @@ static uint32_t *parse_csr_fw(struct drm_i915_private *dev_priv,
 	css_header = (struct intel_css_header *)fw->data;
 	if (sizeof(struct intel_css_header) !=
 	    (css_header->header_len * 4)) {
+<<<<<<< HEAD
 		DRM_ERROR("DMC firmware has wrong CSS header length "
 			  "(%u bytes)\n",
+=======
+		DRM_ERROR("Firmware has wrong CSS header length %u bytes\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  (css_header->header_len * 4));
 		return NULL;
 	}
 
 	csr->version = css_header->version;
 
+<<<<<<< HEAD
 	if (csr->fw_path == i915_modparams.dmc_firmware_path) {
 		/* Bypass version check for firmware override. */
 		required_version = csr->version;
 	} else if (IS_CANNONLAKE(dev_priv)) {
+=======
+	if (IS_CANNONLAKE(dev_priv)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		required_version = CNL_CSR_VERSION_REQUIRED;
 	} else if (IS_GEMINILAKE(dev_priv)) {
 		required_version = GLK_CSR_VERSION_REQUIRED;
@@ -325,7 +363,11 @@ static uint32_t *parse_csr_fw(struct drm_i915_private *dev_priv,
 
 	if (csr->version != required_version) {
 		DRM_INFO("Refusing to load DMC firmware v%u.%u,"
+<<<<<<< HEAD
 			 " please use v%u.%u\n",
+=======
+			 " please use v%u.%u [" FIRMWARE_URL "].\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 CSR_VERSION_MAJOR(csr->version),
 			 CSR_VERSION_MINOR(csr->version),
 			 CSR_VERSION_MAJOR(required_version),
@@ -340,8 +382,12 @@ static uint32_t *parse_csr_fw(struct drm_i915_private *dev_priv,
 		&fw->data[readcount];
 	if (sizeof(struct intel_package_header) !=
 	    (package_header->header_len * 4)) {
+<<<<<<< HEAD
 		DRM_ERROR("DMC firmware has wrong package header length "
 			  "(%u bytes)\n",
+=======
+		DRM_ERROR("Firmware has wrong package header length %u bytes\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  (package_header->header_len * 4));
 		return NULL;
 	}
@@ -362,7 +408,11 @@ static uint32_t *parse_csr_fw(struct drm_i915_private *dev_priv,
 			dmc_offset = package_header->fw_info[i].offset;
 	}
 	if (dmc_offset == CSR_DEFAULT_FW_OFFSET) {
+<<<<<<< HEAD
 		DRM_ERROR("DMC firmware not supported for %c stepping\n",
+=======
+		DRM_ERROR("Firmware not supported for %c stepping\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  si->stepping);
 		return NULL;
 	}
@@ -374,8 +424,12 @@ static uint32_t *parse_csr_fw(struct drm_i915_private *dev_priv,
 	/* Extract dmc_header information. */
 	dmc_header = (struct intel_dmc_header *)&fw->data[readcount];
 	if (sizeof(struct intel_dmc_header) != (dmc_header->header_len)) {
+<<<<<<< HEAD
 		DRM_ERROR("DMC firmware has wrong dmc header length "
 			  "(%u bytes)\n",
+=======
+		DRM_ERROR("Firmware has wrong dmc header length %u bytes\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  (dmc_header->header_len));
 		return NULL;
 	}
@@ -383,7 +437,11 @@ static uint32_t *parse_csr_fw(struct drm_i915_private *dev_priv,
 
 	/* Cache the dmc header info. */
 	if (dmc_header->mmio_count > ARRAY_SIZE(csr->mmioaddr)) {
+<<<<<<< HEAD
 		DRM_ERROR("DMC firmware has wrong mmio count %u\n",
+=======
+		DRM_ERROR("Firmware has wrong mmio count %u\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  dmc_header->mmio_count);
 		return NULL;
 	}
@@ -391,7 +449,11 @@ static uint32_t *parse_csr_fw(struct drm_i915_private *dev_priv,
 	for (i = 0; i < dmc_header->mmio_count; i++) {
 		if (dmc_header->mmioaddr[i] < CSR_MMIO_START_RANGE ||
 		    dmc_header->mmioaddr[i] > CSR_MMIO_END_RANGE) {
+<<<<<<< HEAD
 			DRM_ERROR("DMC firmware has wrong mmio address 0x%x\n",
+=======
+			DRM_ERROR(" Firmware has wrong mmio address 0x%x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  dmc_header->mmioaddr[i]);
 			return NULL;
 		}
@@ -406,7 +468,11 @@ static uint32_t *parse_csr_fw(struct drm_i915_private *dev_priv,
 		goto error_truncated;
 
 	if (nbytes > CSR_MAX_FW_SIZE) {
+<<<<<<< HEAD
 		DRM_ERROR("DMC firmware too big (%u bytes)\n", nbytes);
+=======
+		DRM_ERROR("CSR firmware too big (%u) bytes\n", nbytes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 	csr->dmc_fw_size = dmc_header->fw_size;
@@ -448,11 +514,17 @@ static void csr_load_work_fn(struct work_struct *work)
 			 CSR_VERSION_MINOR(csr->version));
 	} else {
 		dev_notice(dev_priv->drm.dev,
+<<<<<<< HEAD
 			   "Failed to load DMC firmware %s."
 			   " Disabling runtime power management.\n",
 			   csr->fw_path);
 		dev_notice(dev_priv->drm.dev, "DMC firmware homepage: %s",
 			   INTEL_UC_FIRMWARE_URL);
+=======
+			   "Failed to load DMC firmware"
+			   " [" FIRMWARE_URL "],"
+			   " disabling runtime power management.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	release_firmware(fw);
@@ -474,9 +546,13 @@ void intel_csr_ucode_init(struct drm_i915_private *dev_priv)
 	if (!HAS_CSR(dev_priv))
 		return;
 
+<<<<<<< HEAD
 	if (i915_modparams.dmc_firmware_path)
 		csr->fw_path = i915_modparams.dmc_firmware_path;
 	else if (IS_CANNONLAKE(dev_priv))
+=======
+	if (IS_CANNONLAKE(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		csr->fw_path = I915_CSR_CNL;
 	else if (IS_GEMINILAKE(dev_priv))
 		csr->fw_path = I915_CSR_GLK;

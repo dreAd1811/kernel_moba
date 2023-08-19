@@ -14,7 +14,10 @@
  */
 #undef DEBUG
 
+<<<<<<< HEAD
 #include <linux/cpu_pm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/types.h>
 #include <linux/list.h>
@@ -40,9 +43,12 @@
 
 #define PWRDM_TRACE_STATES_FLAG	(1<<31)
 
+<<<<<<< HEAD
 void pwrdms_save_context(void);
 void pwrdms_restore_context(void);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	PWRDM_STATE_NOW = 0,
 	PWRDM_STATE_PREV,
@@ -337,6 +343,7 @@ int pwrdm_register_pwrdms(struct powerdomain **ps)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
 {
 	switch (cmd) {
@@ -353,6 +360,8 @@ static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
 	return NOTIFY_OK;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * pwrdm_complete_init - set up the powerdomain layer
  *
@@ -367,7 +376,10 @@ static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
 int pwrdm_complete_init(void)
 {
 	struct powerdomain *temp_p;
+<<<<<<< HEAD
 	static struct notifier_block nb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (list_empty(&pwrdm_list))
 		return -EACCES;
@@ -375,12 +387,15 @@ int pwrdm_complete_init(void)
 	list_for_each_entry(temp_p, &pwrdm_list, node)
 		pwrdm_set_next_pwrst(temp_p, PWRDM_POWER_ON);
 
+<<<<<<< HEAD
 	/* Only AM43XX can lose pwrdm context during rtc-ddr suspend */
 	if (soc_is_am43xx()) {
 		nb.notifier_call = cpu_notifier;
 		cpu_pm_register_notifier(&nb);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1226,6 +1241,7 @@ bool pwrdm_can_ever_lose_context(struct powerdomain *pwrdm)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 /**
  * pwrdm_save_context - save powerdomain registers
@@ -1286,3 +1302,5 @@ void pwrdms_lost_power(void)
 {
 	pwrdm_for_each(pwrdm_lost_power, NULL);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

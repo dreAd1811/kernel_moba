@@ -704,6 +704,7 @@ static int omap3xxx_prm_late_init(void)
 			omap3430_pre_es3_1_reconfigure_io_chain;
 
 	np = of_find_matching_node(NULL, omap3_prm_dt_match_table);
+<<<<<<< HEAD
 	if (!np) {
 		pr_err("PRM: no device tree node for interrupt?\n");
 
@@ -716,6 +717,14 @@ static int omap3xxx_prm_late_init(void)
 
 	omap3_prcm_irq_setup.irq = irq_num;
 
+=======
+	if (np) {
+		irq_num = of_irq_get(np, 0);
+		if (irq_num > 0)
+			omap3_prcm_irq_setup.irq = irq_num;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	omap3xxx_prm_enable_io_wakeup();
 
 	return omap_prcm_register_chain_handler(&omap3_prcm_irq_setup);

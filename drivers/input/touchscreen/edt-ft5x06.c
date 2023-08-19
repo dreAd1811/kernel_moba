@@ -70,10 +70,15 @@
 #define EDT_RAW_DATA_DELAY		1000 /* usec */
 
 enum edt_ver {
+<<<<<<< HEAD
 	EDT_M06,
 	EDT_M09,
 	EDT_M12,
 	GENERIC_FT,
+=======
+	M06,
+	M09,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct edt_reg_addr {
@@ -181,16 +186,24 @@ static irqreturn_t edt_ft5x06_ts_isr(int irq, void *dev_id)
 	int error;
 
 	switch (tsdata->version) {
+<<<<<<< HEAD
 	case EDT_M06:
+=======
+	case M06:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd = 0xf9; /* tell the controller to send touch data */
 		offset = 5; /* where the actual touch data starts */
 		tplen = 4;  /* data comes in so called frames */
 		crclen = 1; /* length of the crc data */
 		break;
 
+<<<<<<< HEAD
 	case EDT_M09:
 	case EDT_M12:
 	case GENERIC_FT:
+=======
+	case M09:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd = 0x0;
 		offset = 3;
 		tplen = 6;
@@ -213,8 +226,13 @@ static irqreturn_t edt_ft5x06_ts_isr(int irq, void *dev_id)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/* M09/M12 does not send header or CRC */
 	if (tsdata->version == EDT_M06) {
+=======
+	/* M09 does not send header or CRC */
+	if (tsdata->version == M06) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rdbuf[0] != 0xaa || rdbuf[1] != 0xaa ||
 			rdbuf[2] != datalen) {
 			dev_err_ratelimited(dev,
@@ -237,7 +255,11 @@ static irqreturn_t edt_ft5x06_ts_isr(int irq, void *dev_id)
 			continue;
 
 		/* M06 sometimes sends bogus coordinates in TOUCH_DOWN */
+<<<<<<< HEAD
 		if (tsdata->version == EDT_M06 && type == TOUCH_EVENT_DOWN)
+=======
+		if (tsdata->version == M06 && type == TOUCH_EVENT_DOWN)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		x = ((buf[0] << 8) | buf[1]) & 0x0fff;
@@ -268,16 +290,24 @@ static int edt_ft5x06_register_write(struct edt_ft5x06_ts_data *tsdata,
 	u8 wrbuf[4];
 
 	switch (tsdata->version) {
+<<<<<<< HEAD
 	case EDT_M06:
+=======
+	case M06:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wrbuf[0] = tsdata->factory_mode ? 0xf3 : 0xfc;
 		wrbuf[1] = tsdata->factory_mode ? addr & 0x7f : addr & 0x3f;
 		wrbuf[2] = value;
 		wrbuf[3] = wrbuf[0] ^ wrbuf[1] ^ wrbuf[2];
 		return edt_ft5x06_ts_readwrite(tsdata->client, 4,
 					wrbuf, 0, NULL);
+<<<<<<< HEAD
 	case EDT_M09:
 	case EDT_M12:
 	case GENERIC_FT:
+=======
+	case M09:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wrbuf[0] = addr;
 		wrbuf[1] = value;
 
@@ -296,7 +326,11 @@ static int edt_ft5x06_register_read(struct edt_ft5x06_ts_data *tsdata,
 	int error;
 
 	switch (tsdata->version) {
+<<<<<<< HEAD
 	case EDT_M06:
+=======
+	case M06:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wrbuf[0] = tsdata->factory_mode ? 0xf3 : 0xfc;
 		wrbuf[1] = tsdata->factory_mode ? addr & 0x7f : addr & 0x3f;
 		wrbuf[1] |= tsdata->factory_mode ? 0x80 : 0x40;
@@ -315,9 +349,13 @@ static int edt_ft5x06_register_read(struct edt_ft5x06_ts_data *tsdata,
 		}
 		break;
 
+<<<<<<< HEAD
 	case EDT_M09:
 	case EDT_M12:
 	case GENERIC_FT:
+=======
+	case M09:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wrbuf[0] = addr;
 		error = edt_ft5x06_ts_readwrite(tsdata->client, 1,
 						wrbuf, 1, rdbuf);
@@ -376,6 +414,7 @@ static ssize_t edt_ft5x06_setting_show(struct device *dev,
 	}
 
 	switch (tsdata->version) {
+<<<<<<< HEAD
 	case EDT_M06:
 		addr = attr->addr_m06;
 		break;
@@ -383,6 +422,13 @@ static ssize_t edt_ft5x06_setting_show(struct device *dev,
 	case EDT_M09:
 	case EDT_M12:
 	case GENERIC_FT:
+=======
+	case M06:
+		addr = attr->addr_m06;
+		break;
+
+	case M09:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr = attr->addr_m09;
 		break;
 
@@ -447,6 +493,7 @@ static ssize_t edt_ft5x06_setting_store(struct device *dev,
 	}
 
 	switch (tsdata->version) {
+<<<<<<< HEAD
 	case EDT_M06:
 		addr = attr->addr_m06;
 		break;
@@ -454,6 +501,13 @@ static ssize_t edt_ft5x06_setting_store(struct device *dev,
 	case EDT_M09:
 	case EDT_M12:
 	case GENERIC_FT:
+=======
+	case M06:
+		addr = attr->addr_m06;
+		break;
+
+	case M09:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr = attr->addr_m09;
 		break;
 
@@ -478,6 +532,7 @@ out:
 	return error ?: count;
 }
 
+<<<<<<< HEAD
 /* m06, m09: range 0-31, m12: range 0-5 */
 static EDT_ATTR(gain, S_IWUSR | S_IRUGO, WORK_REGISTER_GAIN,
 		M09_REGISTER_GAIN, 0, 31);
@@ -490,6 +545,16 @@ static EDT_ATTR(threshold, S_IWUSR | S_IRUGO, WORK_REGISTER_THRESHOLD,
 /* m06: range 3 to 14, m12: (0x64: 100Hz) */
 static EDT_ATTR(report_rate, S_IWUSR | S_IRUGO, WORK_REGISTER_REPORT_RATE,
 		NO_REGISTER, 0, 255);
+=======
+static EDT_ATTR(gain, S_IWUSR | S_IRUGO, WORK_REGISTER_GAIN,
+		M09_REGISTER_GAIN, 0, 31);
+static EDT_ATTR(offset, S_IWUSR | S_IRUGO, WORK_REGISTER_OFFSET,
+		M09_REGISTER_OFFSET, 0, 31);
+static EDT_ATTR(threshold, S_IWUSR | S_IRUGO, WORK_REGISTER_THRESHOLD,
+		M09_REGISTER_THRESHOLD, 0, 80);
+static EDT_ATTR(report_rate, S_IWUSR | S_IRUGO, WORK_REGISTER_REPORT_RATE,
+		NO_REGISTER, 3, 14);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *edt_ft5x06_attrs[] = {
 	&edt_ft5x06_attr_gain.dattr.attr,
@@ -511,12 +576,15 @@ static int edt_ft5x06_factory_mode(struct edt_ft5x06_ts_data *tsdata)
 	int ret;
 	int error;
 
+<<<<<<< HEAD
 	if (tsdata->version != EDT_M06) {
 		dev_err(&client->dev,
 			"No factory mode support for non-M06 devices\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disable_irq(client->irq);
 
 	if (!tsdata->raw_buffer) {
@@ -530,6 +598,12 @@ static int edt_ft5x06_factory_mode(struct edt_ft5x06_ts_data *tsdata)
 	}
 
 	/* mode register is 0x3c when in the work mode */
+<<<<<<< HEAD
+=======
+	if (tsdata->version == M09)
+		goto m09_out;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = edt_ft5x06_register_write(tsdata, WORK_REGISTER_OPMODE, 0x03);
 	if (error) {
 		dev_err(&client->dev,
@@ -562,6 +636,14 @@ err_out:
 	enable_irq(client->irq);
 
 	return error;
+<<<<<<< HEAD
+=======
+
+m09_out:
+	dev_err(&client->dev, "No factory mode support for M09\n");
+	return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int edt_ft5x06_work_mode(struct edt_ft5x06_ts_data *tsdata)
@@ -784,17 +866,29 @@ static int edt_ft5x06_ts_identify(struct i2c_client *client,
 	 * to have garbage in there
 	 */
 	memset(rdbuf, 0, sizeof(rdbuf));
+<<<<<<< HEAD
 	error = edt_ft5x06_ts_readwrite(client, 1, "\xBB",
+=======
+	error = edt_ft5x06_ts_readwrite(client, 1, "\xbb",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					EDT_NAME_LEN - 1, rdbuf);
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	/* Probe content for something consistent.
 	 * M06 starts with a response byte, M12 gives the data directly.
 	 * M09/Generic does not provide model number information.
 	 */
 	if (!strncasecmp(rdbuf + 1, "EP0", 3)) {
 		tsdata->version = EDT_M06;
+=======
+	/* if we find something consistent, stay with that assumption
+	 * at least M09 won't send 3 bytes here
+	 */
+	if (!(strncasecmp(rdbuf + 1, "EP0", 3))) {
+		tsdata->version = M06;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* remove last '$' end marker */
 		rdbuf[EDT_NAME_LEN - 1] = '\0';
@@ -807,6 +901,7 @@ static int edt_ft5x06_ts_identify(struct i2c_client *client,
 			*p++ = '\0';
 		strlcpy(model_name, rdbuf + 1, EDT_NAME_LEN);
 		strlcpy(fw_version, p ? p : "", EDT_NAME_LEN);
+<<<<<<< HEAD
 	} else if (!strncasecmp(rdbuf, "EP0", 3)) {
 		tsdata->version = EDT_M12;
 
@@ -832,6 +927,11 @@ static int edt_ft5x06_ts_identify(struct i2c_client *client,
 		 * the max coordinates for the latter.
 		 */
 		tsdata->version = GENERIC_FT;
+=======
+	} else {
+		/* since there are only two versions around (M06, M09) */
+		tsdata->version = M09;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		error = edt_ft5x06_ts_readwrite(client, 1, "\xA6",
 						2, rdbuf);
@@ -845,6 +945,7 @@ static int edt_ft5x06_ts_identify(struct i2c_client *client,
 		if (error)
 			return error;
 
+<<<<<<< HEAD
 		/* This "model identification" is not exact. Unfortunately
 		 * not all firmwares for the ft5x06 put useful values in
 		 * the identification registers.
@@ -873,6 +974,10 @@ static int edt_ft5x06_ts_identify(struct i2c_client *client,
 				 rdbuf[0]);
 			break;
 		}
+=======
+		snprintf(model_name, EDT_NAME_LEN, "EP0%i%i0M09",
+			rdbuf[0] >> 4, rdbuf[0] & 0x0F);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -916,6 +1021,7 @@ edt_ft5x06_ts_get_parameters(struct edt_ft5x06_ts_data *tsdata)
 	if (reg_addr->reg_report_rate != NO_REGISTER)
 		tsdata->report_rate = edt_ft5x06_register_read(tsdata,
 						reg_addr->reg_report_rate);
+<<<<<<< HEAD
 	if (tsdata->version == EDT_M06 ||
 	    tsdata->version == EDT_M09 ||
 	    tsdata->version == EDT_M12) {
@@ -927,6 +1033,10 @@ edt_ft5x06_ts_get_parameters(struct edt_ft5x06_ts_data *tsdata)
 		tsdata->num_x = -1;
 		tsdata->num_y = -1;
 	}
+=======
+	tsdata->num_x = edt_ft5x06_register_read(tsdata, reg_addr->reg_num_x);
+	tsdata->num_y = edt_ft5x06_register_read(tsdata, reg_addr->reg_num_y);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -935,7 +1045,11 @@ edt_ft5x06_ts_set_regs(struct edt_ft5x06_ts_data *tsdata)
 	struct edt_reg_addr *reg_addr = &tsdata->reg_addr;
 
 	switch (tsdata->version) {
+<<<<<<< HEAD
 	case EDT_M06:
+=======
+	case M06:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg_addr->reg_threshold = WORK_REGISTER_THRESHOLD;
 		reg_addr->reg_report_rate = WORK_REGISTER_REPORT_RATE;
 		reg_addr->reg_gain = WORK_REGISTER_GAIN;
@@ -944,8 +1058,12 @@ edt_ft5x06_ts_set_regs(struct edt_ft5x06_ts_data *tsdata)
 		reg_addr->reg_num_y = WORK_REGISTER_NUM_Y;
 		break;
 
+<<<<<<< HEAD
 	case EDT_M09:
 	case EDT_M12:
+=======
+	case M09:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg_addr->reg_threshold = M09_REGISTER_THRESHOLD;
 		reg_addr->reg_report_rate = NO_REGISTER;
 		reg_addr->reg_gain = M09_REGISTER_GAIN;
@@ -953,6 +1071,7 @@ edt_ft5x06_ts_set_regs(struct edt_ft5x06_ts_data *tsdata)
 		reg_addr->reg_num_x = M09_REGISTER_NUM_X;
 		reg_addr->reg_num_y = M09_REGISTER_NUM_Y;
 		break;
+<<<<<<< HEAD
 
 	case GENERIC_FT:
 		/* this is a guesswork */
@@ -960,6 +1079,8 @@ edt_ft5x06_ts_set_regs(struct edt_ft5x06_ts_data *tsdata)
 		reg_addr->reg_gain = M09_REGISTER_GAIN;
 		reg_addr->reg_offset = M09_REGISTER_OFFSET;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -968,6 +1089,10 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client,
 {
 	const struct edt_i2c_chip_data *chip_data;
 	struct edt_ft5x06_ts_data *tsdata;
+<<<<<<< HEAD
+=======
+	u8 buf[2] = { 0xfc, 0x00 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct input_dev *input;
 	unsigned long irq_flags;
 	int error;
@@ -1037,6 +1162,15 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client,
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Dummy read access. EP0700MLP1 returns bogus data on the first
+	 * register read access and ignores writes.
+	 */
+	edt_ft5x06_ts_readwrite(tsdata->client, 2, buf, 2, buf);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edt_ft5x06_ts_set_regs(tsdata);
 	edt_ft5x06_ts_get_defaults(&client->dev, tsdata);
 	edt_ft5x06_ts_get_parameters(tsdata);
@@ -1049,6 +1183,7 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client,
 	input->id.bustype = BUS_I2C;
 	input->dev.parent = &client->dev;
 
+<<<<<<< HEAD
 	if (tsdata->version == EDT_M06 ||
 	    tsdata->version == EDT_M09 ||
 	    tsdata->version == EDT_M12) {
@@ -1063,6 +1198,12 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client,
 		input_set_abs_params(input, ABS_MT_POSITION_Y,
 				     0, 65535, 0, 0);
 	}
+=======
+	input_set_abs_params(input, ABS_MT_POSITION_X,
+			     0, tsdata->num_x * 64 - 1, 0, 0);
+	input_set_abs_params(input, ABS_MT_POSITION_Y,
+			     0, tsdata->num_y * 64 - 1, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	touchscreen_parse_properties(input, true, &tsdata->prop);
 
@@ -1088,13 +1229,21 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client,
 		return error;
 	}
 
+<<<<<<< HEAD
 	error = devm_device_add_group(&client->dev, &edt_ft5x06_attr_group);
+=======
+	error = sysfs_create_group(&client->dev.kobj, &edt_ft5x06_attr_group);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error)
 		return error;
 
 	error = input_register_device(input);
 	if (error)
+<<<<<<< HEAD
 		return error;
+=======
+		goto err_remove_attrs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	edt_ft5x06_ts_prepare_debugfs(tsdata, dev_driver_string(&client->dev));
 	device_init_wakeup(&client->dev, 1);
@@ -1106,6 +1255,13 @@ static int edt_ft5x06_ts_probe(struct i2c_client *client,
 		tsdata->reset_gpio ? desc_to_gpio(tsdata->reset_gpio) : -1);
 
 	return 0;
+<<<<<<< HEAD
+=======
+
+err_remove_attrs:
+	sysfs_remove_group(&client->dev.kobj, &edt_ft5x06_attr_group);
+	return error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int edt_ft5x06_ts_remove(struct i2c_client *client)
@@ -1113,6 +1269,10 @@ static int edt_ft5x06_ts_remove(struct i2c_client *client)
 	struct edt_ft5x06_ts_data *tsdata = i2c_get_clientdata(client);
 
 	edt_ft5x06_ts_teardown_debugfs(tsdata);
+<<<<<<< HEAD
+=======
+	sysfs_remove_group(&client->dev.kobj, &edt_ft5x06_attr_group);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

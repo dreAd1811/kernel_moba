@@ -13,7 +13,10 @@
 #include <linux/export.h>
 #include <linux/sched.h>
 #include <asm/switch_to.h>
+<<<<<<< HEAD
 #include <asm/xor_altivec.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "xor_vmx.h"
 
 void xor_altivec_2(unsigned long bytes, unsigned long *v1_in,

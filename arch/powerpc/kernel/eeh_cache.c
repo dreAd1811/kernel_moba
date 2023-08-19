@@ -84,7 +84,12 @@ static inline struct eeh_dev *__eeh_addr_cache_get_device(unsigned long addr)
  * @addr: mmio (PIO) phys address or i/o port number
  *
  * Given an mmio phys address, or a port number, find a pci device
+<<<<<<< HEAD
  * that implements this address.  I/O port numbers are assumed to be offset
+=======
+ * that implements this address.  Be sure to pci_dev_put the device
+ * when finished.  I/O port numbers are assumed to be offset
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * from zero (that is, they do *not* have pci_io_addr added in).
  * It is safe to call this function within an interrupt.
  */

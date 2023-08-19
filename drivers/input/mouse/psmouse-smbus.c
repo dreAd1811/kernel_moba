@@ -23,7 +23,10 @@ struct psmouse_smbus_dev {
 	struct i2c_client *client;
 	struct list_head node;
 	bool dead;
+<<<<<<< HEAD
 	bool need_deactivate;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static LIST_HEAD(psmouse_smbus_list);
@@ -119,10 +122,14 @@ static psmouse_ret_t psmouse_smbus_process_byte(struct psmouse *psmouse)
 
 static int psmouse_smbus_reconnect(struct psmouse *psmouse)
 {
+<<<<<<< HEAD
 	struct psmouse_smbus_dev *smbdev = psmouse->private;
 
 	if (smbdev->need_deactivate)
 		psmouse_deactivate(psmouse);
+=======
+	psmouse_deactivate(psmouse);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -229,7 +236,10 @@ void psmouse_smbus_cleanup(struct psmouse *psmouse)
 int psmouse_smbus_init(struct psmouse *psmouse,
 		       const struct i2c_board_info *board,
 		       const void *pdata, size_t pdata_size,
+<<<<<<< HEAD
 		       bool need_deactivate,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       bool leave_breadcrumbs)
 {
 	struct psmouse_smbus_dev *smbdev;
@@ -241,6 +251,7 @@ int psmouse_smbus_init(struct psmouse *psmouse,
 
 	smbdev->psmouse = psmouse;
 	smbdev->board = *board;
+<<<<<<< HEAD
 	smbdev->need_deactivate = need_deactivate;
 
 	if (pdata) {
@@ -255,6 +266,15 @@ int psmouse_smbus_init(struct psmouse *psmouse,
 	if (need_deactivate)
 		psmouse_deactivate(psmouse);
 
+=======
+
+	smbdev->board.platform_data = kmemdup(pdata, pdata_size, GFP_KERNEL);
+	if (!smbdev->board.platform_data) {
+		kfree(smbdev);
+		return -ENOMEM;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	psmouse->private = smbdev;
 	psmouse->protocol_handler = psmouse_smbus_process_byte;
 	psmouse->reconnect = psmouse_smbus_reconnect;
@@ -262,6 +282,11 @@ int psmouse_smbus_init(struct psmouse *psmouse,
 	psmouse->disconnect = psmouse_smbus_disconnect;
 	psmouse->resync_time = 0;
 
+<<<<<<< HEAD
+=======
+	psmouse_deactivate(psmouse);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&psmouse_smbus_mutex);
 	list_add_tail(&smbdev->node, &psmouse_smbus_list);
 	mutex_unlock(&psmouse_smbus_mutex);

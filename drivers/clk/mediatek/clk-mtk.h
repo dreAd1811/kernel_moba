@@ -20,7 +20,10 @@
 #include <linux/clk-provider.h>
 
 struct clk;
+<<<<<<< HEAD
 struct clk_onecell_data;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAX_MUX_GATE_BIT	31
 #define INVALID_MUX_GATE_BIT	(MAX_MUX_GATE_BIT + 1)
@@ -208,8 +211,11 @@ struct mtk_pll_data {
 	uint32_t en_mask;
 	uint32_t pd_reg;
 	uint32_t tuner_reg;
+<<<<<<< HEAD
 	uint32_t tuner_en_reg;
 	uint8_t tuner_en_bit;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int pd_shift;
 	unsigned int flags;
 	const struct clk_ops *ops;
@@ -229,7 +235,19 @@ void mtk_clk_register_plls(struct device_node *node,
 struct clk *mtk_clk_register_ref2usb_tx(const char *name,
 			const char *parent_name, void __iomem *reg);
 
+<<<<<<< HEAD
 void mtk_register_reset_controller(struct device_node *np,
 			unsigned int num_regs, int regofs);
+=======
+#ifdef CONFIG_RESET_CONTROLLER
+void mtk_register_reset_controller(struct device_node *np,
+			unsigned int num_regs, int regofs);
+#else
+static inline void mtk_register_reset_controller(struct device_node *np,
+			unsigned int num_regs, int regofs)
+{
+}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __DRV_CLK_MTK_H */

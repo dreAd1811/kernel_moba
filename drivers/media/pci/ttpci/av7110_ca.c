@@ -223,13 +223,21 @@ static int dvb_ca_open(struct inode *inode, struct file *file)
 	return 0;
 }
 
+<<<<<<< HEAD
 static __poll_t dvb_ca_poll (struct file *file, poll_table *wait)
+=======
+static unsigned int dvb_ca_poll (struct file *file, poll_table *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dvb_device *dvbdev = file->private_data;
 	struct av7110 *av7110 = dvbdev->priv;
 	struct dvb_ringbuffer *rbuf = &av7110->ci_rbuffer;
 	struct dvb_ringbuffer *wbuf = &av7110->ci_wbuffer;
+<<<<<<< HEAD
 	__poll_t mask = 0;
+=======
+	unsigned int mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dprintk(8, "av7110:%p\n",av7110);
 
@@ -237,10 +245,17 @@ static __poll_t dvb_ca_poll (struct file *file, poll_table *wait)
 	poll_wait(file, &wbuf->queue, wait);
 
 	if (!dvb_ringbuffer_empty(rbuf))
+<<<<<<< HEAD
 		mask |= (EPOLLIN | EPOLLRDNORM);
 
 	if (dvb_ringbuffer_free(wbuf) > 1024)
 		mask |= (EPOLLOUT | EPOLLWRNORM);
+=======
+		mask |= (POLLIN | POLLRDNORM);
+
+	if (dvb_ringbuffer_free(wbuf) > 1024)
+		mask |= (POLLOUT | POLLWRNORM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (c) 2014 SUSE LINUX Products GmbH
  *
@@ -7,12 +10,28 @@
  *  Copyright (C) 2011 Xilinx
  *  Copyright (C) 2012 National Instruments Corp.
  *  Copyright (C) 2013 Xilinx
+<<<<<<< HEAD
+=======
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 /dts-v1/;
 /include/ "zynq-7000.dtsi"
 
 / {
+<<<<<<< HEAD
 	model = "Adapteva Parallella board";
+=======
+	model = "Adapteva Parallella Board";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	compatible = "adapteva,parallella", "xlnx,zynq-7000";
 
 	aliases {

@@ -39,6 +39,16 @@ static int phram_erase(struct mtd_info *mtd, struct erase_info *instr)
 
 	memset(start + instr->addr, 0xff, instr->len);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * This'll catch a few races. Free the thing before returning :)
+	 * I don't feel at all ashamed. This kind of thing is possible anyway
+	 * with flash, but unlikely.
+	 */
+	instr->state = MTD_ERASE_DONE;
+	mtd_erase_callback(instr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -240,12 +250,18 @@ static int phram_setup(const char *val)
 
 	ret = parse_num64(&start, token[1]);
 	if (ret) {
+<<<<<<< HEAD
 		kfree(name);
 		parse_err("illegal start address\n");
+=======
+		parse_err("illegal start address\n");
+		goto error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = parse_num64(&len, token[2]);
 	if (ret) {
+<<<<<<< HEAD
 		kfree(name);
 		parse_err("illegal device length\n");
 	}
@@ -256,6 +272,21 @@ static int phram_setup(const char *val)
 	else
 		kfree(name);
 
+=======
+		parse_err("illegal device length\n");
+		goto error;
+	}
+
+	ret = register_device(name, start, len);
+	if (ret)
+		goto error;
+
+	pr_info("%s device: %#llx at %#llx\n", name, len, start);
+	return 0;
+
+error:
+	kfree(name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

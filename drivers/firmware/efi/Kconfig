@@ -87,6 +87,7 @@ config EFI_RUNTIME_WRAPPERS
 config EFI_ARMSTUB
 	bool
 
+<<<<<<< HEAD
 config EFI_ARMSTUB_DTB_LOADER
 	bool "Enable the DTB loader"
 	depends on EFI_ARMSTUB
@@ -102,6 +103,8 @@ config EFI_ARMSTUB_DTB_LOADER
 	  functionality for bootloaders that do not have such support
 	  this option is necessary.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config EFI_BOOTLOADER_CONTROL
 	tristate "EFI Bootloader Control"
 	depends on EFI_VARS
@@ -128,7 +131,11 @@ config EFI_CAPSULE_LOADER
 	  Most users should say N.
 
 config EFI_CAPSULE_QUIRK_QUARK_CSH
+<<<<<<< HEAD
 	bool "Add support for Quark capsules with non-standard headers"
+=======
+	boolean "Add support for Quark capsules with non-standard headers"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on X86 && !64BIT
 	select EFI_CAPSULE_LOADER
 	default y
@@ -179,11 +186,26 @@ config RESET_ATTACK_MITIGATION
 	  have been evicted, since otherwise it will trigger even on clean
 	  reboots.
 
+<<<<<<< HEAD
+=======
+config EFI_CUSTOM_SSDT_OVERLAYS
+	bool "Load custom ACPI SSDT overlay from an EFI variable"
+	depends on EFI_VARS && ACPI
+	default ACPI_TABLE_UPGRADE
+	help
+	  Allow loading of an ACPI SSDT overlay from an EFI variable specified
+	  by a kernel command line option.
+
+	  See Documentation/admin-guide/acpi/ssdt-overlays.rst for more
+	  information.endmenu
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu
 
 config UEFI_CPER
 	bool
 
+<<<<<<< HEAD
 config UEFI_CPER_ARM
 	bool
 	depends on UEFI_CPER && ( ARM || ARM64 )
@@ -194,6 +216,8 @@ config UEFI_CPER_X86
 	depends on UEFI_CPER && X86
 	default y
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config EFI_DEV_PATH_PARSER
 	bool
 	depends on ACPI

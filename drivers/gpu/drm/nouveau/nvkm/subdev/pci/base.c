@@ -71,10 +71,13 @@ nvkm_pci_intr(int irq, void *arg)
 	struct nvkm_pci *pci = arg;
 	struct nvkm_device *device = pci->subdev.device;
 	bool handled = false;
+<<<<<<< HEAD
 
 	if (pci->irq < 0)
 		return IRQ_HANDLED;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nvkm_mc_intr_unarm(device);
 	if (pci->msi)
 		pci->func->msi_rearm(pci);
@@ -88,6 +91,14 @@ nvkm_pci_fini(struct nvkm_subdev *subdev, bool suspend)
 {
 	struct nvkm_pci *pci = nvkm_pci(subdev);
 
+<<<<<<< HEAD
+=======
+	if (pci->irq >= 0) {
+		free_irq(pci->irq, pci);
+		pci->irq = -1;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pci->agp.bridge)
 		nvkm_agp_fini(pci);
 
@@ -107,6 +118,7 @@ static int
 nvkm_pci_oneinit(struct nvkm_subdev *subdev)
 {
 	struct nvkm_pci *pci = nvkm_pci(subdev);
+<<<<<<< HEAD
 	struct pci_dev *pdev = pci->pdev;
 	int ret;
 
@@ -121,6 +133,10 @@ nvkm_pci_oneinit(struct nvkm_subdev *subdev)
 		return ret;
 
 	pci->irq = pdev->irq;
+=======
+	if (pci_is_pcie(pci->pdev))
+		return nvkm_pcie_oneinit(pci);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -128,6 +144,10 @@ static int
 nvkm_pci_init(struct nvkm_subdev *subdev)
 {
 	struct nvkm_pci *pci = nvkm_pci(subdev);
+<<<<<<< HEAD
+=======
+	struct pci_dev *pdev = pci->pdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (pci->agp.bridge) {
@@ -141,19 +161,33 @@ nvkm_pci_init(struct nvkm_subdev *subdev)
 	if (pci->func->init)
 		pci->func->init(pci);
 
+<<<<<<< HEAD
+=======
+	ret = request_irq(pdev->irq, nvkm_pci_intr, IRQF_SHARED, "nvkm", pci);
+	if (ret)
+		return ret;
+
+	pci->irq = pdev->irq;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Ensure MSI interrupts are armed, for the case where there are
 	 * already interrupts pending (for whatever reason) at load time.
 	 */
 	if (pci->msi)
 		pci->func->msi_rearm(pci);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void *
 nvkm_pci_dtor(struct nvkm_subdev *subdev)
 {
 	struct nvkm_pci *pci = nvkm_pci(subdev);
+<<<<<<< HEAD
 
 	nvkm_agp_dtor(pci);
 
@@ -169,6 +203,11 @@ nvkm_pci_dtor(struct nvkm_subdev *subdev)
 	if (pci->msi)
 		pci_disable_msi(pci->pdev);
 
+=======
+	nvkm_agp_dtor(pci);
+	if (pci->msi)
+		pci_disable_msi(pci->pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return nvkm_pci(subdev);
 }
 

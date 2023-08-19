@@ -1,12 +1,32 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "adreno.h"
 #include "adreno_a6xx.h"
+<<<<<<< HEAD
 #include "adreno_pm4types.h"
 #include "adreno_trace.h"
+=======
+#include "a6xx_reg.h"
+#include "adreno_trace.h"
+#include "adreno_pm4types.h"
+#include "kgsl_gmu_core.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PREEMPT_RECORD(_field) \
 		offsetof(struct a6xx_cp_preemption_record, _field)
@@ -27,6 +47,10 @@ static void _update_wptr(struct adreno_device *adreno_dev, bool reset_timer)
 	struct adreno_ringbuffer *rb = adreno_dev->cur_rb;
 	unsigned long flags;
 	int ret = 0;
+<<<<<<< HEAD
+=======
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&rb->preempt_lock, flags);
 
@@ -36,11 +60,36 @@ static void _update_wptr(struct adreno_device *adreno_dev, bool reset_timer)
 		 * dispatcher context. Do it now.
 		 */
 		if (rb->skip_inline_wptr) {
+<<<<<<< HEAD
+=======
+			/*
+			 * There could be a situation where GPU comes out of
+			 * ifpc after a fenced write transaction but before
+			 * reading AHB_FENCE_STATUS from KMD, it goes back to
+			 * ifpc due to inactivity (kernel scheduler plays a
+			 * role here). Thus, the GPU could technically be
+			 * re-collapsed between subsequent register writes
+			 * leading to a prolonged preemption sequence. The
+			 * keepalive bit prevents any further power collapse
+			 * while it is set.
+			 */
+			if (gmu_core_isenabled(device))
+				gmu_core_regrmw(device, A6XX_GMU_AO_SPARE_CNTL,
+					0x0, 0x2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			ret = adreno_gmu_fenced_write(adreno_dev,
 				ADRENO_REG_CP_RB_WPTR, rb->wptr,
 				FENCE_STATUS_WRITEDROPPED0_MASK);
 
+<<<<<<< HEAD
+=======
+			/* Clear the keep alive */
+			if (gmu_core_isenabled(device))
+				gmu_core_regrmw(device, A6XX_GMU_AO_SPARE_CNTL,
+					0x2, 0x0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reset_timer = true;
 			rb->skip_inline_wptr = false;
 		}
@@ -92,6 +141,7 @@ static void _a6xx_preemption_done(struct adreno_device *adreno_dev)
 	adreno_readreg(adreno_dev, ADRENO_REG_CP_PREEMPT, &status);
 
 	if (status & 0x1) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			     "Preemption not complete: status=%X cur=%d R/W=%X/%X next=%d R/W=%X/%X\n",
 			     status, adreno_dev->cur_rb->id,
@@ -100,6 +150,15 @@ static void _a6xx_preemption_done(struct adreno_device *adreno_dev)
 			     adreno_dev->next_rb->id,
 			     adreno_get_rptr(adreno_dev->next_rb),
 			     adreno_dev->next_rb->wptr);
+=======
+		KGSL_DRV_ERR(device,
+			"Preemption not complete: status=%X cur=%d R/W=%X/%X next=%d R/W=%X/%X\n",
+			status, adreno_dev->cur_rb->id,
+			adreno_get_rptr(adreno_dev->cur_rb),
+			adreno_dev->cur_rb->wptr, adreno_dev->next_rb->id,
+			adreno_get_rptr(adreno_dev->next_rb),
+			adreno_dev->next_rb->wptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Set a fault and restart */
 		adreno_set_gpu_fault(adreno_dev, ADRENO_PREEMPT_FAULT);
@@ -138,6 +197,11 @@ static void _a6xx_preemption_fault(struct adreno_device *adreno_dev)
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	unsigned int status;
 
+<<<<<<< HEAD
+=======
+	KGSL_DRV_WARN(device, "Preemption timed out\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If the power is on check the preemption status one more time - if it
 	 * was successful then just transition to the complete state
@@ -145,7 +209,11 @@ static void _a6xx_preemption_fault(struct adreno_device *adreno_dev)
 	if (kgsl_state_is_awake(device)) {
 		adreno_readreg(adreno_dev, ADRENO_REG_CP_PREEMPT, &status);
 
+<<<<<<< HEAD
 		if (status == 0) {
+=======
+		if (!(status & 0x1)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adreno_set_preempt_state(adreno_dev,
 				ADRENO_PREEMPT_COMPLETE);
 
@@ -154,6 +222,7 @@ static void _a6xx_preemption_fault(struct adreno_device *adreno_dev)
 		}
 	}
 
+<<<<<<< HEAD
 	dev_err(device->dev,
 		     "Preemption timed out: cur=%d R/W=%X/%X, next=%d R/W=%X/%X\n",
 		     adreno_dev->cur_rb->id,
@@ -162,6 +231,15 @@ static void _a6xx_preemption_fault(struct adreno_device *adreno_dev)
 		     adreno_dev->next_rb->id,
 		     adreno_get_rptr(adreno_dev->next_rb),
 		     adreno_dev->next_rb->wptr);
+=======
+	KGSL_DRV_ERR(device,
+		"Preemption Fault: cur=%d R/W=%X/%X, next=%d R/W=%X/%X\n",
+		adreno_dev->cur_rb->id,
+		adreno_get_rptr(adreno_dev->cur_rb), adreno_dev->cur_rb->wptr,
+		adreno_dev->next_rb->id,
+		adreno_get_rptr(adreno_dev->next_rb),
+		adreno_dev->next_rb->wptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adreno_set_gpu_fault(adreno_dev, ADRENO_PREEMPT_FAULT);
 	adreno_dispatcher_schedule(device);
@@ -184,11 +262,17 @@ static void _a6xx_preemption_worker(struct work_struct *work)
 	mutex_unlock(&device->mutex);
 }
 
+<<<<<<< HEAD
 static void _a6xx_preemption_timer(struct timer_list *t)
 {
 	struct adreno_preemption *preempt = from_timer(preempt, t, timer);
 	struct adreno_device *adreno_dev = container_of(preempt,
 						struct adreno_device, preempt);
+=======
+static void _a6xx_preemption_timer(unsigned long data)
+{
+	struct adreno_device *adreno_dev = (struct adreno_device *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We should only be here from a triggered state */
 	if (!adreno_move_preempt_state(adreno_dev,
@@ -214,7 +298,11 @@ static struct adreno_ringbuffer *a6xx_next_ringbuffer(
 		empty = adreno_rb_empty(rb);
 		spin_unlock_irqrestore(&rb->preempt_lock, flags);
 
+<<<<<<< HEAD
 		if (!empty)
+=======
+		if (empty == false)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return rb;
 	}
 
@@ -230,6 +318,10 @@ void a6xx_preemption_trigger(struct adreno_device *adreno_dev)
 	unsigned int contextidr, cntl;
 	unsigned long flags;
 	struct adreno_preemption *preempt = &adreno_dev->preempt;
+<<<<<<< HEAD
+=======
+	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cntl = (((preempt->preempt_level << 6) & 0xC0) |
 		((preempt->skipsaverestore << 9) & 0x200) |
@@ -296,8 +388,13 @@ void a6xx_preemption_trigger(struct adreno_device *adreno_dev)
 	kgsl_sharedmem_writel(device, &iommu->smmu_info,
 		PREEMPT_SMMU_RECORD(context_idr), contextidr);
 
+<<<<<<< HEAD
 	kgsl_sharedmem_readq(&device->scratch, &gpuaddr,
 		SCRATCH_PREEMPTION_CTXT_RESTORE_ADDR_OFFSET(next->id));
+=======
+	kgsl_sharedmem_readq(&preempt->scratch, &gpuaddr,
+			next->id * sizeof(u64));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set a keepalive bit before the first preemption register write.
@@ -312,7 +409,11 @@ void a6xx_preemption_trigger(struct adreno_device *adreno_dev)
 	 * free when the GPU is already powered on, whereas an OOB requires an
 	 * unconditional handshake with the GMU.
 	 */
+<<<<<<< HEAD
 	if (gmu_core_isenabled(device))
+=======
+	if (gmu_core_gpmu_isenabled(device))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gmu_core_regrmw(device, A6XX_GMU_AO_SPARE_CNTL, 0x0, 0x2);
 
 	/*
@@ -325,6 +426,7 @@ void a6xx_preemption_trigger(struct adreno_device *adreno_dev)
 		FENCE_STATUS_WRITEDROPPED1_MASK))
 		goto err;
 
+<<<<<<< HEAD
 	/*
 	 * Above fence writes will make sure GMU comes out of
 	 * IFPC state if its was in IFPC state but it doesn't
@@ -337,6 +439,8 @@ void a6xx_preemption_trigger(struct adreno_device *adreno_dev)
 	if (gmu_core_dev_wait_for_active_transition(device))
 		goto err;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (adreno_gmu_fenced_write(adreno_dev,
 		ADRENO_REG_CP_CONTEXT_SWITCH_PRIV_NON_SECURE_RESTORE_ADDR_HI,
 		upper_32_bits(next->preemption_desc.gpuaddr),
@@ -367,12 +471,29 @@ void a6xx_preemption_trigger(struct adreno_device *adreno_dev)
 		FENCE_STATUS_WRITEDROPPED1_MASK))
 		goto err;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Above fence writes will make sure GMU comes out of
+	 * IFPC state if its was in IFPC state but it doesn't
+	 * guarantee that GMU FW actually moved to ACTIVE state
+	 * i.e. wake-up from IFPC is complete.
+	 * Wait for GMU to move to ACTIVE state before triggering
+	 * preemption. This is require to make sure CP doesn't
+	 * interrupt GMU during wake-up from IFPC.
+	 */
+	if (GMU_DEV_OP_VALID(gmu_dev_ops, wait_for_active_transition))
+		if (gmu_dev_ops->wait_for_active_transition(adreno_dev))
+			goto err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adreno_dev->next_rb = next;
 
 	/* Start the timer to detect a stuck preemption */
 	mod_timer(&adreno_dev->preempt.timer,
 		jiffies + msecs_to_jiffies(ADRENO_PREEMPT_TIMEOUT));
 
+<<<<<<< HEAD
 	trace_adreno_preempt_trigger(adreno_dev->cur_rb, adreno_dev->next_rb,
 		cntl);
 
@@ -381,11 +502,21 @@ void a6xx_preemption_trigger(struct adreno_device *adreno_dev)
 	/* Trigger the preemption */
 	if (adreno_gmu_fenced_write(adreno_dev, ADRENO_REG_CP_PREEMPT, cntl,
 					FENCE_STATUS_WRITEDROPPED1_MASK)) {
+=======
+	adreno_set_preempt_state(adreno_dev, ADRENO_PREEMPT_TRIGGERED);
+	trace_adreno_preempt_trigger(adreno_dev->cur_rb, adreno_dev->next_rb,
+		cntl);
+
+	/* Trigger the preemption */
+	if (adreno_gmu_fenced_write(adreno_dev, ADRENO_REG_CP_PREEMPT, cntl,
+				FENCE_STATUS_WRITEDROPPED1_MASK)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adreno_dev->next_rb = NULL;
 		del_timer(&adreno_dev->preempt.timer);
 		goto err;
 	}
 
+<<<<<<< HEAD
 	return;
 err:
 	/* If fenced write fails, take inline snapshot and trigger recovery */
@@ -400,6 +531,18 @@ err:
 	adreno_dispatcher_schedule(device);
 	/* Clear the keep alive */
 	if (gmu_core_isenabled(device))
+=======
+
+	return;
+err:
+
+	/* If fenced write fails, set the fault and trigger recovery */
+	adreno_set_preempt_state(adreno_dev, ADRENO_PREEMPT_NONE);
+	adreno_set_gpu_fault(adreno_dev, ADRENO_GMU_FAULT);
+	adreno_dispatcher_schedule(device);
+	/* Clear the keep alive */
+	if (gmu_core_gpmu_isenabled(device))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gmu_core_regrmw(device, A6XX_GMU_AO_SPARE_CNTL, 0x2, 0x0);
 }
 
@@ -414,9 +557,14 @@ void a6xx_preemption_callback(struct adreno_device *adreno_dev, int bit)
 	adreno_readreg(adreno_dev, ADRENO_REG_CP_PREEMPT, &status);
 
 	if (status & 0x1) {
+<<<<<<< HEAD
 		dev_err(KGSL_DEVICE(adreno_dev)->dev,
 			     "preempt interrupt with non-zero status: %X\n",
 			     status);
+=======
+		KGSL_DRV_ERR(KGSL_DEVICE(adreno_dev),
+			"preempt interrupt with non-zero status: %X\n", status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Under the assumption that this is a race between the
@@ -435,7 +583,11 @@ void a6xx_preemption_callback(struct adreno_device *adreno_dev, int bit)
 	 * We can now safely clear the preemption keepalive bit, allowing
 	 * power collapse to resume its regular activity.
 	 */
+<<<<<<< HEAD
 	if (gmu_core_isenabled(KGSL_DEVICE(adreno_dev)))
+=======
+	if (gmu_core_gpmu_isenabled(KGSL_DEVICE(adreno_dev)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gmu_core_regrmw(KGSL_DEVICE(adreno_dev),
 				A6XX_GMU_AO_SPARE_CNTL, 0x2, 0x0);
 
@@ -523,12 +675,19 @@ unsigned int a6xx_preemption_pre_ibsubmit(
 			rb->perfcounter_save_restore_desc.gpuaddr);
 
 	if (context) {
+<<<<<<< HEAD
 		struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 		struct adreno_context *drawctxt = ADRENO_CONTEXT(context);
 		struct adreno_ringbuffer *rb = drawctxt->rb;
 		uint64_t dest =
 			SCRATCH_PREEMPTION_CTXT_RESTORE_GPU_ADDR(device,
 			rb->id);
+=======
+		struct adreno_context *drawctxt = ADRENO_CONTEXT(context);
+		struct adreno_ringbuffer *rb = drawctxt->rb;
+		uint64_t dest = adreno_dev->preempt.scratch.gpuaddr +
+			sizeof(u64) * rb->id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		*cmds++ = cp_mem_packet(adreno_dev, CP_MEM_WRITE, 2, 2);
 		cmds += cp_gpuaddr(adreno_dev, cmds, dest);
@@ -546,9 +705,14 @@ unsigned int a6xx_preemption_post_ibsubmit(struct adreno_device *adreno_dev,
 	struct adreno_ringbuffer *rb = adreno_dev->cur_rb;
 
 	if (rb) {
+<<<<<<< HEAD
 		struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 		uint64_t dest = SCRATCH_PREEMPTION_CTXT_RESTORE_GPU_ADDR(device,
 			rb->id);
+=======
+		uint64_t dest = adreno_dev->preempt.scratch.gpuaddr +
+			sizeof(u64) * rb->id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		*cmds++ = cp_mem_packet(adreno_dev, CP_MEM_WRITE, 2, 2);
 		cmds += cp_gpuaddr(adreno_dev, cmds, dest);
@@ -611,7 +775,11 @@ void a6xx_preemption_start(struct adreno_device *adreno_dev)
 }
 
 static int a6xx_preemption_ringbuffer_init(struct adreno_device *adreno_dev,
+<<<<<<< HEAD
 	struct adreno_ringbuffer *rb)
+=======
+	struct adreno_ringbuffer *rb, uint64_t counteraddr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	int ret;
@@ -666,7 +834,11 @@ static int a6xx_preemption_ringbuffer_init(struct adreno_device *adreno_dev,
 	kgsl_sharedmem_writeq(device, &rb->preemption_desc,
 		PREEMPT_RECORD(rbase), rb->buffer_desc.gpuaddr);
 	kgsl_sharedmem_writeq(device, &rb->preemption_desc,
+<<<<<<< HEAD
 		PREEMPT_RECORD(counter), 0);
+=======
+		PREEMPT_RECORD(counter), counteraddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -709,6 +881,10 @@ static void _preemption_close(struct adreno_device *adreno_dev)
 	unsigned int i;
 
 	del_timer(&preempt->timer);
+<<<<<<< HEAD
+=======
+	kgsl_free_global(device, &preempt->scratch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	a6xx_preemption_iommu_close(adreno_dev);
 
 	FOR_EACH_RINGBUFFER(adreno_dev, rb, i) {
@@ -728,6 +904,10 @@ void a6xx_preemption_close(struct adreno_device *adreno_dev)
 	_preemption_close(adreno_dev);
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int a6xx_preemption_init(struct adreno_device *adreno_dev)
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
@@ -735,6 +915,10 @@ int a6xx_preemption_init(struct adreno_device *adreno_dev)
 	struct adreno_ringbuffer *rb;
 	int ret;
 	unsigned int i;
+<<<<<<< HEAD
+=======
+	uint64_t addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We are dependent on IOMMU to make preemption go on the CP side */
 	if (kgsl_mmu_get_mmutype(device) != KGSL_MMU_TYPE_IOMMU)
@@ -742,6 +926,7 @@ int a6xx_preemption_init(struct adreno_device *adreno_dev)
 
 	INIT_WORK(&preempt->work, _a6xx_preemption_worker);
 
+<<<<<<< HEAD
 	timer_setup(&preempt->timer, _a6xx_preemption_timer, 0);
 
 	/* Allocate mem for storing preemption switch record */
@@ -749,6 +934,32 @@ int a6xx_preemption_init(struct adreno_device *adreno_dev)
 		ret = a6xx_preemption_ringbuffer_init(adreno_dev, rb);
 		if (ret)
 			goto err;
+=======
+	setup_timer(&preempt->timer, _a6xx_preemption_timer,
+		(unsigned long) adreno_dev);
+
+	/*
+	 * Allocate a scratch buffer to keep the below table:
+	 * Offset: What
+	 * 0x0: Context Record address
+	 * 0x10: Preemption Counters
+	 */
+	ret = kgsl_allocate_global(device, &preempt->scratch, PAGE_SIZE, 0, 0,
+			"preemption_scratch");
+	if (ret)
+		goto err;
+
+	addr = preempt->scratch.gpuaddr +
+		KGSL_PRIORITY_MAX_RB_LEVELS * sizeof(u64);
+
+	/* Allocate mem for storing preemption switch record */
+	FOR_EACH_RINGBUFFER(adreno_dev, rb, i) {
+		ret = a6xx_preemption_ringbuffer_init(adreno_dev, rb, addr);
+		if (ret)
+			goto err;
+
+		addr += A6XX_CP_CTXRECORD_PREEMPTION_COUNTER_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = a6xx_preemption_iommu_init(adreno_dev);
@@ -765,13 +976,21 @@ void a6xx_preemption_context_destroy(struct kgsl_context *context)
 	struct kgsl_device *device = context->device;
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 
+<<<<<<< HEAD
 	if (!adreno_is_preemption_enabled(adreno_dev))
+=======
+	if (!ADRENO_FEATURE(adreno_dev, ADRENO_PREEMPTION))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	gpumem_free_entry(context->user_ctxt_record);
 
 	/* Put the extra ref from gpumem_alloc_entry() */
+<<<<<<< HEAD
 	kgsl_mem_entry_put_deferred(context->user_ctxt_record);
+=======
+	kgsl_mem_entry_put(context->user_ctxt_record);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int a6xx_preemption_context_init(struct kgsl_context *context)
@@ -780,7 +999,11 @@ int a6xx_preemption_context_init(struct kgsl_context *context)
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 	uint64_t flags = 0;
 
+<<<<<<< HEAD
 	if (!adreno_is_preemption_enabled(adreno_dev))
+=======
+	if (!ADRENO_FEATURE(adreno_dev, ADRENO_PREEMPTION))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (context->flags & KGSL_CONTEXT_SECURE)

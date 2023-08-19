@@ -53,7 +53,11 @@ MODULE_AUTHOR("Bruno Ducrot");
 MODULE_DESCRIPTION("ACPI Video Driver");
 MODULE_LICENSE("GPL");
 
+<<<<<<< HEAD
 static bool brightness_switch_enabled = true;
+=======
+static bool brightness_switch_enabled = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_param(brightness_switch_enabled, bool, 0644);
 
 /*
@@ -861,9 +865,14 @@ int acpi_video_get_levels(struct acpi_device *device,
 	 * in order to account for buggy BIOS which don't export the first two
 	 * special levels (see below)
 	 */
+<<<<<<< HEAD
 	br->levels = kmalloc_array(obj->package.count + ACPI_VIDEO_FIRST_LEVEL,
 				   sizeof(*br->levels),
 				   GFP_KERNEL);
+=======
+	br->levels = kmalloc((obj->package.count + ACPI_VIDEO_FIRST_LEVEL) *
+	                     sizeof(*br->levels), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!br->levels) {
 		result = -ENOMEM;
 		goto out_free;

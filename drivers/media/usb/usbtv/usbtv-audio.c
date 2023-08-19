@@ -126,7 +126,10 @@ static void usbtv_audio_urb_received(struct urb *urb)
 	struct snd_pcm_runtime *runtime = substream->runtime;
 	size_t i, frame_bytes, chunk_length, buffer_pos, period_pos;
 	int period_elapsed;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *urb_current;
 
 	switch (urb->status) {
@@ -180,12 +183,20 @@ static void usbtv_audio_urb_received(struct urb *urb)
 		}
 	}
 
+<<<<<<< HEAD
 	snd_pcm_stream_lock_irqsave(substream, flags);
+=======
+	snd_pcm_stream_lock(substream);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	chip->snd_buffer_pos = buffer_pos;
 	chip->snd_period_pos = period_pos;
 
+<<<<<<< HEAD
 	snd_pcm_stream_unlock_irqrestore(substream, flags);
+=======
+	snd_pcm_stream_unlock(substream);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (period_elapsed)
 		snd_pcm_period_elapsed(substream);

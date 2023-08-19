@@ -25,7 +25,10 @@
 #include <linux/phy/phy.h>
 #include <linux/pm_runtime.h>
 #include <linux/of_platform.h>
+<<<<<<< HEAD
 #include <linux/reset.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ahci.h"
 
 static void ahci_host_stop(struct ata_host *host);
@@ -47,7 +50,11 @@ EXPORT_SYMBOL_GPL(ahci_platform_ops);
  * RETURNS:
  * 0 on success otherwise a negative error code
  */
+<<<<<<< HEAD
 static int ahci_platform_enable_phys(struct ahci_host_priv *hpriv)
+=======
+int ahci_platform_enable_phys(struct ahci_host_priv *hpriv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rc, i;
 
@@ -72,6 +79,10 @@ disable_phys:
 	}
 	return rc;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(ahci_platform_enable_phys);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * ahci_platform_disable_phys - Disable PHYs
@@ -79,7 +90,11 @@ disable_phys:
  *
  * This function disables all PHYs found in hpriv->phys.
  */
+<<<<<<< HEAD
 static void ahci_platform_disable_phys(struct ahci_host_priv *hpriv)
+=======
+void ahci_platform_disable_phys(struct ahci_host_priv *hpriv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -88,6 +103,10 @@ static void ahci_platform_disable_phys(struct ahci_host_priv *hpriv)
 		phy_exit(hpriv->phys[i]);
 	}
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(ahci_platform_disable_phys);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * ahci_platform_enable_clks - Enable platform clocks
@@ -196,8 +215,12 @@ EXPORT_SYMBOL_GPL(ahci_platform_disable_regulators);
  * following order:
  * 1) Regulator
  * 2) Clocks (through ahci_platform_enable_clks)
+<<<<<<< HEAD
  * 3) Resets
  * 4) Phys
+=======
+ * 3) Phys
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * If resource enabling fails at any point the previous enabled resources
  * are disabled in reverse order.
@@ -217,6 +240,7 @@ int ahci_platform_enable_resources(struct ahci_host_priv *hpriv)
 	if (rc)
 		goto disable_regulator;
 
+<<<<<<< HEAD
 	rc = reset_control_deassert(hpriv->rsts);
 	if (rc)
 		goto disable_clks;
@@ -230,6 +254,14 @@ int ahci_platform_enable_resources(struct ahci_host_priv *hpriv)
 disable_resets:
 	reset_control_assert(hpriv->rsts);
 
+=======
+	rc = ahci_platform_enable_phys(hpriv);
+	if (rc)
+		goto disable_clks;
+
+	return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 disable_clks:
 	ahci_platform_disable_clks(hpriv);
 
@@ -247,16 +279,24 @@ EXPORT_SYMBOL_GPL(ahci_platform_enable_resources);
  * This function disables all ahci_platform managed resources in the
  * following order:
  * 1) Phys
+<<<<<<< HEAD
  * 2) Resets
  * 3) Clocks (through ahci_platform_disable_clks)
  * 4) Regulator
+=======
+ * 2) Clocks (through ahci_platform_disable_clks)
+ * 3) Regulator
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void ahci_platform_disable_resources(struct ahci_host_priv *hpriv)
 {
 	ahci_platform_disable_phys(hpriv);
 
+<<<<<<< HEAD
 	reset_control_assert(hpriv->rsts);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ahci_platform_disable_clks(hpriv);
 
 	ahci_platform_disable_regulators(hpriv);
@@ -307,7 +347,10 @@ static int ahci_platform_get_phy(struct ahci_host_priv *hpriv, u32 port,
 				node->name);
 			break;
 		}
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case -ENODEV:
 		/* continue normally */
 		hpriv->phys[port] = NULL;
@@ -347,7 +390,10 @@ static int ahci_platform_get_regulator(struct ahci_host_priv *hpriv, u32 port,
 /**
  * ahci_platform_get_resources - Get platform resources
  * @pdev: platform device to get resources for
+<<<<<<< HEAD
  * @flags: bitmap representing the resource to get
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function allocates an ahci_host_priv struct, and gets the following
  * resources, storing a reference to them inside the returned struct:
@@ -356,20 +402,32 @@ static int ahci_platform_get_regulator(struct ahci_host_priv *hpriv, u32 port,
  * 2) regulator for controlling the targets power (optional)
  * 3) 0 - AHCI_MAX_CLKS clocks, as specified in the devs devicetree node,
  *    or for non devicetree enabled platforms a single clock
+<<<<<<< HEAD
  * 4) resets, if flags has AHCI_PLATFORM_GET_RESETS (optional)
  * 5) phys (optional)
+=======
+ *	4) phys (optional)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * RETURNS:
  * The allocated ahci_host_priv on success, otherwise an ERR_PTR value
  */
+<<<<<<< HEAD
 struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
 						   unsigned int flags)
+=======
+struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = &pdev->dev;
 	struct ahci_host_priv *hpriv;
 	struct clk *clk;
 	struct device_node *child;
+<<<<<<< HEAD
 	int i, enabled_ports = 0, rc = -ENOMEM, child_nodes;
+=======
+	int i, sz, enabled_ports = 0, rc = -ENOMEM, child_nodes;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 mask_port_map = 0;
 
 	if (!devres_open_group(dev, NULL, GFP_KERNEL))
@@ -411,6 +469,7 @@ struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
 		hpriv->clks[i] = clk;
 	}
 
+<<<<<<< HEAD
 	if (flags & AHCI_PLATFORM_GET_RESETS) {
 		hpriv->rsts = devm_reset_control_array_get_optional_shared(dev);
 		if (IS_ERR(hpriv->rsts)) {
@@ -419,6 +478,8 @@ struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hpriv->nports = child_nodes = of_get_child_count(dev->of_node);
 
 	/*
@@ -429,16 +490,26 @@ struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
 	if (!child_nodes)
 		hpriv->nports = 1;
 
+<<<<<<< HEAD
 	hpriv->phys = devm_kcalloc(dev, hpriv->nports, sizeof(*hpriv->phys), GFP_KERNEL);
+=======
+	sz = hpriv->nports * sizeof(*hpriv->phys);
+	hpriv->phys = devm_kzalloc(dev, sz, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!hpriv->phys) {
 		rc = -ENOMEM;
 		goto err_out;
 	}
+<<<<<<< HEAD
 	/*
 	 * We cannot use devm_ here, since ahci_platform_put_resources() uses
 	 * target_pwrs after devm_ have freed memory
 	 */
 	hpriv->target_pwrs = kcalloc(hpriv->nports, sizeof(*hpriv->target_pwrs), GFP_KERNEL);
+=======
+	sz = hpriv->nports * sizeof(*hpriv->target_pwrs);
+	hpriv->target_pwrs = kzalloc(sz, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!hpriv->target_pwrs) {
 		rc = -ENOMEM;
 		goto err_out;
@@ -633,7 +704,11 @@ static void ahci_host_stop(struct ata_host *host)
 
 /**
  * ahci_platform_shutdown - Disable interrupts and stop DMA for host ports
+<<<<<<< HEAD
  * @pdev: platform device pointer for the host
+=======
+ * @dev: platform device pointer for the host
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function is called during system shutdown and performs the minimal
  * deconfiguration required to ensure that an ahci_platform host cannot

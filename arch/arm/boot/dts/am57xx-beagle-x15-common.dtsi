@@ -32,6 +32,30 @@
 		reg = <0x0 0x80000000 0x0 0x80000000>;
 	};
 
+<<<<<<< HEAD
+=======
+	main_12v0: fixedregulator-main_12v0 {
+		/* main supply */
+		compatible = "regulator-fixed";
+		regulator-name = "main_12v0";
+		regulator-min-microvolt = <12000000>;
+		regulator-max-microvolt = <12000000>;
+		regulator-always-on;
+		regulator-boot-on;
+	};
+
+	evm_5v0: fixedregulator-evm_5v0 {
+		/* Output of TPS54531D */
+		compatible = "regulator-fixed";
+		regulator-name = "evm_5v0";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		vin-supply = <&main_12v0>;
+		regulator-always-on;
+		regulator-boot-on;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vdd_3v3: fixedregulator-vdd_3v3 {
 		compatible = "regulator-fixed";
 		regulator-name = "vdd_3v3";
@@ -388,7 +412,11 @@
 };
 
 &cpu0 {
+<<<<<<< HEAD
 	vdd-supply = <&smps12_reg>;
+=======
+	cpu0-supply = <&smps12_reg>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	voltage-tolerance = <1>;
 };
 
@@ -433,7 +461,10 @@
 
 	bus-width = <4>;
 	cd-gpios = <&gpio6 27 GPIO_ACTIVE_LOW>; /* gpio 219 */
+<<<<<<< HEAD
 	no-1-8-v;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &mmc2 {
@@ -443,10 +474,16 @@
 	pinctrl-0 = <&mmc2_pins_default>;
 
 	vmmc-supply = <&vdd_3v3>;
+<<<<<<< HEAD
 	vqmmc-supply = <&vdd_3v3>;
 	bus-width = <8>;
 	non-removable;
 	no-1-8-v;
+=======
+	bus-width = <8>;
+	ti,non-removable;
+	cap-mmc-dual-data-rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &sata {
@@ -556,7 +593,11 @@
 
 &mcasp3 {
 	#sound-dai-cells = <0>;
+<<<<<<< HEAD
 	assigned-clocks = <&l4per_clkctrl DRA7_MCASP3_CLKCTRL 24>;
+=======
+	assigned-clocks = <&mcasp3_ahclkx_mux>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	assigned-clock-parents = <&sys_clkin2>;
 	status = "okay";
 

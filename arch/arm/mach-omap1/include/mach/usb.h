@@ -11,7 +11,11 @@
 
 #include <linux/platform_data/usb-omap1.h>
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_USB)
+=======
+#if IS_ENABLED(CONFIG_USB_SUPPORT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void omap1_usb_init(struct omap_usb_config *pdata);
 #else
 static inline void omap1_usb_init(struct omap_usb_config *pdata)

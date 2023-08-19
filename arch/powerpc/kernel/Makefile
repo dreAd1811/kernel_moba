@@ -5,6 +5,7 @@
 
 CFLAGS_ptrace.o		+= -DUTS_MACHINE='"$(UTS_MACHINE)"'
 
+<<<<<<< HEAD
 # Disable clang warning for using setjmp without setjmp.h header
 CFLAGS_crash.o		+= $(call cc-disable-warning, builtin-requires-header)
 
@@ -14,6 +15,14 @@ ifdef CONFIG_PPC64
 CFLAGS_prom_init.o	+= $(NO_MINIMAL_TOC)
 endif
 ifdef CONFIG_PPC32
+=======
+subdir-ccflags-$(CONFIG_PPC_WERROR) := -Werror
+
+ifeq ($(CONFIG_PPC64),y)
+CFLAGS_prom_init.o	+= $(NO_MINIMAL_TOC)
+endif
+ifeq ($(CONFIG_PPC32),y)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CFLAGS_prom_init.o      += -fPIC
 CFLAGS_btext.o		+= -fPIC
 endif
@@ -25,10 +34,17 @@ CFLAGS_prom.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
 
 ifdef CONFIG_FUNCTION_TRACER
 # Do not trace early boot code
+<<<<<<< HEAD
 CFLAGS_REMOVE_cputable.o = $(CC_FLAGS_FTRACE)
 CFLAGS_REMOVE_prom_init.o = $(CC_FLAGS_FTRACE)
 CFLAGS_REMOVE_btext.o = $(CC_FLAGS_FTRACE)
 CFLAGS_REMOVE_prom.o = $(CC_FLAGS_FTRACE)
+=======
+CFLAGS_REMOVE_cputable.o = -mno-sched-epilog $(CC_FLAGS_FTRACE)
+CFLAGS_REMOVE_prom_init.o = -mno-sched-epilog $(CC_FLAGS_FTRACE)
+CFLAGS_REMOVE_btext.o = -mno-sched-epilog $(CC_FLAGS_FTRACE)
+CFLAGS_REMOVE_prom.o = -mno-sched-epilog $(CC_FLAGS_FTRACE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 obj-y				:= cputable.o ptrace.o syscalls.o \
@@ -66,13 +82,21 @@ obj-$(CONFIG_EEH)              += eeh.o eeh_pe.o eeh_dev.o eeh_cache.o \
 obj-$(CONFIG_GENERIC_TBSYNC)	+= smp-tbsync.o
 obj-$(CONFIG_CRASH_DUMP)	+= crash_dump.o
 obj-$(CONFIG_FA_DUMP)		+= fadump.o
+<<<<<<< HEAD
 ifdef CONFIG_PPC32
+=======
+ifeq ($(CONFIG_PPC32),y)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_E500)		+= idle_e500.o
 endif
 obj-$(CONFIG_6xx)		+= idle_6xx.o l2cr_6xx.o cpu_setup_6xx.o
 obj-$(CONFIG_TAU)		+= tau_6xx.o
 obj-$(CONFIG_HIBERNATION)	+= swsusp.o suspend.o
+<<<<<<< HEAD
 ifdef CONFIG_FSL_BOOKE
+=======
+ifeq ($(CONFIG_FSL_BOOKE),y)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_HIBERNATION)	+= swsusp_booke.o
 else
 obj-$(CONFIG_HIBERNATION)	+= swsusp_$(BITS).o
@@ -113,11 +137,17 @@ obj-$(CONFIG_PCI_MSI)		+= msi.o
 obj-$(CONFIG_KEXEC_CORE)	+= machine_kexec.o crash.o \
 				   machine_kexec_$(BITS).o
 obj-$(CONFIG_KEXEC_FILE)	+= machine_kexec_file_$(BITS).o kexec_elf_$(BITS).o
+<<<<<<< HEAD
 ifdef CONFIG_HAVE_IMA_KEXEC
 ifdef CONFIG_IMA
 obj-y				+= ima_kexec.o
 endif
 endif
+=======
+ifeq ($(CONFIG_HAVE_IMA_KEXEC)$(CONFIG_IMA),yy)
+obj-y				+= ima_kexec.o
+endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_AUDIT)		+= audit.o
 obj64-$(CONFIG_AUDIT)		+= compat_audit.o
@@ -135,7 +165,11 @@ obj64-$(CONFIG_PPC_TRANSACTIONAL_MEM)	+= tm.o
 obj-$(CONFIG_PPC64)		+= $(obj64-y)
 obj-$(CONFIG_PPC32)		+= $(obj32-y)
 
+<<<<<<< HEAD
 ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE)(CONFIG_PPC_BOOK3S),)
+=======
+ifneq ($(CONFIG_XMON)$(CONFIG_KEXEC_CORE),)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-y				+= ppc_save_regs.o
 endif
 
@@ -170,8 +204,13 @@ PHONY += systbl_chk
 systbl_chk: $(src)/systbl_chk.sh $(obj)/systbl_chk.i
 	$(call cmd,systbl_chk)
 
+<<<<<<< HEAD
 ifdef CONFIG_PPC_OF_BOOT_TRAMPOLINE
 $(obj)/built-in.a:		prom_init_check
+=======
+ifeq ($(CONFIG_PPC_OF_BOOT_TRAMPOLINE),y)
+$(obj)/built-in.o:		prom_init_check
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 quiet_cmd_prom_init_check = CALL    $<
       cmd_prom_init_check = $(CONFIG_SHELL) $< "$(NM)" "$(obj)/prom_init.o"

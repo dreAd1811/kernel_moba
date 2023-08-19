@@ -2,6 +2,7 @@
 
 .. _crop:
 
+<<<<<<< HEAD
 *****************************************************
 Image Cropping, Insertion and Scaling -- the CROP API
 *****************************************************
@@ -14,6 +15,11 @@ Image Cropping, Insertion and Scaling -- the CROP API
    implemented by :ref:`VIDIOC_CROPCAP <VIDIOC_CROPCAP>` and has no
    equivalent in the SELECTION API. See :ref:`selection-vs-crop` for a
    comparison of the two APIs.
+=======
+*************************************
+Image Cropping, Insertion and Scaling
+*************************************
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Some video capture devices can sample a subsection of the picture and
 shrink or enlarge it to an image of arbitrary size. We call these
@@ -51,9 +57,16 @@ where applicable) will be fixed in this case.
 
 .. note::
 
+<<<<<<< HEAD
    All capture and output devices that support the CROP or SELECTION
    API will also support the :ref:`VIDIOC_CROPCAP <VIDIOC_CROPCAP>`
    ioctl.
+=======
+   All capture and output devices must support the
+   :ref:`VIDIOC_CROPCAP <VIDIOC_CROPCAP>` ioctl such that applications
+   can determine if scaling takes place.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Cropping Structures
 ===================

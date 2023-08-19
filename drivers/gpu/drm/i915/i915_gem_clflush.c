@@ -70,7 +70,10 @@ static const struct dma_fence_ops i915_clflush_ops = {
 
 static void __i915_do_clflush(struct drm_i915_gem_object *obj)
 {
+<<<<<<< HEAD
 	GEM_BUG_ON(!i915_gem_object_has_pages(obj));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_clflush_sg(obj->mm.pages);
 	intel_fb_obj_flush(obj, ORIGIN_CPU);
 }
@@ -167,7 +170,11 @@ bool i915_gem_clflush_object(struct drm_i915_gem_object *obj,
 		i915_sw_fence_await_reservation(&clflush->wait,
 						obj->resv, NULL,
 						true, I915_FENCE_TIMEOUT,
+<<<<<<< HEAD
 						I915_FENCE_GFP);
+=======
+						GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		reservation_object_lock(obj->resv, NULL);
 		reservation_object_add_excl_fence(obj->resv, &clflush->dma);
@@ -177,7 +184,11 @@ bool i915_gem_clflush_object(struct drm_i915_gem_object *obj,
 	} else if (obj->mm.pages) {
 		__i915_do_clflush(obj);
 	} else {
+<<<<<<< HEAD
 		GEM_BUG_ON(obj->write_domain != I915_GEM_DOMAIN_CPU);
+=======
+		GEM_BUG_ON(obj->base.write_domain != I915_GEM_DOMAIN_CPU);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	obj->cache_dirty = false;

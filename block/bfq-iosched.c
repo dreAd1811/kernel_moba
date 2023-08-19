@@ -49,6 +49,7 @@
  *
  * In particular, to provide these low-latency guarantees, BFQ
  * explicitly privileges the I/O of two classes of time-sensitive
+<<<<<<< HEAD
  * applications: interactive and soft real-time. In more detail, BFQ
  * behaves this way if the low_latency parameter is set (default
  * configuration). This feature enables BFQ to provide applications in
@@ -82,6 +83,11 @@
  * weight-raising for interactive queues.
  *
  * Finally, BFQ also features additional heuristics for
+=======
+ * applications: interactive and soft real-time. This feature enables
+ * BFQ to provide applications in these classes with a very low
+ * latency. Finally, BFQ also features additional heuristics for
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * preserving both a low latency and a high throughput on NCQ-capable,
  * rotational or flash-based devices, and to get the job done quickly
  * for applications consisting in many I/O-bound processes.
@@ -91,6 +97,7 @@
  * all low-latency heuristics for that device, by setting low_latency
  * to 0.
  *
+<<<<<<< HEAD
  * BFQ is described in [1], where also a reference to the initial,
  * more theoretical paper on BFQ can be found. The interested reader
  * can find in the latter paper full details on the main algorithm, as
@@ -99,6 +106,16 @@
  * papers, this implementation adds a few more heuristics, such as the
  * ones that guarantee a low latency to interactive and soft real-time
  * applications, and a hierarchical extension based on H-WF2Q+.
+=======
+ * BFQ is described in [1], where also a reference to the initial, more
+ * theoretical paper on BFQ can be found. The interested reader can find
+ * in the latter paper full details on the main algorithm, as well as
+ * formulas of the guarantees and formal proofs of all the properties.
+ * With respect to the version of BFQ presented in these papers, this
+ * implementation adds a few more heuristics, such as the one that
+ * guarantees a low latency to soft real-time applications, and a
+ * hierarchical extension based on H-WF2Q+.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * B-WF2Q+ is based on WF2Q+, which is described in [2], together with
  * H-WF2Q+, while the augmented tree used here to implement B-WF2Q+
@@ -187,6 +204,7 @@ static const int bfq_stats_min_budgets = 194;
 static const int bfq_default_max_budget = 16 * 1024;
 
 /*
+<<<<<<< HEAD
  * When a sync request is dispatched, the queue that contains that
  * request, and all the ancestor entities of that queue, are charged
  * with the number of sectors of the request. In constrast, if the
@@ -206,10 +224,18 @@ static const int bfq_default_max_budget = 16 * 1024;
  * - when other groups do reads, w.r.t. to when they do writes.
  */
 static const int bfq_async_charge_factor = 3;
+=======
+ * Async to sync throughput distribution is controlled as follows:
+ * when an async request is served, the entity is charged the number
+ * of sectors of the request, multiplied by the factor below
+ */
+static const int bfq_async_charge_factor = 10;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Default timeout values, in jiffies, approximating CFQ defaults. */
 const int bfq_timeout = HZ / 8;
 
+<<<<<<< HEAD
 /*
  * Time limit for merging (see comments in bfq_setup_cooperator). Set
  * to the slowest value that, in our tests, proved to be effective in
@@ -224,6 +250,8 @@ const int bfq_timeout = HZ / 8;
  */
 static const unsigned long bfq_merge_time_limit = HZ/10;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct kmem_cache *bfq_pool;
 
 /* Below this threshold (in ns), we consider thinktime immediate. */
@@ -236,7 +264,11 @@ static struct kmem_cache *bfq_pool;
 #define BFQQ_SEEK_THR		(sector_t)(8 * 100)
 #define BFQQ_SECT_THR_NONROT	(sector_t)(2 * 32)
 #define BFQQ_CLOSE_THR		(sector_t)(8 * 1024)
+<<<<<<< HEAD
 #define BFQQ_SEEKY(bfqq)	(hweight32(bfqq->seek_history) > 19)
+=======
+#define BFQQ_SEEKY(bfqq)	(hweight32(bfqq->seek_history) > 32/8)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Min number of samples required to perform peak-rate update */
 #define BFQ_RATE_MIN_SAMPLES	32
@@ -245,6 +277,7 @@ static struct kmem_cache *bfq_pool;
 /* Target observation time interval for a peak-rate update (ns) */
 #define BFQ_RATE_REF_INTERVAL	NSEC_PER_SEC
 
+<<<<<<< HEAD
 /*
  * Shift used for peak-rate fixed precision calculations.
  * With
@@ -356,6 +389,60 @@ static int ref_wr_duration[2];
  * described at the beginning of these comments.
  */
 static const unsigned long max_service_from_wr = 120000;
+=======
+/* Shift used for peak rate fixed precision calculations. */
+#define BFQ_RATE_SHIFT		16
+
+/*
+ * By default, BFQ computes the duration of the weight raising for
+ * interactive applications automatically, using the following formula:
+ * duration = (R / r) * T, where r is the peak rate of the device, and
+ * R and T are two reference parameters.
+ * In particular, R is the peak rate of the reference device (see below),
+ * and T is a reference time: given the systems that are likely to be
+ * installed on the reference device according to its speed class, T is
+ * about the maximum time needed, under BFQ and while reading two files in
+ * parallel, to load typical large applications on these systems.
+ * In practice, the slower/faster the device at hand is, the more/less it
+ * takes to load applications with respect to the reference device.
+ * Accordingly, the longer/shorter BFQ grants weight raising to interactive
+ * applications.
+ *
+ * BFQ uses four different reference pairs (R, T), depending on:
+ * . whether the device is rotational or non-rotational;
+ * . whether the device is slow, such as old or portable HDDs, as well as
+ *   SD cards, or fast, such as newer HDDs and SSDs.
+ *
+ * The device's speed class is dynamically (re)detected in
+ * bfq_update_peak_rate() every time the estimated peak rate is updated.
+ *
+ * In the following definitions, R_slow[0]/R_fast[0] and
+ * T_slow[0]/T_fast[0] are the reference values for a slow/fast
+ * rotational device, whereas R_slow[1]/R_fast[1] and
+ * T_slow[1]/T_fast[1] are the reference values for a slow/fast
+ * non-rotational device. Finally, device_speed_thresh are the
+ * thresholds used to switch between speed classes. The reference
+ * rates are not the actual peak rates of the devices used as a
+ * reference, but slightly lower values. The reason for using these
+ * slightly lower values is that the peak-rate estimator tends to
+ * yield slightly lower values than the actual peak rate (it can yield
+ * the actual peak rate only if there is only one process doing I/O,
+ * and the process does sequential I/O).
+ *
+ * Both the reference peak rates and the thresholds are measured in
+ * sectors/usec, left-shifted by BFQ_RATE_SHIFT.
+ */
+static int R_slow[2] = {1000, 10700};
+static int R_fast[2] = {14000, 33000};
+/*
+ * To improve readability, a conversion function is used to initialize the
+ * following arrays, which entails that they can be initialized only in a
+ * function.
+ */
+static int T_slow[2];
+static int T_fast[2];
+static int device_speed_thresh[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RQ_BIC(rq)		icq_to_bic((rq)->elv.priv[0])
 #define RQ_BFQQ(rq)		((rq)->elv.priv[1])
@@ -520,6 +607,7 @@ static struct request *bfq_choose_req(struct bfq_data *bfqd,
 	}
 }
 
+<<<<<<< HEAD
 /*
  * Async I/O can easily starve sync I/O (both sync reads and sync
  * writes), by consuming all tags. Similarly, storms of sync writes,
@@ -542,6 +630,8 @@ static void bfq_limit_depth(unsigned int op, struct blk_mq_alloc_data *data)
 			data->shallow_depth);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct bfq_queue *
 bfq_rq_pos_tree_lookup(struct bfq_data *bfqd, struct rb_root *root,
 		     sector_t sector, struct rb_node **ret_parent,
@@ -583,6 +673,7 @@ bfq_rq_pos_tree_lookup(struct bfq_data *bfqd, struct rb_root *root,
 	return bfqq;
 }
 
+<<<<<<< HEAD
 static bool bfq_too_late_for_merging(struct bfq_queue *bfqq)
 {
 	return bfqq->service_from_backlogged > 0 &&
@@ -590,6 +681,8 @@ static bool bfq_too_late_for_merging(struct bfq_queue *bfqq)
 				       bfq_merge_time_limit);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void bfq_pos_tree_add_move(struct bfq_data *bfqd, struct bfq_queue *bfqq)
 {
 	struct rb_node **p, *parent;
@@ -600,6 +693,7 @@ void bfq_pos_tree_add_move(struct bfq_data *bfqd, struct bfq_queue *bfqq)
 		bfqq->pos_root = NULL;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * bfqq cannot be merged any longer (see comments in
 	 * bfq_setup_cooperator): no point in adding bfqq into the
@@ -608,6 +702,8 @@ void bfq_pos_tree_add_move(struct bfq_data *bfqd, struct bfq_queue *bfqq)
 	if (bfq_too_late_for_merging(bfqq))
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bfq_class_idle(bfqq))
 		return;
 	if (!bfqq->next_rq)
@@ -648,7 +744,11 @@ static bool bfq_differentiated_weights(struct bfq_data *bfqd)
  * The following function returns true if every queue must receive the
  * same share of the throughput (this condition is used when deciding
  * whether idling may be disabled, see the comments in the function
+<<<<<<< HEAD
  * bfq_better_to_idle()).
+=======
+ * bfq_bfqq_may_idle()).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Such a scenario occurs when:
  * 1) all active queues have the same weight,
@@ -756,9 +856,14 @@ inc_counter:
  * See the comments to the function bfq_weights_tree_add() for considerations
  * about overhead.
  */
+<<<<<<< HEAD
 void __bfq_weights_tree_remove(struct bfq_data *bfqd,
 			       struct bfq_entity *entity,
 			       struct rb_root *root)
+=======
+void bfq_weights_tree_remove(struct bfq_data *bfqd, struct bfq_entity *entity,
+			     struct rb_root *root)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!entity->weight_counter)
 		return;
@@ -775,6 +880,7 @@ reset_entity_pointer:
 }
 
 /*
+<<<<<<< HEAD
  * Invoke __bfq_weights_tree_remove on bfqq and all its inactive
  * parent entities.
  */
@@ -812,6 +918,8 @@ void bfq_weights_tree_remove(struct bfq_data *bfqd,
 }
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Return expired entry, or NULL to just start from scratch in rbtree.
  */
 static struct request *bfq_check_fifo(struct bfq_queue *bfqq,
@@ -867,7 +975,20 @@ static unsigned long bfq_serv_to_charge(struct request *rq,
 	if (bfq_bfqq_sync(bfqq) || bfqq->wr_coeff > 1)
 		return blk_rq_sectors(rq);
 
+<<<<<<< HEAD
 	return blk_rq_sectors(rq) * bfq_async_charge_factor;
+=======
+	/*
+	 * If there are no weight-raised queues, then amplify service
+	 * by just the async charge factor; otherwise amplify service
+	 * by twice the async charge factor, to further reduce latency
+	 * for weight-raised queues.
+	 */
+	if (bfqq->bfqd->wr_busy_queues == 0)
+		return blk_rq_sectors(rq) * bfq_async_charge_factor;
+
+	return blk_rq_sectors(rq) * 2 * bfq_async_charge_factor;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -908,6 +1029,7 @@ static void bfq_updated_next_req(struct bfq_data *bfqd,
 	}
 }
 
+<<<<<<< HEAD
 static unsigned int bfq_wr_duration(struct bfq_data *bfqd)
 {
 	u64 dur;
@@ -950,6 +1072,8 @@ static void switch_back_to_interactive_wr(struct bfq_queue *bfqq,
 	bfqq->last_wr_start_finish = bfqq->wr_start_at_switch_to_srt;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 bfq_bfqq_resume_state(struct bfq_queue *bfqq, struct bfq_data *bfqd,
 		      struct bfq_io_cq *bic, bool bfq_already_existing)
@@ -976,6 +1100,7 @@ bfq_bfqq_resume_state(struct bfq_queue *bfqq, struct bfq_data *bfqd,
 	if (bfqq->wr_coeff > 1 && (bfq_bfqq_in_large_burst(bfqq) ||
 	    time_is_before_jiffies(bfqq->last_wr_start_finish +
 				   bfqq->wr_cur_max_time))) {
+<<<<<<< HEAD
 		if (bfqq->wr_cur_max_time == bfqd->bfq_wr_rt_max_time &&
 		    !bfq_bfqq_in_large_burst(bfqq) &&
 		    time_is_after_eq_jiffies(bfqq->wr_start_at_switch_to_srt +
@@ -986,6 +1111,12 @@ bfq_bfqq_resume_state(struct bfq_queue *bfqq, struct bfq_data *bfqd,
 			bfq_log_bfqq(bfqq->bfqd, bfqq,
 				     "resume state: switching off wr");
 		}
+=======
+		bfq_log_bfqq(bfqq->bfqd, bfqq,
+		    "resume state: switching off wr");
+
+		bfqq->wr_coeff = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* make sure weight will be updated, however we got here */
@@ -1387,12 +1518,20 @@ static bool bfq_bfqq_update_budg_for_activation(struct bfq_data *bfqd,
 		 * remain unchanged after such an expiration, and the
 		 * following statement therefore assigns to
 		 * entity->budget the remaining budget on such an
+<<<<<<< HEAD
 		 * expiration.
+=======
+		 * expiration. For clarity, entity->service is not
+		 * updated on expiration in any case, and, in normal
+		 * operation, is reset only when bfqq is selected for
+		 * service (see bfq_get_next_queue).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		entity->budget = min_t(unsigned long,
 				       bfq_bfqq_budget_left(bfqq),
 				       bfqq->max_budget);
 
+<<<<<<< HEAD
 		/*
 		 * At this point, we have used entity->service to get
 		 * the budget left (needed for updating
@@ -1411,12 +1550,58 @@ static bool bfq_bfqq_update_budg_for_activation(struct bfq_data *bfqd,
 	 * We can finally complete expiration, by setting service to 0.
 	 */
 	entity->service = 0;
+=======
+		return true;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	entity->budget = max_t(unsigned long, bfqq->max_budget,
 			       bfq_serv_to_charge(bfqq->next_rq, bfqq));
 	bfq_clear_bfqq_non_blocking_wait_rq(bfqq);
 	return wr_or_deserves_wr;
 }
 
+<<<<<<< HEAD
+=======
+static unsigned int bfq_wr_duration(struct bfq_data *bfqd)
+{
+	u64 dur;
+
+	if (bfqd->bfq_wr_max_time > 0)
+		return bfqd->bfq_wr_max_time;
+
+	dur = bfqd->RT_prod;
+	do_div(dur, bfqd->peak_rate);
+
+	/*
+	 * Limit duration between 3 and 13 seconds. Tests show that
+	 * higher values than 13 seconds often yield the opposite of
+	 * the desired result, i.e., worsen responsiveness by letting
+	 * non-interactive and non-soft-real-time applications
+	 * preserve weight raising for a too long time interval.
+	 *
+	 * On the other end, lower values than 3 seconds make it
+	 * difficult for most interactive tasks to complete their jobs
+	 * before weight-raising finishes.
+	 */
+	if (dur > msecs_to_jiffies(13000))
+		dur = msecs_to_jiffies(13000);
+	else if (dur < msecs_to_jiffies(3000))
+		dur = msecs_to_jiffies(3000);
+
+	return dur;
+}
+
+/*
+ * Return the farthest future time instant according to jiffies
+ * macros.
+ */
+static unsigned long bfq_greatest_from_now(void)
+{
+	return jiffies + MAX_JIFFY_OFFSET;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Return the farthest past time instant according to jiffies
  * macros.
@@ -1437,7 +1622,10 @@ static void bfq_update_bfqq_wr_on_rq_arrival(struct bfq_data *bfqd,
 	if (old_wr_coeff == 1 && wr_or_deserves_wr) {
 		/* start a weight-raising period */
 		if (interactive) {
+<<<<<<< HEAD
 			bfqq->service_from_wr = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bfqq->wr_coeff = bfqd->bfq_wr_coeff;
 			bfqq->wr_cur_max_time = bfq_wr_duration(bfqd);
 		} else {
@@ -1550,6 +1738,10 @@ static void bfq_bfqq_handle_idle_busy_switch(struct bfq_data *bfqd,
 			bfqq->ttime.last_end_request +
 			bfqd->bfq_slice_idle * 3;
 
+<<<<<<< HEAD
+=======
+	bfqg_stats_update_io_add(bfqq_group(RQ_BFQQ(rq)), bfqq, rq->cmd_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * bfqq deserves to be weight-raised if:
@@ -1561,8 +1753,12 @@ static void bfq_bfqq_handle_idle_busy_switch(struct bfq_data *bfqd,
 	in_burst = bfq_bfqq_in_large_burst(bfqq);
 	soft_rt = bfqd->bfq_wr_max_softrt_rate > 0 &&
 		!in_burst &&
+<<<<<<< HEAD
 		time_is_before_jiffies(bfqq->soft_rt_next_start) &&
 		bfqq->dispatched == 0;
+=======
+		time_is_before_jiffies(bfqq->soft_rt_next_start);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*interactive = !in_burst && idle_for_long_time;
 	wr_or_deserves_wr = bfqd->low_latency &&
 		(bfqq->wr_coeff > 1 ||
@@ -1819,13 +2015,20 @@ static void bfq_remove_request(struct request_queue *q,
 			rb_erase(&bfqq->pos_node, bfqq->pos_root);
 			bfqq->pos_root = NULL;
 		}
+<<<<<<< HEAD
 	} else {
 		bfq_pos_tree_add_move(bfqd, bfqq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (rq->cmd_flags & REQ_META)
 		bfqq->meta_pending--;
 
+<<<<<<< HEAD
+=======
+	bfqg_stats_update_io_remove(bfqq_group(bfqq), rq->cmd_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool bfq_bio_merge(struct blk_mq_hw_ctx *hctx, struct bio *bio)
@@ -1875,8 +2078,11 @@ static int bfq_request_merge(struct request_queue *q, struct request **req,
 	return ELEVATOR_NO_MERGE;
 }
 
+<<<<<<< HEAD
 static struct bfq_queue *bfq_init_rq(struct request *rq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void bfq_request_merged(struct request_queue *q, struct request *req,
 			       enum elv_merge type)
 {
@@ -1885,6 +2091,7 @@ static void bfq_request_merged(struct request_queue *q, struct request *req,
 	    blk_rq_pos(req) <
 	    blk_rq_pos(container_of(rb_prev(&req->rb_node),
 				    struct request, rb_node))) {
+<<<<<<< HEAD
 		struct bfq_queue *bfqq = bfq_init_rq(req);
 		struct bfq_data *bfqd;
 		struct request *prev, *next_rq;
@@ -1894,6 +2101,12 @@ static void bfq_request_merged(struct request_queue *q, struct request *req,
 
 		bfqd = bfqq->bfqd;
 
+=======
+		struct bfq_queue *bfqq = RQ_BFQQ(req);
+		struct bfq_data *bfqd = bfqq->bfqd;
+		struct request *prev, *next_rq;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Reposition request in its sort_list */
 		elv_rb_del(&bfqq->sort_list, req);
 		elv_rb_add(&bfqq->sort_list, req);
@@ -1915,6 +2128,7 @@ static void bfq_request_merged(struct request_queue *q, struct request *req,
 	}
 }
 
+<<<<<<< HEAD
 /*
  * This function is called to notify the scheduler that the requests
  * rq and 'next' have been merged, with 'next' going away.  BFQ
@@ -1937,6 +2151,15 @@ static void bfq_requests_merged(struct request_queue *q, struct request *rq,
 
 	if (!bfqq)
 		return;
+=======
+static void bfq_requests_merged(struct request_queue *q, struct request *rq,
+				struct request *next)
+{
+	struct bfq_queue *bfqq = RQ_BFQQ(rq), *next_bfqq = RQ_BFQQ(next);
+
+	if (!RB_EMPTY_NODE(&rq->rb_node))
+		goto end;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If next and rq belong to the same bfq_queue and next is older
@@ -1958,6 +2181,12 @@ static void bfq_requests_merged(struct request_queue *q, struct request *rq,
 	if (bfqq->next_rq == next)
 		bfqq->next_rq = rq;
 
+<<<<<<< HEAD
+=======
+	bfq_remove_request(q, next);
+
+end:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfqg_stats_update_io_merged(bfqq_group(bfqq), next->cmd_flags);
 }
 
@@ -2143,9 +2372,12 @@ bfq_setup_merge(struct bfq_queue *bfqq, struct bfq_queue *new_bfqq)
 static bool bfq_may_be_close_cooperator(struct bfq_queue *bfqq,
 					struct bfq_queue *new_bfqq)
 {
+<<<<<<< HEAD
 	if (bfq_too_late_for_merging(new_bfqq))
 		return false;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bfq_class_idle(bfqq) || bfq_class_idle(new_bfqq) ||
 	    (bfqq->ioprio_class != new_bfqq->ioprio_class))
 		return false;
@@ -2170,6 +2402,23 @@ static bool bfq_may_be_close_cooperator(struct bfq_queue *bfqq,
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * If this function returns true, then bfqq cannot be merged. The idea
+ * is that true cooperation happens very early after processes start
+ * to do I/O. Usually, late cooperations are just accidental false
+ * positives. In case bfqq is weight-raised, such false positives
+ * would evidently degrade latency guarantees for bfqq.
+ */
+static bool wr_from_too_long(struct bfq_queue *bfqq)
+{
+	return bfqq->wr_coeff > 1 &&
+		time_is_before_jiffies(bfqq->last_wr_start_finish +
+				       msecs_to_jiffies(100));
+}
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Attempt to schedule a merge of bfqq with the currently in-service
  * queue or with a close queue among the scheduled queues.  Return
  * NULL if no merge was scheduled, a pointer to the shared bfq_queue
@@ -2182,6 +2431,14 @@ static bool bfq_may_be_close_cooperator(struct bfq_queue *bfqq,
  * to maintain. Besides, in such a critical condition as an out of memory,
  * the benefits of queue merging may be little relevant, or even negligible.
  *
+<<<<<<< HEAD
+=======
+ * Weight-raised queues can be merged only if their weight-raising
+ * period has just started. In fact cooperating processes are usually
+ * started together. Thus, with this filter we avoid false positives
+ * that would jeopardize low-latency guarantees.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * WARNING: queue merging may impair fairness among non-weight raised
  * queues, for at least two reasons: 1) the original weight of a
  * merged queue may change during the merged state, 2) even being the
@@ -2195,6 +2452,7 @@ bfq_setup_cooperator(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 {
 	struct bfq_queue *in_service_bfqq, *new_bfqq;
 
+<<<<<<< HEAD
 	/*
 	 * Prevent bfqq from being merged if it has been created too
 	 * long ago. The idea is that true cooperating processes, and
@@ -2213,6 +2471,14 @@ bfq_setup_cooperator(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 		return bfqq->new_bfqq;
 
 	if (!io_struct || unlikely(bfqq == &bfqd->oom_bfqq))
+=======
+	if (bfqq->new_bfqq)
+		return bfqq->new_bfqq;
+
+	if (!io_struct ||
+	    wr_from_too_long(bfqq) ||
+	    unlikely(bfqq == &bfqd->oom_bfqq))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 
 	/* If there is only one backlogged queue, don't search. */
@@ -2221,10 +2487,19 @@ bfq_setup_cooperator(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 
 	in_service_bfqq = bfqd->in_service_queue;
 
+<<<<<<< HEAD
 	if (in_service_bfqq && in_service_bfqq != bfqq &&
 	    likely(in_service_bfqq != &bfqd->oom_bfqq) &&
 	    bfq_rq_close_to_sector(io_struct, request,
 				   bfqd->in_serv_last_pos) &&
+=======
+	if (!in_service_bfqq || in_service_bfqq == bfqq
+	    || wr_from_too_long(in_service_bfqq) ||
+	    unlikely(in_service_bfqq == &bfqd->oom_bfqq))
+		goto check_scheduled;
+
+	if (bfq_rq_close_to_sector(io_struct, request, bfqd->last_position) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    bfqq->entity.parent == in_service_bfqq->entity.parent &&
 	    bfq_may_be_close_cooperator(bfqq, in_service_bfqq)) {
 		new_bfqq = bfq_setup_merge(bfqq, in_service_bfqq);
@@ -2236,10 +2511,19 @@ bfq_setup_cooperator(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 	 * queues. The only thing we need is that the bio/request is not
 	 * NULL, as we need it to establish whether a cooperator exists.
 	 */
+<<<<<<< HEAD
 	new_bfqq = bfq_find_close_cooperator(bfqd, bfqq,
 			bfq_io_struct_pos(io_struct, request));
 
 	if (new_bfqq && likely(new_bfqq != &bfqd->oom_bfqq) &&
+=======
+check_scheduled:
+	new_bfqq = bfq_find_close_cooperator(bfqd, bfqq,
+			bfq_io_struct_pos(io_struct, request));
+
+	if (new_bfqq && !wr_from_too_long(new_bfqq) &&
+	    likely(new_bfqq != &bfqd->oom_bfqq) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    bfq_may_be_close_cooperator(bfqq, new_bfqq))
 		return bfq_setup_merge(bfqq, new_bfqq);
 
@@ -2263,6 +2547,7 @@ static void bfq_bfqq_save_state(struct bfq_queue *bfqq)
 	bic->saved_IO_bound = bfq_bfqq_IO_bound(bfqq);
 	bic->saved_in_large_burst = bfq_bfqq_in_large_burst(bfqq);
 	bic->was_in_burst_list = !hlist_unhashed(&bfqq->burst_list_node);
+<<<<<<< HEAD
 	if (unlikely(bfq_bfqq_just_created(bfqq) &&
 		     !bfq_bfqq_in_large_burst(bfqq) &&
 		     bfqq->bfqd->low_latency)) {
@@ -2285,6 +2570,12 @@ static void bfq_bfqq_save_state(struct bfq_queue *bfqq)
 		bic->saved_last_wr_start_finish = bfqq->last_wr_start_finish;
 		bic->saved_wr_cur_max_time = bfqq->wr_cur_max_time;
 	}
+=======
+	bic->saved_wr_coeff = bfqq->wr_coeff;
+	bic->saved_wr_start_at_switch_to_srt = bfqq->wr_start_at_switch_to_srt;
+	bic->saved_last_wr_start_finish = bfqq->last_wr_start_finish;
+	bic->saved_wr_cur_max_time = bfqq->wr_cur_max_time;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -2431,6 +2722,10 @@ static void __bfq_set_in_service_queue(struct bfq_data *bfqd,
 				       struct bfq_queue *bfqq)
 {
 	if (bfqq) {
+<<<<<<< HEAD
+=======
+		bfqg_stats_update_avg_queue_size(bfqq_group(bfqq));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bfq_clear_bfqq_fifo_expire(bfqq);
 
 		bfqd->budgets_assigned = (bfqd->budgets_assigned * 7 + 256) / 8;
@@ -2542,6 +2837,7 @@ static unsigned long bfq_calc_max_budget(struct bfq_data *bfqd)
 /*
  * Update parameters related to throughput and responsiveness, as a
  * function of the estimated peak rate. See comments on
+<<<<<<< HEAD
  * bfq_calc_max_budget(), and on the ref_wr_duration array.
  */
 static void update_thr_responsiveness_params(struct bfq_data *bfqd)
@@ -2551,6 +2847,39 @@ static void update_thr_responsiveness_params(struct bfq_data *bfqd)
 			bfq_calc_max_budget(bfqd);
 		bfq_log(bfqd, "new max_budget = %d", bfqd->bfq_max_budget);
 	}
+=======
+ * bfq_calc_max_budget(), and on T_slow and T_fast arrays.
+ */
+static void update_thr_responsiveness_params(struct bfq_data *bfqd)
+{
+	int dev_type = blk_queue_nonrot(bfqd->queue);
+
+	if (bfqd->bfq_user_max_budget == 0)
+		bfqd->bfq_max_budget =
+			bfq_calc_max_budget(bfqd);
+
+	if (bfqd->device_speed == BFQ_BFQD_FAST &&
+	    bfqd->peak_rate < device_speed_thresh[dev_type]) {
+		bfqd->device_speed = BFQ_BFQD_SLOW;
+		bfqd->RT_prod = R_slow[dev_type] *
+			T_slow[dev_type];
+	} else if (bfqd->device_speed == BFQ_BFQD_SLOW &&
+		   bfqd->peak_rate > device_speed_thresh[dev_type]) {
+		bfqd->device_speed = BFQ_BFQD_FAST;
+		bfqd->RT_prod = R_fast[dev_type] *
+			T_fast[dev_type];
+	}
+
+	bfq_log(bfqd,
+"dev_type %s dev_speed_class = %s (%llu sects/sec), thresh %llu setcs/sec",
+		dev_type == 0 ? "ROT" : "NONROT",
+		bfqd->device_speed == BFQ_BFQD_FAST ? "FAST" : "SLOW",
+		bfqd->device_speed == BFQ_BFQD_FAST ?
+		(USEC_PER_SEC*(u64)R_fast[dev_type])>>BFQ_RATE_SHIFT :
+		(USEC_PER_SEC*(u64)R_slow[dev_type])>>BFQ_RATE_SHIFT,
+		(USEC_PER_SEC*(u64)device_speed_thresh[dev_type])>>
+		BFQ_RATE_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bfq_reset_rate_computation(struct bfq_data *bfqd,
@@ -2664,6 +2993,7 @@ static void bfq_update_rate_reset(struct bfq_data *bfqd, struct request *rq)
 	rate /= divisor; /* smoothing constant alpha = 1/divisor */
 
 	bfqd->peak_rate += rate;
+<<<<<<< HEAD
 
 	/*
 	 * For a very slow device, bfqd->peak_rate can reach 0 (see
@@ -2674,6 +3004,8 @@ static void bfq_update_rate_reset(struct bfq_data *bfqd, struct request *rq)
 	 */
 	bfqd->peak_rate = max_t(u32, 1, bfqd->peak_rate);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	update_thr_responsiveness_params(bfqd);
 
 reset_computation:
@@ -2766,8 +3098,11 @@ update_rate_and_reset:
 	bfq_update_rate_reset(bfqd, rq);
 update_last_values:
 	bfqd->last_position = blk_rq_pos(rq) + blk_rq_sectors(rq);
+<<<<<<< HEAD
 	if (RQ_BFQQ(rq) == bfqd->in_service_queue)
 		bfqd->in_serv_last_pos = bfqd->last_position;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfqd->last_dispatch = now_ns;
 }
 
@@ -3112,6 +3447,7 @@ static bool bfq_bfqq_is_slow(struct bfq_data *bfqd, struct bfq_queue *bfqq,
  * whereas soft_rt_next_start is set to infinity for applications that do
  * not.
  *
+<<<<<<< HEAD
  * Unfortunately, even a greedy (i.e., I/O-bound) application may
  * happen to meet, occasionally or systematically, both the above
  * bandwidth and isochrony requirements. This may happen at least in
@@ -3184,15 +3520,55 @@ static bool bfq_bfqq_is_slow(struct bfq_data *bfqd, struct bfq_queue *bfqq,
  * bfqd->bfq_slice_idle plus a few jiffies. In particular, we add the
  * minimum number of jiffies for which the filter seems to be quite
  * precise also in embedded systems and KVM/QEMU virtual machines.
+=======
+ * Unfortunately, even a greedy application may happen to behave in an
+ * isochronous way if the CPU load is high. In fact, the application may
+ * stop issuing requests while the CPUs are busy serving other processes,
+ * then restart, then stop again for a while, and so on. In addition, if
+ * the disk achieves a low enough throughput with the request pattern
+ * issued by the application (e.g., because the request pattern is random
+ * and/or the device is slow), then the application may meet the above
+ * bandwidth requirement too. To prevent such a greedy application to be
+ * deemed as soft real-time, a further rule is used in the computation of
+ * soft_rt_next_start: soft_rt_next_start must be higher than the current
+ * time plus the maximum time for which the arrival of a request is waited
+ * for when a sync queue becomes idle, namely bfqd->bfq_slice_idle.
+ * This filters out greedy applications, as the latter issue instead their
+ * next request as soon as possible after the last one has been completed
+ * (in contrast, when a batch of requests is completed, a soft real-time
+ * application spends some time processing data).
+ *
+ * Unfortunately, the last filter may easily generate false positives if
+ * only bfqd->bfq_slice_idle is used as a reference time interval and one
+ * or both the following cases occur:
+ * 1) HZ is so low that the duration of a jiffy is comparable to or higher
+ *    than bfqd->bfq_slice_idle. This happens, e.g., on slow devices with
+ *    HZ=100.
+ * 2) jiffies, instead of increasing at a constant rate, may stop increasing
+ *    for a while, then suddenly 'jump' by several units to recover the lost
+ *    increments. This seems to happen, e.g., inside virtual machines.
+ * To address this issue, we do not use as a reference time interval just
+ * bfqd->bfq_slice_idle, but bfqd->bfq_slice_idle plus a few jiffies. In
+ * particular we add the minimum number of jiffies for which the filter
+ * seems to be quite precise also in embedded systems and KVM/QEMU virtual
+ * machines.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static unsigned long bfq_bfqq_softrt_next_start(struct bfq_data *bfqd,
 						struct bfq_queue *bfqq)
 {
+<<<<<<< HEAD
 	return max3(bfqq->soft_rt_next_start,
 		    bfqq->last_idle_bklogged +
 		    HZ * bfqq->service_from_backlogged /
 		    bfqd->bfq_wr_max_softrt_rate,
 		    jiffies + nsecs_to_jiffies(bfqq->bfqd->bfq_slice_idle) + 4);
+=======
+	return max(bfqq->last_idle_bklogged +
+		   HZ * bfqq->service_from_backlogged /
+		   bfqd->bfq_wr_max_softrt_rate,
+		   jiffies + nsecs_to_jiffies(bfqq->bfqd->bfq_slice_idle) + 4);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3237,6 +3613,20 @@ void bfq_bfqq_expire(struct bfq_data *bfqd,
 	slow = bfq_bfqq_is_slow(bfqd, bfqq, compensate, reason, &delta);
 
 	/*
+<<<<<<< HEAD
+=======
+	 * Increase service_from_backlogged before next statement,
+	 * because the possible next invocation of
+	 * bfq_bfqq_charge_time would likely inflate
+	 * entity->service. In contrast, service_from_backlogged must
+	 * contain real service, to enable the soft real-time
+	 * heuristic to correctly compute the bandwidth consumed by
+	 * bfqq.
+	 */
+	bfqq->service_from_backlogged += entity->service;
+
+	/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * As above explained, charge slow (typically seeky) and
 	 * timed-out queues with the time and not the service
 	 * received, to favor sequential workloads.
@@ -3282,6 +3672,26 @@ void bfq_bfqq_expire(struct bfq_data *bfqd,
 				bfq_bfqq_softrt_next_start(bfqd, bfqq);
 		else {
 			/*
+<<<<<<< HEAD
+=======
+			 * The application is still waiting for the
+			 * completion of one or more requests:
+			 * prevent it from possibly being incorrectly
+			 * deemed as soft real-time by setting its
+			 * soft_rt_next_start to infinity. In fact,
+			 * without this assignment, the application
+			 * would be incorrectly deemed as soft
+			 * real-time if:
+			 * 1) it issued a new request before the
+			 *    completion of all its in-flight
+			 *    requests, and
+			 * 2) at that time, its soft_rt_next_start
+			 *    happened to be in the past.
+			 */
+			bfqq->soft_rt_next_start =
+				bfq_greatest_from_now();
+			/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 * Schedule an update of soft_rt_next_start to when
 			 * the task may be discovered to be isochronous.
 			 */
@@ -3301,6 +3711,7 @@ void bfq_bfqq_expire(struct bfq_data *bfqd,
 	ref = bfqq->ref;
 	__bfq_bfqq_expire(bfqd, bfqq);
 
+<<<<<<< HEAD
 	if (ref == 1) /* bfqq is gone, no more actions on it */
 		return;
 
@@ -3337,6 +3748,13 @@ void bfq_bfqq_expire(struct bfq_data *bfqd,
 	entity = entity->parent;
 	for_each_entity(entity)
 		entity->service = 0;
+=======
+	/* mark bfqq as waiting a request only if a bic still points to it */
+	if (ref > 1 && !bfq_bfqq_busy(bfqq) &&
+	    reason != BFQQE_BUDGET_TIMEOUT &&
+	    reason != BFQQE_BUDGET_EXHAUSTED)
+		bfq_mark_bfqq_non_blocking_wait_rq(bfqq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -3394,7 +3812,11 @@ static bool bfq_may_expire_for_budg_timeout(struct bfq_queue *bfqq)
  * issues taken into account are not trivial. We discuss these issues
  * individually while introducing the variables.
  */
+<<<<<<< HEAD
 static bool bfq_better_to_idle(struct bfq_queue *bfqq)
+=======
+static bool bfq_bfqq_may_idle(struct bfq_queue *bfqq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bfq_data *bfqd = bfqq->bfqd;
 	bool rot_without_queueing =
@@ -3584,7 +4006,16 @@ static bool bfq_better_to_idle(struct bfq_queue *bfqq)
 	 * whether bfqq is being weight-raised, because
 	 * bfq_symmetric_scenario() does not take into account also
 	 * weight-raised queues (see comments on
+<<<<<<< HEAD
 	 * bfq_weights_tree_add()).
+=======
+	 * bfq_weights_tree_add()). In particular, if bfqq is being
+	 * weight-raised, it is important to idle only if there are
+	 * other, non-weight-raised queues that may steal throughput
+	 * to bfqq. Actually, we should be even more precise, and
+	 * differentiate between interactive weight raising and
+	 * soft real-time weight raising.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * As a side note, it is worth considering that the above
 	 * device-idling countermeasures may however fail in the
@@ -3596,7 +4027,12 @@ static bool bfq_better_to_idle(struct bfq_queue *bfqq)
 	 * to let requests be served in the desired order until all
 	 * the requests already queued in the device have been served.
 	 */
+<<<<<<< HEAD
 	asymmetric_scenario = bfqq->wr_coeff > 1 ||
+=======
+	asymmetric_scenario = (bfqq->wr_coeff > 1 &&
+			       bfqd->wr_busy_queues < bfqd->busy_queues) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		!bfq_symmetric_scenario(bfqd);
 
 	/*
@@ -3627,19 +4063,33 @@ static bool bfq_better_to_idle(struct bfq_queue *bfqq)
 }
 
 /*
+<<<<<<< HEAD
  * If the in-service queue is empty but the function bfq_better_to_idle
+=======
+ * If the in-service queue is empty but the function bfq_bfqq_may_idle
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * returns true, then:
  * 1) the queue must remain in service and cannot be expired, and
  * 2) the device must be idled to wait for the possible arrival of a new
  *    request for the queue.
+<<<<<<< HEAD
  * See the comments on the function bfq_better_to_idle for the reasons
  * why performing device idling is the best choice to boost the throughput
  * and preserve service guarantees when bfq_better_to_idle itself
+=======
+ * See the comments on the function bfq_bfqq_may_idle for the reasons
+ * why performing device idling is the best choice to boost the throughput
+ * and preserve service guarantees when bfq_bfqq_may_idle itself
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * returns true.
  */
 static bool bfq_bfqq_must_idle(struct bfq_queue *bfqq)
 {
+<<<<<<< HEAD
 	return RB_EMPTY_ROOT(&bfqq->sort_list) && bfq_better_to_idle(bfqq);
+=======
+	return RB_EMPTY_ROOT(&bfqq->sort_list) && bfq_bfqq_may_idle(bfqq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -3658,6 +4108,7 @@ static struct bfq_queue *bfq_select_queue(struct bfq_data *bfqd)
 
 	bfq_log_bfqq(bfqd, bfqq, "select_queue: already in-service queue");
 
+<<<<<<< HEAD
 	/*
 	 * Do not expire bfqq for budget timeout if bfqq may be about
 	 * to enjoy device idling. The reason why, in this case, we
@@ -3666,6 +4117,10 @@ static struct bfq_queue *bfq_select_queue(struct bfq_data *bfqd)
 	 * bfq_completed_request().
 	 */
 	if (bfq_may_expire_for_budg_timeout(bfqq) &&
+=======
+	if (bfq_may_expire_for_budg_timeout(bfqq) &&
+	    !bfq_bfqq_wait_request(bfqq) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !bfq_bfqq_must_idle(bfqq))
 		goto expire;
 
@@ -3714,6 +4169,10 @@ check_queue:
 				 */
 				bfq_clear_bfqq_wait_request(bfqq);
 				hrtimer_try_to_cancel(&bfqd->idle_slice_timer);
+<<<<<<< HEAD
+=======
+				bfqg_stats_update_idle_time(bfqq_group(bfqq));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			goto keep_queue;
 		}
@@ -3725,7 +4184,11 @@ check_queue:
 	 * may idle after their completion, then keep it anyway.
 	 */
 	if (bfq_bfqq_wait_request(bfqq) ||
+<<<<<<< HEAD
 	    (bfqq->dispatched != 0 && bfq_better_to_idle(bfqq))) {
+=======
+	    (bfqq->dispatched != 0 && bfq_bfqq_may_idle(bfqq))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bfqq = NULL;
 		goto keep_queue;
 	}
@@ -3777,6 +4240,7 @@ static void bfq_update_wr_data(struct bfq_data *bfqd, struct bfq_queue *bfqq)
 					       bfq_wr_duration(bfqd)))
 				bfq_bfqq_end_wr(bfqq);
 			else {
+<<<<<<< HEAD
 				switch_back_to_interactive_wr(bfqq, bfqd);
 				bfqq->entity.prio_changed = 1;
 			}
@@ -3787,6 +4251,16 @@ static void bfq_update_wr_data(struct bfq_data *bfqd, struct bfq_queue *bfqq)
 			/* see comments on max_service_from_wr */
 			bfq_bfqq_end_wr(bfqq);
 		}
+=======
+				/* switch back to interactive wr */
+				bfqq->wr_coeff = bfqd->bfq_wr_coeff;
+				bfqq->wr_cur_max_time = bfq_wr_duration(bfqd);
+				bfqq->last_wr_start_finish =
+					bfqq->wr_start_at_switch_to_srt;
+				bfqq->entity.prio_changed = 1;
+			}
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/*
 	 * To improve latency (for this or other queues), immediately
@@ -3882,6 +4356,7 @@ static struct request *__bfq_dispatch_request(struct blk_mq_hw_ctx *hctx)
 		}
 
 		/*
+<<<<<<< HEAD
 		 * We exploit the bfq_finish_requeue_request hook to
 		 * decrement rq_in_driver, but
 		 * bfq_finish_requeue_request will not be invoked on
@@ -3898,6 +4373,22 @@ static struct request *__bfq_dispatch_request(struct blk_mq_hw_ctx *hctx)
 		 * exploiting this hook, we could 1) increment
 		 * rq_in_driver here, and 2) decrement it in
 		 * bfq_finish_requeue_request. Such a solution would
+=======
+		 * We exploit the put_rq_private hook to decrement
+		 * rq_in_driver, but put_rq_private will not be
+		 * invoked on this request. So, to avoid unbalance,
+		 * just start this request, without incrementing
+		 * rq_in_driver. As a negative consequence,
+		 * rq_in_driver is deceptively lower than it should be
+		 * while this request is in service. This may cause
+		 * bfq_schedule_dispatch to be invoked uselessly.
+		 *
+		 * As for implementing an exact solution, the
+		 * put_request hook, if defined, is probably invoked
+		 * also on this request. So, by exploiting this hook,
+		 * we could 1) increment rq_in_driver here, and 2)
+		 * decrement it in put_request. Such a solution would
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * let the value of the counter be always accurate,
 		 * but it would entail using an extra interface
 		 * function. This cost seems higher than the benefit,
@@ -3943,6 +4434,7 @@ exit:
 	return rq;
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_BFQ_GROUP_IOSCHED) && defined(CONFIG_DEBUG_BLK_CGROUP)
 static void bfq_update_dispatch_stats(struct request_queue *q,
 				      struct request *rq,
@@ -3991,10 +4483,13 @@ static inline void bfq_update_dispatch_stats(struct request_queue *q,
 					     bool idle_timer_disabled) {}
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct request *bfq_dispatch_request(struct blk_mq_hw_ctx *hctx)
 {
 	struct bfq_data *bfqd = hctx->queue->elevator->elevator_data;
 	struct request *rq;
+<<<<<<< HEAD
 	struct bfq_queue *in_serv_queue;
 	bool waiting_rq, idle_timer_disabled;
 
@@ -4013,6 +4508,14 @@ static struct request *bfq_dispatch_request(struct blk_mq_hw_ctx *hctx)
 	bfq_update_dispatch_stats(hctx->queue, rq,
 				  idle_timer_disabled);
 
+=======
+
+	spin_lock_irq(&bfqd->lock);
+
+	rq = __bfq_dispatch_request(hctx);
+	spin_unlock_irq(&bfqd->lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rq;
 }
 
@@ -4037,6 +4540,7 @@ void bfq_put_queue(struct bfq_queue *bfqq)
 	if (bfqq->ref)
 		return;
 
+<<<<<<< HEAD
 	if (!hlist_unhashed(&bfqq->burst_list_node)) {
 		hlist_del_init(&bfqq->burst_list_node);
 		/*
@@ -4068,6 +4572,18 @@ void bfq_put_queue(struct bfq_queue *bfqq)
 		if (bfqq->bic && bfqq->bfqd->burst_size > 0)
 			bfqq->bfqd->burst_size--;
 	}
+=======
+	if (bfq_bfqq_sync(bfqq))
+		/*
+		 * The fact that this queue is being destroyed does not
+		 * invalidate the fact that this queue may have been
+		 * activated during the current burst. As a consequence,
+		 * although the queue does not exist anymore, and hence
+		 * needs to be removed from the burst list if there,
+		 * the burst size has not to be decremented.
+		 */
+		hlist_del_init(&bfqq->burst_list_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kmem_cache_free(bfq_pool, bfqq);
 #ifdef CONFIG_BFQ_GROUP_IOSCHED
@@ -4262,6 +4778,7 @@ static void bfq_init_bfqq(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 	bfqq->split_time = bfq_smallest_from_now();
 
 	/*
+<<<<<<< HEAD
 	 * To not forget the possibly high bandwidth consumed by a
 	 * process/queue in the recent past,
 	 * bfq_bfqq_softrt_next_start() returns a value at least equal
@@ -4271,6 +4788,12 @@ static void bfq_init_bfqq(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 	 * no bandwidth so far.
 	 */
 	bfqq->soft_rt_next_start = jiffies;
+=======
+	 * Set to the value for which bfqq will not be deemed as
+	 * soft rt when it becomes backlogged.
+	 */
+	bfqq->soft_rt_next_start = bfq_greatest_from_now();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* first request is almost certainly seeky */
 	bfqq->seek_history = 1;
@@ -4476,6 +4999,10 @@ static void bfq_rq_enqueued(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 		 */
 		bfq_clear_bfqq_wait_request(bfqq);
 		hrtimer_try_to_cancel(&bfqd->idle_slice_timer);
+<<<<<<< HEAD
+=======
+		bfqg_stats_update_idle_time(bfqq_group(bfqq));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * The queue is not empty, because a new request just
@@ -4490,12 +5017,19 @@ static void bfq_rq_enqueued(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 	}
 }
 
+<<<<<<< HEAD
 /* returns true if it causes the idle timer to be disabled */
 static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
 {
 	struct bfq_queue *bfqq = RQ_BFQQ(rq),
 		*new_bfqq = bfq_setup_cooperator(bfqd, bfqq, rq, true);
 	bool waiting, idle_timer_disabled = false;
+=======
+static void __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
+{
+	struct bfq_queue *bfqq = RQ_BFQQ(rq),
+		*new_bfqq = bfq_setup_cooperator(bfqd, bfqq, rq, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (new_bfqq) {
 		if (bic_to_bfqq(RQ_BIC(rq), 1) != bfqq)
@@ -4507,6 +5041,10 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
 		new_bfqq->allocated++;
 		bfqq->allocated--;
 		new_bfqq->ref++;
+<<<<<<< HEAD
+=======
+		bfq_clear_bfqq_just_created(bfqq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If the bic associated with the process
 		 * issuing this request still points to bfqq
@@ -4518,8 +5056,11 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
 		if (bic_to_bfqq(RQ_BIC(rq), 1) == bfqq)
 			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
 					bfqq, new_bfqq);
+<<<<<<< HEAD
 
 		bfq_clear_bfqq_just_created(bfqq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * rq is about to be enqueued into new_bfqq,
 		 * release rq reference on bfqq
@@ -4529,14 +5070,19 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
 		bfqq = new_bfqq;
 	}
 
+<<<<<<< HEAD
 	waiting = bfqq && bfq_bfqq_wait_request(bfqq);
 	bfq_add_request(rq);
 	idle_timer_disabled = waiting && !bfq_bfqq_wait_request(bfqq);
+=======
+	bfq_add_request(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rq->fifo_time = ktime_get_ns() + bfqd->bfq_fifo_expire[rq_is_sync(rq)];
 	list_add_tail(&rq->queuelist, &bfqq->fifo);
 
 	bfq_rq_enqueued(bfqd, bfqq, rq);
+<<<<<<< HEAD
 
 	return idle_timer_disabled;
 }
@@ -4573,14 +5119,21 @@ static inline void bfq_update_insert_stats(struct request_queue *q,
 					   unsigned int cmd_flags) {}
 #endif
 
+=======
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void bfq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 			       bool at_head)
 {
 	struct request_queue *q = hctx->queue;
 	struct bfq_data *bfqd = q->elevator->elevator_data;
+<<<<<<< HEAD
 	struct bfq_queue *bfqq;
 	bool idle_timer_disabled = false;
 	unsigned int cmd_flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&bfqd->lock);
 	if (blk_mq_sched_try_insert_merge(q, rq)) {
@@ -4593,13 +5146,18 @@ static void bfq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 	blk_mq_sched_request_inserted(rq);
 
 	spin_lock_irq(&bfqd->lock);
+<<<<<<< HEAD
 	bfqq = bfq_init_rq(rq);
 	if (!bfqq || at_head || blk_rq_is_passthrough(rq)) {
+=======
+	if (at_head || blk_rq_is_passthrough(rq)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (at_head)
 			list_add(&rq->queuelist, &bfqd->dispatch);
 		else
 			list_add_tail(&rq->queuelist, &bfqd->dispatch);
 	} else {
+<<<<<<< HEAD
 		idle_timer_disabled = __bfq_insert_request(bfqd, rq);
 		/*
 		 * Update bfqq, because, if a queue merge has occurred
@@ -4607,6 +5165,9 @@ static void bfq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 		 * redirected into a new queue.
 		 */
 		bfqq = RQ_BFQQ(rq);
+=======
+		__bfq_insert_request(bfqd, rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (rq_mergeable(rq)) {
 			elv_rqhash_add(q, rq);
@@ -4615,6 +5176,7 @@ static void bfq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 		}
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Cache cmd_flags before releasing scheduler lock, because rq
 	 * may disappear afterwards (for example, because of a request
@@ -4626,6 +5188,9 @@ static void bfq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 
 	bfq_update_insert_stats(q, bfqq, idle_timer_disabled,
 				cmd_flags);
+=======
+	spin_unlock_irq(&bfqd->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bfq_insert_requests(struct blk_mq_hw_ctx *hctx,
@@ -4684,7 +5249,12 @@ static void bfq_completed_request(struct bfq_queue *bfqq, struct bfq_data *bfqd)
 		 */
 		bfqq->budget_timeout = jiffies;
 
+<<<<<<< HEAD
 		bfq_weights_tree_remove(bfqd, bfqq);
+=======
+		bfq_weights_tree_remove(bfqd, &bfqq->entity,
+					&bfqd->queue_weights_tree);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	now_ns = ktime_get_ns();
@@ -4738,6 +5308,7 @@ static void bfq_completed_request(struct bfq_queue *bfqq, struct bfq_data *bfqd)
 	 * or if we want to idle in case it has no pending requests.
 	 */
 	if (bfqd->in_service_queue == bfqq) {
+<<<<<<< HEAD
 		if (bfq_bfqq_must_idle(bfqq)) {
 			if (bfqq->dispatched == 0)
 				bfq_arm_slice_timer(bfqd);
@@ -4764,13 +5335,21 @@ static void bfq_completed_request(struct bfq_queue *bfqq, struct bfq_data *bfqd)
 			 * zero. This would expose bfqq to violation
 			 * of its reserved service guarantees.
 			 */
+=======
+		if (bfqq->dispatched == 0 && bfq_bfqq_must_idle(bfqq)) {
+			bfq_arm_slice_timer(bfqd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		} else if (bfq_may_expire_for_budg_timeout(bfqq))
 			bfq_bfqq_expire(bfqd, bfqq, false,
 					BFQQE_BUDGET_TIMEOUT);
 		else if (RB_EMPTY_ROOT(&bfqq->sort_list) &&
 			 (bfqq->dispatched == 0 ||
+<<<<<<< HEAD
 			  !bfq_better_to_idle(bfqq)))
+=======
+			  !bfq_bfqq_may_idle(bfqq)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bfq_bfqq_expire(bfqd, bfqq, false,
 					BFQQE_NO_MORE_REQUESTS);
 	}
@@ -4779,13 +5358,18 @@ static void bfq_completed_request(struct bfq_queue *bfqq, struct bfq_data *bfqd)
 		bfq_schedule_dispatch(bfqd);
 }
 
+<<<<<<< HEAD
 static void bfq_finish_requeue_request_body(struct bfq_queue *bfqq)
+=======
+static void bfq_put_rq_priv_body(struct bfq_queue *bfqq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	bfqq->allocated--;
 
 	bfq_put_queue(bfqq);
 }
 
+<<<<<<< HEAD
 /*
  * Handle either a requeue or a finish for rq. The things to do are
  * the same in both cases: all references to rq are to be dropped. In
@@ -4817,12 +5401,28 @@ static void bfq_finish_requeue_request(struct request *rq)
 	if (!rq->elv.icq || !bfqq)
 		return;
 
+=======
+static void bfq_finish_request(struct request *rq)
+{
+	struct bfq_queue *bfqq;
+	struct bfq_data *bfqd;
+
+	if (!rq->elv.icq)
+		return;
+
+	bfqq = RQ_BFQQ(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfqd = bfqq->bfqd;
 
 	if (rq->rq_flags & RQF_STARTED)
 		bfqg_stats_update_completion(bfqq_group(bfqq),
+<<<<<<< HEAD
 					     rq->start_time_ns,
 					     rq->io_start_time_ns,
+=======
+					     rq_start_time_ns(rq),
+					     rq_io_start_time_ns(rq),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     rq->cmd_flags);
 
 	if (likely(rq->rq_flags & RQF_STARTED)) {
@@ -4831,14 +5431,22 @@ static void bfq_finish_requeue_request(struct request *rq)
 		spin_lock_irqsave(&bfqd->lock, flags);
 
 		bfq_completed_request(bfqq, bfqd);
+<<<<<<< HEAD
 		bfq_finish_requeue_request_body(bfqq);
+=======
+		bfq_put_rq_priv_body(bfqq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_unlock_irqrestore(&bfqd->lock, flags);
 	} else {
 		/*
 		 * Request rq may be still/already in the scheduler,
+<<<<<<< HEAD
 		 * in which case we need to remove it (this should
 		 * never happen in case of requeue). And we cannot
+=======
+		 * in which case we need to remove it. And we cannot
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * defer such a check and removal, to avoid
 		 * inconsistencies in the time interval from the end
 		 * of this function to the start of the deferred work.
@@ -4848,6 +5456,7 @@ static void bfq_finish_requeue_request(struct request *rq)
 		 * lock is held.
 		 */
 
+<<<<<<< HEAD
 		if (!RB_EMPTY_NODE(&rq->rb_node)) {
 			bfq_remove_request(rq->q, rq);
 			bfqg_stats_update_io_remove(bfqq_group(bfqq),
@@ -4873,6 +5482,13 @@ static void bfq_finish_requeue_request(struct request *rq)
 	 * requests (which are not re-inserted into bfq internal
 	 * queues).
 	 */
+=======
+		if (!RB_EMPTY_NODE(&rq->rb_node))
+			bfq_remove_request(rq->q, rq);
+		bfq_put_rq_priv_body(bfqq);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rq->elv.priv[0] = NULL;
 	rq->elv.priv[1] = NULL;
 }
@@ -4927,6 +5543,7 @@ static struct bfq_queue *bfq_get_bfqq_handle_split(struct bfq_data *bfqd,
 		else {
 			bfq_clear_bfqq_in_large_burst(bfqq);
 			if (bic->was_in_burst_list)
+<<<<<<< HEAD
 				/*
 				 * If bfqq was in the current
 				 * burst list before being
@@ -4955,6 +5572,8 @@ static struct bfq_queue *bfq_get_bfqq_handle_split(struct bfq_data *bfqd,
 				 * harm the detection of large
 				 * bursts significantly.
 				 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				hlist_add_head(&bfqq->burst_list_node,
 					       &bfqd->burst_list);
 		}
@@ -4965,6 +5584,7 @@ static struct bfq_queue *bfq_get_bfqq_handle_split(struct bfq_data *bfqd,
 }
 
 /*
+<<<<<<< HEAD
  * Only reset private fields. The actual request preparation will be
  * performed by bfq_init_rq, when rq is either inserted or merged. See
  * comments on bfq_init_rq for the reason behind this delayed
@@ -5007,6 +5627,13 @@ static struct bfq_queue *bfq_init_rq(struct request *rq)
 {
 	struct request_queue *q = rq->q;
 	struct bio *bio = rq->bio;
+=======
+ * Allocate bfq data structures associated with this request.
+ */
+static void bfq_prepare_request(struct request *rq, struct bio *bio)
+{
+	struct request_queue *q = rq->q;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bfq_data *bfqd = q->elevator->elevator_data;
 	struct bfq_io_cq *bic;
 	const int is_sync = rq_is_sync(rq);
@@ -5014,6 +5641,7 @@ static struct bfq_queue *bfq_init_rq(struct request *rq)
 	bool new_queue = false;
 	bool bfqq_already_existing = false, split = false;
 
+<<<<<<< HEAD
 	if (unlikely(!rq->elv.icq))
 		return NULL;
 
@@ -5029,6 +5657,22 @@ static struct bfq_queue *bfq_init_rq(struct request *rq)
 
 	bic = icq_to_bic(rq->elv.icq);
 
+=======
+	/*
+	 * Even if we don't have an icq attached, we should still clear
+	 * the scheduler pointers, as they might point to previously
+	 * allocated bic/bfqq structs.
+	 */
+	if (!rq->elv.icq) {
+		rq->elv.priv[0] = rq->elv.priv[1] = NULL;
+		return;
+	}
+
+	bic = icq_to_bic(rq->elv.icq);
+
+	spin_lock_irq(&bfqd->lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfq_check_ioprio_change(bic, bio);
 
 	bfq_bic_update_cgroup(bic, bio);
@@ -5087,7 +5731,11 @@ static struct bfq_queue *bfq_init_rq(struct request *rq)
 	if (unlikely(bfq_bfqq_just_created(bfqq)))
 		bfq_handle_burst(bfqd, bfqq);
 
+<<<<<<< HEAD
 	return bfqq;
+=======
+	spin_unlock_irq(&bfqd->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -5194,6 +5842,7 @@ void bfq_put_async_queues(struct bfq_data *bfqd, struct bfq_group *bfqg)
 	__bfq_put_async_bfqq(bfqd, &bfqg->async_idle_bfqq);
 }
 
+<<<<<<< HEAD
 /*
  * See the comments on bfq_limit_depth for the purpose of
  * the depths set in the function. Return minimum shallow depth we'll use.
@@ -5257,6 +5906,8 @@ static int bfq_init_hctx(struct blk_mq_hw_ctx *hctx, unsigned int index)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void bfq_exit_queue(struct elevator_queue *e)
 {
 	struct bfq_data *bfqd = e->elevator_data;
@@ -5272,9 +5923,12 @@ static void bfq_exit_queue(struct elevator_queue *e)
 	hrtimer_cancel(&bfqd->idle_slice_timer);
 
 #ifdef CONFIG_BFQ_GROUP_IOSCHED
+<<<<<<< HEAD
 	/* release oom-queue reference to root group */
 	bfqg_and_blkg_put(bfqd->root_group);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blkcg_deactivate_policy(bfqd->queue, &blkcg_policy_bfq);
 #else
 	spin_lock_irq(&bfqd->lock);
@@ -5394,12 +6048,23 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_type *e)
 	bfqd->wr_busy_queues = 0;
 
 	/*
+<<<<<<< HEAD
 	 * Begin by assuming, optimistically, that the device peak
 	 * rate is equal to 2/3 of the highest reference rate.
 	 */
 	bfqd->rate_dur_prod = ref_rate[blk_queue_nonrot(bfqd->queue)] *
 		ref_wr_duration[blk_queue_nonrot(bfqd->queue)];
 	bfqd->peak_rate = ref_rate[blk_queue_nonrot(bfqd->queue)] * 2 / 3;
+=======
+	 * Begin by assuming, optimistically, that the device is a
+	 * high-speed one, and that its peak rate is equal to 2/3 of
+	 * the highest reference rate.
+	 */
+	bfqd->RT_prod = R_fast[blk_queue_nonrot(bfqd->queue)] *
+			T_fast[blk_queue_nonrot(bfqd->queue)];
+	bfqd->peak_rate = R_fast[blk_queue_nonrot(bfqd->queue)] * 2 / 3;
+	bfqd->device_speed = BFQ_BFQD_FAST;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&bfqd->lock);
 
@@ -5433,6 +6098,7 @@ out_free:
 	return -ENOMEM;
 }
 
+<<<<<<< HEAD
 static void bfq_registered_queue(struct request_queue *q)
 {
 	struct elevator_queue *e = q->elevator;
@@ -5445,6 +6111,8 @@ static void bfq_registered_queue(struct request_queue *q)
 		bfqd->bfq_slice_idle = 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void bfq_slab_kill(void)
 {
 	kmem_cache_destroy(bfq_pool);
@@ -5673,10 +6341,15 @@ static struct elv_fs_entry bfq_attrs[] = {
 
 static struct elevator_type iosched_bfq_mq = {
 	.ops.mq = {
+<<<<<<< HEAD
 		.limit_depth		= bfq_limit_depth,
 		.prepare_request	= bfq_prepare_request,
 		.requeue_request        = bfq_finish_requeue_request,
 		.finish_request		= bfq_finish_requeue_request,
+=======
+		.prepare_request	= bfq_prepare_request,
+		.finish_request		= bfq_finish_request,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.exit_icq		= bfq_exit_icq,
 		.insert_requests	= bfq_insert_requests,
 		.dispatch_request	= bfq_dispatch_request,
@@ -5688,11 +6361,16 @@ static struct elevator_type iosched_bfq_mq = {
 		.requests_merged	= bfq_requests_merged,
 		.request_merged		= bfq_request_merged,
 		.has_work		= bfq_has_work,
+<<<<<<< HEAD
 		.depth_updated		= bfq_depth_updated,
 		.init_hctx		= bfq_init_hctx,
 		.init_sched		= bfq_init_queue,
 		.exit_sched		= bfq_exit_queue,
 		.elevator_registered_fn = bfq_registered_queue,
+=======
+		.init_sched		= bfq_init_queue,
+		.exit_sched		= bfq_exit_queue,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.uses_mq =		true,
@@ -5721,8 +6399,13 @@ static int __init bfq_init(void)
 	/*
 	 * Times to load large popular applications for the typical
 	 * systems installed on the reference devices (see the
+<<<<<<< HEAD
 	 * comments before the definition of the next
 	 * array). Actually, we use slightly lower values, as the
+=======
+	 * comments before the definitions of the next two
+	 * arrays). Actually, we use slightly slower values, as the
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * estimated peak rate tends to be smaller than the actual
 	 * peak rate.  The reason for this last fact is that estimates
 	 * are computed over much shorter time intervals than the long
@@ -5731,8 +6414,30 @@ static int __init bfq_init(void)
 	 * scheduler cannot rely on a peak-rate-evaluation workload to
 	 * be run for a long time.
 	 */
+<<<<<<< HEAD
 	ref_wr_duration[0] = msecs_to_jiffies(7000); /* actually 8 sec */
 	ref_wr_duration[1] = msecs_to_jiffies(2500); /* actually 3 sec */
+=======
+	T_slow[0] = msecs_to_jiffies(3500); /* actually 4 sec */
+	T_slow[1] = msecs_to_jiffies(6000); /* actually 6.5 sec */
+	T_fast[0] = msecs_to_jiffies(7000); /* actually 8 sec */
+	T_fast[1] = msecs_to_jiffies(2500); /* actually 3 sec */
+
+	/*
+	 * Thresholds that determine the switch between speed classes
+	 * (see the comments before the definition of the array
+	 * device_speed_thresh). These thresholds are biased towards
+	 * transitions to the fast class. This is safer than the
+	 * opposite bias. In fact, a wrong transition to the slow
+	 * class results in short weight-raising periods, because the
+	 * speed of the device then tends to be higher that the
+	 * reference peak rate. On the opposite end, a wrong
+	 * transition to the fast class tends to increase
+	 * weight-raising periods, because of the opposite reason.
+	 */
+	device_speed_thresh[0] = (4 * R_slow[0]) / 3;
+	device_speed_thresh[1] = (4 * R_slow[1]) / 3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = elv_register(&iosched_bfq_mq);
 	if (ret)

@@ -27,6 +27,10 @@ static inline unsigned __sl_cas(volatile unsigned *p, unsigned old, unsigned new
  */
 
 #define arch_spin_is_locked(x)		((x)->lock <= 0)
+<<<<<<< HEAD
+=======
+#define arch_spin_lock_flags(lock, flags) arch_spin_lock(lock)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void arch_spin_lock(arch_spinlock_t *lock)
 {
@@ -52,6 +56,21 @@ static inline int arch_spin_trylock(arch_spinlock_t *lock)
  * read-locks.
  */
 
+<<<<<<< HEAD
+=======
+/**
+ * read_can_lock - would read_trylock() succeed?
+ * @lock: the rwlock in question.
+ */
+#define arch_read_can_lock(x)	((x)->lock > 0)
+
+/**
+ * write_can_lock - would write_trylock() succeed?
+ * @lock: the rwlock in question.
+ */
+#define arch_write_can_lock(x)	((x)->lock == RW_LOCK_BIAS)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void arch_read_lock(arch_rwlock_t *rw)
 {
 	unsigned old;
@@ -89,4 +108,14 @@ static inline int arch_write_trylock(arch_rwlock_t *rw)
 	return __sl_cas(&rw->lock, RW_LOCK_BIAS, 0) == RW_LOCK_BIAS;
 }
 
+<<<<<<< HEAD
+=======
+#define arch_read_lock_flags(lock, flags) arch_read_lock(lock)
+#define arch_write_lock_flags(lock, flags) arch_write_lock(lock)
+
+#define arch_spin_relax(lock)	cpu_relax()
+#define arch_read_relax(lock)	cpu_relax()
+#define arch_write_relax(lock)	cpu_relax()
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASM_SH_SPINLOCK_CAS_H */

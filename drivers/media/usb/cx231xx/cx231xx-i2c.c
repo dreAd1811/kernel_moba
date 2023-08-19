@@ -51,7 +51,11 @@ do {							\
 	if (i2c_debug >= lvl) {				\
 		printk(KERN_DEBUG "%s at %s: " fmt,	\
 		       dev->name, __func__ , ##args);	\
+<<<<<<< HEAD
       }							\
+=======
+      } 						\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while (0)
 
 static inline int get_real_i2c_port(struct cx231xx *dev, int bus_nr)
@@ -376,6 +380,11 @@ static int cx231xx_i2c_xfer(struct i2c_adapter *i2c_adap,
 	struct cx231xx *dev = bus->dev;
 	int addr, rc, i, byte;
 
+<<<<<<< HEAD
+=======
+	if (num <= 0)
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&dev->i2c_lock);
 	for (i = 0; i < num; i++) {
 

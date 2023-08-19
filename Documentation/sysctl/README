@@ -60,7 +60,11 @@ debug/		<empty>
 dev/		device specific information (eg dev/cdrom/info)
 fs/		specific filesystems
 		filehandle, inode, dentry and quota tuning
+<<<<<<< HEAD
 		binfmt_misc <Documentation/admin-guide/binfmt-misc.rst>
+=======
+		binfmt_misc <Documentation/binfmt_misc.txt>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 kernel/		global kernel info / tuning
 		miscellaneous stuff
 net/		networking stuff, for documentation look in:

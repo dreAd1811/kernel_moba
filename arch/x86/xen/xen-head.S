@@ -89,9 +89,13 @@ END(hypercall_page)
 	ELFNOTE(Xen, XEN_ELFNOTE_FEATURES,
 		.ascii "!writable_page_tables|pae_pgdir_above_4gb")
 	ELFNOTE(Xen, XEN_ELFNOTE_SUPPORTED_FEATURES,
+<<<<<<< HEAD
 		.long (1 << XENFEAT_writable_page_tables) |       \
 		      (1 << XENFEAT_dom0) |                       \
 		      (1 << XENFEAT_linux_rsdp_unrestricted))
+=======
+		.long (1 << XENFEAT_writable_page_tables) | (1 << XENFEAT_dom0))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ELFNOTE(Xen, XEN_ELFNOTE_PAE_MODE,       .asciz "yes")
 	ELFNOTE(Xen, XEN_ELFNOTE_LOADER,         .asciz "generic")
 	ELFNOTE(Xen, XEN_ELFNOTE_L1_MFN_VALID,

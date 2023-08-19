@@ -122,8 +122,13 @@ struct PP_StateSoftwareAlgorithmBlock {
  * Type to hold a temperature range.
  */
 struct PP_TemperatureRange {
+<<<<<<< HEAD
 	int min;
 	int max;
+=======
+	uint32_t min;
+	uint32_t max;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct PP_StateValidationBlock {

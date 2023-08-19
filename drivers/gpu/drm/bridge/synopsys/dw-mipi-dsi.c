@@ -1,8 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (c) 2016, Fuzhou Rockchip Electronics Co., Ltd
  * Copyright (C) STMicroelectronics SA 2017
  *
+<<<<<<< HEAD
+=======
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Modified by Philippe Cornu <philippe.cornu@st.com>
  * This generic Synopsys DesignWare MIPI DSI host driver is based on the
  * Rockchip version from rockchip/dw-mipi-dsi.c with phy & bridge APIs.
@@ -25,16 +36,21 @@
 #include <drm/bridge/dw_mipi_dsi.h>
 #include <video/mipi_display.h>
 
+<<<<<<< HEAD
 #define HWVER_131			0x31333100	/* IP version 1.31 */
 
 #define DSI_VERSION			0x00
 #define VERSION				GENMASK(31, 8)
 
+=======
+#define DSI_VERSION			0x00
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DSI_PWR_UP			0x04
 #define RESET				0
 #define POWERUP				BIT(0)
 
 #define DSI_CLKMGR_CFG			0x08
+<<<<<<< HEAD
 #define TO_CLK_DIVISION(div)		(((div) & 0xff) << 8)
 #define TX_ESC_CLK_DIVISION(div)	((div) & 0xff)
 
@@ -43,6 +59,16 @@
 
 #define DSI_DPI_COLOR_CODING		0x10
 #define LOOSELY18_EN			BIT(8)
+=======
+#define TO_CLK_DIVIDSION(div)		(((div) & 0xff) << 8)
+#define TX_ESC_CLK_DIVIDSION(div)	(((div) & 0xff) << 0)
+
+#define DSI_DPI_VCID			0x0c
+#define DPI_VID(vid)			(((vid) & 0x3) << 0)
+
+#define DSI_DPI_COLOR_CODING		0x10
+#define EN18_LOOSELY			BIT(8)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DPI_COLOR_CODING_16BIT_1	0x0
 #define DPI_COLOR_CODING_16BIT_2	0x1
 #define DPI_COLOR_CODING_16BIT_3	0x2
@@ -61,6 +87,7 @@
 #define OUTVACT_LPCMD_TIME(p)		(((p) & 0xff) << 16)
 #define INVACT_LPCMD_TIME(p)		((p) & 0xff)
 
+<<<<<<< HEAD
 #define DSI_DBI_VCID			0x1c
 #define DSI_DBI_CFG			0x20
 #define DSI_DBI_PARTITIONING_EN		0x24
@@ -74,12 +101,27 @@
 #define EOTP_TX_EN			BIT(0)
 
 #define DSI_GEN_VCID			0x30
+=======
+#define DSI_DBI_CFG			0x20
+#define DSI_DBI_CMDSIZE			0x28
+
+#define DSI_PCKHDL_CFG			0x2c
+#define EN_CRC_RX			BIT(4)
+#define EN_ECC_RX			BIT(3)
+#define EN_BTA				BIT(2)
+#define EN_EOTP_RX			BIT(1)
+#define EN_EOTP_TX			BIT(0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DSI_MODE_CFG			0x34
 #define ENABLE_VIDEO_MODE		0
 #define ENABLE_CMD_MODE			BIT(0)
 
 #define DSI_VID_MODE_CFG		0x38
+<<<<<<< HEAD
+=======
+#define FRAME_BTA_ACK			BIT(14)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ENABLE_LOW_POWER		(0x3f << 8)
 #define ENABLE_LOW_POWER_MASK		(0x3f << 8)
 #define VID_MODE_TYPE_NON_BURST_SYNC_PULSES	0x0
@@ -88,6 +130,7 @@
 #define VID_MODE_TYPE_MASK			0x3
 
 #define DSI_VID_PKT_SIZE		0x3c
+<<<<<<< HEAD
 #define VID_PKT_SIZE(p)			((p) & 0x3fff)
 
 #define DSI_VID_NUM_CHUNKS		0x40
@@ -95,6 +138,10 @@
 
 #define DSI_VID_NULL_SIZE		0x44
 #define VID_NULL_SIZE(b)		((b) & 0x1fff)
+=======
+#define VID_PKT_SIZE(p)			(((p) & 0x3fff) << 0)
+#define VID_PKT_MAX_SIZE		0x3fff
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DSI_VID_HSA_TIME		0x48
 #define DSI_VID_HBP_TIME		0x4c
@@ -103,8 +150,11 @@
 #define DSI_VID_VBP_LINES		0x58
 #define DSI_VID_VFP_LINES		0x5c
 #define DSI_VID_VACTIVE_LINES		0x60
+<<<<<<< HEAD
 #define DSI_EDPI_CMD_SIZE		0x64
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DSI_CMD_MODE_CFG		0x68
 #define MAX_RD_PKT_SIZE_LP		BIT(24)
 #define DCS_LW_TX_LP			BIT(19)
@@ -118,8 +168,13 @@
 #define GEN_SW_2P_TX_LP			BIT(10)
 #define GEN_SW_1P_TX_LP			BIT(9)
 #define GEN_SW_0P_TX_LP			BIT(8)
+<<<<<<< HEAD
 #define ACK_RQST_EN			BIT(1)
 #define TEAR_FX_EN			BIT(0)
+=======
+#define EN_ACK_RQST			BIT(1)
+#define EN_TEAR_FX			BIT(0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CMD_MODE_ALL_LP			(MAX_RD_PKT_SIZE_LP | \
 					 DCS_LW_TX_LP | \
@@ -135,6 +190,7 @@
 					 GEN_SW_0P_TX_LP)
 
 #define DSI_GEN_HDR			0x6c
+<<<<<<< HEAD
 #define DSI_GEN_PLD_DATA		0x70
 
 #define DSI_CMD_PKT_STATUS		0x74
@@ -145,17 +201,38 @@
 #define GEN_PLD_W_EMPTY			BIT(2)
 #define GEN_CMD_FULL			BIT(1)
 #define GEN_CMD_EMPTY			BIT(0)
+=======
+#define GEN_HDATA(data)			(((data) & 0xffff) << 8)
+#define GEN_HDATA_MASK			(0xffff << 8)
+#define GEN_HTYPE(type)			(((type) & 0xff) << 0)
+#define GEN_HTYPE_MASK			0xff
+
+#define DSI_GEN_PLD_DATA		0x70
+
+#define DSI_CMD_PKT_STATUS		0x74
+#define GEN_CMD_EMPTY			BIT(0)
+#define GEN_CMD_FULL			BIT(1)
+#define GEN_PLD_W_EMPTY			BIT(2)
+#define GEN_PLD_W_FULL			BIT(3)
+#define GEN_PLD_R_EMPTY			BIT(4)
+#define GEN_PLD_R_FULL			BIT(5)
+#define GEN_RD_CMD_BUSY			BIT(6)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DSI_TO_CNT_CFG			0x78
 #define HSTX_TO_CNT(p)			(((p) & 0xffff) << 16)
 #define LPRX_TO_CNT(p)			((p) & 0xffff)
 
+<<<<<<< HEAD
 #define DSI_HS_RD_TO_CNT		0x7c
 #define DSI_LP_RD_TO_CNT		0x80
 #define DSI_HS_WR_TO_CNT		0x84
 #define DSI_LP_WR_TO_CNT		0x88
 #define DSI_BTA_TO_CNT			0x8c
 
+=======
+#define DSI_BTA_TO_CNT			0x8c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DSI_LPCLK_CTRL			0x94
 #define AUTO_CLKLANE_CTRL		BIT(1)
 #define PHY_TXREQUESTCLKHS		BIT(0)
@@ -168,8 +245,11 @@
 #define PHY_HS2LP_TIME(lbcc)		(((lbcc) & 0xff) << 24)
 #define PHY_LP2HS_TIME(lbcc)		(((lbcc) & 0xff) << 16)
 #define MAX_RD_TIME(lbcc)		((lbcc) & 0x7fff)
+<<<<<<< HEAD
 #define PHY_HS2LP_TIME_V131(lbcc)	(((lbcc) & 0x3ff) << 16)
 #define PHY_LP2HS_TIME_V131(lbcc)	((lbcc) & 0x3ff)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DSI_PHY_RSTZ			0xa0
 #define PHY_DISFORCEPLL			0
@@ -182,6 +262,7 @@
 #define PHY_UNSHUTDOWNZ			BIT(0)
 
 #define DSI_PHY_IF_CFG			0xa4
+<<<<<<< HEAD
 #define PHY_STOP_WAIT_TIME(cycle)	(((cycle) & 0xff) << 8)
 #define N_LANES(n)			(((n) - 1) & 0x3)
 
@@ -191,6 +272,14 @@
 #define DSI_PHY_STATUS			0xb0
 #define PHY_STOP_STATE_CLK_LANE		BIT(2)
 #define PHY_LOCK			BIT(0)
+=======
+#define N_LANES(n)			((((n) - 1) & 0x3) << 0)
+#define PHY_STOP_WAIT_TIME(cycle)	(((cycle) & 0xff) << 8)
+
+#define DSI_PHY_STATUS			0xb0
+#define LOCK				BIT(0)
+#define STOP_STATE_CLK_LANE		BIT(2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DSI_PHY_TST_CTRL0		0xb4
 #define PHY_TESTCLK			BIT(1)
@@ -202,16 +291,23 @@
 #define PHY_TESTEN			BIT(16)
 #define PHY_UNTESTEN			0
 #define PHY_TESTDOUT(n)			(((n) & 0xff) << 8)
+<<<<<<< HEAD
 #define PHY_TESTDIN(n)			((n) & 0xff)
+=======
+#define PHY_TESTDIN(n)			(((n) & 0xff) << 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DSI_INT_ST0			0xbc
 #define DSI_INT_ST1			0xc0
 #define DSI_INT_MSK0			0xc4
 #define DSI_INT_MSK1			0xc8
 
+<<<<<<< HEAD
 #define DSI_PHY_TMR_RD_CFG		0xf4
 #define MAX_RD_TIME_V131(lbcc)		((lbcc) & 0x7fff)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PHY_STATUS_TIMEOUT_US		10000
 #define CMD_PKT_STATUS_TIMEOUT_US	20000
 
@@ -219,6 +315,10 @@ struct dw_mipi_dsi {
 	struct drm_bridge bridge;
 	struct mipi_dsi_host dsi_host;
 	struct drm_bridge *panel_bridge;
+<<<<<<< HEAD
+=======
+	bool is_panel_bridge;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev;
 	void __iomem *base;
 
@@ -294,6 +394,10 @@ static int dw_mipi_dsi_host_attach(struct mipi_dsi_host *host,
 		bridge = drm_panel_bridge_add(panel, DRM_MODE_CONNECTOR_DSI);
 		if (IS_ERR(bridge))
 			return PTR_ERR(bridge);
+<<<<<<< HEAD
+=======
+		dsi->is_panel_bridge = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dsi->panel_bridge = bridge;
@@ -308,7 +412,12 @@ static int dw_mipi_dsi_host_detach(struct mipi_dsi_host *host,
 {
 	struct dw_mipi_dsi *dsi = host_to_dsi(host);
 
+<<<<<<< HEAD
 	drm_of_panel_bridge_remove(host->dev->of_node, 1, 0);
+=======
+	if (dsi->is_panel_bridge)
+		drm_panel_bridge_remove(dsi->panel_bridge);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_bridge_remove(&dsi->bridge);
 
@@ -322,7 +431,11 @@ static void dw_mipi_message_config(struct dw_mipi_dsi *dsi,
 	u32 val = 0;
 
 	if (msg->flags & MIPI_DSI_MSG_REQ_ACK)
+<<<<<<< HEAD
 		val |= ACK_RQST_EN;
+=======
+		val |= EN_ACK_RQST;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (lpm)
 		val |= CMD_MODE_ALL_LP;
 
@@ -338,7 +451,11 @@ static int dw_mipi_dsi_gen_pkt_hdr_write(struct dw_mipi_dsi *dsi, u32 hdr_val)
 	ret = readl_poll_timeout(dsi->base + DSI_CMD_PKT_STATUS,
 				 val, !(val & GEN_CMD_FULL), 1000,
 				 CMD_PKT_STATUS_TIMEOUT_US);
+<<<<<<< HEAD
 	if (ret) {
+=======
+	if (ret < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dsi->dev, "failed to get available command FIFO\n");
 		return ret;
 	}
@@ -349,7 +466,11 @@ static int dw_mipi_dsi_gen_pkt_hdr_write(struct dw_mipi_dsi *dsi, u32 hdr_val)
 	ret = readl_poll_timeout(dsi->base + DSI_CMD_PKT_STATUS,
 				 val, (val & mask) == mask,
 				 1000, CMD_PKT_STATUS_TIMEOUT_US);
+<<<<<<< HEAD
 	if (ret) {
+=======
+	if (ret < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dsi->dev, "failed to write command FIFO\n");
 		return ret;
 	}
@@ -357,6 +478,7 @@ static int dw_mipi_dsi_gen_pkt_hdr_write(struct dw_mipi_dsi *dsi, u32 hdr_val)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dw_mipi_dsi_write(struct dw_mipi_dsi *dsi,
 			     const struct mipi_dsi_packet *packet)
 {
@@ -374,6 +496,54 @@ static int dw_mipi_dsi_write(struct dw_mipi_dsi *dsi,
 		} else {
 			memcpy(&word, tx_buf, pld_data_bytes);
 			dsi_write(dsi, DSI_GEN_PLD_DATA, le32_to_cpu(word));
+=======
+static int dw_mipi_dsi_dcs_short_write(struct dw_mipi_dsi *dsi,
+				       const struct mipi_dsi_msg *msg)
+{
+	const u8 *tx_buf = msg->tx_buf;
+	u16 data = 0;
+	u32 val;
+
+	if (msg->tx_len > 0)
+		data |= tx_buf[0];
+	if (msg->tx_len > 1)
+		data |= tx_buf[1] << 8;
+
+	if (msg->tx_len > 2) {
+		dev_err(dsi->dev, "too long tx buf length %zu for short write\n",
+			msg->tx_len);
+		return -EINVAL;
+	}
+
+	val = GEN_HDATA(data) | GEN_HTYPE(msg->type);
+	return dw_mipi_dsi_gen_pkt_hdr_write(dsi, val);
+}
+
+static int dw_mipi_dsi_dcs_long_write(struct dw_mipi_dsi *dsi,
+				      const struct mipi_dsi_msg *msg)
+{
+	const u8 *tx_buf = msg->tx_buf;
+	int len = msg->tx_len, pld_data_bytes = sizeof(u32), ret;
+	u32 hdr_val = GEN_HDATA(msg->tx_len) | GEN_HTYPE(msg->type);
+	u32 remainder;
+	u32 val;
+
+	if (msg->tx_len < 3) {
+		dev_err(dsi->dev, "wrong tx buf length %zu for long write\n",
+			msg->tx_len);
+		return -EINVAL;
+	}
+
+	while (DIV_ROUND_UP(len, pld_data_bytes)) {
+		if (len < pld_data_bytes) {
+			remainder = 0;
+			memcpy(&remainder, tx_buf, len);
+			dsi_write(dsi, DSI_GEN_PLD_DATA, remainder);
+			len = 0;
+		} else {
+			memcpy(&remainder, tx_buf, pld_data_bytes);
+			dsi_write(dsi, DSI_GEN_PLD_DATA, remainder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tx_buf += pld_data_bytes;
 			len -= pld_data_bytes;
 		}
@@ -381,13 +551,18 @@ static int dw_mipi_dsi_write(struct dw_mipi_dsi *dsi,
 		ret = readl_poll_timeout(dsi->base + DSI_CMD_PKT_STATUS,
 					 val, !(val & GEN_PLD_W_FULL), 1000,
 					 CMD_PKT_STATUS_TIMEOUT_US);
+<<<<<<< HEAD
 		if (ret) {
+=======
+		if (ret < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dsi->dev,
 				"failed to get available write payload FIFO\n");
 			return ret;
 		}
 	}
 
+<<<<<<< HEAD
 	word = 0;
 	memcpy(&word, packet->header, sizeof(packet->header));
 	return dw_mipi_dsi_gen_pkt_hdr_write(dsi, le32_to_cpu(word));
@@ -425,12 +600,16 @@ static int dw_mipi_dsi_read(struct dw_mipi_dsi *dsi,
 	}
 
 	return ret;
+=======
+	return dw_mipi_dsi_gen_pkt_hdr_write(dsi, hdr_val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t dw_mipi_dsi_host_transfer(struct mipi_dsi_host *host,
 					 const struct mipi_dsi_msg *msg)
 {
 	struct dw_mipi_dsi *dsi = host_to_dsi(host);
+<<<<<<< HEAD
 	struct mipi_dsi_packet packet;
 	int ret, nb_bytes;
 
@@ -456,6 +635,35 @@ static ssize_t dw_mipi_dsi_host_transfer(struct mipi_dsi_host *host,
 	}
 
 	return nb_bytes;
+=======
+	int ret;
+
+	/*
+	 * TODO dw drv improvements
+	 * use mipi_dsi_create_packet() instead of all following
+	 * functions and code (no switch cases, no
+	 * dw_mipi_dsi_dcs_short_write(), only the loop in long_write...)
+	 * and use packet.header...
+	 */
+	dw_mipi_message_config(dsi, msg);
+
+	switch (msg->type) {
+	case MIPI_DSI_DCS_SHORT_WRITE:
+	case MIPI_DSI_DCS_SHORT_WRITE_PARAM:
+	case MIPI_DSI_SET_MAXIMUM_RETURN_PACKET_SIZE:
+		ret = dw_mipi_dsi_dcs_short_write(dsi, msg);
+		break;
+	case MIPI_DSI_DCS_LONG_WRITE:
+		ret = dw_mipi_dsi_dcs_long_write(dsi, msg);
+		break;
+	default:
+		dev_err(dsi->dev, "unsupported message type 0x%02x\n",
+			msg->type);
+		ret = -EINVAL;
+	}
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct mipi_dsi_host_ops dw_mipi_dsi_host_ops = {
@@ -526,8 +734,13 @@ static void dw_mipi_dsi_init(struct dw_mipi_dsi *dsi)
 	 * timeout clock division should be computed with the
 	 * high speed transmission counter timeout and byte lane...
 	 */
+<<<<<<< HEAD
 	dsi_write(dsi, DSI_CLKMGR_CFG, TO_CLK_DIVISION(10) |
 		  TX_ESC_CLK_DIVISION(esc_clk_division));
+=======
+	dsi_write(dsi, DSI_CLKMGR_CFG, TO_CLK_DIVIDSION(10) |
+		  TX_ESC_CLK_DIVIDSION(esc_clk_division));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dw_mipi_dsi_dpi_config(struct dw_mipi_dsi *dsi,
@@ -540,7 +753,11 @@ static void dw_mipi_dsi_dpi_config(struct dw_mipi_dsi *dsi,
 		color = DPI_COLOR_CODING_24BIT;
 		break;
 	case MIPI_DSI_FMT_RGB666:
+<<<<<<< HEAD
 		color = DPI_COLOR_CODING_18BIT_2 | LOOSELY18_EN;
+=======
+		color = DPI_COLOR_CODING_18BIT_2 | EN18_LOOSELY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case MIPI_DSI_FMT_RGB666_PACKED:
 		color = DPI_COLOR_CODING_18BIT_1;
@@ -555,7 +772,11 @@ static void dw_mipi_dsi_dpi_config(struct dw_mipi_dsi *dsi,
 	if (mode->flags & DRM_MODE_FLAG_NHSYNC)
 		val |= HSYNC_ACTIVE_LOW;
 
+<<<<<<< HEAD
 	dsi_write(dsi, DSI_DPI_VCID, DPI_VCID(dsi->channel));
+=======
+	dsi_write(dsi, DSI_DPI_VCID, DPI_VID(dsi->channel));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi_write(dsi, DSI_DPI_COLOR_CODING, color);
 	dsi_write(dsi, DSI_DPI_CFG_POL, val);
 	/*
@@ -570,7 +791,11 @@ static void dw_mipi_dsi_dpi_config(struct dw_mipi_dsi *dsi,
 
 static void dw_mipi_dsi_packet_handler_config(struct dw_mipi_dsi *dsi)
 {
+<<<<<<< HEAD
 	dsi_write(dsi, DSI_PCKHDL_CFG, CRC_RX_EN | ECC_RX_EN | BTA_EN);
+=======
+	dsi_write(dsi, DSI_PCKHDL_CFG, EN_CRC_RX | EN_ECC_RX | EN_BTA);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dw_mipi_dsi_video_packet_config(struct dw_mipi_dsi *dsi,
@@ -591,7 +816,11 @@ static void dw_mipi_dsi_command_mode_config(struct dw_mipi_dsi *dsi)
 	/*
 	 * TODO dw drv improvements
 	 * compute high speed transmission counter timeout according
+<<<<<<< HEAD
 	 * to the timeout clock division (TO_CLK_DIVISION) and byte lane...
+=======
+	 * to the timeout clock division (TO_CLK_DIVIDSION) and byte lane...
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	dsi_write(dsi, DSI_TO_CNT_CFG, HSTX_TO_CNT(1000) | LPRX_TO_CNT(1000));
 	/*
@@ -661,8 +890,11 @@ static void dw_mipi_dsi_vertical_timing_config(struct dw_mipi_dsi *dsi,
 
 static void dw_mipi_dsi_dphy_timing_config(struct dw_mipi_dsi *dsi)
 {
+<<<<<<< HEAD
 	u32 hw_version;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * TODO dw drv improvements
 	 * data & clock lane timers should be computed according to panel
@@ -670,6 +902,7 @@ static void dw_mipi_dsi_dphy_timing_config(struct dw_mipi_dsi *dsi)
 	 * note: DSI_PHY_TMR_CFG.MAX_RD_TIME should be in line with
 	 * DSI_CMD_MODE_CFG.MAX_RD_PKT_SIZE_LP (see CMD_MODE_ALL_LP)
 	 */
+<<<<<<< HEAD
 
 	hw_version = dsi_read(dsi, DSI_VERSION) & VERSION;
 
@@ -681,6 +914,10 @@ static void dw_mipi_dsi_dphy_timing_config(struct dw_mipi_dsi *dsi)
 		dsi_write(dsi, DSI_PHY_TMR_CFG, PHY_HS2LP_TIME(0x40) |
 			  PHY_LP2HS_TIME(0x40) | MAX_RD_TIME(10000));
 	}
+=======
+	dsi_write(dsi, DSI_PHY_TMR_CFG, PHY_HS2LP_TIME(0x40)
+		  | PHY_LP2HS_TIME(0x40) | MAX_RD_TIME(10000));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dsi_write(dsi, DSI_PHY_TMR_LPCLK_CFG, PHY_CLKHS2LP_TIME(0x40)
 		  | PHY_CLKLP2HS_TIME(0x40));
@@ -715,6 +952,7 @@ static void dw_mipi_dsi_dphy_enable(struct dw_mipi_dsi *dsi)
 	dsi_write(dsi, DSI_PHY_RSTZ, PHY_ENFORCEPLL | PHY_ENABLECLK |
 		  PHY_UNRSTZ | PHY_UNSHUTDOWNZ);
 
+<<<<<<< HEAD
 	ret = readl_poll_timeout(dsi->base + DSI_PHY_STATUS, val,
 				 val & PHY_LOCK, 1000, PHY_STATUS_TIMEOUT_US);
 	if (ret)
@@ -724,6 +962,17 @@ static void dw_mipi_dsi_dphy_enable(struct dw_mipi_dsi *dsi)
 				 val, val & PHY_STOP_STATE_CLK_LANE, 1000,
 				 PHY_STATUS_TIMEOUT_US);
 	if (ret)
+=======
+	ret = readl_poll_timeout(dsi->base + DSI_PHY_STATUS,
+				 val, val & LOCK, 1000, PHY_STATUS_TIMEOUT_US);
+	if (ret < 0)
+		DRM_DEBUG_DRIVER("failed to wait phy lock state\n");
+
+	ret = readl_poll_timeout(dsi->base + DSI_PHY_STATUS,
+				 val, val & STOP_STATE_CLK_LANE, 1000,
+				 PHY_STATUS_TIMEOUT_US);
+	if (ret < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_DEBUG_DRIVER("failed to wait phy clk lane stop state\n");
 }
 
@@ -760,9 +1009,15 @@ static void dw_mipi_dsi_bridge_post_disable(struct drm_bridge *bridge)
 	pm_runtime_put(dsi->dev);
 }
 
+<<<<<<< HEAD
 static void dw_mipi_dsi_bridge_mode_set(struct drm_bridge *bridge,
 					struct drm_display_mode *mode,
 					struct drm_display_mode *adjusted_mode)
+=======
+void dw_mipi_dsi_bridge_mode_set(struct drm_bridge *bridge,
+				 struct drm_display_mode *mode,
+				 struct drm_display_mode *adjusted_mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dw_mipi_dsi *dsi = bridge_to_dsi(bridge);
 	const struct dw_mipi_dsi_phy_ops *phy_ops = dsi->plat_data->phy_ops;
@@ -771,13 +1026,18 @@ static void dw_mipi_dsi_bridge_mode_set(struct drm_bridge *bridge,
 
 	clk_prepare_enable(dsi->pclk);
 
+<<<<<<< HEAD
 	ret = phy_ops->get_lane_mbps(priv_data, adjusted_mode, dsi->mode_flags,
+=======
+	ret = phy_ops->get_lane_mbps(priv_data, mode, dsi->mode_flags,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     dsi->lanes, dsi->format, &dsi->lane_mbps);
 	if (ret)
 		DRM_DEBUG_DRIVER("Phy get_lane_mbps() failed\n");
 
 	pm_runtime_get_sync(dsi->dev);
 	dw_mipi_dsi_init(dsi);
+<<<<<<< HEAD
 	dw_mipi_dsi_dpi_config(dsi, adjusted_mode);
 	dw_mipi_dsi_packet_handler_config(dsi);
 	dw_mipi_dsi_video_mode_config(dsi);
@@ -785,6 +1045,15 @@ static void dw_mipi_dsi_bridge_mode_set(struct drm_bridge *bridge,
 	dw_mipi_dsi_command_mode_config(dsi);
 	dw_mipi_dsi_line_timer_config(dsi, adjusted_mode);
 	dw_mipi_dsi_vertical_timing_config(dsi, adjusted_mode);
+=======
+	dw_mipi_dsi_dpi_config(dsi, mode);
+	dw_mipi_dsi_packet_handler_config(dsi);
+	dw_mipi_dsi_video_mode_config(dsi);
+	dw_mipi_dsi_video_packet_config(dsi, mode);
+	dw_mipi_dsi_command_mode_config(dsi);
+	dw_mipi_dsi_line_timer_config(dsi, mode);
+	dw_mipi_dsi_vertical_timing_config(dsi, mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dw_mipi_dsi_dphy_init(dsi);
 	dw_mipi_dsi_dphy_timing_config(dsi);
@@ -798,7 +1067,11 @@ static void dw_mipi_dsi_bridge_mode_set(struct drm_bridge *bridge,
 
 	dw_mipi_dsi_dphy_enable(dsi);
 
+<<<<<<< HEAD
 	dw_mipi_dsi_wait_for_two_frames(adjusted_mode);
+=======
+	dw_mipi_dsi_wait_for_two_frames(mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Switch to cmd mode for panel-bridge pre_enable & panel prepare */
 	dw_mipi_dsi_set_mode(dsi, 0);
@@ -896,6 +1169,7 @@ __dw_mipi_dsi_probe(struct platform_device *pdev,
 	 * Note that the reset was not defined in the initial device tree, so
 	 * we have to be prepared for it not being found.
 	 */
+<<<<<<< HEAD
 	apb_rst = devm_reset_control_get_optional_exclusive(dev, "apb");
 	if (IS_ERR(apb_rst)) {
 		ret = PTR_ERR(apb_rst);
@@ -904,6 +1178,17 @@ __dw_mipi_dsi_probe(struct platform_device *pdev,
 			dev_err(dev, "Unable to get reset control: %d\n", ret);
 
 		return ERR_PTR(ret);
+=======
+	apb_rst = devm_reset_control_get(dev, "apb");
+	if (IS_ERR(apb_rst)) {
+		ret = PTR_ERR(apb_rst);
+		if (ret == -ENOENT) {
+			apb_rst = NULL;
+		} else {
+			dev_err(dev, "Unable to get reset control: %d\n", ret);
+			return ERR_PTR(ret);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (apb_rst) {
@@ -936,6 +1221,11 @@ __dw_mipi_dsi_probe(struct platform_device *pdev,
 	dsi->bridge.of_node = pdev->dev.of_node;
 #endif
 
+<<<<<<< HEAD
+=======
+	dev_set_drvdata(dev, dsi);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return dsi;
 }
 
@@ -947,6 +1237,7 @@ static void __dw_mipi_dsi_remove(struct dw_mipi_dsi *dsi)
 /*
  * Probe/remove API, used from platforms based on the DRM bridge API.
  */
+<<<<<<< HEAD
 struct dw_mipi_dsi *
 dw_mipi_dsi_probe(struct platform_device *pdev,
 		  const struct dw_mipi_dsi_plat_data *plat_data)
@@ -957,6 +1248,25 @@ EXPORT_SYMBOL_GPL(dw_mipi_dsi_probe);
 
 void dw_mipi_dsi_remove(struct dw_mipi_dsi *dsi)
 {
+=======
+int dw_mipi_dsi_probe(struct platform_device *pdev,
+		      const struct dw_mipi_dsi_plat_data *plat_data)
+{
+	struct dw_mipi_dsi *dsi;
+
+	dsi = __dw_mipi_dsi_probe(pdev, plat_data);
+	if (IS_ERR(dsi))
+		return PTR_ERR(dsi);
+
+	return 0;
+}
+EXPORT_SYMBOL_GPL(dw_mipi_dsi_probe);
+
+void dw_mipi_dsi_remove(struct platform_device *pdev)
+{
+	struct dw_mipi_dsi *dsi = platform_get_drvdata(pdev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mipi_dsi_host_unregister(&dsi->dsi_host);
 
 	__dw_mipi_dsi_remove(dsi);
@@ -966,15 +1276,21 @@ EXPORT_SYMBOL_GPL(dw_mipi_dsi_remove);
 /*
  * Bind/unbind API, used from platforms based on the component framework.
  */
+<<<<<<< HEAD
 struct dw_mipi_dsi *
 dw_mipi_dsi_bind(struct platform_device *pdev, struct drm_encoder *encoder,
 		 const struct dw_mipi_dsi_plat_data *plat_data)
+=======
+int dw_mipi_dsi_bind(struct platform_device *pdev, struct drm_encoder *encoder,
+		     const struct dw_mipi_dsi_plat_data *plat_data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dw_mipi_dsi *dsi;
 	int ret;
 
 	dsi = __dw_mipi_dsi_probe(pdev, plat_data);
 	if (IS_ERR(dsi))
+<<<<<<< HEAD
 		return dsi;
 
 	ret = drm_bridge_attach(encoder, &dsi->bridge, NULL);
@@ -990,6 +1306,25 @@ EXPORT_SYMBOL_GPL(dw_mipi_dsi_bind);
 
 void dw_mipi_dsi_unbind(struct dw_mipi_dsi *dsi)
 {
+=======
+		return PTR_ERR(dsi);
+
+	ret = drm_bridge_attach(encoder, &dsi->bridge, NULL);
+	if (ret) {
+		dw_mipi_dsi_remove(pdev);
+		DRM_ERROR("Failed to initialize bridge with drm\n");
+		return ret;
+	}
+
+	return 0;
+}
+EXPORT_SYMBOL_GPL(dw_mipi_dsi_bind);
+
+void dw_mipi_dsi_unbind(struct device *dev)
+{
+	struct dw_mipi_dsi *dsi = dev_get_drvdata(dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__dw_mipi_dsi_remove(dsi);
 }
 EXPORT_SYMBOL_GPL(dw_mipi_dsi_unbind);

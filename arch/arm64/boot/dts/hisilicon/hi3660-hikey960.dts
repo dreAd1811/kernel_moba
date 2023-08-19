@@ -109,7 +109,10 @@
 			label = "user_led4";
 			/* gpio_190_user_led4 */
 			gpios = <&gpio23 6 0>;
+<<<<<<< HEAD
 			panic-indicator;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			linux,default-trigger = "cpu0";
 		};
 
@@ -198,6 +201,7 @@
 	};
 };
 
+<<<<<<< HEAD
 /*
  * Legend: proper name = the GPIO line is used as GPIO
  *         NC = not connected (pin out but not routed from the chip to
@@ -517,6 +521,8 @@
 		"", "", "", "", "", "", "", "";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c0 {
 	/* On Low speed expansion */
 	label = "LS-I2C0";
@@ -574,6 +580,7 @@
 };
 
 &dwmmc1 {
+<<<<<<< HEAD
 	bus-width = <0x4>;
 	cap-sd-highspeed;
 	sd-uhs-sdr12;
@@ -587,12 +594,15 @@
 	pinctrl-0 = <&sd_pmx_func
 		     &sd_clk_cfg_func
 		     &sd_cfg_func>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmmc-supply = <&ldo16>;
 	vqmmc-supply = <&ldo9>;
 	status = "okay";
 };
 
 &dwmmc2 { /* WIFI */
+<<<<<<< HEAD
 	bus-width = <0x4>;
 	non-removable;
 	broken-cd;
@@ -603,6 +613,15 @@
 		     &sdio_cfg_func>;
 	/* WL_EN */
 	vmmc-supply = <&wlan_en>;
+=======
+	broken-cd;
+	/* WL_EN */
+	vmmc-supply = <&wlan_en>;
+	ti,non-removable;
+	non-removable;
+	#address-cells = <0x1>;
+	#size-cells = <0x0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "ok";
 
 	wlcore: wlcore@2 {

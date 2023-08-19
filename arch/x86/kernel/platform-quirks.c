@@ -9,7 +9,10 @@ void __init x86_early_init_platform_quirks(void)
 {
 	x86_platform.legacy.i8042 = X86_LEGACY_I8042_EXPECTED_PRESENT;
 	x86_platform.legacy.rtc = 1;
+<<<<<<< HEAD
 	x86_platform.legacy.warm_reset = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	x86_platform.legacy.reserve_bios_regions = 0;
 	x86_platform.legacy.devices.pnpbios = 1;
 
@@ -33,6 +36,7 @@ void __init x86_early_init_platform_quirks(void)
 		x86_platform.set_legacy_features();
 }
 
+<<<<<<< HEAD
 bool __init x86_pnpbios_disabled(void)
 {
 	return x86_platform.legacy.devices.pnpbios == 0;
@@ -42,5 +46,11 @@ bool __init x86_pnpbios_disabled(void)
 bool __init arch_pnpbios_disabled(void)
 {
 	return x86_pnpbios_disabled();
+=======
+#if defined(CONFIG_PNPBIOS)
+bool __init arch_pnpbios_disabled(void)
+{
+	return x86_platform.legacy.devices.pnpbios == 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif

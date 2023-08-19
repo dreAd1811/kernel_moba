@@ -37,20 +37,35 @@ unsigned int ioread32(void __iomem *addr)
 
 void iowrite8(u8 b, void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	IO_CONCAT(__IO_PREFIX,iowrite8)(b, addr);
+=======
+	IO_CONCAT(__IO_PREFIX,iowrite8)(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void iowrite16(u16 b, void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	IO_CONCAT(__IO_PREFIX,iowrite16)(b, addr);
+=======
+	IO_CONCAT(__IO_PREFIX,iowrite16)(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void iowrite32(u32 b, void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	IO_CONCAT(__IO_PREFIX,iowrite32)(b, addr);
+=======
+	IO_CONCAT(__IO_PREFIX,iowrite32)(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 EXPORT_SYMBOL(ioread8);
@@ -176,26 +191,46 @@ u64 readq(const volatile void __iomem *addr)
 
 void writeb(u8 b, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	__raw_writeb(b, addr);
+=======
+	__raw_writeb(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void writew(u16 b, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	__raw_writew(b, addr);
+=======
+	__raw_writew(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void writel(u32 b, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	__raw_writel(b, addr);
+=======
+	__raw_writel(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void writeq(u64 b, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	__raw_writeq(b, addr);
+=======
+	__raw_writeq(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 EXPORT_SYMBOL(readb);

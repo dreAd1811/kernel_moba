@@ -110,10 +110,13 @@ int drm_encoder_init(struct drm_device *dev,
 {
 	int ret;
 
+<<<<<<< HEAD
 	/* encoder index is used with 32bit bitmasks */
 	if (WARN_ON(dev->mode_config.num_encoder >= 32))
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_mode_object_add(dev, &encoder->base, DRM_MODE_OBJECT_ENCODER);
 	if (ret)
 		return ret;

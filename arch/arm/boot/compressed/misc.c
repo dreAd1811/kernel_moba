@@ -22,9 +22,15 @@ unsigned int __machine_arch_type;
 #include <linux/compiler.h>	/* for inline */
 #include <linux/types.h>
 #include <linux/linkage.h>
+<<<<<<< HEAD
 #include "misc.h"
 
 static void putstr(const char *ptr);
+=======
+
+static void putstr(const char *ptr);
+extern void error(char *x);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include CONFIG_UNCOMPRESS_INCLUDE
 
@@ -128,7 +134,16 @@ asmlinkage void __div0(void)
 	error("Attempting division by 0!");
 }
 
+<<<<<<< HEAD
 const unsigned long __stack_chk_guard = 0x000a0dff;
+=======
+unsigned long __stack_chk_guard;
+
+void __stack_chk_guard_setup(void)
+{
+	__stack_chk_guard = 0x000a0dff;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void __stack_chk_fail(void)
 {
@@ -145,6 +160,11 @@ decompress_kernel(unsigned long output_start, unsigned long free_mem_ptr_p,
 {
 	int ret;
 
+<<<<<<< HEAD
+=======
+	__stack_chk_guard_setup();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	output_data		= (unsigned char *)output_start;
 	free_mem_ptr		= free_mem_ptr_p;
 	free_mem_end_ptr	= free_mem_ptr_end_p;
@@ -160,8 +180,11 @@ decompress_kernel(unsigned long output_start, unsigned long free_mem_ptr_p,
 	else
 		putstr(" done, booting the kernel.\n");
 }
+<<<<<<< HEAD
 
 void fortify_panic(const char *name)
 {
 	error("detected buffer overflow");
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

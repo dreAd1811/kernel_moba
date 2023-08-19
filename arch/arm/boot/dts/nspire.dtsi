@@ -20,7 +20,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	bootrom: bootrom@0 {
+=======
+	bootrom: bootrom@00000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x00000000 0x80000>;
 	};
 
@@ -56,7 +60,10 @@
 
 	usb_phy: usb_phy {
 		compatible = "usb-nop-xceiv";
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	vbus_reg: vbus_reg {

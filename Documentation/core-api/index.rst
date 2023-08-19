@@ -14,16 +14,21 @@ Core utilities
    kernel-api
    assoc_array
    atomic_ops
+<<<<<<< HEAD
    cachetlb
    refcount-vs-atomic
    cpu_hotplug
    idr
+=======
+   cpu_hotplug
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    local_ops
    workqueue
    genericirq
    flexible-arrays
    librs
    genalloc
+<<<<<<< HEAD
    errseq
    printk-formats
    circular-buffers
@@ -31,6 +36,8 @@ Core utilities
    gfp_mask-from-fs-io
    timekeeping
    boot-time-mm
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Interfaces for kernel debugging
 ===============================

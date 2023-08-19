@@ -32,6 +32,7 @@
  */
 
 #include <linux/bitfield.h>
+<<<<<<< HEAD
 #include <net/geneve.h>
 #include <net/pkt_cls.h>
 #include <net/switchdev.h>
@@ -41,11 +42,19 @@
 #include <net/tc_act/tc_pedit.h>
 #include <net/tc_act/tc_vlan.h>
 #include <net/tc_act/tc_tunnel_key.h>
+=======
+#include <net/pkt_cls.h>
+#include <net/switchdev.h>
+#include <net/tc_act/tc_gact.h>
+#include <net/tc_act/tc_mirred.h>
+#include <net/tc_act/tc_vlan.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "cmsg.h"
 #include "main.h"
 #include "../nfp_net_repr.h"
 
+<<<<<<< HEAD
 /* The kernel versions of TUNNEL_* are not ABI and therefore vulnerable
  * to change. Such changes will break our FW ABI.
  */
@@ -63,6 +72,18 @@ static void nfp_fl_pop_vlan(struct nfp_fl_pop_vlan *pop_vlan)
 
 	pop_vlan->head.jump_id = NFP_FL_ACTION_OPCODE_POP_VLAN;
 	pop_vlan->head.len_lw = act_size >> NFP_FL_LW_SIZ;
+=======
+static void nfp_fl_pop_vlan(struct nfp_fl_pop_vlan *pop_vlan)
+{
+	size_t act_size = sizeof(struct nfp_fl_pop_vlan);
+	u16 tmp_pop_vlan_op;
+
+	tmp_pop_vlan_op =
+		FIELD_PREP(NFP_FL_ACT_LEN_LW, act_size >> NFP_FL_LW_SIZ) |
+		FIELD_PREP(NFP_FL_ACT_JMP_ID, NFP_FL_ACTION_OPCODE_POP_VLAN);
+
+	pop_vlan->a_op = cpu_to_be16(tmp_pop_vlan_op);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pop_vlan->reserved = 0;
 }
 
@@ -71,20 +92,40 @@ nfp_fl_push_vlan(struct nfp_fl_push_vlan *push_vlan,
 		 const struct tc_action *action)
 {
 	size_t act_size = sizeof(struct nfp_fl_push_vlan);
+<<<<<<< HEAD
 	u16 tmp_push_vlan_tci;
 
 	push_vlan->head.jump_id = NFP_FL_ACTION_OPCODE_PUSH_VLAN;
 	push_vlan->head.len_lw = act_size >> NFP_FL_LW_SIZ;
+=======
+	struct tcf_vlan *vlan = to_vlan(action);
+	u16 tmp_push_vlan_tci;
+	u16 tmp_push_vlan_op;
+
+	tmp_push_vlan_op =
+		FIELD_PREP(NFP_FL_ACT_LEN_LW, act_size >> NFP_FL_LW_SIZ) |
+		FIELD_PREP(NFP_FL_ACT_JMP_ID, NFP_FL_ACTION_OPCODE_PUSH_VLAN);
+
+	push_vlan->a_op = cpu_to_be16(tmp_push_vlan_op);
+	/* Set action push vlan parameters. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	push_vlan->reserved = 0;
 	push_vlan->vlan_tpid = tcf_vlan_push_proto(action);
 
 	tmp_push_vlan_tci =
+<<<<<<< HEAD
 		FIELD_PREP(NFP_FL_PUSH_VLAN_PRIO, tcf_vlan_push_prio(action)) |
 		FIELD_PREP(NFP_FL_PUSH_VLAN_VID, tcf_vlan_push_vid(action));
+=======
+		FIELD_PREP(NFP_FL_PUSH_VLAN_PRIO, vlan->tcfv_push_prio) |
+		FIELD_PREP(NFP_FL_PUSH_VLAN_VID, vlan->tcfv_push_vid) |
+		NFP_FL_PUSH_VLAN_CFI;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	push_vlan->vlan_tci = cpu_to_be16(tmp_push_vlan_tci);
 }
 
 static int
+<<<<<<< HEAD
 nfp_fl_pre_lag(struct nfp_app *app, const struct tc_action *action,
 	       struct nfp_fl_payload *nfp_flow, int act_len)
 {
@@ -192,11 +233,50 @@ nfp_fl_output(struct nfp_app *app, struct nfp_fl_output *output,
 		if (!output->port)
 			return -EOPNOTSUPP;
 	}
+=======
+nfp_fl_output(struct nfp_fl_output *output, const struct tc_action *action,
+	      struct nfp_fl_payload *nfp_flow, bool last,
+	      struct net_device *in_dev)
+{
+	size_t act_size = sizeof(struct nfp_fl_output);
+	struct net_device *out_dev;
+	u16 tmp_output_op;
+	int ifindex;
+
+	/* Set action opcode to output action. */
+	tmp_output_op =
+		FIELD_PREP(NFP_FL_ACT_LEN_LW, act_size >> NFP_FL_LW_SIZ) |
+		FIELD_PREP(NFP_FL_ACT_JMP_ID, NFP_FL_ACTION_OPCODE_OUTPUT);
+
+	output->a_op = cpu_to_be16(tmp_output_op);
+
+	/* Set action output parameters. */
+	output->flags = cpu_to_be16(last ? NFP_FL_OUT_FLAGS_LAST : 0);
+
+	ifindex = tcf_mirred_ifindex(action);
+	out_dev = __dev_get_by_index(dev_net(in_dev), ifindex);
+	if (!out_dev)
+		return -EOPNOTSUPP;
+
+	/* Only offload egress ports are on the same device as the ingress
+	 * port.
+	 */
+	if (!switchdev_port_same_parent_id(in_dev, out_dev))
+		return -EOPNOTSUPP;
+	if (!nfp_netdev_is_nfp_repr(out_dev))
+		return -EOPNOTSUPP;
+
+	output->port = cpu_to_be32(nfp_repr_get_port_id(out_dev));
+	if (!output->port)
+		return -EOPNOTSUPP;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nfp_flow->meta.shortcut = output->port;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static enum nfp_flower_tun_type
 nfp_fl_get_tun_from_act_l4_port(struct nfp_app *app,
 				const struct tc_action *action)
@@ -719,11 +799,22 @@ nfp_flower_loop_action(struct nfp_app *app, const struct tc_action *a,
 	struct nfp_fl_pre_tunnel *pre_tun;
 	struct nfp_fl_push_vlan *psh_v;
 	struct nfp_fl_pop_vlan *pop_v;
+=======
+static int
+nfp_flower_loop_action(const struct tc_action *a,
+		       struct nfp_fl_payload *nfp_fl, int *a_len,
+		       struct net_device *netdev)
+{
+	struct nfp_fl_push_vlan *psh_v;
+	struct nfp_fl_pop_vlan *pop_v;
+	struct nfp_fl_output *output;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (is_tcf_gact_shot(a)) {
 		nfp_fl->meta.shortcut = cpu_to_be32(NFP_FL_SC_ACT_DROP);
 	} else if (is_tcf_mirred_egress_redirect(a)) {
+<<<<<<< HEAD
 		err = nfp_flower_output_action(app, a, nfp_fl, a_len, netdev,
 					       true, tun_type, tun_out_cnt,
 					       out_cnt, csum_updated);
@@ -737,6 +828,27 @@ nfp_flower_loop_action(struct nfp_app *app, const struct tc_action *a,
 		if (err)
 			return err;
 
+=======
+		if (*a_len + sizeof(struct nfp_fl_output) > NFP_FL_MAX_A_SIZ)
+			return -EOPNOTSUPP;
+
+		output = (struct nfp_fl_output *)&nfp_fl->action_data[*a_len];
+		err = nfp_fl_output(output, a, nfp_fl, true, netdev);
+		if (err)
+			return err;
+
+		*a_len += sizeof(struct nfp_fl_output);
+	} else if (is_tcf_mirred_egress_mirror(a)) {
+		if (*a_len + sizeof(struct nfp_fl_output) > NFP_FL_MAX_A_SIZ)
+			return -EOPNOTSUPP;
+
+		output = (struct nfp_fl_output *)&nfp_fl->action_data[*a_len];
+		err = nfp_fl_output(output, a, nfp_fl, false, netdev);
+		if (err)
+			return err;
+
+		*a_len += sizeof(struct nfp_fl_output);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (is_tcf_vlan(a) && tcf_vlan_action(a) == TCA_VLAN_ACT_POP) {
 		if (*a_len + sizeof(struct nfp_fl_pop_vlan) > NFP_FL_MAX_A_SIZ)
 			return -EOPNOTSUPP;
@@ -755,6 +867,7 @@ nfp_flower_loop_action(struct nfp_app *app, const struct tc_action *a,
 
 		nfp_fl_push_vlan(psh_v, a);
 		*a_len += sizeof(struct nfp_fl_push_vlan);
+<<<<<<< HEAD
 	} else if (is_tcf_tunnel_set(a)) {
 		struct ip_tunnel_info *ip_tun = tcf_tunnel_info(a);
 		struct nfp_repr *repr = netdev_priv(netdev);
@@ -803,6 +916,8 @@ nfp_flower_loop_action(struct nfp_app *app, const struct tc_action *a,
 		 * csum update list. Which will later be used to check support.
 		 */
 		*csum_updated &= ~tcf_csum_update_flags(a);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* Currently we do not handle any other actions. */
 		return -EOPNOTSUPP;
@@ -811,6 +926,7 @@ nfp_flower_loop_action(struct nfp_app *app, const struct tc_action *a,
 	return 0;
 }
 
+<<<<<<< HEAD
 int nfp_flower_compile_action(struct nfp_app *app,
 			      struct tc_cls_flower_offload *flow,
 			      struct net_device *netdev,
@@ -833,6 +949,24 @@ int nfp_flower_compile_action(struct nfp_app *app,
 		err = nfp_flower_loop_action(app, a, flow, nfp_flow, &act_len,
 					     netdev, &tun_type, &tun_out_cnt,
 					     &out_cnt, &csum_updated);
+=======
+int nfp_flower_compile_action(struct tc_cls_flower_offload *flow,
+			      struct net_device *netdev,
+			      struct nfp_fl_payload *nfp_flow)
+{
+	int act_len, act_cnt, err;
+	const struct tc_action *a;
+	LIST_HEAD(actions);
+
+	memset(nfp_flow->action_data, 0, NFP_FL_MAX_A_SIZ);
+	nfp_flow->meta.act_len = 0;
+	act_len = 0;
+	act_cnt = 0;
+
+	tcf_exts_to_list(flow->exts, &actions);
+	list_for_each_entry(a, &actions, list) {
+		err = nfp_flower_loop_action(a, nfp_flow, &act_len, netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			return err;
 		act_cnt++;

@@ -45,6 +45,7 @@ static void set_context_pdp_root_pointer(
 		struct execlist_ring_context *ring_context,
 		u32 pdp[8])
 {
+<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < 8; i++)
@@ -117,6 +118,13 @@ static void sr_oa_regs(struct intel_vgpu_workload *workload,
 			reg_state[state_offset + 1] = workload->flex_mmio[i];
 		}
 	}
+=======
+	struct execlist_mmio_pair *pdp_pair = &ring_context->pdp3_UDW;
+	int i;
+
+	for (i = 0; i < 8; i++)
+		pdp_pair[i].val = pdp[7 - i];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int populate_shadow_context(struct intel_vgpu_workload *workload)
@@ -124,8 +132,14 @@ static int populate_shadow_context(struct intel_vgpu_workload *workload)
 	struct intel_vgpu *vgpu = workload->vgpu;
 	struct intel_gvt *gvt = vgpu->gvt;
 	int ring_id = workload->ring_id;
+<<<<<<< HEAD
 	struct drm_i915_gem_object *ctx_obj =
 		workload->req->hw_context->state->obj;
+=======
+	struct i915_gem_context *shadow_ctx = workload->vgpu->shadow_ctx;
+	struct drm_i915_gem_object *ctx_obj =
+		shadow_ctx->engine[ring_id].state->obj;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct execlist_ring_context *shadow_ring_context;
 	struct page *page;
 	void *dst;
@@ -147,6 +161,7 @@ static int populate_shadow_context(struct intel_vgpu_workload *workload)
 	while (i < context_page_num) {
 		context_gpa = intel_vgpu_gma_to_gpa(vgpu->gtt.ggtt_mm,
 				(u32)((workload->ctx_desc.lrca + i) <<
+<<<<<<< HEAD
 				I915_GTT_PAGE_SHIFT));
 		if (context_gpa == INTEL_GVT_INVALID_ADDR) {
 			gvt_vgpu_err("Invalid guest context descriptor\n");
@@ -157,6 +172,18 @@ static int populate_shadow_context(struct intel_vgpu_workload *workload)
 		dst = kmap(page);
 		intel_gvt_hypervisor_read_gpa(vgpu, context_gpa, dst,
 				I915_GTT_PAGE_SIZE);
+=======
+				GTT_PAGE_SHIFT));
+		if (context_gpa == INTEL_GVT_INVALID_ADDR) {
+			gvt_vgpu_err("Invalid guest context descriptor\n");
+			return -EINVAL;
+		}
+
+		page = i915_gem_object_get_page(ctx_obj, LRC_PPHWSP_PN + i);
+		dst = kmap(page);
+		intel_gvt_hypervisor_read_gpa(vgpu, context_gpa, dst,
+				GTT_PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kunmap(page);
 		i++;
 	}
@@ -164,6 +191,7 @@ static int populate_shadow_context(struct intel_vgpu_workload *workload)
 	page = i915_gem_object_get_page(ctx_obj, LRC_STATE_PN);
 	shadow_ring_context = kmap(page);
 
+<<<<<<< HEAD
 	sr_oa_regs(workload, (u32 *)shadow_ring_context, true);
 #define COPY_REG(name) \
 	intel_gvt_hypervisor_read_gpa(vgpu, workload->ring_context_gpa \
@@ -176,6 +204,13 @@ static int populate_shadow_context(struct intel_vgpu_workload *workload)
 	}
 
 	COPY_REG_MASKED(ctx_ctrl);
+=======
+#define COPY_REG(name) \
+	intel_gvt_hypervisor_read_gpa(vgpu, workload->ring_context_gpa \
+		+ RING_CTX_OFF(name.val), &shadow_ring_context->name.val, 4)
+
+	COPY_REG(ctx_ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	COPY_REG(ctx_timestamp);
 
 	if (ring_id == RCS) {
@@ -184,20 +219,32 @@ static int populate_shadow_context(struct intel_vgpu_workload *workload)
 		COPY_REG(rcs_indirect_ctx_offset);
 	}
 #undef COPY_REG
+<<<<<<< HEAD
 #undef COPY_REG_MASKED
+=======
+
+	set_context_pdp_root_pointer(shadow_ring_context,
+				     workload->shadow_mm->shadow_page_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_gvt_hypervisor_read_gpa(vgpu,
 			workload->ring_context_gpa +
 			sizeof(*shadow_ring_context),
 			(void *)shadow_ring_context +
 			sizeof(*shadow_ring_context),
+<<<<<<< HEAD
 			I915_GTT_PAGE_SIZE - sizeof(*shadow_ring_context));
 
 	sr_oa_regs(workload, (u32 *)shadow_ring_context, false);
+=======
+			GTT_PAGE_SIZE - sizeof(*shadow_ring_context));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kunmap(page);
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline bool is_gvt_request(struct i915_request *req)
 {
 	return i915_gem_context_force_single_submission(req->gem_context);
@@ -215,21 +262,36 @@ static void save_ring_hw_state(struct intel_vgpu *vgpu, int ring_id)
 	vgpu_vreg(vgpu, i915_mmio_reg_offset(reg)) = I915_READ_FW(reg);
 	reg = RING_ACTHD_UDW(ring_base);
 	vgpu_vreg(vgpu, i915_mmio_reg_offset(reg)) = I915_READ_FW(reg);
+=======
+static inline bool is_gvt_request(struct drm_i915_gem_request *req)
+{
+	return i915_gem_context_force_single_submission(req->ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int shadow_context_status_change(struct notifier_block *nb,
 		unsigned long action, void *data)
 {
+<<<<<<< HEAD
 	struct i915_request *req = data;
+=======
+	struct drm_i915_gem_request *req = (struct drm_i915_gem_request *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct intel_gvt *gvt = container_of(nb, struct intel_gvt,
 				shadow_ctx_notifier_block[req->engine->id]);
 	struct intel_gvt_workload_scheduler *scheduler = &gvt->scheduler;
 	enum intel_engine_id ring_id = req->engine->id;
 	struct intel_vgpu_workload *workload;
+<<<<<<< HEAD
 	unsigned long flags;
 
 	if (!is_gvt_request(req)) {
 		spin_lock_irqsave(&scheduler->mmio_context_lock, flags);
+=======
+
+	if (!is_gvt_request(req)) {
+		spin_lock_bh(&scheduler->mmio_context_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (action == INTEL_CONTEXT_SCHEDULE_IN &&
 		    scheduler->engine_owner[ring_id]) {
 			/* Switch ring from vGPU to host. */
@@ -237,7 +299,11 @@ static int shadow_context_status_change(struct notifier_block *nb,
 					      NULL, ring_id);
 			scheduler->engine_owner[ring_id] = NULL;
 		}
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&scheduler->mmio_context_lock, flags);
+=======
+		spin_unlock_bh(&scheduler->mmio_context_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return NOTIFY_OK;
 	}
@@ -248,7 +314,11 @@ static int shadow_context_status_change(struct notifier_block *nb,
 
 	switch (action) {
 	case INTEL_CONTEXT_SCHEDULE_IN:
+<<<<<<< HEAD
 		spin_lock_irqsave(&scheduler->mmio_context_lock, flags);
+=======
+		spin_lock_bh(&scheduler->mmio_context_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (workload->vgpu != scheduler->engine_owner[ring_id]) {
 			/* Switch ring from host to vGPU or vGPU to vGPU. */
 			intel_gvt_switch_mmio(scheduler->engine_owner[ring_id],
@@ -257,6 +327,7 @@ static int shadow_context_status_change(struct notifier_block *nb,
 		} else
 			gvt_dbg_sched("skip ring %d mmio switch for vgpu%d\n",
 				      ring_id, workload->vgpu->id);
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&scheduler->mmio_context_lock, flags);
 		atomic_set(&workload->shadow_ctx_active, 1);
 		break;
@@ -267,6 +338,14 @@ static int shadow_context_status_change(struct notifier_block *nb,
 	case INTEL_CONTEXT_SCHEDULE_PREEMPTED:
 		save_ring_hw_state(workload->vgpu, ring_id);
 		break;
+=======
+		spin_unlock_bh(&scheduler->mmio_context_lock);
+		atomic_set(&workload->shadow_ctx_active, 1);
+		break;
+	case INTEL_CONTEXT_SCHEDULE_OUT:
+		atomic_set(&workload->shadow_ctx_active, 0);
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		WARN_ON(1);
 		return NOTIFY_OK;
@@ -275,8 +354,15 @@ static int shadow_context_status_change(struct notifier_block *nb,
 	return NOTIFY_OK;
 }
 
+<<<<<<< HEAD
 static void shadow_context_descriptor_update(struct intel_context *ce)
 {
+=======
+static void shadow_context_descriptor_update(struct i915_gem_context *ctx,
+		struct intel_engine_cs *engine)
+{
+	struct intel_context *ce = &ctx->engine[engine->id];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 desc = 0;
 
 	desc = ce->lrc_desc;
@@ -285,11 +371,16 @@ static void shadow_context_descriptor_update(struct intel_context *ce)
 	 * like GEN8_CTX_* cached in desc_template
 	 */
 	desc &= U64_MAX << 12;
+<<<<<<< HEAD
 	desc |= ce->gem_context->desc_template & ((1ULL << 12) - 1);
+=======
+	desc |= ctx->desc_template & ((1ULL << 12) - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ce->lrc_desc = desc;
 }
 
+<<<<<<< HEAD
 static int copy_workload_to_ring_buffer(struct intel_vgpu_workload *workload)
 {
 	struct intel_vgpu *vgpu = workload->vgpu;
@@ -332,6 +423,8 @@ static void release_shadow_wa_ctx(struct intel_shadow_wa_ctx *wa_ctx)
 	i915_gem_object_put(wa_ctx->indirect_ctx.obj);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * intel_gvt_scan_and_shadow_workload - audit the workload by scanning and
  * shadow it as well, include ringbuffer,wa_ctx and ctx.
@@ -342,6 +435,7 @@ static void release_shadow_wa_ctx(struct intel_shadow_wa_ctx *wa_ctx)
  */
 int intel_gvt_scan_and_shadow_workload(struct intel_vgpu_workload *workload)
 {
+<<<<<<< HEAD
 	struct intel_vgpu *vgpu = workload->vgpu;
 	struct intel_vgpu_submission *s = &vgpu->submission;
 	struct i915_gem_context *shadow_ctx = s->shadow_ctx;
@@ -349,13 +443,91 @@ int intel_gvt_scan_and_shadow_workload(struct intel_vgpu_workload *workload)
 	struct intel_engine_cs *engine = dev_priv->engine[workload->ring_id];
 	struct intel_context *ce;
 	struct i915_request *rq;
+=======
+	int ring_id = workload->ring_id;
+	struct i915_gem_context *shadow_ctx = workload->vgpu->shadow_ctx;
+	struct drm_i915_private *dev_priv = workload->vgpu->gvt->dev_priv;
+	struct drm_i915_gem_request *rq;
+	struct intel_vgpu *vgpu = workload->vgpu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	lockdep_assert_held(&dev_priv->drm.struct_mutex);
 
+<<<<<<< HEAD
 	if (workload->req)
 		return 0;
 
+=======
+	if (workload->shadowed)
+		return 0;
+
+	shadow_ctx->desc_template &= ~(0x3 << GEN8_CTX_ADDRESSING_MODE_SHIFT);
+	shadow_ctx->desc_template |= workload->ctx_desc.addressing_mode <<
+				    GEN8_CTX_ADDRESSING_MODE_SHIFT;
+
+	if (!test_and_set_bit(ring_id, vgpu->shadow_ctx_desc_updated))
+		shadow_context_descriptor_update(shadow_ctx,
+					dev_priv->engine[ring_id]);
+
+	rq = i915_gem_request_alloc(dev_priv->engine[ring_id], shadow_ctx);
+	if (IS_ERR(rq)) {
+		gvt_vgpu_err("fail to allocate gem request\n");
+		ret = PTR_ERR(rq);
+		goto out;
+	}
+
+	gvt_dbg_sched("ring id %d get i915 gem request %p\n", ring_id, rq);
+
+	workload->req = i915_gem_request_get(rq);
+
+	ret = intel_gvt_scan_and_shadow_ringbuffer(workload);
+	if (ret)
+		goto out;
+
+	if ((workload->ring_id == RCS) &&
+	    (workload->wa_ctx.indirect_ctx.size != 0)) {
+		ret = intel_gvt_scan_and_shadow_wa_ctx(&workload->wa_ctx);
+		if (ret)
+			goto out;
+	}
+
+	ret = populate_shadow_context(workload);
+	if (ret)
+		goto out;
+
+	workload->shadowed = true;
+
+out:
+	return ret;
+}
+
+static int dispatch_workload(struct intel_vgpu_workload *workload)
+{
+	int ring_id = workload->ring_id;
+	struct i915_gem_context *shadow_ctx = workload->vgpu->shadow_ctx;
+	struct drm_i915_private *dev_priv = workload->vgpu->gvt->dev_priv;
+	struct intel_engine_cs *engine = dev_priv->engine[ring_id];
+	struct intel_vgpu *vgpu = workload->vgpu;
+	struct intel_ring *ring;
+	int ret = 0;
+
+	gvt_dbg_sched("ring id %d prepare to dispatch workload %p\n",
+		ring_id, workload);
+
+	mutex_lock(&dev_priv->drm.struct_mutex);
+
+	ret = intel_gvt_scan_and_shadow_workload(workload);
+	if (ret)
+		goto out;
+
+	if (workload->prepare) {
+		ret = workload->prepare(workload);
+		if (ret)
+			goto out;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* pin shadow context by gvt even the shadow context will be pinned
 	 * when i915 alloc request. That is because gvt will update the guest
 	 * context from shadow context when workload is completed, and at that
@@ -363,6 +535,7 @@ int intel_gvt_scan_and_shadow_workload(struct intel_vgpu_workload *workload)
 	 * shadow_ctx pages invalid. So gvt need to pin itself. After update
 	 * the guest context, gvt can unpin the shadow_ctx safely.
 	 */
+<<<<<<< HEAD
 	ce = intel_context_pin(shadow_ctx, engine);
 	if (IS_ERR(ce)) {
 		gvt_vgpu_err("fail to pin shadow context\n");
@@ -646,6 +819,14 @@ static int dispatch_workload(struct intel_vgpu_workload *workload)
 		goto out;
 
 	ret = prepare_workload(workload);
+=======
+	ring = engine->context_pin(engine, shadow_ctx);
+	if (IS_ERR(ring)) {
+		ret = PTR_ERR(ring);
+		gvt_vgpu_err("fail to pin shadow context\n");
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	if (ret)
@@ -654,12 +835,19 @@ out:
 	if (!IS_ERR_OR_NULL(workload->req)) {
 		gvt_dbg_sched("ring id %d submit workload to i915 %p\n",
 				ring_id, workload->req);
+<<<<<<< HEAD
 		i915_request_add(workload->req);
+=======
+		i915_add_request(workload->req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		workload->dispatched = true;
 	}
 
 	mutex_unlock(&dev_priv->drm.struct_mutex);
+<<<<<<< HEAD
 	mutex_unlock(&vgpu->vgpu_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -669,7 +857,11 @@ static struct intel_vgpu_workload *pick_next_workload(
 	struct intel_gvt_workload_scheduler *scheduler = &gvt->scheduler;
 	struct intel_vgpu_workload *workload = NULL;
 
+<<<<<<< HEAD
 	mutex_lock(&gvt->sched_lock);
+=======
+	mutex_lock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * no current vgpu / will be scheduled out / no workload
@@ -713,24 +905,40 @@ static struct intel_vgpu_workload *pick_next_workload(
 
 	gvt_dbg_sched("ring id %d pick new workload %p\n", ring_id, workload);
 
+<<<<<<< HEAD
 	atomic_inc(&workload->vgpu->submission.running_workload_num);
 out:
 	mutex_unlock(&gvt->sched_lock);
+=======
+	atomic_inc(&workload->vgpu->running_workload_num);
+out:
+	mutex_unlock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return workload;
 }
 
 static void update_guest_context(struct intel_vgpu_workload *workload)
 {
+<<<<<<< HEAD
 	struct i915_request *rq = workload->req;
 	struct intel_vgpu *vgpu = workload->vgpu;
 	struct intel_gvt *gvt = vgpu->gvt;
 	struct drm_i915_gem_object *ctx_obj = rq->hw_context->state->obj;
+=======
+	struct intel_vgpu *vgpu = workload->vgpu;
+	struct intel_gvt *gvt = vgpu->gvt;
+	int ring_id = workload->ring_id;
+	struct i915_gem_context *shadow_ctx = workload->vgpu->shadow_ctx;
+	struct drm_i915_gem_object *ctx_obj =
+		shadow_ctx->engine[ring_id].state->obj;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct execlist_ring_context *shadow_ring_context;
 	struct page *page;
 	void *src;
 	unsigned long context_gpa, context_page_num;
 	int i;
 
+<<<<<<< HEAD
 	gvt_dbg_sched("ring id %d workload lrca %x\n", rq->engine->id,
 		      workload->ctx_desc.lrca);
 
@@ -738,6 +946,16 @@ static void update_guest_context(struct intel_vgpu_workload *workload)
 	context_page_num = context_page_num >> PAGE_SHIFT;
 
 	if (IS_BROADWELL(gvt->dev_priv) && rq->engine->id == RCS)
+=======
+	gvt_dbg_sched("ring id %d workload lrca %x\n", ring_id,
+			workload->ctx_desc.lrca);
+
+	context_page_num = gvt->dev_priv->engine[ring_id]->context_size;
+
+	context_page_num = context_page_num >> PAGE_SHIFT;
+
+	if (IS_BROADWELL(gvt->dev_priv) && ring_id == RCS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		context_page_num = 19;
 
 	i = 2;
@@ -745,16 +963,27 @@ static void update_guest_context(struct intel_vgpu_workload *workload)
 	while (i < context_page_num) {
 		context_gpa = intel_vgpu_gma_to_gpa(vgpu->gtt.ggtt_mm,
 				(u32)((workload->ctx_desc.lrca + i) <<
+<<<<<<< HEAD
 					I915_GTT_PAGE_SHIFT));
+=======
+					GTT_PAGE_SHIFT));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (context_gpa == INTEL_GVT_INVALID_ADDR) {
 			gvt_vgpu_err("invalid guest context descriptor\n");
 			return;
 		}
 
+<<<<<<< HEAD
 		page = i915_gem_object_get_page(ctx_obj, LRC_HEADER_PAGES + i);
 		src = kmap(page);
 		intel_gvt_hypervisor_write_gpa(vgpu, context_gpa, src,
 				I915_GTT_PAGE_SIZE);
+=======
+		page = i915_gem_object_get_page(ctx_obj, LRC_PPHWSP_PN + i);
+		src = kmap(page);
+		intel_gvt_hypervisor_write_gpa(vgpu, context_gpa, src,
+				GTT_PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kunmap(page);
 		i++;
 	}
@@ -779,11 +1008,16 @@ static void update_guest_context(struct intel_vgpu_workload *workload)
 			sizeof(*shadow_ring_context),
 			(void *)shadow_ring_context +
 			sizeof(*shadow_ring_context),
+<<<<<<< HEAD
 			I915_GTT_PAGE_SIZE - sizeof(*shadow_ring_context));
+=======
+			GTT_PAGE_SIZE - sizeof(*shadow_ring_context));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kunmap(page);
 }
 
+<<<<<<< HEAD
 void intel_vgpu_clean_workloads(struct intel_vgpu *vgpu,
 				unsigned long engine_mask)
 {
@@ -816,12 +1050,33 @@ static void complete_current_workload(struct intel_gvt *gvt, int ring_id)
 
 	mutex_lock(&vgpu->vgpu_lock);
 	mutex_lock(&gvt->sched_lock);
+=======
+static void complete_current_workload(struct intel_gvt *gvt, int ring_id)
+{
+	struct intel_gvt_workload_scheduler *scheduler = &gvt->scheduler;
+	struct intel_vgpu_workload *workload;
+	struct intel_vgpu *vgpu;
+	int event;
+
+	mutex_lock(&gvt->lock);
+
+	workload = scheduler->current_workload[ring_id];
+	vgpu = workload->vgpu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* For the workload w/ request, needs to wait for the context
 	 * switch to make sure request is completed.
 	 * For the workload w/o request, directly complete the workload.
 	 */
+<<<<<<< HEAD
 	if (rq) {
+=======
+	if (workload->req) {
+		struct drm_i915_private *dev_priv =
+			workload->vgpu->gvt->dev_priv;
+		struct intel_engine_cs *engine =
+			dev_priv->engine[workload->ring_id];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wait_event(workload->shadow_ctx_status_wq,
 			   !atomic_read(&workload->shadow_ctx_active));
 
@@ -837,6 +1092,11 @@ static void complete_current_workload(struct intel_gvt *gvt, int ring_id)
 				workload->status = 0;
 		}
 
+<<<<<<< HEAD
+=======
+		i915_gem_request_put(fetch_and_zero(&workload->req));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!workload->status && !(vgpu->resetting_eng &
 					   ENGINE_MASK(ring_id))) {
 			update_guest_context(workload);
@@ -845,6 +1105,7 @@ static void complete_current_workload(struct intel_gvt *gvt, int ring_id)
 					 INTEL_GVT_EVENT_MAX)
 				intel_vgpu_trigger_virtual_event(vgpu, event);
 		}
+<<<<<<< HEAD
 
 		/* unpin shadow ctx as the shadow_ctx update is done */
 		mutex_lock(&rq->i915->drm.struct_mutex);
@@ -852,6 +1113,12 @@ static void complete_current_workload(struct intel_gvt *gvt, int ring_id)
 		mutex_unlock(&rq->i915->drm.struct_mutex);
 
 		i915_request_put(fetch_and_zero(&workload->req));
+=======
+		mutex_lock(&dev_priv->drm.struct_mutex);
+		/* unpin shadow ctx as the shadow_ctx update is done */
+		engine->context_unpin(engine, workload->vgpu->shadow_ctx);
+		mutex_unlock(&dev_priv->drm.struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	gvt_dbg_sched("ring id %d complete workload %p status %d\n",
@@ -860,6 +1127,7 @@ static void complete_current_workload(struct intel_gvt *gvt, int ring_id)
 	scheduler->current_workload[ring_id] = NULL;
 
 	list_del_init(&workload->list);
+<<<<<<< HEAD
 
 	if (!workload->status) {
 		release_shadow_batch_buffer(workload);
@@ -886,13 +1154,22 @@ static void complete_current_workload(struct intel_gvt *gvt, int ring_id)
 	workload->complete(workload);
 
 	atomic_dec(&s->running_workload_num);
+=======
+	workload->complete(workload);
+
+	atomic_dec(&vgpu->running_workload_num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wake_up(&scheduler->workload_complete_wq);
 
 	if (gvt->scheduler.need_reschedule)
 		intel_gvt_request_service(gvt, INTEL_GVT_REQUEST_EVENT_SCHED);
 
+<<<<<<< HEAD
 	mutex_unlock(&gvt->sched_lock);
 	mutex_unlock(&vgpu->vgpu_lock);
+=======
+	mutex_unlock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct workload_thread_param {
@@ -910,8 +1187,12 @@ static int workload_thread(void *priv)
 	struct intel_vgpu *vgpu = NULL;
 	int ret;
 	bool need_force_wake = IS_SKYLAKE(gvt->dev_priv)
+<<<<<<< HEAD
 			|| IS_KABYLAKE(gvt->dev_priv)
 			|| IS_BROXTON(gvt->dev_priv);
+=======
+			|| IS_KABYLAKE(gvt->dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
 
 	kfree(p);
@@ -945,7 +1226,13 @@ static int workload_thread(void *priv)
 			intel_uncore_forcewake_get(gvt->dev_priv,
 					FORCEWAKE_ALL);
 
+<<<<<<< HEAD
 		ret = dispatch_workload(workload);
+=======
+		mutex_lock(&gvt->lock);
+		ret = dispatch_workload(workload);
+		mutex_unlock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret) {
 			vgpu = workload->vgpu;
@@ -955,7 +1242,11 @@ static int workload_thread(void *priv)
 
 		gvt_dbg_sched("ring id %d wait workload %p\n",
 				workload->ring_id, workload);
+<<<<<<< HEAD
 		i915_request_wait(workload->req, 0, MAX_SCHEDULE_TIMEOUT);
+=======
+		i915_wait_request(workload->req, 0, MAX_SCHEDULE_TIMEOUT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 complete:
 		gvt_dbg_sched("will complete workload %p, status: %d\n",
@@ -968,14 +1259,18 @@ complete:
 					FORCEWAKE_ALL);
 
 		intel_runtime_pm_put(gvt->dev_priv);
+<<<<<<< HEAD
 		if (ret && (vgpu_is_vm_unhealthy(ret)))
 			enter_failsafe_mode(vgpu, GVT_FAILSAFE_GUEST_ERR);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
 
 void intel_gvt_wait_vgpu_idle(struct intel_vgpu *vgpu)
 {
+<<<<<<< HEAD
 	struct intel_vgpu_submission *s = &vgpu->submission;
 	struct intel_gvt *gvt = vgpu->gvt;
 	struct intel_gvt_workload_scheduler *scheduler = &gvt->scheduler;
@@ -985,6 +1280,16 @@ void intel_gvt_wait_vgpu_idle(struct intel_vgpu *vgpu)
 
 		wait_event(scheduler->workload_complete_wq,
 				!atomic_read(&s->running_workload_num));
+=======
+	struct intel_gvt *gvt = vgpu->gvt;
+	struct intel_gvt_workload_scheduler *scheduler = &gvt->scheduler;
+
+	if (atomic_read(&vgpu->running_workload_num)) {
+		gvt_dbg_sched("wait vgpu idle\n");
+
+		wait_event(scheduler->workload_complete_wq,
+				!atomic_read(&vgpu->running_workload_num));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1049,6 +1354,7 @@ err:
 	return ret;
 }
 
+<<<<<<< HEAD
 /**
  * intel_vgpu_clean_submission - free submission-related resource for vGPU
  * @vgpu: a vGPU
@@ -1412,3 +1718,25 @@ void intel_vgpu_queue_workload(struct intel_vgpu_workload *workload)
 	intel_gvt_kick_schedule(workload->vgpu->gvt);
 	wake_up(&workload->vgpu->gvt->scheduler.waitq[workload->ring_id]);
 }
+=======
+void intel_vgpu_clean_gvt_context(struct intel_vgpu *vgpu)
+{
+	i915_gem_context_put(vgpu->shadow_ctx);
+}
+
+int intel_vgpu_init_gvt_context(struct intel_vgpu *vgpu)
+{
+	atomic_set(&vgpu->running_workload_num, 0);
+
+	vgpu->shadow_ctx = i915_gem_context_create_gvt(
+			&vgpu->gvt->dev_priv->drm);
+	if (IS_ERR(vgpu->shadow_ctx))
+		return PTR_ERR(vgpu->shadow_ctx);
+
+	vgpu->shadow_ctx->engine[RCS].initialised = true;
+
+	bitmap_zero(vgpu->shadow_ctx_desc_updated, I915_NUM_ENGINES);
+
+	return 0;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

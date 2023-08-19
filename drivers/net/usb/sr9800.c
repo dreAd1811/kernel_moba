@@ -336,7 +336,11 @@ static void sr_set_multicast(struct net_device *net)
 static int sr_mdio_read(struct net_device *net, int phy_id, int loc)
 {
 	struct usbnet *dev = netdev_priv(net);
+<<<<<<< HEAD
 	__le16 res;
+=======
+	__le16 res = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev->phy_mutex);
 	sr_set_sw_mii(dev);

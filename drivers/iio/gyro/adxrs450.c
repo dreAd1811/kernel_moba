@@ -405,6 +405,10 @@ static const struct iio_chan_spec adxrs450_channels[2][2] = {
 };
 
 static const struct iio_info adxrs450_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &adxrs450_read_raw,
 	.write_raw = &adxrs450_write_raw,
 };

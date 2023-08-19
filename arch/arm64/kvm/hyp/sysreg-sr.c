@@ -18,6 +18,7 @@
 #include <linux/compiler.h>
 #include <linux/kvm_host.h>
 
+<<<<<<< HEAD
 #include <asm/kprobes.h>
 #include <asm/kvm_asm.h>
 #include <asm/kvm_emulate.h>
@@ -32,10 +33,24 @@
  * to host userspace or a different VCPU.  EL1 registers only need to be
  * switched when potentially going to run a different VCPU.  The latter two
  * classes are handled as part of kvm_arch_vcpu_load and kvm_arch_vcpu_put.
+=======
+#include <asm/kvm_asm.h>
+#include <asm/kvm_hyp.h>
+
+/* Yes, this does nothing, on purpose */
+static void __hyp_text __sysreg_do_nothing(struct kvm_cpu_context *ctxt) { }
+
+/*
+ * Non-VHE: Both host and guest must save everything.
+ *
+ * VHE: Host must save tpidr*_el0, actlr_el1, mdscr_el1, sp_el0,
+ * and guest must save everything.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 static void __hyp_text __sysreg_save_common_state(struct kvm_cpu_context *ctxt)
 {
+<<<<<<< HEAD
 	ctxt->sys_regs[MDSCR_EL1]	= read_sysreg(mdscr_el1);
 
 	/*
@@ -52,11 +67,24 @@ static void __hyp_text __sysreg_save_user_state(struct kvm_cpu_context *ctxt)
 }
 
 static void __hyp_text __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
+=======
+	ctxt->sys_regs[ACTLR_EL1]	= read_sysreg(actlr_el1);
+	ctxt->sys_regs[TPIDR_EL0]	= read_sysreg(tpidr_el0);
+	ctxt->sys_regs[TPIDRRO_EL0]	= read_sysreg(tpidrro_el0);
+	ctxt->sys_regs[MDSCR_EL1]	= read_sysreg(mdscr_el1);
+	ctxt->gp_regs.regs.sp		= read_sysreg(sp_el0);
+}
+
+static void __hyp_text __sysreg_save_state(struct kvm_cpu_context *ctxt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ctxt->sys_regs[MPIDR_EL1]	= read_sysreg(vmpidr_el2);
 	ctxt->sys_regs[CSSELR_EL1]	= read_sysreg(csselr_el1);
 	ctxt->sys_regs[SCTLR_EL1]	= read_sysreg_el1(sctlr);
+<<<<<<< HEAD
 	ctxt->sys_regs[ACTLR_EL1]	= read_sysreg(actlr_el1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctxt->sys_regs[CPACR_EL1]	= read_sysreg_el1(cpacr);
 	ctxt->sys_regs[TTBR0_EL1]	= read_sysreg_el1(ttbr0);
 	ctxt->sys_regs[TTBR1_EL1]	= read_sysreg_el1(ttbr1);
@@ -76,6 +104,7 @@ static void __hyp_text __sysreg_save_el1_state(struct kvm_cpu_context *ctxt)
 	ctxt->gp_regs.sp_el1		= read_sysreg(sp_el1);
 	ctxt->gp_regs.elr_el1		= read_sysreg_el1(elr);
 	ctxt->gp_regs.spsr[KVM_SPSR_EL1]= read_sysreg_el1(spsr);
+<<<<<<< HEAD
 }
 
 static void __hyp_text __sysreg_save_el2_return_state(struct kvm_cpu_context *ctxt)
@@ -126,11 +155,46 @@ static void __hyp_text __sysreg_restore_user_state(struct kvm_cpu_context *ctxt)
 }
 
 static void __hyp_text __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt)
+=======
+	ctxt->gp_regs.regs.pc		= read_sysreg_el2(elr);
+	ctxt->gp_regs.regs.pstate	= read_sysreg_el2(spsr);
+}
+
+static hyp_alternate_select(__sysreg_call_save_host_state,
+			    __sysreg_save_state, __sysreg_do_nothing,
+			    ARM64_HAS_VIRT_HOST_EXTN);
+
+void __hyp_text __sysreg_save_host_state(struct kvm_cpu_context *ctxt)
+{
+	__sysreg_call_save_host_state()(ctxt);
+	__sysreg_save_common_state(ctxt);
+}
+
+void __hyp_text __sysreg_save_guest_state(struct kvm_cpu_context *ctxt)
+{
+	__sysreg_save_state(ctxt);
+	__sysreg_save_common_state(ctxt);
+}
+
+static void __hyp_text __sysreg_restore_common_state(struct kvm_cpu_context *ctxt)
+{
+	write_sysreg(ctxt->sys_regs[ACTLR_EL1],	  actlr_el1);
+	write_sysreg(ctxt->sys_regs[TPIDR_EL0],	  tpidr_el0);
+	write_sysreg(ctxt->sys_regs[TPIDRRO_EL0], tpidrro_el0);
+	write_sysreg(ctxt->sys_regs[MDSCR_EL1],	  mdscr_el1);
+	write_sysreg(ctxt->gp_regs.regs.sp,	  sp_el0);
+}
+
+static void __hyp_text __sysreg_restore_state(struct kvm_cpu_context *ctxt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	write_sysreg(ctxt->sys_regs[MPIDR_EL1],		vmpidr_el2);
 	write_sysreg(ctxt->sys_regs[CSSELR_EL1],	csselr_el1);
 	write_sysreg_el1(ctxt->sys_regs[SCTLR_EL1],	sctlr);
+<<<<<<< HEAD
 	write_sysreg(ctxt->sys_regs[ACTLR_EL1],	  	actlr_el1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	write_sysreg_el1(ctxt->sys_regs[CPACR_EL1],	cpacr);
 	write_sysreg_el1(ctxt->sys_regs[TTBR0_EL1],	ttbr0);
 	write_sysreg_el1(ctxt->sys_regs[TTBR1_EL1],	ttbr1);
@@ -150,6 +214,7 @@ static void __hyp_text __sysreg_restore_el1_state(struct kvm_cpu_context *ctxt)
 	write_sysreg(ctxt->gp_regs.sp_el1,		sp_el1);
 	write_sysreg_el1(ctxt->gp_regs.elr_el1,		elr);
 	write_sysreg_el1(ctxt->gp_regs.spsr[KVM_SPSR_EL1],spsr);
+<<<<<<< HEAD
 }
 
 static void __hyp_text
@@ -182,12 +247,37 @@ void sysreg_restore_guest_state_vhe(struct kvm_cpu_context *ctxt)
 	__sysreg_restore_el2_return_state(ctxt);
 }
 NOKPROBE_SYMBOL(sysreg_restore_guest_state_vhe);
+=======
+	write_sysreg_el2(ctxt->gp_regs.regs.pc,		elr);
+	write_sysreg_el2(ctxt->gp_regs.regs.pstate,	spsr);
+}
+
+static hyp_alternate_select(__sysreg_call_restore_host_state,
+			    __sysreg_restore_state, __sysreg_do_nothing,
+			    ARM64_HAS_VIRT_HOST_EXTN);
+
+void __hyp_text __sysreg_restore_host_state(struct kvm_cpu_context *ctxt)
+{
+	__sysreg_call_restore_host_state()(ctxt);
+	__sysreg_restore_common_state(ctxt);
+}
+
+void __hyp_text __sysreg_restore_guest_state(struct kvm_cpu_context *ctxt)
+{
+	__sysreg_restore_state(ctxt);
+	__sysreg_restore_common_state(ctxt);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void __hyp_text __sysreg32_save_state(struct kvm_vcpu *vcpu)
 {
 	u64 *spsr, *sysreg;
 
+<<<<<<< HEAD
 	if (!vcpu_el1_is_32bit(vcpu))
+=======
+	if (read_sysreg(hcr_el2) & HCR_RW)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	spsr = vcpu->arch.ctxt.gp_regs.spsr;
@@ -201,7 +291,14 @@ void __hyp_text __sysreg32_save_state(struct kvm_vcpu *vcpu)
 	sysreg[DACR32_EL2] = read_sysreg(dacr32_el2);
 	sysreg[IFSR32_EL2] = read_sysreg(ifsr32_el2);
 
+<<<<<<< HEAD
 	if (has_vhe() || vcpu->arch.flags & KVM_ARM64_DEBUG_DIRTY)
+=======
+	if (__fpsimd_enabled())
+		sysreg[FPEXC32_EL2] = read_sysreg(fpexc32_el2);
+
+	if (vcpu->arch.debug_flags & KVM_ARM64_DEBUG_DIRTY)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sysreg[DBGVCR32_EL2] = read_sysreg(dbgvcr32_el2);
 }
 
@@ -209,7 +306,11 @@ void __hyp_text __sysreg32_restore_state(struct kvm_vcpu *vcpu)
 {
 	u64 *spsr, *sysreg;
 
+<<<<<<< HEAD
 	if (!vcpu_el1_is_32bit(vcpu))
+=======
+	if (read_sysreg(hcr_el2) & HCR_RW)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	spsr = vcpu->arch.ctxt.gp_regs.spsr;
@@ -223,6 +324,7 @@ void __hyp_text __sysreg32_restore_state(struct kvm_vcpu *vcpu)
 	write_sysreg(sysreg[DACR32_EL2], dacr32_el2);
 	write_sysreg(sysreg[IFSR32_EL2], ifsr32_el2);
 
+<<<<<<< HEAD
 	if (has_vhe() || vcpu->arch.flags & KVM_ARM64_DEBUG_DIRTY)
 		write_sysreg(sysreg[DBGVCR32_EL2], dbgvcr32_el2);
 }
@@ -292,6 +394,15 @@ void kvm_vcpu_put_sysregs(struct kvm_vcpu *vcpu)
 	__sysreg_restore_user_state(host_ctxt);
 
 	vcpu->arch.sysregs_loaded_on_cpu = false;
+=======
+	if (vcpu->arch.debug_flags & KVM_ARM64_DEBUG_DIRTY)
+		write_sysreg(sysreg[DBGVCR32_EL2], dbgvcr32_el2);
+}
+
+void __hyp_text __kvm_set_tpidr_el2(u64 tpidr_el2)
+{
+	asm("msr tpidr_el2, %0": : "r" (tpidr_el2));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __hyp_text __kvm_enable_ssbs(void)

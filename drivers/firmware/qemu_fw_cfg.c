@@ -10,15 +10,22 @@
  * and select subsets of aarch64), a Device Tree node (on arm), or using
  * a kernel module (or command line) parameter with the following syntax:
  *
+<<<<<<< HEAD
  *      [qemu_fw_cfg.]ioport=<size>@<base>[:<ctrl_off>:<data_off>[:<dma_off>]]
  * or
  *      [qemu_fw_cfg.]mmio=<size>@<base>[:<ctrl_off>:<data_off>[:<dma_off>]]
+=======
+ *      [fw_cfg.]ioport=<size>@<base>[:<ctrl_off>:<data_off>]
+ * or
+ *      [fw_cfg.]mmio=<size>@<base>[:<ctrl_off>:<data_off>]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * where:
  *      <size>     := size of ioport or mmio range
  *      <base>     := physical base address of ioport or mmio range
  *      <ctrl_off> := (optional) offset of control register
  *      <data_off> := (optional) offset of data register
+<<<<<<< HEAD
  *      <dma_off> := (optional) offset of dma register
  *
  * e.g.:
@@ -29,22 +36,56 @@
 
 #include <linux/module.h>
 #include <linux/mod_devicetable.h>
+=======
+ *
+ * e.g.:
+ *      fw_cfg.ioport=2@0x510:0:1		(the default on x86)
+ * or
+ *      fw_cfg.mmio=0xA@0x9020000:8:0		(the default on arm)
+ */
+
+#include <linux/module.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/acpi.h>
 #include <linux/slab.h>
 #include <linux/io.h>
 #include <linux/ioport.h>
+<<<<<<< HEAD
 #include <uapi/linux/qemu_fw_cfg.h>
 #include <linux/delay.h>
 #include <linux/crash_dump.h>
 #include <linux/crash_core.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Gabriel L. Somlo <somlo@cmu.edu>");
 MODULE_DESCRIPTION("QEMU fw_cfg sysfs support");
 MODULE_LICENSE("GPL");
 
+<<<<<<< HEAD
 /* fw_cfg revision attribute, in /sys/firmware/qemu_fw_cfg top-level dir. */
 static u32 fw_cfg_rev;
+=======
+/* selector key values for "well-known" fw_cfg entries */
+#define FW_CFG_SIGNATURE  0x00
+#define FW_CFG_ID         0x01
+#define FW_CFG_FILE_DIR   0x19
+
+/* size in bytes of fw_cfg signature */
+#define FW_CFG_SIG_SIZE 4
+
+/* fw_cfg "file name" is up to 56 characters (including terminating nul) */
+#define FW_CFG_MAX_FILE_PATH 56
+
+/* fw_cfg file directory entry type */
+struct fw_cfg_file {
+	u32 size;
+	u16 select;
+	u16 reserved;
+	char name[FW_CFG_MAX_FILE_PATH];
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* fw_cfg device i/o register addresses */
 static bool fw_cfg_is_mmio;
@@ -53,12 +94,16 @@ static resource_size_t fw_cfg_p_size;
 static void __iomem *fw_cfg_dev_base;
 static void __iomem *fw_cfg_reg_ctrl;
 static void __iomem *fw_cfg_reg_data;
+<<<<<<< HEAD
 static void __iomem *fw_cfg_reg_dma;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* atomic access to fw_cfg device (potentially slow i/o, so using mutex) */
 static DEFINE_MUTEX(fw_cfg_dev_lock);
 
 /* pick appropriate endianness for selector key */
+<<<<<<< HEAD
 static void fw_cfg_sel_endianness(u16 key)
 {
 	if (fw_cfg_is_mmio)
@@ -130,6 +175,16 @@ end:
 /* read chunk of given fw_cfg blob (caller responsible for sanity-check) */
 static ssize_t fw_cfg_read_blob(u16 key,
 				void *buf, loff_t pos, size_t count)
+=======
+static inline u16 fw_cfg_sel_endianness(u16 key)
+{
+	return fw_cfg_is_mmio ? cpu_to_be16(key) : cpu_to_le16(key);
+}
+
+/* read chunk of given fw_cfg blob (caller responsible for sanity-check) */
+static inline void fw_cfg_read_blob(u16 key,
+				    void *buf, loff_t pos, size_t count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 glk = -1U;
 	acpi_status status;
@@ -142,17 +197,26 @@ static ssize_t fw_cfg_read_blob(u16 key,
 		/* Should never get here */
 		WARN(1, "fw_cfg_read_blob: Failed to lock ACPI!\n");
 		memset(buf, 0, count);
+<<<<<<< HEAD
 		return -EINVAL;
 	}
 
 	mutex_lock(&fw_cfg_dev_lock);
 	fw_cfg_sel_endianness(key);
+=======
+		return;
+	}
+
+	mutex_lock(&fw_cfg_dev_lock);
+	iowrite16(fw_cfg_sel_endianness(key), fw_cfg_reg_ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (pos-- > 0)
 		ioread8(fw_cfg_reg_data);
 	ioread8_rep(fw_cfg_reg_data, buf, count);
 	mutex_unlock(&fw_cfg_dev_lock);
 
 	acpi_release_global_lock(glk);
+<<<<<<< HEAD
 	return count;
 }
 
@@ -197,6 +261,10 @@ end:
 }
 #endif /* CONFIG_CRASH_CORE */
 
+=======
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* clean up fw_cfg device i/o */
 static void fw_cfg_io_cleanup(void)
 {
@@ -214,14 +282,20 @@ static void fw_cfg_io_cleanup(void)
 # if (defined(CONFIG_ARM) || defined(CONFIG_ARM64))
 #  define FW_CFG_CTRL_OFF 0x08
 #  define FW_CFG_DATA_OFF 0x00
+<<<<<<< HEAD
 #  define FW_CFG_DMA_OFF 0x10
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # elif (defined(CONFIG_PPC_PMAC) || defined(CONFIG_SPARC32)) /* ppc/mac,sun4m */
 #  define FW_CFG_CTRL_OFF 0x00
 #  define FW_CFG_DATA_OFF 0x02
 # elif (defined(CONFIG_X86) || defined(CONFIG_SPARC64)) /* x86, sun4u */
 #  define FW_CFG_CTRL_OFF 0x00
 #  define FW_CFG_DATA_OFF 0x01
+<<<<<<< HEAD
 #  define FW_CFG_DMA_OFF 0x04
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # else
 #  error "QEMU FW_CFG not available on this architecture!"
 # endif
@@ -231,7 +305,11 @@ static void fw_cfg_io_cleanup(void)
 static int fw_cfg_do_platform_probe(struct platform_device *pdev)
 {
 	char sig[FW_CFG_SIG_SIZE];
+<<<<<<< HEAD
 	struct resource *range, *ctrl, *data, *dma;
+=======
+	struct resource *range, *ctrl, *data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* acquire i/o range details */
 	fw_cfg_is_mmio = false;
@@ -268,7 +346,10 @@ static int fw_cfg_do_platform_probe(struct platform_device *pdev)
 	/* were custom register offsets provided (e.g. on the command line)? */
 	ctrl = platform_get_resource_byname(pdev, IORESOURCE_REG, "ctrl");
 	data = platform_get_resource_byname(pdev, IORESOURCE_REG, "data");
+<<<<<<< HEAD
 	dma = platform_get_resource_byname(pdev, IORESOURCE_REG, "dma");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ctrl && data) {
 		fw_cfg_reg_ctrl = fw_cfg_dev_base + ctrl->start;
 		fw_cfg_reg_data = fw_cfg_dev_base + data->start;
@@ -278,6 +359,7 @@ static int fw_cfg_do_platform_probe(struct platform_device *pdev)
 		fw_cfg_reg_data = fw_cfg_dev_base + FW_CFG_DATA_OFF;
 	}
 
+<<<<<<< HEAD
 	if (dma)
 		fw_cfg_reg_dma = fw_cfg_dev_base + dma->start;
 #ifdef FW_CFG_DMA_OFF
@@ -289,6 +371,11 @@ static int fw_cfg_do_platform_probe(struct platform_device *pdev)
 	if (fw_cfg_read_blob(FW_CFG_SIGNATURE, sig,
 				0, FW_CFG_SIG_SIZE) < 0 ||
 		memcmp(sig, "QEMU", FW_CFG_SIG_SIZE) != 0) {
+=======
+	/* verify fw_cfg device signature */
+	fw_cfg_read_blob(FW_CFG_SIGNATURE, sig, 0, FW_CFG_SIG_SIZE);
+	if (memcmp(sig, "QEMU", FW_CFG_SIG_SIZE) != 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fw_cfg_io_cleanup();
 		return -ENODEV;
 	}
@@ -296,6 +383,12 @@ static int fw_cfg_do_platform_probe(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/* fw_cfg revision attribute, in /sys/firmware/qemu_fw_cfg top-level dir. */
+static u32 fw_cfg_rev;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t fw_cfg_showrev(struct kobject *k, struct attribute *a, char *buf)
 {
 	return sprintf(buf, "%u\n", fw_cfg_rev);
@@ -312,6 +405,7 @@ static const struct {
 /* fw_cfg_sysfs_entry type */
 struct fw_cfg_sysfs_entry {
 	struct kobject kobj;
+<<<<<<< HEAD
 	u32 size;
 	u16 select;
 	char name[FW_CFG_MAX_FILE_PATH];
@@ -344,6 +438,12 @@ static ssize_t fw_cfg_write_vmcoreinfo(const struct fw_cfg_file *f)
 }
 #endif /* CONFIG_CRASH_CORE */
 
+=======
+	struct fw_cfg_file f;
+	struct list_head list;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* get fw_cfg_sysfs_entry from kobject member */
 static inline struct fw_cfg_sysfs_entry *to_entry(struct kobject *kobj)
 {
@@ -404,17 +504,29 @@ struct fw_cfg_sysfs_attribute fw_cfg_sysfs_attr_##_attr = { \
 
 static ssize_t fw_cfg_sysfs_show_size(struct fw_cfg_sysfs_entry *e, char *buf)
 {
+<<<<<<< HEAD
 	return sprintf(buf, "%u\n", e->size);
+=======
+	return sprintf(buf, "%u\n", e->f.size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t fw_cfg_sysfs_show_key(struct fw_cfg_sysfs_entry *e, char *buf)
 {
+<<<<<<< HEAD
 	return sprintf(buf, "%u\n", e->select);
+=======
+	return sprintf(buf, "%u\n", e->f.select);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t fw_cfg_sysfs_show_name(struct fw_cfg_sysfs_entry *e, char *buf)
 {
+<<<<<<< HEAD
 	return sprintf(buf, "%s\n", e->name);
+=======
+	return sprintf(buf, "%s\n", e->f.name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static FW_CFG_SYSFS_ATTR(size);
@@ -465,6 +577,7 @@ static ssize_t fw_cfg_sysfs_read_raw(struct file *filp, struct kobject *kobj,
 {
 	struct fw_cfg_sysfs_entry *entry = to_entry(kobj);
 
+<<<<<<< HEAD
 	if (pos > entry->size)
 		return -EINVAL;
 
@@ -472,6 +585,16 @@ static ssize_t fw_cfg_sysfs_read_raw(struct file *filp, struct kobject *kobj,
 		count = entry->size - pos;
 
 	return fw_cfg_read_blob(entry->select, buf, pos, count);
+=======
+	if (pos > entry->f.size)
+		return -EINVAL;
+
+	if (count > entry->f.size - pos)
+		count = entry->f.size - pos;
+
+	fw_cfg_read_blob(entry->f.select, buf, pos, count);
+	return count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct bin_attribute fw_cfg_sysfs_attr_raw = {
@@ -583,6 +706,7 @@ static int fw_cfg_register_file(const struct fw_cfg_file *f)
 	int err;
 	struct fw_cfg_sysfs_entry *entry;
 
+<<<<<<< HEAD
 #ifdef CONFIG_CRASH_CORE
 	if (fw_cfg_dma_enabled() &&
 		strcmp(f->name, FW_CFG_VMCOREINFO_FILENAME) == 0 &&
@@ -592,12 +716,15 @@ static int fw_cfg_register_file(const struct fw_cfg_file *f)
 	}
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* allocate new entry */
 	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
 	if (!entry)
 		return -ENOMEM;
 
 	/* set file entry information */
+<<<<<<< HEAD
 	entry->size = be32_to_cpu(f->size);
 	entry->select = be16_to_cpu(f->select);
 	memcpy(entry->name, f->name, FW_CFG_MAX_FILE_PATH);
@@ -605,6 +732,13 @@ static int fw_cfg_register_file(const struct fw_cfg_file *f)
 	/* register entry under "/sys/firmware/qemu_fw_cfg/by_key/" */
 	err = kobject_init_and_add(&entry->kobj, &fw_cfg_sysfs_entry_ktype,
 				   fw_cfg_sel_ko, "%d", entry->select);
+=======
+	memcpy(&entry->f, f, sizeof(struct fw_cfg_file));
+
+	/* register entry under "/sys/firmware/qemu_fw_cfg/by_key/" */
+	err = kobject_init_and_add(&entry->kobj, &fw_cfg_sysfs_entry_ktype,
+				   fw_cfg_sel_ko, "%d", entry->f.select);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_register;
 
@@ -614,7 +748,11 @@ static int fw_cfg_register_file(const struct fw_cfg_file *f)
 		goto err_add_raw;
 
 	/* try adding "/sys/firmware/qemu_fw_cfg/by_name/" symlink */
+<<<<<<< HEAD
 	fw_cfg_build_symlink(fw_cfg_fname_kset, &entry->kobj, entry->name);
+=======
+	fw_cfg_build_symlink(fw_cfg_fname_kset, &entry->kobj, entry->f.name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* success, add entry to global cache */
 	fw_cfg_sysfs_cache_enlist(entry);
@@ -631,35 +769,54 @@ err_register:
 static int fw_cfg_register_dir_entries(void)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	__be32 files_count;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 count, i;
 	struct fw_cfg_file *dir;
 	size_t dir_size;
 
+<<<<<<< HEAD
 	ret = fw_cfg_read_blob(FW_CFG_FILE_DIR, &files_count,
 			0, sizeof(files_count));
 	if (ret < 0)
 		return ret;
 
 	count = be32_to_cpu(files_count);
+=======
+	fw_cfg_read_blob(FW_CFG_FILE_DIR, &count, 0, sizeof(count));
+	count = be32_to_cpu(count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dir_size = count * sizeof(struct fw_cfg_file);
 
 	dir = kmalloc(dir_size, GFP_KERNEL);
 	if (!dir)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = fw_cfg_read_blob(FW_CFG_FILE_DIR, dir,
 			sizeof(files_count), dir_size);
 	if (ret < 0)
 		goto end;
 
 	for (i = 0; i < count; i++) {
+=======
+	fw_cfg_read_blob(FW_CFG_FILE_DIR, dir, sizeof(count), dir_size);
+
+	for (i = 0; i < count; i++) {
+		dir[i].size = be32_to_cpu(dir[i].size);
+		dir[i].select = be16_to_cpu(dir[i].select);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = fw_cfg_register_file(&dir[i]);
 		if (ret)
 			break;
 	}
 
+<<<<<<< HEAD
 end:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dir);
 	return ret;
 }
@@ -674,7 +831,10 @@ static inline void fw_cfg_kobj_cleanup(struct kobject *kobj)
 static int fw_cfg_sysfs_probe(struct platform_device *pdev)
 {
 	int err;
+<<<<<<< HEAD
 	__le32 rev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* NOTE: If we supported multiple fw_cfg devices, we'd first create
 	 * a subdirectory named after e.g. pdev->id, then hang per-device
@@ -700,11 +860,16 @@ static int fw_cfg_sysfs_probe(struct platform_device *pdev)
 		goto err_probe;
 
 	/* get revision number, add matching top-level attribute */
+<<<<<<< HEAD
 	err = fw_cfg_read_blob(FW_CFG_ID, &rev, 0, sizeof(rev));
 	if (err < 0)
 		goto err_probe;
 
 	fw_cfg_rev = le32_to_cpu(rev);
+=======
+	fw_cfg_read_blob(FW_CFG_ID, &fw_cfg_rev, 0, sizeof(fw_cfg_rev));
+	fw_cfg_rev = le32_to_cpu(fw_cfg_rev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = sysfs_create_file(fw_cfg_top_ko, &fw_cfg_rev_attr.attr);
 	if (err)
 		goto err_rev;
@@ -750,7 +915,11 @@ MODULE_DEVICE_TABLE(of, fw_cfg_sysfs_mmio_match);
 
 #ifdef CONFIG_ACPI
 static const struct acpi_device_id fw_cfg_sysfs_acpi_match[] = {
+<<<<<<< HEAD
 	{ FW_CFG_ACPI_DEVICE_ID, },
+=======
+	{ "QEMU0002", },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(acpi, fw_cfg_sysfs_acpi_match);
@@ -782,7 +951,10 @@ static struct platform_device *fw_cfg_cmdline_dev;
 /* use special scanf/printf modifier for phys_addr_t, resource_size_t */
 #define PH_ADDR_SCAN_FMT "@%" __PHYS_ADDR_PREFIX "i%n" \
 			 ":%" __PHYS_ADDR_PREFIX "i" \
+<<<<<<< HEAD
 			 ":%" __PHYS_ADDR_PREFIX "i%n" \
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 ":%" __PHYS_ADDR_PREFIX "i%n"
 
 #define PH_ADDR_PR_1_FMT "0x%" __PHYS_ADDR_PREFIX "x@" \
@@ -792,6 +964,7 @@ static struct platform_device *fw_cfg_cmdline_dev;
 			 ":%" __PHYS_ADDR_PREFIX "u" \
 			 ":%" __PHYS_ADDR_PREFIX "u"
 
+<<<<<<< HEAD
 #define PH_ADDR_PR_4_FMT PH_ADDR_PR_3_FMT \
 			 ":%" __PHYS_ADDR_PREFIX "u"
 
@@ -801,6 +974,14 @@ static int fw_cfg_cmdline_set(const char *arg, const struct kernel_param *kp)
 	char *str;
 	phys_addr_t base;
 	resource_size_t size, ctrl_off, data_off, dma_off;
+=======
+static int fw_cfg_cmdline_set(const char *arg, const struct kernel_param *kp)
+{
+	struct resource res[3] = {};
+	char *str;
+	phys_addr_t base;
+	resource_size_t size, ctrl_off, data_off;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int processed, consumed = 0;
 
 	/* only one fw_cfg device can exist system-wide, so if one
@@ -816,6 +997,7 @@ static int fw_cfg_cmdline_set(const char *arg, const struct kernel_param *kp)
 	/* consume "<size>" portion of command line argument */
 	size = memparse(arg, &str);
 
+<<<<<<< HEAD
 	/* get "@<base>[:<ctrl_off>:<data_off>[:<dma_off>]]" chunks */
 	processed = sscanf(str, PH_ADDR_SCAN_FMT,
 			   &base, &consumed,
@@ -825,11 +1007,25 @@ static int fw_cfg_cmdline_set(const char *arg, const struct kernel_param *kp)
 	/* sscanf() must process precisely 1, 3 or 4 chunks:
 	 * <base> is mandatory, optionally followed by <ctrl_off>
 	 * and <data_off>, and <dma_off>;
+=======
+	/* get "@<base>[:<ctrl_off>:<data_off>]" chunks */
+	processed = sscanf(str, PH_ADDR_SCAN_FMT,
+			   &base, &consumed,
+			   &ctrl_off, &data_off, &consumed);
+
+	/* sscanf() must process precisely 1 or 3 chunks:
+	 * <base> is mandatory, optionally followed by <ctrl_off>
+	 * and <data_off>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * there must be no extra characters after the last chunk,
 	 * so str[consumed] must be '\0'.
 	 */
 	if (str[consumed] ||
+<<<<<<< HEAD
 	    (processed != 1 && processed != 3 && processed != 4))
+=======
+	    (processed != 1 && processed != 3))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	res[0].start = base;
@@ -846,19 +1042,29 @@ static int fw_cfg_cmdline_set(const char *arg, const struct kernel_param *kp)
 		res[2].start = data_off;
 		res[2].flags = IORESOURCE_REG;
 	}
+<<<<<<< HEAD
 	if (processed > 3) {
 		res[3].name = "dma";
 		res[3].start = dma_off;
 		res[3].flags = IORESOURCE_REG;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* "processed" happens to nicely match the number of resources
 	 * we need to pass in to this platform device.
 	 */
 	fw_cfg_cmdline_dev = platform_device_register_simple("fw_cfg",
 					PLATFORM_DEVID_NONE, res, processed);
+<<<<<<< HEAD
 
 	return PTR_ERR_OR_ZERO(fw_cfg_cmdline_dev);
+=======
+	if (IS_ERR(fw_cfg_cmdline_dev))
+		return PTR_ERR(fw_cfg_cmdline_dev);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int fw_cfg_cmdline_get(char *buf, const struct kernel_param *kp)
@@ -883,6 +1089,7 @@ static int fw_cfg_cmdline_get(char *buf, const struct kernel_param *kp)
 				fw_cfg_cmdline_dev->resource[0].start,
 				fw_cfg_cmdline_dev->resource[1].start,
 				fw_cfg_cmdline_dev->resource[2].start);
+<<<<<<< HEAD
 	case 4:
 		return snprintf(buf, PAGE_SIZE, PH_ADDR_PR_4_FMT,
 				resource_size(&fw_cfg_cmdline_dev->resource[0]),
@@ -890,6 +1097,8 @@ static int fw_cfg_cmdline_get(char *buf, const struct kernel_param *kp)
 				fw_cfg_cmdline_dev->resource[1].start,
 				fw_cfg_cmdline_dev->resource[2].start,
 				fw_cfg_cmdline_dev->resource[3].start);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Should never get here */

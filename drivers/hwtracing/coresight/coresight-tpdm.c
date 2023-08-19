@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2014-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -271,6 +284,48 @@ struct tpdm_drvdata {
 
 static void tpdm_init_default_data(struct tpdm_drvdata *drvdata);
 
+<<<<<<< HEAD
+=======
+static void tpdm_setup_disable(struct tpdm_drvdata *drvdata)
+{
+	int i;
+
+	for (i = 0; i < drvdata->nr_tclk; i++)
+		clk_disable_unprepare(drvdata->tclk[i]);
+	for (i = 0; i < drvdata->nr_treg; i++)
+		regulator_disable(drvdata->treg[i]);
+}
+
+int tpdm_setup_enable(struct tpdm_drvdata *drvdata)
+{
+	int ret;
+	int i, j;
+
+	for (i = 0; i < drvdata->nr_treg; i++) {
+		ret = regulator_enable(drvdata->treg[i]);
+		if (ret)
+			goto err_regs;
+	}
+
+	for (j = 0; j < drvdata->nr_tclk; j++) {
+		ret = clk_prepare_enable(drvdata->tclk[j]);
+		if (ret)
+			goto err_clks;
+	}
+
+	return 0;
+
+err_clks:
+	for (j--; j >= 0; j--)
+		clk_disable_unprepare(drvdata->tclk[j]);
+err_regs:
+	for (i--; i >= 0; i--)
+		regulator_disable(drvdata->treg[i]);
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __tpdm_enable_gpr(struct tpdm_drvdata *drvdata)
 {
 	int i;
@@ -481,16 +536,26 @@ static void __tpdm_enable_dsb(struct tpdm_drvdata *drvdata)
 			    TPDM_DSB_CA_SELECT(i));
 
 	val = tpdm_readl(drvdata, TPDM_DSB_TIER);
+<<<<<<< HEAD
 	if (drvdata->dsb->patt_ts) {
 		val = val | BIT(0);
 		if (drvdata->dsb->patt_type)
+=======
+	if (drvdata->dsb->patt_ts == true) {
+		val = val | BIT(0);
+		if (drvdata->dsb->patt_type == true)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			val = val | BIT(2);
 		else
 			val = val & ~BIT(2);
 	} else {
 		val = val & ~BIT(0);
 	}
+<<<<<<< HEAD
 	if (drvdata->dsb->trig_ts)
+=======
+	if (drvdata->dsb->trig_ts == true)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val = val | BIT(1);
 	else
 		val = val & ~BIT(1);
@@ -548,6 +613,7 @@ static void __tpdm_enable_cmb(struct tpdm_drvdata *drvdata)
 	}
 
 	val = tpdm_readl(drvdata, TPDM_CMB_TIER);
+<<<<<<< HEAD
 	if (drvdata->cmb->patt_ts)
 		val = val | BIT(0);
 	else
@@ -561,6 +627,16 @@ static void __tpdm_enable_cmb(struct tpdm_drvdata *drvdata)
 	else
 		val = val & ~BIT(2);
 
+=======
+	if (drvdata->cmb->patt_ts == true)
+		val = val | BIT(0);
+	else
+		val = val & ~BIT(0);
+	if (drvdata->cmb->trig_ts == true)
+		val = val | BIT(1);
+	else
+		val = val & ~BIT(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tpdm_writel(drvdata, val, TPDM_CMB_TIER);
 
 	__tpdm_config_cmb_msr(drvdata);
@@ -599,11 +675,19 @@ static void __tpdm_enable_mcmb(struct tpdm_drvdata *drvdata)
 	}
 
 	val = tpdm_readl(drvdata, TPDM_CMB_TIER);
+<<<<<<< HEAD
 	if (drvdata->cmb->patt_ts)
 		val = val | BIT(0);
 	else
 		val = val & ~BIT(0);
 	if (drvdata->cmb->trig_ts)
+=======
+	if (drvdata->cmb->patt_ts == true)
+		val = val | BIT(0);
+	else
+		val = val & ~BIT(0);
+	if (drvdata->cmb->trig_ts == true)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val = val | BIT(1);
 	else
 		val = val & ~BIT(1);
@@ -670,8 +754,18 @@ static int tpdm_enable(struct coresight_device *csdev,
 	int ret = 0;
 
 	if (drvdata->enable) {
+<<<<<<< HEAD
 		dev_err(drvdata->dev,
 			"TPDM setup already enabled,Skipping enablei\n");
+=======
+		dev_err(drvdata->dev, "TPDM setup already enabled,Skipping enable");
+		return ret;
+	}
+
+	ret = tpdm_setup_enable(drvdata);
+	if (ret) {
+		dev_err(drvdata->dev, "TPDM setup failed. Skipping enable");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -749,8 +843,12 @@ static void tpdm_disable(struct coresight_device *csdev,
 	struct tpdm_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
 	if (!drvdata->enable) {
+<<<<<<< HEAD
 		dev_err(drvdata->dev,
 			"TPDM setup already disabled, Skipping disable\n");
+=======
+		dev_err(drvdata->dev, "TPDM setup already disabled, Skipping disable");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	mutex_lock(&drvdata->lock);
@@ -758,6 +856,11 @@ static void tpdm_disable(struct coresight_device *csdev,
 	drvdata->enable = false;
 	mutex_unlock(&drvdata->lock);
 
+<<<<<<< HEAD
+=======
+	tpdm_setup_disable(drvdata);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(drvdata->dev, "TPDM tracing disabled\n");
 }
 
@@ -778,7 +881,11 @@ static const struct coresight_ops tpdm_cs_ops = {
 	.source_ops	= &tpdm_source_ops,
 };
 
+<<<<<<< HEAD
 static ssize_t available_datasets_show(struct device *dev,
+=======
+static ssize_t tpdm_show_available_datasets(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    char *buf)
 {
@@ -810,9 +917,16 @@ static ssize_t available_datasets_show(struct device *dev,
 	size += scnprintf(buf + size, PAGE_SIZE - size, "\n");
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RO(available_datasets);
 
 static ssize_t enable_datasets_show(struct device *dev,
+=======
+static DEVICE_ATTR(available_datasets, 0444, tpdm_show_available_datasets,
+		   NULL);
+
+static ssize_t tpdm_show_enable_datasets(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -829,7 +943,11 @@ static ssize_t enable_datasets_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t enable_datasets_store(struct device *dev,
+=======
+static ssize_t tpdm_store_enable_datasets(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf,
 					  size_t size)
@@ -856,7 +974,12 @@ static ssize_t enable_datasets_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(enable_datasets);
+=======
+static DEVICE_ATTR(enable_datasets, 0644,
+		   tpdm_show_enable_datasets, tpdm_store_enable_datasets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t reset_store(struct device *dev,
 					  struct device_attribute *attr,
@@ -909,7 +1032,11 @@ static ssize_t reset_store(struct device *dev,
 }
 static DEVICE_ATTR_WO(reset);
 
+<<<<<<< HEAD
 static ssize_t gp_regs_show(struct device *dev,
+=======
+static ssize_t tpdm_show_gp_regs(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct device_attribute *attr,
 				 char *buf)
 {
@@ -932,7 +1059,11 @@ static ssize_t gp_regs_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t gp_regs_store(struct device *dev,
+=======
+static ssize_t tpdm_store_gp_regs(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct device_attribute *attr,
 				  const char *buf,
 				  size_t size)
@@ -952,9 +1083,16 @@ static ssize_t gp_regs_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(gp_regs);
 
 static ssize_t bc_capture_mode_show(struct device *dev,
+=======
+static DEVICE_ATTR(gp_regs, 0644, tpdm_show_gp_regs,
+		   tpdm_store_gp_regs);
+
+static ssize_t tpdm_show_bc_capture_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -968,7 +1106,11 @@ static ssize_t bc_capture_mode_show(struct device *dev,
 			 "ATB" : "APB");
 }
 
+<<<<<<< HEAD
 static ssize_t bc_capture_mode_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_capture_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf,
 					  size_t size)
@@ -985,14 +1127,22 @@ static ssize_t bc_capture_mode_store(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1010,17 +1160,31 @@ static ssize_t bc_capture_mode_store(struct device *dev,
 		drvdata->bc->capture_mode = TPDM_MODE_APB;
 	} else {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(bc_capture_mode);
 
 static ssize_t bc_retrieval_mode_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_capture_mode, 0644,
+		   tpdm_show_bc_capture_mode, tpdm_store_bc_capture_mode);
+
+static ssize_t tpdm_show_bc_retrieval_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -1034,7 +1198,11 @@ static ssize_t bc_retrieval_mode_show(struct device *dev,
 			 "ATB" : "APB");
 }
 
+<<<<<<< HEAD
 static ssize_t bc_retrieval_mode_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_retrieval_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -1066,9 +1234,16 @@ static ssize_t bc_retrieval_mode_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_retrieval_mode);
 
 static ssize_t bc_reset_counters_store(struct device *dev,
+=======
+static DEVICE_ATTR(bc_retrieval_mode, 0644,
+		   tpdm_show_bc_retrieval_mode, tpdm_store_bc_retrieval_mode);
+
+static ssize_t tpdm_store_bc_reset_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -1082,14 +1257,22 @@ static ssize_t bc_reset_counters_store(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1102,12 +1285,22 @@ static ssize_t bc_reset_counters_store(struct device *dev,
 	}
 
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_WO(bc_reset_counters);
 
 static ssize_t bc_sat_mode_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_reset_counters, 0644, NULL,
+		   tpdm_store_bc_reset_counters);
+
+static ssize_t tpdm_show_bc_sat_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     char *buf)
 {
@@ -1120,7 +1313,11 @@ static ssize_t bc_sat_mode_show(struct device *dev,
 			 (unsigned long)drvdata->bc->sat_mode);
 }
 
+<<<<<<< HEAD
 static ssize_t bc_sat_mode_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_sat_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      const char *buf,
 				      size_t size)
@@ -1138,9 +1335,16 @@ static ssize_t bc_sat_mode_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_sat_mode);
 
 static ssize_t bc_enable_counters_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_sat_mode, 0644,
+		   tpdm_show_bc_sat_mode, tpdm_store_bc_sat_mode);
+
+static ssize_t tpdm_show_bc_enable_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    char *buf)
 {
@@ -1153,7 +1357,11 @@ static ssize_t bc_enable_counters_show(struct device *dev,
 			 (unsigned long)drvdata->bc->enable_counters);
 }
 
+<<<<<<< HEAD
 static ssize_t bc_enable_counters_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_enable_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct device_attribute *attr,
 					     const char *buf,
 					     size_t size)
@@ -1171,9 +1379,16 @@ static ssize_t bc_enable_counters_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_enable_counters);
 
 static ssize_t bc_clear_counters_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_enable_counters, 0644,
+		   tpdm_show_bc_enable_counters, tpdm_store_bc_enable_counters);
+
+static ssize_t tpdm_show_bc_clear_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -1186,7 +1401,11 @@ static ssize_t bc_clear_counters_show(struct device *dev,
 			 (unsigned long)drvdata->bc->clear_counters);
 }
 
+<<<<<<< HEAD
 static ssize_t bc_clear_counters_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_clear_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -1204,9 +1423,16 @@ static ssize_t bc_clear_counters_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_clear_counters);
 
 static ssize_t bc_enable_irq_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_clear_counters, 0644,
+		   tpdm_show_bc_clear_counters, tpdm_store_bc_clear_counters);
+
+static ssize_t tpdm_show_bc_enable_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       char *buf)
 {
@@ -1219,7 +1445,11 @@ static ssize_t bc_enable_irq_show(struct device *dev,
 			 (unsigned long)drvdata->bc->enable_irq);
 }
 
+<<<<<<< HEAD
 static ssize_t bc_enable_irq_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_enable_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					const char *buf,
 					size_t size)
@@ -1237,9 +1467,16 @@ static ssize_t bc_enable_irq_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_enable_irq);
 
 static ssize_t bc_clear_irq_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_enable_irq, 0644,
+		   tpdm_show_bc_enable_irq, tpdm_store_bc_enable_irq);
+
+static ssize_t tpdm_show_bc_clear_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      char *buf)
 {
@@ -1252,7 +1489,11 @@ static ssize_t bc_clear_irq_show(struct device *dev,
 			 (unsigned long)drvdata->bc->clear_irq);
 }
 
+<<<<<<< HEAD
 static ssize_t bc_clear_irq_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_clear_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       const char *buf,
 				       size_t size)
@@ -1270,9 +1511,16 @@ static ssize_t bc_clear_irq_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_clear_irq);
 
 static ssize_t bc_trig_val_lo_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_clear_irq, 0644,
+		   tpdm_show_bc_clear_irq, tpdm_store_bc_clear_irq);
+
+static ssize_t tpdm_show_bc_trig_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -1292,7 +1540,11 @@ static ssize_t bc_trig_val_lo_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t bc_trig_val_lo_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_trig_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -1313,9 +1565,16 @@ static ssize_t bc_trig_val_lo_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_trig_val_lo);
 
 static ssize_t bc_trig_val_hi_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_trig_val_lo, 0644,
+		   tpdm_show_bc_trig_val_lo, tpdm_store_bc_trig_val_lo);
+
+static ssize_t tpdm_show_bc_trig_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -1335,7 +1594,11 @@ static ssize_t bc_trig_val_hi_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t bc_trig_val_hi_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_trig_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -1356,9 +1619,16 @@ static ssize_t bc_trig_val_hi_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_trig_val_hi);
 
 static ssize_t bc_enable_ganging_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_trig_val_hi, 0644,
+		   tpdm_show_bc_trig_val_hi, tpdm_store_bc_trig_val_hi);
+
+static ssize_t tpdm_show_bc_enable_ganging(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -1371,7 +1641,11 @@ static ssize_t bc_enable_ganging_show(struct device *dev,
 			 (unsigned long)drvdata->bc->enable_ganging);
 }
 
+<<<<<<< HEAD
 static ssize_t bc_enable_ganging_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_enable_ganging(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -1389,9 +1663,16 @@ static ssize_t bc_enable_ganging_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_enable_ganging);
 
 static ssize_t bc_overflow_val_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_enable_ganging, 0644,
+		   tpdm_show_bc_enable_ganging, tpdm_store_bc_enable_ganging);
+
+static ssize_t tpdm_show_bc_overflow_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -1411,7 +1692,11 @@ static ssize_t bc_overflow_val_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t bc_overflow_val_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_overflow_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf,
 					  size_t size)
@@ -1430,9 +1715,16 @@ static ssize_t bc_overflow_val_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_overflow_val);
 
 static ssize_t bc_ovsr_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_overflow_val, 0644,
+		   tpdm_show_bc_overflow_val, tpdm_store_bc_overflow_val);
+
+static ssize_t tpdm_show_bc_ovsr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct device_attribute *attr,
 				 char *buf)
 {
@@ -1443,14 +1735,22 @@ static ssize_t bc_ovsr_show(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1458,11 +1758,19 @@ static ssize_t bc_ovsr_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_BC_OVSR);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t bc_ovsr_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_bc_ovsr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct device_attribute *attr,
 				  const char *buf,
 				  size_t size)
@@ -1476,14 +1784,22 @@ static ssize_t bc_ovsr_store(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1493,12 +1809,22 @@ static ssize_t bc_ovsr_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(bc_ovsr);
 
 static ssize_t bc_counter_sel_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_ovsr, 0644,
+		   tpdm_show_bc_ovsr, tpdm_store_bc_ovsr);
+
+static ssize_t tpdm_show_bc_counter_sel(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -1509,14 +1835,22 @@ static ssize_t bc_counter_sel_show(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1524,11 +1858,19 @@ static ssize_t bc_counter_sel_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_BC_SELR);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t bc_counter_sel_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_bc_counter_sel(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -1542,14 +1884,22 @@ static ssize_t bc_counter_sel_store(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable || val >= drvdata->bc_counters_avail) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1557,12 +1907,22 @@ static ssize_t bc_counter_sel_store(struct device *dev,
 	tpdm_writel(drvdata, val, TPDM_BC_SELR);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(bc_counter_sel);
 
 static ssize_t bc_count_val_lo_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_counter_sel, 0644,
+		   tpdm_show_bc_counter_sel, tpdm_store_bc_counter_sel);
+
+static ssize_t tpdm_show_bc_count_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -1573,14 +1933,22 @@ static ssize_t bc_count_val_lo_show(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1588,11 +1956,19 @@ static ssize_t bc_count_val_lo_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_BC_CNTR_LO);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t bc_count_val_lo_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_bc_count_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf,
 					  size_t size)
@@ -1606,14 +1982,22 @@ static ssize_t bc_count_val_lo_store(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1624,7 +2008,11 @@ static ssize_t bc_count_val_lo_store(struct device *dev,
 		/* Check if selected counter is disabled */
 		if (BVAL(tpdm_readl(drvdata, TPDM_BC_CNTENSET), select)) {
 			mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 			coresight_disable_reg_clk(drvdata->csdev);
+=======
+			tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EPERM;
 		}
 
@@ -1632,12 +2020,22 @@ static ssize_t bc_count_val_lo_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(bc_count_val_lo);
 
 static ssize_t bc_count_val_hi_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_count_val_lo, 0644,
+		   tpdm_show_bc_count_val_lo, tpdm_store_bc_count_val_lo);
+
+static ssize_t tpdm_show_bc_count_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -1648,14 +2046,22 @@ static ssize_t bc_count_val_hi_show(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1663,11 +2069,19 @@ static ssize_t bc_count_val_hi_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_BC_CNTR_HI);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t bc_count_val_hi_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_bc_count_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf,
 					  size_t size)
@@ -1681,14 +2095,22 @@ static ssize_t bc_count_val_hi_store(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1699,7 +2121,11 @@ static ssize_t bc_count_val_hi_store(struct device *dev,
 		/* Check if selected counter is disabled */
 		if (BVAL(tpdm_readl(drvdata, TPDM_BC_CNTENSET), select)) {
 			mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 			coresight_disable_reg_clk(drvdata->csdev);
+=======
+			tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EPERM;
 		}
 
@@ -1707,12 +2133,22 @@ static ssize_t bc_count_val_hi_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(bc_count_val_hi);
 
 static ssize_t bc_shadow_val_lo_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_count_val_hi, 0644,
+		   tpdm_show_bc_count_val_hi, tpdm_store_bc_count_val_hi);
+
+static ssize_t tpdm_show_bc_shadow_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  char *buf)
 {
@@ -1724,14 +2160,22 @@ static ssize_t bc_shadow_val_lo_show(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1743,12 +2187,22 @@ static ssize_t bc_shadow_val_lo_show(struct device *dev,
 	}
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RO(bc_shadow_val_lo);
 
 static ssize_t bc_shadow_val_hi_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_shadow_val_lo, 0644,
+		   tpdm_show_bc_shadow_val_lo, NULL);
+
+static ssize_t tpdm_show_bc_shadow_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  char *buf)
 {
@@ -1760,14 +2214,22 @@ static ssize_t bc_shadow_val_hi_show(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1778,12 +2240,22 @@ static ssize_t bc_shadow_val_hi_show(struct device *dev,
 				  tpdm_readl(drvdata, TPDM_BC_SHADOW_HI(i)));
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RO(bc_shadow_val_hi);
 
 static ssize_t bc_sw_inc_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_shadow_val_hi, 0644,
+		   tpdm_show_bc_shadow_val_hi, NULL);
+
+static ssize_t tpdm_show_bc_sw_inc(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct device_attribute *attr,
 				   char *buf)
 {
@@ -1794,14 +2266,22 @@ static ssize_t bc_sw_inc_show(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1809,11 +2289,19 @@ static ssize_t bc_sw_inc_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_BC_SWINC);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t bc_sw_inc_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_bc_sw_inc(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct device_attribute *attr,
 				    const char *buf,
 				    size_t size)
@@ -1827,14 +2315,22 @@ static ssize_t bc_sw_inc_store(struct device *dev,
 	if (!test_bit(TPDM_DS_BC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1844,12 +2340,22 @@ static ssize_t bc_sw_inc_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(bc_sw_inc);
 
 static ssize_t bc_msr_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(bc_sw_inc, 0644,
+		   tpdm_show_bc_sw_inc, tpdm_store_bc_sw_inc);
+
+static ssize_t tpdm_show_bc_msr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct device_attribute *attr,
 				char *buf)
 {
@@ -1870,7 +2376,11 @@ static ssize_t bc_msr_show(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 static ssize_t bc_msr_store(struct device *dev,
+=======
+static ssize_t tpdm_store_bc_msr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct device_attribute *attr,
 				 const char *buf,
 				 size_t size)
@@ -1897,9 +2407,15 @@ static ssize_t bc_msr_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(bc_msr);
 
 static ssize_t tc_capture_mode_show(struct device *dev,
+=======
+static DEVICE_ATTR(bc_msr, 0644, tpdm_show_bc_msr, tpdm_store_bc_msr);
+
+static ssize_t tpdm_show_tc_capture_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -1913,7 +2429,11 @@ static ssize_t tc_capture_mode_show(struct device *dev,
 			 "ATB" : "APB");
 }
 
+<<<<<<< HEAD
 static ssize_t tc_capture_mode_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_capture_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf,
 					  size_t size)
@@ -1930,14 +2450,22 @@ static ssize_t tc_capture_mode_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -1955,6 +2483,7 @@ static ssize_t tc_capture_mode_store(struct device *dev,
 		drvdata->tc->capture_mode = TPDM_MODE_APB;
 	} else {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
 		return -EINVAL;
 	}
@@ -1965,6 +2494,19 @@ static ssize_t tc_capture_mode_store(struct device *dev,
 static DEVICE_ATTR_RW(tc_capture_mode);
 
 static ssize_t tc_retrieval_mode_show(struct device *dev,
+=======
+		tpdm_setup_disable(drvdata);
+		return -EINVAL;
+	}
+	mutex_unlock(&drvdata->lock);
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_capture_mode, 0644,
+		   tpdm_show_tc_capture_mode, tpdm_store_tc_capture_mode);
+
+static ssize_t tpdm_show_tc_retrieval_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -1978,7 +2520,11 @@ static ssize_t tc_retrieval_mode_show(struct device *dev,
 			 "ATB" : "APB");
 }
 
+<<<<<<< HEAD
 static ssize_t tc_retrieval_mode_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_retrieval_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -1994,14 +2540,22 @@ static ssize_t tc_retrieval_mode_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->datasets))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2011,6 +2565,7 @@ static ssize_t tc_retrieval_mode_store(struct device *dev,
 		drvdata->tc->retrieval_mode = TPDM_MODE_APB;
 	} else {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
 		return -EINVAL;
 	}
@@ -2021,6 +2576,19 @@ static ssize_t tc_retrieval_mode_store(struct device *dev,
 static DEVICE_ATTR_RW(tc_retrieval_mode);
 
 static ssize_t tc_reset_counters_store(struct device *dev,
+=======
+		tpdm_setup_disable(drvdata);
+		return -EINVAL;
+	}
+	mutex_unlock(&drvdata->lock);
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_retrieval_mode, 0644,
+		   tpdm_show_tc_retrieval_mode, tpdm_store_tc_retrieval_mode);
+
+static ssize_t tpdm_store_tc_reset_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -2034,14 +2602,22 @@ static ssize_t tc_reset_counters_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->datasets))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2053,12 +2629,22 @@ static ssize_t tc_reset_counters_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_WO(tc_reset_counters);
 
 static ssize_t tc_sat_mode_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_reset_counters, 0644, NULL,
+		   tpdm_store_tc_reset_counters);
+
+static ssize_t tpdm_show_tc_sat_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     char *buf)
 {
@@ -2071,7 +2657,11 @@ static ssize_t tc_sat_mode_show(struct device *dev,
 			 (unsigned int)drvdata->tc->sat_mode);
 }
 
+<<<<<<< HEAD
 static ssize_t tc_sat_mode_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_sat_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      const char *buf,
 				      size_t size)
@@ -2092,9 +2682,16 @@ static ssize_t tc_sat_mode_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_sat_mode);
 
 static ssize_t tc_enable_counters_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_sat_mode, 0644,
+		   tpdm_show_tc_sat_mode, tpdm_store_tc_sat_mode);
+
+static ssize_t tpdm_show_tc_enable_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    char *buf)
 {
@@ -2107,7 +2704,11 @@ static ssize_t tc_enable_counters_show(struct device *dev,
 			 (unsigned long)drvdata->tc->enable_counters);
 }
 
+<<<<<<< HEAD
 static ssize_t tc_enable_counters_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_enable_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct device_attribute *attr,
 					     const char *buf,
 					     size_t size)
@@ -2127,9 +2728,16 @@ static ssize_t tc_enable_counters_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_enable_counters);
 
 static ssize_t tc_clear_counters_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_enable_counters, 0644,
+		   tpdm_show_tc_enable_counters, tpdm_store_tc_enable_counters);
+
+static ssize_t tpdm_show_tc_clear_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -2142,7 +2750,11 @@ static ssize_t tc_clear_counters_show(struct device *dev,
 			 (unsigned long)drvdata->tc->clear_counters);
 }
 
+<<<<<<< HEAD
 static ssize_t tc_clear_counters_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_clear_counters(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -2162,9 +2774,16 @@ static ssize_t tc_clear_counters_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_clear_counters);
 
 static ssize_t tc_enable_irq_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_clear_counters, 0644,
+		   tpdm_show_tc_clear_counters, tpdm_store_tc_clear_counters);
+
+static ssize_t tpdm_show_tc_enable_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       char *buf)
 {
@@ -2177,7 +2796,11 @@ static ssize_t tc_enable_irq_show(struct device *dev,
 			 (unsigned long)drvdata->tc->enable_irq);
 }
 
+<<<<<<< HEAD
 static ssize_t tc_enable_irq_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_enable_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					const char *buf,
 					size_t size)
@@ -2195,9 +2818,16 @@ static ssize_t tc_enable_irq_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_enable_irq);
 
 static ssize_t tc_clear_irq_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_enable_irq, 0644,
+		   tpdm_show_tc_enable_irq, tpdm_store_tc_enable_irq);
+
+static ssize_t tpdm_show_tc_clear_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      char *buf)
 {
@@ -2210,7 +2840,11 @@ static ssize_t tc_clear_irq_show(struct device *dev,
 			 (unsigned long)drvdata->tc->clear_irq);
 }
 
+<<<<<<< HEAD
 static ssize_t tc_clear_irq_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_clear_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       const char *buf,
 				       size_t size)
@@ -2228,9 +2862,16 @@ static ssize_t tc_clear_irq_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_clear_irq);
 
 static ssize_t tc_trig_sel_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_clear_irq, 0644,
+		   tpdm_show_tc_clear_irq, tpdm_store_tc_clear_irq);
+
+static ssize_t tpdm_show_tc_trig_sel(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     char *buf)
 {
@@ -2251,7 +2892,11 @@ static ssize_t tc_trig_sel_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t tc_trig_sel_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_trig_sel(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      const char *buf,
 				      size_t size)
@@ -2272,9 +2917,16 @@ static ssize_t tc_trig_sel_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_trig_sel);
 
 static ssize_t tc_trig_val_lo_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_trig_sel, 0644,
+		   tpdm_show_tc_trig_sel, tpdm_store_tc_trig_sel);
+
+static ssize_t tpdm_show_tc_trig_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -2295,7 +2947,11 @@ static ssize_t tc_trig_val_lo_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t tc_trig_val_lo_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_trig_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -2316,9 +2972,16 @@ static ssize_t tc_trig_val_lo_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_trig_val_lo);
 
 static ssize_t tc_trig_val_hi_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_trig_val_lo, 0644,
+		   tpdm_show_tc_trig_val_lo, tpdm_store_tc_trig_val_lo);
+
+static ssize_t tpdm_show_tc_trig_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -2339,7 +3002,11 @@ static ssize_t tc_trig_val_hi_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t tc_trig_val_hi_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_trig_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -2360,9 +3027,16 @@ static ssize_t tc_trig_val_hi_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_trig_val_hi);
 
 static ssize_t tc_ovsr_gp_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_trig_val_hi, 0644,
+		   tpdm_show_tc_trig_val_hi, tpdm_store_tc_trig_val_hi);
+
+static ssize_t tpdm_show_tc_ovsr_gp(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct device_attribute *attr,
 				    char *buf)
 {
@@ -2373,14 +3047,22 @@ static ssize_t tc_ovsr_gp_show(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->datasets))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2388,11 +3070,19 @@ static ssize_t tc_ovsr_gp_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_TC_OVSR_GP);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t tc_ovsr_gp_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_tc_ovsr_gp(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     const char *buf,
 				     size_t size)
@@ -2406,14 +3096,22 @@ static ssize_t tc_ovsr_gp_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2423,12 +3121,22 @@ static ssize_t tc_ovsr_gp_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(tc_ovsr_gp);
 
 static ssize_t tc_ovsr_impl_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_ovsr_gp, 0644,
+		   tpdm_show_tc_ovsr_gp, tpdm_store_tc_ovsr_gp);
+
+static ssize_t tpdm_show_tc_ovsr_impl(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      char *buf)
 {
@@ -2439,14 +3147,22 @@ static ssize_t tc_ovsr_impl_show(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2454,11 +3170,19 @@ static ssize_t tc_ovsr_impl_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_TC_OVSR_IMPL);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t tc_ovsr_impl_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_tc_ovsr_impl(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       const char *buf,
 				       size_t size)
@@ -2472,14 +3196,22 @@ static ssize_t tc_ovsr_impl_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2489,12 +3221,22 @@ static ssize_t tc_ovsr_impl_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(tc_ovsr_impl);
 
 static ssize_t tc_counter_sel_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_ovsr_impl, 0644,
+		   tpdm_show_tc_ovsr_impl, tpdm_store_tc_ovsr_impl);
+
+static ssize_t tpdm_show_tc_counter_sel(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -2505,14 +3247,22 @@ static ssize_t tc_counter_sel_show(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2520,11 +3270,19 @@ static ssize_t tc_counter_sel_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_TC_SELR);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t tc_counter_sel_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_tc_counter_sel(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -2538,14 +3296,22 @@ static ssize_t tc_counter_sel_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2553,12 +3319,22 @@ static ssize_t tc_counter_sel_store(struct device *dev,
 	tpdm_writel(drvdata, val, TPDM_TC_SELR);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(tc_counter_sel);
 
 static ssize_t tc_count_val_lo_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_counter_sel, 0644,
+		   tpdm_show_tc_counter_sel, tpdm_store_tc_counter_sel);
+
+static ssize_t tpdm_show_tc_count_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -2569,14 +3345,22 @@ static ssize_t tc_count_val_lo_show(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2584,11 +3368,19 @@ static ssize_t tc_count_val_lo_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_TC_CNTR_LO);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t tc_count_val_lo_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_tc_count_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf,
 					  size_t size)
@@ -2602,14 +3394,22 @@ static ssize_t tc_count_val_lo_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2621,7 +3421,11 @@ static ssize_t tc_count_val_lo_store(struct device *dev,
 		/* Check if selected counter is disabled */
 		if (BVAL(tpdm_readl(drvdata, TPDM_TC_CNTENSET), select)) {
 			mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 			coresight_disable_reg_clk(drvdata->csdev);
+=======
+			tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EPERM;
 		}
 
@@ -2629,12 +3433,22 @@ static ssize_t tc_count_val_lo_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(tc_count_val_lo);
 
 static ssize_t tc_count_val_hi_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_count_val_lo, 0644,
+		   tpdm_show_tc_count_val_lo, tpdm_store_tc_count_val_lo);
+
+static ssize_t tpdm_show_tc_count_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 char *buf)
 {
@@ -2645,14 +3459,22 @@ static ssize_t tc_count_val_hi_show(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2660,11 +3482,19 @@ static ssize_t tc_count_val_hi_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_TC_CNTR_HI);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t tc_count_val_hi_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_tc_count_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  const char *buf,
 					  size_t size)
@@ -2678,14 +3508,22 @@ static ssize_t tc_count_val_hi_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2697,7 +3535,11 @@ static ssize_t tc_count_val_hi_store(struct device *dev,
 		/* Check if selected counter is disabled */
 		if (BVAL(tpdm_readl(drvdata, TPDM_TC_CNTENSET), select)) {
 			mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 			coresight_disable_reg_clk(drvdata->csdev);
+=======
+			tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EPERM;
 		}
 
@@ -2705,12 +3547,22 @@ static ssize_t tc_count_val_hi_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(tc_count_val_hi);
 
 static ssize_t tc_shadow_val_lo_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_count_val_hi, 0644,
+		   tpdm_show_tc_count_val_hi, tpdm_store_tc_count_val_hi);
+
+static ssize_t tpdm_show_tc_shadow_val_lo(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  char *buf)
 {
@@ -2722,14 +3574,22 @@ static ssize_t tc_shadow_val_lo_show(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2741,12 +3601,22 @@ static ssize_t tc_shadow_val_lo_show(struct device *dev,
 	}
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RO(tc_shadow_val_lo);
 
 static ssize_t tc_shadow_val_hi_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_shadow_val_lo, 0644,
+		   tpdm_show_tc_shadow_val_lo, NULL);
+
+static ssize_t tpdm_show_tc_shadow_val_hi(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  char *buf)
 {
@@ -2758,14 +3628,22 @@ static ssize_t tc_shadow_val_hi_show(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2777,12 +3655,22 @@ static ssize_t tc_shadow_val_hi_show(struct device *dev,
 	}
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RO(tc_shadow_val_hi);
 
 static ssize_t tc_sw_inc_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_shadow_val_hi, 0644,
+		   tpdm_show_tc_shadow_val_hi, NULL);
+
+static ssize_t tpdm_show_tc_sw_inc(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct device_attribute *attr,
 				   char *buf)
 {
@@ -2793,14 +3681,22 @@ static ssize_t tc_sw_inc_show(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2808,11 +3704,19 @@ static ssize_t tc_sw_inc_show(struct device *dev,
 	val = tpdm_readl(drvdata, TPDM_TC_SWINC);
 	TPDM_LOCK(drvdata);
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
 static ssize_t tc_sw_inc_store(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
+}
+
+static ssize_t tpdm_store_tc_sw_inc(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct device_attribute *attr,
 				    const char *buf,
 				    size_t size)
@@ -2826,14 +3730,22 @@ static ssize_t tc_sw_inc_store(struct device *dev,
 	if (!test_bit(TPDM_DS_TC, drvdata->enable_ds))
 		return -EPERM;
 
+<<<<<<< HEAD
 	ret = coresight_enable_reg_clk(drvdata->csdev);
+=======
+	ret = tpdm_setup_enable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	mutex_lock(&drvdata->lock);
 	if (!drvdata->enable) {
 		mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 		coresight_disable_reg_clk(drvdata->csdev);
+=======
+		tpdm_setup_disable(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPERM;
 	}
 
@@ -2843,12 +3755,22 @@ static ssize_t tc_sw_inc_store(struct device *dev,
 		TPDM_LOCK(drvdata);
 	}
 	mutex_unlock(&drvdata->lock);
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 	return size;
 }
 static DEVICE_ATTR_RW(tc_sw_inc);
 
 static ssize_t tc_msr_show(struct device *dev,
+=======
+	tpdm_setup_disable(drvdata);
+	return size;
+}
+static DEVICE_ATTR(tc_sw_inc, 0644,
+		   tpdm_show_tc_sw_inc, tpdm_store_tc_sw_inc);
+
+static ssize_t tpdm_show_tc_msr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct device_attribute *attr,
 				char *buf)
 {
@@ -2869,7 +3791,11 @@ static ssize_t tc_msr_show(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 static ssize_t tc_msr_store(struct device *dev,
+=======
+static ssize_t tpdm_store_tc_msr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct device_attribute *attr,
 				 const char *buf,
 				 size_t size)
@@ -2896,9 +3822,15 @@ static ssize_t tc_msr_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(tc_msr);
 
 static ssize_t dsb_mode_show(struct device *dev,
+=======
+static DEVICE_ATTR(tc_msr, 0644, tpdm_show_tc_msr, tpdm_store_tc_msr);
+
+static ssize_t tpdm_show_dsb_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct device_attribute *attr,
 				  char *buf)
 {
@@ -2911,7 +3843,11 @@ static ssize_t dsb_mode_show(struct device *dev,
 			 (unsigned long)drvdata->dsb->mode);
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_mode_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct device_attribute *attr,
 				   const char *buf,
 				   size_t size)
@@ -2929,9 +3865,16 @@ static ssize_t dsb_mode_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_mode);
 
 static ssize_t dsb_edge_ctrl_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_mode, 0644,
+		   tpdm_show_dsb_mode, tpdm_store_dsb_mode);
+
+static ssize_t tpdm_show_dsb_edge_ctrl(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       char *buf)
 {
@@ -2952,7 +3895,11 @@ static ssize_t dsb_edge_ctrl_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_edge_ctrl_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_edge_ctrl(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					const char *buf,
 					size_t size)
@@ -2983,9 +3930,16 @@ static ssize_t dsb_edge_ctrl_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_edge_ctrl);
 
 static ssize_t dsb_edge_ctrl_mask_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_edge_ctrl, 0644,
+		   tpdm_show_dsb_edge_ctrl, tpdm_store_dsb_edge_ctrl);
+
+static ssize_t tpdm_show_dsb_edge_ctrl_mask(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    char *buf)
 {
@@ -3006,7 +3960,11 @@ static ssize_t dsb_edge_ctrl_mask_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_edge_ctrl_mask_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_edge_ctrl_mask(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct device_attribute *attr,
 					     const char *buf,
 					     size_t size)
@@ -3037,9 +3995,16 @@ static ssize_t dsb_edge_ctrl_mask_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_edge_ctrl_mask);
 
 static ssize_t dsb_patt_val_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_edge_ctrl_mask, 0644,
+		   tpdm_show_dsb_edge_ctrl_mask, tpdm_store_dsb_edge_ctrl_mask);
+
+static ssize_t tpdm_show_dsb_patt_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      char *buf)
 {
@@ -3060,7 +4025,11 @@ static ssize_t dsb_patt_val_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_patt_val_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_patt_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       const char *buf,
 				       size_t size)
@@ -3079,9 +4048,16 @@ static ssize_t dsb_patt_val_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_patt_val);
 
 static ssize_t dsb_patt_mask_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_patt_val, 0644,
+		   tpdm_show_dsb_patt_val, tpdm_store_dsb_patt_val);
+
+static ssize_t tpdm_show_dsb_patt_mask(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       char *buf)
 {
@@ -3102,7 +4078,11 @@ static ssize_t dsb_patt_mask_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_patt_mask_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_patt_mask(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					const char *buf,
 					size_t size)
@@ -3121,9 +4101,16 @@ static ssize_t dsb_patt_mask_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_patt_mask);
 
 static ssize_t dsb_patt_ts_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_patt_mask, 0644,
+		   tpdm_show_dsb_patt_mask, tpdm_store_dsb_patt_mask);
+
+static ssize_t tpdm_show_dsb_patt_ts(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     char *buf)
 {
@@ -3136,7 +4123,11 @@ static ssize_t dsb_patt_ts_show(struct device *dev,
 			 (unsigned int)drvdata->dsb->patt_ts);
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_patt_ts_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_patt_ts(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      const char *buf,
 				      size_t size)
@@ -3157,9 +4148,16 @@ static ssize_t dsb_patt_ts_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_patt_ts);
 
 static ssize_t dsb_patt_type_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_patt_ts, 0644,
+		   tpdm_show_dsb_patt_ts, tpdm_store_dsb_patt_ts);
+
+static ssize_t tpdm_show_dsb_patt_type(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr, char *buf)
 {
 	struct tpdm_drvdata *drvdata = dev_get_drvdata(dev->parent);
@@ -3171,7 +4169,11 @@ static ssize_t dsb_patt_type_show(struct device *dev,
 			 (unsigned int)drvdata->dsb->patt_type);
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_patt_type_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_patt_type(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					const char *buf, size_t size)
 {
@@ -3191,9 +4193,16 @@ static ssize_t dsb_patt_type_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_patt_type);
 
 static ssize_t dsb_trig_patt_val_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_patt_type, 0644,
+		   tpdm_show_dsb_patt_type, tpdm_store_dsb_patt_type);
+
+static ssize_t tpdm_show_dsb_trig_patt_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -3214,7 +4223,11 @@ static ssize_t dsb_trig_patt_val_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_trig_patt_val_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_trig_patt_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -3233,9 +4246,16 @@ static ssize_t dsb_trig_patt_val_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_trig_patt_val);
 
 static ssize_t dsb_trig_patt_mask_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_trig_patt_val, 0644,
+		   tpdm_show_dsb_trig_patt_val, tpdm_store_dsb_trig_patt_val);
+
+static ssize_t tpdm_show_dsb_trig_patt_mask(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    char *buf)
 {
@@ -3256,7 +4276,11 @@ static ssize_t dsb_trig_patt_mask_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_trig_patt_mask_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_trig_patt_mask(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct device_attribute *attr,
 					     const char *buf,
 					     size_t size)
@@ -3275,9 +4299,16 @@ static ssize_t dsb_trig_patt_mask_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_trig_patt_mask);
 
 static ssize_t dsb_trig_type_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_trig_patt_mask, 0644,
+		   tpdm_show_dsb_trig_patt_mask, tpdm_store_dsb_trig_patt_mask);
+
+static ssize_t tpdm_show_dsb_trig_type(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     char *buf)
 {
@@ -3290,7 +4321,11 @@ static ssize_t dsb_trig_type_show(struct device *dev,
 			 (unsigned int)drvdata->dsb->trig_type);
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_trig_type_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_trig_type(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      const char *buf,
 				      size_t size)
@@ -3311,9 +4346,16 @@ static ssize_t dsb_trig_type_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_trig_type);
 
 static ssize_t dsb_trig_ts_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_trig_type, 0644,
+		   tpdm_show_dsb_trig_type, tpdm_store_dsb_trig_type);
+
+static ssize_t tpdm_show_dsb_trig_ts(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     char *buf)
 {
@@ -3326,7 +4368,11 @@ static ssize_t dsb_trig_ts_show(struct device *dev,
 			 (unsigned int)drvdata->dsb->trig_ts);
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_trig_ts_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_trig_ts(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      const char *buf,
 				      size_t size)
@@ -3347,9 +4393,16 @@ static ssize_t dsb_trig_ts_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_trig_ts);
 
 static ssize_t dsb_select_val_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_trig_ts, 0644,
+		   tpdm_show_dsb_trig_ts, tpdm_store_dsb_trig_ts);
+
+static ssize_t tpdm_show_dsb_select_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -3370,7 +4423,11 @@ static ssize_t dsb_select_val_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_select_val_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_select_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -3398,9 +4455,16 @@ static ssize_t dsb_select_val_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_select_val);
 
 static ssize_t dsb_msr_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_select_val, 0644,
+		   tpdm_show_dsb_select_val, tpdm_store_dsb_select_val);
+
+static ssize_t tpdm_show_dsb_msr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct device_attribute *attr,
 				 char *buf)
 {
@@ -3421,7 +4485,11 @@ static ssize_t dsb_msr_show(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 static ssize_t dsb_msr_store(struct device *dev,
+=======
+static ssize_t tpdm_store_dsb_msr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct device_attribute *attr,
 				  const char *buf,
 				  size_t size)
@@ -3448,17 +4516,30 @@ static ssize_t dsb_msr_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(dsb_msr);
 
 static ssize_t cmb_available_modes_show(struct device *dev,
+=======
+static DEVICE_ATTR(dsb_msr, 0644, tpdm_show_dsb_msr, tpdm_store_dsb_msr);
+
+static ssize_t tpdm_show_cmb_available_modes(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct device_attribute *attr,
 					     char *buf)
 {
 	return scnprintf(buf, PAGE_SIZE, "%s\n", "continuous trace_on_change");
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RO(cmb_available_modes);
 
 static ssize_t cmb_mode_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_available_modes, 0444, tpdm_show_cmb_available_modes,
+		   NULL);
+
+static ssize_t tpdm_show_cmb_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct device_attribute *attr,
 				  char *buf)
 {
@@ -3474,7 +4555,11 @@ static ssize_t cmb_mode_show(struct device *dev,
 			 drvdata->cmb->cycle_acc);
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_mode_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_mode(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct device_attribute *attr,
 				   const char *buf,
 				   size_t size)
@@ -3497,9 +4582,16 @@ static ssize_t cmb_mode_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_mode);
 
 static ssize_t cmb_patt_val_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_mode, 0644,
+		   tpdm_show_cmb_mode, tpdm_store_cmb_mode);
+
+static ssize_t tpdm_show_cmb_patt_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  char *buf)
 {
@@ -3521,7 +4613,11 @@ static ssize_t cmb_patt_val_show(struct device *dev,
 	return size;
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_patt_val_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_patt_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   const char *buf, size_t size)
 {
@@ -3542,9 +4638,17 @@ static ssize_t cmb_patt_val_store(struct device *dev,
 
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_patt_val);
 
 static ssize_t cmb_patt_mask_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_patt_val, 0644,
+		   tpdm_show_cmb_patt_val,
+		   tpdm_store_cmb_patt_val);
+
+static ssize_t tpdm_show_cmb_patt_mask(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -3567,7 +4671,11 @@ static ssize_t cmb_patt_mask_show(struct device *dev,
 
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_patt_mask_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_patt_mask(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf, size_t size)
 {
@@ -3587,9 +4695,16 @@ static ssize_t cmb_patt_mask_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_patt_mask);
 
 static ssize_t cmb_patt_ts_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_patt_mask, 0644,
+		   tpdm_show_cmb_patt_mask, tpdm_store_cmb_patt_mask);
+
+static ssize_t tpdm_show_cmb_patt_ts(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     char *buf)
 {
@@ -3603,7 +4718,11 @@ static ssize_t cmb_patt_ts_show(struct device *dev,
 			 (unsigned int)drvdata->cmb->patt_ts);
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_patt_ts_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_patt_ts(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      const char *buf,
 				      size_t size)
@@ -3625,7 +4744,10 @@ static ssize_t cmb_patt_ts_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_patt_ts);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t cmb_ts_all_show(struct device *dev,
 				     struct device_attribute *attr,
@@ -3665,7 +4787,14 @@ static ssize_t cmb_ts_all_store(struct device *dev,
 }
 static DEVICE_ATTR_RW(cmb_ts_all);
 
+<<<<<<< HEAD
 static ssize_t cmb_trig_patt_val_lsb_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_patt_ts, 0644,
+		   tpdm_show_cmb_patt_ts, tpdm_store_cmb_patt_ts);
+
+static ssize_t tpdm_show_cmb_trig_patt_val_lsb(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       struct device_attribute *attr,
 					       char *buf)
 {
@@ -3681,7 +4810,11 @@ static ssize_t cmb_trig_patt_val_lsb_show(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%#lx\n", val);
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_trig_patt_val_lsb_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_trig_patt_val_lsb(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						struct device_attribute *attr,
 						const char *buf, size_t size)
 {
@@ -3699,9 +4832,17 @@ static ssize_t cmb_trig_patt_val_lsb_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_trig_patt_val_lsb);
 
 static ssize_t cmb_trig_patt_mask_lsb_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_trig_patt_val_lsb, 0644,
+		   tpdm_show_cmb_trig_patt_val_lsb,
+		   tpdm_store_cmb_trig_patt_val_lsb);
+
+static ssize_t tpdm_show_cmb_trig_patt_mask_lsb(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						struct device_attribute *attr,
 						char *buf)
 {
@@ -3717,7 +4858,11 @@ static ssize_t cmb_trig_patt_mask_lsb_show(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%#lx\n", val);
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_trig_patt_mask_lsb_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_trig_patt_mask_lsb(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 struct device_attribute *attr,
 						 const char *buf, size_t size)
 {
@@ -3735,9 +4880,17 @@ static ssize_t cmb_trig_patt_mask_lsb_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_trig_patt_mask_lsb);
 
 static ssize_t cmb_trig_patt_val_msb_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_trig_patt_mask_lsb, 0644,
+		   tpdm_show_cmb_trig_patt_mask_lsb,
+		   tpdm_store_cmb_trig_patt_mask_lsb);
+
+static ssize_t tpdm_show_cmb_trig_patt_val_msb(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       struct device_attribute *attr,
 					       char *buf)
 {
@@ -3753,7 +4906,11 @@ static ssize_t cmb_trig_patt_val_msb_show(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%#lx\n", val);
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_trig_patt_val_msb_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_trig_patt_val_msb(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						struct device_attribute *attr,
 						const char *buf, size_t size)
 {
@@ -3771,9 +4928,17 @@ static ssize_t cmb_trig_patt_val_msb_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_trig_patt_val_msb);
 
 static ssize_t cmb_trig_patt_mask_msb_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_trig_patt_val_msb, 0644,
+		   tpdm_show_cmb_trig_patt_val_msb,
+		   tpdm_store_cmb_trig_patt_val_msb);
+
+static ssize_t tpdm_show_cmb_trig_patt_mask_msb(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						struct device_attribute *attr,
 						char *buf)
 {
@@ -3789,7 +4954,11 @@ static ssize_t cmb_trig_patt_mask_msb_show(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%#lx\n", val);
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_trig_patt_mask_msb_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_trig_patt_mask_msb(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 struct device_attribute *attr,
 						 const char *buf, size_t size)
 {
@@ -3807,9 +4976,17 @@ static ssize_t cmb_trig_patt_mask_msb_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_trig_patt_mask_msb);
 
 static ssize_t cmb_trig_ts_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_trig_patt_mask_msb, 0644,
+		   tpdm_show_cmb_trig_patt_mask_msb,
+		   tpdm_store_cmb_trig_patt_mask_msb);
+
+static ssize_t tpdm_show_cmb_trig_ts(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct device_attribute *attr,
 				     char *buf)
 {
@@ -3823,7 +5000,11 @@ static ssize_t cmb_trig_ts_show(struct device *dev,
 			 (unsigned int)drvdata->cmb->trig_ts);
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_trig_ts_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_trig_ts(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      const char *buf,
 				      size_t size)
@@ -3845,9 +5026,16 @@ static ssize_t cmb_trig_ts_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_trig_ts);
 
 static ssize_t cmb_msr_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_trig_ts, 0644,
+		   tpdm_show_cmb_trig_ts, tpdm_store_cmb_trig_ts);
+
+static ssize_t tpdm_show_cmb_msr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct device_attribute *attr,
 				 char *buf)
 {
@@ -3869,7 +5057,11 @@ static ssize_t cmb_msr_show(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_msr_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_msr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct device_attribute *attr,
 				  const char *buf,
 				  size_t size)
@@ -3897,9 +5089,15 @@ static ssize_t cmb_msr_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_msr);
 
 static ssize_t cmb_read_interface_state_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_msr, 0644, tpdm_show_cmb_msr, tpdm_store_cmb_msr);
+
+static ssize_t tpdm_show_cmb_read_interface_state(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  struct device_attribute *attr,
 						  char *buf)
 {
@@ -3915,6 +5113,10 @@ static ssize_t cmb_read_interface_state_show(struct device *dev,
 		mutex_unlock(&drvdata->lock);
 		return -EPERM;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TPDM_UNLOCK(drvdata);
 	val = tpdm_readl(drvdata, TPDM_CMB_READVAL);
 	TPDM_LOCK(drvdata);
@@ -3922,9 +5124,16 @@ static ssize_t cmb_read_interface_state_show(struct device *dev,
 
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RO(cmb_read_interface_state);
 
 static ssize_t cmb_read_ctl_reg_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_read_interface_state, 0444,
+		   tpdm_show_cmb_read_interface_state, NULL);
+
+static ssize_t tpdm_show_cmb_read_ctl_reg(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  char *buf)
 {
@@ -3940,6 +5149,10 @@ static ssize_t cmb_read_ctl_reg_show(struct device *dev,
 		mutex_unlock(&drvdata->lock);
 		return -EPERM;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TPDM_UNLOCK(drvdata);
 	val = tpdm_readl(drvdata, TPDM_CMB_READCTL);
 	TPDM_LOCK(drvdata);
@@ -3952,7 +5165,11 @@ static ssize_t cmb_read_ctl_reg_show(struct device *dev,
 				 (unsigned int)BMVAL(val, 1, 3), val & 0x1);
 }
 
+<<<<<<< HEAD
 static ssize_t cmb_read_ctl_reg_store(struct device *dev,
+=======
+static ssize_t tpdm_store_cmb_read_ctl_reg(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   const char *buf,
 					   size_t size)
@@ -3972,6 +5189,10 @@ static ssize_t cmb_read_ctl_reg_store(struct device *dev,
 		mutex_unlock(&drvdata->lock);
 		return -EPERM;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TPDM_UNLOCK(drvdata);
 	tpdm_writel(drvdata, val, TPDM_CMB_READCTL);
 	TPDM_LOCK(drvdata);
@@ -3979,9 +5200,16 @@ static ssize_t cmb_read_ctl_reg_store(struct device *dev,
 
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(cmb_read_ctl_reg);
 
 static ssize_t mcmb_trig_lane_show(struct device *dev,
+=======
+static DEVICE_ATTR(cmb_read_ctl_reg, 0644,
+		   tpdm_show_cmb_read_ctl_reg, tpdm_store_cmb_read_ctl_reg);
+
+static ssize_t tpdm_show_mcmb_trig_lane(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -3994,7 +5222,11 @@ static ssize_t mcmb_trig_lane_show(struct device *dev,
 			 (unsigned int)drvdata->cmb->mcmb->mcmb_trig_lane);
 }
 
+<<<<<<< HEAD
 static ssize_t mcmb_trig_lane_store(struct device *dev,
+=======
+static ssize_t tpdm_store_mcmb_trig_lane(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -4014,9 +5246,16 @@ static ssize_t mcmb_trig_lane_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(mcmb_trig_lane);
 
 static ssize_t mcmb_lanes_select_show(struct device *dev,
+=======
+static DEVICE_ATTR(mcmb_trig_lane, 0644,
+		   tpdm_show_mcmb_trig_lane, tpdm_store_mcmb_trig_lane);
+
+static ssize_t tpdm_show_mcmb_lanes_select(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -4029,7 +5268,11 @@ static ssize_t mcmb_lanes_select_show(struct device *dev,
 			 (unsigned int)drvdata->cmb->mcmb->mcmb_lane_select);
 }
 
+<<<<<<< HEAD
 static ssize_t mcmb_lanes_select_store(struct device *dev,
+=======
+static ssize_t tpdm_store_mcmb_lanes_select(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -4049,9 +5292,16 @@ static ssize_t mcmb_lanes_select_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(mcmb_lanes_select);
 
 static ssize_t cmb_markr_store(struct device *dev,
+=======
+static DEVICE_ATTR(mcmb_lanes_select, 0644,
+		   tpdm_show_mcmb_lanes_select, tpdm_store_mcmb_lanes_select);
+
+static ssize_t tpdm_store_cmb_markr(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct device_attribute *attr,
 				    const char *buf,
 				    size_t size)
@@ -4071,6 +5321,10 @@ static ssize_t cmb_markr_store(struct device *dev,
 		mutex_unlock(&drvdata->lock);
 		return -EPERM;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TPDM_UNLOCK(drvdata);
 	tpdm_writel(drvdata, val, TPDM_CMB_MARKR);
 	TPDM_LOCK(drvdata);
@@ -4078,7 +5332,11 @@ static ssize_t cmb_markr_store(struct device *dev,
 
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(cmb_markr);
+=======
+static DEVICE_ATTR(cmb_markr, 0200, NULL, tpdm_store_cmb_markr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *tpdm_bc_attrs[] = {
 	&dev_attr_bc_capture_mode.attr,
@@ -4265,6 +5523,7 @@ static void tpdm_init_default_data(struct tpdm_drvdata *drvdata)
 		drvdata->cmb->trig_ts = true;
 }
 
+<<<<<<< HEAD
 static int tpdm_parse_of_data(struct tpdm_drvdata *drvdata)
 {
 	int i, ret;
@@ -4319,6 +5578,8 @@ static int tpdm_parse_of_data(struct tpdm_drvdata *drvdata)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tpdm_probe(struct amba_device *adev, const struct amba_id *id)
 {
 	int ret, i;
@@ -4329,19 +5590,32 @@ static int tpdm_probe(struct amba_device *adev, const struct amba_id *id)
 	struct coresight_desc *desc;
 	static int traceid = TPDM_TRACE_ID_START;
 	uint32_t version;
+<<<<<<< HEAD
+=======
+	const char *tclk_name, *treg_name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scm_desc des = {0};
 	u32 scm_ret = 0;
 
 	pdata = of_get_coresight_platform_data(dev, adev->dev.of_node);
+<<<<<<< HEAD
 	if (IS_ERR(pdata)) {
 		dev_dbg(dev, "failed to get pdata, defer probe\n");
 		return -EPROBE_DEFER;
 	}
+=======
+	if (IS_ERR(pdata))
+		return PTR_ERR(pdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adev->dev.platform_data = pdata;
 
 	if (of_property_read_bool(adev->dev.of_node, "qcom,hw-enable-check")) {
 		ret = scm_call2(SCM_SIP_FNID(SCM_SVC_UTIL,
+<<<<<<< HEAD
 				HW_ENABLE_CHECK_VALUE), &des);
+=======
+				HW_ENABLE_CHECK_VALUE),	&des);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		scm_ret = des.ret[0];
 		if (scm_ret == 0)
 			return -ENXIO;
@@ -4357,6 +5631,7 @@ static int tpdm_probe(struct amba_device *adev, const struct amba_id *id)
 	if (!drvdata->base)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	mutex_init(&drvdata->lock);
 
 	ret = tpdm_parse_of_data(drvdata);
@@ -4383,6 +5658,64 @@ static int tpdm_probe(struct amba_device *adev, const struct amba_id *id)
 		coresight_unregister(drvdata->csdev);
 		return ret;
 	}
+=======
+	drvdata->clk_enable = of_property_read_bool(adev->dev.of_node,
+						    "qcom,clk-enable");
+
+	drvdata->msr_fix_req = of_property_read_bool(adev->dev.of_node,
+						     "qcom,msr-fix-req");
+
+	mutex_init(&drvdata->lock);
+
+	drvdata->nr_tclk = of_property_count_strings(adev->dev.of_node,
+						     "qcom,tpdm-clks");
+	if (drvdata->nr_tclk > 0) {
+		drvdata->tclk = devm_kzalloc(dev, drvdata->nr_tclk *
+					     sizeof(*drvdata->tclk),
+					     GFP_KERNEL);
+		if (!drvdata->tclk)
+			return -ENOMEM;
+
+		for (i = 0; i < drvdata->nr_tclk; i++) {
+			ret = of_property_read_string_index(adev->dev.of_node,
+							    "qcom,tpdm-clks",
+							    i, &tclk_name);
+			if (ret)
+				return ret;
+
+			drvdata->tclk[i] = devm_clk_get(dev, tclk_name);
+			if (IS_ERR(drvdata->tclk[i]))
+				return PTR_ERR(drvdata->tclk[i]);
+		}
+	}
+
+	drvdata->nr_treg = of_property_count_strings(adev->dev.of_node,
+						     "qcom,tpdm-regs");
+	if (drvdata->nr_treg > 0) {
+		drvdata->treg = devm_kzalloc(dev, drvdata->nr_treg *
+					     sizeof(*drvdata->treg),
+					     GFP_KERNEL);
+		if (!drvdata->treg)
+			return -ENOMEM;
+
+		for (i = 0; i < drvdata->nr_treg; i++) {
+			ret = of_property_read_string_index(adev->dev.of_node,
+							    "qcom,tpdm-regs",
+							    i, &treg_name);
+			if (ret)
+				return ret;
+
+			drvdata->treg[i] = devm_regulator_get(dev, treg_name);
+			if (IS_ERR(drvdata->treg[i]))
+				return PTR_ERR(drvdata->treg[i]);
+		}
+	}
+
+	ret = tpdm_setup_enable(drvdata);
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	version = tpdm_readl(drvdata, CORESIGHT_PERIPHIDR2);
 	drvdata->version = BMVAL(version, 4, 7);
 
@@ -4398,10 +5731,15 @@ static int tpdm_probe(struct amba_device *adev, const struct amba_id *id)
 	}
 
 	ret = tpdm_datasets_alloc(drvdata);
+<<<<<<< HEAD
 	if (ret) {
 		coresight_unregister(drvdata->csdev);
 		return ret;
 	}
+=======
+	if (ret)
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tpdm_init_default_data(drvdata);
 
@@ -4412,10 +5750,30 @@ static int tpdm_probe(struct amba_device *adev, const struct amba_id *id)
 	drvdata->bc_counters_avail = BMVAL(devid, 6, 10) + 1;
 	drvdata->tc_counters_avail = BMVAL(devid, 4, 5) + 1;
 
+<<<<<<< HEAD
 	coresight_disable_reg_clk(drvdata->csdev);
 
 	drvdata->traceid = traceid++;
 
+=======
+	tpdm_setup_disable(drvdata);
+
+	drvdata->traceid = traceid++;
+
+	desc = devm_kzalloc(dev, sizeof(*desc), GFP_KERNEL);
+	if (!desc)
+		return -ENOMEM;
+	desc->type = CORESIGHT_DEV_TYPE_SOURCE;
+	desc->subtype.source_subtype = CORESIGHT_DEV_SUBTYPE_SOURCE_PROC;
+	desc->ops = &tpdm_cs_ops;
+	desc->pdata = adev->dev.platform_data;
+	desc->dev = &adev->dev;
+	desc->groups = tpdm_attr_grps;
+	drvdata->csdev = coresight_register(desc);
+	if (IS_ERR(drvdata->csdev))
+		return PTR_ERR(drvdata->csdev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(drvdata->dev, "TPDM initialized\n");
 
 	if (boot_enable)

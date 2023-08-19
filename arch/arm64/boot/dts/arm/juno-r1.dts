@@ -63,7 +63,11 @@
 		};
 
 		idle-states {
+<<<<<<< HEAD
 			entry-method = "psci";
+=======
+			entry-method = "arm,psci";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			CPU_SLEEP_0: cpu-sleep-0 {
 				compatible = "arm,idle-state";
@@ -201,7 +205,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	pmu-a57 {
+=======
+	pmu_a57 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "arm,cortex-a57-pmu";
 		interrupts = <GIC_SPI 02 IRQ_TYPE_LEVEL_HIGH>,
 			     <GIC_SPI 06 IRQ_TYPE_LEVEL_HIGH>;
@@ -209,7 +217,11 @@
 				     <&A57_1>;
 	};
 
+<<<<<<< HEAD
 	pmu-a53 {
+=======
+	pmu_a53 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "arm,cortex-a53-pmu";
 		interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
 			     <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>,
@@ -278,10 +290,13 @@
 	remote-endpoint = <&csys2_funnel_out_port>;
 };
 
+<<<<<<< HEAD
 &csys1_funnel_in_port0 {
 	remote-endpoint = <&stm_out_port>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &stm_out_port {
 	remote-endpoint = <&csys1_funnel_in_port0>;
 };

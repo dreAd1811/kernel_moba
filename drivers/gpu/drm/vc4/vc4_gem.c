@@ -27,7 +27,10 @@
 #include <linux/device.h>
 #include <linux/io.h>
 #include <linux/sched/signal.h>
+<<<<<<< HEAD
 #include <linux/dma-fence-array.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "uapi/drm/vc4_drm.h"
 #include "vc4_drv.h"
@@ -189,6 +192,7 @@ vc4_save_hang_state(struct drm_device *dev)
 			continue;
 
 		for (j = 0; j < exec[i]->bo_count; j++) {
+<<<<<<< HEAD
 			bo = to_vc4_bo(&exec[i]->bo[j]->base);
 
 			/* Retain BOs just in case they were marked purgeable.
@@ -197,14 +201,19 @@ vc4_save_hang_state(struct drm_device *dev)
 			 */
 			WARN_ON(!refcount_read(&bo->usecnt));
 			refcount_inc(&bo->usecnt);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			drm_gem_object_get(&exec[i]->bo[j]->base);
 			kernel_state->bo[k++] = &exec[i]->bo[j]->base;
 		}
 
 		list_for_each_entry(bo, &exec[i]->unref_list, unref_head) {
+<<<<<<< HEAD
 			/* No need to retain BOs coming from the ->unref_list
 			 * because they are naturally unpurgeable.
 			 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			drm_gem_object_get(&bo->base.base);
 			kernel_state->bo[k++] = &bo->base.base;
 		}
@@ -245,6 +254,7 @@ vc4_save_hang_state(struct drm_device *dev)
 	state->fdbgs = V3D_READ(V3D_FDBGS);
 	state->errstat = V3D_READ(V3D_ERRSTAT);
 
+<<<<<<< HEAD
 	/* We need to turn purgeable BOs into unpurgeable ones so that
 	 * userspace has a chance to dump the hang state before the kernel
 	 * decides to purge those BOs.
@@ -265,6 +275,8 @@ vc4_save_hang_state(struct drm_device *dev)
 		mutex_unlock(&bo->madv_lock);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&vc4->job_lock, irqflags);
 	if (vc4->hang_state) {
 		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
@@ -313,10 +325,17 @@ vc4_reset_work(struct work_struct *work)
 }
 
 static void
+<<<<<<< HEAD
 vc4_hangcheck_elapsed(struct timer_list *t)
 {
 	struct vc4_dev *vc4 = from_timer(vc4, t, hangcheck.timer);
 	struct drm_device *dev = vc4->dev;
+=======
+vc4_hangcheck_elapsed(unsigned long data)
+{
+	struct drm_device *dev = (struct drm_device *)data;
+	struct vc4_dev *vc4 = to_vc4_dev(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t ct0ca, ct1ca;
 	unsigned long irqflags;
 	struct vc4_exec_info *bin_exec, *render_exec;
@@ -437,6 +456,7 @@ vc4_flush_caches(struct drm_device *dev)
 		  VC4_SET_FIELD(0xf, V3D_SLCACTL_ICC));
 }
 
+<<<<<<< HEAD
 static void
 vc4_flush_texture_caches(struct drm_device *dev)
 {
@@ -450,6 +470,8 @@ vc4_flush_texture_caches(struct drm_device *dev)
 		  VC4_SET_FIELD(0xf, V3D_SLCACTL_T0CC));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Sets the registers for the next job to be actually be executed in
  * the hardware.
  *
@@ -468,18 +490,22 @@ again:
 
 	vc4_flush_caches(dev);
 
+<<<<<<< HEAD
 	/* Only start the perfmon if it was not already started by a previous
 	 * job.
 	 */
 	if (exec->perfmon && vc4->active_perfmon != exec->perfmon)
 		vc4_perfmon_start(vc4, exec->perfmon);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Either put the job in the binner if it uses the binner, or
 	 * immediately move it to the to-be-rendered queue.
 	 */
 	if (exec->ct0ca != exec->ct0ea) {
 		submit_cl(dev, 0, exec->ct0ca, exec->ct0ea);
 	} else {
+<<<<<<< HEAD
 		struct vc4_exec_info *next;
 
 		vc4_move_job_to_render(dev, exec);
@@ -492,6 +518,10 @@ again:
 		 */
 		if (next && next->perfmon == exec->perfmon)
 			goto again;
+=======
+		vc4_move_job_to_render(dev, exec);
+		goto again;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -504,6 +534,7 @@ vc4_submit_next_render_job(struct drm_device *dev)
 	if (!exec)
 		return;
 
+<<<<<<< HEAD
 	/* A previous RCL may have written to one of our textures, and
 	 * our full cache flush at bin time may have occurred before
 	 * that RCL completed.  Flush the texture cache now, but not
@@ -512,6 +543,8 @@ vc4_submit_next_render_job(struct drm_device *dev)
 	 */
 	vc4_flush_texture_caches(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	submit_cl(dev, 1, exec->ct1ca, exec->ct1ea);
 }
 
@@ -656,11 +689,17 @@ retry:
  */
 static int
 vc4_queue_submit(struct drm_device *dev, struct vc4_exec_info *exec,
+<<<<<<< HEAD
 		 struct ww_acquire_ctx *acquire_ctx,
 		 struct drm_syncobj *out_sync)
 {
 	struct vc4_dev *vc4 = to_vc4_dev(dev);
 	struct vc4_exec_info *renderjob;
+=======
+		 struct ww_acquire_ctx *acquire_ctx)
+{
+	struct vc4_dev *vc4 = to_vc4_dev(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t seqno;
 	unsigned long irqflags;
 	struct vc4_fence *fence;
@@ -680,15 +719,19 @@ vc4_queue_submit(struct drm_device *dev, struct vc4_exec_info *exec,
 	fence->seqno = exec->seqno;
 	exec->fence = &fence->base;
 
+<<<<<<< HEAD
 	if (out_sync)
 		drm_syncobj_replace_fence(out_sync, exec->fence);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vc4_update_bo_seqnos(exec, seqno);
 
 	vc4_unlock_bo_reservations(dev, exec, acquire_ctx);
 
 	list_add_tail(&exec->head, &vc4->bin_job_list);
 
+<<<<<<< HEAD
 	/* If no bin job was executing and if the render job (if any) has the
 	 * same perfmon as our job attached to it (or if both jobs don't have
 	 * perfmon activated), then kick ours off.  Otherwise, it'll get
@@ -697,6 +740,13 @@ vc4_queue_submit(struct drm_device *dev, struct vc4_exec_info *exec,
 	renderjob = vc4_first_render_job(vc4);
 	if (vc4_first_bin_job(vc4) == exec &&
 	    (!renderjob || renderjob->perfmon == exec->perfmon)) {
+=======
+	/* If no job was executing, kick ours off.  Otherwise, it'll
+	 * get started when the previous job's flush done interrupt
+	 * occurs.
+	 */
+	if (vc4_first_bin_job(vc4) == exec) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vc4_submit_next_bin_job(dev);
 		vc4_queue_hangcheck(dev);
 	}
@@ -716,6 +766,12 @@ vc4_queue_submit(struct drm_device *dev, struct vc4_exec_info *exec,
  * The command validator needs to reference BOs by their index within
  * the submitted job's BO list.  This does the validation of the job's
  * BO list and reference counting for the lifetime of the job.
+<<<<<<< HEAD
+=======
+ *
+ * Note that this function doesn't need to unreference the BOs on
+ * failure, because that will happen at vc4_complete_exec() time.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int
 vc4_cl_lookup_bos(struct drm_device *dev,
@@ -767,14 +823,21 @@ vc4_cl_lookup_bos(struct drm_device *dev,
 			DRM_DEBUG("Failed to look up GEM BO %d: %d\n",
 				  i, handles[i]);
 			ret = -EINVAL;
+<<<<<<< HEAD
 			break;
 		}
 
+=======
+			spin_unlock(&file_priv->table_lock);
+			goto fail;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_gem_object_get(bo);
 		exec->bo[i] = (struct drm_gem_cma_object *)bo;
 	}
 	spin_unlock(&file_priv->table_lock);
 
+<<<<<<< HEAD
 	if (ret)
 		goto fail_put_bo;
 
@@ -808,6 +871,10 @@ fail:
 	kvfree(handles);
 	kvfree(exec->bo);
 	exec->bo = NULL;
+=======
+fail:
+	kvfree(handles);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -940,12 +1007,17 @@ vc4_complete_exec(struct drm_device *dev, struct vc4_exec_info *exec)
 	}
 
 	if (exec->bo) {
+<<<<<<< HEAD
 		for (i = 0; i < exec->bo_count; i++) {
 			struct vc4_bo *bo = to_vc4_bo(&exec->bo[i]->base);
 
 			vc4_bo_dec_usecnt(bo);
 			drm_gem_object_put_unlocked(&exec->bo[i]->base);
 		}
+=======
+		for (i = 0; i < exec->bo_count; i++)
+			drm_gem_object_put_unlocked(&exec->bo[i]->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kvfree(exec->bo);
 	}
 
@@ -961,9 +1033,12 @@ vc4_complete_exec(struct drm_device *dev, struct vc4_exec_info *exec)
 	vc4->bin_alloc_used &= ~exec->bin_slots;
 	spin_unlock_irqrestore(&vc4->job_lock, irqflags);
 
+<<<<<<< HEAD
 	/* Release the reference we had on the perf monitor. */
 	vc4_perfmon_put(exec->perfmon);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&vc4->power_lock);
 	if (--vc4->power_refcount == 0) {
 		pm_runtime_mark_last_busy(&vc4->v3d->pdev->dev);
@@ -1116,12 +1191,18 @@ vc4_submit_cl_ioctl(struct drm_device *dev, void *data,
 		    struct drm_file *file_priv)
 {
 	struct vc4_dev *vc4 = to_vc4_dev(dev);
+<<<<<<< HEAD
 	struct vc4_file *vc4file = file_priv->driver_priv;
 	struct drm_vc4_submit_cl *args = data;
 	struct drm_syncobj *out_sync = NULL;
 	struct vc4_exec_info *exec;
 	struct ww_acquire_ctx acquire_ctx;
 	struct dma_fence *in_fence;
+=======
+	struct drm_vc4_submit_cl *args = data;
+	struct vc4_exec_info *exec;
+	struct ww_acquire_ctx acquire_ctx;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	if ((args->flags & ~(VC4_SUBMIT_CL_USE_CLEAR_COLOR |
@@ -1132,11 +1213,14 @@ vc4_submit_cl_ioctl(struct drm_device *dev, void *data,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (args->pad2 != 0) {
 		DRM_DEBUG("Invalid pad: 0x%08x\n", args->pad2);
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	exec = kcalloc(1, sizeof(*exec), GFP_KERNEL);
 	if (!exec) {
 		DRM_ERROR("malloc failure on exec struct\n");
@@ -1162,6 +1246,7 @@ vc4_submit_cl_ioctl(struct drm_device *dev, void *data,
 	if (ret)
 		goto fail;
 
+<<<<<<< HEAD
 	if (args->perfmonid) {
 		exec->perfmon = vc4_perfmon_find(vc4file,
 						 args->perfmonid);
@@ -1194,6 +1279,8 @@ vc4_submit_cl_ioctl(struct drm_device *dev, void *data,
 		dma_fence_put(in_fence);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (exec->args->bin_cl_size != 0) {
 		ret = vc4_get_bcl(dev, exec);
 		if (ret)
@@ -1211,6 +1298,7 @@ vc4_submit_cl_ioctl(struct drm_device *dev, void *data,
 	if (ret)
 		goto fail;
 
+<<<<<<< HEAD
 	if (args->out_sync) {
 		out_sync = drm_syncobj_find(file_priv, args->out_sync);
 		if (!out_sync) {
@@ -1225,11 +1313,14 @@ vc4_submit_cl_ioctl(struct drm_device *dev, void *data,
 		 */
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Clear this out of the struct we'll be putting in the queue,
 	 * since it's part of our stack.
 	 */
 	exec->args = NULL;
 
+<<<<<<< HEAD
 	ret = vc4_queue_submit(dev, exec, &acquire_ctx, out_sync);
 
 	/* The syncobj isn't part of the exec data and we need to free our
@@ -1238,6 +1329,9 @@ vc4_submit_cl_ioctl(struct drm_device *dev, void *data,
 	if (out_sync)
 		drm_syncobj_put(out_sync);
 
+=======
+	ret = vc4_queue_submit(dev, exec, &acquire_ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto fail;
 
@@ -1266,14 +1360,23 @@ vc4_gem_init(struct drm_device *dev)
 	spin_lock_init(&vc4->job_lock);
 
 	INIT_WORK(&vc4->hangcheck.reset_work, vc4_reset_work);
+<<<<<<< HEAD
 	timer_setup(&vc4->hangcheck.timer, vc4_hangcheck_elapsed, 0);
+=======
+	setup_timer(&vc4->hangcheck.timer,
+		    vc4_hangcheck_elapsed,
+		    (unsigned long)dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&vc4->job_done_work, vc4_job_done_work);
 
 	mutex_init(&vc4->power_lock);
+<<<<<<< HEAD
 
 	INIT_LIST_HEAD(&vc4->purgeable.list);
 	mutex_init(&vc4->purgeable.lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void
@@ -1297,6 +1400,7 @@ vc4_gem_destroy(struct drm_device *dev)
 	if (vc4->hang_state)
 		vc4_free_hang_state(dev, vc4->hang_state);
 }
+<<<<<<< HEAD
 
 int vc4_gem_madvise_ioctl(struct drm_device *dev, void *data,
 			  struct drm_file *file_priv)
@@ -1375,3 +1479,5 @@ out_put_gem:
 
 	return ret;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

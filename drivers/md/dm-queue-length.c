@@ -195,6 +195,12 @@ static struct dm_path *ql_select_path(struct path_selector *ps, size_t nr_bytes)
 	if (list_empty(&s->valid_paths))
 		goto out;
 
+<<<<<<< HEAD
+=======
+	/* Change preferred (first in list) path to evenly balance. */
+	list_move_tail(s->valid_paths.next, &s->valid_paths);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(pi, &s->valid_paths, list) {
 		if (!best ||
 		    (atomic_read(&pi->qlen) < atomic_read(&best->qlen)))
@@ -207,9 +213,12 @@ static struct dm_path *ql_select_path(struct path_selector *ps, size_t nr_bytes)
 	if (!best)
 		goto out;
 
+<<<<<<< HEAD
 	/* Move most recently used to least preferred to evenly balance. */
 	list_move_tail(&best->list, &s->valid_paths);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = best->path;
 out:
 	spin_unlock_irqrestore(&s->lock, flags);

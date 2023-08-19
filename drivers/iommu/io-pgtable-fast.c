@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt)	"io-pgtable-fast: " fmt
@@ -12,6 +25,10 @@
 #include <linux/slab.h>
 #include <linux/types.h>
 #include <linux/io-pgtable-fast.h>
+<<<<<<< HEAD
+=======
+#include <linux/mm.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cacheflush.h>
 #include <linux/vmalloc.h>
 
@@ -35,6 +52,13 @@ struct av8l_fast_io_pgtable {
 	av8l_fast_iopte		 *puds[4];
 	av8l_fast_iopte		 *pmds;
 	struct page		**pages; /* page table memory */
+<<<<<<< HEAD
+=======
+	int			nr_pages;
+	dma_addr_t		base;
+	dma_addr_t		start;
+	dma_addr_t		end;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Page table bits */
@@ -143,7 +167,11 @@ struct av8l_fast_io_pgtable {
 
 #define PTE_SH_IDX(pte) (pte & AV8L_FAST_PTE_SH_MASK)
 
+<<<<<<< HEAD
 #define iopte_pmd_offset(pmds, iova) (pmds + (iova >> 12))
+=======
+#define iopte_pmd_offset(pmds, base, iova) (pmds + ((iova - base) >> 12))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_IOMMU_IO_PGTABLE_FAST_PROVE_TLB
 
@@ -172,6 +200,7 @@ static void __av8l_check_for_stale_tlb(av8l_fast_iopte *ptep)
 	}
 }
 
+<<<<<<< HEAD
 void av8l_fast_clear_stale_ptes(struct io_pgtable_ops *ops, bool skip_sync)
 {
 	int i;
@@ -179,6 +208,17 @@ void av8l_fast_clear_stale_ptes(struct io_pgtable_ops *ops, bool skip_sync)
 	av8l_fast_iopte *pmdp = data->pmds;
 
 	for (i = 0; i < ((SZ_1G * 4UL) >> AV8L_FAST_PAGE_SHIFT); ++i) {
+=======
+void av8l_fast_clear_stale_ptes(struct io_pgtable_ops *ops, u64 base,
+		u64 start, u64 end, bool skip_sync)
+{
+	int i;
+	struct av8l_fast_io_pgtable *data = iof_pgtable_ops_to_data(ops);
+	av8l_fast_iopte *pmdp = iopte_pmd_offset(pmds, base, start);
+
+	for (i = start >> AV8L_FAST_PAGE_SHIFT;
+			i <= (end >> AV8L_FAST_PAGE_SHIFT); ++i) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!(*pmdp & AV8L_FAST_PTE_VALID)) {
 			*pmdp = 0;
 			if (!skip_sync)
@@ -233,7 +273,11 @@ static int av8l_fast_map(struct io_pgtable_ops *ops, unsigned long iova,
 			 phys_addr_t paddr, size_t size, int prot)
 {
 	struct av8l_fast_io_pgtable *data = iof_pgtable_ops_to_data(ops);
+<<<<<<< HEAD
 	av8l_fast_iopte *ptep = iopte_pmd_offset(data->pmds, iova);
+=======
+	av8l_fast_iopte *ptep = iopte_pmd_offset(data->pmds, data->base, iova);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long i, nptes = size >> AV8L_FAST_PAGE_SHIFT;
 	av8l_fast_iopte pte;
 
@@ -265,7 +309,11 @@ __av8l_fast_unmap(struct io_pgtable_ops *ops, unsigned long iova,
 		? AV8L_FAST_PTE_UNMAPPED_NEED_TLBI
 		: 0;
 
+<<<<<<< HEAD
 	ptep = iopte_pmd_offset(data->pmds, iova);
+=======
+	ptep = iopte_pmd_offset(data->pmds, data->base, iova);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nptes = size >> AV8L_FAST_PAGE_SHIFT;
 
 	memset(ptep, val, sizeof(*ptep) * nptes);
@@ -289,6 +337,7 @@ static size_t av8l_fast_unmap(struct io_pgtable_ops *ops, unsigned long iova,
 	return __av8l_fast_unmap(ops, iova, size, false);
 }
 
+<<<<<<< HEAD
 static int av8l_fast_map_sg(struct io_pgtable_ops *ops,
 			unsigned long iova, struct scatterlist *sgl,
 			unsigned int nents, int prot, size_t *size)
@@ -311,6 +360,8 @@ int av8l_fast_map_sg_public(struct io_pgtable_ops *ops,
 	return av8l_fast_map_sg(ops, iova, sgl, nents, prot, size);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_ARM64)
 #define FAST_PGDNDX(va) (((va) & 0x7fc0000000) >> 27)
 #elif defined(CONFIG_ARM)
@@ -359,11 +410,25 @@ phys_addr_t av8l_fast_iova_to_phys_public(struct io_pgtable_ops *ops,
 	return av8l_fast_iova_to_phys(ops, iova);
 }
 
+<<<<<<< HEAD
+=======
+static int av8l_fast_map_sg(struct io_pgtable_ops *ops, unsigned long iova,
+			    struct scatterlist *sg, unsigned int nents,
+			    int prot, size_t *size)
+{
+	return -ENODEV;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool av8l_fast_iova_coherent(struct io_pgtable_ops *ops,
 					unsigned long iova)
 {
 	struct av8l_fast_io_pgtable *data = iof_pgtable_ops_to_data(ops);
+<<<<<<< HEAD
 	av8l_fast_iopte *ptep = iopte_pmd_offset(data->pmds, iova);
+=======
+	av8l_fast_iopte *ptep = iopte_pmd_offset(data->pmds, data->base, iova);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ((PTE_MAIR_IDX(*ptep) == AV8L_FAST_MAIR_ATTR_IDX_CACHE) &&
 		((PTE_SH_IDX(*ptep) == AV8L_FAST_PTE_SH_OS) ||
@@ -397,7 +462,11 @@ av8l_fast_alloc_pgtable_data(struct io_pgtable_cfg *cfg)
 }
 
 /*
+<<<<<<< HEAD
  * We need 1 page for the pgd, 4 pages for puds (1GB VA per pud page) and
+=======
+ * We need max 1 page for the pgd, 4 pages for puds (1GB VA per pud page) and
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * 2048 pages for pmds (each pud page contains 512 table entries, each
  * pointing to a pmd).
  */
@@ -406,12 +475,44 @@ av8l_fast_alloc_pgtable_data(struct io_pgtable_cfg *cfg)
 #define NUM_PMD_PAGES 2048
 #define NUM_PGTBL_PAGES (NUM_PGD_PAGES + NUM_PUD_PAGES + NUM_PMD_PAGES)
 
+<<<<<<< HEAD
+=======
+/* undefine arch specific definitions which depends on page table format */
+#undef pud_index
+#undef pud_mask
+#undef pud_next
+#undef pmd_index
+#undef pmd_mask
+#undef pmd_next
+
+#define pud_index(addr)		(((addr) >> 30) & 0x3)
+#define pud_mask(addr)		((addr) & ~((1UL << 30) - 1))
+#define pud_next(addr, end)					\
+({	unsigned long __boundary = pud_mask(addr + (1UL << 30));\
+	(__boundary - 1 < (end) - 1) ? __boundary : (end);	\
+})
+
+#define pmd_index(addr)		(((addr) >> 21) & 0x1ff)
+#define pmd_mask(addr)		((addr) & ~((1UL << 21) - 1))
+#define pmd_next(addr, end)					\
+({	unsigned long __boundary = pmd_mask(addr + (1UL << 21));\
+	(__boundary - 1 < (end) - 1) ? __boundary : (end);	\
+})
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 av8l_fast_prepopulate_pgtables(struct av8l_fast_io_pgtable *data,
 			       struct io_pgtable_cfg *cfg, void *cookie)
 {
 	int i, j, pg = 0;
 	struct page **pages, *page;
+<<<<<<< HEAD
+=======
+	dma_addr_t base = cfg->iova_base;
+	dma_addr_t end = cfg->iova_end;
+	dma_addr_t pud, pmd;
+	int pmd_pg_index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pages = kmalloc(sizeof(*pages) * NUM_PGTBL_PAGES, __GFP_NOWARN |
 							__GFP_NORETRY);
@@ -429,10 +530,18 @@ av8l_fast_prepopulate_pgtables(struct av8l_fast_io_pgtable *data,
 	data->pgd = page_address(page);
 
 	/*
+<<<<<<< HEAD
 	 * We need 2048 entries at level 2 to map 4GB of VA space. A page
 	 * can hold 512 entries, so we need 4 pages.
 	 */
 	for (i = 0; i < 4; ++i) {
+=======
+	 * We need max 2048 entries at level 2 to map 4GB of VA space. A page
+	 * can hold 512 entries, so we need max 4 pages.
+	 */
+	for (i = pud_index(base), pud = base; pud < end;
+			++i, pud = pud_next(pud, end)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		av8l_fast_iopte pte, *ptep;
 
 		page = alloc_page(GFP_KERNEL | __GFP_ZERO);
@@ -447,12 +556,24 @@ av8l_fast_prepopulate_pgtables(struct av8l_fast_io_pgtable *data,
 	dmac_clean_range(data->pgd, data->pgd + 4);
 
 	/*
+<<<<<<< HEAD
 	 * We have 4 puds, each of which can point to 512 pmds, so we'll
 	 * have 2048 pmds, each of which can hold 512 ptes, for a grand
 	 * total of 2048*512=1048576 PTEs.
 	 */
 	for (i = 0; i < 4; ++i) {
 		for (j = 0; j < 512; ++j) {
+=======
+	 * We have max 4 puds, each of which can point to 512 pmds, so we'll
+	 * have max 2048 pmds, each of which can hold 512 ptes, for a grand
+	 * total of 2048*512=1048576 PTEs.
+	 */
+	pmd_pg_index = pg;
+	for (i = pud_index(base), pud = base; pud < end;
+			++i, pud = pud_next(pud, end)) {
+		for (j = pmd_index(pud), pmd = pud; pmd < pud_next(pud, end);
+				++j, pmd = pmd_next(pmd, end)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			av8l_fast_iopte pte, *pudp;
 			void *addr;
 
@@ -471,21 +592,34 @@ av8l_fast_prepopulate_pgtables(struct av8l_fast_io_pgtable *data,
 		dmac_clean_range(data->puds[i], data->puds[i] + 512);
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON(pg != NUM_PGTBL_PAGES))
 		goto err_free_pages;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We map the pmds into a virtually contiguous space so that we
 	 * don't have to traverse the first two levels of the page tables
 	 * to find the appropriate pud.  Instead, it will be a simple
 	 * offset from the virtual base of the pmds.
 	 */
+<<<<<<< HEAD
 	data->pmds = vmap(&pages[NUM_PGD_PAGES + NUM_PUD_PAGES], NUM_PMD_PAGES,
+=======
+	data->pmds = vmap(&pages[pmd_pg_index], pg - pmd_pg_index,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  VM_IOREMAP, PAGE_KERNEL);
 	if (!data->pmds)
 		goto err_free_pages;
 
 	data->pages = pages;
+<<<<<<< HEAD
+=======
+	data->nr_pages = pg;
+	data->base = base;
+	data->end = end;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_free_pages:
@@ -591,7 +725,11 @@ static void av8l_fast_free_pgtable(struct io_pgtable *iop)
 	struct av8l_fast_io_pgtable *data = iof_pgtable_to_data(iop);
 
 	vunmap(data->pmds);
+<<<<<<< HEAD
 	for (i = 0; i < NUM_PGTBL_PAGES; ++i)
+=======
+	for (i = 0; i < data->nr_pages; ++i)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__free_page(data->pages[i]);
 	kvfree(data->pages);
 	kfree(data);
@@ -663,6 +801,10 @@ static int __init av8l_fast_positive_testing(void)
 	struct av8l_fast_io_pgtable *data;
 	av8l_fast_iopte *pmds;
 	u64 max = SZ_1G * 4ULL - 1;
+<<<<<<< HEAD
+=======
+	u64 base = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cfg = (struct io_pgtable_cfg) {
 		.quirks = 0,
@@ -670,6 +812,11 @@ static int __init av8l_fast_positive_testing(void)
 		.ias = 32,
 		.oas = 32,
 		.pgsize_bitmap = SZ_4K,
+<<<<<<< HEAD
+=======
+		.iova_base = base,
+		.iova_end = max,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	cfg_cookie = &cfg;
@@ -682,81 +829,142 @@ static int __init av8l_fast_positive_testing(void)
 	pmds = data->pmds;
 
 	/* map the entire 4GB VA space with 4K map calls */
+<<<<<<< HEAD
 	for (iova = 0; iova < max; iova += SZ_4K) {
+=======
+	for (iova = base; iova < max; iova += SZ_4K) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(ops->map(ops, iova, iova, SZ_4K, IOMMU_READ))) {
 			failed++;
 			continue;
 		}
 	}
+<<<<<<< HEAD
 	if (WARN_ON(!av8l_fast_range_has_specific_mapping(ops, 0, 0,
 							  max)))
 		failed++;
 
 	/* unmap it all */
 	for (iova = 0; iova < max; iova += SZ_4K) {
+=======
+	if (WARN_ON(!av8l_fast_range_has_specific_mapping(ops, base,
+					base, max - base)))
+		failed++;
+
+	/* unmap it all */
+	for (iova = base; iova < max; iova += SZ_4K) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(ops->unmap(ops, iova, SZ_4K) != SZ_4K))
 			failed++;
 	}
 
 	/* sweep up TLB proving PTEs */
+<<<<<<< HEAD
 	av8l_fast_clear_stale_ptes(ops, false);
 
 	/* map the entire 4GB VA space with 8K map calls */
 	for (iova = 0; iova < max; iova += SZ_8K) {
+=======
+	av8l_fast_clear_stale_ptes(ops, base, base, max, false);
+
+	/* map the entire 4GB VA space with 8K map calls */
+	for (iova = base; iova < max; iova += SZ_8K) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(ops->map(ops, iova, iova, SZ_8K, IOMMU_READ))) {
 			failed++;
 			continue;
 		}
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON(!av8l_fast_range_has_specific_mapping(ops, 0, 0,
 							  max)))
 		failed++;
 
 	/* unmap it all with 8K unmap calls */
 	for (iova = 0; iova < max; iova += SZ_8K) {
+=======
+	if (WARN_ON(!av8l_fast_range_has_specific_mapping(ops, base,
+					base, max - base)))
+		failed++;
+
+	/* unmap it all with 8K unmap calls */
+	for (iova = base; iova < max; iova += SZ_8K) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(ops->unmap(ops, iova, SZ_8K) != SZ_8K))
 			failed++;
 	}
 
 	/* sweep up TLB proving PTEs */
+<<<<<<< HEAD
 	av8l_fast_clear_stale_ptes(ops, false);
 
 	/* map the entire 4GB VA space with 16K map calls */
 	for (iova = 0; iova < max; iova += SZ_16K) {
+=======
+	av8l_fast_clear_stale_ptes(ops, base, base, max, false);
+
+	/* map the entire 4GB VA space with 16K map calls */
+	for (iova = base; iova < max; iova += SZ_16K) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(ops->map(ops, iova, iova, SZ_16K, IOMMU_READ))) {
 			failed++;
 			continue;
 		}
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON(!av8l_fast_range_has_specific_mapping(ops, 0, 0,
 							  max)))
 		failed++;
 
 	/* unmap it all */
 	for (iova = 0; iova < max; iova += SZ_16K) {
+=======
+	if (WARN_ON(!av8l_fast_range_has_specific_mapping(ops, base,
+					base, max - base)))
+		failed++;
+
+	/* unmap it all */
+	for (iova = base; iova < max; iova += SZ_16K) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(ops->unmap(ops, iova, SZ_16K) != SZ_16K))
 			failed++;
 	}
 
 	/* sweep up TLB proving PTEs */
+<<<<<<< HEAD
 	av8l_fast_clear_stale_ptes(ops, false);
 
 	/* map the entire 4GB VA space with 64K map calls */
 	for (iova = 0; iova < max; iova += SZ_64K) {
+=======
+	av8l_fast_clear_stale_ptes(ops, base, base, max, false);
+
+	/* map the entire 4GB VA space with 64K map calls */
+	for (iova = base; iova < max; iova += SZ_64K) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(ops->map(ops, iova, iova, SZ_64K, IOMMU_READ))) {
 			failed++;
 			continue;
 		}
 	}
 
+<<<<<<< HEAD
 	if (WARN_ON(!av8l_fast_range_has_specific_mapping(ops, 0, 0,
 							  max)))
 		failed++;
 
 	/* unmap it all at once */
 	if (WARN_ON(ops->unmap(ops, 0, max) != max))
+=======
+	if (WARN_ON(!av8l_fast_range_has_specific_mapping(ops, base,
+					base, max - base)))
+		failed++;
+
+	/* unmap it all at once */
+	if (WARN_ON(ops->unmap(ops, base, max - base) != (max - base)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		failed++;
 
 	free_io_pgtable_ops(ops);

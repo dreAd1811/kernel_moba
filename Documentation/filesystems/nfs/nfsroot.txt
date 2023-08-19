@@ -5,7 +5,10 @@ Written 1996 by Gero Kuhlmann <gero@gkminix.han.de>
 Updated 1997 by Martin Mares <mj@atrey.karlin.mff.cuni.cz>
 Updated 2006 by Nico Schottelius <nico-kernel-nfsroot@schottelius.org>
 Updated 2006 by Horms <horms@verge.net.au>
+<<<<<<< HEAD
 Updated 2018 by Chris Novakovic <chris@chrisn.me.uk>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 
@@ -80,7 +83,11 @@ nfsroot=[<server-ip>:]<root-dir>[,<nfs-options>]
 
 
 ip=<client-ip>:<server-ip>:<gw-ip>:<netmask>:<hostname>:<device>:<autoconf>:
+<<<<<<< HEAD
    <dns0-ip>:<dns1-ip>:<ntp0-ip>
+=======
+   <dns0-ip>:<dns1-ip>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   This parameter tells the kernel how to configure IP addresses of devices
   and also how to set up the IP routing table. It was originally called
@@ -111,9 +118,12 @@ ip=<client-ip>:<server-ip>:<gw-ip>:<netmask>:<hostname>:<device>:<autoconf>:
 		will not be triggered if it is missing and NFS root is not
 		in operation.
 
+<<<<<<< HEAD
 		Value is exported to /proc/net/pnp with the prefix "bootserver "
 		(see below).
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		Default: Determined using autoconfiguration.
 		         The address of the autoconfiguration server is used.
 
@@ -127,6 +137,7 @@ ip=<client-ip>:<server-ip>:<gw-ip>:<netmask>:<hostname>:<device>:<autoconf>:
 
 		Default:  Determined using autoconfiguration.
 
+<<<<<<< HEAD
   <hostname>	Name of the client. If a '.' character is present, anything
 		before the first '.' is used as the client's hostname, and anything
 		after it is used as its NIS domain name. May be supplied by
@@ -134,6 +145,12 @@ ip=<client-ip>:<server-ip>:<gw-ip>:<netmask>:<hostname>:<device>:<autoconf>:
 		If specified and DHCP is used, the user-provided hostname (and NIS
 		domain name, if present) will be carried in the DHCP request; this
 		may cause a DNS record to be created or updated for the client.
+=======
+  <hostname>	Name of the client. May be supplied by autoconfiguration,
+  		but its absence will not trigger autoconfiguration.
+		If specified and DHCP is used, the user provided hostname will
+		be carried in the DHCP request to hopefully update DNS record.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   		Default: Client IP address is used in ASCII notation.
 
@@ -169,6 +186,7 @@ ip=<client-ip>:<server-ip>:<gw-ip>:<netmask>:<hostname>:<device>:<autoconf>:
 
                 Default: any
 
+<<<<<<< HEAD
   <dns0-ip>	IP address of primary nameserver.
 		Value is exported to /proc/net/pnp with the prefix "nameserver "
 		(see below).
@@ -218,6 +236,14 @@ ip=<client-ip>:<server-ip>:<gw-ip>:<netmask>:<hostname>:<device>:<autoconf>:
   (e.g. an initrd/initramfs script that passes the IP addresses listed in
   /proc/net/ipconfig/ntp_servers to an NTP client before mounting the real
   root filesystem if it is on NFS).
+=======
+  <dns0-ip>	IP address of first nameserver.
+		Value gets exported by /proc/net/pnp which is often linked
+		on embedded systems by /etc/resolv.conf.
+
+  <dns1-ip>	IP address of second nameserver.
+		Same as above.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 nfsrootdebug

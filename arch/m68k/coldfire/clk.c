@@ -129,6 +129,7 @@ unsigned long clk_get_rate(struct clk *clk)
 }
 EXPORT_SYMBOL(clk_get_rate);
 
+<<<<<<< HEAD
 /* dummy functions, should not be called */
 long clk_round_rate(struct clk *clk, unsigned long rate)
 {
@@ -158,4 +159,6 @@ struct clk *clk_get_parent(struct clk *clk)
 }
 EXPORT_SYMBOL(clk_get_parent);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /***************************************************************************/

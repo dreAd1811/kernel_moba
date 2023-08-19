@@ -33,7 +33,10 @@
 #include "kfd_pm4_headers_diq.h"
 #include "kfd_dbgmgr.h"
 #include "kfd_dbgdev.h"
+<<<<<<< HEAD
 #include "kfd_device_queue_manager.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static DEFINE_MUTEX(kfd_dbgmgr_mutex);
 
@@ -84,7 +87,11 @@ bool kfd_dbgmgr_create(struct kfd_dbgmgr **ppmgr, struct kfd_dev *pdev)
 	}
 
 	/* get actual type of DBGDevice cpsch or not */
+<<<<<<< HEAD
 	if (pdev->dqm->sched_policy == KFD_SCHED_POLICY_NO_HWS)
+=======
+	if (sched_policy == KFD_SCHED_POLICY_NO_HWS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		type = DBGDEV_TYPE_NODIQ;
 
 	kfd_dbgdev_init(new_buff->dbgdev, pdev, type);

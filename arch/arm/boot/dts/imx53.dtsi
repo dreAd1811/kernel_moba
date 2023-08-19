@@ -26,7 +26,11 @@
 	 * Also for U-Boot there must be a pre-existing /memory node.
 	 */
 	chosen {};
+<<<<<<< HEAD
 	memory { device_type = "memory"; };
+=======
+	memory { device_type = "memory"; reg = <0 0>; };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	aliases {
 		ethernet0 = &fec;
@@ -80,7 +84,11 @@
 		ports = <&ipu_di0>, <&ipu_di1>;
 	};
 
+<<<<<<< HEAD
 	tzic: tz-interrupt-controller@fffc000 {
+=======
+	tzic: tz-interrupt-controller@0fffc000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx53-tzic", "fsl,tzic";
 		interrupt-controller;
 		#interrupt-cells = <1>;
@@ -88,6 +96,12 @@
 	};
 
 	clocks {
+<<<<<<< HEAD
+=======
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ckil {
 			compatible = "fsl,imx-ckil", "fixed-clock";
 			#clock-cells = <0>;
@@ -113,6 +127,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	pmu: pmu {
 		compatible = "arm,cortex-a8-pmu";
 		interrupt-parent = <&tzic>;
@@ -135,6 +150,8 @@
 		status = "okay";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -318,6 +335,23 @@
 				reg = <0x53f00000 0x60>;
 			};
 
+<<<<<<< HEAD
+=======
+			usbphy0: usbphy@0 {
+				compatible = "usb-nop-xceiv";
+				clocks = <&clks IMX5_CLK_USB_PHY1_GATE>;
+				clock-names = "main_clk";
+				status = "okay";
+			};
+
+			usbphy1: usbphy@1 {
+				compatible = "usb-nop-xceiv";
+				clocks = <&clks IMX5_CLK_USB_PHY2_GATE>;
+				clock-names = "main_clk";
+				status = "okay";
+			};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			usbotg: usb@53f80000 {
 				compatible = "fsl,imx53-usb", "fsl,imx27-usb";
 				reg = <0x53f80000 0x0200>;
@@ -438,6 +472,7 @@
 				clock-names = "ipg", "per";
 			};
 
+<<<<<<< HEAD
 			srtc: rtc@53fa4000 {
 				compatible = "fsl,imx53-rtc";
 				reg = <0x53fa4000 0x4000>;
@@ -445,6 +480,8 @@
 				clocks = <&clks IMX5_CLK_SRTC_GATE>;
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iomuxc: iomuxc@53fa8000 {
 				compatible = "fsl,imx53-iomuxc";
 				reg = <0x53fa8000 0x4000>;
@@ -485,10 +522,13 @@
 							remote-endpoint = <&ipu_di0_lvds0>;
 						};
 					};
+<<<<<<< HEAD
 
 					port@2 {
 						reg = <2>;
 					};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				};
 
 				lvds-channel@1 {
@@ -504,10 +544,13 @@
 							remote-endpoint = <&ipu_di1_lvds1>;
 						};
 					};
+<<<<<<< HEAD
 
 					port@2 {
 						reg = <2>;
 					};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				};
 			};
 
@@ -556,7 +599,11 @@
 			};
 
 			can1: can@53fc8000 {
+<<<<<<< HEAD
 				compatible = "fsl,imx53-flexcan", "fsl,imx25-flexcan";
+=======
+				compatible = "fsl,imx53-flexcan", "fsl,p1010-flexcan";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0x53fc8000 0x4000>;
 				interrupts = <82>;
 				clocks = <&clks IMX5_CLK_CAN1_IPG_GATE>,
@@ -566,7 +613,11 @@
 			};
 
 			can2: can@53fcc000 {
+<<<<<<< HEAD
 				compatible = "fsl,imx53-flexcan", "fsl,imx25-flexcan";
+=======
+				compatible = "fsl,imx53-flexcan", "fsl,p1010-flexcan";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0x53fcc000 0x4000>;
 				interrupts = <83>;
 				clocks = <&clks IMX5_CLK_CAN2_IPG_GATE>,
@@ -672,11 +723,14 @@
 				status = "disabled";
 			};
 
+<<<<<<< HEAD
 			tigerp: tigerp@63fa0000 {
 				compatible = "fsl,imx53-tigerp", "fsl,imx51-tigerp";
 				reg = <0x63fa0000 0x28>;
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			owire: owire@63fa4000 {
 				compatible = "fsl,imx53-owire", "fsl,imx21-owire";
 				reg = <0x63fa4000 0x4000>;
@@ -838,5 +892,13 @@
 			reg = <0xf8000000 0x20000>;
 			clocks = <&clks IMX5_CLK_OCRAM>;
 		};
+<<<<<<< HEAD
+=======
+
+		pmu {
+			compatible = "arm,cortex-a8-pmu";
+			interrupts = <77>;
+		};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

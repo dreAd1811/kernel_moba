@@ -1,9 +1,18 @@
 # SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
+=======
+menu "Kernel hacking"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config TRACE_IRQFLAGS_SUPPORT
 	bool
 	default y
 
+<<<<<<< HEAD
+=======
+source "lib/Kconfig.debug"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DEBUG_DCFLUSH
 	bool "D-cache flush debugging"
 	depends on SPARC64 && DEBUG_KERNEL
@@ -18,3 +27,8 @@ config FRAME_POINTER
 	bool
 	depends on MCOUNT
 	default y
+<<<<<<< HEAD
+=======
+
+endmenu
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

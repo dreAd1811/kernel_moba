@@ -30,7 +30,10 @@
 #include <linux/i2c-algo-bit.h>
 #include <linux/export.h>
 #include <drm/drmP.h>
+<<<<<<< HEAD
 #include <drm/drm_hdcp.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "intel_drv.h"
 #include <drm/i915_drm.h>
 #include "i915_drv.h"
@@ -76,6 +79,7 @@ static const struct gmbus_pin gmbus_pins_cnp[] = {
 	[GMBUS_PIN_4_CNP] = { "dpd", GPIOE },
 };
 
+<<<<<<< HEAD
 static const struct gmbus_pin gmbus_pins_icp[] = {
 	[GMBUS_PIN_1_BXT] = { "dpa", GPIOB },
 	[GMBUS_PIN_2_BXT] = { "dpb", GPIOC },
@@ -85,13 +89,19 @@ static const struct gmbus_pin gmbus_pins_icp[] = {
 	[GMBUS_PIN_12_TC4_ICP] = { "tc4", GPIOM },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* pin is expected to be valid */
 static const struct gmbus_pin *get_gmbus_pin(struct drm_i915_private *dev_priv,
 					     unsigned int pin)
 {
+<<<<<<< HEAD
 	if (HAS_PCH_ICP(dev_priv))
 		return &gmbus_pins_icp[pin];
 	else if (HAS_PCH_CNP(dev_priv))
+=======
+	if (HAS_PCH_CNP(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return &gmbus_pins_cnp[pin];
 	else if (IS_GEN9_LP(dev_priv))
 		return &gmbus_pins_bxt[pin];
@@ -108,9 +118,13 @@ bool intel_gmbus_is_valid_pin(struct drm_i915_private *dev_priv,
 {
 	unsigned int size;
 
+<<<<<<< HEAD
 	if (HAS_PCH_ICP(dev_priv))
 		size = ARRAY_SIZE(gmbus_pins_icp);
 	else if (HAS_PCH_CNP(dev_priv))
+=======
+	if (HAS_PCH_CNP(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size = ARRAY_SIZE(gmbus_pins_cnp);
 	else if (IS_GEN9_LP(dev_priv))
 		size = ARRAY_SIZE(gmbus_pins_bxt);
@@ -142,12 +156,17 @@ intel_i2c_reset(struct drm_i915_private *dev_priv)
 	I915_WRITE(GMBUS4, 0);
 }
 
+<<<<<<< HEAD
 static void pnv_gmbus_clock_gating(struct drm_i915_private *dev_priv,
 				   bool enable)
+=======
+static void intel_i2c_quirk_set(struct drm_i915_private *dev_priv, bool enable)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 val;
 
 	/* When using bit bashing for I2C, this bit needs to be set to 1 */
+<<<<<<< HEAD
 	val = I915_READ(DSPCLK_GATE_D);
 	if (!enable)
 		val |= PNV_GMBUSUNIT_CLOCK_GATE_DISABLE;
@@ -182,6 +201,19 @@ static void bxt_gmbus_clock_gating(struct drm_i915_private *dev_priv,
 	I915_WRITE(GEN9_CLKGATE_DIS_4, val);
 }
 
+=======
+	if (!IS_PINEVIEW(dev_priv))
+		return;
+
+	val = I915_READ(DSPCLK_GATE_D);
+	if (enable)
+		val |= DPCUNIT_CLOCK_GATE_DISABLE;
+	else
+		val &= ~DPCUNIT_CLOCK_GATE_DISABLE;
+	I915_WRITE(DSPCLK_GATE_D, val);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32 get_reserved(struct intel_gmbus *bus)
 {
 	struct drm_i915_private *dev_priv = bus->dev_priv;
@@ -259,10 +291,14 @@ intel_gpio_pre_xfer(struct i2c_adapter *adapter)
 	struct drm_i915_private *dev_priv = bus->dev_priv;
 
 	intel_i2c_reset(dev_priv);
+<<<<<<< HEAD
 
 	if (IS_PINEVIEW(dev_priv))
 		pnv_gmbus_clock_gating(dev_priv, false);
 
+=======
+	intel_i2c_quirk_set(dev_priv, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_data(bus, 1);
 	set_clock(bus, 1);
 	udelay(I2C_RISEFALL_TIME);
@@ -279,9 +315,13 @@ intel_gpio_post_xfer(struct i2c_adapter *adapter)
 
 	set_data(bus, 1);
 	set_clock(bus, 1);
+<<<<<<< HEAD
 
 	if (IS_PINEVIEW(dev_priv))
 		pnv_gmbus_clock_gating(dev_priv, true);
+=======
+	intel_i2c_quirk_set(dev_priv, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -361,6 +401,7 @@ gmbus_wait_idle(struct drm_i915_private *dev_priv)
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline
 unsigned int gmbus_max_xfer_size(struct drm_i915_private *dev_priv)
 {
@@ -394,6 +435,17 @@ gmbus_xfer_read_chunk(struct drm_i915_private *dev_priv,
 		      gmbus1_index |
 		      GMBUS_CYCLE_WAIT |
 		      (size << GMBUS_BYTE_COUNT_SHIFT) |
+=======
+static int
+gmbus_xfer_read_chunk(struct drm_i915_private *dev_priv,
+		      unsigned short addr, u8 *buf, unsigned int len,
+		      u32 gmbus1_index)
+{
+	I915_WRITE_FW(GMBUS1,
+		      gmbus1_index |
+		      GMBUS_CYCLE_WAIT |
+		      (len << GMBUS_BYTE_COUNT_SHIFT) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      (addr << GMBUS_SLAVE_ADDR_SHIFT) |
 		      GMBUS_SLAVE_READ | GMBUS_SW_RDY);
 	while (len) {
@@ -406,6 +458,7 @@ gmbus_xfer_read_chunk(struct drm_i915_private *dev_priv,
 
 		val = I915_READ_FW(GMBUS3);
 		do {
+<<<<<<< HEAD
 			if (extra_byte_added && len == 1)
 				break;
 
@@ -416,11 +469,17 @@ gmbus_xfer_read_chunk(struct drm_i915_private *dev_priv,
 		if (burst_read && len == size - 4)
 			/* Reset the override bit */
 			I915_WRITE_FW(GMBUS0, gmbus0_reg);
+=======
+			*buf++ = val & 0xff;
+			val >>= 8;
+		} while (--len && ++loop < 4);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * HW spec says that 512Bytes in Burst read need special treatment.
  * But it doesn't talk about other multiple of 256Bytes. And couldn't locate
@@ -434,6 +493,11 @@ gmbus_xfer_read_chunk(struct drm_i915_private *dev_priv,
 static int
 gmbus_xfer_read(struct drm_i915_private *dev_priv, struct i2c_msg *msg,
 		u32 gmbus0_reg, u32 gmbus1_index)
+=======
+static int
+gmbus_xfer_read(struct drm_i915_private *dev_priv, struct i2c_msg *msg,
+		u32 gmbus1_index)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 *buf = msg->buf;
 	unsigned int rx_size = msg->len;
@@ -441,6 +505,7 @@ gmbus_xfer_read(struct drm_i915_private *dev_priv, struct i2c_msg *msg,
 	int ret;
 
 	do {
+<<<<<<< HEAD
 		if (HAS_GMBUS_BURST_READ(dev_priv))
 			len = min(rx_size, INTEL_GMBUS_BURST_READ_MAX_LEN);
 		else
@@ -448,6 +513,12 @@ gmbus_xfer_read(struct drm_i915_private *dev_priv, struct i2c_msg *msg,
 
 		ret = gmbus_xfer_read_chunk(dev_priv, msg->addr, buf, len,
 					    gmbus0_reg, gmbus1_index);
+=======
+		len = min(rx_size, GMBUS_BYTE_COUNT_MAX);
+
+		ret = gmbus_xfer_read_chunk(dev_priv, msg->addr,
+					    buf, len, gmbus1_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 
@@ -460,8 +531,12 @@ gmbus_xfer_read(struct drm_i915_private *dev_priv, struct i2c_msg *msg,
 
 static int
 gmbus_xfer_write_chunk(struct drm_i915_private *dev_priv,
+<<<<<<< HEAD
 		       unsigned short addr, u8 *buf, unsigned int len,
 		       u32 gmbus1_index)
+=======
+		       unsigned short addr, u8 *buf, unsigned int len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int chunk_size = len;
 	u32 val, loop;
@@ -474,7 +549,11 @@ gmbus_xfer_write_chunk(struct drm_i915_private *dev_priv,
 
 	I915_WRITE_FW(GMBUS3, val);
 	I915_WRITE_FW(GMBUS1,
+<<<<<<< HEAD
 		      gmbus1_index | GMBUS_CYCLE_WAIT |
+=======
+		      GMBUS_CYCLE_WAIT |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      (chunk_size << GMBUS_BYTE_COUNT_SHIFT) |
 		      (addr << GMBUS_SLAVE_ADDR_SHIFT) |
 		      GMBUS_SLAVE_WRITE | GMBUS_SW_RDY);
@@ -497,8 +576,12 @@ gmbus_xfer_write_chunk(struct drm_i915_private *dev_priv,
 }
 
 static int
+<<<<<<< HEAD
 gmbus_xfer_write(struct drm_i915_private *dev_priv, struct i2c_msg *msg,
 		 u32 gmbus1_index)
+=======
+gmbus_xfer_write(struct drm_i915_private *dev_priv, struct i2c_msg *msg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 *buf = msg->buf;
 	unsigned int tx_size = msg->len;
@@ -506,10 +589,16 @@ gmbus_xfer_write(struct drm_i915_private *dev_priv, struct i2c_msg *msg,
 	int ret;
 
 	do {
+<<<<<<< HEAD
 		len = min(tx_size, gmbus_max_xfer_size(dev_priv));
 
 		ret = gmbus_xfer_write_chunk(dev_priv, msg->addr, buf, len,
 					     gmbus1_index);
+=======
+		len = min(tx_size, GMBUS_BYTE_COUNT_MAX);
+
+		ret = gmbus_xfer_write_chunk(dev_priv, msg->addr, buf, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 
@@ -521,22 +610,38 @@ gmbus_xfer_write(struct drm_i915_private *dev_priv, struct i2c_msg *msg,
 }
 
 /*
+<<<<<<< HEAD
  * The gmbus controller can combine a 1 or 2 byte write with another read/write
  * that immediately follows it by using an "INDEX" cycle.
  */
 static bool
 gmbus_is_index_xfer(struct i2c_msg *msgs, int i, int num)
+=======
+ * The gmbus controller can combine a 1 or 2 byte write with a read that
+ * immediately follows it by using an "INDEX" cycle.
+ */
+static bool
+gmbus_is_index_read(struct i2c_msg *msgs, int i, int num)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (i + 1 < num &&
 		msgs[i].addr == msgs[i + 1].addr &&
 		!(msgs[i].flags & I2C_M_RD) &&
 		(msgs[i].len == 1 || msgs[i].len == 2) &&
+<<<<<<< HEAD
 		msgs[i + 1].len > 0);
 }
 
 static int
 gmbus_index_xfer(struct drm_i915_private *dev_priv, struct i2c_msg *msgs,
 		 u32 gmbus0_reg)
+=======
+		(msgs[i + 1].flags & I2C_M_RD));
+}
+
+static int
+gmbus_xfer_index_read(struct drm_i915_private *dev_priv, struct i2c_msg *msgs)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 gmbus1_index = 0;
 	u32 gmbus5 = 0;
@@ -553,11 +658,15 @@ gmbus_index_xfer(struct drm_i915_private *dev_priv, struct i2c_msg *msgs,
 	if (gmbus5)
 		I915_WRITE_FW(GMBUS5, gmbus5);
 
+<<<<<<< HEAD
 	if (msgs[1].flags & I2C_M_RD)
 		ret = gmbus_xfer_read(dev_priv, &msgs[1], gmbus0_reg,
 				      gmbus1_index);
 	else
 		ret = gmbus_xfer_write(dev_priv, &msgs[1], gmbus1_index);
+=======
+	ret = gmbus_xfer_read(dev_priv, &msgs[1], gmbus1_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clear GMBUS5 after each index transfer */
 	if (gmbus5)
@@ -567,8 +676,12 @@ gmbus_index_xfer(struct drm_i915_private *dev_priv, struct i2c_msg *msgs,
 }
 
 static int
+<<<<<<< HEAD
 do_gmbus_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num,
 	      u32 gmbus0_source)
+=======
+do_gmbus_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_gmbus *bus = container_of(adapter,
 					       struct intel_gmbus,
@@ -577,6 +690,7 @@ do_gmbus_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num,
 	int i = 0, inc, try = 0;
 	int ret = 0;
 
+<<<<<<< HEAD
 	/* Display WA #0868: skl,bxt,kbl,cfl,glk,cnl */
 	if (IS_GEN9_LP(dev_priv))
 		bxt_gmbus_clock_gating(dev_priv, false);
@@ -598,6 +712,20 @@ retry:
 					      gmbus0_source | bus->reg0, 0);
 		} else {
 			ret = gmbus_xfer_write(dev_priv, &msgs[i], 0);
+=======
+retry:
+	I915_WRITE_FW(GMBUS0, bus->reg0);
+
+	for (; i < num; i += inc) {
+		inc = 1;
+		if (gmbus_is_index_read(msgs, i, num)) {
+			ret = gmbus_xfer_index_read(dev_priv, &msgs[i]);
+			inc = 2; /* an index read is two msgs */
+		} else if (msgs[i].flags & I2C_M_RD) {
+			ret = gmbus_xfer_read(dev_priv, &msgs[i], 0);
+		} else {
+			ret = gmbus_xfer_write(dev_priv, &msgs[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (!ret)
@@ -687,6 +815,7 @@ timeout:
 	ret = -EAGAIN;
 
 out:
+<<<<<<< HEAD
 	/* Display WA #0868: skl,bxt,kbl,cfl,glk,cnl */
 	if (IS_GEN9_LP(dev_priv))
 		bxt_gmbus_clock_gating(dev_priv, true);
@@ -694,6 +823,8 @@ out:
 		 HAS_PCH_KBP(dev_priv) || HAS_PCH_CNP(dev_priv))
 		pch_gmbus_clock_gating(dev_priv, true);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -712,7 +843,11 @@ gmbus_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num)
 		if (ret < 0)
 			bus->force_bit &= ~GMBUS_FORCE_BIT_RETRY;
 	} else {
+<<<<<<< HEAD
 		ret = do_gmbus_xfer(adapter, msgs, num, 0);
+=======
+		ret = do_gmbus_xfer(adapter, msgs, num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret == -EAGAIN)
 			bus->force_bit |= GMBUS_FORCE_BIT_RETRY;
 	}
@@ -722,6 +857,7 @@ gmbus_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs, int num)
 	return ret;
 }
 
+<<<<<<< HEAD
 int intel_gmbus_output_aksv(struct i2c_adapter *adapter)
 {
 	struct intel_gmbus *bus = container_of(adapter, struct intel_gmbus,
@@ -761,6 +897,8 @@ int intel_gmbus_output_aksv(struct i2c_adapter *adapter)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32 gmbus_func(struct i2c_adapter *adapter)
 {
 	return i2c_bit_algo.functionality(adapter) &
@@ -819,7 +957,11 @@ int intel_setup_gmbus(struct drm_i915_private *dev_priv)
 	unsigned int pin;
 	int ret;
 
+<<<<<<< HEAD
 	if (INTEL_INFO(dev_priv)->num_pipes == 0)
+=======
+	if (HAS_PCH_NOP(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (IS_VALLEYVIEW(dev_priv) || IS_CHERRYVIEW(dev_priv))

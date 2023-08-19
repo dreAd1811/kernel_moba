@@ -41,7 +41,10 @@
 #include <linux/jiffies.h>
 #include <linux/prefetch.h>
 #include <linux/export.h>
+<<<<<<< HEAD
 #include <net/xfrm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/ipv6.h>
 #include <net/tcp.h>
 #include <net/busy_poll.h>
@@ -54,7 +57,10 @@
 #include "t4_msg.h"
 #include "t4fw_api.h"
 #include "cxgb4_ptp.h"
+<<<<<<< HEAD
 #include "cxgb4_uld.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Rx buffer size.  We use largish buffers if possible but settle for single
@@ -112,6 +118,17 @@
 #define NOMEM_TMR_IDX (SGE_NTIMERS - 1)
 
 /*
+<<<<<<< HEAD
+=======
+ * Suspend an Ethernet Tx queue with fewer available descriptors than this.
+ * This is the same as calc_tx_descs() for a TSO packet with
+ * nr_frags == MAX_SKB_FRAGS.
+ */
+#define ETHTXQ_STOP_THRES \
+	(1 + DIV_ROUND_UP((3 * MAX_SKB_FRAGS) / 2 + (MAX_SKB_FRAGS & 1), 8))
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Suspension threshold for non-Ethernet Tx queues.  We require enough room
  * for a full sized WR.
  */
@@ -128,6 +145,14 @@
  */
 #define MAX_CTRL_WR_LEN SGE_MAX_WR_LEN
 
+<<<<<<< HEAD
+=======
+struct tx_sw_desc {                /* SW state per Tx descriptor */
+	struct sk_buff *skb;
+	struct ulptx_sgl *sgl;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rx_sw_desc {                /* SW state per Rx descriptor */
 	struct page *page;
 	dma_addr_t dma_addr;
@@ -237,8 +262,13 @@ static inline bool fl_starving(const struct adapter *adapter,
 	return fl->avail - fl->pend_cred <= s->fl_starve_thres;
 }
 
+<<<<<<< HEAD
 int cxgb4_map_skb(struct device *dev, const struct sk_buff *skb,
 		  dma_addr_t *addr)
+=======
+static int map_skb(struct device *dev, const struct sk_buff *skb,
+		   dma_addr_t *addr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const skb_frag_t *fp, *end;
 	const struct skb_shared_info *si;
@@ -266,7 +296,10 @@ unwind:
 out_err:
 	return -ENOMEM;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(cxgb4_map_skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_NEED_DMA_MAP_STATE
 static void unmap_skb(struct device *dev, const struct sk_buff *skb,
@@ -395,13 +428,21 @@ void free_tx_desc(struct adapter *adap, struct sge_txq *q,
  */
 static inline int reclaimable(const struct sge_txq *q)
 {
+<<<<<<< HEAD
 	int hw_cidx = ntohs(READ_ONCE(q->stat->cidx));
+=======
+	int hw_cidx = ntohs(ACCESS_ONCE(q->stat->cidx));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw_cidx -= q->cidx;
 	return hw_cidx < 0 ? hw_cidx + q->size : hw_cidx;
 }
 
 /**
+<<<<<<< HEAD
  *	cxgb4_reclaim_completed_tx - reclaims completed Tx descriptors
+=======
+ *	reclaim_completed_tx - reclaims completed Tx descriptors
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	@adap: the adapter
  *	@q: the Tx queue to reclaim completed descriptors from
  *	@unmap: whether the buffers should be unmapped for DMA
@@ -410,7 +451,11 @@ static inline int reclaimable(const struct sge_txq *q)
  *	and frees the associated buffers if possible.  Called with the Tx
  *	queue locked.
  */
+<<<<<<< HEAD
 inline void cxgb4_reclaim_completed_tx(struct adapter *adap, struct sge_txq *q,
+=======
+static inline void reclaim_completed_tx(struct adapter *adap, struct sge_txq *q,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					bool unmap)
 {
 	int avail = reclaimable(q);
@@ -427,7 +472,10 @@ inline void cxgb4_reclaim_completed_tx(struct adapter *adap, struct sge_txq *q,
 		q->in_use -= avail;
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(cxgb4_reclaim_completed_tx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline int get_buf_size(struct adapter *adapter,
 			       const struct rx_sw_desc *d)
@@ -694,12 +742,20 @@ static void *alloc_ring(struct device *dev, size_t nelem, size_t elem_size,
 {
 	size_t len = nelem * elem_size + stat_size;
 	void *s = NULL;
+<<<<<<< HEAD
 	void *p = dma_zalloc_coherent(dev, len, phys, GFP_KERNEL);
+=======
+	void *p = dma_alloc_coherent(dev, len, phys, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!p)
 		return NULL;
 	if (sw_size) {
+<<<<<<< HEAD
 		s = kcalloc_node(sw_size, nelem, GFP_KERNEL, node);
+=======
+		s = kzalloc_node(nelem * sw_size, GFP_KERNEL, node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!s) {
 			dma_free_coherent(dev, len, p, *phys);
@@ -708,6 +764,10 @@ static void *alloc_ring(struct device *dev, size_t nelem, size_t elem_size,
 	}
 	if (metadata)
 		*(void **)metadata = s;
+<<<<<<< HEAD
+=======
+	memset(p, 0, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return p;
 }
 
@@ -760,6 +820,7 @@ static inline unsigned int flits_to_desc(unsigned int n)
  *	Returns whether an Ethernet packet is small enough to fit as
  *	immediate data. Return value corresponds to headroom required.
  */
+<<<<<<< HEAD
 static inline int is_eth_imm(const struct sk_buff *skb, unsigned int chip_ver)
 {
 	int hdrlen = 0;
@@ -773,6 +834,14 @@ static inline int is_eth_imm(const struct sk_buff *skb, unsigned int chip_ver)
 			 sizeof(struct cpl_tx_pkt_lso_core) : 0;
 		hdrlen += sizeof(struct cpl_tx_pkt);
 	}
+=======
+static inline int is_eth_imm(const struct sk_buff *skb)
+{
+	int hdrlen = skb_shinfo(skb)->gso_size ?
+			sizeof(struct cpl_tx_pkt_lso_core) : 0;
+
+	hdrlen += sizeof(struct cpl_tx_pkt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (skb->len <= MAX_IMM_TX_PKT_LEN - hdrlen)
 		return hdrlen;
 	return 0;
@@ -785,11 +854,18 @@ static inline int is_eth_imm(const struct sk_buff *skb, unsigned int chip_ver)
  *	Returns the number of flits needed for a Tx WR for the given Ethernet
  *	packet, including the needed WR and CPL headers.
  */
+<<<<<<< HEAD
 static inline unsigned int calc_tx_flits(const struct sk_buff *skb,
 					 unsigned int chip_ver)
 {
 	unsigned int flits;
 	int hdrlen = is_eth_imm(skb, chip_ver);
+=======
+static inline unsigned int calc_tx_flits(const struct sk_buff *skb)
+{
+	unsigned int flits;
+	int hdrlen = is_eth_imm(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If the skb is small enough, we can pump it out as a work request
 	 * with only immediate data.  In that case we just have to have the
@@ -808,6 +884,7 @@ static inline unsigned int calc_tx_flits(const struct sk_buff *skb,
 	 * with an embedded TX Packet Write CPL message.
 	 */
 	flits = sgl_len(skb_shinfo(skb)->nr_frags + 1);
+<<<<<<< HEAD
 	if (skb_shinfo(skb)->gso_size) {
 		if (skb->encapsulation && chip_ver > CHELSIO_T5)
 			hdrlen = sizeof(struct fw_eth_tx_pkt_wr) +
@@ -822,6 +899,15 @@ static inline unsigned int calc_tx_flits(const struct sk_buff *skb,
 		flits += (sizeof(struct fw_eth_tx_pkt_wr) +
 			  sizeof(struct cpl_tx_pkt_core)) / sizeof(__be64);
 	}
+=======
+	if (skb_shinfo(skb)->gso_size)
+		flits += (sizeof(struct fw_eth_tx_pkt_wr) +
+			  sizeof(struct cpl_tx_pkt_lso_core) +
+			  sizeof(struct cpl_tx_pkt_core)) / sizeof(__be64);
+	else
+		flits += (sizeof(struct fw_eth_tx_pkt_wr) +
+			  sizeof(struct cpl_tx_pkt_core)) / sizeof(__be64);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return flits;
 }
 
@@ -832,6 +918,7 @@ static inline unsigned int calc_tx_flits(const struct sk_buff *skb,
  *	Returns the number of Tx descriptors needed for the given Ethernet
  *	packet, including the needed WR and CPL headers.
  */
+<<<<<<< HEAD
 static inline unsigned int calc_tx_descs(const struct sk_buff *skb,
 					 unsigned int chip_ver)
 {
@@ -840,6 +927,15 @@ static inline unsigned int calc_tx_descs(const struct sk_buff *skb,
 
 /**
  *	cxgb4_write_sgl - populate a scatter/gather list for a packet
+=======
+static inline unsigned int calc_tx_descs(const struct sk_buff *skb)
+{
+	return flits_to_desc(calc_tx_flits(skb));
+}
+
+/**
+ *	write_sgl - populate a scatter/gather list for a packet
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	@skb: the packet
  *	@q: the Tx queue we are writing into
  *	@sgl: starting location for writing the SGL
@@ -855,9 +951,15 @@ static inline unsigned int calc_tx_descs(const struct sk_buff *skb,
  *	right after the end of the SGL but does not account for any potential
  *	wrap around, i.e., @end > @sgl.
  */
+<<<<<<< HEAD
 void cxgb4_write_sgl(const struct sk_buff *skb, struct sge_txq *q,
 		     struct ulptx_sgl *sgl, u64 *end, unsigned int start,
 		     const dma_addr_t *addr)
+=======
+static void write_sgl(const struct sk_buff *skb, struct sge_txq *q,
+		      struct ulptx_sgl *sgl, u64 *end, unsigned int start,
+		      const dma_addr_t *addr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i, len;
 	struct ulptx_sge_pair *to;
@@ -909,7 +1011,10 @@ void cxgb4_write_sgl(const struct sk_buff *skb, struct sge_txq *q,
 	if ((uintptr_t)end & 8)           /* 0-pad to multiple of 16 */
 		*end = 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(cxgb4_write_sgl);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* This function copies 64 byte coalesced work request to
  * memory mapped BAR2 space. For coalesced WR SGE fetches
@@ -928,14 +1033,22 @@ static void cxgb_pio_copy(u64 __iomem *dst, u64 *src)
 }
 
 /**
+<<<<<<< HEAD
  *	cxgb4_ring_tx_db - check and potentially ring a Tx queue's doorbell
+=======
+ *	ring_tx_db - check and potentially ring a Tx queue's doorbell
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	@adap: the adapter
  *	@q: the Tx queue
  *	@n: number of new descriptors to give to HW
  *
  *	Ring the doorbel for a Tx queue.
  */
+<<<<<<< HEAD
 inline void cxgb4_ring_tx_db(struct adapter *adap, struct sge_txq *q, int n)
+=======
+static inline void ring_tx_db(struct adapter *adap, struct sge_txq *q, int n)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Make sure that all writes to the TX Descriptors are committed
 	 * before we tell the hardware about them.
@@ -1002,10 +1115,16 @@ inline void cxgb4_ring_tx_db(struct adapter *adap, struct sge_txq *q, int n)
 		wmb();
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(cxgb4_ring_tx_db);
 
 /**
  *	cxgb4_inline_tx_skb - inline a packet's data into Tx descriptors
+=======
+
+/**
+ *	inline_tx_skb - inline a packet's data into Tx descriptors
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	@skb: the packet
  *	@q: the Tx queue where the packet will be inlined
  *	@pos: starting position in the Tx queue where to inline the packet
@@ -1015,11 +1134,19 @@ EXPORT_SYMBOL(cxgb4_ring_tx_db);
  *	Most of the complexity of this operation is dealing with wrap arounds
  *	in the middle of the packet we want to inline.
  */
+<<<<<<< HEAD
 void cxgb4_inline_tx_skb(const struct sk_buff *skb,
 			 const struct sge_txq *q, void *pos)
 {
 	int left = (void *)q->stat - pos;
 	u64 *p;
+=======
+static void inline_tx_skb(const struct sk_buff *skb, const struct sge_txq *q,
+			  void *pos)
+{
+	u64 *p;
+	int left = (void *)q->stat - pos;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(skb->len <= left)) {
 		if (likely(!skb->data_len))
@@ -1038,7 +1165,10 @@ void cxgb4_inline_tx_skb(const struct sk_buff *skb,
 	if ((uintptr_t)p & 8)
 		*p = 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(cxgb4_inline_tx_skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void *inline_tx_skb_header(const struct sk_buff *skb,
 				  const struct sge_txq *q,  void *pos,
@@ -1071,6 +1201,7 @@ static void *inline_tx_skb_header(const struct sk_buff *skb,
 static u64 hwcsum(enum chip_type chip, const struct sk_buff *skb)
 {
 	int csum_type;
+<<<<<<< HEAD
 	bool inner_hdr_csum = false;
 	u16 proto, ver;
 
@@ -1092,6 +1223,14 @@ static u64 hwcsum(enum chip_type chip, const struct sk_buff *skb)
 		if (proto == IPPROTO_TCP)
 			csum_type = TX_CSUM_TCPIP;
 		else if (proto == IPPROTO_UDP)
+=======
+	const struct iphdr *iph = ip_hdr(skb);
+
+	if (iph->version == 4) {
+		if (iph->protocol == IPPROTO_TCP)
+			csum_type = TX_CSUM_TCPIP;
+		else if (iph->protocol == IPPROTO_UDP)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			csum_type = TX_CSUM_UDPIP;
 		else {
 nocsum:			/*
@@ -1104,15 +1243,24 @@ nocsum:			/*
 		/*
 		 * this doesn't work with extension headers
 		 */
+<<<<<<< HEAD
 		if (proto == IPPROTO_TCP)
 			csum_type = TX_CSUM_TCPIP6;
 		else if (proto == IPPROTO_UDP)
+=======
+		const struct ipv6hdr *ip6h = (const struct ipv6hdr *)iph;
+
+		if (ip6h->nexthdr == IPPROTO_TCP)
+			csum_type = TX_CSUM_TCPIP6;
+		else if (ip6h->nexthdr == IPPROTO_UDP)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			csum_type = TX_CSUM_UDPIP6;
 		else
 			goto nocsum;
 	}
 
 	if (likely(csum_type >= TX_CSUM_TCPIP)) {
+<<<<<<< HEAD
 		int eth_hdr_len, l4_len;
 		u64 hdr_len;
 
@@ -1127,6 +1275,10 @@ nocsum:			/*
 			eth_hdr_len = skb_network_offset(skb) - ETH_HLEN;
 		}
 		hdr_len = TXPKT_IPHDR_LEN_V(l4_len);
+=======
+		u64 hdr_len = TXPKT_IPHDR_LEN_V(skb_network_header_len(skb));
+		int eth_hdr_len = skb_network_offset(skb) - ETH_HLEN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (CHELSIO_CHIP_VERSION(chip) <= CHELSIO_T5)
 			hdr_len |= TXPKT_ETHHDR_LEN_V(eth_hdr_len);
@@ -1188,6 +1340,7 @@ cxgb_fcoe_offload(struct sk_buff *skb, struct adapter *adap,
 }
 #endif /* CONFIG_CHELSIO_T4_FCOE */
 
+<<<<<<< HEAD
 /* Returns tunnel type if hardware supports offloading of the same.
  * It is called only for T5 and onwards.
  */
@@ -1289,15 +1442,26 @@ static inline void t6_fill_tnl_lso(struct sk_buff *skb,
 
 /**
  *	cxgb4_eth_xmit - add a packet to an Ethernet Tx queue
+=======
+/**
+ *	t4_eth_xmit - add a packet to an Ethernet Tx queue
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	@skb: the packet
  *	@dev: the egress net device
  *
  *	Add a packet to an SGE Ethernet Tx queue.  Runs with softirqs disabled.
  */
+<<<<<<< HEAD
 static netdev_tx_t cxgb4_eth_xmit(struct sk_buff *skb, struct net_device *dev)
 {
 	u32 wr_mid, ctrl0, op;
 	u64 cntrl, *end, *sgl;
+=======
+netdev_tx_t t4_eth_xmit(struct sk_buff *skb, struct net_device *dev)
+{
+	u32 wr_mid, ctrl0, op;
+	u64 cntrl, *end;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int qidx, credits;
 	unsigned int flits, ndesc;
 	struct adapter *adap;
@@ -1310,9 +1474,12 @@ static netdev_tx_t cxgb4_eth_xmit(struct sk_buff *skb, struct net_device *dev)
 	bool immediate = false;
 	int len, max_pkt_len;
 	bool ptp_enabled = is_ptp_enabled(skb, dev);
+<<<<<<< HEAD
 	unsigned int chip_ver;
 	enum cpl_tx_tnl_lso_type tnl_type = TX_TNL_TYPE_OPAQUE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_CHELSIO_T4_FCOE
 	int err;
 #endif /* CONFIG_CHELSIO_T4_FCOE */
@@ -1335,12 +1502,15 @@ out_free:	dev_kfree_skb_any(skb);
 
 	pi = netdev_priv(dev);
 	adap = pi->adapter;
+<<<<<<< HEAD
 	ssi = skb_shinfo(skb);
 #ifdef CONFIG_CHELSIO_IPSEC_INLINE
 	if (xfrm_offload(skb) && !ssi->gso_size)
 		return adap->uld[CXGB4_ULD_CRYPTO].tx_handler(skb, dev);
 #endif /* CHELSIO_IPSEC_INLINE */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qidx = skb_get_queue_mapping(skb);
 	if (ptp_enabled) {
 		spin_lock(&adap->ptp_lock);
@@ -1357,7 +1527,11 @@ out_free:	dev_kfree_skb_any(skb);
 	}
 	skb_tx_timestamp(skb);
 
+<<<<<<< HEAD
 	cxgb4_reclaim_completed_tx(adap, &q->q, true);
+=======
+	reclaim_completed_tx(adap, &q->q, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cntrl = TXPKT_L4CSUM_DIS_F | TXPKT_IPCSUM_DIS_F;
 
 #ifdef CONFIG_CHELSIO_T4_FCOE
@@ -1369,8 +1543,12 @@ out_free:	dev_kfree_skb_any(skb);
 	}
 #endif /* CONFIG_CHELSIO_T4_FCOE */
 
+<<<<<<< HEAD
 	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
 	flits = calc_tx_flits(skb, chip_ver);
+=======
+	flits = calc_tx_flits(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ndesc = flits_to_desc(flits);
 	credits = txq_avail(&q->q) - ndesc;
 
@@ -1384,6 +1562,7 @@ out_free:	dev_kfree_skb_any(skb);
 		return NETDEV_TX_BUSY;
 	}
 
+<<<<<<< HEAD
 	if (is_eth_imm(skb, chip_ver))
 		immediate = true;
 
@@ -1392,6 +1571,13 @@ out_free:	dev_kfree_skb_any(skb);
 
 	if (!immediate &&
 	    unlikely(cxgb4_map_skb(adap->pdev_dev, skb, addr) < 0)) {
+=======
+	if (is_eth_imm(skb))
+		immediate = true;
+
+	if (!immediate &&
+	    unlikely(map_skb(adap->pdev_dev, skb, addr) < 0)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		q->mapping_err++;
 		if (ptp_enabled)
 			spin_unlock(&adap->ptp_lock);
@@ -1410,6 +1596,7 @@ out_free:	dev_kfree_skb_any(skb);
 	end = (u64 *)wr + flits;
 
 	len = immediate ? skb->len : 0;
+<<<<<<< HEAD
 	len += sizeof(*cpl);
 	if (ssi->gso_size) {
 		struct cpl_tx_pkt_lso_core *lso = (void *)(wr + 1);
@@ -1443,11 +1630,25 @@ out_free:	dev_kfree_skb_any(skb);
 				cntrl = hwcsum(adap->params.chip, skb);
 		} else {
 			lso->lso_ctrl = htonl(LSO_OPCODE_V(CPL_TX_PKT_LSO) |
+=======
+	ssi = skb_shinfo(skb);
+	if (ssi->gso_size) {
+		struct cpl_tx_pkt_lso *lso = (void *)wr;
+		bool v6 = (ssi->gso_type & SKB_GSO_TCPV6) != 0;
+		int l3hdr_len = skb_network_header_len(skb);
+		int eth_xtra_len = skb_network_offset(skb) - ETH_HLEN;
+
+		len += sizeof(*lso);
+		wr->op_immdlen = htonl(FW_WR_OP_V(FW_ETH_TX_PKT_WR) |
+				       FW_WR_IMMDLEN_V(len));
+		lso->c.lso_ctrl = htonl(LSO_OPCODE_V(CPL_TX_PKT_LSO) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					LSO_FIRST_SLICE_F | LSO_LAST_SLICE_F |
 					LSO_IPV6_V(v6) |
 					LSO_ETHHDR_LEN_V(eth_xtra_len / 4) |
 					LSO_IPHDR_LEN_V(l3hdr_len / 4) |
 					LSO_TCPHDR_LEN_V(tcp_hdr(skb)->doff));
+<<<<<<< HEAD
 			lso->ipid_ofst = htons(0);
 			lso->mss = htons(ssi->gso_size);
 			lso->seqno_offset = htonl(0);
@@ -1483,6 +1684,29 @@ out_free:	dev_kfree_skb_any(skb);
 		q->tso++;
 		q->tx_cso += ssi->gso_segs;
 	} else {
+=======
+		lso->c.ipid_ofst = htons(0);
+		lso->c.mss = htons(ssi->gso_size);
+		lso->c.seqno_offset = htonl(0);
+		if (is_t4(adap->params.chip))
+			lso->c.len = htonl(skb->len);
+		else
+			lso->c.len = htonl(LSO_T5_XFER_SIZE_V(skb->len));
+		cpl = (void *)(lso + 1);
+
+		if (CHELSIO_CHIP_VERSION(adap->params.chip) <= CHELSIO_T5)
+			cntrl =	TXPKT_ETHHDR_LEN_V(eth_xtra_len);
+		else
+			cntrl = T6_TXPKT_ETHHDR_LEN_V(eth_xtra_len);
+
+		cntrl |= TXPKT_CSUM_TYPE_V(v6 ?
+					   TX_CSUM_TCPIP6 : TX_CSUM_TCPIP) |
+			 TXPKT_IPHDR_LEN_V(l3hdr_len);
+		q->tso++;
+		q->tx_cso += ssi->gso_segs;
+	} else {
+		len += sizeof(*cpl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ptp_enabled)
 			op = FW_PTP_TX_PKT_WR;
 		else
@@ -1490,7 +1714,10 @@ out_free:	dev_kfree_skb_any(skb);
 		wr->op_immdlen = htonl(FW_WR_OP_V(op) |
 				       FW_WR_IMMDLEN_V(len));
 		cpl = (void *)(wr + 1);
+<<<<<<< HEAD
 		sgl = (u64 *)(cpl + 1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (skb->ip_summed == CHECKSUM_PARTIAL) {
 			cntrl = hwcsum(adap->params.chip, skb) |
 				TXPKT_IPCSUM_DIS_F;
@@ -1524,29 +1751,47 @@ out_free:	dev_kfree_skb_any(skb);
 	cpl->ctrl1 = cpu_to_be64(cntrl);
 
 	if (immediate) {
+<<<<<<< HEAD
 		cxgb4_inline_tx_skb(skb, &q->q, sgl);
+=======
+		inline_tx_skb(skb, &q->q, cpl + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_consume_skb_any(skb);
 	} else {
 		int last_desc;
 
+<<<<<<< HEAD
 		cxgb4_write_sgl(skb, &q->q, (void *)sgl, end, 0, addr);
+=======
+		write_sgl(skb, &q->q, (struct ulptx_sgl *)(cpl + 1), end, 0,
+			  addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb_orphan(skb);
 
 		last_desc = q->q.pidx + ndesc - 1;
 		if (last_desc >= q->q.size)
 			last_desc -= q->q.size;
 		q->q.sdesc[last_desc].skb = skb;
+<<<<<<< HEAD
 		q->q.sdesc[last_desc].sgl = (struct ulptx_sgl *)sgl;
+=======
+		q->q.sdesc[last_desc].sgl = (struct ulptx_sgl *)(cpl + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	txq_advance(&q->q, ndesc);
 
+<<<<<<< HEAD
 	cxgb4_ring_tx_db(adap, &q->q, ndesc);
+=======
+	ring_tx_db(adap, &q->q, ndesc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ptp_enabled)
 		spin_unlock(&adap->ptp_lock);
 	return NETDEV_TX_OK;
 }
 
+<<<<<<< HEAD
 /* Constants ... */
 enum {
 	/* Egress Queue sizes, producer and consumer indices are all in units
@@ -1915,10 +2160,13 @@ netdev_tx_t t4_start_xmit(struct sk_buff *skb, struct net_device *dev)
 	return cxgb4_eth_xmit(skb, dev);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *	reclaim_completed_tx_imm - reclaim completed control-queue Tx descs
  *	@q: the SGE control Tx queue
  *
+<<<<<<< HEAD
  *	This is a variant of cxgb4_reclaim_completed_tx() that is used
  *	for Tx queues that send only immediate data (presently just
  *	the control queues) and	thus do not have any sk_buffs to release.
@@ -1926,6 +2174,15 @@ netdev_tx_t t4_start_xmit(struct sk_buff *skb, struct net_device *dev)
 static inline void reclaim_completed_tx_imm(struct sge_txq *q)
 {
 	int hw_cidx = ntohs(READ_ONCE(q->stat->cidx));
+=======
+ *	This is a variant of reclaim_completed_tx() that is used for Tx queues
+ *	that send only immediate data (presently just the control queues) and
+ *	thus do not have any sk_buffs to release.
+ */
+static inline void reclaim_completed_tx_imm(struct sge_txq *q)
+{
+	int hw_cidx = ntohs(ACCESS_ONCE(q->stat->cidx));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int reclaim = hw_cidx - q->cidx;
 
 	if (reclaim < 0)
@@ -1996,13 +2253,21 @@ static int ctrl_xmit(struct sge_ctrl_txq *q, struct sk_buff *skb)
 	}
 
 	wr = (struct fw_wr_hdr *)&q->q.desc[q->q.pidx];
+<<<<<<< HEAD
 	cxgb4_inline_tx_skb(skb, &q->q, wr);
+=======
+	inline_tx_skb(skb, &q->q, wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	txq_advance(&q->q, ndesc);
 	if (unlikely(txq_avail(&q->q) < TXQ_STOP_THRES))
 		ctrlq_check_stop(q, wr);
 
+<<<<<<< HEAD
 	cxgb4_ring_tx_db(q->adap, &q->q, ndesc);
+=======
+	ring_tx_db(q->adap, &q->q, ndesc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&q->sendq.lock);
 
 	kfree_skb(skb);
@@ -2037,7 +2302,11 @@ static void restart_ctrlq(unsigned long data)
 		txq_advance(&q->q, ndesc);
 		spin_unlock(&q->sendq.lock);
 
+<<<<<<< HEAD
 		cxgb4_inline_tx_skb(skb, &q->q, wr);
+=======
+		inline_tx_skb(skb, &q->q, wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree_skb(skb);
 
 		if (unlikely(txq_avail(&q->q) < TXQ_STOP_THRES)) {
@@ -2050,15 +2319,24 @@ static void restart_ctrlq(unsigned long data)
 			}
 		}
 		if (written > 16) {
+<<<<<<< HEAD
 			cxgb4_ring_tx_db(q->adap, &q->q, written);
+=======
+			ring_tx_db(q->adap, &q->q, written);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			written = 0;
 		}
 		spin_lock(&q->sendq.lock);
 	}
 	q->full = 0;
+<<<<<<< HEAD
 ringdb:
 	if (written)
 		cxgb4_ring_tx_db(q->adap, &q->q, written);
+=======
+ringdb: if (written)
+		ring_tx_db(q->adap, &q->q, written);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&q->sendq.lock);
 }
 
@@ -2088,6 +2366,7 @@ int t4_mgmt_tx(struct adapter *adap, struct sk_buff *skb)
  */
 static inline int is_ofld_imm(const struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct work_request_hdr *req = (struct work_request_hdr *)skb->data;
 	unsigned long opcode = FW_WR_OP_G(ntohl(req->wr_hi));
 
@@ -2095,6 +2374,9 @@ static inline int is_ofld_imm(const struct sk_buff *skb)
 		return skb->len <= SGE_MAX_WR_LEN;
 	else
 		return skb->len <= MAX_IMM_TX_PKT_LEN;
+=======
+	return skb->len <= MAX_IMM_TX_PKT_LEN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2139,13 +2421,24 @@ static void txq_stop_maperr(struct sge_uld_txq *q)
 /**
  *	ofldtxq_stop - stop an offload Tx queue that has become full
  *	@q: the queue to stop
+<<<<<<< HEAD
  *	@wr: the Work Request causing the queue to become full
+=======
+ *	@skb: the packet causing the queue to become full
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	Stops an offload Tx queue that has become full and modifies the packet
  *	being written to request a wakeup.
  */
+<<<<<<< HEAD
 static void ofldtxq_stop(struct sge_uld_txq *q, struct fw_wr_hdr *wr)
 {
+=======
+static void ofldtxq_stop(struct sge_uld_txq *q, struct sk_buff *skb)
+{
+	struct fw_wr_hdr *wr = (struct fw_wr_hdr *)skb->data;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wr->lo |= htonl(FW_WR_EQUEQ_F | FW_WR_EQUIQ_F);
 	q->q.stops++;
 	q->full = 1;
@@ -2199,13 +2492,18 @@ static void service_ofldq(struct sge_uld_txq *q)
 		 */
 		spin_unlock(&q->sendq.lock);
 
+<<<<<<< HEAD
 		cxgb4_reclaim_completed_tx(q->adap, &q->q, false);
+=======
+		reclaim_completed_tx(q->adap, &q->q, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		flits = skb->priority;                /* previously saved */
 		ndesc = flits_to_desc(flits);
 		credits = txq_avail(&q->q) - ndesc;
 		BUG_ON(credits < 0);
 		if (unlikely(credits < TXQ_STOP_THRES))
+<<<<<<< HEAD
 			ofldtxq_stop(q, (struct fw_wr_hdr *)skb->data);
 
 		pos = (u64 *)&q->q.desc[q->q.pidx];
@@ -2213,6 +2511,15 @@ static void service_ofldq(struct sge_uld_txq *q)
 			cxgb4_inline_tx_skb(skb, &q->q, pos);
 		else if (cxgb4_map_skb(q->adap->pdev_dev, skb,
 				       (dma_addr_t *)skb->head)) {
+=======
+			ofldtxq_stop(q, skb);
+
+		pos = (u64 *)&q->q.desc[q->q.pidx];
+		if (is_ofld_imm(skb))
+			inline_tx_skb(skb, &q->q, pos);
+		else if (map_skb(q->adap->pdev_dev, skb,
+				 (dma_addr_t *)skb->head)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			txq_stop_maperr(q);
 			spin_lock(&q->sendq.lock);
 			break;
@@ -2243,9 +2550,15 @@ static void service_ofldq(struct sge_uld_txq *q)
 				pos = (void *)txq->desc;
 			}
 
+<<<<<<< HEAD
 			cxgb4_write_sgl(skb, &q->q, (void *)pos,
 					end, hdr_len,
 					(dma_addr_t *)skb->head);
+=======
+			write_sgl(skb, &q->q, (void *)pos,
+				  end, hdr_len,
+				  (dma_addr_t *)skb->head);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_NEED_DMA_MAP_STATE
 			skb->dev = q->adap->port[0];
 			skb->destructor = deferred_unmap_destructor;
@@ -2259,7 +2572,11 @@ static void service_ofldq(struct sge_uld_txq *q)
 		txq_advance(&q->q, ndesc);
 		written += ndesc;
 		if (unlikely(written > 32)) {
+<<<<<<< HEAD
 			cxgb4_ring_tx_db(q->adap, &q->q, written);
+=======
+			ring_tx_db(q->adap, &q->q, written);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			written = 0;
 		}
 
@@ -2274,7 +2591,11 @@ static void service_ofldq(struct sge_uld_txq *q)
 			kfree_skb(skb);
 	}
 	if (likely(written))
+<<<<<<< HEAD
 		cxgb4_ring_tx_db(q->adap, &q->q, written);
+=======
+		ring_tx_db(q->adap, &q->q, written);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*Indicate that no thread is processing the Pending Send Queue
 	 * currently.
@@ -2407,6 +2728,7 @@ int cxgb4_ofld_send(struct net_device *dev, struct sk_buff *skb)
 }
 EXPORT_SYMBOL(cxgb4_ofld_send);
 
+<<<<<<< HEAD
 static void *inline_tx_header(const void *src,
 			      const struct sge_txq *q,
 			      void *pos, int length)
@@ -2504,6 +2826,8 @@ int cxgb4_immdata_send(struct net_device *dev, unsigned int idx,
 }
 EXPORT_SYMBOL(cxgb4_immdata_send);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *	t4_crypto_send - send crypto packet
  *	@adap: the adapter
@@ -2663,7 +2987,11 @@ static void cxgb4_sgetim_to_hwtstamp(struct adapter *adap,
 }
 
 static void do_gro(struct sge_eth_rxq *rxq, const struct pkt_gl *gl,
+<<<<<<< HEAD
 		   const struct cpl_rx_pkt *pkt, unsigned long tnl_hdr_len)
+=======
+		   const struct cpl_rx_pkt *pkt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adapter *adapter = rxq->rspq.adap;
 	struct sge *s = &adapter->sge;
@@ -2679,8 +3007,11 @@ static void do_gro(struct sge_eth_rxq *rxq, const struct pkt_gl *gl,
 	}
 
 	copy_frags(skb, gl, s->pktshift);
+<<<<<<< HEAD
 	if (tnl_hdr_len)
 		skb->csum_level = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb->len = gl->tot_len - s->pktshift;
 	skb->data_len = skb->len;
 	skb->truesize += skb->data_len;
@@ -2742,7 +3073,11 @@ static noinline int t4_systim_to_hwstamp(struct adapter *adapter,
 
 	hwtstamps = skb_hwtstamps(skb);
 	memset(hwtstamps, 0, sizeof(*hwtstamps));
+<<<<<<< HEAD
 	hwtstamps->hwtstamp = ns_to_ktime(be64_to_cpu(*((u64 *)data)));
+=======
+	hwtstamps->hwtstamp = ns_to_ktime(get_unaligned_be64(data));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return RX_PTP_PKT_SUC;
 }
@@ -2812,7 +3147,11 @@ int t4_ethrx_handler(struct sge_rspq *q, const __be64 *rsp,
 	struct sge *s = &q->adap->sge;
 	int cpl_trace_pkt = is_t4(q->adap->params.chip) ?
 			    CPL_TRACE_PKT : CPL_TRACE_PKT_T5;
+<<<<<<< HEAD
 	u16 err_vec, tnl_hdr_len = 0;
+=======
+	u16 err_vec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct port_info *pi;
 	int ret = 0;
 
@@ -2821,6 +3160,7 @@ int t4_ethrx_handler(struct sge_rspq *q, const __be64 *rsp,
 
 	pkt = (const struct cpl_rx_pkt *)rsp;
 	/* Compressed error vector is enabled for T6 only */
+<<<<<<< HEAD
 	if (q->adap->params.tp.rx_pkt_encap) {
 		err_vec = T6_COMPR_RXERR_VEC_G(be16_to_cpu(pkt->err_vec));
 		tnl_hdr_len = T6_RX_TNLHDR_LEN_G(ntohs(pkt->err_vec));
@@ -2834,6 +3174,18 @@ int t4_ethrx_handler(struct sge_rspq *q, const __be64 *rsp,
 	     tnl_hdr_len) &&
 	    (q->netdev->features & NETIF_F_GRO) && csum_ok && !pkt->ip_frag) {
 		do_gro(rxq, si, pkt, tnl_hdr_len);
+=======
+	if (q->adap->params.tp.rx_pkt_encap)
+		err_vec = T6_COMPR_RXERR_VEC_G(be16_to_cpu(pkt->err_vec));
+	else
+		err_vec = be16_to_cpu(pkt->err_vec);
+
+	csum_ok = pkt->csum_calc && !err_vec &&
+		  (q->netdev->features & NETIF_F_RXCSUM);
+	if ((pkt->l2info & htonl(RXF_TCP_F)) &&
+	    (q->netdev->features & NETIF_F_GRO) && csum_ok && !pkt->ip_frag) {
+		do_gro(rxq, si, pkt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -2880,6 +3232,7 @@ int t4_ethrx_handler(struct sge_rspq *q, const __be64 *rsp,
 		} else if (pkt->l2info & htonl(RXF_IP_F)) {
 			__sum16 c = (__force __sum16)pkt->csum;
 			skb->csum = csum_unfold(c);
+<<<<<<< HEAD
 
 			if (tnl_hdr_len) {
 				skb->ip_summed = CHECKSUM_UNNECESSARY;
@@ -2887,6 +3240,9 @@ int t4_ethrx_handler(struct sge_rspq *q, const __be64 *rsp,
 			} else {
 				skb->ip_summed = CHECKSUM_COMPLETE;
 			}
+=======
+			skb->ip_summed = CHECKSUM_COMPLETE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rxq->stats.rx_cso++;
 		}
 	} else {
@@ -3246,11 +3602,19 @@ irq_handler_t t4_intr_handler(struct adapter *adap)
 	return t4_intr_intx;
 }
 
+<<<<<<< HEAD
 static void sge_rx_timer_cb(struct timer_list *t)
 {
 	unsigned long m;
 	unsigned int i;
 	struct adapter *adap = from_timer(adap, t, sge.rx_timer);
+=======
+static void sge_rx_timer_cb(unsigned long data)
+{
+	unsigned long m;
+	unsigned int i;
+	struct adapter *adap = (struct adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sge *s = &adap->sge;
 
 	for (i = 0; i < BITS_TO_LONGS(s->egr_sz); i++)
@@ -3283,11 +3647,19 @@ done:
 	mod_timer(&s->rx_timer, jiffies + RX_QCHECK_PERIOD);
 }
 
+<<<<<<< HEAD
 static void sge_tx_timer_cb(struct timer_list *t)
 {
 	unsigned long m;
 	unsigned int i, budget;
 	struct adapter *adap = from_timer(adap, t, sge.tx_timer);
+=======
+static void sge_tx_timer_cb(unsigned long data)
+{
+	unsigned long m;
+	unsigned int i, budget;
+	struct adapter *adap = (struct adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sge *s = &adap->sge;
 
 	for (i = 0; i < BITS_TO_LONGS(s->egr_sz); i++)
@@ -3412,9 +3784,13 @@ int t4_sge_alloc_rxq(struct adapter *adap, struct sge_rspq *iq, bool fwevtq,
 	c.iqsize = htons(iq->size);
 	c.iqaddr = cpu_to_be64(iq->phys_addr);
 	if (cong >= 0)
+<<<<<<< HEAD
 		c.iqns_to_fl0congen = htonl(FW_IQ_CMD_IQFLINTCONGEN_F |
 				FW_IQ_CMD_IQTYPE_V(cong ? FW_IQ_IQTYPE_NIC
 							:  FW_IQ_IQTYPE_OFLD));
+=======
+		c.iqns_to_fl0congen = htonl(FW_IQ_CMD_IQFLINTCONGEN_F);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fl) {
 		enum chip_type chip = CHELSIO_CHIP_VERSION(adap->params.chip);
@@ -4123,8 +4499,13 @@ int t4_sge_init(struct adapter *adap)
 	/* Set up timers used for recuring callbacks to process RX and TX
 	 * administrative tasks.
 	 */
+<<<<<<< HEAD
 	timer_setup(&s->rx_timer, sge_rx_timer_cb, 0);
 	timer_setup(&s->tx_timer, sge_tx_timer_cb, 0);
+=======
+	setup_timer(&s->rx_timer, sge_rx_timer_cb, (unsigned long)adap);
+	setup_timer(&s->tx_timer, sge_tx_timer_cb, (unsigned long)adap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&s->intrq_lock);
 

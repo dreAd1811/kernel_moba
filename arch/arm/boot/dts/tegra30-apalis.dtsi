@@ -10,10 +10,13 @@
 	model = "Toradex Apalis T30";
 	compatible = "toradex,apalis_t30", "nvidia,tegra30";
 
+<<<<<<< HEAD
 	memory@80000000 {
 		reg = <0x80000000 0x40000000>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pcie@3000 {
 		avdd-pexa-supply = <&vdd2_reg>;
 		vdd-pexa-supply = <&vdd2_reg>;
@@ -122,7 +125,10 @@
 				nvidia,function = "spi4";
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
+<<<<<<< HEAD
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 			/* CAN_INT2 */
 			spi2_cs2_n_pw3 {
@@ -171,14 +177,23 @@
 
 			/* Apalis MMC1 */
 			sdmmc3_clk_pa6 {
+<<<<<<< HEAD
 				nvidia,pins = "sdmmc3_clk_pa6",
 					      "sdmmc3_cmd_pa7";
+=======
+				nvidia,pins = "sdmmc3_clk_pa6";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,function = "sdmmc3";
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 			};
 			sdmmc3_dat0_pb7 {
+<<<<<<< HEAD
 				nvidia,pins = "sdmmc3_dat0_pb7",
+=======
+				nvidia,pins = "sdmmc3_cmd_pa7",
+					      "sdmmc3_dat0_pb7",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      "sdmmc3_dat1_pb6",
 					      "sdmmc3_dat2_pb5",
 					      "sdmmc3_dat3_pb4",
@@ -442,7 +457,11 @@
 	};
 
 	hdmiddc: i2c@7000c700 {
+<<<<<<< HEAD
 		clock-frequency = <10000>;
+=======
+		clock-frequency = <100000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/*
@@ -590,6 +609,11 @@
 		/* STMPE811 touch screen controller */
 		stmpe811@41 {
 			compatible = "st,stmpe811";
+<<<<<<< HEAD
+=======
+			#address-cells = <1>;
+			#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x41>;
 			interrupts = <TEGRA_GPIO(V, 0) IRQ_TYPE_LEVEL_LOW>;
 			interrupt-parent = <&gpio>;
@@ -598,8 +622,14 @@
 			blocks = <0x5>;
 			irq-trigger = <0x1>;
 
+<<<<<<< HEAD
 			stmpe_touchscreen {
 				compatible = "st,stmpe-ts";
+=======
+			stmpe_touchscreen@0 {
+				compatible = "st,stmpe-ts";
+				reg = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* 3.25 MHz ADC clock speed */
 				st,adc-freq = <1>;
 				/* 8 sample average control */
@@ -659,7 +689,11 @@
 			reg = <1>;
 			clocks = <&clk16m>;
 			interrupt-parent = <&gpio>;
+<<<<<<< HEAD
 			interrupts = <TEGRA_GPIO(W, 3) IRQ_TYPE_EDGE_RISING>;
+=======
+			interrupts = <TEGRA_GPIO(W, 3) GPIO_ACTIVE_LOW>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spi-max-frequency = <10000000>;
 		};
 	};
@@ -674,7 +708,11 @@
 			reg = <0>;
 			clocks = <&clk16m>;
 			interrupt-parent = <&gpio>;
+<<<<<<< HEAD
 			interrupts = <TEGRA_GPIO(W, 2) IRQ_TYPE_EDGE_RISING>;
+=======
+			interrupts = <TEGRA_GPIO(W, 2) GPIO_ACTIVE_LOW>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spi-max-frequency = <10000000>;
 		};
 	};

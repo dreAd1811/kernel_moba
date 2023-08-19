@@ -25,6 +25,7 @@
 		.align			32
 __handle_preemption:
 		call			SCHEDULE_USER
+<<<<<<< HEAD
 661:		 wrpr			%g0, RTRAP_PSTATE, %pstate
 		/* If userspace is using ADI, it could potentially pass
 		 * a pointer with version tag embedded in it. To maintain
@@ -35,12 +36,16 @@ __handle_preemption:
 		.word	661b
 		 wrpr			%g0, RTRAP_PSTATE|PSTATE_MCDE, %pstate
 		.previous
+=======
+		 wrpr			%g0, RTRAP_PSTATE, %pstate
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ba,pt			%xcc, __handle_preemption_continue
 		 wrpr			%g0, RTRAP_PSTATE_IRQOFF, %pstate
 
 __handle_user_windows:
 		add			%sp, PTREGS_OFF, %o0
 		call			fault_in_user_windows
+<<<<<<< HEAD
 661:		 wrpr			%g0, RTRAP_PSTATE, %pstate
 		/* If userspace is using ADI, it could potentially pass
 		 * a pointer with version tag embedded in it. To maintain
@@ -51,6 +56,9 @@ __handle_user_windows:
 		.word	661b
 		 wrpr			%g0, RTRAP_PSTATE|PSTATE_MCDE, %pstate
 		.previous
+=======
+		 wrpr			%g0, RTRAP_PSTATE, %pstate
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ba,pt			%xcc, __handle_preemption_continue
 		 wrpr			%g0, RTRAP_PSTATE_IRQOFF, %pstate
 
@@ -67,6 +75,7 @@ __handle_signal:
 		add			%sp, PTREGS_OFF, %o0
 		mov			%l0, %o2
 		call			do_notify_resume
+<<<<<<< HEAD
 661:		 wrpr			%g0, RTRAP_PSTATE, %pstate
 		/* If userspace is using ADI, it could potentially pass
 		 * a pointer with version tag embedded in it. To maintain
@@ -77,6 +86,9 @@ __handle_signal:
 		.word	661b
 		 wrpr			%g0, RTRAP_PSTATE|PSTATE_MCDE, %pstate
 		.previous
+=======
+		 wrpr			%g0, RTRAP_PSTATE, %pstate
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wrpr			%g0, RTRAP_PSTATE_IRQOFF, %pstate
 
 		/* Signal delivery can modify pt_regs tstate, so we must
@@ -85,9 +97,14 @@ __handle_signal:
 		ldx			[%sp + PTREGS_OFF + PT_V9_TSTATE], %l1
 		sethi			%hi(0xf << 20), %l4
 		and			%l1, %l4, %l4
+<<<<<<< HEAD
 		andn			%l1, %l4, %l1
 		ba,pt			%xcc, __handle_preemption_continue
 		 srl			%l4, 20, %l4
+=======
+		ba,pt			%xcc, __handle_preemption_continue
+		 andn			%l1, %l4, %l1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* When returning from a NMI (%pil==15) interrupt we want to
 		 * avoid running softirqs, doing IRQ tracing, preempting, etc.

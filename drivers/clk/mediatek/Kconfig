@@ -1,4 +1,5 @@
 #
+<<<<<<< HEAD
 # MediaTek Clock Drivers
 #
 menu "Clock driver for MediaTek SoC"
@@ -12,10 +13,22 @@ config COMMON_CLK_MEDIATEK
 
 config COMMON_CLK_MT2701
 	bool "Clock driver for MediaTek MT2701"
+=======
+# MediaTek SoC drivers
+#
+config COMMON_CLK_MEDIATEK
+	bool
+	---help---
+	  Mediatek SoCs' clock support.
+
+config COMMON_CLK_MT2701
+	bool "Clock driver for Mediatek MT2701"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on (ARCH_MEDIATEK && ARM) || COMPILE_TEST
 	select COMMON_CLK_MEDIATEK
 	default ARCH_MEDIATEK && ARM
 	---help---
+<<<<<<< HEAD
 	  This driver supports MediaTek MT2701 basic clocks.
 
 config COMMON_CLK_MT2701_MMSYS
@@ -118,10 +131,53 @@ config COMMON_CLK_MT2712_VENCSYS
 
 config COMMON_CLK_MT6797
        bool "Clock driver for MediaTek MT6797"
+=======
+	  This driver supports Mediatek MT2701 basic clocks.
+
+config COMMON_CLK_MT2701_MMSYS
+	bool "Clock driver for Mediatek MT2701 mmsys"
+	depends on COMMON_CLK_MT2701
+	---help---
+	  This driver supports Mediatek MT2701 mmsys clocks.
+
+config COMMON_CLK_MT2701_IMGSYS
+	bool "Clock driver for Mediatek MT2701 imgsys"
+	depends on COMMON_CLK_MT2701
+	---help---
+	  This driver supports Mediatek MT2701 imgsys clocks.
+
+config COMMON_CLK_MT2701_VDECSYS
+	bool "Clock driver for Mediatek MT2701 vdecsys"
+	depends on COMMON_CLK_MT2701
+	---help---
+	  This driver supports Mediatek MT2701 vdecsys clocks.
+
+config COMMON_CLK_MT2701_HIFSYS
+	bool "Clock driver for Mediatek MT2701 hifsys"
+	depends on COMMON_CLK_MT2701
+	---help---
+	  This driver supports Mediatek MT2701 hifsys clocks.
+
+config COMMON_CLK_MT2701_ETHSYS
+	bool "Clock driver for Mediatek MT2701 ethsys"
+	depends on COMMON_CLK_MT2701
+	---help---
+	  This driver supports Mediatek MT2701 ethsys clocks.
+
+config COMMON_CLK_MT2701_BDPSYS
+	bool "Clock driver for Mediatek MT2701 bdpsys"
+	depends on COMMON_CLK_MT2701
+	---help---
+	  This driver supports Mediatek MT2701 bdpsys clocks.
+
+config COMMON_CLK_MT6797
+       bool "Clock driver for Mediatek MT6797"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        depends on (ARCH_MEDIATEK && ARM64) || COMPILE_TEST
        select COMMON_CLK_MEDIATEK
        default ARCH_MEDIATEK && ARM64
        ---help---
+<<<<<<< HEAD
          This driver supports MediaTek MT6797 basic clocks.
 
 config COMMON_CLK_MT6797_MMSYS
@@ -180,17 +236,58 @@ config COMMON_CLK_MT7622_AUDSYS
 
 config COMMON_CLK_MT8135
 	bool "Clock driver for MediaTek MT8135"
+=======
+         This driver supports Mediatek MT6797 basic clocks.
+
+config COMMON_CLK_MT6797_MMSYS
+       bool "Clock driver for Mediatek MT6797 mmsys"
+       depends on COMMON_CLK_MT6797
+       ---help---
+         This driver supports Mediatek MT6797 mmsys clocks.
+
+config COMMON_CLK_MT6797_IMGSYS
+       bool "Clock driver for Mediatek MT6797 imgsys"
+       depends on COMMON_CLK_MT6797
+       ---help---
+         This driver supports Mediatek MT6797 imgsys clocks.
+
+config COMMON_CLK_MT6797_VDECSYS
+       bool "Clock driver for Mediatek MT6797 vdecsys"
+       depends on COMMON_CLK_MT6797
+       ---help---
+         This driver supports Mediatek MT6797 vdecsys clocks.
+
+config COMMON_CLK_MT6797_VENCSYS
+       bool "Clock driver for Mediatek MT6797 vencsys"
+       depends on COMMON_CLK_MT6797
+       ---help---
+         This driver supports Mediatek MT6797 vencsys clocks.
+
+config COMMON_CLK_MT8135
+	bool "Clock driver for Mediatek MT8135"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on (ARCH_MEDIATEK && ARM) || COMPILE_TEST
 	select COMMON_CLK_MEDIATEK
 	default ARCH_MEDIATEK && ARM
 	---help---
+<<<<<<< HEAD
 	  This driver supports MediaTek MT8135 clocks.
 
 config COMMON_CLK_MT8173
 	bool "Clock driver for MediaTek MT8173"
+=======
+	  This driver supports Mediatek MT8135 clocks.
+
+config COMMON_CLK_MT8173
+	bool "Clock driver for Mediatek MT8173"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARCH_MEDIATEK || COMPILE_TEST
 	select COMMON_CLK_MEDIATEK
 	default ARCH_MEDIATEK
 	---help---
+<<<<<<< HEAD
 	  This driver supports MediaTek MT8173 clocks.
 endmenu
+=======
+	  This driver supports Mediatek MT8173 clocks.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

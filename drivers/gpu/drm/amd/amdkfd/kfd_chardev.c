@@ -24,7 +24,10 @@
 #include <linux/export.h>
 #include <linux/err.h>
 #include <linux/fs.h>
+<<<<<<< HEAD
 #include <linux/file.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/sched.h>
 #include <linux/slab.h>
 #include <linux/uaccess.h>
@@ -118,6 +121,7 @@ static int kfd_open(struct inode *inode, struct file *filep)
 		return -EPERM;
 	}
 
+<<<<<<< HEAD
 	process = kfd_create_process(filep);
 	if (IS_ERR(process))
 		return PTR_ERR(process);
@@ -125,6 +129,12 @@ static int kfd_open(struct inode *inode, struct file *filep)
 	if (kfd_is_locked())
 		return -EAGAIN;
 
+=======
+	process = kfd_create_process(current);
+	if (IS_ERR(process))
+		return PTR_ERR(process);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(kfd_device, "process %d opened, compat mode (32 bit) - %d\n",
 		process->pasid, process->is_32bit_user_mode);
 
@@ -210,7 +220,10 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
 	q_properties->ctx_save_restore_area_address =
 			args->ctx_save_restore_address;
 	q_properties->ctx_save_restore_area_size = args->ctx_save_restore_size;
+<<<<<<< HEAD
 	q_properties->ctl_stack_size = args->ctl_stack_size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (args->queue_type == KFD_IOC_QUEUE_TYPE_COMPUTE ||
 		args->queue_type == KFD_IOC_QUEUE_TYPE_COMPUTE_AQL)
 		q_properties->type = KFD_QUEUE_TYPE_COMPUTE;
@@ -236,7 +249,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
 	pr_debug("Queue Size: 0x%llX, %u\n",
 			q_properties->queue_size, args->ring_size);
 
+<<<<<<< HEAD
 	pr_debug("Queue r/w Pointers: %px, %px\n",
+=======
+	pr_debug("Queue r/w Pointers: %p, %p\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			q_properties->read_ptr,
 			q_properties->write_ptr);
 
@@ -287,7 +304,12 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
 			p->pasid,
 			dev->id);
 
+<<<<<<< HEAD
 	err = pqm_create_queue(&p->pqm, dev, filep, &q_properties, &queue_id);
+=======
+	err = pqm_create_queue(&p->pqm, dev, filep, &q_properties,
+				0, q_properties.type, &queue_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err != 0)
 		goto err_create_queue;
 
@@ -295,6 +317,7 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
 
 
 	/* Return gpu_id as doorbell offset for mmap usage */
+<<<<<<< HEAD
 	args->doorbell_offset = KFD_MMAP_TYPE_DOORBELL;
 	args->doorbell_offset |= KFD_MMAP_GPU_ID(args->gpu_id);
 	args->doorbell_offset <<= PAGE_SHIFT;
@@ -305,6 +328,10 @@ static int kfd_ioctl_create_queue(struct file *filep, struct kfd_process *p,
 		 * doorbell aperture to user mode.
 		 */
 		args->doorbell_offset |= q_properties.doorbell_off;
+=======
+	args->doorbell_offset = (KFD_MMAP_DOORBELL_MASK | args->gpu_id);
+	args->doorbell_offset <<= PAGE_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&p->mutex);
 
@@ -392,6 +419,7 @@ static int kfd_ioctl_update_queue(struct file *filp, struct kfd_process *p,
 	return retval;
 }
 
+<<<<<<< HEAD
 static int kfd_ioctl_set_cu_mask(struct file *filp, struct kfd_process *p,
 					void *data)
 {
@@ -447,6 +475,8 @@ static int kfd_ioctl_set_cu_mask(struct file *filp, struct kfd_process *p,
 	return retval;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kfd_ioctl_set_memory_policy(struct file *filep,
 					struct kfd_process *p, void *data)
 {
@@ -499,6 +529,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static int kfd_ioctl_set_trap_handler(struct file *filep,
 					struct kfd_process *p, void *data)
 {
@@ -531,6 +562,8 @@ out:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kfd_ioctl_dbg_register(struct file *filep,
 				struct kfd_process *p, void *data)
 {
@@ -550,8 +583,13 @@ static int kfd_ioctl_dbg_register(struct file *filep,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&p->mutex);
 	mutex_lock(kfd_get_dbgmgr_mutex());
+=======
+	mutex_lock(kfd_get_dbgmgr_mutex());
+	mutex_lock(&p->mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * make sure that we have pdd, if this the first queue created for
@@ -579,8 +617,13 @@ static int kfd_ioctl_dbg_register(struct file *filep,
 	}
 
 out:
+<<<<<<< HEAD
 	mutex_unlock(kfd_get_dbgmgr_mutex());
 	mutex_unlock(&p->mutex);
+=======
+	mutex_unlock(&p->mutex);
+	mutex_unlock(kfd_get_dbgmgr_mutex());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return status;
 }
@@ -593,7 +636,11 @@ static int kfd_ioctl_dbg_unregister(struct file *filep,
 	long status;
 
 	dev = kfd_device_by_id(args->gpu_id);
+<<<<<<< HEAD
 	if (!dev || !dev->dbgmgr)
+=======
+	if (!dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (dev->device_info->asic_family == CHIP_CARRIZO) {
@@ -812,6 +859,10 @@ static int kfd_ioctl_get_clock_counters(struct file *filep,
 {
 	struct kfd_ioctl_get_clock_counters_args *args = data;
 	struct kfd_dev *dev;
+<<<<<<< HEAD
+=======
+	struct timespec64 time;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = kfd_device_by_id(args->gpu_id);
 	if (dev)
@@ -823,8 +874,16 @@ static int kfd_ioctl_get_clock_counters(struct file *filep,
 		args->gpu_clock_counter = 0;
 
 	/* No access to rdtsc. Using raw monotonic time */
+<<<<<<< HEAD
 	args->cpu_clock_counter = ktime_get_raw_ns();
 	args->system_clock_counter = ktime_get_boot_ns();
+=======
+	getrawmonotonic64(&time);
+	args->cpu_clock_counter = (uint64_t)timespec64_to_ns(&time);
+
+	get_monotonic_boottime64(&time);
+	args->system_clock_counter = (uint64_t)timespec64_to_ns(&time);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Since the counter is in nano-seconds we use 1GHz frequency */
 	args->system_clock_freq = 1000000000;
@@ -889,6 +948,7 @@ static int kfd_ioctl_get_process_apertures(struct file *filp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int kfd_ioctl_get_process_apertures_new(struct file *filp,
 				struct kfd_process *p, void *data)
 {
@@ -980,12 +1040,15 @@ out_unlock:
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kfd_ioctl_create_event(struct file *filp, struct kfd_process *p,
 					void *data)
 {
 	struct kfd_ioctl_create_event_args *args = data;
 	int err;
 
+<<<<<<< HEAD
 	/* For dGPUs the event page is allocated in user mode. The
 	 * handle is passed to KFD with the first call to this IOCTL
 	 * through the event_page_offset field.
@@ -1038,6 +1101,8 @@ static int kfd_ioctl_create_event(struct file *filp, struct kfd_process *p,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = kfd_event_create(filp, p, args->event_type,
 				args->auto_reset != 0, args->node_id,
 				&args->event_id, &args->event_trigger_data,
@@ -1045,10 +1110,13 @@ static int kfd_ioctl_create_event(struct file *filp, struct kfd_process *p,
 				&args->event_slot_index);
 
 	return err;
+<<<<<<< HEAD
 
 out_unlock:
 	mutex_unlock(&p->mutex);
 	return err;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int kfd_ioctl_destroy_event(struct file *filp, struct kfd_process *p,
@@ -1079,12 +1147,22 @@ static int kfd_ioctl_wait_events(struct file *filp, struct kfd_process *p,
 				void *data)
 {
 	struct kfd_ioctl_wait_events_args *args = data;
+<<<<<<< HEAD
+=======
+	enum kfd_event_wait_result wait_result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = kfd_wait_on_events(p, args->num_events,
 			(void __user *)args->events_ptr,
 			(args->wait_for_all != 0),
+<<<<<<< HEAD
 			args->timeout, &args->wait_result);
+=======
+			args->timeout, &wait_result);
+
+	args->wait_result = wait_result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -1112,8 +1190,12 @@ static int kfd_ioctl_set_scratch_backing_va(struct file *filep,
 
 	mutex_unlock(&p->mutex);
 
+<<<<<<< HEAD
 	if (dev->dqm->sched_policy == KFD_SCHED_POLICY_NO_HWS &&
 	    pdd->qpd.vmid != 0)
+=======
+	if (sched_policy == KFD_SCHED_POLICY_NO_HWS && pdd->qpd.vmid != 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->kfd2kgd->set_scratch_backing_va(
 			dev->kgd, args->va_addr, pdd->qpd.vmid);
 
@@ -1166,6 +1248,7 @@ static int kfd_ioctl_get_tile_config(struct file *filep,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int kfd_ioctl_acquire_vm(struct file *filep, struct kfd_process *p,
 				void *data)
 {
@@ -1531,6 +1614,8 @@ copy_from_user_failed:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AMDKFD_IOCTL_DEF(ioctl, _func, _flags) \
 	[_IOC_NR(ioctl)] = {.cmd = ioctl, .func = _func, .flags = _flags, \
 			    .cmd_drv = 0, .name = #ioctl}
@@ -1589,6 +1674,7 @@ static const struct amdkfd_ioctl_desc amdkfd_ioctls[] = {
 			kfd_ioctl_set_scratch_backing_va, 0),
 
 	AMDKFD_IOCTL_DEF(AMDKFD_IOC_GET_TILE_CONFIG,
+<<<<<<< HEAD
 			kfd_ioctl_get_tile_config, 0),
 
 	AMDKFD_IOCTL_DEF(AMDKFD_IOC_SET_TRAP_HANDLER,
@@ -1615,6 +1701,9 @@ static const struct amdkfd_ioctl_desc amdkfd_ioctls[] = {
 	AMDKFD_IOCTL_DEF(AMDKFD_IOC_SET_CU_MASK,
 			kfd_ioctl_set_cu_mask, 0),
 
+=======
+			kfd_ioctl_get_tile_config, 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define AMDKFD_CORE_IOCTL_COUNT	ARRAY_SIZE(amdkfd_ioctls)
@@ -1710,14 +1799,18 @@ err_i1:
 static int kfd_mmap(struct file *filp, struct vm_area_struct *vma)
 {
 	struct kfd_process *process;
+<<<<<<< HEAD
 	struct kfd_dev *dev = NULL;
 	unsigned long vm_pgoff;
 	unsigned int gpu_id;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	process = kfd_get_process(current);
 	if (IS_ERR(process))
 		return PTR_ERR(process);
 
+<<<<<<< HEAD
 	vm_pgoff = vma->vm_pgoff;
 	vma->vm_pgoff = KFD_MMAP_OFFSET_VALUE_GET(vm_pgoff);
 	gpu_id = KFD_MMAP_GPU_ID_GET(vm_pgoff);
@@ -1737,6 +1830,16 @@ static int kfd_mmap(struct file *filp, struct vm_area_struct *vma)
 		if (!dev)
 			return -ENODEV;
 		return kfd_reserved_mem_mmap(dev, process, vma);
+=======
+	if ((vma->vm_pgoff & KFD_MMAP_DOORBELL_MASK) ==
+			KFD_MMAP_DOORBELL_MASK) {
+		vma->vm_pgoff = vma->vm_pgoff ^ KFD_MMAP_DOORBELL_MASK;
+		return kfd_doorbell_mmap(process, vma);
+	} else if ((vma->vm_pgoff & KFD_MMAP_EVENTS_MASK) ==
+			KFD_MMAP_EVENTS_MASK) {
+		vma->vm_pgoff = vma->vm_pgoff ^ KFD_MMAP_EVENTS_MASK;
+		return kfd_event_mmap(process, vma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return -EFAULT;

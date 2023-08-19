@@ -9,8 +9,13 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
+<<<<<<< HEAD
  */
 
+=======
+ *
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -25,13 +30,17 @@
 static int panic_heartbeats;
 
 struct heartbeat_trig_data {
+<<<<<<< HEAD
 	struct led_classdev *led_cdev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int phase;
 	unsigned int period;
 	struct timer_list timer;
 	unsigned int invert;
 };
 
+<<<<<<< HEAD
 static void led_heartbeat_function(struct timer_list *t)
 {
 	struct heartbeat_trig_data *heartbeat_data =
@@ -42,6 +51,15 @@ static void led_heartbeat_function(struct timer_list *t)
 
 	led_cdev = heartbeat_data->led_cdev;
 
+=======
+static void led_heartbeat_function(unsigned long data)
+{
+	struct led_classdev *led_cdev = (struct led_classdev *) data;
+	struct heartbeat_trig_data *heartbeat_data = led_cdev->trigger_data;
+	unsigned long brightness = LED_OFF;
+	unsigned long delay = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(panic_heartbeats)) {
 		led_set_brightness_nosleep(led_cdev, LED_OFF);
 		return;
@@ -96,8 +114,13 @@ static void led_heartbeat_function(struct timer_list *t)
 static ssize_t led_invert_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	struct heartbeat_trig_data *heartbeat_data =
 		led_trigger_get_drvdata(dev);
+=======
+	struct led_classdev *led_cdev = dev_get_drvdata(dev);
+	struct heartbeat_trig_data *heartbeat_data = led_cdev->trigger_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return sprintf(buf, "%u\n", heartbeat_data->invert);
 }
@@ -105,8 +128,13 @@ static ssize_t led_invert_show(struct device *dev,
 static ssize_t led_invert_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t size)
 {
+<<<<<<< HEAD
 	struct heartbeat_trig_data *heartbeat_data =
 		led_trigger_get_drvdata(dev);
+=======
+	struct led_classdev *led_cdev = dev_get_drvdata(dev);
+	struct heartbeat_trig_data *heartbeat_data = led_cdev->trigger_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long state;
 	int ret;
 
@@ -121,6 +149,7 @@ static ssize_t led_invert_store(struct device *dev,
 
 static DEVICE_ATTR(invert, 0644, led_invert_show, led_invert_store);
 
+<<<<<<< HEAD
 static struct attribute *heartbeat_trig_attrs[] = {
 	&dev_attr_invert.attr,
 	NULL
@@ -146,23 +175,64 @@ static int heartbeat_trig_activate(struct led_classdev *led_cdev)
 	set_bit(LED_BLINK_SW, &led_cdev->work_flags);
 
 	return 0;
+=======
+static void heartbeat_trig_activate(struct led_classdev *led_cdev)
+{
+	struct heartbeat_trig_data *heartbeat_data;
+	int rc;
+
+	heartbeat_data = kzalloc(sizeof(*heartbeat_data), GFP_KERNEL);
+	if (!heartbeat_data)
+		return;
+
+	led_cdev->trigger_data = heartbeat_data;
+	rc = device_create_file(led_cdev->dev, &dev_attr_invert);
+	if (rc) {
+		kfree(led_cdev->trigger_data);
+		return;
+	}
+
+	setup_timer(&heartbeat_data->timer,
+		    led_heartbeat_function, (unsigned long) led_cdev);
+	heartbeat_data->phase = 0;
+	if (!led_cdev->blink_brightness)
+		led_cdev->blink_brightness = led_cdev->max_brightness;
+	led_heartbeat_function(heartbeat_data->timer.data);
+	set_bit(LED_BLINK_SW, &led_cdev->work_flags);
+	led_cdev->activated = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void heartbeat_trig_deactivate(struct led_classdev *led_cdev)
 {
+<<<<<<< HEAD
 	struct heartbeat_trig_data *heartbeat_data =
 		led_get_trigger_data(led_cdev);
 
 	del_timer_sync(&heartbeat_data->timer);
 	kfree(heartbeat_data);
 	clear_bit(LED_BLINK_SW, &led_cdev->work_flags);
+=======
+	struct heartbeat_trig_data *heartbeat_data = led_cdev->trigger_data;
+
+	if (led_cdev->activated) {
+		del_timer_sync(&heartbeat_data->timer);
+		device_remove_file(led_cdev->dev, &dev_attr_invert);
+		kfree(heartbeat_data);
+		clear_bit(LED_BLINK_SW, &led_cdev->work_flags);
+		led_cdev->activated = false;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct led_trigger heartbeat_led_trigger = {
 	.name     = "heartbeat",
 	.activate = heartbeat_trig_activate,
 	.deactivate = heartbeat_trig_deactivate,
+<<<<<<< HEAD
 	.groups = heartbeat_trig_groups,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int heartbeat_reboot_notifier(struct notifier_block *nb,
@@ -212,4 +282,8 @@ module_exit(heartbeat_trig_exit);
 
 MODULE_AUTHOR("Atsushi Nemoto <anemo@mba.ocn.ne.jp>");
 MODULE_DESCRIPTION("Heartbeat LED trigger");
+<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
+=======
+MODULE_LICENSE("GPL");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

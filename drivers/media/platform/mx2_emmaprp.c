@@ -250,6 +250,23 @@ static void emmaprp_job_abort(void *priv)
 	v4l2_m2m_job_finish(pcdev->m2m_dev, ctx->m2m_ctx);
 }
 
+<<<<<<< HEAD
+=======
+static void emmaprp_lock(void *priv)
+{
+	struct emmaprp_ctx *ctx = priv;
+	struct emmaprp_dev *pcdev = ctx->dev;
+	mutex_lock(&pcdev->dev_mutex);
+}
+
+static void emmaprp_unlock(void *priv)
+{
+	struct emmaprp_ctx *ctx = priv;
+	struct emmaprp_dev *pcdev = ctx->dev;
+	mutex_unlock(&pcdev->dev_mutex);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void emmaprp_dump_regs(struct emmaprp_dev *pcdev)
 {
 	dprintk(pcdev,
@@ -733,8 +750,11 @@ static const struct vb2_ops emmaprp_qops = {
 	.queue_setup	 = emmaprp_queue_setup,
 	.buf_prepare	 = emmaprp_buf_prepare,
 	.buf_queue	 = emmaprp_buf_queue,
+<<<<<<< HEAD
 	.wait_prepare	 = vb2_ops_wait_prepare,
 	.wait_finish	 = vb2_ops_wait_finish,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int queue_init(void *priv, struct vb2_queue *src_vq,
@@ -751,7 +771,10 @@ static int queue_init(void *priv, struct vb2_queue *src_vq,
 	src_vq->mem_ops = &vb2_dma_contig_memops;
 	src_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
 	src_vq->dev = ctx->dev->v4l2_dev.dev;
+<<<<<<< HEAD
 	src_vq->lock = &ctx->dev->dev_mutex;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = vb2_queue_init(src_vq);
 	if (ret)
@@ -765,7 +788,10 @@ static int queue_init(void *priv, struct vb2_queue *src_vq,
 	dst_vq->mem_ops = &vb2_dma_contig_memops;
 	dst_vq->timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_COPY;
 	dst_vq->dev = ctx->dev->v4l2_dev.dev;
+<<<<<<< HEAD
 	dst_vq->lock = &ctx->dev->dev_mutex;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return vb2_queue_init(dst_vq);
 }
@@ -828,12 +854,20 @@ static int emmaprp_release(struct file *file)
 	return 0;
 }
 
+<<<<<<< HEAD
 static __poll_t emmaprp_poll(struct file *file,
+=======
+static unsigned int emmaprp_poll(struct file *file,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct poll_table_struct *wait)
 {
 	struct emmaprp_dev *pcdev = video_drvdata(file);
 	struct emmaprp_ctx *ctx = file->private_data;
+<<<<<<< HEAD
 	__poll_t res;
+=======
+	unsigned int res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&pcdev->dev_mutex);
 	res = v4l2_m2m_poll(file, ctx->m2m_ctx, wait);
@@ -875,6 +909,11 @@ static const struct video_device emmaprp_videodev = {
 static const struct v4l2_m2m_ops m2m_ops = {
 	.device_run	= emmaprp_device_run,
 	.job_abort	= emmaprp_job_abort,
+<<<<<<< HEAD
+=======
+	.lock		= emmaprp_lock,
+	.unlock		= emmaprp_unlock,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int emmaprp_probe(struct platform_device *pdev)
@@ -922,6 +961,10 @@ static int emmaprp_probe(struct platform_device *pdev)
 	vfd->v4l2_dev = &pcdev->v4l2_dev;
 
 	video_set_drvdata(vfd, pcdev);
+<<<<<<< HEAD
+=======
+	snprintf(vfd->name, sizeof(vfd->name), "%s", emmaprp_videodev.name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pcdev->vfd = vfd;
 	v4l2_info(&pcdev->v4l2_dev, EMMAPRP_MODULE_NAME
 		  " Device registered as /dev/video%d\n", vfd->num);

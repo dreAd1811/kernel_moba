@@ -83,6 +83,10 @@ static struct shash_alg alg = {
 		.cra_name		= "sha1",
 		.cra_driver_name	= "sha1-neon",
 		.cra_priority		= 250,
+<<<<<<< HEAD
+=======
+		.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize		= SHA1_BLOCK_SIZE,
 		.cra_module		= THIS_MODULE,
 	}

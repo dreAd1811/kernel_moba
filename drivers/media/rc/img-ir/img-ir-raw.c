@@ -67,9 +67,15 @@ void img_ir_isr_raw(struct img_ir_priv *priv, u32 irq_status)
  * order to be assured of the final space. If there are no edges for a certain
  * time we use this timer to emit a final sample to satisfy them.
  */
+<<<<<<< HEAD
 static void img_ir_echo_timer(struct timer_list *t)
 {
 	struct img_ir_priv *priv = from_timer(priv, t, raw.timer);
+=======
+static void img_ir_echo_timer(unsigned long arg)
+{
+	struct img_ir_priv *priv = (struct img_ir_priv *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&priv->lock);
 
@@ -107,7 +113,11 @@ int img_ir_probe_raw(struct img_ir_priv *priv)
 	int error;
 
 	/* Set up the echo timer */
+<<<<<<< HEAD
 	timer_setup(&raw->timer, img_ir_echo_timer, 0);
+=======
+	setup_timer(&raw->timer, img_ir_echo_timer, (unsigned long)priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate raw decoder */
 	raw->rdev = rdev = rc_allocate_device(RC_DRIVER_IR_RAW);

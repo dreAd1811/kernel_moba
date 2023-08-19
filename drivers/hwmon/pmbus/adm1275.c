@@ -3,7 +3,10 @@
  * and Digital Power Monitor
  *
  * Copyright (c) 2011 Ericsson AB.
+<<<<<<< HEAD
  * Copyright (c) 2018 Guenter Roeck
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +28,11 @@
 #include <linux/bitops.h>
 #include "pmbus.h"
 
+<<<<<<< HEAD
 enum chips { adm1075, adm1272, adm1275, adm1276, adm1278, adm1293, adm1294 };
+=======
+enum chips { adm1075, adm1275, adm1276, adm1278, adm1293, adm1294 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ADM1275_MFR_STATUS_IOUT_WARN2	BIT(0)
 #define ADM1293_MFR_STATUS_VAUX_UV_WARN	BIT(5)
@@ -42,8 +49,11 @@ enum chips { adm1075, adm1272, adm1275, adm1276, adm1278, adm1293, adm1294 };
 #define ADM1075_IRANGE_25		BIT(3)
 #define ADM1075_IRANGE_MASK		(BIT(3) | BIT(4))
 
+<<<<<<< HEAD
 #define ADM1272_IRANGE			BIT(0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ADM1278_TEMP1_EN		BIT(3)
 #define ADM1278_VIN_EN			BIT(2)
 #define ADM1278_VOUT_EN			BIT(1)
@@ -108,6 +118,7 @@ static const struct coefficients adm1075_coefficients[] = {
 	[4] = { 4279, 0, -1 },		/* power, irange50 */
 };
 
+<<<<<<< HEAD
 static const struct coefficients adm1272_coefficients[] = {
 	[0] = { 6770, 0, -2 },		/* voltage, vrange 60V */
 	[1] = { 4062, 0, -2 },		/* voltage, vrange 100V */
@@ -121,6 +132,8 @@ static const struct coefficients adm1272_coefficients[] = {
 
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct coefficients adm1275_coefficients[] = {
 	[0] = { 19199, 0, -2 },		/* voltage, vrange set */
 	[1] = { 6720, 0, -1 },		/* voltage, vrange not set */
@@ -351,7 +364,10 @@ static int adm1275_read_byte_data(struct i2c_client *client, int page, int reg)
 
 static const struct i2c_device_id adm1275_id[] = {
 	{ "adm1075", adm1075 },
+<<<<<<< HEAD
 	{ "adm1272", adm1272 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "adm1275", adm1275 },
 	{ "adm1276", adm1276 },
 	{ "adm1278", adm1278 },
@@ -468,6 +484,7 @@ static int adm1275_probe(struct i2c_client *client,
 			info->func[0] |=
 			  PMBUS_HAVE_VOUT | PMBUS_HAVE_STATUS_VOUT;
 		break;
+<<<<<<< HEAD
 	case adm1272:
 		data->have_vout = true;
 		data->have_pin_max = true;
@@ -516,6 +533,8 @@ static int adm1275_probe(struct i2c_client *client,
 		if (config & ADM1278_VIN_EN)
 			info->func[0] |= PMBUS_HAVE_VIN;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case adm1275:
 		if (device_config & ADM1275_IOUT_WARN2_SELECT)
 			data->have_oc_fault = true;

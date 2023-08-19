@@ -24,9 +24,15 @@
 #include <asm/paca.h>
 #include <asm/hvcall.h>
 #endif
+<<<<<<< HEAD
 #include <asm/synch.h>
 #include <asm/ppc-opcode.h>
 #include <asm/asm-405.h>
+=======
+#include <asm/asm-compat.h>
+#include <asm/synch.h>
+#include <asm/ppc-opcode.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC64
 /* use 0x800000yy when locked, where yy == CPU number */
@@ -56,8 +62,11 @@
 #define vcpu_is_preempted vcpu_is_preempted
 static inline bool vcpu_is_preempted(int cpu)
 {
+<<<<<<< HEAD
 	if (!firmware_has_feature(FW_FEATURE_SPLPAR))
 		return false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return !!(be32_to_cpu(lppaca_of(cpu).yield_count) & 1);
 }
 #endif
@@ -163,7 +172,10 @@ void arch_spin_lock_flags(arch_spinlock_t *lock, unsigned long flags)
 		local_irq_restore(flags_dis);
 	}
 }
+<<<<<<< HEAD
 #define arch_spin_lock_flags arch_spin_lock_flags
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void arch_spin_unlock(arch_spinlock_t *lock)
 {
@@ -184,6 +196,12 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
  * read-locks.
  */
 
+<<<<<<< HEAD
+=======
+#define arch_read_can_lock(rw)		((rw)->lock >= 0)
+#define arch_write_can_lock(rw)	(!(rw)->lock)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PPC64
 #define __DO_SIGN_EXTEND	"extsw	%0,%0\n"
 #define WRLOCK_TOKEN		LOCK_TOKEN	/* it's negative */
@@ -302,6 +320,12 @@ static inline void arch_write_unlock(arch_rwlock_t *rw)
 	rw->lock = 0;
 }
 
+<<<<<<< HEAD
+=======
+#define arch_read_lock_flags(lock, flags) arch_read_lock(lock)
+#define arch_write_lock_flags(lock, flags) arch_write_lock(lock)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define arch_spin_relax(lock)	__spin_yield(lock)
 #define arch_read_relax(lock)	__rw_yield(lock)
 #define arch_write_relax(lock)	__rw_yield(lock)

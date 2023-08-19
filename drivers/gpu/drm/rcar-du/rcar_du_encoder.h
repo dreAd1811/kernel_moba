@@ -19,10 +19,19 @@
 
 struct drm_panel;
 struct rcar_du_device;
+<<<<<<< HEAD
+=======
+struct rcar_du_lvdsenc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct rcar_du_encoder {
 	struct drm_encoder base;
 	enum rcar_du_output output;
+<<<<<<< HEAD
+=======
+	struct rcar_du_connector *connector;
+	struct rcar_du_lvdsenc *lvds;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define to_rcar_encoder(e) \
@@ -30,6 +39,18 @@ struct rcar_du_encoder {
 
 #define rcar_encoder_to_drm_encoder(e)	(&(e)->base)
 
+<<<<<<< HEAD
+=======
+struct rcar_du_connector {
+	struct drm_connector connector;
+	struct rcar_du_encoder *encoder;
+	struct drm_panel *panel;
+};
+
+#define to_rcar_connector(c) \
+	container_of(c, struct rcar_du_connector, connector)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int rcar_du_encoder_init(struct rcar_du_device *rcdu,
 			 enum rcar_du_output output,
 			 struct device_node *enc_node,

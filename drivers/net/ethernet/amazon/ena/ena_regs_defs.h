@@ -60,8 +60,11 @@ enum ena_regs_reset_reason_types {
 	ENA_REGS_RESET_USER_TRIGGER		= 12,
 
 	ENA_REGS_RESET_GENERIC			= 13,
+<<<<<<< HEAD
 
 	ENA_REGS_RESET_MISS_INTERRUPT		= 14,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ena_registers offsets */

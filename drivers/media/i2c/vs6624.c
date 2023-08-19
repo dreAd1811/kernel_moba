@@ -657,6 +657,7 @@ static int vs6624_get_fmt(struct v4l2_subdev *sd,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int vs6624_g_frame_interval(struct v4l2_subdev *sd,
 				   struct v4l2_subdev_frame_interval *ival)
 {
@@ -673,6 +674,33 @@ static int vs6624_s_frame_interval(struct v4l2_subdev *sd,
 	struct vs6624 *sensor = to_vs6624(sd);
 	struct v4l2_fract *tpf = &ival->interval;
 
+=======
+static int vs6624_g_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *parms)
+{
+	struct vs6624 *sensor = to_vs6624(sd);
+	struct v4l2_captureparm *cp = &parms->parm.capture;
+
+	if (parms->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		return -EINVAL;
+
+	memset(cp, 0, sizeof(*cp));
+	cp->capability = V4L2_CAP_TIMEPERFRAME;
+	cp->timeperframe.numerator = sensor->frame_rate.denominator;
+	cp->timeperframe.denominator = sensor->frame_rate.numerator;
+	return 0;
+}
+
+static int vs6624_s_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *parms)
+{
+	struct vs6624 *sensor = to_vs6624(sd);
+	struct v4l2_captureparm *cp = &parms->parm.capture;
+	struct v4l2_fract *tpf = &cp->timeperframe;
+
+	if (parms->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		return -EINVAL;
+	if (cp->extendedmode != 0)
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tpf->numerator == 0 || tpf->denominator == 0
 		|| (tpf->denominator > tpf->numerator * MAX_FRAME_RATE)) {
@@ -729,8 +757,13 @@ static const struct v4l2_subdev_core_ops vs6624_core_ops = {
 };
 
 static const struct v4l2_subdev_video_ops vs6624_video_ops = {
+<<<<<<< HEAD
 	.s_frame_interval = vs6624_s_frame_interval,
 	.g_frame_interval = vs6624_g_frame_interval,
+=======
+	.s_parm = vs6624_s_parm,
+	.g_parm = vs6624_g_parm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.s_stream = vs6624_s_stream,
 };
 
@@ -770,7 +803,11 @@ static int vs6624_probe(struct i2c_client *client,
 		return ret;
 	}
 	/* wait 100ms before any further i2c writes are performed */
+<<<<<<< HEAD
 	msleep(100);
+=======
+	mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sensor = devm_kzalloc(&client->dev, sizeof(*sensor), GFP_KERNEL);
 	if (sensor == NULL)
@@ -782,7 +819,11 @@ static int vs6624_probe(struct i2c_client *client,
 	vs6624_writeregs(sd, vs6624_p1);
 	vs6624_write(sd, VS6624_MICRO_EN, 0x2);
 	vs6624_write(sd, VS6624_DIO_EN, 0x1);
+<<<<<<< HEAD
 	usleep_range(10000, 11000);
+=======
+	mdelay(10);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vs6624_writeregs(sd, vs6624_p2);
 
 	vs6624_writeregs(sd, vs6624_default);

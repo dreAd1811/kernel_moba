@@ -133,10 +133,16 @@ static const struct clk_ops apll_ck_ops = {
 	.get_parent	= &dra7_init_apll_parent,
 };
 
+<<<<<<< HEAD
 static void __init omap_clk_register_apll(void *user,
 					  struct device_node *node)
 {
 	struct clk_hw *hw = user;
+=======
+static void __init omap_clk_register_apll(struct clk_hw *hw,
+					  struct device_node *node)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk_hw_omap *clk_hw = to_clk_hw_omap(hw);
 	struct dpll_data *ad = clk_hw->dpll_data;
 	struct clk *clk;
@@ -206,7 +212,11 @@ static void __init of_dra7_apll_setup(struct device_node *node)
 		goto cleanup;
 	}
 
+<<<<<<< HEAD
 	parent_names = kcalloc(init->num_parents, sizeof(char *), GFP_KERNEL);
+=======
+	parent_names = kzalloc(sizeof(char *) * init->num_parents, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!parent_names)
 		goto cleanup;
 

@@ -1704,6 +1704,11 @@ gk104_ram = {
 	.probe_fbpa_amount = gf100_ram_probe_fbpa_amount,
 	.dtor = gk104_ram_dtor,
 	.init = gk104_ram_init,
+<<<<<<< HEAD
+=======
+	.get = gf100_ram_get,
+	.put = gf100_ram_put,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.calc = gk104_ram_calc,
 	.prog = gk104_ram_prog,
 	.tidy = gk104_ram_tidy,

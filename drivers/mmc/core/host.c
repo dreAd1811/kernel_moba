@@ -4,6 +4,10 @@
  *  Copyright (C) 2003 Russell King, All Rights Reserved.
  *  Copyright (C) 2007-2008 Pierre Ossman
  *  Copyright (C) 2010 Linus Walleij
+<<<<<<< HEAD
+=======
+ *  Copyright (c) 2012, The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -24,16 +28,28 @@
 
 #include <linux/mmc/host.h>
 #include <linux/mmc/card.h>
+<<<<<<< HEAD
 #include <linux/mmc/slot-gpio.h>
 
 #include "core.h"
+=======
+#include <linux/mmc/ring_buffer.h>
+
+#include <linux/mmc/slot-gpio.h>
+
+#include "core.h"
+#include "crypto.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "host.h"
 #include "slot-gpio.h"
 #include "pwrseq.h"
 #include "sdio_ops.h"
 
+<<<<<<< HEAD
 #define cls_dev_to_mmc_host(d)	container_of(d, struct mmc_host, class_dev)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MMC_DEVFRQ_DEFAULT_UP_THRESHOLD 35
 #define MMC_DEVFRQ_DEFAULT_DOWN_THRESHOLD 5
 #define MMC_DEVFRQ_DEFAULT_POLLING_MSEC 100
@@ -81,6 +97,309 @@ void mmc_unregister_host_class(void)
 	class_unregister(&mmc_host_class);
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MMC_CLKGATE
+static ssize_t clkgate_delay_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct mmc_host *host = cls_dev_to_mmc_host(dev);
+
+	return snprintf(buf, PAGE_SIZE, "%lu\n", host->clkgate_delay);
+}
+
+static ssize_t clkgate_delay_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	struct mmc_host *host = cls_dev_to_mmc_host(dev);
+	unsigned long flags, value;
+
+	if (kstrtoul(buf, 0, &value))
+		return -EINVAL;
+
+	spin_lock_irqsave(&host->clk_lock, flags);
+	host->clkgate_delay = value;
+	spin_unlock_irqrestore(&host->clk_lock, flags);
+	return count;
+}
+
+/*
+ * Enabling clock gating will make the core call out to the host
+ * once up and once down when it performs a request or card operation
+ * intermingled in any fashion. The driver will see this through
+ * set_ios() operations with ios.clock field set to 0 to gate (disable)
+ * the block clock, and to the old frequency to enable it again.
+ */
+static void mmc_host_clk_gate_delayed(struct mmc_host *host)
+{
+	unsigned long tick_ns;
+	unsigned long freq = host->ios.clock;
+	unsigned long flags;
+
+	if (!freq) {
+		pr_debug("%s: frequency set to 0 in disable function, this means the clock is already disabled.\n",
+			 mmc_hostname(host));
+		return;
+	}
+	/*
+	 * New requests may have appeared while we were scheduling,
+	 * then there is no reason to delay the check before
+	 * clk_disable().
+	 */
+	spin_lock_irqsave(&host->clk_lock, flags);
+
+	/*
+	 * Delay n bus cycles (at least 8 from MMC spec) before attempting
+	 * to disable the MCI block clock. The reference count may have
+	 * gone up again after this delay due to rescheduling!
+	 */
+	if (!host->clk_requests) {
+		spin_unlock_irqrestore(&host->clk_lock, flags);
+		tick_ns = DIV_ROUND_UP(1000000000, freq);
+		ndelay(host->clk_delay * tick_ns);
+	} else {
+		/* New users appeared while waiting for this work */
+		spin_unlock_irqrestore(&host->clk_lock, flags);
+		return;
+	}
+	mutex_lock(&host->clk_gate_mutex);
+	spin_lock_irqsave(&host->clk_lock, flags);
+	if (!host->clk_requests) {
+		spin_unlock_irqrestore(&host->clk_lock, flags);
+		/* This will set host->ios.clock to 0 */
+		mmc_gate_clock(host);
+		spin_lock_irqsave(&host->clk_lock, flags);
+		pr_debug("%s: gated MCI clock\n", mmc_hostname(host));
+		MMC_TRACE(host, "clocks are gated\n");
+	}
+	spin_unlock_irqrestore(&host->clk_lock, flags);
+	mutex_unlock(&host->clk_gate_mutex);
+}
+
+/*
+ * Internal work. Work to disable the clock at some later point.
+ */
+static void mmc_host_clk_gate_work(struct work_struct *work)
+{
+	struct mmc_host *host = container_of(work, struct mmc_host,
+					      clk_gate_work.work);
+
+	mmc_host_clk_gate_delayed(host);
+}
+
+/**
+ *	mmc_host_clk_hold - ungate hardware MCI clocks
+ *	@host: host to ungate.
+ *
+ *	Makes sure the host ios.clock is restored to a non-zero value
+ *	past this call.	Increase clock reference count and ungate clock
+ *	if we're the first user.
+ */
+void mmc_host_clk_hold(struct mmc_host *host)
+{
+	unsigned long flags;
+
+	/* cancel any clock gating work scheduled by mmc_host_clk_release() */
+	cancel_delayed_work_sync(&host->clk_gate_work);
+	mutex_lock(&host->clk_gate_mutex);
+	spin_lock_irqsave(&host->clk_lock, flags);
+	if (host->clk_gated) {
+		spin_unlock_irqrestore(&host->clk_lock, flags);
+		mmc_ungate_clock(host);
+
+		spin_lock_irqsave(&host->clk_lock, flags);
+		pr_debug("%s: ungated MCI clock\n", mmc_hostname(host));
+		MMC_TRACE(host, "clocks are ungated\n");
+	}
+	host->clk_requests++;
+	spin_unlock_irqrestore(&host->clk_lock, flags);
+	mutex_unlock(&host->clk_gate_mutex);
+}
+EXPORT_SYMBOL(mmc_host_clk_hold);
+
+/**
+ *	mmc_host_may_gate_card - check if this card may be gated
+ *	@card: card to check.
+ */
+bool mmc_host_may_gate_card(struct mmc_card *card)
+{
+	/* If there is no card we may gate it */
+	if (!card)
+		return true;
+
+	/*
+	 * SDIO3.0 card allows the clock to be gated off so check if
+	 * that is the case or not.
+	 */
+	if (mmc_card_sdio(card) && card->cccr.async_intr_sup)
+		return true;
+
+	/*
+	 * Don't gate SDIO cards! These need to be clocked at all times
+	 * since they may be independent systems generating interrupts
+	 * and other events. The clock requests counter from the core will
+	 * go down to zero since the core does not need it, but we will not
+	 * gate the clock, because there is somebody out there that may still
+	 * be using it.
+	 */
+	return !(card->quirks & MMC_QUIRK_BROKEN_CLK_GATING);
+}
+
+/**
+ *	mmc_host_clk_release - gate off hardware MCI clocks
+ *	@host: host to gate.
+ *
+ *	Calls the host driver with ios.clock set to zero as often as possible
+ *	in order to gate off hardware MCI clocks. Decrease clock reference
+ *	count and schedule disabling of clock.
+ */
+void mmc_host_clk_release(struct mmc_host *host)
+{
+	unsigned long flags;
+
+	spin_lock_irqsave(&host->clk_lock, flags);
+	host->clk_requests--;
+	if (mmc_host_may_gate_card(host->card) &&
+	    !host->clk_requests)
+		queue_delayed_work(host->clk_gate_wq, &host->clk_gate_work,
+				      msecs_to_jiffies(host->clkgate_delay));
+	spin_unlock_irqrestore(&host->clk_lock, flags);
+}
+EXPORT_SYMBOL(mmc_host_clk_release);
+
+/**
+ *	mmc_host_clk_rate - get current clock frequency setting
+ *	@host: host to get the clock frequency for.
+ *
+ *	Returns current clock frequency regardless of gating.
+ */
+unsigned int mmc_host_clk_rate(struct mmc_host *host)
+{
+	unsigned long freq;
+	unsigned long flags;
+
+	spin_lock_irqsave(&host->clk_lock, flags);
+	if (host->clk_gated)
+		freq = host->clk_old;
+	else
+		freq = host->ios.clock;
+	spin_unlock_irqrestore(&host->clk_lock, flags);
+	return freq;
+}
+
+/**
+ *	mmc_host_clk_init - set up clock gating code
+ *	@host: host with potential clock to control
+ */
+static inline void mmc_host_clk_init(struct mmc_host *host)
+{
+	host->clk_requests = 0;
+	/* Hold MCI clock for 8 cycles by default */
+	host->clk_delay = 8;
+	/*
+	 * Default clock gating delay is 0ms to avoid wasting power.
+	 * This value can be tuned by writing into sysfs entry.
+	 */
+	host->clkgate_delay = 0;
+	host->clk_gated = false;
+	INIT_DELAYED_WORK(&host->clk_gate_work, mmc_host_clk_gate_work);
+	spin_lock_init(&host->clk_lock);
+	mutex_init(&host->clk_gate_mutex);
+}
+
+/**
+ *	mmc_host_clk_exit - shut down clock gating code
+ *	@host: host with potential clock to control
+ */
+static inline void mmc_host_clk_exit(struct mmc_host *host)
+{
+	/*
+	 * Wait for any outstanding gate and then make sure we're
+	 * ungated before exiting.
+	 */
+	if (cancel_delayed_work_sync(&host->clk_gate_work))
+		mmc_host_clk_gate_delayed(host);
+	if (host->clk_gated)
+		mmc_host_clk_hold(host);
+	if (host->clk_gate_wq)
+		destroy_workqueue(host->clk_gate_wq);
+	/* There should be only one user now */
+	WARN_ON(host->clk_requests > 1);
+}
+
+static inline void mmc_host_clk_sysfs_init(struct mmc_host *host)
+{
+	host->clkgate_delay_attr.show = clkgate_delay_show;
+	host->clkgate_delay_attr.store = clkgate_delay_store;
+	sysfs_attr_init(&host->clkgate_delay_attr.attr);
+	host->clkgate_delay_attr.attr.name = "clkgate_delay";
+	host->clkgate_delay_attr.attr.mode = 0644;
+	if (device_create_file(&host->class_dev, &host->clkgate_delay_attr))
+		pr_err("%s: Failed to create clkgate_delay sysfs entry\n",
+				mmc_hostname(host));
+}
+
+static inline bool mmc_host_clk_gate_wq_init(struct mmc_host *host)
+{
+	char *wq = NULL;
+	int wq_nl;
+	bool ret = true;
+
+	wq_nl = sizeof("mmc_clk_gate/") + sizeof(mmc_hostname(host)) + 1;
+
+	wq = kzalloc(wq_nl, GFP_KERNEL);
+	if (!wq) {
+		ret = false;
+		goto out;
+	}
+
+	snprintf(wq, wq_nl, "mmc_clk_gate/%s", mmc_hostname(host));
+
+	/*
+	 * Create a work queue with flag WQ_MEM_RECLAIM set for
+	 * mmc clock gate work. Because mmc thread is created with
+	 * flag PF_MEMALLOC set, kernel will check for work queue
+	 * flag WQ_MEM_RECLAIM when flush the work queue. If work
+	 * queue flag WQ_MEM_RECLAIM is not set, kernel warning
+	 * will be triggered.
+	 */
+	host->clk_gate_wq = create_workqueue(wq);
+	if (!host->clk_gate_wq) {
+		ret = false;
+		dev_err(host->parent,
+				"failed to create clock gate work queue\n");
+	}
+
+	kfree(wq);
+out:
+	return ret;
+}
+#else
+
+static inline void mmc_host_clk_init(struct mmc_host *host)
+{
+}
+
+static inline void mmc_host_clk_exit(struct mmc_host *host)
+{
+}
+
+static inline void mmc_host_clk_sysfs_init(struct mmc_host *host)
+{
+}
+
+bool mmc_host_may_gate_card(struct mmc_card *card)
+{
+	return false;
+}
+
+static inline bool mmc_host_clk_gate_wq_init(struct mmc_host *host)
+{
+	return true;
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mmc_retune_enable(struct mmc_host *host)
 {
 	host->can_retune = 1;
@@ -88,6 +407,10 @@ void mmc_retune_enable(struct mmc_host *host)
 		mod_timer(&host->retune_timer,
 			  jiffies + host->retune_period * HZ);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mmc_retune_enable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Pause re-tuning for a small set of operations.  The pause begins after the
@@ -120,6 +443,10 @@ void mmc_retune_disable(struct mmc_host *host)
 	host->retune_now = 0;
 	host->need_retune = 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mmc_retune_disable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void mmc_retune_timer_stop(struct mmc_host *host)
 {
@@ -134,6 +461,15 @@ void mmc_retune_hold(struct mmc_host *host)
 	host->hold_retune += 1;
 }
 
+<<<<<<< HEAD
+=======
+void mmc_retune_hold_now(struct mmc_host *host)
+{
+	host->retune_now = 0;
+	host->hold_retune += 1;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mmc_retune_release(struct mmc_host *host)
 {
 	if (host->hold_retune)
@@ -141,7 +477,10 @@ void mmc_retune_release(struct mmc_host *host)
 	else
 		WARN_ON(1);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(mmc_retune_release);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mmc_retune(struct mmc_host *host)
 {
@@ -153,9 +492,14 @@ int mmc_retune(struct mmc_host *host)
 	else
 		return 0;
 
+<<<<<<< HEAD
 	if (!host->need_retune || host->doing_retune || !host->card
 			|| mmc_card_hs400es(host->card)
 			|| (host->ios.clock <= MMC_HIGH_DDR_MAX_DTR))
+=======
+	if (!host->need_retune || host->doing_retune || !host->card ||
+			mmc_card_hs400es(host->card))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	host->need_retune = 0;
@@ -168,8 +512,26 @@ int mmc_retune(struct mmc_host *host)
 			goto out;
 
 		return_to_hs400 = true;
+<<<<<<< HEAD
 	}
 
+=======
+
+		if (host->ops->prepare_hs400_tuning)
+			host->ops->prepare_hs400_tuning(host, &host->ios);
+	}
+
+	/*
+	 * Timing should be adjusted to the HS400 target
+	 * operation frequency for tuning process.
+	 * Similar handling is also done in mmc_hs200_tuning()
+	 * This is handled properly in sdhci-msm.c from msm-5.4 onwards.
+	 */
+	if (host->card->mmc_avail_type & EXT_CSD_CARD_TYPE_HS400 &&
+		host->ios.bus_width == MMC_BUS_WIDTH_8)
+		mmc_set_timing(host, MMC_TIMING_MMC_HS400);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mmc_execute_tuning(host->card);
 	if (err)
 		goto out;
@@ -182,9 +544,15 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static void mmc_retune_timer(struct timer_list *t)
 {
 	struct mmc_host *host = from_timer(host, t, retune_timer);
+=======
+static void mmc_retune_timer(unsigned long data)
+{
+	struct mmc_host *host = (struct mmc_host *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmc_retune_needed(host);
 }
@@ -201,7 +569,11 @@ static void mmc_retune_timer(struct timer_list *t)
 int mmc_of_parse(struct mmc_host *host)
 {
 	struct device *dev = host->parent;
+<<<<<<< HEAD
 	u32 bus_width, drv_type, cd_debounce_delay_ms;
+=======
+	u32 bus_width;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	bool cd_cap_invert, cd_gpio_invert = false;
 	bool ro_cap_invert, ro_gpio_invert = false;
@@ -252,16 +624,23 @@ int mmc_of_parse(struct mmc_host *host)
 	} else {
 		cd_cap_invert = device_property_read_bool(dev, "cd-inverted");
 
+<<<<<<< HEAD
 		if (device_property_read_u32(dev, "cd-debounce-delay-ms",
 					     &cd_debounce_delay_ms))
 			cd_debounce_delay_ms = 200;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (device_property_read_bool(dev, "broken-cd"))
 			host->caps |= MMC_CAP_NEEDS_POLL;
 
 		ret = mmc_gpiod_request_cd(host, "cd", 0, true,
+<<<<<<< HEAD
 					   cd_debounce_delay_ms * 1000,
 					   &cd_gpio_invert);
+=======
+					   0, &cd_gpio_invert);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ret)
 			dev_info(host->parent, "Got CD GPIO\n");
 		else if (ret != -ENOENT && ret != -ENOSYS)
@@ -348,6 +727,7 @@ int mmc_of_parse(struct mmc_host *host)
 	if (device_property_read_bool(dev, "no-mmc"))
 		host->caps2 |= MMC_CAP2_NO_MMC;
 
+<<<<<<< HEAD
 	/* Must be after "non-removable" check */
 	if (device_property_read_u32(dev, "fixed-emmc-driver-type", &drv_type) == 0) {
 		if (host->caps & MMC_CAP_NONREMOVABLE)
@@ -357,6 +737,8 @@ int mmc_of_parse(struct mmc_host *host)
 				"can't use fixed driver type, media is removable\n");
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host->dsr_req = !device_property_read_u32(dev, "dsr", &host->dsr);
 	if (host->dsr_req && (host->dsr & ~0xffff)) {
 		dev_err(host->parent,
@@ -365,9 +747,12 @@ int mmc_of_parse(struct mmc_host *host)
 		host->dsr_req = 0;
 	}
 
+<<<<<<< HEAD
 	device_property_read_u32(dev, "post-power-on-delay-ms",
 				 &host->ios.power_delay_ms);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mmc_pwrseq_alloc(host);
 }
 
@@ -410,17 +795,36 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 
 	if (mmc_gpio_alloc(host)) {
 		put_device(&host->class_dev);
+<<<<<<< HEAD
 		ida_simple_remove(&mmc_host_ida, host->index);
+=======
+		return NULL;
+	}
+
+	if (!mmc_host_clk_gate_wq_init(host)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(host);
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	spin_lock_init(&host->lock);
 	atomic_set(&host->active_reqs, 0);
 	init_waitqueue_head(&host->wq);
 	INIT_DELAYED_WORK(&host->detect, mmc_rescan);
 	INIT_DELAYED_WORK(&host->sdio_irq_work, sdio_irq_work);
 	timer_setup(&host->retune_timer, mmc_retune_timer, 0);
+=======
+	mmc_host_clk_init(host);
+
+	spin_lock_init(&host->lock);
+	init_waitqueue_head(&host->wq);
+	INIT_DELAYED_WORK(&host->detect, mmc_rescan);
+	INIT_DELAYED_WORK(&host->sdio_irq_work, sdio_irq_work);
+	setup_timer(&host->retune_timer, mmc_retune_timer, (unsigned long)host);
+
+	mutex_init(&host->rpmb_req_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * By default, hosts do not support SGIO or large requests.
@@ -432,15 +836,25 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
 	host->max_req_size = PAGE_SIZE;
 	host->max_blk_size = 512;
 	host->max_blk_count = PAGE_SIZE / 512;
+<<<<<<< HEAD
 
 	host->fixed_drv_type = -EINVAL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host->ios.power_delay_ms = 10;
 
 	return host;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(mmc_alloc_host);
 
 static ssize_t enable_show(struct device *dev,
+=======
+
+EXPORT_SYMBOL(mmc_alloc_host);
+
+static ssize_t show_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, char *buf)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
@@ -451,7 +865,11 @@ static ssize_t enable_show(struct device *dev,
 	return snprintf(buf, PAGE_SIZE, "%d\n", mmc_can_scale_clk(host));
 }
 
+<<<<<<< HEAD
 static ssize_t enable_store(struct device *dev,
+=======
+static ssize_t store_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, const char *buf, size_t count)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
@@ -460,7 +878,11 @@ static ssize_t enable_store(struct device *dev,
 	if (!host || !host->card || kstrtoul(buf, 0, &value))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	mmc_get_card(host->card, NULL);
+=======
+	mmc_get_card(host->card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!value) {
 		/* Suspend the clock scaling and mask host capability */
@@ -481,12 +903,20 @@ static ssize_t enable_store(struct device *dev,
 		}
 	}
 
+<<<<<<< HEAD
 	mmc_put_card(host->card, NULL);
+=======
+	mmc_put_card(host->card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t up_threshold_show(struct device *dev,
+=======
+static ssize_t show_up_threshold(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, char *buf)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
@@ -498,7 +928,11 @@ static ssize_t up_threshold_show(struct device *dev,
 }
 
 #define MAX_PERCENTAGE	100
+<<<<<<< HEAD
 static ssize_t up_threshold_store(struct device *dev,
+=======
+static ssize_t store_up_threshold(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, const char *buf, size_t count)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
@@ -514,7 +948,11 @@ static ssize_t up_threshold_store(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t down_threshold_show(struct device *dev,
+=======
+static ssize_t show_down_threshold(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, char *buf)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
@@ -526,7 +964,11 @@ static ssize_t down_threshold_show(struct device *dev,
 			host->clk_scaling.downthreshold);
 }
 
+<<<<<<< HEAD
 static ssize_t down_threshold_store(struct device *dev,
+=======
+static ssize_t store_down_threshold(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, const char *buf, size_t count)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
@@ -542,7 +984,11 @@ static ssize_t down_threshold_store(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t polling_interval_show(struct device *dev,
+=======
+static ssize_t show_polling(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, char *buf)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
@@ -554,7 +1000,11 @@ static ssize_t polling_interval_show(struct device *dev,
 			host->clk_scaling.polling_delay_ms);
 }
 
+<<<<<<< HEAD
 static ssize_t polling_interval_store(struct device *dev,
+=======
+static ssize_t store_polling(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr, const char *buf, size_t count)
 {
 	struct mmc_host *host = cls_dev_to_mmc_host(dev);
@@ -570,10 +1020,21 @@ static ssize_t polling_interval_store(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
 DEVICE_ATTR_RW(enable);
 DEVICE_ATTR_RW(polling_interval);
 DEVICE_ATTR_RW(up_threshold);
 DEVICE_ATTR_RW(down_threshold);
+=======
+DEVICE_ATTR(enable, 0644,
+		show_enable, store_enable);
+DEVICE_ATTR(polling_interval, 0644,
+		show_polling, store_polling);
+DEVICE_ATTR(up_threshold, 0644,
+		show_up_threshold, store_up_threshold);
+DEVICE_ATTR(down_threshold, 0644,
+		show_down_threshold, store_down_threshold);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *clk_scaling_attrs[] = {
 	&dev_attr_enable.attr,
@@ -588,6 +1049,71 @@ static struct attribute_group clk_scaling_attr_grp = {
 	.attrs = clk_scaling_attrs,
 };
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MMC_PERF_PROFILING
+static ssize_t
+show_perf(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	struct mmc_host *host = cls_dev_to_mmc_host(dev);
+	int64_t rtime_drv, wtime_drv;
+	unsigned long rbytes_drv, wbytes_drv, flags;
+
+	spin_lock_irqsave(&host->lock, flags);
+
+	rbytes_drv = host->perf.rbytes_drv;
+	wbytes_drv = host->perf.wbytes_drv;
+
+	rtime_drv = ktime_to_us(host->perf.rtime_drv);
+	wtime_drv = ktime_to_us(host->perf.wtime_drv);
+
+	spin_unlock_irqrestore(&host->lock, flags);
+
+	return snprintf(buf, PAGE_SIZE, "Write performance at driver Level:"
+					"%lu bytes in %lld microseconds\n"
+					"Read performance at driver Level:"
+					"%lu bytes in %lld microseconds\n",
+					wbytes_drv, wtime_drv,
+					rbytes_drv, rtime_drv);
+}
+
+static ssize_t
+set_perf(struct device *dev, struct device_attribute *attr,
+		const char *buf, size_t count)
+{
+	struct mmc_host *host = cls_dev_to_mmc_host(dev);
+	int64_t value;
+	unsigned long flags;
+
+	sscanf(buf, "%lld", &value);
+	spin_lock_irqsave(&host->lock, flags);
+	if (!value) {
+		memset(&host->perf, 0, sizeof(host->perf));
+		host->perf_enable = false;
+	} else {
+		host->perf_enable = true;
+	}
+	spin_unlock_irqrestore(&host->lock, flags);
+
+	return count;
+}
+
+static DEVICE_ATTR(perf, 0644,
+		show_perf, set_perf);
+
+#endif
+
+static struct attribute *dev_attrs[] = {
+#ifdef CONFIG_MMC_PERF_PROFILING
+	&dev_attr_perf.attr,
+#endif
+	NULL,
+};
+static struct attribute_group dev_attr_grp = {
+	.attrs = dev_attrs,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *	mmc_add_host - initialise host hardware
  *	@host: mmc host
@@ -617,6 +1143,7 @@ int mmc_add_host(struct mmc_host *host)
 #ifdef CONFIG_DEBUG_FS
 	mmc_add_host_debugfs(host);
 #endif
+<<<<<<< HEAD
 
 #ifdef CONFIG_MMC_IPC_LOGGING
 	host->ipc_log_ctxt = ipc_log_context_create(NUM_LOG_PAGES,
@@ -624,12 +1151,28 @@ int mmc_add_host(struct mmc_host *host)
 	if (!host->ipc_log_ctxt)
 		pr_err("%s: Error getting ipc_log_ctxt\n", __func__);
 #endif
+=======
+	mmc_host_clk_sysfs_init(host);
+	mmc_trace_init(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = sysfs_create_group(&host->class_dev.kobj, &clk_scaling_attr_grp);
 	if (err)
 		pr_err("%s: failed to create clk scale sysfs group with err %d\n",
 				__func__, err);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_BLOCK
+	mmc_latency_hist_sysfs_init(host);
+#endif
+
+	err = sysfs_create_group(&host->class_dev.kobj, &dev_attr_grp);
+	if (err)
+		pr_err("%s: failed to create sysfs group with err %d\n",
+							 __func__, err);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_start_host(host);
 	if (!(host->pm_flags & MMC_PM_IGNORE_PM_NOTIFY))
 		mmc_register_pm_notifier(host);
@@ -657,15 +1200,28 @@ void mmc_remove_host(struct mmc_host *host)
 	mmc_remove_host_debugfs(host);
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_MMC_IPC_LOGGING
 	ipc_log_context_destroy(host->ipc_log_ctxt);
 	host->ipc_log_ctxt = NULL;
 #endif
+=======
+#ifdef CONFIG_BLOCK
+	mmc_latency_hist_sysfs_exit(host);
+#endif
+
+	sysfs_remove_group(&host->parent->kobj, &dev_attr_grp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sysfs_remove_group(&host->class_dev.kobj, &clk_scaling_attr_grp);
 
 	device_del(&host->class_dev);
 
 	led_trigger_unregister_simple(host->led);
+<<<<<<< HEAD
+=======
+
+	mmc_host_clk_exit(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 EXPORT_SYMBOL(mmc_remove_host);
@@ -678,6 +1234,10 @@ EXPORT_SYMBOL(mmc_remove_host);
  */
 void mmc_free_host(struct mmc_host *host)
 {
+<<<<<<< HEAD
+=======
+	mmc_crypto_free_host(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_pwrseq_free(host);
 	put_device(&host->class_dev);
 }

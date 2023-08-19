@@ -387,7 +387,10 @@ static void radeon_vm_set_pages(struct radeon_device *rdev,
 static int radeon_vm_clear_bo(struct radeon_device *rdev,
 			      struct radeon_bo *bo)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { true, false };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct radeon_ib ib;
 	unsigned entries;
 	uint64_t addr;
@@ -397,7 +400,11 @@ static int radeon_vm_clear_bo(struct radeon_device *rdev,
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	r = ttm_bo_validate(&bo->tbo, &bo->placement, &ctx);
+=======
+	r = ttm_bo_validate(&bo->tbo, &bo->placement, true, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		goto error_unreserve;
 

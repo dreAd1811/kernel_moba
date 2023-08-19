@@ -268,8 +268,12 @@ static int alpine_msix_init(struct device_node *node,
 		goto err_priv;
 	}
 
+<<<<<<< HEAD
 	priv->msi_map = kcalloc(BITS_TO_LONGS(priv->num_spis),
 				sizeof(*priv->msi_map),
+=======
+	priv->msi_map = kzalloc(sizeof(*priv->msi_map) * BITS_TO_LONGS(priv->num_spis),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!priv->msi_map) {
 		ret = -ENOMEM;

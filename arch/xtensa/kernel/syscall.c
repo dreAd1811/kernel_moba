@@ -55,7 +55,11 @@ asmlinkage long xtensa_shmat(int shmid, char __user *shmaddr, int shmflg)
 asmlinkage long xtensa_fadvise64_64(int fd, int advice,
 		unsigned long long offset, unsigned long long len)
 {
+<<<<<<< HEAD
 	return ksys_fadvise64_64(fd, offset, len, advice);
+=======
+	return sys_fadvise64_64(fd, offset, len, advice);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_MMU

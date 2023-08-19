@@ -538,9 +538,15 @@ static int tifm_ms_set_param(struct memstick_host *msh,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void tifm_ms_abort(struct timer_list *t)
 {
 	struct tifm_ms *host = from_timer(host, t, timer);
+=======
+static void tifm_ms_abort(unsigned long data)
+{
+	struct tifm_ms *host = (struct tifm_ms *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&host->dev->dev, "status %x\n",
 		readl(host->dev->addr + SOCK_MS_STATUS));
@@ -575,7 +581,11 @@ static int tifm_ms_probe(struct tifm_dev *sock)
 	host->dev = sock;
 	host->timeout_jiffies = msecs_to_jiffies(1000);
 
+<<<<<<< HEAD
 	timer_setup(&host->timer, tifm_ms_abort, 0);
+=======
+	setup_timer(&host->timer, tifm_ms_abort, (unsigned long)host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tasklet_init(&host->notify, tifm_ms_req_tasklet, (unsigned long)msh);
 
 	msh->request = tifm_ms_submit_req;

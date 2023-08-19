@@ -301,6 +301,7 @@ void drm_sysfs_connector_remove(struct drm_connector *connector)
 	connector->kdev = NULL;
 }
 
+<<<<<<< HEAD
 void drm_sysfs_lease_event(struct drm_device *dev)
 {
 	char *event_string = "LEASE=1";
@@ -311,6 +312,8 @@ void drm_sysfs_lease_event(struct drm_device *dev)
 	kobject_uevent_env(&dev->primary->kdev->kobj, KOBJ_CHANGE, envp);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_sysfs_hotplug_event - generate a DRM uevent
  * @dev: DRM device
@@ -341,7 +344,13 @@ struct device *drm_sysfs_minor_alloc(struct drm_minor *minor)
 	struct device *kdev;
 	int r;
 
+<<<<<<< HEAD
 	if (minor->type == DRM_MINOR_RENDER)
+=======
+	if (minor->type == DRM_MINOR_CONTROL)
+		minor_str = "controlD%d";
+	else if (minor->type == DRM_MINOR_RENDER)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		minor_str = "renderD%d";
 	else
 		minor_str = "card%d";

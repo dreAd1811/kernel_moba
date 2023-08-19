@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2016-2017 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2016 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -35,6 +39,7 @@ struct a5xx_gpu {
 	uint32_t gpmu_dwords;
 
 	uint32_t lm_leakage;
+<<<<<<< HEAD
 
 	struct msm_ringbuffer *cur_ring;
 	struct msm_ringbuffer *next_ring;
@@ -45,10 +50,13 @@ struct a5xx_gpu {
 
 	atomic_t preempt_state;
 	struct timer_list preempt_timer;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define to_a5xx_gpu(x) container_of(x, struct a5xx_gpu, base)
 
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 int a5xx_debugfs_init(struct msm_gpu *gpu, struct drm_minor *minor);
 #endif
@@ -133,6 +141,8 @@ struct a5xx_preempt_record {
 #define A5XX_PREEMPT_COUNTER_SIZE (16 * 4)
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int a5xx_power_init(struct msm_gpu *gpu);
 void a5xx_gpmu_ucode_init(struct msm_gpu *gpu);
 
@@ -149,6 +159,7 @@ static inline int spin_usecs(struct msm_gpu *gpu, uint32_t usecs,
 	return -ETIMEDOUT;
 }
 
+<<<<<<< HEAD
 bool a5xx_idle(struct msm_gpu *gpu, struct msm_ringbuffer *ring);
 void a5xx_set_hwcg(struct msm_gpu *gpu, bool state);
 
@@ -167,4 +178,9 @@ static inline bool a5xx_in_preempt(struct a5xx_gpu *a5xx_gpu)
 			preempt_state == PREEMPT_ABORT);
 }
 
+=======
+bool a5xx_idle(struct msm_gpu *gpu);
+void a5xx_set_hwcg(struct msm_gpu *gpu, bool state);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __A5XX_GPU_H__ */

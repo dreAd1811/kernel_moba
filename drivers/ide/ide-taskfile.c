@@ -128,7 +128,11 @@ ide_startstop_t do_rw_taskfile(ide_drive_t *drive, struct ide_cmd *orig_cmd)
 			return pre_task_out_intr(drive, cmd);
 		}
 		handler = task_pio_intr;
+<<<<<<< HEAD
 		/* fall through */
+=======
+		/* fall-through */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ATA_PROT_NODATA:
 		if (handler == NULL)
 			handler = task_no_data_intr;
@@ -140,7 +144,10 @@ ide_startstop_t do_rw_taskfile(ide_drive_t *drive, struct ide_cmd *orig_cmd)
 		hwif->expiry = dma_ops->dma_timer_expiry;
 		ide_execute_command(drive, cmd, ide_dma_intr, 2 * WAIT_CMD);
 		dma_ops->dma_start(drive);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return ide_started;
 	}
@@ -233,11 +240,19 @@ void ide_pio_bytes(ide_drive_t *drive, struct ide_cmd *cmd,
 	unsigned int offset;
 	u8 *buf;
 
+<<<<<<< HEAD
+=======
+	cursg = cmd->cursg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cursg == NULL)
 		cursg = cmd->cursg = sg;
 
 	while (len) {
 		unsigned nr_bytes = min(len, cursg->length - cmd->cursg_ofs);
+<<<<<<< HEAD
+=======
+		int page_is_high;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		page = sg_page(cursg);
 		offset = cursg->offset + cmd->cursg_ofs;
@@ -248,6 +263,13 @@ void ide_pio_bytes(ide_drive_t *drive, struct ide_cmd *cmd,
 
 		nr_bytes = min_t(unsigned, nr_bytes, (PAGE_SIZE - offset));
 
+<<<<<<< HEAD
+=======
+		page_is_high = PageHighMem(page);
+		if (page_is_high)
+			local_irq_save(flags);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		buf = kmap_atomic(page) + offset;
 
 		cmd->nleft -= nr_bytes;
@@ -266,6 +288,12 @@ void ide_pio_bytes(ide_drive_t *drive, struct ide_cmd *cmd,
 
 		kunmap_atomic(buf);
 
+<<<<<<< HEAD
+=======
+		if (page_is_high)
+			local_irq_restore(flags);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		len -= nr_bytes;
 	}
 }
@@ -406,7 +434,11 @@ static ide_startstop_t pre_task_out_intr(ide_drive_t *drive,
 		return startstop;
 	}
 
+<<<<<<< HEAD
 	if (!force_irqthreads && (drive->dev_flags & IDE_DFLAG_UNMASK) == 0)
+=======
+	if ((drive->dev_flags & IDE_DFLAG_UNMASK) == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		local_irq_disable();
 
 	ide_set_handler(drive, &task_pio_intr, WAIT_WORSTCASE);
@@ -424,7 +456,11 @@ int ide_raw_taskfile(ide_drive_t *drive, struct ide_cmd *cmd, u8 *buf,
 
 	rq = blk_get_request(drive->queue,
 		(cmd->tf_flags & IDE_TFLAG_WRITE) ?
+<<<<<<< HEAD
 			REQ_OP_DRV_OUT : REQ_OP_DRV_IN, 0);
+=======
+			REQ_OP_DRV_OUT : REQ_OP_DRV_IN, __GFP_RECLAIM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ide_req(rq)->type = ATA_PRIV_TASKFILE;
 
 	/*
@@ -435,7 +471,11 @@ int ide_raw_taskfile(ide_drive_t *drive, struct ide_cmd *cmd, u8 *buf,
 	 */
 	if (nsect) {
 		error = blk_rq_map_kern(drive->queue, rq, buf,
+<<<<<<< HEAD
 					nsect * SECTOR_SIZE, GFP_NOIO);
+=======
+					nsect * SECTOR_SIZE, __GFP_RECLAIM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (error)
 			goto put_req;
 	}

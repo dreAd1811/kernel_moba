@@ -56,7 +56,11 @@ static unsigned dm_get_blk_mq_queue_depth(void)
 
 int dm_request_based(struct mapped_device *md)
 {
+<<<<<<< HEAD
 	return queue_is_rq_based(md->queue);
+=======
+	return blk_queue_stackable(md->queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dm_old_start_queue(struct request_queue *q)
@@ -219,7 +223,11 @@ static void dm_end_request(struct request *clone, blk_status_t error)
 	struct request *rq = tio->orig;
 
 	blk_rq_unprep_clone(clone);
+<<<<<<< HEAD
 	tio->ti->type->release_clone_rq(clone, NULL);
+=======
+	tio->ti->type->release_clone_rq(clone);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rq_end_stats(md, rq);
 	if (!rq->q->mq_ops)
@@ -270,7 +278,11 @@ static void dm_requeue_original_request(struct dm_rq_target_io *tio, bool delay_
 	rq_end_stats(md, rq);
 	if (tio->clone) {
 		blk_rq_unprep_clone(tio->clone);
+<<<<<<< HEAD
 		tio->ti->type->release_clone_rq(tio->clone, NULL);
+=======
+		tio->ti->type->release_clone_rq(tio->clone);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!rq->q->mq_ops)
@@ -295,6 +307,7 @@ static void dm_done(struct request *clone, blk_status_t error, bool mapped)
 	}
 
 	if (unlikely(error == BLK_STS_TARGET)) {
+<<<<<<< HEAD
 		if (req_op(clone) == REQ_OP_DISCARD &&
 		    !clone->q->limits.max_discard_sectors)
 			disable_discard(tio->md);
@@ -303,6 +316,13 @@ static void dm_done(struct request *clone, blk_status_t error, bool mapped)
 			disable_write_same(tio->md);
 		else if (req_op(clone) == REQ_OP_WRITE_ZEROES &&
 			 !clone->q->limits.max_write_zeroes_sectors)
+=======
+		if (req_op(clone) == REQ_OP_WRITE_SAME &&
+		    !clone->q->limits.max_write_same_sectors)
+			disable_write_same(tio->md);
+		if (req_op(clone) == REQ_OP_WRITE_ZEROES &&
+		    !clone->q->limits.max_write_zeroes_sectors)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			disable_write_zeroes(tio->md);
 	}
 
@@ -318,10 +338,13 @@ static void dm_done(struct request *clone, blk_status_t error, bool mapped)
 		/* The target wants to requeue the I/O */
 		dm_requeue_original_request(tio, false);
 		break;
+<<<<<<< HEAD
 	case DM_ENDIO_DELAY_REQUEUE:
 		/* The target wants to requeue the I/O after a delay */
 		dm_requeue_original_request(tio, true);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		DMWARN("unimplemented target endio return value: %d", r);
 		BUG();
@@ -402,19 +425,31 @@ static void end_clone_request(struct request *clone, blk_status_t error)
 	dm_complete_request(tio->orig, error);
 }
 
+<<<<<<< HEAD
 static blk_status_t dm_dispatch_clone_request(struct request *clone, struct request *rq)
+=======
+static void dm_dispatch_clone_request(struct request *clone, struct request *rq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	blk_status_t r;
 
 	if (blk_queue_io_stat(clone->q))
 		clone->rq_flags |= RQF_IO_STAT;
 
+<<<<<<< HEAD
 	clone->start_time_ns = ktime_get_ns();
 	r = blk_insert_cloned_request(clone->q, clone);
 	if (r != BLK_STS_OK && r != BLK_STS_RESOURCE && r != BLK_STS_DEV_RESOURCE)
 		/* must complete clone in terms of original request */
 		dm_complete_request(rq, r);
 	return r;
+=======
+	clone->start_time = jiffies;
+	r = blk_insert_cloned_request(clone->q, clone);
+	if (r)
+		/* must complete clone in terms of original request */
+		dm_complete_request(rq, r);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dm_rq_bio_constructor(struct bio *bio, struct bio *bio_orig,
@@ -436,7 +471,11 @@ static int setup_clone(struct request *clone, struct request *rq,
 {
 	int r;
 
+<<<<<<< HEAD
 	r = blk_rq_prep_clone(clone, rq, &tio->md->bs, gfp_mask,
+=======
+	r = blk_rq_prep_clone(clone, rq, tio->md->bs, gfp_mask,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      dm_rq_bio_constructor, tio);
 	if (r)
 		return r;
@@ -484,10 +523,15 @@ static int map_request(struct dm_rq_target_io *tio)
 	struct mapped_device *md = tio->md;
 	struct request *rq = tio->orig;
 	struct request *clone = NULL;
+<<<<<<< HEAD
 	blk_status_t ret;
 
 	r = ti->type->clone_and_map_rq(ti, rq, &tio->info, &clone);
 check_again:
+=======
+
+	r = ti->type->clone_and_map_rq(ti, rq, &tio->info, &clone);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (r) {
 	case DM_MAPIO_SUBMITTED:
 		/* The target has taken the I/O to submit by itself later */
@@ -495,13 +539,18 @@ check_again:
 	case DM_MAPIO_REMAPPED:
 		if (setup_clone(clone, rq, tio, GFP_ATOMIC)) {
 			/* -ENOMEM */
+<<<<<<< HEAD
 			ti->type->release_clone_rq(clone, &tio->info);
+=======
+			ti->type->release_clone_rq(clone);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return DM_MAPIO_REQUEUE;
 		}
 
 		/* The target has remapped the I/O so dispatch it */
 		trace_block_rq_remap(clone->q, clone, disk_devt(dm_disk(md)),
 				     blk_rq_pos(rq));
+<<<<<<< HEAD
 		ret = dm_dispatch_clone_request(clone, rq);
 		if (ret == BLK_STS_RESOURCE || ret == BLK_STS_DEV_RESOURCE) {
 			blk_rq_unprep_clone(clone);
@@ -514,6 +563,9 @@ check_again:
 				r = DM_MAPIO_REQUEUE;
 			goto check_again;
 		}
+=======
+		dm_dispatch_clone_request(clone, rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case DM_MAPIO_REQUEUE:
 		/* The target wants to requeue the I/O */
@@ -721,6 +773,10 @@ int dm_old_init_request_queue(struct mapped_device *md, struct dm_table *t)
 	/* disable dm_old_request_fn's merge heuristic by default */
 	md->seq_rq_merge_deadline_usecs = 0;
 
+<<<<<<< HEAD
+=======
+	dm_init_normal_md_queue(md);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_queue_softirq_done(md->queue, dm_softirq_done);
 
 	/* Initialize the request-based DM worker thread */
@@ -733,6 +789,11 @@ int dm_old_init_request_queue(struct mapped_device *md, struct dm_table *t)
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	elv_register_queue(md->queue);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -776,6 +837,10 @@ static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
 		/* Undo dm_start_request() before requeuing */
 		rq_end_stats(md, rq);
 		rq_completed(md, rq_data_dir(rq), false);
+<<<<<<< HEAD
+=======
+		blk_mq_delay_run_hw_queue(hctx, 100/*ms*/);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return BLK_STS_RESOURCE;
 	}
 
@@ -827,9 +892,23 @@ int dm_mq_init_request_queue(struct mapped_device *md, struct dm_table *t)
 		err = PTR_ERR(q);
 		goto out_tag_set;
 	}
+<<<<<<< HEAD
 
 	return 0;
 
+=======
+	dm_init_md_queue(md);
+
+	/* backfill 'mq' sysfs registration normally done in blk_register_queue */
+	err = blk_mq_register_dev(disk_to_dev(md->disk), q);
+	if (err)
+		goto out_cleanup_queue;
+
+	return 0;
+
+out_cleanup_queue:
+	blk_cleanup_queue(q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_tag_set:
 	blk_mq_free_tag_set(md->tag_set);
 out_kfree_tag_set:

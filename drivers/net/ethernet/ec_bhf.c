@@ -602,7 +602,11 @@ static struct pci_driver pci_driver = {
 };
 module_pci_driver(pci_driver);
 
+<<<<<<< HEAD
 module_param(polling_frequency, long, 0444);
+=======
+module_param(polling_frequency, long, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(polling_frequency, "Polling timer frequency in ns");
 
 MODULE_LICENSE("GPL");

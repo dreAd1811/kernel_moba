@@ -171,7 +171,11 @@ struct spacc_ablk_ctx {
 	 * The fallback cipher. If the operation can't be done in hardware,
 	 * fallback to a software version.
 	 */
+<<<<<<< HEAD
 	struct crypto_sync_skcipher	*sw_cipher;
+=======
+	struct crypto_skcipher		*sw_cipher;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* AEAD cipher context. */
@@ -499,12 +503,18 @@ static int spacc_aead_setkey(struct crypto_aead *tfm, const u8 *key,
 	memcpy(ctx->hash_ctx, keys.authkey, keys.authkeylen);
 	ctx->hash_key_len = keys.authkeylen;
 
+<<<<<<< HEAD
 	memzero_explicit(&keys, sizeof(keys));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 badkey:
 	crypto_aead_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
+<<<<<<< HEAD
 	memzero_explicit(&keys, sizeof(keys));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EINVAL;
 }
 
@@ -799,6 +809,7 @@ static int spacc_aes_setkey(struct crypto_ablkcipher *cipher, const u8 *key,
 		 * Set the fallback transform to use the same request flags as
 		 * the hardware transform.
 		 */
+<<<<<<< HEAD
 		crypto_sync_skcipher_clear_flags(ctx->sw_cipher,
 					    CRYPTO_TFM_REQ_MASK);
 		crypto_sync_skcipher_set_flags(ctx->sw_cipher,
@@ -810,6 +821,19 @@ static int spacc_aes_setkey(struct crypto_ablkcipher *cipher, const u8 *key,
 		tfm->crt_flags &= ~CRYPTO_TFM_RES_MASK;
 		tfm->crt_flags |=
 			crypto_sync_skcipher_get_flags(ctx->sw_cipher) &
+=======
+		crypto_skcipher_clear_flags(ctx->sw_cipher,
+					    CRYPTO_TFM_REQ_MASK);
+		crypto_skcipher_set_flags(ctx->sw_cipher,
+					  cipher->base.crt_flags &
+					  CRYPTO_TFM_REQ_MASK);
+
+		err = crypto_skcipher_setkey(ctx->sw_cipher, key, len);
+
+		tfm->crt_flags &= ~CRYPTO_TFM_RES_MASK;
+		tfm->crt_flags |=
+			crypto_skcipher_get_flags(ctx->sw_cipher) &
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			CRYPTO_TFM_RES_MASK;
 
 		if (err)
@@ -914,7 +938,11 @@ static int spacc_ablk_do_fallback(struct ablkcipher_request *req,
 	struct crypto_tfm *old_tfm =
 	    crypto_ablkcipher_tfm(crypto_ablkcipher_reqtfm(req));
 	struct spacc_ablk_ctx *ctx = crypto_tfm_ctx(old_tfm);
+<<<<<<< HEAD
 	SYNC_SKCIPHER_REQUEST_ON_STACK(subreq, ctx->sw_cipher);
+=======
+	SKCIPHER_REQUEST_ON_STACK(subreq, ctx->sw_cipher);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	/*
@@ -922,7 +950,11 @@ static int spacc_ablk_do_fallback(struct ablkcipher_request *req,
 	 * the ciphering has completed, put the old transform back into the
 	 * request.
 	 */
+<<<<<<< HEAD
 	skcipher_request_set_sync_tfm(subreq, ctx->sw_cipher);
+=======
+	skcipher_request_set_tfm(subreq, ctx->sw_cipher);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skcipher_request_set_callback(subreq, req->base.flags, NULL, NULL);
 	skcipher_request_set_crypt(subreq, req->src, req->dst,
 				   req->nbytes, req->info);
@@ -1020,8 +1052,14 @@ static int spacc_ablk_cra_init(struct crypto_tfm *tfm)
 	ctx->generic.flags = spacc_alg->type;
 	ctx->generic.engine = engine;
 	if (alg->cra_flags & CRYPTO_ALG_NEED_FALLBACK) {
+<<<<<<< HEAD
 		ctx->sw_cipher = crypto_alloc_sync_skcipher(
 			alg->cra_name, 0, CRYPTO_ALG_NEED_FALLBACK);
+=======
+		ctx->sw_cipher = crypto_alloc_skcipher(
+			alg->cra_name, 0, CRYPTO_ALG_ASYNC |
+					  CRYPTO_ALG_NEED_FALLBACK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(ctx->sw_cipher)) {
 			dev_warn(engine->dev, "failed to allocate fallback for %s\n",
 				 alg->cra_name);
@@ -1040,7 +1078,11 @@ static void spacc_ablk_cra_exit(struct crypto_tfm *tfm)
 {
 	struct spacc_ablk_ctx *ctx = crypto_tfm_ctx(tfm);
 
+<<<<<<< HEAD
 	crypto_free_sync_skcipher(ctx->sw_cipher);
+=======
+	crypto_free_skcipher(ctx->sw_cipher);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int spacc_ablk_encrypt(struct ablkcipher_request *req)
@@ -1126,9 +1168,15 @@ static irqreturn_t spacc_spacc_irq(int irq, void *dev)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static void spacc_packet_timeout(struct timer_list *t)
 {
 	struct spacc_engine *engine = from_timer(engine, t, packet_timeout);
+=======
+static void spacc_packet_timeout(unsigned long data)
+{
+	struct spacc_engine *engine = (struct spacc_engine *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spacc_process_done(engine);
 }
@@ -1168,7 +1216,12 @@ static void spacc_spacc_complete(unsigned long data)
 #ifdef CONFIG_PM
 static int spacc_suspend(struct device *dev)
 {
+<<<<<<< HEAD
 	struct spacc_engine *engine = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct spacc_engine *engine = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We only support standby mode. All we have to do is gate the clock to
@@ -1182,7 +1235,12 @@ static int spacc_suspend(struct device *dev)
 
 static int spacc_resume(struct device *dev)
 {
+<<<<<<< HEAD
 	struct spacc_engine *engine = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct spacc_engine *engine = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return clk_enable(engine->clk);
 }
@@ -1615,9 +1673,20 @@ static const struct of_device_id spacc_of_id_table[] = {
 MODULE_DEVICE_TABLE(of, spacc_of_id_table);
 #endif /* CONFIG_OF */
 
+<<<<<<< HEAD
 static int spacc_probe(struct platform_device *pdev)
 {
 	int i, err, ret;
+=======
+static void spacc_tasklet_kill(void *data)
+{
+	tasklet_kill(data);
+}
+
+static int spacc_probe(struct platform_device *pdev)
+{
+	int i, err, ret = -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *mem, *irq;
 	struct device_node *np = pdev->dev.of_node;
 	struct spacc_engine *engine = devm_kzalloc(&pdev->dev, sizeof(*engine),
@@ -1658,6 +1727,17 @@ static int spacc_probe(struct platform_device *pdev)
 		return -ENXIO;
 	}
 
+<<<<<<< HEAD
+=======
+	tasklet_init(&engine->complete, spacc_spacc_complete,
+		     (unsigned long)engine);
+
+	ret = devm_add_action(&pdev->dev, spacc_tasklet_kill,
+			      &engine->complete);
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (devm_request_irq(&pdev->dev, irq->start, spacc_spacc_irq, 0,
 			     engine->name, engine)) {
 		dev_err(engine->dev, "failed to request IRQ\n");
@@ -1678,11 +1758,16 @@ static int spacc_probe(struct platform_device *pdev)
 	engine->clk = clk_get(&pdev->dev, "ref");
 	if (IS_ERR(engine->clk)) {
 		dev_info(&pdev->dev, "clk unavailable\n");
+<<<<<<< HEAD
+=======
+		device_remove_file(&pdev->dev, &dev_attr_stat_irq_thresh);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(engine->clk);
 	}
 
 	if (clk_prepare_enable(engine->clk)) {
 		dev_info(&pdev->dev, "unable to prepare/enable clk\n");
+<<<<<<< HEAD
 		ret = -EIO;
 		goto err_clk_put;
 	}
@@ -1690,6 +1775,18 @@ static int spacc_probe(struct platform_device *pdev)
 	ret = device_create_file(&pdev->dev, &dev_attr_stat_irq_thresh);
 	if (ret)
 		goto err_clk_disable;
+=======
+		clk_put(engine->clk);
+		return -EIO;
+	}
+
+	err = device_create_file(&pdev->dev, &dev_attr_stat_irq_thresh);
+	if (err) {
+		clk_disable_unprepare(engine->clk);
+		clk_put(engine->clk);
+		return err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	/*
@@ -1709,18 +1806,29 @@ static int spacc_probe(struct platform_device *pdev)
 	writel(SPA_IRQ_EN_STAT_EN | SPA_IRQ_EN_GLBL_EN,
 	       engine->regs + SPA_IRQ_EN_REG_OFFSET);
 
+<<<<<<< HEAD
 	timer_setup(&engine->packet_timeout, spacc_packet_timeout, 0);
+=======
+	setup_timer(&engine->packet_timeout, spacc_packet_timeout,
+		    (unsigned long)engine);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&engine->pending);
 	INIT_LIST_HEAD(&engine->completed);
 	INIT_LIST_HEAD(&engine->in_progress);
 	engine->in_flight = 0;
+<<<<<<< HEAD
 	tasklet_init(&engine->complete, spacc_spacc_complete,
 		     (unsigned long)engine);
 
 	platform_set_drvdata(pdev, engine);
 
 	ret = -EINVAL;
+=======
+
+	platform_set_drvdata(pdev, engine);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&engine->registered_algs);
 	for (i = 0; i < engine->num_algs; ++i) {
 		engine->algs[i].engine = engine;
@@ -1755,6 +1863,7 @@ static int spacc_probe(struct platform_device *pdev)
 				engine->aeads[i].alg.base.cra_name);
 	}
 
+<<<<<<< HEAD
 	if (!ret)
 		return 0;
 
@@ -1765,6 +1874,8 @@ err_clk_disable:
 err_clk_put:
 	clk_put(engine->clk);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

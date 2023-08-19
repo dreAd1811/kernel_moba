@@ -10,6 +10,10 @@ struct nv40_ram {
 	u32 coef;
 };
 
+<<<<<<< HEAD
 int nv40_ram_new_(struct nvkm_fb *fb, enum nvkm_ram_type, u64,
+=======
+int nv40_ram_new_(struct nvkm_fb *fb, enum nvkm_ram_type, u64, u32,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  struct nvkm_ram **);
 #endif

@@ -27,6 +27,7 @@ Description:	This file contains the current status of the "SSD Smart Path"
 		the direct i/o path to physical devices.  This setting is
 		controller wide, affecting all configured logical drives on the
 		controller.  This file is readable and writable.
+<<<<<<< HEAD
 
 What:		/sys/class/scsi_host/hostX/link_power_management_policy
 Date:		Oct, 2007
@@ -116,3 +117,5 @@ KernelVersion:	v2.6.39
 Contact:	linux-ide@vger.kernel.org
 Description:
 		(RO) Displays supported enclosure management message types.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

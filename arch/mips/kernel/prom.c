@@ -41,6 +41,7 @@ char *mips_get_machine_name(void)
 #ifdef CONFIG_USE_OF
 void __init early_init_dt_add_memory_arch(u64 base, u64 size)
 {
+<<<<<<< HEAD
 	if (base >= PHYS_ADDR_MAX) {
 		pr_warn("Trying to add an invalid memory region, skipped\n");
 		return;
@@ -54,6 +55,14 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
 	}
 
 	add_memory_region(base, size, BOOT_MEM_RAM);
+=======
+	return add_memory_region(base, size, BOOT_MEM_RAM);
+}
+
+void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+{
+	return __alloc_bootmem(size, align, __pa(MAX_DMA_ADDRESS));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int __init early_init_dt_reserve_memory_arch(phys_addr_t base,

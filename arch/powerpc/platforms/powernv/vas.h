@@ -13,9 +13,12 @@
 #include <linux/idr.h>
 #include <asm/vas.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/dcache.h>
 #include <linux/mutex.h>
 #include <linux/stringify.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Overview of Virtual Accelerator Switchboard (VAS).
@@ -109,8 +112,13 @@
  *
  * TODO: Needs tuning for per-process credits
  */
+<<<<<<< HEAD
 #define VAS_RX_WCREDS_MAX		((64 << 10) - 1)
 #define VAS_TX_WCREDS_MAX		((4 << 10) - 1)
+=======
+#define VAS_WCREDS_MIN			16
+#define VAS_WCREDS_MAX			((64 << 10) - 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VAS_WCREDS_DEFAULT		(1 << 10)
 
 /*
@@ -262,6 +270,7 @@
 #define VAS_NX_UTIL_ADDER		PPC_BITMASK(32, 63)
 
 /*
+<<<<<<< HEAD
  * VREG(x):
  * Expand a register's short name (eg: LPID) into two parameters:
  *	- the register's short name in string form ("LPID"), and
@@ -272,6 +281,8 @@
 #define VREG(r)		VREG_SFX(r, _OFFSET)
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Local Notify Scope Control Register. (Receive windows only).
  */
 enum vas_notify_scope {
@@ -320,9 +331,12 @@ struct vas_instance {
 	struct mutex mutex;
 	struct vas_window *rxwin[VAS_COP_TYPE_MAX];
 	struct vas_window *windows[VAS_WINDOWS_PER_CHIP];
+<<<<<<< HEAD
 
 	char *dbgname;
 	struct dentry *dbgdir;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -338,10 +352,13 @@ struct vas_window {
 	void *hvwc_map;		/* HV window context */
 	void *uwc_map;		/* OS/User window context */
 	pid_t pid;		/* Linux process id of owner */
+<<<<<<< HEAD
 	int wcreds_max;		/* Window credits */
 
 	char *dbgname;
 	struct dentry *dbgdir;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Fields applicable only to send windows */
 	void *paste_kaddr;
@@ -403,6 +420,7 @@ struct vas_winctx {
 	enum vas_notify_after_count notify_after_count;
 };
 
+<<<<<<< HEAD
 extern struct mutex vas_mutex;
 
 extern struct vas_instance *find_vas_instance(int vasid);
@@ -410,16 +428,54 @@ extern void vas_init_dbgdir(void);
 extern void vas_instance_init_dbgdir(struct vas_instance *vinst);
 extern void vas_window_init_dbgdir(struct vas_window *win);
 extern void vas_window_free_dbgdir(struct vas_window *win);
+=======
+extern struct vas_instance *find_vas_instance(int vasid);
+
+/*
+ * VREG(x):
+ * Expand a register's short name (eg: LPID) into two parameters:
+ *	- the register's short name in string form ("LPID"), and
+ *	- the name of the macro (eg: VAS_LPID_OFFSET), defining the
+ *	  register's offset in the window context
+ */
+#define VREG_SFX(n, s)	__stringify(n), VAS_##n##s
+#define VREG(r)		VREG_SFX(r, _OFFSET)
+
+#ifdef vas_debug
+static inline void dump_rx_win_attr(struct vas_rx_win_attr *attr)
+{
+	pr_err("fault %d, notify %d, intr %d early %d\n",
+			attr->fault_win, attr->notify_disable,
+			attr->intr_disable, attr->notify_early);
+
+	pr_err("rx_fifo_size %d, max value %d\n",
+				attr->rx_fifo_size, VAS_RX_FIFO_SIZE_MAX);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void vas_log_write(struct vas_window *win, char *name,
 			void *regptr, u64 val)
 {
 	if (val)
+<<<<<<< HEAD
 		pr_debug("%swin #%d: %s reg %p, val 0x%016llx\n",
+=======
+		pr_err("%swin #%d: %s reg %p, val 0x%016llx\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				win->tx_win ? "Tx" : "Rx", win->winid, name,
 				regptr, val);
 }
 
+<<<<<<< HEAD
+=======
+#else	/* vas_debug */
+
+#define vas_log_write(win, name, reg, val)
+#define dump_rx_win_attr(attr)
+
+#endif	/* vas_debug */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void write_uwc_reg(struct vas_window *win, char *name,
 			s32 reg, u64 val)
 {
@@ -448,6 +504,7 @@ static inline u64 read_hvwc_reg(struct vas_window *win,
 	return in_be64(win->hvwc_map+reg);
 }
 
+<<<<<<< HEAD
 /*
  * Encode/decode the Partition Send Window ID (PSWID) for a window in
  * a way that we can uniquely identify any window in the system. i.e.
@@ -476,4 +533,20 @@ static inline void decode_pswid(u32 pswid, int *vasid, int *winid)
 	if (winid)
 		*winid = pswid & 0xFFFF;
 }
+=======
+#ifdef vas_debug
+
+static void print_fifo_msg_count(struct vas_window *txwin)
+{
+	uint64_t read_hvwc_reg(struct vas_window *w, char *n, uint64_t o);
+	pr_devel("Winid %d, Msg count %llu\n", txwin->winid,
+			(uint64_t)read_hvwc_reg(txwin, VREG(LRFIFO_PUSH)));
+}
+#else	/* vas_debug */
+
+#define print_fifo_msg_count(window)
+
+#endif	/* vas_debug */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _VAS_H */

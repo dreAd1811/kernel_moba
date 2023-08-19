@@ -28,6 +28,11 @@
 #include <linux/vmalloc.h>
 #include <linux/sizes.h>
 #include <linux/cma.h>
+<<<<<<< HEAD
+=======
+#include <linux/msm_dma_iommu_mapping.h>
+#include <linux/dma-mapping-fast.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of.h>
 #include <linux/of_address.h>
 
@@ -118,7 +123,11 @@ static void *
 __dma_alloc_remap(struct page *page, size_t size, gfp_t gfp, pgprot_t prot,
 		const void *caller);
 
+<<<<<<< HEAD
 static void __dma_free_remap(void *cpu_addr, size_t size, bool no_warn);
+=======
+static void __dma_free_remap(void *cpu_addr, size_t size, bool warn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot,
 					bool coherent);
@@ -141,6 +150,10 @@ static pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot,
 	return prot;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_ARM_DMA_USE_IOMMU
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool is_dma_coherent(struct device *dev, unsigned long attrs,
 			    bool is_coherent)
 {
@@ -153,6 +166,10 @@ static bool is_dma_coherent(struct device *dev, unsigned long attrs,
 
 	return is_coherent;
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * arm_dma_map_page - map a portion of a page for streaming DMA
@@ -426,9 +443,15 @@ static void __dma_free_remap(void *cpu_addr, size_t size, bool no_warn)
 }
 
 #define DEFAULT_DMA_COHERENT_POOL_SIZE	SZ_256K
+<<<<<<< HEAD
 static struct gen_pool *atomic_pool __ro_after_init;
 
 static size_t atomic_pool_size __initdata = DEFAULT_DMA_COHERENT_POOL_SIZE;
+=======
+static struct gen_pool *atomic_pool;
+
+static size_t atomic_pool_size = DEFAULT_DMA_COHERENT_POOL_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int __init early_coherent_pool(char *p)
 {
@@ -437,6 +460,24 @@ static int __init early_coherent_pool(char *p)
 }
 early_param("coherent_pool", early_coherent_pool);
 
+<<<<<<< HEAD
+=======
+void __init init_dma_coherent_pool_size(unsigned long size)
+{
+	/*
+	 * Catch any attempt to set the pool size too late.
+	 */
+	BUG_ON(atomic_pool);
+
+	/*
+	 * Set architecture specific coherent pool size only if
+	 * it has not been changed by kernel command line parameter.
+	 */
+	if (atomic_pool_size == DEFAULT_DMA_COHERENT_POOL_SIZE)
+		atomic_pool_size = size;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Initialise the coherent pool for atomic allocations.
  */
@@ -472,7 +513,11 @@ static int __init atomic_pool_init(void)
 
 		gen_pool_set_algo(atomic_pool,
 				gen_pool_first_fit_order_align,
+<<<<<<< HEAD
 				NULL);
+=======
+				(void *)PAGE_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_info("DMA: preallocated %zu KiB pool for atomic coherent allocations\n",
 		       atomic_pool_size / 1024);
 		return 0;
@@ -595,7 +640,12 @@ static void __dma_remap(struct page *page, size_t size, pgprot_t prot,
 	flush_tlb_kernel_range(start, end);
 }
 
+<<<<<<< HEAD
 #define NO_KERNEL_MAPPING_DUMMY		0x2222
+=======
+
+#define NO_KERNEL_MAPPING_DUMMY	0x2222
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *__alloc_remap_buffer(struct device *dev, size_t size, gfp_t gfp,
 				 pgprot_t prot, struct page **ret_page,
 				 const void *caller, bool want_vaddr)
@@ -669,7 +719,11 @@ static void *__alloc_from_contiguous(struct device *dev, size_t size,
 	struct page *page;
 	void *ptr = NULL;
 
+<<<<<<< HEAD
 	page = dma_alloc_from_contiguous(dev, count, order, gfp & __GFP_NOWARN);
+=======
+	page = dma_alloc_from_contiguous(dev, count, order, gfp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!page)
 		return NULL;
 
@@ -688,8 +742,13 @@ static void *__alloc_from_contiguous(struct device *dev, size_t size,
 			kmap_flush_unused();
 			kmap_atomic_flush_unused();
 		} else {
+<<<<<<< HEAD
 			ptr = __dma_alloc_remap(page, size, GFP_KERNEL,
 					prot, caller);
+=======
+			ptr = __dma_alloc_remap(page, size, GFP_KERNEL, prot,
+						caller);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!ptr) {
 				dma_release_from_contiguous(dev, page, count);
 				return NULL;
@@ -878,7 +937,11 @@ static void *__dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
 		kfree(buf);
 	}
 
+<<<<<<< HEAD
 	return addr;
+=======
+	return  addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -905,8 +968,13 @@ static int __arm_dma_mmap(struct device *dev, struct vm_area_struct *vma,
 		 void *cpu_addr, dma_addr_t dma_addr, size_t size,
 		 unsigned long attrs)
 {
+<<<<<<< HEAD
 	int ret = -ENXIO;
 	unsigned long nr_vma_pages = vma_pages(vma);
+=======
+	int ret;
+	unsigned long nr_vma_pages = (vma->vm_end - vma->vm_start) >> PAGE_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
 	unsigned long pfn = dma_to_pfn(dev, dma_addr);
 	unsigned long off = vma->vm_pgoff;
@@ -950,7 +1018,11 @@ static void arm_dma_unremap(struct device *dev, void *remapped_addr,
 
 	area = find_vm_area(remapped_addr);
 	if (!area || (area->flags & flags) != flags) {
+<<<<<<< HEAD
 		WARN(1, "trying to free invalid coherent area: %pK\n",
+=======
+		WARN(1, "trying to free invalid coherent area: %p\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			remapped_addr);
 		return;
 	}
@@ -1263,10 +1335,21 @@ int arm_dma_supported(struct device *dev, u64 mask)
 	return __dma_supported(dev, mask, false);
 }
 
+<<<<<<< HEAD
 static const struct dma_map_ops *arm_get_dma_map_ops(bool coherent)
 {
 	return coherent ? &arm_coherent_dma_ops : &arm_dma_ops;
 }
+=======
+#define PREALLOC_DMA_DEBUG_ENTRIES	4096
+
+static int __init dma_debug_do_init(void)
+{
+	dma_debug_init(PREALLOC_DMA_DEBUG_ENTRIES);
+	return 0;
+}
+core_initcall(dma_debug_do_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_ARM_DMA_USE_IOMMU
 
@@ -1370,7 +1453,12 @@ static inline void __free_iova(struct dma_iommu_mapping *mapping,
 
 	start = (addr - bitmap_base) >>	PAGE_SHIFT;
 
+<<<<<<< HEAD
 	if (addr + size > bitmap_base + mapping_size) {
+=======
+	if ((addr + size - 1 > addr) &&
+		(addr + size - 1 > bitmap_base + mapping_size - 1)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * The address range to be freed reaches into the iova
 		 * range of the next bitmap. This should not happen as
@@ -1411,8 +1499,12 @@ static struct page **__iommu_alloc_buffer(struct device *dev, size_t size,
 		unsigned long order = get_order(size);
 		struct page *page;
 
+<<<<<<< HEAD
 		page = dma_alloc_from_contiguous(dev, count, order,
 						 gfp & __GFP_NOWARN);
+=======
+		page = dma_alloc_from_contiguous(dev, count, order, gfp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!page)
 			goto error;
 
@@ -1774,8 +1866,12 @@ void __arm_iommu_free_attrs(struct device *dev, size_t size, void *cpu_addr,
 void arm_iommu_free_attrs(struct device *dev, size_t size,
 		    void *cpu_addr, dma_addr_t handle, unsigned long attrs)
 {
+<<<<<<< HEAD
 	__arm_iommu_free_attrs(dev, size, cpu_addr, handle, attrs,
 				is_dma_coherent(dev, attrs, NORMAL));
+=======
+	__arm_iommu_free_attrs(dev, size, cpu_addr, handle, attrs, NORMAL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void arm_coherent_iommu_free_attrs(struct device *dev, size_t size,
@@ -1811,7 +1907,11 @@ static int __map_sg_chunk(struct device *dev, struct scatterlist *sg,
 	int ret = 0;
 	unsigned int count;
 	struct scatterlist *s;
+<<<<<<< HEAD
 	int prot;
+=======
+	int prot = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	size = PAGE_ALIGN(size);
 	*handle = ARM_MAPPING_ERROR;
@@ -1820,6 +1920,14 @@ static int __map_sg_chunk(struct device *dev, struct scatterlist *sg,
 	if (iova == ARM_MAPPING_ERROR)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Check for coherency.
+	 */
+	prot |= is_coherent ? IOMMU_CACHE : 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (count = 0, s = sg; count < (size >> PAGE_SHIFT); s = sg_next(s)) {
 		phys_addr_t phys = page_to_phys(sg_page(s));
 		unsigned int len = PAGE_ALIGN(s->offset + s->length);
@@ -1827,7 +1935,11 @@ static int __map_sg_chunk(struct device *dev, struct scatterlist *sg,
 		if (!is_coherent && (attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
 			__dma_page_cpu_to_dev(sg_page(s), s->offset, s->length, dir);
 
+<<<<<<< HEAD
 		prot = __dma_info_to_prot(dir, attrs);
+=======
+		prot |= __dma_info_to_prot(dir, attrs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = iommu_map(mapping->domain, iova, phys, len, prot);
 		if (ret < 0)
@@ -1931,9 +2043,29 @@ int arm_iommu_map_sg(struct device *dev, struct scatterlist *sg,
 	dma_addr_t iova;
 	int prot = __dma_info_to_prot(dir, attrs);
 	bool coherent;
+<<<<<<< HEAD
 
 	for_each_sg(sg, s, nents, i)
 		total_length += s->length;
+=======
+	/*
+	 * This is used to check if there are any unaligned offset/size
+	 * given in the scatter list.
+	 */
+	bool unaligned_offset_size = false;
+
+	for_each_sg(sg, s, nents, i) {
+		total_length += s->length;
+		if ((s->offset & ~PAGE_MASK) || (s->length & ~PAGE_MASK)) {
+			unaligned_offset_size = true;
+			break;
+		}
+	}
+
+	if (unaligned_offset_size)
+		return __iommu_map_sg(dev, sg, nents, dir, attrs,
+				      is_dma_coherent(dev, attrs, false));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iova = __alloc_iova(mapping, total_length);
 	if (iova == ARM_MAPPING_ERROR)
@@ -1950,7 +2082,14 @@ int arm_iommu_map_sg(struct device *dev, struct scatterlist *sg,
 
 	for_each_sg(sg, s, nents, i) {
 		s->dma_address = iova + current_offset;
+<<<<<<< HEAD
 		s->dma_length = total_length - current_offset;
+=======
+		if (i == 0)
+			s->dma_length = total_length;
+		else
+			s->dma_length = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		current_offset += s->length;
 	}
 
@@ -2301,7 +2440,10 @@ const struct dma_map_ops iommu_coherent_ops = {
 };
 
 /**
+<<<<<<< HEAD
  * DEPRECATED
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * arm_iommu_create_mapping
  * @bus: pointer to the bus holding the client device (for IOMMU calls)
  * @base: start address of the valid IO address space
@@ -2311,13 +2453,19 @@ const struct dma_map_ops iommu_coherent_ops = {
  * IO address ranges, which is required to perform memory allocation and
  * mapping with IOMMU aware functions.
  *
+<<<<<<< HEAD
  * The client device need to be attached to the mapping with
  * arm_iommu_attach_device function.
+=======
+ * Clients may use iommu_domain_set_attr() to set additional flags prior
+ * to calling arm_iommu_attach_device() to complete initialization.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct dma_iommu_mapping *
 arm_iommu_create_mapping(struct bus_type *bus, dma_addr_t base, u64 size)
 {
 	unsigned int bits = size >> PAGE_SHIFT;
+<<<<<<< HEAD
 	unsigned int bitmap_size = BITS_TO_LONGS(bits) * sizeof(long);
 	struct dma_iommu_mapping *mapping;
 	int extensions = 1;
@@ -2329,12 +2477,49 @@ arm_iommu_create_mapping(struct bus_type *bus, dma_addr_t base, u64 size)
 
 	if (!bitmap_size)
 		return ERR_PTR(-EINVAL);
+=======
+	struct dma_iommu_mapping *mapping;
+
+	if (!bits)
+		return ERR_PTR(-EINVAL);
+
+	mapping = kzalloc(sizeof(struct dma_iommu_mapping), GFP_KERNEL);
+	if (!mapping)
+		return ERR_PTR(-ENOMEM);
+
+	mapping->base = base;
+	mapping->bits = bits;
+
+	mapping->domain = iommu_domain_alloc(bus);
+	if (!mapping->domain)
+		goto err_domain_alloc;
+
+	mapping->init = false;
+	return mapping;
+
+err_domain_alloc:
+	kfree(mapping);
+	return ERR_PTR(-ENOMEM);
+}
+EXPORT_SYMBOL(arm_iommu_create_mapping);
+
+static int
+iommu_init_mapping(struct device *dev, struct dma_iommu_mapping *mapping)
+{
+	unsigned int bitmap_size = BITS_TO_LONGS(mapping->bits) * sizeof(long);
+	int extensions = 1;
+	int err = -ENOMEM;
+
+	if (!bitmap_size)
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bitmap_size > PAGE_SIZE) {
 		extensions = bitmap_size / PAGE_SIZE;
 		bitmap_size = PAGE_SIZE;
 	}
 
+<<<<<<< HEAD
 	mapping = kzalloc(sizeof(struct dma_iommu_mapping), GFP_KERNEL);
 	if (!mapping)
 		goto err;
@@ -2379,6 +2564,42 @@ static void release_iommu_mapping(struct kref *kref)
 	struct dma_iommu_mapping *mapping =
 		container_of(kref, struct dma_iommu_mapping, kref);
 
+=======
+	mapping->bitmap_size = bitmap_size;
+	mapping->bitmaps = kzalloc(extensions * sizeof(unsigned long *),
+			GFP_KERNEL);
+
+	if (!mapping->bitmaps)
+		return -ENOMEM;
+
+	mapping->bitmaps[0] = kzalloc(bitmap_size, GFP_KERNEL);
+	if (!mapping->bitmaps[0])
+		goto err;
+
+	mapping->nr_bitmaps = 1;
+	mapping->extensions = extensions;
+
+	spin_lock_init(&mapping->lock);
+	mapping->ops = &iommu_ops;
+	return 0;
+err:
+	kfree(mapping->bitmaps);
+	return err;
+}
+
+static void iommu_release_mapping(struct kref *kref)
+{
+	int i;
+	int is_fast = 0;
+
+	struct dma_iommu_mapping *mapping =
+		container_of(kref, struct dma_iommu_mapping, kref);
+
+	iommu_domain_get_attr(mapping->domain, DOMAIN_ATTR_FAST, &is_fast);
+	if (is_fast)
+		fast_smmu_release_mapping(kref);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iommu_domain_free(mapping->domain);
 	for (i = 0; i < mapping->nr_bitmaps; i++)
 		kfree(mapping->bitmaps[i]);
@@ -2404,6 +2625,7 @@ static int extend_iommu_mapping(struct dma_iommu_mapping *mapping)
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * DEPRECATED
  */
@@ -2414,24 +2636,118 @@ void arm_iommu_release_mapping(struct dma_iommu_mapping *mapping)
 }
 EXPORT_SYMBOL_GPL(arm_iommu_release_mapping);
 
+=======
+/*
+ * arm_iommu_release_mapping
+ * @mapping: allocted via arm_iommu_create_mapping()
+ *
+ * Frees all resources associated with the iommu mapping.
+ * The device associated with this mapping must be in the 'detached' state
+ */
+void arm_iommu_release_mapping(struct dma_iommu_mapping *mapping)
+{
+	int is_fast = 0;
+	void (*release)(struct kref *kref);
+
+	if (!mapping)
+		return;
+
+	if (!mapping->init) {
+		iommu_domain_free(mapping->domain);
+		kfree(mapping);
+		return;
+	}
+
+	iommu_domain_get_attr(mapping->domain, DOMAIN_ATTR_FAST, &is_fast);
+
+	if (is_fast)
+		release = fast_smmu_release_mapping;
+	else
+		release = iommu_release_mapping;
+
+	kref_put(&mapping->kref, release);
+}
+EXPORT_SYMBOL_GPL(arm_iommu_release_mapping);
+
+static int arm_iommu_init_mapping(struct device *dev,
+			    struct dma_iommu_mapping *mapping)
+{
+	int err = -EINVAL;
+	u64 size = mapping->bits << PAGE_SHIFT;
+	int is_fast = 0;
+
+	if (mapping->init)
+		return 0;
+
+	/* currently only 32-bit DMA address space is supported */
+	if (size > DMA_BIT_MASK(32) + 1) {
+		dev_err(dev, "dma mask %llx too small\n", dma_get_mask(dev));
+		return -ERANGE;
+	}
+
+	iommu_domain_get_attr(mapping->domain, DOMAIN_ATTR_FAST, &is_fast);
+
+	if (is_fast)
+		err = fast_smmu_init_mapping(dev, mapping);
+	else
+		err = iommu_init_mapping(dev, mapping);
+	if (!err) {
+		kref_init(&mapping->kref);
+		mapping->init = true;
+	}
+	return err;
+}
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __arm_iommu_attach_device(struct device *dev,
 				     struct dma_iommu_mapping *mapping)
 {
 	int err;
 
+<<<<<<< HEAD
 	err = iommu_attach_device(mapping->domain, dev);
 	if (err)
 		return err;
 
 	kref_get(&mapping->kref);
+=======
+	err = iommu_attach_group(mapping->domain, dev->iommu_group);
+	if (err)
+		return err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	to_dma_iommu_mapping(dev) = mapping;
 
 	pr_debug("Attached IOMMU controller to %s device.\n", dev_name(dev));
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * DEPRECATED
+=======
+static void __arm_iommu_detach_device(struct device *dev)
+{
+	struct dma_iommu_mapping *mapping;
+
+	mapping = to_dma_iommu_mapping(dev);
+	if (!mapping) {
+		dev_warn(dev, "Not attached\n");
+		return;
+	}
+
+	if (msm_dma_unmap_all_for_dev(dev))
+		dev_warn(dev, "IOMMU detach with outstanding mappings\n");
+
+	iommu_detach_device(mapping->domain, dev);
+	to_dma_iommu_mapping(dev) = NULL;
+
+	pr_debug("Detached IOMMU controller from %s device.\n", dev_name(dev));
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * arm_iommu_attach_device
  * @dev: valid struct device pointer
  * @mapping: io address space mapping structure (returned from
@@ -2448,18 +2764,49 @@ int arm_iommu_attach_device(struct device *dev,
 			    struct dma_iommu_mapping *mapping)
 {
 	int err;
+<<<<<<< HEAD
+=======
+	int s1_bypass = 0;
+	struct iommu_group *group = dev->iommu_group;
+
+	if (!group) {
+		dev_err(dev, "No iommu associated with device\n");
+		return -EINVAL;
+	}
+
+	if (iommu_get_domain_for_dev(dev)) {
+		dev_err(dev, "Device already attached to other iommu_domain\n");
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = __arm_iommu_attach_device(dev, mapping);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	set_dma_ops(dev, &iommu_ops);
+=======
+	err = arm_iommu_init_mapping(dev, mapping);
+	if (err) {
+		__arm_iommu_detach_device(dev);
+		return err;
+	}
+
+	iommu_domain_get_attr(mapping->domain, DOMAIN_ATTR_S1_BYPASS,
+			&s1_bypass);
+	if (!s1_bypass)
+		set_dma_ops(dev, mapping->ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL_GPL(arm_iommu_attach_device);
 
 /**
+<<<<<<< HEAD
  * DEPRECATED
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * arm_iommu_detach_device
  * @dev: valid struct device pointer
  *
@@ -2469,6 +2816,10 @@ EXPORT_SYMBOL_GPL(arm_iommu_attach_device);
 void arm_iommu_detach_device(struct device *dev)
 {
 	struct dma_iommu_mapping *mapping;
+<<<<<<< HEAD
+=======
+	int s1_bypass = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mapping = to_dma_iommu_mapping(dev);
 	if (!mapping) {
@@ -2476,20 +2827,33 @@ void arm_iommu_detach_device(struct device *dev)
 		return;
 	}
 
+<<<<<<< HEAD
 	iommu_detach_device(mapping->domain, dev);
 	kref_put(&mapping->kref, release_iommu_mapping);
 	to_dma_iommu_mapping(dev) = NULL;
 	set_dma_ops(dev, arm_get_dma_map_ops(dev->archdata.dma_coherent));
+=======
+	__arm_iommu_detach_device(dev);
+
+	iommu_domain_get_attr(mapping->domain, DOMAIN_ATTR_S1_BYPASS,
+			      &s1_bypass);
+	if (!s1_bypass)
+		set_dma_ops(dev, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("Detached IOMMU controller from %s device.\n", dev_name(dev));
 }
 EXPORT_SYMBOL_GPL(arm_iommu_detach_device);
 
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct dma_map_ops *arm_get_iommu_dma_map_ops(bool coherent)
 {
 	return coherent ? &iommu_coherent_ops : &iommu_ops;
 }
+<<<<<<< HEAD
 */
 
 static void arm_iommu_dma_release_mapping(struct kref *kref)
@@ -2639,17 +3003,25 @@ static void arm_iommu_get_dma_window(struct device *dev, u64 *dma_addr,
 	*dma_addr = of_read_number(ranges, naddr);
 	*dma_size = of_read_number(ranges + naddr, nsize);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool arm_setup_iommu_dma_ops(struct device *dev, u64 dma_base, u64 size,
 				    const struct iommu_ops *iommu)
 {
+<<<<<<< HEAD
 	struct iommu_group *group;
 	struct iommu_domain *domain;
 	struct dma_iommu_mapping *mapping;
+=======
+	struct dma_iommu_mapping *mapping;
+	struct iommu_domain *domain;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!iommu)
 		return false;
 
+<<<<<<< HEAD
 	group = dev->iommu_group;
 	if (!group)
 		return false;
@@ -2676,12 +3048,39 @@ static bool arm_setup_iommu_dma_ops(struct device *dev, u64 dma_base, u64 size,
 
 	kref_get(&mapping->kref);
 	to_dma_iommu_mapping(dev) = mapping;
+=======
+	/*
+	 * Adding this to not to attach to smmu device by default as any way
+	 * clients call the arm_iommu_create_mapping() in their use cases.
+	 */
+	domain = iommu_get_domain_for_dev(dev);
+
+	if (!domain)
+		return false;
+
+	if (domain->type == IOMMU_DOMAIN_DMA) {
+		mapping = arm_iommu_create_mapping(dev->bus, dma_base, size);
+		if (IS_ERR(mapping)) {
+			pr_warn("Failed to create %llu-byte IOMMU mapping for device %s\n",
+				size, dev_name(dev));
+			return false;
+		}
+
+		if (__arm_iommu_attach_device(dev, mapping)) {
+			pr_warn("Failed to attached device %s to IOMMU_mapping\n",
+				dev_name(dev));
+			arm_iommu_release_mapping(mapping);
+			return false;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
 
 static void arm_teardown_iommu_dma_ops(struct device *dev)
 {
+<<<<<<< HEAD
 	struct dma_iommu_mapping *mapping;
 	int s1_bypass = 0;
 
@@ -2699,6 +3098,17 @@ static void arm_teardown_iommu_dma_ops(struct device *dev)
 		set_dma_ops(dev, NULL);
 
 }
+=======
+	struct dma_iommu_mapping *mapping = to_dma_iommu_mapping(dev);
+
+	if (!mapping)
+		return;
+
+	arm_iommu_detach_device(dev);
+	arm_iommu_release_mapping(mapping);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 
 static bool arm_setup_iommu_dma_ops(struct device *dev, u64 dma_base, u64 size,
@@ -2713,11 +3123,22 @@ static void arm_teardown_iommu_dma_ops(struct device *dev) { }
 
 #endif	/* CONFIG_ARM_DMA_USE_IOMMU */
 
+<<<<<<< HEAD
+=======
+static const struct dma_map_ops *arm_get_dma_map_ops(bool coherent)
+{
+	return coherent ? &arm_coherent_dma_ops : &arm_dma_ops;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
 			const struct iommu_ops *iommu, bool coherent)
 {
 	const struct dma_map_ops *dma_ops;
+<<<<<<< HEAD
 	struct dma_iommu_mapping *mapping;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->archdata.dma_coherent = coherent;
 
@@ -2730,10 +3151,18 @@ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
 		return;
 
 	if (arm_setup_iommu_dma_ops(dev, dma_base, size, iommu)) {
+<<<<<<< HEAD
 		mapping = to_dma_iommu_mapping(dev);
 		dma_ops = mapping->ops;
 	} else {
 		dma_ops = arm_get_dma_map_ops(coherent);
+=======
+		dma_ops = arm_get_iommu_dma_map_ops(coherent);
+		dev->archdata.dma_ops_setup = true;
+	} else {
+		dma_ops = arm_get_dma_map_ops(coherent);
+		dev->archdata.dma_ops_setup = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	set_dma_ops(dev, dma_ops);
@@ -2744,7 +3173,10 @@ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
 		dev->dma_ops = xen_dma_ops;
 	}
 #endif
+<<<<<<< HEAD
 	dev->archdata.dma_ops_setup = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(arch_setup_dma_ops);
 

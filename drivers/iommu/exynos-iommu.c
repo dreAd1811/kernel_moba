@@ -17,7 +17,10 @@
 #include <linux/io.h>
 #include <linux/iommu.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/kmemleak.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/list.h>
 #include <linux/of.h>
 #include <linux/of_iommu.h>
@@ -264,7 +267,10 @@ struct exynos_iommu_domain {
 struct sysmmu_drvdata {
 	struct device *sysmmu;		/* SYSMMU controller device */
 	struct device *master;		/* master device (owner) */
+<<<<<<< HEAD
 	struct device_link *link;	/* runtime PM link to master */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *sfrbase;		/* our registers */
 	struct clk *clk;		/* SYSMMU's clock */
 	struct clk *aclk;		/* SYSMMU's aclk clock */
@@ -1239,10 +1245,26 @@ static phys_addr_t exynos_iommu_iova_to_phys(struct iommu_domain *iommu_domain,
 	return phys;
 }
 
+<<<<<<< HEAD
 static int exynos_iommu_add_device(struct device *dev)
 {
 	struct exynos_iommu_owner *owner = dev->archdata.iommu;
 	struct sysmmu_drvdata *data;
+=======
+static struct iommu_group *get_device_iommu_group(struct device *dev)
+{
+	struct iommu_group *group;
+
+	group = iommu_group_get(dev);
+	if (!group)
+		group = iommu_group_alloc();
+
+	return group;
+}
+
+static int exynos_iommu_add_device(struct device *dev)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iommu_group *group;
 
 	if (!has_sysmmu(dev))
@@ -1253,6 +1275,7 @@ static int exynos_iommu_add_device(struct device *dev)
 	if (IS_ERR(group))
 		return PTR_ERR(group);
 
+<<<<<<< HEAD
 	list_for_each_entry(data, &owner->controllers, owner_node) {
 		/*
 		 * SYSMMU will be runtime activated via device link
@@ -1262,6 +1285,8 @@ static int exynos_iommu_add_device(struct device *dev)
 		data->link = device_link_add(dev, data->sysmmu,
 					     DL_FLAG_PM_RUNTIME);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iommu_group_put(group);
 
 	return 0;
@@ -1270,7 +1295,10 @@ static int exynos_iommu_add_device(struct device *dev)
 static void exynos_iommu_remove_device(struct device *dev)
 {
 	struct exynos_iommu_owner *owner = dev->archdata.iommu;
+<<<<<<< HEAD
 	struct sysmmu_drvdata *data;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!has_sysmmu(dev))
 		return;
@@ -1286,9 +1314,12 @@ static void exynos_iommu_remove_device(struct device *dev)
 		}
 	}
 	iommu_group_remove_device(dev);
+<<<<<<< HEAD
 
 	list_for_each_entry(data, &owner->controllers, owner_node)
 		device_link_del(data->link);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int exynos_iommu_of_xlate(struct device *dev,
@@ -1322,6 +1353,16 @@ static int exynos_iommu_of_xlate(struct device *dev,
 	list_add_tail(&data->owner_node, &owner->controllers);
 	data->master = dev;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * SYSMMU will be runtime activated via device link (dependency) to its
+	 * master device, so there are no direct calls to pm_runtime_get/put
+	 * in this driver.
+	 */
+	device_link_add(dev, data->sysmmu, DL_FLAG_PM_RUNTIME);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1332,8 +1373,14 @@ static const struct iommu_ops exynos_iommu_ops = {
 	.detach_dev = exynos_iommu_detach_device,
 	.map = exynos_iommu_map,
 	.unmap = exynos_iommu_unmap,
+<<<<<<< HEAD
 	.iova_to_phys = exynos_iommu_iova_to_phys,
 	.device_group = generic_device_group,
+=======
+	.map_sg = default_iommu_map_sg,
+	.iova_to_phys = exynos_iommu_iova_to_phys,
+	.device_group = get_device_iommu_group,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.add_device = exynos_iommu_add_device,
 	.remove_device = exynos_iommu_remove_device,
 	.pgsize_bitmap = SECT_SIZE | LPAGE_SIZE | SPAGE_SIZE,
@@ -1389,3 +1436,8 @@ err_reg_driver:
 	return ret;
 }
 core_initcall(exynos_iommu_init);
+<<<<<<< HEAD
+=======
+
+IOMMU_OF_DECLARE(exynos_iommu_of, "samsung,exynos-sysmmu", NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

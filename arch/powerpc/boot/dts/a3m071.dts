@@ -105,11 +105,16 @@
 			reg = <0 0x0 0x02000000>;
 			compatible = "cfi-flash";
 			bank-width = <2>;
+<<<<<<< HEAD
 			partition@0 {
+=======
+			partition@0x0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				label = "u-boot";
 				reg = <0x00000000 0x00040000>;
 				read-only;
 			};
+<<<<<<< HEAD
 			partition@40000 {
 				label = "env";
 				reg = <0x00040000 0x00020000>;
@@ -123,6 +128,21 @@
 				reg = <0x00080000 0x00500000>;
 			};
 			partition@580000 {
+=======
+			partition@0x00040000 {
+				label = "env";
+				reg = <0x00040000 0x00020000>;
+			};
+			partition@0x00060000 {
+				label = "dtb";
+				reg = <0x00060000 0x00020000>;
+			};
+			partition@0x00080000 {
+				label = "kernel";
+				reg = <0x00080000 0x00500000>;
+			};
+			partition@0x00580000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				label = "root";
 				reg = <0x00580000 0x00A80000>;
 			};

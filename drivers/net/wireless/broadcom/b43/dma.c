@@ -1484,7 +1484,11 @@ void b43_dma_handle_txstatus(struct b43_wldev *dev,
 	int slot, firstused;
 	bool frame_succeed;
 	int skip;
+<<<<<<< HEAD
 	static u8 err_out1;
+=======
+	static u8 err_out1, err_out2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ring = parse_cookie(dev, status->cookie, &slot);
 	if (unlikely(!ring))
@@ -1518,6 +1522,7 @@ void b43_dma_handle_txstatus(struct b43_wldev *dev,
 			}
 		} else {
 			/* More than a single header/data pair were missed.
+<<<<<<< HEAD
 			 * Report this error. If running with open-source
 			 * firmware, then reset the controller to
 			 * revive operation.
@@ -1527,6 +1532,15 @@ void b43_dma_handle_txstatus(struct b43_wldev *dev,
 			       ring->index, firstused, slot);
 			if (dev->fw.opensource)
 				b43_controller_restart(dev, "Out of order TX");
+=======
+			 * Report this error once.
+			 */
+			if (!err_out2)
+				b43dbg(dev->wl,
+				       "Out of order TX status report on DMA ring %d. Expected %d, but got %d\n",
+				       ring->index, firstused, slot);
+			err_out2 = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	}

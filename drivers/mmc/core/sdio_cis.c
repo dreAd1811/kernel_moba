@@ -54,9 +54,14 @@ static int cistpl_vers_1(struct mmc_card *card, struct sdio_func *func,
 	string = (char*)(buffer + nr_strings);
 
 	for (i = 0; i < nr_strings; i++) {
+<<<<<<< HEAD
 		size_t buf_len = strlen(buf);
 		buffer[i] = string;
 		strlcpy(string, buf, buf_len + 1);
+=======
+		buffer[i] = string;
+		strlcpy(string, buf, strlen(buf) + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		string += strlen(string) + 1;
 		buf += strlen(buf) + 1;
 	}
@@ -278,8 +283,21 @@ static int sdio_read_cis(struct mmc_card *card, struct sdio_func *func)
 			break;
 
 		/* null entries have no link field or data */
+<<<<<<< HEAD
 		if (tpl_code == 0x00)
 			continue;
+=======
+		if (tpl_code == 0x00) {
+			if (card->cis.vendor == 0x70 &&
+				(card->cis.device == 0x2460 ||
+				 card->cis.device == 0x0460 ||
+				 card->cis.device == 0x23F1 ||
+				 card->cis.device == 0x23F0))
+				break;
+
+			continue;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = mmc_io_rw_direct(card, 0, 0, ptr++, 0, &tpl_link);
 		if (ret)

@@ -23,7 +23,11 @@
 #include <linux/gpio.h>
 #include <linux/gpio_keys.h>
 #include <linux/leds-lp3944.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
+=======
+#include <linux/i2c/pxa-i2c.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/setup.h>
 #include <asm/mach-types.h>

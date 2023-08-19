@@ -20,7 +20,10 @@
 #include <linux/videodev2.h>
 #include <linux/vmalloc.h>
 #include <linux/wait.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/atomic.h>
 #include <media/v4l2-ctrls.h>
 
@@ -367,10 +370,17 @@ static struct uvc_menu_info exposure_auto_controls[] = {
 	{ 8, "Aperture Priority Mode" },
 };
 
+<<<<<<< HEAD
 static s32 uvc_ctrl_get_zoom(struct uvc_control_mapping *mapping,
 	u8 query, const u8 *data)
 {
 	s8 zoom = (s8)data[0];
+=======
+static __s32 uvc_ctrl_get_zoom(struct uvc_control_mapping *mapping,
+	__u8 query, const __u8 *data)
+{
+	__s8 zoom = (__s8)data[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (query) {
 	case UVC_GET_CUR:
@@ -386,17 +396,29 @@ static s32 uvc_ctrl_get_zoom(struct uvc_control_mapping *mapping,
 }
 
 static void uvc_ctrl_set_zoom(struct uvc_control_mapping *mapping,
+<<<<<<< HEAD
 	s32 value, u8 *data)
+=======
+	__s32 value, __u8 *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	data[0] = value == 0 ? 0 : (value > 0) ? 1 : 0xff;
 	data[2] = min((int)abs(value), 0xff);
 }
 
+<<<<<<< HEAD
 static s32 uvc_ctrl_get_rel_speed(struct uvc_control_mapping *mapping,
 	u8 query, const u8 *data)
 {
 	unsigned int first = mapping->offset / 8;
 	s8 rel = (s8)data[first];
+=======
+static __s32 uvc_ctrl_get_rel_speed(struct uvc_control_mapping *mapping,
+	__u8 query, const __u8 *data)
+{
+	unsigned int first = mapping->offset / 8;
+	__s8 rel = (__s8)data[first];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (query) {
 	case UVC_GET_CUR:
@@ -413,7 +435,11 @@ static s32 uvc_ctrl_get_rel_speed(struct uvc_control_mapping *mapping,
 }
 
 static void uvc_ctrl_set_rel_speed(struct uvc_control_mapping *mapping,
+<<<<<<< HEAD
 	s32 value, u8 *data)
+=======
+	__s32 value, __u8 *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int first = mapping->offset / 8;
 
@@ -746,17 +772,29 @@ static struct uvc_control_mapping uvc_ctrl_mappings[] = {
  * Utility functions
  */
 
+<<<<<<< HEAD
 static inline u8 *uvc_ctrl_data(struct uvc_control *ctrl, int id)
+=======
+static inline __u8 *uvc_ctrl_data(struct uvc_control *ctrl, int id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return ctrl->uvc_data + id * ctrl->info.size;
 }
 
+<<<<<<< HEAD
 static inline int uvc_test_bit(const u8 *data, int bit)
+=======
+static inline int uvc_test_bit(const __u8 *data, int bit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (data[bit >> 3] >> (bit & 7)) & 1;
 }
 
+<<<<<<< HEAD
 static inline void uvc_clear_bit(u8 *data, int bit)
+=======
+static inline void uvc_clear_bit(__u8 *data, int bit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	data[bit >> 3] &= ~(1 << (bit & 7));
 }
@@ -766,6 +804,7 @@ static inline void uvc_clear_bit(u8 *data, int bit)
  * a signed 32bit integer. Sign extension will be performed if the mapping
  * references a signed data type.
  */
+<<<<<<< HEAD
 static s32 uvc_get_le_value(struct uvc_control_mapping *mapping,
 	u8 query, const u8 *data)
 {
@@ -773,13 +812,26 @@ static s32 uvc_get_le_value(struct uvc_control_mapping *mapping,
 	int offset = mapping->offset;
 	s32 value = 0;
 	u8 mask;
+=======
+static __s32 uvc_get_le_value(struct uvc_control_mapping *mapping,
+	__u8 query, const __u8 *data)
+{
+	int bits = mapping->size;
+	int offset = mapping->offset;
+	__s32 value = 0;
+	__u8 mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data += offset / 8;
 	offset &= 7;
 	mask = ((1LL << bits) - 1) << offset;
 
 	for (; bits > 0; data++) {
+<<<<<<< HEAD
 		u8 byte = *data & mask;
+=======
+		__u8 byte = *data & mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		value |= offset > 0 ? (byte >> offset) : (byte << (-offset));
 		bits -= 8 - (offset > 0 ? offset : 0);
 		offset -= 8;
@@ -797,11 +849,19 @@ static s32 uvc_get_le_value(struct uvc_control_mapping *mapping,
  * in the little-endian data stored at 'data' to the value 'value'.
  */
 static void uvc_set_le_value(struct uvc_control_mapping *mapping,
+<<<<<<< HEAD
 	s32 value, u8 *data)
 {
 	int bits = mapping->size;
 	int offset = mapping->offset;
 	u8 mask;
+=======
+	__s32 value, __u8 *data)
+{
+	int bits = mapping->size;
+	int offset = mapping->offset;
+	__u8 mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* According to the v4l2 spec, writing any value to a button control
 	 * should result in the action belonging to the button control being
@@ -827,6 +887,7 @@ static void uvc_set_le_value(struct uvc_control_mapping *mapping,
  * Terminal and unit management
  */
 
+<<<<<<< HEAD
 static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
 static const u8 uvc_camera_guid[16] = UVC_GUID_UVC_CAMERA;
 static const u8 uvc_media_transport_input_guid[16] =
@@ -834,6 +895,15 @@ static const u8 uvc_media_transport_input_guid[16] =
 
 static int uvc_entity_match_guid(const struct uvc_entity *entity,
 	const u8 guid[16])
+=======
+static const __u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
+static const __u8 uvc_camera_guid[16] = UVC_GUID_UVC_CAMERA;
+static const __u8 uvc_media_transport_input_guid[16] =
+	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
+
+static int uvc_entity_match_guid(const struct uvc_entity *entity,
+	const __u8 guid[16])
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (UVC_ENTITY_TYPE(entity)) {
 	case UVC_ITT_CAMERA:
@@ -858,7 +928,11 @@ static int uvc_entity_match_guid(const struct uvc_entity *entity,
  * UVC Controls
  */
 
+<<<<<<< HEAD
 static void __uvc_find_control(struct uvc_entity *entity, u32 v4l2_id,
+=======
+static void __uvc_find_control(struct uvc_entity *entity, __u32 v4l2_id,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct uvc_control_mapping **mapping, struct uvc_control **control,
 	int next)
 {
@@ -891,7 +965,11 @@ static void __uvc_find_control(struct uvc_entity *entity, u32 v4l2_id,
 }
 
 static struct uvc_control *uvc_find_control(struct uvc_video_chain *chain,
+<<<<<<< HEAD
 	u32 v4l2_id, struct uvc_control_mapping **mapping)
+=======
+	__u32 v4l2_id, struct uvc_control_mapping **mapping)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct uvc_control *ctrl = NULL;
 	struct uvc_entity *entity;
@@ -972,6 +1050,7 @@ static int uvc_ctrl_populate_cache(struct uvc_video_chain *chain,
 	return 0;
 }
 
+<<<<<<< HEAD
 static s32 __uvc_ctrl_get_value(struct uvc_control_mapping *mapping,
 				const u8 *data)
 {
@@ -992,10 +1071,17 @@ static s32 __uvc_ctrl_get_value(struct uvc_control_mapping *mapping,
 	return value;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __uvc_ctrl_get(struct uvc_video_chain *chain,
 	struct uvc_control *ctrl, struct uvc_control_mapping *mapping,
 	s32 *value)
 {
+<<<<<<< HEAD
+=======
+	struct uvc_menu_info *menu;
+	unsigned int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if ((ctrl->info.flags & UVC_CTRL_FLAG_GET_CUR) == 0)
@@ -1012,8 +1098,23 @@ static int __uvc_ctrl_get(struct uvc_video_chain *chain,
 		ctrl->loaded = 1;
 	}
 
+<<<<<<< HEAD
 	*value = __uvc_ctrl_get_value(mapping,
 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
+=======
+	*value = mapping->get(mapping, UVC_GET_CUR,
+		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
+
+	if (mapping->v4l2_type == V4L2_CTRL_TYPE_MENU) {
+		menu = mapping->menu_info;
+		for (i = 0; i < mapping->menu_count; ++i, ++menu) {
+			if (menu->value == *value) {
+				*value = i;
+				break;
+			}
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1028,10 +1129,17 @@ static int __uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
 	struct uvc_menu_info *menu;
 	unsigned int i;
 
+<<<<<<< HEAD
 	memset(v4l2_ctrl, 0, sizeof(*v4l2_ctrl));
 	v4l2_ctrl->id = mapping->id;
 	v4l2_ctrl->type = mapping->v4l2_type;
 	strlcpy(v4l2_ctrl->name, mapping->name, sizeof(v4l2_ctrl->name));
+=======
+	memset(v4l2_ctrl, 0, sizeof *v4l2_ctrl);
+	v4l2_ctrl->id = mapping->id;
+	v4l2_ctrl->type = mapping->v4l2_type;
+	strlcpy(v4l2_ctrl->name, mapping->name, sizeof v4l2_ctrl->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_ctrl->flags = 0;
 
 	if (!(ctrl->info.flags & UVC_CTRL_FLAG_GET_CUR))
@@ -1134,7 +1242,11 @@ done:
 }
 
 /*
+<<<<<<< HEAD
  * Mapping V4L2 controls to UVC controls can be straightforward if done well.
+=======
+ * Mapping V4L2 controls to UVC controls can be straighforward if done well.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Most of the UVC controls exist in V4L2, and can be mapped directly. Some
  * must be grouped (for instance the Red Balance, Blue Balance and Do White
  * Balance V4L2 controls use the White Balance Component UVC control) or
@@ -1191,7 +1303,11 @@ int uvc_query_v4l2_menu(struct uvc_video_chain *chain,
 		}
 	}
 
+<<<<<<< HEAD
 	strlcpy(query_menu->name, menu_info->name, sizeof(query_menu->name));
+=======
+	strlcpy(query_menu->name, menu_info->name, sizeof query_menu->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	mutex_unlock(&chain->ctrl_mutex);
@@ -1225,6 +1341,7 @@ static void uvc_ctrl_fill_event(struct uvc_video_chain *chain,
 	ev->u.ctrl.default_value = v4l2_ctrl.default_value;
 }
 
+<<<<<<< HEAD
 /*
  * Send control change events to all subscribers for the @ctrl control. By
  * default the subscriber that generated the event, as identified by @handle,
@@ -1237,22 +1354,38 @@ static void uvc_ctrl_send_event(struct uvc_video_chain *chain,
 	struct uvc_control_mapping *mapping, s32 value, u32 changes)
 {
 	struct v4l2_fh *originator = handle ? &handle->vfh : NULL;
+=======
+static void uvc_ctrl_send_event(struct uvc_fh *handle,
+	struct uvc_control *ctrl, struct uvc_control_mapping *mapping,
+	s32 value, u32 changes)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct v4l2_subscribed_event *sev;
 	struct v4l2_event ev;
 
 	if (list_empty(&mapping->ev_subs))
 		return;
 
+<<<<<<< HEAD
 	uvc_ctrl_fill_event(chain, &ev, ctrl, mapping, value, changes);
 
 	list_for_each_entry(sev, &mapping->ev_subs, node) {
 		if (sev->fh != originator ||
 		    (sev->flags & V4L2_EVENT_SUB_FL_ALLOW_FEEDBACK) ||
 		    (changes & V4L2_EVENT_CTRL_CH_FLAGS))
+=======
+	uvc_ctrl_fill_event(handle->chain, &ev, ctrl, mapping, value, changes);
+
+	list_for_each_entry(sev, &mapping->ev_subs, node) {
+		if (sev->fh && (sev->fh != &handle->vfh ||
+		    (sev->flags & V4L2_EVENT_SUB_FL_ALLOW_FEEDBACK) ||
+		    (changes & V4L2_EVENT_CTRL_CH_FLAGS)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			v4l2_event_queue_fh(sev->fh, &ev);
 	}
 }
 
+<<<<<<< HEAD
 /*
  * Send control change events for the slave of the @master control identified
  * by the V4L2 ID @slave_id. The @handle identifies the event subscriber that
@@ -1260,16 +1393,37 @@ static void uvc_ctrl_send_event(struct uvc_video_chain *chain,
  */
 static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
 	struct uvc_fh *handle, struct uvc_control *master, u32 slave_id)
+=======
+static void uvc_ctrl_send_slave_event(struct uvc_fh *handle,
+	struct uvc_control *master, u32 slave_id,
+	const struct v4l2_ext_control *xctrls, unsigned int xctrls_count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct uvc_control_mapping *mapping = NULL;
 	struct uvc_control *ctrl = NULL;
 	u32 changes = V4L2_EVENT_CTRL_CH_FLAGS;
+<<<<<<< HEAD
 	s32 val = 0;
 
+=======
+	unsigned int i;
+	s32 val = 0;
+
+	/*
+	 * We can skip sending an event for the slave if the slave
+	 * is being modified in the same transaction.
+	 */
+	for (i = 0; i < xctrls_count; i++) {
+		if (xctrls[i].id == slave_id)
+			return;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__uvc_find_control(master->entity, slave_id, &mapping, &ctrl, 0);
 	if (ctrl == NULL)
 		return;
 
+<<<<<<< HEAD
 	if (__uvc_ctrl_get(chain, ctrl, mapping, &val) == 0)
 		changes |= V4L2_EVENT_CTRL_CH_VALUE;
 
@@ -1354,6 +1508,12 @@ static bool uvc_ctrl_xctrls_has_control(const struct v4l2_ext_control *xctrls,
 	}
 
 	return false;
+=======
+	if (__uvc_ctrl_get(handle->chain, ctrl, mapping, &val) == 0)
+		changes |= V4L2_EVENT_CTRL_CH_VALUE;
+
+	uvc_ctrl_send_event(handle, ctrl, mapping, val, changes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void uvc_ctrl_send_events(struct uvc_fh *handle,
@@ -1368,6 +1528,7 @@ static void uvc_ctrl_send_events(struct uvc_fh *handle,
 	for (i = 0; i < xctrls_count; ++i) {
 		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
 
+<<<<<<< HEAD
 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
 			/* Notification will be sent from an Interrupt event. */
 			continue;
@@ -1388,12 +1549,21 @@ static void uvc_ctrl_send_events(struct uvc_fh *handle,
 
 			uvc_ctrl_send_slave_event(handle->chain, handle, ctrl,
 						  slave_id);
+=======
+		for (j = 0; j < ARRAY_SIZE(mapping->slave_ids); ++j) {
+			if (!mapping->slave_ids[j])
+				break;
+			uvc_ctrl_send_slave_event(handle, ctrl,
+						  mapping->slave_ids[j],
+						  xctrls, xctrls_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/*
 		 * If the master is being modified in the same transaction
 		 * flags may change too.
 		 */
+<<<<<<< HEAD
 		if (mapping->master_id &&
 		    uvc_ctrl_xctrls_has_control(xctrls, xctrls_count,
 						mapping->master_id))
@@ -1401,6 +1571,19 @@ static void uvc_ctrl_send_events(struct uvc_fh *handle,
 
 		uvc_ctrl_send_event(handle->chain, handle, ctrl, mapping,
 				    xctrls[i].value, changes);
+=======
+		if (mapping->master_id) {
+			for (j = 0; j < xctrls_count; j++) {
+				if (xctrls[j].id == mapping->master_id) {
+					changes |= V4L2_EVENT_CTRL_CH_FLAGS;
+					break;
+				}
+			}
+		}
+
+		uvc_ctrl_send_event(handle, ctrl, mapping, xctrls[i].value,
+				    changes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1573,10 +1756,16 @@ int uvc_ctrl_get(struct uvc_video_chain *chain,
 	return __uvc_ctrl_get(chain, ctrl, mapping, &xctrl->value);
 }
 
+<<<<<<< HEAD
 int uvc_ctrl_set(struct uvc_fh *handle,
 	struct v4l2_ext_control *xctrl)
 {
 	struct uvc_video_chain *chain = handle->chain;
+=======
+int uvc_ctrl_set(struct uvc_video_chain *chain,
+	struct v4l2_ext_control *xctrl)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct uvc_control *ctrl;
 	struct uvc_control_mapping *mapping;
 	s32 value;
@@ -1683,9 +1872,12 @@ int uvc_ctrl_set(struct uvc_fh *handle,
 	mapping->set(mapping, value,
 		uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT));
 
+<<<<<<< HEAD
 	if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
 		ctrl->handle = handle;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctrl->dirty = 1;
 	ctrl->modified = 1;
 	return 0;
@@ -1695,6 +1887,7 @@ int uvc_ctrl_set(struct uvc_fh *handle,
  * Dynamic controls
  */
 
+<<<<<<< HEAD
 /*
  * Retrieve flags for a given control
  */
@@ -1725,6 +1918,8 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void uvc_ctrl_fixup_xu_info(struct uvc_device *dev,
 	const struct uvc_control *ctrl, struct uvc_control_info *info)
 {
@@ -1794,6 +1989,7 @@ static int uvc_ctrl_fill_xu_info(struct uvc_device *dev,
 
 	info->size = le16_to_cpup((__le16 *)data);
 
+<<<<<<< HEAD
 	info->flags = UVC_CTRL_FLAG_GET_MIN | UVC_CTRL_FLAG_GET_MAX
 		    | UVC_CTRL_FLAG_GET_RES | UVC_CTRL_FLAG_GET_DEF;
 
@@ -1801,10 +1997,30 @@ static int uvc_ctrl_fill_xu_info(struct uvc_device *dev,
 	if (ret < 0) {
 		uvc_trace(UVC_TRACE_CONTROL,
 			  "Failed to get flags for control %pUl/%u (%d).\n",
+=======
+	/* Query the control information (GET_INFO) */
+	ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id, dev->intfnum,
+			     info->selector, data, 1);
+	if (ret < 0) {
+		uvc_trace(UVC_TRACE_CONTROL,
+			  "GET_INFO failed on control %pUl/%u (%d).\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  info->entity, info->selector, ret);
 		goto done;
 	}
 
+<<<<<<< HEAD
+=======
+	info->flags = UVC_CTRL_FLAG_GET_MIN | UVC_CTRL_FLAG_GET_MAX
+		    | UVC_CTRL_FLAG_GET_RES | UVC_CTRL_FLAG_GET_DEF
+		    | (data[0] & UVC_CONTROL_CAP_GET ?
+		       UVC_CTRL_FLAG_GET_CUR : 0)
+		    | (data[0] & UVC_CONTROL_CAP_SET ?
+		       UVC_CTRL_FLAG_SET_CUR : 0)
+		    | (data[0] & UVC_CONTROL_CAP_AUTOUPDATE ?
+		       UVC_CTRL_FLAG_AUTO_UPDATE : 0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uvc_ctrl_fixup_xu_info(dev, ctrl, info);
 
 	uvc_trace(UVC_TRACE_CONTROL, "XU control %pUl/%u queried: len %u, "
@@ -1850,9 +2066,15 @@ int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
 	struct uvc_entity *entity;
 	struct uvc_control *ctrl;
 	unsigned int i, found = 0;
+<<<<<<< HEAD
 	u32 reqflags;
 	u16 size;
 	u8 *data = NULL;
+=======
+	__u32 reqflags;
+	__u16 size;
+	__u8 *data = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/* Find the extension unit. */
@@ -2029,6 +2251,7 @@ static int uvc_ctrl_add_info(struct uvc_device *dev, struct uvc_control *ctrl,
 		goto done;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Retrieve control flags from the device. Ignore errors and work with
 	 * default flag values from the uvc_ctrl array when the device doesn't
@@ -2036,6 +2259,8 @@ static int uvc_ctrl_add_info(struct uvc_device *dev, struct uvc_control *ctrl,
 	 */
 	uvc_ctrl_get_flags(dev, ctrl, &ctrl->info);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctrl->initialized = 1;
 
 	uvc_trace(UVC_TRACE_CONTROL, "Added control %pUl/%u to device %s "
@@ -2283,13 +2508,20 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
 	struct uvc_entity *entity;
 	unsigned int i;
 
+<<<<<<< HEAD
 	INIT_WORK(&dev->async_ctrl.work, uvc_ctrl_status_event_work);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Walk the entities list and instantiate controls */
 	list_for_each_entry(entity, &dev->entities, list) {
 		struct uvc_control *ctrl;
 		unsigned int bControlSize = 0, ncontrols;
+<<<<<<< HEAD
 		u8 *bmControls = NULL;
+=======
+		__u8 *bmControls = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (UVC_ENTITY_TYPE(entity) == UVC_VC_EXTENSION_UNIT) {
 			bmControls = entity->extension.bmControls;
@@ -2353,10 +2585,13 @@ void uvc_ctrl_cleanup_device(struct uvc_device *dev)
 	struct uvc_entity *entity;
 	unsigned int i;
 
+<<<<<<< HEAD
 	/* Can be uninitialized if we are aborting on probe error. */
 	if (dev->async_ctrl.work.func)
 		cancel_work_sync(&dev->async_ctrl.work);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Free controls and control mappings for all entities. */
 	list_for_each_entry(entity, &dev->entities, list) {
 		for (i = 0; i < entity->ncontrols; ++i) {

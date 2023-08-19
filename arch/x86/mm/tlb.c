@@ -41,7 +41,11 @@
  * necessary invalidation by clearing out the 'ctx_id' which
  * forces a TLB flush when the context is loaded.
  */
+<<<<<<< HEAD
 static void clear_asid_other(void)
+=======
+void clear_asid_other(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u16 asid;
 
@@ -163,7 +167,11 @@ static void sync_current_stack_to_mm(struct mm_struct *mm)
 	unsigned long sp = current_stack_pointer;
 	pgd_t *pgd = pgd_offset(mm, sp);
 
+<<<<<<< HEAD
 	if (pgtable_l5_enabled()) {
+=======
+	if (CONFIG_PGTABLE_LEVELS > 4) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(pgd_none(*pgd))) {
 			pgd_t *pgd_ref = pgd_offset_k(sp);
 
@@ -318,12 +326,15 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 #endif
 	this_cpu_write(cpu_tlbstate.is_lazy, false);
 
+<<<<<<< HEAD
 	/*
 	 * The membarrier system call requires a full memory barrier and
 	 * core serialization before returning to user-space, after
 	 * storing to rq->curr. Writing to CR3 provides that full
 	 * memory barrier and core serializing instruction.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (real_prev == next) {
 		VM_WARN_ON(this_cpu_read(cpu_tlbstate.ctxs[prev_asid].ctx_id) !=
 			   next->context.ctx_id);
@@ -360,6 +371,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 			sync_current_stack_to_mm(next);
 		}
 
+<<<<<<< HEAD
 		/*
 		 * Stop remote flushes for the previous mm.
 		 * Skip kernel threads; we never send init_mm TLB flushing IPIs,
@@ -370,12 +382,22 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 						mm_cpumask(real_prev)));
 			cpumask_clear_cpu(cpu, mm_cpumask(real_prev));
 		}
+=======
+		/* Stop remote flushes for the previous mm */
+		VM_WARN_ON_ONCE(!cpumask_test_cpu(cpu, mm_cpumask(real_prev)) &&
+				real_prev != &init_mm);
+		cpumask_clear_cpu(cpu, mm_cpumask(real_prev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Start remote flushes and then read tlb_gen.
 		 */
+<<<<<<< HEAD
 		if (next != &init_mm)
 			cpumask_set_cpu(cpu, mm_cpumask(next));
+=======
+		cpumask_set_cpu(cpu, mm_cpumask(next));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		next_tlb_gen = atomic64_read(&next->context.tlb_gen);
 
 		choose_new_asid(next, next_tlb_gen, &new_asid, &need_flush);
@@ -664,9 +686,12 @@ void native_flush_tlb_others(const struct cpumask *cpumask,
 		 * that UV should be updated so that smp_call_function_many(),
 		 * etc, are optimal on UV.
 		 */
+<<<<<<< HEAD
 		unsigned int cpu;
 
 		cpu = smp_processor_id();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpumask = uv_flush_tlb_others(cpumask, info);
 		if (cpumask)
 			smp_call_function_many(cpumask, flush_tlb_func_remote,

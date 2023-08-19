@@ -1,7 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Copyright 2011 Freescale Semiconductor, Inc.
 // Copyright 2011 Linaro Ltd.
+=======
+/*
+ * Copyright 2011 Freescale Semiconductor, Inc.
+ * Copyright 2011 Linaro Ltd.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "imx53.dtsi"
 
@@ -10,12 +24,20 @@
 		stdout-path = &uart1;
 	};
 
+<<<<<<< HEAD
 	memory@70000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x70000000 0x20000000>,
 		      <0xb0000000 0x20000000>;
 	};
 
+<<<<<<< HEAD
 	display0: disp0 {
+=======
+	display0: display@di0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		interface-pix-fmt = "rgb565";
 		pinctrl-names = "default";
@@ -164,6 +186,10 @@
 	imx53-qsb {
 		pinctrl_hog: hoggrp {
 			fsl,pins = <
+<<<<<<< HEAD
+=======
+				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK 0x80000000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				MX53_PAD_GPIO_8__GPIO1_8          0x80000000
 				MX53_PAD_PATA_DATA14__GPIO2_14    0x80000000
 				MX53_PAD_PATA_DATA15__GPIO2_15    0x80000000
@@ -175,7 +201,11 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		led_pin_gpio7_7: led_gpio7_7 {
+=======
+		led_pin_gpio7_7: led_gpio7_7@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fsl,pins = <
 				MX53_PAD_PATA_DA_1__GPIO7_7 0x80000000
 			>;
@@ -190,12 +220,15 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		pinctrl_codec: codecgrp {
 			fsl,pins = <
 				MX53_PAD_GPIO_0__CCM_SSI_EXT1_CLK	0x1c4
 			>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pinctrl_esdhc1: esdhc1grp {
 			fsl,pins = <
 				MX53_PAD_SD1_DATA0__ESDHC1_DAT0		0x1d5
@@ -323,12 +356,18 @@
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
 
+<<<<<<< HEAD
 	sgtl5000: codec@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_codec>;
 		#sound-dai-cells = <0>;
+=======
+	sgtl5000: codec@0a {
+		compatible = "fsl,sgtl5000";
+		reg = <0x0a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		VDDA-supply = <&reg_3p2v>;
 		VDDIO-supply = <&reg_3p2v>;
 		clocks = <&clks IMX5_CLK_SSI_EXT1_GATE>;

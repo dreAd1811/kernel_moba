@@ -571,7 +571,11 @@ int bnx2x_vf_mcast(struct bnx2x *bp, struct bnx2x_virtf *vf,
 	else
 		set_bit(RAMROD_COMP_WAIT, &mcast.ramrod_flags);
 	if (mc_num) {
+<<<<<<< HEAD
 		mc = kcalloc(mc_num, sizeof(struct bnx2x_mcast_list_elem),
+=======
+		mc = kzalloc(mc_num * sizeof(struct bnx2x_mcast_list_elem),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     GFP_KERNEL);
 		if (!mc) {
 			BNX2X_ERR("Cannot Configure multicasts due to lack of memory\n");
@@ -812,7 +816,11 @@ static u8 bnx2x_vf_is_pcie_pending(struct bnx2x *bp, u8 abs_vfid)
 	if (!vf)
 		return false;
 
+<<<<<<< HEAD
 	dev = pci_get_domain_bus_and_slot(vf->domain, vf->bus, vf->devfn);
+=======
+	dev = pci_get_bus_and_slot(vf->bus, vf->devfn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev)
 		return bnx2x_is_pcie_pending(dev);
 	return false;
@@ -1041,6 +1049,7 @@ void bnx2x_iov_init_dmae(struct bnx2x *bp)
 		REG_WR(bp, DMAE_REG_BACKWARD_COMP_EN, 0);
 }
 
+<<<<<<< HEAD
 static int bnx2x_vf_domain(struct bnx2x *bp, int vfid)
 {
 	struct pci_dev *dev = bp->pdev;
@@ -1048,6 +1057,8 @@ static int bnx2x_vf_domain(struct bnx2x *bp, int vfid)
 	return pci_domain_nr(dev->bus);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnx2x_vf_bus(struct bnx2x *bp, int vfid)
 {
 	struct pci_dev *dev = bp->pdev;
@@ -1081,6 +1092,14 @@ static void bnx2x_vf_set_bars(struct bnx2x *bp, struct bnx2x_virtf *vf)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static int bnx2x_ari_enabled(struct pci_dev *dev)
+{
+	return dev->bus->self && dev->bus->self->ari_enabled;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 bnx2x_get_vf_igu_cam_info(struct bnx2x *bp)
 {
@@ -1214,7 +1233,11 @@ int bnx2x_iov_init_one(struct bnx2x *bp, int int_mode_param,
 
 	err = -EIO;
 	/* verify ari is enabled */
+<<<<<<< HEAD
 	if (!pci_ari_enabled(bp->pdev->bus)) {
+=======
+	if (!bnx2x_ari_enabled(bp->pdev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		BNX2X_ERR("ARI not supported (check pci bridge ARI forwarding), SRIOV can not be enabled\n");
 		return 0;
 	}
@@ -1253,9 +1276,14 @@ int bnx2x_iov_init_one(struct bnx2x *bp, int int_mode_param,
 	   num_vfs_param, iov->nr_virtfn);
 
 	/* allocate the vf array */
+<<<<<<< HEAD
 	bp->vfdb->vfs = kcalloc(BNX2X_NR_VIRTFN(bp),
 				sizeof(struct bnx2x_virtf),
 				GFP_KERNEL);
+=======
+	bp->vfdb->vfs = kzalloc(sizeof(struct bnx2x_virtf) *
+				BNX2X_NR_VIRTFN(bp), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bp->vfdb->vfs) {
 		BNX2X_ERR("failed to allocate vf array\n");
 		err = -ENOMEM;
@@ -1279,9 +1307,15 @@ int bnx2x_iov_init_one(struct bnx2x *bp, int int_mode_param,
 	}
 
 	/* allocate the queue arrays for all VFs */
+<<<<<<< HEAD
 	bp->vfdb->vfqs = kcalloc(BNX2X_MAX_NUM_VF_QUEUES,
 				 sizeof(struct bnx2x_vf_queue),
 				 GFP_KERNEL);
+=======
+	bp->vfdb->vfqs = kzalloc(
+		BNX2X_MAX_NUM_VF_QUEUES * sizeof(struct bnx2x_vf_queue),
+		GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!bp->vfdb->vfqs) {
 		BNX2X_ERR("failed to allocate vf queue array\n");
@@ -1614,7 +1648,10 @@ int bnx2x_iov_nic_init(struct bnx2x *bp)
 		struct bnx2x_virtf *vf = BP_VF(bp, vfid);
 
 		/* fill in the BDF and bars */
+<<<<<<< HEAD
 		vf->domain = bnx2x_vf_domain(bp, vfid);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vf->bus = bnx2x_vf_bus(bp, vfid);
 		vf->devfn = bnx2x_vf_devfn(bp, vfid);
 		bnx2x_vf_set_bars(bp, vf);
@@ -1827,7 +1864,10 @@ get_vf:
 		DP(BNX2X_MSG_IOV, "got VF [%d:%d] RSS update ramrod\n",
 		   vf->abs_vfid, qidx);
 		bnx2x_vf_handle_rss_update_eqe(bp, vf);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case EVENT_RING_OPCODE_VF_FLR:
 		/* Do nothing for now */
 		return 0;
@@ -2394,15 +2434,32 @@ static int bnx2x_set_pf_tx_switching(struct bnx2x *bp, bool enable)
 	/* send the ramrod on all the queues of the PF */
 	for_each_eth_queue(bp, i) {
 		struct bnx2x_fastpath *fp = &bp->fp[i];
+<<<<<<< HEAD
+=======
+		int tx_idx;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Set the appropriate Queue object */
 		q_params.q_obj = &bnx2x_sp_obj(bp, fp).q_obj;
 
+<<<<<<< HEAD
 		/* Update the Queue state */
 		rc = bnx2x_queue_state_change(bp, &q_params);
 		if (rc) {
 			BNX2X_ERR("Failed to configure Tx switching\n");
 			return rc;
+=======
+		for (tx_idx = FIRST_TX_COS_INDEX;
+		     tx_idx < fp->max_cos; tx_idx++) {
+			q_params.params.update.cid_index = tx_idx;
+
+			/* Update the Queue state */
+			rc = bnx2x_queue_state_change(bp, &q_params);
+			if (rc) {
+				BNX2X_ERR("Failed to configure Tx switching\n");
+				return rc;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 

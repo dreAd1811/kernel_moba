@@ -676,10 +676,17 @@ static int ar9002_hw_calibrate(struct ath_hw *ah, struct ath9k_channel *chan,
 			return 0;
 
 		ah->cal_list_curr = currCal = currCal->calNext;
+<<<<<<< HEAD
 		if (currCal->calState == CAL_WAITING)
 			ath9k_hw_reset_calibration(ah, currCal);
 
 		return 0;
+=======
+		if (currCal->calState == CAL_WAITING) {
+			ath9k_hw_reset_calibration(ah, currCal);
+			return 0;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Do NF cal only at longer intervals */

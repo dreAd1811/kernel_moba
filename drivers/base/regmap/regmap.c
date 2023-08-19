@@ -20,7 +20,10 @@
 #include <linux/sched.h>
 #include <linux/delay.h>
 #include <linux/log2.h>
+<<<<<<< HEAD
 #include <linux/hwspinlock.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CREATE_TRACE_POINTS
 #include "trace.h"
@@ -168,6 +171,7 @@ bool regmap_precious(struct regmap *map, unsigned int reg)
 	return false;
 }
 
+<<<<<<< HEAD
 bool regmap_readable_noinc(struct regmap *map, unsigned int reg)
 {
 	if (map->readable_noinc_reg)
@@ -179,13 +183,19 @@ bool regmap_readable_noinc(struct regmap *map, unsigned int reg)
 	return true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool regmap_volatile_range(struct regmap *map, unsigned int reg,
 	size_t num)
 {
 	unsigned int i;
 
 	for (i = 0; i < num; i++)
+<<<<<<< HEAD
 		if (!regmap_volatile(map, reg + regmap_get_offset(map, i)))
+=======
+		if (!regmap_volatile(map, reg + i))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return false;
 
 	return true;
@@ -425,6 +435,7 @@ static unsigned int regmap_parse_64_native(const void *buf)
 }
 #endif
 
+<<<<<<< HEAD
 static void regmap_lock_hwlock(void *__map)
 {
 	struct regmap *map = __map;
@@ -473,6 +484,8 @@ static void regmap_lock_unlock_none(void *__map)
 
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void regmap_lock_mutex(void *__map)
 {
 	struct regmap *map = __map;
@@ -683,6 +696,7 @@ struct regmap *__regmap_init(struct device *dev,
 		goto err;
 	}
 
+<<<<<<< HEAD
 	if (config->name) {
 		map->name = kstrdup_const(config->name, GFP_KERNEL);
 		if (!map->name) {
@@ -721,6 +735,12 @@ struct regmap *__regmap_init(struct device *dev,
 		}
 
 		map->lock_arg = map;
+=======
+	if (config->lock && config->unlock) {
+		map->lock = config->lock;
+		map->unlock = config->unlock;
+		map->lock_arg = config->lock_arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if ((bus && bus->fast_io) ||
 		    config->fast_io) {
@@ -777,22 +797,34 @@ struct regmap *__regmap_init(struct device *dev,
 	map->rd_table = config->rd_table;
 	map->volatile_table = config->volatile_table;
 	map->precious_table = config->precious_table;
+<<<<<<< HEAD
 	map->rd_noinc_table = config->rd_noinc_table;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	map->writeable_reg = config->writeable_reg;
 	map->readable_reg = config->readable_reg;
 	map->volatile_reg = config->volatile_reg;
 	map->precious_reg = config->precious_reg;
+<<<<<<< HEAD
 	map->readable_noinc_reg = config->readable_noinc_reg;
 	map->cache_type = config->cache_type;
+=======
+	map->cache_type = config->cache_type;
+	map->name = config->name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&map->async_lock);
 	INIT_LIST_HEAD(&map->async_list);
 	INIT_LIST_HEAD(&map->async_free);
 	init_waitqueue_head(&map->async_waitq);
 
+<<<<<<< HEAD
 	if (config->read_flag_mask ||
 	    config->write_flag_mask ||
 	    config->zero_flag_mask) {
+=======
+	if (config->read_flag_mask || config->write_flag_mask) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map->read_flag_mask = config->read_flag_mask;
 		map->write_flag_mask = config->write_flag_mask;
 	} else if (bus) {
@@ -826,7 +858,11 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.format_write = regmap_format_2_6_write;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -836,7 +872,11 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.format_write = regmap_format_4_12_write;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -846,7 +886,11 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.format_write = regmap_format_7_9_write;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -856,7 +900,11 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.format_write = regmap_format_10_14_write;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -876,13 +924,21 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.format_reg = regmap_format_16_native;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
 	case 24:
 		if (reg_endian != REGMAP_ENDIAN_BIG)
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map->format.format_reg = regmap_format_24;
 		break;
 
@@ -898,7 +954,11 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.format_reg = regmap_format_32_native;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
@@ -915,13 +975,21 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.format_reg = regmap_format_64_native;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 #endif
 
 	default:
+<<<<<<< HEAD
 		goto err_hwlock;
+=======
+		goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (val_endian == REGMAP_ENDIAN_NATIVE)
@@ -950,12 +1018,20 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.parse_val = regmap_parse_16_native;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	case 24:
 		if (val_endian != REGMAP_ENDIAN_BIG)
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map->format.format_val = regmap_format_24;
 		map->format.parse_val = regmap_parse_24;
 		break;
@@ -976,7 +1052,11 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.parse_val = regmap_parse_32_native;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 #ifdef CONFIG_64BIT
@@ -997,7 +1077,11 @@ struct regmap *__regmap_init(struct device *dev,
 			map->format.parse_val = regmap_parse_64_native;
 			break;
 		default:
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 #endif
@@ -1006,18 +1090,30 @@ struct regmap *__regmap_init(struct device *dev,
 	if (map->format.format_write) {
 		if ((reg_endian != REGMAP_ENDIAN_BIG) ||
 		    (val_endian != REGMAP_ENDIAN_BIG))
+<<<<<<< HEAD
 			goto err_hwlock;
+=======
+			goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map->use_single_write = true;
 	}
 
 	if (!map->format.format_write &&
 	    !(map->format.format_reg && map->format.format_val))
+<<<<<<< HEAD
 		goto err_hwlock;
+=======
+		goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	map->work_buf = kzalloc(map->format.buf_size, GFP_KERNEL);
 	if (map->work_buf == NULL) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err_hwlock;
+=======
+		goto err_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (map->format.format_write) {
@@ -1129,8 +1225,11 @@ skip_format_initialization:
 		ret = regmap_attach_dev(dev, map, config);
 		if (ret != 0)
 			goto err_regcache;
+<<<<<<< HEAD
 	} else {
 		regmap_debugfs_init(map, config->name);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return map;
@@ -1140,11 +1239,14 @@ err_regcache:
 err_range:
 	regmap_range_exit(map);
 	kfree(map->work_buf);
+<<<<<<< HEAD
 err_hwlock:
 	if (map->hwlock)
 		hwspin_lock_free(map->hwlock);
 err_name:
 	kfree_const(map->name);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_map:
 	kfree(map);
 err:
@@ -1298,7 +1400,10 @@ int regmap_reinit_cache(struct regmap *map, const struct regmap_config *config)
 	map->readable_reg = config->readable_reg;
 	map->volatile_reg = config->volatile_reg;
 	map->precious_reg = config->precious_reg;
+<<<<<<< HEAD
 	map->readable_noinc_reg = config->readable_noinc_reg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	map->cache_type = config->cache_type;
 
 	regmap_debugfs_init(map, config->name);
@@ -1333,9 +1438,12 @@ void regmap_exit(struct regmap *map)
 		kfree(async->work_buf);
 		kfree(async);
 	}
+<<<<<<< HEAD
 	if (map->hwlock)
 		hwspin_lock_free(map->hwlock);
 	kfree_const(map->name);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(map);
 }
 EXPORT_SYMBOL_GPL(regmap_exit);
@@ -1350,7 +1458,11 @@ static int dev_get_regmap_match(struct device *dev, void *res, void *data)
 
 	/* If the user didn't specify a name match any */
 	if (data)
+<<<<<<< HEAD
 		return (*r)->name == data;
+=======
+		return !strcmp((*r)->name, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		return 1;
 }
@@ -1454,8 +1566,13 @@ static void regmap_set_work_buf_flag_mask(struct regmap *map, int max_bytes,
 		buf[i] |= (mask >> (8 * i)) & 0xff;
 }
 
+<<<<<<< HEAD
 static int _regmap_raw_write_impl(struct regmap *map, unsigned int reg,
 				  const void *val, size_t val_len)
+=======
+int _regmap_raw_write(struct regmap *map, unsigned int reg,
+		      const void *val, size_t val_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct regmap_range_node *range;
 	unsigned long flags;
@@ -1506,9 +1623,14 @@ static int _regmap_raw_write_impl(struct regmap *map, unsigned int reg,
 		while (val_num > win_residue) {
 			dev_dbg(map->dev, "Writing window %d/%zu\n",
 				win_residue, val_len / map->format.val_bytes);
+<<<<<<< HEAD
 			ret = _regmap_raw_write_impl(map, reg, val,
 						     win_residue *
 						     map->format.val_bytes);
+=======
+			ret = _regmap_raw_write(map, reg, val, win_residue *
+						map->format.val_bytes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret != 0)
 				return ret;
 
@@ -1726,11 +1848,19 @@ static int _regmap_bus_raw_write(void *context, unsigned int reg,
 
 	map->format.format_val(map->work_buf + map->format.reg_bytes
 			       + map->format.pad_bytes, val, 0);
+<<<<<<< HEAD
 	return _regmap_raw_write_impl(map, reg,
 				      map->work_buf +
 				      map->format.reg_bytes +
 				      map->format.pad_bytes,
 				      map->format.val_bytes);
+=======
+	return _regmap_raw_write(map, reg,
+				 map->work_buf +
+				 map->format.reg_bytes +
+				 map->format.pad_bytes,
+				 map->format.val_bytes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void *_regmap_map_get_context(struct regmap *map)
@@ -1825,6 +1955,7 @@ int regmap_write_async(struct regmap *map, unsigned int reg, unsigned int val)
 }
 EXPORT_SYMBOL_GPL(regmap_write_async);
 
+<<<<<<< HEAD
 int _regmap_raw_write(struct regmap *map, unsigned int reg,
 		      const void *val, size_t val_len)
 {
@@ -1863,6 +1994,8 @@ int _regmap_raw_write(struct regmap *map, unsigned int reg,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * regmap_raw_write() - Write raw values to one or more registers
  *
@@ -1888,6 +2021,11 @@ int regmap_raw_write(struct regmap *map, unsigned int reg,
 		return -EINVAL;
 	if (val_len % map->format.val_bytes)
 		return -EINVAL;
+<<<<<<< HEAD
+=======
+	if (map->max_raw_write && map->max_raw_write < val_len)
+		return -E2BIG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	map->lock(map->lock_arg);
 
@@ -1978,15 +2116,33 @@ int regmap_bulk_write(struct regmap *map, unsigned int reg, const void *val,
 {
 	int ret = 0, i;
 	size_t val_bytes = map->format.val_bytes;
+<<<<<<< HEAD
+=======
+	size_t total_size = val_bytes * val_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!IS_ALIGNED(reg, map->reg_stride))
 		return -EINVAL;
 
 	/*
+<<<<<<< HEAD
 	 * Some devices don't support bulk write, for them we have a series of
 	 * single write operations.
 	 */
 	if (!map->bus || !map->format.parse_inplace) {
+=======
+	 * Some devices don't support bulk write, for
+	 * them we have a series of single write operations in the first two if
+	 * blocks.
+	 *
+	 * The first if block is used for memory mapped io. It does not allow
+	 * val_bytes of 3 for example.
+	 * The second one is for busses that do not provide raw I/O.
+	 * The third one is used for busses which do not have these limitations
+	 * and can write arbitrary value lengths.
+	 */
+	if (!map->bus) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map->lock(map->lock_arg);
 		for (i = 0; i < val_count; i++) {
 			unsigned int ival;
@@ -2019,6 +2175,7 @@ int regmap_bulk_write(struct regmap *map, unsigned int reg, const void *val,
 		}
 out:
 		map->unlock(map->lock_arg);
+<<<<<<< HEAD
 	} else {
 		void *wval;
 
@@ -2030,6 +2187,83 @@ out:
 			map->format.parse_inplace(wval + i);
 
 		ret = regmap_raw_write(map, reg, wval, val_bytes * val_count);
+=======
+	} else if (map->bus && !map->format.parse_inplace) {
+		const u8 *u8 = val;
+		const u16 *u16 = val;
+		const u32 *u32 = val;
+		unsigned int ival;
+
+		for (i = 0; i < val_count; i++) {
+			switch (map->format.val_bytes) {
+			case 4:
+				ival = u32[i];
+				break;
+			case 2:
+				ival = u16[i];
+				break;
+			case 1:
+				ival = u8[i];
+				break;
+			default:
+				return -EINVAL;
+			}
+
+			ret = regmap_write(map, reg + (i * map->reg_stride),
+					   ival);
+			if (ret)
+				return ret;
+		}
+	} else if (map->use_single_write ||
+		   (map->max_raw_write && map->max_raw_write < total_size)) {
+		int chunk_stride = map->reg_stride;
+		size_t chunk_size = val_bytes;
+		size_t chunk_count = val_count;
+
+		if (!map->use_single_write) {
+			chunk_size = map->max_raw_write;
+			if (chunk_size % val_bytes)
+				chunk_size -= chunk_size % val_bytes;
+			chunk_count = total_size / chunk_size;
+			chunk_stride *= chunk_size / val_bytes;
+		}
+
+		map->lock(map->lock_arg);
+		/* Write as many bytes as possible with chunk_size */
+		for (i = 0; i < chunk_count; i++) {
+			ret = _regmap_raw_write(map,
+						reg + (i * chunk_stride),
+						val + (i * chunk_size),
+						chunk_size);
+			if (ret)
+				break;
+		}
+
+		/* Write remaining bytes */
+		if (!ret && chunk_size * i < total_size) {
+			ret = _regmap_raw_write(map, reg + (i * chunk_stride),
+						val + (i * chunk_size),
+						total_size - i * chunk_size);
+		}
+		map->unlock(map->lock_arg);
+	} else {
+		void *wval;
+
+		if (!val_count)
+			return -EINVAL;
+
+		wval = kmemdup(val, val_count * val_bytes, map->alloc_flags);
+		if (!wval) {
+			dev_err(map->dev, "Error in memory allocation\n");
+			return -ENOMEM;
+		}
+		for (i = 0; i < val_count * val_bytes; i += val_bytes)
+			map->format.parse_inplace(wval + i);
+
+		map->lock(map->lock_arg);
+		ret = _regmap_raw_write(map, reg, wval, val_bytes * val_count);
+		map->unlock(map->lock_arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		kfree(wval);
 	}
@@ -2419,15 +2653,24 @@ static int _regmap_bus_read(void *context, unsigned int reg,
 {
 	int ret;
 	struct regmap *map = context;
+<<<<<<< HEAD
 	void *work_val = map->work_buf + map->format.reg_bytes +
 		map->format.pad_bytes;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!map->format.parse_val)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = _regmap_raw_read(map, reg, work_val, map->format.val_bytes);
 	if (ret == 0)
 		*val = map->format.parse_val(work_val);
+=======
+	ret = _regmap_raw_read(map, reg, map->work_buf, map->format.val_bytes);
+	if (ret == 0)
+		*val = map->format.parse_val(map->work_buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2525,13 +2768,17 @@ int regmap_raw_read(struct regmap *map, unsigned int reg, void *val,
 
 	if (regmap_volatile_range(map, reg, val_count) || map->cache_bypass ||
 	    map->cache_type == REGCACHE_NONE) {
+<<<<<<< HEAD
 		size_t chunk_count, chunk_bytes;
 		size_t chunk_regs = val_count;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!map->bus->read) {
 			ret = -ENOTSUPP;
 			goto out;
 		}
+<<<<<<< HEAD
 
 		if (map->use_single_read)
 			chunk_regs = 1;
@@ -2558,6 +2805,16 @@ int regmap_raw_read(struct regmap *map, unsigned int reg, void *val,
 			if (ret != 0)
 				goto out;
 		}
+=======
+		if (map->max_raw_read && map->max_raw_read < val_len) {
+			ret = -E2BIG;
+			goto out;
+		}
+
+		/* Physical block read if there's no cache involved */
+		ret = _regmap_raw_read(map, reg, val, val_len);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* Otherwise go word by word for the cache; should be low
 		 * cost as we expect to hit the cache.
@@ -2580,6 +2837,7 @@ int regmap_raw_read(struct regmap *map, unsigned int reg, void *val,
 EXPORT_SYMBOL_GPL(regmap_raw_read);
 
 /**
+<<<<<<< HEAD
  * regmap_noinc_read(): Read data from a register without incrementing the
  *			register number
  *
@@ -2644,6 +2902,9 @@ EXPORT_SYMBOL_GPL(regmap_noinc_read);
 
 /**
  * regmap_field_read(): Read a value to a single register field
+=======
+ * regmap_field_read() - Read a value to a single register field
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @field: Register field to read from
  * @val: Pointer to store read value
@@ -2720,6 +2981,7 @@ int regmap_bulk_read(struct regmap *map, unsigned int reg, void *val,
 
 	if (!IS_ALIGNED(reg, map->reg_stride))
 		return -EINVAL;
+<<<<<<< HEAD
 	if (val_count == 0)
 		return -EINVAL;
 
@@ -2727,10 +2989,65 @@ int regmap_bulk_read(struct regmap *map, unsigned int reg, void *val,
 		ret = regmap_raw_read(map, reg, val, val_bytes * val_count);
 		if (ret != 0)
 			return ret;
+=======
+
+	if (map->bus && map->format.parse_inplace && (vol || map->cache_type == REGCACHE_NONE)) {
+		/*
+		 * Some devices does not support bulk read, for
+		 * them we have a series of single read operations.
+		 */
+		size_t total_size = val_bytes * val_count;
+
+		if (!map->use_single_read &&
+		    (!map->max_raw_read || map->max_raw_read > total_size)) {
+			ret = regmap_raw_read(map, reg, val,
+					      val_bytes * val_count);
+			if (ret != 0)
+				return ret;
+		} else {
+			/*
+			 * Some devices do not support bulk read or do not
+			 * support large bulk reads, for them we have a series
+			 * of read operations.
+			 */
+			int chunk_stride = map->reg_stride;
+			size_t chunk_size = val_bytes;
+			size_t chunk_count = val_count;
+
+			if (!map->use_single_read) {
+				chunk_size = map->max_raw_read;
+				if (chunk_size % val_bytes)
+					chunk_size -= chunk_size % val_bytes;
+				chunk_count = total_size / chunk_size;
+				chunk_stride *= chunk_size / val_bytes;
+			}
+
+			/* Read bytes that fit into a multiple of chunk_size */
+			for (i = 0; i < chunk_count; i++) {
+				ret = regmap_raw_read(map,
+						      reg + (i * chunk_stride),
+						      val + (i * chunk_size),
+						      chunk_size);
+				if (ret != 0)
+					return ret;
+			}
+
+			/* Read remaining bytes */
+			if (chunk_size * i < total_size) {
+				ret = regmap_raw_read(map,
+						      reg + (i * chunk_stride),
+						      val + (i * chunk_size),
+						      total_size - i * chunk_size);
+				if (ret != 0)
+					return ret;
+			}
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		for (i = 0; i < val_count * val_bytes; i += val_bytes)
 			map->format.parse_inplace(val + i);
 	} else {
+<<<<<<< HEAD
 #ifdef CONFIG_64BIT
 		u64 *u64 = val;
 #endif
@@ -2774,6 +3091,54 @@ out:
 	}
 
 	return ret;
+=======
+		for (i = 0; i < val_count; i++) {
+			unsigned int ival;
+			ret = regmap_read(map, reg + regmap_get_offset(map, i),
+					  &ival);
+			if (ret != 0)
+				return ret;
+
+			if (map->format.format_val) {
+				map->format.format_val(val + (i * val_bytes), ival, 0);
+			} else {
+				/* Devices providing read and write
+				 * operations can use the bulk I/O
+				 * functions if they define a val_bytes,
+				 * we assume that the values are native
+				 * endian.
+				 */
+#ifdef CONFIG_64BIT
+				u64 *u64 = val;
+#endif
+				u32 *u32 = val;
+				u16 *u16 = val;
+				u8 *u8 = val;
+
+				switch (map->format.val_bytes) {
+#ifdef CONFIG_64BIT
+				case 8:
+					u64[i] = ival;
+					break;
+#endif
+				case 4:
+					u32[i] = ival;
+					break;
+				case 2:
+					u16[i] = ival;
+					break;
+				case 1:
+					u8[i] = ival;
+					break;
+				default:
+					return -EINVAL;
+				}
+			}
+		}
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(regmap_bulk_read);
 

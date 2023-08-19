@@ -26,13 +26,19 @@
 static bool initialize_cik(struct kernel_queue *kq, struct kfd_dev *dev,
 			enum kfd_queue_type type, unsigned int queue_size);
 static void uninitialize_cik(struct kernel_queue *kq);
+<<<<<<< HEAD
 static void submit_packet_cik(struct kernel_queue *kq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void kernel_queue_init_cik(struct kernel_queue_ops *ops)
 {
 	ops->initialize = initialize_cik;
 	ops->uninitialize = uninitialize_cik;
+<<<<<<< HEAD
 	ops->submit_packet = submit_packet_cik;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool initialize_cik(struct kernel_queue *kq, struct kfd_dev *dev,
@@ -44,6 +50,7 @@ static bool initialize_cik(struct kernel_queue *kq, struct kfd_dev *dev,
 static void uninitialize_cik(struct kernel_queue *kq)
 {
 }
+<<<<<<< HEAD
 
 static void submit_packet_cik(struct kernel_queue *kq)
 {
@@ -51,3 +58,5 @@ static void submit_packet_cik(struct kernel_queue *kq)
 	write_kernel_doorbell(kq->queue->properties.doorbell_ptr,
 				kq->pending_wptr);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

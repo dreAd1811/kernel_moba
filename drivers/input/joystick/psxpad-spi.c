@@ -292,7 +292,11 @@ static int psxpad_spi_probe(struct spi_device *spi)
 	if (!pad)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	pdev = input_allocate_polled_device();
+=======
+	pdev = devm_input_allocate_polled_device(&spi->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pdev) {
 		dev_err(&spi->dev, "failed to allocate input device\n");
 		return -ENOMEM;

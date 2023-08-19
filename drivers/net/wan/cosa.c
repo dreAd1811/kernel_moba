@@ -924,7 +924,11 @@ static int chrdev_tx_done(struct channel_data *chan, int size)
 	return 1;
 }
 
+<<<<<<< HEAD
 static __poll_t cosa_poll(struct file *file, poll_table *poll)
+=======
+static unsigned int cosa_poll(struct file *file, poll_table *poll)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	pr_info("cosa_poll is here\n");
 	return 0;

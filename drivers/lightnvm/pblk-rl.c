@@ -73,6 +73,7 @@ void pblk_rl_user_in(struct pblk_rl *rl, int nr_entries)
 	pblk_rl_kick_u_timer(rl);
 }
 
+<<<<<<< HEAD
 void pblk_rl_werr_line_in(struct pblk_rl *rl)
 {
 	atomic_inc(&rl->werr_lines);
@@ -83,6 +84,8 @@ void pblk_rl_werr_line_out(struct pblk_rl *rl)
 	atomic_dec(&rl->werr_lines);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pblk_rl_gc_in(struct pblk_rl *rl, int nr_entries)
 {
 	atomic_add(nr_entries, &rl->rb_gc_cnt);
@@ -99,6 +102,7 @@ unsigned long pblk_rl_nr_free_blks(struct pblk_rl *rl)
 	return atomic_read(&rl->free_blocks);
 }
 
+<<<<<<< HEAD
 unsigned long pblk_rl_nr_user_free_blks(struct pblk_rl *rl)
 {
 	return atomic_read(&rl->free_user_blocks);
@@ -124,6 +128,23 @@ static void __pblk_rl_update_rates(struct pblk_rl *rl,
 			rl->rb_gc_max = 0;
 			rl->rb_state = PBLK_RL_OFF;
 		}
+=======
+/*
+ * We check for (i) the number of free blocks in the current LUN and (ii) the
+ * total number of free blocks in the pblk instance. This is to even out the
+ * number of free blocks on each LUN when GC kicks in.
+ *
+ * Only the total number of free blocks is used to configure the rate limiter.
+ */
+static int pblk_rl_update_rates(struct pblk_rl *rl, unsigned long max)
+{
+	unsigned long free_blocks = pblk_rl_nr_free_blks(rl);
+
+	if (free_blocks >= rl->high) {
+		rl->rb_user_max = max;
+		rl->rb_gc_max = 0;
+		rl->rb_state = PBLK_RL_HIGH;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (free_blocks < rl->high) {
 		int shift = rl->high_pw - rl->rb_windows_pw;
 		int user_windows = free_blocks >> shift;
@@ -144,12 +165,30 @@ static void __pblk_rl_update_rates(struct pblk_rl *rl,
 		rl->rb_state = PBLK_RL_LOW;
 	}
 
+<<<<<<< HEAD
 	if (rl->rb_state != PBLK_RL_OFF)
+=======
+	return rl->rb_state;
+}
+
+void pblk_rl_free_lines_inc(struct pblk_rl *rl, struct pblk_line *line)
+{
+	struct pblk *pblk = container_of(rl, struct pblk, rl);
+	int blk_in_line = atomic_read(&line->blk_in_line);
+	int ret;
+
+	atomic_add(blk_in_line, &rl->free_blocks);
+	/* Rates will not change that often - no need to lock update */
+	ret = pblk_rl_update_rates(rl, rl->rb_budget);
+
+	if (ret == (PBLK_RL_MID | PBLK_RL_LOW))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pblk_gc_should_start(pblk);
 	else
 		pblk_gc_should_stop(pblk);
 }
 
+<<<<<<< HEAD
 void pblk_rl_update_rates(struct pblk_rl *rl)
 {
 	__pblk_rl_update_rates(rl, pblk_rl_nr_user_free_blks(rl));
@@ -181,6 +220,26 @@ void pblk_rl_free_lines_dec(struct pblk_rl *rl, struct pblk_line *line,
 		free_blocks = atomic_read(&rl->free_user_blocks);
 
 	__pblk_rl_update_rates(rl, free_blocks);
+=======
+void pblk_rl_free_lines_dec(struct pblk_rl *rl, struct pblk_line *line)
+{
+	int blk_in_line = atomic_read(&line->blk_in_line);
+
+	atomic_sub(blk_in_line, &rl->free_blocks);
+}
+
+void pblk_gc_should_kick(struct pblk *pblk)
+{
+	struct pblk_rl *rl = &pblk->rl;
+	int ret;
+
+	/* Rates will not change that often - no need to lock update */
+	ret = pblk_rl_update_rates(rl, rl->rb_budget);
+	if (ret == (PBLK_RL_MID | PBLK_RL_LOW))
+		pblk_gc_should_start(pblk);
+	else
+		pblk_gc_should_stop(pblk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int pblk_rl_high_thrs(struct pblk_rl *rl)
@@ -188,6 +247,7 @@ int pblk_rl_high_thrs(struct pblk_rl *rl)
 	return rl->high;
 }
 
+<<<<<<< HEAD
 int pblk_rl_max_io(struct pblk_rl *rl)
 {
 	return rl->rb_max_io;
@@ -196,6 +256,21 @@ int pblk_rl_max_io(struct pblk_rl *rl)
 static void pblk_rl_u_timer(struct timer_list *t)
 {
 	struct pblk_rl *rl = from_timer(rl, t, u_timer);
+=======
+int pblk_rl_low_thrs(struct pblk_rl *rl)
+{
+	return rl->low;
+}
+
+int pblk_rl_sysfs_rate_show(struct pblk_rl *rl)
+{
+	return rl->rb_user_max;
+}
+
+static void pblk_rl_u_timer(unsigned long data)
+{
+	struct pblk_rl *rl = (struct pblk_rl *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Release user I/O state. Protect from GC */
 	smp_store_release(&rl->rb_user_active, 0);
@@ -209,6 +284,7 @@ void pblk_rl_free(struct pblk_rl *rl)
 void pblk_rl_init(struct pblk_rl *rl, int budget)
 {
 	struct pblk *pblk = container_of(rl, struct pblk, rl);
+<<<<<<< HEAD
 	struct nvm_tgt_dev *dev = pblk->dev;
 	struct nvm_geo *geo = &dev->geo;
 	struct pblk_line_mgmt *l_mg = &pblk->l_mg;
@@ -225,6 +301,19 @@ void pblk_rl_init(struct pblk_rl *rl, int budget)
 	rl->high = pblk->op_blks - blk_meta - lm->blk_per_line;
 	rl->high_pw = get_count_order(rl->high);
 
+=======
+	struct pblk_line_meta *lm = &pblk->lm;
+	int min_blocks = lm->blk_per_line * PBLK_GC_RSV_LINE;
+	unsigned int rb_windows;
+
+	rl->high = rl->total_blocks / PBLK_USER_HIGH_THRS;
+	rl->high_pw = get_count_order(rl->high);
+
+	rl->low = rl->total_blocks / PBLK_USER_LOW_THRS;
+	if (rl->low < min_blocks)
+		rl->low = min_blocks;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rl->rsv_blocks = min_blocks;
 
 	/* This will always be a power-of-2 */
@@ -234,16 +323,24 @@ void pblk_rl_init(struct pblk_rl *rl, int budget)
 	/* To start with, all buffer is available to user I/O writers */
 	rl->rb_budget = budget;
 	rl->rb_user_max = budget;
+<<<<<<< HEAD
 	rl->rb_max_io = budget >> 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rl->rb_gc_max = 0;
 	rl->rb_state = PBLK_RL_HIGH;
 
 	atomic_set(&rl->rb_user_cnt, 0);
 	atomic_set(&rl->rb_gc_cnt, 0);
 	atomic_set(&rl->rb_space, -1);
+<<<<<<< HEAD
 	atomic_set(&rl->werr_lines, 0);
 
 	timer_setup(&rl->u_timer, pblk_rl_u_timer, 0);
+=======
+
+	setup_timer(&rl->u_timer, pblk_rl_u_timer, (unsigned long)rl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rl->rb_user_active = 0;
 	rl->rb_gc_active = 0;

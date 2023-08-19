@@ -33,7 +33,10 @@
 #include <linux/security.h>
 #include <linux/init.h>
 #include <linux/signal.h>
+<<<<<<< HEAD
 #include <linux/string.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/uaccess.h>
 #include <linux/perf_event.h>
 #include <linux/hw_breakpoint.h>
@@ -42,9 +45,13 @@
 #include <linux/elf.h>
 
 #include <asm/compat.h>
+<<<<<<< HEAD
 #include <asm/cpufeature.h>
 #include <asm/debug-monitors.h>
 #include <asm/fpsimd.h>
+=======
+#include <asm/debug-monitors.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/pgtable.h>
 #include <asm/stacktrace.h>
 #include <asm/syscall.h>
@@ -132,7 +139,11 @@ static bool regs_within_kernel_stack(struct pt_regs *regs, unsigned long addr)
 {
 	return ((addr & ~(THREAD_SIZE - 1))  ==
 		(kernel_stack_pointer(regs) & ~(THREAD_SIZE - 1))) ||
+<<<<<<< HEAD
 		on_irq_stack(addr, NULL);
+=======
+		on_irq_stack(addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -182,6 +193,7 @@ static void ptrace_hbptriggered(struct perf_event *bp,
 				struct pt_regs *regs)
 {
 	struct arch_hw_breakpoint *bkpt = counter_arch_bp(bp);
+<<<<<<< HEAD
 	siginfo_t info;
 
 	clear_siginfo(&info);
@@ -212,6 +224,38 @@ static void ptrace_hbptriggered(struct perf_event *bp,
 	}
 #endif
 	arm64_force_sig_info(&info, "Hardware breakpoint trap (ptrace)", current);
+=======
+	siginfo_t info = {
+		.si_signo	= SIGTRAP,
+		.si_errno	= 0,
+		.si_code	= TRAP_HWBKPT,
+		.si_addr	= (void __user *)(bkpt->trigger),
+	};
+
+#ifdef CONFIG_COMPAT
+	int i;
+
+	if (!is_compat_task())
+		goto send_sig;
+
+	for (i = 0; i < ARM_MAX_BRP; ++i) {
+		if (current->thread.debug.hbp_break[i] == bp) {
+			info.si_errno = (i << 1) + 1;
+			break;
+		}
+	}
+
+	for (i = 0; i < ARM_MAX_WRP; ++i) {
+		if (current->thread.debug.hbp_watch[i] == bp) {
+			info.si_errno = -((i << 1) + 1);
+			break;
+		}
+	}
+
+send_sig:
+#endif
+	force_sig_info(SIGTRAP, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -627,6 +671,7 @@ static int gpr_set(struct task_struct *target, const struct user_regset *regset,
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * TODO: update fp accessors for lazy context switching (sync/flush hwstate)
  */
@@ -645,10 +690,23 @@ static int __fpr_get(struct task_struct *target,
 				   start_pos, start_pos + sizeof(*uregs));
 }
 
+=======
+static int fpr_active(struct task_struct *target, const struct user_regset *regset)
+{
+	if (!system_supports_fpsimd())
+		return -ENODEV;
+	return regset->n;
+}
+
+/*
+ * TODO: update fp accessors for lazy context switching (sync/flush hwstate)
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fpr_get(struct task_struct *target, const struct user_regset *regset,
 		   unsigned int pos, unsigned int count,
 		   void *kbuf, void __user *ubuf)
 {
+<<<<<<< HEAD
 	if (target == current)
 		fpsimd_preserve_current_state();
 
@@ -680,6 +738,18 @@ static int __fpr_set(struct task_struct *target,
 	target->thread.uw.fpsimd_state = newstate;
 
 	return ret;
+=======
+	struct user_fpsimd_state *uregs;
+	uregs = &target->thread.fpsimd_state.user_fpsimd;
+
+	if (!system_supports_fpsimd())
+		return -EINVAL;
+
+	if (target == current)
+		fpsimd_preserve_current_state();
+
+	return user_regset_copyout(&pos, &count, &kbuf, &ubuf, uregs, 0, -1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int fpr_set(struct task_struct *target, const struct user_regset *regset,
@@ -687,6 +757,7 @@ static int fpr_set(struct task_struct *target, const struct user_regset *regset,
 		   const void *kbuf, const void __user *ubuf)
 {
 	int ret;
+<<<<<<< HEAD
 
 	ret = __fpr_set(target, regset, pos, count, kbuf, ubuf, 0);
 	if (ret)
@@ -695,6 +766,20 @@ static int fpr_set(struct task_struct *target, const struct user_regset *regset,
 	sve_sync_from_fpsimd_zeropad(target);
 	fpsimd_flush_task_state(target);
 
+=======
+	struct user_fpsimd_state newstate =
+		target->thread.fpsimd_state.user_fpsimd;
+
+	if (!system_supports_fpsimd())
+		return -EINVAL;
+
+	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &newstate, 0, -1);
+	if (ret)
+		return ret;
+
+	target->thread.fpsimd_state.user_fpsimd = newstate;
+	fpsimd_flush_task_state(target);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -702,7 +787,11 @@ static int tls_get(struct task_struct *target, const struct user_regset *regset,
 		   unsigned int pos, unsigned int count,
 		   void *kbuf, void __user *ubuf)
 {
+<<<<<<< HEAD
 	unsigned long *tls = &target->thread.uw.tp_value;
+=======
+	unsigned long *tls = &target->thread.tp_value;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (target == current)
 		tls_preserve_current_state();
@@ -715,13 +804,21 @@ static int tls_set(struct task_struct *target, const struct user_regset *regset,
 		   const void *kbuf, const void __user *ubuf)
 {
 	int ret;
+<<<<<<< HEAD
 	unsigned long tls = target->thread.uw.tp_value;
+=======
+	unsigned long tls = target->thread.tp_value;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &tls, 0, -1);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	target->thread.uw.tp_value = tls;
+=======
+	target->thread.tp_value = tls;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -752,6 +849,7 @@ static int system_call_set(struct task_struct *target,
 	return ret;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_SVE
 
 static void sve_init_header_from_task(struct user_sve_header *header,
@@ -958,6 +1056,8 @@ out:
 
 #endif /* CONFIG_ARM64_SVE */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum aarch64_regset {
 	REGSET_GPR,
 	REGSET_FPR,
@@ -967,9 +1067,12 @@ enum aarch64_regset {
 	REGSET_HW_WATCH,
 #endif
 	REGSET_SYSTEM_CALL,
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_SVE
 	REGSET_SVE,
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct user_regset aarch64_regsets[] = {
@@ -990,6 +1093,10 @@ static const struct user_regset aarch64_regsets[] = {
 		 */
 		.size = sizeof(u32),
 		.align = sizeof(u32),
+<<<<<<< HEAD
+=======
+		.active = fpr_active,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get = fpr_get,
 		.set = fpr_set
 	},
@@ -1027,6 +1134,7 @@ static const struct user_regset aarch64_regsets[] = {
 		.get = system_call_get,
 		.set = system_call_set,
 	},
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_SVE
 	[REGSET_SVE] = { /* Scalable Vector Extension */
 		.core_note_type = NT_ARM_SVE,
@@ -1039,6 +1147,8 @@ static const struct user_regset aarch64_regsets[] = {
 		.get_size = sve_get_size,
 	},
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct user_regset_view user_aarch64_view = {
@@ -1047,6 +1157,11 @@ static const struct user_regset_view user_aarch64_view = {
 };
 
 #ifdef CONFIG_COMPAT
+<<<<<<< HEAD
+=======
+#include <linux/compat.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum compat_regset {
 	REGSET_COMPAT_GPR,
 	REGSET_COMPAT_VFP,
@@ -1176,7 +1291,14 @@ static int compat_vfp_get(struct task_struct *target,
 	compat_ulong_t fpscr;
 	int ret, vregs_end_pos;
 
+<<<<<<< HEAD
 	uregs = &target->thread.uw.fpsimd_state;
+=======
+	if (!system_supports_fpsimd())
+		return -EINVAL;
+
+	uregs = &target->thread.fpsimd_state.user_fpsimd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (target == current)
 		fpsimd_preserve_current_state();
@@ -1209,7 +1331,14 @@ static int compat_vfp_set(struct task_struct *target,
 	compat_ulong_t fpscr;
 	int ret, vregs_end_pos;
 
+<<<<<<< HEAD
 	uregs = &target->thread.uw.fpsimd_state;
+=======
+	if (!system_supports_fpsimd())
+		return -EINVAL;
+
+	uregs = &target->thread.fpsimd_state.user_fpsimd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vregs_end_pos = VFP_STATE_SIZE - sizeof(compat_ulong_t);
 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, uregs, 0,
@@ -1232,7 +1361,11 @@ static int compat_tls_get(struct task_struct *target,
 			  const struct user_regset *regset, unsigned int pos,
 			  unsigned int count, void *kbuf, void __user *ubuf)
 {
+<<<<<<< HEAD
 	compat_ulong_t tls = (compat_ulong_t)target->thread.uw.tp_value;
+=======
+	compat_ulong_t tls = (compat_ulong_t)target->thread.tp_value;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return user_regset_copyout(&pos, &count, &kbuf, &ubuf, &tls, 0, -1);
 }
 
@@ -1242,13 +1375,21 @@ static int compat_tls_set(struct task_struct *target,
 			  const void __user *ubuf)
 {
 	int ret;
+<<<<<<< HEAD
 	compat_ulong_t tls = target->thread.uw.tp_value;
+=======
+	compat_ulong_t tls = target->thread.tp_value;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &tls, 0, -1);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	target->thread.uw.tp_value = tls;
+=======
+	target->thread.tp_value = tls;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1266,6 +1407,10 @@ static const struct user_regset aarch32_regsets[] = {
 		.n = VFP_STATE_SIZE / sizeof(compat_ulong_t),
 		.size = sizeof(compat_ulong_t),
 		.align = sizeof(compat_ulong_t),
+<<<<<<< HEAD
+=======
+		.active = fpr_active,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get = compat_vfp_get,
 		.set = compat_vfp_set
 	},
@@ -1426,7 +1571,11 @@ static int compat_ptrace_hbp_get(unsigned int note_type,
 	u64 addr = 0;
 	u32 ctrl = 0;
 
+<<<<<<< HEAD
 	int err, idx = compat_ptrace_hbp_num_to_idx(num);
+=======
+	int err, idx = compat_ptrace_hbp_num_to_idx(num);;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (num & 1) {
 		err = ptrace_hbp_get_addr(note_type, tsk, idx, &addr);
@@ -1539,7 +1688,11 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
 			break;
 
 		case COMPAT_PTRACE_GET_THREAD_AREA:
+<<<<<<< HEAD
 			ret = put_user((compat_ulong_t)child->thread.uw.tp_value,
+=======
+			ret = put_user((compat_ulong_t)child->thread.tp_value,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       (compat_ulong_t __user *)datap);
 			break;
 
@@ -1634,7 +1787,11 @@ static void tracehook_report_syscall(struct pt_regs *regs,
 	regs->regs[regno] = saved_reg;
 }
 
+<<<<<<< HEAD
 int syscall_trace_enter(struct pt_regs *regs)
+=======
+asmlinkage int syscall_trace_enter(struct pt_regs *regs)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (test_thread_flag(TIF_SYSCALL_TRACE))
 		tracehook_report_syscall(regs, PTRACE_SYSCALL_ENTER);
@@ -1652,7 +1809,11 @@ int syscall_trace_enter(struct pt_regs *regs)
 	return regs->syscallno;
 }
 
+<<<<<<< HEAD
 void syscall_trace_exit(struct pt_regs *regs)
+=======
+asmlinkage void syscall_trace_exit(struct pt_regs *regs)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	audit_syscall_exit(regs);
 
@@ -1661,8 +1822,11 @@ void syscall_trace_exit(struct pt_regs *regs)
 
 	if (test_thread_flag(TIF_SYSCALL_TRACE))
 		tracehook_report_syscall(regs, PTRACE_SYSCALL_EXIT);
+<<<<<<< HEAD
 
 	rseq_syscall(regs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1687,6 +1851,7 @@ static int valid_compat_regs(struct user_pt_regs *regs)
 
 	if (!system_supports_mixed_endian_el0()) {
 		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
+<<<<<<< HEAD
 			regs->pstate |= PSR_AA32_E_BIT;
 		else
 			regs->pstate &= ~PSR_AA32_E_BIT;
@@ -1696,6 +1861,17 @@ static int valid_compat_regs(struct user_pt_regs *regs)
 	    (regs->pstate & PSR_AA32_A_BIT) == 0 &&
 	    (regs->pstate & PSR_AA32_I_BIT) == 0 &&
 	    (regs->pstate & PSR_AA32_F_BIT) == 0) {
+=======
+			regs->pstate |= COMPAT_PSR_E_BIT;
+		else
+			regs->pstate &= ~COMPAT_PSR_E_BIT;
+	}
+
+	if (user_mode(regs) && (regs->pstate & PSR_MODE32_BIT) &&
+	    (regs->pstate & COMPAT_PSR_A_BIT) == 0 &&
+	    (regs->pstate & COMPAT_PSR_I_BIT) == 0 &&
+	    (regs->pstate & COMPAT_PSR_F_BIT) == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 
@@ -1703,11 +1879,19 @@ static int valid_compat_regs(struct user_pt_regs *regs)
 	 * Force PSR to a valid 32-bit EL0t, preserving the same bits as
 	 * arch/arm.
 	 */
+<<<<<<< HEAD
 	regs->pstate &= PSR_AA32_N_BIT | PSR_AA32_Z_BIT |
 			PSR_AA32_C_BIT | PSR_AA32_V_BIT |
 			PSR_AA32_Q_BIT | PSR_AA32_IT_MASK |
 			PSR_AA32_GE_MASK | PSR_AA32_E_BIT |
 			PSR_AA32_T_BIT;
+=======
+	regs->pstate &= COMPAT_PSR_N_BIT | COMPAT_PSR_Z_BIT |
+			COMPAT_PSR_C_BIT | COMPAT_PSR_V_BIT |
+			COMPAT_PSR_Q_BIT | COMPAT_PSR_IT_MASK |
+			COMPAT_PSR_GE_MASK | COMPAT_PSR_E_BIT |
+			COMPAT_PSR_T_BIT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regs->pstate |= PSR_MODE32_BIT;
 
 	return 0;
@@ -1737,8 +1921,13 @@ static int valid_native_regs(struct user_pt_regs *regs)
  */
 int valid_user_regs(struct user_pt_regs *regs, struct task_struct *task)
 {
+<<<<<<< HEAD
 	if (!test_tsk_thread_flag(task, TIF_SINGLESTEP))
 		regs->pstate &= ~DBG_SPSR_SS;
+=======
+	/* https://lore.kernel.org/lkml/20191118131525.GA4180@willie-the-truck */
+	user_regs_reset_single_step(regs, task);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (is_compat_thread(task_thread_info(task)))
 		return valid_compat_regs(regs);

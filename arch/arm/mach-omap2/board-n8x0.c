@@ -566,11 +566,19 @@ static int n8x0_menelaus_late_init(struct device *dev)
 }
 #endif
 
+<<<<<<< HEAD
 struct menelaus_platform_data n8x0_menelaus_platform_data = {
 	.late_init = n8x0_menelaus_late_init,
 };
 
 struct aic3x_pdata n810_aic33_data = {
+=======
+struct menelaus_platform_data n8x0_menelaus_platform_data __initdata = {
+	.late_init = n8x0_menelaus_late_init,
+};
+
+struct aic3x_pdata n810_aic33_data __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gpio_reset = 118,
 };
 

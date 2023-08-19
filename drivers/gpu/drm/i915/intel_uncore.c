@@ -37,12 +37,15 @@ static const char * const forcewake_domain_names[] = {
 	"render",
 	"blitter",
 	"media",
+<<<<<<< HEAD
 	"vdbox0",
 	"vdbox1",
 	"vdbox2",
 	"vdbox3",
 	"vebox0",
 	"vebox1",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const char *
@@ -62,11 +65,14 @@ static inline void
 fw_domain_reset(struct drm_i915_private *i915,
 		const struct intel_uncore_forcewake_domain *d)
 {
+<<<<<<< HEAD
 	/*
 	 * We don't really know if the powerwell for the forcewake domain we are
 	 * trying to reset here does exist at this point (engines could be fused
 	 * off in ICL+), so no waiting for acks
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__raw_i915_write32(i915, d->reg_set, i915->uncore.fw_reset);
 }
 
@@ -80,6 +86,7 @@ fw_domain_arm_timer(struct intel_uncore_forcewake_domain *d)
 			       HRTIMER_MODE_REL);
 }
 
+<<<<<<< HEAD
 static inline int
 __wait_for_ack(const struct drm_i915_private *i915,
 	       const struct intel_uncore_forcewake_domain *d,
@@ -106,15 +113,24 @@ wait_ack_set(const struct drm_i915_private *i915,
 	return __wait_for_ack(i915, d, ack, ack);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void
 fw_domain_wait_ack_clear(const struct drm_i915_private *i915,
 			 const struct intel_uncore_forcewake_domain *d)
 {
+<<<<<<< HEAD
 	if (wait_ack_clear(i915, d, FORCEWAKE_KERNEL))
+=======
+	if (wait_for_atomic((__raw_i915_read32(i915, d->reg_ack) &
+			     FORCEWAKE_KERNEL) == 0,
+			    FORCEWAKE_ACK_TIMEOUT_MS))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_ERROR("%s: timed out waiting for forcewake ack to clear.\n",
 			  intel_uncore_forcewake_domain_to_str(d->id));
 }
 
+<<<<<<< HEAD
 enum ack_type {
 	ACK_CLEAR = 0,
 	ACK_SET
@@ -180,6 +196,8 @@ fw_domain_wait_ack_clear_fallback(const struct drm_i915_private *i915,
 		fw_domain_wait_ack_clear(i915, d);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void
 fw_domain_get(struct drm_i915_private *i915,
 	      const struct intel_uncore_forcewake_domain *d)
@@ -188,15 +206,25 @@ fw_domain_get(struct drm_i915_private *i915,
 }
 
 static inline void
+<<<<<<< HEAD
 fw_domain_wait_ack_set(const struct drm_i915_private *i915,
 		       const struct intel_uncore_forcewake_domain *d)
 {
 	if (wait_ack_set(i915, d, FORCEWAKE_KERNEL))
+=======
+fw_domain_wait_ack(const struct drm_i915_private *i915,
+		   const struct intel_uncore_forcewake_domain *d)
+{
+	if (wait_for_atomic((__raw_i915_read32(i915, d->reg_ack) &
+			     FORCEWAKE_KERNEL),
+			    FORCEWAKE_ACK_TIMEOUT_MS))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_ERROR("%s: timed out waiting for forcewake ack request.\n",
 			  intel_uncore_forcewake_domain_to_str(d->id));
 }
 
 static inline void
+<<<<<<< HEAD
 fw_domain_wait_ack_set_fallback(const struct drm_i915_private *i915,
 				const struct intel_uncore_forcewake_domain *d)
 {
@@ -208,6 +236,8 @@ fw_domain_wait_ack_set_fallback(const struct drm_i915_private *i915,
 }
 
 static inline void
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fw_domain_put(const struct drm_i915_private *i915,
 	      const struct intel_uncore_forcewake_domain *d)
 {
@@ -228,6 +258,7 @@ fw_domains_get(struct drm_i915_private *i915, enum forcewake_domains fw_domains)
 	}
 
 	for_each_fw_domain_masked(d, fw_domains, i915, tmp)
+<<<<<<< HEAD
 		fw_domain_wait_ack_set(i915, d);
 
 	i915->uncore.fw_domains_active |= fw_domains;
@@ -249,6 +280,9 @@ fw_domains_get_with_fallback(struct drm_i915_private *i915,
 
 	for_each_fw_domain_masked(d, fw_domains, i915, tmp)
 		fw_domain_wait_ack_set_fallback(i915, d);
+=======
+		fw_domain_wait_ack(i915, d);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i915->uncore.fw_domains_active |= fw_domains;
 }
@@ -358,17 +392,25 @@ intel_uncore_fw_release_timer(struct hrtimer *timer)
 	return HRTIMER_NORESTART;
 }
 
+<<<<<<< HEAD
 /* Note callers must have acquired the PUNIT->PMIC bus, before calling this. */
 static unsigned int
 intel_uncore_forcewake_reset(struct drm_i915_private *dev_priv)
+=======
+static void intel_uncore_forcewake_reset(struct drm_i915_private *dev_priv,
+					 bool restore)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long irqflags;
 	struct intel_uncore_forcewake_domain *domain;
 	int retry_count = 100;
 	enum forcewake_domains fw, active_domains;
 
+<<<<<<< HEAD
 	iosf_mbi_assert_punit_acquired();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Hold uncore.lock across reset to prevent any register access
 	 * with forcewake not set correctly. Wait until all pending
 	 * timers are run before holding.
@@ -412,11 +454,28 @@ intel_uncore_forcewake_reset(struct drm_i915_private *dev_priv)
 		dev_priv->uncore.funcs.force_wake_put(dev_priv, fw);
 
 	fw_domains_reset(dev_priv, dev_priv->uncore.fw_domains);
+<<<<<<< HEAD
 	assert_forcewakes_inactive(dev_priv);
 
 	spin_unlock_irqrestore(&dev_priv->uncore.lock, irqflags);
 
 	return fw; /* track the lost user forcewake domains */
+=======
+
+	if (restore) { /* If reset with a user forcewake, try to restore */
+		if (fw)
+			dev_priv->uncore.funcs.force_wake_get(dev_priv, fw);
+
+		if (IS_GEN6(dev_priv) || IS_GEN7(dev_priv))
+			dev_priv->uncore.fifo_count =
+				fifo_free_entries(dev_priv);
+	}
+
+	if (!restore)
+		assert_forcewakes_inactive(dev_priv);
+
+	spin_unlock_irqrestore(&dev_priv->uncore.lock, irqflags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u64 gen9_edram_size(struct drm_i915_private *dev_priv)
@@ -525,7 +584,11 @@ check_for_unclaimed_mmio(struct drm_i915_private *dev_priv)
 }
 
 static void __intel_uncore_early_sanitize(struct drm_i915_private *dev_priv,
+<<<<<<< HEAD
 					  unsigned int restore_forcewake)
+=======
+					  bool restore_forcewake)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* clear out unclaimed reg detection bit */
 	if (check_for_unclaimed_mmio(dev_priv))
@@ -539,6 +602,7 @@ static void __intel_uncore_early_sanitize(struct drm_i915_private *dev_priv,
 				   GT_FIFO_CTL_RC6_POLICY_STALL);
 	}
 
+<<<<<<< HEAD
 	iosf_mbi_punit_acquire();
 	intel_uncore_forcewake_reset(dev_priv);
 	if (restore_forcewake) {
@@ -552,25 +616,38 @@ static void __intel_uncore_early_sanitize(struct drm_i915_private *dev_priv,
 		spin_unlock_irq(&dev_priv->uncore.lock);
 	}
 	iosf_mbi_punit_release();
+=======
+	intel_uncore_forcewake_reset(dev_priv, restore_forcewake);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_uncore_suspend(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	iosf_mbi_punit_acquire();
 	iosf_mbi_unregister_pmic_bus_access_notifier_unlocked(
 		&dev_priv->uncore.pmic_bus_access_nb);
 	dev_priv->uncore.fw_domains_saved =
 		intel_uncore_forcewake_reset(dev_priv);
 	iosf_mbi_punit_release();
+=======
+	iosf_mbi_unregister_pmic_bus_access_notifier(
+		&dev_priv->uncore.pmic_bus_access_nb);
+	intel_uncore_forcewake_reset(dev_priv, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_uncore_resume_early(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	unsigned int restore_forcewake;
 
 	restore_forcewake = fetch_and_zero(&dev_priv->uncore.fw_domains_saved);
 	__intel_uncore_early_sanitize(dev_priv, restore_forcewake);
 
+=======
+	__intel_uncore_early_sanitize(dev_priv, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iosf_mbi_register_pmic_bus_access_notifier(
 		&dev_priv->uncore.pmic_bus_access_nb);
 	i915_check_and_clear_faults(dev_priv);
@@ -584,6 +661,11 @@ void intel_uncore_runtime_resume(struct drm_i915_private *dev_priv)
 
 void intel_uncore_sanitize(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
+=======
+	i915.enable_rc6 = sanitize_rc6_option(dev_priv, i915.enable_rc6);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* BIOS often leaves RC6 enabled, but disable it for hw init */
 	intel_sanitize_gt_powersave(dev_priv);
 }
@@ -636,6 +718,7 @@ void intel_uncore_forcewake_get(struct drm_i915_private *dev_priv,
 }
 
 /**
+<<<<<<< HEAD
  * intel_uncore_forcewake_user_get - claim forcewake on behalf of userspace
  * @dev_priv: i915 device instance
  *
@@ -687,6 +770,8 @@ void intel_uncore_forcewake_user_put(struct drm_i915_private *dev_priv)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * intel_uncore_forcewake_get__locked - grab forcewake domain references
  * @dev_priv: i915 device instance
  * @fw_domains: forcewake domains to get reference on
@@ -771,6 +856,7 @@ void assert_forcewakes_inactive(struct drm_i915_private *dev_priv)
 	if (!dev_priv->uncore.funcs.force_wake_get)
 		return;
 
+<<<<<<< HEAD
 	WARN(dev_priv->uncore.fw_domains_active,
 	     "Expected all fw_domains to be inactive, but %08x are still on\n",
 	     dev_priv->uncore.fw_domains_active);
@@ -788,14 +874,20 @@ void assert_forcewakes_active(struct drm_i915_private *dev_priv,
 	WARN(fw_domains & ~dev_priv->uncore.fw_domains_active,
 	     "Expected %08x fw_domains to be active, but %08x are off\n",
 	     fw_domains, fw_domains & ~dev_priv->uncore.fw_domains_active);
+=======
+	WARN_ON(dev_priv->uncore.fw_domains_active);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* We give fast paths for the really cool registers */
 #define NEEDS_FORCE_WAKE(reg) ((reg) < 0x40000)
 
+<<<<<<< HEAD
 #define GEN11_NEEDS_FORCE_WAKE(reg) \
 	((reg) < 0x40000 || ((reg) >= 0x1c0000 && (reg) < 0x1dc000))
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __gen6_reg_read_fw_domains(offset) \
 ({ \
 	enum forcewake_domains __fwd; \
@@ -848,6 +940,7 @@ find_fw_domain(struct drm_i915_private *dev_priv, u32 offset)
 	if (!entry)
 		return 0;
 
+<<<<<<< HEAD
 	/*
 	 * The list of FW domains depends on the SKU in gen11+ so we
 	 * can't determine it statically. We use FORCEWAKE_ALL and
@@ -856,6 +949,8 @@ find_fw_domain(struct drm_i915_private *dev_priv, u32 offset)
 	if (entry->domains == FORCEWAKE_ALL)
 		return dev_priv->uncore.fw_domains;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN(entry->domains & ~dev_priv->uncore.fw_domains,
 	     "Uninitialized forcewake domain(s) 0x%x accessed at 0x%x\n",
 	     entry->domains & ~dev_priv->uncore.fw_domains, offset);
@@ -890,6 +985,7 @@ static const struct intel_forcewake_range __vlv_fw_ranges[] = {
 	__fwd; \
 })
 
+<<<<<<< HEAD
 #define __gen11_fwtable_reg_read_fw_domains(offset) \
 ({ \
 	enum forcewake_domains __fwd = 0; \
@@ -898,6 +994,8 @@ static const struct intel_forcewake_range __vlv_fw_ranges[] = {
 	__fwd; \
 })
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* *Must* be sorted by offset! See intel_shadow_table_check(). */
 static const i915_reg_t gen8_shadowed_regs[] = {
 	RING_TAIL(RENDER_RING_BASE),	/* 0x2000 (base) */
@@ -909,6 +1007,7 @@ static const i915_reg_t gen8_shadowed_regs[] = {
 	/* TODO: Other registers are not yet used */
 };
 
+<<<<<<< HEAD
 static const i915_reg_t gen11_shadowed_regs[] = {
 	RING_TAIL(RENDER_RING_BASE),		/* 0x2000 (base) */
 	GEN6_RPNSWREQ,				/* 0xA008 */
@@ -923,6 +1022,8 @@ static const i915_reg_t gen11_shadowed_regs[] = {
 	/* TODO: Other registers are not yet used */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mmio_reg_cmp(u32 key, const i915_reg_t *reg)
 {
 	u32 offset = i915_mmio_reg_offset(*reg);
@@ -935,6 +1036,7 @@ static int mmio_reg_cmp(u32 key, const i915_reg_t *reg)
 		return 0;
 }
 
+<<<<<<< HEAD
 #define __is_genX_shadowed(x) \
 static bool is_gen##x##_shadowed(u32 offset) \
 { \
@@ -945,6 +1047,15 @@ static bool is_gen##x##_shadowed(u32 offset) \
 
 __is_genX_shadowed(8)
 __is_genX_shadowed(11)
+=======
+static bool is_gen8_shadowed(u32 offset)
+{
+	const i915_reg_t *regs = gen8_shadowed_regs;
+
+	return BSEARCH(offset, regs, ARRAY_SIZE(gen8_shadowed_regs),
+		       mmio_reg_cmp);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define __gen8_reg_write_fw_domains(offset) \
 ({ \
@@ -984,6 +1095,7 @@ static const struct intel_forcewake_range __chv_fw_ranges[] = {
 	__fwd; \
 })
 
+<<<<<<< HEAD
 #define __gen11_fwtable_reg_write_fw_domains(offset) \
 ({ \
 	enum forcewake_domains __fwd = 0; \
@@ -992,6 +1104,8 @@ static const struct intel_forcewake_range __chv_fw_ranges[] = {
 	__fwd; \
 })
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* *Must* be sorted by offset ranges! See intel_fw_table_check(). */
 static const struct intel_forcewake_range __gen9_fw_ranges[] = {
 	GEN_FW_RANGE(0x0, 0xaff, FORCEWAKE_BLITTER),
@@ -1028,6 +1142,7 @@ static const struct intel_forcewake_range __gen9_fw_ranges[] = {
 	GEN_FW_RANGE(0x30000, 0x3ffff, FORCEWAKE_MEDIA),
 };
 
+<<<<<<< HEAD
 /* *Must* be sorted by offset ranges! See intel_fw_table_check(). */
 static const struct intel_forcewake_range __gen11_fw_ranges[] = {
 	GEN_FW_RANGE(0x0, 0xaff, FORCEWAKE_BLITTER),
@@ -1062,6 +1177,8 @@ static const struct intel_forcewake_range __gen11_fw_ranges[] = {
 	GEN_FW_RANGE(0x1d8000, 0x1dbfff, FORCEWAKE_MEDIA_VEBOX1)
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 ilk_dummy_write(struct drm_i915_private *dev_priv)
 {
@@ -1081,8 +1198,12 @@ __unclaimed_reg_debug(struct drm_i915_private *dev_priv,
 		 "Unclaimed %s register 0x%x\n",
 		 read ? "read from" : "write to",
 		 i915_mmio_reg_offset(reg)))
+<<<<<<< HEAD
 		/* Only report the first N failures */
 		i915_modparams.mmio_debug--;
+=======
+		i915.mmio_debug--; /* Only report the first N failures */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void
@@ -1091,7 +1212,11 @@ unclaimed_reg_debug(struct drm_i915_private *dev_priv,
 		    const bool read,
 		    const bool before)
 {
+<<<<<<< HEAD
 	if (likely(!i915_modparams.mmio_debug))
+=======
+	if (likely(!i915.mmio_debug))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	__unclaimed_reg_debug(dev_priv, reg, read, before);
@@ -1192,12 +1317,16 @@ func##_read##x(struct drm_i915_private *dev_priv, i915_reg_t reg, bool trace) { 
 }
 #define __gen6_read(x) __gen_read(gen6, x)
 #define __fwtable_read(x) __gen_read(fwtable, x)
+<<<<<<< HEAD
 #define __gen11_fwtable_read(x) __gen_read(gen11_fwtable, x)
 
 __gen11_fwtable_read(8)
 __gen11_fwtable_read(16)
 __gen11_fwtable_read(32)
 __gen11_fwtable_read(64)
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __fwtable_read(8)
 __fwtable_read(16)
 __fwtable_read(32)
@@ -1207,7 +1336,10 @@ __gen6_read(16)
 __gen6_read(32)
 __gen6_read(64)
 
+<<<<<<< HEAD
 #undef __gen11_fwtable_read
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef __fwtable_read
 #undef __gen6_read
 #undef GEN6_READ_FOOTER
@@ -1284,11 +1416,15 @@ func##_write##x(struct drm_i915_private *dev_priv, i915_reg_t reg, u##x val, boo
 }
 #define __gen8_write(x) __gen_write(gen8, x)
 #define __fwtable_write(x) __gen_write(fwtable, x)
+<<<<<<< HEAD
 #define __gen11_fwtable_write(x) __gen_write(gen11_fwtable, x)
 
 __gen11_fwtable_write(8)
 __gen11_fwtable_write(16)
 __gen11_fwtable_write(32)
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __fwtable_write(8)
 __fwtable_write(16)
 __fwtable_write(32)
@@ -1299,7 +1435,10 @@ __gen6_write(8)
 __gen6_write(16)
 __gen6_write(32)
 
+<<<<<<< HEAD
 #undef __gen11_fwtable_write
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef __fwtable_write
 #undef __gen8_write
 #undef __gen6_write
@@ -1348,6 +1487,7 @@ static void fw_domain_init(struct drm_i915_private *dev_priv,
 	BUILD_BUG_ON(FORCEWAKE_RENDER != (1 << FW_DOMAIN_ID_RENDER));
 	BUILD_BUG_ON(FORCEWAKE_BLITTER != (1 << FW_DOMAIN_ID_BLITTER));
 	BUILD_BUG_ON(FORCEWAKE_MEDIA != (1 << FW_DOMAIN_ID_MEDIA));
+<<<<<<< HEAD
 	BUILD_BUG_ON(FORCEWAKE_MEDIA_VDBOX0 != (1 << FW_DOMAIN_ID_MEDIA_VDBOX0));
 	BUILD_BUG_ON(FORCEWAKE_MEDIA_VDBOX1 != (1 << FW_DOMAIN_ID_MEDIA_VDBOX1));
 	BUILD_BUG_ON(FORCEWAKE_MEDIA_VDBOX2 != (1 << FW_DOMAIN_ID_MEDIA_VDBOX2));
@@ -1355,6 +1495,8 @@ static void fw_domain_init(struct drm_i915_private *dev_priv,
 	BUILD_BUG_ON(FORCEWAKE_MEDIA_VEBOX0 != (1 << FW_DOMAIN_ID_MEDIA_VEBOX0));
 	BUILD_BUG_ON(FORCEWAKE_MEDIA_VEBOX1 != (1 << FW_DOMAIN_ID_MEDIA_VEBOX1));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	d->mask = BIT(domain_id);
 
@@ -1366,6 +1508,7 @@ static void fw_domain_init(struct drm_i915_private *dev_priv,
 	fw_domain_reset(dev_priv, d);
 }
 
+<<<<<<< HEAD
 static void fw_domain_fini(struct drm_i915_private *dev_priv,
 			   enum forcewake_domain_id domain_id)
 {
@@ -1383,6 +1526,8 @@ static void fw_domain_fini(struct drm_i915_private *dev_priv,
 	dev_priv->uncore.fw_domains &= ~BIT(domain_id);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void intel_uncore_fw_domains_init(struct drm_i915_private *dev_priv)
 {
 	if (INTEL_GEN(dev_priv) <= 5 || intel_vgpu_active(dev_priv))
@@ -1399,6 +1544,7 @@ static void intel_uncore_fw_domains_init(struct drm_i915_private *dev_priv)
 		dev_priv->uncore.fw_clear = _MASKED_BIT_DISABLE(FORCEWAKE_KERNEL);
 	}
 
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 11) {
 		int i;
 
@@ -1430,6 +1576,10 @@ static void intel_uncore_fw_domains_init(struct drm_i915_private *dev_priv)
 	} else if (IS_GEN9(dev_priv) || IS_GEN10(dev_priv)) {
 		dev_priv->uncore.funcs.force_wake_get =
 			fw_domains_get_with_fallback;
+=======
+	if (INTEL_GEN(dev_priv) >= 9) {
+		dev_priv->uncore.funcs.force_wake_get = fw_domains_get;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_priv->uncore.funcs.force_wake_put = fw_domains_put;
 		fw_domain_init(dev_priv, FW_DOMAIN_ID_RENDER,
 			       FORCEWAKE_RENDER_GEN9,
@@ -1551,7 +1701,11 @@ void intel_uncore_init(struct drm_i915_private *dev_priv)
 
 	intel_uncore_edram_detect(dev_priv);
 	intel_uncore_fw_domains_init(dev_priv);
+<<<<<<< HEAD
 	__intel_uncore_early_sanitize(dev_priv, 0);
+=======
+	__intel_uncore_early_sanitize(dev_priv, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_priv->uncore.unclaimed_mmio_check = 1;
 	dev_priv->uncore.pmic_bus_access_nb.notifier_call =
@@ -1582,6 +1736,7 @@ void intel_uncore_init(struct drm_i915_private *dev_priv)
 			ASSIGN_WRITE_MMIO_VFUNCS(dev_priv, gen8);
 			ASSIGN_READ_MMIO_VFUNCS(dev_priv, gen6);
 		}
+<<<<<<< HEAD
 	} else if (IS_GEN(dev_priv, 9, 10)) {
 		ASSIGN_FW_DOMAINS_TABLE(__gen9_fw_ranges);
 		ASSIGN_WRITE_MMIO_VFUNCS(dev_priv, fwtable);
@@ -1590,10 +1745,17 @@ void intel_uncore_init(struct drm_i915_private *dev_priv)
 		ASSIGN_FW_DOMAINS_TABLE(__gen11_fw_ranges);
 		ASSIGN_WRITE_MMIO_VFUNCS(dev_priv, gen11_fwtable);
 		ASSIGN_READ_MMIO_VFUNCS(dev_priv, gen11_fwtable);
+=======
+	} else {
+		ASSIGN_FW_DOMAINS_TABLE(__gen9_fw_ranges);
+		ASSIGN_WRITE_MMIO_VFUNCS(dev_priv, fwtable);
+		ASSIGN_READ_MMIO_VFUNCS(dev_priv, fwtable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	iosf_mbi_register_pmic_bus_access_notifier(
 		&dev_priv->uncore.pmic_bus_access_nb);
+<<<<<<< HEAD
 }
 
 /*
@@ -1628,10 +1790,15 @@ void intel_uncore_prune(struct drm_i915_private *dev_priv)
 				fw_domain_fini(dev_priv, domain_id);
 		}
 	}
+=======
+
+	i915_check_and_clear_faults(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_uncore_fini(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	/* Paranoia: make sure we have disabled everything before we exit. */
 	intel_uncore_sanitize(dev_priv);
 
@@ -1653,12 +1820,35 @@ static const struct reg_whitelist {
 	.gen_mask = INTEL_GEN_MASK(4, 11),
 	.size = 8
 } };
+=======
+	iosf_mbi_unregister_pmic_bus_access_notifier(
+		&dev_priv->uncore.pmic_bus_access_nb);
+
+	/* Paranoia: make sure we have disabled everything before we exit. */
+	intel_uncore_sanitize(dev_priv);
+	intel_uncore_forcewake_reset(dev_priv, false);
+}
+
+#define GEN_RANGE(l, h) GENMASK((h) - 1, (l) - 1)
+
+static const struct register_whitelist {
+	i915_reg_t offset_ldw, offset_udw;
+	uint32_t size;
+	/* supported gens, 0x10 for 4, 0x30 for 4 and 5, etc. */
+	uint32_t gen_bitmask;
+} whitelist[] = {
+	{ .offset_ldw = RING_TIMESTAMP(RENDER_RING_BASE),
+	  .offset_udw = RING_TIMESTAMP_UDW(RENDER_RING_BASE),
+	  .size = 8, .gen_bitmask = GEN_RANGE(4, 9) },
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int i915_reg_read_ioctl(struct drm_device *dev,
 			void *data, struct drm_file *file)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct drm_i915_reg_read *reg = data;
+<<<<<<< HEAD
 	struct reg_whitelist const *entry;
 	unsigned int flags;
 	int remain;
@@ -1730,10 +1920,65 @@ static void gen3_stop_engine(struct intel_engine_cs *engine)
 
 static void i915_stop_engines(struct drm_i915_private *dev_priv,
 			      unsigned engine_mask)
+=======
+	struct register_whitelist const *entry = whitelist;
+	unsigned size;
+	i915_reg_t offset_ldw, offset_udw;
+	int i, ret = 0;
+
+	for (i = 0; i < ARRAY_SIZE(whitelist); i++, entry++) {
+		if (i915_mmio_reg_offset(entry->offset_ldw) == (reg->offset & -entry->size) &&
+		    (INTEL_INFO(dev_priv)->gen_mask & entry->gen_bitmask))
+			break;
+	}
+
+	if (i == ARRAY_SIZE(whitelist))
+		return -EINVAL;
+
+	/* We use the low bits to encode extra flags as the register should
+	 * be naturally aligned (and those that are not so aligned merely
+	 * limit the available flags for that register).
+	 */
+	offset_ldw = entry->offset_ldw;
+	offset_udw = entry->offset_udw;
+	size = entry->size;
+	size |= reg->offset ^ i915_mmio_reg_offset(offset_ldw);
+
+	intel_runtime_pm_get(dev_priv);
+
+	switch (size) {
+	case 8 | 1:
+		reg->val = I915_READ64_2x32(offset_ldw, offset_udw);
+		break;
+	case 8:
+		reg->val = I915_READ64(offset_ldw);
+		break;
+	case 4:
+		reg->val = I915_READ(offset_ldw);
+		break;
+	case 2:
+		reg->val = I915_READ16(offset_ldw);
+		break;
+	case 1:
+		reg->val = I915_READ8(offset_ldw);
+		break;
+	default:
+		ret = -EINVAL;
+		goto out;
+	}
+
+out:
+	intel_runtime_pm_put(dev_priv);
+	return ret;
+}
+
+static void gen3_stop_rings(struct drm_i915_private *dev_priv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
 
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) < 3)
 		return;
 
@@ -1742,16 +1987,48 @@ static void i915_stop_engines(struct drm_i915_private *dev_priv,
 }
 
 static bool i915_in_reset(struct pci_dev *pdev)
+=======
+	for_each_engine(engine, dev_priv, id) {
+		const u32 base = engine->mmio_base;
+		const i915_reg_t mode = RING_MI_MODE(base);
+
+		I915_WRITE_FW(mode, _MASKED_BIT_ENABLE(STOP_RING));
+		if (intel_wait_for_register_fw(dev_priv,
+					       mode,
+					       MODE_IDLE,
+					       MODE_IDLE,
+					       500))
+			DRM_DEBUG_DRIVER("%s: timed out on STOP_RING\n",
+					 engine->name);
+
+		I915_WRITE_FW(RING_CTL(base), 0);
+		I915_WRITE_FW(RING_HEAD(base), 0);
+		I915_WRITE_FW(RING_TAIL(base), 0);
+
+		/* Check acts as a post */
+		if (I915_READ_FW(RING_HEAD(base)) != 0)
+			DRM_DEBUG_DRIVER("%s: ring head not parked\n",
+					 engine->name);
+	}
+}
+
+static bool i915_reset_complete(struct pci_dev *pdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 gdrst;
 
 	pci_read_config_byte(pdev, I915_GDRST, &gdrst);
+<<<<<<< HEAD
 	return gdrst & GRDOM_RESET_STATUS;
+=======
+	return (gdrst & GRDOM_RESET_STATUS) == 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i915_do_reset(struct drm_i915_private *dev_priv, unsigned engine_mask)
 {
 	struct pci_dev *pdev = dev_priv->drm.pdev;
+<<<<<<< HEAD
 	int err;
 
 	/* Assert reset for at least 20 usec, and wait for acknowledgement. */
@@ -1766,6 +2043,15 @@ static int i915_do_reset(struct drm_i915_private *dev_priv, unsigned engine_mask
 		err = wait_for(!i915_in_reset(pdev), 500);
 
 	return err;
+=======
+
+	/* assert reset for at least 20 usec */
+	pci_write_config_byte(pdev, I915_GDRST, GRDOM_RESET_ENABLE);
+	usleep_range(50, 200);
+	pci_write_config_byte(pdev, I915_GDRST, 0);
+
+	return wait_for(i915_reset_complete(pdev), 500);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool g4x_reset_complete(struct pci_dev *pdev)
@@ -1780,6 +2066,12 @@ static int g33_do_reset(struct drm_i915_private *dev_priv, unsigned engine_mask)
 {
 	struct pci_dev *pdev = dev_priv->drm.pdev;
 
+<<<<<<< HEAD
+=======
+	/* Stop engines before we reset; see g4x_do_reset() below for why. */
+	gen3_stop_rings(dev_priv);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_write_config_byte(pdev, I915_GDRST, GRDOM_RESET_ENABLE);
 	return wait_for(g4x_reset_complete(pdev), 500);
 }
@@ -1794,6 +2086,15 @@ static int g4x_do_reset(struct drm_i915_private *dev_priv, unsigned engine_mask)
 		   I915_READ(VDECCLK_GATE_D) | VCP_UNIT_CLOCK_GATE_DISABLE);
 	POSTING_READ(VDECCLK_GATE_D);
 
+<<<<<<< HEAD
+=======
+	/* We stop engines, otherwise we might get failed reset and a
+	 * dead gpu (on elk).
+	 * WaMediaResetMainRingCleanup:ctg,elk (presumably)
+	 */
+	gen3_stop_rings(dev_priv);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_write_config_byte(pdev, I915_GDRST,
 			      GRDOM_MEDIA | GRDOM_RESET_ENABLE);
 	ret =  wait_for(g4x_reset_complete(pdev), 500);
@@ -1862,10 +2163,16 @@ static int gen6_hw_domain_reset(struct drm_i915_private *dev_priv,
 	__raw_i915_write32(dev_priv, GEN6_GDRST, hw_domain_mask);
 
 	/* Wait for the device to ack the reset requests */
+<<<<<<< HEAD
 	err = __intel_wait_for_register_fw(dev_priv,
 					   GEN6_GDRST, hw_domain_mask, 0,
 					   500, 0,
 					   NULL);
+=======
+	err = intel_wait_for_register_fw(dev_priv,
+					  GEN6_GDRST, hw_domain_mask, 0,
+					  500);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		DRM_DEBUG_DRIVER("Wait for 0x%08x engines reset failed\n",
 				 hw_domain_mask);
@@ -1913,6 +2220,7 @@ static int gen6_reset_engines(struct drm_i915_private *dev_priv,
 }
 
 /**
+<<<<<<< HEAD
  * gen11_reset_engines - reset individual engines
  * @dev_priv: i915 device
  * @engine_mask: mask of intel_ring_flag() engines or ALL_ENGINES for full reset
@@ -1957,6 +2265,8 @@ static int gen11_reset_engines(struct drm_i915_private *dev_priv,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * __intel_wait_for_register_fw - wait until register matches expected state
  * @dev_priv: the i915 device
  * @reg: the register to read
@@ -2012,14 +2322,22 @@ int __intel_wait_for_register_fw(struct drm_i915_private *dev_priv,
 }
 
 /**
+<<<<<<< HEAD
  * __intel_wait_for_register - wait until register matches expected state
+=======
+ * intel_wait_for_register - wait until register matches expected state
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev_priv: the i915 device
  * @reg: the register to read
  * @mask: mask to apply to register value
  * @value: expected value
+<<<<<<< HEAD
  * @fast_timeout_us: fast timeout in microsecond for atomic/tight wait
  * @slow_timeout_ms: slow timeout in millisecond
  * @out_value: optional placeholder to hold registry value
+=======
+ * @timeout_ms: timeout in millisecond
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This routine waits until the target register @reg contains the expected
  * @value after applying the @mask, i.e. it waits until ::
@@ -2030,6 +2348,7 @@ int __intel_wait_for_register_fw(struct drm_i915_private *dev_priv,
  *
  * Returns 0 if the register matches the desired condition, or -ETIMEOUT.
  */
+<<<<<<< HEAD
 int __intel_wait_for_register(struct drm_i915_private *dev_priv,
 			    i915_reg_t reg,
 			    u32 mask,
@@ -2044,17 +2363,35 @@ int __intel_wait_for_register(struct drm_i915_private *dev_priv,
 	int ret;
 
 	might_sleep_if(slow_timeout_ms);
+=======
+int intel_wait_for_register(struct drm_i915_private *dev_priv,
+			    i915_reg_t reg,
+			    u32 mask,
+			    u32 value,
+			    unsigned int timeout_ms)
+{
+	unsigned fw =
+		intel_uncore_forcewake_for_reg(dev_priv, reg, FW_REG_READ);
+	int ret;
+
+	might_sleep();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&dev_priv->uncore.lock);
 	intel_uncore_forcewake_get__locked(dev_priv, fw);
 
 	ret = __intel_wait_for_register_fw(dev_priv,
 					   reg, mask, value,
+<<<<<<< HEAD
 					   fast_timeout_us, 0, &reg_value);
+=======
+					   2, 0, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_uncore_forcewake_put__locked(dev_priv, fw);
 	spin_unlock_irq(&dev_priv->uncore.lock);
 
+<<<<<<< HEAD
 	if (ret && slow_timeout_ms)
 		ret = __wait_for(reg_value = I915_READ_NOTRACE(reg),
 				 (reg_value & mask) == value,
@@ -2062,6 +2399,11 @@ int __intel_wait_for_register(struct drm_i915_private *dev_priv,
 
 	if (out_value)
 		*out_value = reg_value;
+=======
+	if (ret)
+		ret = wait_for((I915_READ_NOTRACE(reg) & mask) == value,
+			       timeout_ms);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2074,12 +2416,20 @@ static int gen8_reset_engine_start(struct intel_engine_cs *engine)
 	I915_WRITE_FW(RING_RESET_CTL(engine->mmio_base),
 		      _MASKED_BIT_ENABLE(RESET_CTL_REQUEST_RESET));
 
+<<<<<<< HEAD
 	ret = __intel_wait_for_register_fw(dev_priv,
 					   RING_RESET_CTL(engine->mmio_base),
 					   RESET_CTL_READY_TO_RESET,
 					   RESET_CTL_READY_TO_RESET,
 					   700, 0,
 					   NULL);
+=======
+	ret = intel_wait_for_register_fw(dev_priv,
+					 RING_RESET_CTL(engine->mmio_base),
+					 RESET_CTL_READY_TO_RESET,
+					 RESET_CTL_READY_TO_RESET,
+					 700);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		DRM_ERROR("%s: reset request timeout\n", engine->name);
 
@@ -2099,6 +2449,7 @@ static int gen8_reset_engines(struct drm_i915_private *dev_priv,
 {
 	struct intel_engine_cs *engine;
 	unsigned int tmp;
+<<<<<<< HEAD
 	int ret;
 
 	for_each_engine_masked(engine, dev_priv, engine_mask, tmp) {
@@ -2112,24 +2463,45 @@ static int gen8_reset_engines(struct drm_i915_private *dev_priv,
 		ret = gen11_reset_engines(dev_priv, engine_mask);
 	else
 		ret = gen6_reset_engines(dev_priv, engine_mask);
+=======
+
+	for_each_engine_masked(engine, dev_priv, engine_mask, tmp)
+		if (gen8_reset_engine_start(engine))
+			goto not_ready;
+
+	return gen6_reset_engines(dev_priv, engine_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 not_ready:
 	for_each_engine_masked(engine, dev_priv, engine_mask, tmp)
 		gen8_reset_engine_cancel(engine);
 
+<<<<<<< HEAD
 	return ret;
+=======
+	return -EIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 typedef int (*reset_func)(struct drm_i915_private *, unsigned engine_mask);
 
 static reset_func intel_get_gpu_reset(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	if (!i915_modparams.reset)
 		return NULL;
 
 	if (INTEL_GEN(dev_priv) >= 8)
 		return gen8_reset_engines;
 	else if (INTEL_GEN(dev_priv) >= 6)
+=======
+	if (!i915.reset)
+		return NULL;
+
+	if (INTEL_INFO(dev_priv)->gen >= 8)
+		return gen8_reset_engines;
+	else if (INTEL_INFO(dev_priv)->gen >= 6)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return gen6_reset_engines;
 	else if (IS_GEN5(dev_priv))
 		return ironlake_do_reset;
@@ -2137,7 +2509,11 @@ static reset_func intel_get_gpu_reset(struct drm_i915_private *dev_priv)
 		return g4x_do_reset;
 	else if (IS_G33(dev_priv) || IS_PINEVIEW(dev_priv))
 		return g33_do_reset;
+<<<<<<< HEAD
 	else if (INTEL_GEN(dev_priv) >= 3)
+=======
+	else if (INTEL_INFO(dev_priv)->gen >= 3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return i915_do_reset;
 	else
 		return NULL;
@@ -2145,6 +2521,7 @@ static reset_func intel_get_gpu_reset(struct drm_i915_private *dev_priv)
 
 int intel_gpu_reset(struct drm_i915_private *dev_priv, unsigned engine_mask)
 {
+<<<<<<< HEAD
 	reset_func reset = intel_get_gpu_reset(dev_priv);
 	int retry;
 	int ret;
@@ -2167,10 +2544,24 @@ int intel_gpu_reset(struct drm_i915_private *dev_priv, unsigned engine_mask)
 
 	/*
 	 * If the power well sleeps during the reset, the reset
+=======
+	reset_func reset;
+	int retry;
+	int ret;
+
+	might_sleep();
+
+	reset = intel_get_gpu_reset(dev_priv);
+	if (reset == NULL)
+		return -ENODEV;
+
+	/* If the power well sleeps during the reset, the reset
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * request may be dropped and never completes (causing -EIO).
 	 */
 	intel_uncore_forcewake_get(dev_priv, FORCEWAKE_ALL);
 	for (retry = 0; retry < 3; retry++) {
+<<<<<<< HEAD
 
 		/*
 		 * We stop engines, otherwise we might get failed reset and a
@@ -2194,6 +2585,10 @@ int intel_gpu_reset(struct drm_i915_private *dev_priv, unsigned engine_mask)
 			ret = reset(dev_priv, engine_mask);
 		}
 		if (ret != -ETIMEDOUT || engine_mask != ALL_ENGINES)
+=======
+		ret = reset(dev_priv, engine_mask);
+		if (ret != -ETIMEDOUT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		cond_resched();
@@ -2208,6 +2603,7 @@ bool intel_has_gpu_reset(struct drm_i915_private *dev_priv)
 	return intel_get_gpu_reset(dev_priv) != NULL;
 }
 
+<<<<<<< HEAD
 bool intel_has_reset_engine(struct drm_i915_private *dev_priv)
 {
 	return (dev_priv->info.has_reset_engine &&
@@ -2224,6 +2620,28 @@ int intel_reset_guc(struct drm_i915_private *dev_priv)
 
 	intel_uncore_forcewake_get(dev_priv, FORCEWAKE_ALL);
 	ret = gen6_hw_domain_reset(dev_priv, guc_domain);
+=======
+/*
+ * When GuC submission is enabled, GuC manages ELSP and can initiate the
+ * engine reset too. For now, fall back to full GPU reset if it is enabled.
+ */
+bool intel_has_reset_engine(struct drm_i915_private *dev_priv)
+{
+	return (dev_priv->info.has_reset_engine &&
+		!dev_priv->guc.execbuf_client &&
+		i915.reset >= 2);
+}
+
+int intel_guc_reset(struct drm_i915_private *dev_priv)
+{
+	int ret;
+
+	if (!HAS_GUC(dev_priv))
+		return -EINVAL;
+
+	intel_uncore_forcewake_get(dev_priv, FORCEWAKE_ALL);
+	ret = gen6_hw_domain_reset(dev_priv, GEN9_GRDOM_GUC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_uncore_forcewake_put(dev_priv, FORCEWAKE_ALL);
 
 	return ret;
@@ -2237,7 +2655,11 @@ bool intel_uncore_unclaimed_mmio(struct drm_i915_private *dev_priv)
 bool
 intel_uncore_arm_unclaimed_mmio_detection(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	if (unlikely(i915_modparams.mmio_debug ||
+=======
+	if (unlikely(i915.mmio_debug ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     dev_priv->uncore.unclaimed_mmio_check <= 0))
 		return false;
 
@@ -2245,7 +2667,11 @@ intel_uncore_arm_unclaimed_mmio_detection(struct drm_i915_private *dev_priv)
 		DRM_DEBUG("Unclaimed register detected, "
 			  "enabling oneshot unclaimed register reporting. "
 			  "Please use i915.mmio_debug=N for more information.\n");
+<<<<<<< HEAD
 		i915_modparams.mmio_debug++;
+=======
+		i915.mmio_debug++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_priv->uncore.unclaimed_mmio_check--;
 		return true;
 	}
@@ -2260,9 +2686,13 @@ intel_uncore_forcewake_for_read(struct drm_i915_private *dev_priv,
 	u32 offset = i915_mmio_reg_offset(reg);
 	enum forcewake_domains fw_domains;
 
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 11) {
 		fw_domains = __gen11_fwtable_reg_read_fw_domains(offset);
 	} else if (HAS_FWTABLE(dev_priv)) {
+=======
+	if (HAS_FWTABLE(dev_priv)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fw_domains = __fwtable_reg_read_fw_domains(offset);
 	} else if (INTEL_GEN(dev_priv) >= 6) {
 		fw_domains = __gen6_reg_read_fw_domains(offset);
@@ -2283,9 +2713,13 @@ intel_uncore_forcewake_for_write(struct drm_i915_private *dev_priv,
 	u32 offset = i915_mmio_reg_offset(reg);
 	enum forcewake_domains fw_domains;
 
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 11) {
 		fw_domains = __gen11_fwtable_reg_write_fw_domains(offset);
 	} else if (HAS_FWTABLE(dev_priv) && !IS_VALLEYVIEW(dev_priv)) {
+=======
+	if (HAS_FWTABLE(dev_priv) && !IS_VALLEYVIEW(dev_priv)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fw_domains = __fwtable_reg_write_fw_domains(offset);
 	} else if (IS_GEN8(dev_priv)) {
 		fw_domains = __gen8_reg_write_fw_domains(offset);

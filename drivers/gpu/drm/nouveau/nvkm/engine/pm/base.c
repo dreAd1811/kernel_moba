@@ -462,7 +462,11 @@ nvkm_perfmon_mthd_query_domain(struct nvkm_perfmon *perfmon,
 
 		args->v0.id         = di;
 		args->v0.signal_nr  = nvkm_perfdom_count_perfsig(dom);
+<<<<<<< HEAD
 		strncpy(args->v0.name, dom->name, sizeof(args->v0.name) - 1);
+=======
+		strncpy(args->v0.name, dom->name, sizeof(args->v0.name));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Currently only global counters (PCOUNTER) are implemented
 		 * but this will be different for local counters (MP). */
@@ -514,7 +518,11 @@ nvkm_perfmon_mthd_query_signal(struct nvkm_perfmon *perfmon,
 				 "/%s/%02x", dom->name, si);
 		} else {
 			strncpy(args->v0.name, sig->name,
+<<<<<<< HEAD
 				sizeof(args->v0.name) - 1);
+=======
+				sizeof(args->v0.name));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		args->v0.signal = si;
@@ -572,7 +580,11 @@ nvkm_perfmon_mthd_query_source(struct nvkm_perfmon *perfmon,
 
 		args->v0.source = sig->source[si];
 		args->v0.mask   = src->mask;
+<<<<<<< HEAD
 		strncpy(args->v0.name, src->name, sizeof(args->v0.name) - 1);
+=======
+		strncpy(args->v0.name, src->name, sizeof(args->v0.name));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (++si < source_nr) {
@@ -779,8 +791,13 @@ nvkm_perfdom_new(struct nvkm_pm *pm, const char *name, u32 mask,
 
 		sdom = spec;
 		while (sdom->signal_nr) {
+<<<<<<< HEAD
 			dom = kzalloc(struct_size(dom, signal, sdom->signal_nr),
 				      GFP_KERNEL);
+=======
+			dom = kzalloc(sizeof(*dom) + sdom->signal_nr *
+				      sizeof(*dom->signal), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!dom)
 				return -ENOMEM;
 

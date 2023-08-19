@@ -8,7 +8,11 @@
 #include <linux/init.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
+=======
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/of.h>
 #include <linux/mfd/stmpe.h>
@@ -273,6 +277,7 @@ static void stmpe_dbg_show_one(struct seq_file *s,
 		u8 fall_reg;
 		u8 irqen_reg;
 
+<<<<<<< HEAD
 		static const char * const edge_det_values[] = {
 			"edge-inactive",
 			"edge-asserted",
@@ -288,6 +293,17 @@ static void stmpe_dbg_show_one(struct seq_file *s,
 			"falling-edge-detection",
 			"not-supported"
 		};
+=======
+		char *edge_det_values[] = {"edge-inactive",
+					   "edge-asserted",
+					   "not-supported"};
+		char *rise_values[] = {"no-rising-edge-detection",
+				       "rising-edge-detection",
+				       "not-supported"};
+		char *fall_values[] = {"no-falling-edge-detection",
+				       "falling-edge-detection",
+				       "not-supported"};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#define NOT_SUPPORTED_IDX 2
 		u8 edge_det = NOT_SUPPORTED_IDX;
 		u8 rise = NOT_SUPPORTED_IDX;
@@ -305,7 +321,11 @@ static void stmpe_dbg_show_one(struct seq_file *s,
 			if (ret < 0)
 				return;
 			edge_det = !!(ret & mask);
+<<<<<<< HEAD
 			/* fall through */
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case STMPE1801:
 			rise_reg = stmpe->regs[STMPE_IDX_GPRER_LSB + bank];
 			fall_reg = stmpe->regs[STMPE_IDX_GPFER_LSB + bank];
@@ -318,7 +338,11 @@ static void stmpe_dbg_show_one(struct seq_file *s,
 			if (ret < 0)
 				return;
 			fall = !!(ret & mask);
+<<<<<<< HEAD
 			/* fall through */
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case STMPE801:
 		case STMPE1600:
 			irqen_reg = stmpe->regs[STMPE_IDX_IEGPIOR_LSB + bank];
@@ -350,7 +374,11 @@ static void stmpe_dbg_show(struct seq_file *s, struct gpio_chip *gc)
 
 	for (i = 0; i < gc->ngpio; i++, gpio++) {
 		stmpe_dbg_show_one(s, gc, i, gpio);
+<<<<<<< HEAD
 		seq_putc(s, '\n');
+=======
+		seq_printf(s, "\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -363,15 +391,22 @@ static struct irq_chip stmpe_gpio_irq_chip = {
 	.irq_set_type		= stmpe_gpio_irq_set_type,
 };
 
+<<<<<<< HEAD
 #define MAX_GPIOS 24
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t stmpe_gpio_irq(int irq, void *dev)
 {
 	struct stmpe_gpio *stmpe_gpio = dev;
 	struct stmpe *stmpe = stmpe_gpio->stmpe;
 	u8 statmsbreg;
 	int num_banks = DIV_ROUND_UP(stmpe->num_gpios, 8);
+<<<<<<< HEAD
 	u8 status[DIV_ROUND_UP(MAX_GPIOS, 8)];
+=======
+	u8 status[num_banks];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	int i;
 
@@ -405,7 +440,11 @@ static irqreturn_t stmpe_gpio_irq(int irq, void *dev)
 		while (stat) {
 			int bit = __ffs(stat);
 			int line = bank * 8 + bit;
+<<<<<<< HEAD
 			int child_irq = irq_find_mapping(stmpe_gpio->chip.irq.domain,
+=======
+			int child_irq = irq_find_mapping(stmpe_gpio->chip.irqdomain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							 line);
 
 			handle_nested_irq(child_irq);
@@ -434,6 +473,7 @@ static int stmpe_gpio_probe(struct platform_device *pdev)
 	struct stmpe *stmpe = dev_get_drvdata(pdev->dev.parent);
 	struct device_node *np = pdev->dev.of_node;
 	struct stmpe_gpio *stmpe_gpio;
+<<<<<<< HEAD
 	int ret, irq;
 
 	if (stmpe->num_gpios > MAX_GPIOS) {
@@ -442,6 +482,14 @@ static int stmpe_gpio_probe(struct platform_device *pdev)
 	}
 
 	stmpe_gpio = kzalloc(sizeof(*stmpe_gpio), GFP_KERNEL);
+=======
+	int ret;
+	int irq = 0;
+
+	irq = platform_get_irq(pdev, 0);
+
+	stmpe_gpio = kzalloc(sizeof(struct stmpe_gpio), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!stmpe_gpio)
 		return -ENOMEM;
 
@@ -461,9 +509,14 @@ static int stmpe_gpio_probe(struct platform_device *pdev)
 	of_property_read_u32(np, "st,norequest-mask",
 			&stmpe_gpio->norequest_mask);
 	if (stmpe_gpio->norequest_mask)
+<<<<<<< HEAD
 		stmpe_gpio->chip.irq.need_valid_mask = true;
 
 	irq = platform_get_irq(pdev, 0);
+=======
+		stmpe_gpio->chip.irq_need_valid_mask = true;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (irq < 0)
 		dev_info(&pdev->dev,
 			"device configured in no-irq mode: "
@@ -493,7 +546,11 @@ static int stmpe_gpio_probe(struct platform_device *pdev)
 			/* Forbid unused lines to be mapped as IRQs */
 			for (i = 0; i < sizeof(u32); i++)
 				if (stmpe_gpio->norequest_mask & BIT(i))
+<<<<<<< HEAD
 					clear_bit(i, stmpe_gpio->chip.irq.valid_mask);
+=======
+					clear_bit(i, stmpe_gpio->chip.irq_valid_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		ret =  gpiochip_irqchip_add_nested(&stmpe_gpio->chip,
 						   &stmpe_gpio_irq_chip,

@@ -10,11 +10,17 @@
  *  release for licensing terms and conditions.
  */
 
+<<<<<<< HEAD
 #include <linux/refcount.h>
 
 struct clip_entry {
 	spinlock_t lock;	/* Hold while modifying clip reference */
 	refcount_t refcnt;
+=======
+struct clip_entry {
+	spinlock_t lock;	/* Hold while modifying clip reference */
+	atomic_t refcnt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head list;
 	union {
 		struct sockaddr_in addr;

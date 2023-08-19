@@ -126,13 +126,19 @@ static inline void atomic_inc(atomic_t *v)
 {
 	__asm__ __volatile__("addql #1,%0" : "+m" (*v));
 }
+<<<<<<< HEAD
 #define atomic_inc atomic_inc
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void atomic_dec(atomic_t *v)
 {
 	__asm__ __volatile__("subql #1,%0" : "+m" (*v));
 }
+<<<<<<< HEAD
 #define atomic_dec atomic_dec
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline int atomic_dec_and_test(atomic_t *v)
 {
@@ -140,7 +146,10 @@ static inline int atomic_dec_and_test(atomic_t *v)
 	__asm__ __volatile__("subql #1,%1; seq %0" : "=d" (c), "+m" (*v));
 	return c != 0;
 }
+<<<<<<< HEAD
 #define atomic_dec_and_test atomic_dec_and_test
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline int atomic_dec_and_test_lt(atomic_t *v)
 {
@@ -158,7 +167,10 @@ static inline int atomic_inc_and_test(atomic_t *v)
 	__asm__ __volatile__("addql #1,%1; seq %0" : "=d" (c), "+m" (*v));
 	return c != 0;
 }
+<<<<<<< HEAD
 #define atomic_inc_and_test atomic_inc_and_test
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_RMW_INSNS
 
@@ -194,6 +206,12 @@ static inline int atomic_xchg(atomic_t *v, int new)
 
 #endif /* !CONFIG_RMW_INSNS */
 
+<<<<<<< HEAD
+=======
+#define atomic_dec_return(v)	atomic_sub_return(1, (v))
+#define atomic_inc_return(v)	atomic_add_return(1, (v))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int atomic_sub_and_test(int i, atomic_t *v)
 {
 	char c;
@@ -202,7 +220,10 @@ static inline int atomic_sub_and_test(int i, atomic_t *v)
 			     : ASM_DI (i));
 	return c != 0;
 }
+<<<<<<< HEAD
 #define atomic_sub_and_test atomic_sub_and_test
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline int atomic_add_negative(int i, atomic_t *v)
 {
@@ -212,6 +233,24 @@ static inline int atomic_add_negative(int i, atomic_t *v)
 			     : ASM_DI (i));
 	return c != 0;
 }
+<<<<<<< HEAD
 #define atomic_add_negative atomic_add_negative
+=======
+
+static __inline__ int __atomic_add_unless(atomic_t *v, int a, int u)
+{
+	int c, old;
+	c = atomic_read(v);
+	for (;;) {
+		if (unlikely(c == (u)))
+			break;
+		old = atomic_cmpxchg((v), c, c + (a));
+		if (likely(old == c))
+			break;
+		c = old;
+	}
+	return c;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __ARCH_M68K_ATOMIC __ */

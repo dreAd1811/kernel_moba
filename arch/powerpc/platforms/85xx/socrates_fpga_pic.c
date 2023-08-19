@@ -252,7 +252,12 @@ static int socrates_fpga_pic_host_xlate(struct irq_domain *h,
 		/* type is configurable */
 		if (intspec[1] != IRQ_TYPE_LEVEL_LOW &&
 		    intspec[1] != IRQ_TYPE_LEVEL_HIGH) {
+<<<<<<< HEAD
 			pr_warn("FPGA PIC: invalid irq type, setting default active low\n");
+=======
+			pr_warning("FPGA PIC: invalid irq type, "
+				   "setting default active low\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*out_flags = IRQ_TYPE_LEVEL_LOW;
 		} else {
 			*out_flags = intspec[1];
@@ -266,7 +271,11 @@ static int socrates_fpga_pic_host_xlate(struct irq_domain *h,
 	if (intspec[2] <= 2)
 		fpga_irq->irq_line = intspec[2];
 	else
+<<<<<<< HEAD
 		pr_warn("FPGA PIC: invalid irq routing\n");
+=======
+		pr_warning("FPGA PIC: invalid irq routing\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -292,7 +301,11 @@ void socrates_fpga_pic_init(struct device_node *pic)
 	for (i = 0; i < 3; i++) {
 		socrates_fpga_irqs[i] = irq_of_parse_and_map(pic, i);
 		if (!socrates_fpga_irqs[i]) {
+<<<<<<< HEAD
 			pr_warn("FPGA PIC: can't get irq%d\n", i);
+=======
+			pr_warning("FPGA PIC: can't get irq%d.\n", i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 		irq_set_chained_handler(socrates_fpga_irqs[i],

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // handle em28xx IR remotes via linux kernel input layer.
@@ -16,6 +17,30 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
+=======
+/*
+  handle em28xx IR remotes via linux kernel input layer.
+
+   Copyright (C) 2005 Ludovico Cavedon <cavedon@sssup.it>
+		      Markus Rechberger <mrechberger@gmail.com>
+		      Mauro Carvalho Chehab <mchehab@infradead.org>
+		      Sascha Sommer <saschasommer@freenet.de>
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "em28xx.h"
 
@@ -37,15 +62,25 @@ MODULE_PARM_DESC(ir_debug, "enable debug messages [IR]");
 
 #define MODULE_NAME "em28xx"
 
+<<<<<<< HEAD
 #define dprintk(fmt, arg...) do {					\
+=======
+#define dprintk( fmt, arg...) do {					\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ir_debug)							\
 		dev_printk(KERN_DEBUG, &ir->dev->intf->dev,		\
 			   "input: %s: " fmt, __func__, ## arg);	\
 } while (0)
 
+<<<<<<< HEAD
 /*
  * Polling structure used by em28xx IR's
  */
+=======
+/**********************************************************
+ Polling structure used by em28xx IR's
+ **********************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct em28xx_ir_poll_result {
 	unsigned int toggle_bit:1;
@@ -72,16 +107,26 @@ struct em28xx_IR {
 
 	int  (*get_key_i2c)(struct i2c_client *ir, enum rc_proto *protocol,
 			    u32 *scancode);
+<<<<<<< HEAD
 	int  (*get_key)(struct em28xx_IR *ir, struct em28xx_ir_poll_result *r);
 };
 
 /*
  * I2C IR based get keycodes - should be used with ir-kbd-i2c
  */
+=======
+	int  (*get_key)(struct em28xx_IR *, struct em28xx_ir_poll_result *);
+};
+
+/**********************************************************
+ I2C IR based get keycodes - should be used with ir-kbd-i2c
+ **********************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int em28xx_get_key_terratec(struct i2c_client *i2c_dev,
 				   enum rc_proto *protocol, u32 *scancode)
 {
+<<<<<<< HEAD
 	int rc;
 	unsigned char b;
 
@@ -97,6 +142,16 @@ static int em28xx_get_key_terratec(struct i2c_client *i2c_dev,
 	 * it seems that 0xFE indicates that a button is still hold
 	 * down, while 0xff indicates that no button is hold down.
 	 */
+=======
+	unsigned char b;
+
+	/* poll IR chip */
+	if (1 != i2c_master_recv(i2c_dev, &b, 1))
+		return -EIO;
+
+	/* it seems that 0xFE indicates that a button is still hold
+	   down, while 0xff indicates that no button is hold down. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (b == 0xff)
 		return 0;
@@ -148,7 +203,11 @@ static int em28xx_get_key_pinnacle_usb_grey(struct i2c_client *i2c_dev,
 
 	/* poll IR chip */
 
+<<<<<<< HEAD
 	if (i2c_master_recv(i2c_dev, buf, 3) != 3)
+=======
+	if (3 != i2c_master_recv(i2c_dev, buf, 3))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 
 	if (buf[0] != 0x00)
@@ -165,6 +224,7 @@ static int em28xx_get_key_winfast_usbii_deluxe(struct i2c_client *i2c_dev,
 {
 	unsigned char subaddr, keydetect, key;
 
+<<<<<<< HEAD
 	struct i2c_msg msg[] = {
 		{
 			.addr = i2c_dev->addr,
@@ -180,13 +240,24 @@ static int em28xx_get_key_winfast_usbii_deluxe(struct i2c_client *i2c_dev,
 
 	subaddr = 0x10;
 	if (i2c_transfer(i2c_dev->adapter, msg, 2) != 2)
+=======
+	struct i2c_msg msg[] = { { .addr = i2c_dev->addr, .flags = 0, .buf = &subaddr, .len = 1},
+				 { .addr = i2c_dev->addr, .flags = I2C_M_RD, .buf = &keydetect, .len = 1} };
+
+	subaddr = 0x10;
+	if (2 != i2c_transfer(i2c_dev->adapter, msg, 2))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	if (keydetect == 0x00)
 		return 0;
 
 	subaddr = 0x00;
 	msg[1].buf = &key;
+<<<<<<< HEAD
 	if (i2c_transfer(i2c_dev->adapter, msg, 2) != 2)
+=======
+	if (2 != i2c_transfer(i2c_dev->adapter, msg, 2))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	if (key == 0x00)
 		return 0;
@@ -196,9 +267,15 @@ static int em28xx_get_key_winfast_usbii_deluxe(struct i2c_client *i2c_dev,
 	return 1;
 }
 
+<<<<<<< HEAD
 /*
  * Poll based get keycode functions
  */
+=======
+/**********************************************************
+ Poll based get keycode functions
+ **********************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* This is for the em2860/em2880 */
 static int default_polling_getkey(struct em28xx_IR *ir,
@@ -208,9 +285,14 @@ static int default_polling_getkey(struct em28xx_IR *ir,
 	int rc;
 	u8 msg[3] = { 0, 0, 0 };
 
+<<<<<<< HEAD
 	/*
 	 * Read key toggle, brand, and key code
 	 * on registers 0x45, 0x46 and 0x47
+=======
+	/* Read key toggle, brand, and key code
+	   on registers 0x45, 0x46 and 0x47
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	rc = dev->em28xx_read_reg_req_len(dev, 0, EM28XX_R45_IR,
 					  msg, sizeof(msg));
@@ -251,9 +333,14 @@ static int em2874_polling_getkey(struct em28xx_IR *ir,
 	int rc;
 	u8 msg[5] = { 0, 0, 0, 0, 0 };
 
+<<<<<<< HEAD
 	/*
 	 * Read key toggle, brand, and key code
 	 * on registers 0x51-55
+=======
+	/* Read key toggle, brand, and key code
+	   on registers 0x51-55
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	rc = dev->em28xx_read_reg_req_len(dev, 0, EM2874_R51_IR,
 					  msg, sizeof(msg));
@@ -309,9 +396,15 @@ static int em2874_polling_getkey(struct em28xx_IR *ir,
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Polling code for em28xx
  */
+=======
+/**********************************************************
+ Polling code for em28xx
+ **********************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int em28xx_i2c_ir_handle_key(struct em28xx_IR *ir)
 {
@@ -362,6 +455,7 @@ static void em28xx_ir_handle_key(struct em28xx_IR *ir)
 
 		if (ir->dev->chip_id == CHIP_ID_EM2874 ||
 		    ir->dev->chip_id == CHIP_ID_EM2884)
+<<<<<<< HEAD
 			/*
 			 * The em2874 clears the readcount field every time the
 			 * register is read.  The em2860/2880 datasheet says
@@ -370,6 +464,13 @@ static void em28xx_ir_handle_key(struct em28xx_IR *ir)
 			 * non-zero read count as opposed to a readcount
 			 * that is incrementing
 			 */
+=======
+			/* The em2874 clears the readcount field every time the
+			   register is read.  The em2860/2880 datasheet says that it
+			   is supposed to clear the readcount, but it doesn't.  So with
+			   the em2874, we are looking for a non-zero read count as
+			   opposed to a readcount that is incrementing */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ir->last_readcount = 0;
 		else
 			ir->last_readcount = poll_result.read_count;
@@ -494,18 +595,28 @@ static int em28xx_ir_change_protocol(struct rc_dev *rc_dev, u64 *rc_proto)
 static int em28xx_probe_i2c_ir(struct em28xx *dev)
 {
 	int i = 0;
+<<<<<<< HEAD
 	/*
 	 * Leadtek winfast tv USBII deluxe can find a non working IR-device
 	 * at address 0x18, so if that address is needed for another board in
 	 * the future, please put it after 0x1f.
 	 */
+=======
+	/* Leadtek winfast tv USBII deluxe can find a non working IR-device */
+	/* at address 0x18, so if that address is needed for another board in */
+	/* the future, please put it after 0x1f. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const unsigned short addr_list[] = {
 		 0x1f, 0x30, 0x47, I2C_CLIENT_END
 	};
 
 	while (addr_list[i] != I2C_CLIENT_END) {
+<<<<<<< HEAD
 		if (i2c_probe_func_quick_read(&dev->i2c_adap[dev->def_i2c_bus],
 					      addr_list[i]) == 1)
+=======
+		if (i2c_probe_func_quick_read(&dev->i2c_adap[dev->def_i2c_bus], addr_list[i]) == 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return addr_list[i];
 		i++;
 	}
@@ -513,9 +624,15 @@ static int em28xx_probe_i2c_ir(struct em28xx *dev)
 	return -ENODEV;
 }
 
+<<<<<<< HEAD
 /*
  * Handle buttons
  */
+=======
+/**********************************************************
+ Handle buttons
+ **********************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void em28xx_query_buttons(struct work_struct *work)
 {
@@ -536,10 +653,14 @@ static void em28xx_query_buttons(struct work_struct *work)
 		j = 0;
 		while (dev->board.buttons[j].role >= 0 &&
 		       dev->board.buttons[j].role < EM28XX_NUM_BUTTON_ROLES) {
+<<<<<<< HEAD
 			const struct em28xx_button *button;
 
 			button = &dev->board.buttons[j];
 
+=======
+			struct em28xx_button *button = &dev->board.buttons[j];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Check if button uses the current address */
 			if (button->reg_r != dev->button_polling_addresses[i]) {
 				j++;
@@ -642,8 +763,12 @@ static void em28xx_init_buttons(struct em28xx *dev)
 	dev->button_polling_interval = EM28XX_BUTTONS_DEBOUNCED_QUERY_INTERVAL;
 	while (dev->board.buttons[i].role >= 0 &&
 	       dev->board.buttons[i].role < EM28XX_NUM_BUTTON_ROLES) {
+<<<<<<< HEAD
 		const struct em28xx_button *button = &dev->board.buttons[i];
 
+=======
+		struct em28xx_button *button = &dev->board.buttons[i];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Check if polling address is already on the list */
 		addr_new = true;
 		for (j = 0; j < dev->num_button_polling_addresses; j++) {
@@ -674,7 +799,10 @@ static void em28xx_init_buttons(struct em28xx *dev)
 		/* Add read address to list of polling addresses */
 		if (addr_new) {
 			unsigned int index = dev->num_button_polling_addresses;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev->button_polling_addresses[index] = button->reg_r;
 			dev->num_button_polling_addresses++;
 		}
@@ -703,7 +831,11 @@ static void em28xx_shutdown_buttons(struct em28xx *dev)
 	/* Clear polling addresses list */
 	dev->num_button_polling_addresses = 0;
 	/* Deregister input devices */
+<<<<<<< HEAD
 	if (dev->sbutton_input_dev) {
+=======
+	if (dev->sbutton_input_dev != NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(&dev->intf->dev, "Deregistering snapshot button\n");
 		input_unregister_device(dev->sbutton_input_dev);
 		dev->sbutton_input_dev = NULL;
@@ -740,7 +872,11 @@ static int em28xx_ir_init(struct em28xx *dev)
 		}
 	}
 
+<<<<<<< HEAD
 	if (!dev->board.ir_codes && !dev->board.has_ir_i2c) {
+=======
+	if (dev->board.ir_codes == NULL && !dev->board.has_ir_i2c) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* No remote control support */
 		dev_warn(&dev->intf->dev,
 			 "Remote control support is not available for this card.\n");
@@ -790,7 +926,11 @@ static int em28xx_ir_init(struct em28xx *dev)
 			goto error;
 		}
 
+<<<<<<< HEAD
 		ir->i2c_client = kzalloc(sizeof(*ir->i2c_client), GFP_KERNEL);
+=======
+		ir->i2c_client = kzalloc(sizeof(struct i2c_client), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ir->i2c_client)
 			goto error;
 		ir->i2c_client->adapter = &ir->dev->i2c_adap[dev->def_i2c_bus];
@@ -907,11 +1047,17 @@ static int em28xx_ir_suspend(struct em28xx *dev)
 	if (ir)
 		cancel_delayed_work_sync(&ir->work);
 	cancel_delayed_work_sync(&dev->buttons_query_work);
+<<<<<<< HEAD
 	/*
 	 * is canceling delayed work sufficient or does the rc event
 	 * kthread needs stopping? kthread is stopped in
 	 * ir_raw_event_unregister()
 	 */
+=======
+	/* is canceling delayed work sufficient or does the rc event
+	   kthread needs stopping? kthread is stopped in
+	   ir_raw_event_unregister() */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -923,10 +1069,15 @@ static int em28xx_ir_resume(struct em28xx *dev)
 		return 0;
 
 	dev_info(&dev->intf->dev, "Resuming input extension\n");
+<<<<<<< HEAD
 	/*
 	 * if suspend calls ir_raw_event_unregister(), the should call
 	 * ir_raw_event_register()
 	 */
+=======
+	/* if suspend calls ir_raw_event_unregister(), the should call
+	   ir_raw_event_register() */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ir)
 		schedule_delayed_work(&ir->work, msecs_to_jiffies(ir->polling));
 	if (dev->num_button_polling_addresses)
@@ -954,7 +1105,11 @@ static void __exit em28xx_rc_unregister(void)
 	em28xx_unregister_extension(&rc_ops);
 }
 
+<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
+=======
+MODULE_LICENSE("GPL");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Mauro Carvalho Chehab");
 MODULE_DESCRIPTION(DRIVER_DESC " - input interface");
 MODULE_VERSION(EM28XX_VERSION);

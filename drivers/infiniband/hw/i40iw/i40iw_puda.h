@@ -100,6 +100,10 @@ struct i40iw_puda_rsrc_info {
 	enum puda_resource_type type;	/* ILQ or IEQ */
 	u32 count;
 	u16 pd_id;
+<<<<<<< HEAD
+=======
+	bool ceq_valid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cq_id;
 	u32 qp_id;
 	u32 sq_size;
@@ -124,6 +128,10 @@ struct i40iw_puda_rsrc {
 	enum puda_resource_type type;
 	u16 buf_size;		/*buffer must be max datalen + tcpip hdr + mac */
 	u16 mss;
+<<<<<<< HEAD
+=======
+	bool ceq_valid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cq_id;
 	u32 qp_id;
 	u32 sq_size;

@@ -1,23 +1,37 @@
 .. -*- coding: utf-8; mode: rst -*-
 
 .. _lirc_set_rec_timeout:
+<<<<<<< HEAD
 .. _lirc_get_rec_timeout:
 
 ***************************************************
 ioctl LIRC_GET_REC_TIMEOUT and LIRC_SET_REC_TIMEOUT
 ***************************************************
+=======
+
+**************************
+ioctl LIRC_SET_REC_TIMEOUT
+**************************
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Name
 ====
 
+<<<<<<< HEAD
 LIRC_GET_REC_TIMEOUT/LIRC_SET_REC_TIMEOUT - Get/set the integer value for IR inactivity timeout.
+=======
+LIRC_SET_REC_TIMEOUT - sets the integer value for IR inactivity timeout.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Synopsis
 ========
 
+<<<<<<< HEAD
 .. c:function:: int ioctl( int fd, LIRC_GET_REC_TIMEOUT, __u32 *timeout )
     :name: LIRC_GET_REC_TIMEOUT
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .. c:function:: int ioctl( int fd, LIRC_SET_REC_TIMEOUT, __u32 *timeout )
     :name: LIRC_SET_REC_TIMEOUT
 
@@ -34,7 +48,11 @@ Arguments
 Description
 ===========
 
+<<<<<<< HEAD
 Get and set the integer value for IR inactivity timeout.
+=======
+Sets the integer value for IR inactivity timeout.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 If supported by the hardware, setting it to 0  disables all hardware timeouts
 and data should be reported as soon as possible. If the exact value

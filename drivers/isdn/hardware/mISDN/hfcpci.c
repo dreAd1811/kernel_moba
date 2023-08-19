@@ -301,9 +301,14 @@ reset_hfcpci(struct hfc_pci *hc)
  * Timer function called when kernel timer expires
  */
 static void
+<<<<<<< HEAD
 hfcpci_Timer(struct timer_list *t)
 {
 	struct hfc_pci *hc = from_timer(hc, t, hw.timer);
+=======
+hfcpci_Timer(struct hfc_pci *hc)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hc->hw.timer.expires = jiffies + 75;
 	/* WD RESET */
 /*
@@ -1242,7 +1247,11 @@ hfcpci_int(int intno, void *dev_id)
  * timer callback for D-chan busy resolution. Currently no function
  */
 static void
+<<<<<<< HEAD
 hfcpci_dbusy_timer(struct timer_list *t)
+=======
+hfcpci_dbusy_timer(struct hfc_pci *hc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 
@@ -1296,7 +1305,10 @@ mode_hfcpci(struct bchannel *bch, int bc, int protocol)
 	case (-1): /* used for init */
 		bch->state = -1;
 		bch->nr = bc;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case (ISDN_P_NONE):
 		if (bch->state == ISDN_P_NONE)
 			return 0;
@@ -1719,7 +1731,12 @@ static void
 inithfcpci(struct hfc_pci *hc)
 {
 	printk(KERN_DEBUG "inithfcpci: entered\n");
+<<<<<<< HEAD
 	timer_setup(&hc->dch.timer, hfcpci_dbusy_timer, 0);
+=======
+	setup_timer(&hc->dch.timer, (void *)hfcpci_dbusy_timer,
+		    (long)&hc->dch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hc->chanlimit = 2;
 	mode_hfcpci(&hc->bch[0], 1, -1);
 	mode_hfcpci(&hc->bch[1], 2, -1);
@@ -2044,7 +2061,11 @@ setup_hw(struct hfc_pci *hc)
 	Write_hfc(hc, HFCPCI_INT_M1, hc->hw.int_m1);
 	/* At this point the needed PCI config is done */
 	/* fifos are still not enabled */
+<<<<<<< HEAD
 	timer_setup(&hc->hw.timer, hfcpci_Timer, 0);
+=======
+	setup_timer(&hc->hw.timer, (void *)hfcpci_Timer, (long)hc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* default PCM master */
 	test_and_set_bit(HFC_CFG_MASTER, &hc->cfg);
 	return 0;
@@ -2220,7 +2241,11 @@ hfc_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	struct hfc_pci	*card;
 	struct _hfc_map	*m = (struct _hfc_map *)ent->driver_data;
 
+<<<<<<< HEAD
 	card = kzalloc(sizeof(struct hfc_pci), GFP_KERNEL);
+=======
+	card = kzalloc(sizeof(struct hfc_pci), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!card) {
 		printk(KERN_ERR "No kmem for HFC card\n");
 		return err;
@@ -2266,7 +2291,11 @@ static struct pci_driver hfc_driver = {
 };
 
 static int
+<<<<<<< HEAD
 _hfcpci_softirq(struct device *dev, void *unused)
+=======
+_hfcpci_softirq(struct device *dev, void *arg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hfc_pci  *hc = dev_get_drvdata(dev);
 	struct bchannel *bch;
@@ -2291,9 +2320,15 @@ _hfcpci_softirq(struct device *dev, void *unused)
 }
 
 static void
+<<<<<<< HEAD
 hfcpci_softirq(struct timer_list *unused)
 {
 	WARN_ON_ONCE(driver_for_each_device(&hfc_driver.driver, NULL, NULL,
+=======
+hfcpci_softirq(void *arg)
+{
+	WARN_ON_ONCE(driver_for_each_device(&hfc_driver.driver, NULL, arg,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      _hfcpci_softirq) != 0);
 
 	/* if next event would be in the past ... */
@@ -2328,7 +2363,13 @@ HFC_init(void)
 	if (poll != HFCPCI_BTRANS_THRESHOLD) {
 		printk(KERN_INFO "%s: Using alternative poll value of %d\n",
 		       __func__, poll);
+<<<<<<< HEAD
 		timer_setup(&hfc_tl, hfcpci_softirq, 0);
+=======
+		hfc_tl.function = (void *)hfcpci_softirq;
+		hfc_tl.data = 0;
+		init_timer(&hfc_tl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hfc_tl.expires = jiffies + tics;
 		hfc_jiffies = hfc_tl.expires;
 		add_timer(&hfc_tl);

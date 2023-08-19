@@ -7,8 +7,12 @@
  *
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2014 Intel Mobile Communications GmbH
+<<<<<<< HEAD
  * Copyright(c) 2015        Intel Deutschland GmbH
  * Copyright(c) 2018        Intel Corporation
+=======
+ * Copyright(c) 2015 Intel Deutschland GmbH
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -35,8 +39,12 @@
  *
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2014 Intel Mobile Communications GmbH
+<<<<<<< HEAD
  * Copyright(c) 2015        Intel Deutschland GmbH
  * Copyright(c) 2018        Intel Corporation
+=======
+ * Copyright(c) 2015 Intel Deutschland GmbH
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,6 +78,10 @@
 #include <linux/module.h>
 #include <linux/stringify.h>
 #include "iwl-config.h"
+<<<<<<< HEAD
+=======
+#include "iwl-agn-hw.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Highest firmware API version supported */
 #define IWL7260_UCODE_API_MAX	17
@@ -123,7 +135,10 @@
 static const struct iwl_base_params iwl7000_base_params = {
 	.eeprom_size = OTP_LOW_IMAGE_SIZE_FAMILY_7000,
 	.num_of_queues = 31,
+<<<<<<< HEAD
 	.max_tfd_queue_size = 256,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.shadow_ram_support = true,
 	.led_compensation = 57,
 	.wd_timeout = IWL_LONG_WD_TIMEOUT,
@@ -162,13 +177,22 @@ static const struct iwl_ht_params iwl7000_ht_params = {
 
 #define IWL_DEVICE_7000_COMMON					\
 	.device_family = IWL_DEVICE_FAMILY_7000,		\
+<<<<<<< HEAD
+=======
+	.max_inst_size = IWL60_RTC_INST_SIZE,			\
+	.max_data_size = IWL60_RTC_DATA_SIZE,			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base_params = &iwl7000_base_params,			\
 	.led_mode = IWL_LED_RF_STATE,				\
 	.nvm_hw_section_num = NVM_HW_SECTION_NUM_FAMILY_7000,	\
 	.non_shared_ant = ANT_A,				\
 	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K,	\
+<<<<<<< HEAD
 	.dccm_offset = IWL7000_DCCM_OFFSET,			\
 	.csr = &iwl_csr_v1
+=======
+	.dccm_offset = IWL7000_DCCM_OFFSET
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define IWL_DEVICE_7000						\
 	IWL_DEVICE_7000_COMMON,					\

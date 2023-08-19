@@ -652,6 +652,10 @@ static void brcms_reg_apply_radar_flags(struct wiphy *wiphy)
 		 */
 		if (!(ch->flags & IEEE80211_CHAN_DISABLED))
 			ch->flags |= IEEE80211_CHAN_RADAR |
+<<<<<<< HEAD
+=======
+				     IEEE80211_CHAN_NO_IR |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     IEEE80211_CHAN_NO_IR;
 	}
 }

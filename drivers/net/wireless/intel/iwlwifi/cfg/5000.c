@@ -1,7 +1,10 @@
 /******************************************************************************
  *
  * Copyright(c) 2007 - 2014 Intel Corporation. All rights reserved.
+<<<<<<< HEAD
  * Copyright(c) 2018 - 2019 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
@@ -29,6 +32,10 @@
 #include <linux/stringify.h>
 #include "iwl-config.h"
 #include "iwl-agn-hw.h"
+<<<<<<< HEAD
+=======
+#include "iwl-csr.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Highest firmware API version supported */
 #define IWL5000_UCODE_API_MAX 5
@@ -53,7 +60,10 @@
 static const struct iwl_base_params iwl5000_base_params = {
 	.eeprom_size = IWLAGN_EEPROM_IMG_SIZE,
 	.num_of_queues = IWLAGN_NUM_QUEUES,
+<<<<<<< HEAD
 	.max_tfd_queue_size = 256,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pll_cfg = true,
 	.led_compensation = 51,
 	.wd_timeout = IWL_WATCHDOG_DISABLED,
@@ -90,8 +100,12 @@ static const struct iwl_eeprom_params iwl5000_eeprom_params = {
 	.base_params = &iwl5000_base_params,			\
 	.eeprom_params = &iwl5000_eeprom_params,		\
 	.led_mode = IWL_LED_BLINK,				\
+<<<<<<< HEAD
 	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K,	\
 	.csr = &iwl_csr_v1
+=======
+	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 const struct iwl_cfg iwl5300_agn_cfg = {
 	.name = "Intel(R) Ultimate N WiFi Link 5300 AGN",
@@ -140,7 +154,10 @@ const struct iwl_cfg iwl5350_agn_cfg = {
 	.ht_params = &iwl5000_ht_params,
 	.led_mode = IWL_LED_BLINK,
 	.internal_wimax_coex = true,
+<<<<<<< HEAD
 	.csr = &iwl_csr_v1,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define IWL_DEVICE_5150						\
@@ -156,8 +173,12 @@ const struct iwl_cfg iwl5350_agn_cfg = {
 	.eeprom_params = &iwl5000_eeprom_params,		\
 	.led_mode = IWL_LED_BLINK,				\
 	.internal_wimax_coex = true,				\
+<<<<<<< HEAD
 	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K,	\
 	.csr = &iwl_csr_v1
+=======
+	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 const struct iwl_cfg iwl5150_agn_cfg = {
 	.name = "Intel(R) WiMAX/WiFi Link 5150 AGN",

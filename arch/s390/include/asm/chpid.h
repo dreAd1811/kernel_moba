@@ -9,7 +9,11 @@
 #include <uapi/asm/chpid.h>
 #include <asm/cio.h>
 
+<<<<<<< HEAD
 struct channel_path_desc_fmt0 {
+=======
+struct channel_path_desc {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 flags;
 	u8 lsn;
 	u8 desc;

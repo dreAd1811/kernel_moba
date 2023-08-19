@@ -147,7 +147,11 @@ static void slc_bump(struct slcan *sl)
 	u32 tmpid;
 	char *cmd = sl->rbuff;
 
+<<<<<<< HEAD
 	cf.can_id = 0;
+=======
+	memset(&cf, 0, sizeof(cf));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (*cmd) {
 	case 'r':
@@ -186,8 +190,11 @@ static void slc_bump(struct slcan *sl)
 	else
 		return;
 
+<<<<<<< HEAD
 	*(u64 *) (&cf.data) = 0; /* clear payload */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* RTR frames may have a dlc > 0 but they never have any data bytes */
 	if (!(cf.can_id & CAN_RTR_FLAG)) {
 		for (i = 0; i < cf.can_dlc; i++) {
@@ -343,9 +350,22 @@ static void slcan_transmit(struct work_struct *work)
  */
 static void slcan_write_wakeup(struct tty_struct *tty)
 {
+<<<<<<< HEAD
 	struct slcan *sl = tty->disc_data;
 
 	schedule_work(&sl->tx_work);
+=======
+	struct slcan *sl;
+
+	rcu_read_lock();
+	sl = rcu_dereference(tty->disc_data);
+	if (!sl)
+		goto out;
+
+	schedule_work(&sl->tx_work);
+out:
+	rcu_read_unlock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Send a can_frame to a TTY queue. */
@@ -508,7 +528,11 @@ static void slc_sync(void)
 }
 
 /* Find a free SLCAN channel, and link in this `tty' line. */
+<<<<<<< HEAD
 static struct slcan *slc_alloc(void)
+=======
+static struct slcan *slc_alloc(dev_t line)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	char name[IFNAMSIZ];
@@ -583,7 +607,11 @@ static int slcan_open(struct tty_struct *tty)
 
 	/* OK.  Find a free SLCAN channel to use. */
 	err = -ENFILE;
+<<<<<<< HEAD
 	sl = slc_alloc();
+=======
+	sl = slc_alloc(tty_devnum(tty));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sl == NULL)
 		goto err_exit;
 
@@ -613,6 +641,14 @@ err_free_chan:
 	sl->tty = NULL;
 	tty->disc_data = NULL;
 	clear_bit(SLF_INUSE, &sl->flags);
+<<<<<<< HEAD
+=======
+	slc_free_netdev(sl->dev);
+	/* do not call free_netdev before rtnl_unlock */
+	rtnl_unlock();
+	free_netdev(sl->dev);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_exit:
 	rtnl_unlock();
@@ -638,10 +674,18 @@ static void slcan_close(struct tty_struct *tty)
 		return;
 
 	spin_lock_bh(&sl->lock);
+<<<<<<< HEAD
 	tty->disc_data = NULL;
 	sl->tty = NULL;
 	spin_unlock_bh(&sl->lock);
 
+=======
+	rcu_assign_pointer(tty->disc_data, NULL);
+	sl->tty = NULL;
+	spin_unlock_bh(&sl->lock);
+
+	synchronize_rcu();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flush_work(&sl->tx_work);
 
 	/* Flush network side */
@@ -703,7 +747,11 @@ static int __init slcan_init(void)
 	pr_info("slcan: serial line CAN interface driver\n");
 	pr_info("slcan: %d dynamic interface channels.\n", maxdev);
 
+<<<<<<< HEAD
 	slcan_devs = kcalloc(maxdev, sizeof(struct net_device *), GFP_KERNEL);
+=======
+	slcan_devs = kzalloc(sizeof(struct net_device *)*maxdev, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!slcan_devs)
 		return -ENOMEM;
 

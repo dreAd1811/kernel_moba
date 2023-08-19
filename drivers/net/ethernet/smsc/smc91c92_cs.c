@@ -280,7 +280,11 @@ static void set_rx_mode(struct net_device *dev);
 static int s9k_config(struct net_device *dev, struct ifmap *map);
 static void smc_set_xcvr(struct net_device *dev, int if_port);
 static void smc_reset(struct net_device *dev);
+<<<<<<< HEAD
 static void media_check(struct timer_list *t);
+=======
+static void media_check(u_long arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mdio_sync(unsigned int addr);
 static int mdio_read(struct net_device *dev, int phy_id, int loc);
 static void mdio_write(struct net_device *dev, int phy_id, int loc, int value);
@@ -1070,7 +1074,11 @@ static int smc_open(struct net_device *dev)
     smc->packets_waiting = 0;
 
     smc_reset(dev);
+<<<<<<< HEAD
     timer_setup(&smc->media, media_check, 0);
+=======
+    setup_timer(&smc->media, media_check, (u_long)dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     mod_timer(&smc->media, jiffies + HZ);
 
     return 0;
@@ -1708,10 +1716,17 @@ static void smc_reset(struct net_device *dev)
 
 ======================================================================*/
 
+<<<<<<< HEAD
 static void media_check(struct timer_list *t)
 {
     struct smc_private *smc = from_timer(smc, t, media);
     struct net_device *dev = smc->mii_if.dev;
+=======
+static void media_check(u_long arg)
+{
+    struct net_device *dev = (struct net_device *) arg;
+    struct smc_private *smc = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     unsigned int ioaddr = dev->base_addr;
     u_short i, media, saved_bank;
     u_short link;

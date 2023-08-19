@@ -21,7 +21,11 @@
  *
  */
 
+<<<<<<< HEAD
 #include "kfd_mqd_manager.h"
+=======
+#include "kfd_priv.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct mqd_manager *mqd_manager_init(enum KFD_MQD_TYPE type,
 					struct kfd_dev *dev)
@@ -29,6 +33,7 @@ struct mqd_manager *mqd_manager_init(enum KFD_MQD_TYPE type,
 	switch (dev->device_info->asic_family) {
 	case CHIP_KAVERI:
 		return mqd_manager_init_cik(type, dev);
+<<<<<<< HEAD
 	case CHIP_HAWAII:
 		return mqd_manager_init_cik_hawaii(type, dev);
 	case CHIP_CARRIZO:
@@ -44,10 +49,15 @@ struct mqd_manager *mqd_manager_init(enum KFD_MQD_TYPE type,
 	default:
 		WARN(1, "Unexpected ASIC family %u",
 		     dev->device_info->asic_family);
+=======
+	case CHIP_CARRIZO:
+		return mqd_manager_init_vi(type, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return NULL;
 }
+<<<<<<< HEAD
 
 void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
 		const uint32_t *cu_mask, uint32_t cu_mask_count,
@@ -87,3 +97,5 @@ void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
 		} while (cu >= cu_per_sh[se] && cu < 32);
 	}
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

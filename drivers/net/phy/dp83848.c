@@ -20,6 +20,10 @@
 #define TI_DP83620_PHY_ID		0x20005ce0
 #define NS_DP83848C_PHY_ID		0x20005c90
 #define TLK10X_PHY_ID			0x2000a210
+<<<<<<< HEAD
+=======
+#define TI_DP83822_PHY_ID		0x2000a240
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Registers */
 #define DP83848_MICR			0x11 /* MII Interrupt Control Register */
@@ -74,6 +78,7 @@ static int dp83848_config_intr(struct phy_device *phydev)
 	return phy_write(phydev, DP83848_MICR, control);
 }
 
+<<<<<<< HEAD
 static int dp83848_config_init(struct phy_device *phydev)
 {
 	int err;
@@ -93,16 +98,26 @@ static int dp83848_config_init(struct phy_device *phydev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mdio_device_id __maybe_unused dp83848_tbl[] = {
 	{ TI_DP83848C_PHY_ID, 0xfffffff0 },
 	{ NS_DP83848C_PHY_ID, 0xfffffff0 },
 	{ TI_DP83620_PHY_ID, 0xfffffff0 },
 	{ TLK10X_PHY_ID, 0xfffffff0 },
+<<<<<<< HEAD
+=======
+	{ TI_DP83822_PHY_ID, 0xfffffff0 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(mdio, dp83848_tbl);
 
+<<<<<<< HEAD
 #define DP83848_PHY_DRIVER(_id, _name, _config_init)		\
+=======
+#define DP83848_PHY_DRIVER(_id, _name)				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{							\
 		.phy_id		= _id,				\
 		.phy_id_mask	= 0xfffffff0,			\
@@ -111,9 +126,17 @@ MODULE_DEVICE_TABLE(mdio, dp83848_tbl);
 		.flags		= PHY_HAS_INTERRUPT,		\
 								\
 		.soft_reset	= genphy_soft_reset,		\
+<<<<<<< HEAD
 		.config_init	= _config_init,			\
 		.suspend	= genphy_suspend,		\
 		.resume		= genphy_resume,		\
+=======
+		.config_init	= genphy_config_init,		\
+		.suspend	= genphy_suspend,		\
+		.resume		= genphy_resume,		\
+		.config_aneg	= genphy_config_aneg,		\
+		.read_status	= genphy_read_status,		\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 								\
 		/* IRQ related */				\
 		.ack_interrupt	= dp83848_ack_interrupt,	\
@@ -121,6 +144,7 @@ MODULE_DEVICE_TABLE(mdio, dp83848_tbl);
 	}
 
 static struct phy_driver dp83848_driver[] = {
+<<<<<<< HEAD
 	DP83848_PHY_DRIVER(TI_DP83848C_PHY_ID, "TI DP83848C 10/100 Mbps PHY",
 			   genphy_config_init),
 	DP83848_PHY_DRIVER(NS_DP83848C_PHY_ID, "NS DP83848C 10/100 Mbps PHY",
@@ -129,6 +153,13 @@ static struct phy_driver dp83848_driver[] = {
 			   dp83848_config_init),
 	DP83848_PHY_DRIVER(TLK10X_PHY_ID, "TI TLK10X 10/100 Mbps PHY",
 			   genphy_config_init),
+=======
+	DP83848_PHY_DRIVER(TI_DP83848C_PHY_ID, "TI DP83848C 10/100 Mbps PHY"),
+	DP83848_PHY_DRIVER(NS_DP83848C_PHY_ID, "NS DP83848C 10/100 Mbps PHY"),
+	DP83848_PHY_DRIVER(TI_DP83620_PHY_ID, "TI DP83620 10/100 Mbps PHY"),
+	DP83848_PHY_DRIVER(TLK10X_PHY_ID, "TI TLK10X 10/100 Mbps PHY"),
+	DP83848_PHY_DRIVER(TI_DP83822_PHY_ID, "TI DP83822 10/100 Mbps PHY"),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 module_phy_driver(dp83848_driver);
 

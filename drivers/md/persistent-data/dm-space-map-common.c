@@ -69,9 +69,15 @@ static struct dm_block_validator index_validator = {
  */
 #define BITMAP_CSUM_XOR 240779
 
+<<<<<<< HEAD
 static void dm_bitmap_prepare_for_write(struct dm_block_validator *v,
 					struct dm_block *b,
 					size_t block_size)
+=======
+static void bitmap_prepare_for_write(struct dm_block_validator *v,
+				     struct dm_block *b,
+				     size_t block_size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct disk_bitmap_header *disk_header = dm_block_data(b);
 
@@ -81,9 +87,15 @@ static void dm_bitmap_prepare_for_write(struct dm_block_validator *v,
 						       BITMAP_CSUM_XOR));
 }
 
+<<<<<<< HEAD
 static int dm_bitmap_check(struct dm_block_validator *v,
 			   struct dm_block *b,
 			   size_t block_size)
+=======
+static int bitmap_check(struct dm_block_validator *v,
+			struct dm_block *b,
+			size_t block_size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct disk_bitmap_header *disk_header = dm_block_data(b);
 	__le32 csum_disk;
@@ -108,8 +120,13 @@ static int dm_bitmap_check(struct dm_block_validator *v,
 
 static struct dm_block_validator dm_sm_bitmap_validator = {
 	.name = "sm_bitmap",
+<<<<<<< HEAD
 	.prepare_for_write = dm_bitmap_prepare_for_write,
 	.check = dm_bitmap_check,
+=======
+	.prepare_for_write = bitmap_prepare_for_write,
+	.check = bitmap_check
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*----------------------------------------------------------------*/
@@ -124,7 +141,11 @@ static void *dm_bitmap_data(struct dm_block *b)
 
 #define WORD_MASK_HIGH 0xAAAAAAAAAAAAAAAAULL
 
+<<<<<<< HEAD
 static unsigned dm_bitmap_word_used(void *addr, unsigned b)
+=======
+static unsigned bitmap_word_used(void *addr, unsigned b)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	__le64 *words_le = addr;
 	__le64 *w_le = words_le + (b >> ENTRIES_SHIFT);
@@ -170,7 +191,11 @@ static int sm_find_free(void *addr, unsigned begin, unsigned end,
 {
 	while (begin < end) {
 		if (!(begin & (ENTRIES_PER_WORD - 1)) &&
+<<<<<<< HEAD
 		    dm_bitmap_word_used(addr, begin)) {
+=======
+		    bitmap_word_used(addr, begin)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			begin += ENTRIES_PER_WORD;
 			continue;
 		}
@@ -382,6 +407,36 @@ int sm_ll_find_free_block(struct ll_disk *ll, dm_block_t begin,
 	return -ENOSPC;
 }
 
+<<<<<<< HEAD
+=======
+int sm_ll_find_common_free_block(struct ll_disk *old_ll, struct ll_disk *new_ll,
+	                         dm_block_t begin, dm_block_t end, dm_block_t *b)
+{
+	int r;
+	uint32_t count;
+
+	do {
+		r = sm_ll_find_free_block(new_ll, begin, new_ll->nr_blocks, b);
+		if (r)
+			break;
+
+		/* double check this block wasn't used in the old transaction */
+		if (*b >= old_ll->nr_blocks)
+			count = 0;
+		else {
+			r = sm_ll_lookup(old_ll, *b, &count);
+			if (r)
+				break;
+
+			if (count)
+				begin = *b + 1;
+		}
+	} while (count);
+
+	return r;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sm_ll_mutate(struct ll_disk *ll, dm_block_t b,
 			int (*mutator)(void *context, uint32_t old, uint32_t *new),
 			void *context, enum allocation_event *ev)

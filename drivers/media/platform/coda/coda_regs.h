@@ -125,7 +125,11 @@
 #define		CODA9_MODE_ENCODE_H264		8
 #define		CODA9_MODE_ENCODE_MP4		11
 #define		CODA9_MODE_ENCODE_MJPG		13
+<<<<<<< HEAD
 #define		CODA_MODE_INVALID		0xffff
+=======
+#define 	CODA_MODE_INVALID		0xffff
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CODA_REG_BIT_INT_ENABLE		0x170
 #define		CODA_INT_INTERRUPT_ENABLE	(1 << 3)
 #define CODA_REG_BIT_INT_REASON			0x174
@@ -157,7 +161,10 @@
 #define CODA_CMD_DEC_SEQ_START_BYTE		0x190
 #define CODA_CMD_DEC_SEQ_PS_BB_START		0x194
 #define CODA_CMD_DEC_SEQ_PS_BB_SIZE		0x198
+<<<<<<< HEAD
 #define CODA_CMD_DEC_SEQ_JPG_THUMB_EN		0x19c
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CODA_CMD_DEC_SEQ_MP4_ASP_CLASS		0x19c
 #define		CODA_MP4_CLASS_MPEG4			0
 #define CODA_CMD_DEC_SEQ_X264_MV_EN		0x19c
@@ -255,6 +262,10 @@
 #define		CODA9_STD_H264					0
 #define		CODA_STD_H263					1
 #define		CODA_STD_H264					2
+<<<<<<< HEAD
+=======
+#define		CODA_STD_MJPG					3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define		CODA9_STD_MPEG4					3
 
 #define CODA_CMD_ENC_SEQ_SRC_SIZE				0x190

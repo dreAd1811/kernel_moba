@@ -16,6 +16,7 @@ typedef struct {
 	unsigned long asce;
 	unsigned long asce_limit;
 	unsigned long vdso_base;
+<<<<<<< HEAD
 	/*
 	 * The following bitfields need a down_write on the mm
 	 * semaphore when they are written to. As they are only
@@ -23,15 +24,24 @@ typedef struct {
 	 *
 	 * The mmu context allocates 4K page tables.
 	 */
+=======
+	/* The mmu context allocates 4K page tables. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int alloc_pgste:1;
 	/* The mmu context uses extended page tables. */
 	unsigned int has_pgste:1;
 	/* The mmu context uses storage keys. */
+<<<<<<< HEAD
 	unsigned int uses_skeys:1;
 	/* The mmu context uses CMM. */
 	unsigned int uses_cmm:1;
 	/* The gmaps associated with this context are allowed to use huge pages. */
 	unsigned int allow_gmap_hpage_1m:1;
+=======
+	unsigned int use_skey:1;
+	/* The mmu context uses CMMA. */
+	unsigned int use_cmma:1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } mm_context_t;
 
 #define INIT_MM_CONTEXT(name)						   \

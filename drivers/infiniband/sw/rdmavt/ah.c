@@ -122,8 +122,12 @@ struct ib_ah *rvt_create_ah(struct ib_pd *pd,
 	dev->n_ahs_allocated++;
 	spin_unlock_irqrestore(&dev->n_ahs_lock, flags);
 
+<<<<<<< HEAD
 	rdma_copy_ah_attr(&ah->attr, ah_attr);
 
+=======
+	ah->attr = *ah_attr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_set(&ah->refcount, 0);
 
 	if (dev->driver_f.notify_new_ah)
@@ -151,7 +155,10 @@ int rvt_destroy_ah(struct ib_ah *ibah)
 	dev->n_ahs_allocated--;
 	spin_unlock_irqrestore(&dev->n_ahs_lock, flags);
 
+<<<<<<< HEAD
 	rdma_destroy_ah_attr(&ah->attr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(ah);
 
 	return 0;

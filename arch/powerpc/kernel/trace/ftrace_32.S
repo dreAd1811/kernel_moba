@@ -14,6 +14,10 @@
 #include <asm/ftrace.h>
 #include <asm/export.h>
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DYNAMIC_FTRACE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 _GLOBAL(mcount)
 _GLOBAL(_mcount)
 	/*
@@ -46,7 +50,30 @@ _GLOBAL(ftrace_graph_stub)
 	MCOUNT_RESTORE_FRAME
 	/* old link register ends up in ctr reg */
 	bctr
+<<<<<<< HEAD
 
+=======
+#else
+_GLOBAL(mcount)
+_GLOBAL(_mcount)
+
+	MCOUNT_SAVE_FRAME
+
+	subi	r3, r3, MCOUNT_INSN_SIZE
+	LOAD_REG_ADDR(r5, ftrace_trace_function)
+	lwz	r5,0(r5)
+
+	mtctr	r5
+	bctrl
+	nop
+
+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
+	b	ftrace_graph_caller
+#endif
+	MCOUNT_RESTORE_FRAME
+	bctr
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(_mcount)
 
 _GLOBAL(ftrace_stub)

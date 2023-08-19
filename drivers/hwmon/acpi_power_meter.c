@@ -575,9 +575,14 @@ static int read_domain_devices(struct acpi_power_meter_resource *resource)
 	if (!pss->package.count)
 		goto end;
 
+<<<<<<< HEAD
 	resource->domain_devices = kcalloc(pss->package.count,
 					   sizeof(struct acpi_device *),
 					   GFP_KERNEL);
+=======
+	resource->domain_devices = kzalloc(sizeof(struct acpi_device *) *
+					   pss->package.count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!resource->domain_devices) {
 		res = -ENOMEM;
 		goto end;
@@ -797,7 +802,11 @@ static int read_capabilities(struct acpi_power_meter_resource *resource)
 			goto error;
 		}
 
+<<<<<<< HEAD
 		*str = kcalloc(element->string.length + 1, sizeof(u8),
+=======
+		*str = kzalloc(sizeof(u8) * (element->string.length + 1),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL);
 		if (!*str) {
 			res = -ENOMEM;
@@ -896,7 +905,11 @@ static int acpi_power_meter_add(struct acpi_device *device)
 
 	res = setup_attrs(resource);
 	if (res)
+<<<<<<< HEAD
 		goto exit_free;
+=======
+		goto exit_free_capability;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	resource->hwmon_dev = hwmon_device_register(&device->dev);
 	if (IS_ERR(resource->hwmon_dev)) {
@@ -909,6 +922,11 @@ static int acpi_power_meter_add(struct acpi_device *device)
 
 exit_remove:
 	remove_attrs(resource);
+<<<<<<< HEAD
+=======
+exit_free_capability:
+	free_capabilities(resource);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit_free:
 	kfree(resource);
 exit:

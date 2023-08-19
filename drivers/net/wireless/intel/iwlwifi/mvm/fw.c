@@ -8,7 +8,10 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright(c) 2018        Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -36,7 +39,10 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright(c) 2018        Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,6 +74,10 @@
  *****************************************************************************/
 #include <net/mac80211.h>
 #include <linux/netdevice.h>
+<<<<<<< HEAD
+=======
+#include <linux/acpi.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "iwl-trans.h"
 #include "iwl-op-mode.h"
@@ -76,13 +86,20 @@
 #include "iwl-csr.h" /* for iwl_mvm_rx_card_state_notif */
 #include "iwl-io.h" /* for iwl_mvm_rx_card_state_notif */
 #include "iwl-prph.h"
+<<<<<<< HEAD
 #include "fw/acpi.h"
+=======
+#include "iwl-eeprom-parse.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mvm.h"
 #include "fw/dbg.h"
 #include "iwl-phy-db.h"
+<<<<<<< HEAD
 #include "iwl-modparams.h"
 #include "iwl-nvm-parse.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MVM_UCODE_ALIVE_TIMEOUT	HZ
 #define MVM_UCODE_CALIB_TIMEOUT	(2*HZ)
@@ -110,12 +127,21 @@ static int iwl_send_rss_cfg_cmd(struct iwl_mvm *mvm)
 	int i;
 	struct iwl_rss_config_cmd cmd = {
 		.flags = cpu_to_le32(IWL_RSS_ENABLE),
+<<<<<<< HEAD
 		.hash_mask = IWL_RSS_HASH_TYPE_IPV4_TCP |
 			     IWL_RSS_HASH_TYPE_IPV4_UDP |
 			     IWL_RSS_HASH_TYPE_IPV4_PAYLOAD |
 			     IWL_RSS_HASH_TYPE_IPV6_TCP |
 			     IWL_RSS_HASH_TYPE_IPV6_UDP |
 			     IWL_RSS_HASH_TYPE_IPV6_PAYLOAD,
+=======
+		.hash_mask = BIT(IWL_RSS_HASH_TYPE_IPV4_TCP) |
+			     BIT(IWL_RSS_HASH_TYPE_IPV4_UDP) |
+			     BIT(IWL_RSS_HASH_TYPE_IPV4_PAYLOAD) |
+			     BIT(IWL_RSS_HASH_TYPE_IPV6_TCP) |
+			     BIT(IWL_RSS_HASH_TYPE_IPV6_UDP) |
+			     BIT(IWL_RSS_HASH_TYPE_IPV6_PAYLOAD),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	if (mvm->trans->num_rx_queues == 1)
@@ -130,6 +156,7 @@ static int iwl_send_rss_cfg_cmd(struct iwl_mvm *mvm)
 	return iwl_mvm_send_cmd_pdu(mvm, RSS_CONFIG_CMD, 0, sizeof(cmd), &cmd);
 }
 
+<<<<<<< HEAD
 static int iwl_configure_rxq(struct iwl_mvm *mvm)
 {
 	int i, num_queues, size, ret;
@@ -173,6 +200,8 @@ static int iwl_configure_rxq(struct iwl_mvm *mvm)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int iwl_mvm_send_dqa_cmd(struct iwl_mvm *mvm)
 {
 	struct iwl_dqa_enable_cmd dqa_cmd = {
@@ -223,7 +252,10 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
 	struct iwl_lmac_alive *lmac1;
 	struct iwl_lmac_alive *lmac2 = NULL;
 	u16 status;
+<<<<<<< HEAD
 	u32 umac_error_event_table;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (iwl_rx_packet_payload_len(pkt) == sizeof(*palive)) {
 		palive = (void *)pkt->data;
@@ -243,6 +275,7 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
 		mvm->error_event_table[1] =
 			le32_to_cpu(lmac2->error_event_table_ptr);
 	mvm->log_event_table = le32_to_cpu(lmac1->log_event_table_ptr);
+<<<<<<< HEAD
 
 	umac_error_event_table = le32_to_cpu(umac->error_info_addr);
 
@@ -263,6 +296,17 @@ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
 
 	alive_data->scd_base_addr = le32_to_cpu(lmac1->scd_base_ptr);
 	alive_data->valid = status == IWL_ALIVE_STATUS_OK;
+=======
+	mvm->sf_space.addr = le32_to_cpu(lmac1->st_fwrd_addr);
+	mvm->sf_space.size = le32_to_cpu(lmac1->st_fwrd_size);
+
+	mvm->umac_error_event_table = le32_to_cpu(umac->error_info_addr);
+
+	alive_data->scd_base_addr = le32_to_cpu(lmac1->scd_base_ptr);
+	alive_data->valid = status == IWL_ALIVE_STATUS_OK;
+	if (mvm->umac_error_event_table)
+		mvm->support_umac_log = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	IWL_DEBUG_FW(mvm,
 		     "Alive ucode status 0x%04x revision 0x%01X 0x%01X\n",
@@ -311,6 +355,10 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
 	int ret, i;
 	enum iwl_ucode_type old_type = mvm->fwrt.cur_fw_img;
 	static const u16 alive_cmd[] = { MVM_ALIVE };
+<<<<<<< HEAD
+=======
+	struct iwl_sf_region st_fwrd_space;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ucode_type == IWL_UCODE_REGULAR &&
 	    iwl_fw_dbg_conf_usniffer(mvm->fw, FW_DBG_START_FROM_ALIVE) &&
@@ -344,7 +392,11 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
 	if (ret) {
 		struct iwl_trans *trans = mvm->trans;
 
+<<<<<<< HEAD
 		if (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22000)
+=======
+		if (trans->cfg->device_family == IWL_DEVICE_FAMILY_A000)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			IWL_ERR(mvm,
 				"SecBoot CPU1 Status: 0x%x, CPU2 Status: 0x%x\n",
 				iwl_read_prph(trans, UMAG_SB_CPU_1_STATUS),
@@ -364,6 +416,21 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
 		return -EIO;
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * update the sdio allocation according to the pointer we get in the
+	 * alive notification.
+	 */
+	st_fwrd_space.addr = mvm->sf_space.addr;
+	st_fwrd_space.size = mvm->sf_space.size;
+	ret = iwl_trans_update_sf(mvm->trans, &st_fwrd_space);
+	if (ret) {
+		IWL_ERR(mvm, "Failed to update SF size. ret %d\n", ret);
+		return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwl_trans_fw_alive(mvm->trans, alive_data.scd_base_addr);
 
 	/*
@@ -428,8 +495,12 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
 
 	/* Load NVM to NIC if needed */
 	if (mvm->nvm_file_name) {
+<<<<<<< HEAD
 		iwl_read_external_nvm(mvm->trans, mvm->nvm_file_name,
 				      mvm->nvm_sections);
+=======
+		iwl_mvm_read_external_nvm(mvm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iwl_mvm_load_nvm_to_nic(mvm);
 	}
 
@@ -458,7 +529,11 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
 
 	/* Read the NVM only at driver load time, no need to do this twice */
 	if (!IWL_MVM_PARSE_NVM && read_nvm) {
+<<<<<<< HEAD
 		mvm->nvm_data = iwl_get_nvm(mvm->trans, mvm->fw);
+=======
+		mvm->nvm_data = iwl_fw_get_nvm(&mvm->fwrt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(mvm->nvm_data)) {
 			ret = PTR_ERR(mvm->nvm_data);
 			mvm->nvm_data = NULL;
@@ -547,7 +622,13 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm, bool read_nvm)
 	if (mvm->nvm_file_name)
 		iwl_mvm_load_nvm_to_nic(mvm);
 
+<<<<<<< HEAD
 	WARN_ON(iwl_nvm_check_version(mvm->nvm_data, mvm->trans));
+=======
+	WARN_ONCE(mvm->nvm_data->nvm_version < mvm->trans->cfg->nvm_ver,
+		  "Too old NVM version (0x%0x, required = 0x%0x)",
+		  mvm->nvm_data->nvm_version, mvm->trans->cfg->nvm_ver);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * abort after reading the nvm in case RF Kill is on, we will complete
@@ -629,6 +710,20 @@ static int iwl_mvm_config_ltr(struct iwl_mvm *mvm)
 }
 
 #ifdef CONFIG_ACPI
+<<<<<<< HEAD
+=======
+#define ACPI_WRDS_METHOD		"WRDS"
+#define ACPI_EWRD_METHOD		"EWRD"
+#define ACPI_WGDS_METHOD		"WGDS"
+#define ACPI_WIFI_DOMAIN		(0x07)
+#define ACPI_WRDS_WIFI_DATA_SIZE	(IWL_MVM_SAR_TABLE_SIZE + 2)
+#define ACPI_EWRD_WIFI_DATA_SIZE	((IWL_MVM_SAR_PROFILE_NUM - 1) * \
+					 IWL_MVM_SAR_TABLE_SIZE + 3)
+#define ACPI_WGDS_WIFI_DATA_SIZE	19
+#define ACPI_WGDS_NUM_BANDS		2
+#define ACPI_WGDS_TABLE_SIZE		3
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int iwl_mvm_sar_set_profile(struct iwl_mvm *mvm,
 				   union acpi_object *table,
 				   struct iwl_mvm_sar_profile *profile,
@@ -638,7 +733,11 @@ static int iwl_mvm_sar_set_profile(struct iwl_mvm *mvm,
 
 	profile->enabled = enabled;
 
+<<<<<<< HEAD
 	for (i = 0; i < ACPI_SAR_TABLE_SIZE; i++) {
+=======
+	for (i = 0; i < IWL_MVM_SAR_TABLE_SIZE; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((table[i].type != ACPI_TYPE_INTEGER) ||
 		    (table[i].integer.value > U8_MAX))
 			return -EINVAL;
@@ -649,6 +748,7 @@ static int iwl_mvm_sar_set_profile(struct iwl_mvm *mvm,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int iwl_mvm_sar_get_wrds_table(struct iwl_mvm *mvm)
 {
 	union acpi_object *wifi_pkg, *table, *data;
@@ -661,6 +761,90 @@ static int iwl_mvm_sar_get_wrds_table(struct iwl_mvm *mvm)
 
 	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
 					 ACPI_WRDS_WIFI_DATA_SIZE);
+=======
+static union acpi_object *iwl_mvm_sar_find_wifi_pkg(struct iwl_mvm *mvm,
+						    union acpi_object *data,
+						    int data_size)
+{
+	union acpi_object *wifi_pkg = NULL;
+	int i;
+
+	/*
+	 * We need at least two packages, one for the revision and one
+	 * for the data itself.  Also check that the revision is valid
+	 * (i.e. it is an integer set to 0).
+	 */
+	if (data->type != ACPI_TYPE_PACKAGE ||
+	    data->package.count < 2 ||
+	    data->package.elements[0].type != ACPI_TYPE_INTEGER ||
+	    data->package.elements[0].integer.value != 0) {
+		IWL_DEBUG_RADIO(mvm, "Unsupported packages structure\n");
+		return ERR_PTR(-EINVAL);
+	}
+
+	/* loop through all the packages to find the one for WiFi */
+	for (i = 1; i < data->package.count; i++) {
+		union acpi_object *domain;
+
+		wifi_pkg = &data->package.elements[i];
+
+		/* Skip anything that is not a package with the right
+		 * amount of elements (i.e. domain_type,
+		 * enabled/disabled plus the actual data size.
+		 */
+		if (wifi_pkg->type != ACPI_TYPE_PACKAGE ||
+		    wifi_pkg->package.count != data_size)
+			continue;
+
+		domain = &wifi_pkg->package.elements[0];
+		if (domain->type == ACPI_TYPE_INTEGER &&
+		    domain->integer.value == ACPI_WIFI_DOMAIN)
+			break;
+
+		wifi_pkg = NULL;
+	}
+
+	if (!wifi_pkg)
+		return ERR_PTR(-ENOENT);
+
+	return wifi_pkg;
+}
+
+static int iwl_mvm_sar_get_wrds_table(struct iwl_mvm *mvm)
+{
+	union acpi_object *wifi_pkg, *table;
+	acpi_handle root_handle;
+	acpi_handle handle;
+	struct acpi_buffer wrds = {ACPI_ALLOCATE_BUFFER, NULL};
+	acpi_status status;
+	bool enabled;
+	int ret;
+
+	root_handle = ACPI_HANDLE(mvm->dev);
+	if (!root_handle) {
+		IWL_DEBUG_RADIO(mvm,
+				"Could not retrieve root port ACPI handle\n");
+		return -ENOENT;
+	}
+
+	/* Get the method's handle */
+	status = acpi_get_handle(root_handle, (acpi_string)ACPI_WRDS_METHOD,
+				 &handle);
+	if (ACPI_FAILURE(status)) {
+		IWL_DEBUG_RADIO(mvm, "WRDS method not found\n");
+		return -ENOENT;
+	}
+
+	/* Call WRDS with no arguments */
+	status = acpi_evaluate_object(handle, NULL, NULL, &wrds);
+	if (ACPI_FAILURE(status)) {
+		IWL_DEBUG_RADIO(mvm, "WRDS invocation failed (0x%x)\n", status);
+		return -ENOENT;
+	}
+
+	wifi_pkg = iwl_mvm_sar_find_wifi_pkg(mvm, wrds.pointer,
+					     ACPI_WRDS_WIFI_DATA_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(wifi_pkg)) {
 		ret = PTR_ERR(wifi_pkg);
 		goto out_free;
@@ -681,13 +865,20 @@ static int iwl_mvm_sar_get_wrds_table(struct iwl_mvm *mvm)
 	 */
 	ret = iwl_mvm_sar_set_profile(mvm, table, &mvm->sar_profiles[0],
 				      enabled);
+<<<<<<< HEAD
 out_free:
 	kfree(data);
+=======
+
+out_free:
+	kfree(wrds.pointer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int iwl_mvm_sar_get_ewrd_table(struct iwl_mvm *mvm)
 {
+<<<<<<< HEAD
 	union acpi_object *wifi_pkg, *data;
 	bool enabled;
 	int i, n_profiles, ret;
@@ -698,6 +889,40 @@ static int iwl_mvm_sar_get_ewrd_table(struct iwl_mvm *mvm)
 
 	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
 					 ACPI_EWRD_WIFI_DATA_SIZE);
+=======
+	union acpi_object *wifi_pkg;
+	acpi_handle root_handle;
+	acpi_handle handle;
+	struct acpi_buffer ewrd = {ACPI_ALLOCATE_BUFFER, NULL};
+	acpi_status status;
+	bool enabled;
+	int i, n_profiles, ret;
+
+	root_handle = ACPI_HANDLE(mvm->dev);
+	if (!root_handle) {
+		IWL_DEBUG_RADIO(mvm,
+				"Could not retrieve root port ACPI handle\n");
+		return -ENOENT;
+	}
+
+	/* Get the method's handle */
+	status = acpi_get_handle(root_handle, (acpi_string)ACPI_EWRD_METHOD,
+				 &handle);
+	if (ACPI_FAILURE(status)) {
+		IWL_DEBUG_RADIO(mvm, "EWRD method not found\n");
+		return -ENOENT;
+	}
+
+	/* Call EWRD with no arguments */
+	status = acpi_evaluate_object(handle, NULL, NULL, &ewrd);
+	if (ACPI_FAILURE(status)) {
+		IWL_DEBUG_RADIO(mvm, "EWRD invocation failed (0x%x)\n", status);
+		return -ENOENT;
+	}
+
+	wifi_pkg = iwl_mvm_sar_find_wifi_pkg(mvm, ewrd.pointer,
+					     ACPI_EWRD_WIFI_DATA_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(wifi_pkg)) {
 		ret = PTR_ERR(wifi_pkg);
 		goto out_free;
@@ -712,12 +937,17 @@ static int iwl_mvm_sar_get_ewrd_table(struct iwl_mvm *mvm)
 	enabled = !!(wifi_pkg->package.elements[1].integer.value);
 	n_profiles = wifi_pkg->package.elements[2].integer.value;
 
+<<<<<<< HEAD
 	/*
 	 * Check the validity of n_profiles.  The EWRD profiles start
 	 * from index 1, so the maximum value allowed here is
 	 * ACPI_SAR_PROFILES_NUM - 1.
 	 */
 	if (n_profiles <= 0 || n_profiles >= ACPI_SAR_PROFILE_NUM) {
+=======
+	/* in case of BIOS bug */
+	if (n_profiles <= 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto out_free;
 	}
@@ -738,16 +968,25 @@ static int iwl_mvm_sar_get_ewrd_table(struct iwl_mvm *mvm)
 			break;
 
 		/* go to the next table */
+<<<<<<< HEAD
 		pos += ACPI_SAR_TABLE_SIZE;
 	}
 
 out_free:
 	kfree(data);
+=======
+		pos += IWL_MVM_SAR_TABLE_SIZE;
+	}
+
+out_free:
+	kfree(ewrd.pointer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int iwl_mvm_sar_get_wgds_table(struct iwl_mvm *mvm)
 {
+<<<<<<< HEAD
 	union acpi_object *wifi_pkg, *data;
 	int i, j, ret;
 	int idx = 1;
@@ -758,13 +997,52 @@ static int iwl_mvm_sar_get_wgds_table(struct iwl_mvm *mvm)
 
 	wifi_pkg = iwl_acpi_get_wifi_pkg(mvm->dev, data,
 					 ACPI_WGDS_WIFI_DATA_SIZE);
+=======
+	union acpi_object *wifi_pkg;
+	acpi_handle root_handle;
+	acpi_handle handle;
+	struct acpi_buffer wgds = {ACPI_ALLOCATE_BUFFER, NULL};
+	acpi_status status;
+	int i, j, ret;
+	int idx = 1;
+
+	root_handle = ACPI_HANDLE(mvm->dev);
+	if (!root_handle) {
+		IWL_DEBUG_RADIO(mvm,
+				"Could not retrieve root port ACPI handle\n");
+		return -ENOENT;
+	}
+
+	/* Get the method's handle */
+	status = acpi_get_handle(root_handle, (acpi_string)ACPI_WGDS_METHOD,
+				 &handle);
+	if (ACPI_FAILURE(status)) {
+		IWL_DEBUG_RADIO(mvm, "WGDS method not found\n");
+		return -ENOENT;
+	}
+
+	/* Call WGDS with no arguments */
+	status = acpi_evaluate_object(handle, NULL, NULL, &wgds);
+	if (ACPI_FAILURE(status)) {
+		IWL_DEBUG_RADIO(mvm, "WGDS invocation failed (0x%x)\n", status);
+		return -ENOENT;
+	}
+
+	wifi_pkg = iwl_mvm_sar_find_wifi_pkg(mvm, wgds.pointer,
+					     ACPI_WGDS_WIFI_DATA_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(wifi_pkg)) {
 		ret = PTR_ERR(wifi_pkg);
 		goto out_free;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < ACPI_NUM_GEO_PROFILES; i++) {
 		for (j = 0; j < ACPI_GEO_TABLE_SIZE; j++) {
+=======
+	for (i = 0; i < IWL_NUM_GEO_PROFILES; i++) {
+		for (j = 0; j < IWL_MVM_GEO_TABLE_SIZE; j++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			union acpi_object *entry;
 
 			entry = &wifi_pkg->package.elements[idx++];
@@ -779,7 +1057,11 @@ static int iwl_mvm_sar_get_wgds_table(struct iwl_mvm *mvm)
 	}
 	ret = 0;
 out_free:
+<<<<<<< HEAD
 	kfree(data);
+=======
+	kfree(wgds.pointer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -789,25 +1071,43 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
 		.v3.set_mode = cpu_to_le32(IWL_TX_POWER_MODE_SET_CHAINS),
 	};
 	int i, j, idx;
+<<<<<<< HEAD
 	int profs[ACPI_SAR_NUM_CHAIN_LIMITS] = { prof_a, prof_b };
 	int len = sizeof(cmd);
 
 	BUILD_BUG_ON(ACPI_SAR_NUM_CHAIN_LIMITS < 2);
 	BUILD_BUG_ON(ACPI_SAR_NUM_CHAIN_LIMITS * ACPI_SAR_NUM_SUB_BANDS !=
 		     ACPI_SAR_TABLE_SIZE);
+=======
+	int profs[IWL_NUM_CHAIN_LIMITS] = { prof_a, prof_b };
+	int len = sizeof(cmd);
+
+	BUILD_BUG_ON(IWL_NUM_CHAIN_LIMITS < 2);
+	BUILD_BUG_ON(IWL_NUM_CHAIN_LIMITS * IWL_NUM_SUB_BANDS !=
+		     IWL_MVM_SAR_TABLE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_TX_POWER_ACK))
 		len = sizeof(cmd.v3);
 
+<<<<<<< HEAD
 	for (i = 0; i < ACPI_SAR_NUM_CHAIN_LIMITS; i++) {
+=======
+	for (i = 0; i < IWL_NUM_CHAIN_LIMITS; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct iwl_mvm_sar_profile *prof;
 
 		/* don't allow SAR to be disabled (profile 0 means disable) */
 		if (profs[i] == 0)
 			return -EPERM;
 
+<<<<<<< HEAD
 		/* we are off by one, so allow up to ACPI_SAR_PROFILE_NUM */
 		if (profs[i] > ACPI_SAR_PROFILE_NUM)
+=======
+		/* we are off by one, so allow up to IWL_MVM_SAR_PROFILE_NUM */
+		if (profs[i] > IWL_MVM_SAR_PROFILE_NUM)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 
 		/* profiles go from 1 to 4, so decrement to access the array */
@@ -822,8 +1122,13 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
 		}
 
 		IWL_DEBUG_RADIO(mvm, "  Chain[%d]:\n", i);
+<<<<<<< HEAD
 		for (j = 0; j < ACPI_SAR_NUM_SUB_BANDS; j++) {
 			idx = (i * ACPI_SAR_NUM_SUB_BANDS) + j;
+=======
+		for (j = 0; j < IWL_NUM_SUB_BANDS; j++) {
+			idx = (i * IWL_NUM_SUB_BANDS) + j;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cmd.v3.per_chain_restriction[i][j] =
 				cpu_to_le16(prof->table[idx]);
 			IWL_DEBUG_RADIO(mvm, "    Band[%d] = %d * .125dBm\n",
@@ -843,6 +1148,7 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
 	 * firmware versions.  Unfortunately, we don't have a TLV API
 	 * flag to rely on, so rely on the major version which is in
 	 * the first byte of ucode_ver.  This was implemented
+<<<<<<< HEAD
 	 * initially on version 38 and then backported to29 and 17.
 	 * The intention was to have it in 36 as well, but not all
 	 * 8000 family got this feature enabled.  The 8000 family is
@@ -850,6 +1156,13 @@ static bool iwl_mvm_sar_geo_support(struct iwl_mvm *mvm)
 	 * entirely.
 	 */
 	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
+=======
+	 * initially on version 38 and then backported to 36, 29 and
+	 * 17.
+	 */
+	return IWL_UCODE_SERIAL(mvm->fw->ucode_ver) >= 38 ||
+	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 36 ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 29 ||
 	       IWL_UCODE_SERIAL(mvm->fw->ucode_ver) == 17;
 }
@@ -880,7 +1193,11 @@ int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
 
 	resp = (void *)cmd.resp_pkt->data;
 	ret = le32_to_cpu(resp->profile_idx);
+<<<<<<< HEAD
 	if (WARN_ON(ret > ACPI_NUM_GEO_PROFILES)) {
+=======
+	if (WARN_ON(ret > IWL_NUM_GEO_PROFILES)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EIO;
 		IWL_WARN(mvm, "Invalid geographic profile idx (%d)\n", ret);
 	}
@@ -911,12 +1228,19 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
 
 	IWL_DEBUG_RADIO(mvm, "Sending GEO_TX_POWER_LIMIT\n");
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(ACPI_NUM_GEO_PROFILES * ACPI_WGDS_NUM_BANDS *
 		     ACPI_WGDS_TABLE_SIZE + 1 !=  ACPI_WGDS_WIFI_DATA_SIZE);
 
 	BUILD_BUG_ON(ACPI_NUM_GEO_PROFILES > IWL_NUM_GEO_PROFILES);
 
 	for (i = 0; i < ACPI_NUM_GEO_PROFILES; i++) {
+=======
+	BUILD_BUG_ON(IWL_NUM_GEO_PROFILES * ACPI_WGDS_NUM_BANDS *
+		     ACPI_WGDS_TABLE_SIZE + 1 !=  ACPI_WGDS_WIFI_DATA_SIZE);
+
+	for (i = 0; i < IWL_NUM_GEO_PROFILES; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct iwl_per_chain_offset *chain =
 			(struct iwl_per_chain_offset *)&cmd.table[i];
 
@@ -924,7 +1248,11 @@ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
 			u8 *value;
 
 			value = &mvm->geo_profiles[i].values[j *
+<<<<<<< HEAD
 				ACPI_GEO_PER_CHAIN_SIZE];
+=======
+				IWL_GEO_PER_CHAIN_SIZE];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			chain[j].max_tx_power = cpu_to_le16(value[0]);
 			chain[j].chain_a = value[1];
 			chain[j].chain_b = value[2];
@@ -1015,11 +1343,19 @@ static int iwl_mvm_load_rt_fw(struct iwl_mvm *mvm)
 
 	ret = iwl_run_init_mvm_ucode(mvm, false);
 
+<<<<<<< HEAD
 	if (ret) {
 		IWL_ERR(mvm, "Failed to run INIT ucode: %d\n", ret);
 
 		if (iwlmvm_mod_params.init_dbg)
 			return 0;
+=======
+	if (iwlmvm_mod_params.init_dbg)
+		return 0;
+
+	if (ret) {
+		IWL_ERR(mvm, "Failed to run INIT ucode: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -1090,6 +1426,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
 		goto error;
 
 	/* Init RSS configuration */
+<<<<<<< HEAD
 	if (mvm->trans->cfg->device_family >= IWL_DEVICE_FAMILY_22000) {
 		ret = iwl_configure_rxq(mvm);
 		if (ret) {
@@ -1100,6 +1437,11 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
 	}
 
 	if (iwl_mvm_has_new_rx_api(mvm)) {
+=======
+	/* TODO - remove a000 disablement when we have RXQ config API */
+	if (iwl_mvm_has_new_rx_api(mvm) &&
+	    mvm->trans->cfg->device_family != IWL_DEVICE_FAMILY_A000) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = iwl_send_rss_cfg_cmd(mvm);
 		if (ret) {
 			IWL_ERR(mvm, "Failed to configure RSS queues: %d\n",
@@ -1188,7 +1530,10 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
 
 	if (fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_UMAC_SCAN)) {
 		mvm->scan_type = IWL_SCAN_TYPE_NOT_SET;
+<<<<<<< HEAD
 		mvm->hb_scan_type = IWL_SCAN_TYPE_NOT_SET;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = iwl_mvm_config_scan(mvm);
 		if (ret)
 			goto error;
@@ -1219,7 +1564,11 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
 	IWL_DEBUG_INFO(mvm, "RT uCode started.\n");
 	return 0;
  error:
+<<<<<<< HEAD
 	if (!iwlmvm_mod_params.init_dbg || !ret)
+=======
+	if (!iwlmvm_mod_params.init_dbg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iwl_mvm_stop_device(mvm);
 	return ret;
 }

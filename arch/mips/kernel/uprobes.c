@@ -221,7 +221,11 @@ unsigned long arch_uretprobe_hijack_return_addr(
 int __weak set_swbp(struct arch_uprobe *auprobe, struct mm_struct *mm,
 	unsigned long vaddr)
 {
+<<<<<<< HEAD
 	return uprobe_write_opcode(auprobe, mm, vaddr, UPROBE_SWBP_INSN);
+=======
+	return uprobe_write_opcode(mm, vaddr, UPROBE_SWBP_INSN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,

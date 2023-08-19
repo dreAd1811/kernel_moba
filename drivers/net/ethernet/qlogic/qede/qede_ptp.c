@@ -490,17 +490,30 @@ int qede_ptp_enable(struct qede_dev *edev, bool init_tc)
 
 	ptp->clock = ptp_clock_register(&ptp->clock_info, &edev->pdev->dev);
 	if (IS_ERR(ptp->clock)) {
+<<<<<<< HEAD
 		DP_ERR(edev, "PTP clock registration failed\n");
 		qede_ptp_disable(edev);
 		rc = -EINVAL;
+=======
+		rc = -EINVAL;
+		DP_ERR(edev, "PTP clock registeration failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err2;
 	}
 
 	return 0;
 
+<<<<<<< HEAD
 err1:
 	kfree(ptp);
 err2:
+=======
+err2:
+	qede_ptp_disable(edev);
+	ptp->clock = NULL;
+err1:
+	kfree(ptp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edev->ptp = NULL;
 
 	return rc;

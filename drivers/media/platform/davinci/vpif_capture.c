@@ -109,7 +109,11 @@ static int vpif_buffer_prepare(struct vb2_buffer *vb)
  * @vq: vb2_queue ptr
  * @nbuffers: ptr to number of buffers requested by application
  * @nplanes:: contains number of distinct video planes needed to hold a frame
+<<<<<<< HEAD
  * @sizes: contains the size (in bytes) of each plane.
+=======
+ * @sizes[]: contains the size (in bytes) of each plane.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @alloc_devs: ptr to allocation context
  *
  * This callback function is called when reqbuf() is called to adjust
@@ -167,7 +171,11 @@ static void vpif_buffer_queue(struct vb2_buffer *vb)
 
 /**
  * vpif_start_streaming : Starts the DMA engine for streaming
+<<<<<<< HEAD
  * @vq: ptr to vb2_buffer
+=======
+ * @vb: ptr to vb2_buffer
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @count: number of buffers
  */
 static int vpif_start_streaming(struct vb2_queue *vq, unsigned int count)
@@ -629,7 +637,11 @@ static void vpif_calculate_offsets(struct channel_obj *ch)
 
 /**
  * vpif_get_default_field() - Get default field type based on interface
+<<<<<<< HEAD
  * @iface: ptr to vpif interface
+=======
+ * @vpif_params - ptr to vpif params
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static inline enum v4l2_field vpif_get_default_field(
 				struct vpif_interface *iface)
@@ -640,8 +652,13 @@ static inline enum v4l2_field vpif_get_default_field(
 
 /**
  * vpif_config_addr() - function to configure buffer address in vpif
+<<<<<<< HEAD
  * @ch: channel ptr
  * @muxmode: channel mux mode
+=======
+ * @ch - channel ptr
+ * @muxmode - channel mux mode
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void vpif_config_addr(struct channel_obj *ch, int muxmode)
 {
@@ -661,9 +678,15 @@ static void vpif_config_addr(struct channel_obj *ch, int muxmode)
 
 /**
  * vpif_input_to_subdev() - Maps input to sub device
+<<<<<<< HEAD
  * @vpif_cfg: global config ptr
  * @chan_cfg: channel config ptr
  * @input_index: Given input index from application
+=======
+ * @vpif_cfg - global config ptr
+ * @chan_cfg - channel config ptr
+ * @input_index - Given input index from application
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * lookup the sub device information for a given input index.
  * we report all the inputs to application. inputs table also
@@ -699,9 +722,15 @@ static int vpif_input_to_subdev(
 
 /**
  * vpif_set_input() - Select an input
+<<<<<<< HEAD
  * @vpif_cfg: global config ptr
  * @ch: channel
  * @index: Given input index from application
+=======
+ * @vpif_cfg - global config ptr
+ * @ch - channel
+ * @_index - Given input index from application
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Select the given input.
  */
@@ -792,7 +821,11 @@ static int vpif_querystd(struct file *file, void *priv, v4l2_std_id *std_id)
  * vpif_g_std() - get STD handler
  * @file: file ptr
  * @priv: file handle
+<<<<<<< HEAD
  * @std: ptr to std id
+=======
+ * @std_id: ptr to std id
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int vpif_g_std(struct file *file, void *priv, v4l2_std_id *std)
 {
@@ -933,7 +966,11 @@ static int vpif_s_input(struct file *file, void *priv, unsigned int index)
  * vpif_enum_fmt_vid_cap() - ENUM_FMT handler
  * @file: file ptr
  * @priv: file handle
+<<<<<<< HEAD
  * @fmt: ptr to V4L2 format descriptor
+=======
+ * @index: input index
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int vpif_enum_fmt_vid_cap(struct file *file, void  *priv,
 					struct v4l2_fmtdesc *fmt)
@@ -1390,7 +1427,11 @@ static int vpif_async_bound(struct v4l2_async_notifier *notifier,
 
 	for (i = 0; i < vpif_obj.config->asd_sizes[0]; i++) {
 		struct v4l2_async_subdev *_asd = vpif_obj.config->asd[i];
+<<<<<<< HEAD
 		const struct fwnode_handle *fwnode = _asd->match.fwnode;
+=======
+		const struct fwnode_handle *fwnode = _asd->match.fwnode.fwnode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (fwnode == subdev->fwnode) {
 			vpif_obj.sd[i] = subdev;
@@ -1500,11 +1541,14 @@ static int vpif_async_complete(struct v4l2_async_notifier *notifier)
 	return vpif_probe_complete();
 }
 
+<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations vpif_async_ops = {
 	.bound = vpif_async_bound,
 	.complete = vpif_async_complete,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct vpif_capture_config *
 vpif_capture_get_pdata(struct platform_device *pdev)
 {
@@ -1528,10 +1572,15 @@ vpif_capture_get_pdata(struct platform_device *pdev)
 	if (!pdata)
 		return NULL;
 	pdata->subdev_info =
+<<<<<<< HEAD
 		devm_kcalloc(&pdev->dev,
 			     VPIF_CAPTURE_NUM_CHANNELS,
 			     sizeof(*pdata->subdev_info),
 			     GFP_KERNEL);
+=======
+		devm_kzalloc(&pdev->dev, sizeof(*pdata->subdev_info) *
+			     VPIF_CAPTURE_NUM_CHANNELS, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pdata->subdev_info)
 		return NULL;
@@ -1548,9 +1597,15 @@ vpif_capture_get_pdata(struct platform_device *pdev)
 
 		sdinfo = &pdata->subdev_info[i];
 		chan = &pdata->chan_config[i];
+<<<<<<< HEAD
 		chan->inputs = devm_kcalloc(&pdev->dev,
 					    VPIF_CAPTURE_NUM_CHANNELS,
 					    sizeof(*chan->inputs),
+=======
+		chan->inputs = devm_kzalloc(&pdev->dev,
+					    sizeof(*chan->inputs) *
+					    VPIF_CAPTURE_NUM_CHANNELS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    GFP_KERNEL);
 		if (!chan->inputs)
 			return NULL;
@@ -1597,7 +1652,11 @@ vpif_capture_get_pdata(struct platform_device *pdev)
 		}
 
 		pdata->asd[i]->match_type = V4L2_ASYNC_MATCH_FWNODE;
+<<<<<<< HEAD
 		pdata->asd[i]->match.fwnode = of_fwnode_handle(rem);
+=======
+		pdata->asd[i]->match.fwnode.fwnode = of_fwnode_handle(rem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		of_node_put(rem);
 	}
 
@@ -1700,7 +1759,12 @@ static __init int vpif_probe(struct platform_device *pdev)
 	} else {
 		vpif_obj.notifier.subdevs = vpif_obj.config->asd;
 		vpif_obj.notifier.num_subdevs = vpif_obj.config->asd_sizes[0];
+<<<<<<< HEAD
 		vpif_obj.notifier.ops = &vpif_async_ops;
+=======
+		vpif_obj.notifier.bound = vpif_async_bound;
+		vpif_obj.notifier.complete = vpif_async_complete;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = v4l2_async_notifier_register(&vpif_obj.v4l2_dev,
 						   &vpif_obj.notifier);
 		if (err) {
@@ -1749,7 +1813,10 @@ static int vpif_remove(struct platform_device *device)
 #ifdef CONFIG_PM_SLEEP
 /**
  * vpif_suspend: vpif device suspend
+<<<<<<< HEAD
  * @dev: pointer to &struct device
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int vpif_suspend(struct device *dev)
 {

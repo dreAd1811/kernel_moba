@@ -56,6 +56,11 @@
 #include "yealink.h"
 
 #define DRIVER_VERSION "yld-20051230"
+<<<<<<< HEAD
+=======
+#define DRIVER_AUTHOR "Henk Vergonet"
+#define DRIVER_DESC "Yealink phone driver"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define YEALINK_POLLING_FREQUENCY	10	/* in [Hz] */
 
@@ -894,12 +899,20 @@ static int usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
 
 	/* allocate usb buffers */
 	yld->irq_data = usb_alloc_coherent(udev, USB_PKT_LEN,
+<<<<<<< HEAD
 					   GFP_KERNEL, &yld->irq_dma);
+=======
+					   GFP_ATOMIC, &yld->irq_dma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (yld->irq_data == NULL)
 		return usb_cleanup(yld, -ENOMEM);
 
 	yld->ctl_data = usb_alloc_coherent(udev, USB_PKT_LEN,
+<<<<<<< HEAD
 					   GFP_KERNEL, &yld->ctl_dma);
+=======
+					   GFP_ATOMIC, &yld->ctl_dma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!yld->ctl_data)
 		return usb_cleanup(yld, -ENOMEM);
 
@@ -1004,6 +1017,11 @@ module_usb_driver(yealink_driver);
 
 MODULE_DEVICE_TABLE (usb, usb_table);
 
+<<<<<<< HEAD
 MODULE_AUTHOR("Henk Vergonet");
 MODULE_DESCRIPTION("Yealink phone driver");
+=======
+MODULE_AUTHOR(DRIVER_AUTHOR);
+MODULE_DESCRIPTION(DRIVER_DESC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

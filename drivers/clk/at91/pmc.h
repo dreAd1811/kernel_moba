@@ -31,10 +31,15 @@ int of_at91_get_clk_range(struct device_node *np, const char *propname,
 
 #ifdef CONFIG_PM
 void pmc_register_id(u8 id);
+<<<<<<< HEAD
 void pmc_register_pck(u8 pck);
 #else
 static inline void pmc_register_id(u8 id) {}
 static inline void pmc_register_pck(u8 pck) {}
+=======
+#else
+static inline void pmc_register_id(u8 id) {}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif /* __PMC_H_ */

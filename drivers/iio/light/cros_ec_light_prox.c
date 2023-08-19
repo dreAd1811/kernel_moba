@@ -16,7 +16,10 @@
 #include <linux/delay.h>
 #include <linux/device.h>
 #include <linux/iio/buffer.h>
+<<<<<<< HEAD
 #include <linux/iio/common/cros_ec_sensors_core.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/iio/iio.h>
 #include <linux/iio/kfifo_buf.h>
 #include <linux/iio/trigger.h>
@@ -30,6 +33,11 @@
 #include <linux/slab.h>
 #include <linux/sysfs.h>
 
+<<<<<<< HEAD
+=======
+#include "../common/cros_ec_sensors/cros_ec_sensors_core.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We only represent one entry for light or proximity. EC is merging different
  * light sensors to return the what the eye would see. For proximity, we
@@ -174,12 +182,20 @@ static int cros_ec_light_prox_write(struct iio_dev *indio_dev,
 static const struct iio_info cros_ec_light_prox_info = {
 	.read_raw = &cros_ec_light_prox_read,
 	.write_raw = &cros_ec_light_prox_write,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int cros_ec_light_prox_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct cros_ec_dev *ec_dev = dev_get_drvdata(dev->parent);
+<<<<<<< HEAD
+=======
+	struct cros_ec_device *ec_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iio_dev *indio_dev;
 	struct cros_ec_light_prox_state *state;
 	struct iio_chan_spec *channel;
@@ -189,6 +205,10 @@ static int cros_ec_light_prox_probe(struct platform_device *pdev)
 		dev_warn(dev, "No CROS EC device found.\n");
 		return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+	ec_device = ec_dev->ec_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev = devm_iio_device_alloc(dev, sizeof(*state));
 	if (!indio_dev)
@@ -275,7 +295,10 @@ MODULE_DEVICE_TABLE(platform, cros_ec_light_prox_ids);
 static struct platform_driver cros_ec_light_prox_platform_driver = {
 	.driver = {
 		.name	= "cros-ec-light-prox",
+<<<<<<< HEAD
 		.pm	= &cros_ec_sensors_pm_ops,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= cros_ec_light_prox_probe,
 	.id_table	= cros_ec_light_prox_ids,

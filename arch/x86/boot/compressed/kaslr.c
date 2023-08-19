@@ -23,8 +23,16 @@
  * _ctype[] in lib/ctype.c is needed by isspace() of linux/ctype.h.
  * While both lib/ctype.c and lib/cmdline.c will bring EXPORT_SYMBOL
  * which is meaningless and will cause compiling error in some cases.
+<<<<<<< HEAD
  */
 #define __DISABLE_EXPORTS
+=======
+ * So do not include linux/export.h and define EXPORT_SYMBOL(sym)
+ * as empty.
+ */
+#define _LINUX_EXPORT_H
+#define EXPORT_SYMBOL(sym)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "misc.h"
 #include "error.h"
@@ -43,6 +51,7 @@
 #define STATIC
 #include <linux/decompress/mm.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_5LEVEL
 unsigned int __pgtable_l5_enabled;
 unsigned int pgdir_shift __ro_after_init = 39;
@@ -54,6 +63,10 @@ extern unsigned long get_cmd_line_ptr(void);
 /* Used by PAGE_KERN* macros: */
 pteval_t __default_kernel_pte_mask __read_mostly = ~0;
 
+=======
+extern unsigned long get_cmd_line_ptr(void);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Simplified build-specific string for starting entropy. */
 static const char build_str[] = UTS_RELEASE " (" LINUX_COMPILE_BY "@"
 		LINUX_COMPILE_HOST ") (" LINUX_COMPILER ") " UTS_VERSION;
@@ -99,7 +112,11 @@ static bool memmap_too_large;
 
 
 /* Store memory limit specified by "mem=nn[KMG]" or "memmap=nn[KMG]" */
+<<<<<<< HEAD
 static unsigned long long mem_limit = ULLONG_MAX;
+=======
+unsigned long long mem_limit = ULLONG_MAX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 enum mem_avoid_index {
@@ -177,6 +194,10 @@ parse_memmap(char *p, unsigned long long *start, unsigned long long *size)
 static void mem_avoid_memmap(char *str)
 {
 	static int i;
+<<<<<<< HEAD
+=======
+	int rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (i >= MAX_MEMMAP_REGIONS)
 		return;
@@ -212,6 +233,7 @@ static void mem_avoid_memmap(char *str)
 		memmap_too_large = true;
 }
 
+<<<<<<< HEAD
 /* Store the number of 1GB huge pages which users specified: */
 static unsigned long max_gb_huge_pages;
 
@@ -242,6 +264,9 @@ static void parse_gb_huge_pages(char *param, char *val)
 
 
 static int handle_mem_options(void)
+=======
+static int handle_mem_memmap(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	char *args = (char *)get_cmd_line_ptr();
 	size_t len = strlen((char *)args);
@@ -249,12 +274,20 @@ static int handle_mem_options(void)
 	char *param, *val;
 	u64 mem_size;
 
+<<<<<<< HEAD
 	if (!strstr(args, "memmap=") && !strstr(args, "mem=") &&
 		!strstr(args, "hugepages"))
 		return 0;
 
 	tmp_cmdline = malloc(len + 1);
 	if (!tmp_cmdline)
+=======
+	if (!strstr(args, "memmap=") && !strstr(args, "mem="))
+		return 0;
+
+	tmp_cmdline = malloc(len + 1);
+	if (!tmp_cmdline )
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		error("Failed to allocate space for tmp_cmdline");
 
 	memcpy(tmp_cmdline, args, len);
@@ -275,8 +308,11 @@ static int handle_mem_options(void)
 
 		if (!strcmp(param, "memmap")) {
 			mem_avoid_memmap(val);
+<<<<<<< HEAD
 		} else if (strstr(param, "hugepages")) {
 			parse_gb_huge_pages(param, val);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (!strcmp(param, "mem")) {
 			char *p = val;
 
@@ -400,7 +436,11 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
 	cmd_line |= boot_params->hdr.cmd_line_ptr;
 	/* Calculate size of cmd_line. */
 	ptr = (char *)(unsigned long)cmd_line;
+<<<<<<< HEAD
 	for (cmd_line_size = 0; ptr[cmd_line_size++];)
+=======
+	for (cmd_line_size = 0; ptr[cmd_line_size++]; )
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		;
 	mem_avoid[MEM_AVOID_CMDLINE].start = cmd_line;
 	mem_avoid[MEM_AVOID_CMDLINE].size = cmd_line_size;
@@ -416,7 +456,11 @@ static void mem_avoid_init(unsigned long input, unsigned long input_size,
 	/* We don't need to set a mapping for setup_data. */
 
 	/* Mark the memmap regions we need to avoid */
+<<<<<<< HEAD
 	handle_mem_options();
+=======
+	handle_mem_memmap();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_X86_VERBOSE_BOOTUP
 	/* Make sure video RAM can be used. */
@@ -495,6 +539,7 @@ static void store_slot_info(struct mem_vector *region, unsigned long image_size)
 	}
 }
 
+<<<<<<< HEAD
 /*
  * Skip as many 1GB huge pages as possible in the passed region
  * according to the number which users specified:
@@ -549,6 +594,8 @@ process_gb_huge_pages(struct mem_vector *region, unsigned long image_size)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned long slots_fetch_random(void)
 {
 	unsigned long slot;
@@ -629,7 +676,11 @@ static void process_mem_region(struct mem_vector *entry,
 
 		/* If nothing overlaps, store the region and return. */
 		if (!mem_avoid_overlap(&region, &overlap)) {
+<<<<<<< HEAD
 			process_gb_huge_pages(&region, image_size);
+=======
+			store_slot_info(&region, image_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 
@@ -639,7 +690,11 @@ static void process_mem_region(struct mem_vector *entry,
 
 			beginning.start = region.start;
 			beginning.size = overlap.start - region.start;
+<<<<<<< HEAD
 			process_gb_huge_pages(&beginning, image_size);
+=======
+			store_slot_info(&beginning, image_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* Return if overlap extends to or past end of region. */
@@ -815,6 +870,7 @@ void choose_random_location(unsigned long input,
 		return;
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_5LEVEL
 	if (__read_cr4() & X86_CR4_LA57) {
 		__pgtable_l5_enabled = 1;
@@ -823,6 +879,8 @@ void choose_random_location(unsigned long input,
 	}
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	boot_params->hdr.loadflags |= KASLR_FLAG;
 
 	/* Prepare to add new identity pagetables on demand. */

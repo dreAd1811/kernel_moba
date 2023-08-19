@@ -90,6 +90,7 @@ nv50_head_new(struct nvkm_disp *disp, int id)
 {
 	return nvkm_head_new_(&nv50_head, disp, id);
 }
+<<<<<<< HEAD
 
 int
 nv50_head_cnt(struct nvkm_disp *disp, unsigned long *pmask)
@@ -97,3 +98,5 @@ nv50_head_cnt(struct nvkm_disp *disp, unsigned long *pmask)
 	*pmask = 3;
 	return 2;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

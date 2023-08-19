@@ -11,7 +11,11 @@
 
 #include <linux/export.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/dma-direct.h>
+=======
+#include <linux/dma-mapping.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/scatterlist.h>
 
 #include <asm/cachetype.h>
@@ -22,7 +26,11 @@
 #include "dma.h"
 
 /*
+<<<<<<< HEAD
  *  dma_direct_ops is used if
+=======
+ *  dma_noop_ops is used if
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *   - MMU/MPU is off
  *   - cpu is v7m w/o cache support
  *   - device is coherent
@@ -39,6 +47,10 @@ static void *arm_nommu_dma_alloc(struct device *dev, size_t size,
 				 unsigned long attrs)
 
 {
+<<<<<<< HEAD
+=======
+	const struct dma_map_ops *ops = &dma_noop_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *ret;
 
 	/*
@@ -47,7 +59,11 @@ static void *arm_nommu_dma_alloc(struct device *dev, size_t size,
 	 */
 
 	if (attrs & DMA_ATTR_NON_CONSISTENT)
+<<<<<<< HEAD
 		return dma_direct_alloc(dev, size, dma_handle, gfp, attrs);
+=======
+		return ops->alloc(dev, size, dma_handle, gfp, attrs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = dma_alloc_from_global_coherent(size, dma_handle);
 
@@ -69,8 +85,15 @@ static void arm_nommu_dma_free(struct device *dev, size_t size,
 			       void *cpu_addr, dma_addr_t dma_addr,
 			       unsigned long attrs)
 {
+<<<<<<< HEAD
 	if (attrs & DMA_ATTR_NON_CONSISTENT) {
 		dma_direct_free(dev, size, cpu_addr, dma_addr, attrs);
+=======
+	const struct dma_map_ops *ops = &dma_noop_ops;
+
+	if (attrs & DMA_ATTR_NON_CONSISTENT) {
+		ops->free(dev, size, cpu_addr, dma_addr, attrs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		int ret = dma_release_from_global_coherent(get_order(size),
 							   cpu_addr);
@@ -210,7 +233,11 @@ EXPORT_SYMBOL(arm_nommu_dma_ops);
 
 static const struct dma_map_ops *arm_nommu_get_dma_map_ops(bool coherent)
 {
+<<<<<<< HEAD
 	return coherent ? &dma_direct_ops : &arm_nommu_dma_ops;
+=======
+	return coherent ? &dma_noop_ops : &arm_nommu_dma_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
@@ -241,3 +268,15 @@ void arch_setup_dma_ops(struct device *dev, u64 dma_base, u64 size,
 void arch_teardown_dma_ops(struct device *dev)
 {
 }
+<<<<<<< HEAD
+=======
+
+#define PREALLOC_DMA_DEBUG_ENTRIES	4096
+
+static int __init dma_debug_do_init(void)
+{
+	dma_debug_init(PREALLOC_DMA_DEBUG_ENTRIES);
+	return 0;
+}
+core_initcall(dma_debug_do_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

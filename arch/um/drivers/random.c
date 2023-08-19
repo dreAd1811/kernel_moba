@@ -13,7 +13,10 @@
 #include <linux/miscdevice.h>
 #include <linux/delay.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <init.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <irq_kern.h>
 #include <os.h>
 
@@ -155,6 +158,7 @@ err_out_cleanup_hw:
 /*
  * rng_cleanup - shutdown RNG module
  */
+<<<<<<< HEAD
 
 static void cleanup(void)
 {
@@ -163,6 +167,9 @@ static void cleanup(void)
 }
 
 static void __exit rng_cleanup(void)
+=======
+static void __exit rng_cleanup (void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	os_close_file(random_fd);
 	misc_deregister (&rng_miscdev);
@@ -170,7 +177,10 @@ static void __exit rng_cleanup(void)
 
 module_init (rng_init);
 module_exit (rng_cleanup);
+<<<<<<< HEAD
 __uml_exitcall(cleanup);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_DESCRIPTION("UML Host Random Number Generator (RNG) driver");
 MODULE_LICENSE("GPL");

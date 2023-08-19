@@ -43,7 +43,11 @@ static struct map_info ts5500_map = {
 	.phys = WINDOW_ADDR
 };
 
+<<<<<<< HEAD
 static const struct mtd_partition ts5500_partitions[] = {
+=======
+static struct mtd_partition ts5500_partitions[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name = "Drive A",
 		.offset = 0,

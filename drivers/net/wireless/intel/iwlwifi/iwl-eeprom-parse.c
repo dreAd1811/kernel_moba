@@ -7,7 +7,10 @@
  *
  * Copyright(c) 2008 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2015 Intel Mobile Communications GmbH
+<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -19,7 +22,13 @@
  * General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
+<<<<<<< HEAD
  * along with this program;
+=======
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110,
+ * USA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The full GNU General Public License is included in this distribution
  * in the file called COPYING.
@@ -32,7 +41,10 @@
  *
  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2015 Intel Mobile Communications GmbH
+<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -767,7 +779,11 @@ void iwl_init_ht_hw_capab(const struct iwl_cfg *cfg,
 		ht_info->cap |= IEEE80211_HT_CAP_LDPC_CODING;
 
 	if ((cfg->mq_rx_supported &&
+<<<<<<< HEAD
 	     iwlwifi_mod_params.amsdu_size == IWL_AMSDU_DEF) ||
+=======
+	     iwlwifi_mod_params.amsdu_size != IWL_AMSDU_4K) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	     iwlwifi_mod_params.amsdu_size >= IWL_AMSDU_8K)
 		ht_info->cap |= IEEE80211_HT_CAP_MAX_AMSDU;
 
@@ -899,8 +915,13 @@ iwl_parse_eeprom_data(struct device *dev, const struct iwl_cfg *cfg,
 				 EEPROM_SKU_CAP);
 	data->sku_cap_11n_enable = sku & EEPROM_SKU_CAP_11N_ENABLE;
 	data->sku_cap_amt_enable = sku & EEPROM_SKU_CAP_AMT_ENABLE;
+<<<<<<< HEAD
 	data->sku_cap_band_24ghz_enable = sku & EEPROM_SKU_CAP_BAND_24GHZ;
 	data->sku_cap_band_52ghz_enable = sku & EEPROM_SKU_CAP_BAND_52GHZ;
+=======
+	data->sku_cap_band_24GHz_enable = sku & EEPROM_SKU_CAP_BAND_24GHZ;
+	data->sku_cap_band_52GHz_enable = sku & EEPROM_SKU_CAP_BAND_52GHZ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->sku_cap_ipan_enable = sku & EEPROM_SKU_CAP_IPAN_ENABLE;
 	if (iwlwifi_mod_params.disable_11n & IWL_DISABLE_HT_ALL)
 		data->sku_cap_11n_enable = false;
@@ -928,6 +949,7 @@ iwl_parse_eeprom_data(struct device *dev, const struct iwl_cfg *cfg,
 	return NULL;
 }
 IWL_EXPORT_SYMBOL(iwl_parse_eeprom_data);
+<<<<<<< HEAD
 
 /* helper functions */
 int iwl_nvm_check_version(struct iwl_nvm_data *data,
@@ -947,3 +969,5 @@ int iwl_nvm_check_version(struct iwl_nvm_data *data,
 	return -EINVAL;
 }
 IWL_EXPORT_SYMBOL(iwl_nvm_check_version);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

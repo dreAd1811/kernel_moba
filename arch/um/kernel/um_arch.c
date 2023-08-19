@@ -54,7 +54,11 @@ struct cpuinfo_um boot_cpu_data = {
 
 union thread_union cpu0_irqstack
 	__attribute__((__section__(".data..init_irqstack"))) =
+<<<<<<< HEAD
 		{ .thread_info = INIT_THREAD_INFO(init_task) };
+=======
+		{ INIT_THREAD_INFO(init_task) };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Changed in setup_arch, which is called in early boot */
 static char host_info[(__NEW_UTS_LEN + 1) * 5];

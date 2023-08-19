@@ -40,6 +40,11 @@
 #include <media/v4l2-device.h>
 #include <media/v4l2-ctrls.h>
 
+<<<<<<< HEAD
+=======
+#include <media/i2c-addr.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ---------------------------------------------------------------------- */
 /* insmod args                                                            */
 
@@ -134,7 +139,11 @@ struct CHIPSTATE {
 	/* thread */
 	struct task_struct   *thread;
 	struct timer_list    wt;
+<<<<<<< HEAD
 	int		     audmode;
+=======
+	int 		     audmode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct CHIPSTATE *to_state(struct v4l2_subdev *sd)
@@ -156,18 +165,27 @@ static int chip_write(struct CHIPSTATE *chip, int subaddr, int val)
 	struct v4l2_subdev *sd = &chip->sd;
 	struct i2c_client *c = v4l2_get_subdevdata(sd);
 	unsigned char buffer[2];
+<<<<<<< HEAD
 	int rc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (subaddr < 0) {
 		v4l2_dbg(1, debug, sd, "chip_write: 0x%x\n", val);
 		chip->shadow.bytes[1] = val;
 		buffer[0] = val;
+<<<<<<< HEAD
 		rc = i2c_master_send(c, buffer, 1);
 		if (rc != 1) {
 			v4l2_warn(sd, "I/O error (write 0x%x)\n", val);
 			if (rc < 0)
 				return rc;
 			return -EIO;
+=======
+		if (1 != i2c_master_send(c, buffer, 1)) {
+			v4l2_warn(sd, "I/O error (write 0x%x)\n", val);
+			return -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		if (subaddr + 1 >= ARRAY_SIZE(chip->shadow.bytes)) {
@@ -182,6 +200,7 @@ static int chip_write(struct CHIPSTATE *chip, int subaddr, int val)
 		chip->shadow.bytes[subaddr+1] = val;
 		buffer[0] = subaddr;
 		buffer[1] = val;
+<<<<<<< HEAD
 		rc = i2c_master_send(c, buffer, 2);
 		if (rc != 2) {
 			v4l2_warn(sd, "I/O error (write reg%d=0x%x)\n",
@@ -189,6 +208,12 @@ static int chip_write(struct CHIPSTATE *chip, int subaddr, int val)
 			if (rc < 0)
 				return rc;
 			return -EIO;
+=======
+		if (2 != i2c_master_send(c, buffer, 2)) {
+			v4l2_warn(sd, "I/O error (write reg%d=0x%x)\n",
+				subaddr, val);
+			return -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return 0;
@@ -221,6 +246,7 @@ static int chip_read(struct CHIPSTATE *chip)
 	struct v4l2_subdev *sd = &chip->sd;
 	struct i2c_client *c = v4l2_get_subdevdata(sd);
 	unsigned char buffer;
+<<<<<<< HEAD
 	int rc;
 
 	rc = i2c_master_recv(c, &buffer, 1);
@@ -229,6 +255,12 @@ static int chip_read(struct CHIPSTATE *chip)
 		if (rc < 0)
 			return rc;
 		return -EIO;
+=======
+
+	if (1 != i2c_master_recv(c, &buffer, 1)) {
+		v4l2_warn(sd, "I/O error (read)\n");
+		return -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	v4l2_dbg(1, debug, sd, "chip_read: 0x%x\n", buffer);
 	return buffer;
@@ -238,7 +270,10 @@ static int chip_read2(struct CHIPSTATE *chip, int subaddr)
 {
 	struct v4l2_subdev *sd = &chip->sd;
 	struct i2c_client *c = v4l2_get_subdevdata(sd);
+<<<<<<< HEAD
 	int rc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char write[1];
 	unsigned char read[1];
 	struct i2c_msg msgs[2] = {
@@ -257,12 +292,18 @@ static int chip_read2(struct CHIPSTATE *chip, int subaddr)
 
 	write[0] = subaddr;
 
+<<<<<<< HEAD
 	rc = i2c_transfer(c->adapter, msgs, 2);
 	if (rc != 2) {
 		v4l2_warn(sd, "I/O error (read2)\n");
 		if (rc < 0)
 			return rc;
 		return -EIO;
+=======
+	if (2 != i2c_transfer(c->adapter, msgs, 2)) {
+		v4l2_warn(sd, "I/O error (read2)\n");
+		return -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	v4l2_dbg(1, debug, sd, "chip_read2: reg%d=0x%x\n",
 		subaddr, read[0]);
@@ -273,7 +314,11 @@ static int chip_cmd(struct CHIPSTATE *chip, char *name, audiocmd *cmd)
 {
 	struct v4l2_subdev *sd = &chip->sd;
 	struct i2c_client *c = v4l2_get_subdevdata(sd);
+<<<<<<< HEAD
 	int i, rc;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == cmd->count)
 		return 0;
@@ -299,12 +344,18 @@ static int chip_cmd(struct CHIPSTATE *chip, char *name, audiocmd *cmd)
 		printk(KERN_CONT "\n");
 
 	/* send data to the chip */
+<<<<<<< HEAD
 	rc = i2c_master_send(c, cmd->bytes, cmd->count);
 	if (rc != cmd->count) {
 		v4l2_warn(sd, "I/O error (%s)\n", name);
 		if (rc < 0)
 			return rc;
 		return -EIO;
+=======
+	if (cmd->count != i2c_master_send(c, cmd->bytes, cmd->count)) {
+		v4l2_warn(sd, "I/O error (%s)\n", name);
+		return -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -316,9 +367,15 @@ static int chip_cmd(struct CHIPSTATE *chip, char *name, audiocmd *cmd)
  *   if available, ...
  */
 
+<<<<<<< HEAD
 static void chip_thread_wake(struct timer_list *t)
 {
 	struct CHIPSTATE *chip = from_timer(chip, t, wt);
+=======
+static void chip_thread_wake(unsigned long data)
+{
+	struct CHIPSTATE *chip = (struct CHIPSTATE*)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wake_up_process(chip->thread);
 }
 
@@ -418,12 +475,17 @@ static int tda9840_getrxsubchans(struct CHIPSTATE *chip)
 	struct v4l2_subdev *sd = &chip->sd;
 	int val, mode;
 
+<<<<<<< HEAD
 	mode = V4L2_TUNER_SUB_MONO;
 
 	val = chip_read(chip);
 	if (val < 0)
 		return mode;
 
+=======
+	val = chip_read(chip);
+	mode = V4L2_TUNER_SUB_MONO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (val & TDA9840_DS_DUAL)
 		mode |= V4L2_TUNER_SUB_LANG1 | V4L2_TUNER_SUB_LANG2;
 	if (val & TDA9840_ST_STEREO)
@@ -467,12 +529,16 @@ static void tda9840_setaudmode(struct CHIPSTATE *chip, int mode)
 static int tda9840_checkit(struct CHIPSTATE *chip)
 {
 	int rc;
+<<<<<<< HEAD
 
 	rc = chip_read(chip);
 	if (rc < 0)
 		return 0;
 
 
+=======
+	rc = chip_read(chip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* lower 5 bits should be 0 */
 	return ((rc & 0x1f) == 0) ? 1 : 0;
 }
@@ -590,9 +656,12 @@ static int  tda985x_getrxsubchans(struct CHIPSTATE *chip)
 	/* Allows forced mono */
 	mode = V4L2_TUNER_SUB_MONO;
 	val = chip_read(chip);
+<<<<<<< HEAD
 	if (val < 0)
 		return mode;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (val & TDA985x_STP)
 		mode = V4L2_TUNER_SUB_STEREO;
 	if (val & TDA985x_SAPP)
@@ -750,12 +819,17 @@ static int tda9873_getrxsubchans(struct CHIPSTATE *chip)
 	struct v4l2_subdev *sd = &chip->sd;
 	int val,mode;
 
+<<<<<<< HEAD
 	mode = V4L2_TUNER_SUB_MONO;
 
 	val = chip_read(chip);
 	if (val < 0)
 		return mode;
 
+=======
+	val = chip_read(chip);
+	mode = V4L2_TUNER_SUB_MONO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (val & TDA9873_STEREO)
 		mode = V4L2_TUNER_SUB_STEREO;
 	if (val & TDA9873_DUAL)
@@ -814,8 +888,12 @@ static int tda9873_checkit(struct CHIPSTATE *chip)
 {
 	int rc;
 
+<<<<<<< HEAD
 	rc = chip_read2(chip, 254);
 	if (rc < 0)
+=======
+	if (-1 == (rc = chip_read2(chip,254)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	return (rc & ~0x1f) == 0x80;
 }
@@ -961,6 +1039,7 @@ static int tda9874a_getrxsubchans(struct CHIPSTATE *chip)
 
 	mode = V4L2_TUNER_SUB_MONO;
 
+<<<<<<< HEAD
 	dsr = chip_read2(chip, TDA9874A_DSR);
 	if (dsr < 0)
 		return mode;
@@ -969,6 +1048,13 @@ static int tda9874a_getrxsubchans(struct CHIPSTATE *chip)
 		return mode;
 	necr = chip_read2(chip, TDA9874A_NECR);
 	if (necr < 0)
+=======
+	if(-1 == (dsr = chip_read2(chip,TDA9874A_DSR)))
+		return mode;
+	if(-1 == (nsr = chip_read2(chip,TDA9874A_NSR)))
+		return mode;
+	if(-1 == (necr = chip_read2(chip,TDA9874A_NECR)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return mode;
 
 	/* need to store dsr/nsr somewhere */
@@ -1097,11 +1183,17 @@ static int tda9874a_checkit(struct CHIPSTATE *chip)
 	struct v4l2_subdev *sd = &chip->sd;
 	int dic,sic;	/* device id. and software id. codes */
 
+<<<<<<< HEAD
 	dic = chip_read2(chip, TDA9874A_DIC);
 	if (dic < 0)
 		return 0;
 	sic = chip_read2(chip, TDA9874A_SIC);
 	if (sic < 0)
+=======
+	if(-1 == (dic = chip_read2(chip,TDA9874A_DIC)))
+		return 0;
+	if(-1 == (sic = chip_read2(chip,TDA9874A_SIC)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	v4l2_dbg(1, debug, sd, "tda9874a_checkit(): DIC=0x%X, SIC=0x%X.\n", dic, sic);
@@ -1241,11 +1333,15 @@ static int tda9875_checkit(struct CHIPSTATE *chip)
 	int dic, rev;
 
 	dic = chip_read2(chip, 254);
+<<<<<<< HEAD
 	if (dic < 0)
 		return 0;
 	rev = chip_read2(chip, 255);
 	if (rev < 0)
 		return 0;
+=======
+	rev = chip_read2(chip, 255);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dic == 0 || dic == 2) { /* tda9875 and tda9875A */
 		v4l2_info(sd, "found tda9875%s rev. %d.\n",
@@ -1421,12 +1517,17 @@ static int ta8874z_getrxsubchans(struct CHIPSTATE *chip)
 {
 	int val, mode;
 
+<<<<<<< HEAD
 	mode = V4L2_TUNER_SUB_MONO;
 
 	val = chip_read(chip);
 	if (val < 0)
 		return mode;
 
+=======
+	val = chip_read(chip);
+	mode = V4L2_TUNER_SUB_MONO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (val & TA8874Z_B1){
 		mode |= V4L2_TUNER_SUB_LANG1 | V4L2_TUNER_SUB_LANG2;
 	}else if (!(val & TA8874Z_B0)){
@@ -1479,11 +1580,15 @@ static void ta8874z_setaudmode(struct CHIPSTATE *chip, int mode)
 static int ta8874z_checkit(struct CHIPSTATE *chip)
 {
 	int rc;
+<<<<<<< HEAD
 
 	rc = chip_read(chip);
 	if (rc < 0)
 		return rc;
 
+=======
+	rc = chip_read(chip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ((rc & 0x1f) == 0x1f) ? 1 : 0;
 }
 
@@ -2045,7 +2150,11 @@ static int tvaudio_probe(struct i2c_client *client, const struct i2c_device_id *
 	v4l2_ctrl_handler_setup(&chip->hdl);
 
 	chip->thread = NULL;
+<<<<<<< HEAD
 	timer_setup(&chip->wt, chip_thread_wake, 0);
+=======
+	init_timer(&chip->wt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (desc->flags & CHIP_NEED_CHECKMODE) {
 		if (!desc->getrxsubchans || !desc->setaudmode) {
 			/* This shouldn't be happen. Warn user, but keep working
@@ -2055,6 +2164,11 @@ static int tvaudio_probe(struct i2c_client *client, const struct i2c_device_id *
 			return 0;
 		}
 		/* start async thread */
+<<<<<<< HEAD
+=======
+		chip->wt.function = chip_thread_wake;
+		chip->wt.data     = (unsigned long)chip;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chip->thread = kthread_run(chip_thread, chip, "%s",
 					   client->name);
 		if (IS_ERR(chip->thread)) {

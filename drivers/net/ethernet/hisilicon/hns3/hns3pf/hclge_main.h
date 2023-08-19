@@ -1,37 +1,68 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 // Copyright (c) 2016-2017 Hisilicon Limited.
+=======
+/*
+ * Copyright (c) 2016~2017 Hisilicon Limited.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __HCLGE_MAIN_H
 #define __HCLGE_MAIN_H
 #include <linux/fs.h>
 #include <linux/types.h>
 #include <linux/phy.h>
+<<<<<<< HEAD
 #include <linux/if_vlan.h>
 
 #include "hclge_cmd.h"
 #include "hnae3.h"
 
 #define HCLGE_MOD_VERSION "1.0"
+=======
+#include "hclge_cmd.h"
+#include "hnae3.h"
+
+#define HCLGE_MOD_VERSION "v1.0"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HCLGE_DRIVER_NAME "hclge"
 
 #define HCLGE_INVALID_VPORT 0xffff
 
+<<<<<<< HEAD
+=======
+#define HCLGE_ROCE_VECTOR_OFFSET	96
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HCLGE_PF_CFG_BLOCK_SIZE		32
 #define HCLGE_PF_CFG_DESC_NUM \
 	(HCLGE_PF_CFG_BLOCK_SIZE / HCLGE_CFG_RD_LEN_BYTES)
 
 #define HCLGE_VECTOR_REG_BASE		0x20000
+<<<<<<< HEAD
 #define HCLGE_MISC_VECTOR_REG_BASE	0x20400
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define HCLGE_VECTOR_REG_OFFSET		0x4
 #define HCLGE_VECTOR_VF_OFFSET		0x100000
 
 #define HCLGE_RSS_IND_TBL_SIZE		512
+<<<<<<< HEAD
 #define HCLGE_RSS_SET_BITMAP_MSK	GENMASK(15, 0)
+=======
+#define HCLGE_RSS_SET_BITMAP_MSK	0xffff
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HCLGE_RSS_KEY_SIZE		40
 #define HCLGE_RSS_HASH_ALGO_TOEPLITZ	0
 #define HCLGE_RSS_HASH_ALGO_SIMPLE	1
 #define HCLGE_RSS_HASH_ALGO_SYMMETRIC	2
+<<<<<<< HEAD
 #define HCLGE_RSS_HASH_ALGO_MASK	GENMASK(3, 0)
 #define HCLGE_RSS_CFG_TBL_NUM \
 	(HCLGE_RSS_IND_TBL_SIZE / HCLGE_RSS_CFG_TBL_SIZE)
@@ -44,6 +75,12 @@
 #define HCLGE_S_IP_BIT			BIT(3)
 #define HCLGE_V_TAG_BIT			BIT(4)
 
+=======
+#define HCLGE_RSS_HASH_ALGO_MASK	0xf
+#define HCLGE_RSS_CFG_TBL_NUM \
+	(HCLGE_RSS_IND_TBL_SIZE / HCLGE_RSS_CFG_TBL_SIZE)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HCLGE_RSS_TC_SIZE_0		1
 #define HCLGE_RSS_TC_SIZE_1		2
 #define HCLGE_RSS_TC_SIZE_2		4
@@ -53,8 +90,11 @@
 #define HCLGE_RSS_TC_SIZE_6		64
 #define HCLGE_RSS_TC_SIZE_7		128
 
+<<<<<<< HEAD
 #define HCLGE_MTA_TBL_SIZE		4096
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HCLGE_TQP_RESET_TRY_TIMES	10
 
 #define HCLGE_PHY_PAGE_MDIX		0
@@ -69,6 +109,7 @@
 /* Copper Specific Status Register */
 #define HCLGE_PHY_CSS_REG		17
 
+<<<<<<< HEAD
 #define HCLGE_PHY_MDIX_CTRL_S		5
 #define HCLGE_PHY_MDIX_CTRL_M		GENMASK(6, 5)
 
@@ -108,6 +149,13 @@
 #define HCLGE_SUPPORT_25G_BIT		BIT(2)
 #define HCLGE_SUPPORT_50G_BIT		BIT(3)
 #define HCLGE_SUPPORT_100G_BIT		BIT(4)
+=======
+#define HCLGE_PHY_MDIX_CTRL_S		(5)
+#define HCLGE_PHY_MDIX_CTRL_M		(3 << HCLGE_PHY_MDIX_CTRL_S)
+
+#define HCLGE_PHY_MDIX_STATUS_B	(6)
+#define HCLGE_PHY_SPEED_DUP_RESOLVE_B	(11)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum HCLGE_DEV_STATE {
 	HCLGE_STATE_REINITING,
@@ -116,6 +164,7 @@ enum HCLGE_DEV_STATE {
 	HCLGE_STATE_REMOVING,
 	HCLGE_STATE_SERVICE_INITED,
 	HCLGE_STATE_SERVICE_SCHED,
+<<<<<<< HEAD
 	HCLGE_STATE_RST_SERVICE_SCHED,
 	HCLGE_STATE_RST_HANDLING,
 	HCLGE_STATE_MBX_SERVICE_SCHED,
@@ -132,6 +181,20 @@ enum hclge_evt_cause {
 };
 
 #define HCLGE_MPF_ENBALE 1
+=======
+	HCLGE_STATE_MBX_HANDLING,
+	HCLGE_STATE_MBX_IRQ,
+	HCLGE_STATE_MAX
+};
+
+#define HCLGE_MPF_ENBALE 1
+struct hclge_caps {
+	u16 num_tqp;
+	u16 num_buffer_cell;
+	u32 flag;
+	u16 vmdq;
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum HCLGE_MAC_SPEED {
 	HCLGE_MAC_SPEED_10M	= 10,		/* 10 Mbps */
@@ -168,8 +231,11 @@ struct hclge_mac {
 	struct phy_device *phydev;
 	struct mii_bus *mdio_bus;
 	phy_interface_t phy_if;
+<<<<<<< HEAD
 	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
 	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertising);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct hclge_hw {
@@ -177,6 +243,11 @@ struct hclge_hw {
 	struct hclge_mac mac;
 	int num_vec;
 	struct hclge_cmq cmq;
+<<<<<<< HEAD
+=======
+	struct hclge_caps caps;
+	void *back;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* TQP stats */
@@ -188,10 +259,14 @@ struct hlcge_tqp_stats {
 };
 
 struct hclge_tqp {
+<<<<<<< HEAD
 	/* copy of device pointer from pci_dev,
 	 * used when perform DMA mapping
 	 */
 	struct device *dev;
+=======
+	struct device *dev;	/* Device for DMA mapping */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hnae3_queue q;
 	struct hlcge_tqp_stats tqp_stats;
 	u16 index;	/* Global index in a NIC controller */
@@ -231,13 +306,19 @@ struct hclge_cfg {
 	u8 tc_num;
 	u16 tqp_desc_num;
 	u16 rx_buf_len;
+<<<<<<< HEAD
 	u16 rss_size_max;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 phy_addr;
 	u8 media_type;
 	u8 mac_addr[ETH_ALEN];
 	u8 default_speed;
 	u32 numa_node_map;
+<<<<<<< HEAD
 	u8 speed_ability;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct hclge_tm_info {
@@ -389,13 +470,18 @@ struct hclge_mac_stats {
 	u64 mac_tx_multi_pkt_num;
 	u64 mac_tx_broad_pkt_num;
 	u64 mac_tx_undersize_pkt_num;
+<<<<<<< HEAD
 	u64 mac_tx_oversize_pkt_num;
+=======
+	u64 mac_tx_overrsize_pkt_num;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 mac_tx_64_oct_pkt_num;
 	u64 mac_tx_65_127_oct_pkt_num;
 	u64 mac_tx_128_255_oct_pkt_num;
 	u64 mac_tx_256_511_oct_pkt_num;
 	u64 mac_tx_512_1023_oct_pkt_num;
 	u64 mac_tx_1024_1518_oct_pkt_num;
+<<<<<<< HEAD
 	u64 mac_tx_1519_2047_oct_pkt_num;
 	u64 mac_tx_2048_4095_oct_pkt_num;
 	u64 mac_tx_4096_8191_oct_pkt_num;
@@ -406,6 +492,9 @@ struct hclge_mac_stats {
 	u64 mac_tx_1519_max_good_oct_pkt_num;
 	u64 mac_tx_1519_max_bad_oct_pkt_num;
 
+=======
+	u64 mac_tx_1519_max_oct_pkt_num;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 mac_rx_total_pkt_num;
 	u64 mac_rx_total_oct_num;
 	u64 mac_rx_good_pkt_num;
@@ -416,13 +505,18 @@ struct hclge_mac_stats {
 	u64 mac_rx_multi_pkt_num;
 	u64 mac_rx_broad_pkt_num;
 	u64 mac_rx_undersize_pkt_num;
+<<<<<<< HEAD
 	u64 mac_rx_oversize_pkt_num;
+=======
+	u64 mac_rx_overrsize_pkt_num;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 mac_rx_64_oct_pkt_num;
 	u64 mac_rx_65_127_oct_pkt_num;
 	u64 mac_rx_128_255_oct_pkt_num;
 	u64 mac_rx_256_511_oct_pkt_num;
 	u64 mac_rx_512_1023_oct_pkt_num;
 	u64 mac_rx_1024_1518_oct_pkt_num;
+<<<<<<< HEAD
 	u64 mac_rx_1519_2047_oct_pkt_num;
 	u64 mac_rx_2048_4095_oct_pkt_num;
 	u64 mac_rx_4096_8191_oct_pkt_num;
@@ -448,10 +542,29 @@ struct hclge_mac_stats {
 };
 
 #define HCLGE_STATS_TIMER_INTERVAL	(60 * 5)
+=======
+	u64 mac_rx_1519_max_oct_pkt_num;
+
+	u64 mac_trans_fragment_pkt_num;
+	u64 mac_trans_undermin_pkt_num;
+	u64 mac_trans_jabber_pkt_num;
+	u64 mac_trans_err_all_pkt_num;
+	u64 mac_trans_from_app_good_pkt_num;
+	u64 mac_trans_from_app_bad_pkt_num;
+	u64 mac_rcv_fragment_pkt_num;
+	u64 mac_rcv_undermin_pkt_num;
+	u64 mac_rcv_jabber_pkt_num;
+	u64 mac_rcv_fcs_err_pkt_num;
+	u64 mac_rcv_send_app_good_pkt_num;
+	u64 mac_rcv_send_app_bad_pkt_num;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hclge_hw_stats {
 	struct hclge_mac_stats      mac_stats;
 	struct hclge_64_bit_stats   all_64_bit_stats;
 	struct hclge_32_bit_stats   all_32_bit_stats;
+<<<<<<< HEAD
 	u32 stats_timer;
 };
 
@@ -465,10 +578,15 @@ struct hclge_vlan_type_cfg {
 };
 
 #define HCLGE_VPORT_NUM 256
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hclge_dev {
 	struct pci_dev *pdev;
 	struct hnae3_ae_dev *ae_dev;
 	struct hclge_hw hw;
+<<<<<<< HEAD
 	struct hclge_misc_vector misc_vector;
 	struct hclge_hw_stats hw_stats;
 	unsigned long state;
@@ -476,16 +594,34 @@ struct hclge_dev {
 	enum hnae3_reset_type reset_type;
 	unsigned long reset_request;	/* reset has been requested */
 	unsigned long reset_pending;	/* client rst is pending to be served */
+=======
+	struct hclge_hw_stats hw_stats;
+	unsigned long state;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 fw_version;
 	u16 num_vmdq_vport;		/* Num vmdq vport this PF has set up */
 	u16 num_tqps;			/* Num task queue pairs of this PF */
 	u16 num_req_vfs;		/* Num VFs requested for this PF */
 
+<<<<<<< HEAD
 	u16 base_tqp_pid;	/* Base task tqp physical id of this PF */
 	u16 alloc_rss_size;		/* Allocated RSS task queue */
 	u16 rss_size_max;		/* HW defined max RSS task queue */
 
 	u16 fdir_pf_filter_count; /* Num of guaranteed filters for this PF */
+=======
+	u16 num_roce_msix;		/* Num of roce vectors for this PF */
+	int roce_base_vector;
+
+	/* Base task tqp physical id of this PF */
+	u16 base_tqp_pid;
+	u16 alloc_rss_size;		/* Allocated RSS task queue */
+	u16 rss_size_max;		/* HW defined max RSS task queue */
+
+	/* Num of guaranteed filters for this PF */
+	u16 fdir_pf_filter_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 num_alloc_vport;		/* Num vports this driver supports */
 	u32 numa_node_mask;
 	u16 rx_buf_len;
@@ -497,22 +633,33 @@ struct hclge_dev {
 #define HCLGE_FLAG_TC_BASE_SCH_MODE		1
 #define HCLGE_FLAG_VNET_BASE_SCH_MODE		2
 	u8 tx_sch_mode;
+<<<<<<< HEAD
 	u8 tc_max;
 	u8 pfc_max;
 
 	u8 default_up;
 	u8 dcbx_cap;
+=======
+
+	u8 default_up;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hclge_tm_info tm_info;
 
 	u16 num_msi;
 	u16 num_msi_left;
 	u16 num_msi_used;
+<<<<<<< HEAD
 	u16 roce_base_msix_offset;
 	u32 base_msi_vector;
 	u16 *vector_status;
 	int *vector_irq;
 	u16 num_roce_msi;	/* Num of roce vectors for this PF */
 	int roce_base_vector;
+=======
+	u32 base_msi_vector;
+	struct msix_entry *msix_entries;
+	u16 *vector_status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u16 pending_udp_bitmap;
 
@@ -524,8 +671,11 @@ struct hclge_dev {
 	unsigned long service_timer_previous;
 	struct timer_list service_timer;
 	struct work_struct service_task;
+<<<<<<< HEAD
 	struct work_struct rst_service_task;
 	struct work_struct mbx_service_task;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bool cur_promisc;
 	int num_alloc_vfs;	/* Actual number of VFs allocated */
@@ -538,14 +688,23 @@ struct hclge_dev {
 	struct hnae3_client *nic_client;
 	struct hnae3_client *roce_client;
 
+<<<<<<< HEAD
 #define HCLGE_FLAG_MAIN			BIT(0)
 #define HCLGE_FLAG_DCB_CAPABLE		BIT(1)
 #define HCLGE_FLAG_DCB_ENABLE		BIT(2)
 #define HCLGE_FLAG_MQPRIO_ENABLE	BIT(3)
+=======
+#define HCLGE_FLAG_USE_MSI	0x00000001
+#define HCLGE_FLAG_USE_MSIX	0x00000002
+#define HCLGE_FLAG_MAIN		0x00000004
+#define HCLGE_FLAG_DCB_CAPABLE	0x00000008
+#define HCLGE_FLAG_DCB_ENABLE	0x00000010
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 flag;
 
 	u32 pkt_buf_size; /* Total pf buf size for tx/rx */
 	u32 mps; /* Max packet size */
+<<<<<<< HEAD
 
 	enum hclge_mta_dmac_sel_type mta_mac_sel_type;
 	bool enable_mta; /* Multicast filter enable */
@@ -584,6 +743,14 @@ struct hclge_rss_tuple_cfg {
 	u8 ipv6_udp_en;
 	u8 ipv6_sctp_en;
 	u8 ipv6_fragment_en;
+=======
+	struct hclge_priv_buf *priv_buf;
+	struct hclge_shared_buf s_buf;
+
+	enum hclge_mta_dmac_sel_type mta_mac_sel_type;
+	bool enable_mta; /* Mutilcast filter enable */
+	bool accept_mta_mc; /* Whether accept mta filter multicast */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct hclge_vport {
@@ -592,6 +759,7 @@ struct hclge_vport {
 	u8  rss_hash_key[HCLGE_RSS_KEY_SIZE]; /* User configured hash keys */
 	/* User configured lookup table entries */
 	u8  rss_indirection_tbl[HCLGE_RSS_IND_TBL_SIZE];
+<<<<<<< HEAD
 	int rss_algo;		/* User configured hash algorithm */
 	/* User configured rss tuple sets */
 	struct hclge_rss_tuple_cfg rss_tuple_sets;
@@ -605,13 +773,24 @@ struct hclge_vport {
 	struct hclge_tx_vtag_cfg  txvlan_cfg;
 	struct hclge_rx_vtag_cfg  rxvlan_cfg;
 
+=======
+	u16 alloc_rss_size;
+
+	u16 qs_offset;
+	u32 bw_limit;		/* VSI BW Limit (0 = disabled) */
+	u8  dwrr;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int vport_id;
 	struct hclge_dev *back;  /* Back reference to associated dev */
 	struct hnae3_handle nic;
 	struct hnae3_handle roce;
+<<<<<<< HEAD
 
 	bool accept_mta_mc; /* whether to accept mta filter multicast */
 	unsigned long mta_shadow[BITS_TO_LONGS(HCLGE_MTA_TBL_SIZE)];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void hclge_promisc_param_init(struct hclge_promisc_param *param, bool en_uc,
@@ -629,6 +808,7 @@ int hclge_rm_mc_addr_common(struct hclge_vport *vport,
 int hclge_cfg_func_mta_filter(struct hclge_dev *hdev,
 			      u8 func_id,
 			      bool enable);
+<<<<<<< HEAD
 int hclge_update_mta_status_common(struct hclge_vport *vport,
 				   unsigned long *status,
 				   u16 idx,
@@ -640,6 +820,11 @@ int hclge_bind_ring_with_vector(struct hclge_vport *vport,
 				int vector_id, bool en,
 				struct hnae3_ring_chain_node *ring_chain);
 
+=======
+struct hclge_vport *hclge_get_vport(struct hnae3_handle *handle);
+int hclge_map_vport_ring_to_vector(struct hclge_vport *vport, int vector,
+				   struct hnae3_ring_chain_node *ring_chain);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int hclge_get_queue_id(struct hnae3_queue *queue)
 {
 	struct hclge_tqp *tqp = container_of(queue, struct hclge_tqp, q);
@@ -648,6 +833,7 @@ static inline int hclge_get_queue_id(struct hnae3_queue *queue)
 }
 
 int hclge_cfg_mac_speed_dup(struct hclge_dev *hdev, int speed, u8 duplex);
+<<<<<<< HEAD
 int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
 			  u16 vlan_id, bool is_kill);
 int hclge_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable);
@@ -661,4 +847,8 @@ void hclge_reset_tqp(struct hnae3_handle *handle, u16 queue_id);
 void hclge_reset_vf_queue(struct hclge_vport *vport, u16 queue_id);
 int hclge_cfg_flowctrl(struct hclge_dev *hdev);
 int hclge_func_reset_cmd(struct hclge_dev *hdev, int func_id);
+=======
+int hclge_set_vf_vlan_common(struct hclge_dev *vport, int vfid,
+			     bool is_kill, u16 vlan, u8 qos, __be16 proto);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

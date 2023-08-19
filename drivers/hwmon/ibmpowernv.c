@@ -51,7 +51,10 @@ enum sensors {
 	POWER_SUPPLY,
 	POWER_INPUT,
 	CURRENT,
+<<<<<<< HEAD
 	ENERGY,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MAX_SENSOR_TYPE,
 };
 
@@ -79,7 +82,10 @@ static struct sensor_group {
 	{ "in"    },
 	{ "power" },
 	{ "curr"  },
+<<<<<<< HEAD
 	{ "energy" },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct sensor_data {
@@ -90,6 +96,7 @@ struct sensor_data {
 	char label[MAX_LABEL_LEN];
 	char name[MAX_ATTR_LEN];
 	struct device_attribute dev_attr;
+<<<<<<< HEAD
 	struct sensor_group_data *sgrp_data;
 };
 
@@ -97,13 +104,19 @@ struct sensor_group_data {
 	struct mutex mutex;
 	u32 gid;
 	bool enable;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct platform_data {
 	const struct attribute_group *attr_groups[MAX_SENSOR_TYPE + 1];
+<<<<<<< HEAD
 	struct sensor_group_data *sgrp_data;
 	u32 sensors_count; /* Total count of sensors from each group */
 	u32 nr_sensor_groups; /* Total number of sensor groups */
+=======
+	u32 sensors_count; /* Total count of sensors from each group */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static ssize_t show_sensor(struct device *dev, struct device_attribute *devattr,
@@ -112,6 +125,7 @@ static ssize_t show_sensor(struct device *dev, struct device_attribute *devattr,
 	struct sensor_data *sdata = container_of(devattr, struct sensor_data,
 						 dev_attr);
 	ssize_t ret;
+<<<<<<< HEAD
 	u64 x;
 
 	if (sdata->sgrp_data && !sdata->sgrp_data->enable)
@@ -119,6 +133,11 @@ static ssize_t show_sensor(struct device *dev, struct device_attribute *devattr,
 
 	ret =  opal_get_sensor_data_u64(sdata->id, &x);
 
+=======
+	u32 x;
+
+	ret = opal_get_sensor_data(sdata->id, &x);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -129,6 +148,7 @@ static ssize_t show_sensor(struct device *dev, struct device_attribute *devattr,
 	else if (sdata->type == POWER_INPUT)
 		x *= 1000000;
 
+<<<<<<< HEAD
 	return sprintf(buf, "%llu\n", x);
 }
 
@@ -170,6 +190,9 @@ static ssize_t store_enable(struct device *dev,
 
 	mutex_unlock(&sgrp_data->mutex);
 	return ret;
+=======
+	return sprintf(buf, "%u\n", x);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t show_label(struct device *dev, struct device_attribute *devattr,
@@ -343,6 +366,7 @@ static u32 get_sensor_hwmon_index(struct sensor_data *sdata,
 	return ++sensor_groups[sdata->type].hwmon_index;
 }
 
+<<<<<<< HEAD
 static int init_sensor_group_data(struct platform_device *pdev,
 				  struct platform_data *pdata)
 {
@@ -441,17 +465,22 @@ static struct sensor_group_data *get_sensor_group(struct platform_data *pdata,
 	return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int populate_attr_groups(struct platform_device *pdev)
 {
 	struct platform_data *pdata = platform_get_drvdata(pdev);
 	const struct attribute_group **pgroups = pdata->attr_groups;
 	struct device_node *opal, *np;
 	enum sensors type;
+<<<<<<< HEAD
 	int ret;
 
 	ret = init_sensor_group_data(pdev, pdata);
 	if (ret)
 		return ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	opal = of_find_node_by_path("/ibm,opal/sensors");
 	for_each_child_of_node(opal, np) {
@@ -480,9 +509,15 @@ static int populate_attr_groups(struct platform_device *pdev)
 	of_node_put(opal);
 
 	for (type = 0; type < MAX_SENSOR_TYPE; type++) {
+<<<<<<< HEAD
 		sensor_groups[type].group.attrs = devm_kcalloc(&pdev->dev,
 					sensor_groups[type].attr_count + 1,
 					sizeof(struct attribute *),
+=======
+		sensor_groups[type].group.attrs = devm_kzalloc(&pdev->dev,
+					sizeof(struct attribute *) *
+					(sensor_groups[type].attr_count + 1),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GFP_KERNEL);
 		if (!sensor_groups[type].group.attrs)
 			return -ENOMEM;
@@ -498,10 +533,14 @@ static int populate_attr_groups(struct platform_device *pdev)
 static void create_hwmon_attr(struct sensor_data *sdata, const char *attr_name,
 			      ssize_t (*show)(struct device *dev,
 					      struct device_attribute *attr,
+<<<<<<< HEAD
 					      char *buf),
 			    ssize_t (*store)(struct device *dev,
 					     struct device_attribute *attr,
 					     const char *buf, size_t count))
+=======
+					      char *buf))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	snprintf(sdata->name, MAX_ATTR_LEN, "%s%d_%s",
 		 sensor_groups[sdata->type].name, sdata->hwmon_index,
@@ -509,6 +548,7 @@ static void create_hwmon_attr(struct sensor_data *sdata, const char *attr_name,
 
 	sysfs_attr_init(&sdata->dev_attr.attr);
 	sdata->dev_attr.attr.name = sdata->name;
+<<<<<<< HEAD
 	sdata->dev_attr.show = show;
 	if (store) {
 		sdata->dev_attr.store = store;
@@ -516,11 +556,16 @@ static void create_hwmon_attr(struct sensor_data *sdata, const char *attr_name,
 	} else {
 		sdata->dev_attr.attr.mode = 0444;
 	}
+=======
+	sdata->dev_attr.attr.mode = S_IRUGO;
+	sdata->dev_attr.show = show;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void populate_sensor(struct sensor_data *sdata, int od, int hd, int sid,
 			    const char *attr_name, enum sensors type,
 			    const struct attribute_group *pgroup,
+<<<<<<< HEAD
 			    struct sensor_group_data *sgrp_data,
 			    ssize_t (*show)(struct device *dev,
 					    struct device_attribute *attr,
@@ -528,14 +573,24 @@ static void populate_sensor(struct sensor_data *sdata, int od, int hd, int sid,
 			    ssize_t (*store)(struct device *dev,
 					     struct device_attribute *attr,
 					     const char *buf, size_t count))
+=======
+			    ssize_t (*show)(struct device *dev,
+					    struct device_attribute *attr,
+					    char *buf))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	sdata->id = sid;
 	sdata->type = type;
 	sdata->opal_index = od;
 	sdata->hwmon_index = hd;
+<<<<<<< HEAD
 	create_hwmon_attr(sdata, attr_name, show, store);
 	pgroup->attrs[sensor_groups[type].attr_count++] = &sdata->dev_attr.attr;
 	sdata->sgrp_data = sgrp_data;
+=======
+	create_hwmon_attr(sdata, attr_name, show);
+	pgroup->attrs[sensor_groups[type].attr_count++] = &sdata->dev_attr.attr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static char *get_max_attr(enum sensors type)
@@ -570,6 +625,7 @@ static int create_device_attrs(struct platform_device *pdev)
 	const struct attribute_group **pgroups = pdata->attr_groups;
 	struct device_node *opal, *np;
 	struct sensor_data *sdata;
+<<<<<<< HEAD
 	u32 count = 0;
 	u32 group_attr_id[MAX_SENSOR_TYPE] = {0};
 
@@ -587,6 +643,25 @@ static int create_device_attrs(struct platform_device *pdev)
 		u32 sensor_id;
 		const char *label;
 		enum sensors type;
+=======
+	u32 sensor_id;
+	enum sensors type;
+	u32 count = 0;
+	int err = 0;
+
+	opal = of_find_node_by_path("/ibm,opal/sensors");
+	sdata = devm_kzalloc(&pdev->dev, pdata->sensors_count * sizeof(*sdata),
+			     GFP_KERNEL);
+	if (!sdata) {
+		err = -ENOMEM;
+		goto exit_put_node;
+	}
+
+	for_each_child_of_node(opal, np) {
+		const char *attr_name;
+		u32 opal_index;
+		const char *label;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (np->name == NULL)
 			continue;
@@ -622,12 +697,23 @@ static int create_device_attrs(struct platform_device *pdev)
 			opal_index = INVALID_INDEX;
 		}
 
+<<<<<<< HEAD
 		hw_id = get_sensor_hwmon_index(&sdata[count], sdata, count);
 		sgrp_data = get_sensor_group(pdata, np, type);
 		populate_sensor(&sdata[count], opal_index, hw_id, sensor_id,
 				attr_name, type, pgroups[type], sgrp_data,
 				show_sensor, NULL);
 		count++;
+=======
+		sdata[count].opal_index = opal_index;
+		sdata[count].hwmon_index =
+			get_sensor_hwmon_index(&sdata[count], sdata, count);
+
+		create_hwmon_attr(&sdata[count], attr_name, show_sensor);
+
+		pgroups[type]->attrs[sensor_groups[type].attr_count++] =
+				&sdata[count++].dev_attr.attr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!of_property_read_string(np, "label", &label)) {
 			/*
@@ -638,23 +724,38 @@ static int create_device_attrs(struct platform_device *pdev)
 			 */
 
 			make_sensor_label(np, &sdata[count], label);
+<<<<<<< HEAD
 			populate_sensor(&sdata[count], opal_index, hw_id,
 					sensor_id, "label", type, pgroups[type],
 					NULL, show_label, NULL);
+=======
+			populate_sensor(&sdata[count], opal_index,
+					sdata[count - 1].hwmon_index,
+					sensor_id, "label", type, pgroups[type],
+					show_label);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			count++;
 		}
 
 		if (!of_property_read_u32(np, "sensor-data-max", &sensor_id)) {
 			attr_name = get_max_attr(type);
+<<<<<<< HEAD
 			populate_sensor(&sdata[count], opal_index, hw_id,
 					sensor_id, attr_name, type,
 					pgroups[type], sgrp_data, show_sensor,
 					NULL);
+=======
+			populate_sensor(&sdata[count], opal_index,
+					sdata[count - 1].hwmon_index,
+					sensor_id, attr_name, type,
+					pgroups[type], show_sensor);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			count++;
 		}
 
 		if (!of_property_read_u32(np, "sensor-data-min", &sensor_id)) {
 			attr_name = get_min_attr(type);
+<<<<<<< HEAD
 			populate_sensor(&sdata[count], opal_index, hw_id,
 					sensor_id, attr_name, type,
 					pgroups[type], sgrp_data, show_sensor,
@@ -669,12 +770,24 @@ static int create_device_attrs(struct platform_device *pdev)
 					sgrp_data->gid, "enable", type,
 					pgroups[type], sgrp_data, show_enable,
 					store_enable);
+=======
+			populate_sensor(&sdata[count], opal_index,
+					sdata[count - 1].hwmon_index,
+					sensor_id, attr_name, type,
+					pgroups[type], show_sensor);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			count++;
 		}
 	}
 
+<<<<<<< HEAD
 	of_node_put(opal);
 	return 0;
+=======
+exit_put_node:
+	of_node_put(opal);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ibmpowernv_probe(struct platform_device *pdev)
@@ -689,7 +802,10 @@ static int ibmpowernv_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, pdata);
 	pdata->sensors_count = 0;
+<<<<<<< HEAD
 	pdata->nr_sensor_groups = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = populate_attr_groups(pdev);
 	if (err)
 		return err;

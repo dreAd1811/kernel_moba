@@ -241,6 +241,11 @@ int vimc_pipeline_s_stream(struct media_entity *ent, int enable)
 
 		/* Start the stream in the subdevice direct connected */
 		pad = media_entity_remote_pad(&ent->pads[i]);
+<<<<<<< HEAD
+=======
+		if (!pad)
+			continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!is_media_entity_v4l2_subdev(pad->entity))
 			return -EINVAL;
@@ -399,9 +404,13 @@ int vimc_ent_sd_register(struct vimc_ent_device *ved,
 	v4l2_set_subdevdata(sd, ved);
 
 	/* Expose this subdev to user space */
+<<<<<<< HEAD
 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
 	if (sd->ctrl_handler)
 		sd->flags |= V4L2_SUBDEV_FL_HAS_EVENTS;
+=======
+	sd->flags = V4L2_SUBDEV_FL_HAS_DEVNODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize the media entity */
 	ret = media_entity_pads_init(&sd->entity, num_pads, ved->pads);

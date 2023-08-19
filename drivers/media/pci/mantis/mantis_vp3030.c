@@ -22,11 +22,19 @@
 #include <linux/sched.h>
 #include <linux/interrupt.h>
 
+<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
+=======
+#include "dmxdev.h"
+#include "dvbdev.h"
+#include "dvb_demux.h"
+#include "dvb_frontend.h"
+#include "dvb_net.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "zl10353.h"
 #include "tda665x.h"
@@ -42,8 +50,13 @@ static struct zl10353_config mantis_vp3030_config = {
 static struct tda665x_config env57h12d5_config = {
 	.name			= "ENV57H12D5 (ET-50DT)",
 	.addr			= 0x60,
+<<<<<<< HEAD
 	.frequency_min		=  47 * MHz,
 	.frequency_max		= 862 * MHz,
+=======
+	.frequency_min		=  47000000,
+	.frequency_max		= 862000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.frequency_offst	=   3616667,
 	.ref_multiplier		= 6, /* 1/6 MHz */
 	.ref_divider		= 100000, /* 1/6 MHz */

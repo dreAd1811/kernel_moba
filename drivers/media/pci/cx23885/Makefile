@@ -8,7 +8,13 @@ cx23885-objs	:= cx23885-cards.o cx23885-video.o cx23885-vbi.o \
 obj-$(CONFIG_VIDEO_CX23885) += cx23885.o
 obj-$(CONFIG_MEDIA_ALTERA_CI) += altera-ci.o
 
+<<<<<<< HEAD
 ccflags-y += -Idrivers/media/tuners
+=======
+ccflags-y += -Idrivers/media/i2c
+ccflags-y += -Idrivers/media/tuners
+ccflags-y += -Idrivers/media/dvb-core
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ccflags-y += -Idrivers/media/dvb-frontends
 
 ccflags-y += $(extra-cflags-y) $(extra-cflags-m)

@@ -93,6 +93,14 @@ struct dln2_mod_rx_slots {
 	spinlock_t lock;
 };
 
+<<<<<<< HEAD
+=======
+enum dln2_endpoint {
+	DLN2_EP_OUT	= 0,
+	DLN2_EP_IN	= 1,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dln2_dev {
 	struct usb_device *usb_dev;
 	struct usb_interface *interface;
@@ -194,7 +202,10 @@ static bool dln2_transfer_complete(struct dln2_dev *dln2, struct urb *urb,
 	struct device *dev = &dln2->interface->dev;
 	struct dln2_mod_rx_slots *rxs = &dln2->mod_rx_slots[handle];
 	struct dln2_rx_context *rxc;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool valid_slot = false;
 
 	if (rx_slot >= DLN2_MAX_RX_SLOTS)
@@ -202,13 +213,26 @@ static bool dln2_transfer_complete(struct dln2_dev *dln2, struct urb *urb,
 
 	rxc = &rxs->slots[rx_slot];
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&rxs->lock, flags);
+=======
+	/*
+	 * No need to disable interrupts as this lock is not taken in interrupt
+	 * context elsewhere in this driver. This function (or its callers) are
+	 * also not exported to other modules.
+	 */
+	spin_lock(&rxs->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rxc->in_use && !rxc->urb) {
 		rxc->urb = urb;
 		complete(&rxc->done);
 		valid_slot = true;
 	}
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&rxs->lock, flags);
+=======
+	spin_unlock(&rxs->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	if (!valid_slot)
@@ -725,6 +749,11 @@ static int dln2_probe(struct usb_interface *interface,
 		      const struct usb_device_id *usb_id)
 {
 	struct usb_host_interface *hostif = interface->cur_altsetting;
+<<<<<<< HEAD
+=======
+	struct usb_endpoint_descriptor *epin;
+	struct usb_endpoint_descriptor *epout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev = &interface->dev;
 	struct dln2_dev *dln2;
 	int ret;
@@ -734,12 +763,27 @@ static int dln2_probe(struct usb_interface *interface,
 	    hostif->desc.bNumEndpoints < 2)
 		return -ENODEV;
 
+<<<<<<< HEAD
+=======
+	epout = &hostif->endpoint[DLN2_EP_OUT].desc;
+	if (!usb_endpoint_is_bulk_out(epout))
+		return -ENODEV;
+	epin = &hostif->endpoint[DLN2_EP_IN].desc;
+	if (!usb_endpoint_is_bulk_in(epin))
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dln2 = kzalloc(sizeof(*dln2), GFP_KERNEL);
 	if (!dln2)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	dln2->ep_out = hostif->endpoint[0].desc.bEndpointAddress;
 	dln2->ep_in = hostif->endpoint[1].desc.bEndpointAddress;
+=======
+	dln2->ep_out = epout->bEndpointAddress;
+	dln2->ep_in = epin->bEndpointAddress;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dln2->usb_dev = usb_get_dev(interface_to_usbdev(interface));
 	dln2->interface = interface;
 	usb_set_intfdata(interface, dln2);

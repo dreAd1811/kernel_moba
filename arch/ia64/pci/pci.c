@@ -398,7 +398,11 @@ pcibios_enable_device (struct pci_dev *dev, int mask)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	if (!pci_dev_msi_enabled(dev))
+=======
+	if (!dev->msi_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return acpi_pci_irq_enable(dev);
 	return 0;
 }
@@ -407,7 +411,11 @@ void
 pcibios_disable_device (struct pci_dev *dev)
 {
 	BUG_ON(atomic_read(&dev->enable_cnt));
+<<<<<<< HEAD
 	if (!pci_dev_msi_enabled(dev))
+=======
+	if (!dev->msi_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		acpi_pci_irq_disable(dev);
 }
 

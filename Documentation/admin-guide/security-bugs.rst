@@ -26,6 +26,7 @@ information is helpful.  Any exploit code is very helpful and will not
 be released without consent from the reporter unless it has already been
 made public.
 
+<<<<<<< HEAD
 Disclosure and embargoed information
 ------------------------------------
 
@@ -55,6 +56,23 @@ In other words our only interest is in getting bugs fixed.  All other
 information submitted to the security list and any followup discussions
 of the report are treated confidentially even after the embargo has been
 lifted, in perpetuity.
+=======
+Disclosure
+----------
+
+The goal of the Linux kernel security team is to work with the
+bug submitter to bug resolution as well as disclosure.  We prefer
+to fully disclose the bug as soon as possible.  It is reasonable to
+delay disclosure when the bug or the fix is not yet fully understood,
+the solution is not well-tested or for vendor coordination.  However, we
+expect these delays to be short, measurable in days, not weeks or months.
+A disclosure date is negotiated by the security team working with the
+bug submitter as well as vendors.  However, the kernel security team
+holds the final say when setting a disclosure date.  The timeframe for
+disclosure is from immediate (esp. if it's already publicly known)
+to a few weeks.  As a basic default policy, we expect report date to
+disclosure date to be on the order of 7 days.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Coordination
 ------------
@@ -80,7 +98,11 @@ may delay the bug handling. If a reporter wishes to have a CVE identifier
 assigned ahead of public disclosure, they will need to contact the private
 linux-distros list, described above. When such a CVE identifier is known
 before a patch is provided, it is desirable to mention it in the commit
+<<<<<<< HEAD
 message if the reporter agrees.
+=======
+message, though.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Non-disclosure agreements
 -------------------------

@@ -55,6 +55,7 @@
 #include <linux/device.h>
 #include <linux/io.h>
 
+<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
@@ -64,6 +65,17 @@
 #include <media/dvb_net.h>
 
 #define DDBRIDGE_VERSION "0.9.33-integrated"
+=======
+#include "dmxdev.h"
+#include "dvbdev.h"
+#include "dvb_demux.h"
+#include "dvb_frontend.h"
+#include "dvb_ringbuffer.h"
+#include "dvb_ca_en50221.h"
+#include "dvb_net.h"
+
+#define DDBRIDGE_VERSION "0.9.31intermediate-integrated"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DDB_MAX_I2C    32
 #define DDB_MAX_PORT   32
@@ -112,6 +124,7 @@ struct ddb_ids {
 
 struct ddb_info {
 	int   type;
+<<<<<<< HEAD
 #define DDB_NONE            0
 #define DDB_OCTOPUS         1
 #define DDB_OCTOPUS_CI      2
@@ -123,25 +136,60 @@ struct ddb_info {
 	u32   board_control;
 	u32   board_control_2;
 
+=======
+#define DDB_NONE         0
+#define DDB_OCTOPUS      1
+#define DDB_OCTOPUS_CI   2
+#define DDB_OCTOPUS_MAX  5
+#define DDB_OCTOPUS_MAX_CT  6
+	char *name;
+	u32   i2c_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8    port_num;
 	u8    led_num;
 	u8    fan_num;
 	u8    temp_num;
 	u8    temp_bus;
+<<<<<<< HEAD
+=======
+	u32   board_control;
+	u32   board_control_2;
+	u8    mdio_num;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8    con_clock; /* use a continuous clock */
 	u8    ts_quirks;
 #define TS_QUIRK_SERIAL   1
 #define TS_QUIRK_REVERSED 2
 #define TS_QUIRK_ALT_OSC  8
+<<<<<<< HEAD
 	u8    mci_ports;
 	u8    mci_type;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32   tempmon_irq;
 	const struct ddb_regmap *regmap;
 };
 
+<<<<<<< HEAD
 #define DMA_MAX_BUFS 32      /* hardware table limit */
 
+=======
+/* DMA_SIZE MUST be smaller than 256k and
+ * MUST be divisible by 188 and 128 !!!
+ */
+
+#define DMA_MAX_BUFS 32      /* hardware table limit */
+
+#define INPUT_DMA_BUFS 8
+#define INPUT_DMA_SIZE (128*47*21)
+#define INPUT_DMA_IRQ_DIV 1
+
+#define OUTPUT_DMA_BUFS 8
+#define OUTPUT_DMA_SIZE (128*47*21)
+#define OUTPUT_DMA_IRQ_DIV 1
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ddb;
 struct ddb_port;
 
@@ -158,7 +206,11 @@ struct ddb_dma {
 	u32                    bufval;
 
 	struct work_struct     work;
+<<<<<<< HEAD
 	spinlock_t             lock; /* DMA lock */
+=======
+	spinlock_t             lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_queue_head_t      wq;
 	int                    running;
 	u32                    stat;
@@ -188,16 +240,27 @@ struct ddb_dvb {
 
 	int (*i2c_gate_ctrl)(struct dvb_frontend *, int);
 	int (*set_voltage)(struct dvb_frontend *fe,
+<<<<<<< HEAD
 			   enum fe_sec_voltage voltage);
 	int (*set_input)(struct dvb_frontend *fe, int input);
 	int (*diseqc_send_master_cmd)(struct dvb_frontend *fe,
 				      struct dvb_diseqc_master_cmd *cmd);
+=======
+		enum fe_sec_voltage voltage);
+	int (*set_input)(struct dvb_frontend *fe, int input);
+	int (*diseqc_send_master_cmd)(struct dvb_frontend *fe,
+		struct dvb_diseqc_master_cmd *cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ddb_ci {
 	struct dvb_ca_en50221  en;
 	struct ddb_port       *port;
 	u32                    nr;
+<<<<<<< HEAD
+=======
+	struct mutex           lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ddb_io {
@@ -231,7 +294,11 @@ struct ddb_port {
 	u32                    regs;
 	u32                    lnr;
 	struct ddb_i2c        *i2c;
+<<<<<<< HEAD
 	struct mutex           i2c_gate_lock; /* I2C access lock */
+=======
+	struct mutex           i2c_gate_lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32                    class;
 #define DDB_PORT_NONE           0
 #define DDB_PORT_CI             1
@@ -240,7 +307,10 @@ struct ddb_port {
 	char                   *name;
 	char                   *type_name;
 	u32                     type;
+<<<<<<< HEAD
 #define DDB_TUNER_DUMMY          0xffffffff
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DDB_TUNER_NONE           0
 #define DDB_TUNER_DVBS_ST        1
 #define DDB_TUNER_DVBS_ST_AA     2
@@ -266,6 +336,7 @@ struct ddb_port {
 #define DDB_TUNER_ATSC_ST        (DDB_TUNER_XO2 + 4)
 #define DDB_TUNER_DVBC2T2I_SONY  (DDB_TUNER_XO2 + 5)
 
+<<<<<<< HEAD
 #define DDB_TUNER_MCI            48
 #define DDB_TUNER_MCI_SX8        (DDB_TUNER_MCI + 0)
 
@@ -273,6 +344,11 @@ struct ddb_port {
 	struct ddb_output     *output;
 	struct dvb_ca_en50221 *en;
 	u8                     en_freedata;
+=======
+	struct ddb_input      *input[2];
+	struct ddb_output     *output;
+	struct dvb_ca_en50221 *en;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ddb_dvb         dvb[2];
 	u32                    gap;
 	u32                    obr;
@@ -293,7 +369,11 @@ struct ddb_port {
 #define TS_CAPTURE_LEN  (4096)
 
 struct ddb_lnb {
+<<<<<<< HEAD
 	struct mutex           lock; /* lock lnb access */
+=======
+	struct mutex           lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32                    tone;
 	enum fe_sec_voltage    oldvoltage[4];
 	u32                    voltage[4];
@@ -301,22 +381,31 @@ struct ddb_lnb {
 	u32                    fmode;
 };
 
+<<<<<<< HEAD
 struct ddb_irq {
 	void                   (*handler)(void *);
 	void                  *data;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ddb_link {
 	struct ddb            *dev;
 	const struct ddb_info *info;
 	u32                    nr;
 	u32                    regs;
+<<<<<<< HEAD
 	spinlock_t             lock; /* lock link access */
 	struct mutex           flash_mutex; /* lock flash access */
+=======
+	spinlock_t             lock;
+	struct mutex           flash_mutex;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ddb_lnb         lnb;
 	struct tasklet_struct  tasklet;
 	struct ddb_ids         ids;
 
+<<<<<<< HEAD
 	spinlock_t             temp_lock; /* lock temp chip access */
 	int                    overtemperature_error;
 	u8                     temp_tab[11];
@@ -357,6 +446,50 @@ struct ddb {
 	struct mutex             mutex; /* lock access to global ddb array */
 
 	u8                       tsbuf[TS_CAPTURE_LEN];
+=======
+	spinlock_t             temp_lock;
+	int                    overtemperature_error;
+	u8                     temp_tab[11];
+};
+
+struct ddb {
+	struct pci_dev        *pdev;
+	struct platform_device *pfdev;
+	struct device         *dev;
+
+	int                    msi;
+	struct workqueue_struct *wq;
+	u32                    has_dma;
+
+	struct ddb_link        link[DDB_MAX_LINK];
+	unsigned char __iomem *regs;
+	u32                    regs_len;
+	u32                    port_num;
+	struct ddb_port        port[DDB_MAX_PORT];
+	u32                    i2c_num;
+	struct ddb_i2c         i2c[DDB_MAX_I2C];
+	struct ddb_input       input[DDB_MAX_INPUT];
+	struct ddb_output      output[DDB_MAX_OUTPUT];
+	struct dvb_adapter     adap[DDB_MAX_INPUT];
+	struct ddb_dma         idma[DDB_MAX_INPUT];
+	struct ddb_dma         odma[DDB_MAX_OUTPUT];
+
+	void                   (*handler[4][256])(unsigned long);
+	unsigned long          handler_data[4][256];
+
+	struct device         *ddb_dev;
+	u32                    ddb_dev_users;
+	u32                    nr;
+	u8                     iobuf[1028];
+
+	u8                     leds;
+	u32                    ts_irq;
+	u32                    i2c_irq;
+
+	struct mutex           mutex;
+
+	u8                     tsbuf[TS_CAPTURE_LEN];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /****************************************************************************/
@@ -367,9 +500,22 @@ int ddbridge_flashread(struct ddb *dev, u32 link, u8 *buf, u32 addr, u32 len);
 
 /****************************************************************************/
 
+<<<<<<< HEAD
 /* ddbridge-core.c */
 struct ddb_irq *ddb_irq_set(struct ddb *dev, u32 link, u32 nr,
 			    void (*handler)(void *), void *data);
+=======
+/* ddbridge-main.c (modparams) */
+extern int ci_bitrate;
+extern int ts_loop;
+extern int xo2_speed;
+extern int alt_dma;
+extern int no_init;
+extern int stv0910_single;
+extern struct workqueue_struct *ddb_wq;
+
+/* ddbridge-core.c */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ddb_ports_detach(struct ddb *dev);
 void ddb_ports_release(struct ddb *dev);
 void ddb_buffers_free(struct ddb *dev);
@@ -381,9 +527,16 @@ void ddb_ports_init(struct ddb *dev);
 int ddb_buffers_alloc(struct ddb *dev);
 int ddb_ports_attach(struct ddb *dev);
 int ddb_device_create(struct ddb *dev);
+<<<<<<< HEAD
 int ddb_init(struct ddb *dev);
 void ddb_unmap(struct ddb *dev);
 int ddb_exit_ddbridge(int stage, int error);
 int ddb_init_ddbridge(void);
+=======
+int ddb_class_create(void);
+void ddb_class_destroy(void);
+int ddb_init(struct ddb *dev);
+void ddb_unmap(struct ddb *dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* DDBRIDGE_H */

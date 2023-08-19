@@ -332,7 +332,11 @@ static int ads1015_set_power_state(struct ads1015_data *data, bool on)
 static
 int ads1015_get_adc_result(struct ads1015_data *data, int chan, int *val)
 {
+<<<<<<< HEAD
 	int ret, pga, dr, dr_old, conv_time;
+=======
+	int ret, pga, dr, conv_time;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int old, mask, cfg;
 
 	if (chan < 0 || chan >= ADS1015_CHANNELS)
@@ -358,6 +362,7 @@ int ads1015_get_adc_result(struct ads1015_data *data, int chan, int *val)
 	}
 
 	cfg = (old & ~mask) | (cfg & mask);
+<<<<<<< HEAD
 	if (old != cfg) {
 		ret = regmap_write(data->regmap, ADS1015_CFG_REG, cfg);
 		if (ret)
@@ -366,6 +371,17 @@ int ads1015_get_adc_result(struct ads1015_data *data, int chan, int *val)
 	}
 	if (data->conv_invalid) {
 		dr_old = (old & ADS1015_CFG_DR_MASK) >> ADS1015_CFG_DR_SHIFT;
+=======
+
+	ret = regmap_write(data->regmap, ADS1015_CFG_REG, cfg);
+	if (ret)
+		return ret;
+
+	if (old != cfg || data->conv_invalid) {
+		int dr_old = (old & ADS1015_CFG_DR_MASK) >>
+				ADS1015_CFG_DR_SHIFT;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		conv_time = DIV_ROUND_UP(USEC_PER_SEC, data->data_rate[dr_old]);
 		conv_time += DIV_ROUND_UP(USEC_PER_SEC, data->data_rate[dr]);
 		conv_time += conv_time / 10; /* 10% internal clock inaccuracy */
@@ -821,6 +837,10 @@ static const struct attribute_group ads1115_attribute_group = {
 };
 
 static const struct iio_info ads1015_info = {
+<<<<<<< HEAD
+=======
+	.driver_module	= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw	= ads1015_read_raw,
 	.write_raw	= ads1015_write_raw,
 	.read_event_value = ads1015_read_event,
@@ -831,6 +851,10 @@ static const struct iio_info ads1015_info = {
 };
 
 static const struct iio_info ads1115_info = {
+<<<<<<< HEAD
+=======
+	.driver_module	= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw	= ads1015_read_raw,
 	.write_raw	= ads1015_write_raw,
 	.read_event_value = ads1015_read_event,

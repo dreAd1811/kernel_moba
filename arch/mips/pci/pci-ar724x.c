@@ -12,18 +12,27 @@
 #include <linux/irq.h>
 #include <linux/pci.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <asm/mach-ath79/ath79.h>
 #include <asm/mach-ath79/ar71xx_regs.h>
 
+<<<<<<< HEAD
 #define AR724X_PCI_REG_APP		0x00
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AR724X_PCI_REG_RESET		0x18
 #define AR724X_PCI_REG_INT_STATUS	0x4c
 #define AR724X_PCI_REG_INT_MASK		0x50
 
+<<<<<<< HEAD
 #define AR724X_PCI_APP_LTSSM_ENABLE	BIT(0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AR724X_PCI_RESET_LINK_UP	BIT(0)
 
 #define AR724X_PCI_INT_DEV0		BIT(14)
@@ -329,6 +338,7 @@ static void ar724x_pci_irq_init(struct ar724x_pci_controller *apc,
 					 apc);
 }
 
+<<<<<<< HEAD
 static void ar724x_pci_hw_init(struct ar724x_pci_controller *apc)
 {
 	u32 ppl, app;
@@ -360,6 +370,8 @@ static void ar724x_pci_hw_init(struct ar724x_pci_controller *apc)
 	} while (wait < 10 && !ar724x_pci_check_link(apc));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ar724x_pci_probe(struct platform_device *pdev)
 {
 	struct ar724x_pci_controller *apc;
@@ -418,6 +430,7 @@ static int ar724x_pci_probe(struct platform_device *pdev)
 	apc->pci_controller.io_resource = &apc->io_res;
 	apc->pci_controller.mem_resource = &apc->mem_res;
 
+<<<<<<< HEAD
 	/*
 	 * Do the full PCIE Root Complex Initialization Sequence if the PCIe
 	 * host controller is in reset.
@@ -425,6 +438,8 @@ static int ar724x_pci_probe(struct platform_device *pdev)
 	if (ath79_reset_rr(AR724X_RESET_REG_RESET_MODULE) & AR724X_RESET_PCIE)
 		ar724x_pci_hw_init(apc);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	apc->link_up = ar724x_pci_check_link(apc);
 	if (!apc->link_up)
 		dev_warn(&pdev->dev, "PCIe link is down\n");

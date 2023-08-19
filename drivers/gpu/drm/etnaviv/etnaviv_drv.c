@@ -1,6 +1,23 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) 2015-2018 Etnaviv Project
+=======
+/*
+ * Copyright (C) 2015 Etnaviv Project
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/component.h>
@@ -12,7 +29,61 @@
 #include "etnaviv_gpu.h"
 #include "etnaviv_gem.h"
 #include "etnaviv_mmu.h"
+<<<<<<< HEAD
 #include "etnaviv_perfmon.h"
+=======
+
+#ifdef CONFIG_DRM_ETNAVIV_REGISTER_LOGGING
+static bool reglog;
+MODULE_PARM_DESC(reglog, "Enable register read/write logging");
+module_param(reglog, bool, 0600);
+#else
+#define reglog 0
+#endif
+
+void __iomem *etnaviv_ioremap(struct platform_device *pdev, const char *name,
+		const char *dbgname)
+{
+	struct resource *res;
+	void __iomem *ptr;
+
+	if (name)
+		res = platform_get_resource_byname(pdev, IORESOURCE_MEM, name);
+	else
+		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+
+	ptr = devm_ioremap_resource(&pdev->dev, res);
+	if (IS_ERR(ptr)) {
+		dev_err(&pdev->dev, "failed to ioremap %s: %ld\n", name,
+			PTR_ERR(ptr));
+		return ptr;
+	}
+
+	if (reglog)
+		dev_printk(KERN_DEBUG, &pdev->dev, "IO:region %s 0x%p %08zx\n",
+			   dbgname, ptr, (size_t)resource_size(res));
+
+	return ptr;
+}
+
+void etnaviv_writel(u32 data, void __iomem *addr)
+{
+	if (reglog)
+		printk(KERN_DEBUG "IO:W %p %08x\n", addr, data);
+
+	writel(data, addr);
+}
+
+u32 etnaviv_readl(const void __iomem *addr)
+{
+	u32 val = readl(addr);
+
+	if (reglog)
+		printk(KERN_DEBUG "IO:R %p %08x\n", addr, val);
+
+	return val;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * DRM operations:
@@ -39,14 +110,19 @@ static void load_gpu(struct drm_device *dev)
 
 static int etnaviv_open(struct drm_device *dev, struct drm_file *file)
 {
+<<<<<<< HEAD
 	struct etnaviv_drm_private *priv = dev->dev_private;
 	struct etnaviv_file_private *ctx;
 	int i;
+=======
+	struct etnaviv_file_private *ctx;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
 	if (!ctx)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	for (i = 0; i < ETNA_MAX_PIPES; i++) {
 		struct etnaviv_gpu *gpu = priv->gpu[i];
 		struct drm_sched_rq *rq;
@@ -58,6 +134,8 @@ static int etnaviv_open(struct drm_device *dev, struct drm_file *file)
 			}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	file->driver_priv = ctx;
 
 	return 0;
@@ -77,8 +155,11 @@ static void etnaviv_postclose(struct drm_device *dev, struct drm_file *file)
 			if (gpu->lastctx == ctx)
 				gpu->lastctx = NULL;
 			mutex_unlock(&gpu->lock);
+<<<<<<< HEAD
 
 			drm_sched_entity_destroy(&ctx->sched_entity[i]);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -125,7 +206,11 @@ static int etnaviv_mmu_show(struct etnaviv_gpu *gpu, struct seq_file *m)
 
 static void etnaviv_buffer_dump(struct etnaviv_gpu *gpu, struct seq_file *m)
 {
+<<<<<<< HEAD
 	struct etnaviv_cmdbuf *buf = &gpu->buffer;
+=======
+	struct etnaviv_cmdbuf *buf = gpu->buffer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 size = buf->size;
 	u32 *ptr = buf->vaddr;
 	u32 i;
@@ -405,6 +490,7 @@ static int etnaviv_ioctl_gem_wait(struct drm_device *dev, void *data,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int etnaviv_ioctl_pm_query_dom(struct drm_device *dev, void *data,
 	struct drm_file *file)
 {
@@ -439,6 +525,8 @@ static int etnaviv_ioctl_pm_query_sig(struct drm_device *dev, void *data,
 	return etnaviv_pm_query_sig(gpu, args);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct drm_ioctl_desc etnaviv_ioctls[] = {
 #define ETNA_IOCTL(n, func, flags) \
 	DRM_IOCTL_DEF_DRV(ETNAVIV_##n, etnaviv_ioctl_##func, flags)
@@ -451,8 +539,11 @@ static const struct drm_ioctl_desc etnaviv_ioctls[] = {
 	ETNA_IOCTL(WAIT_FENCE,   wait_fence,   DRM_AUTH|DRM_RENDER_ALLOW),
 	ETNA_IOCTL(GEM_USERPTR,  gem_userptr,  DRM_AUTH|DRM_RENDER_ALLOW),
 	ETNA_IOCTL(GEM_WAIT,     gem_wait,     DRM_AUTH|DRM_RENDER_ALLOW),
+<<<<<<< HEAD
 	ETNA_IOCTL(PM_QUERY_DOM, pm_query_dom, DRM_AUTH|DRM_RENDER_ALLOW),
 	ETNA_IOCTL(PM_QUERY_SIG, pm_query_sig, DRM_AUTH|DRM_RENDER_ALLOW),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct vm_operations_struct vm_ops = {
@@ -503,7 +594,11 @@ static struct drm_driver etnaviv_drm_driver = {
 	.desc               = "etnaviv DRM",
 	.date               = "20151214",
 	.major              = 1,
+<<<<<<< HEAD
 	.minor              = 2,
+=======
+	.minor              = 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -527,8 +622,16 @@ static int etnaviv_bind(struct device *dev)
 	}
 	drm->dev_private = priv;
 
+<<<<<<< HEAD
 	dev->dma_parms = &priv->dma_parms;
 	dma_set_max_seg_size(dev, SZ_2G);
+=======
+	priv->wq = alloc_ordered_workqueue("etnaviv", 0);
+	if (!priv->wq) {
+		ret = -ENOMEM;
+		goto out_wq;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&priv->gem_lock);
 	INIT_LIST_HEAD(&priv->gem_list);
@@ -551,6 +654,12 @@ static int etnaviv_bind(struct device *dev)
 out_register:
 	component_unbind_all(dev, drm);
 out_bind:
+<<<<<<< HEAD
+=======
+	flush_workqueue(priv->wq);
+	destroy_workqueue(priv->wq);
+out_wq:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(priv);
 out_unref:
 	drm_dev_unref(drm);
@@ -565,9 +674,16 @@ static void etnaviv_unbind(struct device *dev)
 
 	drm_dev_unregister(drm);
 
+<<<<<<< HEAD
 	component_unbind_all(dev, drm);
 
 	dev->dma_parms = NULL;
+=======
+	flush_workqueue(priv->wq);
+	destroy_workqueue(priv->wq);
+
+	component_unbind_all(dev, drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm->dev_private = NULL;
 	kfree(priv);
@@ -595,6 +711,7 @@ static int compare_str(struct device *dev, void *data)
 static int etnaviv_pdev_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 	struct component_match *match = NULL;
 
 	if (!dev->platform_data) {
@@ -608,6 +725,27 @@ static int etnaviv_pdev_probe(struct platform_device *pdev)
 						   compare_of, core_node);
 		}
 	} else {
+=======
+	struct device_node *node = dev->of_node;
+	struct component_match *match = NULL;
+
+	dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
+
+	if (node) {
+		struct device_node *core_node;
+		int i;
+
+		for (i = 0; ; i++) {
+			core_node = of_parse_phandle(node, "cores", i);
+			if (!core_node)
+				break;
+
+			drm_of_component_match_add(&pdev->dev, &match,
+						   compare_of, core_node);
+			of_node_put(core_node);
+		}
+	} else if (dev->platform_data) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		char **names = dev->platform_data;
 		unsigned i;
 
@@ -625,11 +763,22 @@ static int etnaviv_pdev_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static const struct of_device_id dt_match[] = {
+	{ .compatible = "fsl,imx-gpu-subsystem" },
+	{ .compatible = "marvell,dove-gpu-subsystem" },
+	{}
+};
+MODULE_DEVICE_TABLE(of, dt_match);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver etnaviv_platform_driver = {
 	.probe      = etnaviv_pdev_probe,
 	.remove     = etnaviv_pdev_remove,
 	.driver     = {
 		.name   = "etnaviv",
+<<<<<<< HEAD
 	},
 };
 
@@ -640,6 +789,15 @@ static int __init etnaviv_init(void)
 	struct platform_device *pdev;
 	int ret;
 	struct device_node *np;
+=======
+		.of_match_table = dt_match,
+	},
+};
+
+static int __init etnaviv_init(void)
+{
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	etnaviv_validate_init();
 
@@ -649,6 +807,7 @@ static int __init etnaviv_init(void)
 
 	ret = platform_driver_register(&etnaviv_platform_driver);
 	if (ret != 0)
+<<<<<<< HEAD
 		goto unregister_gpu_driver;
 
 	/*
@@ -693,15 +852,24 @@ unregister_platform_driver:
 	platform_driver_unregister(&etnaviv_platform_driver);
 unregister_gpu_driver:
 	platform_driver_unregister(&etnaviv_gpu_driver);
+=======
+		platform_driver_unregister(&etnaviv_gpu_driver);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 module_init(etnaviv_init);
 
 static void __exit etnaviv_exit(void)
 {
+<<<<<<< HEAD
 	platform_device_unregister(etnaviv_drm);
 	platform_driver_unregister(&etnaviv_platform_driver);
 	platform_driver_unregister(&etnaviv_gpu_driver);
+=======
+	platform_driver_unregister(&etnaviv_gpu_driver);
+	platform_driver_unregister(&etnaviv_platform_driver);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 module_exit(etnaviv_exit);
 

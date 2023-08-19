@@ -753,7 +753,11 @@ validate_gl_shader_rec(struct drm_device *dev,
 		28, /* cs */
 	};
 	uint32_t shader_reloc_count = ARRAY_SIZE(shader_reloc_offsets);
+<<<<<<< HEAD
 	struct drm_gem_cma_object *bo[ARRAY_SIZE(shader_reloc_offsets) + 8];
+=======
+	struct drm_gem_cma_object *bo[shader_reloc_count + 8];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t nr_attributes, nr_relocs, packet_size;
 	int i;
 

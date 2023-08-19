@@ -526,7 +526,11 @@ static int radeon_atpx_init(void)
  * look up whether we are the integrated or discrete GPU (all asics).
  * Returns the client id.
  */
+<<<<<<< HEAD
 static enum vga_switcheroo_client_id radeon_atpx_get_client_id(struct pci_dev *pdev)
+=======
+static int radeon_atpx_get_client_id(struct pci_dev *pdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (radeon_atpx_priv.dhandle == ACPI_HANDLE(&pdev->dev))
 		return VGA_SWITCHEROO_IGD;

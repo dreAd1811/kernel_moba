@@ -24,7 +24,10 @@
 #include "octeon_device.h"
 #include "octeon_main.h"
 #include "octeon_mailbox.h"
+<<<<<<< HEAD
 #include "cn23xx_pf_device.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * octeon_mbox_read:
@@ -88,7 +91,11 @@ int octeon_mbox_read(struct octeon_mbox *mbox)
 	}
 
 	if (mbox->state & OCTEON_MBOX_STATE_REQUEST_RECEIVING) {
+<<<<<<< HEAD
 		if (mbox->mbox_req.recv_len < mbox->mbox_req.msg.s.len) {
+=======
+		if (mbox->mbox_req.recv_len < msg.s.len) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = 0;
 		} else {
 			mbox->state &= ~OCTEON_MBOX_STATE_REQUEST_RECEIVING;
@@ -97,8 +104,12 @@ int octeon_mbox_read(struct octeon_mbox *mbox)
 		}
 	} else {
 		if (mbox->state & OCTEON_MBOX_STATE_RESPONSE_RECEIVING) {
+<<<<<<< HEAD
 			if (mbox->mbox_resp.recv_len <
 			    mbox->mbox_resp.msg.s.len) {
+=======
+			if (mbox->mbox_resp.recv_len < msg.s.len) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = 0;
 			} else {
 				mbox->state &=
@@ -206,6 +217,7 @@ int octeon_mbox_write(struct octeon_device *oct,
 	return ret;
 }
 
+<<<<<<< HEAD
 static void get_vf_stats(struct octeon_device *oct,
 			 struct oct_vf_stats *stats)
 {
@@ -226,6 +238,8 @@ static void get_vf_stats(struct octeon_device *oct,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * octeon_mbox_process_cmd:
  * @mbox: Pointer mailbox
@@ -271,6 +285,7 @@ static int octeon_mbox_process_cmd(struct octeon_mbox *mbox,
 						     mbox_cmd->msg.s.params);
 		break;
 
+<<<<<<< HEAD
 	case OCTEON_GET_VF_STATS:
 		dev_dbg(&oct->pci_dev->dev, "Got VF stats request. Sending data back\n");
 		mbox_cmd->msg.s.type = OCTEON_MBOX_RESPONSE;
@@ -280,6 +295,8 @@ static int octeon_mbox_process_cmd(struct octeon_mbox *mbox,
 		get_vf_stats(oct, (struct oct_vf_stats *)mbox_cmd->data);
 		octeon_mbox_write(oct, mbox_cmd);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		break;
 	}
@@ -352,6 +369,7 @@ int octeon_mbox_process_message(struct octeon_mbox *mbox)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 int octeon_mbox_cancel(struct octeon_device *oct, int q_no)
 {
@@ -374,3 +392,5 @@ int octeon_mbox_cancel(struct octeon_device *oct, int q_no)
 
 	return 0;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -64,10 +64,16 @@ struct dsa_loop_priv {
 
 static struct phy_device *phydevs[PHY_MAX_ADDR];
 
+<<<<<<< HEAD
 static enum dsa_tag_protocol dsa_loop_get_protocol(struct dsa_switch *ds,
 						   int port)
 {
 	dev_dbg(ds->dev, "%s: port: %d\n", __func__, port);
+=======
+static enum dsa_tag_protocol dsa_loop_get_protocol(struct dsa_switch *ds)
+{
+	dev_dbg(ds->dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return DSA_TAG_PROTO_NONE;
 }
@@ -86,6 +92,7 @@ static int dsa_loop_setup(struct dsa_switch *ds)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dsa_loop_get_sset_count(struct dsa_switch *ds, int port, int sset)
 {
 	if (sset != ETH_SS_STATS && sset != ETH_SS_PHY_STATS)
@@ -96,13 +103,24 @@ static int dsa_loop_get_sset_count(struct dsa_switch *ds, int port, int sset)
 
 static void dsa_loop_get_strings(struct dsa_switch *ds, int port,
 				 u32 stringset, uint8_t *data)
+=======
+static int dsa_loop_get_sset_count(struct dsa_switch *ds)
+{
+	return __DSA_LOOP_CNT_MAX;
+}
+
+static void dsa_loop_get_strings(struct dsa_switch *ds, int port, uint8_t *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dsa_loop_priv *ps = ds->priv;
 	unsigned int i;
 
+<<<<<<< HEAD
 	if (stringset != ETH_SS_STATS && stringset != ETH_SS_PHY_STATS)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < __DSA_LOOP_CNT_MAX; i++)
 		memcpy(data + i * ETH_GSTRING_LEN,
 		       ps->ports[port].mib[i].name, ETH_GSTRING_LEN);
@@ -118,12 +136,27 @@ static void dsa_loop_get_ethtool_stats(struct dsa_switch *ds, int port,
 		data[i] = ps->ports[port].mib[i].val;
 }
 
+<<<<<<< HEAD
+=======
+static int dsa_loop_set_addr(struct dsa_switch *ds, u8 *addr)
+{
+	dev_dbg(ds->dev, "%s\n", __func__);
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dsa_loop_phy_read(struct dsa_switch *ds, int port, int regnum)
 {
 	struct dsa_loop_priv *ps = ds->priv;
 	struct mii_bus *bus = ps->bus;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mdiobus_read_nested(bus, ps->port_base + port, regnum);
 	if (ret < 0)
 		ps->ports[port].mib[DSA_LOOP_PHY_READ_ERR].val++;
@@ -140,6 +173,11 @@ static int dsa_loop_phy_write(struct dsa_switch *ds, int port,
 	struct mii_bus *bus = ps->bus;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mdiobus_write_nested(bus, ps->port_base + port, regnum, value);
 	if (ret < 0)
 		ps->ports[port].mib[DSA_LOOP_PHY_WRITE_ERR].val++;
@@ -152,8 +190,12 @@ static int dsa_loop_phy_write(struct dsa_switch *ds, int port,
 static int dsa_loop_port_bridge_join(struct dsa_switch *ds, int port,
 				     struct net_device *bridge)
 {
+<<<<<<< HEAD
 	dev_dbg(ds->dev, "%s: port: %d, bridge: %s\n",
 		__func__, port, bridge->name);
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -161,35 +203,57 @@ static int dsa_loop_port_bridge_join(struct dsa_switch *ds, int port,
 static void dsa_loop_port_bridge_leave(struct dsa_switch *ds, int port,
 				       struct net_device *bridge)
 {
+<<<<<<< HEAD
 	dev_dbg(ds->dev, "%s: port: %d, bridge: %s\n",
 		__func__, port, bridge->name);
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dsa_loop_port_stp_state_set(struct dsa_switch *ds, int port,
 					u8 state)
 {
+<<<<<<< HEAD
 	dev_dbg(ds->dev, "%s: port: %d, state: %d\n",
 		__func__, port, state);
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dsa_loop_port_vlan_filtering(struct dsa_switch *ds, int port,
 					bool vlan_filtering)
 {
+<<<<<<< HEAD
 	dev_dbg(ds->dev, "%s: port: %d, vlan_filtering: %d\n",
 		__func__, port, vlan_filtering);
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int
 dsa_loop_port_vlan_prepare(struct dsa_switch *ds, int port,
 			   const struct switchdev_obj_port_vlan *vlan)
+=======
+static int dsa_loop_port_vlan_prepare(struct dsa_switch *ds, int port,
+				      const struct switchdev_obj_port_vlan *vlan,
+				      struct switchdev_trans *trans)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dsa_loop_priv *ps = ds->priv;
 	struct mii_bus *bus = ps->bus;
 
+<<<<<<< HEAD
 	dev_dbg(ds->dev, "%s: port: %d, vlan: %d-%d",
 		__func__, port, vlan->vid_begin, vlan->vid_end);
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Just do a sleeping operation to make lockdep checks effective */
 	mdiobus_read(bus, ps->port_base + port, MII_BMSR);
@@ -201,7 +265,12 @@ dsa_loop_port_vlan_prepare(struct dsa_switch *ds, int port,
 }
 
 static void dsa_loop_port_vlan_add(struct dsa_switch *ds, int port,
+<<<<<<< HEAD
 				   const struct switchdev_obj_port_vlan *vlan)
+=======
+				   const struct switchdev_obj_port_vlan *vlan,
+				   struct switchdev_trans *trans)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	bool untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
 	bool pvid = vlan->flags & BRIDGE_VLAN_INFO_PVID;
@@ -210,6 +279,11 @@ static void dsa_loop_port_vlan_add(struct dsa_switch *ds, int port,
 	struct dsa_loop_vlan *vl;
 	u16 vid;
 
+<<<<<<< HEAD
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Just do a sleeping operation to make lockdep checks effective */
 	mdiobus_read(bus, ps->port_base + port, MII_BMSR);
 
@@ -221,9 +295,12 @@ static void dsa_loop_port_vlan_add(struct dsa_switch *ds, int port,
 			vl->untagged |= BIT(port);
 		else
 			vl->untagged &= ~BIT(port);
+<<<<<<< HEAD
 
 		dev_dbg(ds->dev, "%s: port: %d vlan: %d, %stagged, pvid: %d\n",
 			__func__, port, vid, untagged ? "un" : "", pvid);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (pvid)
@@ -239,6 +316,11 @@ static int dsa_loop_port_vlan_del(struct dsa_switch *ds, int port,
 	struct dsa_loop_vlan *vl;
 	u16 vid, pvid = ps->pvid;
 
+<<<<<<< HEAD
+=======
+	dev_dbg(ds->dev, "%s\n", __func__);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Just do a sleeping operation to make lockdep checks effective */
 	mdiobus_read(bus, ps->port_base + port, MII_BMSR);
 
@@ -251,9 +333,12 @@ static int dsa_loop_port_vlan_del(struct dsa_switch *ds, int port,
 
 		if (pvid == vid)
 			pvid = 1;
+<<<<<<< HEAD
 
 		dev_dbg(ds->dev, "%s: port: %d vlan: %d, %stagged, pvid: %d\n",
 			__func__, port, vid, untagged ? "un" : "", pvid);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	ps->pvid = pvid;
 
@@ -266,7 +351,11 @@ static const struct dsa_switch_ops dsa_loop_driver = {
 	.get_strings		= dsa_loop_get_strings,
 	.get_ethtool_stats	= dsa_loop_get_ethtool_stats,
 	.get_sset_count		= dsa_loop_get_sset_count,
+<<<<<<< HEAD
 	.get_ethtool_phy_stats	= dsa_loop_get_ethtool_stats,
+=======
+	.set_addr		= dsa_loop_set_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.phy_read		= dsa_loop_phy_read,
 	.phy_write		= dsa_loop_phy_write,
 	.port_bridge_join	= dsa_loop_port_bridge_join,
@@ -360,6 +449,10 @@ static void __exit dsa_loop_exit(void)
 }
 module_exit(dsa_loop_exit);
 
+<<<<<<< HEAD
+=======
+MODULE_SOFTDEP("pre: dsa_loop_bdinfo");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Florian Fainelli");
 MODULE_DESCRIPTION("DSA loopback driver");

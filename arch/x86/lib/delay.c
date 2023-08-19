@@ -162,7 +162,11 @@ void __delay(unsigned long loops)
 }
 EXPORT_SYMBOL(__delay);
 
+<<<<<<< HEAD
 void __const_udelay(unsigned long xloops)
+=======
+inline void __const_udelay(unsigned long xloops)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long lpj = this_cpu_read(cpu_info.loops_per_jiffy) ? : loops_per_jiffy;
 	int d0;

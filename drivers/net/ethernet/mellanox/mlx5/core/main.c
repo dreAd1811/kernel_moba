@@ -58,6 +58,7 @@
 #include "eswitch.h"
 #include "lib/mlx5.h"
 #include "fpga/core.h"
+<<<<<<< HEAD
 #include "fpga/ipsec.h"
 #include "accel/ipsec.h"
 #include "accel/tls.h"
@@ -67,6 +68,12 @@
 
 MODULE_AUTHOR("Eli Cohen <eli@mellanox.com>");
 MODULE_DESCRIPTION("Mellanox 5th generation network adapters (ConnectX series) core driver");
+=======
+#include "accel/ipsec.h"
+
+MODULE_AUTHOR("Eli Cohen <eli@mellanox.com>");
+MODULE_DESCRIPTION("Mellanox Connect-IB, ConnectX-4 core driver");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_VERSION(DRIVER_VERSION);
 
@@ -79,8 +86,11 @@ static unsigned int prof_sel = MLX5_DEFAULT_PROF;
 module_param_named(prof_sel, prof_sel, uint, 0444);
 MODULE_PARM_DESC(prof_sel, "profile selector. Valid range 0 - 2");
 
+<<<<<<< HEAD
 static u32 sw_owner_id[4];
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	MLX5_ATOMIC_REQ_MODE_BE = 0x0,
 	MLX5_ATOMIC_REQ_MODE_HOST_ENDIANNESS = 0x1,
@@ -303,11 +313,16 @@ static int mlx5_alloc_irq_vectors(struct mlx5_core_dev *dev)
 {
 	struct mlx5_priv *priv = &dev->priv;
 	struct mlx5_eq_table *table = &priv->eq_table;
+<<<<<<< HEAD
 	int num_eqs = MLX5_CAP_GEN(dev, max_num_eqs) ?
 		      MLX5_CAP_GEN(dev, max_num_eqs) :
 		      1 << MLX5_CAP_GEN(dev, log_max_eq);
 	int nvec;
 	int err;
+=======
+	int num_eqs = 1 << MLX5_CAP_GEN(dev, log_max_eq);
+	int nvec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvec = MLX5_CAP_GEN(dev, num_ports) * num_online_cpus() +
 	       MLX5_EQ_VEC_COMP_BASE;
@@ -317,23 +332,38 @@ static int mlx5_alloc_irq_vectors(struct mlx5_core_dev *dev)
 
 	priv->irq_info = kcalloc(nvec, sizeof(*priv->irq_info), GFP_KERNEL);
 	if (!priv->irq_info)
+<<<<<<< HEAD
 		return -ENOMEM;
+=======
+		goto err_free_msix;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvec = pci_alloc_irq_vectors(dev->pdev,
 			MLX5_EQ_VEC_COMP_BASE + 1, nvec,
 			PCI_IRQ_MSIX);
+<<<<<<< HEAD
 	if (nvec < 0) {
 		err = nvec;
 		goto err_free_irq_info;
 	}
+=======
+	if (nvec < 0)
+		return nvec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	table->num_comp_vectors = nvec - MLX5_EQ_VEC_COMP_BASE;
 
 	return 0;
 
+<<<<<<< HEAD
 err_free_irq_info:
 	kfree(priv->irq_info);
 	return err;
+=======
+err_free_msix:
+	kfree(priv->irq_info);
+	return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx5_free_irq_vectors(struct mlx5_core_dev *dev)
@@ -537,6 +567,7 @@ static int handle_hca_cap(struct mlx5_core_dev *dev)
 		MLX5_SET(cmd_hca_cap,
 			 set_hca_cap,
 			 cache_line_128byte,
+<<<<<<< HEAD
 			 cache_line_size() >= 128 ? 1 : 0);
 
 	if (MLX5_CAP_GEN_MAX(dev, dct))
@@ -547,6 +578,9 @@ static int handle_hca_cap(struct mlx5_core_dev *dev)
 			 set_hca_cap,
 			 num_vhca_ports,
 			 MLX5_CAP_GEN_MAX(dev, num_vhca_ports));
+=======
+			 cache_line_size() == 128 ? 1 : 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = set_caps(dev, set_ctx, set_sz,
 		       MLX5_SET_HCA_CAP_OP_MOD_GENERAL_DEVICE);
@@ -859,11 +893,17 @@ static int mlx5_pci_init(struct mlx5_core_dev *dev, struct mlx5_priv *priv)
 
 	priv->numa_node = dev_to_node(&dev->pdev->dev);
 
+<<<<<<< HEAD
 	priv->dbg_root = debugfs_create_dir(dev_name(&pdev->dev), mlx5_debugfs_root);
 	if (!priv->dbg_root) {
 		dev_err(&pdev->dev, "Cannot create debugfs dir, aborting\n");
 		return -ENOMEM;
 	}
+=======
+	if (mlx5_debugfs_root)
+		priv->dbg_root =
+			debugfs_create_dir(pci_name(pdev), mlx5_debugfs_root);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx5_pci_enable_device(dev);
 	if (err) {
@@ -932,9 +972,15 @@ static int mlx5_init_once(struct mlx5_core_dev *dev, struct mlx5_priv *priv)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	err = mlx5_cq_debugfs_init(dev);
 	if (err) {
 		dev_err(&pdev->dev, "failed to initialize cq debugfs\n");
+=======
+	err = mlx5_init_cq_table(dev);
+	if (err) {
+		dev_err(&pdev->dev, "failed to initialize cq table\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_eq_cleanup;
 	}
 
@@ -946,10 +992,13 @@ static int mlx5_init_once(struct mlx5_core_dev *dev, struct mlx5_priv *priv)
 
 	mlx5_init_reserved_gids(dev);
 
+<<<<<<< HEAD
 	mlx5_init_clock(dev);
 
 	dev->vxlan = mlx5_vxlan_create(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlx5_init_rl_table(dev);
 	if (err) {
 		dev_err(&pdev->dev, "Failed to init rate limiting\n");
@@ -980,8 +1029,11 @@ static int mlx5_init_once(struct mlx5_core_dev *dev, struct mlx5_priv *priv)
 		goto err_sriov_cleanup;
 	}
 
+<<<<<<< HEAD
 	dev->tracer = mlx5_fw_tracer_create(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_sriov_cleanup:
@@ -993,11 +1045,18 @@ err_mpfs_cleanup:
 err_rl_cleanup:
 	mlx5_cleanup_rl_table(dev);
 err_tables_cleanup:
+<<<<<<< HEAD
 	mlx5_vxlan_destroy(dev->vxlan);
 	mlx5_cleanup_mkey_table(dev);
 	mlx5_cleanup_srq_table(dev);
 	mlx5_cleanup_qp_table(dev);
 	mlx5_cq_debugfs_cleanup(dev);
+=======
+	mlx5_cleanup_mkey_table(dev);
+	mlx5_cleanup_srq_table(dev);
+	mlx5_cleanup_qp_table(dev);
+	mlx5_cleanup_cq_table(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_eq_cleanup:
 	mlx5_eq_cleanup(dev);
@@ -1008,19 +1067,29 @@ out:
 
 static void mlx5_cleanup_once(struct mlx5_core_dev *dev)
 {
+<<<<<<< HEAD
 	mlx5_fw_tracer_destroy(dev->tracer);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_fpga_cleanup(dev);
 	mlx5_sriov_cleanup(dev);
 	mlx5_eswitch_cleanup(dev->priv.eswitch);
 	mlx5_mpfs_cleanup(dev);
 	mlx5_cleanup_rl_table(dev);
+<<<<<<< HEAD
 	mlx5_vxlan_destroy(dev->vxlan);
 	mlx5_cleanup_clock(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_cleanup_reserved_gids(dev);
 	mlx5_cleanup_mkey_table(dev);
 	mlx5_cleanup_srq_table(dev);
 	mlx5_cleanup_qp_table(dev);
+<<<<<<< HEAD
 	mlx5_cq_debugfs_cleanup(dev);
+=======
+	mlx5_cleanup_cq_table(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_eq_cleanup(dev);
 }
 
@@ -1040,10 +1109,13 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 	dev_info(&pdev->dev, "firmware version: %d.%d.%d\n", fw_rev_maj(dev),
 		 fw_rev_min(dev), fw_rev_sub(dev));
 
+<<<<<<< HEAD
 	/* Only PFs hold the relevant PCIe information for this query */
 	if (mlx5_core_is_pf(dev))
 		pcie_print_link_status(dev->pdev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* on load removing any previous indication of internal error, device is
 	 * up
 	 */
@@ -1119,7 +1191,11 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 		goto reclaim_boot_pages;
 	}
 
+<<<<<<< HEAD
 	err = mlx5_cmd_init_hca(dev, sw_owner_id);
+=======
+	err = mlx5_cmd_init_hca(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		dev_err(&pdev->dev, "init hca failed\n");
 		goto err_pagealloc_stop;
@@ -1135,12 +1211,18 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 		goto err_stop_poll;
 	}
 
+<<<<<<< HEAD
 	if (boot) {
 		err = mlx5_init_once(dev, priv);
 		if (err) {
 			dev_err(&pdev->dev, "sw objs init failed\n");
 			goto err_stop_poll;
 		}
+=======
+	if (boot && mlx5_init_once(dev, priv)) {
+		dev_err(&pdev->dev, "sw objs init failed\n");
+		goto err_stop_poll;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = mlx5_alloc_irq_vectors(dev);
@@ -1150,9 +1232,14 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 	}
 
 	dev->priv.uar = mlx5_get_uars_page(dev);
+<<<<<<< HEAD
 	if (IS_ERR(dev->priv.uar)) {
 		dev_err(&pdev->dev, "Failed allocating uar, aborting\n");
 		err = PTR_ERR(dev->priv.uar);
+=======
+	if (!dev->priv.uar) {
+		dev_err(&pdev->dev, "Failed allocating uar, aborting\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_disable_msix;
 	}
 
@@ -1162,6 +1249,7 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 		goto err_put_uars;
 	}
 
+<<<<<<< HEAD
 	err = mlx5_fw_tracer_init(dev->tracer);
 	if (err) {
 		dev_err(&pdev->dev, "Failed to init FW tracer\n");
@@ -1172,6 +1260,12 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 	if (err) {
 		dev_err(&pdev->dev, "Failed to alloc completion EQs\n");
 		goto err_comp_eqs;
+=======
+	err = alloc_comp_eqs(dev);
+	if (err) {
+		dev_err(&pdev->dev, "Failed to alloc completion EQs\n");
+		goto err_stop_eqs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = mlx5_irq_set_affinity_hints(dev);
@@ -1180,6 +1274,7 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 		goto err_affinity_hints;
 	}
 
+<<<<<<< HEAD
 	err = mlx5_fpga_device_start(dev);
 	if (err) {
 		dev_err(&pdev->dev, "fpga device start failed %d\n", err);
@@ -1198,6 +1293,8 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 		goto err_tls_start;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlx5_init_fs(dev);
 	if (err) {
 		dev_err(&pdev->dev, "Failed to init flow steering\n");
@@ -1216,6 +1313,20 @@ static int mlx5_load_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 		goto err_sriov;
 	}
 
+<<<<<<< HEAD
+=======
+	err = mlx5_fpga_device_start(dev);
+	if (err) {
+		dev_err(&pdev->dev, "fpga device start failed %d\n", err);
+		goto err_fpga_start;
+	}
+	err = mlx5_accel_ipsec_init(dev);
+	if (err) {
+		dev_err(&pdev->dev, "IPSec device start failed %d\n", err);
+		goto err_ipsec_start;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mlx5_device_registered(dev)) {
 		mlx5_attach_device(dev);
 	} else {
@@ -1233,12 +1344,21 @@ out:
 	return 0;
 
 err_reg_dev:
+<<<<<<< HEAD
+=======
+	mlx5_accel_ipsec_cleanup(dev);
+err_ipsec_start:
+	mlx5_fpga_device_stop(dev);
+
+err_fpga_start:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_sriov_detach(dev);
 
 err_sriov:
 	mlx5_cleanup_fs(dev);
 
 err_fs:
+<<<<<<< HEAD
 	mlx5_accel_tls_cleanup(dev);
 
 err_tls_start:
@@ -1248,15 +1368,21 @@ err_ipsec_start:
 	mlx5_fpga_device_stop(dev);
 
 err_fpga_start:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_irq_clear_affinity_hints(dev);
 
 err_affinity_hints:
 	free_comp_eqs(dev);
 
+<<<<<<< HEAD
 err_comp_eqs:
 	mlx5_fw_tracer_cleanup(dev->tracer);
 
 err_fw_tracer:
+=======
+err_stop_eqs:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_stop_eqs(dev);
 
 err_put_uars:
@@ -1317,6 +1443,7 @@ static int mlx5_unload_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 	if (mlx5_device_registered(dev))
 		mlx5_detach_device(dev);
 
+<<<<<<< HEAD
 	mlx5_sriov_detach(dev);
 	mlx5_cleanup_fs(dev);
 	mlx5_accel_ipsec_cleanup(dev);
@@ -1325,6 +1452,15 @@ static int mlx5_unload_one(struct mlx5_core_dev *dev, struct mlx5_priv *priv,
 	mlx5_irq_clear_affinity_hints(dev);
 	free_comp_eqs(dev);
 	mlx5_fw_tracer_cleanup(dev->tracer);
+=======
+	mlx5_accel_ipsec_cleanup(dev);
+	mlx5_fpga_device_stop(dev);
+
+	mlx5_sriov_detach(dev);
+	mlx5_cleanup_fs(dev);
+	mlx5_irq_clear_affinity_hints(dev);
+	free_comp_eqs(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_stop_eqs(dev);
 	mlx5_put_uars_page(dev, priv->uar);
 	mlx5_free_irq_vectors(dev);
@@ -1603,6 +1739,7 @@ static int mlx5_try_fast_unload(struct mlx5_core_dev *dev)
 
 	mlx5_enter_error_state(dev, true);
 
+<<<<<<< HEAD
 	/* Some platforms requiring freeing the IRQ's in the shutdown
 	 * flow. If they aren't freed they can't be allocated after
 	 * kexec. There is no need to cleanup the mlx5_core software
@@ -1611,6 +1748,8 @@ static int mlx5_try_fast_unload(struct mlx5_core_dev *dev)
 	mlx5_irq_clear_affinity_hints(dev);
 	mlx5_core_eq_free_irqs(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1685,10 +1824,14 @@ static int __init init(void)
 {
 	int err;
 
+<<<<<<< HEAD
 	get_random_bytes(&sw_owner_id, sizeof(sw_owner_id));
 
 	mlx5_core_verify_params();
 	mlx5_fpga_ipsec_build_fs_cmds();
+=======
+	mlx5_core_verify_params();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_register_debugfs();
 
 	err = pci_register_driver(&mlx5_core_driver);

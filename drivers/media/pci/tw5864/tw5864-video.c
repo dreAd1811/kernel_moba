@@ -730,7 +730,11 @@ static int tw5864_frameinterval_get(struct tw5864_input *input,
 		frameinterval->denominator = 25;
 		break;
 	default:
+<<<<<<< HEAD
 		dev_warn(&dev->pci->dev, "tw5864_frameinterval_get requested for unknown std %d\n",
+=======
+	        dev_warn(&dev->pci->dev, "tw5864_frameinterval_get requested for unknown std %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 input->std);
 		return -EINVAL;
 	}
@@ -1395,13 +1399,21 @@ static void tw5864_handle_frame(struct tw5864_h264_frame *frame)
 	input->vb = NULL;
 	spin_unlock_irqrestore(&input->slock, flags);
 
+<<<<<<< HEAD
 	v4l2_buf = to_vb2_v4l2_buffer(&vb->vb.vb2_buf);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vb) { /* Gone because of disabling */
 		dev_dbg(&dev->pci->dev, "vb is empty, dropping frame\n");
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	v4l2_buf = to_vb2_v4l2_buffer(&vb->vb.vb2_buf);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Check for space.
 	 * Mind the overhead of startcode emulation prevention.

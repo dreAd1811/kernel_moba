@@ -150,13 +150,29 @@ static ssize_t average_read(struct file *filp, char __user *buf, size_t count,
 	int ret;
 	char tbuf[22];
 
+<<<<<<< HEAD
+=======
+	if (*pos)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stats = filp->private_data;
 	spin_lock_irq(&stats->lock);
 	if (stats->n)
 		field = div64_u64(stats->sum, stats->n);
 	spin_unlock_irq(&stats->lock);
 	ret = snprintf(tbuf, sizeof(tbuf), "%llu\n", field);
+<<<<<<< HEAD
 	return simple_read_from_buffer(buf, count, pos, tbuf, ret);
+=======
+	if (ret > 0) {
+		if (copy_to_user(buf, tbuf, ret))
+			return -EFAULT;
+	}
+
+	*pos += ret;
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t average_write(struct file *filp, const char __user *buf,
@@ -433,6 +449,12 @@ static ssize_t dbg_read(struct file *filp, char __user *buf, size_t count,
 	u64 field;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (*pos)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc = filp->private_data;
 	d = (void *)(desc - desc->i) - sizeof(*d);
 	switch (d->type) {
@@ -458,7 +480,17 @@ static ssize_t dbg_read(struct file *filp, char __user *buf, size_t count,
 	else
 		ret = snprintf(tbuf, sizeof(tbuf), "0x%llx\n", field);
 
+<<<<<<< HEAD
 	return simple_read_from_buffer(buf, count, pos, tbuf, ret);
+=======
+	if (ret > 0) {
+		if (copy_to_user(buf, tbuf, ret))
+			return -EFAULT;
+	}
+
+	*pos += ret;
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations fops = {
@@ -476,7 +508,11 @@ static int add_res_tree(struct mlx5_core_dev *dev, enum dbg_rsc_type type,
 	int err;
 	int i;
 
+<<<<<<< HEAD
 	d = kzalloc(struct_size(d, fields, nfile), GFP_KERNEL);
+=======
+	d = kzalloc(sizeof(*d) + nfile * sizeof(d->fields[0]), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d)
 		return -ENOMEM;
 

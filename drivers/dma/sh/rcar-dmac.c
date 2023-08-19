@@ -1,13 +1,25 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Renesas R-Car Gen2 DMA Controller Driver
  *
  * Copyright (C) 2014 Renesas Electronics Inc.
  *
  * Author: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+<<<<<<< HEAD
  */
 
 #include <linux/delay.h>
+=======
+ *
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of version 2 of the GNU General Public License as
+ * published by the Free Software Foundation.
+ */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dma-mapping.h>
 #include <linux/dmaengine.h>
 #include <linux/interrupt.h>
@@ -198,6 +210,10 @@ struct rcar_dmac {
 	struct dma_device engine;
 	struct device *dev;
 	void __iomem *iomem;
+<<<<<<< HEAD
+=======
+	struct device_dma_parameters parms;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int n_channels;
 	struct rcar_dmac_chan *channels;
@@ -428,8 +444,12 @@ static void rcar_dmac_chan_start_xfer(struct rcar_dmac_chan *chan)
 		chcr |= RCAR_DMACHCR_DPM_DISABLED | RCAR_DMACHCR_IE;
 	}
 
+<<<<<<< HEAD
 	rcar_dmac_chan_write(chan, RCAR_DMACHCR,
 			     chcr | RCAR_DMACHCR_DE | RCAR_DMACHCR_CAIE);
+=======
+	rcar_dmac_chan_write(chan, RCAR_DMACHCR, chcr | RCAR_DMACHCR_DE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rcar_dmac_init(struct rcar_dmac *dmac)
@@ -740,6 +760,7 @@ static int rcar_dmac_fill_hwdesc(struct rcar_dmac_chan *chan,
 /* -----------------------------------------------------------------------------
  * Stop and reset
  */
+<<<<<<< HEAD
 static void rcar_dmac_chcr_de_barrier(struct rcar_dmac_chan *chan)
 {
 	u32 chcr;
@@ -769,16 +790,23 @@ static void rcar_dmac_clear_chcr_de(struct rcar_dmac_chan *chan)
 	/* make sure all remaining data was flushed */
 	rcar_dmac_chcr_de_barrier(chan);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void rcar_dmac_chan_halt(struct rcar_dmac_chan *chan)
 {
 	u32 chcr = rcar_dmac_chan_read(chan, RCAR_DMACHCR);
 
 	chcr &= ~(RCAR_DMACHCR_DSE | RCAR_DMACHCR_DSIE | RCAR_DMACHCR_IE |
+<<<<<<< HEAD
 		  RCAR_DMACHCR_TE | RCAR_DMACHCR_DE |
 		  RCAR_DMACHCR_CAE | RCAR_DMACHCR_CAIE);
 	rcar_dmac_chan_write(chan, RCAR_DMACHCR, chcr);
 	rcar_dmac_chcr_de_barrier(chan);
+=======
+		  RCAR_DMACHCR_TE | RCAR_DMACHCR_DE);
+	rcar_dmac_chan_write(chan, RCAR_DMACHCR, chcr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rcar_dmac_chan_reinit(struct rcar_dmac_chan *chan)
@@ -805,7 +833,16 @@ static void rcar_dmac_chan_reinit(struct rcar_dmac_chan *chan)
 	}
 }
 
+<<<<<<< HEAD
 static void rcar_dmac_stop_all_chan(struct rcar_dmac *dmac)
+=======
+static void rcar_dmac_stop(struct rcar_dmac *dmac)
+{
+	rcar_dmac_write(dmac, RCAR_DMAOR, 0);
+}
+
+static void rcar_dmac_abort(struct rcar_dmac *dmac)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i;
 
@@ -814,6 +851,7 @@ static void rcar_dmac_stop_all_chan(struct rcar_dmac *dmac)
 		struct rcar_dmac_chan *chan = &dmac->channels[i];
 
 		/* Stop and reinitialize the channel. */
+<<<<<<< HEAD
 		spin_lock_irq(&chan->lock);
 		rcar_dmac_chan_halt(chan);
 		spin_unlock_irq(&chan->lock);
@@ -832,6 +870,16 @@ static int rcar_dmac_chan_pause(struct dma_chan *chan)
 	return 0;
 }
 
+=======
+		spin_lock(&chan->lock);
+		rcar_dmac_chan_halt(chan);
+		spin_unlock(&chan->lock);
+
+		rcar_dmac_chan_reinit(chan);
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Descriptors preparation
  */
@@ -1281,9 +1329,12 @@ static unsigned int rcar_dmac_chan_get_residue(struct rcar_dmac_chan *chan,
 	enum dma_status status;
 	unsigned int residue = 0;
 	unsigned int dptr = 0;
+<<<<<<< HEAD
 	unsigned int chcrb;
 	unsigned int tcrb;
 	unsigned int i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!desc)
 		return 0;
@@ -1332,6 +1383,7 @@ static unsigned int rcar_dmac_chan_get_residue(struct rcar_dmac_chan *chan,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * We need to read two registers.
 	 * Make sure the control register does not skip to next chunk
 	 * while reading the counter.
@@ -1350,13 +1402,20 @@ static unsigned int rcar_dmac_chan_get_residue(struct rcar_dmac_chan *chan,
 	WARN_ONCE(i >= 3, "residue might be not continuous!");
 
 	/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * In descriptor mode the descriptor running pointer is not maintained
 	 * by the interrupt handler, find the running descriptor from the
 	 * descriptor pointer field in the CHCRB register. In non-descriptor
 	 * mode just use the running descriptor pointer.
 	 */
 	if (desc->hwdescs.use) {
+<<<<<<< HEAD
 		dptr = chcrb >> RCAR_DMACHCRB_DPTR_SHIFT;
+=======
+		dptr = (rcar_dmac_chan_read(chan, RCAR_DMACHCRB) &
+			RCAR_DMACHCRB_DPTR_MASK) >> RCAR_DMACHCRB_DPTR_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (dptr == 0)
 			dptr = desc->nchunks;
 		dptr--;
@@ -1374,7 +1433,11 @@ static unsigned int rcar_dmac_chan_get_residue(struct rcar_dmac_chan *chan,
 	}
 
 	/* Add the residue for the current chunk. */
+<<<<<<< HEAD
 	residue += tcrb << desc->xfer_shift;
+=======
+	residue += rcar_dmac_chan_read(chan, RCAR_DMATCR) << desc->xfer_shift;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return residue;
 }
@@ -1539,12 +1602,16 @@ static irqreturn_t rcar_dmac_isr_channel(int irq, void *dev)
 	u32 mask = RCAR_DMACHCR_DSE | RCAR_DMACHCR_TE;
 	struct rcar_dmac_chan *chan = dev;
 	irqreturn_t ret = IRQ_NONE;
+<<<<<<< HEAD
 	bool reinit = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 chcr;
 
 	spin_lock(&chan->lock);
 
 	chcr = rcar_dmac_chan_read(chan, RCAR_DMACHCR);
+<<<<<<< HEAD
 	if (chcr & RCAR_DMACHCR_CAE) {
 		struct rcar_dmac *dmac = to_rcar_dmac(chan->chan.device);
 
@@ -1564,6 +1631,11 @@ static irqreturn_t rcar_dmac_isr_channel(int irq, void *dev)
 	rcar_dmac_chan_write(chan, RCAR_DMACHCR, chcr & ~mask);
 	if (mask & RCAR_DMACHCR_DE)
 		rcar_dmac_chcr_de_barrier(chan);
+=======
+	if (chcr & RCAR_DMACHCR_TE)
+		mask |= RCAR_DMACHCR_DE;
+	rcar_dmac_chan_write(chan, RCAR_DMACHCR, chcr & ~mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (chcr & RCAR_DMACHCR_DSE)
 		ret |= rcar_dmac_isr_desc_stage_end(chan);
@@ -1571,6 +1643,7 @@ static irqreturn_t rcar_dmac_isr_channel(int irq, void *dev)
 	if (chcr & RCAR_DMACHCR_TE)
 		ret |= rcar_dmac_isr_transfer_end(chan);
 
+<<<<<<< HEAD
 spin_lock_end:
 	spin_unlock(&chan->lock);
 
@@ -1581,6 +1654,10 @@ spin_lock_end:
 		ret = IRQ_HANDLED;
 	}
 
+=======
+	spin_unlock(&chan->lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1637,6 +1714,27 @@ static irqreturn_t rcar_dmac_isr_channel_thread(int irq, void *dev)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
+=======
+static irqreturn_t rcar_dmac_isr_error(int irq, void *data)
+{
+	struct rcar_dmac *dmac = data;
+
+	if (!(rcar_dmac_read(dmac, RCAR_DMAOR) & RCAR_DMAOR_AE))
+		return IRQ_NONE;
+
+	/*
+	 * An unrecoverable error occurred on an unknown channel. Halt the DMAC,
+	 * abort transfers on all channels, and reinitialize the DMAC.
+	 */
+	rcar_dmac_stop(dmac);
+	rcar_dmac_abort(dmac);
+	rcar_dmac_init(dmac);
+
+	return IRQ_HANDLED;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * OF xlate and channel filter
  */
@@ -1688,6 +1786,25 @@ static struct dma_chan *rcar_dmac_of_xlate(struct of_phandle_args *dma_spec,
  * Power management
  */
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM_SLEEP
+static int rcar_dmac_sleep_suspend(struct device *dev)
+{
+	/*
+	 * TODO: Wait for the current transfer to complete and stop the device.
+	 */
+	return 0;
+}
+
+static int rcar_dmac_sleep_resume(struct device *dev)
+{
+	/* TODO: Resume transfers, if any. */
+	return 0;
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PM
 static int rcar_dmac_runtime_suspend(struct device *dev)
 {
@@ -1703,6 +1820,7 @@ static int rcar_dmac_runtime_resume(struct device *dev)
 #endif
 
 static const struct dev_pm_ops rcar_dmac_pm = {
+<<<<<<< HEAD
 	/*
 	 * TODO for system sleep/resume:
 	 *   - Wait for the current transfer to complete and stop the device,
@@ -1710,6 +1828,9 @@ static const struct dev_pm_ops rcar_dmac_pm = {
 	 */
 	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				      pm_runtime_force_resume)
+=======
+	SET_SYSTEM_SLEEP_PM_OPS(rcar_dmac_sleep_suspend, rcar_dmac_sleep_resume)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SET_RUNTIME_PM_OPS(rcar_dmac_runtime_suspend, rcar_dmac_runtime_resume,
 			   NULL)
 };
@@ -1806,6 +1927,11 @@ static int rcar_dmac_probe(struct platform_device *pdev)
 	struct rcar_dmac *dmac;
 	struct resource *mem;
 	unsigned int i;
+<<<<<<< HEAD
+=======
+	char *irqname;
+	int irq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	dmac = devm_kzalloc(&pdev->dev, sizeof(*dmac), GFP_KERNEL);
@@ -1814,6 +1940,11 @@ static int rcar_dmac_probe(struct platform_device *pdev)
 
 	dmac->dev = &pdev->dev;
 	platform_set_drvdata(pdev, dmac);
+<<<<<<< HEAD
+=======
+	dmac->dev->dma_parms = &dmac->parms;
+	dma_set_max_seg_size(dmac->dev, RCAR_DMATCR_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_set_mask_and_coherent(dmac->dev, DMA_BIT_MASK(40));
 
 	ret = rcar_dmac_parse_of(&pdev->dev, dmac);
@@ -1844,6 +1975,20 @@ static int rcar_dmac_probe(struct platform_device *pdev)
 	if (IS_ERR(dmac->iomem))
 		return PTR_ERR(dmac->iomem);
 
+<<<<<<< HEAD
+=======
+	irq = platform_get_irq_byname(pdev, "error");
+	if (irq < 0) {
+		dev_err(&pdev->dev, "no error IRQ specified\n");
+		return -ENODEV;
+	}
+
+	irqname = devm_kasprintf(dmac->dev, GFP_KERNEL, "%s:error",
+				 dev_name(dmac->dev));
+	if (!irqname)
+		return -ENOMEM;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable runtime PM and initialize the device. */
 	pm_runtime_enable(&pdev->dev);
 	ret = pm_runtime_get_sync(&pdev->dev);
@@ -1880,7 +2025,10 @@ static int rcar_dmac_probe(struct platform_device *pdev)
 	engine->device_prep_slave_sg		= rcar_dmac_prep_slave_sg;
 	engine->device_prep_dma_cyclic		= rcar_dmac_prep_dma_cyclic;
 	engine->device_config			= rcar_dmac_device_config;
+<<<<<<< HEAD
 	engine->device_pause			= rcar_dmac_chan_pause;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	engine->device_terminate_all		= rcar_dmac_chan_terminate_all;
 	engine->device_tx_status		= rcar_dmac_tx_status;
 	engine->device_issue_pending		= rcar_dmac_issue_pending;
@@ -1895,6 +2043,17 @@ static int rcar_dmac_probe(struct platform_device *pdev)
 			goto error;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = devm_request_irq(&pdev->dev, irq, rcar_dmac_isr_error, 0,
+			       irqname, dmac);
+	if (ret) {
+		dev_err(&pdev->dev, "failed to request IRQ %u (%d)\n",
+			irq, ret);
+		return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Register the DMAC as a DMA provider for DT. */
 	ret = of_dma_controller_register(pdev->dev.of_node, rcar_dmac_of_xlate,
 					 NULL);
@@ -1934,7 +2093,11 @@ static void rcar_dmac_shutdown(struct platform_device *pdev)
 {
 	struct rcar_dmac *dmac = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	rcar_dmac_stop_all_chan(dmac);
+=======
+	rcar_dmac_stop(dmac);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id rcar_dmac_of_ids[] = {

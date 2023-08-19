@@ -17,7 +17,10 @@
 
 #include <linux/dma-mapping.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/timekeeping.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/uaccess.h>
 
 #include "isp.h"
@@ -238,7 +241,11 @@ static int isp_stat_buf_queue(struct ispstat *stat)
 	if (!stat->active_buf)
 		return STAT_NO_BUF;
 
+<<<<<<< HEAD
 	ktime_get_ts64(&stat->active_buf->ts);
+=======
+	v4l2_get_timestamp(&stat->active_buf->ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	stat->active_buf->buf_size = stat->buf_size;
 	if (isp_stat_buf_check_magic(stat, stat->active_buf)) {
@@ -371,7 +378,11 @@ static int isp_stat_bufs_alloc_one(struct device *dev,
 	int ret;
 
 	buf->virt_addr = dma_alloc_coherent(dev, size, &buf->dma_addr,
+<<<<<<< HEAD
 					    GFP_KERNEL);
+=======
+					    GFP_KERNEL | GFP_DMA);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buf->virt_addr)
 		return -ENOMEM;
 
@@ -450,8 +461,15 @@ static int isp_stat_bufs_alloc(struct ispstat *stat, u32 size)
 		buf->empty = 1;
 
 		dev_dbg(stat->isp->dev,
+<<<<<<< HEAD
 			"%s: buffer[%u] allocated. dma=%pad virt=%p",
 			stat->subdev.name, i, &buf->dma_addr, buf->virt_addr);
+=======
+			"%s: buffer[%u] allocated. dma=0x%08lx virt=0x%08lx",
+			stat->subdev.name, i,
+			(unsigned long)buf->dma_addr,
+			(unsigned long)buf->virt_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -499,8 +517,12 @@ int omap3isp_stat_request_statistics(struct ispstat *stat,
 		return PTR_ERR(buf);
 	}
 
+<<<<<<< HEAD
 	data->ts.tv_sec = buf->ts.tv_sec;
 	data->ts.tv_usec = buf->ts.tv_nsec / NSEC_PER_USEC;
+=======
+	data->ts = buf->ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->config_counter = buf->config_counter;
 	data->frame_number = buf->frame_number;
 	data->buf_size = buf->buf_size;
@@ -512,6 +534,7 @@ int omap3isp_stat_request_statistics(struct ispstat *stat,
 	return 0;
 }
 
+<<<<<<< HEAD
 int omap3isp_stat_request_statistics_time32(struct ispstat *stat,
 					struct omap3isp_stat_data_time32 *data)
 {
@@ -529,6 +552,8 @@ int omap3isp_stat_request_statistics_time32(struct ispstat *stat,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * omap3isp_stat_config - Receives new statistic engine configuration.
  * @new_conf: Pointer to config structure.
@@ -544,6 +569,15 @@ int omap3isp_stat_config(struct ispstat *stat, void *new_conf)
 	struct ispstat_generic_config *user_cfg = new_conf;
 	u32 buf_size = user_cfg->buf_size;
 
+<<<<<<< HEAD
+=======
+	if (!new_conf) {
+		dev_dbg(stat->isp->dev, "%s: configuration is NULL\n",
+			stat->subdev.name);
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&stat->ioctl_lock);
 
 	dev_dbg(stat->isp->dev,

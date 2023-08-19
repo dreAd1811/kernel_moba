@@ -9,10 +9,15 @@
 #include <linux/spinlock.h>
 #include <linux/mm_types.h>
 #include <linux/smp.h>
+<<<<<<< HEAD
 #include <linux/sched.h>
 
 #include <asm/spitfire.h>
 #include <asm/adi_64.h>
+=======
+
+#include <asm/spitfire.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/mm_hooks.h>
 #include <asm/percpu.h>
 
@@ -138,6 +143,7 @@ static inline void switch_mm(struct mm_struct *old_mm, struct mm_struct *mm, str
 
 #define deactivate_mm(tsk,mm)	do { } while (0)
 #define activate_mm(active_mm, mm) switch_mm(active_mm, mm, NULL)
+<<<<<<< HEAD
 
 #define  __HAVE_ARCH_START_CONTEXT_SWITCH
 static inline void arch_start_context_switch(struct task_struct *prev)
@@ -187,6 +193,8 @@ static inline void finish_arch_post_lock_switch(void)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* !(__ASSEMBLY__) */
 
 #endif /* !(__SPARC64_MMU_CONTEXT_H) */

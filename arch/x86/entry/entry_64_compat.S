@@ -220,11 +220,16 @@ GLOBAL(entry_SYSCALL_compat_after_hwframe)
 	pushq	%rax			/* pt_regs->orig_ax */
 	pushq	%rdi			/* pt_regs->di */
 	pushq	%rsi			/* pt_regs->si */
+<<<<<<< HEAD
 	xorl	%esi, %esi		/* nospec   si */
 	pushq	%rdx			/* pt_regs->dx */
 	xorl	%edx, %edx		/* nospec   dx */
 	pushq	%rbp			/* pt_regs->cx (stashed in bp) */
 	xorl	%ecx, %ecx		/* nospec   cx */
+=======
+	pushq	%rdx			/* pt_regs->dx */
+	pushq	%rbp			/* pt_regs->cx (stashed in bp) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pushq	$-ENOSYS		/* pt_regs->ax */
 	pushq   $0			/* pt_regs->r8  = 0 */
 	xorl	%r8d, %r8d		/* nospec   r8 */
@@ -350,6 +355,7 @@ ENTRY(entry_INT80_compat)
 	 */
 	movl	%eax, %eax
 
+<<<<<<< HEAD
 	/* switch to thread stack expects orig_ax and rdi to be pushed */
 	pushq	%rax			/* pt_regs->orig_ax */
 	pushq	%rdi			/* pt_regs->di */
@@ -383,6 +389,25 @@ ENTRY(entry_INT80_compat)
 	pushq   %r10			/* pt_regs->r10*/
 	xorl	%r10d, %r10d		/* nospec   r10 */
 	pushq   %r11			/* pt_regs->r11 */
+=======
+	pushq	%rax			/* pt_regs->orig_ax */
+
+	/* switch to thread stack expects orig_ax to be pushed */
+	call	switch_to_thread_stack
+
+	pushq	%rdi			/* pt_regs->di */
+	pushq	%rsi			/* pt_regs->si */
+	pushq	%rdx			/* pt_regs->dx */
+	pushq	%rcx			/* pt_regs->cx */
+	pushq	$-ENOSYS		/* pt_regs->ax */
+	pushq   $0			/* pt_regs->r8  = 0 */
+	xorl	%r8d, %r8d		/* nospec   r8 */
+	pushq   $0			/* pt_regs->r9  = 0 */
+	xorl	%r9d, %r9d		/* nospec   r9 */
+	pushq   $0			/* pt_regs->r10 = 0 */
+	xorl	%r10d, %r10d		/* nospec   r10 */
+	pushq   $0			/* pt_regs->r11 = 0 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xorl	%r11d, %r11d		/* nospec   r11 */
 	pushq   %rbx                    /* pt_regs->rbx */
 	xorl	%ebx, %ebx		/* nospec   rbx */
@@ -412,3 +437,18 @@ ENTRY(entry_INT80_compat)
 	TRACE_IRQS_ON
 	jmp	swapgs_restore_regs_and_return_to_usermode
 END(entry_INT80_compat)
+<<<<<<< HEAD
+=======
+
+ENTRY(stub32_clone)
+	/*
+	 * The 32-bit clone ABI is: clone(..., int tls_val, int *child_tidptr).
+	 * The 64-bit clone ABI is: clone(..., int *child_tidptr, int tls_val).
+	 *
+	 * The native 64-bit kernel's sys_clone() implements the latter,
+	 * so we need to swap arguments here before calling it:
+	 */
+	xchg	%r8, %rcx
+	jmp	sys_clone
+ENDPROC(stub32_clone)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

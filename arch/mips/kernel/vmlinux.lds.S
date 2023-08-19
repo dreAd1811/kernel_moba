@@ -50,7 +50,11 @@ SECTIONS
 	/* . = 0xa800000000300000; */
 	. = 0xffffffff80300000;
 #endif
+<<<<<<< HEAD
 	. = VMLINUX_LOAD_ADDRESS;
+=======
+	. = LINKER_LOAD_ADDRESS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* read-only */
 	_text = .;	/* Text and read-only data */
 	.text : {

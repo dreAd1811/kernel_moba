@@ -177,14 +177,27 @@ Here is a sample module which implements a basic per cpu counter using
                     printk("Read : CPU %d, count %ld\n", cpu,
                             local_read(&per_cpu(counters, cpu)));
             }
+<<<<<<< HEAD
             mod_timer(&test_timer, jiffies + 1000);
+=======
+            del_timer(&test_timer);
+            test_timer.expires = jiffies + 1000;
+            add_timer(&test_timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     }
 
     static int __init test_init(void)
     {
             /* initialize the timer that will increment the counter */
+<<<<<<< HEAD
             timer_setup(&test_timer, do_test_timer, 0);
             mod_timer(&test_timer, jiffies + 1);
+=======
+            init_timer(&test_timer);
+            test_timer.function = do_test_timer;
+            test_timer.expires = jiffies + 1;
+            add_timer(&test_timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
             return 0;
     }

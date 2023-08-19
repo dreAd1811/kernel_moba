@@ -210,8 +210,13 @@ int start_spu_profiling_cycles(unsigned int cycles_reset)
 	timer.function = profile_spus;
 
 	/* Allocate arrays for collecting SPU PC samples */
+<<<<<<< HEAD
 	samples = kcalloc(SPUS_PER_NODE * TRACE_ARRAY_SIZE, sizeof(u32),
 			  GFP_KERNEL);
+=======
+	samples = kzalloc(SPUS_PER_NODE *
+			  TRACE_ARRAY_SIZE * sizeof(u32), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!samples)
 		return -ENOMEM;

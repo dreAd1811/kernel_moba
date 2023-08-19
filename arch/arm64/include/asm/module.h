@@ -39,8 +39,11 @@ struct mod_arch_specific {
 u64 module_emit_plt_entry(struct module *mod, void *loc, const Elf64_Rela *rela,
 			  Elf64_Sym *sym);
 
+<<<<<<< HEAD
 u64 module_emit_veneer_for_adrp(struct module *mod, void *loc, u64 val);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_RANDOMIZE_BASE
 extern u64 module_alloc_base;
 #else

@@ -166,7 +166,11 @@ int ide_devset_execute(ide_drive_t *drive, const struct ide_devset *setting,
 	if (!(setting->flags & DS_SYNC))
 		return setting->set(drive, arg);
 
+<<<<<<< HEAD
 	rq = blk_get_request(q, REQ_OP_DRV_IN, 0);
+=======
+	rq = blk_get_request(q, REQ_OP_DRV_IN, __GFP_RECLAIM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ide_req(rq)->type = ATA_PRIV_MISC;
 	scsi_req(rq)->cmd_len = 5;
 	scsi_req(rq)->cmd[0] = REQ_DEVSET_EXEC;

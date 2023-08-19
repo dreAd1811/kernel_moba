@@ -2,14 +2,22 @@
 	- this file
 boot.txt
 	- List of boot protocol versions
+<<<<<<< HEAD
+=======
+early-microcode.txt
+	- How to load microcode from an initrd-CPIO archive early to fix CPU issues.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 earlyprintk.txt
 	- Using earlyprintk with a USB2 debug port key.
 entry_64.txt
 	- Describe (some of the) kernel entry points for x86.
 exception-tables.txt
 	- why and how Linux kernel uses exception tables on x86
+<<<<<<< HEAD
 microcode.txt
 	- How to load microcode from an initrd-CPIO archive early to fix CPU issues.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mtrr.txt
 	- how to use x86 Memory Type Range Registers to increase performance
 pat.txt

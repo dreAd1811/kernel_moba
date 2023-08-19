@@ -2,10 +2,17 @@
 #ifndef __PVRUSB2_DVB_H__
 #define __PVRUSB2_DVB_H__
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_net.h>
 #include <media/dmxdev.h>
+=======
+#include "dvb_frontend.h"
+#include "dvb_demux.h"
+#include "dvb_net.h"
+#include "dmxdev.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "pvrusb2-context.h"
 
 #define PVR2_DVB_BUFFER_COUNT 32

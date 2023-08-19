@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
+<<<<<<< HEAD
  * Device driver for the PMU in Apple PowerBooks and PowerMacs.
+=======
+ * Device driver for the via-pmu on Apple Powermacs.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The VIA (versatile interface adapter) interfaces to the PMU,
  * a 6805 microprocessor core whose primary function is to control
@@ -49,26 +53,40 @@
 #include <linux/compat.h>
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
+<<<<<<< HEAD
 #include <linux/uaccess.h>
+=======
+#include <asm/prom.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/machdep.h>
 #include <asm/io.h>
 #include <asm/pgtable.h>
 #include <asm/sections.h>
 #include <asm/irq.h>
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_PMAC
 #include <asm/pmac_feature.h>
 #include <asm/pmac_pfunc.h>
 #include <asm/pmac_low_i2c.h>
 #include <asm/prom.h>
+=======
+#include <asm/pmac_feature.h>
+#include <asm/pmac_pfunc.h>
+#include <asm/pmac_low_i2c.h>
+#include <linux/uaccess.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mmu_context.h>
 #include <asm/cputable.h>
 #include <asm/time.h>
 #include <asm/backlight.h>
+<<<<<<< HEAD
 #else
 #include <asm/macintosh.h>
 #include <asm/macints.h>
 #include <asm/mac_via.h>
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "via-pmu-event.h"
 
@@ -82,6 +100,10 @@
 #define BATTERY_POLLING_COUNT	2
 
 static DEFINE_MUTEX(pmu_info_proc_mutex);
+<<<<<<< HEAD
+=======
+static volatile unsigned char __iomem *via;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* VIA registers - spaced 0x200 bytes apart */
 #define RS		0x200		/* skip between registers */
@@ -103,6 +125,7 @@ static DEFINE_MUTEX(pmu_info_proc_mutex);
 #define ANH		(15*RS)		/* A-side data, no handshake */
 
 /* Bits in B data register: both active low */
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_PMAC
 #define TACK		0x08		/* Transfer acknowledge (input) */
 #define TREQ		0x10		/* Transfer request (output) */
@@ -110,6 +133,10 @@ static DEFINE_MUTEX(pmu_info_proc_mutex);
 #define TACK		0x02
 #define TREQ		0x04
 #endif
+=======
+#define TACK		0x08		/* Transfer acknowledge (input) */
+#define TREQ		0x10		/* Transfer request (output) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Bits in ACR */
 #define SR_CTRL		0x1c		/* Shift register control bits */
@@ -124,7 +151,10 @@ static DEFINE_MUTEX(pmu_info_proc_mutex);
 #define CB1_INT		0x10		/* transition on CB1 input */
 
 static volatile enum pmu_state {
+<<<<<<< HEAD
 	uninitialized = 0,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idle,
 	sending,
 	intack,
@@ -151,6 +181,7 @@ static int data_index;
 static int data_len;
 static volatile int adb_int_pending;
 static volatile int disable_poll;
+<<<<<<< HEAD
 static int pmu_kind = PMU_UNKNOWN;
 static int pmu_fully_inited;
 static int pmu_has_adb;
@@ -160,6 +191,13 @@ static volatile unsigned char __iomem *via2;
 static struct device_node *vias;
 static struct device_node *gpio_node;
 #endif
+=======
+static struct device_node *vias;
+static int pmu_kind = PMU_UNKNOWN;
+static int pmu_fully_inited;
+static int pmu_has_adb;
+static struct device_node *gpio_node;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned char __iomem *gpio_reg;
 static int gpio_irq = 0;
 static int gpio_irq_enabled = -1;
@@ -172,9 +210,13 @@ static int drop_interrupts;
 static int option_lid_wakeup = 1;
 #endif /* CONFIG_SUSPEND && CONFIG_PPC32 */
 static unsigned long async_req_locks;
+<<<<<<< HEAD
 
 #define NUM_IRQ_STATS 13
 static unsigned int pmu_irq_stats[NUM_IRQ_STATS];
+=======
+static unsigned int pmu_irq_stats[11];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct proc_dir_entry *proc_pmu_root;
 static struct proc_dir_entry *proc_pmu_info;
@@ -208,6 +250,7 @@ static int init_pmu(void);
 static void pmu_start(void);
 static irqreturn_t via_pmu_interrupt(int irq, void *arg);
 static irqreturn_t gpio1_interrupt(int irq, void *arg);
+<<<<<<< HEAD
 static int pmu_info_proc_show(struct seq_file *m, void *v);
 static int pmu_irqstats_proc_show(struct seq_file *m, void *v);
 static int pmu_battery_proc_show(struct seq_file *m, void *v);
@@ -223,6 +266,23 @@ const struct adb_driver via_pmu_driver = {
 	.autopoll     = pmu_adb_autopoll,
 	.poll         = pmu_poll_adb,
 	.reset_bus    = pmu_adb_reset_bus,
+=======
+static const struct file_operations pmu_info_proc_fops;
+static const struct file_operations pmu_irqstats_proc_fops;
+static void pmu_pass_intr(unsigned char *data, int len);
+static const struct file_operations pmu_battery_proc_fops;
+static const struct file_operations pmu_options_proc_fops;
+
+#ifdef CONFIG_ADB
+struct adb_driver via_pmu_driver = {
+	"PMU",
+	pmu_probe,
+	pmu_init,
+	pmu_send_request,
+	pmu_adb_autopoll,
+	pmu_poll_adb,
+	pmu_adb_reset_bus
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #endif /* CONFIG_ADB */
 
@@ -288,11 +348,18 @@ static char *pbook_type[] = {
 
 int __init find_via_pmu(void)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_PMAC
 	u64 taddr;
 	const u32 *reg;
 
 	if (pmu_state != uninitialized)
+=======
+	u64 taddr;
+	const u32 *reg;
+
+	if (via != 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	vias = of_find_node_by_name(NULL, "via-pmu");
 	if (vias == NULL)
@@ -357,33 +424,55 @@ int __init find_via_pmu(void)
 	} else
 		pmu_kind = PMU_UNKNOWN;
 
+<<<<<<< HEAD
 	via1 = via2 = ioremap(taddr, 0x2000);
 	if (via1 == NULL) {
+=======
+	via = ioremap(taddr, 0x2000);
+	if (via == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_ERR "via-pmu: Can't map address !\n");
 		goto fail_via_remap;
 	}
 	
+<<<<<<< HEAD
 	out_8(&via1[IER], IER_CLR | 0x7f);	/* disable all intrs */
 	out_8(&via1[IFR], 0x7f);			/* clear IFR */
+=======
+	out_8(&via[IER], IER_CLR | 0x7f);	/* disable all intrs */
+	out_8(&via[IFR], 0x7f);			/* clear IFR */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pmu_state = idle;
 
 	if (!init_pmu())
 		goto fail_init;
 
+<<<<<<< HEAD
+=======
+	printk(KERN_INFO "PMU driver v%d initialized for %s, firmware: %02x\n",
+	       PMU_DRIVER_VERSION, pbook_type[pmu_kind], pmu_version);
+	       
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sys_ctrler = SYS_CTRLER_PMU;
 	
 	return 1;
 
  fail_init:
+<<<<<<< HEAD
 	iounmap(via1);
 	via1 = via2 = NULL;
+=======
+	iounmap(via);
+	via = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  fail_via_remap:
 	iounmap(gpio_reg);
 	gpio_reg = NULL;
  fail:
 	of_node_put(vias);
 	vias = NULL;
+<<<<<<< HEAD
 	pmu_state = uninitialized;
 	return 0;
 #else
@@ -410,17 +499,31 @@ int __init find_via_pmu(void)
 
 	return 1;
 #endif /* !CONFIG_PPC_PMAC */
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_ADB
 static int pmu_probe(void)
 {
+<<<<<<< HEAD
 	return pmu_state == uninitialized ? -ENODEV : 0;
 }
 
 static int pmu_init(void)
 {
 	return pmu_state == uninitialized ? -ENODEV : 0;
+=======
+	return vias == NULL? -ENODEV: 0;
+}
+
+static int __init pmu_init(void)
+{
+	if (vias == NULL)
+		return -ENODEV;
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_ADB */
 
@@ -433,14 +536,23 @@ static int pmu_init(void)
  */
 static int __init via_pmu_start(void)
 {
+<<<<<<< HEAD
 	unsigned int __maybe_unused irq;
 
 	if (pmu_state == uninitialized)
+=======
+	unsigned int irq;
+
+	if (vias == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	batt_req.complete = 1;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_PMAC
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	irq = irq_of_parse_and_map(vias, 0);
 	if (!irq) {
 		printk(KERN_ERR "via-pmu: can't map interrupt\n");
@@ -476,6 +588,7 @@ static int __init via_pmu_start(void)
 	}
 
 	/* Enable interrupts */
+<<<<<<< HEAD
 	out_8(&via1[IER], IER_SET | SR_INT | CB1_INT);
 #else
 	if (request_irq(IRQ_MAC_ADB_SR, via_pmu_interrupt, IRQF_NO_SUSPEND,
@@ -490,6 +603,9 @@ static int __init via_pmu_start(void)
 		return -ENODEV;
 	}
 #endif /* !CONFIG_PPC_PMAC */
+=======
+	out_8(&via[IER], IER_SET | SR_INT | CB1_INT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pmu_fully_inited = 1;
 
@@ -515,7 +631,11 @@ arch_initcall(via_pmu_start);
  */
 static int __init via_pmu_dev_init(void)
 {
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (vias == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 #ifdef CONFIG_PMAC_BACKLIGHT
@@ -563,6 +683,7 @@ static int __init via_pmu_dev_init(void)
 		for (i=0; i<pmu_battery_count; i++) {
 			char title[16];
 			sprintf(title, "battery_%ld", i);
+<<<<<<< HEAD
 			proc_pmu_batt[i] = proc_create_single_data(title, 0,
 					proc_pmu_root, pmu_battery_proc_show,
 					(void *)i);
@@ -572,6 +693,15 @@ static int __init via_pmu_dev_init(void)
 				pmu_info_proc_show);
 		proc_pmu_irqstats = proc_create_single("interrupts", 0,
 				proc_pmu_root, pmu_irqstats_proc_show);
+=======
+			proc_pmu_batt[i] = proc_create_data(title, 0, proc_pmu_root,
+					&pmu_battery_proc_fops, (void *)i);
+		}
+
+		proc_pmu_info = proc_create("info", 0, proc_pmu_root, &pmu_info_proc_fops);
+		proc_pmu_irqstats = proc_create("interrupts", 0, proc_pmu_root,
+						&pmu_irqstats_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		proc_pmu_options = proc_create("options", 0600, proc_pmu_root,
 						&pmu_options_proc_fops);
 	}
@@ -587,8 +717,13 @@ init_pmu(void)
 	struct adb_request req;
 
 	/* Negate TREQ. Set TACK to input and TREQ to output. */
+<<<<<<< HEAD
 	out_8(&via2[B], in_8(&via2[B]) | TREQ);
 	out_8(&via2[DIRB], (in_8(&via2[DIRB]) | TREQ) & ~TACK);
+=======
+	out_8(&via[B], in_8(&via[B]) | TREQ);
+	out_8(&via[DIRB], (in_8(&via[DIRB]) | TREQ) & ~TACK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pmu_request(&req, NULL, 2, PMU_SET_INTR_MASK, pmu_intr_mask);
 	timeout =  100000;
@@ -640,10 +775,13 @@ init_pmu(void)
 			       option_server_mode ? "enabled" : "disabled");
 		}
 	}
+<<<<<<< HEAD
 
 	printk(KERN_INFO "PMU driver v%d initialized for %s, firmware: %02x\n",
 	       PMU_DRIVER_VERSION, pbook_type[pmu_kind], pmu_version);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 1;
 }
 
@@ -682,7 +820,10 @@ static void pmu_set_server_mode(int server_mode)
 static void
 done_battery_state_ohare(struct adb_request* req)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_PMAC
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* format:
 	 *  [0]    :  flags
 	 *    0x01 :  AC indicator
@@ -764,7 +905,10 @@ done_battery_state_ohare(struct adb_request* req)
 	pmu_batteries[pmu_cur_battery].amperage = amperage;
 	pmu_batteries[pmu_cur_battery].voltage = voltage;
 	pmu_batteries[pmu_cur_battery].time_remaining = time;
+<<<<<<< HEAD
 #endif /* CONFIG_PPC_PMAC */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clear_bit(0, &async_req_locks);
 }
@@ -872,12 +1016,34 @@ static int pmu_info_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int pmu_irqstats_proc_show(struct seq_file *m, void *v)
 {
 	int i;
 	static const char *irq_names[NUM_IRQ_STATS] = {
 		"Unknown interrupt (type 0)",
 		"Unknown interrupt (type 1)",
+=======
+static int pmu_info_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, pmu_info_proc_show, NULL);
+}
+
+static const struct file_operations pmu_info_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= pmu_info_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+static int pmu_irqstats_proc_show(struct seq_file *m, void *v)
+{
+	int i;
+	static const char *irq_names[] = {
+		"Total CB1 triggered events",
+		"Total GPIO1 triggered events",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"PC-Card eject button",
 		"Sound/Brightness button",
 		"ADB message",
@@ -886,18 +1052,41 @@ static int pmu_irqstats_proc_show(struct seq_file *m, void *v)
 		"Tick timer",
 		"Ghost interrupt (zero len)",
 		"Empty interrupt (empty mask)",
+<<<<<<< HEAD
 		"Max irqs in a row",
 		"Total CB1 triggered events",
 		"Total GPIO1 triggered events",
         };
 
 	for (i = 0; i < NUM_IRQ_STATS; i++) {
+=======
+		"Max irqs in a row"
+        };
+
+	for (i=0; i<11; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_printf(m, " %2u: %10u (%s)\n",
 			     i, pmu_irq_stats[i], irq_names[i]);
 	}
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int pmu_irqstats_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, pmu_irqstats_proc_show, NULL);
+}
+
+static const struct file_operations pmu_irqstats_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= pmu_irqstats_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pmu_battery_proc_show(struct seq_file *m, void *v)
 {
 	long batnum = (long)m->private;
@@ -912,6 +1101,22 @@ static int pmu_battery_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int pmu_battery_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, pmu_battery_proc_show, PDE_DATA(inode));
+}
+
+static const struct file_operations pmu_battery_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= pmu_battery_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pmu_options_proc_show(struct seq_file *m, void *v)
 {
 #if defined(CONFIG_SUSPEND) && defined(CONFIG_PPC32)
@@ -989,7 +1194,11 @@ static int pmu_send_request(struct adb_request *req, int sync)
 {
 	int i, ret;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized || !pmu_fully_inited) {
+=======
+	if ((vias == NULL) || (!pmu_fully_inited)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req->complete = 1;
 		return -ENXIO;
 	}
@@ -1083,7 +1292,11 @@ static int __pmu_adb_autopoll(int devs)
 
 static int pmu_adb_autopoll(int devs)
 {
+<<<<<<< HEAD
 	if (pmu_state == uninitialized || !pmu_fully_inited || !pmu_has_adb)
+=======
+	if ((vias == NULL) || (!pmu_fully_inited) || !pmu_has_adb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 
 	adb_dev_map = devs;
@@ -1096,7 +1309,11 @@ static int pmu_adb_reset_bus(void)
 	struct adb_request req;
 	int save_autopoll = adb_dev_map;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized || !pmu_fully_inited || !pmu_has_adb)
+=======
+	if ((vias == NULL) || (!pmu_fully_inited) || !pmu_has_adb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 
 	/* anyone got a better idea?? */
@@ -1132,7 +1349,11 @@ pmu_request(struct adb_request *req, void (*done)(struct adb_request *),
 	va_list list;
 	int i;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (vias == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 
 	if (nbytes < 0 || nbytes > 32) {
@@ -1157,7 +1378,11 @@ pmu_queue_request(struct adb_request *req)
 	unsigned long flags;
 	int nsend;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized) {
+=======
+	if (via == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req->complete = 1;
 		return -ENXIO;
 	}
@@ -1176,7 +1401,11 @@ pmu_queue_request(struct adb_request *req)
 	req->complete = 0;
 
 	spin_lock_irqsave(&pmu_lock, flags);
+<<<<<<< HEAD
 	if (current_req) {
+=======
+	if (current_req != 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		last_req->next = req;
 		last_req = req;
 	} else {
@@ -1197,7 +1426,11 @@ wait_for_ack(void)
 	 * reported
 	 */
 	int timeout = 4000;
+<<<<<<< HEAD
 	while ((in_8(&via2[B]) & TACK) == 0) {
+=======
+	while ((in_8(&via[B]) & TACK) == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (--timeout < 0) {
 			printk(KERN_ERR "PMU not responding (!ack)\n");
 			return;
@@ -1211,19 +1444,37 @@ wait_for_ack(void)
 static inline void
 send_byte(int x)
 {
+<<<<<<< HEAD
 	out_8(&via1[ACR], in_8(&via1[ACR]) | SR_OUT | SR_EXT);
 	out_8(&via1[SR], x);
 	out_8(&via2[B], in_8(&via2[B]) & ~TREQ);	/* assert TREQ */
 	(void)in_8(&via2[B]);
+=======
+	volatile unsigned char __iomem *v = via;
+
+	out_8(&v[ACR], in_8(&v[ACR]) | SR_OUT | SR_EXT);
+	out_8(&v[SR], x);
+	out_8(&v[B], in_8(&v[B]) & ~TREQ);		/* assert TREQ */
+	(void)in_8(&v[B]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void
 recv_byte(void)
 {
+<<<<<<< HEAD
 	out_8(&via1[ACR], (in_8(&via1[ACR]) & ~SR_OUT) | SR_EXT);
 	in_8(&via1[SR]);		/* resets SR */
 	out_8(&via2[B], in_8(&via2[B]) & ~TREQ);
 	(void)in_8(&via2[B]);
+=======
+	volatile unsigned char __iomem *v = via;
+
+	out_8(&v[ACR], (in_8(&v[ACR]) & ~SR_OUT) | SR_EXT);
+	in_8(&v[SR]);		/* resets SR */
+	out_8(&v[B], in_8(&v[B]) & ~TREQ);
+	(void)in_8(&v[B]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void
@@ -1247,7 +1498,11 @@ pmu_start(void)
 	/* assert pmu_state == idle */
 	/* get the packet to send */
 	req = current_req;
+<<<<<<< HEAD
 	if (!req || pmu_state != idle
+=======
+	if (req == 0 || pmu_state != idle
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    || (/*req->reply_expected && */req_awaiting_reply))
 		return;
 
@@ -1266,7 +1521,11 @@ pmu_start(void)
 void
 pmu_poll(void)
 {
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (!via)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	if (disable_poll)
 		return;
@@ -1276,7 +1535,11 @@ pmu_poll(void)
 void
 pmu_poll_adb(void)
 {
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (!via)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	if (disable_poll)
 		return;
@@ -1291,7 +1554,11 @@ pmu_poll_adb(void)
 void
 pmu_wait_complete(struct adb_request *req)
 {
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (!via)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	while((pmu_state != idle && pmu_state != locked) || !req->complete)
 		via_pmu_interrupt(0, NULL);
@@ -1307,7 +1574,11 @@ pmu_suspend(void)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (!via)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	
 	spin_lock_irqsave(&pmu_lock, flags);
@@ -1326,7 +1597,11 @@ pmu_suspend(void)
 		if (!adb_int_pending && pmu_state == idle && !req_awaiting_reply) {
 			if (gpio_irq >= 0)
 				disable_irq_nosync(gpio_irq);
+<<<<<<< HEAD
 			out_8(&via1[IER], CB1_INT | IER_CLR);
+=======
+			out_8(&via[IER], CB1_INT | IER_CLR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_unlock_irqrestore(&pmu_lock, flags);
 			break;
 		}
@@ -1338,7 +1613,11 @@ pmu_resume(void)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized || pmu_suspended < 1)
+=======
+	if (!via || (pmu_suspended < 1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	spin_lock_irqsave(&pmu_lock, flags);
@@ -1350,7 +1629,11 @@ pmu_resume(void)
 	adb_int_pending = 1;
 	if (gpio_irq >= 0)
 		enable_irq(gpio_irq);
+<<<<<<< HEAD
 	out_8(&via1[IER], CB1_INT | IER_SET);
+=======
+	out_8(&via[IER], CB1_INT | IER_SET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&pmu_lock, flags);
 	pmu_poll();
 }
@@ -1359,8 +1642,12 @@ pmu_resume(void)
 static void
 pmu_handle_data(unsigned char *data, int len)
 {
+<<<<<<< HEAD
 	unsigned char ints;
 	int idx;
+=======
+	unsigned char ints, pirq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i = 0;
 
 	asleep = 0;
@@ -1382,27 +1669,48 @@ pmu_handle_data(unsigned char *data, int len)
 		ints &= ~(PMU_INT_ADB_AUTO | PMU_INT_AUTO_SRQ_POLL);
 
 next:
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ints == 0) {
 		if (i > pmu_irq_stats[10])
 			pmu_irq_stats[10] = i;
 		return;
 	}
+<<<<<<< HEAD
 	i++;
 
 	idx = ffs(ints) - 1;
 	ints &= ~BIT(idx);
 
 	pmu_irq_stats[idx]++;
+=======
+
+	for (pirq = 0; pirq < 8; pirq++)
+		if (ints & (1 << pirq))
+			break;
+	pmu_irq_stats[pirq]++;
+	i++;
+	ints &= ~(1 << pirq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Note: for some reason, we get an interrupt with len=1,
 	 * data[0]==0 after each normal ADB interrupt, at least
 	 * on the Pismo. Still investigating...  --BenH
 	 */
+<<<<<<< HEAD
 	switch (BIT(idx)) {
 	case PMU_INT_ADB:
 		if ((data[0] & PMU_INT_ADB_AUTO) == 0) {
 			struct adb_request *req = req_awaiting_reply;
 			if (!req) {
+=======
+	if ((1 << pirq) & PMU_INT_ADB) {
+		if ((data[0] & PMU_INT_ADB_AUTO) == 0) {
+			struct adb_request *req = req_awaiting_reply;
+			if (req == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				printk(KERN_ERR "PMU: extra ADB reply\n");
 				return;
 			}
@@ -1415,7 +1723,10 @@ next:
 			}
 			pmu_done(req);
 		} else {
+<<<<<<< HEAD
 #ifdef CONFIG_XMON
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (len == 4 && data[1] == 0x2c) {
 				extern int xmon_wants_key, xmon_adb_keycode;
 				if (xmon_wants_key) {
@@ -1423,7 +1734,10 @@ next:
 					return;
 				}
 			}
+<<<<<<< HEAD
 #endif /* CONFIG_XMON */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ADB
 			/*
 			 * XXX On the [23]400 the PMU gives us an up
@@ -1437,28 +1751,46 @@ next:
 				adb_input(data+1, len-1, 1);
 #endif /* CONFIG_ADB */		
 		}
+<<<<<<< HEAD
 		break;
 
 	/* Sound/brightness button pressed */
 	case PMU_INT_SNDBRT:
+=======
+	}
+	/* Sound/brightness button pressed */
+	else if ((1 << pirq) & PMU_INT_SNDBRT) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PMAC_BACKLIGHT
 		if (len == 3)
 			pmac_backlight_set_legacy_brightness_pmu(data[1] >> 4);
 #endif
+<<<<<<< HEAD
 		break;
 
 	/* Tick interrupt */
 	case PMU_INT_TICK:
 		/* Environment or tick interrupt, query batteries */
+=======
+	}
+	/* Tick interrupt */
+	else if ((1 << pirq) & PMU_INT_TICK) {
+		/* Environement or tick interrupt, query batteries */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pmu_battery_count) {
 			if ((--query_batt_timer) == 0) {
 				query_battery_state();
 				query_batt_timer = BATTERY_POLLING_COUNT;
 			}
 		}
+<<<<<<< HEAD
 		break;
 
 	case PMU_INT_ENVIRONMENT:
+=======
+        }
+	else if ((1 << pirq) & PMU_INT_ENVIRONMENT) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pmu_battery_count)
 			query_battery_state();
 		pmu_pass_intr(data, len);
@@ -1468,9 +1800,13 @@ next:
 			via_pmu_event(PMU_EVT_POWER, !!(data[1]&8));
 			via_pmu_event(PMU_EVT_LID, data[1]&1);
 		}
+<<<<<<< HEAD
 		break;
 
 	default:
+=======
+	} else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       pmu_pass_intr(data, len);
 	}
 	goto next;
@@ -1482,20 +1818,37 @@ pmu_sr_intr(void)
 	struct adb_request *req;
 	int bite = 0;
 
+<<<<<<< HEAD
 	if (in_8(&via2[B]) & TREQ) {
 		printk(KERN_ERR "PMU: spurious SR intr (%x)\n", in_8(&via2[B]));
 		return NULL;
 	}
 	/* The ack may not yet be low when we get the interrupt */
 	while ((in_8(&via2[B]) & TACK) != 0)
+=======
+	if (in_8(&via[B]) & TREQ) {
+		printk(KERN_ERR "PMU: spurious SR intr (%x)\n", in_8(&via[B]));
+		out_8(&via[IFR], SR_INT);
+		return NULL;
+	}
+	/* The ack may not yet be low when we get the interrupt */
+	while ((in_8(&via[B]) & TACK) != 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			;
 
 	/* if reading grab the byte, and reset the interrupt */
 	if (pmu_state == reading || pmu_state == reading_intr)
+<<<<<<< HEAD
 		bite = in_8(&via1[SR]);
 
 	/* reset TREQ and wait for TACK to go high */
 	out_8(&via2[B], in_8(&via2[B]) | TREQ);
+=======
+		bite = in_8(&via[SR]);
+
+	/* reset TREQ and wait for TACK to go high */
+	out_8(&via[B], in_8(&via[B]) | TREQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_for_ack();
 
 	switch (pmu_state) {
@@ -1596,6 +1949,7 @@ via_pmu_interrupt(int irq, void *arg)
 	++disable_poll;
 	
 	for (;;) {
+<<<<<<< HEAD
 		/* On 68k Macs, VIA interrupts are dispatched individually.
 		 * Unless we are polling, the relevant IRQ flag has already
 		 * been cleared.
@@ -1615,27 +1969,43 @@ via_pmu_interrupt(int irq, void *arg)
 			break;
 		}
 #endif
+=======
+		intr = in_8(&via[IFR]) & (SR_INT | CB1_INT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (intr == 0)
 			break;
 		handled = 1;
 		if (++nloop > 1000) {
 			printk(KERN_DEBUG "PMU: stuck in intr loop, "
 			       "intr=%x, ier=%x pmu_state=%d\n",
+<<<<<<< HEAD
 			       intr, in_8(&via1[IER]), pmu_state);
 			break;
 		}
 		if (intr & CB1_INT) {
 			adb_int_pending = 1;
 			pmu_irq_stats[11]++;
+=======
+			       intr, in_8(&via[IER]), pmu_state);
+			break;
+		}
+		out_8(&via[IFR], intr);
+		if (intr & CB1_INT) {
+			adb_int_pending = 1;
+			pmu_irq_stats[0]++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (intr & SR_INT) {
 			req = pmu_sr_intr();
 			if (req)
 				break;
 		}
+<<<<<<< HEAD
 #ifndef CONFIG_PPC_PMAC
 		break;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 recheck:
@@ -1702,7 +2072,11 @@ pmu_unlock(void)
 }
 
 
+<<<<<<< HEAD
 static __maybe_unused irqreturn_t
+=======
+static irqreturn_t
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gpio1_interrupt(int irq, void *arg)
 {
 	unsigned long flags;
@@ -1713,7 +2087,11 @@ gpio1_interrupt(int irq, void *arg)
 			disable_irq_nosync(gpio_irq);
 			gpio_irq_enabled = 0;
 		}
+<<<<<<< HEAD
 		pmu_irq_stats[12]++;
+=======
+		pmu_irq_stats[1]++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adb_int_pending = 1;
 		spin_unlock_irqrestore(&pmu_lock, flags);
 		via_pmu_interrupt(0, NULL);
@@ -1727,7 +2105,11 @@ pmu_enable_irled(int on)
 {
 	struct adb_request req;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (vias == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ;
 	if (pmu_kind == PMU_KEYLARGO_BASED)
 		return ;
@@ -1742,7 +2124,11 @@ pmu_restart(void)
 {
 	struct adb_request req;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (via == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	local_irq_disable();
@@ -1767,7 +2153,11 @@ pmu_shutdown(void)
 {
 	struct adb_request req;
 
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (via == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	local_irq_disable();
@@ -1795,7 +2185,11 @@ pmu_shutdown(void)
 int
 pmu_present(void)
 {
+<<<<<<< HEAD
 	return pmu_state != uninitialized;
+=======
+	return via != 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #if defined(CONFIG_SUSPEND) && defined(CONFIG_PPC32)
@@ -1808,6 +2202,7 @@ static u32 save_via[8];
 static void
 save_via_state(void)
 {
+<<<<<<< HEAD
 	save_via[0] = in_8(&via1[ANH]);
 	save_via[1] = in_8(&via1[DIRA]);
 	save_via[2] = in_8(&via1[B]);
@@ -1816,10 +2211,21 @@ save_via_state(void)
 	save_via[5] = in_8(&via1[ACR]);
 	save_via[6] = in_8(&via1[T1CL]);
 	save_via[7] = in_8(&via1[T1CH]);
+=======
+	save_via[0] = in_8(&via[ANH]);
+	save_via[1] = in_8(&via[DIRA]);
+	save_via[2] = in_8(&via[B]);
+	save_via[3] = in_8(&via[DIRB]);
+	save_via[4] = in_8(&via[PCR]);
+	save_via[5] = in_8(&via[ACR]);
+	save_via[6] = in_8(&via[T1CL]);
+	save_via[7] = in_8(&via[T1CH]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 static void
 restore_via_state(void)
 {
+<<<<<<< HEAD
 	out_8(&via1[ANH],  save_via[0]);
 	out_8(&via1[DIRA], save_via[1]);
 	out_8(&via1[B],    save_via[2]);
@@ -1831,6 +2237,19 @@ restore_via_state(void)
 	out_8(&via1[IER], IER_CLR | 0x7f);	/* disable all intrs */
 	out_8(&via1[IFR], 0x7f);			/* clear IFR */
 	out_8(&via1[IER], IER_SET | SR_INT | CB1_INT);
+=======
+	out_8(&via[ANH], save_via[0]);
+	out_8(&via[DIRA], save_via[1]);
+	out_8(&via[B], save_via[2]);
+	out_8(&via[DIRB], save_via[3]);
+	out_8(&via[PCR], save_via[4]);
+	out_8(&via[ACR], save_via[5]);
+	out_8(&via[T1CL], save_via[6]);
+	out_8(&via[T1CH], save_via[7]);
+	out_8(&via[IER], IER_CLR | 0x7f);	/* disable all intrs */
+	out_8(&via[IFR], 0x7f);				/* clear IFR */
+	out_8(&via[IER], IER_SET | SR_INT | CB1_INT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define	GRACKLE_PM	(1<<7)
@@ -1845,7 +2264,11 @@ static int powerbook_sleep_grackle(void)
 	struct adb_request req;
 	struct pci_dev *grackle;
 
+<<<<<<< HEAD
 	grackle = pci_get_domain_bus_and_slot(0, 0, 0);
+=======
+	grackle = pci_get_bus_and_slot(0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!grackle)
 		return -ENODEV;
 
@@ -2127,7 +2550,11 @@ pmu_open(struct inode *inode, struct file *file)
 	unsigned long flags;
 
 	pp = kmalloc(sizeof(struct pmu_private), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!pp)
+=======
+	if (pp == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	pp->rb_get = pp->rb_put = 0;
 	spin_lock_init(&pp->lock);
@@ -2153,7 +2580,11 @@ pmu_read(struct file *file, char __user *buf,
 	unsigned long flags;
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (count < 1 || !pp)
+=======
+	if (count < 1 || pp == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	if (!access_ok(VERIFY_WRITE, buf, count))
 		return -EFAULT;
@@ -2203,6 +2634,7 @@ pmu_write(struct file *file, const char __user *buf,
 	return 0;
 }
 
+<<<<<<< HEAD
 static __poll_t
 pmu_fpoll(struct file *filp, poll_table *wait)
 {
@@ -2211,11 +2643,25 @@ pmu_fpoll(struct file *filp, poll_table *wait)
 	unsigned long flags;
 	
 	if (!pp)
+=======
+static unsigned int
+pmu_fpoll(struct file *filp, poll_table *wait)
+{
+	struct pmu_private *pp = filp->private_data;
+	unsigned int mask = 0;
+	unsigned long flags;
+	
+	if (pp == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	poll_wait(filp, &pp->wait, wait);
 	spin_lock_irqsave(&pp->lock, flags);
 	if (pp->rb_get != pp->rb_put)
+<<<<<<< HEAD
 		mask |= EPOLLIN;
+=======
+		mask |= POLLIN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&pp->lock, flags);
 	return mask;
 }
@@ -2226,7 +2672,11 @@ pmu_release(struct inode *inode, struct file *file)
 	struct pmu_private *pp = file->private_data;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (pp) {
+=======
+	if (pp != 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		file->private_data = NULL;
 		spin_lock_irqsave(&all_pvt_lock, flags);
 		list_del(&pp->list);
@@ -2336,7 +2786,10 @@ static int pmu_ioctl(struct file *filp,
 	int error = -EINVAL;
 
 	switch (cmd) {
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_PMAC
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case PMU_IOC_SLEEP:
 		if (!capable(CAP_SYS_ADMIN))
 			return -EACCES;
@@ -2346,7 +2799,10 @@ static int pmu_ioctl(struct file *filp,
 			return put_user(0, argp);
 		else
 			return put_user(1, argp);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PMAC_BACKLIGHT_LEGACY
 	/* Compatibility ioctl's for backlight */
@@ -2463,7 +2919,11 @@ static struct miscdevice pmu_device = {
 
 static int pmu_device_init(void)
 {
+<<<<<<< HEAD
 	if (pmu_state == uninitialized)
+=======
+	if (!via)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	if (misc_register(&pmu_device) < 0)
 		printk(KERN_ERR "via-pmu: cannot register misc device.\n");
@@ -2474,6 +2934,7 @@ device_initcall(pmu_device_init);
 
 #ifdef DEBUG_SLEEP
 static inline void 
+<<<<<<< HEAD
 polled_handshake(void)
 {
 	via2[B] &= ~TREQ; eieio();
@@ -2481,10 +2942,20 @@ polled_handshake(void)
 		;
 	via2[B] |= TREQ; eieio();
 	while ((via2[B] & TACK) == 0)
+=======
+polled_handshake(volatile unsigned char __iomem *via)
+{
+	via[B] &= ~TREQ; eieio();
+	while ((via[B] & TACK) != 0)
+		;
+	via[B] |= TREQ; eieio();
+	while ((via[B] & TACK) == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		;
 }
 
 static inline void 
+<<<<<<< HEAD
 polled_send_byte(int x)
 {
 	via1[ACR] |= SR_OUT | SR_EXT; eieio();
@@ -2501,6 +2972,24 @@ polled_recv_byte(void)
 	x = via1[SR]; eieio();
 	polled_handshake();
 	x = via1[SR]; eieio();
+=======
+polled_send_byte(volatile unsigned char __iomem *via, int x)
+{
+	via[ACR] |= SR_OUT | SR_EXT; eieio();
+	via[SR] = x; eieio();
+	polled_handshake(via);
+}
+
+static inline int
+polled_recv_byte(volatile unsigned char __iomem *via)
+{
+	int x;
+
+	via[ACR] = (via[ACR] & ~SR_OUT) | SR_EXT; eieio();
+	x = via[SR]; eieio();
+	polled_handshake(via);
+	x = via[SR]; eieio();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return x;
 }
 
@@ -2509,6 +2998,10 @@ pmu_polled_request(struct adb_request *req)
 {
 	unsigned long flags;
 	int i, l, c;
+<<<<<<< HEAD
+=======
+	volatile unsigned char __iomem *v = via;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	req->complete = 1;
 	c = req->data[0];
@@ -2520,6 +3013,7 @@ pmu_polled_request(struct adb_request *req)
 	while (pmu_state != idle)
 		pmu_poll();
 
+<<<<<<< HEAD
 	while ((via2[B] & TACK) == 0)
 		;
 	polled_send_byte(c);
@@ -2535,6 +3029,23 @@ pmu_polled_request(struct adb_request *req)
 		l = polled_recv_byte();
 	for (i = 0; i < l; ++i)
 		req->reply[i + req->reply_len] = polled_recv_byte();
+=======
+	while ((via[B] & TACK) == 0)
+		;
+	polled_send_byte(v, c);
+	if (l < 0) {
+		l = req->nbytes - 1;
+		polled_send_byte(v, l);
+	}
+	for (i = 1; i <= l; ++i)
+		polled_send_byte(v, req->data[i]);
+
+	l = pmu_data_len[c][1];
+	if (l < 0)
+		l = polled_recv_byte(v);
+	for (i = 0; i < l; ++i)
+		req->reply[i + req->reply_len] = polled_recv_byte(v);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (req->done)
 		(*req->done)(req);

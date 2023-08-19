@@ -38,8 +38,11 @@ enum helene_xtal {
  * @set_tuner_priv:	Callback function private context
  * @set_tuner_callback:	Callback function that notifies the parent driver
  *			which tuner is active now
+<<<<<<< HEAD
  * @xtal: Cristal frequency as described by &enum helene_xtal
  * @fe: Frontend for which connects this tuner
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct helene_config {
 	u8	i2c_address;
@@ -47,6 +50,7 @@ struct helene_config {
 	void	*set_tuner_priv;
 	int	(*set_tuner_callback)(void *, int);
 	enum helene_xtal xtal;
+<<<<<<< HEAD
 
 	struct dvb_frontend *fe;
 };
@@ -77,6 +81,14 @@ extern struct dvb_frontend *helene_attach(struct dvb_frontend *fe,
 extern struct dvb_frontend *helene_attach_s(struct dvb_frontend *fe,
 					const struct helene_config *config,
 					struct i2c_adapter *i2c);
+=======
+};
+
+#if IS_REACHABLE(CONFIG_DVB_HELENE)
+extern struct dvb_frontend *helene_attach(struct dvb_frontend *fe,
+					const struct helene_config *config,
+					struct i2c_adapter *i2c);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static inline struct dvb_frontend *helene_attach(struct dvb_frontend *fe,
 					const struct helene_config *config,
@@ -85,6 +97,16 @@ static inline struct dvb_frontend *helene_attach(struct dvb_frontend *fe,
 	pr_warn("%s: driver disabled by Kconfig\n", __func__);
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+#endif
+
+#if IS_REACHABLE(CONFIG_DVB_HELENE)
+extern struct dvb_frontend *helene_attach_s(struct dvb_frontend *fe,
+					const struct helene_config *config,
+					struct i2c_adapter *i2c);
+#else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct dvb_frontend *helene_attach_s(struct dvb_frontend *fe,
 					const struct helene_config *config,
 					struct i2c_adapter *i2c)

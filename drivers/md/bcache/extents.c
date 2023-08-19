@@ -18,7 +18,11 @@
  * as keys are inserted we only sort the pages that have not yet been written.
  * When garbage collection is run, we resort the entire node.
  *
+<<<<<<< HEAD
  * All configuration is done via sysfs; see Documentation/admin-guide/bcache.rst.
+=======
+ * All configuration is done via sysfs; see Documentation/bcache.txt.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "bcache.h"
@@ -46,7 +50,11 @@ static bool bch_key_sort_cmp(struct btree_iter_set l,
 
 static bool __ptr_invalid(struct cache_set *c, const struct bkey *k)
 {
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < KEY_PTRS(k); i++)
 		if (ptr_available(c, k, i)) {
@@ -67,7 +75,11 @@ static bool __ptr_invalid(struct cache_set *c, const struct bkey *k)
 
 static const char *bch_ptr_status(struct cache_set *c, const struct bkey *k)
 {
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < KEY_PTRS(k); i++)
 		if (ptr_available(c, k, i)) {
@@ -96,7 +108,11 @@ static const char *bch_ptr_status(struct cache_set *c, const struct bkey *k)
 
 void bch_extent_to_text(char *buf, size_t size, const struct bkey *k)
 {
+<<<<<<< HEAD
 	unsigned int i = 0;
+=======
+	unsigned i = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *out = buf, *end = buf + size;
 
 #define p(...)	(out += scnprintf(out, end - out, __VA_ARGS__))
@@ -126,6 +142,7 @@ void bch_extent_to_text(char *buf, size_t size, const struct bkey *k)
 static void bch_bkey_dump(struct btree_keys *keys, const struct bkey *k)
 {
 	struct btree *b = container_of(keys, struct btree, keys);
+<<<<<<< HEAD
 	unsigned int j;
 	char buf[80];
 
@@ -142,6 +159,24 @@ static void bch_bkey_dump(struct btree_keys *keys, const struct bkey *k)
 	}
 
 	pr_err(" %s\n", bch_ptr_status(b->c, k));
+=======
+	unsigned j;
+	char buf[80];
+
+	bch_extent_to_text(buf, sizeof(buf), k);
+	printk(" %s", buf);
+
+	for (j = 0; j < KEY_PTRS(k); j++) {
+		size_t n = PTR_BUCKET_NR(b->c, k, j);
+		printk(" bucket %zu", n);
+
+		if (n >= b->c->sb.first_bucket && n < b->c->sb.nbuckets)
+			printk(" prio %i",
+			       PTR_BUCKET(b->c, k, j)->prio);
+	}
+
+	printk(" %s\n", bch_ptr_status(b->c, k));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Btree ptrs */
@@ -166,13 +201,20 @@ bad:
 static bool bch_btree_ptr_invalid(struct btree_keys *bk, const struct bkey *k)
 {
 	struct btree *b = container_of(bk, struct btree, keys);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return __bch_btree_ptr_invalid(b->c, k);
 }
 
 static bool btree_ptr_bad_expensive(struct btree *b, const struct bkey *k)
 {
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char buf[80];
 	struct bucket *g;
 
@@ -205,7 +247,11 @@ err:
 static bool bch_btree_ptr_bad(struct btree_keys *bk, const struct bkey *k)
 {
 	struct btree *b = container_of(bk, struct btree, keys);
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!bkey_cmp(k, &ZERO_KEY) ||
 	    !KEY_PTRS(k) ||
@@ -328,14 +374,21 @@ static bool bch_extent_insert_fixup(struct btree_keys *b,
 	struct cache_set *c = container_of(b, struct btree, keys)->c;
 
 	uint64_t old_offset;
+<<<<<<< HEAD
 	unsigned int old_size, sectors_found = 0;
+=======
+	unsigned old_size, sectors_found = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(!KEY_OFFSET(insert));
 	BUG_ON(!KEY_SIZE(insert));
 
 	while (1) {
 		struct bkey *k = bch_btree_iter_next(iter);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!k)
 			break;
 
@@ -365,7 +418,11 @@ static bool bch_extent_insert_fixup(struct btree_keys *b,
 			 * k might have been split since we inserted/found the
 			 * key we're replacing
 			 */
+<<<<<<< HEAD
 			unsigned int i;
+=======
+			unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			uint64_t offset = KEY_START(k) -
 				KEY_START(replace_key);
 
@@ -500,12 +557,19 @@ bad:
 static bool bch_extent_invalid(struct btree_keys *bk, const struct bkey *k)
 {
 	struct btree *b = container_of(bk, struct btree, keys);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return __bch_extent_invalid(b->c, k);
 }
 
 static bool bch_extent_bad_expensive(struct btree *b, const struct bkey *k,
+<<<<<<< HEAD
 				     unsigned int ptr)
+=======
+				     unsigned ptr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bucket *g = PTR_BUCKET(b->c, k, ptr);
 	char buf[80];
@@ -537,8 +601,13 @@ err:
 static bool bch_extent_bad(struct btree_keys *bk, const struct bkey *k)
 {
 	struct btree *b = container_of(bk, struct btree, keys);
+<<<<<<< HEAD
 	unsigned int i, stale;
 	char buf[80];
+=======
+	struct bucket *g;
+	unsigned i, stale;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!KEY_PTRS(k) ||
 	    bch_extent_invalid(bk, k))
@@ -548,6 +617,7 @@ static bool bch_extent_bad(struct btree_keys *bk, const struct bkey *k)
 		if (!ptr_available(b->c, k, i))
 			return true;
 
+<<<<<<< HEAD
 	for (i = 0; i < KEY_PTRS(k); i++) {
 		stale = ptr_stale(b->c, k, i);
 
@@ -561,6 +631,22 @@ static bool bch_extent_bad(struct btree_keys *bk, const struct bkey *k)
 			     "key too stale: %i, need_gc %u",
 			     stale, b->c->need_gc);
 
+=======
+	if (!expensive_debug_checks(b->c) && KEY_DIRTY(k))
+		return false;
+
+	for (i = 0; i < KEY_PTRS(k); i++) {
+		g = PTR_BUCKET(b->c, k, i);
+		stale = ptr_stale(b->c, k, i);
+
+		btree_bug_on(stale > 96, b,
+			     "key too stale: %i, need_gc %u",
+			     stale, b->c->need_gc);
+
+		btree_bug_on(stale && KEY_DIRTY(k) && KEY_SIZE(k),
+			     b, "stale dirty pointer");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (stale)
 			return true;
 
@@ -578,12 +664,19 @@ static uint64_t merge_chksums(struct bkey *l, struct bkey *r)
 		~((uint64_t)1 << 63);
 }
 
+<<<<<<< HEAD
 static bool bch_extent_merge(struct btree_keys *bk,
 			     struct bkey *l,
 			     struct bkey *r)
 {
 	struct btree *b = container_of(bk, struct btree, keys);
 	unsigned int i;
+=======
+static bool bch_extent_merge(struct btree_keys *bk, struct bkey *l, struct bkey *r)
+{
+	struct btree *b = container_of(bk, struct btree, keys);
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (key_merging_disabled(b->c))
 		return false;

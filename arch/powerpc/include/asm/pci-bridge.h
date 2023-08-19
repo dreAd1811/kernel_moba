@@ -197,18 +197,31 @@ struct pci_dn {
 	struct	iommu_table_group *table_group;	/* for phb's or bridges */
 
 	int	pci_ext_config_space;	/* for pci devices */
+<<<<<<< HEAD
+=======
+
+	struct	pci_dev *pcidev;	/* back-pointer to the pci device */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_EEH
 	struct eeh_dev *edev;		/* eeh device */
 #endif
 #define IODA_INVALID_PE		0xFFFFFFFF
+<<<<<<< HEAD
 	unsigned int pe_number;
 #ifdef CONFIG_PCI_IOV
 	int     vf_index;		/* VF index in the PF */
+=======
+#ifdef CONFIG_PPC_POWERNV
+	unsigned int pe_number;
+	int     vf_index;		/* VF index in the PF */
+#ifdef CONFIG_PCI_IOV
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16     vfs_expanded;		/* number of VFs IOV BAR expanded */
 	u16     num_vfs;		/* number of VFs enabled*/
 	unsigned int *pe_num_map;	/* PE# for the first VF PE or array */
 	bool    m64_single_mode;	/* Use M64 BAR in Single Mode */
 #define IODA_INVALID_M64        (-1)
+<<<<<<< HEAD
 	int     (*m64_map)[PCI_SRIOV_NUM_BARS];	/* Only used on powernv */
 	int     last_allow_rc;			/* Only used on pseries */
 #endif /* CONFIG_PCI_IOV */
@@ -216,6 +229,14 @@ struct pci_dn {
 	struct list_head child_list;
 	struct list_head list;
 	struct resource holes[PCI_SRIOV_NUM_BARS];
+=======
+	int     (*m64_map)[PCI_SRIOV_NUM_BARS];
+#endif /* CONFIG_PCI_IOV */
+	int	mps;			/* Maximum Payload Size */
+#endif
+	struct list_head child_list;
+	struct list_head list;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Get the pointer to a device_node's pci_dn */

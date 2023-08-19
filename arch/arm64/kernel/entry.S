@@ -41,9 +41,25 @@
  * Context tracking subsystem.  Used to instrument transitions
  * between user and kernel mode.
  */
+<<<<<<< HEAD
 	.macro ct_user_exit
 #ifdef CONFIG_CONTEXT_TRACKING
 	bl	context_tracking_user_exit
+=======
+	.macro ct_user_exit, syscall = 0
+#ifdef CONFIG_CONTEXT_TRACKING
+	bl	context_tracking_user_exit
+	.if \syscall == 1
+	/*
+	 * Save/restore needed during syscalls.  Restore syscall arguments from
+	 * the values already saved on stack during kernel_entry.
+	 */
+	ldp	x0, x1, [sp]
+	ldp	x2, x3, [sp, #S_X2]
+	ldp	x4, x5, [sp, #S_X4]
+	ldp	x6, x7, [sp, #S_X6]
+	.endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	.endm
 
@@ -53,12 +69,15 @@
 #endif
 	.endm
 
+<<<<<<< HEAD
 	.macro	clear_gp_regs
 	.irp	n,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29
 	mov	x\n, xzr
 	.endr
 	.endm
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Bad Abort numbers
  *-----------------
@@ -136,6 +155,7 @@ alternative_else_nop_endif
 
 	// This macro corrupts x0-x3. It is the caller's duty
 	// to save/restore them if required.
+<<<<<<< HEAD
 	.macro	apply_ssbd, state, tmp1, tmp2
 #ifdef CONFIG_ARM64_SSBD
 alternative_cb	arm64_enable_wa2_handling
@@ -151,6 +171,21 @@ alternative_cb	arm64_update_smccc_conduit
 	nop					// Patched to SMC/HVC #0
 alternative_cb_end
 .L__asm_ssbd_skip\@:
+=======
+	.macro	apply_ssbd, state, targ, tmp1, tmp2
+#ifdef CONFIG_ARM64_SSBD
+	ldr	\tmp1, =ssbd_state
+	ldr	\tmp1, [\tmp1]
+	cmp	\tmp1, #ARM64_SSBD_KERNEL
+	b.ne	\targ
+	ldr_this_cpu	\tmp2, arm64_ssbd_callback_required, \tmp1
+	cbz	\tmp2, \targ
+	ldr	\tmp2, [tsk, #TSK_TI_FLAGS]
+	tbnz	\tmp2, #TIF_SSBD, \targ
+	mov	w0, #ARM_SMCCC_ARCH_WORKAROUND_2
+	mov	w1, #\state
+	smc	#0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	.endm
 
@@ -175,14 +210,34 @@ alternative_cb_end
 	stp	x28, x29, [sp, #16 * 14]
 
 	.if	\el == 0
+<<<<<<< HEAD
 	clear_gp_regs
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mrs	x21, sp_el0
 	ldr_this_cpu	tsk, __entry_task, x20	// Ensure MDSCR_EL1.SS is clear,
 	ldr	x19, [tsk, #TSK_TI_FLAGS]	// since we can unmask debug
 	disable_step_tsk x19, x20		// exceptions when scheduling.
 
+<<<<<<< HEAD
 	apply_ssbd 1, x22, x23
 
+=======
+	apply_ssbd 1, 1f, x22, x23
+
+#ifdef CONFIG_ARM64_SSBD
+	ldp	x0, x1, [sp, #16 * 0]
+	ldp	x2, x3, [sp, #16 * 1]
+#endif
+1:
+
+	mov	x29, xzr			// fp pointed to user-space
+
+#ifdef CONFIG_SHADOW_CALL_STACK
+	ldr	x18, [tsk, #TSK_TI_SCS]		// Restore shadow call stack
+	str	xzr, [tsk, #TSK_TI_SCS]		// Limit visibility of saved SCS
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.else
 	add	x21, sp, #S_FRAME_SIZE
 	get_thread_info tsk
@@ -260,8 +315,11 @@ alternative_else_nop_endif
 
 	.macro	kernel_exit, el
 	.if	\el != 0
+<<<<<<< HEAD
 	disable_daif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Restore the task's original addr_limit. */
 	ldr	x20, [sp, #S_ORIG_ADDR_LIMIT]
 	str	x20, [tsk, #TSK_TI_ADDR_LIMIT]
@@ -274,6 +332,15 @@ alternative_else_nop_endif
 	ct_user_enter
 	.endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SHADOW_CALL_STACK
+	.if	\el == 0
+	str	x18, [tsk, #TSK_TI_SCS]		// Save shadow call stack
+	.endif
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARM64_SW_TTBR0_PAN
 	/*
 	 * Restore access to TTBR0_EL1. If returning to EL0, no need for SPSR
@@ -322,7 +389,12 @@ alternative_if ARM64_WORKAROUND_845719
 alternative_else_nop_endif
 #endif
 3:
+<<<<<<< HEAD
 	apply_ssbd 0, x0, x1
+=======
+	apply_ssbd 0, 5f, x0, x1
+5:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.endif
 
 	msr	elr_el1, x21			// set up the return data
@@ -344,10 +416,13 @@ alternative_else_nop_endif
 	ldp	x28, x29, [sp, #16 * 14]
 	ldr	lr, [sp, #S_LR]
 	add	sp, sp, #S_FRAME_SIZE		// restore sp
+<<<<<<< HEAD
 	/*
 	 * ARCH_HAS_MEMBARRIER_SYNC_CORE rely on eret context synchronization
 	 * when returning from IPI handler, and when returning to user-space.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.if	\el == 0
 alternative_insn eret, nop, ARM64_UNMAP_KERNEL_AT_EL0
@@ -367,6 +442,12 @@ alternative_insn eret, nop, ARM64_UNMAP_KERNEL_AT_EL0
 
 	.macro	irq_stack_entry
 	mov	x19, sp			// preserve the original sp
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SHADOW_CALL_STACK
+	mov	x20, x18		// preserve the original shadow stack
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Compare sp with the base of the task stack.
@@ -384,15 +465,35 @@ alternative_insn eret, nop, ARM64_UNMAP_KERNEL_AT_EL0
 
 	/* switch to the irq stack */
 	mov	sp, x26
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_SHADOW_CALL_STACK
+	/* also switch to the irq shadow stack */
+	ldr_this_cpu x18, irq_shadow_call_stack_ptr, x26
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 9998:
 	.endm
 
 	/*
+<<<<<<< HEAD
 	 * x19 should be preserved between irq_stack_entry and
 	 * irq_stack_exit.
 	 */
 	.macro	irq_stack_exit
 	mov	sp, x19
+=======
+	 * The callee-saved regs (x19-x29) should be preserved between
+	 * irq_stack_entry and irq_stack_exit.
+	 */
+	.macro	irq_stack_exit
+	mov	sp, x19
+#ifdef CONFIG_SHADOW_CALL_STACK
+	mov	x18, x20
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.endm
 
 /*
@@ -436,18 +537,30 @@ ENTRY(vectors)
 	kernel_ventry	1, sync				// Synchronous EL1h
 	kernel_ventry	1, irq				// IRQ EL1h
 	kernel_ventry	1, fiq_invalid			// FIQ EL1h
+<<<<<<< HEAD
 	kernel_ventry	1, error			// Error EL1h
+=======
+	kernel_ventry	1, error_invalid		// Error EL1h
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kernel_ventry	0, sync				// Synchronous 64-bit EL0
 	kernel_ventry	0, irq				// IRQ 64-bit EL0
 	kernel_ventry	0, fiq_invalid			// FIQ 64-bit EL0
+<<<<<<< HEAD
 	kernel_ventry	0, error			// Error 64-bit EL0
+=======
+	kernel_ventry	0, error_invalid		// Error 64-bit EL0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_COMPAT
 	kernel_ventry	0, sync_compat, 32		// Synchronous 32-bit EL0
 	kernel_ventry	0, irq_compat, 32		// IRQ 32-bit EL0
 	kernel_ventry	0, fiq_invalid_compat, 32	// FIQ 32-bit EL0
+<<<<<<< HEAD
 	kernel_ventry	0, error_compat, 32		// Error 32-bit EL0
+=======
+	kernel_ventry	0, error_invalid_compat, 32	// Error 32-bit EL0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 	kernel_ventry	0, sync_invalid, 32		// Synchronous 32-bit EL0
 	kernel_ventry	0, irq_invalid, 32		// IRQ 32-bit EL0
@@ -516,6 +629,13 @@ ENDPROC(el0_error_invalid)
 el0_fiq_invalid_compat:
 	inv_entry 0, BAD_FIQ, 32
 ENDPROC(el0_fiq_invalid_compat)
+<<<<<<< HEAD
+=======
+
+el0_error_invalid_compat:
+	inv_entry 0, BAD_ERROR, 32
+ENDPROC(el0_error_invalid_compat)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 el1_sync_invalid:
@@ -567,18 +687,36 @@ el1_da:
 	 * Data abort handling
 	 */
 	mrs	x3, far_el1
+<<<<<<< HEAD
 	inherit_daif	pstate=x23, tmp=x2
 	clear_address_tag x0, x3
 	mov	x2, sp				// struct pt_regs
 	bl	do_mem_abort
 
+=======
+	enable_dbg
+	// re-enable interrupts if they were enabled in the aborted context
+	tbnz	x23, #7, 1f			// PSR_I_BIT
+	enable_irq
+1:
+	untagged_addr x0, x3
+	mov	x2, sp				// struct pt_regs
+	bl	do_mem_abort
+
+	// disable interrupts before pulling preserved data off the stack
+	disable_irq
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kernel_exit 1
 el1_sp_pc:
 	/*
 	 * Stack or PC alignment exception handling
 	 */
 	mrs	x0, far_el1
+<<<<<<< HEAD
 	inherit_daif	pstate=x23, tmp=x2
+=======
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	x2, sp
 	bl	do_sp_pc_abort
 	ASM_BUG()
@@ -586,7 +724,11 @@ el1_undef:
 	/*
 	 * Undefined instruction
 	 */
+<<<<<<< HEAD
 	inherit_daif	pstate=x23, tmp=x2
+=======
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	x0, sp
 	bl	do_undefinstr
 	kernel_exit 1
@@ -603,7 +745,11 @@ el1_dbg:
 	kernel_exit 1
 el1_inv:
 	// TODO: add support for undefined instructions in kernel mode
+<<<<<<< HEAD
 	inherit_daif	pstate=x23, tmp=x2
+=======
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	x0, sp
 	mov	x2, x1
 	mov	x1, #BAD_SYNC
@@ -614,7 +760,11 @@ ENDPROC(el1_sync)
 	.align	6
 el1_irq:
 	kernel_entry 1
+<<<<<<< HEAD
 	enable_da_f
+=======
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_TRACE_IRQFLAGS
 	bl	trace_hardirqs_off
 #endif
@@ -660,8 +810,11 @@ el0_sync:
 	b.eq	el0_ia
 	cmp	x24, #ESR_ELx_EC_FP_ASIMD	// FP/ASIMD access
 	b.eq	el0_fpsimd_acc
+<<<<<<< HEAD
 	cmp	x24, #ESR_ELx_EC_SVE		// SVE access
 	b.eq	el0_sve_acc
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmp	x24, #ESR_ELx_EC_FP_EXC64	// FP/ASIMD exception
 	b.eq	el0_fpsimd_exc
 	cmp	x24, #ESR_ELx_EC_SYS64		// configurable trap
@@ -697,9 +850,15 @@ el0_sync_compat:
 	cmp	x24, #ESR_ELx_EC_UNKNOWN	// unknown exception in EL0
 	b.eq	el0_undef
 	cmp	x24, #ESR_ELx_EC_CP15_32	// CP15 MRC/MCR trap
+<<<<<<< HEAD
 	b.eq	el0_cp15
 	cmp	x24, #ESR_ELx_EC_CP15_64	// CP15 MRRC/MCRR trap
 	b.eq	el0_cp15
+=======
+	b.eq	el0_cp15_32_compat
+	cmp	x24, #ESR_ELx_EC_CP15_64	// CP15 MRRC/MCRR trap
+	b.eq	el0_cp15_64_compat
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmp	x24, #ESR_ELx_EC_CP14_MR	// CP14 MRC/MCR trap
 	b.eq	el0_undef
 	cmp	x24, #ESR_ELx_EC_CP14_LS	// CP14 LDC/STC trap
@@ -710,14 +869,46 @@ el0_sync_compat:
 	b.ge	el0_dbg
 	b	el0_inv
 el0_svc_compat:
+<<<<<<< HEAD
 	mov	x0, sp
 	bl	el0_svc_compat_handler
+=======
+	/*
+	 * AArch32 syscall handling
+	 */
+	adrp	stbl, compat_sys_call_table	// load compat syscall table pointer
+	mov	wscno, w7			// syscall number in w7 (r7)
+	mov     wsc_nr, #__NR_compat_syscalls
+	b	el0_svc_naked
+
+el0_cp15_32_compat:
+	/*
+	 * AArch32 CP15 MRC/MCR trap handling
+	 */
+	enable_dbg_and_irq
+	ct_user_exit
+	mov	x0, x25
+	mov	x1, sp
+	bl	do_cp15_32_instr_compat
+	b	ret_to_user
+
+el0_cp15_64_compat:
+	/*
+	 * AArch32 CP15 MRRC/MCRR trap handling
+	 */
+	enable_dbg_and_irq
+	ct_user_exit
+	mov	x0, x25
+	mov	x1, sp
+	bl	do_cp15_64_instr_compat
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	b	ret_to_user
 
 	.align	6
 el0_irq_compat:
 	kernel_entry 0, 32
 	b	el0_irq_naked
+<<<<<<< HEAD
 
 el0_error_compat:
 	kernel_entry 0, 32
@@ -733,6 +924,8 @@ el0_cp15:
 	mov	x1, sp
 	bl	do_cp15instr
 	b	ret_to_user
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 el0_da:
@@ -740,9 +933,16 @@ el0_da:
 	 * Data abort handling
 	 */
 	mrs	x26, far_el1
+<<<<<<< HEAD
 	enable_daif
 	ct_user_exit
 	clear_address_tag x0, x26
+=======
+	// enable interrupts before calling the main handler
+	enable_dbg_and_irq
+	ct_user_exit
+	untagged_addr x0, x26
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	x1, x25
 	mov	x2, sp
 	bl	do_mem_abort
@@ -752,7 +952,11 @@ el0_ia:
 	 * Instruction abort handling
 	 */
 	mrs	x26, far_el1
+<<<<<<< HEAD
 	enable_da_f
+=======
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_TRACE_IRQFLAGS
 	bl	trace_hardirqs_off
 #endif
@@ -766,12 +970,17 @@ el0_fpsimd_acc:
 	/*
 	 * Floating Point or Advanced SIMD access
 	 */
+<<<<<<< HEAD
 	enable_daif
+=======
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ct_user_exit
 	mov	x0, x25
 	mov	x1, sp
 	bl	do_fpsimd_acc
 	b	ret_to_user
+<<<<<<< HEAD
 el0_sve_acc:
 	/*
 	 * Scalable Vector Extension access
@@ -787,6 +996,13 @@ el0_fpsimd_exc:
 	 * Floating Point, Advanced SIMD or SVE exception
 	 */
 	enable_daif
+=======
+el0_fpsimd_exc:
+	/*
+	 * Floating Point or Advanced SIMD exception
+	 */
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ct_user_exit
 	mov	x0, x25
 	mov	x1, sp
@@ -797,7 +1013,11 @@ el0_sp_pc:
 	 * Stack or PC alignment exception handling
 	 */
 	mrs	x26, far_el1
+<<<<<<< HEAD
 	enable_da_f
+=======
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_TRACE_IRQFLAGS
 	bl	trace_hardirqs_off
 #endif
@@ -811,7 +1031,12 @@ el0_undef:
 	/*
 	 * Undefined instruction
 	 */
+<<<<<<< HEAD
 	enable_daif
+=======
+	// enable interrupts before calling the main handler
+	enable_dbg_and_irq
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ct_user_exit
 	mov	x0, sp
 	bl	do_undefinstr
@@ -820,7 +1045,11 @@ el0_sys:
 	/*
 	 * System instructions, for trapped cache maintenance instructions
 	 */
+<<<<<<< HEAD
 	enable_daif
+=======
+	enable_dbg_and_irq
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ct_user_exit
 	mov	x0, x25
 	mov	x1, sp
@@ -835,11 +1064,19 @@ el0_dbg:
 	mov	x1, x25
 	mov	x2, sp
 	bl	do_debug_exception
+<<<<<<< HEAD
 	enable_da_f
 	ct_user_exit
 	b	ret_to_user
 el0_inv:
 	enable_daif
+=======
+	enable_dbg
+	ct_user_exit
+	b	ret_to_user
+el0_inv:
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ct_user_exit
 	mov	x0, sp
 	mov	x1, #BAD_SYNC
@@ -852,7 +1089,11 @@ ENDPROC(el0_sync)
 el0_irq:
 	kernel_entry 0
 el0_irq_naked:
+<<<<<<< HEAD
 	enable_da_f
+=======
+	enable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_TRACE_IRQFLAGS
 	bl	trace_hardirqs_off
 #endif
@@ -871,6 +1112,7 @@ el0_irq_naked:
 	b	ret_to_user
 ENDPROC(el0_irq)
 
+<<<<<<< HEAD
 el1_error:
 	kernel_entry 1
 	mrs	x1, esr_el1
@@ -891,6 +1133,25 @@ el0_error_naked:
 	ct_user_exit
 	b	ret_to_user
 ENDPROC(el0_error)
+=======
+/*
+ * This is the fast syscall return path.  We do as little as possible here,
+ * and this includes saving x0 back into the kernel stack.
+ */
+ret_fast_syscall:
+	disable_irq				// disable interrupts
+	str	x0, [sp, #S_X0]			// returned x0
+	ldr	x1, [tsk, #TSK_TI_FLAGS]	// re-check for syscall tracing
+	and	x2, x1, #_TIF_SYSCALL_WORK
+	cbnz	x2, ret_fast_syscall_trace
+	and	x2, x1, #_TIF_WORK_MASK
+	cbnz	x2, work_pending
+	enable_step_tsk x1, x2
+	kernel_exit 0
+ret_fast_syscall_trace:
+	enable_irq				// enable interrupts
+	b	__sys_trace_return_skipped	// we already saved x0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Ok, we need to do extra processing, enter the slow path.
@@ -907,15 +1168,22 @@ work_pending:
  * "slow" syscall return path.
  */
 ret_to_user:
+<<<<<<< HEAD
 	disable_daif
+=======
+	disable_irq				// disable interrupts
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ldr	x1, [tsk, #TSK_TI_FLAGS]
 	and	x2, x1, #_TIF_WORK_MASK
 	cbnz	x2, work_pending
 finish_ret_to_user:
 	enable_step_tsk x1, x2
+<<<<<<< HEAD
 #ifdef CONFIG_GCC_PLUGIN_STACKLEAK
 	bl	stackleak_erase
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kernel_exit 0
 ENDPROC(ret_to_user)
 
@@ -924,11 +1192,73 @@ ENDPROC(ret_to_user)
  */
 	.align	6
 el0_svc:
+<<<<<<< HEAD
 	mov	x0, sp
 	bl	el0_svc_handler
 	b	ret_to_user
 ENDPROC(el0_svc)
 
+=======
+	adrp	stbl, sys_call_table		// load syscall table pointer
+	mov	wscno, w8			// syscall number in w8
+	mov	wsc_nr, #__NR_syscalls
+el0_svc_naked:					// compat entry point
+	stp	x0, xscno, [sp, #S_ORIG_X0]	// save the original x0 and syscall number
+	enable_dbg_and_irq
+	ct_user_exit 1
+
+	ldr	x16, [tsk, #TSK_TI_FLAGS]	// check for syscall hooks
+	tst	x16, #_TIF_SYSCALL_WORK
+	b.ne	__sys_trace
+	cmp     wscno, wsc_nr			// check upper syscall limit
+	b.hs	ni_sys
+	mask_nospec64 xscno, xsc_nr, x19	// enforce bounds for syscall number
+	ldr	x16, [stbl, xscno, lsl #3]	// address in the syscall table
+	blr	x16				// call sys_* routine
+	b	ret_fast_syscall
+ni_sys:
+	mov	x0, sp
+	bl	do_ni_syscall
+	b	ret_fast_syscall
+ENDPROC(el0_svc)
+
+	/*
+	 * This is the really slow path.  We're going to be doing context
+	 * switches, and waiting for our parent to respond.
+	 */
+__sys_trace:
+	cmp     wscno, #NO_SYSCALL		// user-issued syscall(-1)?
+	b.ne	1f
+	mov	x0, #-ENOSYS			// set default errno if so
+	str	x0, [sp, #S_X0]
+1:	mov	x0, sp
+	bl	syscall_trace_enter
+	cmp	w0, #NO_SYSCALL			// skip the syscall?
+	b.eq	__sys_trace_return_skipped
+	mov	wscno, w0			// syscall number (possibly new)
+	mov	x1, sp				// pointer to regs
+	cmp	wscno, wsc_nr			// check upper syscall limit
+	b.hs	__ni_sys_trace
+	ldp	x0, x1, [sp]			// restore the syscall args
+	ldp	x2, x3, [sp, #S_X2]
+	ldp	x4, x5, [sp, #S_X4]
+	ldp	x6, x7, [sp, #S_X6]
+	ldr	x16, [stbl, xscno, lsl #3]	// address in the syscall table
+	blr	x16				// call sys_* routine
+
+__sys_trace_return:
+	str	x0, [sp, #S_X0]			// save returned x0
+__sys_trace_return_skipped:
+	mov	x0, sp
+	bl	syscall_trace_exit
+	b	ret_to_user
+
+__ni_sys_trace:
+	mov	x0, sp
+	bl	do_ni_syscall
+	b	__sys_trace_return
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.popsection				// .entry.text
 
 #ifdef CONFIG_UNMAP_KERNEL_AT_EL0
@@ -939,7 +1269,11 @@ ENDPROC(el0_svc)
 
 	.macro tramp_map_kernel, tmp
 	mrs	\tmp, ttbr1_el1
+<<<<<<< HEAD
 	add	\tmp, \tmp, #(PAGE_SIZE + RESERVED_TTBR0_SIZE)
+=======
+	sub	\tmp, \tmp, #(SWAPPER_DIR_SIZE + RESERVED_TTBR0_SIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bic	\tmp, \tmp, #USER_ASID_FLAG
 	msr	ttbr1_el1, \tmp
 #ifdef CONFIG_QCOM_FALKOR_ERRATUM_1003
@@ -958,7 +1292,11 @@ alternative_else_nop_endif
 
 	.macro tramp_unmap_kernel, tmp
 	mrs	\tmp, ttbr1_el1
+<<<<<<< HEAD
 	sub	\tmp, \tmp, #(PAGE_SIZE + RESERVED_TTBR0_SIZE)
+=======
+	add	\tmp, \tmp, #(SWAPPER_DIR_SIZE + RESERVED_TTBR0_SIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	orr	\tmp, \tmp, #USER_ASID_FLAG
 	msr	ttbr1_el1, \tmp
 	/*
@@ -1043,6 +1381,17 @@ __entry_tramp_data_start:
 #endif /* CONFIG_UNMAP_KERNEL_AT_EL0 */
 
 /*
+<<<<<<< HEAD
+=======
+ * Special system call wrappers.
+ */
+ENTRY(sys_rt_sigreturn_wrapper)
+	mov	x0, sp
+	b	sys_rt_sigreturn
+ENDPROC(sys_rt_sigreturn_wrapper)
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Register switch for AArch64. The callee-saved registers need to be saved
  * and restored. On entry:
  *   x0 = previous task_struct (must be preserved across the switch)
@@ -1071,6 +1420,14 @@ ENTRY(cpu_switch_to)
 	ldr	lr, [x8]
 	mov	sp, x9
 	msr	sp_el0, x1
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SHADOW_CALL_STACK
+	str	x18, [x0, #TSK_TI_SCS]
+	ldr	x18, [x1, #TSK_TI_SCS]
+	str	xzr, [x1, #TSK_TI_SCS]		// limit visibility of saved SCS
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret
 ENDPROC(cpu_switch_to)
 NOKPROBE(cpu_switch_to)
@@ -1087,6 +1444,7 @@ ENTRY(ret_from_fork)
 	b	ret_to_user
 ENDPROC(ret_from_fork)
 NOKPROBE(ret_from_fork)
+<<<<<<< HEAD
 
 #ifdef CONFIG_ARM_SDE_INTERFACE
 
@@ -1264,3 +1622,5 @@ alternative_else_nop_endif
 ENDPROC(__sdei_asm_handler)
 NOKPROBE(__sdei_asm_handler)
 #endif /* CONFIG_ARM_SDE_INTERFACE */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

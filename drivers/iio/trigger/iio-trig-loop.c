@@ -36,7 +36,11 @@ struct iio_loop_info {
 	struct task_struct *task;
 };
 
+<<<<<<< HEAD
 static const struct config_item_type iio_loop_type = {
+=======
+static struct config_item_type iio_loop_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_owner = THIS_MODULE,
 };
 
@@ -74,6 +78,10 @@ static int iio_loop_trigger_set_state(struct iio_trigger *trig, bool state)
 
 static const struct iio_trigger_ops iio_loop_trigger_ops = {
 	.set_trigger_state = iio_loop_trigger_set_state,
+<<<<<<< HEAD
+=======
+	.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct iio_sw_trigger *iio_trig_loop_probe(const char *name)

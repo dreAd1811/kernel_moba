@@ -7,6 +7,10 @@
  *
  * Copyright(c) 2013 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
+<<<<<<< HEAD
+=======
+ * Copyright(c) 2017        Intel Deutschland GmbH
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -33,6 +37,10 @@
  *
  * Copyright(c) 2013 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
+<<<<<<< HEAD
+=======
+ * Copyright(c) 2017        Intel Deutschland GmbH
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -279,8 +287,11 @@ struct iwl_bt_iterator_data {
 	struct ieee80211_chanctx_conf *primary;
 	struct ieee80211_chanctx_conf *secondary;
 	bool primary_ll;
+<<<<<<< HEAD
 	u8 primary_load;
 	u8 secondary_load;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline
@@ -297,6 +308,7 @@ void iwl_mvm_bt_coex_enable_rssi_event(struct iwl_mvm *mvm,
 		enable ? -IWL_MVM_BT_COEX_DIS_RED_TXP_THRESH : 0;
 }
 
+<<<<<<< HEAD
 #define MVM_COEX_TCM_PERIOD (HZ * 10)
 
 static void iwl_mvm_bt_coex_tcm_based_ci(struct iwl_mvm *mvm,
@@ -321,6 +333,8 @@ static void iwl_mvm_bt_coex_tcm_based_ci(struct iwl_mvm *mvm,
 	swap(data->primary, data->secondary);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* must be called under rcu_read_lock */
 static void iwl_mvm_bt_notif_iterator(void *_data, u8 *mac,
 				      struct ieee80211_vif *vif)
@@ -411,11 +425,14 @@ static void iwl_mvm_bt_notif_iterator(void *_data, u8 *mac,
 			/* there is low latency vif - we will be secondary */
 			data->secondary = chanctx_conf;
 		}
+<<<<<<< HEAD
 
 		if (data->primary == chanctx_conf)
 			data->primary_load = mvm->tcm.result.load[mvmvif->id];
 		else if (data->secondary == chanctx_conf)
 			data->secondary_load = mvm->tcm.result.load[mvmvif->id];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -429,10 +446,13 @@ static void iwl_mvm_bt_notif_iterator(void *_data, u8 *mac,
 		/* if secondary is not NULL, it might be a GO */
 		data->secondary = chanctx_conf;
 
+<<<<<<< HEAD
 	if (data->primary == chanctx_conf)
 		data->primary_load = mvm->tcm.result.load[mvmvif->id];
 	else if (data->secondary == chanctx_conf)
 		data->secondary_load = mvm->tcm.result.load[mvmvif->id];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * don't reduce the Tx power if one of these is true:
 	 *  we are in LOOSE
@@ -484,8 +504,11 @@ static void iwl_mvm_bt_coex_notif_handle(struct iwl_mvm *mvm)
 					mvm->hw, IEEE80211_IFACE_ITER_NORMAL,
 					iwl_mvm_bt_notif_iterator, &data);
 
+<<<<<<< HEAD
 	iwl_mvm_bt_coex_tcm_based_ci(mvm, &data);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (data.primary) {
 		struct ieee80211_chanctx_conf *chan = data.primary;
 		if (WARN_ON(!chan->def.chan)) {
@@ -549,6 +572,7 @@ void iwl_mvm_rx_bt_coex_notif(struct iwl_mvm *mvm,
 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
 	struct iwl_bt_coex_profile_notif *notif = (void *)pkt->data;
 
+<<<<<<< HEAD
 	IWL_DEBUG_COEX(mvm, "BT Coex Notification received\n");
 	IWL_DEBUG_COEX(mvm, "\tBT ci compliance %d\n", notif->bt_ci_compliance);
 	IWL_DEBUG_COEX(mvm, "\tBT primary_ch_lut %d\n",
@@ -560,6 +584,38 @@ void iwl_mvm_rx_bt_coex_notif(struct iwl_mvm *mvm,
 
 	/* remember this notification for future use: rssi fluctuations */
 	memcpy(&mvm->last_bt_notif, notif, sizeof(mvm->last_bt_notif));
+=======
+	if (!iwl_mvm_has_new_ats_coex_api(mvm)) {
+		struct iwl_bt_coex_profile_notif_v4 *v4 = (void *)pkt->data;
+
+		mvm->last_bt_notif.mbox_msg[0] = v4->mbox_msg[0];
+		mvm->last_bt_notif.mbox_msg[1] = v4->mbox_msg[1];
+		mvm->last_bt_notif.mbox_msg[2] = v4->mbox_msg[2];
+		mvm->last_bt_notif.mbox_msg[3] = v4->mbox_msg[3];
+		mvm->last_bt_notif.msg_idx = v4->msg_idx;
+		mvm->last_bt_notif.bt_ci_compliance = v4->bt_ci_compliance;
+		mvm->last_bt_notif.primary_ch_lut = v4->primary_ch_lut;
+		mvm->last_bt_notif.secondary_ch_lut = v4->secondary_ch_lut;
+		mvm->last_bt_notif.bt_activity_grading =
+			v4->bt_activity_grading;
+		mvm->last_bt_notif.ttc_status = v4->ttc_status;
+		mvm->last_bt_notif.rrc_status = v4->rrc_status;
+	} else {
+		/* save this notification for future use: rssi fluctuations */
+		memcpy(&mvm->last_bt_notif, notif, sizeof(mvm->last_bt_notif));
+	}
+
+	IWL_DEBUG_COEX(mvm, "BT Coex Notification received\n");
+	IWL_DEBUG_COEX(mvm, "\tBT ci compliance %d\n",
+		       mvm->last_bt_notif.bt_ci_compliance);
+	IWL_DEBUG_COEX(mvm, "\tBT primary_ch_lut %d\n",
+		       le32_to_cpu(mvm->last_bt_notif.primary_ch_lut));
+	IWL_DEBUG_COEX(mvm, "\tBT secondary_ch_lut %d\n",
+		       le32_to_cpu(mvm->last_bt_notif.secondary_ch_lut));
+	IWL_DEBUG_COEX(mvm, "\tBT activity grading %d\n",
+		       le32_to_cpu(mvm->last_bt_notif.bt_activity_grading));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iwl_mvm_bt_coex_notif_handle(mvm);
 }

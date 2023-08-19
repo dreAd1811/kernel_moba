@@ -232,13 +232,20 @@ spufs_mem_write(struct file *file, const char __user *buffer,
 	return size;
 }
 
+<<<<<<< HEAD
 static vm_fault_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 spufs_mem_mmap_fault(struct vm_fault *vmf)
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct spu_context *ctx	= vma->vm_file->private_data;
 	unsigned long pfn, offset;
+<<<<<<< HEAD
 	vm_fault_t ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	offset = vmf->pgoff << PAGE_SHIFT;
 	if (offset >= LS_SIZE)
@@ -257,11 +264,19 @@ spufs_mem_mmap_fault(struct vm_fault *vmf)
 		vma->vm_page_prot = pgprot_noncached_wc(vma->vm_page_prot);
 		pfn = (ctx->spu->local_store_phys + offset) >> PAGE_SHIFT;
 	}
+<<<<<<< HEAD
 	ret = vmf_insert_pfn(vma, vmf->address, pfn);
 
 	spu_release(ctx);
 
 	return ret;
+=======
+	vm_insert_pfn(vma, vmf->address, pfn);
+
+	spu_release(ctx);
+
+	return VM_FAULT_NOPAGE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int spufs_mem_mmap_access(struct vm_area_struct *vma,
@@ -313,14 +328,22 @@ static const struct file_operations spufs_mem_fops = {
 	.mmap			= spufs_mem_mmap,
 };
 
+<<<<<<< HEAD
 static vm_fault_t spufs_ps_fault(struct vm_fault *vmf,
+=======
+static int spufs_ps_fault(struct vm_fault *vmf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    unsigned long ps_offs,
 				    unsigned long ps_size)
 {
 	struct spu_context *ctx = vmf->vma->vm_file->private_data;
 	unsigned long area, offset = vmf->pgoff << PAGE_SHIFT;
+<<<<<<< HEAD
 	int err = 0;
 	vm_fault_t ret = VM_FAULT_NOPAGE;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spu_context_nospu_trace(spufs_ps_fault__enter, ctx);
 
@@ -351,26 +374,46 @@ static vm_fault_t spufs_ps_fault(struct vm_fault *vmf,
 	if (ctx->state == SPU_STATE_SAVED) {
 		up_read(&current->mm->mmap_sem);
 		spu_context_nospu_trace(spufs_ps_fault__sleep, ctx);
+<<<<<<< HEAD
 		err = spufs_wait(ctx->run_wq, ctx->state == SPU_STATE_RUNNABLE);
+=======
+		ret = spufs_wait(ctx->run_wq, ctx->state == SPU_STATE_RUNNABLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spu_context_trace(spufs_ps_fault__wake, ctx, ctx->spu);
 		down_read(&current->mm->mmap_sem);
 	} else {
 		area = ctx->spu->problem_phys + ps_offs;
+<<<<<<< HEAD
 		ret = vmf_insert_pfn(vmf->vma, vmf->address,
 				(area + offset) >> PAGE_SHIFT);
 		spu_context_trace(spufs_ps_fault__insert, ctx, ctx->spu);
 	}
 
 	if (!err)
+=======
+		vm_insert_pfn(vmf->vma, vmf->address, (area + offset) >> PAGE_SHIFT);
+		spu_context_trace(spufs_ps_fault__insert, ctx, ctx->spu);
+	}
+
+	if (!ret)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spu_release(ctx);
 
 refault:
 	put_spu_context(ctx);
+<<<<<<< HEAD
 	return ret;
 }
 
 #if SPUFS_MMAP_4K
 static vm_fault_t spufs_cntl_mmap_fault(struct vm_fault *vmf)
+=======
+	return VM_FAULT_NOPAGE;
+}
+
+#if SPUFS_MMAP_4K
+static int spufs_cntl_mmap_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return spufs_ps_fault(vmf, 0x4000, SPUFS_CNTL_MAP_SIZE);
 }
@@ -765,10 +808,17 @@ out:
 	return count;
 }
 
+<<<<<<< HEAD
 static __poll_t spufs_ibox_poll(struct file *file, poll_table *wait)
 {
 	struct spu_context *ctx = file->private_data;
 	__poll_t mask;
+=======
+static unsigned int spufs_ibox_poll(struct file *file, poll_table *wait)
+{
+	struct spu_context *ctx = file->private_data;
+	unsigned int mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &ctx->ibox_wq, wait);
 
@@ -777,7 +827,11 @@ static __poll_t spufs_ibox_poll(struct file *file, poll_table *wait)
 	 * that poll should not sleep.  Will be fixed later.
 	 */
 	mutex_lock(&ctx->state_mutex);
+<<<<<<< HEAD
 	mask = ctx->ops->mbox_stat_poll(ctx, EPOLLIN | EPOLLRDNORM);
+=======
+	mask = ctx->ops->mbox_stat_poll(ctx, POLLIN | POLLRDNORM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spu_release(ctx);
 
 	return mask;
@@ -901,10 +955,17 @@ out:
 	return count;
 }
 
+<<<<<<< HEAD
 static __poll_t spufs_wbox_poll(struct file *file, poll_table *wait)
 {
 	struct spu_context *ctx = file->private_data;
 	__poll_t mask;
+=======
+static unsigned int spufs_wbox_poll(struct file *file, poll_table *wait)
+{
+	struct spu_context *ctx = file->private_data;
+	unsigned int mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &ctx->wbox_wq, wait);
 
@@ -913,7 +974,11 @@ static __poll_t spufs_wbox_poll(struct file *file, poll_table *wait)
 	 * that poll should not sleep.  Will be fixed later.
 	 */
 	mutex_lock(&ctx->state_mutex);
+<<<<<<< HEAD
 	mask = ctx->ops->mbox_stat_poll(ctx, EPOLLOUT | EPOLLWRNORM);
+=======
+	mask = ctx->ops->mbox_stat_poll(ctx, POLLOUT | POLLWRNORM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spu_release(ctx);
 
 	return mask;
@@ -1043,7 +1108,11 @@ static ssize_t spufs_signal1_write(struct file *file, const char __user *buf,
 	return 4;
 }
 
+<<<<<<< HEAD
 static vm_fault_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 spufs_signal1_mmap_fault(struct vm_fault *vmf)
 {
 #if SPUFS_SIGNAL_MAP_SIZE == 0x1000
@@ -1181,7 +1250,11 @@ static ssize_t spufs_signal2_write(struct file *file, const char __user *buf,
 }
 
 #if SPUFS_MMAP_4K
+<<<<<<< HEAD
 static vm_fault_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 spufs_signal2_mmap_fault(struct vm_fault *vmf)
 {
 #if SPUFS_SIGNAL_MAP_SIZE == 0x1000
@@ -1310,7 +1383,11 @@ DEFINE_SPUFS_ATTRIBUTE(spufs_signal2_type, spufs_signal2_type_get,
 		       spufs_signal2_type_set, "%llu\n", SPU_ATTR_ACQUIRE);
 
 #if SPUFS_MMAP_4K
+<<<<<<< HEAD
 static vm_fault_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 spufs_mss_mmap_fault(struct vm_fault *vmf)
 {
 	return spufs_ps_fault(vmf, 0x0000, SPUFS_MSS_MAP_SIZE);
@@ -1372,7 +1449,11 @@ static const struct file_operations spufs_mss_fops = {
 	.llseek  = no_llseek,
 };
 
+<<<<<<< HEAD
 static vm_fault_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 spufs_psmap_mmap_fault(struct vm_fault *vmf)
 {
 	return spufs_ps_fault(vmf, 0x0000, SPUFS_PS_MAP_SIZE);
@@ -1432,7 +1513,11 @@ static const struct file_operations spufs_psmap_fops = {
 
 
 #if SPUFS_MMAP_4K
+<<<<<<< HEAD
 static vm_fault_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 spufs_mfc_mmap_fault(struct vm_fault *vmf)
 {
 	return spufs_ps_fault(vmf, 0x3000, SPUFS_MFC_MAP_SIZE);
@@ -1693,11 +1778,19 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t spufs_mfc_poll(struct file *file,poll_table *wait)
 {
 	struct spu_context *ctx = file->private_data;
 	u32 free_elements, tagstatus;
 	__poll_t mask;
+=======
+static unsigned int spufs_mfc_poll(struct file *file,poll_table *wait)
+{
+	struct spu_context *ctx = file->private_data;
+	u32 free_elements, tagstatus;
+	unsigned int mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &ctx->mfc_wq, wait);
 
@@ -1713,9 +1806,15 @@ static __poll_t spufs_mfc_poll(struct file *file,poll_table *wait)
 
 	mask = 0;
 	if (free_elements & 0xffff)
+<<<<<<< HEAD
 		mask |= EPOLLOUT | EPOLLWRNORM;
 	if (tagstatus & ctx->tagwait)
 		mask |= EPOLLIN | EPOLLRDNORM;
+=======
+		mask |= POLLOUT | POLLWRNORM;
+	if (tagstatus & ctx->tagwait)
+		mask |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("%s: free %d tagstatus %d tagwait %d\n", __func__,
 		free_elements, tagstatus, ctx->tagwait);
@@ -1991,8 +2090,14 @@ static ssize_t __spufs_mbox_info_read(struct spu_context *ctx,
 static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
 				   size_t len, loff_t *pos)
 {
+<<<<<<< HEAD
 	int ret;
 	struct spu_context *ctx = file->private_data;
+=======
+	struct spu_context *ctx = file->private_data;
+	u32 stat, data;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!access_ok(VERIFY_WRITE, buf, len))
 		return -EFAULT;
@@ -2001,11 +2106,24 @@ static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
 	if (ret)
 		return ret;
 	spin_lock(&ctx->csa.register_lock);
+<<<<<<< HEAD
 	ret = __spufs_mbox_info_read(ctx, buf, len, pos);
 	spin_unlock(&ctx->csa.register_lock);
 	spu_release_saved(ctx);
 
 	return ret;
+=======
+	stat = ctx->csa.prob.mb_stat_R;
+	data = ctx->csa.prob.pu_mb_R;
+	spin_unlock(&ctx->csa.register_lock);
+	spu_release_saved(ctx);
+
+	/* EOF if there's no entry in the mbox */
+	if (!(stat & 0x0000ff))
+		return 0;
+
+	return simple_read_from_buffer(buf, len, pos, &data, sizeof(data));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations spufs_mbox_info_fops = {
@@ -2032,6 +2150,10 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
 				   size_t len, loff_t *pos)
 {
 	struct spu_context *ctx = file->private_data;
+<<<<<<< HEAD
+=======
+	u32 stat, data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!access_ok(VERIFY_WRITE, buf, len))
@@ -2041,11 +2163,24 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
 	if (ret)
 		return ret;
 	spin_lock(&ctx->csa.register_lock);
+<<<<<<< HEAD
 	ret = __spufs_ibox_info_read(ctx, buf, len, pos);
 	spin_unlock(&ctx->csa.register_lock);
 	spu_release_saved(ctx);
 
 	return ret;
+=======
+	stat = ctx->csa.prob.mb_stat_R;
+	data = ctx->csa.priv2.puint_mb_R;
+	spin_unlock(&ctx->csa.register_lock);
+	spu_release_saved(ctx);
+
+	/* EOF if there's no entry in the ibox */
+	if (!(stat & 0xff0000))
+		return 0;
+
+	return simple_read_from_buffer(buf, len, pos, &data, sizeof(data));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations spufs_ibox_info_fops = {
@@ -2054,6 +2189,14 @@ static const struct file_operations spufs_ibox_info_fops = {
 	.llseek  = generic_file_llseek,
 };
 
+<<<<<<< HEAD
+=======
+static size_t spufs_wbox_info_cnt(struct spu_context *ctx)
+{
+	return (4 - ((ctx->csa.prob.mb_stat_R & 0x00ff00) >> 8)) * sizeof(u32);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
 			char __user *buf, size_t len, loff_t *pos)
 {
@@ -2062,7 +2205,11 @@ static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
 	u32 wbox_stat;
 
 	wbox_stat = ctx->csa.prob.mb_stat_R;
+<<<<<<< HEAD
 	cnt = 4 - ((wbox_stat & 0x00ff00) >> 8);
+=======
+	cnt = spufs_wbox_info_cnt(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < cnt; i++) {
 		data[i] = ctx->csa.spu_mailbox_data[i];
 	}
@@ -2075,7 +2222,12 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
 				   size_t len, loff_t *pos)
 {
 	struct spu_context *ctx = file->private_data;
+<<<<<<< HEAD
 	int ret;
+=======
+	u32 data[ARRAY_SIZE(ctx->csa.spu_mailbox_data)];
+	int ret, count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!access_ok(VERIFY_WRITE, buf, len))
 		return -EFAULT;
@@ -2084,11 +2236,21 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
 	if (ret)
 		return ret;
 	spin_lock(&ctx->csa.register_lock);
+<<<<<<< HEAD
 	ret = __spufs_wbox_info_read(ctx, buf, len, pos);
 	spin_unlock(&ctx->csa.register_lock);
 	spu_release_saved(ctx);
 
 	return ret;
+=======
+	count = spufs_wbox_info_cnt(ctx);
+	memcpy(&data, &ctx->csa.spu_mailbox_data, sizeof(data));
+	spin_unlock(&ctx->csa.register_lock);
+	spu_release_saved(ctx);
+
+	return simple_read_from_buffer(buf, len, pos, &data,
+				count * sizeof(u32));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations spufs_wbox_info_fops = {
@@ -2097,6 +2259,7 @@ static const struct file_operations spufs_wbox_info_fops = {
 	.llseek  = generic_file_llseek,
 };
 
+<<<<<<< HEAD
 static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
 			char __user *buf, size_t len, loff_t *pos)
 {
@@ -2112,12 +2275,38 @@ static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
 	for (i = 0; i < 16; i++) {
 		qp = &info.dma_info_command_data[i];
 		spuqp = &ctx->csa.priv2.spuq[i];
+=======
+static void spufs_get_dma_info(struct spu_context *ctx,
+		struct spu_dma_info *info)
+{
+	int i;
+
+	info->dma_info_type = ctx->csa.priv2.spu_tag_status_query_RW;
+	info->dma_info_mask = ctx->csa.lscsa->tag_mask.slot[0];
+	info->dma_info_status = ctx->csa.spu_chnldata_RW[24];
+	info->dma_info_stall_and_notify = ctx->csa.spu_chnldata_RW[25];
+	info->dma_info_atomic_command_status = ctx->csa.spu_chnldata_RW[27];
+	for (i = 0; i < 16; i++) {
+		struct mfc_cq_sr *qp = &info->dma_info_command_data[i];
+		struct mfc_cq_sr *spuqp = &ctx->csa.priv2.spuq[i];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		qp->mfc_cq_data0_RW = spuqp->mfc_cq_data0_RW;
 		qp->mfc_cq_data1_RW = spuqp->mfc_cq_data1_RW;
 		qp->mfc_cq_data2_RW = spuqp->mfc_cq_data2_RW;
 		qp->mfc_cq_data3_RW = spuqp->mfc_cq_data3_RW;
 	}
+<<<<<<< HEAD
+=======
+}
+
+static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
+			char __user *buf, size_t len, loff_t *pos)
+{
+	struct spu_dma_info info;
+
+	spufs_get_dma_info(ctx, &info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return simple_read_from_buffer(buf, len, pos, &info,
 				sizeof info);
@@ -2127,6 +2316,10 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
 			      size_t len, loff_t *pos)
 {
 	struct spu_context *ctx = file->private_data;
+<<<<<<< HEAD
+=======
+	struct spu_dma_info info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!access_ok(VERIFY_WRITE, buf, len))
@@ -2136,11 +2329,20 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
 	if (ret)
 		return ret;
 	spin_lock(&ctx->csa.register_lock);
+<<<<<<< HEAD
 	ret = __spufs_dma_info_read(ctx, buf, len, pos);
 	spin_unlock(&ctx->csa.register_lock);
 	spu_release_saved(ctx);
 
 	return ret;
+=======
+	spufs_get_dma_info(ctx, &info);
+	spin_unlock(&ctx->csa.register_lock);
+	spu_release_saved(ctx);
+
+	return simple_read_from_buffer(buf, len, pos, &info,
+				sizeof(info));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations spufs_dma_info_fops = {
@@ -2149,13 +2351,40 @@ static const struct file_operations spufs_dma_info_fops = {
 	.llseek = no_llseek,
 };
 
+<<<<<<< HEAD
+=======
+static void spufs_get_proxydma_info(struct spu_context *ctx,
+		struct spu_proxydma_info *info)
+{
+	int i;
+
+	info->proxydma_info_type = ctx->csa.prob.dma_querytype_RW;
+	info->proxydma_info_mask = ctx->csa.prob.dma_querymask_RW;
+	info->proxydma_info_status = ctx->csa.prob.dma_tagstatus_R;
+
+	for (i = 0; i < 8; i++) {
+		struct mfc_cq_sr *qp = &info->proxydma_info_command_data[i];
+		struct mfc_cq_sr *puqp = &ctx->csa.priv2.puq[i];
+
+		qp->mfc_cq_data0_RW = puqp->mfc_cq_data0_RW;
+		qp->mfc_cq_data1_RW = puqp->mfc_cq_data1_RW;
+		qp->mfc_cq_data2_RW = puqp->mfc_cq_data2_RW;
+		qp->mfc_cq_data3_RW = puqp->mfc_cq_data3_RW;
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
 			char __user *buf, size_t len, loff_t *pos)
 {
 	struct spu_proxydma_info info;
+<<<<<<< HEAD
 	struct mfc_cq_sr *qp, *puqp;
 	int ret = sizeof info;
 	int i;
+=======
+	int ret = sizeof info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (len < ret)
 		return -EINVAL;
@@ -2163,6 +2392,7 @@ static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
 	if (!access_ok(VERIFY_WRITE, buf, len))
 		return -EFAULT;
 
+<<<<<<< HEAD
 	info.proxydma_info_type = ctx->csa.prob.dma_querytype_RW;
 	info.proxydma_info_mask = ctx->csa.prob.dma_querymask_RW;
 	info.proxydma_info_status = ctx->csa.prob.dma_tagstatus_R;
@@ -2175,6 +2405,9 @@ static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
 		qp->mfc_cq_data2_RW = puqp->mfc_cq_data2_RW;
 		qp->mfc_cq_data3_RW = puqp->mfc_cq_data3_RW;
 	}
+=======
+	spufs_get_proxydma_info(ctx, &info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return simple_read_from_buffer(buf, len, pos, &info,
 				sizeof info);
@@ -2184,17 +2417,30 @@ static ssize_t spufs_proxydma_info_read(struct file *file, char __user *buf,
 				   size_t len, loff_t *pos)
 {
 	struct spu_context *ctx = file->private_data;
+<<<<<<< HEAD
+=======
+	struct spu_proxydma_info info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = spu_acquire_saved(ctx);
 	if (ret)
 		return ret;
 	spin_lock(&ctx->csa.register_lock);
+<<<<<<< HEAD
 	ret = __spufs_proxydma_info_read(ctx, buf, len, pos);
 	spin_unlock(&ctx->csa.register_lock);
 	spu_release_saved(ctx);
 
 	return ret;
+=======
+	spufs_get_proxydma_info(ctx, &info);
+	spin_unlock(&ctx->csa.register_lock);
+	spu_release_saved(ctx);
+
+	return simple_read_from_buffer(buf, len, pos, &info,
+				sizeof(info));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations spufs_proxydma_info_fops = {
@@ -2378,8 +2624,13 @@ static int switch_log_sprint(struct spu_context *ctx, char *tbuf, int n)
 
 	p = ctx->switch_log->log + ctx->switch_log->tail % SWITCH_LOG_BUFSIZE;
 
+<<<<<<< HEAD
 	return snprintf(tbuf, n, "%llu.%09u %d %u %u %llu\n",
 			(unsigned long long) p->tstamp.tv_sec,
+=======
+	return snprintf(tbuf, n, "%u.%09u %d %u %u %llu\n",
+			(unsigned int) p->tstamp.tv_sec,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			(unsigned int) p->tstamp.tv_nsec,
 			p->spu_id,
 			(unsigned int) p->type,
@@ -2458,11 +2709,19 @@ static ssize_t spufs_switch_log_read(struct file *file, char __user *buf,
 	return cnt == 0 ? error : cnt;
 }
 
+<<<<<<< HEAD
 static __poll_t spufs_switch_log_poll(struct file *file, poll_table *wait)
 {
 	struct inode *inode = file_inode(file);
 	struct spu_context *ctx = SPUFS_I(inode)->i_ctx;
 	__poll_t mask = 0;
+=======
+static unsigned int spufs_switch_log_poll(struct file *file, poll_table *wait)
+{
+	struct inode *inode = file_inode(file);
+	struct spu_context *ctx = SPUFS_I(inode)->i_ctx;
+	unsigned int mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	poll_wait(file, &ctx->switch_log->wait, wait);
@@ -2472,7 +2731,11 @@ static __poll_t spufs_switch_log_poll(struct file *file, poll_table *wait)
 		return rc;
 
 	if (spufs_switch_log_used(ctx) > 0)
+<<<<<<< HEAD
 		mask |= EPOLLIN;
+=======
+		mask |= POLLIN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spu_release(ctx);
 
@@ -2502,7 +2765,11 @@ void spu_switch_log_notify(struct spu *spu, struct spu_context *ctx,
 		struct switch_log_entry *p;
 
 		p = ctx->switch_log->log + ctx->switch_log->head;
+<<<<<<< HEAD
 		ktime_get_ts64(&p->tstamp);
+=======
+		ktime_get_ts(&p->tstamp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p->timebase = get_tb();
 		p->spu_id = spu ? spu->number : -1;
 		p->type = type;

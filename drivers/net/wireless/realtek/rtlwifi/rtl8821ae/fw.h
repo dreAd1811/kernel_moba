@@ -137,6 +137,23 @@
 #define	FW_PWR_STATE_ACTIVE	((FW_PS_RF_ON) | (FW_PS_REGISTER_ACTIVE))
 #define	FW_PWR_STATE_RF_OFF	0
 
+<<<<<<< HEAD
+=======
+enum rtl8812_c2h_evt {
+	C2H_8812_DBG = 0,
+	C2H_8812_LB = 1,
+	C2H_8812_TXBF = 2,
+	C2H_8812_TX_REPORT = 3,
+	C2H_8812_BT_INFO = 9,
+	C2H_8812_BT_MP = 11,
+	C2H_8812_RA_RPT = 12,
+
+	C2H_8812_FW_SWCHNL = 0x10,
+	C2H_8812_IQK_FINISH = 0x11,
+	MAX_8812_C2HEVENT
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rtl8821a_h2c_cmd {
 	H2C_8821AE_RSVDPAGE = 0,
 	H2C_8821AE_MSRRPT = 1,
@@ -317,6 +334,14 @@ void rtl8821ae_set_fw_keep_alive_cmd(struct ieee80211_hw *hw, bool func_en);
 void rtl8821ae_set_fw_disconnect_decision_ctrl_cmd(struct ieee80211_hw *hw,
 						   bool enabled);
 void rtl8821ae_set_fw_global_info_cmd(struct ieee80211_hw *hw);
+<<<<<<< HEAD
 void rtl8821ae_c2h_ra_report_handler(struct ieee80211_hw *hw,
 				     u8 *cmd_buf, u8 cmd_len);
+=======
+void rtl8821ae_c2h_packet_handler(struct ieee80211_hw *hw,
+				  u8 *buffer, u8 length);
+void rtl8821ae_c2h_content_parsing(struct ieee80211_hw *hw,
+				   u8 c2h_cmd_id, u8 c2h_cmd_len,
+				   u8 *tmp_buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

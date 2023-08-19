@@ -1,15 +1,33 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 // encore-enltv-fm53.h - Keytable for encore_enltv_fm53 Remote Controller
 //
 // keymap imported from ir-keymaps.c
 //
 // Copyright (c) 2010 by Mauro Carvalho Chehab
+=======
+/* encore-enltv-fm53.h - Keytable for encore_enltv_fm53 Remote Controller
+ *
+ * keymap imported from ir-keymaps.c
+ *
+ * Copyright (c) 2010 by Mauro Carvalho Chehab
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <media/rc-map.h>
 #include <linux/module.h>
 
 /* Encore ENLTV-FM v5.3
+<<<<<<< HEAD
    Mauro Carvalho Chehab <mchehab@kernel.org>
+=======
+   Mauro Carvalho Chehab <mchehab@infradead.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 static struct rc_map_table encore_enltv_fm53[] = {

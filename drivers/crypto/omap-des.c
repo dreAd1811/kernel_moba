@@ -86,7 +86,10 @@
 #define FLAGS_OUT_DATA_ST_SHIFT	10
 
 struct omap_des_ctx {
+<<<<<<< HEAD
 	struct crypto_engine_ctx enginectx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct omap_des_dev *dd;
 
 	int		keylen;
@@ -499,7 +502,11 @@ static void omap_des_finish_req(struct omap_des_dev *dd, int err)
 
 	pr_debug("err: %d\n", err);
 
+<<<<<<< HEAD
 	crypto_finalize_ablkcipher_request(dd->engine, req, err);
+=======
+	crypto_finalize_cipher_request(dd->engine, req, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_mark_last_busy(dd->dev);
 	pm_runtime_put_autosuspend(dd->dev);
@@ -521,15 +528,24 @@ static int omap_des_handle_queue(struct omap_des_dev *dd,
 				 struct ablkcipher_request *req)
 {
 	if (req)
+<<<<<<< HEAD
 		return crypto_transfer_ablkcipher_request_to_engine(dd->engine, req);
+=======
+		return crypto_transfer_cipher_request_to_engine(dd->engine, req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int omap_des_prepare_req(struct crypto_engine *engine,
+<<<<<<< HEAD
 				void *areq)
 {
 	struct ablkcipher_request *req = container_of(areq, struct ablkcipher_request, base);
+=======
+				struct ablkcipher_request *req)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct omap_des_ctx *ctx = crypto_ablkcipher_ctx(
 			crypto_ablkcipher_reqtfm(req));
 	struct omap_des_dev *dd = omap_des_find_dev(ctx);
@@ -584,9 +600,14 @@ static int omap_des_prepare_req(struct crypto_engine *engine,
 }
 
 static int omap_des_crypt_req(struct crypto_engine *engine,
+<<<<<<< HEAD
 			      void *areq)
 {
 	struct ablkcipher_request *req = container_of(areq, struct ablkcipher_request, base);
+=======
+			      struct ablkcipher_request *req)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct omap_des_ctx *ctx = crypto_ablkcipher_ctx(
 			crypto_ablkcipher_reqtfm(req));
 	struct omap_des_dev *dd = omap_des_find_dev(ctx);
@@ -698,6 +719,7 @@ static int omap_des_cbc_decrypt(struct ablkcipher_request *req)
 	return omap_des_crypt(req, FLAGS_CBC);
 }
 
+<<<<<<< HEAD
 static int omap_des_prepare_req(struct crypto_engine *engine,
 				void *areq);
 static int omap_des_crypt_req(struct crypto_engine *engine,
@@ -707,14 +729,21 @@ static int omap_des_cra_init(struct crypto_tfm *tfm)
 {
 	struct omap_des_ctx *ctx = crypto_tfm_ctx(tfm);
 
+=======
+static int omap_des_cra_init(struct crypto_tfm *tfm)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("enter\n");
 
 	tfm->crt_ablkcipher.reqsize = sizeof(struct omap_des_reqctx);
 
+<<<<<<< HEAD
 	ctx->enginectx.op.prepare_request = omap_des_prepare_req;
 	ctx->enginectx.op.unprepare_request = NULL;
 	ctx->enginectx.op.do_one_request = omap_des_crypt_req;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -942,13 +971,25 @@ MODULE_DEVICE_TABLE(of, omap_des_of_match);
 static int omap_des_get_of(struct omap_des_dev *dd,
 		struct platform_device *pdev)
 {
+<<<<<<< HEAD
 
 	dd->pdata = of_device_get_match_data(&pdev->dev);
 	if (!dd->pdata) {
+=======
+	const struct of_device_id *match;
+
+	match = of_match_device(of_match_ptr(omap_des_of_match), &pdev->dev);
+	if (!match) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pdev->dev, "no compatible OF match\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	dd->pdata = match->data;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 #else
@@ -1060,6 +1101,11 @@ static int omap_des_probe(struct platform_device *pdev)
 		goto err_engine;
 	}
 
+<<<<<<< HEAD
+=======
+	dd->engine->prepare_cipher_request = omap_des_prepare_req;
+	dd->engine->cipher_one_request = omap_des_crypt_req;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = crypto_engine_start(dd->engine);
 	if (err)
 		goto err_engine;

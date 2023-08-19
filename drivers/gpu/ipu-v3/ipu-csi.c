@@ -224,18 +224,26 @@ static int ipu_csi_set_testgen_mclk(struct ipu_csi *csi, u32 pixel_clk,
  * Find the CSI data format and data width for the given V4L2 media
  * bus pixel format code.
  */
+<<<<<<< HEAD
 static int mbus_code_to_bus_cfg(struct ipu_csi_bus_config *cfg, u32 mbus_code,
 				enum v4l2_mbus_type mbus_type)
+=======
+static int mbus_code_to_bus_cfg(struct ipu_csi_bus_config *cfg, u32 mbus_code)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (mbus_code) {
 	case MEDIA_BUS_FMT_BGR565_2X8_BE:
 	case MEDIA_BUS_FMT_BGR565_2X8_LE:
 	case MEDIA_BUS_FMT_RGB565_2X8_BE:
 	case MEDIA_BUS_FMT_RGB565_2X8_LE:
+<<<<<<< HEAD
 		if (mbus_type == V4L2_MBUS_CSI2)
 			cfg->data_fmt = CSI_SENS_CONF_DATA_FMT_RGB565;
 		else
 			cfg->data_fmt = CSI_SENS_CONF_DATA_FMT_BAYER;
+=======
+		cfg->data_fmt = CSI_SENS_CONF_DATA_FMT_RGB565;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cfg->mipi_dt = MIPI_DT_RGB565;
 		cfg->data_width = IPU_CSI_DATA_WIDTH_8;
 		break;
@@ -251,12 +259,15 @@ static int mbus_code_to_bus_cfg(struct ipu_csi_bus_config *cfg, u32 mbus_code,
 		cfg->mipi_dt = MIPI_DT_RGB555;
 		cfg->data_width = IPU_CSI_DATA_WIDTH_8;
 		break;
+<<<<<<< HEAD
 	case MEDIA_BUS_FMT_RGB888_1X24:
 	case MEDIA_BUS_FMT_BGR888_1X24:
 		cfg->data_fmt = CSI_SENS_CONF_DATA_FMT_RGB_YUV444;
 		cfg->mipi_dt = MIPI_DT_RGB888;
 		cfg->data_width = IPU_CSI_DATA_WIDTH_8;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MEDIA_BUS_FMT_UYVY8_2X8:
 		cfg->data_fmt = CSI_SENS_CONF_DATA_FMT_YUV422_UYVY;
 		cfg->mipi_dt = MIPI_DT_YUV422;
@@ -298,7 +309,10 @@ static int mbus_code_to_bus_cfg(struct ipu_csi_bus_config *cfg, u32 mbus_code,
 	case MEDIA_BUS_FMT_SGBRG10_1X10:
 	case MEDIA_BUS_FMT_SGRBG10_1X10:
 	case MEDIA_BUS_FMT_SRGGB10_1X10:
+<<<<<<< HEAD
 	case MEDIA_BUS_FMT_Y10_1X10:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cfg->data_fmt = CSI_SENS_CONF_DATA_FMT_BAYER;
 		cfg->mipi_dt = MIPI_DT_RAW10;
 		cfg->data_width = IPU_CSI_DATA_WIDTH_10;
@@ -307,7 +321,10 @@ static int mbus_code_to_bus_cfg(struct ipu_csi_bus_config *cfg, u32 mbus_code,
 	case MEDIA_BUS_FMT_SGBRG12_1X12:
 	case MEDIA_BUS_FMT_SGRBG12_1X12:
 	case MEDIA_BUS_FMT_SRGGB12_1X12:
+<<<<<<< HEAD
 	case MEDIA_BUS_FMT_Y12_1X12:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cfg->data_fmt = CSI_SENS_CONF_DATA_FMT_BAYER;
 		cfg->mipi_dt = MIPI_DT_RAW12;
 		cfg->data_width = IPU_CSI_DATA_WIDTH_12;
@@ -336,7 +353,11 @@ static int fill_csi_bus_cfg(struct ipu_csi_bus_config *csicfg,
 
 	memset(csicfg, 0, sizeof(*csicfg));
 
+<<<<<<< HEAD
 	ret = mbus_code_to_bus_cfg(csicfg, mbus_fmt->code, mbus_cfg->type);
+=======
+	ret = mbus_code_to_bus_cfg(csicfg, mbus_fmt->code);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -353,8 +374,12 @@ static int fill_csi_bus_cfg(struct ipu_csi_bus_config *csicfg,
 		break;
 	case V4L2_MBUS_BT656:
 		csicfg->ext_vsync = 0;
+<<<<<<< HEAD
 		if (V4L2_FIELD_HAS_BOTH(mbus_fmt->field) ||
 		    mbus_fmt->field == V4L2_FIELD_ALTERNATE)
+=======
+		if (V4L2_FIELD_HAS_BOTH(mbus_fmt->field))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			csicfg->clk_mode = IPU_CSI_CLK_MODE_CCIR656_INTERLACED;
 		else
 			csicfg->clk_mode = IPU_CSI_CLK_MODE_CCIR656_PROGRESSIVE;
@@ -611,7 +636,11 @@ int ipu_csi_set_mipi_datatype(struct ipu_csi *csi, u32 vc,
 	if (vc > 3)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = mbus_code_to_bus_cfg(&cfg, mbus_fmt->code, V4L2_MBUS_CSI2);
+=======
+	ret = mbus_code_to_bus_cfg(&cfg, mbus_fmt->code);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 

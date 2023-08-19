@@ -376,7 +376,11 @@ void oaktrail_lvds_init(struct drm_device *dev,
 	 * preferred mode is the right one.
 	 */
 	if (edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, edid);
+=======
+		drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_add_edid_modes(connector, edid);
 		kfree(edid);
 

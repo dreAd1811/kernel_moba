@@ -432,6 +432,10 @@ static struct i2c_driver g4fan_driver = {
 	.driver = {
 		.name	= "therm_windtunnel",
 	},
+<<<<<<< HEAD
+=======
+	.attach_adapter = do_attach,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.probe		= do_probe,
 	.remove		= do_remove,
 	.id_table	= therm_windtunnel_id,
@@ -444,6 +448,7 @@ static struct i2c_driver g4fan_driver = {
 
 static int therm_of_probe(struct platform_device *dev)
 {
+<<<<<<< HEAD
 	struct i2c_adapter *adap;
 	int ret, i = 0;
 
@@ -467,6 +472,9 @@ static int therm_of_probe(struct platform_device *dev)
 	}
 
 	return -ENODEV;
+=======
+	return i2c_add_driver( &g4fan_driver );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int

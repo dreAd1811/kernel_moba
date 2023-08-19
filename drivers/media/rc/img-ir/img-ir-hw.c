@@ -339,7 +339,11 @@ static void img_ir_decoder_preprocess(struct img_ir_decoder *decoder)
 /**
  * img_ir_decoder_convert() - Generate internal timings in decoder.
  * @decoder:	Decoder to be converted to internal timings.
+<<<<<<< HEAD
  * @reg_timings: Timing register values.
+=======
+ * @timings:	Timing register values.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @clock_hz:	IR clock rate in Hz.
  *
  * Fills out the repeat timings and timing register values for a specific clock
@@ -867,9 +871,15 @@ static void img_ir_handle_data(struct img_ir_priv *priv, u32 len, u64 raw)
 }
 
 /* timer function to end waiting for repeat. */
+<<<<<<< HEAD
 static void img_ir_end_timer(struct timer_list *t)
 {
 	struct img_ir_priv *priv = from_timer(priv, t, hw.end_timer);
+=======
+static void img_ir_end_timer(unsigned long arg)
+{
+	struct img_ir_priv *priv = (struct img_ir_priv *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&priv->lock);
 	img_ir_end_repeat(priv);
@@ -881,9 +891,15 @@ static void img_ir_end_timer(struct timer_list *t)
  * cleared when invalid interrupts were generated due to a quirk in the
  * img-ir decoder.
  */
+<<<<<<< HEAD
 static void img_ir_suspend_timer(struct timer_list *t)
 {
 	struct img_ir_priv *priv = from_timer(priv, t, hw.suspend_timer);
+=======
+static void img_ir_suspend_timer(unsigned long arg)
+{
+	struct img_ir_priv *priv = (struct img_ir_priv *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&priv->lock);
 	/*
@@ -1055,8 +1071,14 @@ int img_ir_probe_hw(struct img_ir_priv *priv)
 	img_ir_probe_hw_caps(priv);
 
 	/* Set up the end timer */
+<<<<<<< HEAD
 	timer_setup(&hw->end_timer, img_ir_end_timer, 0);
 	timer_setup(&hw->suspend_timer, img_ir_suspend_timer, 0);
+=======
+	setup_timer(&hw->end_timer, img_ir_end_timer, (unsigned long)priv);
+	setup_timer(&hw->suspend_timer, img_ir_suspend_timer,
+				(unsigned long)priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Register a clock notifier */
 	if (!IS_ERR(priv->clk)) {

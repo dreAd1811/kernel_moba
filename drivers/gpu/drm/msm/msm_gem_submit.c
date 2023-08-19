@@ -31,8 +31,12 @@
 #define BO_PINNED   0x2000
 
 static struct msm_gem_submit *submit_create(struct drm_device *dev,
+<<<<<<< HEAD
 		struct msm_gpu *gpu, struct msm_gpu_submitqueue *queue,
 		uint32_t nr_bos, uint32_t nr_cmds)
+=======
+		struct msm_gpu *gpu, uint32_t nr_bos, uint32_t nr_cmds)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct msm_gem_submit *submit;
 	uint64_t sz = sizeof(*submit) + ((u64)nr_bos * sizeof(submit->bos[0])) +
@@ -50,8 +54,11 @@ static struct msm_gem_submit *submit_create(struct drm_device *dev,
 	submit->fence = NULL;
 	submit->pid = get_pid(task_pid(current));
 	submit->cmd = (void *)&submit->bos[nr_bos];
+<<<<<<< HEAD
 	submit->queue = queue;
 	submit->ring = gpu->rb[queue->prio];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* initially, until copy_from_user() and bo lookup succeeds: */
 	submit->nr_bos = 0;
@@ -69,8 +76,11 @@ void msm_gem_submit_free(struct msm_gem_submit *submit)
 	dma_fence_put(submit->fence);
 	list_del(&submit->node);
 	put_pid(submit->pid);
+<<<<<<< HEAD
 	msm_submitqueue_put(submit->queue);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(submit);
 }
 
@@ -161,8 +171,12 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void submit_unlock_unpin_bo(struct msm_gem_submit *submit,
 		int i, bool backoff)
+=======
+static void submit_unlock_unpin_bo(struct msm_gem_submit *submit, int i)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct msm_gem_object *msm_obj = submit->bos[i].obj;
 
@@ -172,7 +186,11 @@ static void submit_unlock_unpin_bo(struct msm_gem_submit *submit,
 	if (submit->bos[i].flags & BO_LOCKED)
 		ww_mutex_unlock(&msm_obj->resv->lock);
 
+<<<<<<< HEAD
 	if (backoff && !(submit->bos[i].flags & BO_VALID))
+=======
+	if (!(submit->bos[i].flags & BO_VALID))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		submit->bos[i].iova = 0;
 
 	submit->bos[i].flags &= ~(BO_LOCKED | BO_PINNED);
@@ -207,10 +225,17 @@ retry:
 
 fail:
 	for (; i >= 0; i--)
+<<<<<<< HEAD
 		submit_unlock_unpin_bo(submit, i, true);
 
 	if (slow_locked > 0)
 		submit_unlock_unpin_bo(submit, slow_locked, true);
+=======
+		submit_unlock_unpin_bo(submit, i);
+
+	if (slow_locked > 0)
+		submit_unlock_unpin_bo(submit, slow_locked);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret == -EDEADLK) {
 		struct msm_gem_object *msm_obj = submit->bos[contended].obj;
@@ -249,8 +274,12 @@ static int submit_fence_sync(struct msm_gem_submit *submit, bool no_implicit)
 		if (no_implicit)
 			continue;
 
+<<<<<<< HEAD
 		ret = msm_gem_sync_object(&msm_obj->base, submit->ring->fctx,
 			write);
+=======
+		ret = msm_gem_sync_object(&msm_obj->base, submit->gpu->fctx, write);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			break;
 	}
@@ -394,7 +423,11 @@ static void submit_cleanup(struct msm_gem_submit *submit)
 
 	for (i = 0; i < submit->nr_bos; i++) {
 		struct msm_gem_object *msm_obj = submit->bos[i].obj;
+<<<<<<< HEAD
 		submit_unlock_unpin_bo(submit, i, false);
+=======
+		submit_unlock_unpin_bo(submit, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_del_init(&msm_obj->submit_entry);
 		drm_gem_object_unreference(&msm_obj->base);
 	}
@@ -408,11 +441,18 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
 	struct msm_drm_private *priv = dev->dev_private;
 	struct drm_msm_gem_submit *args = data;
 	struct msm_file_private *ctx = file->driver_priv;
+<<<<<<< HEAD
 	struct msm_gem_submit *submit;
 	struct msm_gpu *gpu = priv->gpu;
 	struct sync_file *sync_file = NULL;
 	struct msm_gpu_submitqueue *queue;
 	struct msm_ringbuffer *ring;
+=======
+	struct msm_gem_submit *submit = NULL;
+	struct msm_gpu *gpu = priv->gpu;
+	struct dma_fence *in_fence = NULL;
+	struct sync_file *sync_file = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int out_fence_fd = -1;
 	unsigned i;
 	int ret;
@@ -429,6 +469,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
 	if (MSM_PIPE_FLAGS(args->flags) & ~MSM_SUBMIT_FLAGS)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (args->flags & MSM_SUBMIT_SUDO) {
 		if (!IS_ENABLED(CONFIG_DRM_MSM_GPU_SUDO) ||
 		    !capable(CAP_SYS_RAWIO))
@@ -444,6 +485,9 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
 	if (args->flags & MSM_SUBMIT_FENCE_FD_IN) {
 		struct dma_fence *in_fence;
 
+=======
+	if (args->flags & MSM_SUBMIT_FENCE_FD_IN) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		in_fence = sync_file_get_fence(args->fence_fd);
 
 		if (!in_fence)
@@ -453,6 +497,7 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
 		 * Wait if the fence is from a foreign context, or if the fence
 		 * array contains any fence from a foreign context.
 		 */
+<<<<<<< HEAD
 		ret = 0;
 		if (!dma_fence_match_context(in_fence, ring->fctx->context))
 			ret = dma_fence_wait(in_fence, true);
@@ -460,6 +505,13 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
 		dma_fence_put(in_fence);
 		if (ret)
 			return ret;
+=======
+		if (!dma_fence_match_context(in_fence, gpu->fctx->context)) {
+			ret = dma_fence_wait(in_fence, true);
+			if (ret)
+				return ret;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = mutex_lock_interruptible(&dev->struct_mutex);
@@ -473,16 +525,25 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
 			goto out_unlock;
 		}
 	}
+<<<<<<< HEAD
 
 	submit = submit_create(dev, gpu, queue, args->nr_bos, args->nr_cmds);
+=======
+	priv->struct_mutex_task = current;
+
+	submit = submit_create(dev, gpu, args->nr_bos, args->nr_cmds);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!submit) {
 		ret = -ENOMEM;
 		goto out_unlock;
 	}
 
+<<<<<<< HEAD
 	if (args->flags & MSM_SUBMIT_SUDO)
 		submit->in_rb = true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = submit_lookup_objects(submit, args, file);
 	if (ret)
 		goto out;
@@ -560,7 +621,11 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
 
 	submit->nr_cmds = i;
 
+<<<<<<< HEAD
 	submit->fence = msm_fence_alloc(ring->fctx);
+=======
+	submit->fence = msm_fence_alloc(gpu->fctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(submit->fence)) {
 		ret = PTR_ERR(submit->fence);
 		submit->fence = NULL;
@@ -585,12 +650,21 @@ int msm_ioctl_gem_submit(struct drm_device *dev, void *data,
 	}
 
 out:
+<<<<<<< HEAD
+=======
+	if (in_fence)
+		dma_fence_put(in_fence);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	submit_cleanup(submit);
 	if (ret)
 		msm_gem_submit_free(submit);
 out_unlock:
 	if (ret && (out_fence_fd >= 0))
 		put_unused_fd(out_fence_fd);
+<<<<<<< HEAD
+=======
+	priv->struct_mutex_task = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&dev->struct_mutex);
 	return ret;
 }

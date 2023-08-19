@@ -19,7 +19,10 @@
 #ifndef __ASM_CACHEFLUSH_H
 #define __ASM_CACHEFLUSH_H
 
+<<<<<<< HEAD
 #include <linux/kgdb.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mm.h>
 
 /*
@@ -37,9 +40,15 @@
  *	Start addresses are inclusive and end addresses are exclusive; start
  *	addresses should be rounded down, end addresses up.
  *
+<<<<<<< HEAD
  *	See Documentation/core-api/cachetlb.rst for more information. Please note that
  *	the implementation assumes non-aliasing VIPT D-cache and (aliasing)
  *	VIPT I-cache.
+=======
+ *	See Documentation/cachetlb.txt for more information. Please note that
+ *	the implementation assumes non-aliasing VIPT D-cache and (aliasing)
+ *	VIPT or ASID-tagged VIVT I-cache.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	flush_cache_all()
  *
@@ -57,12 +66,15 @@
  *		- start  - virtual start address
  *		- end    - virtual end address
  *
+<<<<<<< HEAD
  *	invalidate_icache_range(start, end)
  *
  *		Invalidate the I-cache in the region described by start, end.
  *		- start  - virtual start address
  *		- end    - virtual end address
  *
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	__flush_cache_user_range(start, end)
  *
  *		Ensure coherency between the I-cache and the D-cache in the
@@ -77,8 +89,12 @@
  *		- size   - region size
  */
 extern void flush_cache_all(void);
+<<<<<<< HEAD
 extern void __flush_icache_range(unsigned long start, unsigned long end);
 extern int  invalidate_icache_range(unsigned long start, unsigned long end);
+=======
+extern void flush_icache_range(unsigned long start, unsigned long end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void __flush_dcache_area(void *addr, size_t len);
 extern void __inval_dcache_area(void *addr, size_t len);
 extern void __clean_dcache_area_poc(void *addr, size_t len);
@@ -87,6 +103,7 @@ extern void __clean_dcache_area_pou(void *addr, size_t len);
 extern long __flush_cache_user_range(unsigned long start, unsigned long end);
 extern void sync_icache_aliases(void *kaddr, unsigned long len);
 
+<<<<<<< HEAD
 static inline void flush_icache_range(unsigned long start, unsigned long end)
 {
 	__flush_icache_range(start, end);
@@ -111,6 +128,8 @@ static inline void flush_icache_range(unsigned long start, unsigned long end)
 	kick_all_cpus_sync();
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void flush_cache_mm(struct mm_struct *mm)
 {
 }
@@ -172,15 +191,25 @@ extern void flush_dcache_page(struct page *);
 
 static inline void __flush_icache_all(void)
 {
+<<<<<<< HEAD
 	if (cpus_have_const_cap(ARM64_HAS_CACHE_DIC))
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	asm("ic	ialluis");
 	dsb(ish);
 }
 
+<<<<<<< HEAD
 #define flush_dcache_mmap_lock(mapping)		do { } while (0)
 #define flush_dcache_mmap_unlock(mapping)	do { } while (0)
+=======
+#define flush_dcache_mmap_lock(mapping) \
+	spin_lock_irq(&(mapping)->tree_lock)
+#define flush_dcache_mmap_unlock(mapping) \
+	spin_unlock_irq(&(mapping)->tree_lock)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * We don't appear to need to do anything here.  In fact, if we did, we'd

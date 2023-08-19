@@ -12,13 +12,17 @@
 #include "../aq_hw.h"
 #include "../aq_hw_utils.h"
 #include "../aq_ring.h"
+<<<<<<< HEAD
 #include "../aq_nic.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "hw_atl_b0.h"
 #include "hw_atl_utils.h"
 #include "hw_atl_llh.h"
 #include "hw_atl_b0_internal.h"
 #include "hw_atl_llh_internal.h"
 
+<<<<<<< HEAD
 #define DEFAULT_B0_BOARD_BASIC_CAPABILITIES \
 	.is_64_dma = true,		  \
 	.msix_irqs = 4U,		  \
@@ -84,11 +88,54 @@ const struct aq_hw_caps_s hw_atl_b0_caps_aqc109 = {
 			  HW_ATL_B0_RATE_1G  |
 			  HW_ATL_B0_RATE_100M,
 };
+=======
+static int hw_atl_b0_get_hw_caps(struct aq_hw_s *self,
+				 struct aq_hw_caps_s *aq_hw_caps,
+				 unsigned short device,
+				 unsigned short subsystem_device)
+{
+	memcpy(aq_hw_caps, &hw_atl_b0_hw_caps_, sizeof(*aq_hw_caps));
+
+	if (device == HW_ATL_DEVICE_ID_D108 && subsystem_device == 0x0001)
+		aq_hw_caps->link_speed_msk &= ~HW_ATL_B0_RATE_10G;
+
+	if (device == HW_ATL_DEVICE_ID_D109 && subsystem_device == 0x0001) {
+		aq_hw_caps->link_speed_msk &= ~HW_ATL_B0_RATE_10G;
+		aq_hw_caps->link_speed_msk &= ~HW_ATL_B0_RATE_5G;
+	}
+
+	return 0;
+}
+
+static struct aq_hw_s *hw_atl_b0_create(struct aq_pci_func_s *aq_pci_func,
+					unsigned int port,
+					struct aq_hw_ops *ops)
+{
+	struct hw_atl_s *self = NULL;
+
+	self = kzalloc(sizeof(*self), GFP_KERNEL);
+	if (!self)
+		goto err_exit;
+
+	self->base.aq_pci_func = aq_pci_func;
+
+	self->base.not_ff_addr = 0x10U;
+
+err_exit:
+	return (struct aq_hw_s *)self;
+}
+
+static void hw_atl_b0_destroy(struct aq_hw_s *self)
+{
+	kfree(self);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int hw_atl_b0_hw_reset(struct aq_hw_s *self)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	err = hw_atl_utils_soft_reset(self);
 	if (err)
 		return err;
@@ -97,6 +144,34 @@ static int hw_atl_b0_hw_reset(struct aq_hw_s *self)
 
 	err = aq_hw_err_from_flags(self);
 
+=======
+	glb_glb_reg_res_dis_set(self, 1U);
+	pci_pci_reg_res_dis_set(self, 0U);
+	rx_rx_reg_res_dis_set(self, 0U);
+	tx_tx_reg_res_dis_set(self, 0U);
+
+	HW_ATL_FLUSH();
+	glb_soft_res_set(self, 1);
+
+	/* check 10 times by 1ms */
+	AQ_HW_WAIT_FOR(glb_soft_res_get(self) == 0, 1000U, 10U);
+	if (err < 0)
+		goto err_exit;
+
+	itr_irq_reg_res_dis_set(self, 0U);
+	itr_res_irq_set(self, 1U);
+
+	/* check 10 times by 1ms */
+	AQ_HW_WAIT_FOR(itr_res_irq_get(self) == 0, 1000U, 10U);
+	if (err < 0)
+		goto err_exit;
+
+	hw_atl_utils_mpi_set(self, MPI_RESET, 0x0U);
+
+	err = aq_hw_err_from_flags(self);
+
+err_exit:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -108,6 +183,7 @@ static int hw_atl_b0_hw_qos_set(struct aq_hw_s *self)
 	bool is_rx_flow_control = false;
 
 	/* TPS Descriptor rate init */
+<<<<<<< HEAD
 	hw_atl_tps_tx_pkt_shed_desc_rate_curr_time_res_set(self, 0x0U);
 	hw_atl_tps_tx_pkt_shed_desc_rate_lim_set(self, 0xA);
 
@@ -122,10 +198,27 @@ static int hw_atl_b0_hw_qos_set(struct aq_hw_s *self)
 	hw_atl_tps_tx_pkt_shed_tc_data_weight_set(self, 0x64, 0U);
 	hw_atl_tps_tx_pkt_shed_desc_tc_max_credit_set(self, 0x50, 0U);
 	hw_atl_tps_tx_pkt_shed_desc_tc_weight_set(self, 0x1E, 0U);
+=======
+	tps_tx_pkt_shed_desc_rate_curr_time_res_set(self, 0x0U);
+	tps_tx_pkt_shed_desc_rate_lim_set(self, 0xA);
+
+	/* TPS VM init */
+	tps_tx_pkt_shed_desc_vm_arb_mode_set(self, 0U);
+
+	/* TPS TC credits init */
+	tps_tx_pkt_shed_desc_tc_arb_mode_set(self, 0U);
+	tps_tx_pkt_shed_data_arb_mode_set(self, 0U);
+
+	tps_tx_pkt_shed_tc_data_max_credit_set(self, 0xFFF, 0U);
+	tps_tx_pkt_shed_tc_data_weight_set(self, 0x64, 0U);
+	tps_tx_pkt_shed_desc_tc_max_credit_set(self, 0x50, 0U);
+	tps_tx_pkt_shed_desc_tc_weight_set(self, 0x1E, 0U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Tx buf size */
 	buff_size = HW_ATL_B0_TXBUF_MAX;
 
+<<<<<<< HEAD
 	hw_atl_tpb_tx_pkt_buff_size_per_tc_set(self, buff_size, tc);
 	hw_atl_tpb_tx_buff_hi_threshold_per_tc_set(self,
 						   (buff_size *
@@ -135,12 +228,22 @@ static int hw_atl_b0_hw_qos_set(struct aq_hw_s *self)
 						   (buff_size *
 						   (1024 / 32U) * 50U) /
 						   100U, tc);
+=======
+	tpb_tx_pkt_buff_size_per_tc_set(self, buff_size, tc);
+	tpb_tx_buff_hi_threshold_per_tc_set(self,
+					    (buff_size * (1024 / 32U) * 66U) /
+					    100U, tc);
+	tpb_tx_buff_lo_threshold_per_tc_set(self,
+					    (buff_size * (1024 / 32U) * 50U) /
+					    100U, tc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* QoS Rx buf size per TC */
 	tc = 0;
 	is_rx_flow_control = (AQ_NIC_FC_RX & self->aq_nic_cfg->flow_control);
 	buff_size = HW_ATL_B0_RXBUF_MAX;
 
+<<<<<<< HEAD
 	hw_atl_rpb_rx_pkt_buff_size_per_tc_set(self, buff_size, tc);
 	hw_atl_rpb_rx_buff_hi_threshold_per_tc_set(self,
 						   (buff_size *
@@ -155,6 +258,22 @@ static int hw_atl_b0_hw_qos_set(struct aq_hw_s *self)
 	/* QoS 802.1p priority -> TC mapping */
 	for (i_priority = 8U; i_priority--;)
 		hw_atl_rpf_rpb_user_priority_tc_map_set(self, i_priority, 0U);
+=======
+	rpb_rx_pkt_buff_size_per_tc_set(self, buff_size, tc);
+	rpb_rx_buff_hi_threshold_per_tc_set(self,
+					    (buff_size *
+					    (1024U / 32U) * 66U) /
+					    100U, tc);
+	rpb_rx_buff_lo_threshold_per_tc_set(self,
+					    (buff_size *
+					    (1024U / 32U) * 50U) /
+					    100U, tc);
+	rpb_rx_xoff_en_per_tc_set(self, is_rx_flow_control ? 1U : 0U, tc);
+
+	/* QoS 802.1p priority -> TC mapping */
+	for (i_priority = 8U; i_priority--;)
+		rpf_rpb_user_priority_tc_map_set(self, i_priority, 0U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return aq_hw_err_from_flags(self);
 }
@@ -162,11 +281,16 @@ static int hw_atl_b0_hw_qos_set(struct aq_hw_s *self)
 static int hw_atl_b0_hw_rss_hash_set(struct aq_hw_s *self,
 				     struct aq_rss_parameters *rss_params)
 {
+<<<<<<< HEAD
 	struct aq_nic_cfg_s *cfg = self->aq_nic_cfg;
+=======
+	struct aq_nic_cfg_s *cfg = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 	unsigned int i = 0U;
 	unsigned int addr = 0U;
 
+<<<<<<< HEAD
 	for (i = 10, addr = 0U; i--; ++addr) {
 		u32 key_data = cfg->is_rss ?
 			__swab32(rss_params->hash_secret_key[i]) : 0U;
@@ -175,6 +299,17 @@ static int hw_atl_b0_hw_rss_hash_set(struct aq_hw_s *self,
 		hw_atl_rpf_rss_key_wr_en_set(self, 1U);
 		AQ_HW_WAIT_FOR(hw_atl_rpf_rss_key_wr_en_get(self) == 0,
 			       1000U, 10U);
+=======
+	cfg = self->aq_nic_cfg;
+
+	for (i = 10, addr = 0U; i--; ++addr) {
+		u32 key_data = cfg->is_rss ?
+			__swab32(rss_params->hash_secret_key[i]) : 0U;
+		rpf_rss_key_wr_data_set(self, key_data);
+		rpf_rss_key_addr_set(self, addr);
+		rpf_rss_key_wr_en_set(self, 1U);
+		AQ_HW_WAIT_FOR(rpf_rss_key_wr_en_get(self) == 0, 1000U, 10U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0)
 			goto err_exit;
 	}
@@ -192,8 +327,13 @@ static int hw_atl_b0_hw_rss_set(struct aq_hw_s *self,
 	u32 i = 0U;
 	u32 num_rss_queues = max(1U, self->aq_nic_cfg->num_rss_queues);
 	int err = 0;
+<<<<<<< HEAD
 	u16 bitary[(HW_ATL_B0_RSS_REDIRECTION_MAX *
 					HW_ATL_B0_RSS_REDIRECTION_BITS / 16U)];
+=======
+	u16 bitary[1 + (HW_ATL_B0_RSS_REDIRECTION_MAX *
+		   HW_ATL_B0_RSS_REDIRECTION_BITS / 16U)];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(bitary, 0, sizeof(bitary));
 
@@ -203,12 +343,20 @@ static int hw_atl_b0_hw_rss_set(struct aq_hw_s *self,
 			((i * 3U) & 0xFU));
 	}
 
+<<<<<<< HEAD
 	for (i = ARRAY_SIZE(bitary); i--;) {
 		hw_atl_rpf_rss_redir_tbl_wr_data_set(self, bitary[i]);
 		hw_atl_rpf_rss_redir_tbl_addr_set(self, i);
 		hw_atl_rpf_rss_redir_wr_en_set(self, 1U);
 		AQ_HW_WAIT_FOR(hw_atl_rpf_rss_redir_wr_en_get(self) == 0,
 			       1000U, 10U);
+=======
+	for (i = AQ_DIMOF(bitary); i--;) {
+		rpf_rss_redir_tbl_wr_data_set(self, bitary[i]);
+		rpf_rss_redir_tbl_addr_set(self, i);
+		rpf_rss_redir_wr_en_set(self, 1U);
+		AQ_HW_WAIT_FOR(rpf_rss_redir_wr_en_get(self) == 0, 1000U, 10U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0)
 			goto err_exit;
 	}
@@ -225,6 +373,7 @@ static int hw_atl_b0_hw_offload_set(struct aq_hw_s *self,
 	unsigned int i;
 
 	/* TX checksums offloads*/
+<<<<<<< HEAD
 	hw_atl_tpo_ipv4header_crc_offload_en_set(self, 1);
 	hw_atl_tpo_tcp_udp_crc_offload_en_set(self, 1);
 
@@ -234,6 +383,17 @@ static int hw_atl_b0_hw_offload_set(struct aq_hw_s *self,
 
 	/* LSO offloads*/
 	hw_atl_tdm_large_send_offload_en_set(self, 0xFFFFFFFFU);
+=======
+	tpo_ipv4header_crc_offload_en_set(self, 1);
+	tpo_tcp_udp_crc_offload_en_set(self, 1);
+
+	/* RX checksums offloads*/
+	rpo_ipv4header_crc_offload_en_set(self, 1);
+	rpo_tcp_udp_crc_offload_en_set(self, 1);
+
+	/* LSO offloads*/
+	tdm_large_send_offload_en_set(self, 0xFFFFFFFFU);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* LRO offloads */
 	{
@@ -242,6 +402,7 @@ static int hw_atl_b0_hw_offload_set(struct aq_hw_s *self,
 			((2U < HW_ATL_B0_LRO_RXD_MAX) ? 0x1U : 0x0));
 
 		for (i = 0; i < HW_ATL_B0_RINGS_MAX; i++)
+<<<<<<< HEAD
 			hw_atl_rpo_lro_max_num_of_descriptors_set(self, val, i);
 
 		hw_atl_rpo_lro_time_base_divider_set(self, 0x61AU);
@@ -260,26 +421,61 @@ static int hw_atl_b0_hw_offload_set(struct aq_hw_s *self,
 
 		hw_atl_rpo_lro_en_set(self,
 				      aq_nic_cfg->is_lro ? 0xFFFFFFFFU : 0U);
+=======
+			rpo_lro_max_num_of_descriptors_set(self, val, i);
+
+		rpo_lro_time_base_divider_set(self, 0x61AU);
+		rpo_lro_inactive_interval_set(self, 0);
+		rpo_lro_max_coalescing_interval_set(self, 2);
+
+		rpo_lro_qsessions_lim_set(self, 1U);
+
+		rpo_lro_total_desc_lim_set(self, 2U);
+
+		rpo_lro_patch_optimization_en_set(self, 0U);
+
+		rpo_lro_min_pay_of_first_pkt_set(self, 10U);
+
+		rpo_lro_pkt_lim_set(self, 1U);
+
+		rpo_lro_en_set(self, aq_nic_cfg->is_lro ? 0xFFFFFFFFU : 0U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return aq_hw_err_from_flags(self);
 }
 
 static int hw_atl_b0_hw_init_tx_path(struct aq_hw_s *self)
 {
+<<<<<<< HEAD
 	hw_atl_thm_lso_tcp_flag_of_first_pkt_set(self, 0x0FF6U);
 	hw_atl_thm_lso_tcp_flag_of_middle_pkt_set(self, 0x0FF6U);
 	hw_atl_thm_lso_tcp_flag_of_last_pkt_set(self, 0x0F7FU);
 
 	/* Tx interrupts */
 	hw_atl_tdm_tx_desc_wr_wb_irq_en_set(self, 1U);
+=======
+	thm_lso_tcp_flag_of_first_pkt_set(self, 0x0FF6U);
+	thm_lso_tcp_flag_of_middle_pkt_set(self, 0x0FF6U);
+	thm_lso_tcp_flag_of_last_pkt_set(self, 0x0F7FU);
+
+	/* Tx interrupts */
+	tdm_tx_desc_wr_wb_irq_en_set(self, 1U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* misc */
 	aq_hw_write_reg(self, 0x00007040U, IS_CHIP_FEATURE(TPO2) ?
 			0x00010000U : 0x00000000U);
+<<<<<<< HEAD
 	hw_atl_tdm_tx_dca_en_set(self, 0U);
 	hw_atl_tdm_tx_dca_mode_set(self, 0U);
 
 	hw_atl_tpb_tx_path_scp_ins_en_set(self, 1U);
+=======
+	tdm_tx_dca_en_set(self, 0U);
+	tdm_tx_dca_mode_set(self, 0U);
+
+	tpb_tx_path_scp_ins_en_set(self, 1U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return aq_hw_err_from_flags(self);
 }
@@ -290,6 +486,7 @@ static int hw_atl_b0_hw_init_rx_path(struct aq_hw_s *self)
 	int i;
 
 	/* Rx TC/RSS number config */
+<<<<<<< HEAD
 	hw_atl_rpb_rpf_rx_traf_class_mode_set(self, 1U);
 
 	/* Rx flow control */
@@ -297,10 +494,20 @@ static int hw_atl_b0_hw_init_rx_path(struct aq_hw_s *self)
 
 	/* RSS Ring selection */
 	hw_atl_reg_rx_flr_rss_control1set(self, cfg->is_rss ?
+=======
+	rpb_rpf_rx_traf_class_mode_set(self, 1U);
+
+	/* Rx flow control */
+	rpb_rx_flow_ctl_mode_set(self, 1U);
+
+	/* RSS Ring selection */
+	reg_rx_flr_rss_control1set(self, cfg->is_rss ?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					0xB3333333U : 0x00000000U);
 
 	/* Multicast filters */
 	for (i = HW_ATL_B0_MAC_MAX; i--;) {
+<<<<<<< HEAD
 		hw_atl_rpfl2_uc_flr_en_set(self, (i == 0U) ? 1U : 0U, i);
 		hw_atl_rpfl2unicast_flr_act_set(self, 1U, i);
 	}
@@ -329,16 +536,54 @@ static int hw_atl_b0_hw_init_rx_path(struct aq_hw_s *self)
 
 	/* Rx Interrupts */
 	hw_atl_rdm_rx_desc_wr_wb_irq_en_set(self, 1U);
+=======
+		rpfl2_uc_flr_en_set(self, (i == 0U) ? 1U : 0U, i);
+		rpfl2unicast_flr_act_set(self, 1U, i);
+	}
+
+	reg_rx_flr_mcst_flr_msk_set(self, 0x00000000U);
+	reg_rx_flr_mcst_flr_set(self, 0x00010FFFU, 0U);
+
+	/* Vlan filters */
+	rpf_vlan_outer_etht_set(self, 0x88A8U);
+	rpf_vlan_inner_etht_set(self, 0x8100U);
+
+	if (cfg->vlan_id) {
+		rpf_vlan_flr_act_set(self, 1U, 0U);
+		rpf_vlan_id_flr_set(self, 0U, 0U);
+		rpf_vlan_flr_en_set(self, 0U, 0U);
+
+		rpf_vlan_accept_untagged_packets_set(self, 1U);
+		rpf_vlan_untagged_act_set(self, 1U);
+
+		rpf_vlan_flr_act_set(self, 1U, 1U);
+		rpf_vlan_id_flr_set(self, cfg->vlan_id, 0U);
+		rpf_vlan_flr_en_set(self, 1U, 1U);
+	} else {
+		rpf_vlan_prom_mode_en_set(self, 1);
+	}
+
+	/* Rx Interrupts */
+	rdm_rx_desc_wr_wb_irq_en_set(self, 1U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* misc */
 	aq_hw_write_reg(self, 0x00005040U,
 			IS_CHIP_FEATURE(RPF2) ? 0x000F0000U : 0x00000000U);
 
+<<<<<<< HEAD
 	hw_atl_rpfl2broadcast_flr_act_set(self, 1U);
 	hw_atl_rpfl2broadcast_count_threshold_set(self, 0xFFFFU & (~0U / 256U));
 
 	hw_atl_rdm_rx_dca_en_set(self, 0U);
 	hw_atl_rdm_rx_dca_mode_set(self, 0U);
+=======
+	rpfl2broadcast_flr_act_set(self, 1U);
+	rpfl2broadcast_count_threshold_set(self, 0xFFFFU & (~0U / 256U));
+
+	rdm_rx_dca_en_set(self, 0U);
+	rdm_rx_dca_mode_set(self, 0U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return aq_hw_err_from_flags(self);
 }
@@ -357,10 +602,17 @@ static int hw_atl_b0_hw_mac_addr_set(struct aq_hw_s *self, u8 *mac_addr)
 	l = (mac_addr[2] << 24) | (mac_addr[3] << 16) |
 		(mac_addr[4] << 8) | mac_addr[5];
 
+<<<<<<< HEAD
 	hw_atl_rpfl2_uc_flr_en_set(self, 0U, HW_ATL_B0_MAC);
 	hw_atl_rpfl2unicast_dest_addresslsw_set(self, l, HW_ATL_B0_MAC);
 	hw_atl_rpfl2unicast_dest_addressmsw_set(self, h, HW_ATL_B0_MAC);
 	hw_atl_rpfl2_uc_flr_en_set(self, 1U, HW_ATL_B0_MAC);
+=======
+	rpfl2_uc_flr_en_set(self, 0U, HW_ATL_B0_MAC);
+	rpfl2unicast_dest_addresslsw_set(self, l, HW_ATL_B0_MAC);
+	rpfl2unicast_dest_addressmsw_set(self, h, HW_ATL_B0_MAC);
+	rpfl2_uc_flr_en_set(self, 1U, HW_ATL_B0_MAC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = aq_hw_err_from_flags(self);
 
@@ -368,7 +620,13 @@ err_exit:
 	return err;
 }
 
+<<<<<<< HEAD
 static int hw_atl_b0_hw_init(struct aq_hw_s *self, u8 *mac_addr)
+=======
+static int hw_atl_b0_hw_init(struct aq_hw_s *self,
+			     struct aq_nic_cfg_s *aq_nic_cfg,
+			     u8 *mac_addr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static u32 aq_hw_atl_igcr_table_[4][2] = {
 		{ 0x20000000U, 0x20000000U }, /* AQ_IRQ_INVALID */
@@ -380,40 +638,61 @@ static int hw_atl_b0_hw_init(struct aq_hw_s *self, u8 *mac_addr)
 	int err = 0;
 	u32 val;
 
+<<<<<<< HEAD
 	struct aq_nic_cfg_s *aq_nic_cfg = self->aq_nic_cfg;
+=======
+	self->aq_nic_cfg = aq_nic_cfg;
+
+	hw_atl_utils_hw_chip_features_init(self,
+					   &PHAL_ATLANTIC_B0->chip_features);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw_atl_b0_hw_init_tx_path(self);
 	hw_atl_b0_hw_init_rx_path(self);
 
 	hw_atl_b0_hw_mac_addr_set(self, mac_addr);
 
+<<<<<<< HEAD
 	self->aq_fw_ops->set_link_speed(self, aq_nic_cfg->link_speed_msk);
 	self->aq_fw_ops->set_state(self, MPI_INIT);
+=======
+	hw_atl_utils_mpi_set(self, MPI_INIT, aq_nic_cfg->link_speed_msk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw_atl_b0_hw_qos_set(self);
 	hw_atl_b0_hw_rss_set(self, &aq_nic_cfg->aq_rss);
 	hw_atl_b0_hw_rss_hash_set(self, &aq_nic_cfg->aq_rss);
 
 	/* Force limit MRRS on RDM/TDM to 2K */
+<<<<<<< HEAD
 	val = aq_hw_read_reg(self, HW_ATL_PCI_REG_CONTROL6_ADR);
 	aq_hw_write_reg(self, HW_ATL_PCI_REG_CONTROL6_ADR,
 			(val & ~0x707) | 0x404);
+=======
+	val = aq_hw_read_reg(self, pci_reg_control6_adr);
+	aq_hw_write_reg(self, pci_reg_control6_adr, (val & ~0x707) | 0x404);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TX DMA total request limit. B0 hardware is not capable to
 	 * handle more than (8K-MRRS) incoming DMA data.
 	 * Value 24 in 256byte units
 	 */
+<<<<<<< HEAD
 	aq_hw_write_reg(self, HW_ATL_TX_DMA_TOTAL_REQ_LIMIT_ADR, 24);
 
 	/* Reset link status and read out initial hardware counters */
 	self->aq_link_status.mbps = 0;
 	self->aq_fw_ops->update_stats(self);
+=======
+	aq_hw_write_reg(self, tx_dma_total_req_limit_adr, 24);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = aq_hw_err_from_flags(self);
 	if (err < 0)
 		goto err_exit;
 
 	/* Interrupts */
+<<<<<<< HEAD
 	hw_atl_reg_irq_glb_ctl_set(self,
 				   aq_hw_atl_igcr_table_[aq_nic_cfg->irq_type]
 						 [(aq_nic_cfg->vecs > 1U) ?
@@ -424,6 +703,18 @@ static int hw_atl_b0_hw_init(struct aq_hw_s *self, u8 *mac_addr)
 	/* Interrupts */
 	hw_atl_reg_gen_irq_map_set(self,
 				   ((HW_ATL_B0_ERR_INT << 0x18) | (1U << 0x1F)) |
+=======
+	reg_irq_glb_ctl_set(self,
+			    aq_hw_atl_igcr_table_[aq_nic_cfg->irq_type]
+						 [(aq_nic_cfg->vecs > 1U) ?
+						 1 : 0]);
+
+	itr_irq_auto_masklsw_set(self, aq_nic_cfg->aq_hw_caps->irq_mask);
+
+	/* Interrupts */
+	reg_gen_irq_map_set(self,
+			    ((HW_ATL_B0_ERR_INT << 0x18) | (1U << 0x1F)) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    ((HW_ATL_B0_ERR_INT << 0x10) | (1U << 0x17)), 0U);
 
 	hw_atl_b0_hw_offload_set(self, aq_nic_cfg);
@@ -435,28 +726,45 @@ err_exit:
 static int hw_atl_b0_hw_ring_tx_start(struct aq_hw_s *self,
 				      struct aq_ring_s *ring)
 {
+<<<<<<< HEAD
 	hw_atl_tdm_tx_desc_en_set(self, 1, ring->idx);
+=======
+	tdm_tx_desc_en_set(self, 1, ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return aq_hw_err_from_flags(self);
 }
 
 static int hw_atl_b0_hw_ring_rx_start(struct aq_hw_s *self,
 				      struct aq_ring_s *ring)
 {
+<<<<<<< HEAD
 	hw_atl_rdm_rx_desc_en_set(self, 1, ring->idx);
+=======
+	rdm_rx_desc_en_set(self, 1, ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return aq_hw_err_from_flags(self);
 }
 
 static int hw_atl_b0_hw_start(struct aq_hw_s *self)
 {
+<<<<<<< HEAD
 	hw_atl_tpb_tx_buff_en_set(self, 1);
 	hw_atl_rpb_rx_buff_en_set(self, 1);
+=======
+	tpb_tx_buff_en_set(self, 1);
+	rpb_rx_buff_en_set(self, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return aq_hw_err_from_flags(self);
 }
 
 static int hw_atl_b0_hw_tx_ring_tail_update(struct aq_hw_s *self,
 					    struct aq_ring_s *ring)
 {
+<<<<<<< HEAD
 	hw_atl_reg_tx_dma_desc_tail_ptr_set(self, ring->sw_tail, ring->idx);
+=======
+	reg_tx_dma_desc_tail_ptr_set(self, ring->sw_tail, ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -542,6 +850,7 @@ static int hw_atl_b0_hw_ring_rx_init(struct aq_hw_s *self,
 	u32 dma_desc_addr_lsw = (u32)aq_ring->dx_ring_pa;
 	u32 dma_desc_addr_msw = (u32)(((u64)aq_ring->dx_ring_pa) >> 32);
 
+<<<<<<< HEAD
 	hw_atl_rdm_rx_desc_en_set(self, false, aq_ring->idx);
 
 	hw_atl_rdm_rx_desc_head_splitting_set(self, 0U, aq_ring->idx);
@@ -561,10 +870,32 @@ static int hw_atl_b0_hw_ring_rx_init(struct aq_hw_s *self,
 	hw_atl_rdm_rx_desc_head_buff_size_set(self, 0U, aq_ring->idx);
 	hw_atl_rdm_rx_desc_head_splitting_set(self, 0U, aq_ring->idx);
 	hw_atl_rpo_rx_desc_vlan_stripping_set(self, 0U, aq_ring->idx);
+=======
+	rdm_rx_desc_en_set(self, false, aq_ring->idx);
+
+	rdm_rx_desc_head_splitting_set(self, 0U, aq_ring->idx);
+
+	reg_rx_dma_desc_base_addresslswset(self, dma_desc_addr_lsw,
+					   aq_ring->idx);
+
+	reg_rx_dma_desc_base_addressmswset(self,
+					   dma_desc_addr_msw, aq_ring->idx);
+
+	rdm_rx_desc_len_set(self, aq_ring->size / 8U, aq_ring->idx);
+
+	rdm_rx_desc_data_buff_size_set(self,
+				       AQ_CFG_RX_FRAME_MAX / 1024U,
+				       aq_ring->idx);
+
+	rdm_rx_desc_head_buff_size_set(self, 0U, aq_ring->idx);
+	rdm_rx_desc_head_splitting_set(self, 0U, aq_ring->idx);
+	rpo_rx_desc_vlan_stripping_set(self, 0U, aq_ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Rx ring set mode */
 
 	/* Mapping interrupt vector */
+<<<<<<< HEAD
 	hw_atl_itr_irq_map_rx_set(self, aq_ring_param->vec_idx, aq_ring->idx);
 	hw_atl_itr_irq_map_en_rx_set(self, true, aq_ring->idx);
 
@@ -572,6 +903,15 @@ static int hw_atl_b0_hw_ring_rx_init(struct aq_hw_s *self,
 	hw_atl_rdm_rx_desc_dca_en_set(self, 0U, aq_ring->idx);
 	hw_atl_rdm_rx_head_dca_en_set(self, 0U, aq_ring->idx);
 	hw_atl_rdm_rx_pld_dca_en_set(self, 0U, aq_ring->idx);
+=======
+	itr_irq_map_rx_set(self, aq_ring_param->vec_idx, aq_ring->idx);
+	itr_irq_map_en_rx_set(self, true, aq_ring->idx);
+
+	rdm_cpu_id_set(self, aq_ring_param->cpu, aq_ring->idx);
+	rdm_rx_desc_dca_en_set(self, 0U, aq_ring->idx);
+	rdm_rx_head_dca_en_set(self, 0U, aq_ring->idx);
+	rdm_rx_pld_dca_en_set(self, 0U, aq_ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return aq_hw_err_from_flags(self);
 }
@@ -583,6 +923,7 @@ static int hw_atl_b0_hw_ring_tx_init(struct aq_hw_s *self,
 	u32 dma_desc_lsw_addr = (u32)aq_ring->dx_ring_pa;
 	u32 dma_desc_msw_addr = (u32)(((u64)aq_ring->dx_ring_pa) >> 32);
 
+<<<<<<< HEAD
 	hw_atl_reg_tx_dma_desc_base_addresslswset(self, dma_desc_lsw_addr,
 						  aq_ring->idx);
 
@@ -590,10 +931,20 @@ static int hw_atl_b0_hw_ring_tx_init(struct aq_hw_s *self,
 						  aq_ring->idx);
 
 	hw_atl_tdm_tx_desc_len_set(self, aq_ring->size / 8U, aq_ring->idx);
+=======
+	reg_tx_dma_desc_base_addresslswset(self, dma_desc_lsw_addr,
+					   aq_ring->idx);
+
+	reg_tx_dma_desc_base_addressmswset(self, dma_desc_msw_addr,
+					   aq_ring->idx);
+
+	tdm_tx_desc_len_set(self, aq_ring->size / 8U, aq_ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw_atl_b0_hw_tx_ring_tail_update(self, aq_ring);
 
 	/* Set Tx threshold */
+<<<<<<< HEAD
 	hw_atl_tdm_tx_desc_wr_wb_threshold_set(self, 0U, aq_ring->idx);
 
 	/* Mapping interrupt vector */
@@ -602,6 +953,16 @@ static int hw_atl_b0_hw_ring_tx_init(struct aq_hw_s *self,
 
 	hw_atl_tdm_cpu_id_set(self, aq_ring_param->cpu, aq_ring->idx);
 	hw_atl_tdm_tx_desc_dca_en_set(self, 0U, aq_ring->idx);
+=======
+	tdm_tx_desc_wr_wb_threshold_set(self, 0U, aq_ring->idx);
+
+	/* Mapping interrupt vector */
+	itr_irq_map_tx_set(self, aq_ring_param->vec_idx, aq_ring->idx);
+	itr_irq_map_en_tx_set(self, true, aq_ring->idx);
+
+	tdm_cpu_id_set(self, aq_ring_param->cpu, aq_ring->idx);
+	tdm_tx_desc_dca_en_set(self, 0U, aq_ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return aq_hw_err_from_flags(self);
 }
@@ -622,7 +983,11 @@ static int hw_atl_b0_hw_ring_rx_fill(struct aq_hw_s *self,
 		rxd->hdr_addr = 0U;
 	}
 
+<<<<<<< HEAD
 	hw_atl_reg_rx_dma_desc_tail_ptr_set(self, sw_tail_old, ring->idx);
+=======
+	reg_rx_dma_desc_tail_ptr_set(self, sw_tail_old, ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return aq_hw_err_from_flags(self);
 }
@@ -631,9 +996,15 @@ static int hw_atl_b0_hw_ring_tx_head_update(struct aq_hw_s *self,
 					    struct aq_ring_s *ring)
 {
 	int err = 0;
+<<<<<<< HEAD
 	unsigned int hw_head_ = hw_atl_tdm_tx_desc_head_ptr_get(self, ring->idx);
 
 	if (aq_utils_obj_test(&self->flags, AQ_HW_FLAG_ERR_UNPLUG)) {
+=======
+	unsigned int hw_head_ = tdm_tx_desc_head_ptr_get(self, ring->idx);
+
+	if (aq_utils_obj_test(&self->header.flags, AQ_HW_FLAG_ERR_UNPLUG)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENXIO;
 		goto err_exit;
 	}
@@ -655,9 +1026,15 @@ static int hw_atl_b0_hw_ring_rx_receive(struct aq_hw_s *self,
 		struct hw_atl_rxd_wb_s *rxd_wb = (struct hw_atl_rxd_wb_s *)
 			&ring->dx_ring[ring->hw_head * HW_ATL_B0_RXD_SIZE];
 
+<<<<<<< HEAD
 		unsigned int is_rx_check_sum_enabled = 0U;
 		unsigned int pkt_type = 0U;
 		u8 rx_stat = 0U;
+=======
+		unsigned int is_err = 1U;
+		unsigned int is_rx_check_sum_enabled = 0U;
+		unsigned int pkt_type = 0U;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!(rxd_wb->status & 0x1U)) { /* RxD is not done */
 			break;
@@ -665,6 +1042,7 @@ static int hw_atl_b0_hw_ring_rx_receive(struct aq_hw_s *self,
 
 		buff = &ring->buff_ring[ring->hw_head];
 
+<<<<<<< HEAD
 		rx_stat = (0x0000003CU & rxd_wb->status) >> 2;
 
 		is_rx_check_sum_enabled = (rxd_wb->type >> 19) & 0x3U;
@@ -694,6 +1072,37 @@ static int hw_atl_b0_hw_ring_rx_receive(struct aq_hw_s *self,
 
 		if ((rx_stat & BIT(0)) || rxd_wb->type & 0x1000U) {
 			/* MAC error or DMA error */
+=======
+		is_err = (0x0000003CU & rxd_wb->status);
+
+		is_rx_check_sum_enabled = (rxd_wb->type) & (0x3U << 19);
+		is_err &= ~0x20U; /* exclude validity bit */
+
+		pkt_type = 0xFFU & (rxd_wb->type >> 4);
+
+		if (is_rx_check_sum_enabled) {
+			if (0x0U == (pkt_type & 0x3U))
+				buff->is_ip_cso = (is_err & 0x08U) ? 0U : 1U;
+
+			if (0x4U == (pkt_type & 0x1CU))
+				buff->is_udp_cso = buff->is_cso_err ? 0U : 1U;
+			else if (0x0U == (pkt_type & 0x1CU))
+				buff->is_tcp_cso = buff->is_cso_err ? 0U : 1U;
+
+			/* Checksum offload workaround for small packets */
+			if (rxd_wb->pkt_len <= 60) {
+				buff->is_ip_cso = 0U;
+				buff->is_cso_err = 0U;
+			}
+		}
+
+		is_err &= ~0x18U;
+
+		dma_unmap_page(ndev, buff->pa, buff->len, DMA_FROM_DEVICE);
+
+		if (is_err || rxd_wb->type & 0x1000U) {
+			/* status error or DMA error */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			buff->is_error = 1U;
 		}
 		if (self->aq_nic_cfg->is_rss) {
@@ -739,22 +1148,37 @@ static int hw_atl_b0_hw_ring_rx_receive(struct aq_hw_s *self,
 
 static int hw_atl_b0_hw_irq_enable(struct aq_hw_s *self, u64 mask)
 {
+<<<<<<< HEAD
 	hw_atl_itr_irq_msk_setlsw_set(self, LODWORD(mask));
+=======
+	itr_irq_msk_setlsw_set(self, LODWORD(mask));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return aq_hw_err_from_flags(self);
 }
 
 static int hw_atl_b0_hw_irq_disable(struct aq_hw_s *self, u64 mask)
 {
+<<<<<<< HEAD
 	hw_atl_itr_irq_msk_clearlsw_set(self, LODWORD(mask));
 	hw_atl_itr_irq_status_clearlsw_set(self, LODWORD(mask));
 
 	atomic_inc(&self->dpc);
+=======
+	itr_irq_msk_clearlsw_set(self, LODWORD(mask));
+	itr_irq_status_clearlsw_set(self, LODWORD(mask));
+
+	atomic_inc(&PHAL_ATLANTIC_B0->dpc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return aq_hw_err_from_flags(self);
 }
 
 static int hw_atl_b0_hw_irq_read(struct aq_hw_s *self, u64 *mask)
 {
+<<<<<<< HEAD
 	*mask = hw_atl_itr_irq_statuslsw_get(self);
+=======
+	*mask = itr_irq_statuslsw_get(self);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return aq_hw_err_from_flags(self);
 }
 
@@ -765,6 +1189,7 @@ static int hw_atl_b0_hw_packet_filter_set(struct aq_hw_s *self,
 {
 	unsigned int i = 0U;
 
+<<<<<<< HEAD
 	hw_atl_rpfl2promiscuous_mode_en_set(self, IS_FILTER_ENABLED(IFF_PROMISC));
 	hw_atl_rpfl2multicast_flr_en_set(self,
 					 IS_FILTER_ENABLED(IFF_ALLMULTI), 0);
@@ -773,12 +1198,27 @@ static int hw_atl_b0_hw_packet_filter_set(struct aq_hw_s *self,
 					       IS_FILTER_ENABLED(IFF_ALLMULTI));
 
 	hw_atl_rpfl2broadcast_en_set(self, IS_FILTER_ENABLED(IFF_BROADCAST));
+=======
+	rpfl2promiscuous_mode_en_set(self, IS_FILTER_ENABLED(IFF_PROMISC));
+	rpfl2multicast_flr_en_set(self,
+				  IS_FILTER_ENABLED(IFF_ALLMULTI), 0);
+
+	rpfl2_accept_all_mc_packets_set(self,
+					IS_FILTER_ENABLED(IFF_ALLMULTI));
+
+	rpfl2broadcast_en_set(self, IS_FILTER_ENABLED(IFF_BROADCAST));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	self->aq_nic_cfg->is_mc_list_enabled = IS_FILTER_ENABLED(IFF_MULTICAST);
 
 	for (i = HW_ATL_B0_MAC_MIN; i < HW_ATL_B0_MAC_MAX; ++i)
+<<<<<<< HEAD
 		hw_atl_rpfl2_uc_flr_en_set(self,
 					   (self->aq_nic_cfg->is_mc_list_enabled &&
+=======
+		rpfl2_uc_flr_en_set(self,
+				    (self->aq_nic_cfg->is_mc_list_enabled &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    (i <= self->aq_nic_cfg->mc_list_count)) ?
 				    1U : 0U, i);
 
@@ -789,7 +1229,11 @@ static int hw_atl_b0_hw_packet_filter_set(struct aq_hw_s *self,
 
 static int hw_atl_b0_hw_multicast_list_set(struct aq_hw_s *self,
 					   u8 ar_mac
+<<<<<<< HEAD
 					   [AQ_HW_MULTICAST_ADDRESS_MAX]
+=======
+					   [AQ_CFG_MULTICAST_ADDRESS_MAX]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   [ETH_ALEN],
 					   u32 count)
 {
@@ -807,6 +1251,7 @@ static int hw_atl_b0_hw_multicast_list_set(struct aq_hw_s *self,
 		u32 l = (ar_mac[i][2] << 24) | (ar_mac[i][3] << 16) |
 					(ar_mac[i][4] << 8) | ar_mac[i][5];
 
+<<<<<<< HEAD
 		hw_atl_rpfl2_uc_flr_en_set(self, 0U, HW_ATL_B0_MAC_MIN + i);
 
 		hw_atl_rpfl2unicast_dest_addresslsw_set(self,
@@ -818,6 +1263,19 @@ static int hw_atl_b0_hw_multicast_list_set(struct aq_hw_s *self,
 		hw_atl_rpfl2_uc_flr_en_set(self,
 					   (self->aq_nic_cfg->is_mc_list_enabled),
 					   HW_ATL_B0_MAC_MIN + i);
+=======
+		rpfl2_uc_flr_en_set(self, 0U, HW_ATL_B0_MAC_MIN + i);
+
+		rpfl2unicast_dest_addresslsw_set(self,
+						 l, HW_ATL_B0_MAC_MIN + i);
+
+		rpfl2unicast_dest_addressmsw_set(self,
+						 h, HW_ATL_B0_MAC_MIN + i);
+
+		rpfl2_uc_flr_en_set(self,
+				    (self->aq_nic_cfg->is_mc_list_enabled),
+				    HW_ATL_B0_MAC_MIN + i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = aq_hw_err_from_flags(self);
@@ -835,10 +1293,17 @@ static int hw_atl_b0_hw_interrupt_moderation_set(struct aq_hw_s *self)
 	switch (self->aq_nic_cfg->itr) {
 	case  AQ_CFG_INTERRUPT_MODERATION_ON:
 	case  AQ_CFG_INTERRUPT_MODERATION_AUTO:
+<<<<<<< HEAD
 		hw_atl_tdm_tx_desc_wr_wb_irq_en_set(self, 0U);
 		hw_atl_tdm_tdm_intr_moder_en_set(self, 1U);
 		hw_atl_rdm_rx_desc_wr_wb_irq_en_set(self, 0U);
 		hw_atl_rdm_rdm_intr_moder_en_set(self, 1U);
+=======
+		tdm_tx_desc_wr_wb_irq_en_set(self, 0U);
+		tdm_tdm_intr_moder_en_set(self, 1U);
+		rdm_rx_desc_wr_wb_irq_en_set(self, 0U);
+		rdm_rdm_intr_moder_en_set(self, 1U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (self->aq_nic_cfg->itr == AQ_CFG_INTERRUPT_MODERATION_ON) {
 			/* HW timers are in 2us units */
@@ -898,18 +1363,30 @@ static int hw_atl_b0_hw_interrupt_moderation_set(struct aq_hw_s *self)
 		}
 		break;
 	case AQ_CFG_INTERRUPT_MODERATION_OFF:
+<<<<<<< HEAD
 		hw_atl_tdm_tx_desc_wr_wb_irq_en_set(self, 1U);
 		hw_atl_tdm_tdm_intr_moder_en_set(self, 0U);
 		hw_atl_rdm_rx_desc_wr_wb_irq_en_set(self, 1U);
 		hw_atl_rdm_rdm_intr_moder_en_set(self, 0U);
+=======
+		tdm_tx_desc_wr_wb_irq_en_set(self, 1U);
+		tdm_tdm_intr_moder_en_set(self, 0U);
+		rdm_rx_desc_wr_wb_irq_en_set(self, 1U);
+		rdm_rdm_intr_moder_en_set(self, 0U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		itr_tx = 0U;
 		itr_rx = 0U;
 		break;
 	}
 
 	for (i = HW_ATL_B0_RINGS_MAX; i--;) {
+<<<<<<< HEAD
 		hw_atl_reg_tx_intr_moder_ctrl_set(self, itr_tx, i);
 		hw_atl_reg_rx_intr_moder_ctrl_set(self, itr_rx, i);
+=======
+		reg_tx_intr_moder_ctrl_set(self, itr_tx, i);
+		reg_rx_intr_moder_ctrl_set(self, itr_rx, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return aq_hw_err_from_flags(self);
@@ -918,25 +1395,33 @@ static int hw_atl_b0_hw_interrupt_moderation_set(struct aq_hw_s *self)
 static int hw_atl_b0_hw_stop(struct aq_hw_s *self)
 {
 	hw_atl_b0_hw_irq_disable(self, HW_ATL_B0_INT_MASK);
+<<<<<<< HEAD
 
 	/* Invalidate Descriptor Cache to prevent writing to the cached
 	 * descriptors and to the data pointer of those descriptors
 	 */
 	hw_atl_rdm_rx_dma_desc_cache_init_set(self, 1);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return aq_hw_err_from_flags(self);
 }
 
 static int hw_atl_b0_hw_ring_tx_stop(struct aq_hw_s *self,
 				     struct aq_ring_s *ring)
 {
+<<<<<<< HEAD
 	hw_atl_tdm_tx_desc_en_set(self, 0U, ring->idx);
+=======
+	tdm_tx_desc_en_set(self, 0U, ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return aq_hw_err_from_flags(self);
 }
 
 static int hw_atl_b0_hw_ring_rx_stop(struct aq_hw_s *self,
 				     struct aq_ring_s *ring)
 {
+<<<<<<< HEAD
 	hw_atl_rdm_rx_desc_en_set(self, 0U, ring->idx);
 	return aq_hw_err_from_flags(self);
 }
@@ -944,6 +1429,35 @@ static int hw_atl_b0_hw_ring_rx_stop(struct aq_hw_s *self,
 const struct aq_hw_ops hw_atl_ops_b0 = {
 	.hw_set_mac_address   = hw_atl_b0_hw_mac_addr_set,
 	.hw_init              = hw_atl_b0_hw_init,
+=======
+	rdm_rx_desc_en_set(self, 0U, ring->idx);
+	return aq_hw_err_from_flags(self);
+}
+
+static int hw_atl_b0_hw_set_speed(struct aq_hw_s *self, u32 speed)
+{
+	int err = 0;
+
+	err = hw_atl_utils_mpi_set_speed(self, speed, MPI_INIT);
+	if (err < 0)
+		goto err_exit;
+
+err_exit:
+	return err;
+}
+
+static struct aq_hw_ops hw_atl_ops_ = {
+	.create               = hw_atl_b0_create,
+	.destroy              = hw_atl_b0_destroy,
+	.get_hw_caps          = hw_atl_b0_get_hw_caps,
+
+	.hw_get_mac_permanent = hw_atl_utils_get_mac_permanent,
+	.hw_set_mac_address   = hw_atl_b0_hw_mac_addr_set,
+	.hw_get_link_status   = hw_atl_utils_mpi_get_link_status,
+	.hw_set_link_speed    = hw_atl_b0_hw_set_speed,
+	.hw_init              = hw_atl_b0_hw_init,
+	.hw_deinit            = hw_atl_utils_hw_deinit,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.hw_set_power         = hw_atl_utils_hw_set_power,
 	.hw_reset             = hw_atl_b0_hw_reset,
 	.hw_start             = hw_atl_b0_hw_start,
@@ -971,6 +1485,27 @@ const struct aq_hw_ops hw_atl_ops_b0 = {
 	.hw_rss_set                  = hw_atl_b0_hw_rss_set,
 	.hw_rss_hash_set             = hw_atl_b0_hw_rss_hash_set,
 	.hw_get_regs                 = hw_atl_utils_hw_get_regs,
+<<<<<<< HEAD
 	.hw_get_hw_stats             = hw_atl_utils_get_hw_stats,
 	.hw_get_fw_version           = hw_atl_utils_get_fw_version,
 };
+=======
+	.hw_update_stats             = hw_atl_utils_update_stats,
+	.hw_get_hw_stats             = hw_atl_utils_get_hw_stats,
+	.hw_get_fw_version           = hw_atl_utils_get_fw_version,
+};
+
+struct aq_hw_ops *hw_atl_b0_get_ops_by_id(struct pci_dev *pdev)
+{
+	bool is_vid_ok = (pdev->vendor == PCI_VENDOR_ID_AQUANTIA);
+	bool is_did_ok = ((pdev->device == HW_ATL_DEVICE_ID_0001) ||
+			(pdev->device == HW_ATL_DEVICE_ID_D100) ||
+			(pdev->device == HW_ATL_DEVICE_ID_D107) ||
+			(pdev->device == HW_ATL_DEVICE_ID_D108) ||
+			(pdev->device == HW_ATL_DEVICE_ID_D109));
+
+	bool is_rev_ok = (pdev->revision == 2U);
+
+	return (is_vid_ok && is_did_ok && is_rev_ok) ? &hw_atl_ops_ : NULL;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

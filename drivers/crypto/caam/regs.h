@@ -312,17 +312,23 @@ struct caam_perfmon {
 
 	/* Component Instantiation Parameters			fe0-fff */
 	u32 rtic_id;		/* RVID - RTIC Version ID	*/
+<<<<<<< HEAD
 #define CCBVID_ERA_MASK		0xff000000
 #define CCBVID_ERA_SHIFT	24
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 ccb_id;		/* CCBVID - CCB Version ID	*/
 	u32 cha_id_ms;		/* CHAVID - CHA Version ID Most Significant*/
 	u32 cha_id_ls;		/* CHAVID - CHA Version ID Least Significant*/
 	u32 cha_num_ms;		/* CHANUM - CHA Number Most Significant	*/
 	u32 cha_num_ls;		/* CHANUM - CHA Number Least Significant*/
+<<<<<<< HEAD
 #define SECVID_MS_IPID_MASK	0xffff0000
 #define SECVID_MS_IPID_SHIFT	16
 #define SECVID_MS_MAJ_REV_MASK	0x0000ff00
 #define SECVID_MS_MAJ_REV_SHIFT	8
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 caam_id_ms;		/* CAAMVID - CAAM Version ID MS	*/
 	u32 caam_id_ls;		/* CAAMVID - CAAM Version ID LS	*/
 };

@@ -129,7 +129,10 @@ static const struct regmap_range axp288_volatile_ranges[] = {
 	regmap_reg_range(AXP20X_PWR_INPUT_STATUS, AXP288_POWER_REASON),
 	regmap_reg_range(AXP288_BC_GLOBAL, AXP288_BC_GLOBAL),
 	regmap_reg_range(AXP288_BC_DET_STAT, AXP288_BC_DET_STAT),
+<<<<<<< HEAD
 	regmap_reg_range(AXP20X_CHRG_BAK_CTRL, AXP20X_CHRG_BAK_CTRL),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regmap_reg_range(AXP20X_IRQ1_EN, AXP20X_IPSOUT_V_HIGH_L),
 	regmap_reg_range(AXP20X_TIMER_CTRL, AXP20X_TIMER_CTRL),
 	regmap_reg_range(AXP22X_GPIO_STATE, AXP22X_GPIO_STATE),
@@ -169,34 +172,65 @@ static const struct regmap_access_table axp806_volatile_table = {
 	.n_yes_ranges	= ARRAY_SIZE(axp806_volatile_ranges),
 };
 
+<<<<<<< HEAD
 static const struct resource axp152_pek_resources[] = {
+=======
+static struct resource axp152_pek_resources[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE_RES_IRQ_NAMED(AXP152_IRQ_PEK_RIS_EDGE, "PEK_DBR"),
 	DEFINE_RES_IRQ_NAMED(AXP152_IRQ_PEK_FAL_EDGE, "PEK_DBF"),
 };
 
+<<<<<<< HEAD
 static const struct resource axp20x_ac_power_supply_resources[] = {
+=======
+static struct resource axp20x_ac_power_supply_resources[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_ACIN_PLUGIN, "ACIN_PLUGIN"),
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_ACIN_REMOVAL, "ACIN_REMOVAL"),
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_ACIN_OVER_V, "ACIN_OVER_V"),
 };
 
+<<<<<<< HEAD
 static const struct resource axp20x_pek_resources[] = {
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_PEK_RIS_EDGE, "PEK_DBR"),
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_PEK_FAL_EDGE, "PEK_DBF"),
 };
 
 static const struct resource axp20x_usb_power_supply_resources[] = {
+=======
+static struct resource axp20x_pek_resources[] = {
+	{
+		.name	= "PEK_DBR",
+		.start	= AXP20X_IRQ_PEK_RIS_EDGE,
+		.end	= AXP20X_IRQ_PEK_RIS_EDGE,
+		.flags	= IORESOURCE_IRQ,
+	}, {
+		.name	= "PEK_DBF",
+		.start	= AXP20X_IRQ_PEK_FAL_EDGE,
+		.end	= AXP20X_IRQ_PEK_FAL_EDGE,
+		.flags	= IORESOURCE_IRQ,
+	},
+};
+
+static struct resource axp20x_usb_power_supply_resources[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_VBUS_PLUGIN, "VBUS_PLUGIN"),
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_VBUS_REMOVAL, "VBUS_REMOVAL"),
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_VBUS_VALID, "VBUS_VALID"),
 	DEFINE_RES_IRQ_NAMED(AXP20X_IRQ_VBUS_NOT_VALID, "VBUS_NOT_VALID"),
 };
 
+<<<<<<< HEAD
 static const struct resource axp22x_usb_power_supply_resources[] = {
+=======
+static struct resource axp22x_usb_power_supply_resources[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE_RES_IRQ_NAMED(AXP22X_IRQ_VBUS_PLUGIN, "VBUS_PLUGIN"),
 	DEFINE_RES_IRQ_NAMED(AXP22X_IRQ_VBUS_REMOVAL, "VBUS_REMOVAL"),
 };
 
+<<<<<<< HEAD
 static const struct resource axp22x_pek_resources[] = {
 	DEFINE_RES_IRQ_NAMED(AXP22X_IRQ_PEK_RIS_EDGE, "PEK_DBR"),
 	DEFINE_RES_IRQ_NAMED(AXP22X_IRQ_PEK_FAL_EDGE, "PEK_DBF"),
@@ -229,6 +263,96 @@ static const struct resource axp806_pek_resources[] = {
 static const struct resource axp809_pek_resources[] = {
 	DEFINE_RES_IRQ_NAMED(AXP809_IRQ_PEK_RIS_EDGE, "PEK_DBR"),
 	DEFINE_RES_IRQ_NAMED(AXP809_IRQ_PEK_FAL_EDGE, "PEK_DBF"),
+=======
+static struct resource axp22x_pek_resources[] = {
+	{
+		.name   = "PEK_DBR",
+		.start  = AXP22X_IRQ_PEK_RIS_EDGE,
+		.end    = AXP22X_IRQ_PEK_RIS_EDGE,
+		.flags  = IORESOURCE_IRQ,
+	}, {
+		.name   = "PEK_DBF",
+		.start  = AXP22X_IRQ_PEK_FAL_EDGE,
+		.end    = AXP22X_IRQ_PEK_FAL_EDGE,
+		.flags  = IORESOURCE_IRQ,
+	},
+};
+
+static struct resource axp288_power_button_resources[] = {
+	{
+		.name	= "PEK_DBR",
+		.start	= AXP288_IRQ_POKP,
+		.end	= AXP288_IRQ_POKP,
+		.flags	= IORESOURCE_IRQ,
+	},
+	{
+		.name	= "PEK_DBF",
+		.start	= AXP288_IRQ_POKN,
+		.end	= AXP288_IRQ_POKN,
+		.flags	= IORESOURCE_IRQ,
+	},
+};
+
+static struct resource axp288_fuel_gauge_resources[] = {
+	{
+		.start = AXP288_IRQ_QWBTU,
+		.end   = AXP288_IRQ_QWBTU,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_WBTU,
+		.end   = AXP288_IRQ_WBTU,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_QWBTO,
+		.end   = AXP288_IRQ_QWBTO,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_WBTO,
+		.end   = AXP288_IRQ_WBTO,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_WL2,
+		.end   = AXP288_IRQ_WL2,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_WL1,
+		.end   = AXP288_IRQ_WL1,
+		.flags = IORESOURCE_IRQ,
+	},
+};
+
+static struct resource axp803_pek_resources[] = {
+	{
+		.name   = "PEK_DBR",
+		.start  = AXP803_IRQ_PEK_RIS_EDGE,
+		.end    = AXP803_IRQ_PEK_RIS_EDGE,
+		.flags  = IORESOURCE_IRQ,
+	}, {
+		.name   = "PEK_DBF",
+		.start  = AXP803_IRQ_PEK_FAL_EDGE,
+		.end    = AXP803_IRQ_PEK_FAL_EDGE,
+		.flags  = IORESOURCE_IRQ,
+	},
+};
+
+static struct resource axp809_pek_resources[] = {
+	{
+		.name   = "PEK_DBR",
+		.start  = AXP809_IRQ_PEK_RIS_EDGE,
+		.end    = AXP809_IRQ_PEK_RIS_EDGE,
+		.flags  = IORESOURCE_IRQ,
+	}, {
+		.name   = "PEK_DBF",
+		.start  = AXP809_IRQ_PEK_FAL_EDGE,
+		.end    = AXP809_IRQ_PEK_FAL_EDGE,
+		.flags  = IORESOURCE_IRQ,
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct regmap_config axp152_regmap_config = {
@@ -455,11 +579,19 @@ static const struct regmap_irq axp806_regmap_irqs[] = {
 	INIT_REGMAP_IRQ(AXP806, DCDCC_V_LOW,		0, 5),
 	INIT_REGMAP_IRQ(AXP806, DCDCD_V_LOW,		0, 6),
 	INIT_REGMAP_IRQ(AXP806, DCDCE_V_LOW,		0, 7),
+<<<<<<< HEAD
 	INIT_REGMAP_IRQ(AXP806, POK_LONG,		1, 0),
 	INIT_REGMAP_IRQ(AXP806, POK_SHORT,		1, 1),
 	INIT_REGMAP_IRQ(AXP806, WAKEUP,			1, 4),
 	INIT_REGMAP_IRQ(AXP806, POK_FALL,		1, 5),
 	INIT_REGMAP_IRQ(AXP806, POK_RISE,		1, 6),
+=======
+	INIT_REGMAP_IRQ(AXP806, PWROK_LONG,		1, 0),
+	INIT_REGMAP_IRQ(AXP806, PWROK_SHORT,		1, 1),
+	INIT_REGMAP_IRQ(AXP806, WAKEUP,			1, 4),
+	INIT_REGMAP_IRQ(AXP806, PWROK_FALL,		1, 5),
+	INIT_REGMAP_IRQ(AXP806, PWROK_RISE,		1, 6),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct regmap_irq axp809_regmap_irqs[] = {
@@ -583,7 +715,11 @@ static const struct regmap_irq_chip axp809_regmap_irq_chip = {
 	.num_regs		= 5,
 };
 
+<<<<<<< HEAD
 static const struct mfd_cell axp20x_cells[] = {
+=======
+static struct mfd_cell axp20x_cells[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name		= "axp20x-gpio",
 		.of_compatible	= "x-powers,axp209-gpio",
@@ -595,7 +731,10 @@ static const struct mfd_cell axp20x_cells[] = {
 		.name		= "axp20x-regulator",
 	}, {
 		.name		= "axp20x-adc",
+<<<<<<< HEAD
 		.of_compatible	= "x-powers,axp209-adc",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.name		= "axp20x-battery-power-supply",
 		.of_compatible	= "x-powers,axp209-battery-power-supply",
@@ -612,7 +751,11 @@ static const struct mfd_cell axp20x_cells[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct mfd_cell axp221_cells[] = {
+=======
+static struct mfd_cell axp221_cells[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name		= "axp221-pek",
 		.num_resources	= ARRAY_SIZE(axp22x_pek_resources),
@@ -620,8 +763,12 @@ static const struct mfd_cell axp221_cells[] = {
 	}, {
 		.name		= "axp20x-regulator",
 	}, {
+<<<<<<< HEAD
 		.name		= "axp22x-adc",
 		.of_compatible	= "x-powers,axp221-adc",
+=======
+		.name		= "axp22x-adc"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.name		= "axp20x-ac-power-supply",
 		.of_compatible	= "x-powers,axp221-ac-power-supply",
@@ -638,6 +785,7 @@ static const struct mfd_cell axp221_cells[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct mfd_cell axp223_cells[] = {
 	{
 		.name		= "axp221-pek",
@@ -646,11 +794,24 @@ static const struct mfd_cell axp223_cells[] = {
 	}, {
 		.name		= "axp22x-adc",
 		.of_compatible	= "x-powers,axp221-adc",
+=======
+static struct mfd_cell axp223_cells[] = {
+	{
+		.name			= "axp221-pek",
+		.num_resources		= ARRAY_SIZE(axp22x_pek_resources),
+		.resources		= axp22x_pek_resources,
+	}, {
+		.name		= "axp22x-adc",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.name		= "axp20x-battery-power-supply",
 		.of_compatible	= "x-powers,axp221-battery-power-supply",
 	}, {
+<<<<<<< HEAD
 		.name		= "axp20x-regulator",
+=======
+		.name			= "axp20x-regulator",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.name		= "axp20x-ac-power-supply",
 		.of_compatible	= "x-powers,axp221-ac-power-supply",
@@ -664,6 +825,7 @@ static const struct mfd_cell axp223_cells[] = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct mfd_cell axp152_cells[] = {
 	{
 		.name		= "axp20x-pek",
@@ -793,6 +955,160 @@ static const struct mfd_cell axp813_cells[] = {
 		.num_resources	= ARRAY_SIZE(axp20x_ac_power_supply_resources),
 		.resources	= axp20x_ac_power_supply_resources,
 	},
+=======
+static struct mfd_cell axp152_cells[] = {
+	{
+		.name			= "axp20x-pek",
+		.num_resources		= ARRAY_SIZE(axp152_pek_resources),
+		.resources		= axp152_pek_resources,
+	},
+};
+
+static struct resource axp288_adc_resources[] = {
+	{
+		.name  = "GPADC",
+		.start = AXP288_IRQ_GPADC,
+		.end   = AXP288_IRQ_GPADC,
+		.flags = IORESOURCE_IRQ,
+	},
+};
+
+static struct resource axp288_extcon_resources[] = {
+	{
+		.start = AXP288_IRQ_VBUS_FALL,
+		.end   = AXP288_IRQ_VBUS_FALL,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_VBUS_RISE,
+		.end   = AXP288_IRQ_VBUS_RISE,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_MV_CHNG,
+		.end   = AXP288_IRQ_MV_CHNG,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_BC_USB_CHNG,
+		.end   = AXP288_IRQ_BC_USB_CHNG,
+		.flags = IORESOURCE_IRQ,
+	},
+};
+
+static struct resource axp288_charger_resources[] = {
+	{
+		.start = AXP288_IRQ_OV,
+		.end   = AXP288_IRQ_OV,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_DONE,
+		.end   = AXP288_IRQ_DONE,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_CHARGING,
+		.end   = AXP288_IRQ_CHARGING,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_SAFE_QUIT,
+		.end   = AXP288_IRQ_SAFE_QUIT,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_SAFE_ENTER,
+		.end   = AXP288_IRQ_SAFE_ENTER,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_QCBTU,
+		.end   = AXP288_IRQ_QCBTU,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_CBTU,
+		.end   = AXP288_IRQ_CBTU,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_QCBTO,
+		.end   = AXP288_IRQ_QCBTO,
+		.flags = IORESOURCE_IRQ,
+	},
+	{
+		.start = AXP288_IRQ_CBTO,
+		.end   = AXP288_IRQ_CBTO,
+		.flags = IORESOURCE_IRQ,
+	},
+};
+
+static struct mfd_cell axp288_cells[] = {
+	{
+		.name = "axp288_adc",
+		.num_resources = ARRAY_SIZE(axp288_adc_resources),
+		.resources = axp288_adc_resources,
+	},
+	{
+		.name = "axp288_extcon",
+		.num_resources = ARRAY_SIZE(axp288_extcon_resources),
+		.resources = axp288_extcon_resources,
+	},
+	{
+		.name = "axp288_charger",
+		.num_resources = ARRAY_SIZE(axp288_charger_resources),
+		.resources = axp288_charger_resources,
+	},
+	{
+		.name = "axp288_fuel_gauge",
+		.num_resources = ARRAY_SIZE(axp288_fuel_gauge_resources),
+		.resources = axp288_fuel_gauge_resources,
+	},
+	{
+		.name = "axp221-pek",
+		.num_resources = ARRAY_SIZE(axp288_power_button_resources),
+		.resources = axp288_power_button_resources,
+	},
+	{
+		.name = "axp288_pmic_acpi",
+	},
+};
+
+static struct mfd_cell axp803_cells[] = {
+	{
+		.name			= "axp221-pek",
+		.num_resources		= ARRAY_SIZE(axp803_pek_resources),
+		.resources		= axp803_pek_resources,
+	},
+	{	.name			= "axp20x-regulator" },
+};
+
+static struct mfd_cell axp806_cells[] = {
+	{
+		.id			= 2,
+		.name			= "axp20x-regulator",
+	},
+};
+
+static struct mfd_cell axp809_cells[] = {
+	{
+		.name			= "axp221-pek",
+		.num_resources		= ARRAY_SIZE(axp809_pek_resources),
+		.resources		= axp809_pek_resources,
+	}, {
+		.id			= 1,
+		.name			= "axp20x-regulator",
+	},
+};
+
+static struct mfd_cell axp813_cells[] = {
+	{
+		.name			= "axp221-pek",
+		.num_resources		= ARRAY_SIZE(axp803_pek_resources),
+		.resources		= axp803_pek_resources,
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct axp20x_dev *axp20x_pm_power_off;
@@ -870,6 +1186,7 @@ int axp20x_match_device(struct axp20x_dev *axp20x)
 		axp20x->regmap_irq_chip = &axp803_regmap_irq_chip;
 		break;
 	case AXP806_ID:
+<<<<<<< HEAD
 		if (of_property_read_bool(axp20x->dev->of_node,
 					  "x-powers,self-working-mode")) {
 			axp20x->nr_cells = ARRAY_SIZE(axp806_self_working_cells);
@@ -878,6 +1195,10 @@ int axp20x_match_device(struct axp20x_dev *axp20x)
 			axp20x->nr_cells = ARRAY_SIZE(axp806_cells);
 			axp20x->cells = axp806_cells;
 		}
+=======
+		axp20x->nr_cells = ARRAY_SIZE(axp806_cells);
+		axp20x->cells = axp806_cells;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		axp20x->regmap_cfg = &axp806_regmap_config;
 		axp20x->regmap_irq_chip = &axp806_regmap_irq_chip;
 		break;
@@ -935,9 +1256,13 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
 	 */
 	if (axp20x->variant == AXP806_ID) {
 		if (of_property_read_bool(axp20x->dev->of_node,
+<<<<<<< HEAD
 					  "x-powers,master-mode") ||
 		    of_property_read_bool(axp20x->dev->of_node,
 					  "x-powers,self-working-mode"))
+=======
+					  "x-powers,master-mode"))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			regmap_write(axp20x->regmap, AXP806_REG_ADDR_EXT,
 				     AXP806_REG_ADDR_EXT_ADDR_MASTER_MODE);
 		else

@@ -1,7 +1,25 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: ISC
 /*
  * Copyright (c) 2014-2017 Qualcomm Atheros, Inc.
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+=======
+/*
+ * Copyright (c) 2014-2017 Qualcomm Atheros, Inc.
+ * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "wil6210.h"
@@ -296,8 +314,13 @@ static u16 wil_agg_size(struct wil6210_priv *wil, u16 req_agg_wsize)
 }
 
 /* Block Ack - Rx side (recipient) */
+<<<<<<< HEAD
 int wil_addba_rx_request(struct wil6210_priv *wil, u8 mid, u8 cid, u8 tid,
 			 u8 dialog_token, __le16 ba_param_set,
+=======
+int wil_addba_rx_request(struct wil6210_priv *wil, u8 mid,
+			 u8 cidxtid, u8 dialog_token, __le16 ba_param_set,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 __le16 ba_timeout, __le16 ba_seq_ctrl)
 __acquires(&sta->tid_rx_lock) __releases(&sta->tid_rx_lock)
 {
@@ -305,7 +328,12 @@ __acquires(&sta->tid_rx_lock) __releases(&sta->tid_rx_lock)
 	u16 agg_timeout = le16_to_cpu(ba_timeout);
 	u16 seq_ctrl = le16_to_cpu(ba_seq_ctrl);
 	struct wil_sta_info *sta;
+<<<<<<< HEAD
 	u16 agg_wsize;
+=======
+	u8 cid, tid;
+	u16 agg_wsize = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* bit 0: A-MSDU supported
 	 * bit 1: policy (should be 0 for us)
 	 * bits 2..5: TID
@@ -317,14 +345,25 @@ __acquires(&sta->tid_rx_lock) __releases(&sta->tid_rx_lock)
 		test_bit(WMI_FW_CAPABILITY_AMSDU, wil->fw_capabilities) &&
 		wil->amsdu_en && (param_set & BIT(0));
 	int ba_policy = param_set & BIT(1);
+<<<<<<< HEAD
+=======
+	u16 status = WLAN_STATUS_SUCCESS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 ssn = seq_ctrl >> 4;
 	struct wil_tid_ampdu_rx *r;
 	int rc = 0;
 
 	might_sleep();
+<<<<<<< HEAD
 
 	/* sanity checks */
 	if (cid >= max_assoc_sta) {
+=======
+	parse_cidxtid(cidxtid, &cid, &tid);
+
+	/* sanity checks */
+	if (cid >= WIL6210_MAX_CID) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wil_err(wil, "BACK: invalid CID %d\n", cid);
 		rc = -EINVAL;
 		goto out;
@@ -343,6 +382,7 @@ __acquires(&sta->tid_rx_lock) __releases(&sta->tid_rx_lock)
 		    agg_amsdu ? "+" : "-", !!ba_policy, dialog_token, ssn);
 
 	/* apply policies */
+<<<<<<< HEAD
 	if (req_agg_wsize == 0) {
 		wil_dbg_misc(wil, "Suggest BACK wsize %d\n",
 			     wil->max_agg_wsize);
@@ -356,6 +396,29 @@ __acquires(&sta->tid_rx_lock) __releases(&sta->tid_rx_lock)
 					     agg_wsize, agg_timeout);
 	if (rc) {
 		wil_err(wil, "do not apply ba, rc(%d)\n", rc);
+=======
+	if (ba_policy) {
+		wil_err(wil, "BACK requested unsupported ba_policy == 1\n");
+		status = WLAN_STATUS_INVALID_QOS_PARAM;
+	}
+	if (status == WLAN_STATUS_SUCCESS) {
+		if (req_agg_wsize == 0) {
+			wil_dbg_misc(wil, "Suggest BACK wsize %d\n",
+				     wil->max_agg_wsize);
+			agg_wsize = wil->max_agg_wsize;
+		} else {
+			agg_wsize = min_t(u16,
+					  wil->max_agg_wsize, req_agg_wsize);
+		}
+	}
+
+	rc = wil->txrx_ops.wmi_addba_rx_resp(wil, mid, cid, tid, dialog_token,
+					     status, agg_amsdu, agg_wsize,
+					     agg_timeout);
+	if (rc || (status != WLAN_STATUS_SUCCESS)) {
+		wil_err(wil, "do not apply ba, rc(%d), status(%d)\n", rc,
+			status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 

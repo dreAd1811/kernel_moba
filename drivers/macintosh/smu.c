@@ -103,7 +103,11 @@ static DEFINE_MUTEX(smu_part_access);
 static int smu_irq_inited;
 static unsigned long smu_cmdbuf_abs;
 
+<<<<<<< HEAD
 static void smu_i2c_retry(struct timer_list *t);
+=======
+static void smu_i2c_retry(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * SMU driver low level stuff
@@ -582,7 +586,13 @@ static int smu_late_init(void)
 	if (!smu)
 		return 0;
 
+<<<<<<< HEAD
 	timer_setup(&smu->i2c_timer, smu_i2c_retry, 0);
+=======
+	init_timer(&smu->i2c_timer);
+	smu->i2c_timer.function = smu_i2c_retry;
+	smu->i2c_timer.data = (unsigned long)smu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (smu->db_node) {
 		smu->db_irq = irq_of_parse_and_map(smu->db_node, 0);
@@ -753,7 +763,11 @@ static void smu_i2c_complete_command(struct smu_i2c_cmd *cmd, int fail)
 }
 
 
+<<<<<<< HEAD
 static void smu_i2c_retry(struct timer_list *unused)
+=======
+static void smu_i2c_retry(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct smu_i2c_cmd	*cmd = smu->cmd_i2c_cur;
 
@@ -793,7 +807,11 @@ static void smu_i2c_low_completion(struct smu_cmd *scmd, void *misc)
 		BUG_ON(cmd != smu->cmd_i2c_cur);
 		if (!smu_irq_inited) {
 			mdelay(5);
+<<<<<<< HEAD
 			smu_i2c_retry(NULL);
+=======
+			smu_i2c_retry(0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 		mod_timer(&smu->i2c_timer, jiffies + msecs_to_jiffies(5));
@@ -1245,10 +1263,17 @@ static ssize_t smu_read(struct file *file, char __user *buf,
 	return -EBADFD;
 }
 
+<<<<<<< HEAD
 static __poll_t smu_fpoll(struct file *file, poll_table *wait)
 {
 	struct smu_private *pp = file->private_data;
 	__poll_t mask = 0;
+=======
+static unsigned int smu_fpoll(struct file *file, poll_table *wait)
+{
+	struct smu_private *pp = file->private_data;
+	unsigned int mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	if (pp == 0)
@@ -1259,7 +1284,11 @@ static __poll_t smu_fpoll(struct file *file, poll_table *wait)
 
 		spin_lock_irqsave(&pp->lock, flags);
 		if (pp->busy && pp->cmd.status != 1)
+<<<<<<< HEAD
 			mask |= EPOLLIN;
+=======
+			mask |= POLLIN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&pp->lock, flags);
 	}
 	if (pp->mode == smu_file_events) {

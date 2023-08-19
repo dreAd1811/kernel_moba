@@ -28,7 +28,10 @@
 #include <linux/bug.h>
 #include <linux/nmi.h>
 #include <linux/ctype.h>
+<<<<<<< HEAD
 #include <linux/highmem.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/debugfs.h>
 #include <asm/ptrace.h>
@@ -41,7 +44,10 @@
 #include <asm/pgtable.h>
 #include <asm/mmu.h>
 #include <asm/mmu_context.h>
+<<<<<<< HEAD
 #include <asm/plpar_wrappers.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cputable.h>
 #include <asm/rtas.h>
 #include <asm/sstep.h>
@@ -56,13 +62,25 @@
 #include <asm/opal.h>
 #include <asm/firmware.h>
 #include <asm/code-patching.h>
+<<<<<<< HEAD
 #include <asm/sections.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC64
 #include <asm/hvcall.h>
 #include <asm/paca.h>
 #endif
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_PPC_SPLPAR)
+#include <asm/plpar_wrappers.h>
+#else
+static inline long plapr_set_ciabr(unsigned long ciabr) {return 0; };
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "nonstdio.h"
 #include "dis-asm.h"
 
@@ -127,7 +145,10 @@ static void byterev(unsigned char *, int);
 static void memex(void);
 static int bsesc(void);
 static void dump(void);
+<<<<<<< HEAD
 static void show_pte(unsigned long);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void prdump(unsigned long, long);
 static int ppc_inst_dump(unsigned long, long, int);
 static void dump_log_buf(void);
@@ -235,7 +256,10 @@ Commands:\n\
 #endif
   "\
   dr	dump stream of raw bytes\n\
+<<<<<<< HEAD
   dv	dump virtual address translation \n\
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   dt	dump the tracing buffers (uses printk)\n\
   dtc	dump the tracing buffers for current CPU (uses printk)\n\
 "
@@ -248,7 +272,10 @@ Commands:\n\
   f	flush cache\n\
   la	lookup symbol+offset of specified address\n\
   ls	lookup address of specified symbol\n\
+<<<<<<< HEAD
   lp s [#]	lookup address of percpu symbol s for current cpu, or cpu #\n\
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   m	examine/change memory\n\
   mm	move a block of memory\n\
   ms	set a block of memory\n\
@@ -281,7 +308,10 @@ Commands:\n\
 #elif defined(CONFIG_44x) || defined(CONFIG_PPC_BOOK3E)
 "  u	dump TLB\n"
 #endif
+<<<<<<< HEAD
 "  U	show uptime information\n"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 "  ?	help\n"
 "  # n	limit output to n lines per page (for dp, dpa, dl)\n"
 "  zr	reboot\n\
@@ -328,7 +358,11 @@ static void write_ciabr(unsigned long ciabr)
 		mtspr(SPRN_CIABR, ciabr);
 		return;
 	}
+<<<<<<< HEAD
 	plpar_set_ciabr(ciabr);
+=======
+	plapr_set_ciabr(ciabr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -521,7 +555,11 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
 		get_output_lock();
 		excprint(regs);
 		if (bp) {
+<<<<<<< HEAD
 			printf("cpu 0x%x stopped at breakpoint 0x%tx (",
+=======
+			printf("cpu 0x%x stopped at breakpoint 0x%lx (",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       cpu, BP_NUM(bp));
 			xmon_print_symbol(regs->nip, " ", ")\n");
 		}
@@ -628,7 +666,11 @@ static int xmon_core(struct pt_regs *regs, int fromipi)
 		excprint(regs);
 		bp = at_breakpoint(regs->nip);
 		if (bp) {
+<<<<<<< HEAD
 			printf("Stopped at breakpoint %tx (", BP_NUM(bp));
+=======
+			printf("Stopped at breakpoint %lx (", BP_NUM(bp));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			xmon_print_symbol(regs->nip, " ", ")\n");
 		}
 		if (unrecoverable_excp(regs))
@@ -784,6 +826,7 @@ static int xmon_fault_handler(struct pt_regs *regs)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Force enable xmon if not already enabled */
 static inline void force_enable_xmon(void)
 {
@@ -794,6 +837,8 @@ static inline void force_enable_xmon(void)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct bpt *at_breakpoint(unsigned long pc)
 {
 	int i;
@@ -920,6 +965,7 @@ static void remove_cpu_bpts(void)
 	write_ciabr(0);
 }
 
+<<<<<<< HEAD
 /* Based on uptime_proc_show(). */
 static void
 show_uptime(void)
@@ -940,6 +986,8 @@ show_uptime(void)
 	catch_memory_errors = 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void set_lpp_cmd(void)
 {
 	unsigned long lpp;
@@ -1075,9 +1123,12 @@ cmds(struct pt_regs *excp)
 			dump_tlb_book3e();
 			break;
 #endif
+<<<<<<< HEAD
 		case 'U':
 			show_uptime();
 			break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			printf("Unrecognized command: ");
 			do {
@@ -1110,7 +1161,10 @@ static int do_step(struct pt_regs *regs)
 	unsigned int instr;
 	int stepped;
 
+<<<<<<< HEAD
 	force_enable_xmon();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* check we are in 64-bit kernel mode, translation enabled */
 	if ((regs->msr & (MSR_64BIT|MSR_PR|MSR_IR)) == (MSR_64BIT|MSR_IR)) {
 		if (mread(regs->nip, &instr, 4) == 4) {
@@ -1177,11 +1231,15 @@ static int cpu_cmd(void)
 	}
 	/* try to switch to cpu specified */
 	if (!cpumask_test_cpu(cpu, &cpus_in_xmon)) {
+<<<<<<< HEAD
 		printf("cpu 0x%lx isn't in xmon\n", cpu);
 #ifdef CONFIG_PPC64
 		printf("backtrace of paca[0x%lx].saved_r1 (possibly stale):\n", cpu);
 		xmon_show_stack(paca_ptrs[cpu]->saved_r1, 0, 0);
 #endif
+=======
+		printf("cpu 0x%x isn't in xmon\n", cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 	xmon_taken = 0;
@@ -1195,7 +1253,11 @@ static int cpu_cmd(void)
 			/* take control back */
 			mb();
 			xmon_owner = smp_processor_id();
+<<<<<<< HEAD
 			printf("cpu 0x%lx didn't take control\n", cpu);
+=======
+			printf("cpu 0x%x didn't take control\n", cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 		barrier();
@@ -1313,10 +1375,13 @@ bpt_cmds(void)
 	static const char badaddr[] = "Only kernel addresses are permitted for breakpoints\n";
 	int mode;
 	case 'd':	/* bd - hardware data breakpoint */
+<<<<<<< HEAD
 		if (!ppc_breakpoint_available()) {
 			printf("Hardware data breakpoint not supported on this cpu\n");
 			break;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mode = 7;
 		cmd = inchar();
 		if (cmd == 'r')
@@ -1335,8 +1400,11 @@ bpt_cmds(void)
 			dabr.address &= ~HW_BRK_TYPE_DABR;
 			dabr.enabled = mode | BP_DABR;
 		}
+<<<<<<< HEAD
 
 		force_enable_xmon();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 'i':	/* bi - hardware instr breakpoint */
@@ -1357,7 +1425,10 @@ bpt_cmds(void)
 		if (bp != NULL) {
 			bp->enabled |= BP_CIABR;
 			iabr = bp;
+<<<<<<< HEAD
 			force_enable_xmon();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 #endif
@@ -1385,7 +1456,11 @@ bpt_cmds(void)
 			}
 		}
 
+<<<<<<< HEAD
 		printf("Cleared breakpoint %tx (", BP_NUM(bp));
+=======
+		printf("Cleared breakpoint %lx (", BP_NUM(bp));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xmon_print_symbol(bp->address, " ", ")\n");
 		bp->enabled = 0;
 		break;
@@ -1412,7 +1487,11 @@ bpt_cmds(void)
 			for (bp = bpts; bp < &bpts[NBPTS]; ++bp) {
 				if (!bp->enabled)
 					continue;
+<<<<<<< HEAD
 				printf("%tx %s   ", BP_NUM(bp),
+=======
+				printf("%2x %s   ", BP_NUM(bp),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    (bp->enabled & BP_CIABR) ? "inst": "trap");
 				xmon_print_symbol(bp->address, "  ", "\n");
 			}
@@ -1422,10 +1501,15 @@ bpt_cmds(void)
 		if (!check_bp_loc(a))
 			break;
 		bp = new_breakpoint(a);
+<<<<<<< HEAD
 		if (bp != NULL) {
 			bp->enabled |= BP_TRAP;
 			force_enable_xmon();
 		}
+=======
+		if (bp != NULL)
+			bp->enabled |= BP_TRAP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
@@ -1615,7 +1699,11 @@ static void print_bug_trap(struct pt_regs *regs)
 	printf("kernel BUG at %s:%u!\n",
 	       bug->file, bug->line);
 #else
+<<<<<<< HEAD
 	printf("kernel BUG at %px!\n", (void *)bug->bug_addr);
+=======
+	printf("kernel BUG at %p!\n", (void *)bug->bug_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #endif /* CONFIG_BUG */
 }
@@ -1629,11 +1717,19 @@ static void excprint(struct pt_regs *fp)
 #endif /* CONFIG_SMP */
 
 	trap = TRAP(fp);
+<<<<<<< HEAD
 	printf("Vector: %lx %s at [%px]\n", fp->trap, getvecname(trap), fp);
 	printf("    pc: ");
 	xmon_print_symbol(fp->nip, ": ", "\n");
 
 	printf("    lr: ");
+=======
+	printf("Vector: %lx %s at [%lx]\n", fp->trap, getvecname(trap), fp);
+	printf("    pc: ");
+	xmon_print_symbol(fp->nip, ": ", "\n");
+
+	printf("    lr: ", fp->link);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xmon_print_symbol(fp->link, ": ", "\n");
 
 	printf("    sp: %lx\n", fp->gpr[1]);
@@ -1645,6 +1741,7 @@ static void excprint(struct pt_regs *fp)
 			printf(" dsisr: %lx\n", fp->dsisr);
 	}
 
+<<<<<<< HEAD
 	printf("  current = 0x%px\n", current);
 #ifdef CONFIG_PPC64
 	printf("  paca    = 0x%px\t irqmask: 0x%02x\t irq_happened: 0x%02x\n",
@@ -1652,6 +1749,15 @@ static void excprint(struct pt_regs *fp)
 #endif
 	if (current) {
 		printf("    pid   = %d, comm = %s\n",
+=======
+	printf("  current = 0x%lx\n", current);
+#ifdef CONFIG_PPC64
+	printf("  paca    = 0x%lx\t softe: %d\t irq_happened: 0x%02x\n",
+	       local_paca, local_paca->soft_enabled, local_paca->irq_happened);
+#endif
+	if (current) {
+		printf("    pid   = %ld, comm = %s\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       current->pid, current->comm);
 	}
 
@@ -1687,16 +1793,28 @@ static void prregs(struct pt_regs *fp)
 #ifdef CONFIG_PPC64
 	if (FULL_REGS(fp)) {
 		for (n = 0; n < 16; ++n)
+<<<<<<< HEAD
 			printf("R%.2d = "REG"   R%.2d = "REG"\n",
 			       n, fp->gpr[n], n+16, fp->gpr[n+16]);
 	} else {
 		for (n = 0; n < 7; ++n)
 			printf("R%.2d = "REG"   R%.2d = "REG"\n",
+=======
+			printf("R%.2ld = "REG"   R%.2ld = "REG"\n",
+			       n, fp->gpr[n], n+16, fp->gpr[n+16]);
+	} else {
+		for (n = 0; n < 7; ++n)
+			printf("R%.2ld = "REG"   R%.2ld = "REG"\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       n, fp->gpr[n], n+7, fp->gpr[n+7]);
 	}
 #else
 	for (n = 0; n < 32; ++n) {
+<<<<<<< HEAD
 		printf("R%.2d = %.8lx%s", n, fp->gpr[n],
+=======
+		printf("R%.2d = %.8x%s", n, fp->gpr[n],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       (n & 3) == 3? "\n": "   ");
 		if (n == 12 && !FULL_REGS(fp)) {
 			printf("\n");
@@ -1800,9 +1918,15 @@ static void dump_206_sprs(void)
 
 	/* Actually some of these pre-date 2.06, but whatevs */
 
+<<<<<<< HEAD
 	printf("srr0   = %.16lx  srr1  = %.16lx dsisr  = %.8lx\n",
 		mfspr(SPRN_SRR0), mfspr(SPRN_SRR1), mfspr(SPRN_DSISR));
 	printf("dscr   = %.16lx  ppr   = %.16lx pir    = %.8lx\n",
+=======
+	printf("srr0   = %.16lx  srr1  = %.16lx dsisr  = %.8x\n",
+		mfspr(SPRN_SRR0), mfspr(SPRN_SRR1), mfspr(SPRN_DSISR));
+	printf("dscr   = %.16lx  ppr   = %.16lx pir    = %.8x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mfspr(SPRN_DSCR), mfspr(SPRN_PPR), mfspr(SPRN_PIR));
 	printf("amr    = %.16lx  uamor = %.16lx\n",
 		mfspr(SPRN_AMR), mfspr(SPRN_UAMOR));
@@ -1810,11 +1934,19 @@ static void dump_206_sprs(void)
 	if (!(mfmsr() & MSR_HV))
 		return;
 
+<<<<<<< HEAD
 	printf("sdr1   = %.16lx  hdar  = %.16lx hdsisr = %.8lx\n",
 		mfspr(SPRN_SDR1), mfspr(SPRN_HDAR), mfspr(SPRN_HDSISR));
 	printf("hsrr0  = %.16lx hsrr1  = %.16lx hdec   = %.16lx\n",
 		mfspr(SPRN_HSRR0), mfspr(SPRN_HSRR1), mfspr(SPRN_HDEC));
 	printf("lpcr   = %.16lx  pcr   = %.16lx lpidr  = %.8lx\n",
+=======
+	printf("sdr1   = %.16lx  hdar  = %.16lx hdsisr = %.8x\n",
+		mfspr(SPRN_SDR1), mfspr(SPRN_HDAR), mfspr(SPRN_HDSISR));
+	printf("hsrr0  = %.16lx hsrr1  = %.16lx hdec   = %.16lx\n",
+		mfspr(SPRN_HSRR0), mfspr(SPRN_HSRR1), mfspr(SPRN_HDEC));
+	printf("lpcr   = %.16lx  pcr   = %.16lx lpidr  = %.8x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mfspr(SPRN_LPCR), mfspr(SPRN_PCR), mfspr(SPRN_LPID));
 	printf("hsprg0 = %.16lx hsprg1 = %.16lx amor   = %.16lx\n",
 		mfspr(SPRN_HSPRG0), mfspr(SPRN_HSPRG1), mfspr(SPRN_AMOR));
@@ -1831,10 +1963,17 @@ static void dump_207_sprs(void)
 	if (!cpu_has_feature(CPU_FTR_ARCH_207S))
 		return;
 
+<<<<<<< HEAD
 	printf("dpdes  = %.16lx  tir   = %.16lx cir    = %.8lx\n",
 		mfspr(SPRN_DPDES), mfspr(SPRN_TIR), mfspr(SPRN_CIR));
 
 	printf("fscr   = %.16lx  tar   = %.16lx pspb   = %.8lx\n",
+=======
+	printf("dpdes  = %.16lx  tir   = %.16lx cir    = %.8x\n",
+		mfspr(SPRN_DPDES), mfspr(SPRN_TIR), mfspr(SPRN_CIR));
+
+	printf("fscr   = %.16lx  tar   = %.16lx pspb   = %.8x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mfspr(SPRN_FSCR), mfspr(SPRN_TAR), mfspr(SPRN_PSPB));
 
 	msr = mfmsr();
@@ -1847,12 +1986,21 @@ static void dump_207_sprs(void)
 
 	printf("mmcr0  = %.16lx  mmcr1 = %.16lx mmcr2  = %.16lx\n",
 		mfspr(SPRN_MMCR0), mfspr(SPRN_MMCR1), mfspr(SPRN_MMCR2));
+<<<<<<< HEAD
 	printf("pmc1   = %.8lx pmc2 = %.8lx  pmc3 = %.8lx  pmc4   = %.8lx\n",
 		mfspr(SPRN_PMC1), mfspr(SPRN_PMC2),
 		mfspr(SPRN_PMC3), mfspr(SPRN_PMC4));
 	printf("mmcra  = %.16lx   siar = %.16lx pmc5   = %.8lx\n",
 		mfspr(SPRN_MMCRA), mfspr(SPRN_SIAR), mfspr(SPRN_PMC5));
 	printf("sdar   = %.16lx   sier = %.16lx pmc6   = %.8lx\n",
+=======
+	printf("pmc1   = %.8x pmc2 = %.8x  pmc3 = %.8x  pmc4   = %.8x\n",
+		mfspr(SPRN_PMC1), mfspr(SPRN_PMC2),
+		mfspr(SPRN_PMC3), mfspr(SPRN_PMC4));
+	printf("mmcra  = %.16lx   siar = %.16lx pmc5   = %.8x\n",
+		mfspr(SPRN_MMCRA), mfspr(SPRN_SIAR), mfspr(SPRN_PMC5));
+	printf("sdar   = %.16lx   sier = %.16lx pmc6   = %.8x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mfspr(SPRN_SDAR), mfspr(SPRN_SIER), mfspr(SPRN_PMC6));
 	printf("ebbhr  = %.16lx  ebbrr = %.16lx bescr  = %.16lx\n",
 		mfspr(SPRN_EBBHR), mfspr(SPRN_EBBRR), mfspr(SPRN_BESCR));
@@ -1878,15 +2026,25 @@ static void dump_300_sprs(void)
 
 	printf("pidr   = %.16lx  tidr  = %.16lx\n",
 		mfspr(SPRN_PID), mfspr(SPRN_TIDR));
+<<<<<<< HEAD
 	printf("asdr   = %.16lx  psscr = %.16lx\n",
 		mfspr(SPRN_ASDR), hv ? mfspr(SPRN_PSSCR)
 					: mfspr(SPRN_PSSCR_PR));
+=======
+	printf("psscr  = %.16lx\n",
+		hv ? mfspr(SPRN_PSSCR) : mfspr(SPRN_PSSCR_PR));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!hv)
 		return;
 
+<<<<<<< HEAD
 	printf("ptcr   = %.16lx\n",
 		mfspr(SPRN_PTCR));
+=======
+	printf("ptcr   = %.16lx  asdr  = %.16lx\n",
+		mfspr(SPRN_PTCR), mfspr(SPRN_ASDR));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 
@@ -2340,7 +2498,11 @@ static void dump_tracing(void)
 static void dump_one_paca(int cpu)
 {
 	struct paca_struct *p;
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i = 0;
 #endif
 
@@ -2352,6 +2514,7 @@ static void dump_one_paca(int cpu)
 	catch_memory_errors = 1;
 	sync();
 
+<<<<<<< HEAD
 	p = paca_ptrs[cpu];
 
 	printf("paca for cpu 0x%x @ %px:\n", cpu, p);
@@ -2382,6 +2545,38 @@ static void dump_one_paca(int cpu)
 	DUMP(p, cpu_start, "%#-*x");
 	DUMP(p, kexec_state, "%#-*x");
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+	p = &paca[cpu];
+
+	printf("paca for cpu 0x%x @ %p:\n", cpu, p);
+
+	printf(" %-*s = %s\n", 20, "possible", cpu_possible(cpu) ? "yes" : "no");
+	printf(" %-*s = %s\n", 20, "present", cpu_present(cpu) ? "yes" : "no");
+	printf(" %-*s = %s\n", 20, "online", cpu_online(cpu) ? "yes" : "no");
+
+#define DUMP(paca, name, format) \
+	printf(" %-*s = %#-*"format"\t(0x%lx)\n", 20, #name, 18, paca->name, \
+		offsetof(struct paca_struct, name));
+
+	DUMP(p, lock_token, "x");
+	DUMP(p, paca_index, "x");
+	DUMP(p, kernel_toc, "lx");
+	DUMP(p, kernelbase, "lx");
+	DUMP(p, kernel_msr, "lx");
+	DUMP(p, emergency_sp, "p");
+#ifdef CONFIG_PPC_BOOK3S_64
+	DUMP(p, nmi_emergency_sp, "p");
+	DUMP(p, mc_emergency_sp, "p");
+	DUMP(p, in_nmi, "x");
+	DUMP(p, in_mce, "x");
+	DUMP(p, hmi_event_available, "x");
+#endif
+	DUMP(p, data_offset, "lx");
+	DUMP(p, hw_cpu_id, "x");
+	DUMP(p, cpu_start, "x");
+	DUMP(p, kexec_state, "x");
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < SLB_NUM_BOLTED; i++) {
 		u64 esid, vsid;
 
@@ -2392,6 +2587,7 @@ static void dump_one_paca(int cpu)
 		vsid = be64_to_cpu(p->slb_shadow_ptr->save_area[i].vsid);
 
 		if (esid || vsid) {
+<<<<<<< HEAD
 			printf(" %-*s[%d] = 0x%016llx 0x%016llx\n",
 			       22, "slb_shadow", i, esid, vsid);
 		}
@@ -2454,6 +2650,59 @@ static void dump_one_paca(int cpu)
 	DUMP(p, accounting.startspurr, "%#-*lx");
 	DUMP(p, accounting.utime_sspurr, "%#-*lx");
 	DUMP(p, accounting.steal_time, "%#-*lx");
+=======
+			printf(" slb_shadow[%d]:       = 0x%016lx 0x%016lx\n",
+				i, esid, vsid);
+		}
+	}
+	DUMP(p, vmalloc_sllp, "x");
+	DUMP(p, slb_cache_ptr, "x");
+	for (i = 0; i < SLB_CACHE_ENTRIES; i++)
+		printf(" slb_cache[%d]:        = 0x%016lx\n", i, p->slb_cache[i]);
+
+	DUMP(p, rfi_flush_fallback_area, "px");
+#endif
+	DUMP(p, dscr_default, "llx");
+#ifdef CONFIG_PPC_BOOK3E
+	DUMP(p, pgd, "p");
+	DUMP(p, kernel_pgd, "p");
+	DUMP(p, tcd_ptr, "p");
+	DUMP(p, mc_kstack, "p");
+	DUMP(p, crit_kstack, "p");
+	DUMP(p, dbg_kstack, "p");
+#endif
+	DUMP(p, __current, "p");
+	DUMP(p, kstack, "lx");
+	DUMP(p, stab_rr, "lx");
+	DUMP(p, saved_r1, "lx");
+	DUMP(p, trap_save, "x");
+	DUMP(p, soft_enabled, "x");
+	DUMP(p, irq_happened, "x");
+	DUMP(p, io_sync, "x");
+	DUMP(p, irq_work_pending, "x");
+	DUMP(p, nap_state_lost, "x");
+	DUMP(p, sprg_vdso, "llx");
+
+#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+	DUMP(p, tm_scratch, "llx");
+#endif
+
+#ifdef CONFIG_PPC_POWERNV
+	DUMP(p, core_idle_state_ptr, "p");
+	DUMP(p, thread_idle_state, "x");
+	DUMP(p, thread_mask, "x");
+	DUMP(p, subcore_sibling_mask, "x");
+#endif
+
+	DUMP(p, accounting.utime, "llx");
+	DUMP(p, accounting.stime, "llx");
+	DUMP(p, accounting.utime_scaled, "llx");
+	DUMP(p, accounting.starttime, "llx");
+	DUMP(p, accounting.starttime_user, "llx");
+	DUMP(p, accounting.startspurr, "llx");
+	DUMP(p, accounting.utime_sspurr, "llx");
+	DUMP(p, accounting.steal_time, "llx");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef DUMP
 
 	catch_memory_errors = 0;
@@ -2602,7 +2851,11 @@ static void dump_by_size(unsigned long addr, long count, int size)
 			default: val = 0;
 			}
 
+<<<<<<< HEAD
 			printf("%0*llx", size * 2, val);
+=======
+			printf("%0*lx", size * 2, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		printf("\n");
 	}
@@ -2656,9 +2909,12 @@ dump(void)
 		dump_log_buf();
 	} else if (c == 'o') {
 		dump_opal_msglog();
+<<<<<<< HEAD
 	} else if (c == 'v') {
 		/* dump virtual to physical translation */
 		show_pte(adrs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (c == 'r') {
 		scanhex(&ndump);
 		if (ndump == 0)
@@ -2742,7 +2998,11 @@ generic_inst_dump(unsigned long adr, long count, int praddr,
 {
 	int nr, dotted;
 	unsigned long first_adr;
+<<<<<<< HEAD
 	unsigned int inst, last_inst = 0;
+=======
+	unsigned long inst, last_inst = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char val[4];
 
 	dotted = 0;
@@ -2898,7 +3158,11 @@ memdiffs(unsigned char *p1, unsigned char *p2, unsigned nb, unsigned maxpr)
 	for( n = nb; n > 0; --n )
 		if( *p1++ != *p2++ )
 			if( ++prt <= maxpr )
+<<<<<<< HEAD
 				printf("%px %.2x # %px %.2x\n", p1 - 1,
+=======
+				printf("%.16x %.2x # %.16x %.2x\n", p1 - 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					p1[-1], p2 - 1, p2[-1]);
 	if( prt > maxpr )
 		printf("Total of %d differences\n", prt);
@@ -2958,13 +3222,21 @@ memzcan(void)
 		if (ok && !ook) {
 			printf("%.8x .. ", a);
 		} else if (!ok && ook)
+<<<<<<< HEAD
 			printf("%.8lx\n", a - mskip);
+=======
+			printf("%.8x\n", a - mskip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ook = ok;
 		if (a + mskip < a)
 			break;
 	}
 	if (ook)
+<<<<<<< HEAD
 		printf("%.8lx\n", a - mskip);
+=======
+		printf("%.8x\n", a - mskip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void show_task(struct task_struct *tsk)
@@ -2985,13 +3257,18 @@ static void show_task(struct task_struct *tsk)
 		(tsk->exit_state & EXIT_DEAD) ? 'E' :
 		(tsk->state & TASK_INTERRUPTIBLE) ? 'S' : '?';
 
+<<<<<<< HEAD
 	printf("%px %016lx %6d %6d %c %2d %s\n", tsk,
+=======
+	printf("%p %016lx %6d %6d %c %2d %s\n", tsk,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tsk->thread.ksp,
 		tsk->pid, tsk->parent->pid,
 		state, task_thread_info(tsk)->cpu,
 		tsk->comm);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 void format_pte(void *ptep, unsigned long pte)
 {
@@ -3102,6 +3379,8 @@ static void show_pte(unsigned long addr)
 }
 #endif /* CONFIG_PPC_BOOK3S_64 */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void show_tasks(void)
 {
 	unsigned long tskv;
@@ -3114,7 +3393,11 @@ static void show_tasks(void)
 
 	if (setjmp(bus_error_jmp) != 0) {
 		catch_memory_errors = 0;
+<<<<<<< HEAD
 		printf("*** Error dumping task %px\n", tsk);
+=======
+		printf("*** Error dumping task %p\n", tsk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -3185,7 +3468,11 @@ skipbl(void)
 }
 
 #define N_PTREGS	44
+<<<<<<< HEAD
 static const char *regnames[N_PTREGS] = {
+=======
+static char *regnames[N_PTREGS] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
 	"r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15",
 	"r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
@@ -3220,6 +3507,7 @@ scanhex(unsigned long *vp)
 			regname[i] = c;
 		}
 		regname[i] = 0;
+<<<<<<< HEAD
 		i = match_string(regnames, N_PTREGS, regname);
 		if (i < 0) {
 			printf("invalid register name '%%%s'\n", regname);
@@ -3231,6 +3519,20 @@ scanhex(unsigned long *vp)
 		}
 		*vp = ((unsigned long *)xmon_regs)[i];
 		return 1;
+=======
+		for (i = 0; i < N_PTREGS; ++i) {
+			if (strcmp(regnames[i], regname) == 0) {
+				if (xmon_regs == NULL) {
+					printf("regs not available\n");
+					return 0;
+				}
+				*vp = ((unsigned long *)xmon_regs)[i];
+				return 1;
+			}
+		}
+		printf("invalid register name '%%%s'\n", regname);
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* skip leading "0x" if any */
@@ -3361,8 +3663,12 @@ static void
 symbol_lookup(void)
 {
 	int type = inchar();
+<<<<<<< HEAD
 	unsigned long addr, cpu;
 	void __percpu *ptr = NULL;
+=======
+	unsigned long addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static char tmp[64];
 
 	switch (type) {
@@ -3386,6 +3692,7 @@ symbol_lookup(void)
 		catch_memory_errors = 0;
 		termch = 0;
 		break;
+<<<<<<< HEAD
 	case 'p':
 		getstring(tmp, 64);
 		if (setjmp(bus_error_jmp) == 0) {
@@ -3414,6 +3721,8 @@ symbol_lookup(void)
 		catch_memory_errors = 0;
 		termch = 0;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3447,7 +3756,11 @@ static void xmon_print_symbol(unsigned long address, const char *mid,
 	printf("%s", after);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void dump_segments(void)
 {
 	int i;
@@ -3493,7 +3806,11 @@ void dump_segments(void)
 
 	printf("sr0-15 =");
 	for (i = 0; i < 16; ++i)
+<<<<<<< HEAD
 		printf(" %x", mfsrin(i));
+=======
+		printf(" %x", mfsrin(i << 28));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printf("\n");
 }
 #endif
@@ -3508,9 +3825,15 @@ static void dump_tlb_44x(void)
 		asm volatile("tlbre  %0,%1,0" : "=r" (w0) : "r" (i));
 		asm volatile("tlbre  %0,%1,1" : "=r" (w1) : "r" (i));
 		asm volatile("tlbre  %0,%1,2" : "=r" (w2) : "r" (i));
+<<<<<<< HEAD
 		printf("[%02x] %08lx %08lx %08lx ", i, w0, w1, w2);
 		if (w0 & PPC44x_TLB_VALID) {
 			printf("V %08lx -> %01lx%08lx %c%c%c%c%c",
+=======
+		printf("[%02x] %08x %08x %08x ", i, w0, w1, w2);
+		if (w0 & PPC44x_TLB_VALID) {
+			printf("V %08x -> %01x%08x %c%c%c%c%c",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       w0 & PPC44x_TLB_EPN_MASK,
 			       w1 & PPC44x_TLB_ERPN_MASK,
 			       w1 & PPC44x_TLB_RPN_MASK,
@@ -3723,6 +4046,7 @@ device_initcall(setup_xmon_sysrq);
 #endif /* CONFIG_MAGIC_SYSRQ */
 
 #ifdef CONFIG_DEBUG_FS
+<<<<<<< HEAD
 static void clear_all_bpt(void)
 {
 	int i;
@@ -3744,14 +4068,19 @@ static void clear_all_bpt(void)
 	printf("xmon: All breakpoints cleared\n");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int xmon_dbgfs_set(void *data, u64 val)
 {
 	xmon_on = !!val;
 	xmon_init(xmon_on);
 
+<<<<<<< HEAD
 	/* make sure all breakpoints removed when disabling */
 	if (!xmon_on)
 		clear_all_bpt();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3942,6 +4271,7 @@ static void dump_spu_fields(struct spu *spu)
 	DUMP_FIELD(spu, "0x%lx", ls_size);
 	DUMP_FIELD(spu, "0x%x", node);
 	DUMP_FIELD(spu, "0x%lx", flags);
+<<<<<<< HEAD
 	DUMP_FIELD(spu, "%llu", class_0_pending);
 	DUMP_FIELD(spu, "0x%llx", class_0_dar);
 	DUMP_FIELD(spu, "0x%llx", class_1_dar);
@@ -3949,12 +4279,25 @@ static void dump_spu_fields(struct spu *spu)
 	DUMP_FIELD(spu, "0x%x", irqs[0]);
 	DUMP_FIELD(spu, "0x%x", irqs[1]);
 	DUMP_FIELD(spu, "0x%x", irqs[2]);
+=======
+	DUMP_FIELD(spu, "%d", class_0_pending);
+	DUMP_FIELD(spu, "0x%lx", class_0_dar);
+	DUMP_FIELD(spu, "0x%lx", class_1_dar);
+	DUMP_FIELD(spu, "0x%lx", class_1_dsisr);
+	DUMP_FIELD(spu, "0x%lx", irqs[0]);
+	DUMP_FIELD(spu, "0x%lx", irqs[1]);
+	DUMP_FIELD(spu, "0x%lx", irqs[2]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DUMP_FIELD(spu, "0x%x", slb_replace);
 	DUMP_FIELD(spu, "%d", pid);
 	DUMP_FIELD(spu, "0x%p", mm);
 	DUMP_FIELD(spu, "0x%p", ctx);
 	DUMP_FIELD(spu, "0x%p", rq);
+<<<<<<< HEAD
 	DUMP_FIELD(spu, "0x%llx", timestamp);
+=======
+	DUMP_FIELD(spu, "0x%p", timestamp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DUMP_FIELD(spu, "0x%lx", problem_phys);
 	DUMP_FIELD(spu, "0x%p", problem);
 	DUMP_VALUE("0x%x", problem->spu_runcntl_RW,
@@ -3985,7 +4328,11 @@ static void dump_spu_ls(unsigned long num, int subcmd)
 		__delay(200);
 	} else {
 		catch_memory_errors = 0;
+<<<<<<< HEAD
 		printf("*** Error: accessing spu info for spu %ld\n", num);
+=======
+		printf("*** Error: accessing spu info for spu %d\n", num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	catch_memory_errors = 0;

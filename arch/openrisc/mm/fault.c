@@ -33,7 +33,11 @@ unsigned long pte_errors;	/* updated by do_page_fault() */
 /* __PHX__ :: - check the vmalloc_fault in do_page_fault()
  *            - also look into include/asm-or32/mmu_context.h
  */
+<<<<<<< HEAD
 volatile pgd_t *current_pgd[NR_CPUS];
+=======
+volatile pgd_t *current_pgd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void die(char *, struct pt_regs *, long);
 
@@ -52,8 +56,13 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long address,
 	struct task_struct *tsk;
 	struct mm_struct *mm;
 	struct vm_area_struct *vma;
+<<<<<<< HEAD
 	int si_code;
 	vm_fault_t fault;
+=======
+	siginfo_t info;
+	int fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
 	tsk = current;
@@ -97,7 +106,11 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long address,
 	}
 
 	mm = tsk->mm;
+<<<<<<< HEAD
 	si_code = SEGV_MAPERR;
+=======
+	info.si_code = SEGV_MAPERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we're in an interrupt or have no user
@@ -139,7 +152,11 @@ retry:
 	 */
 
 good_area:
+<<<<<<< HEAD
 	si_code = SEGV_ACCERR;
+=======
+	info.si_code = SEGV_ACCERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* first do some preliminary protection checks */
 
@@ -213,7 +230,15 @@ bad_area_nosemaphore:
 	/* User mode accesses just cause a SIGSEGV */
 
 	if (user_mode(regs)) {
+<<<<<<< HEAD
 		force_sig_fault(SIGSEGV, si_code, (void __user *)address, tsk);
+=======
+		info.si_signo = SIGSEGV;
+		info.si_errno = 0;
+		/* info.si_code has been set above */
+		info.si_addr = (void *)address;
+		force_sig_info(SIGSEGV, &info, tsk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -278,7 +303,15 @@ do_sigbus:
 	 * Send a sigbus, regardless of whether we were in kernel
 	 * or user mode.
 	 */
+<<<<<<< HEAD
 	force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)address, tsk);
+=======
+	info.si_signo = SIGBUS;
+	info.si_errno = 0;
+	info.si_code = BUS_ADRERR;
+	info.si_addr = (void *)address;
+	force_sig_info(SIGBUS, &info, tsk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Kernel mode? Handle exceptions or die */
 	if (!user_mode(regs))
@@ -311,7 +344,11 @@ vmalloc_fault:
 
 		phx_mmu("vmalloc_fault");
 */
+<<<<<<< HEAD
 		pgd = (pgd_t *)current_pgd[smp_processor_id()] + offset;
+=======
+		pgd = (pgd_t *)current_pgd + offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pgd_k = init_mm.pgd + offset;
 
 		/* Since we're two-level, we don't need to do both

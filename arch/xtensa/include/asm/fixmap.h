@@ -44,7 +44,11 @@ enum fixed_addresses {
 	__end_of_fixed_addresses
 };
 
+<<<<<<< HEAD
 #define FIXADDR_TOP     (XCHAL_KSEG_CACHED_VADDR - PAGE_SIZE)
+=======
+#define FIXADDR_TOP     (VMALLOC_START - PAGE_SIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FIXADDR_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
 #define FIXADDR_START	((FIXADDR_TOP - FIXADDR_SIZE) & PMD_MASK)
 
@@ -63,7 +67,11 @@ static __always_inline unsigned long fix_to_virt(const unsigned int idx)
 	 * table.
 	 */
 	BUILD_BUG_ON(FIXADDR_START <
+<<<<<<< HEAD
 		     TLBTEMP_BASE_1 + TLBTEMP_SIZE);
+=======
+		     XCHAL_PAGE_TABLE_VADDR + XCHAL_PAGE_TABLE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUILD_BUG_ON(idx >= __end_of_fixed_addresses);
 	return __fix_to_virt(idx);
 }

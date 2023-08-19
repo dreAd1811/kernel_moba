@@ -20,7 +20,10 @@
 
 #include <asm/page.h>
 #include <asm/memory.h>
+<<<<<<< HEAD
 #include <asm/mmu_context.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cpufeature.h>
 
 /*
@@ -70,14 +73,25 @@
  * mappings, and none of this applies in that case.
  */
 
+<<<<<<< HEAD
 #ifdef __ASSEMBLY__
 
 #include <asm/alternative.h>
+=======
+#define HYP_PAGE_OFFSET_HIGH_MASK	((UL(1) << VA_BITS) - 1)
+#define HYP_PAGE_OFFSET_LOW_MASK	((UL(1) << (VA_BITS - 1)) - 1)
+
+#ifdef __ASSEMBLY__
+
+#include <asm/alternative.h>
+#include <asm/cpufeature.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Convert a kernel VA into a HYP VA.
  * reg: VA to be converted.
  *
+<<<<<<< HEAD
  * The actual code generation takes place in kvm_update_va_mask, and
  * the instructions below are only there to reserve the space and
  * perform the register allocation (kvm_update_va_mask uses the
@@ -91,6 +105,30 @@ alternative_cb kvm_update_va_mask
 	add	\reg, \reg, #0, lsl 12	/* insert the top 12 bits of the tag */
 	ror	\reg, \reg, #63		/* rotate back */
 alternative_cb_end
+=======
+ * This generates the following sequences:
+ * - High mask:
+ *		and x0, x0, #HYP_PAGE_OFFSET_HIGH_MASK
+ *		nop
+ * - Low mask:
+ *		and x0, x0, #HYP_PAGE_OFFSET_HIGH_MASK
+ *		and x0, x0, #HYP_PAGE_OFFSET_LOW_MASK
+ * - VHE:
+ *		nop
+ *		nop
+ *
+ * The "low mask" version works because the mask is a strict subset of
+ * the "high mask", hence performing the first mask for nothing.
+ * Should be completely invisible on any viable CPU.
+ */
+.macro kern_hyp_va	reg
+alternative_if_not ARM64_HAS_VIRT_HOST_EXTN
+	and     \reg, \reg, #HYP_PAGE_OFFSET_HIGH_MASK
+alternative_else_nop_endif
+alternative_if ARM64_HYP_OFFSET_LOW
+	and     \reg, \reg, #HYP_PAGE_OFFSET_LOW_MASK
+alternative_else_nop_endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .endm
 
 #else
@@ -101,6 +139,7 @@ alternative_cb_end
 #include <asm/mmu_context.h>
 #include <asm/pgtable.h>
 
+<<<<<<< HEAD
 void kvm_update_va_mask(struct alt_instr *alt,
 			__le32 *origptr, __le32 *updptr, int nr_inst);
 
@@ -113,6 +152,20 @@ static inline unsigned long __kern_hyp_va(unsigned long v)
 				    "ror %0, %0, #63\n",
 				    kvm_update_va_mask)
 		     : "+r" (v));
+=======
+static inline unsigned long __kern_hyp_va(unsigned long v)
+{
+	asm volatile(ALTERNATIVE("and %0, %0, %1",
+				 "nop",
+				 ARM64_HAS_VIRT_HOST_EXTN)
+		     : "+r" (v)
+		     : "i" (HYP_PAGE_OFFSET_HIGH_MASK));
+	asm volatile(ALTERNATIVE("nop",
+				 "and %0, %0, %1",
+				 ARM64_HYP_OFFSET_LOW)
+		     : "+r" (v)
+		     : "i" (HYP_PAGE_OFFSET_LOW_MASK));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return v;
 }
 
@@ -148,11 +201,15 @@ static inline unsigned long __kern_hyp_va(unsigned long v)
 #include <asm/stage2_pgtable.h>
 
 int create_hyp_mappings(void *from, void *to, pgprot_t prot);
+<<<<<<< HEAD
 int create_hyp_io_mappings(phys_addr_t phys_addr, size_t size,
 			   void __iomem **kaddr,
 			   void __iomem **haddr);
 int create_hyp_exec_mappings(phys_addr_t phys_addr, size_t size,
 			     void **haddr);
+=======
+int create_hyp_io_mappings(void *from, void *to, phys_addr_t);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void free_hyp_pgds(void);
 
 void stage2_unmap_vm(struct kvm *kvm);
@@ -170,12 +227,17 @@ phys_addr_t kvm_get_idmap_vector(void);
 int kvm_mmu_init(void);
 void kvm_clear_hyp_idmap(void);
 
+<<<<<<< HEAD
 #define kvm_mk_pmd(ptep)					\
 	__pmd(__phys_to_pmd_val(__pa(ptep)) | PMD_TYPE_TABLE)
 #define kvm_mk_pud(pmdp)					\
 	__pud(__phys_to_pud_val(__pa(pmdp)) | PMD_TYPE_TABLE)
 #define kvm_mk_pgd(pudp)					\
 	__pgd(__phys_to_pgd_val(__pa(pudp)) | PUD_TYPE_TABLE)
+=======
+#define	kvm_set_pte(ptep, pte)		set_pte(ptep, pte)
+#define	kvm_set_pmd(pmdp, pmd)		set_pmd(pmdp, pmd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline pte_t kvm_s2pte_mkwrite(pte_t pte)
 {
@@ -189,6 +251,7 @@ static inline pmd_t kvm_s2pmd_mkwrite(pmd_t pmd)
 	return pmd;
 }
 
+<<<<<<< HEAD
 static inline pte_t kvm_s2pte_mkexec(pte_t pte)
 {
 	pte_val(pte) &= ~PTE_S2_XN;
@@ -206,10 +269,18 @@ static inline void kvm_set_s2pte_readonly(pte_t *ptep)
 	pteval_t old_pteval, pteval;
 
 	pteval = READ_ONCE(pte_val(*ptep));
+=======
+static inline void kvm_set_s2pte_readonly(pte_t *pte)
+{
+	pteval_t old_pteval, pteval;
+
+	pteval = READ_ONCE(pte_val(*pte));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	do {
 		old_pteval = pteval;
 		pteval &= ~PTE_S2_RDWR;
 		pteval |= PTE_S2_RDONLY;
+<<<<<<< HEAD
 		pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
 	} while (pteval != old_pteval);
 }
@@ -237,6 +308,25 @@ static inline bool kvm_s2pmd_readonly(pmd_t *pmdp)
 static inline bool kvm_s2pmd_exec(pmd_t *pmdp)
 {
 	return !(READ_ONCE(pmd_val(*pmdp)) & PMD_S2_XN);
+=======
+		pteval = cmpxchg_relaxed(&pte_val(*pte), old_pteval, pteval);
+	} while (pteval != old_pteval);
+}
+
+static inline bool kvm_s2pte_readonly(pte_t *pte)
+{
+	return (pte_val(*pte) & PTE_S2_RDWR) == PTE_S2_RDONLY;
+}
+
+static inline void kvm_set_s2pmd_readonly(pmd_t *pmd)
+{
+	kvm_set_s2pte_readonly((pte_t *)pmd);
+}
+
+static inline bool kvm_s2pmd_readonly(pmd_t *pmd)
+{
+	return kvm_s2pte_readonly((pte_t *)pmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool kvm_page_empty(void *ptr)
@@ -265,6 +355,7 @@ struct kvm;
 
 static inline bool vcpu_has_cache_enabled(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	return (vcpu_read_sys_reg(vcpu, SCTLR_EL1) & 0b101) == 0b101;
 }
 
@@ -287,40 +378,73 @@ static inline void __clean_dcache_guest_page(kvm_pfn_t pfn, unsigned long size)
 static inline void __invalidate_icache_guest_page(kvm_pfn_t pfn,
 						  unsigned long size)
 {
+=======
+	return (vcpu_sys_reg(vcpu, SCTLR_EL1) & 0b101) == 0b101;
+}
+
+static inline void __coherent_cache_guest_page(struct kvm_vcpu *vcpu,
+					       kvm_pfn_t pfn,
+					       unsigned long size)
+{
+	void *va = page_address(pfn_to_page(pfn));
+
+	kvm_flush_dcache_to_poc(va, size);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (icache_is_aliasing()) {
 		/* any kind of VIPT cache */
 		__flush_icache_all();
 	} else if (is_kernel_in_hyp_mode() || !icache_is_vpipt()) {
 		/* PIPT or VPIPT at EL2 (see comment in __kvm_tlb_flush_vmid_ipa) */
+<<<<<<< HEAD
 		void *va = page_address(pfn_to_page(pfn));
 
 		invalidate_icache_range((unsigned long)va,
 					(unsigned long)va + size);
+=======
+		flush_icache_range((unsigned long)va,
+				   (unsigned long)va + size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static inline void __kvm_flush_dcache_pte(pte_t pte)
 {
+<<<<<<< HEAD
 	if (!cpus_have_const_cap(ARM64_HAS_STAGE2_FWB)) {
 		struct page *page = pte_page(pte);
 		kvm_flush_dcache_to_poc(page_address(page), PAGE_SIZE);
 	}
+=======
+	struct page *page = pte_page(pte);
+	kvm_flush_dcache_to_poc(page_address(page), PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void __kvm_flush_dcache_pmd(pmd_t pmd)
 {
+<<<<<<< HEAD
 	if (!cpus_have_const_cap(ARM64_HAS_STAGE2_FWB)) {
 		struct page *page = pmd_page(pmd);
 		kvm_flush_dcache_to_poc(page_address(page), PMD_SIZE);
 	}
+=======
+	struct page *page = pmd_page(pmd);
+	kvm_flush_dcache_to_poc(page_address(page), PMD_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void __kvm_flush_dcache_pud(pud_t pud)
 {
+<<<<<<< HEAD
 	if (!cpus_have_const_cap(ARM64_HAS_STAGE2_FWB)) {
 		struct page *page = pud_page(pud);
 		kvm_flush_dcache_to_poc(page_address(page), PUD_SIZE);
 	}
+=======
+	struct page *page = pud_page(pud);
+	kvm_flush_dcache_to_poc(page_address(page), PUD_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define kvm_virt_to_phys(x)		__pa_symbol(x)
@@ -330,12 +454,16 @@ void kvm_toggle_cache(struct kvm_vcpu *vcpu, bool was_enabled);
 
 static inline bool __kvm_cpu_uses_extended_idmap(void)
 {
+<<<<<<< HEAD
 	return __cpu_uses_extended_idmap_level();
 }
 
 static inline unsigned long __kvm_idmap_ptrs_per_pgd(void)
 {
 	return idmap_ptrs_per_pgd;
+=======
+	return __cpu_uses_extended_idmap();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -349,7 +477,10 @@ static inline void __kvm_extend_hypmap(pgd_t *boot_hyp_pgd,
 				       unsigned long hyp_idmap_start)
 {
 	int idmap_idx;
+<<<<<<< HEAD
 	u64 pgd_addr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Use the first entry to access the HYP mappings. It is
@@ -357,8 +488,12 @@ static inline void __kvm_extend_hypmap(pgd_t *boot_hyp_pgd,
 	 * extended idmap.
 	 */
 	VM_BUG_ON(pgd_val(merged_hyp_pgd[0]));
+<<<<<<< HEAD
 	pgd_addr = __phys_to_pgd_val(__pa(hyp_pgd));
 	merged_hyp_pgd[0] = __pgd(pgd_addr | PMD_TYPE_TABLE);
+=======
+	merged_hyp_pgd[0] = __pgd(__pa(hyp_pgd) | PMD_TYPE_TABLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Create another extended level entry that points to the boot HYP map,
@@ -368,8 +503,12 @@ static inline void __kvm_extend_hypmap(pgd_t *boot_hyp_pgd,
 	 */
 	idmap_idx = hyp_idmap_start >> VA_BITS;
 	VM_BUG_ON(pgd_val(merged_hyp_pgd[idmap_idx]));
+<<<<<<< HEAD
 	pgd_addr = __phys_to_pgd_val(__pa(boot_hyp_pgd));
 	merged_hyp_pgd[idmap_idx] = __pgd(pgd_addr | PMD_TYPE_TABLE);
+=======
+	merged_hyp_pgd[idmap_idx] = __pgd(__pa(boot_hyp_pgd) | PMD_TYPE_TABLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline unsigned int kvm_get_vmid_bits(void)
@@ -395,6 +534,7 @@ static inline int kvm_read_guest_lock(struct kvm *kvm,
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline int kvm_write_guest_lock(struct kvm *kvm, gpa_t gpa,
 				       const void *data, unsigned long len)
 {
@@ -495,6 +635,38 @@ static inline int kvm_map_vectors(void)
 static inline void *kvm_get_hyp_vector(void)
 {
 	return kern_hyp_va(kvm_ksym_ref(__kvm_hyp_vector));
+=======
+#ifdef CONFIG_HARDEN_BRANCH_PREDICTOR
+#include <asm/mmu.h>
+
+static inline void *kvm_get_hyp_vector(void)
+{
+	struct bp_hardening_data *data = arm64_get_bp_hardening_data();
+	void *vect = kvm_ksym_ref(__kvm_hyp_vector);
+
+	if (data->fn) {
+		vect = __bp_harden_hyp_vecs_start +
+		       data->hyp_vectors_slot * SZ_2K;
+
+		if (!has_vhe())
+			vect = lm_alias(vect);
+	}
+
+	return vect;
+}
+
+static inline int kvm_map_vectors(void)
+{
+	return create_hyp_mappings(kvm_ksym_ref(__bp_harden_hyp_vecs_start),
+				   kvm_ksym_ref(__bp_harden_hyp_vecs_end),
+				   PAGE_HYP_EXEC);
+}
+
+#else
+static inline void *kvm_get_hyp_vector(void)
+{
+	return kvm_ksym_ref(__kvm_hyp_vector);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int kvm_map_vectors(void)
@@ -527,6 +699,7 @@ static inline int hyp_map_aux_data(void)
 }
 #endif
 
+<<<<<<< HEAD
 #define kvm_phys_to_vttbr(addr)		phys_to_ttbr(addr)
 
 static inline void kvm_workaround_1542418_vmid_rollover(void)
@@ -543,5 +716,7 @@ static inline void kvm_workaround_1542418_vmid_rollover(void)
 
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASSEMBLY__ */
 #endif /* __ARM64_KVM_MMU_H__ */

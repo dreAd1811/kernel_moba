@@ -12,7 +12,10 @@
  */
 #include <linux/moduleloader.h>
 #include <asm/cacheflush.h>
+<<<<<<< HEAD
 #include <asm/asm-compat.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/netdevice.h>
 #include <linux/filter.h>
 #include <linux/if_vlan.h>
@@ -567,7 +570,11 @@ void bpf_jit_compile(struct bpf_prog *fp)
 	if (!bpf_jit_enable)
 		return;
 
+<<<<<<< HEAD
 	addrs = kcalloc(flen + 1, sizeof(*addrs), GFP_KERNEL);
+=======
+	addrs = kzalloc((flen+1) * sizeof(*addrs), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (addrs == NULL)
 		return;
 

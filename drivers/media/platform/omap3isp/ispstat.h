@@ -39,7 +39,11 @@ struct ispstat_buffer {
 	struct sg_table sgt;
 	void *virt_addr;
 	dma_addr_t dma_addr;
+<<<<<<< HEAD
 	struct timespec64 ts;
+=======
+	struct timeval ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 buf_size;
 	u32 frame_number;
 	u16 config_counter;
@@ -130,8 +134,11 @@ struct ispstat_generic_config {
 int omap3isp_stat_config(struct ispstat *stat, void *new_conf);
 int omap3isp_stat_request_statistics(struct ispstat *stat,
 				     struct omap3isp_stat_data *data);
+<<<<<<< HEAD
 int omap3isp_stat_request_statistics_time32(struct ispstat *stat,
 				     struct omap3isp_stat_data_time32 *data);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int omap3isp_stat_init(struct ispstat *stat, const char *name,
 		       const struct v4l2_subdev_ops *sd_ops);
 void omap3isp_stat_cleanup(struct ispstat *stat);

@@ -72,7 +72,11 @@ static int pseries_rng_remove(struct vio_dev *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct vio_device_id pseries_rng_driver_ids[] = {
+=======
+static struct vio_device_id pseries_rng_driver_ids[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "ibm,random-v1", "ibm,random"},
 	{ "", "" }
 };

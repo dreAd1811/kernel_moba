@@ -5,7 +5,11 @@ Supported chips:
   * Sensirion SHT3x-DIS
     Prefix: 'sht3x'
     Addresses scanned: none
+<<<<<<< HEAD
     Datasheet: https://www.sensirion.com/file/datasheet_sht3x_digital
+=======
+    Datasheet: http://www.sensirion.com/fileadmin/user_upload/customers/sensirion/Dokumente/Humidity/Sensirion_Humidity_Datasheet_SHT3x_DIS.pdf
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Author:
   David Frey <david.frey@sensirion.com>

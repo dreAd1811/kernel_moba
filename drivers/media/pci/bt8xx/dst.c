@@ -28,7 +28,11 @@
 #include <linux/vmalloc.h>
 #include <linux/delay.h>
 #include <asm/div64.h>
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "dst_priv.h"
 #include "dst_common.h"
 
@@ -1657,7 +1661,11 @@ static int dst_tune_frontend(struct dvb_frontend* fe,
 	return 0;
 }
 
+<<<<<<< HEAD
 static enum dvbfe_algo dst_get_tuning_algo(struct dvb_frontend *fe)
+=======
+static int dst_get_tuning_algo(struct dvb_frontend *fe)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return dst_algo ? DVBFE_ALGO_HW : DVBFE_ALGO_SW;
 }
@@ -1739,9 +1747,15 @@ static const struct dvb_frontend_ops dst_dvbt_ops = {
 	.delsys = { SYS_DVBT },
 	.info = {
 		.name = "DST DVB-T",
+<<<<<<< HEAD
 		.frequency_min_hz = 137 * MHz,
 		.frequency_max_hz = 858 * MHz,
 		.frequency_stepsize_hz = 166667,
+=======
+		.frequency_min = 137000000,
+		.frequency_max = 858000000,
+		.frequency_stepsize = 166667,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps = FE_CAN_FEC_AUTO			|
 			FE_CAN_QAM_AUTO			|
 			FE_CAN_QAM_16			|
@@ -1768,10 +1782,17 @@ static const struct dvb_frontend_ops dst_dvbs_ops = {
 	.delsys = { SYS_DVBS },
 	.info = {
 		.name = "DST DVB-S",
+<<<<<<< HEAD
 		.frequency_min_hz   =  950 * MHz,
 		.frequency_max_hz   = 2150 * MHz,
 		.frequency_stepsize_hz = 1 * MHz,
 		.frequency_tolerance_hz = 29500 * kHz,
+=======
+		.frequency_min = 950000,
+		.frequency_max = 2150000,
+		.frequency_stepsize = 1000,	/* kHz for QPSK frontends */
+		.frequency_tolerance = 29500,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min = 1000000,
 		.symbol_rate_max = 45000000,
 	/*     . symbol_rate_tolerance	=	???,*/
@@ -1797,9 +1818,15 @@ static const struct dvb_frontend_ops dst_dvbc_ops = {
 	.delsys = { SYS_DVBC_ANNEX_A },
 	.info = {
 		.name = "DST DVB-C",
+<<<<<<< HEAD
 		.frequency_min_hz =  51 * MHz,
 		.frequency_max_hz = 858 * MHz,
 		.frequency_stepsize_hz = 62500,
+=======
+		.frequency_stepsize = 62500,
+		.frequency_min = 51000000,
+		.frequency_max = 858000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min = 1000000,
 		.symbol_rate_max = 45000000,
 		.caps = FE_CAN_FEC_AUTO |
@@ -1826,9 +1853,15 @@ static const struct dvb_frontend_ops dst_atsc_ops = {
 	.delsys = { SYS_ATSC },
 	.info = {
 		.name = "DST ATSC",
+<<<<<<< HEAD
 		.frequency_min_hz = 510 * MHz,
 		.frequency_max_hz = 858 * MHz,
 		.frequency_stepsize_hz = 62500,
+=======
+		.frequency_stepsize = 62500,
+		.frequency_min = 510000000,
+		.frequency_max = 858000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min = 1000000,
 		.symbol_rate_max = 45000000,
 		.caps = FE_CAN_FEC_AUTO | FE_CAN_QAM_AUTO | FE_CAN_QAM_64 | FE_CAN_QAM_256 | FE_CAN_8VSB

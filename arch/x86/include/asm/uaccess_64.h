@@ -47,6 +47,7 @@ copy_user_generic(void *to, const void *from, unsigned len)
 }
 
 static __always_inline __must_check unsigned long
+<<<<<<< HEAD
 copy_to_user_mcsafe(void *to, const void *from, unsigned len)
 {
 	unsigned long ret;
@@ -63,6 +64,8 @@ copy_to_user_mcsafe(void *to, const void *from, unsigned len)
 }
 
 static __always_inline __must_check unsigned long
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 raw_copy_from_user(void *dst, const void __user *src, unsigned long size)
 {
 	int ret = 0;
@@ -210,7 +213,10 @@ __copy_from_user_flushcache(void *dst, const void __user *src, unsigned size)
 unsigned long
 copy_user_handle_tail(char *to, char *from, unsigned len);
 
+<<<<<<< HEAD
 unsigned long
 mcsafe_handle_tail(char *to, char *from, unsigned len);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_X86_UACCESS_64_H */

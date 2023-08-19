@@ -438,7 +438,11 @@ static void kgdb_disable_hw_debug(struct pt_regs *regs)
  */
 void kgdb_roundup_cpus(unsigned long flags)
 {
+<<<<<<< HEAD
 	apic->send_IPI_allbutself(APIC_DM_NMI);
+=======
+	apic->send_IPI_allbutself(NMI_VECTOR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 

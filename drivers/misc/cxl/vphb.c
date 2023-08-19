@@ -9,6 +9,10 @@
 
 #include <linux/pci.h>
 #include <misc/cxl.h>
+<<<<<<< HEAD
+=======
+#include <asm/pnv-pci.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "cxl.h"
 
 static int cxl_dma_set_mask(struct pci_dev *pdev, u64 dma_mask)
@@ -44,7 +48,10 @@ static bool cxl_pci_enable_device_hook(struct pci_dev *dev)
 {
 	struct pci_controller *phb;
 	struct cxl_afu *afu;
+<<<<<<< HEAD
 	struct cxl_context *ctx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phb = pci_bus_to_host(dev->bus);
 	afu = (struct cxl_afu *)phb->private_data;
@@ -54,6 +61,7 @@ static bool cxl_pci_enable_device_hook(struct pci_dev *dev)
 		return false;
 	}
 
+<<<<<<< HEAD
 	set_dma_ops(&dev->dev, &dma_nommu_ops);
 	set_dma_offset(&dev->dev, PAGE_OFFSET);
 
@@ -81,6 +89,12 @@ static void cxl_pci_disable_device(struct pci_dev *dev)
 		dev->dev.archdata.cxl_ctx = NULL;
 		cxl_release_context(ctx);
 	}
+=======
+	set_dma_ops(&dev->dev, &dma_direct_ops);
+	set_dma_offset(&dev->dev, PAGE_OFFSET);
+
+	return _cxl_pci_associate_default_context(dev, afu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static resource_size_t cxl_pci_window_alignment(struct pci_bus *bus,
@@ -214,8 +228,13 @@ static struct pci_controller_ops cxl_pci_controller_ops =
 {
 	.probe_mode = cxl_pci_probe_mode,
 	.enable_device_hook = cxl_pci_enable_device_hook,
+<<<<<<< HEAD
 	.disable_device = cxl_pci_disable_device,
 	.release_device = cxl_pci_disable_device,
+=======
+	.disable_device = _cxl_pci_disable_device,
+	.release_device = _cxl_pci_disable_device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.window_alignment = cxl_pci_window_alignment,
 	.reset_secondary_bus = cxl_pci_reset_secondary_bus,
 	.setup_msi_irqs = cxl_setup_msi_irqs,
@@ -307,13 +326,25 @@ void cxl_pci_vphb_remove(struct cxl_afu *afu)
 	 */
 }
 
+<<<<<<< HEAD
+=======
+static bool _cxl_pci_is_vphb_device(struct pci_controller *phb)
+{
+	return (phb->ops == &cxl_pcie_pci_ops);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool cxl_pci_is_vphb_device(struct pci_dev *dev)
 {
 	struct pci_controller *phb;
 
 	phb = pci_bus_to_host(dev->bus);
 
+<<<<<<< HEAD
 	return (phb->ops == &cxl_pcie_pci_ops);
+=======
+	return _cxl_pci_is_vphb_device(phb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct cxl_afu *cxl_pci_to_afu(struct pci_dev *dev)
@@ -322,7 +353,17 @@ struct cxl_afu *cxl_pci_to_afu(struct pci_dev *dev)
 
 	phb = pci_bus_to_host(dev->bus);
 
+<<<<<<< HEAD
 	return (struct cxl_afu *)phb->private_data;
+=======
+	if (_cxl_pci_is_vphb_device(phb))
+		return (struct cxl_afu *)phb->private_data;
+
+	if (pnv_pci_on_cxl_phb(dev))
+		return pnv_cxl_phb_to_afu(phb);
+
+	return ERR_PTR(-ENODEV);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(cxl_pci_to_afu);
 

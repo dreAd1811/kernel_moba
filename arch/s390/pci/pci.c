@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright IBM Corp. 2012
  *
@@ -420,6 +423,10 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
 	/* Request MSI interrupts */
 	hwirq = 0;
 	for_each_pci_msi_entry(msi, pdev) {
+<<<<<<< HEAD
+=======
+		rc = -EIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (hwirq >= msi_vecs)
 			break;
 		irq = irq_alloc_desc(0);	/* Alloc irq on node 0 */

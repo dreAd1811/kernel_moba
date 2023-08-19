@@ -523,12 +523,15 @@ struct pfvf_read_coal_resp_tlv {
 	u8 padding[6];
 };
 
+<<<<<<< HEAD
 struct vfpf_bulletin_update_mac_tlv {
 	struct vfpf_first_tlv first_tlv;
 	u8 mac[ETH_ALEN];
 	u8 padding[2];
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union vfpf_tlvs {
 	struct vfpf_first_tlv first_tlv;
 	struct vfpf_acquire_tlv acquire;
@@ -543,7 +546,10 @@ union vfpf_tlvs {
 	struct vfpf_update_tunn_param_tlv tunn_param_update;
 	struct vfpf_update_coalesce update_coalesce;
 	struct vfpf_read_coal_req_tlv read_coal_req;
+<<<<<<< HEAD
 	struct vfpf_bulletin_update_mac_tlv bulletin_update_mac;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tlv_buffer_size tlv_buf_size;
 };
 
@@ -662,7 +668,10 @@ enum {
 	CHANNEL_TLV_COALESCE_UPDATE,
 	CHANNEL_TLV_QID,
 	CHANNEL_TLV_COALESCE_READ,
+<<<<<<< HEAD
 	CHANNEL_TLV_BULLETIN_UPDATE_MAC,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CHANNEL_TLV_MAX,
 
 	/* Required for iterating over vport-update tlvs.
@@ -1055,6 +1064,7 @@ int qed_vf_pf_tunnel_param_update(struct qed_hwfn *p_hwfn,
 				  struct qed_tunnel_info *p_tunn);
 
 u32 qed_vf_hw_bar_size(struct qed_hwfn *p_hwfn, enum BAR_ID bar_id);
+<<<<<<< HEAD
 /**
  * @brief - Ask PF to update the MAC address in it's bulletin board
  *
@@ -1062,6 +1072,8 @@ u32 qed_vf_hw_bar_size(struct qed_hwfn *p_hwfn, enum BAR_ID bar_id);
  */
 int qed_vf_pf_bulletin_update_mac(struct qed_hwfn *p_hwfn, u8 *p_mac);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static inline void qed_vf_get_link_params(struct qed_hwfn *p_hwfn,
 					  struct qed_mcp_link_params *params)
@@ -1248,12 +1260,15 @@ static inline int qed_vf_pf_tunnel_param_update(struct qed_hwfn *p_hwfn,
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static inline int qed_vf_pf_bulletin_update_mac(struct qed_hwfn *p_hwfn,
 						u8 *p_mac)
 {
 	return -EINVAL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32
 qed_vf_hw_bar_size(struct qed_hwfn  *p_hwfn,
 		   enum BAR_ID bar_id)

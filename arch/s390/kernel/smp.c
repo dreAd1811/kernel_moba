@@ -27,6 +27,10 @@
 #include <linux/err.h>
 #include <linux/spinlock.h>
 #include <linux/kernel_stat.h>
+<<<<<<< HEAD
+=======
+#include <linux/kmemleak.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/interrupt.h>
 #include <linux/irqflags.h>
@@ -36,7 +40,10 @@
 #include <linux/sched/task_stack.h>
 #include <linux/crash_dump.h>
 #include <linux/memblock.h>
+<<<<<<< HEAD
 #include <linux/kprobes.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/asm-offsets.h>
 #include <asm/diag.h>
 #include <asm/switch_to.h>
@@ -82,6 +89,11 @@ struct pcpu {
 static u8 boot_core_type;
 static struct pcpu pcpu_devices[NR_CPUS];
 
+<<<<<<< HEAD
+=======
+static struct kmem_cache *pcpu_mcesa_cache;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unsigned int smp_cpu_mt_shift;
 EXPORT_SYMBOL(smp_cpu_mt_shift);
 
@@ -192,8 +204,15 @@ static void pcpu_ec_call(struct pcpu *pcpu, int ec_bit)
 static int pcpu_alloc_lowcore(struct pcpu *pcpu, int cpu)
 {
 	unsigned long async_stack, panic_stack;
+<<<<<<< HEAD
 	struct lowcore *lc;
 
+=======
+	unsigned long mcesa_origin, mcesa_bits;
+	struct lowcore *lc;
+
+	mcesa_origin = mcesa_bits = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pcpu != &pcpu_devices[0]) {
 		pcpu->lowcore =	(struct lowcore *)
 			__get_free_pages(GFP_KERNEL | GFP_DMA, LC_ORDER);
@@ -201,15 +220,33 @@ static int pcpu_alloc_lowcore(struct pcpu *pcpu, int cpu)
 		panic_stack = __get_free_page(GFP_KERNEL);
 		if (!pcpu->lowcore || !panic_stack || !async_stack)
 			goto out;
+<<<<<<< HEAD
 	} else {
 		async_stack = pcpu->lowcore->async_stack - ASYNC_FRAME_OFFSET;
 		panic_stack = pcpu->lowcore->panic_stack - PANIC_FRAME_OFFSET;
+=======
+		if (MACHINE_HAS_VX || MACHINE_HAS_GS) {
+			mcesa_origin = (unsigned long)
+				kmem_cache_alloc(pcpu_mcesa_cache, GFP_KERNEL);
+			if (!mcesa_origin)
+				goto out;
+			/* The pointer is stored with mcesa_bits ORed in */
+			kmemleak_not_leak((void *) mcesa_origin);
+			mcesa_bits = MACHINE_HAS_GS ? 11 : 0;
+		}
+	} else {
+		async_stack = pcpu->lowcore->async_stack - ASYNC_FRAME_OFFSET;
+		panic_stack = pcpu->lowcore->panic_stack - PANIC_FRAME_OFFSET;
+		mcesa_origin = pcpu->lowcore->mcesad & MCESA_ORIGIN_MASK;
+		mcesa_bits = pcpu->lowcore->mcesad & MCESA_LC_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	lc = pcpu->lowcore;
 	memcpy(lc, &S390_lowcore, 512);
 	memset((char *) lc + 512, 0, sizeof(*lc) - 512);
 	lc->async_stack = async_stack + ASYNC_FRAME_OFFSET;
 	lc->panic_stack = panic_stack + PANIC_FRAME_OFFSET;
+<<<<<<< HEAD
 	lc->cpu_nr = cpu;
 	lc->spinlock_lockval = arch_spin_lockval(cpu);
 	lc->spinlock_index = 0;
@@ -226,6 +263,22 @@ out_mcesa:
 	nmi_free_per_cpu(lc);
 out:
 	if (pcpu != &pcpu_devices[0]) {
+=======
+	lc->mcesad = mcesa_origin | mcesa_bits;
+	lc->cpu_nr = cpu;
+	lc->spinlock_lockval = arch_spin_lockval(cpu);
+	lc->br_r1_trampoline = 0x07f1;	/* br %r1 */
+	if (vdso_alloc_per_cpu(lc))
+		goto out;
+	lowcore_ptr[cpu] = lc;
+	pcpu_sigp_retry(pcpu, SIGP_SET_PREFIX, (u32)(unsigned long) lc);
+	return 0;
+out:
+	if (pcpu != &pcpu_devices[0]) {
+		if (mcesa_origin)
+			kmem_cache_free(pcpu_mcesa_cache,
+					(void *) mcesa_origin);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		free_page(panic_stack);
 		free_pages(async_stack, ASYNC_ORDER);
 		free_pages((unsigned long) pcpu->lowcore, LC_ORDER);
@@ -237,12 +290,26 @@ out:
 
 static void pcpu_free_lowcore(struct pcpu *pcpu)
 {
+<<<<<<< HEAD
 	pcpu_sigp_retry(pcpu, SIGP_SET_PREFIX, 0);
 	lowcore_ptr[pcpu - pcpu_devices] = NULL;
 	vdso_free_per_cpu(pcpu->lowcore);
 	nmi_free_per_cpu(pcpu->lowcore);
 	if (pcpu == &pcpu_devices[0])
 		return;
+=======
+	unsigned long mcesa_origin;
+
+	pcpu_sigp_retry(pcpu, SIGP_SET_PREFIX, 0);
+	lowcore_ptr[pcpu - pcpu_devices] = NULL;
+	vdso_free_per_cpu(pcpu->lowcore);
+	if (pcpu == &pcpu_devices[0])
+		return;
+	if (MACHINE_HAS_VX || MACHINE_HAS_GS) {
+		mcesa_origin = pcpu->lowcore->mcesad & MCESA_ORIGIN_MASK;
+		kmem_cache_free(pcpu_mcesa_cache, (void *) mcesa_origin);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_page(pcpu->lowcore->panic_stack-PANIC_FRAME_OFFSET);
 	free_pages(pcpu->lowcore->async_stack-ASYNC_FRAME_OFFSET, ASYNC_ORDER);
 	free_pages((unsigned long) pcpu->lowcore, LC_ORDER);
@@ -258,7 +325,10 @@ static void pcpu_prepare_secondary(struct pcpu *pcpu, int cpu)
 	cpumask_set_cpu(cpu, mm_cpumask(&init_mm));
 	lc->cpu_nr = cpu;
 	lc->spinlock_lockval = arch_spin_lockval(cpu);
+<<<<<<< HEAD
 	lc->spinlock_index = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lc->percpu_offset = __per_cpu_offset[cpu];
 	lc->kernel_asce = S390_lowcore.kernel_asce;
 	lc->machine_flags = S390_lowcore.machine_flags;
@@ -269,7 +339,10 @@ static void pcpu_prepare_secondary(struct pcpu *pcpu, int cpu)
 	       sizeof(lc->stfle_fac_list));
 	memcpy(lc->alt_stfle_fac_list, S390_lowcore.alt_stfle_fac_list,
 	       sizeof(lc->alt_stfle_fac_list));
+<<<<<<< HEAD
 	arch_spin_lock_setup(cpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void pcpu_attach_task(struct pcpu *pcpu, struct task_struct *tsk)
@@ -390,7 +463,11 @@ int smp_find_processor_id(u16 address)
 	return -1;
 }
 
+<<<<<<< HEAD
 bool arch_vcpu_is_preempted(int cpu)
+=======
+bool notrace arch_vcpu_is_preempted(int cpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (test_cpu_flag_of(CIF_ENABLED_WAIT, cpu))
 		return false;
@@ -400,7 +477,11 @@ bool arch_vcpu_is_preempted(int cpu)
 }
 EXPORT_SYMBOL(arch_vcpu_is_preempted);
 
+<<<<<<< HEAD
 void smp_yield_cpu(int cpu)
+=======
+void notrace smp_yield_cpu(int cpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (MACHINE_HAS_DIAG9C) {
 		diag_stat_inc_norecursion(DIAG_STAT_X09C);
@@ -416,6 +497,7 @@ void smp_yield_cpu(int cpu)
  * Send cpus emergency shutdown signal. This gives the cpus the
  * opportunity to complete outstanding interrupts.
  */
+<<<<<<< HEAD
 void notrace smp_emergency_stop(void)
 {
 	cpumask_t cpumask;
@@ -427,6 +509,15 @@ void notrace smp_emergency_stop(void)
 
 	end = get_tod_clock() + (1000000UL << 12);
 	for_each_cpu(cpu, &cpumask) {
+=======
+static void smp_emergency_stop(cpumask_t *cpumask)
+{
+	u64 end;
+	int cpu;
+
+	end = get_tod_clock() + (1000000UL << 12);
+	for_each_cpu(cpu, cpumask) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct pcpu *pcpu = pcpu_devices + cpu;
 		set_bit(ec_stop_cpu, &pcpu->ec_mask);
 		while (__pcpu_sigp(pcpu->address, SIGP_EMERGENCY_SIGNAL,
@@ -435,21 +526,35 @@ void notrace smp_emergency_stop(void)
 			cpu_relax();
 	}
 	while (get_tod_clock() < end) {
+<<<<<<< HEAD
 		for_each_cpu(cpu, &cpumask)
 			if (pcpu_stopped(pcpu_devices + cpu))
 				cpumask_clear_cpu(cpu, &cpumask);
 		if (cpumask_empty(&cpumask))
+=======
+		for_each_cpu(cpu, cpumask)
+			if (pcpu_stopped(pcpu_devices + cpu))
+				cpumask_clear_cpu(cpu, cpumask);
+		if (cpumask_empty(cpumask))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		cpu_relax();
 	}
 }
+<<<<<<< HEAD
 NOKPROBE_SYMBOL(smp_emergency_stop);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Stop all cpus but the current one.
  */
 void smp_send_stop(void)
 {
+<<<<<<< HEAD
+=======
+	cpumask_t cpumask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int cpu;
 
 	/* Disable all interrupts/machine checks */
@@ -457,6 +562,7 @@ void smp_send_stop(void)
 	trace_hardirqs_off();
 
 	debug_set_critical();
+<<<<<<< HEAD
 
 	if (oops_in_progress)
 		smp_emergency_stop();
@@ -467,6 +573,19 @@ void smp_send_stop(void)
 			continue;
 		pcpu_sigp_retry(pcpu_devices + cpu, SIGP_STOP, 0);
 		while (!pcpu_stopped(pcpu_devices + cpu))
+=======
+	cpumask_copy(&cpumask, cpu_online_mask);
+	cpumask_clear_cpu(smp_processor_id(), &cpumask);
+
+	if (oops_in_progress)
+		smp_emergency_stop(&cpumask);
+
+	/* stop all processors */
+	for_each_cpu(cpu, &cpumask) {
+		struct pcpu *pcpu = pcpu_devices + cpu;
+		pcpu_sigp_retry(pcpu, SIGP_STOP, 0);
+		while (!pcpu_stopped(pcpu))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cpu_relax();
 	}
 }
@@ -712,6 +831,7 @@ static void __ref smp_get_core_info(struct sclp_core_info *info, int early)
 
 static int smp_add_present_cpu(int cpu);
 
+<<<<<<< HEAD
 static int __smp_rescan_cpus(struct sclp_core_info *info, int sysfs_add)
 {
 	struct pcpu *pcpu;
@@ -745,6 +865,69 @@ static int __smp_rescan_cpus(struct sclp_core_info *info, int sysfs_add)
 				break;
 		}
 	}
+=======
+static int smp_add_core(struct sclp_core_entry *core, cpumask_t *avail,
+			bool configured, bool early)
+{
+	struct pcpu *pcpu;
+	int cpu, nr, i;
+	u16 address;
+
+	nr = 0;
+	if (sclp.has_core_type && core->type != boot_core_type)
+		return nr;
+	cpu = cpumask_first(avail);
+	address = core->core_id << smp_cpu_mt_shift;
+	for (i = 0; (i <= smp_cpu_mtid) && (cpu < nr_cpu_ids); i++) {
+		if (pcpu_find_address(cpu_present_mask, address + i))
+			continue;
+		pcpu = pcpu_devices + cpu;
+		pcpu->address = address + i;
+		if (configured)
+			pcpu->state = CPU_STATE_CONFIGURED;
+		else
+			pcpu->state = CPU_STATE_STANDBY;
+		smp_cpu_set_polarization(cpu, POLARIZATION_UNKNOWN);
+		set_cpu_present(cpu, true);
+		if (!early && smp_add_present_cpu(cpu) != 0)
+			set_cpu_present(cpu, false);
+		else
+			nr++;
+		cpumask_clear_cpu(cpu, avail);
+		cpu = cpumask_next(cpu, avail);
+	}
+	return nr;
+}
+
+static int __smp_rescan_cpus(struct sclp_core_info *info, bool early)
+{
+	struct sclp_core_entry *core;
+	cpumask_t avail;
+	bool configured;
+	u16 core_id;
+	int nr, i;
+
+	nr = 0;
+	cpumask_xor(&avail, cpu_possible_mask, cpu_present_mask);
+	/*
+	 * Add IPL core first (which got logical CPU number 0) to make sure
+	 * that all SMT threads get subsequent logical CPU numbers.
+	 */
+	if (early) {
+		core_id = pcpu_devices[0].address >> smp_cpu_mt_shift;
+		for (i = 0; i < info->configured; i++) {
+			core = &info->core[i];
+			if (core->core_id == core_id) {
+				nr += smp_add_core(core, &avail, true, early);
+				break;
+			}
+		}
+	}
+	for (i = 0; i < info->combined; i++) {
+		configured = i < info->configured;
+		nr += smp_add_core(&info->core[i], &avail, configured, early);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return nr;
 }
 
@@ -790,7 +973,11 @@ void __init smp_detect_cpus(void)
 
 	/* Add CPUs present at boot */
 	get_online_cpus();
+<<<<<<< HEAD
 	__smp_rescan_cpus(info, 0);
+=======
+	__smp_rescan_cpus(info, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	put_online_cpus();
 	memblock_free_early((unsigned long)info, sizeof(*info));
 }
@@ -800,8 +987,11 @@ void __init smp_detect_cpus(void)
  */
 static void smp_start_secondary(void *cpuvoid)
 {
+<<<<<<< HEAD
 	int cpu = smp_processor_id();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	S390_lowcore.last_update_clock = get_tod_clock();
 	S390_lowcore.restart_stack = (unsigned long) restart_stack;
 	S390_lowcore.restart_fn = (unsigned long) do_restart;
@@ -815,12 +1005,17 @@ static void smp_start_secondary(void *cpuvoid)
 	init_cpu_timer();
 	vtime_init();
 	pfault_init();
+<<<<<<< HEAD
 	notify_cpu_starting(cpu);
 	if (topology_cpu_dedicated(cpu))
 		set_cpu_flag(CIF_DEDICATED_CPU);
 	else
 		clear_cpu_flag(CIF_DEDICATED_CPU);
 	set_cpu_online(cpu, true);
+=======
+	notify_cpu_starting(smp_processor_id());
+	set_cpu_online(smp_processor_id(), true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inc_irq_stat(CPU_RST);
 	local_irq_enable();
 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
@@ -930,12 +1125,28 @@ void __init smp_fill_possible_mask(void)
 
 void __init smp_prepare_cpus(unsigned int max_cpus)
 {
+<<<<<<< HEAD
+=======
+	unsigned long size;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* request the 0x1201 emergency signal external interrupt */
 	if (register_external_irq(EXT_IRQ_EMERGENCY_SIG, do_ext_call_interrupt))
 		panic("Couldn't request external interrupt 0x1201");
 	/* request the 0x1202 external call external interrupt */
 	if (register_external_irq(EXT_IRQ_EXTERNAL_CALL, do_ext_call_interrupt))
 		panic("Couldn't request external interrupt 0x1202");
+<<<<<<< HEAD
+=======
+	/* create slab cache for the machine-check-extended-save-areas */
+	if (MACHINE_HAS_VX || MACHINE_HAS_GS) {
+		size = 1UL << (MACHINE_HAS_GS ? 11 : 10);
+		pcpu_mcesa_cache = kmem_cache_create("nmi_save_areas",
+						     size, size, 0, NULL);
+		if (!pcpu_mcesa_cache)
+			panic("Couldn't create nmi save area cache");
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init smp_prepare_boot_cpu(void)
@@ -958,7 +1169,10 @@ void __init smp_setup_processor_id(void)
 	pcpu_devices[0].address = stap();
 	S390_lowcore.cpu_nr = 0;
 	S390_lowcore.spinlock_lockval = arch_spin_lockval(0);
+<<<<<<< HEAD
 	S390_lowcore.spinlock_index = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1140,7 +1354,11 @@ int __ref smp_rescan_cpus(void)
 	smp_get_core_info(info, 0);
 	get_online_cpus();
 	mutex_lock(&smp_cpu_state_mutex);
+<<<<<<< HEAD
 	nr = __smp_rescan_cpus(info, 1);
+=======
+	nr = __smp_rescan_cpus(info, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&smp_cpu_state_mutex);
 	put_online_cpus();
 	kfree(info);
@@ -1163,7 +1381,11 @@ static ssize_t __ref rescan_store(struct device *dev,
 	unlock_device_hotplug();
 	return rc ? rc : count;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(rescan);
+=======
+static DEVICE_ATTR(rescan, 0200, NULL, rescan_store);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_HOTPLUG_CPU */
 
 static int __init s390_smp_init(void)

@@ -212,6 +212,7 @@ void ps3_mm_vas_destroy(void)
 {
 	int result;
 
+<<<<<<< HEAD
 	DBG("%s:%d: map.vas_id    = %llu\n", __func__, __LINE__, map.vas_id);
 
 	if (map.vas_id) {
@@ -219,6 +220,16 @@ void ps3_mm_vas_destroy(void)
 		BUG_ON(result);
 		result = lv1_destruct_virtual_address_space(map.vas_id);
 		BUG_ON(result);
+=======
+	if (map.vas_id) {
+		result = lv1_select_virtual_address_space(0);
+		result += lv1_destruct_virtual_address_space(map.vas_id);
+
+		if (result) {
+			lv1_panic(0);
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map.vas_id = 0;
 	}
 }
@@ -316,6 +327,7 @@ static void ps3_mm_region_destroy(struct mem_region *r)
 	int result;
 
 	if (!r->destroy) {
+<<<<<<< HEAD
 		pr_info("%s:%d: Not destroying high region: %llxh %llxh\n",
 			__func__, __LINE__, r->base, r->size);
 		return;
@@ -329,6 +341,22 @@ static void ps3_mm_region_destroy(struct mem_region *r)
 		r->size = r->base = r->offset = 0;
 		map.total = map.rm.size;
 	}
+=======
+		return;
+	}
+
+	if (r->base) {
+		result = lv1_release_memory(r->base);
+
+		if (result) {
+			lv1_panic(0);
+		}
+
+		r->size = r->base = r->offset = 0;
+		map.total = map.rm.size;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ps3_mm_set_repository_highmem(NULL);
 }
 
@@ -524,7 +552,12 @@ static int dma_sb_map_pages(struct ps3_dma_region *r, unsigned long phys_addr,
 	int result;
 	struct dma_chunk *c;
 
+<<<<<<< HEAD
 	c = kzalloc(sizeof(*c), GFP_ATOMIC);
+=======
+	c = kzalloc(sizeof(struct dma_chunk), GFP_ATOMIC);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!c) {
 		result = -ENOMEM;
 		goto fail_alloc;
@@ -569,7 +602,12 @@ static int dma_ioc0_map_pages(struct ps3_dma_region *r, unsigned long phys_addr,
 
 	DBG(KERN_ERR "%s: phy=%#lx, lpar%#lx, len=%#lx\n", __func__,
 	    phys_addr, ps3_mm_phys_to_lpar(phys_addr), len);
+<<<<<<< HEAD
 	c = kzalloc(sizeof(*c), GFP_ATOMIC);
+=======
+	c = kzalloc(sizeof(struct dma_chunk), GFP_ATOMIC);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!c) {
 		result = -ENOMEM;
 		goto fail_alloc;
@@ -605,8 +643,13 @@ static int dma_ioc0_map_pages(struct ps3_dma_region *r, unsigned long phys_addr,
 				       r->ioid,
 				       iopte_flag);
 		if (result) {
+<<<<<<< HEAD
 			pr_warn("%s:%d: lv1_put_iopte failed: %s\n",
 				__func__, __LINE__, ps3_result(result));
+=======
+			pr_warning("%s:%d: lv1_put_iopte failed: %s\n",
+				   __func__, __LINE__, ps3_result(result));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto fail_map;
 		}
 		DBG("%s: pg=%d bus=%#lx, lpar=%#lx, ioid=%#x\n", __func__,

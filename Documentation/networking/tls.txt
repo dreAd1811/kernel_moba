@@ -48,9 +48,12 @@ the transmit and the receive into the kernel.
 
   setsockopt(sock, SOL_TLS, TLS_TX, &crypto_info, sizeof(crypto_info));
 
+<<<<<<< HEAD
 Transmit and receive are set separately, but the setup is the same, using either
 TLS_TX or TLS_RX.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Sending TLS application data
 ----------------------------
 
@@ -82,6 +85,7 @@ for memory), or the encryption will always succeed.  If send() returns
 -ENOMEM and some data was left on the socket buffer from a previous
 call using MSG_MORE, the MSG_MORE data is left on the socket buffer.
 
+<<<<<<< HEAD
 Receiving TLS application data
 ------------------------------
 
@@ -104,6 +108,8 @@ EMSGSIZE is returned if the received message is too big.
 
 EBADMSG is returned if decryption failed for any other reason.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Send TLS control messages
 -------------------------
 
@@ -143,6 +149,7 @@ using a record of type @record_type.
 Control message data should be provided unencrypted, and will be
 encrypted by the kernel.
 
+<<<<<<< HEAD
 Receiving TLS control messages
 ------------------------------
 
@@ -180,6 +187,8 @@ received without a cmsg buffer set.
 
 recv will never return data from mixed types of TLS records.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Integrating in to userspace TLS library
 ---------------------------------------
 
@@ -188,10 +197,18 @@ layer of a userspace TLS library.
 
 A patchset to OpenSSL to use ktls as the record layer is here:
 
+<<<<<<< HEAD
 https://github.com/Mellanox/openssl/commits/tls_rx2
+=======
+https://github.com/Mellanox/tls-openssl
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 An example of calling send directly after a handshake using
 gnutls.  Since it doesn't implement a full record layer, control
 messages are not supported:
 
+<<<<<<< HEAD
 https://github.com/ktls/af_ktls-tool/commits/RX
+=======
+https://github.com/Mellanox/tls-af_ktls_tool
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

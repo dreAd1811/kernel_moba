@@ -16,7 +16,10 @@
 #include <linux/screen_info.h>
 #include <linux/platform_device.h>
 #include <linux/serial_8250.h>
+<<<<<<< HEAD
 #include <linux/dma-mapping.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/jazz.h>
 #include <asm/jazzdma.h>
@@ -33,22 +36,38 @@ static struct resource jazz_io_resources[] = {
 		.start	= 0x00,
 		.end	= 0x1f,
 		.name	= "dma1",
+<<<<<<< HEAD
 		.flags	= IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags	= IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.start	= 0x40,
 		.end	= 0x5f,
 		.name	= "timer",
+<<<<<<< HEAD
 		.flags	= IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags	= IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.start	= 0x80,
 		.end	= 0x8f,
 		.name	= "dma page reg",
+<<<<<<< HEAD
 		.flags	= IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags	= IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		.start	= 0xc0,
 		.end	= 0xdf,
 		.name	= "dma2",
+<<<<<<< HEAD
 		.flags	= IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags	= IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 };
 
@@ -137,6 +156,7 @@ static struct resource jazz_esp_rsrc[] = {
 	}
 };
 
+<<<<<<< HEAD
 static u64 jazz_esp_dma_mask = DMA_BIT_MASK(32);
 
 static struct platform_device jazz_esp_pdev = {
@@ -147,6 +167,12 @@ static struct platform_device jazz_esp_pdev = {
 		.dma_mask	   = &jazz_esp_dma_mask,
 		.coherent_dma_mask = DMA_BIT_MASK(32),
 	}
+=======
+static struct platform_device jazz_esp_pdev = {
+	.name		= "jazz_esp",
+	.num_resources	= ARRAY_SIZE(jazz_esp_rsrc),
+	.resource	= jazz_esp_rsrc
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct resource jazz_sonic_rsrc[] = {
@@ -162,6 +188,7 @@ static struct resource jazz_sonic_rsrc[] = {
 	}
 };
 
+<<<<<<< HEAD
 static u64 jazz_sonic_dma_mask = DMA_BIT_MASK(32);
 
 static struct platform_device jazz_sonic_pdev = {
@@ -172,6 +199,12 @@ static struct platform_device jazz_sonic_pdev = {
 		.dma_mask	   = &jazz_sonic_dma_mask,
 		.coherent_dma_mask = DMA_BIT_MASK(32),
 	}
+=======
+static struct platform_device jazz_sonic_pdev = {
+	.name		= "jazzsonic",
+	.num_resources	= ARRAY_SIZE(jazz_sonic_rsrc),
+	.resource	= jazz_sonic_rsrc
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct resource jazz_cmos_rsrc[] = {

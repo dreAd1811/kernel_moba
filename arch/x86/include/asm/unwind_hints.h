@@ -26,7 +26,11 @@
  * the debuginfo as necessary.  It will also warn if it sees any
  * inconsistencies.
  */
+<<<<<<< HEAD
 .macro UNWIND_HINT sp_reg=ORC_REG_SP sp_offset=0 type=ORC_TYPE_CALL end=0
+=======
+.macro UNWIND_HINT sp_reg=ORC_REG_SP sp_offset=0 type=ORC_TYPE_CALL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_STACK_VALIDATION
 .Lunwind_hint_ip_\@:
 	.pushsection .discard.unwind_hints
@@ -35,14 +39,21 @@
 		.short \sp_offset
 		.byte \sp_reg
 		.byte \type
+<<<<<<< HEAD
 		.byte \end
 		.balign 4
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.popsection
 #endif
 .endm
 
 .macro UNWIND_HINT_EMPTY
+<<<<<<< HEAD
 	UNWIND_HINT sp_reg=ORC_REG_UNDEFINED end=1
+=======
+	UNWIND_HINT sp_reg=ORC_REG_UNDEFINED
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .endm
 
 .macro UNWIND_HINT_REGS base=%rsp offset=0 indirect=0 extra=1 iret=0
@@ -88,11 +99,16 @@
 
 #else /* !__ASSEMBLY__ */
 
+<<<<<<< HEAD
 #define UNWIND_HINT(sp_reg, sp_offset, type, end)		\
+=======
+#define UNWIND_HINT(sp_reg, sp_offset, type)			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"987: \n\t"						\
 	".pushsection .discard.unwind_hints\n\t"		\
 	/* struct unwind_hint */				\
 	".long 987b - .\n\t"					\
+<<<<<<< HEAD
 	".short " __stringify(sp_offset) "\n\t"			\
 	".byte " __stringify(sp_reg) "\n\t"			\
 	".byte " __stringify(type) "\n\t"			\
@@ -103,6 +119,16 @@
 #define UNWIND_HINT_SAVE UNWIND_HINT(0, 0, UNWIND_HINT_TYPE_SAVE, 0)
 
 #define UNWIND_HINT_RESTORE UNWIND_HINT(0, 0, UNWIND_HINT_TYPE_RESTORE, 0)
+=======
+	".short " __stringify(sp_offset) "\n\t"		\
+	".byte " __stringify(sp_reg) "\n\t"			\
+	".byte " __stringify(type) "\n\t"			\
+	".popsection\n\t"
+
+#define UNWIND_HINT_SAVE UNWIND_HINT(0, 0, UNWIND_HINT_TYPE_SAVE)
+
+#define UNWIND_HINT_RESTORE UNWIND_HINT(0, 0, UNWIND_HINT_TYPE_RESTORE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __ASSEMBLY__ */
 

@@ -57,12 +57,20 @@ source "drivers/char/Kconfig"
 
 source "drivers/i2c/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/i3c/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/spi/Kconfig"
 
 source "drivers/spmi/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "drivers/slimbus/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/hsi/Kconfig"
 
 source "drivers/pps/Kconfig"
@@ -73,6 +81,11 @@ source "drivers/pinctrl/Kconfig"
 
 source "drivers/gpio/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "drivers/gnsssirf/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/w1/Kconfig"
 
 source "drivers/power/Kconfig"
@@ -159,8 +172,11 @@ source "drivers/remoteproc/Kconfig"
 
 source "drivers/rpmsg/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/soundwire/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/soc/Kconfig"
 
 source "drivers/devfreq/Kconfig"
@@ -177,6 +193,11 @@ source "drivers/vme/Kconfig"
 
 source "drivers/pwm/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "drivers/gpu/msm/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/irqchip/Kconfig"
 
 source "drivers/ipack/Kconfig"
@@ -199,13 +220,24 @@ source "drivers/thunderbolt/Kconfig"
 
 source "drivers/android/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "drivers/gpu/trace/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/nvdimm/Kconfig"
 
 source "drivers/dax/Kconfig"
 
 source "drivers/nvmem/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/hwtracing/Kconfig"
+=======
+source "drivers/hwtracing/stm/Kconfig"
+
+source "drivers/hwtracing/intel_th/Kconfig"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 source "drivers/fpga/Kconfig"
 
@@ -215,6 +247,7 @@ source "drivers/tee/Kconfig"
 
 source "drivers/mux/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/opp/Kconfig"
 
 source "drivers/visorbus/Kconfig"
@@ -230,4 +263,10 @@ source "drivers/sensors/Kconfig"
 source "drivers/gpu/msm/Kconfig"
 
 source "drivers/energy_model/Kconfig"
+=======
+source "drivers/sensors/Kconfig"
+
+source "drivers/esoc/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu

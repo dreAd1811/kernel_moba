@@ -56,10 +56,14 @@ enum AMDGIM_ERROR_CATEGORY {
 	AMDGIM_ERROR_CATEGORY_MAX
 };
 
+<<<<<<< HEAD
 void amdgpu_vf_error_put(struct amdgpu_device *adev,
 			 uint16_t sub_error_code,
 			 uint16_t error_flags,
 			 uint64_t error_data);
+=======
+void amdgpu_vf_error_put(uint16_t sub_error_code, uint16_t error_flags, uint64_t error_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_vf_error_trans_all (struct amdgpu_device *adev);
 
 #endif /* __VF_ERROR_H__ */

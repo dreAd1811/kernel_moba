@@ -61,6 +61,11 @@
 
 	encoder {
 		compatible = "ti,tfp410";
+<<<<<<< HEAD
+=======
+		#address-cells = <1>;
+		#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ports {
 			#address-cells = <1>;
@@ -186,8 +191,11 @@
 /delete-node/&hdmi_mux_1;
 
 &hdmi {
+<<<<<<< HEAD
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_hdmicec>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddc-i2c-bus = <&i2c2>;
 	status = "okay";
 };
@@ -211,12 +219,15 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_hdmicec: hdmicecgrp {
 		fsl,pins = <
 			MX6QDL_PAD_KEY_ROW2__HDMI_TX_CEC_LINE 0x1f8b0
 		>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl_hpd: hpdgrp {
 		fsl,pins = <
 			MX6QDL_PAD_GPIO_4__GPIO1_IO04 0x1b0b0

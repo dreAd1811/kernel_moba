@@ -339,8 +339,12 @@ static int omap4_keypad_probe(struct platform_device *pdev)
 
 	keypad_data->row_shift = get_count_order(keypad_data->cols);
 	max_keys = keypad_data->rows << keypad_data->row_shift;
+<<<<<<< HEAD
 	keypad_data->keymap = kcalloc(max_keys,
 				      sizeof(keypad_data->keymap[0]),
+=======
+	keypad_data->keymap = kzalloc(max_keys * sizeof(keypad_data->keymap[0]),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      GFP_KERNEL);
 	if (!keypad_data->keymap) {
 		dev_err(&pdev->dev, "Not enough memory for keymap\n");

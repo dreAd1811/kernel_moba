@@ -46,6 +46,7 @@
 static inline void crash_setup_regs(struct pt_regs *newregs,
 					struct pt_regs *oldregs) { }
 
+<<<<<<< HEAD
 struct kimage;
 struct s390_load_data {
 	/* Pointer to the kernel buffer. Used to register cmdline etc.. */
@@ -69,4 +70,6 @@ int *kexec_file_update_kernel(struct kimage *iamge,
 extern const struct kexec_file_ops s390_kexec_image_ops;
 extern const struct kexec_file_ops s390_kexec_elf_ops;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /*_S390_KEXEC_H */

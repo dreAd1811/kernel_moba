@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 
 /*
@@ -22,6 +23,26 @@
 #include <asm/kprobes.h>
 
 #include <asm/paca.h>
+=======
+/*
+ * Stack trace utility
+ *
+ * Copyright 2008 Christoph Hellwig, IBM Corp.
+ *
+ *
+ *      This program is free software; you can redistribute it and/or
+ *      modify it under the terms of the GNU General Public License
+ *      as published by the Free Software Foundation; either version
+ *      2 of the License, or (at your option) any later version.
+ */
+
+#include <linux/export.h>
+#include <linux/sched.h>
+#include <linux/sched/debug.h>
+#include <linux/stacktrace.h>
+#include <asm/ptrace.h>
+#include <asm/processor.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Save stack-backtrace addresses into a stack_trace buffer.
@@ -82,6 +103,7 @@ save_stack_trace_regs(struct pt_regs *regs, struct stack_trace *trace)
 	save_context_stack(trace, regs->gpr[1], current, 0);
 }
 EXPORT_SYMBOL_GPL(save_stack_trace_regs);
+<<<<<<< HEAD
 
 #ifdef CONFIG_HAVE_RELIABLE_STACKTRACE
 int
@@ -243,3 +265,5 @@ void arch_trigger_cpumask_backtrace(const cpumask_t *mask, bool exclude_self)
 	nmi_trigger_cpumask_backtrace(mask, exclude_self, raise_backtrace_ipi);
 }
 #endif /* defined(CONFIG_PPC_BOOK3S_64) && defined(CONFIG_NMI_IPI) */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

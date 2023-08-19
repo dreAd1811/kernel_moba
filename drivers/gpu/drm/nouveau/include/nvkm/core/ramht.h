@@ -2,7 +2,10 @@
 #ifndef __NVKM_RAMHT_H__
 #define __NVKM_RAMHT_H__
 #include <core/gpuobj.h>
+<<<<<<< HEAD
 struct nvkm_object;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nvkm_ramht_data {
 	struct nvkm_gpuobj *inst;

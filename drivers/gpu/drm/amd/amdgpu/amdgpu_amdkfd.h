@@ -28,6 +28,7 @@
 #include <linux/types.h>
 #include <linux/mm.h>
 #include <linux/mmu_context.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
 #include <kgd_kfd_interface.h>
 #include <drm/ttm/ttm_execbuf_util.h>
@@ -102,6 +103,16 @@ struct amdkfd_process_info {
 	atomic_t evicted_bos;
 	struct delayed_work restore_userptr_work;
 	struct pid *pid;
+=======
+#include <kgd_kfd_interface.h>
+
+struct amdgpu_device;
+
+struct kgd_mem {
+	struct amdgpu_bo *bo;
+	uint64_t gpu_addr;
+	void *cpu_ptr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int amdgpu_amdkfd_init(void);
@@ -115,6 +126,7 @@ void amdgpu_amdkfd_device_probe(struct amdgpu_device *adev);
 void amdgpu_amdkfd_device_init(struct amdgpu_device *adev);
 void amdgpu_amdkfd_device_fini(struct amdgpu_device *adev);
 
+<<<<<<< HEAD
 int amdgpu_amdkfd_evict_userptr(struct kgd_mem *mem, struct mm_struct *mm);
 int amdgpu_amdkfd_submit_ib(struct kgd_dev *kgd, enum kgd_engine_type engine,
 				uint32_t vmid, uint64_t gpu_addr,
@@ -132,10 +144,15 @@ int amdgpu_amdkfd_pre_reset(struct amdgpu_device *adev);
 int amdgpu_amdkfd_post_reset(struct amdgpu_device *adev);
 
 void amdgpu_amdkfd_gpu_reset(struct kgd_dev *kgd);
+=======
+struct kfd2kgd_calls *amdgpu_amdkfd_gfx_7_get_functions(void);
+struct kfd2kgd_calls *amdgpu_amdkfd_gfx_8_0_get_functions(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Shared API */
 int alloc_gtt_mem(struct kgd_dev *kgd, size_t size,
 			void **mem_obj, uint64_t *gpu_addr,
+<<<<<<< HEAD
 			void **cpu_ptr, bool mqd_gfx9);
 void free_gtt_mem(struct kgd_dev *kgd, void *mem_obj);
 void get_local_mem_info(struct kgd_dev *kgd,
@@ -145,6 +162,14 @@ uint64_t get_gpu_clock_counter(struct kgd_dev *kgd);
 uint32_t get_max_engine_clock_in_mhz(struct kgd_dev *kgd);
 void get_cu_info(struct kgd_dev *kgd, struct kfd_cu_info *cu_info);
 uint64_t amdgpu_amdkfd_get_vram_usage(struct kgd_dev *kgd);
+=======
+			void **cpu_ptr);
+void free_gtt_mem(struct kgd_dev *kgd, void *mem_obj);
+uint64_t get_vmem_size(struct kgd_dev *kgd);
+uint64_t get_gpu_clock_counter(struct kgd_dev *kgd);
+
+uint32_t get_max_engine_clock_in_mhz(struct kgd_dev *kgd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define read_user_wptr(mmptr, wptr, dst)				\
 	({								\
@@ -161,6 +186,7 @@ uint64_t amdgpu_amdkfd_get_vram_usage(struct kgd_dev *kgd);
 		valid;							\
 	})
 
+<<<<<<< HEAD
 /* GPUVM API */
 int amdgpu_amdkfd_gpuvm_create_process_vm(struct kgd_dev *kgd, void **vm,
 					void **process_info,
@@ -196,4 +222,6 @@ int amdgpu_amdkfd_gpuvm_get_vm_fault_info(struct kgd_dev *kgd,
 void amdgpu_amdkfd_gpuvm_init_mem_limits(void);
 void amdgpu_amdkfd_unreserve_system_memory_limit(struct amdgpu_bo *bo);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* AMDGPU_AMDKFD_H_INCLUDED */

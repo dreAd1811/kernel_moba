@@ -835,7 +835,11 @@ static void w5100_tx_work(struct work_struct *work)
 	w5100_tx_skb(priv->ndev, skb);
 }
 
+<<<<<<< HEAD
 static netdev_tx_t w5100_start_tx(struct sk_buff *skb, struct net_device *ndev)
+=======
+static int w5100_start_tx(struct sk_buff *skb, struct net_device *ndev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct w5100_priv *priv = netdev_priv(ndev);
 

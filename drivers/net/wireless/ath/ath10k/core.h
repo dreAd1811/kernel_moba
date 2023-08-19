@@ -1,7 +1,11 @@
 /*
  * Copyright (c) 2005-2011 Atheros Communications Inc.
  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+<<<<<<< HEAD
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -44,18 +48,28 @@
 #define WO(_f)      ((_f##_OFFSET) >> 2)
 
 #define ATH10K_SCAN_ID 0
+<<<<<<< HEAD
 #define ATH10K_SCAN_CHANNEL_SWITCH_WMI_EVT_OVERHEAD 10 /* msec */
 #define WMI_READY_TIMEOUT (5 * HZ)
 #define ATH10K_FLUSH_TIMEOUT_HZ (5 * HZ)
 #define ATH10K_CONNECTION_LOSS_HZ (3 * HZ)
 #define ATH10K_NUM_CHANS 41
 #define ATH10K_MAX_5G_CHAN 173
+=======
+#define WMI_READY_TIMEOUT (5 * HZ)
+#define ATH10K_FLUSH_TIMEOUT_HZ (5 * HZ)
+#define ATH10K_CONNECTION_LOSS_HZ (3 * HZ)
+#define ATH10K_NUM_CHANS 40
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Antenna noise floor */
 #define ATH10K_DEFAULT_NOISE_FLOOR -95
 
+<<<<<<< HEAD
 #define ATH10K_INVALID_RSSI 128
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ATH10K_MAX_NUM_MGMT_PENDING 128
 
 /* number of failed packets (20 packets with 16 sw reties each) */
@@ -177,7 +191,10 @@ struct ath10k_wmi {
 	struct completion service_ready;
 	struct completion unified_ready;
 	struct completion barrier;
+<<<<<<< HEAD
 	struct completion radar_confirm;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_queue_head_t tx_credits_wq;
 	DECLARE_BITMAP(svc_map, WMI_SERVICE_MAX);
 	struct wmi_cmd_map *cmd;
@@ -186,11 +203,14 @@ struct ath10k_wmi {
 	const struct wmi_ops *ops;
 	const struct wmi_peer_flags_map *peer_flags;
 
+<<<<<<< HEAD
 	u32 mgmt_max_num_pending_tx;
 
 	/* Protected by data_lock */
 	struct idr mgmt_pending_tx;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 num_mem_chunks;
 	u32 rx_decap_mode;
 	struct ath10k_mem_chunk mem_chunks[WMI_MAX_MEM_REQS];
@@ -232,6 +252,7 @@ struct ath10k_fw_stats_vdev {
 	u32 beacon_rssi_history[10];
 };
 
+<<<<<<< HEAD
 struct ath10k_fw_stats_vdev_extd {
 	struct list_head list;
 
@@ -253,6 +274,8 @@ struct ath10k_fw_stats_vdev_extd {
 	u32 rx_iftmr_dup_cnt;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ath10k_fw_stats_pdev {
 	struct list_head list;
 
@@ -356,6 +379,7 @@ struct ath10k_tpc_stats {
 	struct ath10k_tpc_table tpc_table[WMI_TPC_FLAG];
 };
 
+<<<<<<< HEAD
 struct ath10k_tpc_table_final {
 	u32 pream_idx[WMI_TPC_FINAL_RATE_MAX];
 	u8 rate_code[WMI_TPC_FINAL_RATE_MAX];
@@ -377,6 +401,8 @@ struct ath10k_tpc_stats_final {
 	struct ath10k_tpc_table_final tpc_table_final[WMI_TPC_FLAG];
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ath10k_dfs_stats {
 	u32 phy_errors;
 	u32 pulses_total;
@@ -385,6 +411,7 @@ struct ath10k_dfs_stats {
 	u32 radar_detected;
 };
 
+<<<<<<< HEAD
 enum ath10k_radar_confirmation_state {
 	ATH10K_RADAR_CONFIRMATION_IDLE = 0,
 	ATH10K_RADAR_CONFIRMATION_INPROGRESS,
@@ -400,6 +427,8 @@ struct ath10k_radar_found_info {
 	u32 sidx_max;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ATH10K_MAX_NUM_PEER_IDS (1 << 11) /* htt rx_desc limit */
 
 struct ath10k_peer {
@@ -422,6 +451,7 @@ struct ath10k_txq {
 	unsigned long num_push_allowed;
 };
 
+<<<<<<< HEAD
 enum ath10k_pkt_rx_err {
 	ATH10K_PKT_RX_ERR_FCS,
 	ATH10K_PKT_RX_ERR_TKIP,
@@ -461,6 +491,8 @@ struct ath10k_sta_tid_stats {
 	unsigned long int rx_pkt_amsdu[ATH10K_AMSDU_SUBFRM_NUM_MAX];
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ath10k_sta {
 	struct ath10k_vif *arvif;
 
@@ -478,6 +510,7 @@ struct ath10k_sta {
 #ifdef CONFIG_MAC80211_DEBUGFS
 	/* protected by conf_mutex */
 	bool aggr_mode;
+<<<<<<< HEAD
 
 	/* Protected with ar->data_lock */
 	struct ath10k_sta_tid_stats tid_stats[IEEE80211_NUM_TIDS + 1];
@@ -485,6 +518,13 @@ struct ath10k_sta {
 };
 
 #define ATH10K_VDEV_SETUP_TIMEOUT_HZ (5 * HZ)
+=======
+#endif
+};
+
+#define ATH10K_VDEV_SETUP_TIMEOUT_HZ	(5 * HZ)
+#define ATH10K_VDEV_DELETE_TIMEOUT_HZ	(5 * HZ)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum ath10k_beacon_state {
 	ATH10K_BEACON_SCHEDULED = 0,
@@ -597,7 +637,10 @@ struct ath10k_debug {
 
 	/* used for tpc-dump storage, protected by data-lock */
 	struct ath10k_tpc_stats *tpc_stats;
+<<<<<<< HEAD
 	struct ath10k_tpc_stats_final *tpc_stats_final;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct completion tpc_complete;
 
@@ -607,6 +650,10 @@ struct ath10k_debug {
 	u32 reg_addr;
 	u32 nf_cal_period;
 	void *cal_data;
+<<<<<<< HEAD
+=======
+	u8 fw_dbglog_mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum ath10k_state {
@@ -861,6 +908,12 @@ struct ath10k_fw_components {
 	const struct firmware *board;
 	const void *board_data;
 	size_t board_len;
+<<<<<<< HEAD
+=======
+	const struct firmware *ext_board;
+	const void *ext_board_data;
+	size_t ext_board_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct ath10k_fw_file fw_file;
 };
@@ -880,6 +933,19 @@ struct ath10k_per_peer_tx_stats {
 	u32	reserved2;
 };
 
+<<<<<<< HEAD
+=======
+enum ath10k_dev_type {
+	ATH10K_DEV_TYPE_LL,
+	ATH10K_DEV_TYPE_HL,
+};
+
+struct ath10k_bus_params {
+	u32 chip_id;
+	enum ath10k_dev_type dev_type;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ath10k {
 	struct ath_common ath_common;
 	struct ieee80211_hw *hw;
@@ -890,6 +956,10 @@ struct ath10k {
 	enum ath10k_hw_rev hw_rev;
 	u16 dev_id;
 	u32 chip_id;
+<<<<<<< HEAD
+=======
+	enum ath10k_dev_type dev_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 target_version;
 	u8 fw_version_major;
 	u32 fw_version_minor;
@@ -946,8 +1016,17 @@ struct ath10k {
 		u32 subsystem_device;
 
 		bool bmi_ids_valid;
+<<<<<<< HEAD
 		u8 bmi_board_id;
 		u8 bmi_chip_id;
+=======
+		bool qmi_ids_valid;
+		u32 qmi_board_id;
+		u8 bmi_board_id;
+		u8 bmi_eboard_id;
+		u8 bmi_chip_id;
+		bool ext_bid_supported;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		char bdf_ext[ATH10K_SMBIOS_BDF_EXT_STR_LENGTH];
 	} id;
@@ -1003,7 +1082,13 @@ struct ath10k {
 
 	struct completion install_key_done;
 
+<<<<<<< HEAD
 	struct completion vdev_setup_done;
+=======
+	int last_wmi_vdev_start_status;
+	struct completion vdev_setup_done;
+	struct completion vdev_delete_done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct workqueue_struct *workqueue;
 	/* Auxiliary workqueue */
@@ -1128,6 +1213,7 @@ struct ath10k {
 
 	u32 ampdu_reference;
 
+<<<<<<< HEAD
 	void *ce_priv;
 
 	u32 sta_tid_stats_mask;
@@ -1136,6 +1222,12 @@ struct ath10k {
 	enum ath10k_radar_confirmation_state radar_conf_state;
 	struct ath10k_radar_found_info last_radar_info;
 	struct work_struct radar_confirmation_work;
+=======
+	const u8 *wmi_key_cipher;
+	void *ce_priv;
+
+	struct completion peer_delete_done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* must be last */
 	u8 drv_priv[0] __aligned(sizeof(void *));
@@ -1167,7 +1259,15 @@ int ath10k_core_start(struct ath10k *ar, enum ath10k_firmware_mode mode,
 		      const struct ath10k_fw_components *fw_components);
 int ath10k_wait_for_suspend(struct ath10k *ar, u32 suspend_opt);
 void ath10k_core_stop(struct ath10k *ar);
+<<<<<<< HEAD
 int ath10k_core_register(struct ath10k *ar, u32 chip_id);
 void ath10k_core_unregister(struct ath10k *ar);
+=======
+int ath10k_core_register(struct ath10k *ar,
+			 const struct ath10k_bus_params *bus_params);
+void ath10k_core_unregister(struct ath10k *ar);
+int ath10k_core_fetch_board_file(struct ath10k *ar, int bd_ie_type);
+void ath10k_core_free_board_files(struct ath10k *ar);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _CORE_H_ */

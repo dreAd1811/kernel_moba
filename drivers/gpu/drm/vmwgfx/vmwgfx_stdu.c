@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /******************************************************************************
  *
  * COPYRIGHT (C) 2014-2015 VMware, Inc., Palo Alto, CA., USA
+=======
+/******************************************************************************
+ *
+ * COPYRIGHT © 2014-2015 VMware, Inc., Palo Alto, CA., USA
+ * All Rights Reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -44,7 +51,11 @@
 enum stdu_content_type {
 	SAME_AS_DISPLAY = 0,
 	SEPARATE_SURFACE,
+<<<<<<< HEAD
 	SEPARATE_BO
+=======
+	SEPARATE_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -58,7 +69,11 @@ enum stdu_content_type {
  * @bottom: Bottom side of bounding box.
  * @fb_left: Left side of the framebuffer/content bounding box
  * @fb_top: Top of the framebuffer/content bounding box
+<<<<<<< HEAD
  * @buf: buffer object when DMA-ing between buffer and screen targets.
+=======
+ * @buf: DMA buffer when DMA-ing between buffer and screen targets.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @sid: Surface ID when copying between surface and screen targets.
  */
 struct vmw_stdu_dirty {
@@ -68,7 +83,11 @@ struct vmw_stdu_dirty {
 	s32 fb_left, fb_top;
 	u32 pitch;
 	union {
+<<<<<<< HEAD
 		struct vmw_buffer_object *buf;
+=======
+		struct vmw_dma_buffer *buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 sid;
 	};
 };
@@ -114,6 +133,10 @@ struct vmw_screen_target_display_unit {
 	bool defined;
 
 	/* For CPU Blit */
+<<<<<<< HEAD
+=======
+	struct ttm_bo_kmap_obj host_map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int cpp;
 };
 
@@ -178,9 +201,19 @@ static int vmw_stdu_define_st(struct vmw_private *dev_priv,
 	cmd->body.height = mode->vdisplay;
 	cmd->body.flags  = (0 == cmd->body.stid) ? SVGA_STFLAG_PRIMARY : 0;
 	cmd->body.dpi    = 0;
+<<<<<<< HEAD
 	cmd->body.xRoot  = crtc_x;
 	cmd->body.yRoot  = crtc_y;
 
+=======
+	if (stdu->base.is_implicit) {
+		cmd->body.xRoot  = crtc_x;
+		cmd->body.yRoot  = crtc_y;
+	} else {
+		cmd->body.xRoot  = stdu->base.gui_x;
+		cmd->body.yRoot  = stdu->base.gui_y;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stdu->base.set_gui_x = cmd->body.xRoot;
 	stdu->base.set_gui_y = cmd->body.yRoot;
 
@@ -370,6 +403,7 @@ static void vmw_stdu_crtc_mode_set_nofb(struct drm_crtc *crtc)
 {
 	struct vmw_private *dev_priv;
 	struct vmw_screen_target_display_unit *stdu;
+<<<<<<< HEAD
 	struct drm_connector_state *conn_state;
 	struct vmw_connector_state *vmw_conn_state;
 	int x, y, ret;
@@ -378,6 +412,13 @@ static void vmw_stdu_crtc_mode_set_nofb(struct drm_crtc *crtc)
 	dev_priv = vmw_priv(crtc->dev);
 	conn_state = stdu->base.connector.state;
 	vmw_conn_state = vmw_connector_state_to_vcs(conn_state);
+=======
+	int ret;
+
+
+	stdu     = vmw_crtc_to_stdu(crtc);
+	dev_priv = vmw_priv(crtc->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (stdu->defined) {
 		ret = vmw_stdu_bind_st(dev_priv, stdu, NULL);
@@ -396,6 +437,7 @@ static void vmw_stdu_crtc_mode_set_nofb(struct drm_crtc *crtc)
 	if (!crtc->state->enable)
 		return;
 
+<<<<<<< HEAD
 	if (stdu->base.is_implicit) {
 		x = crtc->x;
 		y = crtc->y;
@@ -406,6 +448,10 @@ static void vmw_stdu_crtc_mode_set_nofb(struct drm_crtc *crtc)
 
 	vmw_svga_enable(dev_priv);
 	ret = vmw_stdu_define_st(dev_priv, stdu, &crtc->mode, x, y);
+=======
+	vmw_svga_enable(dev_priv);
+	ret = vmw_stdu_define_st(dev_priv, stdu, &crtc->mode, crtc->x, crtc->y);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret)
 		DRM_ERROR("Failed to define Screen Target of size %dx%d\n",
@@ -421,7 +467,10 @@ static void vmw_stdu_crtc_helper_prepare(struct drm_crtc *crtc)
 static void vmw_stdu_crtc_atomic_enable(struct drm_crtc *crtc,
 					struct drm_crtc_state *old_state)
 {
+<<<<<<< HEAD
 	struct drm_plane_state *plane_state = crtc->primary->state;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_private *dev_priv;
 	struct vmw_screen_target_display_unit *stdu;
 	struct vmw_framebuffer *vfb;
@@ -430,7 +479,11 @@ static void vmw_stdu_crtc_atomic_enable(struct drm_crtc *crtc,
 
 	stdu     = vmw_crtc_to_stdu(crtc);
 	dev_priv = vmw_priv(crtc->dev);
+<<<<<<< HEAD
 	fb       = plane_state->fb;
+=======
+	fb       = crtc->primary->fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vfb = (fb) ? vmw_framebuffer_to_vfb(fb) : NULL;
 
@@ -499,30 +552,104 @@ static int vmw_stdu_crtc_page_flip(struct drm_crtc *crtc,
 {
 	struct vmw_private *dev_priv = vmw_priv(crtc->dev);
 	struct vmw_screen_target_display_unit *stdu = vmw_crtc_to_stdu(crtc);
+<<<<<<< HEAD
 	int ret;
 
 	if (!stdu->defined || !vmw_kms_crtc_flippable(dev_priv, crtc))
 		return -EINVAL;
 
 	ret = drm_atomic_helper_page_flip(crtc, new_fb, event, flags, ctx);
+=======
+	struct vmw_framebuffer *vfb = vmw_framebuffer_to_vfb(new_fb);
+	struct drm_vmw_rect vclips;
+	int ret;
+
+	dev_priv          = vmw_priv(crtc->dev);
+	stdu              = vmw_crtc_to_stdu(crtc);
+
+	if (!stdu->defined || !vmw_kms_crtc_flippable(dev_priv, crtc))
+		return -EINVAL;
+
+	/*
+	 * We're always async, but the helper doesn't know how to set async
+	 * so lie to the helper. Also, the helper expects someone
+	 * to pick the event up from the crtc state, and if nobody does,
+	 * it will free it. Since we handle the event in this function,
+	 * don't hand it to the helper.
+	 */
+	flags &= ~DRM_MODE_PAGE_FLIP_ASYNC;
+	ret = drm_atomic_helper_page_flip(crtc, new_fb, NULL, flags, ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("Page flip error %d.\n", ret);
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	if (stdu->base.is_implicit)
+		vmw_kms_update_implicit_fb(dev_priv, crtc);
+
+	/*
+	 * Now that we've bound a new surface to the screen target,
+	 * update the contents.
+	 */
+	vclips.x = crtc->x;
+	vclips.y = crtc->y;
+	vclips.w = crtc->mode.hdisplay;
+	vclips.h = crtc->mode.vdisplay;
+
+	if (vfb->dmabuf)
+		ret = vmw_kms_stdu_dma(dev_priv, NULL, vfb, NULL, NULL, &vclips,
+				       1, 1, true, false);
+	else
+		ret = vmw_kms_stdu_surface_dirty(dev_priv, vfb, NULL, &vclips,
+						 NULL, 0, 0, 1, 1, NULL);
+	if (ret) {
+		DRM_ERROR("Page flip update error %d.\n", ret);
+		return ret;
+	}
+
+	if (event) {
+		struct vmw_fence_obj *fence = NULL;
+		struct drm_file *file_priv = event->base.file_priv;
+
+		vmw_execbuf_fence_commands(NULL, dev_priv, &fence, NULL);
+		if (!fence)
+			return -ENOMEM;
+
+		ret = vmw_event_fence_action_queue(file_priv, fence,
+						   &event->base,
+						   &event->event.tv_sec,
+						   &event->event.tv_usec,
+						   true);
+		vmw_fence_obj_unreference(&fence);
+	} else {
+		(void) vmw_fifo_flush(dev_priv, false);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 
 /**
+<<<<<<< HEAD
  * vmw_stdu_bo_clip - Callback to encode a suface DMA command cliprect
+=======
+ * vmw_stdu_dmabuf_clip - Callback to encode a suface DMA command cliprect
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @dirty: The closure structure.
  *
  * Encodes a surface DMA command cliprect and updates the bounding box
  * for the DMA.
  */
+<<<<<<< HEAD
 static void vmw_stdu_bo_clip(struct vmw_kms_dirty *dirty)
+=======
+static void vmw_stdu_dmabuf_clip(struct vmw_kms_dirty *dirty)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vmw_stdu_dirty *ddirty =
 		container_of(dirty, struct vmw_stdu_dirty, base);
@@ -550,14 +677,22 @@ static void vmw_stdu_bo_clip(struct vmw_kms_dirty *dirty)
 }
 
 /**
+<<<<<<< HEAD
  * vmw_stdu_bo_fifo_commit - Callback to fill in and submit a DMA command.
+=======
+ * vmw_stdu_dmabuf_fifo_commit - Callback to fill in and submit a DMA command.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @dirty: The closure structure.
  *
  * Fills in the missing fields in a DMA command, and optionally encodes
  * a screen target update command, depending on transfer direction.
  */
+<<<<<<< HEAD
 static void vmw_stdu_bo_fifo_commit(struct vmw_kms_dirty *dirty)
+=======
+static void vmw_stdu_dmabuf_fifo_commit(struct vmw_kms_dirty *dirty)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vmw_stdu_dirty *ddirty =
 		container_of(dirty, struct vmw_stdu_dirty, base);
@@ -601,13 +736,21 @@ static void vmw_stdu_bo_fifo_commit(struct vmw_kms_dirty *dirty)
 
 
 /**
+<<<<<<< HEAD
  * vmw_stdu_bo_cpu_clip - Callback to encode a CPU blit
+=======
+ * vmw_stdu_dmabuf_cpu_clip - Callback to encode a CPU blit
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @dirty: The closure structure.
  *
  * This function calculates the bounding box for all the incoming clips.
  */
+<<<<<<< HEAD
 static void vmw_stdu_bo_cpu_clip(struct vmw_kms_dirty *dirty)
+=======
+static void vmw_stdu_dmabuf_cpu_clip(struct vmw_kms_dirty *dirty)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vmw_stdu_dirty *ddirty =
 		container_of(dirty, struct vmw_stdu_dirty, base);
@@ -631,14 +774,22 @@ static void vmw_stdu_bo_cpu_clip(struct vmw_kms_dirty *dirty)
 
 
 /**
+<<<<<<< HEAD
  * vmw_stdu_bo_cpu_commit - Callback to do a CPU blit from buffer object
+=======
+ * vmw_stdu_dmabuf_cpu_commit - Callback to do a CPU blit from DMAbuf
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @dirty: The closure structure.
  *
  * For the special case when we cannot create a proxy surface in a
  * 2D VM, we have to do a CPU blit ourselves.
  */
+<<<<<<< HEAD
 static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dirty *dirty)
+=======
+static void vmw_stdu_dmabuf_cpu_commit(struct vmw_kms_dirty *dirty)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vmw_stdu_dirty *ddirty =
 		container_of(dirty, struct vmw_stdu_dirty, base);
@@ -646,9 +797,16 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dirty *dirty)
 		container_of(dirty->unit, typeof(*stdu), base);
 	s32 width, height;
 	s32 src_pitch, dst_pitch;
+<<<<<<< HEAD
 	struct ttm_buffer_object *src_bo, *dst_bo;
 	u32 src_offset, dst_offset;
 	struct vmw_diff_cpy diff = VMW_CPU_BLIT_DIFF_INITIALIZER(stdu->cpp);
+=======
+	u8 *src, *dst;
+	bool not_used;
+	struct ttm_bo_kmap_obj guest_map;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dirty->num_hits)
 		return;
@@ -659,6 +817,7 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dirty *dirty)
 	if (width == 0 || height == 0)
 		return;
 
+<<<<<<< HEAD
 	/* Assume we are blitting from Guest (bo) to Host (display_srf) */
 	dst_pitch = stdu->display_srf->base_size.width * stdu->cpp;
 	dst_bo = &stdu->display_srf->res.backup->base;
@@ -681,16 +840,66 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dirty *dirty)
 
 	if (ddirty->transfer == SVGA3D_WRITE_HOST_VRAM &&
 	    drm_rect_visible(&diff.rect)) {
+=======
+	ret = ttm_bo_kmap(&ddirty->buf->base, 0, ddirty->buf->base.num_pages,
+			  &guest_map);
+	if (ret) {
+		DRM_ERROR("Failed mapping framebuffer for blit: %d\n",
+			  ret);
+		goto out_cleanup;
+	}
+
+	/* Assume we are blitting from Host (display_srf) to Guest (dmabuf) */
+	src_pitch = stdu->display_srf->base_size.width * stdu->cpp;
+	src = ttm_kmap_obj_virtual(&stdu->host_map, &not_used);
+	src += ddirty->top * src_pitch + ddirty->left * stdu->cpp;
+
+	dst_pitch = ddirty->pitch;
+	dst = ttm_kmap_obj_virtual(&guest_map, &not_used);
+	dst += ddirty->fb_top * dst_pitch + ddirty->fb_left * stdu->cpp;
+
+
+	/* Figure out the real direction */
+	if (ddirty->transfer == SVGA3D_WRITE_HOST_VRAM) {
+		u8 *tmp;
+		s32 tmp_pitch;
+
+		tmp = src;
+		tmp_pitch = src_pitch;
+
+		src = dst;
+		src_pitch = dst_pitch;
+
+		dst = tmp;
+		dst_pitch = tmp_pitch;
+	}
+
+	/* CPU Blit */
+	while (height-- > 0) {
+		memcpy(dst, src, width * stdu->cpp);
+		dst += dst_pitch;
+		src += src_pitch;
+	}
+
+	if (ddirty->transfer == SVGA3D_WRITE_HOST_VRAM) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct vmw_private *dev_priv;
 		struct vmw_stdu_update *cmd;
 		struct drm_clip_rect region;
 		int ret;
 
 		/* We are updating the actual surface, not a proxy */
+<<<<<<< HEAD
 		region.x1 = diff.rect.x1;
 		region.x2 = diff.rect.x2;
 		region.y1 = diff.rect.y1;
 		region.y2 = diff.rect.y2;
+=======
+		region.x1 = ddirty->left;
+		region.x2 = ddirty->right;
+		region.y1 = ddirty->top;
+		region.y2 = ddirty->bottom;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = vmw_kms_update_proxy(
 			(struct vmw_resource *) &stdu->display_srf->res,
 			(const struct drm_clip_rect *) &region, 1, 1);
@@ -707,25 +916,42 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dirty *dirty)
 		}
 
 		vmw_stdu_populate_update(cmd, stdu->base.unit,
+<<<<<<< HEAD
 					 region.x1, region.x2,
 					 region.y1, region.y2);
+=======
+					 ddirty->left, ddirty->right,
+					 ddirty->top, ddirty->bottom);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		vmw_fifo_commit(dev_priv, sizeof(*cmd));
 	}
 
+<<<<<<< HEAD
+=======
+	ttm_bo_kunmap(&guest_map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_cleanup:
 	ddirty->left = ddirty->top = ddirty->fb_left = ddirty->fb_top = S32_MAX;
 	ddirty->right = ddirty->bottom = S32_MIN;
 }
 
 /**
+<<<<<<< HEAD
  * vmw_kms_stdu_dma - Perform a DMA transfer between a buffer-object backed
+=======
+ * vmw_kms_stdu_dma - Perform a DMA transfer between a dma-buffer backed
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * framebuffer and the screen target system.
  *
  * @dev_priv: Pointer to the device private structure.
  * @file_priv: Pointer to a struct drm-file identifying the caller. May be
  * set to NULL, but then @user_fence_rep must also be set to NULL.
+<<<<<<< HEAD
  * @vfb: Pointer to the buffer-object backed framebuffer.
+=======
+ * @vfb: Pointer to the dma-buffer backed framebuffer.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @clips: Array of clip rects. Either @clips or @vclips must be NULL.
  * @vclips: Alternate array of clip rects. Either @clips or @vclips must
  * be NULL.
@@ -734,7 +960,10 @@ out_cleanup:
  * @to_surface: Whether to DMA to the screen target system as opposed to
  * from the screen target system.
  * @interruptible: Whether to perform waits interruptible if possible.
+<<<<<<< HEAD
  * @crtc: If crtc is passed, perform stdu dma on that crtc only.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * If DMA-ing till the screen target system, the function will also notify
  * the screen target system that a bounding box of the cliprects has been
@@ -751,6 +980,7 @@ int vmw_kms_stdu_dma(struct vmw_private *dev_priv,
 		     uint32_t num_clips,
 		     int increment,
 		     bool to_surface,
+<<<<<<< HEAD
 		     bool interruptible,
 		     struct drm_crtc *crtc)
 {
@@ -767,6 +997,17 @@ int vmw_kms_stdu_dma(struct vmw_private *dev_priv,
 	 */
 	ret = vmw_kms_helper_buffer_prepare(dev_priv, buf, interruptible,
 					    false, cpu_blit);
+=======
+		     bool interruptible)
+{
+	struct vmw_dma_buffer *buf =
+		container_of(vfb, struct vmw_framebuffer_dmabuf, base)->buffer;
+	struct vmw_stdu_dirty ddirty;
+	int ret;
+
+	ret = vmw_kms_helper_buffer_prepare(dev_priv, buf, interruptible,
+					    false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -777,14 +1018,20 @@ int vmw_kms_stdu_dma(struct vmw_private *dev_priv,
 	ddirty.fb_left = ddirty.fb_top = S32_MAX;
 	ddirty.pitch = vfb->base.pitches[0];
 	ddirty.buf = buf;
+<<<<<<< HEAD
 	ddirty.base.fifo_commit = vmw_stdu_bo_fifo_commit;
 	ddirty.base.clip = vmw_stdu_bo_clip;
+=======
+	ddirty.base.fifo_commit = vmw_stdu_dmabuf_fifo_commit;
+	ddirty.base.clip = vmw_stdu_dmabuf_clip;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddirty.base.fifo_reserve_size = sizeof(struct vmw_stdu_dma) +
 		num_clips * sizeof(SVGA3dCopyBox) +
 		sizeof(SVGA3dCmdSurfaceDMASuffix);
 	if (to_surface)
 		ddirty.base.fifo_reserve_size += sizeof(struct vmw_stdu_update);
 
+<<<<<<< HEAD
 
 	if (cpu_blit) {
 		ddirty.base.fifo_commit = vmw_stdu_bo_cpu_commit;
@@ -794,6 +1041,15 @@ int vmw_kms_stdu_dma(struct vmw_private *dev_priv,
 
 	ddirty.base.crtc = crtc;
 
+=======
+	/* 2D VMs cannot use SVGA_3D_CMD_SURFACE_DMA so do CPU blit instead */
+	if (!(dev_priv->capabilities & SVGA_CAP_3D)) {
+		ddirty.base.fifo_commit = vmw_stdu_dmabuf_cpu_commit;
+		ddirty.base.clip = vmw_stdu_dmabuf_cpu_clip;
+		ddirty.base.fifo_reserve_size = 0;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = vmw_kms_helper_dirty(dev_priv, vfb, clips, vclips,
 				   0, 0, num_clips, increment, &ddirty.base);
 	vmw_kms_helper_buffer_finish(dev_priv, file_priv, buf, NULL,
@@ -905,7 +1161,10 @@ static void vmw_kms_stdu_surface_fifo_commit(struct vmw_kms_dirty *dirty)
  * @out_fence: If non-NULL, will return a ref-counted pointer to a
  * struct vmw_fence_obj. The returned fence pointer may be NULL in which
  * case the device has already synchronized.
+<<<<<<< HEAD
  * @crtc: If crtc is passed, perform surface dirty on that crtc only.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns 0 on success, negative error code on failure. -ERESTARTSYS if
  * interrupted.
@@ -918,8 +1177,12 @@ int vmw_kms_stdu_surface_dirty(struct vmw_private *dev_priv,
 			       s32 dest_x,
 			       s32 dest_y,
 			       unsigned num_clips, int inc,
+<<<<<<< HEAD
 			       struct vmw_fence_obj **out_fence,
 			       struct drm_crtc *crtc)
+=======
+			       struct vmw_fence_obj **out_fence)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vmw_framebuffer_surface *vfbs =
 		container_of(framebuffer, typeof(*vfbs), base);
@@ -934,7 +1197,11 @@ int vmw_kms_stdu_surface_dirty(struct vmw_private *dev_priv,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (vfbs->is_bo_proxy) {
+=======
+	if (vfbs->is_dmabuf_proxy) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = vmw_kms_update_proxy(srf, clips, num_clips, inc);
 		if (ret)
 			goto out_finish;
@@ -945,7 +1212,10 @@ int vmw_kms_stdu_surface_dirty(struct vmw_private *dev_priv,
 	sdirty.base.fifo_reserve_size = sizeof(struct vmw_stdu_surface_copy) +
 		sizeof(SVGA3dCopyBox) * num_clips +
 		sizeof(struct vmw_stdu_update);
+<<<<<<< HEAD
 	sdirty.base.crtc = crtc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdirty.sid = srf->id;
 	sdirty.left = sdirty.top = S32_MAX;
 	sdirty.right = sdirty.bottom = S32_MIN;
@@ -1064,6 +1334,12 @@ vmw_stdu_primary_plane_cleanup_fb(struct drm_plane *plane,
 {
 	struct vmw_plane_state *vps = vmw_plane_state_to_vps(old_state);
 
+<<<<<<< HEAD
+=======
+	if (vps->host_map.virtual)
+		ttm_bo_kunmap(&vps->host_map);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vps->surf)
 		WARN_ON(!vps->pinned);
 
@@ -1082,7 +1358,11 @@ vmw_stdu_primary_plane_cleanup_fb(struct drm_plane *plane,
  * @new_state: info on the new plane state, including the FB
  *
  * This function allocates a new display surface if the content is
+<<<<<<< HEAD
  * backed by a buffer object.  The display surface is pinned here, and it'll
+=======
+ * backed by a DMA.  The display surface is pinned here, and it'll
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * be unpinned in .cleanup_fb()
  *
  * Returns 0 on success
@@ -1112,13 +1392,22 @@ vmw_stdu_primary_plane_prepare_fb(struct drm_plane *plane,
 	}
 
 	vfb = vmw_framebuffer_to_vfb(new_fb);
+<<<<<<< HEAD
 	new_vfbs = (vfb->bo) ? NULL : vmw_framebuffer_to_vfbs(new_fb);
+=======
+	new_vfbs = (vfb->dmabuf) ? NULL : vmw_framebuffer_to_vfbs(new_fb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (new_vfbs && new_vfbs->surface->base_size.width == hdisplay &&
 	    new_vfbs->surface->base_size.height == vdisplay)
 		new_content_type = SAME_AS_DISPLAY;
+<<<<<<< HEAD
 	else if (vfb->bo)
 		new_content_type = SEPARATE_BO;
+=======
+	else if (vfb->dmabuf)
+		new_content_type = SEPARATE_DMA;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		new_content_type = SEPARATE_SURFACE;
 
@@ -1131,10 +1420,17 @@ vmw_stdu_primary_plane_prepare_fb(struct drm_plane *plane,
 		display_base_size.depth  = 1;
 
 		/*
+<<<<<<< HEAD
 		 * If content buffer is a buffer object, then we have to
 		 * construct surface info
 		 */
 		if (new_content_type == SEPARATE_BO) {
+=======
+		 * If content buffer is a DMA buf, then we have to construct
+		 * surface info
+		 */
+		if (new_content_type == SEPARATE_DMA) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			switch (new_fb->format->cpp[0]*8) {
 			case 32:
@@ -1157,9 +1453,12 @@ vmw_stdu_primary_plane_prepare_fb(struct drm_plane *plane,
 			content_srf.flags             = 0;
 			content_srf.mip_levels[0]     = 1;
 			content_srf.multisample_count = 0;
+<<<<<<< HEAD
 			content_srf.multisample_pattern =
 				SVGA3D_MS_PATTERN_NONE;
 			content_srf.quality_level = SVGA3D_MS_QUALITY_NONE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			content_srf = *new_vfbs->surface;
 		}
@@ -1188,8 +1487,11 @@ vmw_stdu_primary_plane_prepare_fb(struct drm_plane *plane,
 				 content_srf.multisample_count,
 				 0,
 				 display_base_size,
+<<<<<<< HEAD
 				 content_srf.multisample_pattern,
 				 content_srf.quality_level,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 &vps->surf);
 			if (ret != 0) {
 				DRM_ERROR("Couldn't allocate STDU surface.\n");
@@ -1224,6 +1526,7 @@ vmw_stdu_primary_plane_prepare_fb(struct drm_plane *plane,
 	vps->content_fb_type = new_content_type;
 
 	/*
+<<<<<<< HEAD
 	 * This should only happen if the buffer object is too large to create a
 	 * proxy surface for.
 	 * If we are a 2D VM with a buffer object then we have to use CPU blit
@@ -1235,6 +1538,32 @@ vmw_stdu_primary_plane_prepare_fb(struct drm_plane *plane,
 
 	return 0;
 
+=======
+	 * This should only happen if the DMA buf is too large to create a
+	 * proxy surface for.
+	 * If we are a 2D VM with a DMA buffer then we have to use CPU blit
+	 * so cache these mappings
+	 */
+	if (vps->content_fb_type == SEPARATE_DMA &&
+	    !(dev_priv->capabilities & SVGA_CAP_3D)) {
+		ret = ttm_bo_kmap(&vps->surf->res.backup->base, 0,
+				  vps->surf->res.backup->base.num_pages,
+				  &vps->host_map);
+		if (ret) {
+			DRM_ERROR("Failed to map display buffer to CPU\n");
+			goto out_srf_unpin;
+		}
+
+		vps->cpp = new_fb->pitches[0] / new_fb->width;
+	}
+
+	return 0;
+
+out_srf_unpin:
+	vmw_resource_unpin(&vps->surf->res);
+	vps->pinned--;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_srf_unref:
 	vmw_surface_unreference(&vps->surf);
 	return ret;
@@ -1257,6 +1586,7 @@ static void
 vmw_stdu_primary_plane_atomic_update(struct drm_plane *plane,
 				     struct drm_plane_state *old_state)
 {
+<<<<<<< HEAD
 	struct vmw_plane_state *vps = vmw_plane_state_to_vps(plane->state);
 	struct drm_crtc *crtc = plane->state->crtc;
 	struct vmw_screen_target_display_unit *stdu;
@@ -1353,6 +1683,43 @@ vmw_stdu_primary_plane_atomic_update(struct drm_plane *plane,
 	} else {
 		(void) vmw_fifo_flush(dev_priv, false);
 	}
+=======
+	struct vmw_private *dev_priv;
+	struct vmw_screen_target_display_unit *stdu;
+	struct vmw_plane_state *vps = vmw_plane_state_to_vps(plane->state);
+	struct drm_crtc *crtc = plane->state->crtc ?: old_state->crtc;
+	int ret;
+
+	stdu     = vmw_crtc_to_stdu(crtc);
+	dev_priv = vmw_priv(crtc->dev);
+
+	stdu->display_srf = vps->surf;
+	stdu->content_fb_type = vps->content_fb_type;
+	stdu->cpp = vps->cpp;
+	memcpy(&stdu->host_map, &vps->host_map, sizeof(vps->host_map));
+
+	if (!stdu->defined)
+		return;
+
+	if (plane->state->fb)
+		ret = vmw_stdu_bind_st(dev_priv, stdu, &stdu->display_srf->res);
+	else
+		ret = vmw_stdu_bind_st(dev_priv, stdu, NULL);
+
+	/*
+	 * We cannot really fail this function, so if we do, then output an
+	 * error and quit
+	 */
+	if (ret)
+		DRM_ERROR("Failed to bind surface to STDU.\n");
+	else
+		crtc->primary->fb = plane->state->fb;
+
+	ret = vmw_stdu_update_st(dev_priv, stdu);
+
+	if (ret)
+		DRM_ERROR("Failed to update STDU.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -1498,7 +1865,11 @@ static int vmw_stdu_init(struct vmw_private *dev_priv, unsigned unit)
 		goto err_free_connector;
 	}
 
+<<<<<<< HEAD
 	(void) drm_connector_attach_encoder(connector, encoder);
+=======
+	(void) drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	encoder->possible_crtcs = (1 << unit);
 	encoder->possible_clones = 0;
 
@@ -1600,6 +1971,34 @@ int vmw_kms_stdu_init_display(struct vmw_private *dev_priv)
 
 	dev_priv->active_display_unit = vmw_du_screen_target;
 
+<<<<<<< HEAD
+=======
+	if (dev_priv->capabilities & SVGA_CAP_3D) {
+		/*
+		 * For 3D VMs, display (scanout) buffer size is the smaller of
+		 * max texture and max STDU
+		 */
+		uint32_t max_width, max_height;
+
+		max_width = min(dev_priv->texture_max_width,
+				dev_priv->stdu_max_width);
+		max_height = min(dev_priv->texture_max_height,
+				 dev_priv->stdu_max_height);
+
+		dev->mode_config.max_width = max_width;
+		dev->mode_config.max_height = max_height;
+	} else {
+		/*
+		 * Given various display aspect ratios, there's no way to
+		 * estimate these using prim_bb_mem.  So just set these to
+		 * something arbitrarily large and we will reject any layout
+		 * that doesn't fit prim_bb_mem later
+		 */
+		dev->mode_config.max_width = 8192;
+		dev->mode_config.max_height = 8192;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmw_kms_create_implicit_placement_property(dev_priv, false);
 
 	for (i = 0; i < VMWGFX_NUM_DISPLAY_UNITS; ++i) {

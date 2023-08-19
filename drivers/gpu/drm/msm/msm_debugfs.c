@@ -16,12 +16,16 @@
  */
 
 #ifdef CONFIG_DEBUG_FS
+<<<<<<< HEAD
 #include <linux/debugfs.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "msm_drv.h"
 #include "msm_gpu.h"
 #include "msm_kms.h"
 #include "msm_debugfs.h"
 
+<<<<<<< HEAD
 struct msm_gpu_show_priv {
 	struct msm_gpu_state *state;
 	struct drm_device *dev;
@@ -118,6 +122,23 @@ static const struct file_operations msm_gpu_fops = {
 	.release = msm_gpu_release,
 };
 
+=======
+static int msm_gpu_show(struct drm_device *dev, struct seq_file *m)
+{
+	struct msm_drm_private *priv = dev->dev_private;
+	struct msm_gpu *gpu = priv->gpu;
+
+	if (gpu) {
+		seq_printf(m, "%s Status:\n", gpu->name);
+		pm_runtime_get_sync(&gpu->pdev->dev);
+		gpu->funcs->show(gpu, m);
+		pm_runtime_put_sync(&gpu->pdev->dev);
+	}
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int msm_gem_show(struct drm_device *dev, struct seq_file *m)
 {
 	struct msm_drm_private *priv = dev->dev_private;
@@ -187,6 +208,10 @@ static int show_locked(struct seq_file *m, void *arg)
 }
 
 static struct drm_info_list msm_debugfs_list[] = {
+<<<<<<< HEAD
+=======
+		{"gpu", show_locked, 0, msm_gpu_show},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{"gem", show_locked, 0, msm_gem_show},
 		{ "mm", show_locked, 0, msm_mm_show },
 		{ "fb", show_locked, 0, msm_fb_show },
@@ -221,6 +246,12 @@ int msm_debugfs_late_init(struct drm_device *dev)
 	if (ret)
 		return ret;
 	ret = late_init_minor(dev->render);
+<<<<<<< HEAD
+=======
+	if (ret)
+		return ret;
+	ret = late_init_minor(dev->control);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -239,6 +270,7 @@ int msm_debugfs_init(struct drm_minor *minor)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	debugfs_create_file("gpu", S_IRUSR, minor->debugfs_root,
 		dev, &msm_gpu_fops);
 
@@ -247,6 +279,10 @@ int msm_debugfs_init(struct drm_minor *minor)
 		if (ret)
 			return ret;
 	}
+=======
+	if (priv->kms->funcs->debugfs_init)
+		ret = priv->kms->funcs->debugfs_init(priv->kms, minor);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }

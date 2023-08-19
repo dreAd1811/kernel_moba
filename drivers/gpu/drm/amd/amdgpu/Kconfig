@@ -41,4 +41,7 @@ config DRM_AMDGPU_GART_DEBUGFS
 	  pages. Uses more memory for housekeeping, enable only for debugging.
 
 source "drivers/gpu/drm/amd/acp/Kconfig"
+<<<<<<< HEAD
 source "drivers/gpu/drm/amd/display/Kconfig"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

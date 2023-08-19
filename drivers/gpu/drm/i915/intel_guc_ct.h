@@ -75,6 +75,7 @@ struct intel_guc_ct_channel {
 struct intel_guc_ct {
 	struct intel_guc_ct_channel host_channel;
 	/* other channels are tbd */
+<<<<<<< HEAD
 
 	/** @lock: protects pending requests list */
 	spinlock_t lock;
@@ -92,5 +93,14 @@ struct intel_guc_ct {
 void intel_guc_ct_init_early(struct intel_guc_ct *ct);
 int intel_guc_ct_enable(struct intel_guc_ct *ct);
 void intel_guc_ct_disable(struct intel_guc_ct *ct);
+=======
+};
+
+void intel_guc_ct_init_early(struct intel_guc_ct *ct);
+
+/* XXX: move to intel_uc.h ? don't fit there either */
+int intel_guc_enable_ct(struct intel_guc *guc);
+void intel_guc_disable_ct(struct intel_guc *guc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _INTEL_GUC_CT_H_ */

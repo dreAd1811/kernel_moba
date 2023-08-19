@@ -45,8 +45,11 @@
 
 #include <dt-bindings/clock/meson8b-clkc.h>
 #include <dt-bindings/gpio/meson8-gpio.h>
+<<<<<<< HEAD
 #include <dt-bindings/reset/amlogic,meson8b-clkc-reset.h>
 #include <dt-bindings/reset/amlogic,meson8b-reset.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "meson.dtsi"
 
 / {
@@ -57,38 +60,61 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		cpu0: cpu@200 {
+=======
+		cpu@200 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "arm,cortex-a9";
 			next-level-cache = <&L2>;
 			reg = <0x200>;
+<<<<<<< HEAD
 			enable-method = "amlogic,meson8-smp";
 			resets = <&clkc CLKC_RESET_CPU0_SOFT_RESET>;
 		};
 
 		cpu1: cpu@201 {
+=======
+		};
+
+		cpu@201 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "arm,cortex-a9";
 			next-level-cache = <&L2>;
 			reg = <0x201>;
+<<<<<<< HEAD
 			enable-method = "amlogic,meson8-smp";
 			resets = <&clkc CLKC_RESET_CPU1_SOFT_RESET>;
 		};
 
 		cpu2: cpu@202 {
+=======
+		};
+
+		cpu@202 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "arm,cortex-a9";
 			next-level-cache = <&L2>;
 			reg = <0x202>;
+<<<<<<< HEAD
 			enable-method = "amlogic,meson8-smp";
 			resets = <&clkc CLKC_RESET_CPU2_SOFT_RESET>;
 		};
 
 		cpu3: cpu@203 {
+=======
+		};
+
+		cpu@203 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "arm,cortex-a9";
 			next-level-cache = <&L2>;
 			reg = <0x203>;
+<<<<<<< HEAD
 			enable-method = "amlogic,meson8-smp";
 			resets = <&clkc CLKC_RESET_CPU3_SOFT_RESET>;
 		};
@@ -103,6 +129,11 @@
 		interrupt-affinity = <&cpu0>, <&cpu1>, <&cpu2>, <&cpu3>;
 	};
 
+=======
+		};
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reserved-memory {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -137,11 +168,14 @@
 }; /* end of / */
 
 &aobus {
+<<<<<<< HEAD
 	pmu: pmu@e0 {
 		compatible = "amlogic,meson8-pmu", "syscon";
 		reg = <0xe0 0x8>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl_aobus: pinctrl@84 {
 		compatible = "amlogic,meson8-aobus-pinctrl";
 		reg = <0x84 0xc>;
@@ -156,7 +190,11 @@
 			reg-names = "mux", "pull", "gpio";
 			gpio-controller;
 			#gpio-cells = <2>;
+<<<<<<< HEAD
 			gpio-ranges = <&pinctrl_aobus 0 0 16>;
+=======
+			gpio-ranges = <&pinctrl_aobus 0 120 16>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		uart_ao_a_pins: uart_ao_a {
@@ -194,6 +232,7 @@
 		#clock-cells = <1>;
 		#reset-cells = <1>;
 		compatible = "amlogic,meson8-clkc";
+<<<<<<< HEAD
 		reg = <0x8000 0x4>, <0x4000 0x460>;
 	};
 
@@ -206,6 +245,9 @@
 	analog_top: analog-top@81a8 {
 		compatible = "amlogic,meson8-analog-top", "syscon";
 		reg = <0x81a8 0x14>;
+=======
+		reg = <0x8000 0x4>, <0x4000 0x400>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	pwm_ef: pwm@86c0 {
@@ -281,6 +323,7 @@
 				function = "pwm_e";
 			};
 		};
+<<<<<<< HEAD
 
 		uart_a1_pins: uart-a1 {
 			mux {
@@ -313,16 +356,24 @@
 	clock-names = "core";
 };
 
+=======
+	};
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ethmac {
 	clocks = <&clkc CLKID_ETH>;
 	clock-names = "stmmaceth";
 };
 
+<<<<<<< HEAD
 &gpio_intc {
 	compatible = "amlogic,meson8-gpio-intc", "amlogic,meson-gpio-intc";
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &hwrng {
 	compatible = "amlogic,meson8-rng", "amlogic,meson-rng";
 	clocks = <&clkc CLKID_RNG0>;
@@ -345,9 +396,12 @@
 	arm,data-latency = <3 3 3>;
 	arm,tag-latency = <2 2 2>;
 	arm,filter-ranges = <0x100000 0xc0000000>;
+<<<<<<< HEAD
 	prefetch-data = <1>;
 	prefetch-instr = <1>;
 	arm,shared-override;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pwm_ab {
@@ -361,6 +415,7 @@
 &saradc {
 	compatible = "amlogic,meson8-saradc", "amlogic,meson-saradc";
 	clocks = <&clkc CLKID_XTAL>,
+<<<<<<< HEAD
 		<&clkc CLKID_SAR_ADC>;
 	clock-names = "clkin", "core";
 };
@@ -369,6 +424,11 @@
 	compatible = "amlogic,meson8-sdio", "amlogic,meson-mx-sdio";
 	clocks = <&clkc CLKID_SDIO>, <&clkc CLKID_CLK81>;
 	clock-names = "core", "clkin";
+=======
+		<&clkc CLKID_SAR_ADC>,
+		<&clkc CLKID_SANA>;
+	clock-names = "clkin", "core", "sana";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &spifc {
@@ -376,6 +436,7 @@
 };
 
 &uart_AO {
+<<<<<<< HEAD
 	compatible = "amlogic,meson8-uart", "amlogic,meson-uart";
 	clocks = <&clkc CLKID_CLK81>, <&clkc CLKID_XTAL>, <&clkc CLKID_CLK81>;
 	clock-names = "baud", "xtal", "pclk";
@@ -397,6 +458,21 @@
 	compatible = "amlogic,meson8-uart", "amlogic,meson-uart";
 	clocks = <&clkc CLKID_CLK81>, <&clkc CLKID_XTAL>, <&clkc CLKID_UART2>;
 	clock-names = "baud", "xtal", "pclk";
+=======
+	clocks = <&clkc CLKID_CLK81>;
+};
+
+&uart_A {
+	clocks = <&clkc CLKID_CLK81>;
+};
+
+&uart_B {
+	clocks = <&clkc CLKID_CLK81>;
+};
+
+&uart_C {
+	clocks = <&clkc CLKID_CLK81>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb0 {
@@ -415,12 +491,18 @@
 	compatible = "amlogic,meson8-usb2-phy", "amlogic,meson-mx-usb2-phy";
 	clocks = <&clkc CLKID_USB>, <&clkc CLKID_USB0>;
 	clock-names = "usb_general", "usb";
+<<<<<<< HEAD
 	resets = <&reset RESET_USB_OTG>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb1_phy {
 	compatible = "amlogic,meson8-usb2-phy", "amlogic,meson-mx-usb2-phy";
 	clocks = <&clkc CLKID_USB>, <&clkc CLKID_USB1>;
 	clock-names = "usb_general", "usb";
+<<<<<<< HEAD
 	resets = <&reset RESET_USB_OTG>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

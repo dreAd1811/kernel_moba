@@ -157,7 +157,11 @@ EXPORT_SYMBOL(blk_set_stacking_limits);
  * Caveat:
  *    The driver that does this *must* be able to deal appropriately
  *    with buffers in "highmemory". This can be accomplished by either calling
+<<<<<<< HEAD
  *    kmap_atomic() to get a temporary kernel mapping, or by calling
+=======
+ *    __bio_kmap_atomic() to get a temporary kernel mapping, or by calling
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    blk_queue_bounce() to create a buffer in normal memory.
  **/
 void blk_queue_make_request(struct request_queue *q, make_request_fn *mfn)
@@ -379,7 +383,11 @@ EXPORT_SYMBOL(blk_queue_max_segment_size);
  *   storage device can address.  The default of 512 covers most
  *   hardware.
  **/
+<<<<<<< HEAD
 void blk_queue_logical_block_size(struct request_queue *q, unsigned short size)
+=======
+void blk_queue_logical_block_size(struct request_queue *q, unsigned int size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	q->limits.logical_block_size = size;
 
@@ -717,6 +725,12 @@ void disk_stack_limits(struct gendisk *disk, struct block_device *bdev,
 		printk(KERN_NOTICE "%s: Warning: Device %s is misaligned\n",
 		       top, bottom);
 	}
+<<<<<<< HEAD
+=======
+
+	t->backing_dev_info->io_pages =
+		t->limits.max_sectors >> (PAGE_SHIFT - 9);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(disk_stack_limits);
 
@@ -859,10 +873,19 @@ EXPORT_SYMBOL(blk_queue_update_dma_alignment);
 
 void blk_queue_flush_queueable(struct request_queue *q, bool queueable)
 {
+<<<<<<< HEAD
 	if (queueable)
 		blk_queue_flag_clear(QUEUE_FLAG_FLUSH_NQ, q);
 	else
 		blk_queue_flag_set(QUEUE_FLAG_FLUSH_NQ, q);
+=======
+	spin_lock_irq(q->queue_lock);
+	if (queueable)
+		clear_bit(QUEUE_FLAG_FLUSH_NQ, &q->queue_flags);
+	else
+		set_bit(QUEUE_FLAG_FLUSH_NQ, &q->queue_flags);
+	spin_unlock_irq(q->queue_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(blk_queue_flush_queueable);
 
@@ -875,7 +898,11 @@ EXPORT_SYMBOL_GPL(blk_queue_flush_queueable);
 void blk_set_queue_depth(struct request_queue *q, unsigned int depth)
 {
 	q->queue_depth = depth;
+<<<<<<< HEAD
 	wbt_set_queue_depth(q, depth);
+=======
+	wbt_set_queue_depth(q->rq_wb, depth);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(blk_set_queue_depth);
 
@@ -900,7 +927,11 @@ void blk_queue_write_cache(struct request_queue *q, bool wc, bool fua)
 		queue_flag_clear(QUEUE_FLAG_FUA, q);
 	spin_unlock_irq(q->queue_lock);
 
+<<<<<<< HEAD
 	wbt_set_write_cache(q, test_bit(QUEUE_FLAG_WC, &q->queue_flags));
+=======
+	wbt_set_write_cache(q->rq_wb, test_bit(QUEUE_FLAG_WC, &q->queue_flags));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(blk_queue_write_cache);
 

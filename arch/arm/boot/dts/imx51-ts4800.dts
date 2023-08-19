@@ -17,7 +17,11 @@
 		stdout-path = &uart1;
 	};
 
+<<<<<<< HEAD
 	memory@90000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x90000000 0x10000000>;
 	};
 
@@ -50,7 +54,11 @@
 		power-supply = <&backlight_reg>;
 	};
 
+<<<<<<< HEAD
 	display1: disp1 {
+=======
+	display0: display@di0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		interface-pix-fmt = "rgb24";
 		pinctrl-names = "default";
@@ -71,9 +79,15 @@
 			};
 		};
 
+<<<<<<< HEAD
 		port {
 			display0_in: endpoint {
 				remote-endpoint = <&ipu_di0_disp1>;
+=======
+		port@0 {
+			display0_in: endpoint {
+				remote-endpoint = <&ipu_di0_disp0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 	};
@@ -107,7 +121,11 @@
 	};
 };
 
+<<<<<<< HEAD
 &ipu_di0_disp1 {
+=======
+&ipu_di0_disp0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	remote-endpoint = <&display0_in>;
 };
 
@@ -149,18 +167,30 @@
 		#size-cells = <1>;
 		ranges = <0 0 0 0x1d000>;
 
+<<<<<<< HEAD
 		syscon: syscon@10000 {
+=======
+		syscon: syscon@b0010000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "syscon", "simple-mfd";
 			reg = <0x10000 0x3d>;
 			reg-io-width = <2>;
 
+<<<<<<< HEAD
 			wdt {
+=======
+			wdt@e {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "technologic,ts4800-wdt";
 				syscon = <&syscon 0xe>;
 			};
 		};
 
+<<<<<<< HEAD
 		touchscreen@12000 {
+=======
+		touchscreen {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "technologic,ts4800-ts";
 			reg = <0x12000 0x1000>;
 			syscon = <&syscon 0x10 6>;

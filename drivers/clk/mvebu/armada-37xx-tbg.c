@@ -91,8 +91,13 @@ static int armada_3700_tbg_clock_probe(struct platform_device *pdev)
 	void __iomem *reg;
 	int i, ret;
 
+<<<<<<< HEAD
 	hw_tbg_data = devm_kzalloc(&pdev->dev,
 				   struct_size(hw_tbg_data, hws, NUM_TBG),
+=======
+	hw_tbg_data = devm_kzalloc(&pdev->dev, sizeof(*hw_tbg_data)
+				   + sizeof(*hw_tbg_data->hws) * NUM_TBG,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 	if (!hw_tbg_data)
 		return -ENOMEM;

@@ -46,7 +46,11 @@ static int c_show(struct seq_file *m, void *p)
 	seq_printf(m, "driver       : %s\n", alg->cra_driver_name);
 	seq_printf(m, "module       : %s\n", module_name(alg->cra_module));
 	seq_printf(m, "priority     : %d\n", alg->cra_priority);
+<<<<<<< HEAD
 	seq_printf(m, "refcnt       : %u\n", refcount_read(&alg->cra_refcnt));
+=======
+	seq_printf(m, "refcnt       : %d\n", atomic_read(&alg->cra_refcnt));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "selftest     : %s\n",
 		   (alg->cra_flags & CRYPTO_ALG_TESTED) ?
 		   "passed" : "unknown");
@@ -94,9 +98,27 @@ static const struct seq_operations crypto_seq_ops = {
 	.show		= c_show
 };
 
+<<<<<<< HEAD
 void __init crypto_init_proc(void)
 {
 	proc_create_seq("crypto", 0, NULL, &crypto_seq_ops);
+=======
+static int crypto_info_open(struct inode *inode, struct file *file)
+{
+	return seq_open(file, &crypto_seq_ops);
+}
+        
+static const struct file_operations proc_crypto_ops = {
+	.open		= crypto_info_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= seq_release
+};
+
+void __init crypto_init_proc(void)
+{
+	proc_create("crypto", 0, NULL, &proc_crypto_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __exit crypto_exit_proc(void)

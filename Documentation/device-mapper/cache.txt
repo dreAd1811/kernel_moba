@@ -59,7 +59,11 @@ Fixed block size
 The origin is divided up into blocks of a fixed size.  This block size
 is configurable when you first create the cache.  Typically we've been
 using block sizes of 256KB - 1024KB.  The block size must be between 64
+<<<<<<< HEAD
 sectors (32KB) and 2097152 sectors (1GB) and a multiple of 64 sectors (32KB).
+=======
+(32KB) and 2097152 (1GB) and a multiple of 64 (32KB).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Having a fixed block size simplifies the target a lot.  But it is
 something of a compromise.  For instance, a small part of a block may be
@@ -119,7 +123,11 @@ doing here to avoid migrating during those peak io moments.
 
 For the time being, a message "migration_threshold <#sectors>"
 can be used to set the maximum number of sectors being migrated,
+<<<<<<< HEAD
 the default being 2048 sectors (1MB).
+=======
+the default being 204800 sectors (or 100MB).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Updating on-disk metadata
 -------------------------
@@ -143,6 +151,14 @@ the policy how big this chunk is, but it should be kept small.  Like the
 dirty flags this data is lost if there's a crash so a safe fallback
 value should always be possible.
 
+<<<<<<< HEAD
+=======
+For instance, the 'mq' policy, which is currently the default policy,
+uses this facility to store the hit count of the cache blocks.  If
+there's a crash this information will be lost, which means the cache
+may be less efficient until those hit counts are regenerated.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Policy hints affect performance, not correctness.
 
 Policy messaging

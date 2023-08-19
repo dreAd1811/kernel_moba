@@ -23,9 +23,15 @@
 
 #include "ppatomfwctrl.h"
 #include "atomfirmware.h"
+<<<<<<< HEAD
 #include "atom.h"
 #include "pp_debug.h"
 
+=======
+#include "pp_debug.h"
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const union atom_voltage_object_v4 *pp_atomfwctrl_lookup_voltage_type_v4(
 		const struct atom_voltage_objects_info_v4_1 *voltage_object_info_table,
 		uint8_t voltage_type, uint8_t voltage_mode)
@@ -38,6 +44,7 @@ static const union atom_voltage_object_v4 *pp_atomfwctrl_lookup_voltage_type_v4(
 
 	while (offset < size) {
 		const union atom_voltage_object_v4 *voltage_object =
+<<<<<<< HEAD
 			(const union atom_voltage_object_v4 *)(start + offset);
 
 		if (voltage_type == voltage_object->gpio_voltage_obj.header.voltage_type &&
@@ -49,11 +56,25 @@ static const union atom_voltage_object_v4 *pp_atomfwctrl_lookup_voltage_type_v4(
 	}
 
 	return NULL;
+=======
+				(const union atom_voltage_object_v4 *)(start + offset);
+
+        if (voltage_type == voltage_object->gpio_voltage_obj.header.voltage_type &&
+            voltage_mode == voltage_object->gpio_voltage_obj.header.voltage_mode)
+            return voltage_object;
+
+        offset += le16_to_cpu(voltage_object->gpio_voltage_obj.header.object_size);
+
+    }
+
+    return NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct atom_voltage_objects_info_v4_1 *pp_atomfwctrl_get_voltage_info_table(
 		struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	const void *table_address;
 	uint16_t idx;
 
@@ -66,6 +87,21 @@ static struct atom_voltage_objects_info_v4_1 *pp_atomfwctrl_get_voltage_info_tab
 			return NULL);
 
 	return (struct atom_voltage_objects_info_v4_1 *)table_address;
+=======
+    const void *table_address;
+    uint16_t idx;
+
+    idx = GetIndexIntoMasterDataTable(voltageobject_info);
+    table_address =	cgs_atom_get_data_table(hwmgr->device,
+    		idx, NULL, NULL, NULL);
+
+    PP_ASSERT_WITH_CODE( 
+        table_address,
+        "Error retrieving BIOS Table Address!",
+        return NULL);
+
+    return (struct atom_voltage_objects_info_v4_1 *)table_address;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -166,7 +202,11 @@ static struct atom_gpio_pin_lut_v2_1 *pp_atomfwctrl_get_gpio_lookup_table(
 	uint16_t idx;
 
 	idx = GetIndexIntoMasterDataTable(gpio_pin_lut);
+<<<<<<< HEAD
 	table_address =	smu_atom_get_data_table(hwmgr->adev,
+=======
+	table_address =	cgs_atom_get_data_table(hwmgr->device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			idx, NULL, NULL, NULL);
 	PP_ASSERT_WITH_CODE(table_address,
 			"Error retrieving BIOS Table Address!",
@@ -247,15 +287,22 @@ int pp_atomfwctrl_get_gpu_pll_dividers_vega10(struct pp_hwmgr *hwmgr,
 		uint32_t clock_type, uint32_t clock_value,
 		struct pp_atomfwctrl_clock_dividers_soc15 *dividers)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	struct compute_gpu_clock_input_parameter_v1_8 pll_parameters;
 	struct compute_gpu_clock_output_parameter_v1_8 *pll_output;
+=======
+	struct compute_gpu_clock_input_parameter_v1_8 pll_parameters;
+	struct compute_gpu_clock_output_parameter_v1_8 *pll_output;
+	int result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t idx;
 
 	pll_parameters.gpuclock_10khz = (uint32_t)clock_value;
 	pll_parameters.gpu_clock_type = clock_type;
 
 	idx = GetIndexIntoMasterCmdTable(computegpuclockparam);
+<<<<<<< HEAD
 
 	if (amdgpu_atom_execute_table(
 		adev->mode_info.atom_context, idx, (uint32_t *)&pll_parameters))
@@ -271,6 +318,21 @@ int pp_atomfwctrl_get_gpu_pll_dividers_vega10(struct pp_hwmgr *hwmgr,
 	dividers->ucPll_ss_enable = pll_output->pll_ss_enable;
 
 	return 0;
+=======
+	result = cgs_atom_exec_cmd_table(hwmgr->device, idx, &pll_parameters);
+
+	if (!result) {
+		pll_output = (struct compute_gpu_clock_output_parameter_v1_8 *)
+				&pll_parameters;
+		dividers->ulClock = le32_to_cpu(pll_output->gpuclock_10khz);
+		dividers->ulDid = le32_to_cpu(pll_output->dfs_did);
+		dividers->ulPll_fb_mult = le32_to_cpu(pll_output->pll_fb_mult);
+		dividers->ulPll_ss_fbsmult = le32_to_cpu(pll_output->pll_ss_fbsmult);
+		dividers->usPll_ss_slew_frac = le16_to_cpu(pll_output->pll_ss_slew_frac);
+		dividers->ucPll_ss_enable = pll_output->pll_ss_enable;
+	}
+	return result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int pp_atomfwctrl_get_avfs_information(struct pp_hwmgr *hwmgr,
@@ -284,7 +346,11 @@ int pp_atomfwctrl_get_avfs_information(struct pp_hwmgr *hwmgr,
 
 	idx = GetIndexIntoMasterDataTable(asic_profiling_info);
 	profile = (struct atom_asic_profiling_info_v4_1 *)
+<<<<<<< HEAD
 			smu_atom_get_data_table(hwmgr->adev,
+=======
+			cgs_atom_get_data_table(hwmgr->device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					idx, NULL, NULL, NULL);
 
 	if (!profile)
@@ -468,7 +534,11 @@ int pp_atomfwctrl_get_gpio_information(struct pp_hwmgr *hwmgr,
 
 	idx = GetIndexIntoMasterDataTable(smu_info);
 	info = (struct atom_smu_info_v3_1 *)
+<<<<<<< HEAD
 		smu_atom_get_data_table(hwmgr->adev,
+=======
+		cgs_atom_get_data_table(hwmgr->device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				idx, NULL, NULL, NULL);
 
 	if (!info) {
@@ -488,14 +558,20 @@ int pp_atomfwctrl_get_gpio_information(struct pp_hwmgr *hwmgr,
 	return 0;
 }
 
+<<<<<<< HEAD
 int pp_atomfwctrl_get_clk_information_by_clkid(struct pp_hwmgr *hwmgr, BIOS_CLKID id, uint32_t *frequency)
 {
 	struct amdgpu_device *adev = hwmgr->adev;
+=======
+int pp_atomfwctrl__get_clk_information_by_clkid(struct pp_hwmgr *hwmgr, BIOS_CLKID id, uint32_t *frequency)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct atom_get_smu_clock_info_parameters_v3_1   parameters;
 	struct atom_get_smu_clock_info_output_parameters_v3_1 *output;
 	uint32_t ix;
 
 	parameters.clk_id = id;
+<<<<<<< HEAD
 	parameters.syspll_id = 0;
 	parameters.command = GET_SMU_CLOCK_INFO_V3_1_GET_CLOCK_FREQ;
 	parameters.dfsdid = 0;
@@ -508,10 +584,23 @@ int pp_atomfwctrl_get_clk_information_by_clkid(struct pp_hwmgr *hwmgr, BIOS_CLKI
 
 	output = (struct atom_get_smu_clock_info_output_parameters_v3_1 *)&parameters;
 	*frequency = le32_to_cpu(output->atom_smu_outputclkfreq.smu_clock_freq_hz) / 10000;
+=======
+	parameters.command = GET_SMU_CLOCK_INFO_V3_1_GET_CLOCK_FREQ;
+
+	ix = GetIndexIntoMasterCmdTable(getsmuclockinfo);
+	if (!cgs_atom_exec_cmd_table(hwmgr->device, ix, &parameters)) {
+		output = (struct atom_get_smu_clock_info_output_parameters_v3_1 *)&parameters;
+		*frequency = output->atom_smu_outputclkfreq.smu_clock_freq_hz / 10000;
+	} else {
+		pr_info("Error execute_table getsmuclockinfo!");
+		return -1;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void pp_atomfwctrl_copy_vbios_bootup_values_3_2(struct pp_hwmgr *hwmgr,
 			struct pp_atomfwctrl_bios_boot_up_values *boot_values,
 			struct atom_firmware_info_v3_2 *fw_info)
@@ -589,6 +678,18 @@ int pp_atomfwctrl_get_vbios_bootup_values(struct pp_hwmgr *hwmgr,
 	ix = GetIndexIntoMasterDataTable(firmwareinfo);
 	info = (struct atom_common_table_header *)
 		smu_atom_get_data_table(hwmgr->adev,
+=======
+int pp_atomfwctrl_get_vbios_bootup_values(struct pp_hwmgr *hwmgr,
+			struct pp_atomfwctrl_bios_boot_up_values *boot_values)
+{
+	struct atom_firmware_info_v3_1 *info = NULL;
+	uint16_t ix;
+	uint32_t frequency = 0;
+
+	ix = GetIndexIntoMasterDataTable(firmwareinfo);
+	info = (struct atom_firmware_info_v3_1 *)
+		cgs_atom_get_data_table(hwmgr->device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ix, NULL, NULL, NULL);
 
 	if (!info) {
@@ -596,6 +697,7 @@ int pp_atomfwctrl_get_vbios_bootup_values(struct pp_hwmgr *hwmgr,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if ((info->format_revision == 3) && (info->content_revision == 2)) {
 		fwinfo_3_2 = (struct atom_firmware_info_v3_2 *)info;
 		pp_atomfwctrl_copy_vbios_bootup_values_3_2(hwmgr,
@@ -703,3 +805,23 @@ int pp_atomfwctrl_get_smc_dpm_information(struct pp_hwmgr *hwmgr,
 
 	return 0;
 }
+=======
+	boot_values->ulRevision = info->firmware_revision;
+	boot_values->ulGfxClk   = info->bootup_sclk_in10khz;
+	boot_values->ulUClk     = info->bootup_mclk_in10khz;
+	boot_values->usVddc     = info->bootup_vddc_mv;
+	boot_values->usVddci    = info->bootup_vddci_mv;
+	boot_values->usMvddc    = info->bootup_mvddc_mv;
+	boot_values->usVddGfx   = info->bootup_vddgfx_mv;
+	boot_values->ulSocClk   = 0;
+	boot_values->ulDCEFClk   = 0;
+
+	if (!pp_atomfwctrl__get_clk_information_by_clkid(hwmgr, SMU9_SYSPLL0_SOCCLK_ID, &frequency))
+		boot_values->ulSocClk   = frequency;
+
+	if (!pp_atomfwctrl__get_clk_information_by_clkid(hwmgr, SMU9_SYSPLL0_DCEFCLK_ID, &frequency))
+		boot_values->ulDCEFClk   = frequency;
+
+	return 0;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

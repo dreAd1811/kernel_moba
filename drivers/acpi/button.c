@@ -21,7 +21,10 @@
 
 #define pr_fmt(fmt) "ACPI: button: " fmt
 
+<<<<<<< HEAD
 #include <linux/compiler.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/init.h>
@@ -31,7 +34,10 @@
 #include <linux/input.h>
 #include <linux/slab.h>
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/dmi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <acpi/button.h>
 
 #define PREFIX "ACPI: "
@@ -78,6 +84,7 @@ static const struct acpi_device_id button_device_ids[] = {
 };
 MODULE_DEVICE_TABLE(acpi, button_device_ids);
 
+<<<<<<< HEAD
 /*
  * Some devices which don't even have a lid in anyway have a broken _LID
  * method (e.g. pointing to a floating gpio pin) causing spurious LID events.
@@ -94,6 +101,8 @@ static const struct dmi_system_id lid_blacklst[] = {
 	{}
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_button_add(struct acpi_device *device);
 static int acpi_button_remove(struct acpi_device *device);
 static void acpi_button_notify(struct acpi_device *device, u32 event);
@@ -228,14 +237,23 @@ static int acpi_lid_notify_state(struct acpi_device *device, int state)
 	}
 	/* Send the platform triggered reliable event */
 	if (do_update) {
+<<<<<<< HEAD
 		acpi_handle_debug(device->handle, "ACPI LID %s\n",
 				  state ? "open" : "closed");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		input_report_switch(button->input, SW_LID, !state);
 		input_sync(button->input);
 		button->last_state = !!state;
 		button->last_time = ktime_get();
 	}
 
+<<<<<<< HEAD
+=======
+	if (state)
+		acpi_pm_wakeup_event(&device->dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = blocking_notifier_call_chain(&acpi_lid_notifier, state, device);
 	if (ret == NOTIFY_DONE)
 		ret = blocking_notifier_call_chain(&acpi_lid_notifier, state,
@@ -250,8 +268,12 @@ static int acpi_lid_notify_state(struct acpi_device *device, int state)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused acpi_button_state_seq_show(struct seq_file *seq,
 						     void *offset)
+=======
+static int acpi_button_state_seq_show(struct seq_file *seq, void *offset)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct acpi_device *device = seq->private;
 	int state;
@@ -262,6 +284,22 @@ static int __maybe_unused acpi_button_state_seq_show(struct seq_file *seq,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int acpi_button_state_open_fs(struct inode *inode, struct file *file)
+{
+	return single_open(file, acpi_button_state_seq_show, PDE_DATA(inode));
+}
+
+static const struct file_operations acpi_button_state_fops = {
+	.owner = THIS_MODULE,
+	.open = acpi_button_state_open_fs,
+	.read = seq_read,
+	.llseek = seq_lseek,
+	.release = single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_button_add_fs(struct acpi_device *device)
 {
 	struct acpi_button *button = acpi_driver_data(device);
@@ -297,9 +335,15 @@ static int acpi_button_add_fs(struct acpi_device *device)
 	}
 
 	/* create /proc/acpi/button/lid/LID/state */
+<<<<<<< HEAD
 	entry = proc_create_single_data(ACPI_BUTTON_FILE_STATE, S_IRUGO,
 			acpi_device_dir(device), acpi_button_state_seq_show,
 			device);
+=======
+	entry = proc_create_data(ACPI_BUTTON_FILE_STATE,
+				 S_IRUGO, acpi_device_dir(device),
+				 &acpi_button_state_fops, device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!entry) {
 		ret = -ENODEV;
 		goto remove_dev_dir;
@@ -365,8 +409,12 @@ int acpi_lid_open(void)
 }
 EXPORT_SYMBOL(acpi_lid_open);
 
+<<<<<<< HEAD
 static int acpi_lid_update_state(struct acpi_device *device,
 				 bool signal_wakeup)
+=======
+static int acpi_lid_update_state(struct acpi_device *device)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int state;
 
@@ -374,9 +422,12 @@ static int acpi_lid_update_state(struct acpi_device *device,
 	if (state < 0)
 		return state;
 
+<<<<<<< HEAD
 	if (state && signal_wakeup)
 		acpi_pm_wakeup_event(&device->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return acpi_lid_notify_state(device, state);
 }
 
@@ -387,7 +438,11 @@ static void acpi_lid_initialize_state(struct acpi_device *device)
 		(void)acpi_lid_notify_state(device, 1);
 		break;
 	case ACPI_BUTTON_LID_INIT_METHOD:
+<<<<<<< HEAD
 		(void)acpi_lid_update_state(device, false);
+=======
+		(void)acpi_lid_update_state(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case ACPI_BUTTON_LID_INIT_IGNORE:
 	default:
@@ -399,7 +454,10 @@ static void acpi_button_notify(struct acpi_device *device, u32 event)
 {
 	struct acpi_button *button = acpi_driver_data(device);
 	struct input_dev *input;
+<<<<<<< HEAD
 	int users;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (event) {
 	case ACPI_FIXED_HARDWARE_EVENT:
@@ -408,11 +466,15 @@ static void acpi_button_notify(struct acpi_device *device, u32 event)
 	case ACPI_BUTTON_NOTIFY_STATUS:
 		input = button->input;
 		if (button->type == ACPI_BUTTON_TYPE_LID) {
+<<<<<<< HEAD
 			mutex_lock(&button->input->mutex);
 			users = button->input->users;
 			mutex_unlock(&button->input->mutex);
 			if (users)
 				acpi_lid_update_state(device, true);
+=======
+			acpi_lid_update_state(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			int keycode;
 
@@ -456,12 +518,17 @@ static int acpi_button_resume(struct device *dev)
 	struct acpi_button *button = acpi_driver_data(device);
 
 	button->suspended = false;
+<<<<<<< HEAD
 	if (button->type == ACPI_BUTTON_TYPE_LID && button->input->users)
+=======
+	if (button->type == ACPI_BUTTON_TYPE_LID)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		acpi_lid_initialize_state(device);
 	return 0;
 }
 #endif
 
+<<<<<<< HEAD
 static int acpi_lid_input_open(struct input_dev *input)
 {
 	struct acpi_device *device = input_get_drvdata(input);
@@ -474,6 +541,8 @@ static int acpi_lid_input_open(struct input_dev *input)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_button_add(struct acpi_device *device)
 {
 	struct acpi_button *button;
@@ -482,9 +551,12 @@ static int acpi_button_add(struct acpi_device *device)
 	char *name, *class;
 	int error;
 
+<<<<<<< HEAD
 	if (!strcmp(hid, ACPI_BUTTON_HID_LID) && dmi_check_system(lid_blacklst))
 		return -ENODEV;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	button = kzalloc(sizeof(struct acpi_button), GFP_KERNEL);
 	if (!button)
 		return -ENOMEM;
@@ -517,7 +589,12 @@ static int acpi_button_add(struct acpi_device *device)
 		strcpy(name, ACPI_BUTTON_DEVICE_NAME_LID);
 		sprintf(class, "%s/%s",
 			ACPI_BUTTON_CLASS, ACPI_BUTTON_SUBCLASS_LID);
+<<<<<<< HEAD
 		input->open = acpi_lid_input_open;
+=======
+		button->last_state = !!acpi_lid_evaluate_state(device);
+		button->last_time = ktime_get();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		printk(KERN_ERR PREFIX "Unsupported hid [%s]\n", hid);
 		error = -ENODEV;
@@ -550,11 +627,18 @@ static int acpi_button_add(struct acpi_device *device)
 		break;
 	}
 
+<<<<<<< HEAD
 	input_set_drvdata(input, device);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = input_register_device(input);
 	if (error)
 		goto err_remove_fs;
 	if (button->type == ACPI_BUTTON_TYPE_LID) {
+<<<<<<< HEAD
+=======
+		acpi_lid_initialize_state(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * This assumes there's only one lid device, or if there are
 		 * more we only care about the last one...

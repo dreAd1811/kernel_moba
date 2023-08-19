@@ -22,6 +22,7 @@
  */
 #define __COMPAT_SYSCALL_NR
 
+<<<<<<< HEAD
 #include <linux/compat.h>
 #include <linux/compiler.h>
 #include <linux/syscalls.h>
@@ -142,5 +143,33 @@ COMPAT_SYSCALL_DEFINE6(aarch32_fallocate, int, fd, int, mode,
 
 const syscall_fn_t compat_sys_call_table[__NR_compat_syscalls] = {
 	[0 ... __NR_compat_syscalls - 1] = __arm64_sys_ni_syscall,
+=======
+#include <linux/compiler.h>
+#include <linux/syscalls.h>
+
+asmlinkage long compat_sys_sigreturn_wrapper(void);
+asmlinkage long compat_sys_rt_sigreturn_wrapper(void);
+asmlinkage long compat_sys_statfs64_wrapper(void);
+asmlinkage long compat_sys_fstatfs64_wrapper(void);
+asmlinkage long compat_sys_pread64_wrapper(void);
+asmlinkage long compat_sys_pwrite64_wrapper(void);
+asmlinkage long compat_sys_truncate64_wrapper(void);
+asmlinkage long compat_sys_ftruncate64_wrapper(void);
+asmlinkage long compat_sys_readahead_wrapper(void);
+asmlinkage long compat_sys_fadvise64_64_wrapper(void);
+asmlinkage long compat_sys_sync_file_range2_wrapper(void);
+asmlinkage long compat_sys_fallocate_wrapper(void);
+asmlinkage long compat_sys_mmap2_wrapper(void);
+
+#undef __SYSCALL
+#define __SYSCALL(nr, sym)	[nr] = sym,
+
+/*
+ * The sys_call_table array must be 4K aligned to be accessible from
+ * kernel/entry.S.
+ */
+void * const compat_sys_call_table[__NR_compat_syscalls] __aligned(4096) = {
+	[0 ... __NR_compat_syscalls - 1] = sys_ni_syscall,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/unistd32.h>
 };

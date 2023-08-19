@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2002,2007-2019, The Linux Foundation. All rights reserved.
@@ -9,6 +10,28 @@
 #include "adreno.h"
 #include "adreno_perfcounter.h"
 #include "adreno_pm4types.h"
+=======
+/* Copyright (c) 2002,2007-2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+#include <linux/module.h>
+#include <linux/uaccess.h>
+
+#include "kgsl.h"
+#include "adreno.h"
+#include "adreno_perfcounter.h"
+#include "adreno_pm4types.h"
+#include "a5xx_reg.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Bit flag for RBMM_PERFCTR_CTL */
 #define RBBM_PERFCTR_CTL_ENABLE		0x00000001
@@ -28,6 +51,7 @@
 /* offset of clear register from the power enable register for GBIF*/
 #define GBIF_PWR_CLR_REG_EN_OFF    1
 
+<<<<<<< HEAD
 /* offset of select register from the power enable register for GBIF*/
 #define GBIF_PWR_SEL_REG_EN_OFF  3
 
@@ -37,6 +61,12 @@
 #define GBIF_PWR_SEL_RMW_MASK    0xFF
 /* */
 #define GBIF_PWR_EN_CLR_RMW_MASK 0x10000
+=======
+/* */
+#define GBIF_PERF_RMW_MASK   0xFF
+/* */
+#define GBIF_PWR_RMW_MASK    0x10000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* offset of clear register from the enable register */
 #define VBIF2_PERF_PWR_CLR_REG_EN_OFF 8
@@ -114,6 +144,22 @@ static void adreno_perfcounter_write(struct adreno_device *adreno_dev,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * adreno_perfcounter_close() - Release counters initialized by
+ * adreno_perfcounter_close
+ * @adreno_dev: Pointer to an adreno_device struct
+ */
+void adreno_perfcounter_close(struct adreno_device *adreno_dev)
+{
+	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
+
+	if (gpudev->perfcounter_close)
+		gpudev->perfcounter_close(adreno_dev);
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * adreno_perfcounter_restore() - Restore performance counters
  * @adreno_dev: adreno device to configure
  *
@@ -266,7 +312,11 @@ int adreno_perfcounter_read_group(struct adreno_device *adreno_dev,
 
 	mutex_lock(&device->mutex);
 
+<<<<<<< HEAD
 	ret = adreno_perfcntr_active_oob_get(device);
+=======
+	ret = adreno_perfcntr_active_oob_get(adreno_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		mutex_unlock(&device->mutex);
 		goto done;
@@ -295,7 +345,11 @@ int adreno_perfcounter_read_group(struct adreno_device *adreno_dev,
 		}
 	}
 
+<<<<<<< HEAD
 	adreno_perfcntr_active_oob_put(device);
+=======
+	adreno_perfcntr_active_oob_put(adreno_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&device->mutex);
 
@@ -626,7 +680,11 @@ static void _perfcounter_enable_vbif(struct adreno_device *adreno_dev,
 			perfctr_mask, 0);
 		/* select the desired countable */
 		kgsl_regrmw(device, reg->select,
+<<<<<<< HEAD
 			GBIF_PERF_SEL_RMW_MASK << shift, countable << shift);
+=======
+			GBIF_PERF_RMW_MASK << shift, countable << shift);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* enable counter */
 		kgsl_regrmw(device, reg->select - GBIF_PERF_EN_REG_SEL_OFF,
 			perfctr_mask, perfctr_mask);
@@ -650,8 +708,12 @@ static void _perfcounter_enable_vbif(struct adreno_device *adreno_dev,
 }
 
 static void _perfcounter_enable_vbif_pwr(struct adreno_device *adreno_dev,
+<<<<<<< HEAD
 		struct adreno_perfcounters *counters, unsigned int counter,
 		unsigned int countable)
+=======
+		struct adreno_perfcounters *counters, unsigned int counter)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct adreno_perfcount_register *reg;
@@ -659,8 +721,12 @@ static void _perfcounter_enable_vbif_pwr(struct adreno_device *adreno_dev,
 	reg = &counters->groups[KGSL_PERFCOUNTER_GROUP_VBIF_PWR].regs[counter];
 
 	if (adreno_has_gbif(adreno_dev)) {
+<<<<<<< HEAD
 		unsigned int shift = counter << 3;
 		unsigned int perfctr_mask = GBIF_PWR_EN_CLR_RMW_MASK << counter;
+=======
+		unsigned int perfctr_mask = GBIF_PWR_RMW_MASK << counter;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Write 1, followed by 0 to CLR register for
 		 * clearing the counter
@@ -669,9 +735,12 @@ static void _perfcounter_enable_vbif_pwr(struct adreno_device *adreno_dev,
 			perfctr_mask, perfctr_mask);
 		kgsl_regrmw(device, reg->select + GBIF_PWR_CLR_REG_EN_OFF,
 			perfctr_mask, 0);
+<<<<<<< HEAD
 		/* select the desired countable */
 		kgsl_regrmw(device, reg->select + GBIF_PWR_SEL_REG_EN_OFF,
 			GBIF_PWR_SEL_RMW_MASK << shift, countable << shift);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Enable the counter */
 		kgsl_regrmw(device, reg->select, perfctr_mask, perfctr_mask);
 	} else {
@@ -823,9 +892,15 @@ static int _perfcounter_enable_default(struct adreno_device *adreno_dev,
 			if (ret == -EAGAIN)
 				ret = 0;
 			else
+<<<<<<< HEAD
 				dev_err(device->dev,
 					     "Perfcounter %u/%u/%u start via commands failed %d\n",
 					     group, counter, countable, ret);
+=======
+				KGSL_DRV_ERR(device,
+				"Perfcounter %u/%u/%u start via commands failed %d\n",
+				group, counter, countable, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		/* Select the desired perfcounter */
@@ -856,6 +931,10 @@ static int adreno_perfcounter_enable(struct adreno_device *adreno_dev,
 	unsigned int group, unsigned int counter, unsigned int countable)
 {
 	struct adreno_perfcounters *counters = ADRENO_PERFCOUNTERS(adreno_dev);
+<<<<<<< HEAD
+=======
+	struct adreno_gpudev *gpudev  = ADRENO_GPU_DEVICE(adreno_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (counters == NULL)
 		return -EINVAL;
@@ -871,6 +950,11 @@ static int adreno_perfcounter_enable(struct adreno_device *adreno_dev,
 		/* alwayson counter is global, so init value is 0 */
 		break;
 	case KGSL_PERFCOUNTER_GROUP_PWR:
+<<<<<<< HEAD
+=======
+		if (gpudev->enable_pwr_counters)
+			return gpudev->enable_pwr_counters(adreno_dev, counter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	case KGSL_PERFCOUNTER_GROUP_VBIF:
 		if (countable > VBIF2_PERF_CNT_SEL_MASK)
@@ -879,8 +963,12 @@ static int adreno_perfcounter_enable(struct adreno_device *adreno_dev,
 							countable);
 		break;
 	case KGSL_PERFCOUNTER_GROUP_VBIF_PWR:
+<<<<<<< HEAD
 		_perfcounter_enable_vbif_pwr(adreno_dev, counters, counter,
 							countable);
+=======
+		_perfcounter_enable_vbif_pwr(adreno_dev, counters, counter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case KGSL_PERFCOUNTER_GROUP_SP_PWR:
 	case KGSL_PERFCOUNTER_GROUP_TP_PWR:
@@ -932,6 +1020,13 @@ static uint64_t _perfcounter_read_pwr(struct adreno_device *adreno_dev,
 
 	reg = &group->regs[counter];
 
+<<<<<<< HEAD
+=======
+	/* Remember, counter 0 is not emulated on 5XX */
+	if (adreno_is_a5xx(adreno_dev) && (counter == 0))
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (adreno_is_a3xx(adreno_dev)) {
 		/* On A3XX we need to freeze the counter so we can read it */
 		if (counter == 0)

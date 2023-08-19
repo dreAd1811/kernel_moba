@@ -21,12 +21,20 @@ static int msm_hdmi_phy_resource_init(struct hdmi_phy *phy)
 	struct device *dev = &phy->pdev->dev;
 	int i, ret;
 
+<<<<<<< HEAD
 	phy->regs = devm_kcalloc(dev, cfg->num_regs, sizeof(phy->regs[0]),
+=======
+	phy->regs = devm_kzalloc(dev, sizeof(phy->regs[0]) * cfg->num_regs,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 	if (!phy->regs)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	phy->clks = devm_kcalloc(dev, cfg->num_clks, sizeof(phy->clks[0]),
+=======
+	phy->clks = devm_kzalloc(dev, sizeof(phy->clks[0]) * cfg->num_clks,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 	if (!phy->clks)
 		return -ENOMEM;
@@ -48,7 +56,11 @@ static int msm_hdmi_phy_resource_init(struct hdmi_phy *phy)
 	for (i = 0; i < cfg->num_clks; i++) {
 		struct clk *clk;
 
+<<<<<<< HEAD
 		clk = msm_clk_get(phy->pdev, cfg->clk_names[i]);
+=======
+		clk = devm_clk_get(dev, cfg->clk_names[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(clk)) {
 			ret = PTR_ERR(clk);
 			dev_err(dev, "failed to get phy clock: %s (%d)\n",

@@ -279,12 +279,22 @@ union octeon_cvmemctl {
 	} s;
 };
 
+<<<<<<< HEAD
 extern void octeon_check_cpu_bist(void);
 
 int octeon_prune_device_tree(void);
 extern const char __appended_dtb;
 extern const char __dtb_octeon_3xxx_begin;
 extern const char __dtb_octeon_68xx_begin;
+=======
+extern void octeon_write_lcd(const char *s);
+extern void octeon_check_cpu_bist(void);
+extern int octeon_get_boot_uart(void);
+
+struct uart_port;
+extern unsigned int octeon_serial_in(struct uart_port *, int);
+extern void octeon_serial_out(struct uart_port *, int, int);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * Write a 32bit value to the Octeon NPI register space

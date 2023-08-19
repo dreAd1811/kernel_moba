@@ -33,7 +33,11 @@
 
 #define DRV_NAME		"enic"
 #define DRV_DESCRIPTION		"Cisco VIC Ethernet NIC Driver"
+<<<<<<< HEAD
 #define DRV_VERSION		"2.3.0.53"
+=======
+#define DRV_VERSION		"2.3.0.42"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_COPYRIGHT		"Copyright 2008-2013 Cisco Systems, Inc"
 
 #define ENIC_BARS_MAX		6
@@ -43,8 +47,11 @@
 #define ENIC_CQ_MAX		(ENIC_WQ_MAX + ENIC_RQ_MAX)
 #define ENIC_INTR_MAX		(ENIC_CQ_MAX + 2)
 
+<<<<<<< HEAD
 #define ENIC_WQ_NAPI_BUDGET	256
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ENIC_AIC_LARGE_PKT_DIFF	3
 
 struct enic_msix_entry {
@@ -140,7 +147,10 @@ struct enic_rfs_flw_tbl {
 struct vxlan_offload {
 	u16 vxlan_udp_port_number;
 	u8 patch_level;
+<<<<<<< HEAD
 	u8 flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Per-instance private data structure */

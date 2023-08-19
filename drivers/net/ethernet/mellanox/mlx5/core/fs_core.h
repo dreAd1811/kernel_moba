@@ -33,7 +33,10 @@
 #ifndef _MLX5_FS_CORE_
 #define _MLX5_FS_CORE_
 
+<<<<<<< HEAD
 #include <linux/refcount.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mlx5/fs.h>
 #include <linux/rhashtable.h>
 
@@ -48,7 +51,10 @@ enum fs_node_type {
 
 enum fs_flow_table_type {
 	FS_FT_NIC_RX          = 0x0,
+<<<<<<< HEAD
 	FS_FT_NIC_TX          = 0x1,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	FS_FT_ESW_EGRESS_ACL  = 0x2,
 	FS_FT_ESW_INGRESS_ACL = 0x3,
 	FS_FT_FDB             = 0X4,
@@ -68,6 +74,7 @@ enum fs_fte_status {
 
 struct mlx5_flow_steering {
 	struct mlx5_core_dev *dev;
+<<<<<<< HEAD
 	struct kmem_cache               *fgs_cache;
 	struct kmem_cache               *ftes_cache;
 	struct mlx5_flow_root_namespace *root_ns;
@@ -77,6 +84,14 @@ struct mlx5_flow_steering {
 	struct mlx5_flow_root_namespace	*sniffer_tx_root_ns;
 	struct mlx5_flow_root_namespace	*sniffer_rx_root_ns;
 	struct mlx5_flow_root_namespace	*egress_root_ns;
+=======
+	struct mlx5_flow_root_namespace *root_ns;
+	struct mlx5_flow_root_namespace *fdb_root_ns;
+	struct mlx5_flow_root_namespace *esw_egress_root_ns;
+	struct mlx5_flow_root_namespace *esw_ingress_root_ns;
+	struct mlx5_flow_root_namespace	*sniffer_tx_root_ns;
+	struct mlx5_flow_root_namespace	*sniffer_rx_root_ns;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct fs_node {
@@ -86,12 +101,18 @@ struct fs_node {
 	struct fs_node		*parent;
 	struct fs_node		*root;
 	/* lock the node for writing and traversing */
+<<<<<<< HEAD
 	struct rw_semaphore	lock;
 	refcount_t		refcount;
 	bool			active;
 	void			(*del_hw_func)(struct fs_node *);
 	void			(*del_sw_func)(struct fs_node *);
 	atomic_t		version;
+=======
+	struct mutex		lock;
+	atomic_t		refcount;
+	void			(*remove_func)(struct fs_node *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mlx5_flow_rule {
@@ -128,6 +149,10 @@ struct mlx5_flow_table {
 	/* FWD rules that point on this flow table */
 	struct list_head		fwd_rules;
 	u32				flags;
+<<<<<<< HEAD
+=======
+	struct ida			fte_allocator;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rhltable			fgs_hash;
 };
 
@@ -154,12 +179,16 @@ struct mlx5_fc {
 	struct mlx5_fc_cache cache ____cacheline_aligned_in_smp;
 };
 
+<<<<<<< HEAD
 struct mlx5_ft_underlay_qp {
 	struct list_head list;
 	u32 qpn;
 };
 
 #define MLX5_FTE_MATCH_PARAM_RESERVED	reserved_at_800
+=======
+#define MLX5_FTE_MATCH_PARAM_RESERVED	reserved_at_600
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Calculate the fte_match_param length and without the reserved length.
  * Make sure the reserved field is the last.
  */
@@ -176,8 +205,16 @@ struct fs_fte {
 	struct fs_node			node;
 	u32				val[MLX5_ST_SZ_DW_MATCH_PARAM];
 	u32				dests_size;
+<<<<<<< HEAD
 	u32				index;
 	struct mlx5_flow_act		action;
+=======
+	u32				flow_tag;
+	u32				index;
+	u32				action;
+	u32				encap_id;
+	u32				modify_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum fs_fte_status		status;
 	struct mlx5_fc			*counter;
 	struct rhash_head		hash;
@@ -209,7 +246,10 @@ struct mlx5_flow_group {
 	struct mlx5_flow_group_mask	mask;
 	u32				start_index;
 	u32				max_ftes;
+<<<<<<< HEAD
 	struct ida			fte_allocator;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32				id;
 	struct rhashtable		ftes_hash;
 	struct rhlist_head		hash;
@@ -222,8 +262,12 @@ struct mlx5_flow_root_namespace {
 	struct mlx5_flow_table		*root_ft;
 	/* Should be held when chaining flow tables */
 	struct mutex			chain_lock;
+<<<<<<< HEAD
 	struct list_head		underlay_qpns;
 	const struct mlx5_flow_cmds	*cmds;
+=======
+	u32				underlay_qpn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int mlx5_init_fc_stats(struct mlx5_core_dev *dev);

@@ -1,10 +1,35 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
+=======
+/* Intel(R) Ethernet Switch Host Interface Driver
+ * Copyright(c) 2013 - 2017 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "fm10k.h"
 #include <linux/vmalloc.h>
 #include <net/udp_tunnel.h>
+<<<<<<< HEAD
 #include <linux/if_macvlan.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * fm10k_setup_tx_resources - allocate Tx resources (Descriptors)
@@ -470,7 +495,11 @@ static void fm10k_insert_tunnel_port(struct list_head *ports,
 
 /**
  * fm10k_udp_tunnel_add
+<<<<<<< HEAD
  * @dev: network interface device structure
+=======
+ * @netdev: network interface device structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ti: Tunnel endpoint information
  *
  * This function is called when a new UDP tunnel port has been added.
@@ -502,8 +531,13 @@ static void fm10k_udp_tunnel_add(struct net_device *dev,
 
 /**
  * fm10k_udp_tunnel_del
+<<<<<<< HEAD
  * @dev: network interface device structure
  * @ti: Tunnel end point information
+=======
+ * @netdev: network interface device structure
+ * @ti: Tunnel endpoint information
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function is called when a new UDP tunnel port is deleted. The freed
  * port will be removed from the list, then we reprogram the offloaded port
@@ -627,6 +661,7 @@ int fm10k_close(struct net_device *netdev)
 static netdev_tx_t fm10k_xmit_frame(struct sk_buff *skb, struct net_device *dev)
 {
 	struct fm10k_intfc *interface = netdev_priv(dev);
+<<<<<<< HEAD
 	int num_tx_queues = READ_ONCE(interface->num_tx_queues);
 	unsigned int r_idx = skb->queue_mapping;
 	int err;
@@ -634,6 +669,11 @@ static netdev_tx_t fm10k_xmit_frame(struct sk_buff *skb, struct net_device *dev)
 	if (!num_tx_queues)
 		return NETDEV_TX_BUSY;
 
+=======
+	unsigned int r_idx = skb->queue_mapping;
+	int err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((skb->protocol == htons(ETH_P_8021Q)) &&
 	    !skb_vlan_tag_present(skb)) {
 		/* FM10K only supports hardware tagging, any tags in frame
@@ -686,8 +726,13 @@ static netdev_tx_t fm10k_xmit_frame(struct sk_buff *skb, struct net_device *dev)
 		__skb_put(skb, pad_len);
 	}
 
+<<<<<<< HEAD
 	if (r_idx >= num_tx_queues)
 		r_idx %= num_tx_queues;
+=======
+	if (r_idx >= interface->num_tx_queues)
+		r_idx %= interface->num_tx_queues;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = fm10k_xmit_frame_ring(skb, interface->tx_ring[r_idx]);
 
@@ -742,6 +787,7 @@ static bool fm10k_host_mbx_ready(struct fm10k_intfc *interface)
 	return (hw->mac.type == fm10k_mac_vf || interface->host_ready);
 }
 
+<<<<<<< HEAD
 /**
  * fm10k_queue_vlan_request - Queue a VLAN update request
  * @interface: the fm10k interface structure
@@ -864,10 +910,16 @@ void fm10k_clear_macvlan_queue(struct fm10k_intfc *interface,
 	spin_unlock_irqrestore(&interface->macvlan_lock, flags);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fm10k_uc_vlan_unsync(struct net_device *netdev,
 				const unsigned char *uc_addr)
 {
 	struct fm10k_intfc *interface = netdev_priv(netdev);
+<<<<<<< HEAD
+=======
+	struct fm10k_hw *hw = &interface->hw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 glort = interface->glort;
 	u16 vid = interface->vid;
 	bool set = !!(vid / VLAN_N_VID);
@@ -876,7 +928,14 @@ static int fm10k_uc_vlan_unsync(struct net_device *netdev,
 	/* drop any leading bits on the VLAN ID */
 	vid &= VLAN_N_VID - 1;
 
+<<<<<<< HEAD
 	err = fm10k_queue_mac_request(interface, glort, uc_addr, vid, set);
+=======
+	if (fm10k_host_mbx_ready(interface))
+		err = hw->mac.ops.update_uc_addr(hw, glort, uc_addr,
+						 vid, set, 0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -888,6 +947,10 @@ static int fm10k_mc_vlan_unsync(struct net_device *netdev,
 				const unsigned char *mc_addr)
 {
 	struct fm10k_intfc *interface = netdev_priv(netdev);
+<<<<<<< HEAD
+=======
+	struct fm10k_hw *hw = &interface->hw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 glort = interface->glort;
 	u16 vid = interface->vid;
 	bool set = !!(vid / VLAN_N_VID);
@@ -896,7 +959,13 @@ static int fm10k_mc_vlan_unsync(struct net_device *netdev,
 	/* drop any leading bits on the VLAN ID */
 	vid &= VLAN_N_VID - 1;
 
+<<<<<<< HEAD
 	err = fm10k_queue_mac_request(interface, glort, mc_addr, vid, set);
+=======
+	if (fm10k_host_mbx_ready(interface))
+		err = hw->mac.ops.update_mc_addr(hw, glort, mc_addr, vid, set);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -907,9 +976,13 @@ static int fm10k_mc_vlan_unsync(struct net_device *netdev,
 static int fm10k_update_vid(struct net_device *netdev, u16 vid, bool set)
 {
 	struct fm10k_intfc *interface = netdev_priv(netdev);
+<<<<<<< HEAD
 	struct fm10k_l2_accel *l2_accel = interface->l2_accel;
 	struct fm10k_hw *hw = &interface->hw;
 	u16 glort;
+=======
+	struct fm10k_hw *hw = &interface->hw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s32 err;
 	int i;
 
@@ -966,11 +1039,16 @@ static int fm10k_update_vid(struct net_device *netdev, u16 vid, bool set)
 
 	/* only need to update the VLAN if not in promiscuous mode */
 	if (!(netdev->flags & IFF_PROMISC)) {
+<<<<<<< HEAD
 		err = fm10k_queue_vlan_request(interface, vid, 0, set);
+=======
+		err = hw->mac.ops.update_vlan(hw, vid, 0, set);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto err_out;
 	}
 
+<<<<<<< HEAD
 	/* Update our base MAC address */
 	err = fm10k_queue_mac_request(interface, interface->glort,
 				      hw->mac.addr, vid, set);
@@ -993,6 +1071,18 @@ static int fm10k_update_vid(struct net_device *netdev, u16 vid, bool set)
 		}
 	}
 
+=======
+	/* update our base MAC address if host's mailbox is ready */
+	if (fm10k_host_mbx_ready(interface))
+		err = hw->mac.ops.update_uc_addr(hw, interface->glort,
+						 hw->mac.addr, vid, set, 0);
+	else
+		err = -EHOSTDOWN;
+
+	if (err)
+		goto err_out;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* set VLAN ID prior to syncing/unsyncing the VLAN */
 	interface->vid = vid + (set ? VLAN_N_VID : 0);
 
@@ -1033,6 +1123,10 @@ static u16 fm10k_find_next_vlan(struct fm10k_intfc *interface, u16 vid)
 
 static void fm10k_clear_unused_vlans(struct fm10k_intfc *interface)
 {
+<<<<<<< HEAD
+=======
+	struct fm10k_hw *hw = &interface->hw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 vid, prev_vid;
 
 	/* loop through and find any gaps in the table */
@@ -1044,7 +1138,11 @@ static void fm10k_clear_unused_vlans(struct fm10k_intfc *interface)
 
 		/* send request to clear multiple bits at a time */
 		prev_vid += (vid - prev_vid - 1) << FM10K_VLAN_LENGTH_SHIFT;
+<<<<<<< HEAD
 		fm10k_queue_vlan_request(interface, prev_vid, 0, false);
+=======
+		hw->mac.ops.update_vlan(hw, prev_vid, 0, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1052,17 +1150,33 @@ static int __fm10k_uc_sync(struct net_device *dev,
 			   const unsigned char *addr, bool sync)
 {
 	struct fm10k_intfc *interface = netdev_priv(dev);
+<<<<<<< HEAD
+=======
+	struct fm10k_hw *hw = &interface->hw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 vid, glort = interface->glort;
 	s32 err;
 
 	if (!is_valid_ether_addr(addr))
 		return -EADDRNOTAVAIL;
 
+<<<<<<< HEAD
 	for (vid = fm10k_find_next_vlan(interface, 0);
 	     vid < VLAN_N_VID;
 	     vid = fm10k_find_next_vlan(interface, vid)) {
 		err = fm10k_queue_mac_request(interface, glort,
 					      addr, vid, sync);
+=======
+	/* update table with current entries if host's mailbox is ready */
+	if (!fm10k_host_mbx_ready(interface))
+		return -EHOSTDOWN;
+
+	for (vid = hw->mac.default_vid ? fm10k_find_next_vlan(interface, 0) : 1;
+	     vid < VLAN_N_VID;
+	     vid = fm10k_find_next_vlan(interface, vid)) {
+		err = hw->mac.ops.update_uc_addr(hw, glort, addr,
+						 vid, sync, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			return err;
 	}
@@ -1117,6 +1231,7 @@ static int __fm10k_mc_sync(struct net_device *dev,
 			   const unsigned char *addr, bool sync)
 {
 	struct fm10k_intfc *interface = netdev_priv(dev);
+<<<<<<< HEAD
 	u16 vid, glort = interface->glort;
 	s32 err;
 
@@ -1130,6 +1245,19 @@ static int __fm10k_mc_sync(struct net_device *dev,
 					      addr, vid, sync);
 		if (err)
 			return err;
+=======
+	struct fm10k_hw *hw = &interface->hw;
+	u16 vid, glort = interface->glort;
+
+	/* update table with current entries if host's mailbox is ready */
+	if (!fm10k_host_mbx_ready(interface))
+		return 0;
+
+	for (vid = hw->mac.default_vid ? fm10k_find_next_vlan(interface, 0) : 1;
+	     vid < VLAN_N_VID;
+	     vid = fm10k_find_next_vlan(interface, vid)) {
+		hw->mac.ops.update_mc_addr(hw, glort, addr, vid, sync);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1167,12 +1295,18 @@ static void fm10k_set_rx_mode(struct net_device *dev)
 
 	/* update xcast mode first, but only if it changed */
 	if (interface->xcast_mode != xcast_mode) {
+<<<<<<< HEAD
 		/* update VLAN table when entering promiscuous mode */
 		if (xcast_mode == FM10K_XCAST_MODE_PROMISC)
 			fm10k_queue_vlan_request(interface, FM10K_VLAN_ALL,
 						 0, true);
 
 		/* clear VLAN table when exiting promiscuous mode */
+=======
+		/* update VLAN table */
+		if (xcast_mode == FM10K_XCAST_MODE_PROMISC)
+			hw->mac.ops.update_vlan(hw, FM10K_VLAN_ALL, 0, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (interface->xcast_mode == FM10K_XCAST_MODE_PROMISC)
 			fm10k_clear_unused_vlans(interface);
 
@@ -1194,10 +1328,16 @@ static void fm10k_set_rx_mode(struct net_device *dev)
 
 void fm10k_restore_rx_state(struct fm10k_intfc *interface)
 {
+<<<<<<< HEAD
 	struct fm10k_l2_accel *l2_accel = interface->l2_accel;
 	struct net_device *netdev = interface->netdev;
 	struct fm10k_hw *hw = &interface->hw;
 	int xcast_mode, i;
+=======
+	struct net_device *netdev = interface->netdev;
+	struct fm10k_hw *hw = &interface->hw;
+	int xcast_mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 vid, glort;
 
 	/* record glort for this interface */
@@ -1221,6 +1361,7 @@ void fm10k_restore_rx_state(struct fm10k_intfc *interface)
 					       interface->glort_count, true);
 
 	/* update VLAN table */
+<<<<<<< HEAD
 	fm10k_queue_vlan_request(interface, FM10K_VLAN_ALL, 0,
 				 xcast_mode == FM10K_XCAST_MODE_PROMISC);
 
@@ -1248,6 +1389,24 @@ void fm10k_restore_rx_state(struct fm10k_intfc *interface)
 							vid, true);
 			}
 		}
+=======
+	hw->mac.ops.update_vlan(hw, FM10K_VLAN_ALL, 0,
+				xcast_mode == FM10K_XCAST_MODE_PROMISC);
+
+	/* Add filter for VLAN 0 */
+	hw->mac.ops.update_vlan(hw, 0, 0, true);
+
+	/* update table with current entries */
+	for (vid = hw->mac.default_vid ? fm10k_find_next_vlan(interface, 0) : 1;
+	     vid < VLAN_N_VID;
+	     vid = fm10k_find_next_vlan(interface, vid)) {
+		hw->mac.ops.update_vlan(hw, vid, 0, true);
+
+		/* Update unicast entries if host's mailbox is ready */
+		if (fm10k_host_mbx_ready(interface))
+			hw->mac.ops.update_uc_addr(hw, glort, hw->mac.addr,
+						   vid, true, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* update xcast mode before synchronizing addresses if host's mailbox
@@ -1260,6 +1419,7 @@ void fm10k_restore_rx_state(struct fm10k_intfc *interface)
 	__dev_uc_sync(netdev, fm10k_uc_sync, fm10k_uc_unsync);
 	__dev_mc_sync(netdev, fm10k_mc_sync, fm10k_mc_unsync);
 
+<<<<<<< HEAD
 	/* synchronize macvlan addresses */
 	if (l2_accel) {
 		for (i = 0; i < l2_accel->size; i++) {
@@ -1278,6 +1438,8 @@ void fm10k_restore_rx_state(struct fm10k_intfc *interface)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fm10k_mbx_unlock(interface);
 
 	/* record updated xcast mode state */
@@ -1292,6 +1454,7 @@ void fm10k_reset_rx_state(struct fm10k_intfc *interface)
 	struct net_device *netdev = interface->netdev;
 	struct fm10k_hw *hw = &interface->hw;
 
+<<<<<<< HEAD
 	/* Wait for MAC/VLAN work to finish */
 	while (test_bit(__FM10K_MACVLAN_SCHED, interface->state))
 		usleep_range(1000, 2000);
@@ -1299,6 +1462,8 @@ void fm10k_reset_rx_state(struct fm10k_intfc *interface)
 	/* Cancel pending MAC/VLAN requests */
 	fm10k_clear_macvlan_queue(interface, interface->glort, true);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fm10k_mbx_lock(interface);
 
 	/* clear the logical port state on lower device if host's mailbox is
@@ -1433,7 +1598,11 @@ static int __fm10k_setup_tc(struct net_device *dev, enum tc_setup_type type,
 {
 	struct tc_mqprio_qopt *mqprio = type_data;
 
+<<<<<<< HEAD
 	if (type != TC_SETUP_QDISC_MQPRIO)
+=======
+	if (type != TC_SETUP_MQPRIO)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 
 	mqprio->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
@@ -1464,6 +1633,7 @@ static void *fm10k_dfwd_add_station(struct net_device *dev,
 	struct fm10k_dglort_cfg dglort = { 0 };
 	struct fm10k_hw *hw = &interface->hw;
 	int size = 0, i;
+<<<<<<< HEAD
 	u16 vid, glort;
 
 	/* The hardware supported by fm10k only filters on the destination MAC
@@ -1472,6 +1642,9 @@ static void *fm10k_dfwd_add_station(struct net_device *dev,
 	 */
 	if (!macvlan_supports_dest_filter(sdev))
 		return ERR_PTR(-EMEDIUMTYPE);
+=======
+	u16 glort;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* allocate l2 accel structure if it is not available */
 	if (!l2_accel) {
@@ -1537,6 +1710,7 @@ static void *fm10k_dfwd_add_station(struct net_device *dev,
 
 	glort = l2_accel->dglort + 1 + i;
 
+<<<<<<< HEAD
 	if (fm10k_host_mbx_ready(interface))
 		hw->mac.ops.update_xcast_mode(hw, glort,
 					      FM10K_XCAST_MODE_NONE);
@@ -1549,6 +1723,14 @@ static void *fm10k_dfwd_add_station(struct net_device *dev,
 	     vid = fm10k_find_next_vlan(interface, vid))
 		fm10k_queue_mac_request(interface, glort, sdev->dev_addr,
 					vid, true);
+=======
+	if (fm10k_host_mbx_ready(interface)) {
+		hw->mac.ops.update_xcast_mode(hw, glort,
+					      FM10K_XCAST_MODE_MULTI);
+		hw->mac.ops.update_uc_addr(hw, glort, sdev->dev_addr,
+					   0, true, 0);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fm10k_mbx_unlock(interface);
 
@@ -1562,8 +1744,13 @@ static void fm10k_dfwd_del_station(struct net_device *dev, void *priv)
 	struct fm10k_dglort_cfg dglort = { 0 };
 	struct fm10k_hw *hw = &interface->hw;
 	struct net_device *sdev = priv;
+<<<<<<< HEAD
 	u16 vid, glort;
 	int i;
+=======
+	int i;
+	u16 glort;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!l2_accel)
 		return;
@@ -1583,6 +1770,7 @@ static void fm10k_dfwd_del_station(struct net_device *dev, void *priv)
 
 	glort = l2_accel->dglort + 1 + i;
 
+<<<<<<< HEAD
 	if (fm10k_host_mbx_ready(interface))
 		hw->mac.ops.update_xcast_mode(hw, glort,
 					      FM10K_XCAST_MODE_NONE);
@@ -1595,6 +1783,14 @@ static void fm10k_dfwd_del_station(struct net_device *dev, void *priv)
 	     vid = fm10k_find_next_vlan(interface, vid))
 		fm10k_queue_mac_request(interface, glort, sdev->dev_addr,
 					vid, false);
+=======
+	if (fm10k_host_mbx_ready(interface)) {
+		hw->mac.ops.update_xcast_mode(hw, glort,
+					      FM10K_XCAST_MODE_NONE);
+		hw->mac.ops.update_uc_addr(hw, glort, sdev->dev_addr,
+					   0, false, 0);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fm10k_mbx_unlock(interface);
 
@@ -1648,6 +1844,12 @@ static const struct net_device_ops fm10k_netdev_ops = {
 	.ndo_udp_tunnel_del	= fm10k_udp_tunnel_del,
 	.ndo_dfwd_add_station	= fm10k_dfwd_add_station,
 	.ndo_dfwd_del_station	= fm10k_dfwd_del_station,
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+	.ndo_poll_controller	= fm10k_netpoll,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_features_check	= fm10k_features_check,
 };
 

@@ -1,6 +1,7 @@
 config INFINIBAND_HNS
 	tristate "HNS RoCE Driver"
 	depends on NET_VENDOR_HISILICON
+<<<<<<< HEAD
 	depends on ARM64 || (COMPILE_TEST && 64BIT)
 	---help---
 	  This is a RoCE/RDMA driver for the Hisilicon RoCE engine. The engine
@@ -29,3 +30,12 @@ config INFINIBAND_HNS_HIP08
 
 	  To compile this driver as a module, choose M here: the module
 	  will be called hns-roce-hw-v2.
+=======
+	depends on (ARM64 || (COMPILE_TEST && 64BIT)) && HNS && HNS_DSAF && HNS_ENET
+	---help---
+	  This is a RoCE/RDMA driver for the Hisilicon RoCE engine. The engine
+	  is used in Hisilicon Hi1610 and more further ICT SoC.
+
+	  To compile this driver as a module, choose M here: the module
+	  will be called hns-roce.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

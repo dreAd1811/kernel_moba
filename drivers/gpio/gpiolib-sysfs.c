@@ -8,7 +8,10 @@
 #include <linux/interrupt.h>
 #include <linux/kdev_t.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/ctype.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "gpiolib.h"
 
@@ -107,6 +110,7 @@ static ssize_t value_show(struct device *dev,
 
 	mutex_lock(&data->mutex);
 
+<<<<<<< HEAD
 	status = gpiod_get_value_cansleep(desc);
 	if (status < 0)
 		goto err;
@@ -115,6 +119,10 @@ static ssize_t value_show(struct device *dev,
 	buf[1] = '\n';
 	status = 2;
 err:
+=======
+	status = sprintf(buf, "%d\n", gpiod_get_value_cansleep(desc));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&data->mutex);
 
 	return status;
@@ -125,7 +133,11 @@ static ssize_t value_store(struct device *dev,
 {
 	struct gpiod_data *data = dev_get_drvdata(dev);
 	struct gpio_desc *desc = data->desc;
+<<<<<<< HEAD
 	ssize_t status = 0;
+=======
+	ssize_t			status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&data->mutex);
 
@@ -134,11 +146,15 @@ static ssize_t value_store(struct device *dev,
 	} else {
 		long		value;
 
+<<<<<<< HEAD
 		if (size <= 2 && isdigit(buf[0]) &&
 		    (size == 1 || buf[1] == '\n'))
 			value = buf[0] - '0';
 		else
 			status = kstrtol(buf, 0, &value);
+=======
+		status = kstrtol(buf, 0, &value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (status == 0) {
 			gpiod_set_value_cansleep(desc, value);
 			status = size;
@@ -149,7 +165,11 @@ static ssize_t value_store(struct device *dev,
 
 	return status;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_PREALLOC(value, S_IWUSR | S_IRUGO, value_show, value_store);
+=======
+static DEVICE_ATTR_RW(value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static irqreturn_t gpio_sysfs_irq(int irq, void *priv)
 {
@@ -485,6 +505,7 @@ static ssize_t export_store(struct class *class,
 			status = -ENODEV;
 		goto done;
 	}
+<<<<<<< HEAD
 
 	status = gpiod_set_transitory(desc, false);
 	if (!status) {
@@ -494,6 +515,13 @@ static ssize_t export_store(struct class *class,
 		else
 			set_bit(FLAG_SYSFS, &desc->flags);
 	}
+=======
+	status = gpiod_export(desc, true);
+	if (status < 0)
+		gpiod_free(desc);
+	else
+		set_bit(FLAG_SYSFS, &desc->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	if (status)

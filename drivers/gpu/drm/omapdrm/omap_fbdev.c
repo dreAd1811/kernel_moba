@@ -1,5 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * drivers/gpu/drm/omapdrm/omap_fbdev.c
+ *
+ * Copyright (C) 2011 Texas Instruments
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Rob Clark <rob@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -80,6 +86,7 @@ fallback:
 
 static struct fb_ops omap_fb_ops = {
 	.owner = THIS_MODULE,
+<<<<<<< HEAD
 
 	.fb_check_var	= drm_fb_helper_check_var,
 	.fb_set_par	= drm_fb_helper_set_par,
@@ -90,11 +97,23 @@ static struct fb_ops omap_fb_ops = {
 	.fb_debug_leave = drm_fb_helper_debug_leave,
 	.fb_ioctl	= drm_fb_helper_ioctl,
 
+=======
+	DRM_FB_HELPER_DEFAULT_OPS,
+
+	/* Note: to properly handle manual update displays, we wrap the
+	 * basic fbdev ops which write to the framebuffer
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fb_read = drm_fb_helper_sys_read,
 	.fb_write = drm_fb_helper_sys_write,
 	.fb_fillrect = drm_fb_helper_sys_fillrect,
 	.fb_copyarea = drm_fb_helper_sys_copyarea,
 	.fb_imageblit = drm_fb_helper_sys_imageblit,
+<<<<<<< HEAD
+=======
+
+	.fb_pan_display = omap_fbdev_pan_display,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int omap_fbdev_create(struct drm_fb_helper *helper,
@@ -170,11 +189,20 @@ static int omap_fbdev_create(struct drm_fb_helper *helper,
 		goto fail;
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&dev->struct_mutex);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fbi = drm_fb_helper_alloc_fbi(helper);
 	if (IS_ERR(fbi)) {
 		dev_err(dev->dev, "failed to allocate fb info\n");
 		ret = PTR_ERR(fbi);
+<<<<<<< HEAD
 		goto fail;
+=======
+		goto fail_unlock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	DBG("fbi=%p, dev=%p", fbi, dev);
@@ -192,7 +220,11 @@ static int omap_fbdev_create(struct drm_fb_helper *helper,
 
 	dev->mode_config.fb_base = dma_addr;
 
+<<<<<<< HEAD
 	fbi->screen_buffer = omap_gem_vaddr(fbdev->bo);
+=======
+	fbi->screen_base = omap_gem_vaddr(fbdev->bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fbi->screen_size = fbdev->bo->size;
 	fbi->fix.smem_start = dma_addr;
 	fbi->fix.smem_len = fbdev->bo->size;
@@ -210,8 +242,17 @@ static int omap_fbdev_create(struct drm_fb_helper *helper,
 	DBG("par=%p, %dx%d", fbi->par, fbi->var.xres, fbi->var.yres);
 	DBG("allocated %dx%d fb", fbdev->fb->width, fbdev->fb->height);
 
+<<<<<<< HEAD
 	return 0;
 
+=======
+	mutex_unlock(&dev->struct_mutex);
+
+	return 0;
+
+fail_unlock:
+	mutex_unlock(&dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fail:
 
 	if (ret) {
@@ -236,16 +277,23 @@ static struct drm_fb_helper *get_fb(struct fb_info *fbi)
 }
 
 /* initialize fbdev helper */
+<<<<<<< HEAD
 void omap_fbdev_init(struct drm_device *dev)
+=======
+struct drm_fb_helper *omap_fbdev_init(struct drm_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct omap_drm_private *priv = dev->dev_private;
 	struct omap_fbdev *fbdev = NULL;
 	struct drm_fb_helper *helper;
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!priv->num_crtcs || !priv->num_connectors)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fbdev = kzalloc(sizeof(*fbdev), GFP_KERNEL);
 	if (!fbdev)
 		goto fail;
@@ -257,8 +305,15 @@ void omap_fbdev_init(struct drm_device *dev)
 	drm_fb_helper_prepare(dev, helper, &omap_fb_helper_funcs);
 
 	ret = drm_fb_helper_init(dev, helper, priv->num_connectors);
+<<<<<<< HEAD
 	if (ret)
 		goto fail;
+=======
+	if (ret) {
+		dev_err(dev->dev, "could not init fbdev: ret=%d\n", ret);
+		goto fail;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = drm_fb_helper_single_add_all_connectors(helper);
 	if (ret)
@@ -270,7 +325,11 @@ void omap_fbdev_init(struct drm_device *dev)
 
 	priv->fbdev = helper;
 
+<<<<<<< HEAD
 	return;
+=======
+	return helper;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 fini:
 	drm_fb_helper_fini(helper);
@@ -278,9 +337,18 @@ fail:
 	kfree(fbdev);
 
 	dev_warn(dev->dev, "omap_fbdev_init failed\n");
+<<<<<<< HEAD
 }
 
 void omap_fbdev_fini(struct drm_device *dev)
+=======
+	/* well, limp along without an fbdev.. maybe X11 will work? */
+
+	return NULL;
+}
+
+void omap_fbdev_free(struct drm_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct omap_drm_private *priv = dev->dev_private;
 	struct drm_fb_helper *helper = priv->fbdev;
@@ -288,18 +356,28 @@ void omap_fbdev_fini(struct drm_device *dev)
 
 	DBG();
 
+<<<<<<< HEAD
 	if (!helper)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_fb_helper_unregister_fbi(helper);
 
 	drm_fb_helper_fini(helper);
 
+<<<<<<< HEAD
 	fbdev = to_omap_fbdev(helper);
 
 	/* unpin the GEM object pinned in omap_fbdev_create() */
 	if (fbdev->bo)
 		omap_gem_unpin(fbdev->bo);
+=======
+	fbdev = to_omap_fbdev(priv->fbdev);
+
+	/* unpin the GEM object pinned in omap_fbdev_create() */
+	omap_gem_unpin(fbdev->bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* this will free the backing object */
 	if (fbdev->fb)

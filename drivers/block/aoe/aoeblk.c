@@ -159,6 +159,7 @@ static int aoe_debugfs_open(struct inode *inode, struct file *file)
 	return single_open(file, aoedisk_debugfs_show, inode->i_private);
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(state, 0444, aoedisk_show_state, NULL);
 static DEVICE_ATTR(mac, 0444, aoedisk_show_mac, NULL);
 static DEVICE_ATTR(netif, 0444, aoedisk_show_netif, NULL);
@@ -167,6 +168,16 @@ static struct device_attribute dev_attr_firmware_version = {
 	.show = aoedisk_show_fwver,
 };
 static DEVICE_ATTR(payload, 0444, aoedisk_show_payload, NULL);
+=======
+static DEVICE_ATTR(state, S_IRUGO, aoedisk_show_state, NULL);
+static DEVICE_ATTR(mac, S_IRUGO, aoedisk_show_mac, NULL);
+static DEVICE_ATTR(netif, S_IRUGO, aoedisk_show_netif, NULL);
+static struct device_attribute dev_attr_firmware_version = {
+	.attr = { .name = "firmware-version", .mode = S_IRUGO },
+	.show = aoedisk_show_fwver,
+};
+static DEVICE_ATTR(payload, S_IRUGO, aoedisk_show_payload, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *aoe_attrs[] = {
 	&dev_attr_state.attr,
@@ -388,6 +399,10 @@ aoeblk_gdalloc(void *vp)
 			d->aoemajor, d->aoeminor);
 		goto err_mempool;
 	}
+<<<<<<< HEAD
+=======
+	blk_queue_bounce_limit(q, BLK_BOUNCE_HIGH);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&d->lock, flags);
 	WARN_ON(!(d->flags & DEVFL_GD_NOW));

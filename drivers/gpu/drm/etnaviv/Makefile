@@ -9,11 +9,17 @@ etnaviv-y := \
 	etnaviv_gem_submit.o \
 	etnaviv_gem.o \
 	etnaviv_gpu.o \
+<<<<<<< HEAD
 	etnaviv_hwdb.o \
 	etnaviv_iommu_v2.o \
 	etnaviv_iommu.o \
 	etnaviv_mmu.o \
 	etnaviv_perfmon.o \
 	etnaviv_sched.o
+=======
+	etnaviv_iommu_v2.o \
+	etnaviv_iommu.o \
+	etnaviv_mmu.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 obj-$(CONFIG_DRM_ETNAVIV)	+= etnaviv.o

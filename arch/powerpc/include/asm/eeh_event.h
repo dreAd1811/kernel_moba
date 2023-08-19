@@ -34,8 +34,12 @@ struct eeh_event {
 int eeh_event_init(void);
 int eeh_send_failure_event(struct eeh_pe *pe);
 void eeh_remove_event(struct eeh_pe *pe, bool force);
+<<<<<<< HEAD
 void eeh_handle_normal_event(struct eeh_pe *pe);
 void eeh_handle_special_event(void);
+=======
+void eeh_handle_event(struct eeh_pe *pe);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __KERNEL__ */
 #endif /* ASM_POWERPC_EEH_EVENT_H */

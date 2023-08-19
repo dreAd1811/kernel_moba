@@ -551,6 +551,7 @@ static int __init lance_probe1(struct net_device *dev, int ioaddr, int irq, int 
 	if (lance_debug > 6) printk(" (#0x%05lx)", (unsigned long)lp);
 	dev->ml_priv = lp;
 	lp->name = chipname;
+<<<<<<< HEAD
 	lp->rx_buffs = (unsigned long)kmalloc_array(RX_RING_SIZE, PKT_BUF_SZ,
 						    GFP_DMA | GFP_KERNEL);
 	if (!lp->rx_buffs)
@@ -558,6 +559,15 @@ static int __init lance_probe1(struct net_device *dev, int ioaddr, int irq, int 
 	if (lance_need_isa_bounce_buffers) {
 		lp->tx_bounce_buffs = kmalloc_array(TX_RING_SIZE, PKT_BUF_SZ,
 						    GFP_DMA | GFP_KERNEL);
+=======
+	lp->rx_buffs = (unsigned long)kmalloc(PKT_BUF_SZ*RX_RING_SIZE,
+						  GFP_DMA | GFP_KERNEL);
+	if (!lp->rx_buffs)
+		goto out_lp;
+	if (lance_need_isa_bounce_buffers) {
+		lp->tx_bounce_buffs = kmalloc(PKT_BUF_SZ*TX_RING_SIZE,
+						  GFP_DMA | GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!lp->tx_bounce_buffs)
 			goto out_rx;
 	} else

@@ -384,6 +384,11 @@ static int altera_cvp_probe(struct pci_dev *pdev,
 			    const struct pci_device_id *dev_id);
 static void altera_cvp_remove(struct pci_dev *pdev);
 
+<<<<<<< HEAD
+=======
+#define PCI_VENDOR_ID_ALTERA	0x1172
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct pci_device_id altera_cvp_id_tbl[] = {
 	{ PCI_VDEVICE(ALTERA, PCI_ANY_ID) },
 	{ }
@@ -401,7 +406,10 @@ static int altera_cvp_probe(struct pci_dev *pdev,
 			    const struct pci_device_id *dev_id)
 {
 	struct altera_cvp_conf *conf;
+<<<<<<< HEAD
 	struct fpga_manager *mgr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 cmd, val;
 	u32 regval;
 	int ret;
@@ -462,6 +470,7 @@ static int altera_cvp_probe(struct pci_dev *pdev,
 	snprintf(conf->mgr_name, sizeof(conf->mgr_name), "%s @%s",
 		 ALTERA_CVP_MGR_NAME, pci_name(pdev));
 
+<<<<<<< HEAD
 	mgr = fpga_mgr_create(&pdev->dev, conf->mgr_name,
 			      &altera_cvp_ops, conf);
 	if (!mgr) {
@@ -474,14 +483,30 @@ static int altera_cvp_probe(struct pci_dev *pdev,
 	ret = fpga_mgr_register(mgr);
 	if (ret) {
 		fpga_mgr_free(mgr);
+=======
+	ret = fpga_mgr_register(&pdev->dev, conf->mgr_name,
+				&altera_cvp_ops, conf);
+	if (ret)
+		goto err_unmap;
+
+	ret = driver_create_file(&altera_cvp_driver.driver,
+				 &driver_attr_chkcfg);
+	if (ret) {
+		dev_err(&pdev->dev, "Can't create sysfs chkcfg file\n");
+		fpga_mgr_unregister(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_unmap;
 	}
 
 	return 0;
 
 err_unmap:
+<<<<<<< HEAD
 	if (conf->map)
 		pci_iounmap(pdev, conf->map);
+=======
+	pci_iounmap(pdev, conf->map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_release_region(pdev, CVP_BAR);
 err_disable:
 	cmd &= ~PCI_COMMAND_MEMORY;
@@ -495,15 +520,22 @@ static void altera_cvp_remove(struct pci_dev *pdev)
 	struct altera_cvp_conf *conf = mgr->priv;
 	u16 cmd;
 
+<<<<<<< HEAD
 	fpga_mgr_unregister(mgr);
 	if (conf->map)
 		pci_iounmap(pdev, conf->map);
+=======
+	driver_remove_file(&altera_cvp_driver.driver, &driver_attr_chkcfg);
+	fpga_mgr_unregister(&pdev->dev);
+	pci_iounmap(pdev, conf->map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_release_region(pdev, CVP_BAR);
 	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
 	cmd &= ~PCI_COMMAND_MEMORY;
 	pci_write_config_word(pdev, PCI_COMMAND, cmd);
 }
 
+<<<<<<< HEAD
 static int __init altera_cvp_init(void)
 {
 	int ret;
@@ -528,6 +560,9 @@ static void __exit altera_cvp_exit(void)
 
 module_init(altera_cvp_init);
 module_exit(altera_cvp_exit);
+=======
+module_pci_driver(altera_cvp_driver);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_LICENSE("GPL v2");
 MODULE_AUTHOR("Anatolij Gustschin <agust@denx.de>");

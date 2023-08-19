@@ -115,10 +115,20 @@ static unsigned long can_optimize(struct kprobe *p)
 static void optimized_callback(struct optimized_kprobe *op,
 			       struct pt_regs *regs)
 {
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This is possible if op is under delayed unoptimizing */
 	if (kprobe_disabled(&op->kp))
 		return;
 
+<<<<<<< HEAD
+=======
+	local_irq_save(flags);
+	hard_irq_disable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	preempt_disable();
 
 	if (kprobe_running()) {
@@ -131,7 +141,17 @@ static void optimized_callback(struct optimized_kprobe *op,
 		__this_cpu_write(current_kprobe, NULL);
 	}
 
+<<<<<<< HEAD
 	preempt_enable_no_resched();
+=======
+	/*
+	 * No need for an explicit __hard_irq_enable() here.
+	 * local_irq_restore() will re-enable interrupts,
+	 * if they were hard disabled.
+	 */
+	preempt_enable_no_resched();
+	local_irq_restore(flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 NOKPROBE_SYMBOL(optimized_callback);
 

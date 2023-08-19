@@ -48,8 +48,11 @@ static const struct brcmf_feat_fwcap brcmf_fwcap_map[] = {
 	{ BRCMF_FEAT_MBSS, "mbss" },
 	{ BRCMF_FEAT_MCHAN, "mchan" },
 	{ BRCMF_FEAT_P2P, "p2p" },
+<<<<<<< HEAD
 	{ BRCMF_FEAT_MONITOR, "monitor" },
 	{ BRCMF_FEAT_MONITOR_FMT_RADIOTAP, "rtap" },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #ifdef DEBUG
@@ -93,6 +96,7 @@ static int brcmf_feat_debugfs_read(struct seq_file *seq, void *data)
 }
 #endif /* DEBUG */
 
+<<<<<<< HEAD
 struct brcmf_feat_fwfeat {
 	const char * const fwid;
 	u32 feat_flags;
@@ -129,6 +133,8 @@ static void brcmf_feat_firmware_overrides(struct brcmf_pub *drv)
 	drv->feat_flags |= feat_flags;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * brcmf_feat_iovar_int_get() - determine feature through iovar query.
  *
@@ -142,9 +148,12 @@ static void brcmf_feat_iovar_int_get(struct brcmf_if *ifp,
 	u32 data;
 	int err;
 
+<<<<<<< HEAD
 	/* we need to know firmware error */
 	ifp->fwil_fwerr = true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = brcmf_fil_iovar_int_get(ifp, name, &data);
 	if (err == 0) {
 		brcmf_dbg(INFO, "enabling feature: %s\n", brcmf_feat_names[id]);
@@ -153,8 +162,11 @@ static void brcmf_feat_iovar_int_get(struct brcmf_if *ifp,
 		brcmf_dbg(TRACE, "%s feature check failed: %d\n",
 			  brcmf_feat_names[id], err);
 	}
+<<<<<<< HEAD
 
 	ifp->fwil_fwerr = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void brcmf_feat_iovar_data_set(struct brcmf_if *ifp,
@@ -163,9 +175,12 @@ static void brcmf_feat_iovar_data_set(struct brcmf_if *ifp,
 {
 	int err;
 
+<<<<<<< HEAD
 	/* we need to know firmware error */
 	ifp->fwil_fwerr = true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = brcmf_fil_iovar_data_set(ifp, name, data, len);
 	if (err != -BRCMF_FW_UNSUPPORTED) {
 		brcmf_dbg(INFO, "enabling feature: %s\n", brcmf_feat_names[id]);
@@ -174,6 +189,7 @@ static void brcmf_feat_iovar_data_set(struct brcmf_if *ifp,
 		brcmf_dbg(TRACE, "%s feature check failed: %d\n",
 			  brcmf_feat_names[id], err);
 	}
+<<<<<<< HEAD
 
 	ifp->fwil_fwerr = false;
 }
@@ -191,6 +207,17 @@ static void brcmf_feat_firmware_capabilities(struct brcmf_if *ifp)
 		return;
 	}
 
+=======
+}
+
+static void brcmf_feat_firmware_capabilities(struct brcmf_if *ifp)
+{
+	char caps[256];
+	enum brcmf_feat_id id;
+	int i;
+
+	brcmf_fil_iovar_data_get(ifp, "cap", caps, sizeof(caps));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	brcmf_dbg(INFO, "[ %s]\n", caps);
 
 	for (i = 0; i < ARRAY_SIZE(brcmf_fwcap_map); i++) {
@@ -203,6 +230,7 @@ static void brcmf_feat_firmware_capabilities(struct brcmf_if *ifp)
 	}
 }
 
+<<<<<<< HEAD
 /**
  * brcmf_feat_fwcap_debugfs_read() - expose firmware capabilities to debugfs.
  *
@@ -238,6 +266,8 @@ static int brcmf_feat_fwcap_debugfs_read(struct seq_file *seq, void *data)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void brcmf_feat_attach(struct brcmf_pub *drvr)
 {
 	struct brcmf_if *ifp = brcmf_get_ifp(drvr, 0);
@@ -281,15 +311,23 @@ void brcmf_feat_attach(struct brcmf_pub *drvr)
 	if (!err)
 		ifp->drvr->feat_flags |= BIT(BRCMF_FEAT_SCAN_RANDOM_MAC);
 
+<<<<<<< HEAD
+=======
+	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_FWSUP, "sup_wpa");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (drvr->settings->feature_disable) {
 		brcmf_dbg(INFO, "Features: 0x%02x, disable: 0x%02x\n",
 			  ifp->drvr->feat_flags,
 			  drvr->settings->feature_disable);
 		ifp->drvr->feat_flags &= ~drvr->settings->feature_disable;
 	}
+<<<<<<< HEAD
 	brcmf_feat_iovar_int_get(ifp, BRCMF_FEAT_FWSUP, "sup_wpa");
 
 	brcmf_feat_firmware_overrides(drvr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set chip related quirks */
 	switch (drvr->bus_if->chip) {
@@ -303,12 +341,17 @@ void brcmf_feat_attach(struct brcmf_pub *drvr)
 		/* no quirks */
 		break;
 	}
+<<<<<<< HEAD
 }
 
 void brcmf_feat_debugfs_create(struct brcmf_pub *drvr)
 {
 	brcmf_debugfs_add_entry(drvr, "features", brcmf_feat_debugfs_read);
 	brcmf_debugfs_add_entry(drvr, "fwcap", brcmf_feat_fwcap_debugfs_read);
+=======
+
+	brcmf_debugfs_add_entry(drvr, "features", brcmf_feat_debugfs_read);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 bool brcmf_feat_is_enabled(struct brcmf_if *ifp, enum brcmf_feat_id id)

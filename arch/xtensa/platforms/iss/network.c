@@ -16,8 +16,11 @@
  *
  */
 
+<<<<<<< HEAD
 #define pr_fmt(fmt) "%s: " fmt, __func__
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/list.h>
 #include <linux/irq.h>
 #include <linux/spinlock.h>
@@ -351,9 +354,15 @@ static int iss_net_poll(void)
 }
 
 
+<<<<<<< HEAD
 static void iss_net_timer(struct timer_list *t)
 {
 	struct iss_net_private *lp = from_timer(lp, t, timer);
+=======
+static void iss_net_timer(unsigned long priv)
+{
+	struct iss_net_private *lp = (struct iss_net_private *)priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iss_net_poll();
 	spin_lock(&lp->lock);
@@ -388,8 +397,15 @@ static int iss_net_open(struct net_device *dev)
 	spin_unlock_bh(&opened_lock);
 	spin_lock_bh(&lp->lock);
 
+<<<<<<< HEAD
 	timer_setup(&lp->timer, iss_net_timer, 0);
 	lp->timer_val = ISS_NET_TIMER_VALUE;
+=======
+	init_timer(&lp->timer);
+	lp->timer_val = ISS_NET_TIMER_VALUE;
+	lp->timer.data = (unsigned long) lp;
+	lp->timer.function = iss_net_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&lp->timer, jiffies + lp->timer_val);
 
 out:
@@ -482,7 +498,11 @@ static int iss_net_change_mtu(struct net_device *dev, int new_mtu)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 void iss_net_user_timer_expire(struct timer_list *unused)
+=======
+void iss_net_user_timer_expire(unsigned long _conn)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 
@@ -582,7 +602,12 @@ static int iss_net_configure(int index, char *init)
 		return 1;
 	}
 
+<<<<<<< HEAD
 	timer_setup(&lp->tl, iss_net_user_timer_expire, 0);
+=======
+	init_timer(&lp->tl);
+	lp->tl.function = iss_net_user_timer_expire;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -608,6 +633,11 @@ struct iss_net_init {
  * those fields. They will be later initialized in iss_net_init.
  */
 
+<<<<<<< HEAD
+=======
+#define ERR KERN_ERR "iss_net_setup: "
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init iss_net_setup(char *str)
 {
 	struct iss_net_private *device = NULL;
@@ -619,14 +649,22 @@ static int __init iss_net_setup(char *str)
 
 	end = strchr(str, '=');
 	if (!end) {
+<<<<<<< HEAD
 		pr_err("Expected '=' after device number\n");
+=======
+		printk(ERR "Expected '=' after device number\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 	*end = 0;
 	rc = kstrtouint(str, 0, &n);
 	*end = '=';
 	if (rc < 0) {
+<<<<<<< HEAD
 		pr_err("Failed to parse '%s'\n", str);
+=======
+		printk(ERR "Failed to parse '%s'\n", str);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 	str = end;
@@ -642,13 +680,21 @@ static int __init iss_net_setup(char *str)
 	spin_unlock(&devices_lock);
 
 	if (device && device->index == n) {
+<<<<<<< HEAD
 		pr_err("Device %u already configured\n", n);
+=======
+		printk(ERR "Device %u already configured\n", n);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 
 	new = alloc_bootmem(sizeof(*new));
 	if (new == NULL) {
+<<<<<<< HEAD
 		pr_err("Alloc_bootmem failed\n");
+=======
+		printk(ERR "Alloc_bootmem failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 
@@ -660,6 +706,11 @@ static int __init iss_net_setup(char *str)
 	return 1;
 }
 
+<<<<<<< HEAD
+=======
+#undef ERR
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __setup("eth", iss_net_setup);
 
 /*

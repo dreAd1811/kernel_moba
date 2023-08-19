@@ -184,7 +184,11 @@ pcibr_bus_fixup(struct pcibus_bussoft *prom_bussoft, struct pci_controller *cont
 	/* Setup the PMU ATE map */
 	soft->pbi_int_ate_resource.lowest_free_index = 0;
 	soft->pbi_int_ate_resource.ate =
+<<<<<<< HEAD
 	    kcalloc(soft->pbi_int_ate_size, sizeof(u64), GFP_KERNEL);
+=======
+	    kzalloc(soft->pbi_int_ate_size * sizeof(u64), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!soft->pbi_int_ate_resource.ate) {
 		kfree(soft);

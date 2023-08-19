@@ -34,6 +34,10 @@ platforms += sibyte
 platforms += sni
 platforms += txx9
 platforms += vr41xx
+<<<<<<< HEAD
+=======
+platforms += xilfpga
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # include the platform specific files
 include $(patsubst %, $(srctree)/arch/mips/%/Platform, $(platforms))

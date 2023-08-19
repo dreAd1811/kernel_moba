@@ -285,7 +285,11 @@ void __sync_icache_dcache(pte_t pteval)
 
 	page = pfn_to_page(pfn);
 	if (cache_is_vipt_aliasing())
+<<<<<<< HEAD
 		mapping = page_mapping_file(page);
+=======
+		mapping = page_mapping(page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		mapping = NULL;
 
@@ -333,7 +337,11 @@ void flush_dcache_page(struct page *page)
 		return;
 	}
 
+<<<<<<< HEAD
 	mapping = page_mapping_file(page);
+=======
+	mapping = page_mapping(page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cache_ops_need_broadcast() &&
 	    mapping && !page_mapcount(page))
@@ -363,7 +371,11 @@ void flush_kernel_dcache_page(struct page *page)
 	if (cache_is_vivt() || cache_is_vipt_aliasing()) {
 		struct address_space *mapping;
 
+<<<<<<< HEAD
 		mapping = page_mapping_file(page);
+=======
+		mapping = page_mapping(page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!mapping || mapping_mapped(mapping)) {
 			void *addr;

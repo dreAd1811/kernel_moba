@@ -21,6 +21,10 @@
  */
 #define HAS_DMA
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PARPORT_PC_FIFO
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_SPINLOCK(dma_spin_lock);
 
 #define claim_dma_lock() \
@@ -31,6 +35,10 @@ static DEFINE_SPINLOCK(dma_spin_lock);
 
 #define release_dma_lock(__flags) \
 	spin_unlock_irqrestore(&dma_spin_lock, __flags);
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct sparc_ebus_info {
 	struct ebus_dma_info info;

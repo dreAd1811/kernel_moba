@@ -83,6 +83,21 @@ static int show_msp_pci_counts(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int msp_pci_rd_cnt_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, show_msp_pci_counts, NULL);
+}
+
+static const struct file_operations msp_pci_rd_cnt_fops = {
+	.open		= msp_pci_rd_cnt_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*****************************************************************************
  *
  *  FUNCTION: gen_pci_cfg_wr_show
@@ -148,6 +163,21 @@ static int gen_pci_cfg_wr_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int gen_pci_cfg_wr_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, gen_pci_cfg_wr_show, NULL);
+}
+
+static const struct file_operations gen_pci_cfg_wr_fops = {
+	.open		= gen_pci_cfg_wr_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*****************************************************************************
  *
  *  FUNCTION: pci_proc_init
@@ -164,8 +194,13 @@ static int gen_pci_cfg_wr_show(struct seq_file *m, void *v)
  ****************************************************************************/
 static void pci_proc_init(void)
 {
+<<<<<<< HEAD
 	proc_create_single("pmc_msp_pci_rd_cnt", 0, NULL, show_msp_pci_counts);
 	proc_create_single("pmc_msp_pci_cfg_wr", 0, NULL, gen_pci_cfg_wr_show);
+=======
+	proc_create("pmc_msp_pci_rd_cnt", 0, NULL, &msp_pci_rd_cnt_fops);
+	proc_create("pmc_msp_pci_cfg_wr", 0, NULL, &gen_pci_cfg_wr_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_PROC_FS && PCI_COUNTERS */
 

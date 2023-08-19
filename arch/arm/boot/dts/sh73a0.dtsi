@@ -1,8 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the SH73A0 SoC
  *
  * Copyright (C) 2012 Renesas Solutions Corp.
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public License
+ * version 2.  This program is licensed "as is" without any warranty of any
+ * kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/clock/sh73a0-clock.h>
@@ -24,7 +34,10 @@
 			compatible = "arm,cortex-a9";
 			reg = <0>;
 			clock-frequency = <1196000000>;
+<<<<<<< HEAD
 			clocks = <&cpg_clocks SH73A0_CLK_Z>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			power-domains = <&pd_a2sl>;
 			next-level-cache = <&L2>;
 		};
@@ -33,7 +46,10 @@
 			compatible = "arm,cortex-a9";
 			reg = <1>;
 			clock-frequency = <1196000000>;
+<<<<<<< HEAD
 			clocks = <&cpg_clocks SH73A0_CLK_Z>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			power-domains = <&pd_a2sl>;
 			next-level-cache = <&L2>;
 		};
@@ -98,6 +114,12 @@
 		clocks = <&mstp3_clks SH73A0_CLK_CMT1>;
 		clock-names = "fck";
 		power-domains = <&pd_c5>;
+<<<<<<< HEAD
+=======
+
+		renesas,channels-mask = <0x3f>;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 	};
 
@@ -334,7 +356,11 @@
 			      GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>;
 		clocks = <&mstp3_clks SH73A0_CLK_SDHI1>;
 		power-domains = <&pd_a3sp>;
+<<<<<<< HEAD
 		disable-wp;
+=======
+		toshiba,mmc-wrprotect-disable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cap-sd-highspeed;
 		status = "disabled";
 	};
@@ -346,7 +372,11 @@
 			      GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>;
 		clocks = <&mstp3_clks SH73A0_CLK_SDHI2>;
 		power-domains = <&pd_a3sp>;
+<<<<<<< HEAD
 		disable-wp;
+=======
+		toshiba,mmc-wrprotect-disable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cap-sd-highspeed;
 		status = "disabled";
 	};

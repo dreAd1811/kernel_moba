@@ -16,11 +16,14 @@
 #include <asm/assembler.h>
 #include <asm/memory.h>
 
+<<<<<<< HEAD
 #define SCTLR_MMU	0x01
 #define BOOTROM_ADDRESS	0xE6340000
 #define RWTCSRA_ADDRESS 0xE6020004
 #define RWTCSRA_WOVF	0x10
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Reset vector for secondary CPUs.
  * This will be mapped at address 0 by SBAR register.
@@ -42,6 +45,7 @@ shmobile_boot_fn:
 shmobile_boot_size:
 	.long	. - shmobile_boot_vector
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARCH_RCAR_GEN2
 /*
  * Reset vector for R-Car Gen2 and RZ/G1 secondary CPUs.
@@ -92,6 +96,8 @@ shmobile_boot_size_gen2:
 	.long	. - shmobile_boot_vector_gen2
 #endif /* CONFIG_ARCH_RCAR_GEN2 */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Per-CPU SMP boot function/argument selection code based on MPIDR
  */

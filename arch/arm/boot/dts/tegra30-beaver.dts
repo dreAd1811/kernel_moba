@@ -17,7 +17,11 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	memory@80000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x80000000 0x7ff00000>;
 	};
 
@@ -260,14 +264,22 @@
 			};
 			sdmmc3_dat6_pd3 {
 				nvidia,pins = "sdmmc3_dat6_pd3";
+<<<<<<< HEAD
 				nvidia,function = "spdif";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
 			sdmmc3_dat7_pd4 {
 				nvidia,pins = "sdmmc3_dat7_pd4";
+<<<<<<< HEAD
 				nvidia,function = "spdif";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -281,14 +293,22 @@
 			};
 			vi_vsync_pd6 {
 				nvidia,pins = "vi_vsync_pd6";
+<<<<<<< HEAD
 				nvidia,function = "ddr";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
 			vi_hsync_pd7 {
 				nvidia,pins = "vi_hsync_pd7";
+<<<<<<< HEAD
 				nvidia,function = "ddr";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -806,7 +826,11 @@
 			};
 			hdmi_int_pn7 {
 				nvidia,pins = "hdmi_int_pn7";
+<<<<<<< HEAD
 				nvidia,function = "hdmi";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_ENABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -841,7 +865,11 @@
 			};
 			ulpi_data3_po4 {
 				nvidia,pins = "ulpi_data3_po4";
+<<<<<<< HEAD
 				nvidia,function = "uarta";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -1107,21 +1135,33 @@
 			};
 			vi_d10_pt2 {
 				nvidia,pins = "vi_d10_pt2";
+<<<<<<< HEAD
 				nvidia,function = "ddr";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
 			vi_d11_pt3 {
 				nvidia,pins = "vi_d11_pt3";
+<<<<<<< HEAD
 				nvidia,function = "ddr";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_UP>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
 			};
 			vi_d0_pt4 {
 				nvidia,pins = "vi_d0_pt4";
+<<<<<<< HEAD
 				nvidia,function = "ddr";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -1151,7 +1191,11 @@
 			};
 			pu0 {
 				nvidia,pins = "pu0";
+<<<<<<< HEAD
 				nvidia,function = "owr";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -1172,7 +1216,11 @@
 			};
 			pu3 {
 				nvidia,pins = "pu3";
+<<<<<<< HEAD
 				nvidia,function = "pwm0";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -1193,7 +1241,11 @@
 			};
 			pu6 {
 				nvidia,pins = "pu6";
+<<<<<<< HEAD
 				nvidia,function = "pwm3";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -1221,7 +1273,11 @@
 			};
 			pv3 {
 				nvidia,pins = "pv3";
+<<<<<<< HEAD
 				nvidia,function = "clk_12m_out";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_DISABLE>;
@@ -1510,7 +1566,11 @@
 			};
 			pbb0 {
 				nvidia,pins = "pbb0";
+<<<<<<< HEAD
 				nvidia,function = "i2s4";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -1575,7 +1635,11 @@
 			};
 			pcc1 {
 				nvidia,pins = "pcc1";
+<<<<<<< HEAD
 				nvidia,function = "i2s4";
+=======
+				nvidia,function = "rsvd1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvidia,pull = <TEGRA_PIN_PULL_NONE>;
 				nvidia,tristate = <TEGRA_PIN_DISABLE>;
 				nvidia,enable-input = <TEGRA_PIN_ENABLE>;
@@ -1762,7 +1826,11 @@
 			compatible = "realtek,rt5640";
 			reg = <0x1c>;
 			interrupt-parent = <&gpio>;
+<<<<<<< HEAD
 			interrupts = <TEGRA_GPIO(X, 3) IRQ_TYPE_EDGE_FALLING>;
+=======
+			interrupts = <TEGRA_GPIO(X, 3) GPIO_ACTIVE_HIGH>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			realtek,ldo1-en-gpios =
 				<&gpio TEGRA_GPIO(X, 2) GPIO_ACTIVE_HIGH>;
 		};
@@ -1790,6 +1858,12 @@
 			vccio-supply = <&vdd_5v_in_reg>;
 
 			regulators {
+<<<<<<< HEAD
+=======
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				vdd1_reg: vdd1 {
 					regulator-name = "vddio_ddr_1v2";
 					regulator-min-microvolt = <1200000>;

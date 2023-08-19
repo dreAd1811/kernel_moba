@@ -228,7 +228,11 @@
 				gpio-controller;
 			};
 
+<<<<<<< HEAD
 			pio1: ucc_pin@1 {
+=======
+			pio1: ucc_pin@01 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pio-map = <
 			/* port  pin  dir  open_drain  assignment  has_irq */
 					0  3  1  0  1  0 	/* TxD0 */
@@ -255,7 +259,11 @@
 					2  9  1  0  3  0 	/* GTX_CLK - CLK10 */
 					2  8  2  0  1  0>;	/* GTX125 - CLK9 */
 			};
+<<<<<<< HEAD
 			pio2: ucc_pin@2 {
+=======
+			pio2: ucc_pin@02 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pio-map = <
 			/* port  pin  dir  open_drain  assignment  has_irq */
 					0  17 1  0  1  0   /* TxD0 */
@@ -393,12 +401,20 @@
 			reg = <0x2120 0x18>;
 			compatible = "fsl,ucc-mdio";
 
+<<<<<<< HEAD
 			phy0: ethernet-phy@0 {
+=======
+			phy0: ethernet-phy@00 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupt-parent = <&ipic>;
 				interrupts = <17 0x8>;
 				reg = <0x0>;
 			};
+<<<<<<< HEAD
 			phy1: ethernet-phy@1 {
+=======
+			phy1: ethernet-phy@01 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupt-parent = <&ipic>;
 				interrupts = <18 0x8>;
 				reg = <0x1>;

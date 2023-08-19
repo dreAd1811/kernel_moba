@@ -940,11 +940,19 @@ static ssize_t sonypi_misc_read(struct file *file, char __user *buf,
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t sonypi_misc_poll(struct file *file, poll_table *wait)
 {
 	poll_wait(file, &sonypi_device.fifo_proc_list, wait);
 	if (kfifo_len(&sonypi_device.fifo))
 		return EPOLLIN | EPOLLRDNORM;
+=======
+static unsigned int sonypi_misc_poll(struct file *file, poll_table *wait)
+{
+	poll_wait(file, &sonypi_device.fifo_proc_list, wait);
+	if (kfifo_len(&sonypi_device.fifo))
+		return POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

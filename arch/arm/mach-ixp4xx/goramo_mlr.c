@@ -7,6 +7,10 @@
 #include <linux/delay.h>
 #include <linux/gpio.h>
 #include <linux/hdlc.h>
+<<<<<<< HEAD
+=======
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/io.h>
 #include <linux/irq.h>
 #include <linux/kernel.h>
@@ -78,12 +82,15 @@
 static u32 hw_bits = 0xFFFFFFFD;    /* assume all hardware present */;
 static u8 control_value;
 
+<<<<<<< HEAD
 /*
  * FIXME: this is reimplementing I2C bit-bangining. Move this
  * over to using driver/i2c/busses/i2c-gpio.c like all other boards
  * and register proper I2C device(s) on the bus for this. (See
  * other IXP4xx boards for examples.)
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void set_scl(u8 value)
 {
 	gpio_set_value(GPIO_SCL, !!value);
@@ -222,6 +229,23 @@ static struct platform_device device_flash = {
 	.resource	= &flash_resource,
 };
 
+<<<<<<< HEAD
+=======
+
+/* I^2C interface */
+static struct i2c_gpio_platform_data i2c_data = {
+	.sda_pin	= GPIO_SDA,
+	.scl_pin	= GPIO_SCL,
+};
+
+static struct platform_device device_i2c = {
+	.name		= "i2c-gpio",
+	.id		= 0,
+	.dev		= { .platform_data = &i2c_data },
+};
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* IXP425 2 UART ports */
 static struct resource uart_resources[] = {
 	{
@@ -403,6 +427,12 @@ static void __init gmlr_init(void)
 	if (hw_bits & CFG_HW_HAS_HSS1)
 		device_tab[devices++] = &device_hss_tab[1]; /* max index 5 */
 
+<<<<<<< HEAD
+=======
+	if (hw_bits & CFG_HW_HAS_EEPROM)
+		device_tab[devices++] = &device_i2c; /* max index 6 */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio_request(GPIO_SCL, "SCL/clock");
 	gpio_request(GPIO_SDA, "SDA/data");
 	gpio_request(GPIO_STR, "strobe");

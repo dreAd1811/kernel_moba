@@ -29,7 +29,11 @@ static inline void xmon_register_spus(struct list_head *list) { };
 extern int cpus_are_in_xmon(void);
 #endif
 
+<<<<<<< HEAD
 extern __printf(1, 2) void xmon_printf(const char *format, ...);
+=======
+extern void xmon_printf(const char *format, ...);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __KERNEL __ */
 #endif /* __ASM_POWERPC_XMON_H */

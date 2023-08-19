@@ -22,6 +22,7 @@
  */
 
 #include "amdgpu.h"
+<<<<<<< HEAD
 #define MAX_KIQ_REG_WAIT	5000 /* in usecs, 5ms */
 #define MAX_KIQ_REG_BAILOUT_INTERVAL	5 /* in msecs, 5ms */
 #define MAX_KIQ_REG_TRY 20
@@ -45,6 +46,9 @@ bool amdgpu_virt_mmio_blocked(struct amdgpu_device *adev)
 	/* SCRATCH_REG0 to test. */
 	return RREG32_NO_KIQ(0xc040) == 0xffffffff;
 }
+=======
+#define MAX_KIQ_REG_WAIT	100000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int amdgpu_allocate_static_csa(struct amdgpu_device *adev)
 {
@@ -61,6 +65,7 @@ int amdgpu_allocate_static_csa(struct amdgpu_device *adev)
 	return 0;
 }
 
+<<<<<<< HEAD
 void amdgpu_free_static_csa(struct amdgpu_device *adev) {
 	amdgpu_bo_free_kernel(&adev->virt.csa_obj,
 						&adev->virt.csa_vmid0_addr,
@@ -77,6 +82,18 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 			  struct amdgpu_bo_va **bo_va)
 {
 	uint64_t csa_addr = amdgpu_csa_vaddr(adev) & AMDGPU_VA_HOLE_MASK;
+=======
+/*
+ * amdgpu_map_static_csa should be called during amdgpu_vm_init
+ * it maps virtual address "AMDGPU_VA_RESERVED_SIZE - AMDGPU_CSA_SIZE"
+ * to this VM, and each command submission of GFX should use this virtual
+ * address within META_DATA init package to support SRIOV gfx preemption.
+ */
+
+int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
+			  struct amdgpu_bo_va **bo_va)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ww_acquire_ctx ticket;
 	struct list_head list;
 	struct amdgpu_bo_list_entry pd;
@@ -104,7 +121,11 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	r = amdgpu_vm_alloc_pts(adev, (*bo_va)->base.vm, csa_addr,
+=======
+	r = amdgpu_vm_alloc_pts(adev, (*bo_va)->base.vm, AMDGPU_CSA_VADDR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				AMDGPU_CSA_SIZE);
 	if (r) {
 		DRM_ERROR("failed to allocate pts for static CSA, err=%d\n", r);
@@ -113,7 +134,11 @@ int amdgpu_map_static_csa(struct amdgpu_device *adev, struct amdgpu_vm *vm,
 		return r;
 	}
 
+<<<<<<< HEAD
 	r = amdgpu_vm_bo_map(adev, *bo_va, csa_addr, 0, AMDGPU_CSA_SIZE,
+=======
+	r = amdgpu_vm_bo_map(adev, *bo_va, AMDGPU_CSA_VADDR, 0, AMDGPU_CSA_SIZE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     AMDGPU_PTE_READABLE | AMDGPU_PTE_WRITEABLE |
 			     AMDGPU_PTE_EXECUTABLE);
 
@@ -135,18 +160,30 @@ void amdgpu_virt_init_setting(struct amdgpu_device *adev)
 	adev->enable_virtual_display = true;
 	adev->cg_flags = 0;
 	adev->pg_flags = 0;
+<<<<<<< HEAD
+=======
+
+	mutex_init(&adev->virt.lock_reset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 uint32_t amdgpu_virt_kiq_rreg(struct amdgpu_device *adev, uint32_t reg)
 {
+<<<<<<< HEAD
 	signed long r, cnt = 0;
 	unsigned long flags;
 	uint32_t seq;
+=======
+	signed long r;
+	uint32_t val;
+	struct dma_fence *f;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_kiq *kiq = &adev->gfx.kiq;
 	struct amdgpu_ring *ring = &kiq->ring;
 
 	BUG_ON(!ring->funcs->emit_rreg);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&kiq->ring_lock, flags);
 	amdgpu_ring_alloc(ring, 32);
 	amdgpu_ring_emit_rreg(ring, reg);
@@ -183,18 +220,43 @@ uint32_t amdgpu_virt_kiq_rreg(struct amdgpu_device *adev, uint32_t reg)
 failed_kiq_read:
 	pr_err("failed to read reg:%x\n", reg);
 	return ~0;
+=======
+	mutex_lock(&kiq->ring_mutex);
+	amdgpu_ring_alloc(ring, 32);
+	amdgpu_ring_emit_rreg(ring, reg);
+	amdgpu_fence_emit(ring, &f);
+	amdgpu_ring_commit(ring);
+	mutex_unlock(&kiq->ring_mutex);
+
+	r = dma_fence_wait_timeout(f, false, msecs_to_jiffies(MAX_KIQ_REG_WAIT));
+	dma_fence_put(f);
+	if (r < 1) {
+		DRM_ERROR("wait for kiq fence error: %ld.\n", r);
+		return ~0;
+	}
+
+	val = adev->wb.wb[adev->virt.reg_val_offs];
+
+	return val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void amdgpu_virt_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v)
 {
+<<<<<<< HEAD
 	signed long r, cnt = 0;
 	unsigned long flags;
 	uint32_t seq;
+=======
+	signed long r;
+	struct dma_fence *f;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_kiq *kiq = &adev->gfx.kiq;
 	struct amdgpu_ring *ring = &kiq->ring;
 
 	BUG_ON(!ring->funcs->emit_wreg);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&kiq->ring_lock, flags);
 	amdgpu_ring_alloc(ring, 32);
 	amdgpu_ring_emit_wreg(ring, reg, v);
@@ -231,6 +293,19 @@ void amdgpu_virt_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v)
 
 failed_kiq_write:
 	pr_err("failed to write reg:%x\n", reg);
+=======
+	mutex_lock(&kiq->ring_mutex);
+	amdgpu_ring_alloc(ring, 32);
+	amdgpu_ring_emit_wreg(ring, reg, v);
+	amdgpu_fence_emit(ring, &f);
+	amdgpu_ring_commit(ring);
+	mutex_unlock(&kiq->ring_mutex);
+
+	r = dma_fence_wait_timeout(f, false, msecs_to_jiffies(MAX_KIQ_REG_WAIT));
+	if (r < 1)
+		DRM_ERROR("wait for kiq fence error: %ld.\n", r);
+	dma_fence_put(f);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -301,6 +376,7 @@ int amdgpu_virt_reset_gpu(struct amdgpu_device *adev)
 }
 
 /**
+<<<<<<< HEAD
  * amdgpu_virt_wait_reset() - wait for reset gpu completed
  * @amdgpu:	amdgpu device.
  * Wait for GPU reset completed.
@@ -317,6 +393,8 @@ int amdgpu_virt_wait_reset(struct amdgpu_device *adev)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * amdgpu_virt_alloc_mm_table() - alloc memory for mm table
  * @amdgpu:	amdgpu device.
  * MM table is used by UVD and VCE for its initialization
@@ -361,6 +439,7 @@ void amdgpu_virt_free_mm_table(struct amdgpu_device *adev)
 			      (void *)&adev->virt.mm_table.cpu_addr);
 	adev->virt.mm_table.gpu_addr = 0;
 }
+<<<<<<< HEAD
 
 
 int amdgpu_virt_fw_reserve_get_checksum(void *obj,
@@ -437,3 +516,5 @@ void amdgpu_virt_init_data_exchange(struct amdgpu_device *adev)
 }
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

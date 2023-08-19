@@ -23,11 +23,19 @@
 
 struct gic_quirk {
 	const char *desc;
+<<<<<<< HEAD
 	bool (*init)(void *data);
+=======
+	void (*init)(void *data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 iidr;
 	u32 mask;
 };
 extern bool from_suspend;
+<<<<<<< HEAD
+=======
+extern struct irq_chip gic_arch_extn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_QCOM_SHOW_RESUME_IRQ
 extern int msm_show_resume_irq_mask;

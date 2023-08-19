@@ -1250,8 +1250,17 @@ out_disable_adv_intr:
 
 static void __alx_stop(struct alx_priv *alx)
 {
+<<<<<<< HEAD
 	alx_halt(alx);
 	alx_free_irq(alx);
+=======
+	alx_free_irq(alx);
+
+	cancel_work_sync(&alx->link_check_wk);
+	cancel_work_sync(&alx->reset_wk);
+
+	alx_halt(alx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	alx_free_rings(alx);
 	alx_free_napis(alx);
 }
@@ -1279,6 +1288,10 @@ static void alx_check_link(struct alx_priv *alx)
 	struct alx_hw *hw = &alx->hw;
 	unsigned long flags;
 	int old_speed;
+<<<<<<< HEAD
+=======
+	u8 old_duplex;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	/* clear PHY internal interrupt status, otherwise the main
@@ -1287,6 +1300,10 @@ static void alx_check_link(struct alx_priv *alx)
 	alx_clear_phy_intr(hw);
 
 	old_speed = hw->link_speed;
+<<<<<<< HEAD
+=======
+	old_duplex = hw->duplex;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = alx_read_phy_link(hw);
 	if (err < 0)
 		goto reset;
@@ -1861,9 +1878,12 @@ static void alx_remove(struct pci_dev *pdev)
 	struct alx_priv *alx = pci_get_drvdata(pdev);
 	struct alx_hw *hw = &alx->hw;
 
+<<<<<<< HEAD
 	cancel_work_sync(&alx->link_check_wk);
 	cancel_work_sync(&alx->reset_wk);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* restore permanent mac address */
 	alx_set_macaddr(hw, hw->perm_addr);
 

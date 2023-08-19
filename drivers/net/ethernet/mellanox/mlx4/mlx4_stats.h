@@ -63,6 +63,7 @@ struct mlx4_en_xdp_stats {
 #define NUM_XDP_STATS		3
 };
 
+<<<<<<< HEAD
 struct mlx4_en_phy_stats {
 	unsigned long rx_packets_phy;
 	unsigned long rx_bytes_phy;
@@ -71,6 +72,8 @@ struct mlx4_en_phy_stats {
 #define NUM_PHY_STATS		4
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NUM_MAIN_STATS	21
 
 #define MLX4_NUM_PRIORITIES	8
@@ -124,7 +127,11 @@ enum {
 
 #define NUM_ALL_STATS	(NUM_MAIN_STATS + NUM_PORT_STATS + NUM_PKT_STATS + \
 			 NUM_FLOW_STATS + NUM_PERF_STATS + NUM_PF_STATS + \
+<<<<<<< HEAD
 			 NUM_XDP_STATS + NUM_PHY_STATS)
+=======
+			 NUM_XDP_STATS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MLX4_FIND_NETDEV_STAT(n) (offsetof(struct net_device_stats, n) / \
 				  sizeof(((struct net_device_stats *)0)->n))

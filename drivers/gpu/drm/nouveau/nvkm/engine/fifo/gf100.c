@@ -559,7 +559,10 @@ gf100_fifo_oneinit(struct nvkm_fifo *base)
 	struct gf100_fifo *fifo = gf100_fifo(base);
 	struct nvkm_subdev *subdev = &fifo->base.engine.subdev;
 	struct nvkm_device *device = subdev->device;
+<<<<<<< HEAD
 	struct nvkm_vmm *bar = nvkm_bar_bar1_vmm(device);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/* Determine number of PBDMAs by checking valid enable bits. */
@@ -585,12 +588,21 @@ gf100_fifo_oneinit(struct nvkm_fifo *base)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = nvkm_vmm_get(bar, 12, nvkm_memory_size(fifo->user.mem),
 			   &fifo->user.bar);
 	if (ret)
 		return ret;
 
 	return nvkm_memory_map(fifo->user.mem, 0, bar, fifo->user.bar, NULL, 0);
+=======
+	ret = nvkm_bar_umap(device->bar, 128 * 0x1000, 12, &fifo->user.bar);
+	if (ret)
+		return ret;
+
+	nvkm_memory_map(fifo->user.mem, &fifo->user.bar, 0);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -629,7 +641,11 @@ gf100_fifo_init(struct nvkm_fifo *base)
 	}
 
 	nvkm_mask(device, 0x002200, 0x00000001, 0x00000001);
+<<<<<<< HEAD
 	nvkm_wr32(device, 0x002254, 0x10000000 | fifo->user.bar->addr >> 12);
+=======
+	nvkm_wr32(device, 0x002254, 0x10000000 | fifo->user.bar.offset >> 12);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvkm_wr32(device, 0x002100, 0xffffffff);
 	nvkm_wr32(device, 0x002140, 0x7fffffff);
@@ -640,11 +656,18 @@ static void *
 gf100_fifo_dtor(struct nvkm_fifo *base)
 {
 	struct gf100_fifo *fifo = gf100_fifo(base);
+<<<<<<< HEAD
 	struct nvkm_device *device = fifo->base.engine.subdev.device;
 	nvkm_vmm_put(nvkm_bar_bar1_vmm(device), &fifo->user.bar);
 	nvkm_memory_unref(&fifo->user.mem);
 	nvkm_memory_unref(&fifo->runlist.mem[0]);
 	nvkm_memory_unref(&fifo->runlist.mem[1]);
+=======
+	nvkm_vm_put(&fifo->user.bar);
+	nvkm_memory_del(&fifo->user.mem);
+	nvkm_memory_del(&fifo->runlist.mem[0]);
+	nvkm_memory_del(&fifo->runlist.mem[1]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return fifo;
 }
 

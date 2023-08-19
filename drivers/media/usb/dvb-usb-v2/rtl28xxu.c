@@ -1598,7 +1598,11 @@ static int rtl2831u_rc_query(struct dvb_usb_device *d)
 	struct rtl28xxu_dev *dev = d->priv;
 	u8 buf[5];
 	u32 rc_code;
+<<<<<<< HEAD
 	static const struct rtl28xxu_reg_val rc_nec_tab[] = {
+=======
+	struct rtl28xxu_reg_val rc_nec_tab[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x3033, 0x80 },
 		{ 0x3020, 0x43 },
 		{ 0x3021, 0x16 },
@@ -1732,7 +1736,11 @@ static int rtl2832u_rc_query(struct dvb_usb_device *d)
 		goto exit;
 
 	ret = rtl28xxu_rd_reg(d, IR_RX_BC, &buf[0]);
+<<<<<<< HEAD
 	if (ret || buf[0] > sizeof(buf))
+=======
+	if (ret)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 
 	len = buf[0];

@@ -12,7 +12,11 @@ __archpost:
 include scripts/Kbuild.include
 
 CMD_RELOCS = arch/mips/boot/tools/relocs
+<<<<<<< HEAD
 quiet_cmd_relocs = RELOCS $@
+=======
+quiet_cmd_relocs = RELOCS  $@
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       cmd_relocs = $(CMD_RELOCS) $@
 
 # `@true` prevents complaint when there is nothing to be done

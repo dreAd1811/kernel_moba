@@ -62,6 +62,11 @@
 
 	leds {
 		compatible = "gpio-leds";
+<<<<<<< HEAD
+=======
+		pinctrl-names = "default";
+		pinctrl-0 = <&led_pins_a1000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		red {
 			label = "a1000:red:usr";
@@ -77,6 +82,11 @@
 
 	reg_emac_3v3: emac-3v3 {
 		compatible = "regulator-fixed";
+<<<<<<< HEAD
+=======
+		pinctrl-names = "default";
+		pinctrl-0 = <&emac_power_pin_a1000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		regulator-name = "emac-3v3";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
@@ -125,6 +135,11 @@
 };
 
 &emac {
+<<<<<<< HEAD
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&emac_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy = <&phy1>;
 	status = "okay";
 };
@@ -134,6 +149,11 @@
 };
 
 &i2c0 {
+<<<<<<< HEAD
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	axp209: pmic@34 {
@@ -148,7 +168,11 @@
 
 &ir0 {
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&ir0_rx_pins>;
+=======
+	pinctrl-0 = <&ir0_rx_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -162,9 +186,18 @@
 };
 
 &mmc0 {
+<<<<<<< HEAD
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 7 1 GPIO_ACTIVE_LOW>; /* PH1 */
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc0_pins_a>;
+	vmmc-supply = <&reg_vcc3v3>;
+	bus-width = <4>;
+	cd-gpios = <&pio 7 1 GPIO_ACTIVE_HIGH>; /* PH1 */
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -176,6 +209,21 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&pio {
+	emac_power_pin_a1000: emac_power_pin@0 {
+		pins = "PH15";
+		function = "gpio_out";
+	};
+
+	led_pins_a1000: led_pins@0 {
+		pins = "PH10", "PH20";
+		function = "gpio_out";
+	};
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "axp209.dtsi"
 
 &reg_dcdc2 {
@@ -213,13 +261,21 @@
 
 &spdif {
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&spdif_tx_pin>;
+=======
+	pinctrl-0 = <&spdif_tx_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &uart0 {
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&uart0_pb_pins>;
+=======
+	pinctrl-0 = <&uart0_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

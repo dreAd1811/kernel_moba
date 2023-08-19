@@ -19,7 +19,11 @@
 
 #include <linux/platform_device.h>
 #include <linux/dvb/frontend.h>
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct zd1301_demod_platform_data - Platform data for the zd1301_demod driver
@@ -27,6 +31,10 @@
  * @reg_read: Register read callback.
  * @reg_write: Register write callback.
  */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct zd1301_demod_platform_data {
 	void *reg_priv;
 	int (*reg_read)(void *, u16, u8 *);
@@ -40,7 +48,12 @@ struct zd1301_demod_platform_data {
  *
  * Return: Pointer to DVB frontend which given platform device owns.
  */
+<<<<<<< HEAD
 struct dvb_frontend *zd1301_demod_get_dvb_frontend(struct platform_device *pdev);
+=======
+
+struct dvb_frontend *zd1301_demod_get_dvb_frontend(struct platform_device *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * zd1301_demod_get_i2c_adapter() - Get pointer to I2C adapter
@@ -48,6 +61,7 @@ struct dvb_frontend *zd1301_demod_get_dvb_frontend(struct platform_device *pdev)
  *
  * Return: Pointer to I2C adapter which given platform device owns.
  */
+<<<<<<< HEAD
 struct i2c_adapter *zd1301_demod_get_i2c_adapter(struct platform_device *pdev);
 
 #else
@@ -58,6 +72,13 @@ struct i2c_adapter *zd1301_demod_get_i2c_adapter(struct platform_device *pdev);
  *
  * Return: Pointer to %struct dvb_frontend or NULL if attach fails.
  */
+=======
+
+struct i2c_adapter *zd1301_demod_get_i2c_adapter(struct platform_device *);
+
+#else
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct dvb_frontend *zd1301_demod_get_dvb_frontend(struct platform_device *dev)
 {
 	printk(KERN_WARNING "%s: driver disabled by Kconfig\n", __func__);

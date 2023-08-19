@@ -56,16 +56,29 @@ static ssize_t fsl_timer_wakeup_show(struct device *dev,
 				struct device_attribute *attr,
 				char *buf)
 {
+<<<<<<< HEAD
 	time64_t interval = 0;
+=======
+	struct timeval interval;
+	int val = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&sysfs_lock);
 	if (fsl_wakeup->timer) {
 		mpic_get_remain_time(fsl_wakeup->timer, &interval);
+<<<<<<< HEAD
 		interval++;
 	}
 	mutex_unlock(&sysfs_lock);
 
 	return sprintf(buf, "%lld\n", interval);
+=======
+		val = interval.tv_sec + 1;
+	}
+	mutex_unlock(&sysfs_lock);
+
+	return sprintf(buf, "%d\n", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t fsl_timer_wakeup_store(struct device *dev,
@@ -73,10 +86,18 @@ static ssize_t fsl_timer_wakeup_store(struct device *dev,
 				const char *buf,
 				size_t count)
 {
+<<<<<<< HEAD
 	time64_t interval;
 	int ret;
 
 	if (kstrtoll(buf, 0, &interval))
+=======
+	struct timeval interval;
+	int ret;
+
+	interval.tv_usec = 0;
+	if (kstrtol(buf, 0, &interval.tv_sec))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	mutex_lock(&sysfs_lock);
@@ -87,13 +108,21 @@ static ssize_t fsl_timer_wakeup_store(struct device *dev,
 		fsl_wakeup->timer = NULL;
 	}
 
+<<<<<<< HEAD
 	if (!interval) {
+=======
+	if (!interval.tv_sec) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&sysfs_lock);
 		return count;
 	}
 
 	fsl_wakeup->timer = mpic_request_timer(fsl_mpic_timer_irq,
+<<<<<<< HEAD
 						fsl_wakeup, interval);
+=======
+						fsl_wakeup, &interval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!fsl_wakeup->timer) {
 		mutex_unlock(&sysfs_lock);
 		return -EINVAL;

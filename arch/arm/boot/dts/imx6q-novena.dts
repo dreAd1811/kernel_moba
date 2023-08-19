@@ -55,11 +55,14 @@
 	model = "Kosagi Novena Dual/Quad";
 	compatible = "kosagi,imx6q-novena", "fsl,imx6q";
 
+<<<<<<< HEAD
 	/* Will be filled by the bootloader */
 	memory@10000000 {
 		reg = <0x10000000 0>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chosen {
 		stdout-path = &uart2;
 	};
@@ -163,6 +166,10 @@
 		regulator-max-microvolt = <1500000>;
 		gpio = <&gpio7 12 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+<<<<<<< HEAD
+=======
+		regulator-always-on;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	reg_sata: regulator-sata {
@@ -259,7 +266,11 @@
 		reg = <0x68>;
 	};
 
+<<<<<<< HEAD
 	sbs_battery: bq20z75@b {
+=======
+	sbs_battery: bq20z75@0b {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "sbs,sbs-battery";
 		reg = <0x0b>;
 		sbs,i2c-retry-count = <50>;
@@ -268,6 +279,11 @@
 	touch: stmpe811@44 {
 		compatible = "st,stmpe811";
 		reg = <0x44>;
+<<<<<<< HEAD
+=======
+		#address-cells = <1>;
+		#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irq-gpio = <&gpio5 13 GPIO_ACTIVE_HIGH>;
 		id = <0>;
 		blocks = <0x5>;
@@ -297,7 +313,11 @@
 	pinctrl-0 = <&pinctrl_i2c2_novena>;
 	status = "okay";
 
+<<<<<<< HEAD
 	pmic: pfuze100@8 {
+=======
+	pmic: pfuze100@08 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,pfuze100";
 		reg = <0x08>;
 
@@ -449,7 +469,10 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie_novena>;
 	reset-gpio = <&gpio3 29 GPIO_ACTIVE_LOW>;
+<<<<<<< HEAD
 	vpcie-supply = <&reg_pcie>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

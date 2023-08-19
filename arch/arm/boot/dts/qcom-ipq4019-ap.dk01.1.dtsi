@@ -20,6 +20,7 @@
 	model = "Qualcomm Technologies, Inc. IPQ4019/AP-DK01.1";
 	compatible = "qcom,ipq4019";
 
+<<<<<<< HEAD
 	aliases {
 		serial0 = &blsp1_uart1;
 	};
@@ -28,6 +29,8 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		rng@22000 {
 			status = "ok";
@@ -69,7 +72,11 @@
 			status = "ok";
 		};
 
+<<<<<<< HEAD
 		spi@78b5000 {
+=======
+		spi_0: spi@78b5000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-0 = <&spi_0_pins>;
 			pinctrl-names = "default";
 			status = "ok";

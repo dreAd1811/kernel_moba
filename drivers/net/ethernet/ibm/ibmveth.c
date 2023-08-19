@@ -82,7 +82,11 @@ module_param(rx_flush, uint, 0644);
 MODULE_PARM_DESC(rx_flush, "Flush receive buffers before use");
 
 static bool old_large_send __read_mostly;
+<<<<<<< HEAD
 module_param(old_large_send, bool, 0444);
+=======
+module_param(old_large_send, bool, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(old_large_send,
 	"Use old large send method on firmware that supports the new method");
 
@@ -171,7 +175,11 @@ static int ibmveth_alloc_buffer_pool(struct ibmveth_buff_pool *pool)
 {
 	int i;
 
+<<<<<<< HEAD
 	pool->free_map = kmalloc_array(pool->size, sizeof(u16), GFP_KERNEL);
+=======
+	pool->free_map = kmalloc(sizeof(u16) * pool->size, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pool->free_map)
 		return -1;
@@ -1695,7 +1703,11 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
 	}
 
 	netdev->min_mtu = IBMVETH_MIN_MTU;
+<<<<<<< HEAD
 	netdev->max_mtu = ETH_MAX_MTU;
+=======
+	netdev->max_mtu = ETH_MAX_MTU - IBMVETH_BUFF_OH;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(netdev->dev_addr, mac_addr_p, ETH_ALEN);
 

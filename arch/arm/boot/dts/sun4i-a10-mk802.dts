@@ -56,6 +56,7 @@
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
+<<<<<<< HEAD
 
 	hdmi-connector {
 		compatible = "hdmi-connector";
@@ -67,16 +68,21 @@
 			};
 		};
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &codec {
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &de {
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehci0 {
 	status = "okay";
 };
@@ -85,6 +91,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &hdmi {
 	status = "okay";
 };
@@ -99,6 +106,15 @@
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 7 1 GPIO_ACTIVE_LOW>; /* PH1 */
+=======
+&mmc0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc0_pins_a>;
+	vmmc-supply = <&reg_vcc3v3>;
+	bus-width = <4>;
+	cd-gpios = <&pio 7 1 GPIO_ACTIVE_HIGH>; /* PH1 */
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -110,6 +126,26 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&pio {
+	usb0_id_detect_pin: usb0_id_detect_pin@0 {
+		pins = "PH4";
+		function = "gpio_in";
+	};
+
+	usb0_vbus_detect_pin: usb0_vbus_detect_pin@0 {
+		pins = "PH5";
+		function = "gpio_in";
+	};
+
+	usb2_vbus_pin_mk802: usb2_vbus_pin@0 {
+		pins = "PH12";
+		function = "gpio_out";
+	};
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &reg_usb0_vbus {
 	status = "okay";
 };
@@ -119,13 +155,21 @@
 };
 
 &reg_usb2_vbus {
+<<<<<<< HEAD
+=======
+	pinctrl-0 = <&usb2_vbus_pin_mk802>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio = <&pio 7 12 GPIO_ACTIVE_HIGH>; /* PH12 */
 	status = "okay";
 };
 
 &uart0 {
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&uart0_pb_pins>;
+=======
+	pinctrl-0 = <&uart0_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -135,6 +179,11 @@
 };
 
 &usbphy {
+<<<<<<< HEAD
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&usb0_id_detect_pin>, <&usb0_vbus_detect_pin>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb0_id_det-gpios = <&pio 7 4 GPIO_ACTIVE_HIGH>; /* PH4 */
 	usb0_vbus_det-gpios = <&pio 7 5 GPIO_ACTIVE_HIGH>; /* PH5 */
 	usb0_vbus-supply = <&reg_usb0_vbus>;

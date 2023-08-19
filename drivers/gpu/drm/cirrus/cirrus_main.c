@@ -10,6 +10,7 @@
  */
 #include <drm/drmP.h>
 #include <drm/drm_crtc_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
 
 #include "cirrus_drv.h"
@@ -21,14 +22,41 @@ static const struct drm_framebuffer_funcs cirrus_fb_funcs = {
 
 int cirrus_framebuffer_init(struct drm_device *dev,
 			    struct drm_framebuffer *gfb,
+=======
+
+#include "cirrus_drv.h"
+
+
+static void cirrus_user_framebuffer_destroy(struct drm_framebuffer *fb)
+{
+	struct cirrus_framebuffer *cirrus_fb = to_cirrus_framebuffer(fb);
+
+	drm_gem_object_put_unlocked(cirrus_fb->obj);
+	drm_framebuffer_cleanup(fb);
+	kfree(fb);
+}
+
+static const struct drm_framebuffer_funcs cirrus_fb_funcs = {
+	.destroy = cirrus_user_framebuffer_destroy,
+};
+
+int cirrus_framebuffer_init(struct drm_device *dev,
+			    struct cirrus_framebuffer *gfb,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    const struct drm_mode_fb_cmd2 *mode_cmd,
 			    struct drm_gem_object *obj)
 {
 	int ret;
 
+<<<<<<< HEAD
 	drm_helper_mode_fill_fb_struct(dev, gfb, mode_cmd);
 	gfb->obj[0] = obj;
 	ret = drm_framebuffer_init(dev, gfb, &cirrus_fb_funcs);
+=======
+	drm_helper_mode_fill_fb_struct(dev, &gfb->base, mode_cmd);
+	gfb->obj = obj;
+	ret = drm_framebuffer_init(dev, &gfb->base, &cirrus_fb_funcs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("drm_framebuffer_init failed: %d\n", ret);
 		return ret;
@@ -43,7 +71,11 @@ cirrus_user_framebuffer_create(struct drm_device *dev,
 {
 	struct cirrus_device *cdev = dev->dev_private;
 	struct drm_gem_object *obj;
+<<<<<<< HEAD
 	struct drm_framebuffer *fb;
+=======
+	struct cirrus_framebuffer *cirrus_fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 bpp;
 	int ret;
 
@@ -57,12 +89,18 @@ cirrus_user_framebuffer_create(struct drm_device *dev,
 	if (obj == NULL)
 		return ERR_PTR(-ENOENT);
 
+<<<<<<< HEAD
 	fb = kzalloc(sizeof(*fb), GFP_KERNEL);
 	if (!fb) {
+=======
+	cirrus_fb = kzalloc(sizeof(*cirrus_fb), GFP_KERNEL);
+	if (!cirrus_fb) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_gem_object_put_unlocked(obj);
 		return ERR_PTR(-ENOMEM);
 	}
 
+<<<<<<< HEAD
 	ret = cirrus_framebuffer_init(dev, fb, mode_cmd, obj);
 	if (ret) {
 		drm_gem_object_put_unlocked(obj);
@@ -70,6 +108,15 @@ cirrus_user_framebuffer_create(struct drm_device *dev,
 		return ERR_PTR(ret);
 	}
 	return fb;
+=======
+	ret = cirrus_framebuffer_init(dev, cirrus_fb, mode_cmd, obj);
+	if (ret) {
+		drm_gem_object_put_unlocked(obj);
+		kfree(cirrus_fb);
+		return ERR_PTR(ret);
+	}
+	return &cirrus_fb->base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct drm_mode_config_funcs cirrus_mode_funcs = {

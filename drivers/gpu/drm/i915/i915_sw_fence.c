@@ -9,7 +9,10 @@
 
 #include <linux/slab.h>
 #include <linux/dma-fence.h>
+<<<<<<< HEAD
 #include <linux/irq_work.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/reservation.h>
 
 #include "i915_sw_fence.h"
@@ -41,11 +44,14 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
 	debug_object_init(fence, &i915_sw_fence_debug_descr);
 }
 
+<<<<<<< HEAD
 static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
 {
 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void debug_fence_activate(struct i915_sw_fence *fence)
 {
 	debug_object_activate(fence, &i915_sw_fence_debug_descr);
@@ -84,10 +90,13 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
 {
 }
 
+<<<<<<< HEAD
 static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
 {
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void debug_fence_activate(struct i915_sw_fence *fence)
 {
 }
@@ -303,7 +312,10 @@ static int __i915_sw_fence_await_sw_fence(struct i915_sw_fence *fence,
 	int pending;
 
 	debug_fence_assert(fence);
+<<<<<<< HEAD
 	might_sleep_if(gfpflags_allow_blocking(gfp));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (i915_sw_fence_done(signaler))
 		return 0;
@@ -365,6 +377,7 @@ int i915_sw_fence_await_sw_fence_gfp(struct i915_sw_fence *fence,
 struct i915_sw_dma_fence_cb {
 	struct dma_fence_cb base;
 	struct i915_sw_fence *fence;
+<<<<<<< HEAD
 };
 
 struct i915_sw_dma_fence_cb_timer {
@@ -375,11 +388,33 @@ struct i915_sw_dma_fence_cb_timer {
 	struct rcu_head rcu;
 };
 
+=======
+	struct dma_fence *dma;
+	struct timer_list timer;
+};
+
+static void timer_i915_sw_fence_wake(unsigned long data)
+{
+	struct i915_sw_dma_fence_cb *cb = (struct i915_sw_dma_fence_cb *)data;
+
+	pr_warn("asynchronous wait on fence %s:%s:%x timed out\n",
+		cb->dma->ops->get_driver_name(cb->dma),
+		cb->dma->ops->get_timeline_name(cb->dma),
+		cb->dma->seqno);
+	dma_fence_put(cb->dma);
+	cb->dma = NULL;
+
+	i915_sw_fence_complete(cb->fence);
+	cb->timer.function = NULL;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void dma_i915_sw_fence_wake(struct dma_fence *dma,
 				   struct dma_fence_cb *data)
 {
 	struct i915_sw_dma_fence_cb *cb = container_of(data, typeof(*cb), base);
 
+<<<<<<< HEAD
 	i915_sw_fence_complete(cb->fence);
 	kfree(cb);
 }
@@ -424,6 +459,14 @@ static void irq_i915_sw_fence_work(struct irq_work *wrk)
 	dma_fence_put(cb->dma);
 
 	kfree_rcu(cb, rcu);
+=======
+	del_timer_sync(&cb->timer);
+	if (cb->timer.function)
+		i915_sw_fence_complete(cb->fence);
+	dma_fence_put(cb->dma);
+
+	kfree(cb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int i915_sw_fence_await_dma_fence(struct i915_sw_fence *fence,
@@ -432,19 +475,29 @@ int i915_sw_fence_await_dma_fence(struct i915_sw_fence *fence,
 				  gfp_t gfp)
 {
 	struct i915_sw_dma_fence_cb *cb;
+<<<<<<< HEAD
 	dma_fence_func_t func;
 	int ret;
 
 	debug_fence_assert(fence);
 	might_sleep_if(gfpflags_allow_blocking(gfp));
+=======
+	int ret;
+
+	debug_fence_assert(fence);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dma_fence_is_signaled(dma))
 		return 0;
 
+<<<<<<< HEAD
 	cb = kmalloc(timeout ?
 		     sizeof(struct i915_sw_dma_fence_cb_timer) :
 		     sizeof(struct i915_sw_dma_fence_cb),
 		     gfp);
+=======
+	cb = kmalloc(sizeof(*cb), gfp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cb) {
 		if (!gfpflags_allow_blocking(gfp))
 			return -ENOMEM;
@@ -455,6 +508,7 @@ int i915_sw_fence_await_dma_fence(struct i915_sw_fence *fence,
 	cb->fence = fence;
 	i915_sw_fence_await(fence);
 
+<<<<<<< HEAD
 	func = dma_i915_sw_fence_wake;
 	if (timeout) {
 		struct i915_sw_dma_fence_cb_timer *timer =
@@ -475,6 +529,22 @@ int i915_sw_fence_await_dma_fence(struct i915_sw_fence *fence,
 		ret = 1;
 	} else {
 		func(dma, &cb->base);
+=======
+	cb->dma = NULL;
+	__setup_timer(&cb->timer,
+		      timer_i915_sw_fence_wake, (unsigned long)cb,
+		      TIMER_IRQSAFE);
+	if (timeout) {
+		cb->dma = dma_fence_get(dma);
+		mod_timer(&cb->timer, round_jiffies_up(jiffies + timeout));
+	}
+
+	ret = dma_fence_add_callback(dma, &cb->base, dma_i915_sw_fence_wake);
+	if (ret == 0) {
+		ret = 1;
+	} else {
+		dma_i915_sw_fence_wake(dma, &cb->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret == -ENOENT) /* fence already signaled */
 			ret = 0;
 	}
@@ -493,7 +563,10 @@ int i915_sw_fence_await_reservation(struct i915_sw_fence *fence,
 	int ret = 0, pending;
 
 	debug_fence_assert(fence);
+<<<<<<< HEAD
 	might_sleep_if(gfpflags_allow_blocking(gfp));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (write) {
 		struct dma_fence **shared;
@@ -544,6 +617,9 @@ int i915_sw_fence_await_reservation(struct i915_sw_fence *fence,
 }
 
 #if IS_ENABLED(CONFIG_DRM_I915_SELFTEST)
+<<<<<<< HEAD
 #include "selftests/lib_sw_fence.c"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "selftests/i915_sw_fence.c"
 #endif

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
  *
@@ -18,8 +21,11 @@
 #include <linux/debugfs.h>
 #include <linux/device.h>
 #include <linux/iommu.h>
+<<<<<<< HEAD
 #include <linux/of_iommu.h>
 #include <linux/of_address.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of.h>
 #include <linux/platform_device.h>
 #include <linux/slab.h>
@@ -78,18 +84,88 @@ static const char *iommu_debug_attr_to_string(enum iommu_attr attr)
 		return "DOMAIN_ATTR_FAST";
 	case DOMAIN_ATTR_EARLY_MAP:
 		return "DOMAIN_ATTR_EARLY_MAP";
+<<<<<<< HEAD
 	case DOMAIN_ATTR_FAULT_MODEL_NO_CFRE:
 		return "DOMAIN_ATTR_FAULT_MODEL_NO_CFRE";
 	case DOMAIN_ATTR_FAULT_MODEL_NO_STALL:
 		return "DOMAIN_ATTR_FAULT_MODEL_NO_STALL";
 	case DOMAIN_ATTR_FAULT_MODEL_HUPCF:
 		return "DOMAIN_ATTR_FAULT_MODEL_HUPCF";
+=======
+	case DOMAIN_ATTR_CB_STALL_DISABLE:
+		return "DOMAIN_ATTR_CB_STALL_DISABLE";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return "Unknown attr!";
 	}
 }
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_IOMMU_DEBUG_TRACKING
+
+static DEFINE_MUTEX(iommu_debug_attachments_lock);
+static LIST_HEAD(iommu_debug_attachments);
+
+/*
+ * Each group may have more than one domain; but each domain may
+ * only have one group.
+ * Used by debug tools to display the name of the device(s) associated
+ * with a particular domain.
+ */
+struct iommu_debug_attachment {
+	struct iommu_domain *domain;
+	struct iommu_group *group;
+	struct list_head list;
+};
+
+void iommu_debug_attach_device(struct iommu_domain *domain,
+			       struct device *dev)
+{
+	struct iommu_debug_attachment *attach;
+	struct iommu_group *group;
+
+	group = dev->iommu_group;
+	if (!group)
+		return;
+
+	mutex_lock(&iommu_debug_attachments_lock);
+	list_for_each_entry(attach, &iommu_debug_attachments, list)
+		if ((attach->domain == domain) && (attach->group == group))
+			goto out;
+
+	attach = kzalloc(sizeof(*attach), GFP_KERNEL);
+	if (!attach)
+		goto out;
+
+	attach->domain = domain;
+	attach->group = group;
+	INIT_LIST_HEAD(&attach->list);
+
+	list_add(&attach->list, &iommu_debug_attachments);
+out:
+	mutex_unlock(&iommu_debug_attachments_lock);
+}
+
+void iommu_debug_domain_remove(struct iommu_domain *domain)
+{
+	struct iommu_debug_attachment *it, *tmp;
+
+	mutex_lock(&iommu_debug_attachments_lock);
+	list_for_each_entry_safe(it, tmp, &iommu_debug_attachments, list) {
+		if (it->domain != domain)
+			continue;
+		list_del(&it->list);
+		kfree(it);
+	}
+
+	mutex_unlock(&iommu_debug_attachments_lock);
+}
+
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_IOMMU_TESTS
 
 #ifdef CONFIG_64BIT
@@ -121,8 +197,12 @@ struct iommu_debug_device {
 	struct list_head list;
 	struct mutex clk_lock;
 	unsigned int clk_count;
+<<<<<<< HEAD
 	/* Protects domain */
 	struct mutex state_lock;
+=======
+	struct mutex debug_dev_lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARM64_PTDUMP_CORE
 	struct ptdump_info pt_info;
 #endif
@@ -172,6 +252,7 @@ static void iommu_debug_destroy_phoney_sg_table(struct device *dev,
 	sg_free_table(table);
 }
 
+<<<<<<< HEAD
 struct iommu_debug_attr {
 	unsigned long dma_type;
 	int vmid;
@@ -331,6 +412,12 @@ static void iommu_debug_dma_deconfigure(struct iommu_debug_device *ddev)
 
 static const char * const _size_to_string(unsigned long size)
 {
+=======
+static const char * const _size_to_string(unsigned long size)
+{
+	static const char str[] =
+		"\"unknown size, please add to %s function\", __func__";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (size) {
 	case SZ_4K:
 		return "4K";
@@ -353,7 +440,11 @@ static const char * const _size_to_string(unsigned long size)
 	case SZ_1M * 32:
 		return "32M";
 	}
+<<<<<<< HEAD
 	return "unknown size, please add to _size_to_string function";
+=======
+	return str;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nr_iters_set(void *data, u64 val)
@@ -375,6 +466,7 @@ static int nr_iters_get(void *data, u64 *val)
 DEFINE_SIMPLE_ATTRIBUTE(iommu_debug_nr_iters_ops,
 			nr_iters_get, nr_iters_set, "%llu\n");
 
+<<<<<<< HEAD
 static void iommu_debug_device_profiling(struct seq_file *s,
 					struct iommu_debug_device *ddev,
 					struct iommu_debug_attr *attrs,
@@ -391,6 +483,47 @@ static void iommu_debug_device_profiling(struct seq_file *s,
 	domain = ddev->domain;
 
 	iommu_debug_print_attrs(s, attrs);
+=======
+static void iommu_debug_device_profiling(struct seq_file *s, struct device *dev,
+					 enum iommu_attr attrs[],
+					 void *attr_values[], int nattrs,
+					 const size_t sizes[])
+{
+	int i;
+	const size_t *sz;
+	struct iommu_domain *domain;
+	unsigned long iova = 0x10000;
+	phys_addr_t paddr = 0xa000;
+
+	domain = iommu_domain_alloc(&platform_bus_type);
+	if (!domain) {
+		seq_puts(s, "Couldn't allocate domain\n");
+		return;
+	}
+
+	seq_puts(s, "Domain attributes: [ ");
+	for (i = 0; i < nattrs; ++i) {
+		/* not all attrs are ints, but this will get us by for now */
+		seq_printf(s, "%s=%d%s", iommu_debug_attr_to_string(attrs[i]),
+			   *((int *)attr_values[i]),
+			   i < nattrs ? " " : "");
+	}
+	seq_puts(s, "]\n");
+	for (i = 0; i < nattrs; ++i) {
+		if (iommu_domain_set_attr(domain, attrs[i], attr_values[i])) {
+			seq_printf(s, "Couldn't set %d to the value at %p\n",
+				 attrs[i], attr_values[i]);
+			goto out_domain_free;
+		}
+	}
+
+	domain->is_debug_domain = true;
+	if (iommu_attach_group(domain, dev->iommu_group)) {
+		seq_puts(s,
+			 "Couldn't attach new domain to device. Is it already attached?\n");
+		goto out_domain_free;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	seq_printf(s, "(average over %d iterations)\n", iters_per_op);
 	seq_printf(s, "%8s %19s %16s\n", "size", "iommu_map", "iommu_unmap");
@@ -507,7 +640,13 @@ next:
 	}
 
 out_detach:
+<<<<<<< HEAD
 	iommu_debug_dma_deconfigure(ddev);
+=======
+	iommu_detach_group(domain, dev->iommu_group);
+out_domain_free:
+	iommu_domain_free(domain);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int iommu_debug_profiling_show(struct seq_file *s, void *ignored)
@@ -515,10 +654,23 @@ static int iommu_debug_profiling_show(struct seq_file *s, void *ignored)
 	struct iommu_debug_device *ddev = s->private;
 	const size_t sizes[] = { SZ_4K, SZ_64K, SZ_1M, SZ_2M, SZ_1M * 12,
 					SZ_1M * 24, SZ_1M * 32, 0 };
+<<<<<<< HEAD
 
 	mutex_lock(&ddev->state_lock);
 	iommu_debug_device_profiling(s, ddev, &std_attr, sizes);
 	mutex_unlock(&ddev->state_lock);
+=======
+	enum iommu_attr attrs[] = {
+		DOMAIN_ATTR_ATOMIC,
+	};
+	int htw_disable = 1, atomic = 1;
+	void *attr_values[] = { &htw_disable, &atomic };
+
+	mutex_lock(&ddev->debug_dev_lock);
+	iommu_debug_device_profiling(s, ddev->dev, attrs, attr_values,
+				     ARRAY_SIZE(attrs), sizes);
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -541,10 +693,24 @@ static int iommu_debug_secure_profiling_show(struct seq_file *s, void *ignored)
 	const size_t sizes[] = { SZ_4K, SZ_64K, SZ_1M, SZ_2M, SZ_1M * 12,
 					SZ_1M * 24, SZ_1M * 32, 0 };
 
+<<<<<<< HEAD
 	mutex_lock(&ddev->state_lock);
 	iommu_debug_device_profiling(s, ddev, &secure_attr, sizes);
 	mutex_unlock(&ddev->state_lock);
 
+=======
+	enum iommu_attr attrs[] = {
+		DOMAIN_ATTR_ATOMIC,
+		DOMAIN_ATTR_SECURE_VMID,
+	};
+	int one = 1, secure_vmid = VMID_CP_PIXEL;
+	void *attr_values[] = { &one, &secure_vmid };
+
+	mutex_lock(&ddev->debug_dev_lock);
+	iommu_debug_device_profiling(s, ddev->dev, attrs, attr_values,
+				     ARRAY_SIZE(attrs), sizes);
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -566,11 +732,25 @@ static int iommu_debug_profiling_fast_show(struct seq_file *s, void *ignored)
 {
 	struct iommu_debug_device *ddev = s->private;
 	size_t sizes[] = {SZ_4K, SZ_8K, SZ_16K, SZ_64K, 0};
+<<<<<<< HEAD
 
 	mutex_lock(&ddev->state_lock);
 	iommu_debug_device_profiling(s, ddev, &fastmap_attr, sizes);
 	mutex_unlock(&ddev->state_lock);
 
+=======
+	enum iommu_attr attrs[] = {
+		DOMAIN_ATTR_FAST,
+		DOMAIN_ATTR_ATOMIC,
+	};
+	int one = 1;
+	void *attr_values[] = { &one, &one };
+
+	mutex_lock(&ddev->debug_dev_lock);
+	iommu_debug_device_profiling(s, ddev->dev, attrs, attr_values,
+				     ARRAY_SIZE(attrs), sizes);
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -595,9 +775,16 @@ static int iommu_debug_profiling_fast_dma_api_show(struct seq_file *s,
 	struct iommu_debug_device *ddev = s->private;
 	struct device *dev = ddev->dev;
 	u64 map_elapsed_ns[10], unmap_elapsed_ns[10];
+<<<<<<< HEAD
 	struct iommu_domain *domain;
 	dma_addr_t dma_addr;
 	void *virt;
+=======
+	struct dma_iommu_mapping *mapping;
+	dma_addr_t dma_addr;
+	void *virt;
+	int fast = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char * const extra_labels[] = {
 		"not coherent",
 		"coherent",
@@ -607,12 +794,16 @@ static int iommu_debug_profiling_fast_dma_api_show(struct seq_file *s,
 		DMA_ATTR_SKIP_CPU_SYNC,
 	};
 
+<<<<<<< HEAD
 	mutex_lock(&ddev->state_lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	virt = kmalloc(1518, GFP_KERNEL);
 	if (!virt)
 		goto out;
 
+<<<<<<< HEAD
 	if (iommu_debug_dma_reconfigure(ddev, &fastmap_attr, 0, SZ_1G * 4ULL)) {
 		seq_puts(s, "setup failed\n");
 		goto out_kfree;
@@ -620,6 +811,26 @@ static int iommu_debug_profiling_fast_dma_api_show(struct seq_file *s,
 	domain = ddev->domain;
 
 	if (iommu_enable_config_clocks(domain)) {
+=======
+	mapping = arm_iommu_create_mapping(&platform_bus_type, 0, SZ_1G * 4ULL);
+	if (!mapping) {
+		seq_puts(s, "fast_smmu_create_mapping failed\n");
+		goto out_kfree;
+	}
+
+	if (iommu_domain_set_attr(mapping->domain, DOMAIN_ATTR_FAST, &fast)) {
+		seq_puts(s, "iommu_domain_set_attr failed\n");
+		goto out_release_mapping;
+	}
+
+	mapping->domain->is_debug_domain = true;
+	if (arm_iommu_attach_device(dev, mapping)) {
+		seq_puts(s, "fast_smmu_attach_device failed\n");
+		goto out_release_mapping;
+	}
+
+	if (iommu_enable_config_clocks(mapping->domain)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		seq_puts(s, "Couldn't enable clocks\n");
 		goto out_detach;
 	}
@@ -675,6 +886,7 @@ static int iommu_debug_profiling_fast_dma_api_show(struct seq_file *s,
 	}
 
 out_disable_config_clocks:
+<<<<<<< HEAD
 	iommu_disable_config_clocks(domain);
 out_detach:
 	iommu_debug_dma_deconfigure(ddev);
@@ -682,6 +894,16 @@ out_kfree:
 	kfree(virt);
 out:
 	mutex_unlock(&ddev->state_lock);
+=======
+	iommu_disable_config_clocks(mapping->domain);
+out_detach:
+	arm_iommu_detach_device(dev);
+out_release_mapping:
+	arm_iommu_release_mapping(mapping);
+out_kfree:
+	kfree(virt);
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1125,7 +1347,11 @@ static int __functional_dma_api_basic_test(struct device *dev,
 		for (j = 0; j < size; ++j) {
 			if (data[j] != 0xa5) {
 				dev_err_ratelimited(dev,
+<<<<<<< HEAD
 					       "data[%d] != 0xa5\n", data[j]);
+=======
+						"data[%d] != 0xa5\n", data[j]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = -EINVAL;
 				goto out;
 			}
@@ -1220,6 +1446,7 @@ static int __apply_to_new_mapping(struct seq_file *s,
 					      void *priv),
 				    void *priv)
 {
+<<<<<<< HEAD
 	struct iommu_domain *domain;
 	struct iommu_debug_device *ddev = s->private;
 	struct device *dev = ddev->dev;
@@ -1234,12 +1461,36 @@ static int __apply_to_new_mapping(struct seq_file *s,
 	domain = ddev->domain;
 
 	if (iommu_domain_get_attr(domain, DOMAIN_ATTR_PT_BASE_ADDR,
+=======
+	struct dma_iommu_mapping *mapping;
+	struct iommu_debug_device *ddev = s->private;
+	struct device *dev = ddev->dev;
+	int ret = -EINVAL, fast = 1;
+	phys_addr_t pt_phys;
+
+	mapping = arm_iommu_create_mapping(&platform_bus_type, 0,
+						(SZ_1G * 4ULL));
+	if (!mapping)
+		goto out;
+
+	if (iommu_domain_set_attr(mapping->domain, DOMAIN_ATTR_FAST, &fast)) {
+		seq_puts(s, "iommu_domain_set_attr failed\n");
+		goto out_release_mapping;
+	}
+
+	mapping->domain->is_debug_domain = true;
+	if (arm_iommu_attach_device(dev, mapping))
+		goto out_release_mapping;
+
+	if (iommu_domain_get_attr(mapping->domain, DOMAIN_ATTR_PT_BASE_ADDR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  &pt_phys)) {
 		ds_printf(dev, s, "Couldn't get page table base address\n");
 		goto out_release_mapping;
 	}
 
 	dev_err_ratelimited(dev, "testing with pgtables at %pa\n", &pt_phys);
+<<<<<<< HEAD
 	if (iommu_enable_config_clocks(domain)) {
 		ds_printf(dev, s, "Couldn't enable clocks\n");
 		goto out_release_mapping;
@@ -1251,6 +1502,19 @@ out_release_mapping:
 	iommu_debug_dma_deconfigure(ddev);
 out:
 	mutex_unlock(&ddev->state_lock);
+=======
+	if (iommu_enable_config_clocks(mapping->domain)) {
+		ds_printf(dev, s, "Couldn't enable clocks\n");
+		goto out_release_mapping;
+	}
+	ret = fn(dev, s, mapping->domain, priv);
+	iommu_disable_config_clocks(mapping->domain);
+
+	arm_iommu_detach_device(dev);
+out_release_mapping:
+	arm_iommu_release_mapping(mapping);
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(s, "%s\n", ret ? "FAIL" : "SUCCESS");
 	return 0;
 }
@@ -1284,11 +1548,16 @@ static const struct file_operations iommu_debug_functional_fast_dma_api_fops = {
 static int iommu_debug_functional_arm_dma_api_show(struct seq_file *s,
 						   void *ignored)
 {
+<<<<<<< HEAD
+=======
+	struct dma_iommu_mapping *mapping;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iommu_debug_device *ddev = s->private;
 	struct device *dev = ddev->dev;
 	size_t sizes[] = {SZ_4K, SZ_64K, SZ_2M, SZ_1M * 12, 0};
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
 	mutex_lock(&ddev->state_lock);
 	if (iommu_debug_dma_reconfigure(ddev, &fastmap_attr, 0, SZ_1G * 4ULL))
 		goto out;
@@ -1300,6 +1569,26 @@ static int iommu_debug_functional_arm_dma_api_show(struct seq_file *s,
 	iommu_debug_dma_deconfigure(ddev);
 out:
 	mutex_unlock(&ddev->state_lock);
+=======
+	/* Make the size equal to MAX_ULONG */
+	mapping = arm_iommu_create_mapping(&platform_bus_type, 0,
+						(SZ_1G * 4ULL - 1));
+	if (!mapping)
+		goto out;
+
+	mapping->domain->is_debug_domain = true;
+	if (arm_iommu_attach_device(dev, mapping))
+		goto out_release_mapping;
+
+	ret = __functional_dma_api_alloc_test(dev, s, mapping->domain, sizes);
+	ret |= __functional_dma_api_basic_test(dev, s, mapping->domain, sizes);
+	ret |= __functional_dma_api_map_sg_test(dev, s, mapping->domain, sizes);
+
+	arm_iommu_detach_device(dev);
+out_release_mapping:
+	arm_iommu_release_mapping(mapping);
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(s, "%s\n", ret ? "FAIL" : "SUCCESS");
 	return 0;
 }
@@ -1318,6 +1607,7 @@ static const struct file_operations iommu_debug_functional_arm_dma_api_fops = {
 	.release = single_release,
 };
 
+<<<<<<< HEAD
 static ssize_t __iommu_debug_attach_write(struct file *file,
 					  const char __user *ubuf,
 					  size_t count, loff_t *offset,
@@ -1370,12 +1660,209 @@ static ssize_t iommu_debug_attach_read(struct file *file, char __user *ubuf,
 
 	snprintf(buf, sizeof(buf), "%d\n", ddev->domain ? 1 : 0);
 	return simple_read_from_buffer(ubuf, count, offset, buf, strlen(buf));
+=======
+static int iommu_debug_attach_do_attach(struct iommu_debug_device *ddev,
+					int val, bool is_secure)
+{
+	struct iommu_group *group = ddev->dev->iommu_group;
+
+	ddev->domain = iommu_domain_alloc(&platform_bus_type);
+	if (!ddev->domain) {
+		pr_err_ratelimited("Couldn't allocate domain\n");
+		return -ENOMEM;
+	}
+
+	ddev->domain->is_debug_domain = true;
+	val = VMID_CP_CAMERA;
+	if (is_secure && iommu_domain_set_attr(ddev->domain,
+					       DOMAIN_ATTR_SECURE_VMID,
+					       &val)) {
+		pr_err_ratelimited("Couldn't set secure vmid to %d\n", val);
+		goto out_domain_free;
+	}
+
+	if (iommu_attach_group(ddev->domain, group)) {
+		dev_err_ratelimited(ddev->dev, "Couldn't attach new domain to device\n");
+		goto out_domain_free;
+	}
+
+	return 0;
+
+out_domain_free:
+	iommu_domain_free(ddev->domain);
+	ddev->domain = NULL;
+	return -EIO;
+}
+
+static ssize_t __iommu_debug_dma_attach_write(struct file *file,
+					  const char __user *ubuf,
+					  size_t count, loff_t *offset)
+{
+	struct iommu_debug_device *ddev = file->private_data;
+	struct device *dev = ddev->dev;
+	struct dma_iommu_mapping *dma_mapping;
+	ssize_t retval = -EINVAL;
+	int val;
+
+	mutex_lock(&ddev->debug_dev_lock);
+	if (kstrtoint_from_user(ubuf, count, 0, &val)) {
+		pr_err_ratelimited("Invalid format. Expected a hex or decimal integer");
+		retval = -EFAULT;
+		goto out;
+	}
+
+	if (val) {
+		if (dev->archdata.mapping)
+			if (dev->archdata.mapping->domain) {
+				pr_err_ratelimited("Already attached.\n");
+				retval = -EINVAL;
+				goto out;
+			}
+		if (WARN(dev->archdata.iommu,
+			"Attachment tracking out of sync with device\n")) {
+			retval = -EINVAL;
+			goto out;
+		}
+
+		dma_mapping = arm_iommu_create_mapping(&platform_bus_type, 0,
+				(SZ_1G * 4ULL));
+
+		if (!dma_mapping)
+			goto out;
+
+		dma_mapping->domain->is_debug_domain = true;
+
+		if (arm_iommu_attach_device(dev, dma_mapping))
+			goto out_release_mapping;
+
+		ddev->mapping = dma_mapping;
+		pr_err_ratelimited("Attached\n");
+	} else {
+		if (!dev->archdata.mapping) {
+			pr_err_ratelimited("No mapping. Did you already attach?\n");
+			retval = -EINVAL;
+			goto out;
+		}
+		if (!dev->archdata.mapping->domain) {
+			pr_err_ratelimited("No domain. Did you already attach?\n");
+			retval = -EINVAL;
+			goto out;
+		}
+		arm_iommu_detach_device(dev);
+		arm_iommu_release_mapping(ddev->mapping);
+		pr_err_ratelimited("Detached\n");
+	}
+	retval = count;
+	mutex_unlock(&ddev->debug_dev_lock);
+	return retval;
+
+out_release_mapping:
+	arm_iommu_release_mapping(dma_mapping);
+out:
+	mutex_unlock(&ddev->debug_dev_lock);
+	return retval;
+}
+
+static ssize_t __iommu_debug_attach_write(struct file *file,
+					  const char __user *ubuf,
+					  size_t count, loff_t *offset,
+					  bool is_secure)
+{
+	struct iommu_debug_device *ddev = file->private_data;
+	struct device *dev = ddev->dev;
+	struct iommu_domain *domain;
+	ssize_t retval;
+	int val;
+
+	mutex_lock(&ddev->debug_dev_lock);
+	if (kstrtoint_from_user(ubuf, count, 0, &val)) {
+		pr_err_ratelimited("Invalid format. Expected a hex or decimal integer");
+		retval = -EFAULT;
+		goto out;
+	}
+
+	if (val) {
+		if (ddev->domain) {
+			pr_err_ratelimited("Iommu-Debug is already attached?\n");
+			retval = -EINVAL;
+			goto out;
+		}
+
+		domain = iommu_get_domain_for_dev(dev);
+		if (domain) {
+			pr_err_ratelimited("Another driver is using this device's iommu\n"
+				"Iommu-Debug cannot be used concurrently\n");
+			retval = -EINVAL;
+			goto out;
+		}
+		if (iommu_debug_attach_do_attach(ddev, val, is_secure)) {
+			retval = -EIO;
+			goto out;
+		}
+		pr_err_ratelimited("Attached\n");
+	} else {
+		if (!ddev->domain) {
+			pr_err_ratelimited("Iommu-Debug is not attached?\n");
+			retval = -EINVAL;
+			goto out;
+		}
+		iommu_detach_group(ddev->domain, dev->iommu_group);
+		iommu_domain_free(ddev->domain);
+		ddev->domain = NULL;
+		pr_err_ratelimited("Detached\n");
+	}
+
+	retval = count;
+out:
+	mutex_unlock(&ddev->debug_dev_lock);
+	return retval;
+}
+
+static ssize_t iommu_debug_dma_attach_write(struct file *file,
+					  const char __user *ubuf,
+					  size_t count, loff_t *offset)
+{
+	return __iommu_debug_dma_attach_write(file, ubuf, count, offset);
+
+}
+
+static ssize_t iommu_debug_dma_attach_read(struct file *file, char __user *ubuf,
+				       size_t count, loff_t *offset)
+{
+	struct iommu_debug_device *ddev = file->private_data;
+	struct device *dev = ddev->dev;
+	char c[2];
+	size_t buflen = sizeof(c);
+
+	if (*offset)
+		return 0;
+
+	if (!dev->archdata.mapping)
+		c[0] = '0';
+	else
+		c[0] = dev->archdata.mapping->domain ? '1' : '0';
+
+	c[1] = '\n';
+	buflen = min(count, buflen);
+	if (copy_to_user(ubuf, &c, buflen)) {
+		pr_err_ratelimited("copy_to_user failed\n");
+		return -EFAULT;
+	}
+	*offset = 1;		/* non-zero means we're done */
+
+	return buflen;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations iommu_debug_dma_attach_fops = {
 	.open	= simple_open,
+<<<<<<< HEAD
 	.write	= iommu_debug_attach_write,
 	.read	= iommu_debug_attach_read,
+=======
+	.write	= iommu_debug_dma_attach_write,
+	.read	= iommu_debug_dma_attach_read,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static ssize_t iommu_debug_test_virt_addr_read(struct file *file,
@@ -1383,7 +1870,13 @@ static ssize_t iommu_debug_test_virt_addr_read(struct file *file,
 					       size_t count, loff_t *offset)
 {
 	char buf[100];
+<<<<<<< HEAD
 	size_t buf_len = sizeof(buf);
+=======
+	ssize_t retval;
+	size_t buflen;
+	int buf_len = sizeof(buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (*offset)
 		return 0;
@@ -1395,7 +1888,20 @@ static ssize_t iommu_debug_test_virt_addr_read(struct file *file,
 	else
 		snprintf(buf, buf_len, "0x%pK\n", test_virt_addr);
 
+<<<<<<< HEAD
 	return simple_read_from_buffer(ubuf, count, offset, buf, strlen(buf));
+=======
+	buflen = min(count, strlen(buf));
+	if (copy_to_user(ubuf, buf, buflen)) {
+		pr_err_ratelimited("Couldn't copy_to_user\n");
+		retval = -EFAULT;
+	} else {
+		*offset = 1;	/* non-zero means we're done */
+		retval = buflen;
+	}
+
+	return retval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations iommu_debug_test_virt_addr_fops = {
@@ -1403,15 +1909,63 @@ static const struct file_operations iommu_debug_test_virt_addr_fops = {
 	.read	= iommu_debug_test_virt_addr_read,
 };
 
+<<<<<<< HEAD
+=======
+static ssize_t iommu_debug_attach_write(struct file *file,
+					  const char __user *ubuf,
+					  size_t count, loff_t *offset)
+{
+	return __iommu_debug_attach_write(file, ubuf, count, offset,
+					  false);
+
+}
+
+static ssize_t iommu_debug_attach_read(struct file *file, char __user *ubuf,
+				       size_t count, loff_t *offset)
+{
+	struct iommu_debug_device *ddev = file->private_data;
+	char c[2];
+	size_t buflen = sizeof(c);
+
+	if (*offset)
+		return 0;
+
+	c[0] = ddev->domain ? '1' : '0';
+	c[1] = '\n';
+	buflen = min(count, buflen);
+	if (copy_to_user(ubuf, &c, buflen)) {
+		pr_err_ratelimited("copy_to_user failed\n");
+		return -EFAULT;
+	}
+	*offset = 1;		/* non-zero means we're done */
+
+	return buflen;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct file_operations iommu_debug_attach_fops = {
 	.open	= simple_open,
 	.write	= iommu_debug_attach_write,
 	.read	= iommu_debug_attach_read,
 };
 
+<<<<<<< HEAD
 static const struct file_operations iommu_debug_secure_attach_fops = {
 	.open	= simple_open,
 	.write	= iommu_debug_secure_attach_write,
+=======
+static ssize_t iommu_debug_attach_write_secure(struct file *file,
+					       const char __user *ubuf,
+					       size_t count, loff_t *offset)
+{
+	return __iommu_debug_attach_write(file, ubuf, count, offset,
+					  true);
+}
+
+static const struct file_operations iommu_debug_secure_attach_fops = {
+	.open	= simple_open,
+	.write	= iommu_debug_attach_write_secure,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read	= iommu_debug_attach_read,
 };
 
@@ -1438,14 +1992,23 @@ static ssize_t iommu_debug_pte_read(struct file *file, char __user *ubuf,
 				     size_t count, loff_t *offset)
 {
 	struct iommu_debug_device *ddev = file->private_data;
+<<<<<<< HEAD
 	uint64_t pte;
 	char buf[100];
+=======
+	struct device *dev = ddev->dev;
+	uint64_t pte;
+	char buf[100];
+	ssize_t retval;
+	size_t buflen;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (kptr_restrict != 0) {
 		pr_err_ratelimited("kptr_restrict needs to be disabled.\n");
 		return -EPERM;
 	}
 
+<<<<<<< HEAD
 	if (*offset)
 		return 0;
 
@@ -1459,13 +2022,50 @@ static ssize_t iommu_debug_pte_read(struct file *file, char __user *ubuf,
 	memset(buf, 0, sizeof(buf));
 
 	pte = iommu_iova_to_pte(ddev->domain, ddev->iova);
+=======
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!dev->archdata.mapping) {
+		pr_err_ratelimited("No mapping. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EINVAL;
+	}
+	if (!dev->archdata.mapping->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EINVAL;
+	}
+
+	if (*offset) {
+		mutex_unlock(&ddev->debug_dev_lock);
+		return 0;
+	}
+
+	memset(buf, 0, sizeof(buf));
+
+	pte = iommu_iova_to_pte(dev->archdata.mapping->domain,
+			ddev->iova);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pte)
 		strlcpy(buf, "FAIL\n", sizeof(buf));
 	else
 		snprintf(buf, sizeof(buf), "pte=%016llx\n", pte);
+<<<<<<< HEAD
 	mutex_unlock(&ddev->state_lock);
 	return simple_read_from_buffer(ubuf, count, offset, buf, strlen(buf));
+=======
+
+	buflen = min(count, strlen(buf));
+	if (copy_to_user(ubuf, buf, buflen)) {
+		pr_err_ratelimited("Couldn't copy_to_user\n");
+		retval = -EFAULT;
+	} else {
+		*offset = 1;	/* non-zero means we're done */
+		retval = buflen;
+	}
+	mutex_unlock(&ddev->debug_dev_lock);
+	return retval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations iommu_debug_pte_fops = {
@@ -1507,12 +2107,18 @@ static ssize_t iommu_debug_atos_read(struct file *file, char __user *ubuf,
 	struct iommu_debug_device *ddev = file->private_data;
 	phys_addr_t phys;
 	char buf[100];
+<<<<<<< HEAD
+=======
+	ssize_t retval;
+	size_t buflen;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (kptr_restrict != 0) {
 		pr_err_ratelimited("kptr_restrict needs to be disabled.\n");
 		return -EPERM;
 	}
 
+<<<<<<< HEAD
 	if (*offset)
 		return 0;
 
@@ -1523,6 +2129,20 @@ static ssize_t iommu_debug_atos_read(struct file *file, char __user *ubuf,
 		return -EINVAL;
 	}
 
+=======
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!ddev->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EINVAL;
+	}
+
+	if (*offset) {
+		mutex_unlock(&ddev->debug_dev_lock);
+		return 0;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(buf, 0, 100);
 
 	phys = iommu_iova_to_phys_hard(ddev->domain, ddev->iova);
@@ -1534,8 +2154,23 @@ static ssize_t iommu_debug_atos_read(struct file *file, char __user *ubuf,
 	} else {
 		snprintf(buf, 100, "%pa\n", &phys);
 	}
+<<<<<<< HEAD
 	mutex_unlock(&ddev->state_lock);
 	return simple_read_from_buffer(ubuf, count, offset, buf, strlen(buf));
+=======
+
+	buflen = min(count, strlen(buf));
+	if (copy_to_user(ubuf, buf, buflen)) {
+		pr_err_ratelimited("Couldn't copy_to_user\n");
+		retval = -EFAULT;
+	} else {
+		*offset = 1;	/* non-zero means we're done */
+		retval = buflen;
+	}
+
+	mutex_unlock(&ddev->debug_dev_lock);
+	return retval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations iommu_debug_atos_fops = {
@@ -1548,13 +2183,22 @@ static ssize_t iommu_debug_dma_atos_read(struct file *file, char __user *ubuf,
 				     size_t count, loff_t *offset)
 {
 	struct iommu_debug_device *ddev = file->private_data;
+<<<<<<< HEAD
 	phys_addr_t phys;
 	char buf[100];
+=======
+	struct device *dev = ddev->dev;
+	phys_addr_t phys;
+	char buf[100];
+	ssize_t retval;
+	size_t buflen;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (kptr_restrict != 0) {
 		pr_err_ratelimited("kptr_restrict needs to be disabled.\n");
 		return -EPERM;
 	}
+<<<<<<< HEAD
 	if (*offset)
 		return 0;
 
@@ -1568,13 +2212,49 @@ static ssize_t iommu_debug_dma_atos_read(struct file *file, char __user *ubuf,
 	memset(buf, 0, sizeof(buf));
 
 	phys = iommu_iova_to_phys_hard(ddev->domain,
+=======
+
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!dev->archdata.mapping) {
+		pr_err_ratelimited("No mapping. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EINVAL;
+	}
+	if (!dev->archdata.mapping->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EINVAL;
+	}
+
+	if (*offset) {
+		mutex_unlock(&ddev->debug_dev_lock);
+		return 0;
+	}
+	memset(buf, 0, sizeof(buf));
+
+	phys = iommu_iova_to_phys_hard(dev->archdata.mapping->domain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ddev->iova);
 	if (!phys)
 		strlcpy(buf, "FAIL\n", sizeof(buf));
 	else
 		snprintf(buf, sizeof(buf), "%pa\n", &phys);
+<<<<<<< HEAD
 	mutex_unlock(&ddev->state_lock);
 	return simple_read_from_buffer(ubuf, count, offset, buf, strlen(buf));
+=======
+
+	buflen = min(count, strlen(buf));
+	if (copy_to_user(ubuf, buf, buflen)) {
+		pr_err_ratelimited("Couldn't copy_to_user\n");
+		retval = -EFAULT;
+	} else {
+		*offset = 1;	/* non-zero means we're done */
+		retval = buflen;
+	}
+	mutex_unlock(&ddev->debug_dev_lock);
+	return retval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations iommu_debug_dma_atos_fops = {
@@ -1601,6 +2281,16 @@ static ssize_t iommu_debug_map_write(struct file *file, const char __user *ubuf,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!ddev->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(buf, 0, 100);
 
 	if (copy_from_user(buf, ubuf, count)) {
@@ -1635,6 +2325,7 @@ static ssize_t iommu_debug_map_write(struct file *file, const char __user *ubuf,
 	if (kstrtoint(comma3 + 1, 0, &prot))
 		goto invalid_format;
 
+<<<<<<< HEAD
 	mutex_lock(&ddev->state_lock);
 	if (!ddev->domain) {
 		pr_err_ratelimited("No domain. Did you already attach?\n");
@@ -1642,6 +2333,8 @@ static ssize_t iommu_debug_map_write(struct file *file, const char __user *ubuf,
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = iommu_map(ddev->domain, iova, phys, size, prot);
 	if (ret) {
 		pr_err_ratelimited("iommu_map failed with %d\n", ret);
@@ -1653,11 +2346,19 @@ static ssize_t iommu_debug_map_write(struct file *file, const char __user *ubuf,
 	pr_err_ratelimited("Mapped %pa to %pa (len=0x%zx, prot=0x%x)\n",
 	       &iova, &phys, size, prot);
 out:
+<<<<<<< HEAD
 	mutex_unlock(&ddev->state_lock);
+=======
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 
 invalid_format:
 	pr_err_ratelimited("Invalid format. Expected: iova,phys,len,prot where `prot' is the bitwise OR of IOMMU_READ, IOMMU_WRITE, etc.\n");
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EINVAL;
 }
 
@@ -1695,11 +2396,31 @@ static ssize_t iommu_debug_dma_map_write(struct file *file,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!dev->archdata.mapping) {
+		pr_err_ratelimited("No mapping. Did you already attach?\n");
+		retval = -EINVAL;
+		goto out;
+	}
+	if (!dev->archdata.mapping->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		retval = -EINVAL;
+		goto out;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(buf, 0, sizeof(buf));
 
 	if (copy_from_user(buf, ubuf, count)) {
 		pr_err_ratelimited("Couldn't copy from user\n");
+<<<<<<< HEAD
 		return -EFAULT;
+=======
+		retval = -EFAULT;
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	comma1 = strnchr(buf, count, ',');
@@ -1736,6 +2457,7 @@ static ssize_t iommu_debug_dma_map_write(struct file *file,
 	else
 		goto invalid_format;
 
+<<<<<<< HEAD
 	mutex_lock(&ddev->state_lock);
 	if (!ddev->domain) {
 		pr_err_ratelimited("No domain. Did you already attach?\n");
@@ -1743,6 +2465,8 @@ static ssize_t iommu_debug_dma_map_write(struct file *file,
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iova = dma_map_single_attrs(dev, v_addr, size,
 					DMA_TO_DEVICE, dma_attrs);
 
@@ -1757,17 +2481,31 @@ static ssize_t iommu_debug_dma_map_write(struct file *file,
 			v_addr, &iova, size);
 	ddev->iova = iova;
 		pr_err_ratelimited("Saved iova=%pa for future PTE commands\n",
+<<<<<<< HEAD
 				&iova);
 out:
 	mutex_unlock(&ddev->state_lock);
+=======
+			&iova);
+out:
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 
 invalid_format:
 	pr_err_ratelimited("Invalid format. Expected: addr,len,dma attr where 'dma attr' is\n0: normal mapping\n1: force coherent\n2: force non-cohernet\n3: use system cache\n");
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 
 invalid_addr:
 	pr_err_ratelimited("Invalid addr given! Address should be within 1MB size from start addr returned by doing 'cat test_virt_addr'.\n");
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 
@@ -1775,9 +2513,27 @@ static ssize_t iommu_debug_dma_map_read(struct file *file, char __user *ubuf,
 	     size_t count, loff_t *offset)
 {
 	struct iommu_debug_device *ddev = file->private_data;
+<<<<<<< HEAD
 	char buf[100];
 	dma_addr_t iova;
 
+=======
+	struct device *dev = ddev->dev;
+	char buf[100];
+	ssize_t retval;
+	size_t buflen;
+	dma_addr_t iova;
+
+	if (!dev->archdata.mapping) {
+		pr_err_ratelimited("No mapping. Did you already attach?\n");
+		return -EINVAL;
+	}
+	if (!dev->archdata.mapping->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (*offset)
 		return 0;
 
@@ -1785,7 +2541,21 @@ static ssize_t iommu_debug_dma_map_read(struct file *file, char __user *ubuf,
 
 	iova = ddev->iova;
 	snprintf(buf, sizeof(buf), "%pa\n", &iova);
+<<<<<<< HEAD
 	return simple_read_from_buffer(ubuf, count, offset, buf, strlen(buf));
+=======
+
+	buflen = min(count, strlen(buf));
+	if (copy_to_user(ubuf, buf, buflen)) {
+		pr_err_ratelimited("Couldn't copy_to_user\n");
+		retval = -EFAULT;
+	} else {
+		*offset = 1;	/* non-zero means we're done */
+		retval = buflen;
+	}
+
+	return retval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations iommu_debug_dma_map_fops = {
@@ -1811,8 +2581,15 @@ static ssize_t iommu_debug_unmap_write(struct file *file,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (!ddev->domain) {
 		pr_err_ratelimited("No domain. Did you already attach?\n");
+=======
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!ddev->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1837,6 +2614,7 @@ static ssize_t iommu_debug_unmap_write(struct file *file,
 	if (kstrtosize_t(comma1 + 1, 0, &size))
 		goto invalid_format;
 
+<<<<<<< HEAD
 	mutex_lock(&ddev->state_lock);
 	if (!ddev->domain) {
 		pr_err_ratelimited("No domain. Did you already attach?\n");
@@ -1844,22 +2622,37 @@ static ssize_t iommu_debug_unmap_write(struct file *file,
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unmapped = iommu_unmap(ddev->domain, iova, size);
 	if (unmapped != size) {
 		pr_err_ratelimited("iommu_unmap failed. Expected to unmap: 0x%zx, unmapped: 0x%zx",
 		       size, unmapped);
+<<<<<<< HEAD
 		retval = -EIO;
 		goto out;
+=======
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	retval = count;
 	pr_err_ratelimited("Unmapped %pa (len=0x%zx)\n", &iova, size);
 out:
+<<<<<<< HEAD
 	mutex_unlock(&ddev->state_lock);
+=======
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 
 invalid_format:
 	pr_err_ratelimited("Invalid format. Expected: iova,len\n");
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EINVAL;
 }
 
@@ -1887,6 +2680,21 @@ static ssize_t iommu_debug_dma_unmap_write(struct file *file,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!dev->archdata.mapping) {
+		pr_err_ratelimited("No mapping. Did you already attach?\n");
+		retval = -EINVAL;
+		goto out;
+	}
+	if (!dev->archdata.mapping->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		retval = -EINVAL;
+		goto out;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(buf, 0, sizeof(buf));
 
 	if (copy_from_user(buf, ubuf, count)) {
@@ -1925,22 +2733,33 @@ static ssize_t iommu_debug_dma_unmap_write(struct file *file,
 	else
 		goto invalid_format;
 
+<<<<<<< HEAD
 	mutex_lock(&ddev->state_lock);
 	if (!ddev->domain) {
 		pr_err_ratelimited("No domain. Did you already attach?\n");
 		mutex_unlock(&ddev->state_lock);
 		return -EINVAL;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_unmap_single_attrs(dev, iova, size, DMA_TO_DEVICE, dma_attrs);
 
 	retval = count;
 	pr_err_ratelimited("Unmapped %pa (len=0x%zx)\n", &iova, size);
 out:
+<<<<<<< HEAD
 	mutex_unlock(&ddev->state_lock);
+=======
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 
 invalid_format:
 	pr_err_ratelimited("Invalid format. Expected: iova,len, dma attr\n");
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 
@@ -1963,13 +2782,24 @@ static ssize_t iommu_debug_config_clocks_write(struct file *file,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (!ddev->domain) {
 		dev_err_ratelimited(dev, "No domain. Did you already attach?\n");
+=======
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!ddev->domain) {
+		dev_err_ratelimited(dev, "No domain. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	if (copy_from_user(&buf, ubuf, 1)) {
 		dev_err_ratelimited(dev, "Couldn't copy from user\n");
+<<<<<<< HEAD
+=======
+		mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 
@@ -1998,10 +2828,18 @@ static ssize_t iommu_debug_config_clocks_write(struct file *file,
 	default:
 		dev_err_ratelimited(dev, "Invalid value. Should be 0 or 1.\n");
 		mutex_unlock(&ddev->clk_lock);
+<<<<<<< HEAD
 		return -EINVAL;
 	}
 	mutex_unlock(&ddev->clk_lock);
 
+=======
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EINVAL;
+	}
+	mutex_unlock(&ddev->clk_lock);
+	mutex_unlock(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
@@ -2017,6 +2855,7 @@ static ssize_t iommu_debug_trigger_fault_write(
 	struct iommu_debug_device *ddev = file->private_data;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (kstrtoul_from_user(ubuf, count, 0, &flags)) {
 		pr_err_ratelimited("Invalid flags format\n");
 		return -EFAULT;
@@ -2031,6 +2870,24 @@ static ssize_t iommu_debug_trigger_fault_write(
 	iommu_trigger_fault(ddev->domain, flags);
 
 	mutex_unlock(&ddev->state_lock);
+=======
+	mutex_lock(&ddev->debug_dev_lock);
+	if (!ddev->domain) {
+		pr_err_ratelimited("No domain. Did you already attach?\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EINVAL;
+	}
+
+	if (kstrtoul_from_user(ubuf, count, 0, &flags)) {
+		pr_err_ratelimited("Invalid flags format\n");
+		mutex_unlock(&ddev->debug_dev_lock);
+		return -EFAULT;
+	}
+
+	iommu_trigger_fault(ddev->domain, flags);
+	mutex_unlock(&ddev->debug_dev_lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
@@ -2101,7 +2958,11 @@ static int snarf_iommu_devices(struct device *dev, void *ignored)
 		return -ENODEV;
 
 	mutex_init(&ddev->clk_lock);
+<<<<<<< HEAD
 	mutex_init(&ddev->state_lock);
+=======
+	mutex_init(&ddev->debug_dev_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddev->dev = dev;
 	dir = debugfs_create_dir(dev_name(dev), debugfs_tests_dir);
 	if (!dir) {

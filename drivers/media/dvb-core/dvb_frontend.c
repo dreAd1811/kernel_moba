@@ -40,11 +40,18 @@
 #include <linux/jiffies.h>
 #include <linux/kthread.h>
 #include <linux/ktime.h>
+<<<<<<< HEAD
 #include <linux/compat.h>
 #include <asm/processor.h>
 
 #include <media/dvb_frontend.h>
 #include <media/dvbdev.h>
+=======
+#include <asm/processor.h>
+
+#include "dvb_frontend.h"
+#include "dvbdev.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dvb/version.h>
 
 static int dvb_frontend_debug;
@@ -151,7 +158,12 @@ static void __dvb_frontend_free(struct dvb_frontend *fe)
 
 	dvb_frontend_invoke_release(fe, fe->ops.release);
 
+<<<<<<< HEAD
 	kfree(fepriv);
+=======
+	if (fepriv)
+		kfree(fepriv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dvb_frontend_free(struct kref *ref)
@@ -164,9 +176,12 @@ static void dvb_frontend_free(struct kref *ref)
 
 static void dvb_frontend_put(struct dvb_frontend *fe)
 {
+<<<<<<< HEAD
 	/* call detach before dropping the reference count */
 	if (fe->ops.detach)
 		fe->ops.detach(fe);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Check if the frontend was registered, as otherwise
 	 * kref was not initialized yet.
@@ -193,7 +208,11 @@ dtv_property_legacy_params_sync(struct dvb_frontend *fe,
 
 static bool has_get_frontend(struct dvb_frontend *fe)
 {
+<<<<<<< HEAD
 	return fe->ops.get_frontend;
+=======
+	return fe->ops.get_frontend != NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -275,7 +294,11 @@ static void dvb_frontend_add_event(struct dvb_frontend *fe,
 
 	mutex_unlock(&events->mtx);
 
+<<<<<<< HEAD
 	wake_up_interruptible(&events->wait_queue);
+=======
+	wake_up_interruptible (&events->wait_queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dvb_frontend_test_event(struct dvb_frontend_private *fepriv,
@@ -291,7 +314,11 @@ static int dvb_frontend_test_event(struct dvb_frontend_private *fepriv,
 }
 
 static int dvb_frontend_get_event(struct dvb_frontend *fe,
+<<<<<<< HEAD
 				  struct dvb_frontend_event *event, int flags)
+=======
+			          struct dvb_frontend_event *event, int flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dvb_frontend_private *fepriv = fe->frontend_priv;
 	struct dvb_fe_events *events = &fepriv->events;
@@ -337,8 +364,13 @@ static void dvb_frontend_clear_events(struct dvb_frontend *fe)
 static void dvb_frontend_init(struct dvb_frontend *fe)
 {
 	dev_dbg(fe->dvb->device,
+<<<<<<< HEAD
 		"%s: initialising adapter %i frontend %i (%s)...\n",
 		__func__, fe->dvb->num, fe->id, fe->ops.info.name);
+=======
+			"%s: initialising adapter %i frontend %i (%s)...\n",
+			__func__, fe->dvb->num, fe->id, fe->ops.info.name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fe->ops.init)
 		fe->ops.init(fe);
@@ -368,13 +400,18 @@ static void dvb_frontend_swzigzag_update_delay(struct dvb_frontend_private *fepr
 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
 
 	if (locked)
+<<<<<<< HEAD
 		(fepriv->quality) = (fepriv->quality * 220 + 36 * 256) / 256;
+=======
+		(fepriv->quality) = (fepriv->quality * 220 + 36*256) / 256;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		(fepriv->quality) = (fepriv->quality * 220 + 0) / 256;
 
 	q2 = fepriv->quality - 128;
 	q2 *= q2;
 
+<<<<<<< HEAD
 	fepriv->delay = fepriv->min_delay + q2 * HZ / (128 * 128);
 }
 
@@ -387,6 +424,17 @@ static void dvb_frontend_swzigzag_update_delay(struct dvb_frontend_private *fepr
  *		   DO NOT SET ON THE FIRST ATTEMPT.
  *
  * return: Number of complete iterations that have been performed.
+=======
+	fepriv->delay = fepriv->min_delay + q2 * HZ / (128*128);
+}
+
+/**
+ * Performs automatic twiddling of frontend parameters.
+ *
+ * @param fe The frontend concerned.
+ * @param check_wrapped Checks if an iteration has completed. DO NOT SET ON THE FIRST ATTEMPT
+ * @returns Number of complete iterations that have been performed.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wrapped)
 {
@@ -403,7 +451,11 @@ static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wra
 			 (c->inversion == INVERSION_AUTO));
 
 	/* setup parameters correctly */
+<<<<<<< HEAD
 	while (!ready) {
+=======
+	while(!ready) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* calculate the lnb_drift */
 		fepriv->lnb_drift = fepriv->auto_step * fepriv->step_size;
 
@@ -415,7 +467,11 @@ static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wra
 		}
 
 		/* perform inversion and +/- zigzag */
+<<<<<<< HEAD
 		switch (fepriv->auto_sub_step) {
+=======
+		switch(fepriv->auto_sub_step) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 0:
 			/* try with the current inversion and current drift setting */
 			ready = 1;
@@ -460,11 +516,19 @@ static int dvb_frontend_swzigzag_autotune(struct dvb_frontend *fe, int check_wra
 		return 1;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(fe->dvb->device,
 		"%s: drift:%i inversion:%i auto_step:%i auto_sub_step:%i started_auto_step:%i\n",
 		__func__, fepriv->lnb_drift, fepriv->inversion,
 		fepriv->auto_step, fepriv->auto_sub_step,
 		fepriv->started_auto_step);
+=======
+	dev_dbg(fe->dvb->device, "%s: drift:%i inversion:%i auto_step:%i " \
+			"auto_sub_step:%i started_auto_step:%i\n",
+			__func__, fepriv->lnb_drift, fepriv->inversion,
+			fepriv->auto_step, fepriv->auto_sub_step,
+			fepriv->started_auto_step);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set the frontend itself */
 	c->frequency += fepriv->lnb_drift;
@@ -495,7 +559,11 @@ static void dvb_frontend_swzigzag(struct dvb_frontend *fe)
 
 	/* if we've got no parameters, just keep idling */
 	if (fepriv->state & FESTATE_IDLE) {
+<<<<<<< HEAD
 		fepriv->delay = 3 * HZ;
+=======
+		fepriv->delay = 3*HZ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fepriv->quality = 0;
 		return;
 	}
@@ -512,7 +580,11 @@ static void dvb_frontend_swzigzag(struct dvb_frontend *fe)
 			else
 				fepriv->state = FESTATE_TUNED;
 		}
+<<<<<<< HEAD
 		fepriv->delay = 3 * HZ;
+=======
+		fepriv->delay = 3*HZ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fepriv->quality = 0;
 		return;
 	}
@@ -601,7 +673,11 @@ static void dvb_frontend_swzigzag(struct dvb_frontend *fe)
 		}
 		fepriv->check_wrapped = 1;
 
+<<<<<<< HEAD
 		/* if we've just re-tuned, enter the ZIGZAG_FAST state.
+=======
+		/* if we've just retuned, enter the ZIGZAG_FAST state.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * This ensures we cannot return from an
 		 * FE_SET_FRONTEND ioctl before the first frontend tune
 		 * occurs */
@@ -668,7 +744,11 @@ static int dvb_frontend_thread(void *data)
 
 	fepriv->check_wrapped = 0;
 	fepriv->quality = 0;
+<<<<<<< HEAD
 	fepriv->delay = 3 * HZ;
+=======
+	fepriv->delay = 3*HZ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fepriv->status = 0;
 	fepriv->wakeup = 0;
 	fepriv->reinitialise = 0;
@@ -680,9 +760,14 @@ static int dvb_frontend_thread(void *data)
 		up(&fepriv->sem);	    /* is locked when we enter the thread... */
 restart:
 		wait_event_interruptible_timeout(fepriv->wait_queue,
+<<<<<<< HEAD
 						 dvb_frontend_should_wakeup(fe) ||
 						 kthread_should_stop() ||
 						 freezing(current),
+=======
+			dvb_frontend_should_wakeup(fe) || kthread_should_stop()
+				|| freezing(current),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fepriv->delay);
 
 		if (kthread_should_stop() || dvb_frontend_is_exiting(fe)) {
@@ -831,8 +916,13 @@ static void dvb_frontend_stop(struct dvb_frontend *fe)
 	/* paranoia check in case a signal arrived */
 	if (fepriv->thread)
 		dev_warn(fe->dvb->device,
+<<<<<<< HEAD
 			 "dvb_frontend_stop: warning: thread %p won't exit\n",
 			 fepriv->thread);
+=======
+				"dvb_frontend_stop: warning: thread %p won't exit\n",
+				fepriv->thread);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -869,12 +959,20 @@ static int dvb_frontend_start(struct dvb_frontend *fe)
 		if (fe->exit == DVB_FE_NO_EXIT)
 			return 0;
 		else
+<<<<<<< HEAD
 			dvb_frontend_stop(fe);
+=======
+			dvb_frontend_stop (fe);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (signal_pending(current))
 		return -EINTR;
+<<<<<<< HEAD
 	if (down_interruptible(&fepriv->sem))
+=======
+	if (down_interruptible (&fepriv->sem))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINTR;
 
 	fepriv->state = FESTATE_IDLE;
@@ -883,12 +981,21 @@ static int dvb_frontend_start(struct dvb_frontend *fe)
 	mb();
 
 	fe_thread = kthread_run(dvb_frontend_thread, fe,
+<<<<<<< HEAD
 				"kdvb-ad-%i-fe-%i", fe->dvb->num, fe->id);
 	if (IS_ERR(fe_thread)) {
 		ret = PTR_ERR(fe_thread);
 		dev_warn(fe->dvb->device,
 			 "dvb_frontend_start: failed to start kthread (%d)\n",
 			 ret);
+=======
+		"kdvb-ad-%i-fe-%i", fe->dvb->num,fe->id);
+	if (IS_ERR(fe_thread)) {
+		ret = PTR_ERR(fe_thread);
+		dev_warn(fe->dvb->device,
+				"dvb_frontend_start: failed to start kthread (%d)\n",
+				ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		up(&fepriv->sem);
 		return ret;
 	}
@@ -897,6 +1004,7 @@ static int dvb_frontend_start(struct dvb_frontend *fe)
 }
 
 static void dvb_frontend_get_frequency_limits(struct dvb_frontend *fe,
+<<<<<<< HEAD
 					      u32 *freq_min, u32 *freq_max,
 					      u32 *tolerance)
 {
@@ -958,6 +1066,22 @@ static u32 dvb_frontend_get_stepsize(struct dvb_frontend *fe)
 	}
 
 	return step;
+=======
+					u32 *freq_min, u32 *freq_max)
+{
+	*freq_min = max(fe->ops.info.frequency_min, fe->ops.tuner_ops.info.frequency_min);
+
+	if (fe->ops.info.frequency_max == 0)
+		*freq_max = fe->ops.tuner_ops.info.frequency_max;
+	else if (fe->ops.tuner_ops.info.frequency_max == 0)
+		*freq_max = fe->ops.info.frequency_max;
+	else
+		*freq_max = min(fe->ops.info.frequency_max, fe->ops.tuner_ops.info.frequency_max);
+
+	if (*freq_min == 0 || *freq_max == 0)
+		dev_warn(fe->dvb->device, "DVB: adapter %i frontend %u frequency limits undefined - fix the driver\n",
+				fe->dvb->num, fe->id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dvb_frontend_check_parameters(struct dvb_frontend *fe)
@@ -967,12 +1091,21 @@ static int dvb_frontend_check_parameters(struct dvb_frontend *fe)
 	u32 freq_max;
 
 	/* range check: frequency */
+<<<<<<< HEAD
 	dvb_frontend_get_frequency_limits(fe, &freq_min, &freq_max, NULL);
 	if ((freq_min && c->frequency < freq_min) ||
 	    (freq_max && c->frequency > freq_max)) {
 		dev_warn(fe->dvb->device, "DVB: adapter %i frontend %i frequency %u out of range (%u..%u)\n",
 			 fe->dvb->num, fe->id, c->frequency,
 			 freq_min, freq_max);
+=======
+	dvb_frontend_get_frequency_limits(fe, &freq_min, &freq_max);
+	if ((freq_min && c->frequency < freq_min) ||
+	    (freq_max && c->frequency > freq_max)) {
+		dev_warn(fe->dvb->device, "DVB: adapter %i frontend %i frequency %u out of range (%u..%u)\n",
+				fe->dvb->num, fe->id, c->frequency,
+				freq_min, freq_max);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -988,9 +1121,15 @@ static int dvb_frontend_check_parameters(struct dvb_frontend *fe)
 		    (fe->ops.info.symbol_rate_max &&
 		     c->symbol_rate > fe->ops.info.symbol_rate_max)) {
 			dev_warn(fe->dvb->device, "DVB: adapter %i frontend %i symbol rate %u out of range (%u..%u)\n",
+<<<<<<< HEAD
 				 fe->dvb->num, fe->id, c->symbol_rate,
 				 fe->ops.info.symbol_rate_min,
 				 fe->ops.info.symbol_rate_max);
+=======
+					fe->dvb->num, fe->id, c->symbol_rate,
+					fe->ops.info.symbol_rate_min,
+					fe->ops.info.symbol_rate_max);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 	default:
@@ -1010,8 +1149,15 @@ static int dvb_frontend_clear_cache(struct dvb_frontend *fe)
 	memset(c, 0, offsetof(struct dtv_frontend_properties, strength));
 	c->delivery_system = delsys;
 
+<<<<<<< HEAD
 	dev_dbg(fe->dvb->device, "%s: Clearing cache for delivery system %d\n",
 		__func__, c->delivery_system);
+=======
+	c->state = DTV_CLEAR;
+
+	dev_dbg(fe->dvb->device, "%s: Clearing cache for delivery system %d\n",
+			__func__, c->delivery_system);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	c->transmission_mode = TRANSMISSION_MODE_AUTO;
 	c->bandwidth_hz = 0;	/* AUTO */
@@ -1031,7 +1177,11 @@ static int dvb_frontend_clear_cache(struct dvb_frontend *fe)
 	c->isdbt_sb_subchannel = 0;
 	c->isdbt_sb_segment_idx = 0;
 	c->isdbt_sb_segment_count = 0;
+<<<<<<< HEAD
 	c->isdbt_layer_enabled = 7;	/* All layers (A,B,C) */
+=======
+	c->isdbt_layer_enabled = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < 3; i++) {
 		c->layer[i].fec = FEC_AUTO;
 		c->layer[i].modulation = QAM_AUTO;
@@ -1040,7 +1190,10 @@ static int dvb_frontend_clear_cache(struct dvb_frontend *fe)
 	}
 
 	c->stream_id = NO_STREAM_ID_FILTER;
+<<<<<<< HEAD
 	c->scrambling_sequence_index = 0;/* default sequence */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (c->delivery_system) {
 	case SYS_DVBS:
@@ -1131,7 +1284,10 @@ static struct dtv_cmds_h dtv_cmds[DTV_MAX_COMMAND + 1] = {
 
 	_DTV_CMD(DTV_STREAM_ID, 1, 0),
 	_DTV_CMD(DTV_DVBT2_PLP_ID_LEGACY, 1, 0),
+<<<<<<< HEAD
 	_DTV_CMD(DTV_SCRAMBLING_SEQUENCE_INDEX, 1, 0),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_DTV_CMD(DTV_LNA, 1, 0),
 
 	/* Get */
@@ -1168,6 +1324,42 @@ static struct dtv_cmds_h dtv_cmds[DTV_MAX_COMMAND + 1] = {
 	_DTV_CMD(DTV_STAT_TOTAL_BLOCK_COUNT, 0, 0),
 };
 
+<<<<<<< HEAD
+=======
+static void dtv_property_dump(struct dvb_frontend *fe,
+			      bool is_set,
+			      struct dtv_property *tvp)
+{
+	int i;
+
+	if (tvp->cmd <= 0 || tvp->cmd > DTV_MAX_COMMAND) {
+		dev_warn(fe->dvb->device, "%s: %s tvp.cmd = 0x%08x undefined\n",
+				__func__,
+				is_set ? "SET" : "GET",
+				tvp->cmd);
+		return;
+	}
+
+	dev_dbg(fe->dvb->device, "%s: %s tvp.cmd    = 0x%08x (%s)\n", __func__,
+		is_set ? "SET" : "GET",
+		tvp->cmd,
+		dtv_cmds[tvp->cmd].name);
+
+	if (dtv_cmds[tvp->cmd].buffer) {
+		dev_dbg(fe->dvb->device, "%s: tvp.u.buffer.len = 0x%02x\n",
+			__func__, tvp->u.buffer.len);
+
+		for(i = 0; i < tvp->u.buffer.len; i++)
+			dev_dbg(fe->dvb->device,
+					"%s: tvp.u.buffer.data[0x%02x] = 0x%02x\n",
+					__func__, i, tvp->u.buffer.data[i]);
+	} else {
+		dev_dbg(fe->dvb->device, "%s: tvp.u.data = 0x%08x\n", __func__,
+				tvp->u.data);
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Synchronise the legacy tuning parameters into the cache, so that demodulator
  * drivers can use a single set_frontend tuning function, regardless of whether
  * it's being used for the legacy or new API, reducing code and complexity.
@@ -1236,8 +1428,13 @@ static int dtv_property_cache_sync(struct dvb_frontend *fe,
 		break;
 	case DVBV3_UNKNOWN:
 		dev_err(fe->dvb->device,
+<<<<<<< HEAD
 			"%s: doesn't know how to handle a DVBv3 call to delivery system %i\n",
 			__func__, c->delivery_system);
+=======
+				"%s: doesn't know how to handle a DVBv3 call to delivery system %i\n",
+				__func__, c->delivery_system);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1258,8 +1455,13 @@ dtv_property_legacy_params_sync(struct dvb_frontend *fe,
 	switch (dvbv3_type(c->delivery_system)) {
 	case DVBV3_UNKNOWN:
 		dev_err(fe->dvb->device,
+<<<<<<< HEAD
 			"%s: doesn't know how to handle a DVBv3 call to delivery system %i\n",
 			__func__, c->delivery_system);
+=======
+				"%s: doesn't know how to handle a DVBv3 call to delivery system %i\n",
+				__func__, c->delivery_system);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	case DVBV3_QPSK:
 		dev_dbg(fe->dvb->device, "%s: Preparing QPSK req\n", __func__);
@@ -1316,7 +1518,11 @@ dtv_property_legacy_params_sync(struct dvb_frontend *fe,
  * dtv_get_frontend - calls a callback for retrieving DTV parameters
  * @fe:		struct dvb_frontend pointer
  * @c:		struct dtv_frontend_properties pointer (DVBv5 cache)
+<<<<<<< HEAD
  * @p_out:	struct dvb_frontend_parameters pointer (DVBv3 FE struct)
+=======
+ * @p_out	struct dvb_frontend_parameters pointer (DVBv3 FE struct)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This routine calls either the DVBv3 or DVBv5 get_frontend call.
  * If c is not null, it will update the DVBv5 cache struct pointed by it.
@@ -1341,17 +1547,30 @@ static int dtv_get_frontend(struct dvb_frontend *fe,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dvb_frontend_handle_ioctl(struct file *file,
 				     unsigned int cmd, void *parg);
+=======
+static int dvb_frontend_ioctl_legacy(struct file *file,
+			unsigned int cmd, void *parg);
+static int dvb_frontend_ioctl_properties(struct file *file,
+			unsigned int cmd, void *parg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int dtv_property_process_get(struct dvb_frontend *fe,
 				    const struct dtv_frontend_properties *c,
 				    struct dtv_property *tvp,
 				    struct file *file)
 {
+<<<<<<< HEAD
 	int ncaps;
 
 	switch (tvp->cmd) {
+=======
+	int r, ncaps;
+
+	switch(tvp->cmd) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DTV_ENUM_DELSYS:
 		ncaps = 0;
 		while (ncaps < MAX_DELSYS && fe->ops.delsys[ncaps]) {
@@ -1477,11 +1696,14 @@ static int dtv_property_process_get(struct dvb_frontend *fe,
 		tvp->u.data = c->stream_id;
 		break;
 
+<<<<<<< HEAD
 	/* Physical layer scrambling support */
 	case DTV_SCRAMBLING_SEQUENCE_INDEX:
 		tvp->u.data = c->scrambling_sequence_index;
 		break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* ATSC-MH */
 	case DTV_ATSCMH_FIC_VER:
 		tvp->u.data = fe->dtv_property_cache.atscmh_fic_ver;
@@ -1565,6 +1787,7 @@ static int dtv_property_process_get(struct dvb_frontend *fe,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (!dtv_cmds[tvp->cmd].buffer)
 		dev_dbg(fe->dvb->device,
 			"%s: GET cmd 0x%08x (%s) = 0x%08x\n",
@@ -1577,6 +1800,16 @@ static int dtv_property_process_get(struct dvb_frontend *fe,
 			tvp->cmd, dtv_cmds[tvp->cmd].name,
 			tvp->u.buffer.len,
 			tvp->u.buffer.len, tvp->u.buffer.data);
+=======
+	/* Allow the frontend to override outgoing properties */
+	if (fe->ops.get_property) {
+		r = fe->ops.get_property(fe, tvp);
+		if (r < 0)
+			return r;
+	}
+
+	dtv_property_dump(fe, false, tvp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1680,8 +1913,13 @@ static int dvbv5_set_delivery_system(struct dvb_frontend *fe,
 		if (fe->ops.delsys[ncaps] == desired_system) {
 			c->delivery_system = desired_system;
 			dev_dbg(fe->dvb->device,
+<<<<<<< HEAD
 				"%s: Changing delivery system to %d\n",
 				__func__, desired_system);
+=======
+					"%s: Changing delivery system to %d\n",
+					__func__, desired_system);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 		ncaps++;
@@ -1773,8 +2011,13 @@ static int dvbv3_set_delivery_system(struct dvb_frontend *fe)
 	 */
 	if (is_dvbv3_delsys(c->delivery_system)) {
 		dev_dbg(fe->dvb->device,
+<<<<<<< HEAD
 			"%s: Using delivery system to %d\n",
 			__func__, c->delivery_system);
+=======
+				"%s: Using delivery system to %d\n",
+				__func__, c->delivery_system);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1799,6 +2042,7 @@ static int dvbv3_set_delivery_system(struct dvb_frontend *fe)
 	return emulate_delivery_system(fe, delsys);
 }
 
+<<<<<<< HEAD
 /**
  * dtv_property_process_set -  Sets a single DTV property
  * @fe:		Pointer to &struct dvb_frontend
@@ -1816,10 +2060,16 @@ static int dvbv3_set_delivery_system(struct dvb_frontend *fe)
 static int dtv_property_process_set(struct dvb_frontend *fe,
 				    struct file *file,
 				    u32 cmd, u32 data)
+=======
+static int dtv_property_process_set(struct dvb_frontend *fe,
+				    struct dtv_property *tvp,
+				    struct file *file)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r = 0;
 	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
 
+<<<<<<< HEAD
 	/** Dump DTV command name and value*/
 	if (!cmd || cmd > DTV_MAX_COMMAND)
 		dev_warn(fe->dvb->device, "%s: SET cmd 0x%08x undefined\n",
@@ -1829,6 +2079,18 @@ static int dtv_property_process_set(struct dvb_frontend *fe,
 			"%s: SET cmd 0x%08x (%s) to 0x%08x\n",
 			__func__, cmd, dtv_cmds[cmd].name, data);
 	switch (cmd) {
+=======
+	/* Allow the frontend to validate incoming properties */
+	if (fe->ops.set_property) {
+		r = fe->ops.set_property(fe, tvp);
+		if (r < 0)
+			return r;
+	}
+
+	dtv_property_dump(fe, true, tvp);
+
+	switch(tvp->cmd) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DTV_CLEAR:
 		/*
 		 * Reset a cache of data specific to the frontend here. This does
@@ -1837,6 +2099,7 @@ static int dtv_property_process_set(struct dvb_frontend *fe,
 		dvb_frontend_clear_cache(fe);
 		break;
 	case DTV_TUNE:
+<<<<<<< HEAD
 		/*
 		 * Use the cached Digital TV properties to tune the
 		 * frontend
@@ -1844,10 +2107,20 @@ static int dtv_property_process_set(struct dvb_frontend *fe,
 		dev_dbg(fe->dvb->device,
 			"%s: Setting the frontend from property cache\n",
 			__func__);
+=======
+		/* interpret the cache of data, build either a traditional frontend
+		 * tunerequest so we can pass validation in the FE_SET_FRONTEND
+		 * ioctl.
+		 */
+		c->state = tvp->cmd;
+		dev_dbg(fe->dvb->device, "%s: Finalised property cache\n",
+				__func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		r = dtv_set_frontend(fe);
 		break;
 	case DTV_FREQUENCY:
+<<<<<<< HEAD
 		c->frequency = data;
 		break;
 	case DTV_MODULATION:
@@ -1901,10 +2174,66 @@ static int dtv_property_process_set(struct dvb_frontend *fe,
 		break;
 	case DTV_INTERLEAVING:
 		c->interleaving = data;
+=======
+		c->frequency = tvp->u.data;
+		break;
+	case DTV_MODULATION:
+		c->modulation = tvp->u.data;
+		break;
+	case DTV_BANDWIDTH_HZ:
+		c->bandwidth_hz = tvp->u.data;
+		break;
+	case DTV_INVERSION:
+		c->inversion = tvp->u.data;
+		break;
+	case DTV_SYMBOL_RATE:
+		c->symbol_rate = tvp->u.data;
+		break;
+	case DTV_INNER_FEC:
+		c->fec_inner = tvp->u.data;
+		break;
+	case DTV_PILOT:
+		c->pilot = tvp->u.data;
+		break;
+	case DTV_ROLLOFF:
+		c->rolloff = tvp->u.data;
+		break;
+	case DTV_DELIVERY_SYSTEM:
+		r = dvbv5_set_delivery_system(fe, tvp->u.data);
+		break;
+	case DTV_VOLTAGE:
+		c->voltage = tvp->u.data;
+		r = dvb_frontend_ioctl_legacy(file, FE_SET_VOLTAGE,
+			(void *)c->voltage);
+		break;
+	case DTV_TONE:
+		c->sectone = tvp->u.data;
+		r = dvb_frontend_ioctl_legacy(file, FE_SET_TONE,
+			(void *)c->sectone);
+		break;
+	case DTV_CODE_RATE_HP:
+		c->code_rate_HP = tvp->u.data;
+		break;
+	case DTV_CODE_RATE_LP:
+		c->code_rate_LP = tvp->u.data;
+		break;
+	case DTV_GUARD_INTERVAL:
+		c->guard_interval = tvp->u.data;
+		break;
+	case DTV_TRANSMISSION_MODE:
+		c->transmission_mode = tvp->u.data;
+		break;
+	case DTV_HIERARCHY:
+		c->hierarchy = tvp->u.data;
+		break;
+	case DTV_INTERLEAVING:
+		c->interleaving = tvp->u.data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	/* ISDB-T Support here */
 	case DTV_ISDBT_PARTIAL_RECEPTION:
+<<<<<<< HEAD
 		c->isdbt_partial_reception = data;
 		break;
 	case DTV_ISDBT_SOUND_BROADCASTING:
@@ -1957,21 +2286,80 @@ static int dtv_property_process_set(struct dvb_frontend *fe,
 		break;
 	case DTV_ISDBT_LAYERC_TIME_INTERLEAVING:
 		c->layer[2].interleaving = data;
+=======
+		c->isdbt_partial_reception = tvp->u.data;
+		break;
+	case DTV_ISDBT_SOUND_BROADCASTING:
+		c->isdbt_sb_mode = tvp->u.data;
+		break;
+	case DTV_ISDBT_SB_SUBCHANNEL_ID:
+		c->isdbt_sb_subchannel = tvp->u.data;
+		break;
+	case DTV_ISDBT_SB_SEGMENT_IDX:
+		c->isdbt_sb_segment_idx = tvp->u.data;
+		break;
+	case DTV_ISDBT_SB_SEGMENT_COUNT:
+		c->isdbt_sb_segment_count = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYER_ENABLED:
+		c->isdbt_layer_enabled = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERA_FEC:
+		c->layer[0].fec = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERA_MODULATION:
+		c->layer[0].modulation = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERA_SEGMENT_COUNT:
+		c->layer[0].segment_count = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERA_TIME_INTERLEAVING:
+		c->layer[0].interleaving = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERB_FEC:
+		c->layer[1].fec = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERB_MODULATION:
+		c->layer[1].modulation = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERB_SEGMENT_COUNT:
+		c->layer[1].segment_count = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERB_TIME_INTERLEAVING:
+		c->layer[1].interleaving = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERC_FEC:
+		c->layer[2].fec = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERC_MODULATION:
+		c->layer[2].modulation = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERC_SEGMENT_COUNT:
+		c->layer[2].segment_count = tvp->u.data;
+		break;
+	case DTV_ISDBT_LAYERC_TIME_INTERLEAVING:
+		c->layer[2].interleaving = tvp->u.data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	/* Multistream support */
 	case DTV_STREAM_ID:
 	case DTV_DVBT2_PLP_ID_LEGACY:
+<<<<<<< HEAD
 		c->stream_id = data;
 		break;
 
 	/* Physical layer scrambling support */
 	case DTV_SCRAMBLING_SEQUENCE_INDEX:
 		c->scrambling_sequence_index = data;
+=======
+		c->stream_id = tvp->u.data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	/* ATSC-MH */
 	case DTV_ATSCMH_PARADE_ID:
+<<<<<<< HEAD
 		fe->dtv_property_cache.atscmh_parade_id = data;
 		break;
 	case DTV_ATSCMH_RS_FRAME_ENSEMBLE:
@@ -1980,6 +2368,16 @@ static int dtv_property_process_set(struct dvb_frontend *fe,
 
 	case DTV_LNA:
 		c->lna = data;
+=======
+		fe->dtv_property_cache.atscmh_parade_id = tvp->u.data;
+		break;
+	case DTV_ATSCMH_RS_FRAME_ENSEMBLE:
+		fe->dtv_property_cache.atscmh_rs_frame_ensemble = tvp->u.data;
+		break;
+
+	case DTV_LNA:
+		c->lna = tvp->u.data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fe->ops.set_lna)
 			r = fe->ops.set_lna(fe);
 		if (r < 0)
@@ -1993,6 +2391,7 @@ static int dtv_property_process_set(struct dvb_frontend *fe,
 	return r;
 }
 
+<<<<<<< HEAD
 static int dvb_frontend_do_ioctl(struct file *file, unsigned int cmd,
 				 void *parg)
 {
@@ -2000,6 +2399,16 @@ static int dvb_frontend_do_ioctl(struct file *file, unsigned int cmd,
 	struct dvb_frontend *fe = dvbdev->priv;
 	struct dvb_frontend_private *fepriv = fe->frontend_priv;
 	int err;
+=======
+static int dvb_frontend_ioctl(struct file *file,
+			unsigned int cmd, void *parg)
+{
+	struct dvb_device *dvbdev = file->private_data;
+	struct dvb_frontend *fe = dvbdev->priv;
+	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
+	struct dvb_frontend_private *fepriv = fe->frontend_priv;
+	int err = -EOPNOTSUPP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(fe->dvb->device, "%s: (%d)\n", __func__, _IOC_NR(cmd));
 	if (down_interruptible(&fepriv->sem))
@@ -2010,6 +2419,7 @@ static int dvb_frontend_do_ioctl(struct file *file, unsigned int cmd,
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * If the frontend is opened in read-only mode, only the ioctls
 	 * that don't interfere with the tune logic should be accepted.
@@ -2027,16 +2437,31 @@ static int dvb_frontend_do_ioctl(struct file *file, unsigned int cmd,
 	    && (_IOC_DIR(cmd) != _IOC_READ
 		|| cmd == FE_GET_EVENT
 		|| cmd == FE_DISEQC_RECV_SLAVE_REPLY)) {
+=======
+	if ((file->f_flags & O_ACCMODE) == O_RDONLY &&
+	    (_IOC_DIR(cmd) != _IOC_READ || cmd == FE_GET_EVENT ||
+	     cmd == FE_DISEQC_RECV_SLAVE_REPLY)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		up(&fepriv->sem);
 		return -EPERM;
 	}
 
+<<<<<<< HEAD
 	err = dvb_frontend_handle_ioctl(file, cmd, parg);
+=======
+	if ((cmd == FE_SET_PROPERTY) || (cmd == FE_GET_PROPERTY))
+		err = dvb_frontend_ioctl_properties(file, cmd, parg);
+	else {
+		c->state = DTV_UNDEFINED;
+		err = dvb_frontend_ioctl_legacy(file, cmd, parg);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	up(&fepriv->sem);
 	return err;
 }
 
+<<<<<<< HEAD
 static long dvb_frontend_ioctl(struct file *file, unsigned int cmd,
 			       unsigned long arg)
 {
@@ -2075,10 +2500,15 @@ struct compat_dtv_properties {
 
 static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
 					    unsigned long arg)
+=======
+static int dvb_frontend_ioctl_properties(struct file *file,
+			unsigned int cmd, void *parg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dvb_device *dvbdev = file->private_data;
 	struct dvb_frontend *fe = dvbdev->priv;
 	struct dvb_frontend_private *fepriv = fe->frontend_priv;
+<<<<<<< HEAD
 	int i, err = 0;
 
 	if (cmd == COMPAT_FE_SET_PROPERTY) {
@@ -2098,10 +2528,32 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
 			return -EINVAL;
 
 		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
+=======
+	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
+	int err = 0;
+
+	struct dtv_properties *tvps = parg;
+	struct dtv_property *tvp = NULL;
+	int i;
+
+	dev_dbg(fe->dvb->device, "%s:\n", __func__);
+
+	if (cmd == FE_SET_PROPERTY) {
+		dev_dbg(fe->dvb->device, "%s: properties.num = %d\n", __func__, tvps->num);
+		dev_dbg(fe->dvb->device, "%s: properties.props = %p\n", __func__, tvps->props);
+
+		/* Put an arbitrary limit on the number of messages that can
+		 * be sent at once */
+		if ((tvps->num == 0) || (tvps->num > DTV_IOCTL_MAX_MSGS))
+			return -EINVAL;
+
+		tvp = memdup_user(tvps->props, tvps->num * sizeof(*tvp));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(tvp))
 			return PTR_ERR(tvp);
 
 		for (i = 0; i < tvps->num; i++) {
+<<<<<<< HEAD
 			err = dtv_property_process_set(fe, file,
 						       (tvp + i)->cmd,
 						       (tvp + i)->u.data);
@@ -2129,6 +2581,29 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
 			return -EINVAL;
 
 		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
+=======
+			err = dtv_property_process_set(fe, tvp + i, file);
+			if (err < 0)
+				goto out;
+			(tvp + i)->result = err;
+		}
+
+		if (c->state == DTV_TUNE)
+			dev_dbg(fe->dvb->device, "%s: Property cache is full, tuning\n", __func__);
+
+	} else if (cmd == FE_GET_PROPERTY) {
+		struct dtv_frontend_properties getp = fe->dtv_property_cache;
+
+		dev_dbg(fe->dvb->device, "%s: properties.num = %d\n", __func__, tvps->num);
+		dev_dbg(fe->dvb->device, "%s: properties.props = %p\n", __func__, tvps->props);
+
+		/* Put an arbitrary limit on the number of messages that can
+		 * be sent at once */
+		if ((tvps->num == 0) || (tvps->num > DTV_IOCTL_MAX_MSGS))
+			return -EINVAL;
+
+		tvp = memdup_user(tvps->props, tvps->num * sizeof(*tvp));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(tvp))
 			return PTR_ERR(tvp);
 
@@ -2140,6 +2615,7 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
 		 */
 		if (fepriv->state != FESTATE_IDLE) {
 			err = dtv_get_frontend(fe, &getp, NULL);
+<<<<<<< HEAD
 			if (err < 0) {
 				kfree(tvp);
 				return err;
@@ -2187,6 +2663,32 @@ static long dvb_frontend_compat_ioctl(struct file *file, unsigned int cmd,
 }
 #endif
 
+=======
+			if (err < 0)
+				goto out;
+		}
+		for (i = 0; i < tvps->num; i++) {
+			err = dtv_property_process_get(fe, &getp, tvp + i, file);
+			if (err < 0)
+				goto out;
+			(tvp + i)->result = err;
+		}
+
+		if (copy_to_user((void __user *)tvps->props, tvp,
+				 tvps->num * sizeof(struct dtv_property))) {
+			err = -EFAULT;
+			goto out;
+		}
+
+	} else
+		err = -EOPNOTSUPP;
+
+out:
+	kfree(tvp);
+	return err;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dtv_set_frontend(struct dvb_frontend *fe)
 {
 	struct dvb_frontend_private *fepriv = fe->frontend_priv;
@@ -2293,8 +2795,13 @@ static int dtv_set_frontend(struct dvb_frontend *fe)
 		case SYS_ISDBT:
 		case SYS_DTMB:
 			fepriv->min_delay = HZ / 20;
+<<<<<<< HEAD
 			fepriv->step_size = dvb_frontend_get_stepsize(fe) * 2;
 			fepriv->max_drift = (dvb_frontend_get_stepsize(fe) * 2) + 1;
+=======
+			fepriv->step_size = fe->ops.info.frequency_stepsize * 2;
+			fepriv->max_drift = (fe->ops.info.frequency_stepsize * 2) + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		default:
 			/*
@@ -2323,13 +2830,20 @@ static int dtv_set_frontend(struct dvb_frontend *fe)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int dvb_frontend_handle_ioctl(struct file *file,
 				     unsigned int cmd, void *parg)
+=======
+
+static int dvb_frontend_ioctl_legacy(struct file *file,
+			unsigned int cmd, void *parg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dvb_device *dvbdev = file->private_data;
 	struct dvb_frontend *fe = dvbdev->priv;
 	struct dvb_frontend_private *fepriv = fe->frontend_priv;
 	struct dtv_frontend_properties *c = &fe->dtv_property_cache;
+<<<<<<< HEAD
 	int i, err = -ENOTSUPP;
 
 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
@@ -2434,6 +2948,16 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 		dvb_frontend_get_frequency_limits(fe, &info->frequency_min,
 						  &info->frequency_max,
 						  &info->frequency_tolerance);
+=======
+	int err = -EOPNOTSUPP;
+
+	switch (cmd) {
+	case FE_GET_INFO: {
+		struct dvb_frontend_info* info = parg;
+
+		memcpy(info, &fe->ops.info, sizeof(struct dvb_frontend_info));
+		dvb_frontend_get_frequency_limits(fe, &info->frequency_min, &info->frequency_max);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Associate the 4 delivery systems supported by DVBv3
@@ -2461,12 +2985,21 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 			break;
 		default:
 			dev_err(fe->dvb->device,
+<<<<<<< HEAD
 				"%s: doesn't know how to handle a DVBv3 call to delivery system %i\n",
 				__func__, c->delivery_system);
 			info->type = FE_OFDM;
 		}
 		dev_dbg(fe->dvb->device, "%s: current delivery system on cache: %d, V3 type: %d\n",
 			__func__, c->delivery_system, info->type);
+=======
+					"%s: doesn't know how to handle a DVBv3 call to delivery system %i\n",
+					__func__, c->delivery_system);
+			fe->ops.info.type = FE_OFDM;
+		}
+		dev_dbg(fe->dvb->device, "%s: current delivery system on cache: %d, V3 type: %d\n",
+				 __func__, c->delivery_system, fe->ops.info.type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Set CAN_INVERSION_AUTO bit on in other than oneshot mode */
 		if (!(fepriv->tune_mode_flags & FE_TUNE_MODE_ONESHOT))
@@ -2482,7 +3015,11 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 		 * that user get signal state from previous tuning */
 		if (fepriv->state == FESTATE_RETUNE ||
 		    fepriv->state == FESTATE_ERROR) {
+<<<<<<< HEAD
 			err = 0;
+=======
+			err=0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*status = 0;
 			break;
 		}
@@ -2492,6 +3029,45 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 		break;
 	}
 
+<<<<<<< HEAD
+=======
+	case FE_READ_BER:
+		if (fe->ops.read_ber) {
+			if (fepriv->thread)
+				err = fe->ops.read_ber(fe, (__u32 *) parg);
+			else
+				err = -EAGAIN;
+		}
+		break;
+
+	case FE_READ_SIGNAL_STRENGTH:
+		if (fe->ops.read_signal_strength) {
+			if (fepriv->thread)
+				err = fe->ops.read_signal_strength(fe, (__u16 *) parg);
+			else
+				err = -EAGAIN;
+		}
+		break;
+
+	case FE_READ_SNR:
+		if (fe->ops.read_snr) {
+			if (fepriv->thread)
+				err = fe->ops.read_snr(fe, (__u16 *) parg);
+			else
+				err = -EAGAIN;
+		}
+		break;
+
+	case FE_READ_UNCORRECTED_BLOCKS:
+		if (fe->ops.read_ucblocks) {
+			if (fepriv->thread)
+				err = fe->ops.read_ucblocks(fe, (__u32 *) parg);
+			else
+				err = -EAGAIN;
+		}
+		break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case FE_DISEQC_RESET_OVERLOAD:
 		if (fe->ops.diseqc_reset_overload) {
 			err = fe->ops.diseqc_reset_overload(fe);
@@ -2543,6 +3119,7 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 		}
 		break;
 
+<<<<<<< HEAD
 	case FE_DISEQC_RECV_SLAVE_REPLY:
 		if (fe->ops.diseqc_recv_slave_reply)
 			err = fe->ops.diseqc_recv_slave_reply(fe, parg);
@@ -2560,6 +3137,8 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 
 	/* DEPRECATED dish control ioctls */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case FE_DISHNETWORK_SEND_LEGACY_CMD:
 		if (fe->ops.dishnetwork_send_legacy_command) {
 			err = fe->ops.dishnetwork_send_legacy_command(fe,
@@ -2583,12 +3162,19 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 			 * initialization, so parg is 8 bits and does not
 			 * include the initialization or start bit
 			 */
+<<<<<<< HEAD
 			unsigned long swcmd = ((unsigned long)parg) << 1;
+=======
+			unsigned long swcmd = ((unsigned long) parg) << 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ktime_t nexttime;
 			ktime_t tv[10];
 			int i;
 			u8 last = 1;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (dvb_frontend_debug)
 				dprintk("%s switch command: 0x%04lx\n",
 					__func__, swcmd);
@@ -2603,7 +3189,11 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 
 			for (i = 0; i < 9; i++) {
 				if (dvb_frontend_debug)
+<<<<<<< HEAD
 					tv[i + 1] = ktime_get_boottime();
+=======
+					tv[i+1] = ktime_get_boottime();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if ((swcmd & 0x01) != last) {
 					/* set voltage to (last ? 13V : 18V) */
 					fe->ops.set_voltage(fe, (last) ? SEC_VOLTAGE_13 : SEC_VOLTAGE_18);
@@ -2618,7 +3208,11 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 					__func__, fe->dvb->num);
 				for (i = 1; i < 10; i++)
 					pr_info("%d: %d\n", i,
+<<<<<<< HEAD
 						(int)ktime_us_delta(tv[i], tv[i - 1]));
+=======
+					(int) ktime_us_delta(tv[i], tv[i-1]));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			err = 0;
 			fepriv->state = FESTATE_DISEQC;
@@ -2626,6 +3220,7 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 		}
 		break;
 
+<<<<<<< HEAD
 	/* DEPRECATED statistics ioctls */
 
 	case FE_READ_BER:
@@ -2666,6 +3261,18 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 
 	/* DEPRECATED DVBv3 ioctls */
 
+=======
+	case FE_DISEQC_RECV_SLAVE_REPLY:
+		if (fe->ops.diseqc_recv_slave_reply)
+			err = fe->ops.diseqc_recv_slave_reply(fe, (struct dvb_diseqc_slave_reply*) parg);
+		break;
+
+	case FE_ENABLE_HIGH_LNB_VOLTAGE:
+		if (fe->ops.enable_high_lnb_voltage)
+			err = fe->ops.enable_high_lnb_voltage(fe, (long) parg);
+		break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case FE_SET_FRONTEND:
 		err = dvbv3_set_delivery_system(fe);
 		if (err)
@@ -2677,7 +3284,11 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 		err = dtv_set_frontend(fe);
 		break;
 	case FE_GET_EVENT:
+<<<<<<< HEAD
 		err = dvb_frontend_get_event(fe, parg, file->f_flags);
+=======
+		err = dvb_frontend_get_event (fe, parg, file->f_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case FE_GET_FRONTEND: {
@@ -2692,15 +3303,28 @@ static int dvb_frontend_handle_ioctl(struct file *file,
 		err = dtv_get_frontend(fe, &getp, parg);
 		break;
 	}
+<<<<<<< HEAD
 
 	default:
 		return -ENOTSUPP;
 	} /* switch */
+=======
+	case FE_SET_FRONTEND_TUNE_MODE:
+		fepriv->tune_mode_flags = (unsigned long) parg;
+		err = 0;
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
+<<<<<<< HEAD
 static __poll_t dvb_frontend_poll(struct file *file, struct poll_table_struct *wait)
+=======
+
+static unsigned int dvb_frontend_poll(struct file *file, struct poll_table_struct *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dvb_device *dvbdev = file->private_data;
 	struct dvb_frontend *fe = dvbdev->priv;
@@ -2708,10 +3332,17 @@ static __poll_t dvb_frontend_poll(struct file *file, struct poll_table_struct *w
 
 	dev_dbg_ratelimited(fe->dvb->device, "%s:\n", __func__);
 
+<<<<<<< HEAD
 	poll_wait(file, &fepriv->events.wait_queue, wait);
 
 	if (fepriv->events.eventw != fepriv->events.eventr)
 		return (EPOLLIN | EPOLLRDNORM | EPOLLPRI);
+=======
+	poll_wait (file, &fepriv->events.wait_queue, wait);
+
+	if (fepriv->events.eventw != fepriv->events.eventr)
+		return (POLLIN | POLLRDNORM | POLLPRI);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2729,9 +3360,15 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
 		return -ENODEV;
 
 	if (adapter->mfe_shared) {
+<<<<<<< HEAD
 		mutex_lock(&adapter->mfe_lock);
 
 		if (!adapter->mfe_dvbdev)
+=======
+		mutex_lock (&adapter->mfe_lock);
+
+		if (adapter->mfe_dvbdev == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adapter->mfe_dvbdev = dvbdev;
 
 		else if (adapter->mfe_dvbdev != dvbdev) {
@@ -2743,23 +3380,41 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
 				*mfepriv = mfe->frontend_priv;
 			int mferetry = (dvb_mfe_wait_time << 1);
 
+<<<<<<< HEAD
 			mutex_unlock(&adapter->mfe_lock);
 			while (mferetry-- && (mfedev->users != -1 ||
 					      mfepriv->thread)) {
 				if (msleep_interruptible(500)) {
 					if (signal_pending(current))
+=======
+			mutex_unlock (&adapter->mfe_lock);
+			while (mferetry-- && (mfedev->users != -1 ||
+					mfepriv->thread != NULL)) {
+				if(msleep_interruptible(500)) {
+					if(signal_pending(current))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						return -EINTR;
 				}
 			}
 
+<<<<<<< HEAD
 			mutex_lock(&adapter->mfe_lock);
 			if (adapter->mfe_dvbdev != dvbdev) {
+=======
+			mutex_lock (&adapter->mfe_lock);
+			if(adapter->mfe_dvbdev != dvbdev) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				mfedev = adapter->mfe_dvbdev;
 				mfe = mfedev->priv;
 				mfepriv = mfe->frontend_priv;
 				if (mfedev->users != -1 ||
+<<<<<<< HEAD
 				    mfepriv->thread) {
 					mutex_unlock(&adapter->mfe_lock);
+=======
+						mfepriv->thread != NULL) {
+					mutex_unlock (&adapter->mfe_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return -EBUSY;
 				}
 				adapter->mfe_dvbdev = dvbdev;
@@ -2780,7 +3435,11 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
 		fepriv->reinitialise = 1;
 	}
 
+<<<<<<< HEAD
 	if ((ret = dvb_generic_open(inode, file)) < 0)
+=======
+	if ((ret = dvb_generic_open (inode, file)) < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err1;
 
 	if ((file->f_flags & O_ACCMODE) != O_RDONLY) {
@@ -2790,7 +3449,10 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
 		fepriv->voltage = -1;
 
 #ifdef CONFIG_MEDIA_CONTROLLER_DVB
+<<<<<<< HEAD
 		mutex_lock(&fe->dvb->mdev_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fe->dvb->mdev) {
 			mutex_lock(&fe->dvb->mdev->graph_mutex);
 			if (fe->dvb->mdev->enable_source)
@@ -2799,15 +3461,23 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
 							   &fepriv->pipe);
 			mutex_unlock(&fe->dvb->mdev->graph_mutex);
 			if (ret) {
+<<<<<<< HEAD
 				mutex_unlock(&fe->dvb->mdev_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dev_err(fe->dvb->device,
 					"Tuner is busy. Error %d\n", ret);
 				goto err2;
 			}
 		}
+<<<<<<< HEAD
 		mutex_unlock(&fe->dvb->mdev_lock);
 #endif
 		ret = dvb_frontend_start(fe);
+=======
+#endif
+		ret = dvb_frontend_start (fe);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err3;
 
@@ -2818,19 +3488,29 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
 	dvb_frontend_get(fe);
 
 	if (adapter->mfe_shared)
+<<<<<<< HEAD
 		mutex_unlock(&adapter->mfe_lock);
+=======
+		mutex_unlock (&adapter->mfe_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 
 err3:
 #ifdef CONFIG_MEDIA_CONTROLLER_DVB
+<<<<<<< HEAD
 	mutex_lock(&fe->dvb->mdev_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fe->dvb->mdev) {
 		mutex_lock(&fe->dvb->mdev->graph_mutex);
 		if (fe->dvb->mdev->disable_source)
 			fe->dvb->mdev->disable_source(dvbdev->entity);
 		mutex_unlock(&fe->dvb->mdev->graph_mutex);
 	}
+<<<<<<< HEAD
 	mutex_unlock(&fe->dvb->mdev_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err2:
 #endif
 	dvb_generic_release(inode, file);
@@ -2839,7 +3519,11 @@ err1:
 		fe->ops.ts_bus_ctrl(fe, 0);
 err0:
 	if (adapter->mfe_shared)
+<<<<<<< HEAD
 		mutex_unlock(&adapter->mfe_lock);
+=======
+		mutex_unlock (&adapter->mfe_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2857,19 +3541,29 @@ static int dvb_frontend_release(struct inode *inode, struct file *file)
 		mb();
 	}
 
+<<<<<<< HEAD
 	ret = dvb_generic_release(inode, file);
+=======
+	ret = dvb_generic_release (inode, file);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dvbdev->users == -1) {
 		wake_up(&fepriv->wait_queue);
 #ifdef CONFIG_MEDIA_CONTROLLER_DVB
+<<<<<<< HEAD
 		mutex_lock(&fe->dvb->mdev_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fe->dvb->mdev) {
 			mutex_lock(&fe->dvb->mdev->graph_mutex);
 			if (fe->dvb->mdev->disable_source)
 				fe->dvb->mdev->disable_source(dvbdev->entity);
 			mutex_unlock(&fe->dvb->mdev->graph_mutex);
 		}
+<<<<<<< HEAD
 		mutex_unlock(&fe->dvb->mdev_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		if (fe->exit != DVB_FE_NO_EXIT)
 			wake_up(&dvbdev->wait_queue);
@@ -2884,10 +3578,14 @@ static int dvb_frontend_release(struct inode *inode, struct file *file)
 
 static const struct file_operations dvb_frontend_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.unlocked_ioctl	= dvb_frontend_ioctl,
 #ifdef CONFIG_COMPAT
 	.compat_ioctl	= dvb_frontend_compat_ioctl,
 #endif
+=======
+	.unlocked_ioctl	= dvb_generic_ioctl,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.poll		= dvb_frontend_poll,
 	.open		= dvb_frontend_open,
 	.release	= dvb_frontend_release,
@@ -2899,7 +3597,11 @@ int dvb_frontend_suspend(struct dvb_frontend *fe)
 	int ret = 0;
 
 	dev_dbg(fe->dvb->device, "%s: adap=%d fe=%d\n", __func__, fe->dvb->num,
+<<<<<<< HEAD
 		fe->id);
+=======
+			fe->id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fe->ops.tuner_ops.suspend)
 		ret = fe->ops.tuner_ops.suspend(fe);
@@ -2919,7 +3621,11 @@ int dvb_frontend_resume(struct dvb_frontend *fe)
 	int ret = 0;
 
 	dev_dbg(fe->dvb->device, "%s: adap=%d fe=%d\n", __func__, fe->dvb->num,
+<<<<<<< HEAD
 		fe->id);
+=======
+			fe->id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fe->exit = DVB_FE_DEVICE_RESUME;
 	if (fe->ops.init)
@@ -2943,18 +3649,31 @@ int dvb_frontend_resume(struct dvb_frontend *fe)
 }
 EXPORT_SYMBOL(dvb_frontend_resume);
 
+<<<<<<< HEAD
 int dvb_register_frontend(struct dvb_adapter *dvb,
 			  struct dvb_frontend *fe)
+=======
+int dvb_register_frontend(struct dvb_adapter* dvb,
+			  struct dvb_frontend* fe)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dvb_frontend_private *fepriv;
 	const struct dvb_device dvbdev_template = {
 		.users = ~0,
 		.writers = 1,
+<<<<<<< HEAD
 		.readers = (~0) - 1,
+=======
+		.readers = (~0)-1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.fops = &dvb_frontend_fops,
 #if defined(CONFIG_MEDIA_CONTROLLER_DVB)
 		.name = fe->ops.info.name,
 #endif
+<<<<<<< HEAD
+=======
+		.kernel_ioctl = dvb_frontend_ioctl
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	dev_dbg(dvb->device, "%s:\n", __func__);
@@ -2963,7 +3682,11 @@ int dvb_register_frontend(struct dvb_adapter *dvb,
 		return -ERESTARTSYS;
 
 	fe->frontend_priv = kzalloc(sizeof(struct dvb_frontend_private), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!fe->frontend_priv) {
+=======
+	if (fe->frontend_priv == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&frontend_mutex);
 		return -ENOMEM;
 	}
@@ -2979,18 +3702,31 @@ int dvb_register_frontend(struct dvb_adapter *dvb,
 	dvb_frontend_get(fe);
 
 	sema_init(&fepriv->sem, 1);
+<<<<<<< HEAD
 	init_waitqueue_head(&fepriv->wait_queue);
 	init_waitqueue_head(&fepriv->events.wait_queue);
+=======
+	init_waitqueue_head (&fepriv->wait_queue);
+	init_waitqueue_head (&fepriv->events.wait_queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&fepriv->events.mtx);
 	fe->dvb = dvb;
 	fepriv->inversion = INVERSION_OFF;
 
 	dev_info(fe->dvb->device,
+<<<<<<< HEAD
 		 "DVB: registering adapter %i frontend %i (%s)...\n",
 		 fe->dvb->num, fe->id, fe->ops.info.name);
 
 	dvb_register_device(fe->dvb, &fepriv->dvbdev, &dvbdev_template,
 			    fe, DVB_DEVICE_FRONTEND, 0);
+=======
+			"DVB: registering adapter %i frontend %i (%s)...\n",
+			fe->dvb->num, fe->id, fe->ops.info.name);
+
+	dvb_register_device (fe->dvb, &fepriv->dvbdev, &dvbdev_template,
+			     fe, DVB_DEVICE_FRONTEND, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Initialize the cache to the proper values according with the
@@ -3005,10 +3741,16 @@ int dvb_register_frontend(struct dvb_adapter *dvb,
 }
 EXPORT_SYMBOL(dvb_register_frontend);
 
+<<<<<<< HEAD
 int dvb_unregister_frontend(struct dvb_frontend *fe)
 {
 	struct dvb_frontend_private *fepriv = fe->frontend_priv;
 
+=======
+int dvb_unregister_frontend(struct dvb_frontend* fe)
+{
+	struct dvb_frontend_private *fepriv = fe->frontend_priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
 
 	mutex_lock(&frontend_mutex);
@@ -3033,11 +3775,19 @@ static void dvb_frontend_invoke_release(struct dvb_frontend *fe,
 	}
 }
 
+<<<<<<< HEAD
 void dvb_frontend_detach(struct dvb_frontend *fe)
+=======
+void dvb_frontend_detach(struct dvb_frontend* fe)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	dvb_frontend_invoke_release(fe, fe->ops.release_sec);
 	dvb_frontend_invoke_release(fe, fe->ops.tuner_ops.release);
 	dvb_frontend_invoke_release(fe, fe->ops.analog_ops.release);
+<<<<<<< HEAD
+=======
+	dvb_frontend_invoke_release(fe, fe->ops.detach);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dvb_frontend_put(fe);
 }
 EXPORT_SYMBOL(dvb_frontend_detach);

@@ -34,6 +34,10 @@ nv4e_fb = {
 	.tile.fini = nv20_fb_tile_fini,
 	.tile.prog = nv44_fb_tile_prog,
 	.ram_new = nv44_ram_new,
+<<<<<<< HEAD
+=======
+	.memtype_valid = nv04_fb_memtype_valid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

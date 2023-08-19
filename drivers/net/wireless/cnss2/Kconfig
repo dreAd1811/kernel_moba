@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
 
 config CNSS2
@@ -5,6 +6,12 @@ config CNSS2
 	depends on !CNSS && PCI_MSM
 	select CNSS_UTILS
 	help
+=======
+config CNSS2
+	tristate "CNSS2 Platform Driver for Wi-Fi Module"
+	depends on !CNSS && PCI_MSM
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This module adds the support for Connectivity Subsystem (CNSS) used
 	  for PCIe based Wi-Fi devices with QCA6174/QCA6290 chipsets.
 	  This driver also adds support to integrate WLAN module to subsystem
@@ -13,7 +20,11 @@ config CNSS2
 config CNSS2_DEBUG
 	bool "CNSS2 Platform Driver Debug Support"
 	depends on CNSS2
+<<<<<<< HEAD
 	help
+=======
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This option is to enable CNSS2 platform driver debug support which
 	  primarily includes providing additional verbose logs for certain
 	  features, enabling kernel panic for certain cases to aid the
@@ -21,9 +32,14 @@ config CNSS2_DEBUG
 
 config CNSS2_QMI
 	bool "CNSS2 Platform Driver QMI support"
+<<<<<<< HEAD
 	select CNSS_QMI_SVC
 	depends on CNSS2
 	help
+=======
+	depends on CNSS2
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  CNSS2 platform driver uses QMI framework to communicate with WLAN
 	  firmware. It sends and receives boot handshake messages to WLAN
 	  firmware, which includes hardware and software capabilities and
@@ -33,7 +49,11 @@ config CNSS2_QMI
 config CNSS_ASYNC
 	bool "Enable/disable CNSS platform driver asynchronous probe"
 	depends on CNSS2
+<<<<<<< HEAD
 	help
+=======
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  If enabled, CNSS platform driver would do asynchronous probe.
 	  Using asynchronous probe will allow CNSS platform driver to
 	  probe in parallel with other device drivers and will help to
@@ -43,7 +63,11 @@ config BUS_AUTO_SUSPEND
 	bool "Enable/Disable Runtime PM support for PCIe based WLAN Drivers"
 	depends on CNSS2
 	depends on PCI
+<<<<<<< HEAD
 	help
+=======
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  Runtime Power Management is supported for PCIe based WLAN Drivers.
 	  The features enable cld wlan driver to suspend pcie bus when APPS
 	  is awake based on the driver inactivity with the Firmware.
@@ -55,7 +79,11 @@ config BUS_AUTO_SUSPEND
 
 config CNSS_QCA6290
 	bool "Enable CNSS QCA6290 chipset specific changes"
+<<<<<<< HEAD
 	help
+=======
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This enables the changes from WLAN host driver that are specific to
 	  CNSS QCA6290 chipset.
 	  These changes are needed to support the new hardware architecture
@@ -63,7 +91,11 @@ config CNSS_QCA6290
 
 config CNSS_QCA6390
 	bool "Enable CNSS QCA6390 chipset specific changes"
+<<<<<<< HEAD
 	help
+=======
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This enables the changes from WLAN host driver that are specific to
 	  CNSS QCA6390 chipset.
 	  These changes are needed to support the new hardware architecture
@@ -71,12 +103,17 @@ config CNSS_QCA6390
 
 config CNSS_EMULATION
 	bool "Enable specific changes for emulation hardware"
+<<<<<<< HEAD
 	help
+=======
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  This enables the changes from WLAN drivers that are specific to
 	  emulation hardware.
 	  These changes are needed for WLAN drivers to support and meet the
 	  requirement of emulation hardware.
 
+<<<<<<< HEAD
 config CNSS_QCA6490
 	bool "Enable CNSS QCA6490 chipset specific changes"
 	help
@@ -84,3 +121,10 @@ config CNSS_QCA6490
 	  CNSS QCA6490 chipset.
 	  These changes are needed to support the new hardware architecture
 	  for CNSS QCA6490 chipset.
+=======
+config CNSS_SUPPORT_DUAL_DEV
+       bool "Enable cnss support dual wlan card"
+       ---help---
+         This enables the changes from cnss platform driver to support dual
+         wlan card attach
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

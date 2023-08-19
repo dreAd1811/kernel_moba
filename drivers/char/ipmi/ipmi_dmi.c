@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+// SPDX-License-Identifier: GPL-2.0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * A hack to create a platform device from a DMI entry.  This will
  * allow autoloading of the IPMI drive based on SMBIOS entries.
@@ -9,6 +13,7 @@
 #include <linux/dmi.h>
 #include <linux/platform_device.h>
 #include <linux/property.h>
+<<<<<<< HEAD
 #include "ipmi_si_sm.h"
 #include "ipmi_dmi.h"
 
@@ -19,6 +24,12 @@
 
 struct ipmi_dmi_info {
 	enum si_type si_type;
+=======
+#include "ipmi_dmi.h"
+
+struct ipmi_dmi_info {
+	int type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 flags;
 	unsigned long addr;
 	u8 slave_addr;
@@ -39,6 +50,7 @@ static void __init dmi_add_platform_ipmi(unsigned long base_addr,
 	struct platform_device *pdev;
 	struct resource r[4];
 	unsigned int num_r = 1, size;
+<<<<<<< HEAD
 	struct property_entry p[5];
 	unsigned int pidx = 0;
 	char *name, *override;
@@ -47,6 +59,29 @@ static void __init dmi_add_platform_ipmi(unsigned long base_addr,
 	struct ipmi_dmi_info *info;
 
 	memset(p, 0, sizeof(p));
+=======
+	struct property_entry p[4] = {
+		PROPERTY_ENTRY_U8("slave-addr", slave_addr),
+		PROPERTY_ENTRY_U8("ipmi-type", type),
+		PROPERTY_ENTRY_U16("i2c-addr", base_addr),
+		{ }
+	};
+	char *name, *override;
+	int rv;
+	struct ipmi_dmi_info *info;
+
+	info = kmalloc(sizeof(*info), GFP_KERNEL);
+	if (!info) {
+		pr_warn("ipmi:dmi: Could not allocate dmi info\n");
+	} else {
+		info->type = type;
+		info->flags = flags;
+		info->addr = base_addr;
+		info->slave_addr = slave_addr;
+		info->next = ipmi_dmi_infos;
+		ipmi_dmi_infos = info;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	name = "dmi-ipmi-si";
 	override = "ipmi_si";
@@ -56,6 +91,7 @@ static void __init dmi_add_platform_ipmi(unsigned long base_addr,
 		override = "ipmi_ssif";
 		offset = 1;
 		size = 1;
+<<<<<<< HEAD
 		si_type = SI_TYPE_INVALID;
 		break;
 	case IPMI_DMI_TYPE_BT:
@@ -96,6 +132,24 @@ static void __init dmi_add_platform_ipmi(unsigned long base_addr,
 	pdev = platform_device_alloc(name, ipmi_dmi_nr);
 	if (!pdev) {
 		pr_err("ipmi:dmi: Error allocation IPMI platform device\n");
+=======
+		break;
+	case IPMI_DMI_TYPE_BT:
+		size = 3;
+		break;
+	case IPMI_DMI_TYPE_KCS:
+	case IPMI_DMI_TYPE_SMIC:
+		size = 2;
+		break;
+	default:
+		pr_err("ipmi:dmi: Invalid IPMI type: %d", type);
+		return;
+	}
+
+	pdev = platform_device_alloc(name, ipmi_dmi_nr);
+	if (!pdev) {
+		pr_err("ipmi:dmi: Error allocation IPMI platform device");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	pdev->driver_override = kasprintf(GFP_KERNEL, "%s",
@@ -103,10 +157,15 @@ static void __init dmi_add_platform_ipmi(unsigned long base_addr,
 	if (!pdev->driver_override)
 		goto err;
 
+<<<<<<< HEAD
 	if (type == IPMI_DMI_TYPE_SSIF) {
 		p[pidx++] = PROPERTY_ENTRY_U16("i2c-addr", base_addr);
 		goto add_properties;
 	}
+=======
+	if (type == IPMI_DMI_TYPE_SSIF)
+		goto add_properties;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(r, 0, sizeof(r));
 
@@ -174,13 +233,21 @@ err:
  * This function allows an ACPI-specified IPMI device to look up the
  * slave address from the DMI table.
  */
+<<<<<<< HEAD
 int ipmi_dmi_get_slave_addr(enum si_type si_type, u32 flags,
 			    unsigned long base_addr)
+=======
+int ipmi_dmi_get_slave_addr(int type, u32 flags, unsigned long base_addr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipmi_dmi_info *info = ipmi_dmi_infos;
 
 	while (info) {
+<<<<<<< HEAD
 		if (info->si_type == si_type &&
+=======
+		if (info->type == type &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    info->flags == flags &&
 		    info->addr == base_addr)
 			return info->slave_addr;
@@ -217,6 +284,13 @@ static void __init dmi_decode_ipmi(const struct dmi_header *dm)
 	slave_addr = data[DMI_IPMI_SLAVEADDR];
 
 	memcpy(&base_addr, data + DMI_IPMI_ADDR, sizeof(unsigned long));
+<<<<<<< HEAD
+=======
+	if (!base_addr) {
+		pr_err("Base address is zero, assuming no IPMI interface\n");
+		return;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (len >= DMI_IPMI_VER2_LENGTH) {
 		if (type == IPMI_DMI_TYPE_SSIF) {
 			offset = 0;
@@ -263,7 +337,11 @@ static void __init dmi_decode_ipmi(const struct dmi_header *dm)
 				offset = 16;
 				break;
 			default:
+<<<<<<< HEAD
 				pr_err("ipmi:dmi: Invalid offset: 0\n");
+=======
+				pr_err("ipmi:dmi: Invalid offset: 0");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return;
 			}
 		}

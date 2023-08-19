@@ -14,6 +14,10 @@
 
 #include <linux/kernel.h>
 #include <linux/cpuidle.h>
+<<<<<<< HEAD
+=======
+#include <linux/pm_qos.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/jiffies.h>
 #include <linux/tick.h>
 
@@ -70,7 +74,11 @@ static int ladder_select_state(struct cpuidle_driver *drv,
 	struct ladder_device_state *last_state;
 	int last_residency, last_idx = ldev->last_state_idx;
 	int first_idx = drv->states[0].flags & CPUIDLE_FLAG_POLLING ? 1 : 0;
+<<<<<<< HEAD
 	int latency_req = cpuidle_governor_latency_req(dev->cpu);
+=======
+	int latency_req = pm_qos_request(PM_QOS_CPU_DMA_LATENCY);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Special case when user has set very strict latency requirement */
 	if (unlikely(latency_req == 0)) {

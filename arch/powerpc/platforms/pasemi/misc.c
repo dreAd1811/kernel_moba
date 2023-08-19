@@ -69,7 +69,13 @@ static int __init pasemi_register_i2c_devices(void)
 			addr = of_get_property(node, "reg", &len);
 			if (!addr || len < sizeof(int) ||
 			    *addr > (1 << 10) - 1) {
+<<<<<<< HEAD
 				pr_warn("pasemi_register_i2c_devices: invalid i2c device entry\n");
+=======
+				printk(KERN_WARNING
+					"pasemi_register_i2c_devices: "
+					"invalid i2c device entry\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 			}
 

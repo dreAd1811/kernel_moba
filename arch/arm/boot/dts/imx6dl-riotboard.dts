@@ -15,12 +15,49 @@
 	model = "RIoTboard i.MX6S";
 	compatible = "riot,imx6s-riotboard", "fsl,imx6dl";
 
+<<<<<<< HEAD
 	memory@10000000 {
 		reg = <0x10000000 0x40000000>;
 	};
 
 	chosen {
 		stdout-path = "serial1:115200n8";
+=======
+	memory {
+		reg = <0x10000000 0x40000000>;
+	};
+
+	regulators {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		reg_2p5v: regulator@0 {
+			compatible = "regulator-fixed";
+			reg = <0>;
+			regulator-name = "2P5V";
+			regulator-min-microvolt = <2500000>;
+			regulator-max-microvolt = <2500000>;
+		};
+
+		reg_3p3v: regulator@1 {
+			compatible = "regulator-fixed";
+			reg = <1>;
+			regulator-name = "3P3V";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+		};
+
+		reg_usb_otg_vbus: regulator@2 {
+			compatible = "regulator-fixed";
+			reg = <2>;
+			regulator-name = "usb_otg_vbus";
+			regulator-min-microvolt = <5000000>;
+			regulator-max-microvolt = <5000000>;
+			gpio = <&gpio3 22 0>;
+			enable-active-high;
+		};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	leds {
@@ -54,6 +91,7 @@
 			mux-int-port = <1>;
 			mux-ext-port = <3>;
 	};
+<<<<<<< HEAD
 
 	reg_2p5v: regulator-2p5v {
 		compatible = "regulator-fixed";
@@ -76,6 +114,8 @@
 		regulator-max-microvolt = <5000000>;
 		gpio = <&gpio3 22 GPIO_ACTIVE_LOW>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &audmux {
@@ -151,7 +191,11 @@
 	pinctrl-0 = <&pinctrl_i2c1>;
 	status = "okay";
 
+<<<<<<< HEAD
 	codec: sgtl5000@a {
+=======
+	codec: sgtl5000@0a {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		clocks = <&clks IMX6QDL_CLK_CKO>;
@@ -159,7 +203,11 @@
 		VDDIO-supply = <&reg_3p3v>;
 	};
 
+<<<<<<< HEAD
 	pmic: pf0100@8 {
+=======
+	pmic: pf0100@08 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,pfuze100";
 		reg = <0x08>;
 		interrupt-parent = <&gpio5>;

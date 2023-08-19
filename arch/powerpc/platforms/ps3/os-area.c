@@ -664,7 +664,11 @@ static int update_flash_db(void)
 	db_set_64(db, &os_area_db_id_rtc_diff, saved_params.rtc_diff);
 
 	count = os_area_flash_write(db, sizeof(struct os_area_db), pos);
+<<<<<<< HEAD
 	if (count < sizeof(struct os_area_db)) {
+=======
+	if (count < 0 || count < sizeof(struct os_area_db)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("%s: os_area_flash_write failed %zd\n", __func__,
 			 count);
 		error = count < 0 ? count : -EIO;
@@ -699,7 +703,11 @@ static void os_area_queue_work_handler(struct work_struct *work)
 
 	error = update_flash_db();
 	if (error)
+<<<<<<< HEAD
 		pr_warn("%s: Could not update FLASH ROM\n", __func__);
+=======
+		pr_warning("%s: Could not update FLASH ROM\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug(" <- %s:%d\n", __func__, __LINE__);
 }

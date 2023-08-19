@@ -17,7 +17,10 @@
 #include <linux/bitrev.h>
 #include <linux/io.h>
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <linux/sizes.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ipu-prv.h"
 
 /* IC Register Offsets */

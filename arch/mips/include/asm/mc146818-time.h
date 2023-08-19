@@ -86,7 +86,11 @@ static inline int mc146818_set_rtc_mmss(unsigned long nowtime)
 	return retval;
 }
 
+<<<<<<< HEAD
 static inline time64_t mc146818_get_cmos_time(void)
+=======
+static inline unsigned long mc146818_get_cmos_time(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int year, mon, day, hour, min, sec;
 	unsigned long flags;
@@ -113,7 +117,11 @@ static inline time64_t mc146818_get_cmos_time(void)
 	spin_unlock_irqrestore(&rtc_lock, flags);
 	year = mc146818_decode_year(year);
 
+<<<<<<< HEAD
 	return mktime64(year, mon, day, hour, min, sec);
+=======
+	return mktime(year, mon, day, hour, min, sec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif /* __ASM_MC146818_TIME_H */

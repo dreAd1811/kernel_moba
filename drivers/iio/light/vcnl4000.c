@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * vcnl4000.c - Support for Vishay VCNL4000/4010/4020/4200 combined ambient
+=======
+ * vcnl4000.c - Support for Vishay VCNL4000/4010/4020 combined ambient
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * light and proximity sensor
  *
  * Copyright 2012 Peter Meerwald <pmeerw@pmeerw.net>
@@ -8,15 +12,23 @@
  * the GNU General Public License.  See the file COPYING in the main
  * directory of this archive for more details.
  *
+<<<<<<< HEAD
  * IIO driver for:
  *   VCNL4000/10/20 (7-bit I2C slave address 0x13)
  *   VCNL4200 (7-bit I2C slave address 0x51)
+=======
+ * IIO driver for VCNL4000 (7-bit I2C slave address 0x13)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * TODO:
  *   allow to adjust IR current
  *   proximity threshold and event handling
  *   periodic ALS/proximity measurement (VCNL4010/20)
+<<<<<<< HEAD
  *   interrupts (VCNL4010/20, VCNL4200)
+=======
+ *   interrupts (VCNL4010/20)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -28,9 +40,14 @@
 #include <linux/iio/sysfs.h>
 
 #define VCNL4000_DRV_NAME "vcnl4000"
+<<<<<<< HEAD
 #define VCNL4000_PROD_ID	0x01
 #define VCNL4010_PROD_ID	0x02 /* for VCNL4020, VCNL4010 */
 #define VCNL4200_PROD_ID	0x58
+=======
+#define VCNL4000_ID		0x01
+#define VCNL4010_ID		0x02 /* for VCNL4020, VCNL4010 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define VCNL4000_COMMAND	0x80 /* Command register */
 #define VCNL4000_PROD_REV	0x81 /* Product ID and Revision ID */
@@ -43,18 +60,22 @@
 #define VCNL4000_PS_MEAS_FREQ	0x89 /* Proximity test signal frequency */
 #define VCNL4000_PS_MOD_ADJ	0x8a /* Proximity modulator timing adjustment */
 
+<<<<<<< HEAD
 #define VCNL4200_AL_CONF	0x00 /* Ambient light configuration */
 #define VCNL4200_PS_CONF1	0x03 /* Proximity configuration */
 #define VCNL4200_PS_DATA	0x08 /* Proximity data */
 #define VCNL4200_AL_DATA	0x09 /* Ambient light data */
 #define VCNL4200_DEV_ID		0x0e /* Device ID, slave address and version */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Bit masks for COMMAND register */
 #define VCNL4000_AL_RDY		BIT(6) /* ALS data ready? */
 #define VCNL4000_PS_RDY		BIT(5) /* proximity data ready? */
 #define VCNL4000_AL_OD		BIT(4) /* start on-demand ALS measurement */
 #define VCNL4000_PS_OD		BIT(3) /* start on-demand proximity measurement */
 
+<<<<<<< HEAD
 enum vcnl4000_device_ids {
 	VCNL4000,
 	VCNL4010,
@@ -91,10 +112,20 @@ static const struct i2c_device_id vcnl4000_id[] = {
 	{ "vcnl4010", VCNL4010 },
 	{ "vcnl4020", VCNL4010 },
 	{ "vcnl4200", VCNL4200 },
+=======
+struct vcnl4000_data {
+	struct i2c_client *client;
+	struct mutex lock;
+};
+
+static const struct i2c_device_id vcnl4000_id[] = {
+	{ "vcnl4000", 0 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, vcnl4000_id);
 
+<<<<<<< HEAD
 static int vcnl4000_init(struct vcnl4000_data *data)
 {
 	int ret, prod_id;
@@ -161,14 +192,22 @@ static int vcnl4200_init(struct vcnl4000_data *data)
 	return 0;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int vcnl4000_measure(struct vcnl4000_data *data, u8 req_mask,
 				u8 rdy_mask, u8 data_reg, int *val)
 {
 	int tries = 20;
+<<<<<<< HEAD
 	__be16 buf;
 	int ret;
 
 	mutex_lock(&data->vcnl4000_lock);
+=======
+	int ret;
+
+	mutex_lock(&data->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i2c_smbus_write_byte_data(data->client, VCNL4000_COMMAND,
 					req_mask);
@@ -192,6 +231,7 @@ static int vcnl4000_measure(struct vcnl4000_data *data, u8 req_mask,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	ret = i2c_smbus_read_i2c_block_data(data->client,
 		data_reg, sizeof(buf), (u8 *) &buf);
 	if (ret < 0)
@@ -199,10 +239,19 @@ static int vcnl4000_measure(struct vcnl4000_data *data, u8 req_mask,
 
 	mutex_unlock(&data->vcnl4000_lock);
 	*val = be16_to_cpu(buf);
+=======
+	ret = i2c_smbus_read_word_swapped(data->client, data_reg);
+	if (ret < 0)
+		goto fail;
+
+	mutex_unlock(&data->lock);
+	*val = ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
 fail:
+<<<<<<< HEAD
 	mutex_unlock(&data->vcnl4000_lock);
 	return ret;
 }
@@ -279,6 +328,12 @@ static const struct vcnl4000_chip_spec vcnl4000_chip_spec_cfg[] = {
 	},
 };
 
+=======
+	mutex_unlock(&data->lock);
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct iio_chan_spec vcnl4000_channels[] = {
 	{
 		.type = IIO_LIGHT,
@@ -301,12 +356,24 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
 	case IIO_CHAN_INFO_RAW:
 		switch (chan->type) {
 		case IIO_LIGHT:
+<<<<<<< HEAD
 			ret = data->chip_spec->measure_light(data, val);
+=======
+			ret = vcnl4000_measure(data,
+				VCNL4000_AL_OD, VCNL4000_AL_RDY,
+				VCNL4000_AL_RESULT_HI, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0)
 				return ret;
 			return IIO_VAL_INT;
 		case IIO_PROXIMITY:
+<<<<<<< HEAD
 			ret = data->chip_spec->measure_proximity(data, val);
+=======
+			ret = vcnl4000_measure(data,
+				VCNL4000_PS_OD, VCNL4000_PS_RDY,
+				VCNL4000_PS_RESULT_HI, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0)
 				return ret;
 			return IIO_VAL_INT;
@@ -318,7 +385,11 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
 			return -EINVAL;
 
 		*val = 0;
+<<<<<<< HEAD
 		*val2 = data->al_scale;
+=======
+		*val2 = 250000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return IIO_VAL_INT_PLUS_MICRO;
 	default:
 		return -EINVAL;
@@ -327,6 +398,10 @@ static int vcnl4000_read_raw(struct iio_dev *indio_dev,
 
 static const struct iio_info vcnl4000_info = {
 	.read_raw = vcnl4000_read_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int vcnl4000_probe(struct i2c_client *client,
@@ -334,7 +409,11 @@ static int vcnl4000_probe(struct i2c_client *client,
 {
 	struct vcnl4000_data *data;
 	struct iio_dev *indio_dev;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret, prod_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
 	if (!indio_dev)
@@ -343,6 +422,7 @@ static int vcnl4000_probe(struct i2c_client *client,
 	data = iio_priv(indio_dev);
 	i2c_set_clientdata(client, indio_dev);
 	data->client = client;
+<<<<<<< HEAD
 	data->id = id->driver_data;
 	data->chip_spec = &vcnl4000_chip_spec_cfg[data->id];
 
@@ -352,6 +432,21 @@ static int vcnl4000_probe(struct i2c_client *client,
 
 	dev_dbg(&client->dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
 		data->chip_spec->prod, data->rev);
+=======
+	mutex_init(&data->lock);
+
+	ret = i2c_smbus_read_byte_data(data->client, VCNL4000_PROD_REV);
+	if (ret < 0)
+		return ret;
+
+	prod_id = ret >> 4;
+	if (prod_id != VCNL4010_ID && prod_id != VCNL4000_ID)
+		return -ENODEV;
+
+	dev_dbg(&client->dev, "%s Ambient light/proximity sensor, Rev: %02x\n",
+		(prod_id == VCNL4010_ID) ? "VCNL4010/4020" : "VCNL4000",
+		ret & 0xf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev->dev.parent = &client->dev;
 	indio_dev->info = &vcnl4000_info;

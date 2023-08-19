@@ -56,6 +56,7 @@ Description:
 		Writing 1 to this attribute will trigger hot removal of
 		this device object.  This file exists for every device
 		object that has _EJ0 method.
+<<<<<<< HEAD
 
 What:		/sys/bus/acpi/devices/.../status
 Date:		Jan, 2014
@@ -93,3 +94,5 @@ Description:
 		hardware, if the _HRV control method is present.  It is mostly
 		useful for non-PCI devices because lspci can list the hardware
 		version for PCI devices.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

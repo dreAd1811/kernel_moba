@@ -35,11 +35,19 @@ static struct platform_device eisa_root_dev = {
 };
 
 static struct eisa_root_device eisa_bus_root = {
+<<<<<<< HEAD
 	.dev		= &eisa_root_dev.dev,
 	.bus_base_addr	= 0,
 	.res		= &ioport_resource,
 	.slots		= EISA_MAX_SLOTS,
 	.dma_mask	= 0xffffffff,
+=======
+	.dev           = &eisa_root_dev.dev,
+	.bus_base_addr = 0,
+	.res	       = &ioport_resource,
+	.slots	       = EISA_MAX_SLOTS,
+	.dma_mask      = 0xffffffff,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void virtual_eisa_release (struct device *dev)
@@ -50,12 +58,22 @@ static void virtual_eisa_release (struct device *dev)
 static int __init virtual_eisa_root_init (void)
 {
 	int r;
+<<<<<<< HEAD
 
 	if ((r = platform_device_register (&eisa_root_dev)))
 		return r;
 
 	eisa_bus_root.force_probe = force_probe;
 
+=======
+	
+        if ((r = platform_device_register (&eisa_root_dev))) {
+                return r;
+        }
+
+	eisa_bus_root.force_probe = force_probe;
+	
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_set_drvdata(&eisa_root_dev.dev, &eisa_bus_root);
 
 	if (eisa_root_register (&eisa_bus_root)) {

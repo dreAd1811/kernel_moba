@@ -203,7 +203,11 @@ static void bcma_pmu_resources_init(struct bcma_drv_cc *cc)
 	 * Add some delay; allow resources to come up and settle.
 	 * Delay is required for SoC (early init).
 	 */
+<<<<<<< HEAD
 	usleep_range(2000, 2500);
+=======
+	mdelay(2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Disable to allow reading SPROM. Don't know the adventages of enabling it. */

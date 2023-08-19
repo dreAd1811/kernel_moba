@@ -16,10 +16,13 @@
 
 	ahb {
 		apb {
+<<<<<<< HEAD
 			can1: can@f8004000 {
 				status = "okay";
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			macb0: ethernet@f802c000 {
 				phy-mode = "rmii";
 				status = "okay";
@@ -29,12 +32,15 @@
 				phy-mode = "rmii";
 				status = "okay";
 			};
+<<<<<<< HEAD
 
 			pwm0: pwm@f8034000 {
 				pinctrl-names = "default";
 				pinctrl-0 = <&pinctrl_pwm0_pwm0_1>;
 				status = "okay";
 			};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };

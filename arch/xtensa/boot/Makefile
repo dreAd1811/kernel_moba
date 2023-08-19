@@ -30,7 +30,12 @@ Image: boot-elf
 zImage: boot-redboot
 uImage: $(obj)/uImage
 
+<<<<<<< HEAD
 boot-elf boot-redboot: $(addprefix $(obj)/,$(subdir-y))
+=======
+boot-elf boot-redboot: $(addprefix $(obj)/,$(subdir-y)) \
+		       $(addprefix $(obj)/,$(host-progs))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	$(Q)$(MAKE) $(build)=$(obj)/$@ $(MAKECMDGOALS)
 
 OBJCOPYFLAGS = --strip-all -R .comment -R .notes -O binary

@@ -265,6 +265,7 @@ int msm_dsi_dphy_timing_calc_v2(struct msm_dsi_dphy_timing *timing,
 	return 0;
 }
 
+<<<<<<< HEAD
 int msm_dsi_dphy_timing_calc_v3(struct msm_dsi_dphy_timing *timing,
 	struct msm_dsi_phy_clk_request *clk_req)
 {
@@ -374,6 +375,8 @@ int msm_dsi_dphy_timing_calc_v3(struct msm_dsi_dphy_timing *timing,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void msm_dsi_phy_set_src_pll(struct msm_dsi_phy *phy, int pll_id, u32 reg,
 				u32 bit_mask)
 {
@@ -504,10 +507,13 @@ static const struct of_device_id dsi_phy_dt_match[] = {
 	{ .compatible = "qcom,dsi-phy-14nm",
 	  .data = &dsi_phy_14nm_cfgs },
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_DRM_MSM_DSI_10NM_PHY
 	{ .compatible = "qcom,dsi-phy-10nm",
 	  .data = &dsi_phy_10nm_cfgs },
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 
@@ -595,7 +601,11 @@ static int dsi_phy_driver_probe(struct platform_device *pdev)
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	phy->ahb_clk = msm_clk_get(pdev, "iface");
+=======
+	phy->ahb_clk = devm_clk_get(dev, "iface_clk");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(phy->ahb_clk)) {
 		dev_err(dev, "%s: Unable to get ahb clk\n", __func__);
 		ret = PTR_ERR(phy->ahb_clk);
@@ -616,10 +626,17 @@ static int dsi_phy_driver_probe(struct platform_device *pdev)
 		goto fail;
 
 	phy->pll = msm_dsi_pll_init(pdev, phy->cfg->type, phy->id);
+<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(phy->pll))
 		dev_info(dev,
 			"%s: pll init failed: %ld, need separate pll clk driver\n",
 			__func__, PTR_ERR(phy->pll));
+=======
+	if (!phy->pll)
+		dev_info(dev,
+			"%s: pll init failed, need separate pll clk driver\n",
+			__func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dsi_phy_disable_resource(phy);
 
@@ -726,10 +743,13 @@ void msm_dsi_phy_disable(struct msm_dsi_phy *phy)
 	if (!phy || !phy->cfg->ops.disable)
 		return;
 
+<<<<<<< HEAD
 	/* Save PLL status if it is a clock source */
 	if (phy->usecase != MSM_DSI_PHY_SLAVE)
 		msm_dsi_pll_save_state(phy->pll);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy->cfg->ops.disable(phy);
 
 	dsi_phy_regulator_disable(phy);

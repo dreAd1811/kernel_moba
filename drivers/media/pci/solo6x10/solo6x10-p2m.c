@@ -69,11 +69,22 @@ int solo_p2m_dma_desc(struct solo_dev *solo_dev,
 	unsigned int timeout;
 	unsigned int config = 0;
 	int ret = 0;
+<<<<<<< HEAD
 	unsigned int p2m_id = 0;
 
 	/* Get next ID. According to Softlogic, 6110 has problems on !=0 P2M */
 	if (solo_dev->type != SOLO_DEV_6110 && multi_p2m)
 		p2m_id = atomic_inc_return(&solo_dev->p2m_count) % SOLO_NR_P2M;
+=======
+	int p2m_id = 0;
+
+	/* Get next ID. According to Softlogic, 6110 has problems on !=0 P2M */
+	if (solo_dev->type != SOLO_DEV_6110 && multi_p2m) {
+		p2m_id = atomic_inc_return(&solo_dev->p2m_count) % SOLO_NR_P2M;
+		if (p2m_id < 0)
+			p2m_id = -p2m_id;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p2m_dev = &solo_dev->p2m_dev[p2m_id];
 

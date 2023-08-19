@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Samsung's S3C2416 flattened device tree enabled machine
@@ -10,6 +11,24 @@
 //		http://www.samsung.com
 // Copyright (c) 2010-2011 Linaro Ltd.
 //		www.linaro.org
+=======
+/*
+ * Samsung's S3C2416 flattened device tree enabled machine
+ *
+ * Copyright (c) 2012 Heiko Stuebner <heiko@sntech.de>
+ *
+ * based on mach-exynos/mach-exynos4-dt.c
+ *
+ * Copyright (c) 2010-2011 Samsung Electronics Co., Ltd.
+ *		http://www.samsung.com
+ * Copyright (c) 2010-2011 Linaro Ltd.
+ *		www.linaro.org
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/clocksource.h>
 #include <linux/irqchip.h>

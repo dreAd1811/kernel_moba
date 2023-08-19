@@ -309,11 +309,14 @@ static inline void flush_tlb_others(const struct cpumask *cpumask,
 	PVOP_VCALL2(pv_mmu_ops.flush_tlb_others, cpumask, info);
 }
 
+<<<<<<< HEAD
 static inline void paravirt_tlb_remove_table(struct mmu_gather *tlb, void *table)
 {
 	PVOP_VCALL2(pv_mmu_ops.tlb_remove_table, tlb, table);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int paravirt_pgd_alloc(struct mm_struct *mm)
 {
 	return PVOP_CALL1(int, pv_mmu_ops.pgd_alloc, mm);
@@ -573,6 +576,7 @@ static inline p4dval_t p4d_val(p4d_t p4d)
 	return PVOP_CALLEE1(p4dval_t, pv_mmu_ops.p4d_val, p4d.p4d);
 }
 
+<<<<<<< HEAD
 static inline void __set_pgd(pgd_t *pgdp, pgd_t pgd)
 {
 	PVOP_VCALL2(pv_mmu_ops.set_pgd, pgdp, native_pgd_val(pgd));
@@ -589,6 +593,19 @@ static inline void __set_pgd(pgd_t *pgdp, pgd_t pgd)
 	if (pgtable_l5_enabled())						\
 		set_pgd(pgdp, __pgd(0));				\
 } while (0)
+=======
+static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
+{
+	pgdval_t val = native_pgd_val(pgd);
+
+	PVOP_VCALL2(pv_mmu_ops.set_pgd, pgdp, val);
+}
+
+static inline void pgd_clear(pgd_t *pgdp)
+{
+	set_pgd(pgdp, __pgd(0));
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif  /* CONFIG_PGTABLE_LEVELS == 5 */
 

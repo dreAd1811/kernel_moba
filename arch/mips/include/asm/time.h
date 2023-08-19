@@ -22,6 +22,18 @@
 extern spinlock_t rtc_lock;
 
 /*
+<<<<<<< HEAD
+=======
+ * RTC ops.  By default, they point to weak no-op RTC functions.
+ *	rtc_mips_set_time - reverse the above translation and set time to RTC.
+ *	rtc_mips_set_mmss - similar to rtc_set_time, but only min and sec need
+ *			to be set.  Used by RTC sync-up.
+ */
+extern int rtc_mips_set_time(unsigned long);
+extern int rtc_mips_set_mmss(unsigned long);
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * board specific routines required by time_init().
  */
 extern void plat_time_init(void);

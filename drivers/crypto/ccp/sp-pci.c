@@ -25,7 +25,10 @@
 #include <linux/ccp.h>
 
 #include "ccp-dev.h"
+<<<<<<< HEAD
 #include "psp-dev.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MSIX_VECTORS			2
 
@@ -33,7 +36,10 @@ struct sp_pci {
 	int msix_count;
 	struct msix_entry msix_entry[MSIX_VECTORS];
 };
+<<<<<<< HEAD
 static struct sp_device *sp_dev_master;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int sp_get_msix_irqs(struct sp_device *sp)
 {
@@ -110,6 +116,7 @@ static void sp_free_irqs(struct sp_device *sp)
 	sp->psp_irq = 0;
 }
 
+<<<<<<< HEAD
 static bool sp_pci_is_master(struct sp_device *sp)
 {
 	struct device *dev_cur, *dev_new;
@@ -149,6 +156,8 @@ static struct sp_device *psp_get_master(void)
 	return sp_dev_master;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sp_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 {
 	struct sp_device *sp;
@@ -207,8 +216,11 @@ static int sp_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 		goto e_err;
 
 	pci_set_master(pdev);
+<<<<<<< HEAD
 	sp->set_psp_master_device = psp_set_master;
 	sp->get_psp_master_device = psp_get_master;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(48));
 	if (ret) {
@@ -268,6 +280,7 @@ static int sp_pci_resume(struct pci_dev *pdev)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_CRYPTO_DEV_SP_PSP
 static const struct psp_vdata pspv1 = {
 	.cmdresp_reg		= 0x10580,
@@ -290,26 +303,40 @@ static const struct psp_vdata pspv2 = {
 
 static const struct sp_dev_vdata dev_vdata[] = {
 	{	/* 0 */
+=======
+static const struct sp_dev_vdata dev_vdata[] = {
+	{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.bar = 2,
 #ifdef CONFIG_CRYPTO_DEV_SP_CCP
 		.ccp_vdata = &ccpv3,
 #endif
 	},
+<<<<<<< HEAD
 	{	/* 1 */
+=======
+	{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.bar = 2,
 #ifdef CONFIG_CRYPTO_DEV_SP_CCP
 		.ccp_vdata = &ccpv5a,
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_CRYPTO_DEV_SP_PSP
 		.psp_vdata = &pspv1,
 #endif
 	},
 	{	/* 2 */
+=======
+	},
+	{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.bar = 2,
 #ifdef CONFIG_CRYPTO_DEV_SP_CCP
 		.ccp_vdata = &ccpv5b,
 #endif
 	},
+<<<<<<< HEAD
 	{	/* 3 */
 		.bar = 2,
 #ifdef CONFIG_CRYPTO_DEV_SP_CCP
@@ -319,12 +346,17 @@ static const struct sp_dev_vdata dev_vdata[] = {
 		.psp_vdata = &pspv2,
 #endif
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 static const struct pci_device_id sp_pci_table[] = {
 	{ PCI_VDEVICE(AMD, 0x1537), (kernel_ulong_t)&dev_vdata[0] },
 	{ PCI_VDEVICE(AMD, 0x1456), (kernel_ulong_t)&dev_vdata[1] },
 	{ PCI_VDEVICE(AMD, 0x1468), (kernel_ulong_t)&dev_vdata[2] },
+<<<<<<< HEAD
 	{ PCI_VDEVICE(AMD, 0x1486), (kernel_ulong_t)&dev_vdata[3] },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Last entry must be zero */
 	{ 0, }
 };

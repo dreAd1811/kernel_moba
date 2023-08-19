@@ -1557,6 +1557,7 @@ static void rt2800_set_max_psdu_len(struct rt2x00_dev *rt2x00dev)
 	rt2800_register_write(rt2x00dev, MAX_LEN_CFG, reg);
 }
 
+<<<<<<< HEAD
 int rt2800_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 		   struct ieee80211_sta *sta)
 {
@@ -1564,6 +1565,14 @@ int rt2800_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	struct rt2800_drv_data *drv_data = rt2x00dev->drv_data;
 	struct rt2x00_sta *sta_priv = sta_to_rt2x00_sta(sta);
 	int wcid;
+=======
+int rt2800_sta_add(struct rt2x00_dev *rt2x00dev, struct ieee80211_vif *vif,
+		   struct ieee80211_sta *sta)
+{
+	int wcid;
+	struct rt2x00_sta *sta_priv = sta_to_rt2x00_sta(sta);
+	struct rt2800_drv_data *drv_data = rt2x00dev->drv_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Limit global maximum TX AMPDU length to smallest value of all
@@ -1609,10 +1618,15 @@ int rt2800_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 }
 EXPORT_SYMBOL_GPL(rt2800_sta_add);
 
+<<<<<<< HEAD
 int rt2800_sta_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 		      struct ieee80211_sta *sta)
 {
 	struct rt2x00_dev *rt2x00dev = hw->priv;
+=======
+int rt2800_sta_remove(struct rt2x00_dev *rt2x00dev, struct ieee80211_sta *sta)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rt2800_drv_data *drv_data = rt2x00dev->drv_data;
 	struct rt2x00_sta *sta_priv = sta_to_rt2x00_sta(sta);
 	int wcid = sta_priv->wcid;
@@ -4906,7 +4920,11 @@ void rt2800_vco_calibration(struct rt2x00_dev *rt2x00dev)
 		min_sleep = 2000;
 		break;
 	default:
+<<<<<<< HEAD
 		WARN_ONCE(1, "Not supported RF chipset %x for VCO recalibration",
+=======
+		WARN_ONCE(1, "Not supported RF chipet %x for VCO recalibration",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  rt2x00dev->chip.rf);
 		return;
 	}
@@ -6223,9 +6241,14 @@ static void rt2800_init_bbp_53xx(struct rt2x00_dev *rt2x00dev)
 		rt2800_register_write(rt2x00dev, GPIO_CTRL, reg);
 	}
 
+<<<<<<< HEAD
 	/* These chips have hardware RX antenna diversity */
 	if (rt2x00_rt_rev_gte(rt2x00dev, RT5390, REV_RT5390R) ||
 	    rt2x00_rt_rev_gte(rt2x00dev, RT5390, REV_RT5370G)) {
+=======
+	/* This chip has hardware antenna diversity*/
+	if (rt2x00_rt_rev_gte(rt2x00dev, RT5390, REV_RT5390R)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rt2800_bbp_write(rt2x00dev, 150, 0); /* Disable Antenna Software OFDM */
 		rt2800_bbp_write(rt2x00dev, 151, 0); /* Disable Antenna Software CCK */
 		rt2800_bbp_write(rt2x00dev, 154, 0); /* Clear previously selected antenna */
@@ -8752,9 +8775,13 @@ static int rt2800_init_eeprom(struct rt2x00_dev *rt2x00dev)
 		rt2x00dev->default_ant.rx = ANTENNA_A;
 	}
 
+<<<<<<< HEAD
 	/* These chips have hardware RX antenna diversity */
 	if (rt2x00_rt_rev_gte(rt2x00dev, RT5390, REV_RT5390R) ||
 	    rt2x00_rt_rev_gte(rt2x00dev, RT5390, REV_RT5370G)) {
+=======
+	if (rt2x00_rt_rev_gte(rt2x00dev, RT5390, REV_RT5390R)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rt2x00dev->default_ant.tx = ANTENNA_HW_DIVERSITY; /* Unused */
 		rt2x00dev->default_ant.rx = ANTENNA_HW_DIVERSITY; /* Unused */
 	}

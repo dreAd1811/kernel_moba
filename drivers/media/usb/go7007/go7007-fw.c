@@ -1514,10 +1514,14 @@ static noinline_for_stack int do_special(struct go7007 *go, u16 type,
 		case V4L2_PIX_FMT_MPEG4:
 			return gen_mpeg4hdr_to_package(go, code, space,
 								framelen);
+<<<<<<< HEAD
 		default:
 			break;
 		}
 		break;
+=======
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case SPECIAL_BRC_CTRL:
 		return brctrl_to_package(go, code, space, framelen);
 	case SPECIAL_CONFIG:
@@ -1579,7 +1583,11 @@ int go7007_construct_fw_image(struct go7007 *go, u8 **fw, int *fwlen)
 			GO7007_FW_NAME);
 		return -1;
 	}
+<<<<<<< HEAD
 	code = kcalloc(codespace, 2, GFP_KERNEL);
+=======
+	code = kzalloc(codespace * 2, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (code == NULL)
 		goto fw_failed;
 

@@ -343,9 +343,14 @@ static int acpi_processor_get_performance_states(struct acpi_processor *pr)
 
 	pr->performance->state_count = pss->package.count;
 	pr->performance->states =
+<<<<<<< HEAD
 	    kmalloc_array(pss->package.count,
 			  sizeof(struct acpi_processor_px),
 			  GFP_KERNEL);
+=======
+	    kmalloc(sizeof(struct acpi_processor_px) * pss->package.count,
+		    GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pr->performance->states) {
 		result = -ENOMEM;
 		goto end;
@@ -534,7 +539,11 @@ int acpi_processor_notify_smm(struct module *calling_module)
 
 EXPORT_SYMBOL(acpi_processor_notify_smm);
 
+<<<<<<< HEAD
 int acpi_processor_get_psd(acpi_handle handle, struct acpi_psd_package *pdomain)
+=======
+static int acpi_processor_get_psd(struct acpi_processor	*pr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int result = 0;
 	acpi_status status = AE_OK;
@@ -542,8 +551,14 @@ int acpi_processor_get_psd(acpi_handle handle, struct acpi_psd_package *pdomain)
 	struct acpi_buffer format = {sizeof("NNNNN"), "NNNNN"};
 	struct acpi_buffer state = {0, NULL};
 	union acpi_object  *psd = NULL;
+<<<<<<< HEAD
 
 	status = acpi_evaluate_object(handle, "_PSD", NULL, &buffer);
+=======
+	struct acpi_psd_package *pdomain;
+
+	status = acpi_evaluate_object(pr->handle, "_PSD", NULL, &buffer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ACPI_FAILURE(status)) {
 		return -ENODEV;
 	}
@@ -561,6 +576,11 @@ int acpi_processor_get_psd(acpi_handle handle, struct acpi_psd_package *pdomain)
 		goto end;
 	}
 
+<<<<<<< HEAD
+=======
+	pdomain = &(pr->performance->domain_info);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state.length = sizeof(struct acpi_psd_package);
 	state.pointer = pdomain;
 
@@ -595,7 +615,10 @@ end:
 	kfree(buffer.pointer);
 	return result;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(acpi_processor_get_psd);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int acpi_processor_preregister_performance(
 		struct acpi_processor_performance __percpu *performance)
@@ -644,8 +667,12 @@ int acpi_processor_preregister_performance(
 
 		pr->performance = per_cpu_ptr(performance, i);
 		cpumask_set_cpu(i, pr->performance->shared_cpu_map);
+<<<<<<< HEAD
 		pdomain = &(pr->performance->domain_info);
 		if (acpi_processor_get_psd(pr->handle, pdomain)) {
+=======
+		if (acpi_processor_get_psd(pr)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			retval = -EINVAL;
 			continue;
 		}

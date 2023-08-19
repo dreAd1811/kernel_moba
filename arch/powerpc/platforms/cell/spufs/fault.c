@@ -44,7 +44,11 @@ static void spufs_handle_event(struct spu_context *ctx,
 		return;
 	}
 
+<<<<<<< HEAD
 	clear_siginfo(&info);
+=======
+	memset(&info, 0, sizeof(info));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (type) {
 	case SPE_EVENT_INVALID_DMA:
@@ -111,7 +115,11 @@ int spufs_handle_class1(struct spu_context *ctx)
 {
 	u64 ea, dsisr, access;
 	unsigned long flags;
+<<<<<<< HEAD
 	vm_fault_t flt = 0;
+=======
+	unsigned flt = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/*

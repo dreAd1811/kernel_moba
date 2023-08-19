@@ -70,6 +70,7 @@
 #define PPSMC_MSG_SetPhyclkVoltageByFreq        0x26
 #define PPSMC_MSG_SetDppclkVoltageByFreq        0x27
 #define PPSMC_MSG_SetSoftMinVcn                 0x28
+<<<<<<< HEAD
 #define PPSMC_MSG_GetGfxclkFrequency            0x2A
 #define PPSMC_MSG_GetFclkFrequency              0x2B
 #define PPSMC_MSG_GetMinGfxclkFrequency         0x2C
@@ -84,6 +85,9 @@
 #define PPSMC_MSG_PowerGateMmHub                0x35
 #define PPSMC_MSG_SetRccPfcPmeRestoreRegister   0x36
 #define PPSMC_Message_Count                     0x37
+=======
+#define PPSMC_Message_Count                     0x29
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 typedef uint16_t PPSMC_Result;

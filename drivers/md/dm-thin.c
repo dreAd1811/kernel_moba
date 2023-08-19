@@ -246,9 +246,15 @@ struct pool {
 	struct dm_bio_prison *prison;
 	struct dm_kcopyd_client *copier;
 
+<<<<<<< HEAD
 	struct work_struct worker;
 	struct workqueue_struct *wq;
 	struct throttle throttle;
+=======
+	struct workqueue_struct *wq;
+	struct throttle throttle;
+	struct work_struct worker;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct delayed_work waker;
 	struct delayed_work no_space_timeout;
 
@@ -267,6 +273,10 @@ struct pool {
 	struct dm_deferred_set *all_io_ds;
 
 	struct dm_thin_new_mapping *next_mapping;
+<<<<<<< HEAD
+=======
+	mempool_t *mapping_pool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	process_bio_fn process_bio;
 	process_bio_fn process_discard;
@@ -279,8 +289,11 @@ struct pool {
 	process_mapping_fn process_prepared_discard_pt2;
 
 	struct dm_bio_prison_cell **cell_sort_array;
+<<<<<<< HEAD
 
 	mempool_t mapping_pool;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void metadata_operation_failed(struct pool *pool, const char *op, int r);
@@ -529,11 +542,14 @@ static void pool_table_init(void)
 	INIT_LIST_HEAD(&dm_thin_pool_table.pools);
 }
 
+<<<<<<< HEAD
 static void pool_table_exit(void)
 {
 	mutex_destroy(&dm_thin_pool_table.mutex);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __pool_table_insert(struct pool *pool)
 {
 	BUG_ON(!mutex_is_locked(&dm_thin_pool_table.mutex));
@@ -954,7 +970,11 @@ static void process_prepared_mapping_fail(struct dm_thin_new_mapping *m)
 {
 	cell_error(m->tc->pool, m->cell);
 	list_del(&m->list);
+<<<<<<< HEAD
 	mempool_free(m, &m->tc->pool->mapping_pool);
+=======
+	mempool_free(m, m->tc->pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void complete_overwrite_bio(struct thin_c *tc, struct bio *bio)
@@ -1031,7 +1051,11 @@ static void process_prepared_mapping(struct dm_thin_new_mapping *m)
 
 out:
 	list_del(&m->list);
+<<<<<<< HEAD
 	mempool_free(m, &pool->mapping_pool);
+=======
+	mempool_free(m, pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*----------------------------------------------------------------*/
@@ -1041,7 +1065,11 @@ static void free_discard_mapping(struct dm_thin_new_mapping *m)
 	struct thin_c *tc = m->tc;
 	if (m->cell)
 		cell_defer_no_holder(tc, m->cell);
+<<<<<<< HEAD
 	mempool_free(m, &tc->pool->mapping_pool);
+=======
+	mempool_free(m, tc->pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void process_prepared_discard_fail(struct dm_thin_new_mapping *m)
@@ -1069,7 +1097,11 @@ static void process_prepared_discard_no_passdown(struct dm_thin_new_mapping *m)
 		bio_endio(m->bio);
 
 	cell_defer_no_holder(tc, m->cell);
+<<<<<<< HEAD
 	mempool_free(m, &tc->pool->mapping_pool);
+=======
+	mempool_free(m, tc->pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*----------------------------------------------------------------*/
@@ -1162,7 +1194,11 @@ static void process_prepared_discard_passdown_pt1(struct dm_thin_new_mapping *m)
 		metadata_operation_failed(pool, "dm_thin_remove_range", r);
 		bio_io_error(m->bio);
 		cell_defer_no_holder(tc, m->cell);
+<<<<<<< HEAD
 		mempool_free(m, &pool->mapping_pool);
+=======
+		mempool_free(m, pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1175,7 +1211,11 @@ static void process_prepared_discard_passdown_pt1(struct dm_thin_new_mapping *m)
 		metadata_operation_failed(pool, "dm_pool_inc_data_range", r);
 		bio_io_error(m->bio);
 		cell_defer_no_holder(tc, m->cell);
+<<<<<<< HEAD
 		mempool_free(m, &pool->mapping_pool);
+=======
+		mempool_free(m, pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1220,7 +1260,11 @@ static void process_prepared_discard_passdown_pt2(struct dm_thin_new_mapping *m)
 		bio_endio(m->bio);
 
 	cell_defer_no_holder(tc, m->cell);
+<<<<<<< HEAD
 	mempool_free(m, &pool->mapping_pool);
+=======
+	mempool_free(m, pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void process_prepared(struct pool *pool, struct list_head *head,
@@ -1266,7 +1310,11 @@ static int ensure_next_mapping(struct pool *pool)
 	if (pool->next_mapping)
 		return 0;
 
+<<<<<<< HEAD
 	pool->next_mapping = mempool_alloc(&pool->mapping_pool, GFP_ATOMIC);
+=======
+	pool->next_mapping = mempool_alloc(pool->mapping_pool, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return pool->next_mapping ? 0 : -ENOMEM;
 }
@@ -1289,13 +1337,25 @@ static struct dm_thin_new_mapping *get_next_mapping(struct pool *pool)
 static void ll_zero(struct thin_c *tc, struct dm_thin_new_mapping *m,
 		    sector_t begin, sector_t end)
 {
+<<<<<<< HEAD
+=======
+	int r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dm_io_region to;
 
 	to.bdev = tc->pool_dev->bdev;
 	to.sector = begin;
 	to.count = end - begin;
 
+<<<<<<< HEAD
 	dm_kcopyd_zero(tc->pool->copier, 1, &to, 0, copy_complete, m);
+=======
+	r = dm_kcopyd_zero(tc->pool->copier, 1, &to, 0, copy_complete, m);
+	if (r < 0) {
+		DMERR_LIMIT("dm_kcopyd_zero() failed");
+		copy_complete(1, 1, m);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void remap_and_issue_overwrite(struct thin_c *tc, struct bio *bio,
@@ -1321,6 +1381,10 @@ static void schedule_copy(struct thin_c *tc, dm_block_t virt_block,
 			  struct dm_bio_prison_cell *cell, struct bio *bio,
 			  sector_t len)
 {
+<<<<<<< HEAD
+=======
+	int r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pool *pool = tc->pool;
 	struct dm_thin_new_mapping *m = get_next_mapping(pool);
 
@@ -1359,8 +1423,24 @@ static void schedule_copy(struct thin_c *tc, dm_block_t virt_block,
 		to.sector = data_dest * pool->sectors_per_block;
 		to.count = len;
 
+<<<<<<< HEAD
 		dm_kcopyd_copy(pool->copier, &from, 1, &to,
 			       0, copy_complete, m);
+=======
+		r = dm_kcopyd_copy(pool->copier, &from, 1, &to,
+				   0, copy_complete, m);
+		if (r < 0) {
+			DMERR_LIMIT("dm_kcopyd_copy() failed");
+			copy_complete(1, 1, m);
+
+			/*
+			 * We allow the zero to be issued, to simplify the
+			 * error path.  Otherwise we'd need to start
+			 * worrying about decrementing the prepare_actions
+			 * counter.
+			 */
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Do we need to zero a tail region?
@@ -1826,7 +1906,11 @@ static void __remap_and_issue_shared_cell(void *context,
 		    bio_op(bio) == REQ_OP_DISCARD)
 			bio_list_add(&info->defer_bios, bio);
 		else {
+<<<<<<< HEAD
 			struct dm_thin_endio_hook *h = dm_per_bio_data(bio, sizeof(struct dm_thin_endio_hook));
+=======
+			struct dm_thin_endio_hook *h = dm_per_bio_data(bio, sizeof(struct dm_thin_endio_hook));;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			h->shared_read_entry = dm_deferred_entry_inc(info->tc->pool->shared_read_ds);
 			inc_all_io_entry(info->tc->pool, bio);
@@ -2528,7 +2612,11 @@ static void set_pool_mode(struct pool *pool, enum pool_mode new_mode)
 	struct pool_c *pt = pool->ti->private;
 	bool needs_check = dm_pool_metadata_needs_check(pool->pmd);
 	enum pool_mode old_mode = get_pool_mode(pool);
+<<<<<<< HEAD
 	unsigned long no_space_timeout = READ_ONCE(no_space_timeout_secs) * HZ;
+=======
+	unsigned long no_space_timeout = ACCESS_ONCE(no_space_timeout_secs) * HZ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Never allow the pool to transition to PM_WRITE mode if user
@@ -2925,8 +3013,13 @@ static void __pool_destroy(struct pool *pool)
 		destroy_workqueue(pool->wq);
 
 	if (pool->next_mapping)
+<<<<<<< HEAD
 		mempool_free(pool->next_mapping, &pool->mapping_pool);
 	mempool_exit(&pool->mapping_pool);
+=======
+		mempool_free(pool->next_mapping, pool->mapping_pool);
+	mempool_destroy(pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dm_deferred_set_destroy(pool->shared_read_ds);
 	dm_deferred_set_destroy(pool->all_io_ds);
 	kfree(pool);
@@ -3022,6 +3115,7 @@ static struct pool *pool_create(struct mapped_device *pool_md,
 	}
 
 	pool->next_mapping = NULL;
+<<<<<<< HEAD
 	r = mempool_init_slab_pool(&pool->mapping_pool, MAPPING_POOL_SIZE,
 				   _new_mapping_cache);
 	if (r) {
@@ -3033,6 +3127,17 @@ static struct pool *pool_create(struct mapped_device *pool_md,
 	pool->cell_sort_array =
 		vmalloc(array_size(CELL_SORT_ARRAY_SIZE,
 				   sizeof(*pool->cell_sort_array)));
+=======
+	pool->mapping_pool = mempool_create_slab_pool(MAPPING_POOL_SIZE,
+						      _new_mapping_cache);
+	if (!pool->mapping_pool) {
+		*error = "Error creating pool's mapping mempool";
+		err_p = ERR_PTR(-ENOMEM);
+		goto bad_mapping_pool;
+	}
+
+	pool->cell_sort_array = vmalloc(sizeof(*pool->cell_sort_array) * CELL_SORT_ARRAY_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pool->cell_sort_array) {
 		*error = "Error allocating cell sort array";
 		err_p = ERR_PTR(-ENOMEM);
@@ -3048,7 +3153,11 @@ static struct pool *pool_create(struct mapped_device *pool_md,
 	return pool;
 
 bad_sort_array:
+<<<<<<< HEAD
 	mempool_exit(&pool->mapping_pool);
+=======
+	mempool_destroy(pool->mapping_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bad_mapping_pool:
 	dm_deferred_set_destroy(pool->all_io_ds);
 bad_all_io_ds:
@@ -3809,8 +3918,12 @@ static int process_release_metadata_snap_mesg(unsigned argc, char **argv, struct
  *   reserve_metadata_snap
  *   release_metadata_snap
  */
+<<<<<<< HEAD
 static int pool_message(struct dm_target *ti, unsigned argc, char **argv,
 			char *result, unsigned maxlen)
+=======
+static int pool_message(struct dm_target *ti, unsigned argc, char **argv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r = -EINVAL;
 	struct pool_c *pt = ti->private;
@@ -3986,8 +4099,11 @@ static void pool_status(struct dm_target *ti, status_type_t type,
 		else
 			DMEMIT("- ");
 
+<<<<<<< HEAD
 		DMEMIT("%llu ", (unsigned long long)calc_metadata_threshold(pt));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case STATUSTYPE_TABLE:
@@ -4077,7 +4193,11 @@ static struct target_type pool_target = {
 	.name = "thin-pool",
 	.features = DM_TARGET_SINGLETON | DM_TARGET_ALWAYS_WRITEABLE |
 		    DM_TARGET_IMMUTABLE,
+<<<<<<< HEAD
 	.version = {1, 20, 0},
+=======
+	.version = {1, 19, 0},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.module = THIS_MODULE,
 	.ctr = pool_ctr,
 	.dtr = pool_dtr,
@@ -4457,7 +4577,11 @@ static void thin_io_hints(struct dm_target *ti, struct queue_limits *limits)
 
 static struct target_type thin_target = {
 	.name = "thin",
+<<<<<<< HEAD
 	.version = {1, 20, 0},
+=======
+	.version = {1, 19, 0},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.module	= THIS_MODULE,
 	.ctr = thin_ctr,
 	.dtr = thin_dtr,
@@ -4507,8 +4631,11 @@ static void dm_thin_exit(void)
 	dm_unregister_target(&pool_target);
 
 	kmem_cache_destroy(_new_mapping_cache);
+<<<<<<< HEAD
 
 	pool_table_exit();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(dm_thin_init);

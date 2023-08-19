@@ -240,8 +240,13 @@ int iser_fast_reg_fmr(struct iscsi_iser_task *iser_task,
 	page_vec->npages = 0;
 	page_vec->fake_mr.page_size = SIZE_4K;
 	plen = ib_sg_to_pages(&page_vec->fake_mr, mem->sg,
+<<<<<<< HEAD
 			      mem->size, NULL, iser_set_page);
 	if (unlikely(plen < mem->size)) {
+=======
+			      mem->dma_nents, NULL, iser_set_page);
+	if (unlikely(plen < mem->dma_nents)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iser_err("page vec too short to hold this SG\n");
 		iser_data_buf_dump(mem, device->ib_device);
 		iser_dump_page_vec(page_vec);
@@ -311,7 +316,11 @@ iser_set_dif_domain(struct scsi_cmnd *sc, struct ib_sig_attrs *sig_attrs,
 {
 	domain->sig_type = IB_SIG_TYPE_T10_DIF;
 	domain->sig.dif.pi_interval = scsi_prot_interval(sc);
+<<<<<<< HEAD
 	domain->sig.dif.ref_tag = t10_pi_ref_tag(sc->request);
+=======
+	domain->sig.dif.ref_tag = scsi_prot_ref_tag(sc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * At the moment we hard code those, but in the future
 	 * we will take them from sc.
@@ -362,9 +371,15 @@ iser_set_prot_checks(struct scsi_cmnd *sc, u8 *mask)
 {
 	*mask = 0;
 	if (sc->prot_flags & SCSI_PROT_REF_CHECK)
+<<<<<<< HEAD
 		*mask |= IB_SIG_CHECK_REFTAG;
 	if (sc->prot_flags & SCSI_PROT_GUARD_CHECK)
 		*mask |= IB_SIG_CHECK_GUARD;
+=======
+		*mask |= ISER_CHECK_REFTAG;
+	if (sc->prot_flags & SCSI_PROT_GUARD_CHECK)
+		*mask |= ISER_CHECK_GUARD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void
@@ -405,8 +420,12 @@ iser_reg_sig_mr(struct iscsi_iser_task *iser_task,
 
 	ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
 
+<<<<<<< HEAD
 	wr = container_of(iser_tx_next_wr(tx_desc), struct ib_sig_handover_wr,
 			  wr);
+=======
+	wr = sig_handover_wr(iser_tx_next_wr(tx_desc));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wr->wr.opcode = IB_WR_REG_SIG_MR;
 	wr->wr.wr_cqe = cqe;
 	wr->wr.sg_list = &data_reg->sge;
@@ -451,6 +470,7 @@ static int iser_fast_reg_mr(struct iscsi_iser_task *iser_task,
 
 	ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
 
+<<<<<<< HEAD
 	n = ib_map_mr_sg(mr, mem->sg, mem->size, NULL, SIZE_4K);
 	if (unlikely(n != mem->size)) {
 		iser_err("failed to map sg (%d/%d)\n",
@@ -459,6 +479,16 @@ static int iser_fast_reg_mr(struct iscsi_iser_task *iser_task,
 	}
 
 	wr = container_of(iser_tx_next_wr(tx_desc), struct ib_reg_wr, wr);
+=======
+	n = ib_map_mr_sg(mr, mem->sg, mem->dma_nents, NULL, SIZE_4K);
+	if (unlikely(n != mem->dma_nents)) {
+		iser_err("failed to map sg (%d/%d)\n",
+			 n, mem->dma_nents);
+		return n < 0 ? n : -EINVAL;
+	}
+
+	wr = reg_wr(iser_tx_next_wr(tx_desc));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wr->wr.opcode = IB_WR_REG_MR;
 	wr->wr.wr_cqe = cqe;
 	wr->wr.send_flags = 0;

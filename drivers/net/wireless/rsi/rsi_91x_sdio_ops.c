@@ -16,7 +16,10 @@
  */
 
 #include <linux/firmware.h>
+<<<<<<< HEAD
 #include <net/rsi_91x.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "rsi_sdio.h"
 #include "rsi_common.h"
 
@@ -60,6 +63,7 @@ int rsi_sdio_master_access_msword(struct rsi_hw *adapter, u16 ms_word)
 	return status;
 }
 
+<<<<<<< HEAD
 void rsi_sdio_rx_thread(struct rsi_common *common)
 {
 	struct rsi_hw *adapter = common->priv;
@@ -97,6 +101,8 @@ out:
 	complete_and_exit(&sdev->rx_thread.completion, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * rsi_process_pkt() - This Function reads rx_blocks register and figures out
  *		       the size of the rx pkt.
@@ -113,10 +119,13 @@ static int rsi_process_pkt(struct rsi_common *common)
 	u32 rcv_pkt_len = 0;
 	int status = 0;
 	u8 value = 0;
+<<<<<<< HEAD
 	struct sk_buff *skb;
 
 	if (dev->rx_q.num_rx_pkts >= RSI_MAX_RX_PKTS)
 		return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	num_blks = ((adapter->interrupt_status & 1) |
 			((adapter->interrupt_status >> RECV_NUM_BLOCKS) << 1));
@@ -144,6 +153,7 @@ static int rsi_process_pkt(struct rsi_common *common)
 
 	rcv_pkt_len = (num_blks * 256);
 
+<<<<<<< HEAD
 	skb = dev_alloc_skb(rcv_pkt_len);
 	if (!skb)
 		return -ENOMEM;
@@ -162,6 +172,29 @@ static int rsi_process_pkt(struct rsi_common *common)
 	rsi_set_event(&dev->rx_thread.event);
 
 	return 0;
+=======
+	common->rx_data_pkt = kmalloc(rcv_pkt_len, GFP_KERNEL);
+	if (!common->rx_data_pkt) {
+		rsi_dbg(ERR_ZONE, "%s: Failed in memory allocation\n",
+			__func__);
+		return -ENOMEM;
+	}
+
+	status = rsi_sdio_host_intf_read_pkt(adapter,
+					     common->rx_data_pkt,
+					     rcv_pkt_len);
+	if (status) {
+		rsi_dbg(ERR_ZONE, "%s: Failed to read packet from card\n",
+			__func__);
+		goto fail;
+	}
+
+	status = rsi_read_pkt(common, rcv_pkt_len);
+
+fail:
+	kfree(common->rx_data_pkt);
+	return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

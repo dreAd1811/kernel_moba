@@ -168,7 +168,11 @@ static int ad5764_read(struct iio_dev *indio_dev, unsigned int reg,
 static int ad5764_chan_info_to_reg(struct iio_chan_spec const *chan, long info)
 {
 	switch (info) {
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_RAW:
+=======
+	case 0:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return AD5764_REG_DATA(chan->address);
 	case IIO_CHAN_INFO_CALIBBIAS:
 		return AD5764_REG_OFFSET(chan->address);
@@ -268,6 +272,10 @@ static int ad5764_read_raw(struct iio_dev *indio_dev,
 static const struct iio_info ad5764_info = {
 	.read_raw = ad5764_read_raw,
 	.write_raw = ad5764_write_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ad5764_probe(struct spi_device *spi)

@@ -17,11 +17,18 @@
  *
  */
 
+<<<<<<< HEAD
 #include <linux/types.h>
 #include <asm/apic.h>
 #include <asm/desc.h>
 #include <asm/hypervisor.h>
 #include <asm/hyperv-tlfs.h>
+=======
+#include <linux/efi.h>
+#include <linux/types.h>
+#include <asm/hypervisor.h>
+#include <asm/hyperv.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mshyperv.h>
 #include <linux/version.h>
 #include <linux/vmalloc.h>
@@ -39,7 +46,10 @@ struct ms_hyperv_tsc_page *hv_get_tsc_page(void)
 {
 	return tsc_pg;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hv_get_tsc_page);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static u64 read_hv_clock_tsc(struct clocksource *arg)
 {
@@ -88,17 +98,21 @@ EXPORT_SYMBOL_GPL(hyperv_cs);
 u32 *hv_vp_index;
 EXPORT_SYMBOL_GPL(hv_vp_index);
 
+<<<<<<< HEAD
 struct hv_vp_assist_page **hv_vp_assist_page;
 EXPORT_SYMBOL_GPL(hv_vp_assist_page);
 
 void  __percpu **hyperv_pcpu_input_arg;
 EXPORT_SYMBOL_GPL(hyperv_pcpu_input_arg);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u32 hv_max_vp_index;
 
 static int hv_cpu_init(unsigned int cpu)
 {
 	u64 msr_vp_index;
+<<<<<<< HEAD
 	struct hv_vp_assist_page **hvp = &hv_vp_assist_page[smp_processor_id()];
 	void **input_arg;
 	struct page *pg;
@@ -108,6 +122,8 @@ static int hv_cpu_init(unsigned int cpu)
 	if (unlikely(!pg))
 		return -ENOMEM;
 	*input_arg = page_address(pg);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hv_get_vp_index(msr_vp_index);
 
@@ -116,6 +132,7 @@ static int hv_cpu_init(unsigned int cpu)
 	if (msr_vp_index > hv_max_vp_index)
 		hv_max_vp_index = msr_vp_index;
 
+<<<<<<< HEAD
 	if (!hv_vp_assist_page)
 		return 0;
 
@@ -255,6 +272,25 @@ static int hv_cpu_die(unsigned int cpu)
 	}
 
 	return 0;
+=======
+	return 0;
+}
+
+static int __init hv_pci_init(void)
+{
+	int gen2vm = efi_enabled(EFI_BOOT);
+
+	/*
+	 * For Generation-2 VM, we exit from pci_arch_init() by returning 0.
+	 * The purpose is to suppress the harmless warning:
+	 * "PCI: Fatal: No config space access function found"
+	 */
+	if (gen2vm)
+		return 0;
+
+	/* For Generation-1 VM, we'll proceed in pci_arch_init().  */
+	return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -263,13 +299,19 @@ static int hv_cpu_die(unsigned int cpu)
  *
  * 1. Setup the hypercall page.
  * 2. Register Hyper-V specific clocksource.
+<<<<<<< HEAD
  * 3. Setup Hyper-V specific APIC entry points.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void __init hyperv_init(void)
 {
 	u64 guest_id, required_msrs;
 	union hv_x64_msr_hypercall_contents hypercall_msr;
+<<<<<<< HEAD
 	int cpuhp, i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (x86_hyper_type != X86_HYPER_MS_HYPERV)
 		return;
@@ -281,6 +323,7 @@ void __init hyperv_init(void)
 	if ((ms_hyperv.features & required_msrs) != required_msrs)
 		return;
 
+<<<<<<< HEAD
 	/*
 	 * Allocate the per-CPU state for the hypercall input arg.
 	 * If this allocation fails, we will not be able to setup
@@ -291,12 +334,15 @@ void __init hyperv_init(void)
 
 	BUG_ON(hyperv_pcpu_input_arg == NULL);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Allocate percpu VP index */
 	hv_vp_index = kmalloc_array(num_possible_cpus(), sizeof(*hv_vp_index),
 				    GFP_KERNEL);
 	if (!hv_vp_index)
 		return;
 
+<<<<<<< HEAD
 	for (i = 0; i < num_possible_cpus(); i++)
 		hv_vp_index[i] = VP_INVAL;
 
@@ -311,6 +357,11 @@ void __init hyperv_init(void)
 				  hv_cpu_init, hv_cpu_die);
 	if (cpuhp < 0)
 		goto free_vp_assist_page;
+=======
+	if (cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "x86/hyperv_init:online",
+			      hv_cpu_init, NULL) < 0)
+		goto free_vp_index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Setup the hypercall page and enable hypercalls.
@@ -323,7 +374,11 @@ void __init hyperv_init(void)
 	hv_hypercall_pg  = __vmalloc(PAGE_SIZE, GFP_KERNEL, PAGE_KERNEL_RX);
 	if (hv_hypercall_pg == NULL) {
 		wrmsrl(HV_X64_MSR_GUEST_OS_ID, 0);
+<<<<<<< HEAD
 		goto remove_cpuhp_state;
+=======
+		goto free_vp_index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rdmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
@@ -331,13 +386,23 @@ void __init hyperv_init(void)
 	hypercall_msr.guest_physical_address = vmalloc_to_pfn(hv_hypercall_pg);
 	wrmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
 
+<<<<<<< HEAD
 	hv_apic_init();
+=======
+	hyper_alloc_mmu();
+
+	x86_init.pci.arch_init = hv_pci_init;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Register Hyper-V specific clocksource.
 	 */
 #ifdef CONFIG_HYPERV_TSCPAGE
+<<<<<<< HEAD
 	if (ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE) {
+=======
+	if (ms_hyperv.features & HV_X64_MSR_REFERENCE_TSC_AVAILABLE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		union hv_x64_msr_hypercall_contents tsc_msr;
 
 		tsc_pg = __vmalloc(PAGE_SIZE, GFP_KERNEL, PAGE_KERNEL);
@@ -366,16 +431,23 @@ register_msr_cs:
 	 */
 
 	hyperv_cs = &hyperv_cs_msr;
+<<<<<<< HEAD
 	if (ms_hyperv.features & HV_MSR_TIME_REF_COUNT_AVAILABLE)
+=======
+	if (ms_hyperv.features & HV_X64_MSR_TIME_REF_COUNT_AVAILABLE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocksource_register_hz(&hyperv_cs_msr, NSEC_PER_SEC/100);
 
 	return;
 
+<<<<<<< HEAD
 remove_cpuhp_state:
 	cpuhp_remove_state(cpuhp);
 free_vp_assist_page:
 	kfree(hv_vp_assist_page);
 	hv_vp_assist_page = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 free_vp_index:
 	kfree(hv_vp_index);
 	hv_vp_index = NULL;
@@ -391,6 +463,7 @@ void hyperv_cleanup(void)
 	/* Reset our OS id */
 	wrmsrl(HV_X64_MSR_GUEST_OS_ID, 0);
 
+<<<<<<< HEAD
 	/*
 	 * Reset hypercall page reference before reset the page,
 	 * let hypercall operations fail safely rather than
@@ -398,6 +471,8 @@ void hyperv_cleanup(void)
 	 */
 	hv_hypercall_pg = NULL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reset the hypercall page */
 	hypercall_msr.as_uint64 = 0;
 	wrmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
@@ -408,10 +483,16 @@ void hyperv_cleanup(void)
 }
 EXPORT_SYMBOL_GPL(hyperv_cleanup);
 
+<<<<<<< HEAD
 void hyperv_report_panic(struct pt_regs *regs, long err)
 {
 	static bool panic_reported;
 	u64 guest_id;
+=======
+void hyperv_report_panic(struct pt_regs *regs)
+{
+	static bool panic_reported;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We prefer to report panic on 'die' chain as we have proper
@@ -422,6 +503,7 @@ void hyperv_report_panic(struct pt_regs *regs, long err)
 		return;
 	panic_reported = true;
 
+<<<<<<< HEAD
 	rdmsrl(HV_X64_MSR_GUEST_OS_ID, guest_id);
 
 	wrmsrl(HV_X64_MSR_CRASH_P0, err);
@@ -429,6 +511,13 @@ void hyperv_report_panic(struct pt_regs *regs, long err)
 	wrmsrl(HV_X64_MSR_CRASH_P2, regs->ip);
 	wrmsrl(HV_X64_MSR_CRASH_P3, regs->ax);
 	wrmsrl(HV_X64_MSR_CRASH_P4, regs->sp);
+=======
+	wrmsrl(HV_X64_MSR_CRASH_P0, regs->ip);
+	wrmsrl(HV_X64_MSR_CRASH_P1, regs->ax);
+	wrmsrl(HV_X64_MSR_CRASH_P2, regs->bx);
+	wrmsrl(HV_X64_MSR_CRASH_P3, regs->cx);
+	wrmsrl(HV_X64_MSR_CRASH_P4, regs->dx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Let Hyper-V know there is crash data available
@@ -437,6 +526,7 @@ void hyperv_report_panic(struct pt_regs *regs, long err)
 }
 EXPORT_SYMBOL_GPL(hyperv_report_panic);
 
+<<<<<<< HEAD
 /**
  * hyperv_report_panic_msg - report panic message to Hyper-V
  * @pa: physical address of the panic page containing the message
@@ -485,3 +575,19 @@ bool hv_is_hyperv_initialized(void)
 	return hypercall_msr.enable;
 }
 EXPORT_SYMBOL_GPL(hv_is_hyperv_initialized);
+=======
+bool hv_is_hypercall_page_setup(void)
+{
+	union hv_x64_msr_hypercall_contents hypercall_msr;
+
+	/* Check if the hypercall page is setup */
+	hypercall_msr.as_uint64 = 0;
+	rdmsrl(HV_X64_MSR_HYPERCALL, hypercall_msr.as_uint64);
+
+	if (!hypercall_msr.enable)
+		return false;
+
+	return true;
+}
+EXPORT_SYMBOL_GPL(hv_is_hypercall_page_setup);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

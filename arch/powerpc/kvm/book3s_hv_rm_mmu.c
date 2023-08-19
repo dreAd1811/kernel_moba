@@ -14,6 +14,10 @@
 #include <linux/module.h>
 #include <linux/log2.h>
 
+<<<<<<< HEAD
+=======
+#include <asm/tlbflush.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/trace.h>
 #include <asm/kvm_ppc.h>
 #include <asm/kvm_book3s.h>
@@ -41,7 +45,11 @@ static void *real_vmalloc_addr(void *x)
 }
 
 /* Return 1 if we need to do a global tlbie, 0 if we can use tlbiel */
+<<<<<<< HEAD
 static int global_invalidates(struct kvm *kvm)
+=======
+static int global_invalidates(struct kvm *kvm, unsigned long flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int global;
 	int cpu;
@@ -106,6 +114,7 @@ void kvmppc_add_revmap_chain(struct kvm *kvm, struct revmap_entry *rev,
 }
 EXPORT_SYMBOL_GPL(kvmppc_add_revmap_chain);
 
+<<<<<<< HEAD
 /* Update the dirty bitmap of a memslot */
 void kvmppc_update_dirty_map(struct kvm_memory_slot *memslot,
 			     unsigned long gfn, unsigned long psize)
@@ -139,17 +148,41 @@ static unsigned long *revmap_for_hpte(struct kvm *kvm, unsigned long hpte_v,
 				      unsigned long hpte_gr,
 				      struct kvm_memory_slot **memslotp,
 				      unsigned long *gfnp)
+=======
+/* Update the changed page order field of an rmap entry */
+void kvmppc_update_rmap_change(unsigned long *rmap, unsigned long psize)
+{
+	unsigned long order;
+
+	if (!psize)
+		return;
+	order = ilog2(psize);
+	order <<= KVMPPC_RMAP_CHG_SHIFT;
+	if (order > (*rmap & KVMPPC_RMAP_CHG_ORDER))
+		*rmap = (*rmap & ~KVMPPC_RMAP_CHG_ORDER) | order;
+}
+EXPORT_SYMBOL_GPL(kvmppc_update_rmap_change);
+
+/* Returns a pointer to the revmap entry for the page mapped by a HPTE */
+static unsigned long *revmap_for_hpte(struct kvm *kvm, unsigned long hpte_v,
+				      unsigned long hpte_gr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kvm_memory_slot *memslot;
 	unsigned long *rmap;
 	unsigned long gfn;
 
+<<<<<<< HEAD
 	gfn = hpte_rpn(hpte_gr, kvmppc_actual_pgsz(hpte_v, hpte_gr));
 	memslot = __gfn_to_memslot(kvm_memslots_raw(kvm), gfn);
 	if (memslotp)
 		*memslotp = memslot;
 	if (gfnp)
 		*gfnp = gfn;
+=======
+	gfn = hpte_rpn(hpte_gr, hpte_page_size(hpte_v, hpte_gr));
+	memslot = __gfn_to_memslot(kvm_memslots_raw(kvm), gfn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!memslot)
 		return NULL;
 
@@ -166,12 +199,19 @@ static void remove_revmap_chain(struct kvm *kvm, long pte_index,
 	unsigned long ptel, head;
 	unsigned long *rmap;
 	unsigned long rcbits;
+<<<<<<< HEAD
 	struct kvm_memory_slot *memslot;
 	unsigned long gfn;
 
 	rcbits = hpte_r & (HPTE_R_R | HPTE_R_C);
 	ptel = rev->guest_rpte |= rcbits;
 	rmap = revmap_for_hpte(kvm, hpte_v, ptel, &memslot, &gfn);
+=======
+
+	rcbits = hpte_r & (HPTE_R_R | HPTE_R_C);
+	ptel = rev->guest_rpte |= rcbits;
+	rmap = revmap_for_hpte(kvm, hpte_v, ptel);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rmap)
 		return;
 	lock_rmap(rmap);
@@ -190,8 +230,12 @@ static void remove_revmap_chain(struct kvm *kvm, long pte_index,
 	}
 	*rmap |= rcbits << KVMPPC_RMAP_RC_SHIFT;
 	if (rcbits & HPTE_R_C)
+<<<<<<< HEAD
 		kvmppc_update_dirty_map(memslot, gfn,
 					kvmppc_actual_pgsz(hpte_v, hpte_r));
+=======
+		kvmppc_update_rmap_change(rmap, hpte_page_size(hpte_v, hpte_r));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unlock_rmap(rmap);
 }
 
@@ -215,7 +259,11 @@ long kvmppc_do_h_enter(struct kvm *kvm, unsigned long flags,
 
 	if (kvm_is_radix(kvm))
 		return H_FUNCTION;
+<<<<<<< HEAD
 	psize = kvmppc_actual_pgsz(pteh, ptel);
+=======
+	psize = hpte_page_size(pteh, ptel);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!psize)
 		return H_PARAMETER;
 	writing = hpte_is_writable(ptel);
@@ -417,8 +465,12 @@ long kvmppc_h_enter(struct kvm_vcpu *vcpu, unsigned long flags,
 		    long pte_index, unsigned long pteh, unsigned long ptel)
 {
 	return kvmppc_do_h_enter(vcpu->kvm, flags, pte_index, pteh, ptel,
+<<<<<<< HEAD
 				 vcpu->arch.pgdir, true,
 				 &vcpu->arch.regs.gpr[4]);
+=======
+				 vcpu->arch.pgdir, true, &vcpu->arch.gpr[4]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef __BIG_ENDIAN__
@@ -434,6 +486,58 @@ static inline int is_mmio_hpte(unsigned long v, unsigned long r)
 		(HPTE_R_KEY_HI | HPTE_R_KEY_LO));
 }
 
+<<<<<<< HEAD
+=======
+static inline int try_lock_tlbie(unsigned int *lock)
+{
+	unsigned int tmp, old;
+	unsigned int token = LOCK_TOKEN;
+
+	asm volatile("1:lwarx	%1,0,%2\n"
+		     "	cmpwi	cr0,%1,0\n"
+		     "	bne	2f\n"
+		     "  stwcx.	%3,0,%2\n"
+		     "	bne-	1b\n"
+		     "  isync\n"
+		     "2:"
+		     : "=&r" (tmp), "=&r" (old)
+		     : "r" (lock), "r" (token)
+		     : "cc", "memory");
+	return old == 0;
+}
+
+static inline void fixup_tlbie_lpid(unsigned long rb_value, unsigned long lpid)
+{
+
+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
+		/* Radix flush for a hash guest */
+
+		unsigned long rb,rs,prs,r,ric;
+
+		rb = PPC_BIT(52); /* IS = 2 */
+		rs = 0;  /* lpid = 0 */
+		prs = 0; /* partition scoped */
+		r = 1;   /* radix format */
+		ric = 0; /* RIC_FLSUH_TLB */
+
+		/*
+		 * Need the extra ptesync to make sure we don't
+		 * re-order the tlbie
+		 */
+		asm volatile("ptesync": : :"memory");
+		asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+			     : : "r"(rb), "i"(r), "i"(prs),
+			       "i"(ric), "r"(rs) : "memory");
+	}
+
+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+		asm volatile("ptesync": : :"memory");
+		asm volatile(PPC_TLBIE_5(%0,%1,0,0,0) : :
+			     "r" (rb_value), "r" (lpid));
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void do_tlbies(struct kvm *kvm, unsigned long *rbvalues,
 		      long npages, int global, bool need_sync)
 {
@@ -445,6 +549,11 @@ static void do_tlbies(struct kvm *kvm, unsigned long *rbvalues,
 	 * the RS field, this is backwards-compatible with P7 and P8.
 	 */
 	if (global) {
+<<<<<<< HEAD
+=======
+		while (!try_lock_tlbie(&kvm->arch.tlbie_lock))
+			cpu_relax();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (need_sync)
 			asm volatile("ptesync" : : : "memory");
 		for (i = 0; i < npages; ++i) {
@@ -452,6 +561,7 @@ static void do_tlbies(struct kvm *kvm, unsigned long *rbvalues,
 				     "r" (rbvalues[i]), "r" (kvm->arch.lpid));
 		}
 
+<<<<<<< HEAD
 		if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
 			/*
 			 * Need the extra ptesync to make sure we don't
@@ -463,6 +573,11 @@ static void do_tlbies(struct kvm *kvm, unsigned long *rbvalues,
 		}
 
 		asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+=======
+		fixup_tlbie_lpid(rbvalues[i - 1], kvm->arch.lpid);
+		asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+		kvm->arch.tlbie_lock = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (need_sync)
 			asm volatile("ptesync" : : : "memory");
@@ -508,7 +623,11 @@ long kvmppc_do_h_remove(struct kvm *kvm, unsigned long flags,
 	if (v & HPTE_V_VALID) {
 		hpte[0] &= ~cpu_to_be64(HPTE_V_VALID);
 		rb = compute_tlbie_rb(v, pte_r, pte_index);
+<<<<<<< HEAD
 		do_tlbies(kvm, &rb, 1, global_invalidates(kvm), true);
+=======
+		do_tlbies(kvm, &rb, 1, global_invalidates(kvm, flags), true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * The reference (R) and change (C) bits in a HPT
 		 * entry can be set by hardware at any time up until
@@ -540,13 +659,21 @@ long kvmppc_h_remove(struct kvm_vcpu *vcpu, unsigned long flags,
 		     unsigned long pte_index, unsigned long avpn)
 {
 	return kvmppc_do_h_remove(vcpu->kvm, flags, pte_index, avpn,
+<<<<<<< HEAD
 				  &vcpu->arch.regs.gpr[4]);
+=======
+				  &vcpu->arch.gpr[4]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu)
 {
 	struct kvm *kvm = vcpu->kvm;
+<<<<<<< HEAD
 	unsigned long *args = &vcpu->arch.regs.gpr[4];
+=======
+	unsigned long *args = &vcpu->arch.gpr[4];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be64 *hp, *hptes[4];
 	unsigned long tlbrb[4];
 	long int i, j, k, n, found, indexes[4];
@@ -558,7 +685,11 @@ long kvmppc_h_bulk_remove(struct kvm_vcpu *vcpu)
 
 	if (kvm_is_radix(kvm))
 		return H_FUNCTION;
+<<<<<<< HEAD
 	global = global_invalidates(kvm);
+=======
+	global = global_invalidates(kvm, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < 4 && ret == H_SUCCESS; ) {
 		n = 0;
 		for (; i < 4; ++i) {
@@ -718,7 +849,12 @@ long kvmppc_h_protect(struct kvm_vcpu *vcpu, unsigned long flags,
 			rb = compute_tlbie_rb(v, r, pte_index);
 			hpte[0] = cpu_to_be64((pte_v & ~HPTE_V_VALID) |
 					      HPTE_V_ABSENT);
+<<<<<<< HEAD
 			do_tlbies(kvm, &rb, 1, global_invalidates(kvm), true);
+=======
+			do_tlbies(kvm, &rb, 1, global_invalidates(kvm, flags),
+				  true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Don't lose R/C bit updates done by hardware */
 			r |= be64_to_cpu(hpte[1]) & (HPTE_R_R | HPTE_R_C);
 			hpte[1] = cpu_to_be64(r);
@@ -766,8 +902,13 @@ long kvmppc_h_read(struct kvm_vcpu *vcpu, unsigned long flags,
 			r = rev[i].guest_rpte | (r & (HPTE_R_R | HPTE_R_C));
 			r &= ~HPTE_GR_RESERVED;
 		}
+<<<<<<< HEAD
 		vcpu->arch.regs.gpr[4 + i * 2] = v;
 		vcpu->arch.regs.gpr[5 + i * 2] = r;
+=======
+		vcpu->arch.gpr[4 + i * 2] = v;
+		vcpu->arch.gpr[5 + i * 2] = r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return H_SUCCESS;
 }
@@ -805,7 +946,11 @@ long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
 		gr |= r & (HPTE_R_R | HPTE_R_C);
 		if (r & HPTE_R_R) {
 			kvmppc_clear_ref_hpte(kvm, hpte, pte_index);
+<<<<<<< HEAD
 			rmap = revmap_for_hpte(kvm, v, gr, NULL, NULL);
+=======
+			rmap = revmap_for_hpte(kvm, v, gr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (rmap) {
 				lock_rmap(rmap);
 				*rmap |= KVMPPC_RMAP_REFERENCED;
@@ -813,7 +958,11 @@ long kvmppc_h_clear_ref(struct kvm_vcpu *vcpu, unsigned long flags,
 			}
 		}
 	}
+<<<<<<< HEAD
 	vcpu->arch.regs.gpr[4] = gr;
+=======
+	vcpu->arch.gpr[4] = gr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = H_SUCCESS;
  out:
 	unlock_hpte(hpte, v & ~HPTE_V_HVLOCK);
@@ -827,6 +976,10 @@ long kvmppc_h_clear_mod(struct kvm_vcpu *vcpu, unsigned long flags,
 	__be64 *hpte;
 	unsigned long v, r, gr;
 	struct revmap_entry *rev;
+<<<<<<< HEAD
+=======
+	unsigned long *rmap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	long ret = H_NOT_FOUND;
 
 	if (kvm_is_radix(kvm))
@@ -855,12 +1008,28 @@ long kvmppc_h_clear_mod(struct kvm_vcpu *vcpu, unsigned long flags,
 		r = be64_to_cpu(hpte[1]);
 		gr |= r & (HPTE_R_R | HPTE_R_C);
 		if (r & HPTE_R_C) {
+<<<<<<< HEAD
 			hpte[1] = cpu_to_be64(r & ~HPTE_R_C);
 			eieio();
 			kvmppc_set_dirty_from_hpte(kvm, v, gr);
 		}
 	}
 	vcpu->arch.regs.gpr[4] = gr;
+=======
+			unsigned long psize = hpte_page_size(v, r);
+			hpte[1] = cpu_to_be64(r & ~HPTE_R_C);
+			eieio();
+			rmap = revmap_for_hpte(kvm, v, gr);
+			if (rmap) {
+				lock_rmap(rmap);
+				*rmap |= KVMPPC_RMAP_CHANGED;
+				kvmppc_update_rmap_change(rmap, psize);
+				unlock_rmap(rmap);
+			}
+		}
+	}
+	vcpu->arch.gpr[4] = gr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = H_SUCCESS;
  out:
 	unlock_hpte(hpte, v & ~HPTE_V_HVLOCK);
@@ -1014,7 +1183,11 @@ long kvmppc_hv_find_lock_hpte(struct kvm *kvm, gva_t eaddr, unsigned long slb_v,
 			 * Check the HPTE again, including base page size
 			 */
 			if ((v & valid) && (v & mask) == val &&
+<<<<<<< HEAD
 			    kvmppc_hpte_base_page_shift(v, r) == pshift)
+=======
+			    hpte_base_page_size(v, r) == (1ul << pshift))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* Return with the HPTE still locked */
 				return (hash << 3) + (i >> 1);
 

@@ -7,7 +7,11 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
+<<<<<<< HEAD
  * Standard functionality for the common clock API.  See Documentation/driver-api/clk.rst
+=======
+ * Standard functionality for the common clock API.  See Documentation/clk.txt
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -22,7 +26,10 @@
 #include <linux/of.h>
 #include <linux/device.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/sched.h>
 #include <linux/clkdev.h>
 #include <linux/of_platform.h>
@@ -31,6 +38,11 @@
 
 #include "clk.h"
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_COMMON_CLK)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_SPINLOCK(enable_lock);
 static DEFINE_MUTEX(prepare_lock);
 
@@ -69,7 +81,10 @@ struct clk_core {
 	const struct clk_ops	*ops;
 	struct clk_hw		*hw;
 	struct module		*owner;
+<<<<<<< HEAD
 	struct device		*dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk_core		*parent;
 	const char		**parent_names;
 	struct clk_core		**parents;
@@ -84,7 +99,10 @@ struct clk_core {
 	bool			orphan;
 	unsigned int		enable_count;
 	unsigned int		prepare_count;
+<<<<<<< HEAD
 	unsigned int		protect_count;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool			need_handoff_enable;
 	bool			need_handoff_prepare;
 	unsigned long		min_rate;
@@ -118,6 +136,7 @@ struct clk {
 	const char *con_id;
 	unsigned long min_rate;
 	unsigned long max_rate;
+<<<<<<< HEAD
 	unsigned int exclusive_count;
 	struct hlist_node clks_node;
 };
@@ -142,6 +161,11 @@ static void clk_pm_runtime_put(struct clk_core *core)
 	pm_runtime_put_sync(core->dev);
 }
 
+=======
+	struct hlist_node clks_node;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /***           locking             ***/
 static void clk_prepare_lock(void)
 {
@@ -174,6 +198,7 @@ static unsigned long clk_enable_lock(void)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	/*
 	 * On UP systems, spin_trylock_irqsave() always returns true, even if
 	 * we already hold the lock. So, in that case, we rely only on
@@ -186,6 +211,12 @@ static unsigned long clk_enable_lock(void)
 			__acquire(enable_lock);
 			if (!IS_ENABLED(CONFIG_SMP))
 				local_save_flags(flags);
+=======
+	if (!spin_trylock_irqsave(&enable_lock, flags)) {
+		if (enable_owner == current) {
+			enable_refcnt++;
+			__acquire(enable_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return flags;
 		}
 		spin_lock_irqsave(&enable_lock, flags);
@@ -211,6 +242,7 @@ static void clk_enable_unlock(unsigned long flags)
 	spin_unlock_irqrestore(&enable_lock, flags);
 }
 
+<<<<<<< HEAD
 static bool clk_core_rate_is_protected(struct clk_core *core)
 {
 	return core->protect_count;
@@ -220,6 +252,10 @@ static bool clk_core_is_prepared(struct clk_core *core)
 {
 	bool ret = false;
 
+=======
+static bool clk_core_is_prepared(struct clk_core *core)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * .is_prepared is optional for clocks that can prepare
 	 * fall back to software usage counter if it is missing
@@ -227,18 +263,25 @@ static bool clk_core_is_prepared(struct clk_core *core)
 	if (!core->ops->is_prepared)
 		return core->prepare_count;
 
+<<<<<<< HEAD
 	if (!clk_pm_runtime_get(core)) {
 		ret = core->ops->is_prepared(core->hw);
 		clk_pm_runtime_put(core);
 	}
 
 	return ret;
+=======
+	return core->ops->is_prepared(core->hw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool clk_core_is_enabled(struct clk_core *core)
 {
+<<<<<<< HEAD
 	bool ret = false;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * .is_enabled is only mandatory for clocks that gate
 	 * fall back to software usage counter if .is_enabled is missing
@@ -246,6 +289,7 @@ static bool clk_core_is_enabled(struct clk_core *core)
 	if (!core->ops->is_enabled)
 		return core->enable_count;
 
+<<<<<<< HEAD
 	/*
 	 * Check if clock controller's device is runtime active before
 	 * calling .is_enabled callback. If not, assume that clock is
@@ -270,6 +314,9 @@ done:
 		pm_runtime_put(core->dev);
 
 	return ret;
+=======
+	return core->ops->is_enabled(core->hw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /***    helper functions   ***/
@@ -428,11 +475,14 @@ bool clk_hw_is_prepared(const struct clk_hw *hw)
 	return clk_core_is_prepared(hw->core);
 }
 
+<<<<<<< HEAD
 bool clk_hw_rate_is_protected(const struct clk_hw *hw)
 {
 	return clk_core_rate_is_protected(hw->core);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool clk_hw_is_enabled(const struct clk_hw *hw)
 {
 	return clk_core_is_enabled(hw->core);
@@ -606,8 +656,12 @@ static int clk_find_vdd_level(struct clk_core *clk, unsigned long rate)
 	 */
 	for (level = 0; level < clk->num_rate_max; level++)
 		if (DIV_ROUND_CLOSEST(rate, 1000) <=
+<<<<<<< HEAD
 				DIV_ROUND_CLOSEST(clk->rate_max[level], 1000) &&
 		    clk->rate_max[level] > 0)
+=======
+				DIV_ROUND_CLOSEST(clk->rate_max[level], 1000))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 	if (level == clk->num_rate_max) {
@@ -827,6 +881,7 @@ done:
 
 /***        clk api        ***/
 
+<<<<<<< HEAD
 static void clk_core_rate_unprotect(struct clk_core *core)
 {
 	lockdep_assert_held(&prepare_lock);
@@ -961,6 +1016,8 @@ int clk_rate_exclusive_get(struct clk *clk)
 }
 EXPORT_SYMBOL_GPL(clk_rate_exclusive_get);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void clk_core_unprepare(struct clk_core *core)
 {
 	lockdep_assert_held(&prepare_lock);
@@ -968,6 +1025,7 @@ static void clk_core_unprepare(struct clk_core *core)
 	if (!core)
 		return;
 
+<<<<<<< HEAD
 	if (WARN(core->prepare_count == 0,
 	    "%s already unprepared\n", core->name))
 		return;
@@ -983,14 +1041,29 @@ static void clk_core_unprepare(struct clk_core *core)
 		return;
 
 	WARN(core->enable_count > 0, "Unpreparing enabled %s\n", core->name);
+=======
+	if (WARN_ON(core->prepare_count == 0))
+		return;
+
+	if (WARN_ON(core->prepare_count == 1 && core->flags & CLK_IS_CRITICAL))
+		return;
+
+	if (--core->prepare_count > 0)
+		return;
+
+	WARN_ON(core->enable_count > 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	trace_clk_unprepare(core);
 
 	if (core->ops->unprepare)
 		core->ops->unprepare(core->hw);
 
+<<<<<<< HEAD
 	clk_pm_runtime_put(core);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_clk_unprepare_complete(core);
 
 	if (core->vdd_class) {
@@ -1039,6 +1112,7 @@ static int clk_core_prepare(struct clk_core *core)
 		return 0;
 
 	if (core->prepare_count == 0) {
+<<<<<<< HEAD
 		ret = clk_pm_runtime_get(core);
 		if (ret)
 			return ret;
@@ -1046,6 +1120,11 @@ static int clk_core_prepare(struct clk_core *core)
 		ret = clk_core_prepare(core->parent);
 		if (ret)
 			goto runtime_put;
+=======
+		ret = clk_core_prepare(core->parent);
+		if (ret)
+			return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		trace_clk_prepare(core);
 
@@ -1069,12 +1148,18 @@ static int clk_core_prepare(struct clk_core *core)
 			clk_unvote_rate_vdd(core, core->rate);
 			core->vdd_class_vote = 0;
 			core->new_vdd_class_vote = 0;
+<<<<<<< HEAD
 			goto unprepare;
+=======
+			clk_core_unprepare(core->parent);
+			return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	core->prepare_count++;
 
+<<<<<<< HEAD
 	/*
 	 * CLK_SET_RATE_GATE is a special case of clock protection
 	 * Instead of a consumer claiming exclusive rate control, it is
@@ -1091,6 +1176,9 @@ unprepare:
 runtime_put:
 	clk_pm_runtime_put(core);
 	return ret;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int clk_core_prepare_lock(struct clk_core *core)
@@ -1132,11 +1220,18 @@ static void clk_core_disable(struct clk_core *core)
 	if (!core)
 		return;
 
+<<<<<<< HEAD
 	if (WARN(core->enable_count == 0, "%s already disabled\n", core->name))
 		return;
 
 	if (WARN(core->enable_count == 1 && core->flags & CLK_IS_CRITICAL,
 	    "Disabling critical %s\n", core->name))
+=======
+	if (WARN_ON(core->enable_count == 0))
+		return;
+
+	if (WARN_ON(core->enable_count == 1 && core->flags & CLK_IS_CRITICAL))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (--core->enable_count > 0)
@@ -1191,8 +1286,12 @@ static int clk_core_enable(struct clk_core *core)
 	if (!core)
 		return 0;
 
+<<<<<<< HEAD
 	if (WARN(core->prepare_count == 0,
 	    "Enabling unprepared %s\n", core->name))
+=======
+	if (WARN_ON(core->prepare_count == 0))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ESHUTDOWN;
 
 	if (core->enable_count == 0) {
@@ -1301,9 +1400,12 @@ static void clk_unprepare_unused_subtree(struct clk_core *core)
 	if (core->flags & CLK_IGNORE_UNUSED)
 		return;
 
+<<<<<<< HEAD
 	if (clk_pm_runtime_get(core))
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (clk_core_is_prepared(core)) {
 		trace_clk_unprepare(core);
 		if (core->ops->unprepare_unused)
@@ -1312,8 +1414,11 @@ static void clk_unprepare_unused_subtree(struct clk_core *core)
 			core->ops->unprepare(core->hw);
 		trace_clk_unprepare_complete(core);
 	}
+<<<<<<< HEAD
 
 	clk_pm_runtime_put(core);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void clk_disable_unused_subtree(struct clk_core *core)
@@ -1344,9 +1449,12 @@ static void clk_disable_unused_subtree(struct clk_core *core)
 	if (core->flags & CLK_OPS_PARENT_ENABLE)
 		clk_core_prepare_enable(core->parent);
 
+<<<<<<< HEAD
 	if (clk_pm_runtime_get(core))
 		goto unprepare_out;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flags = clk_enable_lock();
 
 	if (core->enable_count)
@@ -1371,8 +1479,11 @@ static void clk_disable_unused_subtree(struct clk_core *core)
 
 unlock_out:
 	clk_enable_unlock(flags);
+<<<<<<< HEAD
 	clk_pm_runtime_put(core);
 unprepare_out:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (core->flags & CLK_OPS_PARENT_ENABLE)
 		clk_core_disable_unprepare(core->parent);
 }
@@ -1415,7 +1526,11 @@ static int clk_disable_unused(void)
 				v->vdd_class->num_levels - 1);
 		list_del(&v->list);
 		kfree(v);
+<<<<<<< HEAD
 	}
+=======
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vdd_class_handoff_completed = true;
 	mutex_unlock(&vdd_class_list_lock);
 
@@ -1425,9 +1540,16 @@ static int clk_disable_unused(void)
 }
 late_initcall_sync(clk_disable_unused);
 
+<<<<<<< HEAD
 static int clk_core_determine_round_nolock(struct clk_core *core,
 					   struct clk_rate_request *req)
 {
+=======
+static int clk_core_round_rate_nolock(struct clk_core *core,
+				      struct clk_rate_request *req)
+{
+	struct clk_core *parent;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	long rate;
 
 	lockdep_assert_held(&prepare_lock);
@@ -1435,6 +1557,7 @@ static int clk_core_determine_round_nolock(struct clk_core *core,
 	if (!core)
 		return 0;
 
+<<<<<<< HEAD
 	/*
 	 * At this point, core protection will be disabled if
 	 * - if the provider is not protected at all
@@ -1467,6 +1590,8 @@ static void clk_core_init_rate_req(struct clk_core * const core,
 	if (WARN_ON(!core || !req))
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	parent = core->parent;
 	if (parent) {
 		req->best_parent_hw = parent->hw;
@@ -1475,6 +1600,7 @@ static void clk_core_init_rate_req(struct clk_core * const core,
 		req->best_parent_hw = NULL;
 		req->best_parent_rate = 0;
 	}
+<<<<<<< HEAD
 }
 
 static bool clk_core_can_round(struct clk_core * const core)
@@ -1503,6 +1629,24 @@ static int clk_core_round_rate_nolock(struct clk_core *core,
 		return clk_core_round_rate_nolock(core->parent, req);
 
 	req->rate = core->rate;
+=======
+
+	if (core->ops->determine_rate) {
+		return core->ops->determine_rate(core->hw, req);
+	} else if (core->ops->round_rate) {
+		rate = core->ops->round_rate(core->hw, req->rate,
+					     &req->best_parent_rate);
+		if (rate < 0)
+			return rate;
+
+		req->rate = rate;
+	} else if (core->flags & CLK_SET_RATE_PARENT) {
+		return clk_core_round_rate_nolock(parent, req);
+	} else {
+		req->rate = core->rate;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1559,17 +1703,23 @@ long clk_round_rate(struct clk *clk, unsigned long rate)
 
 	clk_prepare_lock();
 
+<<<<<<< HEAD
 	if (clk->exclusive_count)
 		clk_core_rate_unprotect(clk->core);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_core_get_boundaries(clk->core, &req.min_rate, &req.max_rate);
 	req.rate = rate;
 
 	ret = clk_core_round_rate_nolock(clk->core, &req);
+<<<<<<< HEAD
 
 	if (clk->exclusive_count)
 		clk_core_rate_protect(clk->core);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_prepare_unlock();
 
 	if (ret)
@@ -1680,6 +1830,7 @@ EXPORT_SYMBOL_GPL(clk_get_accuracy);
 static unsigned long clk_recalc(struct clk_core *core,
 				unsigned long parent_rate)
 {
+<<<<<<< HEAD
 	unsigned long rate = parent_rate;
 
 	if (core->ops->recalc_rate && !clk_pm_runtime_get(core)) {
@@ -1687,6 +1838,11 @@ static unsigned long clk_recalc(struct clk_core *core,
 		clk_pm_runtime_put(core);
 	}
 	return rate;
+=======
+	if (core->ops->recalc_rate)
+		return core->ops->recalc_rate(core->hw, parent_rate);
+	return parent_rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2053,23 +2209,49 @@ static struct clk_core *clk_calc_new_rates(struct clk_core *core,
 	clk_core_get_boundaries(core, &min_rate, &max_rate);
 
 	/* find the closest rate and parent clk/rate */
+<<<<<<< HEAD
 	if (clk_core_can_round(core)) {
+=======
+	if (core->ops->determine_rate) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct clk_rate_request req;
 
 		req.rate = rate;
 		req.min_rate = min_rate;
 		req.max_rate = max_rate;
+<<<<<<< HEAD
 
 		clk_core_init_rate_req(core, &req);
 
 		ret = clk_core_determine_round_nolock(core, &req);
+=======
+		if (parent) {
+			req.best_parent_hw = parent->hw;
+			req.best_parent_rate = parent->rate;
+		} else {
+			req.best_parent_hw = NULL;
+			req.best_parent_rate = 0;
+		}
+
+		ret = core->ops->determine_rate(core->hw, &req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return NULL;
 
 		best_parent_rate = req.best_parent_rate;
 		new_rate = req.rate;
 		parent = req.best_parent_hw ? req.best_parent_hw->core : NULL;
+<<<<<<< HEAD
 
+=======
+	} else if (core->ops->round_rate) {
+		ret = core->ops->round_rate(core->hw, rate,
+					    &best_parent_rate);
+		if (ret < 0)
+			return NULL;
+
+		new_rate = ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (new_rate < min_rate || new_rate > max_rate)
 			return NULL;
 	} else if (!parent || !(core->flags & CLK_SET_RATE_PARENT)) {
@@ -2186,10 +2368,13 @@ static int clk_change_rate(struct clk_core *core)
 		best_parent_rate = core->parent->rate;
 	}
 
+<<<<<<< HEAD
 	rc = clk_pm_runtime_get(core);
 	if (rc)
 		return rc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (core->flags & CLK_SET_RATE_UNGATE) {
 		unsigned long flags;
 
@@ -2224,10 +2409,15 @@ static int clk_change_rate(struct clk_core *core)
 	if (!skip_set_rate && core->ops->set_rate) {
 		rc = core->ops->set_rate(core->hw, core->new_rate,
 						best_parent_rate);
+<<<<<<< HEAD
 		if (rc) {
 			trace_clk_set_rate_complete(core, core->new_rate);
 			goto err_set_rate;
 		}
+=======
+		if (rc)
+			goto err_set_rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	trace_clk_set_rate_complete(core, core->new_rate);
@@ -2262,13 +2452,18 @@ static int clk_change_rate(struct clk_core *core)
 			continue;
 		rc = clk_change_rate(child);
 		if (rc)
+<<<<<<< HEAD
 			goto err_set_rate;
+=======
+			return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* handle the new child who might not be in core->children yet */
 	if (core->new_child)
 		rc = clk_change_rate(core->new_child);
 
+<<<<<<< HEAD
 err_set_rate:
 	clk_pm_runtime_put(core);
 	return rc;
@@ -2299,6 +2494,14 @@ static unsigned long clk_core_req_round_rate_nolock(struct clk_core *core,
 	clk_core_rate_restore_protect(core, cnt);
 
 	return ret ? 0 : req.rate;
+=======
+	return rc;
+
+err_set_rate:
+	trace_clk_set_rate_complete(core, core->new_rate);
+
+	return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -2364,12 +2567,19 @@ static void clk_cleanup_vdd_votes(void)
 		list_del_init(&core->rate_change_node);
 	}
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int clk_core_set_rate_nolock(struct clk_core *core,
 				    unsigned long req_rate)
 {
 	struct clk_core *top, *fail_clk;
+<<<<<<< HEAD
 	unsigned long rate;
+=======
+	unsigned long rate = req_rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	/*
 	 * The prepare lock ensures mutual exclusion with other tasks.
@@ -2384,19 +2594,27 @@ static int clk_core_set_rate_nolock(struct clk_core *core,
 	if (!core)
 		return 0;
 
+<<<<<<< HEAD
 	rate = clk_core_req_round_rate_nolock(core, req_rate);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* bail early if nothing to do */
 	if (rate == clk_core_get_rate_nolock(core))
 		return 0;
 
+<<<<<<< HEAD
 	/* fail on a direct rate set of a protected provider */
 	if (clk_core_rate_is_protected(core))
+=======
+	if ((core->flags & CLK_SET_RATE_GATE) && core->prepare_count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EBUSY;
 
 	set_rate_nesting_count++;
 
 	/* calculate new rates and get the topmost changed clock */
+<<<<<<< HEAD
 	top = clk_calc_new_rates(core, req_rate);
 	if (!top) {
 		ret = -EINVAL;
@@ -2407,6 +2625,15 @@ static int clk_core_set_rate_nolock(struct clk_core *core,
 	if (ret)
 		goto pre_rate_change_err;
 
+=======
+	top = clk_calc_new_rates(core, rate);
+	if (!top) {
+		ret = -EINVAL;
+		set_rate_nesting_count--;
+		goto pre_rate_change_err;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* notify that we are about to change rates */
 	fail_clk = clk_propagate_rate_change(top, PRE_RATE_CHANGE);
 	if (fail_clk) {
@@ -2414,10 +2641,18 @@ static int clk_core_set_rate_nolock(struct clk_core *core,
 				fail_clk->name, req_rate);
 		clk_propagate_rate_change(top, ABORT_RATE_CHANGE);
 		ret = -EBUSY;
+<<<<<<< HEAD
 		clk_pm_runtime_put(core);
 		goto pre_rate_change_err;
 	}
 
+=======
+		set_rate_nesting_count--;
+		goto pre_rate_change_err;
+	}
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* change the rates */
 	ret = clk_change_rate(top);
 	set_rate_nesting_count--;
@@ -2441,12 +2676,18 @@ post_rate_change_err:
 		clk_cleanup_vdd_votes();
 	}
 
+<<<<<<< HEAD
 	clk_pm_runtime_put(core);
 
 	return ret;
 
 pre_rate_change_err:
 	set_rate_nesting_count--;
+=======
+	return ret;
+
+pre_rate_change_err:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (set_rate_nesting_count == 0) {
 		clk_unvote_new_rate_vdd();
 		clk_cleanup_vdd_votes();
@@ -2486,6 +2727,7 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
 	/* prevent racing with updates to the clock topology */
 	clk_prepare_lock();
 
+<<<<<<< HEAD
 	if (clk->exclusive_count)
 		clk_core_rate_unprotect(clk->core);
 
@@ -2494,6 +2736,10 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
 	if (clk->exclusive_count)
 		clk_core_rate_protect(clk->core);
 
+=======
+	ret = clk_core_set_rate_nolock(clk->core, rate);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_prepare_unlock();
 
 	return ret;
@@ -2501,6 +2747,7 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
 EXPORT_SYMBOL_GPL(clk_set_rate);
 
 /**
+<<<<<<< HEAD
  * clk_set_rate_exclusive - specify a new rate get exclusive control
  * @clk: the clk whose rate is being changed
  * @rate: the new rate for clk
@@ -2548,6 +2795,8 @@ int clk_set_rate_exclusive(struct clk *clk, unsigned long rate)
 EXPORT_SYMBOL_GPL(clk_set_rate_exclusive);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * clk_set_rate_range - set a rate range for a clock source
  * @clk: clock source
  * @min: desired minimum clock rate in Hz, inclusive
@@ -2558,7 +2807,10 @@ EXPORT_SYMBOL_GPL(clk_set_rate_exclusive);
 int clk_set_rate_range(struct clk *clk, unsigned long min, unsigned long max)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	unsigned long old_min, old_max, rate;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!clk)
 		return 0;
@@ -2572,6 +2824,7 @@ int clk_set_rate_range(struct clk *clk, unsigned long min, unsigned long max)
 
 	clk_prepare_lock();
 
+<<<<<<< HEAD
 	if (clk->exclusive_count)
 		clk_core_rate_unprotect(clk->core);
 
@@ -2612,6 +2865,14 @@ int clk_set_rate_range(struct clk *clk, unsigned long min, unsigned long max)
 	if (clk->exclusive_count)
 		clk_core_rate_protect(clk->core);
 
+=======
+	if (min != clk->min_rate || max != clk->max_rate) {
+		clk->min_rate = min;
+		clk->max_rate = max;
+		ret = clk_core_set_rate_nolock(clk->core, clk->core->req_rate);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_prepare_unlock();
 
 	return ret;
@@ -2711,6 +2972,10 @@ void clk_hw_reparent(struct clk_hw *hw, struct clk_hw *new_parent)
 bool clk_has_parent(struct clk *clk, struct clk *parent)
 {
 	struct clk_core *core, *parent_core;
+<<<<<<< HEAD
+=======
+	unsigned int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* NULL clocks should be nops, so return success if either is NULL. */
 	if (!clk || !parent)
@@ -2723,6 +2988,7 @@ bool clk_has_parent(struct clk *clk, struct clk *parent)
 	if (core->parent == parent_core)
 		return true;
 
+<<<<<<< HEAD
 	return match_string(core->parent_names, core->num_parents,
 			    parent_core->name) >= 0;
 }
@@ -2730,11 +2996,23 @@ EXPORT_SYMBOL_GPL(clk_has_parent);
 
 static int clk_core_set_parent_nolock(struct clk_core *core,
 				      struct clk_core *parent)
+=======
+	for (i = 0; i < core->num_parents; i++)
+		if (strcmp(core->parent_names[i], parent_core->name) == 0)
+			return true;
+
+	return false;
+}
+EXPORT_SYMBOL_GPL(clk_has_parent);
+
+static int clk_core_set_parent(struct clk_core *core, struct clk_core *parent)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	int p_index = 0;
 	unsigned long p_rate = 0;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&prepare_lock);
 
 	if (!core)
@@ -2753,6 +3031,28 @@ static int clk_core_set_parent_nolock(struct clk_core *core,
 
 	if (clk_core_rate_is_protected(core))
 		return -EBUSY;
+=======
+	if (!core)
+		return 0;
+
+	/* prevent racing with updates to the clock topology */
+	clk_prepare_lock();
+
+	if (core->parent == parent && !(core->flags & CLK_IS_MEASURE))
+		goto out;
+
+	/* verify ops for for multi-parent clks */
+	if ((core->num_parents > 1) && (!core->ops->set_parent)) {
+		ret = -ENOSYS;
+		goto out;
+	}
+
+	/* check that we are allowed to re-parent if the clock is in use */
+	if ((core->flags & CLK_SET_PARENT_GATE) && core->prepare_count) {
+		ret = -EBUSY;
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* try finding the new parent index */
 	if (parent) {
@@ -2760,21 +3060,33 @@ static int clk_core_set_parent_nolock(struct clk_core *core,
 		if (p_index < 0) {
 			pr_debug("%s: clk %s can not be parent of clk %s\n",
 					__func__, parent->name, core->name);
+<<<<<<< HEAD
 			return p_index;
+=======
+			ret = p_index;
+			goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		p_rate = parent->rate;
 	}
 
+<<<<<<< HEAD
 	ret = clk_pm_runtime_get(core);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* propagate PRE_RATE_CHANGE notifications */
 	ret = __clk_speculate_rates(core, p_rate);
 
 	/* abort if a driver objects */
 	if (ret & NOTIFY_STOP_MASK)
+<<<<<<< HEAD
 		goto runtime_put;
+=======
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* do the re-parent */
 	ret = __clk_set_parent(core, parent, p_index);
@@ -2787,8 +3099,13 @@ static int clk_core_set_parent_nolock(struct clk_core *core,
 		__clk_recalc_accuracies(core);
 	}
 
+<<<<<<< HEAD
 runtime_put:
 	clk_pm_runtime_put(core);
+=======
+out:
+	clk_prepare_unlock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2812,6 +3129,7 @@ runtime_put:
  */
 int clk_set_parent(struct clk *clk, struct clk *parent)
 {
+<<<<<<< HEAD
 	int ret;
 
 	if (!clk)
@@ -2859,6 +3177,15 @@ static int clk_core_set_phase_nolock(struct clk_core *core, int degrees)
 	return ret;
 }
 
+=======
+	if (!clk)
+		return 0;
+
+	return clk_core_set_parent(clk->core, parent ? parent->core : NULL);
+}
+EXPORT_SYMBOL_GPL(clk_set_parent);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * clk_set_phase - adjust the phase shift of a clock signal
  * @clk: clock signal source
@@ -2881,7 +3208,11 @@ static int clk_core_set_phase_nolock(struct clk_core *core, int degrees)
  */
 int clk_set_phase(struct clk *clk, int degrees)
 {
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!clk)
 		return 0;
@@ -2893,6 +3224,7 @@ int clk_set_phase(struct clk *clk, int degrees)
 
 	clk_prepare_lock();
 
+<<<<<<< HEAD
 	if (clk->exclusive_count)
 		clk_core_rate_unprotect(clk->core);
 
@@ -2900,6 +3232,17 @@ int clk_set_phase(struct clk *clk, int degrees)
 
 	if (clk->exclusive_count)
 		clk_core_rate_protect(clk->core);
+=======
+	trace_clk_set_phase(clk->core, degrees);
+
+	if (clk->core->ops->set_phase)
+		ret = clk->core->ops->set_phase(clk->core->hw, degrees);
+
+	trace_clk_set_phase_complete(clk->core, degrees);
+
+	if (!ret)
+		clk->core->phase = degrees;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_prepare_unlock();
 
@@ -2996,9 +3339,12 @@ static int clk_core_set_duty_cycle_nolock(struct clk_core *core,
 
 	lockdep_assert_held(&prepare_lock);
 
+<<<<<<< HEAD
 	if (clk_core_rate_is_protected(core))
 		return -EBUSY;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_clk_set_duty_cycle(core, duty);
 
 	if (!core->ops->set_duty_cycle)
@@ -3055,6 +3401,7 @@ int clk_set_duty_cycle(struct clk *clk, unsigned int num, unsigned int den)
 
 	clk_prepare_lock();
 
+<<<<<<< HEAD
 	if (clk->exclusive_count)
 		clk_core_rate_unprotect(clk->core);
 
@@ -3063,6 +3410,10 @@ int clk_set_duty_cycle(struct clk *clk, unsigned int num, unsigned int den)
 	if (clk->exclusive_count)
 		clk_core_rate_protect(clk->core);
 
+=======
+	ret = clk_core_set_duty_cycle_nolock(clk->core, &duty);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_prepare_unlock();
 
 	return ret;
@@ -3219,12 +3570,20 @@ static void clk_summary_show_one(struct seq_file *s, struct clk_core *c,
 	if (!c)
 		return;
 
+<<<<<<< HEAD
 	seq_printf(s, "%*s%-*s %7d %8d %8d %11lu %10lu %5d %6d\n",
 		   level * 3 + 1, "",
 		   30 - level * 3, c->name,
 		   c->enable_count, c->prepare_count, c->protect_count,
 		   clk_core_get_rate(c), clk_core_get_accuracy(c),
 		   clk_core_get_phase(c),
+=======
+	seq_printf(s, "%*s%-*s %7d %8d %8lu %11lu %10d %5d\n",
+		   level * 3 + 1, "",
+		   30 - level * 3, c->name,
+		   c->enable_count, c->prepare_count, clk_core_get_rate(c),
+		   clk_core_get_accuracy(c), clk_core_get_phase(c),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   clk_core_get_scaled_duty_cycle(c, 100000));
 }
 
@@ -3251,9 +3610,15 @@ static int clk_summary_show(struct seq_file *s, void *data)
 	struct clk_core *c;
 	struct hlist_head **lists = (struct hlist_head **)s->private;
 
+<<<<<<< HEAD
 	seq_puts(s, "                                 enable  prepare  protect                                duty\n");
 	seq_puts(s, "   clock                          count    count    count        rate   accuracy phase  cycle\n");
 	seq_puts(s, "---------------------------------------------------------------------------------------------\n");
+=======
+	seq_puts(s, "                                 enable  prepare                          duty\n");
+	seq_puts(s, "   clock                          count    count   rate   accuracy phase  cycle\n");
+	seq_puts(s, "-------------------------------------------------------------------------------\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_prepare_lock();
 
@@ -3265,7 +3630,23 @@ static int clk_summary_show(struct seq_file *s, void *data)
 
 	return 0;
 }
+<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(clk_summary);
+=======
+
+
+static int clk_summary_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, clk_summary_show, inode->i_private);
+}
+
+static const struct file_operations clk_summary_fops = {
+	.open		= clk_summary_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void clk_dump_one(struct seq_file *s, struct clk_core *c, int level)
 {
@@ -3276,10 +3657,16 @@ static void clk_dump_one(struct seq_file *s, struct clk_core *c, int level)
 	seq_printf(s, "\"%s\": { ", c->name);
 	seq_printf(s, "\"enable_count\": %d,", c->enable_count);
 	seq_printf(s, "\"prepare_count\": %d,", c->prepare_count);
+<<<<<<< HEAD
 	seq_printf(s, "\"protect_count\": %d,", c->protect_count);
 	seq_printf(s, "\"rate\": %lu,", clk_core_get_rate(c));
 	seq_printf(s, "\"accuracy\": %lu,", clk_core_get_accuracy(c));
 	seq_printf(s, "\"phase\": %d,", clk_core_get_phase(c));
+=======
+	seq_printf(s, "\"rate\": %lu,", clk_core_get_rate(c));
+	seq_printf(s, "\"accuracy\": %lu,", clk_core_get_accuracy(c));
+	seq_printf(s, "\"phase\": %d", clk_core_get_phase(c));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(s, "\"duty_cycle\": %u",
 		   clk_core_get_scaled_duty_cycle(c, 100000));
 }
@@ -3307,7 +3694,11 @@ static void clk_dump_subtree(struct seq_file *s, struct clk_core *c, int level)
 		c->ops->bus_vote(c->hw, false);
 }
 
+<<<<<<< HEAD
 static int clk_dump_show(struct seq_file *s, void *data)
+=======
+static int clk_dump(struct seq_file *s, void *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct clk_core *c;
 	bool first_node = true;
@@ -3330,6 +3721,7 @@ static int clk_dump_show(struct seq_file *s, void *data)
 	seq_puts(s, "}\n");
 	return 0;
 }
+<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(clk_dump);
 
 static const struct {
@@ -3375,6 +3767,23 @@ static int clk_flags_show(struct seq_file *s, void *data)
 DEFINE_SHOW_ATTRIBUTE(clk_flags);
 
 static int possible_parents_show(struct seq_file *s, void *data)
+=======
+
+
+static int clk_dump_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, clk_dump, inode->i_private);
+}
+
+static const struct file_operations clk_dump_fops = {
+	.open		= clk_dump_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+static int possible_parents_dump(struct seq_file *s, void *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct clk_core *core = s->private;
 	int i;
@@ -3386,6 +3795,7 @@ static int possible_parents_show(struct seq_file *s, void *data)
 
 	return 0;
 }
+<<<<<<< HEAD
 DEFINE_SHOW_ATTRIBUTE(possible_parents);
 
 static int clk_duty_cycle_show(struct seq_file *s, void *data)
@@ -3398,25 +3808,45 @@ static int clk_duty_cycle_show(struct seq_file *s, void *data)
 	return 0;
 }
 DEFINE_SHOW_ATTRIBUTE(clk_duty_cycle);
+=======
+
+static int possible_parents_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, possible_parents_dump, inode->i_private);
+}
+
+static const struct file_operations possible_parents_fops = {
+	.open		= possible_parents_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int clock_debug_rate_set(void *data, u64 val)
 {
 	struct clk_core *core = data;
 	int ret;
 
+<<<<<<< HEAD
 	clk_prepare_lock();
 	if (core->ops->bus_vote)
 		core->ops->bus_vote(core->hw, true);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = clk_set_rate(core->hw->clk, val);
 	if (ret)
 		pr_err("clk_set_rate(%lu) failed (%d)\n",
 				(unsigned long)val, ret);
 
+<<<<<<< HEAD
 	if (core->ops->bus_vote)
 		core->ops->bus_vote(core->hw, false);
 	clk_prepare_unlock();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -3424,6 +3854,7 @@ static int clock_debug_rate_get(void *data, u64 *val)
 {
 	struct clk_core *core = data;
 
+<<<<<<< HEAD
 	clk_prepare_lock();
 	if (core->ops->bus_vote)
 		core->ops->bus_vote(core->hw, true);
@@ -3433,11 +3864,18 @@ static int clock_debug_rate_get(void *data, u64 *val)
 	if (core->ops->bus_vote)
 		core->ops->bus_vote(core->hw, false);
 	clk_prepare_unlock();
+=======
+	*val = core->hw->core->rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(clock_rate_fops, clock_debug_rate_get,
+=======
+DEFINE_SIMPLE_ATTRIBUTE(clock_rate_fops, clock_debug_rate_get,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock_debug_rate_set, "%llu\n");
 
 static ssize_t clock_parent_read(struct file *filp, char __user *ubuf,
@@ -3453,8 +3891,13 @@ static ssize_t clock_parent_read(struct file *filp, char __user *ubuf,
 }
 
 static const struct file_operations clock_parent_fops = {
+<<<<<<< HEAD
 	.open		= simple_open,
 	.read		= clock_parent_read,
+=======
+	.open	= simple_open,
+	.read	= clock_parent_read,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int clock_debug_enable_set(void *data, u64 val)
@@ -3462,19 +3905,25 @@ static int clock_debug_enable_set(void *data, u64 val)
 	struct clk_core *core = data;
 	int rc = 0;
 
+<<<<<<< HEAD
 	clk_prepare_lock();
 	if (core->ops->bus_vote)
 		core->ops->bus_vote(core->hw, true);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (val)
 		rc = clk_prepare_enable(core->hw->clk);
 	else
 		clk_disable_unprepare(core->hw->clk);
 
+<<<<<<< HEAD
 	if (core->ops->bus_vote)
 		core->ops->bus_vote(core->hw, false);
 	clk_prepare_unlock();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -3490,6 +3939,7 @@ static int clock_debug_enable_get(void *data, u64 *val)
 	return 0;
 }
 
+<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(clock_enable_fops, clock_debug_enable_get,
 			clock_debug_enable_set, "%lld\n");
 
@@ -3502,6 +3952,49 @@ do {							\
 	else						\
 		pr_info(fmt, ##__VA_ARGS__);		\
 } while (0)
+=======
+DEFINE_SIMPLE_ATTRIBUTE(clock_enable_fops, clock_debug_enable_get,
+			clock_debug_enable_set, "%lld\n");
+
+/*
+ * clock_debug_print_enabled_debug_suspend() - Print names of enabled clocks
+ * during suspend.
+ */
+static void clock_debug_print_enabled_debug_suspend(struct seq_file *s)
+{
+	struct clk_core *core;
+	int cnt = 0;
+
+	if (!mutex_trylock(&clk_debug_lock))
+		return;
+
+	clock_debug_output(s, 0, "Enabled clocks:\n");
+
+	hlist_for_each_entry(core, &clk_debug_list, debug_node) {
+		if (!core || !core->prepare_count)
+			continue;
+
+		if (core->vdd_class)
+			clock_debug_output(s, 0, " %s:%u:%u [%ld, %d]",
+					core->name, core->prepare_count,
+					core->enable_count, core->rate,
+					clk_find_vdd_level(core, core->rate));
+
+		else
+			clock_debug_output(s, 0, " %s:%u:%u [%ld]",
+					core->name, core->prepare_count,
+					core->enable_count, core->rate);
+		cnt++;
+	}
+
+	mutex_unlock(&clk_debug_lock);
+
+	if (cnt)
+		clock_debug_output(s, 0, "Enabled clock count: %d\n", cnt);
+	else
+		clock_debug_output(s, 0, "No clocks enabled.\n");
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int clock_debug_print_clock(struct clk_core *c, struct seq_file *s)
 {
@@ -3513,7 +4006,11 @@ static int clock_debug_print_clock(struct clk_core *c, struct seq_file *s)
 
 	clk = c->hw->clk;
 
+<<<<<<< HEAD
 	clock_debug_output(s, 0, "    ");
+=======
+	clock_debug_output(s, 0, "\t");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		if (clk->core->vdd_class)
@@ -3739,6 +4236,31 @@ static const struct file_operations rate_max_fops = {
 	.release	= seq_release,
 };
 
+<<<<<<< HEAD
+=======
+static int clk_duty_cycle_show(struct seq_file *s, void *data)
+{
+	struct clk_core *core = s->private;
+	struct clk_duty *duty = &core->duty;
+
+	seq_printf(s, "%u/%u\n", duty->num, duty->den);
+
+	return 0;
+}
+
+static int clk_duty_cycle_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, clk_duty_cycle_show, inode->i_private);
+}
+
+static const struct file_operations clk_duty_cycle_fops = {
+	.open		= clk_duty_cycle_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int clk_debug_create_one(struct clk_core *core, struct dentry *pdentry)
 {
 	struct dentry *d;
@@ -3817,8 +4339,21 @@ static int clk_debug_create_one(struct clk_core *core, struct dentry *pdentry)
 	if (!d)
 		goto err_out;
 
+<<<<<<< HEAD
 	if (core->ops->debug_init)
 		core->ops->debug_init(core->hw, core->dentry);
+=======
+	d = debugfs_create_file("clk_duty_cycle", 0444, core->dentry,
+			core, &clk_duty_cycle_fops);
+	if (!d)
+		goto err_out;
+
+	if (core->ops->debug_init) {
+		ret = core->ops->debug_init(core->hw, core->dentry);
+		if (ret)
+			goto err_out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = 0;
 	goto out;
@@ -3838,6 +4373,7 @@ out:
  * initialized.  Otherwise it bails out early since the debugfs clk directory
  * will be created lazily by clk_debug_init as part of a late_initcall.
  */
+<<<<<<< HEAD
 static void clk_debug_register(struct clk_core *core)
 {
 	mutex_lock(&clk_debug_lock);
@@ -3845,6 +4381,23 @@ static void clk_debug_register(struct clk_core *core)
 	if (inited)
 		clk_debug_create_one(core, rootdir);
 	mutex_unlock(&clk_debug_lock);
+=======
+static int clk_debug_register(struct clk_core *core)
+{
+	int ret = 0;
+
+	mutex_lock(&clk_debug_lock);
+	hlist_add_head(&core->debug_node, &clk_debug_list);
+
+	if (!inited)
+		goto unlock;
+
+	ret = clk_debug_create_one(core, rootdir);
+unlock:
+	mutex_unlock(&clk_debug_lock);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
  /**
@@ -3864,16 +4417,46 @@ static void clk_debug_unregister(struct clk_core *core)
 	mutex_unlock(&clk_debug_lock);
 }
 
+<<<<<<< HEAD
 /*
  * Print the names of all enabled clocks and their parents if
  * debug_suspend is set from debugfs.
  */
 void clock_debug_print_enabled(void)
+=======
+struct dentry *clk_debugfs_add_file(struct clk_hw *hw, char *name, umode_t mode,
+				void *data, const struct file_operations *fops)
+{
+	struct dentry *d = NULL;
+
+	if (hw->core->dentry)
+		d = debugfs_create_file(name, mode, hw->core->dentry, data,
+					fops);
+
+	return d;
+}
+EXPORT_SYMBOL_GPL(clk_debugfs_add_file);
+
+/*
+ * Print the names of all enabled clocks and their parents if
+ * debug_suspend is set from debugfs along with print_parent flag set to 1.
+ * Otherwise if print_parent set to 0, print only enabled clocks
+ *
+ */
+void clock_debug_print_enabled(bool print_parent)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (likely(!debug_suspend))
 		return;
 
+<<<<<<< HEAD
 	clock_debug_print_enabled_clocks(NULL);
+=======
+	if (print_parent)
+		clock_debug_print_enabled_clocks(NULL);
+	else
+		clock_debug_print_enabled_debug_suspend(NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(clock_debug_print_enabled);
 
@@ -3921,6 +4504,10 @@ static int __init clk_debug_init(void)
 	if (!d)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	d = debugfs_create_u32("debug_suspend", 0644, rootdir, &debug_suspend);
 	if (!d)
 		return -ENOMEM;
@@ -3941,7 +4528,11 @@ static int __init clk_debug_init(void)
 }
 late_initcall(clk_debug_init);
 #else
+<<<<<<< HEAD
 static inline void clk_debug_register(struct clk_core *core) { }
+=======
+static inline int clk_debug_register(struct clk_core *core) { return 0; }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void clk_debug_reparent(struct clk_core *core,
 				      struct clk_core *new_parent)
 {
@@ -3949,6 +4540,17 @@ static inline void clk_debug_reparent(struct clk_core *core,
 static inline void clk_debug_unregister(struct clk_core *core)
 {
 }
+<<<<<<< HEAD
+=======
+
+void clk_debug_print_hw(struct clk_core *clk, struct seq_file *f)
+{
+}
+
+void clock_debug_print_enabled(bool print_parent)
+{
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /**
@@ -3960,7 +4562,11 @@ static inline void clk_debug_unregister(struct clk_core *core)
  */
 static int __clk_core_init(struct clk_core *core)
 {
+<<<<<<< HEAD
 	int i, ret;
+=======
+	int i, ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk_core *orphan;
 	struct hlist_node *tmp2;
 	unsigned long rate;
@@ -3970,10 +4576,13 @@ static int __clk_core_init(struct clk_core *core)
 
 	clk_prepare_lock();
 
+<<<<<<< HEAD
 	ret = clk_pm_runtime_get(core);
 	if (ret)
 		goto unlock;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* check to see if a clock with this name is already registered */
 	if (clk_core_lookup(core->name)) {
 		pr_debug("%s: clk %s already initialized\n",
@@ -3982,7 +4591,11 @@ static int __clk_core_init(struct clk_core *core)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/* check that clk_ops are sane.  See Documentation/driver-api/clk.rst */
+=======
+	/* check that clk_ops are sane.  See Documentation/clk.txt */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (core->ops->set_rate &&
 	    !((core->ops->round_rate || core->ops->determine_rate) &&
 	      core->ops->recalc_rate)) {
@@ -4045,6 +4658,7 @@ static int __clk_core_init(struct clk_core *core)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * optional platform-specific magic
 	 *
 	 * The .init callback is not used by any of the basic clock types, but
@@ -4056,6 +4670,8 @@ static int __clk_core_init(struct clk_core *core)
 		core->ops->init(core->hw);
 
 	/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * Set clk's accuracy.  The preferred method is to use
 	 * .recalc_accuracy. For simple clocks and lazy developers the default
 	 * fallback is to use the parent's accuracy.  If a clock doesn't have a
@@ -4108,11 +4724,25 @@ static int __clk_core_init(struct clk_core *core)
 	if (core->flags & CLK_IS_CRITICAL) {
 		unsigned long flags;
 
+<<<<<<< HEAD
 		clk_core_prepare(core);
 
 		flags = clk_enable_lock();
 		clk_core_enable(core);
 		clk_enable_unlock(flags);
+=======
+		ret = clk_core_prepare(core);
+		if (ret)
+			goto out;
+
+		flags = clk_enable_lock();
+		ret = clk_core_enable(core);
+		clk_enable_unlock(flags);
+		if (ret) {
+			clk_core_unprepare(core);
+			goto out;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -4148,6 +4778,7 @@ static int __clk_core_init(struct clk_core *core)
 	if (core->ops->init)
 		core->ops->init(core->hw);
 
+<<<<<<< HEAD
 	if (core->flags & CLK_IS_CRITICAL) {
 		unsigned long flags;
 
@@ -4158,6 +4789,8 @@ static int __clk_core_init(struct clk_core *core)
 		clk_enable_unlock(flags);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * enable clocks with the CLK_ENABLE_HAND_OFF flag set
 	 *
@@ -4191,8 +4824,11 @@ static int __clk_core_init(struct clk_core *core)
 
 	kref_init(&core->ref);
 out:
+<<<<<<< HEAD
 	clk_pm_runtime_put(core);
 unlock:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_prepare_unlock();
 
 	if (!ret)
@@ -4264,6 +4900,7 @@ struct clk *clk_register(struct device *dev, struct clk_hw *hw)
 		ret = -ENOMEM;
 		goto fail_name;
 	}
+<<<<<<< HEAD
 
 	if (WARN_ON(!hw->init->ops)) {
 		ret = -EINVAL;
@@ -4273,6 +4910,9 @@ struct clk *clk_register(struct device *dev, struct clk_hw *hw)
 
 	if (dev && pm_runtime_enabled(dev))
 		core->dev = dev;
+=======
+	core->ops = hw->init->ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev && dev->driver)
 		core->owner = dev->driver->owner;
 	core->hw = hw;
@@ -4344,7 +4984,10 @@ fail_parent_names_copy:
 		kfree_const(core->parent_names[i]);
 	kfree(core->parent_names);
 fail_parent_names:
+<<<<<<< HEAD
 fail_ops:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree_const(core->name);
 fail_name:
 	kfree(core);
@@ -4456,7 +5099,11 @@ void clk_unregister(struct clk *clk)
 		/* Reparent all children to the orphan list. */
 		hlist_for_each_entry_safe(child, t, &clk->core->children,
 					  child_node)
+<<<<<<< HEAD
 			clk_core_set_parent_nolock(child, NULL);
+=======
+			clk_core_set_parent(child, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	hlist_del_init(&clk->core->child_node);
@@ -4464,11 +5111,14 @@ void clk_unregister(struct clk *clk)
 	if (clk->core->prepare_count)
 		pr_warn("%s: unregistering prepared clock: %s\n",
 					__func__, clk->core->name);
+<<<<<<< HEAD
 
 	if (clk->core->protect_count)
 		pr_warn("%s: unregistering protected clock: %s\n",
 					__func__, clk->core->name);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kref_put(&clk->core->ref, __clk_release);
 unlock:
 	clk_prepare_unlock();
@@ -4559,6 +5209,10 @@ static int clk_add_and_print_opp(struct clk_hw *hw,
 				unsigned long rate, int uv, int n)
 {
 	struct clk_core *core = hw->core;
+<<<<<<< HEAD
+=======
+	unsigned long rrate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int j, ret = 0;
 
 	for (j = 0; j < count; j++) {
@@ -4569,8 +5223,16 @@ static int clk_add_and_print_opp(struct clk_hw *hw,
 			return ret;
 		}
 
+<<<<<<< HEAD
 		if (n == 0 || n == core->num_rate_max - 1 ||
 					rate == clk_hw_round_rate(hw, INT_MAX))
+=======
+		clk_prepare_lock();
+		rrate = clk_hw_round_rate(hw, INT_MAX);
+		clk_prepare_unlock();
+
+		if (n == 0 || n == core->num_rate_max - 1 || rate == rrate)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_info("%s: set OPP pair(%lu Hz: %u uV) on %s\n",
 						core->name, rate, uv,
 						dev_name(device_list[j]));
@@ -4625,7 +5287,13 @@ static void clk_populate_clock_opp_table(struct device_node *np,
 	}
 
 	for (n = 0; ; n++) {
+<<<<<<< HEAD
 		rrate = clk_hw_round_rate(hw, rate + 1);
+=======
+		clk_prepare_lock();
+		rrate = clk_hw_round_rate(hw, rate + 1);
+		clk_prepare_unlock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rrate) {
 			pr_err("clk_round_rate failed for %s\n",
 							core->name);
@@ -4790,6 +5458,7 @@ void __clk_put(struct clk *clk)
 
 	clk_prepare_lock();
 
+<<<<<<< HEAD
 	/*
 	 * Before calling clk_put, all calls to clk_rate_exclusive_get() from a
 	 * given user should be balanced with calls to clk_rate_exclusive_put()
@@ -4802,6 +5471,8 @@ void __clk_put(struct clk *clk)
 		clk->exclusive_count = 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hlist_del(&clk->clks_node);
 	if (clk->min_rate > clk->core->req_rate ||
 	    clk->max_rate < clk->core->req_rate)
@@ -4925,6 +5596,11 @@ int clk_notifier_unregister(struct clk *clk, struct notifier_block *nb)
 }
 EXPORT_SYMBOL_GPL(clk_notifier_unregister);
 
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_COMMON_CLK */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_OF
 /**
  * struct of_clk_provider - Clock provider registration structure
@@ -4962,6 +5638,11 @@ struct clk_hw *of_clk_hw_simple_get(struct of_phandle_args *clkspec, void *data)
 }
 EXPORT_SYMBOL_GPL(of_clk_hw_simple_get);
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_COMMON_CLK)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct clk *of_clk_src_onecell_get(struct of_phandle_args *clkspec, void *data)
 {
 	struct clk_onecell_data *clk_data = data;
@@ -4991,6 +5672,32 @@ of_clk_hw_onecell_get(struct of_phandle_args *clkspec, void *data)
 }
 EXPORT_SYMBOL_GPL(of_clk_hw_onecell_get);
 
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_COMMON_CLK */
+
+/**
+ * of_clk_del_provider() - Remove a previously registered clock provider
+ * @np: Device node pointer associated with clock provider
+ */
+void of_clk_del_provider(struct device_node *np)
+{
+	struct of_clk_provider *cp;
+
+	mutex_lock(&of_clk_mutex);
+	list_for_each_entry(cp, &of_clk_providers, link) {
+		if (cp->node == np) {
+			list_del(&cp->link);
+			of_node_put(cp->node);
+			kfree(cp);
+			break;
+		}
+	}
+	mutex_unlock(&of_clk_mutex);
+}
+EXPORT_SYMBOL_GPL(of_clk_del_provider);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * of_clk_add_provider() - Register a clock provider for a node
  * @np: Device node pointer associated with clock provider
@@ -5092,6 +5799,7 @@ int devm_of_clk_add_hw_provider(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(devm_of_clk_add_hw_provider);
 
+<<<<<<< HEAD
 /**
  * of_clk_del_provider() - Remove a previously registered clock provider
  * @np: Device node pointer associated with clock provider
@@ -5113,6 +5821,8 @@ void of_clk_del_provider(struct device_node *np)
 }
 EXPORT_SYMBOL_GPL(of_clk_del_provider);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int devm_clk_provider_match(struct device *dev, void *res, void *data)
 {
 	struct device_node **np = res;
@@ -5262,8 +5972,15 @@ const char *of_clk_get_parent_name(struct device_node *np, int index)
 			else
 				clk_name = NULL;
 		} else {
+<<<<<<< HEAD
 			clk_name = __clk_get_name(clk);
 			clk_put(clk);
+=======
+#if defined(CONFIG_COMMON_CLK)
+			clk_name = __clk_get_name(clk);
+			clk_put(clk);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -5294,8 +6011,15 @@ int of_clk_parent_fill(struct device_node *np, const char **parents,
 }
 EXPORT_SYMBOL_GPL(of_clk_parent_fill);
 
+<<<<<<< HEAD
 struct clock_provider {
 	void (*clk_init_cb)(struct device_node *);
+=======
+#if defined(CONFIG_COMMON_CLK)
+
+struct clock_provider {
+	of_clk_init_cb_t clk_init_cb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node *np;
 	struct list_head node;
 };
@@ -5339,7 +6063,11 @@ static int parent_ready(struct device_node *np)
  * of_clk_detect_critical() - set CLK_IS_CRITICAL flag from Device Tree
  * @np: Device node pointer associated with clock provider
  * @index: clock index
+<<<<<<< HEAD
  * @flags: pointer to top-level framework flags
+=======
+ * @flags: pointer to clk_core->flags
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Detects if the clock-critical property exists and, if so, sets the
  * corresponding CLK_IS_CRITICAL flag.
@@ -5444,4 +6172,10 @@ void __init of_clk_init(const struct of_device_id *matches)
 			force = true;
 	}
 }
+<<<<<<< HEAD
+=======
+
+#endif /* CONFIG_COMMON_CLK */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

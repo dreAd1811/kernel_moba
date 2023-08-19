@@ -12,7 +12,12 @@
 #include <linux/init.h>
 #include <linux/platform_device.h>
 #include <linux/mfd/adp5520.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
+=======
+
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct adp5520_gpio {
 	struct device *master;

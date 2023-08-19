@@ -178,7 +178,11 @@ static int udl_fb_mmap(struct fb_info *info, struct vm_area_struct *vma)
 
 	pos = (unsigned long)info->fix.smem_start + offset;
 
+<<<<<<< HEAD
 	pr_debug("mmap() framebuffer addr:%lu size:%lu\n",
+=======
+	pr_notice("mmap() framebuffer addr:%lu size:%lu\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  pos, size);
 
 	/* We don't want the framebuffer to be mapped encrypted */
@@ -236,7 +240,11 @@ static int udl_fb_open(struct fb_info *info, int user)
 	}
 #endif
 
+<<<<<<< HEAD
 	pr_debug("open /dev/fb%d user=%d fb_info=%p count=%d\n",
+=======
+	pr_notice("open /dev/fb%d user=%d fb_info=%p count=%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  info->node, user, info, ufbdev->fb_count);
 
 	return 0;
@@ -261,7 +269,11 @@ static int udl_fb_release(struct fb_info *info, int user)
 	}
 #endif
 
+<<<<<<< HEAD
 	pr_debug("released /dev/fb%d user=%d count=%d\n",
+=======
+	pr_warn("released /dev/fb%d user=%d count=%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info->node, user, ufbdev->fb_count);
 
 	return 0;

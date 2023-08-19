@@ -9,6 +9,7 @@
 #include <linux/export.h>
 #include <linux/mfd/tmio.h>
 
+<<<<<<< HEAD
 #define CNF_CMD     0x04
 #define CNF_CTL_BASE   0x10
 #define CNF_INT_PIN  0x3d
@@ -29,6 +30,8 @@
 
 #define   SDCREN 0x2   /* Enable access to MMC CTL regs. (flag in COMMAND_REG)*/
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int tmio_core_mmc_enable(void __iomem *cnf, int shift, unsigned long base)
 {
 	/* Enable the MMC/SD Control registers */

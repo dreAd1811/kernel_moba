@@ -1,9 +1,22 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // SAMSUNG EXYNOS Flattened Device Tree enabled machine
 //
 // Copyright (c) 2010-2014 Samsung Electronics Co., Ltd.
 //		http://www.samsung.com
+=======
+/*
+ * SAMSUNG EXYNOS Flattened Device Tree enabled machine
+ *
+ * Copyright (c) 2010-2014 Samsung Electronics Co., Ltd.
+ *		http://www.samsung.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/init.h>
 #include <linux/io.h>
@@ -24,6 +37,18 @@
 
 #include "common.h"
 
+<<<<<<< HEAD
+=======
+static struct map_desc exynos4_iodesc[] __initdata = {
+	{
+		.virtual	= (unsigned long)S5P_VA_COREPERI_BASE,
+		.pfn		= __phys_to_pfn(EXYNOS4_PA_COREPERI),
+		.length		= SZ_8K,
+		.type		= MT_DEVICE,
+	},
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_device exynos_cpuidle = {
 	.name              = "exynos_cpuidle",
 #ifdef CONFIG_ARM_EXYNOS_CPUIDLE
@@ -54,6 +79,18 @@ void __init exynos_sysram_init(void)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void __init exynos_init_late(void)
+{
+	if (of_machine_is_compatible("samsung,exynos5440"))
+		/* to be supported later */
+		return;
+
+	exynos_pm_init();
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init exynos_fdt_map_chipid(unsigned long node, const char *uname,
 					int depth, void *data)
 {
@@ -61,7 +98,12 @@ static int __init exynos_fdt_map_chipid(unsigned long node, const char *uname,
 	const __be32 *reg;
 	int len;
 
+<<<<<<< HEAD
 	if (!of_flat_dt_is_compatible(node, "samsung,exynos4210-chipid"))
+=======
+	if (!of_flat_dt_is_compatible(node, "samsung,exynos4210-chipid") &&
+		!of_flat_dt_is_compatible(node, "samsung,exynos5440-clock"))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	reg = of_get_flat_dt_prop(node, "reg", &len);
@@ -76,6 +118,20 @@ static int __init exynos_fdt_map_chipid(unsigned long node, const char *uname,
 	return 1;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * exynos_map_io
+ *
+ * register the standard cpu IO areas
+ */
+static void __init exynos_map_io(void)
+{
+	if (soc_is_exynos4())
+		iotable_init(exynos4_iodesc, ARRAY_SIZE(exynos4_iodesc));
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init exynos_init_io(void)
 {
 	debug_ll_io_init();
@@ -84,6 +140,11 @@ static void __init exynos_init_io(void)
 
 	/* detect cpu id and rev. */
 	s5p_init_cpu(S5P_VA_CHIPID);
+<<<<<<< HEAD
+=======
+
+	exynos_map_io();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -159,9 +220,15 @@ static void __init exynos_dt_machine_init(void)
 		exynos_cpuidle.dev.platform_data = &cpuidle_coupled_exynos_data;
 #endif
 	if (of_machine_is_compatible("samsung,exynos4210") ||
+<<<<<<< HEAD
 	    (of_machine_is_compatible("samsung,exynos4412") &&
 	     (of_machine_is_compatible("samsung,trats2") ||
 		  of_machine_is_compatible("samsung,midas"))) ||
+=======
+	    of_machine_is_compatible("samsung,exynos4212") ||
+	    (of_machine_is_compatible("samsung,exynos4412") &&
+	     of_machine_is_compatible("samsung,trats2")) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    of_machine_is_compatible("samsung,exynos3250") ||
 	    of_machine_is_compatible("samsung,exynos5250"))
 		platform_device_register(&exynos_cpuidle);
@@ -172,11 +239,19 @@ static char const *const exynos_dt_compat[] __initconst = {
 	"samsung,exynos3250",
 	"samsung,exynos4",
 	"samsung,exynos4210",
+<<<<<<< HEAD
+=======
+	"samsung,exynos4212",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"samsung,exynos4412",
 	"samsung,exynos5",
 	"samsung,exynos5250",
 	"samsung,exynos5260",
 	"samsung,exynos5420",
+<<<<<<< HEAD
+=======
+	"samsung,exynos5440",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 
@@ -190,6 +265,11 @@ static void __init exynos_dt_fixup(void)
 }
 
 DT_MACHINE_START(EXYNOS_DT, "SAMSUNG EXYNOS (Flattened Device Tree)")
+<<<<<<< HEAD
+=======
+	/* Maintainer: Thomas Abraham <thomas.abraham@linaro.org> */
+	/* Maintainer: Kukjin Kim <kgene.kim@samsung.com> */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.l2c_aux_val	= 0x3c400001,
 	.l2c_aux_mask	= 0xc20fffff,
 	.smp		= smp_ops(exynos_smp_ops),
@@ -197,7 +277,11 @@ DT_MACHINE_START(EXYNOS_DT, "SAMSUNG EXYNOS (Flattened Device Tree)")
 	.init_early	= exynos_firmware_init,
 	.init_irq	= exynos_init_irq,
 	.init_machine	= exynos_dt_machine_init,
+<<<<<<< HEAD
 	.init_late	= exynos_pm_init,
+=======
+	.init_late	= exynos_init_late,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.dt_compat	= exynos_dt_compat,
 	.dt_fixup	= exynos_dt_fixup,
 MACHINE_END

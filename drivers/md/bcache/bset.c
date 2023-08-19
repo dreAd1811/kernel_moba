@@ -18,31 +18,52 @@
 
 #ifdef CONFIG_BCACHE_DEBUG
 
+<<<<<<< HEAD
 void bch_dump_bset(struct btree_keys *b, struct bset *i, unsigned int set)
+=======
+void bch_dump_bset(struct btree_keys *b, struct bset *i, unsigned set)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bkey *k, *next;
 
 	for (k = i->start; k < bset_bkey_last(i); k = next) {
 		next = bkey_next(k);
 
+<<<<<<< HEAD
 		pr_err("block %u key %u/%u: ", set,
 		       (unsigned int) ((u64 *) k - i->d), i->keys);
+=======
+		printk(KERN_ERR "block %u key %u/%u: ", set,
+		       (unsigned) ((u64 *) k - i->d), i->keys);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (b->ops->key_dump)
 			b->ops->key_dump(b, k);
 		else
+<<<<<<< HEAD
 			pr_err("%llu:%llu\n", KEY_INODE(k), KEY_OFFSET(k));
+=======
+			printk("%llu:%llu\n", KEY_INODE(k), KEY_OFFSET(k));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (next < bset_bkey_last(i) &&
 		    bkey_cmp(k, b->ops->is_extents ?
 			     &START_KEY(next) : next) > 0)
+<<<<<<< HEAD
 			pr_err("Key skipped backwards\n");
+=======
+			printk(KERN_ERR "Key skipped backwards\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 void bch_dump_bucket(struct btree_keys *b)
 {
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	console_lock();
 	for (i = 0; i <= b->nsets; i++)
@@ -53,7 +74,11 @@ void bch_dump_bucket(struct btree_keys *b)
 
 int __bch_count_data(struct btree_keys *b)
 {
+<<<<<<< HEAD
 	unsigned int ret = 0;
+=======
+	unsigned ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct btree_iter iter;
 	struct bkey *k;
 
@@ -128,7 +153,11 @@ static inline void bch_btree_iter_next_check(struct btree_iter *iter) {}
 
 /* Keylists */
 
+<<<<<<< HEAD
 int __bch_keylist_realloc(struct keylist *l, unsigned int u64s)
+=======
+int __bch_keylist_realloc(struct keylist *l, unsigned u64s)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	size_t oldsize = bch_keylist_nkeys(l);
 	size_t newsize = oldsize + u64s;
@@ -180,7 +209,11 @@ void bch_keylist_pop_front(struct keylist *l)
 /* Key/pointer manipulation */
 
 void bch_bkey_copy_single_ptr(struct bkey *dest, const struct bkey *src,
+<<<<<<< HEAD
 			      unsigned int i)
+=======
+			      unsigned i)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	BUG_ON(i > KEY_PTRS(src));
 
@@ -194,7 +227,11 @@ void bch_bkey_copy_single_ptr(struct bkey *dest, const struct bkey *src,
 
 bool __bch_cut_front(const struct bkey *where, struct bkey *k)
 {
+<<<<<<< HEAD
 	unsigned int i, len = 0;
+=======
+	unsigned i, len = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bkey_cmp(where, &START_KEY(k)) <= 0)
 		return false;
@@ -214,7 +251,11 @@ bool __bch_cut_front(const struct bkey *where, struct bkey *k)
 
 bool __bch_cut_back(const struct bkey *where, struct bkey *k)
 {
+<<<<<<< HEAD
 	unsigned int len = 0;
+=======
+	unsigned len = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bkey_cmp(where, k) >= 0)
 		return false;
@@ -240,9 +281,15 @@ bool __bch_cut_back(const struct bkey *where, struct bkey *k)
 #define BKEY_MANTISSA_MASK	((1 << BKEY_MANTISSA_BITS) - 1)
 
 struct bkey_float {
+<<<<<<< HEAD
 	unsigned int	exponent:BKEY_EXPONENT_BITS;
 	unsigned int	m:BKEY_MID_BITS;
 	unsigned int	mantissa:BKEY_MANTISSA_BITS;
+=======
+	unsigned	exponent:BKEY_EXPONENT_BITS;
+	unsigned	m:BKEY_MID_BITS;
+	unsigned	mantissa:BKEY_MANTISSA_BITS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 /*
@@ -311,9 +358,13 @@ void bch_btree_keys_free(struct btree_keys *b)
 }
 EXPORT_SYMBOL(bch_btree_keys_free);
 
+<<<<<<< HEAD
 int bch_btree_keys_alloc(struct btree_keys *b,
 			 unsigned int page_order,
 			 gfp_t gfp)
+=======
+int bch_btree_keys_alloc(struct btree_keys *b, unsigned page_order, gfp_t gfp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bset_tree *t = b->set;
 
@@ -347,7 +398,11 @@ EXPORT_SYMBOL(bch_btree_keys_alloc);
 void bch_btree_keys_init(struct btree_keys *b, const struct btree_keys_ops *ops,
 			 bool *expensive_debug_checks)
 {
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	b->ops = ops;
 	b->expensive_debug_checks = expensive_debug_checks;
@@ -368,11 +423,15 @@ EXPORT_SYMBOL(bch_btree_keys_init);
 
 /* Binary tree stuff for auxiliary search trees */
 
+<<<<<<< HEAD
 /*
  * return array index next to j when does in-order traverse
  * of a binary tree which is stored in a linear array
  */
 static unsigned int inorder_next(unsigned int j, unsigned int size)
+=======
+static unsigned inorder_next(unsigned j, unsigned size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (j * 2 + 1 < size) {
 		j = j * 2 + 1;
@@ -385,11 +444,15 @@ static unsigned int inorder_next(unsigned int j, unsigned int size)
 	return j;
 }
 
+<<<<<<< HEAD
 /*
  * return array index previous to j when does in-order traverse
  * of a binary tree which is stored in a linear array
  */
 static unsigned int inorder_prev(unsigned int j, unsigned int size)
+=======
+static unsigned inorder_prev(unsigned j, unsigned size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (j * 2 < size) {
 		j = j * 2;
@@ -402,8 +465,12 @@ static unsigned int inorder_prev(unsigned int j, unsigned int size)
 	return j;
 }
 
+<<<<<<< HEAD
 /*
  * I have no idea why this code works... and I'm the one who wrote it
+=======
+/* I have no idea why this code works... and I'm the one who wrote it
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * However, I do know what it does:
  * Given a binary tree constructed in an array (i.e. how you normally implement
@@ -416,12 +483,19 @@ static unsigned int inorder_prev(unsigned int j, unsigned int size)
  * extra is a function of size:
  *   extra = (size - rounddown_pow_of_two(size - 1)) << 1;
  */
+<<<<<<< HEAD
 static unsigned int __to_inorder(unsigned int j,
 				  unsigned int size,
 				  unsigned int extra)
 {
 	unsigned int b = fls(j);
 	unsigned int shift = fls(size - 1) - b;
+=======
+static unsigned __to_inorder(unsigned j, unsigned size, unsigned extra)
+{
+	unsigned b = fls(j);
+	unsigned shift = fls(size - 1) - b;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	j  ^= 1U << (b - 1);
 	j <<= 1;
@@ -434,20 +508,30 @@ static unsigned int __to_inorder(unsigned int j,
 	return j;
 }
 
+<<<<<<< HEAD
 /*
  * Return the cacheline index in bset_tree->data, where j is index
  * from a linear array which stores the auxiliar binary tree
  */
 static unsigned int to_inorder(unsigned int j, struct bset_tree *t)
+=======
+static unsigned to_inorder(unsigned j, struct bset_tree *t)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return __to_inorder(j, t->size, t->extra);
 }
 
+<<<<<<< HEAD
 static unsigned int __inorder_to_tree(unsigned int j,
 				      unsigned int size,
 				      unsigned int extra)
 {
 	unsigned int shift;
+=======
+static unsigned __inorder_to_tree(unsigned j, unsigned size, unsigned extra)
+{
+	unsigned shift;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (j > extra)
 		j += j - extra;
@@ -460,11 +544,15 @@ static unsigned int __inorder_to_tree(unsigned int j,
 	return j;
 }
 
+<<<<<<< HEAD
 /*
  * Return an index from a linear array which stores the auxiliar binary
  * tree, j is the cacheline index of t->data.
  */
 static unsigned int inorder_to_tree(unsigned int j, struct bset_tree *t)
+=======
+static unsigned inorder_to_tree(unsigned j, struct bset_tree *t)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return __inorder_to_tree(j, t->size, t->extra);
 }
@@ -475,6 +563,7 @@ void inorder_test(void)
 	unsigned long done = 0;
 	ktime_t start = ktime_get();
 
+<<<<<<< HEAD
 	for (unsigned int size = 2;
 	     size < 65536000;
 	     size++) {
@@ -484,6 +573,16 @@ void inorder_test(void)
 
 		if (!(size % 4096))
 			pr_notice("loop %u, %llu per us\n", size,
+=======
+	for (unsigned size = 2;
+	     size < 65536000;
+	     size++) {
+		unsigned extra = (size - rounddown_pow_of_two(size - 1)) << 1;
+		unsigned i = 1, j = rounddown_pow_of_two(size - 1);
+
+		if (!(size % 4096))
+			printk(KERN_NOTICE "loop %u, %llu per us\n", size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       done / ktime_us_delta(ktime_get(), start));
 
 		while (1) {
@@ -526,31 +625,53 @@ void inorder_test(void)
  * of the previous key so we can walk backwards to it from t->tree[j]'s key.
  */
 
+<<<<<<< HEAD
 static struct bkey *cacheline_to_bkey(struct bset_tree *t,
 				      unsigned int cacheline,
 				      unsigned int offset)
+=======
+static struct bkey *cacheline_to_bkey(struct bset_tree *t, unsigned cacheline,
+				      unsigned offset)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return ((void *) t->data) + cacheline * BSET_CACHELINE + offset * 8;
 }
 
+<<<<<<< HEAD
 static unsigned int bkey_to_cacheline(struct bset_tree *t, struct bkey *k)
+=======
+static unsigned bkey_to_cacheline(struct bset_tree *t, struct bkey *k)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return ((void *) k - (void *) t->data) / BSET_CACHELINE;
 }
 
+<<<<<<< HEAD
 static unsigned int bkey_to_cacheline_offset(struct bset_tree *t,
 					 unsigned int cacheline,
+=======
+static unsigned bkey_to_cacheline_offset(struct bset_tree *t,
+					 unsigned cacheline,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct bkey *k)
 {
 	return (u64 *) k - (u64 *) cacheline_to_bkey(t, cacheline, 0);
 }
 
+<<<<<<< HEAD
 static struct bkey *tree_to_bkey(struct bset_tree *t, unsigned int j)
+=======
+static struct bkey *tree_to_bkey(struct bset_tree *t, unsigned j)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return cacheline_to_bkey(t, to_inorder(j, t), t->tree[j].m);
 }
 
+<<<<<<< HEAD
 static struct bkey *tree_to_prev_bkey(struct bset_tree *t, unsigned int j)
+=======
+static struct bkey *tree_to_prev_bkey(struct bset_tree *t, unsigned j)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (void *) (((uint64_t *) tree_to_bkey(t, j)) - t->prev[j]);
 }
@@ -559,7 +680,11 @@ static struct bkey *tree_to_prev_bkey(struct bset_tree *t, unsigned int j)
  * For the write set - the one we're currently inserting keys into - we don't
  * maintain a full search tree, we just keep a simple lookup table in t->prev.
  */
+<<<<<<< HEAD
 static struct bkey *table_to_bkey(struct bset_tree *t, unsigned int cacheline)
+=======
+static struct bkey *table_to_bkey(struct bset_tree *t, unsigned cacheline)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return cacheline_to_bkey(t, cacheline, t->prev[cacheline]);
 }
@@ -571,6 +696,7 @@ static inline uint64_t shrd128(uint64_t high, uint64_t low, uint8_t shift)
 	return low;
 }
 
+<<<<<<< HEAD
 /*
  * Calculate mantissa value for struct bkey_float.
  * If most significant bit of f->exponent is not set, then
@@ -594,6 +720,16 @@ static inline unsigned int bfloat_mantissa(const struct bkey *k,
 }
 
 static void make_bfloat(struct bset_tree *t, unsigned int j)
+=======
+static inline unsigned bfloat_mantissa(const struct bkey *k,
+				       struct bkey_float *f)
+{
+	const uint64_t *p = &k->low - (f->exponent >> 6);
+	return shrd128(p[-1], p[0], f->exponent & 63) & BKEY_MANTISSA_MASK;
+}
+
+static void make_bfloat(struct bset_tree *t, unsigned j)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bkey_float *f = &t->tree[j];
 	struct bkey *m = tree_to_bkey(t, j);
@@ -610,6 +746,7 @@ static void make_bfloat(struct bset_tree *t, unsigned int j)
 	BUG_ON(m < l || m > r);
 	BUG_ON(bkey_next(p) != m);
 
+<<<<<<< HEAD
 	/*
 	 * If l and r have different KEY_INODE values (different backing
 	 * device), f->exponent records how many least significant bits
@@ -620,6 +757,8 @@ static void make_bfloat(struct bset_tree *t, unsigned int j)
 	 * See bfloat_mantiss() how the most significant bit of
 	 * f->exponent is used to calculate bfloat mantissa value.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (KEY_INODE(l) != KEY_INODE(r))
 		f->exponent = fls64(KEY_INODE(r) ^ KEY_INODE(l)) + 64;
 	else
@@ -641,7 +780,11 @@ static void make_bfloat(struct bset_tree *t, unsigned int j)
 static void bset_alloc_tree(struct btree_keys *b, struct bset_tree *t)
 {
 	if (t != b->set) {
+<<<<<<< HEAD
 		unsigned int j = roundup(t[-1].size,
+=======
+		unsigned j = roundup(t[-1].size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     64 / sizeof(struct bkey_float));
 
 		t->tree = t[-1].tree + j;
@@ -683,6 +826,7 @@ void bch_bset_init_next(struct btree_keys *b, struct bset *i, uint64_t magic)
 }
 EXPORT_SYMBOL(bch_bset_init_next);
 
+<<<<<<< HEAD
 /*
  * Build auxiliary binary tree 'struct bset_tree *t', this tree is used to
  * accelerate bkey search in a btree node (pointed by bset_tree->data in
@@ -692,17 +836,27 @@ EXPORT_SYMBOL(bch_bset_init_next);
  * linear comparison does the exact search, see __bch_bset_search() for how
  * the auxiliary tree is used.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void bch_bset_build_written_tree(struct btree_keys *b)
 {
 	struct bset_tree *t = bset_tree_last(b);
 	struct bkey *prev = NULL, *k = t->data->start;
+<<<<<<< HEAD
 	unsigned int j, cacheline = 1;
+=======
+	unsigned j, cacheline = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	b->last_set_unwritten = 0;
 
 	bset_alloc_tree(b, t);
 
+<<<<<<< HEAD
 	t->size = min_t(unsigned int,
+=======
+	t->size = min_t(unsigned,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bkey_to_cacheline(t, bset_bkey_last(t->data)),
 			b->set->tree + btree_keys_cachelines(b) - t->tree);
 
@@ -742,7 +896,11 @@ EXPORT_SYMBOL(bch_bset_build_written_tree);
 void bch_bset_fix_invalidated_key(struct btree_keys *b, struct bkey *k)
 {
 	struct bset_tree *t;
+<<<<<<< HEAD
 	unsigned int inorder, j = 1;
+=======
+	unsigned inorder, j = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (t = b->set; t <= bset_tree_last(b); t++)
 		if (k < bset_bkey_last(t->data))
@@ -789,15 +947,24 @@ static void bch_bset_fix_lookup_table(struct btree_keys *b,
 				      struct bset_tree *t,
 				      struct bkey *k)
 {
+<<<<<<< HEAD
 	unsigned int shift = bkey_u64s(k);
 	unsigned int j = bkey_to_cacheline(t, k);
+=======
+	unsigned shift = bkey_u64s(k);
+	unsigned j = bkey_to_cacheline(t, k);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We're getting called from btree_split() or btree_gc, just bail out */
 	if (!t->size)
 		return;
 
+<<<<<<< HEAD
 	/*
 	 * k is the key we just inserted; we need to find the entry in the
+=======
+	/* k is the key we just inserted; we need to find the entry in the
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * lookup table for the first key that is strictly greater than k:
 	 * it's either k's cacheline or the next one
 	 */
@@ -805,8 +972,12 @@ static void bch_bset_fix_lookup_table(struct btree_keys *b,
 	       table_to_bkey(t, j) <= k)
 		j++;
 
+<<<<<<< HEAD
 	/*
 	 * Adjust all the lookup table entries, and find a new key for any that
+=======
+	/* Adjust all the lookup table entries, and find a new key for any that
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * have gotten too big
 	 */
 	for (; j < t->size; j++) {
@@ -831,8 +1002,12 @@ static void bch_bset_fix_lookup_table(struct btree_keys *b,
 	     k != bset_bkey_last(t->data);
 	     k = bkey_next(k))
 		if (t->size == bkey_to_cacheline(t, k)) {
+<<<<<<< HEAD
 			t->prev[t->size] =
 				bkey_to_cacheline_offset(t, t->size, k);
+=======
+			t->prev[t->size] = bkey_to_cacheline_offset(t, t->size, k);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			t->size++;
 		}
 }
@@ -880,10 +1055,17 @@ void bch_bset_insert(struct btree_keys *b, struct bkey *where,
 }
 EXPORT_SYMBOL(bch_bset_insert);
 
+<<<<<<< HEAD
 unsigned int bch_btree_insert_key(struct btree_keys *b, struct bkey *k,
 			      struct bkey *replace_key)
 {
 	unsigned int status = BTREE_INSERT_STATUS_NO_INSERT;
+=======
+unsigned bch_btree_insert_key(struct btree_keys *b, struct bkey *k,
+			      struct bkey *replace_key)
+{
+	unsigned status = BTREE_INSERT_STATUS_NO_INSERT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bset *i = bset_tree_last(b)->data;
 	struct bkey *m, *prev = NULL;
 	struct btree_iter iter;
@@ -945,10 +1127,17 @@ struct bset_search_iter {
 static struct bset_search_iter bset_search_write_set(struct bset_tree *t,
 						     const struct bkey *search)
 {
+<<<<<<< HEAD
 	unsigned int li = 0, ri = t->size;
 
 	while (li + 1 != ri) {
 		unsigned int m = (li + ri) >> 1;
+=======
+	unsigned li = 0, ri = t->size;
+
+	while (li + 1 != ri) {
+		unsigned m = (li + ri) >> 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (bkey_cmp(table_to_bkey(t, m), search) > 0)
 			ri = m;
@@ -967,6 +1156,7 @@ static struct bset_search_iter bset_search_tree(struct bset_tree *t,
 {
 	struct bkey *l, *r;
 	struct bkey_float *f;
+<<<<<<< HEAD
 	unsigned int inorder, j, n = 1;
 
 	do {
@@ -983,6 +1173,12 @@ static struct bset_search_iter bset_search_tree(struct bset_tree *t,
 		 */
 		unsigned int p = n << 4;
 
+=======
+	unsigned inorder, j, n = 1;
+
+	do {
+		unsigned p = n << 4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p &= ((int) (p - t->size)) >> 31;
 
 		prefetch(&t->tree[p]);
@@ -991,9 +1187,12 @@ static struct bset_search_iter bset_search_tree(struct bset_tree *t,
 		f = &t->tree[j];
 
 		/*
+<<<<<<< HEAD
 		 * Similar bit trick, use subtract operation to avoid a branch
 		 * instruction.
 		 *
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * n = (f->mantissa > bfloat_mantissa())
 		 *	? j * 2
 		 *	: j * 2 + 1;
@@ -1002,7 +1201,11 @@ static struct bset_search_iter bset_search_tree(struct bset_tree *t,
 		 * to work  - that's done in make_bfloat()
 		 */
 		if (likely(f->exponent != 127))
+<<<<<<< HEAD
 			n = j * 2 + (((unsigned int)
+=======
+			n = j * 2 + (((unsigned)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      (f->mantissa -
 				       bfloat_mantissa(search, f))) >> 31);
 		else
@@ -1133,7 +1336,10 @@ static struct bkey *__bch_btree_iter_init(struct btree_keys *b,
 					  struct bset_tree *start)
 {
 	struct bkey *ret = NULL;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iter->size = ARRAY_SIZE(iter->data);
 	iter->used = 0;
 
@@ -1160,7 +1366,11 @@ EXPORT_SYMBOL(bch_btree_iter_init);
 static inline struct bkey *__bch_btree_iter_next(struct btree_iter *iter,
 						 btree_iter_cmp_fn *cmp)
 {
+<<<<<<< HEAD
 	struct btree_iter_set b __maybe_unused;
+=======
+	struct btree_iter_set unused;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bkey *ret = NULL;
 
 	if (!btree_iter_end(iter)) {
@@ -1175,7 +1385,11 @@ static inline struct bkey *__bch_btree_iter_next(struct btree_iter *iter,
 		}
 
 		if (iter->data->k == iter->data->end)
+<<<<<<< HEAD
 			heap_pop(iter, b, cmp);
+=======
+			heap_pop(iter, unused, cmp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			heap_sift(iter, 0, cmp);
 	}
@@ -1206,18 +1420,34 @@ struct bkey *bch_btree_iter_next_filter(struct btree_iter *iter,
 
 void bch_bset_sort_state_free(struct bset_sort_state *state)
 {
+<<<<<<< HEAD
 	mempool_exit(&state->pool);
 }
 
 int bch_bset_sort_state_init(struct bset_sort_state *state,
 			     unsigned int page_order)
+=======
+	if (state->pool)
+		mempool_destroy(state->pool);
+}
+
+int bch_bset_sort_state_init(struct bset_sort_state *state, unsigned page_order)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	spin_lock_init(&state->time.lock);
 
 	state->page_order = page_order;
 	state->crit_factor = int_sqrt(1 << page_order);
 
+<<<<<<< HEAD
 	return mempool_init_page_pool(&state->pool, 1, page_order);
+=======
+	state->pool = mempool_create_page_pool(1, page_order);
+	if (!state->pool)
+		return -ENOMEM;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(bch_bset_sort_state_init);
 
@@ -1263,7 +1493,11 @@ static void btree_mergesort(struct btree_keys *b, struct bset *out,
 }
 
 static void __btree_sort(struct btree_keys *b, struct btree_iter *iter,
+<<<<<<< HEAD
 			 unsigned int start, unsigned int order, bool fixup,
+=======
+			 unsigned start, unsigned order, bool fixup,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 struct bset_sort_state *state)
 {
 	uint64_t start_time;
@@ -1275,7 +1509,11 @@ static void __btree_sort(struct btree_keys *b, struct btree_iter *iter,
 
 		BUG_ON(order > state->page_order);
 
+<<<<<<< HEAD
 		outp = mempool_alloc(&state->pool, GFP_NOIO);
+=======
+		outp = mempool_alloc(state->pool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		out = page_address(outp);
 		used_mempool = true;
 		order = state->page_order;
@@ -1304,7 +1542,11 @@ static void __btree_sort(struct btree_keys *b, struct btree_iter *iter,
 	}
 
 	if (used_mempool)
+<<<<<<< HEAD
 		mempool_free(virt_to_page(out), &state->pool);
+=======
+		mempool_free(virt_to_page(out), state->pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		free_pages((unsigned long) out, order);
 
@@ -1314,7 +1556,11 @@ static void __btree_sort(struct btree_keys *b, struct btree_iter *iter,
 		bch_time_stats_update(&state->time, start_time);
 }
 
+<<<<<<< HEAD
 void bch_btree_sort_partial(struct btree_keys *b, unsigned int start,
+=======
+void bch_btree_sort_partial(struct btree_keys *b, unsigned start,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    struct bset_sort_state *state)
 {
 	size_t order = b->page_order, keys = 0;
@@ -1324,7 +1570,11 @@ void bch_btree_sort_partial(struct btree_keys *b, unsigned int start,
 	__bch_btree_iter_init(b, &iter, NULL, &b->set[start]);
 
 	if (start) {
+<<<<<<< HEAD
 		unsigned int i;
+=======
+		unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		for (i = start; i <= b->nsets; i++)
 			keys += b->set[i].data->keys;
@@ -1349,8 +1599,13 @@ void bch_btree_sort_into(struct btree_keys *b, struct btree_keys *new,
 			 struct bset_sort_state *state)
 {
 	uint64_t start_time = local_clock();
+<<<<<<< HEAD
 	struct btree_iter iter;
 
+=======
+
+	struct btree_iter iter;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bch_btree_iter_init(b, &iter, NULL);
 
 	btree_mergesort(b, new->set->data, &iter, false, true);
@@ -1364,7 +1619,11 @@ void bch_btree_sort_into(struct btree_keys *b, struct btree_keys *new,
 
 void bch_btree_sort_lazy(struct btree_keys *b, struct bset_sort_state *state)
 {
+<<<<<<< HEAD
 	unsigned int crit = SORT_CRIT;
+=======
+	unsigned crit = SORT_CRIT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	/* Don't sort if nothing to do */
@@ -1393,7 +1652,11 @@ EXPORT_SYMBOL(bch_btree_sort_lazy);
 
 void bch_btree_keys_stats(struct btree_keys *b, struct bset_stats *stats)
 {
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i <= b->nsets; i++) {
 		struct bset_tree *t = &b->set[i];

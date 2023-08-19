@@ -1,12 +1,36 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *    Filename: cfag12864b.c
  *     Version: 0.1.0
  * Description: cfag12864b LCD driver
+<<<<<<< HEAD
+=======
+ *     License: GPLv2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *     Depends: ks0108
  *
  *      Author: Copyright (C) Miguel Ojeda Sandonis
  *        Date: 2006-10-31
+<<<<<<< HEAD
+=======
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License version 2 as
+ *  published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/init.h>
@@ -333,8 +357,13 @@ static int __init cfag12864b_init(void)
 		goto none;
 	}
 
+<<<<<<< HEAD
 	cfag12864b_cache = kmalloc(CFAG12864B_SIZE,
 				   GFP_KERNEL);
+=======
+	cfag12864b_cache = kmalloc(sizeof(unsigned char) *
+		CFAG12864B_SIZE, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cfag12864b_cache == NULL) {
 		printk(KERN_ERR CFAG12864B_NAME ": ERROR: "
 			"can't alloc cache buffer (%i bytes)\n",

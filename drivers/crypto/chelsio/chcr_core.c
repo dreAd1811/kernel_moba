@@ -48,9 +48,12 @@ static struct cxgb4_uld_info chcr_uld_info = {
 	.add = chcr_uld_add,
 	.state_change = chcr_uld_state_change,
 	.rx_handler = chcr_uld_rx_handler,
+<<<<<<< HEAD
 #ifdef CONFIG_CHELSIO_IPSEC_INLINE
 	.tx_handler = chcr_uld_tx_handler,
 #endif /* CONFIG_CHELSIO_IPSEC_INLINE */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct uld_ctx *assign_chcr_device(void)
@@ -157,20 +160,31 @@ static void *chcr_uld_add(const struct cxgb4_lld_info *lld)
 	struct uld_ctx *u_ctx;
 
 	/* Create the device and add it in the device list */
+<<<<<<< HEAD
 	if (!(lld->ulp_crypto & ULP_CRYPTO_LOOKASIDE))
 		return ERR_PTR(-EOPNOTSUPP);
 
 	/* Create the device and add it in the device list */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u_ctx = kzalloc(sizeof(*u_ctx), GFP_KERNEL);
 	if (!u_ctx) {
 		u_ctx = ERR_PTR(-ENOMEM);
 		goto out;
 	}
+<<<<<<< HEAD
 	u_ctx->lldi = *lld;
 #ifdef CONFIG_CHELSIO_IPSEC_INLINE
 	if (lld->crypto & ULP_CRYPTO_IPSEC_INLINE)
 		chcr_add_xfrmops(lld);
 #endif /* CONFIG_CHELSIO_IPSEC_INLINE */
+=======
+	if (!(lld->ulp_crypto & ULP_CRYPTO_LOOKASIDE)) {
+		u_ctx = ERR_PTR(-ENOMEM);
+		goto out;
+	}
+	u_ctx->lldi = *lld;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return u_ctx;
 }
@@ -194,6 +208,7 @@ int chcr_uld_rx_handler(void *handle, const __be64 *rsp,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_CHELSIO_IPSEC_INLINE
 int chcr_uld_tx_handler(struct sk_buff *skb, struct net_device *dev)
 {
@@ -201,6 +216,8 @@ int chcr_uld_tx_handler(struct sk_buff *skb, struct net_device *dev)
 }
 #endif /* CONFIG_CHELSIO_IPSEC_INLINE */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int chcr_uld_state_change(void *handle, enum cxgb4_state state)
 {
 	struct uld_ctx *u_ctx = handle;
@@ -238,7 +255,11 @@ static int chcr_uld_state_change(void *handle, enum cxgb4_state state)
 static int __init chcr_crypto_init(void)
 {
 	if (cxgb4_register_uld(CXGB4_ULD_CRYPTO, &chcr_uld_info))
+<<<<<<< HEAD
 		pr_err("ULD register fail: No chcr crypto support in cxgb4\n");
+=======
+		pr_err("ULD register fail: No chcr crypto support in cxgb4");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

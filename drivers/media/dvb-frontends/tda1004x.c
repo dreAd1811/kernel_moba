@@ -21,8 +21,13 @@
    */
 /*
  * This driver needs external firmware. Please use the commands
+<<<<<<< HEAD
  * "<kerneldir>/scripts/get_dvb_firmware tda10045",
  * "<kerneldir>/scripts/get_dvb_firmware tda10046" to
+=======
+ * "<kerneldir>/Documentation/dvb/get_dvb_firmware tda10045",
+ * "<kerneldir>/Documentation/dvb/get_dvb_firmware tda10046" to
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * download/extract them, and then copy them to /usr/lib/hotplug/firmware
  * or /lib/firmware (depending on configuration of firmware hotplug).
  */
@@ -36,7 +41,11 @@
 #include <linux/string.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "tda1004x.h"
 
 static int debug;
@@ -329,7 +338,11 @@ static int tda1004x_do_upload(struct tda1004x_state *state,
 	tda1004x_write_byteI(state, dspCodeCounterReg, 0);
 	fw_msg.addr = state->config->demod_address;
 
+<<<<<<< HEAD
 	i2c_lock_bus(state->i2c, I2C_LOCK_SEGMENT);
+=======
+	i2c_lock_adapter(state->i2c);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf[0] = dspCodeInReg;
 	while (pos != len) {
 		// work out how much to send this time
@@ -342,14 +355,22 @@ static int tda1004x_do_upload(struct tda1004x_state *state,
 		fw_msg.len = tx_size + 1;
 		if (__i2c_transfer(state->i2c, &fw_msg, 1) != 1) {
 			printk(KERN_ERR "tda1004x: Error during firmware upload\n");
+<<<<<<< HEAD
 			i2c_unlock_bus(state->i2c, I2C_LOCK_SEGMENT);
+=======
+			i2c_unlock_adapter(state->i2c);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EIO;
 		}
 		pos += tx_size;
 
 		dprintk("%s: fw_pos=0x%x\n", __func__, pos);
 	}
+<<<<<<< HEAD
 	i2c_unlock_bus(state->i2c, I2C_LOCK_SEGMENT);
+=======
+	i2c_unlock_adapter(state->i2c);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* give the DSP a chance to settle 03/10/05 Hac */
 	msleep(100);
@@ -1249,9 +1270,15 @@ static const struct dvb_frontend_ops tda10045_ops = {
 	.delsys = { SYS_DVBT },
 	.info = {
 		.name = "Philips TDA10045H DVB-T",
+<<<<<<< HEAD
 		.frequency_min_hz =  51 * MHz,
 		.frequency_max_hz = 858 * MHz,
 		.frequency_stepsize_hz = 166667,
+=======
+		.frequency_min = 51000000,
+		.frequency_max = 858000000,
+		.frequency_stepsize = 166667,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps =
 		    FE_CAN_FEC_1_2 | FE_CAN_FEC_2_3 | FE_CAN_FEC_3_4 |
 		    FE_CAN_FEC_5_6 | FE_CAN_FEC_7_8 | FE_CAN_FEC_AUTO |
@@ -1319,9 +1346,15 @@ static const struct dvb_frontend_ops tda10046_ops = {
 	.delsys = { SYS_DVBT },
 	.info = {
 		.name = "Philips TDA10046H DVB-T",
+<<<<<<< HEAD
 		.frequency_min_hz =  51 * MHz,
 		.frequency_max_hz = 858 * MHz,
 		.frequency_stepsize_hz = 166667,
+=======
+		.frequency_min = 51000000,
+		.frequency_max = 858000000,
+		.frequency_stepsize = 166667,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps =
 		    FE_CAN_FEC_1_2 | FE_CAN_FEC_2_3 | FE_CAN_FEC_3_4 |
 		    FE_CAN_FEC_5_6 | FE_CAN_FEC_7_8 | FE_CAN_FEC_AUTO |

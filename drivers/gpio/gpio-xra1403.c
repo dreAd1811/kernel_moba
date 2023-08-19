@@ -39,7 +39,10 @@
 #define XRA_REIR  0x10 /* Input Rising Edge Interrupt Enable */
 #define XRA_FEIR  0x12 /* Input Falling Edge Interrupt Enable */
 #define XRA_IFR   0x14 /* Input Filter Enable/Disable */
+<<<<<<< HEAD
 #define XRA_LAST  0x15 /* Bounds */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct xra1403 {
 	struct gpio_chip  chip;
@@ -51,7 +54,11 @@ static const struct regmap_config xra1403_regmap_cfg = {
 		.pad_bits = 1,
 		.val_bits = 8,
 
+<<<<<<< HEAD
 		.max_register = XRA_LAST,
+=======
+		.max_register = XRA_IFR | 0x01,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static unsigned int to_reg(unsigned int reg, unsigned int offset)
@@ -127,16 +134,27 @@ static void xra1403_dbg_show(struct seq_file *s, struct gpio_chip *chip)
 {
 	int reg;
 	struct xra1403 *xra = gpiochip_get_data(chip);
+<<<<<<< HEAD
 	int value[XRA_LAST];
+=======
+	int value[xra1403_regmap_cfg.max_register];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	unsigned int gcr;
 	unsigned int gsr;
 
 	seq_puts(s, "xra reg:");
+<<<<<<< HEAD
 	for (reg = 0; reg <= XRA_LAST; reg++)
 		seq_printf(s, " %2.2x", reg);
 	seq_puts(s, "\n  value:");
 	for (reg = 0; reg < XRA_LAST; reg++) {
+=======
+	for (reg = 0; reg <= xra1403_regmap_cfg.max_register; reg++)
+		seq_printf(s, " %2.2x", reg);
+	seq_puts(s, "\n  value:");
+	for (reg = 0; reg < xra1403_regmap_cfg.max_register; reg++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		regmap_read(xra->regmap, reg, &value[reg]);
 		seq_printf(s, " %2.2x", value[reg]);
 	}

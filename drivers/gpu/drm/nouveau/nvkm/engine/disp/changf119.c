@@ -47,6 +47,7 @@ gf119_disp_chan_uevent = {
 	.init = gf119_disp_chan_uevent_init,
 	.fini = gf119_disp_chan_uevent_fini,
 };
+<<<<<<< HEAD
 
 void
 gf119_disp_chan_intr(struct nv50_disp_chan *chan, bool en)
@@ -60,3 +61,5 @@ gf119_disp_chan_intr(struct nv50_disp_chan *chan, bool en)
 		nvkm_mask(device, 0x6100a0, mask, mask);
 	}
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

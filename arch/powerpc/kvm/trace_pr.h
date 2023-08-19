@@ -252,6 +252,24 @@ TRACE_EVENT(kvm_exit,
 		)
 );
 
+<<<<<<< HEAD
+=======
+TRACE_EVENT(kvm_unmap_hva,
+	TP_PROTO(unsigned long hva),
+	TP_ARGS(hva),
+
+	TP_STRUCT__entry(
+		__field(	unsigned long,	hva		)
+	),
+
+	TP_fast_assign(
+		__entry->hva		= hva;
+	),
+
+	TP_printk("unmap hva 0x%lx\n", __entry->hva)
+);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _TRACE_KVM_H */
 
 /* This part must be outside protection */

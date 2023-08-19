@@ -210,6 +210,7 @@ static ssize_t mtd_oobsize_show(struct device *dev,
 }
 static DEVICE_ATTR(oobsize, S_IRUGO, mtd_oobsize_show, NULL);
 
+<<<<<<< HEAD
 static ssize_t mtd_oobavail_show(struct device *dev,
 				 struct device_attribute *attr, char *buf)
 {
@@ -219,6 +220,8 @@ static ssize_t mtd_oobavail_show(struct device *dev,
 }
 static DEVICE_ATTR(oobavail, S_IRUGO, mtd_oobavail_show, NULL);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t mtd_numeraseregions_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
@@ -336,7 +339,10 @@ static struct attribute *mtd_attrs[] = {
 	&dev_attr_writesize.attr,
 	&dev_attr_subpagesize.attr,
 	&dev_attr_oobsize.attr,
+<<<<<<< HEAD
 	&dev_attr_oobavail.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&dev_attr_numeraseregions.attr,
 	&dev_attr_name.attr,
 	&dev_attr_ecc_strength.attr,
@@ -429,7 +435,11 @@ int mtd_wunit_to_pairing_info(struct mtd_info *mtd, int wunit,
 EXPORT_SYMBOL_GPL(mtd_wunit_to_pairing_info);
 
 /**
+<<<<<<< HEAD
  * mtd_pairing_info_to_wunit - get wunit from pairing information
+=======
+ * mtd_wunit_to_pairing_info - get wunit from pairing information
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @mtd: pointer to new MTD device info structure
  * @info: pairing information struct
  *
@@ -513,11 +523,14 @@ int add_mtd_device(struct mtd_info *mtd)
 		return -EEXIST;
 
 	BUG_ON(mtd->writesize == 0);
+<<<<<<< HEAD
 
 	if (WARN_ON((!mtd->erasesize || !mtd->_erase) &&
 		    !(mtd->flags & MTD_NO_ERASE)))
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&mtd_table_mutex);
 
 	i = idr_alloc(&mtd_idr, mtd, 0, 0, GFP_KERNEL);
@@ -651,6 +664,32 @@ out_error:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int mtd_add_device_partitions(struct mtd_info *mtd,
+				     struct mtd_partitions *parts)
+{
+	const struct mtd_partition *real_parts = parts->parts;
+	int nbparts = parts->nr_parts;
+	int ret;
+
+	if (nbparts == 0 || IS_ENABLED(CONFIG_MTD_PARTITIONED_MASTER)) {
+		ret = add_mtd_device(mtd);
+		if (ret)
+			return ret;
+	}
+
+	if (nbparts > 0) {
+		ret = add_mtd_partitions(mtd, real_parts, nbparts);
+		if (ret && IS_ENABLED(CONFIG_MTD_PARTITIONED_MASTER))
+			del_mtd_device(mtd);
+		return ret;
+	}
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Set a few defaults based on the parent devices, if not provided by the
  * driver
@@ -683,13 +722,23 @@ static void mtd_set_dev_defaults(struct mtd_info *mtd)
  * 'parse_mtd_partitions()') and MTD device and partitions registering. It
  * basically follows the most common pattern found in many MTD drivers:
  *
+<<<<<<< HEAD
  * * If the MTD_PARTITIONED_MASTER option is set, then the device as a whole is
  *   registered first.
  * * Then It tries to probe partitions on MTD device @mtd using parsers
+=======
+ * * It first tries to probe partitions on MTD device @mtd using parsers
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *   specified in @types (if @types is %NULL, then the default list of parsers
  *   is used, see 'parse_mtd_partitions()' for more information). If none are
  *   found this functions tries to fallback to information specified in
  *   @parts/@nr_parts.
+<<<<<<< HEAD
+=======
+ * * If any partitioning info was found, this function registers the found
+ *   partitions. If the MTD_PARTITIONED_MASTER option is set, then the device
+ *   as a whole is registered first.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * * If no partitions were found this function just registers the MTD device
  *   @mtd and exits.
  *
@@ -700,10 +749,15 @@ int mtd_device_parse_register(struct mtd_info *mtd, const char * const *types,
 			      const struct mtd_partition *parts,
 			      int nr_parts)
 {
+<<<<<<< HEAD
+=======
+	struct mtd_partitions parsed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	mtd_set_dev_defaults(mtd);
 
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_MTD_PARTITIONED_MASTER)) {
 		ret = add_mtd_device(mtd);
 		if (ret)
@@ -721,6 +775,26 @@ int mtd_device_parse_register(struct mtd_info *mtd, const char * const *types,
 	else
 		ret = 0;
 
+=======
+	memset(&parsed, 0, sizeof(parsed));
+
+	ret = parse_mtd_partitions(mtd, types, &parsed, parser_data);
+	if ((ret < 0 || parsed.nr_parts == 0) && parts && nr_parts) {
+		/* Fall back to driver-provided partitions */
+		parsed = (struct mtd_partitions){
+			.parts		= parts,
+			.nr_parts	= nr_parts,
+		};
+	} else if (ret < 0) {
+		/* Didn't come up with parsed OR fallback partitions */
+		pr_info("mtd: failed to find partitions; one or more parsers reports errors (%d)\n",
+			ret);
+		/* Don't abort on errors; we can still use unpartitioned MTD */
+		memset(&parsed, 0, sizeof(parsed));
+	}
+
+	ret = mtd_add_device_partitions(mtd, &parsed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -740,9 +814,14 @@ int mtd_device_parse_register(struct mtd_info *mtd, const char * const *types,
 	}
 
 out:
+<<<<<<< HEAD
 	if (ret && device_is_registered(&mtd->dev))
 		del_mtd_device(mtd);
 
+=======
+	/* Cleanup any parsed partitions */
+	mtd_part_parser_cleanup(&parsed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 EXPORT_SYMBOL_GPL(mtd_device_parse_register);
@@ -948,6 +1027,7 @@ void __put_mtd_device(struct mtd_info *mtd)
 EXPORT_SYMBOL_GPL(__put_mtd_device);
 
 /*
+<<<<<<< HEAD
  * Erase is an synchronous operation. Device drivers are epected to return a
  * negative error code if the operation failed and update instr->fail_addr
  * to point the portion that was not properly erased.
@@ -959,14 +1039,33 @@ int mtd_erase(struct mtd_info *mtd, struct erase_info *instr)
 	if (!mtd->erasesize || !mtd->_erase)
 		return -ENOTSUPP;
 
+=======
+ * Erase is an asynchronous operation.  Device drivers are supposed
+ * to call instr->callback() whenever the operation completes, even
+ * if it completes with a failure.
+ * Callers are supposed to pass a callback function and wait for it
+ * to be called before writing to the block.
+ */
+int mtd_erase(struct mtd_info *mtd, struct erase_info *instr)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (instr->addr >= mtd->size || instr->len > mtd->size - instr->addr)
 		return -EINVAL;
 	if (!(mtd->flags & MTD_WRITEABLE))
 		return -EROFS;
+<<<<<<< HEAD
 
 	if (!instr->len)
 		return 0;
 
+=======
+	instr->fail_addr = MTD_FAIL_ADDR_UNKNOWN;
+	if (!instr->len) {
+		instr->state = MTD_ERASE_DONE;
+		mtd_erase_callback(instr);
+		return 0;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ledtrig_mtd_activity();
 	return mtd->_erase(mtd, instr);
 }
@@ -1013,6 +1112,7 @@ EXPORT_SYMBOL_GPL(mtd_unpoint);
 unsigned long mtd_get_unmapped_area(struct mtd_info *mtd, unsigned long len,
 				    unsigned long offset, unsigned long flags)
 {
+<<<<<<< HEAD
 	size_t retlen;
 	void *virt;
 	int ret;
@@ -1025,6 +1125,13 @@ unsigned long mtd_get_unmapped_area(struct mtd_info *mtd, unsigned long len,
 		return -ENOSYS;
 	}
 	return (unsigned long)virt;
+=======
+	if (!mtd->_get_unmapped_area)
+		return -EOPNOTSUPP;
+	if (offset >= mtd->size || len > mtd->size - offset)
+		return -EINVAL;
+	return mtd->_get_unmapped_area(mtd, len, offset, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(mtd_get_unmapped_area);
 
@@ -1044,6 +1151,7 @@ int mtd_read(struct mtd_info *mtd, loff_t from, size_t len, size_t *retlen,
 	 * representing the maximum number of bitflips that were corrected on
 	 * any one ecc region (if applicable; zero otherwise).
 	 */
+<<<<<<< HEAD
 	if (mtd->_read) {
 		ret_code = mtd->_read(mtd, from, len, retlen, buf);
 	} else if (mtd->_read_oob) {
@@ -1058,6 +1166,9 @@ int mtd_read(struct mtd_info *mtd, loff_t from, size_t len, size_t *retlen,
 		return -ENOTSUPP;
 	}
 
+=======
+	ret_code = mtd->_read(mtd, from, len, retlen, buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret_code < 0))
 		return ret_code;
 	if (mtd->ecc_strength == 0)
@@ -1072,12 +1183,17 @@ int mtd_write(struct mtd_info *mtd, loff_t to, size_t len, size_t *retlen,
 	*retlen = 0;
 	if (to < 0 || to >= mtd->size || len > mtd->size - to)
 		return -EINVAL;
+<<<<<<< HEAD
 	if ((!mtd->_write && !mtd->_write_oob) ||
 	    !(mtd->flags & MTD_WRITEABLE))
+=======
+	if (!mtd->_write || !(mtd->flags & MTD_WRITEABLE))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EROFS;
 	if (!len)
 		return 0;
 	ledtrig_mtd_activity();
+<<<<<<< HEAD
 
 	if (!mtd->_write) {
 		struct mtd_oob_ops ops = {
@@ -1091,6 +1207,8 @@ int mtd_write(struct mtd_info *mtd, loff_t to, size_t len, size_t *retlen,
 		return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mtd->_write(mtd, to, len, retlen, buf);
 }
 EXPORT_SYMBOL_GPL(mtd_write);
@@ -1118,6 +1236,7 @@ int mtd_panic_write(struct mtd_info *mtd, loff_t to, size_t len, size_t *retlen,
 }
 EXPORT_SYMBOL_GPL(mtd_panic_write);
 
+<<<<<<< HEAD
 static int mtd_check_oob_ops(struct mtd_info *mtd, loff_t offs,
 			     struct mtd_oob_ops *ops)
 {
@@ -1151,10 +1270,13 @@ static int mtd_check_oob_ops(struct mtd_info *mtd, loff_t offs,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mtd_read_oob(struct mtd_info *mtd, loff_t from, struct mtd_oob_ops *ops)
 {
 	int ret_code;
 	ops->retlen = ops->oobretlen = 0;
+<<<<<<< HEAD
 
 	ret_code = mtd_check_oob_ops(mtd, from, ops);
 	if (ret_code)
@@ -1172,12 +1294,22 @@ int mtd_read_oob(struct mtd_info *mtd, loff_t from, struct mtd_oob_ops *ops)
 		ret_code = mtd->_read(mtd, from, ops->len, &ops->retlen,
 				      ops->datbuf);
 
+=======
+	if (!mtd->_read_oob)
+		return -EOPNOTSUPP;
+
+	ledtrig_mtd_activity();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * In cases where ops->datbuf != NULL, mtd->_read_oob() has semantics
 	 * similar to mtd->_read(), returning a non-negative integer
 	 * representing max bitflips. In other cases, mtd->_read_oob() may
 	 * return -EUCLEAN. In all cases, perform similar logic to mtd_read().
 	 */
+<<<<<<< HEAD
+=======
+	ret_code = mtd->_read_oob(mtd, from, ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret_code < 0))
 		return ret_code;
 	if (mtd->ecc_strength == 0)
@@ -1189,6 +1321,7 @@ EXPORT_SYMBOL_GPL(mtd_read_oob);
 int mtd_write_oob(struct mtd_info *mtd, loff_t to,
 				struct mtd_oob_ops *ops)
 {
+<<<<<<< HEAD
 	int ret;
 
 	ops->retlen = ops->oobretlen = 0;
@@ -1211,6 +1344,15 @@ int mtd_write_oob(struct mtd_info *mtd, loff_t to,
 	else
 		return mtd->_write(mtd, to, ops->len, &ops->retlen,
 				   ops->datbuf);
+=======
+	ops->retlen = ops->oobretlen = 0;
+	if (!mtd->_write_oob)
+		return -EOPNOTSUPP;
+	if (!(mtd->flags & MTD_WRITEABLE))
+		return -EROFS;
+	ledtrig_mtd_activity();
+	return mtd->_write_oob(mtd, to, ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(mtd_write_oob);
 
@@ -1527,9 +1669,15 @@ int mtd_ooblayout_get_databytes(struct mtd_info *mtd, u8 *databuf,
 EXPORT_SYMBOL_GPL(mtd_ooblayout_get_databytes);
 
 /**
+<<<<<<< HEAD
  * mtd_ooblayout_set_databytes - set data bytes into the oob buffer
  * @mtd: mtd info structure
  * @databuf: source buffer to get data bytes from
+=======
+ * mtd_ooblayout_get_eccbytes - set data bytes into the oob buffer
+ * @mtd: mtd info structure
+ * @eccbuf: source buffer to get data bytes from
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @oobbuf: OOB buffer
  * @start: first ECC byte to set
  * @nbytes: number of ECC bytes to set
@@ -1561,7 +1709,11 @@ int mtd_ooblayout_count_freebytes(struct mtd_info *mtd)
 EXPORT_SYMBOL_GPL(mtd_ooblayout_count_freebytes);
 
 /**
+<<<<<<< HEAD
  * mtd_ooblayout_count_eccbytes - count the number of ECC bytes in OOB
+=======
+ * mtd_ooblayout_count_freebytes - count the number of ECC bytes in OOB
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @mtd: mtd info structure
  *
  * Works like mtd_ooblayout_count_bytes(), except it count ECC bytes.
@@ -1849,6 +2001,21 @@ static int mtd_proc_show(struct seq_file *m, void *v)
 	mutex_unlock(&mtd_table_mutex);
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static int mtd_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, mtd_proc_show, NULL);
+}
+
+static const struct file_operations mtd_proc_ops = {
+	.open		= mtd_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PROC_FS */
 
 /*====================================================================*/
@@ -1891,7 +2058,11 @@ static int __init init_mtd(void)
 		goto err_bdi;
 	}
 
+<<<<<<< HEAD
 	proc_mtd = proc_create_single("mtd", 0, NULL, mtd_proc_show);
+=======
+	proc_mtd = proc_create("mtd", 0, NULL, &mtd_proc_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = init_mtdchar();
 	if (ret)

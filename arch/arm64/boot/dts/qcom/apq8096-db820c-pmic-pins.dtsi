@@ -4,7 +4,11 @@
 &pm8994_gpios {
 
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&ls_exp_gpio_f &bt_en_gpios>;
+=======
+	pinctrl-0 = <&ls_exp_gpio_f>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ls_exp_gpio_f: pm8994_gpio5 {
 		pinconf {
@@ -14,6 +18,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	bt_en_gpios: bt_en_gpios {
 		pinconf {
 			pins = "gpio19";
@@ -36,6 +41,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	volume_up_gpio: pm8996_gpio2 {
 		pinconf {
 			pins = "gpio2";
@@ -48,6 +55,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	divclk4_pin_a: divclk4 {
 		pinconf {
 			pins = "gpio18";
@@ -58,6 +66,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb3_vbus_det_gpio: pm8996_gpio22 {
 		pinconf {
 			pins = "gpio22";

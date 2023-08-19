@@ -30,7 +30,10 @@
 #include <linux/random.h>
 #include <linux/prctl.h>
 #include <linux/nmi.h>
+<<<<<<< HEAD
 #include <linux/cpu.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/abi.h>
 #include <asm/asm.h>
@@ -184,7 +187,11 @@ int copy_thread_tls(unsigned long clone_flags, unsigned long usp,
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_STACKPROTECTOR
+=======
+#ifdef CONFIG_CC_STACKPROTECTOR
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/stackprotector.h>
 unsigned long __stack_chk_guard __read_mostly;
 EXPORT_SYMBOL(__stack_chk_guard);
@@ -490,7 +497,11 @@ arch_initcall(frame_info_init);
 /*
  * Return saved PC of a blocked thread.
  */
+<<<<<<< HEAD
 static unsigned long thread_saved_pc(struct task_struct *tsk)
+=======
+unsigned long thread_saved_pc(struct task_struct *tsk)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct thread_struct *t = &tsk->thread;
 
@@ -731,6 +742,7 @@ int mips_get_process_fp_mode(struct task_struct *task)
 	return value;
 }
 
+<<<<<<< HEAD
 static long prepare_for_fp_mode_switch(void *unused)
 {
 	/*
@@ -742,14 +754,26 @@ static long prepare_for_fp_mode_switch(void *unused)
 	 * fp_mode_switching to be zero.
 	 */
 	return 0;
+=======
+static void prepare_for_fp_mode_switch(void *info)
+{
+	struct mm_struct *mm = info;
+
+	if (current->mm == mm)
+		lose_fpu(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
 {
 	const unsigned int known_bits = PR_FP_MODE_FR | PR_FP_MODE_FRE;
 	struct task_struct *t;
+<<<<<<< HEAD
 	struct cpumask process_cpus;
 	int cpu;
+=======
+	int max_users;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If nothing to change, return right away, successfully.  */
 	if (value == mips_get_process_fp_mode(task))
@@ -782,7 +806,39 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
 	if (!(value & PR_FP_MODE_FR) && raw_cpu_has_fpu && cpu_has_mips_r6)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	/* Indicate the new FP mode in each thread */
+=======
+	/* Proceed with the mode switch */
+	preempt_disable();
+
+	/* Save FP & vector context, then disable FPU & MSA */
+	if (task->signal == current->signal)
+		lose_fpu(1);
+
+	/* Prevent any threads from obtaining live FP context */
+	atomic_set(&task->mm->context.fp_mode_switching, 1);
+	smp_mb__after_atomic();
+
+	/*
+	 * If there are multiple online CPUs then force any which are running
+	 * threads in this process to lose their FPU context, which they can't
+	 * regain until fp_mode_switching is cleared later.
+	 */
+	if (num_online_cpus() > 1) {
+		/* No need to send an IPI for the local CPU */
+		max_users = (task->mm == current->mm) ? 1 : 0;
+
+		if (atomic_read(&current->mm->mm_users) > max_users)
+			smp_call_function(prepare_for_fp_mode_switch,
+					  (void *)current->mm, 1);
+	}
+
+	/*
+	 * There are now no threads of the process with live FP context, so it
+	 * is safe to proceed with the FP mode switch.
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_thread(task, t) {
 		/* Update desired FP register width */
 		if (value & PR_FP_MODE_FR) {
@@ -799,6 +855,7 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
 			clear_tsk_thread_flag(t, TIF_HYBRID_FPREGS);
 	}
 
+<<<<<<< HEAD
 	/*
 	 * We need to ensure that all threads in the process have switched mode
 	 * before returning, in order to allow userland to not worry about
@@ -829,6 +886,11 @@ int mips_set_process_fp_mode(struct task_struct *task, unsigned int value)
 	put_online_cpus();
 
 	wake_up_var(&task->mm->context.fp_mode_switching);
+=======
+	/* Allow threads to use FP again */
+	atomic_set(&task->mm->context.fp_mode_switching, 0);
+	preempt_enable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

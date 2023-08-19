@@ -147,7 +147,11 @@ static void qoriq_cpu_kill(unsigned int cpu)
 	for (i = 0; i < 500; i++) {
 		if (is_cpu_dead(cpu)) {
 #ifdef CONFIG_PPC64
+<<<<<<< HEAD
 			paca_ptrs[cpu]->cpu_start = 0;
+=======
+			paca[cpu].cpu_start = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 			return;
 		}
@@ -328,7 +332,11 @@ static int smp_85xx_kick_cpu(int nr)
 		return ret;
 
 done:
+<<<<<<< HEAD
 	paca_ptrs[nr]->cpu_start = 1;
+=======
+	paca[nr].cpu_start = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	generic_set_cpu_up(nr);
 
 	return ret;
@@ -409,14 +417,22 @@ void mpc85xx_smp_kexec_cpu_down(int crash_shutdown, int secondary)
 	}
 
 	if (disable_threadbit) {
+<<<<<<< HEAD
 		while (paca_ptrs[disable_cpu]->kexec_state < KEXEC_STATE_REAL_MODE) {
+=======
+		while (paca[disable_cpu].kexec_state < KEXEC_STATE_REAL_MODE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			barrier();
 			now = mftb();
 			if (!notified && now - start > 1000000) {
 				pr_info("%s/%d: waiting for cpu %d to enter KEXEC_STATE_REAL_MODE (%d)\n",
 					__func__, smp_processor_id(),
 					disable_cpu,
+<<<<<<< HEAD
 					paca_ptrs[disable_cpu]->kexec_state);
+=======
+					paca[disable_cpu].kexec_state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				notified = true;
 			}
 		}

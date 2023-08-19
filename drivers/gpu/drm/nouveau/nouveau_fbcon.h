@@ -41,9 +41,12 @@ struct nouveau_fbdev {
 	struct nvif_object gdi;
 	struct nvif_object blit;
 	struct nvif_object twod;
+<<<<<<< HEAD
 
 	struct mutex hotplug_lock;
 	bool hotplug_waiting;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void nouveau_fbcon_restore(void);
@@ -72,7 +75,11 @@ void nouveau_fbcon_accel_save_disable(struct drm_device *dev);
 void nouveau_fbcon_accel_restore(struct drm_device *dev);
 
 void nouveau_fbcon_output_poll_changed(struct drm_device *dev);
+<<<<<<< HEAD
 void nouveau_fbcon_hotplug_resume(struct nouveau_fbdev *fbcon);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int nouveau_nofbaccel;
 
 #endif /* __NV50_FBCON_H__ */

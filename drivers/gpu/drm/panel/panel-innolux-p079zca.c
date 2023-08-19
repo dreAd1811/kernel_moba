@@ -11,7 +11,10 @@
 #include <linux/gpio/consumer.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/of_device.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regulator/consumer.h>
 
 #include <drm/drmP.h>
@@ -21,6 +24,7 @@
 
 #include <video/mipi_display.h>
 
+<<<<<<< HEAD
 struct panel_init_cmd {
 	size_t len;
 	const char *data;
@@ -56,6 +60,14 @@ struct innolux_panel {
 	struct backlight_device *backlight;
 	struct regulator_bulk_data *supplies;
 	unsigned int num_supplies;
+=======
+struct innolux_panel {
+	struct drm_panel base;
+	struct mipi_dsi_device *link;
+
+	struct backlight_device *backlight;
+	struct regulator *supply;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gpio_desc *enable_gpio;
 
 	bool prepared;
@@ -74,7 +86,12 @@ static int innolux_panel_disable(struct drm_panel *panel)
 	if (!innolux->enabled)
 		return 0;
 
+<<<<<<< HEAD
 	backlight_disable(innolux->backlight);
+=======
+	innolux->backlight->props.power = FB_BLANK_POWERDOWN;
+	backlight_update_status(innolux->backlight);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	innolux->enabled = false;
 
@@ -101,6 +118,7 @@ static int innolux_panel_unprepare(struct drm_panel *panel)
 		return err;
 	}
 
+<<<<<<< HEAD
 	if (innolux->desc->sleep_mode_delay)
 		msleep(innolux->desc->sleep_mode_delay);
 
@@ -111,6 +129,14 @@ static int innolux_panel_unprepare(struct drm_panel *panel)
 
 	err = regulator_bulk_disable(innolux->desc->num_supplies,
 				     innolux->supplies);
+=======
+	gpiod_set_value_cansleep(innolux->enable_gpio, 0);
+
+	/* T8: 80ms - 1000ms */
+	msleep(80);
+
+	err = regulator_disable(innolux->supply);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return err;
 
@@ -122,13 +148,18 @@ static int innolux_panel_unprepare(struct drm_panel *panel)
 static int innolux_panel_prepare(struct drm_panel *panel)
 {
 	struct innolux_panel *innolux = to_innolux_panel(panel);
+<<<<<<< HEAD
 	int err;
+=======
+	int err, regulator_err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (innolux->prepared)
 		return 0;
 
 	gpiod_set_value_cansleep(innolux->enable_gpio, 0);
 
+<<<<<<< HEAD
 	err = regulator_bulk_enable(innolux->desc->num_supplies,
 				    innolux->supplies);
 	if (err < 0)
@@ -171,6 +202,19 @@ static int innolux_panel_prepare(struct drm_panel *panel)
 			}
 		}
 	}
+=======
+	err = regulator_enable(innolux->supply);
+	if (err < 0)
+		return err;
+
+	/* T2: 15ms - 1000ms */
+	usleep_range(15000, 16000);
+
+	gpiod_set_value_cansleep(innolux->enable_gpio, 1);
+
+	/* T4: 15ms - 1000ms */
+	usleep_range(15000, 16000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mipi_dsi_dcs_exit_sleep_mode(innolux->link);
 	if (err < 0) {
@@ -197,9 +241,18 @@ static int innolux_panel_prepare(struct drm_panel *panel)
 	return 0;
 
 poweroff:
+<<<<<<< HEAD
 	gpiod_set_value_cansleep(innolux->enable_gpio, 0);
 	regulator_bulk_disable(innolux->desc->num_supplies, innolux->supplies);
 
+=======
+	regulator_err = regulator_disable(innolux->supply);
+	if (regulator_err)
+		DRM_DEV_ERROR(panel->dev, "failed to disable regulator: %d\n",
+			      regulator_err);
+
+	gpiod_set_value_cansleep(innolux->enable_gpio, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -211,7 +264,12 @@ static int innolux_panel_enable(struct drm_panel *panel)
 	if (innolux->enabled)
 		return 0;
 
+<<<<<<< HEAD
 	ret = backlight_enable(innolux->backlight);
+=======
+	innolux->backlight->props.power = FB_BLANK_UNBLANK;
+	ret = backlight_update_status(innolux->backlight);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_DEV_ERROR(panel->drm->dev,
 			      "Failed to enable backlight %d\n", ret);
@@ -223,11 +281,15 @@ static int innolux_panel_enable(struct drm_panel *panel)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const char * const innolux_p079zca_supply_names[] = {
 	"power",
 };
 
 static const struct drm_display_mode innolux_p079zca_mode = {
+=======
+static const struct drm_display_mode default_mode = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clock = 56900,
 	.hdisplay = 768,
 	.hsync_start = 768 + 40,
@@ -240,6 +302,7 @@ static const struct drm_display_mode innolux_p079zca_mode = {
 	.vrefresh = 60,
 };
 
+<<<<<<< HEAD
 static const struct panel_desc innolux_p079zca_panel_desc = {
 	.mode = &innolux_p079zca_mode,
 	.bpc = 8,
@@ -415,6 +478,17 @@ static int innolux_panel_get_modes(struct drm_panel *panel)
 	if (!mode) {
 		DRM_DEV_ERROR(panel->drm->dev, "failed to add mode %ux%ux@%u\n",
 			      m->hdisplay, m->vdisplay, m->vrefresh);
+=======
+static int innolux_panel_get_modes(struct drm_panel *panel)
+{
+	struct drm_display_mode *mode;
+
+	mode = drm_mode_duplicate(panel->drm, &default_mode);
+	if (!mode) {
+		DRM_DEV_ERROR(panel->drm->dev, "failed to add mode %ux%ux@%u\n",
+			      default_mode.hdisplay, default_mode.vdisplay,
+			      default_mode.vrefresh);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
@@ -422,11 +496,17 @@ static int innolux_panel_get_modes(struct drm_panel *panel)
 
 	drm_mode_probed_add(panel->connector, mode);
 
+<<<<<<< HEAD
 	panel->connector->display_info.width_mm =
 			innolux->desc->size.width;
 	panel->connector->display_info.height_mm =
 			innolux->desc->size.height;
 	panel->connector->display_info.bpc = innolux->desc->bpc;
+=======
+	panel->connector->display_info.width_mm = 120;
+	panel->connector->display_info.height_mm = 160;
+	panel->connector->display_info.bpc = 8;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 1;
 }
@@ -440,16 +520,21 @@ static const struct drm_panel_funcs innolux_panel_funcs = {
 };
 
 static const struct of_device_id innolux_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "innolux,p079zca",
 	  .data = &innolux_p079zca_panel_desc
 	},
 	{ .compatible = "innolux,p097pfg",
 	  .data = &innolux_p097pfg_panel_desc
 	},
+=======
+	{ .compatible = "innolux,p079zca", },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, innolux_of_match);
 
+<<<<<<< HEAD
 static int innolux_panel_add(struct mipi_dsi_device *dsi,
 			     const struct panel_desc *desc)
 {
@@ -476,6 +561,17 @@ static int innolux_panel_add(struct mipi_dsi_device *dsi,
 				      innolux->supplies);
 	if (err < 0)
 		return err;
+=======
+static int innolux_panel_add(struct innolux_panel *innolux)
+{
+	struct device *dev = &innolux->link->dev;
+	struct device_node *np;
+	int err;
+
+	innolux->supply = devm_regulator_get(dev, "power");
+	if (IS_ERR(innolux->supply))
+		return PTR_ERR(innolux->supply);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	innolux->enable_gpio = devm_gpiod_get_optional(dev, "enable",
 						       GPIOD_OUT_HIGH);
@@ -485,6 +581,7 @@ static int innolux_panel_add(struct mipi_dsi_device *dsi,
 		innolux->enable_gpio = NULL;
 	}
 
+<<<<<<< HEAD
 	innolux->backlight = devm_of_find_backlight(dev);
 	if (IS_ERR(innolux->backlight))
 		return PTR_ERR(innolux->backlight);
@@ -501,16 +598,47 @@ static int innolux_panel_add(struct mipi_dsi_device *dsi,
 	innolux->link = dsi;
 
 	return 0;
+=======
+	np = of_parse_phandle(dev->of_node, "backlight", 0);
+	if (np) {
+		innolux->backlight = of_find_backlight_by_node(np);
+		of_node_put(np);
+
+		if (!innolux->backlight)
+			return -EPROBE_DEFER;
+	}
+
+	drm_panel_init(&innolux->base);
+	innolux->base.funcs = &innolux_panel_funcs;
+	innolux->base.dev = &innolux->link->dev;
+
+	err = drm_panel_add(&innolux->base);
+	if (err < 0)
+		goto put_backlight;
+
+	return 0;
+
+put_backlight:
+	put_device(&innolux->backlight->dev);
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void innolux_panel_del(struct innolux_panel *innolux)
 {
 	if (innolux->base.dev)
 		drm_panel_remove(&innolux->base);
+<<<<<<< HEAD
+=======
+
+	put_device(&innolux->backlight->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int innolux_panel_probe(struct mipi_dsi_device *dsi)
 {
+<<<<<<< HEAD
 	const struct panel_desc *desc;
 	int err;
 
@@ -524,6 +652,30 @@ static int innolux_panel_probe(struct mipi_dsi_device *dsi)
 		return err;
 
 	return mipi_dsi_attach(dsi);
+=======
+	struct innolux_panel *innolux;
+	int err;
+
+	dsi->lanes = 4;
+	dsi->format = MIPI_DSI_FMT_RGB888;
+	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+			  MIPI_DSI_MODE_LPM;
+
+	innolux = devm_kzalloc(&dsi->dev, sizeof(*innolux), GFP_KERNEL);
+	if (!innolux)
+		return -ENOMEM;
+
+	mipi_dsi_set_drvdata(dsi, innolux);
+
+	innolux->link = dsi;
+
+	err = innolux_panel_add(innolux);
+	if (err < 0)
+		return err;
+
+	err = mipi_dsi_attach(dsi);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int innolux_panel_remove(struct mipi_dsi_device *dsi)
@@ -545,6 +697,10 @@ static int innolux_panel_remove(struct mipi_dsi_device *dsi)
 		DRM_DEV_ERROR(&dsi->dev, "failed to detach from DSI host: %d\n",
 			      err);
 
+<<<<<<< HEAD
+=======
+	drm_panel_detach(&innolux->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	innolux_panel_del(innolux);
 
 	return 0;
@@ -570,6 +726,9 @@ static struct mipi_dsi_driver innolux_panel_driver = {
 module_mipi_dsi_driver(innolux_panel_driver);
 
 MODULE_AUTHOR("Chris Zhong <zyw@rock-chips.com>");
+<<<<<<< HEAD
 MODULE_AUTHOR("Lin Huang <hl@rock-chips.com>");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("Innolux P079ZCA panel driver");
 MODULE_LICENSE("GPL v2");

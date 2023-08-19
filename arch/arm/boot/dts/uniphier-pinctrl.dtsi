@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+ OR MIT
 //
 // Device Tree Source for UniPhier SoCs default pinctrl settings
@@ -7,10 +8,24 @@
 
 &pinctrl {
 	pinctrl_aout: aout {
+=======
+/*
+ * Device Tree Source for UniPhier SoCs default pinctrl settings
+ *
+ * Copyright (C) 2015-2017 Socionext Inc.
+ *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
+ *
+ * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+ */
+
+&pinctrl {
+	pinctrl_aout: aout_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "aout";
 		function = "aout";
 	};
 
+<<<<<<< HEAD
 	pinctrl_ain1: ain1 {
 		groups = "ain1";
 		function = "ain1";
@@ -52,25 +67,41 @@
 	};
 
 	pinctrl_emmc: emmc {
+=======
+	pinctrl_emmc: emmc_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "emmc", "emmc_dat8";
 		function = "emmc";
 	};
 
+<<<<<<< HEAD
 	pinctrl_ether_mii: ether-mii {
+=======
+	pinctrl_ether_mii: ether_mii_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "ether_mii";
 		function = "ether_mii";
 	};
 
+<<<<<<< HEAD
 	pinctrl_ether_rgmii: ether-rgmii {
+=======
+	pinctrl_ether_rgmii: ether_rgmii_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "ether_rgmii";
 		function = "ether_rgmii";
 	};
 
+<<<<<<< HEAD
 	pinctrl_ether_rmii: ether-rmii {
+=======
+	pinctrl_ether_rmii: ether_rmii_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "ether_rmii";
 		function = "ether_rmii";
 	};
 
+<<<<<<< HEAD
 	pinctrl_ether1_rgmii: ether1-rgmii {
 		groups = "ether1_rgmii";
 		function = "ether1_rgmii";
@@ -82,91 +113,162 @@
 	};
 
 	pinctrl_i2c0: i2c0 {
+=======
+	pinctrl_i2c0: i2c0_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "i2c0";
 		function = "i2c0";
 	};
 
+<<<<<<< HEAD
 	pinctrl_i2c1: i2c1 {
+=======
+	pinctrl_i2c1: i2c1_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "i2c1";
 		function = "i2c1";
 	};
 
+<<<<<<< HEAD
 	pinctrl_i2c2: i2c2 {
+=======
+	pinctrl_i2c2: i2c2_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "i2c2";
 		function = "i2c2";
 	};
 
+<<<<<<< HEAD
 	pinctrl_i2c3: i2c3 {
+=======
+	pinctrl_i2c3: i2c3_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "i2c3";
 		function = "i2c3";
 	};
 
+<<<<<<< HEAD
 	pinctrl_i2c4: i2c4 {
+=======
+	pinctrl_i2c4: i2c4_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "i2c4";
 		function = "i2c4";
 	};
 
+<<<<<<< HEAD
 	pinctrl_nand: nand {
+=======
+	pinctrl_nand: nand_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "nand";
 		function = "nand";
 	};
 
+<<<<<<< HEAD
 	pinctrl_nand2cs: nand2cs {
+=======
+	pinctrl_nand2cs: nand2cs_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "nand", "nand_cs1";
 		function = "nand";
 	};
 
+<<<<<<< HEAD
 	pinctrl_sd: sd {
+=======
+	pinctrl_sd: sd_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "sd";
 		function = "sd";
 	};
 
+<<<<<<< HEAD
 	pinctrl_sd1: sd1 {
+=======
+	pinctrl_sd1: sd1_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "sd1";
 		function = "sd1";
 	};
 
+<<<<<<< HEAD
 	pinctrl_system_bus: system-bus {
+=======
+	pinctrl_system_bus: system_bus_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "system_bus", "system_bus_cs1";
 		function = "system_bus";
 	};
 
+<<<<<<< HEAD
 	pinctrl_uart0: uart0 {
+=======
+	pinctrl_uart0: uart0_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "uart0";
 		function = "uart0";
 	};
 
+<<<<<<< HEAD
 	pinctrl_uart1: uart1 {
+=======
+	pinctrl_uart1: uart1_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "uart1";
 		function = "uart1";
 	};
 
+<<<<<<< HEAD
 	pinctrl_uart2: uart2 {
+=======
+	pinctrl_uart2: uart2_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "uart2";
 		function = "uart2";
 	};
 
+<<<<<<< HEAD
 	pinctrl_uart3: uart3 {
+=======
+	pinctrl_uart3: uart3_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "uart3";
 		function = "uart3";
 	};
 
+<<<<<<< HEAD
 	pinctrl_usb0: usb0 {
+=======
+	pinctrl_usb0: usb0_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "usb0";
 		function = "usb0";
 	};
 
+<<<<<<< HEAD
 	pinctrl_usb1: usb1 {
+=======
+	pinctrl_usb1: usb1_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "usb1";
 		function = "usb1";
 	};
 
+<<<<<<< HEAD
 	pinctrl_usb2: usb2 {
+=======
+	pinctrl_usb2: usb2_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "usb2";
 		function = "usb2";
 	};
 
+<<<<<<< HEAD
 	pinctrl_usb3: usb3 {
+=======
+	pinctrl_usb3: usb3_grp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		groups = "usb3";
 		function = "usb3";
 	};

@@ -36,7 +36,10 @@
 #include "dce_v10_0.h"
 #include "dce_v11_0.h"
 #include "dce_virtual.h"
+<<<<<<< HEAD
 #include "ivsrcid/ivsrcid_vislands30.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DCE_VIRTUAL_VBLANK_PERIOD 16666666
 
@@ -45,9 +48,25 @@ static void dce_virtual_set_display_funcs(struct amdgpu_device *adev);
 static void dce_virtual_set_irq_funcs(struct amdgpu_device *adev);
 static int dce_virtual_connector_encoder_init(struct amdgpu_device *adev,
 					      int index);
+<<<<<<< HEAD
 static void dce_virtual_set_crtc_vblank_interrupt_state(struct amdgpu_device *adev,
 							int crtc,
 							enum amdgpu_interrupt_state state);
+=======
+
+/**
+ * dce_virtual_vblank_wait - vblank wait asic callback.
+ *
+ * @adev: amdgpu_device pointer
+ * @crtc: crtc to wait for vblank on
+ *
+ * Wait for vblank on the requested crtc (evergreen+).
+ */
+static void dce_virtual_vblank_wait(struct amdgpu_device *adev, int crtc)
+{
+	return;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static u32 dce_virtual_vblank_get_counter(struct amdgpu_device *adev, int crtc)
 {
@@ -118,9 +137,15 @@ static const struct drm_crtc_funcs dce_virtual_crtc_funcs = {
 	.cursor_set2 = NULL,
 	.cursor_move = NULL,
 	.gamma_set = dce_virtual_crtc_gamma_set,
+<<<<<<< HEAD
 	.set_config = amdgpu_display_crtc_set_config,
 	.destroy = dce_virtual_crtc_destroy,
 	.page_flip_target = amdgpu_display_crtc_page_flip_target,
+=======
+	.set_config = amdgpu_crtc_set_config,
+	.destroy = dce_virtual_crtc_destroy,
+	.page_flip_target = amdgpu_crtc_page_flip_target,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void dce_virtual_crtc_dpms(struct drm_crtc *crtc, int mode)
@@ -137,8 +162,12 @@ static void dce_virtual_crtc_dpms(struct drm_crtc *crtc, int mode)
 	case DRM_MODE_DPMS_ON:
 		amdgpu_crtc->enabled = true;
 		/* Make sure VBLANK interrupts are still enabled */
+<<<<<<< HEAD
 		type = amdgpu_display_crtc_idx_to_irq_type(adev,
 						amdgpu_crtc->crtc_id);
+=======
+		type = amdgpu_crtc_idx_to_irq_type(adev, amdgpu_crtc->crtc_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		amdgpu_irq_update(adev, &adev->crtc_irq, type);
 		drm_crtc_vblank_on(crtc);
 		break;
@@ -169,9 +198,17 @@ static void dce_virtual_crtc_disable(struct drm_crtc *crtc)
 	dce_virtual_crtc_dpms(crtc, DRM_MODE_DPMS_OFF);
 	if (crtc->primary->fb) {
 		int r;
+<<<<<<< HEAD
 		struct amdgpu_bo *abo;
 
 		abo = gem_to_amdgpu_bo(crtc->primary->fb->obj[0]);
+=======
+		struct amdgpu_framebuffer *amdgpu_fb;
+		struct amdgpu_bo *abo;
+
+		amdgpu_fb = to_amdgpu_framebuffer(crtc->primary->fb);
+		abo = gem_to_amdgpu_bo(amdgpu_fb->obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = amdgpu_bo_reserve(abo, true);
 		if (unlikely(r))
 			DRM_ERROR("failed to reserve abo before unpin\n");
@@ -270,18 +307,38 @@ static int dce_virtual_early_init(void *handle)
 static struct drm_encoder *
 dce_virtual_encoder(struct drm_connector *connector)
 {
+<<<<<<< HEAD
 	struct drm_encoder *encoder;
 	int i;
 
 	drm_connector_for_each_possible_encoder(connector, encoder, i) {
+=======
+	int enc_id = connector->encoder_ids[0];
+	struct drm_encoder *encoder;
+	int i;
+
+	for (i = 0; i < DRM_CONNECTOR_MAX_ENCODER; i++) {
+		if (connector->encoder_ids[i] == 0)
+			break;
+
+		encoder = drm_encoder_find(connector->dev, NULL, connector->encoder_ids[i]);
+		if (!encoder)
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (encoder->encoder_type == DRM_MODE_ENCODER_VIRTUAL)
 			return encoder;
 	}
 
 	/* pick the first one */
+<<<<<<< HEAD
 	drm_connector_for_each_possible_encoder(connector, encoder, i)
 		return encoder;
 
+=======
+	if (enc_id)
+		return drm_encoder_find(connector->dev, NULL, enc_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
 
@@ -321,7 +378,11 @@ static int dce_virtual_get_modes(struct drm_connector *connector)
 	return 0;
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status dce_virtual_mode_valid(struct drm_connector *connector,
+=======
+static int dce_virtual_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct drm_display_mode *mode)
 {
 	return MODE_OK;
@@ -372,7 +433,11 @@ static int dce_virtual_sw_init(void *handle)
 	int r, i;
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
+<<<<<<< HEAD
 	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, VISLANDS30_IV_SRCID_SMU_DISP_TIMER2_TRIGGER, &adev->crtc_irq);
+=======
+	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, 229, &adev->crtc_irq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -386,9 +451,15 @@ static int dce_virtual_sw_init(void *handle)
 	adev->ddev->mode_config.preferred_depth = 24;
 	adev->ddev->mode_config.prefer_shadow = 1;
 
+<<<<<<< HEAD
 	adev->ddev->mode_config.fb_base = adev->gmc.aper_base;
 
 	r = amdgpu_display_modeset_create_props(adev);
+=======
+	adev->ddev->mode_config.fb_base = adev->mc.aper_base;
+
+	r = amdgpu_modeset_create_props(adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -454,9 +525,14 @@ static int dce_virtual_hw_init(void *handle)
 		break;
 	case CHIP_CARRIZO:
 	case CHIP_STONEY:
+<<<<<<< HEAD
 	case CHIP_POLARIS10:
 	case CHIP_POLARIS11:
 	case CHIP_VEGAM:
+=======
+	case CHIP_POLARIS11:
+	case CHIP_POLARIS10:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dce_v11_0_disable_dce(adev);
 		break;
 	case CHIP_TOPAZ:
@@ -466,8 +542,11 @@ static int dce_virtual_hw_init(void *handle)
 		/* no DCE */
 		break;
 	case CHIP_VEGA10:
+<<<<<<< HEAD
 	case CHIP_VEGA12:
 	case CHIP_VEGA20:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		DRM_ERROR("Virtual display unsupported ASIC type: 0x%X\n", adev->asic_type);
@@ -477,6 +556,7 @@ static int dce_virtual_hw_init(void *handle)
 
 static int dce_virtual_hw_fini(void *handle)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 	int i = 0;
 
@@ -484,6 +564,8 @@ static int dce_virtual_hw_fini(void *handle)
 		if (adev->mode_info.crtcs[i])
 			dce_virtual_set_crtc_vblank_interrupt_state(adev, i, AMDGPU_IRQ_STATE_DISABLE);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -628,7 +710,11 @@ static int dce_virtual_connector_encoder_init(struct amdgpu_device *adev,
 	drm_connector_register(connector);
 
 	/* link them */
+<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
+=======
+	drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -636,6 +722,10 @@ static int dce_virtual_connector_encoder_init(struct amdgpu_device *adev,
 static const struct amdgpu_display_funcs dce_virtual_display_funcs = {
 	.bandwidth_update = &dce_virtual_bandwidth_update,
 	.vblank_get_counter = &dce_virtual_vblank_get_counter,
+<<<<<<< HEAD
+=======
+	.vblank_wait = &dce_virtual_vblank_wait,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.backlight_set_level = NULL,
 	.backlight_get_level = NULL,
 	.hpd_sense = &dce_virtual_hpd_sense,

@@ -55,7 +55,11 @@
 #include <mach/tc.h>
 #include <mach/mux.h>
 #include <linux/omap-dma.h>
+<<<<<<< HEAD
 #include <clocksource/timer-ti-dm.h>
+=======
+#include <plat/dmtimer.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <mach/irqs.h>
 

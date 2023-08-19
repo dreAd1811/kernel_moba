@@ -47,6 +47,7 @@ _GLOBAL(__csum_partial)
 	bdnz	2b
 21:	srwi.	r6,r4,4		/* # blocks of 4 words to do */
 	beq	3f
+<<<<<<< HEAD
 	lwz	r0,4(r3)
 	mtctr	r6
 	lwz	r6,8(r3)
@@ -66,6 +67,18 @@ _GLOBAL(__csum_partial)
 	adde	r5,r5,r7
 	bdnz	22b
 23:	adde	r5,r5,r8
+=======
+	mtctr	r6
+22:	lwz	r0,4(r3)
+	lwz	r6,8(r3)
+	lwz	r7,12(r3)
+	lwzu	r8,16(r3)
+	adde	r5,r5,r0
+	adde	r5,r5,r6
+	adde	r5,r5,r7
+	adde	r5,r5,r8
+	bdnz	22b
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 3:	andi.	r0,r4,2
 	beq+	4f
 	lhz	r0,4(r3)
@@ -302,6 +315,7 @@ dst_error:
 	EX_TABLE(51b, dst_error);
 
 EXPORT_SYMBOL(csum_partial_copy_generic)
+<<<<<<< HEAD
 
 /*
  * __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
@@ -335,3 +349,5 @@ _GLOBAL(csum_ipv6_magic)
 	rlwinm	r3, r3, 16, 16, 31
 	blr
 EXPORT_SYMBOL(csum_ipv6_magic)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

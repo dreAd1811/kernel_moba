@@ -79,8 +79,12 @@ void __intel_fb_obj_invalidate(struct drm_i915_gem_object *obj,
 		spin_unlock(&dev_priv->fb_tracking.lock);
 	}
 
+<<<<<<< HEAD
 	might_sleep();
 	intel_psr_invalidate(dev_priv, frontbuffer_bits, origin);
+=======
+	intel_psr_invalidate(dev_priv, frontbuffer_bits);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_edp_drrs_invalidate(dev_priv, frontbuffer_bits);
 	intel_fbc_invalidate(dev_priv, frontbuffer_bits, origin);
 }
@@ -109,7 +113,10 @@ static void intel_frontbuffer_flush(struct drm_i915_private *dev_priv,
 	if (!frontbuffer_bits)
 		return;
 
+<<<<<<< HEAD
 	might_sleep();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_edp_drrs_flush(dev_priv, frontbuffer_bits);
 	intel_psr_flush(dev_priv, frontbuffer_bits, origin);
 	intel_fbc_flush(dev_priv, frontbuffer_bits, origin);
@@ -153,6 +160,11 @@ void intel_frontbuffer_flip_prepare(struct drm_i915_private *dev_priv,
 	/* Remove stale busy bits due to the old buffer. */
 	dev_priv->fb_tracking.busy_bits &= ~frontbuffer_bits;
 	spin_unlock(&dev_priv->fb_tracking.lock);
+<<<<<<< HEAD
+=======
+
+	intel_psr_single_frame_update(dev_priv, frontbuffer_bits);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

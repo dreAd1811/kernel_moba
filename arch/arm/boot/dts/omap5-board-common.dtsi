@@ -14,10 +14,13 @@
 		display0 = &hdmi0;
 	};
 
+<<<<<<< HEAD
 	chosen {
 		stdout-path = &uart3;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmain: fixedregulator-vmain {
 		compatible = "regulator-fixed";
 		regulator-name = "vmain";
@@ -73,14 +76,20 @@
 		clocks = <&auxclk1_ck>;
 		clock-names = "main_clk";
 		clock-frequency = <19200000>;
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* HS USB Host PHY on PORT 3 */
 	hsusb3_phy: hsusb3_phy {
 		compatible = "usb-nop-xceiv";
 		reset-gpios = <&gpio3 15 GPIO_ACTIVE_LOW>; /* gpio3_79 ETH_NRESET */
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	tpd12s015: encoder {
@@ -317,8 +326,12 @@
 
 	palmas_sys_nirq_pins: pinmux_palmas_sys_nirq_pins {
 		pinctrl-single,pins = <
+<<<<<<< HEAD
 			/* sys_nirq1 is pulled down as the SoC is inverting it for GIC */
 			OMAP5_IOPAD(0x068, PIN_INPUT_PULLUP | MUX_MODE0)
+=======
+			OMAP5_IOPAD(0x068, PIN_INPUT_PULLUP | MUX_MODE0) /* sys_nirq1 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		>;
 	};
 
@@ -365,7 +378,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&wlcore_irq_pin>;
 		interrupt-parent = <&gpio1>;
+<<<<<<< HEAD
 		interrupts = <14 IRQ_TYPE_EDGE_RISING>;	/* gpio 14 */
+=======
+		interrupts = <14 IRQ_TYPE_LEVEL_HIGH>;	/* gpio 14 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ref-clock-frequency = <26000000>;
 	};
 };
@@ -386,8 +403,12 @@
 
 	palmas: palmas@48 {
 		compatible = "ti,palmas";
+<<<<<<< HEAD
 		/* sys_nirq/ext_sys_irq pins get inverted at mpuss wakeupgen */
 		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_SPI 7 IRQ_TYPE_NONE>; /* IRQ_SYS_1N */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x48>;
 		interrupt-controller;
 		#interrupt-cells = <2>;
@@ -653,8 +674,12 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&twl6040_pins>;
 
+<<<<<<< HEAD
 		/* sys_nirq/ext_sys_irq pins get inverted at mpuss wakeupgen */
 		interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_SPI 119 IRQ_TYPE_NONE>; /* IRQ_SYS_2N cascaded to gic */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* audpwron gpio defined in the board specific dts */
 
@@ -662,8 +687,13 @@
 		v2v1-supply = <&smps9_reg>;
 		enable-active-high;
 
+<<<<<<< HEAD
 		clocks = <&clk32kgaudio>, <&fref_xtal_ck>;
 		clock-names = "clk32k", "mclk";
+=======
+		clocks = <&clk32kgaudio>;
+		clock-names = "clk32k";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -703,6 +733,14 @@
 	vbus-supply = <&smps10_out1_reg>;
 };
 
+<<<<<<< HEAD
+=======
+&dwc3 {
+	extcon = <&extcon_usb3>;
+	dr_mode = "otg";
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &mcspi1 {
 
 };

@@ -63,6 +63,7 @@
 #error XCHAL_KSEG_PADDR is not properly aligned to XCHAL_KSEG_ALIGNMENT
 #endif
 
+<<<<<<< HEAD
 #endif
 
 #ifndef CONFIG_KASAN
@@ -71,5 +72,14 @@
 #define KERNEL_STACK_SHIFT	15
 #endif
 #define KERNEL_STACK_SIZE	(1 << KERNEL_STACK_SHIFT)
+=======
+#else
+
+#define XCHAL_KSEG_CACHED_VADDR	__XTENSA_UL_CONST(0xd0000000)
+#define XCHAL_KSEG_BYPASS_VADDR	__XTENSA_UL_CONST(0xd8000000)
+#define XCHAL_KSEG_SIZE		__XTENSA_UL_CONST(0x08000000)
+
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

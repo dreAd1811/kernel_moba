@@ -199,6 +199,10 @@ static const struct iio_info mma7455_info = {
 	.attrs = &mma7455_group,
 	.read_raw = mma7455_read_raw,
 	.write_raw = mma7455_write_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define MMA7455_CHANNEL(axis, idx) { \

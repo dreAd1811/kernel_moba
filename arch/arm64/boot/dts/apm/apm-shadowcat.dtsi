@@ -19,7 +19,11 @@
 		#address-cells = <2>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		cpu@0 {
+=======
+		cpu@000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "apm,strega", "arm,armv8";
 			reg = <0x0 0x000>;
@@ -29,7 +33,11 @@
 			#clock-cells = <1>;
 			clocks = <&pmd0clk 0>;
 		};
+<<<<<<< HEAD
 		cpu@1 {
+=======
+		cpu@001 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "apm,strega", "arm,armv8";
 			reg = <0x0 0x001>;
@@ -125,7 +133,11 @@
 		      <0x0 0x780a0000 0x0 0x20000>,	/* GIC CPU */
 		      <0x0 0x780c0000 0x0 0x10000>,	/* GIC VCPU Control */
 		      <0x0 0x780e0000 0x0 0x20000>;	/* GIC VCPU */
+<<<<<<< HEAD
 		v2m0: v2m@0 {
+=======
+		v2m0: v2m@00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,gic-v2m-frame";
 			msi-controller;
 			reg = <0x0 0x0 0x0 0x1000>;

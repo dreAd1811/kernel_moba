@@ -107,7 +107,12 @@ static struct hidma_mgmt_fileinfo hidma_mgmt_files[] = {
 static ssize_t show_values(struct device *dev, struct device_attribute *attr,
 			   char *buf)
 {
+<<<<<<< HEAD
 	struct hidma_mgmt_dev *mdev = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct hidma_mgmt_dev *mdev = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 
 	buf[0] = 0;
@@ -124,7 +129,12 @@ static ssize_t show_values(struct device *dev, struct device_attribute *attr,
 static ssize_t set_values(struct device *dev, struct device_attribute *attr,
 			  const char *buf, size_t count)
 {
+<<<<<<< HEAD
 	struct hidma_mgmt_dev *mdev = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct hidma_mgmt_dev *mdev = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long tmp;
 	unsigned int i;
 	int rc;

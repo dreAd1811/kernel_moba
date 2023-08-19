@@ -55,7 +55,11 @@
 			 <0x20000000 0x20000000 0x30000000>,
 			 <0xe0000000 0xe0000000 0x04000000>;
 
+<<<<<<< HEAD
 		iram: sram@8000000 {
+=======
+		iram: sram@08000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mmio-sram";
 			reg = <0x08000000 0x20000>;
 
@@ -139,11 +143,19 @@
 		};
 
 		clcd: clcd@31040000 {
+<<<<<<< HEAD
 			compatible = "arm,pl110", "arm,primecell";
 			reg = <0x31040000 0x1000>;
 			interrupts = <14 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&clk LPC32XX_CLK_LCD>;
 			clock-names = "apb_pclk";
+=======
+			compatible = "arm,pl111", "arm,primecell";
+			reg = <0x31040000 0x1000>;
+			interrupts = <14 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&clk LPC32XX_CLK_LCD>, <&clk LPC32XX_CLK_LCD>;
+			clock-names = "clcdclk", "apb_pclk";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -179,7 +191,11 @@
 			 * ssp0 and spi1 are shared pins;
 			 * enable one in your board dts, as needed.
 			 */
+<<<<<<< HEAD
 			ssp0: ssp@20084000 {
+=======
+			ssp0: spi@20084000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "arm,pl022", "arm,primecell";
 				reg = <0x20084000 0x1000>;
 				interrupts = <20 IRQ_TYPE_LEVEL_HIGH>;
@@ -199,7 +215,11 @@
 			 * ssp1 and spi2 are shared pins;
 			 * enable one in your board dts, as needed.
 			 */
+<<<<<<< HEAD
 			ssp1: ssp@2008c000 {
+=======
+			ssp1: spi@2008c000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "arm,pl022", "arm,primecell";
 				reg = <0x2008c000 0x1000>;
 				interrupts = <21 IRQ_TYPE_LEVEL_HIGH>;
@@ -462,7 +482,13 @@
 			key: key@40050000 {
 				compatible = "nxp,lpc3220-key";
 				reg = <0x40050000 0x1000>;
+<<<<<<< HEAD
 				interrupts = <54 IRQ_TYPE_LEVEL_HIGH>;
+=======
+				clocks = <&clk LPC32XX_CLK_KEY>;
+				interrupt-parent = <&sic1>;
+				interrupts = <22 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				status = "disabled";
 			};
 

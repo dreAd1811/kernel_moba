@@ -11,11 +11,14 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
+<<<<<<< HEAD
  *
  * TODO:
  *  - Rework topology
  *  - s/chip_id/chip_loc
  *  - s/cfam/chip (cfam_id -> chip_id etc...)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/crc4.h>
@@ -23,12 +26,17 @@
 #include <linux/fsi.h>
 #include <linux/idr.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/of.h>
 #include <linux/slab.h>
 #include <linux/bitops.h>
 #include <linux/cdev.h>
 #include <linux/fs.h>
 #include <linux/uaccess.h>
+=======
+#include <linux/slab.h>
+#include <linux/bitops.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "fsi-master.h"
 
@@ -86,6 +94,7 @@ static DEFINE_IDA(master_ida);
 struct fsi_slave {
 	struct device		dev;
 	struct fsi_master	*master;
+<<<<<<< HEAD
 	struct cdev		cdev;
 	int			cdev_idx;
 	int			id;	/* FSI address */
@@ -95,6 +104,11 @@ struct fsi_slave {
 	uint32_t		size;	/* size of slave address space */
 	u8			t_send_delay;
 	u8			t_echo_delay;
+=======
+	int			id;
+	int			link;
+	uint32_t		size;	/* size of slave address space */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define to_fsi_master(d) container_of(d, struct fsi_master, dev)
@@ -103,6 +117,7 @@ struct fsi_slave {
 static const int slave_retries = 2;
 static int discard_errors;
 
+<<<<<<< HEAD
 static dev_t fsi_base_dev;
 static DEFINE_IDA(fsi_minor_ida);
 #define FSI_CHAR_MAX_DEVICES	0x1000
@@ -110,6 +125,8 @@ static DEFINE_IDA(fsi_minor_ida);
 /* Legacy /dev numbering: 4 devices per chip, 16 chips */
 #define FSI_CHAR_LEGACY_TOP	64
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fsi_master_read(struct fsi_master *master, int link,
 		uint8_t slave_id, uint32_t addr, void *val, size_t size);
 static int fsi_master_write(struct fsi_master *master, int link,
@@ -164,7 +181,10 @@ static void fsi_device_release(struct device *_device)
 {
 	struct fsi_device *device = to_fsi_dev(_device);
 
+<<<<<<< HEAD
 	of_node_put(device->dev.of_node);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(device);
 }
 
@@ -208,10 +228,17 @@ static int fsi_slave_calc_addr(struct fsi_slave *slave, uint32_t *addrp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int fsi_slave_report_and_clear_errors(struct fsi_slave *slave)
 {
 	struct fsi_master *master = slave->master;
 	__be32 irq, stat;
+=======
+int fsi_slave_report_and_clear_errors(struct fsi_slave *slave)
+{
+	struct fsi_master *master = slave->master;
+	uint32_t irq, stat;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc, link;
 	uint8_t id;
 
@@ -228,7 +255,11 @@ static int fsi_slave_report_and_clear_errors(struct fsi_slave *slave)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	dev_dbg(&slave->dev, "status: 0x%08x, sisc: 0x%08x\n",
+=======
+	dev_info(&slave->dev, "status: 0x%08x, sisc: 0x%08x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			be32_to_cpu(stat), be32_to_cpu(irq));
 
 	/* clear interrupts */
@@ -236,6 +267,7 @@ static int fsi_slave_report_and_clear_errors(struct fsi_slave *slave)
 			&irq, sizeof(irq));
 }
 
+<<<<<<< HEAD
 /* Encode slave local bus echo delay */
 static inline uint32_t fsi_smode_echodly(int x)
 {
@@ -286,11 +318,21 @@ static int fsi_slave_set_smode(struct fsi_slave *slave)
 
 static int fsi_slave_handle_error(struct fsi_slave *slave, bool write,
 				  uint32_t addr, size_t size)
+=======
+static int fsi_slave_set_smode(struct fsi_master *master, int link, int id);
+
+int fsi_slave_handle_error(struct fsi_slave *slave, bool write, uint32_t addr,
+		size_t size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct fsi_master *master = slave->master;
 	int rc, link;
 	uint32_t reg;
+<<<<<<< HEAD
 	uint8_t id, send_delay, echo_delay;
+=======
+	uint8_t id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (discard_errors)
 		return -1;
@@ -321,14 +363,18 @@ static int fsi_slave_handle_error(struct fsi_slave *slave, bool write,
 		}
 	}
 
+<<<<<<< HEAD
 	send_delay = slave->t_send_delay;
 	echo_delay = slave->t_echo_delay;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* getting serious, reset the slave via BREAK */
 	rc = fsi_master_break(master, link);
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	slave->t_send_delay = send_delay;
 	slave->t_echo_delay = echo_delay;
 
@@ -341,6 +387,12 @@ static int fsi_slave_handle_error(struct fsi_slave *slave, bool write,
 				    slave->t_send_delay,
 				    slave->t_echo_delay);
 
+=======
+	rc = fsi_slave_set_smode(master, link, id);
+	if (rc)
+		return rc;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return fsi_slave_report_and_clear_errors(slave);
 }
 
@@ -414,6 +466,7 @@ extern void fsi_slave_release_range(struct fsi_slave *slave,
 }
 EXPORT_SYMBOL_GPL(fsi_slave_release_range);
 
+<<<<<<< HEAD
 static bool fsi_device_node_matches(struct device *dev, struct device_node *np,
 		uint32_t addr, uint32_t size)
 {
@@ -468,6 +521,12 @@ static struct device_node *fsi_device_find_of_node(struct fsi_device *dev)
 static int fsi_slave_scan(struct fsi_slave *slave)
 {
 	uint32_t engine_addr;
+=======
+static int fsi_slave_scan(struct fsi_slave *slave)
+{
+	uint32_t engine_addr;
+	uint32_t conf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc, i;
 
 	/*
@@ -481,17 +540,27 @@ static int fsi_slave_scan(struct fsi_slave *slave)
 	for (i = 2; i < engine_page_size / sizeof(uint32_t); i++) {
 		uint8_t slots, version, type, crc;
 		struct fsi_device *dev;
+<<<<<<< HEAD
 		uint32_t conf;
 		__be32 data;
 
 		rc = fsi_slave_read(slave, (i + 1) * sizeof(data),
 				&data, sizeof(data));
+=======
+
+		rc = fsi_slave_read(slave, (i + 1) * sizeof(conf),
+				&conf, sizeof(conf));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rc) {
 			dev_warn(&slave->dev,
 				"error reading slave registers\n");
 			return -1;
 		}
+<<<<<<< HEAD
 		conf = be32_to_cpu(data);
+=======
+		conf = be32_to_cpu(conf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		crc = crc4(0, conf, 32);
 		if (crc) {
@@ -534,7 +603,10 @@ static int fsi_slave_scan(struct fsi_slave *slave)
 			dev_set_name(&dev->dev, "%02x:%02x:%02x:%02x",
 					slave->master->idx, slave->link,
 					slave->id, i - 2);
+<<<<<<< HEAD
 			dev->dev.of_node = fsi_device_find_of_node(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			rc = device_register(&dev->dev);
 			if (rc) {
@@ -552,6 +624,34 @@ static int fsi_slave_scan(struct fsi_slave *slave)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static unsigned long aligned_access_size(size_t offset, size_t count)
+{
+	unsigned long offset_unit, count_unit;
+
+	/* Criteria:
+	 *
+	 * 1. Access size must be less than or equal to the maximum access
+	 *    width or the highest power-of-two factor of offset
+	 * 2. Access size must be less than or equal to the amount specified by
+	 *    count
+	 *
+	 * The access width is optimal if we can calculate 1 to be strictly
+	 * equal while still satisfying 2.
+	 */
+
+	/* Find 1 by the bottom bit of offset (with a 4 byte access cap) */
+	offset_unit = BIT(__builtin_ctzl(offset | 4));
+
+	/* Find 2 by the top bit of count */
+	count_unit = BIT(8 * sizeof(unsigned long) - 1 - __builtin_clzl(count));
+
+	/* Constrain the maximum access width to the minimum of both criteria */
+	return BIT(__builtin_ctzl(offset_unit | count_unit));
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t fsi_slave_sysfs_raw_read(struct file *file,
 		struct kobject *kobj, struct bin_attribute *attr, char *buf,
 		loff_t off, size_t count)
@@ -567,8 +667,12 @@ static ssize_t fsi_slave_sysfs_raw_read(struct file *file,
 		return -EINVAL;
 
 	for (total_len = 0; total_len < count; total_len += read_len) {
+<<<<<<< HEAD
 		read_len = min_t(size_t, count, 4);
 		read_len -= off & 0x3;
+=======
+		read_len = aligned_access_size(off, count - total_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rc = fsi_slave_read(slave, off, buf + total_len, read_len);
 		if (rc)
@@ -595,8 +699,12 @@ static ssize_t fsi_slave_sysfs_raw_write(struct file *file,
 		return -EINVAL;
 
 	for (total_len = 0; total_len < count; total_len += write_len) {
+<<<<<<< HEAD
 		write_len = min_t(size_t, count, 4);
 		write_len -= off & 0x3;
+=======
+		write_len = aligned_access_size(off, count - total_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rc = fsi_slave_write(slave, off, buf + total_len, write_len);
 		if (rc)
@@ -618,6 +726,7 @@ static const struct bin_attribute fsi_slave_raw_attr = {
 	.write = fsi_slave_sysfs_raw_write,
 };
 
+<<<<<<< HEAD
 static void fsi_slave_release(struct device *dev)
 {
 	struct fsi_slave *slave = to_fsi_slave(dev);
@@ -780,6 +889,13 @@ static ssize_t send_term_store(struct device *dev,
 			       const char *buf, size_t count)
 {
 	struct fsi_slave *slave = to_fsi_slave(dev);
+=======
+static ssize_t fsi_slave_sysfs_term_write(struct file *file,
+		struct kobject *kobj, struct bin_attribute *attr,
+		char *buf, loff_t off, size_t count)
+{
+	struct fsi_slave *slave = to_fsi_slave(kobj_to_dev(kobj));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct fsi_master *master = slave->master;
 
 	if (!master->term)
@@ -789,6 +905,7 @@ static ssize_t send_term_store(struct device *dev,
 	return count;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(send_term);
 
 static ssize_t slave_send_echo_show(struct device *dev,
@@ -967,6 +1084,75 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
 	struct fsi_slave *slave;
 	uint8_t crc;
 	__be32 data, llmode;
+=======
+static const struct bin_attribute fsi_slave_term_attr = {
+	.attr = {
+		.name = "term",
+		.mode = 0200,
+	},
+	.size = 0,
+	.write = fsi_slave_sysfs_term_write,
+};
+
+/* Encode slave local bus echo delay */
+static inline uint32_t fsi_smode_echodly(int x)
+{
+	return (x & FSI_SMODE_ED_MASK) << FSI_SMODE_ED_SHIFT;
+}
+
+/* Encode slave local bus send delay */
+static inline uint32_t fsi_smode_senddly(int x)
+{
+	return (x & FSI_SMODE_SD_MASK) << FSI_SMODE_SD_SHIFT;
+}
+
+/* Encode slave local bus clock rate ratio */
+static inline uint32_t fsi_smode_lbcrr(int x)
+{
+	return (x & FSI_SMODE_LBCRR_MASK) << FSI_SMODE_LBCRR_SHIFT;
+}
+
+/* Encode slave ID */
+static inline uint32_t fsi_smode_sid(int x)
+{
+	return (x & FSI_SMODE_SID_MASK) << FSI_SMODE_SID_SHIFT;
+}
+
+static uint32_t fsi_slave_smode(int id)
+{
+	return FSI_SMODE_WSC | FSI_SMODE_ECRC
+		| fsi_smode_sid(id)
+		| fsi_smode_echodly(0xf) | fsi_smode_senddly(0xf)
+		| fsi_smode_lbcrr(0x8);
+}
+
+static int fsi_slave_set_smode(struct fsi_master *master, int link, int id)
+{
+	uint32_t smode;
+
+	/* set our smode register with the slave ID field to 0; this enables
+	 * extended slave addressing
+	 */
+	smode = fsi_slave_smode(id);
+	smode = cpu_to_be32(smode);
+
+	return fsi_master_write(master, link, id, FSI_SLAVE_BASE + FSI_SMODE,
+			&smode, sizeof(smode));
+}
+
+static void fsi_slave_release(struct device *dev)
+{
+	struct fsi_slave *slave = to_fsi_slave(dev);
+
+	kfree(slave);
+}
+
+static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
+{
+	uint32_t chip_id, llmode;
+	struct fsi_slave *slave;
+	uint8_t crc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	/* Currently, we only support single slaves on a link, and use the
@@ -975,23 +1161,48 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
 	if (id != 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	rc = fsi_master_read(master, link, id, 0, &data, sizeof(data));
+=======
+	rc = fsi_master_read(master, link, id, 0, &chip_id, sizeof(chip_id));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		dev_dbg(&master->dev, "can't read slave %02x:%02x %d\n",
 				link, id, rc);
 		return -ENODEV;
 	}
+<<<<<<< HEAD
 	cfam_id = be32_to_cpu(data);
 
 	crc = crc4(0, cfam_id, 32);
 	if (crc) {
 		dev_warn(&master->dev, "slave %02x:%02x invalid cfam id CRC!\n",
+=======
+	chip_id = be32_to_cpu(chip_id);
+
+	crc = crc4(0, chip_id, 32);
+	if (crc) {
+		dev_warn(&master->dev, "slave %02x:%02x invalid chip id CRC!\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				link, id);
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(&master->dev, "fsi: found chip %08x at %02x:%02x:%02x\n",
 			cfam_id, master->idx, link, id);
+=======
+	dev_info(&master->dev, "fsi: found chip %08x at %02x:%02x:%02x\n",
+			chip_id, master->idx, link, id);
+
+	rc = fsi_slave_set_smode(master, link, id);
+	if (rc) {
+		dev_warn(&master->dev,
+				"can't set smode on slave:%02x:%02x %d\n",
+				link, id, rc);
+		return -ENODEV;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If we're behind a master that doesn't provide a self-running bus
 	 * clock, put the slave into async mode
@@ -1014,6 +1225,7 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
 	if (!slave)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	dev_set_name(&slave->dev, "slave@%02x:%02x", link, id);
 	slave->dev.type = &cfam_type;
 	slave->dev.parent = &master->dev;
@@ -1065,10 +1277,34 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
 				    slave->t_echo_delay);
 
 	/* Legacy raw file -> to be removed */
+=======
+	slave->master = master;
+	slave->dev.parent = &master->dev;
+	slave->dev.release = fsi_slave_release;
+	slave->link = link;
+	slave->id = id;
+	slave->size = FSI_SLAVE_SIZE_23b;
+
+	dev_set_name(&slave->dev, "slave@%02x:%02x", link, id);
+	rc = device_register(&slave->dev);
+	if (rc < 0) {
+		dev_warn(&master->dev, "failed to create slave device: %d\n",
+				rc);
+		put_device(&slave->dev);
+		return rc;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = device_create_bin_file(&slave->dev, &fsi_slave_raw_attr);
 	if (rc)
 		dev_warn(&slave->dev, "failed to create raw attr: %d\n", rc);
 
+<<<<<<< HEAD
+=======
+	rc = device_create_bin_file(&slave->dev, &fsi_slave_term_attr);
+	if (rc)
+		dev_warn(&slave->dev, "failed to create term attr: %d\n", rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = fsi_slave_scan(slave);
 	if (rc)
@@ -1076,15 +1312,19 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
 				rc);
 
 	return rc;
+<<<<<<< HEAD
 
  err_free:
 	put_device(&slave->dev);
 	return rc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* FSI master support */
 static int fsi_check_access(uint32_t addr, size_t size)
 {
+<<<<<<< HEAD
 	if (size == 4) {
 		if (addr & 0x3)
 			return -EINVAL;
@@ -1092,6 +1332,12 @@ static int fsi_check_access(uint32_t addr, size_t size)
 		if (addr & 0x1)
 			return -EINVAL;
 	} else if (size != 1)
+=======
+	if (size != 1 && size != 2 && size != 4)
+		return -EINVAL;
+
+	if ((addr & 0x3) != (size & 0x3))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	return 0;
@@ -1144,6 +1390,7 @@ static int fsi_master_link_enable(struct fsi_master *master, int link)
  */
 static int fsi_master_break(struct fsi_master *master, int link)
 {
+<<<<<<< HEAD
 	int rc = 0;
 
 	trace_fsi_master_break(master, link);
@@ -1154,6 +1401,14 @@ static int fsi_master_break(struct fsi_master *master, int link)
 		master->link_config(master, link, 16, 16);
 
 	return rc;
+=======
+	trace_fsi_master_break(master, link);
+
+	if (master->send_break)
+		return master->send_break(master, link);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int fsi_master_scan(struct fsi_master *master)
@@ -1188,11 +1443,16 @@ static int fsi_slave_remove_device(struct device *dev, void *arg)
 
 static int fsi_master_remove_slave(struct device *dev, void *arg)
 {
+<<<<<<< HEAD
 	struct fsi_slave *slave = to_fsi_slave(dev);
 
 	device_for_each_child(dev, NULL, fsi_slave_remove_device);
 	cdev_device_del(&slave->cdev, &slave->dev);
 	put_device(dev);
+=======
+	device_for_each_child(dev, NULL, fsi_slave_remove_device);
+	device_unregister(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1201,6 +1461,7 @@ static void fsi_master_unscan(struct fsi_master *master)
 	device_for_each_child(&master->dev, NULL, fsi_master_remove_slave);
 }
 
+<<<<<<< HEAD
 int fsi_master_rescan(struct fsi_master *master)
 {
 	int rc;
@@ -1214,13 +1475,20 @@ int fsi_master_rescan(struct fsi_master *master)
 }
 EXPORT_SYMBOL_GPL(fsi_master_rescan);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t master_rescan_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count)
 {
 	struct fsi_master *master = to_fsi_master(dev);
 	int rc;
 
+<<<<<<< HEAD
 	rc = fsi_master_rescan(master);
+=======
+	fsi_master_unscan(master);
+	rc = fsi_master_scan(master);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc < 0)
 		return rc;
 
@@ -1244,9 +1512,16 @@ static DEVICE_ATTR(break, 0200, NULL, master_break_store);
 int fsi_master_register(struct fsi_master *master)
 {
 	int rc;
+<<<<<<< HEAD
 	struct device_node *np;
 
 	mutex_init(&master->scan_lock);
+=======
+
+	if (!master)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	master->idx = ida_simple_get(&master_ida, 0, INT_MAX, GFP_KERNEL);
 	dev_set_name(&master->dev, "fsi%d", master->idx);
 
@@ -1258,24 +1533,36 @@ int fsi_master_register(struct fsi_master *master)
 
 	rc = device_create_file(&master->dev, &dev_attr_rescan);
 	if (rc) {
+<<<<<<< HEAD
 		device_del(&master->dev);
+=======
+		device_unregister(&master->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ida_simple_remove(&master_ida, master->idx);
 		return rc;
 	}
 
 	rc = device_create_file(&master->dev, &dev_attr_break);
 	if (rc) {
+<<<<<<< HEAD
 		device_del(&master->dev);
+=======
+		device_unregister(&master->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ida_simple_remove(&master_ida, master->idx);
 		return rc;
 	}
 
+<<<<<<< HEAD
 	np = dev_of_node(&master->dev);
 	if (!of_property_read_bool(np, "no-scan-on-init")) {
 		mutex_lock(&master->scan_lock);
 		fsi_master_scan(master);
 		mutex_unlock(&master->scan_lock);
 	}
+=======
+	fsi_master_scan(master);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1288,9 +1575,13 @@ void fsi_master_unregister(struct fsi_master *master)
 		master->idx = -1;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&master->scan_lock);
 	fsi_master_unscan(master);
 	mutex_unlock(&master->scan_lock);
+=======
+	fsi_master_unscan(master);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_unregister(&master->dev);
 }
 EXPORT_SYMBOL_GPL(fsi_master_unregister);
@@ -1342,6 +1633,7 @@ EXPORT_SYMBOL_GPL(fsi_bus_type);
 
 static int __init fsi_init(void)
 {
+<<<<<<< HEAD
 	int rc;
 
 	rc = alloc_chrdev_region(&fsi_base_dev, 0, FSI_CHAR_MAX_DEVICES, "fsi");
@@ -1355,14 +1647,20 @@ static int __init fsi_init(void)
  fail_bus:
 	unregister_chrdev_region(fsi_base_dev, FSI_CHAR_MAX_DEVICES);
 	return rc;
+=======
+	return bus_register(&fsi_bus_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 postcore_initcall(fsi_init);
 
 static void fsi_exit(void)
 {
 	bus_unregister(&fsi_bus_type);
+<<<<<<< HEAD
 	unregister_chrdev_region(fsi_base_dev, FSI_CHAR_MAX_DEVICES);
 	ida_destroy(&fsi_minor_ida);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 module_exit(fsi_exit);
 module_param(discard_errors, int, 0664);

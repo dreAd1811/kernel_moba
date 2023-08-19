@@ -23,7 +23,11 @@ static bool moving_pred(struct keybuf *buf, struct bkey *k)
 {
 	struct cache_set *c = container_of(buf, struct cache_set,
 					   moving_gc_keys);
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < KEY_PTRS(k); i++)
 		if (ptr_available(c, k, i) &&
@@ -38,7 +42,10 @@ static bool moving_pred(struct keybuf *buf, struct bkey *k)
 static void moving_io_destructor(struct closure *cl)
 {
 	struct moving_io *io = container_of(cl, struct moving_io, cl);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(io);
 }
 
@@ -163,7 +170,11 @@ static void read_moving(struct cache_set *c)
 		bio_set_op_attrs(bio, REQ_OP_READ, 0);
 		bio->bi_end_io	= read_moving_endio;
 
+<<<<<<< HEAD
 		if (bch_bio_alloc_pages(bio, GFP_KERNEL))
+=======
+		if (bio_alloc_pages(bio, GFP_KERNEL))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err;
 
 		trace_bcache_gc_copy(&w->key);
@@ -187,10 +198,16 @@ static bool bucket_cmp(struct bucket *l, struct bucket *r)
 	return GC_SECTORS_USED(l) < GC_SECTORS_USED(r);
 }
 
+<<<<<<< HEAD
 static unsigned int bucket_heap_top(struct cache *ca)
 {
 	struct bucket *b;
 
+=======
+static unsigned bucket_heap_top(struct cache *ca)
+{
+	struct bucket *b;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (b = heap_peek(&ca->heap)) ? GC_SECTORS_USED(b) : 0;
 }
 
@@ -198,7 +215,11 @@ void bch_moving_gc(struct cache_set *c)
 {
 	struct cache *ca;
 	struct bucket *b;
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!c->copy_gc_enabled)
 		return;
@@ -206,9 +227,15 @@ void bch_moving_gc(struct cache_set *c)
 	mutex_lock(&c->bucket_lock);
 
 	for_each_cache(ca, c, i) {
+<<<<<<< HEAD
 		unsigned int sectors_to_move = 0;
 		unsigned int reserve_sectors = ca->sb.bucket_size *
 			     fifo_used(&ca->free[RESERVE_MOVINGGC]);
+=======
+		unsigned sectors_to_move = 0;
+		unsigned reserve_sectors = ca->sb.bucket_size *
+			fifo_used(&ca->free[RESERVE_MOVINGGC]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ca->heap.used = 0;
 

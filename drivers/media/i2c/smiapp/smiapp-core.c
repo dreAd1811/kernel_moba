@@ -1238,10 +1238,13 @@ static int smiapp_power_on(struct device *dev)
 	sleep = SMIAPP_RESET_DELAY(sensor->hwcfg->ext_clk);
 	usleep_range(sleep, sleep);
 
+<<<<<<< HEAD
 	mutex_lock(&sensor->mutex);
 
 	sensor->active = true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Failures to respond to the address change command have been noticed.
 	 * Those failures seem to be caused by the sensor requiring a longer
@@ -1316,7 +1319,11 @@ static int smiapp_power_on(struct device *dev)
 	rval = smiapp_write(sensor, SMIAPP_REG_U8_DPHY_CTRL,
 			    SMIAPP_DPHY_CTRL_UI);
 	if (rval < 0)
+<<<<<<< HEAD
 		goto out_cci_addr_fail;
+=======
+		return rval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rval = smiapp_call_quirk(sensor, post_poweron);
 	if (rval) {
@@ -1324,6 +1331,7 @@ static int smiapp_power_on(struct device *dev)
 		goto out_cci_addr_fail;
 	}
 
+<<<<<<< HEAD
 	/* Are we still initialising...? If not, proceed with control setup. */
 	if (sensor->pixel_array) {
 		rval = __v4l2_ctrl_handler_setup(
@@ -1341,11 +1349,34 @@ static int smiapp_power_on(struct device *dev)
 	}
 
 	mutex_unlock(&sensor->mutex);
+=======
+	/* Are we still initialising...? If yes, return here. */
+	if (!sensor->pixel_array)
+		return 0;
+
+	rval = v4l2_ctrl_handler_setup(&sensor->pixel_array->ctrl_handler);
+	if (rval)
+		goto out_cci_addr_fail;
+
+	rval = v4l2_ctrl_handler_setup(&sensor->src->ctrl_handler);
+	if (rval)
+		goto out_cci_addr_fail;
+
+	mutex_lock(&sensor->mutex);
+	rval = smiapp_update_mode(sensor);
+	mutex_unlock(&sensor->mutex);
+	if (rval < 0)
+		goto out_cci_addr_fail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
 out_cci_addr_fail:
+<<<<<<< HEAD
 	mutex_unlock(&sensor->mutex);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpiod_set_value(sensor->xshutdown, 0);
 	clk_disable_unprepare(sensor->ext_clk);
 
@@ -1363,8 +1394,11 @@ static int smiapp_power_off(struct device *dev)
 	struct smiapp_sensor *sensor =
 		container_of(ssd, struct smiapp_sensor, ssds[0]);
 
+<<<<<<< HEAD
 	mutex_lock(&sensor->mutex);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Currently power/clock to lens are enable/disabled separately
 	 * but they are essentially the same signals. So if the sensor is
@@ -1377,10 +1411,13 @@ static int smiapp_power_off(struct device *dev)
 			     SMIAPP_REG_U8_SOFTWARE_RESET,
 			     SMIAPP_SOFTWARE_RESET);
 
+<<<<<<< HEAD
 	sensor->active = false;
 
 	mutex_unlock(&sensor->mutex);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpiod_set_value(sensor->xshutdown, 0);
 	clk_disable_unprepare(sensor->ext_clk);
 	usleep_range(5000, 5000);
@@ -1390,6 +1427,32 @@ static int smiapp_power_off(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int smiapp_set_power(struct v4l2_subdev *subdev, int on)
+{
+	int rval;
+
+	if (!on) {
+		pm_runtime_mark_last_busy(subdev->dev);
+		pm_runtime_put_autosuspend(subdev->dev);
+
+		return 0;
+	}
+
+	rval = pm_runtime_get_sync(subdev->dev);
+	if (rval >= 0)
+		return 0;
+
+	if (rval != -EBUSY && rval != -EAGAIN)
+		pm_runtime_set_active(subdev->dev);
+
+	pm_runtime_put(subdev->dev);
+
+	return rval;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Video stream management
  */
@@ -1546,13 +1609,17 @@ out:
 static int smiapp_set_stream(struct v4l2_subdev *subdev, int enable)
 {
 	struct smiapp_sensor *sensor = to_smiapp_sensor(subdev);
+<<<<<<< HEAD
 	struct i2c_client *client = v4l2_get_subdevdata(&sensor->src->sd);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rval;
 
 	if (sensor->streaming == enable)
 		return 0;
 
 	if (enable) {
+<<<<<<< HEAD
 		rval = pm_runtime_get_sync(&client->dev);
 		if (rval < 0) {
 			if (rval != -EBUSY && rval != -EAGAIN)
@@ -1563,14 +1630,20 @@ static int smiapp_set_stream(struct v4l2_subdev *subdev, int enable)
 
 		sensor->streaming = true;
 
+=======
+		sensor->streaming = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rval = smiapp_start_streaming(sensor);
 		if (rval < 0)
 			sensor->streaming = false;
 	} else {
 		rval = smiapp_stop_streaming(sensor);
 		sensor->streaming = false;
+<<<<<<< HEAD
 		pm_runtime_mark_last_busy(&client->dev);
 		pm_runtime_put_autosuspend(&client->dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return rval;
@@ -1790,7 +1863,11 @@ static int smiapp_set_format_source(struct v4l2_subdev *subdev,
 	if (csi_format->compressed == old_csi_format->compressed)
 		return 0;
 
+<<<<<<< HEAD
 	valid_link_freqs =
+=======
+	valid_link_freqs = 
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		&sensor->valid_link_freqs[sensor->csi_format->compressed
 					  - sensor->compressed_min_bpp];
 
@@ -1892,7 +1969,11 @@ static int scaling_goodness(struct v4l2_subdev *subdev, int w, int ask_w,
 		val -= SCALING_GOODNESS_EXTREME;
 
 	dev_dbg(&client->dev, "w %d ask_w %d h %d ask_h %d goodness %d\n",
+<<<<<<< HEAD
 		w, ask_w, h, ask_h, val);
+=======
+		w, ask_h, h, ask_h, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return val;
 }
@@ -2648,6 +2729,10 @@ static int smiapp_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
 	struct smiapp_subdev *ssd = to_smiapp_subdev(sd);
 	struct smiapp_sensor *sensor = ssd->sensor;
 	unsigned int i;
+<<<<<<< HEAD
+=======
+	int rval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&sensor->mutex);
 
@@ -2674,6 +2759,25 @@ static int smiapp_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
 
 	mutex_unlock(&sensor->mutex);
 
+<<<<<<< HEAD
+=======
+	rval = pm_runtime_get_sync(sd->dev);
+	if (rval >= 0)
+		return 0;
+
+	if (rval != -EBUSY && rval != -EAGAIN)
+		pm_runtime_set_active(sd->dev);
+	pm_runtime_put(sd->dev);
+
+	return rval;
+}
+
+static int smiapp_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+{
+	pm_runtime_mark_last_busy(sd->dev);
+	pm_runtime_put_autosuspend(sd->dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2681,6 +2785,13 @@ static const struct v4l2_subdev_video_ops smiapp_video_ops = {
 	.s_stream = smiapp_set_stream,
 };
 
+<<<<<<< HEAD
+=======
+static const struct v4l2_subdev_core_ops smiapp_core_ops = {
+	.s_power = smiapp_set_power,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct v4l2_subdev_pad_ops smiapp_pad_ops = {
 	.enum_mbus_code = smiapp_enum_mbus_code,
 	.get_fmt = smiapp_get_format,
@@ -2695,6 +2806,10 @@ static const struct v4l2_subdev_sensor_ops smiapp_sensor_ops = {
 };
 
 static const struct v4l2_subdev_ops smiapp_ops = {
+<<<<<<< HEAD
+=======
+	.core = &smiapp_core_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.video = &smiapp_video_ops,
 	.pad = &smiapp_pad_ops,
 	.sensor = &smiapp_sensor_ops,
@@ -2708,10 +2823,18 @@ static const struct v4l2_subdev_internal_ops smiapp_internal_src_ops = {
 	.registered = smiapp_registered,
 	.unregistered = smiapp_unregistered,
 	.open = smiapp_open,
+<<<<<<< HEAD
+=======
+	.close = smiapp_close,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct v4l2_subdev_internal_ops smiapp_internal_ops = {
 	.open = smiapp_open,
+<<<<<<< HEAD
+=======
+	.close = smiapp_close,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* -----------------------------------------------------------------------------
@@ -2764,7 +2887,10 @@ static struct smiapp_hwconfig *smiapp_get_hwconfig(struct device *dev)
 	struct v4l2_fwnode_endpoint *bus_cfg;
 	struct fwnode_handle *ep;
 	struct fwnode_handle *fwnode = dev_fwnode(dev);
+<<<<<<< HEAD
 	u32 rotation;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	int rval;
 
@@ -2801,6 +2927,7 @@ static struct smiapp_hwconfig *smiapp_get_hwconfig(struct device *dev)
 
 	dev_dbg(dev, "lanes %u\n", hwcfg->lanes);
 
+<<<<<<< HEAD
 	rval = fwnode_property_read_u32(fwnode, "rotation", &rotation);
 	if (!rval) {
 		switch (rotation) {
@@ -2823,6 +2950,17 @@ static struct smiapp_hwconfig *smiapp_get_hwconfig(struct device *dev)
 					&hwcfg->ext_clk);
 	if (rval)
 		dev_info(dev, "can't get clock-frequency\n");
+=======
+	/* NVM size is not mandatory */
+	fwnode_property_read_u32(fwnode, "nokia,nvm-size", &hwcfg->nvm_size);
+
+	rval = fwnode_property_read_u32(fwnode, "clock-frequency",
+					&hwcfg->ext_clk);
+	if (rval) {
+		dev_warn(dev, "can't get clock-frequency\n");
+		goto out_err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(dev, "nvm %d, clk %d, mode %d\n",
 		hwcfg->nvm_size, hwcfg->ext_clk, hwcfg->csi_signalling_mode);
@@ -2882,15 +3020,20 @@ static int smiapp_probe(struct i2c_client *client,
 	}
 
 	sensor->ext_clk = devm_clk_get(&client->dev, NULL);
+<<<<<<< HEAD
 	if (PTR_ERR(sensor->ext_clk) == -ENOENT) {
 		dev_info(&client->dev, "no clock defined, continuing...\n");
 		sensor->ext_clk = NULL;
 	} else if (IS_ERR(sensor->ext_clk)) {
+=======
+	if (IS_ERR(sensor->ext_clk)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&client->dev, "could not get clock (%ld)\n",
 			PTR_ERR(sensor->ext_clk));
 		return -EPROBE_DEFER;
 	}
 
+<<<<<<< HEAD
 	if (sensor->ext_clk) {
 		if (sensor->hwcfg->ext_clk) {
 			unsigned long rate;
@@ -2922,6 +3065,14 @@ static int smiapp_probe(struct i2c_client *client,
 	} else {
 		dev_err(&client->dev, "unable to obtain clock freq\n");
 		return -EINVAL;
+=======
+	rval = clk_set_rate(sensor->ext_clk, sensor->hwcfg->ext_clk);
+	if (rval < 0) {
+		dev_err(&client->dev,
+			"unable to set clock freq to %u\n",
+			sensor->hwcfg->ext_clk);
+		return rval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sensor->xshutdown = devm_gpiod_get_optional(&client->dev, "xshutdown",
@@ -3108,7 +3259,11 @@ static int smiapp_probe(struct i2c_client *client,
 	if (rval < 0)
 		goto out_media_entity_cleanup;
 
+<<<<<<< HEAD
 	rval = v4l2_async_register_subdev_sensor_common(&sensor->src->sd);
+=======
+	rval = v4l2_async_register_subdev(&sensor->src->sd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rval < 0)
 		goto out_media_entity_cleanup;
 
@@ -3187,4 +3342,8 @@ module_i2c_driver(smiapp_i2c_driver);
 
 MODULE_AUTHOR("Sakari Ailus <sakari.ailus@iki.fi>");
 MODULE_DESCRIPTION("Generic SMIA/SMIA++ camera module driver");
+<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
+=======
+MODULE_LICENSE("GPL");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

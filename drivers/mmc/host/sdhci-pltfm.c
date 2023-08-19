@@ -165,7 +165,10 @@ struct sdhci_host *sdhci_pltfm_init(struct platform_device *pdev,
 	if (!IS_ERR(extcon))
 		host->mmc->extcon = extcon;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, host);
 
 	return host;

@@ -16,7 +16,10 @@ config CYPRESS_FIRMWARE
 	tristate "Cypress firmware helper routines"
 	depends on USB
 
+<<<<<<< HEAD
 source "drivers/media/common/videobuf2/Kconfig"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/media/common/b2c2/Kconfig"
 source "drivers/media/common/saa7146/Kconfig"
 source "drivers/media/common/siano/Kconfig"

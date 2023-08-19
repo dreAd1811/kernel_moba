@@ -40,7 +40,14 @@
 
 static int mlx5i_open(struct net_device *netdev);
 static int mlx5i_close(struct net_device *netdev);
+<<<<<<< HEAD
 static int mlx5i_change_mtu(struct net_device *netdev, int new_mtu);
+=======
+static int  mlx5i_dev_init(struct net_device *dev);
+static void mlx5i_dev_cleanup(struct net_device *dev);
+static int mlx5i_change_mtu(struct net_device *netdev, int new_mtu);
+static int mlx5i_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct net_device_ops mlx5i_netdev_ops = {
 	.ndo_open                = mlx5i_open,
@@ -56,16 +63,24 @@ static void mlx5i_build_nic_params(struct mlx5_core_dev *mdev,
 				   struct mlx5e_params *params)
 {
 	/* Override RQ params as IPoIB supports only LINKED LIST RQ for now */
+<<<<<<< HEAD
 	MLX5E_SET_PFLAG(params, MLX5E_PFLAG_RX_STRIDING_RQ, false);
 	mlx5e_set_rq_type(mdev, params);
 	mlx5e_init_rq_type_params(mdev, params);
 
 	/* RQ size in ipoib by default is 512 */
 	params->log_rq_mtu_frames = is_kdump_kernel() ?
+=======
+	mlx5e_set_rq_type_params(mdev, params, MLX5_WQ_TYPE_LINKED_LIST);
+
+	/* RQ size in ipoib by default is 512 */
+	params->log_rq_size = is_kdump_kernel() ?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MLX5E_PARAMS_MINIMUM_LOG_RQ_SIZE :
 		MLX5I_PARAMS_DEFAULT_LOG_RQ_SIZE;
 
 	params->lro_en = false;
+<<<<<<< HEAD
 	params->hard_mtu = MLX5_IB_GRH_BYTES + MLX5_IPOIB_HARD_LEN;
 }
 
@@ -77,12 +92,24 @@ void mlx5i_init(struct mlx5_core_dev *mdev,
 {
 	struct mlx5e_priv *priv  = mlx5i_epriv(netdev);
 	u16 max_mtu;
+=======
+}
+
+/* Called directly after IPoIB netdevice was created to initialize SW structs */
+static void mlx5i_init(struct mlx5_core_dev *mdev,
+		       struct net_device *netdev,
+		       const struct mlx5e_profile *profile,
+		       void *ppriv)
+{
+	struct mlx5e_priv *priv  = mlx5i_epriv(netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* priv init */
 	priv->mdev        = mdev;
 	priv->netdev      = netdev;
 	priv->profile     = profile;
 	priv->ppriv       = ppriv;
+<<<<<<< HEAD
 	mutex_init(&priv->state_lock);
 
 	mlx5_query_port_max_mtu(mdev, &max_mtu, 1);
@@ -94,6 +121,14 @@ void mlx5i_init(struct mlx5_core_dev *mdev,
 
 	mlx5e_timestamp_init(priv);
 
+=======
+	priv->hard_mtu = MLX5_IB_GRH_BYTES + MLX5_IPOIB_HARD_LEN;
+	mutex_init(&priv->state_lock);
+
+	mlx5e_build_nic_params(mdev, &priv->channels.params, profile->max_nch(mdev));
+	mlx5i_build_nic_params(mdev, &priv->channels.params);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* netdev init */
 	netdev->hw_features    |= NETIF_F_SG;
 	netdev->hw_features    |= NETIF_F_IP_CSUM;
@@ -114,6 +149,7 @@ static void mlx5i_cleanup(struct mlx5e_priv *priv)
 	/* Do nothing .. */
 }
 
+<<<<<<< HEAD
 int mlx5i_init_underlay_qp(struct mlx5e_priv *priv)
 {
 	struct mlx5_core_dev *mdev = priv->mdev;
@@ -177,6 +213,13 @@ void mlx5i_uninit_underlay_qp(struct mlx5e_priv *priv)
 
 int mlx5i_create_underlay_qp(struct mlx5_core_dev *mdev, struct mlx5_core_qp *qp)
 {
+=======
+#define MLX5_QP_ENHANCED_ULP_STATELESS_MODE 2
+
+static int mlx5i_create_underlay_qp(struct mlx5_core_dev *mdev, struct mlx5_core_qp *qp)
+{
+	struct mlx5_qp_context *context = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *in = NULL;
 	void *addr_path;
 	int ret = 0;
@@ -195,7 +238,11 @@ int mlx5i_create_underlay_qp(struct mlx5_core_dev *mdev, struct mlx5_core_qp *qp
 		 MLX5_QP_ENHANCED_ULP_STATELESS_MODE);
 
 	addr_path = MLX5_ADDR_OF(qpc, qpc, primary_address_path);
+<<<<<<< HEAD
 	MLX5_SET(ads, addr_path, vhca_port_num, 1);
+=======
+	MLX5_SET(ads, addr_path, port, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(ads, addr_path, grh, 1);
 
 	ret = mlx5_core_create_qp(mdev, qp, in, inlen);
@@ -204,12 +251,51 @@ int mlx5i_create_underlay_qp(struct mlx5_core_dev *mdev, struct mlx5_core_qp *qp
 		goto out;
 	}
 
+<<<<<<< HEAD
 out:
+=======
+	/* QP states */
+	context = kzalloc(sizeof(*context), GFP_KERNEL);
+	if (!context) {
+		ret = -ENOMEM;
+		goto out;
+	}
+
+	context->flags = cpu_to_be32(MLX5_QP_PM_MIGRATED << 11);
+	context->pri_path.port = 1;
+	context->qkey = cpu_to_be32(IB_DEFAULT_Q_KEY);
+
+	ret = mlx5_core_qp_modify(mdev, MLX5_CMD_OP_RST2INIT_QP, 0, context, qp);
+	if (ret) {
+		mlx5_core_err(mdev, "Failed to modify qp RST2INIT, err: %d\n", ret);
+		goto out;
+	}
+	memset(context, 0, sizeof(*context));
+
+	ret = mlx5_core_qp_modify(mdev, MLX5_CMD_OP_INIT2RTR_QP, 0, context, qp);
+	if (ret) {
+		mlx5_core_err(mdev, "Failed to modify qp INIT2RTR, err: %d\n", ret);
+		goto out;
+	}
+
+	ret = mlx5_core_qp_modify(mdev, MLX5_CMD_OP_RTR2RTS_QP, 0, context, qp);
+	if (ret) {
+		mlx5_core_err(mdev, "Failed to modify qp RTR2RTS, err: %d\n", ret);
+		goto out;
+	}
+
+out:
+	kfree(context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvfree(in);
 	return ret;
 }
 
+<<<<<<< HEAD
 void mlx5i_destroy_underlay_qp(struct mlx5_core_dev *mdev, struct mlx5_core_qp *qp)
+=======
+static void mlx5i_destroy_underlay_qp(struct mlx5_core_dev *mdev, struct mlx5_core_qp *qp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	mlx5_core_destroy_qp(mdev, qp);
 }
@@ -228,6 +314,7 @@ static int mlx5i_init_tx(struct mlx5e_priv *priv)
 	err = mlx5e_create_tis(priv->mdev, 0 /* tc */, ipriv->qp.qpn, &priv->tisn[0]);
 	if (err) {
 		mlx5_core_warn(priv->mdev, "create tis failed, %d\n", err);
+<<<<<<< HEAD
 		goto err_destroy_underlay_qp;
 	}
 
@@ -236,6 +323,12 @@ static int mlx5i_init_tx(struct mlx5e_priv *priv)
 err_destroy_underlay_qp:
 	mlx5i_destroy_underlay_qp(priv->mdev, &ipriv->qp);
 	return err;
+=======
+		return err;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx5i_cleanup_tx(struct mlx5e_priv *priv)
@@ -248,8 +341,12 @@ static void mlx5i_cleanup_tx(struct mlx5e_priv *priv)
 
 static int mlx5i_create_flow_steering(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
 	struct ttc_params ttc_params = {};
 	int tt, err;
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->fs.ns = mlx5_get_flow_namespace(priv->mdev,
 					       MLX5_FLOW_NAMESPACE_KERNEL);
@@ -264,6 +361,7 @@ static int mlx5i_create_flow_steering(struct mlx5e_priv *priv)
 		priv->netdev->hw_features &= ~NETIF_F_NTUPLE;
 	}
 
+<<<<<<< HEAD
 	mlx5e_set_ttc_basic_params(priv, &ttc_params);
 	mlx5e_set_inner_ttc_ft_params(&ttc_params);
 	for (tt = 0; tt < MLX5E_NUM_INDIR_TIRS; tt++)
@@ -272,10 +370,16 @@ static int mlx5i_create_flow_steering(struct mlx5e_priv *priv)
 	err = mlx5e_create_inner_ttc_table(priv, &ttc_params, &priv->fs.inner_ttc);
 	if (err) {
 		netdev_err(priv->netdev, "Failed to create inner ttc table, err=%d\n",
+=======
+	err = mlx5e_create_ttc_table(priv);
+	if (err) {
+		netdev_err(priv->netdev, "Failed to create ttc table, err=%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   err);
 		goto err_destroy_arfs_tables;
 	}
 
+<<<<<<< HEAD
 	mlx5e_set_ttc_ft_params(&ttc_params);
 	for (tt = 0; tt < MLX5E_NUM_INDIR_TIRS; tt++)
 		ttc_params.indir_tirn[tt] = priv->indir_tir[tt].tirn;
@@ -291,6 +395,10 @@ static int mlx5i_create_flow_steering(struct mlx5e_priv *priv)
 
 err_destroy_inner_ttc_table:
 	mlx5e_destroy_inner_ttc_table(priv, &priv->fs.inner_ttc);
+=======
+	return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_destroy_arfs_tables:
 	mlx5e_arfs_destroy_tables(priv);
 
@@ -299,13 +407,21 @@ err_destroy_arfs_tables:
 
 static void mlx5i_destroy_flow_steering(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
 	mlx5e_destroy_ttc_table(priv, &priv->fs.ttc);
 	mlx5e_destroy_inner_ttc_table(priv, &priv->fs.inner_ttc);
+=======
+	mlx5e_destroy_ttc_table(priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5e_arfs_destroy_tables(priv);
 }
 
 static int mlx5i_init_rx(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
+=======
+	struct mlx5i_priv *ipriv  = priv->ppriv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = mlx5e_create_indirect_rqt(priv);
@@ -324,12 +440,27 @@ static int mlx5i_init_rx(struct mlx5e_priv *priv)
 	if (err)
 		goto err_destroy_indirect_tirs;
 
+<<<<<<< HEAD
 	err = mlx5i_create_flow_steering(priv);
 	if (err)
 		goto err_destroy_direct_tirs;
 
 	return 0;
 
+=======
+	err = mlx5_fs_add_rx_underlay_qpn(priv->mdev, ipriv->qp.qpn);
+	if (err)
+		goto err_destroy_direct_tirs;
+
+	err = mlx5i_create_flow_steering(priv);
+	if (err)
+		goto err_remove_rx_underlay_qpn;
+
+	return 0;
+
+err_remove_rx_underlay_qpn:
+	mlx5_fs_remove_rx_underlay_qpn(priv->mdev, ipriv->qp.qpn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_destroy_direct_tirs:
 	mlx5e_destroy_direct_tirs(priv);
 err_destroy_indirect_tirs:
@@ -343,6 +474,12 @@ err_destroy_indirect_rqts:
 
 static void mlx5i_cleanup_rx(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
+=======
+	struct mlx5i_priv *ipriv  = priv->ppriv;
+
+	mlx5_fs_remove_rx_underlay_qpn(priv->mdev, ipriv->qp.qpn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5i_destroy_flow_steering(priv);
 	mlx5e_destroy_direct_tirs(priv);
 	mlx5e_destroy_indirect_tirs(priv);
@@ -373,11 +510,16 @@ static int mlx5i_change_mtu(struct net_device *netdev, int new_mtu)
 {
 	struct mlx5e_priv *priv = mlx5i_epriv(netdev);
 	struct mlx5e_channels new_channels = {};
+<<<<<<< HEAD
 	struct mlx5e_params *params;
+=======
+	int curr_mtu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 
 	mutex_lock(&priv->state_lock);
 
+<<<<<<< HEAD
 	params = &priv->channels.params;
 
 	if (!test_bit(MLX5E_STATE_OPENED, &priv->state)) {
@@ -394,13 +536,33 @@ static int mlx5i_change_mtu(struct net_device *netdev, int new_mtu)
 
 	mlx5e_switch_priv_channels(priv, &new_channels, NULL);
 	netdev->mtu = new_channels.params.sw_mtu;
+=======
+	curr_mtu    = netdev->mtu;
+	netdev->mtu = new_mtu;
+
+	if (!test_bit(MLX5E_STATE_OPENED, &priv->state))
+		goto out;
+
+	new_channels.params = priv->channels.params;
+	err = mlx5e_open_channels(priv, &new_channels);
+	if (err) {
+		netdev->mtu = curr_mtu;
+		goto out;
+	}
+
+	mlx5e_switch_priv_channels(priv, &new_channels, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	mutex_unlock(&priv->state_lock);
 	return err;
 }
 
+<<<<<<< HEAD
 int mlx5i_dev_init(struct net_device *dev)
+=======
+static int mlx5i_dev_init(struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5e_priv    *priv   = mlx5i_epriv(dev);
 	struct mlx5i_priv    *ipriv  = priv->ppriv;
@@ -410,6 +572,7 @@ int mlx5i_dev_init(struct net_device *dev)
 	dev->dev_addr[2] = (ipriv->qp.qpn >>  8) & 0xff;
 	dev->dev_addr[3] = (ipriv->qp.qpn) & 0xff;
 
+<<<<<<< HEAD
 	/* Add QPN to net-device mapping to HT */
 	mlx5i_pkey_add_qpn(dev ,ipriv->qp.qpn);
 
@@ -417,6 +580,12 @@ int mlx5i_dev_init(struct net_device *dev)
 }
 
 int mlx5i_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+=======
+	return 0;
+}
+
+static int mlx5i_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5e_priv *priv = mlx5i_epriv(dev);
 
@@ -430,6 +599,7 @@ int mlx5i_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
 	}
 }
 
+<<<<<<< HEAD
 void mlx5i_dev_cleanup(struct net_device *dev)
 {
 	struct mlx5e_priv    *priv   = mlx5i_epriv(dev);
@@ -439,10 +609,22 @@ void mlx5i_dev_cleanup(struct net_device *dev)
 
 	/* Delete QPN to net-device mapping from HT */
 	mlx5i_pkey_del_qpn(dev, ipriv->qp.qpn);
+=======
+static void mlx5i_dev_cleanup(struct net_device *dev)
+{
+	struct mlx5e_priv    *priv   = mlx5i_epriv(dev);
+	struct mlx5_core_dev *mdev   = priv->mdev;
+	struct mlx5i_priv    *ipriv  = priv->ppriv;
+	struct mlx5_qp_context context;
+
+	/* detach qp from flow-steering by reset it */
+	mlx5_core_qp_modify(mdev, MLX5_CMD_OP_2RST_QP, 0, &context, &ipriv->qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlx5i_open(struct net_device *netdev)
 {
+<<<<<<< HEAD
 	struct mlx5e_priv *epriv = mlx5i_epriv(netdev);
 	struct mlx5i_priv *ipriv = epriv->ppriv;
 	struct mlx5_core_dev *mdev = epriv->mdev;
@@ -481,18 +663,46 @@ err_reset_qp:
 err_clear_state_opened_flag:
 	clear_bit(MLX5E_STATE_OPENED, &epriv->state);
 	mutex_unlock(&epriv->state_lock);
+=======
+	struct mlx5e_priv *priv = mlx5i_epriv(netdev);
+	int err;
+
+	mutex_lock(&priv->state_lock);
+
+	set_bit(MLX5E_STATE_OPENED, &priv->state);
+
+	err = mlx5e_open_channels(priv, &priv->channels);
+	if (err)
+		goto err_clear_state_opened_flag;
+
+	mlx5e_refresh_tirs(priv, false);
+	mlx5e_activate_priv_channels(priv);
+	mlx5e_timestamp_init(priv);
+
+	mutex_unlock(&priv->state_lock);
+	return 0;
+
+err_clear_state_opened_flag:
+	clear_bit(MLX5E_STATE_OPENED, &priv->state);
+	mutex_unlock(&priv->state_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
 static int mlx5i_close(struct net_device *netdev)
 {
+<<<<<<< HEAD
 	struct mlx5e_priv *epriv = mlx5i_epriv(netdev);
 	struct mlx5i_priv *ipriv = epriv->ppriv;
 	struct mlx5_core_dev *mdev = epriv->mdev;
+=======
+	struct mlx5e_priv *priv = mlx5i_epriv(netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* May already be CLOSED in case a previous configuration operation
 	 * (e.g RX/TX queue size change) that involves close&open failed.
 	 */
+<<<<<<< HEAD
 	mutex_lock(&epriv->state_lock);
 
 	if (!test_bit(MLX5E_STATE_OPENED, &epriv->state))
@@ -507,6 +717,21 @@ static int mlx5i_close(struct net_device *netdev)
 	mlx5i_uninit_underlay_qp(epriv);
 unlock:
 	mutex_unlock(&epriv->state_lock);
+=======
+	mutex_lock(&priv->state_lock);
+
+	if (!test_bit(MLX5E_STATE_OPENED, &priv->state))
+		goto unlock;
+
+	clear_bit(MLX5E_STATE_OPENED, &priv->state);
+
+	mlx5e_timestamp_cleanup(priv);
+	netif_carrier_off(priv->netdev);
+	mlx5e_deactivate_priv_channels(priv);
+	mlx5e_close_channels(&priv->channels);
+unlock:
+	mutex_unlock(&priv->state_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -547,7 +772,11 @@ static int mlx5i_detach_mcast(struct net_device *netdev, struct ib_device *hca,
 
 	err = mlx5_core_detach_mcg(mdev, gid, ipriv->qp.qpn);
 	if (err)
+<<<<<<< HEAD
 		mlx5_core_dbg(mdev, "failed detaching QPN 0x%x, MGID %pI6\n",
+=======
+		mlx5_core_dbg(mdev, "failed dettaching QPN 0x%x, MGID %pI6\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      ipriv->qp.qpn, gid->raw);
 
 	return err;
@@ -564,6 +793,7 @@ static int mlx5i_xmit(struct net_device *dev, struct sk_buff *skb,
 	return mlx5i_sq_xmit(sq, skb, &mah->av, dqpn, ipriv->qkey);
 }
 
+<<<<<<< HEAD
 static void mlx5i_set_pkey_index(struct net_device *netdev, int id)
 {
 	struct mlx5i_priv *ipriv = netdev_priv(netdev);
@@ -571,6 +801,8 @@ static void mlx5i_set_pkey_index(struct net_device *netdev, int id)
 	ipriv->pkey_index = (u16)id;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlx5i_check_required_hca_cap(struct mlx5_core_dev *mdev)
 {
 	if (MLX5_CAP_GEN(mdev, port_type) != MLX5_CAP_PORT_TYPE_IB)
@@ -584,6 +816,7 @@ static int mlx5i_check_required_hca_cap(struct mlx5_core_dev *mdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mlx5_rdma_netdev_free(struct net_device *netdev)
 {
 	struct mlx5e_priv *priv = mlx5i_epriv(netdev);
@@ -600,18 +833,28 @@ static void mlx5_rdma_netdev_free(struct net_device *netdev)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct net_device *mlx5_rdma_netdev_alloc(struct mlx5_core_dev *mdev,
 					  struct ib_device *ibdev,
 					  const char *name,
 					  void (*setup)(struct net_device *))
 {
+<<<<<<< HEAD
 	const struct mlx5e_profile *profile;
+=======
+	const struct mlx5e_profile *profile = &mlx5i_nic_profile;
+	int nch = profile->max_nch(mdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *netdev;
 	struct mlx5i_priv *ipriv;
 	struct mlx5e_priv *epriv;
 	struct rdma_netdev *rn;
+<<<<<<< HEAD
 	bool sub_interface;
 	int nch;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (mlx5i_check_required_hca_cap(mdev)) {
@@ -619,6 +862,7 @@ struct net_device *mlx5_rdma_netdev_alloc(struct mlx5_core_dev *mdev,
 		return ERR_PTR(-EOPNOTSUPP);
 	}
 
+<<<<<<< HEAD
 	/* TODO: Need to find a better way to check if child device*/
 	sub_interface = (mdev->mlx5e_res.pdn != 0);
 
@@ -628,6 +872,12 @@ struct net_device *mlx5_rdma_netdev_alloc(struct mlx5_core_dev *mdev,
 		profile = &mlx5i_nic_profile;
 
 	nch = profile->max_nch(mdev);
+=======
+	/* This function should only be called once per mdev */
+	err = mlx5e_create_mdev_resources(mdev);
+	if (err)
+		return NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev = alloc_netdev_mqs(sizeof(struct mlx5i_priv) + sizeof(struct mlx5e_priv),
 				  name, NET_NAME_UNKNOWN,
@@ -636,7 +886,11 @@ struct net_device *mlx5_rdma_netdev_alloc(struct mlx5_core_dev *mdev,
 				  nch);
 	if (!netdev) {
 		mlx5_core_warn(mdev, "alloc_netdev_mqs failed\n");
+<<<<<<< HEAD
 		return NULL;
+=======
+		goto free_mdev_resources;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ipriv = netdev_priv(netdev);
@@ -646,6 +900,7 @@ struct net_device *mlx5_rdma_netdev_alloc(struct mlx5_core_dev *mdev,
 	if (!epriv->wq)
 		goto err_free_netdev;
 
+<<<<<<< HEAD
 	ipriv->sub_interface = sub_interface;
 	if (!ipriv->sub_interface) {
 		err = mlx5i_pkey_qpn_ht_init(netdev);
@@ -665,6 +920,11 @@ struct net_device *mlx5_rdma_netdev_alloc(struct mlx5_core_dev *mdev,
 	err = mlx5e_attach_netdev(epriv);
 	if (err)
 		goto detach;
+=======
+	profile->init(mdev, netdev, profile, ipriv);
+
+	mlx5e_attach_netdev(epriv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_carrier_off(netdev);
 
 	/* set rdma_netdev func pointers */
@@ -673,6 +933,7 @@ struct net_device *mlx5_rdma_netdev_alloc(struct mlx5_core_dev *mdev,
 	rn->send = mlx5i_xmit;
 	rn->attach_mcast = mlx5i_attach_mcast;
 	rn->detach_mcast = mlx5i_detach_mcast;
+<<<<<<< HEAD
 	rn->set_id = mlx5i_set_pkey_index;
 
 	netdev->priv_destructor = mlx5_rdma_netdev_free;
@@ -691,7 +952,34 @@ destroy_wq:
 	destroy_workqueue(epriv->wq);
 err_free_netdev:
 	free_netdev(netdev);
+=======
+
+	return netdev;
+
+err_free_netdev:
+	free_netdev(netdev);
+free_mdev_resources:
+	mlx5e_destroy_mdev_resources(mdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return NULL;
 }
 EXPORT_SYMBOL(mlx5_rdma_netdev_alloc);
+<<<<<<< HEAD
+=======
+
+void mlx5_rdma_netdev_free(struct net_device *netdev)
+{
+	struct mlx5e_priv          *priv    = mlx5i_epriv(netdev);
+	const struct mlx5e_profile *profile = priv->profile;
+	struct mlx5_core_dev       *mdev    = priv->mdev;
+
+	mlx5e_detach_netdev(priv);
+	profile->cleanup(priv);
+	destroy_workqueue(priv->wq);
+	free_netdev(netdev);
+
+	mlx5e_destroy_mdev_resources(mdev);
+}
+EXPORT_SYMBOL(mlx5_rdma_netdev_free);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

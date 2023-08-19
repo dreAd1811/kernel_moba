@@ -13,16 +13,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
+<<<<<<< HEAD
  *
  * Note, all properties are considered as u8 arrays.
  * To get a value of any of them the caller must use device_property_read_u8_array().
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "apple-properties: " fmt
 
 #include <linux/bootmem.h>
 #include <linux/efi.h>
+<<<<<<< HEAD
 #include <linux/io.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_data/x86/apple.h>
 #include <linux/property.h>
 #include <linux/slab.h>
@@ -56,6 +62,11 @@ struct properties_header {
 	struct dev_header dev_header[0];
 };
 
+<<<<<<< HEAD
+=======
+static u8 one __initdata = 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init unmarshal_key_value_pairs(struct dev_header *dev_header,
 					     struct device *dev, void *ptr,
 					     struct property_entry entry[])
@@ -97,15 +108,30 @@ static void __init unmarshal_key_value_pairs(struct dev_header *dev_header,
 			     key_len - sizeof(key_len));
 
 		entry[i].name = key;
+<<<<<<< HEAD
 		entry[i].length = val_len - sizeof(val_len);
 		entry[i].is_array = !!entry[i].length;
 		entry[i].type = DEV_PROP_U8;
 		entry[i].pointer.u8_data = ptr + key_len + sizeof(val_len);
+=======
+		entry[i].is_array = true;
+		entry[i].length = val_len - sizeof(val_len);
+		entry[i].pointer.raw_data = ptr + key_len + sizeof(val_len);
+		if (!entry[i].length) {
+			/* driver core doesn't accept empty properties */
+			entry[i].length = 1;
+			entry[i].pointer.raw_data = &one;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (dump_properties) {
 			dev_info(dev, "property: %s\n", entry[i].name);
 			print_hex_dump(KERN_INFO, pr_fmt(), DUMP_PREFIX_OFFSET,
+<<<<<<< HEAD
 				16, 1, entry[i].pointer.u8_data,
+=======
+				16, 1, entry[i].pointer.raw_data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				entry[i].length, true);
 		}
 
@@ -194,7 +220,11 @@ static int __init map_properties(void)
 
 	pa_data = boot_params.hdr.setup_data;
 	while (pa_data) {
+<<<<<<< HEAD
 		data = memremap(pa_data, sizeof(*data), MEMREMAP_WB);
+=======
+		data = ioremap(pa_data, sizeof(*data));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!data) {
 			pr_err("cannot map setup_data header\n");
 			return -ENOMEM;
@@ -202,14 +232,24 @@ static int __init map_properties(void)
 
 		if (data->type != SETUP_APPLE_PROPERTIES) {
 			pa_data = data->next;
+<<<<<<< HEAD
 			memunmap(data);
+=======
+			iounmap(data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 
 		data_len = data->len;
+<<<<<<< HEAD
 		memunmap(data);
 
 		data = memremap(pa_data, sizeof(*data) + data_len, MEMREMAP_WB);
+=======
+		iounmap(data);
+
+		data = ioremap(pa_data, sizeof(*data) + data_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!data) {
 			pr_err("cannot map setup_data payload\n");
 			return -ENOMEM;
@@ -234,7 +274,11 @@ static int __init map_properties(void)
 		 * to avoid breaking the chain of ->next pointers.
 		 */
 		data->len = 0;
+<<<<<<< HEAD
 		memunmap(data);
+=======
+		iounmap(data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		free_bootmem_late(pa_data + sizeof(*data), data_len);
 
 		return ret;

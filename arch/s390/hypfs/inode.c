@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-1.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *    Hypervisor filesystem for Linux on s390.
  *
  *    Copyright IBM Corp. 2006, 2008
  *    Author(s): Michael Holzheu <holzheu@de.ibm.com>
+<<<<<<< HEAD
+=======
+ *    License: GPL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define KMSG_COMPONENT "hypfs"
@@ -36,7 +43,11 @@ struct hypfs_sb_info {
 	kuid_t uid;			/* uid used for files and dirs */
 	kgid_t gid;			/* gid used for files and dirs */
 	struct dentry *update_file;	/* file to trigger update */
+<<<<<<< HEAD
 	time64_t last_update;		/* last update, CLOCK_MONOTONIC time */
+=======
+	time_t last_update;		/* last update time in secs since 1970 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex lock;		/* lock to protect update process */
 };
 
@@ -52,7 +63,11 @@ static void hypfs_update_update(struct super_block *sb)
 	struct hypfs_sb_info *sb_info = sb->s_fs_info;
 	struct inode *inode = d_inode(sb_info->update_file);
 
+<<<<<<< HEAD
 	sb_info->last_update = ktime_get_seconds();
+=======
+	sb_info->last_update = get_seconds();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inode->i_atime = inode->i_mtime = inode->i_ctime = current_time(inode);
 }
 
@@ -179,7 +194,11 @@ static ssize_t hypfs_write_iter(struct kiocb *iocb, struct iov_iter *from)
 	 *    to restart data collection in this case.
 	 */
 	mutex_lock(&fs_info->lock);
+<<<<<<< HEAD
 	if (fs_info->last_update == ktime_get_seconds()) {
+=======
+	if (fs_info->last_update == get_seconds()) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = -EBUSY;
 		goto out;
 	}

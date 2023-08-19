@@ -5,12 +5,23 @@ obj-y			:= component.o core.o bus.o dd.o syscore.o \
 			   driver.o class.o platform.o \
 			   cpu.o firmware.o init.o map.o devres.o \
 			   attribute_container.o transport_class.o \
+<<<<<<< HEAD
 			   topology.o container.o property.o cacheinfo.o \
 			   devcon.o
 obj-$(CONFIG_DEVTMPFS)	+= devtmpfs.o
 obj-y			+= power/
 obj-$(CONFIG_ISA_BUS_API)	+= isa.o
 obj-y				+= firmware_loader/
+=======
+			   topology.o container.o property.o cacheinfo.o
+obj-$(CONFIG_DEVTMPFS)	+= devtmpfs.o
+obj-$(CONFIG_DMA_CMA) += dma-contiguous.o
+obj-y			+= power/
+obj-$(CONFIG_HAS_DMA)	+= dma-mapping.o
+obj-$(CONFIG_HAVE_GENERIC_DMA_COHERENT) += dma-coherent.o dma-removed.o
+obj-$(CONFIG_ISA_BUS_API)	+= isa.o
+obj-$(CONFIG_FW_LOADER)	+= firmware_class.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_NUMA)	+= node.o
 obj-$(CONFIG_MEMORY_HOTPLUG_SPARSE) += memory.o
 ifeq ($(CONFIG_SYSFS),y)

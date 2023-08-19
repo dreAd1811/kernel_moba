@@ -610,10 +610,18 @@ iscsi_iser_session_create(struct iscsi_endpoint *ep,
 			  uint32_t initial_cmdsn)
 {
 	struct iscsi_cls_session *cls_session;
+<<<<<<< HEAD
+=======
+	struct iscsi_session *session;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct Scsi_Host *shost;
 	struct iser_conn *iser_conn = NULL;
 	struct ib_conn *ib_conn;
 	u32 max_fr_sectors;
+<<<<<<< HEAD
+=======
+	u16 max_cmds;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	shost = iscsi_host_alloc(&iscsi_iser_sht, 0, 0);
 	if (!shost)
@@ -631,8 +639,13 @@ iscsi_iser_session_create(struct iscsi_endpoint *ep,
 	 */
 	if (ep) {
 		iser_conn = ep->dd_data;
+<<<<<<< HEAD
 		shost->sg_tablesize = iser_conn->scsi_sg_tablesize;
 		shost->can_queue = min_t(u16, cmds_max, iser_conn->max_cmds);
+=======
+		max_cmds = iser_conn->max_cmds;
+		shost->sg_tablesize = iser_conn->scsi_sg_tablesize;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mutex_lock(&iser_conn->state_mutex);
 		if (iser_conn->state != ISER_CONN_UP) {
@@ -646,6 +659,10 @@ iscsi_iser_session_create(struct iscsi_endpoint *ep,
 		if (ib_conn->pi_support) {
 			u32 sig_caps = ib_conn->device->ib_device->attrs.sig_prot_cap;
 
+<<<<<<< HEAD
+=======
+			shost->sg_prot_tablesize = shost->sg_tablesize;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			scsi_host_set_prot(shost, iser_dif_prot_caps(sig_caps));
 			scsi_host_set_guard(shost, SHOST_DIX_GUARD_IP |
 						   SHOST_DIX_GUARD_CRC);
@@ -658,29 +675,60 @@ iscsi_iser_session_create(struct iscsi_endpoint *ep,
 		}
 		mutex_unlock(&iser_conn->state_mutex);
 	} else {
+<<<<<<< HEAD
 		shost->can_queue = min_t(u16, cmds_max, ISER_DEF_XMIT_CMDS_MAX);
+=======
+		max_cmds = ISER_DEF_XMIT_CMDS_MAX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (iscsi_host_add(shost, NULL))
 			goto free_host;
 	}
 
+<<<<<<< HEAD
 	max_fr_sectors = (shost->sg_tablesize * PAGE_SIZE) >> 9;
+=======
+	/*
+	 * FRs or FMRs can only map up to a (device) page per entry, but if the
+	 * first entry is misaligned we'll end up using using two entries
+	 * (head and tail) for a single page worth data, so we have to drop
+	 * one segment from the calculation.
+	 */
+	max_fr_sectors = ((shost->sg_tablesize - 1) * PAGE_SIZE) >> 9;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	shost->max_sectors = min(iser_max_sectors, max_fr_sectors);
 
 	iser_dbg("iser_conn %p, sg_tablesize %u, max_sectors %u\n",
 		 iser_conn, shost->sg_tablesize,
 		 shost->max_sectors);
 
+<<<<<<< HEAD
 	if (shost->max_sectors < iser_max_sectors)
 		iser_warn("max_sectors was reduced from %u to %u\n",
 			  iser_max_sectors, shost->max_sectors);
 
 	cls_session = iscsi_session_setup(&iscsi_iser_transport, shost,
 					  shost->can_queue, 0,
+=======
+	if (cmds_max > max_cmds) {
+		iser_info("cmds_max changed from %u to %u\n",
+			  cmds_max, max_cmds);
+		cmds_max = max_cmds;
+	}
+
+	cls_session = iscsi_session_setup(&iscsi_iser_transport, shost,
+					  cmds_max, 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  sizeof(struct iscsi_iser_task),
 					  initial_cmdsn, 0);
 	if (!cls_session)
 		goto remove_host;
+<<<<<<< HEAD
 
+=======
+	session = cls_session->dd_data;
+
+	shost->can_queue = session->scsi_cmds_max;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return cls_session;
 
 remove_host:
@@ -862,7 +910,11 @@ iscsi_iser_ep_poll(struct iscsi_endpoint *ep, int timeout_ms)
 	iser_info("iser conn %p rc = %d\n", iser_conn, rc);
 
 	if (rc > 0)
+<<<<<<< HEAD
 		return 1; /* success, this is the equivalent of EPOLLOUT */
+=======
+		return 1; /* success, this is the equivalent of POLLOUT */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else if (!rc)
 		return 0; /* timeout */
 	else

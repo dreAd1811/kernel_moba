@@ -177,7 +177,11 @@ static void tegra_sdhci_reset(struct sdhci_host *host, u8 mask)
 			misc_ctrl |= SDHCI_MISC_CTRL_ENABLE_DDR50;
 		if (soc_data->nvquirks & NVQUIRK_ENABLE_SDR104)
 			misc_ctrl |= SDHCI_MISC_CTRL_ENABLE_SDR104;
+<<<<<<< HEAD
 		if (soc_data->nvquirks & SDHCI_MISC_CTRL_ENABLE_SDR50)
+=======
+		if (soc_data->nvquirks & NVQUIRK_ENABLE_SDR50)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clk_ctrl |= SDHCI_CLOCK_CTRL_SDR50_TUNING_OVERRIDE;
 	}
 
@@ -210,6 +214,7 @@ static void tegra_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
 	if (!clock)
 		return sdhci_set_clock(host, clock);
 
+<<<<<<< HEAD
 	/*
 	 * In DDR50/52 modes the Tegra SDHCI controllers require the SDHCI
 	 * divider to be configured to divided the host clock by two. The SDHCI
@@ -228,6 +233,11 @@ static void tegra_sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
 		host->max_clk = host_clk;
 	else
 		host->max_clk = clk_get_rate(pltfm_host->clk);
+=======
+	host_clk = tegra_host->ddr_signaling ? clock * 2 : clock;
+	clk_set_rate(pltfm_host->clk, host_clk);
+	host->max_clk = clk_get_rate(pltfm_host->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sdhci_set_clock(host, clock);
 
@@ -243,18 +253,33 @@ static void tegra_sdhci_set_uhs_signaling(struct sdhci_host *host,
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct sdhci_tegra *tegra_host = sdhci_pltfm_priv(pltfm_host);
 
+<<<<<<< HEAD
 	if (timing == MMC_TIMING_UHS_DDR50 ||
 	    timing == MMC_TIMING_MMC_DDR52)
 		tegra_host->ddr_signaling = true;
 
 	sdhci_set_uhs_signaling(host, timing);
+=======
+	if (timing == MMC_TIMING_UHS_DDR50)
+		tegra_host->ddr_signaling = true;
+
+	return sdhci_set_uhs_signaling(host, timing);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int tegra_sdhci_get_max_clock(struct sdhci_host *host)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 
+<<<<<<< HEAD
 	return clk_round_rate(pltfm_host->clk, UINT_MAX);
+=======
+	/*
+	 * DDR modes require the host to run at double the card frequency, so
+	 * the maximum rate we can support is half of the module input clock.
+	 */
+	return clk_round_rate(pltfm_host->clk, UINT_MAX) / 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tegra_sdhci_set_tap(struct sdhci_host *host, unsigned int tap)
@@ -347,6 +372,7 @@ static const struct sdhci_pltfm_data sdhci_tegra30_pdata = {
 		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
+<<<<<<< HEAD
 		   SDHCI_QUIRK2_BROKEN_HS200 |
 		   /*
 		    * Auto-CMD23 leads to "Got command interrupt 0x00010000 even
@@ -356,6 +382,9 @@ static const struct sdhci_pltfm_data sdhci_tegra30_pdata = {
 		    * to support Auto CMD23 on a downstream 3.1 kernel.
 		    */
 		   SDHCI_QUIRK2_ACMD23_BROKEN,
+=======
+		   SDHCI_QUIRK2_BROKEN_HS200,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ops  = &tegra_sdhci_ops,
 };
 
@@ -443,6 +472,7 @@ static const struct sdhci_pltfm_data sdhci_tegra186_pdata = {
 		  SDHCI_QUIRK_NO_HISPD_BIT |
 		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
+<<<<<<< HEAD
 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
 		   /* SDHCI controllers on Tegra186 support 40-bit addressing.
 		    * IOVA addresses are 48-bit wide on Tegra186.
@@ -452,6 +482,9 @@ static const struct sdhci_pltfm_data sdhci_tegra186_pdata = {
 		    * But it is not supported as of now.
 		    */
 		   SDHCI_QUIRK2_BROKEN_64_BIT_DMA,
+=======
+	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ops  = &tegra114_sdhci_ops,
 };
 

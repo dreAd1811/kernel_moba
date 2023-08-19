@@ -152,6 +152,7 @@ static void venus_clks_disable(struct venus_core *core)
 		clk_disable_unprepare(core->clks[i]);
 }
 
+<<<<<<< HEAD
 static u32 to_v4l2_codec_type(u32 codec)
 {
 	switch (codec) {
@@ -229,6 +230,8 @@ err:
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int venus_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -304,6 +307,7 @@ static int venus_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_venus_shutdown;
 
+<<<<<<< HEAD
 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_DEC);
 	if (ret)
 		goto err_venus_shutdown;
@@ -312,6 +316,8 @@ static int venus_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_venus_shutdown;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = v4l2_device_register(dev, &core->v4l2_dev);
 	if (ret)
 		goto err_core_deinit;
@@ -430,10 +436,18 @@ static const struct venus_resources msm8916_res = {
 };
 
 static const struct freq_tbl msm8996_freq_table[] = {
+<<<<<<< HEAD
 	{ 1944000, 490000000 },	/* 4k UHD @ 60 */
 	{  972000, 320000000 },	/* 4k UHD @ 30 */
 	{  489600, 150000000 },	/* 1080p @ 60 */
 	{  244800,  75000000 },	/* 1080p @ 30 */
+=======
+	{ 1944000, 520000000 },	/* 4k UHD @ 60 (decode only) */
+	{  972000, 520000000 },	/* 4k UHD @ 30 */
+	{  489600, 346666667 },	/* 1080p @ 60 */
+	{  244800, 150000000 },	/* 1080p @ 30 */
+	{  108000,  75000000 },	/* 720p @ 30 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct reg_val msm8996_reg_preset[] = {
@@ -458,6 +472,7 @@ static const struct venus_resources msm8996_res = {
 	.fwname = "qcom/venus-4.2/venus.mdt",
 };
 
+<<<<<<< HEAD
 static const struct freq_tbl sdm845_freq_table[] = {
 	{ 1944000, 380000000 },	/* 4k UHD @ 60 */
 	{  972000, 320000000 },	/* 4k UHD @ 30 */
@@ -483,6 +498,11 @@ static const struct of_device_id venus_dt_match[] = {
 	{ .compatible = "qcom,msm8916-venus", .data = &msm8916_res, },
 	{ .compatible = "qcom,msm8996-venus", .data = &msm8996_res, },
 	{ .compatible = "qcom,sdm845-venus", .data = &sdm845_res, },
+=======
+static const struct of_device_id venus_dt_match[] = {
+	{ .compatible = "qcom,msm8916-venus", .data = &msm8916_res, },
+	{ .compatible = "qcom,msm8996-venus", .data = &msm8996_res, },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, venus_dt_match);

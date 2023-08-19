@@ -1255,14 +1255,24 @@ fe_stv0900_signal_type stv0900_get_signal_params(struct dvb_frontend *fe)
 		else
 			intp->freq[d] = stv0900_get_tuner_freq(fe);
 
+<<<<<<< HEAD
 		if (abs(offsetFreq) <= ((intp->srch_range[d] / 2000) + 500))
 			range = STV0900_RANGEOK;
 		else if (abs(offsetFreq) <=
+=======
+		if (ABS(offsetFreq) <= ((intp->srch_range[d] / 2000) + 500))
+			range = STV0900_RANGEOK;
+		else if (ABS(offsetFreq) <=
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(stv0900_carrier_width(result->symbol_rate,
 						result->rolloff) / 2000))
 			range = STV0900_RANGEOK;
 
+<<<<<<< HEAD
 	} else if (abs(offsetFreq) <= ((intp->srch_range[d] / 2000) + 500))
+=======
+	} else if (ABS(offsetFreq) <= ((intp->srch_range[d] / 2000) + 500))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		range = STV0900_RANGEOK;
 
 	dprintk("%s: range %d\n", __func__, range);

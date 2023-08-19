@@ -15,7 +15,10 @@
 #include <dt-bindings/pwm/pwm.h>
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
+<<<<<<< HEAD
 #include <dt-bindings/interrupt-controller/irq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "TI AM437x SK EVM";
@@ -36,7 +39,11 @@
 		clock-frequency = <32768>;
 	};
 
+<<<<<<< HEAD
 	lcd_bl: backlight {
+=======
+	backlight {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "pwm-backlight";
 		pwms = <&ecap0 0 50000 PWM_POLARITY_INVERTED>;
 		brightness-levels = <0 51 53 56 62 75 101 152 255>;
@@ -133,8 +140,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&lcd_pins>;
 
+<<<<<<< HEAD
 		backlight = <&lcd_bl>;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		enable-gpios = <&gpio1 7 GPIO_ACTIVE_HIGH>;
 
 		panel-timing {
@@ -159,6 +169,7 @@
 			};
 		};
 	};
+<<<<<<< HEAD
 
 	vmmcwl_fixed: fixedregulator-mmcwl {
 		/*
@@ -175,6 +186,8 @@
 		gpio = <&gpio4 8 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &am43xx_pinmux {
@@ -435,6 +448,7 @@
 			AM4372_IOPAD(0xac4, PIN_OUTPUT | MUX_MODE0) /* usb0_drvvbus.usb0_drvvbus */
 		>;
 	};
+<<<<<<< HEAD
 
 	mmc3_pins_default: pinmux_mmc3_pins_default {
 		pinctrl-single,pins = <
@@ -491,6 +505,8 @@
 			AM4372_IOPAD(0x9cc, PIN_OUTPUT_PULLUP | MUX_MODE7)	/* cam1_data9.gpio4_7 BT_EN */
 		>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &i2c0 {
@@ -656,10 +672,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &gpio4 {
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &gpio5 {
 	status = "okay";
 };
@@ -674,6 +693,7 @@
 	cd-gpios = <&gpio0 6 GPIO_ACTIVE_LOW>;
 };
 
+<<<<<<< HEAD
 &uart1 {
 	status = "okay";
 	pinctrl-names = "default", "sleep";
@@ -712,12 +732,18 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usb2_phy1 {
 	status = "okay";
 };
 
 &usb1 {
+<<<<<<< HEAD
 	dr_mode = "otg";
+=======
+	dr_mode = "peripheral";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&usb1_pins>;

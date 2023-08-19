@@ -45,7 +45,11 @@
 struct gf100_gr_data {
 	u32 size;
 	u32 align;
+<<<<<<< HEAD
 	bool priv;
+=======
+	u32 access;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct gf100_gr_mmio {
@@ -72,12 +76,15 @@ struct gf100_gr_zbc_depth {
 	u32 l2;
 };
 
+<<<<<<< HEAD
 struct gf100_gr_zbc_stencil {
 	u32 format;
 	u32 ds;
 	u32 l2;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gf100_gr {
 	const struct gf100_gr_func *func;
 	struct nvkm_gr base;
@@ -101,11 +108,15 @@ struct gf100_gr {
 
 	struct gf100_gr_zbc_color zbc_color[NVKM_LTC_MAX_ZBC_CNT];
 	struct gf100_gr_zbc_depth zbc_depth[NVKM_LTC_MAX_ZBC_CNT];
+<<<<<<< HEAD
 	struct gf100_gr_zbc_stencil zbc_stencil[NVKM_LTC_MAX_ZBC_CNT];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u8 rop_nr;
 	u8 gpc_nr;
 	u8 tpc_nr[GPC_MAX];
+<<<<<<< HEAD
 	u8 tpc_max;
 	u8 tpc_total;
 	u8 ppc_nr[GPC_MAX];
@@ -123,11 +134,22 @@ struct gf100_gr {
 		u8 tpc;
 	} sm[TPC_MAX];
 	u8 sm_nr;
+=======
+	u8 tpc_total;
+	u8 ppc_nr[GPC_MAX];
+	u8 ppc_mask[GPC_MAX];
+	u8 ppc_tpc_nr[GPC_MAX][4];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct gf100_gr_data mmio_data[4];
 	struct gf100_gr_mmio mmio_list[4096/8];
 	u32  size;
 	u32 *data;
+<<<<<<< HEAD
+=======
+
+	u8 screen_tile_row_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int gf100_gr_ctor(const struct gf100_gr_func *, struct nvkm_device *,
@@ -136,6 +158,7 @@ int gf100_gr_new_(const struct gf100_gr_func *, struct nvkm_device *,
 		  int, struct nvkm_gr **);
 void *gf100_gr_dtor(struct nvkm_gr *);
 
+<<<<<<< HEAD
 struct gf100_gr_func_zbc {
 	void (*clear_color)(struct gf100_gr *, int zbc);
 	void (*clear_depth)(struct gf100_gr *, int zbc);
@@ -173,6 +196,16 @@ struct gf100_gr_func {
 	void (*init_400054)(struct gf100_gr *);
 	void (*init_4188a4)(struct gf100_gr *);
 	void (*trap_mp)(struct gf100_gr *, int gpc, int tpc);
+=======
+struct gf100_gr_func {
+	void (*dtor)(struct gf100_gr *);
+	int (*init)(struct gf100_gr *);
+	void (*init_gpc_mmu)(struct gf100_gr *);
+	void (*init_rop_active_fbps)(struct gf100_gr *);
+	void (*init_ppc_exceptions)(struct gf100_gr *);
+	void (*init_swdx_pes_mask)(struct gf100_gr *);
+	void (*init_num_active_ltcs)(struct gf100_gr *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*set_hww_esr_report_mask)(struct gf100_gr *);
 	const struct gf100_gr_pack *mmio;
 	struct {
@@ -182,6 +215,7 @@ struct gf100_gr_func {
 		struct gf100_gr_ucode *ucode;
 	} gpccs;
 	int (*rops)(struct gf100_gr *);
+<<<<<<< HEAD
 	int gpc_nr;
 	int tpc_nr;
 	int ppc_nr;
@@ -239,19 +273,52 @@ extern const struct gf100_gr_func_zbc gp102_gr_zbc;
 
 #define gf100_gr_chan(p) container_of((p), struct gf100_gr_chan, object)
 #include <core/object.h>
+=======
+	int ppc_nr;
+	const struct gf100_grctx_func *grctx;
+	struct nvkm_sclass sclass[];
+};
+
+int gf100_gr_init(struct gf100_gr *);
+int gf100_gr_rops(struct gf100_gr *);
+
+int gk104_gr_init(struct gf100_gr *);
+void gk104_gr_init_rop_active_fbps(struct gf100_gr *);
+void gk104_gr_init_ppc_exceptions(struct gf100_gr *);
+
+int gk20a_gr_init(struct gf100_gr *);
+
+int gm200_gr_init(struct gf100_gr *);
+int gm200_gr_rops(struct gf100_gr *);
+
+int gp100_gr_init(struct gf100_gr *);
+void gp100_gr_init_rop_active_fbps(struct gf100_gr *);
+
+#define gf100_gr_chan(p) container_of((p), struct gf100_gr_chan, object)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct gf100_gr_chan {
 	struct nvkm_object object;
 	struct gf100_gr *gr;
+<<<<<<< HEAD
 	struct nvkm_vmm *vmm;
 
 	struct nvkm_memory *mmio;
 	struct nvkm_vma *mmio_vma;
+=======
+
+	struct nvkm_memory *mmio;
+	struct nvkm_vma mmio_vma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int mmio_nr;
 
 	struct {
 		struct nvkm_memory *mem;
+<<<<<<< HEAD
 		struct nvkm_vma *vma;
+=======
+		struct nvkm_vma vma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} data[4];
 };
 
@@ -268,7 +335,11 @@ extern const struct nvkm_object_func gf100_fermi;
 struct gf100_gr_init {
 	u32 addr;
 	u8  count;
+<<<<<<< HEAD
 	u32 pitch;
+=======
+	u8  pitch;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 data;
 };
 
@@ -337,10 +408,13 @@ extern const struct gf100_gr_init gf100_gr_init_mpc_0[];
 extern const struct gf100_gr_init gf100_gr_init_be_0[];
 extern const struct gf100_gr_init gf100_gr_init_fe_1[];
 extern const struct gf100_gr_init gf100_gr_init_pe_1[];
+<<<<<<< HEAD
 void gf100_gr_init_gpc_mmu(struct gf100_gr *);
 void gf100_gr_trap_mp(struct gf100_gr *, int, int);
 extern const struct nvkm_bitfield gf100_mp_global_error[];
 extern const struct nvkm_enum gf100_mp_warp_error[];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern const struct gf100_gr_init gf104_gr_init_ds_0[];
 extern const struct gf100_gr_init gf104_gr_init_tex_0[];
@@ -363,7 +437,10 @@ extern const struct gf100_gr_init gf117_gr_init_wwdx_0[];
 extern const struct gf100_gr_init gf117_gr_init_cbm_0[];
 
 extern const struct gf100_gr_init gk104_gr_init_main_0[];
+<<<<<<< HEAD
 extern const struct gf100_gr_init gk104_gr_init_gpc_unk_2[];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern const struct gf100_gr_init gk104_gr_init_tpccs_0[];
 extern const struct gf100_gr_init gk104_gr_init_pe_0[];
 extern const struct gf100_gr_init gk104_gr_init_be_0[];
@@ -391,4 +468,11 @@ extern const struct gf100_gr_init gm107_gr_init_cbm_0[];
 void gm107_gr_init_bios(struct gf100_gr *);
 
 void gm200_gr_init_gpc_mmu(struct gf100_gr *);
+<<<<<<< HEAD
+=======
+
+void gp100_gr_init_num_active_ltcs(struct gf100_gr *gr);
+
+void gp102_gr_init_swdx_pes_mask(struct gf100_gr *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

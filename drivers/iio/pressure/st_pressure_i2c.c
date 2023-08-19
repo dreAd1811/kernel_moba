@@ -37,6 +37,7 @@ static const struct of_device_id st_press_of_match[] = {
 		.compatible = "st,lps22hb-press",
 		.data = LPS22HB_PRESS_DEV_NAME,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "st,lps33hw",
 		.data = LPS33HW_PRESS_DEV_NAME,
@@ -45,6 +46,8 @@ static const struct of_device_id st_press_of_match[] = {
 		.compatible = "st,lps35hw",
 		.data = LPS35HW_PRESS_DEV_NAME,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, st_press_of_match);
@@ -67,8 +70,11 @@ static const struct i2c_device_id st_press_id_table[] = {
 	{ LPS25H_PRESS_DEV_NAME,  LPS25H },
 	{ LPS331AP_PRESS_DEV_NAME, LPS331AP },
 	{ LPS22HB_PRESS_DEV_NAME, LPS22HB },
+<<<<<<< HEAD
 	{ LPS33HW_PRESS_DEV_NAME, LPS33HW },
 	{ LPS35HW_PRESS_DEV_NAME, LPS35HW },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(i2c, st_press_id_table);
@@ -94,8 +100,14 @@ static int st_press_i2c_probe(struct i2c_client *client,
 		if ((ret < 0) || (ret >= ST_PRESS_MAX))
 			return -ENODEV;
 
+<<<<<<< HEAD
 		strlcpy(client->name, st_press_id_table[ret].name,
 				sizeof(client->name));
+=======
+		strncpy(client->name, st_press_id_table[ret].name,
+				sizeof(client->name));
+		client->name[sizeof(client->name) - 1] = '\0';
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (!id)
 		return -ENODEV;
 

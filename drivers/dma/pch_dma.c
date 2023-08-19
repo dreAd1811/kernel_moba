@@ -123,7 +123,11 @@ struct pch_dma_chan {
 struct pch_dma {
 	struct dma_device	dma;
 	void __iomem *membase;
+<<<<<<< HEAD
 	struct dma_pool		*pool;
+=======
+	struct pci_pool		*pool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pch_dma_regs	regs;
 	struct pch_dma_desc_regs ch_regs[MAX_CHAN_NR];
 	struct pch_dma_chan	channels[MAX_CHAN_NR];
@@ -437,7 +441,11 @@ static struct pch_dma_desc *pdc_alloc_desc(struct dma_chan *chan, gfp_t flags)
 	struct pch_dma *pd = to_pd(chan->device);
 	dma_addr_t addr;
 
+<<<<<<< HEAD
 	desc = dma_pool_zalloc(pd->pool, flags, &addr);
+=======
+	desc = pci_pool_zalloc(pd->pool, flags, &addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (desc) {
 		INIT_LIST_HEAD(&desc->tx_list);
 		dma_async_tx_descriptor_init(&desc->txd, chan);
@@ -549,7 +557,11 @@ static void pd_free_chan_resources(struct dma_chan *chan)
 	spin_unlock_irq(&pd_chan->lock);
 
 	list_for_each_entry_safe(desc, _d, &tmp_list, desc_node)
+<<<<<<< HEAD
 		dma_pool_free(pd->pool, desc, desc->txd.phys);
+=======
+		pci_pool_free(pd->pool, desc, desc->txd.phys);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdc_enable_irq(chan, 0);
 }
@@ -873,6 +885,10 @@ static int pch_dma_probe(struct pci_dev *pdev,
 	}
 
 	pci_set_master(pdev);
+<<<<<<< HEAD
+=======
+	pd->dma.dev = &pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = request_irq(pdev->irq, pd_irq, IRQF_SHARED, DRV_NAME, pd);
 	if (err) {
@@ -880,7 +896,11 @@ static int pch_dma_probe(struct pci_dev *pdev,
 		goto err_iounmap;
 	}
 
+<<<<<<< HEAD
 	pd->pool = dma_pool_create("pch_dma_desc_pool", &pdev->dev,
+=======
+	pd->pool = pci_pool_create("pch_dma_desc_pool", pdev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   sizeof(struct pch_dma_desc), 4, 0);
 	if (!pd->pool) {
 		dev_err(&pdev->dev, "Failed to alloc DMA descriptors\n");
@@ -888,7 +908,10 @@ static int pch_dma_probe(struct pci_dev *pdev,
 		goto err_free_irq;
 	}
 
+<<<<<<< HEAD
 	pd->dma.dev = &pdev->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&pd->dma.channels);
 
@@ -931,7 +954,11 @@ static int pch_dma_probe(struct pci_dev *pdev,
 	return 0;
 
 err_free_pool:
+<<<<<<< HEAD
 	dma_pool_destroy(pd->pool);
+=======
+	pci_pool_destroy(pd->pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_irq:
 	free_irq(pdev->irq, pd);
 err_iounmap:
@@ -963,7 +990,11 @@ static void pch_dma_remove(struct pci_dev *pdev)
 			tasklet_kill(&pd_chan->tasklet);
 		}
 
+<<<<<<< HEAD
 		dma_pool_destroy(pd->pool);
+=======
+		pci_pool_destroy(pd->pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pci_iounmap(pdev, pd->membase);
 		pci_release_regions(pdev);
 		pci_disable_device(pdev);

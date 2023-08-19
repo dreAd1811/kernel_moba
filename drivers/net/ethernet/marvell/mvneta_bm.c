@@ -18,7 +18,10 @@
 #include <linux/module.h>
 #include <linux/netdevice.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/of_platform.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/skbuff.h>
 #include <net/hwbm.h>
@@ -393,6 +396,7 @@ static void mvneta_bm_put_sram(struct mvneta_bm *priv)
 		      MVNETA_BM_BPPI_SIZE);
 }
 
+<<<<<<< HEAD
 struct mvneta_bm *mvneta_bm_get(struct device_node *node)
 {
 	struct platform_device *pdev = of_find_device_by_node(node);
@@ -407,6 +411,8 @@ void mvneta_bm_put(struct mvneta_bm *priv)
 }
 EXPORT_SYMBOL_GPL(mvneta_bm_put);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mvneta_bm_probe(struct platform_device *pdev)
 {
 	struct device_node *dn = pdev->dev.of_node;

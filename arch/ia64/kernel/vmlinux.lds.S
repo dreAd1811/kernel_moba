@@ -3,7 +3,10 @@
 #include <asm/cache.h>
 #include <asm/ptrace.h>
 #include <asm/pgtable.h>
+<<<<<<< HEAD
 #include <asm/thread_info.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm-generic/vmlinux.lds.h>
 
@@ -109,9 +112,13 @@ SECTIONS {
 	RODATA
 
 	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
+<<<<<<< HEAD
 		__start_opd = .;
 		*(.opd)
 		__end_opd = .;
+=======
+		*(.opd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*

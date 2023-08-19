@@ -136,13 +136,17 @@ struct pp_atomfwctrl_bios_boot_up_values {
 	uint32_t   ulUClk;
 	uint32_t   ulSocClk;
 	uint32_t   ulDCEFClk;
+<<<<<<< HEAD
 	uint32_t   ulEClk;
 	uint32_t   ulVClk;
 	uint32_t   ulDClk;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint16_t   usVddc;
 	uint16_t   usVddci;
 	uint16_t   usMvddc;
 	uint16_t   usVddGfx;
+<<<<<<< HEAD
 	uint8_t    ucCoolingID;
 };
 
@@ -212,6 +216,8 @@ struct pp_atomfwctrl_smc_dpm_parameters
 	uint16_t acggfxclkspreadfreq;
 
 	uint8_t Vr2_I2C_address;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int pp_atomfwctrl_get_gpu_pll_dividers_vega10(struct pp_hwmgr *hwmgr,
@@ -233,10 +239,13 @@ int pp_atomfwctrl_get_gpio_information(struct pp_hwmgr *hwmgr,
 
 int pp_atomfwctrl_get_vbios_bootup_values(struct pp_hwmgr *hwmgr,
 			struct pp_atomfwctrl_bios_boot_up_values *boot_values);
+<<<<<<< HEAD
 int pp_atomfwctrl_get_smc_dpm_information(struct pp_hwmgr *hwmgr,
 			struct pp_atomfwctrl_smc_dpm_parameters *param);
 int pp_atomfwctrl_get_clk_information_by_clkid(struct pp_hwmgr *hwmgr,
 					BIOS_CLKID id, uint32_t *frequency);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif
 

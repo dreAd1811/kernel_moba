@@ -38,7 +38,11 @@ static void _drbd_start_io_acct(struct drbd_device *device, struct drbd_request 
 {
 	struct request_queue *q = device->rq_queue;
 
+<<<<<<< HEAD
 	generic_start_io_acct(q, bio_op(req->master_bio),
+=======
+	generic_start_io_acct(q, bio_data_dir(req->master_bio),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				req->i.size >> 9, &device->vdisk->part0);
 }
 
@@ -47,7 +51,11 @@ static void _drbd_end_io_acct(struct drbd_device *device, struct drbd_request *r
 {
 	struct request_queue *q = device->rq_queue;
 
+<<<<<<< HEAD
 	generic_end_io_acct(q, bio_op(req->master_bio),
+=======
+	generic_end_io_acct(q, bio_data_dir(req->master_bio),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &device->vdisk->part0, req->start_jif);
 }
 
@@ -55,7 +63,11 @@ static struct drbd_request *drbd_req_new(struct drbd_device *device, struct bio 
 {
 	struct drbd_request *req;
 
+<<<<<<< HEAD
 	req = mempool_alloc(&drbd_request_mempool, GFP_NOIO);
+=======
+	req = mempool_alloc(drbd_request_mempool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!req)
 		return NULL;
 	memset(req, 0, sizeof(*req));
@@ -184,7 +196,11 @@ void drbd_req_destroy(struct kref *kref)
 		}
 	}
 
+<<<<<<< HEAD
 	mempool_free(req, &drbd_request_mempool);
+=======
+	mempool_free(req, drbd_request_mempool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void wake_all_senders(struct drbd_connection *connection)
@@ -1714,9 +1730,15 @@ static bool net_timeout_reached(struct drbd_request *net_req,
  * to expire twice (worst case) to become effective. Good enough.
  */
 
+<<<<<<< HEAD
 void request_timer_fn(struct timer_list *t)
 {
 	struct drbd_device *device = from_timer(device, t, request_timer);
+=======
+void request_timer_fn(unsigned long data)
+{
+	struct drbd_device *device = (struct drbd_device *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drbd_connection *connection = first_peer_device(device)->connection;
 	struct drbd_request *req_read, *req_write, *req_peer; /* oldest request */
 	struct net_conf *nc;

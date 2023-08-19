@@ -164,10 +164,16 @@ enum iwl_antenna_ok iwl_rx_ant_restriction(struct iwl_priv *priv)
  * without doing anything, driver should continue the 5 seconds timer
  * to wake up uCode for temperature check until temperature drop below CT
  */
+<<<<<<< HEAD
 static void iwl_tt_check_exit_ct_kill(struct timer_list *t)
 {
 	struct iwl_priv *priv = from_timer(priv, t,
 					   thermal_throttle.ct_kill_exit_tm);
+=======
+static void iwl_tt_check_exit_ct_kill(unsigned long data)
+{
+	struct iwl_priv *priv = (struct iwl_priv *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iwl_tt_mgmt *tt = &priv->thermal_throttle;
 	unsigned long flags;
 
@@ -215,10 +221,16 @@ static void iwl_perform_ct_kill_task(struct iwl_priv *priv,
 	}
 }
 
+<<<<<<< HEAD
 static void iwl_tt_ready_for_ct_kill(struct timer_list *t)
 {
 	struct iwl_priv *priv = from_timer(priv, t,
 					   thermal_throttle.ct_kill_waiting_tm);
+=======
+static void iwl_tt_ready_for_ct_kill(unsigned long data)
+{
+	struct iwl_priv *priv = (struct iwl_priv *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iwl_tt_mgmt *tt = &priv->thermal_throttle;
 
 	if (test_bit(STATUS_EXIT_PENDING, &priv->status))
@@ -614,10 +626,17 @@ void iwl_tt_initialize(struct iwl_priv *priv)
 	memset(tt, 0, sizeof(struct iwl_tt_mgmt));
 
 	tt->state = IWL_TI_0;
+<<<<<<< HEAD
 	timer_setup(&priv->thermal_throttle.ct_kill_exit_tm,
 		    iwl_tt_check_exit_ct_kill, 0);
 	timer_setup(&priv->thermal_throttle.ct_kill_waiting_tm,
 		    iwl_tt_ready_for_ct_kill, 0);
+=======
+	setup_timer(&priv->thermal_throttle.ct_kill_exit_tm,
+		    iwl_tt_check_exit_ct_kill, (unsigned long)priv);
+	setup_timer(&priv->thermal_throttle.ct_kill_waiting_tm,
+		    iwl_tt_ready_for_ct_kill, (unsigned long)priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* setup deferred ct kill work */
 	INIT_WORK(&priv->tt_work, iwl_bg_tt_work);
 	INIT_WORK(&priv->ct_enter, iwl_bg_ct_enter);

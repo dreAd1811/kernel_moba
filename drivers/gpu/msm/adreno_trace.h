@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #if !defined(_ADRENO_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
@@ -9,12 +23,20 @@
 #undef TRACE_SYSTEM
 #define TRACE_SYSTEM kgsl
 #undef TRACE_INCLUDE_PATH
+<<<<<<< HEAD
 #define TRACE_INCLUDE_PATH .
+=======
+#define TRACE_INCLUDE_PATH ../../drivers/gpu/msm/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef TRACE_INCLUDE_FILE
 #define TRACE_INCLUDE_FILE adreno_trace
 
 #include <linux/tracepoint.h>
 #include "adreno_a3xx.h"
+<<<<<<< HEAD
+=======
+#include "adreno_a4xx.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "adreno_a5xx.h"
 
 TRACE_EVENT(adreno_cmdbatch_queued,
@@ -356,7 +378,11 @@ TRACE_EVENT(adreno_sp_tp,
 	),
 
 	TP_printk(
+<<<<<<< HEAD
 		"func=%pS", (void *) __entry->ip
+=======
+		"func=%pf", (void *) __entry->ip
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	)
 );
 
@@ -388,6 +414,36 @@ TRACE_EVENT(kgsl_a3xx_irq_status,
 );
 
 /*
+<<<<<<< HEAD
+=======
+ * Tracepoint for a4xx irq. Includes status info
+ */
+TRACE_EVENT(kgsl_a4xx_irq_status,
+
+	TP_PROTO(struct adreno_device *adreno_dev, unsigned int status),
+
+	TP_ARGS(adreno_dev, status),
+
+	TP_STRUCT__entry(
+		__string(device_name, adreno_dev->dev.name)
+		__field(unsigned int, status)
+	),
+
+	TP_fast_assign(
+		__assign_str(device_name, adreno_dev->dev.name);
+		__entry->status = status;
+	),
+
+	TP_printk(
+		"d_name=%s status=%s",
+		__get_str(device_name),
+		__entry->status ? __print_flags(__entry->status, "|",
+			A4XX_IRQ_FLAGS) : "None"
+	)
+);
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Tracepoint for a5xx irq. Includes status info
  */
 TRACE_EVENT(kgsl_a5xx_irq_status,

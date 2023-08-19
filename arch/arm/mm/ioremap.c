@@ -119,10 +119,23 @@ void __check_vmalloc_seq(struct mm_struct *mm)
 
 	do {
 		seq = init_mm.context.vmalloc_seq;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_ENABLE_VMALLOC_SAVING
+		memcpy(pgd_offset(mm, PAGE_OFFSET),
+		       pgd_offset_k(PAGE_OFFSET),
+		       sizeof(pgd_t) * (pgd_index(VMALLOC_END) -
+					pgd_index(PAGE_OFFSET)));
+#else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(pgd_offset(mm, VMALLOC_START),
 		       pgd_offset_k(VMALLOC_START),
 		       sizeof(pgd_t) * (pgd_index(VMALLOC_END) -
 					pgd_index(VMALLOC_START)));
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mm->context.vmalloc_seq = seq;
 	} while (seq != init_mm.context.vmalloc_seq);
 }

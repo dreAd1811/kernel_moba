@@ -41,6 +41,7 @@ struct horus3a_config {
 };
 
 #if IS_REACHABLE(CONFIG_DVB_HORUS3A)
+<<<<<<< HEAD
 /**
  * Attach a horus3a tuner
  *
@@ -50,6 +51,8 @@ struct horus3a_config {
  *
  * return: FE pointer on success, NULL on failure.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct dvb_frontend *horus3a_attach(struct dvb_frontend *fe,
 					const struct horus3a_config *config,
 					struct i2c_adapter *i2c);

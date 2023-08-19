@@ -274,7 +274,11 @@ static struct platform_device h2_kp_device = {
 	.resource	= h2_kp_resources,
 };
 
+<<<<<<< HEAD
 static const struct gpio_led h2_gpio_led_pins[] = {
+=======
+static struct gpio_led h2_gpio_led_pins[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name		= "h2:red",
 		.default_trigger = "heartbeat",
@@ -357,7 +361,11 @@ static struct omap_usb_config h2_usb_config __initdata = {
 	.pins[1]	= 3,
 };
 
+<<<<<<< HEAD
 static const struct omap_lcd_config h2_lcd_config __initconst = {
+=======
+static struct omap_lcd_config h2_lcd_config __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ctrl_name	= "internal",
 };
 

@@ -36,9 +36,16 @@ void kexec_copy_flush(struct kimage *image);
 /* pseries hcall tracing */
 extern struct static_key hcall_tracepoint_key;
 void __trace_hcall_entry(unsigned long opcode, unsigned long *args);
+<<<<<<< HEAD
 void __trace_hcall_exit(long opcode, long retval, unsigned long *retbuf);
 /* OPAL tracing */
 #ifdef CONFIG_JUMP_LABEL
+=======
+void __trace_hcall_exit(long opcode, unsigned long retval,
+			unsigned long *retbuf);
+/* OPAL tracing */
+#ifdef HAVE_JUMP_LABEL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct static_key opal_tracepoint_key;
 #endif
 
@@ -48,8 +55,13 @@ void __trace_opal_exit(long opcode, unsigned long retval);
 /* VMX copying */
 int enter_vmx_usercopy(void);
 int exit_vmx_usercopy(void);
+<<<<<<< HEAD
 int enter_vmx_ops(void);
 void *exit_vmx_ops(void *dest);
+=======
+int enter_vmx_copy(void);
+void * exit_vmx_copy(void *dest);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Traps */
 long machine_check_early(struct pt_regs *regs);
@@ -61,7 +73,10 @@ void RunModeException(struct pt_regs *regs);
 void single_step_exception(struct pt_regs *regs);
 void program_check_exception(struct pt_regs *regs);
 void alignment_exception(struct pt_regs *regs);
+<<<<<<< HEAD
 void slb_miss_bad_addr(struct pt_regs *regs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void StackOverflow(struct pt_regs *regs);
 void nonrecoverable_exception(struct pt_regs *regs);
 void kernel_fp_unavailable_exception(struct pt_regs *regs);
@@ -80,6 +95,7 @@ void machine_check_exception(struct pt_regs *regs);
 void emulation_assist_interrupt(struct pt_regs *regs);
 
 /* signals, syscalls and interrupts */
+<<<<<<< HEAD
 long sys_swapcontext(struct ucontext __user *old_ctx,
 		    struct ucontext __user *new_ctx,
 		    long ctx_size);
@@ -94,6 +110,17 @@ void __init machine_init(u64 dt_ptr);
 
 long ppc_fadvise64_64(int fd, int advice, u32 offset_high, u32 offset_low,
 		      u32 len_high, u32 len_low);
+=======
+#ifdef CONFIG_PPC64
+int sys_swapcontext(struct ucontext __user *old_ctx,
+		    struct ucontext __user *new_ctx,
+		    long ctx_size, long r6, long r7, long r8, struct pt_regs *regs);
+#else
+long sys_swapcontext(struct ucontext __user *old_ctx,
+		    struct ucontext __user *new_ctx,
+		    int ctx_size, int r6, int r7, int r8, struct pt_regs *regs);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 long sys_switch_endian(void);
 notrace unsigned int __check_irq_replay(void);
 void notrace restore_interrupts(void);
@@ -131,6 +158,7 @@ extern int __ucmpdi2(u64, u64);
 void _mcount(void);
 unsigned long prepare_ftrace_return(unsigned long parent, unsigned long ip);
 
+<<<<<<< HEAD
 void pnv_power9_force_smt4_catch(void);
 void pnv_power9_force_smt4_release(void);
 
@@ -149,5 +177,15 @@ extern s32 patch__flush_count_cache_return;
 extern s32 patch__memset_nocache, patch__memcpy_nocache;
 
 extern long flush_count_cache;
+=======
+/* Patch sites */
+extern s32 patch__call_flush_count_cache;
+extern s32 patch__flush_count_cache_return;
+extern s32 patch__flush_link_stack_return;
+extern s32 patch__call_kvm_flush_link_stack;
+
+extern long flush_count_cache;
+extern long kvm_flush_link_stack;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _ASM_POWERPC_ASM_PROTOTYPES_H */

@@ -4,7 +4,11 @@
  * Contact: support@caviumnetworks.com
  * This file is part of the OCTEON SDK
  *
+<<<<<<< HEAD
  * Copyright (C) 2003-2018 Cavium, Inc.
+=======
+ * Copyright (c) 2003-2012 Cavium Networks
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, Version 2, as
@@ -334,8 +338,11 @@ static inline uint64_t CVMX_PCSX_TX_RXX_POLARITY_REG(unsigned long offset, unsig
 	return CVMX_ADD_IO_SEG(0x00011800B0001048ull) + ((offset) + (block_id) * 0x20000ull) * 1024;
 }
 
+<<<<<<< HEAD
 void __cvmx_interrupt_pcsx_intx_en_reg_enable(int index, int block);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union cvmx_pcsx_anx_adv_reg {
 	uint64_t u64;
 	struct cvmx_pcsx_anx_adv_reg_s {

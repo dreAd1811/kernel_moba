@@ -29,6 +29,20 @@ module_param(run_edge_events_on_boot, int, 0444);
 MODULE_PARM_DESC(run_edge_events_on_boot,
 		 "Run edge _AEI event-handlers at boot: 0=no, 1=yes, -1=auto");
 
+<<<<<<< HEAD
+=======
+static char *ignore_wake;
+module_param(ignore_wake, charp, 0444);
+MODULE_PARM_DESC(ignore_wake,
+		 "controller@pin combos on which to ignore the ACPI wake flag "
+		 "ignore_wake=controller@pin[,controller@pin[,...]]");
+
+struct acpi_gpiolib_dmi_quirk {
+	bool no_edge_events_on_boot;
+	char *ignore_wake;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct acpi_gpio_event - ACPI GPIO event handler data
  *
@@ -93,6 +107,61 @@ static int acpi_gpiochip_find(struct gpio_chip *gc, void *data)
 	return ACPI_HANDLE(gc->parent) == data;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PINCTRL
+/**
+ * acpi_gpiochip_pin_to_gpio_offset() - translates ACPI GPIO to Linux GPIO
+ * @gdev: GPIO device
+ * @pin: ACPI GPIO pin number from GpioIo/GpioInt resource
+ *
+ * Function takes ACPI GpioIo/GpioInt pin number as a parameter and
+ * translates it to a corresponding offset suitable to be passed to a
+ * GPIO controller driver.
+ *
+ * Typically the returned offset is same as @pin, but if the GPIO
+ * controller uses pin controller and the mapping is not contiguous the
+ * offset might be different.
+ */
+static int acpi_gpiochip_pin_to_gpio_offset(struct gpio_device *gdev, int pin)
+{
+	struct gpio_pin_range *pin_range;
+
+	/* If there are no ranges in this chip, use 1:1 mapping */
+	if (list_empty(&gdev->pin_ranges))
+		return pin;
+
+	list_for_each_entry(pin_range, &gdev->pin_ranges, node) {
+		const struct pinctrl_gpio_range *range = &pin_range->range;
+		int i;
+
+		if (range->pins) {
+			for (i = 0; i < range->npins; i++) {
+				if (range->pins[i] == pin)
+					return range->base + i - gdev->base;
+			}
+		} else {
+			if (pin >= range->pin_base &&
+			    pin < range->pin_base + range->npins) {
+				unsigned gpio_base;
+
+				gpio_base = range->base - gdev->base;
+				return gpio_base + pin - range->pin_base;
+			}
+		}
+	}
+
+	return -EINVAL;
+}
+#else
+static inline int acpi_gpiochip_pin_to_gpio_offset(struct gpio_device *gdev,
+						   int pin)
+{
+	return pin;
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * acpi_get_gpiod() - Translate ACPI GPIO pin to GPIO descriptor usable with GPIO API
  * @path:	ACPI GPIO controller full path name, (e.g. "\\_SB.GPO1")
@@ -108,6 +177,10 @@ static struct gpio_desc *acpi_get_gpiod(char *path, int pin)
 	struct gpio_chip *chip;
 	acpi_handle handle;
 	acpi_status status;
+<<<<<<< HEAD
+=======
+	int offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = acpi_get_handle(NULL, path, &handle);
 	if (ACPI_FAILURE(status))
@@ -117,7 +190,15 @@ static struct gpio_desc *acpi_get_gpiod(char *path, int pin)
 	if (!chip)
 		return ERR_PTR(-EPROBE_DEFER);
 
+<<<<<<< HEAD
 	return gpiochip_get_desc(chip, pin);
+=======
+	offset = acpi_gpiochip_pin_to_gpio_offset(chip->gpiodev, pin);
+	if (offset < 0)
+		return ERR_PTR(offset);
+
+	return gpiochip_get_desc(chip, offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t acpi_gpio_irq_handler(int irq, void *data)
@@ -197,6 +278,60 @@ static void acpi_gpiochip_request_irqs(struct acpi_gpio_chip *acpi_gpio)
 		acpi_gpiochip_request_irq(acpi_gpio, event);
 }
 
+<<<<<<< HEAD
+=======
+static bool acpi_gpio_in_ignore_list(const char *controller_in, int pin_in)
+{
+	const char *controller, *pin_str;
+	int len, pin;
+	char *endp;
+
+	controller = ignore_wake;
+	while (controller) {
+		pin_str = strchr(controller, '@');
+		if (!pin_str)
+			goto err;
+
+		len = pin_str - controller;
+		if (len == strlen(controller_in) &&
+		    strncmp(controller, controller_in, len) == 0) {
+			pin = simple_strtoul(pin_str + 1, &endp, 10);
+			if (*endp != 0 && *endp != ',')
+				goto err;
+
+			if (pin == pin_in)
+				return true;
+		}
+
+		controller = strchr(controller, ',');
+		if (controller)
+			controller++;
+	}
+
+	return false;
+err:
+	pr_err_once("Error invalid value for gpiolib_acpi.ignore_wake: %s\n",
+		    ignore_wake);
+	return false;
+}
+
+static bool acpi_gpio_irq_is_wake(struct device *parent,
+				  struct acpi_resource_gpio *agpio)
+{
+	int pin = agpio->pin_table[0];
+
+	if (agpio->wake_capable != ACPI_WAKE_CAPABLE)
+		return false;
+
+	if (acpi_gpio_in_ignore_list(dev_name(parent), pin)) {
+		dev_info(parent, "Ignoring wakeup on pin %d\n", pin);
+		return false;
+	}
+
+	return true;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static acpi_status acpi_gpiochip_alloc_event(struct acpi_resource *ares,
 					     void *context)
 {
@@ -230,6 +365,13 @@ static acpi_status acpi_gpiochip_alloc_event(struct acpi_resource *ares,
 	if (!handler)
 		return AE_OK;
 
+<<<<<<< HEAD
+=======
+	pin = acpi_gpiochip_pin_to_gpio_offset(chip->gpiodev, pin);
+	if (pin < 0)
+		return AE_BAD_PARAMETER;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc = gpiochip_request_own_desc(chip, pin, "ACPI:Event");
 	if (IS_ERR(desc)) {
 		dev_err(chip->parent, "Failed to request GPIO\n");
@@ -278,7 +420,11 @@ static acpi_status acpi_gpiochip_alloc_event(struct acpi_resource *ares,
 	event->handle = evt_handle;
 	event->handler = handler;
 	event->irq = irq;
+<<<<<<< HEAD
 	event->irq_is_wake = agpio->wake_capable == ACPI_WAKE_CAPABLE;
+=======
+	event->irq_is_wake = acpi_gpio_irq_is_wake(chip->parent, agpio);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	event->pin = pin;
 	event->desc = desc;
 
@@ -434,8 +580,12 @@ EXPORT_SYMBOL_GPL(devm_acpi_dev_remove_driver_gpios);
 
 static bool acpi_get_driver_gpio_data(struct acpi_device *adev,
 				      const char *name, int index,
+<<<<<<< HEAD
 				      struct fwnode_reference_args *args,
 				      unsigned int *quirks)
+=======
+				      struct acpi_reference_args *args)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct acpi_gpio_mapping *gm;
 
@@ -446,13 +596,20 @@ static bool acpi_get_driver_gpio_data(struct acpi_device *adev,
 		if (!strcmp(name, gm->name) && gm->data && index < gm->size) {
 			const struct acpi_gpio_params *par = gm->data + index;
 
+<<<<<<< HEAD
 			args->fwnode = acpi_fwnode_handle(adev);
+=======
+			args->adev = adev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			args->args[0] = par->crs_entry_index;
 			args->args[1] = par->line_index;
 			args->args[2] = par->active_low;
 			args->nargs = 3;
+<<<<<<< HEAD
 
 			*quirks = gm->quirks;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return true;
 		}
 
@@ -484,8 +641,13 @@ acpi_gpio_to_gpiod_flags(const struct acpi_resource_gpio *agpio)
 	}
 }
 
+<<<<<<< HEAD
 static int
 __acpi_gpio_update_gpiod_flags(enum gpiod_flags *flags, enum gpiod_flags update)
+=======
+int
+acpi_gpio_update_gpiod_flags(enum gpiod_flags *flags, enum gpiod_flags update)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 
@@ -512,6 +674,7 @@ __acpi_gpio_update_gpiod_flags(enum gpiod_flags *flags, enum gpiod_flags update)
 	return ret;
 }
 
+<<<<<<< HEAD
 int
 acpi_gpio_update_gpiod_flags(enum gpiod_flags *flags, struct acpi_gpio_info *info)
 {
@@ -532,11 +695,17 @@ acpi_gpio_update_gpiod_flags(enum gpiod_flags *flags, struct acpi_gpio_info *inf
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct acpi_gpio_lookup {
 	struct acpi_gpio_info info;
 	int index;
 	int pin_index;
 	bool active_low;
+<<<<<<< HEAD
+=======
+	struct acpi_device *adev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gpio_desc *desc;
 	int n;
 };
@@ -573,8 +742,13 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
 			lookup->info.triggering = agpio->triggering;
 		} else {
 			lookup->info.flags = acpi_gpio_to_gpiod_flags(agpio);
+<<<<<<< HEAD
 			lookup->info.polarity = lookup->active_low;
 		}
+=======
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 1;
@@ -583,13 +757,20 @@ static int acpi_populate_gpio_lookup(struct acpi_resource *ares, void *data)
 static int acpi_gpio_resource_lookup(struct acpi_gpio_lookup *lookup,
 				     struct acpi_gpio_info *info)
 {
+<<<<<<< HEAD
 	struct acpi_device *adev = lookup->info.adev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head res_list;
 	int ret;
 
 	INIT_LIST_HEAD(&res_list);
 
+<<<<<<< HEAD
 	ret = acpi_dev_get_resources(adev, &res_list,
+=======
+	ret = acpi_dev_get_resources(lookup->adev, &res_list,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     acpi_populate_gpio_lookup,
 				     lookup);
 	if (ret < 0)
@@ -600,8 +781,16 @@ static int acpi_gpio_resource_lookup(struct acpi_gpio_lookup *lookup,
 	if (!lookup->desc)
 		return -ENOENT;
 
+<<<<<<< HEAD
 	if (info)
 		*info = lookup->info;
+=======
+	if (info) {
+		*info = lookup->info;
+		if (lookup->active_low)
+			info->polarity = lookup->active_low;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -609,8 +798,12 @@ static int acpi_gpio_property_lookup(struct fwnode_handle *fwnode,
 				     const char *propname, int index,
 				     struct acpi_gpio_lookup *lookup)
 {
+<<<<<<< HEAD
 	struct fwnode_reference_args args;
 	unsigned int quirks = 0;
+=======
+	struct acpi_reference_args args;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	memset(&args, 0, sizeof(args));
@@ -622,16 +815,24 @@ static int acpi_gpio_property_lookup(struct fwnode_handle *fwnode,
 		if (!adev)
 			return ret;
 
+<<<<<<< HEAD
 		if (!acpi_get_driver_gpio_data(adev, propname, index, &args,
 					       &quirks))
+=======
+		if (!acpi_get_driver_gpio_data(adev, propname, index, &args))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 	}
 	/*
 	 * The property was found and resolved, so need to lookup the GPIO based
 	 * on returned args.
 	 */
+<<<<<<< HEAD
 	if (!to_acpi_device_node(args.fwnode))
 		return -EINVAL;
+=======
+	lookup->adev = args.adev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (args.nargs != 3)
 		return -EPROTO;
 
@@ -639,9 +840,12 @@ static int acpi_gpio_property_lookup(struct fwnode_handle *fwnode,
 	lookup->pin_index = args.args[1];
 	lookup->active_low = !!args.args[2];
 
+<<<<<<< HEAD
 	lookup->info.adev = to_acpi_device_node(args.fwnode);
 	lookup->info.quirks = quirks;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -689,11 +893,19 @@ static struct gpio_desc *acpi_get_gpiod_by_index(struct acpi_device *adev,
 			return ERR_PTR(ret);
 
 		dev_dbg(&adev->dev, "GPIO: _DSD returned %s %d %d %u\n",
+<<<<<<< HEAD
 			dev_name(&lookup.info.adev->dev), lookup.index,
 			lookup.pin_index, lookup.active_low);
 	} else {
 		dev_dbg(&adev->dev, "GPIO: looking up %d in _CRS\n", index);
 		lookup.info.adev = adev;
+=======
+			dev_name(&lookup.adev->dev), lookup.index,
+			lookup.pin_index, lookup.active_low);
+	} else {
+		dev_dbg(&adev->dev, "GPIO: looking up %d in _CRS\n", index);
+		lookup.adev = adev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = acpi_gpio_resource_lookup(&lookup, info);
@@ -710,6 +922,10 @@ struct gpio_desc *acpi_find_gpio(struct device *dev,
 	struct acpi_gpio_info info;
 	struct gpio_desc *desc;
 	char propname[32];
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	/* Try first from _DSD */
@@ -748,7 +964,14 @@ struct gpio_desc *acpi_find_gpio(struct device *dev,
 	if (info.polarity == GPIO_ACTIVE_LOW)
 		*lookupflags |= GPIO_ACTIVE_LOW;
 
+<<<<<<< HEAD
 	acpi_gpio_update_gpiod_flags(dflags, &info);
+=======
+	err = acpi_gpio_update_gpiod_flags(dflags, info.flags);
+	if (err)
+		dev_dbg(dev, "Override GPIO initialization flags\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return desc;
 }
 
@@ -894,6 +1117,15 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
 		struct gpio_desc *desc;
 		bool found;
 
+<<<<<<< HEAD
+=======
+		pin = acpi_gpiochip_pin_to_gpio_offset(chip->gpiodev, pin);
+		if (pin < 0) {
+			status = AE_BAD_PARAMETER;
+			goto out;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&achip->conn_lock);
 
 		found = false;
@@ -1026,7 +1258,15 @@ static struct gpio_desc *acpi_gpiochip_parse_own_gpio(
 	if (ret < 0)
 		return ERR_PTR(ret);
 
+<<<<<<< HEAD
 	desc = gpiochip_get_desc(chip, gpios[0]);
+=======
+	ret = acpi_gpiochip_pin_to_gpio_offset(chip->gpiodev, gpios[0]);
+	if (ret < 0)
+		return ERR_PTR(ret);
+
+	desc = gpiochip_get_desc(chip, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(desc))
 		return desc;
 
@@ -1263,25 +1503,126 @@ static int acpi_gpio_handle_deferred_request_irqs(void)
 /* We must use _sync so that this runs after the first deferred_probe run */
 late_initcall_sync(acpi_gpio_handle_deferred_request_irqs);
 
+<<<<<<< HEAD
 static const struct dmi_system_id run_edge_events_on_boot_blacklist[] = {
 	{
 		.matches = {
 			DMI_MATCH(DMI_SYS_VENDOR, "MINIX"),
 			DMI_MATCH(DMI_PRODUCT_NAME, "Z83-4"),
 		}
+=======
+static const struct dmi_system_id gpiolib_acpi_quirks[] = {
+	{
+		/*
+		 * The Minix Neo Z83-4 has a micro-USB-B id-pin handler for
+		 * a non existing micro-USB-B connector which puts the HDMI
+		 * DDC pins in GPIO mode, breaking HDMI support.
+		 */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "MINIX"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "Z83-4"),
+		},
+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+			.no_edge_events_on_boot = true,
+		},
+	},
+	{
+		/*
+		 * The Terra Pad 1061 has a micro-USB-B id-pin handler, which
+		 * instead of controlling the actual micro-USB-B turns the 5V
+		 * boost for its USB-A connector off. The actual micro-USB-B
+		 * connector is wired for charging only.
+		 */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Wortmann_AG"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "TERRA_PAD_1061"),
+		},
+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+			.no_edge_events_on_boot = true,
+		},
+	},
+	{
+		/*
+		 * HP X2 10 models with Cherry Trail SoC + TI PMIC use an
+		 * external embedded-controller connected via I2C + an ACPI GPIO
+		 * event handler on INT33FF:01 pin 0, causing spurious wakeups.
+		 * When suspending by closing the LID, the power to the USB
+		 * keyboard is turned off, causing INT0002 ACPI events to
+		 * trigger once the XHCI controller notices the keyboard is
+		 * gone. So INT0002 events cause spurious wakeups too. Ignoring
+		 * EC wakes breaks wakeup when opening the lid, the user needs
+		 * to press the power-button to wakeup the system. The
+		 * alternative is suspend simply not working, which is worse.
+		 */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "HP x2 Detachable 10-p0XX"),
+		},
+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+			.ignore_wake = "INT33FF:01@0,INT0002:00@2",
+		},
+	},
+	{
+		/*
+		 * HP X2 10 models with Bay Trail SoC + AXP288 PMIC use an
+		 * external embedded-controller connected via I2C + an ACPI GPIO
+		 * event handler on INT33FC:02 pin 28, causing spurious wakeups.
+		 */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion x2 Detachable"),
+			DMI_MATCH(DMI_BOARD_NAME, "815D"),
+		},
+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+			.ignore_wake = "INT33FC:02@28",
+		},
+	},
+	{
+		/*
+		 * HP X2 10 models with Cherry Trail SoC + AXP288 PMIC use an
+		 * external embedded-controller connected via I2C + an ACPI GPIO
+		 * event handler on INT33FF:01 pin 0, causing spurious wakeups.
+		 */
+		.matches = {
+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion x2 Detachable"),
+			DMI_MATCH(DMI_BOARD_NAME, "813E"),
+		},
+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
+			.ignore_wake = "INT33FF:01@0",
+		},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{} /* Terminating entry */
 };
 
 static int acpi_gpio_setup_params(void)
 {
+<<<<<<< HEAD
 	if (run_edge_events_on_boot < 0) {
 		if (dmi_check_system(run_edge_events_on_boot_blacklist))
+=======
+	const struct acpi_gpiolib_dmi_quirk *quirk = NULL;
+	const struct dmi_system_id *id;
+
+	id = dmi_first_match(gpiolib_acpi_quirks);
+	if (id)
+		quirk = id->driver_data;
+
+	if (run_edge_events_on_boot < 0) {
+		if (quirk && quirk->no_edge_events_on_boot)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			run_edge_events_on_boot = 0;
 		else
 			run_edge_events_on_boot = 1;
 	}
 
+<<<<<<< HEAD
+=======
+	if (ignore_wake == NULL && quirk && quirk->ignore_wake)
+		ignore_wake = quirk->ignore_wake;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -23,6 +23,10 @@
 #include <linux/slab.h>
 #include <linux/spinlock.h>
 #include <linux/msi.h>
+<<<<<<< HEAD
+=======
+#include <linux/vmalloc.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/prom.h>
 #include <asm/io.h>
@@ -72,6 +76,7 @@ static u32 xive_ipi_irq;
 /* Xive state for each CPU */
 static DEFINE_PER_CPU(struct xive_cpu *, xive_cpu);
 
+<<<<<<< HEAD
 /*
  * A "disabled" interrupt should never fire, to catch problems
  * we set its logical number to this
@@ -79,6 +84,8 @@ static DEFINE_PER_CPU(struct xive_cpu *, xive_cpu);
 #define XIVE_BAD_IRQ		0x7fffffff
 #define XIVE_MAX_IRQ		(XIVE_BAD_IRQ - 1)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* An invalid CPU target */
 #define XIVE_INVALID_TARGET	(-1)
 
@@ -246,7 +253,11 @@ notrace void xmon_xive_do_dump(int cpu)
 		u64 val = xive_esb_read(&xc->ipi_data, XIVE_ESB_GET);
 		xmon_printf("  IPI state: %x:%c%c\n", xc->hw_ipi,
 			val & XIVE_ESB_VAL_P ? 'P' : 'p',
+<<<<<<< HEAD
 			val & XIVE_ESB_VAL_Q ? 'Q' : 'q');
+=======
+			val & XIVE_ESB_VAL_P ? 'Q' : 'q');
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 }
@@ -266,7 +277,11 @@ static unsigned int xive_get_irq(void)
 	 * of pending priorities. This will also have the effect of
 	 * updating the CPPR to the most favored pending interrupts.
 	 *
+<<<<<<< HEAD
 	 * In the future, if we have a way to differentiate a first
+=======
+	 * In the future, if we have a way to differenciate a first
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * entry (on HW interrupt) from a replay triggered by EOI,
 	 * we could skip this on replays unless we soft-mask tells us
 	 * that a new HW interrupt occurred.
@@ -319,7 +334,11 @@ void xive_do_source_eoi(u32 hw_irq, struct xive_irq_data *xd)
 		 * The FW told us to call it. This happens for some
 		 * interrupt sources that need additional HW whacking
 		 * beyond the ESB manipulation. For example LPC interrupts
+<<<<<<< HEAD
 		 * on P9 DD1.0 needed a latch to be clared in the LPC bridge
+=======
+		 * on P9 DD1.0 need a latch to be clared in the LPC bridge
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * itself. The Firmware will take care of it.
 		 */
 		if (WARN_ON_ONCE(!xive_ops->eoi))
@@ -337,9 +356,15 @@ void xive_do_source_eoi(u32 hw_irq, struct xive_irq_data *xd)
 		 * This allows us to then do a re-trigger if Q was set
 		 * rather than synthesizing an interrupt in software
 		 *
+<<<<<<< HEAD
 		 * For LSIs the HW EOI cycle is used rather than PQ bits,
 		 * as they are automatically re-triggred in HW when still
 		 * pending.
+=======
+		 * For LSIs, using the HW EOI cycle works around a problem
+		 * on P9 DD1 PHBs where the other ESB accesses don't work
+		 * properly.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		if (xd->flags & XIVE_IRQ_FLAG_LSI)
 			xive_esb_read(xd, XIVE_ESB_LOAD_EOI);
@@ -367,8 +392,12 @@ static void xive_irq_eoi(struct irq_data *d)
 	 * EOI the source if it hasn't been disabled and hasn't
 	 * been passed-through to a KVM guest
 	 */
+<<<<<<< HEAD
 	if (!irqd_irq_disabled(d) && !irqd_is_forwarded_to_vcpu(d) &&
 	    !(xd->flags & XIVE_IRQ_NO_EOI))
+=======
+	if (!irqd_irq_disabled(d) && !irqd_is_forwarded_to_vcpu(d))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xive_do_source_eoi(irqd_to_hwirq(d), xd);
 
 	/*
@@ -940,12 +969,22 @@ EXPORT_SYMBOL_GPL(is_xive_irq);
 void xive_cleanup_irq_data(struct xive_irq_data *xd)
 {
 	if (xd->eoi_mmio) {
+<<<<<<< HEAD
+=======
+		unmap_kernel_range((unsigned long)xd->eoi_mmio,
+				   1u << xd->esb_shift);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iounmap(xd->eoi_mmio);
 		if (xd->eoi_mmio == xd->trig_mmio)
 			xd->trig_mmio = NULL;
 		xd->eoi_mmio = NULL;
 	}
 	if (xd->trig_mmio) {
+<<<<<<< HEAD
+=======
+		unmap_kernel_range((unsigned long)xd->trig_mmio,
+				   1u << xd->esb_shift);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iounmap(xd->trig_mmio);
 		xd->trig_mmio = NULL;
 	}
@@ -968,6 +1007,18 @@ static int xive_irq_alloc_data(unsigned int virq, irq_hw_number_t hw)
 	xd->target = XIVE_INVALID_TARGET;
 	irq_set_handler_data(virq, xd);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Turn OFF by default the interrupt being mapped. A side
+	 * effect of this check is the mapping the ESB page of the
+	 * interrupt in the Linux address space. This prevents page
+	 * fault issues in the crash handler which masks all
+	 * interrupts.
+	 */
+	xive_esb_read(xd, XIVE_ESB_SET_PQ_01);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1009,12 +1060,22 @@ static void xive_ipi_eoi(struct irq_data *d)
 {
 	struct xive_cpu *xc = __this_cpu_read(xive_cpu);
 
+<<<<<<< HEAD
 	DBG_VERBOSE("IPI eoi: irq=%d [0x%lx] (HW IRQ 0x%x) pending=%02x\n",
 		    d->irq, irqd_to_hwirq(d), xc->hw_ipi, xc->pending_prio);
 
 	/* Handle possible race with unplug and drop stale IPIs */
 	if (!xc)
 		return;
+=======
+	/* Handle possible race with unplug and drop stale IPIs */
+	if (!xc)
+		return;
+
+	DBG_VERBOSE("IPI eoi: irq=%d [0x%lx] (HW IRQ 0x%x) pending=%02x\n",
+		    d->irq, irqd_to_hwirq(d), xc->hw_ipi, xc->pending_prio);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xive_do_source_eoi(xc->hw_ipi, &xc->ipi_data);
 	xive_do_queue_eoi(xc);
 }
@@ -1064,7 +1125,11 @@ static int xive_setup_cpu_ipi(unsigned int cpu)
 	xc = per_cpu(xive_cpu, cpu);
 
 	/* Check if we are already setup */
+<<<<<<< HEAD
 	if (xc->hw_ipi != 0)
+=======
+	if (xc->hw_ipi != XIVE_BAD_IRQ)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Grab an IPI from the backend, this will populate xc->hw_ipi */
@@ -1101,7 +1166,11 @@ static void xive_cleanup_cpu_ipi(unsigned int cpu, struct xive_cpu *xc)
 	/* Disable the IPI and free the IRQ data */
 
 	/* Already cleaned up ? */
+<<<<<<< HEAD
 	if (xc->hw_ipi == 0)
+=======
+	if (xc->hw_ipi == XIVE_BAD_IRQ)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* Mask the IPI */
@@ -1257,6 +1326,10 @@ static int xive_prepare_cpu(unsigned int cpu)
 		if (np)
 			xc->chip_id = of_get_ibm_chip_id(np);
 		of_node_put(np);
+<<<<<<< HEAD
+=======
+		xc->hw_ipi = XIVE_BAD_IRQ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		per_cpu(xive_cpu, cpu) = xc;
 	}
@@ -1269,6 +1342,14 @@ static void xive_setup_cpu(void)
 {
 	struct xive_cpu *xc = __this_cpu_read(xive_cpu);
 
+<<<<<<< HEAD
+=======
+	/* Debug: Dump the TM state */
+	pr_devel("CPU %d [HW 0x%02x] VT=%02x\n",
+	    smp_processor_id(), hard_smp_processor_id(),
+	    in_8(xive_tima + xive_tima_offset + TM_WORD2));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The backend might have additional things to do */
 	if (xive_ops->setup_cpu)
 		xive_ops->setup_cpu(smp_processor_id(), xc);
@@ -1407,6 +1488,31 @@ void xive_teardown_cpu(void)
 	xive_cleanup_cpu_queues(cpu, xc);
 }
 
+<<<<<<< HEAD
+=======
+void xive_kexec_teardown_cpu(int secondary)
+{
+	struct xive_cpu *xc = __this_cpu_read(xive_cpu);
+	unsigned int cpu = smp_processor_id();
+
+	/* Set CPPR to 0 to disable flow of interrupts */
+	xc->cppr = 0;
+	out_8(xive_tima + xive_tima_offset + TM_CPPR, 0);
+
+	/* Backend cleanup if any */
+	if (xive_ops->teardown_cpu)
+		xive_ops->teardown_cpu(cpu, xc);
+
+#ifdef CONFIG_SMP
+	/* Get rid of IPI */
+	xive_cleanup_cpu_ipi(cpu, xc);
+#endif
+
+	/* Disable and free the queues */
+	xive_cleanup_cpu_queues(cpu, xc);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void xive_shutdown(void)
 {
 	xive_ops->shutdown();

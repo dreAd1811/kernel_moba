@@ -62,6 +62,7 @@ ENTRY(fsys_getpid)
 	.prologue
 	.altrp b6
 	.body
+<<<<<<< HEAD
 	add r17=IA64_TASK_SIGNAL_OFFSET,r16
 	;;
 	ld8 r17=[r17]				// r17 = current->signal
@@ -72,6 +73,18 @@ ENTRY(fsys_getpid)
 	;;
 	and r9=TIF_ALLWORK_MASK,r9
 	ld8 r17=[r17]				// r17 = current->signal->pids[PIDTYPE_TGID]
+=======
+	add r17=IA64_TASK_GROUP_LEADER_OFFSET,r16
+	;;
+	ld8 r17=[r17]				// r17 = current->group_leader
+	add r9=TI_FLAGS+IA64_TASK_SIZE,r16
+	;;
+	ld4 r9=[r9]
+	add r17=IA64_TASK_TGIDLINK_OFFSET,r17
+	;;
+	and r9=TIF_ALLWORK_MASK,r9
+	ld8 r17=[r17]				// r17 = current->group_leader->pids[PIDTYPE_PID].pid
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	;;
 	add r8=IA64_PID_LEVEL_OFFSET,r17
 	;;
@@ -96,11 +109,19 @@ ENTRY(fsys_set_tid_address)
 	.altrp b6
 	.body
 	add r9=TI_FLAGS+IA64_TASK_SIZE,r16
+<<<<<<< HEAD
 	add r17=IA64_TASK_THREAD_PID_OFFSET,r16
 	;;
 	ld4 r9=[r9]
 	tnat.z p6,p7=r32		// check argument register for being NaT
 	ld8 r17=[r17]				// r17 = current->thread_pid
+=======
+	add r17=IA64_TASK_TGIDLINK_OFFSET,r16
+	;;
+	ld4 r9=[r9]
+	tnat.z p6,p7=r32		// check argument register for being NaT
+	ld8 r17=[r17]				// r17 = current->pids[PIDTYPE_PID].pid
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	;;
 	and r9=TIF_ALLWORK_MASK,r9
 	add r8=IA64_PID_LEVEL_OFFSET,r17
@@ -236,9 +257,15 @@ ENTRY(fsys_gettimeofday)
 	MOV_FROM_ITC(p8, p6, r2, r10)	// CPU_TIMER. 36 clocks latency!!!
 (p9)	ld8 r2 = [r30]		// MMIO_TIMER. Could also have latency issues..
 (p13)	ld8 r25 = [r19]		// get itc_lastcycle value
+<<<<<<< HEAD
 	ld8 r9 = [r22],IA64_TIME_SN_SPEC_SNSEC_OFFSET	// sec
 	;;
 	ld8 r8 = [r22],-IA64_TIME_SN_SPEC_SNSEC_OFFSET	// snsec
+=======
+	ld8 r9 = [r22],IA64_TIMESPEC_TV_NSEC_OFFSET	// tv_sec
+	;;
+	ld8 r8 = [r22],-IA64_TIMESPEC_TV_NSEC_OFFSET	// tv_nsec
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 (p13)	sub r3 = r25,r2		// Diff needed before comparison (thanks davidm)
 	;;
 (p13)	cmp.gt.unc p6,p7 = r3,r0 // check if it is less than last. p6,p7 cleared
@@ -266,9 +293,15 @@ EX(.fail_efault, probe.w.fault r31, 3)
 	mf
 	;;
 	ld4 r10 = [r20]		// gtod_lock.sequence
+<<<<<<< HEAD
 	add r8 = r8,r2		// Add xtime.nsecs
 	;;
 	shr.u r8 = r8,r23	// shift by factor
+=======
+	shr.u r2 = r2,r23	// shift by factor
+	;;
+	add r8 = r8,r2		// Add xtime.nsecs
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmp4.ne p7,p0 = r28,r10
 (p7)	br.cond.dpnt.few .time_redo	// sequence number changed, redo
 	// End critical section.

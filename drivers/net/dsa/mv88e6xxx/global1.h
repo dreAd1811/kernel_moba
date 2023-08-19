@@ -29,9 +29,15 @@
 #define MV88E6XXX_G1_STS_IRQ_AVB			8
 #define MV88E6XXX_G1_STS_IRQ_DEVICE			7
 #define MV88E6XXX_G1_STS_IRQ_STATS			6
+<<<<<<< HEAD
 #define MV88E6XXX_G1_STS_IRQ_VTU_PROB			5
 #define MV88E6XXX_G1_STS_IRQ_VTU_DONE			4
 #define MV88E6XXX_G1_STS_IRQ_ATU_PROB			3
+=======
+#define MV88E6XXX_G1_STS_IRQ_VTU_PROBLEM		5
+#define MV88E6XXX_G1_STS_IRQ_VTU_DONE			4
+#define MV88E6XXX_G1_STS_IRQ_ATU_PROBLEM		3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MV88E6XXX_G1_STS_IRQ_ATU_DONE			2
 #define MV88E6XXX_G1_STS_IRQ_TCAM_DONE			1
 #define MV88E6XXX_G1_STS_IRQ_EEPROM_DONE		0
@@ -82,10 +88,13 @@
 #define MV88E6XXX_G1_VTU_OP_VTU_GET_NEXT	0x4000
 #define MV88E6XXX_G1_VTU_OP_STU_LOAD_PURGE	0x5000
 #define MV88E6XXX_G1_VTU_OP_STU_GET_NEXT	0x6000
+<<<<<<< HEAD
 #define MV88E6XXX_G1_VTU_OP_GET_CLR_VIOLATION	0x7000
 #define MV88E6XXX_G1_VTU_OP_MEMBER_VIOLATION	BIT(6)
 #define MV88E6XXX_G1_VTU_OP_MISS_VIOLATION	BIT(5)
 #define MV88E6XXX_G1_VTU_OP_SPID_MASK		0xf
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Offset 0x06: VTU VID Register */
 #define MV88E6XXX_G1_VTU_VID		0x06
@@ -126,10 +135,13 @@
 #define MV88E6XXX_G1_ATU_OP_FLUSH_MOVE_ALL_DB		0x5000
 #define MV88E6XXX_G1_ATU_OP_FLUSH_MOVE_NON_STATIC_DB	0x6000
 #define MV88E6XXX_G1_ATU_OP_GET_CLR_VIOLATION		0x7000
+<<<<<<< HEAD
 #define MV88E6XXX_G1_ATU_OP_AGE_OUT_VIOLATION		BIT(7)
 #define MV88E6XXX_G1_ATU_OP_MEMBER_VIOLATION		BIT(6)
 #define MV88E6XXX_G1_ATU_OP_MISS_VIOLATION		BIT(5)
 #define MV88E6XXX_G1_ATU_OP_FULL_VIOLATION		BIT(4)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Offset 0x0C: ATU Data Register */
 #define MV88E6XXX_G1_ATU_DATA				0x0c
@@ -197,10 +209,15 @@
 #define MV88E6390_G1_MONITOR_MGMT_CTL_PTR_INGRESS_DEST		0x2000
 #define MV88E6390_G1_MONITOR_MGMT_CTL_PTR_EGRESS_DEST		0x2100
 #define MV88E6390_G1_MONITOR_MGMT_CTL_PTR_CPU_DEST		0x3000
+<<<<<<< HEAD
+=======
+#define MV88E6390_G1_MONITOR_MGMT_CTL_PTR_CPU_DEST_MGMTPRI	0x00e0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MV88E6390_G1_MONITOR_MGMT_CTL_DATA_MASK			0x00ff
 
 /* Offset 0x1C: Global Control 2 */
 #define MV88E6XXX_G1_CTL2			0x1c
+<<<<<<< HEAD
 #define MV88E6185_G1_CTL2_CASCADE_PORT_MASK	0xf000
 #define MV88E6185_G1_CTL2_CASCADE_PORT_NONE	0xe000
 #define MV88E6185_G1_CTL2_CASCADE_PORT_MULTI	0xf000
@@ -230,6 +247,13 @@
 #define MV88E6352_G1_CTL2_CTR_MODE_MASK		0x0060
 #define MV88E6390_G1_CTL2_CTR_MODE		0x0020
 #define MV88E6XXX_G1_CTL2_DEVICE_NUMBER_MASK	0x001f
+=======
+#define MV88E6XXX_G1_CTL2_NO_CASCADE		0xe000
+#define MV88E6XXX_G1_CTL2_MULTIPLE_CASCADE	0xf000
+#define MV88E6XXX_G1_CTL2_HIST_RX		0x0040
+#define MV88E6XXX_G1_CTL2_HIST_TX		0x0080
+#define MV88E6XXX_G1_CTL2_HIST_RX_TX		0x00c0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Offset 0x1D: Stats Operation Register */
 #define MV88E6XXX_G1_STATS_OP			0x1d
@@ -267,16 +291,22 @@ int mv88e6xxx_g1_stats_wait(struct mv88e6xxx_chip *chip);
 int mv88e6xxx_g1_stats_snapshot(struct mv88e6xxx_chip *chip, int port);
 int mv88e6320_g1_stats_snapshot(struct mv88e6xxx_chip *chip, int port);
 int mv88e6390_g1_stats_snapshot(struct mv88e6xxx_chip *chip, int port);
+<<<<<<< HEAD
 int mv88e6095_g1_stats_set_histogram(struct mv88e6xxx_chip *chip);
 int mv88e6390_g1_stats_set_histogram(struct mv88e6xxx_chip *chip);
 void mv88e6xxx_g1_stats_read(struct mv88e6xxx_chip *chip, int stat, u32 *val);
 int mv88e6xxx_g1_stats_clear(struct mv88e6xxx_chip *chip);
+=======
+int mv88e6390_g1_stats_set_histogram(struct mv88e6xxx_chip *chip);
+void mv88e6xxx_g1_stats_read(struct mv88e6xxx_chip *chip, int stat, u32 *val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mv88e6095_g1_set_egress_port(struct mv88e6xxx_chip *chip, int port);
 int mv88e6390_g1_set_egress_port(struct mv88e6xxx_chip *chip, int port);
 int mv88e6095_g1_set_cpu_port(struct mv88e6xxx_chip *chip, int port);
 int mv88e6390_g1_set_cpu_port(struct mv88e6xxx_chip *chip, int port);
 int mv88e6390_g1_mgmt_rsvd2cpu(struct mv88e6xxx_chip *chip);
 
+<<<<<<< HEAD
 int mv88e6085_g1_ip_pri_map(struct mv88e6xxx_chip *chip);
 int mv88e6085_g1_ieee_pri_map(struct mv88e6xxx_chip *chip);
 
@@ -288,6 +318,8 @@ int mv88e6390_g1_rmu_disable(struct mv88e6xxx_chip *chip);
 
 int mv88e6xxx_g1_set_device_number(struct mv88e6xxx_chip *chip, int index);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mv88e6xxx_g1_atu_set_learn2all(struct mv88e6xxx_chip *chip, bool learn2all);
 int mv88e6xxx_g1_atu_set_age_time(struct mv88e6xxx_chip *chip,
 				  unsigned int msecs);
@@ -298,8 +330,11 @@ int mv88e6xxx_g1_atu_loadpurge(struct mv88e6xxx_chip *chip, u16 fid,
 int mv88e6xxx_g1_atu_flush(struct mv88e6xxx_chip *chip, u16 fid, bool all);
 int mv88e6xxx_g1_atu_remove(struct mv88e6xxx_chip *chip, u16 fid, int port,
 			    bool all);
+<<<<<<< HEAD
 int mv88e6xxx_g1_atu_prob_irq_setup(struct mv88e6xxx_chip *chip);
 void mv88e6xxx_g1_atu_prob_irq_free(struct mv88e6xxx_chip *chip);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mv88e6185_g1_vtu_getnext(struct mv88e6xxx_chip *chip,
 			     struct mv88e6xxx_vtu_entry *entry);
@@ -314,7 +349,10 @@ int mv88e6390_g1_vtu_getnext(struct mv88e6xxx_chip *chip,
 int mv88e6390_g1_vtu_loadpurge(struct mv88e6xxx_chip *chip,
 			       struct mv88e6xxx_vtu_entry *entry);
 int mv88e6xxx_g1_vtu_flush(struct mv88e6xxx_chip *chip);
+<<<<<<< HEAD
 int mv88e6xxx_g1_vtu_prob_irq_setup(struct mv88e6xxx_chip *chip);
 void mv88e6xxx_g1_vtu_prob_irq_free(struct mv88e6xxx_chip *chip);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _MV88E6XXX_GLOBAL1_H */

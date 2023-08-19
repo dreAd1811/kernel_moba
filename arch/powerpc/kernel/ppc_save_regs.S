@@ -12,7 +12,10 @@
 #include <asm/ppc_asm.h>
 #include <asm/asm-offsets.h>
 #include <asm/ptrace.h>
+<<<<<<< HEAD
 #include <asm/asm-compat.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Grab the register values as they are now.
@@ -26,9 +29,12 @@
  */
 _GLOBAL(ppc_save_regs)
 	PPC_STL	r0,0*SZL(r3)
+<<<<<<< HEAD
 #ifdef CONFIG_PPC32
 	stmw	r2, 2*SZL(r3)
 #else
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PPC_STL	r2,2*SZL(r3)
 	PPC_STL	r3,3*SZL(r3)
 	PPC_STL	r4,4*SZL(r3)
@@ -59,7 +65,10 @@ _GLOBAL(ppc_save_regs)
 	PPC_STL	r29,29*SZL(r3)
 	PPC_STL	r30,30*SZL(r3)
 	PPC_STL	r31,31*SZL(r3)
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* go up one stack frame for SP */
 	PPC_LL	r4,0(r1)
 	PPC_STL	r4,1*SZL(r3)

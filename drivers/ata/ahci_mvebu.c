@@ -82,7 +82,11 @@ static void ahci_mvebu_regret_option(struct ahci_host_priv *hpriv)
  *
  * Return: 0 on success; Error code otherwise.
  */
+<<<<<<< HEAD
 static int ahci_mvebu_stop_engine(struct ata_port *ap)
+=======
+int ahci_mvebu_stop_engine(struct ata_port *ap)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void __iomem *port_mmio = ahci_port_base(ap);
 	u32 tmp, port_fbs;
@@ -158,7 +162,11 @@ static int ahci_mvebu_probe(struct platform_device *pdev)
 	const struct mbus_dram_target_info *dram;
 	int rc;
 
+<<<<<<< HEAD
 	hpriv = ahci_platform_get_resources(pdev, 0);
+=======
+	hpriv = ahci_platform_get_resources(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(hpriv))
 		return PTR_ERR(hpriv);
 

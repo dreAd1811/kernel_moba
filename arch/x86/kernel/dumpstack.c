@@ -25,10 +25,16 @@
 
 int panic_on_unrecovered_nmi;
 int panic_on_io_nmi;
+<<<<<<< HEAD
 static int die_counter;
 
 static struct pt_regs exec_summary_regs;
 
+=======
+unsigned int code_bytes = 64;
+static int die_counter;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool in_task_stack(unsigned long *stack, struct task_struct *task,
 		   struct stack_info *info)
 {
@@ -71,6 +77,7 @@ static void printk_stack_address(unsigned long address, int reliable,
 	printk("%s %s%pB\n", log_lvl, reliable ? "" : "? ", (void *)address);
 }
 
+<<<<<<< HEAD
 /*
  * There are a couple of reasons for the 2/3rd prologue, courtesy of Linus:
  *
@@ -129,6 +136,11 @@ void show_ip(struct pt_regs *regs, const char *loglvl)
 void show_iret_regs(struct pt_regs *regs)
 {
 	show_ip(regs, KERN_DEFAULT);
+=======
+void show_iret_regs(struct pt_regs *regs)
+{
+	printk(KERN_DEFAULT "RIP: %04x:%pS\n", (int)regs->cs, (void *)regs->ip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk(KERN_DEFAULT "RSP: %04x:%016lx EFLAGS: %08lx", (int)regs->ss,
 		regs->sp, regs->flags);
 }
@@ -146,7 +158,11 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
 	 * they can be printed in the right context.
 	 */
 	if (!partial && on_stack(info, regs, sizeof(*regs))) {
+<<<<<<< HEAD
 		__show_regs(regs, SHOW_REGS_SHORT);
+=======
+		__show_regs(regs, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	} else if (partial && on_stack(info, (void *)regs + IRET_FRAME_OFFSET,
 				       IRET_FRAME_SIZE)) {
@@ -324,6 +340,10 @@ unsigned long oops_begin(void)
 	bust_spinlocks(1);
 	return flags;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(oops_begin);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 NOKPROBE_SYMBOL(oops_begin);
 
 void __noreturn rewind_stack_do_exit(int signr);
@@ -343,9 +363,12 @@ void oops_end(unsigned long flags, struct pt_regs *regs, int signr)
 	raw_local_irq_restore(flags);
 	oops_exit();
 
+<<<<<<< HEAD
 	/* Executive summary in case the oops scrolled away */
 	__show_regs(&exec_summary_regs, SHOW_REGS_ALL);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!signr)
 		return;
 	if (in_interrupt())
@@ -367,10 +390,17 @@ NOKPROBE_SYMBOL(oops_end);
 
 int __die(const char *str, struct pt_regs *regs, long err)
 {
+<<<<<<< HEAD
 	/* Save the regs of the first oops for the executive summary later. */
 	if (!die_counter)
 		exec_summary_regs = *regs;
 
+=======
+#ifdef CONFIG_X86_32
+	unsigned short ss;
+	unsigned long sp;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk(KERN_DEFAULT
 	       "%s: %04lx [#%d]%s%s%s%s%s\n", str, err & 0xffff, ++die_counter,
 	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT"         : "",
@@ -380,13 +410,35 @@ int __die(const char *str, struct pt_regs *regs, long err)
 	       IS_ENABLED(CONFIG_PAGE_TABLE_ISOLATION) ?
 	       (boot_cpu_has(X86_FEATURE_PTI) ? " PTI" : " NOPTI") : "");
 
+<<<<<<< HEAD
 	show_regs(regs);
 	print_modules();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (notify_die(DIE_OOPS, str, regs, err,
 			current->thread.trap_nr, SIGSEGV) == NOTIFY_STOP)
 		return 1;
 
+<<<<<<< HEAD
+=======
+	print_modules();
+	show_regs(regs);
+#ifdef CONFIG_X86_32
+	if (user_mode(regs)) {
+		sp = regs->sp;
+		ss = regs->ss;
+	} else {
+		sp = kernel_stack_pointer(regs);
+		savesegment(ss, ss);
+	}
+	printk(KERN_EMERG "EIP: %pS SS:ESP: %04x:%08lx\n",
+	       (void *)regs->ip, ss, sp);
+#else
+	/* Executive summary in case the oops scrolled away */
+	printk(KERN_ALERT "RIP: %pS RSP: %016lx\n", (void *)regs->ip, regs->sp);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 NOKPROBE_SYMBOL(__die);
@@ -405,6 +457,7 @@ void die(const char *str, struct pt_regs *regs, long err)
 	oops_end(flags, regs, sig);
 }
 
+<<<<<<< HEAD
 void show_regs(struct pt_regs *regs)
 {
 	show_regs_print_info(KERN_DEFAULT);
@@ -417,3 +470,24 @@ void show_regs(struct pt_regs *regs)
 	if (!user_mode(regs))
 		show_trace_log_lvl(current, regs, NULL, KERN_DEFAULT);
 }
+=======
+static int __init code_bytes_setup(char *s)
+{
+	ssize_t ret;
+	unsigned long val;
+
+	if (!s)
+		return -EINVAL;
+
+	ret = kstrtoul(s, 0, &val);
+	if (ret)
+		return ret;
+
+	code_bytes = val;
+	if (code_bytes > 8192)
+		code_bytes = 8192;
+
+	return 1;
+}
+__setup("code_bytes=", code_bytes_setup);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

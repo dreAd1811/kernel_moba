@@ -527,7 +527,11 @@ grace period also drove it to completion.
 This straightforward approach had the disadvantage of needing to
 account for POSIX signals sent to user tasks,
 so more recent implemementations use the Linux kernel's
+<<<<<<< HEAD
 <a href="https://www.kernel.org/doc/Documentation/core-api/workqueue.rst">workqueues</a>.
+=======
+<a href="https://www.kernel.org/doc/Documentation/workqueue.txt">workqueues</a>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 <p>
 The requesting task still does counter snapshotting and funnel-lock

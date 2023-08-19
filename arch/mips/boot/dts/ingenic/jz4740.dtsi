@@ -45,6 +45,7 @@
 		#clock-cells = <1>;
 	};
 
+<<<<<<< HEAD
 	watchdog: watchdog@10002000 {
 		compatible = "ingenic,jz4740-watchdog";
 		reg = <0x10002000 0x10>;
@@ -53,6 +54,8 @@
 		clock-names = "rtc";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtc_dev: rtc@10003000 {
 		compatible = "ingenic,jz4740-rtc";
 		reg = <0x10003000 0x40>;

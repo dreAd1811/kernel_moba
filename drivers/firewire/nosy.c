@@ -328,19 +328,34 @@ nosy_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
+<<<<<<< HEAD
 static __poll_t
 nosy_poll(struct file *file, poll_table *pt)
 {
 	struct client *client = file->private_data;
 	__poll_t ret = 0;
+=======
+static unsigned int
+nosy_poll(struct file *file, poll_table *pt)
+{
+	struct client *client = file->private_data;
+	unsigned int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &client->buffer.wait, pt);
 
 	if (atomic_read(&client->buffer.size) > 0)
+<<<<<<< HEAD
 		ret = EPOLLIN | EPOLLRDNORM;
 
 	if (list_empty(&client->lynx->link))
 		ret |= EPOLLHUP;
+=======
+		ret = POLLIN | POLLRDNORM;
+
+	if (list_empty(&client->lynx->link))
+		ret |= POLLHUP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }

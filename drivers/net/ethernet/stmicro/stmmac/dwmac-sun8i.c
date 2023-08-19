@@ -17,7 +17,10 @@
 #include <linux/clk.h>
 #include <linux/io.h>
 #include <linux/iopoll.h>
+<<<<<<< HEAD
 #include <linux/mdio-mux.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mfd/syscon.h>
 #include <linux/module.h>
 #include <linux/of_device.h>
@@ -37,11 +40,16 @@
  *		is done in the "stmmac files"
  */
 
+<<<<<<< HEAD
 /* struct emac_variant - Describe dwmac-sun8i hardware variant
+=======
+/* struct emac_variant - Descrive dwmac-sun8i hardware variant
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @default_syscon_value:	The default value of the EMAC register in syscon
  *				This value is used for disabling properly EMAC
  *				and used as a good starting value in case of the
  *				boot process(uboot) leave some stuff.
+<<<<<<< HEAD
  * @syscon_field		reg_field for the syscon's gmac register
  * @soc_has_internal_phy:	Does the MAC embed an internal PHY
  * @support_mii:		Does the MAC handle MII
@@ -63,6 +71,19 @@ struct emac_variant {
 	bool support_rgmii;
 	u8 rx_delay_max;
 	u8 tx_delay_max;
+=======
+ * @internal_phy:		Does the MAC embed an internal PHY
+ * @support_mii:		Does the MAC handle MII
+ * @support_rmii:		Does the MAC handle RMII
+ * @support_rgmii:		Does the MAC handle RGMII
+ */
+struct emac_variant {
+	u32 default_syscon_value;
+	int internal_phy;
+	bool support_mii;
+	bool support_rmii;
+	bool support_rgmii;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* struct sunxi_priv_data - hold all sunxi private data
@@ -72,8 +93,12 @@ struct emac_variant {
  * @rst_ephy:	reference to the optional EPHY reset for the internal PHY
  * @variant:	reference to the current board variant
  * @regmap:	regmap for using the syscon
+<<<<<<< HEAD
  * @internal_phy_powered: Does the internal PHY is enabled
  * @mux_handle:	Internal pointer used by mdio-mux lib
+=======
+ * @use_internal_phy: Does the current PHY choice imply using the internal PHY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct sunxi_priv_data {
 	struct clk *tx_clk;
@@ -81,6 +106,7 @@ struct sunxi_priv_data {
 	struct regulator *regulator;
 	struct reset_control *rst_ephy;
 	const struct emac_variant *variant;
+<<<<<<< HEAD
 	struct regmap_field *regmap_field;
 	bool internal_phy_powered;
 	void *mux_handle;
@@ -98,10 +124,15 @@ static const struct reg_field sun8i_ccu_reg_field = {
 	.reg = 0x164,
 	.lsb = 0,
 	.msb = 31,
+=======
+	struct regmap *regmap;
+	bool use_internal_phy;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct emac_variant emac_variant_h3 = {
 	.default_syscon_value = 0x58000,
+<<<<<<< HEAD
 	.syscon_field = &sun8i_syscon_reg_field,
 	.soc_has_internal_phy = true,
 	.support_mii = true,
@@ -109,17 +140,28 @@ static const struct emac_variant emac_variant_h3 = {
 	.support_rgmii = true,
 	.rx_delay_max = 31,
 	.tx_delay_max = 7,
+=======
+	.internal_phy = PHY_INTERFACE_MODE_MII,
+	.support_mii = true,
+	.support_rmii = true,
+	.support_rgmii = true
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct emac_variant emac_variant_v3s = {
 	.default_syscon_value = 0x38000,
+<<<<<<< HEAD
 	.syscon_field = &sun8i_syscon_reg_field,
 	.soc_has_internal_phy = true,
+=======
+	.internal_phy = PHY_INTERFACE_MODE_MII,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.support_mii = true
 };
 
 static const struct emac_variant emac_variant_a83t = {
 	.default_syscon_value = 0,
+<<<<<<< HEAD
 	.syscon_field = &sun8i_syscon_reg_field,
 	.soc_has_internal_phy = false,
 	.support_mii = true,
@@ -134,10 +176,16 @@ static const struct emac_variant emac_variant_r40 = {
 	.support_mii = true,
 	.support_rgmii = true,
 	.rx_delay_max = 7,
+=======
+	.internal_phy = 0,
+	.support_mii = true,
+	.support_rgmii = true
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct emac_variant emac_variant_a64 = {
 	.default_syscon_value = 0,
+<<<<<<< HEAD
 	.syscon_field = &sun8i_syscon_reg_field,
 	.soc_has_internal_phy = false,
 	.support_mii = true,
@@ -145,6 +193,12 @@ static const struct emac_variant emac_variant_a64 = {
 	.support_rgmii = true,
 	.rx_delay_max = 31,
 	.tx_delay_max = 7,
+=======
+	.internal_phy = 0,
+	.support_mii = true,
+	.support_rmii = true,
+	.support_rgmii = true
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define EMAC_BASIC_CTL0 0x00
@@ -240,15 +294,24 @@ static const struct emac_variant emac_variant_a64 = {
 #define H3_EPHY_LED_POL		BIT(17) /* 1: active low, 0: active high */
 #define H3_EPHY_SHUTDOWN	BIT(16) /* 1: shutdown, 0: power up */
 #define H3_EPHY_SELECT		BIT(15) /* 1: internal PHY, 0: external PHY */
+<<<<<<< HEAD
 #define H3_EPHY_MUX_MASK	(H3_EPHY_SHUTDOWN | H3_EPHY_SELECT)
 #define DWMAC_SUN8I_MDIO_MUX_INTERNAL_ID	1
 #define DWMAC_SUN8I_MDIO_MUX_EXTERNAL_ID	2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* H3/A64 specific bits */
 #define SYSCON_RMII_EN		BIT(13) /* 1: enable RMII (overrides EPIT) */
 
 /* Generic system control EMAC_CLK bits */
+<<<<<<< HEAD
 #define SYSCON_ETXDC_SHIFT		10
+=======
+#define SYSCON_ETXDC_MASK		GENMASK(2, 0)
+#define SYSCON_ETXDC_SHIFT		10
+#define SYSCON_ERXDC_MASK		GENMASK(4, 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SYSCON_ERXDC_SHIFT		5
 /* EMAC PHY Interface Type */
 #define SYSCON_EPIT			BIT(2) /* 1: RGMII, 0: MII */
@@ -256,6 +319,10 @@ static const struct emac_variant emac_variant_a64 = {
 #define SYSCON_ETCS_MII		0x0
 #define SYSCON_ETCS_EXT_GMII	0x1
 #define SYSCON_ETCS_INT_GMII	0x2
+<<<<<<< HEAD
+=======
+#define SYSCON_EMAC_REG		0x30
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* sun8i_dwmac_dma_reset() - reset the EMAC
  * Called from stmmac via stmmac_dma_ops->reset
@@ -276,12 +343,23 @@ static int sun8i_dwmac_dma_reset(void __iomem *ioaddr)
  * Called from stmmac via stmmac_dma_ops->init
  */
 static void sun8i_dwmac_dma_init(void __iomem *ioaddr,
+<<<<<<< HEAD
 				 struct stmmac_dma_cfg *dma_cfg, int atds)
 {
+=======
+				 struct stmmac_dma_cfg *dma_cfg,
+				 u32 dma_tx, u32 dma_rx, int atds)
+{
+	/* Write TX and RX descriptors address */
+	writel(dma_rx, ioaddr + EMAC_RX_DESC_LIST);
+	writel(dma_tx, ioaddr + EMAC_TX_DESC_LIST);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(EMAC_RX_INT | EMAC_TX_INT, ioaddr + EMAC_INT_EN);
 	writel(0x1FFFFFF, ioaddr + EMAC_INT_STA);
 }
 
+<<<<<<< HEAD
 static void sun8i_dwmac_dma_init_rx(void __iomem *ioaddr,
 				    struct stmmac_dma_cfg *dma_cfg,
 				    u32 dma_rx_phy, u32 chan)
@@ -298,6 +376,8 @@ static void sun8i_dwmac_dma_init_tx(void __iomem *ioaddr,
 	writel(dma_tx_phy, ioaddr + EMAC_TX_DESC_LIST);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* sun8i_dwmac_dump_regs() - Dump EMAC address space
  * Called from stmmac_dma_ops->dump_regs
  * Used for ethtool
@@ -448,6 +528,7 @@ static int sun8i_dwmac_dma_interrupt(void __iomem *ioaddr,
 	return ret;
 }
 
+<<<<<<< HEAD
 static void sun8i_dwmac_dma_operation_mode_rx(void __iomem *ioaddr, int mode,
 					      u32 channel, int fifosz, u8 qmode)
 {
@@ -473,11 +554,19 @@ static void sun8i_dwmac_dma_operation_mode_rx(void __iomem *ioaddr, int mode,
 
 static void sun8i_dwmac_dma_operation_mode_tx(void __iomem *ioaddr, int mode,
 					      u32 channel, int fifosz, u8 qmode)
+=======
+static void sun8i_dwmac_dma_operation_mode(void __iomem *ioaddr, int txmode,
+					   int rxmode, int rxfifosz)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 v;
 
 	v = readl(ioaddr + EMAC_TX_CTL1);
+<<<<<<< HEAD
 	if (mode == SF_DMA_MODE) {
+=======
+	if (txmode == SF_DMA_MODE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v |= EMAC_TX_MD;
 		/* Undocumented bit (called TX_NEXT_FRM in BSP), the original
 		 * comment is
@@ -488,6 +577,7 @@ static void sun8i_dwmac_dma_operation_mode_tx(void __iomem *ioaddr, int mode,
 	} else {
 		v &= ~EMAC_TX_MD;
 		v &= ~EMAC_TX_TH_MASK;
+<<<<<<< HEAD
 		if (mode < 64)
 			v |= EMAC_TX_TH_64;
 		else if (mode < 128)
@@ -498,16 +588,50 @@ static void sun8i_dwmac_dma_operation_mode_tx(void __iomem *ioaddr, int mode,
 			v |= EMAC_TX_TH_256;
 	}
 	writel(v, ioaddr + EMAC_TX_CTL1);
+=======
+		if (txmode < 64)
+			v |= EMAC_TX_TH_64;
+		else if (txmode < 128)
+			v |= EMAC_TX_TH_128;
+		else if (txmode < 192)
+			v |= EMAC_TX_TH_192;
+		else if (txmode < 256)
+			v |= EMAC_TX_TH_256;
+	}
+	writel(v, ioaddr + EMAC_TX_CTL1);
+
+	v = readl(ioaddr + EMAC_RX_CTL1);
+	if (rxmode == SF_DMA_MODE) {
+		v |= EMAC_RX_MD;
+	} else {
+		v &= ~EMAC_RX_MD;
+		v &= ~EMAC_RX_TH_MASK;
+		if (rxmode < 32)
+			v |= EMAC_RX_TH_32;
+		else if (rxmode < 64)
+			v |= EMAC_RX_TH_64;
+		else if (rxmode < 96)
+			v |= EMAC_RX_TH_96;
+		else if (rxmode < 128)
+			v |= EMAC_RX_TH_128;
+	}
+	writel(v, ioaddr + EMAC_RX_CTL1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct stmmac_dma_ops sun8i_dwmac_dma_ops = {
 	.reset = sun8i_dwmac_dma_reset,
 	.init = sun8i_dwmac_dma_init,
+<<<<<<< HEAD
 	.init_rx_chan = sun8i_dwmac_dma_init_rx,
 	.init_tx_chan = sun8i_dwmac_dma_init_tx,
 	.dump_regs = sun8i_dwmac_dump_regs,
 	.dma_rx_mode = sun8i_dwmac_dma_operation_mode_rx,
 	.dma_tx_mode = sun8i_dwmac_dma_operation_mode_tx,
+=======
+	.dump_regs = sun8i_dwmac_dump_regs,
+	.dma_mode = sun8i_dwmac_dma_operation_mode,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable_dma_transmission = sun8i_dwmac_enable_dma_transmission,
 	.enable_dma_irq = sun8i_dwmac_enable_dma_irq,
 	.disable_dma_irq = sun8i_dwmac_disable_dma_irq,
@@ -700,6 +824,7 @@ static int sun8i_dwmac_reset(struct stmmac_priv *priv)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Search in mdio-mux node for internal PHY node and get its clk/reset */
 static int get_ephy_nodes(struct stmmac_priv *priv)
 {
@@ -861,6 +986,8 @@ static int sun8i_dwmac_register_mdio_mux(struct stmmac_priv *priv)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sun8i_dwmac_set_syscon(struct stmmac_priv *priv)
 {
 	struct sunxi_priv_data *gmac = priv->plat->bsp_priv;
@@ -868,13 +995,18 @@ static int sun8i_dwmac_set_syscon(struct stmmac_priv *priv)
 	int ret;
 	u32 reg, val;
 
+<<<<<<< HEAD
 	regmap_field_read(gmac->regmap_field, &val);
+=======
+	regmap_read(gmac->regmap, SYSCON_EMAC_REG, &val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg = gmac->variant->default_syscon_value;
 	if (reg != val)
 		dev_warn(priv->device,
 			 "Current syscon value is not the default %x (expect %x)\n",
 			 val, reg);
 
+<<<<<<< HEAD
 	if (gmac->variant->soc_has_internal_phy) {
 		if (of_property_read_bool(node, "allwinner,leds-active-low"))
 			reg |= H3_EPHY_LED_POL;
@@ -898,6 +1030,37 @@ static int sun8i_dwmac_set_syscon(struct stmmac_priv *priv)
 		 * set to 0 (external PHY).
 		 */
 		reg &= ~H3_EPHY_SELECT;
+=======
+	if (gmac->variant->internal_phy) {
+		if (!gmac->use_internal_phy) {
+			/* switch to external PHY interface */
+			reg &= ~H3_EPHY_SELECT;
+		} else {
+			reg |= H3_EPHY_SELECT;
+			reg &= ~H3_EPHY_SHUTDOWN;
+			dev_dbg(priv->device, "Select internal_phy %x\n", reg);
+
+			if (of_property_read_bool(priv->plat->phy_node,
+						  "allwinner,leds-active-low"))
+				reg |= H3_EPHY_LED_POL;
+			else
+				reg &= ~H3_EPHY_LED_POL;
+
+			/* Force EPHY xtal frequency to 24MHz. */
+			reg |= H3_EPHY_CLK_SEL;
+
+			ret = of_mdio_parse_addr(priv->device,
+						 priv->plat->phy_node);
+			if (ret < 0) {
+				dev_err(priv->device, "Could not parse MDIO addr\n");
+				return ret;
+			}
+			/* of_mdio_parse_addr returns a valid (0 ~ 31) PHY
+			 * address. No need to mask it again.
+			 */
+			reg |= ret << H3_EPHY_ADDR_SHIFT;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!of_property_read_u32(node, "allwinner,tx-delay-ps", &val)) {
@@ -907,9 +1070,14 @@ static int sun8i_dwmac_set_syscon(struct stmmac_priv *priv)
 		}
 		val /= 100;
 		dev_dbg(priv->device, "set tx-delay to %x\n", val);
+<<<<<<< HEAD
 		if (val <= gmac->variant->tx_delay_max) {
 			reg &= ~(gmac->variant->tx_delay_max <<
 				 SYSCON_ETXDC_SHIFT);
+=======
+		if (val <= SYSCON_ETXDC_MASK) {
+			reg &= ~(SYSCON_ETXDC_MASK << SYSCON_ETXDC_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg |= (val << SYSCON_ETXDC_SHIFT);
 		} else {
 			dev_err(priv->device, "Invalid TX clock delay: %d\n",
@@ -925,9 +1093,14 @@ static int sun8i_dwmac_set_syscon(struct stmmac_priv *priv)
 		}
 		val /= 100;
 		dev_dbg(priv->device, "set rx-delay to %x\n", val);
+<<<<<<< HEAD
 		if (val <= gmac->variant->rx_delay_max) {
 			reg &= ~(gmac->variant->rx_delay_max <<
 				 SYSCON_ERXDC_SHIFT);
+=======
+		if (val <= SYSCON_ERXDC_MASK) {
+			reg &= ~(SYSCON_ERXDC_MASK << SYSCON_ERXDC_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg |= (val << SYSCON_ERXDC_SHIFT);
 		} else {
 			dev_err(priv->device, "Invalid RX clock delay: %d\n",
@@ -946,6 +1119,12 @@ static int sun8i_dwmac_set_syscon(struct stmmac_priv *priv)
 		/* default */
 		break;
 	case PHY_INTERFACE_MODE_RGMII:
+<<<<<<< HEAD
+=======
+	case PHY_INTERFACE_MODE_RGMII_ID:
+	case PHY_INTERFACE_MODE_RGMII_RXID:
+	case PHY_INTERFACE_MODE_RGMII_TXID:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg |= SYSCON_EPIT | SYSCON_ETCS_INT_GMII;
 		break;
 	case PHY_INTERFACE_MODE_RMII:
@@ -957,7 +1136,11 @@ static int sun8i_dwmac_set_syscon(struct stmmac_priv *priv)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	regmap_field_write(gmac->regmap_field, reg);
+=======
+	regmap_write(gmac->regmap, SYSCON_EMAC_REG, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -966,13 +1149,88 @@ static void sun8i_dwmac_unset_syscon(struct sunxi_priv_data *gmac)
 {
 	u32 reg = gmac->variant->default_syscon_value;
 
+<<<<<<< HEAD
 	regmap_field_write(gmac->regmap_field, reg);
+=======
+	regmap_write(gmac->regmap, SYSCON_EMAC_REG, reg);
+}
+
+static int sun8i_dwmac_power_internal_phy(struct stmmac_priv *priv)
+{
+	struct sunxi_priv_data *gmac = priv->plat->bsp_priv;
+	int ret;
+
+	if (!gmac->use_internal_phy)
+		return 0;
+
+	ret = clk_prepare_enable(gmac->ephy_clk);
+	if (ret) {
+		dev_err(priv->device, "Cannot enable ephy\n");
+		return ret;
+	}
+
+	/* Make sure the EPHY is properly reseted, as U-Boot may leave
+	 * it at deasserted state, and thus it may fail to reset EMAC.
+	 */
+	reset_control_assert(gmac->rst_ephy);
+
+	ret = reset_control_deassert(gmac->rst_ephy);
+	if (ret) {
+		dev_err(priv->device, "Cannot deassert ephy\n");
+		clk_disable_unprepare(gmac->ephy_clk);
+		return ret;
+	}
+
+	return 0;
+}
+
+static int sun8i_dwmac_unpower_internal_phy(struct sunxi_priv_data *gmac)
+{
+	if (!gmac->use_internal_phy)
+		return 0;
+
+	clk_disable_unprepare(gmac->ephy_clk);
+	reset_control_assert(gmac->rst_ephy);
+	return 0;
+}
+
+/* sun8i_power_phy() - Activate the PHY:
+ * In case of error, no need to call sun8i_unpower_phy(),
+ * it will be called anyway by sun8i_dwmac_exit()
+ */
+static int sun8i_power_phy(struct stmmac_priv *priv)
+{
+	int ret;
+
+	ret = sun8i_dwmac_power_internal_phy(priv);
+	if (ret)
+		return ret;
+
+	ret = sun8i_dwmac_set_syscon(priv);
+	if (ret)
+		return ret;
+
+	/* After changing syscon value, the MAC need reset or it will use
+	 * the last value (and so the last PHY set.
+	 */
+	ret = sun8i_dwmac_reset(priv);
+	if (ret)
+		return ret;
+	return 0;
+}
+
+static void sun8i_unpower_phy(struct sunxi_priv_data *gmac)
+{
+	sun8i_dwmac_unset_syscon(gmac);
+	sun8i_dwmac_unpower_internal_phy(gmac);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sun8i_dwmac_exit(struct platform_device *pdev, void *priv)
 {
 	struct sunxi_priv_data *gmac = priv;
 
+<<<<<<< HEAD
 	if (gmac->variant->soc_has_internal_phy) {
 		/* sun8i_dwmac_exit could be called with mdiomux uninit */
 		if (gmac->mux_handle)
@@ -984,6 +1242,9 @@ static void sun8i_dwmac_exit(struct platform_device *pdev, void *priv)
 	sun8i_dwmac_unset_syscon(gmac);
 
 	reset_control_put(gmac->rst_ephy);
+=======
+	sun8i_unpower_phy(gmac);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_disable_unprepare(gmac->tx_clk);
 
@@ -1012,7 +1273,11 @@ static struct mac_device_info *sun8i_dwmac_setup(void *ppriv)
 	if (!mac)
 		return NULL;
 
+<<<<<<< HEAD
 	ret = sun8i_dwmac_set_syscon(priv);
+=======
+	ret = sun8i_power_phy(priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return NULL;
 
@@ -1047,6 +1312,7 @@ static struct mac_device_info *sun8i_dwmac_setup(void *ppriv)
 	return mac;
 }
 
+<<<<<<< HEAD
 static struct regmap *sun8i_dwmac_get_syscon_from_dev(struct device_node *node)
 {
 	struct device_node *syscon_node;
@@ -1075,6 +1341,8 @@ out_put_node:
 	return regmap;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sun8i_dwmac_probe(struct platform_device *pdev)
 {
 	struct plat_stmmacenet_data *plat_dat;
@@ -1082,9 +1350,12 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
 	struct sunxi_priv_data *gmac;
 	struct device *dev = &pdev->dev;
 	int ret;
+<<<<<<< HEAD
 	struct stmmac_priv *priv;
 	struct net_device *ndev;
 	struct regmap *regmap;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
 	if (ret)
@@ -1119,6 +1390,7 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
 		gmac->regulator = NULL;
 	}
 
+<<<<<<< HEAD
 	/* The "GMAC clock control" register might be located in the
 	 * CCU address range (on the R40), or the system control address
 	 * range (on most other sun8i and later SoCs).
@@ -1142,10 +1414,17 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
 							 "syscon");
 	if (IS_ERR(regmap)) {
 		ret = PTR_ERR(regmap);
+=======
+	gmac->regmap = syscon_regmap_lookup_by_phandle(pdev->dev.of_node,
+						       "syscon");
+	if (IS_ERR(gmac->regmap)) {
+		ret = PTR_ERR(gmac->regmap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pdev->dev, "Unable to map syscon: %d\n", ret);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	gmac->regmap_field = devm_regmap_field_alloc(dev, regmap,
 						     *gmac->variant->syscon_field);
 	if (IS_ERR(gmac->regmap_field)) {
@@ -1155,6 +1434,32 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
 	}
 
 	plat_dat->interface = of_get_phy_mode(dev->of_node);
+=======
+	plat_dat->interface = of_get_phy_mode(dev->of_node);
+	if (plat_dat->interface == gmac->variant->internal_phy) {
+		dev_info(&pdev->dev, "Will use internal PHY\n");
+		gmac->use_internal_phy = true;
+		gmac->ephy_clk = of_clk_get(plat_dat->phy_node, 0);
+		if (IS_ERR(gmac->ephy_clk)) {
+			ret = PTR_ERR(gmac->ephy_clk);
+			dev_err(&pdev->dev, "Cannot get EPHY clock: %d\n", ret);
+			return -EINVAL;
+		}
+
+		gmac->rst_ephy = of_reset_control_get(plat_dat->phy_node, NULL);
+		if (IS_ERR(gmac->rst_ephy)) {
+			ret = PTR_ERR(gmac->rst_ephy);
+			if (ret == -EPROBE_DEFER)
+				return ret;
+			dev_err(&pdev->dev, "No EPHY reset control found %d\n",
+				ret);
+			return -EINVAL;
+		}
+	} else {
+		dev_info(&pdev->dev, "Will use external PHY\n");
+		gmac->use_internal_phy = false;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* platform data specifying hardware features and callbacks.
 	 * hardware features were copied from Allwinner drivers.
@@ -1173,6 +1478,7 @@ static int sun8i_dwmac_probe(struct platform_device *pdev)
 
 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
 	if (ret)
+<<<<<<< HEAD
 		goto dwmac_exit;
 
 	ndev = dev_get_drvdata(&pdev->dev);
@@ -1214,6 +1520,14 @@ static const struct of_device_id sun8i_dwmac_match[] = {
 		.data = &emac_variant_r40 },
 	{ .compatible = "allwinner,sun50i-a64-emac",
 		.data = &emac_variant_a64 },
+=======
+		sun8i_dwmac_exit(pdev, plat_dat->bsp_priv);
+
+	return ret;
+}
+
+static const struct of_device_id sun8i_dwmac_match[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, sun8i_dwmac_match);

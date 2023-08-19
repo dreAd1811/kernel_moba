@@ -341,6 +341,14 @@ start_here:
 	/* Initialize r31 with current task address */
 	addik	r31, r0, init_task
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Call platform dependent initialize function.
+	 * Please see $(ARCH)/mach-$(SUBARCH)/setup.c for
+	 * the function.
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addik	r11, r0, machine_early_init
 	brald	r15, r11
 	nop

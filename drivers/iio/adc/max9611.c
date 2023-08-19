@@ -92,6 +92,15 @@
 #define MAX9611_TEMP_SCALE_NUM		1000000
 #define MAX9611_TEMP_SCALE_DIV		2083
 
+<<<<<<< HEAD
+=======
+/*
+ * Conversion time is 2 ms (typically) at Ta=25 degreeC
+ * No maximum value is known, so play it safe.
+ */
+#define MAX9611_CONV_TIME_US_RANGE	3000, 3300
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct max9611_dev {
 	struct device *dev;
 	struct i2c_client *i2c_client;
@@ -239,11 +248,17 @@ static int max9611_read_single(struct max9611_dev *max9611,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * need a delay here to make register configuration
 	 * stabilize. 1 msec at least, from empirical testing.
 	 */
 	usleep_range(1000, 2000);
+=======
+	/* need a delay here to make register configuration stabilize. */
+
+	usleep_range(MAX9611_CONV_TIME_US_RANGE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i2c_smbus_read_word_swapped(max9611->i2c_client, reg_addr);
 	if (ret < 0) {
@@ -289,7 +304,11 @@ static int max9611_read_csa_voltage(struct max9611_dev *max9611,
 			return ret;
 
 		if (*adc_raw > 0) {
+<<<<<<< HEAD
 			*csa_gain = gain_selectors[i];
+=======
+			*csa_gain = (enum max9611_csa_gain)gain_selectors[i];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 	}
@@ -460,6 +479,10 @@ static const struct attribute_group max9611_attribute_group = {
 };
 
 static const struct iio_info indio_info = {
+<<<<<<< HEAD
+=======
+	.driver_module	= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw	= max9611_read_raw,
 	.attrs		= &max9611_attribute_group,
 };
@@ -510,7 +533,11 @@ static int max9611_init(struct max9611_dev *max9611)
 			MAX9611_REG_CTRL2, 0);
 		return ret;
 	}
+<<<<<<< HEAD
 	usleep_range(1000, 2000);
+=======
+	usleep_range(MAX9611_CONV_TIME_US_RANGE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -572,6 +599,10 @@ static int max9611_probe(struct i2c_client *client,
 static struct i2c_driver max9611_driver = {
 	.driver = {
 		   .name = DRIVER_NAME,
+<<<<<<< HEAD
+=======
+		   .owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   .of_match_table = max9611_of_table,
 	},
 	.probe = max9611_probe,

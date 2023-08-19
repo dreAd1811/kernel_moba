@@ -28,10 +28,19 @@
  * parent - fixed parent.  No clk_set_parent support
  */
 
+<<<<<<< HEAD
 static unsigned int _get_table_maxdiv(const struct clk_div_table *table,
 				      u8 width)
 {
 	unsigned int maxdiv = 0, mask = clk_div_mask(width);
+=======
+#define div_mask(width)	((1 << (width)) - 1)
+
+static unsigned int _get_table_maxdiv(const struct clk_div_table *table,
+				      u8 width)
+{
+	unsigned int maxdiv = 0, mask = div_mask(width);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct clk_div_table *clkt;
 
 	for (clkt = table; clkt->div; clkt++)
@@ -55,12 +64,21 @@ static unsigned int _get_maxdiv(const struct clk_div_table *table, u8 width,
 				unsigned long flags)
 {
 	if (flags & CLK_DIVIDER_ONE_BASED)
+<<<<<<< HEAD
 		return clk_div_mask(width);
 	if (flags & CLK_DIVIDER_POWER_OF_TWO)
 		return 1 << clk_div_mask(width);
 	if (table)
 		return _get_table_maxdiv(table, width);
 	return clk_div_mask(width) + 1;
+=======
+		return div_mask(width);
+	if (flags & CLK_DIVIDER_POWER_OF_TWO)
+		return 1 << div_mask(width);
+	if (table)
+		return _get_table_maxdiv(table, width);
+	return div_mask(width) + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int _get_table_div(const struct clk_div_table *table,
@@ -82,7 +100,11 @@ static unsigned int _get_div(const struct clk_div_table *table,
 	if (flags & CLK_DIVIDER_POWER_OF_TWO)
 		return 1 << val;
 	if (flags & CLK_DIVIDER_MAX_AT_ZERO)
+<<<<<<< HEAD
 		return val ? val : clk_div_mask(width) + 1;
+=======
+		return val ? val : div_mask(width) + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (table)
 		return _get_table_div(table, val);
 	return val + 1;
@@ -107,7 +129,11 @@ static unsigned int _get_val(const struct clk_div_table *table,
 	if (flags & CLK_DIVIDER_POWER_OF_TWO)
 		return __ffs(div);
 	if (flags & CLK_DIVIDER_MAX_AT_ZERO)
+<<<<<<< HEAD
 		return (div == clk_div_mask(width) + 1) ? 0 : div;
+=======
+		return (div == div_mask(width) + 1) ? 0 : div;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (table)
 		return  _get_table_val(table, div);
 	return div - 1;
@@ -139,7 +165,11 @@ static unsigned long clk_divider_recalc_rate(struct clk_hw *hw,
 	unsigned int val;
 
 	val = clk_readl(divider->reg) >> divider->shift;
+<<<<<<< HEAD
 	val &= clk_div_mask(divider->width);
+=======
+	val &= div_mask(divider->width);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return divider_recalc_rate(hw, parent_rate, val, divider->table,
 				   divider->flags, divider->width);
@@ -255,6 +285,12 @@ static bool _is_best_div(unsigned long rate, unsigned long now,
 {
 	if (flags & CLK_DIVIDER_ROUND_CLOSEST)
 		return abs(rate - now) < abs(rate - best);
+<<<<<<< HEAD
+=======
+	else if (flags & CLK_DIVIDER_ROUND_KHZ)
+		return (DIV_ROUND_CLOSEST(abs(rate - now), 1000)
+			< DIV_ROUND_CLOSEST(abs(rate - best), 1000));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return now <= rate && now > best;
 }
@@ -345,6 +381,7 @@ long divider_round_rate_parent(struct clk_hw *hw, struct clk_hw *parent,
 }
 EXPORT_SYMBOL_GPL(divider_round_rate_parent);
 
+<<<<<<< HEAD
 long divider_ro_round_rate_parent(struct clk_hw *hw, struct clk_hw *parent,
 				  unsigned long rate, unsigned long *prate,
 				  const struct clk_div_table *table, u8 width,
@@ -367,10 +404,13 @@ long divider_ro_round_rate_parent(struct clk_hw *hw, struct clk_hw *parent,
 EXPORT_SYMBOL_GPL(divider_ro_round_rate_parent);
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static long clk_divider_round_rate(struct clk_hw *hw, unsigned long rate,
 				unsigned long *prate)
 {
 	struct clk_divider *divider = to_clk_divider(hw);
+<<<<<<< HEAD
 
 	/* if read only, just return current value */
 	if (divider->flags & CLK_DIVIDER_READ_ONLY) {
@@ -382,6 +422,17 @@ static long clk_divider_round_rate(struct clk_hw *hw, unsigned long rate,
 		return divider_ro_round_rate(hw, rate, prate, divider->table,
 					     divider->width, divider->flags,
 					     val);
+=======
+	int bestdiv;
+
+	/* if read only, just return current value */
+	if (divider->flags & CLK_DIVIDER_READ_ONLY) {
+		bestdiv = clk_readl(divider->reg) >> divider->shift;
+		bestdiv &= div_mask(divider->width);
+		bestdiv = _get_div(divider->table, bestdiv, divider->flags,
+			divider->width);
+		return DIV_ROUND_UP_ULL((u64)*prate, bestdiv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return divider_round_rate(hw, rate, prate, divider->table,
@@ -401,7 +452,11 @@ int divider_get_val(unsigned long rate, unsigned long parent_rate,
 
 	value = _get_val(table, div, flags, width);
 
+<<<<<<< HEAD
 	return min_t(unsigned int, value, clk_div_mask(width));
+=======
+	return min_t(unsigned int, value, div_mask(width));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(divider_get_val);
 
@@ -424,10 +479,17 @@ static int clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
 		__acquire(divider->lock);
 
 	if (divider->flags & CLK_DIVIDER_HIWORD_MASK) {
+<<<<<<< HEAD
 		val = clk_div_mask(divider->width) << (divider->shift + 16);
 	} else {
 		val = clk_readl(divider->reg);
 		val &= ~(clk_div_mask(divider->width) << divider->shift);
+=======
+		val = div_mask(divider->width) << (divider->shift + 16);
+	} else {
+		val = clk_readl(divider->reg);
+		val &= ~(div_mask(divider->width) << divider->shift);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	val |= (u32)value << divider->shift;
 	clk_writel(val, divider->reg);
@@ -497,7 +559,10 @@ static struct clk_hw *_register_divider(struct device *dev, const char *name,
 	/* register the clock */
 	hw = &div->hw;
 	ret = clk_hw_register(dev, hw);
+<<<<<<< HEAD
 	hw->init = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		kfree(div);
 		hw = ERR_PTR(ret);

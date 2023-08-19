@@ -43,6 +43,10 @@
 #include <drm/drm_fb_helper.h>
 
 #include <drm/drm_crtc_helper.h>
+<<<<<<< HEAD
+=======
+#include "radeon_kfd.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * KMS wrapper.
@@ -168,12 +172,16 @@ int radeon_no_wb;
 int radeon_modeset = -1;
 int radeon_dynclks = -1;
 int radeon_r4xx_atom = 0;
+<<<<<<< HEAD
 #ifdef __powerpc__
 /* Default to PCI on PowerPC (fdo #95017) */
 int radeon_agpmode = -1;
 #else
 int radeon_agpmode = 0;
 #endif
+=======
+int radeon_agpmode = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int radeon_vram_limit = 0;
 int radeon_gart_size = -1; /* auto */
 int radeon_benchmarking = 0;
@@ -340,6 +348,7 @@ static int radeon_kick_out_firmware_fb(struct pci_dev *pdev)
 static int radeon_pci_probe(struct pci_dev *pdev,
 			    const struct pci_device_id *ent)
 {
+<<<<<<< HEAD
 	unsigned long flags = 0;
 	int ret;
 
@@ -372,6 +381,17 @@ static int radeon_pci_probe(struct pci_dev *pdev,
 			return -ENODEV;
 		}
 	}
+=======
+	int ret;
+
+	/*
+	 * Initialize amdkfd before starting radeon. If it was not loaded yet,
+	 * defer radeon probing
+	 */
+	ret = radeon_kfd_init();
+	if (ret == -EPROBE_DEFER)
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vga_switcheroo_client_probe_defer(pdev))
 		return -EPROBE_DEFER;
@@ -670,6 +690,10 @@ static int __init radeon_init(void)
 
 static void __exit radeon_exit(void)
 {
+<<<<<<< HEAD
+=======
+	radeon_kfd_fini();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_unregister_driver(pdriver);
 	radeon_unregister_atpx_handler();
 }

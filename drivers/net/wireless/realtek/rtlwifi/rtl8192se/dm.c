@@ -295,8 +295,12 @@ static void _rtl92s_dm_refresh_rateadaptive_mask(struct ieee80211_hw *hw)
 			sta = rtl_find_sta(hw, mac->bssid);
 			if (sta)
 				rtlpriv->cfg->ops->update_rate_tbl(hw, sta,
+<<<<<<< HEAD
 							   ra->ratr_state,
 							   true);
+=======
+							   ra->ratr_state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rcu_read_unlock();
 
 			ra->pre_ratr_state = ra->ratr_state;

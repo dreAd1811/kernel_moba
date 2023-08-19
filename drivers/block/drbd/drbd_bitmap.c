@@ -953,7 +953,11 @@ static void drbd_bm_endio(struct bio *bio)
 	struct drbd_bm_aio_ctx *ctx = bio->bi_private;
 	struct drbd_device *device = ctx->device;
 	struct drbd_bitmap *b = device->bitmap;
+<<<<<<< HEAD
 	unsigned int idx = bm_page_to_idx(bio_first_page_all(bio));
+=======
+	unsigned int idx = bm_page_to_idx(bio->bi_io_vec[0].bv_page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((ctx->flags & BM_AIO_COPY_PAGES) == 0 &&
 	    !bm_test_page_unchanged(b->bm_pages[idx]))
@@ -977,7 +981,11 @@ static void drbd_bm_endio(struct bio *bio)
 	bm_page_unlock_io(device, idx);
 
 	if (ctx->flags & BM_AIO_COPY_PAGES)
+<<<<<<< HEAD
 		mempool_free(bio->bi_io_vec[0].bv_page, &drbd_md_io_page_pool);
+=======
+		mempool_free(bio->bi_io_vec[0].bv_page, drbd_md_io_page_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bio_put(bio);
 
@@ -1014,8 +1022,12 @@ static void bm_page_io_async(struct drbd_bm_aio_ctx *ctx, int page_nr) __must_ho
 	bm_set_page_unchanged(b->bm_pages[page_nr]);
 
 	if (ctx->flags & BM_AIO_COPY_PAGES) {
+<<<<<<< HEAD
 		page = mempool_alloc(&drbd_md_io_page_pool,
 				GFP_NOIO | __GFP_HIGHMEM);
+=======
+		page = mempool_alloc(drbd_md_io_page_pool, __GFP_HIGHMEM|__GFP_RECLAIM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		copy_highpage(page, b->bm_pages[page_nr]);
 		bm_store_page_idx(page, page_nr);
 	} else

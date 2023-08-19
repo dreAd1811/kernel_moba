@@ -170,8 +170,13 @@ int matrix_keypad_build_keymap(const struct matrix_keymap_data *keymap_data,
 		return -EINVAL;
 
 	if (!keymap) {
+<<<<<<< HEAD
 		keymap = devm_kcalloc(input_dev->dev.parent,
 				      max_keys, sizeof(*keymap),
+=======
+		keymap = devm_kzalloc(input_dev->dev.parent,
+				      max_keys * sizeof(*keymap),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      GFP_KERNEL);
 		if (!keymap) {
 			dev_err(input_dev->dev.parent,

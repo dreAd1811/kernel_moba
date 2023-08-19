@@ -1,6 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright 2013 Freescale Semiconductor, Inc.
+=======
+
+/*
+ * Copyright 2013 Freescale Semiconductor, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/interrupt-controller/irq.h>
 #include "imx6q-pinfunc.h"
@@ -38,7 +50,10 @@
 				396000	1175000
 			>;
 			clock-latency = <61036>; /* two CLK32 periods */
+<<<<<<< HEAD
 			#cooling-cells = <2>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&clks IMX6QDL_CLK_ARM>,
 				 <&clks IMX6QDL_CLK_PLL2_PFD2_396M>,
 				 <&clks IMX6QDL_CLK_STEP>,
@@ -51,11 +66,16 @@
 			soc-supply = <&reg_soc>;
 		};
 
+<<<<<<< HEAD
 		cpu1: cpu@1 {
+=======
+		cpu@1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,cortex-a9";
 			device_type = "cpu";
 			reg = <1>;
 			next-level-cache = <&L2>;
+<<<<<<< HEAD
 			operating-points = <
 				/* kHz    uV */
 				1200000 1275000
@@ -86,10 +106,16 @@
 		};
 
 		cpu2: cpu@2 {
+=======
+		};
+
+		cpu@2 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,cortex-a9";
 			device_type = "cpu";
 			reg = <2>;
 			next-level-cache = <&L2>;
+<<<<<<< HEAD
 			operating-points = <
 				/* kHz    uV */
 				1200000 1275000
@@ -120,10 +146,16 @@
 		};
 
 		cpu3: cpu@3 {
+=======
+		};
+
+		cpu@3 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,cortex-a9";
 			device_type = "cpu";
 			reg = <3>;
 			next-level-cache = <&L2>;
+<<<<<<< HEAD
 			operating-points = <
 				/* kHz    uV */
 				1200000 1275000
@@ -151,19 +183,31 @@
 			arm-supply = <&reg_arm>;
 			pu-supply = <&reg_pu>;
 			soc-supply = <&reg_soc>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
 	soc {
+<<<<<<< HEAD
 		ocram: sram@900000 {
+=======
+		ocram: sram@00900000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mmio-sram";
 			reg = <0x00900000 0x40000>;
 			clocks = <&clks IMX6QDL_CLK_OCRAM>;
 		};
 
+<<<<<<< HEAD
 		aips-bus@2000000 { /* AIPS1 */
 			spba-bus@2000000 {
 				ecspi5: ecspi@2018000 {
+=======
+		aips-bus@02000000 { /* AIPS1 */
+			spba-bus@02000000 {
+				ecspi5: ecspi@02018000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					#address-cells = <1>;
 					#size-cells = <0>;
 					compatible = "fsl,imx6q-ecspi", "fsl,imx51-ecspi";
@@ -178,12 +222,20 @@
 				};
 			};
 
+<<<<<<< HEAD
 			iomuxc: iomuxc@20e0000 {
+=======
+			iomuxc: iomuxc@020e0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "fsl,imx6q-iomuxc";
 			};
 		};
 
+<<<<<<< HEAD
 		sata: sata@2200000 {
+=======
+		sata: sata@02200000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "fsl,imx6q-ahci";
 			reg = <0x02200000 0x4000>;
 			interrupts = <0 39 IRQ_TYPE_LEVEL_HIGH>;
@@ -194,7 +246,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		gpu_vg: gpu@2204000 {
+=======
+		gpu_vg: gpu@02204000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "vivante,gc";
 			reg = <0x02204000 0x4000>;
 			interrupts = <0 11 IRQ_TYPE_LEVEL_HIGH>;
@@ -204,7 +260,11 @@
 			power-domains = <&pd_pu>;
 		};
 
+<<<<<<< HEAD
 		ipu2: ipu@2800000 {
+=======
+		ipu2: ipu@02800000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <0>;
 			compatible = "fsl,imx6q-ipu";
@@ -238,6 +298,7 @@
 				#size-cells = <0>;
 				reg = <2>;
 
+<<<<<<< HEAD
 				ipu2_di0_disp0: endpoint@0 {
 					reg = <0>;
 				};
@@ -259,6 +320,24 @@
 
 				ipu2_di0_lvds1: endpoint@4 {
 					reg = <4>;
+=======
+				ipu2_di0_disp0: disp0-endpoint {
+				};
+
+				ipu2_di0_hdmi: hdmi-endpoint {
+					remote-endpoint = <&hdmi_mux_2>;
+				};
+
+				ipu2_di0_mipi: mipi-endpoint {
+					remote-endpoint = <&mipi_mux_2>;
+				};
+
+				ipu2_di0_lvds0: lvds0-endpoint {
+					remote-endpoint = <&lvds0_mux_2>;
+				};
+
+				ipu2_di0_lvds1: lvds1-endpoint {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					remote-endpoint = <&lvds1_mux_2>;
 				};
 			};
@@ -268,6 +347,7 @@
 				#size-cells = <0>;
 				reg = <3>;
 
+<<<<<<< HEAD
 				ipu2_di1_hdmi: endpoint@1 {
 					reg = <1>;
 					remote-endpoint = <&hdmi_mux_3>;
@@ -285,6 +365,21 @@
 
 				ipu2_di1_lvds1: endpoint@4 {
 					reg = <4>;
+=======
+				ipu2_di1_hdmi: hdmi-endpoint {
+					remote-endpoint = <&hdmi_mux_3>;
+				};
+
+				ipu2_di1_mipi: mipi-endpoint {
+					remote-endpoint = <&mipi_mux_3>;
+				};
+
+				ipu2_di1_lvds0: lvds0-endpoint {
+					remote-endpoint = <&lvds0_mux_3>;
+				};
+
+				ipu2_di1_lvds1: lvds1-endpoint {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					remote-endpoint = <&lvds1_mux_3>;
 				};
 			};
@@ -300,6 +395,14 @@
 		compatible = "fsl,imx-display-subsystem";
 		ports = <&ipu1_di0>, <&ipu1_di1>, <&ipu2_di0>, <&ipu2_di1>;
 	};
+<<<<<<< HEAD
+=======
+
+	gpu-subsystem {
+		compatible = "fsl,imx-gpu-subsystem";
+		cores = <&gpu_2d>, <&gpu_3d>, <&gpu_vg>;
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &gpio1 {

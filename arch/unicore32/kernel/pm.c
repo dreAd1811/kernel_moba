@@ -109,9 +109,14 @@ static int __init puv3_pm_init(void)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	sleep_save = kmalloc_array(puv3_cpu_pm_fns->save_count,
 				   sizeof(unsigned long),
 				   GFP_KERNEL);
+=======
+	sleep_save = kmalloc(puv3_cpu_pm_fns->save_count
+				* sizeof(unsigned long), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sleep_save) {
 		printk(KERN_ERR "failed to alloc memory for pm save\n");
 		return -ENOMEM;

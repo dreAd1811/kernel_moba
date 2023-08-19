@@ -3,8 +3,11 @@
  * linux/arch/arm/mach-sa1100/neponset.c
  */
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
 #include <linux/gpio/gpio-reg.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/ioport.h>
 #include <linux/irq.h>
@@ -47,13 +50,19 @@
 #define IRR_USAR	(1 << 1)
 #define IRR_SA1111	(1 << 2)
 
+<<<<<<< HEAD
 #define NCR_NGPIO	7
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MDM_CTL0_RTS1	(1 << 0)
 #define MDM_CTL0_DTR1	(1 << 1)
 #define MDM_CTL0_RTS2	(1 << 2)
 #define MDM_CTL0_DTR2	(1 << 3)
+<<<<<<< HEAD
 #define MDM_CTL0_NGPIO	4
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MDM_CTL1_CTS1	(1 << 0)
 #define MDM_CTL1_DSR1	(1 << 1)
@@ -61,6 +70,7 @@
 #define MDM_CTL1_CTS2	(1 << 3)
 #define MDM_CTL1_DSR2	(1 << 4)
 #define MDM_CTL1_DCD2	(1 << 5)
+<<<<<<< HEAD
 #define MDM_CTL1_NGPIO	6
 
 #define AUD_SEL_1341	(1 << 0)
@@ -88,11 +98,20 @@ static const char *neponset_aud_names[] = {
 	"sel_1341", "mute_1341",
 };
 
+=======
+
+#define AUD_SEL_1341	(1 << 0)
+#define AUD_MUTE_1341	(1 << 1)
+
+extern void sa1110_mb_disable(void);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct neponset_drvdata {
 	void __iomem *base;
 	struct platform_device *sa1111;
 	struct platform_device *smc91x;
 	unsigned irq_base;
+<<<<<<< HEAD
 	struct gpio_chip *gpio[4];
 };
 
@@ -107,11 +126,37 @@ void neponset_ncr_frob(unsigned int mask, unsigned int val)
 		n->gpio[0]->set_multiple(n->gpio[0], &m, &v);
 	else
 		WARN(1, "nep unset\n");
+=======
+#ifdef CONFIG_PM_SLEEP
+	u32 ncr0;
+	u32 mdm_ctl_0;
+#endif
+};
+
+static void __iomem *nep_base;
+
+void neponset_ncr_frob(unsigned int mask, unsigned int val)
+{
+	void __iomem *base = nep_base;
+
+	if (base) {
+		unsigned long flags;
+		unsigned v;
+
+		local_irq_save(flags);
+		v = readb_relaxed(base + NCR_0);
+		writeb_relaxed((v & ~mask) | val, base + NCR_0);
+		local_irq_restore(flags);
+	} else {
+		WARN(1, "nep_base unset\n");
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(neponset_ncr_frob);
 
 static void neponset_set_mctrl(struct uart_port *port, u_int mctrl)
 {
+<<<<<<< HEAD
 	struct neponset_drvdata *n = nep;
 	unsigned long mask, val = 0;
 
@@ -137,11 +182,47 @@ static void neponset_set_mctrl(struct uart_port *port, u_int mctrl)
 	}
 
 	n->gpio[1]->set_multiple(n->gpio[1], &mask, &val);
+=======
+	void __iomem *base = nep_base;
+	u_int mdm_ctl0;
+
+	if (!base)
+		return;
+
+	mdm_ctl0 = readb_relaxed(base + MDM_CTL_0);
+	if (port->mapbase == _Ser1UTCR0) {
+		if (mctrl & TIOCM_RTS)
+			mdm_ctl0 &= ~MDM_CTL0_RTS2;
+		else
+			mdm_ctl0 |= MDM_CTL0_RTS2;
+
+		if (mctrl & TIOCM_DTR)
+			mdm_ctl0 &= ~MDM_CTL0_DTR2;
+		else
+			mdm_ctl0 |= MDM_CTL0_DTR2;
+	} else if (port->mapbase == _Ser3UTCR0) {
+		if (mctrl & TIOCM_RTS)
+			mdm_ctl0 &= ~MDM_CTL0_RTS1;
+		else
+			mdm_ctl0 |= MDM_CTL0_RTS1;
+
+		if (mctrl & TIOCM_DTR)
+			mdm_ctl0 &= ~MDM_CTL0_DTR1;
+		else
+			mdm_ctl0 |= MDM_CTL0_DTR1;
+	}
+
+	writeb_relaxed(mdm_ctl0, base + MDM_CTL_0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u_int neponset_get_mctrl(struct uart_port *port)
 {
+<<<<<<< HEAD
 	void __iomem *base = nep->base;
+=======
+	void __iomem *base = nep_base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u_int ret = TIOCM_CD | TIOCM_CTS | TIOCM_DSR;
 	u_int mdm_ctl1;
 
@@ -243,6 +324,7 @@ static struct irq_chip nochip = {
 	.irq_unmask = nochip_noop,
 };
 
+<<<<<<< HEAD
 static int neponset_init_gpio(struct gpio_chip **gcp,
 	struct device *dev, const char *label, void __iomem *reg,
 	unsigned num, bool in, const char *const * names)
@@ -259,6 +341,8 @@ static int neponset_init_gpio(struct gpio_chip **gcp,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct sa1111_platform_data sa1111_info = {
 	.disable_devs	= SA1111_DEVID_PS2_MSE,
 };
@@ -302,7 +386,11 @@ static int neponset_probe(struct platform_device *dev)
 	};
 	int ret, irq;
 
+<<<<<<< HEAD
 	if (nep)
+=======
+	if (nep_base)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EBUSY;
 
 	irq = ret = platform_get_irq(dev, 0);
@@ -358,6 +446,7 @@ static int neponset_probe(struct platform_device *dev)
 	irq_set_irq_type(irq, IRQ_TYPE_EDGE_RISING);
 	irq_set_chained_handler_and_data(irq, neponset_irq_handler, d);
 
+<<<<<<< HEAD
 	/* Disable GPIO 0/1 drivers so the buttons work on the Assabet */
 	writeb_relaxed(NCR_GP01_OFF, d->base + NCR_0);
 
@@ -374,6 +463,8 @@ static int neponset_probe(struct platform_device *dev)
 			   d->base + AUD_CTL, AUD_NGPIO, false,
 			   neponset_aud_names);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We would set IRQ_GPIO25 to be a wake-up IRQ, but unfortunately
 	 * something on the Neponset activates this IRQ on sleep (eth?)
@@ -384,13 +475,23 @@ static int neponset_probe(struct platform_device *dev)
 
 	dev_info(&dev->dev, "Neponset daughter board, providing IRQ%u-%u\n",
 		 d->irq_base, d->irq_base + NEP_IRQ_NR - 1);
+<<<<<<< HEAD
 	nep = d;
+=======
+	nep_base = d->base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sa1100_register_uart_fns(&neponset_port_fns);
 
 	/* Ensure that the memory bus request/grant signals are setup */
 	sa1110_mb_disable();
 
+<<<<<<< HEAD
+=======
+	/* Disable GPIO 0/1 drivers so the buttons work on the Assabet */
+	writeb_relaxed(NCR_GP01_OFF, d->base + NCR_0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sa1111_resources[0].parent = sa1111_res;
 	sa1111_resources[1].start = d->irq_base + NEP_IRQ_SA1111;
 	sa1111_resources[1].end = d->irq_base + NEP_IRQ_SA1111;
@@ -426,7 +527,11 @@ static int neponset_remove(struct platform_device *dev)
 		platform_device_unregister(d->smc91x);
 	irq_set_chained_handler(irq, NULL);
 	irq_free_descs(d->irq_base, NEP_IRQ_NR);
+<<<<<<< HEAD
 	nep = NULL;
+=======
+	nep_base = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iounmap(d->base);
 	kfree(d);
 
@@ -434,6 +539,7 @@ static int neponset_remove(struct platform_device *dev)
 }
 
 #ifdef CONFIG_PM_SLEEP
+<<<<<<< HEAD
 static int neponset_resume(struct device *dev)
 {
 	struct neponset_drvdata *d = dev_get_drvdata(dev);
@@ -450,6 +556,32 @@ static int neponset_resume(struct device *dev)
 
 static const struct dev_pm_ops neponset_pm_ops = {
 	.resume_noirq = neponset_resume,
+=======
+static int neponset_suspend(struct device *dev)
+{
+	struct neponset_drvdata *d = dev_get_drvdata(dev);
+
+	d->ncr0 = readb_relaxed(d->base + NCR_0);
+	d->mdm_ctl_0 = readb_relaxed(d->base + MDM_CTL_0);
+
+	return 0;
+}
+
+static int neponset_resume(struct device *dev)
+{
+	struct neponset_drvdata *d = dev_get_drvdata(dev);
+
+	writeb_relaxed(d->ncr0, d->base + NCR_0);
+	writeb_relaxed(d->mdm_ctl_0, d->base + MDM_CTL_0);
+
+	return 0;
+}
+
+static const struct dev_pm_ops neponset_pm_ops = {
+	.suspend_noirq = neponset_suspend,
+	.resume_noirq = neponset_resume,
+	.freeze_noirq = neponset_suspend,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.restore_noirq = neponset_resume,
 };
 #define PM_OPS &neponset_pm_ops

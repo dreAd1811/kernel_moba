@@ -30,8 +30,12 @@ struct b53_mmap_priv {
 
 static int b53_mmap_read8(struct b53_device *dev, u8 page, u8 reg, u8 *val)
 {
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv = dev->priv;
 	void __iomem *regs = priv->regs;
+=======
+	u8 __iomem *regs = dev->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*val = readb(regs + (page << 8) + reg);
 
@@ -40,8 +44,12 @@ static int b53_mmap_read8(struct b53_device *dev, u8 page, u8 reg, u8 *val)
 
 static int b53_mmap_read16(struct b53_device *dev, u8 page, u8 reg, u16 *val)
 {
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv = dev->priv;
 	void __iomem *regs = priv->regs;
+=======
+	u8 __iomem *regs = dev->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(reg % 2))
 		return -EINVAL;
@@ -56,8 +64,12 @@ static int b53_mmap_read16(struct b53_device *dev, u8 page, u8 reg, u16 *val)
 
 static int b53_mmap_read32(struct b53_device *dev, u8 page, u8 reg, u32 *val)
 {
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv = dev->priv;
 	void __iomem *regs = priv->regs;
+=======
+	u8 __iomem *regs = dev->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(reg % 4))
 		return -EINVAL;
@@ -72,8 +84,12 @@ static int b53_mmap_read32(struct b53_device *dev, u8 page, u8 reg, u32 *val)
 
 static int b53_mmap_read48(struct b53_device *dev, u8 page, u8 reg, u64 *val)
 {
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv = dev->priv;
 	void __iomem *regs = priv->regs;
+=======
+	u8 __iomem *regs = dev->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(reg % 2))
 		return -EINVAL;
@@ -111,8 +127,12 @@ static int b53_mmap_read48(struct b53_device *dev, u8 page, u8 reg, u64 *val)
 
 static int b53_mmap_read64(struct b53_device *dev, u8 page, u8 reg, u64 *val)
 {
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv = dev->priv;
 	void __iomem *regs = priv->regs;
+=======
+	u8 __iomem *regs = dev->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 hi, lo;
 
 	if (WARN_ON(reg % 4))
@@ -133,8 +153,12 @@ static int b53_mmap_read64(struct b53_device *dev, u8 page, u8 reg, u64 *val)
 
 static int b53_mmap_write8(struct b53_device *dev, u8 page, u8 reg, u8 value)
 {
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv = dev->priv;
 	void __iomem *regs = priv->regs;
+=======
+	u8 __iomem *regs = dev->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writeb(value, regs + (page << 8) + reg);
 
@@ -144,8 +168,12 @@ static int b53_mmap_write8(struct b53_device *dev, u8 page, u8 reg, u8 value)
 static int b53_mmap_write16(struct b53_device *dev, u8 page, u8 reg,
 			    u16 value)
 {
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv = dev->priv;
 	void __iomem *regs = priv->regs;
+=======
+	u8 __iomem *regs = dev->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(reg % 2))
 		return -EINVAL;
@@ -161,8 +189,12 @@ static int b53_mmap_write16(struct b53_device *dev, u8 page, u8 reg,
 static int b53_mmap_write32(struct b53_device *dev, u8 page, u8 reg,
 			    u32 value)
 {
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv = dev->priv;
 	void __iomem *regs = priv->regs;
+=======
+	u8 __iomem *regs = dev->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(reg % 4))
 		return -EINVAL;
@@ -231,12 +263,16 @@ static const struct b53_io_ops b53_mmap_ops = {
 static int b53_mmap_probe(struct platform_device *pdev)
 {
 	struct b53_platform_data *pdata = pdev->dev.platform_data;
+<<<<<<< HEAD
 	struct b53_mmap_priv *priv;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct b53_device *dev;
 
 	if (!pdata)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
@@ -244,6 +280,9 @@ static int b53_mmap_probe(struct platform_device *pdev)
 	priv->regs = pdata->regs;
 
 	dev = b53_switch_alloc(&pdev->dev, &b53_mmap_ops, priv);
+=======
+	dev = b53_switch_alloc(&pdev->dev, &b53_mmap_ops, pdata->regs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev)
 		return -ENOMEM;
 

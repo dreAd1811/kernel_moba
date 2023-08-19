@@ -40,16 +40,23 @@ static void mvme147_get_model(char *model);
 extern void mvme147_sched_init(irq_handler_t handler);
 extern u32 mvme147_gettimeoffset(void);
 extern int mvme147_hwclk (int, struct rtc_time *);
+<<<<<<< HEAD
+=======
+extern int mvme147_set_clock_mmss (unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void mvme147_reset (void);
 
 
 static int bcd2int (unsigned char b);
 
+<<<<<<< HEAD
 /* Save tick handler routine pointer, will point to xtime_update() in
  * kernel/time/timekeeping.c, called via mvme147_process_int() */
 
 irq_handler_t tick_handler;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int __init mvme147_parse_bootinfo(const struct bi_record *bi)
 {
@@ -91,6 +98,10 @@ void __init config_mvme147(void)
 	mach_init_IRQ		= mvme147_init_IRQ;
 	arch_gettimeoffset	= mvme147_gettimeoffset;
 	mach_hwclk		= mvme147_hwclk;
+<<<<<<< HEAD
+=======
+	mach_set_clock_mmss	= mvme147_set_clock_mmss;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mach_reset		= mvme147_reset;
 	mach_get_model		= mvme147_get_model;
 
@@ -104,16 +115,34 @@ void __init config_mvme147(void)
 
 static irqreturn_t mvme147_timer_int (int irq, void *dev_id)
 {
+<<<<<<< HEAD
 	m147_pcc->t1_int_cntrl = PCC_TIMER_INT_CLR;
 	m147_pcc->t1_int_cntrl = PCC_INT_ENAB|PCC_LEVEL_TIMER1;
 	return tick_handler(irq, dev_id);
+=======
+	irq_handler_t timer_routine = dev_id;
+	unsigned long flags;
+
+	local_irq_save(flags);
+	m147_pcc->t1_int_cntrl = PCC_TIMER_INT_CLR;
+	m147_pcc->t1_int_cntrl = PCC_INT_ENAB|PCC_LEVEL_TIMER1;
+	timer_routine(0, NULL);
+	local_irq_restore(flags);
+
+	return IRQ_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
 void mvme147_sched_init (irq_handler_t timer_routine)
 {
+<<<<<<< HEAD
 	tick_handler = timer_routine;
 	if (request_irq(PCC_IRQ_TIMER1, mvme147_timer_int, 0, "timer 1", NULL))
+=======
+	if (request_irq(PCC_IRQ_TIMER1, mvme147_timer_int, 0, "timer 1",
+			timer_routine))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("Couldn't register timer interrupt\n");
 
 	/* Init the clock with a value */
@@ -151,14 +180,29 @@ int mvme147_hwclk(int op, struct rtc_time *t)
 	if (!op) {
 		m147_rtc->ctrl = RTC_READ;
 		t->tm_year = bcd2int (m147_rtc->bcd_year);
+<<<<<<< HEAD
 		t->tm_mon  = bcd2int(m147_rtc->bcd_mth) - 1;
+=======
+		t->tm_mon  = bcd2int (m147_rtc->bcd_mth);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		t->tm_mday = bcd2int (m147_rtc->bcd_dom);
 		t->tm_hour = bcd2int (m147_rtc->bcd_hr);
 		t->tm_min  = bcd2int (m147_rtc->bcd_min);
 		t->tm_sec  = bcd2int (m147_rtc->bcd_sec);
 		m147_rtc->ctrl = 0;
+<<<<<<< HEAD
 		if (t->tm_year < 70)
 			t->tm_year += 100;
 	}
 	return 0;
 }
+=======
+	}
+	return 0;
+}
+
+int mvme147_set_clock_mmss (unsigned long nowtime)
+{
+	return 0;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

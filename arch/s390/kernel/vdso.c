@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vdso setup for s390
  *
  *  Copyright IBM Corp. 2008
  *  Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License (version 2 only)
+ * as published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/init.h>
@@ -47,7 +57,11 @@ static struct page **vdso64_pagelist;
  */
 unsigned int __read_mostly vdso_enabled = 1;
 
+<<<<<<< HEAD
 static vm_fault_t vdso_fault(const struct vm_special_mapping *sm,
+=======
+static int vdso_fault(const struct vm_special_mapping *sm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      struct vm_area_struct *vma, struct vm_fault *vmf)
 {
 	struct page **vdso_pagelist;
@@ -137,6 +151,7 @@ static void __init vdso_init_data(struct vdso_data *vd)
  */
 #define SEGMENT_ORDER	2
 
+<<<<<<< HEAD
 /*
  * The initial vdso_data structure for the boot CPU. Eventually
  * it is replaced with a properly allocated structure in vdso_init.
@@ -151,13 +166,28 @@ void __init vdso_alloc_boot_cpu(struct lowcore *lowcore)
 	lowcore->vdso_per_cpu_data = (unsigned long) &boot_vdso_data;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int vdso_alloc_per_cpu(struct lowcore *lowcore)
 {
 	unsigned long segment_table, page_table, page_frame;
 	struct vdso_per_cpu_data *vd;
+<<<<<<< HEAD
 
 	segment_table = __get_free_pages(GFP_KERNEL, SEGMENT_ORDER);
 	page_table = get_zeroed_page(GFP_KERNEL);
+=======
+	u32 *psal, *aste;
+	int i;
+
+	lowcore->vdso_per_cpu_data = __LC_PASTE;
+
+	if (!vdso_enabled)
+		return 0;
+
+	segment_table = __get_free_pages(GFP_KERNEL, SEGMENT_ORDER);
+	page_table = get_zeroed_page(GFP_KERNEL | GFP_DMA);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	page_frame = get_zeroed_page(GFP_KERNEL);
 	if (!segment_table || !page_table || !page_frame)
 		goto out;
@@ -169,15 +199,38 @@ int vdso_alloc_per_cpu(struct lowcore *lowcore)
 	vd->cpu_nr = lowcore->cpu_nr;
 	vd->node_id = cpu_to_node(vd->cpu_nr);
 
+<<<<<<< HEAD
 	/* Set up page table for the vdso address space */
 	memset64((u64 *)segment_table, _SEGMENT_ENTRY_EMPTY, _CRST_ENTRIES);
 	memset64((u64 *)page_table, _PAGE_INVALID, PTRS_PER_PTE);
+=======
+	/* Set up access register mode page table */
+	clear_table((unsigned long *) segment_table, _SEGMENT_ENTRY_EMPTY,
+		    PAGE_SIZE << SEGMENT_ORDER);
+	clear_table((unsigned long *) page_table, _PAGE_INVALID,
+		    256*sizeof(unsigned long));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*(unsigned long *) segment_table = _SEGMENT_ENTRY + page_table;
 	*(unsigned long *) page_table = _PAGE_PROTECT + page_frame;
 
+<<<<<<< HEAD
 	lowcore->vdso_asce = segment_table +
 		_ASCE_TABLE_LENGTH + _ASCE_USER_BITS + _ASCE_TYPE_SEGMENT;
+=======
+	psal = (u32 *) (page_table + 256*sizeof(unsigned long));
+	aste = psal + 32;
+
+	for (i = 4; i < 32; i += 4)
+		psal[i] = 0x80000000;
+
+	lowcore->paste[4] = (u32)(addr_t) psal;
+	psal[0] = 0x02000000;
+	psal[2] = (u32)(addr_t) aste;
+	*(unsigned long *) (aste + 2) = segment_table +
+		_ASCE_TABLE_LENGTH + _ASCE_USER_BITS + _ASCE_TYPE_SEGMENT;
+	aste[4] = (u32)(addr_t) psal;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lowcore->vdso_per_cpu_data = page_frame;
 
 	return 0;
@@ -192,8 +245,19 @@ out:
 void vdso_free_per_cpu(struct lowcore *lowcore)
 {
 	unsigned long segment_table, page_table, page_frame;
+<<<<<<< HEAD
 
 	segment_table = lowcore->vdso_asce & PAGE_MASK;
+=======
+	u32 *psal, *aste;
+
+	if (!vdso_enabled)
+		return;
+
+	psal = (u32 *)(addr_t) lowcore->paste[4];
+	aste = (u32 *)(addr_t) psal[2];
+	segment_table = *(unsigned long *)(aste + 2) & PAGE_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	page_table = *(unsigned long *) segment_table;
 	page_frame = *(unsigned long *) page_table;
 
@@ -202,6 +266,19 @@ void vdso_free_per_cpu(struct lowcore *lowcore)
 	free_pages(segment_table, SEGMENT_ORDER);
 }
 
+<<<<<<< HEAD
+=======
+static void vdso_init_cr5(void)
+{
+	unsigned long cr5;
+
+	if (!vdso_enabled)
+		return;
+	cr5 = offsetof(struct lowcore, paste);
+	__ctl_load(cr5, 5, 5);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This is called from binfmt_elf, we create the special vma for the
  * vDSO and insert it into the mm struct tree
@@ -278,6 +355,11 @@ static int __init vdso_init(void)
 {
 	int i;
 
+<<<<<<< HEAD
+=======
+	if (!vdso_enabled)
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vdso_init_data(vdso_data);
 #ifdef CONFIG_COMPAT
 	/* Calculate the size of the 32 bit vDSO */
@@ -285,7 +367,11 @@ static int __init vdso_init(void)
 			 + PAGE_SIZE - 1) >> PAGE_SHIFT) + 1;
 
 	/* Make sure pages are in the correct state */
+<<<<<<< HEAD
 	vdso32_pagelist = kcalloc(vdso32_pages + 1, sizeof(struct page *),
+=======
+	vdso32_pagelist = kzalloc(sizeof(struct page *) * (vdso32_pages + 1),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	BUG_ON(vdso32_pagelist == NULL);
 	for (i = 0; i < vdso32_pages - 1; i++) {
@@ -303,7 +389,11 @@ static int __init vdso_init(void)
 			 + PAGE_SIZE - 1) >> PAGE_SHIFT) + 1;
 
 	/* Make sure pages are in the correct state */
+<<<<<<< HEAD
 	vdso64_pagelist = kcalloc(vdso64_pages + 1, sizeof(struct page *),
+=======
+	vdso64_pagelist = kzalloc(sizeof(struct page *) * (vdso64_pages + 1),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	BUG_ON(vdso64_pagelist == NULL);
 	for (i = 0; i < vdso64_pages - 1; i++) {
@@ -316,6 +406,10 @@ static int __init vdso_init(void)
 	vdso64_pagelist[vdso64_pages] = NULL;
 	if (vdso_alloc_per_cpu(&S390_lowcore))
 		BUG();
+<<<<<<< HEAD
+=======
+	vdso_init_cr5();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	get_page(virt_to_page(vdso_data));
 

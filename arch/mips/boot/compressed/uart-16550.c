@@ -18,9 +18,15 @@
 #define PORT(offset) (CKSEG1ADDR(AR7_REGS_UART0) + (4 * offset))
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_INGENIC
 #define INGENIC_UART0_BASE_ADDR	0x10030000
 #define PORT(offset) (CKSEG1ADDR(INGENIC_UART0_BASE_ADDR) + (4 * offset))
+=======
+#if defined(CONFIG_MACH_JZ4740) || defined(CONFIG_MACH_JZ4780)
+#include <asm/mach-jz4740/base.h>
+#define PORT(offset) (CKSEG1ADDR(JZ4740_UART0_BASE_ADDR) + (4 * offset))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #ifdef CONFIG_CPU_XLR

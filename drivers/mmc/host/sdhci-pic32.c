@@ -200,8 +200,15 @@ static int pic32_sdhci_probe(struct platform_device *pdev)
 	}
 
 	ret = sdhci_add_host(host);
+<<<<<<< HEAD
 	if (ret)
 		goto err_base_clk;
+=======
+	if (ret) {
+		dev_err(&pdev->dev, "error adding host\n");
+		goto err_base_clk;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(&pdev->dev, "Successfully added sdhci host\n");
 	return 0;

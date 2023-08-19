@@ -1,10 +1,25 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * R-Car Generation 2 support
  *
  * Copyright (C) 2013  Renesas Solutions Corp.
  * Copyright (C) 2013  Magnus Damm
  * Copyright (C) 2014  Ulrich Hecht
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk-provider.h>
@@ -18,7 +33,10 @@
 #include <linux/of_fdt.h>
 #include <linux/of_platform.h>
 #include <asm/mach/arch.h>
+<<<<<<< HEAD
 #include <asm/secure_cntvoff.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "common.h"
 #include "rcar-gen2.h"
 
@@ -59,6 +77,7 @@ static unsigned int __init get_extal_freq(void)
 
 void __init rcar_gen2_timer_init(void)
 {
+<<<<<<< HEAD
 	void __iomem *base;
 	u32 freq;
 
@@ -69,6 +88,34 @@ void __init rcar_gen2_timer_init(void)
 	    of_machine_is_compatible("renesas,r8a7792") ||
 	    of_machine_is_compatible("renesas,r8a7794")) {
 		freq = 260000000 / 8;	/* ZS / 8 */
+=======
+#ifdef CONFIG_ARM_ARCH_TIMER
+	void __iomem *base;
+	u32 freq;
+
+	if (of_machine_is_compatible("renesas,r8a7745") ||
+	    of_machine_is_compatible("renesas,r8a7792") ||
+	    of_machine_is_compatible("renesas,r8a7794")) {
+		freq = 260000000 / 8;	/* ZS / 8 */
+		/* CNTVOFF has to be initialized either from non-secure
+		 * Hypervisor mode or secure Monitor mode with SCR.NS==1.
+		 * If TrustZone is enabled then it should be handled by the
+		 * secure code.
+		 */
+		asm volatile(
+		"	cps	0x16\n"
+		"	mrc	p15, 0, r1, c1, c1, 0\n"
+		"	orr	r0, r1, #1\n"
+		"	mcr	p15, 0, r0, c1, c1, 0\n"
+		"	isb\n"
+		"	mov	r0, #0\n"
+		"	mcrr	p15, 4, r0, r0, c14\n"
+		"	isb\n"
+		"	mcr	p15, 0, r1, c1, c1, 0\n"
+		"	isb\n"
+		"	cps	0x13\n"
+			: : : "r0", "r1");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* At Linux boot time the r8a7790 arch timer comes up
 		 * with the counter disabled. Moreover, it may also report
@@ -100,6 +147,10 @@ void __init rcar_gen2_timer_init(void)
 	}
 
 	iounmap(base);
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_ARM_ARCH_TIMER */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	of_clk_init(NULL);
 	timer_probe();
@@ -176,8 +227,15 @@ void __init rcar_gen2_reserve(void)
 }
 
 static const char * const rcar_gen2_boards_compat_dt[] __initconst = {
+<<<<<<< HEAD
 	"renesas,r8a7790",
 	"renesas,r8a7791",
+=======
+	/*
+	 * R8A7790 and R8A7791 can't be handled here as long as they need SMP
+	 * initialization fallback.
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"renesas,r8a7792",
 	"renesas,r8a7793",
 	"renesas,r8a7794",
@@ -185,6 +243,10 @@ static const char * const rcar_gen2_boards_compat_dt[] __initconst = {
 };
 
 DT_MACHINE_START(RCAR_GEN2_DT, "Generic R-Car Gen2 (Flattened Device Tree)")
+<<<<<<< HEAD
+=======
+	.init_early	= shmobile_init_delay,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init_late	= shmobile_init_late,
 	.init_time	= rcar_gen2_timer_init,
 	.reserve	= rcar_gen2_reserve,
@@ -194,11 +256,18 @@ MACHINE_END
 static const char * const rz_g1_boards_compat_dt[] __initconst = {
 	"renesas,r8a7743",
 	"renesas,r8a7745",
+<<<<<<< HEAD
 	"renesas,r8a77470",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 
 DT_MACHINE_START(RZ_G1_DT, "Generic RZ/G1 (Flattened Device Tree)")
+<<<<<<< HEAD
+=======
+	.init_early	= shmobile_init_delay,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init_late	= shmobile_init_late,
 	.init_time	= rcar_gen2_timer_init,
 	.reserve	= rcar_gen2_reserve,

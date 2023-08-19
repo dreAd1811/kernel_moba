@@ -1319,8 +1319,13 @@ static void coh901318_list_print(struct coh901318_chan *cohc,
 	int i = 0;
 
 	while (l) {
+<<<<<<< HEAD
 		dev_vdbg(COHC_2_DEV(cohc), "i %d, lli %p, ctrl 0x%x, src %pad"
 			 ", dst %pad, link %pad virt_link_addr 0x%p\n",
+=======
+		dev_vdbg(COHC_2_DEV(cohc), "i %d, lli %p, ctrl 0x%x, src 0x%pad"
+			 ", dst 0x%pad, link 0x%pad virt_link_addr 0x%p\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 i, l, l->control, &l->src_addr, &l->dst_addr,
 			 &l->link_addr, l->virt_link_addr);
 		i++;
@@ -1797,13 +1802,19 @@ static struct dma_chan *coh901318_xlate(struct of_phandle_args *dma_spec,
 static int coh901318_config(struct coh901318_chan *cohc,
 			    struct coh901318_params *param)
 {
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct coh901318_params *p;
 	int channel = cohc->id;
 	void __iomem *virtbase = cohc->base->virtbase;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&cohc->lock, flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (param)
 		p = param;
 	else
@@ -1823,8 +1834,11 @@ static int coh901318_config(struct coh901318_chan *cohc,
 	coh901318_set_conf(cohc, p->config);
 	coh901318_set_ctrl(cohc, p->ctrl_lli_last);
 
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&cohc->lock, flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1949,8 +1963,11 @@ static void dma_tc_handle(struct coh901318_chan *cohc)
 		return;
 	}
 
+<<<<<<< HEAD
 	spin_lock(&cohc->lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * When we reach this point, at least one queue item
 	 * should have been moved over from cohc->queue to
@@ -1971,8 +1988,11 @@ static void dma_tc_handle(struct coh901318_chan *cohc)
 	if (coh901318_queue_start(cohc) == NULL)
 		cohc->busy = 0;
 
+<<<<<<< HEAD
 	spin_unlock(&cohc->lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * This tasklet will remove items from cohc->active
 	 * and thus terminates them.
@@ -2231,7 +2251,11 @@ coh901318_prep_memcpy(struct dma_chan *chan, dma_addr_t dest, dma_addr_t src,
 	spin_lock_irqsave(&cohc->lock, flg);
 
 	dev_vdbg(COHC_2_DEV(cohc),
+<<<<<<< HEAD
 		 "[%s] channel %d src %pad dest %pad size %zu\n",
+=======
+		 "[%s] channel %d src 0x%pad dest 0x%pad size %zu\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 __func__, cohc->id, &src, &dest, size);
 
 	if (flags & DMA_PREP_INTERRUPT)

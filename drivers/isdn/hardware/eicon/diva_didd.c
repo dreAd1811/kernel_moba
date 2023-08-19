@@ -78,13 +78,34 @@ static int divadidd_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int divadidd_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, divadidd_proc_show, NULL);
+}
+
+static const struct file_operations divadidd_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= divadidd_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init create_proc(void)
 {
 	proc_net_eicon = proc_mkdir("eicon", init_net.proc_net);
 
 	if (proc_net_eicon) {
+<<<<<<< HEAD
 		proc_didd = proc_create_single(DRIVERLNAME, S_IRUGO,
 				proc_net_eicon, divadidd_proc_show);
+=======
+		proc_didd = proc_create(DRIVERLNAME, S_IRUGO, proc_net_eicon,
+					&divadidd_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return (1);
 	}
 	return (0);

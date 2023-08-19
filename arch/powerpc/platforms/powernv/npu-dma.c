@@ -17,9 +17,13 @@
 #include <linux/pci.h>
 #include <linux/memblock.h>
 #include <linux/iommu.h>
+<<<<<<< HEAD
 #include <linux/debugfs.h>
 
 #include <asm/debugfs.h>
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/tlb.h>
 #include <asm/powernv.h>
 #include <asm/reg.h>
@@ -36,18 +40,25 @@
 #define npu_to_phb(x) container_of(x, struct pnv_phb, npu)
 
 /*
+<<<<<<< HEAD
  * spinlock to protect initialisation of an npu_context for a particular
  * mm_struct.
  */
 static DEFINE_SPINLOCK(npu_context_lock);
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * When an address shootdown range exceeds this threshold we invalidate the
  * entire TLB on the GPU for the given PID rather than each specific address in
  * the range.
  */
+<<<<<<< HEAD
 static uint64_t atsd_threshold = 2 * 1024 * 1024;
 static struct dentry *atsd_threshold_dentry;
+=======
+#define ATSD_THRESHOLD (2*1024*1024)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Other types of TCE cache invalidation are not functional in the
@@ -55,6 +66,7 @@ static struct dentry *atsd_threshold_dentry;
  */
 static struct pci_dev *get_pci_dev(struct device_node *dn)
 {
+<<<<<<< HEAD
 	struct pci_dn *pdn = PCI_DN(dn);
 	struct pci_dev *pdev;
 
@@ -72,6 +84,9 @@ static struct pci_dev *get_pci_dev(struct device_node *dn)
 		pci_dev_put(pdev);
 
 	return pdev;
+=======
+	return PCI_DN(dn)->pcidev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Given a NPU device get the associated PCI device. */
@@ -309,7 +324,11 @@ static int pnv_npu_dma_set_bypass(struct pnv_ioda_pe *npe)
 	int64_t rc = 0;
 	phys_addr_t top = memblock_end_of_DRAM();
 
+<<<<<<< HEAD
 	if (phb->type != PNV_PHB_NPU_NVLINK || !npe->pdev)
+=======
+	if (phb->type != PNV_PHB_NPU || !npe->pdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	rc = pnv_npu_unset_window(npe, 0);
@@ -427,10 +446,16 @@ struct npu_context {
 	struct pci_dev *npdev[NV_MAX_NPUS][NV_MAX_LINKS];
 	struct mmu_notifier mn;
 	struct kref kref;
+<<<<<<< HEAD
 	bool nmmu_flush;
 
 	/* Callback to stop translation requests on a given GPU */
 	void (*release_cb)(struct npu_context *context, void *priv);
+=======
+
+	/* Callback to stop translation requests on a given GPU */
+	struct npu_context *(*release_cb)(struct npu_context *, void *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Private pointer passed to the above callback for usage by
@@ -476,9 +501,16 @@ static void mmio_launch_invalidate(struct mmio_atsd_reg *mmio_atsd_reg,
 	struct npu *npu = mmio_atsd_reg->npu;
 	int reg = mmio_atsd_reg->reg;
 
+<<<<<<< HEAD
 	__raw_writeq_be(va, npu->mmio_atsd_regs[reg] + XTS_ATSD_AVA);
 	eieio();
 	__raw_writeq_be(launch, npu->mmio_atsd_regs[reg]);
+=======
+	__raw_writeq(cpu_to_be64(va),
+		npu->mmio_atsd_regs[reg] + XTS_ATSD_AVA);
+	eieio();
+	__raw_writeq(cpu_to_be64(launch), npu->mmio_atsd_regs[reg]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mmio_invalidate_pid(struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS],
@@ -634,6 +666,7 @@ static void mmio_invalidate(struct npu_context *npu_context, int va,
 	struct mmio_atsd_reg mmio_atsd_reg[NV_MAX_NPUS];
 	unsigned long pid = npu_context->mm->context.id;
 
+<<<<<<< HEAD
 	if (npu_context->nmmu_flush)
 		/*
 		 * Unfortunately the nest mmu does not support flushing specific
@@ -641,6 +674,13 @@ static void mmio_invalidate(struct npu_context *npu_context, int va,
 		 * shooting down the GPU translation.
 		 */
 		flush_all_mm(npu_context->mm);
+=======
+	/*
+	 * Unfortunately the nest mmu does not support flushing specific
+	 * addresses so we have to flush the whole mm.
+	 */
+	flush_tlb_mm(npu_context->mm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Loop over all the NPUs this process is active on and launch
@@ -700,7 +740,11 @@ static void pnv_npu2_mn_invalidate_range(struct mmu_notifier *mn,
 	struct npu_context *npu_context = mn_to_npu_context(mn);
 	unsigned long address;
 
+<<<<<<< HEAD
 	if (end - start > atsd_threshold) {
+=======
+	if (end - start > ATSD_THRESHOLD) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Just invalidate the entire PID if the address range is too
 		 * large.
@@ -733,12 +777,20 @@ static const struct mmu_notifier_ops nv_nmmu_notifier_ops = {
  * Returns an error if there no contexts are currently available or a
  * npu_context which should be passed to pnv_npu2_handle_fault().
  *
+<<<<<<< HEAD
  * mmap_sem must be held in write mode and must not be called from interrupt
  * context.
  */
 struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 			unsigned long flags,
 			void (*cb)(struct npu_context *, void *),
+=======
+ * mmap_sem must be held in write mode.
+ */
+struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
+			unsigned long flags,
+			struct npu_context *(*cb)(struct npu_context *, void *),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			void *priv)
 {
 	int rc;
@@ -762,11 +814,14 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 		/* No nvlink associated with this GPU device */
 		return ERR_PTR(-ENODEV);
 
+<<<<<<< HEAD
 	nvlink_dn = of_parse_phandle(npdev->dev.of_node, "ibm,nvlink", 0);
 	if (WARN_ON(of_property_read_u32(nvlink_dn, "ibm,npu-link-index",
 							&nvlink_index)))
 		return ERR_PTR(-ENODEV);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mm || mm->context.id == 0) {
 		/*
 		 * Kernel thread contexts are not supported and context id 0 is
@@ -781,9 +836,13 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 	/*
 	 * Setup the NPU context table for a particular GPU. These need to be
 	 * per-GPU as we need the tables to filter ATSDs when there are no
+<<<<<<< HEAD
 	 * active contexts on a particular GPU. It is safe for these to be
 	 * called concurrently with destroy as the OPAL call takes appropriate
 	 * locks and refcounts on init/destroy.
+=======
+	 * active contexts on a particular GPU.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	rc = opal_npu_init_context(nphb->opal_id, mm->context.id, flags,
 				PCI_DEVID(gpdev->bus->number, gpdev->devfn));
@@ -794,6 +853,7 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 	 * We store the npu pci device so we can more easily get at the
 	 * associated npus.
 	 */
+<<<<<<< HEAD
 	spin_lock(&npu_context_lock);
 	npu_context = mm->context.npu_context;
 	if (npu_context) {
@@ -835,10 +895,32 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 		}
 
 		mm->context.npu_context = npu_context;
+=======
+	npu_context = mm->context.npu_context;
+	if (!npu_context) {
+		npu_context = kzalloc(sizeof(struct npu_context), GFP_KERNEL);
+		if (!npu_context)
+			return ERR_PTR(-ENOMEM);
+
+		mm->context.npu_context = npu_context;
+		npu_context->mm = mm;
+		npu_context->mn.ops = &nv_nmmu_notifier_ops;
+		__mmu_notifier_register(&npu_context->mn, mm);
+		kref_init(&npu_context->kref);
+	} else {
+		kref_get(&npu_context->kref);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	npu_context->release_cb = cb;
 	npu_context->priv = priv;
+<<<<<<< HEAD
+=======
+	nvlink_dn = of_parse_phandle(npdev->dev.of_node, "ibm,nvlink", 0);
+	if (WARN_ON(of_property_read_u32(nvlink_dn, "ibm,npu-link-index",
+							&nvlink_index)))
+		return ERR_PTR(-ENODEV);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * npdev is a pci_dev pointer setup by the PCI code. We assign it to
@@ -850,6 +932,7 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 	 */
 	WRITE_ONCE(npu_context->npdev[npu->index][nvlink_index], npdev);
 
+<<<<<<< HEAD
 	if (!nphb->npu.nmmu_flush) {
 		/*
 		 * If we're not explicitly flushing ourselves we need to mark
@@ -860,6 +943,8 @@ struct npu_context *pnv_npu2_init_context(struct pci_dev *gpdev,
 	} else
 		npu_context->nmmu_flush = true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return npu_context;
 }
 EXPORT_SYMBOL(pnv_npu2_init_context);
@@ -869,6 +954,7 @@ static void pnv_npu2_release_context(struct kref *kref)
 	struct npu_context *npu_context =
 		container_of(kref, struct npu_context, kref);
 
+<<<<<<< HEAD
 	if (!npu_context->nmmu_flush)
 		mm_context_remove_copro(npu_context->mm);
 
@@ -883,6 +969,18 @@ void pnv_npu2_destroy_context(struct npu_context *npu_context,
 			struct pci_dev *gpdev)
 {
 	int removed;
+=======
+	npu_context->mm->context.npu_context = NULL;
+	mmu_notifier_unregister(&npu_context->mn,
+				npu_context->mm);
+
+	kfree(npu_context);
+}
+
+void pnv_npu2_destroy_context(struct npu_context *npu_context,
+			struct pci_dev *gpdev)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pnv_phb *nphb;
 	struct npu *npu;
 	struct pci_dev *npdev = pnv_pci_get_npu_dev(gpdev, 0);
@@ -904,6 +1002,7 @@ void pnv_npu2_destroy_context(struct npu_context *npu_context,
 	WRITE_ONCE(npu_context->npdev[npu->index][nvlink_index], NULL);
 	opal_npu_destroy_context(nphb->opal_id, npu_context->mm->context.id,
 				PCI_DEVID(gpdev->bus->number, gpdev->devfn));
+<<<<<<< HEAD
 	spin_lock(&npu_context_lock);
 	removed = kref_put(&npu_context->kref, pnv_npu2_release_context);
 	spin_unlock(&npu_context_lock);
@@ -919,6 +1018,9 @@ void pnv_npu2_destroy_context(struct npu_context *npu_context,
 		kfree(npu_context);
 	}
 
+=======
+	kref_put(&npu_context->kref, pnv_npu2_release_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(pnv_npu2_destroy_context);
 
@@ -975,6 +1077,7 @@ int pnv_npu2_init(struct pnv_phb *phb)
 	static int npu_index;
 	uint64_t rc = 0;
 
+<<<<<<< HEAD
 	if (!atsd_threshold_dentry) {
 		atsd_threshold_dentry = debugfs_create_x64("atsd_threshold",
 				   0600, powerpc_debugfs_root, &atsd_threshold);
@@ -982,6 +1085,8 @@ int pnv_npu2_init(struct pnv_phb *phb)
 
 	phb->npu.nmmu_flush =
 		of_property_read_bool(phb->hose->dn, "ibm,nmmu-flush");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_child_of_node(phb->hose->dn, dn) {
 		gpdev = pnv_pci_get_gpu_dev(get_pci_dev(dn));
 		if (gpdev) {

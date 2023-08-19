@@ -21,7 +21,10 @@
 
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
+<<<<<<< HEAD
 #include <asm/mmu_context.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/dma.h>
 #include <asm/machdep.h>
 #include <asm/mmu.h>
@@ -48,6 +51,7 @@ static int native_register_process_table(unsigned long base, unsigned long pg_sz
 	return 0;
 }
 
+<<<<<<< HEAD
 static __ref void *early_alloc_pgtable(unsigned long size, int nid,
 			unsigned long region_start, unsigned long region_end)
 {
@@ -68,11 +72,19 @@ static __ref void *early_alloc_pgtable(unsigned long size, int nid,
 	BUG_ON(!pa);
 
 	pt = __va(pa);
+=======
+static __ref void *early_alloc_pgtable(unsigned long size)
+{
+	void *pt;
+
+	pt = __va(memblock_alloc_base(size, size, MEMBLOCK_ALLOC_ANYWHERE));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(pt, 0, size);
 
 	return pt;
 }
 
+<<<<<<< HEAD
 static int early_map_kernel_page(unsigned long ea, unsigned long pa,
 			  pgprot_t flags,
 			  unsigned int map_page_size,
@@ -130,6 +142,12 @@ static int __map_kernel_page(unsigned long ea, unsigned long pa,
 			  unsigned long region_start, unsigned long region_end)
 {
 	unsigned long pfn = pa >> PAGE_SHIFT;
+=======
+int radix__map_kernel_page(unsigned long ea, unsigned long pa,
+			  pgprot_t flags,
+			  unsigned int map_page_size)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pgd_t *pgdp;
 	pud_t *pudp;
 	pmd_t *pmdp;
@@ -138,6 +156,7 @@ static int __map_kernel_page(unsigned long ea, unsigned long pa,
 	 * Make sure task size is correct as per the max adddr
 	 */
 	BUILD_BUG_ON(TASK_SIZE_USER64 > RADIX_PGTABLE_RANGE);
+<<<<<<< HEAD
 
 	if (unlikely(!slab_is_available()))
 		return early_map_kernel_page(ea, pa, flags, map_page_size,
@@ -169,10 +188,64 @@ static int __map_kernel_page(unsigned long ea, unsigned long pa,
 
 set_the_pte:
 	set_pte_at(&init_mm, ea, ptep, pfn_pte(pfn, flags));
+=======
+	if (slab_is_available()) {
+		pgdp = pgd_offset_k(ea);
+		pudp = pud_alloc(&init_mm, pgdp, ea);
+		if (!pudp)
+			return -ENOMEM;
+		if (map_page_size == PUD_SIZE) {
+			ptep = (pte_t *)pudp;
+			goto set_the_pte;
+		}
+		pmdp = pmd_alloc(&init_mm, pudp, ea);
+		if (!pmdp)
+			return -ENOMEM;
+		if (map_page_size == PMD_SIZE) {
+			ptep = pmdp_ptep(pmdp);
+			goto set_the_pte;
+		}
+		ptep = pte_alloc_kernel(pmdp, ea);
+		if (!ptep)
+			return -ENOMEM;
+	} else {
+		pgdp = pgd_offset_k(ea);
+		if (pgd_none(*pgdp)) {
+			pudp = early_alloc_pgtable(PUD_TABLE_SIZE);
+			BUG_ON(pudp == NULL);
+			pgd_populate(&init_mm, pgdp, pudp);
+		}
+		pudp = pud_offset(pgdp, ea);
+		if (map_page_size == PUD_SIZE) {
+			ptep = (pte_t *)pudp;
+			goto set_the_pte;
+		}
+		if (pud_none(*pudp)) {
+			pmdp = early_alloc_pgtable(PMD_TABLE_SIZE);
+			BUG_ON(pmdp == NULL);
+			pud_populate(&init_mm, pudp, pmdp);
+		}
+		pmdp = pmd_offset(pudp, ea);
+		if (map_page_size == PMD_SIZE) {
+			ptep = pmdp_ptep(pmdp);
+			goto set_the_pte;
+		}
+		if (!pmd_present(*pmdp)) {
+			ptep = early_alloc_pgtable(PAGE_SIZE);
+			BUG_ON(ptep == NULL);
+			pmd_populate_kernel(&init_mm, pmdp, ptep);
+		}
+		ptep = pte_offset_kernel(pmdp, ea);
+	}
+
+set_the_pte:
+	set_pte_at(&init_mm, ea, ptep, pfn_pte(pa >> PAGE_SHIFT, flags));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smp_wmb();
 	return 0;
 }
 
+<<<<<<< HEAD
 int radix__map_kernel_page(unsigned long ea, unsigned long pa,
 			  pgprot_t flags,
 			  unsigned int map_page_size)
@@ -180,6 +253,8 @@ int radix__map_kernel_page(unsigned long ea, unsigned long pa,
 	return __map_kernel_page(ea, pa, flags, map_page_size, -1, 0, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_STRICT_KERNEL_RWX
 void radix__change_memory_range(unsigned long start, unsigned long end,
 				unsigned long clear)
@@ -226,6 +301,19 @@ void radix__mark_rodata_ro(void)
 {
 	unsigned long start, end;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * mark_rodata_ro() will mark itself as !writable at some point.
+	 * Due to DD1 workaround in radix__pte_update(), we'll end up with
+	 * an invalid pte and the system will crash quite severly.
+	 */
+	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+		pr_warn("Warning: Unable to mark rodata read only on P9 DD1\n");
+		return;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	start = (unsigned long)_stext;
 	end = (unsigned long)__init_begin;
 
@@ -256,8 +344,12 @@ static inline void __meminit print_mapping(unsigned long start,
 }
 
 static int __meminit create_physical_mapping(unsigned long start,
+<<<<<<< HEAD
 					     unsigned long end,
 					     int nid)
+=======
+					     unsigned long end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long vaddr, addr, mapping_size = 0;
 	pgprot_t prot;
@@ -267,7 +359,10 @@ static int __meminit create_physical_mapping(unsigned long start,
 #else
 	int split_text_mapping = 0;
 #endif
+<<<<<<< HEAD
 	int psize;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	start = _ALIGN_UP(start, PAGE_SIZE);
 	for (addr = start; addr < end; addr += mapping_size) {
@@ -281,6 +376,7 @@ static int __meminit create_physical_mapping(unsigned long start,
 retry:
 		if (IS_ALIGNED(addr, PUD_SIZE) && gap >= PUD_SIZE &&
 		    mmu_psize_defs[MMU_PAGE_1G].shift &&
+<<<<<<< HEAD
 		    PUD_SIZE <= max_mapping_size) {
 			mapping_size = PUD_SIZE;
 			psize = MMU_PAGE_1G;
@@ -292,6 +388,15 @@ retry:
 			mapping_size = PAGE_SIZE;
 			psize = mmu_virtual_psize;
 		}
+=======
+		    PUD_SIZE <= max_mapping_size)
+			mapping_size = PUD_SIZE;
+		else if (IS_ALIGNED(addr, PMD_SIZE) && gap >= PMD_SIZE &&
+			 mmu_psize_defs[MMU_PAGE_2M].shift)
+			mapping_size = PMD_SIZE;
+		else
+			mapping_size = PAGE_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (split_text_mapping && (mapping_size == PUD_SIZE) &&
 			(addr <= __pa_symbol(__init_begin)) &&
@@ -302,10 +407,15 @@ retry:
 
 		if (split_text_mapping && (mapping_size == PMD_SIZE) &&
 		    (addr <= __pa_symbol(__init_begin)) &&
+<<<<<<< HEAD
 		    (addr + mapping_size) >= __pa_symbol(_stext)) {
 			mapping_size = PAGE_SIZE;
 			psize = mmu_virtual_psize;
 		}
+=======
+		    (addr + mapping_size) >= __pa_symbol(_stext))
+			mapping_size = PAGE_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (mapping_size != previous_size) {
 			print_mapping(start, addr, previous_size);
@@ -320,18 +430,28 @@ retry:
 		else
 			prot = PAGE_KERNEL;
 
+<<<<<<< HEAD
 		rc = __map_kernel_page(vaddr, addr, prot, mapping_size, nid, start, end);
 		if (rc)
 			return rc;
 
 		update_page_count(psize, 1);
+=======
+		rc = radix__map_kernel_page(vaddr, addr, prot, mapping_size);
+		if (rc)
+			return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	print_mapping(start, addr, mapping_size);
 	return 0;
 }
 
+<<<<<<< HEAD
 void __init radix_init_pgtable(void)
+=======
+static void __init radix_init_pgtable(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long rts_field;
 	struct memblock_region *reg;
@@ -341,6 +461,7 @@ void __init radix_init_pgtable(void)
 	/*
 	 * Create the linear mapping, using standard page size for now
 	 */
+<<<<<<< HEAD
 	for_each_memblock(memory, reg) {
 		/*
 		 * The memblock allocator  is up at this point, so the
@@ -351,6 +472,11 @@ void __init radix_init_pgtable(void)
 						reg->base + reg->size,
 						-1));
 	}
+=======
+	for_each_memblock(memory, reg)
+		WARN_ON(create_physical_mapping(reg->base,
+						reg->base + reg->size));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Find out how many PID bits are supported */
 	if (cpu_has_feature(CPU_FTR_HVMODE)) {
@@ -379,7 +505,11 @@ void __init radix_init_pgtable(void)
 	 * host.
 	 */
 	BUG_ON(PRTB_SIZE_SHIFT > 36);
+<<<<<<< HEAD
 	process_tb = early_alloc_pgtable(1UL << PRTB_SIZE_SHIFT, -1, 0, 0);
+=======
+	process_tb = early_alloc_pgtable(1UL << PRTB_SIZE_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Fill in the process table.
 	 */
@@ -397,6 +527,7 @@ void __init radix_init_pgtable(void)
 		     "r" (TLBIEL_INVAL_SET_LPID), "r" (0));
 	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
 	trace_tlbie(0, 0, TLBIEL_INVAL_SET_LPID, 0, 2, 1, 1);
+<<<<<<< HEAD
 
 	/*
 	 * The init_mm context is given the first available (non-zero) PID,
@@ -413,6 +544,8 @@ void __init radix_init_pgtable(void)
 	 */
 	init_mm.context.id = mmu_base_pid;
 	mmu_base_pid++;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init radix_init_partition_table(void)
@@ -524,6 +657,38 @@ found:
 	return;
 }
 
+<<<<<<< HEAD
+=======
+static void update_hid_for_radix(void)
+{
+	unsigned long hid0;
+	unsigned long rb = 3UL << PPC_BITLSHIFT(53); /* IS = 3 */
+
+	asm volatile("ptesync": : :"memory");
+	/* prs = 0, ric = 2, rs = 0, r = 1 is = 3 */
+	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+		     : : "r"(rb), "i"(1), "i"(0), "i"(2), "r"(0) : "memory");
+	/* prs = 1, ric = 2, rs = 0, r = 1 is = 3 */
+	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+		     : : "r"(rb), "i"(1), "i"(1), "i"(2), "r"(0) : "memory");
+	asm volatile("eieio; tlbsync; ptesync; isync; slbia": : :"memory");
+	trace_tlbie(0, 0, rb, 0, 2, 0, 1);
+	trace_tlbie(0, 0, rb, 0, 2, 1, 1);
+
+	/*
+	 * now switch the HID
+	 */
+	hid0  = mfspr(SPRN_HID0);
+	hid0 |= HID0_POWER9_RADIX;
+	mtspr(SPRN_HID0, hid0);
+	asm volatile("isync": : :"memory");
+
+	/* Wait for it to happen */
+	while (!(mfspr(SPRN_HID0) & HID0_POWER9_RADIX))
+		cpu_relax();
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void radix_init_amor(void)
 {
 	/*
@@ -538,12 +703,29 @@ static void radix_init_amor(void)
 
 static void radix_init_iamr(void)
 {
+<<<<<<< HEAD
+=======
+	unsigned long iamr;
+
+	/*
+	 * The IAMR should set to 0 on DD1.
+	 */
+	if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+		iamr = 0;
+	else
+		iamr = (1ul << 62);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Radix always uses key0 of the IAMR to determine if an access is
 	 * allowed. We set bit 0 (IBM bit 1) of key0, to prevent instruction
 	 * fetch.
 	 */
+<<<<<<< HEAD
 	mtspr(SPRN_IAMR, (1ul << 62));
+=======
+	mtspr(SPRN_IAMR, iamr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init radix__early_init_mmu(void)
@@ -574,7 +756,11 @@ void __init radix__early_init_mmu(void)
 	__pmd_index_size = RADIX_PMD_INDEX_SIZE;
 	__pud_index_size = RADIX_PUD_INDEX_SIZE;
 	__pgd_index_size = RADIX_PGD_INDEX_SIZE;
+<<<<<<< HEAD
 	__pud_cache_index = RADIX_PUD_INDEX_SIZE;
+=======
+	__pmd_cache_index = RADIX_PMD_INDEX_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__pte_table_size = RADIX_PTE_TABLE_SIZE;
 	__pmd_table_size = RADIX_PMD_TABLE_SIZE;
 	__pud_table_size = RADIX_PUD_TABLE_SIZE;
@@ -595,6 +781,7 @@ void __init radix__early_init_mmu(void)
 #ifdef CONFIG_PCI
 	pci_io_base = ISA_IO_BASE;
 #endif
+<<<<<<< HEAD
 	__pte_frag_nr = RADIX_PTE_FRAG_NR;
 	__pte_frag_size_shift = RADIX_PTE_FRAG_SIZE_SHIFT;
 	__pmd_frag_nr = RADIX_PMD_FRAG_NR;
@@ -602,6 +789,19 @@ void __init radix__early_init_mmu(void)
 
 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
 		radix_init_native();
+=======
+
+	/*
+	 * For now radix also use the same frag size
+	 */
+	__pte_frag_nr = H_PTE_FRAG_NR;
+	__pte_frag_size_shift = H_PTE_FRAG_SIZE_SHIFT;
+
+	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
+		radix_init_native();
+		if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+			update_hid_for_radix();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lpcr = mfspr(SPRN_LPCR);
 		mtspr(SPRN_LPCR, lpcr | LPCR_UPRT | LPCR_HR);
 		radix_init_partition_table();
@@ -614,10 +814,13 @@ void __init radix__early_init_mmu(void)
 
 	radix_init_iamr();
 	radix_init_pgtable();
+<<<<<<< HEAD
 	/* Switch to the guard PID before turning on MMU */
 	radix__switch_mmu_context(NULL, &init_mm);
 	if (cpu_has_feature(CPU_FTR_HVMODE))
 		tlbiel_all();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void radix__early_init_mmu_secondary(void)
@@ -627,6 +830,13 @@ void radix__early_init_mmu_secondary(void)
 	 * update partition table control register and UPRT
 	 */
 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
+<<<<<<< HEAD
+=======
+
+		if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+			update_hid_for_radix();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lpcr = mfspr(SPRN_LPCR);
 		mtspr(SPRN_LPCR, lpcr | LPCR_UPRT | LPCR_HR);
 
@@ -635,10 +845,13 @@ void radix__early_init_mmu_secondary(void)
 		radix_init_amor();
 	}
 	radix_init_iamr();
+<<<<<<< HEAD
 
 	radix__switch_mmu_context(NULL, &init_mm);
 	if (cpu_has_feature(CPU_FTR_HVMODE))
 		tlbiel_all();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void radix__mmu_cleanup_all(void)
@@ -661,11 +874,30 @@ void radix__setup_initial_memory_limit(phys_addr_t first_memblock_base,
 	 * physical on those processors
 	 */
 	BUG_ON(first_memblock_base != 0);
+<<<<<<< HEAD
 
 	/*
 	 * Radix mode is not limited by RMA / VRMA addressing.
 	 */
 	ppc64_rma_size = ULONG_MAX;
+=======
+	/*
+	 * We limit the allocation that depend on ppc64_rma_size
+	 * to first_memblock_size. We also clamp it to 1GB to
+	 * avoid some funky things such as RTAS bugs.
+	 *
+	 * On radix config we really don't have a limitation
+	 * on real mode access. But keeping it as above works
+	 * well enough.
+	 */
+	ppc64_rma_size = min_t(u64, first_memblock_size, 0x40000000);
+	/*
+	 * Finally limit subsequent allocations. We really don't want
+	 * to limit the memblock allocations to rma_size. FIXME!! should
+	 * we even limit at all ?
+	 */
+	memblock_set_current_limit(first_memblock_base + first_memblock_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_MEMORY_HOTPLUG
@@ -707,7 +939,11 @@ struct change_mapping_params {
 	unsigned long aligned_end;
 };
 
+<<<<<<< HEAD
 static int __meminit stop_machine_change_mapping(void *data)
+=======
+static int stop_machine_change_mapping(void *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct change_mapping_params *params =
 			(struct change_mapping_params *)data;
@@ -717,8 +953,13 @@ static int __meminit stop_machine_change_mapping(void *data)
 
 	spin_unlock(&init_mm.page_table_lock);
 	pte_clear(&init_mm, params->aligned_start, params->pte);
+<<<<<<< HEAD
 	create_physical_mapping(params->aligned_start, params->start, -1);
 	create_physical_mapping(params->end, params->aligned_end, -1);
+=======
+	create_physical_mapping(params->aligned_start, params->start);
+	create_physical_mapping(params->end, params->aligned_end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&init_mm.page_table_lock);
 	return 0;
 }
@@ -754,7 +995,11 @@ static void remove_pte_table(pte_t *pte_start, unsigned long addr,
 /*
  * clear the pte and potentially split the mapping helper
  */
+<<<<<<< HEAD
 static void __meminit split_kernel_mapping(unsigned long addr, unsigned long end,
+=======
+static void split_kernel_mapping(unsigned long addr, unsigned long end,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				unsigned long size, pte_t *pte)
 {
 	unsigned long mask = ~(size - 1);
@@ -847,7 +1092,11 @@ static void remove_pud_table(pud_t *pud_start, unsigned long addr,
 	}
 }
 
+<<<<<<< HEAD
 static void __meminit remove_pagetable(unsigned long start, unsigned long end)
+=======
+static void remove_pagetable(unsigned long start, unsigned long end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long addr, next;
 	pud_t *pud_base;
@@ -875,12 +1124,21 @@ static void __meminit remove_pagetable(unsigned long start, unsigned long end)
 	radix__flush_tlb_kernel_range(start, end);
 }
 
+<<<<<<< HEAD
 int __meminit radix__create_section_mapping(unsigned long start, unsigned long end, int nid)
 {
 	return create_physical_mapping(start, end, nid);
 }
 
 int __meminit radix__remove_section_mapping(unsigned long start, unsigned long end)
+=======
+int __ref radix__create_section_mapping(unsigned long start, unsigned long end)
+{
+	return create_physical_mapping(start, end);
+}
+
+int radix__remove_section_mapping(unsigned long start, unsigned long end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	remove_pagetable(start, end);
 	return 0;
@@ -888,6 +1146,7 @@ int __meminit radix__remove_section_mapping(unsigned long start, unsigned long e
 #endif /* CONFIG_MEMORY_HOTPLUG */
 
 #ifdef CONFIG_SPARSEMEM_VMEMMAP
+<<<<<<< HEAD
 static int __map_kernel_page_nid(unsigned long ea, unsigned long pa,
 				 pgprot_t flags, unsigned int map_page_size,
 				 int nid)
@@ -895,23 +1154,34 @@ static int __map_kernel_page_nid(unsigned long ea, unsigned long pa,
 	return __map_kernel_page(ea, pa, flags, map_page_size, nid, 0, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __meminit radix__vmemmap_create_mapping(unsigned long start,
 				      unsigned long page_size,
 				      unsigned long phys)
 {
 	/* Create a PTE encoding */
 	unsigned long flags = _PAGE_PRESENT | _PAGE_ACCESSED | _PAGE_KERNEL_RW;
+<<<<<<< HEAD
 	int nid = early_pfn_to_nid(phys >> PAGE_SHIFT);
 	int ret;
 
 	ret = __map_kernel_page_nid(start, phys, __pgprot(flags), page_size, nid);
 	BUG_ON(ret);
 
+=======
+
+	BUG_ON(radix__map_kernel_page(start, phys, __pgprot(flags), page_size));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 #ifdef CONFIG_MEMORY_HOTPLUG
+<<<<<<< HEAD
 void __meminit radix__vmemmap_remove_mapping(unsigned long start, unsigned long page_size)
+=======
+void radix__vmemmap_remove_mapping(unsigned long start, unsigned long page_size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	remove_pagetable(start, start + page_size);
 }
@@ -928,7 +1198,11 @@ unsigned long radix__pmd_hugepage_update(struct mm_struct *mm, unsigned long add
 
 #ifdef CONFIG_DEBUG_VM
 	WARN_ON(!radix__pmd_trans_huge(*pmdp) && !pmd_devmap(*pmdp));
+<<<<<<< HEAD
 	assert_spin_locked(pmd_lockptr(mm, pmdp));
+=======
+	assert_spin_locked(&mm->page_table_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	old = radix__pte_update(mm, addr, (pte_t *)pmdp, clr, set, 1);
@@ -1036,6 +1310,7 @@ int radix__has_transparent_hugepage(void)
 	return 0;
 }
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+<<<<<<< HEAD
 
 void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
 				  pte_t entry, unsigned long address, int psize)
@@ -1070,3 +1345,5 @@ void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
 	}
 	/* See ptesync comment in radix__set_pte_at */
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

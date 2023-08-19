@@ -771,16 +771,20 @@ struct cx23885_board cx23885_boards[] = {
 		.portb        = CX23885_MPEG_DVB,
 		.portc        = CX23885_MPEG_DVB,
 	},
+<<<<<<< HEAD
 	[CX23885_BOARD_HAUPPAUGE_QUADHD_DVB_885] = {
 		.name       = "Hauppauge WinTV-QuadHD-DVB(885)",
 		.portb        = CX23885_MPEG_DVB,
 		.portc        = CX23885_MPEG_DVB,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC] = {
 		.name        = "Hauppauge WinTV-QuadHD-ATSC",
 		.portb        = CX23885_MPEG_DVB,
 		.portc        = CX23885_MPEG_DVB,
 	},
+<<<<<<< HEAD
 	[CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC_885] = {
 		.name       = "Hauppauge WinTV-QuadHD-ATSC(885)",
 		.portb        = CX23885_MPEG_DVB,
@@ -811,6 +815,8 @@ struct cx23885_board cx23885_boards[] = {
 		.name		= "Hauppauge WinTV-Starburst2",
 		.portb		= CX23885_MPEG_DVB,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 const unsigned int cx23885_bcount = ARRAY_SIZE(cx23885_boards);
 
@@ -1063,10 +1069,13 @@ struct cx23885_subid cx23885_subids[] = {
 		.subdevice = 0x7133,
 		.card      = CX23885_BOARD_HAUPPAUGE_IMPACTVCBE,
 	}, {
+<<<<<<< HEAD
 		.subvendor = 0x0070,
 		.subdevice = 0x7137,
 		.card      = CX23885_BOARD_HAUPPAUGE_IMPACTVCBE,
 	}, {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.subvendor = 0x18ac,
 		.subdevice = 0xdb98,
 		.card      = CX23885_BOARD_DVICO_FUSIONHDTV_DVB_T_DUAL_EXP2,
@@ -1126,6 +1135,7 @@ struct cx23885_subid cx23885_subids[] = {
 		.subvendor = 0x0070,
 		.subdevice = 0x6b18,
 		.card      = CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC, /* Tuner Pair 2 */
+<<<<<<< HEAD
 	}, {
 		.subvendor = 0x0070,
 		.subdevice = 0x2a18,
@@ -1134,6 +1144,8 @@ struct cx23885_subid cx23885_subids[] = {
 		.subvendor = 0x0070,
 		.subdevice = 0xf02a,
 		.card      = CX23885_BOARD_HAUPPAUGE_STARBURST2,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 const unsigned int cx23885_idcount = ARRAY_SIZE(cx23885_subids);
@@ -1334,6 +1346,7 @@ static void hauppauge_eeprom(struct cx23885_dev *dev, u8 *eeprom_data)
 	case 150329:
 		/* WinTV-HVR5525 (PCIe, DVB-S/S2, DVB-T/T2/C) */
 		break;
+<<<<<<< HEAD
 	case 161111:
 		/* WinTV-HVR-1265 K4 (PCIe, Analog/ATSC/QAM-B) */
 		break;
@@ -1356,6 +1369,27 @@ static void hauppauge_eeprom(struct cx23885_dev *dev, u8 *eeprom_data)
 	case 165201: /* 885 version, digital only */
 		/* WinTV-QuadHD (ATSC) Tuner Pair 2 (PCIe, IR, half height,
 		 * ATSC/QAM-B, ATSC/QAM-B */
+=======
+	case 166100:
+		/* WinTV-QuadHD (DVB) Tuner Pair 1 (PCIe, IR, half height,
+		   DVB-T/T2/C, DVB-T/T2/C */
+		break;
+	case 166101:
+		/* WinTV-QuadHD (DVB) Tuner Pair 2 (PCIe, IR, half height,
+		   DVB-T/T2/C, DVB-T/T2/C */
+		break;
+	case 165100:
+		/*
+		 * WinTV-QuadHD (ATSC) Tuner Pair 1 (PCIe, IR, half height,
+		 * ATSC, ATSC
+		 */
+		break;
+	case 165101:
+		/*
+		 * WinTV-QuadHD (DVB) Tuner Pair 2 (PCIe, IR, half height,
+		 * ATSC, ATSC
+		 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		pr_warn("%s: warning: unknown hauppauge model #%d\n",
@@ -1373,7 +1407,11 @@ static void hauppauge_eeprom(struct cx23885_dev *dev, u8 *eeprom_data)
 static void tbs_card_init(struct cx23885_dev *dev)
 {
 	int i;
+<<<<<<< HEAD
 	static const u8 buf[] = {
+=======
+	const u8 buf[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		0xe0, 0x06, 0x66, 0x33, 0x65,
 		0x01, 0x17, 0x06, 0xde};
 
@@ -1497,20 +1535,36 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		/* Put the demod into reset and protect the eeprom */
 		mc417_gpio_clear(dev, GPIO_15 | GPIO_14);
+<<<<<<< HEAD
 		msleep(100);
 
 		/* Bring the demod and blaster out of reset */
 		mc417_gpio_set(dev, GPIO_15 | GPIO_14);
 		msleep(100);
+=======
+		mdelay(100);
+
+		/* Bring the demod and blaster out of reset */
+		mc417_gpio_set(dev, GPIO_15 | GPIO_14);
+		mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Force the TDA8295A into reset and back */
 		cx23885_gpio_enable(dev, GPIO_2, 1);
 		cx23885_gpio_set(dev, GPIO_2);
+<<<<<<< HEAD
 		msleep(20);
 		cx23885_gpio_clear(dev, GPIO_2);
 		msleep(20);
 		cx23885_gpio_set(dev, GPIO_2);
 		msleep(20);
+=======
+		mdelay(20);
+		cx23885_gpio_clear(dev, GPIO_2);
+		mdelay(20);
+		cx23885_gpio_set(dev, GPIO_2);
+		mdelay(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case CX23885_BOARD_HAUPPAUGE_HVR1200:
 		/* GPIO-0 tda10048 demodulator reset */
@@ -1518,9 +1572,15 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		/* Put the parts into reset and back */
 		cx_set(GP0_IO, 0x00050000);
+<<<<<<< HEAD
 		msleep(20);
 		cx_clear(GP0_IO, 0x00000005);
 		msleep(20);
+=======
+		mdelay(20);
+		cx_clear(GP0_IO, 0x00000005);
+		mdelay(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x00050005);
 		break;
 	case CX23885_BOARD_HAUPPAUGE_HVR1700:
@@ -1539,9 +1599,15 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		/* Put the parts into reset and back */
 		cx_set(GP0_IO, 0x00050000);
+<<<<<<< HEAD
 		msleep(20);
 		cx_clear(GP0_IO, 0x00000005);
 		msleep(20);
+=======
+		mdelay(20);
+		cx_clear(GP0_IO, 0x00000005);
+		mdelay(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x00050005);
 		break;
 	case CX23885_BOARD_HAUPPAUGE_HVR1400:
@@ -1551,9 +1617,15 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		/* Put the parts into reset and back */
 		cx_set(GP0_IO, 0x00050000);
+<<<<<<< HEAD
 		msleep(20);
 		cx_clear(GP0_IO, 0x00000005);
 		msleep(20);
+=======
+		mdelay(20);
+		cx_clear(GP0_IO, 0x00000005);
+		mdelay(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x00050005);
 		break;
 	case CX23885_BOARD_DVICO_FUSIONHDTV_7_DUAL_EXP:
@@ -1564,9 +1636,15 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		/* Put the parts into reset and back */
 		cx_set(GP0_IO, 0x000f0000);
+<<<<<<< HEAD
 		msleep(20);
 		cx_clear(GP0_IO, 0x0000000f);
 		msleep(20);
+=======
+		mdelay(20);
+		cx_clear(GP0_IO, 0x0000000f);
+		mdelay(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x000f000f);
 		break;
 	case CX23885_BOARD_DVICO_FUSIONHDTV_DVB_T_DUAL_EXP:
@@ -1578,9 +1656,15 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		/* Put the parts into reset and back */
 		cx_set(GP0_IO, 0x000f0000);
+<<<<<<< HEAD
 		msleep(20);
 		cx_clear(GP0_IO, 0x0000000f);
 		msleep(20);
+=======
+		mdelay(20);
+		cx_clear(GP0_IO, 0x0000000f);
+		mdelay(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x000f000f);
 		break;
 	case CX23885_BOARD_LEADTEK_WINFAST_PXDVR3200_H:
@@ -1596,9 +1680,15 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		/* Put the parts into reset and back */
 		cx_set(GP0_IO, 0x00040000);
+<<<<<<< HEAD
 		msleep(20);
 		cx_clear(GP0_IO, 0x00000004);
 		msleep(20);
+=======
+		mdelay(20);
+		cx_clear(GP0_IO, 0x00000004);
+		mdelay(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x00040004);
 		break;
 	case CX23885_BOARD_TBS_6920:
@@ -1608,11 +1698,19 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		cx_write(MC417_CTL, 0x00000036);
 		cx_write(MC417_OEN, 0x00001000);
 		cx_set(MC417_RWD, 0x00000002);
+<<<<<<< HEAD
 		msleep(200);
 		cx_clear(MC417_RWD, 0x00000800);
 		msleep(200);
 		cx_set(MC417_RWD, 0x00000800);
 		msleep(200);
+=======
+		mdelay(200);
+		cx_clear(MC417_RWD, 0x00000800);
+		mdelay(200);
+		cx_set(MC417_RWD, 0x00000800);
+		mdelay(200);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case CX23885_BOARD_NETUP_DUAL_DVBS2_CI:
 		/* GPIO-0 INTA from CiMax1
@@ -1630,7 +1728,11 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		cx_set(GP0_IO, 0x00040000); /* GPIO as out */
 		/* GPIO1 and GPIO2 as INTA and INTB from CiMaxes, reset low */
 		cx_clear(GP0_IO, 0x00030004);
+<<<<<<< HEAD
 		msleep(100);/* reset delay */
+=======
+		mdelay(100);/* reset delay */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x00040004); /* GPIO as out, reset high */
 		cx_write(MC417_CTL, 0x00000037);/* enable GPIO3-18 pins */
 		/* GPIO-15 IN as ~ACK, rest as OUT */
@@ -1653,7 +1755,11 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		cx23885_gpio_enable(dev, GPIO_9 | GPIO_6 | GPIO_5, 1);
 		cx23885_gpio_set(dev, GPIO_9 | GPIO_6 | GPIO_5);
 		cx23885_gpio_clear(dev, GPIO_9);
+<<<<<<< HEAD
 		msleep(20);
+=======
+		mdelay(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx23885_gpio_set(dev, GPIO_9);
 		break;
 	case CX23885_BOARD_MYGICA_X8506:
@@ -1664,18 +1770,30 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		/* GPIO-2 demod reset */
 		cx23885_gpio_enable(dev, GPIO_0 | GPIO_1 | GPIO_2, 1);
 		cx23885_gpio_clear(dev, GPIO_1 | GPIO_2);
+<<<<<<< HEAD
 		msleep(100);
 		cx23885_gpio_set(dev, GPIO_0 | GPIO_1 | GPIO_2);
 		msleep(100);
+=======
+		mdelay(100);
+		cx23885_gpio_set(dev, GPIO_0 | GPIO_1 | GPIO_2);
+		mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case CX23885_BOARD_MYGICA_X8558PRO:
 		/* GPIO-0 reset first ATBM8830 */
 		/* GPIO-1 reset second ATBM8830 */
 		cx23885_gpio_enable(dev, GPIO_0 | GPIO_1, 1);
 		cx23885_gpio_clear(dev, GPIO_0 | GPIO_1);
+<<<<<<< HEAD
 		msleep(100);
 		cx23885_gpio_set(dev, GPIO_0 | GPIO_1);
 		msleep(100);
+=======
+		mdelay(100);
+		cx23885_gpio_set(dev, GPIO_0 | GPIO_1);
+		mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case CX23885_BOARD_HAUPPAUGE_HVR1850:
 	case CX23885_BOARD_HAUPPAUGE_HVR1290:
@@ -1699,11 +1817,19 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		/* Put the demod into reset and protect the eeprom */
 		mc417_gpio_clear(dev, GPIO_14 | GPIO_13);
+<<<<<<< HEAD
 		msleep(100);
 
 		/* Bring the demod out of reset */
 		mc417_gpio_set(dev, GPIO_14);
 		msleep(100);
+=======
+		mdelay(100);
+
+		/* Bring the demod out of reset */
+		mc417_gpio_set(dev, GPIO_14);
+		mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* CX24228 GPIO */
 		/* Connected to IF / Mux */
@@ -1728,7 +1854,11 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		cx_set(GP0_IO, 0x00060000); /* GPIO-1,2 as out */
 		/* GPIO-0 as INT, reset & TMS low */
 		cx_clear(GP0_IO, 0x00010006);
+<<<<<<< HEAD
 		msleep(100);/* reset delay */
+=======
+		mdelay(100);/* reset delay */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x00000004); /* reset high */
 		cx_write(MC417_CTL, 0x00000037);/* enable GPIO-3..18 pins */
 		/* GPIO-17 is TDO in, GPIO-15 is ~RDY in, rest is out */
@@ -1747,15 +1877,22 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		cx23885_gpio_enable(dev, GPIO_8 | GPIO_9, 1);
 
 		cx23885_gpio_clear(dev, GPIO_8 | GPIO_9);
+<<<<<<< HEAD
 		msleep(100);
 		cx23885_gpio_set(dev, GPIO_8 | GPIO_9);
 		msleep(100);
+=======
+		mdelay(100);
+		cx23885_gpio_set(dev, GPIO_8 | GPIO_9);
+		mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		break;
 	case CX23885_BOARD_AVERMEDIA_HC81R:
 		cx_clear(MC417_CTL, 1);
 		/* GPIO-0,1,2 setup direction as output */
 		cx_set(GP0_IO, 0x00070000);
+<<<<<<< HEAD
 		usleep_range(10000, 11000);
 		/* AF9013 demod reset */
 		cx_set(GP0_IO, 0x00010001);
@@ -1771,12 +1908,33 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		usleep_range(10000, 11000);
 		cx_set(GP0_IO, 0x00010001);
 		usleep_range(10000, 11000);
+=======
+		mdelay(10);
+		/* AF9013 demod reset */
+		cx_set(GP0_IO, 0x00010001);
+		mdelay(10);
+		cx_clear(GP0_IO, 0x00010001);
+		mdelay(10);
+		cx_set(GP0_IO, 0x00010001);
+		mdelay(10);
+		/* demod tune? */
+		cx_clear(GP0_IO, 0x00030003);
+		mdelay(10);
+		cx_set(GP0_IO, 0x00020002);
+		mdelay(10);
+		cx_set(GP0_IO, 0x00010001);
+		mdelay(10);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_clear(GP0_IO, 0x00020002);
 		/* XC3028L tuner reset */
 		cx_set(GP0_IO, 0x00040004);
 		cx_clear(GP0_IO, 0x00040004);
 		cx_set(GP0_IO, 0x00040004);
+<<<<<<< HEAD
 		msleep(60);
+=======
+		mdelay(60);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case CX23885_BOARD_DVBSKY_T9580:
 	case CX23885_BOARD_DVBSKY_S952:
@@ -1785,7 +1943,11 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		cx_write(MC417_CTL, 0x00000037);
 		cx23885_gpio_enable(dev, GPIO_2 | GPIO_11, 1);
 		cx23885_gpio_clear(dev, GPIO_2 | GPIO_11);
+<<<<<<< HEAD
 		msleep(100);
+=======
+		mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx23885_gpio_set(dev, GPIO_2 | GPIO_11);
 		break;
 	case CX23885_BOARD_DVBSKY_T980C:
@@ -1807,7 +1969,11 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 
 		cx_set(GP0_IO, 0x00060002); /* GPIO 1/2 as output */
 		cx_clear(GP0_IO, 0x00010004); /* GPIO 0 as input */
+<<<<<<< HEAD
 		msleep(100); /* reset delay */
+=======
+		mdelay(100); /* reset delay */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_set(GP0_IO, 0x00060004); /* GPIO as out, reset high */
 		cx_clear(GP0_IO, 0x00010002);
 		cx_write(MC417_CTL, 0x00000037); /* enable GPIO3-18 pins */
@@ -1828,7 +1994,12 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		cx23885_gpio_set(dev, GPIO_2);
 		break;
 	case CX23885_BOARD_HAUPPAUGE_HVR5525:
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_STARBURST2:
+=======
+	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
+	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * HVR5525 GPIO Details:
 		 *  GPIO-00 IR_WIDE
@@ -1858,6 +2029,7 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		 * card does not have any GPIO's connected to subcomponents.
 		 */
 		break;
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB_885:
@@ -1874,6 +2046,8 @@ void cx23885_gpio_setup(struct cx23885_dev *dev)
 		cx23885_gpio_set(dev, GPIO_8 | GPIO_9);
 		msleep(100);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1881,13 +2055,21 @@ int cx23885_ir_init(struct cx23885_dev *dev)
 {
 	static struct v4l2_subdev_io_pin_config ir_rxtx_pin_cfg[] = {
 		{
+<<<<<<< HEAD
 			.flags	  = BIT(V4L2_SUBDEV_IO_PIN_INPUT),
+=======
+			.flags	  = V4L2_SUBDEV_IO_PIN_INPUT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.pin	  = CX23885_PIN_IR_RX_GPIO19,
 			.function = CX23885_PAD_IR_RX,
 			.value	  = 0,
 			.strength = CX25840_PIN_DRIVE_MEDIUM,
 		}, {
+<<<<<<< HEAD
 			.flags	  = BIT(V4L2_SUBDEV_IO_PIN_OUTPUT),
+=======
+			.flags	  = V4L2_SUBDEV_IO_PIN_OUTPUT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.pin	  = CX23885_PIN_IR_TX_GPIO20,
 			.function = CX23885_PAD_IR_TX,
 			.value	  = 0,
@@ -1898,7 +2080,11 @@ int cx23885_ir_init(struct cx23885_dev *dev)
 
 	static struct v4l2_subdev_io_pin_config ir_rx_pin_cfg[] = {
 		{
+<<<<<<< HEAD
 			.flags	  = BIT(V4L2_SUBDEV_IO_PIN_INPUT),
+=======
+			.flags	  = V4L2_SUBDEV_IO_PIN_INPUT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.pin	  = CX23885_PIN_IR_RX_GPIO19,
 			.function = CX23885_PAD_IR_RX,
 			.value	  = 0,
@@ -2119,12 +2305,17 @@ void cx23885_card_setup(struct cx23885_dev *dev)
 	case CX23885_BOARD_HAUPPAUGE_STARBURST:
 	case CX23885_BOARD_HAUPPAUGE_IMPACTVCBE:
 	case CX23885_BOARD_HAUPPAUGE_HVR5525:
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
 	case CX23885_BOARD_HAUPPAUGE_STARBURST2:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB_885:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC_885:
+=======
+	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
+	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (dev->i2c_bus[0].i2c_rc == 0)
 			hauppauge_eeprom(dev, eeprom+0xc0);
 		break;
@@ -2263,7 +2454,10 @@ void cx23885_card_setup(struct cx23885_dev *dev)
 		ts2->src_sel_val   = CX23885_SRC_SEL_PARALLEL_MPEG_VIDEO;
 		break;
 	case CX23885_BOARD_HAUPPAUGE_HVR5525:
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_STARBURST2:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ts1->gen_ctrl_val  = 0x5; /* Parallel */
 		ts1->ts_clk_en_val = 0x1; /* Enable TS_CLK */
 		ts1->src_sel_val   = CX23885_SRC_SEL_PARALLEL_MPEG_VIDEO;
@@ -2271,11 +2465,16 @@ void cx23885_card_setup(struct cx23885_dev *dev)
 		ts2->ts_clk_en_val = 0x1; /* Enable TS_CLK */
 		ts2->src_sel_val   = CX23885_SRC_SEL_PARALLEL_MPEG_VIDEO;
 		break;
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB_885:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC_885:
+=======
+	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
+	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ts1->gen_ctrl_val  = 0xc; /* Serial bus + punctured clock */
 		ts1->ts_clk_en_val = 0x1; /* Enable TS_CLK */
 		ts1->src_sel_val   = CX23885_SRC_SEL_PARALLEL_MPEG_VIDEO;
@@ -2332,9 +2531,12 @@ void cx23885_card_setup(struct cx23885_dev *dev)
 	case CX23885_BOARD_COMPRO_VIDEOMATE_E800:
 	case CX23885_BOARD_HAUPPAUGE_HVR1255:
 	case CX23885_BOARD_HAUPPAUGE_HVR1255_22111:
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CX23885_BOARD_HAUPPAUGE_HVR1270:
 	case CX23885_BOARD_HAUPPAUGE_HVR1850:
 	case CX23885_BOARD_MYGICA_X8506:
@@ -2426,7 +2628,11 @@ void cx23885_card_setup(struct cx23885_dev *dev)
 
 		ret = request_firmware(&fw, filename, &dev->pci->dev);
 		if (ret != 0)
+<<<<<<< HEAD
 			pr_err("did not find the firmware file '%s'. You can use <kernel_dir>/scripts/get_dvb_firmware to get the firmware.",
+=======
+			pr_err("did not find the firmware file. (%s) Please see linux/Documentation/dvb/ for more details on firmware-problems.",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       filename);
 		else
 			altera_init(&netup_config, fw);

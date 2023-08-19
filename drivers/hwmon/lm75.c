@@ -100,7 +100,11 @@ static int lm75_read(struct device *dev, enum hwmon_sensor_types type,
 		switch (attr) {
 		case hwmon_chip_update_interval:
 			*val = data->sample_time;
+<<<<<<< HEAD
 			break;
+=======
+			break;;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			return -EINVAL;
 		}
@@ -165,7 +169,11 @@ static int lm75_write(struct device *dev, enum hwmon_sensor_types type,
 	temp = DIV_ROUND_CLOSEST(temp  << (resolution - 8),
 				 1000) << (16 - resolution);
 
+<<<<<<< HEAD
 	return regmap_write(data->regmap, reg, temp);
+=======
+	return regmap_write(data->regmap, reg, (u16)temp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static umode_t lm75_is_visible(const void *data, enum hwmon_sensor_types type,

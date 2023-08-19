@@ -34,7 +34,11 @@
 /* XXX Make this per-binary type, this way we can detect the type of
  * XXX a binary.  Every Sparc executable calls this very early on.
  */
+<<<<<<< HEAD
 SYSCALL_DEFINE0(getpagesize)
+=======
+asmlinkage unsigned long sys_getpagesize(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return PAGE_SIZE; /* Possibly older binaries want 8192 on sun4's? */
 }
@@ -73,7 +77,11 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr, unsi
  * sys_pipe() is the normal C calling standard for creating
  * a pipe. It's not the way unix traditionally does this, though.
  */
+<<<<<<< HEAD
 SYSCALL_DEFINE0(sparc_pipe)
+=======
+asmlinkage long sparc_pipe(struct pt_regs *regs)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int fd[2];
 	int error;
@@ -81,7 +89,11 @@ SYSCALL_DEFINE0(sparc_pipe)
 	error = do_pipe_flags(fd, 0);
 	if (error)
 		goto out;
+<<<<<<< HEAD
 	current_pt_regs()->u_regs[UREG_I1] = fd[1];
+=======
+	regs->u_regs[UREG_I1] = fd[1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = fd[0];
 out:
 	return error;
@@ -98,6 +110,7 @@ int sparc_mmap_check(unsigned long addr, unsigned long len)
 
 /* Linux version of mmap */
 
+<<<<<<< HEAD
 SYSCALL_DEFINE6(mmap2, unsigned long, addr, unsigned long, len,
 	unsigned long, prot, unsigned long, flags, unsigned long, fd,
 	unsigned long, pgoff)
@@ -119,6 +132,29 @@ SYSCALL_DEFINE6(mmap, unsigned long, addr, unsigned long, len,
 SYSCALL_DEFINE5(sparc_remap_file_pages, unsigned long, start, unsigned long, size,
 			   unsigned long, prot, unsigned long, pgoff,
 			   unsigned long, flags)
+=======
+asmlinkage long sys_mmap2(unsigned long addr, unsigned long len,
+	unsigned long prot, unsigned long flags, unsigned long fd,
+	unsigned long pgoff)
+{
+	/* Make sure the shift for mmap2 is constant (12), no matter what PAGE_SIZE
+	   we have. */
+	return sys_mmap_pgoff(addr, len, prot, flags, fd,
+			      pgoff >> (PAGE_SHIFT - 12));
+}
+
+asmlinkage long sys_mmap(unsigned long addr, unsigned long len,
+	unsigned long prot, unsigned long flags, unsigned long fd,
+	unsigned long off)
+{
+	/* no alignment check? */
+	return sys_mmap_pgoff(addr, len, prot, flags, fd, off >> PAGE_SHIFT);
+}
+
+long sparc_remap_file_pages(unsigned long start, unsigned long size,
+			   unsigned long prot, unsigned long pgoff,
+			   unsigned long flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* This works on an existing mmap so we don't need to validate
 	 * the range as that was done at the original mmap call.
@@ -127,10 +163,18 @@ SYSCALL_DEFINE5(sparc_remap_file_pages, unsigned long, start, unsigned long, siz
 				    (pgoff >> (PAGE_SHIFT - 12)), flags);
 }
 
+<<<<<<< HEAD
 SYSCALL_DEFINE0(nis_syscall)
 {
 	static int count = 0;
 	struct pt_regs *regs = current_pt_regs();
+=======
+/* we come to here via sys_nis_syscall so it can setup the regs argument */
+asmlinkage unsigned long
+c_sys_nis_syscall (struct pt_regs *regs)
+{
+	static int count = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (count++ > 5)
 		return -ENOSYS;
@@ -147,11 +191,24 @@ SYSCALL_DEFINE0(nis_syscall)
 asmlinkage void
 sparc_breakpoint (struct pt_regs *regs)
 {
+<<<<<<< HEAD
+=======
+	siginfo_t info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef DEBUG_SPARC_BREAKPOINT
         printk ("TRAP: Entering kernel PC=%x, nPC=%x\n", regs->pc, regs->npc);
 #endif
+<<<<<<< HEAD
 	force_sig_fault(SIGTRAP, TRAP_BRKPT, (void __user *)regs->pc, 0, current);
+=======
+	info.si_signo = SIGTRAP;
+	info.si_errno = 0;
+	info.si_code = TRAP_BRKPT;
+	info.si_addr = (void __user *)regs->pc;
+	info.si_trapno = 0;
+	force_sig_info(SIGTRAP, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef DEBUG_SPARC_BREAKPOINT
 	printk ("TRAP: Returning to space: PC=%x nPC=%x\n", regs->pc, regs->npc);
@@ -195,7 +252,11 @@ SYSCALL_DEFINE5(rt_sigaction, int, sig,
 	return ret;
 }
 
+<<<<<<< HEAD
 SYSCALL_DEFINE2(getdomainname, char __user *, name, int, len)
+=======
+asmlinkage long sys_getdomainname(char __user *name, int len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int nlen, err;
 	char tmp[__NEW_UTS_LEN + 1];

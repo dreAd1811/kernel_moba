@@ -132,7 +132,11 @@ static s64 sn_device_fixup_war(u64 nasid, u64 widget, int device,
 	printk_once(KERN_WARNING
 		"PROM version < 4.50 -- implementing old PROM flush WAR\n");
 
+<<<<<<< HEAD
 	war_list = kcalloc(DEV_PER_WIDGET, sizeof(*war_list), GFP_KERNEL);
+=======
+	war_list = kzalloc(DEV_PER_WIDGET * sizeof(*war_list), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(!war_list);
 
 	SAL_CALL_NOLOCK(isrv, SN_SAL_IOIF_GET_WIDGET_DMAFLUSH_LIST,
@@ -480,6 +484,14 @@ sn_io_early_init(void)
 	tioca_init_provider();
 	tioce_init_provider();
 
+<<<<<<< HEAD
+=======
+	/*
+	 * This is needed to avoid bounce limit checks in the blk layer
+	 */
+	ia64_max_iommu_merge_mask = ~PAGE_MASK;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sn_irq_lh_init();
 	INIT_LIST_HEAD(&sn_sysdata_list);
 	sn_init_cpei_timer();

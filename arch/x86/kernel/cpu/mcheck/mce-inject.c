@@ -106,6 +106,12 @@ static void setup_inj_struct(struct mce *m)
 	memset(m, 0, sizeof(struct mce));
 
 	m->cpuvendor = boot_cpu_data.x86_vendor;
+<<<<<<< HEAD
+=======
+	m->time	     = ktime_get_real_seconds();
+	m->cpuid     = cpuid_eax(1);
+	m->microcode = boot_cpu_data.microcode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Update fake mce registers on current CPU. */
@@ -489,7 +495,11 @@ static void do_inject(void)
 	unsigned int cpu = i_mce.extcpu;
 	u8 b = i_mce.bank;
 
+<<<<<<< HEAD
 	i_mce.tsc = rdtsc_ordered();
+=======
+	rdtscll(i_mce.tsc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (i_mce.misc)
 		i_mce.status |= MCI_STATUS_MISCV;
@@ -580,6 +590,12 @@ static int inj_bank_set(void *data, u64 val)
 	m->bank = val;
 	do_inject();
 
+<<<<<<< HEAD
+=======
+	/* Reset injection struct */
+	setup_inj_struct(&i_mce);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

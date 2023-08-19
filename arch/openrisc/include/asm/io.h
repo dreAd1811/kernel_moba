@@ -29,14 +29,21 @@
 #define PIO_OFFSET		0
 #define PIO_MASK		0
 
+<<<<<<< HEAD
 #define ioremap_nocache ioremap_nocache
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/io.h>
 #include <asm/pgtable.h>
 
 extern void __iomem *__ioremap(phys_addr_t offset, unsigned long size,
 				pgprot_t prot);
 
+<<<<<<< HEAD
 static inline void __iomem *ioremap(phys_addr_t offset, size_t size)
+=======
+static inline void __iomem *ioremap(phys_addr_t offset, unsigned long size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return __ioremap(offset, size, PAGE_KERNEL);
 }

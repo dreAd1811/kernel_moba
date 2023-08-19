@@ -98,7 +98,11 @@ static int pm8xxx_vib_set(struct pm8xxx_vib *vib, bool on)
 
 	if (regs->enable_mask)
 		rc = regmap_update_bits(vib->regmap, regs->enable_addr,
+<<<<<<< HEAD
 					on ? regs->enable_mask : 0, val);
+=======
+					regs->enable_mask, on ? ~0 : 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }

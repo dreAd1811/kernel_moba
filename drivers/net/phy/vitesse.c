@@ -72,10 +72,13 @@
 #define PHY_ID_VSC8572			0x000704d0
 #define PHY_ID_VSC8574			0x000704a0
 #define PHY_ID_VSC8601			0x00070420
+<<<<<<< HEAD
 #define PHY_ID_VSC7385			0x00070450
 #define PHY_ID_VSC7388			0x00070480
 #define PHY_ID_VSC7395			0x00070550
 #define PHY_ID_VSC7398			0x00070580
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PHY_ID_VSC8662			0x00070660
 #define PHY_ID_VSC8221			0x000fc550
 #define PHY_ID_VSC8211			0x000fc4b0
@@ -120,6 +123,7 @@ static int vsc824x_config_init(struct phy_device *phydev)
 	return err;
 }
 
+<<<<<<< HEAD
 #define VSC73XX_EXT_PAGE_ACCESS 0x1f
 
 static int vsc73xx_read_page(struct phy_device *phydev)
@@ -251,6 +255,8 @@ static int vsc73xx_config_aneg(struct phy_device *phydev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* This adds a skew for both TX and RX clocks, so the skew should only be
  * applied to "rgmii-id" interfaces. It may not work as expected
  * on "rgmii-txid", "rgmii-rxid" or "rgmii" interfaces. */
@@ -402,6 +408,10 @@ static struct phy_driver vsc82xx_driver[] = {
 	.flags          = PHY_HAS_INTERRUPT,
 	.config_init    = &vsc824x_config_init,
 	.config_aneg    = &vsc82x4_config_aneg,
+<<<<<<< HEAD
+=======
+	.read_status    = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt  = &vsc824x_ack_interrupt,
 	.config_intr    = &vsc82xx_config_intr,
 }, {
@@ -412,6 +422,10 @@ static struct phy_driver vsc82xx_driver[] = {
 	.flags		= PHY_HAS_INTERRUPT,
 	.config_init	= &vsc824x_config_init,
 	.config_aneg	= &vsc82x4_config_aneg,
+<<<<<<< HEAD
+=======
+	.read_status	= &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= &vsc824x_ack_interrupt,
 	.config_intr	= &vsc82xx_config_intr,
 }, {
@@ -422,6 +436,10 @@ static struct phy_driver vsc82xx_driver[] = {
 	.flags		= PHY_HAS_INTERRUPT,
 	.config_init	= &vsc824x_config_init,
 	.config_aneg	= &vsc82x4_config_aneg,
+<<<<<<< HEAD
+=======
+	.read_status	= &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= &vsc824x_ack_interrupt,
 	.config_intr	= &vsc82xx_config_intr,
 }, {
@@ -432,6 +450,10 @@ static struct phy_driver vsc82xx_driver[] = {
 	.flags          = PHY_HAS_INTERRUPT,
 	.config_init    = &vsc824x_config_init,
 	.config_aneg    = &vsc82x4_config_aneg,
+<<<<<<< HEAD
+=======
+	.read_status    = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt  = &vsc824x_ack_interrupt,
 	.config_intr    = &vsc82xx_config_intr,
 }, {
@@ -442,6 +464,10 @@ static struct phy_driver vsc82xx_driver[] = {
 	.flags          = PHY_HAS_INTERRUPT,
 	.config_init    = &vsc824x_config_init,
 	.config_aneg    = &vsc82x4_config_aneg,
+<<<<<<< HEAD
+=======
+	.read_status    = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt  = &vsc824x_ack_interrupt,
 	.config_intr    = &vsc82xx_config_intr,
 }, {
@@ -451,6 +477,7 @@ static struct phy_driver vsc82xx_driver[] = {
 	.features       = PHY_GBIT_FEATURES,
 	.flags          = PHY_HAS_INTERRUPT,
 	.config_init    = &vsc8601_config_init,
+<<<<<<< HEAD
 	.ack_interrupt  = &vsc824x_ack_interrupt,
 	.config_intr    = &vsc82xx_config_intr,
 }, {
@@ -490,6 +517,13 @@ static struct phy_driver vsc82xx_driver[] = {
 	.read_page      = vsc73xx_read_page,
 	.write_page     = vsc73xx_write_page,
 }, {
+=======
+	.config_aneg    = &genphy_config_aneg,
+	.read_status    = &genphy_read_status,
+	.ack_interrupt  = &vsc824x_ack_interrupt,
+	.config_intr    = &vsc82xx_config_intr,
+}, {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.phy_id         = PHY_ID_VSC8662,
 	.name           = "Vitesse VSC8662",
 	.phy_id_mask    = 0x000ffff0,
@@ -497,6 +531,10 @@ static struct phy_driver vsc82xx_driver[] = {
 	.flags          = PHY_HAS_INTERRUPT,
 	.config_init    = &vsc824x_config_init,
 	.config_aneg    = &vsc82x4_config_aneg,
+<<<<<<< HEAD
+=======
+	.read_status    = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt  = &vsc824x_ack_interrupt,
 	.config_intr    = &vsc82xx_config_intr,
 }, {
@@ -507,6 +545,11 @@ static struct phy_driver vsc82xx_driver[] = {
 	.features	= PHY_GBIT_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
 	.config_init	= &vsc8221_config_init,
+<<<<<<< HEAD
+=======
+	.config_aneg	= &genphy_config_aneg,
+	.read_status	= &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= &vsc824x_ack_interrupt,
 	.config_intr	= &vsc82xx_config_intr,
 }, {
@@ -517,6 +560,11 @@ static struct phy_driver vsc82xx_driver[] = {
 	.features	= PHY_GBIT_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
 	.config_init	= &vsc8221_config_init,
+<<<<<<< HEAD
+=======
+	.config_aneg	= &genphy_config_aneg,
+	.read_status	= &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= &vsc824x_ack_interrupt,
 	.config_intr	= &vsc82xx_config_intr,
 } };
@@ -529,10 +577,13 @@ static struct mdio_device_id __maybe_unused vitesse_tbl[] = {
 	{ PHY_ID_VSC8514, 0x000ffff0 },
 	{ PHY_ID_VSC8572, 0x000ffff0 },
 	{ PHY_ID_VSC8574, 0x000ffff0 },
+<<<<<<< HEAD
 	{ PHY_ID_VSC7385, 0x000ffff0 },
 	{ PHY_ID_VSC7388, 0x000ffff0 },
 	{ PHY_ID_VSC7395, 0x000ffff0 },
 	{ PHY_ID_VSC7398, 0x000ffff0 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ PHY_ID_VSC8662, 0x000ffff0 },
 	{ PHY_ID_VSC8221, 0x000ffff0 },
 	{ PHY_ID_VSC8211, 0x000ffff0 },

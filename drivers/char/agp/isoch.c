@@ -93,8 +93,12 @@ static int agp_3_5_isochronous_node_enable(struct agp_bridge_data *bridge,
 	 * We'll work with an array of isoch_data's (one for each
 	 * device in dev_list) throughout this function.
 	 */
+<<<<<<< HEAD
 	master = kmalloc_array(ndevs, sizeof(*master), GFP_KERNEL);
 	if (master == NULL) {
+=======
+	if ((master = kmalloc(ndevs * sizeof(*master), GFP_KERNEL)) == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto get_out;
 	}

@@ -36,6 +36,7 @@ Supported chips:
     Prefix: 'nct6793'
     Addresses scanned: ISA address retrieved from Super I/O registers
     Datasheet: Available from Nuvoton upon request
+<<<<<<< HEAD
   * Nuvoton NCT6795D
     Prefix: 'nct6795'
     Addresses scanned: ISA address retrieved from Super I/O registers
@@ -44,6 +45,8 @@ Supported chips:
     Prefix: 'nct6796'
     Addresses scanned: ISA address retrieved from Super I/O registers
     Datasheet: Available from Nuvoton upon request
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Authors:
         Guenter Roeck <linux@roeck-us.net>
@@ -96,10 +99,17 @@ The mode works for fan1-fan5.
 sysfs attributes
 ----------------
 
+<<<<<<< HEAD
 pwm[1-7] - this file stores PWM duty cycle or DC value (fan speed) in range:
 	   0 (lowest speed) to 255 (full)
 
 pwm[1-7]_enable - this file controls mode of fan/temperature control:
+=======
+pwm[1-5] - this file stores PWM duty cycle or DC value (fan speed) in range:
+	   0 (lowest speed) to 255 (full)
+
+pwm[1-5]_enable - this file controls mode of fan/temperature control:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	* 0 Fan control disabled (fans set to maximum speed)
 	* 1 Manual mode, write to pwm[0-5] any value 0-255
 	* 2 "Thermal Cruise" mode
@@ -107,16 +117,26 @@ pwm[1-7]_enable - this file controls mode of fan/temperature control:
 	* 4 "Smart Fan III" mode (NCT6775F only)
 	* 5 "Smart Fan IV" mode
 
+<<<<<<< HEAD
 pwm[1-7]_mode - controls if output is PWM or DC level
+=======
+pwm[1-5]_mode - controls if output is PWM or DC level
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         * 0 DC output
         * 1 PWM output
 
 Common fan control attributes
 -----------------------------
 
+<<<<<<< HEAD
 pwm[1-7]_temp_sel	Temperature source. Value is temperature sensor index.
 			For example, select '1' for temp1_input.
 pwm[1-7]_weight_temp_sel
+=======
+pwm[1-5]_temp_sel	Temperature source. Value is temperature sensor index.
+			For example, select '1' for temp1_input.
+pwm[1-5]_weight_temp_sel
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			Secondary temperature source. Value is temperature
 			sensor index. For example, select '1' for temp1_input.
 			Set to 0 to disable secondary temperature control.
@@ -124,6 +144,7 @@ pwm[1-7]_weight_temp_sel
 If secondary temperature functionality is enabled, it is controlled with the
 following attributes.
 
+<<<<<<< HEAD
 pwm[1-7]_weight_duty_step
 			Duty step size.
 pwm[1-7]_weight_temp_step
@@ -134,6 +155,18 @@ pwm[1-7]_weight_temp_step_base
 			Temperature at which secondary temperature control kicks
 			in.
 pwm[1-7]_weight_temp_step_tol
+=======
+pwm[1-5]_weight_duty_step
+			Duty step size.
+pwm[1-5]_weight_temp_step
+			Temperature step size. With each step over
+			temp_step_base, the value of weight_duty_step is added
+			to the current pwm value.
+pwm[1-5]_weight_temp_step_base
+			Temperature at which secondary temperature control kicks
+			in.
+pwm[1-5]_weight_temp_step_tol
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			Temperature step tolerance.
 
 Thermal Cruise mode (2)
@@ -141,9 +174,15 @@ Thermal Cruise mode (2)
 
 If the temperature is in the range defined by:
 
+<<<<<<< HEAD
 pwm[1-7]_target_temp	Target temperature, unit millidegree Celsius
 			(range 0 - 127000)
 pwm[1-7]_temp_tolerance
+=======
+pwm[1-5]_target_temp	Target temperature, unit millidegree Celsius
+			(range 0 - 127000)
+pwm[1-5]_temp_tolerance
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			Target temperature tolerance, unit millidegree Celsius
 
 there are no changes to fan speed. Once the temperature leaves the interval, fan
@@ -151,6 +190,7 @@ speed increases (if temperature is higher that desired) or decreases (if
 temperature is lower than desired), using the following limits and time
 intervals.
 
+<<<<<<< HEAD
 pwm[1-7]_start		fan pwm start value (range 1 - 255), to start fan
 			when the temperature is above defined range.
 pwm[1-7]_floor		lowest fan pwm (range 0 - 255) if temperature is below
@@ -159,6 +199,16 @@ pwm[1-7]_floor		lowest fan pwm (range 0 - 255) if temperature is below
 pwm[1-7]_step_up_time	milliseconds before fan speed is increased
 pwm[1-7]_step_down_time	milliseconds before fan speed is decreased
 pwm[1-7]_stop_time	how many milliseconds must elapse to switch
+=======
+pwm[1-5]_start		fan pwm start value (range 1 - 255), to start fan
+			when the temperature is above defined range.
+pwm[1-5]_floor		lowest fan pwm (range 0 - 255) if temperature is below
+			the defined range. If set to 0, the fan is expected to
+			stop if the temperature is below the defined range.
+pwm[1-5]_step_up_time	milliseconds before fan speed is increased
+pwm[1-5]_step_down_time	milliseconds before fan speed is decreased
+pwm[1-5]_stop_time	how many milliseconds must elapse to switch
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			corresponding fan off (when the temperature was below
 			defined range).
 
@@ -167,8 +217,13 @@ Speed Cruise mode (3)
 
 This modes tries to keep the fan speed constant.
 
+<<<<<<< HEAD
 fan[1-7]_target		Target fan speed
 fan[1-7]_tolerance
+=======
+fan[1-5]_target		Target fan speed
+fan[1-5]_tolerance
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			Target speed tolerance
 
 
@@ -185,6 +240,7 @@ points should be set to higher temperatures and higher pwm values to achieve
 higher fan speeds with increasing temperature. The last data point reflects
 critical temperature mode, in which the fans should run at full speed.
 
+<<<<<<< HEAD
 pwm[1-7]_auto_point[1-7]_pwm
 			pwm value to be set if temperature reaches matching
 			temperature range.
@@ -198,6 +254,21 @@ pwm[1-7]_crit_temp_tolerance
 
 pwm[1-7]_step_up_time	milliseconds before fan speed is increased
 pwm[1-7]_step_down_time	milliseconds before fan speed is decreased
+=======
+pwm[1-5]_auto_point[1-7]_pwm
+			pwm value to be set if temperature reaches matching
+			temperature range.
+pwm[1-5]_auto_point[1-7]_temp
+			Temperature over which the matching pwm is enabled.
+pwm[1-5]_temp_tolerance
+			Temperature tolerance, unit millidegree Celsius
+pwm[1-5]_crit_temp_tolerance
+			Temperature tolerance for critical temperature,
+			unit millidegree Celsius
+
+pwm[1-5]_step_up_time	milliseconds before fan speed is increased
+pwm[1-5]_step_down_time	milliseconds before fan speed is decreased
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Usage Notes
 -----------

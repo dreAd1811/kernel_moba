@@ -84,6 +84,15 @@ static int page_is_used(struct mtdoops_context *cxt, int page)
 	return test_bit(page, cxt->oops_page_used);
 }
 
+<<<<<<< HEAD
+=======
+static void mtdoops_erase_callback(struct erase_info *done)
+{
+	wait_queue_head_t *wait_q = (wait_queue_head_t *)done->priv;
+	wake_up(wait_q);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mtdoops_erase_block(struct mtdoops_context *cxt, int offset)
 {
 	struct mtd_info *mtd = cxt->mtd;
@@ -91,6 +100,7 @@ static int mtdoops_erase_block(struct mtdoops_context *cxt, int offset)
 	u32 start_page = start_page_offset / record_size;
 	u32 erase_pages = mtd->erasesize / record_size;
 	struct erase_info erase;
+<<<<<<< HEAD
 	int ret;
 	int page;
 
@@ -99,12 +109,39 @@ static int mtdoops_erase_block(struct mtdoops_context *cxt, int offset)
 
 	ret = mtd_erase(mtd, &erase);
 	if (ret) {
+=======
+	DECLARE_WAITQUEUE(wait, current);
+	wait_queue_head_t wait_q;
+	int ret;
+	int page;
+
+	init_waitqueue_head(&wait_q);
+	erase.mtd = mtd;
+	erase.callback = mtdoops_erase_callback;
+	erase.addr = offset;
+	erase.len = mtd->erasesize;
+	erase.priv = (u_long)&wait_q;
+
+	set_current_state(TASK_INTERRUPTIBLE);
+	add_wait_queue(&wait_q, &wait);
+
+	ret = mtd_erase(mtd, &erase);
+	if (ret) {
+		set_current_state(TASK_RUNNING);
+		remove_wait_queue(&wait_q, &wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_WARNING "mtdoops: erase of region [0x%llx, 0x%llx] on \"%s\" failed\n",
 		       (unsigned long long)erase.addr,
 		       (unsigned long long)erase.len, mtddev);
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	schedule();  /* Wait for erase to finish. */
+	remove_wait_queue(&wait_q, &wait);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Mark pages as unused */
 	for (page = start_page; page < start_page + erase_pages; page++)
 		mark_page_unused(cxt, page);
@@ -330,10 +367,15 @@ static void mtdoops_notify_add(struct mtd_info *mtd)
 	}
 
 	/* oops_page_used is a bit field */
+<<<<<<< HEAD
 	cxt->oops_page_used =
 		vmalloc(array_size(sizeof(unsigned long),
 				   DIV_ROUND_UP(mtdoops_pages,
 						BITS_PER_LONG)));
+=======
+	cxt->oops_page_used = vmalloc(DIV_ROUND_UP(mtdoops_pages,
+			BITS_PER_LONG) * sizeof(unsigned long));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cxt->oops_page_used) {
 		printk(KERN_ERR "mtdoops: could not allocate page array\n");
 		return;

@@ -108,8 +108,11 @@ Description:	CPU topology files that describe a logical CPU's relationship
 
 What:		/sys/devices/system/cpu/cpuidle/current_driver
 		/sys/devices/system/cpu/cpuidle/current_governer_ro
+<<<<<<< HEAD
 		/sys/devices/system/cpu/cpuidle/available_governors
 		/sys/devices/system/cpu/cpuidle/current_governor
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Date:		September 2007
 Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
 Description:	Discover cpuidle policy and mechanism
@@ -121,6 +124,7 @@ Description:	Discover cpuidle policy and mechanism
 		Idle policy (governor) is differentiated from idle mechanism
 		(driver)
 
+<<<<<<< HEAD
 		current_driver: (RO) displays current idle mechanism
 
 		current_governor_ro: (RO) displays current idle policy
@@ -136,10 +140,16 @@ Description:	Discover cpuidle policy and mechanism
 
 		current_governor: (RW) displays current idle policy. Users can
 		switch the governor at runtime by writing to this file.
+=======
+		current_driver: displays current idle mechanism
+
+		current_governor_ro: displays current idle policy
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		See files in Documentation/cpuidle/ for more information.
 
 
+<<<<<<< HEAD
 What:		/sys/devices/system/cpu/cpuX/cpuidle/stateN/name
 		/sys/devices/system/cpu/cpuX/cpuidle/stateN/latency
 		/sys/devices/system/cpu/cpuX/cpuidle/stateN/power
@@ -224,6 +234,8 @@ Description:
 		Total number of times this state has been requested by the CPU
 		while entering suspend-to-idle.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 What:		/sys/devices/system/cpu/cpu#/cpufreq/*
 Date:		pre-git history
 Contact:	linux-pm@vger.kernel.org
@@ -238,6 +250,12 @@ Description:	Discover and change clock speed of CPUs
 
 		See files in Documentation/cpu-freq/ for more information.
 
+<<<<<<< HEAD
+=======
+		In particular, read Documentation/cpu-freq/user-guide.txt
+		to learn how to control the knobs.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 What:		/sys/devices/system/cpu/cpu#/cpufreq/freqdomain_cpus
 Date:		June 2013
@@ -282,8 +300,12 @@ Description:	Processor frequency boosting control
 		This switch controls the boost setting for the whole system.
 		Boosting allows the CPU and the firmware to run at a frequency
 		beyound it's nominal limit.
+<<<<<<< HEAD
 		More details can be found in
 		Documentation/admin-guide/pm/cpufreq.rst
+=======
+		More details can be found in Documentation/cpu-freq/boost.txt
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 What:		/sys/devices/system/cpu/cpu#/crash_notes
@@ -319,8 +341,12 @@ Description:	Parameters for the Intel P-state driver
 		no_turbo: limits the driver to selecting P states below the turbo
 		frequency range.
 
+<<<<<<< HEAD
 		More details can be found in
 		Documentation/admin-guide/pm/intel_pstate.rst
+=======
+		More details can be found in Documentation/cpu-freq/intel-pstate.txt
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 What:		/sys/devices/system/cpu/cpu*/cache/index*/<set_of_attributes_mentioned_below>
 Date:		July 2014(documented, existed before August 2008)
@@ -478,6 +504,12 @@ What:		/sys/devices/system/cpu/vulnerabilities
 		/sys/devices/system/cpu/vulnerabilities/spec_store_bypass
 		/sys/devices/system/cpu/vulnerabilities/l1tf
 		/sys/devices/system/cpu/vulnerabilities/mds
+<<<<<<< HEAD
+=======
+		/sys/devices/system/cpu/vulnerabilities/srbds
+		/sys/devices/system/cpu/vulnerabilities/tsx_async_abort
+		/sys/devices/system/cpu/vulnerabilities/itlb_multihit
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Date:		January 2018
 Contact:	Linux kernel mailing list <linux-kernel@vger.kernel.org>
 Description:	Information about CPU vulnerabilities

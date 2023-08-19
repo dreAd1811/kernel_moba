@@ -11,7 +11,10 @@
 #include <asm/ppc_asm.h>
 #include <asm/asm-offsets.h>
 #include <asm/export.h>
+<<<<<<< HEAD
 #include <asm/feature-fixups.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
         .section        ".toc","aw"
 PPC64_CACHES:
@@ -22,9 +25,13 @@ _GLOBAL_TOC(copy_page)
 BEGIN_FTR_SECTION
 	lis	r5,PAGE_SIZE@h
 FTR_SECTION_ELSE
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 	b	copypage_power7
 #endif
+=======
+	b	copypage_power7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
 	ori	r5,r5,PAGE_SIZE@l
 BEGIN_FTR_SECTION

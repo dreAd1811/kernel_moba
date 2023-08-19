@@ -20,7 +20,10 @@
 #include "regs-vp.h"
 
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/ktime.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spinlock.h>
 #include <linux/wait.h>
 #include <linux/i2c.h>
@@ -68,6 +71,22 @@
 #define MXR_FORMAT_ARGB4444	6
 #define MXR_FORMAT_ARGB8888	7
 
+<<<<<<< HEAD
+=======
+struct mixer_resources {
+	int			irq;
+	void __iomem		*mixer_regs;
+	void __iomem		*vp_regs;
+	spinlock_t		reg_slock;
+	struct clk		*mixer;
+	struct clk		*vp;
+	struct clk		*hdmi;
+	struct clk		*sclk_mixer;
+	struct clk		*sclk_hdmi;
+	struct clk		*mout_mixer;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum mixer_version_id {
 	MXR_VER_0_0_0_16,
 	MXR_VER_16_0_33_0,
@@ -105,6 +124,7 @@ struct mixer_context {
 	struct exynos_drm_plane	planes[MIXER_WIN_NR];
 	unsigned long		flags;
 
+<<<<<<< HEAD
 	int			irq;
 	void __iomem		*mixer_regs;
 	void __iomem		*vp_regs;
@@ -117,6 +137,10 @@ struct mixer_context {
 	struct clk		*mout_mixer;
 	enum mixer_version_id	mxr_ver;
 	int			scan_value;
+=======
+	struct mixer_resources	mixer_res;
+	enum mixer_version_id	mxr_ver;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mixer_drv_data {
@@ -180,6 +204,7 @@ static const u8 filter_cr_horiz_tap4[] = {
 	70,	59,	48,	37,	27,	19,	11,	5,
 };
 
+<<<<<<< HEAD
 static inline u32 vp_reg_read(struct mixer_context *ctx, u32 reg_id)
 {
 	return readl(ctx->vp_regs + reg_id);
@@ -218,6 +243,58 @@ static inline void mixer_reg_writemask(struct mixer_context *ctx,
 
 	val = (val & mask) | (old & ~mask);
 	writel(val, ctx->mixer_regs + reg_id);
+=======
+static inline bool is_alpha_format(unsigned int pixel_format)
+{
+	switch (pixel_format) {
+	case DRM_FORMAT_ARGB8888:
+	case DRM_FORMAT_ARGB1555:
+	case DRM_FORMAT_ARGB4444:
+		return true;
+	default:
+		return false;
+	}
+}
+
+static inline u32 vp_reg_read(struct mixer_resources *res, u32 reg_id)
+{
+	return readl(res->vp_regs + reg_id);
+}
+
+static inline void vp_reg_write(struct mixer_resources *res, u32 reg_id,
+				 u32 val)
+{
+	writel(val, res->vp_regs + reg_id);
+}
+
+static inline void vp_reg_writemask(struct mixer_resources *res, u32 reg_id,
+				 u32 val, u32 mask)
+{
+	u32 old = vp_reg_read(res, reg_id);
+
+	val = (val & mask) | (old & ~mask);
+	writel(val, res->vp_regs + reg_id);
+}
+
+static inline u32 mixer_reg_read(struct mixer_resources *res, u32 reg_id)
+{
+	return readl(res->mixer_regs + reg_id);
+}
+
+static inline void mixer_reg_write(struct mixer_resources *res, u32 reg_id,
+				 u32 val)
+{
+	writel(val, res->mixer_regs + reg_id);
+}
+
+static inline void mixer_reg_writemask(struct mixer_resources *res,
+				 u32 reg_id, u32 val, u32 mask)
+{
+	u32 old = mixer_reg_read(res, reg_id);
+
+	val = (val & mask) | (old & ~mask);
+	writel(val, res->mixer_regs + reg_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mixer_regs_dump(struct mixer_context *ctx)
@@ -225,7 +302,11 @@ static void mixer_regs_dump(struct mixer_context *ctx)
 #define DUMPREG(reg_id) \
 do { \
 	DRM_DEBUG_KMS(#reg_id " = %08x\n", \
+<<<<<<< HEAD
 		(u32)readl(ctx->mixer_regs + reg_id)); \
+=======
+		(u32)readl(ctx->mixer_res.mixer_regs + reg_id)); \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while (0)
 
 	DUMPREG(MXR_STATUS);
@@ -257,7 +338,11 @@ static void vp_regs_dump(struct mixer_context *ctx)
 #define DUMPREG(reg_id) \
 do { \
 	DRM_DEBUG_KMS(#reg_id " = %08x\n", \
+<<<<<<< HEAD
 		(u32) readl(ctx->vp_regs + reg_id)); \
+=======
+		(u32) readl(ctx->mixer_res.vp_regs + reg_id)); \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while (0)
 
 	DUMPREG(VP_ENABLE);
@@ -287,7 +372,11 @@ do { \
 #undef DUMPREG
 }
 
+<<<<<<< HEAD
 static inline void vp_filter_set(struct mixer_context *ctx,
+=======
+static inline void vp_filter_set(struct mixer_resources *res,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int reg_id, const u8 *data, unsigned int size)
 {
 	/* assure 4-byte align */
@@ -295,6 +384,7 @@ static inline void vp_filter_set(struct mixer_context *ctx,
 	for (; size; size -= 4, reg_id += 4, data += 4) {
 		u32 val = (data[0] << 24) |  (data[1] << 16) |
 			(data[2] << 8) | data[3];
+<<<<<<< HEAD
 		vp_reg_write(ctx, reg_id, val);
 	}
 }
@@ -306,12 +396,29 @@ static void vp_default_filter(struct mixer_context *ctx)
 	vp_filter_set(ctx, VP_POLY4_Y0_LL,
 		filter_y_vert_tap4, sizeof(filter_y_vert_tap4));
 	vp_filter_set(ctx, VP_POLY4_C0_LL,
+=======
+		vp_reg_write(res, reg_id, val);
+	}
+}
+
+static void vp_default_filter(struct mixer_resources *res)
+{
+	vp_filter_set(res, VP_POLY8_Y0_LL,
+		filter_y_horiz_tap8, sizeof(filter_y_horiz_tap8));
+	vp_filter_set(res, VP_POLY4_Y0_LL,
+		filter_y_vert_tap4, sizeof(filter_y_vert_tap4));
+	vp_filter_set(res, VP_POLY4_C0_LL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		filter_cr_horiz_tap4, sizeof(filter_cr_horiz_tap4));
 }
 
 static void mixer_cfg_gfx_blend(struct mixer_context *ctx, unsigned int win,
 				bool alpha)
 {
+<<<<<<< HEAD
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	val  = MXR_GRP_CFG_COLOR_KEY_DISABLE; /* no blank key */
@@ -320,12 +427,20 @@ static void mixer_cfg_gfx_blend(struct mixer_context *ctx, unsigned int win,
 		val |= MXR_GRP_CFG_BLEND_PRE_MUL;
 		val |= MXR_GRP_CFG_PIXEL_BLEND_EN;
 	}
+<<<<<<< HEAD
 	mixer_reg_writemask(ctx, MXR_GRAPHIC_CFG(win),
+=======
+	mixer_reg_writemask(res, MXR_GRAPHIC_CFG(win),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    val, MXR_GRP_CFG_MISC_MASK);
 }
 
 static void mixer_cfg_vp_blend(struct mixer_context *ctx)
 {
+<<<<<<< HEAD
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	/*
@@ -335,6 +450,7 @@ static void mixer_cfg_vp_blend(struct mixer_context *ctx)
 	 * support blending of the video layer through this.
 	 */
 	val = 0;
+<<<<<<< HEAD
 	mixer_reg_write(ctx, MXR_VIDEO_CFG, val);
 }
 
@@ -398,12 +514,34 @@ static void mixer_enable_sync(struct mixer_context *ctx)
 
 static void mixer_cfg_scan(struct mixer_context *ctx, int width, int height)
 {
+=======
+	mixer_reg_write(res, MXR_VIDEO_CFG, val);
+}
+
+static void mixer_vsync_set_update(struct mixer_context *ctx, bool enable)
+{
+	struct mixer_resources *res = &ctx->mixer_res;
+
+	/* block update on vsync */
+	mixer_reg_writemask(res, MXR_STATUS, enable ?
+			MXR_STATUS_SYNC_ENABLE : 0, MXR_STATUS_SYNC_ENABLE);
+
+	if (test_bit(MXR_BIT_VP_ENABLED, &ctx->flags))
+		vp_reg_write(res, VP_SHADOW_UPDATE, enable ?
+			VP_SHADOW_UPDATE_ENABLE : 0);
+}
+
+static void mixer_cfg_scan(struct mixer_context *ctx, unsigned int height)
+{
+	struct mixer_resources *res = &ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	/* choosing between interlace and progressive mode */
 	val = test_bit(MXR_BIT_INTERLACE, &ctx->flags) ?
 		MXR_CFG_SCAN_INTERLACE : MXR_CFG_SCAN_PROGRESSIVE;
 
+<<<<<<< HEAD
 	if (ctx->mxr_ver == MXR_VER_128_0_0_184)
 		mixer_reg_write(ctx, MXR_RESOLUTION,
 			MXR_MXR_RES_HEIGHT(height) | MXR_MXR_RES_WIDTH(width));
@@ -411,10 +549,31 @@ static void mixer_cfg_scan(struct mixer_context *ctx, int width, int height)
 		val |= ctx->scan_value;
 
 	mixer_reg_writemask(ctx, MXR_CFG, val, MXR_CFG_SCAN_MASK);
+=======
+	if (ctx->mxr_ver != MXR_VER_128_0_0_184) {
+		/* choosing between proper HD and SD mode */
+		if (height <= 480)
+			val |= MXR_CFG_SCAN_NTSC | MXR_CFG_SCAN_SD;
+		else if (height <= 576)
+			val |= MXR_CFG_SCAN_PAL | MXR_CFG_SCAN_SD;
+		else if (height <= 720)
+			val |= MXR_CFG_SCAN_HD_720 | MXR_CFG_SCAN_HD;
+		else if (height <= 1080)
+			val |= MXR_CFG_SCAN_HD_1080 | MXR_CFG_SCAN_HD;
+		else
+			val |= MXR_CFG_SCAN_HD_720 | MXR_CFG_SCAN_HD;
+	}
+
+	mixer_reg_writemask(res, MXR_CFG, val, MXR_CFG_SCAN_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mixer_cfg_rgb_fmt(struct mixer_context *ctx, unsigned int height)
 {
+<<<<<<< HEAD
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val;
 
 	switch (height) {
@@ -427,44 +586,78 @@ static void mixer_cfg_rgb_fmt(struct mixer_context *ctx, unsigned int height)
 	default:
 		val = MXR_CFG_RGB709_16_235;
 		/* Configure the BT.709 CSC matrix for full range RGB. */
+<<<<<<< HEAD
 		mixer_reg_write(ctx, MXR_CM_COEFF_Y,
 			MXR_CSC_CT( 0.184,  0.614,  0.063) |
 			MXR_CM_COEFF_RGB_FULL);
 		mixer_reg_write(ctx, MXR_CM_COEFF_CB,
 			MXR_CSC_CT(-0.102, -0.338,  0.440));
 		mixer_reg_write(ctx, MXR_CM_COEFF_CR,
+=======
+		mixer_reg_write(res, MXR_CM_COEFF_Y,
+			MXR_CSC_CT( 0.184,  0.614,  0.063) |
+			MXR_CM_COEFF_RGB_FULL);
+		mixer_reg_write(res, MXR_CM_COEFF_CB,
+			MXR_CSC_CT(-0.102, -0.338,  0.440));
+		mixer_reg_write(res, MXR_CM_COEFF_CR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			MXR_CSC_CT( 0.440, -0.399, -0.040));
 		break;
 	}
 
+<<<<<<< HEAD
 	mixer_reg_writemask(ctx, MXR_CFG, val, MXR_CFG_RGB_FMT_MASK);
+=======
+	mixer_reg_writemask(res, MXR_CFG, val, MXR_CFG_RGB_FMT_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mixer_cfg_layer(struct mixer_context *ctx, unsigned int win,
 			    unsigned int priority, bool enable)
 {
+<<<<<<< HEAD
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val = enable ? ~0 : 0;
 
 	switch (win) {
 	case 0:
+<<<<<<< HEAD
 		mixer_reg_writemask(ctx, MXR_CFG, val, MXR_CFG_GRP0_ENABLE);
 		mixer_reg_writemask(ctx, MXR_LAYER_CFG,
+=======
+		mixer_reg_writemask(res, MXR_CFG, val, MXR_CFG_GRP0_ENABLE);
+		mixer_reg_writemask(res, MXR_LAYER_CFG,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    MXR_LAYER_CFG_GRP0_VAL(priority),
 				    MXR_LAYER_CFG_GRP0_MASK);
 		break;
 	case 1:
+<<<<<<< HEAD
 		mixer_reg_writemask(ctx, MXR_CFG, val, MXR_CFG_GRP1_ENABLE);
 		mixer_reg_writemask(ctx, MXR_LAYER_CFG,
+=======
+		mixer_reg_writemask(res, MXR_CFG, val, MXR_CFG_GRP1_ENABLE);
+		mixer_reg_writemask(res, MXR_LAYER_CFG,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    MXR_LAYER_CFG_GRP1_VAL(priority),
 				    MXR_LAYER_CFG_GRP1_MASK);
 
 		break;
 	case VP_DEFAULT_WIN:
 		if (test_bit(MXR_BIT_VP_ENABLED, &ctx->flags)) {
+<<<<<<< HEAD
 			vp_reg_writemask(ctx, VP_ENABLE, val, VP_ENABLE_ON);
 			mixer_reg_writemask(ctx, MXR_CFG, val,
 				MXR_CFG_VP_ENABLE);
 			mixer_reg_writemask(ctx, MXR_LAYER_CFG,
+=======
+			vp_reg_writemask(res, VP_ENABLE, val, VP_ENABLE_ON);
+			mixer_reg_writemask(res, MXR_CFG, val,
+				MXR_CFG_VP_ENABLE);
+			mixer_reg_writemask(res, MXR_LAYER_CFG,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    MXR_LAYER_CFG_VP_VAL(priority),
 					    MXR_LAYER_CFG_VP_MASK);
 		}
@@ -474,20 +667,36 @@ static void mixer_cfg_layer(struct mixer_context *ctx, unsigned int win,
 
 static void mixer_run(struct mixer_context *ctx)
 {
+<<<<<<< HEAD
 	mixer_reg_writemask(ctx, MXR_STATUS, ~0, MXR_STATUS_REG_RUN);
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+
+	mixer_reg_writemask(res, MXR_STATUS, ~0, MXR_STATUS_REG_RUN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mixer_stop(struct mixer_context *ctx)
 {
+<<<<<<< HEAD
 	int timeout = 20;
 
 	mixer_reg_writemask(ctx, MXR_STATUS, 0, MXR_STATUS_REG_RUN);
 
 	while (!(mixer_reg_read(ctx, MXR_STATUS) & MXR_STATUS_REG_IDLE) &&
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+	int timeout = 20;
+
+	mixer_reg_writemask(res, MXR_STATUS, 0, MXR_STATUS_REG_RUN);
+
+	while (!(mixer_reg_read(res, MXR_STATUS) & MXR_STATUS_REG_IDLE) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			--timeout)
 		usleep_range(10000, 12000);
 }
 
+<<<<<<< HEAD
 static void mixer_commit(struct mixer_context *ctx)
 {
 	struct drm_display_mode *mode = &ctx->crtc->base.state->adjusted_mode;
@@ -497,11 +706,18 @@ static void mixer_commit(struct mixer_context *ctx)
 	mixer_run(ctx);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void vp_video_buffer(struct mixer_context *ctx,
 			    struct exynos_drm_plane *plane)
 {
 	struct exynos_drm_plane_state *state =
 				to_exynos_plane_state(plane->base.state);
+<<<<<<< HEAD
+=======
+	struct drm_display_mode *mode = &state->base.crtc->state->adjusted_mode;
+	struct mixer_resources *res = &ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_framebuffer *fb = state->base.fb;
 	unsigned int priority = state->base.normalized_zpos + 1;
 	unsigned long flags;
@@ -515,28 +731,49 @@ static void vp_video_buffer(struct mixer_context *ctx,
 	luma_addr[0] = exynos_drm_fb_dma_addr(fb, 0);
 	chroma_addr[0] = exynos_drm_fb_dma_addr(fb, 1);
 
+<<<<<<< HEAD
 	if (test_bit(MXR_BIT_INTERLACE, &ctx->flags)) {
+=======
+	if (mode->flags & DRM_MODE_FLAG_INTERLACE) {
+		__set_bit(MXR_BIT_INTERLACE, &ctx->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (is_tiled) {
 			luma_addr[1] = luma_addr[0] + 0x40;
 			chroma_addr[1] = chroma_addr[0] + 0x40;
 		} else {
 			luma_addr[1] = luma_addr[0] + fb->pitches[0];
+<<<<<<< HEAD
 			chroma_addr[1] = chroma_addr[0] + fb->pitches[1];
 		}
 	} else {
+=======
+			chroma_addr[1] = chroma_addr[0] + fb->pitches[0];
+		}
+	} else {
+		__clear_bit(MXR_BIT_INTERLACE, &ctx->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		luma_addr[1] = 0;
 		chroma_addr[1] = 0;
 	}
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&ctx->reg_slock, flags);
 
 	/* interlace or progressive scan mode */
 	val = (test_bit(MXR_BIT_INTERLACE, &ctx->flags) ? ~0 : 0);
 	vp_reg_writemask(ctx, VP_MODE, val, VP_MODE_LINE_SKIP);
+=======
+	spin_lock_irqsave(&res->reg_slock, flags);
+
+	/* interlace or progressive scan mode */
+	val = (test_bit(MXR_BIT_INTERLACE, &ctx->flags) ? ~0 : 0);
+	vp_reg_writemask(res, VP_MODE, val, VP_MODE_LINE_SKIP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* setup format */
 	val = (is_nv21 ? VP_MODE_NV21 : VP_MODE_NV12);
 	val |= (is_tiled ? VP_MODE_MEM_TILED : VP_MODE_MEM_LINEAR);
+<<<<<<< HEAD
 	vp_reg_writemask(ctx, VP_MODE, val, VP_MODE_FMT_MASK);
 
 	/* setting size of input image */
@@ -579,16 +816,76 @@ static void vp_video_buffer(struct mixer_context *ctx,
 	mixer_cfg_vp_blend(ctx);
 
 	spin_unlock_irqrestore(&ctx->reg_slock, flags);
+=======
+	vp_reg_writemask(res, VP_MODE, val, VP_MODE_FMT_MASK);
+
+	/* setting size of input image */
+	vp_reg_write(res, VP_IMG_SIZE_Y, VP_IMG_HSIZE(fb->pitches[0]) |
+		VP_IMG_VSIZE(fb->height));
+	/* chroma plane for NV12/NV21 is half the height of the luma plane */
+	vp_reg_write(res, VP_IMG_SIZE_C, VP_IMG_HSIZE(fb->pitches[0]) |
+		VP_IMG_VSIZE(fb->height / 2));
+
+	vp_reg_write(res, VP_SRC_WIDTH, state->src.w);
+	vp_reg_write(res, VP_SRC_HEIGHT, state->src.h);
+	vp_reg_write(res, VP_SRC_H_POSITION,
+			VP_SRC_H_POSITION_VAL(state->src.x));
+	vp_reg_write(res, VP_SRC_V_POSITION, state->src.y);
+
+	vp_reg_write(res, VP_DST_WIDTH, state->crtc.w);
+	vp_reg_write(res, VP_DST_H_POSITION, state->crtc.x);
+	if (test_bit(MXR_BIT_INTERLACE, &ctx->flags)) {
+		vp_reg_write(res, VP_DST_HEIGHT, state->crtc.h / 2);
+		vp_reg_write(res, VP_DST_V_POSITION, state->crtc.y / 2);
+	} else {
+		vp_reg_write(res, VP_DST_HEIGHT, state->crtc.h);
+		vp_reg_write(res, VP_DST_V_POSITION, state->crtc.y);
+	}
+
+	vp_reg_write(res, VP_H_RATIO, state->h_ratio);
+	vp_reg_write(res, VP_V_RATIO, state->v_ratio);
+
+	vp_reg_write(res, VP_ENDIAN_MODE, VP_ENDIAN_MODE_LITTLE);
+
+	/* set buffer address to vp */
+	vp_reg_write(res, VP_TOP_Y_PTR, luma_addr[0]);
+	vp_reg_write(res, VP_BOT_Y_PTR, luma_addr[1]);
+	vp_reg_write(res, VP_TOP_C_PTR, chroma_addr[0]);
+	vp_reg_write(res, VP_BOT_C_PTR, chroma_addr[1]);
+
+	mixer_cfg_scan(ctx, mode->vdisplay);
+	mixer_cfg_rgb_fmt(ctx, mode->vdisplay);
+	mixer_cfg_layer(ctx, plane->index, priority, true);
+	mixer_cfg_vp_blend(ctx);
+	mixer_run(ctx);
+
+	spin_unlock_irqrestore(&res->reg_slock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mixer_regs_dump(ctx);
 	vp_regs_dump(ctx);
 }
 
+<<<<<<< HEAD
+=======
+static void mixer_layer_update(struct mixer_context *ctx)
+{
+	struct mixer_resources *res = &ctx->mixer_res;
+
+	mixer_reg_writemask(res, MXR_CFG, ~0, MXR_CFG_LAYER_UPDATE);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mixer_graph_buffer(struct mixer_context *ctx,
 			       struct exynos_drm_plane *plane)
 {
 	struct exynos_drm_plane_state *state =
 				to_exynos_plane_state(plane->base.state);
+<<<<<<< HEAD
+=======
+	struct drm_display_mode *mode = &state->base.crtc->state->adjusted_mode;
+	struct mixer_resources *res = &ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_framebuffer *fb = state->base.fb;
 	unsigned int priority = state->base.normalized_zpos + 1;
 	unsigned long flags;
@@ -633,6 +930,7 @@ static void mixer_graph_buffer(struct mixer_context *ctx,
 		+ (state->src.x * fb->format->cpp[0])
 		+ (state->src.y * fb->pitches[0]);
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&ctx->reg_slock, flags);
 
 	/* setup format */
@@ -643,15 +941,45 @@ static void mixer_graph_buffer(struct mixer_context *ctx,
 	mixer_reg_write(ctx, MXR_GRAPHIC_SPAN(win),
 			fb->pitches[0] / fb->format->cpp[0]);
 
+=======
+	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
+		__set_bit(MXR_BIT_INTERLACE, &ctx->flags);
+	else
+		__clear_bit(MXR_BIT_INTERLACE, &ctx->flags);
+
+	spin_lock_irqsave(&res->reg_slock, flags);
+
+	/* setup format */
+	mixer_reg_writemask(res, MXR_GRAPHIC_CFG(win),
+		MXR_GRP_CFG_FORMAT_VAL(fmt), MXR_GRP_CFG_FORMAT_MASK);
+
+	/* setup geometry */
+	mixer_reg_write(res, MXR_GRAPHIC_SPAN(win),
+			fb->pitches[0] / fb->format->cpp[0]);
+
+	/* setup display size */
+	if (ctx->mxr_ver == MXR_VER_128_0_0_184 &&
+		win == DEFAULT_WIN) {
+		val  = MXR_MXR_RES_HEIGHT(mode->vdisplay);
+		val |= MXR_MXR_RES_WIDTH(mode->hdisplay);
+		mixer_reg_write(res, MXR_RESOLUTION, val);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val  = MXR_GRP_WH_WIDTH(state->src.w);
 	val |= MXR_GRP_WH_HEIGHT(state->src.h);
 	val |= MXR_GRP_WH_H_SCALE(x_ratio);
 	val |= MXR_GRP_WH_V_SCALE(y_ratio);
+<<<<<<< HEAD
 	mixer_reg_write(ctx, MXR_GRAPHIC_WH(win), val);
+=======
+	mixer_reg_write(res, MXR_GRAPHIC_WH(win), val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* setup offsets in display image */
 	val  = MXR_GRP_DXY_DX(dst_x_offset);
 	val |= MXR_GRP_DXY_DY(dst_y_offset);
+<<<<<<< HEAD
 	mixer_reg_write(ctx, MXR_GRAPHIC_DXY(win), val);
 
 	/* set buffer address to mixer */
@@ -661,18 +989,48 @@ static void mixer_graph_buffer(struct mixer_context *ctx,
 	mixer_cfg_gfx_blend(ctx, win, fb->format->has_alpha);
 
 	spin_unlock_irqrestore(&ctx->reg_slock, flags);
+=======
+	mixer_reg_write(res, MXR_GRAPHIC_DXY(win), val);
+
+	/* set buffer address to mixer */
+	mixer_reg_write(res, MXR_GRAPHIC_BASE(win), dma_addr);
+
+	mixer_cfg_scan(ctx, mode->vdisplay);
+	mixer_cfg_rgb_fmt(ctx, mode->vdisplay);
+	mixer_cfg_layer(ctx, win, priority, true);
+	mixer_cfg_gfx_blend(ctx, win, is_alpha_format(fb->format->format));
+
+	/* layer update mandatory for mixer 16.0.33.0 */
+	if (ctx->mxr_ver == MXR_VER_16_0_33_0 ||
+		ctx->mxr_ver == MXR_VER_128_0_0_184)
+		mixer_layer_update(ctx);
+
+	mixer_run(ctx);
+
+	spin_unlock_irqrestore(&res->reg_slock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mixer_regs_dump(ctx);
 }
 
 static void vp_win_reset(struct mixer_context *ctx)
 {
+<<<<<<< HEAD
 	unsigned int tries = 100;
 
 	vp_reg_write(ctx, VP_SRESET, VP_SRESET_PROCESSING);
 	while (--tries) {
 		/* waiting until VP_SRESET_PROCESSING is 0 */
 		if (~vp_reg_read(ctx, VP_SRESET) & VP_SRESET_PROCESSING)
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+	unsigned int tries = 100;
+
+	vp_reg_write(res, VP_SRESET, VP_SRESET_PROCESSING);
+	while (--tries) {
+		/* waiting until VP_SRESET_PROCESSING is 0 */
+		if (~vp_reg_read(res, VP_SRESET) & VP_SRESET_PROCESSING)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		mdelay(10);
 	}
@@ -681,6 +1039,7 @@ static void vp_win_reset(struct mixer_context *ctx)
 
 static void mixer_win_reset(struct mixer_context *ctx)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&ctx->reg_slock, flags);
@@ -701,10 +1060,34 @@ static void mixer_win_reset(struct mixer_context *ctx)
 	mixer_reg_write(ctx, MXR_BG_COLOR0, MXR_YCBCR_VAL(0, 128, 128));
 	mixer_reg_write(ctx, MXR_BG_COLOR1, MXR_YCBCR_VAL(0, 128, 128));
 	mixer_reg_write(ctx, MXR_BG_COLOR2, MXR_YCBCR_VAL(0, 128, 128));
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+	unsigned long flags;
+
+	spin_lock_irqsave(&res->reg_slock, flags);
+
+	mixer_reg_writemask(res, MXR_CFG, MXR_CFG_DST_HDMI, MXR_CFG_DST_MASK);
+
+	/* set output in RGB888 mode */
+	mixer_reg_writemask(res, MXR_CFG, MXR_CFG_OUT_RGB888, MXR_CFG_OUT_MASK);
+
+	/* 16 beat burst in DMA */
+	mixer_reg_writemask(res, MXR_STATUS, MXR_STATUS_16_BURST,
+		MXR_STATUS_BURST_MASK);
+
+	/* reset default layer priority */
+	mixer_reg_write(res, MXR_LAYER_CFG, 0);
+
+	/* set all background colors to RGB (0,0,0) */
+	mixer_reg_write(res, MXR_BG_COLOR0, MXR_YCBCR_VAL(0, 128, 128));
+	mixer_reg_write(res, MXR_BG_COLOR1, MXR_YCBCR_VAL(0, 128, 128));
+	mixer_reg_write(res, MXR_BG_COLOR2, MXR_YCBCR_VAL(0, 128, 128));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(MXR_BIT_VP_ENABLED, &ctx->flags)) {
 		/* configuration of Video Processor Registers */
 		vp_win_reset(ctx);
+<<<<<<< HEAD
 		vp_default_filter(ctx);
 	}
 
@@ -719,17 +1102,43 @@ static void mixer_win_reset(struct mixer_context *ctx)
 	mixer_reg_write(ctx, MXR_GRAPHIC_SXY(1), 0);
 
 	spin_unlock_irqrestore(&ctx->reg_slock, flags);
+=======
+		vp_default_filter(res);
+	}
+
+	/* disable all layers */
+	mixer_reg_writemask(res, MXR_CFG, 0, MXR_CFG_GRP0_ENABLE);
+	mixer_reg_writemask(res, MXR_CFG, 0, MXR_CFG_GRP1_ENABLE);
+	if (test_bit(MXR_BIT_VP_ENABLED, &ctx->flags))
+		mixer_reg_writemask(res, MXR_CFG, 0, MXR_CFG_VP_ENABLE);
+
+	/* set all source image offsets to zero */
+	mixer_reg_write(res, MXR_GRAPHIC_SXY(0), 0);
+	mixer_reg_write(res, MXR_GRAPHIC_SXY(1), 0);
+
+	spin_unlock_irqrestore(&res->reg_slock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t mixer_irq_handler(int irq, void *arg)
 {
 	struct mixer_context *ctx = arg;
+<<<<<<< HEAD
 	u32 val;
 
 	spin_lock(&ctx->reg_slock);
 
 	/* read interrupt status for handling and clearing flags for VSYNC */
 	val = mixer_reg_read(ctx, MXR_INT_STATUS);
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+	u32 val, base, shadow;
+
+	spin_lock(&res->reg_slock);
+
+	/* read interrupt status for handling and clearing flags for VSYNC */
+	val = mixer_reg_read(res, MXR_INT_STATUS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* handling VSYNC */
 	if (val & MXR_INT_STATUS_VSYNC) {
@@ -738,18 +1147,38 @@ static irqreturn_t mixer_irq_handler(int irq, void *arg)
 		val &= ~MXR_INT_STATUS_VSYNC;
 
 		/* interlace scan need to check shadow register */
+<<<<<<< HEAD
 		if (test_bit(MXR_BIT_INTERLACE, &ctx->flags)
 		    && !mixer_is_synced(ctx))
 			goto out;
+=======
+		if (test_bit(MXR_BIT_INTERLACE, &ctx->flags)) {
+			base = mixer_reg_read(res, MXR_GRAPHIC_BASE(0));
+			shadow = mixer_reg_read(res, MXR_GRAPHIC_BASE_S(0));
+			if (base != shadow)
+				goto out;
+
+			base = mixer_reg_read(res, MXR_GRAPHIC_BASE(1));
+			shadow = mixer_reg_read(res, MXR_GRAPHIC_BASE_S(1));
+			if (base != shadow)
+				goto out;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		drm_crtc_handle_vblank(&ctx->crtc->base);
 	}
 
 out:
 	/* clear interrupts */
+<<<<<<< HEAD
 	mixer_reg_write(ctx, MXR_INT_STATUS, val);
 
 	spin_unlock(&ctx->reg_slock);
+=======
+	mixer_reg_write(res, MXR_INT_STATUS, val);
+
+	spin_unlock(&res->reg_slock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }
@@ -757,6 +1186,7 @@ out:
 static int mixer_resources_init(struct mixer_context *mixer_ctx)
 {
 	struct device *dev = &mixer_ctx->pdev->dev;
+<<<<<<< HEAD
 	struct resource *res;
 	int ret;
 
@@ -764,10 +1194,21 @@ static int mixer_resources_init(struct mixer_context *mixer_ctx)
 
 	mixer_ctx->mixer = devm_clk_get(dev, "mixer");
 	if (IS_ERR(mixer_ctx->mixer)) {
+=======
+	struct mixer_resources *mixer_res = &mixer_ctx->mixer_res;
+	struct resource *res;
+	int ret;
+
+	spin_lock_init(&mixer_res->reg_slock);
+
+	mixer_res->mixer = devm_clk_get(dev, "mixer");
+	if (IS_ERR(mixer_res->mixer)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "failed to get clock 'mixer'\n");
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	mixer_ctx->hdmi = devm_clk_get(dev, "hdmi");
 	if (IS_ERR(mixer_ctx->hdmi)) {
 		dev_err(dev, "failed to get clock 'hdmi'\n");
@@ -776,6 +1217,16 @@ static int mixer_resources_init(struct mixer_context *mixer_ctx)
 
 	mixer_ctx->sclk_hdmi = devm_clk_get(dev, "sclk_hdmi");
 	if (IS_ERR(mixer_ctx->sclk_hdmi)) {
+=======
+	mixer_res->hdmi = devm_clk_get(dev, "hdmi");
+	if (IS_ERR(mixer_res->hdmi)) {
+		dev_err(dev, "failed to get clock 'hdmi'\n");
+		return PTR_ERR(mixer_res->hdmi);
+	}
+
+	mixer_res->sclk_hdmi = devm_clk_get(dev, "sclk_hdmi");
+	if (IS_ERR(mixer_res->sclk_hdmi)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "failed to get clock 'sclk_hdmi'\n");
 		return -ENODEV;
 	}
@@ -785,9 +1236,15 @@ static int mixer_resources_init(struct mixer_context *mixer_ctx)
 		return -ENXIO;
 	}
 
+<<<<<<< HEAD
 	mixer_ctx->mixer_regs = devm_ioremap(dev, res->start,
 							resource_size(res));
 	if (mixer_ctx->mixer_regs == NULL) {
+=======
+	mixer_res->mixer_regs = devm_ioremap(dev, res->start,
+							resource_size(res));
+	if (mixer_res->mixer_regs == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "register mapping failed.\n");
 		return -ENXIO;
 	}
@@ -804,7 +1261,11 @@ static int mixer_resources_init(struct mixer_context *mixer_ctx)
 		dev_err(dev, "request interrupt failed.\n");
 		return ret;
 	}
+<<<<<<< HEAD
 	mixer_ctx->irq = res->start;
+=======
+	mixer_res->irq = res->start;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -812,15 +1273,24 @@ static int mixer_resources_init(struct mixer_context *mixer_ctx)
 static int vp_resources_init(struct mixer_context *mixer_ctx)
 {
 	struct device *dev = &mixer_ctx->pdev->dev;
+<<<<<<< HEAD
 	struct resource *res;
 
 	mixer_ctx->vp = devm_clk_get(dev, "vp");
 	if (IS_ERR(mixer_ctx->vp)) {
+=======
+	struct mixer_resources *mixer_res = &mixer_ctx->mixer_res;
+	struct resource *res;
+
+	mixer_res->vp = devm_clk_get(dev, "vp");
+	if (IS_ERR(mixer_res->vp)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "failed to get clock 'vp'\n");
 		return -ENODEV;
 	}
 
 	if (test_bit(MXR_BIT_HAS_SCLK, &mixer_ctx->flags)) {
+<<<<<<< HEAD
 		mixer_ctx->sclk_mixer = devm_clk_get(dev, "sclk_mixer");
 		if (IS_ERR(mixer_ctx->sclk_mixer)) {
 			dev_err(dev, "failed to get clock 'sclk_mixer'\n");
@@ -828,13 +1298,28 @@ static int vp_resources_init(struct mixer_context *mixer_ctx)
 		}
 		mixer_ctx->mout_mixer = devm_clk_get(dev, "mout_mixer");
 		if (IS_ERR(mixer_ctx->mout_mixer)) {
+=======
+		mixer_res->sclk_mixer = devm_clk_get(dev, "sclk_mixer");
+		if (IS_ERR(mixer_res->sclk_mixer)) {
+			dev_err(dev, "failed to get clock 'sclk_mixer'\n");
+			return -ENODEV;
+		}
+		mixer_res->mout_mixer = devm_clk_get(dev, "mout_mixer");
+		if (IS_ERR(mixer_res->mout_mixer)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev, "failed to get clock 'mout_mixer'\n");
 			return -ENODEV;
 		}
 
+<<<<<<< HEAD
 		if (mixer_ctx->sclk_hdmi && mixer_ctx->mout_mixer)
 			clk_set_parent(mixer_ctx->mout_mixer,
 				       mixer_ctx->sclk_hdmi);
+=======
+		if (mixer_res->sclk_hdmi && mixer_res->mout_mixer)
+			clk_set_parent(mixer_res->mout_mixer,
+				       mixer_res->sclk_hdmi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	res = platform_get_resource(mixer_ctx->pdev, IORESOURCE_MEM, 1);
@@ -843,9 +1328,15 @@ static int vp_resources_init(struct mixer_context *mixer_ctx)
 		return -ENXIO;
 	}
 
+<<<<<<< HEAD
 	mixer_ctx->vp_regs = devm_ioremap(dev, res->start,
 							resource_size(res));
 	if (mixer_ctx->vp_regs == NULL) {
+=======
+	mixer_res->vp_regs = devm_ioremap(dev, res->start,
+							resource_size(res));
+	if (mixer_res->vp_regs == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "register mapping failed.\n");
 		return -ENXIO;
 	}
@@ -857,6 +1348,11 @@ static int mixer_initialize(struct mixer_context *mixer_ctx,
 			struct drm_device *drm_dev)
 {
 	int ret;
+<<<<<<< HEAD
+=======
+	struct exynos_drm_private *priv;
+	priv = drm_dev->dev_private;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mixer_ctx->drm_dev = drm_dev;
 
@@ -887,14 +1383,23 @@ static void mixer_ctx_remove(struct mixer_context *mixer_ctx)
 static int mixer_enable_vblank(struct exynos_drm_crtc *crtc)
 {
 	struct mixer_context *mixer_ctx = crtc->ctx;
+<<<<<<< HEAD
+=======
+	struct mixer_resources *res = &mixer_ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__set_bit(MXR_BIT_VSYNC, &mixer_ctx->flags);
 	if (!test_bit(MXR_BIT_POWERED, &mixer_ctx->flags))
 		return 0;
 
 	/* enable vsync interrupt */
+<<<<<<< HEAD
 	mixer_reg_writemask(mixer_ctx, MXR_INT_STATUS, ~0, MXR_INT_CLEAR_VSYNC);
 	mixer_reg_writemask(mixer_ctx, MXR_INT_EN, ~0, MXR_INT_EN_VSYNC);
+=======
+	mixer_reg_writemask(res, MXR_INT_STATUS, ~0, MXR_INT_CLEAR_VSYNC);
+	mixer_reg_writemask(res, MXR_INT_EN, ~0, MXR_INT_EN_VSYNC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -902,6 +1407,10 @@ static int mixer_enable_vblank(struct exynos_drm_crtc *crtc)
 static void mixer_disable_vblank(struct exynos_drm_crtc *crtc)
 {
 	struct mixer_context *mixer_ctx = crtc->ctx;
+<<<<<<< HEAD
+=======
+	struct mixer_resources *res = &mixer_ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__clear_bit(MXR_BIT_VSYNC, &mixer_ctx->flags);
 
@@ -909,12 +1418,18 @@ static void mixer_disable_vblank(struct exynos_drm_crtc *crtc)
 		return;
 
 	/* disable vsync interrupt */
+<<<<<<< HEAD
 	mixer_reg_writemask(mixer_ctx, MXR_INT_STATUS, ~0, MXR_INT_CLEAR_VSYNC);
 	mixer_reg_writemask(mixer_ctx, MXR_INT_EN, 0, MXR_INT_EN_VSYNC);
+=======
+	mixer_reg_writemask(res, MXR_INT_STATUS, ~0, MXR_INT_CLEAR_VSYNC);
+	mixer_reg_writemask(res, MXR_INT_EN, 0, MXR_INT_EN_VSYNC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mixer_atomic_begin(struct exynos_drm_crtc *crtc)
 {
+<<<<<<< HEAD
 	struct mixer_context *ctx = crtc->ctx;
 
 	if (!test_bit(MXR_BIT_POWERED, &ctx->flags))
@@ -923,6 +1438,14 @@ static void mixer_atomic_begin(struct exynos_drm_crtc *crtc)
 	if (mixer_wait_for_sync(ctx))
 		dev_err(ctx->dev, "timeout waiting for VSYNC\n");
 	mixer_disable_sync(ctx);
+=======
+	struct mixer_context *mixer_ctx = crtc->ctx;
+
+	if (!test_bit(MXR_BIT_POWERED, &mixer_ctx->flags))
+		return;
+
+	mixer_vsync_set_update(mixer_ctx, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mixer_update_plane(struct exynos_drm_crtc *crtc,
@@ -945,6 +1468,10 @@ static void mixer_disable_plane(struct exynos_drm_crtc *crtc,
 				struct exynos_drm_plane *plane)
 {
 	struct mixer_context *mixer_ctx = crtc->ctx;
+<<<<<<< HEAD
+=======
+	struct mixer_resources *res = &mixer_ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	DRM_DEBUG_KMS("win: %d\n", plane->index);
@@ -952,9 +1479,15 @@ static void mixer_disable_plane(struct exynos_drm_crtc *crtc,
 	if (!test_bit(MXR_BIT_POWERED, &mixer_ctx->flags))
 		return;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&mixer_ctx->reg_slock, flags);
 	mixer_cfg_layer(mixer_ctx, plane->index, 0, false);
 	spin_unlock_irqrestore(&mixer_ctx->reg_slock, flags);
+=======
+	spin_lock_irqsave(&res->reg_slock, flags);
+	mixer_cfg_layer(mixer_ctx, plane->index, 0, false);
+	spin_unlock_irqrestore(&res->reg_slock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mixer_atomic_flush(struct exynos_drm_crtc *crtc)
@@ -964,13 +1497,21 @@ static void mixer_atomic_flush(struct exynos_drm_crtc *crtc)
 	if (!test_bit(MXR_BIT_POWERED, &mixer_ctx->flags))
 		return;
 
+<<<<<<< HEAD
 	mixer_enable_sync(mixer_ctx);
+=======
+	mixer_vsync_set_update(mixer_ctx, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	exynos_crtc_handle_event(crtc);
 }
 
 static void mixer_enable(struct exynos_drm_crtc *crtc)
 {
 	struct mixer_context *ctx = crtc->ctx;
+<<<<<<< HEAD
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(MXR_BIT_POWERED, &ctx->flags))
 		return;
@@ -979,6 +1520,7 @@ static void mixer_enable(struct exynos_drm_crtc *crtc)
 
 	exynos_drm_pipe_clk_enable(crtc, true);
 
+<<<<<<< HEAD
 	mixer_disable_sync(ctx);
 
 	mixer_reg_writemask(ctx, MXR_STATUS, ~0, MXR_STATUS_SOFT_RESET);
@@ -993,6 +1535,19 @@ static void mixer_enable(struct exynos_drm_crtc *crtc)
 	mixer_commit(ctx);
 
 	mixer_enable_sync(ctx);
+=======
+	mixer_vsync_set_update(ctx, false);
+
+	mixer_reg_writemask(res, MXR_STATUS, ~0, MXR_STATUS_SOFT_RESET);
+
+	if (test_bit(MXR_BIT_VSYNC, &ctx->flags)) {
+		mixer_reg_writemask(res, MXR_INT_STATUS, ~0, MXR_INT_CLEAR_VSYNC);
+		mixer_reg_writemask(res, MXR_INT_EN, ~0, MXR_INT_EN_VSYNC);
+	}
+	mixer_win_reset(ctx);
+
+	mixer_vsync_set_update(ctx, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_bit(MXR_BIT_POWERED, &ctx->flags);
 }
@@ -1018,6 +1573,7 @@ static void mixer_disable(struct exynos_drm_crtc *crtc)
 	clear_bit(MXR_BIT_POWERED, &ctx->flags);
 }
 
+<<<<<<< HEAD
 static int mixer_mode_valid(struct exynos_drm_crtc *crtc,
 		const struct drm_display_mode *mode)
 {
@@ -1087,6 +1643,28 @@ static bool mixer_mode_fixup(struct exynos_drm_crtc *crtc,
 		}
 
 	return false;
+=======
+/* Only valid for Mixer version 16.0.33.0 */
+static int mixer_atomic_check(struct exynos_drm_crtc *crtc,
+		       struct drm_crtc_state *state)
+{
+	struct drm_display_mode *mode = &state->adjusted_mode;
+	u32 w, h;
+
+	w = mode->hdisplay;
+	h = mode->vdisplay;
+
+	DRM_DEBUG_KMS("xres=%d, yres=%d, refresh=%d, intl=%d\n",
+		mode->hdisplay, mode->vdisplay, mode->vrefresh,
+		(mode->flags & DRM_MODE_FLAG_INTERLACE) ? 1 : 0);
+
+	if ((w >= 464 && w <= 720 && h >= 261 && h <= 576) ||
+		(w >= 1024 && w <= 1280 && h >= 576 && h <= 720) ||
+		(w >= 1664 && w <= 1920 && h >= 936 && h <= 1080))
+		return 0;
+
+	return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct exynos_drm_crtc_ops mixer_crtc_ops = {
@@ -1098,8 +1676,12 @@ static const struct exynos_drm_crtc_ops mixer_crtc_ops = {
 	.update_plane		= mixer_update_plane,
 	.disable_plane		= mixer_disable_plane,
 	.atomic_flush		= mixer_atomic_flush,
+<<<<<<< HEAD
 	.mode_valid		= mixer_mode_valid,
 	.mode_fixup		= mixer_mode_fixup,
+=======
+	.atomic_check		= mixer_atomic_check,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct mixer_drv_data exynos5420_mxr_drv_data = {
@@ -1241,6 +1823,7 @@ static int mixer_remove(struct platform_device *pdev)
 static int __maybe_unused exynos_mixer_suspend(struct device *dev)
 {
 	struct mixer_context *ctx = dev_get_drvdata(dev);
+<<<<<<< HEAD
 
 	clk_disable_unprepare(ctx->hdmi);
 	clk_disable_unprepare(ctx->mixer);
@@ -1248,6 +1831,16 @@ static int __maybe_unused exynos_mixer_suspend(struct device *dev)
 		clk_disable_unprepare(ctx->vp);
 		if (test_bit(MXR_BIT_HAS_SCLK, &ctx->flags))
 			clk_disable_unprepare(ctx->sclk_mixer);
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+
+	clk_disable_unprepare(res->hdmi);
+	clk_disable_unprepare(res->mixer);
+	if (test_bit(MXR_BIT_VP_ENABLED, &ctx->flags)) {
+		clk_disable_unprepare(res->vp);
+		if (test_bit(MXR_BIT_HAS_SCLK, &ctx->flags))
+			clk_disable_unprepare(res->sclk_mixer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1256,27 +1849,46 @@ static int __maybe_unused exynos_mixer_suspend(struct device *dev)
 static int __maybe_unused exynos_mixer_resume(struct device *dev)
 {
 	struct mixer_context *ctx = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int ret;
 
 	ret = clk_prepare_enable(ctx->mixer);
+=======
+	struct mixer_resources *res = &ctx->mixer_res;
+	int ret;
+
+	ret = clk_prepare_enable(res->mixer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		DRM_ERROR("Failed to prepare_enable the mixer clk [%d]\n", ret);
 		return ret;
 	}
+<<<<<<< HEAD
 	ret = clk_prepare_enable(ctx->hdmi);
+=======
+	ret = clk_prepare_enable(res->hdmi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		DRM_ERROR("Failed to prepare_enable the hdmi clk [%d]\n", ret);
 		return ret;
 	}
 	if (test_bit(MXR_BIT_VP_ENABLED, &ctx->flags)) {
+<<<<<<< HEAD
 		ret = clk_prepare_enable(ctx->vp);
+=======
+		ret = clk_prepare_enable(res->vp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			DRM_ERROR("Failed to prepare_enable the vp clk [%d]\n",
 				  ret);
 			return ret;
 		}
 		if (test_bit(MXR_BIT_HAS_SCLK, &ctx->flags)) {
+<<<<<<< HEAD
 			ret = clk_prepare_enable(ctx->sclk_mixer);
+=======
+			ret = clk_prepare_enable(res->sclk_mixer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0) {
 				DRM_ERROR("Failed to prepare_enable the " \
 					   "sclk_mixer clk [%d]\n",
@@ -1291,8 +1903,11 @@ static int __maybe_unused exynos_mixer_resume(struct device *dev)
 
 static const struct dev_pm_ops exynos_mixer_pm_ops = {
 	SET_RUNTIME_PM_OPS(exynos_mixer_suspend, exynos_mixer_resume, NULL)
+<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct platform_driver mixer_driver = {

@@ -19,17 +19,24 @@
  *
  *   tail -f /sys/kernel/debug/dri/<minor>/rd > logfile.rd
  *
+<<<<<<< HEAD
  * to log the cmdstream in a format that is understood by freedreno/cffdump
+=======
+ * To log the cmdstream in a format that is understood by freedreno/cffdump
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * utility.  By comparing the last successfully completed fence #, to the
  * cmdstream for the next fence, you can narrow down which process and submit
  * caused the gpu crash/lockup.
  *
+<<<<<<< HEAD
  * Additionally:
  *
  *   tail -f /sys/kernel/debug/dri/<minor>/hangrd > logfile.rd
  *
  * will capture just the cmdstream from submits which triggered a GPU hang.
  *
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This bypasses drm_debugfs_create_files() mainly because we need to use
  * our own fops for a bit more control.  In particular, we don't want to
  * do anything if userspace doesn't have the debugfs file open.
@@ -108,9 +115,19 @@ struct msm_rd_state {
 
 static void rd_write(struct msm_rd_state *rd, const void *buf, int sz)
 {
+<<<<<<< HEAD
 	struct circ_buf *fifo = &rd->fifo;
 	const char *ptr = buf;
 
+=======
+	struct circ_buf *fifo;
+	const char *ptr = buf;
+
+	if (!rd || !buf)
+		return;
+
+	fifo = &rd->fifo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (sz > 0) {
 		char *fptr = &fifo->buf[fifo->head];
 		int n;
@@ -145,11 +162,26 @@ static void rd_write_section(struct msm_rd_state *rd,
 static ssize_t rd_read(struct file *file, char __user *buf,
 		size_t sz, loff_t *ppos)
 {
+<<<<<<< HEAD
 	struct msm_rd_state *rd = file->private_data;
 	struct circ_buf *fifo = &rd->fifo;
 	const char *fptr = &fifo->buf[fifo->tail];
 	int n = 0, ret = 0;
 
+=======
+	struct msm_rd_state *rd;
+	struct circ_buf *fifo;
+	const char *fptr;
+	int n = 0, ret = 0;
+
+	if (!file || !file->private_data || !buf || !ppos)
+		return -EINVAL;
+
+	rd = file->private_data;
+	fifo = &rd->fifo;
+	fptr = &fifo->buf[fifo->tail];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&rd->read_lock);
 
 	ret = wait_event_interruptible(rd->fifo_event,
@@ -181,19 +213,47 @@ out:
 
 static int rd_open(struct inode *inode, struct file *file)
 {
+<<<<<<< HEAD
 	struct msm_rd_state *rd = inode->i_private;
 	struct drm_device *dev = rd->dev;
 	struct msm_drm_private *priv = dev->dev_private;
 	struct msm_gpu *gpu = priv->gpu;
+=======
+	struct msm_rd_state *rd;
+	struct drm_device *dev;
+	struct msm_drm_private *priv;
+	struct msm_gpu *gpu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t val;
 	uint32_t gpu_id;
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	if (!file || !inode || !inode->i_private)
+		return -EINVAL;
+
+	rd = inode->i_private;
+	dev = rd->dev;
+
+	if (!dev || !dev->dev_private)
+		return -EINVAL;
+
+	priv = dev->dev_private;
+	gpu = priv->gpu;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&dev->struct_mutex);
 
 	if (rd->open || !gpu) {
 		ret = -EBUSY;
 		goto out;
+<<<<<<< HEAD
+=======
+	} else if (!gpu->funcs || !gpu->funcs->get_param) {
+		ret = -EINVAL;
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	file->private_data = rd;
@@ -214,7 +274,16 @@ out:
 
 static int rd_release(struct inode *inode, struct file *file)
 {
+<<<<<<< HEAD
 	struct msm_rd_state *rd = inode->i_private;
+=======
+	struct msm_rd_state *rd;
+
+	if (!inode || !inode->i_private)
+		return -EINVAL;
+
+	rd = inode->i_private;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rd->open = false;
 	wake_up_all(&rd->fifo_event);
@@ -231,6 +300,7 @@ static const struct file_operations rd_debugfs_fops = {
 	.release = rd_release,
 };
 
+<<<<<<< HEAD
 
 static void rd_cleanup(struct msm_rd_state *rd)
 {
@@ -279,11 +349,24 @@ int msm_rd_debugfs_init(struct drm_minor *minor)
 	struct msm_drm_private *priv = minor->dev->dev_private;
 	struct msm_rd_state *rd;
 	int ret;
+=======
+int msm_rd_debugfs_init(struct drm_minor *minor)
+{
+	struct msm_drm_private *priv;
+	struct msm_rd_state *rd;
+	struct dentry *ent;
+
+	if (!minor || !minor->dev || !minor->dev->dev_private)
+		return -EINVAL;
+
+	priv = minor->dev->dev_private;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* only create on first minor: */
 	if (priv->rd)
 		return 0;
 
+<<<<<<< HEAD
 	rd = rd_init(minor, "rd");
 	if (IS_ERR(rd)) {
 		ret = PTR_ERR(rd);
@@ -300,20 +383,62 @@ int msm_rd_debugfs_init(struct drm_minor *minor)
 
 	priv->hangrd = rd;
 
+=======
+	rd = kzalloc(sizeof(*rd), GFP_KERNEL);
+	if (!rd)
+		return -ENOMEM;
+
+	rd->dev = minor->dev;
+	rd->fifo.buf = rd->buf;
+
+	mutex_init(&rd->read_lock);
+	priv->rd = rd;
+
+	init_waitqueue_head(&rd->fifo_event);
+
+	ent = debugfs_create_file("rd", S_IFREG | S_IRUGO,
+			minor->debugfs_root, rd, &rd_debugfs_fops);
+	if (!ent) {
+		DRM_ERROR("Cannot create /sys/kernel/debug/dri/%pd/rd\n",
+				minor->debugfs_root);
+		goto fail;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 fail:
 	msm_rd_debugfs_cleanup(priv);
+<<<<<<< HEAD
 	return ret;
+=======
+	return -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void msm_rd_debugfs_cleanup(struct msm_drm_private *priv)
 {
+<<<<<<< HEAD
 	rd_cleanup(priv->rd);
 	priv->rd = NULL;
 
 	rd_cleanup(priv->hangrd);
 	priv->hangrd = NULL;
+=======
+	struct msm_rd_state *rd;
+
+	if (!priv)
+		return;
+
+	rd = priv->rd;
+
+	if (!rd)
+		return;
+
+	priv->rd = NULL;
+	mutex_destroy(&rd->read_lock);
+	kfree(rd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void snapshot_buf(struct msm_rd_state *rd,
@@ -321,16 +446,28 @@ static void snapshot_buf(struct msm_rd_state *rd,
 		uint64_t iova, uint32_t size)
 {
 	struct msm_gem_object *obj = submit->bos[idx].obj;
+<<<<<<< HEAD
 	unsigned offset = 0;
 	const char *buf;
 
 	if (iova) {
 		offset = iova - submit->bos[idx].iova;
+=======
+	const char *buf;
+
+	buf = msm_gem_get_vaddr(&obj->base);
+	if (IS_ERR(buf))
+		return;
+
+	if (iova) {
+		buf += iova - submit->bos[idx].iova;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		iova = submit->bos[idx].iova;
 		size = obj->base.size;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Always write the GPUADDR header so can get a complete list of all the
 	 * buffers in the cmd
@@ -348,12 +485,17 @@ static void snapshot_buf(struct msm_rd_state *rd,
 
 	buf += offset;
 
+=======
+	rd_write_section(rd, RD_GPUADDR,
+			(uint32_t[3]){ iova, size, iova >> 32 }, 12);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rd_write_section(rd, RD_BUFFER_CONTENTS, buf, size);
 
 	msm_gem_put_vaddr(&obj->base);
 }
 
 /* called under struct_mutex */
+<<<<<<< HEAD
 void msm_rd_dump_submit(struct msm_rd_state *rd, struct msm_gem_submit *submit,
 		const char *fmt, ...)
 {
@@ -363,6 +505,24 @@ void msm_rd_dump_submit(struct msm_rd_state *rd, struct msm_gem_submit *submit,
 	int i, n;
 
 	if (!rd->open)
+=======
+void msm_rd_dump_submit(struct msm_gem_submit *submit)
+{
+	struct drm_device *dev;
+	struct msm_drm_private *priv;
+	struct msm_rd_state *rd;
+	char msg[128];
+	int i, n;
+
+	if (!submit || !submit->dev || !submit->dev->dev_private)
+		return;
+
+	dev = submit->dev;
+	priv = dev->dev_private;
+	rd = priv->rd;
+
+	if (!rd || !rd->open)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* writing into fifo is serialized by caller, and
@@ -370,6 +530,7 @@ void msm_rd_dump_submit(struct msm_rd_state *rd, struct msm_gem_submit *submit,
 	 */
 	WARN_ON(!mutex_is_locked(&dev->struct_mutex));
 
+<<<<<<< HEAD
 	if (fmt) {
 		va_list args;
 
@@ -396,6 +557,25 @@ void msm_rd_dump_submit(struct msm_rd_state *rd, struct msm_gem_submit *submit,
 
 	for (i = 0; rd_full && i < submit->nr_bos; i++)
 		snapshot_buf(rd, submit, i, 0, 0);
+=======
+	n = snprintf(msg, sizeof(msg), "%.*s/%d: fence=%u",
+			TASK_COMM_LEN, current->comm, task_pid_nr(current),
+			submit->fence->seqno);
+
+	rd_write_section(rd, RD_CMD, msg, ALIGN(n, 4));
+
+	if (rd_full) {
+		for (i = 0; i < submit->nr_bos; i++) {
+			/* buffers that are written to probably don't start out
+			 * with anything interesting:
+			 */
+			if (submit->bos[i].flags & MSM_SUBMIT_BO_WRITE)
+				continue;
+
+			snapshot_buf(rd, submit, i, 0, 0);
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < submit->nr_cmds; i++) {
 		uint64_t iova = submit->cmd[i].iova;

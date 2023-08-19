@@ -14,6 +14,10 @@
 #include <asm/processor.h>
 #include <asm/types.h>
 #include <asm/cache.h>
+<<<<<<< HEAD
+=======
+#include <platform/hardware.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kmem_layout.h>
 
 /*
@@ -30,11 +34,21 @@
 #define MAX_LOW_PFN	(PHYS_PFN(XCHAL_KSEG_PADDR) + \
 			 PHYS_PFN(XCHAL_KSEG_SIZE))
 #else
+<<<<<<< HEAD
 #define PAGE_OFFSET	_AC(CONFIG_DEFAULT_MEM_START, UL)
 #define PHYS_OFFSET	_AC(CONFIG_DEFAULT_MEM_START, UL)
 #define MAX_LOW_PFN	PHYS_PFN(0xfffffffful)
 #endif
 
+=======
+#define PAGE_OFFSET	PLATFORM_DEFAULT_MEM_START
+#define PHYS_OFFSET	PLATFORM_DEFAULT_MEM_START
+#define MAX_LOW_PFN	PHYS_PFN(0xfffffffful)
+#endif
+
+#define PGTABLE_START	0x80000000
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Cache aliasing:
  *

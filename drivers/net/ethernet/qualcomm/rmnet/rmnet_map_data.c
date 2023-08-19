@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2013-2020, The Linux Foundation. All rights reserved.
  *
+=======
+/* Copyright (c) 2013-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * RMNET Data MAP protocol
  *
  */
@@ -1401,6 +1415,7 @@ static struct sk_buff *rmnet_map_build_skb(struct rmnet_port *port)
 	return skb;
 }
 
+<<<<<<< HEAD
 static void rmnet_map_send_agg_skb(struct rmnet_port *port, unsigned long flags)
 {
 	struct sk_buff *agg_skb;
@@ -1425,6 +1440,13 @@ void rmnet_map_tx_aggregate(struct sk_buff *skb, struct rmnet_port *port)
 {
 	struct timespec diff, last;
 	int size;
+=======
+void rmnet_map_tx_aggregate(struct sk_buff *skb, struct rmnet_port *port)
+{
+	struct timespec diff, last;
+	int size, agg_count = 0;
+	struct sk_buff *agg_skb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 new_packet:
@@ -1432,6 +1454,7 @@ new_packet:
 	memcpy(&last, &port->agg_last, sizeof(struct timespec));
 	getnstimeofday(&port->agg_last);
 
+<<<<<<< HEAD
 	if ((port->data_format & RMNET_EGRESS_FORMAT_PRIORITY) &&
 	    skb->priority) {
 		/* Send out any aggregated SKBs we have */
@@ -1442,6 +1465,8 @@ new_packet:
 		return;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!port->agg_skb) {
 		/* Check to see if we should agg first. If the traffic is very
 		 * sparse, don't aggregate. We will need to tune this later
@@ -1481,7 +1506,19 @@ new_packet:
 	if (skb->len > size ||
 	    port->agg_count >= port->egress_agg_params.agg_count ||
 	    diff.tv_sec > 0 || diff.tv_nsec > rmnet_agg_time_limit) {
+<<<<<<< HEAD
 		rmnet_map_send_agg_skb(port, flags);
+=======
+		agg_skb = port->agg_skb;
+		agg_count = port->agg_count;
+		port->agg_skb = 0;
+		port->agg_count = 0;
+		memset(&port->agg_time, 0, sizeof(struct timespec));
+		port->agg_state = 0;
+		spin_unlock_irqrestore(&port->agg_lock, flags);
+		hrtimer_cancel(&port->hrtimer);
+		dev_queue_xmit(agg_skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto new_packet;
 	}
 
@@ -1579,7 +1616,11 @@ void rmnet_map_tx_qmap_cmd(struct sk_buff *qmap_skb)
 
 	port = rmnet_get_port(qmap_skb->dev);
 
+<<<<<<< HEAD
 	if (port && (port->data_format & RMNET_EGRESS_FORMAT_AGGREGATION)) {
+=======
+	if (port->data_format & RMNET_EGRESS_FORMAT_AGGREGATION) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&port->agg_lock, flags);
 		if (port->agg_skb) {
 			agg_skb = port->agg_skb;

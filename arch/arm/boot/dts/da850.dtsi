@@ -7,6 +7,7 @@
  * Free Software Foundation;  either version 2 of the  License, or (at your
  * option) any later version.
  */
+<<<<<<< HEAD
 #include <dt-bindings/interrupt-controller/irq.h>
 
 / {
@@ -20,6 +21,12 @@
 		reg = <0xc0000000 0x0>;
 	};
 
+=======
+#include "skeleton.dtsi"
+#include <dt-bindings/interrupt-controller/irq.h>
+
+/ {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	arm {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -32,6 +39,7 @@
 			reg = <0xfffee000 0x2000>;
 		};
 	};
+<<<<<<< HEAD
 	clocks: clocks {
 		ref_clk: ref_clk {
 			compatible = "fixed-clock";
@@ -65,6 +73,8 @@
 		resets = <&psc0 15>;
 		status = "disabled";
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc@1c00000 {
 		compatible = "simple-bus";
 		model = "da850";
@@ -73,6 +83,7 @@
 		ranges = <0x0 0x01c00000 0x400000>;
 		interrupt-parent = <&intc>;
 
+<<<<<<< HEAD
 		psc0: clock-controller@10000 {
 			compatible = "ti,da850-psc0";
 			reg = <0x10000 0x1000>;
@@ -105,6 +116,8 @@
 				#clock-cells = <0>;
 			};
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pmx_core: pinmux@14120 {
 			compatible = "pinctrl-single";
 			reg = <0x14120 0x50>;
@@ -112,6 +125,7 @@
 			pinctrl-single,bit-per-mux;
 			pinctrl-single,register-width = <32>;
 			pinctrl-single,function-mask = <0xf>;
+<<<<<<< HEAD
 			/* pin base, nr pins & gpio function */
 			pinctrl-single,gpio-range = <&range   0 17 0x8>,
 						    <&range  17  8 0x4>,
@@ -124,6 +138,10 @@
 				#pinctrl-single,gpio-range-cells = <3>;
 			};
 
+=======
+			status = "disabled";
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			serial0_rtscts_pins: pinmux_serial0_rtscts_pins {
 				pinctrl-single,bits = <
 					/* UART0_RTS UART0_CTS */
@@ -334,6 +352,7 @@
 			usb_phy: usb-phy {
 				compatible = "ti,da830-usb-phy";
 				#phy-cells = <1>;
+<<<<<<< HEAD
 				clocks = <&usb_phy_clk 0>, <&usb_phy_clk 1>;
 				clock-names = "usb0_clk48", "usb1_clk48";
 				status = "disabled";
@@ -369,6 +388,10 @@
 				clocks = <&pll0_sysclk 2>, <&pll1_sysclk 2>;
 				clock-names = "pll0_sysclk2", "pll1_sysclk2";
 			};
+=======
+				status = "disabled";
+			};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		edma0: edma@0 {
 			compatible = "ti,edma3-tpcc";
@@ -380,21 +403,30 @@
 			#dma-cells = <2>;
 
 			ti,tptcs = <&edma0_tptc0 7>, <&edma0_tptc1 0>;
+<<<<<<< HEAD
 			power-domains = <&psc0 0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		edma0_tptc0: tptc@8000 {
 			compatible = "ti,edma3-tptc";
 			reg =	<0x8000 0x400>;
 			interrupts = <13>;
 			interrupt-names = "edm3_tcerrint";
+<<<<<<< HEAD
 			power-domains = <&psc0 1>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		edma0_tptc1: tptc@8400 {
 			compatible = "ti,edma3-tptc";
 			reg =	<0x8400 0x400>;
 			interrupts = <32>;
 			interrupt-names = "edm3_tcerrint";
+<<<<<<< HEAD
 			power-domains = <&psc0 2>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		edma1: edma@230000 {
 			compatible = "ti,edma3-tpcc";
@@ -406,14 +438,20 @@
 			#dma-cells = <2>;
 
 			ti,tptcs = <&edma1_tptc0 7>;
+<<<<<<< HEAD
 			power-domains = <&psc1 0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		edma1_tptc0: tptc@238000 {
 			compatible = "ti,edma3-tptc";
 			reg =	<0x238000 0x400>;
 			interrupts = <95>;
 			interrupt-names = "edm3_tcerrint";
+<<<<<<< HEAD
 			power-domains = <&psc1 21>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		serial0: serial@42000 {
 			compatible = "ti,da830-uart", "ns16550a";
@@ -421,8 +459,11 @@
 			reg-io-width = <4>;
 			reg-shift = <2>;
 			interrupts = <25>;
+<<<<<<< HEAD
 			clocks = <&psc0 9>;
 			power-domains = <&psc0 9>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		serial1: serial@10c000 {
@@ -431,8 +472,11 @@
 			reg-io-width = <4>;
 			reg-shift = <2>;
 			interrupts = <53>;
+<<<<<<< HEAD
 			clocks = <&psc1 12>;
 			power-domains = <&psc1 12>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		serial2: serial@10d000 {
@@ -441,8 +485,11 @@
 			reg-io-width = <4>;
 			reg-shift = <2>;
 			interrupts = <61>;
+<<<<<<< HEAD
 			clocks = <&psc1 13>;
 			power-domains = <&psc1 13>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		rtc0: rtc@23000 {
@@ -450,8 +497,11 @@
 			reg = <0x23000 0x1000>;
 			interrupts = <19
 				      19>;
+<<<<<<< HEAD
 			clocks = <&pll0_auxclk>;
 			clock-names = "int-clk";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		i2c0: i2c@22000 {
@@ -460,7 +510,10 @@
 			interrupts = <15>;
 			#address-cells = <1>;
 			#size-cells = <0>;
+<<<<<<< HEAD
 			clocks = <&pll0_auxclk>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		i2c1: i2c@228000 {
@@ -469,6 +522,7 @@
 			interrupts = <51>;
 			#address-cells = <1>;
 			#size-cells = <0>;
+<<<<<<< HEAD
 			clocks = <&psc1 11>;
 			power-domains = <&psc1 11>;
 			status = "disabled";
@@ -484,6 +538,13 @@
 			compatible = "ti,davinci-wdt";
 			reg = <0x21000 0x1000>;
 			clocks = <&pll0_auxclk>;
+=======
+			status = "disabled";
+		};
+		wdt: wdt@21000 {
+			compatible = "ti,davinci-wdt";
+			reg = <0x21000 0x1000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		mmc0: mmc@40000 {
@@ -494,14 +555,20 @@
 			interrupts = <16>;
 			dmas = <&edma0 16 0>, <&edma0 17 0>;
 			dma-names = "rx", "tx";
+<<<<<<< HEAD
 			clocks = <&psc0 5>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		vpif: video@217000 {
 			compatible = "ti,da850-vpif";
 			reg = <0x217000 0x1000>;
 			interrupts = <92>;
+<<<<<<< HEAD
 			power-domains = <&psc1 9>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 
 			/* VPIF capture port */
@@ -524,7 +591,10 @@
 			interrupts = <72>;
 			dmas = <&edma1 28 0>, <&edma1 29 0>;
 			dma-names = "rx", "tx";
+<<<<<<< HEAD
 			clocks = <&psc1 18>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		ehrpwm0: pwm@300000 {
@@ -532,9 +602,12 @@
 				     "ti,am33xx-ehrpwm";
 			#pwm-cells = <3>;
 			reg = <0x300000 0x2000>;
+<<<<<<< HEAD
 			clocks = <&psc1 17>, <&ehrpwm_tbclk>;
 			clock-names = "fck", "tbclk";
 			power-domains = <&psc1 17>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		ehrpwm1: pwm@302000 {
@@ -542,9 +615,12 @@
 				     "ti,am33xx-ehrpwm";
 			#pwm-cells = <3>;
 			reg = <0x302000 0x2000>;
+<<<<<<< HEAD
 			clocks = <&psc1 17>, <&ehrpwm_tbclk>;
 			clock-names = "fck", "tbclk";
 			power-domains = <&psc1 17>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		ecap0: ecap@306000 {
@@ -552,9 +628,12 @@
 				     "ti,am33xx-ecap";
 			#pwm-cells = <3>;
 			reg = <0x306000 0x80>;
+<<<<<<< HEAD
 			clocks = <&psc1 20>;
 			clock-names = "fck";
 			power-domains = <&psc1 20>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		ecap1: ecap@307000 {
@@ -562,9 +641,12 @@
 				     "ti,am33xx-ecap";
 			#pwm-cells = <3>;
 			reg = <0x307000 0x80>;
+<<<<<<< HEAD
 			clocks = <&psc1 20>;
 			clock-names = "fck";
 			power-domains = <&psc1 20>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		ecap2: ecap@308000 {
@@ -572,9 +654,12 @@
 				     "ti,am33xx-ecap";
 			#pwm-cells = <3>;
 			reg = <0x308000 0x80>;
+<<<<<<< HEAD
 			clocks = <&psc1 20>;
 			clock-names = "fck";
 			power-domains = <&psc1 20>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		spi0: spi@41000 {
@@ -587,8 +672,11 @@
 			interrupts = <20>;
 			dmas = <&edma0 14 0>, <&edma0 15 0>;
 			dma-names = "rx", "tx";
+<<<<<<< HEAD
 			clocks = <&psc0 4>;
 			power-domains = <&psc0 4>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		spi1: spi@30e000 {
@@ -601,8 +689,11 @@
 			interrupts = <56>;
 			dmas = <&edma0 18 0>, <&edma0 19 0>;
 			dma-names = "rx", "tx";
+<<<<<<< HEAD
 			clocks = <&psc1 10>;
 			power-domains = <&psc1 10>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		usb0: usb@200000 {
@@ -614,8 +705,11 @@
 			dr_mode = "otg";
 			phys = <&usb_phy 0>;
 			phy-names = "usb-phy";
+<<<<<<< HEAD
 			clocks = <&psc1 1>;
 			clock-ranges;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 
 			#address-cells = <1>;
@@ -639,7 +733,10 @@
 				interrupts = <58>;
 				#dma-cells = <2>;
 				#dma-channels = <4>;
+<<<<<<< HEAD
 				power-domains = <&psc1 1>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				status = "okay";
 			};
 		};
@@ -647,6 +744,7 @@
 			compatible = "ti,da850-ahci";
 			reg = <0x218000 0x2000>, <0x22c018 0x4>;
 			interrupts = <67>;
+<<<<<<< HEAD
 			clocks = <&psc1 8>, <&sata_refclk>;
 			clock-names = "fck", "refclk";
 			status = "disabled";
@@ -664,14 +762,21 @@
 				#clock-cells = <0>;
 			};
 		};
+=======
+			status = "disabled";
+		};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mdio: mdio@224000 {
 			compatible = "ti,davinci_mdio";
 			#address-cells = <1>;
 			#size-cells = <0>;
 			reg = <0x224000 0x1000>;
+<<<<<<< HEAD
 			clocks = <&psc1 5>;
 			clock-names = "fck";
 			power-domains = <&psc1 5>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		eth0: ethernet@220000 {
@@ -687,8 +792,11 @@
 					35
 					36
 					>;
+<<<<<<< HEAD
 			clocks = <&psc1 5>;
 			power-domains = <&psc1 5>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		usb1: usb@225000 {
@@ -697,7 +805,10 @@
 			interrupts = <59>;
 			phys = <&usb_phy 1>;
 			phy-names = "usb-phy";
+<<<<<<< HEAD
 			clocks = <&psc1 2>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		gpio: gpio@226000 {
@@ -708,6 +819,7 @@
 			interrupts = <42 43 44 45 46 47 48 49 50>;
 			ti,ngpio = <144>;
 			ti,davinci-gpio-unbanked = <0>;
+<<<<<<< HEAD
 			clocks = <&psc1 3>;
 			clock-names = "gpio";
 			status = "disabled";
@@ -868,6 +980,11 @@
 			clock-names = "pll0_sysclk2", "pll0_sysclk4", "async3";
 			assigned-clocks = <&async3_clk>;
 			assigned-clock-parents = <&pll1_sysclk 2>;
+=======
+			status = "disabled";
+			interrupt-controller;
+			#interrupt-cells = <2>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		pinconf: pin-controller@22c00c {
 			compatible = "ti,da850-pupd";
@@ -882,7 +999,10 @@
 			reg-names = "mpu", "dat";
 			interrupts = <54>;
 			interrupt-names = "common";
+<<<<<<< HEAD
 			power-domains = <&psc1 7>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 			dmas = <&edma0 1 1>,
 				<&edma0 0 1>;
@@ -894,9 +1014,12 @@
 			reg = <0x213000 0x1000>;
 			interrupts = <52>;
 			max-pixelclock = <37500>;
+<<<<<<< HEAD
 			clocks = <&psc1 16>;
 			clock-names = "fck";
 			power-domains = <&psc1 16>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 	};
@@ -908,9 +1031,12 @@
 		reg = <0x68000000 0x00008000>;
 		ranges = <0 0 0x60000000 0x08000000
 			  1 0 0x68000000 0x00008000>;
+<<<<<<< HEAD
 		clocks = <&psc0 3>;
 		clock-names = "aemif";
 		clock-ranges;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "disabled";
 	};
 	memctrl: memory-controller@b0000000 {

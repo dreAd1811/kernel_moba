@@ -7,7 +7,10 @@
 menuconfig DRM
 	tristate "Direct Rendering Manager (XFree86 4.1.0 and higher DRI support)"
 	depends on (AGP || AGP=n) && !EMULATED_CMPXCHG && HAS_DMA
+<<<<<<< HEAD
 	select DRM_PANEL_ORIENTATION_QUIRKS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HDMI
 	select FB
 	select FB_CMDLINE
@@ -26,7 +29,11 @@ menuconfig DRM
 
 config DRM_MIPI_DSI
 	bool
+<<<<<<< HEAD
 	default y if DRM
+=======
+	depends on DRM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config DRM_DP_AUX_CHARDEV
 	bool "DRM DP AUX Interface"
@@ -50,17 +57,29 @@ config DRM_DEBUG_MM
 
 	  If in doubt, say "N".
 
+<<<<<<< HEAD
 config DRM_DEBUG_SELFTEST
 	tristate "kselftests for DRM"
+=======
+config DRM_DEBUG_MM_SELFTEST
+	tristate "kselftests for DRM range manager (struct drm_mm)"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on DRM
 	depends on DEBUG_KERNEL
 	select PRIME_NUMBERS
 	select DRM_LIB_RANDOM
+<<<<<<< HEAD
 	select DRM_KMS_HELPER
 	default n
 	help
 	  This option provides kernel modules that can be used to run
 	  various selftests on parts of the DRM api. This option is not
+=======
+	default n
+	help
+	  This option provides a kernel module that can be used to test
+	  the DRM range manager (drm_mm) and its API. This option is not
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  useful for distributions or general kernels, but only for kernel
 	  developers working on DRM and associated drivers.
 
@@ -68,7 +87,11 @@ config DRM_DEBUG_SELFTEST
 
 config DRM_KMS_HELPER
 	tristate
+<<<<<<< HEAD
 	default y if DRM
+=======
+	depends on DRM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  CRTC helpers for KMS drivers.
 
@@ -111,6 +134,7 @@ config DRM_FBDEV_OVERALLOC
 	  is 100. Typical values for double buffering will be 200,
 	  triple buffering 300.
 
+<<<<<<< HEAD
 config DRM_FBDEV_LEAK_PHYS_SMEM
 	bool "Shamelessly allow leaking of fbdev physical address (DANGEROUS)"
 	depends on DRM_FBDEV_EMULATION && EXPERT
@@ -134,6 +158,11 @@ config DRM_FBDEV_LEAK_PHYS_SMEM
 config DRM_LOAD_EDID_FIRMWARE
 	bool "Allow to specify an EDID data set instead of probing for it"
 	depends on DRM
+=======
+config DRM_LOAD_EDID_FIRMWARE
+	bool "Allow to specify an EDID data set instead of probing for it"
+	depends on DRM_KMS_HELPER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here, if you want to use EDID data to be loaded from the
 	  /lib/firmware directory or one of the provided built-in
@@ -143,6 +172,7 @@ config DRM_LOAD_EDID_FIRMWARE
 	  default case is N. Details and instructions how to build your own
 	  EDID data are given in Documentation/EDID/HOWTO.txt.
 
+<<<<<<< HEAD
 config DRM_DP_CEC
 	bool "Enable DisplayPort CEC-Tunneling-over-AUX HDMI support"
 	select CEC_CORE
@@ -153,6 +183,8 @@ config DRM_DP_CEC
 	  Note: not all adapters support this feature, and even for those
 	  that do support this they often do not hook up the CEC pin.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DRM_TTM
 	tristate
 	depends on DRM && MMU
@@ -182,10 +214,13 @@ config DRM_VM
 	bool
 	depends on DRM && MMU
 
+<<<<<<< HEAD
 config DRM_SCHED
 	tristate
 	depends on DRM
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/gpu/drm/i2c/Kconfig"
 
 source "drivers/gpu/drm/arm/Kconfig"
@@ -215,14 +250,20 @@ config DRM_AMDGPU
 	depends on DRM && PCI && MMU
 	select FW_LOADER
         select DRM_KMS_HELPER
+<<<<<<< HEAD
 	select DRM_SCHED
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         select DRM_TTM
 	select POWER_SUPPLY
 	select HWMON
 	select BACKLIGHT_CLASS_DEVICE
 	select BACKLIGHT_LCD_SUPPORT
 	select INTERVAL_TREE
+<<<<<<< HEAD
 	select CHASH
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Choose this option if you have a recent AMD Radeon graphics card.
 
@@ -230,8 +271,11 @@ config DRM_AMDGPU
 
 source "drivers/gpu/drm/amd/amdgpu/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/gpu/drm/amd/lib/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/gpu/drm/nouveau/Kconfig"
 
 source "drivers/gpu/drm/i915/Kconfig"
@@ -244,6 +288,7 @@ config DRM_VGEM
 	  as used by Mesa's software renderer for enhanced performance.
 	  If M is selected the module will be called vgem.
 
+<<<<<<< HEAD
 config DRM_VKMS
 	tristate "Virtual KMS (EXPERIMENTAL)"
 	depends on DRM
@@ -255,6 +300,8 @@ config DRM_VKMS
 	  a VKMS.
 
 	  If M is selected the module will be called vkms.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 source "drivers/gpu/drm/exynos/Kconfig"
 
@@ -294,6 +341,13 @@ source "drivers/gpu/drm/virtio/Kconfig"
 
 source "drivers/gpu/drm/msm/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "drivers/gpu/drm/msm-hyp/Kconfig"
+
+source "drivers/gpu/drm/msm-lease/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/gpu/drm/fsl-dcu/Kconfig"
 
 source "drivers/gpu/drm/tegra/Kconfig"
@@ -310,8 +364,11 @@ source "drivers/gpu/drm/amd/amdkfd/Kconfig"
 
 source "drivers/gpu/drm/imx/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/gpu/drm/v3d/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/gpu/drm/vc4/Kconfig"
 
 source "drivers/gpu/drm/etnaviv/Kconfig"
@@ -332,10 +389,13 @@ source "drivers/gpu/drm/tinydrm/Kconfig"
 
 source "drivers/gpu/drm/pl111/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/gpu/drm/tve200/Kconfig"
 
 source "drivers/gpu/drm/xen/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # Keep legacy drivers last
 
 menuconfig DRM_LEGACY
@@ -415,10 +475,13 @@ config DRM_SAVAGE
 
 endif # DRM_LEGACY
 
+<<<<<<< HEAD
 # Separate option because drm_panel_orientation_quirks.c is shared with fbdev
 config DRM_PANEL_ORIENTATION_QUIRKS
 	tristate
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DRM_LIB_RANDOM
 	bool
 	default n

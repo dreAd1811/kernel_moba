@@ -167,7 +167,11 @@ static struct platform_device *osk5912_devices[] __initdata = {
 	&osk5912_cf_device,
 };
 
+<<<<<<< HEAD
 static const struct gpio_led tps_leds[] = {
+=======
+static struct gpio_led tps_leds[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* NOTE:  D9 and D2 have hardware blink support.
 	 * Also, D9 requires non-battery power.
 	 */
@@ -295,7 +299,11 @@ static struct omap_usb_config osk_usb_config __initdata = {
 };
 
 #ifdef	CONFIG_OMAP_OSK_MISTRAL
+<<<<<<< HEAD
 static const struct omap_lcd_config osk_lcd_config __initconst = {
+=======
+static struct omap_lcd_config osk_lcd_config __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ctrl_name	= "internal",
 };
 #endif
@@ -303,22 +311,36 @@ static const struct omap_lcd_config osk_lcd_config __initconst = {
 #ifdef	CONFIG_OMAP_OSK_MISTRAL
 
 #include <linux/input.h>
+<<<<<<< HEAD
 #include <linux/property.h>
+=======
+#include <linux/platform_data/at24.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spi/spi.h>
 #include <linux/spi/ads7846.h>
 
 #include <linux/platform_data/keypad-omap.h>
 
+<<<<<<< HEAD
 static const struct property_entry mistral_at24_properties[] = {
 	PROPERTY_ENTRY_U32("pagesize", 16),
 	{ }
+=======
+static struct at24_platform_data at24c04 = {
+	.byte_len	= SZ_4K / 8,
+	.page_size	= 16,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct i2c_board_info __initdata mistral_i2c_board_info[] = {
 	{
 		/* NOTE:  powered from LCD supply */
 		I2C_BOARD_INFO("24c04", 0x50),
+<<<<<<< HEAD
 		.properties = mistral_at24_properties,
+=======
+		.platform_data	= &at24c04,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	/* TODO when driver support is ready:
 	 *  - optionally ov9640 camera sensor at 0x30
@@ -385,7 +407,11 @@ static struct platform_device osk5912_lcd_device = {
 	.id		= -1,
 };
 
+<<<<<<< HEAD
 static const struct gpio_led mistral_gpio_led_pins[] = {
+=======
+static struct gpio_led mistral_gpio_led_pins[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.name		= "mistral:red",
 		.default_trigger = "heartbeat",

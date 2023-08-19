@@ -103,6 +103,7 @@ int qed_ooo_alloc(struct qed_hwfn *p_hwfn)
 {
 	u16 max_num_archipelagos = 0, cid_base;
 	struct qed_ooo_info *p_ooo_info;
+<<<<<<< HEAD
 	enum protocol_type proto;
 	u16 max_num_isles = 0;
 	u32 i;
@@ -116,15 +117,27 @@ int qed_ooo_alloc(struct qed_hwfn *p_hwfn)
 		proto = PROTOCOLID_IWARP;
 		break;
 	default:
+=======
+	u16 max_num_isles = 0;
+	u32 i;
+
+	if (p_hwfn->hw_info.personality != QED_PCI_ISCSI) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DP_NOTICE(p_hwfn,
 			  "Failed to allocate qed_ooo_info: unknown personality\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	max_num_archipelagos = (u16)qed_cxt_get_proto_cid_count(p_hwfn, proto,
 								NULL);
 	max_num_isles = QED_MAX_NUM_ISLES + max_num_archipelagos;
 	cid_base = (u16)qed_cxt_get_proto_cid_start(p_hwfn, proto);
+=======
+	max_num_archipelagos = p_hwfn->pf_params.iscsi_pf_params.num_cons;
+	max_num_isles = QED_MAX_NUM_ISLES + max_num_archipelagos;
+	cid_base = (u16)qed_cxt_get_proto_cid_start(p_hwfn, PROTOCOLID_ISCSI);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!max_num_archipelagos) {
 		DP_NOTICE(p_hwfn,

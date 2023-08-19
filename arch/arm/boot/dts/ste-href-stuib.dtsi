@@ -92,7 +92,11 @@
 				interrupts = <18 IRQ_TYPE_EDGE_RISING>,
 					     <19 IRQ_TYPE_EDGE_RISING>;
 			};
+<<<<<<< HEAD
 			ak8974@f {
+=======
+			ak8974@0f {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* Magnetometer */
 				compatible = "asahi-kasei,ak8974";
 				reg = <0x0f>;

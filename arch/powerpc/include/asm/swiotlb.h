@@ -13,7 +13,13 @@
 
 #include <linux/swiotlb.h>
 
+<<<<<<< HEAD
 extern const struct dma_map_ops powerpc_swiotlb_dma_ops;
+=======
+extern const struct dma_map_ops swiotlb_dma_ops;
+
+static inline void dma_mark_clean(void *addr, size_t size) {}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern unsigned int ppc_swiotlb_enable;
 int __init swiotlb_setup_bus_notifier(void);

@@ -237,7 +237,11 @@ nautilus_init_pci(void)
 	bus = hose->bus = bridge->bus;
 	pcibios_claim_one_bus(bus);
 
+<<<<<<< HEAD
 	irongate = pci_get_domain_bus_and_slot(pci_domain_nr(bus), 0, 0);
+=======
+	irongate = pci_get_bus_and_slot(0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus->self = irongate;
 	bus->resource[0] = &irongate_io;
 	bus->resource[1] = &irongate_mem;

@@ -176,10 +176,17 @@ static const struct clk_ops clk_factors_ops = {
 	.set_rate = clk_factors_set_rate,
 };
 
+<<<<<<< HEAD
 static struct clk *__sunxi_factors_register(struct device_node *node,
 					    const struct factors_data *data,
 					    spinlock_t *lock, void __iomem *reg,
 					    unsigned long flags)
+=======
+struct clk *sunxi_factors_register(struct device_node *node,
+				   const struct factors_data *data,
+				   spinlock_t *lock,
+				   void __iomem *reg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct clk *clk;
 	struct clk_factors *factors;
@@ -249,7 +256,11 @@ static struct clk *__sunxi_factors_register(struct device_node *node,
 			parents, i,
 			mux_hw, &clk_mux_ops,
 			&factors->hw, &clk_factors_ops,
+<<<<<<< HEAD
 			gate_hw, &clk_gate_ops, CLK_IS_CRITICAL);
+=======
+			gate_hw, &clk_gate_ops, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(clk))
 		goto err_register;
 
@@ -272,6 +283,7 @@ err_factors:
 	return NULL;
 }
 
+<<<<<<< HEAD
 struct clk *sunxi_factors_register(struct device_node *node,
 				   const struct factors_data *data,
 				   spinlock_t *lock,
@@ -288,15 +300,25 @@ struct clk *sunxi_factors_register_critical(struct device_node *node,
 	return __sunxi_factors_register(node, data, lock, reg, CLK_IS_CRITICAL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void sunxi_factors_unregister(struct device_node *node, struct clk *clk)
 {
 	struct clk_hw *hw = __clk_get_hw(clk);
 	struct clk_factors *factors;
+<<<<<<< HEAD
+=======
+	const char *name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!hw)
 		return;
 
 	factors = to_clk_factors(hw);
+<<<<<<< HEAD
+=======
+	name = clk_hw_get_name(hw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	of_clk_del_provider(node);
 	/* TODO: The composite clock stuff will leak a bit here. */

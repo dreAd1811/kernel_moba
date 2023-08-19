@@ -2,6 +2,10 @@ config CRYPTO_DEV_VIRTIO
 	tristate "VirtIO crypto driver"
 	depends on VIRTIO
 	select CRYPTO_AEAD
+<<<<<<< HEAD
+=======
+	select CRYPTO_AUTHENC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRYPTO_BLKCIPHER
 	select CRYPTO_ENGINE
 	default m

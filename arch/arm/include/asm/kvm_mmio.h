@@ -26,6 +26,11 @@
 struct kvm_decode {
 	unsigned long rt;
 	bool sign_extend;
+<<<<<<< HEAD
+=======
+	/* Not used on 32-bit arm */
+	bool sixty_four;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void kvm_mmio_write_buf(void *buf, unsigned int len, unsigned long data);

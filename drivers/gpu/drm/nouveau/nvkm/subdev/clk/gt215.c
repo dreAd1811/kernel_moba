@@ -110,7 +110,10 @@ read_pll(struct gt215_clk *clk, int idx, u32 pll)
 	struct nvkm_device *device = clk->base.subdev.device;
 	u32 ctrl = nvkm_rd32(device, pll + 0);
 	u32 sclk = 0, P = 1, N = 1, M = 1;
+<<<<<<< HEAD
 	u32 MP;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(ctrl & 0x00000008)) {
 		if (ctrl & 0x00000001) {
@@ -131,12 +134,19 @@ read_pll(struct gt215_clk *clk, int idx, u32 pll)
 		sclk = read_clk(clk, 0x10 + idx, false);
 	}
 
+<<<<<<< HEAD
 	MP = M * P;
 
 	if (!MP)
 		return 0;
 
 	return sclk * N / MP;
+=======
+	if (M * P)
+		return sclk * N / (M * P);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int

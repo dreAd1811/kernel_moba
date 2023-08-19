@@ -40,6 +40,14 @@
 #include <net/bonding.h>
 #include <net/bond_alb.h>
 
+<<<<<<< HEAD
+=======
+
+
+static const u8 mac_bcast[ETH_ALEN + 2] __long_aligned = {
+	0xff, 0xff, 0xff, 0xff, 0xff, 0xff
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const u8 mac_v6_allmcast[ETH_ALEN + 2] __long_aligned = {
 	0x33, 0x33, 0x00, 0x00, 0x00, 0x01
 };
@@ -66,11 +74,14 @@ struct arp_pkt {
 };
 #pragma pack()
 
+<<<<<<< HEAD
 static inline struct arp_pkt *arp_pkt(const struct sk_buff *skb)
 {
 	return (struct arp_pkt *)skb_network_header(skb);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Forward declaration */
 static void alb_send_learning_packets(struct slave *slave, u8 mac_addr[],
 				      bool strict_match);
@@ -415,7 +426,12 @@ static void rlb_clear_slave(struct bonding *bond, struct slave *slave)
 
 			if (assigned_slave) {
 				rx_hash_table[index].slave = assigned_slave;
+<<<<<<< HEAD
 				if (is_valid_ether_addr(rx_hash_table[index].mac_dst)) {
+=======
+				if (!ether_addr_equal_64bits(rx_hash_table[index].mac_dst,
+							     mac_bcast)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					bond_info->rx_hashtbl[index].ntt = 1;
 					bond_info->rx_ntt = 1;
 					/* A slave has been removed from the
@@ -518,7 +534,11 @@ static void rlb_req_update_slave_clients(struct bonding *bond, struct slave *sla
 		client_info = &(bond_info->rx_hashtbl[hash_index]);
 
 		if ((client_info->slave == slave) &&
+<<<<<<< HEAD
 		    is_valid_ether_addr(client_info->mac_dst)) {
+=======
+		    !ether_addr_equal_64bits(client_info->mac_dst, mac_bcast)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			client_info->ntt = 1;
 			ntt = 1;
 		}
@@ -559,7 +579,11 @@ static void rlb_req_update_subnet_clients(struct bonding *bond, __be32 src_ip)
 		if ((client_info->ip_src == src_ip) &&
 		    !ether_addr_equal_64bits(client_info->slave->dev->dev_addr,
 					     bond->dev->dev_addr) &&
+<<<<<<< HEAD
 		    is_valid_ether_addr(client_info->mac_dst)) {
+=======
+		    !ether_addr_equal_64bits(client_info->mac_dst, mac_bcast)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			client_info->ntt = 1;
 			bond_info->rx_ntt = 1;
 		}
@@ -568,10 +592,18 @@ static void rlb_req_update_subnet_clients(struct bonding *bond, __be32 src_ip)
 	spin_unlock(&bond->mode_lock);
 }
 
+<<<<<<< HEAD
 static struct slave *rlb_choose_channel(struct sk_buff *skb, struct bonding *bond)
 {
 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
 	struct arp_pkt *arp = arp_pkt(skb);
+=======
+static struct slave *rlb_choose_channel(struct sk_buff *skb,
+					struct bonding *bond,
+					const struct arp_pkt *arp)
+{
+	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct slave *assigned_slave, *curr_active_slave;
 	struct rlb_client_info *client_info;
 	u32 hash_index = 0;
@@ -587,7 +619,11 @@ static struct slave *rlb_choose_channel(struct sk_buff *skb, struct bonding *bon
 		if ((client_info->ip_src == arp->ip_src) &&
 		    (client_info->ip_dst == arp->ip_dst)) {
 			/* the entry is already assigned to this client */
+<<<<<<< HEAD
 			if (!is_broadcast_ether_addr(arp->mac_dst)) {
+=======
+			if (!ether_addr_equal_64bits(arp->mac_dst, mac_bcast)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* update mac address from arp */
 				ether_addr_copy(client_info->mac_dst, arp->mac_dst);
 			}
@@ -635,7 +671,11 @@ static struct slave *rlb_choose_channel(struct sk_buff *skb, struct bonding *bon
 		ether_addr_copy(client_info->mac_src, arp->mac_src);
 		client_info->slave = assigned_slave;
 
+<<<<<<< HEAD
 		if (is_valid_ether_addr(client_info->mac_dst)) {
+=======
+		if (!ether_addr_equal_64bits(client_info->mac_dst, mac_bcast)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			client_info->ntt = 1;
 			bond->alb_info.rx_ntt = 1;
 		} else {
@@ -668,8 +708,17 @@ static struct slave *rlb_choose_channel(struct sk_buff *skb, struct bonding *bon
  */
 static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
 {
+<<<<<<< HEAD
 	struct arp_pkt *arp = arp_pkt(skb);
 	struct slave *tx_slave = NULL;
+=======
+	struct slave *tx_slave = NULL;
+	struct arp_pkt *arp;
+
+	if (!pskb_network_may_pull(skb, sizeof(*arp)))
+		return NULL;
+	arp = (struct arp_pkt *)skb_network_header(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Don't modify or load balance ARPs that do not originate locally
 	 * (e.g.,arrive via a bridge).
@@ -679,7 +728,11 @@ static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
 
 	if (arp->op_code == htons(ARPOP_REPLY)) {
 		/* the arp must be sent on the selected rx channel */
+<<<<<<< HEAD
 		tx_slave = rlb_choose_channel(skb, bond);
+=======
+		tx_slave = rlb_choose_channel(skb, bond, arp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (tx_slave)
 			bond_hw_addr_copy(arp->mac_src, tx_slave->dev->dev_addr,
 					  tx_slave->dev->addr_len);
@@ -690,7 +743,11 @@ static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
 		 * When the arp reply is received the entry will be updated
 		 * with the correct unicast address of the client.
 		 */
+<<<<<<< HEAD
 		rlb_choose_channel(skb, bond);
+=======
+		rlb_choose_channel(skb, bond, arp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* The ARP reply packets must be delayed so that
 		 * they can cancel out the influence of the ARP request.
@@ -727,10 +784,15 @@ static void rlb_rebalance(struct bonding *bond)
 		assigned_slave = __rlb_next_rx_slave(bond);
 		if (assigned_slave && (client_info->slave != assigned_slave)) {
 			client_info->slave = assigned_slave;
+<<<<<<< HEAD
 			if (!is_zero_ether_addr(client_info->mac_dst)) {
 				client_info->ntt = 1;
 				ntt = 1;
 			}
+=======
+			client_info->ntt = 1;
+			ntt = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1315,8 +1377,13 @@ void bond_alb_deinitialize(struct bonding *bond)
 		rlb_deinitialize(bond);
 }
 
+<<<<<<< HEAD
 static netdev_tx_t bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
 				    struct slave *tx_slave)
+=======
+static int bond_do_alb_xmit(struct sk_buff *skb, struct bonding *bond,
+			    struct slave *tx_slave)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct alb_bond_info *bond_info = &(BOND_ALB_INFO(bond));
 	struct ethhdr *eth_data = eth_hdr(skb);
@@ -1350,7 +1417,11 @@ out:
 	return NETDEV_TX_OK;
 }
 
+<<<<<<< HEAD
 netdev_tx_t bond_tlb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+=======
+int bond_tlb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bonding *bond = netdev_priv(bond_dev);
 	struct ethhdr *eth_data;
@@ -1377,7 +1448,11 @@ netdev_tx_t bond_tlb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 				unsigned int count;
 
 				slaves = rcu_dereference(bond->slave_arr);
+<<<<<<< HEAD
 				count = slaves ? READ_ONCE(slaves->count) : 0;
+=======
+				count = slaves ? ACCESS_ONCE(slaves->count) : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (likely(count))
 					tx_slave = slaves->arr[hash_index %
 							       count];
@@ -1388,7 +1463,11 @@ netdev_tx_t bond_tlb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 	return bond_do_alb_xmit(skb, bond, tx_slave);
 }
 
+<<<<<<< HEAD
 netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+=======
+int bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct bonding *bond = netdev_priv(bond_dev);
 	struct ethhdr *eth_data;
@@ -1399,23 +1478,39 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 	bool do_tx_balance = true;
 	u32 hash_index = 0;
 	const u8 *hash_start = NULL;
+<<<<<<< HEAD
 	struct ipv6hdr *ip6hdr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_reset_mac_header(skb);
 	eth_data = eth_hdr(skb);
 
 	switch (ntohs(skb->protocol)) {
 	case ETH_P_IP: {
+<<<<<<< HEAD
 		const struct iphdr *iph = ip_hdr(skb);
 
 		if (is_broadcast_ether_addr(eth_data->h_dest) ||
 		    iph->daddr == ip_bcast ||
 		    iph->protocol == IPPROTO_IGMP) {
+=======
+		const struct iphdr *iph;
+
+		if (ether_addr_equal_64bits(eth_data->h_dest, mac_bcast) ||
+		    (!pskb_network_may_pull(skb, sizeof(*iph)))) {
+			do_tx_balance = false;
+			break;
+		}
+		iph = ip_hdr(skb);
+		if (iph->daddr == ip_bcast || iph->protocol == IPPROTO_IGMP) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			do_tx_balance = false;
 			break;
 		}
 		hash_start = (char *)&(iph->daddr);
 		hash_size = sizeof(iph->daddr);
+<<<<<<< HEAD
 	}
 		break;
 	case ETH_P_IPV6:
@@ -1423,6 +1518,17 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 		 * that here just in case.
 		 */
 		if (is_broadcast_ether_addr(eth_data->h_dest)) {
+=======
+		break;
+	}
+	case ETH_P_IPV6: {
+		const struct ipv6hdr *ip6hdr;
+
+		/* IPv6 doesn't really use broadcast mac address, but leave
+		 * that here just in case.
+		 */
+		if (ether_addr_equal_64bits(eth_data->h_dest, mac_bcast)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			do_tx_balance = false;
 			break;
 		}
@@ -1435,7 +1541,15 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 			break;
 		}
 
+<<<<<<< HEAD
 		/* Additianally, DAD probes should not be tx-balanced as that
+=======
+		if (!pskb_network_may_pull(skb, sizeof(*ip6hdr))) {
+			do_tx_balance = false;
+			break;
+		}
+		/* Additionally, DAD probes should not be tx-balanced as that
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * will lead to false positives for duplicate addresses and
 		 * prevent address configuration from working.
 		 */
@@ -1445,17 +1559,38 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 			break;
 		}
 
+<<<<<<< HEAD
 		hash_start = (char *)&(ipv6_hdr(skb)->daddr);
 		hash_size = sizeof(ipv6_hdr(skb)->daddr);
 		break;
 	case ETH_P_IPX:
 		if (ipx_hdr(skb)->ipx_checksum != IPX_NO_CHECKSUM) {
+=======
+		hash_start = (char *)&ip6hdr->daddr;
+		hash_size = sizeof(ip6hdr->daddr);
+		break;
+	}
+	case ETH_P_IPX: {
+		const struct ipxhdr *ipxhdr;
+
+		if (pskb_network_may_pull(skb, sizeof(*ipxhdr))) {
+			do_tx_balance = false;
+			break;
+		}
+		ipxhdr = (struct ipxhdr *)skb_network_header(skb);
+
+		if (ipxhdr->ipx_checksum != IPX_NO_CHECKSUM) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* something is wrong with this packet */
 			do_tx_balance = false;
 			break;
 		}
 
+<<<<<<< HEAD
 		if (ipx_hdr(skb)->ipx_type != IPX_TYPE_NCP) {
+=======
+		if (ipxhdr->ipx_type != IPX_TYPE_NCP) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* The only protocol worth balancing in
 			 * this family since it has an "ARP" like
 			 * mechanism
@@ -1464,9 +1599,17 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 			break;
 		}
 
+<<<<<<< HEAD
 		hash_start = (char *)eth_data->h_dest;
 		hash_size = ETH_ALEN;
 		break;
+=======
+		eth_data = eth_hdr(skb);
+		hash_start = (char *)eth_data->h_dest;
+		hash_size = ETH_ALEN;
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ETH_P_ARP:
 		do_tx_balance = false;
 		if (bond_info->rlb_enabled)
@@ -1478,6 +1621,7 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 	}
 
 	if (do_tx_balance) {
+<<<<<<< HEAD
 		if (bond->params.tlb_dynamic_lb) {
 			hash_index = _simple_hash(hash_start, hash_size);
 			tx_slave = tlb_choose_channel(bond, hash_index, skb->len);
@@ -1496,6 +1640,10 @@ netdev_tx_t bond_alb_xmit(struct sk_buff *skb, struct net_device *bond_dev)
 				tx_slave = slaves->arr[bond_xmit_hash(bond, skb) %
 						       count];
 		}
+=======
+		hash_index = _simple_hash(hash_start, hash_size);
+		tx_slave = tlb_choose_channel(bond, hash_index, skb->len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return bond_do_alb_xmit(skb, bond, tx_slave);

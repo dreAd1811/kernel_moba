@@ -628,12 +628,21 @@ The keyctl syscall functions are:
      defined key type will return its data as is. If a key type does not
      implement this function, error EOPNOTSUPP will result.
 
+<<<<<<< HEAD
      If the specified buffer is too small, then the size of the buffer required
      will be returned.  Note that in this case, the contents of the buffer may
      have been overwritten in some undefined way.
 
      Otherwise, on success, the function will return the amount of data copied
      into the buffer.
+=======
+     As much of the data as can be fitted into the buffer will be copied to
+     userspace if the buffer pointer is not NULL.
+
+     On a successful return, the function will always return the amount of data
+     available rather than the amount copied.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   *  Instantiate a partially constructed key::
 

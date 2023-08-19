@@ -26,10 +26,17 @@
 #include <linux/slab.h>
 #include <linux/i2c.h>
 
+<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
+=======
+#include "dmxdev.h"
+#include "dvbdev.h"
+#include "dvb_demux.h"
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "dvb-bt8xx.h"
 #include "bt878.h"
 
@@ -386,6 +393,13 @@ static int advbt771_samsung_tdtc9251dh0_tuner_calc_regs(struct dvb_frontend *fe,
 		bs = 0x02;
 	else if (c->frequency < 470000000)
 		bs = 0x02;
+<<<<<<< HEAD
+=======
+	else if (c->frequency < 600000000)
+		bs = 0x08;
+	else if (c->frequency < 730000000)
+		bs = 0x08;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		bs = 0x08;
 
@@ -571,6 +585,10 @@ static struct mt352_config digitv_alps_tded4_config = {
 };
 
 static struct lgdt330x_config tdvs_tua6034_config = {
+<<<<<<< HEAD
+=======
+	.demod_address    = 0x0e,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.demod_chip       = LGDT3303,
 	.serial_mpeg      = 0x40, /* TPSERIAL for 3303 in TOP_CONTROL */
 };
@@ -602,15 +620,24 @@ static void frontend_init(struct dvb_bt8xx_card *card, u32 type)
 
 		if (card->fe != NULL) {
 			card->fe->ops.tuner_ops.calc_regs = thomson_dtt7579_tuner_calc_regs;
+<<<<<<< HEAD
 			card->fe->ops.info.frequency_min_hz = 174 * MHz;
 			card->fe->ops.info.frequency_max_hz = 862 * MHz;
+=======
+			card->fe->ops.info.frequency_min = 174000000;
+			card->fe->ops.info.frequency_max = 862000000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 
 	case BTTV_BOARD_DVICO_FUSIONHDTV_5_LITE:
 		lgdt330x_reset(card);
+<<<<<<< HEAD
 		card->fe = dvb_attach(lgdt330x_attach, &tdvs_tua6034_config,
 				      0x0e, card->i2c_adapter);
+=======
+		card->fe = dvb_attach(lgdt330x_attach, &tdvs_tua6034_config, card->i2c_adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (card->fe != NULL) {
 			dvb_attach(simple_tuner_attach, card->fe,
 				   card->i2c_adapter, 0x61,
@@ -655,8 +682,13 @@ static void frontend_init(struct dvb_bt8xx_card *card, u32 type)
 		card->fe = dvb_attach(mt352_attach, &advbt771_samsung_tdtc9251dh0_config, card->i2c_adapter);
 		if (card->fe != NULL) {
 			card->fe->ops.tuner_ops.calc_regs = advbt771_samsung_tdtc9251dh0_tuner_calc_regs;
+<<<<<<< HEAD
 			card->fe->ops.info.frequency_min_hz = 174 * MHz;
 			card->fe->ops.info.frequency_max_hz = 862 * MHz;
+=======
+			card->fe->ops.info.frequency_min = 174000000;
+			card->fe->ops.info.frequency_max = 862000000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 

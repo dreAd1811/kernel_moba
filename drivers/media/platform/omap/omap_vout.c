@@ -198,7 +198,11 @@ static int omap_vout_try_format(struct v4l2_pix_format *pix)
  * omap_vout_get_userptr: Convert user space virtual address to physical
  * address.
  */
+<<<<<<< HEAD
 static int omap_vout_get_userptr(struct videobuf_buffer *vb, long virtp,
+=======
+static int omap_vout_get_userptr(struct videobuf_buffer *vb, u32 virtp,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 u32 *physp)
 {
 	struct frame_vector *vec;
@@ -702,6 +706,7 @@ static int omap_vout_buffer_setup(struct videobuf_queue *q, unsigned int *count,
 		virt_addr = omap_vout_alloc_buffer(vout->buffer_size,
 				&phy_addr);
 		if (!virt_addr) {
+<<<<<<< HEAD
 			if (ovid->rotation_type == VOUT_ROT_NONE)
 				break;
 
@@ -714,6 +719,21 @@ static int omap_vout_buffer_setup(struct videobuf_queue *q, unsigned int *count,
 						      vout->smsshado_size);
 				vout->smsshado_virt_addr[j] = 0;
 				vout->smsshado_phy_addr[j] = 0;
+=======
+			if (ovid->rotation_type == VOUT_ROT_NONE) {
+				break;
+			} else {
+				if (!is_rotation_enabled(vout))
+					break;
+			/* Free the VRFB buffers if no space for V4L2 buffers */
+			for (j = i; j < *count; j++) {
+				omap_vout_free_buffer(
+						vout->smsshado_virt_addr[j],
+						vout->smsshado_size);
+				vout->smsshado_virt_addr[j] = 0;
+				vout->smsshado_phy_addr[j] = 0;
+				}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		vout->buf_virt_addr[i] = virt_addr;
@@ -838,7 +858,11 @@ static void omap_vout_buffer_release(struct videobuf_queue *q,
 /*
  *  File operations
  */
+<<<<<<< HEAD
 static __poll_t omap_vout_poll(struct file *file,
+=======
+static unsigned int omap_vout_poll(struct file *file,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct poll_table_struct *wait)
 {
 	struct omap_vout_device *vout = file->private_data;
@@ -1003,12 +1027,19 @@ static int omap_vout_open(struct file *file)
 	struct omap_vout_device *vout = NULL;
 
 	vout = video_drvdata(file);
+<<<<<<< HEAD
+=======
+	v4l2_dbg(1, debug, &vout->vid_dev->v4l2_dev, "Entering %s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vout == NULL)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	v4l2_dbg(1, debug, &vout->vid_dev->v4l2_dev, "Entering %s\n", __func__);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* for now, we only support single open */
 	if (vout->opened)
 		return -EBUSY;
@@ -1527,6 +1558,7 @@ static int vidioc_dqbuf(struct file *file, void *fh, struct v4l2_buffer *b)
 	unsigned long size;
 	struct videobuf_buffer *vb;
 
+<<<<<<< HEAD
 	vb = q->bufs[b->index];
 
 	if (!vout->streaming)
@@ -1538,12 +1570,26 @@ static int vidioc_dqbuf(struct file *file, void *fh, struct v4l2_buffer *b)
 	else
 		/* Call videobuf_dqbuf for  blocking mode */
 		ret = videobuf_dqbuf(q, (struct v4l2_buffer *)b, 0);
+=======
+	if (!vout->streaming)
+		return -EINVAL;
+
+	ret = videobuf_dqbuf(q, b, !!(file->f_flags & O_NONBLOCK));
+	if (ret)
+		return ret;
+
+	vb = q->bufs[b->index];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	addr = (unsigned long) vout->buf_phy_addr[vb->i];
 	size = (unsigned long) vb->size;
 	dma_unmap_single(vout->vid_dev->v4l2_dev.dev,  addr,
 				size, DMA_TO_DEVICE);
+<<<<<<< HEAD
 	return ret;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vidioc_streamon(struct file *file, void *fh, enum v4l2_buf_type i)
@@ -1773,8 +1819,13 @@ static int vidioc_g_fbuf(struct file *file, void *fh,
 }
 
 static const struct v4l2_ioctl_ops vout_ioctl_ops = {
+<<<<<<< HEAD
 	.vidioc_querycap			= vidioc_querycap,
 	.vidioc_enum_fmt_vid_out		= vidioc_enum_fmt_vid_out,
+=======
+	.vidioc_querycap      			= vidioc_querycap,
+	.vidioc_enum_fmt_vid_out 		= vidioc_enum_fmt_vid_out,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.vidioc_g_fmt_vid_out			= vidioc_g_fmt_vid_out,
 	.vidioc_try_fmt_vid_out			= vidioc_try_fmt_vid_out,
 	.vidioc_s_fmt_vid_out			= vidioc_s_fmt_vid_out,
@@ -1794,12 +1845,21 @@ static const struct v4l2_ioctl_ops vout_ioctl_ops = {
 };
 
 static const struct v4l2_file_operations omap_vout_fops = {
+<<<<<<< HEAD
 	.owner		= THIS_MODULE,
 	.poll		= omap_vout_poll,
 	.unlocked_ioctl	= video_ioctl2,
 	.mmap		= omap_vout_mmap,
 	.open		= omap_vout_open,
 	.release	= omap_vout_release,
+=======
+	.owner 		= THIS_MODULE,
+	.poll		= omap_vout_poll,
+	.unlocked_ioctl	= video_ioctl2,
+	.mmap 		= omap_vout_mmap,
+	.open 		= omap_vout_open,
+	.release 	= omap_vout_release,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Init functions used during driver initialization */

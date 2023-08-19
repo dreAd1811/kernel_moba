@@ -397,6 +397,10 @@ set_phys_lowmem:
 	}
 	return err;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(skcipher_walk_next);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int skcipher_copy_iv(struct skcipher_walk *walk)
 {
@@ -446,6 +450,10 @@ static int skcipher_walk_first(struct skcipher_walk *walk)
 	}
 
 	walk->page = NULL;
+<<<<<<< HEAD
+=======
+	walk->nbytes = walk->total;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return skcipher_walk_next(walk);
 }
@@ -593,12 +601,15 @@ static unsigned int crypto_skcipher_extsize(struct crypto_alg *alg)
 	return crypto_alg_extsize(alg);
 }
 
+<<<<<<< HEAD
 static void skcipher_set_needkey(struct crypto_skcipher *tfm)
 {
 	if (tfm->keysize)
 		crypto_skcipher_set_flags(tfm, CRYPTO_TFM_NEED_KEY);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int skcipher_setkey_blkcipher(struct crypto_skcipher *tfm,
 				     const u8 *key, unsigned int keylen)
 {
@@ -612,6 +623,7 @@ static int skcipher_setkey_blkcipher(struct crypto_skcipher *tfm,
 	err = crypto_blkcipher_setkey(blkcipher, key, keylen);
 	crypto_skcipher_set_flags(tfm, crypto_blkcipher_get_flags(blkcipher) &
 				       CRYPTO_TFM_RES_MASK);
+<<<<<<< HEAD
 	if (unlikely(err)) {
 		skcipher_set_needkey(tfm);
 		return err;
@@ -619,6 +631,10 @@ static int skcipher_setkey_blkcipher(struct crypto_skcipher *tfm,
 
 	crypto_skcipher_clear_flags(tfm, CRYPTO_TFM_NEED_KEY);
 	return 0;
+=======
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int skcipher_crypt_blkcipher(struct skcipher_request *req,
@@ -693,8 +709,11 @@ static int crypto_init_skcipher_ops_blkcipher(struct crypto_tfm *tfm)
 	skcipher->ivsize = crypto_blkcipher_ivsize(blkcipher);
 	skcipher->keysize = calg->cra_blkcipher.max_keysize;
 
+<<<<<<< HEAD
 	skcipher_set_needkey(skcipher);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -713,6 +732,7 @@ static int skcipher_setkey_ablkcipher(struct crypto_skcipher *tfm,
 	crypto_skcipher_set_flags(tfm,
 				  crypto_ablkcipher_get_flags(ablkcipher) &
 				  CRYPTO_TFM_RES_MASK);
+<<<<<<< HEAD
 	if (unlikely(err)) {
 		skcipher_set_needkey(tfm);
 		return err;
@@ -720,6 +740,10 @@ static int skcipher_setkey_ablkcipher(struct crypto_skcipher *tfm,
 
 	crypto_skcipher_clear_flags(tfm, CRYPTO_TFM_NEED_KEY);
 	return 0;
+=======
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int skcipher_crypt_ablkcipher(struct skcipher_request *req,
@@ -793,8 +817,11 @@ static int crypto_init_skcipher_ops_ablkcipher(struct crypto_tfm *tfm)
 			    sizeof(struct ablkcipher_request);
 	skcipher->keysize = calg->cra_ablkcipher.max_keysize;
 
+<<<<<<< HEAD
 	skcipher_set_needkey(skcipher);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -824,7 +851,10 @@ static int skcipher_setkey(struct crypto_skcipher *tfm, const u8 *key,
 {
 	struct skcipher_alg *cipher = crypto_skcipher_alg(tfm);
 	unsigned long alignmask = crypto_skcipher_alignmask(tfm);
+<<<<<<< HEAD
 	int err;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (keylen < cipher->min_keysize || keylen > cipher->max_keysize) {
 		crypto_skcipher_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
@@ -832,6 +862,7 @@ static int skcipher_setkey(struct crypto_skcipher *tfm, const u8 *key,
 	}
 
 	if ((unsigned long)key & alignmask)
+<<<<<<< HEAD
 		err = skcipher_setkey_unaligned(tfm, key, keylen);
 	else
 		err = cipher->setkey(tfm, key, keylen);
@@ -843,6 +874,11 @@ static int skcipher_setkey(struct crypto_skcipher *tfm, const u8 *key,
 
 	crypto_skcipher_clear_flags(tfm, CRYPTO_TFM_NEED_KEY);
 	return 0;
+=======
+		return skcipher_setkey_unaligned(tfm, key, keylen);
+
+	return cipher->setkey(tfm, key, keylen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void crypto_skcipher_exit_tfm(struct crypto_tfm *tfm)
@@ -871,8 +907,11 @@ static int crypto_skcipher_init_tfm(struct crypto_tfm *tfm)
 	skcipher->ivsize = alg->ivsize;
 	skcipher->keysize = alg->max_keysize;
 
+<<<<<<< HEAD
 	skcipher_set_needkey(skcipher);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (alg->exit)
 		skcipher->base.exit = crypto_skcipher_exit_tfm;
 
@@ -967,6 +1006,7 @@ struct crypto_skcipher *crypto_alloc_skcipher(const char *alg_name,
 }
 EXPORT_SYMBOL_GPL(crypto_alloc_skcipher);
 
+<<<<<<< HEAD
 struct crypto_sync_skcipher *crypto_alloc_sync_skcipher(
 				const char *alg_name, u32 type, u32 mask)
 {
@@ -991,6 +1031,8 @@ struct crypto_sync_skcipher *crypto_alloc_sync_skcipher(
 }
 EXPORT_SYMBOL_GPL(crypto_alloc_sync_skcipher);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int crypto_has_skcipher2(const char *alg_name, u32 type, u32 mask)
 {
 	return crypto_type_has_alg(alg_name, &crypto_skcipher_type2,

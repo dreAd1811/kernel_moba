@@ -5,6 +5,10 @@
 #ifdef CONFIG_NUMA
 
 #define cpu_to_node(cpu)	((void)(cpu),0)
+<<<<<<< HEAD
+=======
+#define parent_node(node)	((void)(node),0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define cpumask_of_node(node)	((void)node, cpu_online_mask)
 

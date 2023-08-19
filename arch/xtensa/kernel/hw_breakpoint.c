@@ -33,6 +33,7 @@ int hw_breakpoint_slots(int type)
 	}
 }
 
+<<<<<<< HEAD
 int arch_check_bp_in_kernelspace(struct arch_hw_breakpoint *hw)
 {
 	unsigned int len;
@@ -40,6 +41,16 @@ int arch_check_bp_in_kernelspace(struct arch_hw_breakpoint *hw)
 
 	va = hw->address;
 	len = hw->len;
+=======
+int arch_check_bp_in_kernelspace(struct perf_event *bp)
+{
+	unsigned int len;
+	unsigned long va;
+	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
+
+	va = info->address;
+	len = bp->attr.bp_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (va >= TASK_SIZE) && ((va + len - 1) >= TASK_SIZE);
 }
@@ -47,6 +58,7 @@ int arch_check_bp_in_kernelspace(struct arch_hw_breakpoint *hw)
 /*
  * Construct an arch_hw_breakpoint from a perf_event.
  */
+<<<<<<< HEAD
 int hw_breakpoint_arch_parse(struct perf_event *bp,
 			     const struct perf_event_attr *attr,
 			     struct arch_hw_breakpoint *hw)
@@ -64,12 +76,32 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
 		break;
 	case HW_BREAKPOINT_RW:
 		hw->type = XTENSA_BREAKPOINT_LOAD | XTENSA_BREAKPOINT_STORE;
+=======
+static int arch_build_bp_info(struct perf_event *bp)
+{
+	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
+
+	/* Type */
+	switch (bp->attr.bp_type) {
+	case HW_BREAKPOINT_X:
+		info->type = XTENSA_BREAKPOINT_EXECUTE;
+		break;
+	case HW_BREAKPOINT_R:
+		info->type = XTENSA_BREAKPOINT_LOAD;
+		break;
+	case HW_BREAKPOINT_W:
+		info->type = XTENSA_BREAKPOINT_STORE;
+		break;
+	case HW_BREAKPOINT_RW:
+		info->type = XTENSA_BREAKPOINT_LOAD | XTENSA_BREAKPOINT_STORE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
 	}
 
 	/* Len */
+<<<<<<< HEAD
 	hw->len = attr->bp_len;
 	if (hw->len < 1 || hw->len > 64 || !is_power_of_2(hw->len))
 		return -EINVAL;
@@ -77,11 +109,32 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
 	/* Address */
 	hw->address = attr->bp_addr;
 	if (hw->address & (hw->len - 1))
+=======
+	info->len = bp->attr.bp_len;
+	if (info->len < 1 || info->len > 64 || !is_power_of_2(info->len))
+		return -EINVAL;
+
+	/* Address */
+	info->address = bp->attr.bp_addr;
+	if (info->address & (info->len - 1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int arch_validate_hwbkpt_settings(struct perf_event *bp)
+{
+	int ret;
+
+	/* Build the arch_hw_breakpoint. */
+	ret = arch_build_bp_info(bp);
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
 				    unsigned long val, void *data)
 {

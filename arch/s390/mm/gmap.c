@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  *  KVM guest address space mapping code
@@ -6,6 +7,13 @@
  *    Author(s): Martin Schwidefsky <schwidefsky@de.ibm.com>
  *		 David Hildenbrand <david@redhat.com>
  *		 Janosch Frank <frankja@linux.vnet.ibm.com>
+=======
+/*
+ *  KVM guest address space mapping code
+ *
+ *    Copyright IBM Corp. 2007, 2016
+ *    Author(s): Martin Schwidefsky <schwidefsky@de.ibm.com>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -523,9 +531,12 @@ void gmap_unlink(struct mm_struct *mm, unsigned long *table,
 	rcu_read_unlock();
 }
 
+<<<<<<< HEAD
 static void gmap_pmdp_xchg(struct gmap *gmap, pmd_t *old, pmd_t new,
 			   unsigned long gaddr);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * gmap_link - set up shadow page tables to connect a host to a guest address
  * @gmap: pointer to guest mapping meta data structure
@@ -546,7 +557,10 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
 	p4d_t *p4d;
 	pud_t *pud;
 	pmd_t *pmd;
+<<<<<<< HEAD
 	u64 unprot;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	BUG_ON(gmap_is_shadow(gmap));
@@ -590,8 +604,13 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
 		return -EFAULT;
 	pmd = pmd_offset(pud, vmaddr);
 	VM_BUG_ON(pmd_none(*pmd));
+<<<<<<< HEAD
 	/* Are we allowed to use huge pages? */
 	if (pmd_large(*pmd) && !gmap->mm->context.allow_gmap_hpage_1m)
+=======
+	/* large pmds cannot yet be handled */
+	if (pmd_large(*pmd))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	/* Link gmap segment table entry location to page table. */
 	rc = radix_tree_preload(GFP_KERNEL);
@@ -602,6 +621,7 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
 	if (*table == _SEGMENT_ENTRY_EMPTY) {
 		rc = radix_tree_insert(&gmap->host_to_guest,
 				       vmaddr >> PMD_SHIFT, table);
+<<<<<<< HEAD
 		if (!rc) {
 			if (pmd_large(*pmd)) {
 				*table = (pmd_val(*pmd) &
@@ -618,6 +638,12 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
 		unprot |= _SEGMENT_ENTRY_GMAP_UC;
 		gmap_pmdp_xchg(gmap, (pmd_t *)table, __pmd(unprot), gaddr);
 	}
+=======
+		if (!rc)
+			*table = pmd_val(*pmd);
+	} else
+		rc = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&gmap->guest_table_lock);
 	spin_unlock(ptl);
 	radix_tree_preload_end();
@@ -710,12 +736,15 @@ void gmap_discard(struct gmap *gmap, unsigned long from, unsigned long to)
 		vma = find_vma(gmap->mm, vmaddr);
 		if (!vma)
 			continue;
+<<<<<<< HEAD
 		/*
 		 * We do not discard pages that are backed by
 		 * hugetlbfs, so we don't have to refault them.
 		 */
 		if (is_vm_hugetlb_page(vma))
 			continue;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size = min(to - gaddr, PMD_SIZE - (gaddr & ~PMD_MASK));
 		zap_page_range(vma, vmaddr, size);
 	}
@@ -787,14 +816,26 @@ static void gmap_call_notifier(struct gmap *gmap, unsigned long start,
 static inline unsigned long *gmap_table_walk(struct gmap *gmap,
 					     unsigned long gaddr, int level)
 {
+<<<<<<< HEAD
+=======
+	const int asce_type = gmap->asce & _ASCE_TYPE_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long *table;
 
 	if ((gmap->asce & _ASCE_TYPE_MASK) + 4 < (level * 4))
 		return NULL;
 	if (gmap_is_shadow(gmap) && gmap->removed)
 		return NULL;
+<<<<<<< HEAD
 	if (gaddr & (-1UL << (31 + ((gmap->asce & _ASCE_TYPE_MASK) >> 2)*11)))
 		return NULL;
+=======
+
+	if (asce_type != _ASCE_TYPE_REGION1 &&
+	    gaddr & (-1UL << (31 + (asce_type >> 2) * 11)))
+		return NULL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	table = gmap->table;
 	switch (gmap->asce & _ASCE_TYPE_MASK) {
 	case _ASCE_TYPE_REGION1:
@@ -841,17 +882,38 @@ static inline unsigned long *gmap_table_walk(struct gmap *gmap,
  * @ptl: pointer to the spinlock pointer
  *
  * Returns a pointer to the locked pte for a guest address, or NULL
+<<<<<<< HEAD
+=======
+ *
+ * Note: Can also be called for shadow gmaps.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static pte_t *gmap_pte_op_walk(struct gmap *gmap, unsigned long gaddr,
 			       spinlock_t **ptl)
 {
 	unsigned long *table;
 
+<<<<<<< HEAD
 	BUG_ON(gmap_is_shadow(gmap));
 	/* Walk the gmap page table, lock and get pte pointer */
 	table = gmap_table_walk(gmap, gaddr, 1); /* get segment pointer */
 	if (!table || *table & _SEGMENT_ENTRY_INVALID)
 		return NULL;
+=======
+	if (gmap_is_shadow(gmap))
+		spin_lock(&gmap->guest_table_lock);
+	/* Walk the gmap page table, lock and get pte pointer */
+	table = gmap_table_walk(gmap, gaddr, 1); /* get segment pointer */
+	if (!table || *table & _SEGMENT_ENTRY_INVALID) {
+		if (gmap_is_shadow(gmap))
+			spin_unlock(&gmap->guest_table_lock);
+		return NULL;
+	}
+	if (gmap_is_shadow(gmap)) {
+		*ptl = &gmap->guest_table_lock;
+		return pte_offset_map((pmd_t *) table, gaddr);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pte_alloc_map_lock(gmap->mm, (pmd_t *) table, gaddr, ptl);
 }
 
@@ -890,6 +952,7 @@ static int gmap_pte_op_fixup(struct gmap *gmap, unsigned long gaddr,
  */
 static void gmap_pte_op_end(spinlock_t *ptl)
 {
+<<<<<<< HEAD
 	if (ptl)
 		spin_unlock(ptl);
 }
@@ -1012,6 +1075,9 @@ static int gmap_protect_pte(struct gmap *gmap, unsigned long gaddr,
 	rc = ptep_force_prot(gmap->mm, gaddr, ptep, prot, pbits);
 	gmap_pte_op_end(ptl);
 	return rc;
+=======
+	spin_unlock(ptl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1026,10 +1092,16 @@ static int gmap_protect_pte(struct gmap *gmap, unsigned long gaddr,
  * -EFAULT if gaddr is invalid (or mapping for shadows is missing).
  *
  * Called with sg->mm->mmap_sem in read.
+<<<<<<< HEAD
+=======
+ *
+ * Note: Can also be called for shadow gmaps.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int gmap_protect_range(struct gmap *gmap, unsigned long gaddr,
 			      unsigned long len, int prot, unsigned long bits)
 {
+<<<<<<< HEAD
 	unsigned long vmaddr, dist;
 	pmd_t *pmdp;
 	int rc;
@@ -1062,13 +1134,35 @@ static int gmap_protect_range(struct gmap *gmap, unsigned long gaddr,
 				return rc;
 
 			/* -EAGAIN, fixup of userspace mm and gmap */
+=======
+	unsigned long vmaddr;
+	spinlock_t *ptl;
+	pte_t *ptep;
+	int rc;
+
+	while (len) {
+		rc = -EAGAIN;
+		ptep = gmap_pte_op_walk(gmap, gaddr, &ptl);
+		if (ptep) {
+			rc = ptep_force_prot(gmap->mm, gaddr, ptep, prot, bits);
+			gmap_pte_op_end(ptl);
+		}
+		if (rc) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vmaddr = __gmap_translate(gmap, gaddr);
 			if (IS_ERR_VALUE(vmaddr))
 				return vmaddr;
 			rc = gmap_pte_op_fixup(gmap, gaddr, vmaddr, prot);
 			if (rc)
 				return rc;
+<<<<<<< HEAD
 		}
+=======
+			continue;
+		}
+		gaddr += PAGE_SIZE;
+		len -= PAGE_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -1097,7 +1191,11 @@ int gmap_mprotect_notify(struct gmap *gmap, unsigned long gaddr,
 	if (!MACHINE_HAS_ESOP && prot == PROT_READ)
 		return -EINVAL;
 	down_read(&gmap->mm->mmap_sem);
+<<<<<<< HEAD
 	rc = gmap_protect_range(gmap, gaddr, len, prot, GMAP_NOTIFY_MPROT);
+=======
+	rc = gmap_protect_range(gmap, gaddr, len, prot, PGSTE_IN_BIT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_read(&gmap->mm->mmap_sem);
 	return rc;
 }
@@ -1111,8 +1209,12 @@ EXPORT_SYMBOL_GPL(gmap_mprotect_notify);
  * @val: pointer to the unsigned long value to return
  *
  * Returns 0 if the value was read, -ENOMEM if out of memory and -EFAULT
+<<<<<<< HEAD
  * if reading using the virtual address failed. -EINVAL if called on a gmap
  * shadow.
+=======
+ * if reading using the virtual address failed.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Called with gmap->mm->mmap_sem in read.
  */
@@ -1123,9 +1225,12 @@ int gmap_read_table(struct gmap *gmap, unsigned long gaddr, unsigned long *val)
 	pte_t *ptep, pte;
 	int rc;
 
+<<<<<<< HEAD
 	if (gmap_is_shadow(gmap))
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (1) {
 		rc = -EAGAIN;
 		ptep = gmap_pte_op_walk(gmap, gaddr, &ptl);
@@ -1183,17 +1288,29 @@ static inline void gmap_insert_rmap(struct gmap *sg, unsigned long vmaddr,
 }
 
 /**
+<<<<<<< HEAD
  * gmap_protect_rmap - restrict access rights to memory (RO) and create an rmap
+=======
+ * gmap_protect_rmap - modify access rights to memory and create an rmap
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @sg: pointer to the shadow guest address space structure
  * @raddr: rmap address in the shadow gmap
  * @paddr: address in the parent guest address space
  * @len: length of the memory area to protect
+<<<<<<< HEAD
+=======
+ * @prot: indicates access rights: none, read-only or read-write
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns 0 if successfully protected and the rmap was created, -ENOMEM
  * if out of memory and -EFAULT if paddr is invalid.
  */
 static int gmap_protect_rmap(struct gmap *sg, unsigned long raddr,
+<<<<<<< HEAD
 			     unsigned long paddr, unsigned long len)
+=======
+			     unsigned long paddr, unsigned long len, int prot)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gmap *parent;
 	struct gmap_rmap *rmap;
@@ -1221,7 +1338,11 @@ static int gmap_protect_rmap(struct gmap *sg, unsigned long raddr,
 		ptep = gmap_pte_op_walk(parent, paddr, &ptl);
 		if (ptep) {
 			spin_lock(&sg->guest_table_lock);
+<<<<<<< HEAD
 			rc = ptep_force_prot(parent->mm, paddr, ptep, PROT_READ,
+=======
+			rc = ptep_force_prot(parent->mm, paddr, ptep, prot,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     PGSTE_VSIE_BIT);
 			if (!rc)
 				gmap_insert_rmap(sg, vmaddr, rmap);
@@ -1231,7 +1352,11 @@ static int gmap_protect_rmap(struct gmap *sg, unsigned long raddr,
 		radix_tree_preload_end();
 		if (rc) {
 			kfree(rmap);
+<<<<<<< HEAD
 			rc = gmap_pte_op_fixup(parent, paddr, vmaddr, PROT_READ);
+=======
+			rc = gmap_pte_op_fixup(parent, paddr, vmaddr, prot);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (rc)
 				return rc;
 			continue;
@@ -1342,11 +1467,19 @@ static void gmap_unshadow_pgt(struct gmap *sg, unsigned long raddr)
 static void __gmap_unshadow_sgt(struct gmap *sg, unsigned long raddr,
 				unsigned long *sgt)
 {
+<<<<<<< HEAD
 	unsigned long *pgt;
+=======
+	unsigned long asce, *pgt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct page *page;
 	int i;
 
 	BUG_ON(!gmap_is_shadow(sg));
+<<<<<<< HEAD
+=======
+	asce = (unsigned long) sgt | _ASCE_TYPE_SEGMENT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < _CRST_ENTRIES; i++, raddr += _SEGMENT_SIZE) {
 		if (!(sgt[i] & _SEGMENT_ENTRY_ORIGIN))
 			continue;
@@ -1399,11 +1532,19 @@ static void gmap_unshadow_sgt(struct gmap *sg, unsigned long raddr)
 static void __gmap_unshadow_r3t(struct gmap *sg, unsigned long raddr,
 				unsigned long *r3t)
 {
+<<<<<<< HEAD
 	unsigned long *sgt;
+=======
+	unsigned long asce, *sgt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct page *page;
 	int i;
 
 	BUG_ON(!gmap_is_shadow(sg));
+<<<<<<< HEAD
+=======
+	asce = (unsigned long) r3t | _ASCE_TYPE_REGION3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < _CRST_ENTRIES; i++, raddr += _REGION3_SIZE) {
 		if (!(r3t[i] & _REGION_ENTRY_ORIGIN))
 			continue;
@@ -1456,11 +1597,19 @@ static void gmap_unshadow_r3t(struct gmap *sg, unsigned long raddr)
 static void __gmap_unshadow_r2t(struct gmap *sg, unsigned long raddr,
 				unsigned long *r2t)
 {
+<<<<<<< HEAD
 	unsigned long *r3t;
+=======
+	unsigned long asce, *r3t;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct page *page;
 	int i;
 
 	BUG_ON(!gmap_is_shadow(sg));
+<<<<<<< HEAD
+=======
+	asce = (unsigned long) r2t | _ASCE_TYPE_REGION2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < _CRST_ENTRIES; i++, raddr += _REGION2_SIZE) {
 		if (!(r2t[i] & _REGION_ENTRY_ORIGIN))
 			continue;
@@ -1636,7 +1785,10 @@ struct gmap *gmap_shadow(struct gmap *parent, unsigned long asce,
 	unsigned long limit;
 	int rc;
 
+<<<<<<< HEAD
 	BUG_ON(parent->mm->context.allow_gmap_hpage_1m);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(gmap_is_shadow(parent));
 	spin_lock(&parent->shadow_lock);
 	sg = gmap_find_shadow(parent, asce, edat_level);
@@ -1689,7 +1841,11 @@ struct gmap *gmap_shadow(struct gmap *parent, unsigned long asce,
 	down_read(&parent->mm->mmap_sem);
 	rc = gmap_protect_range(parent, asce & _ASCE_ORIGIN,
 				((asce & _ASCE_TABLE_LENGTH) + 1) * PAGE_SIZE,
+<<<<<<< HEAD
 				PROT_READ, GMAP_NOTIFY_SHADOW);
+=======
+				PROT_READ, PGSTE_VSIE_BIT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_read(&parent->mm->mmap_sem);
 	spin_lock(&parent->shadow_lock);
 	new->initialized = true;
@@ -1771,7 +1927,11 @@ int gmap_shadow_r2t(struct gmap *sg, unsigned long saddr, unsigned long r2t,
 	origin = r2t & _REGION_ENTRY_ORIGIN;
 	offset = ((r2t & _REGION_ENTRY_OFFSET) >> 6) * PAGE_SIZE;
 	len = ((r2t & _REGION_ENTRY_LENGTH) + 1) * PAGE_SIZE - offset;
+<<<<<<< HEAD
 	rc = gmap_protect_rmap(sg, raddr, origin + offset, len);
+=======
+	rc = gmap_protect_rmap(sg, raddr, origin + offset, len, PROT_READ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&sg->guest_table_lock);
 	if (!rc) {
 		table = gmap_table_walk(sg, saddr, 4);
@@ -1834,6 +1994,10 @@ int gmap_shadow_r3t(struct gmap *sg, unsigned long saddr, unsigned long r3t,
 		goto out_free;
 	} else if (*table & _REGION_ENTRY_ORIGIN) {
 		rc = -EAGAIN;		/* Race with shadow */
+<<<<<<< HEAD
+=======
+		goto out_free;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	crst_table_init(s_r3t, _REGION3_ENTRY_EMPTY);
 	/* mark as invalid as long as the parent table is not protected */
@@ -1854,7 +2018,11 @@ int gmap_shadow_r3t(struct gmap *sg, unsigned long saddr, unsigned long r3t,
 	origin = r3t & _REGION_ENTRY_ORIGIN;
 	offset = ((r3t & _REGION_ENTRY_OFFSET) >> 6) * PAGE_SIZE;
 	len = ((r3t & _REGION_ENTRY_LENGTH) + 1) * PAGE_SIZE - offset;
+<<<<<<< HEAD
 	rc = gmap_protect_rmap(sg, raddr, origin + offset, len);
+=======
+	rc = gmap_protect_rmap(sg, raddr, origin + offset, len, PROT_READ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&sg->guest_table_lock);
 	if (!rc) {
 		table = gmap_table_walk(sg, saddr, 3);
@@ -1938,7 +2106,11 @@ int gmap_shadow_sgt(struct gmap *sg, unsigned long saddr, unsigned long sgt,
 	origin = sgt & _REGION_ENTRY_ORIGIN;
 	offset = ((sgt & _REGION_ENTRY_OFFSET) >> 6) * PAGE_SIZE;
 	len = ((sgt & _REGION_ENTRY_LENGTH) + 1) * PAGE_SIZE - offset;
+<<<<<<< HEAD
 	rc = gmap_protect_rmap(sg, raddr, origin + offset, len);
+=======
+	rc = gmap_protect_rmap(sg, raddr, origin + offset, len, PROT_READ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&sg->guest_table_lock);
 	if (!rc) {
 		table = gmap_table_walk(sg, saddr, 2);
@@ -2057,7 +2229,11 @@ int gmap_shadow_pgt(struct gmap *sg, unsigned long saddr, unsigned long pgt,
 	/* Make pgt read-only in parent gmap page table (not the pgste) */
 	raddr = (saddr & _SEGMENT_MASK) | _SHADOW_RMAP_SEGMENT;
 	origin = pgt & _SEGMENT_ENTRY_ORIGIN & PAGE_MASK;
+<<<<<<< HEAD
 	rc = gmap_protect_rmap(sg, raddr, origin, PAGE_SIZE);
+=======
+	rc = gmap_protect_rmap(sg, raddr, origin, PAGE_SIZE, PROT_READ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&sg->guest_table_lock);
 	if (!rc) {
 		table = gmap_table_walk(sg, saddr, 1);
@@ -2160,7 +2336,11 @@ EXPORT_SYMBOL_GPL(gmap_shadow_page);
  * Called with sg->parent->shadow_lock.
  */
 static void gmap_shadow_notify(struct gmap *sg, unsigned long vmaddr,
+<<<<<<< HEAD
 			       unsigned long gaddr)
+=======
+			       unsigned long gaddr, pte_t *pte)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gmap_rmap *rmap, *rnext, *head;
 	unsigned long start, end, bits, raddr;
@@ -2245,7 +2425,11 @@ void ptep_notify(struct mm_struct *mm, unsigned long vmaddr,
 			spin_lock(&gmap->shadow_lock);
 			list_for_each_entry_safe(sg, next,
 						 &gmap->children, list)
+<<<<<<< HEAD
 				gmap_shadow_notify(sg, vmaddr, gaddr);
+=======
+				gmap_shadow_notify(sg, vmaddr, gaddr, pte);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_unlock(&gmap->shadow_lock);
 		}
 		if (bits & PGSTE_IN_BIT)
@@ -2255,6 +2439,7 @@ void ptep_notify(struct mm_struct *mm, unsigned long vmaddr,
 }
 EXPORT_SYMBOL_GPL(ptep_notify);
 
+<<<<<<< HEAD
 static void pmdp_notify_gmap(struct gmap *gmap, pmd_t *pmdp,
 			     unsigned long gaddr)
 {
@@ -2474,6 +2659,8 @@ void gmap_sync_dirty_log_pmd(struct gmap *gmap, unsigned long bitmap[4],
 }
 EXPORT_SYMBOL_GPL(gmap_sync_dirty_log_pmd);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void thp_split_mm(struct mm_struct *mm)
 {
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
@@ -2550,14 +2737,20 @@ EXPORT_SYMBOL_GPL(s390_enable_sie);
  * Enable storage key handling from now on and initialize the storage
  * keys with the default key.
  */
+<<<<<<< HEAD
 static int __s390_enable_skey_pte(pte_t *pte, unsigned long addr,
 				  unsigned long next, struct mm_walk *walk)
+=======
+static int __s390_enable_skey(pte_t *pte, unsigned long addr,
+			      unsigned long next, struct mm_walk *walk)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Clear storage key */
 	ptep_zap_key(walk->mm, addr, pte);
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __s390_enable_skey_hugetlb(pte_t *pte, unsigned long addr,
 				      unsigned long hmask, unsigned long next,
 				      struct mm_walk *walk)
@@ -2589,11 +2782,17 @@ int s390_enable_skey(void)
 		.hugetlb_entry = __s390_enable_skey_hugetlb,
 		.pte_entry = __s390_enable_skey_pte,
 	};
+=======
+int s390_enable_skey(void)
+{
+	struct mm_walk walk = { .pte_entry = __s390_enable_skey };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mm_struct *mm = current->mm;
 	struct vm_area_struct *vma;
 	int rc = 0;
 
 	down_write(&mm->mmap_sem);
+<<<<<<< HEAD
 	if (mm_uses_skeys(mm))
 		goto out_up;
 
@@ -2602,6 +2801,16 @@ int s390_enable_skey(void)
 		if (ksm_madvise(vma, vma->vm_start, vma->vm_end,
 				MADV_UNMERGEABLE, &vma->vm_flags)) {
 			mm->context.uses_skeys = 0;
+=======
+	if (mm_use_skey(mm))
+		goto out_up;
+
+	mm->context.use_skey = 1;
+	for (vma = mm->mmap; vma; vma = vma->vm_next) {
+		if (ksm_madvise(vma, vma->vm_start, vma->vm_end,
+				MADV_UNMERGEABLE, &vma->vm_flags)) {
+			mm->context.use_skey = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENOMEM;
 			goto out_up;
 		}

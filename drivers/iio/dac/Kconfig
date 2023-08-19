@@ -60,8 +60,12 @@ config AD5446
 	  Say yes here to build support for Analog Devices AD5300, AD5301, AD5310,
 	  AD5311, AD5320, AD5321, AD5444, AD5446, AD5450, AD5451, AD5452, AD5453,
 	  AD5512A, AD5541A, AD5542A, AD5543, AD5553, AD5601, AD5602, AD5611, AD5612,
+<<<<<<< HEAD
 	  AD5620, AD5621, AD5622, AD5640, AD5641, AD5660, AD5662 DACs
 	  as well as Texas Instruments DAC081S101, DAC101S101, DAC121S101.
+=======
+	  AD5620, AD5621, AD5622, AD5640, AD5641, AD5660, AD5662 DACs.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called ad5446.
@@ -131,6 +135,7 @@ config LTC2632
 	  module will be called ltc2632.
 
 config AD5686
+<<<<<<< HEAD
 	tristate
 
 config AD5686_SPI
@@ -141,10 +146,19 @@ config AD5686_SPI
 	  Say yes here to build support for Analog Devices AD5672R, AD5676,
 	  AD5676R, AD5684, AD5684R, AD5684R, AD5685R, AD5686, AD5686R.
 	  Voltage Output Digital to Analog Converter.
+=======
+	tristate "Analog Devices AD5686R/AD5685R/AD5684R DAC SPI driver"
+	depends on SPI
+	help
+	  Say yes here to build support for Analog Devices AD5686R, AD5685R,
+	  AD5684R, AD5791 Voltage Output Digital to
+	  Analog Converter.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called ad5686.
 
+<<<<<<< HEAD
 config AD5696_I2C
 	tristate "Analog Devices AD5696 and similar multi-channel DACs (I2C)"
 	depends on I2C
@@ -156,6 +170,8 @@ config AD5696_I2C
 	  To compile this driver as a module, choose M here: the module will be
 	  called ad5696.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config AD5755
 	tristate "Analog Devices AD5755/AD5755-1/AD5757/AD5735/AD5737 DAC driver"
 	depends on SPI_MASTER
@@ -167,6 +183,7 @@ config AD5755
 	  To compile this driver as a module, choose M here: the
 	  module will be called ad5755.
 
+<<<<<<< HEAD
 config AD5758
 	tristate "Analog Devices AD5758 DAC driver"
 	depends on SPI_MASTER
@@ -177,6 +194,8 @@ config AD5758
 	  To compile this driver as a module, choose M here: the
 	  module will be called ad5758.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config AD5761
 	tristate "Analog Devices AD5761/61R/21/21R DAC driver"
 	depends on SPI_MASTER
@@ -220,8 +239,12 @@ config AD7303
 
 config CIO_DAC
 	tristate "Measurement Computing CIO-DAC IIO driver"
+<<<<<<< HEAD
 	depends on X86 && (ISA_BUS || PC104)
 	select ISA_BUS_API
+=======
+	depends on X86 && ISA_BUS_API
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say yes here to build support for the Measurement Computing CIO-DAC
 	  analog output device family (CIO-DAC16, CIO-DAC08, PC104-DAC06). The
@@ -248,6 +271,7 @@ config DPOT_DAC
 	  To compile this driver as a module, choose M here: the module will be
 	  called dpot-dac.
 
+<<<<<<< HEAD
 config DS4424
 	tristate "Maxim Integrated DS4422/DS4424 DAC driver"
 	depends on I2C
@@ -257,6 +281,8 @@ config DS4424
 	  This driver can also be built as a module.  If so, the module
 	  will be called ds4424.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config LPC18XX_DAC
 	tristate "NXP LPC18xx DAC driver"
 	depends on ARCH_LPC18XX || COMPILE_TEST
@@ -336,6 +362,7 @@ config STM32_DAC
 config STM32_DAC_CORE
 	tristate
 
+<<<<<<< HEAD
 config TI_DAC082S085
 	tristate "Texas Instruments 8/10/12-bit 2/4-channel DAC driver"
 	depends on SPI_MASTER
@@ -356,6 +383,8 @@ config TI_DAC5571
 
 	  If compiled as a module, it will be called ti-dac5571.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config VF610_DAC
 	tristate "Vybrid vf610 DAC driver"
 	depends on OF

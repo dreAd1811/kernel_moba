@@ -361,9 +361,15 @@ static irqreturn_t kw_i2c_irq(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static void kw_i2c_timeout(struct timer_list *t)
 {
 	struct pmac_i2c_host_kw *host = from_timer(host, t, timeout_timer);
+=======
+static void kw_i2c_timeout(unsigned long data)
+{
+	struct pmac_i2c_host_kw *host = (struct pmac_i2c_host_kw *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&host->lock, flags);
@@ -492,7 +498,11 @@ static struct pmac_i2c_host_kw *__init kw_i2c_host_init(struct device_node *np)
 	const u32		*psteps, *prate, *addrp;
 	u32			steps;
 
+<<<<<<< HEAD
 	host = kzalloc(sizeof(*host), GFP_KERNEL);
+=======
+	host = kzalloc(sizeof(struct pmac_i2c_host_kw), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (host == NULL) {
 		printk(KERN_ERR "low_i2c: Can't allocate host for %pOF\n",
 		       np);
@@ -513,7 +523,13 @@ static struct pmac_i2c_host_kw *__init kw_i2c_host_init(struct device_node *np)
 	mutex_init(&host->mutex);
 	init_completion(&host->complete);
 	spin_lock_init(&host->lock);
+<<<<<<< HEAD
 	timer_setup(&host->timeout_timer, kw_i2c_timeout, 0);
+=======
+	init_timer(&host->timeout_timer);
+	host->timeout_timer.function = kw_i2c_timeout;
+	host->timeout_timer.data = (unsigned long)host;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	psteps = of_get_property(np, "AAPL,address-step", NULL);
 	steps = psteps ? (*psteps) : 0x10;
@@ -1192,7 +1208,11 @@ static void pmac_i2c_devscan(void (*callback)(struct device_node *dev,
 		{ NULL, NULL, 0 },
 	};
 
+<<<<<<< HEAD
 	/* Only some devices need to have platform functions instantiated
+=======
+	/* Only some devices need to have platform functions instanciated
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * here. For now, we have a table. Others, like 9554 i2c GPIOs used
 	 * on Xserve, if we ever do a driver for them, will use their own
 	 * platform function instance

@@ -17,7 +17,10 @@
 
 /* Additional registers for v8 */
 #define S5P_FIMV_D_MVC_NUM_VIEWS_V8		0xf104
+<<<<<<< HEAD
 #define S5P_FIMV_D_MIN_SCRATCH_BUFFER_SIZE_V8	0xf108
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define S5P_FIMV_D_FIRST_PLANE_DPB_SIZE_V8	0xf144
 #define S5P_FIMV_D_SECOND_PLANE_DPB_SIZE_V8	0xf148
 #define S5P_FIMV_D_MV_BUFFER_SIZE_V8		0xf150
@@ -85,7 +88,10 @@
 
 #define S5P_FIMV_E_VBV_BUFFER_SIZE_V8		0xf78c
 #define S5P_FIMV_E_VBV_INIT_DELAY_V8		0xf790
+<<<<<<< HEAD
 #define S5P_FIMV_E_MIN_SCRATCH_BUFFER_SIZE_V8   0xf894
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define S5P_FIMV_E_ASPECT_RATIO_V8		0xfb4c
 #define S5P_FIMV_E_EXTENDED_SAR_V8		0xfb50

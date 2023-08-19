@@ -52,7 +52,10 @@ struct efi __read_mostly efi = {
 	.properties_table	= EFI_INVALID_TABLE_ADDR,
 	.mem_attr_table		= EFI_INVALID_TABLE_ADDR,
 	.rng_seed		= EFI_INVALID_TABLE_ADDR,
+<<<<<<< HEAD
 	.tpm_log		= EFI_INVALID_TABLE_ADDR
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 EXPORT_SYMBOL(efi);
 
@@ -75,6 +78,7 @@ static unsigned long *efi_tables[] = {
 	&efi.mem_attr_table,
 };
 
+<<<<<<< HEAD
 struct mm_struct efi_mm = {
 	.mm_rb			= RB_ROOT,
 	.mm_users		= ATOMIC_INIT(2),
@@ -87,6 +91,8 @@ struct mm_struct efi_mm = {
 
 struct workqueue_struct *efi_rts_wq;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool disable_runtime;
 static int __init setup_noefi(char *arg)
 {
@@ -122,8 +128,11 @@ struct kobject *efi_kobj;
 /*
  * Let's not leave out systab information that snuck into
  * the efivars driver
+<<<<<<< HEAD
  * Note, do not add more fields in systab sysfs file as it breaks sysfs
  * one value per file rule!
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static ssize_t systab_show(struct kobject *kobj,
 			   struct kobj_attribute *attr, char *buf)
@@ -236,7 +245,11 @@ static void generic_ops_unregister(void)
 	efivars_unregister(&generic_efivars);
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_ACPI)
+=======
+#ifdef CONFIG_EFI_CUSTOM_SSDT_OVERLAYS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EFIVAR_SSDT_NAME_MAX	16
 static char efivar_ssdt[EFIVAR_SSDT_NAME_MAX] __initdata;
 static int __init efivar_ssdt_setup(char *str)
@@ -343,6 +356,7 @@ static int __init efisubsys_init(void)
 	if (!efi_enabled(EFI_BOOT))
 		return 0;
 
+<<<<<<< HEAD
 	/*
 	 * Since we process only one efi_runtime_service() at a time, an
 	 * ordered workqueue (which creates only one execution context)
@@ -355,6 +369,8 @@ static int __init efisubsys_init(void)
 		return 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* We register the efi directory at /sys/firmware/efi */
 	efi_kobj = kobject_create_and_add("efi", firmware_kobj);
 	if (!efi_kobj) {
@@ -406,7 +422,11 @@ subsys_initcall(efisubsys_init);
  * and if so, populate the supplied memory descriptor with the appropriate
  * data.
  */
+<<<<<<< HEAD
 int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+=======
+int __init efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	efi_memory_desc_t *md;
 
@@ -424,6 +444,15 @@ int efi_mem_desc_lookup(u64 phys_addr, efi_memory_desc_t *out_md)
 		u64 size;
 		u64 end;
 
+<<<<<<< HEAD
+=======
+		if (!(md->attribute & EFI_MEMORY_RUNTIME) &&
+		    md->type != EFI_BOOT_SERVICES_DATA &&
+		    md->type != EFI_RUNTIME_SERVICES_DATA) {
+			continue;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size = md->num_pages << EFI_PAGE_SHIFT;
 		end = md->phys_addr + size;
 		if (phys_addr >= md->phys_addr && phys_addr < end) {
@@ -486,7 +515,10 @@ static __initdata efi_config_table_type_t common_tables[] = {
 	{EFI_PROPERTIES_TABLE_GUID, "PROP", &efi.properties_table},
 	{EFI_MEMORY_ATTRIBUTES_TABLE_GUID, "MEMATTR", &efi.mem_attr_table},
 	{LINUX_EFI_RANDOM_SEED_TABLE_GUID, "RNG", &efi.rng_seed},
+<<<<<<< HEAD
 	{LINUX_EFI_TPM_EVENT_LOG_GUID, "TPMEventLog", &efi.tpm_log},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{NULL_GUID, NULL, NULL},
 };
 
@@ -563,20 +595,32 @@ int __init efi_config_parse_tables(void *config_tables, int count, int sz,
 			seed = early_memremap(efi.rng_seed,
 					      sizeof(*seed) + size);
 			if (seed != NULL) {
+<<<<<<< HEAD
 				pr_notice("seeding entropy pool\n");
 				add_device_randomness(seed->bits, seed->size);
 				early_memunmap(seed, sizeof(*seed) + size);
+=======
+				add_device_randomness(seed->bits, seed->size);
+				early_memunmap(seed, sizeof(*seed) + size);
+				pr_notice("seeding entropy pool\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} else {
 				pr_err("Could not map UEFI random seed!\n");
 			}
 		}
 	}
 
+<<<<<<< HEAD
 	if (efi_enabled(EFI_MEMMAP))
 		efi_memattr_init();
 
 	efi_tpm_eventlog_init();
 
+=======
+	if (!IS_ENABLED(CONFIG_X86_32) && efi_enabled(EFI_MEMMAP))
+		efi_memattr_init();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Parse the EFI Properties table if it exists */
 	if (efi.properties_table != EFI_INVALID_TABLE_ADDR) {
 		efi_properties_table_t *tbl;
@@ -633,7 +677,11 @@ static int __init efi_load_efivars(void)
 		return 0;
 
 	pdev = platform_device_register_simple("efivars", 0, NULL, 0);
+<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(pdev);
+=======
+	return IS_ERR(pdev) ? PTR_ERR(pdev) : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 device_initcall(efi_load_efivars);
 #endif

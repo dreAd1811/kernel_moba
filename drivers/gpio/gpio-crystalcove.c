@@ -18,7 +18,11 @@
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
+=======
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/seq_file.h>
 #include <linux/bitops.h>
 #include <linux/regmap.h>
@@ -295,7 +299,11 @@ static irqreturn_t crystalcove_gpio_irq_handler(int irq, void *data)
 
 	for (gpio = 0; gpio < CRYSTALCOVE_GPIO_NUM; gpio++) {
 		if (pending & BIT(gpio)) {
+<<<<<<< HEAD
 			virq = irq_find_mapping(cg->chip.irq.domain, gpio);
+=======
+			virq = irq_find_mapping(cg->chip.irqdomain, gpio);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			handle_nested_irq(virq);
 		}
 	}

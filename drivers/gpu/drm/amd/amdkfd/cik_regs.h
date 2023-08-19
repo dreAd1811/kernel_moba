@@ -33,8 +33,12 @@
 #define	APE1_MTYPE(x)					((x) << 7)
 
 /* valid for both DEFAULT_MTYPE and APE1_MTYPE */
+<<<<<<< HEAD
 #define	MTYPE_CACHED_NV					0
 #define	MTYPE_CACHED					1
+=======
+#define	MTYPE_CACHED					0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define	MTYPE_NONCACHED					3
 
 #define	DEFAULT_CP_HQD_PERSISTENT_STATE			(0x33U << 8)

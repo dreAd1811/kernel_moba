@@ -10,14 +10,21 @@
  *	2 of the License, or (at your option) any later version.
  *
  * Authors:	Alan Cox, <alan@lxorguk.ukuu.org.uk> (version 1)
+<<<<<<< HEAD
  *              Mauro Carvalho Chehab <mchehab@kernel.org> (version 2)
+=======
+ *              Mauro Carvalho Chehab <mchehab@infradead.org> (version 2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Fixes:	20000516  Claudio Matsuoka <claudio@conectiva.com>
  *		- Added procfs support
  */
 
+<<<<<<< HEAD
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/types.h>
 #include <linux/kernel.h>
@@ -36,12 +43,15 @@
 #define VIDEO_NUM_DEVICES	256
 #define VIDEO_NAME              "video4linux"
 
+<<<<<<< HEAD
 #define dprintk(fmt, arg...) do {					\
 		printk(KERN_DEBUG pr_fmt("%s: " fmt),			\
 		       __func__, ##arg);				\
 } while (0)
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *	sysfs stuff
  */
@@ -99,7 +109,11 @@ ATTRIBUTE_GROUPS(video_device);
 /*
  *	Active devices
  */
+<<<<<<< HEAD
 static struct video_device *video_devices[VIDEO_NUM_DEVICES];
+=======
+static struct video_device *video_device[VIDEO_NUM_DEVICES];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_MUTEX(videodev_lock);
 static DECLARE_BITMAP(devnode_nums[VFL_TYPE_MAX], VIDEO_NUM_DEVICES);
 
@@ -110,7 +124,11 @@ static DECLARE_BITMAP(devnode_nums[VFL_TYPE_MAX], VIDEO_NUM_DEVICES);
 
 #ifdef CONFIG_VIDEO_FIXED_MINOR_RANGES
 /* Return the bitmap corresponding to vfl_type. */
+<<<<<<< HEAD
 static inline unsigned long *devnode_bits(enum vfl_devnode_type vfl_type)
+=======
+static inline unsigned long *devnode_bits(int vfl_type)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Any types not assigned to fixed minor ranges must be mapped to
 	   one single bitmap for the purposes of finding a free node number
@@ -121,7 +139,11 @@ static inline unsigned long *devnode_bits(enum vfl_devnode_type vfl_type)
 }
 #else
 /* Return the bitmap corresponding to vfl_type. */
+<<<<<<< HEAD
 static inline unsigned long *devnode_bits(enum vfl_devnode_type vfl_type)
+=======
+static inline unsigned long *devnode_bits(int vfl_type)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return devnode_nums[vfl_type];
 }
@@ -181,14 +203,22 @@ static void v4l2_device_release(struct device *cd)
 	struct v4l2_device *v4l2_dev = vdev->v4l2_dev;
 
 	mutex_lock(&videodev_lock);
+<<<<<<< HEAD
 	if (WARN_ON(video_devices[vdev->minor] != vdev)) {
+=======
+	if (WARN_ON(video_device[vdev->minor] != vdev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* should not happen */
 		mutex_unlock(&videodev_lock);
 		return;
 	}
 
 	/* Free up this device for reuse */
+<<<<<<< HEAD
 	video_devices[vdev->minor] = NULL;
+=======
+	video_device[vdev->minor] = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Delete the cdev on this minor as well */
 	cdev_del(vdev->cdev);
@@ -202,7 +232,11 @@ static void v4l2_device_release(struct device *cd)
 	mutex_unlock(&videodev_lock);
 
 #if defined(CONFIG_MEDIA_CONTROLLER)
+<<<<<<< HEAD
 	if (v4l2_dev->mdev && vdev->vfl_dir != VFL_DIR_M2M) {
+=======
+	if (v4l2_dev->mdev) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Remove interfaces and interface links */
 		media_devnode_remove(vdev->intf_devnode);
 		if (vdev->entity.function != MEDIA_ENT_F_UNKNOWN)
@@ -237,7 +271,11 @@ static struct class video_class = {
 
 struct video_device *video_devdata(struct file *file)
 {
+<<<<<<< HEAD
 	return video_devices[iminor(file_inode(file))];
+=======
+	return video_device[iminor(file_inode(file))];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(video_devdata);
 
@@ -317,7 +355,11 @@ static ssize_t v4l2_read(struct file *filp, char __user *buf,
 		ret = vdev->fops->read(filp, buf, sz, off);
 	if ((vdev->dev_debug & V4L2_DEV_DEBUG_FOP) &&
 	    (vdev->dev_debug & V4L2_DEV_DEBUG_STREAMING))
+<<<<<<< HEAD
 		dprintk("%s: read: %zd (%d)\n",
+=======
+		printk(KERN_DEBUG "%s: read: %zd (%d)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			video_device_node_name(vdev), sz, ret);
 	return ret;
 }
@@ -334,22 +376,37 @@ static ssize_t v4l2_write(struct file *filp, const char __user *buf,
 		ret = vdev->fops->write(filp, buf, sz, off);
 	if ((vdev->dev_debug & V4L2_DEV_DEBUG_FOP) &&
 	    (vdev->dev_debug & V4L2_DEV_DEBUG_STREAMING))
+<<<<<<< HEAD
 		dprintk("%s: write: %zd (%d)\n",
+=======
+		printk(KERN_DEBUG "%s: write: %zd (%d)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			video_device_node_name(vdev), sz, ret);
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t v4l2_poll(struct file *filp, struct poll_table_struct *poll)
 {
 	struct video_device *vdev = video_devdata(filp);
 	__poll_t res = EPOLLERR | EPOLLHUP;
+=======
+static unsigned int v4l2_poll(struct file *filp, struct poll_table_struct *poll)
+{
+	struct video_device *vdev = video_devdata(filp);
+	unsigned int res = POLLERR | POLLHUP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!vdev->fops->poll)
 		return DEFAULT_POLLMASK;
 	if (video_is_registered(vdev))
 		res = vdev->fops->poll(filp, poll);
 	if (vdev->dev_debug & V4L2_DEV_DEBUG_POLL)
+<<<<<<< HEAD
 		dprintk("%s: poll: %08x\n",
+=======
+		printk(KERN_DEBUG "%s: poll: %08x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			video_device_node_name(vdev), res);
 	return res;
 }
@@ -360,8 +417,19 @@ static long v4l2_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	int ret = -ENODEV;
 
 	if (vdev->fops->unlocked_ioctl) {
+<<<<<<< HEAD
 		if (video_is_registered(vdev))
 			ret = vdev->fops->unlocked_ioctl(filp, cmd, arg);
+=======
+		struct mutex *lock = v4l2_ioctl_get_lock(vdev, cmd);
+
+		if (lock && mutex_lock_interruptible(lock))
+			return -ERESTARTSYS;
+		if (video_is_registered(vdev))
+			ret = vdev->fops->unlocked_ioctl(filp, cmd, arg);
+		if (lock)
+			mutex_unlock(lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 		ret = -ENOTTY;
 
@@ -384,7 +452,11 @@ static unsigned long v4l2_get_unmapped_area(struct file *filp,
 		return -ENODEV;
 	ret = vdev->fops->get_unmapped_area(filp, addr, len, pgoff, flags);
 	if (vdev->dev_debug & V4L2_DEV_DEBUG_FOP)
+<<<<<<< HEAD
 		dprintk("%s: get_unmapped_area (%d)\n",
+=======
+		printk(KERN_DEBUG "%s: get_unmapped_area (%d)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			video_device_node_name(vdev), ret);
 	return ret;
 }
@@ -400,7 +472,11 @@ static int v4l2_mmap(struct file *filp, struct vm_area_struct *vm)
 	if (video_is_registered(vdev))
 		ret = vdev->fops->mmap(filp, vm);
 	if (vdev->dev_debug & V4L2_DEV_DEBUG_FOP)
+<<<<<<< HEAD
 		dprintk("%s: mmap (%d)\n",
+=======
+		printk(KERN_DEBUG "%s: mmap (%d)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			video_device_node_name(vdev), ret);
 	return ret;
 }
@@ -430,7 +506,11 @@ static int v4l2_open(struct inode *inode, struct file *filp)
 	}
 
 	if (vdev->dev_debug & V4L2_DEV_DEBUG_FOP)
+<<<<<<< HEAD
 		dprintk("%s: open (%d)\n",
+=======
+		printk(KERN_DEBUG "%s: open (%d)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			video_device_node_name(vdev), ret);
 	/* decrease the refcount in case of an error */
 	if (ret)
@@ -447,7 +527,11 @@ static int v4l2_release(struct inode *inode, struct file *filp)
 	if (vdev->fops->release)
 		ret = vdev->fops->release(filp);
 	if (vdev->dev_debug & V4L2_DEV_DEBUG_FOP)
+<<<<<<< HEAD
 		dprintk("%s: release\n",
+=======
+		printk(KERN_DEBUG "%s: release\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			video_device_node_name(vdev));
 
 	/* decrease the refcount unconditionally since the release()
@@ -495,9 +579,15 @@ static int get_index(struct video_device *vdev)
 	bitmap_zero(used, VIDEO_NUM_DEVICES);
 
 	for (i = 0; i < VIDEO_NUM_DEVICES; i++) {
+<<<<<<< HEAD
 		if (video_devices[i] != NULL &&
 		    video_devices[i]->v4l2_dev == vdev->v4l2_dev) {
 			set_bit(video_devices[i]->index, used);
+=======
+		if (video_device[i] != NULL &&
+		    video_device[i]->v4l2_dev == vdev->v4l2_dev) {
+			set_bit(video_device[i]->index, used);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -716,9 +806,12 @@ static void determine_valid_ioctls(struct video_device *vdev)
 		SET_VALID_IOCTL(ops, VIDIOC_ENUM_DV_TIMINGS, vidioc_enum_dv_timings);
 		SET_VALID_IOCTL(ops, VIDIOC_DV_TIMINGS_CAP, vidioc_dv_timings_cap);
 		SET_VALID_IOCTL(ops, VIDIOC_G_EDID, vidioc_g_edid);
+<<<<<<< HEAD
 	} else {
 		/* ioctls valid for radio */
 		SET_VALID_IOCTL(ops, VIDIOC_DQBUF, vidioc_dqbuf);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (is_tx && (is_radio || is_sdr)) {
 		/* radio transmitter only ioctls */
@@ -736,22 +829,34 @@ static void determine_valid_ioctls(struct video_device *vdev)
 			BASE_VIDIOC_PRIVATE);
 }
 
+<<<<<<< HEAD
 static int video_register_media_controller(struct video_device *vdev)
+=======
+static int video_register_media_controller(struct video_device *vdev, int type)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #if defined(CONFIG_MEDIA_CONTROLLER)
 	u32 intf_type;
 	int ret;
 
+<<<<<<< HEAD
 	/* Memory-to-memory devices are more complex and use
 	 * their own function to register its mc entities.
 	 */
 	if (!vdev->v4l2_dev->mdev || vdev->vfl_dir == VFL_DIR_M2M)
+=======
+	if (!vdev->v4l2_dev->mdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	vdev->entity.obj_type = MEDIA_ENTITY_TYPE_VIDEO_DEVICE;
 	vdev->entity.function = MEDIA_ENT_F_UNKNOWN;
 
+<<<<<<< HEAD
 	switch (vdev->vfl_type) {
+=======
+	switch (type) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case VFL_TYPE_GRABBER:
 		intf_type = MEDIA_INTF_T_V4L_VIDEO;
 		vdev->entity.function = MEDIA_ENT_F_IO_V4L;
@@ -794,7 +899,12 @@ static int video_register_media_controller(struct video_device *vdev)
 		ret = media_device_register_entity(vdev->v4l2_dev->mdev,
 						   &vdev->entity);
 		if (ret < 0) {
+<<<<<<< HEAD
 			pr_warn("%s: media_device_register_entity failed\n",
+=======
+			printk(KERN_WARNING
+				"%s: media_device_register_entity failed\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				__func__);
 			return ret;
 		}
@@ -814,8 +924,12 @@ static int video_register_media_controller(struct video_device *vdev)
 
 		link = media_create_intf_link(&vdev->entity,
 					      &vdev->intf_devnode->intf,
+<<<<<<< HEAD
 					      MEDIA_LNK_FL_ENABLED |
 					      MEDIA_LNK_FL_IMMUTABLE);
+=======
+					      MEDIA_LNK_FL_ENABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!link) {
 			media_devnode_remove(vdev->intf_devnode);
 			media_device_unregister_entity(&vdev->entity);
@@ -829,10 +943,15 @@ static int video_register_media_controller(struct video_device *vdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 int __video_register_device(struct video_device *vdev,
 			    enum vfl_devnode_type type,
 			    int nr, int warn_if_nr_in_use,
 			    struct module *owner)
+=======
+int __video_register_device(struct video_device *vdev, int type, int nr,
+		int warn_if_nr_in_use, struct module *owner)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i = 0;
 	int ret;
@@ -877,7 +996,11 @@ int __video_register_device(struct video_device *vdev,
 		name_base = "v4l-touch";
 		break;
 	default:
+<<<<<<< HEAD
 		pr_err("%s called with unknown type: %d\n",
+=======
+		printk(KERN_ERR "%s called with unknown type: %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       __func__, type);
 		return -EINVAL;
 	}
@@ -926,7 +1049,11 @@ int __video_register_device(struct video_device *vdev,
 	if (nr == minor_cnt)
 		nr = devnode_find(vdev, 0, minor_cnt);
 	if (nr == minor_cnt) {
+<<<<<<< HEAD
 		pr_err("could not get a free device node number\n");
+=======
+		printk(KERN_ERR "could not get a free device node number\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&videodev_lock);
 		return -ENFILE;
 	}
@@ -937,16 +1064,25 @@ int __video_register_device(struct video_device *vdev,
 	/* The device node number and minor numbers are independent, so
 	   we just find the first free minor number. */
 	for (i = 0; i < VIDEO_NUM_DEVICES; i++)
+<<<<<<< HEAD
 		if (video_devices[i] == NULL)
 			break;
 	if (i == VIDEO_NUM_DEVICES) {
 		mutex_unlock(&videodev_lock);
 		pr_err("could not get a free minor\n");
+=======
+		if (video_device[i] == NULL)
+			break;
+	if (i == VIDEO_NUM_DEVICES) {
+		mutex_unlock(&videodev_lock);
+		printk(KERN_ERR "could not get a free minor\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENFILE;
 	}
 #endif
 	vdev->minor = i + minor_offset;
 	vdev->num = nr;
+<<<<<<< HEAD
 
 	/* Should not happen since we thought this minor was free */
 	if (WARN_ON(video_devices[vdev->minor])) {
@@ -957,6 +1093,14 @@ int __video_register_device(struct video_device *vdev,
 	devnode_set(vdev);
 	vdev->index = get_index(vdev);
 	video_devices[vdev->minor] = vdev;
+=======
+	devnode_set(vdev);
+
+	/* Should not happen since we thought this minor was free */
+	WARN_ON(video_device[vdev->minor] != NULL);
+	vdev->index = get_index(vdev);
+	video_device[vdev->minor] = vdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&videodev_lock);
 
 	if (vdev->ioctl_ops)
@@ -972,7 +1116,11 @@ int __video_register_device(struct video_device *vdev,
 	vdev->cdev->owner = owner;
 	ret = cdev_add(vdev->cdev, MKDEV(VIDEO_MAJOR, vdev->minor), 1);
 	if (ret < 0) {
+<<<<<<< HEAD
 		pr_err("%s: cdev_add failed\n", __func__);
+=======
+		printk(KERN_ERR "%s: cdev_add failed\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(vdev->cdev);
 		vdev->cdev = NULL;
 		goto cleanup;
@@ -985,7 +1133,11 @@ int __video_register_device(struct video_device *vdev,
 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
 	ret = device_register(&vdev->dev);
 	if (ret < 0) {
+<<<<<<< HEAD
 		pr_err("%s: device_register failed\n", __func__);
+=======
+		printk(KERN_ERR "%s: device_register failed\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto cleanup;
 	}
 	/* Register the release callback that will be called when the last
@@ -993,14 +1145,22 @@ int __video_register_device(struct video_device *vdev,
 	vdev->dev.release = v4l2_device_release;
 
 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
+<<<<<<< HEAD
 		pr_warn("%s: requested %s%d, got %s\n", __func__,
+=======
+		printk(KERN_WARNING "%s: requested %s%d, got %s\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			name_base, nr, video_device_node_name(vdev));
 
 	/* Increase v4l2_device refcount */
 	v4l2_device_get(vdev->v4l2_dev);
 
 	/* Part 5: Register the entity. */
+<<<<<<< HEAD
 	ret = video_register_media_controller(vdev);
+=======
+	ret = video_register_media_controller(vdev, type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Part 6: Activate this minor. The char device can now be used. */
 	set_bit(V4L2_FL_REGISTERED, &vdev->flags);
@@ -1011,7 +1171,11 @@ cleanup:
 	mutex_lock(&videodev_lock);
 	if (vdev->cdev)
 		cdev_del(vdev->cdev);
+<<<<<<< HEAD
 	video_devices[vdev->minor] = NULL;
+=======
+	video_device[vdev->minor] = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	devnode_clear(vdev);
 	mutex_unlock(&videodev_lock);
 	/* Mark this video device as never having been registered. */
@@ -1051,10 +1215,17 @@ static int __init videodev_init(void)
 	dev_t dev = MKDEV(VIDEO_MAJOR, 0);
 	int ret;
 
+<<<<<<< HEAD
 	pr_info("Linux video capture interface: v2.00\n");
 	ret = register_chrdev_region(dev, VIDEO_NUM_DEVICES, VIDEO_NAME);
 	if (ret < 0) {
 		pr_warn("videodev: unable to get major %d\n",
+=======
+	printk(KERN_INFO "Linux video capture interface: v2.00\n");
+	ret = register_chrdev_region(dev, VIDEO_NUM_DEVICES, VIDEO_NAME);
+	if (ret < 0) {
+		printk(KERN_WARNING "videodev: unable to get major %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				VIDEO_MAJOR);
 		return ret;
 	}
@@ -1062,7 +1233,11 @@ static int __init videodev_init(void)
 	ret = class_register(&video_class);
 	if (ret < 0) {
 		unregister_chrdev_region(dev, VIDEO_NUM_DEVICES);
+<<<<<<< HEAD
 		pr_warn("video_dev: class_register failed\n");
+=======
+		printk(KERN_WARNING "video_dev: class_register failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -1080,7 +1255,11 @@ static void __exit videodev_exit(void)
 subsys_initcall(videodev_init);
 module_exit(videodev_exit)
 
+<<<<<<< HEAD
 MODULE_AUTHOR("Alan Cox, Mauro Carvalho Chehab <mchehab@kernel.org>");
+=======
+MODULE_AUTHOR("Alan Cox, Mauro Carvalho Chehab <mchehab@infradead.org>");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("Device registrar for Video4Linux drivers v2");
 MODULE_LICENSE("GPL");
 MODULE_ALIAS_CHARDEV_MAJOR(VIDEO_MAJOR);

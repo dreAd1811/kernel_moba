@@ -29,6 +29,15 @@
 #include "sd.h"
 #include "sd_ops.h"
 
+<<<<<<< HEAD
+=======
+#define UHS_SDR104_MIN_DTR	(100 * 1000 * 1000)
+#define UHS_DDR50_MIN_DTR	(50 * 1000 * 1000)
+#define UHS_SDR50_MIN_DTR	(50 * 1000 * 1000)
+#define UHS_SDR25_MIN_DTR	(25 * 1000 * 1000)
+#define UHS_SDR12_MIN_DTR	(12.5 * 1000 * 1000)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const unsigned int tran_exp[] = {
 	10000,		100000,		1000000,	10000000,
 	0,		0,		0,		0
@@ -299,6 +308,11 @@ static int mmc_read_switch(struct mmc_card *card)
 		return 0;
 	}
 
+<<<<<<< HEAD
+=======
+	err = -EIO;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = kmalloc(64, GFP_KERNEL);
 	if (!status)
 		return -ENOMEM;
@@ -369,9 +383,15 @@ int mmc_sd_switch_hs(struct mmc_card *card)
 		goto out;
 
 	if ((status[16] & 0xF) != 1) {
+<<<<<<< HEAD
 		pr_warn("%s: Problem switching card into high-speed mode!\n",
 			mmc_hostname(card->host));
 		err = 0;
+=======
+		pr_warn("%s: Problem switching card into high-speed mode!, status:%x\n",
+			mmc_hostname(card->host), (status[16] & 0xF));
+		err = -EBUSY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		err = 1;
 	}
@@ -425,6 +445,7 @@ static void sd_update_bus_speed_mode(struct mmc_card *card)
 	}
 
 	if ((card->host->caps & MMC_CAP_UHS_SDR104) &&
+<<<<<<< HEAD
 	    (card->sw_caps.sd3_bus_mode & SD_MODE_UHS_SDR104)) {
 		card->sd_bus_speed = UHS_SDR104_BUS_SPEED;
 	} else if ((card->host->caps & MMC_CAP_UHS_DDR50) &&
@@ -437,6 +458,24 @@ static void sd_update_bus_speed_mode(struct mmc_card *card)
 	} else if ((card->host->caps & (MMC_CAP_UHS_SDR104 |
 		    MMC_CAP_UHS_SDR50 | MMC_CAP_UHS_SDR25)) &&
 		   (card->sw_caps.sd3_bus_mode & SD_MODE_UHS_SDR25)) {
+=======
+	    (card->sw_caps.sd3_bus_mode & SD_MODE_UHS_SDR104) &&
+	    (card->host->f_max > UHS_SDR104_MIN_DTR)) {
+		card->sd_bus_speed = UHS_SDR104_BUS_SPEED;
+	} else if ((card->host->caps & (MMC_CAP_UHS_SDR104 |
+		    MMC_CAP_UHS_SDR50)) && (card->sw_caps.sd3_bus_mode &
+		    SD_MODE_UHS_SDR50) &&
+		    (card->host->f_max > UHS_SDR50_MIN_DTR)) {
+		card->sd_bus_speed = UHS_SDR50_BUS_SPEED;
+	} else if ((card->host->caps & MMC_CAP_UHS_DDR50) &&
+		   (card->sw_caps.sd3_bus_mode & SD_MODE_UHS_DDR50) &&
+		    (card->host->f_max > UHS_DDR50_MIN_DTR)) {
+		card->sd_bus_speed = UHS_DDR50_BUS_SPEED;
+	} else if ((card->host->caps & (MMC_CAP_UHS_SDR104 |
+		    MMC_CAP_UHS_SDR50 | MMC_CAP_UHS_SDR25)) &&
+		   (card->sw_caps.sd3_bus_mode & SD_MODE_UHS_SDR25) &&
+		 (card->host->f_max > UHS_SDR25_MIN_DTR)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		card->sd_bus_speed = UHS_SDR25_BUS_SPEED;
 	} else if ((card->host->caps & (MMC_CAP_UHS_SDR104 |
 		    MMC_CAP_UHS_SDR50 | MMC_CAP_UHS_SDR25 |
@@ -480,15 +519,28 @@ static int sd_set_bus_speed_mode(struct mmc_card *card, u8 *status)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	if ((status[16] & 0xF) != card->sd_bus_speed)
 		pr_warn("%s: Problem setting bus speed mode!\n",
 			mmc_hostname(card->host));
 	else {
+=======
+	if ((status[16] & 0xF) != card->sd_bus_speed) {
+		pr_warn("%s: Problem setting bus speed mode(%u)! max_dtr:%u, timing:%u, status:%x\n",
+			mmc_hostname(card->host), card->sd_bus_speed,
+			card->sw_caps.uhs_max_dtr, timing, (status[16] & 0xF));
+		err = -EBUSY;
+	} else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mmc_set_timing(card->host, timing);
 		mmc_set_clock(card->host, card->sw_caps.uhs_max_dtr);
 	}
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Get host's max current setting at its current voltage */
@@ -620,8 +672,16 @@ static int mmc_sd_change_bus_speed(struct mmc_host *host, unsigned long *freq)
 		 * frequency, it is host driver responsibility to
 		 * perform actual tuning only when required.
 		 */
+<<<<<<< HEAD
 		err = card->host->ops->execute_tuning(card->host,
 				MMC_SEND_TUNING_BLOCK);
+=======
+		mmc_host_clk_hold(card->host);
+		err = card->host->ops->execute_tuning(card->host,
+				MMC_SEND_TUNING_BLOCK);
+		mmc_host_clk_release(card->host);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err) {
 			pr_warn("%s: %s: tuning execution failed %d. Restoring to previous clock %lu\n",
 				   mmc_hostname(card->host), __func__, err,
@@ -635,6 +695,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static int mmc_sd_change_bus_speed_deferred(struct mmc_host *host,
 							unsigned long *freq)
 {
@@ -677,6 +738,8 @@ out:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * UHS-I specific initialization procedure
  */
@@ -685,6 +748,12 @@ static int mmc_sd_init_uhs_card(struct mmc_card *card)
 	int err;
 	u8 *status;
 
+<<<<<<< HEAD
+=======
+	if (!card->scr.sda_spec3)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(card->csd.cmdclass & CCC_SWITCH))
 		return 0;
 
@@ -693,11 +762,22 @@ static int mmc_sd_init_uhs_card(struct mmc_card *card)
 		return -ENOMEM;
 
 	/* Set 4-bit bus width */
+<<<<<<< HEAD
 	err = mmc_app_set_bus_width(card, MMC_BUS_WIDTH_4);
 	if (err)
 		goto out;
 
 	mmc_set_bus_width(card->host, MMC_BUS_WIDTH_4);
+=======
+	if ((card->host->caps & MMC_CAP_4_BIT_DATA) &&
+	    (card->scr.bus_widths & SD_SCR_BUS_WIDTH_4)) {
+		err = mmc_app_set_bus_width(card, MMC_BUS_WIDTH_4);
+		if (err)
+			goto out;
+
+		mmc_set_bus_width(card->host, MMC_BUS_WIDTH_4);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Select the bus speed mode depending on host
@@ -773,7 +853,10 @@ MMC_DEV_ATTR(name, "%s\n", card->cid.prod_name);
 MMC_DEV_ATTR(oemid, "0x%04x\n", card->cid.oemid);
 MMC_DEV_ATTR(serial, "0x%08x\n", card->cid.serial);
 MMC_DEV_ATTR(ocr, "0x%08x\n", card->ocr);
+<<<<<<< HEAD
 MMC_DEV_ATTR(rca, "0x%04x\n", card->rca);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 static ssize_t mmc_dsr_show(struct device *dev,
@@ -807,7 +890,10 @@ static struct attribute *sd_std_attrs[] = {
 	&dev_attr_oemid.attr,
 	&dev_attr_serial.attr,
 	&dev_attr_ocr.attr,
+<<<<<<< HEAD
 	&dev_attr_rca.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&dev_attr_dsr.attr,
 	NULL,
 };
@@ -924,7 +1010,13 @@ static int mmc_sd_get_ro(struct mmc_host *host)
 	if (!host->ops->get_ro)
 		return -1;
 
+<<<<<<< HEAD
 	ro = host->ops->get_ro(host);
+=======
+	mmc_host_clk_hold(host);
+	ro = host->ops->get_ro(host);
+	mmc_host_clk_release(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ro;
 }
@@ -933,6 +1025,12 @@ int mmc_sd_setup_card(struct mmc_host *host, struct mmc_card *card,
 	bool reinit)
 {
 	int err;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MMC_PARANOID_SD_INIT
+	int retries;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!reinit) {
 		/*
@@ -959,7 +1057,30 @@ int mmc_sd_setup_card(struct mmc_host *host, struct mmc_card *card,
 		/*
 		 * Fetch switch information from card.
 		 */
+<<<<<<< HEAD
 		err = mmc_read_switch(card);
+=======
+#ifdef CONFIG_MMC_PARANOID_SD_INIT
+		for (retries = 1; retries <= 3; retries++) {
+			err = mmc_read_switch(card);
+			if (!err) {
+				if (retries > 1) {
+					printk(KERN_WARNING
+					       "%s: recovered\n",
+					       mmc_hostname(host));
+				}
+				break;
+			} else {
+				printk(KERN_WARNING
+				       "%s: read switch failed (attempt %d)\n",
+				       mmc_hostname(host), retries);
+			}
+		}
+#else
+		err = mmc_read_switch(card);
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			return err;
 	}
@@ -1010,6 +1131,7 @@ unsigned mmc_sd_get_max_clock(struct mmc_card *card)
 	return max_dtr;
 }
 
+<<<<<<< HEAD
 static bool mmc_sd_card_using_v18(struct mmc_card *card)
 {
 	/*
@@ -1022,6 +1144,8 @@ static bool mmc_sd_card_using_v18(struct mmc_card *card)
 	       (SD_MODE_UHS_SDR50 | SD_MODE_UHS_SDR104 | SD_MODE_UHS_DDR50);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Handle the detection and initialisation of a card.
  *
@@ -1035,10 +1159,16 @@ static int mmc_sd_init_card(struct mmc_host *host, u32 ocr,
 	int err;
 	u32 cid[4];
 	u32 rocr = 0;
+<<<<<<< HEAD
 	bool v18_fixup_failed = false;
 
 	WARN_ON(!host->claimed);
 retry:
+=======
+
+	WARN_ON(!host->claimed);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mmc_sd_get_cid(host, ocr, cid, &rocr);
 	if (err)
 		return err;
@@ -1105,6 +1235,7 @@ retry:
 	if (err)
 		goto free_card;
 
+<<<<<<< HEAD
 	/*
 	 * If the card has not been power cycled, it may still be using 1.8V
 	 * signaling. Detect that situation and try to initialize a UHS-I (1.8V)
@@ -1137,6 +1268,10 @@ retry:
 
 	/* Initialization sequence for UHS-I cards */
 	if (rocr & SD_ROCR_S18A && mmc_host_uhs(host)) {
+=======
+	/* Initialization sequence for UHS-I cards */
+	if (rocr & SD_ROCR_S18A) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = mmc_sd_init_uhs_card(card);
 		if (err)
 			goto free_card;
@@ -1168,6 +1303,7 @@ retry:
 		}
 	}
 
+<<<<<<< HEAD
 	if (host->caps2 & MMC_CAP2_AVOID_3_3V &&
 	    host->ios.signal_voltage == MMC_SIGNAL_VOLTAGE_330) {
 		pr_err("%s: Host failed to negotiate down from 3.3V\n",
@@ -1176,6 +1312,8 @@ retry:
 		goto free_card;
 	}
 done:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	card->clk_scaling_highest = mmc_sd_get_max_clock(card);
 	card->clk_scaling_lowest = host->f_min;
 
@@ -1219,9 +1357,31 @@ static int mmc_sd_alive(struct mmc_host *host)
  */
 static void mmc_sd_detect(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	int err;
 
 	mmc_get_card(host->card, NULL);
+=======
+	int err = 0;
+#ifdef CONFIG_MMC_PARANOID_SD_INIT
+	int retries = 5;
+#endif
+
+	/*
+	 * Try to acquire claim host. If failed to get the lock in 2 sec,
+	 * just return; This is to ensure that when this call is invoked
+	 * due to pm_suspend, not to block suspend for longer duration.
+	 */
+	pm_runtime_get_sync(&host->card->dev);
+	if (!mmc_try_claim_host(host, 2000)) {
+		pm_runtime_mark_last_busy(&host->card->dev);
+		pm_runtime_put_autosuspend(&host->card->dev);
+		return;
+	}
+
+	if (mmc_bus_needs_resume(host))
+		mmc_resume_bus(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (host->ops->get_cd && !host->ops->get_cd(host)) {
 		err = -ENOMEDIUM;
@@ -1233,10 +1393,34 @@ static void mmc_sd_detect(struct mmc_host *host)
 	/*
 	 * Just check if our card has been removed.
 	 */
+<<<<<<< HEAD
 	err = _mmc_detect_card_removed(host);
 
 out:
 	mmc_put_card(host->card, NULL);
+=======
+#ifdef CONFIG_MMC_PARANOID_SD_INIT
+	while(retries) {
+		err = mmc_send_status(host->card, NULL);
+		if (err) {
+			retries--;
+			udelay(5);
+			continue;
+		}
+		break;
+	}
+	if (!retries) {
+		printk(KERN_ERR "%s(%s): Unable to re-detect card (%d)\n",
+		       __func__, mmc_hostname(host), err);
+		err = _mmc_detect_card_removed(host);
+	}
+#else
+	err = _mmc_detect_card_removed(host);
+#endif
+
+out:
+	mmc_put_card(host->card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err) {
 		mmc_sd_remove(host);
@@ -1260,7 +1444,10 @@ static int _mmc_sd_suspend(struct mmc_host *host)
 	}
 
 	mmc_claim_host(host);
+<<<<<<< HEAD
 	mmc_log_string(host, "Enter\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mmc_card_suspended(host->card))
 		goto out;
@@ -1274,7 +1461,10 @@ static int _mmc_sd_suspend(struct mmc_host *host)
 	}
 
 out:
+<<<<<<< HEAD
 	mmc_log_string(host, "Exit err: %d\n", err);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_release_host(host);
 	return err;
 }
@@ -1286,6 +1476,10 @@ static int mmc_sd_suspend(struct mmc_host *host)
 {
 	int err;
 
+<<<<<<< HEAD
+=======
+	MMC_TRACE(host, "%s: Enter\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = _mmc_sd_suspend(host);
 	if (!err) {
 		pm_runtime_disable(&host->card->dev);
@@ -1294,6 +1488,11 @@ static int mmc_sd_suspend(struct mmc_host *host)
 	} else if (mmc_bus_manual_resume(host))
 		host->ignore_bus_resume_flags = true;
 
+<<<<<<< HEAD
+=======
+	MMC_TRACE(host, "%s: Exit err: %d\n", __func__, err);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -1304,42 +1503,88 @@ static int mmc_sd_suspend(struct mmc_host *host)
 static int _mmc_sd_resume(struct mmc_host *host)
 {
 	int err = 0;
+<<<<<<< HEAD
 
 	mmc_claim_host(host);
 	mmc_log_string(host, "Enter\n");
+=======
+#ifdef CONFIG_MMC_PARANOID_SD_INIT
+	int retries;
+#endif
+
+	mmc_claim_host(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!mmc_card_suspended(host->card))
 		goto out;
 
 	if (host->ops->get_cd && !host->ops->get_cd(host)) {
+<<<<<<< HEAD
 		err = -ENOMEDIUM;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mmc_card_clr_suspended(host->card);
 		goto out;
 	}
 
 	mmc_power_up(host, host->card->ocr);
+<<<<<<< HEAD
 	err = mmc_sd_init_card(host, host->card->ocr, host->card);
+=======
+#ifdef CONFIG_MMC_PARANOID_SD_INIT
+	retries = 5;
+	while (retries) {
+		err = mmc_sd_init_card(host, host->card->ocr, host->card);
+
+		if (err && err != -ENOENT) {
+			printk(KERN_ERR "%s: Re-init card rc = %d (retries = %d)\n",
+				mmc_hostname(host), err, retries);
+			retries--;
+			mmc_power_off(host);
+			usleep_range(5000, 5500);
+			mmc_power_up(host, host->card->ocr);
+			mmc_select_voltage(host, host->card->ocr);
+			continue;
+		}
+		break;
+	}
+#else
+	err = mmc_sd_init_card(host, host->card->ocr, host->card);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err == -ENOENT) {
 		pr_debug("%s: %s: found a different card(%d), do detect change\n",
 			mmc_hostname(host), __func__, err);
 		mmc_card_set_removed(host->card);
 		mmc_detect_change(host, msecs_to_jiffies(200));
+<<<<<<< HEAD
 	} else if (err) {
 		goto out;
 	}
 	mmc_card_clr_suspended(host->card);
+=======
+	}
+	mmc_card_clr_suspended(host->card);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mmc_resume_clk_scaling(host);
 	if (err) {
 		pr_err("%s: %s: fail to resume clock scaling (%d)\n",
 			mmc_hostname(host), __func__, err);
 		goto out;
 	}
+<<<<<<< HEAD
 out:
 	mmc_log_string(host, "Exit err: %d\n", err);
+=======
+
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_release_host(host);
 	return err;
 }
 
+<<<<<<< HEAD
 static int _mmc_sd_deferred_resume(struct mmc_host *host)
 {
 	int err = 0;
@@ -1371,6 +1616,8 @@ out:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Callback for resume
  */
@@ -1378,7 +1625,11 @@ static int mmc_sd_resume(struct mmc_host *host)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	mmc_log_string(host, "enter\n");
+=======
+	MMC_TRACE(host, "%s: Enter\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = _mmc_sd_resume(host);
 	if (err) {
 		pr_err("%s: sd resume err: %d\n", mmc_hostname(host), err);
@@ -1394,11 +1645,16 @@ static int mmc_sd_resume(struct mmc_host *host)
 		pm_runtime_enable(&host->card->dev);
 	}
 
+<<<<<<< HEAD
 	mmc_log_string(host, "done err=%d\n", err);
+=======
+	MMC_TRACE(host, "%s: Exit err: %d\n", __func__, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
 /*
+<<<<<<< HEAD
  * Callback for deferred resume
  */
 static int mmc_sd_deferred_resume(struct mmc_host *host)
@@ -1416,6 +1672,8 @@ static int mmc_sd_deferred_resume(struct mmc_host *host)
 
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Callback for runtime_suspend.
  */
 static int mmc_sd_runtime_suspend(struct mmc_host *host)
@@ -1438,6 +1696,7 @@ static int mmc_sd_runtime_suspend(struct mmc_host *host)
  */
 static int mmc_sd_runtime_resume(struct mmc_host *host)
 {
+<<<<<<< HEAD
 	int err = 0;
 
 	err = _mmc_sd_resume(host);
@@ -1451,6 +1710,19 @@ static int mmc_sd_runtime_resume(struct mmc_host *host)
 }
 
 static int mmc_sd_hw_reset(struct mmc_host *host)
+=======
+	int err;
+
+	err = _mmc_sd_resume(host);
+	if (err && err != -ENOMEDIUM)
+		pr_err("%s: error %d doing runtime resume\n",
+			mmc_hostname(host), err);
+
+	return 0;
+}
+
+static int mmc_sd_reset(struct mmc_host *host)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (host->ops->get_cd && !host->ops->get_cd(host))
 		return -ENOMEDIUM;
@@ -1466,11 +1738,18 @@ static const struct mmc_bus_ops mmc_sd_ops = {
 	.runtime_resume = mmc_sd_runtime_resume,
 	.suspend = mmc_sd_suspend,
 	.resume = mmc_sd_resume,
+<<<<<<< HEAD
 	.deferred_resume = mmc_sd_deferred_resume,
 	.alive = mmc_sd_alive,
 	.hw_reset = mmc_sd_hw_reset,
 	.change_bus_speed = mmc_sd_change_bus_speed,
 	.change_bus_speed_deferred = mmc_sd_change_bus_speed_deferred,
+=======
+	.alive = mmc_sd_alive,
+	.shutdown = mmc_sd_suspend,
+	.change_bus_speed = mmc_sd_change_bus_speed,
+	.reset = mmc_sd_reset,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -1480,6 +1759,12 @@ int mmc_attach_sd(struct mmc_host *host)
 {
 	int err;
 	u32 ocr, rocr;
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MMC_PARANOID_SD_INIT
+	int retries;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARN_ON(!host->claimed);
 
@@ -1521,9 +1806,37 @@ int mmc_attach_sd(struct mmc_host *host)
 	/*
 	 * Detect and init the card.
 	 */
+<<<<<<< HEAD
 	err = mmc_sd_init_card(host, rocr, NULL);
 	if (err)
 		goto err;
+=======
+#ifdef CONFIG_MMC_PARANOID_SD_INIT
+	retries = 5;
+	while (retries) {
+		err = mmc_sd_init_card(host, rocr, NULL);
+		if (err) {
+			retries--;
+			mmc_power_off(host);
+			usleep_range(5000, 5500);
+			mmc_power_up(host, rocr);
+			mmc_select_voltage(host, rocr);
+			continue;
+		}
+		break;
+	}
+
+	if (!retries) {
+		printk(KERN_ERR "%s: mmc_sd_init_card() failure (err = %d)\n",
+		       mmc_hostname(host), err);
+		goto err;
+	}
+#else
+	err = mmc_sd_init_card(host, rocr, NULL);
+	if (err)
+		goto err;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmc_release_host(host);
 	err = mmc_add_card(host->card);

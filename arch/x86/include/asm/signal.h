@@ -39,7 +39,10 @@ extern void do_signal(struct pt_regs *regs);
 
 #define __ARCH_HAS_SA_RESTORER
 
+<<<<<<< HEAD
 #include <asm/asm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <uapi/asm/sigcontext.h>
 
 #ifdef __i386__
@@ -87,9 +90,15 @@ static inline int __const_sigismember(sigset_t *set, int _sig)
 
 static inline int __gen_sigismember(sigset_t *set, int _sig)
 {
+<<<<<<< HEAD
 	bool ret;
 	asm("btl %2,%1" CC_SET(c)
 	    : CC_OUT(c) (ret) : "m"(*set), "Ir"(_sig-1));
+=======
+	unsigned char ret;
+	asm("btl %2,%1\n\tsetc %0"
+	    : "=qm"(ret) : "m"(*set), "Ir"(_sig-1) : "cc");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

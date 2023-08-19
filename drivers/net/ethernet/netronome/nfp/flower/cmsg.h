@@ -37,12 +37,19 @@
 #include <linux/bitfield.h>
 #include <linux/skbuff.h>
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <net/geneve.h>
 
 #include "../nfp_app.h"
 #include "../nfpcore/nfp_cpp.h"
 
 #define NFP_FLOWER_LAYER_EXT_META	BIT(0)
+=======
+
+#include "../nfp_app.h"
+
+#define NFP_FLOWER_LAYER_META		BIT(0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NFP_FLOWER_LAYER_PORT		BIT(1)
 #define NFP_FLOWER_LAYER_MAC		BIT(2)
 #define NFP_FLOWER_LAYER_TP		BIT(3)
@@ -51,6 +58,7 @@
 #define NFP_FLOWER_LAYER_CT		BIT(6)
 #define NFP_FLOWER_LAYER_VXLAN		BIT(7)
 
+<<<<<<< HEAD
 #define NFP_FLOWER_LAYER2_GENEVE	BIT(5)
 #define NFP_FLOWER_LAYER2_GENEVE_OP	BIT(6)
 
@@ -73,6 +81,15 @@
 #define NFP_FL_TCP_FLAG_SYN		BIT(1)
 #define NFP_FL_TCP_FLAG_FIN		BIT(0)
 
+=======
+#define NFP_FLOWER_LAYER_ETHER		BIT(3)
+#define NFP_FLOWER_LAYER_ARP		BIT(4)
+
+#define NFP_FLOWER_MASK_VLAN_PRIO	GENMASK(15, 13)
+#define NFP_FLOWER_MASK_VLAN_CFI	BIT(12)
+#define NFP_FLOWER_MASK_VLAN_VID	GENMASK(11, 0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NFP_FL_SC_ACT_DROP		0x80000000
 #define NFP_FL_SC_ACT_USER		0x7D000000
 #define NFP_FL_SC_ACT_POPV		0x6A000000
@@ -83,6 +100,7 @@
 #define NFP_FL_MAX_A_SIZ		1216
 #define NFP_FL_LW_SIZ			2
 
+<<<<<<< HEAD
 /* Maximum allowed geneve options */
 #define NFP_FL_MAX_GENEVE_OPT_ACT	32
 #define NFP_FL_MAX_GENEVE_OPT_CNT	64
@@ -103,12 +121,23 @@
 #define NFP_FL_ACTION_OPCODE_PRE_TUNNEL		17
 #define NFP_FL_ACTION_OPCODE_PUSH_GENEVE	26
 #define NFP_FL_ACTION_OPCODE_NUM		32
+=======
+/* Action opcodes */
+#define NFP_FL_ACTION_OPCODE_OUTPUT	0
+#define NFP_FL_ACTION_OPCODE_PUSH_VLAN	1
+#define NFP_FL_ACTION_OPCODE_POP_VLAN	2
+#define NFP_FL_ACTION_OPCODE_NUM	32
+
+#define NFP_FL_ACT_JMP_ID		GENMASK(15, 8)
+#define NFP_FL_ACT_LEN_LW		GENMASK(7, 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NFP_FL_OUT_FLAGS_LAST		BIT(15)
 #define NFP_FL_OUT_FLAGS_USE_TUN	BIT(4)
 #define NFP_FL_OUT_FLAGS_TYPE_IDX	GENMASK(2, 0)
 
 #define NFP_FL_PUSH_VLAN_PRIO		GENMASK(15, 13)
+<<<<<<< HEAD
 #define NFP_FL_PUSH_VLAN_VID		GENMASK(11, 0)
 
 /* LAG ports */
@@ -172,18 +201,30 @@ struct nfp_fl_set_tport {
 
 struct nfp_fl_output {
 	struct nfp_fl_act_head head;
+=======
+#define NFP_FL_PUSH_VLAN_CFI		BIT(12)
+#define NFP_FL_PUSH_VLAN_VID		GENMASK(11, 0)
+
+struct nfp_fl_output {
+	__be16 a_op;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be16 flags;
 	__be32 port;
 };
 
 struct nfp_fl_push_vlan {
+<<<<<<< HEAD
 	struct nfp_fl_act_head head;
+=======
+	__be16 a_op;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be16 reserved;
 	__be16 vlan_tpid;
 	__be16 vlan_tci;
 };
 
 struct nfp_fl_pop_vlan {
+<<<<<<< HEAD
 	struct nfp_fl_act_head head;
 	__be16 reserved;
 };
@@ -226,6 +267,24 @@ struct nfp_fl_push_geneve {
 	u8 type;
 	u8 length;
 	u8 opt_data[];
+=======
+	__be16 a_op;
+	__be16 reserved;
+};
+
+/* Metadata without L2 (1W/4B)
+ * ----------------------------------------------------------------
+ *    3                   2                   1
+ *  1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * |  key_layers   |    mask_id    |           reserved            |
+ * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ */
+struct nfp_flower_meta_one {
+	u8 nfp_flow_key_layer;
+	u8 mask_id;
+	u16 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Metadata with L2 (1W/4B)
@@ -239,12 +298,17 @@ struct nfp_fl_push_geneve {
  *                           NOTE: |             TCI               |
  *                                 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
+<<<<<<< HEAD
 struct nfp_flower_meta_tci {
+=======
+struct nfp_flower_meta_two {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 nfp_flow_key_layer;
 	u8 mask_id;
 	__be16 tci;
 };
 
+<<<<<<< HEAD
 /* Extended metadata for additional key_layers (1W/4B)
  * ----------------------------------------------------------------
  *    3                   2                   1
@@ -257,6 +321,8 @@ struct nfp_flower_ext_meta {
 	__be32 nfp_flow_key_layer2;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Port details (1W/4B)
  * ----------------------------------------------------------------
  *    3                   2                   1
@@ -300,6 +366,7 @@ struct nfp_flower_tp_ports {
 	__be16 port_dst;
 };
 
+<<<<<<< HEAD
 struct nfp_flower_ip_ext {
 	u8 tos;
 	u8 proto;
@@ -307,11 +374,17 @@ struct nfp_flower_ip_ext {
 	u8 flags;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* L3 IPv4 details (3W/12B)
  *    3                   2                   1
  *  1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<<<<<<< HEAD
  * |    DSCP   |ECN|   protocol    |      ttl      |     flags     |
+=======
+ * |    DSCP   |ECN|   protocol    |           reserved            |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * |                        ipv4_addr_src                          |
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -319,7 +392,14 @@ struct nfp_flower_ip_ext {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 struct nfp_flower_ipv4 {
+<<<<<<< HEAD
 	struct nfp_flower_ip_ext ip_ext;
+=======
+	u8 tos;
+	u8 proto;
+	u8 ttl;
+	u8 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be32 ipv4_src;
 	__be32 ipv4_dst;
 };
@@ -328,7 +408,11 @@ struct nfp_flower_ipv4 {
  *    3                   2                   1
  *  1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1 0
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+<<<<<<< HEAD
  * |    DSCP   |ECN|   protocol    |      ttl      |     flags     |
+=======
+ * |    DSCP   |ECN|   protocol    |          reserved             |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  * |   ipv6_exthdr   | res |            ipv6_flow_label            |
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -350,12 +434,20 @@ struct nfp_flower_ipv4 {
  * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  */
 struct nfp_flower_ipv6 {
+<<<<<<< HEAD
 	struct nfp_flower_ip_ext ip_ext;
+=======
+	u8 tos;
+	u8 proto;
+	u8 ttl;
+	u8 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be32 ipv6_flow_label_exthdr;
 	struct in6_addr ipv6_src;
 	struct in6_addr ipv6_dst;
 };
 
+<<<<<<< HEAD
 /* Flow Frame IPv4 UDP TUNNEL --> Tunnel details (4W/16B)
  * -----------------------------------------------------------------
  *    3                   2                   1
@@ -388,6 +480,8 @@ struct nfp_flower_geneve_options {
 
 #define NFP_FL_TUN_VNI_OFFSET 8
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The base header for a control message packet.
  * Defines an 8-bit version, and an 8-bit type, padded
  * to a 32-bit word. Rest of the packet is type-specific.
@@ -405,6 +499,7 @@ struct nfp_flower_cmsg_hdr {
 enum nfp_flower_cmsg_type_port {
 	NFP_FLOWER_CMSG_TYPE_FLOW_ADD =		0,
 	NFP_FLOWER_CMSG_TYPE_FLOW_DEL =		2,
+<<<<<<< HEAD
 	NFP_FLOWER_CMSG_TYPE_LAG_CONFIG =	4,
 	NFP_FLOWER_CMSG_TYPE_PORT_REIFY =	6,
 	NFP_FLOWER_CMSG_TYPE_MAC_REPR =		7,
@@ -414,6 +509,10 @@ enum nfp_flower_cmsg_type_port {
 	NFP_FLOWER_CMSG_TYPE_ACTIVE_TUNS =	12,
 	NFP_FLOWER_CMSG_TYPE_TUN_NEIGH =	13,
 	NFP_FLOWER_CMSG_TYPE_TUN_IPS =		14,
+=======
+	NFP_FLOWER_CMSG_TYPE_MAC_REPR =		7,
+	NFP_FLOWER_CMSG_TYPE_PORT_MOD =		8,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NFP_FLOWER_CMSG_TYPE_FLOW_STATS =	15,
 	NFP_FLOWER_CMSG_TYPE_PORT_ECHO =	16,
 	NFP_FLOWER_CMSG_TYPE_MAX =		32,
@@ -442,6 +541,7 @@ struct nfp_flower_cmsg_portmod {
 };
 
 #define NFP_FLOWER_CMSG_PORTMOD_INFO_LINK	BIT(0)
+<<<<<<< HEAD
 #define NFP_FLOWER_CMSG_PORTMOD_MTU_CHANGE_ONLY	BIT(1)
 
 /* NFP_FLOWER_CMSG_TYPE_PORT_REIFY */
@@ -452,12 +552,17 @@ struct nfp_flower_cmsg_portreify {
 };
 
 #define NFP_FLOWER_CMSG_PORTREIFY_INFO_EXIST	BIT(0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum nfp_flower_cmsg_port_type {
 	NFP_FLOWER_CMSG_PORT_TYPE_UNSPEC =	0x0,
 	NFP_FLOWER_CMSG_PORT_TYPE_PHYS_PORT =	0x1,
 	NFP_FLOWER_CMSG_PORT_TYPE_PCIE_PORT =	0x2,
+<<<<<<< HEAD
 	NFP_FLOWER_CMSG_PORT_TYPE_OTHER_PORT =  0x3,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum nfp_flower_cmsg_port_vnic_type {
@@ -499,24 +604,35 @@ static inline void *nfp_flower_cmsg_get_data(struct sk_buff *skb)
 	return (unsigned char *)skb->data + NFP_FLOWER_CMSG_HLEN;
 }
 
+<<<<<<< HEAD
 static inline int nfp_flower_cmsg_get_data_len(struct sk_buff *skb)
 {
 	return skb->len - NFP_FLOWER_CMSG_HLEN;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct sk_buff *
 nfp_flower_cmsg_mac_repr_start(struct nfp_app *app, unsigned int num_ports);
 void
 nfp_flower_cmsg_mac_repr_add(struct sk_buff *skb, unsigned int idx,
 			     unsigned int nbi, unsigned int nbi_port,
 			     unsigned int phys_port);
+<<<<<<< HEAD
 int nfp_flower_cmsg_portmod(struct nfp_repr *repr, bool carrier_ok,
 			    unsigned int mtu, bool mtu_only);
 int nfp_flower_cmsg_portreify(struct nfp_repr *repr, bool exists);
+=======
+int nfp_flower_cmsg_portmod(struct nfp_repr *repr, bool carrier_ok);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void nfp_flower_cmsg_process_rx(struct work_struct *work);
 void nfp_flower_cmsg_rx(struct nfp_app *app, struct sk_buff *skb);
 struct sk_buff *
 nfp_flower_cmsg_alloc(struct nfp_app *app, unsigned int size,
+<<<<<<< HEAD
 		      enum nfp_flower_cmsg_type_port type, gfp_t flag);
+=======
+		      enum nfp_flower_cmsg_type_port type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

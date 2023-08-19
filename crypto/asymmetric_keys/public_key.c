@@ -22,8 +22,11 @@
 #include <crypto/public_key.h>
 #include <crypto/akcipher.h>
 
+<<<<<<< HEAD
 MODULE_DESCRIPTION("In-software asymmetric public-key subtype");
 MODULE_AUTHOR("Red Hat, Inc.");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 
 /*
@@ -59,13 +62,36 @@ static void public_key_destroy(void *payload0, void *payload3)
 	public_key_signature_free(payload3);
 }
 
+<<<<<<< HEAD
+=======
+struct public_key_completion {
+	struct completion completion;
+	int err;
+};
+
+static void public_key_verify_done(struct crypto_async_request *req, int err)
+{
+	struct public_key_completion *compl = req->data;
+
+	if (err == -EINPROGRESS)
+		return;
+
+	compl->err = err;
+	complete(&compl->completion);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Verify a signature using a public key.
  */
 int public_key_verify_signature(const struct public_key *pkey,
 				const struct public_key_signature *sig)
 {
+<<<<<<< HEAD
 	struct crypto_wait cwait;
+=======
+	struct public_key_completion compl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct crypto_akcipher *tfm;
 	struct akcipher_request *req;
 	struct scatterlist sig_sg, digest_sg;
@@ -73,7 +99,11 @@ int public_key_verify_signature(const struct public_key *pkey,
 	char alg_name_buf[CRYPTO_MAX_ALG_NAME];
 	void *output;
 	unsigned int outlen;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_devel("==>%s()\n", __func__);
 
@@ -101,7 +131,10 @@ int public_key_verify_signature(const struct public_key *pkey,
 	if (IS_ERR(tfm))
 		return PTR_ERR(tfm);
 
+<<<<<<< HEAD
 	ret = -ENOMEM;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req = akcipher_request_alloc(tfm, GFP_KERNEL);
 	if (!req)
 		goto error_free_tfm;
@@ -120,17 +153,33 @@ int public_key_verify_signature(const struct public_key *pkey,
 	sg_init_one(&digest_sg, output, outlen);
 	akcipher_request_set_crypt(req, &sig_sg, &digest_sg, sig->s_size,
 				   outlen);
+<<<<<<< HEAD
 	crypto_init_wait(&cwait);
 	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
 				      CRYPTO_TFM_REQ_MAY_SLEEP,
 				      crypto_req_done, &cwait);
+=======
+	init_completion(&compl.completion);
+	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+				      CRYPTO_TFM_REQ_MAY_SLEEP,
+				      public_key_verify_done, &compl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Perform the verification calculation.  This doesn't actually do the
 	 * verification, but rather calculates the hash expected by the
 	 * signature and returns that to us.
 	 */
+<<<<<<< HEAD
 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
 	if (ret)
+=======
+	ret = crypto_akcipher_verify(req);
+	if ((ret == -EINPROGRESS) || (ret == -EBUSY)) {
+		wait_for_completion(&compl.completion);
+		ret = compl.err;
+	}
+	if (ret < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_free_output;
 
 	/* Do the actual verification step. */
@@ -145,8 +194,11 @@ error_free_req:
 error_free_tfm:
 	crypto_free_akcipher(tfm);
 	pr_devel("<==%s() = %d\n", __func__, ret);
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(ret > 0))
 		ret = -EINVAL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 EXPORT_SYMBOL_GPL(public_key_verify_signature);

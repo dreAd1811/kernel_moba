@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <dt-bindings/clock/jz4780-cgu.h>
+<<<<<<< HEAD
 #include <dt-bindings/dma/jz4780-dma.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	#address-cells = <1>;
@@ -155,6 +158,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	spi_gpio {
 		compatible = "spi-gpio";
 		#address-cells = <1>;
@@ -174,6 +178,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uart0: serial@10030000 {
 		compatible = "ingenic,jz4780-uart";
 		reg = <0x10030000 0x100>;
@@ -239,6 +245,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	watchdog: watchdog@10002000 {
 		compatible = "ingenic,jz4780-watchdog";
 		reg = <0x10002000 0x10>;
@@ -247,6 +254,8 @@
 		clock-names = "rtc";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nemc: nemc@13410000 {
 		compatible = "ingenic,jz4780-nemc";
 		reg = <0x13410000 0x10000>;
@@ -264,6 +273,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	dma: dma@13420000 {
 		compatible = "ingenic,jz4780-dma";
 		reg = <0x13420000 0x10000>;
@@ -315,6 +325,8 @@
 		status = "disabled";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bch: bch@134d0000 {
 		compatible = "ingenic,jz4780-bch";
 		reg = <0x134d0000 0x10000>;

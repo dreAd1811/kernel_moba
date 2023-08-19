@@ -104,16 +104,26 @@ ssize_t led_trigger_show(struct device *dev, struct device_attribute *attr,
 EXPORT_SYMBOL_GPL(led_trigger_show);
 
 /* Caller must ensure led_cdev->trigger_lock held */
+<<<<<<< HEAD
 int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+=======
+void led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags;
 	char *event = NULL;
 	char *envp[2];
 	const char *name;
+<<<<<<< HEAD
 	int ret;
 
 	if (!led_cdev->trigger && !trig)
 		return 0;
+=======
+
+	if (!led_cdev->trigger && !trig)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	name = trig ? trig->name : "none";
 	event = kasprintf(GFP_KERNEL, "TRIGGER=%s", name);
@@ -128,10 +138,14 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
 		led_stop_software_blink(led_cdev);
 		if (led_cdev->trigger->deactivate)
 			led_cdev->trigger->deactivate(led_cdev);
+<<<<<<< HEAD
 		device_remove_groups(led_cdev->dev, led_cdev->trigger->groups);
 		led_cdev->trigger = NULL;
 		led_cdev->trigger_data = NULL;
 		led_cdev->activated = false;
+=======
+		led_cdev->trigger = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		led_set_brightness(led_cdev, LED_OFF);
 	}
 	if (trig) {
@@ -139,6 +153,7 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
 		list_add_tail(&led_cdev->trig_list, &trig->led_cdevs);
 		write_unlock_irqrestore(&trig->leddev_list_lock, flags);
 		led_cdev->trigger = trig;
+<<<<<<< HEAD
 
 		if (trig->activate)
 			ret = trig->activate(led_cdev);
@@ -153,6 +168,10 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
 			dev_err(led_cdev->dev, "Failed to add trigger attributes\n");
 			goto err_add_groups;
 		}
+=======
+		if (trig->activate)
+			trig->activate(led_cdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (event) {
@@ -163,6 +182,7 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
 				"%s: Error sending uevent\n", __func__);
 		kfree(event);
 	}
+<<<<<<< HEAD
 
 	return 0;
 
@@ -181,6 +201,8 @@ err_activate:
 	kfree(event);
 
 	return ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(led_trigger_set);
 

@@ -196,7 +196,11 @@ The Linux kernel supports the following types of credentials:
      When a process accesses a key, if not already present, it will normally be
      cached on one of these keyrings for future accesses to find.
 
+<<<<<<< HEAD
      For more information on using keys, see ``Documentation/security/keys/*``.
+=======
+     For more information on using keys, see Documentation/security/keys.txt.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  5. LSM
 
@@ -451,6 +455,7 @@ checks and hooks done.  Both the current and the proposed sets of credentials
 are available for this purpose as current_cred() will return the current set
 still at this point.
 
+<<<<<<< HEAD
 When replacing the group list, the new list must be sorted before it
 is added to the credential, as a binary search is used to test for
 membership.  In practice, this means :c:func:`groups_sort` should be
@@ -458,6 +463,8 @@ called before :c:func:`set_groups` or :c:func:`set_current_groups`.
 :c:func:`groups_sort)` must not be called on a ``struct group_list`` which
 is shared as it may permute elements as part of the sorting process
 even if the array is already sorted.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 When the credential set is ready, it should be committed to the current process
 by calling::

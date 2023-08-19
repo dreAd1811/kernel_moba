@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2016-2017, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/dma-contiguous.h>
@@ -11,6 +24,7 @@
 #include <asm/cacheflush.h>
 #include <asm/dma-iommu.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/genalloc.h>
 #include <linux/vmalloc.h>
 #include <linux/pci.h>
@@ -19,11 +33,22 @@
 #include <trace/events/iommu.h>
 #include "io-pgtable.h"
 
+=======
+#include <linux/vmalloc.h>
+#include <linux/pci.h>
+#include <trace/events/iommu.h>
+#include "io-pgtable.h"
+
+#include <soc/qcom/secure_buffer.h>
+#include <linux/arm-smmu-errata.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* some redundant definitions... :( TODO: move to io-pgtable-fast.h */
 #define FAST_PAGE_SHIFT		12
 #define FAST_PAGE_SIZE (1UL << FAST_PAGE_SHIFT)
 #define FAST_PAGE_MASK (~(PAGE_SIZE - 1))
 
+<<<<<<< HEAD
 #define DEFAULT_DMA_COHERENT_POOL_SIZE	SZ_256K
 static struct gen_pool *atomic_pool __ro_after_init;
 
@@ -36,6 +61,8 @@ static int __init early_coherent_pool(char *p)
 }
 early_param("coherent_pool", early_coherent_pool);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot,
 				 bool coherent)
 {
@@ -46,6 +73,7 @@ static pgprot_t __get_dma_pgprot(unsigned long attrs, pgprot_t prot,
 	return prot;
 }
 
+<<<<<<< HEAD
 static void *__alloc_from_pool(size_t size, struct page **ret_page, gfp_t flags)
 {
 	unsigned long val;
@@ -88,6 +116,19 @@ static int __free_from_pool(void *start, size_t size)
 	gen_pool_free(atomic_pool, (unsigned long)start, size);
 
 	return 1;
+=======
+static int __get_iommu_pgprot(unsigned long attrs, int prot,
+			      bool coherent)
+{
+	if (!(attrs & DMA_ATTR_EXEC_MAPPING))
+		prot |= IOMMU_NOEXEC;
+	if ((attrs & DMA_ATTR_STRONGLY_ORDERED))
+		prot |= IOMMU_MMIO;
+	if (coherent)
+		prot |= IOMMU_CACHE;
+
+	return prot;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool is_dma_coherent(struct device *dev, unsigned long attrs)
@@ -106,6 +147,7 @@ static bool is_dma_coherent(struct device *dev, unsigned long attrs)
 	return is_coherent;
 }
 
+<<<<<<< HEAD
 static struct dma_fast_smmu_mapping *dev_get_mapping(struct device *dev)
 {
 	struct iommu_domain *domain;
@@ -116,6 +158,8 @@ static struct dma_fast_smmu_mapping *dev_get_mapping(struct device *dev)
 	return domain->iova_cookie;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Checks if the allocated range (ending at @end) covered the upcoming
  * stale bit.  We don't need to know exactly where the range starts since
@@ -175,9 +219,24 @@ static dma_addr_t __fast_smmu_alloc_iova(struct dma_fast_smmu_mapping *mapping,
 					 unsigned long attrs,
 					 size_t size)
 {
+<<<<<<< HEAD
 	unsigned long bit, prev_search_start, nbits = size >> FAST_PAGE_SHIFT;
 	unsigned long align = (1 << get_order(size)) - 1;
 
+=======
+	unsigned long bit, prev_search_start, nbits;
+	unsigned long align;
+	unsigned long guard_len;
+	dma_addr_t iova;
+
+	if (mapping->min_iova_align)
+		guard_len = ALIGN(size, mapping->min_iova_align) - size;
+	else
+		guard_len = 0;
+
+	nbits = (size + guard_len) >> FAST_PAGE_SHIFT;
+	align = (1 << get_order(size + guard_len)) - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bit = bitmap_find_next_zero_area(
 		mapping->bitmap, mapping->num_4k_pages, mapping->next_start,
 		nbits, align);
@@ -210,10 +269,30 @@ static dma_addr_t __fast_smmu_alloc_iova(struct dma_fast_smmu_mapping *mapping,
 
 		iommu_tlbiall(mapping->domain);
 		mapping->have_stale_tlbs = false;
+<<<<<<< HEAD
 		av8l_fast_clear_stale_ptes(mapping->pgtbl_ops, skip_sync);
 	}
 
 	return (bit << FAST_PAGE_SHIFT) + mapping->base;
+=======
+		av8l_fast_clear_stale_ptes(mapping->pgtbl_ops,
+				mapping->domain->geometry.aperture_start,
+				mapping->base,
+				mapping->base + mapping->size - 1,
+				skip_sync);
+	}
+
+	iova =  (bit << FAST_PAGE_SHIFT) + mapping->base;
+	if (guard_len &&
+		iommu_map(mapping->domain, iova + size,
+			page_to_phys(mapping->guard_page),
+			guard_len, ARM_SMMU_GUARD_PROT)) {
+
+		bitmap_clear(mapping->bitmap, bit, nbits);
+		return DMA_ERROR_CODE;
+	}
+	return iova;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -303,6 +382,7 @@ static bool __bit_is_sooner(unsigned long candidate,
 	return true;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64
 static int __init atomic_pool_init(void)
 {
@@ -367,11 +447,27 @@ out:
 arch_initcall(atomic_pool_init);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __fast_smmu_free_iova(struct dma_fast_smmu_mapping *mapping,
 				  dma_addr_t iova, size_t size)
 {
 	unsigned long start_bit = (iova - mapping->base) >> FAST_PAGE_SHIFT;
+<<<<<<< HEAD
 	unsigned long nbits = size >> FAST_PAGE_SHIFT;
+=======
+	unsigned long nbits;
+	unsigned long guard_len;
+
+	if (mapping->min_iova_align) {
+		guard_len = ALIGN(size, mapping->min_iova_align) - size;
+		iommu_unmap(mapping->domain, iova + size, guard_len);
+	} else {
+		guard_len = 0;
+	}
+	nbits = (size + guard_len) >> FAST_PAGE_SHIFT;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We don't invalidate TLBs on unmap.  We invalidate TLBs on map
@@ -406,12 +502,33 @@ static void __fast_dma_page_dev_to_cpu(struct page *page, unsigned long off,
 		set_bit(PG_dcache_clean, &page->flags);
 }
 
+<<<<<<< HEAD
+=======
+static int __fast_dma_direction_to_prot(enum dma_data_direction dir)
+{
+	switch (dir) {
+	case DMA_BIDIRECTIONAL:
+		return IOMMU_READ | IOMMU_WRITE;
+	case DMA_TO_DEVICE:
+		return IOMMU_READ;
+	case DMA_FROM_DEVICE:
+		return IOMMU_WRITE;
+	default:
+		return 0;
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static dma_addr_t fast_smmu_map_page(struct device *dev, struct page *page,
 				   unsigned long offset, size_t size,
 				   enum dma_data_direction dir,
 				   unsigned long attrs)
 {
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *mapping = dev_get_mapping(dev);
+=======
+	struct dma_fast_smmu_mapping *mapping = dev->archdata.mapping->fast;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t iova;
 	unsigned long flags;
 	phys_addr_t phys_plus_off = page_to_phys(page) + offset;
@@ -419,8 +536,15 @@ static dma_addr_t fast_smmu_map_page(struct device *dev, struct page *page,
 	unsigned long offset_from_phys_to_map = phys_plus_off & ~FAST_PAGE_MASK;
 	size_t len = ALIGN(size + offset_from_phys_to_map, FAST_PAGE_SIZE);
 	bool skip_sync = (attrs & DMA_ATTR_SKIP_CPU_SYNC);
+<<<<<<< HEAD
 	bool is_coherent = is_dma_coherent(dev, attrs);
 	int prot = dma_info_to_prot(dir, is_coherent, attrs);
+=======
+	int prot = __fast_dma_direction_to_prot(dir);
+	bool is_coherent = is_dma_coherent(dev, attrs);
+
+	prot = __get_iommu_pgprot(attrs, prot, is_coherent);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!skip_sync && !is_coherent)
 		__fast_dma_page_cpu_to_dev(phys_to_page(phys_to_map),
@@ -453,7 +577,11 @@ static void fast_smmu_unmap_page(struct device *dev, dma_addr_t iova,
 			       size_t size, enum dma_data_direction dir,
 			       unsigned long attrs)
 {
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *mapping = dev_get_mapping(dev);
+=======
+	struct dma_fast_smmu_mapping *mapping = dev->archdata.mapping->fast;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	unsigned long offset = iova & ~FAST_PAGE_MASK;
 	size_t len = ALIGN(size + offset, FAST_PAGE_SIZE);
@@ -472,7 +600,11 @@ static void fast_smmu_unmap_page(struct device *dev, dma_addr_t iova,
 
 	spin_lock_irqsave(&mapping->lock, flags);
 	av8l_fast_unmap_public(mapping->pgtbl_ops, iova, len);
+<<<<<<< HEAD
 	__fast_smmu_free_iova(mapping, iova, len);
+=======
+	__fast_smmu_free_iova(mapping, iova - offset, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&mapping->lock, flags);
 
 	trace_unmap(mapping->domain, iova - offset, len, len);
@@ -481,7 +613,11 @@ static void fast_smmu_unmap_page(struct device *dev, dma_addr_t iova,
 static void fast_smmu_sync_single_for_cpu(struct device *dev,
 		dma_addr_t iova, size_t size, enum dma_data_direction dir)
 {
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *mapping = dev_get_mapping(dev);
+=======
+	struct dma_fast_smmu_mapping *mapping = dev->archdata.mapping->fast;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long offset = iova & ~FAST_PAGE_MASK;
 
 	if (!av8l_fast_iova_coherent_public(mapping->pgtbl_ops, iova)) {
@@ -498,7 +634,11 @@ static void fast_smmu_sync_single_for_cpu(struct device *dev,
 static void fast_smmu_sync_single_for_device(struct device *dev,
 		dma_addr_t iova, size_t size, enum dma_data_direction dir)
 {
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *mapping = dev_get_mapping(dev);
+=======
+	struct dma_fast_smmu_mapping *mapping = dev->archdata.mapping->fast;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long offset = iova & ~FAST_PAGE_MASK;
 
 	if (!av8l_fast_iova_coherent_public(mapping->pgtbl_ops, iova)) {
@@ -512,6 +652,7 @@ static void fast_smmu_sync_single_for_device(struct device *dev,
 	}
 }
 
+<<<<<<< HEAD
 static void fast_smmu_sync_sg_for_cpu(struct device *dev,
 				    struct scatterlist *sgl, int nelems,
 				    enum dma_data_direction dir)
@@ -544,10 +685,13 @@ static void fast_smmu_sync_sg_for_device(struct device *dev,
 		__dma_map_area(sg_virt(sg), sg->length, dir);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fast_smmu_map_sg(struct device *dev, struct scatterlist *sg,
 			    int nents, enum dma_data_direction dir,
 			    unsigned long attrs)
 {
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *mapping = dev_get_mapping(dev);
 	size_t iova_len;
 	bool is_coherent = is_dma_coherent(dev, attrs);
@@ -577,10 +721,14 @@ static int fast_smmu_map_sg(struct device *dev, struct scatterlist *sg,
 	return ret;
 fail:
 	iommu_dma_invalidate_sg(sg, nents);
+=======
+	/* 0 indicates error */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void fast_smmu_unmap_sg(struct device *dev,
+<<<<<<< HEAD
 			       struct scatterlist *sg, int nelems,
 			       enum dma_data_direction dir,
 			       unsigned long attrs)
@@ -612,19 +760,42 @@ static void fast_smmu_unmap_sg(struct device *dev,
 	spin_lock_irqsave(&mapping->lock, flags);
 	__fast_smmu_free_iova(mapping, start, len);
 	spin_unlock_irqrestore(&mapping->lock, flags);
+=======
+			       struct scatterlist *sg, int nents,
+			       enum dma_data_direction dir,
+			       unsigned long attrs)
+{
+	WARN_ON_ONCE(1);
+}
+
+static void fast_smmu_sync_sg_for_cpu(struct device *dev,
+		struct scatterlist *sg, int nents, enum dma_data_direction dir)
+{
+	WARN_ON_ONCE(1);
+}
+
+static void fast_smmu_sync_sg_for_device(struct device *dev,
+		struct scatterlist *sg, int nents, enum dma_data_direction dir)
+{
+	WARN_ON_ONCE(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __fast_smmu_free_pages(struct page **pages, int count)
 {
 	int i;
 
+<<<<<<< HEAD
 	if (!pages)
 		return;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < count; i++)
 		__free_page(pages[i]);
 	kvfree(pages);
 }
 
+<<<<<<< HEAD
 static void *fast_smmu_alloc_atomic(struct dma_fast_smmu_mapping *mapping,
 				    size_t size, gfp_t gfp, unsigned long attrs,
 				    dma_addr_t *handle, bool coherent)
@@ -668,6 +839,8 @@ out_free_page:
 	return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct page **__fast_smmu_alloc_pages(unsigned int count, gfp_t gfp)
 {
 	struct page **pages;
@@ -695,6 +868,7 @@ static struct page **__fast_smmu_alloc_pages(unsigned int count, gfp_t gfp)
 	return pages;
 }
 
+<<<<<<< HEAD
 static void *__fast_smmu_alloc_contiguous(struct device *dev, size_t size,
 			dma_addr_t *handle, gfp_t gfp, unsigned long attrs)
 {
@@ -743,19 +917,30 @@ release_page:
 	return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *fast_smmu_alloc(struct device *dev, size_t size,
 			     dma_addr_t *handle, gfp_t gfp,
 			     unsigned long attrs)
 {
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *mapping = dev_get_mapping(dev);
+=======
+	struct dma_fast_smmu_mapping *mapping = dev->archdata.mapping->fast;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sg_table sgt;
 	dma_addr_t dma_addr, iova_iter;
 	void *addr;
 	unsigned long flags;
 	struct sg_mapping_iter miter;
 	size_t count = ALIGN(size, SZ_4K) >> PAGE_SHIFT;
+<<<<<<< HEAD
 	bool is_coherent = is_dma_coherent(dev, attrs);
 	int prot = dma_info_to_prot(DMA_BIDIRECTIONAL, is_coherent, attrs);
+=======
+	int prot = IOMMU_READ | IOMMU_WRITE; /* TODO: extract from attrs */
+	bool is_coherent = is_dma_coherent(dev, attrs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pgprot_t remap_prot = __get_dma_pgprot(attrs, PAGE_KERNEL, is_coherent);
 	struct page **pages;
 
@@ -769,6 +954,7 @@ static void *fast_smmu_alloc(struct device *dev, size_t size,
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	*handle = DMA_ERROR_CODE;
 	size = ALIGN(size, SZ_4K);
 
@@ -778,6 +964,11 @@ static void *fast_smmu_alloc(struct device *dev, size_t size,
 	else if (attrs & DMA_ATTR_FORCE_CONTIGUOUS)
 		return __fast_smmu_alloc_contiguous(dev, size, handle, gfp,
 						    attrs);
+=======
+	prot = __get_iommu_pgprot(attrs, prot, is_coherent);
+
+	*handle = DMA_ERROR_CODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pages = __fast_smmu_alloc_pages(count, gfp);
 	if (!pages) {
@@ -785,6 +976,10 @@ static void *fast_smmu_alloc(struct device *dev, size_t size,
 		return NULL;
 	}
 
+<<<<<<< HEAD
+=======
+	size = ALIGN(size, SZ_4K);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sg_alloc_table_from_pages(&sgt, pages, count, 0, size, gfp)) {
 		dev_err(dev, "no sg tablen\n");
 		goto out_free_pages;
@@ -852,6 +1047,7 @@ out_free_pages:
 }
 
 static void fast_smmu_free(struct device *dev, size_t size,
+<<<<<<< HEAD
 			   void *cpu_addr, dma_addr_t dma_handle,
 			   unsigned long attrs)
 {
@@ -861,10 +1057,30 @@ static void fast_smmu_free(struct device *dev, size_t size,
 
 	size = ALIGN(size, FAST_PAGE_SIZE);
 
+=======
+			   void *vaddr, dma_addr_t dma_handle,
+			   unsigned long attrs)
+{
+	struct dma_fast_smmu_mapping *mapping = dev->archdata.mapping->fast;
+	struct vm_struct *area;
+	struct page **pages;
+	size_t count = ALIGN(size, SZ_4K) >> FAST_PAGE_SHIFT;
+	unsigned long flags;
+
+	size = ALIGN(size, SZ_4K);
+
+	area = find_vm_area(vaddr);
+	if (WARN_ON_ONCE(!area))
+		return;
+
+	pages = area->pages;
+	dma_common_free_remap(vaddr, size, VM_USERMAP, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&mapping->lock, flags);
 	av8l_fast_unmap_public(mapping->pgtbl_ops, dma_handle, size);
 	__fast_smmu_free_iova(mapping, dma_handle, size);
 	spin_unlock_irqrestore(&mapping->lock, flags);
+<<<<<<< HEAD
 
 	area = find_vm_area(cpu_addr);
 	if (area && area->pages) {
@@ -901,6 +1117,9 @@ static int fast_smmu_mmap_pfn(struct vm_area_struct *vma, unsigned long pfn,
 	}
 
 	return ret;
+=======
+	__fast_smmu_free_pages(pages, count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int fast_smmu_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
@@ -908,12 +1127,20 @@ static int fast_smmu_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
 				size_t size, unsigned long attrs)
 {
 	struct vm_struct *area;
+<<<<<<< HEAD
 	bool coherent = is_dma_coherent(dev, attrs);
 	unsigned long pfn = 0;
+=======
+	unsigned long uaddr = vma->vm_start;
+	struct page **pages;
+	int i, nr_pages, ret = 0;
+	bool coherent = is_dma_coherent(dev, attrs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vma->vm_page_prot = __get_dma_pgprot(attrs, vma->vm_page_prot,
 					     coherent);
 	area = find_vm_area(cpu_addr);
+<<<<<<< HEAD
 	if (area && area->pages)
 		return iommu_dma_mmap(area->pages, size, vma);
 	else if (attrs & DMA_ATTR_FORCE_CONTIGUOUS)
@@ -928,6 +1155,21 @@ static int fast_smmu_mmap_attrs(struct device *dev, struct vm_area_struct *vma,
 		return fast_smmu_mmap_pfn(vma, pfn, size);
 
 	return -EINVAL;
+=======
+	if (!area)
+		return -EINVAL;
+
+	pages = area->pages;
+	nr_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
+	for (i = vma->vm_pgoff; i < nr_pages && uaddr < vma->vm_end; i++) {
+		ret = vm_insert_page(vma, uaddr, pages[i]);
+		if (ret)
+			break;
+		uaddr += PAGE_SIZE;
+	}
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int fast_smmu_get_sgtable(struct device *dev, struct sg_table *sgt,
@@ -936,6 +1178,7 @@ static int fast_smmu_get_sgtable(struct device *dev, struct sg_table *sgt,
 {
 	unsigned int n_pages = PAGE_ALIGN(size) >> PAGE_SHIFT;
 	struct vm_struct *area;
+<<<<<<< HEAD
 	struct page *page = NULL;
 	int ret = -ENXIO;
 
@@ -957,6 +1200,15 @@ static int fast_smmu_get_sgtable(struct device *dev, struct sg_table *sgt,
 	}
 
 	return ret;
+=======
+
+	area = find_vm_area(cpu_addr);
+	if (!area || !area->pages)
+		return -EINVAL;
+
+	return sg_alloc_table_from_pages(sgt, area->pages, n_pages, 0, size,
+					GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static dma_addr_t fast_smmu_dma_map_resource(
@@ -964,7 +1216,11 @@ static dma_addr_t fast_smmu_dma_map_resource(
 			size_t size, enum dma_data_direction dir,
 			unsigned long attrs)
 {
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *mapping = dev_get_mapping(dev);
+=======
+	struct dma_fast_smmu_mapping *mapping = dev->archdata.mapping->fast;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t offset = phys_addr & ~FAST_PAGE_MASK;
 	size_t len = round_up(size + offset, FAST_PAGE_SIZE);
 	dma_addr_t dma_addr;
@@ -978,7 +1234,11 @@ static dma_addr_t fast_smmu_dma_map_resource(
 	if (dma_addr == DMA_ERROR_CODE)
 		return dma_addr;
 
+<<<<<<< HEAD
 	prot = dma_info_to_prot(dir, false, attrs);
+=======
+	prot = __fast_dma_direction_to_prot(dir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	prot |= IOMMU_MMIO;
 
 	if (iommu_map(mapping->domain, dma_addr, phys_addr - offset,
@@ -996,14 +1256,22 @@ static void fast_smmu_dma_unmap_resource(
 			size_t size, enum dma_data_direction dir,
 			unsigned long attrs)
 {
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *mapping = dev_get_mapping(dev);
+=======
+	struct dma_fast_smmu_mapping *mapping = dev->archdata.mapping->fast;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t offset = addr & ~FAST_PAGE_MASK;
 	size_t len = round_up(size + offset, FAST_PAGE_SIZE);
 	unsigned long flags;
 
 	iommu_unmap(mapping->domain, addr - offset, len);
 	spin_lock_irqsave(&mapping->lock, flags);
+<<<<<<< HEAD
 	__fast_smmu_free_iova(mapping, addr, len);
+=======
+	__fast_smmu_free_iova(mapping, addr - offset, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&mapping->lock, flags);
 }
 
@@ -1075,7 +1343,11 @@ static const struct dma_map_ops fast_smmu_dma_ops = {
  *
  * Creates a mapping structure which holds information about used/unused IO
  * address ranges, which is required to perform mapping with IOMMU aware
+<<<<<<< HEAD
  * functions.  The only VA range supported is [0, 4GB).
+=======
+ * functions. The only VA range supported is [0, 4GB].
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The client device need to be attached to the mapping with
  * fast_smmu_attach_device function.
@@ -1104,6 +1376,7 @@ static struct dma_fast_smmu_mapping *__fast_smmu_create_mapping_sized(
 
 	spin_lock_init(&fast->lock);
 
+<<<<<<< HEAD
 	fast->iovad = kzalloc(sizeof(*fast->iovad), GFP_KERNEL);
 	if (!fast->iovad)
 		goto err_free_bitmap;
@@ -1114,6 +1387,9 @@ static struct dma_fast_smmu_mapping *__fast_smmu_create_mapping_sized(
 
 err_free_bitmap:
 	kvfree(fast->bitmap);
+=======
+	return fast;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err2:
 	kfree(fast);
 err:
@@ -1164,6 +1440,7 @@ static void fast_smmu_reserve_pci_windows(struct device *dev,
 	spin_unlock_irqrestore(&mapping->lock, flags);
 }
 
+<<<<<<< HEAD
 void fast_smmu_put_dma_cookie(struct iommu_domain *domain)
 {
 	struct dma_fast_smmu_mapping *fast = domain->iova_cookie;
@@ -1181,6 +1458,28 @@ void fast_smmu_put_dma_cookie(struct iommu_domain *domain)
 
 	kfree(fast);
 	domain->iova_cookie = NULL;
+=======
+static int fast_smmu_errata_init(struct dma_iommu_mapping *mapping)
+{
+	struct dma_fast_smmu_mapping *fast = mapping->fast;
+	int vmid = VMID_HLOS;
+	int min_iova_align = 0;
+
+	iommu_domain_get_attr(mapping->domain,
+			DOMAIN_ATTR_QCOM_MMU500_ERRATA_MIN_IOVA_ALIGN,
+			&min_iova_align);
+	iommu_domain_get_attr(mapping->domain, DOMAIN_ATTR_SECURE_VMID, &vmid);
+	if (vmid >= VMID_LAST || vmid < 0)
+		vmid = VMID_HLOS;
+
+	if (min_iova_align) {
+		fast->min_iova_align = ARM_SMMU_MIN_IOVA_ALIGN;
+		fast->guard_page = arm_smmu_errata_get_guard_page(vmid);
+		if (!fast->guard_page)
+			return -ENOMEM;
+	}
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1199,18 +1498,22 @@ int fast_smmu_init_mapping(struct device *dev,
 	struct iommu_domain *domain = mapping->domain;
 	struct iommu_pgtbl_info info;
 	u64 size = (u64)mapping->bits << PAGE_SHIFT;
+<<<<<<< HEAD
 	struct dma_fast_smmu_mapping *fast;
 
 	if (domain->iova_cookie) {
 		fast = domain->iova_cookie;
 		goto finish;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mapping->base + size > (SZ_1G * 4ULL)) {
 		dev_err(dev, "Iova end address too large\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	fast = __fast_smmu_create_mapping_sized(mapping->base, size);
 	if (IS_ERR(fast))
 		return -ENOMEM;
@@ -1218,6 +1521,21 @@ int fast_smmu_init_mapping(struct device *dev,
 	fast->domain = domain;
 	fast->dev = dev;
 	domain->iova_cookie = fast;
+=======
+	mapping->fast = __fast_smmu_create_mapping_sized(mapping->base, size);
+	if (IS_ERR(mapping->fast))
+		return -ENOMEM;
+	mapping->fast->domain = domain;
+	mapping->fast->dev = dev;
+
+	if (fast_smmu_errata_init(mapping))
+		goto release_mapping;
+
+	fast_smmu_reserve_pci_windows(dev, mapping->fast);
+
+	domain->geometry.aperture_start = mapping->base;
+	domain->geometry.aperture_end = mapping->base + size - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (iommu_domain_get_attr(domain, DOMAIN_ATTR_PGTBL_INFO,
 				  &info)) {
@@ -1225,6 +1543,7 @@ int fast_smmu_init_mapping(struct device *dev,
 		err = -EINVAL;
 		goto release_mapping;
 	}
+<<<<<<< HEAD
 	fast->pgtbl_ops = (struct io_pgtable_ops *)info.ops;
 
 	fast->notifier.notifier_call = fast_smmu_notify;
@@ -1232,10 +1551,41 @@ int fast_smmu_init_mapping(struct device *dev,
 
 finish:
 	fast_smmu_reserve_pci_windows(dev, fast);
+=======
+	mapping->fast->pgtbl_ops = (struct io_pgtable_ops *)info.ops;
+
+	mapping->fast->notifier.notifier_call = fast_smmu_notify;
+	av8l_register_notify(&mapping->fast->notifier);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mapping->ops = &fast_smmu_dma_ops;
 	return 0;
 
 release_mapping:
+<<<<<<< HEAD
 	fast_smmu_put_dma_cookie(domain);
 	return err;
 }
+=======
+	kfree(mapping->fast->bitmap);
+	kfree(mapping->fast);
+	return err;
+}
+
+/**
+ * fast_smmu_release_mapping
+ * @kref: dma_iommu_mapping->kref
+ *
+ * Cleans up the given iommu mapping.
+ */
+void fast_smmu_release_mapping(struct kref *kref)
+{
+	struct dma_iommu_mapping *mapping =
+		container_of(kref, struct dma_iommu_mapping, kref);
+
+	kvfree(mapping->fast->bitmap);
+	kfree(mapping->fast);
+	iommu_domain_free(mapping->domain);
+	kfree(mapping);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

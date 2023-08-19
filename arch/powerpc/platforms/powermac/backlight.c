@@ -186,7 +186,11 @@ int pmac_backlight_set_legacy_brightness(int brightness)
 	return __pmac_backlight_set_legacy_brightness(brightness);
 }
 
+<<<<<<< HEAD
 int pmac_backlight_get_legacy_brightness(void)
+=======
+int pmac_backlight_get_legacy_brightness()
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int result = -ENXIO;
 
@@ -205,12 +209,20 @@ int pmac_backlight_get_legacy_brightness(void)
 	return result;
 }
 
+<<<<<<< HEAD
 void pmac_backlight_disable(void)
+=======
+void pmac_backlight_disable()
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	atomic_inc(&kernel_backlight_disabled);
 }
 
+<<<<<<< HEAD
 void pmac_backlight_enable(void)
+=======
+void pmac_backlight_enable()
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	atomic_dec(&kernel_backlight_disabled);
 }

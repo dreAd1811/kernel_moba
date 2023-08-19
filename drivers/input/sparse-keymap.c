@@ -21,6 +21,10 @@
 MODULE_AUTHOR("Dmitry Torokhov <dtor@mail.ru>");
 MODULE_DESCRIPTION("Generic support for sparse keymaps");
 MODULE_LICENSE("GPL v2");
+<<<<<<< HEAD
+=======
+MODULE_VERSION("0.1");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned int sparse_keymap_get_key_index(struct input_dev *dev,
 						const struct key_entry *k)

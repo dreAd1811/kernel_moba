@@ -38,12 +38,20 @@
 			reg = <0x0 0x0 0x800000>;
 			bank-width = <1>;
 			device-width = <1>;
+<<<<<<< HEAD
 			partition@0 {
+=======
+			partition@0x0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				label = "space";
 				/* FF800000 -> FFF9FFFF */
 				reg = <0x00000000 0x007a0000>;
 			};
+<<<<<<< HEAD
 			partition@7a0000 {
+=======
+			partition@0x7a0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				label = "bootloader";
 				/* FFFA0000 -> FFFFFFFF */
 				reg = <0x007a0000 0x00060000>;
@@ -92,12 +100,20 @@
 			compatible = "intel,JS28F128", "cfi-flash";
 			bank-width = <4>;
 			device-width = <1>;
+<<<<<<< HEAD
 			partition@0 {
+=======
+			partition@0x0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				label = "space";
 				/* EC000000 -> EFEFFFFF */
 				reg = <0x00000000 0x03f00000>;
 			};
+<<<<<<< HEAD
 			partition@3f00000 {
+=======
+			partition@0x03f00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				label = "bootloader";
 				/* EFF00000 -> EFFFFFFF */
 				reg = <0x03f00000 0x00100000>;

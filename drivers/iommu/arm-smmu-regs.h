@@ -208,6 +208,7 @@ enum arm_smmu_s2cr_privcfg {
 #define TCU_INV_IN_PRGSS_SHIFT		16
 #define TBUID_SHIFT			10
 
+<<<<<<< HEAD
 #define SCTLR_MEM_ATTR_SHIFT		16
 #define SCTLR_SHCFG_SHIFT		22
 #define SCTLR_RACFG_SHIFT		24
@@ -218,6 +219,11 @@ enum arm_smmu_s2cr_privcfg {
 #define SCTLR_WACFG_WA			0x2
 #define SCTLR_MEM_ATTR_OISH_WB_CACHE	0xf
 #define SCTLR_MTCFG			(1 << 20)
+=======
+#define SCTLR_SHCFG_SHIFT		22
+#define SCTLR_SHCFG_MASK		0x3
+#define SCTLR_SHCFG_NSH			0x3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SCTLR_S1_ASIDPNE		(1 << 12)
 #define SCTLR_CFCFG			(1 << 7)
 #define SCTLR_HUPCF			(1 << 8)
@@ -259,6 +265,7 @@ enum arm_smmu_s2cr_privcfg {
 
 #define FSYNR0_WNR			(1 << 4)
 
+<<<<<<< HEAD
 #define IMPL_DEF1_MICRO_MMU_CTRL	0
 #define MICRO_MMU_CTRL_LOCAL_HALT_REQ	(1 << 2)
 #define MICRO_MMU_CTRL_IDLE		(1 << 3)
@@ -273,4 +280,6 @@ enum arm_smmu_s2cr_privcfg {
 #define ACTLR_QCOM_NSH_SHIFT		30
 #define ACTLR_QCOM_NSH			1
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ARM_SMMU_REGS_H */

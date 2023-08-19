@@ -93,6 +93,7 @@ static unsigned int local_entry_offset(const Elf64_Sym *sym)
 {
 	return 0;
 }
+<<<<<<< HEAD
 
 void *dereference_module_function_descriptor(struct module *mod, void *ptr)
 {
@@ -102,6 +103,8 @@ void *dereference_module_function_descriptor(struct module *mod, void *ptr)
 
 	return dereference_function_descriptor(ptr);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define STUB_MAGIC 0x73747562 /* stub */
@@ -280,10 +283,13 @@ static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
 #ifdef CONFIG_DYNAMIC_FTRACE
 	/* make the trampoline to the ftrace_caller */
 	relocs++;
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
 	/* an additional one for ftrace_regs_caller */
 	relocs++;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	pr_debug("Looks like a total of %lu stubs, max\n", relocs);
@@ -352,11 +358,16 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
 		char *p;
 		if (strcmp(secstrings + sechdrs[i].sh_name, ".stubs") == 0)
 			me->arch.stubs_section = i;
+<<<<<<< HEAD
 		else if (strcmp(secstrings + sechdrs[i].sh_name, ".toc") == 0) {
 			me->arch.toc_section = i;
 			if (sechdrs[i].sh_addralign < 8)
 				sechdrs[i].sh_addralign = 8;
 		}
+=======
+		else if (strcmp(secstrings + sechdrs[i].sh_name, ".toc") == 0)
+			me->arch.toc_section = i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else if (strcmp(secstrings+sechdrs[i].sh_name,"__versions")==0)
 			dedotify_versions((void *)hdr + sechdrs[i].sh_offset,
 					  sechdrs[i].sh_size);
@@ -389,6 +400,7 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * r2 is the TOC pointer: it actually points 0x8000 into the TOC (this gives the
  * value maximum span in an instruction which uses a signed offset). Round down
@@ -398,6 +410,14 @@ int module_frob_arch_sections(Elf64_Ehdr *hdr,
 static inline unsigned long my_r2(const Elf64_Shdr *sechdrs, struct module *me)
 {
 	return (sechdrs[me->arch.toc_section].sh_addr & ~0xfful) + 0x8000;
+=======
+/* r2 is the TOC pointer: it actually points 0x8000 into the TOC (this
+   gives the value maximum span in an instruction which uses a signed
+   offset) */
+static inline unsigned long my_r2(const Elf64_Shdr *sechdrs, struct module *me)
+{
+	return sechdrs[me->arch.toc_section].sh_addr + 0x8000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Both low and high 16 bits are added as SIGNED additions, so if low
@@ -448,8 +468,12 @@ static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
 	/* Find this stub, or if that fails, the next avail. entry */
 	stubs = (void *)sechdrs[me->arch.stubs_section].sh_addr;
 	for (i = 0; stub_func_addr(stubs[i].funcdata); i++) {
+<<<<<<< HEAD
 		if (WARN_ON(i >= num_stubs))
 			return 0;
+=======
+		BUG_ON(i >= num_stubs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (stub_func_addr(stubs[i].funcdata) == func_addr(addr))
 			return (unsigned long)&stubs[i];
@@ -461,12 +485,18 @@ static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
 	return (unsigned long)&stubs[i];
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_MPROFILE_KERNEL
 static bool is_mprofile_mcount_callsite(const char *name, u32 *instruction)
 {
 	if (strcmp("_mcount", name))
 		return false;
 
+=======
+#ifdef CC_USING_MPROFILE_KERNEL
+static bool is_early_mcount_callsite(u32 *instruction)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Check if this is one of the -mprofile-kernel sequences.
 	 */
@@ -498,7 +528,12 @@ static void squash_toc_save_inst(const char *name, unsigned long addr)
 #else
 static void squash_toc_save_inst(const char *name, unsigned long addr) { }
 
+<<<<<<< HEAD
 static bool is_mprofile_mcount_callsite(const char *name, u32 *instruction)
+=======
+/* without -mprofile-kernel, mcount calls are never early */
+static bool is_early_mcount_callsite(u32 *instruction)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return false;
 }
@@ -506,11 +541,19 @@ static bool is_mprofile_mcount_callsite(const char *name, u32 *instruction)
 
 /* We expect a noop next: if it is, replace it with instruction to
    restore r2. */
+<<<<<<< HEAD
 static int restore_r2(const char *name, u32 *instruction, struct module *me)
 {
 	u32 *prev_insn = instruction - 1;
 
 	if (is_mprofile_mcount_callsite(name, prev_insn))
+=======
+static int restore_r2(u32 *instruction, struct module *me)
+{
+	u32 *prev_insn = instruction - 1;
+
+	if (is_early_mcount_callsite(prev_insn))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	/*
@@ -522,8 +565,13 @@ static int restore_r2(const char *name, u32 *instruction, struct module *me)
 		return 1;
 
 	if (*instruction != PPC_INST_NOP) {
+<<<<<<< HEAD
 		pr_err("%s: Expected nop after call, got %08x at %pS\n",
 			me->name, *instruction, instruction);
+=======
+		pr_err("%s: Expect noop after relocate, got %08x\n",
+		       me->name, *instruction);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 	/* ld r2,R2_STACK_OFFSET(r1) */
@@ -645,14 +693,22 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
 
 		case R_PPC_REL24:
 			/* FIXME: Handle weak symbols here --RR */
+<<<<<<< HEAD
 			if (sym->st_shndx == SHN_UNDEF ||
 			    sym->st_shndx == SHN_LIVEPATCH) {
+=======
+			if (sym->st_shndx == SHN_UNDEF) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* External: go via stub */
 				value = stub_for_addr(sechdrs, value, me);
 				if (!value)
 					return -ENOENT;
+<<<<<<< HEAD
 				if (!restore_r2(strtab + sym->st_name,
 							(u32 *)location + 1, me))
+=======
+				if (!restore_r2((u32 *)location + 1, me))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return -ENOEXEC;
 
 				squash_toc_save_inst(strtab + sym->st_name, value);
@@ -755,7 +811,11 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
 
 #ifdef CONFIG_DYNAMIC_FTRACE
 
+<<<<<<< HEAD
 #ifdef CONFIG_MPROFILE_KERNEL
+=======
+#ifdef CC_USING_MPROFILE_KERNEL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PACATOC offsetof(struct paca_struct, kernel_toc)
 
@@ -771,8 +831,12 @@ int apply_relocate_add(Elf64_Shdr *sechdrs,
  * via the paca (in r13). The target (ftrace_caller()) is responsible for
  * saving and restoring the toc before returning.
  */
+<<<<<<< HEAD
 static unsigned long create_ftrace_stub(const Elf64_Shdr *sechdrs,
 				struct module *me, unsigned long addr)
+=======
+static unsigned long create_ftrace_stub(const Elf64_Shdr *sechdrs, struct module *me)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ppc64_stub_entry *entry;
 	unsigned int i, num_stubs;
@@ -799,10 +863,16 @@ static unsigned long create_ftrace_stub(const Elf64_Shdr *sechdrs,
 	memcpy(entry->jump, stub_insns, sizeof(stub_insns));
 
 	/* Stub uses address relative to kernel toc (from the paca) */
+<<<<<<< HEAD
 	reladdr = addr - kernel_toc_addr();
 	if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
 		pr_err("%s: Address of %ps out of range of kernel_toc.\n",
 							me->name, (void *)addr);
+=======
+	reladdr = (unsigned long)ftrace_caller - kernel_toc_addr();
+	if (reladdr > 0x7FFFFFFF || reladdr < -(0x80000000L)) {
+		pr_err("%s: Address of ftrace_caller out of range of kernel_toc.\n", me->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -810,21 +880,32 @@ static unsigned long create_ftrace_stub(const Elf64_Shdr *sechdrs,
 	entry->jump[2] |= PPC_LO(reladdr);
 
 	/* Eventhough we don't use funcdata in the stub, it's needed elsewhere. */
+<<<<<<< HEAD
 	entry->funcdata = func_desc(addr);
+=======
+	entry->funcdata = func_desc((unsigned long)ftrace_caller);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	entry->magic = STUB_MAGIC;
 
 	return (unsigned long)entry;
 }
 #else
+<<<<<<< HEAD
 static unsigned long create_ftrace_stub(const Elf64_Shdr *sechdrs,
 				struct module *me, unsigned long addr)
 {
 	return stub_for_addr(sechdrs, addr, me);
+=======
+static unsigned long create_ftrace_stub(const Elf64_Shdr *sechdrs, struct module *me)
+{
+	return stub_for_addr(sechdrs, (unsigned long)ftrace_caller, me);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
 int module_finalize_ftrace(struct module *mod, const Elf_Shdr *sechdrs)
 {
+<<<<<<< HEAD
 	mod->arch.tramp = create_ftrace_stub(sechdrs, mod,
 					(unsigned long)ftrace_caller);
 #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
@@ -833,6 +914,10 @@ int module_finalize_ftrace(struct module *mod, const Elf_Shdr *sechdrs)
 	if (!mod->arch.tramp_regs)
 		return -ENOENT;
 #endif
+=======
+	mod->arch.toc = my_r2(sechdrs, mod);
+	mod->arch.tramp = create_ftrace_stub(sechdrs, mod);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!mod->arch.tramp)
 		return -ENOENT;

@@ -40,6 +40,10 @@
 #define RC6_6A_MCE_TOGGLE_MASK	0x8000	/* for the body bits */
 #define RC6_6A_LCC_MASK		0xffff0000 /* RC6-6A-32 long customer code mask */
 #define RC6_6A_MCE_CC		0x800f0000 /* MCE customer code */
+<<<<<<< HEAD
+=======
+#define RC6_6A_KATHREIN_CC	0x80460000 /* Kathrein RCU-676 customer code */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CHAR_BIT
 #define CHAR_BIT 8	/* Normally in <limits.h> */
 #endif
@@ -100,8 +104,13 @@ static int ir_rc6_decode(struct rc_dev *dev, struct ir_raw_event ev)
 		goto out;
 
 again:
+<<<<<<< HEAD
 	dev_dbg(&dev->dev, "RC6 decode started at state %i (%uus %s)\n",
 		data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+=======
+	IR_dprintk(2, "RC6 decode started at state %i (%uus %s)\n",
+		   data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!geq_margin(ev.duration, RC6_UNIT, RC6_UNIT / 2))
 		return 0;
@@ -145,6 +154,12 @@ again:
 		return 0;
 
 	case STATE_HEADER_BIT_END:
+<<<<<<< HEAD
+=======
+		if (!is_transition(&ev, &dev->raw->prev_ev))
+			break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (data->count == RC6_HEADER_NBITS)
 			data->state = STATE_TOGGLE_START;
 		else
@@ -162,8 +177,17 @@ again:
 		return 0;
 
 	case STATE_TOGGLE_END:
+<<<<<<< HEAD
 		if (!(data->header & RC6_STARTBIT_MASK)) {
 			dev_dbg(&dev->dev, "RC6 invalid start bit\n");
+=======
+		if (!is_transition(&ev, &dev->raw->prev_ev) ||
+		    !geq_margin(ev.duration, RC6_TOGGLE_END, RC6_UNIT / 2))
+			break;
+
+		if (!(data->header & RC6_STARTBIT_MASK)) {
+			IR_dprintk(1, "RC6 invalid start bit\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
@@ -180,7 +204,11 @@ again:
 			data->wanted_bits = RC6_6A_NBITS;
 			break;
 		default:
+<<<<<<< HEAD
 			dev_dbg(&dev->dev, "RC6 unknown mode\n");
+=======
+			IR_dprintk(1, "RC6 unknown mode\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 		}
 		goto again;
@@ -203,6 +231,12 @@ again:
 		break;
 
 	case STATE_BODY_BIT_END:
+<<<<<<< HEAD
+=======
+		if (!is_transition(&ev, &dev->raw->prev_ev))
+			break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (data->count == data->wanted_bits)
 			data->state = STATE_FINISHED;
 		else
@@ -220,13 +254,22 @@ again:
 			scancode = data->body;
 			toggle = data->toggle;
 			protocol = RC_PROTO_RC6_0;
+<<<<<<< HEAD
 			dev_dbg(&dev->dev, "RC6(0) scancode 0x%04x (toggle: %u)\n",
 				scancode, toggle);
+=======
+			IR_dprintk(1, "RC6(0) scancode 0x%04x (toggle: %u)\n",
+				   scancode, toggle);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case RC6_MODE_6A:
 			if (data->count > CHAR_BIT * sizeof data->body) {
+<<<<<<< HEAD
 				dev_dbg(&dev->dev, "RC6 too many (%u) data bits\n",
+=======
+				IR_dprintk(1, "RC6 too many (%u) data bits\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					data->count);
 				goto out;
 			}
@@ -242,6 +285,7 @@ again:
 				toggle = 0;
 				break;
 			case 32:
+<<<<<<< HEAD
 				if ((scancode & RC6_6A_LCC_MASK) == RC6_6A_MCE_CC) {
 					protocol = RC_PROTO_RC6_MCE;
 					toggle = !!(scancode & RC6_6A_MCE_TOGGLE_MASK);
@@ -261,6 +305,31 @@ again:
 			break;
 		default:
 			dev_dbg(&dev->dev, "RC6 unknown mode\n");
+=======
+				switch (scancode & RC6_6A_LCC_MASK) {
+				case RC6_6A_MCE_CC:
+				case RC6_6A_KATHREIN_CC:
+					protocol = RC_PROTO_RC6_MCE;
+					toggle = !!(scancode & RC6_6A_MCE_TOGGLE_MASK);
+					scancode &= ~RC6_6A_MCE_TOGGLE_MASK;
+					break;
+				default:
+					protocol = RC_PROTO_RC6_6A_32;
+					toggle = 0;
+					break;
+				}
+				break;
+			default:
+				IR_dprintk(1, "RC6(6A) unsupported length\n");
+				goto out;
+			}
+
+			IR_dprintk(1, "RC6(6A) proto 0x%04x, scancode 0x%08x (toggle: %u)\n",
+				   protocol, scancode, toggle);
+			break;
+		default:
+			IR_dprintk(1, "RC6 unknown mode\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 		}
 
@@ -270,16 +339,31 @@ again:
 	}
 
 out:
+<<<<<<< HEAD
 	dev_dbg(&dev->dev, "RC6 decode failed at state %i (%uus %s)\n",
 		data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+=======
+	IR_dprintk(1, "RC6 decode failed at state %i (%uus %s)\n",
+		   data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->state = STATE_INACTIVE;
 	return -EINVAL;
 }
 
 static const struct ir_raw_timings_manchester ir_rc6_timings[4] = {
 	{
+<<<<<<< HEAD
 		.leader_pulse		= RC6_PREFIX_PULSE,
 		.leader_space		= RC6_PREFIX_SPACE,
+=======
+		.leader			= RC6_PREFIX_PULSE,
+		.pulse_space_start	= 0,
+		.clock			= RC6_UNIT,
+		.invert			= 1,
+		.trailer_space		= RC6_PREFIX_SPACE,
+	},
+	{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.clock			= RC6_UNIT,
 		.invert			= 1,
 	},
@@ -314,22 +398,41 @@ static int ir_rc6_encode(enum rc_proto protocol, u32 scancode,
 	struct ir_raw_event *e = events;
 
 	if (protocol == RC_PROTO_RC6_0) {
+<<<<<<< HEAD
 		/* Modulate the header (Start Bit & Mode-0) */
 		ret = ir_raw_gen_manchester(&e, max - (e - events),
 					    &ir_rc6_timings[0],
+=======
+		/* Modulate the preamble */
+		ret = ir_raw_gen_manchester(&e, max, &ir_rc6_timings[0], 0, 0);
+		if (ret < 0)
+			return ret;
+
+		/* Modulate the header (Start Bit & Mode-0) */
+		ret = ir_raw_gen_manchester(&e, max - (e - events),
+					    &ir_rc6_timings[1],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    RC6_HEADER_NBITS, (1 << 3));
 		if (ret < 0)
 			return ret;
 
 		/* Modulate Trailer Bit */
 		ret = ir_raw_gen_manchester(&e, max - (e - events),
+<<<<<<< HEAD
 					    &ir_rc6_timings[1], 1, 0);
+=======
+					    &ir_rc6_timings[2], 1, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
 		/* Modulate rest of the data */
 		ret = ir_raw_gen_manchester(&e, max - (e - events),
+<<<<<<< HEAD
 					    &ir_rc6_timings[2], RC6_0_NBITS,
+=======
+					    &ir_rc6_timings[3], RC6_0_NBITS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    scancode);
 		if (ret < 0)
 			return ret;
@@ -352,22 +455,41 @@ static int ir_rc6_encode(enum rc_proto protocol, u32 scancode,
 			return -EINVAL;
 		}
 
+<<<<<<< HEAD
 		/* Modulate the header (Start Bit & Header-version 6 */
 		ret = ir_raw_gen_manchester(&e, max - (e - events),
 					    &ir_rc6_timings[0],
+=======
+		/* Modulate the preamble */
+		ret = ir_raw_gen_manchester(&e, max, &ir_rc6_timings[0], 0, 0);
+		if (ret < 0)
+			return ret;
+
+		/* Modulate the header (Start Bit & Header-version 6 */
+		ret = ir_raw_gen_manchester(&e, max - (e - events),
+					    &ir_rc6_timings[1],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    RC6_HEADER_NBITS, (1 << 3 | 6));
 		if (ret < 0)
 			return ret;
 
 		/* Modulate Trailer Bit */
 		ret = ir_raw_gen_manchester(&e, max - (e - events),
+<<<<<<< HEAD
 					    &ir_rc6_timings[1], 1, 0);
+=======
+					    &ir_rc6_timings[2], 1, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 
 		/* Modulate rest of the data */
 		ret = ir_raw_gen_manchester(&e, max - (e - events),
+<<<<<<< HEAD
 					    &ir_rc6_timings[2],
+=======
+					    &ir_rc6_timings[3],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    bits,
 					    scancode);
 		if (ret < 0)
@@ -383,8 +505,11 @@ static struct ir_raw_handler rc6_handler = {
 			  RC_PROTO_BIT_RC6_MCE,
 	.decode		= ir_rc6_decode,
 	.encode		= ir_rc6_encode,
+<<<<<<< HEAD
 	.carrier	= 36000,
 	.min_timeout	= RC6_SUFFIX_SPACE,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init ir_rc6_decode_init(void)

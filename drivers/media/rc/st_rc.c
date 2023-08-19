@@ -49,7 +49,11 @@ struct st_rc_device {
 #define IRB_RX_NOISE_SUPPR      0x5c	/* noise suppression  */
 #define IRB_RX_POLARITY_INV     0x68	/* polarity inverter  */
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * IRQ set: Enable full FIFO                 1  -> bit  3;
  *          Enable overrun IRQ               1  -> bit  2;
  *          Enable last symbol IRQ           1  -> bit  1:
@@ -72,7 +76,11 @@ static void st_rc_send_lirc_timeout(struct rc_dev *rdev)
 	ir_raw_event_store(rdev, &ev);
 }
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * RX graphical example to better understand the difference between ST IR block
  * output and standard definition used by LIRC (and most of the world!)
  *
@@ -96,16 +104,24 @@ static void st_rc_send_lirc_timeout(struct rc_dev *rdev)
 
 static irqreturn_t st_rc_rx_interrupt(int irq, void *data)
 {
+<<<<<<< HEAD
 	unsigned long timeout;
 	unsigned int symbol, mark = 0;
 	struct st_rc_device *dev = data;
 	int last_symbol = 0;
 	u32 status, int_status;
+=======
+	unsigned int symbol, mark = 0;
+	struct st_rc_device *dev = data;
+	int last_symbol = 0;
+	u32 status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE_IR_RAW_EVENT(ev);
 
 	if (dev->irq_wake)
 		pm_wakeup_event(dev->dev, 0);
 
+<<<<<<< HEAD
 	/* FIXME: is 10ms good enough ? */
 	timeout = jiffies +  msecs_to_jiffies(10);
 	do {
@@ -114,6 +130,12 @@ static irqreturn_t st_rc_rx_interrupt(int irq, void *data)
 			break;
 
 		int_status = readl(dev->rx_base + IRB_RX_INT_STATUS);
+=======
+	status  = readl(dev->rx_base + IRB_RX_STATUS);
+
+	while (status & (IRB_FIFO_NOT_EMPTY | IRB_OVERFLOW)) {
+		u32 int_status = readl(dev->rx_base + IRB_RX_INT_STATUS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(int_status & IRB_RX_OVERRUN_INT)) {
 			/* discard the entire collection in case of errors!  */
 			ir_raw_event_reset(dev->rdev);
@@ -153,7 +175,12 @@ static irqreturn_t st_rc_rx_interrupt(int irq, void *data)
 
 		}
 		last_symbol = 0;
+<<<<<<< HEAD
 	} while (time_is_after_jiffies(timeout));
+=======
+		status  = readl(dev->rx_base + IRB_RX_STATUS);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(IRB_RX_INTS, dev->rx_base + IRB_RX_INT_CLEAR);
 
@@ -321,7 +348,11 @@ static int st_rc_probe(struct platform_device *pdev)
 	device_init_wakeup(dev, true);
 	dev_pm_set_wake_irq(dev, rc_dev->irq);
 
+<<<<<<< HEAD
 	/*
+=======
+	/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * for LIRC_MODE_MODE2 or LIRC_MODE_PULSE or LIRC_MODE_RAW
 	 * lircd expects a long space first before a signal train to sync.
 	 */

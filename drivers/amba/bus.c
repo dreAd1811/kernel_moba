@@ -20,7 +20,10 @@
 #include <linux/sizes.h>
 #include <linux/limits.h>
 #include <linux/clk/clk-conf.h>
+<<<<<<< HEAD
 #include <linux/platform_device.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/irq.h>
 
@@ -102,8 +105,13 @@ static ssize_t driver_override_store(struct device *_dev,
 	if (strlen(driver_override)) {
 		dev->driver_override = driver_override;
 	} else {
+<<<<<<< HEAD
 		kfree(driver_override);
 		dev->driver_override = NULL;
+=======
+	       kfree(driver_override);
+	       dev->driver_override = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	device_unlock(_dev);
 
@@ -194,18 +202,26 @@ static const struct dev_pm_ops amba_pm = {
 /*
  * Primecells are part of the Advanced Microcontroller Bus Architecture,
  * so we call the bus "amba".
+<<<<<<< HEAD
  * DMA configuration for platform and AMBA bus is same. So here we reuse
  * platform's DMA config routine.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct bus_type amba_bustype = {
 	.name		= "amba",
 	.dev_groups	= amba_dev_groups,
 	.match		= amba_match,
 	.uevent		= amba_uevent,
+<<<<<<< HEAD
 	.dma_configure	= platform_dma_configure,
 	.pm		= &amba_pm,
 };
 EXPORT_SYMBOL_GPL(amba_bustype);
+=======
+	.pm		= &amba_pm,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int __init amba_init(void)
 {
@@ -252,7 +268,11 @@ static int amba_probe(struct device *dev)
 			break;
 
 		ret = dev_pm_domain_attach(dev, true);
+<<<<<<< HEAD
 		if (ret)
+=======
+		if (ret == -EPROBE_DEFER)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		ret = amba_get_enable_pclk(pcdev);
@@ -379,7 +399,11 @@ static int amba_device_try_add(struct amba_device *dev, struct resource *parent)
 	}
 
 	ret = dev_pm_domain_attach(&dev->dev, true);
+<<<<<<< HEAD
 	if (ret) {
+=======
+	if (ret == -EPROBE_DEFER) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iounmap(tmp);
 		goto err_release;
 	}

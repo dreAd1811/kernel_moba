@@ -37,9 +37,12 @@
 #include <asm/kvm_ppc.h>
 #include <asm/ppc-opcode.h>
 #include <asm/cpuidle.h>
+<<<<<<< HEAD
 #include <asm/kexec.h>
 #include <asm/reg.h>
 #include <asm/powernv.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "powernv.h"
 
@@ -52,6 +55,7 @@
 
 static void pnv_smp_setup_cpu(int cpu)
 {
+<<<<<<< HEAD
 	/*
 	 * P9 workaround for CI vector load (see traps.c),
 	 * enable the corresponding HMI interrupt
@@ -59,6 +63,8 @@ static void pnv_smp_setup_cpu(int cpu)
 	if (pvr_version_is(PVR_POWER9))
 		mtspr(SPRN_HMEER, mfspr(SPRN_HMEER) | PPC_BIT(17));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (xive_enabled())
 		xive_smp_setup_cpu();
 	else if (cpu != boot_cpuid)
@@ -81,7 +87,11 @@ static int pnv_smp_kick_cpu(int nr)
 	 * If we already started or OPAL is not supported, we just
 	 * kick the CPU via the PACA
 	 */
+<<<<<<< HEAD
 	if (paca_ptrs[nr]->cpu_start || !firmware_has_feature(FW_FEATURE_OPAL))
+=======
+	if (paca[nr].cpu_start || !firmware_has_feature(FW_FEATURE_OPAL))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto kick;
 
 	/*
@@ -154,7 +164,10 @@ static void pnv_smp_cpu_kill_self(void)
 {
 	unsigned int cpu;
 	unsigned long srr1, wmask;
+<<<<<<< HEAD
 	u64 lpcr_val;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Standard hot unplug procedure */
 	/*
@@ -176,6 +189,7 @@ static void pnv_smp_cpu_kill_self(void)
 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
 		wmask = SRR1_WAKEMASK_P8;
 
+<<<<<<< HEAD
 	/*
 	 * We don't want to take decrementer interrupts while we are
 	 * offline, so clear LPCR:PECE1. We keep PECE2 (and
@@ -189,6 +203,8 @@ static void pnv_smp_cpu_kill_self(void)
 	lpcr_val = mfspr(SPRN_LPCR) & ~(u64)LPCR_PECE1;
 	pnv_program_cpu_hotplug_lpcr(cpu, lpcr_val);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (!generic_check_cpu_restart(cpu)) {
 		/*
 		 * Clear IPI flag, since we don't handle IPIs while
@@ -226,6 +242,7 @@ static void pnv_smp_cpu_kill_self(void)
 		} else if ((srr1 & wmask) == SRR1_WAKEHDBELL) {
 			unsigned long msg = PPC_DBELL_TYPE(PPC_DBELL_SERVER);
 			asm volatile(PPC_MSGCLR(%0) : : "r" (msg));
+<<<<<<< HEAD
 		} else if ((srr1 & wmask) == SRR1_WAKERESET) {
 			irq_set_pending_from_srr1(srr1);
 			/* Does not return */
@@ -252,6 +269,11 @@ static void pnv_smp_cpu_kill_self(void)
 			/* Does not return */
 		}
 
+=======
+		}
+		smp_mb();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cpu_core_split_required())
 			continue;
 
@@ -261,6 +283,7 @@ static void pnv_smp_cpu_kill_self(void)
 
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Re-enable decrementer interrupts in LPCR.
 	 *
@@ -271,6 +294,8 @@ static void pnv_smp_cpu_kill_self(void)
 	lpcr_val = mfspr(SPRN_LPCR) | (u64)LPCR_PECE1;
 	pnv_program_cpu_hotplug_lpcr(cpu, lpcr_val);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG("CPU%d coming online...\n", cpu);
 }
 
@@ -308,6 +333,26 @@ static void pnv_cause_ipi(int cpu)
 	ic_cause_ipi(cpu);
 }
 
+<<<<<<< HEAD
+=======
+static void pnv_p9_dd1_cause_ipi(int cpu)
+{
+	int this_cpu = get_cpu();
+
+	/*
+	 * POWER9 DD1 has a global addressed msgsnd, but for now we restrict
+	 * IPIs to same core, because it requires additional synchronization
+	 * for inter-core doorbells which we do not implement.
+	 */
+	if (cpumask_test_cpu(cpu, cpu_sibling_mask(this_cpu)))
+		doorbell_global_ipi(cpu);
+	else
+		ic_cause_ipi(cpu);
+
+	put_cpu();
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init pnv_smp_probe(void)
 {
 	if (xive_enabled())
@@ -319,6 +364,7 @@ static void __init pnv_smp_probe(void)
 		ic_cause_ipi = smp_ops->cause_ipi;
 		WARN_ON(!ic_cause_ipi);
 
+<<<<<<< HEAD
 		if (cpu_has_feature(CPU_FTR_ARCH_300))
 			smp_ops->cause_ipi = doorbell_global_ipi;
 		else
@@ -387,6 +433,17 @@ static int pnv_cause_nmi_ipi(int cpu)
 	}
 
 	return 0;
+=======
+		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
+			if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+				smp_ops->cause_ipi = pnv_p9_dd1_cause_ipi;
+			else
+				smp_ops->cause_ipi = doorbell_global_ipi;
+		} else {
+			smp_ops->cause_ipi = pnv_cause_ipi;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct smp_ops_t pnv_smp_ops = {
@@ -407,16 +464,22 @@ static struct smp_ops_t pnv_smp_ops = {
 /* This is called very early during platform setup_arch */
 void __init pnv_smp_init(void)
 {
+<<<<<<< HEAD
 	if (opal_check_token(OPAL_SIGNAL_SYSTEM_RESET)) {
 		ppc_md.system_reset_exception = pnv_system_reset_exception;
 		pnv_smp_ops.cause_nmi_ipi = pnv_cause_nmi_ipi;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smp_ops = &pnv_smp_ops;
 
 #ifdef CONFIG_HOTPLUG_CPU
 	ppc_md.cpu_die	= pnv_smp_cpu_kill_self;
+<<<<<<< HEAD
 #ifdef CONFIG_KEXEC_CORE
 	crash_wake_offline = 1;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }

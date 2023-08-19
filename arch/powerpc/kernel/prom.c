@@ -23,6 +23,10 @@
 #include <linux/spinlock.h>
 #include <linux/types.h>
 #include <linux/pci.h>
+<<<<<<< HEAD
+=======
+#include <linux/stringify.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/initrd.h>
 #include <linux/bitops.h>
@@ -46,7 +50,10 @@
 #include <asm/mmu.h>
 #include <asm/paca.h>
 #include <asm/pgtable.h>
+<<<<<<< HEAD
 #include <asm/powernv.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/iommu.h>
 #include <asm/btext.h>
 #include <asm/sections.h>
@@ -58,7 +65,10 @@
 #include <asm/epapr_hcalls.h>
 #include <asm/firmware.h>
 #include <asm/dt_cpu_ftrs.h>
+<<<<<<< HEAD
 #include <asm/drmem.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <mm/mmu_decl.h>
 
@@ -129,7 +139,11 @@ static void __init move_device_tree(void)
 		p = __va(memblock_alloc(size, PAGE_SIZE));
 		memcpy(p, initial_boot_params, size);
 		initial_boot_params = p;
+<<<<<<< HEAD
 		DBG("Moved device tree to 0x%p\n", p);
+=======
+		DBG("Moved device tree to 0x%px\n", p);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	DBG("<- move_device_tree\n");
@@ -229,7 +243,11 @@ static void __init check_cpu_pa_features(unsigned long node)
 		      ibm_pa_features, ARRAY_SIZE(ibm_pa_features));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init init_mmu_slb_size(unsigned long node)
 {
 	const __be32 *slb_size_ptr;
@@ -290,11 +308,19 @@ static inline void identical_pvr_fixup(unsigned long node)
 
 static void __init check_cpu_feature_properties(unsigned long node)
 {
+<<<<<<< HEAD
 	int i;
 	struct feature_property *fp = feature_properties;
 	const __be32 *prop;
 
 	for (i = 0; i < (int)ARRAY_SIZE(feature_properties); ++i, ++fp) {
+=======
+	unsigned long i;
+	struct feature_property *fp = feature_properties;
+	const __be32 *prop;
+
+	for (i = 0; i < ARRAY_SIZE(feature_properties); ++i, ++fp) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		prop = of_get_flat_dt_prop(node, fp->name, NULL);
 		if (prop && be32_to_cpup(prop) >= fp->min_value) {
 			cur_cpu_spec->cpu_features |= fp->cpu_feature;
@@ -331,10 +357,32 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
 	 * NOTE: This must match the parsing done in smp_setup_cpu_maps.
 	 */
 	for (i = 0; i < nthreads; i++) {
+<<<<<<< HEAD
 		if (be32_to_cpu(intserv[i]) ==
 			fdt_boot_cpuid_phys(initial_boot_params)) {
 			found = boot_cpu_count;
 			found_thread = i;
+=======
+		/*
+		 * version 2 of the kexec param format adds the phys cpuid of
+		 * booted proc.
+		 */
+		if (fdt_version(initial_boot_params) >= 2) {
+			if (be32_to_cpu(intserv[i]) ==
+			    fdt_boot_cpuid_phys(initial_boot_params)) {
+				found = boot_cpu_count;
+				found_thread = i;
+			}
+		} else {
+			/*
+			 * Check if it's the boot-cpu, set it's hw index now,
+			 * unfortunately this format did not support booting
+			 * off secondary threads.
+			 */
+			if (of_get_flat_dt_prop(node,
+					"linux,boot-cpu", NULL) != NULL)
+				found = boot_cpu_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 #ifdef CONFIG_SMP
 		/* logical cpu id is always 0 on UP kernels */
@@ -349,6 +397,10 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
 	DBG("boot cpu: logical %d physical %d\n", found,
 	    be32_to_cpu(intserv[found_thread]));
 	boot_cpuid = found;
+<<<<<<< HEAD
+=======
+	set_hard_smp_processor_id(found, be32_to_cpu(intserv[found_thread]));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * PAPR defines "logical" PVR values for cpus that
@@ -386,9 +438,13 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
 		cur_cpu_spec->cpu_features &= ~CPU_FTR_SMT;
 	else if (!dt_cpu_ftrs_in_use())
 		cur_cpu_spec->cpu_features |= CPU_FTR_SMT;
+<<<<<<< HEAD
 	allocate_paca(boot_cpuid);
 #endif
 	set_hard_smp_processor_id(found, be32_to_cpu(intserv[found_thread]));
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -439,6 +495,7 @@ static int __init early_init_dt_scan_chosen_ppc(unsigned long node,
 	return 1;
 }
 
+<<<<<<< HEAD
 /*
  * Compare the range against max mem limit and update
  * size if it cross the limit.
@@ -520,12 +577,94 @@ static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
 			memblock_add(base, size);
 	} while (--rngs);
 }
+=======
+#ifdef CONFIG_PPC_PSERIES
+/*
+ * Interpret the ibm,dynamic-memory property in the
+ * /ibm,dynamic-reconfiguration-memory node.
+ * This contains a list of memory blocks along with NUMA affinity
+ * information.
+ */
+static int __init early_init_dt_scan_drconf_memory(unsigned long node)
+{
+	const __be32 *dm, *ls, *usm;
+	int l;
+	unsigned long n, flags;
+	u64 base, size, memblock_size;
+	unsigned int is_kexec_kdump = 0, rngs;
+
+	ls = of_get_flat_dt_prop(node, "ibm,lmb-size", &l);
+	if (ls == NULL || l < dt_root_size_cells * sizeof(__be32))
+		return 0;
+	memblock_size = dt_mem_next_cell(dt_root_size_cells, &ls);
+
+	dm = of_get_flat_dt_prop(node, "ibm,dynamic-memory", &l);
+	if (dm == NULL || l < sizeof(__be32))
+		return 0;
+
+	n = of_read_number(dm++, 1);	/* number of entries */
+	if (l < (n * (dt_root_addr_cells + 4) + 1) * sizeof(__be32))
+		return 0;
+
+	/* check if this is a kexec/kdump kernel. */
+	usm = of_get_flat_dt_prop(node, "linux,drconf-usable-memory",
+						 &l);
+	if (usm != NULL)
+		is_kexec_kdump = 1;
+
+	for (; n != 0; --n) {
+		base = dt_mem_next_cell(dt_root_addr_cells, &dm);
+		flags = of_read_number(&dm[3], 1);
+		/* skip DRC index, pad, assoc. list index, flags */
+		dm += 4;
+		/* skip this block if the reserved bit is set in flags
+		   or if the block is not assigned to this partition */
+		if ((flags & DRCONF_MEM_RESERVED) ||
+				!(flags & DRCONF_MEM_ASSIGNED))
+			continue;
+		size = memblock_size;
+		rngs = 1;
+		if (is_kexec_kdump) {
+			/*
+			 * For each memblock in ibm,dynamic-memory, a corresponding
+			 * entry in linux,drconf-usable-memory property contains
+			 * a counter 'p' followed by 'p' (base, size) duple.
+			 * Now read the counter from
+			 * linux,drconf-usable-memory property
+			 */
+			rngs = dt_mem_next_cell(dt_root_size_cells, &usm);
+			if (!rngs) /* there are no (base, size) duple */
+				continue;
+		}
+		do {
+			if (is_kexec_kdump) {
+				base = dt_mem_next_cell(dt_root_addr_cells,
+							 &usm);
+				size = dt_mem_next_cell(dt_root_size_cells,
+							 &usm);
+			}
+			if (iommu_is_off) {
+				if (base >= 0x80000000ul)
+					continue;
+				if ((base + size) > 0x80000000ul)
+					size = 0x80000000ul - base;
+			}
+			memblock_add(base, size);
+		} while (--rngs);
+	}
+	memblock_dump_all();
+	return 0;
+}
+#else
+#define early_init_dt_scan_drconf_memory(node)	0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PPC_PSERIES */
 
 static int __init early_init_dt_scan_memory_ppc(unsigned long node,
 						const char *uname,
 						int depth, void *data)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_PSERIES
 	if (depth == 1 &&
 	    strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0) {
@@ -533,6 +672,11 @@ static int __init early_init_dt_scan_memory_ppc(unsigned long node,
 		return 0;
 	}
 #endif
+=======
+	if (depth == 1 &&
+	    strcmp(uname, "ibm,dynamic-reconfiguration-memory") == 0)
+		return early_init_dt_scan_drconf_memory(node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	
 	return early_init_dt_scan_memory(node, uname, depth, data);
 }
@@ -571,10 +715,15 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
 	}
 
 	/* Add the chunk to the MEMBLOCK list */
+<<<<<<< HEAD
 	if (add_mem_to_memblock) {
 		if (validate_mem_limit(base, &size))
 			memblock_add(base, size);
 	}
+=======
+	if (add_mem_to_memblock)
+		memblock_add(base, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init early_reserve_mem_dt(void)
@@ -653,6 +802,7 @@ static void __init early_reserve_mem(void)
 #endif
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 static bool tm_disabled __initdata;
 
@@ -684,12 +834,34 @@ static void __init tm_init(void)
 #else
 static void tm_init(void) { }
 #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+=======
+#ifdef CONFIG_PPC64
+static void __init save_fscr_to_task(void)
+{
+	/*
+	 * Ensure the init_task (pid 0, aka swapper) uses the value of FSCR we
+	 * have configured via the device tree features or via __init_FSCR().
+	 * That value will then be propagated to pid 1 (init) and all future
+	 * processes.
+	 */
+	if (early_cpu_has_feature(CPU_FTR_ARCH_207S))
+		init_task.thread.fscr = mfspr(SPRN_FSCR);
+}
+#else
+static inline void save_fscr_to_task(void) {};
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void __init early_init_devtree(void *params)
 {
 	phys_addr_t limit;
 
+<<<<<<< HEAD
 	DBG(" -> early_init_devtree(%p)\n", params);
+=======
+	DBG(" -> early_init_devtree(%px)\n", params);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Too early to BUG_ON(), do it by hand */
 	if (!early_init_dt_verify(params))
@@ -749,13 +921,21 @@ void __init early_init_devtree(void *params)
 	memblock_allow_resize();
 	memblock_dump_all();
 
+<<<<<<< HEAD
 	DBG("Phys. mem: %llx\n", memblock_phys_mem_size());
+=======
+	DBG("Phys. mem: %llx\n", (unsigned long long)memblock_phys_mem_size());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We may need to relocate the flat tree, do it now.
 	 * FIXME .. and the initrd too? */
 	move_device_tree();
 
+<<<<<<< HEAD
 	allocate_paca_ptrs();
+=======
+	allocate_pacas();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DBG("Scanning CPUs ...\n");
 
@@ -770,6 +950,11 @@ void __init early_init_devtree(void *params)
 		BUG();
 	}
 
+<<<<<<< HEAD
+=======
+	save_fscr_to_task();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_SMP) && defined(CONFIG_PPC64)
 	/* We'll later wait for secondaries to check in; there are
 	 * NCPUS-1 non-boot CPUs  :-)
@@ -794,8 +979,11 @@ void __init early_init_devtree(void *params)
 		powerpc_firmware_features |= FW_FEATURE_PS3_POSSIBLE;
 #endif
 
+<<<<<<< HEAD
 	tm_init();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG(" <- early_init_devtree()\n");
 }
 
@@ -885,6 +1073,7 @@ EXPORT_SYMBOL(cpu_to_chip_id);
 
 bool arch_match_cpu_phys_id(int cpu, u64 phys_id)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
 	/*
 	 * Early firmware scanning must use this rather than
@@ -895,5 +1084,7 @@ bool arch_match_cpu_phys_id(int cpu, u64 phys_id)
 		return (int)phys_id == cpu_to_phys_id[cpu];
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (int)phys_id == get_hard_smp_processor_id(cpu);
 }

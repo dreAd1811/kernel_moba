@@ -436,7 +436,11 @@ static int cpt_device_init(struct cpt_device *cpt)
 
 	/* Reset the PF when probed first */
 	cpt_reset(cpt);
+<<<<<<< HEAD
 	msleep(100);
+=======
+	mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*Check BIST status*/
 	bist = (u64)cpt_check_bist_status(cpt);

@@ -49,7 +49,10 @@
 
 	aliases {
 		mdio-gpio0 = &mdio1;
+<<<<<<< HEAD
 		rtc0 = &ds1341;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	mdio1: mdio {
@@ -263,6 +266,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &cpu0 {
 	fsl,soc-operating-points = <
 		/* ARM kHz  SOC-PU uV */
@@ -274,6 +278,8 @@
 	>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &reg_arm {
 	vin-supply = <&sw1a_reg>;
 };
@@ -316,6 +322,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart4>;
 	status = "okay";
+<<<<<<< HEAD
 
 	rave-sp {
 		compatible = "zii,rave-sp-rdu2";
@@ -351,6 +358,8 @@
 			zii,eeprom-name = "main-eeprom";
 		};
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &ecspi1 {
@@ -437,7 +446,11 @@
 	clock-frequency = <100000>;
 	status = "okay";
 
+<<<<<<< HEAD
 	pmic@8 {
+=======
+	pmic@08 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,pfuze100";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_pfuze100_irq>;
@@ -544,11 +557,19 @@
 	};
 
 	eeprom@54 {
+<<<<<<< HEAD
 		compatible = "atmel,24c128";
 		reg = <0x54>;
 	};
 
 	ds1341: rtc@68 {
+=======
+		compatible = "at,24c128";
+		reg = <0x54>;
+	};
+
+	rtc@68 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "dallas,ds1341";
 		reg = <0x68>;
 	};
@@ -590,24 +611,37 @@
 
 		rmi4-f01@1 {
 			reg = <0x1>;
+<<<<<<< HEAD
 			syna,nosleep-mode = <2>;
+=======
+			syna,nosleep-mode = <1>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		rmi4-f11@11 {
 			reg = <0x11>;
+<<<<<<< HEAD
 			touchscreen-inverted-x;
+=======
+			touchscreen-inverted-y;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			touchscreen-swapped-x-y;
 			syna,sensor-type = <1>;
 		};
 
 		rmi4-f12@12 {
 			reg = <0x12>;
+<<<<<<< HEAD
 			touchscreen-inverted-x;
+=======
+			touchscreen-inverted-y;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			touchscreen-swapped-x-y;
 			syna,sensor-type = <1>;
 		};
 	};
 
+<<<<<<< HEAD
 	touchscreen@2a {
 		compatible = "eeti,egalax_ts";
 		pinctrl-names = "default";
@@ -619,6 +653,8 @@
 		status = "disabled";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hpa1: amp@60 {
 		compatible = "ti,tpa6130a2";
 		pinctrl-names = "default";
@@ -638,6 +674,7 @@
 	pinctrl-0 = <&pinctrl_pcie>;
 	reset-gpio = <&gpio7 12 GPIO_ACTIVE_LOW>;
 	status = "okay";
+<<<<<<< HEAD
 
 	host@0 {
 		reg = <0 0 0 0 0>;
@@ -649,6 +686,8 @@
 			reg = <0 0 0 0 0>;
 		};
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usdhc2 {
@@ -656,11 +695,17 @@
 	pinctrl-0 = <&pinctrl_usdhc2>;
 	bus-width = <4>;
 	cd-gpios = <&gpio2 2 GPIO_ACTIVE_LOW>;
+<<<<<<< HEAD
 	wp-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;
 	vmmc-supply = <&reg_3p3v_sd>;
 	vqmmc-supply = <&reg_3p3v>;
 	no-1-8-v;
 	no-sdio;
+=======
+	disable-wp;
+	vmmc-supply = <&reg_3p3v_sd>;
+	vqmmc-supply = <&reg_3p3v>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -669,11 +714,17 @@
 	pinctrl-0 = <&pinctrl_usdhc3>;
 	bus-width = <4>;
 	cd-gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
+<<<<<<< HEAD
 	wp-gpios = <&gpio2 1 GPIO_ACTIVE_HIGH>;
 	vmmc-supply = <&reg_3p3v_sd>;
 	vqmmc-supply = <&reg_3p3v>;
 	no-1-8-v;
 	no-sdio;
+=======
+	disable-wp;
+	vmmc-supply = <&reg_3p3v_sd>;
+	vqmmc-supply = <&reg_3p3v>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -683,10 +734,14 @@
 	bus-width = <8>;
 	vmmc-supply = <&reg_3p3v>;
 	vqmmc-supply = <&reg_3p3v>;
+<<<<<<< HEAD
 	no-1-8-v;
 	non-removable;
 	no-sdio;
 	no-sd;
+=======
+	non-removable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -714,6 +769,11 @@
 			compatible = "marvell,mv88e6085";
 			pinctrl-0 = <&pinctrl_switch_irq>;
 			pinctrl-names = "default";
+<<<<<<< HEAD
+=======
+			#address-cells = <1>;
+			#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0>;
 			dsa,member = <0 0>;
 			eeprom-length = <512>;
@@ -802,7 +862,10 @@
 
 &usbh1 {
 	vbus-supply = <&reg_5p0v_main>;
+<<<<<<< HEAD
 	disable-over-current;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -867,10 +930,13 @@
 	};
 };
 
+<<<<<<< HEAD
 &wdog1 {
 	status = "disabled";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &iomuxc {
 	pinctrl_accel: accelgrp {
 		fsl,pins = <
@@ -1080,7 +1146,10 @@
 			MX6QDL_PAD_SD2_DAT1__SD2_DATA1		0x17059
 			MX6QDL_PAD_SD2_DAT2__SD2_DATA2		0x17059
 			MX6QDL_PAD_SD2_DAT3__SD2_DATA3		0x17059
+<<<<<<< HEAD
 			MX6QDL_PAD_NANDF_D3__GPIO2_IO03		0x40010040
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			MX6QDL_PAD_NANDF_D2__GPIO2_IO02		0x40010040
 		>;
 	};
@@ -1093,7 +1162,10 @@
 			MX6QDL_PAD_SD3_DAT1__SD3_DATA1		0x17059
 			MX6QDL_PAD_SD3_DAT2__SD3_DATA2		0x17059
 			MX6QDL_PAD_SD3_DAT3__SD3_DATA3		0x17059
+<<<<<<< HEAD
 			MX6QDL_PAD_NANDF_D1__GPIO2_IO01		0x40010040
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			MX6QDL_PAD_NANDF_D0__GPIO2_IO00		0x40010040
 
 		>;

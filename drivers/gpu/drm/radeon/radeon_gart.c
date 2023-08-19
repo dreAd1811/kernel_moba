@@ -347,14 +347,23 @@ int radeon_gart_init(struct radeon_device *rdev)
 	DRM_INFO("GART: num cpu pages %u, num gpu pages %u\n",
 		 rdev->gart.num_cpu_pages, rdev->gart.num_gpu_pages);
 	/* Allocate pages table */
+<<<<<<< HEAD
 	rdev->gart.pages = vzalloc(array_size(sizeof(void *),
 				   rdev->gart.num_cpu_pages));
+=======
+	rdev->gart.pages = vzalloc(sizeof(void *) * rdev->gart.num_cpu_pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rdev->gart.pages == NULL) {
 		radeon_gart_fini(rdev);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	rdev->gart.pages_entry = vmalloc(array_size(sizeof(uint64_t),
 						    rdev->gart.num_gpu_pages));
+=======
+	rdev->gart.pages_entry = vmalloc(sizeof(uint64_t) *
+					 rdev->gart.num_gpu_pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rdev->gart.pages_entry == NULL) {
 		radeon_gart_fini(rdev);
 		return -ENOMEM;

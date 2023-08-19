@@ -1,8 +1,13 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef __NVKM_DEVICE_H__
 #define __NVKM_DEVICE_H__
+<<<<<<< HEAD
 #include <core/oclass.h>
 #include <core/event.h>
+=======
+#include <core/event.h>
+#include <core/object.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum nvkm_devidx {
 	NVKM_SUBDEV_PCI,
@@ -22,7 +27,10 @@ enum nvkm_devidx {
 	NVKM_SUBDEV_LTC,
 	NVKM_SUBDEV_MMU,
 	NVKM_SUBDEV_BAR,
+<<<<<<< HEAD
 	NVKM_SUBDEV_FAULT,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NVKM_SUBDEV_PMU,
 	NVKM_SUBDEV_VOLT,
 	NVKM_SUBDEV_ICCSENSE,
@@ -38,10 +46,14 @@ enum nvkm_devidx {
 	NVKM_ENGINE_CE3,
 	NVKM_ENGINE_CE4,
 	NVKM_ENGINE_CE5,
+<<<<<<< HEAD
 	NVKM_ENGINE_CE6,
 	NVKM_ENGINE_CE7,
 	NVKM_ENGINE_CE8,
 	NVKM_ENGINE_CE_LAST = NVKM_ENGINE_CE8,
+=======
+	NVKM_ENGINE_CE_LAST = NVKM_ENGINE_CE5,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	NVKM_ENGINE_CIPHER,
 	NVKM_ENGINE_DISP,
@@ -113,7 +125,10 @@ struct nvkm_device {
 		NV_E0    = 0xe0,
 		GM100    = 0x110,
 		GP100    = 0x130,
+<<<<<<< HEAD
 		GV100    = 0x140,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} card_type;
 	u32 chipset;
 	u8  chiprev;
@@ -128,7 +143,10 @@ struct nvkm_device {
 	struct nvkm_bus *bus;
 	struct nvkm_clk *clk;
 	struct nvkm_devinit *devinit;
+<<<<<<< HEAD
 	struct nvkm_fault *fault;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvkm_fb *fb;
 	struct nvkm_fuse *fuse;
 	struct nvkm_gpio *gpio;
@@ -149,7 +167,11 @@ struct nvkm_device {
 	struct nvkm_volt *volt;
 
 	struct nvkm_engine *bsp;
+<<<<<<< HEAD
 	struct nvkm_engine *ce[9];
+=======
+	struct nvkm_engine *ce[6];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvkm_engine *cipher;
 	struct nvkm_disp *disp;
 	struct nvkm_dma *dma;
@@ -200,7 +222,10 @@ struct nvkm_device_chip {
 	int (*bus     )(struct nvkm_device *, int idx, struct nvkm_bus **);
 	int (*clk     )(struct nvkm_device *, int idx, struct nvkm_clk **);
 	int (*devinit )(struct nvkm_device *, int idx, struct nvkm_devinit **);
+<<<<<<< HEAD
 	int (*fault   )(struct nvkm_device *, int idx, struct nvkm_fault **);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*fb      )(struct nvkm_device *, int idx, struct nvkm_fb **);
 	int (*fuse    )(struct nvkm_device *, int idx, struct nvkm_fuse **);
 	int (*gpio    )(struct nvkm_device *, int idx, struct nvkm_gpio **);
@@ -221,7 +246,11 @@ struct nvkm_device_chip {
 	int (*volt    )(struct nvkm_device *, int idx, struct nvkm_volt **);
 
 	int (*bsp     )(struct nvkm_device *, int idx, struct nvkm_engine **);
+<<<<<<< HEAD
 	int (*ce[9]   )(struct nvkm_device *, int idx, struct nvkm_engine **);
+=======
+	int (*ce[6]   )(struct nvkm_device *, int idx, struct nvkm_engine **);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*cipher  )(struct nvkm_device *, int idx, struct nvkm_engine **);
 	int (*disp    )(struct nvkm_device *, int idx, struct nvkm_disp **);
 	int (*dma     )(struct nvkm_device *, int idx, struct nvkm_dma **);

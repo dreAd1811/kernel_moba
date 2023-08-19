@@ -49,7 +49,11 @@
 static struct gnttab_vm_area {
 	struct vm_struct *area;
 	pte_t **ptes;
+<<<<<<< HEAD
 } gnttab_shared_vm_area, gnttab_status_vm_area;
+=======
+} gnttab_shared_vm_area;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int arch_gnttab_map_shared(unsigned long *frames, unsigned long nr_gframes,
 			   unsigned long max_nr_gframes,
@@ -73,6 +77,7 @@ int arch_gnttab_map_shared(unsigned long *frames, unsigned long nr_gframes,
 	return 0;
 }
 
+<<<<<<< HEAD
 int arch_gnttab_map_status(uint64_t *frames, unsigned long nr_gframes,
 			   unsigned long max_nr_gframes,
 			   grant_status_t **__shared)
@@ -110,6 +115,18 @@ void arch_gnttab_unmap(void *shared, unsigned long nr_gframes)
 
 	for (i = 0; i < nr_gframes; i++) {
 		set_pte_at(&init_mm, addr, ptes[i], __pte(0));
+=======
+void arch_gnttab_unmap(void *shared, unsigned long nr_gframes)
+{
+	unsigned long addr;
+	unsigned long i;
+
+	addr = (unsigned long)shared;
+
+	for (i = 0; i < nr_gframes; i++) {
+		set_pte_at(&init_mm, addr, gnttab_shared_vm_area.ptes[i],
+			   __pte(0));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr += PAGE_SIZE;
 	}
 }
@@ -129,6 +146,7 @@ static int arch_gnttab_valloc(struct gnttab_vm_area *area, unsigned nr_frames)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void arch_gnttab_vfree(struct gnttab_vm_area *area)
 {
 	free_vm_area(area->area);
@@ -158,6 +176,14 @@ int arch_gnttab_init(unsigned long nr_shared, unsigned long nr_status)
 err:
 	arch_gnttab_vfree(&gnttab_shared_vm_area);
 	return -ENOMEM;
+=======
+int arch_gnttab_init(unsigned long nr_shared)
+{
+	if (!xen_pv_domain())
+		return 0;
+
+	return arch_gnttab_valloc(&gnttab_shared_vm_area, nr_shared);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_XEN_PVH

@@ -1,10 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vsp1_uds.c  --  R-Car VSP1 Up and Down Scaler
  *
  * Copyright (C) 2013-2014 Renesas Electronics Corporation
  *
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/device.h>
@@ -27,22 +38,37 @@
  * Device Access
  */
 
+<<<<<<< HEAD
 static inline void vsp1_uds_write(struct vsp1_uds *uds,
 				  struct vsp1_dl_body *dlb, u32 reg, u32 data)
 {
 	vsp1_dl_body_write(dlb, reg + uds->entity.index * VI6_UDS_OFFSET, data);
+=======
+static inline void vsp1_uds_write(struct vsp1_uds *uds, struct vsp1_dl_list *dl,
+				  u32 reg, u32 data)
+{
+	vsp1_dl_list_write(dl, reg + uds->entity.index * VI6_UDS_OFFSET, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -----------------------------------------------------------------------------
  * Scaling Computation
  */
 
+<<<<<<< HEAD
 void vsp1_uds_set_alpha(struct vsp1_entity *entity, struct vsp1_dl_body *dlb,
+=======
+void vsp1_uds_set_alpha(struct vsp1_entity *entity, struct vsp1_dl_list *dl,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			unsigned int alpha)
 {
 	struct vsp1_uds *uds = to_uds(&entity->subdev);
 
+<<<<<<< HEAD
 	vsp1_uds_write(uds, dlb, VI6_UDS_ALPVAL,
+=======
+	vsp1_uds_write(uds, dl, VI6_UDS_ALPVAL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       alpha << VI6_UDS_ALPVAL_VAL0_SHIFT);
 }
 
@@ -255,9 +281,16 @@ static const struct v4l2_subdev_ops uds_ops = {
  * VSP1 Entity Operations
  */
 
+<<<<<<< HEAD
 static void uds_configure_stream(struct vsp1_entity *entity,
 				 struct vsp1_pipeline *pipe,
 				 struct vsp1_dl_body *dlb)
+=======
+static void uds_configure(struct vsp1_entity *entity,
+			  struct vsp1_pipeline *pipe,
+			  struct vsp1_dl_list *dl,
+			  enum vsp1_entity_params params)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vsp1_uds *uds = to_uds(&entity->subdev);
 	const struct v4l2_mbus_framefmt *output;
@@ -271,6 +304,30 @@ static void uds_configure_stream(struct vsp1_entity *entity,
 	output = vsp1_entity_get_pad_format(&uds->entity, uds->entity.config,
 					    UDS_PAD_SOURCE);
 
+<<<<<<< HEAD
+=======
+	if (params == VSP1_ENTITY_PARAMS_PARTITION) {
+		struct vsp1_partition *partition = pipe->partition;
+
+		/* Input size clipping */
+		vsp1_uds_write(uds, dl, VI6_UDS_HSZCLIP, VI6_UDS_HSZCLIP_HCEN |
+			       (0 << VI6_UDS_HSZCLIP_HCL_OFST_SHIFT) |
+			       (partition->uds_sink.width
+					<< VI6_UDS_HSZCLIP_HCL_SIZE_SHIFT));
+
+		/* Output size clipping */
+		vsp1_uds_write(uds, dl, VI6_UDS_CLIP_SIZE,
+			       (partition->uds_source.width
+					<< VI6_UDS_CLIP_SIZE_HSIZE_SHIFT) |
+			       (output->height
+					<< VI6_UDS_CLIP_SIZE_VSIZE_SHIFT));
+		return;
+	}
+
+	if (params != VSP1_ENTITY_PARAMS_INIT)
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hscale = uds_compute_ratio(input->width, output->width);
 	vscale = uds_compute_ratio(input->height, output->height);
 
@@ -286,22 +343,35 @@ static void uds_configure_stream(struct vsp1_entity *entity,
 	else
 		multitap = true;
 
+<<<<<<< HEAD
 	vsp1_uds_write(uds, dlb, VI6_UDS_CTRL,
 		       (uds->scale_alpha ? VI6_UDS_CTRL_AON : 0) |
 		       (multitap ? VI6_UDS_CTRL_BC : 0));
 
 	vsp1_uds_write(uds, dlb, VI6_UDS_PASS_BWIDTH,
+=======
+	vsp1_uds_write(uds, dl, VI6_UDS_CTRL,
+		       (uds->scale_alpha ? VI6_UDS_CTRL_AON : 0) |
+		       (multitap ? VI6_UDS_CTRL_BC : 0));
+
+	vsp1_uds_write(uds, dl, VI6_UDS_PASS_BWIDTH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       (uds_passband_width(hscale)
 				<< VI6_UDS_PASS_BWIDTH_H_SHIFT) |
 		       (uds_passband_width(vscale)
 				<< VI6_UDS_PASS_BWIDTH_V_SHIFT));
 
 	/* Set the scaling ratios. */
+<<<<<<< HEAD
 	vsp1_uds_write(uds, dlb, VI6_UDS_SCALE,
+=======
+	vsp1_uds_write(uds, dl, VI6_UDS_SCALE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       (hscale << VI6_UDS_SCALE_HFRAC_SHIFT) |
 		       (vscale << VI6_UDS_SCALE_VFRAC_SHIFT));
 }
 
+<<<<<<< HEAD
 static void uds_configure_partition(struct vsp1_entity *entity,
 				    struct vsp1_pipeline *pipe,
 				    struct vsp1_dl_list *dl,
@@ -328,6 +398,8 @@ static void uds_configure_partition(struct vsp1_entity *entity,
 				<< VI6_UDS_CLIP_SIZE_VSIZE_SHIFT));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int uds_max_width(struct vsp1_entity *entity,
 				  struct vsp1_pipeline *pipe)
 {
@@ -384,8 +456,12 @@ static void uds_partition(struct vsp1_entity *entity,
 }
 
 static const struct vsp1_entity_operations uds_entity_ops = {
+<<<<<<< HEAD
 	.configure_stream = uds_configure_stream,
 	.configure_partition = uds_configure_partition,
+=======
+	.configure = uds_configure,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.max_width = uds_max_width,
 	.partition = uds_partition,
 };

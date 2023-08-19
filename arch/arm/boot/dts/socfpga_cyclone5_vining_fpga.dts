@@ -161,7 +161,11 @@
 	};
 
 	at24@50 {
+<<<<<<< HEAD
 		compatible = "atmel,24c01";
+=======
+		compatible = "at24,24c01";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pagesize = <8>;
 		reg = <0x50>;
 	};
@@ -213,7 +217,11 @@
 			#size-cells = <0>;
 			reg = <6>;
 			eeprom@51 {
+<<<<<<< HEAD
 				compatible = "atmel,24c01";
+=======
+				compatible = "at,24c01";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pagesize = <8>;
 				reg = <0x51>;
 			};
@@ -224,7 +232,11 @@
 			#size-cells = <0>;
 			reg = <7>;
 			eeprom@51 {
+<<<<<<< HEAD
 				compatible = "atmel,24c01";
+=======
+				compatible = "at,24c01";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pagesize = <8>;
 				reg = <0x51>;
 			};
@@ -237,7 +249,11 @@
 	clock-frequency = <100000>;
 
 	at24@50 {
+<<<<<<< HEAD
 		compatible = "atmel,24c02";
+=======
+		compatible = "at24,24c02";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pagesize = <8>;
 		reg = <0x50>;
 	};

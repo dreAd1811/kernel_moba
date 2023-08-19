@@ -78,6 +78,7 @@ bool tinydrm_merge_clips(struct drm_clip_rect *dst,
 }
 EXPORT_SYMBOL(tinydrm_merge_clips);
 
+<<<<<<< HEAD
 int tinydrm_fb_dirty(struct drm_framebuffer *fb,
 		     struct drm_file *file_priv,
 		     unsigned int flags, unsigned int color,
@@ -108,6 +109,8 @@ int tinydrm_fb_dirty(struct drm_framebuffer *fb,
 }
 EXPORT_SYMBOL(tinydrm_fb_dirty);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * tinydrm_memcpy - Copy clip buffer
  * @dst: Destination buffer
@@ -266,6 +269,104 @@ void tinydrm_xrgb8888_to_gray8(u8 *dst, void *vaddr, struct drm_framebuffer *fb,
 }
 EXPORT_SYMBOL(tinydrm_xrgb8888_to_gray8);
 
+<<<<<<< HEAD
+=======
+/**
+ * tinydrm_of_find_backlight - Find backlight device in device-tree
+ * @dev: Device
+ *
+ * This function looks for a DT node pointed to by a property named 'backlight'
+ * and uses of_find_backlight_by_node() to get the backlight device.
+ * Additionally if the brightness property is zero, it is set to
+ * max_brightness.
+ *
+ * Returns:
+ * NULL if there's no backlight property.
+ * Error pointer -EPROBE_DEFER if the DT node is found, but no backlight device
+ * is found.
+ * If the backlight device is found, a pointer to the structure is returned.
+ */
+struct backlight_device *tinydrm_of_find_backlight(struct device *dev)
+{
+	struct backlight_device *backlight;
+	struct device_node *np;
+
+	np = of_parse_phandle(dev->of_node, "backlight", 0);
+	if (!np)
+		return NULL;
+
+	backlight = of_find_backlight_by_node(np);
+	of_node_put(np);
+
+	if (!backlight)
+		return ERR_PTR(-EPROBE_DEFER);
+
+	if (!backlight->props.brightness) {
+		backlight->props.brightness = backlight->props.max_brightness;
+		DRM_DEBUG_KMS("Backlight brightness set to %d\n",
+			      backlight->props.brightness);
+	}
+
+	return backlight;
+}
+EXPORT_SYMBOL(tinydrm_of_find_backlight);
+
+/**
+ * tinydrm_enable_backlight - Enable backlight helper
+ * @backlight: Backlight device
+ *
+ * Returns:
+ * Zero on success, negative error code on failure.
+ */
+int tinydrm_enable_backlight(struct backlight_device *backlight)
+{
+	unsigned int old_state;
+	int ret;
+
+	if (!backlight)
+		return 0;
+
+	old_state = backlight->props.state;
+	backlight->props.state &= ~BL_CORE_FBBLANK;
+	DRM_DEBUG_KMS("Backlight state: 0x%x -> 0x%x\n", old_state,
+		      backlight->props.state);
+
+	ret = backlight_update_status(backlight);
+	if (ret)
+		DRM_ERROR("Failed to enable backlight %d\n", ret);
+
+	return ret;
+}
+EXPORT_SYMBOL(tinydrm_enable_backlight);
+
+/**
+ * tinydrm_disable_backlight - Disable backlight helper
+ * @backlight: Backlight device
+ *
+ * Returns:
+ * Zero on success, negative error code on failure.
+ */
+int tinydrm_disable_backlight(struct backlight_device *backlight)
+{
+	unsigned int old_state;
+	int ret;
+
+	if (!backlight)
+		return 0;
+
+	old_state = backlight->props.state;
+	backlight->props.state |= BL_CORE_FBBLANK;
+	DRM_DEBUG_KMS("Backlight state: 0x%x -> 0x%x\n", old_state,
+		      backlight->props.state);
+	ret = backlight_update_status(backlight);
+	if (ret)
+		DRM_ERROR("Failed to disable backlight %d\n", ret);
+
+	return ret;
+}
+EXPORT_SYMBOL(tinydrm_disable_backlight);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if IS_ENABLED(CONFIG_SPI)
 
 /**
@@ -349,9 +450,17 @@ tinydrm_dbg_spi_print(struct spi_device *spi, struct spi_transfer *tr,
 void _tinydrm_dbg_spi_message(struct spi_device *spi, struct spi_message *m)
 {
 	struct spi_transfer *tmp;
+<<<<<<< HEAD
 	int i = 0;
 
 	list_for_each_entry(tmp, &m->transfers, transfer_list) {
+=======
+	struct list_head *pos;
+	int i = 0;
+
+	list_for_each(pos, &m->transfers) {
+		tmp = list_entry(pos, struct spi_transfer, transfer_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (tmp->tx_buf)
 			tinydrm_dbg_spi_print(spi, tmp, tmp->tx_buf, i, true);

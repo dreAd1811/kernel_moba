@@ -257,6 +257,10 @@ extern int rbv_present,via_alt_mapping;
 
 struct irq_desc;
 
+<<<<<<< HEAD
+=======
+extern void via_l2_flush(int writeback);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void via_register_interrupts(void);
 extern void via_irq_enable(int);
 extern void via_irq_disable(int);

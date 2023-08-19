@@ -27,6 +27,7 @@
 	clock-frequency = <12000000>;
 };
 
+<<<<<<< HEAD
 &tcb0 {
 	timer@0 {
 		compatible = "atmel,tcb-timer";
@@ -39,6 +40,8 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c0 {
 	status = "okay";
 

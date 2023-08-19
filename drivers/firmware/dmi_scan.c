@@ -26,13 +26,24 @@ static u16 dmi_num;
 static u8 smbios_entry_point[32];
 static int smbios_entry_point_size;
 
+<<<<<<< HEAD
+=======
+/*
+ * Catch too early calls to dmi_check_system():
+ */
+static int dmi_initialized;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* DMI system identification string used during boot */
 static char dmi_ids_string[128] __initdata;
 
 static struct dmi_memdev_info {
 	const char *device;
 	const char *bank;
+<<<<<<< HEAD
 	u64 size;		/* bytes */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 handle;
 } *dmi_memdev;
 static int dmi_memdev_nr;
@@ -211,9 +222,15 @@ static void __init dmi_save_uuid(const struct dmi_header *dm, int slot,
 	 * says that this is the defacto standard.
 	 */
 	if (dmi_ver >= 0x020600)
+<<<<<<< HEAD
 		sprintf(s, "%pUl", d);
 	else
 		sprintf(s, "%pUb", d);
+=======
+		sprintf(s, "%pUL", d);
+	else
+		sprintf(s, "%pUB", d);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dmi_ident[slot] = s;
 }
@@ -387,8 +404,11 @@ static void __init save_mem_devices(const struct dmi_header *dm, void *v)
 {
 	const char *d = (const char *)dm;
 	static int nr;
+<<<<<<< HEAD
 	u64 bytes;
 	u16 size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dm->type != DMI_ENTRY_MEM_DEVICE || dm->length < 0x12)
 		return;
@@ -399,6 +419,7 @@ static void __init save_mem_devices(const struct dmi_header *dm, void *v)
 	dmi_memdev[nr].handle = get_unaligned(&dm->handle);
 	dmi_memdev[nr].device = dmi_string(dm, d[0x10]);
 	dmi_memdev[nr].bank = dmi_string(dm, d[0x11]);
+<<<<<<< HEAD
 
 	size = get_unaligned((u16 *)&d[0xC]);
 	if (size == 0)
@@ -413,6 +434,8 @@ static void __init save_mem_devices(const struct dmi_header *dm, void *v)
 		bytes = (u64)get_unaligned((u32 *)&d[0x1C]) << 20;
 
 	dmi_memdev[nr].size = bytes;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nr++;
 }
 
@@ -447,7 +470,10 @@ static void __init dmi_decode(const struct dmi_header *dm, void *dummy)
 		dmi_save_ident(dm, DMI_PRODUCT_VERSION, 6);
 		dmi_save_ident(dm, DMI_PRODUCT_SERIAL, 7);
 		dmi_save_uuid(dm, DMI_PRODUCT_UUID, 8);
+<<<<<<< HEAD
 		dmi_save_ident(dm, DMI_PRODUCT_SKU, 25);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dmi_save_ident(dm, DMI_PRODUCT_FAMILY, 26);
 		break;
 	case 2:		/* Base Board Information */
@@ -642,7 +668,11 @@ void __init dmi_scan_machine(void)
 
 			if (!dmi_smbios3_present(buf)) {
 				dmi_available = 1;
+<<<<<<< HEAD
 				return;
+=======
+				goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		if (efi.smbios == EFI_INVALID_TABLE_ADDR)
@@ -660,7 +690,11 @@ void __init dmi_scan_machine(void)
 
 		if (!dmi_present(buf)) {
 			dmi_available = 1;
+<<<<<<< HEAD
 			return;
+=======
+			goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else if (IS_ENABLED(CONFIG_DMI_SCAN_MACHINE_NON_EFI_FALLBACK)) {
 		p = dmi_early_remap(0xF0000, 0x10000);
@@ -677,7 +711,11 @@ void __init dmi_scan_machine(void)
 			if (!dmi_smbios3_present(buf)) {
 				dmi_available = 1;
 				dmi_early_unmap(p, 0x10000);
+<<<<<<< HEAD
 				return;
+=======
+				goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			memcpy(buf, buf + 16, 16);
 		}
@@ -695,7 +733,11 @@ void __init dmi_scan_machine(void)
 			if (!dmi_present(buf)) {
 				dmi_available = 1;
 				dmi_early_unmap(p, 0x10000);
+<<<<<<< HEAD
 				return;
+=======
+				goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			memcpy(buf, buf + 16, 16);
 		}
@@ -703,6 +745,11 @@ void __init dmi_scan_machine(void)
 	}
  error:
 	pr_info("DMI not present or invalid.\n");
+<<<<<<< HEAD
+=======
+ out:
+	dmi_initialized = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t raw_table_read(struct file *file, struct kobject *kobj,
@@ -789,10 +836,16 @@ static bool dmi_matches(const struct dmi_system_id *dmi)
 {
 	int i;
 
+<<<<<<< HEAD
+=======
+	WARN(!dmi_initialized, KERN_ERR "dmi check: not initialized yet.\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(dmi->matches); i++) {
 		int s = dmi->matches[i].slot;
 		if (s == DMI_NONE)
 			break;
+<<<<<<< HEAD
 		if (s == DMI_OEM_STRING) {
 			/* DMI_OEM_STRING must be exact match */
 			const struct dmi_device *valid;
@@ -811,6 +864,15 @@ static bool dmi_matches(const struct dmi_system_id *dmi)
 					   dmi->matches[i].substr))
 					continue;
 			}
+=======
+		if (dmi_ident[s]) {
+			if (!dmi->matches[i].exact_match &&
+			    strstr(dmi_ident[s], dmi->matches[i].substr))
+				continue;
+			else if (dmi->matches[i].exact_match &&
+				 !strcmp(dmi_ident[s], dmi->matches[i].substr))
+				continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* No match */
@@ -840,8 +902,11 @@ static bool dmi_is_end_of_table(const struct dmi_system_id *dmi)
  *	Walk the blacklist table running matching functions until someone
  *	returns non zero or we hit the end. Callback function is called for
  *	each successful match. Returns the number of matches.
+<<<<<<< HEAD
  *
  *	dmi_scan_machine must be called before this function is called.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int dmi_check_system(const struct dmi_system_id *list)
 {
@@ -870,8 +935,11 @@ EXPORT_SYMBOL(dmi_check_system);
  *
  *	Walk the blacklist table until the first match is found.  Return the
  *	pointer to the matching entry or NULL if there's no match.
+<<<<<<< HEAD
  *
  *	dmi_scan_machine must be called before this function is called.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 const struct dmi_system_id *dmi_first_match(const struct dmi_system_id *list)
 {
@@ -1031,6 +1099,7 @@ out:
 EXPORT_SYMBOL(dmi_get_date);
 
 /**
+<<<<<<< HEAD
  *	dmi_get_bios_year - get a year out of DMI_BIOS_DATE field
  *
  *	Returns year on success, -ENXIO if DMI is not selected,
@@ -1051,6 +1120,8 @@ int dmi_get_bios_year(void)
 EXPORT_SYMBOL(dmi_get_bios_year);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	dmi_walk - Walk the DMI table and get called back for every record
  *	@decode: Callback function
  *	@private_data: Private data to be passed to the callback function
@@ -1111,6 +1182,7 @@ void dmi_memdev_name(u16 handle, const char **bank, const char **device)
 	}
 }
 EXPORT_SYMBOL_GPL(dmi_memdev_name);
+<<<<<<< HEAD
 
 u64 dmi_memdev_size(u16 handle)
 {
@@ -1125,3 +1197,5 @@ u64 dmi_memdev_size(u16 handle)
 	return ~0ull;
 }
 EXPORT_SYMBOL_GPL(dmi_memdev_size);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

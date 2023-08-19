@@ -28,8 +28,11 @@
 struct regmap_mmio_context {
 	void __iomem *regs;
 	unsigned val_bytes;
+<<<<<<< HEAD
 
 	bool attached_clk;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk *clk;
 
 	void (*reg_write)(struct regmap_mmio_context *ctx,
@@ -206,8 +209,12 @@ static void regmap_mmio_free_context(void *context)
 
 	if (!IS_ERR(ctx->clk)) {
 		clk_unprepare(ctx->clk);
+<<<<<<< HEAD
 		if (!ctx->attached_clk)
 			clk_put(ctx->clk);
+=======
+		clk_put(ctx->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	kfree(context);
 }
@@ -366,6 +373,7 @@ struct regmap *__devm_regmap_init_mmio_clk(struct device *dev,
 }
 EXPORT_SYMBOL_GPL(__devm_regmap_init_mmio_clk);
 
+<<<<<<< HEAD
 int regmap_mmio_attach_clk(struct regmap *map, struct clk *clk)
 {
 	struct regmap_mmio_context *ctx = map->bus_context;
@@ -388,4 +396,6 @@ void regmap_mmio_detach_clk(struct regmap *map)
 }
 EXPORT_SYMBOL_GPL(regmap_mmio_detach_clk);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

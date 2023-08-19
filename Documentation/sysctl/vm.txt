@@ -27,11 +27,18 @@ Currently, these files are in /proc/sys/vm:
 - dirty_bytes
 - dirty_expire_centisecs
 - dirty_ratio
+<<<<<<< HEAD
 - dirtytime_expire_seconds
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - dirty_writeback_centisecs
 - drop_caches
 - extfrag_threshold
 - extra_free_kbytes
+<<<<<<< HEAD
+=======
+- hugepages_treat_as_movable
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - hugetlb_shm_group
 - laptop_mode
 - legacy_va_layout
@@ -46,7 +53,10 @@ Currently, these files are in /proc/sys/vm:
 - mmap_rnd_bits
 - mmap_rnd_compat_bits
 - nr_hugepages
+<<<<<<< HEAD
 - nr_hugepages_mempolicy
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - nr_overcommit_hugepages
 - nr_trim_pages         (only if CONFIG_MMU=n)
 - numa_zonelist_order
@@ -61,11 +71,17 @@ Currently, these files are in /proc/sys/vm:
 - percpu_pagelist_fraction
 - stat_interval
 - stat_refresh
+<<<<<<< HEAD
 - numa_stat
 - swappiness
 - user_reserve_kbytes
 - vfs_cache_pressure
 - watermark_boost_factor
+=======
+- swappiness
+- user_reserve_kbytes
+- vfs_cache_pressure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - watermark_scale_factor
 - zone_reclaim_mode
 - want_old_faultaround_pte
@@ -184,6 +200,7 @@ The total available memory is not equal to total system memory.
 
 ==============================================================
 
+<<<<<<< HEAD
 dirtytime_expire_seconds
 
 When a lazytime inode is constantly having its pages dirtied, the inode with
@@ -196,6 +213,8 @@ And, it is also used as the interval to wakeup dirtytime_writeback thread.
 
 ==============================================================
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 dirty_writeback_centisecs
 
 The kernel flusher threads will periodically wake up and write `old' data
@@ -293,6 +312,33 @@ related latencies.
 
 ==============================================================
 
+<<<<<<< HEAD
+=======
+hugepages_treat_as_movable
+
+This parameter controls whether we can allocate hugepages from ZONE_MOVABLE
+or not. If set to non-zero, hugepages can be allocated from ZONE_MOVABLE.
+ZONE_MOVABLE is created when kernel boot parameter kernelcore= is specified,
+so this parameter has no effect if used without kernelcore=.
+
+Hugepage migration is now available in some situations which depend on the
+architecture and/or the hugepage size. If a hugepage supports migration,
+allocation from ZONE_MOVABLE is always enabled for the hugepage regardless
+of the value of this parameter.
+IOW, this parameter affects only non-migratable hugepages.
+
+Assuming that hugepages are not migratable in your system, one usecase of
+this parameter is that users can make hugepage pool more extensible by
+enabling the allocation from ZONE_MOVABLE. This is because on ZONE_MOVABLE
+page reclaim/migration/compaction work more and you can get contiguous
+memory more likely. Note that using ZONE_MOVABLE for non-migratable
+hugepages can do harm to other features like memory hotremove (because
+memory hotremove expects that memory blocks on ZONE_MOVABLE are always
+removable,) so it's a trade-off responsible for the users.
+
+==============================================================
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 hugetlb_shm_group
 
 hugetlb_shm_group contains group id that is allowed to create SysV
@@ -345,6 +391,11 @@ The lowmem_reserve_ratio is an array. You can see them by reading this file.
 % cat /proc/sys/vm/lowmem_reserve_ratio
 256     256     32
 -
+<<<<<<< HEAD
+=======
+Note: # of this elements is one fewer than number of zones. Because the highest
+      zone's value is not necessary for following calculation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 But, these values are not used directly. The kernel calculates # of protection
 pages for each zones from them. These are shown as array of protection pages
@@ -395,8 +446,12 @@ As above expression, they are reciprocal number of ratio.
 pages of higher zones on the node.
 
 If you would like to protect more pages, smaller values are effective.
+<<<<<<< HEAD
 The minimum value is 1 (1/1 -> 100%). The value less than 1 completely
 disables protection of the pages.
+=======
+The minimum value is 1 (1/1 -> 100%).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ==============================================================
 
@@ -548,6 +603,7 @@ nr_hugepages
 
 Change the minimum size of the hugepage pool.
 
+<<<<<<< HEAD
 See Documentation/admin-guide/mm/hugetlbpage.rst
 
 ==============================================================
@@ -558,6 +614,9 @@ Change the size of the hugepage pool at run-time on a specific
 set of NUMA nodes.
 
 See Documentation/admin-guide/mm/hugetlbpage.rst
+=======
+See Documentation/vm/hugetlbpage.txt
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ==============================================================
 
@@ -566,7 +625,11 @@ nr_overcommit_hugepages
 Change the maximum size of the hugepage pool. The maximum is
 nr_hugepages + nr_overcommit_hugepages.
 
+<<<<<<< HEAD
 See Documentation/admin-guide/mm/hugetlbpage.rst
+=======
+See Documentation/vm/hugetlbpage.txt
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ==============================================================
 
@@ -639,7 +702,11 @@ oom_dump_tasks
 
 Enables a system-wide task dump (excluding kernel threads) to be produced
 when the kernel performs an OOM-killing and includes such information as
+<<<<<<< HEAD
 pid, uid, tgid, vm size, rss, pgtables_bytes, swapents, oom_score_adj
+=======
+pid, uid, tgid, vm size, rss, nr_ptes, nr_pmds, swapents, oom_score_adj
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 score, and name.  This is helpful to determine why the OOM killer was
 invoked, to identify the rogue task that caused it, and to determine why
 the OOM killer chose the task it did to kill.
@@ -727,8 +794,13 @@ and don't use much of it.
 
 The default value is 0.
 
+<<<<<<< HEAD
 See Documentation/vm/overcommit-accounting.rst and
 mm/util.c::__vm_enough_memory() for more information.
+=======
+See Documentation/vm/overcommit-accounting and
+mm/mmap.c::__vm_enough_memory() for more information.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ==============================================================
 
@@ -827,6 +899,7 @@ with no ill effects: errors and warnings on these stats are suppressed.)
 
 ==============================================================
 
+<<<<<<< HEAD
 numa_stat
 
 This interface allows runtime configuration of numa statistics.
@@ -846,6 +919,12 @@ swappiness
 
 This control is used to define how aggressive the kernel will swap
 memory pages.  Higher values will increase aggressiveness, lower values
+=======
+swappiness
+
+This control is used to define how aggressive the kernel will swap
+memory pages.  Higher values will increase agressiveness, lower values
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 decrease the amount of swap.  A value of 0 instructs the kernel not to
 initiate swap until the amount of free and file-backed pages is less
 than the high water mark in a zone.
@@ -893,6 +972,7 @@ ten times more freeable objects than there are.
 
 =============================================================
 
+<<<<<<< HEAD
 watermark_boost_factor:
 
 This factor controls the level of reclaim when memory is being fragmented.
@@ -913,6 +993,8 @@ smaller than a pageblock then a pageblocks worth of pages will be reclaimed
 
 =============================================================
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 watermark_scale_factor:
 
 This factor controls the aggressiveness of kswapd. It defines the

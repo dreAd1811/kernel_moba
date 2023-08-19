@@ -389,7 +389,11 @@ static int __igt_reserve(unsigned int count, u64 size)
 	if (!order)
 		goto err;
 
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(count, sizeof(*nodes)));
+=======
+	nodes = vzalloc(sizeof(*nodes) * count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nodes)
 		goto err_order;
 
@@ -579,7 +583,11 @@ static int __igt_insert(unsigned int count, u64 size, bool replace)
 	DRM_MM_BUG_ON(!size);
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	nodes = vmalloc(array_size(count, sizeof(*nodes)));
+=======
+	nodes = vmalloc(count * sizeof(*nodes));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nodes)
 		goto err;
 
@@ -682,8 +690,11 @@ static int __igt_insert(unsigned int count, u64 size, bool replace)
 		drm_mm_for_each_node_safe(node, next, &mm)
 			drm_mm_remove_node(node);
 		DRM_MM_BUG_ON(!drm_mm_clean(&mm));
+<<<<<<< HEAD
 
 		cond_resched();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = 0;
@@ -889,7 +900,11 @@ static int __igt_insert_range(unsigned int count, u64 size, u64 start, u64 end)
 	 */
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(count, sizeof(*nodes)));
+=======
+	nodes = vzalloc(count * sizeof(*nodes));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nodes)
 		goto err;
 
@@ -946,8 +961,11 @@ static int __igt_insert_range(unsigned int count, u64 size, u64 start, u64 end)
 		drm_mm_for_each_node_safe(node, next, &mm)
 			drm_mm_remove_node(node);
 		DRM_MM_BUG_ON(!drm_mm_clean(&mm));
+<<<<<<< HEAD
 
 		cond_resched();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = 0;
@@ -1046,7 +1064,11 @@ static int igt_align(void *ignored)
 	 * meets our requirements.
 	 */
 
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(max_count, sizeof(*nodes)));
+=======
+	nodes = vzalloc(max_count * sizeof(*nodes));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nodes)
 		goto err;
 
@@ -1072,7 +1094,10 @@ static int igt_align(void *ignored)
 		drm_mm_for_each_node_safe(node, next, &mm)
 			drm_mm_remove_node(node);
 		DRM_MM_BUG_ON(!drm_mm_clean(&mm));
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cond_resched();
 	}
 
@@ -1416,7 +1441,11 @@ static int igt_evict(void *ignored)
 	 */
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(size, sizeof(*nodes)));
+=======
+	nodes = vzalloc(size * sizeof(*nodes));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nodes)
 		goto err;
 
@@ -1526,7 +1555,11 @@ static int igt_evict_range(void *ignored)
 	 */
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(size, sizeof(*nodes)));
+=======
+	nodes = vzalloc(size * sizeof(*nodes));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nodes)
 		goto err;
 
@@ -1627,11 +1660,19 @@ static int igt_topdown(void *ignored)
 	 */
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(count, sizeof(*nodes)));
 	if (!nodes)
 		goto err;
 
 	bitmap = kcalloc(count / BITS_PER_LONG, sizeof(unsigned long),
+=======
+	nodes = vzalloc(count * sizeof(*nodes));
+	if (!nodes)
+		goto err;
+
+	bitmap = kzalloc(count / BITS_PER_LONG * sizeof(unsigned long),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 GFP_KERNEL);
 	if (!bitmap)
 		goto err_nodes;
@@ -1741,11 +1782,19 @@ static int igt_bottomup(void *ignored)
 	 */
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(count, sizeof(*nodes)));
 	if (!nodes)
 		goto err;
 
 	bitmap = kcalloc(count / BITS_PER_LONG, sizeof(unsigned long),
+=======
+	nodes = vzalloc(count * sizeof(*nodes));
+	if (!nodes)
+		goto err;
+
+	bitmap = kzalloc(count / BITS_PER_LONG * sizeof(unsigned long),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 GFP_KERNEL);
 	if (!bitmap)
 		goto err_nodes;
@@ -1825,6 +1874,7 @@ err:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int __igt_once(unsigned int mode)
 {
 	struct drm_mm mm;
@@ -1896,6 +1946,8 @@ static int igt_highest(void *ignored)
 	return __igt_once(DRM_MM_INSERT_HIGH);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void separate_adjacent_colors(const struct drm_mm_node *node,
 				     unsigned long color,
 				     u64 *start,
@@ -2169,7 +2221,11 @@ static int igt_color_evict(void *ignored)
 	 */
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(total_size, sizeof(*nodes)));
+=======
+	nodes = vzalloc(total_size * sizeof(*nodes));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nodes)
 		goto err;
 
@@ -2270,7 +2326,11 @@ static int igt_color_evict_range(void *ignored)
 	 */
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	nodes = vzalloc(array_size(total_size, sizeof(*nodes)));
+=======
+	nodes = vzalloc(total_size * sizeof(*nodes));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nodes)
 		goto err;
 

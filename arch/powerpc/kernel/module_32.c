@@ -109,12 +109,20 @@ static unsigned long get_plt_size(const Elf32_Ehdr *hdr,
 	for (i = 1; i < hdr->e_shnum; i++) {
 		/* If it's called *.init*, and we're not init, we're
                    not interested */
+<<<<<<< HEAD
 		if ((strstr(secstrings + sechdrs[i].sh_name, ".init") != NULL)
+=======
+		if ((strstr(secstrings + sechdrs[i].sh_name, ".init") != 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    != is_init)
 			continue;
 
 		/* We don't want to look at debug sections. */
+<<<<<<< HEAD
 		if (strstr(secstrings + sechdrs[i].sh_name, ".debug"))
+=======
+		if (strstr(secstrings + sechdrs[i].sh_name, ".debug") != 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		if (sechdrs[i].sh_type == SHT_RELA) {

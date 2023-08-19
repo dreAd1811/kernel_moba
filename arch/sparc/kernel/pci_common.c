@@ -329,6 +329,46 @@ void pci_get_pbm_props(struct pci_pbm_info *pbm)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void pci_register_legacy_regions(struct resource *io_res,
+					struct resource *mem_res)
+{
+	struct resource *p;
+
+	/* VGA Video RAM. */
+	p = kzalloc(sizeof(*p), GFP_KERNEL);
+	if (!p)
+		return;
+
+	p->name = "Video RAM area";
+	p->start = mem_res->start + 0xa0000UL;
+	p->end = p->start + 0x1ffffUL;
+	p->flags = IORESOURCE_BUSY;
+	request_resource(mem_res, p);
+
+	p = kzalloc(sizeof(*p), GFP_KERNEL);
+	if (!p)
+		return;
+
+	p->name = "System ROM";
+	p->start = mem_res->start + 0xf0000UL;
+	p->end = p->start + 0xffffUL;
+	p->flags = IORESOURCE_BUSY;
+	request_resource(mem_res, p);
+
+	p = kzalloc(sizeof(*p), GFP_KERNEL);
+	if (!p)
+		return;
+
+	p->name = "Video ROM";
+	p->start = mem_res->start + 0xc0000UL;
+	p->end = p->start + 0x7fffUL;
+	p->flags = IORESOURCE_BUSY;
+	request_resource(mem_res, p);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void pci_register_iommu_region(struct pci_pbm_info *pbm)
 {
 	const u32 *vdma = of_get_property(pbm->op->dev.of_node, "virtual-dma",
@@ -360,8 +400,11 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 	int i, saw_mem, saw_io;
 	int num_pbm_ranges;
 
+<<<<<<< HEAD
 	/* Corresponding generic code in of_pci_get_host_bridge_resources() */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	saw_mem = saw_io = 0;
 	pbm_ranges = of_get_property(pbm->op->dev.of_node, "ranges", &i);
 	if (!pbm_ranges) {
@@ -376,16 +419,24 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 
 	for (i = 0; i < num_pbm_ranges; i++) {
 		const struct linux_prom_pci_ranges *pr = &pbm_ranges[i];
+<<<<<<< HEAD
 		unsigned long a, size, region_a;
 		u32 parent_phys_hi, parent_phys_lo;
 		u32 child_phys_mid, child_phys_lo;
+=======
+		unsigned long a, size;
+		u32 parent_phys_hi, parent_phys_lo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 size_hi, size_lo;
 		int type;
 
 		parent_phys_hi = pr->parent_phys_hi;
 		parent_phys_lo = pr->parent_phys_lo;
+<<<<<<< HEAD
 		child_phys_mid = pr->child_phys_mid;
 		child_phys_lo = pr->child_phys_lo;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (tlb_type == hypervisor)
 			parent_phys_hi &= 0x0fffffff;
 
@@ -395,8 +446,11 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 		type = (pr->child_phys_hi >> 24) & 0x3;
 		a = (((unsigned long)parent_phys_hi << 32UL) |
 		     ((unsigned long)parent_phys_lo  <<  0UL));
+<<<<<<< HEAD
 		region_a = (((unsigned long)child_phys_mid << 32UL) |
 		     ((unsigned long)child_phys_lo  <<  0UL));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size = (((unsigned long)size_hi << 32UL) |
 			((unsigned long)size_lo  <<  0UL));
 
@@ -411,7 +465,10 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 			pbm->io_space.start = a;
 			pbm->io_space.end = a + size - 1UL;
 			pbm->io_space.flags = IORESOURCE_IO;
+<<<<<<< HEAD
 			pbm->io_offset = a - region_a;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			saw_io = 1;
 			break;
 
@@ -420,7 +477,10 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 			pbm->mem_space.start = a;
 			pbm->mem_space.end = a + size - 1UL;
 			pbm->mem_space.flags = IORESOURCE_MEM;
+<<<<<<< HEAD
 			pbm->mem_offset = a - region_a;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			saw_mem = 1;
 			break;
 
@@ -429,7 +489,10 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 			pbm->mem64_space.start = a;
 			pbm->mem64_space.end = a + size - 1UL;
 			pbm->mem64_space.flags = IORESOURCE_MEM;
+<<<<<<< HEAD
 			pbm->mem64_offset = a - region_a;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			saw_mem = 1;
 			break;
 
@@ -445,6 +508,7 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 		prom_halt();
 	}
 
+<<<<<<< HEAD
 	if (pbm->io_space.flags)
 		printk("%s: PCI IO %pR offset %llx\n",
 		       pbm->name, &pbm->io_space, pbm->io_offset);
@@ -461,6 +525,16 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 	if (pbm->mem64_space.flags)
 		printk("%s: PCI MEM64 %pR offset %llx\n",
 		       pbm->name, &pbm->mem64_space, pbm->mem64_offset);
+=======
+	printk("%s: PCI IO[%llx] MEM[%llx]",
+	       pbm->name,
+	       pbm->io_space.start,
+	       pbm->mem_space.start);
+	if (pbm->mem64_space.flags)
+		printk(" MEM64[%llx]",
+		       pbm->mem64_space.start);
+	printk("\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pbm->io_space.name = pbm->mem_space.name = pbm->name;
 	pbm->mem64_space.name = pbm->name;
@@ -470,6 +544,11 @@ void pci_determine_mem_io_space(struct pci_pbm_info *pbm)
 	if (pbm->mem64_space.flags)
 		request_resource(&iomem_resource, &pbm->mem64_space);
 
+<<<<<<< HEAD
+=======
+	pci_register_legacy_regions(&pbm->io_space,
+				    &pbm->mem_space);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_register_iommu_region(pbm);
 }
 
@@ -489,8 +568,13 @@ void pci_scan_for_target_abort(struct pci_pbm_info *pbm,
 				   PCI_STATUS_REC_TARGET_ABORT));
 		if (error_bits) {
 			pci_write_config_word(pdev, PCI_STATUS, error_bits);
+<<<<<<< HEAD
 			pci_info(pdev, "%s: Device saw Target Abort [%016x]\n",
 				 pbm->name, status);
+=======
+			printk("%s: Device %s saw Target Abort [%016x]\n",
+			       pbm->name, pci_name(pdev), status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -512,8 +596,13 @@ void pci_scan_for_master_abort(struct pci_pbm_info *pbm,
 			(status & (PCI_STATUS_REC_MASTER_ABORT));
 		if (error_bits) {
 			pci_write_config_word(pdev, PCI_STATUS, error_bits);
+<<<<<<< HEAD
 			pci_info(pdev, "%s: Device received Master Abort "
 				 "[%016x]\n", pbm->name, status);
+=======
+			printk("%s: Device %s received Master Abort [%016x]\n",
+			       pbm->name, pci_name(pdev), status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -536,8 +625,13 @@ void pci_scan_for_parity_error(struct pci_pbm_info *pbm,
 				   PCI_STATUS_DETECTED_PARITY));
 		if (error_bits) {
 			pci_write_config_word(pdev, PCI_STATUS, error_bits);
+<<<<<<< HEAD
 			pci_info(pdev, "%s: Device saw Parity Error [%016x]\n",
 				 pbm->name, status);
+=======
+			printk("%s: Device %s saw Parity Error [%016x]\n",
+			       pbm->name, pci_name(pdev), status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 

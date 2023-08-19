@@ -19,7 +19,10 @@
 #include <linux/linkage.h>
 #include <asm/current.h>
 #include <asm/asm-offsets.h>
+<<<<<<< HEAD
 #include <asm/asmmacro.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/processor.h>
 
 #if XCHAL_UNALIGNED_LOAD_EXCEPTION || XCHAL_UNALIGNED_STORE_EXCEPTION
@@ -67,6 +70,11 @@
 #define	INSN_T		24
 #define	INSN_OP1	16
 
+<<<<<<< HEAD
+=======
+.macro __src_b	r, w0, w1;	src	\r, \w0, \w1;	.endm
+.macro __ssa8	r;		ssa8b	\r;		.endm
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .macro __ssa8r	r;		ssa8l	\r;		.endm
 .macro __sh	r, s;		srl	\r, \s;		.endm
 .macro __sl	r, s;		sll	\r, \s;		.endm
@@ -80,6 +88,11 @@
 #define	INSN_T		4
 #define	INSN_OP1	12
 
+<<<<<<< HEAD
+=======
+.macro __src_b	r, w0, w1;	src	\r, \w1, \w0;	.endm
+.macro __ssa8	r;		ssa8l	\r;		.endm
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .macro __ssa8r	r;		ssa8b	\r;		.endm
 .macro __sh	r, s;		sll	\r, \s;		.endm
 .macro __sl	r, s;		srl	\r, \s;		.endm
@@ -152,7 +165,11 @@
  *	     <  VALID_DOUBLE_EXCEPTION_ADDRESS: regular exception
  */
 
+<<<<<<< HEAD
 	.literal_position
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENTRY(fast_unaligned)
 
 	/* Note: We don't expect the address to be aligned on a word

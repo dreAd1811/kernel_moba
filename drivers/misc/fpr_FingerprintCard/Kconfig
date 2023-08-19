@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
 
 config FPR_FPC
@@ -7,3 +8,15 @@ config FPR_FPC
 	  support fpc1020 and fpc1028.
 	  This driver can also be built as a module.  If so, the module
 	  will be called fpc1020.
+=======
+#
+# FingerprintCard fingerprint driver
+#
+menu "FingerprintCard fingerprint driver"
+config FPR_FPC
+       default n
+       tristate "FPC_BTP fingerprint sensor support"
+       depends on SPI_MASTER
+
+endmenu
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

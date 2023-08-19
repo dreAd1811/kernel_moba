@@ -1,7 +1,11 @@
 /*
  *
  * Intel Management Engine Interface (Intel MEI) Linux driver
+<<<<<<< HEAD
  * Copyright (c) 2003-2018, Intel Corporation.
+=======
+ * Copyright (c) 2003-2012, Intel Corporation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU General Public License,
@@ -137,7 +141,11 @@ static ssize_t mei_read(struct file *file, char __user *ubuf,
 	struct mei_device *dev;
 	struct mei_cl_cb *cb = NULL;
 	bool nonblock = !!(file->f_flags & O_NONBLOCK);
+<<<<<<< HEAD
 	ssize_t rets;
+=======
+	int rets;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(!cl || !cl->dev))
 		return -ENODEV;
@@ -170,7 +178,11 @@ static ssize_t mei_read(struct file *file, char __user *ubuf,
 
 	rets = mei_cl_read_start(cl, length, file);
 	if (rets && rets != -EBUSY) {
+<<<<<<< HEAD
 		cl_dbg(dev, cl, "mei start read failure status = %zd\n", rets);
+=======
+		cl_dbg(dev, cl, "mei start read failure status = %d\n", rets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -204,7 +216,11 @@ copy_buffer:
 	/* now copy the data to user space */
 	if (cb->status) {
 		rets = cb->status;
+<<<<<<< HEAD
 		cl_dbg(dev, cl, "read operation failed %zd\n", rets);
+=======
+		cl_dbg(dev, cl, "read operation failed %d\n", rets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free;
 	}
 
@@ -236,7 +252,11 @@ free:
 	*offset = 0;
 
 out:
+<<<<<<< HEAD
 	cl_dbg(dev, cl, "end mei read rets = %zd\n", rets);
+=======
+	cl_dbg(dev, cl, "end mei read rets = %d\n", rets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&dev->device_lock);
 	return rets;
 }
@@ -256,7 +276,11 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
 	struct mei_cl *cl = file->private_data;
 	struct mei_cl_cb *cb;
 	struct mei_device *dev;
+<<<<<<< HEAD
 	ssize_t rets;
+=======
+	int rets;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(!cl || !cl->dev))
 		return -ENODEV;
@@ -291,6 +315,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	while (cl->tx_cb_queued >= dev->tx_queue_limit) {
 		if (file->f_flags & O_NONBLOCK) {
 			rets = -EAGAIN;
@@ -312,6 +337,8 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cb = mei_cl_alloc_cb(cl, length, MEI_FOP_WRITE, file);
 	if (!cb) {
 		rets = -ENOMEM;
@@ -561,6 +588,7 @@ static long mei_compat_ioctl(struct file *file,
  *
  * Return: poll mask
  */
+<<<<<<< HEAD
 static __poll_t mei_poll(struct file *file, poll_table *wait)
 {
 	__poll_t req_events = poll_requested_events(wait);
@@ -571,22 +599,43 @@ static __poll_t mei_poll(struct file *file, poll_table *wait)
 
 	if (WARN_ON(!cl || !cl->dev))
 		return EPOLLERR;
+=======
+static unsigned int mei_poll(struct file *file, poll_table *wait)
+{
+	unsigned long req_events = poll_requested_events(wait);
+	struct mei_cl *cl = file->private_data;
+	struct mei_device *dev;
+	unsigned int mask = 0;
+	bool notify_en;
+
+	if (WARN_ON(!cl || !cl->dev))
+		return POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = cl->dev;
 
 	mutex_lock(&dev->device_lock);
 
+<<<<<<< HEAD
 	notify_en = cl->notify_en && (req_events & EPOLLPRI);
 
 	if (dev->dev_state != MEI_DEV_ENABLED ||
 	    !mei_cl_is_connected(cl)) {
 		mask = EPOLLERR;
+=======
+	notify_en = cl->notify_en && (req_events & POLLPRI);
+
+	if (dev->dev_state != MEI_DEV_ENABLED ||
+	    !mei_cl_is_connected(cl)) {
+		mask = POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
 	if (notify_en) {
 		poll_wait(file, &cl->ev_wait, wait);
 		if (cl->notify_ev)
+<<<<<<< HEAD
 			mask |= EPOLLPRI;
 	}
 
@@ -595,16 +644,29 @@ static __poll_t mei_poll(struct file *file, poll_table *wait)
 
 		if (!list_empty(&cl->rd_completed))
 			mask |= EPOLLIN | EPOLLRDNORM;
+=======
+			mask |= POLLPRI;
+	}
+
+	if (req_events & (POLLIN | POLLRDNORM)) {
+		poll_wait(file, &cl->rx_wait, wait);
+
+		if (!list_empty(&cl->rd_completed))
+			mask |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			mei_cl_read_start(cl, mei_cl_mtu(cl), file);
 	}
 
+<<<<<<< HEAD
 	if (req_events & (POLLOUT | POLLWRNORM)) {
 		poll_wait(file, &cl->tx_wait, wait);
 		if (cl->tx_cb_queued < dev->tx_queue_limit)
 			mask |= POLLOUT | POLLWRNORM;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&dev->device_lock);
 	return mask;
@@ -774,6 +836,7 @@ static ssize_t hbm_ver_drv_show(struct device *device,
 }
 static DEVICE_ATTR_RO(hbm_ver_drv);
 
+<<<<<<< HEAD
 static ssize_t tx_queue_limit_show(struct device *device,
 				   struct device_attribute *attr, char *buf)
 {
@@ -838,12 +901,17 @@ static ssize_t fw_ver_show(struct device *device,
 }
 static DEVICE_ATTR_RO(fw_ver);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct attribute *mei_attrs[] = {
 	&dev_attr_fw_status.attr,
 	&dev_attr_hbm_ver.attr,
 	&dev_attr_hbm_ver_drv.attr,
+<<<<<<< HEAD
 	&dev_attr_tx_queue_limit.attr,
 	&dev_attr_fw_ver.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 ATTRIBUTE_GROUPS(mei);

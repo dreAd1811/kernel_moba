@@ -24,7 +24,12 @@
 #include <linux/i2c.h>
 #include <asm/div64.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_math.h"
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "stv0910.h"
 #include "stv0910_regs.h"
 
@@ -137,6 +142,7 @@ struct slookup {
 	u32  reg_value;
 };
 
+<<<<<<< HEAD
 static int write_reg(struct stv *state, u16 reg, u8 val)
 {
 	struct i2c_adapter *adap = state->base->i2c;
@@ -148,10 +154,38 @@ static int write_reg(struct stv *state, u16 reg, u8 val)
 		dev_warn(&adap->dev, "i2c write error ([%02x] %04x: %02x)\n",
 			 state->base->adr, reg, val);
 		return -EIO;
+=======
+static inline int i2c_write(struct i2c_adapter *adap, u8 adr,
+			    u8 *data, int len)
+{
+	struct i2c_msg msg = {.addr = adr, .flags = 0,
+			      .buf = data, .len = len};
+
+	if (i2c_transfer(adap, &msg, 1) != 1) {
+		dev_warn(&adap->dev, "i2c write error ([%02x] %04x: %02x)\n",
+			 adr, (data[0] << 8) | data[1],
+			 (len > 2 ? data[2] : 0));
+		return -EREMOTEIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int i2c_write_reg16(struct i2c_adapter *adap, u8 adr, u16 reg, u8 val)
+{
+	u8 msg[3] = {reg >> 8, reg & 0xff, val};
+
+	return i2c_write(adap, adr, msg, 3);
+}
+
+static int write_reg(struct stv *state, u16 reg, u8 val)
+{
+	return i2c_write_reg16(state->base->i2c, state->base->adr, reg, val);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int i2c_read_regs16(struct i2c_adapter *adapter, u8 adr,
 				  u16 reg, u8 *val, int count)
 {
@@ -164,7 +198,11 @@ static inline int i2c_read_regs16(struct i2c_adapter *adapter, u8 adr,
 	if (i2c_transfer(adapter, msgs, 2) != 2) {
 		dev_warn(&adapter->dev, "i2c read error ([%02x] %04x)\n",
 			 adr, reg);
+<<<<<<< HEAD
 		return -EIO;
+=======
+		return -EREMOTEIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -194,6 +232,7 @@ static int write_shared_reg(struct stv *state, u16 reg, u8 mask, u8 val)
 	return status;
 }
 
+<<<<<<< HEAD
 static int write_field(struct stv *state, u32 field, u8 val)
 {
 	int status;
@@ -222,6 +261,8 @@ static int write_field(struct stv *state, u32 field, u8 val)
 	read_reg(state, state->nr ? RSTV0910_P2_##_reg :	\
 		 RSTV0910_P1_##_reg, _val)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct slookup s1_sn_lookup[] = {
 	{   0,    9242  }, /* C/N=   0dB */
 	{   5,    9105  }, /* C/N= 0.5dB */
@@ -548,8 +589,15 @@ static int get_signal_parameters(struct stv *state)
 
 static int tracking_optimization(struct stv *state)
 {
+<<<<<<< HEAD
 	u8 tmp;
 
+=======
+	u32 symbol_rate = 0;
+	u8 tmp;
+
+	get_cur_symbol_rate(state, &symbol_rate);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	read_reg(state, RSTV0910_P2_DMDCFGMD + state->regoff, &tmp);
 	tmp &= ~0xC0;
 
@@ -682,8 +730,13 @@ static int get_bit_error_rate_s(struct stv *state, u32 *bernumerator,
 		return -EINVAL;
 
 	if ((regs[0] & 0x80) == 0) {
+<<<<<<< HEAD
 		state->last_berdenominator = 1ULL << ((state->berscale * 2) +
 						     10 + 3);
+=======
+		state->last_berdenominator = 1 << ((state->berscale * 2) +
+						  10 + 3);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		state->last_bernumerator = ((u32)(regs[0] & 0x7F) << 16) |
 			((u32)regs[1] << 8) | regs[2];
 		if (state->last_bernumerator < 256 && state->berscale < 6) {
@@ -880,6 +933,7 @@ static int stop(struct stv *state)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void set_pls(struct stv *state, u32 pls_code)
 {
 	if (pls_code == state->cur_scrambling_code)
@@ -934,11 +988,53 @@ static int init_search_param(struct stv *state,
 	SET_FIELD(ISIOBS_MODE, 1);
 
 	set_stream_modes(state, p);
+=======
+static int init_search_param(struct stv *state)
+{
+	u8 tmp;
+
+	read_reg(state, RSTV0910_P2_PDELCTRL1 + state->regoff, &tmp);
+	tmp |= 0x20; /* Filter_en (no effect if SIS=non-MIS */
+	write_reg(state, RSTV0910_P2_PDELCTRL1 + state->regoff, tmp);
+
+	read_reg(state, RSTV0910_P2_PDELCTRL2 + state->regoff, &tmp);
+	tmp &= ~0x02; /* frame mode = 0 */
+	write_reg(state, RSTV0910_P2_PDELCTRL2 + state->regoff, tmp);
+
+	write_reg(state, RSTV0910_P2_UPLCCST0 + state->regoff, 0xe0);
+	write_reg(state, RSTV0910_P2_ISIBITENA + state->regoff, 0x00);
+
+	read_reg(state, RSTV0910_P2_TSSTATEM + state->regoff, &tmp);
+	tmp &= ~0x01; /* nosync = 0, in case next signal is standard TS */
+	write_reg(state, RSTV0910_P2_TSSTATEM + state->regoff, tmp);
+
+	read_reg(state, RSTV0910_P2_TSCFGL + state->regoff, &tmp);
+	tmp &= ~0x04; /* embindvb = 0 */
+	write_reg(state, RSTV0910_P2_TSCFGL + state->regoff, tmp);
+
+	read_reg(state, RSTV0910_P2_TSINSDELH + state->regoff, &tmp);
+	tmp &= ~0x80; /* syncbyte = 0 */
+	write_reg(state, RSTV0910_P2_TSINSDELH + state->regoff, tmp);
+
+	read_reg(state, RSTV0910_P2_TSINSDELM + state->regoff, &tmp);
+	tmp &= ~0x08; /* token = 0 */
+	write_reg(state, RSTV0910_P2_TSINSDELM + state->regoff, tmp);
+
+	read_reg(state, RSTV0910_P2_TSDLYSET2 + state->regoff, &tmp);
+	tmp &= ~0x30; /* hysteresis threshold = 0 */
+	write_reg(state, RSTV0910_P2_TSDLYSET2 + state->regoff, tmp);
+
+	read_reg(state, RSTV0910_P2_PDELCTRL0 + state->regoff, &tmp);
+	tmp = (tmp & ~0x30) | 0x10; /* isi obs mode = 1, observe min ISI */
+	write_reg(state, RSTV0910_P2_PDELCTRL0 + state->regoff, tmp);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int enable_puncture_rate(struct stv *state, enum fe_code_rate rate)
 {
+<<<<<<< HEAD
 	u8 val;
 
 	switch (rate) {
@@ -964,6 +1060,29 @@ static int enable_puncture_rate(struct stv *state, enum fe_code_rate rate)
 	}
 
 	return write_reg(state, RSTV0910_P2_PRVIT + state->regoff, val);
+=======
+	switch (rate) {
+	case FEC_1_2:
+		return write_reg(state,
+				 RSTV0910_P2_PRVIT + state->regoff, 0x01);
+	case FEC_2_3:
+		return write_reg(state,
+				 RSTV0910_P2_PRVIT + state->regoff, 0x02);
+	case FEC_3_4:
+		return write_reg(state,
+				 RSTV0910_P2_PRVIT + state->regoff, 0x04);
+	case FEC_5_6:
+		return write_reg(state,
+				 RSTV0910_P2_PRVIT + state->regoff, 0x08);
+	case FEC_7_8:
+		return write_reg(state,
+				 RSTV0910_P2_PRVIT + state->regoff, 0x20);
+	case FEC_NONE:
+	default:
+		return write_reg(state,
+				 RSTV0910_P2_PRVIT + state->regoff, 0x2f);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int set_vth_default(struct stv *state)
@@ -1020,6 +1139,10 @@ static int start(struct stv *state, struct dtv_frontend_properties *p)
 	s32 freq;
 	u8  reg_dmdcfgmd;
 	u16 symb;
+<<<<<<< HEAD
+=======
+	u32 scrambling_code = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (p->symbol_rate < 100000 || p->symbol_rate > 70000000)
 		return -EINVAL;
@@ -1031,7 +1154,34 @@ static int start(struct stv *state, struct dtv_frontend_properties *p)
 	if (state->started)
 		write_reg(state, RSTV0910_P2_DMDISTATE + state->regoff, 0x5C);
 
+<<<<<<< HEAD
 	init_search_param(state, p);
+=======
+	init_search_param(state);
+
+	if (p->stream_id != NO_STREAM_ID_FILTER) {
+		/*
+		 * Backwards compatibility to "crazy" API.
+		 * PRBS X root cannot be 0, so this should always work.
+		 */
+		if (p->stream_id & 0xffffff00)
+			scrambling_code = p->stream_id >> 8;
+		write_reg(state, RSTV0910_P2_ISIENTRY + state->regoff,
+			  p->stream_id & 0xff);
+		write_reg(state, RSTV0910_P2_ISIBITENA + state->regoff,
+			  0xff);
+	}
+
+	if (scrambling_code != state->cur_scrambling_code) {
+		write_reg(state, RSTV0910_P2_PLROOT0 + state->regoff,
+			  scrambling_code & 0xff);
+		write_reg(state, RSTV0910_P2_PLROOT1 + state->regoff,
+			  (scrambling_code >> 8) & 0xff);
+		write_reg(state, RSTV0910_P2_PLROOT2 + state->regoff,
+			  (scrambling_code >> 16) & 0x0f);
+		state->cur_scrambling_code = scrambling_code;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (p->symbol_rate <= 1000000) { /* SR <=1Msps */
 		state->demod_timeout = 3000;
@@ -1200,6 +1350,10 @@ static int probe(struct stv *state)
 	write_reg(state, RSTV0910_P1_TSCFGM, 0xC0); /* Manual speed */
 	write_reg(state, RSTV0910_P1_TSCFGL, 0x20);
 
+<<<<<<< HEAD
+=======
+	/* Speed = 67.5 MHz */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	write_reg(state, RSTV0910_P1_TSSPEED, state->tsspeed);
 
 	write_reg(state, RSTV0910_P2_TSCFGH, state->tscfgh | 0x01);
@@ -1207,6 +1361,10 @@ static int probe(struct stv *state)
 	write_reg(state, RSTV0910_P2_TSCFGM, 0xC0); /* Manual speed */
 	write_reg(state, RSTV0910_P2_TSCFGL, 0x20);
 
+<<<<<<< HEAD
+=======
+	/* Speed = 67.5 MHz */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	write_reg(state, RSTV0910_P2_TSSPEED, state->tsspeed);
 
 	/* Reset stream merger */
@@ -1218,12 +1376,15 @@ static int probe(struct stv *state)
 	write_reg(state, RSTV0910_P1_I2CRPT, state->i2crpt);
 	write_reg(state, RSTV0910_P2_I2CRPT, state->i2crpt);
 
+<<<<<<< HEAD
 	write_reg(state, RSTV0910_P1_TSINSDELM, 0x17);
 	write_reg(state, RSTV0910_P1_TSINSDELL, 0xff);
 
 	write_reg(state, RSTV0910_P2_TSINSDELM, 0x17);
 	write_reg(state, RSTV0910_P2_TSINSDELL, 0xff);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_diseqc(state);
 	return 0;
 }
@@ -1253,8 +1414,12 @@ static int gate_ctrl(struct dvb_frontend *fe, int enable)
 	if (write_reg(state, state->nr ? RSTV0910_P2_I2CRPT :
 		      RSTV0910_P1_I2CRPT, i2crpt) < 0) {
 		/* don't hold the I2C bus lock on failure */
+<<<<<<< HEAD
 		if (!WARN_ON(!mutex_is_locked(&state->base->i2c_lock)))
 			mutex_unlock(&state->base->i2c_lock);
+=======
+		mutex_unlock(&state->base->i2c_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&state->base->i2c->dev,
 			"%s() write_reg failure (enable=%d)\n",
 			__func__, enable);
@@ -1264,8 +1429,12 @@ static int gate_ctrl(struct dvb_frontend *fe, int enable)
 	state->i2crpt = i2crpt;
 
 	if (!enable)
+<<<<<<< HEAD
 		if (!WARN_ON(!mutex_is_locked(&state->base->i2c_lock)))
 			mutex_unlock(&state->base->i2c_lock);
+=======
+		mutex_unlock(&state->base->i2c_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1285,11 +1454,20 @@ static int set_parameters(struct dvb_frontend *fe)
 {
 	int stat = 0;
 	struct stv *state = fe->demodulator_priv;
+<<<<<<< HEAD
+=======
+	u32 iffreq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dtv_frontend_properties *p = &fe->dtv_property_cache;
 
 	stop(state);
 	if (fe->ops.tuner_ops.set_params)
 		fe->ops.tuner_ops.set_params(fe);
+<<<<<<< HEAD
+=======
+	if (fe->ops.tuner_ops.get_if_frequency)
+		fe->ops.tuner_ops.get_if_frequency(fe, &iffreq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->symbol_rate = p->symbol_rate;
 	stat = start(state, p);
 	return stat;
@@ -1324,7 +1502,11 @@ static int read_snr(struct dvb_frontend *fe)
 
 	if (!get_signal_to_noise(state, &snrval)) {
 		p->cnr.stat[0].scale = FE_SCALE_DECIBEL;
+<<<<<<< HEAD
 		p->cnr.stat[0].svalue = 100 * snrval; /* fix scale */
+=======
+		p->cnr.stat[0].uvalue = 100 * snrval; /* fix scale */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		p->cnr.stat[0].scale = FE_SCALE_NOT_AVAILABLE;
 	}
@@ -1509,6 +1691,7 @@ static int read_status(struct dvb_frontend *fe, enum fe_status *status)
 				enable_puncture_rate(state,
 						     state->puncture_rate);
 		}
+<<<<<<< HEAD
 
 		/* Use highest signaled ModCod for quality */
 		if (state->is_vcm) {
@@ -1522,6 +1705,8 @@ static int read_status(struct dvb_frontend *fe, enum fe_status *status)
 			if (mod_cod > state->mod_cod)
 				state->mod_cod = mod_cod;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* read signal statistics */
@@ -1551,7 +1736,10 @@ static int get_frontend(struct dvb_frontend *fe,
 {
 	struct stv *state = fe->demodulator_priv;
 	u8 tmp;
+<<<<<<< HEAD
 	u32 symbolrate;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (state->receive_mode == RCVMODE_DVBS2) {
 		u32 mc;
@@ -1605,10 +1793,13 @@ static int get_frontend(struct dvb_frontend *fe,
 		p->rolloff = ROLLOFF_35;
 	}
 
+<<<<<<< HEAD
 	if (state->receive_mode != RCVMODE_NONE) {
 		get_cur_symbol_rate(state, &symbolrate);
 		p->symbol_rate = symbolrate;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1637,7 +1828,11 @@ static int tune(struct dvb_frontend *fe, bool re_tune,
 	return 0;
 }
 
+<<<<<<< HEAD
 static enum dvbfe_algo get_algo(struct dvb_frontend *fe)
+=======
+static int get_algo(struct dvb_frontend *fe)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return DVBFE_ALGO_HW;
 }
@@ -1677,6 +1872,7 @@ static int send_master_cmd(struct dvb_frontend *fe,
 			   struct dvb_diseqc_master_cmd *cmd)
 {
 	struct stv *state = fe->demodulator_priv;
+<<<<<<< HEAD
 	int i;
 
 	SET_FIELD(DISEQC_MODE, 2);
@@ -1686,6 +1882,17 @@ static int send_master_cmd(struct dvb_frontend *fe,
 		SET_REG(DISTXFIFO, cmd->msg[i]);
 	}
 	SET_FIELD(DIS_PRECHARGE, 0);
+=======
+	u16 offs = state->nr ? 0x40 : 0;
+	int i;
+
+	write_reg(state, RSTV0910_P1_DISTXCFG + offs, 0x3E);
+	for (i = 0; i < cmd->msg_len; i++) {
+		wait_dis(state, 0x40, 0x00);
+		write_reg(state, RSTV0910_P1_DISTXFIFO + offs, cmd->msg[i]);
+	}
+	write_reg(state, RSTV0910_P1_DISTXCFG + offs, 0x3A);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_dis(state, 0x20, 0x20);
 	return 0;
 }
@@ -1693,6 +1900,7 @@ static int send_master_cmd(struct dvb_frontend *fe,
 static int send_burst(struct dvb_frontend *fe, enum fe_sec_mini_cmd burst)
 {
 	struct stv *state = fe->demodulator_priv;
+<<<<<<< HEAD
 	u8 value;
 
 	if (burst == SEC_MINI_A) {
@@ -1707,6 +1915,21 @@ static int send_burst(struct dvb_frontend *fe, enum fe_sec_mini_cmd burst)
 	wait_dis(state, 0x40, 0x00);
 	SET_REG(DISTXFIFO, value);
 	SET_FIELD(DIS_PRECHARGE, 0);
+=======
+	u16 offs = state->nr ? 0x40 : 0;
+	u8 value;
+
+	if (burst == SEC_MINI_A) {
+		write_reg(state, RSTV0910_P1_DISTXCFG + offs, 0x3F);
+		value = 0x00;
+	} else {
+		write_reg(state, RSTV0910_P1_DISTXCFG + offs, 0x3E);
+		value = 0xFF;
+	}
+	wait_dis(state, 0x40, 0x00);
+	write_reg(state, RSTV0910_P1_DISTXFIFO + offs, value);
+	write_reg(state, RSTV0910_P1_DISTXCFG + offs, 0x3A);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_dis(state, 0x20, 0x20);
 
 	return 0;
@@ -1724,8 +1947,15 @@ static const struct dvb_frontend_ops stv0910_ops = {
 	.delsys = { SYS_DVBS, SYS_DVBS2, SYS_DSS },
 	.info = {
 		.name			= "ST STV0910",
+<<<<<<< HEAD
 		.frequency_min_hz	=  950 * MHz,
 		.frequency_max_hz	= 2150 * MHz,
+=======
+		.frequency_min		= 950000,
+		.frequency_max		= 2150000,
+		.frequency_stepsize	= 0,
+		.frequency_tolerance	= 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min	= 100000,
 		.symbol_rate_max	= 70000000,
 		.caps			= FE_CAN_INVERSION_AUTO |
@@ -1786,8 +2016,12 @@ struct dvb_frontend *stv0910_attach(struct i2c_adapter *i2c,
 	state->tscfgh = 0x20 | (cfg->parallel ? 0 : 0x40);
 	state->tsgeneral = (cfg->parallel == 2) ? 0x02 : 0x00;
 	state->i2crpt = 0x0A | ((cfg->rptlvl & 0x07) << 4);
+<<<<<<< HEAD
 	/* use safe tsspeed value if unspecified through stv0910_cfg */
 	state->tsspeed = (cfg->tsspeed ? cfg->tsspeed : 0x28);
+=======
+	state->tsspeed = 0x28;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->nr = nr;
 	state->regoff = state->nr ? 0 : 0x200;
 	state->search_range = 16000000;

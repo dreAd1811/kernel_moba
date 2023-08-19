@@ -280,6 +280,10 @@ static AD7266_DECLARE_DIFF_CHANNELS_FIXED(u, 'u');
 static const struct iio_info ad7266_info = {
 	.read_raw = &ad7266_read_raw,
 	.update_scan_mode = &ad7266_update_scan_mode,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const unsigned long ad7266_available_scan_masks[] = {

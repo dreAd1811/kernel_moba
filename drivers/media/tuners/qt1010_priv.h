@@ -71,6 +71,7 @@ reg def meaning
 2f  00  ? not used?
 */
 
+<<<<<<< HEAD
 #define QT1010_STEP         (125 * kHz) /*
 					 * used by Windows drivers,
 				         * hw could be more precise but we don't
@@ -79,6 +80,14 @@ reg def meaning
 #define QT1010_MIN_FREQ   (48 * MHz)
 #define QT1010_MAX_FREQ  (860 * MHz)
 #define QT1010_OFFSET   (1246 * MHz)
+=======
+#define QT1010_STEP         125000 /*  125 kHz used by Windows drivers,
+				      hw could be more precise but we don't
+				      know how to use */
+#define QT1010_MIN_FREQ   48000000 /*   48 MHz */
+#define QT1010_MAX_FREQ  860000000 /*  860 MHz */
+#define QT1010_OFFSET   1246000000 /* 1246 MHz */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QT1010_WR 0
 #define QT1010_RD 1

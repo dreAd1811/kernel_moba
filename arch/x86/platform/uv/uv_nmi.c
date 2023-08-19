@@ -905,7 +905,11 @@ static inline void uv_call_kgdb_kdb(int cpu, struct pt_regs *regs, int master)
 /*
  * UV NMI handler
  */
+<<<<<<< HEAD
 static int uv_handle_nmi(unsigned int reason, struct pt_regs *regs)
+=======
+int uv_handle_nmi(unsigned int reason, struct pt_regs *regs)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct uv_hub_nmi_s *hub_nmi = uv_hub_nmi;
 	int cpu = smp_processor_id();
@@ -1013,7 +1017,11 @@ void uv_nmi_init(void)
 }
 
 /* Setup HUB NMI info */
+<<<<<<< HEAD
 static void __init uv_nmi_setup_common(bool hubbed)
+=======
+void __init uv_nmi_setup_common(bool hubbed)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int size = sizeof(void *) * (1 << NODES_SHIFT);
 	int cpu;

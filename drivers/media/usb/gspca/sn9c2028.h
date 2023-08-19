@@ -43,9 +43,16 @@ static unsigned char *sn9c2028_find_sof(struct gspca_dev *gspca_dev,
 			if (sd->sof_read == 12)
 				sd->avg_lum = (m[i] << 8) + sd->avg_lum_l;
 			if (sd->sof_read == sizeof(sn9c2028_sof_marker)) {
+<<<<<<< HEAD
 				gspca_dbg(gspca_dev, D_FRAM,
 					  "SOF found, bytes to analyze: %u - Frame starts at byte #%u\n",
 					  len, i + 1);
+=======
+				PDEBUG(D_FRAM,
+					"SOF found, bytes to analyze: %u."
+					" Frame starts at byte #%u",
+					len, i + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				sd->sof_read = 0;
 				return m + i + 1;
 			}

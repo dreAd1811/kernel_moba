@@ -1141,8 +1141,12 @@ static int ethoc_probe(struct platform_device *pdev)
 	dev_dbg(&pdev->dev, "ethoc: num_tx: %d num_rx: %d\n",
 		priv->num_tx, priv->num_rx);
 
+<<<<<<< HEAD
 	priv->vma = devm_kcalloc(&pdev->dev, num_bd, sizeof(void *),
 				 GFP_KERNEL);
+=======
+	priv->vma = devm_kzalloc(&pdev->dev, num_bd*sizeof(void *), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->vma) {
 		ret = -ENOMEM;
 		goto free;
@@ -1247,7 +1251,12 @@ error:
 	mdiobus_unregister(priv->mdio);
 	mdiobus_free(priv->mdio);
 free2:
+<<<<<<< HEAD
 	clk_disable_unprepare(priv->clk);
+=======
+	if (priv->clk)
+		clk_disable_unprepare(priv->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 free:
 	free_netdev(netdev);
 out:
@@ -1271,7 +1280,12 @@ static int ethoc_remove(struct platform_device *pdev)
 			mdiobus_unregister(priv->mdio);
 			mdiobus_free(priv->mdio);
 		}
+<<<<<<< HEAD
 		clk_disable_unprepare(priv->clk);
+=======
+		if (priv->clk)
+			clk_disable_unprepare(priv->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unregister_netdev(netdev);
 		free_netdev(netdev);
 	}

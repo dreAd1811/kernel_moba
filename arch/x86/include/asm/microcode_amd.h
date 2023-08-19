@@ -41,7 +41,11 @@ struct microcode_amd {
 	unsigned int			mpb[0];
 };
 
+<<<<<<< HEAD
 #define PATCH_MAX_SIZE PAGE_SIZE
+=======
+#define PATCH_MAX_SIZE (3 * PAGE_SIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_MICROCODE_AMD
 extern void __init load_ucode_amd_bsp(unsigned int family);

@@ -336,10 +336,17 @@ static int file_release(struct inode *inode, struct file *filp)
 	return rtlx_release(iminor(inode));
 }
 
+<<<<<<< HEAD
 static __poll_t file_poll(struct file *file, poll_table *wait)
 {
 	int minor = iminor(file_inode(file));
 	__poll_t mask = 0;
+=======
+static unsigned int file_poll(struct file *file, poll_table *wait)
+{
+	int minor = iminor(file_inode(file));
+	unsigned int mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &channel_wqs[minor].rt_queue, wait);
 	poll_wait(file, &channel_wqs[minor].lx_queue, wait);
@@ -349,11 +356,19 @@ static __poll_t file_poll(struct file *file, poll_table *wait)
 
 	/* data available to read? */
 	if (rtlx_read_poll(minor, 0))
+<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
 
 	/* space to write */
 	if (rtlx_write_poll(minor))
 		mask |= EPOLLOUT | EPOLLWRNORM;
+=======
+		mask |= POLLIN | POLLRDNORM;
+
+	/* space to write */
+	if (rtlx_write_poll(minor))
+		mask |= POLLOUT | POLLWRNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

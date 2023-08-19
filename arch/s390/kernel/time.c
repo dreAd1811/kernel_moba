@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *    Time of day based timer functions.
  *
@@ -221,6 +224,7 @@ void read_persistent_clock64(struct timespec64 *ts)
 	ext_to_timespec64(clk, ts);
 }
 
+<<<<<<< HEAD
 void __init read_persistent_wall_and_boot_offset(struct timespec64 *wall_time,
 						 struct timespec64 *boot_offset)
 {
@@ -237,6 +241,19 @@ void __init read_persistent_wall_and_boot_offset(struct timespec64 *wall_time,
 
 	read_persistent_clock64(wall_time);
 	*boot_offset = timespec64_sub(*wall_time, boot_time);
+=======
+void read_boot_clock64(struct timespec64 *ts)
+{
+	unsigned char clk[STORE_CLOCK_EXT_SIZE];
+	__u64 delta;
+
+	delta = initial_leap_seconds + TOD_UNIX_EPOCH;
+	memcpy(clk, tod_clock_base, 16);
+	*(__u64 *) &clk[1] -= delta;
+	if (*(__u64 *) &clk[1] > delta)
+		clk[0]--;
+	ext_to_timespec64(clk, ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u64 read_tod_clock(struct clocksource *cs)
@@ -529,7 +546,11 @@ static void __init stp_reset(void)
 	}
 }
 
+<<<<<<< HEAD
 static void stp_timeout(struct timer_list *unused)
+=======
+static void stp_timeout(unsigned long dummy)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	queue_work(time_sync_wq, &stp_work);
 }
@@ -538,7 +559,11 @@ static int __init stp_init(void)
 {
 	if (!test_bit(CLOCK_SYNC_HAS_STP, &clock_sync_flags))
 		return 0;
+<<<<<<< HEAD
 	timer_setup(&stp_timer, stp_timeout, 0);
+=======
+	setup_timer(&stp_timer, stp_timeout, 0UL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	time_init_wq();
 	if (!stp_online)
 		return 0;

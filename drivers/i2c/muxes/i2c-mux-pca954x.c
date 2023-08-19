@@ -4,11 +4,19 @@
  * Copyright (c) 2008-2009 Rodolfo Giometti <giometti@linux.it>
  * Copyright (c) 2008-2009 Eurotech S.p.A. <info@eurotech.it>
  *
+<<<<<<< HEAD
  * This module supports the PCA954x and PCA954x series of I2C multiplexer/switch
  * chips made by NXP Semiconductors.
  * This includes the:
  *	 PCA9540, PCA9542, PCA9543, PCA9544, PCA9545, PCA9546, PCA9547,
  *	 PCA9548, PCA9846, PCA9847, PCA9848 and PCA9849.
+=======
+ * This module supports the PCA954x series of I2C multiplexer/switch chips
+ * made by Philips Semiconductors.
+ * This includes the:
+ *	 PCA9540, PCA9542, PCA9543, PCA9544, PCA9545, PCA9546, PCA9547
+ *	 and PCA9548.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * These chips are all controlled via the I2C bus itself, and all have a
  * single 8-bit register. The upstream "parent" bus fans out to two,
@@ -36,7 +44,10 @@
  */
 
 #include <linux/device.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio/consumer.h>
 #include <linux/i2c.h>
 #include <linux/i2c-mux.h>
@@ -64,10 +75,13 @@ enum pca_type {
 	pca_9546,
 	pca_9547,
 	pca_9548,
+<<<<<<< HEAD
 	pca_9846,
 	pca_9847,
 	pca_9848,
 	pca_9849,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct chip_desc {
@@ -78,7 +92,10 @@ struct chip_desc {
 		pca954x_ismux = 0,
 		pca954x_isswi
 	} muxtype;
+<<<<<<< HEAD
 	struct i2c_device_identity id;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct pca954x {
@@ -99,48 +116,70 @@ static const struct chip_desc chips[] = {
 		.nchans = 2,
 		.enable = 0x4,
 		.muxtype = pca954x_ismux,
+<<<<<<< HEAD
 		.id = { .manufacturer_id = I2C_DEVICE_ID_NONE },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[pca_9542] = {
 		.nchans = 2,
 		.enable = 0x4,
 		.has_irq = 1,
 		.muxtype = pca954x_ismux,
+<<<<<<< HEAD
 		.id = { .manufacturer_id = I2C_DEVICE_ID_NONE },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[pca_9543] = {
 		.nchans = 2,
 		.has_irq = 1,
 		.muxtype = pca954x_isswi,
+<<<<<<< HEAD
 		.id = { .manufacturer_id = I2C_DEVICE_ID_NONE },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[pca_9544] = {
 		.nchans = 4,
 		.enable = 0x4,
 		.has_irq = 1,
 		.muxtype = pca954x_ismux,
+<<<<<<< HEAD
 		.id = { .manufacturer_id = I2C_DEVICE_ID_NONE },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[pca_9545] = {
 		.nchans = 4,
 		.has_irq = 1,
 		.muxtype = pca954x_isswi,
+<<<<<<< HEAD
 		.id = { .manufacturer_id = I2C_DEVICE_ID_NONE },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[pca_9546] = {
 		.nchans = 4,
 		.muxtype = pca954x_isswi,
+<<<<<<< HEAD
 		.id = { .manufacturer_id = I2C_DEVICE_ID_NONE },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[pca_9547] = {
 		.nchans = 8,
 		.enable = 0x8,
 		.muxtype = pca954x_ismux,
+<<<<<<< HEAD
 		.id = { .manufacturer_id = I2C_DEVICE_ID_NONE },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[pca_9548] = {
 		.nchans = 8,
 		.muxtype = pca954x_isswi,
+<<<<<<< HEAD
 		.id = { .manufacturer_id = I2C_DEVICE_ID_NONE },
 	},
 	[pca_9846] = {
@@ -176,6 +215,8 @@ static const struct chip_desc chips[] = {
 			.manufacturer_id = I2C_DEVICE_ID_NXP_SEMICONDUCTORS,
 			.part_id = 0x109,
 		},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -188,10 +229,13 @@ static const struct i2c_device_id pca954x_id[] = {
 	{ "pca9546", pca_9546 },
 	{ "pca9547", pca_9547 },
 	{ "pca9548", pca_9548 },
+<<<<<<< HEAD
 	{ "pca9846", pca_9846 },
 	{ "pca9847", pca_9847 },
 	{ "pca9848", pca_9848 },
 	{ "pca9849", pca_9849 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, pca954x_id);
@@ -206,10 +250,13 @@ static const struct of_device_id pca954x_of_match[] = {
 	{ .compatible = "nxp,pca9546", .data = &chips[pca_9546] },
 	{ .compatible = "nxp,pca9547", .data = &chips[pca_9547] },
 	{ .compatible = "nxp,pca9548", .data = &chips[pca_9548] },
+<<<<<<< HEAD
 	{ .compatible = "nxp,pca9846", .data = &chips[pca_9846] },
 	{ .compatible = "nxp,pca9847", .data = &chips[pca_9847] },
 	{ .compatible = "nxp,pca9848", .data = &chips[pca_9848] },
 	{ .compatible = "nxp,pca9849", .data = &chips[pca_9849] },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(of, pca954x_of_match);
@@ -220,11 +267,38 @@ MODULE_DEVICE_TABLE(of, pca954x_of_match);
 static int pca954x_reg_write(struct i2c_adapter *adap,
 			     struct i2c_client *client, u8 val)
 {
+<<<<<<< HEAD
 	union i2c_smbus_data dummy;
 
 	return __i2c_smbus_xfer(adap, client->addr, client->flags,
 				I2C_SMBUS_WRITE, val,
 				I2C_SMBUS_BYTE, &dummy);
+=======
+	int ret = -ENODEV;
+
+	if (adap->algo->master_xfer) {
+		struct i2c_msg msg;
+		char buf[1];
+
+		msg.addr = client->addr;
+		msg.flags = 0;
+		msg.len = 1;
+		buf[0] = val;
+		msg.buf = buf;
+		ret = __i2c_transfer(adap, &msg, 1);
+
+		if (ret >= 0 && ret != 1)
+			ret = -EREMOTEIO;
+	} else {
+		union i2c_smbus_data data;
+		ret = adap->algo->smbus_xfer(adap, client->addr,
+					     client->flags,
+					     I2C_SMBUS_WRITE,
+					     val, I2C_SMBUS_BYTE, &data);
+	}
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pca954x_select_chan(struct i2c_mux_core *muxc, u32 chan)
@@ -283,6 +357,39 @@ static irqreturn_t pca954x_irq_handler(int irq, void *dev_id)
 	return handled ? IRQ_HANDLED : IRQ_NONE;
 }
 
+<<<<<<< HEAD
+=======
+static void pca954x_irq_mask(struct irq_data *idata)
+{
+	struct pca954x *data = irq_data_get_irq_chip_data(idata);
+	unsigned int pos = idata->hwirq;
+	unsigned long flags;
+
+	raw_spin_lock_irqsave(&data->lock, flags);
+
+	data->irq_mask &= ~BIT(pos);
+	if (!data->irq_mask)
+		disable_irq(data->client->irq);
+
+	raw_spin_unlock_irqrestore(&data->lock, flags);
+}
+
+static void pca954x_irq_unmask(struct irq_data *idata)
+{
+	struct pca954x *data = irq_data_get_irq_chip_data(idata);
+	unsigned int pos = idata->hwirq;
+	unsigned long flags;
+
+	raw_spin_lock_irqsave(&data->lock, flags);
+
+	if (!data->irq_mask)
+		enable_irq(data->client->irq);
+	data->irq_mask |= BIT(pos);
+
+	raw_spin_unlock_irqrestore(&data->lock, flags);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pca954x_irq_set_type(struct irq_data *idata, unsigned int type)
 {
 	if ((type & IRQ_TYPE_SENSE_MASK) != IRQ_TYPE_LEVEL_LOW)
@@ -292,6 +399,11 @@ static int pca954x_irq_set_type(struct irq_data *idata, unsigned int type)
 
 static struct irq_chip pca954x_irq_chip = {
 	.name = "i2c-mux-pca954x",
+<<<<<<< HEAD
+=======
+	.irq_mask = pca954x_irq_mask,
+	.irq_unmask = pca954x_irq_unmask,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.irq_set_type = pca954x_irq_set_type,
 };
 
@@ -299,7 +411,11 @@ static int pca954x_irq_setup(struct i2c_mux_core *muxc)
 {
 	struct pca954x *data = i2c_mux_priv(muxc);
 	struct i2c_client *client = data->client;
+<<<<<<< HEAD
 	int c, irq;
+=======
+	int c, err, irq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!data->chip->has_irq || client->irq <= 0)
 		return 0;
@@ -314,15 +430,19 @@ static int pca954x_irq_setup(struct i2c_mux_core *muxc)
 
 	for (c = 0; c < data->chip->nchans; c++) {
 		irq = irq_create_mapping(data->irq, c);
+<<<<<<< HEAD
 		if (!irq) {
 			dev_err(&client->dev, "failed irq create map\n");
 			return -EINVAL;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irq_set_chip_data(irq, data);
 		irq_set_chip_and_handler(irq, &pca954x_irq_chip,
 			handle_simple_irq);
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -339,6 +459,26 @@ static void pca954x_cleanup(struct i2c_mux_core *muxc)
 		irq_domain_remove(data->irq);
 	}
 	i2c_mux_del_adapters(muxc);
+=======
+	err = devm_request_threaded_irq(&client->dev, data->client->irq, NULL,
+					pca954x_irq_handler,
+					IRQF_ONESHOT | IRQF_SHARED,
+					"pca954x", data);
+	if (err)
+		goto err_req_irq;
+
+	disable_irq(data->client->irq);
+
+	return 0;
+err_req_irq:
+	for (c = 0; c < data->chip->nchans; c++) {
+		irq = irq_find_mapping(data->irq, c);
+		irq_dispose_mapping(irq);
+	}
+	irq_domain_remove(data->irq);
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -349,19 +489,32 @@ static int pca954x_probe(struct i2c_client *client,
 {
 	struct i2c_adapter *adap = to_i2c_adapter(client->dev.parent);
 	struct pca954x_platform_data *pdata = dev_get_platdata(&client->dev);
+<<<<<<< HEAD
 	struct device *dev = &client->dev;
 	struct device_node *np = dev->of_node;
+=======
+	struct device_node *of_node = client->dev.of_node;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool idle_disconnect_dt;
 	struct gpio_desc *gpio;
 	int num, force, class;
 	struct i2c_mux_core *muxc;
 	struct pca954x *data;
+<<<<<<< HEAD
+=======
+	const struct of_device_id *match;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!i2c_check_functionality(adap, I2C_FUNC_SMBUS_BYTE))
 		return -ENODEV;
 
+<<<<<<< HEAD
 	muxc = i2c_mux_alloc(adap, dev, PCA954X_MAX_NCHANS, sizeof(*data), 0,
+=======
+	muxc = i2c_mux_alloc(adap, &client->dev,
+			     PCA954X_MAX_NCHANS, sizeof(*data), 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     pca954x_select_chan, pca954x_deselect_mux);
 	if (!muxc)
 		return -ENOMEM;
@@ -370,6 +523,7 @@ static int pca954x_probe(struct i2c_client *client,
 	i2c_set_clientdata(client, muxc);
 	data->client = client;
 
+<<<<<<< HEAD
 	/* Reset the mux if a reset GPIO is specified. */
 	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
 	if (IS_ERR(gpio))
@@ -401,12 +555,19 @@ static int pca954x_probe(struct i2c_client *client,
 			return -ENODEV;
 		}
 	}
+=======
+	/* Get the mux out of reset if a reset GPIO is specified. */
+	gpio = devm_gpiod_get_optional(&client->dev, "reset", GPIOD_OUT_LOW);
+	if (IS_ERR(gpio))
+		return PTR_ERR(gpio);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Write the mux register at addr to verify
 	 * that the mux is in fact present. This also
 	 * initializes the mux to disconnected state.
 	 */
 	if (i2c_smbus_write_byte(client, 0) < 0) {
+<<<<<<< HEAD
 		dev_warn(dev, "probe failed\n");
 		return -ENODEV;
 	}
@@ -419,6 +580,26 @@ static int pca954x_probe(struct i2c_client *client,
 	ret = pca954x_irq_setup(muxc);
 	if (ret)
 		goto fail_cleanup;
+=======
+		dev_warn(&client->dev, "probe failed\n");
+		return -ENODEV;
+	}
+
+	match = of_match_device(of_match_ptr(pca954x_of_match), &client->dev);
+	if (match)
+		data->chip = of_device_get_match_data(&client->dev);
+	else
+		data->chip = &chips[id->driver_data];
+
+	data->last_chan = 0;		   /* force the first selection */
+
+	idle_disconnect_dt = of_node &&
+		of_property_read_bool(of_node, "i2c-mux-idle-disconnect");
+
+	ret = pca954x_irq_setup(muxc);
+	if (ret)
+		goto fail_del_adapters;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Now create an adapter for each channel */
 	for (num = 0; num < data->chip->nchans; num++) {
@@ -441,6 +622,7 @@ static int pca954x_probe(struct i2c_client *client,
 
 		ret = i2c_mux_add_adapter(muxc, force, num, class);
 		if (ret)
+<<<<<<< HEAD
 			goto fail_cleanup;
 	}
 
@@ -454,21 +636,48 @@ static int pca954x_probe(struct i2c_client *client,
 	}
 
 	dev_info(dev, "registered %d multiplexed busses for I2C %s %s\n",
+=======
+			goto fail_del_adapters;
+	}
+
+	dev_info(&client->dev,
+		 "registered %d multiplexed busses for I2C %s %s\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 num, data->chip->muxtype == pca954x_ismux
 				? "mux" : "switch", client->name);
 
 	return 0;
 
+<<<<<<< HEAD
 fail_cleanup:
 	pca954x_cleanup(muxc);
+=======
+fail_del_adapters:
+	i2c_mux_del_adapters(muxc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int pca954x_remove(struct i2c_client *client)
 {
 	struct i2c_mux_core *muxc = i2c_get_clientdata(client);
+<<<<<<< HEAD
 
 	pca954x_cleanup(muxc);
+=======
+	struct pca954x *data = i2c_mux_priv(muxc);
+	int c, irq;
+
+	if (data->irq) {
+		for (c = 0; c < data->chip->nchans; c++) {
+			irq = irq_find_mapping(data->irq, c);
+			irq_dispose_mapping(irq);
+		}
+		irq_domain_remove(data->irq);
+	}
+
+	i2c_mux_del_adapters(muxc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

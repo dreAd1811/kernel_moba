@@ -122,7 +122,15 @@ static int sh_cpufreq_cpu_init(struct cpufreq_policy *policy)
 
 	freq_table = cpuclk->nr_freqs ? cpuclk->freq_table : NULL;
 	if (freq_table) {
+<<<<<<< HEAD
 		policy->freq_table = freq_table;
+=======
+		int result;
+
+		result = cpufreq_table_validate_and_show(policy, freq_table);
+		if (result)
+			return result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		dev_notice(dev, "no frequency table found, falling back "
 			   "to rate rounding.\n");
@@ -133,6 +141,14 @@ static int sh_cpufreq_cpu_init(struct cpufreq_policy *policy)
 			(clk_round_rate(cpuclk, ~0UL) + 500) / 1000;
 	}
 
+<<<<<<< HEAD
+=======
+	dev_info(dev, "CPU Frequencies - Minimum %u.%03u MHz, "
+	       "Maximum %u.%03u MHz.\n",
+	       policy->min / 1000, policy->min % 1000,
+	       policy->max / 1000, policy->max % 1000);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -146,6 +162,7 @@ static int sh_cpufreq_cpu_exit(struct cpufreq_policy *policy)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void sh_cpufreq_cpu_ready(struct cpufreq_policy *policy)
 {
 	struct device *dev = get_cpu_device(policy->cpu);
@@ -156,6 +173,8 @@ static void sh_cpufreq_cpu_ready(struct cpufreq_policy *policy)
 	       policy->max / 1000, policy->max % 1000);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct cpufreq_driver sh_cpufreq_driver = {
 	.name		= "sh",
 	.flags		= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
@@ -164,7 +183,10 @@ static struct cpufreq_driver sh_cpufreq_driver = {
 	.verify		= sh_cpufreq_verify,
 	.init		= sh_cpufreq_cpu_init,
 	.exit		= sh_cpufreq_cpu_exit,
+<<<<<<< HEAD
 	.ready		= sh_cpufreq_cpu_ready,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attr		= cpufreq_generic_attr,
 };
 

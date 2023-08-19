@@ -45,10 +45,15 @@
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 
 #include <dt-bindings/clock/sun8i-a83t-ccu.h>
+<<<<<<< HEAD
 #include <dt-bindings/clock/sun8i-de2.h>
 #include <dt-bindings/clock/sun8i-r-ccu.h>
 #include <dt-bindings/reset/sun8i-a83t-ccu.h>
 #include <dt-bindings/reset/sun8i-de2.h>
+=======
+#include <dt-bindings/clock/sun8i-r-ccu.h>
+#include <dt-bindings/reset/sun8i-a83t-ccu.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <dt-bindings/reset/sun8i-r-ccu.h>
 
 / {
@@ -56,10 +61,20 @@
 	#address-cells = <1>;
 	#size-cells = <1>;
 
+<<<<<<< HEAD
+=======
+	aliases {
+	};
+
+	chosen {
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		cpu0: cpu@0 {
 			clocks = <&ccu CLK_C0CPUX>;
 			clock-names = "cpu";
@@ -68,30 +83,42 @@
 			operating-points-v2 = <&cpu0_opp_table>;
 			cci-control-port = <&cci_control0>;
 			enable-method = "allwinner,sun8i-a83t-smp";
+=======
+		cpu@0 {
+			compatible = "arm,cortex-a7";
+			device_type = "cpu";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0>;
 		};
 
 		cpu@1 {
 			compatible = "arm,cortex-a7";
 			device_type = "cpu";
+<<<<<<< HEAD
 			operating-points-v2 = <&cpu0_opp_table>;
 			cci-control-port = <&cci_control0>;
 			enable-method = "allwinner,sun8i-a83t-smp";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <1>;
 		};
 
 		cpu@2 {
 			compatible = "arm,cortex-a7";
 			device_type = "cpu";
+<<<<<<< HEAD
 			operating-points-v2 = <&cpu0_opp_table>;
 			cci-control-port = <&cci_control0>;
 			enable-method = "allwinner,sun8i-a83t-smp";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <2>;
 		};
 
 		cpu@3 {
 			compatible = "arm,cortex-a7";
 			device_type = "cpu";
+<<<<<<< HEAD
 			operating-points-v2 = <&cpu0_opp_table>;
 			cci-control-port = <&cci_control0>;
 			enable-method = "allwinner,sun8i-a83t-smp";
@@ -106,33 +133,50 @@
 			operating-points-v2 = <&cpu1_opp_table>;
 			cci-control-port = <&cci_control1>;
 			enable-method = "allwinner,sun8i-a83t-smp";
+=======
+			reg = <3>;
+		};
+
+		cpu@100 {
+			compatible = "arm,cortex-a7";
+			device_type = "cpu";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x100>;
 		};
 
 		cpu@101 {
 			compatible = "arm,cortex-a7";
 			device_type = "cpu";
+<<<<<<< HEAD
 			operating-points-v2 = <&cpu1_opp_table>;
 			cci-control-port = <&cci_control1>;
 			enable-method = "allwinner,sun8i-a83t-smp";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x101>;
 		};
 
 		cpu@102 {
 			compatible = "arm,cortex-a7";
 			device_type = "cpu";
+<<<<<<< HEAD
 			operating-points-v2 = <&cpu1_opp_table>;
 			cci-control-port = <&cci_control1>;
 			enable-method = "allwinner,sun8i-a83t-smp";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x102>;
 		};
 
 		cpu@103 {
 			compatible = "arm,cortex-a7";
 			device_type = "cpu";
+<<<<<<< HEAD
 			operating-points-v2 = <&cpu1_opp_table>;
 			cci-control-port = <&cci_control1>;
 			enable-method = "allwinner,sun8i-a83t-smp";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x103>;
 		};
 	};
@@ -181,17 +225,21 @@
 		};
 	};
 
+<<<<<<< HEAD
 	de: display-engine {
 		compatible = "allwinner,sun8i-a83t-display-engine";
 		allwinner,pipelines = <&mixer0>, <&mixer1>;
 		status = "disabled";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memory {
 		reg = <0x40000000 0x80000000>;
 		device_type = "memory";
 	};
 
+<<<<<<< HEAD
 	cpu0_opp_table: opp_table0 {
 		compatible = "operating-points-v2";
 		opp-shared;
@@ -298,12 +346,15 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		compatible = "simple-bus";
 		#address-cells = <1>;
 		#size-cells = <1>;
 		ranges;
 
+<<<<<<< HEAD
 		display_clocks: clock@1000000 {
 			compatible = "allwinner,sun8i-a83t-de2-clk";
 			reg = <0x01000000 0x100000>;
@@ -403,6 +454,8 @@
 			};
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		syscon: syscon@1c00000 {
 			compatible = "allwinner,sun8i-a83t-system-controller",
 				"syscon";
@@ -418,6 +471,7 @@
 			#dma-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		tcon0: lcd-controller@1c0c000 {
 			compatible = "allwinner,sun8i-a83t-tcon-lcd";
 			reg = <0x01c0c000 0x1000>;
@@ -485,6 +539,8 @@
 			};
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mmc0: mmc@1c0f000 {
 			compatible = "allwinner,sun8i-a83t-mmc",
 				     "allwinner,sun7i-a20-mmc";
@@ -520,8 +576,11 @@
 			resets = <&ccu RST_BUS_MMC1>;
 			reset-names = "ahb";
 			interrupts = <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 			pinctrl-names = "default";
 			pinctrl-0 = <&mmc1_pins>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -546,12 +605,16 @@
 			#size-cells = <0>;
 		};
 
+<<<<<<< HEAD
 		sid: eeprom@1c14000 {
 			compatible = "allwinner,sun8i-a83t-sid";
 			reg = <0x1c14000 0x400>;
 		};
 
 		usb_otg: usb@1c19000 {
+=======
+		usb_otg: usb@01c19000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun8i-a83t-musb",
 				     "allwinner,sun8i-a33-musb";
 			reg = <0x01c19000 0x0400>;
@@ -649,6 +712,7 @@
 			#interrupt-cells = <3>;
 			#gpio-cells = <3>;
 
+<<<<<<< HEAD
 			emac_rgmii_pins: emac-rgmii-pins {
 				pins = "PD2", "PD3", "PD4", "PD5", "PD6", "PD7",
 				       "PD11", "PD12", "PD13", "PD14", "PD18",
@@ -693,6 +757,8 @@
 				function = "lvds0";
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mmc0_pins: mmc0-pins {
 				pins = "PF0", "PF1", "PF2",
 				       "PF3", "PF4", "PF5";
@@ -701,6 +767,7 @@
 				bias-pull-up;
 			};
 
+<<<<<<< HEAD
 			mmc1_pins: mmc1-pins {
 				pins = "PG0", "PG1", "PG2",
 				       "PG3", "PG4", "PG5";
@@ -709,6 +776,8 @@
 				bias-pull-up;
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mmc2_8bit_emmc_pins: mmc2-8bit-emmc-pins {
 				pins = "PC5", "PC6", "PC8", "PC9",
 				       "PC10", "PC11", "PC12", "PC13",
@@ -718,11 +787,14 @@
 				bias-pull-up;
 			};
 
+<<<<<<< HEAD
 			pwm_pin: pwm-pin {
 				pins = "PD28";
 				function = "pwm";
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spdif_tx_pin: spdif-tx-pin {
 				pins = "PE18";
 				function = "spdif";
@@ -737,6 +809,7 @@
 				pins = "PF2", "PF4";
 				function = "uart0";
 			};
+<<<<<<< HEAD
 
 			uart1_pins: uart1-pins {
 				pins = "PG6", "PG7";
@@ -747,6 +820,8 @@
 				pins = "PG8", "PG9";
 				function = "uart1";
 			};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		timer@1c20c00 {
@@ -780,6 +855,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		i2s0: i2s@1c22000 {
 			#sound-dai-cells = <0>;
 			compatible = "allwinner,sun8i-a83t-i2s";
@@ -831,6 +907,9 @@
 		};
 
 		uart0: serial@1c28000 {
+=======
+		uart0: serial@01c28000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c28000 0x400>;
 			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
@@ -841,6 +920,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		uart1: serial@1c28400 {
 			compatible = "snps,dw-apb-uart";
 			reg = <0x01c28400 0x400>;
@@ -911,6 +991,8 @@
 			};
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gic: interrupt-controller@1c81000 {
 			compatible = "arm,cortex-a7-gic", "arm,cortex-a15-gic";
 			reg = <0x01c81000 0x1000>,
@@ -922,6 +1004,7 @@
 			interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(8) | IRQ_TYPE_LEVEL_HIGH)>;
 		};
 
+<<<<<<< HEAD
 		hdmi: hdmi@1ee0000 {
 			compatible = "allwinner,sun8i-a83t-dw-hdmi";
 			reg = <0x01ee0000 0x10000>;
@@ -966,6 +1049,8 @@
 			#phy-cells = <0>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r_intc: interrupt-controller@1f00c00 {
 			compatible = "allwinner,sun8i-a83t-r-intc",
 				     "allwinner,sun6i-a31-r-intc";
@@ -985,11 +1070,14 @@
 			#reset-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		r_cpucfg@1f01c00 {
 			compatible = "allwinner,sun8i-a83t-r-cpucfg";
 			reg = <0x1f01c00 0x400>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r_pio: pinctrl@1f02c00 {
 			compatible = "allwinner,sun8i-a83t-r-pinctrl";
 			reg = <0x01f02c00 0x400>;

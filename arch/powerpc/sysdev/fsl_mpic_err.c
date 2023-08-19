@@ -76,7 +76,11 @@ int mpic_setup_error_int(struct mpic *mpic, int intvec)
 	mpic->flags |= MPIC_FSL_HAS_EIMR;
 	/* allocate interrupt vectors for error interrupts */
 	for (i = MPIC_MAX_ERR - 1; i >= 0; i--)
+<<<<<<< HEAD
 		mpic->err_int_vecs[i] = intvec--;
+=======
+		mpic->err_int_vecs[i] = --intvec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

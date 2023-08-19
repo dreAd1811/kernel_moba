@@ -35,7 +35,10 @@
 	 A3XX_INT0_CP_RB_INT |             \
 	 A3XX_INT0_CP_REG_PROTECT_FAULT |  \
 	 A3XX_INT0_CP_AHB_ERROR_HALT |     \
+<<<<<<< HEAD
 	 A3XX_INT0_CACHE_FLUSH_TS |        \
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 A3XX_INT0_UCHE_OOB_ACCESS)
 
 extern bool hang_debug;
@@ -45,7 +48,11 @@ static bool a3xx_idle(struct msm_gpu *gpu);
 
 static bool a3xx_me_init(struct msm_gpu *gpu)
 {
+<<<<<<< HEAD
 	struct msm_ringbuffer *ring = gpu->rb[0];
+=======
+	struct msm_ringbuffer *ring = gpu->rb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	OUT_PKT3(ring, CP_ME_INIT, 17);
 	OUT_RING(ring, 0x000003f7);
@@ -66,7 +73,11 @@ static bool a3xx_me_init(struct msm_gpu *gpu)
 	OUT_RING(ring, 0x00000000);
 	OUT_RING(ring, 0x00000000);
 
+<<<<<<< HEAD
 	gpu->funcs->flush(gpu, ring);
+=======
+	gpu->funcs->flush(gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return a3xx_idle(gpu);
 }
 
@@ -257,8 +268,13 @@ static int a3xx_hw_init(struct msm_gpu *gpu)
 	 */
 
 	/* Load PM4: */
+<<<<<<< HEAD
 	ptr = (uint32_t *)(adreno_gpu->fw[ADRENO_FW_PM4]->data);
 	len = adreno_gpu->fw[ADRENO_FW_PM4]->size / 4;
+=======
+	ptr = (uint32_t *)(adreno_gpu->pm4->data);
+	len = adreno_gpu->pm4->size / 4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG("loading PM4 ucode version: %x", ptr[1]);
 
 	gpu_write(gpu, REG_AXXX_CP_DEBUG,
@@ -269,8 +285,13 @@ static int a3xx_hw_init(struct msm_gpu *gpu)
 		gpu_write(gpu, REG_AXXX_CP_ME_RAM_DATA, ptr[i]);
 
 	/* Load PFP: */
+<<<<<<< HEAD
 	ptr = (uint32_t *)(adreno_gpu->fw[ADRENO_FW_PFP]->data);
 	len = adreno_gpu->fw[ADRENO_FW_PFP]->size / 4;
+=======
+	ptr = (uint32_t *)(adreno_gpu->pfp->data);
+	len = adreno_gpu->pfp->size / 4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG("loading PFP ucode version: %x", ptr[5]);
 
 	gpu_write(gpu, REG_A3XX_CP_PFP_UCODE_ADDR, 0);
@@ -340,7 +361,11 @@ static void a3xx_destroy(struct msm_gpu *gpu)
 static bool a3xx_idle(struct msm_gpu *gpu)
 {
 	/* wait for ringbuffer to drain: */
+<<<<<<< HEAD
 	if (!adreno_idle(gpu, gpu->rb[0]))
+=======
+	if (!adreno_idle(gpu))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	/* then wait for GPU to finish: */
@@ -395,6 +420,7 @@ static const unsigned int a3xx_registers[] = {
 	0x2200, 0x2212, 0x2214, 0x2217, 0x221a, 0x221a, 0x2240, 0x227e,
 	0x2280, 0x228b, 0x22c0, 0x22c0, 0x22c4, 0x22ce, 0x22d0, 0x22d8,
 	0x22df, 0x22e6, 0x22e8, 0x22e9, 0x22ec, 0x22ec, 0x22f0, 0x22f7,
+<<<<<<< HEAD
 	0x22ff, 0x22ff, 0x2340, 0x2343, 0x2348, 0x2349, 0x2350, 0x2356,
 	0x2360, 0x2360, 0x2440, 0x2440, 0x2444, 0x2444, 0x2448, 0x244d,
 	0x2468, 0x2469, 0x246c, 0x246d, 0x2470, 0x2470, 0x2472, 0x2472,
@@ -411,6 +437,31 @@ static const unsigned int a3xx_registers[] = {
 	~0   /* sentinel */
 };
 
+=======
+	0x22ff, 0x22ff, 0x2340, 0x2343, 0x2440, 0x2440, 0x2444, 0x2444,
+	0x2448, 0x244d, 0x2468, 0x2469, 0x246c, 0x246d, 0x2470, 0x2470,
+	0x2472, 0x2472, 0x2474, 0x2475, 0x2479, 0x247a, 0x24c0, 0x24d3,
+	0x24e4, 0x24ef, 0x2500, 0x2509, 0x250c, 0x250c, 0x250e, 0x250e,
+	0x2510, 0x2511, 0x2514, 0x2515, 0x25e4, 0x25e4, 0x25ea, 0x25ea,
+	0x25ec, 0x25ed, 0x25f0, 0x25f0, 0x2600, 0x2612, 0x2614, 0x2617,
+	0x261a, 0x261a, 0x2640, 0x267e, 0x2680, 0x268b, 0x26c0, 0x26c0,
+	0x26c4, 0x26ce, 0x26d0, 0x26d8, 0x26df, 0x26e6, 0x26e8, 0x26e9,
+	0x26ec, 0x26ec, 0x26f0, 0x26f7, 0x26ff, 0x26ff, 0x2740, 0x2743,
+	0x300c, 0x300e, 0x301c, 0x301d, 0x302a, 0x302a, 0x302c, 0x302d,
+	0x3030, 0x3031, 0x3034, 0x3036, 0x303c, 0x303c, 0x305e, 0x305f,
+	~0   /* sentinel */
+};
+
+#ifdef CONFIG_DEBUG_FS
+static void a3xx_show(struct msm_gpu *gpu, struct seq_file *m)
+{
+	seq_printf(m, "status:   %08x\n",
+			gpu_read(gpu, REG_A3XX_RBBM_STATUS));
+	adreno_show(gpu, m);
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* would be nice to not have to duplicate the _show() stuff with printk(): */
 static void a3xx_dump(struct msm_gpu *gpu)
 {
@@ -418,6 +469,7 @@ static void a3xx_dump(struct msm_gpu *gpu)
 			gpu_read(gpu, REG_A3XX_RBBM_STATUS));
 	adreno_dump(gpu);
 }
+<<<<<<< HEAD
 
 static struct msm_gpu_state *a3xx_gpu_state_get(struct msm_gpu *gpu)
 {
@@ -433,6 +485,8 @@ static struct msm_gpu_state *a3xx_gpu_state_get(struct msm_gpu *gpu)
 	return state;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Register offset defines for A3XX */
 static const unsigned int a3xx_register_offsets[REG_ADRENO_REGISTER_MAX] = {
 	REG_ADRENO_DEFINE(REG_ADRENO_CP_RB_BASE, REG_AXXX_CP_RB_BASE),
@@ -451,6 +505,7 @@ static const struct adreno_gpu_funcs funcs = {
 		.pm_suspend = msm_gpu_pm_suspend,
 		.pm_resume = msm_gpu_pm_resume,
 		.recover = a3xx_recover,
+<<<<<<< HEAD
 		.submit = adreno_submit,
 		.flush = adreno_flush,
 		.active_ring = adreno_active_ring,
@@ -461,6 +516,16 @@ static const struct adreno_gpu_funcs funcs = {
 #endif
 		.gpu_state_get = a3xx_gpu_state_get,
 		.gpu_state_put = adreno_gpu_state_put,
+=======
+		.last_fence = adreno_last_fence,
+		.submit = adreno_submit,
+		.flush = adreno_flush,
+		.irq = a3xx_irq,
+		.destroy = a3xx_destroy,
+#ifdef CONFIG_DEBUG_FS
+		.show = a3xx_show,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -501,7 +566,11 @@ struct msm_gpu *a3xx_gpu_init(struct drm_device *dev)
 	adreno_gpu->registers = a3xx_registers;
 	adreno_gpu->reg_offsets = a3xx_register_offsets;
 
+<<<<<<< HEAD
 	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 1);
+=======
+	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto fail;
 

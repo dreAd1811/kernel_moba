@@ -1,8 +1,11 @@
 /* SPDX-License-Identifier: GPL-2.0 */
+<<<<<<< HEAD
 #define PDMA_FILTER_PARAM(_prio, _requestor) (&(struct pxad_param) { \
 	.prio = PXAD_PRIO_##_prio, .drcmr = _requestor })
 struct mmp_dma_platdata;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct platform_device pxa_device_pmu;
 extern struct platform_device pxa_device_mci;
 extern struct platform_device pxa3xx_device_mci2;
@@ -59,6 +62,7 @@ extern struct platform_device pxa3xx_device_gpio;
 extern struct platform_device pxa93x_device_gpio;
 
 void __init pxa_register_device(struct platform_device *dev, void *data);
+<<<<<<< HEAD
 void __init pxa2xx_set_dmac_info(struct mmp_dma_platdata *dma_pdata);
 
 struct i2c_pxa_platform_data;
@@ -69,3 +73,6 @@ extern void pxa27x_set_i2c_power_info(struct i2c_pxa_platform_data *info);
 #ifdef CONFIG_PXA3xx
 extern void pxa3xx_set_i2c_power_info(struct i2c_pxa_platform_data *info);
 #endif
+=======
+void __init pxa2xx_set_dmac_info(int nb_channels, int nb_requestors);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

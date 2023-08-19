@@ -12,7 +12,10 @@
 #include <linux/pagemap.h>
 #include <linux/rwsem.h>
 #include <asm/pgtable.h>
+<<<<<<< HEAD
 #include <asm/adi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * The performance critical leaf functions are made noinline otherwise gcc
@@ -193,10 +196,13 @@ static int gup_pud_range(pgd_t pgd, unsigned long addr, unsigned long end,
 	return 1;
 }
 
+<<<<<<< HEAD
 /*
  * Note a difference with get_user_pages_fast: this always returns the
  * number of pages pinned, 0 if no pages were pinned.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
 			  struct page **pages)
 {
@@ -206,6 +212,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
 	pgd_t *pgdp;
 	int nr = 0;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SPARC64
 	if (adi_capable()) {
 		long addr = start;
@@ -224,6 +231,8 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
 		start = addr;
 	}
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	start &= PAGE_MASK;
 	addr = start;
 	len = (unsigned long) nr_pages << PAGE_SHIFT;
@@ -254,6 +263,7 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
 	pgd_t *pgdp;
 	int nr = 0;
 
+<<<<<<< HEAD
 #ifdef CONFIG_SPARC64
 	if (adi_capable()) {
 		long addr = start;
@@ -272,6 +282,8 @@ int get_user_pages_fast(unsigned long start, int nr_pages, int write,
 		start = addr;
 	}
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	start &= PAGE_MASK;
 	addr = start;
 	len = (unsigned long) nr_pages << PAGE_SHIFT;

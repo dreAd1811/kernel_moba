@@ -11,7 +11,10 @@
 
 #include "aq_ethtool.h"
 #include "aq_nic.h"
+<<<<<<< HEAD
 #include "aq_vec.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void aq_ethtool_get_regs(struct net_device *ndev,
 				struct ethtool_regs *regs, void *p)
@@ -67,6 +70,7 @@ static const char aq_ethtool_stat_names[][ETH_GSTRING_LEN] = {
 	"OutUCast",
 	"OutMCast",
 	"OutBCast",
+<<<<<<< HEAD
 	"InUCastOctets",
 	"OutUCastOctets",
 	"InMCastOctets",
@@ -75,6 +79,16 @@ static const char aq_ethtool_stat_names[][ETH_GSTRING_LEN] = {
 	"OutBCastOctets",
 	"InOctets",
 	"OutOctets",
+=======
+	"InUCastOctects",
+	"OutUCastOctects",
+	"InMCastOctects",
+	"OutMCastOctects",
+	"InBCastOctects",
+	"OutBCastOctects",
+	"InOctects",
+	"OutOctects",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"InPacketsDma",
 	"OutPacketsDma",
 	"InOctetsDma",
@@ -222,8 +236,13 @@ static int aq_ethtool_get_rxnfc(struct net_device *ndev,
 	return err;
 }
 
+<<<<<<< HEAD
 static int aq_ethtool_get_coalesce(struct net_device *ndev,
 				   struct ethtool_coalesce *coal)
+=======
+int aq_ethtool_get_coalesce(struct net_device *ndev,
+			    struct ethtool_coalesce *coal)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct aq_nic_s *aq_nic = netdev_priv(ndev);
 	struct aq_nic_cfg_s *cfg = aq_nic_get_cfg(aq_nic);
@@ -243,8 +262,13 @@ static int aq_ethtool_get_coalesce(struct net_device *ndev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int aq_ethtool_set_coalesce(struct net_device *ndev,
 				   struct ethtool_coalesce *coal)
+=======
+int aq_ethtool_set_coalesce(struct net_device *ndev,
+			    struct ethtool_coalesce *coal)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct aq_nic_s *aq_nic = netdev_priv(ndev);
 	struct aq_nic_cfg_s *cfg = aq_nic_get_cfg(aq_nic);
@@ -285,6 +309,7 @@ static int aq_ethtool_set_coalesce(struct net_device *ndev,
 	return aq_nic_update_interrupt_moderation_settings(aq_nic);
 }
 
+<<<<<<< HEAD
 static int aq_ethtool_nway_reset(struct net_device *ndev)
 {
 	struct aq_nic_s *aq_nic = netdev_priv(ndev);
@@ -396,6 +421,8 @@ err_exit:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct ethtool_ops aq_ethtool_ops = {
 	.get_link            = aq_ethtool_get_link,
 	.get_regs_len        = aq_ethtool_get_regs_len,
@@ -403,11 +430,14 @@ const struct ethtool_ops aq_ethtool_ops = {
 	.get_drvinfo         = aq_ethtool_get_drvinfo,
 	.get_strings         = aq_ethtool_get_strings,
 	.get_rxfh_indir_size = aq_ethtool_get_rss_indir_size,
+<<<<<<< HEAD
 	.nway_reset          = aq_ethtool_nway_reset,
 	.get_ringparam       = aq_get_ringparam,
 	.set_ringparam       = aq_set_ringparam,
 	.get_pauseparam      = aq_ethtool_get_pauseparam,
 	.set_pauseparam      = aq_ethtool_set_pauseparam,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_rxfh_key_size   = aq_ethtool_get_rss_key_size,
 	.get_rxfh            = aq_ethtool_get_rss,
 	.get_rxnfc           = aq_ethtool_get_rxnfc,

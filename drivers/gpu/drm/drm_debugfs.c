@@ -28,7 +28,10 @@
 #include <linux/slab.h>
 #include <linux/export.h>
 
+<<<<<<< HEAD
 #include <drm/drm_client.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_debugfs.h>
 #include <drm/drm_edid.h>
 #include <drm/drm_atomic.h>
@@ -151,7 +154,11 @@ int drm_debugfs_init(struct drm_minor *minor, int minor_id,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (drm_drv_uses_atomic_modeset(dev)) {
+=======
+	if (drm_core_check_feature(dev, DRIVER_ATOMIC)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_atomic_debugfs_init(minor);
 		if (ret) {
 			DRM_ERROR("Failed to create atomic debugfs files\n");
@@ -159,6 +166,7 @@ int drm_debugfs_init(struct drm_minor *minor, int minor_id,
 		}
 	}
 
+<<<<<<< HEAD
 	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
 		ret = drm_framebuffer_debugfs_init(minor);
 		if (ret) {
@@ -173,6 +181,8 @@ int drm_debugfs_init(struct drm_minor *minor, int minor_id,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->driver->debugfs_init) {
 		ret = dev->driver->debugfs_init(minor);
 		if (ret) {
@@ -314,13 +324,21 @@ static ssize_t edid_write(struct file *file, const char __user *ubuf,
 
 	if (len == 5 && !strncmp(buf, "reset", 5)) {
 		connector->override_edid = false;
+<<<<<<< HEAD
 		ret = drm_connector_update_edid_property(connector, NULL);
+=======
+		ret = drm_mode_connector_update_edid_property(connector, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (len < EDID_LENGTH ||
 		   EDID_LENGTH * (1 + edid->extensions) > len)
 		ret = -EINVAL;
 	else {
 		connector->override_edid = false;
+<<<<<<< HEAD
 		ret = drm_connector_update_edid_property(connector, edid);
+=======
+		ret = drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ret)
 			connector->override_edid = true;
 	}

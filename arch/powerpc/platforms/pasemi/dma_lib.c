@@ -531,7 +531,11 @@ int pasemi_dma_init(void)
 	iob_pdev = pci_get_device(PCI_VENDOR_ID_PASEMI, 0xa001, NULL);
 	if (!iob_pdev) {
 		BUG();
+<<<<<<< HEAD
 		pr_warn("Can't find I/O Bridge\n");
+=======
+		printk(KERN_WARNING "Can't find I/O Bridge\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENODEV;
 		goto out;
 	}
@@ -540,7 +544,11 @@ int pasemi_dma_init(void)
 	dma_pdev = pci_get_device(PCI_VENDOR_ID_PASEMI, 0xa007, NULL);
 	if (!dma_pdev) {
 		BUG();
+<<<<<<< HEAD
 		pr_warn("Can't find DMA controller\n");
+=======
+		printk(KERN_WARNING "Can't find DMA controller\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENODEV;
 		goto out;
 	}
@@ -589,7 +597,11 @@ int pasemi_dma_init(void)
 	pasemi_write_dma_reg(PAS_DMA_COM_RXCMD, 0);
 	while (pasemi_read_dma_reg(PAS_DMA_COM_RXSTA) & 1) {
 		if (time_after(jiffies, timeout)) {
+<<<<<<< HEAD
 			pr_warn("Warning: Could not disable RX section\n");
+=======
+			pr_warning("Warning: Could not disable RX section\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -598,7 +610,11 @@ int pasemi_dma_init(void)
 	pasemi_write_dma_reg(PAS_DMA_COM_TXCMD, 0);
 	while (pasemi_read_dma_reg(PAS_DMA_COM_TXSTA) & 1) {
 		if (time_after(jiffies, timeout)) {
+<<<<<<< HEAD
 			pr_warn("Warning: Could not disable TX section\n");
+=======
+			pr_warning("Warning: Could not disable TX section\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -623,7 +639,11 @@ int pasemi_dma_init(void)
 	pasemi_write_dma_reg(PAS_DMA_TXF_CFLG0, 0xffffffff);
 	pasemi_write_dma_reg(PAS_DMA_TXF_CFLG1, 0xffffffff);
 
+<<<<<<< HEAD
 	pr_info("PA Semi PWRficient DMA library initialized "
+=======
+	printk(KERN_INFO "PA Semi PWRficient DMA library initialized "
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"(%d tx, %d rx channels)\n", num_txch, num_rxch);
 
 out:

@@ -89,14 +89,22 @@ static inline void reset_unknown(struct kvm_vcpu *vcpu,
 {
 	BUG_ON(!r->reg);
 	BUG_ON(r->reg >= NR_SYS_REGS);
+<<<<<<< HEAD
 	__vcpu_sys_reg(vcpu, r->reg) = 0x1de7ec7edbadc0deULL;
+=======
+	vcpu_sys_reg(vcpu, r->reg) = 0x1de7ec7edbadc0deULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void reset_val(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r)
 {
 	BUG_ON(!r->reg);
 	BUG_ON(r->reg >= NR_SYS_REGS);
+<<<<<<< HEAD
 	__vcpu_sys_reg(vcpu, r->reg) = r->val;
+=======
+	vcpu_sys_reg(vcpu, r->reg) = r->val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int cmp_sys_reg(const struct sys_reg_desc *i1,

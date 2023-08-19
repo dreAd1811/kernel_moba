@@ -115,6 +115,7 @@ static const u32 hpd_bxt[HPD_NUM_PINS] = {
 	[HPD_PORT_C] = BXT_DE_PORT_HP_DDIC
 };
 
+<<<<<<< HEAD
 static const u32 hpd_gen11[HPD_NUM_PINS] = {
 	[HPD_PORT_C] = GEN11_TC1_HOTPLUG | GEN11_TBT1_HOTPLUG,
 	[HPD_PORT_D] = GEN11_TC2_HOTPLUG | GEN11_TBT2_HOTPLUG,
@@ -131,6 +132,8 @@ static const u32 hpd_icp[HPD_NUM_PINS] = {
 	[HPD_PORT_F] = SDE_TC4_HOTPLUG_ICP
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* IIR can theoretically queue up two events. Be paranoid. */
 #define GEN8_IRQ_RESET_NDX(type, which) do { \
 	I915_WRITE(GEN8_##type##_IMR(which), 0xffffffff); \
@@ -142,7 +145,11 @@ static const u32 hpd_icp[HPD_NUM_PINS] = {
 	POSTING_READ(GEN8_##type##_IIR(which)); \
 } while (0)
 
+<<<<<<< HEAD
 #define GEN3_IRQ_RESET(type) do { \
+=======
+#define GEN5_IRQ_RESET(type) do { \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	I915_WRITE(type##IMR, 0xffffffff); \
 	POSTING_READ(type##IMR); \
 	I915_WRITE(type##IER, 0); \
@@ -152,6 +159,7 @@ static const u32 hpd_icp[HPD_NUM_PINS] = {
 	POSTING_READ(type##IIR); \
 } while (0)
 
+<<<<<<< HEAD
 #define GEN2_IRQ_RESET(type) do { \
 	I915_WRITE16(type##IMR, 0xffff); \
 	POSTING_READ16(type##IMR); \
@@ -166,6 +174,12 @@ static const u32 hpd_icp[HPD_NUM_PINS] = {
  * We should clear IMR at preinstall/uninstall, and just check at postinstall.
  */
 static void gen3_assert_iir_is_zero(struct drm_i915_private *dev_priv,
+=======
+/*
+ * We should clear IMR at preinstall/uninstall, and just check at postinstall.
+ */
+static void gen5_assert_iir_is_zero(struct drm_i915_private *dev_priv,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    i915_reg_t reg)
 {
 	u32 val = I915_READ(reg);
@@ -181,6 +195,7 @@ static void gen3_assert_iir_is_zero(struct drm_i915_private *dev_priv,
 	POSTING_READ(reg);
 }
 
+<<<<<<< HEAD
 static void gen2_assert_iir_is_zero(struct drm_i915_private *dev_priv,
 				    i915_reg_t reg)
 {
@@ -199,18 +214,28 @@ static void gen2_assert_iir_is_zero(struct drm_i915_private *dev_priv,
 
 #define GEN8_IRQ_INIT_NDX(type, which, imr_val, ier_val) do { \
 	gen3_assert_iir_is_zero(dev_priv, GEN8_##type##_IIR(which)); \
+=======
+#define GEN8_IRQ_INIT_NDX(type, which, imr_val, ier_val) do { \
+	gen5_assert_iir_is_zero(dev_priv, GEN8_##type##_IIR(which)); \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	I915_WRITE(GEN8_##type##_IER(which), (ier_val)); \
 	I915_WRITE(GEN8_##type##_IMR(which), (imr_val)); \
 	POSTING_READ(GEN8_##type##_IMR(which)); \
 } while (0)
 
+<<<<<<< HEAD
 #define GEN3_IRQ_INIT(type, imr_val, ier_val) do { \
 	gen3_assert_iir_is_zero(dev_priv, type##IIR); \
+=======
+#define GEN5_IRQ_INIT(type, imr_val, ier_val) do { \
+	gen5_assert_iir_is_zero(dev_priv, type##IIR); \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	I915_WRITE(type##IER, (ier_val)); \
 	I915_WRITE(type##IMR, (imr_val)); \
 	POSTING_READ(type##IMR); \
 } while (0)
 
+<<<<<<< HEAD
 #define GEN2_IRQ_INIT(type, imr_val, ier_val) do { \
 	gen2_assert_iir_is_zero(dev_priv, type##IIR); \
 	I915_WRITE16(type##IER, (ier_val)); \
@@ -218,6 +243,8 @@ static void gen2_assert_iir_is_zero(struct drm_i915_private *dev_priv,
 	POSTING_READ16(type##IMR); \
 } while (0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gen6_rps_irq_handler(struct drm_i915_private *dev_priv, u32 pm_iir);
 static void gen9_guc_irq_handler(struct drm_i915_private *dev_priv, u32 pm_iir);
 
@@ -259,6 +286,7 @@ void i915_hotplug_interrupt_update(struct drm_i915_private *dev_priv,
 	spin_unlock_irq(&dev_priv->irq_lock);
 }
 
+<<<<<<< HEAD
 static u32
 gen11_gt_engine_identity(struct drm_i915_private * const i915,
 			 const unsigned int bank, const unsigned int bit);
@@ -294,6 +322,8 @@ static bool gen11_reset_one_iir(struct drm_i915_private * const i915,
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * ilk_update_display_irq - update DEIMR
  * @dev_priv: driver private
@@ -359,29 +389,40 @@ void gen5_disable_gt_irq(struct drm_i915_private *dev_priv, uint32_t mask)
 
 static i915_reg_t gen6_pm_iir(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	WARN_ON_ONCE(INTEL_GEN(dev_priv) >= 11);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return INTEL_GEN(dev_priv) >= 8 ? GEN8_GT_IIR(2) : GEN6_PMIIR;
 }
 
 static i915_reg_t gen6_pm_imr(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 11)
 		return GEN11_GPM_WGBOXPERF_INTR_MASK;
 	else if (INTEL_GEN(dev_priv) >= 8)
 		return GEN8_GT_IMR(2);
 	else
 		return GEN6_PMIMR;
+=======
+	return INTEL_GEN(dev_priv) >= 8 ? GEN8_GT_IMR(2) : GEN6_PMIMR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static i915_reg_t gen6_pm_ier(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 11)
 		return GEN11_GPM_WGBOXPERF_INTR_ENABLE;
 	else if (INTEL_GEN(dev_priv) >= 8)
 		return GEN8_GT_IER(2);
 	else
 		return GEN6_PMIER;
+=======
+	return INTEL_GEN(dev_priv) >= 8 ? GEN8_GT_IER(2) : GEN6_PMIER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -432,7 +473,11 @@ void gen6_mask_pm_irq(struct drm_i915_private *dev_priv, u32 mask)
 	__gen6_mask_pm_irq(dev_priv, mask);
 }
 
+<<<<<<< HEAD
 static void gen6_reset_pm_iir(struct drm_i915_private *dev_priv, u32 reset_mask)
+=======
+void gen6_reset_pm_iir(struct drm_i915_private *dev_priv, u32 reset_mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	i915_reg_t reg = gen6_pm_iir(dev_priv);
 
@@ -443,7 +488,11 @@ static void gen6_reset_pm_iir(struct drm_i915_private *dev_priv, u32 reset_mask)
 	POSTING_READ(reg);
 }
 
+<<<<<<< HEAD
 static void gen6_enable_pm_irq(struct drm_i915_private *dev_priv, u32 enable_mask)
+=======
+void gen6_enable_pm_irq(struct drm_i915_private *dev_priv, u32 enable_mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	lockdep_assert_held(&dev_priv->irq_lock);
 
@@ -453,7 +502,11 @@ static void gen6_enable_pm_irq(struct drm_i915_private *dev_priv, u32 enable_mas
 	/* unmask_pm_irq provides an implicit barrier (POSTING_READ) */
 }
 
+<<<<<<< HEAD
 static void gen6_disable_pm_irq(struct drm_i915_private *dev_priv, u32 disable_mask)
+=======
+void gen6_disable_pm_irq(struct drm_i915_private *dev_priv, u32 disable_mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	lockdep_assert_held(&dev_priv->irq_lock);
 
@@ -463,6 +516,7 @@ static void gen6_disable_pm_irq(struct drm_i915_private *dev_priv, u32 disable_m
 	/* though a barrier is missing here, but don't really need a one */
 }
 
+<<<<<<< HEAD
 void gen11_reset_rps_interrupts(struct drm_i915_private *dev_priv)
 {
 	spin_lock_irq(&dev_priv->irq_lock);
@@ -475,16 +529,23 @@ void gen11_reset_rps_interrupts(struct drm_i915_private *dev_priv)
 	spin_unlock_irq(&dev_priv->irq_lock);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void gen6_reset_rps_interrupts(struct drm_i915_private *dev_priv)
 {
 	spin_lock_irq(&dev_priv->irq_lock);
 	gen6_reset_pm_iir(dev_priv, dev_priv->pm_rps_events);
+<<<<<<< HEAD
 	dev_priv->gt_pm.rps.pm_iir = 0;
+=======
+	dev_priv->rps.pm_iir = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irq(&dev_priv->irq_lock);
 }
 
 void gen6_enable_rps_interrupts(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
 
 	if (READ_ONCE(rps->interrupts_enabled))
@@ -499,6 +560,15 @@ void gen6_enable_rps_interrupts(struct drm_i915_private *dev_priv)
 		WARN_ON_ONCE(I915_READ(gen6_pm_iir(dev_priv)) & dev_priv->pm_rps_events);
 
 	rps->interrupts_enabled = true;
+=======
+	if (READ_ONCE(dev_priv->rps.interrupts_enabled))
+		return;
+
+	spin_lock_irq(&dev_priv->irq_lock);
+	WARN_ON_ONCE(dev_priv->rps.pm_iir);
+	WARN_ON_ONCE(I915_READ(gen6_pm_iir(dev_priv)) & dev_priv->pm_rps_events);
+	dev_priv->rps.interrupts_enabled = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gen6_enable_pm_irq(dev_priv, dev_priv->pm_rps_events);
 
 	spin_unlock_irq(&dev_priv->irq_lock);
@@ -506,6 +576,7 @@ void gen6_enable_rps_interrupts(struct drm_i915_private *dev_priv)
 
 void gen6_disable_rps_interrupts(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
 
 	if (!READ_ONCE(rps->interrupts_enabled))
@@ -513,6 +584,13 @@ void gen6_disable_rps_interrupts(struct drm_i915_private *dev_priv)
 
 	spin_lock_irq(&dev_priv->irq_lock);
 	rps->interrupts_enabled = false;
+=======
+	if (!READ_ONCE(dev_priv->rps.interrupts_enabled))
+		return;
+
+	spin_lock_irq(&dev_priv->irq_lock);
+	dev_priv->rps.interrupts_enabled = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	I915_WRITE(GEN6_PMINTRMSK, gen6_sanitize_rps_pm_mask(dev_priv, ~0u));
 
@@ -522,6 +600,7 @@ void gen6_disable_rps_interrupts(struct drm_i915_private *dev_priv)
 	synchronize_irq(dev_priv->drm.irq);
 
 	/* Now that we will not be generating any more work, flush any
+<<<<<<< HEAD
 	 * outstanding tasks. As we are called on the RPS idle path,
 	 * we will reset the GPU to minimum frequencies, so the current
 	 * state of the worker can be discarded.
@@ -531,12 +610,23 @@ void gen6_disable_rps_interrupts(struct drm_i915_private *dev_priv)
 		gen11_reset_rps_interrupts(dev_priv);
 	else
 		gen6_reset_rps_interrupts(dev_priv);
+=======
+	 * outsanding tasks. As we are called on the RPS idle path,
+	 * we will reset the GPU to minimum frequencies, so the current
+	 * state of the worker can be discarded.
+	 */
+	cancel_work_sync(&dev_priv->rps.work);
+	gen6_reset_rps_interrupts(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void gen9_reset_guc_interrupts(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	assert_rpm_wakelock_held(dev_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irq(&dev_priv->irq_lock);
 	gen6_reset_pm_iir(dev_priv, dev_priv->pm_guc_events);
 	spin_unlock_irq(&dev_priv->irq_lock);
@@ -544,8 +634,11 @@ void gen9_reset_guc_interrupts(struct drm_i915_private *dev_priv)
 
 void gen9_enable_guc_interrupts(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	assert_rpm_wakelock_held(dev_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irq(&dev_priv->irq_lock);
 	if (!dev_priv->guc.interrupts_enabled) {
 		WARN_ON_ONCE(I915_READ(gen6_pm_iir(dev_priv)) &
@@ -558,8 +651,11 @@ void gen9_enable_guc_interrupts(struct drm_i915_private *dev_priv)
 
 void gen9_disable_guc_interrupts(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	assert_rpm_wakelock_held(dev_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irq(&dev_priv->irq_lock);
 	dev_priv->guc.interrupts_enabled = false;
 
@@ -660,6 +756,7 @@ void ibx_display_interrupt_update(struct drm_i915_private *dev_priv,
 	POSTING_READ(SDEIMR);
 }
 
+<<<<<<< HEAD
 u32 i915_pipestat_enable_mask(struct drm_i915_private *dev_priv,
 			      enum pipe pipe)
 {
@@ -670,6 +767,64 @@ u32 i915_pipestat_enable_mask(struct drm_i915_private *dev_priv,
 
 	if (INTEL_GEN(dev_priv) < 5)
 		goto out;
+=======
+static void
+__i915_enable_pipestat(struct drm_i915_private *dev_priv, enum pipe pipe,
+		       u32 enable_mask, u32 status_mask)
+{
+	i915_reg_t reg = PIPESTAT(pipe);
+	u32 pipestat = I915_READ(reg) & PIPESTAT_INT_ENABLE_MASK;
+
+	lockdep_assert_held(&dev_priv->irq_lock);
+	WARN_ON(!intel_irqs_enabled(dev_priv));
+
+	if (WARN_ONCE(enable_mask & ~PIPESTAT_INT_ENABLE_MASK ||
+		      status_mask & ~PIPESTAT_INT_STATUS_MASK,
+		      "pipe %c: enable_mask=0x%x, status_mask=0x%x\n",
+		      pipe_name(pipe), enable_mask, status_mask))
+		return;
+
+	if ((pipestat & enable_mask) == enable_mask)
+		return;
+
+	dev_priv->pipestat_irq_mask[pipe] |= status_mask;
+
+	/* Enable the interrupt, clear any pending status */
+	pipestat |= enable_mask | status_mask;
+	I915_WRITE(reg, pipestat);
+	POSTING_READ(reg);
+}
+
+static void
+__i915_disable_pipestat(struct drm_i915_private *dev_priv, enum pipe pipe,
+		        u32 enable_mask, u32 status_mask)
+{
+	i915_reg_t reg = PIPESTAT(pipe);
+	u32 pipestat = I915_READ(reg) & PIPESTAT_INT_ENABLE_MASK;
+
+	lockdep_assert_held(&dev_priv->irq_lock);
+	WARN_ON(!intel_irqs_enabled(dev_priv));
+
+	if (WARN_ONCE(enable_mask & ~PIPESTAT_INT_ENABLE_MASK ||
+		      status_mask & ~PIPESTAT_INT_STATUS_MASK,
+		      "pipe %c: enable_mask=0x%x, status_mask=0x%x\n",
+		      pipe_name(pipe), enable_mask, status_mask))
+		return;
+
+	if ((pipestat & enable_mask) == 0)
+		return;
+
+	dev_priv->pipestat_irq_mask[pipe] &= ~status_mask;
+
+	pipestat &= ~enable_mask;
+	I915_WRITE(reg, pipestat);
+	POSTING_READ(reg);
+}
+
+static u32 vlv_get_pipestat_enable_mask(struct drm_device *dev, u32 status_mask)
+{
+	u32 enable_mask = status_mask << 16;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * On pipe A we don't support the PSR interrupt yet,
@@ -692,6 +847,7 @@ u32 i915_pipestat_enable_mask(struct drm_i915_private *dev_priv,
 	if (status_mask & SPRITE1_FLIP_DONE_INT_STATUS_VLV)
 		enable_mask |= SPRITE1_FLIP_DONE_INT_EN_VLV;
 
+<<<<<<< HEAD
 out:
 	WARN_ONCE(enable_mask & ~PIPESTAT_INT_ENABLE_MASK ||
 		  status_mask & ~PIPESTAT_INT_STATUS_MASK,
@@ -745,6 +901,37 @@ void i915_disable_pipestat(struct drm_i915_private *dev_priv,
 
 	I915_WRITE(reg, enable_mask | status_mask);
 	POSTING_READ(reg);
+=======
+	return enable_mask;
+}
+
+void
+i915_enable_pipestat(struct drm_i915_private *dev_priv, enum pipe pipe,
+		     u32 status_mask)
+{
+	u32 enable_mask;
+
+	if (IS_VALLEYVIEW(dev_priv) || IS_CHERRYVIEW(dev_priv))
+		enable_mask = vlv_get_pipestat_enable_mask(&dev_priv->drm,
+							   status_mask);
+	else
+		enable_mask = status_mask << 16;
+	__i915_enable_pipestat(dev_priv, pipe, enable_mask, status_mask);
+}
+
+void
+i915_disable_pipestat(struct drm_i915_private *dev_priv, enum pipe pipe,
+		      u32 status_mask)
+{
+	u32 enable_mask;
+
+	if (IS_VALLEYVIEW(dev_priv) || IS_CHERRYVIEW(dev_priv))
+		enable_mask = vlv_get_pipestat_enable_mask(&dev_priv->drm,
+							   status_mask);
+	else
+		enable_mask = status_mask << 16;
+	__i915_disable_pipestat(dev_priv, pipe, enable_mask, status_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -876,6 +1063,7 @@ static u32 g4x_get_vblank_counter(struct drm_device *dev, unsigned int pipe)
 	return I915_READ(PIPE_FRMCOUNT_G4X(pipe));
 }
 
+<<<<<<< HEAD
 /*
  * On certain encoders on certain platforms, pipe
  * scanline register will not work to get the scanline,
@@ -927,6 +1115,8 @@ static u32 __intel_get_crtc_scanline_from_timestamp(struct intel_crtc *crtc)
 	return scanline;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* I915_READ_FW, only for fast reads of display block, no need for forcewake etc. */
 static int __intel_get_crtc_scanline(struct intel_crtc *crtc)
 {
@@ -943,9 +1133,12 @@ static int __intel_get_crtc_scanline(struct intel_crtc *crtc)
 	vblank = &crtc->base.dev->vblank[drm_crtc_index(&crtc->base)];
 	mode = &vblank->hwmode;
 
+<<<<<<< HEAD
 	if (mode->private_flags & I915_MODE_FLAG_GET_SCANLINE_FROM_TIMESTAMP)
 		return __intel_get_crtc_scanline_from_timestamp(crtc);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vtotal = mode->crtc_vtotal;
 	if (mode->flags & DRM_MODE_FLAG_INTERLACE)
 		vtotal /= 2;
@@ -1154,6 +1347,7 @@ static void ironlake_rps_change_irq_handler(struct drm_i915_private *dev_priv)
 
 static void notify_ring(struct intel_engine_cs *engine)
 {
+<<<<<<< HEAD
 	const u32 seqno = intel_engine_get_seqno(engine);
 	struct i915_request *rq = NULL;
 	struct task_struct *tsk = NULL;
@@ -1163,12 +1357,23 @@ static void notify_ring(struct intel_engine_cs *engine)
 		return;
 
 	rcu_read_lock();
+=======
+	struct drm_i915_gem_request *rq = NULL;
+	struct intel_wait *wait;
+
+	atomic_inc(&engine->irq_count);
+	set_bit(ENGINE_IRQ_BREADCRUMB, &engine->irq_posted);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&engine->breadcrumbs.irq_lock);
 	wait = engine->breadcrumbs.irq_wait;
 	if (wait) {
+<<<<<<< HEAD
 		/*
 		 * We use a callback from the dma-fence to submit
+=======
+		/* We use a callback from the dma-fence to submit
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * requests after waiting on our own requests. To
 		 * ensure minimum delay in queuing the next request to
 		 * hardware, signal the fence now rather than wait for
@@ -1179,6 +1384,7 @@ static void notify_ring(struct intel_engine_cs *engine)
 		 * and to handle coalescing of multiple seqno updates
 		 * and many waiters.
 		 */
+<<<<<<< HEAD
 		if (i915_seqno_passed(seqno, wait->seqno)) {
 			struct i915_request *waiter = wait->request;
 
@@ -1202,10 +1408,22 @@ static void notify_ring(struct intel_engine_cs *engine)
 	} else {
 		if (engine->breadcrumbs.irq_armed)
 			__intel_engine_disarm_breadcrumbs(engine);
+=======
+		if (i915_seqno_passed(intel_engine_get_seqno(engine),
+				      wait->seqno) &&
+		    !test_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
+			      &wait->request->fence.flags))
+			rq = i915_gem_request_get(wait->request);
+
+		wake_up_process(wait->tsk);
+	} else {
+		__intel_engine_disarm_breadcrumbs(engine);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock(&engine->breadcrumbs.irq_lock);
 
 	if (rq) {
+<<<<<<< HEAD
 		spin_lock(&rq->lock);
 		dma_fence_signal_locked(&rq->fence);
 		GEM_BUG_ON(!i915_request_completed(rq));
@@ -1219,6 +1437,12 @@ static void notify_ring(struct intel_engine_cs *engine)
 
 	rcu_read_unlock();
 
+=======
+		dma_fence_signal(&rq->fence);
+		i915_gem_request_put(rq);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_intel_engine_notify(engine, wait);
 }
 
@@ -1232,13 +1456,21 @@ static void vlv_c0_read(struct drm_i915_private *dev_priv,
 
 void gen6_rps_reset_ei(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	memset(&dev_priv->gt_pm.rps.ei, 0, sizeof(dev_priv->gt_pm.rps.ei));
+=======
+	memset(&dev_priv->rps.ei, 0, sizeof(dev_priv->rps.ei));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 vlv_wa_c0_ei(struct drm_i915_private *dev_priv, u32 pm_iir)
 {
+<<<<<<< HEAD
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
 	const struct intel_rps_ei *prev = &rps->ei;
+=======
+	const struct intel_rps_ei *prev = &dev_priv->rps.ei;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct intel_rps_ei now;
 	u32 events = 0;
 
@@ -1265,6 +1497,7 @@ static u32 vlv_wa_c0_ei(struct drm_i915_private *dev_priv, u32 pm_iir)
 		c0 = max(render, media);
 		c0 *= 1000 * 100 << 8; /* to usecs and scale to threshold% */
 
+<<<<<<< HEAD
 		if (c0 > time * rps->power.up_threshold)
 			events = GEN6_PM_RP_UP_THRESHOLD;
 		else if (c0 < time * rps->power.down_threshold)
@@ -1272,22 +1505,41 @@ static u32 vlv_wa_c0_ei(struct drm_i915_private *dev_priv, u32 pm_iir)
 	}
 
 	rps->ei = now;
+=======
+		if (c0 > time * dev_priv->rps.up_threshold)
+			events = GEN6_PM_RP_UP_THRESHOLD;
+		else if (c0 < time * dev_priv->rps.down_threshold)
+			events = GEN6_PM_RP_DOWN_THRESHOLD;
+	}
+
+	dev_priv->rps.ei = now;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return events;
 }
 
 static void gen6_pm_rps_work(struct work_struct *work)
 {
 	struct drm_i915_private *dev_priv =
+<<<<<<< HEAD
 		container_of(work, struct drm_i915_private, gt_pm.rps.work);
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
+=======
+		container_of(work, struct drm_i915_private, rps.work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool client_boost = false;
 	int new_delay, adj, min, max;
 	u32 pm_iir = 0;
 
 	spin_lock_irq(&dev_priv->irq_lock);
+<<<<<<< HEAD
 	if (rps->interrupts_enabled) {
 		pm_iir = fetch_and_zero(&rps->pm_iir);
 		client_boost = atomic_read(&rps->num_waiters);
+=======
+	if (dev_priv->rps.interrupts_enabled) {
+		pm_iir = fetch_and_zero(&dev_priv->rps.pm_iir);
+		client_boost = atomic_read(&dev_priv->rps.num_waiters);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock_irq(&dev_priv->irq_lock);
 
@@ -1296,6 +1548,7 @@ static void gen6_pm_rps_work(struct work_struct *work)
 	if ((pm_iir & dev_priv->pm_rps_events) == 0 && !client_boost)
 		goto out;
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
 
 	pm_iir |= vlv_wa_c0_ei(dev_priv, pm_iir);
@@ -1308,6 +1561,20 @@ static void gen6_pm_rps_work(struct work_struct *work)
 		max = rps->max_freq;
 	if (client_boost && new_delay < rps->boost_freq) {
 		new_delay = rps->boost_freq;
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+
+	pm_iir |= vlv_wa_c0_ei(dev_priv, pm_iir);
+
+	adj = dev_priv->rps.last_adj;
+	new_delay = dev_priv->rps.cur_freq;
+	min = dev_priv->rps.min_freq_softlimit;
+	max = dev_priv->rps.max_freq_softlimit;
+	if (client_boost)
+		max = dev_priv->rps.max_freq;
+	if (client_boost && new_delay < dev_priv->rps.boost_freq) {
+		new_delay = dev_priv->rps.boost_freq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adj = 0;
 	} else if (pm_iir & GEN6_PM_RP_UP_THRESHOLD) {
 		if (adj > 0)
@@ -1315,15 +1582,26 @@ static void gen6_pm_rps_work(struct work_struct *work)
 		else /* CHV needs even encode values */
 			adj = IS_CHERRYVIEW(dev_priv) ? 2 : 1;
 
+<<<<<<< HEAD
 		if (new_delay >= rps->max_freq_softlimit)
+=======
+		if (new_delay >= dev_priv->rps.max_freq_softlimit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adj = 0;
 	} else if (client_boost) {
 		adj = 0;
 	} else if (pm_iir & GEN6_PM_RP_DOWN_TIMEOUT) {
+<<<<<<< HEAD
 		if (rps->cur_freq > rps->efficient_freq)
 			new_delay = rps->efficient_freq;
 		else if (rps->cur_freq > rps->min_freq_softlimit)
 			new_delay = rps->min_freq_softlimit;
+=======
+		if (dev_priv->rps.cur_freq > dev_priv->rps.efficient_freq)
+			new_delay = dev_priv->rps.efficient_freq;
+		else if (dev_priv->rps.cur_freq > dev_priv->rps.min_freq_softlimit)
+			new_delay = dev_priv->rps.min_freq_softlimit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adj = 0;
 	} else if (pm_iir & GEN6_PM_RP_DOWN_THRESHOLD) {
 		if (adj < 0)
@@ -1331,13 +1609,21 @@ static void gen6_pm_rps_work(struct work_struct *work)
 		else /* CHV needs even encode values */
 			adj = IS_CHERRYVIEW(dev_priv) ? -2 : -1;
 
+<<<<<<< HEAD
 		if (new_delay <= rps->min_freq_softlimit)
+=======
+		if (new_delay <= dev_priv->rps.min_freq_softlimit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adj = 0;
 	} else { /* unknown event */
 		adj = 0;
 	}
 
+<<<<<<< HEAD
 	rps->last_adj = adj;
+=======
+	dev_priv->rps.last_adj = adj;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* sysfs frequency interfaces may have snuck in while servicing the
 	 * interrupt
@@ -1347,15 +1633,26 @@ static void gen6_pm_rps_work(struct work_struct *work)
 
 	if (intel_set_rps(dev_priv, new_delay)) {
 		DRM_DEBUG_DRIVER("Failed to set new GPU frequency\n");
+<<<<<<< HEAD
 		rps->last_adj = 0;
 	}
 
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+		dev_priv->rps.last_adj = 0;
+	}
+
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	/* Make sure not to corrupt PMIMR state used by ringbuffer on GEN6 */
 	spin_lock_irq(&dev_priv->irq_lock);
+<<<<<<< HEAD
 	if (rps->interrupts_enabled)
+=======
+	if (dev_priv->rps.interrupts_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gen6_unmask_pm_irq(dev_priv, dev_priv->pm_rps_events);
 	spin_unlock_irq(&dev_priv->irq_lock);
 }
@@ -1491,6 +1788,7 @@ static void snb_gt_irq_handler(struct drm_i915_private *dev_priv,
 }
 
 static void
+<<<<<<< HEAD
 gen8_cs_irq_handler(struct intel_engine_cs *engine, u32 iir)
 {
 	bool tasklet = false;
@@ -1600,12 +1898,119 @@ static bool bxt_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 	case HPD_PORT_B:
 		return val & PORTB_HOTPLUG_LONG_DETECT;
 	case HPD_PORT_C:
+=======
+gen8_cs_irq_handler(struct intel_engine_cs *engine, u32 iir, int test_shift)
+{
+	bool tasklet = false;
+
+	if (iir & (GT_CONTEXT_SWITCH_INTERRUPT << test_shift)) {
+		if (port_count(&engine->execlist_port[0])) {
+			__set_bit(ENGINE_IRQ_EXECLIST, &engine->irq_posted);
+			tasklet = true;
+		}
+	}
+
+	if (iir & (GT_RENDER_USER_INTERRUPT << test_shift)) {
+		notify_ring(engine);
+		tasklet |= i915.enable_guc_submission;
+	}
+
+	if (tasklet)
+		tasklet_hi_schedule(&engine->irq_tasklet);
+}
+
+static irqreturn_t gen8_gt_irq_ack(struct drm_i915_private *dev_priv,
+				   u32 master_ctl,
+				   u32 gt_iir[4])
+{
+	irqreturn_t ret = IRQ_NONE;
+
+	if (master_ctl & (GEN8_GT_RCS_IRQ | GEN8_GT_BCS_IRQ)) {
+		gt_iir[0] = I915_READ_FW(GEN8_GT_IIR(0));
+		if (gt_iir[0]) {
+			I915_WRITE_FW(GEN8_GT_IIR(0), gt_iir[0]);
+			ret = IRQ_HANDLED;
+		} else
+			DRM_ERROR("The master control interrupt lied (GT0)!\n");
+	}
+
+	if (master_ctl & (GEN8_GT_VCS1_IRQ | GEN8_GT_VCS2_IRQ)) {
+		gt_iir[1] = I915_READ_FW(GEN8_GT_IIR(1));
+		if (gt_iir[1]) {
+			I915_WRITE_FW(GEN8_GT_IIR(1), gt_iir[1]);
+			ret = IRQ_HANDLED;
+		} else
+			DRM_ERROR("The master control interrupt lied (GT1)!\n");
+	}
+
+	if (master_ctl & GEN8_GT_VECS_IRQ) {
+		gt_iir[3] = I915_READ_FW(GEN8_GT_IIR(3));
+		if (gt_iir[3]) {
+			I915_WRITE_FW(GEN8_GT_IIR(3), gt_iir[3]);
+			ret = IRQ_HANDLED;
+		} else
+			DRM_ERROR("The master control interrupt lied (GT3)!\n");
+	}
+
+	if (master_ctl & (GEN8_GT_PM_IRQ | GEN8_GT_GUC_IRQ)) {
+		gt_iir[2] = I915_READ_FW(GEN8_GT_IIR(2));
+		if (gt_iir[2] & (dev_priv->pm_rps_events |
+				 dev_priv->pm_guc_events)) {
+			I915_WRITE_FW(GEN8_GT_IIR(2),
+				      gt_iir[2] & (dev_priv->pm_rps_events |
+						   dev_priv->pm_guc_events));
+			ret = IRQ_HANDLED;
+		} else
+			DRM_ERROR("The master control interrupt lied (PM)!\n");
+	}
+
+	return ret;
+}
+
+static void gen8_gt_irq_handler(struct drm_i915_private *dev_priv,
+				u32 gt_iir[4])
+{
+	if (gt_iir[0]) {
+		gen8_cs_irq_handler(dev_priv->engine[RCS],
+				    gt_iir[0], GEN8_RCS_IRQ_SHIFT);
+		gen8_cs_irq_handler(dev_priv->engine[BCS],
+				    gt_iir[0], GEN8_BCS_IRQ_SHIFT);
+	}
+
+	if (gt_iir[1]) {
+		gen8_cs_irq_handler(dev_priv->engine[VCS],
+				    gt_iir[1], GEN8_VCS1_IRQ_SHIFT);
+		gen8_cs_irq_handler(dev_priv->engine[VCS2],
+				    gt_iir[1], GEN8_VCS2_IRQ_SHIFT);
+	}
+
+	if (gt_iir[3])
+		gen8_cs_irq_handler(dev_priv->engine[VECS],
+				    gt_iir[3], GEN8_VECS_IRQ_SHIFT);
+
+	if (gt_iir[2] & dev_priv->pm_rps_events)
+		gen6_rps_irq_handler(dev_priv, gt_iir[2]);
+
+	if (gt_iir[2] & dev_priv->pm_guc_events)
+		gen9_guc_irq_handler(dev_priv, gt_iir[2]);
+}
+
+static bool bxt_port_hotplug_long_detect(enum port port, u32 val)
+{
+	switch (port) {
+	case PORT_A:
+		return val & PORTA_HOTPLUG_LONG_DETECT;
+	case PORT_B:
+		return val & PORTB_HOTPLUG_LONG_DETECT;
+	case PORT_C:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return val & PORTC_HOTPLUG_LONG_DETECT;
 	default:
 		return false;
 	}
 }
 
+<<<<<<< HEAD
 static bool icp_ddi_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 {
 	switch (pin) {
@@ -1638,12 +2043,19 @@ static bool spt_port_hotplug2_long_detect(enum hpd_pin pin, u32 val)
 {
 	switch (pin) {
 	case HPD_PORT_E:
+=======
+static bool spt_port_hotplug2_long_detect(enum port port, u32 val)
+{
+	switch (port) {
+	case PORT_E:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return val & PORTE_HOTPLUG_LONG_DETECT;
 	default:
 		return false;
 	}
 }
 
+<<<<<<< HEAD
 static bool spt_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 {
 	switch (pin) {
@@ -1654,22 +2066,42 @@ static bool spt_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 	case HPD_PORT_C:
 		return val & PORTC_HOTPLUG_LONG_DETECT;
 	case HPD_PORT_D:
+=======
+static bool spt_port_hotplug_long_detect(enum port port, u32 val)
+{
+	switch (port) {
+	case PORT_A:
+		return val & PORTA_HOTPLUG_LONG_DETECT;
+	case PORT_B:
+		return val & PORTB_HOTPLUG_LONG_DETECT;
+	case PORT_C:
+		return val & PORTC_HOTPLUG_LONG_DETECT;
+	case PORT_D:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return val & PORTD_HOTPLUG_LONG_DETECT;
 	default:
 		return false;
 	}
 }
 
+<<<<<<< HEAD
 static bool ilk_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 {
 	switch (pin) {
 	case HPD_PORT_A:
+=======
+static bool ilk_port_hotplug_long_detect(enum port port, u32 val)
+{
+	switch (port) {
+	case PORT_A:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return val & DIGITAL_PORTA_HOTPLUG_LONG_DETECT;
 	default:
 		return false;
 	}
 }
 
+<<<<<<< HEAD
 static bool pch_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 {
 	switch (pin) {
@@ -1678,12 +2110,23 @@ static bool pch_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 	case HPD_PORT_C:
 		return val & PORTC_HOTPLUG_LONG_DETECT;
 	case HPD_PORT_D:
+=======
+static bool pch_port_hotplug_long_detect(enum port port, u32 val)
+{
+	switch (port) {
+	case PORT_B:
+		return val & PORTB_HOTPLUG_LONG_DETECT;
+	case PORT_C:
+		return val & PORTC_HOTPLUG_LONG_DETECT;
+	case PORT_D:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return val & PORTD_HOTPLUG_LONG_DETECT;
 	default:
 		return false;
 	}
 }
 
+<<<<<<< HEAD
 static bool i9xx_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 {
 	switch (pin) {
@@ -1692,6 +2135,16 @@ static bool i9xx_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
 	case HPD_PORT_C:
 		return val & PORTC_HOTPLUG_INT_LONG_PULSE;
 	case HPD_PORT_D:
+=======
+static bool i9xx_port_hotplug_long_detect(enum port port, u32 val)
+{
+	switch (port) {
+	case PORT_B:
+		return val & PORTB_HOTPLUG_INT_LONG_PULSE;
+	case PORT_C:
+		return val & PORTC_HOTPLUG_INT_LONG_PULSE;
+	case PORT_D:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return val & PORTD_HOTPLUG_INT_LONG_PULSE;
 	default:
 		return false;
@@ -1705,6 +2158,7 @@ static bool i9xx_port_hotplug_long_detect(enum hpd_pin pin, u32 val)
  *
  * Note that the caller is expected to zero out the masks initially.
  */
+<<<<<<< HEAD
 static void intel_get_hpd_pins(struct drm_i915_private *dev_priv,
 			       u32 *pin_mask, u32 *long_mask,
 			       u32 hotplug_trigger, u32 dig_hotplug_reg,
@@ -1725,6 +2179,32 @@ static void intel_get_hpd_pins(struct drm_i915_private *dev_priv,
 
 	DRM_DEBUG_DRIVER("hotplug event received, stat 0x%08x, dig 0x%08x, pins 0x%08x, long 0x%08x\n",
 			 hotplug_trigger, dig_hotplug_reg, *pin_mask, *long_mask);
+=======
+static void intel_get_hpd_pins(u32 *pin_mask, u32 *long_mask,
+			     u32 hotplug_trigger, u32 dig_hotplug_reg,
+			     const u32 hpd[HPD_NUM_PINS],
+			     bool long_pulse_detect(enum port port, u32 val))
+{
+	enum port port;
+	int i;
+
+	for_each_hpd_pin(i) {
+		if ((hpd[i] & hotplug_trigger) == 0)
+			continue;
+
+		*pin_mask |= BIT(i);
+
+		port = intel_hpd_pin_to_port(i);
+		if (port == PORT_NONE)
+			continue;
+
+		if (long_pulse_detect(port, dig_hotplug_reg))
+			*long_mask |= BIT(i);
+	}
+
+	DRM_DEBUG_DRIVER("hotplug event received, stat 0x%08x, dig 0x%08x, pins 0x%08x\n",
+			 hotplug_trigger, dig_hotplug_reg, *pin_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 
@@ -1746,6 +2226,7 @@ static void display_pipe_crc_irq_handler(struct drm_i915_private *dev_priv,
 					 uint32_t crc4)
 {
 	struct intel_pipe_crc *pipe_crc = &dev_priv->pipe_crc[pipe];
+<<<<<<< HEAD
 	struct intel_crtc *crtc = intel_get_crtc_for_pipe(dev_priv, pipe);
 	uint32_t crcs[5];
 
@@ -1774,6 +2255,71 @@ static void display_pipe_crc_irq_handler(struct drm_i915_private *dev_priv,
 	drm_crtc_add_crc_entry(&crtc->base, true,
 				drm_crtc_accurate_vblank_count(&crtc->base),
 				crcs);
+=======
+	struct intel_pipe_crc_entry *entry;
+	struct intel_crtc *crtc = intel_get_crtc_for_pipe(dev_priv, pipe);
+	struct drm_driver *driver = dev_priv->drm.driver;
+	uint32_t crcs[5];
+	int head, tail;
+
+	spin_lock(&pipe_crc->lock);
+	if (pipe_crc->source) {
+		if (!pipe_crc->entries) {
+			spin_unlock(&pipe_crc->lock);
+			DRM_DEBUG_KMS("spurious interrupt\n");
+			return;
+		}
+
+		head = pipe_crc->head;
+		tail = pipe_crc->tail;
+
+		if (CIRC_SPACE(head, tail, INTEL_PIPE_CRC_ENTRIES_NR) < 1) {
+			spin_unlock(&pipe_crc->lock);
+			DRM_ERROR("CRC buffer overflowing\n");
+			return;
+		}
+
+		entry = &pipe_crc->entries[head];
+
+		entry->frame = driver->get_vblank_counter(&dev_priv->drm, pipe);
+		entry->crc[0] = crc0;
+		entry->crc[1] = crc1;
+		entry->crc[2] = crc2;
+		entry->crc[3] = crc3;
+		entry->crc[4] = crc4;
+
+		head = (head + 1) & (INTEL_PIPE_CRC_ENTRIES_NR - 1);
+		pipe_crc->head = head;
+
+		spin_unlock(&pipe_crc->lock);
+
+		wake_up_interruptible(&pipe_crc->wq);
+	} else {
+		/*
+		 * For some not yet identified reason, the first CRC is
+		 * bonkers. So let's just wait for the next vblank and read
+		 * out the buggy result.
+		 *
+		 * On CHV sometimes the second CRC is bonkers as well, so
+		 * don't trust that one either.
+		 */
+		if (pipe_crc->skipped == 0 ||
+		    (IS_CHERRYVIEW(dev_priv) && pipe_crc->skipped == 1)) {
+			pipe_crc->skipped++;
+			spin_unlock(&pipe_crc->lock);
+			return;
+		}
+		spin_unlock(&pipe_crc->lock);
+		crcs[0] = crc0;
+		crcs[1] = crc1;
+		crcs[2] = crc2;
+		crcs[3] = crc3;
+		crcs[4] = crc4;
+		drm_crtc_add_crc_entry(&crtc->base, true,
+				       drm_crtc_accurate_vblank_count(&crtc->base),
+				       crcs);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #else
 static inline void
@@ -1831,6 +2377,7 @@ static void i9xx_pipe_crc_irq_handler(struct drm_i915_private *dev_priv,
  * the work queue. */
 static void gen6_rps_irq_handler(struct drm_i915_private *dev_priv, u32 pm_iir)
 {
+<<<<<<< HEAD
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
 
 	if (pm_iir & dev_priv->pm_rps_events) {
@@ -1839,6 +2386,14 @@ static void gen6_rps_irq_handler(struct drm_i915_private *dev_priv, u32 pm_iir)
 		if (rps->interrupts_enabled) {
 			rps->pm_iir |= pm_iir & dev_priv->pm_rps_events;
 			schedule_work(&rps->work);
+=======
+	if (pm_iir & dev_priv->pm_rps_events) {
+		spin_lock(&dev_priv->irq_lock);
+		gen6_mask_pm_irq(dev_priv, pm_iir & dev_priv->pm_rps_events);
+		if (dev_priv->rps.interrupts_enabled) {
+			dev_priv->rps.pm_iir |= pm_iir & dev_priv->pm_rps_events;
+			schedule_work(&dev_priv->rps.work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		spin_unlock(&dev_priv->irq_lock);
 	}
@@ -1857,6 +2412,7 @@ static void gen6_rps_irq_handler(struct drm_i915_private *dev_priv, u32 pm_iir)
 
 static void gen9_guc_irq_handler(struct drm_i915_private *dev_priv, u32 gt_iir)
 {
+<<<<<<< HEAD
 	if (gt_iir & GEN9_GUC_TO_HOST_INT_EVENT)
 		intel_guc_to_host_event_handler(&dev_priv->guc);
 }
@@ -1876,6 +2432,43 @@ static void i9xx_pipestat_irq_reset(struct drm_i915_private *dev_priv)
 
 static void i9xx_pipestat_irq_ack(struct drm_i915_private *dev_priv,
 				  u32 iir, u32 pipe_stats[I915_MAX_PIPES])
+=======
+	if (gt_iir & GEN9_GUC_TO_HOST_INT_EVENT) {
+		/* Sample the log buffer flush related bits & clear them out now
+		 * itself from the message identity register to minimize the
+		 * probability of losing a flush interrupt, when there are back
+		 * to back flush interrupts.
+		 * There can be a new flush interrupt, for different log buffer
+		 * type (like for ISR), whilst Host is handling one (for DPC).
+		 * Since same bit is used in message register for ISR & DPC, it
+		 * could happen that GuC sets the bit for 2nd interrupt but Host
+		 * clears out the bit on handling the 1st interrupt.
+		 */
+		u32 msg, flush;
+
+		msg = I915_READ(SOFT_SCRATCH(15));
+		flush = msg & (INTEL_GUC_RECV_MSG_CRASH_DUMP_POSTED |
+			       INTEL_GUC_RECV_MSG_FLUSH_LOG_BUFFER);
+		if (flush) {
+			/* Clear the message bits that are handled */
+			I915_WRITE(SOFT_SCRATCH(15), msg & ~flush);
+
+			/* Handle flush interrupt in bottom half */
+			queue_work(dev_priv->guc.log.runtime.flush_wq,
+				   &dev_priv->guc.log.runtime.flush_work);
+
+			dev_priv->guc.log.flush_interrupt_count++;
+		} else {
+			/* Not clearing of unhandled event bits won't result in
+			 * re-triggering of the interrupt.
+			 */
+		}
+	}
+}
+
+static void valleyview_pipestat_irq_ack(struct drm_i915_private *dev_priv,
+					u32 iir, u32 pipe_stats[I915_MAX_PIPES])
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int pipe;
 
@@ -1888,7 +2481,11 @@ static void i9xx_pipestat_irq_ack(struct drm_i915_private *dev_priv,
 
 	for_each_pipe(dev_priv, pipe) {
 		i915_reg_t reg;
+<<<<<<< HEAD
 		u32 status_mask, enable_mask, iir_bit = 0;
+=======
+		u32 mask, iir_bit = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * PIPESTAT bits get signalled even when the interrupt is
@@ -1899,7 +2496,11 @@ static void i9xx_pipestat_irq_ack(struct drm_i915_private *dev_priv,
 		 */
 
 		/* fifo underruns are filterered in the underrun handler. */
+<<<<<<< HEAD
 		status_mask = PIPE_FIFO_UNDERRUN_STATUS;
+=======
+		mask = PIPE_FIFO_UNDERRUN_STATUS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (pipe) {
 		case PIPE_A:
@@ -1913,6 +2514,7 @@ static void i9xx_pipestat_irq_ack(struct drm_i915_private *dev_priv,
 			break;
 		}
 		if (iir & iir_bit)
+<<<<<<< HEAD
 			status_mask |= dev_priv->pipestat_irq_mask[pipe];
 
 		if (!status_mask)
@@ -1935,10 +2537,28 @@ static void i9xx_pipestat_irq_ack(struct drm_i915_private *dev_priv,
 			I915_WRITE(reg, pipe_stats[pipe]);
 			I915_WRITE(reg, enable_mask);
 		}
+=======
+			mask |= dev_priv->pipestat_irq_mask[pipe];
+
+		if (!mask)
+			continue;
+
+		reg = PIPESTAT(pipe);
+		mask |= PIPESTAT_INT_ENABLE_MASK;
+		pipe_stats[pipe] = I915_READ(reg) & mask;
+
+		/*
+		 * Clear the PIPE*STAT regs before the IIR
+		 */
+		if (pipe_stats[pipe] & (PIPE_FIFO_UNDERRUN_STATUS |
+					PIPESTAT_INT_STATUS_MASK))
+			I915_WRITE(reg, pipe_stats[pipe]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock(&dev_priv->irq_lock);
 }
 
+<<<<<<< HEAD
 static void i8xx_pipestat_irq_handler(struct drm_i915_private *dev_priv,
 				      u16 iir, u32 pipe_stats[I915_MAX_PIPES])
 {
@@ -2007,6 +2627,8 @@ static void i965_pipestat_irq_handler(struct drm_i915_private *dev_priv,
 		gmbus_irq_handler(dev_priv);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void valleyview_pipestat_irq_handler(struct drm_i915_private *dev_priv,
 					    u32 pipe_stats[I915_MAX_PIPES])
 {
@@ -2075,9 +2697,14 @@ static void i9xx_hpd_irq_handler(struct drm_i915_private *dev_priv,
 		u32 hotplug_trigger = hotplug_status & HOTPLUG_INT_STATUS_G4X;
 
 		if (hotplug_trigger) {
+<<<<<<< HEAD
 			intel_get_hpd_pins(dev_priv, &pin_mask, &long_mask,
 					   hotplug_trigger, hotplug_trigger,
 					   hpd_status_g4x,
+=======
+			intel_get_hpd_pins(&pin_mask, &long_mask, hotplug_trigger,
+					   hotplug_trigger, hpd_status_g4x,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   i9xx_port_hotplug_long_detect);
 
 			intel_hpd_irq_handler(dev_priv, pin_mask, long_mask);
@@ -2089,9 +2716,14 @@ static void i9xx_hpd_irq_handler(struct drm_i915_private *dev_priv,
 		u32 hotplug_trigger = hotplug_status & HOTPLUG_INT_STATUS_I915;
 
 		if (hotplug_trigger) {
+<<<<<<< HEAD
 			intel_get_hpd_pins(dev_priv, &pin_mask, &long_mask,
 					   hotplug_trigger, hotplug_trigger,
 					   hpd_status_i915,
+=======
+			intel_get_hpd_pins(&pin_mask, &long_mask, hotplug_trigger,
+					   hotplug_trigger, hpd_status_i915,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   i9xx_port_hotplug_long_detect);
 			intel_hpd_irq_handler(dev_priv, pin_mask, long_mask);
 		}
@@ -2152,7 +2784,11 @@ static irqreturn_t valleyview_irq_handler(int irq, void *arg)
 
 		/* Call regardless, as some status bits might not be
 		 * signalled in iir */
+<<<<<<< HEAD
 		i9xx_pipestat_irq_ack(dev_priv, iir, pipe_stats);
+=======
+		valleyview_pipestat_irq_ack(dev_priv, iir, pipe_stats);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (iir & (I915_LPE_PIPE_A_INTERRUPT |
 			   I915_LPE_PIPE_B_INTERRUPT))
@@ -2167,6 +2803,10 @@ static irqreturn_t valleyview_irq_handler(int irq, void *arg)
 
 		I915_WRITE(VLV_IER, ier);
 		I915_WRITE(VLV_MASTER_IER, MASTER_INTERRUPT_ENABLE);
+<<<<<<< HEAD
+=======
+		POSTING_READ(VLV_MASTER_IER);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (gt_iir)
 			snb_gt_irq_handler(dev_priv, gt_iir);
@@ -2198,9 +2838,15 @@ static irqreturn_t cherryview_irq_handler(int irq, void *arg)
 
 	do {
 		u32 master_ctl, iir;
+<<<<<<< HEAD
 		u32 pipe_stats[I915_MAX_PIPES] = {};
 		u32 hotplug_status = 0;
 		u32 gt_iir[4];
+=======
+		u32 gt_iir[4] = {};
+		u32 pipe_stats[I915_MAX_PIPES] = {};
+		u32 hotplug_status = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 ier = 0;
 
 		master_ctl = I915_READ(GEN8_MASTER_IRQ) & ~GEN8_MASTER_IRQ_CONTROL;
@@ -2235,7 +2881,11 @@ static irqreturn_t cherryview_irq_handler(int irq, void *arg)
 
 		/* Call regardless, as some status bits might not be
 		 * signalled in iir */
+<<<<<<< HEAD
 		i9xx_pipestat_irq_ack(dev_priv, iir, pipe_stats);
+=======
+		valleyview_pipestat_irq_ack(dev_priv, iir, pipe_stats);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (iir & (I915_LPE_PIPE_A_INTERRUPT |
 			   I915_LPE_PIPE_B_INTERRUPT |
@@ -2251,8 +2901,14 @@ static irqreturn_t cherryview_irq_handler(int irq, void *arg)
 
 		I915_WRITE(VLV_IER, ier);
 		I915_WRITE(GEN8_MASTER_IRQ, GEN8_MASTER_IRQ_CONTROL);
+<<<<<<< HEAD
 
 		gen8_gt_irq_handler(dev_priv, master_ctl, gt_iir);
+=======
+		POSTING_READ(GEN8_MASTER_IRQ);
+
+		gen8_gt_irq_handler(dev_priv, gt_iir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (hotplug_status)
 			i9xx_hpd_irq_handler(dev_priv, hotplug_status);
@@ -2290,7 +2946,11 @@ static void ibx_hpd_irq_handler(struct drm_i915_private *dev_priv,
 	if (!hotplug_trigger)
 		return;
 
+<<<<<<< HEAD
 	intel_get_hpd_pins(dev_priv, &pin_mask, &long_mask, hotplug_trigger,
+=======
+	intel_get_hpd_pins(&pin_mask, &long_mask, hotplug_trigger,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   dig_hotplug_reg, hpd,
 			   pch_port_hotplug_long_detect);
 
@@ -2371,14 +3031,28 @@ static void ivb_err_int_handler(struct drm_i915_private *dev_priv)
 static void cpt_serr_int_handler(struct drm_i915_private *dev_priv)
 {
 	u32 serr_int = I915_READ(SERR_INT);
+<<<<<<< HEAD
 	enum pipe pipe;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (serr_int & SERR_INT_POISON)
 		DRM_ERROR("PCH poison interrupt\n");
 
+<<<<<<< HEAD
 	for_each_pipe(dev_priv, pipe)
 		if (serr_int & SERR_INT_TRANS_FIFO_UNDERRUN(pipe))
 			intel_pch_fifo_underrun_irq_handler(dev_priv, pipe);
+=======
+	if (serr_int & SERR_INT_TRANS_A_FIFO_UNDERRUN)
+		intel_pch_fifo_underrun_irq_handler(dev_priv, PIPE_A);
+
+	if (serr_int & SERR_INT_TRANS_B_FIFO_UNDERRUN)
+		intel_pch_fifo_underrun_irq_handler(dev_priv, PIPE_B);
+
+	if (serr_int & SERR_INT_TRANS_C_FIFO_UNDERRUN)
+		intel_pch_fifo_underrun_irq_handler(dev_priv, PIPE_C);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	I915_WRITE(SERR_INT, serr_int);
 }
@@ -2419,6 +3093,7 @@ static void cpt_irq_handler(struct drm_i915_private *dev_priv, u32 pch_iir)
 		cpt_serr_int_handler(dev_priv);
 }
 
+<<<<<<< HEAD
 static void icp_irq_handler(struct drm_i915_private *dev_priv, u32 pch_iir)
 {
 	u32 ddi_hotplug_trigger = pch_iir & SDE_DDI_MASK_ICP;
@@ -2456,6 +3131,8 @@ static void icp_irq_handler(struct drm_i915_private *dev_priv, u32 pch_iir)
 		gmbus_irq_handler(dev_priv);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void spt_irq_handler(struct drm_i915_private *dev_priv, u32 pch_iir)
 {
 	u32 hotplug_trigger = pch_iir & SDE_HOTPLUG_MASK_SPT &
@@ -2469,8 +3146,13 @@ static void spt_irq_handler(struct drm_i915_private *dev_priv, u32 pch_iir)
 		dig_hotplug_reg = I915_READ(PCH_PORT_HOTPLUG);
 		I915_WRITE(PCH_PORT_HOTPLUG, dig_hotplug_reg);
 
+<<<<<<< HEAD
 		intel_get_hpd_pins(dev_priv, &pin_mask, &long_mask,
 				   hotplug_trigger, dig_hotplug_reg, hpd_spt,
+=======
+		intel_get_hpd_pins(&pin_mask, &long_mask, hotplug_trigger,
+				   dig_hotplug_reg, hpd_spt,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   spt_port_hotplug_long_detect);
 	}
 
@@ -2480,8 +3162,13 @@ static void spt_irq_handler(struct drm_i915_private *dev_priv, u32 pch_iir)
 		dig_hotplug_reg = I915_READ(PCH_PORT_HOTPLUG2);
 		I915_WRITE(PCH_PORT_HOTPLUG2, dig_hotplug_reg);
 
+<<<<<<< HEAD
 		intel_get_hpd_pins(dev_priv, &pin_mask, &long_mask,
 				   hotplug2_trigger, dig_hotplug_reg, hpd_spt,
+=======
+		intel_get_hpd_pins(&pin_mask, &long_mask, hotplug2_trigger,
+				   dig_hotplug_reg, hpd_spt,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   spt_port_hotplug2_long_detect);
 	}
 
@@ -2501,7 +3188,11 @@ static void ilk_hpd_irq_handler(struct drm_i915_private *dev_priv,
 	dig_hotplug_reg = I915_READ(DIGITAL_PORT_HOTPLUG_CNTRL);
 	I915_WRITE(DIGITAL_PORT_HOTPLUG_CNTRL, dig_hotplug_reg);
 
+<<<<<<< HEAD
 	intel_get_hpd_pins(dev_priv, &pin_mask, &long_mask, hotplug_trigger,
+=======
+	intel_get_hpd_pins(&pin_mask, &long_mask, hotplug_trigger,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   dig_hotplug_reg, hpd,
 			   ilk_port_hotplug_long_detect);
 
@@ -2566,6 +3257,7 @@ static void ivb_display_irq_handler(struct drm_i915_private *dev_priv,
 	if (de_iir & DE_ERR_INT_IVB)
 		ivb_err_int_handler(dev_priv);
 
+<<<<<<< HEAD
 	if (de_iir & DE_EDP_PSR_INT_HSW) {
 		u32 psr_iir = I915_READ(EDP_PSR_IIR);
 
@@ -2573,6 +3265,8 @@ static void ivb_display_irq_handler(struct drm_i915_private *dev_priv,
 		I915_WRITE(EDP_PSR_IIR, psr_iir);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (de_iir & DE_AUX_CHANNEL_A_IVB)
 		dp_aux_irq_handler(dev_priv);
 
@@ -2619,6 +3313,10 @@ static irqreturn_t ironlake_irq_handler(int irq, void *arg)
 	/* disable master interrupt before clearing iir  */
 	de_ier = I915_READ(DEIER);
 	I915_WRITE(DEIER, de_ier & ~DE_MASTER_IRQ_CONTROL);
+<<<<<<< HEAD
+=======
+	POSTING_READ(DEIER);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Disable south interrupts. We'll only write to SDEIIR once, so further
 	 * interrupts will will be stored on its back queue, and then we'll be
@@ -2628,6 +3326,10 @@ static irqreturn_t ironlake_irq_handler(int irq, void *arg)
 	if (!HAS_PCH_NOP(dev_priv)) {
 		sde_ier = I915_READ(SDEIER);
 		I915_WRITE(SDEIER, 0);
+<<<<<<< HEAD
+=======
+		POSTING_READ(SDEIER);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Find, clear, then process each source of interrupt */
@@ -2662,8 +3364,16 @@ static irqreturn_t ironlake_irq_handler(int irq, void *arg)
 	}
 
 	I915_WRITE(DEIER, de_ier);
+<<<<<<< HEAD
 	if (!HAS_PCH_NOP(dev_priv))
 		I915_WRITE(SDEIER, sde_ier);
+=======
+	POSTING_READ(DEIER);
+	if (!HAS_PCH_NOP(dev_priv)) {
+		I915_WRITE(SDEIER, sde_ier);
+		POSTING_READ(SDEIER);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* IRQs are synced during runtime_suspend, we don't require a wakeref */
 	enable_rpm_wakeref_asserts(dev_priv);
@@ -2680,13 +3390,18 @@ static void bxt_hpd_irq_handler(struct drm_i915_private *dev_priv,
 	dig_hotplug_reg = I915_READ(PCH_PORT_HOTPLUG);
 	I915_WRITE(PCH_PORT_HOTPLUG, dig_hotplug_reg);
 
+<<<<<<< HEAD
 	intel_get_hpd_pins(dev_priv, &pin_mask, &long_mask, hotplug_trigger,
+=======
+	intel_get_hpd_pins(&pin_mask, &long_mask, hotplug_trigger,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   dig_hotplug_reg, hpd,
 			   bxt_port_hotplug_long_detect);
 
 	intel_hpd_irq_handler(dev_priv, pin_mask, long_mask);
 }
 
+<<<<<<< HEAD
 static void gen11_hpd_irq_handler(struct drm_i915_private *dev_priv, u32 iir)
 {
 	u32 pin_mask = 0, long_mask = 0;
@@ -2721,6 +3436,8 @@ static void gen11_hpd_irq_handler(struct drm_i915_private *dev_priv, u32 iir)
 		DRM_ERROR("Unexpected DE HPD interrupt 0x%08x\n", iir);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t
 gen8_de_irq_handler(struct drm_i915_private *dev_priv, u32 master_ctl)
 {
@@ -2731,6 +3448,7 @@ gen8_de_irq_handler(struct drm_i915_private *dev_priv, u32 master_ctl)
 	if (master_ctl & GEN8_DE_MISC_IRQ) {
 		iir = I915_READ(GEN8_DE_MISC_IIR);
 		if (iir) {
+<<<<<<< HEAD
 			bool found = false;
 
 			I915_WRITE(GEN8_DE_MISC_IIR, iir);
@@ -2750,12 +3468,20 @@ gen8_de_irq_handler(struct drm_i915_private *dev_priv, u32 master_ctl)
 			}
 
 			if (!found)
+=======
+			I915_WRITE(GEN8_DE_MISC_IIR, iir);
+			ret = IRQ_HANDLED;
+			if (iir & GEN8_DE_MISC_GSE)
+				intel_opregion_asle_intr(dev_priv);
+			else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				DRM_ERROR("Unexpected DE Misc interrupt\n");
 		}
 		else
 			DRM_ERROR("The master control interrupt lied (DE MISC)!\n");
 	}
 
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 11 && (master_ctl & GEN11_DE_HPD_IRQ)) {
 		iir = I915_READ(GEN11_DE_HPD_IIR);
 		if (iir) {
@@ -2767,6 +3493,8 @@ gen8_de_irq_handler(struct drm_i915_private *dev_priv, u32 master_ctl)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (master_ctl & GEN8_DE_PORT_IRQ) {
 		iir = I915_READ(GEN8_DE_PORT_IIR);
 		if (iir) {
@@ -2782,6 +3510,7 @@ gen8_de_irq_handler(struct drm_i915_private *dev_priv, u32 master_ctl)
 					    GEN9_AUX_CHANNEL_C |
 					    GEN9_AUX_CHANNEL_D;
 
+<<<<<<< HEAD
 			if (INTEL_GEN(dev_priv) >= 11)
 				tmp_mask |= ICL_AUX_CHANNEL_E;
 
@@ -2789,6 +3518,8 @@ gen8_de_irq_handler(struct drm_i915_private *dev_priv, u32 master_ctl)
 			    INTEL_GEN(dev_priv) >= 11)
 				tmp_mask |= CNL_AUX_CHANNEL_F;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (iir & tmp_mask) {
 				dp_aux_irq_handler(dev_priv);
 				found = true;
@@ -2870,11 +3601,16 @@ gen8_de_irq_handler(struct drm_i915_private *dev_priv, u32 master_ctl)
 			I915_WRITE(SDEIIR, iir);
 			ret = IRQ_HANDLED;
 
+<<<<<<< HEAD
 			if (HAS_PCH_ICP(dev_priv))
 				icp_irq_handler(dev_priv, iir);
 			else if (HAS_PCH_SPT(dev_priv) ||
 				 HAS_PCH_KBP(dev_priv) ||
 				 HAS_PCH_CNP(dev_priv))
+=======
+			if (HAS_PCH_SPT(dev_priv) || HAS_PCH_KBP(dev_priv) ||
+			    HAS_PCH_CNP(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				spt_irq_handler(dev_priv, iir);
 			else
 				cpt_irq_handler(dev_priv, iir);
@@ -2892,9 +3628,17 @@ gen8_de_irq_handler(struct drm_i915_private *dev_priv, u32 master_ctl)
 
 static irqreturn_t gen8_irq_handler(int irq, void *arg)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *dev_priv = to_i915(arg);
 	u32 master_ctl;
 	u32 gt_iir[4];
+=======
+	struct drm_device *dev = arg;
+	struct drm_i915_private *dev_priv = to_i915(dev);
+	u32 master_ctl;
+	u32 gt_iir[4] = {};
+	irqreturn_t ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_irqs_enabled(dev_priv))
 		return IRQ_NONE;
@@ -2906,6 +3650,7 @@ static irqreturn_t gen8_irq_handler(int irq, void *arg)
 
 	I915_WRITE_FW(GEN8_MASTER_IRQ, 0);
 
+<<<<<<< HEAD
 	/* Find, clear, then process each source of interrupt */
 	gen8_gt_irq_ack(dev_priv, master_ctl, gt_iir);
 
@@ -2921,6 +3666,22 @@ static irqreturn_t gen8_irq_handler(int irq, void *arg)
 	gen8_gt_irq_handler(dev_priv, master_ctl, gt_iir);
 
 	return IRQ_HANDLED;
+=======
+	/* IRQs are synced during runtime_suspend, we don't require a wakeref */
+	disable_rpm_wakeref_asserts(dev_priv);
+
+	/* Find, clear, then process each source of interrupt */
+	ret = gen8_gt_irq_ack(dev_priv, master_ctl, gt_iir);
+	gen8_gt_irq_handler(dev_priv, gt_iir);
+	ret |= gen8_de_irq_handler(dev_priv, master_ctl);
+
+	I915_WRITE_FW(GEN8_MASTER_IRQ, GEN8_MASTER_IRQ_CONTROL);
+	POSTING_READ_FW(GEN8_MASTER_IRQ);
+
+	enable_rpm_wakeref_asserts(dev_priv);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct wedge_me {
@@ -2963,6 +3724,7 @@ static void __fini_wedge(struct wedge_me *w)
 	     (W)->i915;							\
 	     __fini_wedge((W)))
 
+<<<<<<< HEAD
 static u32
 gen11_gt_engine_identity(struct drm_i915_private * const i915,
 			 const unsigned int bank, const unsigned int bit)
@@ -3163,6 +3925,17 @@ static void i915_reset_device(struct drm_i915_private *dev_priv,
 			      const char *reason)
 {
 	struct i915_gpu_error *error = &dev_priv->gpu_error;
+=======
+/**
+ * i915_reset_device - do process context error handling work
+ * @dev_priv: i915 device private
+ *
+ * Fire an error uevent so userspace can see that a hang or error
+ * was detected.
+ */
+static void i915_reset_device(struct drm_i915_private *dev_priv)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kobject *kobj = &dev_priv->drm.primary->kdev->kobj;
 	char *error_event[] = { I915_ERROR_UEVENT "=1", NULL };
 	char *reset_event[] = { I915_RESET_UEVENT "=1", NULL };
@@ -3178,6 +3951,7 @@ static void i915_reset_device(struct drm_i915_private *dev_priv,
 	i915_wedge_on_timeout(&w, dev_priv, 5*HZ) {
 		intel_prepare_reset(dev_priv);
 
+<<<<<<< HEAD
 		error->reason = reason;
 		error->stalled_mask = engine_mask;
 
@@ -3185,20 +3959,33 @@ static void i915_reset_device(struct drm_i915_private *dev_priv,
 		smp_mb__before_atomic();
 		set_bit(I915_RESET_HANDOFF, &error->flags);
 		wake_up_all(&error->wait_queue);
+=======
+		/* Signal that locked waiters should reset the GPU */
+		set_bit(I915_RESET_HANDOFF, &dev_priv->gpu_error.flags);
+		wake_up_all(&dev_priv->gpu_error.wait_queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Wait for anyone holding the lock to wakeup, without
 		 * blocking indefinitely on struct_mutex.
 		 */
 		do {
 			if (mutex_trylock(&dev_priv->drm.struct_mutex)) {
+<<<<<<< HEAD
 				i915_reset(dev_priv, engine_mask, reason);
 				mutex_unlock(&dev_priv->drm.struct_mutex);
 			}
 		} while (wait_on_bit_timeout(&error->flags,
+=======
+				i915_reset(dev_priv, 0);
+				mutex_unlock(&dev_priv->drm.struct_mutex);
+			}
+		} while (wait_on_bit_timeout(&dev_priv->gpu_error.flags,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     I915_RESET_HANDOFF,
 					     TASK_UNINTERRUPTIBLE,
 					     1));
 
+<<<<<<< HEAD
 		error->stalled_mask = 0;
 		error->reason = NULL;
 
@@ -3207,6 +3994,14 @@ static void i915_reset_device(struct drm_i915_private *dev_priv,
 
 	if (!test_bit(I915_WEDGED, &error->flags))
 		kobject_uevent_env(kobj, KOBJ_CHANGE, reset_done_event);
+=======
+		intel_finish_reset(dev_priv);
+	}
+
+	if (!test_bit(I915_WEDGED, &dev_priv->gpu_error.flags))
+		kobject_uevent_env(kobj,
+				   KOBJ_CHANGE, reset_done_event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void i915_clear_error_registers(struct drm_i915_private *dev_priv)
@@ -3230,7 +4025,11 @@ static void i915_clear_error_registers(struct drm_i915_private *dev_priv)
 		 */
 		DRM_DEBUG_DRIVER("EIR stuck: 0x%08x, masking\n", eir);
 		I915_WRITE(EMR, I915_READ(EMR) | eir);
+<<<<<<< HEAD
 		I915_WRITE(IIR, I915_MASTER_ERROR_INTERRUPT);
+=======
+		I915_WRITE(IIR, I915_RENDER_COMMAND_PARSER_ERROR_INTERRUPT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3238,7 +4037,10 @@ static void i915_clear_error_registers(struct drm_i915_private *dev_priv)
  * i915_handle_error - handle a gpu error
  * @dev_priv: i915 device private
  * @engine_mask: mask representing engines that are hung
+<<<<<<< HEAD
  * @flags: control flags
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @fmt: Error message format string
  *
  * Do some basic checking of register state at error time and
@@ -3249,11 +4051,15 @@ static void i915_clear_error_registers(struct drm_i915_private *dev_priv)
  */
 void i915_handle_error(struct drm_i915_private *dev_priv,
 		       u32 engine_mask,
+<<<<<<< HEAD
 		       unsigned long flags,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       const char *fmt, ...)
 {
 	struct intel_engine_cs *engine;
 	unsigned int tmp;
+<<<<<<< HEAD
 	char error_msg[80];
 	char *msg = NULL;
 
@@ -3266,6 +4072,14 @@ void i915_handle_error(struct drm_i915_private *dev_priv,
 
 		msg = error_msg;
 	}
+=======
+	va_list args;
+	char error_msg[80];
+
+	va_start(args, fmt);
+	vscnprintf(error_msg, sizeof(error_msg), fmt, args);
+	va_end(args);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * In most cases it's guaranteed that we get here with an RPM
@@ -3276,12 +4090,17 @@ void i915_handle_error(struct drm_i915_private *dev_priv,
 	 */
 	intel_runtime_pm_get(dev_priv);
 
+<<<<<<< HEAD
 	engine_mask &= INTEL_INFO(dev_priv)->ring_mask;
 
 	if (flags & I915_ERROR_CAPTURE) {
 		i915_capture_error_state(dev_priv, engine_mask, msg);
 		i915_clear_error_registers(dev_priv);
 	}
+=======
+	i915_capture_error_state(dev_priv, engine_mask, error_msg);
+	i915_clear_error_registers(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Try engine reset when available. We fall back to full reset if
@@ -3294,7 +4113,11 @@ void i915_handle_error(struct drm_i915_private *dev_priv,
 					     &dev_priv->gpu_error.flags))
 				continue;
 
+<<<<<<< HEAD
 			if (i915_reset_engine(engine, msg) == 0)
+=======
+			if (i915_reset_engine(engine, 0) == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				engine_mask &= ~intel_engine_flag(engine);
 
 			clear_bit(I915_RESET_ENGINE + engine->id,
@@ -3324,7 +4147,11 @@ void i915_handle_error(struct drm_i915_private *dev_priv,
 				    TASK_UNINTERRUPTIBLE);
 	}
 
+<<<<<<< HEAD
 	i915_reset_device(dev_priv, engine_mask, msg);
+=======
+	i915_reset_device(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_engine(engine, dev_priv, tmp) {
 		clear_bit(I915_RESET_ENGINE + engine->id,
@@ -3377,12 +4204,15 @@ static int ironlake_enable_vblank(struct drm_device *dev, unsigned int pipe)
 	ilk_enable_display_irq(dev_priv, bit);
 	spin_unlock_irqrestore(&dev_priv->irq_lock, irqflags);
 
+<<<<<<< HEAD
 	/* Even though there is no DMC, frame counter can get stuck when
 	 * PSR is active as no frames are generated.
 	 */
 	if (HAS_PSR(dev_priv))
 		drm_vblank_restore(dev, pipe);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3395,12 +4225,15 @@ static int gen8_enable_vblank(struct drm_device *dev, unsigned int pipe)
 	bdw_enable_pipe_irq(dev_priv, pipe, GEN8_PIPE_VBLANK);
 	spin_unlock_irqrestore(&dev_priv->irq_lock, irqflags);
 
+<<<<<<< HEAD
 	/* Even if there is no DMC, frame counter can get stuck when
 	 * PSR is active as no frames are generated, so check only for PSR.
 	 */
 	if (HAS_PSR(dev_priv))
 		drm_vblank_restore(dev, pipe);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3455,7 +4288,11 @@ static void ibx_irq_reset(struct drm_i915_private *dev_priv)
 	if (HAS_PCH_NOP(dev_priv))
 		return;
 
+<<<<<<< HEAD
 	GEN3_IRQ_RESET(SDE);
+=======
+	GEN5_IRQ_RESET(SDE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (HAS_PCH_CPT(dev_priv) || HAS_PCH_LPT(dev_priv))
 		I915_WRITE(SERR_INT, 0xffffffff);
@@ -3483,13 +4320,24 @@ static void ibx_irq_pre_postinstall(struct drm_device *dev)
 
 static void gen5_gt_irq_reset(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	GEN3_IRQ_RESET(GT);
 	if (INTEL_GEN(dev_priv) >= 6)
 		GEN3_IRQ_RESET(GEN6_PM);
+=======
+	GEN5_IRQ_RESET(GT);
+	if (INTEL_GEN(dev_priv) >= 6)
+		GEN5_IRQ_RESET(GEN6_PM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vlv_display_irq_reset(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
+=======
+	enum pipe pipe;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_CHERRYVIEW(dev_priv))
 		I915_WRITE(DPINVGTT, DPINVGTT_STATUS_MASK_CHV);
 	else
@@ -3498,10 +4346,22 @@ static void vlv_display_irq_reset(struct drm_i915_private *dev_priv)
 	i915_hotplug_interrupt_update_locked(dev_priv, 0xffffffff, 0);
 	I915_WRITE(PORT_HOTPLUG_STAT, I915_READ(PORT_HOTPLUG_STAT));
 
+<<<<<<< HEAD
 	i9xx_pipestat_irq_reset(dev_priv);
 
 	GEN3_IRQ_RESET(VLV_);
 	dev_priv->irq_mask = ~0u;
+=======
+	for_each_pipe(dev_priv, pipe) {
+		I915_WRITE(PIPESTAT(pipe),
+			   PIPE_FIFO_UNDERRUN_STATUS |
+			   PIPESTAT_INT_STATUS_MASK);
+		dev_priv->pipestat_irq_mask[pipe] = 0;
+	}
+
+	GEN5_IRQ_RESET(VLV_);
+	dev_priv->irq_mask = ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vlv_display_irq_postinstall(struct drm_i915_private *dev_priv)
@@ -3510,7 +4370,12 @@ static void vlv_display_irq_postinstall(struct drm_i915_private *dev_priv)
 	u32 enable_mask;
 	enum pipe pipe;
 
+<<<<<<< HEAD
 	pipestat_mask = PIPE_CRC_DONE_INTERRUPT_STATUS;
+=======
+	pipestat_mask = PLANE_FLIP_DONE_INT_STATUS_VLV |
+			PIPE_CRC_DONE_INTERRUPT_STATUS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i915_enable_pipestat(dev_priv, PIPE_A, PIPE_GMBUS_INTERRUPT_STATUS);
 	for_each_pipe(dev_priv, pipe)
@@ -3526,11 +4391,19 @@ static void vlv_display_irq_postinstall(struct drm_i915_private *dev_priv)
 		enable_mask |= I915_DISPLAY_PIPE_C_EVENT_INTERRUPT |
 			I915_LPE_PIPE_C_INTERRUPT;
 
+<<<<<<< HEAD
 	WARN_ON(dev_priv->irq_mask != ~0u);
 
 	dev_priv->irq_mask = ~enable_mask;
 
 	GEN3_IRQ_INIT(VLV_, dev_priv->irq_mask, enable_mask);
+=======
+	WARN_ON(dev_priv->irq_mask != ~0);
+
+	dev_priv->irq_mask = ~enable_mask;
+
+	GEN5_IRQ_INIT(VLV_, dev_priv->irq_mask, enable_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* drm_dma.h hooks
@@ -3539,6 +4412,7 @@ static void ironlake_irq_reset(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 
+<<<<<<< HEAD
 	if (IS_GEN5(dev_priv))
 		I915_WRITE(HWSTAM, 0xffffffff);
 
@@ -3551,12 +4425,24 @@ static void ironlake_irq_reset(struct drm_device *dev)
 		I915_WRITE(EDP_PSR_IIR, 0xffffffff);
 	}
 
+=======
+	I915_WRITE(HWSTAM, 0xffffffff);
+
+	GEN5_IRQ_RESET(DE);
+	if (IS_GEN7(dev_priv))
+		I915_WRITE(GEN7_ERR_INT, 0xffffffff);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gen5_gt_irq_reset(dev_priv);
 
 	ibx_irq_reset(dev_priv);
 }
 
+<<<<<<< HEAD
 static void valleyview_irq_reset(struct drm_device *dev)
+=======
+static void valleyview_irq_preinstall(struct drm_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 
@@ -3589,22 +4475,32 @@ static void gen8_irq_reset(struct drm_device *dev)
 
 	gen8_gt_irq_reset(dev_priv);
 
+<<<<<<< HEAD
 	I915_WRITE(EDP_PSR_IMR, 0xffffffff);
 	I915_WRITE(EDP_PSR_IIR, 0xffffffff);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_pipe(dev_priv, pipe)
 		if (intel_display_power_is_enabled(dev_priv,
 						   POWER_DOMAIN_PIPE(pipe)))
 			GEN8_IRQ_RESET_NDX(DE_PIPE, pipe);
 
+<<<<<<< HEAD
 	GEN3_IRQ_RESET(GEN8_DE_PORT_);
 	GEN3_IRQ_RESET(GEN8_DE_MISC_);
 	GEN3_IRQ_RESET(GEN8_PCU_);
+=======
+	GEN5_IRQ_RESET(GEN8_DE_PORT_);
+	GEN5_IRQ_RESET(GEN8_DE_MISC_);
+	GEN5_IRQ_RESET(GEN8_PCU_);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (HAS_PCH_SPLIT(dev_priv))
 		ibx_irq_reset(dev_priv);
 }
 
+<<<<<<< HEAD
 static void gen11_gt_irq_reset(struct drm_i915_private *dev_priv)
 {
 	/* Disable RCS, BCS, VCS and VECS class engines. */
@@ -3649,6 +4545,8 @@ static void gen11_irq_reset(struct drm_device *dev)
 		GEN3_IRQ_RESET(SDE);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void gen8_irq_power_well_post_enable(struct drm_i915_private *dev_priv,
 				     u8 pipe_mask)
 {
@@ -3656,17 +4554,23 @@ void gen8_irq_power_well_post_enable(struct drm_i915_private *dev_priv,
 	enum pipe pipe;
 
 	spin_lock_irq(&dev_priv->irq_lock);
+<<<<<<< HEAD
 
 	if (!intel_irqs_enabled(dev_priv)) {
 		spin_unlock_irq(&dev_priv->irq_lock);
 		return;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_pipe_masked(dev_priv, pipe, pipe_mask)
 		GEN8_IRQ_INIT_NDX(DE_PIPE, pipe,
 				  dev_priv->de_irq_mask[pipe],
 				  ~dev_priv->de_irq_mask[pipe] | extra_ier);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irq(&dev_priv->irq_lock);
 }
 
@@ -3676,6 +4580,7 @@ void gen8_irq_power_well_pre_disable(struct drm_i915_private *dev_priv,
 	enum pipe pipe;
 
 	spin_lock_irq(&dev_priv->irq_lock);
+<<<<<<< HEAD
 
 	if (!intel_irqs_enabled(dev_priv)) {
 		spin_unlock_irq(&dev_priv->irq_lock);
@@ -3685,13 +4590,21 @@ void gen8_irq_power_well_pre_disable(struct drm_i915_private *dev_priv,
 	for_each_pipe_masked(dev_priv, pipe, pipe_mask)
 		GEN8_IRQ_RESET_NDX(DE_PIPE, pipe);
 
+=======
+	for_each_pipe_masked(dev_priv, pipe, pipe_mask)
+		GEN8_IRQ_RESET_NDX(DE_PIPE, pipe);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irq(&dev_priv->irq_lock);
 
 	/* make sure we're done processing display irqs */
 	synchronize_irq(dev_priv->drm.irq);
 }
 
+<<<<<<< HEAD
 static void cherryview_irq_reset(struct drm_device *dev)
+=======
+static void cherryview_irq_preinstall(struct drm_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 
@@ -3700,7 +4613,11 @@ static void cherryview_irq_reset(struct drm_device *dev)
 
 	gen8_gt_irq_reset(dev_priv);
 
+<<<<<<< HEAD
 	GEN3_IRQ_RESET(GEN8_PCU_);
+=======
+	GEN5_IRQ_RESET(GEN8_PCU_);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&dev_priv->irq_lock);
 	if (dev_priv->display_irqs_enabled)
@@ -3763,6 +4680,7 @@ static void ibx_hpd_irq_setup(struct drm_i915_private *dev_priv)
 	ibx_hpd_detection_setup(dev_priv);
 }
 
+<<<<<<< HEAD
 static void icp_hpd_detection_setup(struct drm_i915_private *dev_priv)
 {
 	u32 hotplug;
@@ -3841,6 +4759,11 @@ static void spt_hpd_detection_setup(struct drm_i915_private *dev_priv)
 		val |= CHASSIS_CLK_REQ_DURATION(0xf);
 		I915_WRITE(SOUTH_CHICKEN1, val);
 	}
+=======
+static void spt_hpd_detection_setup(struct drm_i915_private *dev_priv)
+{
+	u32 hotplug;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable digital hotplug on the PCH */
 	hotplug = I915_READ(PCH_PORT_HOTPLUG);
@@ -3967,12 +4890,19 @@ static void ibx_irq_postinstall(struct drm_device *dev)
 
 	if (HAS_PCH_IBX(dev_priv))
 		mask = SDE_GMBUS | SDE_AUX_MASK | SDE_POISON;
+<<<<<<< HEAD
 	else if (HAS_PCH_CPT(dev_priv) || HAS_PCH_LPT(dev_priv))
 		mask = SDE_GMBUS_CPT | SDE_AUX_MASK_CPT;
 	else
 		mask = SDE_GMBUS_CPT;
 
 	gen3_assert_iir_is_zero(dev_priv, SDEIIR);
+=======
+	else
+		mask = SDE_GMBUS_CPT | SDE_AUX_MASK_CPT;
+
+	gen5_assert_iir_is_zero(dev_priv, SDEIIR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	I915_WRITE(SDEIMR, ~mask);
 
 	if (HAS_PCH_IBX(dev_priv) || HAS_PCH_CPT(dev_priv) ||
@@ -4003,7 +4933,11 @@ static void gen5_gt_irq_postinstall(struct drm_device *dev)
 		gt_irqs |= GT_BLT_USER_INTERRUPT | GT_BSD_USER_INTERRUPT;
 	}
 
+<<<<<<< HEAD
 	GEN3_IRQ_INIT(GT, dev_priv->gt_irq_mask, gt_irqs);
+=======
+	GEN5_IRQ_INIT(GT, dev_priv->gt_irq_mask, gt_irqs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (INTEL_GEN(dev_priv) >= 6) {
 		/*
@@ -4016,7 +4950,11 @@ static void gen5_gt_irq_postinstall(struct drm_device *dev)
 		}
 
 		dev_priv->pm_imr = 0xffffffff;
+<<<<<<< HEAD
 		GEN3_IRQ_INIT(GEN6_PM, dev_priv->pm_imr, pm_irqs);
+=======
+		GEN5_IRQ_INIT(GEN6_PM, dev_priv->pm_imr, pm_irqs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -4027,19 +4965,33 @@ static int ironlake_irq_postinstall(struct drm_device *dev)
 
 	if (INTEL_GEN(dev_priv) >= 7) {
 		display_mask = (DE_MASTER_IRQ_CONTROL | DE_GSE_IVB |
+<<<<<<< HEAD
 				DE_PCH_EVENT_IVB | DE_AUX_CHANNEL_A_IVB);
+=======
+				DE_PCH_EVENT_IVB | DE_PLANEC_FLIP_DONE_IVB |
+				DE_PLANEB_FLIP_DONE_IVB |
+				DE_PLANEA_FLIP_DONE_IVB | DE_AUX_CHANNEL_A_IVB);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		extra_mask = (DE_PIPEC_VBLANK_IVB | DE_PIPEB_VBLANK_IVB |
 			      DE_PIPEA_VBLANK_IVB | DE_ERR_INT_IVB |
 			      DE_DP_A_HOTPLUG_IVB);
 	} else {
 		display_mask = (DE_MASTER_IRQ_CONTROL | DE_GSE | DE_PCH_EVENT |
+<<<<<<< HEAD
 				DE_AUX_CHANNEL_A | DE_PIPEB_CRC_DONE |
 				DE_PIPEA_CRC_DONE | DE_POISON);
+=======
+				DE_PLANEA_FLIP_DONE | DE_PLANEB_FLIP_DONE |
+				DE_AUX_CHANNEL_A |
+				DE_PIPEB_CRC_DONE | DE_PIPEA_CRC_DONE |
+				DE_POISON);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		extra_mask = (DE_PIPEA_VBLANK | DE_PIPEB_VBLANK | DE_PCU_EVENT |
 			      DE_PIPEB_FIFO_UNDERRUN | DE_PIPEA_FIFO_UNDERRUN |
 			      DE_DP_A_HOTPLUG);
 	}
 
+<<<<<<< HEAD
 	if (IS_HASWELL(dev_priv)) {
 		gen3_assert_iir_is_zero(dev_priv, EDP_PSR_IIR);
 		intel_psr_irq_control(dev_priv, dev_priv->psr.debug);
@@ -4051,6 +5003,15 @@ static int ironlake_irq_postinstall(struct drm_device *dev)
 	ibx_irq_pre_postinstall(dev);
 
 	GEN3_IRQ_INIT(DE, dev_priv->irq_mask, display_mask | extra_mask);
+=======
+	dev_priv->irq_mask = ~display_mask;
+
+	I915_WRITE(HWSTAM, 0xeffe);
+
+	ibx_irq_pre_postinstall(dev);
+
+	GEN5_IRQ_INIT(DE, dev_priv->irq_mask, display_mask | extra_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gen5_gt_irq_postinstall(dev);
 
@@ -4156,6 +5117,7 @@ static void gen8_de_irq_postinstall(struct drm_i915_private *dev_priv)
 	uint32_t de_pipe_enables;
 	u32 de_port_masked = GEN8_AUX_CHANNEL_A;
 	u32 de_port_enables;
+<<<<<<< HEAD
 	u32 de_misc_masked = GEN8_DE_EDP_PSR;
 	enum pipe pipe;
 
@@ -4164,11 +5126,20 @@ static void gen8_de_irq_postinstall(struct drm_i915_private *dev_priv)
 
 	if (INTEL_GEN(dev_priv) >= 9) {
 		de_pipe_masked |= GEN9_DE_PIPE_IRQ_FAULT_ERRORS;
+=======
+	u32 de_misc_masked = GEN8_DE_MISC_GSE;
+	enum pipe pipe;
+
+	if (INTEL_GEN(dev_priv) >= 9) {
+		de_pipe_masked |= GEN9_PIPE_PLANE1_FLIP_DONE |
+				  GEN9_DE_PIPE_IRQ_FAULT_ERRORS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		de_port_masked |= GEN9_AUX_CHANNEL_B | GEN9_AUX_CHANNEL_C |
 				  GEN9_AUX_CHANNEL_D;
 		if (IS_GEN9_LP(dev_priv))
 			de_port_masked |= BXT_DE_PORT_GMBUS;
 	} else {
+<<<<<<< HEAD
 		de_pipe_masked |= GEN8_DE_PIPE_IRQ_FAULT_ERRORS;
 	}
 
@@ -4178,6 +5149,12 @@ static void gen8_de_irq_postinstall(struct drm_i915_private *dev_priv)
 	if (IS_CNL_WITH_PORT_F(dev_priv) || INTEL_GEN(dev_priv) >= 11)
 		de_port_masked |= CNL_AUX_CHANNEL_F;
 
+=======
+		de_pipe_masked |= GEN8_PIPE_PRIMARY_FLIP_DONE |
+				  GEN8_DE_PIPE_IRQ_FAULT_ERRORS;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	de_pipe_enables = de_pipe_masked | GEN8_PIPE_VBLANK |
 					   GEN8_PIPE_FIFO_UNDERRUN;
 
@@ -4187,17 +5164,26 @@ static void gen8_de_irq_postinstall(struct drm_i915_private *dev_priv)
 	else if (IS_BROADWELL(dev_priv))
 		de_port_enables |= GEN8_PORT_DP_A_HOTPLUG;
 
+<<<<<<< HEAD
 	gen3_assert_iir_is_zero(dev_priv, EDP_PSR_IIR);
 	intel_psr_irq_control(dev_priv, dev_priv->psr.debug);
 
 	for_each_pipe(dev_priv, pipe) {
 		dev_priv->de_irq_mask[pipe] = ~de_pipe_masked;
 
+=======
+	dev_priv->de_irq_mask[PIPE_A] = ~de_pipe_masked;
+	dev_priv->de_irq_mask[PIPE_B] = ~de_pipe_masked;
+	dev_priv->de_irq_mask[PIPE_C] = ~de_pipe_masked;
+
+	for_each_pipe(dev_priv, pipe)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (intel_display_power_is_enabled(dev_priv,
 				POWER_DOMAIN_PIPE(pipe)))
 			GEN8_IRQ_INIT_NDX(DE_PIPE, pipe,
 					  dev_priv->de_irq_mask[pipe],
 					  de_pipe_enables);
+<<<<<<< HEAD
 	}
 
 	GEN3_IRQ_INIT(GEN8_DE_PORT_, ~de_port_masked, de_port_enables);
@@ -4215,6 +5201,16 @@ static void gen8_de_irq_postinstall(struct drm_i915_private *dev_priv)
 	} else if (IS_BROADWELL(dev_priv)) {
 		ilk_hpd_detection_setup(dev_priv);
 	}
+=======
+
+	GEN5_IRQ_INIT(GEN8_DE_PORT_, ~de_port_masked, de_port_enables);
+	GEN5_IRQ_INIT(GEN8_DE_MISC_, ~de_misc_masked, de_misc_masked);
+
+	if (IS_GEN9_LP(dev_priv))
+		bxt_hpd_detection_setup(dev_priv);
+	else if (IS_BROADWELL(dev_priv))
+		ilk_hpd_detection_setup(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gen8_irq_postinstall(struct drm_device *dev)
@@ -4236,6 +5232,7 @@ static int gen8_irq_postinstall(struct drm_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void gen11_gt_irq_postinstall(struct drm_i915_private *dev_priv)
 {
 	const u32 irqs = GT_RENDER_USER_INTERRUPT | GT_CONTEXT_SWITCH_INTERRUPT;
@@ -4299,6 +5296,8 @@ static int gen11_irq_postinstall(struct drm_device *dev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cherryview_irq_postinstall(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
@@ -4316,6 +5315,7 @@ static int cherryview_irq_postinstall(struct drm_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void i8xx_irq_reset(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
@@ -4325,20 +5325,99 @@ static void i8xx_irq_reset(struct drm_device *dev)
 	I915_WRITE16(HWSTAM, 0xffff);
 
 	GEN2_IRQ_RESET();
+=======
+static void gen8_irq_uninstall(struct drm_device *dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+
+	if (!dev_priv)
+		return;
+
+	gen8_irq_reset(dev);
+}
+
+static void valleyview_irq_uninstall(struct drm_device *dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+
+	if (!dev_priv)
+		return;
+
+	I915_WRITE(VLV_MASTER_IER, 0);
+	POSTING_READ(VLV_MASTER_IER);
+
+	gen5_gt_irq_reset(dev_priv);
+
+	I915_WRITE(HWSTAM, 0xffffffff);
+
+	spin_lock_irq(&dev_priv->irq_lock);
+	if (dev_priv->display_irqs_enabled)
+		vlv_display_irq_reset(dev_priv);
+	spin_unlock_irq(&dev_priv->irq_lock);
+}
+
+static void cherryview_irq_uninstall(struct drm_device *dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+
+	if (!dev_priv)
+		return;
+
+	I915_WRITE(GEN8_MASTER_IRQ, 0);
+	POSTING_READ(GEN8_MASTER_IRQ);
+
+	gen8_gt_irq_reset(dev_priv);
+
+	GEN5_IRQ_RESET(GEN8_PCU_);
+
+	spin_lock_irq(&dev_priv->irq_lock);
+	if (dev_priv->display_irqs_enabled)
+		vlv_display_irq_reset(dev_priv);
+	spin_unlock_irq(&dev_priv->irq_lock);
+}
+
+static void ironlake_irq_uninstall(struct drm_device *dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+
+	if (!dev_priv)
+		return;
+
+	ironlake_irq_reset(dev);
+}
+
+static void i8xx_irq_preinstall(struct drm_device * dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+	int pipe;
+
+	for_each_pipe(dev_priv, pipe)
+		I915_WRITE(PIPESTAT(pipe), 0);
+	I915_WRITE16(IMR, 0xffff);
+	I915_WRITE16(IER, 0x0);
+	POSTING_READ16(IER);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i8xx_irq_postinstall(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
+<<<<<<< HEAD
 	u16 enable_mask;
 
 	I915_WRITE16(EMR, ~(I915_ERROR_PAGE_TABLE |
 			    I915_ERROR_MEMORY_REFRESH));
+=======
+
+	I915_WRITE16(EMR,
+		     ~(I915_ERROR_PAGE_TABLE | I915_ERROR_MEMORY_REFRESH));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Unmask the interrupts that we always want on. */
 	dev_priv->irq_mask =
 		~(I915_DISPLAY_PIPE_A_EVENT_INTERRUPT |
 		  I915_DISPLAY_PIPE_B_EVENT_INTERRUPT |
+<<<<<<< HEAD
 		  I915_MASTER_ERROR_INTERRUPT);
 
 	enable_mask =
@@ -4348,6 +5427,17 @@ static int i8xx_irq_postinstall(struct drm_device *dev)
 		I915_USER_INTERRUPT;
 
 	GEN2_IRQ_INIT(, dev_priv->irq_mask, enable_mask);
+=======
+		  I915_DISPLAY_PLANE_A_FLIP_PENDING_INTERRUPT |
+		  I915_DISPLAY_PLANE_B_FLIP_PENDING_INTERRUPT);
+	I915_WRITE16(IMR, dev_priv->irq_mask);
+
+	I915_WRITE16(IER,
+		     I915_DISPLAY_PIPE_A_EVENT_INTERRUPT |
+		     I915_DISPLAY_PIPE_B_EVENT_INTERRUPT |
+		     I915_USER_INTERRUPT);
+	POSTING_READ16(IER);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Interrupt setup is already guaranteed to be single-threaded, this is
 	 * just to make the assert_spin_locked check happy. */
@@ -4359,6 +5449,7 @@ static int i8xx_irq_postinstall(struct drm_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void i8xx_error_irq_ack(struct drm_i915_private *dev_priv,
 			       u16 *eir, u16 *eir_stuck)
 {
@@ -4434,11 +5525,23 @@ static void i9xx_error_irq_handler(struct drm_i915_private *dev_priv,
 		DRM_DEBUG_DRIVER("EIR stuck: 0x%08x, masked\n", eir_stuck);
 }
 
+=======
+/*
+ * Returns true when a page flip has completed.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t i8xx_irq_handler(int irq, void *arg)
 {
 	struct drm_device *dev = arg;
 	struct drm_i915_private *dev_priv = to_i915(dev);
+<<<<<<< HEAD
 	irqreturn_t ret = IRQ_NONE;
+=======
+	u16 iir, new_iir;
+	u32 pipe_stats[2];
+	int pipe;
+	irqreturn_t ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_irqs_enabled(dev_priv))
 		return IRQ_NONE;
@@ -4446,6 +5549,7 @@ static irqreturn_t i8xx_irq_handler(int irq, void *arg)
 	/* IRQs are synced during runtime_suspend, we don't require a wakeref */
 	disable_rpm_wakeref_asserts(dev_priv);
 
+<<<<<<< HEAD
 	do {
 		u32 pipe_stats[I915_MAX_PIPES] = {};
 		u16 eir = 0, eir_stuck = 0;
@@ -4465,35 +5569,121 @@ static irqreturn_t i8xx_irq_handler(int irq, void *arg)
 			i8xx_error_irq_ack(dev_priv, &eir, &eir_stuck);
 
 		I915_WRITE16(IIR, iir);
+=======
+	ret = IRQ_NONE;
+	iir = I915_READ16(IIR);
+	if (iir == 0)
+		goto out;
+
+	while (iir) {
+		/* Can't rely on pipestat interrupt bit in iir as it might
+		 * have been cleared after the pipestat interrupt was received.
+		 * It doesn't set the bit in iir again, but it still produces
+		 * interrupts (for non-MSI).
+		 */
+		spin_lock(&dev_priv->irq_lock);
+		if (iir & I915_RENDER_COMMAND_PARSER_ERROR_INTERRUPT)
+			DRM_DEBUG("Command parser error, iir 0x%08x\n", iir);
+
+		for_each_pipe(dev_priv, pipe) {
+			i915_reg_t reg = PIPESTAT(pipe);
+			pipe_stats[pipe] = I915_READ(reg);
+
+			/*
+			 * Clear the PIPE*STAT regs before the IIR
+			 */
+			if (pipe_stats[pipe] & 0x8000ffff)
+				I915_WRITE(reg, pipe_stats[pipe]);
+		}
+		spin_unlock(&dev_priv->irq_lock);
+
+		I915_WRITE16(IIR, iir);
+		new_iir = I915_READ16(IIR); /* Flush posted writes */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (iir & I915_USER_INTERRUPT)
 			notify_ring(dev_priv->engine[RCS]);
 
+<<<<<<< HEAD
 		if (iir & I915_MASTER_ERROR_INTERRUPT)
 			i8xx_error_irq_handler(dev_priv, eir, eir_stuck);
 
 		i8xx_pipestat_irq_handler(dev_priv, iir, pipe_stats);
 	} while (0);
 
+=======
+		for_each_pipe(dev_priv, pipe) {
+			int plane = pipe;
+			if (HAS_FBC(dev_priv))
+				plane = !plane;
+
+			if (pipe_stats[pipe] & PIPE_VBLANK_INTERRUPT_STATUS)
+				drm_handle_vblank(&dev_priv->drm, pipe);
+
+			if (pipe_stats[pipe] & PIPE_CRC_DONE_INTERRUPT_STATUS)
+				i9xx_pipe_crc_irq_handler(dev_priv, pipe);
+
+			if (pipe_stats[pipe] & PIPE_FIFO_UNDERRUN_STATUS)
+				intel_cpu_fifo_underrun_irq_handler(dev_priv,
+								    pipe);
+		}
+
+		iir = new_iir;
+	}
+	ret = IRQ_HANDLED;
+
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enable_rpm_wakeref_asserts(dev_priv);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static void i915_irq_reset(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
+=======
+static void i8xx_irq_uninstall(struct drm_device * dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+	int pipe;
+
+	for_each_pipe(dev_priv, pipe) {
+		/* Clear enable bits; then clear status bits */
+		I915_WRITE(PIPESTAT(pipe), 0);
+		I915_WRITE(PIPESTAT(pipe), I915_READ(PIPESTAT(pipe)));
+	}
+	I915_WRITE16(IMR, 0xffff);
+	I915_WRITE16(IER, 0x0);
+	I915_WRITE16(IIR, I915_READ16(IIR));
+}
+
+static void i915_irq_preinstall(struct drm_device * dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+	int pipe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (I915_HAS_HOTPLUG(dev_priv)) {
 		i915_hotplug_interrupt_update(dev_priv, 0xffffffff, 0);
 		I915_WRITE(PORT_HOTPLUG_STAT, I915_READ(PORT_HOTPLUG_STAT));
 	}
 
+<<<<<<< HEAD
 	i9xx_pipestat_irq_reset(dev_priv);
 
 	I915_WRITE(HWSTAM, 0xffffffff);
 
 	GEN3_IRQ_RESET();
+=======
+	I915_WRITE16(HWSTAM, 0xeffe);
+	for_each_pipe(dev_priv, pipe)
+		I915_WRITE(PIPESTAT(pipe), 0);
+	I915_WRITE(IMR, 0xffffffff);
+	I915_WRITE(IER, 0x0);
+	POSTING_READ(IER);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i915_irq_postinstall(struct drm_device *dev)
@@ -4501,31 +5691,57 @@ static int i915_irq_postinstall(struct drm_device *dev)
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	u32 enable_mask;
 
+<<<<<<< HEAD
 	I915_WRITE(EMR, ~(I915_ERROR_PAGE_TABLE |
 			  I915_ERROR_MEMORY_REFRESH));
+=======
+	I915_WRITE(EMR, ~(I915_ERROR_PAGE_TABLE | I915_ERROR_MEMORY_REFRESH));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Unmask the interrupts that we always want on. */
 	dev_priv->irq_mask =
 		~(I915_ASLE_INTERRUPT |
 		  I915_DISPLAY_PIPE_A_EVENT_INTERRUPT |
 		  I915_DISPLAY_PIPE_B_EVENT_INTERRUPT |
+<<<<<<< HEAD
 		  I915_MASTER_ERROR_INTERRUPT);
+=======
+		  I915_DISPLAY_PLANE_A_FLIP_PENDING_INTERRUPT |
+		  I915_DISPLAY_PLANE_B_FLIP_PENDING_INTERRUPT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	enable_mask =
 		I915_ASLE_INTERRUPT |
 		I915_DISPLAY_PIPE_A_EVENT_INTERRUPT |
 		I915_DISPLAY_PIPE_B_EVENT_INTERRUPT |
+<<<<<<< HEAD
 		I915_MASTER_ERROR_INTERRUPT |
 		I915_USER_INTERRUPT;
 
 	if (I915_HAS_HOTPLUG(dev_priv)) {
+=======
+		I915_USER_INTERRUPT;
+
+	if (I915_HAS_HOTPLUG(dev_priv)) {
+		i915_hotplug_interrupt_update(dev_priv, 0xffffffff, 0);
+		POSTING_READ(PORT_HOTPLUG_EN);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Enable in IER... */
 		enable_mask |= I915_DISPLAY_PORT_INTERRUPT;
 		/* and unmask in IMR */
 		dev_priv->irq_mask &= ~I915_DISPLAY_PORT_INTERRUPT;
 	}
 
+<<<<<<< HEAD
 	GEN3_IRQ_INIT(, dev_priv->irq_mask, enable_mask);
+=======
+	I915_WRITE(IMR, dev_priv->irq_mask);
+	I915_WRITE(IER, enable_mask);
+	POSTING_READ(IER);
+
+	i915_enable_asle_pipestat(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Interrupt setup is already guaranteed to be single-threaded, this is
 	 * just to make the assert_spin_locked check happy. */
@@ -4534,8 +5750,11 @@ static int i915_irq_postinstall(struct drm_device *dev)
 	i915_enable_pipestat(dev_priv, PIPE_B, PIPE_CRC_DONE_INTERRUPT_STATUS);
 	spin_unlock_irq(&dev_priv->irq_lock);
 
+<<<<<<< HEAD
 	i915_enable_asle_pipestat(dev_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -4543,7 +5762,12 @@ static irqreturn_t i915_irq_handler(int irq, void *arg)
 {
 	struct drm_device *dev = arg;
 	struct drm_i915_private *dev_priv = to_i915(dev);
+<<<<<<< HEAD
 	irqreturn_t ret = IRQ_NONE;
+=======
+	u32 iir, new_iir, pipe_stats[I915_MAX_PIPES];
+	int pipe, ret = IRQ_NONE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_irqs_enabled(dev_priv))
 		return IRQ_NONE;
@@ -4551,6 +5775,7 @@ static irqreturn_t i915_irq_handler(int irq, void *arg)
 	/* IRQs are synced during runtime_suspend, we don't require a wakeref */
 	disable_rpm_wakeref_asserts(dev_priv);
 
+<<<<<<< HEAD
 	do {
 		u32 pipe_stats[I915_MAX_PIPES] = {};
 		u32 eir = 0, eir_stuck = 0;
@@ -4575,10 +5800,52 @@ static irqreturn_t i915_irq_handler(int irq, void *arg)
 			i9xx_error_irq_ack(dev_priv, &eir, &eir_stuck);
 
 		I915_WRITE(IIR, iir);
+=======
+	iir = I915_READ(IIR);
+	do {
+		bool irq_received = (iir) != 0;
+		bool blc_event = false;
+
+		/* Can't rely on pipestat interrupt bit in iir as it might
+		 * have been cleared after the pipestat interrupt was received.
+		 * It doesn't set the bit in iir again, but it still produces
+		 * interrupts (for non-MSI).
+		 */
+		spin_lock(&dev_priv->irq_lock);
+		if (iir & I915_RENDER_COMMAND_PARSER_ERROR_INTERRUPT)
+			DRM_DEBUG("Command parser error, iir 0x%08x\n", iir);
+
+		for_each_pipe(dev_priv, pipe) {
+			i915_reg_t reg = PIPESTAT(pipe);
+			pipe_stats[pipe] = I915_READ(reg);
+
+			/* Clear the PIPE*STAT regs before the IIR */
+			if (pipe_stats[pipe] & 0x8000ffff) {
+				I915_WRITE(reg, pipe_stats[pipe]);
+				irq_received = true;
+			}
+		}
+		spin_unlock(&dev_priv->irq_lock);
+
+		if (!irq_received)
+			break;
+
+		/* Consume port.  Then clear IIR or we'll miss events */
+		if (I915_HAS_HOTPLUG(dev_priv) &&
+		    iir & I915_DISPLAY_PORT_INTERRUPT) {
+			u32 hotplug_status = i9xx_hpd_irq_ack(dev_priv);
+			if (hotplug_status)
+				i9xx_hpd_irq_handler(dev_priv, hotplug_status);
+		}
+
+		I915_WRITE(IIR, iir);
+		new_iir = I915_READ(IIR); /* Flush posted writes */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (iir & I915_USER_INTERRUPT)
 			notify_ring(dev_priv->engine[RCS]);
 
+<<<<<<< HEAD
 		if (iir & I915_MASTER_ERROR_INTERRUPT)
 			i9xx_error_irq_handler(dev_priv, eir, eir_stuck);
 
@@ -4587,24 +5854,104 @@ static irqreturn_t i915_irq_handler(int irq, void *arg)
 
 		i915_pipestat_irq_handler(dev_priv, iir, pipe_stats);
 	} while (0);
+=======
+		for_each_pipe(dev_priv, pipe) {
+			int plane = pipe;
+			if (HAS_FBC(dev_priv))
+				plane = !plane;
+
+			if (pipe_stats[pipe] & PIPE_VBLANK_INTERRUPT_STATUS)
+				drm_handle_vblank(&dev_priv->drm, pipe);
+
+			if (pipe_stats[pipe] & PIPE_LEGACY_BLC_EVENT_STATUS)
+				blc_event = true;
+
+			if (pipe_stats[pipe] & PIPE_CRC_DONE_INTERRUPT_STATUS)
+				i9xx_pipe_crc_irq_handler(dev_priv, pipe);
+
+			if (pipe_stats[pipe] & PIPE_FIFO_UNDERRUN_STATUS)
+				intel_cpu_fifo_underrun_irq_handler(dev_priv,
+								    pipe);
+		}
+
+		if (blc_event || (iir & I915_ASLE_INTERRUPT))
+			intel_opregion_asle_intr(dev_priv);
+
+		/* With MSI, interrupts are only generated when iir
+		 * transitions from zero to nonzero.  If another bit got
+		 * set while we were handling the existing iir bits, then
+		 * we would never get another interrupt.
+		 *
+		 * This is fine on non-MSI as well, as if we hit this path
+		 * we avoid exiting the interrupt handler only to generate
+		 * another one.
+		 *
+		 * Note that for MSI this could cause a stray interrupt report
+		 * if an interrupt landed in the time between writing IIR and
+		 * the posting read.  This should be rare enough to never
+		 * trigger the 99% of 100,000 interrupts test for disabling
+		 * stray interrupts.
+		 */
+		ret = IRQ_HANDLED;
+		iir = new_iir;
+	} while (iir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	enable_rpm_wakeref_asserts(dev_priv);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static void i965_irq_reset(struct drm_device *dev)
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
+=======
+static void i915_irq_uninstall(struct drm_device * dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+	int pipe;
+
+	if (I915_HAS_HOTPLUG(dev_priv)) {
+		i915_hotplug_interrupt_update(dev_priv, 0xffffffff, 0);
+		I915_WRITE(PORT_HOTPLUG_STAT, I915_READ(PORT_HOTPLUG_STAT));
+	}
+
+	I915_WRITE16(HWSTAM, 0xffff);
+	for_each_pipe(dev_priv, pipe) {
+		/* Clear enable bits; then clear status bits */
+		I915_WRITE(PIPESTAT(pipe), 0);
+		I915_WRITE(PIPESTAT(pipe), I915_READ(PIPESTAT(pipe)));
+	}
+	I915_WRITE(IMR, 0xffffffff);
+	I915_WRITE(IER, 0x0);
+
+	I915_WRITE(IIR, I915_READ(IIR));
+}
+
+static void i965_irq_preinstall(struct drm_device * dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+	int pipe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i915_hotplug_interrupt_update(dev_priv, 0xffffffff, 0);
 	I915_WRITE(PORT_HOTPLUG_STAT, I915_READ(PORT_HOTPLUG_STAT));
 
+<<<<<<< HEAD
 	i9xx_pipestat_irq_reset(dev_priv);
 
 	I915_WRITE(HWSTAM, 0xffffffff);
 
 	GEN3_IRQ_RESET();
+=======
+	I915_WRITE(HWSTAM, 0xeffe);
+	for_each_pipe(dev_priv, pipe)
+		I915_WRITE(PIPESTAT(pipe), 0);
+	I915_WRITE(IMR, 0xffffffff);
+	I915_WRITE(IER, 0x0);
+	POSTING_READ(IER);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int i965_irq_postinstall(struct drm_device *dev)
@@ -4613,6 +5960,34 @@ static int i965_irq_postinstall(struct drm_device *dev)
 	u32 enable_mask;
 	u32 error_mask;
 
+<<<<<<< HEAD
+=======
+	/* Unmask the interrupts that we always want on. */
+	dev_priv->irq_mask = ~(I915_ASLE_INTERRUPT |
+			       I915_DISPLAY_PORT_INTERRUPT |
+			       I915_DISPLAY_PIPE_A_EVENT_INTERRUPT |
+			       I915_DISPLAY_PIPE_B_EVENT_INTERRUPT |
+			       I915_DISPLAY_PLANE_A_FLIP_PENDING_INTERRUPT |
+			       I915_DISPLAY_PLANE_B_FLIP_PENDING_INTERRUPT |
+			       I915_RENDER_COMMAND_PARSER_ERROR_INTERRUPT);
+
+	enable_mask = ~dev_priv->irq_mask;
+	enable_mask &= ~(I915_DISPLAY_PLANE_A_FLIP_PENDING_INTERRUPT |
+			 I915_DISPLAY_PLANE_B_FLIP_PENDING_INTERRUPT);
+	enable_mask |= I915_USER_INTERRUPT;
+
+	if (IS_G4X(dev_priv))
+		enable_mask |= I915_BSD_USER_INTERRUPT;
+
+	/* Interrupt setup is already guaranteed to be single-threaded, this is
+	 * just to make the assert_spin_locked check happy. */
+	spin_lock_irq(&dev_priv->irq_lock);
+	i915_enable_pipestat(dev_priv, PIPE_A, PIPE_GMBUS_INTERRUPT_STATUS);
+	i915_enable_pipestat(dev_priv, PIPE_A, PIPE_CRC_DONE_INTERRUPT_STATUS);
+	i915_enable_pipestat(dev_priv, PIPE_B, PIPE_CRC_DONE_INTERRUPT_STATUS);
+	spin_unlock_irq(&dev_priv->irq_lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Enable some error detection, note the instruction error mask
 	 * bit is reserved, so we leave it masked.
@@ -4628,6 +6003,7 @@ static int i965_irq_postinstall(struct drm_device *dev)
 	}
 	I915_WRITE(EMR, error_mask);
 
+<<<<<<< HEAD
 	/* Unmask the interrupts that we always want on. */
 	dev_priv->irq_mask =
 		~(I915_ASLE_INTERRUPT |
@@ -4656,6 +6032,14 @@ static int i965_irq_postinstall(struct drm_device *dev)
 	i915_enable_pipestat(dev_priv, PIPE_A, PIPE_CRC_DONE_INTERRUPT_STATUS);
 	i915_enable_pipestat(dev_priv, PIPE_B, PIPE_CRC_DONE_INTERRUPT_STATUS);
 	spin_unlock_irq(&dev_priv->irq_lock);
+=======
+	I915_WRITE(IMR, dev_priv->irq_mask);
+	I915_WRITE(IER, enable_mask);
+	POSTING_READ(IER);
+
+	i915_hotplug_interrupt_update(dev_priv, 0xffffffff, 0);
+	POSTING_READ(PORT_HOTPLUG_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i915_enable_asle_pipestat(dev_priv);
 
@@ -4691,7 +6075,13 @@ static irqreturn_t i965_irq_handler(int irq, void *arg)
 {
 	struct drm_device *dev = arg;
 	struct drm_i915_private *dev_priv = to_i915(dev);
+<<<<<<< HEAD
 	irqreturn_t ret = IRQ_NONE;
+=======
+	u32 iir, new_iir;
+	u32 pipe_stats[I915_MAX_PIPES];
+	int ret = IRQ_NONE, pipe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_irqs_enabled(dev_priv))
 		return IRQ_NONE;
@@ -4699,6 +6089,7 @@ static irqreturn_t i965_irq_handler(int irq, void *arg)
 	/* IRQs are synced during runtime_suspend, we don't require a wakeref */
 	disable_rpm_wakeref_asserts(dev_priv);
 
+<<<<<<< HEAD
 	do {
 		u32 pipe_stats[I915_MAX_PIPES] = {};
 		u32 eir = 0, eir_stuck = 0;
@@ -4707,10 +6098,43 @@ static irqreturn_t i965_irq_handler(int irq, void *arg)
 
 		iir = I915_READ(IIR);
 		if (iir == 0)
+=======
+	iir = I915_READ(IIR);
+
+	for (;;) {
+		bool irq_received = (iir) != 0;
+		bool blc_event = false;
+
+		/* Can't rely on pipestat interrupt bit in iir as it might
+		 * have been cleared after the pipestat interrupt was received.
+		 * It doesn't set the bit in iir again, but it still produces
+		 * interrupts (for non-MSI).
+		 */
+		spin_lock(&dev_priv->irq_lock);
+		if (iir & I915_RENDER_COMMAND_PARSER_ERROR_INTERRUPT)
+			DRM_DEBUG("Command parser error, iir 0x%08x\n", iir);
+
+		for_each_pipe(dev_priv, pipe) {
+			i915_reg_t reg = PIPESTAT(pipe);
+			pipe_stats[pipe] = I915_READ(reg);
+
+			/*
+			 * Clear the PIPE*STAT regs before the IIR
+			 */
+			if (pipe_stats[pipe] & 0x8000ffff) {
+				I915_WRITE(reg, pipe_stats[pipe]);
+				irq_received = true;
+			}
+		}
+		spin_unlock(&dev_priv->irq_lock);
+
+		if (!irq_received)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		ret = IRQ_HANDLED;
 
+<<<<<<< HEAD
 		if (iir & I915_DISPLAY_PORT_INTERRUPT)
 			hotplug_status = i9xx_hpd_irq_ack(dev_priv);
 
@@ -4737,12 +6161,92 @@ static irqreturn_t i965_irq_handler(int irq, void *arg)
 
 		i965_pipestat_irq_handler(dev_priv, iir, pipe_stats);
 	} while (0);
+=======
+		/* Consume port.  Then clear IIR or we'll miss events */
+		if (iir & I915_DISPLAY_PORT_INTERRUPT) {
+			u32 hotplug_status = i9xx_hpd_irq_ack(dev_priv);
+			if (hotplug_status)
+				i9xx_hpd_irq_handler(dev_priv, hotplug_status);
+		}
+
+		I915_WRITE(IIR, iir);
+		new_iir = I915_READ(IIR); /* Flush posted writes */
+
+		if (iir & I915_USER_INTERRUPT)
+			notify_ring(dev_priv->engine[RCS]);
+		if (iir & I915_BSD_USER_INTERRUPT)
+			notify_ring(dev_priv->engine[VCS]);
+
+		for_each_pipe(dev_priv, pipe) {
+			if (pipe_stats[pipe] & PIPE_START_VBLANK_INTERRUPT_STATUS)
+				drm_handle_vblank(&dev_priv->drm, pipe);
+
+			if (pipe_stats[pipe] & PIPE_LEGACY_BLC_EVENT_STATUS)
+				blc_event = true;
+
+			if (pipe_stats[pipe] & PIPE_CRC_DONE_INTERRUPT_STATUS)
+				i9xx_pipe_crc_irq_handler(dev_priv, pipe);
+
+			if (pipe_stats[pipe] & PIPE_FIFO_UNDERRUN_STATUS)
+				intel_cpu_fifo_underrun_irq_handler(dev_priv, pipe);
+		}
+
+		if (blc_event || (iir & I915_ASLE_INTERRUPT))
+			intel_opregion_asle_intr(dev_priv);
+
+		if (pipe_stats[0] & PIPE_GMBUS_INTERRUPT_STATUS)
+			gmbus_irq_handler(dev_priv);
+
+		/* With MSI, interrupts are only generated when iir
+		 * transitions from zero to nonzero.  If another bit got
+		 * set while we were handling the existing iir bits, then
+		 * we would never get another interrupt.
+		 *
+		 * This is fine on non-MSI as well, as if we hit this path
+		 * we avoid exiting the interrupt handler only to generate
+		 * another one.
+		 *
+		 * Note that for MSI this could cause a stray interrupt report
+		 * if an interrupt landed in the time between writing IIR and
+		 * the posting read.  This should be rare enough to never
+		 * trigger the 99% of 100,000 interrupts test for disabling
+		 * stray interrupts.
+		 */
+		iir = new_iir;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	enable_rpm_wakeref_asserts(dev_priv);
 
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static void i965_irq_uninstall(struct drm_device * dev)
+{
+	struct drm_i915_private *dev_priv = to_i915(dev);
+	int pipe;
+
+	if (!dev_priv)
+		return;
+
+	i915_hotplug_interrupt_update(dev_priv, 0xffffffff, 0);
+	I915_WRITE(PORT_HOTPLUG_STAT, I915_READ(PORT_HOTPLUG_STAT));
+
+	I915_WRITE(HWSTAM, 0xffffffff);
+	for_each_pipe(dev_priv, pipe)
+		I915_WRITE(PIPESTAT(pipe), 0);
+	I915_WRITE(IMR, 0xffffffff);
+	I915_WRITE(IER, 0x0);
+
+	for_each_pipe(dev_priv, pipe)
+		I915_WRITE(PIPESTAT(pipe),
+			   I915_READ(PIPESTAT(pipe)) & 0x8000ffff);
+	I915_WRITE(IIR, I915_READ(IIR));
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * intel_irq_init - initializes irq support
  * @dev_priv: i915 device instance
@@ -4753,12 +6257,19 @@ static irqreturn_t i965_irq_handler(int irq, void *arg)
 void intel_irq_init(struct drm_i915_private *dev_priv)
 {
 	struct drm_device *dev = &dev_priv->drm;
+<<<<<<< HEAD
 	struct intel_rps *rps = &dev_priv->gt_pm.rps;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	intel_hpd_init_work(dev_priv);
 
+<<<<<<< HEAD
 	INIT_WORK(&rps->work, gen6_pm_rps_work);
+=======
+	INIT_WORK(&dev_priv->rps.work, gen6_pm_rps_work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&dev_priv->l3_parity.error_work, ivybridge_parity_work);
 	for (i = 0; i < MAX_L3_SLICES; ++i)
@@ -4774,7 +6285,11 @@ void intel_irq_init(struct drm_i915_private *dev_priv)
 	else
 		dev_priv->pm_rps_events = GEN6_PM_RPS_EVENTS;
 
+<<<<<<< HEAD
 	rps->pm_intrmsk_mbz = 0;
+=======
+	dev_priv->rps.pm_intrmsk_mbz = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * SNB,IVB,HSW can while VLV,CHV may hard hang on looping batchbuffer
@@ -4783,10 +6298,17 @@ void intel_irq_init(struct drm_i915_private *dev_priv)
 	 * TODO: verify if this can be reproduced on VLV,CHV.
 	 */
 	if (INTEL_GEN(dev_priv) <= 7)
+<<<<<<< HEAD
 		rps->pm_intrmsk_mbz |= GEN6_PM_RP_UP_EI_EXPIRED;
 
 	if (INTEL_GEN(dev_priv) >= 8)
 		rps->pm_intrmsk_mbz |= GEN8_PMINTR_DISABLE_REDIRECT_TO_GUC;
+=======
+		dev_priv->rps.pm_intrmsk_mbz |= GEN6_PM_RP_UP_EI_EXPIRED;
+
+	if (INTEL_GEN(dev_priv) >= 8)
+		dev_priv->rps.pm_intrmsk_mbz |= GEN8_PMINTR_DISABLE_REDIRECT_TO_GUC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_GEN2(dev_priv)) {
 		/* Gen2 doesn't have a hardware frame counter */
@@ -4824,14 +6346,21 @@ void intel_irq_init(struct drm_i915_private *dev_priv)
 
 	if (IS_CHERRYVIEW(dev_priv)) {
 		dev->driver->irq_handler = cherryview_irq_handler;
+<<<<<<< HEAD
 		dev->driver->irq_preinstall = cherryview_irq_reset;
 		dev->driver->irq_postinstall = cherryview_irq_postinstall;
 		dev->driver->irq_uninstall = cherryview_irq_reset;
+=======
+		dev->driver->irq_preinstall = cherryview_irq_preinstall;
+		dev->driver->irq_postinstall = cherryview_irq_postinstall;
+		dev->driver->irq_uninstall = cherryview_irq_uninstall;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->driver->enable_vblank = i965_enable_vblank;
 		dev->driver->disable_vblank = i965_disable_vblank;
 		dev_priv->display.hpd_irq_setup = i915_hpd_irq_setup;
 	} else if (IS_VALLEYVIEW(dev_priv)) {
 		dev->driver->irq_handler = valleyview_irq_handler;
+<<<<<<< HEAD
 		dev->driver->irq_preinstall = valleyview_irq_reset;
 		dev->driver->irq_postinstall = valleyview_irq_postinstall;
 		dev->driver->irq_uninstall = valleyview_irq_reset;
@@ -4846,11 +6375,23 @@ void intel_irq_init(struct drm_i915_private *dev_priv)
 		dev->driver->enable_vblank = gen8_enable_vblank;
 		dev->driver->disable_vblank = gen8_disable_vblank;
 		dev_priv->display.hpd_irq_setup = gen11_hpd_irq_setup;
+=======
+		dev->driver->irq_preinstall = valleyview_irq_preinstall;
+		dev->driver->irq_postinstall = valleyview_irq_postinstall;
+		dev->driver->irq_uninstall = valleyview_irq_uninstall;
+		dev->driver->enable_vblank = i965_enable_vblank;
+		dev->driver->disable_vblank = i965_disable_vblank;
+		dev_priv->display.hpd_irq_setup = i915_hpd_irq_setup;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (INTEL_GEN(dev_priv) >= 8) {
 		dev->driver->irq_handler = gen8_irq_handler;
 		dev->driver->irq_preinstall = gen8_irq_reset;
 		dev->driver->irq_postinstall = gen8_irq_postinstall;
+<<<<<<< HEAD
 		dev->driver->irq_uninstall = gen8_irq_reset;
+=======
+		dev->driver->irq_uninstall = gen8_irq_uninstall;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->driver->enable_vblank = gen8_enable_vblank;
 		dev->driver->disable_vblank = gen8_disable_vblank;
 		if (IS_GEN9_LP(dev_priv))
@@ -4864,12 +6405,17 @@ void intel_irq_init(struct drm_i915_private *dev_priv)
 		dev->driver->irq_handler = ironlake_irq_handler;
 		dev->driver->irq_preinstall = ironlake_irq_reset;
 		dev->driver->irq_postinstall = ironlake_irq_postinstall;
+<<<<<<< HEAD
 		dev->driver->irq_uninstall = ironlake_irq_reset;
+=======
+		dev->driver->irq_uninstall = ironlake_irq_uninstall;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->driver->enable_vblank = ironlake_enable_vblank;
 		dev->driver->disable_vblank = ironlake_disable_vblank;
 		dev_priv->display.hpd_irq_setup = ilk_hpd_irq_setup;
 	} else {
 		if (IS_GEN2(dev_priv)) {
+<<<<<<< HEAD
 			dev->driver->irq_preinstall = i8xx_irq_reset;
 			dev->driver->irq_postinstall = i8xx_irq_postinstall;
 			dev->driver->irq_handler = i8xx_irq_handler;
@@ -4880,13 +6426,31 @@ void intel_irq_init(struct drm_i915_private *dev_priv)
 			dev->driver->irq_preinstall = i915_irq_reset;
 			dev->driver->irq_postinstall = i915_irq_postinstall;
 			dev->driver->irq_uninstall = i915_irq_reset;
+=======
+			dev->driver->irq_preinstall = i8xx_irq_preinstall;
+			dev->driver->irq_postinstall = i8xx_irq_postinstall;
+			dev->driver->irq_handler = i8xx_irq_handler;
+			dev->driver->irq_uninstall = i8xx_irq_uninstall;
+			dev->driver->enable_vblank = i8xx_enable_vblank;
+			dev->driver->disable_vblank = i8xx_disable_vblank;
+		} else if (IS_GEN3(dev_priv)) {
+			dev->driver->irq_preinstall = i915_irq_preinstall;
+			dev->driver->irq_postinstall = i915_irq_postinstall;
+			dev->driver->irq_uninstall = i915_irq_uninstall;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev->driver->irq_handler = i915_irq_handler;
 			dev->driver->enable_vblank = i8xx_enable_vblank;
 			dev->driver->disable_vblank = i8xx_disable_vblank;
 		} else {
+<<<<<<< HEAD
 			dev->driver->irq_preinstall = i965_irq_reset;
 			dev->driver->irq_postinstall = i965_irq_postinstall;
 			dev->driver->irq_uninstall = i965_irq_reset;
+=======
+			dev->driver->irq_preinstall = i965_irq_preinstall;
+			dev->driver->irq_postinstall = i965_irq_postinstall;
+			dev->driver->irq_uninstall = i965_irq_uninstall;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev->driver->irq_handler = i965_irq_handler;
 			dev->driver->enable_vblank = i965_enable_vblank;
 			dev->driver->disable_vblank = i965_disable_vblank;
@@ -4928,7 +6492,11 @@ int intel_irq_install(struct drm_i915_private *dev_priv)
 	 * interrupts as enabled _before_ actually enabling them to avoid
 	 * special cases in our ordering checks.
 	 */
+<<<<<<< HEAD
 	dev_priv->runtime_pm.irqs_enabled = true;
+=======
+	dev_priv->pm.irqs_enabled = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return drm_irq_install(&dev_priv->drm, dev_priv->drm.pdev->irq);
 }
@@ -4944,7 +6512,11 @@ void intel_irq_uninstall(struct drm_i915_private *dev_priv)
 {
 	drm_irq_uninstall(&dev_priv->drm);
 	intel_hpd_cancel_work(dev_priv);
+<<<<<<< HEAD
 	dev_priv->runtime_pm.irqs_enabled = false;
+=======
+	dev_priv->pm.irqs_enabled = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -4957,7 +6529,11 @@ void intel_irq_uninstall(struct drm_i915_private *dev_priv)
 void intel_runtime_pm_disable_interrupts(struct drm_i915_private *dev_priv)
 {
 	dev_priv->drm.driver->irq_uninstall(&dev_priv->drm);
+<<<<<<< HEAD
 	dev_priv->runtime_pm.irqs_enabled = false;
+=======
+	dev_priv->pm.irqs_enabled = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	synchronize_irq(dev_priv->drm.irq);
 }
 
@@ -4970,7 +6546,11 @@ void intel_runtime_pm_disable_interrupts(struct drm_i915_private *dev_priv)
  */
 void intel_runtime_pm_enable_interrupts(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	dev_priv->runtime_pm.irqs_enabled = true;
+=======
+	dev_priv->pm.irqs_enabled = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_priv->drm.driver->irq_preinstall(&dev_priv->drm);
 	dev_priv->drm.driver->irq_postinstall(&dev_priv->drm);
 }

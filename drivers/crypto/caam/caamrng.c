@@ -353,7 +353,14 @@ static int __init caam_rng_init(void)
 		goto free_rng_ctx;
 
 	dev_info(dev, "registering rng-caam\n");
+<<<<<<< HEAD
 	return hwrng_register(&caam_rng);
+=======
+
+	err = hwrng_register(&caam_rng);
+	if (!err)
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 free_rng_ctx:
 	kfree(rng_ctx);

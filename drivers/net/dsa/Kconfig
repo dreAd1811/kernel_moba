@@ -5,7 +5,11 @@ source "drivers/net/dsa/b53/Kconfig"
 
 config NET_DSA_BCM_SF2
 	tristate "Broadcom Starfighter 2 Ethernet switch support"
+<<<<<<< HEAD
 	depends on HAS_IOMEM && NET_DSA
+=======
+	depends on HAS_IOMEM && NET_DSA && OF_MDIO
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select NET_DSA_TAG_BRCM
 	select FIXED_PHY
 	select BCM7XXX_PHY
@@ -33,7 +37,11 @@ config NET_DSA_MT7530
 
 config NET_DSA_MV88E6060
 	tristate "Marvell 88E6060 ethernet switch chip support"
+<<<<<<< HEAD
 	depends on NET_DSA && NET_DSA_LEGACY
+=======
+	depends on NET_DSA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select NET_DSA_TAG_TRAILER
 	---help---
 	  This enables support for the Marvell 88E6060 ethernet switch
@@ -52,6 +60,7 @@ config NET_DSA_QCA8K
 	  This enables support for the Qualcomm Atheros QCA8K Ethernet
 	  switch chips.
 
+<<<<<<< HEAD
 config NET_DSA_REALTEK_SMI
 	tristate "Realtek SMI Ethernet switch family support"
 	depends on NET_DSA
@@ -66,6 +75,12 @@ config NET_DSA_REALTEK_SMI
 config NET_DSA_SMSC_LAN9303
 	tristate
 	select NET_DSA_TAG_LAN9303
+=======
+config NET_DSA_SMSC_LAN9303
+	tristate
+	select NET_DSA_TAG_LAN9303
+	select REGMAP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This enables support for the SMSC/Microchip LAN9303 3 port ethernet
 	  switch chips.
@@ -87,6 +102,7 @@ config NET_DSA_SMSC_LAN9303_MDIO
 	  Enable access functions if the SMSC/Microchip LAN9303 is configured
 	  for MDIO managed mode.
 
+<<<<<<< HEAD
 config NET_DSA_VITESSE_VSC73XX
 	tristate "Vitesse VSC7385/7388/7395/7398 support"
 	depends on OF && SPI
@@ -98,4 +114,6 @@ config NET_DSA_VITESSE_VSC73XX
 	  This enables support for the Vitesse VSC7385, VSC7388,
 	  VSC7395 and VSC7398 SparX integrated ethernet switches.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu

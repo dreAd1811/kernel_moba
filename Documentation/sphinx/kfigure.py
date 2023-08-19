@@ -83,7 +83,11 @@ __version__  = '1.0.0'
 # -------------
 
 def which(cmd):
+<<<<<<< HEAD
     """Searches the ``cmd`` in the ``PATH`` environment.
+=======
+    """Searches the ``cmd`` in the ``PATH`` enviroment.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
     This *which* searches the PATH for executable ``cmd`` . First match is
     returned, if nothing is found, ``None` is returned.
@@ -421,6 +425,7 @@ def visit_kernel_render(self, node):
     app = self.builder.app
     srclang = node.get('srclang')
 
+<<<<<<< HEAD
     kernellog.verbose(app, 'visit kernel-render node lang: "%s"' % (srclang))
 
     tmp_ext = RENDER_MARKUP_EXT.get(srclang, None)
@@ -430,6 +435,17 @@ def visit_kernel_render(self, node):
 
     if not dot_cmd and tmp_ext == '.dot':
         kernellog.verbose(app, "dot from graphviz not available / include raw.")
+=======
+    kernellog.verbose('visit kernel-render node lang: "%s"' % (srclang))
+
+    tmp_ext = RENDER_MARKUP_EXT.get(srclang, None)
+    if tmp_ext is None:
+        kernellog.warn('kernel-render: "%s" unknow / include raw.' % (srclang))
+        return
+
+    if not dot_cmd and tmp_ext == '.dot':
+        kernellog.verbose("dot from graphviz not available / include raw.")
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         return
 
     literal_block = node[0]
@@ -488,7 +504,11 @@ class KernelRender(Figure):
         srclang = self.arguments[0].strip()
         if srclang not in RENDER_MARKUP_EXT.keys():
             return [self.state_machine.reporter.warning(
+<<<<<<< HEAD
                 'Unknown source language "%s", use one of: %s.' % (
+=======
+                'Unknow source language "%s", use one of: %s.' % (
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
                     srclang, ",".join(RENDER_MARKUP_EXT.keys())),
                 line=self.lineno)]
 

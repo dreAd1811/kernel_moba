@@ -195,7 +195,11 @@ struct adjust {
 struct ks0127 {
 	struct v4l2_subdev sd;
 	v4l2_std_id	norm;
+<<<<<<< HEAD
 	u8		regs[256];
+=======
+	u8 		regs[256];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct ks0127 *to_ks0127(struct v4l2_subdev *sd)

@@ -1092,7 +1092,12 @@ static int ql_get_next_chunk(struct ql_adapter *qdev, struct rx_ring *rx_ring,
 {
 	if (!rx_ring->pg_chunk.page) {
 		u64 map;
+<<<<<<< HEAD
 		rx_ring->pg_chunk.page = alloc_pages(__GFP_COMP | GFP_ATOMIC,
+=======
+		rx_ring->pg_chunk.page = alloc_pages(__GFP_COLD | __GFP_COMP |
+						GFP_ATOMIC,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						qdev->lbq_buf_order);
 		if (unlikely(!rx_ring->pg_chunk.page)) {
 			netif_err(qdev, drv, qdev->ndev,
@@ -1747,7 +1752,12 @@ static void ql_realign_skb(struct sk_buff *skb, int len)
 	 */
 	skb->data -= QLGE_SB_PAD - NET_IP_ALIGN;
 	skb->tail -= QLGE_SB_PAD - NET_IP_ALIGN;
+<<<<<<< HEAD
 	memmove(skb->data, temp_addr, len);
+=======
+	skb_copy_to_linear_data(skb, temp_addr,
+		(unsigned int)len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -2211,7 +2221,11 @@ static int ql_clean_outbound_rx_ring(struct rx_ring *rx_ring)
 	while (prod != rx_ring->cnsmr_idx) {
 
 		netif_printk(qdev, rx_status, KERN_DEBUG, qdev->ndev,
+<<<<<<< HEAD
 			     "cq_id = %d, prod = %d, cnsmr = %d\n",
+=======
+			     "cq_id = %d, prod = %d, cnsmr = %d.\n.",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     rx_ring->cq_id, prod, rx_ring->cnsmr_idx);
 
 		net_rsp = (struct ob_mac_iocb_rsp *)rx_ring->curr_entry;
@@ -2258,7 +2272,11 @@ static int ql_clean_inbound_rx_ring(struct rx_ring *rx_ring, int budget)
 	while (prod != rx_ring->cnsmr_idx) {
 
 		netif_printk(qdev, rx_status, KERN_DEBUG, qdev->ndev,
+<<<<<<< HEAD
 			     "cq_id = %d, prod = %d, cnsmr = %d\n",
+=======
+			     "cq_id = %d, prod = %d, cnsmr = %d.\n.",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     rx_ring->cq_id, prod, rx_ring->cnsmr_idx);
 
 		net_rsp = rx_ring->curr_entry;
@@ -2694,8 +2712,12 @@ static netdev_tx_t qlge_send(struct sk_buff *skb, struct net_device *ndev)
 		tx_ring->prod_idx = 0;
 	wmb();
 
+<<<<<<< HEAD
 	ql_write_db_reg_relaxed(tx_ring->prod_idx, tx_ring->prod_idx_db_reg);
 	mmiowb();
+=======
+	ql_write_db_reg(tx_ring->prod_idx, tx_ring->prod_idx_db_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_printk(qdev, tx_queued, KERN_DEBUG, qdev->ndev,
 		     "tx queued, slot %d, len %d\n",
 		     tx_ring->prod_idx, skb->len);
@@ -2804,8 +2826,12 @@ static int ql_alloc_tx_resources(struct ql_adapter *qdev,
 		goto pci_alloc_err;
 
 	tx_ring->q =
+<<<<<<< HEAD
 	    kmalloc_array(tx_ring->wq_len, sizeof(struct tx_ring_desc),
 			  GFP_KERNEL);
+=======
+	    kmalloc(tx_ring->wq_len * sizeof(struct tx_ring_desc), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tx_ring->q == NULL)
 		goto err;
 
@@ -4718,9 +4744,15 @@ static const struct net_device_ops qlge_netdev_ops = {
 	.ndo_vlan_rx_kill_vid	= qlge_vlan_rx_kill_vid,
 };
 
+<<<<<<< HEAD
 static void ql_timer(struct timer_list *t)
 {
 	struct ql_adapter *qdev = from_timer(qdev, t, timer);
+=======
+static void ql_timer(unsigned long data)
+{
+	struct ql_adapter *qdev = (struct ql_adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 var = 0;
 
 	var = ql_read32(qdev, STS);
@@ -4799,8 +4831,16 @@ static int qlge_probe(struct pci_dev *pdev,
 	/* Start up the timer to trigger EEH if
 	 * the bus goes dead
 	 */
+<<<<<<< HEAD
 	timer_setup(&qdev->timer, ql_timer, TIMER_DEFERRABLE);
 	mod_timer(&qdev->timer, jiffies + (5*HZ));
+=======
+	init_timer_deferrable(&qdev->timer);
+	qdev->timer.data = (unsigned long)qdev;
+	qdev->timer.function = ql_timer;
+	qdev->timer.expires = jiffies + (5*HZ);
+	add_timer(&qdev->timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ql_link_off(qdev);
 	ql_display_dev_info(ndev);
 	atomic_set(&qdev->lb_count, 0);

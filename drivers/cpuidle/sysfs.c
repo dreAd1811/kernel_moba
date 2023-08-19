@@ -330,6 +330,7 @@ struct cpuidle_state_kobj {
 	struct kobject kobj;
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_SUSPEND
 #define define_show_state_s2idle_ull_function(_name) \
 static ssize_t show_state_s2idle_##_name(struct cpuidle_state *state, \
@@ -382,6 +383,8 @@ static inline void cpuidle_add_s2idle_attr_group(struct cpuidle_state_kobj *kobj
 static inline void cpuidle_remove_s2idle_attr_group(struct cpuidle_state_kobj *kobj) { }
 #endif /* CONFIG_SUSPEND */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define kobj_to_state_obj(k) container_of(k, struct cpuidle_state_kobj, kobj)
 #define kobj_to_state(k) (kobj_to_state_obj(k)->state)
 #define kobj_to_state_usage(k) (kobj_to_state_obj(k)->state_usage)
@@ -435,7 +438,10 @@ static struct kobj_type ktype_state_cpuidle = {
 
 static inline void cpuidle_free_state_kobj(struct cpuidle_device *device, int i)
 {
+<<<<<<< HEAD
 	cpuidle_remove_s2idle_attr_group(device->kobjs[i]);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kobject_put(&device->kobjs[i]->kobj);
 	wait_for_completion(&device->kobjs[i]->kobj_unregister);
 	kfree(device->kobjs[i]);
@@ -467,10 +473,16 @@ static int cpuidle_add_state_sysfs(struct cpuidle_device *device)
 		ret = kobject_init_and_add(&kobj->kobj, &ktype_state_cpuidle,
 					   &kdev->kobj, "state%d", i);
 		if (ret) {
+<<<<<<< HEAD
 			kfree(kobj);
 			goto error_state;
 		}
 		cpuidle_add_s2idle_attr_group(kobj);
+=======
+			kobject_put(&kobj->kobj);
+			goto error_state;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kobject_uevent(&kobj->kobj, KOBJ_ADD);
 		device->kobjs[i] = kobj;
 	}
@@ -598,7 +610,11 @@ static int cpuidle_add_driver_sysfs(struct cpuidle_device *dev)
 	ret = kobject_init_and_add(&kdrv->kobj, &ktype_driver_cpuidle,
 				   &kdev->kobj, "driver");
 	if (ret) {
+<<<<<<< HEAD
 		kfree(kdrv);
+=======
+		kobject_put(&kdrv->kobj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -692,7 +708,11 @@ int cpuidle_add_sysfs(struct cpuidle_device *dev)
 	error = kobject_init_and_add(&kdev->kobj, &ktype_cpuidle, &cpu_dev->kobj,
 				   "cpuidle");
 	if (error) {
+<<<<<<< HEAD
 		kfree(kdev);
+=======
+		kobject_put(&kdev->kobj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return error;
 	}
 

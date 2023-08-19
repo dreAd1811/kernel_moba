@@ -16,6 +16,7 @@
  */
 
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <net/rsi_91x.h>
 #include "rsi_usb.h"
 #include "rsi_hal.h"
@@ -30,6 +31,10 @@ MODULE_PARM_DESC(dev_oper_mode,
 		 "6[AP + BT classic], 14[AP + BT classic + BT LE]");
 
 static int rsi_rx_urb_submit(struct rsi_hw *adapter, u8 ep_num);
+=======
+#include "rsi_usb.h"
+#include "rsi_hal.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * rsi_usb_card_write() - This function writes to the USB Card.
@@ -85,7 +90,12 @@ static int rsi_write_multiple(struct rsi_hw *adapter,
 			      u8 *data,
 			      u32 count)
 {
+<<<<<<< HEAD
 	struct rsi_91x_usbdev *dev;
+=======
+	struct rsi_91x_usbdev *dev =
+		(struct rsi_91x_usbdev *)adapter->rsi_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!adapter)
 		return -ENODEV;
@@ -93,7 +103,10 @@ static int rsi_write_multiple(struct rsi_hw *adapter,
 	if (endpoint == 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	dev = (struct rsi_91x_usbdev *)adapter->rsi_dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->write_fail)
 		return -ENETDOWN;
 
@@ -115,13 +128,20 @@ static int rsi_find_bulk_in_and_out_endpoints(struct usb_interface *interface,
 	struct usb_host_interface *iface_desc;
 	struct usb_endpoint_descriptor *endpoint;
 	__le16 buffer_size;
+<<<<<<< HEAD
 	int ii, bin_found = 0, bout_found = 0;
 
 	iface_desc = &(interface->altsetting[0]);
+=======
+	int ii, bep_found = 0;
+
+	iface_desc = interface->cur_altsetting;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (ii = 0; ii < iface_desc->desc.bNumEndpoints; ++ii) {
 		endpoint = &(iface_desc->endpoint[ii].desc);
 
+<<<<<<< HEAD
 		if (!dev->bulkin_endpoint_addr[bin_found] &&
 		    (endpoint->bEndpointAddress & USB_DIR_IN) &&
 		    ((endpoint->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
@@ -150,6 +170,36 @@ static int rsi_find_bulk_in_and_out_endpoints(struct usb_interface *interface,
 
 	if (!(dev->bulkin_endpoint_addr[0]) &&
 	    dev->bulkout_endpoint_addr[0])
+=======
+		if ((!(dev->bulkin_endpoint_addr)) &&
+		    (endpoint->bEndpointAddress & USB_DIR_IN) &&
+		    ((endpoint->bmAttributes &
+		    USB_ENDPOINT_XFERTYPE_MASK) ==
+		    USB_ENDPOINT_XFER_BULK)) {
+			buffer_size = endpoint->wMaxPacketSize;
+			dev->bulkin_size = buffer_size;
+			dev->bulkin_endpoint_addr =
+				endpoint->bEndpointAddress;
+		}
+
+		if (!dev->bulkout_endpoint_addr[bep_found] &&
+		    !(endpoint->bEndpointAddress & USB_DIR_IN) &&
+		    ((endpoint->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
+		      USB_ENDPOINT_XFER_BULK)) {
+			dev->bulkout_endpoint_addr[bep_found] =
+				endpoint->bEndpointAddress;
+			buffer_size = endpoint->wMaxPacketSize;
+			dev->bulkout_size[bep_found] = buffer_size;
+			bep_found++;
+		}
+
+		if (bep_found >= MAX_BULK_EP)
+			break;
+	}
+
+	if (!(dev->bulkin_endpoint_addr) &&
+	    (dev->bulkout_endpoint_addr[0]))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	return 0;
@@ -259,6 +309,7 @@ static int rsi_usb_reg_write(struct usb_device *usbdev,
  */
 static void rsi_rx_done_handler(struct urb *urb)
 {
+<<<<<<< HEAD
 	struct rx_usb_ctrl_block *rx_cb = urb->context;
 	struct rsi_91x_usbdev *dev = (struct rsi_91x_usbdev *)rx_cb->data;
 	int status = -EINVAL;
@@ -288,6 +339,15 @@ out:
 
 	if (status)
 		dev_kfree_skb(rx_cb->rx_skb);
+=======
+	struct rsi_hw *adapter = urb->context;
+	struct rsi_91x_usbdev *dev = (struct rsi_91x_usbdev *)adapter->rsi_dev;
+
+	if (urb->status)
+		return;
+
+	rsi_set_event(&dev->rx_thread.event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -296,6 +356,7 @@ out:
  *
  * Return: 0 on success, a negative error code on failure.
  */
+<<<<<<< HEAD
 static int rsi_rx_urb_submit(struct rsi_hw *adapter, u8 ep_num)
 {
 	struct rsi_91x_usbdev *dev = (struct rsi_91x_usbdev *)adapter->rsi_dev;
@@ -316,15 +377,30 @@ static int rsi_rx_urb_submit(struct rsi_hw *adapter, u8 ep_num)
 		skb_push(skb, dword_align_bytes);
 	urb->transfer_buffer = skb->data;
 	rx_cb->rx_skb = skb;
+=======
+static int rsi_rx_urb_submit(struct rsi_hw *adapter)
+{
+	struct rsi_91x_usbdev *dev = (struct rsi_91x_usbdev *)adapter->rsi_dev;
+	struct urb *urb = dev->rx_usb_urb[0];
+	int status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	usb_fill_bulk_urb(urb,
 			  dev->usbdev,
 			  usb_rcvbulkpipe(dev->usbdev,
+<<<<<<< HEAD
 			  dev->bulkin_endpoint_addr[ep_num - 1]),
 			  urb->transfer_buffer,
 			  skb->len,
 			  rsi_rx_done_handler,
 			  rx_cb);
+=======
+				dev->bulkin_endpoint_addr),
+			  urb->transfer_buffer,
+			  3000,
+			  rsi_rx_done_handler,
+			  adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = usb_submit_urb(urb, GFP_KERNEL);
 	if (status)
@@ -536,6 +612,7 @@ static void rsi_deinit_usb_interface(struct rsi_hw *adapter)
 	struct rsi_91x_usbdev *dev = (struct rsi_91x_usbdev *)adapter->rsi_dev;
 
 	rsi_kill_thread(&dev->rx_thread);
+<<<<<<< HEAD
 
 	usb_free_urb(dev->rx_cb[0].rx_urb);
 	if (adapter->priv->coex_mode > 1)
@@ -581,6 +658,13 @@ err:
 	return -1;
 }
 
+=======
+	usb_free_urb(dev->rx_usb_urb[0]);
+	kfree(adapter->priv->rx_data_pkt);
+	kfree(dev->tx_buffer);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * rsi_init_usb_interface() - This function initializes the usb interface.
  * @adapter: Pointer to the adapter structure.
@@ -592,6 +676,10 @@ static int rsi_init_usb_interface(struct rsi_hw *adapter,
 				  struct usb_interface *pfunction)
 {
 	struct rsi_91x_usbdev *rsi_dev;
+<<<<<<< HEAD
+=======
+	struct rsi_common *common = adapter->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status;
 
 	rsi_dev = kzalloc(sizeof(*rsi_dev), GFP_KERNEL);
@@ -600,16 +688,23 @@ static int rsi_init_usb_interface(struct rsi_hw *adapter,
 
 	adapter->rsi_dev = rsi_dev;
 	rsi_dev->usbdev = interface_to_usbdev(pfunction);
+<<<<<<< HEAD
 	rsi_dev->priv = (void *)adapter;
 
 	if (rsi_find_bulk_in_and_out_endpoints(pfunction, adapter)) {
 		status = -EINVAL;
 		goto fail_eps;
 	}
+=======
+
+	if (rsi_find_bulk_in_and_out_endpoints(pfunction, adapter))
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adapter->device = &pfunction->dev;
 	usb_set_intfdata(pfunction, adapter);
 
+<<<<<<< HEAD
 	rsi_dev->tx_buffer = kmalloc(2048, GFP_KERNEL);
 	if (!rsi_dev->tx_buffer) {
 		status = -ENOMEM;
@@ -622,15 +717,50 @@ static int rsi_init_usb_interface(struct rsi_hw *adapter,
 		goto fail_rx;
 	}
 
+=======
+	common->rx_data_pkt = kmalloc(2048, GFP_KERNEL);
+	if (!common->rx_data_pkt) {
+		rsi_dbg(ERR_ZONE, "%s: Failed to allocate memory\n",
+			__func__);
+		return -ENOMEM;
+	}
+
+	rsi_dev->tx_buffer = kmalloc(2048, GFP_KERNEL);
+	if (!rsi_dev->tx_buffer) {
+		status = -ENOMEM;
+		goto fail_tx;
+	}
+	rsi_dev->rx_usb_urb[0] = usb_alloc_urb(0, GFP_KERNEL);
+	if (!rsi_dev->rx_usb_urb[0]) {
+		status = -ENOMEM;
+		goto fail_rx;
+	}
+	rsi_dev->rx_usb_urb[0]->transfer_buffer = adapter->priv->rx_data_pkt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rsi_dev->tx_blk_size = 252;
 	adapter->block_size = rsi_dev->tx_blk_size;
 
 	/* Initializing function callbacks */
+<<<<<<< HEAD
+=======
+	adapter->rx_urb_submit = rsi_rx_urb_submit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adapter->check_hw_queue_status = rsi_usb_check_queue_status;
 	adapter->determine_event_timeout = rsi_usb_event_timeout;
 	adapter->rsi_host_intf = RSI_HOST_INTF_USB;
 	adapter->host_intf_ops = &usb_host_intf_ops;
 
+<<<<<<< HEAD
+=======
+	rsi_init_event(&rsi_dev->rx_thread.event);
+	status = rsi_create_kthread(common, &rsi_dev->rx_thread,
+				    rsi_usb_rx_thread, "RX-Thread");
+	if (status) {
+		rsi_dbg(ERR_ZONE, "%s: Unable to init rx thrd\n", __func__);
+		goto fail_thread;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_RSI_DEBUGFS
 	/* In USB, one less than the MAX_DEBUGFS_ENTRIES entries is required */
 	adapter->num_debugfs_entries = (MAX_DEBUGFS_ENTRIES - 1);
@@ -639,11 +769,20 @@ static int rsi_init_usb_interface(struct rsi_hw *adapter,
 	rsi_dbg(INIT_ZONE, "%s: Enabled the interface\n", __func__);
 	return 0;
 
+<<<<<<< HEAD
 fail_rx:
 	kfree(rsi_dev->tx_buffer);
 
 fail_eps:
 
+=======
+fail_thread:
+	usb_free_urb(rsi_dev->rx_usb_urb[0]);
+fail_rx:
+	kfree(rsi_dev->tx_buffer);
+fail_tx:
+	kfree(common->rx_data_pkt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -689,6 +828,7 @@ static int rsi_reset_card(struct rsi_hw *adapter)
 	 */
 	msleep(100);
 
+<<<<<<< HEAD
 	ret = rsi_usb_master_reg_write(adapter, SWBL_REGOUT,
 				       RSI_FW_WDT_DISABLE_REQ,
 				       RSI_COMMON_REG_SIZE);
@@ -697,6 +837,8 @@ static int rsi_reset_card(struct rsi_hw *adapter)
 		goto fail;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = usb_ulp_read_write(adapter, RSI_WATCH_DOG_TIMER_1,
 				 RSI_ULP_WRITE_2, 32);
 	if (ret < 0)
@@ -745,7 +887,11 @@ static int rsi_probe(struct usb_interface *pfunction,
 
 	rsi_dbg(INIT_ZONE, "%s: Init function called\n", __func__);
 
+<<<<<<< HEAD
 	adapter = rsi_91x_init(dev_oper_mode);
+=======
+	adapter = rsi_91x_init();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!adapter) {
 		rsi_dbg(ERR_ZONE, "%s: Failed to init os intf ops\n",
 			__func__);
@@ -781,6 +927,7 @@ static int rsi_probe(struct usb_interface *pfunction,
 		rsi_dbg(INIT_ZONE, "%s: Device Init Done\n", __func__);
 	}
 
+<<<<<<< HEAD
 	status = rsi_rx_urb_submit(adapter, WLAN_EP);
 	if (status)
 		goto err1;
@@ -791,6 +938,12 @@ static int rsi_probe(struct usb_interface *pfunction,
 			goto err1;
 	}
 
+=======
+	status = rsi_rx_urb_submit(adapter);
+	if (status)
+		goto err1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 err1:
 	rsi_deinit_usb_interface(adapter);
@@ -837,7 +990,15 @@ static int rsi_resume(struct usb_interface *intf)
 #endif
 
 static const struct usb_device_id rsi_dev_table[] = {
+<<<<<<< HEAD
 	{ USB_DEVICE(RSI_USB_VID_9113, RSI_USB_PID_9113) },
+=======
+	{ USB_DEVICE(0x0303, 0x0100) },
+	{ USB_DEVICE(0x041B, 0x0301) },
+	{ USB_DEVICE(0x041B, 0x0201) },
+	{ USB_DEVICE(0x041B, 0x9330) },
+	{ USB_DEVICE(0x1618, 0x9113) },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* Blank */},
 };
 

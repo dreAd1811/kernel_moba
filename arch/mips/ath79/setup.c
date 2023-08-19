@@ -60,7 +60,10 @@ static void __init ath79_detect_sys_type(void)
 	u32 major;
 	u32 minor;
 	u32 rev = 0;
+<<<<<<< HEAD
 	u32 ver = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	id = ath79_reset_rr(AR71XX_RESET_REG_REV_ID);
 	major = id & REV_ID_MAJOR_MASK;
@@ -153,6 +156,7 @@ static void __init ath79_detect_sys_type(void)
 		rev = id & AR934X_REV_ID_REVISION_MASK;
 		break;
 
+<<<<<<< HEAD
 	case REV_ID_MAJOR_QCA9533_V2:
 		ver = 2;
 		ath79_soc_rev = 2;
@@ -164,6 +168,8 @@ static void __init ath79_detect_sys_type(void)
 		rev = id & QCA953X_REV_ID_REVISION_MASK;
 		break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case REV_ID_MAJOR_QCA9556:
 		ath79_soc = ATH79_SOC_QCA9556;
 		chip = "9556";
@@ -176,6 +182,7 @@ static void __init ath79_detect_sys_type(void)
 		rev = id & QCA955X_REV_ID_REVISION_MASK;
 		break;
 
+<<<<<<< HEAD
 	case REV_ID_MAJOR_QCA956X:
 		ath79_soc = ATH79_SOC_QCA956X;
 		chip = "956X";
@@ -188,10 +195,13 @@ static void __init ath79_detect_sys_type(void)
 		rev = id & QCA956X_REV_ID_REVISION_MASK;
 		break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		panic("ath79: unknown SoC, id:0x%08x", id);
 	}
 
+<<<<<<< HEAD
 	if (ver == 1)
 		ath79_soc_rev = rev;
 
@@ -200,6 +210,12 @@ static void __init ath79_detect_sys_type(void)
 			chip, ver, rev);
 	else if (soc_is_tp9343())
 		sprintf(ath79_sys_type, "Qualcomm Atheros TP%s rev %u",
+=======
+	ath79_soc_rev = rev;
+
+	if (soc_is_qca955x())
+		sprintf(ath79_sys_type, "Qualcomm Atheros QCA%s rev %u",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			chip, rev);
 	else
 		sprintf(ath79_sys_type, "Atheros AR%s rev %u", chip, rev);

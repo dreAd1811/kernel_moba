@@ -455,12 +455,15 @@ static __u8 wiimote_cmd_read_ext(struct wiimote_data *wdata, __u8 *rmem)
 		return WIIMOTE_EXT_BALANCE_BOARD;
 	if (rmem[4] == 0x01 && rmem[5] == 0x20)
 		return WIIMOTE_EXT_PRO_CONTROLLER;
+<<<<<<< HEAD
 	if (rmem[0] == 0x01 && rmem[1] == 0x00 &&
 	    rmem[4] == 0x01 && rmem[5] == 0x03)
 		return WIIMOTE_EXT_DRUMS;
 	if (rmem[0] == 0x00 && rmem[1] == 0x00 &&
 	    rmem[4] == 0x01 && rmem[5] == 0x03)
 		return WIIMOTE_EXT_GUITAR;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return WIIMOTE_EXT_UNKNOWN;
 }
@@ -494,8 +497,11 @@ static bool wiimote_cmd_map_mp(struct wiimote_data *wdata, __u8 exttype)
 	/* map MP with correct pass-through mode */
 	switch (exttype) {
 	case WIIMOTE_EXT_CLASSIC_CONTROLLER:
+<<<<<<< HEAD
 	case WIIMOTE_EXT_DRUMS:
 	case WIIMOTE_EXT_GUITAR:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wmem = 0x07;
 		break;
 	case WIIMOTE_EXT_NUNCHUK:
@@ -1083,8 +1089,11 @@ static const char *wiimote_exttype_names[WIIMOTE_EXT_NUM] = {
 	[WIIMOTE_EXT_CLASSIC_CONTROLLER] = "Nintendo Wii Classic Controller",
 	[WIIMOTE_EXT_BALANCE_BOARD] = "Nintendo Wii Balance Board",
 	[WIIMOTE_EXT_PRO_CONTROLLER] = "Nintendo Wii U Pro Controller",
+<<<<<<< HEAD
 	[WIIMOTE_EXT_DRUMS] = "Nintendo Wii Drums",
 	[WIIMOTE_EXT_GUITAR] = "Nintendo Wii Guitar",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -1236,9 +1245,15 @@ static void wiimote_schedule(struct wiimote_data *wdata)
 	spin_unlock_irqrestore(&wdata->state.lock, flags);
 }
 
+<<<<<<< HEAD
 static void wiimote_init_timeout(struct timer_list *t)
 {
 	struct wiimote_data *wdata = from_timer(wdata, t, timer);
+=======
+static void wiimote_init_timeout(unsigned long arg)
+{
+	struct wiimote_data *wdata = (void*)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wiimote_schedule(wdata);
 }
@@ -1670,10 +1685,13 @@ static ssize_t wiimote_ext_show(struct device *dev,
 		return sprintf(buf, "balanceboard\n");
 	case WIIMOTE_EXT_PRO_CONTROLLER:
 		return sprintf(buf, "procontroller\n");
+<<<<<<< HEAD
 	case WIIMOTE_EXT_DRUMS:
 		return sprintf(buf, "drums\n");
 	case WIIMOTE_EXT_GUITAR:
 		return sprintf(buf, "guitar\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case WIIMOTE_EXT_UNKNOWN:
 		/* fallthrough */
 	default:
@@ -1754,7 +1772,11 @@ static struct wiimote_data *wiimote_create(struct hid_device *hdev)
 	wdata->state.cmd_battery = 0xff;
 
 	INIT_WORK(&wdata->init_worker, wiimote_init_worker);
+<<<<<<< HEAD
 	timer_setup(&wdata->timer, wiimote_init_timeout, 0);
+=======
+	setup_timer(&wdata->timer, wiimote_init_timeout, (long)wdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return wdata;
 }

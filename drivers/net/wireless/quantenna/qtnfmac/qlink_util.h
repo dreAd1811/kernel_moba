@@ -19,7 +19,10 @@
 
 #include <linux/types.h>
 #include <linux/skbuff.h>
+<<<<<<< HEAD
 #include <net/cfg80211.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "qlink.h"
 
@@ -63,6 +66,7 @@ static inline void qtnf_cmd_skb_put_tlv_u16(struct sk_buff *skb,
 
 u16 qlink_iface_type_to_nl_mask(u16 qlink_type);
 u8 qlink_chan_width_mask_to_nl(u16 qlink_mask);
+<<<<<<< HEAD
 void qlink_chandef_q2cfg(struct wiphy *wiphy,
 			 const struct qlink_chandef *qch,
 			 struct cfg80211_chan_def *chdef);
@@ -73,5 +77,7 @@ bool qtnf_utils_is_bit_set(const u8 *arr, unsigned int bit,
 			   unsigned int arr_max_len);
 void qlink_acl_data_cfg2q(const struct cfg80211_acl_data *acl,
 			  struct qlink_acl_data *qacl);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _QTN_FMAC_QLINK_UTIL_H_ */

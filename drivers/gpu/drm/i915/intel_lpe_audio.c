@@ -75,6 +75,10 @@
 static struct platform_device *
 lpe_audio_platdev_create(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *dev = &dev_priv->drm;
 	struct platform_device_info pinfo = {};
 	struct resource *rsc;
@@ -119,6 +123,7 @@ lpe_audio_platdev_create(struct drm_i915_private *dev_priv)
 	spin_lock_init(&pdata->lpe_audio_slock);
 
 	platdev = platform_device_register_full(&pinfo);
+<<<<<<< HEAD
 	kfree(rsc);
 	kfree(pdata);
 
@@ -130,6 +135,24 @@ lpe_audio_platdev_create(struct drm_i915_private *dev_priv)
 	pm_runtime_no_callbacks(&platdev->dev);
 
 	return platdev;
+=======
+	if (IS_ERR(platdev)) {
+		ret = PTR_ERR(platdev);
+		DRM_ERROR("Failed to allocate LPE audio platform device\n");
+		goto err;
+	}
+
+	kfree(rsc);
+
+	pm_runtime_no_callbacks(&platdev->dev);
+
+	return platdev;
+
+err:
+	kfree(rsc);
+	kfree(pdata);
+	return ERR_PTR(ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void lpe_audio_platdev_destroy(struct drm_i915_private *dev_priv)
@@ -186,7 +209,11 @@ static bool lpe_audio_detect(struct drm_i915_private *dev_priv)
 		};
 
 		if (!pci_dev_present(atom_hdaudio_ids)) {
+<<<<<<< HEAD
 			DRM_INFO("HDaudio controller not detected, using LPE audio instead\n");
+=======
+			DRM_INFO("%s\n", "HDaudio controller not detected, using LPE audio instead\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			lpe_present = true;
 		}
 	}

@@ -9,6 +9,12 @@
  *  Copyright (C) 1997,1998 Jakub Jelinek   (jj@sunsite.mff.cuni.cz)
  */
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_COMPAT
+#include <linux/compat.h>	/* for compat_old_sigset_t */
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/sched.h>
 #include <linux/kernel.h>
 #include <linux/signal.h>

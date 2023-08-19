@@ -43,6 +43,10 @@ struct platram_info {
 	struct device		*dev;
 	struct mtd_info		*mtd;
 	struct map_info		 map;
+<<<<<<< HEAD
+=======
+	struct resource		*area;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct platdata_mtd_ram	*pdata;
 };
 
@@ -96,6 +100,19 @@ static int platram_remove(struct platform_device *pdev)
 
 	platram_setrw(info, PLATRAM_RO);
 
+<<<<<<< HEAD
+=======
+	/* release resources */
+
+	if (info->area) {
+		release_resource(info->area);
+		kfree(info->area);
+	}
+
+	if (info->map.virt != NULL)
+		iounmap(info->map.virt);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(info);
 
 	return 0;
@@ -136,11 +153,20 @@ static int platram_probe(struct platform_device *pdev)
 	info->pdata = pdata;
 
 	/* get the resource for the memory mapping */
+<<<<<<< HEAD
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	info->map.virt = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(info->map.virt)) {
 		err = PTR_ERR(info->map.virt);
 		dev_err(&pdev->dev, "failed to ioremap() region\n");
+=======
+
+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+
+	if (res == NULL) {
+		dev_err(&pdev->dev, "no memory resource specified\n");
+		err = -ENOENT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto exit_free;
 	}
 
@@ -155,8 +181,31 @@ static int platram_probe(struct platform_device *pdev)
 			(char *)pdata->mapname : (char *)pdev->name;
 	info->map.bankwidth = pdata->bankwidth;
 
+<<<<<<< HEAD
 	dev_dbg(&pdev->dev, "virt %p, %lu bytes\n", info->map.virt, info->map.size);
 
+=======
+	/* register our usage of the memory area */
+
+	info->area = request_mem_region(res->start, info->map.size, pdev->name);
+	if (info->area == NULL) {
+		dev_err(&pdev->dev, "failed to request memory region\n");
+		err = -EIO;
+		goto exit_free;
+	}
+
+	/* remap the memory area */
+
+	info->map.virt = ioremap(res->start, info->map.size);
+	dev_dbg(&pdev->dev, "virt %p, %lu bytes\n", info->map.virt, info->map.size);
+
+	if (info->map.virt == NULL) {
+		dev_err(&pdev->dev, "failed to ioremap() region\n");
+		err = -EIO;
+		goto exit_free;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	simple_map_init(&info->map);
 
 	dev_dbg(&pdev->dev, "initialised map, probing for mtd\n");

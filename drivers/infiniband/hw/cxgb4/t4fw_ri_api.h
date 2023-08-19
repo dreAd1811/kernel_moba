@@ -50,8 +50,12 @@ enum fw_ri_wr_opcode {
 	FW_RI_BYPASS			= 0xd,
 	FW_RI_RECEIVE			= 0xe,
 
+<<<<<<< HEAD
 	FW_RI_SGE_EC_CR_RETURN		= 0xf,
 	FW_RI_WRITE_IMMEDIATE           = FW_RI_RDMA_INIT
+=======
+	FW_RI_SGE_EC_CR_RETURN		= 0xf
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum fw_ri_wr_flags {
@@ -60,8 +64,12 @@ enum fw_ri_wr_flags {
 	FW_RI_SOLICITED_EVENT_FLAG	= 0x04,
 	FW_RI_READ_FENCE_FLAG		= 0x08,
 	FW_RI_LOCAL_FENCE_FLAG		= 0x10,
+<<<<<<< HEAD
 	FW_RI_RDMA_READ_INVALIDATE	= 0x20,
 	FW_RI_RDMA_WRITE_WITH_IMMEDIATE = 0x40
+=======
+	FW_RI_RDMA_READ_INVALIDATE	= 0x20
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum fw_ri_mpa_attrs {
@@ -265,7 +273,10 @@ enum fw_ri_res_type {
 	FW_RI_RES_TYPE_SQ,
 	FW_RI_RES_TYPE_RQ,
 	FW_RI_RES_TYPE_CQ,
+<<<<<<< HEAD
 	FW_RI_RES_TYPE_SRQ,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum fw_ri_res_op {
@@ -299,6 +310,7 @@ struct fw_ri_res {
 			__be32 r6_lo;
 			__be64 r7;
 		} cq;
+<<<<<<< HEAD
 		struct fw_ri_res_srq {
 			__u8   restype;
 			__u8   op;
@@ -313,6 +325,8 @@ struct fw_ri_res {
 			__be32 hwsrqsize;
 			__be32 hwsrqaddr;
 		} srq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} u;
 };
 
@@ -548,6 +562,7 @@ struct fw_ri_rdma_write_wr {
 	__u16  wrid;
 	__u8   r1[3];
 	__u8   len16;
+<<<<<<< HEAD
 	/*
 	 * Use union for immediate data to be consistent with stack's 32 bit
 	 * data and iWARP spec's 64 bit data.
@@ -559,6 +574,9 @@ struct fw_ri_rdma_write_wr {
 		} ib_imm_data;
 		__be64 imm_data64;
 	} iw_imm_data;
+=======
+	__be64 r2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be32 plen;
 	__be32 stag_sink;
 	__be64 to_sink;
@@ -595,6 +613,7 @@ struct fw_ri_send_wr {
 #define FW_RI_SEND_WR_SENDOP_G(x)	\
 	(((x) >> FW_RI_SEND_WR_SENDOP_S) & FW_RI_SEND_WR_SENDOP_M)
 
+<<<<<<< HEAD
 struct fw_ri_rdma_write_cmpl_wr {
 	__u8   opcode;
 	__u8   flags;
@@ -626,6 +645,8 @@ struct fw_ri_rdma_write_cmpl_wr {
 #endif
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fw_ri_rdma_read_wr {
 	__u8   opcode;
 	__u8   flags;
@@ -765,10 +786,13 @@ enum fw_ri_init_p2ptype {
 	FW_RI_INIT_P2PTYPE_DISABLED		= 0xf,
 };
 
+<<<<<<< HEAD
 enum fw_ri_init_rqeqid_srq {
 	FW_RI_INIT_RQEQID_SRQ			= 1 << 31,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fw_ri_wr {
 	__be32 op_compl;
 	__be32 flowid_len16;

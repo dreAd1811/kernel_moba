@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 menuconfig ARCH_STM32
 	bool "STMicroelectronics STM32 family" if ARM_SINGLE_ARMV7M || ARCH_MULTI_V7
 	select ARMV7M_SYSTICK if ARM_SINGLE_ARMV7M
@@ -5,6 +6,13 @@ menuconfig ARCH_STM32
 	select ARM_GIC if ARCH_MULTI_V7
 	select ARM_PSCI if ARCH_MULTI_V7
 	select ARCH_HAS_RESET_CONTROLLER
+=======
+config ARCH_STM32
+	bool "STMicrolectronics STM32"
+	depends on ARM_SINGLE_ARMV7M
+	select ARCH_HAS_RESET_CONTROLLER
+	select ARMV7M_SYSTICK
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_STM32
 	select PINCTRL
 	select RESET_CONTROLLER
@@ -12,6 +20,7 @@ menuconfig ARCH_STM32
 	help
 	  Support for STMicroelectronics STM32 processors.
 
+<<<<<<< HEAD
 if ARCH_STM32
 
 if ARM_SINGLE_ARMV7M
@@ -51,3 +60,24 @@ config MACH_STM32MP157
 endif # ARMv7-A
 
 endif
+=======
+config MACH_STM32F429
+	bool "STMicrolectronics STM32F429"
+	depends on ARCH_STM32
+	default y
+
+config MACH_STM32F469
+	bool "STMicrolectronics STM32F469"
+	depends on ARCH_STM32
+	default y
+
+config MACH_STM32F746
+	bool "STMicrolectronics STM32F746"
+	depends on ARCH_STM32
+	default y
+
+config MACH_STM32H743
+	bool "STMicrolectronics STM32H743"
+	depends on ARCH_STM32
+	default y
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -496,6 +496,7 @@ static int idma64_terminate_all(struct dma_chan *chan)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void idma64_synchronize(struct dma_chan *chan)
 {
 	struct idma64_chan *idma64c = to_idma64_chan(chan);
@@ -503,6 +504,8 @@ static void idma64_synchronize(struct dma_chan *chan)
 	vchan_synchronize(&idma64c->vchan);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int idma64_alloc_chan_resources(struct dma_chan *chan)
 {
 	struct idma64_chan *idma64c = to_idma64_chan(chan);
@@ -590,7 +593,10 @@ static int idma64_probe(struct idma64_chip *chip)
 	idma64->dma.device_pause = idma64_pause;
 	idma64->dma.device_resume = idma64_resume;
 	idma64->dma.device_terminate_all = idma64_terminate_all;
+<<<<<<< HEAD
 	idma64->dma.device_synchronize = idma64_synchronize;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	idma64->dma.src_addr_widths = IDMA64_BUSWIDTHS;
 	idma64->dma.dst_addr_widths = IDMA64_BUSWIDTHS;
@@ -680,7 +686,12 @@ static int idma64_platform_remove(struct platform_device *pdev)
 
 static int idma64_pm_suspend(struct device *dev)
 {
+<<<<<<< HEAD
 	struct idma64_chip *chip = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct idma64_chip *chip = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	idma64_off(chip->idma64);
 	return 0;
@@ -688,7 +699,12 @@ static int idma64_pm_suspend(struct device *dev)
 
 static int idma64_pm_resume(struct device *dev)
 {
+<<<<<<< HEAD
 	struct idma64_chip *chip = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct idma64_chip *chip = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	idma64_on(chip->idma64);
 	return 0;

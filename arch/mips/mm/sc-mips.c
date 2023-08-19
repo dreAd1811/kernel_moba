@@ -16,7 +16,10 @@
 #include <asm/mmu_context.h>
 #include <asm/r4kcache.h>
 #include <asm/mips-cps.h>
+<<<<<<< HEAD
 #include <asm/bootinfo.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * MIPS32/MIPS64 L2 cache handling
@@ -221,6 +224,7 @@ static inline int __init mips_sc_probe(void)
 	else
 		return 0;
 
+<<<<<<< HEAD
 	/*
 	 * According to config2 it would be 5-ways, but that is contradicted
 	 * by all documentation.
@@ -229,6 +233,8 @@ static inline int __init mips_sc_probe(void)
 				mips_machtype == MACH_INGENIC_JZ4770)
 		c->scache.ways = 4;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c->scache.waysize = c->scache.sets * c->scache.linesz;
 	c->scache.waybit = __ffs(c->scache.waysize);
 

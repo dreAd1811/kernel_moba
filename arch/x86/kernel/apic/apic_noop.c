@@ -84,6 +84,23 @@ static int noop_apic_id_registered(void)
 	return physid_isset(0, phys_cpu_present_map);
 }
 
+<<<<<<< HEAD
+=======
+static const struct cpumask *noop_target_cpus(void)
+{
+	/* only BSP here */
+	return cpumask_of(0);
+}
+
+static void noop_vector_allocation_domain(int cpu, struct cpumask *retmask,
+					  const struct cpumask *mask)
+{
+	if (cpu != 0)
+		pr_warning("APIC: Vector allocated for non-BSP cpu\n");
+	cpumask_copy(retmask, cpumask_of(cpu));
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32 noop_apic_read(u32 reg)
 {
 	WARN_ON_ONCE(boot_cpu_has(X86_FEATURE_APIC) && !disable_apic);
@@ -95,6 +112,7 @@ static void noop_apic_write(u32 reg, u32 v)
 	WARN_ON_ONCE(boot_cpu_has(X86_FEATURE_APIC) && !disable_apic);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_32
 static int noop_x86_32_early_logical_apicid(int cpu)
 {
@@ -102,6 +120,8 @@ static int noop_x86_32_early_logical_apicid(int cpu)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct apic apic_noop __ro_after_init = {
 	.name				= "noop",
 	.probe				= noop_probe,
@@ -110,14 +130,26 @@ struct apic apic_noop __ro_after_init = {
 	.apic_id_valid			= default_apic_id_valid,
 	.apic_id_registered		= noop_apic_id_registered,
 
+<<<<<<< HEAD
 	.irq_delivery_mode		= dest_Fixed,
 	/* logical delivery broadcast to all CPUs: */
 	.irq_dest_mode			= 1,
 
+=======
+	.irq_delivery_mode		= dest_LowestPrio,
+	/* logical delivery broadcast to all CPUs: */
+	.irq_dest_mode			= 1,
+
+	.target_cpus			= noop_target_cpus,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.disable_esr			= 0,
 	.dest_logical			= APIC_DEST_LOGICAL,
 	.check_apicid_used		= default_check_apicid_used,
 
+<<<<<<< HEAD
+=======
+	.vector_allocation_domain	= noop_vector_allocation_domain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init_apic_ldr			= noop_init_apic_ldr,
 
 	.ioapic_phys_id_map		= default_ioapic_phys_id_map,
@@ -133,7 +165,11 @@ struct apic apic_noop __ro_after_init = {
 	.get_apic_id			= noop_get_apic_id,
 	.set_apic_id			= NULL,
 
+<<<<<<< HEAD
 	.calc_dest_apicid		= apic_flat_calc_apicid,
+=======
+	.cpu_mask_to_apicid		= flat_cpu_mask_to_apicid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.send_IPI			= noop_send_IPI,
 	.send_IPI_mask			= noop_send_IPI_mask,

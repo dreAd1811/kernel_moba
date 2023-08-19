@@ -136,7 +136,11 @@ static struct mc13xxx_leds_platform_data __init *mc13xxx_led_probe_dt(
 
 	pdata->num_leds = of_get_child_count(parent);
 
+<<<<<<< HEAD
 	pdata->led = devm_kcalloc(dev, pdata->num_leds, sizeof(*pdata->led),
+=======
+	pdata->led = devm_kzalloc(dev, pdata->num_leds * sizeof(*pdata->led),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	if (!pdata->led) {
 		ret = -ENOMEM;
@@ -210,7 +214,11 @@ static int __init mc13xxx_led_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	leds->led = devm_kcalloc(dev, leds->num_leds, sizeof(*leds->led),
+=======
+	leds->led = devm_kzalloc(dev, leds->num_leds * sizeof(*leds->led),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 	if (!leds->led)
 		return -ENOMEM;

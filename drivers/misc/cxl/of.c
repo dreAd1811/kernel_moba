@@ -302,7 +302,11 @@ static int read_adapter_irq_config(struct cxl *adapter, struct device_node *np)
 	if (nranges == 0 || (nranges * 2 * sizeof(int)) != len)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	adapter->guest->irq_avail = kcalloc(nranges, sizeof(struct irq_avail),
+=======
+	adapter->guest->irq_avail = kzalloc(nranges * sizeof(struct irq_avail),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    GFP_KERNEL);
 	if (adapter->guest->irq_avail == NULL)
 		return -ENOMEM;

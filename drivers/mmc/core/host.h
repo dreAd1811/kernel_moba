@@ -13,22 +13,36 @@
 
 #include <linux/mmc/host.h>
 
+<<<<<<< HEAD
+=======
+#define cls_dev_to_mmc_host(d)	container_of(d, struct mmc_host, class_dev)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mmc_register_host_class(void);
 void mmc_unregister_host_class(void);
 
 void mmc_retune_enable(struct mmc_host *host);
 void mmc_retune_disable(struct mmc_host *host);
 void mmc_retune_hold(struct mmc_host *host);
+<<<<<<< HEAD
+=======
+void mmc_retune_hold_now(struct mmc_host *host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mmc_retune_release(struct mmc_host *host);
 int mmc_retune(struct mmc_host *host);
 void mmc_retune_pause(struct mmc_host *host);
 void mmc_retune_unpause(struct mmc_host *host);
 
+<<<<<<< HEAD
 static inline void mmc_retune_hold_now(struct mmc_host *host)
 {
 	host->retune_now = 0;
 	host->hold_retune += 1;
 }
+=======
+void mmc_latency_hist_sysfs_init(struct mmc_host *host);
+void mmc_latency_hist_sysfs_exit(struct mmc_host *host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void mmc_retune_recheck(struct mmc_host *host)
 {
@@ -41,11 +55,14 @@ static inline int mmc_host_cmd23(struct mmc_host *host)
 	return host->caps & MMC_CAP_CMD23;
 }
 
+<<<<<<< HEAD
 static inline bool mmc_host_done_complete(struct mmc_host *host)
 {
 	return host->caps & MMC_CAP_DONE_COMPLETE;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int mmc_boot_partition_access(struct mmc_host *host)
 {
 	return !(host->caps2 & MMC_CAP2_BOOTPART_NOACC);
@@ -56,8 +73,12 @@ static inline int mmc_host_uhs(struct mmc_host *host)
 	return host->caps &
 		(MMC_CAP_UHS_SDR12 | MMC_CAP_UHS_SDR25 |
 		 MMC_CAP_UHS_SDR50 | MMC_CAP_UHS_SDR104 |
+<<<<<<< HEAD
 		 MMC_CAP_UHS_DDR50) &&
 	       host->caps & MMC_CAP_4_BIT_DATA;
+=======
+		 MMC_CAP_UHS_DDR50);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool mmc_card_hs200(struct mmc_card *card)
@@ -80,5 +101,12 @@ static inline bool mmc_card_hs400es(struct mmc_card *card)
 	return card->host->ios.enhanced_strobe;
 }
 
+<<<<<<< HEAD
+=======
+
+void mmc_latency_hist_sysfs_init(struct mmc_host *host);
+void mmc_latency_hist_sysfs_exit(struct mmc_host *host);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 

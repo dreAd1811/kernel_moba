@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) STMicroelectronics 2016
  *
  * Author: Benjamin Gaignard <benjamin.gaignard@st.com>
  *
+<<<<<<< HEAD
+=======
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/iio/iio.h>
@@ -161,7 +168,12 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void stm32_timer_stop(struct stm32_timer_trigger *priv)
+=======
+static void stm32_timer_stop(struct stm32_timer_trigger *priv,
+			     struct iio_trigger *trig)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 ccer, cr1;
 
@@ -179,6 +191,15 @@ static void stm32_timer_stop(struct stm32_timer_trigger *priv)
 	regmap_write(priv->regmap, TIM_PSC, 0);
 	regmap_write(priv->regmap, TIM_ARR, 0);
 
+<<<<<<< HEAD
+=======
+	/* Force disable master mode */
+	if (stm32_timer_is_trgo2_name(trig->name))
+		regmap_update_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS2, 0);
+	else
+		regmap_update_bits(priv->regmap, TIM_CR2, TIM_CR2_MMS, 0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Make sure that registers are updated */
 	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
 }
@@ -197,7 +218,11 @@ static ssize_t stm32_tt_store_frequency(struct device *dev,
 		return ret;
 
 	if (freq == 0) {
+<<<<<<< HEAD
 		stm32_timer_stop(priv);
+=======
+		stm32_timer_stop(priv, trig);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ret = stm32_timer_start(priv, trig, freq);
 		if (ret)
@@ -355,6 +380,10 @@ static const struct attribute_group *stm32_trigger_attr_groups[] = {
 };
 
 static const struct iio_trigger_ops timer_trigger_ops = {
+<<<<<<< HEAD
+=======
+	.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int stm32_setup_iio_triggers(struct stm32_timer_trigger *priv)
@@ -492,6 +521,10 @@ static int stm32_counter_validate_trigger(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info stm32_trigger_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.validate_trigger = stm32_counter_validate_trigger,
 	.read_raw = stm32_counter_read_raw,
 	.write_raw = stm32_counter_write_raw

@@ -288,6 +288,7 @@ Channel manager Data Structure entry = 20 DWORD
 #define AUDIO_EXT_INT_MSTAT	0x00040068
 #define AUDIO_EXT_INT_SSTAT	0x0004006C
 
+<<<<<<< HEAD
 /* Bits [7:0] set in both TC_REQ and TC_REQ_SET
  * indicate a stall in the RISC engine for a
  * particular rider traffic class. This causes
@@ -300,6 +301,8 @@ Channel manager Data Structure entry = 20 DWORD
 #define TC_REQ		0x00040090
 #define TC_REQ_SET	0x00040094
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RDR_CFG0	0x00050000
 #define RDR_CFG1	0x00050004
 #define RDR_CFG2	0x00050008
@@ -398,8 +401,11 @@ Channel manager Data Structure entry = 20 DWORD
 #define VID_B_PIXEL_FRMT	0x00130184
 
 /* Video C Interface */
+<<<<<<< HEAD
 #define VID_C_DMA		0x00130200
 #define VBI_C_DMA		0x00130208
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VID_C_GPCNT		0x00130220
 #define VID_C_GPCNT_CTL		0x00130230
 #define VBI_C_GPCNT_CTL		0x00130234

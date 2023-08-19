@@ -87,7 +87,11 @@ nvkm_gddr3_calc(struct nvkm_ram *ram)
 		WR  = (ram->next->bios.timing[2] & 0x007f0000) >> 16;
 		/* XXX: Get these values from the VBIOS instead */
 		DLL = !(ram->mr[1] & 0x1);
+<<<<<<< HEAD
 		RON = !(ram->mr[1] & 0x300) >> 8;
+=======
+		RON = !((ram->mr[1] & 0x300) >> 8);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -ENOSYS;

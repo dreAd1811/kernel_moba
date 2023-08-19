@@ -12,12 +12,19 @@
 #ifndef __ARCH_ARM_MACH_DAVINCI_COMMON_H
 #define __ARCH_ARM_MACH_DAVINCI_COMMON_H
 
+<<<<<<< HEAD
 #include <linux/clk.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/compiler.h>
 #include <linux/types.h>
 #include <linux/reboot.h>
 
+<<<<<<< HEAD
 void davinci_timer_init(struct clk *clk);
+=======
+extern void davinci_timer_init(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void davinci_irq_init(void);
 extern void __iomem *davinci_intc_base;
@@ -54,6 +61,12 @@ struct davinci_soc_info {
 	u32				jtag_id_reg;
 	struct davinci_id		*ids;
 	unsigned long			ids_num;
+<<<<<<< HEAD
+=======
+	struct clk_lookup		*cpu_clks;
+	u32				*psc_bases;
+	unsigned long			psc_bases_num;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32				pinmux_base;
 	const struct mux_config		*pinmux_pins;
 	unsigned long			pinmux_pins_num;
@@ -77,10 +90,24 @@ struct davinci_soc_info {
 
 extern struct davinci_soc_info davinci_soc_info;
 
+<<<<<<< HEAD
 extern void davinci_common_init(const struct davinci_soc_info *soc_info);
 extern void davinci_init_ide(void);
 void davinci_init_late(void);
 
+=======
+extern void davinci_common_init(struct davinci_soc_info *soc_info);
+extern void davinci_init_ide(void);
+void davinci_restart(enum reboot_mode mode, const char *cmd);
+void davinci_init_late(void);
+
+#ifdef CONFIG_DAVINCI_RESET_CLOCKS
+int davinci_clk_disable_unused(void);
+#else
+static inline int davinci_clk_disable_unused(void) { return 0; }
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_CPU_FREQ
 int davinci_cpufreq_init(void);
 #else

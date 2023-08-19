@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * ipmi_poweroff.c
  *
@@ -10,6 +13,30 @@
  *         source@mvista.com
  *
  * Copyright 2002,2004 MontaVista Software Inc.
+<<<<<<< HEAD
+=======
+ *
+ *  This program is free software; you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation; either version 2 of the License, or (at your
+ *  option) any later version.
+ *
+ *
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+ *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  675 Mass Ave, Cambridge, MA 02139, USA.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/module.h>
 #include <linux/moduleparam.h>
@@ -39,9 +66,15 @@ static int ifnum_to_use = -1;
 
 /* Our local state. */
 static int ready;
+<<<<<<< HEAD
 static struct ipmi_user *ipmi_user;
 static int ipmi_ifnum;
 static void (*specific_poweroff_func)(struct ipmi_user *user);
+=======
+static ipmi_user_t ipmi_user;
+static int ipmi_ifnum;
+static void (*specific_poweroff_func)(ipmi_user_t user);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Holds the old poweroff function so we can restore it on removal. */
 static void (*old_poweroff_func)(void);
@@ -113,12 +146,20 @@ static void receive_handler(struct ipmi_recv_msg *recv_msg, void *handler_data)
 		complete(comp);
 }
 
+<<<<<<< HEAD
 static const struct ipmi_user_hndl ipmi_poweroff_handler = {
+=======
+static struct ipmi_user_hndl ipmi_poweroff_handler = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ipmi_recv_hndl = receive_handler
 };
 
 
+<<<<<<< HEAD
 static int ipmi_request_wait_for_response(struct ipmi_user       *user,
+=======
+static int ipmi_request_wait_for_response(ipmi_user_t            user,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct ipmi_addr       *addr,
 					  struct kernel_ipmi_msg *send_msg)
 {
@@ -138,7 +179,11 @@ static int ipmi_request_wait_for_response(struct ipmi_user       *user,
 }
 
 /* Wait for message to complete, spinning. */
+<<<<<<< HEAD
 static int ipmi_request_in_rc_mode(struct ipmi_user       *user,
+=======
+static int ipmi_request_in_rc_mode(ipmi_user_t            user,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct ipmi_addr       *addr,
 				   struct kernel_ipmi_msg *send_msg)
 {
@@ -178,9 +223,15 @@ static int ipmi_request_in_rc_mode(struct ipmi_user       *user,
 #define IPMI_MOTOROLA_MANUFACTURER_ID		0x0000A1
 #define IPMI_MOTOROLA_PPS_IPMC_PRODUCT_ID	0x0051
 
+<<<<<<< HEAD
 static void (*atca_oem_poweroff_hook)(struct ipmi_user *user);
 
 static void pps_poweroff_atca(struct ipmi_user *user)
+=======
+static void (*atca_oem_poweroff_hook)(ipmi_user_t user);
+
+static void pps_poweroff_atca(ipmi_user_t user)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipmi_system_interface_addr smi_addr;
 	struct kernel_ipmi_msg            send_msg;
@@ -208,7 +259,11 @@ static void pps_poweroff_atca(struct ipmi_user *user)
 	return;
 }
 
+<<<<<<< HEAD
 static int ipmi_atca_detect(struct ipmi_user *user)
+=======
+static int ipmi_atca_detect(ipmi_user_t user)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipmi_system_interface_addr smi_addr;
 	struct kernel_ipmi_msg            send_msg;
@@ -245,7 +300,11 @@ static int ipmi_atca_detect(struct ipmi_user *user)
 	return !rv;
 }
 
+<<<<<<< HEAD
 static void ipmi_poweroff_atca(struct ipmi_user *user)
+=======
+static void ipmi_poweroff_atca(ipmi_user_t user)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipmi_system_interface_addr smi_addr;
 	struct kernel_ipmi_msg            send_msg;
@@ -309,13 +368,21 @@ static void ipmi_poweroff_atca(struct ipmi_user *user)
 #define IPMI_CPI1_PRODUCT_ID		0x000157
 #define IPMI_CPI1_MANUFACTURER_ID	0x0108
 
+<<<<<<< HEAD
 static int ipmi_cpi1_detect(struct ipmi_user *user)
+=======
+static int ipmi_cpi1_detect(ipmi_user_t user)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return ((mfg_id == IPMI_CPI1_MANUFACTURER_ID)
 		&& (prod_id == IPMI_CPI1_PRODUCT_ID));
 }
 
+<<<<<<< HEAD
 static void ipmi_poweroff_cpi1(struct ipmi_user *user)
+=======
+static void ipmi_poweroff_cpi1(ipmi_user_t user)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipmi_system_interface_addr smi_addr;
 	struct ipmi_ipmb_addr             ipmb_addr;
@@ -424,7 +491,11 @@ static void ipmi_poweroff_cpi1(struct ipmi_user *user)
  */
 
 #define DELL_IANA_MFR_ID {0xA2, 0x02, 0x00}
+<<<<<<< HEAD
 static int ipmi_dell_chassis_detect(struct ipmi_user *user)
+=======
+static int ipmi_dell_chassis_detect(ipmi_user_t user)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const char ipmi_version_major = ipmi_version & 0xF;
 	const char ipmi_version_minor = (ipmi_version >> 4) & 0xF;
@@ -437,6 +508,7 @@ static int ipmi_dell_chassis_detect(struct ipmi_user *user)
 }
 
 /*
+<<<<<<< HEAD
  * ipmi_hp_chassis_detect()
  * HP PA-RISC servers rp3410/rp3440, the C8000 workstation and the rx2600 and
  * zx6000 machines support IPMI vers 1 and don't set the chassis capability bit
@@ -455,19 +527,29 @@ static int ipmi_hp_chassis_detect(struct ipmi_user *user)
 }
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Standard chassis support
  */
 
 #define IPMI_NETFN_CHASSIS_REQUEST	0
 #define IPMI_CHASSIS_CONTROL_CMD	0x02
 
+<<<<<<< HEAD
 static int ipmi_chassis_detect(struct ipmi_user *user)
+=======
+static int ipmi_chassis_detect(ipmi_user_t user)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Chassis support, use it. */
 	return (capabilities & 0x80);
 }
 
+<<<<<<< HEAD
 static void ipmi_poweroff_chassis(struct ipmi_user *user)
+=======
+static void ipmi_poweroff_chassis(ipmi_user_t user)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipmi_system_interface_addr smi_addr;
 	struct kernel_ipmi_msg            send_msg;
@@ -517,8 +599,13 @@ static void ipmi_poweroff_chassis(struct ipmi_user *user)
 /* Table of possible power off functions. */
 struct poweroff_function {
 	char *platform_type;
+<<<<<<< HEAD
 	int  (*detect)(struct ipmi_user *user);
 	void (*poweroff_func)(struct ipmi_user *user);
+=======
+	int  (*detect)(ipmi_user_t user);
+	void (*poweroff_func)(ipmi_user_t user);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct poweroff_function poweroff_functions[] = {
@@ -531,16 +618,24 @@ static struct poweroff_function poweroff_functions[] = {
 	{ .platform_type	= "chassis",
 	  .detect		= ipmi_dell_chassis_detect,
 	  .poweroff_func	= ipmi_poweroff_chassis },
+<<<<<<< HEAD
 	{ .platform_type	= "chassis",
 	  .detect		= ipmi_hp_chassis_detect,
 	  .poweroff_func	= ipmi_poweroff_chassis },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Chassis should generally be last, other things should override
 	   it. */
 	{ .platform_type	= "chassis",
 	  .detect		= ipmi_chassis_detect,
 	  .poweroff_func	= ipmi_poweroff_chassis },
 };
+<<<<<<< HEAD
 #define NUM_PO_FUNCS ARRAY_SIZE(poweroff_functions)
+=======
+#define NUM_PO_FUNCS (sizeof(poweroff_functions) \
+		      / sizeof(struct poweroff_function))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 /* Called on a powerdown request. */

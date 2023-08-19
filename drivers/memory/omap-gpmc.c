@@ -32,6 +32,10 @@
 #include <linux/pm_runtime.h>
 
 #include <linux/platform_data/mtd-nand-omap2.h>
+<<<<<<< HEAD
+=======
+#include <linux/platform_data/mtd-onenand-omap2.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach-types.h>
 
@@ -1074,6 +1078,7 @@ int gpmc_configure(int cmd, int wval)
 }
 EXPORT_SYMBOL(gpmc_configure);
 
+<<<<<<< HEAD
 static bool gpmc_nand_writebuffer_empty(void)
 {
 	if (gpmc_read_reg(GPMC_STATUS) & GPMC_STATUS_EMPTYWRITEBUFFERSTATUS)
@@ -1101,6 +1106,13 @@ struct gpmc_nand_ops *gpmc_omap_get_nand_ops(struct gpmc_nand_regs *reg, int cs)
 	if (cs >= gpmc_cs_num)
 		return NULL;
 
+=======
+void gpmc_update_nand_reg(struct gpmc_nand_regs *reg, int cs)
+{
+	int i;
+
+	reg->gpmc_status = NULL;	/* deprecated */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg->gpmc_nand_command = gpmc_base + GPMC_CS0_OFFSET +
 				GPMC_CS_NAND_COMMAND + GPMC_CS_SIZE * cs;
 	reg->gpmc_nand_address = gpmc_base + GPMC_CS0_OFFSET +
@@ -1132,11 +1144,43 @@ struct gpmc_nand_ops *gpmc_omap_get_nand_ops(struct gpmc_nand_regs *reg, int cs)
 		reg->gpmc_bch_result6[i] = gpmc_base + GPMC_ECC_BCH_RESULT_6 +
 					   i * GPMC_BCH_SIZE;
 	}
+<<<<<<< HEAD
+=======
+}
+
+static bool gpmc_nand_writebuffer_empty(void)
+{
+	if (gpmc_read_reg(GPMC_STATUS) & GPMC_STATUS_EMPTYWRITEBUFFERSTATUS)
+		return true;
+
+	return false;
+}
+
+static struct gpmc_nand_ops nand_ops = {
+	.nand_writebuffer_empty = gpmc_nand_writebuffer_empty,
+};
+
+/**
+ * gpmc_omap_get_nand_ops - Get the GPMC NAND interface
+ * @regs: the GPMC NAND register map exclusive for NAND use.
+ * @cs: GPMC chip select number on which the NAND sits. The
+ *      register map returned will be specific to this chip select.
+ *
+ * Returns NULL on error e.g. invalid cs.
+ */
+struct gpmc_nand_ops *gpmc_omap_get_nand_ops(struct gpmc_nand_regs *reg, int cs)
+{
+	if (cs >= gpmc_cs_num)
+		return NULL;
+
+	gpmc_update_nand_reg(reg, cs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &nand_ops;
 }
 EXPORT_SYMBOL_GPL(gpmc_omap_get_nand_ops);
 
+<<<<<<< HEAD
 static void gpmc_omap_onenand_calc_sync_timings(struct gpmc_timings *t,
 						struct gpmc_settings *s,
 						int freq, int latency)
@@ -1243,6 +1287,8 @@ int gpmc_omap_onenand_set_timings(struct device *dev, int cs, int freq,
 }
 EXPORT_SYMBOL_GPL(gpmc_omap_onenand_set_timings);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int gpmc_get_client_irq(unsigned irq_config)
 {
 	if (!gpmc_irq_domain) {
@@ -2021,6 +2067,44 @@ static void __maybe_unused gpmc_read_timings_dt(struct device_node *np,
 		of_property_read_bool(np, "gpmc,time-para-granularity");
 }
 
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_MTD_ONENAND)
+static int gpmc_probe_onenand_child(struct platform_device *pdev,
+				 struct device_node *child)
+{
+	u32 val;
+	struct omap_onenand_platform_data *gpmc_onenand_data;
+
+	if (of_property_read_u32(child, "reg", &val) < 0) {
+		dev_err(&pdev->dev, "%pOF has no 'reg' property\n",
+			child);
+		return -ENODEV;
+	}
+
+	gpmc_onenand_data = devm_kzalloc(&pdev->dev, sizeof(*gpmc_onenand_data),
+					 GFP_KERNEL);
+	if (!gpmc_onenand_data)
+		return -ENOMEM;
+
+	gpmc_onenand_data->cs = val;
+	gpmc_onenand_data->of_node = child;
+	gpmc_onenand_data->dma_channel = -1;
+
+	if (!of_property_read_u32(child, "dma-channel", &val))
+		gpmc_onenand_data->dma_channel = val;
+
+	return gpmc_onenand_init(gpmc_onenand_data);
+}
+#else
+static int gpmc_probe_onenand_child(struct platform_device *pdev,
+				    struct device_node *child)
+{
+	return 0;
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * gpmc_probe_generic_child - configures the gpmc for a child device
  * @pdev:	pointer to gpmc platform device
@@ -2060,8 +2144,13 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
 	 * timings.
 	 */
 	name = gpmc_cs_get_name(cs);
+<<<<<<< HEAD
 	if (name && of_node_cmp(child->name, name) == 0)
 		goto no_timings;
+=======
+	if (name && child->name && of_node_cmp(child->name, name) == 0)
+			goto no_timings;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = gpmc_cs_request(cs, resource_size(&res), &base);
 	if (ret < 0) {
@@ -2123,6 +2212,7 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
 		}
 	}
 
+<<<<<<< HEAD
 	if (of_node_cmp(child->name, "onenand") == 0) {
 		/* Warn about older DT blobs with no compatible property */
 		if (!of_property_read_bool(child, "compatible")) {
@@ -2133,6 +2223,8 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (of_device_is_compatible(child, "ti,omap2-nand")) {
 		/* NAND specific setup */
 		val = 8;
@@ -2157,9 +2249,14 @@ static int gpmc_probe_generic_child(struct platform_device *pdev,
 	} else {
 		ret = of_property_read_u32(child, "bank-width",
 					   &gpmc_s.device_width);
+<<<<<<< HEAD
 		if (ret < 0 && !gpmc_s.device_width) {
 			dev_err(&pdev->dev,
 				"%pOF has no 'gpmc,device-width' property\n",
+=======
+		if (ret < 0) {
+			dev_err(&pdev->dev, "%pOF has no 'bank-width' property\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				child);
 			goto err;
 		}
@@ -2269,7 +2366,15 @@ static void gpmc_probe_dt_children(struct platform_device *pdev)
 		if (!child->name)
 			continue;
 
+<<<<<<< HEAD
 		ret = gpmc_probe_generic_child(pdev, child);
+=======
+		if (of_node_cmp(child->name, "onenand") == 0)
+			ret = gpmc_probe_onenand_child(pdev, child);
+		else
+			ret = gpmc_probe_generic_child(pdev, child);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			dev_err(&pdev->dev, "failed to probe DT child '%s': %d\n",
 				child->name, ret);

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Samsung's Exynos3250 based Monk board device tree source
  *
@@ -7,6 +10,13 @@
  *
  * Device tree source file for Samsung's Monk board which is based on
  * Samsung Exynos3250 SoC.
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -29,7 +39,11 @@
 		reg =  <0x40000000 0x1ff00000>;
 	};
 
+<<<<<<< HEAD
 	firmware@205f000 {
+=======
+	firmware@0205F000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "samsung,secure-firmware";
 		reg = <0x0205F000 0x1000>;
 	};

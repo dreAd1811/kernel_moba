@@ -23,7 +23,11 @@
 #include <linux/leds.h>
 #include <linux/reboot.h>
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/io.h>
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -55,6 +59,7 @@ static struct platform_device fsg_flash = {
 	.resource		= &fsg_flash_resource,
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table fsg_i2c_gpiod_table = {
 	.dev_id		= "i2c-gpio.0",
 	.table		= {
@@ -63,13 +68,22 @@ static struct gpiod_lookup_table fsg_i2c_gpiod_table = {
 		GPIO_LOOKUP_IDX("IXP4XX_GPIO_CHIP", FSG_SCL_PIN,
 				NULL, 1, GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
 	},
+=======
+static struct i2c_gpio_platform_data fsg_i2c_gpio_data = {
+	.sda_pin		= FSG_SDA_PIN,
+	.scl_pin		= FSG_SCL_PIN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_device fsg_i2c_gpio = {
 	.name			= "i2c-gpio",
 	.id			= 0,
 	.dev = {
+<<<<<<< HEAD
 		.platform_data	= NULL,
+=======
+		.platform_data	= &fsg_i2c_gpio_data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -202,7 +216,10 @@ static void __init fsg_init(void)
 	/* Configure CS2 for operation, 8bit and writable */
 	*IXP4XX_EXP_CS2 = 0xbfff0002;
 
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&fsg_i2c_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_register_board_info(0, fsg_i2c_board_info,
 				ARRAY_SIZE(fsg_i2c_board_info));
 

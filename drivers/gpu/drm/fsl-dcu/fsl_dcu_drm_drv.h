@@ -196,6 +196,10 @@ struct fsl_dcu_drm_device {
 	struct drm_encoder encoder;
 	struct fsl_dcu_drm_connector connector;
 	const struct fsl_dcu_soc_data *soc;
+<<<<<<< HEAD
+=======
+	struct drm_atomic_state *state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int fsl_dcu_drm_modeset_init(struct fsl_dcu_drm_device *fsl_dev);

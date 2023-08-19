@@ -1,4 +1,9 @@
 /*
+<<<<<<< HEAD
+=======
+ * tcm.h
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * TILER container manager specification and support functions for TI
  * TILER driver.
  *
@@ -65,7 +70,11 @@ struct tcm {
 
 	/* function table */
 	s32 (*reserve_2d)(struct tcm *tcm, u16 height, u16 width, u16 align,
+<<<<<<< HEAD
 			  s16 offset, u16 slot_bytes,
+=======
+			  int16_t offset, uint16_t slot_bytes,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  struct tcm_area *area);
 	s32 (*reserve_1d)(struct tcm *tcm, u32 slots, struct tcm_area *area);
 	s32 (*free)(struct tcm *tcm, struct tcm_area *area);
@@ -129,7 +138,11 @@ static inline void tcm_deinit(struct tcm *tcm)
  *	    allocation.
  */
 static inline s32 tcm_reserve_2d(struct tcm *tcm, u16 width, u16 height,
+<<<<<<< HEAD
 				u16 align, s16 offset, u16 slot_bytes,
+=======
+				u16 align, int16_t offset, uint16_t slot_bytes,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct tcm_area *area)
 {
 	/* perform rudimentary error checking */

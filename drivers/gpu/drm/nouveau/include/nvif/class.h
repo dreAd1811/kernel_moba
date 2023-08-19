@@ -15,6 +15,7 @@
 #define NVIF_CLASS_SW_NV50                           /* if0005.h */ -0x00000006
 #define NVIF_CLASS_SW_GF100                          /* if0005.h */ -0x00000007
 
+<<<<<<< HEAD
 #define NVIF_CLASS_MMU                               /* if0008.h */  0x80000008
 #define NVIF_CLASS_MMU_NV04                          /* if0008.h */  0x80000009
 #define NVIF_CLASS_MMU_NV50                          /* if0008.h */  0x80005009
@@ -32,6 +33,8 @@
 #define NVIF_CLASS_VMM_GM200                         /* ifb00d.h */  0x8000b00d
 #define NVIF_CLASS_VMM_GP100                         /* ifc00d.h */  0x8000c00d
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* the below match nvidia-assigned (either in hw, or sw) class numbers */
 #define NV_NULL_CLASS                                                0x00000030
 
@@ -52,8 +55,11 @@
 
 #define NV04_DISP                                     /* cl0046.h */ 0x00000046
 
+<<<<<<< HEAD
 #define VOLTA_USERMODE_A                                             0x0000c361
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NV03_CHANNEL_DMA                              /* cl506b.h */ 0x0000006b
 #define NV10_CHANNEL_DMA                              /* cl506b.h */ 0x0000006e
 #define NV17_CHANNEL_DMA                              /* cl506b.h */ 0x0000176e
@@ -68,7 +74,10 @@
 #define KEPLER_CHANNEL_GPFIFO_B                       /* cla06f.h */ 0x0000a16f
 #define MAXWELL_CHANNEL_GPFIFO_A                      /* cla06f.h */ 0x0000b06f
 #define PASCAL_CHANNEL_GPFIFO_A                       /* cla06f.h */ 0x0000c06f
+<<<<<<< HEAD
 #define VOLTA_CHANNEL_GPFIFO_A                        /* cla06f.h */ 0x0000c36f
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NV50_DISP                                     /* cl5070.h */ 0x00005070
 #define G82_DISP                                      /* cl5070.h */ 0x00008270
@@ -82,7 +91,10 @@
 #define GM200_DISP                                    /* cl5070.h */ 0x00009570
 #define GP100_DISP                                    /* cl5070.h */ 0x00009770
 #define GP102_DISP                                    /* cl5070.h */ 0x00009870
+<<<<<<< HEAD
 #define GV100_DISP                                    /* cl5070.h */ 0x0000c370
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NV31_MPEG                                                    0x00003174
 #define G82_MPEG                                                     0x00008274
@@ -94,7 +106,10 @@
 #define GT214_DISP_CURSOR                             /* cl507a.h */ 0x0000857a
 #define GF110_DISP_CURSOR                             /* cl507a.h */ 0x0000907a
 #define GK104_DISP_CURSOR                             /* cl507a.h */ 0x0000917a
+<<<<<<< HEAD
 #define GV100_DISP_CURSOR                             /* cl507a.h */ 0x0000c37a
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NV50_DISP_OVERLAY                             /* cl507b.h */ 0x0000507b
 #define G82_DISP_OVERLAY                              /* cl507b.h */ 0x0000827b
@@ -102,8 +117,11 @@
 #define GF110_DISP_OVERLAY                            /* cl507b.h */ 0x0000907b
 #define GK104_DISP_OVERLAY                            /* cl507b.h */ 0x0000917b
 
+<<<<<<< HEAD
 #define GV100_DISP_WINDOW_IMM_CHANNEL_DMA             /* clc37b.h */ 0x0000c37b
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NV50_DISP_BASE_CHANNEL_DMA                    /* cl507c.h */ 0x0000507c
 #define G82_DISP_BASE_CHANNEL_DMA                     /* cl507c.h */ 0x0000827c
 #define GT200_DISP_BASE_CHANNEL_DMA                   /* cl507c.h */ 0x0000837c
@@ -124,7 +142,10 @@
 #define GM200_DISP_CORE_CHANNEL_DMA                   /* cl507d.h */ 0x0000957d
 #define GP100_DISP_CORE_CHANNEL_DMA                   /* cl507d.h */ 0x0000977d
 #define GP102_DISP_CORE_CHANNEL_DMA                   /* cl507d.h */ 0x0000987d
+<<<<<<< HEAD
 #define GV100_DISP_CORE_CHANNEL_DMA                   /* cl507d.h */ 0x0000c37d
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NV50_DISP_OVERLAY_CHANNEL_DMA                 /* cl507e.h */ 0x0000507e
 #define G82_DISP_OVERLAY_CHANNEL_DMA                  /* cl507e.h */ 0x0000827e
@@ -133,8 +154,11 @@
 #define GF110_DISP_OVERLAY_CONTROL_DMA                /* cl507e.h */ 0x0000907e
 #define GK104_DISP_OVERLAY_CONTROL_DMA                /* cl507e.h */ 0x0000917e
 
+<<<<<<< HEAD
 #define GV100_DISP_WINDOW_CHANNEL_DMA                 /* clc37e.h */ 0x0000c37e
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NV50_TESLA                                                   0x00005097
 #define G82_TESLA                                                    0x00008297
 #define GT200_TESLA                                                  0x00008397
@@ -155,8 +179,11 @@
 #define PASCAL_A                                      /* cl9097.h */ 0x0000c097
 #define PASCAL_B                                      /* cl9097.h */ 0x0000c197
 
+<<<<<<< HEAD
 #define VOLTA_A                                       /* cl9097.h */ 0x0000c397
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NV74_BSP                                                     0x000074b0
 
 #define GT212_MSVLD                                                  0x000085b1
@@ -182,7 +209,10 @@
 #define MAXWELL_DMA_COPY_A                                           0x0000b0b5
 #define PASCAL_DMA_COPY_A                                            0x0000c0b5
 #define PASCAL_DMA_COPY_B                                            0x0000c1b5
+<<<<<<< HEAD
 #define VOLTA_DMA_COPY_A                                             0x0000c3b5
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define FERMI_DECOMPRESS                                             0x000090b8
 
@@ -196,7 +226,10 @@
 #define MAXWELL_COMPUTE_B                                            0x0000b1c0
 #define PASCAL_COMPUTE_A                                             0x0000c0c0
 #define PASCAL_COMPUTE_B                                             0x0000c1c0
+<<<<<<< HEAD
 #define VOLTA_COMPUTE_A                                              0x0000c3c0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NV74_CIPHER                                                  0x000074c1
 #endif

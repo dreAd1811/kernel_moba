@@ -2,9 +2,17 @@
 The Linux Kernel API
 ====================
 
+<<<<<<< HEAD
 
 List Management Functions
 =========================
+=======
+Data Types
+==========
+
+Doubly Linked Lists
+-------------------
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. kernel-doc:: include/linux/list.h
    :internal:
@@ -39,6 +47,7 @@ String Manipulation
 .. kernel-doc:: lib/string.c
    :export:
 
+<<<<<<< HEAD
 .. kernel-doc:: mm/util.c
    :functions: kstrdup kstrdup_const kstrndup kmemdup kmemdup_nul memdup_user
                vmemdup_user strndup_user memdup_user_nul
@@ -48,16 +57,27 @@ Basic Kernel Library Functions
 
 The Linux kernel provides more basic utility functions.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Bit Operations
 --------------
 
 .. kernel-doc:: arch/x86/include/asm/bitops.h
    :internal:
 
+<<<<<<< HEAD
+=======
+Basic Kernel Library Functions
+==============================
+
+The Linux kernel provides more basic utility functions.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Bitmap Operations
 -----------------
 
 .. kernel-doc:: lib/bitmap.c
+<<<<<<< HEAD
    :doc: bitmap introduction
 
 .. kernel-doc:: include/linux/bitmap.h
@@ -70,20 +90,26 @@ Bitmap Operations
    :doc: bitmap bitops
 
 .. kernel-doc:: lib/bitmap.c
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:
 
 .. kernel-doc:: lib/bitmap.c
    :internal:
 
+<<<<<<< HEAD
 .. kernel-doc:: include/linux/bitmap.h
    :internal:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Command-line Parsing
 --------------------
 
 .. kernel-doc:: lib/cmdline.c
    :export:
 
+<<<<<<< HEAD
 Sorting
 -------
 
@@ -122,6 +148,18 @@ CRC Functions
    :export:
 
 .. kernel-doc:: lib/crc16.c
+=======
+CRC Functions
+-------------
+
+.. kernel-doc:: lib/crc7.c
+   :export:
+
+.. kernel-doc:: lib/crc16.c
+   :export:
+
+.. kernel-doc:: lib/crc-itu-t.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:
 
 .. kernel-doc:: lib/crc32.c
@@ -129,6 +167,7 @@ CRC Functions
 .. kernel-doc:: lib/crc-ccitt.c
    :export:
 
+<<<<<<< HEAD
 .. kernel-doc:: lib/crc-itu-t.c
    :export:
 
@@ -157,6 +196,72 @@ UUID/GUID
 ---------
 
 .. kernel-doc:: lib/uuid.c
+=======
+idr/ida Functions
+-----------------
+
+.. kernel-doc:: include/linux/idr.h
+   :doc: idr sync
+
+.. kernel-doc:: lib/idr.c
+   :doc: IDA description
+
+.. kernel-doc:: lib/idr.c
+   :export:
+
+Memory Management in Linux
+==========================
+
+The Slab Cache
+--------------
+
+.. kernel-doc:: include/linux/slab.h
+   :internal:
+
+.. kernel-doc:: mm/slab.c
+   :export:
+
+.. kernel-doc:: mm/util.c
+   :export:
+
+User Space Memory Access
+------------------------
+
+.. kernel-doc:: arch/x86/include/asm/uaccess.h
+   :internal:
+
+.. kernel-doc:: arch/x86/lib/usercopy_32.c
+   :export:
+
+More Memory Management Functions
+--------------------------------
+
+.. kernel-doc:: mm/readahead.c
+   :export:
+
+.. kernel-doc:: mm/filemap.c
+   :export:
+
+.. kernel-doc:: mm/memory.c
+   :export:
+
+.. kernel-doc:: mm/vmalloc.c
+   :export:
+
+.. kernel-doc:: mm/page_alloc.c
+   :internal:
+
+.. kernel-doc:: mm/mempool.c
+   :export:
+
+.. kernel-doc:: mm/dmapool.c
+   :export:
+
+.. kernel-doc:: mm/page-writeback.c
+   :export:
+
+.. kernel-doc:: mm/truncate.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:
 
 Kernel IPC facilities
@@ -234,7 +339,11 @@ Resources Management
 MTRR Handling
 -------------
 
+<<<<<<< HEAD
 .. kernel-doc:: arch/x86/kernel/cpu/mtrr/mtrr.c
+=======
+.. kernel-doc:: arch/x86/kernel/cpu/mtrr/main.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:
 
 Security Framework
@@ -387,3 +496,7 @@ Read-Copy Update (RCU)
 .. kernel-doc:: include/linux/rcu_sync.h
 
 .. kernel-doc:: kernel/rcu/sync.c
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

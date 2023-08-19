@@ -65,6 +65,7 @@ __read_mostly int xen_have_vector_callback;
 EXPORT_SYMBOL_GPL(xen_have_vector_callback);
 
 /*
+<<<<<<< HEAD
  * NB: needs to live in .data because it's used by xen_prepare_pvh which runs
  * before clearing the bss.
  */
@@ -72,6 +73,8 @@ uint32_t xen_start_flags __attribute__((section(".data"))) = 0;
 EXPORT_SYMBOL(xen_start_flags);
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Point at some empty memory to start with. We map the real shared_info
  * page as soon as fixmap is up and running.
  */
@@ -266,19 +269,55 @@ void xen_reboot(int reason)
 		BUG();
 }
 
+<<<<<<< HEAD
 void xen_emergency_restart(void)
 {
 	xen_reboot(SHUTDOWN_reboot);
+=======
+static int reboot_reason = SHUTDOWN_reboot;
+static bool xen_legacy_crash;
+void xen_emergency_restart(void)
+{
+	xen_reboot(reboot_reason);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
 xen_panic_event(struct notifier_block *this, unsigned long event, void *ptr)
 {
+<<<<<<< HEAD
 	if (!kexec_crash_loaded())
 		xen_reboot(SHUTDOWN_crash);
 	return NOTIFY_DONE;
 }
 
+=======
+	if (!kexec_crash_loaded()) {
+		if (xen_legacy_crash)
+			xen_reboot(SHUTDOWN_crash);
+
+		reboot_reason = SHUTDOWN_crash;
+
+		/*
+		 * If panic_timeout==0 then we are supposed to wait forever.
+		 * However, to preserve original dom0 behavior we have to drop
+		 * into hypervisor. (domU behavior is controlled by its
+		 * config file)
+		 */
+		if (panic_timeout == 0)
+			panic_timeout = -1;
+	}
+	return NOTIFY_DONE;
+}
+
+static int __init parse_xen_legacy_crash(char *arg)
+{
+	xen_legacy_crash = true;
+	return 0;
+}
+early_param("xen_legacy_crash", parse_xen_legacy_crash);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct notifier_block xen_panic_block = {
 	.notifier_call = xen_panic_event,
 	.priority = INT_MIN

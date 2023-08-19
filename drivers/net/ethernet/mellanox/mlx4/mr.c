@@ -1104,6 +1104,7 @@ EXPORT_SYMBOL_GPL(mlx4_fmr_enable);
 void mlx4_fmr_unmap(struct mlx4_dev *dev, struct mlx4_fmr *fmr,
 		    u32 *lkey, u32 *rkey)
 {
+<<<<<<< HEAD
 	if (!fmr->maps)
 		return;
 
@@ -1114,6 +1115,32 @@ void mlx4_fmr_unmap(struct mlx4_dev *dev, struct mlx4_fmr *fmr,
 	wmb();
 
 	fmr->maps = 0;
+=======
+	struct mlx4_cmd_mailbox *mailbox;
+	int err;
+
+	if (!fmr->maps)
+		return;
+
+	fmr->maps = 0;
+
+	mailbox = mlx4_alloc_cmd_mailbox(dev);
+	if (IS_ERR(mailbox)) {
+		err = PTR_ERR(mailbox);
+		pr_warn("mlx4_ib: mlx4_alloc_cmd_mailbox failed (%d)\n", err);
+		return;
+	}
+
+	err = mlx4_HW2SW_MPT(dev, NULL,
+			     key_to_hw_index(fmr->mr.key) &
+			     (dev->caps.num_mpts - 1));
+	mlx4_free_cmd_mailbox(dev, mailbox);
+	if (err) {
+		pr_warn("mlx4_ib: mlx4_HW2SW_MPT failed (%d)\n", err);
+		return;
+	}
+	fmr->mr.enabled = MLX4_MPT_EN_SW;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(mlx4_fmr_unmap);
 
@@ -1123,6 +1150,7 @@ int mlx4_fmr_free(struct mlx4_dev *dev, struct mlx4_fmr *fmr)
 
 	if (fmr->maps)
 		return -EBUSY;
+<<<<<<< HEAD
 	if (fmr->mr.enabled == MLX4_MPT_EN_HW) {
 		/* In case of FMR was enabled and unmapped
 		 * make sure to give ownership of MPT back to HW
@@ -1139,6 +1167,8 @@ int mlx4_fmr_free(struct mlx4_dev *dev, struct mlx4_fmr *fmr)
 		/* make sure MPT status is visible */
 		wmb();
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mlx4_mr_free(dev, &fmr->mr);
 	if (ret)

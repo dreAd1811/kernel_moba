@@ -29,10 +29,15 @@
 #include <linux/nls.h>
 #include <linux/vmalloc.h>
 #include <linux/rtnetlink.h>
+<<<<<<< HEAD
 #include <linux/ucs2_string.h>
 
 #include "hyperv_net.h"
 #include "netvsc_trace.h"
+=======
+
+#include "hyperv_net.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void rndis_set_multicast(struct work_struct *w);
 
@@ -136,9 +141,17 @@ static void put_rndis_request(struct rndis_device *dev,
 	kfree(req);
 }
 
+<<<<<<< HEAD
 static void dump_rndis_message(struct net_device *netdev,
 			       const struct rndis_message *rndis_msg)
 {
+=======
+static void dump_rndis_message(struct hv_device *hv_dev,
+			       const struct rndis_message *rndis_msg)
+{
+	struct net_device *netdev = hv_get_drvdata(hv_dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (rndis_msg->ndis_msg_type) {
 	case RNDIS_MSG_PACKET:
 		netdev_dbg(netdev, "RNDIS_MSG_PACKET (len %u, "
@@ -243,8 +256,11 @@ static int rndis_filter_send_request(struct rndis_device *dev,
 			pb[0].len;
 	}
 
+<<<<<<< HEAD
 	trace_rndis_send(dev->ndev, 0, &req->request_msg);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcu_read_lock_bh();
 	ret = netvsc_send(dev->ndev, packet, NULL, pb, NULL);
 	rcu_read_unlock_bh();
@@ -366,15 +382,24 @@ static inline void *rndis_get_ppi(struct rndis_packet *rpkt, u32 type)
 
 static int rndis_filter_receive_data(struct net_device *ndev,
 				     struct netvsc_device *nvdev,
+<<<<<<< HEAD
 				     struct vmbus_channel *channel,
 				     struct rndis_message *msg,
 				     u32 data_buflen)
+=======
+				     struct rndis_message *msg,
+				     struct vmbus_channel *channel,
+				     void *data, u32 data_buflen)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rndis_packet *rndis_pkt = &msg->msg.pkt;
 	const struct ndis_tcp_ip_checksum_info *csum_info;
 	const struct ndis_pkt_8021q_info *vlan;
 	u32 data_offset;
+<<<<<<< HEAD
 	void *data;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Remove the rndis header and pass it back up the stack */
 	data_offset = RNDIS_HEADER_SIZE + rndis_pkt->data_offset;
@@ -395,22 +420,35 @@ static int rndis_filter_receive_data(struct net_device *ndev,
 
 	vlan = rndis_get_ppi(rndis_pkt, IEEE_8021Q_INFO);
 
+<<<<<<< HEAD
 	csum_info = rndis_get_ppi(rndis_pkt, TCPIP_CHKSUM_PKTINFO);
 
 	data = (void *)msg + data_offset;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Remove the rndis trailer padding from rndis packet message
 	 * rndis_pkt->data_len tell us the real data length, we only copy
 	 * the data packet to the stack, without the rndis trailer padding
 	 */
+<<<<<<< HEAD
 	return netvsc_recv_callback(ndev, nvdev, channel,
+=======
+	data = (void *)((unsigned long)data + data_offset);
+	csum_info = rndis_get_ppi(rndis_pkt, TCPIP_CHKSUM_PKTINFO);
+	return netvsc_recv_callback(ndev, channel,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    data, rndis_pkt->data_len,
 				    csum_info, vlan);
 }
 
 int rndis_filter_receive(struct net_device *ndev,
 			 struct netvsc_device *net_dev,
+<<<<<<< HEAD
+=======
+			 struct hv_device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 struct vmbus_channel *channel,
 			 void *data, u32 buflen)
 {
@@ -418,12 +456,21 @@ int rndis_filter_receive(struct net_device *ndev,
 	struct rndis_message *rndis_msg = data;
 
 	if (netif_msg_rx_status(net_device_ctx))
+<<<<<<< HEAD
 		dump_rndis_message(ndev, rndis_msg);
 
 	switch (rndis_msg->ndis_msg_type) {
 	case RNDIS_MSG_PACKET:
 		return rndis_filter_receive_data(ndev, net_dev, channel,
 						 rndis_msg, buflen);
+=======
+		dump_rndis_message(dev, rndis_msg);
+
+	switch (rndis_msg->ndis_msg_type) {
+	case RNDIS_MSG_PACKET:
+		return rndis_filter_receive_data(ndev, net_dev, rndis_msg,
+						 channel, data, buflen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case RNDIS_MSG_INIT_C:
 	case RNDIS_MSG_QUERY_C:
 	case RNDIS_MSG_SET_C:
@@ -433,17 +480,28 @@ int rndis_filter_receive(struct net_device *ndev,
 
 	case RNDIS_MSG_INDICATE:
 		/* notification msgs */
+<<<<<<< HEAD
 		netvsc_linkstatus_callback(ndev, rndis_msg);
+=======
+		netvsc_linkstatus_callback(dev, rndis_msg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		netdev_err(ndev,
 			"unhandled rndis message (type %u len %u)\n",
 			   rndis_msg->ndis_msg_type,
 			   rndis_msg->msg_len);
+<<<<<<< HEAD
 		return NVSP_STAT_FAIL;
 	}
 
 	return NVSP_STAT_SUCCESS;
+=======
+		break;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rndis_filter_query_device(struct rndis_device *dev,
@@ -719,6 +777,10 @@ static int rndis_set_rss_param_msg(struct rndis_device *rdev,
 				   const u8 *rss_key, u16 flag)
 {
 	struct net_device *ndev = rdev->ndev;
+<<<<<<< HEAD
+=======
+	struct net_device_context *ndc = netdev_priv(ndev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rndis_request *request;
 	struct rndis_set_request *set;
 	struct rndis_set_complete *set_complete;
@@ -752,16 +814,27 @@ static int rndis_set_rss_param_msg(struct rndis_device *rdev,
 	rssp->indirect_tabsize = 4*ITAB_NUM;
 	rssp->indirect_taboffset = sizeof(struct ndis_recv_scale_param);
 	rssp->hashkey_size = NETVSC_HASH_KEYLEN;
+<<<<<<< HEAD
 	rssp->hashkey_offset = rssp->indirect_taboffset +
+=======
+	rssp->kashkey_offset = rssp->indirect_taboffset +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       rssp->indirect_tabsize;
 
 	/* Set indirection table entries */
 	itab = (u32 *)(rssp + 1);
 	for (i = 0; i < ITAB_NUM; i++)
+<<<<<<< HEAD
 		itab[i] = rdev->rx_table[i];
 
 	/* Set hask key values */
 	keyp = (u8 *)((unsigned long)rssp + rssp->hashkey_offset);
+=======
+		itab[i] = ndc->rx_table[i];
+
+	/* Set hask key values */
+	keyp = (u8 *)((unsigned long)rssp + rssp->kashkey_offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(keyp, rss_key, NETVSC_HASH_KEYLEN);
 
 	ret = rndis_filter_send_request(rdev, request);
@@ -838,15 +911,22 @@ static int rndis_filter_set_packet_filter(struct rndis_device *dev,
 	struct rndis_set_request *set;
 	int ret;
 
+<<<<<<< HEAD
 	if (dev->filter == new_filter)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	request = get_rndis_request(dev, RNDIS_MSG_SET,
 			RNDIS_MESSAGE_SIZE(struct rndis_set_request) +
 			sizeof(u32));
 	if (!request)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Setup the rndis set */
 	set = &request->request_msg.msg.set_req;
 	set->oid = RNDIS_OID_GEN_CURRENT_PACKET_FILTER;
@@ -857,10 +937,15 @@ static int rndis_filter_set_packet_filter(struct rndis_device *dev,
 	       &new_filter, sizeof(u32));
 
 	ret = rndis_filter_send_request(dev, request);
+<<<<<<< HEAD
 	if (ret == 0) {
 		wait_for_completion(&request->wait_event);
 		dev->filter = new_filter;
 	}
+=======
+	if (ret == 0)
+		wait_for_completion(&request->wait_event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	put_rndis_request(dev, request);
 
@@ -961,11 +1046,20 @@ static bool netvsc_device_idle(const struct netvsc_device *nvdev)
 	return true;
 }
 
+<<<<<<< HEAD
 static void rndis_filter_halt_device(struct netvsc_device *nvdev,
 				     struct rndis_device *dev)
 {
 	struct rndis_request *request;
 	struct rndis_halt_request *halt;
+=======
+static void rndis_filter_halt_device(struct rndis_device *dev)
+{
+	struct rndis_request *request;
+	struct rndis_halt_request *halt;
+	struct net_device_context *net_device_ctx = netdev_priv(dev->ndev);
+	struct netvsc_device *nvdev = rtnl_dereference(net_device_ctx->nvdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Attempt to do a rndis device halt */
 	request = get_rndis_request(dev, RNDIS_MSG_HALT,
@@ -1059,8 +1153,13 @@ static void netvsc_sc_open(struct vmbus_channel *new_sc)
 	/* Set the channel before opening.*/
 	nvchan->channel = new_sc;
 
+<<<<<<< HEAD
 	ret = vmbus_open(new_sc, netvsc_ring_bytes,
 			 netvsc_ring_bytes, NULL, 0,
+=======
+	ret = vmbus_open(new_sc, nvscdev->ring_size * PAGE_SIZE,
+			 nvscdev->ring_size * PAGE_SIZE, NULL, 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 netvsc_channel_cb, nvchan);
 	if (ret == 0)
 		napi_enable(&nvchan->napi);
@@ -1075,9 +1174,13 @@ static void netvsc_sc_open(struct vmbus_channel *new_sc)
  * This breaks overlap of processing the host message for the
  * new primary channel with the initialization of sub-channels.
  */
+<<<<<<< HEAD
 int rndis_set_subchannel(struct net_device *ndev,
 			 struct netvsc_device *nvdev,
 			 struct netvsc_device_info *dev_info)
+=======
+int rndis_set_subchannel(struct net_device *ndev, struct netvsc_device *nvdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nvsp_message *init_packet = &nvdev->channel_init_pkt;
 	struct net_device_context *ndev_ctx = netdev_priv(ndev);
@@ -1092,8 +1195,11 @@ int rndis_set_subchannel(struct net_device *ndev,
 	init_packet->msg.v5_msg.subchn_req.op = NVSP_SUBCHANNEL_ALLOCATE;
 	init_packet->msg.v5_msg.subchn_req.num_subchannels =
 						nvdev->num_chn - 1;
+<<<<<<< HEAD
 	trace_nvsp_send(ndev, init_packet);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = vmbus_sendpacket(hv_dev->channel, init_packet,
 			       sizeof(struct nvsp_message),
 			       (unsigned long)init_packet,
@@ -1118,10 +1224,14 @@ int rndis_set_subchannel(struct net_device *ndev,
 		   atomic_read(&nvdev->open_chn) == nvdev->num_chn);
 
 	/* ignore failues from setting rss parameters, still have channels */
+<<<<<<< HEAD
 	if (dev_info)
 		rndis_filter_set_rss_param(rdev, dev_info->rss_key);
 	else
 		rndis_filter_set_rss_param(rdev, netvsc_hash_key);
+=======
+	rndis_filter_set_rss_param(rdev, netvsc_hash_key);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_set_real_num_tx_queues(ndev, nvdev->num_chn);
 	netif_set_real_num_rx_queues(ndev, nvdev->num_chn);
@@ -1214,6 +1324,7 @@ static int rndis_netdev_set_hwcaps(struct rndis_device *rndis_device,
 	return ret;
 }
 
+<<<<<<< HEAD
 static void rndis_get_friendly_name(struct net_device *net,
 				    struct rndis_device *rndis_device,
 				    struct netvsc_device *net_device)
@@ -1240,10 +1351,16 @@ static void rndis_get_friendly_name(struct net_device *net,
 		dev_set_alias(net, ifalias, len);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct netvsc_device *rndis_filter_device_add(struct hv_device *dev,
 				      struct netvsc_device_info *device_info)
 {
 	struct net_device *net = hv_get_drvdata(dev);
+<<<<<<< HEAD
+=======
+	struct net_device_context *ndc = netdev_priv(net);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct netvsc_device *net_device;
 	struct rndis_device *rndis_device;
 	struct ndis_recv_scale_cap rsscap;
@@ -1293,10 +1410,13 @@ struct netvsc_device *rndis_filter_device_add(struct hv_device *dev,
 
 	memcpy(device_info->mac_adr, rndis_device->hw_mac_adr, ETH_ALEN);
 
+<<<<<<< HEAD
 	/* Get friendly name as ifalias*/
 	if (!net->ifalias)
 		rndis_get_friendly_name(net, rndis_device, net_device);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Query and set hardware capabilities */
 	ret = rndis_netdev_set_hwcaps(rndis_device, net_device);
 	if (ret != 0)
@@ -1330,9 +1450,17 @@ struct netvsc_device *rndis_filter_device_add(struct hv_device *dev,
 	/* We will use the given number of channels if available. */
 	net_device->num_chn = min(net_device->max_chn, device_info->num_chn);
 
+<<<<<<< HEAD
 	for (i = 0; i < ITAB_NUM; i++)
 		rndis_device->rx_table[i] = ethtool_rxfh_indir_default(
 						i, net_device->num_chn);
+=======
+	if (!netif_is_rxfh_configured(net)) {
+		for (i = 0; i < ITAB_NUM; i++)
+			ndc->rx_table[i] = ethtool_rxfh_indir_default(
+						i, net_device->num_chn);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_set(&net_device->open_chn, 1);
 	vmbus_set_sc_create_callback(dev->channel, netvsc_sc_open);
@@ -1369,9 +1497,13 @@ void rndis_filter_device_remove(struct hv_device *dev,
 	struct rndis_device *rndis_dev = net_dev->extension;
 
 	/* Halt and release the rndis device */
+<<<<<<< HEAD
 	rndis_filter_halt_device(net_dev, rndis_dev);
 
 	net_dev->extension = NULL;
+=======
+	rndis_filter_halt_device(rndis_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netvsc_device_remove(dev);
 }
@@ -1381,6 +1513,12 @@ int rndis_filter_open(struct netvsc_device *nvdev)
 	if (!nvdev)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (atomic_inc_return(&nvdev->open_cnt) != 1)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rndis_filter_open_device(nvdev->extension);
 }
 
@@ -1389,5 +1527,11 @@ int rndis_filter_close(struct netvsc_device *nvdev)
 	if (!nvdev)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (atomic_dec_return(&nvdev->open_cnt) != 0)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rndis_filter_close_device(nvdev->extension);
 }

@@ -599,9 +599,15 @@ static void b44_check_phy(struct b44 *bp)
 	}
 }
 
+<<<<<<< HEAD
 static void b44_timer(struct timer_list *t)
 {
 	struct b44 *bp = from_timer(bp, t, timer);
+=======
+static void b44_timer(unsigned long __opaque)
+{
+	struct b44 *bp = (struct b44 *) __opaque;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irq(&bp->lock);
 
@@ -1474,8 +1480,15 @@ static int b44_open(struct net_device *dev)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	timer_setup(&bp->timer, b44_timer, 0);
 	bp->timer.expires = jiffies + HZ;
+=======
+	init_timer(&bp->timer);
+	bp->timer.expires = jiffies + HZ;
+	bp->timer.data = (unsigned long) bp;
+	bp->timer.function = b44_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&bp->timer);
 
 	b44_enable_ints(bp);
@@ -1519,8 +1532,15 @@ static int b44_magic_pattern(u8 *macaddr, u8 *ppattern, u8 *pmask, int offset)
 	int ethaddr_bytes = ETH_ALEN;
 
 	memset(ppattern + offset, 0xff, magicsync);
+<<<<<<< HEAD
 	for (j = 0; j < magicsync; j++)
 		set_bit(len++, (unsigned long *) pmask);
+=======
+	for (j = 0; j < magicsync; j++) {
+		pmask[len >> 3] |= BIT(len & 7);
+		len++;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (j = 0; j < B44_MAX_PATTERNS; j++) {
 		if ((B44_PATTERN_SIZE - len) >= ETH_ALEN)
@@ -1532,7 +1552,12 @@ static int b44_magic_pattern(u8 *macaddr, u8 *ppattern, u8 *pmask, int offset)
 		for (k = 0; k< ethaddr_bytes; k++) {
 			ppattern[offset + magicsync +
 				(j * ETH_ALEN) + k] = macaddr[k];
+<<<<<<< HEAD
 			set_bit(len++, (unsigned long *) pmask);
+=======
+			pmask[len >> 3] |= BIT(len & 7);
+			len++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return len - 1;

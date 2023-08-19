@@ -14,7 +14,11 @@
 #include <linux/types.h>
 
 #include <asm/feature-fixups.h>
+<<<<<<< HEAD
 #include <asm/asm-const.h>
+=======
+#include <asm/asm-compat.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define JUMP_ENTRY_TYPE		stringify_in_c(FTR_ENTRY_LONG)
 #define JUMP_LABEL_NOP_SIZE	4

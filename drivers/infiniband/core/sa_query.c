@@ -1078,7 +1078,11 @@ int ib_nl_handle_set_timeout(struct sk_buff *skb,
 	}
 
 settimeout_out:
+<<<<<<< HEAD
 	return skb->len;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int ib_nl_is_good_resolve_resp(const struct nlmsghdr *nlh)
@@ -1149,7 +1153,11 @@ int ib_nl_handle_resolve_resp(struct sk_buff *skb,
 	}
 
 resp_out:
+<<<<<<< HEAD
 	return skb->len;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void free_sm_ah(struct kref *kref)
@@ -1227,6 +1235,7 @@ static u8 get_src_path_mask(struct ib_device *device, u8 port_num)
 	return src_path_mask;
 }
 
+<<<<<<< HEAD
 static int roce_resolve_route_from_path(struct sa_path_rec *rec,
 					const struct ib_gid_attr *attr)
 {
@@ -1344,6 +1353,125 @@ EXPORT_SYMBOL(ib_init_ah_attr_from_path);
 static int alloc_mad(struct ib_sa_query *query, gfp_t gfp_mask)
 {
 	struct rdma_ah_attr ah_attr;
+=======
+int ib_init_ah_from_path(struct ib_device *device, u8 port_num,
+			 struct sa_path_rec *rec,
+			 struct rdma_ah_attr *ah_attr)
+{
+	int ret;
+	u16 gid_index;
+	int use_roce;
+	struct net_device *ndev = NULL;
+
+	memset(ah_attr, 0, sizeof *ah_attr);
+	ah_attr->type = rdma_ah_find_type(device, port_num);
+
+	rdma_ah_set_dlid(ah_attr, be32_to_cpu(sa_path_get_dlid(rec)));
+
+	if ((ah_attr->type == RDMA_AH_ATTR_TYPE_OPA) &&
+	    (rdma_ah_get_dlid(ah_attr) == be16_to_cpu(IB_LID_PERMISSIVE)))
+		rdma_ah_set_make_grd(ah_attr, true);
+
+	rdma_ah_set_sl(ah_attr, rec->sl);
+	rdma_ah_set_path_bits(ah_attr, be32_to_cpu(sa_path_get_slid(rec)) &
+			      get_src_path_mask(device, port_num));
+	rdma_ah_set_port_num(ah_attr, port_num);
+	rdma_ah_set_static_rate(ah_attr, rec->rate);
+	use_roce = rdma_cap_eth_ah(device, port_num);
+
+	if (use_roce) {
+		struct net_device *idev;
+		struct net_device *resolved_dev;
+		struct rdma_dev_addr dev_addr = {
+			.bound_dev_if = ((sa_path_get_ifindex(rec) >= 0) ?
+					 sa_path_get_ifindex(rec) : 0),
+			.net = sa_path_get_ndev(rec) ?
+				sa_path_get_ndev(rec) :
+				&init_net
+		};
+		union {
+			struct sockaddr_in  _sockaddr_in;
+			struct sockaddr_in6 _sockaddr_in6;
+		} sgid_addr, dgid_addr;
+
+		if (!device->get_netdev)
+			return -EOPNOTSUPP;
+
+		rdma_gid2ip((struct sockaddr *)&sgid_addr, &rec->sgid);
+		rdma_gid2ip((struct sockaddr *)&dgid_addr, &rec->dgid);
+
+		/* validate the route */
+		ret = rdma_resolve_ip_route((struct sockaddr *)&sgid_addr,
+					    (struct sockaddr *)&dgid_addr,
+					    &dev_addr);
+		if (ret)
+			return ret;
+
+		if ((dev_addr.network == RDMA_NETWORK_IPV4 ||
+		     dev_addr.network == RDMA_NETWORK_IPV6) &&
+		    rec->rec_type != SA_PATH_REC_TYPE_ROCE_V2)
+			return -EINVAL;
+
+		idev = device->get_netdev(device, port_num);
+		if (!idev)
+			return -ENODEV;
+
+		resolved_dev = dev_get_by_index(dev_addr.net,
+						dev_addr.bound_dev_if);
+		if (!resolved_dev) {
+			dev_put(idev);
+			return -ENODEV;
+		}
+		ndev = ib_get_ndev_from_path(rec);
+		rcu_read_lock();
+		if ((ndev && ndev != resolved_dev) ||
+		    (resolved_dev != idev &&
+		     !rdma_is_upper_dev_rcu(idev, resolved_dev)))
+			ret = -EHOSTUNREACH;
+		rcu_read_unlock();
+		dev_put(idev);
+		dev_put(resolved_dev);
+		if (ret) {
+			if (ndev)
+				dev_put(ndev);
+			return ret;
+		}
+	}
+
+	if (rec->hop_limit > 0 || use_roce) {
+		enum ib_gid_type type = sa_conv_pathrec_to_gid_type(rec);
+
+		ret = ib_find_cached_gid_by_port(device, &rec->sgid, type,
+						 port_num, ndev, &gid_index);
+		if (ret) {
+			if (ndev)
+				dev_put(ndev);
+			return ret;
+		}
+
+		rdma_ah_set_grh(ah_attr, &rec->dgid,
+				be32_to_cpu(rec->flow_label),
+				gid_index, rec->hop_limit,
+				rec->traffic_class);
+		if (ndev)
+			dev_put(ndev);
+	}
+
+	if (use_roce) {
+		u8 *dmac = sa_path_get_dmac(rec);
+
+		if (!dmac)
+			return -EINVAL;
+		memcpy(ah_attr->roce.dmac, dmac, ETH_ALEN);
+	}
+
+	return 0;
+}
+EXPORT_SYMBOL(ib_init_ah_from_path);
+
+static int alloc_mad(struct ib_sa_query *query, gfp_t gfp_mask)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&query->port->ah_lock, flags);
@@ -1355,6 +1483,7 @@ static int alloc_mad(struct ib_sa_query *query, gfp_t gfp_mask)
 	query->sm_ah = query->port->sm_ah;
 	spin_unlock_irqrestore(&query->port->ah_lock, flags);
 
+<<<<<<< HEAD
 	/*
 	 * Always check if sm_ah has valid dlid assigned,
 	 * before querying for class port info
@@ -1364,6 +1493,8 @@ static int alloc_mad(struct ib_sa_query *query, gfp_t gfp_mask)
 		kref_put(&query->sm_ah->ref, free_sm_ah);
 		return -EAGAIN;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	query->mad_buf = ib_create_send_mad(query->port->agent, 1,
 					    query->sm_ah->pkey_index,
 					    0, IB_MGMT_SA_HDR, IB_MGMT_SA_DATA,
@@ -1544,6 +1675,11 @@ static void ib_sa_path_rec_callback(struct ib_sa_query *sa_query,
 				  ARRAY_SIZE(path_rec_table),
 				  mad->data, &rec);
 			rec.rec_type = SA_PATH_REC_TYPE_IB;
+<<<<<<< HEAD
+=======
+			sa_path_set_ndev(&rec, NULL);
+			sa_path_set_ifindex(&rec, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sa_path_set_dmac_zero(&rec);
 
 			if (query->conv_pr) {
@@ -2275,7 +2411,10 @@ static void update_sm_ah(struct work_struct *work)
 	struct ib_sa_sm_ah *new_ah;
 	struct ib_port_attr port_attr;
 	struct rdma_ah_attr   ah_attr;
+<<<<<<< HEAD
 	bool grh_required;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ib_query_port(port->agent->device, port->port_num, &port_attr)) {
 		pr_warn("Couldn't query port\n");
@@ -2300,6 +2439,7 @@ static void update_sm_ah(struct work_struct *work)
 	rdma_ah_set_dlid(&ah_attr, port_attr.sm_lid);
 	rdma_ah_set_sl(&ah_attr, port_attr.sm_sl);
 	rdma_ah_set_port_num(&ah_attr, port->port_num);
+<<<<<<< HEAD
 
 	grh_required = rdma_is_grh_required(port->agent->device,
 					    port->port_num);
@@ -2321,6 +2461,18 @@ static void update_sm_ah(struct work_struct *work)
 					  cpu_to_be64(port_attr.subnet_prefix));
 		rdma_ah_set_interface_id(&ah_attr,
 					 cpu_to_be64(IB_SA_WELL_KNOWN_GUID));
+=======
+	if (port_attr.grh_required) {
+		if (ah_attr.type == RDMA_AH_ATTR_TYPE_OPA) {
+			rdma_ah_set_make_grd(&ah_attr, true);
+		} else {
+			rdma_ah_set_ah_flags(&ah_attr, IB_AH_GRH);
+			rdma_ah_set_subnet_prefix(&ah_attr,
+						  cpu_to_be64(port_attr.subnet_prefix));
+			rdma_ah_set_interface_id(&ah_attr,
+						 cpu_to_be64(IB_SA_WELL_KNOWN_GUID));
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	new_ah->ah = rdma_create_ah(port->agent->qp->pd, &ah_attr);

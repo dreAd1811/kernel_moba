@@ -27,17 +27,30 @@
 #include "amdgpu_ucode.h"
 #include "amdgpu_trace.h"
 
+<<<<<<< HEAD
 #include "sdma0/sdma0_4_0_offset.h"
 #include "sdma0/sdma0_4_0_sh_mask.h"
 #include "sdma1/sdma1_4_0_offset.h"
 #include "sdma1/sdma1_4_0_sh_mask.h"
 #include "hdp/hdp_4_0_offset.h"
 #include "sdma0/sdma0_4_1_default.h"
+=======
+#include "vega10/soc15ip.h"
+#include "vega10/SDMA0/sdma0_4_0_offset.h"
+#include "vega10/SDMA0/sdma0_4_0_sh_mask.h"
+#include "vega10/SDMA1/sdma1_4_0_offset.h"
+#include "vega10/SDMA1/sdma1_4_0_sh_mask.h"
+#include "vega10/MMHUB/mmhub_1_0_offset.h"
+#include "vega10/MMHUB/mmhub_1_0_sh_mask.h"
+#include "vega10/HDP/hdp_4_0_offset.h"
+#include "raven1/SDMA0/sdma0_4_1_default.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "soc15_common.h"
 #include "soc15.h"
 #include "vega10_sdma_pkt_open.h"
 
+<<<<<<< HEAD
 #include "ivsrcid/sdma0/irqsrcs_sdma0_4_0.h"
 #include "ivsrcid/sdma1/irqsrcs_sdma1_4_0.h"
 
@@ -47,6 +60,10 @@ MODULE_FIRMWARE("amdgpu/vega12_sdma.bin");
 MODULE_FIRMWARE("amdgpu/vega12_sdma1.bin");
 MODULE_FIRMWARE("amdgpu/vega20_sdma.bin");
 MODULE_FIRMWARE("amdgpu/vega20_sdma1.bin");
+=======
+MODULE_FIRMWARE("amdgpu/vega10_sdma.bin");
+MODULE_FIRMWARE("amdgpu/vega10_sdma1.bin");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_FIRMWARE("amdgpu/raven_sdma.bin");
 
 #define SDMA0_POWER_CNTL__ON_OFF_CONDITION_HOLD_TIME_MASK  0x000000F8L
@@ -57,6 +74,7 @@ static void sdma_v4_0_set_buffer_funcs(struct amdgpu_device *adev);
 static void sdma_v4_0_set_vm_pte_funcs(struct amdgpu_device *adev);
 static void sdma_v4_0_set_irq_funcs(struct amdgpu_device *adev);
 
+<<<<<<< HEAD
 static const struct soc15_reg_golden golden_settings_sdma_4[] = {
 	SOC15_REG_GOLDEN_VALUE(SDMA0, 0, mmSDMA0_CHICKEN_BITS, 0xfe931f07, 0x02831d07),
 	SOC15_REG_GOLDEN_VALUE(SDMA0, 0, mmSDMA0_CLK_CTRL, 0xff000ff0, 0x3f000100),
@@ -149,12 +167,86 @@ static u32 sdma_v4_0_get_reg_offset(struct amdgpu_device *adev,
 {
 	return ( 0 == instance ? (adev->reg_offset[SDMA0_HWIP][0][0] + offset) :
 			(adev->reg_offset[SDMA1_HWIP][0][0] + offset));
+=======
+static const u32 golden_settings_sdma_4[] = {
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_CHICKEN_BITS), 0xfe931f07, 0x02831f07,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_CLK_CTRL), 0xff000ff0, 0x3f000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_GFX_IB_CNTL), 0x800f0100, 0x00000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_GFX_RB_WPTR_POLL_CNTL), 0xfffffff7, 0x00403000,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_PAGE_IB_CNTL), 0x800f0100, 0x00000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_PAGE_RB_WPTR_POLL_CNTL), 0x0000fff0, 0x00403000,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_POWER_CNTL), 0x003ff006, 0x0003c000,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_RLC0_IB_CNTL), 0x800f0100, 0x00000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_RLC0_RB_WPTR_POLL_CNTL), 0x0000fff0, 0x00403000,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_RLC1_IB_CNTL), 0x800f0100, 0x00000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_RLC1_RB_WPTR_POLL_CNTL), 0x0000fff0, 0x00403000,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_UTCL1_PAGE), 0x000003ff, 0x000003c0,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_CHICKEN_BITS), 0xfe931f07, 0x02831f07,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_CLK_CTRL), 0xffffffff, 0x3f000100,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_GFX_IB_CNTL), 0x800f0100, 0x00000100,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_GFX_RB_WPTR_POLL_CNTL), 0x0000fff0, 0x00403000,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_PAGE_IB_CNTL), 0x800f0100, 0x00000100,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_PAGE_RB_WPTR_POLL_CNTL), 0x0000fff0, 0x00403000,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_POWER_CNTL), 0x003ff000, 0x0003c000,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_RLC0_IB_CNTL), 0x800f0100, 0x00000100,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_RLC0_RB_WPTR_POLL_CNTL), 0x0000fff0, 0x00403000,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_RLC1_IB_CNTL), 0x800f0100, 0x00000100,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_RLC1_RB_WPTR_POLL_CNTL), 0x0000fff0, 0x00403000,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_UTCL1_PAGE), 0x000003ff, 0x000003c0
+};
+
+static const u32 golden_settings_sdma_vg10[] = {
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_GB_ADDR_CONFIG), 0x0018773f, 0x00104002,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_GB_ADDR_CONFIG_READ), 0x0018773f, 0x00104002,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_GB_ADDR_CONFIG), 0x0018773f, 0x00104002,
+	SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_GB_ADDR_CONFIG_READ), 0x0018773f, 0x00104002
+};
+
+static const u32 golden_settings_sdma_4_1[] =
+{
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_CHICKEN_BITS), 0xfe931f07, 0x02831f07,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_CLK_CTRL), 0xffffffff, 0x3f000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_GFX_IB_CNTL), 0x800f0111, 0x00000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_GFX_RB_WPTR_POLL_CNTL), 0xfffffff7, 0x00403000,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_POWER_CNTL), 0xfc3fffff, 0x40000051,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_RLC0_IB_CNTL), 0x800f0111, 0x00000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_RLC0_RB_WPTR_POLL_CNTL), 0xfffffff7, 0x00403000,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_RLC1_IB_CNTL), 0x800f0111, 0x00000100,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_RLC1_RB_WPTR_POLL_CNTL), 0xfffffff7, 0x00403000,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_UTCL1_PAGE), 0x000003ff, 0x000003c0
+};
+
+static const u32 golden_settings_sdma_rv1[] =
+{
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_GB_ADDR_CONFIG), 0x0018773f, 0x00000002,
+	SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_GB_ADDR_CONFIG_READ), 0x0018773f, 0x00000002
+};
+
+static u32 sdma_v4_0_get_reg_offset(u32 instance, u32 internal_offset)
+{
+	u32 base = 0;
+
+	switch (instance) {
+	case 0:
+		base = SDMA0_BASE.instance[0].segment[0];
+		break;
+	case 1:
+		base = SDMA1_BASE.instance[0].segment[0];
+		break;
+	default:
+		BUG();
+		break;
+	}
+
+	return base + internal_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sdma_v4_0_init_golden_registers(struct amdgpu_device *adev)
 {
 	switch (adev->asic_type) {
 	case CHIP_VEGA10:
+<<<<<<< HEAD
 		soc15_program_register_sequence(adev,
 						 golden_settings_sdma_4,
 						 ARRAY_SIZE(golden_settings_sdma_4));
@@ -182,6 +274,22 @@ static void sdma_v4_0_init_golden_registers(struct amdgpu_device *adev)
 		soc15_program_register_sequence(adev,
 						 golden_settings_sdma_rv1,
 						 ARRAY_SIZE(golden_settings_sdma_rv1));
+=======
+		amdgpu_program_register_sequence(adev,
+						 golden_settings_sdma_4,
+						 (const u32)ARRAY_SIZE(golden_settings_sdma_4));
+		amdgpu_program_register_sequence(adev,
+						 golden_settings_sdma_vg10,
+						 (const u32)ARRAY_SIZE(golden_settings_sdma_vg10));
+		break;
+	case CHIP_RAVEN:
+		amdgpu_program_register_sequence(adev,
+						 golden_settings_sdma_4_1,
+						 (const u32)ARRAY_SIZE(golden_settings_sdma_4_1));
+		amdgpu_program_register_sequence(adev,
+						 golden_settings_sdma_rv1,
+						 (const u32)ARRAY_SIZE(golden_settings_sdma_rv1));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
@@ -215,12 +323,15 @@ static int sdma_v4_0_init_microcode(struct amdgpu_device *adev)
 	case CHIP_VEGA10:
 		chip_name = "vega10";
 		break;
+<<<<<<< HEAD
 	case CHIP_VEGA12:
 		chip_name = "vega12";
 		break;
 	case CHIP_VEGA20:
 		chip_name = "vega20";
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CHIP_RAVEN:
 		chip_name = "raven";
 		break;
@@ -295,6 +406,7 @@ static uint64_t sdma_v4_0_ring_get_rptr(struct amdgpu_ring *ring)
 static uint64_t sdma_v4_0_ring_get_wptr(struct amdgpu_ring *ring)
 {
 	struct amdgpu_device *adev = ring->adev;
+<<<<<<< HEAD
 	u64 wptr;
 
 	if (ring->use_doorbell) {
@@ -315,6 +427,33 @@ static uint64_t sdma_v4_0_ring_get_wptr(struct amdgpu_ring *ring)
 	}
 
 	return wptr >> 2;
+=======
+	u64 *wptr = NULL;
+	uint64_t local_wptr = 0;
+
+	if (ring->use_doorbell) {
+		/* XXX check if swapping is necessary on BE */
+		wptr = ((u64 *)&adev->wb.wb[ring->wptr_offs]);
+		DRM_DEBUG("wptr/doorbell before shift == 0x%016llx\n", *wptr);
+		*wptr = (*wptr) >> 2;
+		DRM_DEBUG("wptr/doorbell after shift == 0x%016llx\n", *wptr);
+	} else {
+		u32 lowbit, highbit;
+		int me = (ring == &adev->sdma.instance[0].ring) ? 0 : 1;
+
+		wptr = &local_wptr;
+		lowbit = RREG32(sdma_v4_0_get_reg_offset(me, mmSDMA0_GFX_RB_WPTR)) >> 2;
+		highbit = RREG32(sdma_v4_0_get_reg_offset(me, mmSDMA0_GFX_RB_WPTR_HI)) >> 2;
+
+		DRM_DEBUG("wptr [%i]high== 0x%08x low==0x%08x\n",
+				me, highbit, lowbit);
+		*wptr = highbit;
+		*wptr = (*wptr) << 32;
+		*wptr |= lowbit;
+	}
+
+	return *wptr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -345,6 +484,7 @@ static void sdma_v4_0_ring_set_wptr(struct amdgpu_ring *ring)
 				ring->doorbell_index, ring->wptr << 2);
 		WDOORBELL64(ring->doorbell_index, ring->wptr << 2);
 	} else {
+<<<<<<< HEAD
 		DRM_DEBUG("Not using doorbell -- "
 				"mmSDMA%i_GFX_RB_WPTR == 0x%08x "
 				"mmSDMA%i_GFX_RB_WPTR_HI == 0x%08x\n",
@@ -354,6 +494,19 @@ static void sdma_v4_0_ring_set_wptr(struct amdgpu_ring *ring)
 				upper_32_bits(ring->wptr << 2));
 		WREG32(sdma_v4_0_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR), lower_32_bits(ring->wptr << 2));
 		WREG32(sdma_v4_0_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR_HI), upper_32_bits(ring->wptr << 2));
+=======
+		int me = (ring == &ring->adev->sdma.instance[0].ring) ? 0 : 1;
+
+		DRM_DEBUG("Not using doorbell -- "
+				"mmSDMA%i_GFX_RB_WPTR == 0x%08x "
+				"mmSDMA%i_GFX_RB_WPTR_HI == 0x%08x\n",
+				me,
+				lower_32_bits(ring->wptr << 2),
+				me,
+				upper_32_bits(ring->wptr << 2));
+		WREG32(sdma_v4_0_get_reg_offset(me, mmSDMA0_GFX_RB_WPTR), lower_32_bits(ring->wptr << 2));
+		WREG32(sdma_v4_0_get_reg_offset(me, mmSDMA0_GFX_RB_WPTR_HI), upper_32_bits(ring->wptr << 2));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -380,13 +533,24 @@ static void sdma_v4_0_ring_insert_nop(struct amdgpu_ring *ring, uint32_t count)
  */
 static void sdma_v4_0_ring_emit_ib(struct amdgpu_ring *ring,
 					struct amdgpu_ib *ib,
+<<<<<<< HEAD
 					unsigned vmid, bool ctx_switch)
 {
+=======
+					unsigned vm_id, bool ctx_switch)
+{
+	u32 vmid = vm_id & 0xf;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* IB packet must end on a 8 DW boundary */
 	sdma_v4_0_ring_insert_nop(ring, (10 - (lower_32_bits(ring->wptr) & 7)) % 8);
 
 	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_INDIRECT) |
+<<<<<<< HEAD
 			  SDMA_PKT_INDIRECT_HEADER_VMID(vmid & 0xf));
+=======
+			  SDMA_PKT_INDIRECT_HEADER_VMID(vmid));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* base must be 32 byte aligned */
 	amdgpu_ring_write(ring, lower_32_bits(ib->gpu_addr) & 0xffffffe0);
 	amdgpu_ring_write(ring, upper_32_bits(ib->gpu_addr));
@@ -396,6 +560,7 @@ static void sdma_v4_0_ring_emit_ib(struct amdgpu_ring *ring,
 
 }
 
+<<<<<<< HEAD
 static void sdma_v4_0_wait_reg_mem(struct amdgpu_ring *ring,
 				   int mem_space, int hdp,
 				   uint32_t addr0, uint32_t addr1,
@@ -421,6 +586,8 @@ static void sdma_v4_0_wait_reg_mem(struct amdgpu_ring *ring,
 			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(inv)); /* retry count, poll interval */
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * sdma_v4_0_ring_emit_hdp_flush - emit an hdp flush on the DMA ring
  *
@@ -430,19 +597,51 @@ static void sdma_v4_0_wait_reg_mem(struct amdgpu_ring *ring,
  */
 static void sdma_v4_0_ring_emit_hdp_flush(struct amdgpu_ring *ring)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = ring->adev;
 	u32 ref_and_mask = 0;
 	const struct nbio_hdp_flush_reg *nbio_hf_reg = adev->nbio_funcs->hdp_flush_reg;
 
 	if (ring->me == 0)
+=======
+	u32 ref_and_mask = 0;
+	struct nbio_hdp_flush_reg *nbio_hf_reg;
+
+	if (ring->adev->flags & AMD_IS_APU)
+		nbio_hf_reg = &nbio_v7_0_hdp_flush_reg;
+	else
+		nbio_hf_reg = &nbio_v6_1_hdp_flush_reg;
+
+	if (ring == &ring->adev->sdma.instance[0].ring)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma0;
 	else
 		ref_and_mask = nbio_hf_reg->ref_and_mask_sdma1;
 
+<<<<<<< HEAD
 	sdma_v4_0_wait_reg_mem(ring, 0, 1,
 			       adev->nbio_funcs->get_hdp_flush_done_offset(adev),
 			       adev->nbio_funcs->get_hdp_flush_req_offset(adev),
 			       ref_and_mask, ref_and_mask, 10);
+=======
+	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
+			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(1) |
+			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* == */
+	amdgpu_ring_write(ring, nbio_hf_reg->hdp_flush_done_offset << 2);
+	amdgpu_ring_write(ring, nbio_hf_reg->hdp_flush_req_offset << 2);
+	amdgpu_ring_write(ring, ref_and_mask); /* reference */
+	amdgpu_ring_write(ring, ref_and_mask); /* mask */
+	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
+			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10)); /* retry count, poll interval */
+}
+
+static void sdma_v4_0_ring_emit_hdp_invalidate(struct amdgpu_ring *ring)
+{
+	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_SRBM_WRITE) |
+			  SDMA_PKT_SRBM_WRITE_HEADER_BYTE_EN(0xf));
+	amdgpu_ring_write(ring, SOC15_REG_OFFSET(HDP, 0, mmHDP_DEBUG0));
+	amdgpu_ring_write(ring, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -500,6 +699,7 @@ static void sdma_v4_0_gfx_stop(struct amdgpu_device *adev)
 
 	if ((adev->mman.buffer_funcs_ring == sdma0) ||
 	    (adev->mman.buffer_funcs_ring == sdma1))
+<<<<<<< HEAD
 			amdgpu_ttm_set_buffer_funcs_status(adev, false);
 
 	for (i = 0; i < adev->sdma.num_instances; i++) {
@@ -509,6 +709,17 @@ static void sdma_v4_0_gfx_stop(struct amdgpu_device *adev)
 		ib_cntl = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_IB_CNTL));
 		ib_cntl = REG_SET_FIELD(ib_cntl, SDMA0_GFX_IB_CNTL, IB_ENABLE, 0);
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_IB_CNTL), ib_cntl);
+=======
+		amdgpu_ttm_set_active_vram_size(adev, adev->mc.visible_vram_size);
+
+	for (i = 0; i < adev->sdma.num_instances; i++) {
+		rb_cntl = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_CNTL));
+		rb_cntl = REG_SET_FIELD(rb_cntl, SDMA0_GFX_RB_CNTL, RB_ENABLE, 0);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_CNTL), rb_cntl);
+		ib_cntl = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_IB_CNTL));
+		ib_cntl = REG_SET_FIELD(ib_cntl, SDMA0_GFX_IB_CNTL, IB_ENABLE, 0);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_IB_CNTL), ib_cntl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sdma0->ready = false;
@@ -565,6 +776,7 @@ static void sdma_v4_0_ctx_switch_enable(struct amdgpu_device *adev, bool enable)
 	}
 
 	for (i = 0; i < adev->sdma.num_instances; i++) {
+<<<<<<< HEAD
 		f32_cntl = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_CNTL));
 		f32_cntl = REG_SET_FIELD(f32_cntl, SDMA0_CNTL,
 				AUTO_CTXSW_ENABLE, enable ? 1 : 0);
@@ -577,6 +789,20 @@ static void sdma_v4_0_ctx_switch_enable(struct amdgpu_device *adev, bool enable)
 			       phase_quantum);
 		}
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_CNTL), f32_cntl);
+=======
+		f32_cntl = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_CNTL));
+		f32_cntl = REG_SET_FIELD(f32_cntl, SDMA0_CNTL,
+				AUTO_CTXSW_ENABLE, enable ? 1 : 0);
+		if (enable && amdgpu_sdma_phase_quantum) {
+			WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_PHASE0_QUANTUM),
+			       phase_quantum);
+			WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_PHASE1_QUANTUM),
+			       phase_quantum);
+			WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_PHASE2_QUANTUM),
+			       phase_quantum);
+		}
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_CNTL), f32_cntl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 }
@@ -600,9 +826,15 @@ static void sdma_v4_0_enable(struct amdgpu_device *adev, bool enable)
 	}
 
 	for (i = 0; i < adev->sdma.num_instances; i++) {
+<<<<<<< HEAD
 		f32_cntl = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_F32_CNTL));
 		f32_cntl = REG_SET_FIELD(f32_cntl, SDMA0_F32_CNTL, HALT, enable ? 0 : 1);
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_F32_CNTL), f32_cntl);
+=======
+		f32_cntl = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_F32_CNTL));
+		f32_cntl = REG_SET_FIELD(f32_cntl, SDMA0_F32_CNTL, HALT, enable ? 0 : 1);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_F32_CNTL), f32_cntl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -630,17 +862,26 @@ static int sdma_v4_0_gfx_resume(struct amdgpu_device *adev)
 		ring = &adev->sdma.instance[i].ring;
 		wb_offset = (ring->rptr_offs * 4);
 
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_SEM_WAIT_FAIL_TIMER_CNTL), 0);
 
 		/* Set ring buffer size in dwords */
 		rb_bufsz = order_base_2(ring->ring_size / 4);
 		rb_cntl = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_CNTL));
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_SEM_WAIT_FAIL_TIMER_CNTL), 0);
+
+		/* Set ring buffer size in dwords */
+		rb_bufsz = order_base_2(ring->ring_size / 4);
+		rb_cntl = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_CNTL));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rb_cntl = REG_SET_FIELD(rb_cntl, SDMA0_GFX_RB_CNTL, RB_SIZE, rb_bufsz);
 #ifdef __BIG_ENDIAN
 		rb_cntl = REG_SET_FIELD(rb_cntl, SDMA0_GFX_RB_CNTL, RB_SWAP_ENABLE, 1);
 		rb_cntl = REG_SET_FIELD(rb_cntl, SDMA0_GFX_RB_CNTL,
 					RPTR_WRITEBACK_SWAP_ENABLE, 1);
 #endif
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_CNTL), rb_cntl);
 
 		/* Initialize the ring buffer's read and write pointers */
@@ -653,16 +894,36 @@ static int sdma_v4_0_gfx_resume(struct amdgpu_device *adev)
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_RPTR_ADDR_HI),
 		       upper_32_bits(adev->wb.gpu_addr + wb_offset) & 0xFFFFFFFF);
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_RPTR_ADDR_LO),
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_CNTL), rb_cntl);
+
+		/* Initialize the ring buffer's read and write pointers */
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_RPTR), 0);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_RPTR_HI), 0);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_WPTR), 0);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_WPTR_HI), 0);
+
+		/* set the wb address whether it's enabled or not */
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_RPTR_ADDR_HI),
+		       upper_32_bits(adev->wb.gpu_addr + wb_offset) & 0xFFFFFFFF);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_RPTR_ADDR_LO),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       lower_32_bits(adev->wb.gpu_addr + wb_offset) & 0xFFFFFFFC);
 
 		rb_cntl = REG_SET_FIELD(rb_cntl, SDMA0_GFX_RB_CNTL, RPTR_WRITEBACK_ENABLE, 1);
 
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_BASE), ring->gpu_addr >> 8);
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_BASE_HI), ring->gpu_addr >> 40);
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_BASE), ring->gpu_addr >> 8);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_BASE_HI), ring->gpu_addr >> 40);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ring->wptr = 0;
 
 		/* before programing wptr to a less value, need set minor_ptr_update first */
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_MINOR_PTR_UPDATE), 1);
 
 		if (!amdgpu_sriov_vf(adev)) { /* only bare-metal use register write for wptr */
@@ -672,6 +933,17 @@ static int sdma_v4_0_gfx_resume(struct amdgpu_device *adev)
 
 		doorbell = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_DOORBELL));
 		doorbell_offset = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_DOORBELL_OFFSET));
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_MINOR_PTR_UPDATE), 1);
+
+		if (!amdgpu_sriov_vf(adev)) { /* only bare-metal use register write for wptr */
+			WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_WPTR), lower_32_bits(ring->wptr) << 2);
+			WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_WPTR_HI), upper_32_bits(ring->wptr) << 2);
+		}
+
+		doorbell = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_DOORBELL));
+		doorbell_offset = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_DOORBELL_OFFSET));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ring->use_doorbell) {
 			doorbell = REG_SET_FIELD(doorbell, SDMA0_GFX_DOORBELL, ENABLE, 1);
@@ -680,15 +952,25 @@ static int sdma_v4_0_gfx_resume(struct amdgpu_device *adev)
 		} else {
 			doorbell = REG_SET_FIELD(doorbell, SDMA0_GFX_DOORBELL, ENABLE, 0);
 		}
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_DOORBELL), doorbell);
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_DOORBELL_OFFSET), doorbell_offset);
 		adev->nbio_funcs->sdma_doorbell_range(adev, i, ring->use_doorbell,
 						      ring->doorbell_index);
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_DOORBELL), doorbell);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_DOORBELL_OFFSET), doorbell_offset);
+		if (adev->flags & AMD_IS_APU)
+			nbio_v7_0_sdma_doorbell_range(adev, i, ring->use_doorbell, ring->doorbell_index);
+		else
+			nbio_v6_1_sdma_doorbell_range(adev, i, ring->use_doorbell, ring->doorbell_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (amdgpu_sriov_vf(adev))
 			sdma_v4_0_ring_set_wptr(ring);
 
 		/* set minor_ptr_update to 0 after wptr programed */
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_MINOR_PTR_UPDATE), 0);
 
 		/* set utc l1 enable flag always to 1 */
@@ -701,19 +983,42 @@ static int sdma_v4_0_gfx_resume(struct amdgpu_device *adev)
 			temp = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_F32_CNTL));
 			temp = REG_SET_FIELD(temp, SDMA0_F32_CNTL, HALT, 0);
 			WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_F32_CNTL), temp);
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_MINOR_PTR_UPDATE), 0);
+
+		/* set utc l1 enable flag always to 1 */
+		temp = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_CNTL));
+		temp = REG_SET_FIELD(temp, SDMA0_CNTL, UTC_L1_ENABLE, 1);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_CNTL), temp);
+
+		if (!amdgpu_sriov_vf(adev)) {
+			/* unhalt engine */
+			temp = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_F32_CNTL));
+			temp = REG_SET_FIELD(temp, SDMA0_F32_CNTL, HALT, 0);
+			WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_F32_CNTL), temp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* setup the wptr shadow polling */
 		wptr_gpu_addr = adev->wb.gpu_addr + (ring->wptr_offs * 4);
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_WPTR_POLL_ADDR_LO),
 		       lower_32_bits(wptr_gpu_addr));
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_WPTR_POLL_ADDR_HI),
 		       upper_32_bits(wptr_gpu_addr));
 		wptr_poll_cntl = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_WPTR_POLL_CNTL));
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_WPTR_POLL_ADDR_LO),
+		       lower_32_bits(wptr_gpu_addr));
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_WPTR_POLL_ADDR_HI),
+		       upper_32_bits(wptr_gpu_addr));
+		wptr_poll_cntl = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_WPTR_POLL_CNTL));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (amdgpu_sriov_vf(adev))
 			wptr_poll_cntl = REG_SET_FIELD(wptr_poll_cntl, SDMA0_GFX_RB_WPTR_POLL_CNTL, F32_POLL_ENABLE, 1);
 		else
 			wptr_poll_cntl = REG_SET_FIELD(wptr_poll_cntl, SDMA0_GFX_RB_WPTR_POLL_CNTL, F32_POLL_ENABLE, 0);
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_WPTR_POLL_CNTL), wptr_poll_cntl);
 
 		/* enable DMA RB */
@@ -721,12 +1026,25 @@ static int sdma_v4_0_gfx_resume(struct amdgpu_device *adev)
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_RB_CNTL), rb_cntl);
 
 		ib_cntl = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_IB_CNTL));
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_WPTR_POLL_CNTL), wptr_poll_cntl);
+
+		/* enable DMA RB */
+		rb_cntl = REG_SET_FIELD(rb_cntl, SDMA0_GFX_RB_CNTL, RB_ENABLE, 1);
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_RB_CNTL), rb_cntl);
+
+		ib_cntl = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_IB_CNTL));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ib_cntl = REG_SET_FIELD(ib_cntl, SDMA0_GFX_IB_CNTL, IB_ENABLE, 1);
 #ifdef __BIG_ENDIAN
 		ib_cntl = REG_SET_FIELD(ib_cntl, SDMA0_GFX_IB_CNTL, IB_SWAP_ENABLE, 1);
 #endif
 		/* enable DMA IBs */
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_GFX_IB_CNTL), ib_cntl);
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_GFX_IB_CNTL), ib_cntl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ring->ready = true;
 
@@ -742,7 +1060,11 @@ static int sdma_v4_0_gfx_resume(struct amdgpu_device *adev)
 		}
 
 		if (adev->mman.buffer_funcs_ring == ring)
+<<<<<<< HEAD
 			amdgpu_ttm_set_buffer_funcs_status(adev, true);
+=======
+			amdgpu_ttm_set_active_vram_size(adev, adev->mc.real_vram_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	}
 
@@ -857,12 +1179,21 @@ static int sdma_v4_0_load_microcode(struct amdgpu_device *adev)
 			(adev->sdma.instance[i].fw->data +
 				le32_to_cpu(hdr->header.ucode_array_offset_bytes));
 
+<<<<<<< HEAD
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_UCODE_ADDR), 0);
 
 		for (j = 0; j < fw_size; j++)
 			WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_UCODE_DATA), le32_to_cpup(fw_data++));
 
 		WREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_UCODE_ADDR), adev->sdma.instance[i].fw_version);
+=======
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_UCODE_ADDR), 0);
+
+		for (j = 0; j < fw_size; j++)
+			WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_UCODE_DATA), le32_to_cpup(fw_data++));
+
+		WREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_UCODE_ADDR), adev->sdma.instance[i].fw_version);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -927,7 +1258,11 @@ static int sdma_v4_0_ring_test_ring(struct amdgpu_ring *ring)
 	u32 tmp;
 	u64 gpu_addr;
 
+<<<<<<< HEAD
 	r = amdgpu_device_wb_get(adev, &index);
+=======
+	r = amdgpu_wb_get(adev, &index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%d) failed to allocate wb slot\n", r);
 		return r;
@@ -940,7 +1275,11 @@ static int sdma_v4_0_ring_test_ring(struct amdgpu_ring *ring)
 	r = amdgpu_ring_alloc(ring, 5);
 	if (r) {
 		DRM_ERROR("amdgpu: dma failed to lock ring %d (%d).\n", ring->idx, r);
+<<<<<<< HEAD
 		amdgpu_device_wb_free(adev, index);
+=======
+		amdgpu_wb_free(adev, index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return r;
 	}
 
@@ -960,13 +1299,21 @@ static int sdma_v4_0_ring_test_ring(struct amdgpu_ring *ring)
 	}
 
 	if (i < adev->usec_timeout) {
+<<<<<<< HEAD
 		DRM_DEBUG("ring test on %d succeeded in %d usecs\n", ring->idx, i);
+=======
+		DRM_INFO("ring test on %d succeeded in %d usecs\n", ring->idx, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		DRM_ERROR("amdgpu: ring %d test failed (0x%08X)\n",
 			  ring->idx, tmp);
 		r = -EINVAL;
 	}
+<<<<<<< HEAD
 	amdgpu_device_wb_free(adev, index);
+=======
+	amdgpu_wb_free(adev, index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
@@ -989,7 +1336,11 @@ static int sdma_v4_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
 	u32 tmp = 0;
 	u64 gpu_addr;
 
+<<<<<<< HEAD
 	r = amdgpu_device_wb_get(adev, &index);
+=======
+	r = amdgpu_wb_get(adev, &index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		dev_err(adev->dev, "(%ld) failed to allocate wb slot\n", r);
 		return r;
@@ -1031,7 +1382,11 @@ static int sdma_v4_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
 	}
 	tmp = le32_to_cpu(adev->wb.wb[index]);
 	if (tmp == 0xDEADBEEF) {
+<<<<<<< HEAD
 		DRM_DEBUG("ib test on ring %d succeeded\n", ring->idx);
+=======
+		DRM_INFO("ib test on ring %d succeeded\n", ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = 0;
 	} else {
 		DRM_ERROR("amdgpu: ib test failed (0x%08X)\n", tmp);
@@ -1041,7 +1396,11 @@ err1:
 	amdgpu_ib_free(adev, &ib, NULL);
 	dma_fence_put(f);
 err0:
+<<<<<<< HEAD
 	amdgpu_device_wb_free(adev, index);
+=======
+	amdgpu_wb_free(adev, index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -1170,10 +1529,23 @@ static void sdma_v4_0_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
 	uint64_t addr = ring->fence_drv.gpu_addr;
 
 	/* wait for idle */
+<<<<<<< HEAD
 	sdma_v4_0_wait_reg_mem(ring, 1, 0,
 			       addr & 0xfffffffc,
 			       upper_32_bits(addr) & 0xffffffff,
 			       seq, 0xffffffff, 4);
+=======
+	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
+			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(0) |
+			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3) | /* equal */
+			  SDMA_PKT_POLL_REGMEM_HEADER_MEM_POLL(1));
+	amdgpu_ring_write(ring, addr & 0xfffffffc);
+	amdgpu_ring_write(ring, upper_32_bits(addr) & 0xffffffff);
+	amdgpu_ring_write(ring, seq); /* reference */
+	amdgpu_ring_write(ring, 0xffffffff); /* mask */
+	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
+			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(4)); /* retry count, poll interval */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -1187,6 +1559,7 @@ static void sdma_v4_0_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
  * using sDMA (VEGA10).
  */
 static void sdma_v4_0_ring_emit_vm_flush(struct amdgpu_ring *ring,
+<<<<<<< HEAD
 					 unsigned vmid, uint64_t pd_addr)
 {
 	amdgpu_gmc_emit_flush_gpu_tlb(ring, vmid, pd_addr);
@@ -1205,6 +1578,43 @@ static void sdma_v4_0_ring_emit_reg_wait(struct amdgpu_ring *ring, uint32_t reg,
 					 uint32_t val, uint32_t mask)
 {
 	sdma_v4_0_wait_reg_mem(ring, 0, 0, reg, 0, val, mask, 10);
+=======
+					 unsigned vm_id, uint64_t pd_addr)
+{
+	struct amdgpu_vmhub *hub = &ring->adev->vmhub[ring->funcs->vmhub];
+	uint32_t req = ring->adev->gart.gart_funcs->get_invalidate_req(vm_id);
+	unsigned eng = ring->vm_inv_eng;
+
+	pd_addr = amdgpu_gart_get_vm_pde(ring->adev, pd_addr);
+	pd_addr |= AMDGPU_PTE_VALID;
+
+	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_SRBM_WRITE) |
+			  SDMA_PKT_SRBM_WRITE_HEADER_BYTE_EN(0xf));
+	amdgpu_ring_write(ring, hub->ctx0_ptb_addr_lo32 + vm_id * 2);
+	amdgpu_ring_write(ring, lower_32_bits(pd_addr));
+
+	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_SRBM_WRITE) |
+			  SDMA_PKT_SRBM_WRITE_HEADER_BYTE_EN(0xf));
+	amdgpu_ring_write(ring, hub->ctx0_ptb_addr_hi32 + vm_id * 2);
+	amdgpu_ring_write(ring, upper_32_bits(pd_addr));
+
+	/* flush TLB */
+	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_SRBM_WRITE) |
+			  SDMA_PKT_SRBM_WRITE_HEADER_BYTE_EN(0xf));
+	amdgpu_ring_write(ring, hub->vm_inv_eng0_req + eng);
+	amdgpu_ring_write(ring, req);
+
+	/* wait for flush */
+	amdgpu_ring_write(ring, SDMA_PKT_HEADER_OP(SDMA_OP_POLL_REGMEM) |
+			  SDMA_PKT_POLL_REGMEM_HEADER_HDP_FLUSH(0) |
+			  SDMA_PKT_POLL_REGMEM_HEADER_FUNC(3)); /* equal */
+	amdgpu_ring_write(ring, (hub->vm_inv_eng0_ack + eng) << 2);
+	amdgpu_ring_write(ring, 0);
+	amdgpu_ring_write(ring, 1 << vm_id); /* reference */
+	amdgpu_ring_write(ring, 1 << vm_id); /* mask */
+	amdgpu_ring_write(ring, SDMA_PKT_POLL_REGMEM_DW5_RETRY_COUNT(0xfff) |
+			  SDMA_PKT_POLL_REGMEM_DW5_INTERVAL(10));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sdma_v4_0_early_init(void *handle)
@@ -1232,13 +1642,21 @@ static int sdma_v4_0_sw_init(void *handle)
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
 	/* SDMA trap event */
+<<<<<<< HEAD
 	r = amdgpu_irq_add_id(adev, SOC15_IH_CLIENTID_SDMA0, SDMA0_4_0__SRCID__SDMA_TRAP,
+=======
+	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_SDMA0, 224,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      &adev->sdma.trap_irq);
 	if (r)
 		return r;
 
 	/* SDMA trap event */
+<<<<<<< HEAD
 	r = amdgpu_irq_add_id(adev, SOC15_IH_CLIENTID_SDMA1, SDMA1_4_0__SRCID__SDMA_TRAP,
+=======
+	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_SDMA1, 224,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      &adev->sdma.trap_irq);
 	if (r)
 		return r;
@@ -1282,11 +1700,14 @@ static int sdma_v4_0_sw_fini(void *handle)
 	for (i = 0; i < adev->sdma.num_instances; i++)
 		amdgpu_ring_fini(&adev->sdma.instance[i].ring);
 
+<<<<<<< HEAD
 	for (i = 0; i < adev->sdma.num_instances; i++) {
 		release_firmware(adev->sdma.instance[i].fw);
 		adev->sdma.instance[i].fw = NULL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1335,7 +1756,11 @@ static bool sdma_v4_0_is_idle(void *handle)
 	u32 i;
 
 	for (i = 0; i < adev->sdma.num_instances; i++) {
+<<<<<<< HEAD
 		u32 tmp = RREG32(sdma_v4_0_get_reg_offset(adev, i, mmSDMA0_STATUS_REG));
+=======
+		u32 tmp = RREG32(sdma_v4_0_get_reg_offset(i, mmSDMA0_STATUS_REG));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!(tmp & SDMA0_STATUS_REG__IDLE_MASK))
 			return false;
@@ -1351,8 +1776,13 @@ static int sdma_v4_0_wait_for_idle(void *handle)
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
 	for (i = 0; i < adev->usec_timeout; i++) {
+<<<<<<< HEAD
 		sdma0 = RREG32(sdma_v4_0_get_reg_offset(adev, 0, mmSDMA0_STATUS_REG));
 		sdma1 = RREG32(sdma_v4_0_get_reg_offset(adev, 1, mmSDMA0_STATUS_REG));
+=======
+		sdma0 = RREG32(sdma_v4_0_get_reg_offset(0, mmSDMA0_STATUS_REG));
+		sdma1 = RREG32(sdma_v4_0_get_reg_offset(1, mmSDMA0_STATUS_REG));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (sdma0 & sdma1 & SDMA0_STATUS_REG__IDLE_MASK)
 			return 0;
@@ -1376,8 +1806,13 @@ static int sdma_v4_0_set_trap_irq_state(struct amdgpu_device *adev,
 	u32 sdma_cntl;
 
 	u32 reg_offset = (type == AMDGPU_SDMA_IRQ_TRAP0) ?
+<<<<<<< HEAD
 		sdma_v4_0_get_reg_offset(adev, 0, mmSDMA0_CNTL) :
 		sdma_v4_0_get_reg_offset(adev, 1, mmSDMA0_CNTL);
+=======
+		sdma_v4_0_get_reg_offset(0, mmSDMA0_CNTL) :
+		sdma_v4_0_get_reg_offset(1, mmSDMA0_CNTL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sdma_cntl = RREG32(reg_offset);
 	sdma_cntl = REG_SET_FIELD(sdma_cntl, SDMA0_CNTL, TRAP_ENABLE,
@@ -1393,7 +1828,11 @@ static int sdma_v4_0_process_trap_irq(struct amdgpu_device *adev,
 {
 	DRM_DEBUG("IH: SDMA trap\n");
 	switch (entry->client_id) {
+<<<<<<< HEAD
 	case SOC15_IH_CLIENTID_SDMA0:
+=======
+	case AMDGPU_IH_CLIENTID_SDMA0:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (entry->ring_id) {
 		case 0:
 			amdgpu_fence_process(&adev->sdma.instance[0].ring);
@@ -1409,7 +1848,11 @@ static int sdma_v4_0_process_trap_irq(struct amdgpu_device *adev,
 			break;
 		}
 		break;
+<<<<<<< HEAD
 	case SOC15_IH_CLIENTID_SDMA1:
+=======
+	case AMDGPU_IH_CLIENTID_SDMA1:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (entry->ring_id) {
 		case 0:
 			amdgpu_fence_process(&adev->sdma.instance[1].ring);
@@ -1459,7 +1902,11 @@ static void sdma_v4_0_update_medium_grain_clock_gating(
 		if (def != data)
 			WREG32(SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_CLK_CTRL), data);
 
+<<<<<<< HEAD
 		if (adev->sdma.num_instances > 1) {
+=======
+		if (adev->asic_type == CHIP_VEGA10) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			def = data = RREG32(SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_CLK_CTRL));
 			data &= ~(SDMA1_CLK_CTRL__SOFT_OVERRIDE7_MASK |
 				  SDMA1_CLK_CTRL__SOFT_OVERRIDE6_MASK |
@@ -1487,7 +1934,11 @@ static void sdma_v4_0_update_medium_grain_clock_gating(
 		if (def != data)
 			WREG32(SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_CLK_CTRL), data);
 
+<<<<<<< HEAD
 		if (adev->sdma.num_instances > 1) {
+=======
+		if (adev->asic_type == CHIP_VEGA10) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			def = data = RREG32(SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_CLK_CTRL));
 			data |= (SDMA1_CLK_CTRL__SOFT_OVERRIDE7_MASK |
 				 SDMA1_CLK_CTRL__SOFT_OVERRIDE6_MASK |
@@ -1518,7 +1969,11 @@ static void sdma_v4_0_update_medium_grain_light_sleep(
 			WREG32(SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_POWER_CNTL), data);
 
 		/* 1-not override: enable sdma1 mem light sleep */
+<<<<<<< HEAD
 		if (adev->sdma.num_instances > 1) {
+=======
+		if (adev->asic_type == CHIP_VEGA10) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			def = data = RREG32(SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_POWER_CNTL));
 			data |= SDMA1_POWER_CNTL__MEM_POWER_OVERRIDE_MASK;
 			if (def != data)
@@ -1532,7 +1987,11 @@ static void sdma_v4_0_update_medium_grain_light_sleep(
 			WREG32(SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_POWER_CNTL), data);
 
 		/* 0-override:disable sdma1 mem light sleep */
+<<<<<<< HEAD
 		if (adev->sdma.num_instances > 1) {
+=======
+		if (adev->asic_type == CHIP_VEGA10) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			def = data = RREG32(SOC15_REG_OFFSET(SDMA1, 0, mmSDMA1_POWER_CNTL));
 			data &= ~SDMA1_POWER_CNTL__MEM_POWER_OVERRIDE_MASK;
 			if (def != data)
@@ -1551,8 +2010,11 @@ static int sdma_v4_0_set_clockgating_state(void *handle,
 
 	switch (adev->asic_type) {
 	case CHIP_VEGA10:
+<<<<<<< HEAD
 	case CHIP_VEGA12:
 	case CHIP_VEGA20:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CHIP_RAVEN:
 		sdma_v4_0_update_medium_grain_clock_gating(adev,
 				state == AMD_CG_STATE_GATE ? true : false);
@@ -1630,11 +2092,17 @@ static const struct amdgpu_ring_funcs sdma_v4_0_ring_funcs = {
 	.set_wptr = sdma_v4_0_ring_set_wptr,
 	.emit_frame_size =
 		6 + /* sdma_v4_0_ring_emit_hdp_flush */
+<<<<<<< HEAD
 		3 + /* hdp invalidate */
 		6 + /* sdma_v4_0_ring_emit_pipeline_sync */
 		/* sdma_v4_0_ring_emit_vm_flush */
 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 3 +
 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 6 +
+=======
+		3 + /* sdma_v4_0_ring_emit_hdp_invalidate */
+		6 + /* sdma_v4_0_ring_emit_pipeline_sync */
+		18 + /* sdma_v4_0_ring_emit_vm_flush */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		10 + 10 + 10, /* sdma_v4_0_ring_emit_fence x3 for user fence, vm fence */
 	.emit_ib_size = 7 + 6, /* sdma_v4_0_ring_emit_ib */
 	.emit_ib = sdma_v4_0_ring_emit_ib,
@@ -1642,23 +2110,35 @@ static const struct amdgpu_ring_funcs sdma_v4_0_ring_funcs = {
 	.emit_pipeline_sync = sdma_v4_0_ring_emit_pipeline_sync,
 	.emit_vm_flush = sdma_v4_0_ring_emit_vm_flush,
 	.emit_hdp_flush = sdma_v4_0_ring_emit_hdp_flush,
+<<<<<<< HEAD
+=======
+	.emit_hdp_invalidate = sdma_v4_0_ring_emit_hdp_invalidate,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.test_ring = sdma_v4_0_ring_test_ring,
 	.test_ib = sdma_v4_0_ring_test_ib,
 	.insert_nop = sdma_v4_0_ring_insert_nop,
 	.pad_ib = sdma_v4_0_ring_pad_ib,
+<<<<<<< HEAD
 	.emit_wreg = sdma_v4_0_ring_emit_wreg,
 	.emit_reg_wait = sdma_v4_0_ring_emit_reg_wait,
 	.emit_reg_write_reg_wait = amdgpu_ring_emit_reg_write_reg_wait_helper,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void sdma_v4_0_set_ring_funcs(struct amdgpu_device *adev)
 {
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < adev->sdma.num_instances; i++) {
 		adev->sdma.instance[i].ring.funcs = &sdma_v4_0_ring_funcs;
 		adev->sdma.instance[i].ring.me = i;
 	}
+=======
+	for (i = 0; i < adev->sdma.num_instances; i++)
+		adev->sdma.instance[i].ring.funcs = &sdma_v4_0_ring_funcs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct amdgpu_irq_src_funcs sdma_v4_0_trap_irq_funcs = {
@@ -1685,7 +2165,11 @@ static void sdma_v4_0_set_irq_funcs(struct amdgpu_device *adev)
  * @dst_offset: dst GPU address
  * @byte_count: number of bytes to xfer
  *
+<<<<<<< HEAD
  * Copy GPU buffers using the DMA engine (VEGA10/12).
+=======
+ * Copy GPU buffers using the DMA engine (VEGA10).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Used by the amdgpu ttm implementation to move pages if
  * registered as the asic copy callback.
  */
@@ -1712,7 +2196,11 @@ static void sdma_v4_0_emit_copy_buffer(struct amdgpu_ib *ib,
  * @dst_offset: dst GPU address
  * @byte_count: number of bytes to xfer
  *
+<<<<<<< HEAD
  * Fill GPU buffers using the DMA engine (VEGA10/12).
+=======
+ * Fill GPU buffers using the DMA engine (VEGA10).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void sdma_v4_0_emit_fill_buffer(struct amdgpu_ib *ib,
 				       uint32_t src_data,
@@ -1745,9 +2233,13 @@ static void sdma_v4_0_set_buffer_funcs(struct amdgpu_device *adev)
 }
 
 static const struct amdgpu_vm_pte_funcs sdma_v4_0_vm_pte_funcs = {
+<<<<<<< HEAD
 	.copy_pte_num_dw = 7,
 	.copy_pte = sdma_v4_0_vm_copy_pte,
 
+=======
+	.copy_pte = sdma_v4_0_vm_copy_pte,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.write_pte = sdma_v4_0_vm_write_pte,
 	.set_pte_pde = sdma_v4_0_vm_set_pte_pde,
 };

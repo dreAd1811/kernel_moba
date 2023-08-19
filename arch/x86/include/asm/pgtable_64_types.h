@@ -20,6 +20,7 @@ typedef unsigned long	pgprotval_t;
 
 typedef struct { pteval_t pte; } pte_t;
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_5LEVEL
 extern unsigned int __pgtable_l5_enabled;
 
@@ -43,6 +44,8 @@ static inline bool pgtable_l5_enabled(void)
 extern unsigned int pgdir_shift;
 extern unsigned int ptrs_per_p4d;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* !__ASSEMBLY__ */
 
 #define SHARED_KERNEL_PMD	0
@@ -52,12 +55,17 @@ extern unsigned int ptrs_per_p4d;
 /*
  * PGDIR_SHIFT determines what a top-level page table entry can map
  */
+<<<<<<< HEAD
 #define PGDIR_SHIFT	pgdir_shift
+=======
+#define PGDIR_SHIFT	48
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PTRS_PER_PGD	512
 
 /*
  * 4th level page in 5-level paging case
  */
+<<<<<<< HEAD
 #define P4D_SHIFT		39
 #define MAX_PTRS_PER_P4D	512
 #define PTRS_PER_P4D		ptrs_per_p4d
@@ -65,15 +73,26 @@ extern unsigned int ptrs_per_p4d;
 #define P4D_MASK		(~(P4D_SIZE - 1))
 
 #define MAX_POSSIBLE_PHYSMEM_BITS	52
+=======
+#define P4D_SHIFT	39
+#define PTRS_PER_P4D	512
+#define P4D_SIZE	(_AC(1, UL) << P4D_SHIFT)
+#define P4D_MASK	(~(P4D_SIZE - 1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #else /* CONFIG_X86_5LEVEL */
 
 /*
  * PGDIR_SHIFT determines what a top-level page table entry can map
  */
+<<<<<<< HEAD
 #define PGDIR_SHIFT		39
 #define PTRS_PER_PGD		512
 #define MAX_PTRS_PER_P4D	1
+=======
+#define PGDIR_SHIFT	39
+#define PTRS_PER_PGD	512
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* CONFIG_X86_5LEVEL */
 
@@ -109,7 +128,21 @@ extern unsigned int ptrs_per_p4d;
  * range must not overlap with anything except the KASAN shadow area, which
  * is correct as KASAN disables KASLR.
  */
+<<<<<<< HEAD
 #define MAXMEM			(1UL << MAX_PHYSMEM_BITS)
+=======
+#define MAXMEM			_AC(__AC(1, UL) << MAX_PHYSMEM_BITS, UL)
+
+#ifdef CONFIG_X86_5LEVEL
+# define VMALLOC_SIZE_TB	_AC(12800, UL)
+# define __VMALLOC_BASE		_AC(0xffa0000000000000, UL)
+# define __VMEMMAP_BASE		_AC(0xffd4000000000000, UL)
+#else
+# define VMALLOC_SIZE_TB	_AC(32, UL)
+# define __VMALLOC_BASE		_AC(0xffffc90000000000, UL)
+# define __VMEMMAP_BASE		_AC(0xffffea0000000000, UL)
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GUARD_HOLE_PGD_ENTRY	-256UL
 #define GUARD_HOLE_SIZE		(16UL << PGDIR_SHIFT)
@@ -118,6 +151,7 @@ extern unsigned int ptrs_per_p4d;
 
 #define LDT_PGD_ENTRY		-240UL
 #define LDT_BASE_ADDR		(LDT_PGD_ENTRY << PGDIR_SHIFT)
+<<<<<<< HEAD
 #define LDT_END_ADDR		(LDT_BASE_ADDR + PGDIR_SIZE)
 
 #define __VMALLOC_BASE_L4	0xffffc90000000000UL
@@ -140,6 +174,18 @@ extern unsigned int ptrs_per_p4d;
 #endif /* CONFIG_DYNAMIC_MEMORY_LAYOUT */
 
 #define VMALLOC_END		(VMALLOC_START + (VMALLOC_SIZE_TB << 40) - 1)
+=======
+
+#ifdef CONFIG_RANDOMIZE_MEMORY
+# define VMALLOC_START		vmalloc_base
+# define VMEMMAP_START		vmemmap_base
+#else
+# define VMALLOC_START		__VMALLOC_BASE
+# define VMEMMAP_START		__VMEMMAP_BASE
+#endif /* CONFIG_RANDOMIZE_MEMORY */
+
+#define VMALLOC_END		(VMALLOC_START + _AC((VMALLOC_SIZE_TB << 40) - 1, UL))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MODULES_VADDR		(__START_KERNEL_map + KERNEL_IMAGE_SIZE)
 /* The module sections ends with the start of the fixmap */
@@ -157,6 +203,9 @@ extern unsigned int ptrs_per_p4d;
 
 #define EARLY_DYNAMIC_PAGE_TABLES	64
 
+<<<<<<< HEAD
 #define PGD_KERNEL_START	((PAGE_SIZE / 2) / sizeof(pgd_t))
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_X86_PGTABLE_64_DEFS_H */

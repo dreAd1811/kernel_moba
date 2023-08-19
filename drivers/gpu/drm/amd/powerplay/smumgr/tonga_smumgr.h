@@ -25,6 +25,7 @@
 #define _TONGA_SMUMGR_H_
 
 #include "smu72_discrete.h"
+<<<<<<< HEAD
 #include "smu7_smumgr.h"
 #include "smu72.h"
 
@@ -45,6 +46,10 @@ struct tonga_pt_defaults {
 	uint16_t  bapmti_r[SMU72_DTE_ITERATIONS * SMU72_DTE_SOURCES * SMU72_DTE_SINKS];
 	uint16_t  bapmti_rc[SMU72_DTE_ITERATIONS * SMU72_DTE_SOURCES * SMU72_DTE_SINKS];
 };
+=======
+
+#include "smu7_smumgr.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct tonga_mc_reg_entry {
 	uint32_t mclk_max;
@@ -69,6 +74,12 @@ struct tonga_smumgr {
 	const struct tonga_pt_defaults  *power_tune_defaults;
 	SMU72_Discrete_MCRegisters      mc_regs;
 	struct tonga_mc_reg_table mc_reg_table;
+<<<<<<< HEAD
+=======
+
+	uint32_t        activity_target[SMU72_MAX_LEVELS_GRAPHICS];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif

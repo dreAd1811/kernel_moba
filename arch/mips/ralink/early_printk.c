@@ -10,7 +10,10 @@
 #include <linux/serial_reg.h>
 
 #include <asm/addrspace.h>
+<<<<<<< HEAD
 #include <asm/setup.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_SOC_RT288X
 #define EARLY_UART_BASE		0x300c00
@@ -69,7 +72,11 @@ static void find_uart_base(void)
 	}
 }
 
+<<<<<<< HEAD
 void prom_putchar(char ch)
+=======
+void prom_putchar(unsigned char ch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!init_complete) {
 		find_uart_base();
@@ -77,13 +84,21 @@ void prom_putchar(char ch)
 	}
 
 	if (IS_ENABLED(CONFIG_SOC_MT7621) || soc_is_mt7628()) {
+<<<<<<< HEAD
 		uart_w32((unsigned char)ch, UART_TX);
+=======
+		uart_w32(ch, UART_TX);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		while ((uart_r32(UART_REG_LSR) & UART_LSR_THRE) == 0)
 			;
 	} else {
 		while ((uart_r32(UART_REG_LSR_RT2880) & UART_LSR_THRE) == 0)
 			;
+<<<<<<< HEAD
 		uart_w32((unsigned char)ch, UART_REG_TX);
+=======
+		uart_w32(ch, UART_REG_TX);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		while ((uart_r32(UART_REG_LSR_RT2880) & UART_LSR_THRE) == 0)
 			;
 	}

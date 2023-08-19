@@ -86,7 +86,11 @@ nvkm_xtensa_fini(struct nvkm_engine *engine, bool suspend)
 	nvkm_wr32(device, base + 0xd94, 0); /* FIFO_CTRL */
 
 	if (!suspend)
+<<<<<<< HEAD
 		nvkm_memory_unref(&xtensa->gpu_fw);
+=======
+		nvkm_memory_del(&xtensa->gpu_fw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

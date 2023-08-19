@@ -62,7 +62,11 @@ static __always_inline void __ticket_spin_lock(arch_spinlock_t *lock)
 
 static __always_inline int __ticket_spin_trylock(arch_spinlock_t *lock)
 {
+<<<<<<< HEAD
 	int tmp = READ_ONCE(lock->lock);
+=======
+	int tmp = ACCESS_ONCE(lock->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(((tmp >> TICKET_SHIFT) ^ tmp) & TICKET_MASK))
 		return ia64_cmpxchg(acq, &lock->lock, tmp, tmp + 1, sizeof (tmp)) == tmp;
@@ -74,19 +78,31 @@ static __always_inline void __ticket_spin_unlock(arch_spinlock_t *lock)
 	unsigned short	*p = (unsigned short *)&lock->lock + 1, tmp;
 
 	asm volatile ("ld2.bias %0=[%1]" : "=r"(tmp) : "r"(p));
+<<<<<<< HEAD
 	WRITE_ONCE(*p, (tmp + 2) & ~1);
+=======
+	ACCESS_ONCE(*p) = (tmp + 2) & ~1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int __ticket_spin_is_locked(arch_spinlock_t *lock)
 {
+<<<<<<< HEAD
 	long tmp = READ_ONCE(lock->lock);
+=======
+	long tmp = ACCESS_ONCE(lock->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return !!(((tmp >> TICKET_SHIFT) ^ tmp) & TICKET_MASK);
 }
 
 static inline int __ticket_spin_is_contended(arch_spinlock_t *lock)
 {
+<<<<<<< HEAD
 	long tmp = READ_ONCE(lock->lock);
+=======
+	long tmp = ACCESS_ONCE(lock->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ((tmp - (tmp >> TICKET_SHIFT)) & TICKET_MASK) > 1;
 }
@@ -127,7 +143,13 @@ static __always_inline void arch_spin_lock_flags(arch_spinlock_t *lock,
 {
 	arch_spin_lock(lock);
 }
+<<<<<<< HEAD
 #define arch_spin_lock_flags	arch_spin_lock_flags
+=======
+
+#define arch_read_can_lock(rw)		(*(volatile int *)(rw) >= 0)
+#define arch_write_can_lock(rw)	(*(volatile int *)(rw) == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef ASM_SUPPORTED
 
@@ -155,7 +177,10 @@ arch_read_lock_flags(arch_rwlock_t *lock, unsigned long flags)
 		: "p6", "p7", "r2", "memory");
 }
 
+<<<<<<< HEAD
 #define arch_read_lock_flags arch_read_lock_flags
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define arch_read_lock(lock) arch_read_lock_flags(lock, 0)
 
 #else /* !ASM_SUPPORTED */
@@ -208,7 +233,10 @@ arch_write_lock_flags(arch_rwlock_t *lock, unsigned long flags)
 		: "ar.ccv", "p6", "p7", "r2", "r29", "memory");
 }
 
+<<<<<<< HEAD
 #define arch_write_lock_flags arch_write_lock_flags
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define arch_write_lock(rw) arch_write_lock_flags(rw, 0)
 
 #define arch_write_trylock(rw)							\
@@ -232,6 +260,11 @@ static inline void arch_write_unlock(arch_rwlock_t *x)
 
 #else /* !ASM_SUPPORTED */
 
+<<<<<<< HEAD
+=======
+#define arch_write_lock_flags(l, flags) arch_write_lock(l)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define arch_write_lock(l)								\
 ({											\
 	__u64 ia64_val, ia64_set_val = ia64_dep_mi(-1, 0, 31, 1);			\
@@ -271,4 +304,11 @@ static inline int arch_read_trylock(arch_rwlock_t *x)
 	return (u32)ia64_cmpxchg4_acq((__u32 *)(x), new.word, old.word) == old.word;
 }
 
+<<<<<<< HEAD
+=======
+#define arch_spin_relax(lock)	cpu_relax()
+#define arch_read_relax(lock)	cpu_relax()
+#define arch_write_relax(lock)	cpu_relax()
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /*  _ASM_IA64_SPINLOCK_H */

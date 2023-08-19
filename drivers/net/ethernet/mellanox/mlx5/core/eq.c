@@ -34,6 +34,7 @@
 #include <linux/module.h>
 #include <linux/mlx5/driver.h>
 #include <linux/mlx5/cmd.h>
+<<<<<<< HEAD
 #ifdef CONFIG_RFS_ACCEL
 #include <linux/cpu_rmap.h>
 #endif
@@ -42,6 +43,11 @@
 #include "eswitch.h"
 #include "lib/clock.h"
 #include "diag/fw_tracer.h"
+=======
+#include "mlx5_core.h"
+#include "fpga/core.h"
+#include "eswitch.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	MLX5_EQE_SIZE		= sizeof(struct mlx5_eqe),
@@ -56,7 +62,11 @@ enum {
 
 enum {
 	MLX5_NUM_SPARE_EQE	= 0x80,
+<<<<<<< HEAD
 	MLX5_NUM_ASYNC_EQE	= 0x1000,
+=======
+	MLX5_NUM_ASYNC_EQE	= 0x100,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_NUM_CMD_EQE	= 32,
 	MLX5_NUM_PF_DRAIN	= 64,
 };
@@ -146,8 +156,11 @@ static const char *eqe_type_str(u8 type)
 		return "MLX5_EVENT_TYPE_GPIO_EVENT";
 	case MLX5_EVENT_TYPE_PORT_MODULE_EVENT:
 		return "MLX5_EVENT_TYPE_PORT_MODULE_EVENT";
+<<<<<<< HEAD
 	case MLX5_EVENT_TYPE_TEMP_WARN_EVENT:
 		return "MLX5_EVENT_TYPE_TEMP_WARN_EVENT";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MLX5_EVENT_TYPE_REMOTE_CONFIG:
 		return "MLX5_EVENT_TYPE_REMOTE_CONFIG";
 	case MLX5_EVENT_TYPE_DB_BF_CONGESTION:
@@ -166,12 +179,17 @@ static const char *eqe_type_str(u8 type)
 		return "MLX5_EVENT_TYPE_NIC_VPORT_CHANGE";
 	case MLX5_EVENT_TYPE_FPGA_ERROR:
 		return "MLX5_EVENT_TYPE_FPGA_ERROR";
+<<<<<<< HEAD
 	case MLX5_EVENT_TYPE_FPGA_QP_ERROR:
 		return "MLX5_EVENT_TYPE_FPGA_QP_ERROR";
 	case MLX5_EVENT_TYPE_GENERAL_EVENT:
 		return "MLX5_EVENT_TYPE_GENERAL_EVENT";
 	case MLX5_EVENT_TYPE_DEVICE_TRACER:
 		return "MLX5_EVENT_TYPE_DEVICE_TRACER";
+=======
+	case MLX5_EVENT_TYPE_GENERAL_EVENT:
+		return "MLX5_EVENT_TYPE_GENERAL_EVENT";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return "Unrecognized event";
 	}
@@ -404,6 +422,7 @@ static void general_event_handler(struct mlx5_core_dev *dev,
 	}
 }
 
+<<<<<<< HEAD
 static void mlx5_temp_warning_event(struct mlx5_core_dev *dev,
 				    struct mlx5_eqe *eqe)
 {
@@ -463,6 +482,8 @@ static void mlx5_eq_cq_event(struct mlx5_eq *eq, u32 cqn, int event_type)
 	mlx5_cq_put(cq);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t mlx5_eq_int(int irq, void *eq_ptr)
 {
 	struct mlx5_eq *eq = eq_ptr;
@@ -485,6 +506,7 @@ static irqreturn_t mlx5_eq_int(int irq, void *eq_ptr)
 		switch (eqe->type) {
 		case MLX5_EVENT_TYPE_COMP:
 			cqn = be32_to_cpu(eqe->data.comp.cqn) & 0xffffff;
+<<<<<<< HEAD
 			mlx5_eq_cq_completion(eq, cqn);
 			break;
 		case MLX5_EVENT_TYPE_DCT_DRAINED:
@@ -492,6 +514,11 @@ static irqreturn_t mlx5_eq_int(int irq, void *eq_ptr)
 			rsn |= (MLX5_RES_DCT << MLX5_USER_INDEX_LEN);
 			mlx5_rsc_event(dev, rsn, eqe->type);
 			break;
+=======
+			mlx5_cq_completion(dev, cqn);
+			break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case MLX5_EVENT_TYPE_PATH_MIG:
 		case MLX5_EVENT_TYPE_COMM_EST:
 		case MLX5_EVENT_TYPE_SQ_DRAINED:
@@ -540,9 +567,15 @@ static irqreturn_t mlx5_eq_int(int irq, void *eq_ptr)
 			break;
 		case MLX5_EVENT_TYPE_CQ_ERROR:
 			cqn = be32_to_cpu(eqe->data.cq_err.cqn) & 0xffffff;
+<<<<<<< HEAD
 			mlx5_core_warn(dev, "CQ error on CQN 0x%x, syndrome 0x%x\n",
 				       cqn, eqe->data.cq_err.syndrome);
 			mlx5_eq_cq_event(eq, cqn, eqe->type);
+=======
+			mlx5_core_warn(dev, "CQ error on CQN 0x%x, syndrom 0x%x\n",
+				       cqn, eqe->data.cq_err.syndrome);
+			mlx5_cq_event(dev, cqn, eqe->type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case MLX5_EVENT_TYPE_PAGE_REQUEST:
@@ -565,6 +598,7 @@ static irqreturn_t mlx5_eq_int(int irq, void *eq_ptr)
 			break;
 
 		case MLX5_EVENT_TYPE_PPS_EVENT:
+<<<<<<< HEAD
 			mlx5_pps_event(dev, eqe);
 			break;
 
@@ -585,6 +619,19 @@ static irqreturn_t mlx5_eq_int(int irq, void *eq_ptr)
 			mlx5_fw_tracer_event(dev, eqe);
 			break;
 
+=======
+			if (dev->event)
+				dev->event(dev, MLX5_DEV_EVENT_PPS, (unsigned long)eqe);
+			break;
+
+		case MLX5_EVENT_TYPE_FPGA_ERROR:
+			mlx5_fpga_event(dev, eqe->type, &eqe->data.raw);
+			break;
+
+		case MLX5_EVENT_TYPE_GENERAL_EVENT:
+			general_event_handler(dev, eqe);
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			mlx5_core_warn(dev, "Unhandled event 0x%x on EQ 0x%x\n",
 				       eqe->type, eq->eqn);
@@ -614,6 +661,7 @@ static irqreturn_t mlx5_eq_int(int irq, void *eq_ptr)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 /* Some architectures don't latch interrupts when they are disabled, so using
  * mlx5_eq_poll_irq_disabled could end up losing interrupts while trying to
  * avoid losing them.  It is not recommended to use it, unless this is the last
@@ -632,6 +680,8 @@ u32 mlx5_eq_poll_irq_disabled(struct mlx5_eq *eq)
 	return count_eqe;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void init_eq_buf(struct mlx5_eq *eq)
 {
 	struct mlx5_eqe *eqe;
@@ -647,7 +697,10 @@ int mlx5_create_map_eq(struct mlx5_core_dev *dev, struct mlx5_eq *eq, u8 vecidx,
 		       int nent, u64 mask, const char *name,
 		       enum mlx5_eq_type type)
 {
+<<<<<<< HEAD
 	struct mlx5_cq_table *cq_table = &eq->cq_table;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 out[MLX5_ST_SZ_DW(create_eq_out)] = {0};
 	struct mlx5_priv *priv = &dev->priv;
 	irq_handler_t handler;
@@ -657,11 +710,14 @@ int mlx5_create_map_eq(struct mlx5_core_dev *dev, struct mlx5_eq *eq, u8 vecidx,
 	u32 *in;
 	int err;
 
+<<<<<<< HEAD
 	/* Init CQ table */
 	memset(cq_table, 0, sizeof(*cq_table));
 	spin_lock_init(&cq_table->lock);
 	INIT_RADIX_TREE(&cq_table->tree, GFP_ATOMIC);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	eq->type = type;
 	eq->nent = roundup_pow_of_two(nent + MLX5_NUM_SPARE_EQE);
 	eq->cons_index = 0;
@@ -755,6 +811,10 @@ err_buf:
 	mlx5_buf_free(dev, &eq->buf);
 	return err;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(mlx5_create_map_eq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mlx5_destroy_unmap_eq(struct mlx5_core_dev *dev, struct mlx5_eq *eq)
 {
@@ -781,6 +841,7 @@ int mlx5_destroy_unmap_eq(struct mlx5_core_dev *dev, struct mlx5_eq *eq)
 
 	return err;
 }
+<<<<<<< HEAD
 
 int mlx5_eq_add_cq(struct mlx5_eq *eq, struct mlx5_core_cq *cq)
 {
@@ -815,6 +876,9 @@ int mlx5_eq_del_cq(struct mlx5_eq *eq, struct mlx5_core_cq *cq)
 
 	return 0;
 }
+=======
+EXPORT_SYMBOL_GPL(mlx5_destroy_unmap_eq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mlx5_eq_init(struct mlx5_core_dev *dev)
 {
@@ -854,6 +918,7 @@ int mlx5_start_eqs(struct mlx5_core_dev *dev)
 		async_event_mask |= (1ull << MLX5_EVENT_TYPE_PPS_EVENT);
 
 	if (MLX5_CAP_GEN(dev, fpga))
+<<<<<<< HEAD
 		async_event_mask |= (1ull << MLX5_EVENT_TYPE_FPGA_ERROR) |
 				    (1ull << MLX5_EVENT_TYPE_FPGA_QP_ERROR);
 	if (MLX5_CAP_GEN_MAX(dev, dct))
@@ -864,6 +929,9 @@ int mlx5_start_eqs(struct mlx5_core_dev *dev)
 
 	if (MLX5_CAP_MCAM_REG(dev, tracer_registers))
 		async_event_mask |= (1ull << MLX5_EVENT_TYPE_DEVICE_TRACER);
+=======
+		async_event_mask |= (1ull << MLX5_EVENT_TYPE_FPGA_ERROR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx5_create_map_eq(dev, &table->cmd_eq, MLX5_EQ_VEC_CMD,
 				 MLX5_NUM_CMD_EQE, 1ull << MLX5_EVENT_TYPE_CMD,
@@ -964,6 +1032,7 @@ int mlx5_core_eq_query(struct mlx5_core_dev *dev, struct mlx5_eq *eq,
 	MLX5_SET(query_eq_in, in, eq_number, eq->eqn);
 	return mlx5_cmd_exec(dev, in, sizeof(in), out, outlen);
 }
+<<<<<<< HEAD
 
 /* This function should only be called after mlx5_cmd_force_teardown_hca */
 void mlx5_core_eq_free_irqs(struct mlx5_core_dev *dev)
@@ -989,3 +1058,6 @@ void mlx5_core_eq_free_irqs(struct mlx5_core_dev *dev)
 #endif
 	pci_free_irq_vectors(dev->pdev);
 }
+=======
+EXPORT_SYMBOL_GPL(mlx5_core_eq_query);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

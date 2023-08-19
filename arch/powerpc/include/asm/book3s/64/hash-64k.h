@@ -4,6 +4,7 @@
 
 #define H_PTE_INDEX_SIZE  8
 #define H_PMD_INDEX_SIZE  10
+<<<<<<< HEAD
 #define H_PUD_INDEX_SIZE  10
 #define H_PGD_INDEX_SIZE  8
 
@@ -14,11 +15,18 @@
 #define MAX_EA_BITS_PER_CONTEXT		49
 
 /*
+=======
+#define H_PUD_INDEX_SIZE  7
+#define H_PGD_INDEX_SIZE  8
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * 64k aligned address free up few of the lower bits of RPN for us
  * We steal that here. For more deatils look at pte_pfn/pfn_pte()
  */
 #define H_PAGE_COMBO	_RPAGE_RPN0 /* this is a combo 4k page */
 #define H_PAGE_4K_PFN	_RPAGE_RPN1 /* PFN is for a single 4k page */
+<<<<<<< HEAD
 #define H_PAGE_BUSY	_RPAGE_RPN44     /* software: PTE & hash are busy */
 #define H_PAGE_HASHPTE	_RPAGE_RPN43	/* PTE has associated HPTE */
 
@@ -29,12 +37,15 @@
 #define H_PTE_PKEY_BIT3	_RPAGE_RSV4
 #define H_PTE_PKEY_BIT4	_RPAGE_RSV5
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We need to differentiate between explicit huge page and THP huge
  * page, since THP huge page also need to track real subpage details
  */
 #define H_PAGE_THP_HUGE  H_PAGE_4K_PFN
 
+<<<<<<< HEAD
 /* PTE flags to conserve for HPTE identification */
 #define _PAGE_HPTEFLAGS (H_PAGE_BUSY | H_PAGE_HASHPTE | H_PAGE_COMBO)
 /*
@@ -52,6 +63,27 @@
 #define H_PMD_FRAG_SIZE_SHIFT  (H_PMD_INDEX_SIZE + 3)
 #endif
 #define H_PMD_FRAG_NR	(PAGE_SIZE >> H_PMD_FRAG_SIZE_SHIFT)
+=======
+/*
+ * Used to track subpage group valid if H_PAGE_COMBO is set
+ * This overloads H_PAGE_F_GIX and H_PAGE_F_SECOND
+ */
+#define H_PAGE_COMBO_VALID	(H_PAGE_F_GIX | H_PAGE_F_SECOND)
+
+/* PTE flags to conserve for HPTE identification */
+#define _PAGE_HPTEFLAGS (H_PAGE_BUSY | H_PAGE_F_SECOND | \
+			 H_PAGE_F_GIX | H_PAGE_HASHPTE | H_PAGE_COMBO)
+/*
+ * we support 16 fragments per PTE page of 64K size.
+ */
+#define H_PTE_FRAG_NR	16
+/*
+ * We use a 2K PTE page fragment and another 2K for storing
+ * real_pte_t hash index
+ */
+#define H_PTE_FRAG_SIZE_SHIFT  12
+#define PTE_FRAG_SIZE (1UL << PTE_FRAG_SIZE_SHIFT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __ASSEMBLY__
 #include <asm/errno.h>
@@ -63,12 +95,17 @@
  * generic accessors and iterators here
  */
 #define __real_pte __real_pte
+<<<<<<< HEAD
 static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
+=======
+static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	real_pte_t rpte;
 	unsigned long *hidxp;
 
 	rpte.pte = pte;
+<<<<<<< HEAD
 
 	/*
 	 * Ensure that we do not read the hidx before we read the PTE. Because
@@ -121,6 +158,26 @@ static inline unsigned long pte_set_hidx(pte_t *ptep, real_pte_t rpte,
 
 	/* No PTE bits to be modified, return 0x0UL */
 	return 0x0UL;
+=======
+	rpte.hidx = 0;
+	if (pte_val(pte) & H_PAGE_COMBO) {
+		/*
+		 * Make sure we order the hidx load against the H_PAGE_COMBO
+		 * check. The store side ordering is done in __hash_page_4K
+		 */
+		smp_rmb();
+		hidxp = (unsigned long *)(ptep + PTRS_PER_PTE);
+		rpte.hidx = *hidxp;
+	}
+	return rpte;
+}
+
+static inline unsigned long __rpte_to_hidx(real_pte_t rpte, unsigned long index)
+{
+	if ((pte_val(rpte.pte) & H_PAGE_COMBO))
+		return (rpte.hidx >> (index<<2)) & 0xf;
+	return (pte_val(rpte.pte) >> H_PAGE_F_GIX_SHIFT) & 0xf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define __rpte_to_pte(r)	((r).pte)
@@ -137,9 +194,16 @@ extern bool __rpte_sub_valid(real_pte_t rpte, unsigned long index);
 		shift = mmu_psize_defs[psize].shift;			\
 		for (index = 0; vpn < __end; index++,			\
 			     vpn += (1L << (shift - VPN_SHIFT))) {	\
+<<<<<<< HEAD
 		if (!__split || __rpte_sub_valid(rpte, index))
 
 #define pte_iterate_hashed_end()  } } while(0)
+=======
+			if (!__split || __rpte_sub_valid(rpte, index))	\
+				do {
+
+#define pte_iterate_hashed_end() } while(0); } } while(0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define pte_pagesize_index(mm, addr, pte)	\
 	(((pte) & H_PAGE_COMBO)? MMU_PAGE_4K: MMU_PAGE_64K)
@@ -158,18 +222,26 @@ static inline int hash__remap_4k_pfn(struct vm_area_struct *vma, unsigned long a
 }
 
 #define H_PTE_TABLE_SIZE	PTE_FRAG_SIZE
+<<<<<<< HEAD
 #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined (CONFIG_HUGETLB_PAGE)
+=======
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define H_PMD_TABLE_SIZE	((sizeof(pmd_t) << PMD_INDEX_SIZE) + \
 				 (sizeof(unsigned long) << PMD_INDEX_SIZE))
 #else
 #define H_PMD_TABLE_SIZE	(sizeof(pmd_t) << PMD_INDEX_SIZE)
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_HUGETLB_PAGE
 #define H_PUD_TABLE_SIZE	((sizeof(pud_t) << PUD_INDEX_SIZE) +	\
 				 (sizeof(unsigned long) << PUD_INDEX_SIZE))
 #else
 #define H_PUD_TABLE_SIZE	(sizeof(pud_t) << PUD_INDEX_SIZE)
 #endif
+=======
+#define H_PUD_TABLE_SIZE	(sizeof(pud_t) << PUD_INDEX_SIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define H_PGD_TABLE_SIZE	(sizeof(pgd_t) << PGD_INDEX_SIZE)
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
@@ -233,7 +305,11 @@ static inline void mark_hpte_slot_valid(unsigned char *hpte_slot_array,
  */
 static inline int hash__pmd_trans_huge(pmd_t pmd)
 {
+<<<<<<< HEAD
 	return !!((pmd_val(pmd) & (_PAGE_PTE | H_PAGE_THP_HUGE)) ==
+=======
+	return !!((pmd_val(pmd) & (_PAGE_PTE | H_PAGE_THP_HUGE | _PAGE_DEVMAP)) ==
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  (_PAGE_PTE | H_PAGE_THP_HUGE));
 }
 
@@ -255,10 +331,24 @@ extern pmd_t hash__pmdp_collapse_flush(struct vm_area_struct *vma,
 extern void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
 					 pgtable_t pgtable);
 extern pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
+<<<<<<< HEAD
+=======
+extern void hash__pmdp_huge_split_prepare(struct vm_area_struct *vma,
+				      unsigned long address, pmd_t *pmdp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern pmd_t hash__pmdp_huge_get_and_clear(struct mm_struct *mm,
 				       unsigned long addr, pmd_t *pmdp);
 extern int hash__has_transparent_hugepage(void);
 #endif /*  CONFIG_TRANSPARENT_HUGEPAGE */
+<<<<<<< HEAD
+=======
+
+static inline pmd_t hash__pmd_mkdevmap(pmd_t pmd)
+{
+	return __pmd(pmd_val(pmd) | (_PAGE_PTE | H_PAGE_THP_HUGE | _PAGE_DEVMAP));
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* __ASSEMBLY__ */
 
 #endif /* _ASM_POWERPC_BOOK3S_64_HASH_64K_H */

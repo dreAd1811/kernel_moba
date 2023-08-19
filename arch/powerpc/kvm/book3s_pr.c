@@ -27,6 +27,10 @@
 #include <asm/reg.h>
 #include <asm/cputable.h>
 #include <asm/cacheflush.h>
+<<<<<<< HEAD
+=======
+#include <asm/tlbflush.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/uaccess.h>
 #include <asm/io.h>
 #include <asm/kvm_ppc.h>
@@ -41,8 +45,11 @@
 #include <linux/highmem.h>
 #include <linux/module.h>
 #include <linux/miscdevice.h>
+<<<<<<< HEAD
 #include <asm/asm-prototypes.h>
 #include <asm/tm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "book3s.h"
 
@@ -54,9 +61,13 @@
 
 static int kvmppc_handle_ext(struct kvm_vcpu *vcpu, unsigned int exit_nr,
 			     ulong msr);
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 static int kvmppc_handle_fac(struct kvm_vcpu *vcpu, ulong fac);
 #endif
+=======
+static void kvmppc_giveup_fac(struct kvm_vcpu *vcpu, ulong fac);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Some compatibility defines */
 #ifdef CONFIG_PPC_BOOK3S_32
@@ -117,8 +128,11 @@ static void kvmppc_core_vcpu_load_pr(struct kvm_vcpu *vcpu, int cpu)
 
 	if (kvmppc_is_split_real(vcpu))
 		kvmppc_fixup_split_real(vcpu);
+<<<<<<< HEAD
 
 	kvmppc_restore_tm_pr(vcpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void kvmppc_core_vcpu_put_pr(struct kvm_vcpu *vcpu)
@@ -126,7 +140,11 @@ static void kvmppc_core_vcpu_put_pr(struct kvm_vcpu *vcpu)
 #ifdef CONFIG_PPC_BOOK3S_64
 	struct kvmppc_book3s_shadow_vcpu *svcpu = svcpu_get(vcpu);
 	if (svcpu->in_use) {
+<<<<<<< HEAD
 		kvmppc_copy_from_svcpu(vcpu);
+=======
+		kvmppc_copy_from_svcpu(vcpu, svcpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	memcpy(to_book3s(vcpu)->slb_shadow, svcpu->slb, sizeof(svcpu->slb));
 	to_book3s(vcpu)->slb_shadow_max = svcpu->slb_max;
@@ -138,7 +156,10 @@ static void kvmppc_core_vcpu_put_pr(struct kvm_vcpu *vcpu)
 
 	kvmppc_giveup_ext(vcpu, MSR_FP | MSR_VEC | MSR_VSX);
 	kvmppc_giveup_fac(vcpu, FSCR_TAR_LG);
+<<<<<<< HEAD
 	kvmppc_save_tm_pr(vcpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable AIL if supported */
 	if (cpu_has_feature(CPU_FTR_HVMODE) &&
@@ -149,6 +170,7 @@ static void kvmppc_core_vcpu_put_pr(struct kvm_vcpu *vcpu)
 }
 
 /* Copy data needed by real-mode code from vcpu to shadow vcpu */
+<<<<<<< HEAD
 void kvmppc_copy_to_svcpu(struct kvm_vcpu *vcpu)
 {
 	struct kvmppc_book3s_shadow_vcpu *svcpu = svcpu_get(vcpu);
@@ -172,6 +194,30 @@ void kvmppc_copy_to_svcpu(struct kvm_vcpu *vcpu)
 	svcpu->ctr = vcpu->arch.regs.ctr;
 	svcpu->lr  = vcpu->arch.regs.link;
 	svcpu->pc  = vcpu->arch.regs.nip;
+=======
+void kvmppc_copy_to_svcpu(struct kvmppc_book3s_shadow_vcpu *svcpu,
+			  struct kvm_vcpu *vcpu)
+{
+	svcpu->gpr[0] = vcpu->arch.gpr[0];
+	svcpu->gpr[1] = vcpu->arch.gpr[1];
+	svcpu->gpr[2] = vcpu->arch.gpr[2];
+	svcpu->gpr[3] = vcpu->arch.gpr[3];
+	svcpu->gpr[4] = vcpu->arch.gpr[4];
+	svcpu->gpr[5] = vcpu->arch.gpr[5];
+	svcpu->gpr[6] = vcpu->arch.gpr[6];
+	svcpu->gpr[7] = vcpu->arch.gpr[7];
+	svcpu->gpr[8] = vcpu->arch.gpr[8];
+	svcpu->gpr[9] = vcpu->arch.gpr[9];
+	svcpu->gpr[10] = vcpu->arch.gpr[10];
+	svcpu->gpr[11] = vcpu->arch.gpr[11];
+	svcpu->gpr[12] = vcpu->arch.gpr[12];
+	svcpu->gpr[13] = vcpu->arch.gpr[13];
+	svcpu->cr  = vcpu->arch.cr;
+	svcpu->xer = vcpu->arch.xer;
+	svcpu->ctr = vcpu->arch.ctr;
+	svcpu->lr  = vcpu->arch.lr;
+	svcpu->pc  = vcpu->arch.pc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PPC_BOOK3S_64
 	svcpu->shadow_fscr = vcpu->arch.shadow_fscr;
 #endif
@@ -184,6 +230,7 @@ void kvmppc_copy_to_svcpu(struct kvm_vcpu *vcpu)
 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
 		vcpu->arch.entry_ic = mfspr(SPRN_IC);
 	svcpu->in_use = true;
+<<<<<<< HEAD
 
 	svcpu_put(svcpu);
 }
@@ -227,6 +274,19 @@ void kvmppc_copy_from_svcpu(struct kvm_vcpu *vcpu)
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	ulong old_msr;
 #endif
+=======
+}
+
+/* Copy data touched by real-mode code from shadow vcpu back to vcpu */
+void kvmppc_copy_from_svcpu(struct kvm_vcpu *vcpu,
+			    struct kvmppc_book3s_shadow_vcpu *svcpu)
+{
+	/*
+	 * vcpu_put would just call us again because in_use hasn't
+	 * been updated yet.
+	 */
+	preempt_disable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Maybe we were already preempted and synced the svcpu from
@@ -235,6 +295,7 @@ void kvmppc_copy_from_svcpu(struct kvm_vcpu *vcpu)
 	if (!svcpu->in_use)
 		goto out;
 
+<<<<<<< HEAD
 	vcpu->arch.regs.gpr[0] = svcpu->gpr[0];
 	vcpu->arch.regs.gpr[1] = svcpu->gpr[1];
 	vcpu->arch.regs.gpr[2] = svcpu->gpr[2];
@@ -254,6 +315,27 @@ void kvmppc_copy_from_svcpu(struct kvm_vcpu *vcpu)
 	vcpu->arch.regs.ctr = svcpu->ctr;
 	vcpu->arch.regs.link  = svcpu->lr;
 	vcpu->arch.regs.nip  = svcpu->pc;
+=======
+	vcpu->arch.gpr[0] = svcpu->gpr[0];
+	vcpu->arch.gpr[1] = svcpu->gpr[1];
+	vcpu->arch.gpr[2] = svcpu->gpr[2];
+	vcpu->arch.gpr[3] = svcpu->gpr[3];
+	vcpu->arch.gpr[4] = svcpu->gpr[4];
+	vcpu->arch.gpr[5] = svcpu->gpr[5];
+	vcpu->arch.gpr[6] = svcpu->gpr[6];
+	vcpu->arch.gpr[7] = svcpu->gpr[7];
+	vcpu->arch.gpr[8] = svcpu->gpr[8];
+	vcpu->arch.gpr[9] = svcpu->gpr[9];
+	vcpu->arch.gpr[10] = svcpu->gpr[10];
+	vcpu->arch.gpr[11] = svcpu->gpr[11];
+	vcpu->arch.gpr[12] = svcpu->gpr[12];
+	vcpu->arch.gpr[13] = svcpu->gpr[13];
+	vcpu->arch.cr  = svcpu->cr;
+	vcpu->arch.xer = svcpu->xer;
+	vcpu->arch.ctr = svcpu->ctr;
+	vcpu->arch.lr  = svcpu->lr;
+	vcpu->arch.pc  = svcpu->pc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vcpu->arch.shadow_srr1 = svcpu->shadow_srr1;
 	vcpu->arch.fault_dar   = svcpu->fault_dar;
 	vcpu->arch.fault_dsisr = svcpu->fault_dsisr;
@@ -269,6 +351,7 @@ void kvmppc_copy_from_svcpu(struct kvm_vcpu *vcpu)
 	to_book3s(vcpu)->vtb += get_vtb() - vcpu->arch.entry_vtb;
 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
 		vcpu->arch.ic += mfspr(SPRN_IC) - vcpu->arch.entry_ic;
+<<<<<<< HEAD
 
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	/*
@@ -379,6 +462,14 @@ void kvmppc_restore_tm_pr(struct kvm_vcpu *vcpu)
 }
 #endif
 
+=======
+	svcpu->in_use = false;
+
+out:
+	preempt_enable();
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kvmppc_core_check_requests_pr(struct kvm_vcpu *vcpu)
 {
 	int r = 1; /* Indicate we want to get back into the guest */
@@ -422,6 +513,18 @@ static void do_kvm_unmap_hva(struct kvm *kvm, unsigned long start,
 	}
 }
 
+<<<<<<< HEAD
+=======
+static int kvm_unmap_hva_pr(struct kvm *kvm, unsigned long hva)
+{
+	trace_kvm_unmap_hva(hva);
+
+	do_kvm_unmap_hva(kvm, hva, hva + PAGE_SIZE);
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kvm_unmap_hva_range_pr(struct kvm *kvm, unsigned long start,
 				  unsigned long end)
 {
@@ -451,6 +554,7 @@ static void kvm_set_spte_hva_pr(struct kvm *kvm, unsigned long hva, pte_t pte)
 
 /*****************************************/
 
+<<<<<<< HEAD
 static void kvmppc_set_msr_pr(struct kvm_vcpu *vcpu, u64 msr)
 {
 	ulong old_msr;
@@ -458,11 +562,35 @@ static void kvmppc_set_msr_pr(struct kvm_vcpu *vcpu, u64 msr)
 	/* For PAPR guest, make sure MSR reflects guest mode */
 	if (vcpu->arch.papr_enabled)
 		msr = (msr & ~MSR_HV) | MSR_ME;
+=======
+static void kvmppc_recalc_shadow_msr(struct kvm_vcpu *vcpu)
+{
+	ulong guest_msr = kvmppc_get_msr(vcpu);
+	ulong smsr = guest_msr;
+
+	/* Guest MSR values */
+	smsr &= MSR_FE0 | MSR_FE1 | MSR_SF | MSR_SE | MSR_BE | MSR_LE;
+	/* Process MSR values */
+	smsr |= MSR_ME | MSR_RI | MSR_IR | MSR_DR | MSR_PR | MSR_EE;
+	/* External providers the guest reserved */
+	smsr |= (guest_msr & vcpu->arch.guest_owned_ext);
+	/* 64-bit Process MSR values */
+#ifdef CONFIG_PPC_BOOK3S_64
+	smsr |= MSR_ISF | MSR_HV;
+#endif
+	vcpu->arch.shadow_msr = smsr;
+}
+
+static void kvmppc_set_msr_pr(struct kvm_vcpu *vcpu, u64 msr)
+{
+	ulong old_msr = kvmppc_get_msr(vcpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef EXIT_DEBUG
 	printk(KERN_INFO "KVM: Set MSR to 0x%llx\n", msr);
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	/* We should never target guest MSR to TS=10 && PR=0,
 	 * since we always fail transaction for guest privilege
@@ -474,6 +602,8 @@ static void kvmppc_set_msr_pr(struct kvm_vcpu *vcpu, u64 msr)
 #endif
 
 	old_msr = kvmppc_get_msr(vcpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msr &= to_book3s(vcpu)->msr_mask;
 	kvmppc_set_msr_fast(vcpu, msr);
 	kvmppc_recalc_shadow_msr(vcpu);
@@ -514,7 +644,11 @@ static void kvmppc_set_msr_pr(struct kvm_vcpu *vcpu, u64 msr)
 	/*
 	 * When switching from 32 to 64-bit, we may have a stale 32-bit
 	 * magic page around, we need to flush it. Typically 32-bit magic
+<<<<<<< HEAD
 	 * page will be instantiated when calling into RTAS. Note: We
+=======
+	 * page will be instanciated when calling into RTAS. Note: We
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * assume that such transition only happens while in kernel mode,
 	 * ie, we never transition from user 32-bit to kernel 64-bit with
 	 * a 32-bit magic page around.
@@ -529,11 +663,14 @@ static void kvmppc_set_msr_pr(struct kvm_vcpu *vcpu, u64 msr)
 	/* Preload FPU if it's enabled */
 	if (kvmppc_get_msr(vcpu) & MSR_FP)
 		kvmppc_handle_ext(vcpu, BOOK3S_INTERRUPT_FP_UNAVAIL, MSR_FP);
+<<<<<<< HEAD
 
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	if (kvmppc_get_msr(vcpu) & MSR_TM)
 		kvmppc_handle_lost_math_exts(vcpu);
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void kvmppc_set_pvr_pr(struct kvm_vcpu *vcpu, u32 pvr)
@@ -731,6 +868,7 @@ int kvmppc_handle_pagefault(struct kvm_run *run, struct kvm_vcpu *vcpu,
 		pte.may_execute = !data;
 	}
 
+<<<<<<< HEAD
 	if (page_found == -ENOENT || page_found == -EPERM) {
 		/* Page not found in guest PTE entries, or protection fault */
 		u64 flags;
@@ -745,6 +883,26 @@ int kvmppc_handle_pagefault(struct kvm_run *run, struct kvm_vcpu *vcpu,
 		} else {
 			kvmppc_core_queue_inst_storage(vcpu, flags);
 		}
+=======
+	if (page_found == -ENOENT) {
+		/* Page not found in guest PTE entries */
+		u64 ssrr1 = vcpu->arch.shadow_srr1;
+		u64 msr = kvmppc_get_msr(vcpu);
+		kvmppc_set_dar(vcpu, kvmppc_get_fault_dar(vcpu));
+		kvmppc_set_dsisr(vcpu, vcpu->arch.fault_dsisr);
+		kvmppc_set_msr_fast(vcpu, msr | (ssrr1 & 0xf8000000ULL));
+		kvmppc_book3s_queue_irqprio(vcpu, vec);
+	} else if (page_found == -EPERM) {
+		/* Storage protection */
+		u32 dsisr = vcpu->arch.fault_dsisr;
+		u64 ssrr1 = vcpu->arch.shadow_srr1;
+		u64 msr = kvmppc_get_msr(vcpu);
+		kvmppc_set_dar(vcpu, kvmppc_get_fault_dar(vcpu));
+		dsisr = (dsisr & ~DSISR_NOHPTE) | DSISR_PROTFAULT;
+		kvmppc_set_dsisr(vcpu, dsisr);
+		kvmppc_set_msr_fast(vcpu, msr | (ssrr1 & 0xf8000000ULL));
+		kvmppc_book3s_queue_irqprio(vcpu, vec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (page_found == -EINVAL) {
 		/* Page not found in guest SLB */
 		kvmppc_set_dar(vcpu, kvmppc_get_fault_dar(vcpu));
@@ -826,7 +984,11 @@ void kvmppc_giveup_ext(struct kvm_vcpu *vcpu, ulong msr)
 }
 
 /* Give up facility (TAR / EBB / DSCR) */
+<<<<<<< HEAD
 void kvmppc_giveup_fac(struct kvm_vcpu *vcpu, ulong fac)
+=======
+static void kvmppc_giveup_fac(struct kvm_vcpu *vcpu, ulong fac)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifdef CONFIG_PPC_BOOK3S_64
 	if (!(vcpu->arch.shadow_fscr & (1ULL << fac))) {
@@ -945,7 +1107,11 @@ static void kvmppc_handle_lost_ext(struct kvm_vcpu *vcpu)
 
 #ifdef CONFIG_PPC_BOOK3S_64
 
+<<<<<<< HEAD
 void kvmppc_trigger_fac_interrupt(struct kvm_vcpu *vcpu, ulong fac)
+=======
+static void kvmppc_trigger_fac_interrupt(struct kvm_vcpu *vcpu, ulong fac)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Inject the Interrupt Cause field and trigger a guest interrupt */
 	vcpu->arch.fscr &= ~(0xffULL << 56);
@@ -1007,6 +1173,7 @@ static int kvmppc_handle_fac(struct kvm_vcpu *vcpu, ulong fac)
 		break;
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	/* Since we disabled MSR_TM at privilege state, the mfspr instruction
 	 * for TM spr can trigger TM fac unavailable. In this case, the
@@ -1019,6 +1186,8 @@ static int kvmppc_handle_fac(struct kvm_vcpu *vcpu, ulong fac)
 		return RESUME_GUEST_NV;
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return RESUME_GUEST;
 }
 
@@ -1027,12 +1196,16 @@ void kvmppc_set_fscr(struct kvm_vcpu *vcpu, u64 fscr)
 	if ((vcpu->arch.fscr & FSCR_TAR) && !(fscr & FSCR_TAR)) {
 		/* TAR got dropped, drop it in shadow too */
 		kvmppc_giveup_fac(vcpu, FSCR_TAR_LG);
+<<<<<<< HEAD
 	} else if (!(vcpu->arch.fscr & FSCR_TAR) && (fscr & FSCR_TAR)) {
 		vcpu->arch.fscr = fscr;
 		kvmppc_handle_fac(vcpu, FSCR_TAR_LG);
 		return;
 	}
 
+=======
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vcpu->arch.fscr = fscr;
 }
 #endif
@@ -1177,8 +1350,15 @@ int kvmppc_handle_exit_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 			kvmppc_mmu_pte_flush(vcpu, kvmppc_get_pc(vcpu), ~0xFFFUL);
 			r = RESUME_GUEST;
 		} else {
+<<<<<<< HEAD
 			kvmppc_core_queue_inst_storage(vcpu,
 						shadow_srr1 & 0x58000000);
+=======
+			u64 msr = kvmppc_get_msr(vcpu);
+			msr |= shadow_srr1 & 0x58000000;
+			kvmppc_set_msr_fast(vcpu, msr);
+			kvmppc_book3s_queue_irqprio(vcpu, exit_nr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			r = RESUME_GUEST;
 		}
 		break;
@@ -1217,7 +1397,13 @@ int kvmppc_handle_exit_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 			r = kvmppc_handle_pagefault(run, vcpu, dar, exit_nr);
 			srcu_read_unlock(&vcpu->kvm->srcu, idx);
 		} else {
+<<<<<<< HEAD
 			kvmppc_core_queue_data_storage(vcpu, dar, fault_dsisr);
+=======
+			kvmppc_set_dar(vcpu, dar);
+			kvmppc_set_dsisr(vcpu, fault_dsisr);
+			kvmppc_book3s_queue_irqprio(vcpu, exit_nr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			r = RESUME_GUEST;
 		}
 		break;
@@ -1248,6 +1434,7 @@ int kvmppc_handle_exit_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 	case BOOK3S_INTERRUPT_EXTERNAL:
 	case BOOK3S_INTERRUPT_EXTERNAL_LEVEL:
 	case BOOK3S_INTERRUPT_EXTERNAL_HV:
+<<<<<<< HEAD
 	case BOOK3S_INTERRUPT_H_VIRT:
 		vcpu->stat.ext_intr_exits++;
 		r = RESUME_GUEST;
@@ -1255,6 +1442,12 @@ int kvmppc_handle_exit_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 	case BOOK3S_INTERRUPT_HMI:
 	case BOOK3S_INTERRUPT_PERFMON:
 	case BOOK3S_INTERRUPT_SYSTEM_RESET:
+=======
+		vcpu->stat.ext_intr_exits++;
+		r = RESUME_GUEST;
+		break;
+	case BOOK3S_INTERRUPT_PERFMON:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = RESUME_GUEST;
 		break;
 	case BOOK3S_INTERRUPT_PROGRAM:
@@ -1384,7 +1577,12 @@ int kvmppc_handle_exit_pr(struct kvm_run *run, struct kvm_vcpu *vcpu,
 	}
 #ifdef CONFIG_PPC_BOOK3S_64
 	case BOOK3S_INTERRUPT_FAC_UNAVAIL:
+<<<<<<< HEAD
 		r = kvmppc_handle_fac(vcpu, vcpu->arch.shadow_fscr >> 56);
+=======
+		kvmppc_handle_fac(vcpu, vcpu->arch.shadow_fscr >> 56);
+		r = RESUME_GUEST;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 #endif
 	case BOOK3S_INTERRUPT_MACHINE_CHECK:
@@ -1475,6 +1673,7 @@ static int kvm_arch_vcpu_ioctl_set_sregs_pr(struct kvm_vcpu *vcpu,
 	kvmppc_set_pvr_pr(vcpu, sregs->pvr);
 
 	vcpu3s->sdr1 = sregs->u.s.sdr1;
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 	if (vcpu->arch.hflags & BOOK3S_HFLAG_SLB) {
 		/* Flush all SLB entries */
@@ -1491,6 +1690,14 @@ static int kvm_arch_vcpu_ioctl_set_sregs_pr(struct kvm_vcpu *vcpu,
 	} else
 #endif
 	{
+=======
+	if (vcpu->arch.hflags & BOOK3S_HFLAG_SLB) {
+		for (i = 0; i < 64; i++) {
+			vcpu->arch.mmu.slbmte(vcpu, sregs->u.s.ppc64.slb[i].slbv,
+						    sregs->u.s.ppc64.slb[i].slbe);
+		}
+	} else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < 16; i++) {
 			vcpu->arch.mmu.mtsrin(vcpu, i, sregs->u.s.ppc32.sr[i]);
 		}
@@ -1537,6 +1744,7 @@ static int kvmppc_get_one_reg_pr(struct kvm_vcpu *vcpu, u64 id,
 		else
 			*val = get_reg_val(id, 0);
 		break;
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	case KVM_REG_PPC_TFHAR:
 		*val = get_reg_val(id, vcpu->arch.tfhar);
@@ -1604,6 +1812,8 @@ static int kvmppc_get_one_reg_pr(struct kvm_vcpu *vcpu, u64 id,
 		*val = get_reg_val(id, vcpu->arch.tar_tm);
 		break;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		r = -EINVAL;
 		break;
@@ -1637,6 +1847,7 @@ static int kvmppc_set_one_reg_pr(struct kvm_vcpu *vcpu, u64 id,
 	case KVM_REG_PPC_LPCR_64:
 		kvmppc_set_lpcr_pr(vcpu, set_reg_val(id, *val));
 		break;
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	case KVM_REG_PPC_TFHAR:
 		vcpu->arch.tfhar = set_reg_val(id, *val);
@@ -1703,6 +1914,8 @@ static int kvmppc_set_one_reg_pr(struct kvm_vcpu *vcpu, u64 id,
 		vcpu->arch.tar_tm = set_reg_val(id, *val);
 		break;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		r = -EINVAL;
 		break;
@@ -1772,10 +1985,19 @@ static struct kvm_vcpu *kvmppc_core_vcpu_create_pr(struct kvm *kvm,
 
 	err = kvmppc_mmu_init(vcpu);
 	if (err < 0)
+<<<<<<< HEAD
 		goto uninit_vcpu;
 
 	return vcpu;
 
+=======
+		goto free_shared_page;
+
+	return vcpu;
+
+free_shared_page:
+	free_page((unsigned long)vcpu->arch.shared);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 uninit_vcpu:
 	kvm_vcpu_uninit(vcpu);
 free_shadow_vcpu:
@@ -1978,6 +2200,7 @@ static int kvm_vm_ioctl_get_smmu_info_pr(struct kvm *kvm,
 
 	return 0;
 }
+<<<<<<< HEAD
 
 static int kvm_configure_mmu_pr(struct kvm *kvm, struct kvm_ppc_mmuv3_cfg *cfg)
 {
@@ -1989,6 +2212,8 @@ static int kvm_configure_mmu_pr(struct kvm *kvm, struct kvm_ppc_mmuv3_cfg *cfg)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static int kvm_vm_ioctl_get_smmu_info_pr(struct kvm *kvm,
 					 struct kvm_ppc_smmu_info *info)
@@ -2037,12 +2262,18 @@ static void kvmppc_core_destroy_vm_pr(struct kvm *kvm)
 static int kvmppc_core_check_processor_compat_pr(void)
 {
 	/*
+<<<<<<< HEAD
 	 * PR KVM can work on POWER9 inside a guest partition
 	 * running in HPT mode.  It can't work if we are using
 	 * radix translation (because radix provides no way for
 	 * a process to have unique translations in quadrant 3).
 	 */
 	if (cpu_has_feature(CPU_FTR_ARCH_300) && radix_enabled())
+=======
+	 * Disable KVM for Power9 untill the required bits merged.
+	 */
+	if (cpu_has_feature(CPU_FTR_ARCH_300))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	return 0;
 }
@@ -2069,6 +2300,10 @@ static struct kvmppc_ops kvm_ops_pr = {
 	.flush_memslot = kvmppc_core_flush_memslot_pr,
 	.prepare_memory_region = kvmppc_core_prepare_memory_region_pr,
 	.commit_memory_region = kvmppc_core_commit_memory_region_pr,
+<<<<<<< HEAD
+=======
+	.unmap_hva = kvm_unmap_hva_pr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.unmap_hva_range = kvm_unmap_hva_range_pr,
 	.age_hva  = kvm_age_hva_pr,
 	.test_age_hva = kvm_test_age_hva_pr,
@@ -2086,9 +2321,13 @@ static struct kvmppc_ops kvm_ops_pr = {
 	.arch_vm_ioctl  = kvm_arch_vm_ioctl_pr,
 #ifdef CONFIG_PPC_BOOK3S_64
 	.hcall_implemented = kvmppc_hcall_impl_pr,
+<<<<<<< HEAD
 	.configure_mmu = kvm_configure_mmu_pr,
 #endif
 	.giveup_ext = kvmppc_giveup_ext,
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 

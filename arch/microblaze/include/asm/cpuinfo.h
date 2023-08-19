@@ -13,7 +13,11 @@
 #ifndef _ASM_MICROBLAZE_CPUINFO_H
 #define _ASM_MICROBLAZE_CPUINFO_H
 
+<<<<<<< HEAD
 #include <linux/of.h>
+=======
+#include <asm/prom.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* CPU Version and FPGA Family code conversion table type */
 struct cpu_ver_key {

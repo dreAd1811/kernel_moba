@@ -52,7 +52,10 @@
 
 static void bnxt_qplib_arm_cq_enable(struct bnxt_qplib_cq *cq);
 static void __clean_cq(struct bnxt_qplib_cq *cq, u64 qp);
+<<<<<<< HEAD
 static void bnxt_qplib_arm_srq(struct bnxt_qplib_srq *srq, u32 arm_type);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void bnxt_qplib_cancel_phantom_processing(struct bnxt_qplib_qp *qp)
 {
@@ -88,6 +91,7 @@ static void __bnxt_qplib_add_flush_qp(struct bnxt_qplib_qp *qp)
 	}
 }
 
+<<<<<<< HEAD
 static void bnxt_qplib_acquire_cq_flush_locks(struct bnxt_qplib_qp *qp,
 				       unsigned long *flags)
 	__acquires(&qp->scq->flush_lock) __acquires(&qp->rcq->flush_lock)
@@ -108,19 +112,95 @@ static void bnxt_qplib_release_cq_flush_locks(struct bnxt_qplib_qp *qp,
 	else
 		spin_unlock(&qp->rcq->flush_lock);
 	spin_unlock_irqrestore(&qp->scq->flush_lock, *flags);
+=======
+void bnxt_qplib_acquire_cq_locks(struct bnxt_qplib_qp *qp,
+				 unsigned long *flags)
+	__acquires(&qp->scq->hwq.lock) __acquires(&qp->rcq->hwq.lock)
+{
+	spin_lock_irqsave(&qp->scq->hwq.lock, *flags);
+	if (qp->scq == qp->rcq)
+		__acquire(&qp->rcq->hwq.lock);
+	else
+		spin_lock(&qp->rcq->hwq.lock);
+}
+
+void bnxt_qplib_release_cq_locks(struct bnxt_qplib_qp *qp,
+				 unsigned long *flags)
+	__releases(&qp->scq->hwq.lock) __releases(&qp->rcq->hwq.lock)
+{
+	if (qp->scq == qp->rcq)
+		__release(&qp->rcq->hwq.lock);
+	else
+		spin_unlock(&qp->rcq->hwq.lock);
+	spin_unlock_irqrestore(&qp->scq->hwq.lock, *flags);
+}
+
+static struct bnxt_qplib_cq *bnxt_qplib_find_buddy_cq(struct bnxt_qplib_qp *qp,
+						      struct bnxt_qplib_cq *cq)
+{
+	struct bnxt_qplib_cq *buddy_cq = NULL;
+
+	if (qp->scq == qp->rcq)
+		buddy_cq = NULL;
+	else if (qp->scq == cq)
+		buddy_cq = qp->rcq;
+	else
+		buddy_cq = qp->scq;
+	return buddy_cq;
+}
+
+static void bnxt_qplib_lock_buddy_cq(struct bnxt_qplib_qp *qp,
+				     struct bnxt_qplib_cq *cq)
+	__acquires(&buddy_cq->hwq.lock)
+{
+	struct bnxt_qplib_cq *buddy_cq = NULL;
+
+	buddy_cq = bnxt_qplib_find_buddy_cq(qp, cq);
+	if (!buddy_cq)
+		__acquire(&cq->hwq.lock);
+	else
+		spin_lock(&buddy_cq->hwq.lock);
+}
+
+static void bnxt_qplib_unlock_buddy_cq(struct bnxt_qplib_qp *qp,
+				       struct bnxt_qplib_cq *cq)
+	__releases(&buddy_cq->hwq.lock)
+{
+	struct bnxt_qplib_cq *buddy_cq = NULL;
+
+	buddy_cq = bnxt_qplib_find_buddy_cq(qp, cq);
+	if (!buddy_cq)
+		__release(&cq->hwq.lock);
+	else
+		spin_unlock(&buddy_cq->hwq.lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void bnxt_qplib_add_flush_qp(struct bnxt_qplib_qp *qp)
 {
 	unsigned long flags;
 
+<<<<<<< HEAD
 	bnxt_qplib_acquire_cq_flush_locks(qp, &flags);
 	__bnxt_qplib_add_flush_qp(qp);
 	bnxt_qplib_release_cq_flush_locks(qp, &flags);
+=======
+	bnxt_qplib_acquire_cq_locks(qp, &flags);
+	__bnxt_qplib_add_flush_qp(qp);
+	bnxt_qplib_release_cq_locks(qp, &flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __bnxt_qplib_del_flush_qp(struct bnxt_qplib_qp *qp)
 {
+<<<<<<< HEAD
+=======
+	struct bnxt_qplib_cq *scq, *rcq;
+
+	scq = qp->scq;
+	rcq = qp->rcq;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (qp->sq.flushed) {
 		qp->sq.flushed = false;
 		list_del(&qp->sq_flush);
@@ -133,11 +213,19 @@ static void __bnxt_qplib_del_flush_qp(struct bnxt_qplib_qp *qp)
 	}
 }
 
+<<<<<<< HEAD
 void bnxt_qplib_clean_qp(struct bnxt_qplib_qp *qp)
 {
 	unsigned long flags;
 
 	bnxt_qplib_acquire_cq_flush_locks(qp, &flags);
+=======
+void bnxt_qplib_del_flush_qp(struct bnxt_qplib_qp *qp)
+{
+	unsigned long flags;
+
+	bnxt_qplib_acquire_cq_locks(qp, &flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__clean_cq(qp->scq, (u64)(unsigned long)qp);
 	qp->sq.hwq.prod = 0;
 	qp->sq.hwq.cons = 0;
@@ -146,7 +234,11 @@ void bnxt_qplib_clean_qp(struct bnxt_qplib_qp *qp)
 	qp->rq.hwq.cons = 0;
 
 	__bnxt_qplib_del_flush_qp(qp);
+<<<<<<< HEAD
 	bnxt_qplib_release_cq_flush_locks(qp, &flags);
+=======
+	bnxt_qplib_release_cq_locks(qp, &flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bnxt_qpn_cqn_sched_task(struct work_struct *work)
@@ -196,7 +288,11 @@ static int bnxt_qplib_alloc_qp_hdr_buf(struct bnxt_qplib_res *res,
 				       struct bnxt_qplib_qp *qp)
 {
 	struct bnxt_qplib_q *rq = &qp->rq;
+<<<<<<< HEAD
 	struct bnxt_qplib_q *sq = &qp->sq;
+=======
+	struct bnxt_qplib_q *sq = &qp->rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 0;
 
 	if (qp->sq_hdr_buf_size && sq->hwq.max_elements) {
@@ -239,11 +335,18 @@ static void bnxt_qplib_service_nq(unsigned long data)
 	struct nq_base *nqe, **nq_ptr;
 	struct bnxt_qplib_cq *cq;
 	int num_cqne_processed = 0;
+<<<<<<< HEAD
 	int num_srqne_processed = 0;
 	u32 sw_cons, raw_cons;
 	u16 type;
 	int budget = nq->budget;
 	uintptr_t q_handle;
+=======
+	u32 sw_cons, raw_cons;
+	u16 type;
+	int budget = nq->budget;
+	u64 q_handle;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Service the NQ until empty */
 	raw_cons = hwq->cons;
@@ -254,12 +357,15 @@ static void bnxt_qplib_service_nq(unsigned long data)
 		if (!NQE_CMP_VALID(nqe, raw_cons, hwq->max_elements))
 			break;
 
+<<<<<<< HEAD
 		/*
 		 * The valid test of the entry must be done first before
 		 * reading any further.
 		 */
 		dma_rmb();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		type = le16_to_cpu(nqe->info10_type) & NQ_BASE_TYPE_MASK;
 		switch (type) {
 		case NQ_BASE_TYPE_CQ_NOTIFICATION:
@@ -282,6 +388,7 @@ static void bnxt_qplib_service_nq(unsigned long data)
 			spin_unlock_bh(&cq->compl_lock);
 			break;
 		}
+<<<<<<< HEAD
 		case NQ_BASE_TYPE_SRQ_EVENT:
 		{
 			struct nq_srq_event *nqsrqe =
@@ -302,6 +409,8 @@ static void bnxt_qplib_service_nq(unsigned long data)
 					 nqsrqe->event);
 			break;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case NQ_BASE_TYPE_DBQ_EVENT:
 			break;
 		default:
@@ -336,6 +445,7 @@ static irqreturn_t bnxt_qplib_nq_irq(int irq, void *dev_instance)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 void bnxt_qplib_nq_stop_irq(struct bnxt_qplib_nq *nq, bool kill)
 {
 	tasklet_disable(&nq->worker);
@@ -352,17 +462,32 @@ void bnxt_qplib_nq_stop_irq(struct bnxt_qplib_nq *nq, bool kill)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void bnxt_qplib_disable_nq(struct bnxt_qplib_nq *nq)
 {
 	if (nq->cqn_wq) {
 		destroy_workqueue(nq->cqn_wq);
 		nq->cqn_wq = NULL;
 	}
+<<<<<<< HEAD
 
 	/* Make sure the HW is stopped! */
 	if (nq->requested)
 		bnxt_qplib_nq_stop_irq(nq, true);
 
+=======
+	/* Make sure the HW is stopped! */
+	synchronize_irq(nq->vector);
+	tasklet_disable(&nq->worker);
+	tasklet_kill(&nq->worker);
+
+	if (nq->requested) {
+		irq_set_affinity_hint(nq->vector, NULL);
+		free_irq(nq->vector, nq);
+		nq->requested = false;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nq->bar_reg_iomem)
 		iounmap(nq->bar_reg_iomem);
 	nq->bar_reg_iomem = NULL;
@@ -372,6 +497,7 @@ void bnxt_qplib_disable_nq(struct bnxt_qplib_nq *nq)
 	nq->vector = 0;
 }
 
+<<<<<<< HEAD
 int bnxt_qplib_nq_start_irq(struct bnxt_qplib_nq *nq, int nq_indx,
 			    int msix_vector, bool need_init)
 {
@@ -406,28 +532,71 @@ int bnxt_qplib_nq_start_irq(struct bnxt_qplib_nq *nq, int nq_indx,
 	return rc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bnxt_qplib_enable_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq,
 			 int nq_idx, int msix_vector, int bar_reg_offset,
 			 int (*cqn_handler)(struct bnxt_qplib_nq *nq,
 					    struct bnxt_qplib_cq *),
 			 int (*srqn_handler)(struct bnxt_qplib_nq *nq,
+<<<<<<< HEAD
 					     struct bnxt_qplib_srq *,
 					     u8 event))
+=======
+					     void *, u8 event))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	resource_size_t nq_base;
 	int rc = -1;
 
+<<<<<<< HEAD
 	if (cqn_handler)
 		nq->cqn_handler = cqn_handler;
 
 	if (srqn_handler)
 		nq->srqn_handler = srqn_handler;
+=======
+	nq->pdev = pdev;
+	nq->vector = msix_vector;
+
+	nq->cqn_handler = cqn_handler;
+
+	nq->srqn_handler = srqn_handler;
+
+	tasklet_init(&nq->worker, bnxt_qplib_service_nq, (unsigned long)nq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Have a task to schedule CQ notifiers in post send case */
 	nq->cqn_wq  = create_singlethread_workqueue("bnxt_qplib_nq");
 	if (!nq->cqn_wq)
+<<<<<<< HEAD
 		return -ENOMEM;
 
+=======
+		goto fail;
+
+	nq->requested = false;
+	memset(nq->name, 0, 32);
+	sprintf(nq->name, "bnxt_qplib_nq-%d", nq_idx);
+	rc = request_irq(nq->vector, bnxt_qplib_nq_irq, 0, nq->name, nq);
+	if (rc) {
+		dev_err(&nq->pdev->dev,
+			"Failed to request IRQ for NQ: %#x", rc);
+		bnxt_qplib_disable_nq(nq);
+		goto fail;
+	}
+
+	cpumask_clear(&nq->mask);
+	cpumask_set_cpu(nq_idx, &nq->mask);
+	rc = irq_set_affinity_hint(nq->vector, &nq->mask);
+	if (rc) {
+		dev_warn(&nq->pdev->dev,
+			 "QPLIB: set affinity failed; vector: %d nq_idx: %d\n",
+			 nq->vector, nq_idx);
+	}
+
+	nq->requested = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nq->bar_reg = NQ_CONS_PCI_BAR_REGION;
 	nq->bar_reg_off = bar_reg_offset;
 	nq_base = pci_resource_start(pdev, nq->bar_reg);
@@ -440,6 +609,7 @@ int bnxt_qplib_enable_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq,
 		rc = -ENOMEM;
 		goto fail;
 	}
+<<<<<<< HEAD
 
 	rc = bnxt_qplib_nq_start_irq(nq, nq_idx, msix_vector, true);
 	if (rc) {
@@ -447,6 +617,9 @@ int bnxt_qplib_enable_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq,
 			"QPLIB: Failed to request irq for nq-idx %d", nq_idx);
 		goto fail;
 	}
+=======
+	NQ_DB_REARM(nq->bar_reg_iomem, nq->hwq.cons, nq->hwq.max_elements);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 fail:
@@ -479,6 +652,7 @@ int bnxt_qplib_alloc_nq(struct pci_dev *pdev, struct bnxt_qplib_nq *nq)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* SRQ */
 static void bnxt_qplib_arm_srq(struct bnxt_qplib_srq *srq, u32 arm_type)
 {
@@ -713,6 +887,8 @@ done:
 	return rc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* QP */
 int bnxt_qplib_create_qp1(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 {
@@ -981,12 +1157,15 @@ int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
 				 pbl->pg_size == ROCE_PG_SIZE_1G ?
 					CMDQ_CREATE_QP_RQ_PG_SIZE_PG_1G :
 				 CMDQ_CREATE_QP_RQ_PG_SIZE_PG_4K);
+<<<<<<< HEAD
 	} else {
 		/* SRQ */
 		if (qp->srq) {
 			qp_flags |= CMDQ_CREATE_QP_QP_FLAGS_SRQ_USED;
 			req.srq_cid = cpu_to_le32(qp->srq->id);
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (qp->rcq)
@@ -1369,11 +1548,14 @@ static void __clean_cq(struct bnxt_qplib_cq *cq, u64 qp)
 		hw_cqe = &hw_cqe_ptr[CQE_PG(i)][CQE_IDX(i)];
 		if (!CQE_CMP_VALID(hw_cqe, i, cq_hwq->max_elements))
 			continue;
+<<<<<<< HEAD
 		/*
 		 * The valid test of the entry must be done first before
 		 * reading any further.
 		 */
 		dma_rmb();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (hw_cqe->cqe_type_toggle & CQ_BASE_CQE_TYPE_MASK) {
 		case CQ_BASE_CQE_TYPE_REQ:
 		case CQ_BASE_CQE_TYPE_TERMINAL:
@@ -1406,6 +1588,10 @@ int bnxt_qplib_destroy_qp(struct bnxt_qplib_res *res,
 	struct bnxt_qplib_rcfw *rcfw = res->rcfw;
 	struct cmdq_destroy_qp req;
 	struct creq_destroy_qp_resp resp;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 cmd_flags = 0;
 	int rc;
 
@@ -1423,12 +1609,28 @@ int bnxt_qplib_destroy_qp(struct bnxt_qplib_res *res,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
 void bnxt_qplib_free_qp_res(struct bnxt_qplib_res *res,
 			    struct bnxt_qplib_qp *qp)
 {
+=======
+	/* Must walk the associated CQs to nullified the QP ptr */
+	spin_lock_irqsave(&qp->scq->hwq.lock, flags);
+
+	__clean_cq(qp->scq, (u64)(unsigned long)qp);
+
+	if (qp->rcq && qp->rcq != qp->scq) {
+		spin_lock(&qp->rcq->hwq.lock);
+		__clean_cq(qp->rcq, (u64)(unsigned long)qp);
+		spin_unlock(&qp->rcq->hwq.lock);
+	}
+
+	spin_unlock_irqrestore(&qp->scq->hwq.lock, flags);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bnxt_qplib_free_qp_hdr_buf(res, qp);
 	bnxt_qplib_free_hwq(res->pdev, &qp->sq.hwq);
 	kfree(qp->sq.swq);
@@ -1441,6 +1643,10 @@ void bnxt_qplib_free_qp_res(struct bnxt_qplib_res *res,
 	if (qp->orrq.max_elements)
 		bnxt_qplib_free_hwq(res->pdev, &qp->orrq);
 
+<<<<<<< HEAD
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void *bnxt_qplib_get_qp1_sq_buf(struct bnxt_qplib_qp *qp,
@@ -1607,7 +1813,11 @@ int bnxt_qplib_post_send(struct bnxt_qplib_qp *qp,
 
 			break;
 		}
+<<<<<<< HEAD
 		/* fall thru */
+=======
+		/* else, just fall thru */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BNXT_QPLIB_SWQE_TYPE_SEND_WITH_IMM:
 	case BNXT_QPLIB_SWQE_TYPE_SEND_WITH_INV:
 	{
@@ -2094,6 +2304,12 @@ void bnxt_qplib_mark_qp_error(void *qp_handle)
 	/* Must block new posting of SQ and RQ */
 	qp->state = CMDQ_MODIFY_QP_NEW_STATE_ERR;
 	bnxt_qplib_cancel_phantom_processing(qp);
+<<<<<<< HEAD
+=======
+
+	/* Add qp to flush list of the CQ */
+	__bnxt_qplib_add_flush_qp(qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Note: SQE is valid from sw_sq_cons up to cqe_sq_cons (exclusive)
@@ -2145,11 +2361,14 @@ static int do_wa9060(struct bnxt_qplib_qp *qp, struct bnxt_qplib_cq *cq,
 			/* If the next hwcqe is VALID */
 			if (CQE_CMP_VALID(peek_hwcqe, peek_raw_cq_cons,
 					  cq->hwq.max_elements)) {
+<<<<<<< HEAD
 			/*
 			 * The valid test of the entry must be done first before
 			 * reading any further.
 			 */
 				dma_rmb();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* If the next hwcqe is a REQ */
 				if ((peek_hwcqe->cqe_type_toggle &
 				    CQ_BASE_CQE_TYPE_MASK) ==
@@ -2269,6 +2488,7 @@ static int bnxt_qplib_cq_process_req(struct bnxt_qplib_cq *cq,
 				sw_sq_cons, cqe->wr_id, cqe->status);
 			cqe++;
 			(*budget)--;
+<<<<<<< HEAD
 			bnxt_qplib_mark_qp_error(qp);
 			/* Add qp to flush list of the CQ */
 			bnxt_qplib_add_flush_qp(qp);
@@ -2280,6 +2500,19 @@ static int bnxt_qplib_cq_process_req(struct bnxt_qplib_cq *cq,
 					*lib_qp = qp;
 					goto out;
 				}
+=======
+			bnxt_qplib_lock_buddy_cq(qp, cq);
+			bnxt_qplib_mark_qp_error(qp);
+			bnxt_qplib_unlock_buddy_cq(qp, cq);
+		} else {
+			/* Before we complete, do WA 9060 */
+			if (do_wa9060(qp, cq, cq_cons, sw_sq_cons,
+				      cqe_sq_cons)) {
+				*lib_qp = qp;
+				goto out;
+			}
+			if (swq->flags & SQ_SEND_FLAGS_SIGNAL_COMP) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				cqe->status = CQ_REQ_STATUS_OK;
 				cqe++;
 				(*budget)--;
@@ -2306,6 +2539,7 @@ done:
 	return rc;
 }
 
+<<<<<<< HEAD
 static void bnxt_qplib_release_srqe(struct bnxt_qplib_srq *srq, u32 tag)
 {
 	spin_lock(&srq->hwq.lock);
@@ -2316,6 +2550,8 @@ static void bnxt_qplib_release_srqe(struct bnxt_qplib_srq *srq, u32 tag)
 	spin_unlock(&srq->hwq.lock);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnxt_qplib_cq_process_res_rc(struct bnxt_qplib_cq *cq,
 					struct cq_res_rc *hwcqe,
 					struct bnxt_qplib_cqe **pcqe,
@@ -2323,7 +2559,10 @@ static int bnxt_qplib_cq_process_res_rc(struct bnxt_qplib_cq *cq,
 {
 	struct bnxt_qplib_qp *qp;
 	struct bnxt_qplib_q *rq;
+<<<<<<< HEAD
 	struct bnxt_qplib_srq *srq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bnxt_qplib_cqe *cqe;
 	u32 wr_id_idx;
 	int rc = 0;
@@ -2351,6 +2590,7 @@ static int bnxt_qplib_cq_process_res_rc(struct bnxt_qplib_cq *cq,
 
 	wr_id_idx = le32_to_cpu(hwcqe->srq_or_rq_wr_id) &
 				CQ_RES_RC_SRQ_OR_RQ_WR_ID_MASK;
+<<<<<<< HEAD
 	if (cqe->flags & CQ_RES_RC_FLAGS_SRQ_SRQ) {
 		srq = qp->srq;
 		if (!srq)
@@ -2389,6 +2629,28 @@ static int bnxt_qplib_cq_process_res_rc(struct bnxt_qplib_cq *cq,
 			/* Add qp to flush list of the CQ */
 			bnxt_qplib_add_flush_qp(qp);
 		}
+=======
+	rq = &qp->rq;
+	if (wr_id_idx > rq->hwq.max_elements) {
+		dev_err(&cq->hwq.pdev->dev, "QPLIB: FP: CQ Process RC ");
+		dev_err(&cq->hwq.pdev->dev,
+			"QPLIB: wr_id idx 0x%x exceeded RQ max 0x%x",
+			wr_id_idx, rq->hwq.max_elements);
+		return -EINVAL;
+	}
+
+	cqe->wr_id = rq->swq[wr_id_idx].wr_id;
+	cqe++;
+	(*budget)--;
+	rq->hwq.cons++;
+	*pcqe = cqe;
+
+	if (hwcqe->status != CQ_RES_RC_STATUS_OK) {
+		 /* Add qp to flush list of the CQ */
+		bnxt_qplib_lock_buddy_cq(qp, cq);
+		__bnxt_qplib_add_flush_qp(qp);
+		bnxt_qplib_unlock_buddy_cq(qp, cq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 done:
@@ -2402,7 +2664,10 @@ static int bnxt_qplib_cq_process_res_ud(struct bnxt_qplib_cq *cq,
 {
 	struct bnxt_qplib_qp *qp;
 	struct bnxt_qplib_q *rq;
+<<<<<<< HEAD
 	struct bnxt_qplib_srq *srq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bnxt_qplib_cqe *cqe;
 	u32 wr_id_idx;
 	int rc = 0;
@@ -2433,6 +2698,7 @@ static int bnxt_qplib_cq_process_res_ud(struct bnxt_qplib_cq *cq,
 				  hwcqe->src_qp_high_srq_or_rq_wr_id) &
 				 CQ_RES_UD_SRC_QP_HIGH_MASK) >> 8);
 
+<<<<<<< HEAD
 	if (cqe->flags & CQ_RES_RC_FLAGS_SRQ_SRQ) {
 		srq = qp->srq;
 		if (!srq)
@@ -2473,6 +2739,28 @@ static int bnxt_qplib_cq_process_res_ud(struct bnxt_qplib_cq *cq,
 			/* Add qp to flush list of the CQ */
 			bnxt_qplib_add_flush_qp(qp);
 		}
+=======
+	rq = &qp->rq;
+	if (wr_id_idx > rq->hwq.max_elements) {
+		dev_err(&cq->hwq.pdev->dev, "QPLIB: FP: CQ Process UD ");
+		dev_err(&cq->hwq.pdev->dev,
+			"QPLIB: wr_id idx %#x exceeded RQ max %#x",
+			wr_id_idx, rq->hwq.max_elements);
+		return -EINVAL;
+	}
+
+	cqe->wr_id = rq->swq[wr_id_idx].wr_id;
+	cqe++;
+	(*budget)--;
+	rq->hwq.cons++;
+	*pcqe = cqe;
+
+	if (hwcqe->status != CQ_RES_RC_STATUS_OK) {
+		/* Add qp to flush list of the CQ */
+		bnxt_qplib_lock_buddy_cq(qp, cq);
+		__bnxt_qplib_add_flush_qp(qp);
+		bnxt_qplib_unlock_buddy_cq(qp, cq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 done:
 	return rc;
@@ -2481,9 +2769,17 @@ done:
 bool bnxt_qplib_is_cq_empty(struct bnxt_qplib_cq *cq)
 {
 	struct cq_base *hw_cqe, **hw_cqe_ptr;
+<<<<<<< HEAD
 	u32 sw_cons, raw_cons;
 	bool rc = true;
 
+=======
+	unsigned long flags;
+	u32 sw_cons, raw_cons;
+	bool rc = true;
+
+	spin_lock_irqsave(&cq->hwq.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	raw_cons = cq->hwq.cons;
 	sw_cons = HWQ_CMP(raw_cons, &cq->hwq);
 	hw_cqe_ptr = (struct cq_base **)cq->hwq.pbl_ptr;
@@ -2491,6 +2787,10 @@ bool bnxt_qplib_is_cq_empty(struct bnxt_qplib_cq *cq)
 
 	 /* Check for Valid bit. If the CQE is valid, return false */
 	rc = !CQE_CMP_VALID(hw_cqe, raw_cons, cq->hwq.max_elements);
+<<<<<<< HEAD
+=======
+	spin_unlock_irqrestore(&cq->hwq.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -2501,7 +2801,10 @@ static int bnxt_qplib_cq_process_res_raweth_qp1(struct bnxt_qplib_cq *cq,
 {
 	struct bnxt_qplib_qp *qp;
 	struct bnxt_qplib_q *rq;
+<<<<<<< HEAD
 	struct bnxt_qplib_srq *srq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bnxt_qplib_cqe *cqe;
 	u32 wr_id_idx;
 	int rc = 0;
@@ -2538,6 +2841,7 @@ static int bnxt_qplib_cq_process_res_raweth_qp1(struct bnxt_qplib_cq *cq,
 
 	cqe->raweth_qp1_flags = le16_to_cpu(hwcqe->raweth_qp1_flags);
 	cqe->raweth_qp1_flags2 = le32_to_cpu(hwcqe->raweth_qp1_flags2);
+<<<<<<< HEAD
 	cqe->raweth_qp1_metadata = le32_to_cpu(hwcqe->raweth_qp1_metadata);
 
 	if (cqe->flags & CQ_RES_RAWETH_QP1_FLAGS_SRQ_SRQ) {
@@ -2581,6 +2885,28 @@ static int bnxt_qplib_cq_process_res_raweth_qp1(struct bnxt_qplib_cq *cq,
 			/* Add qp to flush list of the CQ */
 			bnxt_qplib_add_flush_qp(qp);
 		}
+=======
+
+	rq = &qp->rq;
+	if (wr_id_idx > rq->hwq.max_elements) {
+		dev_err(&cq->hwq.pdev->dev, "QPLIB: FP: CQ Process Raw/QP1 RQ wr_id ");
+		dev_err(&cq->hwq.pdev->dev, "QPLIB: ix 0x%x exceeded RQ max 0x%x",
+			wr_id_idx, rq->hwq.max_elements);
+		return -EINVAL;
+	}
+
+	cqe->wr_id = rq->swq[wr_id_idx].wr_id;
+	cqe++;
+	(*budget)--;
+	rq->hwq.cons++;
+	*pcqe = cqe;
+
+	if (hwcqe->status != CQ_RES_RC_STATUS_OK) {
+		/* Add qp to flush list of the CQ */
+		bnxt_qplib_lock_buddy_cq(qp, cq);
+		__bnxt_qplib_add_flush_qp(qp);
+		bnxt_qplib_unlock_buddy_cq(qp, cq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 done:
@@ -2694,7 +3020,13 @@ do_rq:
 	 */
 
 	/* Add qp to flush list of the CQ */
+<<<<<<< HEAD
 	bnxt_qplib_add_flush_qp(qp);
+=======
+	bnxt_qplib_lock_buddy_cq(qp, cq);
+	__bnxt_qplib_add_flush_qp(qp);
+	bnxt_qplib_unlock_buddy_cq(qp, cq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	return rc;
 }
@@ -2723,7 +3055,11 @@ int bnxt_qplib_process_flush_list(struct bnxt_qplib_cq *cq,
 	u32 budget = num_cqes;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&cq->flush_lock, flags);
+=======
+	spin_lock_irqsave(&cq->hwq.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(qp, &cq->sqf_head, sq_flush) {
 		dev_dbg(&cq->hwq.pdev->dev,
 			"QPLIB: FP: Flushing SQ QP= %p",
@@ -2737,7 +3073,11 @@ int bnxt_qplib_process_flush_list(struct bnxt_qplib_cq *cq,
 			qp);
 		__flush_rq(&qp->rq, qp, &cqe, &budget);
 	}
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&cq->flush_lock, flags);
+=======
+	spin_unlock_irqrestore(&cq->hwq.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return num_cqes - budget;
 }
@@ -2746,9 +3086,17 @@ int bnxt_qplib_poll_cq(struct bnxt_qplib_cq *cq, struct bnxt_qplib_cqe *cqe,
 		       int num_cqes, struct bnxt_qplib_qp **lib_qp)
 {
 	struct cq_base *hw_cqe, **hw_cqe_ptr;
+<<<<<<< HEAD
 	u32 sw_cons, raw_cons;
 	int budget, rc = 0;
 
+=======
+	unsigned long flags;
+	u32 sw_cons, raw_cons;
+	int budget, rc = 0;
+
+	spin_lock_irqsave(&cq->hwq.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	raw_cons = cq->hwq.cons;
 	budget = num_cqes;
 
@@ -2761,11 +3109,14 @@ int bnxt_qplib_poll_cq(struct bnxt_qplib_cq *cq, struct bnxt_qplib_cqe *cqe,
 		if (!CQE_CMP_VALID(hw_cqe, raw_cons, cq->hwq.max_elements))
 			break;
 
+<<<<<<< HEAD
 		/*
 		 * The valid test of the entry must be done first before
 		 * reading any further.
 		 */
 		dma_rmb();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* From the device's respective CQE format to qplib_wc*/
 		switch (hw_cqe->cqe_type_toggle & CQ_BASE_CQE_TYPE_MASK) {
 		case CQ_BASE_CQE_TYPE_REQ:
@@ -2824,15 +3175,26 @@ int bnxt_qplib_poll_cq(struct bnxt_qplib_cq *cq, struct bnxt_qplib_cqe *cqe,
 		bnxt_qplib_arm_cq(cq, DBR_DBR_TYPE_CQ);
 	}
 exit:
+<<<<<<< HEAD
+=======
+	spin_unlock_irqrestore(&cq->hwq.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return num_cqes - budget;
 }
 
 void bnxt_qplib_req_notify_cq(struct bnxt_qplib_cq *cq, u32 arm_type)
 {
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&cq->hwq.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (arm_type)
 		bnxt_qplib_arm_cq(cq, arm_type);
 	/* Using cq->arm_state variable to track whether to issue cq handler */
 	atomic_set(&cq->arm_state, 1);
+<<<<<<< HEAD
 }
 
 void bnxt_qplib_flush_cqn_wq(struct bnxt_qplib_qp *qp)
@@ -2840,4 +3202,7 @@ void bnxt_qplib_flush_cqn_wq(struct bnxt_qplib_qp *qp)
 	flush_workqueue(qp->scq->nq->cqn_wq);
 	if (qp->scq != qp->rcq)
 		flush_workqueue(qp->rcq->nq->cqn_wq);
+=======
+	spin_unlock_irqrestore(&cq->hwq.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -93,6 +93,13 @@ lookup_powerpc (unsigned long insn, ppc_cpu_t dialect)
 {
   const struct powerpc_opcode *opcode;
   const struct powerpc_opcode *opcode_end;
+<<<<<<< HEAD
+=======
+  unsigned long op;
+
+  /* Get the major opcode of the instruction.  */
+  op = PPC_OP (insn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   opcode_end = powerpc_opcodes + powerpc_num_opcodes;
   /* Find the first match in the opcode table for this major opcode.  */

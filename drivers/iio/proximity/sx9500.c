@@ -32,6 +32,12 @@
 #define SX9500_DRIVER_NAME		"sx9500"
 #define SX9500_IRQ_NAME			"sx9500_event"
 
+<<<<<<< HEAD
+=======
+#define SX9500_GPIO_INT			"interrupt"
+#define SX9500_GPIO_RESET		"reset"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Register definitions. */
 #define SX9500_REG_IRQ_SRC		0x00
 #define SX9500_REG_STAT			0x01
@@ -612,6 +618,10 @@ static const struct attribute_group sx9500_attribute_group = {
 };
 
 static const struct iio_info sx9500_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &sx9500_attribute_group,
 	.read_raw = &sx9500_read_raw,
 	.write_raw = &sx9500_write_raw,
@@ -646,6 +656,10 @@ out:
 
 static const struct iio_trigger_ops sx9500_trigger_ops = {
 	.set_trigger_state = sx9500_set_trigger_state,
+<<<<<<< HEAD
+=======
+	.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static irqreturn_t sx9500_trigger_handler(int irq, void *private)
@@ -863,6 +877,7 @@ static int sx9500_init_device(struct iio_dev *indio_dev)
 	return sx9500_init_compensation(indio_dev);
 }
 
+<<<<<<< HEAD
 static const struct acpi_gpio_params reset_gpios = { 0, 0, false };
 static const struct acpi_gpio_params interrupt_gpios = { 2, 0, false };
 
@@ -876,31 +891,45 @@ static const struct acpi_gpio_mapping acpi_sx9500_gpios[] = {
 	{ },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sx9500_gpio_probe(struct i2c_client *client,
 			      struct sx9500_data *data)
 {
 	struct gpio_desc *gpiod_int;
 	struct device *dev;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!client)
 		return;
 
 	dev = &client->dev;
 
+<<<<<<< HEAD
 	ret = devm_acpi_dev_add_driver_gpios(dev, acpi_sx9500_gpios);
 	if (ret)
 		dev_dbg(dev, "Unable to add GPIO mapping table\n");
 
 	if (client->irq <= 0) {
 		gpiod_int = devm_gpiod_get(dev, "interrupt", GPIOD_IN);
+=======
+	if (client->irq <= 0) {
+		gpiod_int = devm_gpiod_get(dev, SX9500_GPIO_INT, GPIOD_IN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(gpiod_int))
 			dev_err(dev, "gpio get irq failed\n");
 		else
 			client->irq = gpiod_to_irq(gpiod_int);
 	}
 
+<<<<<<< HEAD
 	data->gpiod_rst = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+=======
+	data->gpiod_rst = devm_gpiod_get(dev, SX9500_GPIO_RESET, GPIOD_OUT_HIGH);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(data->gpiod_rst)) {
 		dev_warn(dev, "gpio get reset pin failed\n");
 		data->gpiod_rst = NULL;
@@ -1046,7 +1075,10 @@ static const struct dev_pm_ops sx9500_pm_ops = {
 
 static const struct acpi_device_id sx9500_acpi_match[] = {
 	{"SSX9500", 0},
+<<<<<<< HEAD
 	{"SASX9500", 0},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 MODULE_DEVICE_TABLE(acpi, sx9500_acpi_match);

@@ -15,6 +15,10 @@
  */
 
 #include <drm/drm_crtc_helper.h>
+<<<<<<< HEAD
+=======
+#include <drm/drm_encoder_slave.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_atomic_helper.h>
 
 #include "arcpgu.h"
@@ -28,6 +32,10 @@
 
 struct arcpgu_drm_connector {
 	struct drm_connector connector;
+<<<<<<< HEAD
+=======
+	struct drm_encoder_slave *encoder_slave;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int arcpgu_drm_connector_get_modes(struct drm_connector *connector)
@@ -66,7 +74,11 @@ static struct drm_encoder_funcs arcpgu_drm_encoder_funcs = {
 int arcpgu_drm_sim_init(struct drm_device *drm, struct device_node *np)
 {
 	struct arcpgu_drm_connector *arcpgu_connector;
+<<<<<<< HEAD
 	struct drm_encoder *encoder;
+=======
+	struct drm_encoder_slave *encoder;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_connector *connector;
 	int ret;
 
@@ -74,10 +86,17 @@ int arcpgu_drm_sim_init(struct drm_device *drm, struct device_node *np)
 	if (encoder == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	encoder->possible_crtcs = 1;
 	encoder->possible_clones = 0;
 
 	ret = drm_encoder_init(drm, encoder, &arcpgu_drm_encoder_funcs,
+=======
+	encoder->base.possible_crtcs = 1;
+	encoder->base.possible_clones = 0;
+
+	ret = drm_encoder_init(drm, &encoder->base, &arcpgu_drm_encoder_funcs,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       DRM_MODE_ENCODER_VIRTUAL, NULL);
 	if (ret)
 		return ret;
@@ -99,19 +118,32 @@ int arcpgu_drm_sim_init(struct drm_device *drm, struct device_node *np)
 		goto error_encoder_cleanup;
 	}
 
+<<<<<<< HEAD
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = drm_mode_connector_attach_encoder(connector, &encoder->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		dev_err(drm->dev, "could not attach connector to encoder\n");
 		drm_connector_unregister(connector);
 		goto error_connector_cleanup;
 	}
 
+<<<<<<< HEAD
+=======
+	arcpgu_connector->encoder_slave = encoder;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 error_connector_cleanup:
 	drm_connector_cleanup(connector);
 
 error_encoder_cleanup:
+<<<<<<< HEAD
 	drm_encoder_cleanup(encoder);
+=======
+	drm_encoder_cleanup(&encoder->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }

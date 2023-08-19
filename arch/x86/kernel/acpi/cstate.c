@@ -108,7 +108,11 @@ static long acpi_processor_ffh_cstate_probe_cpu(void *_cx)
 			cx->type);
 	}
 	snprintf(cx->desc,
+<<<<<<< HEAD
 			ACPI_CX_DESC_LEN, "ACPI FFH MWAIT 0x%x",
+=======
+			ACPI_CX_DESC_LEN, "ACPI FFH INTEL MWAIT 0x%x",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cx->address);
 out:
 	return retval;
@@ -133,7 +137,12 @@ int acpi_processor_ffh_cstate_probe(unsigned int cpu,
 
 	/* Make sure we are running on right CPU */
 
+<<<<<<< HEAD
 	retval = work_on_cpu(cpu, acpi_processor_ffh_cstate_probe_cpu, cx);
+=======
+	retval = call_on_cpu(cpu, acpi_processor_ffh_cstate_probe_cpu, cx,
+			     false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval == 0) {
 		/* Use the hint in CST */
 		percpu_entry->states[cx->index].eax = cx->address;

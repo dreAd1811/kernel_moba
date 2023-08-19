@@ -26,6 +26,10 @@
 #include <asm/cp15.h>
 
 #define ICC_EOIR1			__ACCESS_CP15(c12, 0, c12, 1)
+<<<<<<< HEAD
+=======
+#define ICC_HPPIR1			__ACCESS_CP15(c12, 0, c12, 2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ICC_DIR				__ACCESS_CP15(c12, 0, c11, 1)
 #define ICC_IAR1			__ACCESS_CP15(c12, 0, c12, 0)
 #define ICC_SGI1R			__ACCESS_CP15_64(0, c12)
@@ -35,6 +39,7 @@
 #define ICC_IGRPEN1			__ACCESS_CP15(c12, 0, c12, 7)
 #define ICC_BPR1			__ACCESS_CP15(c12, 0, c12, 3)
 
+<<<<<<< HEAD
 #define __ICC_AP0Rx(x)			__ACCESS_CP15(c12, 0, c8, 4 | x)
 #define ICC_AP0R0			__ICC_AP0Rx(0)
 #define ICC_AP0R1			__ICC_AP0Rx(1)
@@ -47,6 +52,8 @@
 #define ICC_AP1R2			__ICC_AP1Rx(2)
 #define ICC_AP1R3			__ICC_AP1Rx(3)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ICC_HSRE			__ACCESS_CP15(c12, 4, c9, 5)
 
 #define ICH_VSEIR			__ACCESS_CP15(c12, 4, c9, 4)
@@ -98,6 +105,7 @@
 #define ICH_LRC14			__LRC8(6)
 #define ICH_LRC15			__LRC8(7)
 
+<<<<<<< HEAD
 #define __ICH_AP0Rx(x)			__ACCESS_CP15(c12, 4, c8, x)
 #define ICH_AP0R0			__ICH_AP0Rx(0)
 #define ICH_AP0R1			__ICH_AP0Rx(1)
@@ -109,6 +117,19 @@
 #define ICH_AP1R1			__ICH_AP1Rx(1)
 #define ICH_AP1R2			__ICH_AP1Rx(2)
 #define ICH_AP1R3			__ICH_AP1Rx(3)
+=======
+#define __AP0Rx(x)			__ACCESS_CP15(c12, 4, c8, x)
+#define ICH_AP0R0			__AP0Rx(0)
+#define ICH_AP0R1			__AP0Rx(1)
+#define ICH_AP0R2			__AP0Rx(2)
+#define ICH_AP0R3			__AP0Rx(3)
+
+#define __AP1Rx(x)			__ACCESS_CP15(c12, 4, c9, x)
+#define ICH_AP1R0			__AP1Rx(0)
+#define ICH_AP1R1			__AP1Rx(1)
+#define ICH_AP1R2			__AP1Rx(2)
+#define ICH_AP1R3			__AP1Rx(3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* A32-to-A64 mappings used by VGIC save/restore */
 
@@ -137,6 +158,7 @@ static inline u64 read_ ## a64(void)		\
 	return val; 				\
 }
 
+<<<<<<< HEAD
 CPUIF_MAP(ICC_PMR, ICC_PMR_EL1)
 CPUIF_MAP(ICC_AP0R0, ICC_AP0R0_EL1)
 CPUIF_MAP(ICC_AP0R1, ICC_AP0R1_EL1)
@@ -147,6 +169,8 @@ CPUIF_MAP(ICC_AP1R1, ICC_AP1R1_EL1)
 CPUIF_MAP(ICC_AP1R2, ICC_AP1R2_EL1)
 CPUIF_MAP(ICC_AP1R3, ICC_AP1R3_EL1)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CPUIF_MAP(ICH_HCR, ICH_HCR_EL2)
 CPUIF_MAP(ICH_VTR, ICH_VTR_EL2)
 CPUIF_MAP(ICH_MISR, ICH_MISR_EL2)
@@ -163,6 +187,10 @@ CPUIF_MAP(ICH_AP1R1, ICH_AP1R1_EL2)
 CPUIF_MAP(ICH_AP1R0, ICH_AP1R0_EL2)
 CPUIF_MAP(ICC_HSRE, ICC_SRE_EL2)
 CPUIF_MAP(ICC_SRE, ICC_SRE_EL1)
+<<<<<<< HEAD
+=======
+CPUIF_MAP(ICC_HPPIR1, ICC_HPPIR1_EL1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CPUIF_MAP_LO_HI(ICH_LR15, ICH_LRC15, ICH_LR15_EL2)
 CPUIF_MAP_LO_HI(ICH_LR14, ICH_LRC14, ICH_LR14_EL2)
@@ -207,17 +235,37 @@ static inline u32 gic_read_iar(void)
 	return irqstat;
 }
 
+<<<<<<< HEAD
+=======
+static inline u32 gic_read_hppir(void)
+{
+	u32 irqstat = read_sysreg(ICC_HPPIR1);
+
+	dsb(sy);
+
+	return irqstat;
+}
+
+static inline void gic_write_pmr(u32 val)
+{
+	write_sysreg(val, ICC_PMR);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void gic_write_ctlr(u32 val)
 {
 	write_sysreg(val, ICC_CTLR);
 	isb();
 }
 
+<<<<<<< HEAD
 static inline u32 gic_read_ctlr(void)
 {
 	return read_sysreg(ICC_CTLR);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void gic_write_grpen1(u32 val)
 {
 	write_sysreg(val, ICC_IGRPEN1);

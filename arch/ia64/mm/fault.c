@@ -85,8 +85,14 @@ ia64_do_page_fault (unsigned long address, unsigned long isr, struct pt_regs *re
 	int signal = SIGSEGV, code = SEGV_MAPERR;
 	struct vm_area_struct *vma, *prev_vma;
 	struct mm_struct *mm = current->mm;
+<<<<<<< HEAD
 	unsigned long mask;
 	vm_fault_t fault;
+=======
+	struct siginfo si;
+	unsigned long mask;
+	int fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
 	mask = ((((isr >> IA64_ISR_X_BIT) & 1UL) << VM_EXEC_BIT)
@@ -248,9 +254,12 @@ retry:
 		return;
 	}
 	if (user_mode(regs)) {
+<<<<<<< HEAD
 		struct siginfo si;
 
 		clear_siginfo(&si);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		si.si_signo = signal;
 		si.si_errno = 0;
 		si.si_code = code;

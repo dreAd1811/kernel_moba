@@ -207,6 +207,7 @@ config MTD_ICHXROM
 	  BE VERY CAREFUL.
 
 config MTD_ESB2ROM
+<<<<<<< HEAD
 	tristate "BIOS flash chip on Intel ESB Controller Hub 2"
 	depends on X86 && MTD_JEDECPROBE && PCI
 	help
@@ -214,6 +215,15 @@ config MTD_ESB2ROM
 	  as an MTD device - with this you can reprogram your BIOS.
 
 	  BE VERY CAREFUL.
+=======
+        tristate "BIOS flash chip on Intel ESB Controller Hub 2"
+        depends on X86 && MTD_JEDECPROBE && PCI
+        help
+          Support for treating the BIOS flash chip on ESB2 motherboards
+          as an MTD device - with this you can reprogram your BIOS.
+
+          BE VERY CAREFUL.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config MTD_CK804XROM
 	tristate "BIOS flash chip on Nvidia CK804"
@@ -334,6 +344,19 @@ config MTD_PCMCIA_ANONYMOUS
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
+=======
+config MTD_BFIN_ASYNC
+	tristate "Blackfin BF533-STAMP Flash Chip Support"
+	depends on BFIN533_STAMP && MTD_CFI && MTD_COMPLEX_MAPPINGS
+	default y
+	help
+	  Map driver which allows for simultaneous utilization of
+	  ethernet and CFI parallel flash.
+
+	  If compiled as a module, it will be called bfin-async-flash.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MTD_GPIO_ADDR
 	tristate "GPIO-assisted Flash Chip Support"
 	depends on GPIOLIB || COMPILE_TEST
@@ -401,6 +424,7 @@ config MTD_PISMO
 	  When built as a module, it will be called pismo.ko
 
 config MTD_LATCH_ADDR
+<<<<<<< HEAD
 	tristate "Latch-assisted Flash Chip Support"
 	depends on MTD_COMPLEX_MAPPINGS
 	help
@@ -408,5 +432,14 @@ config MTD_LATCH_ADDR
 	  and have the upper address lines set by a board specific code.
 
 	  If compiled as a module, it will be called latch-addr-flash.
+=======
+        tristate "Latch-assisted Flash Chip Support"
+        depends on MTD_COMPLEX_MAPPINGS
+        help
+          Map driver which allows flashes to be partially physically addressed
+          and have the upper address lines set by a board specific code.
+
+          If compiled as a module, it will be called latch-addr-flash.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endmenu

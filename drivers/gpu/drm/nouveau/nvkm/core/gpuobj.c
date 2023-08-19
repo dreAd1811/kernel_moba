@@ -42,6 +42,7 @@ nvkm_gpuobj_wr32_fast(struct nvkm_gpuobj *gpuobj, u32 offset, u32 data)
 }
 
 /* accessor functions for gpuobjs allocated directly from instmem */
+<<<<<<< HEAD
 static int
 nvkm_gpuobj_heap_map(struct nvkm_gpuobj *gpuobj, u64 offset,
 		     struct nvkm_vmm *vmm, struct nvkm_vma *vma,
@@ -50,6 +51,8 @@ nvkm_gpuobj_heap_map(struct nvkm_gpuobj *gpuobj, u64 offset,
 	return nvkm_memory_map(gpuobj->memory, offset, vmm, vma, argv, argc);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32
 nvkm_gpuobj_heap_rd32(struct nvkm_gpuobj *gpuobj, u32 offset)
 {
@@ -75,7 +78,10 @@ nvkm_gpuobj_heap_fast = {
 	.release = nvkm_gpuobj_heap_release,
 	.rd32 = nvkm_gpuobj_rd32_fast,
 	.wr32 = nvkm_gpuobj_wr32_fast,
+<<<<<<< HEAD
 	.map = nvkm_gpuobj_heap_map,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct nvkm_gpuobj_func
@@ -83,7 +89,10 @@ nvkm_gpuobj_heap_slow = {
 	.release = nvkm_gpuobj_heap_release,
 	.rd32 = nvkm_gpuobj_heap_rd32,
 	.wr32 = nvkm_gpuobj_heap_wr32,
+<<<<<<< HEAD
 	.map = nvkm_gpuobj_heap_map,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void *
@@ -100,6 +109,7 @@ nvkm_gpuobj_heap_acquire(struct nvkm_gpuobj *gpuobj)
 static const struct nvkm_gpuobj_func
 nvkm_gpuobj_heap = {
 	.acquire = nvkm_gpuobj_heap_acquire,
+<<<<<<< HEAD
 	.map = nvkm_gpuobj_heap_map,
 };
 
@@ -113,6 +123,11 @@ nvkm_gpuobj_map(struct nvkm_gpuobj *gpuobj, u64 offset,
 			       vmm, vma, argv, argc);
 }
 
+=======
+};
+
+/* accessor functions for gpuobjs sub-allocated from a parent gpuobj */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32
 nvkm_gpuobj_rd32(struct nvkm_gpuobj *gpuobj, u32 offset)
 {
@@ -138,7 +153,10 @@ nvkm_gpuobj_fast = {
 	.release = nvkm_gpuobj_release,
 	.rd32 = nvkm_gpuobj_rd32_fast,
 	.wr32 = nvkm_gpuobj_wr32_fast,
+<<<<<<< HEAD
 	.map = nvkm_gpuobj_map,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct nvkm_gpuobj_func
@@ -146,7 +164,10 @@ nvkm_gpuobj_slow = {
 	.release = nvkm_gpuobj_release,
 	.rd32 = nvkm_gpuobj_rd32,
 	.wr32 = nvkm_gpuobj_wr32,
+<<<<<<< HEAD
 	.map = nvkm_gpuobj_map,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void *
@@ -165,7 +186,10 @@ nvkm_gpuobj_acquire(struct nvkm_gpuobj *gpuobj)
 static const struct nvkm_gpuobj_func
 nvkm_gpuobj_func = {
 	.acquire = nvkm_gpuobj_acquire,
+<<<<<<< HEAD
 	.map = nvkm_gpuobj_map,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int
@@ -208,7 +232,11 @@ nvkm_gpuobj_ctor(struct nvkm_device *device, u32 size, int align, bool zero,
 		gpuobj->size = nvkm_memory_size(gpuobj->memory);
 	}
 
+<<<<<<< HEAD
 	return nvkm_mm_init(&gpuobj->heap, 0, 0, gpuobj->size, 1);
+=======
+	return nvkm_mm_init(&gpuobj->heap, 0, gpuobj->size, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void
@@ -219,7 +247,11 @@ nvkm_gpuobj_del(struct nvkm_gpuobj **pgpuobj)
 		if (gpuobj->parent)
 			nvkm_mm_free(&gpuobj->parent->heap, &gpuobj->node);
 		nvkm_mm_fini(&gpuobj->heap);
+<<<<<<< HEAD
 		nvkm_memory_unref(&gpuobj->memory);
+=======
+		nvkm_memory_del(&gpuobj->memory);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(*pgpuobj);
 		*pgpuobj = NULL;
 	}
@@ -241,6 +273,29 @@ nvkm_gpuobj_new(struct nvkm_device *device, u32 size, int align, bool zero,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+int
+nvkm_gpuobj_map(struct nvkm_gpuobj *gpuobj, struct nvkm_vm *vm,
+		u32 access, struct nvkm_vma *vma)
+{
+	struct nvkm_memory *memory = gpuobj->memory;
+	int ret = nvkm_vm_get(vm, gpuobj->size, 12, access, vma);
+	if (ret == 0)
+		nvkm_memory_map(memory, vma, 0);
+	return ret;
+}
+
+void
+nvkm_gpuobj_unmap(struct nvkm_vma *vma)
+{
+	if (vma->node) {
+		nvkm_vm_unmap(vma);
+		nvkm_vm_put(vma);
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* the below is basically only here to support sharing the paged dma object
  * for PCI(E)GART on <=nv4x chipsets, and should *not* be expected to work
  * anywhere else.

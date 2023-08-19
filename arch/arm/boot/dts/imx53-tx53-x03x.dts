@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * Copyright 2013-2017 Lothar Waßmann <LW@KARO-electronics.de>
  *
  * This file is dual-licensed: you can use it either under the terms
@@ -37,6 +38,16 @@
  *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
  *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *     OTHER DEALINGS IN THE SOFTWARE.
+=======
+ * Copyright 2013 Lothar Waßmann <LW@KARO-electronics.de>
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -53,6 +64,7 @@
 		display = &display;
 	};
 
+<<<<<<< HEAD
 	display: disp0 {
 		compatible = "fsl,imx-parallel-display";
 		interface-pix-fmt = "rgb24";
@@ -177,6 +189,134 @@
 				vsync-active = <0>;
 				de-active = <1>;
 				pixelclk-active = <0>;
+=======
+	soc {
+		display: display@di0 {
+			compatible = "fsl,imx-parallel-display";
+			interface-pix-fmt = "rgb24";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_rgb24_vga1>;
+			status = "okay";
+
+			port {
+				display0_in: endpoint {
+					remote-endpoint = <&ipu_di0_disp0>;
+				};
+			};
+
+			display-timings {
+				VGA {
+					clock-frequency = <25200000>;
+					hactive = <640>;
+					vactive = <480>;
+					hback-porch = <48>;
+					hsync-len = <96>;
+					hfront-porch = <16>;
+					vback-porch = <31>;
+					vsync-len = <2>;
+					vfront-porch = <12>;
+					hsync-active = <0>;
+					vsync-active = <0>;
+					de-active = <1>;
+					pixelclk-active = <0>;
+				};
+
+				ETV570 {
+					clock-frequency = <25200000>;
+					hactive = <640>;
+					vactive = <480>;
+					hback-porch = <114>;
+					hsync-len = <30>;
+					hfront-porch = <16>;
+					vback-porch = <32>;
+					vsync-len = <3>;
+					vfront-porch = <10>;
+					hsync-active = <0>;
+					vsync-active = <0>;
+					de-active = <1>;
+					pixelclk-active = <0>;
+				};
+
+				ET0350 {
+					clock-frequency = <6413760>;
+					hactive = <320>;
+					vactive = <240>;
+					hback-porch = <34>;
+					hsync-len = <34>;
+					hfront-porch = <20>;
+					vback-porch = <15>;
+					vsync-len = <3>;
+					vfront-porch = <4>;
+					hsync-active = <0>;
+					vsync-active = <0>;
+					de-active = <1>;
+					pixelclk-active = <0>;
+				};
+
+				ET0430 {
+					clock-frequency = <9009000>;
+					hactive = <480>;
+					vactive = <272>;
+					hback-porch = <2>;
+					hsync-len = <41>;
+					hfront-porch = <2>;
+					vback-porch = <2>;
+					vsync-len = <10>;
+					vfront-porch = <2>;
+					hsync-active = <0>;
+					vsync-active = <0>;
+					de-active = <1>;
+					pixelclk-active = <1>;
+				};
+
+				ET0500 {
+					clock-frequency = <33264000>;
+					hactive = <800>;
+					vactive = <480>;
+					hback-porch = <88>;
+					hsync-len = <128>;
+					hfront-porch = <40>;
+					vback-porch = <33>;
+					vsync-len = <2>;
+					vfront-porch = <10>;
+					hsync-active = <0>;
+					vsync-active = <0>;
+					de-active = <1>;
+					pixelclk-active = <0>;
+				};
+
+				ET0700 { /* same as ET0500 */
+					clock-frequency = <33264000>;
+					hactive = <800>;
+					vactive = <480>;
+					hback-porch = <88>;
+					hsync-len = <128>;
+					hfront-porch = <40>;
+					vback-porch = <33>;
+					vsync-len = <2>;
+					vfront-porch = <10>;
+					hsync-active = <0>;
+					vsync-active = <0>;
+					de-active = <1>;
+					pixelclk-active = <0>;
+				};
+
+				ETQ570 {
+					clock-frequency = <6596040>;
+					hactive = <320>;
+					vactive = <240>;
+					hback-porch = <38>;
+					hsync-len = <30>;
+					hfront-porch = <30>;
+					vback-porch = <16>;
+					vsync-len = <3>;
+					vfront-porch = <4>;
+					hsync-active = <0>;
+					vsync-active = <0>;
+					de-active = <1>;
+					pixelclk-active = <0>;
+				};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 	};
@@ -201,6 +341,7 @@
 		default-brightness-level = <50>;
 	};
 
+<<<<<<< HEAD
 	reg_lcd_pwr: regulator-lcd-pwr {
 		compatible = "regulator-fixed";
 		regulator-name = "LCD POWER";
@@ -219,6 +360,30 @@
 		gpio = <&gpio3 29 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		regulator-boot-on;
+=======
+	regulators {
+		reg_lcd_pwr: regulator@5 {
+			compatible = "regulator-fixed";
+			reg = <5>;
+			regulator-name = "LCD POWER";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio2 31 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			regulator-boot-on;
+		};
+
+		reg_lcd_reset: regulator@6 {
+			compatible = "regulator-fixed";
+			reg = <6>;
+			regulator-name = "LCD RESET";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio3 29 GPIO_ACTIVE_HIGH>;
+			enable-active-high;
+			regulator-boot-on;
+		};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -227,10 +392,16 @@
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
 
+<<<<<<< HEAD
 	sgtl5000: codec@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		#sound-dai-cells = <0>;
+=======
+	sgtl5000: codec@0a {
+		compatible = "fsl,sgtl5000";
+		reg = <0x0a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		VDDA-supply = <&reg_2v5>;
 		VDDIO-supply = <&reg_3v3>;
 		clocks = <&mclk>;
@@ -245,7 +416,10 @@
 		interrupts = <15 IRQ_TYPE_EDGE_FALLING>;
 		reset-gpios = <&gpio2 22 GPIO_ACTIVE_LOW>;
 		wake-gpios = <&gpio2 21 GPIO_ACTIVE_HIGH>;
+<<<<<<< HEAD
 		wakeup-source;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	touchscreen: tsc2007@48 {
@@ -254,7 +428,11 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_tsc2007>;
 		interrupt-parent = <&gpio3>;
+<<<<<<< HEAD
 		interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
+=======
+		interrupts = <26 0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gpios = <&gpio3 26 GPIO_ACTIVE_LOW>;
 		ti,x-plate-ohms = <660>;
 		wakeup-source;

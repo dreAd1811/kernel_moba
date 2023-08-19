@@ -22,6 +22,7 @@ enum die_val {
 	DIE_NMIUNKNOWN,
 };
 
+<<<<<<< HEAD
 enum show_regs_mode {
 	SHOW_REGS_SHORT,
 	/*
@@ -36,6 +37,12 @@ extern void die(const char *, struct pt_regs *,long);
 extern int __must_check __die(const char *, struct pt_regs *, long);
 extern void show_stack_regs(struct pt_regs *regs);
 extern void __show_regs(struct pt_regs *regs, enum show_regs_mode);
+=======
+extern void die(const char *, struct pt_regs *,long);
+extern int __must_check __die(const char *, struct pt_regs *, long);
+extern void show_stack_regs(struct pt_regs *regs);
+extern void __show_regs(struct pt_regs *regs, int all);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void show_iret_regs(struct pt_regs *regs);
 extern unsigned long oops_begin(void);
 extern void oops_end(unsigned long, struct pt_regs *, int signr);

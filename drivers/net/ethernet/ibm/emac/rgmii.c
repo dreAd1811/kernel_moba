@@ -52,16 +52,43 @@
 /* RGMII bridge supports only GMII/TBI and RGMII/RTBI PHYs */
 static inline int rgmii_valid_mode(int phy_mode)
 {
+<<<<<<< HEAD
 	return  phy_interface_mode_is_rgmii(phy_mode) ||
 		phy_mode == PHY_INTERFACE_MODE_GMII ||
 		phy_mode == PHY_INTERFACE_MODE_MII ||
 		phy_mode == PHY_INTERFACE_MODE_TBI ||
 		phy_mode == PHY_INTERFACE_MODE_RTBI;
+=======
+	return  phy_mode == PHY_MODE_GMII ||
+		phy_mode == PHY_MODE_MII ||
+		phy_mode == PHY_MODE_RGMII ||
+		phy_mode == PHY_MODE_TBI ||
+		phy_mode == PHY_MODE_RTBI;
+}
+
+static inline const char *rgmii_mode_name(int mode)
+{
+	switch (mode) {
+	case PHY_MODE_RGMII:
+		return "RGMII";
+	case PHY_MODE_TBI:
+		return "TBI";
+	case PHY_MODE_GMII:
+		return "GMII";
+	case PHY_MODE_MII:
+		return "MII";
+	case PHY_MODE_RTBI:
+		return "RTBI";
+	default:
+		BUG();
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline u32 rgmii_mode_mask(int mode, int input)
 {
 	switch (mode) {
+<<<<<<< HEAD
 	case PHY_INTERFACE_MODE_RGMII:
 	case PHY_INTERFACE_MODE_RGMII_ID:
 	case PHY_INTERFACE_MODE_RGMII_RXID:
@@ -74,6 +101,17 @@ static inline u32 rgmii_mode_mask(int mode, int input)
 	case PHY_INTERFACE_MODE_MII:
 		return RGMII_FER_MII(input);
 	case PHY_INTERFACE_MODE_RTBI:
+=======
+	case PHY_MODE_RGMII:
+		return RGMII_FER_RGMII(input);
+	case PHY_MODE_TBI:
+		return RGMII_FER_TBI(input);
+	case PHY_MODE_GMII:
+		return RGMII_FER_GMII(input);
+	case PHY_MODE_MII:
+		return RGMII_FER_MII(input);
+	case PHY_MODE_RTBI:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return RGMII_FER_RTBI(input);
 	default:
 		BUG();
@@ -100,7 +138,11 @@ int rgmii_attach(struct platform_device *ofdev, int input, int mode)
 	out_be32(&p->fer, in_be32(&p->fer) | rgmii_mode_mask(mode, input));
 
 	printk(KERN_NOTICE "%pOF: input %d in %s mode\n",
+<<<<<<< HEAD
 	       ofdev->dev.of_node, input, phy_modes(mode));
+=======
+	       ofdev->dev.of_node, input, rgmii_mode_name(mode));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	++dev->users;
 

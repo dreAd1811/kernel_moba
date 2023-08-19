@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright(C) 2015 Linaro Limited. All rights reserved.
@@ -5,6 +6,25 @@
  */
 
 #include <linux/pid_namespace.h>
+=======
+/*
+ * Copyright(C) 2015 Linaro Limited. All rights reserved.
+ * Author: Mathieu Poirier <mathieu.poirier@linaro.org>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 #include <linux/sysfs.h>
 #include "coresight-etm.h"
@@ -1026,6 +1046,7 @@ static ssize_t ctxid_pid_show(struct device *dev,
 	struct etm_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	struct etm_config *config = &drvdata->config;
 
+<<<<<<< HEAD
 	/*
 	 * Don't use contextID tracing if coming from a PID namespace.  See
 	 * comment in ctxid_pid_store().
@@ -1035,6 +1056,10 @@ static ssize_t ctxid_pid_show(struct device *dev,
 
 	spin_lock(&drvdata->spinlock);
 	val = config->ctxid_pid[config->ctxid_idx];
+=======
+	spin_lock(&drvdata->spinlock);
+	val = config->ctxid_vpid[config->ctxid_idx];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&drvdata->spinlock);
 
 	return sprintf(buf, "%#lx\n", val);
@@ -1045,6 +1070,7 @@ static ssize_t ctxid_pid_store(struct device *dev,
 			       const char *buf, size_t size)
 {
 	int ret;
+<<<<<<< HEAD
 	unsigned long pid;
 	struct etm_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	struct etm_config *config = &drvdata->config;
@@ -1067,6 +1093,21 @@ static ssize_t ctxid_pid_store(struct device *dev,
 
 	spin_lock(&drvdata->spinlock);
 	config->ctxid_pid[config->ctxid_idx] = pid;
+=======
+	unsigned long vpid, pid;
+	struct etm_drvdata *drvdata = dev_get_drvdata(dev->parent);
+	struct etm_config *config = &drvdata->config;
+
+	ret = kstrtoul(buf, 16, &vpid);
+	if (ret)
+		return ret;
+
+	pid = coresight_vpid_to_pid(vpid);
+
+	spin_lock(&drvdata->spinlock);
+	config->ctxid_pid[config->ctxid_idx] = pid;
+	config->ctxid_vpid[config->ctxid_idx] = vpid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&drvdata->spinlock);
 
 	return size;
@@ -1080,6 +1121,7 @@ static ssize_t ctxid_mask_show(struct device *dev,
 	struct etm_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	struct etm_config *config = &drvdata->config;
 
+<<<<<<< HEAD
 	/*
 	 * Don't use contextID tracing if coming from a PID namespace.  See
 	 * comment in ctxid_pid_store().
@@ -1087,6 +1129,8 @@ static ssize_t ctxid_mask_show(struct device *dev,
 	if (task_active_pid_ns(current) != &init_pid_ns)
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = config->ctxid_mask;
 	return sprintf(buf, "%#lx\n", val);
 }
@@ -1100,6 +1144,7 @@ static ssize_t ctxid_mask_store(struct device *dev,
 	struct etm_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	struct etm_config *config = &drvdata->config;
 
+<<<<<<< HEAD
 	/*
 	 * Don't use contextID tracing if coming from a PID namespace.  See
 	 * comment in ctxid_pid_store().
@@ -1107,6 +1152,8 @@ static ssize_t ctxid_mask_store(struct device *dev,
 	if (task_active_pid_ns(current) != &init_pid_ns)
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = kstrtoul(buf, 16, &val);
 	if (ret)
 		return ret;

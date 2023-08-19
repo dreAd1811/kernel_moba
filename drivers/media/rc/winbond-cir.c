@@ -989,7 +989,12 @@ wbcir_init_hw(struct wbcir_data *data)
 
 	/* Clear RX state */
 	data->rxstate = WBCIR_RXSTATE_INACTIVE;
+<<<<<<< HEAD
 	wbcir_idle_rx(data->dev, true);
+=======
+	ir_raw_event_reset(data->dev);
+	ir_raw_event_set_idle(data->dev, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clear TX state */
 	if (data->txstate == WBCIR_TXSTATE_ACTIVE) {
@@ -1008,7 +1013,10 @@ wbcir_resume(struct pnp_dev *device)
 	struct wbcir_data *data = pnp_get_drvdata(device);
 
 	wbcir_init_hw(data);
+<<<<<<< HEAD
 	ir_raw_event_reset(data->dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enable_irq(data->irq);
 	led_classdev_resume(&data->led);
 
@@ -1044,7 +1052,11 @@ wbcir_probe(struct pnp_dev *device, const struct pnp_device_id *dev_id)
 	data->irq = pnp_irq(device, 0);
 
 	if (data->wbase == 0 || data->ebase == 0 ||
+<<<<<<< HEAD
 	    data->sbase == 0 || data->irq == -1) {
+=======
+	    data->sbase == 0 || data->irq == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENODEV;
 		dev_err(dev, "Invalid resources\n");
 		goto exit_free_data;

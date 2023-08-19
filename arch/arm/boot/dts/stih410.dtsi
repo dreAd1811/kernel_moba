@@ -16,9 +16,14 @@
 	};
 
 	soc {
+<<<<<<< HEAD
 		usb2_picophy1: phy2@0 {
 			compatible = "st,stih407-usb2-phy";
 			reg = <0 0>;
+=======
+		usb2_picophy1: phy2 {
+			compatible = "st,stih407-usb2-phy";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#phy-cells = <0>;
 			st,syscfg = <&syscfg_core 0xf8 0xf4>;
 			resets = <&softreset STIH407_PICOPHY_SOFTRESET>,
@@ -28,9 +33,14 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		usb2_picophy2: phy3@0 {
 			compatible = "st,stih407-usb2-phy";
 			reg = <0 0>;
+=======
+		usb2_picophy2: phy3 {
+			compatible = "st,stih407-usb2-phy";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#phy-cells = <0>;
 			st,syscfg = <&syscfg_core 0xfc 0xf4>;
 			resets = <&softreset STIH407_PICOPHY_SOFTRESET>,
@@ -43,7 +53,11 @@
 		ohci0: usb@9a03c00 {
 			compatible = "st,st-ohci-300x";
 			reg = <0x9a03c00 0x100>;
+<<<<<<< HEAD
 			interrupts = <GIC_SPI 180 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 180 IRQ_TYPE_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&clk_s_c0_flexgen CLK_TX_ICN_DISP_0>,
 				 <&clk_s_c0_flexgen CLK_RX_ICN_DISP_0>;
 			resets = <&powerdown STIH407_USB2_PORT0_POWERDOWN>,
@@ -58,7 +72,11 @@
 		ehci0: usb@9a03e00 {
 			compatible = "st,st-ehci-300x";
 			reg = <0x9a03e00 0x100>;
+<<<<<<< HEAD
 			interrupts = <GIC_SPI 151 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 151 IRQ_TYPE_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_usb0>;
 			clocks = <&clk_s_c0_flexgen CLK_TX_ICN_DISP_0>,
@@ -75,7 +93,11 @@
 		ohci1: usb@9a83c00 {
 			compatible = "st,st-ohci-300x";
 			reg = <0x9a83c00 0x100>;
+<<<<<<< HEAD
 			interrupts = <GIC_SPI 181 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 181 IRQ_TYPE_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&clk_s_c0_flexgen CLK_TX_ICN_DISP_0>,
 				 <&clk_s_c0_flexgen CLK_RX_ICN_DISP_0>;
 			resets = <&powerdown STIH407_USB2_PORT1_POWERDOWN>,
@@ -90,7 +112,11 @@
 		ehci1: usb@9a83e00 {
 			compatible = "st,st-ehci-300x";
 			reg = <0x9a83e00 0x100>;
+<<<<<<< HEAD
 			interrupts = <GIC_SPI 153 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 153 IRQ_TYPE_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_usb1>;
 			clocks = <&clk_s_c0_flexgen CLK_TX_ICN_DISP_0>,
@@ -104,12 +130,19 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		sti-display-subsystem@0 {
+=======
+		sti-display-subsystem {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "st,sti-display-subsystem";
 			#address-cells = <1>;
 			#size-cells = <1>;
 
+<<<<<<< HEAD
 			reg = <0 0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			assigned-clocks	= <&clk_s_d2_quadfs 0>,
 					  <&clk_s_d2_quadfs 1>,
 					  <&clk_s_c0_pll1 0>,
@@ -201,8 +234,12 @@
 				compatible = "st,stih407-hdmi";
 				reg = <0x8d04000 0x1000>;
 				reg-names = "hdmi-reg";
+<<<<<<< HEAD
 				#sound-dai-cells = <0>;
 				interrupts = <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>;
+=======
+				interrupts = <GIC_SPI 106 IRQ_TYPE_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupt-names	= "irq";
 				clock-names = "pix",
 					      "tmds",
@@ -239,7 +276,11 @@
 					 <&clk_s_d2_quadfs 1>;
 			};
 
+<<<<<<< HEAD
 			sti-hqvdp@9c00000 {
+=======
+			sti-hqvdp@9c000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "st,stih407-hqvdp";
 				reg = <0x9C00000 0x100000>;
 				clock-names = "hqvdp", "pix_main";
@@ -254,7 +295,11 @@
 		bdisp0:bdisp@9f10000 {
 			compatible = "st,stih407-bdisp";
 			reg = <0x9f10000 0x1000>;
+<<<<<<< HEAD
 			interrupts = <GIC_SPI 38 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 38 IRQ_TYPE_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-names = "bdisp";
 			clocks = <&clk_s_c0_flexgen CLK_IC_BDISP_0>;
 		};
@@ -263,8 +308,13 @@
 			compatible = "st,st-hva";
 			reg = <0x8c85000 0x400>, <0x6000000 0x40000>;
 			reg-names = "hva_registers", "hva_esram";
+<<<<<<< HEAD
 			interrupts = <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
 				     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 58 IRQ_TYPE_NONE>,
+				     <GIC_SPI 59 IRQ_TYPE_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-names = "clk_hva";
 			clocks = <&clk_s_c0_flexgen CLK_HVA>;
 		};
@@ -277,7 +327,11 @@
 			interrupts = <GIC_SPI 205 IRQ_TYPE_EDGE_RISING>;
 		};
 
+<<<<<<< HEAD
 		delta0@0 {
+=======
+		delta0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "st,st-delta";
 			clock-names = "delta",
 				      "delta-st231",
@@ -287,12 +341,20 @@
 				 <&clk_s_c0_flexgen CLK_FLASH_PROMIP>;
 		};
 
+<<<<<<< HEAD
 		sti-cec@94a087c {
+=======
+		sti-cec@094a087c {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "st,stih-cec";
 			reg = <0x94a087c 0x64>;
 			clocks = <&clk_sysin>;
 			clock-names = "cec-clk";
+<<<<<<< HEAD
 			interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			interrupts = <GIC_SPI 140 IRQ_TYPE_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			interrupt-names = "cec-irq";
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_cec0_default>;

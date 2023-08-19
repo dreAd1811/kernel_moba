@@ -140,7 +140,11 @@ static int dataflash_waitready(struct spi_device *spi)
 		if (status & (1 << 7))	/* RDY/nBSY */
 			return status;
 
+<<<<<<< HEAD
 		usleep_range(3000, 4000);
+=======
+		msleep(3);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -220,6 +224,13 @@ static int dataflash_erase(struct mtd_info *mtd, struct erase_info *instr)
 	}
 	mutex_unlock(&priv->lock);
 
+<<<<<<< HEAD
+=======
+	/* Inform MTD subsystem that erase is complete */
+	instr->state = MTD_ERASE_DONE;
+	mtd_erase_callback(instr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

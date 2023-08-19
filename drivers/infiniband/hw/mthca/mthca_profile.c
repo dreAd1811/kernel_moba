@@ -79,7 +79,11 @@ s64 mthca_make_profile(struct mthca_dev *dev,
 	struct mthca_resource *profile;
 	int i, j;
 
+<<<<<<< HEAD
 	profile = kcalloc(MTHCA_RES_NUM, sizeof(*profile), GFP_KERNEL);
+=======
+	profile = kzalloc(MTHCA_RES_NUM * sizeof *profile, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!profile)
 		return -ENOMEM;
 

@@ -20,8 +20,11 @@
  *
  */
 
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "../wlcore/debugfs.h"
 #include "../wlcore/wlcore.h"
 #include "../wlcore/debug.h"
@@ -278,18 +281,28 @@ static ssize_t radar_detection_write(struct file *file,
 	if (unlikely(wl->state != WLCORE_STATE_ON))
 		goto out;
 
+<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
+=======
+	ret = wl1271_ps_elp_wakeup(wl);
+	if (ret < 0)
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = wl18xx_cmd_radar_detection_debug(wl, channel);
 	if (ret < 0)
 		count = ret;
 
+<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
+=======
+	wl1271_ps_elp_sleep(wl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 	return count;
@@ -320,18 +333,28 @@ static ssize_t dynamic_fw_traces_write(struct file *file,
 	if (unlikely(wl->state != WLCORE_STATE_ON))
 		goto out;
 
+<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
+=======
+	ret = wl1271_ps_elp_wakeup(wl);
+	if (ret < 0)
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = wl18xx_acx_dynamic_fw_traces(wl);
 	if (ret < 0)
 		count = ret;
 
+<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
+=======
+	wl1271_ps_elp_sleep(wl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 	return count;
@@ -382,11 +405,17 @@ static ssize_t radar_debug_mode_write(struct file *file,
 	if (unlikely(wl->state != WLCORE_STATE_ON))
 		goto out;
 
+<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
 		goto out;
 	}
+=======
+	ret = wl1271_ps_elp_wakeup(wl);
+	if (ret < 0)
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wl12xx_for_each_wlvif_ap(wl, wlvif) {
 		wlcore_cmd_generic_cfg(wl, wlvif,
@@ -394,8 +423,12 @@ static ssize_t radar_debug_mode_write(struct file *file,
 				       wl->radar_debug_mode, 0);
 	}
 
+<<<<<<< HEAD
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
+=======
+	wl1271_ps_elp_sleep(wl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&wl->mutex);
 	return count;

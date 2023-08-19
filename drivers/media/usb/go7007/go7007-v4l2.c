@@ -634,7 +634,11 @@ static int vidioc_enum_input(struct file *file, void *priv,
 	if (inp->index >= go->board_info->num_inputs)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	strlcpy(inp->name, go->board_info->inputs[inp->index].name,
+=======
+	strncpy(inp->name, go->board_info->inputs[inp->index].name,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sizeof(inp->name));
 
 	/* If this board has a tuner, it will be the first input */

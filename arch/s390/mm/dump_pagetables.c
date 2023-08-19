@@ -24,8 +24,13 @@ enum address_markers_idx {
 
 static struct addr_marker address_markers[] = {
 	[IDENTITY_NR]	  = {0, "Identity Mapping"},
+<<<<<<< HEAD
 	[KERNEL_START_NR] = {(unsigned long)_stext, "Kernel Image Start"},
 	[KERNEL_END_NR]	  = {(unsigned long)_end, "Kernel Image End"},
+=======
+	[KERNEL_START_NR] = {(unsigned long)&_stext, "Kernel Image Start"},
+	[KERNEL_END_NR]	  = {(unsigned long)&_end, "Kernel Image End"},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[VMEMMAP_NR]	  = {0, "vmemmap Area"},
 	[VMALLOC_NR]	  = {0, "vmalloc Area"},
 	[MODULES_NR]	  = {0, "Modules Area"},

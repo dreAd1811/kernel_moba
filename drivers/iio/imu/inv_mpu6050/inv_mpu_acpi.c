@@ -196,7 +196,12 @@ void inv_mpu_acpi_delete_mux_client(struct i2c_client *client)
 {
 	struct inv_mpu6050_state *st = iio_priv(dev_get_drvdata(&client->dev));
 
+<<<<<<< HEAD
 	i2c_unregister_device(st->mux_client);
+=======
+	if (st->mux_client)
+		i2c_unregister_device(st->mux_client);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #else
 

@@ -243,7 +243,11 @@ static struct gs_tx_context *gs_get_tx_context(struct gs_can *dev,
 	return NULL;
 }
 
+<<<<<<< HEAD
 static int gs_cmd_reset(struct gs_can *gsdev)
+=======
+static int gs_cmd_reset(struct gs_usb *gsusb, struct gs_can *gsdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gs_device_mode *dm;
 	struct usb_interface *intf = gsdev->iface;
@@ -631,6 +635,10 @@ static int gs_can_open(struct net_device *netdev)
 					   rc);
 
 				usb_unanchor_urb(urb);
+<<<<<<< HEAD
+=======
+				usb_free_urb(urb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			}
 
@@ -709,7 +717,11 @@ static int gs_can_close(struct net_device *netdev)
 	atomic_set(&dev->active_tx_urbs, 0);
 
 	/* reset the device */
+<<<<<<< HEAD
 	rc = gs_cmd_reset(dev);
+=======
+	rc = gs_cmd_reset(parent, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc < 0)
 		netdev_warn(netdev, "Couldn't shutdown device (err=%d)", rc);
 
@@ -925,7 +937,11 @@ static int gs_usb_probe(struct usb_interface *intf,
 			     GS_USB_BREQ_HOST_FORMAT,
 			     USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_INTERFACE,
 			     1,
+<<<<<<< HEAD
 			     intf->altsetting[0].desc.bInterfaceNumber,
+=======
+			     intf->cur_altsetting->desc.bInterfaceNumber,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     hconf,
 			     sizeof(*hconf),
 			     1000);
@@ -948,7 +964,11 @@ static int gs_usb_probe(struct usb_interface *intf,
 			     GS_USB_BREQ_DEVICE_CONFIG,
 			     USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_INTERFACE,
 			     1,
+<<<<<<< HEAD
 			     intf->altsetting[0].desc.bInterfaceNumber,
+=======
+			     intf->cur_altsetting->desc.bInterfaceNumber,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     dconf,
 			     sizeof(*dconf),
 			     1000);

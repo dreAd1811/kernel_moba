@@ -669,10 +669,17 @@ edd_get_pci_dev(struct edd_device *edev)
 	struct edd_info *info = edd_dev_get_info(edev);
 
 	if (edd_dev_is_type(edev, "PCI") || edd_dev_is_type(edev, "XPRS")) {
+<<<<<<< HEAD
 		return pci_get_domain_bus_and_slot(0,
 				info->params.interface_path.pci.bus,
 				PCI_DEVFN(info->params.interface_path.pci.slot,
 				info->params.interface_path.pci.function));
+=======
+		return pci_get_bus_and_slot(info->params.interface_path.pci.bus,
+				     PCI_DEVFN(info->params.interface_path.pci.slot,
+					       info->params.interface_path.pci.
+					       function));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return NULL;
 }
@@ -748,12 +755,23 @@ edd_init(void)
 	int rc=0;
 	struct edd_device *edev;
 
+<<<<<<< HEAD
 	if (!edd_num_devices())
 		return -ENODEV;
 
 	printk(KERN_INFO "BIOS EDD facility v%s %s, %d devices found\n",
 	       EDD_VERSION, EDD_DATE, edd_num_devices());
 
+=======
+	printk(KERN_INFO "BIOS EDD facility v%s %s, %d devices found\n",
+	       EDD_VERSION, EDD_DATE, edd_num_devices());
+
+	if (!edd_num_devices()) {
+		printk(KERN_INFO "EDD information not available.\n");
+		return -ENODEV;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edd_kset = kset_create_and_add("edd", NULL, firmware_kobj);
 	if (!edd_kset)
 		return -ENOMEM;

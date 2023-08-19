@@ -13,7 +13,10 @@
 #include <linux/input.h>
 #include <linux/input/mt.h>
 #include <linux/input/touchscreen.h>
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool touchscreen_get_prop_u32(struct device *dev,
 				     const char *property,
@@ -186,6 +189,9 @@ void touchscreen_report_pos(struct input_dev *input,
 	input_report_abs(input, multitouch ? ABS_MT_POSITION_Y : ABS_Y, y);
 }
 EXPORT_SYMBOL(touchscreen_report_pos);
+<<<<<<< HEAD
 
 MODULE_LICENSE("GPL v2");
 MODULE_DESCRIPTION("Device-tree helpers functions for touchscreen devices");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

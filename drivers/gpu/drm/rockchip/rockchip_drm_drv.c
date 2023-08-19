@@ -58,7 +58,11 @@ int rockchip_drm_dma_attach_device(struct drm_device *drm_dev,
 
 	ret = iommu_attach_device(private->domain, dev);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "Failed to attach iommu device\n");
+=======
+		dev_err(dev, "Failed to attach iommu device\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -134,7 +138,11 @@ static int rockchip_drm_bind(struct device *dev)
 	drm_dev->dev_private = private;
 
 	INIT_LIST_HEAD(&private->psr_list);
+<<<<<<< HEAD
 	mutex_init(&private->psr_list_lock);
+=======
+	spin_lock_init(&private->psr_list_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = rockchip_drm_init_iommu(drm_dev);
 	if (ret)
@@ -207,6 +215,16 @@ static void rockchip_drm_unbind(struct device *dev)
 	drm_dev_unref(drm_dev);
 }
 
+<<<<<<< HEAD
+=======
+static void rockchip_drm_lastclose(struct drm_device *dev)
+{
+	struct rockchip_drm_private *priv = dev->dev_private;
+
+	drm_fb_helper_restore_fbdev_mode_unlocked(&priv->fbdev_helper);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct file_operations rockchip_drm_driver_fops = {
 	.owner = THIS_MODULE,
 	.open = drm_open,
@@ -221,7 +239,11 @@ static const struct file_operations rockchip_drm_driver_fops = {
 static struct drm_driver rockchip_drm_driver = {
 	.driver_features	= DRIVER_MODESET | DRIVER_GEM |
 				  DRIVER_PRIME | DRIVER_ATOMIC,
+<<<<<<< HEAD
 	.lastclose		= drm_fb_helper_lastclose,
+=======
+	.lastclose		= rockchip_drm_lastclose,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gem_vm_ops		= &drm_gem_cma_vm_ops,
 	.gem_free_object_unlocked = rockchip_gem_free_object,
 	.dumb_create		= rockchip_gem_dumb_create,
@@ -230,7 +252,10 @@ static struct drm_driver rockchip_drm_driver = {
 	.gem_prime_import	= drm_gem_prime_import,
 	.gem_prime_export	= drm_gem_prime_export,
 	.gem_prime_get_sg_table	= rockchip_gem_prime_get_sg_table,
+<<<<<<< HEAD
 	.gem_prime_import_sg_table	= rockchip_gem_prime_import_sg_table,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gem_prime_vmap		= rockchip_gem_prime_vmap,
 	.gem_prime_vunmap	= rockchip_gem_prime_vunmap,
 	.gem_prime_mmap		= rockchip_gem_mmap_buf,
@@ -314,6 +339,7 @@ static int compare_dev(struct device *dev, void *data)
 	return dev == (struct device *)data;
 }
 
+<<<<<<< HEAD
 static void rockchip_drm_match_remove(struct device *dev)
 {
 	struct device_link *link;
@@ -322,6 +348,8 @@ static void rockchip_drm_match_remove(struct device *dev)
 		device_link_del(link);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct component_match *rockchip_drm_match_add(struct device *dev)
 {
 	struct component_match *match = NULL;
@@ -339,15 +367,21 @@ static struct component_match *rockchip_drm_match_add(struct device *dev)
 
 			if (!d)
 				break;
+<<<<<<< HEAD
 
 			device_link_add(dev, d, DL_FLAG_STATELESS);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			component_match_add(dev, &match, compare_dev, d);
 		} while (true);
 	}
 
+<<<<<<< HEAD
 	if (IS_ERR(match))
 		rockchip_drm_match_remove(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return match ?: ERR_PTR(-ENODEV);
 }
 
@@ -380,9 +414,14 @@ static int rockchip_drm_platform_of_probe(struct device *dev)
 
 		iommu = of_parse_phandle(port->parent, "iommus", 0);
 		if (!iommu || !of_device_is_available(iommu->parent)) {
+<<<<<<< HEAD
 			DRM_DEV_DEBUG(dev,
 				      "no iommu attached for %pOF, using non-iommu buffers\n",
 				      port->parent);
+=======
+			dev_dbg(dev, "no iommu attached for %pOF, using non-iommu buffers\n",
+				port->parent);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * if there is a crtc not support iommu, force set all
 			 * crtc use non-iommu buffer.
@@ -397,13 +436,21 @@ static int rockchip_drm_platform_of_probe(struct device *dev)
 	}
 
 	if (i == 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "missing 'ports' property\n");
+=======
+		dev_err(dev, "missing 'ports' property\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
 	if (!found) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev,
 			      "No available vop found for display-subsystem.\n");
+=======
+		dev_err(dev, "No available vop found for display-subsystem.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -424,6 +471,7 @@ static int rockchip_drm_platform_probe(struct platform_device *pdev)
 	if (IS_ERR(match))
 		return PTR_ERR(match);
 
+<<<<<<< HEAD
 	ret = component_master_add_with_match(dev, &rockchip_drm_ops, match);
 	if (ret < 0) {
 		rockchip_drm_match_remove(dev);
@@ -431,14 +479,20 @@ static int rockchip_drm_platform_probe(struct platform_device *pdev)
 	}
 
 	return 0;
+=======
+	return component_master_add_with_match(dev, &rockchip_drm_ops, match);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rockchip_drm_platform_remove(struct platform_device *pdev)
 {
 	component_master_del(&pdev->dev, &rockchip_drm_ops);
 
+<<<<<<< HEAD
 	rockchip_drm_match_remove(&pdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -479,8 +533,11 @@ static int __init rockchip_drm_init(void)
 
 	num_rockchip_sub_drivers = 0;
 	ADD_ROCKCHIP_SUB_DRIVER(vop_platform_driver, CONFIG_DRM_ROCKCHIP);
+<<<<<<< HEAD
 	ADD_ROCKCHIP_SUB_DRIVER(rockchip_lvds_driver,
 				CONFIG_ROCKCHIP_LVDS);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ADD_ROCKCHIP_SUB_DRIVER(rockchip_dp_driver,
 				CONFIG_ROCKCHIP_ANALOGIX_DP);
 	ADD_ROCKCHIP_SUB_DRIVER(cdn_dp_driver, CONFIG_ROCKCHIP_CDN_DP);

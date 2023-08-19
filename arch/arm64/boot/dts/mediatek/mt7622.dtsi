@@ -8,11 +8,14 @@
 
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
+<<<<<<< HEAD
 #include <dt-bindings/clock/mt7622-clk.h>
 #include <dt-bindings/phy/phy.h>
 #include <dt-bindings/power/mt7622-power.h>
 #include <dt-bindings/reset/mt7622-reset.h>
 #include <dt-bindings/thermal/thermal.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "mediatek,mt7622";
@@ -20,6 +23,7 @@
 	#address-cells = <2>;
 	#size-cells = <2>;
 
+<<<<<<< HEAD
 	cpu_opp_table: opp-table {
 		compatible = "operating-points-v2";
 		opp-shared;
@@ -64,6 +68,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpus {
 		#address-cells = <2>;
 		#size-cells = <0>;
@@ -72,11 +78,14 @@
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x0>;
+<<<<<<< HEAD
 			clocks = <&infracfg CLK_INFRA_MUX1_SEL>,
 				 <&apmixedsys CLK_APMIXED_MAIN_CORE_EN>;
 			clock-names = "cpu", "intermediate";
 			operating-points-v2 = <&cpu_opp_table>;
 			#cooling-cells = <2>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			enable-method = "psci";
 			clock-frequency = <1300000000>;
 		};
@@ -85,16 +94,20 @@
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x1>;
+<<<<<<< HEAD
 			clocks = <&infracfg CLK_INFRA_MUX1_SEL>,
 				 <&apmixedsys CLK_APMIXED_MAIN_CORE_EN>;
 			clock-names = "cpu", "intermediate";
 			operating-points-v2 = <&cpu_opp_table>;
 			#cooling-cells = <2>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			enable-method = "psci";
 			clock-frequency = <1300000000>;
 		};
 	};
 
+<<<<<<< HEAD
 	pwrap_clk: dummy40m {
 		compatible = "fixed-clock";
 		clock-frequency = <40000000>;
@@ -106,6 +119,18 @@
 		#clock-cells = <0>;
 		clock-frequency = <25000000>;
 		clock-output-names = "clkxtal";
+=======
+	uart_clk: dummy25m {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <25000000>;
+	};
+
+	bus_clk: dummy280m {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <280000000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	psci {
@@ -125,6 +150,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	thermal-zones {
 		cpu_thermal: cpu-thermal {
 			polling-delay-passive = <1000>;
@@ -177,6 +203,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timer {
 		compatible = "arm,armv8-timer";
 		interrupt-parent = <&gic>;
@@ -190,6 +218,7 @@
 			      IRQ_TYPE_LEVEL_HIGH)>;
 	};
 
+<<<<<<< HEAD
 	infracfg: infracfg@10000000 {
 		compatible = "mediatek,mt7622-infracfg",
 			     "syscon";
@@ -242,6 +271,8 @@
 		status = "disabled";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sysirq: interrupt-controller@10200620 {
 		compatible = "mediatek,mt7622-sysirq",
 			     "mediatek,mt6577-sysirq";
@@ -251,6 +282,7 @@
 		reg = <0 0x10200620 0 0x20>;
 	};
 
+<<<<<<< HEAD
 	efuse: efuse@10206000 {
 		compatible = "mediatek,mt7622-efuse",
 			     "mediatek,efuse";
@@ -314,6 +346,8 @@
 		clock-names = "rtc";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gic: interrupt-controller@10300000 {
 		compatible = "arm,gic-400";
 		interrupt-controller;
@@ -325,6 +359,7 @@
 		      <0 0x10360000 0 0x2000>;
 	};
 
+<<<<<<< HEAD
 	auxadc: adc@11001000 {
 		compatible = "mediatek,mt7622-auxadc";
 		reg = <0 0x11001000 0 0x1000>;
@@ -333,11 +368,14 @@
 		#io-channel-cells = <1>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uart0: serial@11002000 {
 		compatible = "mediatek,mt7622-uart",
 			     "mediatek,mt6577-uart";
 		reg = <0 0x11002000 0 0x400>;
 		interrupts = <GIC_SPI 91 IRQ_TYPE_LEVEL_LOW>;
+<<<<<<< HEAD
 		clocks = <&topckgen CLK_TOP_UART_SEL>,
 			 <&pericfg CLK_PERI_UART0_PD>;
 		clock-names = "baud", "bus";
@@ -879,4 +917,10 @@
 		reg = <0 0x1b128000 0 0x1000>;
 		#clock-cells = <1>;
 	};
+=======
+		clocks = <&uart_clk>, <&bus_clk>;
+		clock-names = "baud", "bus";
+		status = "disabled";
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

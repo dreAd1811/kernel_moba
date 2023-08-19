@@ -235,7 +235,11 @@ static int imx_tve_connector_get_modes(struct drm_connector *connector)
 
 	edid = drm_get_edid(connector, tve->ddc);
 	if (edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, edid);
+=======
+		drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_add_edid_modes(connector, edid);
 		kfree(edid);
 	}
@@ -493,7 +497,11 @@ static int imx_tve_register(struct drm_device *drm, struct imx_tve *tve)
 	drm_connector_init(drm, &tve->connector, &imx_tve_connector_funcs,
 			   DRM_MODE_CONNECTOR_VGA);
 
+<<<<<<< HEAD
 	drm_connector_attach_encoder(&tve->connector, &tve->encoder);
+=======
+	drm_mode_connector_attach_encoder(&tve->connector, &tve->encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

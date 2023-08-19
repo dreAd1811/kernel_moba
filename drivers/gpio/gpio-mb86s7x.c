@@ -17,7 +17,10 @@
 #include <linux/io.h>
 #include <linux/init.h>
 #include <linux/clk.h>
+<<<<<<< HEAD
 #include <linux/module.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include <linux/errno.h>
 #include <linux/ioport.h>
@@ -53,6 +56,14 @@ static int mb86s70_gpio_request(struct gpio_chip *gc, unsigned gpio)
 	spin_lock_irqsave(&gchip->lock, flags);
 
 	val = readl(gchip->base + PFR(gpio));
+<<<<<<< HEAD
+=======
+	if (!(val & OFFSET(gpio))) {
+		spin_unlock_irqrestore(&gchip->lock, flags);
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val &= ~OFFSET(gpio);
 	writel(val, gchip->base + PFR(gpio));
 
@@ -205,7 +216,10 @@ static const struct of_device_id mb86s70_gpio_dt_ids[] = {
 	{ .compatible = "fujitsu,mb86s70-gpio" },
 	{ /* sentinel */ }
 };
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(of, mb86s70_gpio_dt_ids);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct platform_driver mb86s70_gpio_driver = {
 	.driver = {
@@ -215,8 +229,13 @@ static struct platform_driver mb86s70_gpio_driver = {
 	.probe = mb86s70_gpio_probe,
 	.remove = mb86s70_gpio_remove,
 };
+<<<<<<< HEAD
 module_platform_driver(mb86s70_gpio_driver);
 
 MODULE_DESCRIPTION("MB86S7x GPIO Driver");
 MODULE_ALIAS("platform:mb86s70-gpio");
 MODULE_LICENSE("GPL");
+=======
+
+builtin_platform_driver(mb86s70_gpio_driver);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

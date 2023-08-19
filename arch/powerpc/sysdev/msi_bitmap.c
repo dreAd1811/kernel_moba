@@ -10,7 +10,10 @@
 
 #include <linux/slab.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/kmemleak.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bitmap.h>
 #include <linux/bootmem.h>
 #include <asm/msi_bitmap.h>
@@ -225,23 +228,37 @@ static void __init test_of_node(void)
 	struct device_node of_node;
 	struct property prop;
 	struct msi_bitmap bmp;
+<<<<<<< HEAD
 #define SIZE_EXPECTED 256
 	DECLARE_BITMAP(expected, SIZE_EXPECTED);
+=======
+	int size = 256;
+	DECLARE_BITMAP(expected, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* There should really be a struct device_node allocator */
 	memset(&of_node, 0, sizeof(of_node));
 	of_node_init(&of_node);
 	of_node.full_name = node_name;
 
+<<<<<<< HEAD
 	WARN_ON(msi_bitmap_alloc(&bmp, SIZE_EXPECTED, &of_node));
+=======
+	WARN_ON(msi_bitmap_alloc(&bmp, size, &of_node));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* No msi-available-ranges, so expect > 0 */
 	WARN_ON(msi_bitmap_reserve_dt_hwirqs(&bmp) <= 0);
 
 	/* Should all still be free */
+<<<<<<< HEAD
 	WARN_ON(bitmap_find_free_region(bmp.bitmap, SIZE_EXPECTED,
 					get_count_order(SIZE_EXPECTED)));
 	bitmap_release_region(bmp.bitmap, 0, get_count_order(SIZE_EXPECTED));
+=======
+	WARN_ON(bitmap_find_free_region(bmp.bitmap, size, get_count_order(size)));
+	bitmap_release_region(bmp.bitmap, 0, get_count_order(size));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Now create a fake msi-available-ranges property */
 
@@ -257,8 +274,13 @@ static void __init test_of_node(void)
 	WARN_ON(msi_bitmap_reserve_dt_hwirqs(&bmp));
 
 	/* Check we got the expected result */
+<<<<<<< HEAD
 	WARN_ON(bitmap_parselist(expected_str, expected, SIZE_EXPECTED));
 	WARN_ON(!bitmap_equal(expected, bmp.bitmap, SIZE_EXPECTED));
+=======
+	WARN_ON(bitmap_parselist(expected_str, expected, size));
+	WARN_ON(!bitmap_equal(expected, bmp.bitmap, size));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msi_bitmap_free(&bmp);
 	kfree(bmp.bitmap);

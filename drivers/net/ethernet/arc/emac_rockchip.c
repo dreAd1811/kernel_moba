@@ -201,11 +201,17 @@ static int emac_rockchip_probe(struct platform_device *pdev)
 
 	/* RMII interface needs always a rate of 50MHz */
 	err = clk_set_rate(priv->refclk, 50000000);
+<<<<<<< HEAD
 	if (err) {
 		dev_err(dev,
 			"failed to change reference clock rate (%d)\n", err);
 		goto out_regulator_disable;
 	}
+=======
+	if (err)
+		dev_err(dev,
+			"failed to change reference clock rate (%d)\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (priv->soc_data->need_div_macclk) {
 		priv->macclk = devm_clk_get(dev, "macclk");
@@ -234,6 +240,7 @@ static int emac_rockchip_probe(struct platform_device *pdev)
 	err = arc_emac_probe(ndev, interface);
 	if (err) {
 		dev_err(dev, "failed to probe arc emac (%d)\n", err);
+<<<<<<< HEAD
 		goto out_clk_disable_macclk;
 	}
 
@@ -242,6 +249,14 @@ static int emac_rockchip_probe(struct platform_device *pdev)
 out_clk_disable_macclk:
 	if (priv->soc_data->need_div_macclk)
 		clk_disable_unprepare(priv->macclk);
+=======
+		goto out_regulator_disable;
+	}
+
+	return 0;
+out_clk_disable_macclk:
+	clk_disable_unprepare(priv->macclk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_regulator_disable:
 	if (priv->regulator)
 		regulator_disable(priv->regulator);
@@ -265,6 +280,12 @@ static int emac_rockchip_remove(struct platform_device *pdev)
 	if (priv->regulator)
 		regulator_disable(priv->regulator);
 
+<<<<<<< HEAD
+=======
+	if (priv->soc_data->need_div_macclk)
+		clk_disable_unprepare(priv->macclk);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_netdev(ndev);
 	return err;
 }

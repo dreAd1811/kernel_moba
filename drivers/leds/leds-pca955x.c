@@ -390,8 +390,13 @@ pca955x_pdata_of_init(struct i2c_client *client, struct pca955x_chipdef *chip)
 	if (!pdata)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	pdata->leds = devm_kcalloc(&client->dev,
 				   chip->bits, sizeof(struct pca955x_led),
+=======
+	pdata->leds = devm_kzalloc(&client->dev,
+				   sizeof(struct pca955x_led) * chip->bits,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 	if (!pdata->leds)
 		return ERR_PTR(-ENOMEM);
@@ -494,8 +499,13 @@ static int pca955x_probe(struct i2c_client *client,
 	if (!pca955x)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	pca955x->leds = devm_kcalloc(&client->dev,
 			chip->bits, sizeof(*pca955x_led), GFP_KERNEL);
+=======
+	pca955x->leds = devm_kzalloc(&client->dev,
+			sizeof(*pca955x_led) * chip->bits, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pca955x->leds)
 		return -ENOMEM;
 

@@ -167,8 +167,11 @@ static void stk1160_release(struct v4l2_device *v4l2_dev)
 
 	v4l2_ctrl_handler_free(&dev->ctrl_handler);
 	v4l2_device_unregister(&dev->v4l2_dev);
+<<<<<<< HEAD
 	mutex_destroy(&dev->v4l_lock);
 	mutex_destroy(&dev->vb_queue_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dev->alt_max_pkt_size);
 	kfree(dev);
 }
@@ -290,9 +293,14 @@ static int stk1160_probe(struct usb_interface *interface,
 		return -ENODEV;
 
 	/* Alloc an array for all possible max_pkt_size */
+<<<<<<< HEAD
 	alt_max_pkt_size = kmalloc_array(interface->num_altsetting,
 					 sizeof(alt_max_pkt_size[0]),
 					 GFP_KERNEL);
+=======
+	alt_max_pkt_size = kmalloc(sizeof(alt_max_pkt_size[0]) *
+			interface->num_altsetting, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (alt_max_pkt_size == NULL)
 		return -ENOMEM;
 
@@ -426,7 +434,11 @@ static void stk1160_disconnect(struct usb_interface *interface)
 
 	/*
 	 * This calls stk1160_release if it's the last reference.
+<<<<<<< HEAD
 	 * Otherwise, release is posponed until there are no users left.
+=======
+	 * therwise, release is posponed until there are no users left.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	v4l2_device_put(&dev->v4l2_dev);
 }

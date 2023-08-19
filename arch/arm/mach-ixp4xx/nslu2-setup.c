@@ -25,7 +25,11 @@
 #include <linux/leds.h>
 #include <linux/reboot.h>
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/io.h>
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -69,6 +73,7 @@ static struct platform_device nslu2_flash = {
 	.resource		= &nslu2_flash_resource,
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table nslu2_i2c_gpiod_table = {
 	.dev_id		= "i2c-gpio.0",
 	.table		= {
@@ -77,6 +82,11 @@ static struct gpiod_lookup_table nslu2_i2c_gpiod_table = {
 		GPIO_LOOKUP_IDX("IXP4XX_GPIO_CHIP", NSLU2_SCL_PIN,
 				NULL, 1, GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
 	},
+=======
+static struct i2c_gpio_platform_data nslu2_i2c_gpio_data = {
+	.sda_pin		= NSLU2_SDA_PIN,
+	.scl_pin		= NSLU2_SCL_PIN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct i2c_board_info __initdata nslu2_i2c_board_info [] = {
@@ -121,7 +131,11 @@ static struct platform_device nslu2_i2c_gpio = {
 	.name			= "i2c-gpio",
 	.id			= 0,
 	.dev	 = {
+<<<<<<< HEAD
 		.platform_data	= NULL,
+=======
+		.platform_data	= &nslu2_i2c_gpio_data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -256,7 +270,10 @@ static void __init nslu2_init(void)
 	nslu2_flash_resource.end =
 		IXP4XX_EXP_BUS_BASE(0) + ixp4xx_exp_bus_size - 1;
 
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&nslu2_i2c_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_register_board_info(0, nslu2_i2c_board_info,
 				ARRAY_SIZE(nslu2_i2c_board_info));
 

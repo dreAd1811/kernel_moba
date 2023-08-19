@@ -76,7 +76,11 @@ static int qtnf_netdev_close(struct net_device *ndev)
 
 /* Netdev handler for data transmission.
  */
+<<<<<<< HEAD
 static netdev_tx_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 qtnf_netdev_hard_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 {
 	struct qtnf_vif *vif;
@@ -119,6 +123,7 @@ qtnf_netdev_hard_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 
 /* Netdev handler for getting stats.
  */
+<<<<<<< HEAD
 static void qtnf_netdev_get_stats64(struct net_device *ndev,
 				    struct rtnl_link_stats64 *stats)
 {
@@ -151,6 +156,11 @@ static void qtnf_netdev_get_stats64(struct net_device *ndev,
 		stats->tx_packets += tx_packets;
 		stats->tx_bytes += tx_bytes;
 	}
+=======
+static struct net_device_stats *qtnf_netdev_get_stats(struct net_device *dev)
+{
+	return &dev->stats;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Netdev handler for transmission timeout.
@@ -179,6 +189,7 @@ static void qtnf_netdev_tx_timeout(struct net_device *ndev)
 	}
 }
 
+<<<<<<< HEAD
 static int qtnf_netdev_set_mac_address(struct net_device *ndev, void *addr)
 {
 	struct qtnf_vif *vif = qtnf_netdev_get_priv(ndev);
@@ -203,14 +214,20 @@ static int qtnf_netdev_set_mac_address(struct net_device *ndev, void *addr)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Network device ops handlers */
 const struct net_device_ops qtnf_netdev_ops = {
 	.ndo_open = qtnf_netdev_open,
 	.ndo_stop = qtnf_netdev_close,
 	.ndo_start_xmit = qtnf_netdev_hard_start_xmit,
 	.ndo_tx_timeout = qtnf_netdev_tx_timeout,
+<<<<<<< HEAD
 	.ndo_get_stats64 = qtnf_netdev_get_stats64,
 	.ndo_set_mac_address = qtnf_netdev_set_mac_address,
+=======
+	.ndo_get_stats = qtnf_netdev_get_stats,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int qtnf_mac_init_single_band(struct wiphy *wiphy,
@@ -225,7 +242,11 @@ static int qtnf_mac_init_single_band(struct wiphy *wiphy,
 
 	wiphy->bands[band]->band = band;
 
+<<<<<<< HEAD
 	ret = qtnf_cmd_band_info_get(mac, wiphy->bands[band]);
+=======
+	ret = qtnf_cmd_get_mac_chan_info(mac, wiphy->bands[band]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("MAC%u: band %u: failed to get chans info: %d\n",
 		       mac->macid, band, ret);
@@ -233,6 +254,10 @@ static int qtnf_mac_init_single_band(struct wiphy *wiphy,
 	}
 
 	qtnf_band_init_rates(wiphy->bands[band]);
+<<<<<<< HEAD
+=======
+	qtnf_band_setup_htvht_caps(&mac->macinfo, wiphy->bands[band]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -287,6 +312,7 @@ struct qtnf_vif *qtnf_mac_get_base_vif(struct qtnf_wmac *mac)
 	return vif;
 }
 
+<<<<<<< HEAD
 void qtnf_mac_iface_comb_free(struct qtnf_wmac *mac)
 {
 	struct ieee80211_iface_combination *comb;
@@ -304,6 +330,8 @@ void qtnf_mac_iface_comb_free(struct qtnf_wmac *mac)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qtnf_vif_reset_handler(struct work_struct *work)
 {
 	struct qtnf_vif *vif = container_of(work, struct qtnf_vif, reset_work);
@@ -329,13 +357,18 @@ static void qtnf_mac_init_primary_intf(struct qtnf_wmac *mac)
 {
 	struct qtnf_vif *vif = &mac->iflist[QTNF_PRIMARY_VIF_IDX];
 
+<<<<<<< HEAD
 	vif->wdev.iftype = NL80211_IFTYPE_STATION;
+=======
+	vif->wdev.iftype = NL80211_IFTYPE_AP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vif->bss_priority = QTNF_DEF_BSS_PRIORITY;
 	vif->wdev.wiphy = priv_to_wiphy(mac);
 	INIT_WORK(&vif->reset_work, qtnf_vif_reset_handler);
 	vif->cons_tx_timeout_cnt = 0;
 }
 
+<<<<<<< HEAD
 static void qtnf_mac_scan_finish(struct qtnf_wmac *mac, bool aborted)
 {
 	struct cfg80211_scan_info info = {
@@ -367,6 +400,8 @@ static void qtnf_mac_scan_timeout(struct work_struct *work)
 	qtnf_mac_scan_finish(mac, true);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct qtnf_wmac *qtnf_core_mac_alloc(struct qtnf_bus *bus,
 					     unsigned int macid)
 {
@@ -390,12 +425,16 @@ static struct qtnf_wmac *qtnf_core_mac_alloc(struct qtnf_bus *bus,
 		mac->iflist[i].vifid = i;
 		qtnf_sta_list_init(&mac->iflist[i].sta_list);
 		mutex_init(&mac->mac_lock);
+<<<<<<< HEAD
 		INIT_DELAYED_WORK(&mac->scan_timeout, qtnf_mac_scan_timeout);
 		mac->iflist[i].stats64 =
 			netdev_alloc_pcpu_stats(struct pcpu_sw_netstats);
 		if (!mac->iflist[i].stats64)
 			pr_warn("VIF%u.%u: per cpu stats allocation failed\n",
 				macid, i);
+=======
+		init_timer(&mac->scan_timeout);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	qtnf_mac_init_primary_intf(mac);
@@ -404,12 +443,18 @@ static struct qtnf_wmac *qtnf_core_mac_alloc(struct qtnf_bus *bus,
 	return mac;
 }
 
+<<<<<<< HEAD
 static const struct ethtool_ops qtnf_ethtool_ops = {
 	.get_drvinfo = cfg80211_get_drvinfo,
 };
 
 int qtnf_core_net_attach(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 			 const char *name, unsigned char name_assign_type)
+=======
+int qtnf_core_net_attach(struct qtnf_wmac *mac, struct qtnf_vif *vif,
+			 const char *name, unsigned char name_assign_type,
+			 enum nl80211_iftype iftype)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wiphy *wiphy = priv_to_wiphy(mac);
 	struct net_device *dev;
@@ -419,6 +464,10 @@ int qtnf_core_net_attach(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 	dev = alloc_netdev_mqs(sizeof(struct qtnf_vif *), name,
 			       name_assign_type, ether_setup, 1, 1);
 	if (!dev) {
+<<<<<<< HEAD
+=======
+		memset(&vif->wdev, 0, sizeof(vif->wdev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vif->wdev.iftype = NL80211_IFTYPE_UNSPECIFIED;
 		return -ENOMEM;
 	}
@@ -429,12 +478,19 @@ int qtnf_core_net_attach(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 	dev->needs_free_netdev = true;
 	dev_net_set(dev, wiphy_net(wiphy));
 	dev->ieee80211_ptr = &vif->wdev;
+<<<<<<< HEAD
+=======
+	dev->ieee80211_ptr->iftype = iftype;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ether_addr_copy(dev->dev_addr, vif->mac_addr);
 	SET_NETDEV_DEV(dev, wiphy_dev(wiphy));
 	dev->flags |= IFF_BROADCAST | IFF_MULTICAST;
 	dev->watchdog_timeo = QTNF_DEF_WDOG_TIMEOUT;
 	dev->tx_queue_len = 100;
+<<<<<<< HEAD
 	dev->ethtool_ops = &qtnf_ethtool_ops;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qdev_vif = netdev_priv(dev);
 	*((void **)qdev_vif) = vif;
@@ -475,7 +531,10 @@ static void qtnf_core_mac_detach(struct qtnf_bus *bus, unsigned int macid)
 		}
 		rtnl_unlock();
 		qtnf_sta_list_free(&vif->sta_list);
+<<<<<<< HEAD
 		free_percpu(vif->stats64);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (mac->wiphy_registered)
@@ -492,10 +551,15 @@ static void qtnf_core_mac_detach(struct qtnf_bus *bus, unsigned int macid)
 		wiphy->bands[band] = NULL;
 	}
 
+<<<<<<< HEAD
 	qtnf_mac_iface_comb_free(mac);
 	kfree(mac->macinfo.extended_capabilities);
 	kfree(mac->macinfo.extended_capabilities_mask);
 	kfree(mac->macinfo.wowlan);
+=======
+	kfree(mac->macinfo.limits);
+	kfree(wiphy->iface_combinations);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wiphy_free(wiphy);
 	bus->mac[macid] = NULL;
 }
@@ -530,7 +594,11 @@ static int qtnf_core_mac_attach(struct qtnf_bus *bus, unsigned int macid)
 		goto error;
 	}
 
+<<<<<<< HEAD
 	ret = qtnf_cmd_send_add_intf(vif, vif->wdev.iftype, vif->mac_addr);
+=======
+	ret = qtnf_cmd_send_add_intf(vif, NL80211_IFTYPE_AP, vif->mac_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("MAC%u: failed to add VIF\n", macid);
 		goto error;
@@ -558,7 +626,12 @@ static int qtnf_core_mac_attach(struct qtnf_bus *bus, unsigned int macid)
 
 	rtnl_lock();
 
+<<<<<<< HEAD
 	ret = qtnf_core_net_attach(mac, vif, "wlan%d", NET_NAME_ENUM);
+=======
+	ret = qtnf_core_net_attach(mac, vif, "wlan%d", NET_NAME_ENUM,
+				   NL80211_IFTYPE_AP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_unlock();
 
 	if (ret) {
@@ -654,7 +727,11 @@ void qtnf_core_detach(struct qtnf_bus *bus)
 	if (bus->fw_state == QTNF_FW_STATE_ACTIVE)
 		qtnf_cmd_send_deinit_fw(bus);
 
+<<<<<<< HEAD
 	bus->fw_state = QTNF_FW_STATE_DETACHED;
+=======
+	bus->fw_state = QTNF_FW_STATE_DEAD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bus->workqueue) {
 		flush_workqueue(bus->workqueue);
@@ -728,6 +805,7 @@ out:
 }
 EXPORT_SYMBOL_GPL(qtnf_classify_skb);
 
+<<<<<<< HEAD
 void qtnf_wake_all_queues(struct net_device *ndev)
 {
 	struct qtnf_vif *vif = qtnf_netdev_get_priv(ndev);
@@ -795,6 +873,8 @@ void qtnf_update_tx_stats(struct net_device *ndev, const struct sk_buff *skb)
 }
 EXPORT_SYMBOL_GPL(qtnf_update_tx_stats);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Quantenna Communications");
 MODULE_DESCRIPTION("Quantenna 802.11 wireless LAN FullMAC driver.");
 MODULE_LICENSE("GPL");

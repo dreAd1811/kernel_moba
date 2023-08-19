@@ -12,8 +12,11 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  */
+<<<<<<< HEAD
 #include <linux/dmaengine.h>
 #include <linux/dma/pxa-dma.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -25,8 +28,12 @@
 #include <linux/io.h>
 #include <linux/of.h>
 #include <linux/syscore_ops.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
 #include <linux/platform_data/mmp_dma.h>
+=======
+#include <linux/i2c/pxa-i2c.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach/map.h>
 #include <asm/suspend.h>
@@ -424,6 +431,7 @@ static struct platform_device *devices[] __initdata = {
 	&pxa27x_device_pwm1,
 };
 
+<<<<<<< HEAD
 static const struct dma_slave_map pxa3xx_slave_map[] = {
 	/* PXA25x, PXA27x and PXA3xx common entries */
 	{ "pxa2xx-ac97", "pcm_pcm_mic_mono", PDMA_FILTER_PARAM(LOWEST, 8) },
@@ -460,6 +468,8 @@ static struct mmp_dma_platdata pxa3xx_dma_pdata = {
 	.slave_map_cnt	= ARRAY_SIZE(pxa3xx_slave_map),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init pxa3xx_init(void)
 {
 	int ret = 0;
@@ -485,17 +495,24 @@ static int __init pxa3xx_init(void)
 
 		pxa3xx_init_pm();
 
+<<<<<<< HEAD
 		enable_irq_wake(IRQ_WAKEUP0);
 		if (cpu_is_pxa320())
 			enable_irq_wake(IRQ_WAKEUP1);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		register_syscore_ops(&pxa_irq_syscore_ops);
 		register_syscore_ops(&pxa3xx_mfp_syscore_ops);
 
 		if (of_have_populated_dt())
 			return 0;
 
+<<<<<<< HEAD
 		pxa2xx_set_dmac_info(&pxa3xx_dma_pdata);
+=======
+		pxa2xx_set_dmac_info(32, 100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = platform_add_devices(devices, ARRAY_SIZE(devices));
 		if (ret)
 			return ret;

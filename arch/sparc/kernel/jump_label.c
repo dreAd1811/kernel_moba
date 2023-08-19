@@ -9,6 +9,11 @@
 
 #include <asm/cacheflush.h>
 
+<<<<<<< HEAD
+=======
+#ifdef HAVE_JUMP_LABEL
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void arch_jump_label_transform(struct jump_entry *entry,
 			       enum jump_label_type type)
 {
@@ -45,3 +50,8 @@ void arch_jump_label_transform(struct jump_entry *entry,
 	flushi(insn);
 	mutex_unlock(&text_mutex);
 }
+<<<<<<< HEAD
+=======
+
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -17,7 +17,11 @@
 #ifndef A8293_H
 #define A8293_H
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * I2C address

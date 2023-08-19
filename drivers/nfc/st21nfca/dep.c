@@ -184,8 +184,15 @@ static int st21nfca_tm_send_atr_res(struct nfc_hci_dev *hdev,
 		memcpy(atr_res->gbi, atr_req->gbi, gb_len);
 		r = nfc_set_remote_general_bytes(hdev->ndev, atr_res->gbi,
 						  gb_len);
+<<<<<<< HEAD
 		if (r < 0)
 			return r;
+=======
+		if (r < 0) {
+			kfree_skb(skb);
+			return r;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	info->dep_info.curr_nfc_dep_pni = 0;

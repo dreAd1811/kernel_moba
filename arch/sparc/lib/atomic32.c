@@ -95,7 +95,11 @@ int atomic_cmpxchg(atomic_t *v, int old, int new)
 }
 EXPORT_SYMBOL(atomic_cmpxchg);
 
+<<<<<<< HEAD
 int atomic_fetch_add_unless(atomic_t *v, int a, int u)
+=======
+int __atomic_add_unless(atomic_t *v, int a, int u)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	unsigned long flags;
@@ -107,7 +111,11 @@ int atomic_fetch_add_unless(atomic_t *v, int a, int u)
 	spin_unlock_irqrestore(ATOMIC_HASH(v), flags);
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(atomic_fetch_add_unless);
+=======
+EXPORT_SYMBOL(__atomic_add_unless);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Atomic operations are already serializing */
 void atomic_set(atomic_t *v, int i)

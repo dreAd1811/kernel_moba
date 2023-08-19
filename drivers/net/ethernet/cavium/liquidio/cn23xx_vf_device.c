@@ -382,7 +382,11 @@ void cn23xx_vf_ask_pf_to_do_flr(struct octeon_device *oct)
 	mbox_cmd.recv_len = 0;
 	mbox_cmd.recv_status = 0;
 	mbox_cmd.fn = NULL;
+<<<<<<< HEAD
 	mbox_cmd.fn_arg = NULL;
+=======
+	mbox_cmd.fn_arg = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	octeon_mbox_write(oct, &mbox_cmd);
 }
@@ -682,3 +686,36 @@ int cn23xx_setup_octeon_vf_device(struct octeon_device *oct)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+void cn23xx_dump_vf_iq_regs(struct octeon_device *oct)
+{
+	u32 regval, q_no;
+
+	dev_dbg(&oct->pci_dev->dev, "SLI_IQ_DOORBELL_0 [0x%x]: 0x%016llx\n",
+		CN23XX_VF_SLI_IQ_DOORBELL(0),
+		CVM_CAST64(octeon_read_csr64(
+					oct, CN23XX_VF_SLI_IQ_DOORBELL(0))));
+
+	dev_dbg(&oct->pci_dev->dev, "SLI_IQ_BASEADDR_0 [0x%x]: 0x%016llx\n",
+		CN23XX_VF_SLI_IQ_BASE_ADDR64(0),
+		CVM_CAST64(octeon_read_csr64(
+			oct, CN23XX_VF_SLI_IQ_BASE_ADDR64(0))));
+
+	dev_dbg(&oct->pci_dev->dev, "SLI_IQ_FIFO_RSIZE_0 [0x%x]: 0x%016llx\n",
+		CN23XX_VF_SLI_IQ_SIZE(0),
+		CVM_CAST64(octeon_read_csr64(oct, CN23XX_VF_SLI_IQ_SIZE(0))));
+
+	for (q_no = 0; q_no < oct->sriov_info.rings_per_vf; q_no++) {
+		dev_dbg(&oct->pci_dev->dev, "SLI_PKT[%d]_INPUT_CTL [0x%x]: 0x%016llx\n",
+			q_no, CN23XX_VF_SLI_IQ_PKT_CONTROL64(q_no),
+			CVM_CAST64(octeon_read_csr64(
+				oct, CN23XX_VF_SLI_IQ_PKT_CONTROL64(q_no))));
+	}
+
+	pci_read_config_dword(oct->pci_dev, CN23XX_CONFIG_PCIE_DEVCTL, &regval);
+	dev_dbg(&oct->pci_dev->dev, "Config DevCtl [0x%x]: 0x%08x\n",
+		CN23XX_CONFIG_PCIE_DEVCTL, regval);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

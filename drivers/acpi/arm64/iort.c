@@ -31,10 +31,21 @@
 #define IORT_IOMMU_TYPE		((1 << ACPI_IORT_NODE_SMMU) |	\
 				(1 << ACPI_IORT_NODE_SMMU_V3))
 
+<<<<<<< HEAD
 struct iort_its_msi_chip {
 	struct list_head	list;
 	struct fwnode_handle	*fw_node;
 	phys_addr_t		base_addr;
+=======
+/* Until ACPICA headers cover IORT rev. C */
+#ifndef ACPI_IORT_SMMU_V3_CAVIUM_CN99XX
+#define ACPI_IORT_SMMU_V3_CAVIUM_CN99XX		0x2
+#endif
+
+struct iort_its_msi_chip {
+	struct list_head	list;
+	struct fwnode_handle	*fw_node;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32			translation_id;
 };
 
@@ -84,8 +95,13 @@ static inline int iort_set_fwnode(struct acpi_iort_node *iort_node,
  *
  * Returns: fwnode_handle pointer on success, NULL on failure
  */
+<<<<<<< HEAD
 static inline struct fwnode_handle *iort_get_fwnode(
 			struct acpi_iort_node *node)
+=======
+static inline
+struct fwnode_handle *iort_get_fwnode(struct acpi_iort_node *node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct iort_fwnode *curr;
 	struct fwnode_handle *fwnode = NULL;
@@ -122,6 +138,7 @@ static inline void iort_delete_fwnode(struct acpi_iort_node *node)
 	spin_unlock(&iort_fwnode_lock);
 }
 
+<<<<<<< HEAD
 /**
  * iort_get_iort_node() - Retrieve iort_node associated with an fwnode
  *
@@ -147,6 +164,8 @@ static inline struct acpi_iort_node *iort_get_iort_node(
 	return iort_node;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef acpi_status (*iort_find_node_callback)
 	(struct acpi_iort_node *node, void *context);
 
@@ -157,16 +176,26 @@ static LIST_HEAD(iort_msi_chip_list);
 static DEFINE_SPINLOCK(iort_msi_chip_lock);
 
 /**
+<<<<<<< HEAD
  * iort_register_domain_token() - register domain token along with related
  * ITS ID and base address to the list from where we can get it back later on.
  * @trans_id: ITS ID.
  * @base: ITS base address.
+=======
+ * iort_register_domain_token() - register domain token and related ITS ID
+ * to the list from where we can get it back later on.
+ * @trans_id: ITS ID.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @fw_node: Domain token.
  *
  * Returns: 0 on success, -ENOMEM if no memory when allocating list element
  */
+<<<<<<< HEAD
 int iort_register_domain_token(int trans_id, phys_addr_t base,
 			       struct fwnode_handle *fw_node)
+=======
+int iort_register_domain_token(int trans_id, struct fwnode_handle *fw_node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct iort_its_msi_chip *its_msi_chip;
 
@@ -176,7 +205,10 @@ int iort_register_domain_token(int trans_id, phys_addr_t base,
 
 	its_msi_chip->fw_node = fw_node;
 	its_msi_chip->translation_id = trans_id;
+<<<<<<< HEAD
 	its_msi_chip->base_addr = base;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&iort_msi_chip_lock);
 	list_add(&its_msi_chip->list, &iort_msi_chip_list);
@@ -330,8 +362,14 @@ static int iort_id_map(struct acpi_iort_id_mapping *map, u8 type, u32 rid_in,
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
 					       u32 *id_out, int index)
+=======
+static
+struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
+					u32 *id_out, int index)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct acpi_iort_node *parent;
 	struct acpi_iort_id_mapping *map;
@@ -355,8 +393,12 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
 
 	if (map->flags & ACPI_IORT_ID_SINGLE_MAPPING) {
 		if (node->type == ACPI_IORT_NODE_NAMED_COMPONENT ||
+<<<<<<< HEAD
 		    node->type == ACPI_IORT_NODE_PCI_ROOT_COMPLEX ||
 		    node->type == ACPI_IORT_NODE_SMMU_V3) {
+=======
+		    node->type == ACPI_IORT_NODE_PCI_ROOT_COMPLEX) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*id_out = map->output_base;
 			return parent;
 		}
@@ -365,6 +407,7 @@ static struct acpi_iort_node *iort_node_get_id(struct acpi_iort_node *node,
 	return NULL;
 }
 
+<<<<<<< HEAD
 static int iort_get_id_mapping_index(struct acpi_iort_node *node)
 {
 	struct acpi_iort_smmu_v3 *smmu;
@@ -399,6 +442,8 @@ static int iort_get_id_mapping_index(struct acpi_iort_node *node)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
 					       u32 id_in, u32 *id_out,
 					       u8 type_mask)
@@ -408,7 +453,11 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
 	/* Parse the ID mapping tree to find specified node type */
 	while (node) {
 		struct acpi_iort_id_mapping *map;
+<<<<<<< HEAD
 		int i, index;
+=======
+		int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (IORT_TYPE_MASK(node->type) & type_mask) {
 			if (id_out)
@@ -429,6 +478,7 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
 			goto fail_map;
 		}
 
+<<<<<<< HEAD
 		/*
 		 * Get the special ID mapping index (if any) and skip its
 		 * associated ID map to prevent erroneous multi-stage
@@ -442,6 +492,10 @@ static struct acpi_iort_node *iort_node_map_id(struct acpi_iort_node *node,
 			if (i == index)
 				continue;
 
+=======
+		/* Do the ID translation */
+		for (i = 0; i < node->mapping_count; i++, map++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!iort_id_map(map, node->type, id, &id))
 				break;
 		}
@@ -461,9 +515,16 @@ fail_map:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static struct acpi_iort_node *iort_node_map_platform_id(
 		struct acpi_iort_node *node, u32 *id_out, u8 type_mask,
 		int index)
+=======
+static
+struct acpi_iort_node *iort_node_map_platform_id(struct acpi_iort_node *node,
+						 u32 *id_out, u8 type_mask,
+						 int index)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct acpi_iort_node *parent;
 	u32 id;
@@ -492,6 +553,7 @@ static struct acpi_iort_node *iort_find_dev_node(struct device *dev)
 {
 	struct pci_bus *pbus;
 
+<<<<<<< HEAD
 	if (!dev_is_pci(dev)) {
 		struct acpi_iort_node *node;
 		/*
@@ -511,6 +573,11 @@ static struct acpi_iort_node *iort_find_dev_node(struct device *dev)
 		return iort_scan_node(ACPI_IORT_NODE_NAMED_COMPONENT,
 				      iort_match_node_callback, dev);
 	}
+=======
+	if (!dev_is_pci(dev))
+		return iort_scan_node(ACPI_IORT_NODE_NAMED_COMPONENT,
+				      iort_match_node_callback, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Find a PCI root bus */
 	pbus = to_pci_dev(dev)->bus;
@@ -550,13 +617,18 @@ u32 iort_msi_map_rid(struct device *dev, u32 req_id)
  */
 int iort_pmsi_get_dev_id(struct device *dev, u32 *dev_id)
 {
+<<<<<<< HEAD
 	int i, index;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct acpi_iort_node *node;
 
 	node = iort_find_dev_node(dev);
 	if (!node)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	index = iort_get_id_mapping_index(node);
 	/* if there is a valid index, go get the dev_id directly */
 	if (index >= 0) {
@@ -568,11 +640,17 @@ int iort_pmsi_get_dev_id(struct device *dev, u32 *dev_id)
 						      IORT_MSI_TYPE, i))
 				return 0;
 		}
+=======
+	for (i = 0; i < node->mapping_count; i++) {
+		if (iort_node_map_platform_id(node, dev_id, IORT_MSI_TYPE, i))
+			return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return -ENODEV;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused iort_find_its_base(u32 its_id, phys_addr_t *base)
 {
 	struct iort_its_msi_chip *its_msi_chip;
@@ -591,6 +669,8 @@ static int __maybe_unused iort_find_its_base(u32 its_id, phys_addr_t *base)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * iort_dev_find_its_id() - Find the ITS identifier for a device
  * @dev: The device.
@@ -648,6 +728,7 @@ struct irq_domain *iort_get_device_domain(struct device *dev, u32 req_id)
 	return irq_find_matching_fwnode(handle, DOMAIN_BUS_PCI_MSI);
 }
 
+<<<<<<< HEAD
 static void iort_set_device_domain(struct device *dev,
 				   struct acpi_iort_node *node)
 {
@@ -691,6 +772,8 @@ static void iort_set_device_domain(struct device *dev,
 		dev_set_msi_domain(dev, domain);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * iort_get_platform_device_domain() - Find MSI domain related to a
  * platform device
@@ -776,6 +859,7 @@ static inline bool iort_iommu_driver_enabled(u8 type)
 }
 
 #ifdef CONFIG_IOMMU_API
+<<<<<<< HEAD
 static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
 {
 	struct acpi_iort_node *iommu;
@@ -796,12 +880,21 @@ static struct acpi_iort_node *iort_get_msi_resv_iommu(struct device *dev)
 
 static inline const struct iommu_ops *iort_fwspec_iommu_ops(
 				struct iommu_fwspec *fwspec)
+=======
+static inline
+const struct iommu_ops *iort_fwspec_iommu_ops(struct iommu_fwspec *fwspec)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (fwspec && fwspec->ops) ? fwspec->ops : NULL;
 }
 
+<<<<<<< HEAD
 static inline int iort_add_device_replay(const struct iommu_ops *ops,
 					 struct device *dev)
+=======
+static inline
+int iort_add_device_replay(const struct iommu_ops *ops, struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 
@@ -810,6 +903,7 @@ static inline int iort_add_device_replay(const struct iommu_ops *ops,
 
 	return err;
 }
+<<<<<<< HEAD
 
 /**
  * iort_iommu_msi_get_resv_regions - Reserved region driver helper
@@ -881,6 +975,14 @@ static inline int iort_add_device_replay(const struct iommu_ops *ops,
 					 struct device *dev)
 { return 0; }
 int iort_iommu_msi_get_resv_regions(struct device *dev, struct list_head *head)
+=======
+#else
+static inline
+const struct iommu_ops *iort_fwspec_iommu_ops(struct iommu_fwspec *fwspec)
+{ return NULL; }
+static inline
+int iort_add_device_replay(const struct iommu_ops *ops, struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 { return 0; }
 #endif
 
@@ -947,6 +1049,7 @@ static int nc_dma_get_range(struct device *dev, u64 *size)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rc_dma_get_range(struct device *dev, u64 *size)
 {
 	struct acpi_iort_node *node;
@@ -966,6 +1069,8 @@ static int rc_dma_get_range(struct device *dev, u64 *size)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * iort_dma_setup() - Set-up device DMA parameters.
  *
@@ -979,6 +1084,7 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
 	int ret, msb;
 
 	/*
+<<<<<<< HEAD
 	 * If @dev is expected to be DMA-capable then the bus code that created
 	 * it should have initialised its dma_mask pointer by this point. For
 	 * now, we'll continue the legacy behaviour of coercing it to the
@@ -1001,6 +1107,27 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
 	} else {
 		ret = nc_dma_get_range(dev, &size);
 	}
+=======
+	 * Set default coherent_dma_mask to 32 bit.  Drivers are expected to
+	 * setup the correct supported mask.
+	 */
+	if (!dev->coherent_dma_mask)
+		dev->coherent_dma_mask = DMA_BIT_MASK(32);
+
+	/*
+	 * Set it to coherent_dma_mask by default if the architecture
+	 * code has not set it.
+	 */
+	if (!dev->dma_mask)
+		dev->dma_mask = &dev->coherent_dma_mask;
+
+	size = max(dev->coherent_dma_mask, dev->coherent_dma_mask + 1);
+
+	if (dev_is_pci(dev))
+		ret = acpi_dma_get_range(dev, &dmaaddr, &offset, &size);
+	else
+		ret = nc_dma_get_range(dev, &size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ret) {
 		msb = fls64(dmaaddr + size - 1);
@@ -1015,7 +1142,10 @@ void iort_dma_setup(struct device *dev, u64 *dma_addr, u64 *dma_size)
 		 * Limit coherent and dma mask based on size
 		 * retrieved from firmware.
 		 */
+<<<<<<< HEAD
 		dev->bus_dma_mask = mask;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->coherent_dma_mask = mask;
 		*dev->dma_mask = mask;
 	}
@@ -1227,28 +1357,43 @@ static bool __init arm_smmu_v3_is_coherent(struct acpi_iort_node *node)
 	return smmu->flags & ACPI_IORT_SMMU_V3_COHACC_OVERRIDE;
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_ACPI_NUMA)
 /*
  * set numa proximity domain for smmuv3 device
  */
 static int  __init arm_smmu_v3_set_proximity(struct device *dev,
+=======
+#if defined(CONFIG_ACPI_NUMA) && defined(ACPI_IORT_SMMU_V3_PXM_VALID)
+/*
+ * set numa proximity domain for smmuv3 device
+ */
+static void  __init arm_smmu_v3_set_proximity(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      struct acpi_iort_node *node)
 {
 	struct acpi_iort_smmu_v3 *smmu;
 
 	smmu = (struct acpi_iort_smmu_v3 *)node->node_data;
 	if (smmu->flags & ACPI_IORT_SMMU_V3_PXM_VALID) {
+<<<<<<< HEAD
 		int node = acpi_map_pxm_to_node(smmu->pxm);
 
 		if (node != NUMA_NO_NODE && !node_online(node))
 			return -EINVAL;
 
 		set_dev_node(dev, node);
+=======
+		set_dev_node(dev, acpi_map_pxm_to_node(smmu->pxm));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_info("SMMU-v3[%llx] Mapped to Proximity domain %d\n",
 			smmu->base_address,
 			smmu->pxm);
 	}
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #else
 #define arm_smmu_v3_set_proximity NULL
@@ -1316,6 +1461,7 @@ static bool __init arm_smmu_is_coherent(struct acpi_iort_node *node)
 	return smmu->flags & ACPI_IORT_SMMU_COHERENT_WALK;
 }
 
+<<<<<<< HEAD
 struct iort_dev_config {
 	const char *name;
 	int (*dev_init)(struct acpi_iort_node *node);
@@ -1344,6 +1490,36 @@ static const struct iort_dev_config iort_arm_smmu_cfg __initconst = {
 
 static __init const struct iort_dev_config *iort_get_dev_cfg(
 			struct acpi_iort_node *node)
+=======
+struct iort_iommu_config {
+	const char *name;
+	int (*iommu_init)(struct acpi_iort_node *node);
+	bool (*iommu_is_coherent)(struct acpi_iort_node *node);
+	int (*iommu_count_resources)(struct acpi_iort_node *node);
+	void (*iommu_init_resources)(struct resource *res,
+				     struct acpi_iort_node *node);
+	void (*iommu_set_proximity)(struct device *dev,
+				    struct acpi_iort_node *node);
+};
+
+static const struct iort_iommu_config iort_arm_smmu_v3_cfg __initconst = {
+	.name = "arm-smmu-v3",
+	.iommu_is_coherent = arm_smmu_v3_is_coherent,
+	.iommu_count_resources = arm_smmu_v3_count_resources,
+	.iommu_init_resources = arm_smmu_v3_init_resources,
+	.iommu_set_proximity = arm_smmu_v3_set_proximity,
+};
+
+static const struct iort_iommu_config iort_arm_smmu_cfg __initconst = {
+	.name = "arm-smmu",
+	.iommu_is_coherent = arm_smmu_is_coherent,
+	.iommu_count_resources = arm_smmu_count_resources,
+	.iommu_init_resources = arm_smmu_init_resources
+};
+
+static __init
+const struct iort_iommu_config *iort_get_iommu_cfg(struct acpi_iort_node *node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (node->type) {
 	case ACPI_IORT_NODE_SMMU_V3:
@@ -1356,6 +1532,7 @@ static __init const struct iort_dev_config *iort_get_dev_cfg(
 }
 
 /**
+<<<<<<< HEAD
  * iort_add_platform_device() - Allocate a platform device for IORT node
  * @node: Pointer to device ACPI IORT node
  *
@@ -1363,17 +1540,33 @@ static __init const struct iort_dev_config *iort_get_dev_cfg(
  */
 static int __init iort_add_platform_device(struct acpi_iort_node *node,
 					   const struct iort_dev_config *ops)
+=======
+ * iort_add_smmu_platform_device() - Allocate a platform device for SMMU
+ * @node: Pointer to SMMU ACPI IORT node
+ *
+ * Returns: 0 on success, <0 failure
+ */
+static int __init iort_add_smmu_platform_device(struct acpi_iort_node *node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct fwnode_handle *fwnode;
 	struct platform_device *pdev;
 	struct resource *r;
 	enum dev_dma_attr attr;
 	int ret, count;
+<<<<<<< HEAD
+=======
+	const struct iort_iommu_config *ops = iort_get_iommu_cfg(node);
+
+	if (!ops)
+		return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdev = platform_device_alloc(ops->name, PLATFORM_DEVID_AUTO);
 	if (!pdev)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	if (ops->dev_set_proximity) {
 		ret = ops->dev_set_proximity(&pdev->dev, node);
 		if (ret)
@@ -1381,6 +1574,12 @@ static int __init iort_add_platform_device(struct acpi_iort_node *node,
 	}
 
 	count = ops->dev_count_resources(node);
+=======
+	if (ops->iommu_set_proximity)
+		ops->iommu_set_proximity(&pdev->dev, node);
+
+	count = ops->iommu_count_resources(node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = kcalloc(count, sizeof(*r), GFP_KERNEL);
 	if (!r) {
@@ -1388,7 +1587,11 @@ static int __init iort_add_platform_device(struct acpi_iort_node *node,
 		goto dev_put;
 	}
 
+<<<<<<< HEAD
 	ops->dev_init_resources(r, node);
+=======
+	ops->iommu_init_resources(r, node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = platform_device_add_resources(pdev, r, count);
 	/*
@@ -1423,14 +1626,22 @@ static int __init iort_add_platform_device(struct acpi_iort_node *node,
 
 	pdev->dev.fwnode = fwnode;
 
+<<<<<<< HEAD
 	attr = ops->dev_is_coherent && ops->dev_is_coherent(node) ?
 			DEV_DMA_COHERENT : DEV_DMA_NON_COHERENT;
+=======
+	attr = ops->iommu_is_coherent(node) ?
+			     DEV_DMA_COHERENT : DEV_DMA_NON_COHERENT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Configure DMA for the page table walker */
 	acpi_dma_configure(&pdev->dev, attr);
 
+<<<<<<< HEAD
 	iort_set_device_domain(&pdev->dev, node);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = platform_device_add(pdev);
 	if (ret)
 		goto dma_deconfigure;
@@ -1483,7 +1694,10 @@ static void __init iort_init_platform_devices(void)
 	struct fwnode_handle *fwnode;
 	int i, ret;
 	bool acs_enabled = false;
+<<<<<<< HEAD
 	const struct iort_dev_config *ops;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * iort_table and iort both point to the start of IORT table, but
@@ -1506,15 +1720,25 @@ static void __init iort_init_platform_devices(void)
 		if (!acs_enabled)
 			acs_enabled = iort_enable_acs(iort_node);
 
+<<<<<<< HEAD
 		ops = iort_get_dev_cfg(iort_node);
 		if (ops) {
+=======
+		if ((iort_node->type == ACPI_IORT_NODE_SMMU) ||
+			(iort_node->type == ACPI_IORT_NODE_SMMU_V3)) {
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fwnode = acpi_alloc_fwnode_static();
 			if (!fwnode)
 				return;
 
 			iort_set_fwnode(iort_node, fwnode);
 
+<<<<<<< HEAD
 			ret = iort_add_platform_device(iort_node, ops);
+=======
+			ret = iort_add_smmu_platform_device(iort_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret) {
 				iort_delete_fwnode(iort_node);
 				acpi_free_fwnode_static(fwnode);

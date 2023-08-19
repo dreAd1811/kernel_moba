@@ -23,7 +23,10 @@
 #include <linux/hwmon-sysfs.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/hwmon.h>
 #include <linux/slab.h>
 #include <linux/init.h>
@@ -64,10 +67,13 @@ static int mc13783_adc_read(struct device *dev,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* ADIN7 subchannels */
 	if (channel >= 16)
 		channel = 7;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	channel &= 0x7;
 
 	*val = (sample[channel % 4] >> (channel > 3 ? 14 : 2)) & 0x3ff;
@@ -116,6 +122,7 @@ static ssize_t mc13783_adc_read_gp(struct device *dev,
 	return sprintf(buf, "%u\n", val);
 }
 
+<<<<<<< HEAD
 static ssize_t mc13783_adc_read_uid(struct device *dev,
 		struct device_attribute *devattr, char *buf)
 {
@@ -167,6 +174,8 @@ static ssize_t mc13783_adc_read_temp(struct device *dev,
 	return sprintf(buf, "%d\n", ret);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEVICE_ATTR_RO(name);
 static SENSOR_DEVICE_ATTR(in2_input, S_IRUGO, mc13783_adc_read_bp, NULL, 2);
 static SENSOR_DEVICE_ATTR(in5_input, S_IRUGO, mc13783_adc_read_gp, NULL, 5);
@@ -180,9 +189,12 @@ static SENSOR_DEVICE_ATTR(in12_input, S_IRUGO, mc13783_adc_read_gp, NULL, 12);
 static SENSOR_DEVICE_ATTR(in13_input, S_IRUGO, mc13783_adc_read_gp, NULL, 13);
 static SENSOR_DEVICE_ATTR(in14_input, S_IRUGO, mc13783_adc_read_gp, NULL, 14);
 static SENSOR_DEVICE_ATTR(in15_input, S_IRUGO, mc13783_adc_read_gp, NULL, 15);
+<<<<<<< HEAD
 static SENSOR_DEVICE_ATTR(in16_input, S_IRUGO, mc13783_adc_read_uid, NULL, 16);
 static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO,
 			  mc13783_adc_read_temp, NULL, 17);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *mc13783_attr_base[] = {
 	&dev_attr_name.attr,
@@ -190,8 +202,11 @@ static struct attribute *mc13783_attr_base[] = {
 	&sensor_dev_attr_in5_input.dev_attr.attr,
 	&sensor_dev_attr_in6_input.dev_attr.attr,
 	&sensor_dev_attr_in7_input.dev_attr.attr,
+<<<<<<< HEAD
 	&sensor_dev_attr_in16_input.dev_attr.attr,
 	&sensor_dev_attr_temp1_input.dev_attr.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 

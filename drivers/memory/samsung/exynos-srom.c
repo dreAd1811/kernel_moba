@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright (c) 2015 Samsung Electronics Co., Ltd.
@@ -5,6 +6,19 @@
 //
 // EXYNOS - SROM Controller support
 // Author: Pankaj Dubey <pankaj.dubey@samsung.com>
+=======
+/*
+ * Copyright (c) 2015 Samsung Electronics Co., Ltd.
+ *	      http://www.samsung.com/
+ *
+ * EXYNOS - SROM Controller support
+ * Author: Pankaj Dubey <pankaj.dubey@samsung.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/io.h>
 #include <linux/init.h>

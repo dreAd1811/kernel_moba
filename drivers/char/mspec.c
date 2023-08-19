@@ -191,7 +191,11 @@ mspec_close(struct vm_area_struct *vma)
  *
  * Creates a mspec page and maps it to user space.
  */
+<<<<<<< HEAD
 static vm_fault_t
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mspec_fault(struct vm_fault *vmf)
 {
 	unsigned long paddr, maddr;
@@ -223,7 +227,18 @@ mspec_fault(struct vm_fault *vmf)
 
 	pfn = paddr >> PAGE_SHIFT;
 
+<<<<<<< HEAD
 	return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
+=======
+	/*
+	 * vm_insert_pfn can fail with -EBUSY, but in that case it will
+	 * be because another thread has installed the pte first, so it
+	 * is no problem.
+	 */
+	vm_insert_pfn(vmf->vma, vmf->address, pfn);
+
+	return VM_FAULT_NOPAGE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct vm_operations_struct mspec_vm_ops = {

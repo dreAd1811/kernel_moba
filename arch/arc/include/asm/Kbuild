@@ -1,9 +1,15 @@
 # SPDX-License-Identifier: GPL-2.0
 generic-y += bugs.h
+<<<<<<< HEAD
 generic-y += compat.h
 generic-y += device.h
 generic-y += div64.h
 generic-y += dma-mapping.h
+=======
+generic-y += clkdev.h
+generic-y += device.h
+generic-y += div64.h
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 generic-y += emergency-restart.h
 generic-y += extable.h
 generic-y += fb.h

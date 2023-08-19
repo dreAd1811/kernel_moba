@@ -40,6 +40,20 @@ static void set_stklim(void)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static __init void do_uml_initcalls(void)
+{
+	initcall_t *call;
+
+	call = &__uml_initcall_start;
+	while (call < &__uml_initcall_end) {
+		(*call)();
+		call++;
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void last_ditch_exit(int sig)
 {
 	uml_cleanup();
@@ -140,6 +154,10 @@ int __init main(int argc, char **argv, char **envp)
 	scan_elf_aux(envp);
 #endif
 
+<<<<<<< HEAD
+=======
+	do_uml_initcalls();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	change_sig(SIGPIPE, 0);
 	ret = linux_main(argc, argv);
 

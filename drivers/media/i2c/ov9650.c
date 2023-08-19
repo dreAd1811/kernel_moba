@@ -11,10 +11,15 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  */
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/gpio.h>
 #include <linux/gpio/consumer.h>
+=======
+#include <linux/delay.h>
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/i2c.h>
 #include <linux/kernel.h>
 #include <linux/media.h>
@@ -251,10 +256,16 @@ struct ov965x {
 	struct v4l2_subdev sd;
 	struct media_pad pad;
 	enum v4l2_mbus_type bus_type;
+<<<<<<< HEAD
 	struct gpio_desc *gpios[NUM_GPIOS];
 	/* External master clock frequency */
 	unsigned long mclk_frequency;
 	struct clk *clk;
+=======
+	int gpios[NUM_GPIOS];
+	/* External master clock frequency */
+	unsigned long mclk_frequency;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Protects the struct fields below */
 	struct mutex lock;
@@ -516,6 +527,7 @@ static int ov965x_set_color_matrix(struct ov965x *ov965x)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __ov965x_set_power(struct ov965x *ov965x, int on)
 {
 	if (on) {
@@ -537,6 +549,26 @@ static int __ov965x_set_power(struct ov965x *ov965x, int on)
 	ov965x->streaming = 0;
 
 	return 0;
+=======
+static void ov965x_gpio_set(int gpio, int val)
+{
+	if (gpio_is_valid(gpio))
+		gpio_set_value(gpio, val);
+}
+
+static void __ov965x_set_power(struct ov965x *ov965x, int on)
+{
+	if (on) {
+		ov965x_gpio_set(ov965x->gpios[GPIO_PWDN], 0);
+		ov965x_gpio_set(ov965x->gpios[GPIO_RST], 0);
+		msleep(25);
+	} else {
+		ov965x_gpio_set(ov965x->gpios[GPIO_RST], 1);
+		ov965x_gpio_set(ov965x->gpios[GPIO_PWDN], 1);
+	}
+
+	ov965x->streaming = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ov965x_s_power(struct v4l2_subdev *sd, int on)
@@ -549,8 +581,13 @@ static int ov965x_s_power(struct v4l2_subdev *sd, int on)
 
 	mutex_lock(&ov965x->lock);
 	if (ov965x->power == !on) {
+<<<<<<< HEAD
 		ret = __ov965x_set_power(ov965x, on);
 		if (!ret && on) {
+=======
+		__ov965x_set_power(ov965x, on);
+		if (on) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = ov965x_write_array(client,
 						 ov965x_init_regs);
 			ov965x->apply_frame_fmt = 1;
@@ -897,12 +934,19 @@ static int __g_volatile_ctrl(struct ov965x *ov965x, struct v4l2_ctrl *ctrl)
 		if (ctrl->val == V4L2_EXPOSURE_MANUAL)
 			return 0;
 		ret = ov965x_read(client, REG_COM1, &reg0);
+<<<<<<< HEAD
 		if (ret < 0)
 			return ret;
 		ret = ov965x_read(client, REG_AECH, &reg1);
 		if (ret < 0)
 			return ret;
 		ret = ov965x_read(client, REG_AECHM, &reg2);
+=======
+		if (!ret)
+			ret = ov965x_read(client, REG_AECH, &reg1);
+		if (!ret)
+			ret = ov965x_read(client, REG_AECHM, &reg2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			return ret;
 		exposure = ((reg2 & 0x3f) << 10) | (reg1 << 2) |
@@ -998,6 +1042,10 @@ static const struct v4l2_ctrl_ops ov965x_ctrl_ops = {
 static const char * const test_pattern_menu[] = {
 	"Disabled",
 	"Color bars",
+<<<<<<< HEAD
+=======
+	NULL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ov965x_initialize_controls(struct ov965x *ov965x)
@@ -1141,8 +1189,13 @@ static int __ov965x_set_frame_interval(struct ov965x *ov965x,
 	if (fi->interval.denominator == 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	req_int = (u64)fi->interval.numerator * 10000;
 	do_div(req_int, fi->interval.denominator);
+=======
+	req_int = (u64)(fi->interval.numerator * 10000) /
+		fi->interval.denominator;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(ov965x_intervals); i++) {
 		const struct ov965x_interval *iv = &ov965x_intervals[i];
@@ -1421,6 +1474,7 @@ static const struct v4l2_subdev_ops ov965x_subdev_ops = {
 /*
  * Reset and power down GPIOs configuration
  */
+<<<<<<< HEAD
 static int ov965x_configure_gpios_pdata(struct ov965x *ov965x,
 				const struct ov9650_platform_data *pdata)
 {
@@ -1432,6 +1486,18 @@ static int ov965x_configure_gpios_pdata(struct ov965x *ov965x,
 
 	for (i = 0; i < ARRAY_SIZE(ov965x->gpios); i++) {
 		int gpio = gpios[i];
+=======
+static int ov965x_configure_gpios(struct ov965x *ov965x,
+				  const struct ov9650_platform_data *pdata)
+{
+	int ret, i;
+
+	ov965x->gpios[GPIO_PWDN] = pdata->gpio_pwdn;
+	ov965x->gpios[GPIO_RST]  = pdata->gpio_reset;
+
+	for (i = 0; i < ARRAY_SIZE(ov965x->gpios); i++) {
+		int gpio = ov965x->gpios[i];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!gpio_is_valid(gpio))
 			continue;
@@ -1441,6 +1507,7 @@ static int ov965x_configure_gpios_pdata(struct ov965x *ov965x,
 			return ret;
 		v4l2_dbg(1, debug, &ov965x->sd, "set gpio %d to 1\n", gpio);
 
+<<<<<<< HEAD
 		gpio_set_value_cansleep(gpio, 1);
 		gpio_export(gpio, 0);
 		ov965x->gpios[i] = gpio_to_desc(gpio);
@@ -1465,6 +1532,11 @@ static int ov965x_configure_gpios(struct ov965x *ov965x)
 	if (IS_ERR(ov965x->gpios[GPIO_RST])) {
 		dev_info(dev, "can't get %s GPIO\n", "reset");
 		return PTR_ERR(ov965x->gpios[GPIO_RST]);
+=======
+		gpio_set_value(gpio, 1);
+		gpio_export(gpio, 0);
+		ov965x->gpios[i] = gpio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1478,10 +1550,14 @@ static int ov965x_detect_sensor(struct v4l2_subdev *sd)
 	int ret;
 
 	mutex_lock(&ov965x->lock);
+<<<<<<< HEAD
 	ret = __ov965x_set_power(ov965x, 1);
 	if (ret)
 		goto out;
 
+=======
+	__ov965x_set_power(ov965x, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msleep(25);
 
 	/* Check sensor revision */
@@ -1501,7 +1577,10 @@ static int ov965x_detect_sensor(struct v4l2_subdev *sd)
 			ret = -ENODEV;
 		}
 	}
+<<<<<<< HEAD
 out:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&ov965x->lock);
 
 	return ret;
@@ -1515,10 +1594,24 @@ static int ov965x_probe(struct i2c_client *client,
 	struct ov965x *ov965x;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (!pdata) {
+		dev_err(&client->dev, "platform data not specified\n");
+		return -EINVAL;
+	}
+
+	if (pdata->mclk_frequency == 0) {
+		dev_err(&client->dev, "MCLK frequency not specified\n");
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ov965x = devm_kzalloc(&client->dev, sizeof(*ov965x), GFP_KERNEL);
 	if (!ov965x)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ov965x->client = client;
 
 	if (pdata) {
@@ -1548,6 +1641,11 @@ static int ov965x_probe(struct i2c_client *client,
 	}
 
 	mutex_init(&ov965x->lock);
+=======
+	mutex_init(&ov965x->lock);
+	ov965x->client = client;
+	ov965x->mclk_frequency = pdata->mclk_frequency;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sd = &ov965x->sd;
 	v4l2_i2c_subdev_init(sd, client, &ov965x_subdev_ops);
@@ -1557,6 +1655,13 @@ static int ov965x_probe(struct i2c_client *client,
 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE |
 		     V4L2_SUBDEV_FL_HAS_EVENTS;
 
+<<<<<<< HEAD
+=======
+	ret = ov965x_configure_gpios(ov965x, pdata);
+	if (ret < 0)
+		goto err_mutex;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ov965x->pad.flags = MEDIA_PAD_FL_SOURCE;
 	sd->entity.function = MEDIA_ENT_F_CAM_SENSOR;
 	ret = media_entity_pads_init(&sd->entity, 1, &ov965x->pad);
@@ -1612,6 +1717,7 @@ static const struct i2c_device_id ov965x_id[] = {
 };
 MODULE_DEVICE_TABLE(i2c, ov965x_id);
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_OF)
 static const struct of_device_id ov965x_of_match[] = {
 	{ .compatible = "ovti,ov9650", },
@@ -1625,6 +1731,11 @@ static struct i2c_driver ov965x_i2c_driver = {
 	.driver = {
 		.name	= DRIVER_NAME,
 		.of_match_table = of_match_ptr(ov965x_of_match),
+=======
+static struct i2c_driver ov965x_i2c_driver = {
+	.driver = {
+		.name	= DRIVER_NAME,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= ov965x_probe,
 	.remove		= ov965x_remove,

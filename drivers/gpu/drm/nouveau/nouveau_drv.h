@@ -6,7 +6,11 @@
 #define DRIVER_EMAIL		"nouveau@lists.freedesktop.org"
 
 #define DRIVER_NAME		"nouveau"
+<<<<<<< HEAD
 #define DRIVER_DESC		"nVidia Riva/TNT/GeForce/Quadro/Tesla/Tegra K1+"
+=======
+#define DRIVER_DESC		"nVidia Riva/TNT/GeForce/Quadro/Tesla"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRIVER_DATE		"20120801"
 
 #define DRIVER_MAJOR		1
@@ -43,8 +47,11 @@
 #include <nvif/client.h>
 #include <nvif/device.h>
 #include <nvif/ioctl.h>
+<<<<<<< HEAD
 #include <nvif/mmu.h>
 #include <nvif/vmm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <drm/drmP.h>
 
@@ -64,7 +71,10 @@ struct platform_device;
 
 #include "nouveau_fence.h"
 #include "nouveau_bios.h"
+<<<<<<< HEAD
 #include "nouveau_vmm.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nouveau_drm_tile {
 	struct nouveau_fence *fence;
@@ -90,6 +100,7 @@ enum nouveau_drm_handle {
 
 struct nouveau_cli {
 	struct nvif_client base;
+<<<<<<< HEAD
 	struct nouveau_drm *drm;
 	struct mutex mutex;
 
@@ -98,11 +109,20 @@ struct nouveau_cli {
 	struct nouveau_vmm vmm;
 	const struct nvif_mclass *mem;
 
+=======
+	struct drm_device *dev;
+	struct mutex mutex;
+
+	struct nvif_device device;
+
+	struct nvkm_vm *vm; /*XXX*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head head;
 	void *abi16;
 	struct list_head objects;
 	struct list_head notifys;
 	char name[32];
+<<<<<<< HEAD
 
 	struct work_struct work;
 	struct list_head worker;
@@ -121,6 +141,10 @@ struct nouveau_cli_work {
 void nouveau_cli_work_queue(struct nouveau_cli *, struct dma_fence *,
 			    struct nouveau_cli_work *);
 
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct nouveau_cli *
 nouveau_cli(struct drm_file *fpriv)
 {
@@ -131,7 +155,10 @@ nouveau_cli(struct drm_file *fpriv)
 #include <nvif/device.h>
 
 struct nouveau_drm {
+<<<<<<< HEAD
 	struct nouveau_cli master;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nouveau_cli client;
 	struct drm_device *dev;
 
@@ -156,9 +183,12 @@ struct nouveau_drm {
 		struct nouveau_channel *chan;
 		struct nvif_object copy;
 		int mtrr;
+<<<<<<< HEAD
 		int type_vram;
 		int type_host[2];
 		int type_ncoh[2];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} ttm;
 
 	/* GEM interface support */
@@ -170,12 +200,15 @@ struct nouveau_drm {
 	/* synchronisation */
 	void *fence;
 
+<<<<<<< HEAD
 	/* Global channel management. */
 	struct {
 		int nr;
 		u64 context_base;
 	} chan;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* context for accelerated drm-internal operations */
 	struct nouveau_channel *cechan;
 	struct nouveau_channel *channel;
@@ -214,6 +247,10 @@ struct nouveau_drm {
 	bool have_disp_power_ref;
 
 	struct dev_pm_domain vga_pm_domain;
+<<<<<<< HEAD
+=======
+	struct pci_dev *hdmi_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct nouveau_drm *
@@ -222,6 +259,7 @@ nouveau_drm(struct drm_device *dev)
 	return dev->dev_private;
 }
 
+<<<<<<< HEAD
 static inline bool
 nouveau_drm_use_coherent_gpu_mapping(struct nouveau_drm *drm)
 {
@@ -229,6 +267,8 @@ nouveau_drm_use_coherent_gpu_mapping(struct nouveau_drm *drm)
 	return !(mmu->type[drm->ttm.type_host[0]].type & NVIF_MEM_UNCACHED);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int nouveau_pmops_suspend(struct device *);
 int nouveau_pmops_resume(struct device *);
 bool nouveau_pmops_runtime(void);
@@ -242,7 +282,11 @@ void nouveau_drm_device_remove(struct drm_device *dev);
 
 #define NV_PRINTK(l,c,f,a...) do {                                             \
 	struct nouveau_cli *_cli = (c);                                        \
+<<<<<<< HEAD
 	dev_##l(_cli->drm->dev->dev, "%s: "f, _cli->name, ##a);                \
+=======
+	dev_##l(_cli->dev->dev, "%s: "f, _cli->name, ##a);                     \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while(0)
 #define NV_FATAL(drm,f,a...) NV_PRINTK(crit, &(drm)->client, f, ##a)
 #define NV_ERROR(drm,f,a...) NV_PRINTK(err, &(drm)->client, f, ##a)

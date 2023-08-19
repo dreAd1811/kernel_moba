@@ -262,7 +262,11 @@ static int jlj_start(struct gspca_dev *gspca_dev)
 	msleep(2);
 	setfreq(gspca_dev, v4l2_ctrl_g_ctrl(sd->freq));
 	if (gspca_dev->usb_err < 0)
+<<<<<<< HEAD
 		gspca_err(gspca_dev, "Start streaming command failed\n");
+=======
+		PERR("Start streaming command failed");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return gspca_dev->usb_err;
 }
 
@@ -273,18 +277,29 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 	int packet_type;
 	u32 header_marker;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Got %d bytes out of %d for Block 0\n",
 		  len, JEILINJ_MAX_TRANSFER);
 	if (len != JEILINJ_MAX_TRANSFER) {
 		gspca_dbg(gspca_dev, D_PACK, "bad length\n");
+=======
+	PDEBUG(D_STREAM, "Got %d bytes out of %d for Block 0",
+			len, JEILINJ_MAX_TRANSFER);
+	if (len != JEILINJ_MAX_TRANSFER) {
+		PDEBUG(D_PACK, "bad length");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto discard;
 	}
 	/* check if it's start of frame */
 	header_marker = ((u32 *)data)[0];
 	if (header_marker == FRAME_START) {
 		sd->blocks_left = data[0x0a] - 1;
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "blocks_left = 0x%x\n",
 			  sd->blocks_left);
+=======
+		PDEBUG(D_STREAM, "blocks_left = 0x%x", sd->blocks_left);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Start a new frame, and add the JPEG header, first thing */
 		gspca_frame_add(gspca_dev, FIRST_PACKET,
 				sd->jpeg_hdr, JPEG_HDR_SZ);
@@ -293,8 +308,13 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 				data + FRAME_HEADER_LEN,
 				JEILINJ_MAX_TRANSFER - FRAME_HEADER_LEN);
 	} else if (sd->blocks_left > 0) {
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "%d blocks remaining for frame\n",
 			  sd->blocks_left);
+=======
+		PDEBUG(D_STREAM, "%d blocks remaining for frame",
+				sd->blocks_left);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sd->blocks_left -= 1;
 		if (sd->blocks_left == 0)
 			packet_type = LAST_PACKET;
@@ -379,8 +399,13 @@ static int sd_start(struct gspca_dev *gspca_dev)
 			gspca_dev->pixfmt.width,
 			0x21);          /* JPEG 422 */
 	jpeg_set_qual(dev->jpeg_hdr, dev->quality);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_STREAM, "Start streaming at %dx%d\n",
 		  gspca_dev->pixfmt.height, gspca_dev->pixfmt.width);
+=======
+	PDEBUG(D_STREAM, "Start streaming at %dx%d",
+		gspca_dev->pixfmt.height, gspca_dev->pixfmt.width);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jlj_start(gspca_dev);
 	return gspca_dev->usb_err;
 }

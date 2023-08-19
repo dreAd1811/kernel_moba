@@ -112,7 +112,11 @@ struct hifmc_host {
 	u32 num_chip;
 };
 
+<<<<<<< HEAD
 static inline int hisi_spi_nor_wait_op_finish(struct hifmc_host *host)
+=======
+static inline int wait_op_finish(struct hifmc_host *host)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 reg;
 
@@ -120,7 +124,11 @@ static inline int hisi_spi_nor_wait_op_finish(struct hifmc_host *host)
 		(reg & FMC_INT_OP_DONE), 0, FMC_WAIT_TIMEOUT);
 }
 
+<<<<<<< HEAD
 static int hisi_spi_nor_get_if_type(enum spi_nor_protocol proto)
+=======
+static int get_if_type(enum spi_nor_protocol proto)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	enum hifmc_iftype if_type;
 
@@ -208,7 +216,11 @@ static int hisi_spi_nor_op_reg(struct spi_nor *nor,
 	reg = FMC_OP_CMD1_EN | FMC_OP_REG_OP_START | optype;
 	writel(reg, host->regbase + FMC_OP);
 
+<<<<<<< HEAD
 	return hisi_spi_nor_wait_op_finish(host);
+=======
+	return wait_op_finish(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int hisi_spi_nor_read_reg(struct spi_nor *nor, u8 opcode, u8 *buf,
@@ -259,9 +271,15 @@ static int hisi_spi_nor_dma_transfer(struct spi_nor *nor, loff_t start_off,
 
 	reg = OP_CFG_FM_CS(priv->chipselect);
 	if (op_type == FMC_OP_READ)
+<<<<<<< HEAD
 		if_type = hisi_spi_nor_get_if_type(nor->read_proto);
 	else
 		if_type = hisi_spi_nor_get_if_type(nor->write_proto);
+=======
+		if_type = get_if_type(nor->read_proto);
+	else
+		if_type = get_if_type(nor->write_proto);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg |= OP_CFG_MEM_IF_TYPE(if_type);
 	if (op_type == FMC_OP_READ)
 		reg |= OP_CFG_DUMMY_NUM(nor->read_dummy >> 3);
@@ -274,7 +292,11 @@ static int hisi_spi_nor_dma_transfer(struct spi_nor *nor, loff_t start_off,
 		: OP_CTRL_WR_OPCODE(nor->program_opcode);
 	writel(reg, host->regbase + FMC_OP_DMA);
 
+<<<<<<< HEAD
 	return hisi_spi_nor_wait_op_finish(host);
+=======
+	return wait_op_finish(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t hisi_spi_nor_read(struct spi_nor *nor, loff_t from, size_t len,

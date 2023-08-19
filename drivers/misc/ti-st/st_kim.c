@@ -138,7 +138,11 @@ static void kim_int_recv(struct kim_data_s *kim_gdata,
 	const unsigned char *data, long count)
 {
 	const unsigned char *ptr;
+<<<<<<< HEAD
 	int len = 0;
+=======
+	int len = 0, type = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char *plen;
 
 	pr_debug("%s", __func__);
@@ -183,6 +187,10 @@ static void kim_int_recv(struct kim_data_s *kim_gdata,
 		case 0x04:
 			kim_gdata->rx_state = ST_W4_HEADER;
 			kim_gdata->rx_count = 2;
+<<<<<<< HEAD
+=======
+			type = *ptr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		default:
 			pr_info("unknown packet");
@@ -734,7 +742,11 @@ static int kim_probe(struct platform_device *pdev)
 		st_kim_devices[0] = pdev;
 	}
 
+<<<<<<< HEAD
 	kim_gdata = kzalloc(sizeof(struct kim_data_s), GFP_KERNEL);
+=======
+	kim_gdata = kzalloc(sizeof(struct kim_data_s), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!kim_gdata) {
 		pr_err("no mem to allocate");
 		return -ENOMEM;

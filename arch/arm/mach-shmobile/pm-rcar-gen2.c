@@ -15,8 +15,13 @@
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/smp.h>
+<<<<<<< HEAD
 #include <asm/io.h>
 #include <asm/cputype.h>
+=======
+#include <linux/soc/renesas/rcar-sysc.h>
+#include <asm/io.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "common.h"
 #include "rcar-gen2.h"
 
@@ -37,6 +42,10 @@
 #define CA7RESCNT_CODE	0x5a5a0000
 #define CA7RESCNT_CPUS	0xf		/* CPU0-3 */
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* On-chip RAM */
 #define ICRAM1		0xe63c0000	/* Inter Connect RAM1 (4 KiB) */
 
@@ -45,6 +54,26 @@ static inline u32 phys_to_sbar(phys_addr_t addr)
 	return (addr >> 8) & 0xfffffc00;
 }
 
+<<<<<<< HEAD
+=======
+/* SYSC */
+#define SYSCIER 0x0c
+#define SYSCIMR 0x10
+
+#if defined(CONFIG_SMP)
+
+static void __init rcar_gen2_sysc_init(u32 syscier)
+{
+	rcar_sysc_init(0xe6180000, syscier);
+}
+
+#else /* CONFIG_SMP */
+
+static inline void rcar_gen2_sysc_init(u32 syscier) {}
+
+#endif /* CONFIG_SMP */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init rcar_gen2_pm_init(void)
 {
 	void __iomem *p;
@@ -54,6 +83,10 @@ void __init rcar_gen2_pm_init(void)
 	bool has_a7 = false;
 	bool has_a15 = false;
 	struct resource res;
+<<<<<<< HEAD
+=======
+	u32 syscier = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error;
 
 	if (once++)
@@ -70,6 +103,14 @@ void __init rcar_gen2_pm_init(void)
 			has_a7 = true;
 	}
 
+<<<<<<< HEAD
+=======
+	if (of_machine_is_compatible("renesas,r8a7790"))
+		syscier = 0x013111ef;
+	else if (of_machine_is_compatible("renesas,r8a7791"))
+		syscier = 0x00111003;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	np = of_find_compatible_node(NULL, NULL, "renesas,smp-sram");
 	if (!np) {
 		/* No smp-sram in DT, fall back to hardcoded address */
@@ -95,6 +136,7 @@ map:
 	p = ioremap(res.start, resource_size(&res));
 	if (!p)
 		return;
+<<<<<<< HEAD
 	/*
 	 * install the reset vector, use the largest version if we have enough
 	 * memory available
@@ -106,6 +148,10 @@ map:
 	} else {
 		memcpy_toio(p, shmobile_boot_vector, shmobile_boot_size);
 	}
+=======
+
+	memcpy_toio(p, shmobile_boot_vector, shmobile_boot_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iounmap(p);
 
 	/* setup reset vectors */
@@ -131,5 +177,9 @@ map:
 	}
 	iounmap(p);
 
+<<<<<<< HEAD
+=======
+	rcar_gen2_sysc_init(syscier);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	shmobile_smp_apmu_suspend_init();
 }

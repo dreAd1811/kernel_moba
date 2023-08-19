@@ -41,7 +41,10 @@
 #include <linux/random.h>
 #include <linux/jiffies.h>
 #include <linux/lockdep.h>
+<<<<<<< HEAD
 #include <linux/inet.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <rdma/ib_cache.h>
 
 #include <linux/atomic.h>
@@ -57,10 +60,19 @@
 
 #define DRV_NAME	"ib_srp"
 #define PFX		DRV_NAME ": "
+<<<<<<< HEAD
+=======
+#define DRV_VERSION	"2.0"
+#define DRV_RELDATE	"July 26, 2015"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Roland Dreier");
 MODULE_DESCRIPTION("InfiniBand SCSI RDMA Protocol initiator");
 MODULE_LICENSE("Dual BSD/GPL");
+<<<<<<< HEAD
+=======
+MODULE_INFO(release_date, DRV_RELDATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if !defined(CONFIG_DYNAMIC_DEBUG)
 #define DEFINE_DYNAMIC_DEBUG_METADATA(name, fmt)
@@ -142,10 +154,14 @@ static void srp_remove_one(struct ib_device *device, void *client_data);
 static void srp_recv_done(struct ib_cq *cq, struct ib_wc *wc);
 static void srp_handle_qp_err(struct ib_cq *cq, struct ib_wc *wc,
 		const char *opname);
+<<<<<<< HEAD
 static int srp_ib_cm_handler(struct ib_cm_id *cm_id,
 			     const struct ib_cm_event *event);
 static int srp_rdma_cm_handler(struct rdma_cm_id *cm_id,
 			       struct rdma_cm_event *event);
+=======
+static int srp_cm_handler(struct ib_cm_id *cm_id, struct ib_cm_event *event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct scsi_transport_template *ib_srp_transport_template;
 static struct workqueue_struct *srp_remove_wq;
@@ -266,8 +282,13 @@ static void srp_qp_event(struct ib_event *event, void *context)
 		 ib_event_msg(event->event), event->event);
 }
 
+<<<<<<< HEAD
 static int srp_init_ib_qp(struct srp_target_port *target,
 			  struct ib_qp *qp)
+=======
+static int srp_init_qp(struct srp_target_port *target,
+		       struct ib_qp *qp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ib_qp_attr *attr;
 	int ret;
@@ -278,7 +299,11 @@ static int srp_init_ib_qp(struct srp_target_port *target,
 
 	ret = ib_find_cached_pkey(target->srp_host->srp_dev->dev,
 				  target->srp_host->port,
+<<<<<<< HEAD
 				  be16_to_cpu(target->ib_cm.pkey),
+=======
+				  be16_to_cpu(target->pkey),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  &attr->pkey_index);
 	if (ret)
 		goto out;
@@ -299,12 +324,17 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int srp_new_ib_cm_id(struct srp_rdma_ch *ch)
+=======
+static int srp_new_cm_id(struct srp_rdma_ch *ch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct srp_target_port *target = ch->target;
 	struct ib_cm_id *new_cm_id;
 
 	new_cm_id = ib_create_cm_id(target->srp_host->srp_dev->dev,
+<<<<<<< HEAD
 				    srp_ib_cm_handler, ch);
 	if (IS_ERR(new_cm_id))
 		return PTR_ERR(new_cm_id);
@@ -321,10 +351,29 @@ static int srp_new_ib_cm_id(struct srp_rdma_ch *ch)
 	ch->ib_cm.path.dgid = target->ib_cm.orig_dgid;
 	ch->ib_cm.path.pkey = target->ib_cm.pkey;
 	ch->ib_cm.path.service_id = target->ib_cm.service_id;
+=======
+				    srp_cm_handler, ch);
+	if (IS_ERR(new_cm_id))
+		return PTR_ERR(new_cm_id);
+
+	if (ch->cm_id)
+		ib_destroy_cm_id(ch->cm_id);
+	ch->cm_id = new_cm_id;
+	if (rdma_cap_opa_ah(target->srp_host->srp_dev->dev,
+			    target->srp_host->port))
+		ch->path.rec_type = SA_PATH_REC_TYPE_OPA;
+	else
+		ch->path.rec_type = SA_PATH_REC_TYPE_IB;
+	ch->path.sgid = target->sgid;
+	ch->path.dgid = target->orig_dgid;
+	ch->path.pkey = target->pkey;
+	ch->path.service_id = target->service_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int srp_new_rdma_cm_id(struct srp_rdma_ch *ch)
 {
 	struct srp_target_port *target = ch->target;
@@ -377,6 +426,8 @@ static int srp_new_cm_id(struct srp_rdma_ch *ch)
 		srp_new_ib_cm_id(ch);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct ib_fmr_pool *srp_alloc_fmr_pool(struct srp_target_port *target)
 {
 	struct srp_device *dev = target->srp_host->srp_dev;
@@ -429,7 +480,10 @@ static struct srp_fr_pool *srp_create_fr_pool(struct ib_device *device,
 	struct srp_fr_desc *d;
 	struct ib_mr *mr;
 	int i, ret = -EINVAL;
+<<<<<<< HEAD
 	enum ib_mr_type mr_type;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pool_size <= 0)
 		goto err;
@@ -443,6 +497,7 @@ static struct srp_fr_pool *srp_create_fr_pool(struct ib_device *device,
 	spin_lock_init(&pool->lock);
 	INIT_LIST_HEAD(&pool->free_list);
 
+<<<<<<< HEAD
 	if (device->attrs.device_cap_flags & IB_DEVICE_SG_GAPS_REG)
 		mr_type = IB_MR_TYPE_SG_GAPS;
 	else
@@ -450,6 +505,11 @@ static struct srp_fr_pool *srp_create_fr_pool(struct ib_device *device,
 
 	for (i = 0, d = &pool->desc[0]; i < pool->size; i++, d++) {
 		mr = ib_alloc_mr(pd, mr_type, max_page_list_len);
+=======
+	for (i = 0, d = &pool->desc[0]; i < pool->size; i++, d++) {
+		mr = ib_alloc_mr(pd, IB_MR_TYPE_MEM_REG,
+				 max_page_list_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(mr)) {
 			ret = PTR_ERR(mr);
 			if (ret == -ENOMEM)
@@ -522,20 +582,33 @@ static struct srp_fr_pool *srp_alloc_fr_pool(struct srp_target_port *target)
 
 /**
  * srp_destroy_qp() - destroy an RDMA queue pair
+<<<<<<< HEAD
  * @ch: SRP RDMA channel.
+=======
+ * @qp: RDMA queue pair.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Drain the qp before destroying it.  This avoids that the receive
  * completion handler can access the queue pair while it is
  * being destroyed.
  */
+<<<<<<< HEAD
 static void srp_destroy_qp(struct srp_rdma_ch *ch)
+=======
+static void srp_destroy_qp(struct srp_rdma_ch *ch, struct ib_qp *qp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	spin_lock_irq(&ch->lock);
 	ib_process_cq_direct(ch->send_cq, -1);
 	spin_unlock_irq(&ch->lock);
 
+<<<<<<< HEAD
 	ib_drain_qp(ch->qp);
 	ib_destroy_qp(ch->qp);
+=======
+	ib_drain_qp(qp);
+	ib_destroy_qp(qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int srp_create_ch_ib(struct srp_rdma_ch *ch)
@@ -579,6 +652,7 @@ static int srp_create_ch_ib(struct srp_rdma_ch *ch)
 	init_attr->send_cq             = send_cq;
 	init_attr->recv_cq             = recv_cq;
 
+<<<<<<< HEAD
 	if (target->using_rdma_cm) {
 		ret = rdma_create_qp(ch->rdma_cm.cm_id, dev->pd, init_attr);
 		qp = ch->rdma_cm.cm_id->qp;
@@ -598,6 +672,18 @@ static int srp_create_ch_ib(struct srp_rdma_ch *ch)
 		goto err_send_cq;
 	}
 
+=======
+	qp = ib_create_qp(dev->pd, init_attr);
+	if (IS_ERR(qp)) {
+		ret = PTR_ERR(qp);
+		goto err_send_cq;
+	}
+
+	ret = srp_init_qp(target, qp);
+	if (ret)
+		goto err_qp;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->use_fast_reg) {
 		fr_pool = srp_alloc_fr_pool(target);
 		if (IS_ERR(fr_pool)) {
@@ -617,7 +703,11 @@ static int srp_create_ch_ib(struct srp_rdma_ch *ch)
 	}
 
 	if (ch->qp)
+<<<<<<< HEAD
 		srp_destroy_qp(ch);
+=======
+		srp_destroy_qp(ch, ch->qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ch->recv_cq)
 		ib_free_cq(ch->recv_cq);
 	if (ch->send_cq)
@@ -641,10 +731,14 @@ static int srp_create_ch_ib(struct srp_rdma_ch *ch)
 	return 0;
 
 err_qp:
+<<<<<<< HEAD
 	if (target->using_rdma_cm)
 		rdma_destroy_qp(ch->rdma_cm.cm_id);
 	else
 		ib_destroy_qp(qp);
+=======
+	ib_destroy_qp(qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_send_cq:
 	ib_free_cq(send_cq);
@@ -670,6 +764,7 @@ static void srp_free_ch_ib(struct srp_target_port *target,
 	if (!ch->target)
 		return;
 
+<<<<<<< HEAD
 	if (target->using_rdma_cm) {
 		if (ch->rdma_cm.cm_id) {
 			rdma_destroy_id(ch->rdma_cm.cm_id);
@@ -680,6 +775,11 @@ static void srp_free_ch_ib(struct srp_target_port *target,
 			ib_destroy_cm_id(ch->ib_cm.cm_id);
 			ch->ib_cm.cm_id = NULL;
 		}
+=======
+	if (ch->cm_id) {
+		ib_destroy_cm_id(ch->cm_id);
+		ch->cm_id = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* If srp_new_cm_id() succeeded but srp_create_ch_ib() not, return. */
@@ -694,7 +794,11 @@ static void srp_free_ch_ib(struct srp_target_port *target,
 			ib_destroy_fmr_pool(ch->fmr_pool);
 	}
 
+<<<<<<< HEAD
 	srp_destroy_qp(ch);
+=======
+	srp_destroy_qp(ch, ch->qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ib_free_cq(ch->send_cq);
 	ib_free_cq(ch->recv_cq);
 
@@ -735,6 +839,7 @@ static void srp_path_rec_completion(int status,
 		shost_printk(KERN_ERR, target->scsi_host,
 			     PFX "Got failed path rec status %d\n", status);
 	else
+<<<<<<< HEAD
 		ch->ib_cm.path = *pathrec;
 	complete(&ch->done);
 }
@@ -752,6 +857,32 @@ static int srp_ib_lookup_path(struct srp_rdma_ch *ch)
 					       target->srp_host->srp_dev->dev,
 					       target->srp_host->port,
 					       &ch->ib_cm.path,
+=======
+		ch->path = *pathrec;
+	complete(&ch->done);
+}
+
+static int srp_lookup_path(struct srp_rdma_ch *ch)
+{
+	struct srp_target_port *target = ch->target;
+	int ret = -ENODEV;
+
+	ch->path.numb_path = 1;
+
+	init_completion(&ch->done);
+
+	/*
+	 * Avoid that the SCSI host can be removed by srp_remove_target()
+	 * before srp_path_rec_completion() is called.
+	 */
+	if (!scsi_host_get(target->scsi_host))
+		goto out;
+
+	ch->path_query_id = ib_sa_path_rec_get(&srp_sa_client,
+					       target->srp_host->srp_dev->dev,
+					       target->srp_host->port,
+					       &ch->path,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       IB_SA_PATH_REC_SERVICE_ID |
 					       IB_SA_PATH_REC_DGID	 |
 					       IB_SA_PATH_REC_SGID	 |
@@ -760,6 +891,7 @@ static int srp_ib_lookup_path(struct srp_rdma_ch *ch)
 					       SRP_PATH_REC_TIMEOUT_MS,
 					       GFP_KERNEL,
 					       srp_path_rec_completion,
+<<<<<<< HEAD
 					       ch, &ch->ib_cm.path_query);
 	if (ch->ib_cm.path_query_id < 0)
 		return ch->ib_cm.path_query_id;
@@ -821,31 +953,73 @@ static u8 srp_get_subnet_timeout(struct srp_host *host)
 			dev_name(&host->srp_dev->dev->dev), subnet_timeout);
 
 	return subnet_timeout;
+=======
+					       ch, &ch->path_query);
+	ret = ch->path_query_id;
+	if (ret < 0)
+		goto put;
+
+	ret = wait_for_completion_interruptible(&ch->done);
+	if (ret < 0)
+		goto put;
+
+	ret = ch->status;
+	if (ret < 0)
+		shost_printk(KERN_WARNING, target->scsi_host,
+			     PFX "Path record query failed\n");
+
+put:
+	scsi_host_put(target->scsi_host);
+
+out:
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int srp_send_req(struct srp_rdma_ch *ch, bool multich)
 {
 	struct srp_target_port *target = ch->target;
 	struct {
+<<<<<<< HEAD
 		struct rdma_conn_param	  rdma_param;
 		struct srp_login_req_rdma rdma_req;
 		struct ib_cm_req_param	  ib_param;
 		struct srp_login_req	  ib_req;
 	} *req = NULL;
 	char *ipi, *tpi;
+=======
+		struct ib_cm_req_param param;
+		struct srp_login_req   priv;
+	} *req = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status;
 
 	req = kzalloc(sizeof *req, GFP_KERNEL);
 	if (!req)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	req->ib_param.flow_control = 1;
 	req->ib_param.retry_count = target->tl_retry_count;
+=======
+	req->param.primary_path		      = &ch->path;
+	req->param.alternate_path 	      = NULL;
+	req->param.service_id 		      = target->service_id;
+	req->param.qp_num		      = ch->qp->qp_num;
+	req->param.qp_type		      = ch->qp->qp_type;
+	req->param.private_data 	      = &req->priv;
+	req->param.private_data_len 	      = sizeof req->priv;
+	req->param.flow_control 	      = 1;
+
+	get_random_bytes(&req->param.starting_psn, 4);
+	req->param.starting_psn 	     &= 0xffffff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Pick some arbitrary defaults here; we could make these
 	 * module parameters if anyone cared about setting them.
 	 */
+<<<<<<< HEAD
 	req->ib_param.responder_resources = 4;
 	req->ib_param.rnr_retry_count = 7;
 	req->ib_param.max_cm_retries = 15;
@@ -897,6 +1071,22 @@ static int srp_send_req(struct srp_rdma_ch *ch, bool multich)
 		tpi = req->ib_req.target_port_id;
 	}
 
+=======
+	req->param.responder_resources	      = 4;
+	req->param.remote_cm_response_timeout = 20;
+	req->param.local_cm_response_timeout  = 20;
+	req->param.retry_count                = target->tl_retry_count;
+	req->param.rnr_retry_count 	      = 7;
+	req->param.max_cm_retries 	      = 15;
+
+	req->priv.opcode     	= SRP_LOGIN_REQ;
+	req->priv.tag        	= 0;
+	req->priv.req_it_iu_len = cpu_to_be32(target->max_iu_len);
+	req->priv.req_buf_fmt 	= cpu_to_be16(SRP_BUF_FORMAT_DIRECT |
+					      SRP_BUF_FORMAT_INDIRECT);
+	req->priv.req_flags	= (multich ? SRP_MULTICHAN_MULTI :
+				   SRP_MULTICHAN_SINGLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * In the published SRP specification (draft rev. 16a), the
 	 * port identifier format is 8 bytes of ID extension followed
@@ -907,6 +1097,7 @@ static int srp_send_req(struct srp_rdma_ch *ch, bool multich)
 	 * recognized by the I/O Class they report.
 	 */
 	if (target->io_class == SRP_REV10_IB_IO_CLASS) {
+<<<<<<< HEAD
 		memcpy(ipi,     &target->sgid.global.interface_id, 8);
 		memcpy(ipi + 8, &target->initiator_ext, 8);
 		memcpy(tpi,     &target->ioc_guid, 8);
@@ -916,6 +1107,21 @@ static int srp_send_req(struct srp_rdma_ch *ch, bool multich)
 		memcpy(ipi + 8, &target->sgid.global.interface_id, 8);
 		memcpy(tpi,     &target->id_ext, 8);
 		memcpy(tpi + 8, &target->ioc_guid, 8);
+=======
+		memcpy(req->priv.initiator_port_id,
+		       &target->sgid.global.interface_id, 8);
+		memcpy(req->priv.initiator_port_id + 8,
+		       &target->initiator_ext, 8);
+		memcpy(req->priv.target_port_id,     &target->ioc_guid, 8);
+		memcpy(req->priv.target_port_id + 8, &target->id_ext, 8);
+	} else {
+		memcpy(req->priv.initiator_port_id,
+		       &target->initiator_ext, 8);
+		memcpy(req->priv.initiator_port_id + 8,
+		       &target->sgid.global.interface_id, 8);
+		memcpy(req->priv.target_port_id,     &target->id_ext, 8);
+		memcpy(req->priv.target_port_id + 8, &target->ioc_guid, 8);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -928,6 +1134,7 @@ static int srp_send_req(struct srp_rdma_ch *ch, bool multich)
 			     PFX "Topspin/Cisco initiator port ID workaround "
 			     "activated for target GUID %016llx\n",
 			     be64_to_cpu(target->ioc_guid));
+<<<<<<< HEAD
 		memset(ipi, 0, 8);
 		memcpy(ipi + 8, &target->srp_host->srp_dev->dev->node_guid, 8);
 	}
@@ -936,6 +1143,14 @@ static int srp_send_req(struct srp_rdma_ch *ch, bool multich)
 		status = rdma_connect(ch->rdma_cm.cm_id, &req->rdma_param);
 	else
 		status = ib_send_cm_req(ch->ib_cm.cm_id, &req->ib_param);
+=======
+		memset(req->priv.initiator_port_id, 0, 8);
+		memcpy(req->priv.initiator_port_id + 8,
+		       &target->srp_host->srp_dev->dev->node_guid, 8);
+	}
+
+	status = ib_send_cm_req(ch->cm_id, &req->param);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(req);
 
@@ -962,13 +1177,18 @@ static bool srp_queue_remove_work(struct srp_target_port *target)
 static void srp_disconnect_target(struct srp_target_port *target)
 {
 	struct srp_rdma_ch *ch;
+<<<<<<< HEAD
 	int i, ret;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* XXX should send SRP_I_LOGOUT request */
 
 	for (i = 0; i < target->ch_count; i++) {
 		ch = &target->ch[i];
 		ch->connected = false;
+<<<<<<< HEAD
 		ret = 0;
 		if (target->using_rdma_cm) {
 			if (ch->rdma_cm.cm_id)
@@ -979,6 +1199,9 @@ static void srp_disconnect_target(struct srp_target_port *target)
 						      NULL, 0);
 		}
 		if (ret < 0) {
+=======
+		if (ch->cm_id && ib_send_cm_dreq(ch->cm_id, NULL, 0)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			shost_printk(KERN_DEBUG, target->scsi_host,
 				     PFX "Sending CM DREQ failed\n");
 		}
@@ -1033,17 +1256,27 @@ static int srp_alloc_req_data(struct srp_rdma_ch *ch)
 
 	for (i = 0; i < target->req_ring_size; ++i) {
 		req = &ch->req_ring[i];
+<<<<<<< HEAD
 		mr_list = kmalloc_array(target->mr_per_cmd, sizeof(void *),
 					GFP_KERNEL);
+=======
+		mr_list = kmalloc(target->mr_per_cmd * sizeof(void *),
+				  GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!mr_list)
 			goto out;
 		if (srp_dev->use_fast_reg) {
 			req->fr_list = mr_list;
 		} else {
 			req->fmr_list = mr_list;
+<<<<<<< HEAD
 			req->map_page = kmalloc_array(srp_dev->max_pages_per_mr,
 						      sizeof(void *),
 						      GFP_KERNEL);
+=======
+			req->map_page = kmalloc(srp_dev->max_pages_per_mr *
+						sizeof(void *), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!req->map_page)
 				goto out;
 		}
@@ -1093,7 +1326,10 @@ static void srp_remove_target(struct srp_target_port *target)
 	scsi_remove_host(target->scsi_host);
 	srp_stop_rport_timers(target->rport);
 	srp_disconnect_target(target);
+<<<<<<< HEAD
 	kobj_ns_drop(KOBJ_NS_TYPE_NET, target->net);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < target->ch_count; i++) {
 		ch = &target->ch[i];
 		srp_free_ch_ib(target, ch);
@@ -1209,6 +1445,10 @@ static void srp_inv_rkey_err_done(struct ib_cq *cq, struct ib_wc *wc)
 static int srp_inv_rkey(struct srp_request *req, struct srp_rdma_ch *ch,
 		u32 rkey)
 {
+<<<<<<< HEAD
+=======
+	struct ib_send_wr *bad_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_send_wr wr = {
 		.opcode		    = IB_WR_LOCAL_INV,
 		.next		    = NULL,
@@ -1219,7 +1459,11 @@ static int srp_inv_rkey(struct srp_request *req, struct srp_rdma_ch *ch,
 
 	wr.wr_cqe = &req->reg_cqe;
 	req->reg_cqe.done = srp_inv_rkey_err_done;
+<<<<<<< HEAD
 	return ib_post_send(ch->qp, &wr, NULL);
+=======
+	return ib_post_send(ch->qp, &wr, &bad_wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void srp_unmap_data(struct scsi_cmnd *scmnd,
@@ -1443,6 +1687,10 @@ static int srp_map_finish_fmr(struct srp_map_state *state,
 {
 	struct srp_target_port *target = ch->target;
 	struct srp_device *dev = target->srp_host->srp_dev;
+<<<<<<< HEAD
+=======
+	struct ib_pd *pd = target->pd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_pool_fmr *fmr;
 	u64 io_addr = 0;
 
@@ -1458,9 +1706,15 @@ static int srp_map_finish_fmr(struct srp_map_state *state,
 	if (state->npages == 0)
 		return 0;
 
+<<<<<<< HEAD
 	if (state->npages == 1 && target->global_rkey) {
 		srp_map_desc(state, state->base_dma_addr, state->dma_len,
 			     target->global_rkey);
+=======
+	if (state->npages == 1 && (pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY)) {
+		srp_map_desc(state, state->base_dma_addr, state->dma_len,
+			     pd->unsafe_global_rkey);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto reset_state;
 	}
 
@@ -1500,6 +1754,11 @@ static int srp_map_finish_fr(struct srp_map_state *state,
 {
 	struct srp_target_port *target = ch->target;
 	struct srp_device *dev = target->srp_host->srp_dev;
+<<<<<<< HEAD
+=======
+	struct ib_pd *pd = target->pd;
+	struct ib_send_wr *bad_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_reg_wr wr;
 	struct srp_fr_desc *desc;
 	u32 rkey;
@@ -1514,12 +1773,20 @@ static int srp_map_finish_fr(struct srp_map_state *state,
 
 	WARN_ON_ONCE(!dev->use_fast_reg);
 
+<<<<<<< HEAD
 	if (sg_nents == 1 && target->global_rkey) {
+=======
+	if (sg_nents == 1 && (pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int sg_offset = sg_offset_p ? *sg_offset_p : 0;
 
 		srp_map_desc(state, sg_dma_address(state->sg) + sg_offset,
 			     sg_dma_len(state->sg) - sg_offset,
+<<<<<<< HEAD
 			     target->global_rkey);
+=======
+			     pd->unsafe_global_rkey);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (sg_offset_p)
 			*sg_offset_p = 0;
 		return 1;
@@ -1563,7 +1830,11 @@ static int srp_map_finish_fr(struct srp_map_state *state,
 	srp_map_desc(state, desc->mr->iova,
 		     desc->mr->length, desc->mr->rkey);
 
+<<<<<<< HEAD
 	err = ib_post_send(ch->qp, &wr.wr, NULL);
+=======
+	err = ib_post_send(ch->qp, &wr.wr, &bad_wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(err)) {
 		WARN_ON_ONCE(err == -ENOMEM);
 		return err;
@@ -1681,7 +1952,11 @@ static int srp_map_sg_dma(struct srp_map_state *state, struct srp_rdma_ch *ch,
 	for_each_sg(scat, sg, count, i) {
 		srp_map_desc(state, ib_sg_dma_address(dev->dev, sg),
 			     ib_sg_dma_len(dev->dev, sg),
+<<<<<<< HEAD
 			     target->global_rkey);
+=======
+			     target->pd->unsafe_global_rkey);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1779,6 +2054,10 @@ static int srp_map_data(struct scsi_cmnd *scmnd, struct srp_rdma_ch *ch,
 			struct srp_request *req)
 {
 	struct srp_target_port *target = ch->target;
+<<<<<<< HEAD
+=======
+	struct ib_pd *pd = target->pd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scatterlist *scat;
 	struct srp_cmd *cmd = req->cmd->buf;
 	int len, nents, count, ret;
@@ -1814,7 +2093,11 @@ static int srp_map_data(struct scsi_cmnd *scmnd, struct srp_rdma_ch *ch,
 	fmt = SRP_DATA_DESC_DIRECT;
 	len = sizeof (struct srp_cmd) +	sizeof (struct srp_direct_buf);
 
+<<<<<<< HEAD
 	if (count == 1 && target->global_rkey) {
+=======
+	if (count == 1 && (pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * The midlayer only generated a single gather/scatter
 		 * entry, or DMA mapping coalesced everything to a
@@ -1824,7 +2107,11 @@ static int srp_map_data(struct scsi_cmnd *scmnd, struct srp_rdma_ch *ch,
 		struct srp_direct_buf *buf = (void *) cmd->add_data;
 
 		buf->va  = cpu_to_be64(ib_sg_dma_address(ibdev, scat));
+<<<<<<< HEAD
 		buf->key = cpu_to_be32(target->global_rkey);
+=======
+		buf->key = cpu_to_be32(pd->unsafe_global_rkey);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		buf->len = cpu_to_be32(ib_sg_dma_len(ibdev, scat));
 
 		req->nmdesc = 0;
@@ -1895,14 +2182,22 @@ static int srp_map_data(struct scsi_cmnd *scmnd, struct srp_rdma_ch *ch,
 	memcpy(indirect_hdr->desc_list, req->indirect_desc,
 	       count * sizeof (struct srp_direct_buf));
 
+<<<<<<< HEAD
 	if (!target->global_rkey) {
+=======
+	if (!(pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = srp_map_idb(ch, req, state.gen.next, state.gen.end,
 				  idb_len, &idb_rkey);
 		if (ret < 0)
 			goto unmap;
 		req->nmdesc++;
 	} else {
+<<<<<<< HEAD
 		idb_rkey = cpu_to_be32(target->global_rkey);
+=======
+		idb_rkey = cpu_to_be32(pd->unsafe_global_rkey);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	indirect_hdr->table_desc.va = cpu_to_be64(req->indirect_dma_addr);
@@ -2014,7 +2309,11 @@ static int srp_post_send(struct srp_rdma_ch *ch, struct srp_iu *iu, int len)
 {
 	struct srp_target_port *target = ch->target;
 	struct ib_sge list;
+<<<<<<< HEAD
 	struct ib_send_wr wr;
+=======
+	struct ib_send_wr wr, *bad_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list.addr   = iu->dma;
 	list.length = len;
@@ -2029,13 +2328,21 @@ static int srp_post_send(struct srp_rdma_ch *ch, struct srp_iu *iu, int len)
 	wr.opcode     = IB_WR_SEND;
 	wr.send_flags = IB_SEND_SIGNALED;
 
+<<<<<<< HEAD
 	return ib_post_send(ch->qp, &wr, NULL);
+=======
+	return ib_post_send(ch->qp, &wr, &bad_wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int srp_post_recv(struct srp_rdma_ch *ch, struct srp_iu *iu)
 {
 	struct srp_target_port *target = ch->target;
+<<<<<<< HEAD
 	struct ib_recv_wr wr;
+=======
+	struct ib_recv_wr wr, *bad_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_sge list;
 
 	list.addr   = iu->dma;
@@ -2049,7 +2356,11 @@ static int srp_post_recv(struct srp_rdma_ch *ch, struct srp_iu *iu)
 	wr.sg_list  = &list;
 	wr.num_sge  = 1;
 
+<<<<<<< HEAD
 	return ib_post_recv(ch->qp, &wr, NULL);
+=======
+	return ib_post_recv(ch->qp, &wr, &bad_wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void srp_process_rsp(struct srp_rdma_ch *ch, struct srp_rsp *rsp)
@@ -2357,6 +2668,10 @@ static int srp_queuecommand(struct Scsi_Host *shost, struct scsi_cmnd *scmnd)
 
 	if (srp_post_send(ch, iu, len)) {
 		shost_printk(KERN_ERR, target->scsi_host, PFX "Send failed\n");
+<<<<<<< HEAD
+=======
+		scmnd->result = DID_ERROR << 16;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_unmap;
 	}
 
@@ -2479,7 +2794,11 @@ static void srp_cm_rep_handler(struct ib_cm_id *cm_id,
 	struct srp_target_port *target = ch->target;
 	struct ib_qp_attr *qp_attr = NULL;
 	int attr_mask = 0;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	if (lrsp->opcode == SRP_LOGIN_RSP) {
@@ -2509,11 +2828,29 @@ static void srp_cm_rep_handler(struct ib_cm_id *cm_id,
 			goto error;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = -ENOMEM;
+	qp_attr = kmalloc(sizeof *qp_attr, GFP_KERNEL);
+	if (!qp_attr)
+		goto error;
+
+	qp_attr->qp_state = IB_QPS_RTR;
+	ret = ib_cm_init_qp_attr(cm_id, qp_attr, &attr_mask);
+	if (ret)
+		goto error_free;
+
+	ret = ib_modify_qp(ch->qp, qp_attr, attr_mask);
+	if (ret)
+		goto error_free;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < target->queue_size; i++) {
 		struct srp_iu *iu = ch->rx_ring[i];
 
 		ret = srp_post_recv(ch, iu);
 		if (ret)
+<<<<<<< HEAD
 			goto error;
 	}
 
@@ -2545,6 +2882,23 @@ static void srp_cm_rep_handler(struct ib_cm_id *cm_id,
 
 		ret = ib_send_cm_rtu(cm_id, NULL, 0);
 	}
+=======
+			goto error_free;
+	}
+
+	qp_attr->qp_state = IB_QPS_RTS;
+	ret = ib_cm_init_qp_attr(cm_id, qp_attr, &attr_mask);
+	if (ret)
+		goto error_free;
+
+	target->rq_tmo_jiffies = srp_compute_rq_tmo(qp_attr, attr_mask);
+
+	ret = ib_modify_qp(ch->qp, qp_attr, attr_mask);
+	if (ret)
+		goto error_free;
+
+	ret = ib_send_cm_rtu(cm_id, NULL, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error_free:
 	kfree(qp_attr);
@@ -2553,19 +2907,29 @@ error:
 	ch->status = ret;
 }
 
+<<<<<<< HEAD
 static void srp_ib_cm_rej_handler(struct ib_cm_id *cm_id,
 				  const struct ib_cm_event *event,
 				  struct srp_rdma_ch *ch)
+=======
+static void srp_cm_rej_handler(struct ib_cm_id *cm_id,
+			       struct ib_cm_event *event,
+			       struct srp_rdma_ch *ch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct srp_target_port *target = ch->target;
 	struct Scsi_Host *shost = target->scsi_host;
 	struct ib_class_port_info *cpi;
 	int opcode;
+<<<<<<< HEAD
 	u16 dlid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (event->param.rej_rcvd.reason) {
 	case IB_CM_REJ_PORT_CM_REDIRECT:
 		cpi = event->param.rej_rcvd.ari;
+<<<<<<< HEAD
 		dlid = be16_to_cpu(cpi->redirect_lid);
 		sa_path_set_dlid(&ch->ib_cm.path, dlid);
 		ch->ib_cm.path.pkey = cpi->redirect_pkey;
@@ -2573,23 +2937,45 @@ static void srp_ib_cm_rej_handler(struct ib_cm_id *cm_id,
 		memcpy(ch->ib_cm.path.dgid.raw, cpi->redirect_gid, 16);
 
 		ch->status = dlid ? SRP_DLID_REDIRECT : SRP_PORT_REDIRECT;
+=======
+		sa_path_set_dlid(&ch->path, htonl(ntohs(cpi->redirect_lid)));
+		ch->path.pkey = cpi->redirect_pkey;
+		cm_id->remote_cm_qpn = be32_to_cpu(cpi->redirect_qp) & 0x00ffffff;
+		memcpy(ch->path.dgid.raw, cpi->redirect_gid, 16);
+
+		ch->status = sa_path_get_dlid(&ch->path) ?
+			SRP_DLID_REDIRECT : SRP_PORT_REDIRECT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case IB_CM_REJ_PORT_REDIRECT:
 		if (srp_target_is_topspin(target)) {
+<<<<<<< HEAD
 			union ib_gid *dgid = &ch->ib_cm.path.dgid;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Topspin/Cisco SRP gateways incorrectly send
 			 * reject reason code 25 when they mean 24
 			 * (port redirect).
 			 */
+<<<<<<< HEAD
 			memcpy(dgid->raw, event->param.rej_rcvd.ari, 16);
 
 			shost_printk(KERN_DEBUG, shost,
 				     PFX "Topspin/Cisco redirect to target port GID %016llx%016llx\n",
 				     be64_to_cpu(dgid->global.subnet_prefix),
 				     be64_to_cpu(dgid->global.interface_id));
+=======
+			memcpy(ch->path.dgid.raw,
+			       event->param.rej_rcvd.ari, 16);
+
+			shost_printk(KERN_DEBUG, shost,
+				     PFX "Topspin/Cisco redirect to target port GID %016llx%016llx\n",
+				     be64_to_cpu(ch->path.dgid.global.subnet_prefix),
+				     be64_to_cpu(ch->path.dgid.global.interface_id));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			ch->status = SRP_PORT_REDIRECT;
 		} else {
@@ -2618,8 +3004,12 @@ static void srp_ib_cm_rej_handler(struct ib_cm_id *cm_id,
 				shost_printk(KERN_WARNING, shost, PFX
 					     "SRP LOGIN from %pI6 to %pI6 REJECTED, reason 0x%08x\n",
 					     target->sgid.raw,
+<<<<<<< HEAD
 					     target->ib_cm.orig_dgid.raw,
 					     reason);
+=======
+					     target->orig_dgid.raw, reason);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else
 			shost_printk(KERN_WARNING, shost,
 				     "  REJ reason: IB_CM_REJ_CONSUMER_DEFINED,"
@@ -2639,8 +3029,12 @@ static void srp_ib_cm_rej_handler(struct ib_cm_id *cm_id,
 	}
 }
 
+<<<<<<< HEAD
 static int srp_ib_cm_handler(struct ib_cm_id *cm_id,
 			     const struct ib_cm_event *event)
+=======
+static int srp_cm_handler(struct ib_cm_id *cm_id, struct ib_cm_event *event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct srp_rdma_ch *ch = cm_id->context;
 	struct srp_target_port *target = ch->target;
@@ -2663,7 +3057,11 @@ static int srp_ib_cm_handler(struct ib_cm_id *cm_id,
 		shost_printk(KERN_DEBUG, target->scsi_host, PFX "REJ received\n");
 		comp = 1;
 
+<<<<<<< HEAD
 		srp_ib_cm_rej_handler(cm_id, event, ch);
+=======
+		srp_cm_rej_handler(cm_id, event, ch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case IB_CM_DREQ_RECEIVED:
@@ -2701,6 +3099,7 @@ static int srp_ib_cm_handler(struct ib_cm_id *cm_id,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void srp_rdma_cm_rej_handler(struct srp_rdma_ch *ch,
 				    struct rdma_cm_event *event)
 {
@@ -2830,6 +3229,8 @@ static int srp_rdma_cm_handler(struct rdma_cm_id *cm_id,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * srp_change_queue_depth - setting device queue depth
  * @sdev: scsi device struct
@@ -2974,6 +3375,7 @@ static int srp_reset_host(struct scsi_cmnd *scmnd)
 	return srp_reconnect_rport(target->rport) == 0 ? SUCCESS : FAILED;
 }
 
+<<<<<<< HEAD
 static int srp_target_alloc(struct scsi_target *starget)
 {
 	struct Scsi_Host *shost = dev_to_shost(starget->dev.parent);
@@ -2984,14 +3386,21 @@ static int srp_target_alloc(struct scsi_target *starget)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int srp_slave_alloc(struct scsi_device *sdev)
 {
 	struct Scsi_Host *shost = sdev->host;
 	struct srp_target_port *target = host_to_target(shost);
 	struct srp_device *srp_dev = target->srp_host->srp_dev;
+<<<<<<< HEAD
 	struct ib_device *ibdev = srp_dev->dev;
 
 	if (!(ibdev->attrs.device_cap_flags & IB_DEVICE_SG_GAPS_REG))
+=======
+
+	if (true)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blk_queue_virt_boundary(sdev->request_queue,
 					~srp_dev->mr_page_mask);
 
@@ -3034,10 +3443,14 @@ static ssize_t show_service_id(struct device *dev,
 {
 	struct srp_target_port *target = host_to_target(class_to_shost(dev));
 
+<<<<<<< HEAD
 	if (target->using_rdma_cm)
 		return -ENOENT;
 	return sprintf(buf, "0x%016llx\n",
 		       be64_to_cpu(target->ib_cm.service_id));
+=======
+	return sprintf(buf, "0x%016llx\n", be64_to_cpu(target->service_id));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t show_pkey(struct device *dev, struct device_attribute *attr,
@@ -3045,9 +3458,13 @@ static ssize_t show_pkey(struct device *dev, struct device_attribute *attr,
 {
 	struct srp_target_port *target = host_to_target(class_to_shost(dev));
 
+<<<<<<< HEAD
 	if (target->using_rdma_cm)
 		return -ENOENT;
 	return sprintf(buf, "0x%04x\n", be16_to_cpu(target->ib_cm.pkey));
+=======
+	return sprintf(buf, "0x%04x\n", be16_to_cpu(target->pkey));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t show_sgid(struct device *dev, struct device_attribute *attr,
@@ -3064,9 +3481,13 @@ static ssize_t show_dgid(struct device *dev, struct device_attribute *attr,
 	struct srp_target_port *target = host_to_target(class_to_shost(dev));
 	struct srp_rdma_ch *ch = &target->ch[0];
 
+<<<<<<< HEAD
 	if (target->using_rdma_cm)
 		return -ENOENT;
 	return sprintf(buf, "%pI6\n", ch->ib_cm.path.dgid.raw);
+=======
+	return sprintf(buf, "%pI6\n", ch->path.dgid.raw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t show_orig_dgid(struct device *dev,
@@ -3074,9 +3495,13 @@ static ssize_t show_orig_dgid(struct device *dev,
 {
 	struct srp_target_port *target = host_to_target(class_to_shost(dev));
 
+<<<<<<< HEAD
 	if (target->using_rdma_cm)
 		return -ENOENT;
 	return sprintf(buf, "%pI6\n", target->ib_cm.orig_dgid.raw);
+=======
+	return sprintf(buf, "%pI6\n", target->orig_dgid.raw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t show_req_lim(struct device *dev,
@@ -3198,7 +3623,10 @@ static struct scsi_host_template srp_template = {
 	.module				= THIS_MODULE,
 	.name				= "InfiniBand SRP initiator",
 	.proc_name			= DRV_NAME,
+<<<<<<< HEAD
 	.target_alloc			= srp_target_alloc,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.slave_alloc			= srp_slave_alloc,
 	.slave_configure		= srp_slave_configure,
 	.info				= srp_target_info,
@@ -3338,9 +3766,12 @@ out:
  *
  *     id_ext=<SRP ID ext>,ioc_guid=<SRP IOC GUID>,dgid=<dest GID>,
  *     pkey=<P_Key>,service_id=<service ID>
+<<<<<<< HEAD
  * or
  *     id_ext=<SRP ID ext>,ioc_guid=<SRP IOC GUID>,
  *     [src=<IPv4 address>,]dest=<IPv4 address>:<port number>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * to the add_target sysfs attribute.
  */
@@ -3361,6 +3792,7 @@ enum {
 	SRP_OPT_COMP_VECTOR	= 1 << 12,
 	SRP_OPT_TL_RETRY_COUNT	= 1 << 13,
 	SRP_OPT_QUEUE_SIZE	= 1 << 14,
+<<<<<<< HEAD
 	SRP_OPT_IP_SRC		= 1 << 15,
 	SRP_OPT_IP_DEST		= 1 << 16,
 	SRP_OPT_TARGET_CAN_QUEUE= 1 << 17,
@@ -3375,6 +3807,13 @@ static unsigned int srp_opt_mandatory[] = {
 	SRP_OPT_ID_EXT		|
 	SRP_OPT_IOC_GUID	|
 	SRP_OPT_IP_DEST,
+=======
+	SRP_OPT_ALL		= (SRP_OPT_ID_EXT	|
+				   SRP_OPT_IOC_GUID	|
+				   SRP_OPT_DGID		|
+				   SRP_OPT_PKEY		|
+				   SRP_OPT_SERVICE_ID),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const match_table_t srp_opt_tokens = {
@@ -3385,7 +3824,10 @@ static const match_table_t srp_opt_tokens = {
 	{ SRP_OPT_SERVICE_ID,		"service_id=%s"		},
 	{ SRP_OPT_MAX_SECT,		"max_sect=%d" 		},
 	{ SRP_OPT_MAX_CMD_PER_LUN,	"max_cmd_per_lun=%d" 	},
+<<<<<<< HEAD
 	{ SRP_OPT_TARGET_CAN_QUEUE,	"target_can_queue=%d"	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ SRP_OPT_IO_CLASS,		"io_class=%x"		},
 	{ SRP_OPT_INITIATOR_EXT,	"initiator_ext=%s"	},
 	{ SRP_OPT_CMD_SG_ENTRIES,	"cmd_sg_entries=%u"	},
@@ -3394,6 +3836,7 @@ static const match_table_t srp_opt_tokens = {
 	{ SRP_OPT_COMP_VECTOR,		"comp_vector=%u"	},
 	{ SRP_OPT_TL_RETRY_COUNT,	"tl_retry_count=%u"	},
 	{ SRP_OPT_QUEUE_SIZE,		"queue_size=%d"		},
+<<<<<<< HEAD
 	{ SRP_OPT_IP_SRC,		"src=%s"		},
 	{ SRP_OPT_IP_DEST,		"dest=%s"		},
 	{ SRP_OPT_ERR,			NULL 			}
@@ -3448,6 +3891,17 @@ static int srp_parse_options(struct net *net, const char *buf,
 	substring_t args[MAX_OPT_ARGS];
 	unsigned long long ull;
 	bool has_port;
+=======
+	{ SRP_OPT_ERR,			NULL 			}
+};
+
+static int srp_parse_options(const char *buf, struct srp_target_port *target)
+{
+	char *options, *sep_opt;
+	char *p;
+	char dgid[3];
+	substring_t args[MAX_OPT_ARGS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int opt_mask = 0;
 	int token;
 	int ret = -EINVAL;
@@ -3472,6 +3926,7 @@ static int srp_parse_options(struct net *net, const char *buf,
 				ret = -ENOMEM;
 				goto out;
 			}
+<<<<<<< HEAD
 			ret = kstrtoull(p, 16, &ull);
 			if (ret) {
 				pr_warn("invalid id_ext parameter '%s'\n", p);
@@ -3479,6 +3934,9 @@ static int srp_parse_options(struct net *net, const char *buf,
 				goto out;
 			}
 			target->id_ext = cpu_to_be64(ull);
+=======
+			target->id_ext = cpu_to_be64(simple_strtoull(p, NULL, 16));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(p);
 			break;
 
@@ -3488,6 +3946,7 @@ static int srp_parse_options(struct net *net, const char *buf,
 				ret = -ENOMEM;
 				goto out;
 			}
+<<<<<<< HEAD
 			ret = kstrtoull(p, 16, &ull);
 			if (ret) {
 				pr_warn("invalid ioc_guid parameter '%s'\n", p);
@@ -3495,6 +3954,9 @@ static int srp_parse_options(struct net *net, const char *buf,
 				goto out;
 			}
 			target->ioc_guid = cpu_to_be64(ull);
+=======
+			target->ioc_guid = cpu_to_be64(simple_strtoull(p, NULL, 16));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(p);
 			break;
 
@@ -3510,10 +3972,23 @@ static int srp_parse_options(struct net *net, const char *buf,
 				goto out;
 			}
 
+<<<<<<< HEAD
 			ret = hex2bin(target->ib_cm.orig_dgid.raw, p, 16);
 			kfree(p);
 			if (ret < 0)
 				goto out;
+=======
+			for (i = 0; i < 16; ++i) {
+				strlcpy(dgid, p + i * 2, sizeof(dgid));
+				if (sscanf(dgid, "%hhx",
+					   &target->orig_dgid.raw[i]) < 1) {
+					ret = -EINVAL;
+					kfree(p);
+					goto out;
+				}
+			}
+			kfree(p);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case SRP_OPT_PKEY:
@@ -3521,7 +3996,11 @@ static int srp_parse_options(struct net *net, const char *buf,
 				pr_warn("bad P_Key parameter '%s'\n", p);
 				goto out;
 			}
+<<<<<<< HEAD
 			target->ib_cm.pkey = cpu_to_be16(token);
+=======
+			target->pkey = cpu_to_be16(token);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case SRP_OPT_SERVICE_ID:
@@ -3530,6 +4009,7 @@ static int srp_parse_options(struct net *net, const char *buf,
 				ret = -ENOMEM;
 				goto out;
 			}
+<<<<<<< HEAD
 			ret = kstrtoull(p, 16, &ull);
 			if (ret) {
 				pr_warn("bad service_id parameter '%s'\n", p);
@@ -3573,6 +4053,9 @@ static int srp_parse_options(struct net *net, const char *buf,
 				goto out;
 			}
 			target->using_rdma_cm = true;
+=======
+			target->service_id = cpu_to_be64(simple_strtoull(p, NULL, 16));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(p);
 			break;
 
@@ -3605,6 +4088,7 @@ static int srp_parse_options(struct net *net, const char *buf,
 			target->scsi_host->cmd_per_lun = token;
 			break;
 
+<<<<<<< HEAD
 		case SRP_OPT_TARGET_CAN_QUEUE:
 			if (match_int(args, &token) || token < 1) {
 				pr_warn("bad max target_can_queue parameter '%s'\n",
@@ -3614,6 +4098,8 @@ static int srp_parse_options(struct net *net, const char *buf,
 			target->target_can_queue = token;
 			break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case SRP_OPT_IO_CLASS:
 			if (match_hex(args, &token)) {
 				pr_warn("bad IO class parameter '%s'\n", p);
@@ -3635,6 +4121,7 @@ static int srp_parse_options(struct net *net, const char *buf,
 				ret = -ENOMEM;
 				goto out;
 			}
+<<<<<<< HEAD
 			ret = kstrtoull(p, 16, &ull);
 			if (ret) {
 				pr_warn("bad initiator_ext value '%s'\n", p);
@@ -3642,6 +4129,9 @@ static int srp_parse_options(struct net *net, const char *buf,
 				goto out;
 			}
 			target->initiator_ext = cpu_to_be64(ull);
+=======
+			target->initiator_ext = cpu_to_be64(simple_strtoull(p, NULL, 16));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(p);
 			break;
 
@@ -3696,6 +4186,7 @@ static int srp_parse_options(struct net *net, const char *buf,
 		}
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(srp_opt_mandatory); i++) {
 		if ((opt_mask & srp_opt_mandatory[i]) == srp_opt_mandatory[i]) {
 			ret = 0;
@@ -3704,6 +4195,16 @@ static int srp_parse_options(struct net *net, const char *buf,
 	}
 	if (ret)
 		pr_warn("target creation request is missing one or more parameters\n");
+=======
+	if ((opt_mask & SRP_OPT_ALL) == SRP_OPT_ALL)
+		ret = 0;
+	else
+		for (i = 0; i < ARRAY_SIZE(srp_opt_tokens); ++i)
+			if ((srp_opt_tokens[i].token & SRP_OPT_ALL) &&
+			    !(srp_opt_tokens[i].token & opt_mask))
+				pr_warn("target creation request is missing parameter '%s'\n",
+					srp_opt_tokens[i].pattern);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (target->scsi_host->cmd_per_lun > target->scsi_host->can_queue
 	    && (opt_mask & SRP_OPT_MAX_CMD_PER_LUN))
@@ -3744,12 +4245,20 @@ static ssize_t srp_create_target(struct device *dev,
 
 	target = host_to_target(target_host);
 
+<<<<<<< HEAD
 	target->net		= kobj_ns_grab_current(KOBJ_NS_TYPE_NET);
 	target->io_class	= SRP_REV16A_IB_IO_CLASS;
 	target->scsi_host	= target_host;
 	target->srp_host	= host;
 	target->lkey		= host->srp_dev->pd->local_dma_lkey;
 	target->global_rkey	= host->srp_dev->global_rkey;
+=======
+	target->io_class	= SRP_REV16A_IB_IO_CLASS;
+	target->scsi_host	= target_host;
+	target->srp_host	= host;
+	target->pd		= host->srp_dev->pd;
+	target->lkey		= host->srp_dev->pd->local_dma_lkey;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	target->cmd_sg_cnt	= cmd_sg_entries;
 	target->sg_tablesize	= indirect_sg_entries ? : cmd_sg_entries;
 	target->allow_ext_sg	= allow_ext_sg;
@@ -3766,13 +4275,18 @@ static ssize_t srp_create_target(struct device *dev,
 	if (ret < 0)
 		goto put;
 
+<<<<<<< HEAD
 	ret = srp_parse_options(target->net, buf, target);
+=======
+	ret = srp_parse_options(buf, target);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
 	target->req_ring_size = target->queue_size - SRP_TSK_MGMT_SQ_SIZE;
 
 	if (!srp_conn_unique(target->srp_host, target)) {
+<<<<<<< HEAD
 		if (target->using_rdma_cm) {
 			shost_printk(KERN_INFO, target->scsi_host,
 				     PFX "Already connected to target port with id_ext=%016llx;ioc_guid=%016llx;dest=%pIS\n",
@@ -3786,6 +4300,13 @@ static ssize_t srp_create_target(struct device *dev,
 				     be64_to_cpu(target->ioc_guid),
 				     be64_to_cpu(target->initiator_ext));
 		}
+=======
+		shost_printk(KERN_INFO, target->scsi_host,
+			     PFX "Already connected to target port with id_ext=%016llx;ioc_guid=%016llx;initiator_ext=%016llx\n",
+			     be64_to_cpu(target->id_ext),
+			     be64_to_cpu(target->ioc_guid),
+			     be64_to_cpu(target->initiator_ext));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EEXIST;
 		goto out;
 	}
@@ -3797,6 +4318,7 @@ static ssize_t srp_create_target(struct device *dev,
 	}
 
 	if (srp_dev->use_fast_reg || srp_dev->use_fmr) {
+<<<<<<< HEAD
 		bool gaps_reg = (ibdev->attrs.device_cap_flags &
 				 IB_DEVICE_SG_GAPS_REG);
 
@@ -3827,6 +4349,28 @@ static ssize_t srp_create_target(struct device *dev,
 		}
 		pr_debug("max_sectors = %u; max_pages_per_mr = %u; mr_page_size = %u; max_sectors_per_mr = %u; mr_per_cmd = %u\n",
 			 target->scsi_host->max_sectors, srp_dev->max_pages_per_mr, srp_dev->mr_page_size,
+=======
+		/*
+		 * FR and FMR can only map one HCA page per entry. If the
+		 * start address is not aligned on a HCA page boundary two
+		 * entries will be used for the head and the tail although
+		 * these two entries combined contain at most one HCA page of
+		 * data. Hence the "+ 1" in the calculation below.
+		 *
+		 * The indirect data buffer descriptor is contiguous so the
+		 * memory for that buffer will only be registered if
+		 * register_always is true. Hence add one to mr_per_cmd if
+		 * register_always has been set.
+		 */
+		max_sectors_per_mr = srp_dev->max_pages_per_mr <<
+				  (ilog2(srp_dev->mr_page_size) - 9);
+		mr_per_cmd = register_always +
+			(target->scsi_host->max_sectors + 1 +
+			 max_sectors_per_mr - 1) / max_sectors_per_mr;
+		pr_debug("max_sectors = %u; max_pages_per_mr = %u; mr_page_size = %u; max_sectors_per_mr = %u; mr_per_cmd = %u\n",
+			 target->scsi_host->max_sectors,
+			 srp_dev->max_pages_per_mr, srp_dev->mr_page_size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 max_sectors_per_mr, mr_per_cmd);
 	}
 
@@ -3842,7 +4386,11 @@ static ssize_t srp_create_target(struct device *dev,
 	INIT_WORK(&target->tl_err_work, srp_tl_err_work);
 	INIT_WORK(&target->remove_work, srp_remove_work);
 	spin_lock_init(&target->lock);
+<<<<<<< HEAD
 	ret = rdma_query_gid(ibdev, host->port, 0, &target->sgid);
+=======
+	ret = ib_query_gid(ibdev, host->port, 0, &target->sgid, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -3894,6 +4442,7 @@ static ssize_t srp_create_target(struct device *dev,
 
 			ret = srp_connect_ch(ch, multich);
 			if (ret) {
+<<<<<<< HEAD
 				char dst[64];
 
 				if (target->using_rdma_cm)
@@ -3906,6 +4455,13 @@ static ssize_t srp_create_target(struct device *dev,
 					     PFX "Connection %d/%d to %s failed\n",
 					     ch_start + cpu_idx,
 					     target->ch_count, dst);
+=======
+				shost_printk(KERN_ERR, target->scsi_host,
+					     PFX "Connection %d/%d to %pI6 failed\n",
+					     ch_start + cpu_idx,
+					     target->ch_count,
+					     ch->target->orig_dgid.raw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (node_idx == 0 && cpu_idx == 0) {
 					goto free_ch;
 				} else {
@@ -3930,6 +4486,7 @@ connected:
 		goto err_disconnect;
 
 	if (target->state != SRP_TARGET_REMOVED) {
+<<<<<<< HEAD
 		if (target->using_rdma_cm) {
 			shost_printk(KERN_DEBUG, target->scsi_host, PFX
 				     "new target: id_ext %016llx ioc_guid %016llx sgid %pI6 dest %pIS\n",
@@ -3946,6 +4503,15 @@ connected:
 				     target->sgid.raw,
 				     target->ib_cm.orig_dgid.raw);
 		}
+=======
+		shost_printk(KERN_DEBUG, target->scsi_host, PFX
+			     "new target: id_ext %016llx ioc_guid %016llx pkey %04x service_id %016llx sgid %pI6 dgid %pI6\n",
+			     be64_to_cpu(target->id_ext),
+			     be64_to_cpu(target->ioc_guid),
+			     be16_to_cpu(target->pkey),
+			     be64_to_cpu(target->service_id),
+			     target->sgid.raw, target->orig_dgid.raw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = count;
@@ -3955,6 +4521,7 @@ out:
 
 put:
 	scsi_host_put(target->scsi_host);
+<<<<<<< HEAD
 	if (ret < 0) {
 		/*
 		 * If a call to srp_remove_target() has not been scheduled,
@@ -3965,6 +4532,10 @@ put:
 			kobj_ns_drop(KOBJ_NS_TYPE_NET, target->net);
 		scsi_host_put(target->scsi_host);
 	}
+=======
+	if (ret < 0)
+		scsi_host_put(target->scsi_host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 
@@ -4108,10 +4679,13 @@ static void srp_add_one(struct ib_device *device)
 	if (IS_ERR(srp_dev->pd))
 		goto free_dev;
 
+<<<<<<< HEAD
 	if (flags & IB_PD_UNSAFE_GLOBAL_RKEY) {
 		srp_dev->global_rkey = srp_dev->pd->unsafe_global_rkey;
 		WARN_ON_ONCE(srp_dev->global_rkey == 0);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (p = rdma_start_port(device); p <= rdma_end_port(device); ++p) {
 		host = srp_add_port(srp_dev, p);

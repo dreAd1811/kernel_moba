@@ -251,7 +251,11 @@ static void psbfb_copyarea_accel(struct fb_info *info,
 	if (!fb)
 		return;
 
+<<<<<<< HEAD
 	offset = to_gtt_range(fb->obj[0])->offset;
+=======
+	offset = psbfb->gtt->offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stride = fb->pitches[0];
 
 	switch (fb->format->depth) {

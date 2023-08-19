@@ -39,6 +39,7 @@ static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT], mce_event);
 static DEFINE_PER_CPU(int, mce_queue_count);
 static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT], mce_event_queue);
 
+<<<<<<< HEAD
 /* Queue for delayed MCE UE events. */
 static DEFINE_PER_CPU(int, mce_ue_count);
 static DEFINE_PER_CPU(struct machine_check_event[MAX_MC_EVT],
@@ -49,16 +50,22 @@ static void machine_check_ue_irq_work(struct irq_work *work);
 void machine_check_ue_event(struct machine_check_event *evt);
 static void machine_process_ue_event(struct work_struct *work);
 
+=======
+static void machine_check_process_queued_event(struct irq_work *work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct irq_work mce_event_process_work = {
         .func = machine_check_process_queued_event,
 };
 
+<<<<<<< HEAD
 static struct irq_work mce_ue_event_irq_work = {
 	.func = machine_check_ue_irq_work,
 };
 
 DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mce_set_error_info(struct machine_check_event *mce,
 			       struct mce_error_info *mce_err)
 {
@@ -97,7 +104,11 @@ static void mce_set_error_info(struct machine_check_event *mce,
  */
 void save_mce_event(struct pt_regs *regs, long handled,
 		    struct mce_error_info *mce_err,
+<<<<<<< HEAD
 		    uint64_t nip, uint64_t addr, uint64_t phys_addr)
+=======
+		    uint64_t nip, uint64_t addr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int index = __this_cpu_inc_return(mce_nest_count) - 1;
 	struct machine_check_event *mce = this_cpu_ptr(&mce_event[index]);
@@ -155,11 +166,14 @@ void save_mce_event(struct pt_regs *regs, long handled,
 	} else if (mce->error_type == MCE_ERROR_TYPE_UE) {
 		mce->u.ue_error.effective_address_provided = true;
 		mce->u.ue_error.effective_address = addr;
+<<<<<<< HEAD
 		if (phys_addr != ULONG_MAX) {
 			mce->u.ue_error.physical_address_provided = true;
 			mce->u.ue_error.physical_address = phys_addr;
 			machine_check_ue_event(mce);
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return;
 }
@@ -213,6 +227,7 @@ void release_mce_event(void)
 	get_mce_event(NULL, true);
 }
 
+<<<<<<< HEAD
 static void machine_check_ue_irq_work(struct irq_work *work)
 {
 	schedule_work(&mce_ue_event_work);
@@ -237,6 +252,8 @@ void machine_check_ue_event(struct machine_check_event *evt)
 	irq_work_queue(&mce_ue_event_irq_work);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Queue up the MCE event which then can be handled later.
  */
@@ -259,6 +276,7 @@ void machine_check_queue_event(void)
 	/* Queue irq work to process this event later. */
 	irq_work_queue(&mce_event_process_work);
 }
+<<<<<<< HEAD
 /*
  * process pending MCE event from the mce event queue. This function will be
  * called during syscall exit.
@@ -292,6 +310,9 @@ static void machine_process_ue_event(struct work_struct *work)
 		__this_cpu_dec(mce_ue_count);
 	}
 }
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * process pending MCE event from the mce event queue. This function will be
  * called during syscall exit.
@@ -299,7 +320,10 @@ static void machine_process_ue_event(struct work_struct *work)
 static void machine_check_process_queued_event(struct irq_work *work)
 {
 	int index;
+<<<<<<< HEAD
 	struct machine_check_event *evt;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	add_taint(TAINT_MACHINE_CHECK, LOCKDEP_NOW_UNRELIABLE);
 
@@ -309,8 +333,13 @@ static void machine_check_process_queued_event(struct irq_work *work)
 	 */
 	while (__this_cpu_read(mce_queue_count) > 0) {
 		index = __this_cpu_read(mce_queue_count) - 1;
+<<<<<<< HEAD
 		evt = this_cpu_ptr(&mce_event_queue[index]);
 		machine_check_print_event_info(evt, false);
+=======
+		machine_check_print_event_info(
+				this_cpu_ptr(&mce_event_queue[index]), false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__this_cpu_dec(mce_queue_count);
 	}
 }
@@ -417,7 +446,11 @@ void machine_check_print_event_info(struct machine_check_event *evt,
 			printk("%s    Effective address: %016llx\n",
 			       level, evt->u.ue_error.effective_address);
 		if (evt->u.ue_error.physical_address_provided)
+<<<<<<< HEAD
 			printk("%s    Physical address:  %016llx\n",
+=======
+			printk("%s      Physical address: %016llx\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       level, evt->u.ue_error.physical_address);
 		break;
 	case MCE_ERROR_TYPE_SLB:
@@ -488,6 +521,48 @@ void machine_check_print_event_info(struct machine_check_event *evt,
 }
 EXPORT_SYMBOL_GPL(machine_check_print_event_info);
 
+<<<<<<< HEAD
+=======
+uint64_t get_mce_fault_addr(struct machine_check_event *evt)
+{
+	switch (evt->error_type) {
+	case MCE_ERROR_TYPE_UE:
+		if (evt->u.ue_error.effective_address_provided)
+			return evt->u.ue_error.effective_address;
+		break;
+	case MCE_ERROR_TYPE_SLB:
+		if (evt->u.slb_error.effective_address_provided)
+			return evt->u.slb_error.effective_address;
+		break;
+	case MCE_ERROR_TYPE_ERAT:
+		if (evt->u.erat_error.effective_address_provided)
+			return evt->u.erat_error.effective_address;
+		break;
+	case MCE_ERROR_TYPE_TLB:
+		if (evt->u.tlb_error.effective_address_provided)
+			return evt->u.tlb_error.effective_address;
+		break;
+	case MCE_ERROR_TYPE_USER:
+		if (evt->u.user_error.effective_address_provided)
+			return evt->u.user_error.effective_address;
+		break;
+	case MCE_ERROR_TYPE_RA:
+		if (evt->u.ra_error.effective_address_provided)
+			return evt->u.ra_error.effective_address;
+		break;
+	case MCE_ERROR_TYPE_LINK:
+		if (evt->u.link_error.effective_address_provided)
+			return evt->u.link_error.effective_address;
+		break;
+	default:
+	case MCE_ERROR_TYPE_UNKNOWN:
+		break;
+	}
+	return 0;
+}
+EXPORT_SYMBOL(get_mce_fault_addr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This function is called in real mode. Strictly no printk's please.
  *
@@ -504,6 +579,7 @@ long machine_check_early(struct pt_regs *regs)
 	return handled;
 }
 
+<<<<<<< HEAD
 /* Possible meanings for HMER_DEBUG_TRIG bit being set on POWER9 */
 static enum {
 	DTRIG_UNKNOWN,
@@ -622,6 +698,12 @@ long hmi_exception_realmode(struct pt_regs *regs)
 	if (ret >= 0)
 		return ret;
 
+=======
+long hmi_exception_realmode(struct pt_regs *regs)
+{
+	__this_cpu_inc(irq_stat.hmi_exceptions);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_for_subcore_guest_exit();
 
 	if (ppc_md.hmi_exception_early)
@@ -629,5 +711,9 @@ long hmi_exception_realmode(struct pt_regs *regs)
 
 	wait_for_tb_resync();
 
+<<<<<<< HEAD
 	return 1;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -14,6 +14,10 @@
  * between kernel and user space.
  *
  * Pad space is left for:
+<<<<<<< HEAD
+=======
+ * - 64-bit time_t to solve y2038 problem
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * - 2 miscellaneous 32-bit values
  *
  */
@@ -26,6 +30,7 @@
 struct semid64_ds {
 	struct ipc64_perm sem_perm;		/* permissions .. see ipc.h */
 #ifdef __XTENSA_EL__
+<<<<<<< HEAD
 	unsigned long	sem_otime;		/* last semop time */
 	unsigned long	sem_otime_high;
 	unsigned long	sem_ctime;		/* last change time */
@@ -35,6 +40,17 @@ struct semid64_ds {
 	unsigned long	sem_otime;		/* last semop time */
 	unsigned long	sem_ctime_high;
 	unsigned long	sem_ctime;		/* last change time */
+=======
+	__kernel_time_t	sem_otime;		/* last semop time */
+	unsigned long	__unused1;
+	__kernel_time_t	sem_ctime;		/* last change time */
+	unsigned long	__unused2;
+#else
+	unsigned long	__unused1;
+	__kernel_time_t	sem_otime;		/* last semop time */
+	unsigned long	__unused2;
+	__kernel_time_t	sem_ctime;		/* last change time */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	unsigned long	sem_nsems;		/* no. of semaphores in array */
 	unsigned long	__unused3;

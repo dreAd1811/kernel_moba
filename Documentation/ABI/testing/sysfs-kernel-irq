@@ -51,6 +51,7 @@ Date:		September 2016
 KernelVersion:	4.9
 Contact:	Craig Gallek <kraig@google.com>
 Description:	The type of the interrupt.  Either the string 'level' or 'edge'.
+<<<<<<< HEAD
 
 What:		/sys/kernel/irq/<irq>/wakeup
 Date:		March 2018
@@ -58,3 +59,5 @@ KernelVersion:	4.17
 Contact:	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Description:	The wakeup state of the interrupt. Either the string
 		'enabled' or 'disabled'.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -16,7 +16,14 @@
 #ifndef BRCMFMAC_FIRMWARE_H
 #define BRCMFMAC_FIRMWARE_H
 
+<<<<<<< HEAD
 #define BRCMF_FW_REQF_OPTIONAL		0x0001
+=======
+#define BRCMF_FW_REQUEST		0x000F
+#define  BRCMF_FW_REQUEST_NVRAM		0x0001
+#define BRCMF_FW_REQ_FLAGS		0x00F0
+#define  BRCMF_FW_REQ_NV_OPTIONAL	0x0010
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define	BRCMF_FW_NAME_LEN		320
 
@@ -35,6 +42,7 @@
 struct brcmf_firmware_mapping {
 	u32 chipid;
 	u32 revmask;
+<<<<<<< HEAD
 	const char *fw_base;
 };
 
@@ -84,13 +92,57 @@ brcmf_fw_alloc_request(u32 chip, u32 chiprev,
 		       u32 table_size, struct brcmf_fw_name *fwnames,
 		       u32 n_fwnames);
 
+=======
+	const char *fw;
+	const char *nvram;
+};
+
+#define BRCMF_FW_NVRAM_DEF(fw_nvram_name, fw, nvram) \
+static const char BRCM_ ## fw_nvram_name ## _FIRMWARE_NAME[] = \
+	BRCMF_FW_DEFAULT_PATH fw; \
+static const char BRCM_ ## fw_nvram_name ## _NVRAM_NAME[] = \
+	BRCMF_FW_DEFAULT_PATH nvram; \
+MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH fw);
+
+#define BRCMF_FW_DEF(fw_name, fw) \
+static const char BRCM_ ## fw_name ## _FIRMWARE_NAME[] = \
+	BRCMF_FW_DEFAULT_PATH fw; \
+MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH fw) \
+
+#define BRCMF_FW_NVRAM_ENTRY(chipid, mask, name) \
+	{ chipid, mask, \
+	  BRCM_ ## name ## _FIRMWARE_NAME, BRCM_ ## name ## _NVRAM_NAME }
+
+#define BRCMF_FW_ENTRY(chipid, mask, name) \
+	{ chipid, mask, BRCM_ ## name ## _FIRMWARE_NAME, NULL }
+
+int brcmf_fw_map_chip_to_name(u32 chip, u32 chiprev,
+			      struct brcmf_firmware_mapping mapping_table[],
+			      u32 table_size, char fw_name[BRCMF_FW_NAME_LEN],
+			      char nvram_name[BRCMF_FW_NAME_LEN]);
+void brcmf_fw_nvram_free(void *nvram);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Request firmware(s) asynchronously. When the asynchronous request
  * fails it will not use the callback, but call device_release_driver()
  * instead which will call the driver .remove() callback.
  */
+<<<<<<< HEAD
 int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
 			   void (*fw_cb)(struct device *dev, int err,
 					 struct brcmf_fw_request *req));
+=======
+int brcmf_fw_get_firmwares_pcie(struct device *dev, u16 flags,
+				const char *code, const char *nvram,
+				void (*fw_cb)(struct device *dev, int err,
+					      const struct firmware *fw,
+					      void *nvram_image, u32 nvram_len),
+				u16 domain_nr, u16 bus_nr);
+int brcmf_fw_get_firmwares(struct device *dev, u16 flags,
+			   const char *code, const char *nvram,
+			   void (*fw_cb)(struct device *dev, int err,
+					 const struct firmware *fw,
+					 void *nvram_image, u32 nvram_len));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* BRCMFMAC_FIRMWARE_H */

@@ -283,6 +283,10 @@ struct brcmf_cfg80211_wowl {
  * @scan_status: scan activity on the dongle.
  * @pub: common driver information.
  * @channel: current channel.
+<<<<<<< HEAD
+=======
+ * @active_scan: current scan mode.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @int_escan_map: bucket map for which internal e-scan is done.
  * @ibss_starter: indicates this sta is ibss starter.
  * @pwr_save: indicate whether dongle to support power save mode.
@@ -315,6 +319,10 @@ struct brcmf_cfg80211_info {
 	unsigned long scan_status;
 	struct brcmf_pub *pub;
 	u32 channel;
+<<<<<<< HEAD
+=======
+	bool active_scan;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 int_escan_map;
 	bool ibss_starter;
 	bool pwr_save;
@@ -355,24 +363,38 @@ static inline struct wiphy *cfg_to_wiphy(struct brcmf_cfg80211_info *cfg)
 
 static inline struct brcmf_cfg80211_info *wiphy_to_cfg(struct wiphy *w)
 {
+<<<<<<< HEAD
 	struct brcmf_pub *drvr = wiphy_priv(w);
 	return drvr->config;
+=======
+	return (struct brcmf_cfg80211_info *)(wiphy_priv(w));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline struct brcmf_cfg80211_info *wdev_to_cfg(struct wireless_dev *wd)
 {
+<<<<<<< HEAD
 	return wiphy_to_cfg(wd->wiphy);
 }
 
 static inline struct brcmf_cfg80211_vif *wdev_to_vif(struct wireless_dev *wdev)
 {
 	return container_of(wdev, struct brcmf_cfg80211_vif, wdev);
+=======
+	return (struct brcmf_cfg80211_info *)(wdev_priv(wd));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline
 struct net_device *cfg_to_ndev(struct brcmf_cfg80211_info *cfg)
 {
+<<<<<<< HEAD
 	return brcmf_get_ifp(cfg->pub, 0)->ndev;
+=======
+	struct brcmf_cfg80211_vif *vif;
+	vif = list_first_entry(&cfg->vif_list, struct brcmf_cfg80211_vif, list);
+	return vif->wdev.netdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline struct brcmf_cfg80211_info *ndev_to_cfg(struct net_device *ndev)
@@ -399,12 +421,19 @@ brcmf_cfg80211_connect_info *cfg_to_conn(struct brcmf_cfg80211_info *cfg)
 }
 
 struct brcmf_cfg80211_info *brcmf_cfg80211_attach(struct brcmf_pub *drvr,
+<<<<<<< HEAD
 						  struct cfg80211_ops *ops,
+=======
+						  struct device *busdev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  bool p2pdev_forced);
 void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg);
 s32 brcmf_cfg80211_up(struct net_device *ndev);
 s32 brcmf_cfg80211_down(struct net_device *ndev);
+<<<<<<< HEAD
 struct cfg80211_ops *brcmf_cfg80211_get_ops(struct brcmf_mp_device *settings);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum nl80211_iftype brcmf_cfg80211_get_iftype(struct brcmf_if *ifp);
 
 struct brcmf_cfg80211_vif *brcmf_alloc_vif(struct brcmf_cfg80211_info *cfg,

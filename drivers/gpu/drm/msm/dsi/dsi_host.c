@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2015, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2015-2017, The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -34,6 +38,11 @@
 #include "dsi_cfg.h"
 #include "msm_kms.h"
 
+<<<<<<< HEAD
+=======
+#define DSI_RESET_TOGGLE_DELAY_MS 20
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dsi_get_version(const void __iomem *base, u32 *major, u32 *minor)
 {
 	u32 ver;
@@ -115,10 +124,15 @@ struct msm_dsi_host {
 	struct clk *pixel_clk;
 	struct clk *byte_clk_src;
 	struct clk *pixel_clk_src;
+<<<<<<< HEAD
 	struct clk *byte_intf_clk;
 
 	u32 byte_clk_rate;
 	u32 pixel_clk_rate;
+=======
+
+	u32 byte_clk_rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 esc_clk_rate;
 
 	/* DSI v2 specific clocks */
@@ -174,7 +188,10 @@ struct msm_dsi_host {
 
 	bool registered;
 	bool power_on;
+<<<<<<< HEAD
 	bool enabled;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int irq;
 };
 
@@ -217,7 +234,11 @@ static const struct msm_dsi_cfg_handler *dsi_get_config(
 		goto exit;
 	}
 
+<<<<<<< HEAD
 	ahb_clk = msm_clk_get(msm_host->pdev, "iface");
+=======
+	ahb_clk = clk_get(dev, "iface_clk");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ahb_clk)) {
 		pr_err("%s: cannot get interface clock\n", __func__);
 		goto put_gdsc;
@@ -228,7 +249,11 @@ static const struct msm_dsi_cfg_handler *dsi_get_config(
 	ret = regulator_enable(gdsc_reg);
 	if (ret) {
 		pr_err("%s: unable to enable gdsc\n", __func__);
+<<<<<<< HEAD
 		goto put_gdsc;
+=======
+		goto put_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = clk_prepare_enable(ahb_clk);
@@ -252,6 +277,11 @@ disable_clks:
 disable_gdsc:
 	regulator_disable(gdsc_reg);
 	pm_runtime_put_sync(dev);
+<<<<<<< HEAD
+=======
+put_clk:
+	clk_put(ahb_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 put_gdsc:
 	regulator_put(gdsc_reg);
 exit:
@@ -333,6 +363,7 @@ static int dsi_regulator_init(struct msm_dsi_host *msm_host)
 	return 0;
 }
 
+<<<<<<< HEAD
 int dsi_clk_init_v2(struct msm_dsi_host *msm_host)
 {
 	struct platform_device *pdev = msm_host->pdev;
@@ -384,58 +415,99 @@ int dsi_clk_init_6g_v2(struct msm_dsi_host *msm_host)
 static int dsi_clk_init(struct msm_dsi_host *msm_host)
 {
 	struct platform_device *pdev = msm_host->pdev;
+=======
+static int dsi_clk_init(struct msm_dsi_host *msm_host)
+{
+	struct device *dev = &msm_host->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
 	const struct msm_dsi_config *cfg = cfg_hnd->cfg;
 	int i, ret = 0;
 
 	/* get bus clocks */
 	for (i = 0; i < cfg->num_bus_clks; i++) {
+<<<<<<< HEAD
 		msm_host->bus_clks[i] = msm_clk_get(pdev,
 						cfg->bus_clk_names[i]);
 		if (IS_ERR(msm_host->bus_clks[i])) {
 			ret = PTR_ERR(msm_host->bus_clks[i]);
 			pr_err("%s: Unable to get %s clock, ret = %d\n",
+=======
+		msm_host->bus_clks[i] = devm_clk_get(dev,
+						cfg->bus_clk_names[i]);
+		if (IS_ERR(msm_host->bus_clks[i])) {
+			ret = PTR_ERR(msm_host->bus_clks[i]);
+			pr_err("%s: Unable to get %s, ret = %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				__func__, cfg->bus_clk_names[i], ret);
 			goto exit;
 		}
 	}
 
 	/* get link and source clocks */
+<<<<<<< HEAD
 	msm_host->byte_clk = msm_clk_get(pdev, "byte");
 	if (IS_ERR(msm_host->byte_clk)) {
 		ret = PTR_ERR(msm_host->byte_clk);
 		pr_err("%s: can't find dsi_byte clock. ret=%d\n",
+=======
+	msm_host->byte_clk = devm_clk_get(dev, "byte_clk");
+	if (IS_ERR(msm_host->byte_clk)) {
+		ret = PTR_ERR(msm_host->byte_clk);
+		pr_err("%s: can't find dsi_byte_clk. ret=%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__, ret);
 		msm_host->byte_clk = NULL;
 		goto exit;
 	}
 
+<<<<<<< HEAD
 	msm_host->pixel_clk = msm_clk_get(pdev, "pixel");
 	if (IS_ERR(msm_host->pixel_clk)) {
 		ret = PTR_ERR(msm_host->pixel_clk);
 		pr_err("%s: can't find dsi_pixel clock. ret=%d\n",
+=======
+	msm_host->pixel_clk = devm_clk_get(dev, "pixel_clk");
+	if (IS_ERR(msm_host->pixel_clk)) {
+		ret = PTR_ERR(msm_host->pixel_clk);
+		pr_err("%s: can't find dsi_pixel_clk. ret=%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__, ret);
 		msm_host->pixel_clk = NULL;
 		goto exit;
 	}
 
+<<<<<<< HEAD
 	msm_host->esc_clk = msm_clk_get(pdev, "core");
 	if (IS_ERR(msm_host->esc_clk)) {
 		ret = PTR_ERR(msm_host->esc_clk);
 		pr_err("%s: can't find dsi_esc clock. ret=%d\n",
+=======
+	msm_host->esc_clk = devm_clk_get(dev, "core_clk");
+	if (IS_ERR(msm_host->esc_clk)) {
+		ret = PTR_ERR(msm_host->esc_clk);
+		pr_err("%s: can't find dsi_esc_clk. ret=%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__, ret);
 		msm_host->esc_clk = NULL;
 		goto exit;
 	}
 
 	msm_host->byte_clk_src = clk_get_parent(msm_host->byte_clk);
+<<<<<<< HEAD
 	if (IS_ERR(msm_host->byte_clk_src)) {
 		ret = PTR_ERR(msm_host->byte_clk_src);
 		pr_err("%s: can't find byte_clk clock. ret=%d\n", __func__, ret);
+=======
+	if (!msm_host->byte_clk_src) {
+		ret = -ENODEV;
+		pr_err("%s: can't find byte_clk_src. ret=%d\n", __func__, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto exit;
 	}
 
 	msm_host->pixel_clk_src = clk_get_parent(msm_host->pixel_clk);
+<<<<<<< HEAD
 	if (IS_ERR(msm_host->pixel_clk_src)) {
 		ret = PTR_ERR(msm_host->pixel_clk_src);
 		pr_err("%s: can't find pixel_clk clock. ret=%d\n", __func__, ret);
@@ -444,6 +516,39 @@ static int dsi_clk_init(struct msm_dsi_host *msm_host)
 
 	if (cfg_hnd->ops->clk_init_ver)
 		ret = cfg_hnd->ops->clk_init_ver(msm_host);
+=======
+	if (!msm_host->pixel_clk_src) {
+		ret = -ENODEV;
+		pr_err("%s: can't find pixel_clk_src. ret=%d\n", __func__, ret);
+		goto exit;
+	}
+
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_V2) {
+		msm_host->src_clk = devm_clk_get(dev, "src_clk");
+		if (IS_ERR(msm_host->src_clk)) {
+			ret = PTR_ERR(msm_host->src_clk);
+			pr_err("%s: can't find dsi_src_clk. ret=%d\n",
+				__func__, ret);
+			msm_host->src_clk = NULL;
+			goto exit;
+		}
+
+		msm_host->esc_clk_src = clk_get_parent(msm_host->esc_clk);
+		if (!msm_host->esc_clk_src) {
+			ret = -ENODEV;
+			pr_err("%s: can't get esc_clk_src. ret=%d\n",
+				__func__, ret);
+			goto exit;
+		}
+
+		msm_host->dsi_clk_src = clk_get_parent(msm_host->src_clk);
+		if (!msm_host->dsi_clk_src) {
+			ret = -ENODEV;
+			pr_err("%s: can't get dsi_clk_src. ret=%d\n",
+				__func__, ret);
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 exit:
 	return ret;
 }
@@ -511,7 +616,11 @@ int msm_dsi_runtime_resume(struct device *dev)
 	return dsi_bus_clk_enable(msm_host);
 }
 
+<<<<<<< HEAD
 int dsi_link_clk_enable_6g(struct msm_dsi_host *msm_host)
+=======
+static int dsi_link_clk_enable_6g(struct msm_dsi_host *msm_host)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -524,12 +633,17 @@ int dsi_link_clk_enable_6g(struct msm_dsi_host *msm_host)
 		goto error;
 	}
 
+<<<<<<< HEAD
 	ret = clk_set_rate(msm_host->pixel_clk, msm_host->pixel_clk_rate);
+=======
+	ret = clk_set_rate(msm_host->pixel_clk, msm_host->mode->clock * 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("%s: Failed to set rate pixel clk, %d\n", __func__, ret);
 		goto error;
 	}
 
+<<<<<<< HEAD
 	if (msm_host->byte_intf_clk) {
 		ret = clk_set_rate(msm_host->byte_intf_clk,
 				   msm_host->byte_clk_rate / 2);
@@ -540,6 +654,8 @@ int dsi_link_clk_enable_6g(struct msm_dsi_host *msm_host)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = clk_prepare_enable(msm_host->esc_clk);
 	if (ret) {
 		pr_err("%s: Failed to enable dsi esc clk\n", __func__);
@@ -558,6 +674,7 @@ int dsi_link_clk_enable_6g(struct msm_dsi_host *msm_host)
 		goto pixel_clk_err;
 	}
 
+<<<<<<< HEAD
 	if (msm_host->byte_intf_clk) {
 		ret = clk_prepare_enable(msm_host->byte_intf_clk);
 		if (ret) {
@@ -571,6 +688,10 @@ int dsi_link_clk_enable_6g(struct msm_dsi_host *msm_host)
 
 byte_intf_clk_err:
 	clk_disable_unprepare(msm_host->pixel_clk);
+=======
+	return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 pixel_clk_err:
 	clk_disable_unprepare(msm_host->byte_clk);
 byte_clk_err:
@@ -579,7 +700,11 @@ error:
 	return ret;
 }
 
+<<<<<<< HEAD
 int dsi_link_clk_enable_v2(struct msm_dsi_host *msm_host)
+=======
+static int dsi_link_clk_enable_v2(struct msm_dsi_host *msm_host)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -605,7 +730,11 @@ int dsi_link_clk_enable_v2(struct msm_dsi_host *msm_host)
 		goto error;
 	}
 
+<<<<<<< HEAD
 	ret = clk_set_rate(msm_host->pixel_clk, msm_host->pixel_clk_rate);
+=======
+	ret = clk_set_rate(msm_host->pixel_clk, msm_host->mode->clock * 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("%s: Failed to set rate pixel clk, %d\n", __func__, ret);
 		goto error;
@@ -647,6 +776,7 @@ error:
 	return ret;
 }
 
+<<<<<<< HEAD
 void dsi_link_clk_disable_6g(struct msm_dsi_host *msm_host)
 {
 	clk_disable_unprepare(msm_host->esc_clk);
@@ -708,10 +838,48 @@ static void dsi_calc_pclk(struct msm_dsi_host *msm_host, bool is_dual_dsi)
 int dsi_calc_clk_rate_6g(struct msm_dsi_host *msm_host, bool is_dual_dsi)
 {
 	if (!msm_host->mode) {
+=======
+static int dsi_link_clk_enable(struct msm_dsi_host *msm_host)
+{
+	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_6G)
+		return dsi_link_clk_enable_6g(msm_host);
+	else
+		return dsi_link_clk_enable_v2(msm_host);
+}
+
+static void dsi_link_clk_disable(struct msm_dsi_host *msm_host)
+{
+	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_6G) {
+		clk_disable_unprepare(msm_host->esc_clk);
+		clk_disable_unprepare(msm_host->pixel_clk);
+		clk_disable_unprepare(msm_host->byte_clk);
+	} else {
+		clk_disable_unprepare(msm_host->pixel_clk);
+		clk_disable_unprepare(msm_host->src_clk);
+		clk_disable_unprepare(msm_host->esc_clk);
+		clk_disable_unprepare(msm_host->byte_clk);
+	}
+}
+
+static int dsi_calc_clk_rate(struct msm_dsi_host *msm_host)
+{
+	struct drm_display_mode *mode = msm_host->mode;
+	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+	u8 lanes = msm_host->lanes;
+	u32 bpp = dsi_get_bpp(msm_host->format);
+	u32 pclk_rate;
+
+	if (!mode) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("%s: mode not set\n", __func__);
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	dsi_calc_pclk(msm_host, is_dual_dsi);
 	msm_host->esc_clk_rate = clk_get_rate(msm_host->esc_clk);
 	return 0;
@@ -761,6 +929,58 @@ int dsi_calc_clk_rate_v2(struct msm_dsi_host *msm_host, bool is_dual_dsi)
 
 	DBG("esc=%d, src=%d", msm_host->esc_clk_rate,
 		msm_host->src_clk_rate);
+=======
+	pclk_rate = mode->clock * 1000;
+	if (lanes > 0) {
+		msm_host->byte_clk_rate = (pclk_rate * bpp) / (8 * lanes);
+	} else {
+		pr_err("%s: forcing mdss_dsi lanes to 1\n", __func__);
+		msm_host->byte_clk_rate = (pclk_rate * bpp) / 8;
+	}
+
+	DBG("pclk=%d, bclk=%d", pclk_rate, msm_host->byte_clk_rate);
+
+	msm_host->esc_clk_rate = clk_get_rate(msm_host->esc_clk);
+
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_V2) {
+		unsigned int esc_mhz, esc_div;
+		unsigned long byte_mhz;
+
+		msm_host->src_clk_rate = (pclk_rate * bpp) / 8;
+
+		/*
+		 * esc clock is byte clock followed by a 4 bit divider,
+		 * we need to find an escape clock frequency within the
+		 * mipi DSI spec range within the maximum divider limit
+		 * We iterate here between an escape clock frequencey
+		 * between 20 Mhz to 5 Mhz and pick up the first one
+		 * that can be supported by our divider
+		 */
+
+		byte_mhz = msm_host->byte_clk_rate / 1000000;
+
+		for (esc_mhz = 20; esc_mhz >= 5; esc_mhz--) {
+			esc_div = DIV_ROUND_UP(byte_mhz, esc_mhz);
+
+			/*
+			 * TODO: Ideally, we shouldn't know what sort of divider
+			 * is available in mmss_cc, we're just assuming that
+			 * it'll always be a 4 bit divider. Need to come up with
+			 * a better way here.
+			 */
+			if (esc_div >= 1 && esc_div <= 16)
+				break;
+		}
+
+		if (esc_mhz < 5)
+			return -EINVAL;
+
+		msm_host->esc_clk_rate = msm_host->byte_clk_rate / esc_div;
+
+		DBG("esc=%d, src=%d", msm_host->esc_clk_rate,
+			msm_host->src_clk_rate);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -921,7 +1141,11 @@ static void dsi_ctrl_config(struct msm_dsi_host *msm_host, bool enable,
 	dsi_write(msm_host, REG_DSI_CTRL, data);
 }
 
+<<<<<<< HEAD
 static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_dual_dsi)
+=======
+static void dsi_timing_setup(struct msm_dsi_host *msm_host)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_display_mode *mode = msm_host->mode;
 	u32 hs_start = 0, vs_start = 0; /* take sync start as 0 */
@@ -933,11 +1157,15 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_dual_dsi)
 	u32 ha_end = ha_start + mode->hdisplay;
 	u32 va_start = v_total - mode->vsync_start;
 	u32 va_end = va_start + mode->vdisplay;
+<<<<<<< HEAD
 	u32 hdisplay = mode->hdisplay;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 wc;
 
 	DBG("");
 
+<<<<<<< HEAD
 	/*
 	 * For dual DSI mode, the current DRM mode has
 	 * the complete width of the panel. Since, the complete
@@ -953,6 +1181,8 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_dual_dsi)
 		hdisplay /= 2;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (msm_host->mode_flags & MIPI_DSI_MODE_VIDEO) {
 		dsi_write(msm_host, REG_DSI_ACTIVE_H,
 			DSI_ACTIVE_H_START(ha_start) |
@@ -973,7 +1203,11 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_dual_dsi)
 			DSI_ACTIVE_VSYNC_VPOS_END(vs_end));
 	} else {		/* command mode */
 		/* image data and 1 byte write_memory_start cmd */
+<<<<<<< HEAD
 		wc = hdisplay * dsi_get_bpp(msm_host->format) / 8 + 1;
+=======
+		wc = mode->hdisplay * dsi_get_bpp(msm_host->format) / 8 + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		dsi_write(msm_host, REG_DSI_CMD_MDP_STREAM_CTRL,
 			DSI_CMD_MDP_STREAM_CTRL_WORD_COUNT(wc) |
@@ -983,7 +1217,11 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_dual_dsi)
 					MIPI_DSI_DCS_LONG_WRITE));
 
 		dsi_write(msm_host, REG_DSI_CMD_MDP_STREAM_TOTAL,
+<<<<<<< HEAD
 			DSI_CMD_MDP_STREAM_TOTAL_H_TOTAL(hdisplay) |
+=======
+			DSI_CMD_MDP_STREAM_TOTAL_H_TOTAL(mode->hdisplay) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DSI_CMD_MDP_STREAM_TOTAL_V_TOTAL(mode->vdisplay));
 	}
 }
@@ -994,7 +1232,11 @@ static void dsi_sw_reset(struct msm_dsi_host *msm_host)
 	wmb(); /* clocks need to be enabled before reset */
 
 	dsi_write(msm_host, REG_DSI_RESET, 1);
+<<<<<<< HEAD
 	wmb(); /* make sure reset happen */
+=======
+	msleep(DSI_RESET_TOGGLE_DELAY_MS); /* make sure reset happen */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi_write(msm_host, REG_DSI_RESET, 0);
 }
 
@@ -1039,19 +1281,28 @@ static void dsi_set_tx_power_mode(int mode, struct msm_dsi_host *msm_host)
 
 static void dsi_wait4video_done(struct msm_dsi_host *msm_host)
 {
+<<<<<<< HEAD
 	u32 ret = 0;
 	struct device *dev = &msm_host->pdev->dev;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi_intr_ctrl(msm_host, DSI_IRQ_MASK_VIDEO_DONE, 1);
 
 	reinit_completion(&msm_host->video_comp);
 
+<<<<<<< HEAD
 	ret = wait_for_completion_timeout(&msm_host->video_comp,
 			msecs_to_jiffies(70));
 
 	if (ret <= 0)
 		dev_err(dev, "wait for video done timed out\n");
 
+=======
+	wait_for_completion_timeout(&msm_host->video_comp,
+			msecs_to_jiffies(70));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi_intr_ctrl(msm_host, DSI_IRQ_MASK_VIDEO_DONE, 0);
 }
 
@@ -1060,13 +1311,18 @@ static void dsi_wait4video_eng_busy(struct msm_dsi_host *msm_host)
 	if (!(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO))
 		return;
 
+<<<<<<< HEAD
 	if (msm_host->power_on && msm_host->enabled) {
+=======
+	if (msm_host->power_on) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dsi_wait4video_done(msm_host);
 		/* delay 4 ms to skip BLLP */
 		usleep_range(2000, 4000);
 	}
 }
 
+<<<<<<< HEAD
 int dsi_tx_buf_alloc_6g(struct msm_dsi_host *msm_host, int size)
 {
 	struct drm_device *dev = msm_host->dev;
@@ -1098,6 +1354,52 @@ int dsi_tx_buf_alloc_v2(struct msm_dsi_host *msm_host, int size)
 		return -ENOMEM;
 
 	msm_host->tx_size = size;
+=======
+/* dsi_cmd */
+static int dsi_tx_buf_alloc(struct msm_dsi_host *msm_host, int size)
+{
+	struct drm_device *dev = msm_host->dev;
+	struct msm_drm_private *priv = dev->dev_private;
+	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+	int ret;
+	uint64_t iova;
+
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_6G) {
+		msm_host->tx_gem_obj = msm_gem_new(dev, size, MSM_BO_UNCACHED);
+		if (IS_ERR(msm_host->tx_gem_obj)) {
+			ret = PTR_ERR(msm_host->tx_gem_obj);
+			pr_err("%s: failed to allocate gem, %d\n",
+				__func__, ret);
+			msm_host->tx_gem_obj = NULL;
+			return ret;
+		}
+
+		ret = msm_gem_get_iova(msm_host->tx_gem_obj,
+				priv->kms->aspace, &iova);
+		if (ret) {
+			pr_err("%s: failed to get iova, %d\n", __func__, ret);
+			return ret;
+		}
+
+		if (iova & 0x07) {
+			pr_err("%s: buf NOT 8 bytes aligned\n", __func__);
+			return -EINVAL;
+		}
+
+		msm_host->tx_size = msm_host->tx_gem_obj->size;
+	} else {
+		msm_host->tx_buf = dma_alloc_coherent(dev->dev, size,
+					&msm_host->tx_buf_paddr, GFP_KERNEL);
+		if (!msm_host->tx_buf) {
+			ret = -ENOMEM;
+			pr_err("%s: failed to allocate tx buf, %d\n",
+				__func__, ret);
+			return ret;
+		}
+
+		msm_host->tx_size = size;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1105,6 +1407,7 @@ int dsi_tx_buf_alloc_v2(struct msm_dsi_host *msm_host, int size)
 static void dsi_tx_buf_free(struct msm_dsi_host *msm_host)
 {
 	struct drm_device *dev = msm_host->dev;
+<<<<<<< HEAD
 	struct msm_drm_private *priv;
 
 	/*
@@ -1121,6 +1424,15 @@ static void dsi_tx_buf_free(struct msm_dsi_host *msm_host)
 		msm_gem_put_iova(msm_host->tx_gem_obj, priv->kms->aspace);
 		drm_gem_object_put_unlocked(msm_host->tx_gem_obj);
 		msm_host->tx_gem_obj = NULL;
+=======
+
+	if (msm_host->tx_gem_obj) {
+		msm_gem_put_iova(msm_host->tx_gem_obj, 0);
+		mutex_lock(&dev->struct_mutex);
+		msm_gem_free_object(msm_host->tx_gem_obj);
+		msm_host->tx_gem_obj = NULL;
+		mutex_unlock(&dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (msm_host->tx_buf)
@@ -1128,6 +1440,7 @@ static void dsi_tx_buf_free(struct msm_dsi_host *msm_host)
 			msm_host->tx_buf_paddr);
 }
 
+<<<<<<< HEAD
 void *dsi_tx_buf_get_6g(struct msm_dsi_host *msm_host)
 {
 	return msm_gem_get_vaddr(msm_host->tx_gem_obj);
@@ -1143,6 +1456,8 @@ void dsi_tx_buf_put_6g(struct msm_dsi_host *msm_host)
 	msm_gem_put_vaddr(msm_host->tx_gem_obj);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * prepare cmd buffer to be txed
  */
@@ -1167,11 +1482,23 @@ static int dsi_cmd_dma_add(struct msm_dsi_host *msm_host,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	data = cfg_hnd->ops->tx_buf_get(msm_host);
 	if (IS_ERR(data)) {
 		ret = PTR_ERR(data);
 		pr_err("%s: get vaddr failed, %d\n", __func__, ret);
 		return ret;
+=======
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_6G) {
+		data = msm_gem_get_vaddr(msm_host->tx_gem_obj);
+		if (IS_ERR(data)) {
+			ret = PTR_ERR(data);
+			pr_err("%s: get vaddr failed, %d\n", __func__, ret);
+			return ret;
+		}
+	} else {
+		data = msm_host->tx_buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* MSM specific command format in memory */
@@ -1192,8 +1519,13 @@ static int dsi_cmd_dma_add(struct msm_dsi_host *msm_host,
 	if (packet.size < len)
 		memset(data + packet.size, 0xff, len - packet.size);
 
+<<<<<<< HEAD
 	if (cfg_hnd->ops->tx_buf_put)
 		cfg_hnd->ops->tx_buf_put(msm_host);
+=======
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_6G)
+		msm_gem_put_vaddr(msm_host->tx_gem_obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return len;
 }
@@ -1240,6 +1572,7 @@ static int dsi_long_read_resp(u8 *buf, const struct mipi_dsi_msg *msg)
 	return msg->rx_len;
 }
 
+<<<<<<< HEAD
 int dsi_dma_base_get_6g(struct msm_dsi_host *msm_host, uint64_t *dma_base)
 {
 	struct drm_device *dev = msm_host->dev;
@@ -1264,14 +1597,33 @@ int dsi_dma_base_get_v2(struct msm_dsi_host *msm_host, uint64_t *dma_base)
 static int dsi_cmd_dma_tx(struct msm_dsi_host *msm_host, int len)
 {
 	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+=======
+static int dsi_cmd_dma_tx(struct msm_dsi_host *msm_host, int len)
+{
+	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+	struct drm_device *dev = msm_host->dev;
+	struct msm_drm_private *priv = dev->dev_private;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	uint64_t dma_base;
 	bool triggered;
 
+<<<<<<< HEAD
 	ret = cfg_hnd->ops->dma_base_get(msm_host, &dma_base);
 	if (ret) {
 		pr_err("%s: failed to get iova: %d\n", __func__, ret);
 		return ret;
+=======
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_6G) {
+		ret = msm_gem_get_iova(msm_host->tx_gem_obj,
+				priv->kms->aspace, &dma_base);
+		if (ret) {
+			pr_err("%s: failed to get iova: %d\n", __func__, ret);
+			return ret;
+		}
+	} else {
+		dma_base = msm_host->tx_buf_paddr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	reinit_completion(&msm_host->dma_comp);
@@ -1402,7 +1754,11 @@ static void dsi_sw_reset_restore(struct msm_dsi_host *msm_host)
 
 	/* dsi controller can only be reset while clocks are running */
 	dsi_write(msm_host, REG_DSI_RESET, 1);
+<<<<<<< HEAD
 	wmb();	/* make sure reset happen */
+=======
+	msleep(DSI_RESET_TOGGLE_DELAY_MS); /* make sure reset happen */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi_write(msm_host, REG_DSI_RESET, 0);
 	wmb();	/* controller out of reset */
 	dsi_write(msm_host, REG_DSI_CTRL, data0);
@@ -1909,7 +2265,10 @@ int msm_dsi_host_modeset_init(struct mipi_dsi_host *host,
 					struct drm_device *dev)
 {
 	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
+<<<<<<< HEAD
 	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct platform_device *pdev = msm_host->pdev;
 	int ret;
 
@@ -1930,7 +2289,11 @@ int msm_dsi_host_modeset_init(struct mipi_dsi_host *host,
 	}
 
 	msm_host->dev = dev;
+<<<<<<< HEAD
 	ret = cfg_hnd->ops->tx_buf_alloc(msm_host, SZ_4K);
+=======
+	ret = dsi_tx_buf_alloc(msm_host, SZ_4K);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("%s: alloc tx gem obj failed, %d\n", __func__, ret);
 		return ret;
@@ -1963,7 +2326,11 @@ int msm_dsi_host_register(struct mipi_dsi_host *host, bool check_defer)
 		 * output
 		 */
 		if (check_defer && msm_host->device_node) {
+<<<<<<< HEAD
 			if (IS_ERR(of_drm_find_panel(msm_host->device_node)))
+=======
+			if (!of_drm_find_panel(msm_host->device_node))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (!of_drm_find_bridge(msm_host->device_node))
 					return -EPROBE_DEFER;
 		}
@@ -1988,7 +2355,10 @@ int msm_dsi_host_xfer_prepare(struct mipi_dsi_host *host,
 				const struct mipi_dsi_msg *msg)
 {
 	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
+<<<<<<< HEAD
 	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TODO: make sure dsi_cmd_mdp is idle.
 	 * Since DSI6G v1.2.0, we can set DSI_TRIG_CTRL.BLOCK_DMA_WITHIN_FRAME
@@ -2001,7 +2371,11 @@ int msm_dsi_host_xfer_prepare(struct mipi_dsi_host *host,
 	 * mdp clock need to be enabled to receive dsi interrupt
 	 */
 	pm_runtime_get_sync(&msm_host->pdev->dev);
+<<<<<<< HEAD
 	cfg_hnd->ops->link_clk_enable(msm_host);
+=======
+	dsi_link_clk_enable(msm_host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TODO: vote for bus bandwidth */
 
@@ -2022,7 +2396,10 @@ void msm_dsi_host_xfer_restore(struct mipi_dsi_host *host,
 				const struct mipi_dsi_msg *msg)
 {
 	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
+<<<<<<< HEAD
 	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dsi_intr_ctrl(msm_host, DSI_IRQ_MASK_CMD_DMA_DONE, 0);
 	dsi_write(msm_host, REG_DSI_CTRL, msm_host->dma_cmd_ctrl_restore);
@@ -2032,7 +2409,11 @@ void msm_dsi_host_xfer_restore(struct mipi_dsi_host *host,
 
 	/* TODO: unvote for bus bandwidth */
 
+<<<<<<< HEAD
 	cfg_hnd->ops->link_clk_disable(msm_host);
+=======
+	dsi_link_clk_disable(msm_host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put_autosuspend(&msm_host->pdev->dev);
 }
 
@@ -2196,6 +2577,10 @@ int msm_dsi_host_set_src_pll(struct mipi_dsi_host *host,
 	struct msm_dsi_pll *src_pll)
 {
 	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
+<<<<<<< HEAD
+=======
+	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk *byte_clk_provider, *pixel_clk_provider;
 	int ret;
 
@@ -2221,16 +2606,24 @@ int msm_dsi_host_set_src_pll(struct mipi_dsi_host *host,
 		goto exit;
 	}
 
+<<<<<<< HEAD
 	if (msm_host->dsi_clk_src) {
+=======
+	if (cfg_hnd->major == MSM_DSI_VER_MAJOR_V2) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = clk_set_parent(msm_host->dsi_clk_src, pixel_clk_provider);
 		if (ret) {
 			pr_err("%s: can't set parent to dsi_clk_src. ret=%d\n",
 				__func__, ret);
 			goto exit;
 		}
+<<<<<<< HEAD
 	}
 
 	if (msm_host->esc_clk_src) {
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = clk_set_parent(msm_host->esc_clk_src, byte_clk_provider);
 		if (ret) {
 			pr_err("%s: can't set parent to esc_clk_src. ret=%d\n",
@@ -2257,6 +2650,7 @@ void msm_dsi_host_reset_phy(struct mipi_dsi_host *host)
 }
 
 void msm_dsi_host_get_phy_clk_req(struct mipi_dsi_host *host,
+<<<<<<< HEAD
 			struct msm_dsi_phy_clk_request *clk_req,
 			bool is_dual_dsi)
 {
@@ -2265,6 +2659,14 @@ void msm_dsi_host_get_phy_clk_req(struct mipi_dsi_host *host,
 	int ret;
 
 	ret = cfg_hnd->ops->calc_clk_rate(msm_host, is_dual_dsi);
+=======
+	struct msm_dsi_phy_clk_request *clk_req)
+{
+	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
+	int ret;
+
+	ret = dsi_calc_clk_rate(msm_host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("%s: unable to calc clk rate, %d\n", __func__, ret);
 		return;
@@ -2290,7 +2692,11 @@ int msm_dsi_host_enable(struct mipi_dsi_host *host)
 	 *	pm_runtime_put_autosuspend(&msm_host->pdev->dev);
 	 * }
 	 */
+<<<<<<< HEAD
 	msm_host->enabled = true;
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2298,7 +2704,10 @@ int msm_dsi_host_disable(struct mipi_dsi_host *host)
 {
 	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
 
+<<<<<<< HEAD
 	msm_host->enabled = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi_op_mode_config(msm_host,
 		!!(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO), false);
 
@@ -2326,11 +2735,17 @@ static void msm_dsi_sfpb_config(struct msm_dsi_host *msm_host, bool enable)
 }
 
 int msm_dsi_host_power_on(struct mipi_dsi_host *host,
+<<<<<<< HEAD
 			struct msm_dsi_phy_shared_timings *phy_shared_timings,
 			bool is_dual_dsi)
 {
 	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
 	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+=======
+			struct msm_dsi_phy_shared_timings *phy_shared_timings)
+{
+	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	mutex_lock(&msm_host->dev_mutex);
@@ -2349,7 +2764,11 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
 	}
 
 	pm_runtime_get_sync(&msm_host->pdev->dev);
+<<<<<<< HEAD
 	ret = cfg_hnd->ops->link_clk_enable(msm_host);
+=======
+	ret = dsi_link_clk_enable(msm_host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("%s: failed to enable link clocks. ret=%d\n",
 		       __func__, ret);
@@ -2363,7 +2782,11 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
 		goto fail_disable_clk;
 	}
 
+<<<<<<< HEAD
 	dsi_timing_setup(msm_host, is_dual_dsi);
+=======
+	dsi_timing_setup(msm_host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi_sw_reset(msm_host);
 	dsi_ctrl_config(msm_host, true, phy_shared_timings);
 
@@ -2376,7 +2799,11 @@ int msm_dsi_host_power_on(struct mipi_dsi_host *host,
 	return 0;
 
 fail_disable_clk:
+<<<<<<< HEAD
 	cfg_hnd->ops->link_clk_disable(msm_host);
+=======
+	dsi_link_clk_disable(msm_host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put_autosuspend(&msm_host->pdev->dev);
 fail_disable_reg:
 	dsi_host_regulator_disable(msm_host);
@@ -2388,7 +2815,10 @@ unlock_ret:
 int msm_dsi_host_power_off(struct mipi_dsi_host *host)
 {
 	struct msm_dsi_host *msm_host = to_msm_dsi_host(host);
+<<<<<<< HEAD
 	const struct msm_dsi_cfg_handler *cfg_hnd = msm_host->cfg_hnd;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&msm_host->dev_mutex);
 	if (!msm_host->power_on) {
@@ -2403,7 +2833,11 @@ int msm_dsi_host_power_off(struct mipi_dsi_host *host)
 
 	pinctrl_pm_select_sleep_state(&msm_host->pdev->dev);
 
+<<<<<<< HEAD
 	cfg_hnd->ops->link_clk_disable(msm_host);
+=======
+	dsi_link_clk_disable(msm_host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put_autosuspend(&msm_host->pdev->dev);
 
 	dsi_host_regulator_disable(msm_host);

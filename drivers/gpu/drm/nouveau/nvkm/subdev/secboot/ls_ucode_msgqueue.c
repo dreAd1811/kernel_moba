@@ -80,11 +80,20 @@ acr_ls_msgqueue_post_run(struct nvkm_msgqueue *queue,
 			 struct nvkm_falcon *falcon, u32 addr_args)
 {
 	struct nvkm_device *device = falcon->owner->device;
+<<<<<<< HEAD
 	u8 buf[NVKM_MSGQUEUE_CMDLINE_SIZE];
 
 	memset(buf, 0, sizeof(buf));
 	nvkm_msgqueue_write_cmdline(queue, buf);
 	nvkm_falcon_load_dmem(falcon, buf, addr_args, sizeof(buf), 0);
+=======
+	u32 cmdline_size = NVKM_MSGQUEUE_CMDLINE_SIZE;
+	u8 buf[cmdline_size];
+
+	memset(buf, 0, cmdline_size);
+	nvkm_msgqueue_write_cmdline(queue, buf);
+	nvkm_falcon_load_dmem(falcon, buf, addr_args, cmdline_size, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* rearm the queue so it will wait for the init message */
 	nvkm_msgqueue_reinit(queue);
 
@@ -182,7 +191,11 @@ acr_ls_sec2_post_run(const struct nvkm_acr *acr, const struct nvkm_secboot *sb)
 			  break;
 	);
 	if (reg & BIT(4)) {
+<<<<<<< HEAD
 		nvkm_debug(subdev, "applying workaround for start bug...\n");
+=======
+		nvkm_debug(subdev, "applying workaround for start bug...");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvkm_falcon_start(sb->boot_falcon);
 		nvkm_msec(subdev->device, 1,
 			if ((reg = nvkm_rd32(subdev->device,

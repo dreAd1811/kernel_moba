@@ -27,7 +27,11 @@
 #include "as10x_cmd.h"
 #include "as102_fe.h"
 #include "as102_fw.h"
+<<<<<<< HEAD
 #include <media/dvbdev.h>
+=======
+#include "dvbdev.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int dual_tuner;
 module_param_named(dual_tuner, dual_tuner, int, 0644);

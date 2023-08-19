@@ -136,6 +136,7 @@ static int via_cputemp_probe(struct platform_device *pdev)
 	data->id = pdev->id;
 	data->name = "via_cputemp";
 
+<<<<<<< HEAD
 	if (c->x86 == 7) {
 		data->msr_temp = 0x1423;
 	} else {
@@ -154,6 +155,22 @@ static int via_cputemp_probe(struct platform_device *pdev)
 		default:
 			return -ENODEV;
 		}
+=======
+	switch (c->x86_model) {
+	case 0xA:
+		/* C7 A */
+	case 0xD:
+		/* C7 D */
+		data->msr_temp = 0x1169;
+		data->msr_vid = 0x198;
+		break;
+	case 0xF:
+		/* Nano */
+		data->msr_temp = 0x1423;
+		break;
+	default:
+		return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* test if we can access the TEMPERATURE MSR */
@@ -287,7 +304,10 @@ static const struct x86_cpu_id __initconst cputemp_ids[] = {
 	{ X86_VENDOR_CENTAUR, 6, 0xa, }, /* C7 A */
 	{ X86_VENDOR_CENTAUR, 6, 0xd, }, /* C7 D */
 	{ X86_VENDOR_CENTAUR, 6, 0xf, }, /* Nano */
+<<<<<<< HEAD
 	{ X86_VENDOR_CENTAUR, 7, X86_MODEL_ANY, },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(x86cpu, cputemp_ids);

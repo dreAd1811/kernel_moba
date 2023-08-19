@@ -72,7 +72,11 @@ good_area:
 	}
 
 	do {
+<<<<<<< HEAD
 		vm_fault_t fault;
+=======
+		int fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		fault = handle_mm_fault(vma, address, flags);
 
@@ -162,9 +166,19 @@ static void show_segv_info(struct uml_pt_regs *regs)
 
 static void bad_segv(struct faultinfo fi, unsigned long ip)
 {
+<<<<<<< HEAD
 	current->thread.arch.faultinfo = fi;
 	force_sig_fault(SIGSEGV, SEGV_ACCERR, (void __user *) FAULT_ADDRESS(fi),
 			current);
+=======
+	struct siginfo si;
+
+	si.si_signo = SIGSEGV;
+	si.si_code = SEGV_ACCERR;
+	si.si_addr = (void __user *) FAULT_ADDRESS(fi);
+	current->thread.arch.faultinfo = fi;
+	force_sig_info(SIGSEGV, &si, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void fatal_sigsegv(void)
@@ -210,8 +224,13 @@ void segv_handler(int sig, struct siginfo *unused_si, struct uml_pt_regs *regs)
 unsigned long segv(struct faultinfo fi, unsigned long ip, int is_user,
 		   struct uml_pt_regs *regs)
 {
+<<<<<<< HEAD
 	jmp_buf *catcher;
 	int si_code;
+=======
+	struct siginfo si;
+	jmp_buf *catcher;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 	int is_write = FAULT_WRITE(fi);
 	unsigned long address = FAULT_ADDRESS(fi);
@@ -235,7 +254,11 @@ unsigned long segv(struct faultinfo fi, unsigned long ip, int is_user,
 
 	if (SEGV_IS_FIXABLE(&fi))
 		err = handle_page_fault(address, ip, is_write, is_user,
+<<<<<<< HEAD
 					&si_code);
+=======
+					&si.si_code);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else {
 		err = -EFAULT;
 		/*
@@ -267,6 +290,7 @@ unsigned long segv(struct faultinfo fi, unsigned long ip, int is_user,
 	show_segv_info(regs);
 
 	if (err == -EACCES) {
+<<<<<<< HEAD
 		current->thread.arch.faultinfo = fi;
 		force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)address,
 				current);
@@ -275,6 +299,20 @@ unsigned long segv(struct faultinfo fi, unsigned long ip, int is_user,
 		current->thread.arch.faultinfo = fi;
 		force_sig_fault(SIGSEGV, si_code, (void __user *) address,
 				current);
+=======
+		si.si_signo = SIGBUS;
+		si.si_errno = 0;
+		si.si_code = BUS_ADRERR;
+		si.si_addr = (void __user *)address;
+		current->thread.arch.faultinfo = fi;
+		force_sig_info(SIGBUS, &si, current);
+	} else {
+		BUG_ON(err != -EFAULT);
+		si.si_signo = SIGSEGV;
+		si.si_addr = (void __user *) address;
+		current->thread.arch.faultinfo = fi;
+		force_sig_info(SIGSEGV, &si, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
@@ -286,7 +324,13 @@ out:
 
 void relay_signal(int sig, struct siginfo *si, struct uml_pt_regs *regs)
 {
+<<<<<<< HEAD
 	int code, err;
+=======
+	struct faultinfo *fi;
+	struct siginfo clean_si;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!UPT_IS_USER(regs)) {
 		if (sig == SIGBUS)
 			printk(KERN_ERR "Bus error - the host /dev/shm or /tmp "
@@ -296,6 +340,7 @@ void relay_signal(int sig, struct siginfo *si, struct uml_pt_regs *regs)
 
 	arch_examine_signal(sig, regs);
 
+<<<<<<< HEAD
 	/* Is the signal layout for the signal known?
 	 * Signal data must be scrubbed to prevent information leaks.
 	 */
@@ -311,6 +356,31 @@ void relay_signal(int sig, struct siginfo *si, struct uml_pt_regs *regs)
 		       sig, code, err);
 		force_sig(sig, current);
 	}
+=======
+	memset(&clean_si, 0, sizeof(clean_si));
+	clean_si.si_signo = si->si_signo;
+	clean_si.si_errno = si->si_errno;
+	clean_si.si_code = si->si_code;
+	switch (sig) {
+	case SIGILL:
+	case SIGFPE:
+	case SIGSEGV:
+	case SIGBUS:
+	case SIGTRAP:
+		fi = UPT_FAULTINFO(regs);
+		clean_si.si_addr = (void __user *) FAULT_ADDRESS(*fi);
+		current->thread.arch.faultinfo = *fi;
+#ifdef __ARCH_SI_TRAPNO
+		clean_si.si_trapno = si->si_trapno;
+#endif
+		break;
+	default:
+		printk(KERN_ERR "Attempted to relay unknown signal %d (si_code = %d)\n",
+			sig, si->si_code);
+	}
+
+	force_sig_info(sig, &clean_si, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void bus_handler(int sig, struct siginfo *si, struct uml_pt_regs *regs)

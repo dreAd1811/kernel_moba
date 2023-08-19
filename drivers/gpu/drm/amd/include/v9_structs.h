@@ -29,10 +29,17 @@ struct v9_sdma_mqd {
 	uint32_t sdmax_rlcx_rb_base;
 	uint32_t sdmax_rlcx_rb_base_hi;
 	uint32_t sdmax_rlcx_rb_rptr;
+<<<<<<< HEAD
 	uint32_t sdmax_rlcx_rb_rptr_hi;
 	uint32_t sdmax_rlcx_rb_wptr;
 	uint32_t sdmax_rlcx_rb_wptr_hi;
 	uint32_t sdmax_rlcx_rb_wptr_poll_cntl;
+=======
+	uint32_t sdmax_rlcx_rb_wptr;
+	uint32_t sdmax_rlcx_rb_wptr_poll_cntl;
+	uint32_t sdmax_rlcx_rb_wptr_poll_addr_hi;
+	uint32_t sdmax_rlcx_rb_wptr_poll_addr_lo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t sdmax_rlcx_rb_rptr_addr_hi;
 	uint32_t sdmax_rlcx_rb_rptr_addr_lo;
 	uint32_t sdmax_rlcx_ib_cntl;
@@ -44,6 +51,7 @@ struct v9_sdma_mqd {
 	uint32_t sdmax_rlcx_skip_cntl;
 	uint32_t sdmax_rlcx_context_status;
 	uint32_t sdmax_rlcx_doorbell;
+<<<<<<< HEAD
 	uint32_t sdmax_rlcx_status;
 	uint32_t sdmax_rlcx_doorbell_log;
 	uint32_t sdmax_rlcx_watermark;
@@ -67,6 +75,31 @@ struct v9_sdma_mqd {
 	uint32_t sdmax_rlcx_midcmd_data7;
 	uint32_t sdmax_rlcx_midcmd_data8;
 	uint32_t sdmax_rlcx_midcmd_cntl;
+=======
+	uint32_t sdmax_rlcx_virtual_addr;
+	uint32_t sdmax_rlcx_ape1_cntl;
+	uint32_t sdmax_rlcx_doorbell_log;
+	uint32_t reserved_22;
+	uint32_t reserved_23;
+	uint32_t reserved_24;
+	uint32_t reserved_25;
+	uint32_t reserved_26;
+	uint32_t reserved_27;
+	uint32_t reserved_28;
+	uint32_t reserved_29;
+	uint32_t reserved_30;
+	uint32_t reserved_31;
+	uint32_t reserved_32;
+	uint32_t reserved_33;
+	uint32_t reserved_34;
+	uint32_t reserved_35;
+	uint32_t reserved_36;
+	uint32_t reserved_37;
+	uint32_t reserved_38;
+	uint32_t reserved_39;
+	uint32_t reserved_40;
+	uint32_t reserved_41;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t reserved_42;
 	uint32_t reserved_43;
 	uint32_t reserved_44;
@@ -284,8 +317,13 @@ struct v9_mqd {
 	uint32_t gds_save_mask_hi;
 	uint32_t ctx_save_base_addr_lo;
 	uint32_t ctx_save_base_addr_hi;
+<<<<<<< HEAD
 	uint32_t dynamic_cu_mask_addr_lo;
 	uint32_t dynamic_cu_mask_addr_hi;
+=======
+	uint32_t reserved_126;
+	uint32_t reserved_127;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t cp_mqd_base_addr_lo;
 	uint32_t cp_mqd_base_addr_hi;
 	uint32_t cp_hqd_active;
@@ -672,6 +710,7 @@ struct v9_mqd {
 	uint32_t reserved_511;
 };
 
+<<<<<<< HEAD
 struct v9_mqd_allocation {
 	struct v9_mqd mqd;
 	uint32_t wptr_poll_mem;
@@ -680,6 +719,8 @@ struct v9_mqd_allocation {
 	uint32_t dynamic_rb_mask;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* from vega10 all CSA format is shifted to chain ib compatible mode */
 struct v9_ce_ib_state {
     /* section of non chained ib part */

@@ -1,17 +1,47 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright(C) 2016 Linaro Limited. All rights reserved.
  * Author: Mathieu Poirier <mathieu.poirier@linaro.org>
  */
 
+=======
+/*
+ * Copyright(C) 2016 Linaro Limited. All rights reserved.
+ * Author: Mathieu Poirier <mathieu.poirier@linaro.org>
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include <linux/atomic.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/circ_buf.h>
 #include <linux/coresight.h>
 #include <linux/perf_event.h>
 #include <linux/slab.h>
 #include "coresight-priv.h"
 #include "coresight-tmc.h"
+<<<<<<< HEAD
 
 static void tmc_etb_enable_hw(struct tmc_drvdata *drvdata)
+=======
+#include "coresight-etm-perf.h"
+
+static int tmc_set_etf_buffer(struct coresight_device *csdev,
+			      struct perf_output_handle *handle);
+
+static void __tmc_etb_enable_hw(struct tmc_drvdata *drvdata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	CS_UNLOCK(drvdata->base);
 
@@ -21,7 +51,11 @@ static void tmc_etb_enable_hw(struct tmc_drvdata *drvdata)
 	writel_relaxed(TMC_MODE_CIRCULAR_BUFFER, drvdata->base + TMC_MODE);
 	writel_relaxed(TMC_FFCR_EN_FMT | TMC_FFCR_EN_TI |
 		       TMC_FFCR_FON_FLIN | TMC_FFCR_FON_TRIG_EVT |
+<<<<<<< HEAD
 		       TMC_FFCR_TRIGON_TRIGIN | TMC_FFCR_STOP_ON_FLUSH,
+=======
+		       TMC_FFCR_TRIGON_TRIGIN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       drvdata->base + TMC_FFCR);
 
 	writel_relaxed(drvdata->trigger_cntr, drvdata->base + TMC_TRG);
@@ -30,6 +64,20 @@ static void tmc_etb_enable_hw(struct tmc_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
+=======
+static int tmc_etb_enable_hw(struct tmc_drvdata *drvdata)
+{
+	int rc = coresight_claim_device(drvdata->base);
+
+	if (rc)
+		return rc;
+
+	__tmc_etb_enable_hw(drvdata);
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tmc_etb_dump_hw(struct tmc_drvdata *drvdata)
 {
 	char *bufp;
@@ -56,7 +104,11 @@ done:
 	return;
 }
 
+<<<<<<< HEAD
 static void tmc_etb_disable_hw(struct tmc_drvdata *drvdata)
+=======
+static void __tmc_etb_disable_hw(struct tmc_drvdata *drvdata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	CS_UNLOCK(drvdata->base);
 
@@ -72,7 +124,17 @@ static void tmc_etb_disable_hw(struct tmc_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
 static void tmc_etf_enable_hw(struct tmc_drvdata *drvdata)
+=======
+static void tmc_etb_disable_hw(struct tmc_drvdata *drvdata)
+{
+	coresight_disclaim_device(drvdata->base);
+	__tmc_etb_disable_hw(drvdata);
+}
+
+static void __tmc_etf_enable_hw(struct tmc_drvdata *drvdata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	CS_UNLOCK(drvdata->base);
 
@@ -88,13 +150,31 @@ static void tmc_etf_enable_hw(struct tmc_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
+=======
+static int tmc_etf_enable_hw(struct tmc_drvdata *drvdata)
+{
+	int rc = coresight_claim_device(drvdata->base);
+
+	if (rc)
+		return rc;
+
+	__tmc_etf_enable_hw(drvdata);
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tmc_etf_disable_hw(struct tmc_drvdata *drvdata)
 {
 	CS_UNLOCK(drvdata->base);
 
 	tmc_flush_and_stop(drvdata);
 	tmc_disable_hw(drvdata);
+<<<<<<< HEAD
 
+=======
+	coresight_disclaim_device_unlocked(drvdata->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CS_LOCK(drvdata->base);
 }
 
@@ -151,8 +231,15 @@ static int tmc_enable_etf_sink_sysfs(struct coresight_device *csdev)
 	 * sink is already enabled no memory is needed and the HW need not be
 	 * touched.
 	 */
+<<<<<<< HEAD
 	if (drvdata->mode == CS_MODE_SYSFS)
 		goto out;
+=======
+	if (drvdata->mode == CS_MODE_SYSFS) {
+		atomic_inc(csdev->refcnt);
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If drvdata::buf isn't NULL, memory was allocated for a previous
@@ -170,8 +257,19 @@ static int tmc_enable_etf_sink_sysfs(struct coresight_device *csdev)
 		drvdata->buf = buf;
 	}
 
+<<<<<<< HEAD
 	drvdata->mode = CS_MODE_SYSFS;
 	tmc_etb_enable_hw(drvdata);
+=======
+	ret = tmc_etb_enable_hw(drvdata);
+	if (!ret) {
+		drvdata->mode = CS_MODE_SYSFS;
+		atomic_inc(csdev->refcnt);
+	} else {
+		/* Free up the buffer if we failed to enable */
+		used = false;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
@@ -188,11 +286,16 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int tmc_enable_etf_sink_perf(struct coresight_device *csdev)
+=======
+static int tmc_enable_etf_sink_perf(struct coresight_device *csdev, void *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	unsigned long flags;
 	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+<<<<<<< HEAD
 
 	spin_lock_irqsave(&drvdata->spinlock, flags);
 	if (drvdata->reading) {
@@ -213,12 +316,43 @@ static int tmc_enable_etf_sink_perf(struct coresight_device *csdev)
 	drvdata->mode = CS_MODE_PERF;
 	tmc_etb_enable_hw(drvdata);
 out:
+=======
+	struct perf_output_handle *handle = data;
+
+	spin_lock_irqsave(&drvdata->spinlock, flags);
+	do {
+		ret = -EINVAL;
+		if (drvdata->reading)
+			break;
+		/*
+		 * In Perf mode there can be only one writer per sink.  There
+		 * is also no need to continue if the ETB/ETF is already
+		 * operated from sysFS.
+		 */
+		if (drvdata->mode != CS_MODE_DISABLED)
+			break;
+
+		ret = tmc_set_etf_buffer(csdev, handle);
+		if (ret)
+			break;
+		ret  = tmc_etb_enable_hw(drvdata);
+		if (!ret) {
+			drvdata->mode = CS_MODE_PERF;
+			atomic_inc(csdev->refcnt);
+		}
+	} while (0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static int tmc_enable_etf_sink(struct coresight_device *csdev, u32 mode)
+=======
+static int tmc_enable_etf_sink(struct coresight_device *csdev,
+			       u32 mode, void *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
@@ -228,7 +362,11 @@ static int tmc_enable_etf_sink(struct coresight_device *csdev, u32 mode)
 		ret = tmc_enable_etf_sink_sysfs(csdev);
 		break;
 	case CS_MODE_PERF:
+<<<<<<< HEAD
 		ret = tmc_enable_etf_sink_perf(csdev);
+=======
+		ret = tmc_enable_etf_sink_perf(csdev, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	/* We shouldn't be here */
 	default:
@@ -239,16 +377,25 @@ static int tmc_enable_etf_sink(struct coresight_device *csdev, u32 mode)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	dev_info(drvdata->dev, "TMC-ETB/ETF enabled\n");
 	return 0;
 }
 
 static void tmc_disable_etf_sink(struct coresight_device *csdev)
+=======
+	dev_dbg(drvdata->dev, "TMC-ETB/ETF enabled\n");
+	return 0;
+}
+
+static int tmc_disable_etf_sink(struct coresight_device *csdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long flags;
 	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
 	spin_lock_irqsave(&drvdata->spinlock, flags);
+<<<<<<< HEAD
 	if (drvdata->reading) {
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
 		return;
@@ -260,19 +407,49 @@ static void tmc_disable_etf_sink(struct coresight_device *csdev)
 		drvdata->mode = CS_MODE_DISABLED;
 	}
 
+=======
+
+	if (drvdata->reading) {
+		spin_unlock_irqrestore(&drvdata->spinlock, flags);
+		return -EBUSY;
+	}
+
+	if (atomic_dec_return(csdev->refcnt)) {
+		spin_unlock_irqrestore(&drvdata->spinlock, flags);
+		return -EBUSY;
+	}
+
+	/* Complain if we (somehow) got out of sync */
+	WARN_ON_ONCE(drvdata->mode == CS_MODE_DISABLED);
+	tmc_etb_disable_hw(drvdata);
+	drvdata->mode = CS_MODE_DISABLED;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
 	coresight_cti_unmap_trigin(drvdata->cti_reset, 0, 0);
 	coresight_cti_unmap_trigout(drvdata->cti_flush, 1, 0);
 
+<<<<<<< HEAD
 	dev_info(drvdata->dev, "TMC-ETB/ETF disabled\n");
+=======
+	dev_dbg(drvdata->dev, "TMC-ETB/ETF disabled\n");
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tmc_enable_etf_link(struct coresight_device *csdev,
 			       int inport, int outport)
 {
+<<<<<<< HEAD
 	unsigned long flags;
 	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+=======
+	int ret = 0;
+	unsigned long flags;
+	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+	bool first_enable = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&drvdata->spinlock, flags);
 	if (drvdata->reading) {
@@ -280,12 +457,29 @@ static int tmc_enable_etf_link(struct coresight_device *csdev,
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
 	tmc_etf_enable_hw(drvdata);
 	drvdata->mode = CS_MODE_SYSFS;
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
 	dev_info(drvdata->dev, "TMC-ETF enabled\n");
 	return 0;
+=======
+	if (atomic_read(&csdev->refcnt[0]) == 0) {
+		ret = tmc_etf_enable_hw(drvdata);
+		if (!ret) {
+			drvdata->mode = CS_MODE_SYSFS;
+			first_enable = true;
+		}
+	}
+	if (!ret)
+		atomic_inc(&csdev->refcnt[0]);
+	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+
+	if (first_enable)
+		dev_dbg(drvdata->dev, "TMC-ETF enabled\n");
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tmc_disable_etf_link(struct coresight_device *csdev,
@@ -293,6 +487,10 @@ static void tmc_disable_etf_link(struct coresight_device *csdev,
 {
 	unsigned long flags;
 	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+<<<<<<< HEAD
+=======
+	bool last_disable = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&drvdata->spinlock, flags);
 	if (drvdata->reading) {
@@ -300,6 +498,7 @@ static void tmc_disable_etf_link(struct coresight_device *csdev,
 		return;
 	}
 
+<<<<<<< HEAD
 	tmc_etf_disable_hw(drvdata);
 	drvdata->mode = CS_MODE_DISABLED;
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
@@ -316,6 +515,27 @@ static void *tmc_alloc_etf_buffer(struct coresight_device *csdev, int cpu,
 	if (cpu == -1)
 		cpu = smp_processor_id();
 	node = cpu_to_node(cpu);
+=======
+	if (atomic_dec_return(&csdev->refcnt[0]) == 0) {
+		tmc_etf_disable_hw(drvdata);
+		drvdata->mode = CS_MODE_DISABLED;
+		last_disable = true;
+	}
+	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+
+	if (last_disable)
+		dev_dbg(drvdata->dev, "TMC-ETF disabled\n");
+}
+
+static void *tmc_alloc_etf_buffer(struct coresight_device *csdev,
+				  struct perf_event *event, void **pages,
+				  int nr_pages, bool overwrite)
+{
+	int node, cpu = event->cpu;
+	struct cs_buffers *buf;
+
+	node = (cpu == -1) ? NUMA_NO_NODE : cpu_to_node(cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate memory structure for interaction with Perf */
 	buf = kzalloc_node(sizeof(struct cs_buffers), GFP_KERNEL, node);
@@ -337,12 +557,23 @@ static void tmc_free_etf_buffer(void *config)
 }
 
 static int tmc_set_etf_buffer(struct coresight_device *csdev,
+<<<<<<< HEAD
 			      struct perf_output_handle *handle,
 			      void *sink_config)
 {
 	int ret = 0;
 	unsigned long head;
 	struct cs_buffers *buf = sink_config;
+=======
+			      struct perf_output_handle *handle)
+{
+	int ret = 0;
+	unsigned long head;
+	struct cs_buffers *buf = etm_perf_sink_config(handle);
+
+	if (!buf)
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* wrap head around to the amount of space we have */
 	head = handle->head & ((buf->nr_pages << PAGE_SHIFT) - 1);
@@ -358,6 +589,7 @@ static int tmc_set_etf_buffer(struct coresight_device *csdev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static unsigned long tmc_reset_etf_buffer(struct coresight_device *csdev,
 					  struct perf_output_handle *handle,
 					  void *sink_config)
@@ -388,6 +620,9 @@ static unsigned long tmc_reset_etf_buffer(struct coresight_device *csdev,
 }
 
 static void tmc_update_etf_buffer(struct coresight_device *csdev,
+=======
+static unsigned long tmc_update_etf_buffer(struct coresight_device *csdev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct perf_output_handle *handle,
 				  void *sink_config)
 {
@@ -396,18 +631,33 @@ static void tmc_update_etf_buffer(struct coresight_device *csdev,
 	const u32 *barrier;
 	u32 *buf_ptr;
 	u64 read_ptr, write_ptr;
+<<<<<<< HEAD
 	u32 status, to_read;
 	unsigned long offset;
+=======
+	u32 status;
+	unsigned long offset, to_read, flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cs_buffers *buf = sink_config;
 	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
 	if (!buf)
+<<<<<<< HEAD
 		return;
 
 	/* This shouldn't happen */
 	if (WARN_ON_ONCE(drvdata->mode != CS_MODE_PERF))
 		return;
 
+=======
+		return 0;
+
+	/* This shouldn't happen */
+	if (WARN_ON_ONCE(drvdata->mode != CS_MODE_PERF))
+		return 0;
+
+	spin_lock_irqsave(&drvdata->spinlock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CS_UNLOCK(drvdata->base);
 
 	tmc_flush_and_stop(drvdata);
@@ -430,6 +680,7 @@ static void tmc_update_etf_buffer(struct coresight_device *csdev,
 	/*
 	 * The TMC RAM buffer may be bigger than the space available in the
 	 * perf ring buffer (handle->size).  If so advance the RRP so that we
+<<<<<<< HEAD
 	 * get the latest trace data.
 	 */
 	if (to_read > handle->size) {
@@ -457,6 +708,18 @@ static void tmc_update_etf_buffer(struct coresight_device *csdev,
 		/*
 		 * Make sure the new size is aligned in accordance with the
 		 * requirement explained above.
+=======
+	 * get the latest trace data.  In snapshot mode none of that matters
+	 * since we are expected to clobber stale data in favour of the latest
+	 * traces.
+	 */
+	if (!buf->snapshot && to_read > handle->size) {
+		u32 mask = tmc_get_memwidth_mask(drvdata);
+
+		/*
+		 * Make sure the new size is aligned in accordance with the
+		 * requirement explained in function tmc_get_memwidth_mask().
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		to_read = handle->size & mask;
 		/* Move the RAM read pointer up */
@@ -469,7 +732,17 @@ static void tmc_update_etf_buffer(struct coresight_device *csdev,
 		lost = true;
 	}
 
+<<<<<<< HEAD
 	if (lost)
+=======
+	/*
+	 * Don't set the TRUNCATED flag in snapshot mode because 1) the
+	 * captured buffer is expected to be truncated and 2) a full buffer
+	 * prevents the event from being re-enabled by the perf core,
+	 * resulting in stale data being send to user space.
+	 */
+	if (!buf->snapshot && lost)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		perf_aux_output_flag(handle, PERF_AUX_FLAG_TRUNCATED);
 
 	cur = buf->cur;
@@ -495,6 +768,7 @@ static void tmc_update_etf_buffer(struct coresight_device *csdev,
 		}
 	}
 
+<<<<<<< HEAD
 	/*
 	 * In snapshot mode all we have to do is communicate to
 	 * perf_aux_output_end() the address of the current head.  In full
@@ -507,6 +781,47 @@ static void tmc_update_etf_buffer(struct coresight_device *csdev,
 		local_add(to_read, &buf->data_size);
 
 	CS_LOCK(drvdata->base);
+=======
+	/* In snapshot mode we have to update the head */
+	if (buf->snapshot) {
+		handle->head = (cur * PAGE_SIZE) + offset;
+		to_read = buf->nr_pages << PAGE_SHIFT;
+	}
+	CS_LOCK(drvdata->base);
+	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+
+	return to_read;
+}
+
+static void tmc_abort_etf_sink(struct coresight_device *csdev)
+{
+	struct tmc_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+	unsigned long flags;
+	enum tmc_mode mode;
+
+	spin_lock_irqsave(&drvdata->spinlock, flags);
+	if (drvdata->reading)
+		goto out0;
+
+	if (drvdata->config_type == TMC_CONFIG_TYPE_ETB) {
+		tmc_etb_disable_hw(drvdata);
+	} else {
+
+		mode = readl_relaxed(drvdata->base + TMC_MODE);
+		if (mode == TMC_MODE_CIRCULAR_BUFFER)
+			tmc_etb_disable_hw(drvdata);
+		else
+			goto out1;
+	}
+out0:
+	drvdata->enable = false;
+	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+
+	dev_info(drvdata->dev, "TMC aborted\n");
+	return;
+out1:
+	spin_unlock_irqrestore(&drvdata->spinlock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct coresight_ops_sink tmc_etf_sink_ops = {
@@ -514,9 +829,14 @@ static const struct coresight_ops_sink tmc_etf_sink_ops = {
 	.disable	= tmc_disable_etf_sink,
 	.alloc_buffer	= tmc_alloc_etf_buffer,
 	.free_buffer	= tmc_free_etf_buffer,
+<<<<<<< HEAD
 	.set_buffer	= tmc_set_etf_buffer,
 	.reset_buffer	= tmc_reset_etf_buffer,
 	.update_buffer	= tmc_update_etf_buffer,
+=======
+	.update_buffer	= tmc_update_etf_buffer,
+	.abort		= tmc_abort_etf_sink,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct coresight_ops_link tmc_etf_link_ops = {
@@ -573,12 +893,18 @@ int tmc_read_prepare_etb(struct tmc_drvdata *drvdata)
 	}
 
 	/* Disable the TMC if need be */
+<<<<<<< HEAD
 	if (drvdata->mode == CS_MODE_SYSFS) {
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
 		coresight_disable_all_source_link();
 		spin_lock_irqsave(&drvdata->spinlock, flags);
 		tmc_etb_disable_hw(drvdata);
 	}
+=======
+	if (drvdata->mode == CS_MODE_SYSFS)
+		__tmc_etb_disable_hw(drvdata);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drvdata->reading = true;
 out:
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
@@ -608,7 +934,10 @@ int tmc_read_unprepare_etb(struct tmc_drvdata *drvdata)
 		}
 	}
 
+<<<<<<< HEAD
 	drvdata->reading = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Re-enable the TMC if need be */
 	if (drvdata->mode == CS_MODE_SYSFS) {
 		/*
@@ -620,10 +949,14 @@ int tmc_read_unprepare_etb(struct tmc_drvdata *drvdata)
 		 * can't be NULL.
 		 */
 		memset(drvdata->buf, 0, drvdata->size);
+<<<<<<< HEAD
 		tmc_etb_enable_hw(drvdata);
 		spin_unlock_irqrestore(&drvdata->spinlock, flags);
 		coresight_enable_all_source_link();
 		spin_lock_irqsave(&drvdata->spinlock, flags);
+=======
+		__tmc_etb_enable_hw(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * The ETB/ETF is not tracing and the buffer was just read.
@@ -633,6 +966,10 @@ int tmc_read_unprepare_etb(struct tmc_drvdata *drvdata)
 		drvdata->buf = NULL;
 	}
 
+<<<<<<< HEAD
+=======
+	drvdata->reading = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&drvdata->spinlock, flags);
 
 	/*

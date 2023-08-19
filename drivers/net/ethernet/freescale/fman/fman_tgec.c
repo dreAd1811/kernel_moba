@@ -44,7 +44,10 @@
 #define TGEC_TX_IPG_LENGTH_MASK	0x000003ff
 
 /* Command and Configuration Register (COMMAND_CONFIG) */
+<<<<<<< HEAD
 #define CMD_CFG_EN_TIMESTAMP		0x00100000
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CMD_CFG_NO_LEN_CHK		0x00020000
 #define CMD_CFG_PAUSE_IGNORE		0x00000100
 #define CMF_CFG_CRC_FWD			0x00000040
@@ -218,7 +221,10 @@ struct fman_mac {
 	struct tgec_cfg *cfg;
 	void *fm;
 	struct fman_rev_info fm_rev_info;
+<<<<<<< HEAD
 	bool allmulti_enabled;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void set_mac_address(struct tgec_regs __iomem *regs, u8 *adr)
@@ -566,6 +572,7 @@ int tgec_add_hash_mac_address(struct fman_mac *tgec, enet_addr_t *eth_addr)
 	return 0;
 }
 
+<<<<<<< HEAD
 int tgec_set_allmulti(struct fman_mac *tgec, bool enable)
 {
 	u32 entry;
@@ -609,6 +616,8 @@ int tgec_set_tstamp(struct fman_mac *tgec, bool enable)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int tgec_del_hash_mac_address(struct fman_mac *tgec, enet_addr_t *eth_addr)
 {
 	struct tgec_regs __iomem *regs = tgec->regs;
@@ -636,12 +645,18 @@ int tgec_del_hash_mac_address(struct fman_mac *tgec, enet_addr_t *eth_addr)
 			break;
 		}
 	}
+<<<<<<< HEAD
 
 	if (!tgec->allmulti_enabled) {
 		if (list_empty(&tgec->multicast_addr_hash->lsts[hash]))
 			iowrite32be((hash & ~TGEC_HASH_MCAST_EN),
 				    &regs->hashtable_ctrl);
 	}
+=======
+	if (list_empty(&tgec->multicast_addr_hash->lsts[hash]))
+		iowrite32be((hash & ~TGEC_HASH_MCAST_EN),
+			    &regs->hashtable_ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -21,12 +21,18 @@
  *
  * Authors: Ben Skeggs
  */
+<<<<<<< HEAD
 #include "channv50.h"
+=======
+#include "dmacnv50.h"
+#include "rootnv50.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <core/ramht.h>
 #include <subdev/timer.h>
 
 int
+<<<<<<< HEAD
 gf119_disp_dmac_bind(struct nv50_disp_chan *chan,
 		     struct nvkm_object *object, u32 handle)
 {
@@ -42,6 +48,24 @@ gf119_disp_dmac_fini(struct nv50_disp_chan *chan)
 	struct nvkm_device *device = subdev->device;
 	int ctrl = chan->chid.ctrl;
 	int user = chan->chid.user;
+=======
+gf119_disp_dmac_bind(struct nv50_disp_dmac *chan,
+		     struct nvkm_object *object, u32 handle)
+{
+	return nvkm_ramht_insert(chan->base.root->ramht, object,
+				 chan->base.chid.user, -9, handle,
+				 chan->base.chid.user << 27 | 0x00000001);
+}
+
+void
+gf119_disp_dmac_fini(struct nv50_disp_dmac *chan)
+{
+	struct nv50_disp *disp = chan->base.root->disp;
+	struct nvkm_subdev *subdev = &disp->base.engine.subdev;
+	struct nvkm_device *device = subdev->device;
+	int ctrl = chan->base.chid.ctrl;
+	int user = chan->base.chid.user;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* deactivate channel */
 	nvkm_mask(device, 0x610490 + (ctrl * 0x0010), 0x00001010, 0x00001000);
@@ -53,6 +77,7 @@ gf119_disp_dmac_fini(struct nv50_disp_chan *chan)
 		nvkm_error(subdev, "ch %d fini: %08x\n", user,
 			   nvkm_rd32(device, 0x610490 + (ctrl * 0x10)));
 	}
+<<<<<<< HEAD
 }
 
 static int
@@ -62,6 +87,25 @@ gf119_disp_dmac_init(struct nv50_disp_chan *chan)
 	struct nvkm_device *device = subdev->device;
 	int ctrl = chan->chid.ctrl;
 	int user = chan->chid.user;
+=======
+
+	/* disable error reporting and completion notification */
+	nvkm_mask(device, 0x610090, 0x00000001 << user, 0x00000000);
+	nvkm_mask(device, 0x6100a0, 0x00000001 << user, 0x00000000);
+}
+
+static int
+gf119_disp_dmac_init(struct nv50_disp_dmac *chan)
+{
+	struct nv50_disp *disp = chan->base.root->disp;
+	struct nvkm_subdev *subdev = &disp->base.engine.subdev;
+	struct nvkm_device *device = subdev->device;
+	int ctrl = chan->base.chid.ctrl;
+	int user = chan->base.chid.user;
+
+	/* enable error reporting */
+	nvkm_mask(device, 0x6100a0, 0x00000001 << user, 0x00000001 << user);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* initialise channel for dma command submission */
 	nvkm_wr32(device, 0x610494 + (ctrl * 0x0010), chan->push);
@@ -84,11 +128,18 @@ gf119_disp_dmac_init(struct nv50_disp_chan *chan)
 	return 0;
 }
 
+<<<<<<< HEAD
 const struct nv50_disp_chan_func
 gf119_disp_dmac_func = {
 	.init = gf119_disp_dmac_init,
 	.fini = gf119_disp_dmac_fini,
 	.intr = gf119_disp_chan_intr,
 	.user = nv50_disp_chan_user,
+=======
+const struct nv50_disp_dmac_func
+gf119_disp_dmac_func = {
+	.init = gf119_disp_dmac_init,
+	.fini = gf119_disp_dmac_fini,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.bind = gf119_disp_dmac_bind,
 };

@@ -207,7 +207,11 @@
 				};
 			};
 
+<<<<<<< HEAD
 			gpio0: gpio@0 {
+=======
+			gpio0: gpio@000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "oxsemi,ox810se-gpio";
 				reg = <0x000000 0x100000>;
 				interrupts = <21>;
@@ -296,7 +300,11 @@
 			compatible = "simple-bus";
 			ranges = <0 0x45000000 0x1000000>;
 
+<<<<<<< HEAD
 			sys: sys-ctrl@0 {
+=======
+			sys: sys-ctrl@000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "oxsemi,ox810se-sys-ctrl", "syscon", "simple-mfd";
 				reg = <0x000000 0x100000>;
 
@@ -322,8 +330,13 @@
 					interrupt-controller;
 					reg = <0 0x200>;
 					#interrupt-cells = <1>;
+<<<<<<< HEAD
 					valid-mask = <0xFFFFFFFF>;
 					clear-mask = <0>;
+=======
+					valid-mask = <0xffffffff>;
+					clear-mask = <0xffffffff>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				};
 
 				timer0: timer@200 {

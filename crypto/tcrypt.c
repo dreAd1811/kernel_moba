@@ -67,11 +67,18 @@ static char *alg = NULL;
 static u32 type;
 static u32 mask;
 static int mode;
+<<<<<<< HEAD
 static u32 num_mb = 8;
 static char *tvmem[TVMEMSIZE];
 
 static char *check[] = {
 	"des", "md5", "des3_ede", "rot13", "sha1", "sha224", "sha256", "sm3",
+=======
+static char *tvmem[TVMEMSIZE];
+
+static char *check[] = {
+	"des", "md5", "des3_ede", "rot13", "sha1", "sha224", "sha256",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"blowfish", "twofish", "serpent", "sha384", "sha512", "md4", "aes",
 	"cast6", "arc4", "michael_mic", "deflate", "crc32c", "tea", "xtea",
 	"khazad", "wp512", "wp384", "wp256", "tnepres", "xeta",  "fcrypt",
@@ -80,6 +87,7 @@ static char *check[] = {
 	NULL
 };
 
+<<<<<<< HEAD
 static u32 block_sizes[] = { 16, 64, 256, 1024, 8192, 0 };
 static u32 aead_sizes[] = { 16, 64, 256, 512, 1024, 2048, 4096, 8192, 0 };
 
@@ -138,10 +146,27 @@ static void sg_init_aead(struct scatterlist *sg, char *xbuf[XBUFSIZE],
 
 	if (rem)
 		sg_set_buf(&sg[k + 1], xbuf[k], rem);
+=======
+struct tcrypt_result {
+	struct completion completion;
+	int err;
+};
+
+static void tcrypt_complete(struct crypto_async_request *req, int err)
+{
+	struct tcrypt_result *res = req->data;
+
+	if (err == -EINPROGRESS)
+		return;
+
+	res->err = err;
+	complete(&res->completion);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int do_one_aead_op(struct aead_request *req, int ret)
 {
+<<<<<<< HEAD
 	struct crypto_wait *wait = req->base.data;
 
 	return crypto_wait_req(ret, wait);
@@ -454,6 +479,20 @@ out_free_iv:
 	kfree(iv);
 }
 
+=======
+	if (ret == -EINPROGRESS || ret == -EBUSY) {
+		struct tcrypt_result *tr = req->base.data;
+
+		ret = wait_for_completion_interruptible(&tr->completion);
+		if (!ret)
+			ret = tr->err;
+		reinit_completion(&tr->completion);
+	}
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int test_aead_jiffies(struct aead_request *req, int enc,
 				int blen, int secs)
 {
@@ -519,6 +558,65 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static u32 block_sizes[] = { 16, 64, 256, 1024, 8192, 0 };
+static u32 aead_sizes[] = { 16, 64, 256, 512, 1024, 2048, 4096, 8192, 0 };
+
+#define XBUFSIZE 8
+#define MAX_IVLEN 32
+
+static int testmgr_alloc_buf(char *buf[XBUFSIZE])
+{
+	int i;
+
+	for (i = 0; i < XBUFSIZE; i++) {
+		buf[i] = (void *)__get_free_page(GFP_KERNEL);
+		if (!buf[i])
+			goto err_free_buf;
+	}
+
+	return 0;
+
+err_free_buf:
+	while (i-- > 0)
+		free_page((unsigned long)buf[i]);
+
+	return -ENOMEM;
+}
+
+static void testmgr_free_buf(char *buf[XBUFSIZE])
+{
+	int i;
+
+	for (i = 0; i < XBUFSIZE; i++)
+		free_page((unsigned long)buf[i]);
+}
+
+static void sg_init_aead(struct scatterlist *sg, char *xbuf[XBUFSIZE],
+			unsigned int buflen)
+{
+	int np = (buflen + PAGE_SIZE - 1)/PAGE_SIZE;
+	int k, rem;
+
+	if (np > XBUFSIZE) {
+		rem = PAGE_SIZE;
+		np = XBUFSIZE;
+	} else {
+		rem = buflen % PAGE_SIZE;
+	}
+
+	sg_init_table(sg, np + 1);
+	if (rem)
+		np--;
+	for (k = 0; k < np; k++)
+		sg_set_buf(&sg[k + 1], xbuf[k], PAGE_SIZE);
+
+	if (rem)
+		sg_set_buf(&sg[k + 1], xbuf[k], rem);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void test_aead_speed(const char *algo, int enc, unsigned int secs,
 			    struct aead_speed_template *template,
 			    unsigned int tcount, u8 authsize,
@@ -539,7 +637,11 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
 	char *axbuf[XBUFSIZE];
 	unsigned int *b_size;
 	unsigned int iv_len;
+<<<<<<< HEAD
 	struct crypto_wait wait;
+=======
+	struct tcrypt_result result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iv = kzalloc(MAX_IVLEN, GFP_KERNEL);
 	if (!iv)
@@ -575,7 +677,11 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
 		goto out_notfm;
 	}
 
+<<<<<<< HEAD
 	crypto_init_wait(&wait);
+=======
+	init_completion(&result.completion);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk(KERN_INFO "\ntesting speed of %s (%s) %s\n", algo,
 			get_driver_name(crypto_aead, tfm), e);
 
@@ -587,7 +693,11 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
 	}
 
 	aead_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+<<<<<<< HEAD
 				  crypto_req_done, &wait);
+=======
+				  tcrypt_complete, &result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i = 0;
 	do {
@@ -630,6 +740,7 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
 				goto out;
 			}
 
+<<<<<<< HEAD
 			sg_init_aead(sg, xbuf, *b_size + (enc ? 0 : authsize),
 				     assoc, aad_size);
 
@@ -657,10 +768,21 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
 					break;
 				}
 			}
+=======
+			sg_init_aead(sg, xbuf,
+				    *b_size + (enc ? 0 : authsize));
+
+			sg_init_aead(sgout, xoutbuf,
+				    *b_size + (enc ? authsize : 0));
+
+			sg_set_buf(&sg[0], assoc, aad_size);
+			sg_set_buf(&sgout[0], assoc, aad_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			aead_request_set_crypt(req, sg, sgout,
 					       *b_size + (enc ? 0 : authsize),
 					       iv);
+<<<<<<< HEAD
 
 			if (secs) {
 				ret = test_aead_jiffies(req, enc, *b_size,
@@ -669,6 +791,15 @@ static void test_aead_speed(const char *algo, int enc, unsigned int secs,
 			} else {
 				ret = test_aead_cycles(req, enc, *b_size);
 			}
+=======
+			aead_request_set_ad(req, aad_size);
+
+			if (secs)
+				ret = test_aead_jiffies(req, enc, *b_size,
+							secs);
+			else
+				ret = test_aead_cycles(req, enc, *b_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (ret) {
 				pr_err("%s() failed return code=%d\n", e, ret);
@@ -694,6 +825,10 @@ out_noaxbuf:
 	testmgr_free_buf(xbuf);
 out_noxbuf:
 	kfree(iv);
+<<<<<<< HEAD
+=======
+	return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void test_hash_sg_init(struct scatterlist *sg)
@@ -709,6 +844,7 @@ static void test_hash_sg_init(struct scatterlist *sg)
 
 static inline int do_one_ahash_op(struct ahash_request *req, int ret)
 {
+<<<<<<< HEAD
 	struct crypto_wait *wait = req->base.data;
 
 	return crypto_wait_req(ret, wait);
@@ -821,6 +957,37 @@ static void test_mb_ahash_speed(const char *algo, unsigned int secs,
 	int ret;
 
 	data = kcalloc(num_mb, sizeof(*data), GFP_KERNEL);
+=======
+	if (ret == -EINPROGRESS || ret == -EBUSY) {
+		struct tcrypt_result *tr = req->base.data;
+
+		wait_for_completion(&tr->completion);
+		reinit_completion(&tr->completion);
+		ret = tr->err;
+	}
+	return ret;
+}
+
+struct test_mb_ahash_data {
+	struct scatterlist sg[TVMEMSIZE];
+	char result[64];
+	struct ahash_request *req;
+	struct tcrypt_result tresult;
+	char *xbuf[XBUFSIZE];
+};
+
+static void test_mb_ahash_speed(const char *algo, unsigned int sec,
+				struct hash_speed *speed)
+{
+	struct test_mb_ahash_data *data;
+	struct crypto_ahash *tfm;
+	unsigned long start, end;
+	unsigned long cycles;
+	unsigned int i, j, k;
+	int ret;
+
+	data = kzalloc(sizeof(*data) * 8, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data)
 		return;
 
@@ -831,11 +998,19 @@ static void test_mb_ahash_speed(const char *algo, unsigned int secs,
 		goto free_data;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < num_mb; ++i) {
 		if (testmgr_alloc_buf(data[i].xbuf))
 			goto out;
 
 		crypto_init_wait(&data[i].wait);
+=======
+	for (i = 0; i < 8; ++i) {
+		if (testmgr_alloc_buf(data[i].xbuf))
+			goto out;
+
+		init_completion(&data[i].tresult.completion);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		data[i].req = ahash_request_alloc(tfm, GFP_KERNEL);
 		if (!data[i].req) {
@@ -844,6 +1019,7 @@ static void test_mb_ahash_speed(const char *algo, unsigned int secs,
 			goto out;
 		}
 
+<<<<<<< HEAD
 		ahash_request_set_callback(data[i].req, 0, crypto_req_done,
 					   &data[i].wait);
 
@@ -852,6 +1028,11 @@ static void test_mb_ahash_speed(const char *algo, unsigned int secs,
 			sg_set_buf(data[i].sg + j, data[i].xbuf[j], PAGE_SIZE);
 			memset(data[i].xbuf[j], 0xff, PAGE_SIZE);
 		}
+=======
+		ahash_request_set_callback(data[i].req, 0,
+					   tcrypt_complete, &data[i].tresult);
+		test_hash_sg_init(data[i].sg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pr_info("\ntesting speed of multibuffer %s (%s)\n", algo,
@@ -862,16 +1043,26 @@ static void test_mb_ahash_speed(const char *algo, unsigned int secs,
 		if (speed[i].blen != speed[i].plen)
 			continue;
 
+<<<<<<< HEAD
 		if (speed[i].blen > XBUFSIZE * PAGE_SIZE) {
 			pr_err("template (%u) too big for tvmem (%lu)\n",
 			       speed[i].blen, XBUFSIZE * PAGE_SIZE);
+=======
+		if (speed[i].blen > TVMEMSIZE * PAGE_SIZE) {
+			pr_err("template (%u) too big for tvmem (%lu)\n",
+			       speed[i].blen, TVMEMSIZE * PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 		}
 
 		if (speed[i].klen)
 			crypto_ahash_setkey(tfm, tvmem[0], speed[i].klen);
 
+<<<<<<< HEAD
 		for (k = 0; k < num_mb; k++)
+=======
+		for (k = 0; k < 8; k++)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ahash_request_set_crypt(data[k].req, data[k].sg,
 						data[k].result, speed[i].blen);
 
@@ -880,6 +1071,7 @@ static void test_mb_ahash_speed(const char *algo, unsigned int secs,
 			i, speed[i].blen, speed[i].plen,
 			speed[i].blen / speed[i].plen);
 
+<<<<<<< HEAD
 		if (secs) {
 			ret = test_mb_ahash_jiffies(data, speed[i].blen, secs,
 						    num_mb);
@@ -888,6 +1080,36 @@ static void test_mb_ahash_speed(const char *algo, unsigned int secs,
 			ret = test_mb_ahash_cycles(data, speed[i].blen, num_mb);
 		}
 
+=======
+		start = get_cycles();
+
+		for (k = 0; k < 8; k++) {
+			ret = crypto_ahash_digest(data[k].req);
+			if (ret == -EINPROGRESS) {
+				ret = 0;
+				continue;
+			}
+
+			if (ret)
+				break;
+
+			complete(&data[k].tresult.completion);
+			data[k].tresult.err = 0;
+		}
+
+		for (j = 0; j < k; j++) {
+			struct tcrypt_result *tr = &data[j].tresult;
+
+			wait_for_completion(&tr->completion);
+			if (tr->err)
+				ret = tr->err;
+		}
+
+		end = get_cycles();
+		cycles = end - start;
+		pr_cont("%6lu cycles/operation, %4lu cycles/byte\n",
+			cycles, cycles / (8 * speed[i].blen));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret) {
 			pr_err("At least one hashing failed ret=%d\n", ret);
@@ -896,10 +1118,17 @@ static void test_mb_ahash_speed(const char *algo, unsigned int secs,
 	}
 
 out:
+<<<<<<< HEAD
 	for (k = 0; k < num_mb; ++k)
 		ahash_request_free(data[k].req);
 
 	for (k = 0; k < num_mb; ++k)
+=======
+	for (k = 0; k < 8; ++k)
+		ahash_request_free(data[k].req);
+
+	for (k = 0; k < 8; ++k)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		testmgr_free_buf(data[k].xbuf);
 
 	crypto_free_ahash(tfm);
@@ -1059,7 +1288,11 @@ static void test_ahash_speed_common(const char *algo, unsigned int secs,
 				    struct hash_speed *speed, unsigned mask)
 {
 	struct scatterlist sg[TVMEMSIZE];
+<<<<<<< HEAD
 	struct crypto_wait wait;
+=======
+	struct tcrypt_result tresult;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ahash_request *req;
 	struct crypto_ahash *tfm;
 	char *output;
@@ -1088,9 +1321,15 @@ static void test_ahash_speed_common(const char *algo, unsigned int secs,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	crypto_init_wait(&wait);
 	ahash_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
 				   crypto_req_done, &wait);
+=======
+	init_completion(&tresult.completion);
+	ahash_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+				   tcrypt_complete, &tresult);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	output = kmalloc(MAX_DIGEST_SIZE, GFP_KERNEL);
 	if (!output)
@@ -1112,6 +1351,7 @@ static void test_ahash_speed_common(const char *algo, unsigned int secs,
 
 		ahash_request_set_crypt(req, sg, output, speed[i].plen);
 
+<<<<<<< HEAD
 		if (secs) {
 			ret = test_ahash_jiffies(req, speed[i].blen,
 						 speed[i].plen, output, secs);
@@ -1120,6 +1360,14 @@ static void test_ahash_speed_common(const char *algo, unsigned int secs,
 			ret = test_ahash_cycles(req, speed[i].blen,
 						speed[i].plen, output);
 		}
+=======
+		if (secs)
+			ret = test_ahash_jiffies(req, speed[i].blen,
+						 speed[i].plen, output, secs);
+		else
+			ret = test_ahash_cycles(req, speed[i].blen,
+						speed[i].plen, output);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret) {
 			pr_err("hashing failed ret=%d\n", ret);
@@ -1148,6 +1396,7 @@ static void test_hash_speed(const char *algo, unsigned int secs,
 	return test_ahash_speed_common(algo, secs, speed, CRYPTO_ALG_ASYNC);
 }
 
+<<<<<<< HEAD
 struct test_mb_skcipher_data {
 	struct scatterlist sg[XBUFSIZE];
 	struct skcipher_request *req;
@@ -1416,6 +1665,19 @@ static inline int do_one_acipher_op(struct skcipher_request *req, int ret)
 	struct crypto_wait *wait = req->base.data;
 
 	return crypto_wait_req(ret, wait);
+=======
+static inline int do_one_acipher_op(struct skcipher_request *req, int ret)
+{
+	if (ret == -EINPROGRESS || ret == -EBUSY) {
+		struct tcrypt_result *tr = req->base.data;
+
+		wait_for_completion(&tr->completion);
+		reinit_completion(&tr->completion);
+		ret = tr->err;
+	}
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int test_acipher_jiffies(struct skcipher_request *req, int enc,
@@ -1495,7 +1757,11 @@ static void test_skcipher_speed(const char *algo, int enc, unsigned int secs,
 				unsigned int tcount, u8 *keysize, bool async)
 {
 	unsigned int ret, i, j, k, iv_len;
+<<<<<<< HEAD
 	struct crypto_wait wait;
+=======
+	struct tcrypt_result tresult;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *key;
 	char iv[128];
 	struct skcipher_request *req;
@@ -1508,7 +1774,11 @@ static void test_skcipher_speed(const char *algo, int enc, unsigned int secs,
 	else
 		e = "decryption";
 
+<<<<<<< HEAD
 	crypto_init_wait(&wait);
+=======
+	init_completion(&tresult.completion);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tfm = crypto_alloc_skcipher(algo, 0, async ? 0 : CRYPTO_ALG_ASYNC);
 
@@ -1529,7 +1799,11 @@ static void test_skcipher_speed(const char *algo, int enc, unsigned int secs,
 	}
 
 	skcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+<<<<<<< HEAD
 				      crypto_req_done, &wait);
+=======
+				      tcrypt_complete, &tresult);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i = 0;
 	do {
@@ -1594,6 +1868,7 @@ static void test_skcipher_speed(const char *algo, int enc, unsigned int secs,
 
 			skcipher_request_set_crypt(req, sg, sg, *b_size, iv);
 
+<<<<<<< HEAD
 			if (secs) {
 				ret = test_acipher_jiffies(req, enc,
 							   *b_size, secs);
@@ -1602,6 +1877,14 @@ static void test_skcipher_speed(const char *algo, int enc, unsigned int secs,
 				ret = test_acipher_cycles(req, enc,
 							  *b_size);
 			}
+=======
+			if (secs)
+				ret = test_acipher_jiffies(req, enc,
+							   *b_size, secs);
+			else
+				ret = test_acipher_cycles(req, enc,
+							  *b_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (ret) {
 				pr_err("%s() failed flags=%x\n", e,
@@ -1661,7 +1944,11 @@ static inline int tcrypt_test(const char *alg)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
+=======
+static int do_test(const char *alg, u32 type, u32 mask, int m)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	int ret = 0;
@@ -1676,7 +1963,11 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 		}
 
 		for (i = 1; i < 200; i++)
+<<<<<<< HEAD
 			ret += do_test(NULL, 0, 0, i, num_mb);
+=======
+			ret += do_test(NULL, 0, 0, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 1:
@@ -1736,7 +2027,10 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 		ret += tcrypt_test("xts(aes)");
 		ret += tcrypt_test("ctr(aes)");
 		ret += tcrypt_test("rfc3686(ctr(aes))");
+<<<<<<< HEAD
 		ret += tcrypt_test("cfb(aes)");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 11:
@@ -1914,10 +2208,13 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 		ret += tcrypt_test("sha3-512");
 		break;
 
+<<<<<<< HEAD
 	case 52:
 		ret += tcrypt_test("sm3");
 		break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 100:
 		ret += tcrypt_test("hmac(md5)");
 		break;
@@ -1955,7 +2252,15 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 		break;
 
 	case 109:
+<<<<<<< HEAD
 		ret += tcrypt_test("vmac64(aes)");
+=======
+		ret += tcrypt_test("vmac(aes)");
+		break;
+
+	case 110:
+		ret += tcrypt_test("hmac(crc32)");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 111:
@@ -2035,9 +2340,12 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 	case 190:
 		ret += tcrypt_test("authenc(hmac(sha512),cbc(des3_ede))");
 		break;
+<<<<<<< HEAD
 	case 191:
 		ret += tcrypt_test("ecb(sm4)");
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 200:
 		test_cipher_speed("ecb(aes)", ENCRYPT, sec, NULL, 0,
 				speed_template_16_24_32);
@@ -2063,10 +2371,13 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 				speed_template_16_24_32);
 		test_cipher_speed("ctr(aes)", DECRYPT, sec, NULL, 0,
 				speed_template_16_24_32);
+<<<<<<< HEAD
 		test_cipher_speed("cfb(aes)", ENCRYPT, sec, NULL, 0,
 				speed_template_16_24_32);
 		test_cipher_speed("cfb(aes)", DECRYPT, sec, NULL, 0,
 				speed_template_16_24_32);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 201:
@@ -2238,24 +2549,33 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 				NULL, 0, 16, 16, aead_speed_template_20);
 		test_aead_speed("gcm(aes)", ENCRYPT, sec,
 				NULL, 0, 16, 8, speed_template_16_24_32);
+<<<<<<< HEAD
 		test_aead_speed("rfc4106(gcm(aes))", DECRYPT, sec,
 				NULL, 0, 16, 16, aead_speed_template_20);
 		test_aead_speed("gcm(aes)", DECRYPT, sec,
 				NULL, 0, 16, 8, speed_template_16_24_32);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 212:
 		test_aead_speed("rfc4309(ccm(aes))", ENCRYPT, sec,
 				NULL, 0, 16, 16, aead_speed_template_19);
+<<<<<<< HEAD
 		test_aead_speed("rfc4309(ccm(aes))", DECRYPT, sec,
 				NULL, 0, 16, 16, aead_speed_template_19);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 213:
 		test_aead_speed("rfc7539esp(chacha20,poly1305)", ENCRYPT, sec,
 				NULL, 0, 16, 8, aead_speed_template_36);
+<<<<<<< HEAD
 		test_aead_speed("rfc7539esp(chacha20,poly1305)", DECRYPT, sec,
 				NULL, 0, 16, 8, aead_speed_template_36);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 214:
@@ -2263,6 +2583,7 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 				  speed_template_32);
 		break;
 
+<<<<<<< HEAD
 	case 215:
 		test_mb_aead_speed("rfc4106(gcm(aes))", ENCRYPT, sec, NULL,
 				   0, 16, 16, aead_speed_template_20, num_mb);
@@ -2290,6 +2611,8 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 				   num_mb);
 		break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 219:
 		test_cipher_speed("adiantum(xchacha12,aes)", ENCRYPT, sec, NULL,
 				  0, speed_template_32);
@@ -2306,6 +2629,7 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 			test_hash_speed(alg, sec, generic_hash_speed_template);
 			break;
 		}
+<<<<<<< HEAD
 		/* fall through */
 	case 301:
 		test_hash_speed("md4", sec, generic_hash_speed_template);
@@ -2411,6 +2735,111 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 		test_hash_speed("sm3", sec, generic_hash_speed_template);
 		if (mode > 300 && mode < 400) break;
 		/* fall through */
+=======
+
+		/* fall through */
+
+	case 301:
+		test_hash_speed("md4", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 302:
+		test_hash_speed("md5", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 303:
+		test_hash_speed("sha1", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 304:
+		test_hash_speed("sha256", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 305:
+		test_hash_speed("sha384", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 306:
+		test_hash_speed("sha512", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 307:
+		test_hash_speed("wp256", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 308:
+		test_hash_speed("wp384", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 309:
+		test_hash_speed("wp512", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 310:
+		test_hash_speed("tgr128", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 311:
+		test_hash_speed("tgr160", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 312:
+		test_hash_speed("tgr192", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 313:
+		test_hash_speed("sha224", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 314:
+		test_hash_speed("rmd128", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 315:
+		test_hash_speed("rmd160", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 316:
+		test_hash_speed("rmd256", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 317:
+		test_hash_speed("rmd320", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 318:
+		test_hash_speed("ghash-generic", sec, hash_speed_template_16);
+		if (mode > 300 && mode < 400) break;
+
+	case 319:
+		test_hash_speed("crc32c", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 320:
+		test_hash_speed("crct10dif", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 321:
+		test_hash_speed("poly1305", sec, poly1305_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 322:
+		test_hash_speed("sha3-224", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 323:
+		test_hash_speed("sha3-256", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 324:
+		test_hash_speed("sha3-384", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+	case 325:
+		test_hash_speed("sha3-512", sec, generic_hash_speed_template);
+		if (mode > 300 && mode < 400) break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 399:
 		break;
 
@@ -2419,6 +2848,7 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 			test_ahash_speed(alg, sec, generic_hash_speed_template);
 			break;
 		}
+<<<<<<< HEAD
 		/* fall through */
 	case 401:
 		test_ahash_speed("md4", sec, generic_hash_speed_template);
@@ -2524,6 +2954,108 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 				    num_mb);
 		if (mode > 400 && mode < 500) break;
 		/* fall through */
+=======
+
+		/* fall through */
+
+	case 401:
+		test_ahash_speed("md4", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 402:
+		test_ahash_speed("md5", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 403:
+		test_ahash_speed("sha1", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 404:
+		test_ahash_speed("sha256", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 405:
+		test_ahash_speed("sha384", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 406:
+		test_ahash_speed("sha512", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 407:
+		test_ahash_speed("wp256", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 408:
+		test_ahash_speed("wp384", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 409:
+		test_ahash_speed("wp512", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 410:
+		test_ahash_speed("tgr128", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 411:
+		test_ahash_speed("tgr160", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 412:
+		test_ahash_speed("tgr192", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 413:
+		test_ahash_speed("sha224", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 414:
+		test_ahash_speed("rmd128", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 415:
+		test_ahash_speed("rmd160", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 416:
+		test_ahash_speed("rmd256", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 417:
+		test_ahash_speed("rmd320", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 418:
+		test_ahash_speed("sha3-224", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 419:
+		test_ahash_speed("sha3-256", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 420:
+		test_ahash_speed("sha3-384", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+
+	case 421:
+		test_ahash_speed("sha3-512", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 422:
+		test_mb_ahash_speed("sha1", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 423:
+		test_mb_ahash_speed("sha256", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+	case 424:
+		test_mb_ahash_speed("sha512", sec, generic_hash_speed_template);
+		if (mode > 400 && mode < 500) break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 499:
 		break;
 
@@ -2739,6 +3271,7 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 				   speed_template_8_32);
 		break;
 
+<<<<<<< HEAD
 	case 600:
 		test_mb_skcipher_speed("ecb(aes)", ENCRYPT, sec, NULL, 0,
 				       speed_template_16_24_32, num_mb);
@@ -2951,6 +3484,8 @@ static int do_test(const char *alg, u32 type, u32 mask, int m, u32 num_mb)
 				       speed_template_8_32, num_mb);
 		break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 1000:
 		test_available();
 		break;
@@ -2970,7 +3505,11 @@ static int __init tcrypt_mod_init(void)
 			goto err_free_tv;
 	}
 
+<<<<<<< HEAD
 	err = do_test(alg, type, mask, mode, num_mb);
+=======
+	err = do_test(alg, type, mask, mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err) {
 		printk(KERN_ERR "tcrypt: one or more tests failed!\n");
@@ -3012,8 +3551,11 @@ module_param(mode, int, 0);
 module_param(sec, uint, 0);
 MODULE_PARM_DESC(sec, "Length in seconds of speed tests "
 		      "(defaults to zero which uses CPU cycles instead)");
+<<<<<<< HEAD
 module_param(num_mb, uint, 0000);
 MODULE_PARM_DESC(num_mb, "Number of concurrent requests to be used in mb speed tests (defaults to 8)");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Quick & dirty crypto testing module");

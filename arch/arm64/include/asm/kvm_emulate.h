@@ -26,15 +26,22 @@
 
 #include <asm/esr.h>
 #include <asm/kvm_arm.h>
+<<<<<<< HEAD
 #include <asm/kvm_hyp.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kvm_mmio.h>
 #include <asm/ptrace.h>
 #include <asm/cputype.h>
 #include <asm/virt.h>
 
 unsigned long *vcpu_reg32(const struct kvm_vcpu *vcpu, u8 reg_num);
+<<<<<<< HEAD
 unsigned long vcpu_read_spsr32(const struct kvm_vcpu *vcpu);
 void vcpu_write_spsr32(struct kvm_vcpu *vcpu, unsigned long v);
+=======
+unsigned long *vcpu_spsr32(const struct kvm_vcpu *vcpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 bool kvm_condition_valid32(const struct kvm_vcpu *vcpu);
 void kvm_skip_instr32(struct kvm_vcpu *vcpu, bool is_wide_instr);
@@ -43,9 +50,12 @@ void kvm_inject_undefined(struct kvm_vcpu *vcpu);
 void kvm_inject_vabt(struct kvm_vcpu *vcpu);
 void kvm_inject_dabt(struct kvm_vcpu *vcpu, unsigned long addr);
 void kvm_inject_pabt(struct kvm_vcpu *vcpu, unsigned long addr);
+<<<<<<< HEAD
 void kvm_inject_undef32(struct kvm_vcpu *vcpu);
 void kvm_inject_dabt32(struct kvm_vcpu *vcpu, unsigned long addr);
 void kvm_inject_pabt32(struct kvm_vcpu *vcpu, unsigned long addr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool vcpu_el1_is_32bit(struct kvm_vcpu *vcpu)
 {
@@ -57,6 +67,7 @@ static inline void vcpu_reset_hcr(struct kvm_vcpu *vcpu)
 	vcpu->arch.hcr_el2 = HCR_GUEST_FLAGS;
 	if (is_kernel_in_hyp_mode())
 		vcpu->arch.hcr_el2 |= HCR_E2H;
+<<<<<<< HEAD
 	if (cpus_have_const_cap(ARM64_HAS_RAS_EXTN)) {
 		/* route synchronous external abort exceptions to EL2 */
 		vcpu->arch.hcr_el2 |= HCR_TEA;
@@ -101,6 +112,20 @@ static inline unsigned long vcpu_get_vsesr(struct kvm_vcpu *vcpu)
 static inline void vcpu_set_vsesr(struct kvm_vcpu *vcpu, u64 vsesr)
 {
 	vcpu->arch.vsesr_el2 = vsesr;
+=======
+	if (test_bit(KVM_ARM_VCPU_EL1_32BIT, vcpu->arch.features))
+		vcpu->arch.hcr_el2 &= ~HCR_RW;
+}
+
+static inline unsigned long vcpu_get_hcr(struct kvm_vcpu *vcpu)
+{
+	return vcpu->arch.hcr_el2;
+}
+
+static inline void vcpu_set_hcr(struct kvm_vcpu *vcpu, unsigned long hcr)
+{
+	vcpu->arch.hcr_el2 = hcr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline unsigned long *vcpu_pc(const struct kvm_vcpu *vcpu)
@@ -108,11 +133,16 @@ static inline unsigned long *vcpu_pc(const struct kvm_vcpu *vcpu)
 	return (unsigned long *)&vcpu_gp_regs(vcpu)->regs.pc;
 }
 
+<<<<<<< HEAD
 static inline unsigned long *__vcpu_elr_el1(const struct kvm_vcpu *vcpu)
+=======
+static inline unsigned long *vcpu_elr_el1(const struct kvm_vcpu *vcpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (unsigned long *)&vcpu_gp_regs(vcpu)->elr_el1;
 }
 
+<<<<<<< HEAD
 static inline unsigned long vcpu_read_elr_el1(const struct kvm_vcpu *vcpu)
 {
 	if (vcpu->arch.sysregs_loaded_on_cpu)
@@ -129,6 +159,8 @@ static inline void vcpu_write_elr_el1(const struct kvm_vcpu *vcpu, unsigned long
 		*__vcpu_elr_el1(vcpu) = v;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned long *vcpu_cpsr(const struct kvm_vcpu *vcpu)
 {
 	return (unsigned long *)&vcpu_gp_regs(vcpu)->regs.pstate;
@@ -157,7 +189,11 @@ static inline void kvm_skip_instr(struct kvm_vcpu *vcpu, bool is_wide_instr)
 
 static inline void vcpu_set_thumb(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	*vcpu_cpsr(vcpu) |= PSR_AA32_T_BIT;
+=======
+	*vcpu_cpsr(vcpu) |= COMPAT_PSR_T_BIT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -178,6 +214,7 @@ static inline void vcpu_set_reg(struct kvm_vcpu *vcpu, u8 reg_num,
 		vcpu_gp_regs(vcpu)->regs.regs[reg_num] = val;
 }
 
+<<<<<<< HEAD
 static inline unsigned long vcpu_read_spsr(const struct kvm_vcpu *vcpu)
 {
 	if (vcpu_mode_is_32bit(vcpu))
@@ -200,6 +237,15 @@ static inline void vcpu_write_spsr(struct kvm_vcpu *vcpu, unsigned long v)
 		write_sysreg_el1(v, spsr);
 	else
 		vcpu_gp_regs(vcpu)->spsr[KVM_SPSR_EL1] = v;
+=======
+/* Get vcpu SPSR for current mode */
+static inline unsigned long *vcpu_spsr(const struct kvm_vcpu *vcpu)
+{
+	if (vcpu_mode_is_32bit(vcpu))
+		return vcpu_spsr32(vcpu);
+
+	return (unsigned long *)&vcpu_gp_regs(vcpu)->spsr[KVM_SPSR_EL1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool vcpu_mode_priv(const struct kvm_vcpu *vcpu)
@@ -207,8 +253,13 @@ static inline bool vcpu_mode_priv(const struct kvm_vcpu *vcpu)
 	u32 mode;
 
 	if (vcpu_mode_is_32bit(vcpu)) {
+<<<<<<< HEAD
 		mode = *vcpu_cpsr(vcpu) & PSR_AA32_MODE_MASK;
 		return mode > PSR_AA32_MODE_USR;
+=======
+		mode = *vcpu_cpsr(vcpu) & COMPAT_PSR_MODE_MASK;
+		return mode > COMPAT_PSR_MODE_USR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mode = *vcpu_cpsr(vcpu) & PSR_MODE_MASK;
@@ -241,11 +292,14 @@ static inline phys_addr_t kvm_vcpu_get_fault_ipa(const struct kvm_vcpu *vcpu)
 	return ((phys_addr_t)vcpu->arch.fault.hpfar_el2 & HPFAR_MASK) << 8;
 }
 
+<<<<<<< HEAD
 static inline u64 kvm_vcpu_get_disr(const struct kvm_vcpu *vcpu)
 {
 	return vcpu->arch.fault.disr_el1;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 kvm_vcpu_hvc_get_imm(const struct kvm_vcpu *vcpu)
 {
 	return kvm_vcpu_get_hsr(vcpu) & ESR_ELx_xVC_IMM_MASK;
@@ -261,6 +315,14 @@ static inline bool kvm_vcpu_dabt_issext(const struct kvm_vcpu *vcpu)
 	return !!(kvm_vcpu_get_hsr(vcpu) & ESR_ELx_SSE);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool kvm_vcpu_dabt_issf(const struct kvm_vcpu *vcpu)
+{
+	return !!(kvm_vcpu_get_hsr(vcpu) & ESR_ELx_SF);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int kvm_vcpu_dabt_get_rd(const struct kvm_vcpu *vcpu)
 {
 	return (kvm_vcpu_get_hsr(vcpu) & ESR_ELx_SRT_MASK) >> ESR_ELx_SRT_SHIFT;
@@ -315,7 +377,11 @@ static inline u8 kvm_vcpu_trap_get_fault_type(const struct kvm_vcpu *vcpu)
 
 static inline bool kvm_vcpu_dabt_isextabt(const struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	switch (kvm_vcpu_trap_get_fault(vcpu)) {
+=======
+	switch (kvm_vcpu_trap_get_fault_type(vcpu)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case FSC_SEA:
 	case FSC_SEA_TTW0:
 	case FSC_SEA_TTW1:
@@ -340,11 +406,16 @@ static inline int kvm_vcpu_sys_get_rt(struct kvm_vcpu *vcpu)
 
 static inline unsigned long kvm_vcpu_get_mpidr_aff(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	return vcpu_read_sys_reg(vcpu, MPIDR_EL1) & MPIDR_HWID_BITMASK;
+=======
+	return vcpu_sys_reg(vcpu, MPIDR_EL1) & MPIDR_HWID_BITMASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void kvm_vcpu_set_be(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	if (vcpu_mode_is_32bit(vcpu)) {
 		*vcpu_cpsr(vcpu) |= PSR_AA32_E_BIT;
 	} else {
@@ -352,14 +423,26 @@ static inline void kvm_vcpu_set_be(struct kvm_vcpu *vcpu)
 		sctlr |= (1 << 25);
 		vcpu_write_sys_reg(vcpu, sctlr, SCTLR_EL1);
 	}
+=======
+	if (vcpu_mode_is_32bit(vcpu))
+		*vcpu_cpsr(vcpu) |= COMPAT_PSR_E_BIT;
+	else
+		vcpu_sys_reg(vcpu, SCTLR_EL1) |= (1 << 25);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool kvm_vcpu_is_be(struct kvm_vcpu *vcpu)
 {
 	if (vcpu_mode_is_32bit(vcpu))
+<<<<<<< HEAD
 		return !!(*vcpu_cpsr(vcpu) & PSR_AA32_E_BIT);
 
 	return !!(vcpu_read_sys_reg(vcpu, SCTLR_EL1) & (1 << 25));
+=======
+		return !!(*vcpu_cpsr(vcpu) & COMPAT_PSR_E_BIT);
+
+	return !!(vcpu_sys_reg(vcpu, SCTLR_EL1) & (1 << 25));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline unsigned long vcpu_data_guest_to_host(struct kvm_vcpu *vcpu,

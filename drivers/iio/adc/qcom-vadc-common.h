@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
+=======
+/* SPDX-License-Identifier: GPL-2.0 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Code shared between the different Qualcomm PMIC voltage ADCs
  */
@@ -44,7 +48,11 @@
 #define PMIC5_CHG_TEMP_SCALE_FACTOR		377500
 #define PMIC5_SMB_TEMP_CONSTANT			419400
 #define PMIC5_SMB_TEMP_SCALE_FACTOR		356
+<<<<<<< HEAD
 #define PMIC5_SMB1398_TEMP_SCALE_FACTOR	340
+=======
+#define PMIC5_SMB1398_TEMP_SCALE_FACTOR		340
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PMIC5_SMB1398_TEMP_CONSTANT		268235
 
 #define PMI_CHG_SCALE_1				-138890
@@ -55,6 +63,7 @@
 #define ADC_USR_DATA_CHECK			0x8000
 #define ADC_HC_VDD_REF			1875000
 
+<<<<<<< HEAD
 #define IPC_LOGPAGES 10
 
 #ifdef CONFIG_DEBUG_FS
@@ -91,6 +100,8 @@
 #define DIE_TEMP_ADC7_SCALE_FACTOR			1000
 #define DIE_TEMP_ADC7_MAX				160000
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct vadc_map_pt - Map the graph representation for ADC channel
  * @x: Represent the ADC digitized code.
@@ -152,6 +163,7 @@ struct vadc_prescale_ratio {
  *	lookup table. The hardware applies offset/slope to adc code.
  * SCALE_HW_CALIB_XOTHERM: Returns XO thermistor voltage in millidegC using
  *	100k pullup. The hardware applies offset/slope to adc code.
+<<<<<<< HEAD
  * SCALE_HW_CALIB_THERM_100K_PU_PM7: Returns temperature in millidegC using
  *	lookup table for PMIC7. The hardware applies offset/slope to adc code.
  * SCALE_HW_CALIB_PMIC_THERM: Returns result in milli degree's Centigrade.
@@ -159,6 +171,11 @@ struct vadc_prescale_ratio {
  * SCALE_HW_CALIB_CUR: Returns result in uA for PMIC5.
  * SCALE_HW_CALIB_PMIC_THERM: Returns result in milli degree's Centigrade.
  *	The hardware applies offset/slope to adc code. This is for PMIC7.
+=======
+ * SCALE_HW_CALIB_PMIC_THERM: Returns result in milli degree's Centigrade.
+ *	The hardware applies offset/slope to adc code.
+ * SCALE_HW_CALIB_CUR: Returns result in uA for PMIC5.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * SCALE_HW_CALIB_PM5_CHG_TEMP: Returns result in millidegrees for PMIC5
  *	charger temperature.
  * SCALE_HW_CALIB_PM5_SMB_TEMP: Returns result in millidegrees for PMIC5
@@ -190,8 +207,11 @@ enum vadc_scale_fn_type {
 	SCALE_HW_CALIB_BATT_THERM_30K,
 	SCALE_HW_CALIB_BATT_THERM_400K,
 	SCALE_HW_CALIB_PM5_SMB1398_TEMP,
+<<<<<<< HEAD
 	SCALE_HW_CALIB_THERM_100K_PU_PM7,
 	SCALE_HW_CALIB_PMIC_THERM_PM7,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SCALE_HW_CALIB_MAX,
 };
 

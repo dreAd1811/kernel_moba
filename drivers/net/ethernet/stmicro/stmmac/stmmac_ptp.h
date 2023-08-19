@@ -21,7 +21,10 @@
 #ifndef	__STMMAC_PTP_H__
 #define	__STMMAC_PTP_H__
 
+<<<<<<< HEAD
 #define PTP_XGMAC_OFFSET	0xd00
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define	PTP_GMAC4_OFFSET	0xb00
 #define	PTP_GMAC3_X_OFFSET	0x700
 
@@ -64,9 +67,18 @@
 #define	PTP_GMAC4_TCR_SNAPTYPSEL_1	GENMASK(17, 16)
 /* Enable MAC address for PTP Frame Filtering */
 #define	PTP_TCR_TSENMACADDR	BIT(18)
+<<<<<<< HEAD
+=======
+#define	PTP_TCR_AV8021ASMEN	BIT(28)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* SSIR defines */
 #define	PTP_SSIR_SSINC_MASK		0xff
 #define	GMAC4_PTP_SSIR_SSINC_SHIFT	16
+<<<<<<< HEAD
+=======
+#define	PTP_SSIR_SNSINC_MASK		0xff
+#define	GMAC4_PTP_SSIR_SNSINC_SHIFT	8
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif	/* __STMMAC_PTP_H__ */

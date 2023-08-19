@@ -78,6 +78,7 @@ The following IOCTLs are also supported by the device:
   between PCI Function Framework number (used by the event system)
   and Switchtec Logic Port ID and Partition number (which is more
   user friendly).
+<<<<<<< HEAD
 
 
 Non-Transparent Bridge (NTB) Driver
@@ -90,3 +91,5 @@ partitions. It also requires the following configuration settings:
 * Both partitions must be able to access each other's GAS spaces.
   Thus, the bits in the GAS Access Vector under Management Settings
   must be set to support this.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -9,22 +9,31 @@
 
 #include <linux/sched.h>
 #include <linux/mm_types.h>
+<<<<<<< HEAD
 #include <linux/memblock.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <misc/cxl-base.h>
 
 #include <asm/pgalloc.h>
 #include <asm/tlb.h>
+<<<<<<< HEAD
 #include <asm/trace.h>
 #include <asm/powernv.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mmu_decl.h"
 #include <trace/events/thp.h>
 
+<<<<<<< HEAD
 unsigned long __pmd_frag_nr;
 EXPORT_SYMBOL(__pmd_frag_nr);
 unsigned long __pmd_frag_size_shift;
 EXPORT_SYMBOL(__pmd_frag_size_shift);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int (*register_process_table)(unsigned long base, unsigned long page_size,
 			      unsigned long tbl_size);
 
@@ -42,6 +51,7 @@ int pmdp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
 	int changed;
 #ifdef CONFIG_DEBUG_VM
 	WARN_ON(!pmd_trans_huge(*pmdp) && !pmd_devmap(*pmdp));
+<<<<<<< HEAD
 	assert_spin_locked(pmd_lockptr(vma->vm_mm, pmdp));
 #endif
 	changed = !pmd_same(*(pmdp), entry);
@@ -52,6 +62,15 @@ int pmdp_set_access_flags(struct vm_area_struct *vma, unsigned long address,
 		 */
 		__ptep_set_access_flags(vma, pmdp_ptep(pmdp),
 					pmd_pte(entry), address, MMU_PAGE_2M);
+=======
+	assert_spin_locked(&vma->vm_mm->page_table_lock);
+#endif
+	changed = !pmd_same(*(pmdp), entry);
+	if (changed) {
+		__ptep_set_access_flags(vma->vm_mm, pmdp_ptep(pmdp),
+					pmd_pte(entry), address);
+		flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return changed;
 }
@@ -70,7 +89,11 @@ void set_pmd_at(struct mm_struct *mm, unsigned long addr,
 {
 #ifdef CONFIG_DEBUG_VM
 	WARN_ON(pte_present(pmd_pte(*pmdp)) && !pte_protnone(pmd_pte(*pmdp)));
+<<<<<<< HEAD
 	assert_spin_locked(pmd_lockptr(mm, pmdp));
+=======
+	assert_spin_locked(&mm->page_table_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(!(pmd_trans_huge(pmd) || pmd_devmap(pmd)));
 #endif
 	trace_hugepage_set_pmd(addr, pmd_val(pmd));
@@ -101,19 +124,29 @@ void serialize_against_pte_lookup(struct mm_struct *mm)
  * We use this to invalidate a pmdp entry before switching from a
  * hugepte to regular pmd entry.
  */
+<<<<<<< HEAD
 pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
 		     pmd_t *pmdp)
 {
 	unsigned long old_pmd;
 
 	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, 0);
+=======
+void pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+		     pmd_t *pmdp)
+{
+	pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
 	/*
 	 * This ensures that generic code that rely on IRQ disabling
 	 * to prevent a parallel THP split work as expected.
 	 */
 	serialize_against_pte_lookup(vma->vm_mm);
+<<<<<<< HEAD
 	return __pmd(old_pmd);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static pmd_t pmd_set_protbits(pmd_t pmd, pgprot_t pgprot)
@@ -152,8 +185,12 @@ pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
 void update_mmu_cache_pmd(struct vm_area_struct *vma, unsigned long addr,
 			  pmd_t *pmd)
 {
+<<<<<<< HEAD
 	if (radix_enabled())
 		prefetch((void *)addr);
+=======
+	return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
@@ -167,6 +204,7 @@ void mmu_cleanup_all(void)
 }
 
 #ifdef CONFIG_MEMORY_HOTPLUG
+<<<<<<< HEAD
 int __meminit create_section_mapping(unsigned long start, unsigned long end, int nid)
 {
 	if (radix_enabled())
@@ -176,6 +214,17 @@ int __meminit create_section_mapping(unsigned long start, unsigned long end, int
 }
 
 int __meminit remove_section_mapping(unsigned long start, unsigned long end)
+=======
+int create_section_mapping(unsigned long start, unsigned long end)
+{
+	if (radix_enabled())
+		return radix__create_section_mapping(start, end);
+
+	return hash__create_section_mapping(start, end);
+}
+
+int remove_section_mapping(unsigned long start, unsigned long end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (radix_enabled())
 		return radix__remove_section_mapping(start, end);
@@ -183,6 +232,7 @@ int __meminit remove_section_mapping(unsigned long start, unsigned long end)
 	return hash__remove_section_mapping(start, end);
 }
 #endif /* CONFIG_MEMORY_HOTPLUG */
+<<<<<<< HEAD
 
 void __init mmu_partition_table_init(void)
 {
@@ -499,3 +549,5 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
 
 	return true;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

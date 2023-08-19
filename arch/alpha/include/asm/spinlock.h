@@ -14,6 +14,10 @@
  * We make no fairness assumptions. They have a cost.
  */
 
+<<<<<<< HEAD
+=======
+#define arch_spin_lock_flags(lock, flags) arch_spin_lock(lock)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define arch_spin_is_locked(x)	((x)->lock != 0)
 
 static inline int arch_spin_value_unlocked(arch_spinlock_t lock)
@@ -54,6 +58,19 @@ static inline int arch_spin_trylock(arch_spinlock_t *lock)
 
 /***********************************************************/
 
+<<<<<<< HEAD
+=======
+static inline int arch_read_can_lock(arch_rwlock_t *lock)
+{
+	return (lock->lock & 1) == 0;
+}
+
+static inline int arch_write_can_lock(arch_rwlock_t *lock)
+{
+	return lock->lock == 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void arch_read_lock(arch_rwlock_t *lock)
 {
 	long regx;
@@ -160,4 +177,10 @@ static inline void arch_write_unlock(arch_rwlock_t * lock)
 	lock->lock = 0;
 }
 
+<<<<<<< HEAD
+=======
+#define arch_read_lock_flags(lock, flags) arch_read_lock(lock)
+#define arch_write_lock_flags(lock, flags) arch_write_lock(lock)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ALPHA_SPINLOCK_H */

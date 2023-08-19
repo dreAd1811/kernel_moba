@@ -82,6 +82,7 @@ static const struct of_device_id st_accel_of_match[] = {
 		.compatible = "st,lis331dl-accel",
 		.data = LIS331DL_ACCEL_DEV_NAME,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "st,lis2dw12",
 		.data = LIS2DW12_ACCEL_DEV_NAME,
@@ -90,6 +91,8 @@ static const struct of_device_id st_accel_of_match[] = {
 		.compatible = "st,lis3dhh",
 		.data = LIS3DHH_ACCEL_DEV_NAME,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(of, st_accel_of_match);
@@ -141,8 +144,11 @@ static const struct spi_device_id st_accel_id_table[] = {
 	{ H3LIS331DL_ACCEL_DEV_NAME },
 	{ LIS331DL_ACCEL_DEV_NAME },
 	{ LIS3LV02DL_ACCEL_DEV_NAME },
+<<<<<<< HEAD
 	{ LIS2DW12_ACCEL_DEV_NAME },
 	{ LIS3DHH_ACCEL_DEV_NAME },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(spi, st_accel_id_table);

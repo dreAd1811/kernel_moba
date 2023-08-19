@@ -476,6 +476,7 @@ static int omap4_clkdm_clk_disable(struct clockdomain *clkdm)
 	return 0;
 }
 
+<<<<<<< HEAD
 static u32 omap4_cminst_xlate_clkctrl(u8 part, u16 inst, u16 offset)
 {
 	return _cm_bases[part].pa + inst + offset;
@@ -520,6 +521,14 @@ static int omap4_clkdm_restore_context(struct clockdomain *clkdm)
 		break;
 	}
 	return 0;
+=======
+static u32 omap4_clkdm_xlate_address(struct clockdomain *clkdm)
+{
+	u32 addr = _cm_bases[clkdm->prcm_partition].pa + clkdm->cm_inst +
+		clkdm->clkdm_offs;
+
+	return addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct clkdm_ops omap4_clkdm_operations = {
@@ -537,8 +546,12 @@ struct clkdm_ops omap4_clkdm_operations = {
 	.clkdm_deny_idle	= omap4_clkdm_deny_idle,
 	.clkdm_clk_enable	= omap4_clkdm_clk_enable,
 	.clkdm_clk_disable	= omap4_clkdm_clk_disable,
+<<<<<<< HEAD
 	.clkdm_save_context	= omap4_clkdm_save_context,
 	.clkdm_restore_context	= omap4_clkdm_restore_context,
+=======
+	.clkdm_xlate_address	= omap4_clkdm_xlate_address,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct clkdm_ops am43xx_clkdm_operations = {
@@ -548,14 +561,24 @@ struct clkdm_ops am43xx_clkdm_operations = {
 	.clkdm_deny_idle	= omap4_clkdm_deny_idle,
 	.clkdm_clk_enable	= omap4_clkdm_clk_enable,
 	.clkdm_clk_disable	= omap4_clkdm_clk_disable,
+<<<<<<< HEAD
 };
 
 static const struct cm_ll_data omap4xxx_cm_ll_data = {
+=======
+	.clkdm_xlate_address	= omap4_clkdm_xlate_address,
+};
+
+static struct cm_ll_data omap4xxx_cm_ll_data = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.wait_module_ready	= &omap4_cminst_wait_module_ready,
 	.wait_module_idle	= &omap4_cminst_wait_module_idle,
 	.module_enable		= &omap4_cminst_module_enable,
 	.module_disable		= &omap4_cminst_module_disable,
+<<<<<<< HEAD
 	.xlate_clkctrl		= &omap4_cminst_xlate_clkctrl,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int __init omap4_cm_init(const struct omap_prcm_init_data *data)

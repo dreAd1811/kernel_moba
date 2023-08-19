@@ -191,9 +191,15 @@ static void ath_mci_ftp_adjust(struct ath_softc *sc)
  * 45ms, bt traffic will be given priority during 55% of this
  * period while wlan gets remaining 45%
  */
+<<<<<<< HEAD
 static void ath_btcoex_period_timer(struct timer_list *t)
 {
 	struct ath_softc *sc = from_timer(sc, t, btcoex.period_timer);
+=======
+static void ath_btcoex_period_timer(unsigned long data)
+{
+	struct ath_softc *sc = (struct ath_softc *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_hw *ah = sc->sc_ah;
 	struct ath_btcoex *btcoex = &sc->btcoex;
 	enum ath_stomp_type stomp_type;
@@ -252,9 +258,15 @@ skip_hw_wakeup:
  * Generic tsf based hw timer which configures weight
  * registers to time slice between wlan and bt traffic
  */
+<<<<<<< HEAD
 static void ath_btcoex_no_stomp_timer(struct timer_list *t)
 {
 	struct ath_softc *sc = from_timer(sc, t, btcoex.no_stomp_timer);
+=======
+static void ath_btcoex_no_stomp_timer(unsigned long arg)
+{
+	struct ath_softc *sc = (struct ath_softc *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_hw *ah = sc->sc_ah;
 	struct ath_btcoex *btcoex = &sc->btcoex;
 
@@ -284,8 +296,15 @@ static void ath_init_btcoex_timer(struct ath_softc *sc)
 				   btcoex->btcoex_period / 100;
 	btcoex->bt_stomp_type = ATH_BTCOEX_STOMP_LOW;
 
+<<<<<<< HEAD
 	timer_setup(&btcoex->period_timer, ath_btcoex_period_timer, 0);
 	timer_setup(&btcoex->no_stomp_timer, ath_btcoex_no_stomp_timer, 0);
+=======
+	setup_timer(&btcoex->period_timer, ath_btcoex_period_timer,
+			(unsigned long) sc);
+	setup_timer(&btcoex->no_stomp_timer, ath_btcoex_no_stomp_timer,
+			(unsigned long) sc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&btcoex->btcoex_lock);
 }

@@ -433,7 +433,12 @@ static struct port_buffer *alloc_buf(struct virtio_device *vdev, size_t buf_size
 	 * Allocate buffer and the sg list. The sg list array is allocated
 	 * directly after the port_buffer struct.
 	 */
+<<<<<<< HEAD
 	buf = kmalloc(struct_size(buf, sg, pages), GFP_KERNEL);
+=======
+	buf = kmalloc(sizeof(*buf) + sizeof(struct scatterlist) * pages,
+		      GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buf)
 		goto fail;
 
@@ -981,16 +986,24 @@ error_out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t port_fops_poll(struct file *filp, poll_table *wait)
 {
 	struct port *port;
 	__poll_t ret;
+=======
+static unsigned int port_fops_poll(struct file *filp, poll_table *wait)
+{
+	struct port *port;
+	unsigned int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	port = filp->private_data;
 	poll_wait(filp, &port->waitqueue, wait);
 
 	if (!port->guest_connected) {
 		/* Port got unplugged */
+<<<<<<< HEAD
 		return EPOLLHUP;
 	}
 	ret = 0;
@@ -1000,6 +1013,17 @@ static __poll_t port_fops_poll(struct file *filp, poll_table *wait)
 		ret |= EPOLLOUT;
 	if (!port->host_connected)
 		ret |= EPOLLHUP;
+=======
+		return POLLHUP;
+	}
+	ret = 0;
+	if (!will_read_block(port))
+		ret |= POLLIN | POLLRDNORM;
+	if (!will_write_block(port))
+		ret |= POLLOUT;
+	if (!port->host_connected)
+		ret |= POLLHUP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1309,6 +1333,7 @@ static const struct attribute_group port_attribute_group = {
 	.attrs = port_sysfs_entries,
 };
 
+<<<<<<< HEAD
 static int debugfs_show(struct seq_file *s, void *data)
 {
 	struct port *port = s->private;
@@ -1330,14 +1355,60 @@ static int debugfs_show(struct seq_file *s, void *data)
 static int debugfs_open(struct inode *inode, struct file *file)
 {
 	return single_open(file, debugfs_show, inode->i_private);
+=======
+static ssize_t debugfs_read(struct file *filp, char __user *ubuf,
+			    size_t count, loff_t *offp)
+{
+	struct port *port;
+	char *buf;
+	ssize_t ret, out_offset, out_count;
+
+	out_count = 1024;
+	buf = kmalloc(out_count, GFP_KERNEL);
+	if (!buf)
+		return -ENOMEM;
+
+	port = filp->private_data;
+	out_offset = 0;
+	out_offset += snprintf(buf + out_offset, out_count,
+			       "name: %s\n", port->name ? port->name : "");
+	out_offset += snprintf(buf + out_offset, out_count - out_offset,
+			       "guest_connected: %d\n", port->guest_connected);
+	out_offset += snprintf(buf + out_offset, out_count - out_offset,
+			       "host_connected: %d\n", port->host_connected);
+	out_offset += snprintf(buf + out_offset, out_count - out_offset,
+			       "outvq_full: %d\n", port->outvq_full);
+	out_offset += snprintf(buf + out_offset, out_count - out_offset,
+			       "bytes_sent: %lu\n", port->stats.bytes_sent);
+	out_offset += snprintf(buf + out_offset, out_count - out_offset,
+			       "bytes_received: %lu\n",
+			       port->stats.bytes_received);
+	out_offset += snprintf(buf + out_offset, out_count - out_offset,
+			       "bytes_discarded: %lu\n",
+			       port->stats.bytes_discarded);
+	out_offset += snprintf(buf + out_offset, out_count - out_offset,
+			       "is_console: %s\n",
+			       is_console_port(port) ? "yes" : "no");
+	out_offset += snprintf(buf + out_offset, out_count - out_offset,
+			       "console_vtermno: %u\n", port->cons.vtermno);
+
+	ret = simple_read_from_buffer(ubuf, count, offp, buf, out_offset);
+	kfree(buf);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations port_debugfs_ops = {
 	.owner = THIS_MODULE,
+<<<<<<< HEAD
 	.open = debugfs_open,
 	.read = seq_read,
 	.llseek = seq_lseek,
 	.release = single_release,
+=======
+	.open  = simple_open,
+	.read  = debugfs_read,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void set_console_size(struct port *port, u16 rows, u16 cols)
@@ -1349,24 +1420,39 @@ static void set_console_size(struct port *port, u16 rows, u16 cols)
 	port->cons.ws.ws_col = cols;
 }
 
+<<<<<<< HEAD
 static unsigned int fill_queue(struct virtqueue *vq, spinlock_t *lock)
 {
 	struct port_buffer *buf;
 	unsigned int nr_added_bufs;
+=======
+static int fill_queue(struct virtqueue *vq, spinlock_t *lock)
+{
+	struct port_buffer *buf;
+	int nr_added_bufs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	nr_added_bufs = 0;
 	do {
 		buf = alloc_buf(vq->vdev, PAGE_SIZE, 0);
 		if (!buf)
+<<<<<<< HEAD
 			break;
+=======
+			return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock_irq(lock);
 		ret = add_inbuf(vq, buf);
 		if (ret < 0) {
 			spin_unlock_irq(lock);
 			free_buf(buf, true);
+<<<<<<< HEAD
 			break;
+=======
+			return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		nr_added_bufs++;
 		spin_unlock_irq(lock);
@@ -1386,7 +1472,10 @@ static int add_port(struct ports_device *portdev, u32 id)
 	char debugfs_name[16];
 	struct port *port;
 	dev_t devt;
+<<<<<<< HEAD
 	unsigned int nr_added_bufs;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	port = kmalloc(sizeof(*port), GFP_KERNEL);
@@ -1445,11 +1534,21 @@ static int add_port(struct ports_device *portdev, u32 id)
 	spin_lock_init(&port->outvq_lock);
 	init_waitqueue_head(&port->waitqueue);
 
+<<<<<<< HEAD
 	/* Fill the in_vq with buffers so the host can send us data. */
 	nr_added_bufs = fill_queue(port->in_vq, &port->inbuf_lock);
 	if (!nr_added_bufs) {
 		dev_err(port->dev, "Error allocating inbufs\n");
 		err = -ENOMEM;
+=======
+	/* We can safely ignore ENOSPC because it means
+	 * the queue already has buffers. Buffers are removed
+	 * only by virtcons_remove(), not by unplug_port()
+	 */
+	err = fill_queue(port->in_vq, &port->inbuf_lock);
+	if (err < 0 && err != -ENOSPC) {
+		dev_err(port->dev, "Error allocating inbufs\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free_device;
 	}
 
@@ -1876,6 +1975,7 @@ static int init_vqs(struct ports_device *portdev)
 	nr_ports = portdev->max_nr_ports;
 	nr_queues = use_multiport(portdev) ? (nr_ports + 1) * 2 : 2;
 
+<<<<<<< HEAD
 	vqs = kmalloc_array(nr_queues, sizeof(struct virtqueue *), GFP_KERNEL);
 	io_callbacks = kmalloc_array(nr_queues, sizeof(vq_callback_t *),
 				     GFP_KERNEL);
@@ -1884,6 +1984,15 @@ static int init_vqs(struct ports_device *portdev)
 					GFP_KERNEL);
 	portdev->out_vqs = kmalloc_array(nr_ports, sizeof(struct virtqueue *),
 					 GFP_KERNEL);
+=======
+	vqs = kmalloc(nr_queues * sizeof(struct virtqueue *), GFP_KERNEL);
+	io_callbacks = kmalloc(nr_queues * sizeof(vq_callback_t *), GFP_KERNEL);
+	io_names = kmalloc(nr_queues * sizeof(char *), GFP_KERNEL);
+	portdev->in_vqs = kmalloc(nr_ports * sizeof(struct virtqueue *),
+				  GFP_KERNEL);
+	portdev->out_vqs = kmalloc(nr_ports * sizeof(struct virtqueue *),
+				   GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vqs || !io_callbacks || !io_names || !portdev->in_vqs ||
 	    !portdev->out_vqs) {
 		err = -ENOMEM;
@@ -2083,6 +2192,7 @@ static int virtcons_probe(struct virtio_device *vdev)
 	INIT_WORK(&portdev->control_work, &control_work_handler);
 
 	if (multiport) {
+<<<<<<< HEAD
 		unsigned int nr_added_bufs;
 
 		spin_lock_init(&portdev->c_ivq_lock);
@@ -2091,6 +2201,13 @@ static int virtcons_probe(struct virtio_device *vdev)
 		nr_added_bufs = fill_queue(portdev->c_ivq,
 					   &portdev->c_ivq_lock);
 		if (!nr_added_bufs) {
+=======
+		spin_lock_init(&portdev->c_ivq_lock);
+		spin_lock_init(&portdev->c_ovq_lock);
+
+		err = fill_queue(portdev->c_ivq, &portdev->c_ivq_lock);
+		if (err < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(&vdev->dev,
 				"Error allocating buffers for control queue\n");
 			/*
@@ -2101,7 +2218,11 @@ static int virtcons_probe(struct virtio_device *vdev)
 					   VIRTIO_CONSOLE_DEVICE_READY, 0);
 			/* Device was functional: we need full cleanup. */
 			virtcons_remove(vdev);
+<<<<<<< HEAD
 			return -ENOMEM;
+=======
+			return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		/*
@@ -2144,6 +2265,10 @@ static struct virtio_device_id id_table[] = {
 	{ VIRTIO_ID_CONSOLE, VIRTIO_DEV_ANY_ID },
 	{ 0 },
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(virtio, id_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned int features[] = {
 	VIRTIO_CONSOLE_F_SIZE,
@@ -2156,6 +2281,10 @@ static struct virtio_device_id rproc_serial_id_table[] = {
 #endif
 	{ 0 },
 };
+<<<<<<< HEAD
+=======
+MODULE_DEVICE_TABLE(virtio, rproc_serial_id_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned int rproc_serial_features[] = {
 };
@@ -2308,6 +2437,9 @@ static void __exit fini(void)
 module_init(init);
 module_exit(fini);
 
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(virtio, id_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("Virtio console driver");
 MODULE_LICENSE("GPL");

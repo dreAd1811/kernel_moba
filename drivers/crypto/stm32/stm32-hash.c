@@ -31,7 +31,10 @@
 #include <linux/module.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/reset.h>
 
 #include <crypto/engine.h>
@@ -122,10 +125,14 @@ enum stm32_hash_data_format {
 #define HASH_QUEUE_LENGTH		16
 #define HASH_DMA_THRESHOLD		50
 
+<<<<<<< HEAD
 #define HASH_AUTOSUSPEND_DELAY		50
 
 struct stm32_hash_ctx {
 	struct crypto_engine_ctx enginectx;
+=======
+struct stm32_hash_ctx {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct stm32_hash_dev	*hdev;
 	unsigned long		flags;
 
@@ -365,7 +372,11 @@ static int stm32_hash_xmit_cpu(struct stm32_hash_dev *hdev,
 		return -ETIMEDOUT;
 
 	if ((hdev->flags & HASH_FLAGS_HMAC) &&
+<<<<<<< HEAD
 	    (hdev->flags & ~HASH_FLAGS_HMAC_KEY)) {
+=======
+	    (!(hdev->flags & HASH_FLAGS_HMAC_KEY))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hdev->flags |= HASH_FLAGS_HMAC_KEY;
 		stm32_hash_write_key(hdev);
 		if (stm32_hash_wait_busy(hdev))
@@ -630,7 +641,11 @@ static int stm32_hash_dma_send(struct stm32_hash_dev *hdev)
 			writesl(hdev->io_base + HASH_DIN, buffer,
 				DIV_ROUND_UP(ncp, sizeof(u32)));
 		}
+<<<<<<< HEAD
 		stm32_hash_set_nblw(hdev, ncp);
+=======
+		stm32_hash_set_nblw(hdev, DIV_ROUND_UP(ncp, sizeof(u32)));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = stm32_hash_read(hdev, HASH_STR);
 		reg |= HASH_STR_DCAL;
 		stm32_hash_write(hdev, HASH_STR, reg);
@@ -747,15 +762,24 @@ static int stm32_hash_final_req(struct stm32_hash_dev *hdev)
 	struct ahash_request *req = hdev->req;
 	struct stm32_hash_request_ctx *rctx = ahash_request_ctx(req);
 	int err;
+<<<<<<< HEAD
 	int buflen = rctx->bufcnt;
 
 	rctx->bufcnt = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(rctx->flags & HASH_FLAGS_CPU))
 		err = stm32_hash_dma_send(hdev);
 	else
+<<<<<<< HEAD
 		err = stm32_hash_xmit_cpu(hdev, rctx->buffer, buflen, 1);
 
+=======
+		err = stm32_hash_xmit_cpu(hdev, rctx->buffer, rctx->bufcnt, 1);
+
+	rctx->bufcnt = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -817,17 +841,23 @@ static void stm32_hash_finish_req(struct ahash_request *req, int err)
 		rctx->flags |= HASH_FLAGS_ERRORS;
 	}
 
+<<<<<<< HEAD
 	pm_runtime_mark_last_busy(hdev->dev);
 	pm_runtime_put_autosuspend(hdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	crypto_finalize_hash_request(hdev->engine, req, err);
 }
 
 static int stm32_hash_hw_init(struct stm32_hash_dev *hdev,
 			      struct stm32_hash_request_ctx *rctx)
 {
+<<<<<<< HEAD
 	pm_runtime_get_sync(hdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(HASH_FLAGS_INIT & hdev->flags)) {
 		stm32_hash_write(hdev, HASH_CR, HASH_CR_INIT);
 		stm32_hash_write(hdev, HASH_STR, 0);
@@ -839,19 +869,28 @@ static int stm32_hash_hw_init(struct stm32_hash_dev *hdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int stm32_hash_one_request(struct crypto_engine *engine, void *areq);
 static int stm32_hash_prepare_req(struct crypto_engine *engine, void *areq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int stm32_hash_handle_queue(struct stm32_hash_dev *hdev,
 				   struct ahash_request *req)
 {
 	return crypto_transfer_hash_request_to_engine(hdev->engine, req);
 }
 
+<<<<<<< HEAD
 static int stm32_hash_prepare_req(struct crypto_engine *engine, void *areq)
 {
 	struct ahash_request *req = container_of(areq, struct ahash_request,
 						 base);
+=======
+static int stm32_hash_prepare_req(struct crypto_engine *engine,
+				  struct ahash_request *req)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct stm32_hash_ctx *ctx = crypto_ahash_ctx(crypto_ahash_reqtfm(req));
 	struct stm32_hash_dev *hdev = stm32_hash_find_dev(ctx);
 	struct stm32_hash_request_ctx *rctx;
@@ -869,10 +908,16 @@ static int stm32_hash_prepare_req(struct crypto_engine *engine, void *areq)
 	return stm32_hash_hw_init(hdev, rctx);
 }
 
+<<<<<<< HEAD
 static int stm32_hash_one_request(struct crypto_engine *engine, void *areq)
 {
 	struct ahash_request *req = container_of(areq, struct ahash_request,
 						 base);
+=======
+static int stm32_hash_one_request(struct crypto_engine *engine,
+				  struct ahash_request *req)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct stm32_hash_ctx *ctx = crypto_ahash_ctx(crypto_ahash_reqtfm(req));
 	struct stm32_hash_dev *hdev = stm32_hash_find_dev(ctx);
 	struct stm32_hash_request_ctx *rctx;
@@ -911,6 +956,10 @@ static int stm32_hash_enqueue(struct ahash_request *req, unsigned int op)
 static int stm32_hash_update(struct ahash_request *req)
 {
 	struct stm32_hash_request_ctx *rctx = ahash_request_ctx(req);
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!req->nbytes || !(rctx->flags & HASH_FLAGS_CPU))
 		return 0;
@@ -924,7 +973,16 @@ static int stm32_hash_update(struct ahash_request *req)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	return stm32_hash_enqueue(req, HASH_OP_UPDATE);
+=======
+	ret = stm32_hash_enqueue(req, HASH_OP_UPDATE);
+
+	if (rctx->flags & HASH_FLAGS_FINUP)
+		return ret;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int stm32_hash_final(struct ahash_request *req)
@@ -975,6 +1033,7 @@ static int stm32_hash_export(struct ahash_request *req, void *out)
 	u32 *preg;
 	unsigned int i;
 
+<<<<<<< HEAD
 	pm_runtime_get_sync(hdev->dev);
 
 	while (!(stm32_hash_read(hdev, HASH_SR) & HASH_SR_DATA_INPUT_READY))
@@ -983,6 +1042,13 @@ static int stm32_hash_export(struct ahash_request *req, void *out)
 	rctx->hw_context = kmalloc_array(3 + HASH_CSR_REGISTER_NUMBER,
 					 sizeof(u32),
 					 GFP_KERNEL);
+=======
+	while (!(stm32_hash_read(hdev, HASH_SR) & HASH_SR_DATA_INPUT_READY))
+		cpu_relax();
+
+	rctx->hw_context = kmalloc(sizeof(u32) * (3 + HASH_CSR_REGISTER_NUMBER),
+				   GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	preg = rctx->hw_context;
 
@@ -992,9 +1058,12 @@ static int stm32_hash_export(struct ahash_request *req, void *out)
 	for (i = 0; i < HASH_CSR_REGISTER_NUMBER; i++)
 		*preg++ = stm32_hash_read(hdev, HASH_CSR(i));
 
+<<<<<<< HEAD
 	pm_runtime_mark_last_busy(hdev->dev);
 	pm_runtime_put_autosuspend(hdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(out, rctx, sizeof(*rctx));
 
 	return 0;
@@ -1013,8 +1082,11 @@ static int stm32_hash_import(struct ahash_request *req, const void *in)
 
 	preg = rctx->hw_context;
 
+<<<<<<< HEAD
 	pm_runtime_get_sync(hdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stm32_hash_write(hdev, HASH_IMR, *preg++);
 	stm32_hash_write(hdev, HASH_STR, *preg++);
 	stm32_hash_write(hdev, HASH_CR, *preg);
@@ -1024,9 +1096,12 @@ static int stm32_hash_import(struct ahash_request *req, const void *in)
 	for (i = 0; i < HASH_CSR_REGISTER_NUMBER; i++)
 		stm32_hash_write(hdev, HASH_CSR(i), *preg++);
 
+<<<<<<< HEAD
 	pm_runtime_mark_last_busy(hdev->dev);
 	pm_runtime_put_autosuspend(hdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(rctx->hw_context);
 
 	return 0;
@@ -1060,9 +1135,12 @@ static int stm32_hash_cra_init_algs(struct crypto_tfm *tfm,
 	if (algs_hmac_name)
 		ctx->flags |= HASH_FLAGS_HMAC;
 
+<<<<<<< HEAD
 	ctx->enginectx.op.do_one_request = stm32_hash_one_request;
 	ctx->enginectx.op.prepare_request = stm32_hash_prepare_req;
 	ctx->enginectx.op.unprepare_request = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1094,6 +1172,10 @@ static int stm32_hash_cra_sha256_init(struct crypto_tfm *tfm)
 static irqreturn_t stm32_hash_irq_thread(int irq, void *dev_id)
 {
 	struct stm32_hash_dev *hdev = dev_id;
+<<<<<<< HEAD
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (HASH_FLAGS_CPU & hdev->flags) {
 		if (HASH_FLAGS_OUTPUT_READY & hdev->flags) {
@@ -1110,8 +1192,13 @@ static irqreturn_t stm32_hash_irq_thread(int irq, void *dev_id)
 	return IRQ_HANDLED;
 
 finish:
+<<<<<<< HEAD
 	/* Finish current request */
 	stm32_hash_finish_req(hdev->req, 0);
+=======
+	/*Finish current request */
+	stm32_hash_finish_req(hdev->req, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }
@@ -1126,8 +1213,11 @@ static irqreturn_t stm32_hash_irq_handler(int irq, void *dev_id)
 		reg &= ~HASH_SR_OUTPUT_READY;
 		stm32_hash_write(hdev, HASH_SR, reg);
 		hdev->flags |= HASH_FLAGS_OUTPUT_READY;
+<<<<<<< HEAD
 		/* Disable IT*/
 		stm32_hash_write(hdev, HASH_IMR, 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return IRQ_WAKE_THREAD;
 	}
 
@@ -1150,7 +1240,12 @@ static struct ahash_alg algs_md5_sha1[] = {
 				.cra_name = "md5",
 				.cra_driver_name = "stm32-md5",
 				.cra_priority = 200,
+<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC |
+=======
+				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
+					CRYPTO_ALG_ASYNC |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					CRYPTO_ALG_KERN_DRIVER_ONLY,
 				.cra_blocksize = MD5_HMAC_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct stm32_hash_ctx),
@@ -1176,7 +1271,12 @@ static struct ahash_alg algs_md5_sha1[] = {
 				.cra_name = "hmac(md5)",
 				.cra_driver_name = "stm32-hmac-md5",
 				.cra_priority = 200,
+<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC |
+=======
+				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
+					CRYPTO_ALG_ASYNC |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					CRYPTO_ALG_KERN_DRIVER_ONLY,
 				.cra_blocksize = MD5_HMAC_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct stm32_hash_ctx),
@@ -1201,7 +1301,12 @@ static struct ahash_alg algs_md5_sha1[] = {
 				.cra_name = "sha1",
 				.cra_driver_name = "stm32-sha1",
 				.cra_priority = 200,
+<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC |
+=======
+				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
+					CRYPTO_ALG_ASYNC |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					CRYPTO_ALG_KERN_DRIVER_ONLY,
 				.cra_blocksize = SHA1_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct stm32_hash_ctx),
@@ -1227,7 +1332,12 @@ static struct ahash_alg algs_md5_sha1[] = {
 				.cra_name = "hmac(sha1)",
 				.cra_driver_name = "stm32-hmac-sha1",
 				.cra_priority = 200,
+<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC |
+=======
+				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
+					CRYPTO_ALG_ASYNC |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					CRYPTO_ALG_KERN_DRIVER_ONLY,
 				.cra_blocksize = SHA1_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct stm32_hash_ctx),
@@ -1255,7 +1365,12 @@ static struct ahash_alg algs_sha224_sha256[] = {
 				.cra_name = "sha224",
 				.cra_driver_name = "stm32-sha224",
 				.cra_priority = 200,
+<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC |
+=======
+				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
+					CRYPTO_ALG_ASYNC |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					CRYPTO_ALG_KERN_DRIVER_ONLY,
 				.cra_blocksize = SHA224_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct stm32_hash_ctx),
@@ -1281,7 +1396,12 @@ static struct ahash_alg algs_sha224_sha256[] = {
 				.cra_name = "hmac(sha224)",
 				.cra_driver_name = "stm32-hmac-sha224",
 				.cra_priority = 200,
+<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC |
+=======
+				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
+					CRYPTO_ALG_ASYNC |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					CRYPTO_ALG_KERN_DRIVER_ONLY,
 				.cra_blocksize = SHA224_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct stm32_hash_ctx),
@@ -1306,7 +1426,12 @@ static struct ahash_alg algs_sha224_sha256[] = {
 				.cra_name = "sha256",
 				.cra_driver_name = "stm32-sha256",
 				.cra_priority = 200,
+<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC |
+=======
+				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
+					CRYPTO_ALG_ASYNC |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					CRYPTO_ALG_KERN_DRIVER_ONLY,
 				.cra_blocksize = SHA256_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct stm32_hash_ctx),
@@ -1332,7 +1457,12 @@ static struct ahash_alg algs_sha224_sha256[] = {
 				.cra_name = "hmac(sha256)",
 				.cra_driver_name = "stm32-hmac-sha256",
 				.cra_priority = 200,
+<<<<<<< HEAD
 				.cra_flags = CRYPTO_ALG_ASYNC |
+=======
+				.cra_flags = CRYPTO_ALG_TYPE_AHASH |
+					CRYPTO_ALG_ASYNC |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					CRYPTO_ALG_KERN_DRIVER_ONLY,
 				.cra_blocksize = SHA256_BLOCK_SIZE,
 				.cra_ctxsize = sizeof(struct stm32_hash_ctx),
@@ -1428,12 +1558,21 @@ MODULE_DEVICE_TABLE(of, stm32_hash_of_match);
 static int stm32_hash_get_of_match(struct stm32_hash_dev *hdev,
 				   struct device *dev)
 {
+<<<<<<< HEAD
 	hdev->pdata = of_device_get_match_data(dev);
 	if (!hdev->pdata) {
+=======
+	const struct of_device_id *match;
+	int err;
+
+	match = of_match_device(stm32_hash_of_match, dev);
+	if (!match) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "no compatible OF match\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (of_property_read_u32(dev->of_node, "dma-maxburst",
 				 &hdev->dma_maxburst)) {
 		dev_info(dev, "dma-maxburst not specified, using 0\n");
@@ -1441,6 +1580,14 @@ static int stm32_hash_get_of_match(struct stm32_hash_dev *hdev,
 	}
 
 	return 0;
+=======
+	err = of_property_read_u32(dev->of_node, "dma-maxburst",
+				   &hdev->dma_maxburst);
+
+	hdev->pdata = match->data;
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int stm32_hash_probe(struct platform_device *pdev)
@@ -1492,6 +1639,7 @@ static int stm32_hash_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	pm_runtime_set_autosuspend_delay(dev, HASH_AUTOSUSPEND_DELAY);
 	pm_runtime_use_autosuspend(dev);
 
@@ -1499,6 +1647,8 @@ static int stm32_hash_probe(struct platform_device *pdev)
 	pm_runtime_set_active(dev);
 	pm_runtime_enable(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdev->rst = devm_reset_control_get(&pdev->dev, NULL);
 	if (!IS_ERR(hdev->rst)) {
 		reset_control_assert(hdev->rst);
@@ -1525,6 +1675,12 @@ static int stm32_hash_probe(struct platform_device *pdev)
 		goto err_engine;
 	}
 
+<<<<<<< HEAD
+=======
+	hdev->engine->prepare_hash_request = stm32_hash_prepare_req;
+	hdev->engine->hash_one_request = stm32_hash_one_request;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = crypto_engine_start(hdev->engine);
 	if (ret)
 		goto err_engine_start;
@@ -1539,8 +1695,11 @@ static int stm32_hash_probe(struct platform_device *pdev)
 	dev_info(dev, "Init HASH done HW ver %x DMA mode %u\n",
 		 stm32_hash_read(hdev, HASH_VER), hdev->dma_mode);
 
+<<<<<<< HEAD
 	pm_runtime_put_sync(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_algs:
@@ -1554,9 +1713,12 @@ err_engine:
 	if (hdev->dma_lch)
 		dma_release_channel(hdev->dma_lch);
 
+<<<<<<< HEAD
 	pm_runtime_disable(dev);
 	pm_runtime_put_noidle(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(hdev->clk);
 
 	return ret;
@@ -1565,16 +1727,22 @@ err_engine:
 static int stm32_hash_remove(struct platform_device *pdev)
 {
 	static struct stm32_hash_dev *hdev;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdev = platform_get_drvdata(pdev);
 	if (!hdev)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = pm_runtime_get_sync(hdev->dev);
 	if (ret < 0)
 		return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stm32_hash_unregister_algs(hdev);
 
 	crypto_engine_exit(hdev->engine);
@@ -1586,14 +1754,18 @@ static int stm32_hash_remove(struct platform_device *pdev)
 	if (hdev->dma_lch)
 		dma_release_channel(hdev->dma_lch);
 
+<<<<<<< HEAD
 	pm_runtime_disable(hdev->dev);
 	pm_runtime_put_noidle(hdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(hdev->clk);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int stm32_hash_runtime_suspend(struct device *dev)
 {
@@ -1626,12 +1798,17 @@ static const struct dev_pm_ops stm32_hash_pm_ops = {
 			   stm32_hash_runtime_resume, NULL)
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver stm32_hash_driver = {
 	.probe		= stm32_hash_probe,
 	.remove		= stm32_hash_remove,
 	.driver		= {
 		.name	= "stm32-hash",
+<<<<<<< HEAD
 		.pm = &stm32_hash_pm_ops,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table	= stm32_hash_of_match,
 	}
 };

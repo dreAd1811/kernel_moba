@@ -273,7 +273,12 @@ static void __init asm9260_acc_init(struct device_node *np)
 	int n;
 	u32 accuracy = 0;
 
+<<<<<<< HEAD
 	clk_data = kzalloc(struct_size(clk_data, hws, MAX_CLKS), GFP_KERNEL);
+=======
+	clk_data = kzalloc(sizeof(*clk_data) +
+			   sizeof(*clk_data->hws) * MAX_CLKS, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!clk_data)
 		return;
 	clk_data->num = MAX_CLKS;

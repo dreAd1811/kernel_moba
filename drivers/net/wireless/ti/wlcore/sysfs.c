@@ -19,11 +19,17 @@
  *
  */
 
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
 
 #include "acx.h"
 #include "wlcore.h"
 #include "debug.h"
+=======
+#include "wlcore.h"
+#include "debug.h"
+#include "ps.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "sysfs.h"
 
 static ssize_t wl1271_sysfs_show_bt_coex_state(struct device *dev,
@@ -70,6 +76,7 @@ static ssize_t wl1271_sysfs_store_bt_coex_state(struct device *dev,
 	if (unlikely(wl->state != WLCORE_STATE_ON))
 		goto out;
 
+<<<<<<< HEAD
 	ret = pm_runtime_get_sync(wl->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(wl->dev);
@@ -79,13 +86,25 @@ static ssize_t wl1271_sysfs_store_bt_coex_state(struct device *dev,
 	wl1271_acx_sg_enable(wl, wl->sg_enabled);
 	pm_runtime_mark_last_busy(wl->dev);
 	pm_runtime_put_autosuspend(wl->dev);
+=======
+	ret = wl1271_ps_elp_wakeup(wl);
+	if (ret < 0)
+		goto out;
+
+	wl1271_acx_sg_enable(wl, wl->sg_enabled);
+	wl1271_ps_elp_sleep(wl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  out:
 	mutex_unlock(&wl->mutex);
 	return count;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(bt_coex_state, 0644,
+=======
+static DEVICE_ATTR(bt_coex_state, S_IRUGO | S_IWUSR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   wl1271_sysfs_show_bt_coex_state,
 		   wl1271_sysfs_store_bt_coex_state);
 
@@ -108,7 +127,12 @@ static ssize_t wl1271_sysfs_show_hw_pg_ver(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(hw_pg_ver, 0444, wl1271_sysfs_show_hw_pg_ver, NULL);
+=======
+static DEVICE_ATTR(hw_pg_ver, S_IRUGO,
+		   wl1271_sysfs_show_hw_pg_ver, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t wl1271_sysfs_read_fwlog(struct file *filp, struct kobject *kobj,
 				       struct bin_attribute *bin_attr,
@@ -143,7 +167,11 @@ static ssize_t wl1271_sysfs_read_fwlog(struct file *filp, struct kobject *kobj,
 }
 
 static const struct bin_attribute fwlog_attr = {
+<<<<<<< HEAD
 	.attr = { .name = "fwlog", .mode = 0400 },
+=======
+	.attr = {.name = "fwlog", .mode = S_IRUSR},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read = wl1271_sysfs_read_fwlog,
 };
 

@@ -26,7 +26,11 @@
 #include <asm/page.h>
 #include <asm/tlbflush.h>
 
+<<<<<<< HEAD
 static struct kmem_cache *pgd_cache __ro_after_init;
+=======
+static struct kmem_cache *pgd_cache;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 pgd_t *pgd_alloc(struct mm_struct *mm)
 {
@@ -49,6 +53,7 @@ void __init pgd_cache_init(void)
 	if (PGD_SIZE == PAGE_SIZE)
 		return;
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_PA_BITS_52
 	/*
 	 * With 52-bit physical addresses, the architecture requires the
@@ -57,6 +62,8 @@ void __init pgd_cache_init(void)
 	BUILD_BUG_ON(PGD_SIZE < 64);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Naturally aligned pgds required by the architecture.
 	 */

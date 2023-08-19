@@ -54,8 +54,13 @@
 		allwinner,pipelines = <&fe0>;
 	};
 
+<<<<<<< HEAD
 	soc@1c00000 {
 		pwm: pwm@1c20e00 {
+=======
+	soc@01c00000 {
+		pwm: pwm@01c20e00 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a10s-pwm";
 			reg = <0x01c20e00 0xc>;
 			clocks = <&ccu CLK_HOSC>;
@@ -63,7 +68,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		spdif: spdif@1c21000 {
+=======
+		spdif: spdif@01c21000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#sound-dai-cells = <0>;
 			compatible = "allwinner,sun4i-a10-spdif";
 			reg = <0x01c21000 0x400>;
@@ -76,7 +85,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		i2s0: i2s@1c22400 {
+=======
+		i2s0: i2s@01c22400 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#sound-dai-cells = <0>;
 			compatible = "allwinner,sun4i-a10-i2s";
 			reg = <0x01c22400 0x400>;

@@ -23,11 +23,18 @@ void set_bit(unsigned long nr, volatile unsigned long *addr);
 void clear_bit(unsigned long nr, volatile unsigned long *addr);
 void change_bit(unsigned long nr, volatile unsigned long *addr);
 
+<<<<<<< HEAD
 int fls(unsigned int word);
 int __fls(unsigned long word);
 
 #include <asm-generic/bitops/non-atomic.h>
 
+=======
+#include <asm-generic/bitops/non-atomic.h>
+
+#include <asm-generic/bitops/fls.h>
+#include <asm-generic/bitops/__fls.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/bitops/fls64.h>
 
 #ifdef __KERNEL__

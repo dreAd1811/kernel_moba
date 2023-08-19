@@ -29,9 +29,17 @@ int omap2_prcm_base_init(void);
  *
  * PRM_HAS_IO_WAKEUP: has IO wakeup capability
  * PRM_HAS_VOLTAGE: has voltage domains
+<<<<<<< HEAD
  */
 #define PRM_HAS_IO_WAKEUP	BIT(0)
 #define PRM_HAS_VOLTAGE		BIT(1)
+=======
+ * PRM_IRQ_DEFAULT: use default irq number for PRM irq
+ */
+#define PRM_HAS_IO_WAKEUP	BIT(0)
+#define PRM_HAS_VOLTAGE		BIT(1)
+#define PRM_IRQ_DEFAULT		BIT(2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * MAX_MODULE_SOFTRESET_WAIT: Maximum microseconds to wait for OMAP

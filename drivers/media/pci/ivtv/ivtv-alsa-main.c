@@ -20,6 +20,10 @@
 #include "ivtv-driver.h"
 #include "ivtv-version.h"
 #include "ivtv-alsa.h"
+<<<<<<< HEAD
+=======
+#include "ivtv-alsa-mixer.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ivtv-alsa-pcm.h"
 
 #include <sound/core.h>
@@ -159,7 +163,19 @@ static int snd_ivtv_init(struct v4l2_device *v4l2_dev)
 	/* (4) Set the driver ID and name strings */
 	snd_ivtv_card_set_names(itvsc);
 
+<<<<<<< HEAD
 	/* (5) Create other components: PCM, & proc files */
+=======
+	/* (5) Create other components: mixer, PCM, & proc files */
+#if 0
+	ret = snd_ivtv_mixer_create(itvsc);
+	if (ret) {
+		IVTV_ALSA_WARN("%s: snd_ivtv_mixer_create() failed with err %d: proceeding anyway\n",
+			       __func__, ret);
+	}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = snd_ivtv_pcm_create(itvsc);
 	if (ret) {
 		IVTV_ALSA_ERR("%s: snd_ivtv_pcm_create() failed with err %d\n",

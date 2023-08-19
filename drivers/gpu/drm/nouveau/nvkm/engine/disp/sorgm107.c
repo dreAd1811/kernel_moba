@@ -63,5 +63,9 @@ gm107_sor = {
 int
 gm107_sor_new(struct nvkm_disp *disp, int id)
 {
+<<<<<<< HEAD
 	return nvkm_ior_new_(&gm107_sor, disp, SOR, id);
+=======
+	return gf119_sor_new_(&gm107_sor, disp, id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

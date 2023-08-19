@@ -26,22 +26,50 @@
 #include "hardwaremanager.h"
 #include "power_state.h"
 
+<<<<<<< HEAD
 
 #define TEMP_RANGE_MIN (0)
 #define TEMP_RANGE_MAX (80 * 1000)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PHM_FUNC_CHECK(hw) \
 	do {							\
 		if ((hw) == NULL || (hw)->hwmgr_func == NULL)	\
 			return -EINVAL;				\
 	} while (0)
 
+<<<<<<< HEAD
+=======
+bool phm_is_hw_access_blocked(struct pp_hwmgr *hwmgr)
+{
+	return hwmgr->block_hw_access;
+}
+
+int phm_block_hw_access(struct pp_hwmgr *hwmgr, bool block)
+{
+	hwmgr->block_hw_access = block;
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phm_setup_asic(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
 
+<<<<<<< HEAD
 	if (NULL != hwmgr->hwmgr_func->asic_setup)
 		return hwmgr->hwmgr_func->asic_setup(hwmgr);
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+		PHM_PlatformCaps_TablelessHardwareInterface)) {
+		if (NULL != hwmgr->hwmgr_func->asic_setup)
+			return hwmgr->hwmgr_func->asic_setup(hwmgr);
+	} else {
+		return phm_dispatch_table(hwmgr, &(hwmgr->setup_asic),
+					  NULL, NULL);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -50,8 +78,19 @@ int phm_power_down_asic(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
 
+<<<<<<< HEAD
 	if (NULL != hwmgr->hwmgr_func->power_off_asic)
 		return hwmgr->hwmgr_func->power_off_asic(hwmgr);
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+		PHM_PlatformCaps_TablelessHardwareInterface)) {
+		if (NULL != hwmgr->hwmgr_func->power_off_asic)
+			return hwmgr->hwmgr_func->power_off_asic(hwmgr);
+	} else {
+		return phm_dispatch_table(hwmgr, &(hwmgr->power_down_asic),
+					  NULL, NULL);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -67,14 +106,25 @@ int phm_set_power_state(struct pp_hwmgr *hwmgr,
 	states.pcurrent_state = pcurrent_state;
 	states.pnew_state = pnew_power_state;
 
+<<<<<<< HEAD
 	if (NULL != hwmgr->hwmgr_func->power_state_set)
 		return hwmgr->hwmgr_func->power_state_set(hwmgr, &states);
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+		PHM_PlatformCaps_TablelessHardwareInterface)) {
+		if (NULL != hwmgr->hwmgr_func->power_state_set)
+			return hwmgr->hwmgr_func->power_state_set(hwmgr, &states);
+	} else {
+		return phm_dispatch_table(hwmgr, &(hwmgr->set_power_state), &states, NULL);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 int phm_enable_dynamic_state_management(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = NULL;
 	int ret = -EINVAL;;
 	PHM_FUNC_CHECK(hwmgr);
@@ -87,12 +137,32 @@ int phm_enable_dynamic_state_management(struct pp_hwmgr *hwmgr)
 
 	if (NULL != hwmgr->hwmgr_func->dynamic_state_management_enable)
 		ret = hwmgr->hwmgr_func->dynamic_state_management_enable(hwmgr);
+=======
+	int ret = 1;
+	bool enabled;
+	PHM_FUNC_CHECK(hwmgr);
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+		PHM_PlatformCaps_TablelessHardwareInterface)) {
+		if (NULL != hwmgr->hwmgr_func->dynamic_state_management_enable)
+			ret = hwmgr->hwmgr_func->dynamic_state_management_enable(hwmgr);
+	} else {
+		ret = phm_dispatch_table(hwmgr,
+				&(hwmgr->enable_dynamic_state_management),
+				NULL, NULL);
+	}
+
+	enabled = ret == 0;
+
+	cgs_notify_dpm_enabled(hwmgr->device, enabled);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
 int phm_disable_dynamic_state_management(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	int ret = -EINVAL;
 
 	PHM_FUNC_CHECK(hwmgr);
@@ -104,6 +174,26 @@ int phm_disable_dynamic_state_management(struct pp_hwmgr *hwmgr)
 
 	if (hwmgr->hwmgr_func->dynamic_state_management_disable)
 		ret = hwmgr->hwmgr_func->dynamic_state_management_disable(hwmgr);
+=======
+	int ret = -1;
+	bool enabled;
+
+	PHM_FUNC_CHECK(hwmgr);
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+		PHM_PlatformCaps_TablelessHardwareInterface)) {
+		if (hwmgr->hwmgr_func->dynamic_state_management_disable)
+			ret = hwmgr->hwmgr_func->dynamic_state_management_disable(hwmgr);
+	} else {
+		ret = phm_dispatch_table(hwmgr,
+				&(hwmgr->disable_dynamic_state_management),
+				NULL, NULL);
+	}
+
+	enabled = ret == 0 ? false : true;
+
+	cgs_notify_dpm_enabled(hwmgr->device, enabled);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -114,8 +204,27 @@ int phm_force_dpm_levels(struct pp_hwmgr *hwmgr, enum amd_dpm_forced_level level
 
 	PHM_FUNC_CHECK(hwmgr);
 
+<<<<<<< HEAD
 	if (hwmgr->hwmgr_func->force_dpm_level != NULL)
 		ret = hwmgr->hwmgr_func->force_dpm_level(hwmgr, level);
+=======
+	if (hwmgr->hwmgr_func->force_dpm_level != NULL) {
+		ret = hwmgr->hwmgr_func->force_dpm_level(hwmgr, level);
+		if (ret)
+			return ret;
+
+		if (hwmgr->hwmgr_func->set_power_profile_state) {
+			if (hwmgr->current_power_profile == AMD_PP_GFX_PROFILE)
+				ret = hwmgr->hwmgr_func->set_power_profile_state(
+						hwmgr,
+						&hwmgr->gfx_power_profile);
+			else if (hwmgr->current_power_profile == AMD_PP_COMPUTE_PROFILE)
+				ret = hwmgr->hwmgr_func->set_power_profile_state(
+						hwmgr,
+						&hwmgr->compute_power_profile);
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -134,6 +243,7 @@ int phm_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
 	return 0;
 }
 
+<<<<<<< HEAD
 int phm_apply_clock_adjust_rules(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
@@ -143,6 +253,8 @@ int phm_apply_clock_adjust_rules(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phm_powerdown_uvd(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
@@ -152,13 +264,44 @@ int phm_powerdown_uvd(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int phm_powergate_uvd(struct pp_hwmgr *hwmgr, bool gate)
+{
+	PHM_FUNC_CHECK(hwmgr);
+
+	if (hwmgr->hwmgr_func->powergate_uvd != NULL)
+		return hwmgr->hwmgr_func->powergate_uvd(hwmgr, gate);
+	return 0;
+}
+
+int phm_powergate_vce(struct pp_hwmgr *hwmgr, bool gate)
+{
+	PHM_FUNC_CHECK(hwmgr);
+
+	if (hwmgr->hwmgr_func->powergate_vce != NULL)
+		return hwmgr->hwmgr_func->powergate_vce(hwmgr, gate);
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phm_enable_clock_power_gatings(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
 
+<<<<<<< HEAD
 	if (NULL != hwmgr->hwmgr_func->enable_clock_power_gating)
 		return hwmgr->hwmgr_func->enable_clock_power_gating(hwmgr);
 
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+		PHM_PlatformCaps_TablelessHardwareInterface)) {
+		if (NULL != hwmgr->hwmgr_func->enable_clock_power_gating)
+			return hwmgr->hwmgr_func->enable_clock_power_gating(hwmgr);
+	} else {
+		return phm_dispatch_table(hwmgr, &(hwmgr->enable_clock_power_gatings), NULL, NULL);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -166,6 +309,7 @@ int phm_disable_clock_power_gatings(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
 
+<<<<<<< HEAD
 	if (NULL != hwmgr->hwmgr_func->disable_clock_power_gating)
 		return hwmgr->hwmgr_func->disable_clock_power_gating(hwmgr);
 
@@ -182,14 +326,33 @@ int phm_pre_display_configuration_changed(struct pp_hwmgr *hwmgr)
 	return 0;
 
 }
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+		PHM_PlatformCaps_TablelessHardwareInterface)) {
+		if (NULL != hwmgr->hwmgr_func->disable_clock_power_gating)
+			return hwmgr->hwmgr_func->disable_clock_power_gating(hwmgr);
+	}
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int phm_display_configuration_changed(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
 
+<<<<<<< HEAD
 	if (NULL != hwmgr->hwmgr_func->display_config_changed)
 		hwmgr->hwmgr_func->display_config_changed(hwmgr);
 
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+				 PHM_PlatformCaps_TablelessHardwareInterface)) {
+		if (NULL != hwmgr->hwmgr_func->display_config_changed)
+			hwmgr->hwmgr_func->display_config_changed(hwmgr);
+	} else
+		return phm_dispatch_table(hwmgr, &hwmgr->display_configuration_changed, NULL, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -197,7 +360,13 @@ int phm_notify_smc_display_config_after_ps_adjustment(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
 
+<<<<<<< HEAD
 	if (NULL != hwmgr->hwmgr_func->notify_smc_display_config_after_ps_adjustment)
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+				 PHM_PlatformCaps_TablelessHardwareInterface))
+		if (NULL != hwmgr->hwmgr_func->notify_smc_display_config_after_ps_adjustment)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hwmgr->hwmgr_func->notify_smc_display_config_after_ps_adjustment(hwmgr);
 
 	return 0;
@@ -213,6 +382,7 @@ int phm_stop_thermal_controller(struct pp_hwmgr *hwmgr)
 	return hwmgr->hwmgr_func->stop_thermal_controller(hwmgr);
 }
 
+<<<<<<< HEAD
 int phm_register_irq_handlers(struct pp_hwmgr *hwmgr)
 {
 	PHM_FUNC_CHECK(hwmgr);
@@ -221,12 +391,23 @@ int phm_register_irq_handlers(struct pp_hwmgr *hwmgr)
 		return hwmgr->hwmgr_func->register_irq_handlers(hwmgr);
 
 	return 0;
+=======
+int phm_register_thermal_interrupt(struct pp_hwmgr *hwmgr, const void *info)
+{
+	PHM_FUNC_CHECK(hwmgr);
+
+	if (hwmgr->hwmgr_func->register_internal_thermal_interrupt == NULL)
+		return -EINVAL;
+
+	return hwmgr->hwmgr_func->register_internal_thermal_interrupt(hwmgr, info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
 * Initializes the thermal controller subsystem.
 *
 * @param    pHwMgr  the address of the powerplay hardware manager.
+<<<<<<< HEAD
 * @exception PP_Result_Failed if any of the paramters is NULL, otherwise the return value from the dispatcher.
 */
 int phm_start_thermal_controller(struct pp_hwmgr *hwmgr)
@@ -248,6 +429,14 @@ int phm_start_thermal_controller(struct pp_hwmgr *hwmgr)
 	adev->pm.dpm.thermal.max_temp = range.max;
 
 	return ret;
+=======
+* @param    pTemperatureRange the address of the structure holding the temperature range.
+* @exception PP_Result_Failed if any of the paramters is NULL, otherwise the return value from the dispatcher.
+*/
+int phm_start_thermal_controller(struct pp_hwmgr *hwmgr, struct PP_TemperatureRange *temperature_range)
+{
+	return phm_dispatch_table(hwmgr, &(hwmgr->start_thermal_controller), temperature_range, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -278,14 +467,18 @@ int phm_check_states_equal(struct pp_hwmgr *hwmgr,
 int phm_store_dal_configuration_data(struct pp_hwmgr *hwmgr,
 		    const struct amd_pp_display_configuration *display_config)
 {
+<<<<<<< HEAD
 	int index = 0;
 	int number_of_active_display = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PHM_FUNC_CHECK(hwmgr);
 
 	if (display_config == NULL)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (NULL != hwmgr->hwmgr_func->set_deep_sleep_dcefclk)
 		hwmgr->hwmgr_func->set_deep_sleep_dcefclk(hwmgr, display_config->min_dcef_deep_sleep_set_clk);
 
@@ -296,6 +489,9 @@ int phm_store_dal_configuration_data(struct pp_hwmgr *hwmgr,
 
 	if (NULL != hwmgr->hwmgr_func->set_active_display_count)
 		hwmgr->hwmgr_func->set_active_display_count(hwmgr, number_of_active_display);
+=======
+	hwmgr->display_config = *display_config;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hwmgr->hwmgr_func->store_cc6_data == NULL)
 		return -EINVAL;
@@ -437,7 +633,11 @@ int phm_get_clock_by_type_with_voltage(struct pp_hwmgr *hwmgr,
 }
 
 int phm_set_watermarks_for_clocks_ranges(struct pp_hwmgr *hwmgr,
+<<<<<<< HEAD
 					void *clock_ranges)
+=======
+		struct pp_wm_sets_with_clock_ranges_soc15 *wm_with_clock_ranges)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	PHM_FUNC_CHECK(hwmgr);
 
@@ -445,7 +645,11 @@ int phm_set_watermarks_for_clocks_ranges(struct pp_hwmgr *hwmgr,
 		return -EINVAL;
 
 	return hwmgr->hwmgr_func->set_watermarks_for_clocks_ranges(hwmgr,
+<<<<<<< HEAD
 								clock_ranges);
+=======
+			wm_with_clock_ranges);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int phm_display_clock_voltage_request(struct pp_hwmgr *hwmgr,

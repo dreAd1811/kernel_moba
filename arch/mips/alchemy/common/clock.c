@@ -143,7 +143,11 @@ void __init alchemy_set_lpj(void)
 	preset_lpj /= 2 * HZ;
 }
 
+<<<<<<< HEAD
 static const struct clk_ops alchemy_clkops_cpu = {
+=======
+static struct clk_ops alchemy_clkops_cpu = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate	= alchemy_clk_cpu_recalc,
 };
 
@@ -224,7 +228,11 @@ static long alchemy_clk_aux_roundr(struct clk_hw *hw,
 	return (*parent_rate) * mult;
 }
 
+<<<<<<< HEAD
 static const struct clk_ops alchemy_clkops_aux = {
+=======
+static struct clk_ops alchemy_clkops_aux = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate	= alchemy_clk_aux_recalc,
 	.set_rate	= alchemy_clk_aux_setr,
 	.round_rate	= alchemy_clk_aux_roundr,
@@ -576,7 +584,11 @@ static int alchemy_clk_fgv1_detr(struct clk_hw *hw,
 }
 
 /* Au1000, Au1100, Au15x0, Au12x0 */
+<<<<<<< HEAD
 static const struct clk_ops alchemy_clkops_fgenv1 = {
+=======
+static struct clk_ops alchemy_clkops_fgenv1 = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate	= alchemy_clk_fgv1_recalc,
 	.determine_rate	= alchemy_clk_fgv1_detr,
 	.set_rate	= alchemy_clk_fgv1_setr,
@@ -717,7 +729,11 @@ static int alchemy_clk_fgv2_detr(struct clk_hw *hw,
 }
 
 /* Au1300 larger input mux, no separate disable bit, flexible divider */
+<<<<<<< HEAD
 static const struct clk_ops alchemy_clkops_fgenv2 = {
+=======
+static struct clk_ops alchemy_clkops_fgenv2 = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate	= alchemy_clk_fgv2_recalc,
 	.determine_rate	= alchemy_clk_fgv2_detr,
 	.set_rate	= alchemy_clk_fgv2_setr,
@@ -925,7 +941,11 @@ static int alchemy_clk_csrc_detr(struct clk_hw *hw,
 	return alchemy_clk_fgcs_detr(hw, req, scale, 4);
 }
 
+<<<<<<< HEAD
 static const struct clk_ops alchemy_clkops_csrc = {
+=======
+static struct clk_ops alchemy_clkops_csrc = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate	= alchemy_clk_csrc_recalc,
 	.determine_rate	= alchemy_clk_csrc_detr,
 	.set_rate	= alchemy_clk_csrc_setr,
@@ -985,7 +1005,11 @@ static int __init alchemy_clk_setup_imux(int ctype)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	a = kcalloc(6, sizeof(*a), GFP_KERNEL);
+=======
+	a = kzalloc((sizeof(*a)) * 6, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!a)
 		return -ENOMEM;
 

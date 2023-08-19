@@ -22,24 +22,30 @@ struct sun4i_layer {
 	int			id;
 };
 
+<<<<<<< HEAD
 struct sun4i_layer_state {
 	struct drm_plane_state	state;
 	unsigned int		pipe;
 	bool			uses_frontend;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct sun4i_layer *
 plane_to_sun4i_layer(struct drm_plane *plane)
 {
 	return container_of(plane, struct sun4i_layer, plane);
 }
 
+<<<<<<< HEAD
 static inline struct sun4i_layer_state *
 state_to_sun4i_layer_state(struct drm_plane_state *state)
 {
 	return container_of(state, struct sun4i_layer_state, state);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct drm_plane **sun4i_layers_init(struct drm_device *drm,
 				     struct sunxi_engine *engine);
 

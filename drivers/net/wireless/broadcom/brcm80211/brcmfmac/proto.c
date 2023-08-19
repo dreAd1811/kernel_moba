@@ -54,8 +54,12 @@ int brcmf_proto_attach(struct brcmf_pub *drvr)
 	if (!proto->tx_queue_data || (proto->hdrpull == NULL) ||
 	    (proto->query_dcmd == NULL) || (proto->set_dcmd == NULL) ||
 	    (proto->configure_addr_mode == NULL) ||
+<<<<<<< HEAD
 	    (proto->delete_peer == NULL) || (proto->add_tdls_peer == NULL) ||
 	    (proto->debugfs_create == NULL)) {
+=======
+	    (proto->delete_peer == NULL) || (proto->add_tdls_peer == NULL)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		brcmf_err("Not all proto handlers have been installed\n");
 		goto fail;
 	}
@@ -67,22 +71,33 @@ fail:
 	return -ENOMEM;
 }
 
+<<<<<<< HEAD
 void brcmf_proto_detach_post_delif(struct brcmf_pub *drvr)
+=======
+void brcmf_proto_detach(struct brcmf_pub *drvr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	brcmf_dbg(TRACE, "Enter\n");
 
 	if (drvr->proto) {
 		if (drvr->bus_if->proto_type == BRCMF_PROTO_BCDC)
+<<<<<<< HEAD
 			brcmf_proto_bcdc_detach_post_delif(drvr);
+=======
+			brcmf_proto_bcdc_detach(drvr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else if (drvr->bus_if->proto_type == BRCMF_PROTO_MSGBUF)
 			brcmf_proto_msgbuf_detach(drvr);
 		kfree(drvr->proto);
 		drvr->proto = NULL;
 	}
 }
+<<<<<<< HEAD
 
 void brcmf_proto_detach_pre_delif(struct brcmf_pub *drvr)
 {
 	if (drvr->proto && drvr->bus_if->proto_type == BRCMF_PROTO_BCDC)
 		brcmf_proto_bcdc_detach_pre_delif(drvr);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

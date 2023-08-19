@@ -6,8 +6,11 @@ Description:
 		This file allows user to read/write the raw NVMEM contents.
 		Permissions for write to this file depends on the nvmem
 		provider configuration.
+<<<<<<< HEAD
 		Note: This file is only present if CONFIG_NVMEM_SYSFS
 		is enabled
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ex:
 		hexdump /sys/bus/nvmem/devices/qfprom0/nvmem

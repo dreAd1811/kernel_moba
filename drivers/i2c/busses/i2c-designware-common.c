@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-or-later
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Synopsys DesignWare I2C adapter driver.
  *
@@ -7,8 +10,26 @@
  * Copyright (C) 2006 Texas Instruments.
  * Copyright (C) 2007 MontaVista Software Inc.
  * Copyright (C) 2009 Provigent Ltd.
+<<<<<<< HEAD
  */
 #include <linux/clk.h>
+=======
+ *
+ * ----------------------------------------------------------------------------
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * ----------------------------------------------------------------------------
+ *
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/export.h>
 #include <linux/errno.h>
@@ -18,7 +39,10 @@
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/swab.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "i2c-designware-core.h"
 
@@ -82,6 +106,7 @@ void dw_writel(struct dw_i2c_dev *dev, u32 b, int offset)
 	}
 }
 
+<<<<<<< HEAD
 /**
  * i2c_dw_set_reg_access() - Set register access flags
  * @dev: device private data
@@ -116,6 +141,8 @@ int i2c_dw_set_reg_access(struct dw_i2c_dev *dev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u32 i2c_dw_scl_hcnt(u32 ic_clk, u32 tSYMBOL, u32 tf, int cond, int offset)
 {
 	/*
@@ -171,6 +198,7 @@ u32 i2c_dw_scl_lcnt(u32 ic_clk, u32 tLOW, u32 tf, int offset)
 	return ((ic_clk * (tLOW + tf) + 500000) / 1000000) - 1 + offset;
 }
 
+<<<<<<< HEAD
 int i2c_dw_set_sda_hold(struct dw_i2c_dev *dev)
 {
 	u32 reg;
@@ -213,16 +241,29 @@ int i2c_dw_set_sda_hold(struct dw_i2c_dev *dev)
 }
 
 void __i2c_dw_disable(struct dw_i2c_dev *dev)
+=======
+void __i2c_dw_enable(struct dw_i2c_dev *dev, bool enable)
+{
+	dw_writel(dev, enable, DW_IC_ENABLE);
+}
+
+void __i2c_dw_enable_and_wait(struct dw_i2c_dev *dev, bool enable)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int timeout = 100;
 
 	do {
+<<<<<<< HEAD
 		__i2c_dw_disable_nowait(dev);
 		/*
 		 * The enable status register may be unimplemented, but
 		 * in that case this test reads zero and exits the loop.
 		 */
 		if ((dw_readl(dev, DW_IC_ENABLE_STATUS) & 1) == 0)
+=======
+		__i2c_dw_enable(dev, enable);
+		if ((dw_readl(dev, DW_IC_ENABLE_STATUS) & 1) == enable)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 
 		/*
@@ -233,7 +274,12 @@ void __i2c_dw_disable(struct dw_i2c_dev *dev)
 		usleep_range(25, 250);
 	} while (timeout--);
 
+<<<<<<< HEAD
 	dev_warn(dev->dev, "timeout in disabling adapter\n");
+=======
+	dev_warn(dev->dev, "timeout in %sabling adapter\n",
+		 enable ? "en" : "dis");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 unsigned long i2c_dw_clk_rate(struct dw_i2c_dev *dev)
@@ -247,6 +293,7 @@ unsigned long i2c_dw_clk_rate(struct dw_i2c_dev *dev)
 	return dev->get_clk_rate_khz(dev);
 }
 
+<<<<<<< HEAD
 int i2c_dw_prepare_clk(struct dw_i2c_dev *dev, bool prepare)
 {
 	if (IS_ERR(dev->clk))
@@ -260,6 +307,8 @@ int i2c_dw_prepare_clk(struct dw_i2c_dev *dev, bool prepare)
 }
 EXPORT_SYMBOL_GPL(i2c_dw_prepare_clk);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i2c_dw_acquire_lock(struct dw_i2c_dev *dev)
 {
 	int ret;
@@ -292,11 +341,15 @@ int i2c_dw_wait_bus_not_busy(struct dw_i2c_dev *dev)
 	while (dw_readl(dev, DW_IC_STATUS) & DW_IC_STATUS_ACTIVITY) {
 		if (timeout <= 0) {
 			dev_warn(dev->dev, "timeout waiting for bus ready\n");
+<<<<<<< HEAD
 			i2c_recover_bus(&dev->adapter);
 
 			if (dw_readl(dev, DW_IC_STATUS) & DW_IC_STATUS_ACTIVITY)
 				return -ETIMEDOUT;
 			return 0;
+=======
+			return -ETIMEDOUT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		timeout--;
 		usleep_range(1000, 1100);
@@ -338,7 +391,11 @@ u32 i2c_dw_func(struct i2c_adapter *adap)
 void i2c_dw_disable(struct dw_i2c_dev *dev)
 {
 	/* Disable controller */
+<<<<<<< HEAD
 	__i2c_dw_disable(dev);
+=======
+	__i2c_dw_enable_and_wait(dev, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Disable all interupts */
 	dw_writel(dev, 0, DW_IC_INTR_MASK);

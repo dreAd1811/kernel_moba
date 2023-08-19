@@ -107,7 +107,12 @@
 	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin_m9>;
 	vmmc-supply = <&reg_dcdc1>;
 	bus-width = <4>;
+<<<<<<< HEAD
 	cd-gpios = <&pio 7 22 GPIO_ACTIVE_LOW>; /* PH22 */
+=======
+	cd-gpios = <&pio 7 22 GPIO_ACTIVE_HIGH>; /* PH22 */
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

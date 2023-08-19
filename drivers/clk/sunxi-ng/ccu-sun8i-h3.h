@@ -26,9 +26,13 @@
 #define CLK_PLL_AUDIO_2X	3
 #define CLK_PLL_AUDIO_4X	4
 #define CLK_PLL_AUDIO_8X	5
+<<<<<<< HEAD
 
 /* PLL_VIDEO is exported */
 
+=======
+#define CLK_PLL_VIDEO		6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CLK_PLL_VE		7
 #define CLK_PLL_DDR		8
 

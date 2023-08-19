@@ -14,7 +14,10 @@
 #include <linux/init.h>
 #include <linux/string.h>
 #include <linux/bootmem.h>
+<<<<<<< HEAD
 #include <linux/memblock.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/setup.h>
 #include <asm/page.h>
@@ -154,20 +157,28 @@ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
 
 void __init cf_bootmem_alloc(void)
 {
+<<<<<<< HEAD
+=======
+	unsigned long start_pfn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long memstart;
 
 	/* _rambase and _ramend will be naturally page aligned */
 	m68k_memory[0].addr = _rambase;
 	m68k_memory[0].size = _ramend - _rambase;
 
+<<<<<<< HEAD
 	memblock_add(m68k_memory[0].addr, m68k_memory[0].size);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* compute total pages in system */
 	num_pages = PFN_DOWN(_ramend - _rambase);
 
 	/* page numbers */
 	memstart = PAGE_ALIGN(_ramstart);
 	min_low_pfn = PFN_DOWN(_rambase);
+<<<<<<< HEAD
 	max_pfn = max_low_pfn = PFN_DOWN(_ramend);
 	high_memory = (void *)_ramend;
 
@@ -179,13 +190,31 @@ void __init cf_bootmem_alloc(void)
 
 	/* setup node data */
 	m68k_setup_node(0);
+=======
+	start_pfn = PFN_DOWN(memstart);
+	max_pfn = max_low_pfn = PFN_DOWN(_ramend);
+	high_memory = (void *)_ramend;
+
+	m68k_virt_to_node_shift = fls(_ramend - 1) - 6;
+	module_fixup(NULL, __start_fixup, __stop_fixup);
+
+	/* setup bootmem data */
+	m68k_setup_node(0);
+	memstart += init_bootmem_node(NODE_DATA(0), start_pfn,
+		min_low_pfn, max_low_pfn);
+	free_bootmem_node(NODE_DATA(0), memstart, _ramend - memstart);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
  * Initialize the context management stuff.
  * The following was taken from arch/ppc/mmu_context.c
  */
+<<<<<<< HEAD
 void __init cf_mmu_context_init(void)
+=======
+void __init mmu_context_init(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * Some processors have too few contexts to reserve one for

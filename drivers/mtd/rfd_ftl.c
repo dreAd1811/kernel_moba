@@ -189,8 +189,12 @@ static int scan_header(struct partition *part)
 	if (!part->blocks)
 		goto err;
 
+<<<<<<< HEAD
 	part->sector_map = vmalloc(array_size(sizeof(u_long),
 					      part->sector_count));
+=======
+	part->sector_map = vmalloc(part->sector_count * sizeof(u_long));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!part->sector_map) {
 		printk(KERN_ERR PREFIX "'%s': unable to allocate memory for "
 			"sector map", part->mbd.mtd->name);
@@ -267,6 +271,7 @@ static int rfd_ftl_readsect(struct mtd_blktrans_dev *dev, u_long sector, char *b
 	return 0;
 }
 
+<<<<<<< HEAD
 static int erase_block(struct partition *part, int block)
 {
 	struct erase_info *erase;
@@ -278,15 +283,93 @@ static int erase_block(struct partition *part, int block)
 
 	erase->addr = part->blocks[block].offset;
 	erase->len = part->block_size;
+=======
+static void erase_callback(struct erase_info *erase)
+{
+	struct partition *part;
+	u16 magic;
+	int i, rc;
+	size_t retlen;
+
+	part = (struct partition*)erase->priv;
+
+	i = (u32)erase->addr / part->block_size;
+	if (i >= part->total_blocks || part->blocks[i].offset != erase->addr ||
+	    erase->addr > UINT_MAX) {
+		printk(KERN_ERR PREFIX "erase callback for unknown offset %llx "
+				"on '%s'\n", (unsigned long long)erase->addr, part->mbd.mtd->name);
+		return;
+	}
+
+	if (erase->state != MTD_ERASE_DONE) {
+		printk(KERN_WARNING PREFIX "erase failed at 0x%llx on '%s', "
+				"state %d\n", (unsigned long long)erase->addr,
+				part->mbd.mtd->name, erase->state);
+
+		part->blocks[i].state = BLOCK_FAILED;
+		part->blocks[i].free_sectors = 0;
+		part->blocks[i].used_sectors = 0;
+
+		kfree(erase);
+
+		return;
+	}
+
+	magic = cpu_to_le16(RFD_MAGIC);
+
+	part->blocks[i].state = BLOCK_ERASED;
+	part->blocks[i].free_sectors = part->data_sectors_per_block;
+	part->blocks[i].used_sectors = 0;
+	part->blocks[i].erases++;
+
+	rc = mtd_write(part->mbd.mtd, part->blocks[i].offset, sizeof(magic),
+		       &retlen, (u_char *)&magic);
+
+	if (!rc && retlen != sizeof(magic))
+		rc = -EIO;
+
+	if (rc) {
+		printk(KERN_ERR PREFIX "'%s': unable to write RFD "
+				"header at 0x%lx\n",
+				part->mbd.mtd->name,
+				part->blocks[i].offset);
+		part->blocks[i].state = BLOCK_FAILED;
+	}
+	else
+		part->blocks[i].state = BLOCK_OK;
+
+	kfree(erase);
+}
+
+static int erase_block(struct partition *part, int block)
+{
+	struct erase_info *erase;
+	int rc = -ENOMEM;
+
+	erase = kmalloc(sizeof(struct erase_info), GFP_KERNEL);
+	if (!erase)
+		goto err;
+
+	erase->mtd = part->mbd.mtd;
+	erase->callback = erase_callback;
+	erase->addr = part->blocks[block].offset;
+	erase->len = part->block_size;
+	erase->priv = (u_long)part;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	part->blocks[block].state = BLOCK_ERASING;
 	part->blocks[block].free_sectors = 0;
 
 	rc = mtd_erase(part->mbd.mtd, erase);
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		printk(KERN_ERR PREFIX "erase of region %llx,%llx on '%s' "
 				"failed\n", (unsigned long long)erase->addr,
 				(unsigned long long)erase->len, part->mbd.mtd->name);
+<<<<<<< HEAD
 		part->blocks[block].state = BLOCK_FAILED;
 		part->blocks[block].free_sectors = 0;
 		part->blocks[block].used_sectors = 0;
@@ -315,6 +398,12 @@ static int erase_block(struct partition *part, int block)
 
 	kfree(erase);
 
+=======
+		kfree(erase);
+	}
+
+err:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 

@@ -1,8 +1,26 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FPGA Manager Driver for Altera SOCFPGA
  *
  *  Copyright (C) 2013-2015 Altera Corporation
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/completion.h>
 #include <linux/delay.h>
@@ -544,7 +562,10 @@ static int socfpga_fpga_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct socfpga_fpga_priv *priv;
+<<<<<<< HEAD
 	struct fpga_manager *mgr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *res;
 	int ret;
 
@@ -571,6 +592,7 @@ static int socfpga_fpga_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	mgr = fpga_mgr_create(dev, "Altera SOCFPGA FPGA Manager",
 			      &socfpga_fpga_ops, priv);
 	if (!mgr)
@@ -583,13 +605,21 @@ static int socfpga_fpga_probe(struct platform_device *pdev)
 		fpga_mgr_free(mgr);
 
 	return ret;
+=======
+	return fpga_mgr_register(dev, "Altera SOCFPGA FPGA Manager",
+				 &socfpga_fpga_ops, priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int socfpga_fpga_remove(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct fpga_manager *mgr = platform_get_drvdata(pdev);
 
 	fpga_mgr_unregister(mgr);
+=======
+	fpga_mgr_unregister(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

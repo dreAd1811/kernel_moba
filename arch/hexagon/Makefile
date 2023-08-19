@@ -12,9 +12,15 @@ KBUILD_CFLAGS += -fno-short-enums
 
 # Modules must use either long-calls, or use pic/plt.
 # Use long-calls for now, it's easier.  And faster.
+<<<<<<< HEAD
 # KBUILD_CFLAGS_MODULE += -fPIC
 # KBUILD_LDFLAGS_MODULE += -shared
 KBUILD_CFLAGS_MODULE += -mlong-calls
+=======
+# CFLAGS_MODULE += -fPIC
+# LDFLAGS_MODULE += -shared
+CFLAGS_MODULE += -mlong-calls
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 cflags-y += $(call cc-option,-mv${CONFIG_HEXAGON_ARCH_VERSION})
 aflags-y += $(call cc-option,-mv${CONFIG_HEXAGON_ARCH_VERSION})
@@ -22,7 +28,13 @@ ldflags-y += $(call cc-option,-mv${CONFIG_HEXAGON_ARCH_VERSION})
 
 KBUILD_CFLAGS += $(cflags-y)
 KBUILD_AFLAGS += $(aflags-y)
+<<<<<<< HEAD
 KBUILD_LDFLAGS += $(ldflags-y)
+=======
+
+#  no KBUILD_LDFLAGS?
+LDFLAGS += $(ldflags-y)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # Thread-info register will be r19.  This value is not configureable;
 # it is hard-coded in several files.

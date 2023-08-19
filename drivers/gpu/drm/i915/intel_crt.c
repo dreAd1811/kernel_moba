@@ -63,6 +63,7 @@ static struct intel_crt *intel_attached_crt(struct drm_connector *connector)
 	return intel_encoder_to_crt(intel_attached_encoder(connector));
 }
 
+<<<<<<< HEAD
 bool intel_crt_port_enabled(struct drm_i915_private *dev_priv,
 			    i915_reg_t adpa_reg, enum pipe *pipe)
 {
@@ -84,14 +85,40 @@ static bool intel_crt_get_hw_state(struct intel_encoder *encoder,
 {
 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
 	struct intel_crt *crt = intel_encoder_to_crt(encoder);
+=======
+static bool intel_crt_get_hw_state(struct intel_encoder *encoder,
+				   enum pipe *pipe)
+{
+	struct drm_device *dev = encoder->base.dev;
+	struct drm_i915_private *dev_priv = to_i915(dev);
+	struct intel_crt *crt = intel_encoder_to_crt(encoder);
+	u32 tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool ret;
 
 	if (!intel_display_power_get_if_enabled(dev_priv,
 						encoder->power_domain))
 		return false;
 
+<<<<<<< HEAD
 	ret = intel_crt_port_enabled(dev_priv, crt->adpa_reg, pipe);
 
+=======
+	ret = false;
+
+	tmp = I915_READ(crt->adpa_reg);
+
+	if (!(tmp & ADPA_DAC_ENABLE))
+		goto out;
+
+	if (HAS_PCH_CPT(dev_priv))
+		*pipe = PORT_TO_PIPE_CPT(tmp);
+	else
+		*pipe = PORT_TO_PIPE(tmp);
+
+	ret = true;
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_display_power_put(dev_priv, encoder->power_domain);
 
 	return ret;
@@ -121,8 +148,11 @@ static unsigned int intel_crt_get_flags(struct intel_encoder *encoder)
 static void intel_crt_get_config(struct intel_encoder *encoder,
 				 struct intel_crtc_state *pipe_config)
 {
+<<<<<<< HEAD
 	pipe_config->output_types |= BIT(INTEL_OUTPUT_ANALOG);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pipe_config->base.adjusted_mode.flags |= intel_crt_get_flags(encoder);
 
 	pipe_config->base.adjusted_mode.crtc_clock = pipe_config->port_clock;
@@ -147,7 +177,11 @@ static void hsw_crt_get_config(struct intel_encoder *encoder,
 /* Note: The caller is required to filter out dpms modes not supported by the
  * platform. */
 static void intel_crt_set_dpms(struct intel_encoder *encoder,
+<<<<<<< HEAD
 			       const struct intel_crtc_state *crtc_state,
+=======
+			       struct intel_crtc_state *crtc_state,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       int mode)
 {
 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
@@ -170,9 +204,17 @@ static void intel_crt_set_dpms(struct intel_encoder *encoder,
 	if (HAS_PCH_LPT(dev_priv))
 		; /* Those bits don't exist here */
 	else if (HAS_PCH_CPT(dev_priv))
+<<<<<<< HEAD
 		adpa |= ADPA_PIPE_SEL_CPT(crtc->pipe);
 	else
 		adpa |= ADPA_PIPE_SEL(crtc->pipe);
+=======
+		adpa |= PORT_TRANS_SEL_CPT(crtc->pipe);
+	else if (crtc->pipe == 0)
+		adpa |= ADPA_PIPE_A_SELECT;
+	else
+		adpa |= ADPA_PIPE_B_SELECT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!HAS_PCH_SPLIT(dev_priv))
 		I915_WRITE(BCLRPAT(crtc->pipe), 0);
@@ -196,25 +238,41 @@ static void intel_crt_set_dpms(struct intel_encoder *encoder,
 }
 
 static void intel_disable_crt(struct intel_encoder *encoder,
+<<<<<<< HEAD
 			      const struct intel_crtc_state *old_crtc_state,
 			      const struct drm_connector_state *old_conn_state)
+=======
+			      struct intel_crtc_state *old_crtc_state,
+			      struct drm_connector_state *old_conn_state)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	intel_crt_set_dpms(encoder, old_crtc_state, DRM_MODE_DPMS_OFF);
 }
 
 static void pch_disable_crt(struct intel_encoder *encoder,
+<<<<<<< HEAD
 			    const struct intel_crtc_state *old_crtc_state,
 			    const struct drm_connector_state *old_conn_state)
+=======
+			    struct intel_crtc_state *old_crtc_state,
+			    struct drm_connector_state *old_conn_state)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 
 static void pch_post_disable_crt(struct intel_encoder *encoder,
+<<<<<<< HEAD
 				 const struct intel_crtc_state *old_crtc_state,
 				 const struct drm_connector_state *old_conn_state)
+=======
+				 struct intel_crtc_state *old_crtc_state,
+				 struct drm_connector_state *old_conn_state)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	intel_disable_crt(encoder, old_crtc_state, old_conn_state);
 }
 
+<<<<<<< HEAD
 static void hsw_disable_crt(struct intel_encoder *encoder,
 			    const struct intel_crtc_state *old_crtc_state,
 			    const struct drm_connector_state *old_conn_state)
@@ -234,12 +292,21 @@ static void hsw_post_disable_crt(struct intel_encoder *encoder,
 
 	intel_ddi_disable_pipe_clock(old_crtc_state);
 
+=======
+static void hsw_post_disable_crt(struct intel_encoder *encoder,
+				 struct intel_crtc_state *old_crtc_state,
+				 struct drm_connector_state *old_conn_state)
+{
+	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pch_post_disable_crt(encoder, old_crtc_state, old_conn_state);
 
 	lpt_disable_pch_transcoder(dev_priv);
 	lpt_disable_iclkip(dev_priv);
 
 	intel_ddi_fdi_post_disable(encoder, old_crtc_state, old_conn_state);
+<<<<<<< HEAD
 
 	WARN_ON(!old_crtc_state->has_pch_encoder);
 
@@ -297,6 +364,15 @@ static void intel_enable_crt(struct intel_encoder *encoder,
 			     const struct drm_connector_state *conn_state)
 {
 	intel_crt_set_dpms(encoder, crtc_state, DRM_MODE_DPMS_ON);
+=======
+}
+
+static void intel_enable_crt(struct intel_encoder *encoder,
+			     struct intel_crtc_state *pipe_config,
+			     struct drm_connector_state *conn_state)
+{
+	intel_crt_set_dpms(encoder, pipe_config, DRM_MODE_DPMS_ON);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static enum drm_mode_status
@@ -337,10 +413,13 @@ intel_crt_mode_valid(struct drm_connector *connector,
 	    (ironlake_get_lanes_required(mode->clock, 270000, 24) > 2))
 		return MODE_CLOCK_HIGH;
 
+<<<<<<< HEAD
 	/* HSW/BDW FDI limited to 4k */
 	if (mode->hdisplay > 4096)
 		return MODE_H_ILLEGAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return MODE_OK;
 }
 
@@ -348,6 +427,7 @@ static bool intel_crt_compute_config(struct intel_encoder *encoder,
 				     struct intel_crtc_state *pipe_config,
 				     struct drm_connector_state *conn_state)
 {
+<<<<<<< HEAD
 	struct drm_display_mode *adjusted_mode =
 		&pipe_config->base.adjusted_mode;
 
@@ -389,6 +469,12 @@ static bool hsw_crt_compute_config(struct intel_encoder *encoder,
 		return false;
 
 	pipe_config->has_pch_encoder = true;
+=======
+	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+
+	if (HAS_PCH_SPLIT(dev_priv))
+		pipe_config->has_pch_encoder = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* LPT FDI RX only supports 8bpc. */
 	if (HAS_PCH_LPT(dev_priv)) {
@@ -401,7 +487,12 @@ static bool hsw_crt_compute_config(struct intel_encoder *encoder,
 	}
 
 	/* FDI must always be 2.7 GHz */
+<<<<<<< HEAD
 	pipe_config->port_clock = 135000 * 2;
+=======
+	if (HAS_DDI(dev_priv))
+		pipe_config->port_clock = 135000 * 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -507,6 +598,17 @@ static bool valleyview_crt_detect_hotplug(struct drm_connector *connector)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * Uses CRT_HOTPLUG_EN and CRT_HOTPLUG_STAT to detect CRT presence.
+ *
+ * Not for i915G/i915GM
+ *
+ * \return true if CRT is connected.
+ * \return false if CRT is disconnected.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool intel_crt_detect_hotplug(struct drm_connector *connector)
 {
 	struct drm_device *dev = connector->dev;
@@ -526,7 +628,11 @@ static bool intel_crt_detect_hotplug(struct drm_connector *connector)
 	 * to get a reliable result.
 	 */
 
+<<<<<<< HEAD
 	if (IS_G45(dev_priv))
+=======
+	if (IS_G4X(dev_priv) && !IS_GM45(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tries = 2;
 	else
 		tries = 1;
@@ -781,11 +887,14 @@ intel_crt_detect(struct drm_connector *connector,
 		      connector->base.id, connector->name,
 		      force);
 
+<<<<<<< HEAD
 	if (i915_modparams.load_detect_test) {
 		intel_display_power_get(dev_priv, intel_encoder->power_domain);
 		goto load_detect;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Skip machines without VGA that falsely report hotplug events */
 	if (dmi_check_system(intel_spurious_crt_detect))
 		return connector_status_disconnected;
@@ -814,12 +923,19 @@ intel_crt_detect(struct drm_connector *connector,
 	 * broken monitor (without edid) to work behind a broken kvm (that fails
 	 * to have the right resistors for HP detection) needs to fix this up.
 	 * For now just bail out. */
+<<<<<<< HEAD
 	if (I915_HAS_HOTPLUG(dev_priv)) {
+=======
+	if (I915_HAS_HOTPLUG(dev_priv) && !i915.load_detect_test) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = connector_status_disconnected;
 		goto out;
 	}
 
+<<<<<<< HEAD
 load_detect:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!force) {
 		status = connector->status;
 		goto out;
@@ -833,16 +949,27 @@ load_detect:
 		else if (INTEL_GEN(dev_priv) < 4)
 			status = intel_crt_load_detect(crt,
 				to_intel_crtc(connector->state->crtc)->pipe);
+<<<<<<< HEAD
 		else if (i915_modparams.load_detect_test)
+=======
+		else if (i915.load_detect_test)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = connector_status_disconnected;
 		else
 			status = connector_status_unknown;
 		intel_release_load_detect_pipe(connector, &tmp, ctx);
+<<<<<<< HEAD
 	} else if (ret == 0) {
 		status = connector_status_unknown;
 	} else {
 		status = ret;
 	}
+=======
+	} else if (ret == 0)
+		status = connector_status_unknown;
+	else if (ret < 0)
+		status = ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	intel_display_power_put(dev_priv, intel_encoder->power_domain);
@@ -994,16 +1121,31 @@ void intel_crt_init(struct drm_i915_private *dev_priv)
 
 	crt->base.power_domain = POWER_DOMAIN_PORT_CRT;
 
+<<<<<<< HEAD
 	if (I915_HAS_HOTPLUG(dev_priv) &&
 	    !dmi_check_system(intel_spurious_crt_detect)) {
 		crt->base.hpd_pin = HPD_CRT;
 		crt->base.hotplug = intel_encoder_hotplug;
 	}
 
+=======
+	crt->base.compute_config = intel_crt_compute_config;
+	if (HAS_PCH_SPLIT(dev_priv)) {
+		crt->base.disable = pch_disable_crt;
+		crt->base.post_disable = pch_post_disable_crt;
+	} else {
+		crt->base.disable = intel_disable_crt;
+	}
+	crt->base.enable = intel_enable_crt;
+	if (I915_HAS_HOTPLUG(dev_priv) &&
+	    !dmi_check_system(intel_spurious_crt_detect))
+		crt->base.hpd_pin = HPD_CRT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (HAS_DDI(dev_priv)) {
 		crt->base.port = PORT_E;
 		crt->base.get_config = hsw_crt_get_config;
 		crt->base.get_hw_state = intel_ddi_get_hw_state;
+<<<<<<< HEAD
 		crt->base.compute_config = hsw_crt_compute_config;
 		crt->base.pre_pll_enable = hsw_pre_pll_enable_crt;
 		crt->base.pre_enable = hsw_pre_enable_crt;
@@ -1023,6 +1165,13 @@ void intel_crt_init(struct drm_i915_private *dev_priv)
 		crt->base.get_config = intel_crt_get_config;
 		crt->base.get_hw_state = intel_crt_get_hw_state;
 		crt->base.enable = intel_enable_crt;
+=======
+		crt->base.post_disable = hsw_post_disable_crt;
+	} else {
+		crt->base.port = PORT_NONE;
+		crt->base.get_config = intel_crt_get_config;
+		crt->base.get_hw_state = intel_crt_get_hw_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	intel_connector->get_hw_state = intel_connector_get_hw_state;
 

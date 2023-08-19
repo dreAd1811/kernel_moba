@@ -20,7 +20,10 @@
  * 02110-1301 USA
  */
 
+<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/dma-mapping.h>
 #include <linux/pm_runtime.h>

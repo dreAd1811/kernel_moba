@@ -331,7 +331,11 @@ void i40iw_process_aeq(struct i40iw_device *iwdev)
 		switch (info->ae_id) {
 		case I40IW_AE_LLP_FIN_RECEIVED:
 			if (qp->term_flags)
+<<<<<<< HEAD
 				break;
+=======
+				continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (atomic_inc_return(&iwqp->close_timer_started) == 1) {
 				iwqp->hw_tcp_state = I40IW_TCP_STATE_CLOSE_WAIT;
 				if ((iwqp->hw_tcp_state == I40IW_TCP_STATE_CLOSE_WAIT) &&
@@ -352,15 +356,22 @@ void i40iw_process_aeq(struct i40iw_device *iwdev)
 			else
 				i40iw_cm_disconn(iwqp);
 			break;
+<<<<<<< HEAD
 		case I40IW_AE_BAD_CLOSE:
 			/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case I40IW_AE_RESET_SENT:
 			i40iw_next_iw_state(iwqp, I40IW_QP_STATE_ERROR, 1, 0, 0);
 			i40iw_cm_disconn(iwqp);
 			break;
 		case I40IW_AE_LLP_CONNECTION_RESET:
 			if (atomic_read(&iwqp->close_timer_started))
+<<<<<<< HEAD
 				break;
+=======
+				continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i40iw_cm_disconn(iwqp);
 			break;
 		case I40IW_AE_QP_SUSPEND_COMPLETE:
@@ -387,8 +398,11 @@ void i40iw_process_aeq(struct i40iw_device *iwdev)
 				iwcq->ibcq.event_handler(&ibevent, iwcq->ibcq.cq_context);
 			}
 			break;
+<<<<<<< HEAD
 		case I40IW_AE_LLP_DOUBT_REACHABILITY:
 			break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case I40IW_AE_PRIV_OPERATION_DENIED:
 		case I40IW_AE_STAG_ZERO_INVALID:
 		case I40IW_AE_IB_RREQ_AND_Q1_FULL:
@@ -407,13 +421,22 @@ void i40iw_process_aeq(struct i40iw_device *iwdev)
 		case I40IW_AE_LLP_SEGMENT_TOO_SMALL:
 		case I40IW_AE_LLP_SYN_RECEIVED:
 		case I40IW_AE_LLP_TOO_MANY_RETRIES:
+<<<<<<< HEAD
+=======
+		case I40IW_AE_LLP_DOUBT_REACHABILITY:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case I40IW_AE_LCE_QP_CATASTROPHIC:
 		case I40IW_AE_LCE_FUNCTION_CATASTROPHIC:
 		case I40IW_AE_LCE_CQ_CATASTROPHIC:
 		case I40IW_AE_UDA_XMIT_DGRAM_TOO_LONG:
+<<<<<<< HEAD
 		case I40IW_AE_UDA_XMIT_DGRAM_TOO_SHORT:
 			ctx_info->err_rq_idx_valid = false;
 			/* fall through */
+=======
+		case I40IW_AE_UDA_XMIT_IPADDR_MISMATCH:
+			ctx_info->err_rq_idx_valid = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			if (!info->sq && ctx_info->err_rq_idx_valid) {
 				ctx_info->err_rq_idx = info->wqe_idx;
@@ -435,11 +458,16 @@ void i40iw_process_aeq(struct i40iw_device *iwdev)
 }
 
 /**
+<<<<<<< HEAD
  * i40iw_cqp_manage_abvpt_cmd - send cqp command manage abpvt
+=======
+ * i40iw_manage_apbvt - add or delete tcp port
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @iwdev: iwarp device
  * @accel_local_port: port for apbvt
  * @add_port: add or delete port
  */
+<<<<<<< HEAD
 static enum i40iw_status_code
 i40iw_cqp_manage_abvpt_cmd(struct i40iw_device *iwdev,
 			   u16 accel_local_port,
@@ -453,6 +481,18 @@ i40iw_cqp_manage_abvpt_cmd(struct i40iw_device *iwdev,
 	cqp_request = i40iw_get_cqp_request(&iwdev->cqp, add_port);
 	if (!cqp_request)
 		return I40IW_ERR_NO_MEMORY;
+=======
+int i40iw_manage_apbvt(struct i40iw_device *iwdev, u16 accel_local_port, bool add_port)
+{
+	struct i40iw_apbvt_info *info;
+	enum i40iw_status_code status;
+	struct i40iw_cqp_request *cqp_request;
+	struct cqp_commands_info *cqp_info;
+
+	cqp_request = i40iw_get_cqp_request(&iwdev->cqp, add_port);
+	if (!cqp_request)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cqp_info = &cqp_request->info;
 	info = &cqp_info->in.u.manage_apbvt_entry.info;
@@ -468,11 +508,15 @@ i40iw_cqp_manage_abvpt_cmd(struct i40iw_device *iwdev,
 	status = i40iw_handle_cqp_op(iwdev, cqp_request);
 	if (status)
 		i40iw_pr_err("CQP-OP Manage APBVT entry fail");
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
 /**
+<<<<<<< HEAD
  * i40iw_manage_apbvt - add or delete tcp port
  * @iwdev: iwarp device
  * @accel_local_port: port for apbvt
@@ -516,6 +560,8 @@ enum i40iw_status_code i40iw_manage_apbvt(struct i40iw_device *iwdev,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40iw_manage_arp_cache - manage hw arp cache
  * @iwdev: iwarp device
  * @mac_addr: mac address ptr
@@ -534,7 +580,11 @@ void i40iw_manage_arp_cache(struct i40iw_device *iwdev,
 	int arp_index;
 
 	arp_index = i40iw_arp_table(iwdev, ip_addr, ipv4, mac_addr, action);
+<<<<<<< HEAD
 	if (arp_index == -1)
+=======
+	if (arp_index < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	cqp_request = i40iw_get_cqp_request(&iwdev->cqp, false);
 	if (!cqp_request)
@@ -717,6 +767,7 @@ enum i40iw_status_code i40iw_hw_flush_wqes(struct i40iw_device *iwdev,
 }
 
 /**
+<<<<<<< HEAD
  * i40iw_gen_ae - generate AE
  * @iwdev: iwarp device
  * @qp: qp associated with AE
@@ -750,6 +801,8 @@ void i40iw_gen_ae(struct i40iw_device *iwdev,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40iw_hw_manage_vf_pble_bp - manage vf pbles
  * @iwdev: iwarp device
  * @info: info for managing pble

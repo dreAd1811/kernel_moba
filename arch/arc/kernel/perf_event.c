@@ -336,12 +336,24 @@ static int arc_pmu_add(struct perf_event *event, int flags)
 	struct hw_perf_event *hwc = &event->hw;
 	int idx = hwc->idx;
 
+<<<<<<< HEAD
 	idx = ffz(pmu_cpu->used_mask[0]);
 	if (idx == arc_pmu->n_counters)
 		return -EAGAIN;
 
 	__set_bit(idx, pmu_cpu->used_mask);
 	hwc->idx = idx;
+=======
+	if (__test_and_set_bit(idx, pmu_cpu->used_mask)) {
+		idx = find_first_zero_bit(pmu_cpu->used_mask,
+					  arc_pmu->n_counters);
+		if (idx == arc_pmu->n_counters)
+			return -EAGAIN;
+
+		__set_bit(idx, pmu_cpu->used_mask);
+		hwc->idx = idx;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	write_aux_reg(ARC_REG_PCT_INDEX, idx);
 
@@ -374,12 +386,17 @@ static irqreturn_t arc_pmu_intr(int irq, void *dev)
 	struct perf_sample_data data;
 	struct arc_pmu_cpu *pmu_cpu = this_cpu_ptr(&arc_pmu_cpu);
 	struct pt_regs *regs;
+<<<<<<< HEAD
 	unsigned int active_ints;
+=======
+	int active_ints;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int idx;
 
 	arc_pmu_disable(&arc_pmu->pmu);
 
 	active_ints = read_aux_reg(ARC_REG_PCT_INT_ACT);
+<<<<<<< HEAD
 	if (!active_ints)
 		goto done;
 
@@ -390,6 +407,17 @@ static irqreturn_t arc_pmu_intr(int irq, void *dev)
 		struct hw_perf_event *hwc;
 
 		idx = __ffs(active_ints);
+=======
+
+	regs = get_irq_regs();
+
+	for (idx = 0; idx < arc_pmu->n_counters; idx++) {
+		struct perf_event *event = pmu_cpu->act_counter[idx];
+		struct hw_perf_event *hwc;
+
+		if (!(active_ints & (1 << idx)))
+			continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Reset interrupt flag by writing of 1 */
 		write_aux_reg(ARC_REG_PCT_INT_ACT, 1 << idx);
@@ -402,13 +430,17 @@ static irqreturn_t arc_pmu_intr(int irq, void *dev)
 		write_aux_reg(ARC_REG_PCT_INT_CTRL,
 			read_aux_reg(ARC_REG_PCT_INT_CTRL) | (1 << idx));
 
+<<<<<<< HEAD
 		event = pmu_cpu->act_counter[idx];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hwc = &event->hw;
 
 		WARN_ON_ONCE(hwc->idx != idx);
 
 		arc_perf_event_update(event, &event->hw, event->hw.idx);
 		perf_sample_data_init(&data, 0, hwc->last_period);
+<<<<<<< HEAD
 		if (arc_pmu_event_set_period(event)) {
 			if (perf_event_overflow(event, &data, regs))
 				arc_pmu_stop(event, 0);
@@ -418,6 +450,15 @@ static irqreturn_t arc_pmu_intr(int irq, void *dev)
 	} while (active_ints);
 
 done:
+=======
+		if (!arc_pmu_event_set_period(event))
+			continue;
+
+		if (perf_event_overflow(event, &data, regs))
+			arc_pmu_stop(event, 0);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	arc_pmu_enable(&arc_pmu->pmu);
 
 	return IRQ_HANDLED;
@@ -462,7 +503,10 @@ static int arc_pmu_device_probe(struct platform_device *pdev)
 		pr_err("This core does not have performance counters!\n");
 		return -ENODEV;
 	}
+<<<<<<< HEAD
 	BUILD_BUG_ON(ARC_PERF_MAX_COUNTERS > 32);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(pct_bcr.c > ARC_PERF_MAX_COUNTERS);
 
 	READ_BCR(ARC_REG_CC_BUILD, cc_bcr);
@@ -490,8 +534,13 @@ static int arc_pmu_device_probe(struct platform_device *pdev)
 	/* loop thru all available h/w condition indexes */
 	for (j = 0; j < cc_bcr.c; j++) {
 		write_aux_reg(ARC_REG_CC_INDEX, j);
+<<<<<<< HEAD
 		cc_name.indiv.word0 = read_aux_reg(ARC_REG_CC_NAME0);
 		cc_name.indiv.word1 = read_aux_reg(ARC_REG_CC_NAME1);
+=======
+		cc_name.indiv.word0 = le32_to_cpu(read_aux_reg(ARC_REG_CC_NAME0));
+		cc_name.indiv.word1 = le32_to_cpu(read_aux_reg(ARC_REG_CC_NAME1));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* See if it has been mapped to a perf event_id */
 		for (i = 0; i < ARRAY_SIZE(arc_pmu_ev_hw_map); i++) {

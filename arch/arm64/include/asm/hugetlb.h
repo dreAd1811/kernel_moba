@@ -22,7 +22,11 @@
 
 static inline pte_t huge_ptep_get(pte_t *ptep)
 {
+<<<<<<< HEAD
 	return READ_ONCE(*ptep);
+=======
+	return *ptep;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 

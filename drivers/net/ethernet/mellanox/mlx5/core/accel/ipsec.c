@@ -37,11 +37,31 @@
 #include "mlx5_core.h"
 #include "fpga/ipsec.h"
 
+<<<<<<< HEAD
+=======
+void *mlx5_accel_ipsec_sa_cmd_exec(struct mlx5_core_dev *mdev,
+				   struct mlx5_accel_ipsec_sa *cmd)
+{
+	if (!MLX5_IPSEC_DEV(mdev))
+		return ERR_PTR(-EOPNOTSUPP);
+
+	return mlx5_fpga_ipsec_sa_cmd_exec(mdev, cmd);
+}
+
+int mlx5_accel_ipsec_sa_cmd_wait(void *ctx)
+{
+	return mlx5_fpga_ipsec_sa_cmd_wait(ctx);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u32 mlx5_accel_ipsec_device_caps(struct mlx5_core_dev *mdev)
 {
 	return mlx5_fpga_ipsec_device_caps(mdev);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mlx5_accel_ipsec_device_caps);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unsigned int mlx5_accel_ipsec_counters_count(struct mlx5_core_dev *mdev)
 {
@@ -54,6 +74,7 @@ int mlx5_accel_ipsec_counters_read(struct mlx5_core_dev *mdev, u64 *counters,
 	return mlx5_fpga_ipsec_counters_read(mdev, counters, count);
 }
 
+<<<<<<< HEAD
 void *mlx5_accel_esp_create_hw_context(struct mlx5_core_dev *mdev,
 				       struct mlx5_accel_esp_xfrm *xfrm,
 				       const __be32 saddr[4],
@@ -69,6 +90,8 @@ void mlx5_accel_esp_free_hw_context(void *context)
 	mlx5_fpga_ipsec_delete_sa_ctx(context);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_accel_ipsec_init(struct mlx5_core_dev *mdev)
 {
 	return mlx5_fpga_ipsec_init(mdev);
@@ -78,6 +101,7 @@ void mlx5_accel_ipsec_cleanup(struct mlx5_core_dev *mdev)
 {
 	mlx5_fpga_ipsec_cleanup(mdev);
 }
+<<<<<<< HEAD
 
 struct mlx5_accel_esp_xfrm *
 mlx5_accel_esp_create_xfrm(struct mlx5_core_dev *mdev,
@@ -107,3 +131,5 @@ int mlx5_accel_esp_modify_xfrm(struct mlx5_accel_esp_xfrm *xfrm,
 	return mlx5_fpga_esp_modify_xfrm(xfrm, attrs);
 }
 EXPORT_SYMBOL_GPL(mlx5_accel_esp_modify_xfrm);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

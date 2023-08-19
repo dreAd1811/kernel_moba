@@ -158,8 +158,12 @@ static void qed_ll2_kill_buffers(struct qed_dev *cdev)
 		qed_ll2_dealloc_buffer(cdev, buffer);
 }
 
+<<<<<<< HEAD
 static void qed_ll2b_complete_rx_packet(void *cxt,
 					struct qed_ll2_comp_rx_data *data)
+=======
+void qed_ll2b_complete_rx_packet(void *cxt, struct qed_ll2_comp_rx_data *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_hwfn *p_hwfn = cxt;
 	struct qed_ll2_buffer *buffer = data->cookie;
@@ -300,7 +304,10 @@ static void qed_ll2_txq_flush(struct qed_hwfn *p_hwfn, u8 connection_handle)
 	struct qed_ll2_tx_packet *p_pkt = NULL;
 	struct qed_ll2_info *p_ll2_conn;
 	struct qed_ll2_tx_queue *p_tx;
+<<<<<<< HEAD
 	unsigned long flags = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t tx_frag;
 
 	p_ll2_conn = qed_ll2_handle_sanity_inactive(p_hwfn, connection_handle);
@@ -309,7 +316,10 @@ static void qed_ll2_txq_flush(struct qed_hwfn *p_hwfn, u8 connection_handle)
 
 	p_tx = &p_ll2_conn->tx_queue;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&p_tx->lock, flags);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (!list_empty(&p_tx->active_descq)) {
 		p_pkt = list_first_entry(&p_tx->active_descq,
 					 struct qed_ll2_tx_packet, list_entry);
@@ -319,7 +329,10 @@ static void qed_ll2_txq_flush(struct qed_hwfn *p_hwfn, u8 connection_handle)
 		list_del(&p_pkt->list_entry);
 		b_last_packet = list_empty(&p_tx->active_descq);
 		list_add_tail(&p_pkt->list_entry, &p_tx->free_descq);
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&p_tx->lock, flags);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (p_ll2_conn->input.conn_type == QED_LL2_TYPE_OOO) {
 			struct qed_ooo_buffer *p_buffer;
 
@@ -339,9 +352,13 @@ static void qed_ll2_txq_flush(struct qed_hwfn *p_hwfn, u8 connection_handle)
 						      b_last_frag,
 						      b_last_packet);
 		}
+<<<<<<< HEAD
 		spin_lock_irqsave(&p_tx->lock, flags);
 	}
 	spin_unlock_irqrestore(&p_tx->lock, flags);
+=======
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qed_ll2_txq_completion(struct qed_hwfn *p_hwfn, void *p_cookie)
@@ -419,9 +436,12 @@ static void qed_ll2_rxq_parse_gsi(struct qed_hwfn *p_hwfn,
 	data->opaque_data_0 = le32_to_cpu(p_cqe->rx_cqe_gsi.src_mac_addrhi);
 	data->opaque_data_1 = le16_to_cpu(p_cqe->rx_cqe_gsi.src_mac_addrlo);
 	data->u.data_length_error = p_cqe->rx_cqe_gsi.data_length_error;
+<<<<<<< HEAD
 	data->qp_id = le16_to_cpu(p_cqe->rx_cqe_gsi.qp_id);
 
 	data->src_qp = le32_to_cpu(p_cqe->rx_cqe_gsi.src_qp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qed_ll2_rxq_parse_reg(struct qed_hwfn *p_hwfn,
@@ -429,7 +449,10 @@ static void qed_ll2_rxq_parse_reg(struct qed_hwfn *p_hwfn,
 				  struct qed_ll2_comp_rx_data *data)
 {
 	data->parse_flags = le16_to_cpu(p_cqe->rx_cqe_fp.parse_flags.flags);
+<<<<<<< HEAD
 	data->err_flags = le16_to_cpu(p_cqe->rx_cqe_fp.err_flags.flags);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->length.packet_length =
 	    le16_to_cpu(p_cqe->rx_cqe_fp.packet_length);
 	data->vlan = le16_to_cpu(p_cqe->rx_cqe_fp.vlan);
@@ -439,6 +462,7 @@ static void qed_ll2_rxq_parse_reg(struct qed_hwfn *p_hwfn,
 }
 
 static int
+<<<<<<< HEAD
 qed_ll2_handle_slowpath(struct qed_hwfn *p_hwfn,
 			struct qed_ll2_info *p_ll2_conn,
 			union core_rx_cqe_union *p_cqe,
@@ -474,6 +498,8 @@ qed_ll2_handle_slowpath(struct qed_hwfn *p_hwfn,
 }
 
 static int
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 qed_ll2_rxq_handle_completion(struct qed_hwfn *p_hwfn,
 			      struct qed_ll2_info *p_ll2_conn,
 			      union core_rx_cqe_union *p_cqe,
@@ -546,8 +572,13 @@ static int qed_ll2_rxq_completion(struct qed_hwfn *p_hwfn, void *cookie)
 
 		switch (cqe->rx_cqe_sp.type) {
 		case CORE_RX_CQE_TYPE_SLOW_PATH:
+<<<<<<< HEAD
 			rc = qed_ll2_handle_slowpath(p_hwfn, p_ll2_conn,
 						     cqe, &flags);
+=======
+			DP_NOTICE(p_hwfn, "LL2 - unexpected Rx CQE slowpath\n");
+			rc = -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case CORE_RX_CQE_TYPE_GSI_OFFLOAD:
 		case CORE_RX_CQE_TYPE_REGULAR:
@@ -569,7 +600,10 @@ static void qed_ll2_rxq_flush(struct qed_hwfn *p_hwfn, u8 connection_handle)
 	struct qed_ll2_info *p_ll2_conn = NULL;
 	struct qed_ll2_rx_packet *p_pkt = NULL;
 	struct qed_ll2_rx_queue *p_rx;
+<<<<<<< HEAD
 	unsigned long flags = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p_ll2_conn = qed_ll2_handle_sanity_inactive(p_hwfn, connection_handle);
 	if (!p_ll2_conn)
@@ -577,14 +611,22 @@ static void qed_ll2_rxq_flush(struct qed_hwfn *p_hwfn, u8 connection_handle)
 
 	p_rx = &p_ll2_conn->rx_queue;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&p_rx->lock, flags);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (!list_empty(&p_rx->active_descq)) {
 		p_pkt = list_first_entry(&p_rx->active_descq,
 					 struct qed_ll2_rx_packet, list_entry);
 		if (!p_pkt)
 			break;
+<<<<<<< HEAD
 		list_move_tail(&p_pkt->list_entry, &p_rx->free_descq);
 		spin_unlock_irqrestore(&p_rx->lock, flags);
+=======
+
+		list_move_tail(&p_pkt->list_entry, &p_rx->free_descq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (p_ll2_conn->input.conn_type == QED_LL2_TYPE_OOO) {
 			struct qed_ooo_buffer *p_buffer;
@@ -603,6 +645,7 @@ static void qed_ll2_rxq_flush(struct qed_hwfn *p_hwfn, u8 connection_handle)
 						      cookie,
 						      rx_buf_addr, b_last);
 		}
+<<<<<<< HEAD
 		spin_lock_irqsave(&p_rx->lock, flags);
 	}
 	spin_unlock_irqrestore(&p_rx->lock, flags);
@@ -627,6 +670,19 @@ qed_ll2_lb_rxq_handler_slowpath(struct qed_hwfn *p_hwfn,
 	qed_ooo_release_connection_isles(p_hwfn, p_hwfn->p_ooo_info, cid);
 
 	return true;
+=======
+	}
+}
+
+static u8 qed_ll2_convert_rx_parse_to_tx_flags(u16 parse_flags)
+{
+	u8 bd_flags = 0;
+
+	if (GET_FIELD(parse_flags, PARSING_AND_ERR_FLAGS_TAG8021QEXIST))
+		SET_FIELD(bd_flags, CORE_TX_BD_DATA_VLAN_INSERTION, 1);
+
+	return bd_flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qed_ll2_lb_rxq_handler(struct qed_hwfn *p_hwfn,
@@ -655,11 +711,14 @@ static int qed_ll2_lb_rxq_handler(struct qed_hwfn *p_hwfn,
 		cq_old_idx = qed_chain_get_cons_idx(&p_rx->rcq_chain);
 		cqe_type = cqe->rx_cqe_sp.type;
 
+<<<<<<< HEAD
 		if (cqe_type == CORE_RX_CQE_TYPE_SLOW_PATH)
 			if (qed_ll2_lb_rxq_handler_slowpath(p_hwfn,
 							    &cqe->rx_cqe_sp))
 				continue;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cqe_type != CORE_RX_CQE_TYPE_REGULAR) {
 			DP_NOTICE(p_hwfn,
 				  "Got a non-regular LB LL2 completion [type 0x%02x]\n",
@@ -777,6 +836,10 @@ qed_ooo_submit_tx_buffers(struct qed_hwfn *p_hwfn,
 	struct qed_ooo_buffer *p_buffer;
 	u16 l4_hdr_offset_w;
 	dma_addr_t first_frag;
+<<<<<<< HEAD
+=======
+	u16 parse_flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 bd_flags;
 	int rc;
 
@@ -788,6 +851,11 @@ qed_ooo_submit_tx_buffers(struct qed_hwfn *p_hwfn,
 
 		first_frag = p_buffer->rx_buffer_phys_addr +
 			     p_buffer->placement_offset;
+<<<<<<< HEAD
+=======
+		parse_flags = p_buffer->parse_flags;
+		bd_flags = qed_ll2_convert_rx_parse_to_tx_flags(parse_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		SET_FIELD(bd_flags, CORE_TX_BD_DATA_FORCE_VLAN_MODE, 1);
 		SET_FIELD(bd_flags, CORE_TX_BD_DATA_L4_PROTOCOL, 1);
 
@@ -837,9 +905,12 @@ static int qed_ll2_lb_rxq_completion(struct qed_hwfn *p_hwfn, void *p_cookie)
 	struct qed_ll2_info *p_ll2_conn = (struct qed_ll2_info *)p_cookie;
 	int rc;
 
+<<<<<<< HEAD
 	if (!QED_LL2_RX_REGISTERED(p_ll2_conn))
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = qed_ll2_lb_rxq_handler(p_hwfn, p_ll2_conn);
 	if (rc)
 		return rc;
@@ -860,9 +931,12 @@ static int qed_ll2_lb_txq_completion(struct qed_hwfn *p_hwfn, void *p_cookie)
 	u16 new_idx = 0, num_bds = 0;
 	int rc;
 
+<<<<<<< HEAD
 	if (!QED_LL2_TX_REGISTERED(p_ll2_conn))
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	new_idx = le16_to_cpu(*p_tx->p_fw_cons);
 	num_bds = ((s16)new_idx - (s16)p_tx->bds_idx);
 
@@ -966,6 +1040,7 @@ static int qed_sp_ll2_rx_queue_start(struct qed_hwfn *p_hwfn,
 		       qed_chain_get_pbl_phys(&p_rx->rcq_chain));
 
 	p_ramrod->drop_ttl0_flg = p_ll2_conn->input.rx_drop_ttl0_flg;
+<<<<<<< HEAD
 	p_ramrod->inner_vlan_stripping_en =
 		p_ll2_conn->input.rx_vlan_removal_en;
 
@@ -978,6 +1053,15 @@ static int qed_sp_ll2_rx_queue_start(struct qed_hwfn *p_hwfn,
 	if (test_bit(QED_MF_LL2_NON_UNICAST, &p_hwfn->cdev->mf_bits) &&
 	    p_ramrod->main_func_queue && conn_type != QED_LL2_TYPE_ROCE &&
 	    conn_type != QED_LL2_TYPE_IWARP) {
+=======
+	p_ramrod->inner_vlan_removal_en = p_ll2_conn->input.rx_vlan_removal_en;
+	p_ramrod->queue_id = p_ll2_conn->queue_id;
+	p_ramrod->main_func_queue = (conn_type == QED_LL2_TYPE_OOO) ? 0 : 1;
+
+	if ((IS_MF_DEFAULT(p_hwfn) || IS_MF_SI(p_hwfn)) &&
+	    p_ramrod->main_func_queue && (conn_type != QED_LL2_TYPE_ROCE) &&
+	    (conn_type != QED_LL2_TYPE_IWARP)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p_ramrod->mf_si_bcast_accept_all = 1;
 		p_ramrod->mf_si_mcast_accept_all = 1;
 	} else {
@@ -1184,7 +1268,10 @@ static int qed_ll2_acquire_connection_tx(struct qed_hwfn *p_hwfn,
 					 struct qed_ll2_info *p_ll2_info)
 {
 	struct qed_ll2_tx_packet *p_descq;
+<<<<<<< HEAD
 	u32 desc_size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 capacity;
 	int rc = 0;
 
@@ -1202,17 +1289,26 @@ static int qed_ll2_acquire_connection_tx(struct qed_hwfn *p_hwfn,
 		goto out;
 
 	capacity = qed_chain_get_capacity(&p_ll2_info->tx_queue.txq_chain);
+<<<<<<< HEAD
 	/* First element is part of the packet, rest are flexibly added */
 	desc_size = (sizeof(*p_descq) +
 		     (p_ll2_info->input.tx_max_bds_per_packet - 1) *
 		     sizeof(p_descq->bds_set));
 
 	p_descq = kcalloc(capacity, desc_size, GFP_KERNEL);
+=======
+	p_descq = kcalloc(capacity, sizeof(struct qed_ll2_tx_packet),
+			  GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!p_descq) {
 		rc = -ENOMEM;
 		goto out;
 	}
+<<<<<<< HEAD
 	p_ll2_info->tx_queue.descq_mem = p_descq;
+=======
+	p_ll2_info->tx_queue.descq_array = p_descq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DP_VERBOSE(p_hwfn, QED_MSG_LL2,
 		   "Allocated LL2 Txq [Type %08x] with 0x%08x buffers\n",
@@ -1293,7 +1389,10 @@ qed_ll2_set_cbs(struct qed_ll2_info *p_ll2_info, const struct qed_ll2_cbs *cbs)
 	p_ll2_info->cbs.rx_release_cb = cbs->rx_release_cb;
 	p_ll2_info->cbs.tx_comp_cb = cbs->tx_comp_cb;
 	p_ll2_info->cbs.tx_release_cb = cbs->tx_release_cb;
+<<<<<<< HEAD
 	p_ll2_info->cbs.slowpath_cb = cbs->slowpath_cb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	p_ll2_info->cbs.cookie = cbs->cookie;
 
 	return 0;
@@ -1343,6 +1442,7 @@ int qed_ll2_acquire_connection(void *cxt, struct qed_ll2_acquire_data *data)
 
 	memcpy(&p_ll2_info->input, &data->input, sizeof(p_ll2_info->input));
 
+<<<<<<< HEAD
 	switch (data->input.tx_dest) {
 	case QED_LL2_TX_DEST_NW:
 		p_ll2_info->tx_dest = CORE_TX_DEST_NW;
@@ -1362,6 +1462,10 @@ int qed_ll2_acquire_connection(void *cxt, struct qed_ll2_acquire_data *data)
 		p_ll2_info->main_func_queue = false;
 	else
 		p_ll2_info->main_func_queue = true;
+=======
+	p_ll2_info->tx_dest = (data->input.tx_dest == QED_LL2_TX_DEST_NW) ?
+			      CORE_TX_DEST_NW : CORE_TX_DEST_LB;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Correct maximum number of Tx BDs */
 	p_tx_max = &p_ll2_info->input.tx_max_bds_per_packet;
@@ -1461,13 +1565,19 @@ int qed_ll2_establish_connection(void *cxt, u8 connection_handle)
 {
 	struct qed_hwfn *p_hwfn = cxt;
 	struct qed_ll2_info *p_ll2_conn;
+<<<<<<< HEAD
 	struct qed_ll2_tx_packet *p_pkt;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qed_ll2_rx_queue *p_rx;
 	struct qed_ll2_tx_queue *p_tx;
 	struct qed_ptt *p_ptt;
 	int rc = -EINVAL;
 	u32 i, capacity;
+<<<<<<< HEAD
 	u32 desc_size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 qid;
 
 	p_ptt = qed_ptt_acquire(p_hwfn);
@@ -1501,6 +1611,7 @@ int qed_ll2_establish_connection(void *cxt, u8 connection_handle)
 	INIT_LIST_HEAD(&p_tx->sending_descq);
 	spin_lock_init(&p_tx->lock);
 	capacity = qed_chain_get_capacity(&p_tx->txq_chain);
+<<<<<<< HEAD
 	/* First element is part of the packet, rest are flexibly added */
 	desc_size = (sizeof(*p_pkt) +
 		     (p_ll2_conn->input.tx_max_bds_per_packet - 1) *
@@ -1510,6 +1621,11 @@ int qed_ll2_establish_connection(void *cxt, u8 connection_handle)
 		p_pkt = p_tx->descq_mem + desc_size * i;
 		list_add_tail(&p_pkt->list_entry, &p_tx->free_descq);
 	}
+=======
+	for (i = 0; i < capacity; i++)
+		list_add_tail(&p_tx->descq_array[i].list_entry,
+			      &p_tx->free_descq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	p_tx->cur_completing_bd_idx = 0;
 	p_tx->bds_idx = 0;
 	p_tx->b_completing_packet = false;
@@ -1546,12 +1662,20 @@ int qed_ll2_establish_connection(void *cxt, u8 connection_handle)
 	qed_ll2_establish_connection_ooo(p_hwfn, p_ll2_conn);
 
 	if (p_ll2_conn->input.conn_type == QED_LL2_TYPE_FCOE) {
+<<<<<<< HEAD
 		if (!test_bit(QED_MF_UFP_SPECIFIC, &p_hwfn->cdev->mf_bits))
 			qed_llh_add_protocol_filter(p_hwfn, p_ptt,
 						    ETH_P_FCOE, 0,
 						    QED_LLH_FILTER_ETHERTYPE);
 		qed_llh_add_protocol_filter(p_hwfn, p_ptt,
 					    ETH_P_FIP, 0,
+=======
+		qed_llh_add_protocol_filter(p_hwfn, p_ptt,
+					    0x8906, 0,
+					    QED_LLH_FILTER_ETHERTYPE);
+		qed_llh_add_protocol_filter(p_hwfn, p_ptt,
+					    0x8914, 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    QED_LLH_FILTER_ETHERTYPE);
 	}
 
@@ -1694,6 +1818,7 @@ qed_ll2_prepare_tx_packet_set_bd(struct qed_hwfn *p_hwfn,
 	roce_flavor = (pkt->qed_roce_flavor == QED_LL2_ROCE) ? CORE_ROCE
 							     : CORE_RROCE;
 
+<<<<<<< HEAD
 	switch (pkt->tx_dest) {
 	case QED_LL2_TX_DEST_NW:
 		tx_dest = CORE_TX_DEST_NW;
@@ -1721,6 +1846,13 @@ qed_ll2_prepare_tx_packet_set_bd(struct qed_hwfn *p_hwfn,
 			pkt->remove_stag = true;
 	}
 
+=======
+	tx_dest = (pkt->tx_dest == QED_LL2_TX_DEST_NW) ? CORE_TX_DEST_NW
+						       : CORE_TX_DEST_LB;
+
+	start_bd = (struct core_tx_bd *)qed_chain_produce(p_tx_chain);
+	start_bd->nw_vlan_or_lb_echo = cpu_to_le16(pkt->vlan);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SET_FIELD(start_bd->bitfield1, CORE_TX_BD_L4_HDR_OFFSET_W,
 		  cpu_to_le16(pkt->l4_hdr_offset_w));
 	SET_FIELD(start_bd->bitfield1, CORE_TX_BD_TX_DST, tx_dest);
@@ -1728,12 +1860,15 @@ qed_ll2_prepare_tx_packet_set_bd(struct qed_hwfn *p_hwfn,
 	SET_FIELD(bd_data, CORE_TX_BD_DATA_START_BD, 0x1);
 	SET_FIELD(bd_data, CORE_TX_BD_DATA_NBDS, pkt->num_of_bds);
 	SET_FIELD(bd_data, CORE_TX_BD_DATA_ROCE_FLAV, roce_flavor);
+<<<<<<< HEAD
 	SET_FIELD(bd_data, CORE_TX_BD_DATA_IP_CSUM, !!(pkt->enable_ip_cksum));
 	SET_FIELD(bd_data, CORE_TX_BD_DATA_L4_CSUM, !!(pkt->enable_l4_cksum));
 	SET_FIELD(bd_data, CORE_TX_BD_DATA_IP_LEN, !!(pkt->calc_ip_len));
 	SET_FIELD(bd_data, CORE_TX_BD_DATA_DISABLE_STAG_INSERTION,
 		  !!(pkt->remove_stag));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	start_bd->bd_data.as_bitfield = cpu_to_le16(bd_data);
 	DMA_REGPAIR_LE(start_bd->addr, pkt->first_frag);
 	start_bd->nbytes = cpu_to_le16(pkt->first_frag_len);
@@ -1841,7 +1976,11 @@ int qed_ll2_prepare_tx_packet(void *cxt,
 	p_tx = &p_ll2_conn->tx_queue;
 	p_tx_chain = &p_tx->txq_chain;
 
+<<<<<<< HEAD
 	if (pkt->num_of_bds > p_ll2_conn->input.tx_max_bds_per_packet)
+=======
+	if (pkt->num_of_bds > CORE_LL2_TX_MAX_BDS_PER_PACKET)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 
 	spin_lock_irqsave(&p_tx->lock, flags);
@@ -1933,6 +2072,7 @@ int qed_ll2_terminate_connection(void *cxt, u8 connection_handle)
 
 	/* Stop Tx & Rx of connection, if needed */
 	if (QED_LL2_TX_REGISTERED(p_ll2_conn)) {
+<<<<<<< HEAD
 		p_ll2_conn->tx_queue.b_cb_registred = false;
 		smp_wmb(); /* Make sure this is seen by ll2_lb_rxq_completion */
 		rc = qed_sp_ll2_tx_queue_stop(p_hwfn, p_ll2_conn);
@@ -1952,18 +2092,39 @@ int qed_ll2_terminate_connection(void *cxt, u8 connection_handle)
 
 		qed_ll2_rxq_flush(p_hwfn, connection_handle);
 		qed_int_unregister_cb(p_hwfn, p_ll2_conn->rx_queue.rx_sb_index);
+=======
+		rc = qed_sp_ll2_tx_queue_stop(p_hwfn, p_ll2_conn);
+		if (rc)
+			goto out;
+		qed_ll2_txq_flush(p_hwfn, connection_handle);
+	}
+
+	if (QED_LL2_RX_REGISTERED(p_ll2_conn)) {
+		rc = qed_sp_ll2_rx_queue_stop(p_hwfn, p_ll2_conn);
+		if (rc)
+			goto out;
+		qed_ll2_rxq_flush(p_hwfn, connection_handle);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (p_ll2_conn->input.conn_type == QED_LL2_TYPE_OOO)
 		qed_ooo_release_all_isles(p_hwfn, p_hwfn->p_ooo_info);
 
 	if (p_ll2_conn->input.conn_type == QED_LL2_TYPE_FCOE) {
+<<<<<<< HEAD
 		if (!test_bit(QED_MF_UFP_SPECIFIC, &p_hwfn->cdev->mf_bits))
 			qed_llh_remove_protocol_filter(p_hwfn, p_ptt,
 						       ETH_P_FCOE, 0,
 						      QED_LLH_FILTER_ETHERTYPE);
 		qed_llh_remove_protocol_filter(p_hwfn, p_ptt,
 					       ETH_P_FIP, 0,
+=======
+		qed_llh_remove_protocol_filter(p_hwfn, p_ptt,
+					       0x8906, 0,
+					       QED_LLH_FILTER_ETHERTYPE);
+		qed_llh_remove_protocol_filter(p_hwfn, p_ptt,
+					       0x8914, 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       QED_LLH_FILTER_ETHERTYPE);
 	}
 
@@ -2000,7 +2161,21 @@ void qed_ll2_release_connection(void *cxt, u8 connection_handle)
 	if (!p_ll2_conn)
 		return;
 
+<<<<<<< HEAD
 	kfree(p_ll2_conn->tx_queue.descq_mem);
+=======
+	if (QED_LL2_RX_REGISTERED(p_ll2_conn)) {
+		p_ll2_conn->rx_queue.b_cb_registred = false;
+		qed_int_unregister_cb(p_hwfn, p_ll2_conn->rx_queue.rx_sb_index);
+	}
+
+	if (QED_LL2_TX_REGISTERED(p_ll2_conn)) {
+		p_ll2_conn->tx_queue.b_cb_registred = false;
+		qed_int_unregister_cb(p_hwfn, p_ll2_conn->tx_queue.tx_sb_index);
+	}
+
+	kfree(p_ll2_conn->tx_queue.descq_array);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qed_chain_free(p_hwfn->cdev, &p_ll2_conn->tx_queue.txq_chain);
 
 	kfree(p_ll2_conn->rx_queue.descq_array);
@@ -2349,7 +2524,12 @@ static int qed_ll2_start(struct qed_dev *cdev, struct qed_ll2_params *params)
 		goto release_terminate;
 	}
 
+<<<<<<< HEAD
 	if (QED_LEADING_HWFN(cdev)->hw_info.personality == QED_PCI_ISCSI) {
+=======
+	if (cdev->hwfns[0].hw_info.personality == QED_PCI_ISCSI &&
+	    cdev->hwfns[0].pf_params.iscsi_pf_params.ooo_enable) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DP_VERBOSE(cdev, QED_MSG_STORAGE, "Starting OOO LL2 queue\n");
 		rc = qed_ll2_start_ooo(cdev, params);
 		if (rc) {
@@ -2407,7 +2587,12 @@ static int qed_ll2_stop(struct qed_dev *cdev)
 	qed_ptt_release(QED_LEADING_HWFN(cdev), p_ptt);
 	eth_zero_addr(cdev->ll2_mac_address);
 
+<<<<<<< HEAD
 	if (QED_LEADING_HWFN(cdev)->hw_info.personality == QED_PCI_ISCSI)
+=======
+	if (cdev->hwfns[0].hw_info.personality == QED_PCI_ISCSI &&
+	    cdev->hwfns[0].pf_params.iscsi_pf_params.ooo_enable)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qed_ll2_stop_ooo(cdev);
 
 	rc = qed_ll2_terminate_connection(QED_LEADING_HWFN(cdev),
@@ -2425,8 +2610,12 @@ fail:
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 static int qed_ll2_start_xmit(struct qed_dev *cdev, struct sk_buff *skb,
 			      unsigned long xmit_flags)
+=======
+static int qed_ll2_start_xmit(struct qed_dev *cdev, struct sk_buff *skb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_ll2_tx_pkt_info pkt;
 	const skb_frag_t *frag;
@@ -2436,7 +2625,11 @@ static int qed_ll2_start_xmit(struct qed_dev *cdev, struct sk_buff *skb,
 	u16 vlan = 0;
 
 	if (unlikely(skb->ip_summed != CHECKSUM_NONE)) {
+<<<<<<< HEAD
 		DP_INFO(cdev, "Cannot transmit a checksummed packet\n");
+=======
+		DP_INFO(cdev, "Cannot transmit a checksumed packet\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -2476,9 +2669,12 @@ static int qed_ll2_start_xmit(struct qed_dev *cdev, struct sk_buff *skb,
 	pkt.first_frag = mapping;
 	pkt.first_frag_len = skb->len;
 	pkt.cookie = skb;
+<<<<<<< HEAD
 	if (test_bit(QED_MF_UFP_SPECIFIC, &cdev->mf_bits) &&
 	    test_bit(QED_LL2_XMIT_FLAGS_FIP_DISCOVERY, &xmit_flags))
 		pkt.remove_stag = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* qed_ll2_prepare_tx_packet() may actually send the packet if
 	 * there are no fragments in the skb and subsequently the completion

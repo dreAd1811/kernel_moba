@@ -34,7 +34,11 @@
 #define REG_PR_FMT	"%04x=%08x"
 #define REG_PR_ARG	__entry->reg, __entry->val
 
+<<<<<<< HEAD
 DECLARE_EVENT_CLASS(dev_reg_evtu,
+=======
+DECLARE_EVENT_CLASS(dev_reg_evt,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TP_PROTO(struct mt7601u_dev *dev, u32 reg, u32 val),
 	TP_ARGS(dev, reg, val),
 	TP_STRUCT__entry(
@@ -51,12 +55,20 @@ DECLARE_EVENT_CLASS(dev_reg_evtu,
 	)
 );
 
+<<<<<<< HEAD
 DEFINE_EVENT(dev_reg_evtu, reg_read,
+=======
+DEFINE_EVENT(dev_reg_evt, reg_read,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TP_PROTO(struct mt7601u_dev *dev, u32 reg, u32 val),
 	TP_ARGS(dev, reg, val)
 );
 
+<<<<<<< HEAD
 DEFINE_EVENT(dev_reg_evtu, reg_write,
+=======
+DEFINE_EVENT(dev_reg_evt, reg_write,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TP_PROTO(struct mt7601u_dev *dev, u32 reg, u32 val),
 	TP_ARGS(dev, reg, val)
 );

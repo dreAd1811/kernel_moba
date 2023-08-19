@@ -207,6 +207,16 @@ directory. Here's a description of each file in that directory:
 	to the file do not need to be in ordered form but reads from the file
 	will be ordered in the same way as the actions_avail sysctl.
 
+<<<<<<< HEAD
+=======
+	It is important to note that the value of ``actions_logged`` does not
+	prevent certain actions from being logged when the audit subsystem is
+	configured to audit a task. If the action is not found in
+	``actions_logged`` list, the final decision on whether to audit the
+	action for that task is ultimately left up to the audit subsystem to
+	decide for all seccomp return values other than ``SECCOMP_RET_ALLOW``.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	The ``allow`` string is not accepted in the ``actions_logged`` sysctl
 	as it is not possible to log ``SECCOMP_RET_ALLOW`` actions. Attempting
 	to write ``allow`` to the sysctl will result in an EINVAL being

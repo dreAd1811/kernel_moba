@@ -373,6 +373,11 @@ static int st33zp24_send(struct tpm_chip *chip, unsigned char *buf,
 	int ret;
 	u8 data;
 
+<<<<<<< HEAD
+=======
+	if (!chip)
+		return -EBUSY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (len < TPM_HEADER_SIZE)
 		return -EBUSY;
 

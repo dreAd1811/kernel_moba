@@ -39,7 +39,10 @@
 #include "smu/smu_7_1_2_sh_mask.h"
 #include "gca/gfx_8_0_d.h"
 #include "gca/gfx_8_0_sh_mask.h"
+<<<<<<< HEAD
 #include "ivsrcid/ivsrcid_vislands30.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #define GRBM_GFX_INDEX__VCE_INSTANCE__SHIFT	0x04
@@ -87,9 +90,15 @@ static uint64_t vce_v3_0_ring_get_rptr(struct amdgpu_ring *ring)
 	else if (adev->vce.harvest_config == AMDGPU_VCE_HARVEST_VCE0)
 		WREG32(mmGRBM_GFX_INDEX, GET_VCE_INSTANCE(1));
 
+<<<<<<< HEAD
 	if (ring->me == 0)
 		v = RREG32(mmVCE_RB_RPTR);
 	else if (ring->me == 1)
+=======
+	if (ring == &adev->vce.ring[0])
+		v = RREG32(mmVCE_RB_RPTR);
+	else if (ring == &adev->vce.ring[1])
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v = RREG32(mmVCE_RB_RPTR2);
 	else
 		v = RREG32(mmVCE_RB_RPTR3);
@@ -119,9 +128,15 @@ static uint64_t vce_v3_0_ring_get_wptr(struct amdgpu_ring *ring)
 	else if (adev->vce.harvest_config == AMDGPU_VCE_HARVEST_VCE0)
 		WREG32(mmGRBM_GFX_INDEX, GET_VCE_INSTANCE(1));
 
+<<<<<<< HEAD
 	if (ring->me == 0)
 		v = RREG32(mmVCE_RB_WPTR);
 	else if (ring->me == 1)
+=======
+	if (ring == &adev->vce.ring[0])
+		v = RREG32(mmVCE_RB_WPTR);
+	else if (ring == &adev->vce.ring[1])
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v = RREG32(mmVCE_RB_WPTR2);
 	else
 		v = RREG32(mmVCE_RB_WPTR3);
@@ -150,9 +165,15 @@ static void vce_v3_0_ring_set_wptr(struct amdgpu_ring *ring)
 	else if (adev->vce.harvest_config == AMDGPU_VCE_HARVEST_VCE0)
 		WREG32(mmGRBM_GFX_INDEX, GET_VCE_INSTANCE(1));
 
+<<<<<<< HEAD
 	if (ring->me == 0)
 		WREG32(mmVCE_RB_WPTR, lower_32_bits(ring->wptr));
 	else if (ring->me == 1)
+=======
+	if (ring == &adev->vce.ring[0])
+		WREG32(mmVCE_RB_WPTR, lower_32_bits(ring->wptr));
+	else if (ring == &adev->vce.ring[1])
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WREG32(mmVCE_RB_WPTR2, lower_32_bits(ring->wptr));
 	else
 		WREG32(mmVCE_RB_WPTR3, lower_32_bits(ring->wptr));
@@ -389,8 +410,12 @@ static unsigned vce_v3_0_get_harvest_config(struct amdgpu_device *adev)
 	default:
 		if ((adev->asic_type == CHIP_POLARIS10) ||
 		    (adev->asic_type == CHIP_POLARIS11) ||
+<<<<<<< HEAD
 		    (adev->asic_type == CHIP_POLARIS12) ||
 		    (adev->asic_type == CHIP_VEGAM))
+=======
+		    (adev->asic_type == CHIP_POLARIS12))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return AMDGPU_VCE_HARVEST_VCE1;
 
 		return 0;
@@ -423,7 +448,11 @@ static int vce_v3_0_sw_init(void *handle)
 	int r, i;
 
 	/* VCE */
+<<<<<<< HEAD
 	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, VISLANDS30_IV_SRCID_VCE_TRAP, &adev->vce.irq);
+=======
+	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, 167, &adev->vce.irq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -448,8 +477,11 @@ static int vce_v3_0_sw_init(void *handle)
 			return r;
 	}
 
+<<<<<<< HEAD
 	r = amdgpu_vce_entity_init(adev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -838,16 +870,24 @@ out:
 }
 
 static void vce_v3_0_ring_emit_ib(struct amdgpu_ring *ring,
+<<<<<<< HEAD
 		struct amdgpu_ib *ib, unsigned int vmid, bool ctx_switch)
 {
 	amdgpu_ring_write(ring, VCE_CMD_IB_VM);
 	amdgpu_ring_write(ring, vmid);
+=======
+		struct amdgpu_ib *ib, unsigned int vm_id, bool ctx_switch)
+{
+	amdgpu_ring_write(ring, VCE_CMD_IB_VM);
+	amdgpu_ring_write(ring, vm_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_ring_write(ring, lower_32_bits(ib->gpu_addr));
 	amdgpu_ring_write(ring, upper_32_bits(ib->gpu_addr));
 	amdgpu_ring_write(ring, ib->length_dw);
 }
 
 static void vce_v3_0_emit_vm_flush(struct amdgpu_ring *ring,
+<<<<<<< HEAD
 				   unsigned int vmid, uint64_t pd_addr)
 {
 	amdgpu_ring_write(ring, VCE_CMD_UPDATE_PTB);
@@ -856,6 +896,16 @@ static void vce_v3_0_emit_vm_flush(struct amdgpu_ring *ring,
 
 	amdgpu_ring_write(ring, VCE_CMD_FLUSH_TLB);
 	amdgpu_ring_write(ring, vmid);
+=======
+			 unsigned int vm_id, uint64_t pd_addr)
+{
+	amdgpu_ring_write(ring, VCE_CMD_UPDATE_PTB);
+	amdgpu_ring_write(ring, vm_id);
+	amdgpu_ring_write(ring, pd_addr >> 12);
+
+	amdgpu_ring_write(ring, VCE_CMD_FLUSH_TLB);
+	amdgpu_ring_write(ring, vm_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_ring_write(ring, VCE_CMD_END);
 }
 
@@ -945,6 +995,7 @@ static void vce_v3_0_set_ring_funcs(struct amdgpu_device *adev)
 	int i;
 
 	if (adev->asic_type >= CHIP_STONEY) {
+<<<<<<< HEAD
 		for (i = 0; i < adev->vce.num_rings; i++) {
 			adev->vce.ring[i].funcs = &vce_v3_0_ring_vm_funcs;
 			adev->vce.ring[i].me = i;
@@ -955,6 +1006,14 @@ static void vce_v3_0_set_ring_funcs(struct amdgpu_device *adev)
 			adev->vce.ring[i].funcs = &vce_v3_0_ring_phys_funcs;
 			adev->vce.ring[i].me = i;
 		}
+=======
+		for (i = 0; i < adev->vce.num_rings; i++)
+			adev->vce.ring[i].funcs = &vce_v3_0_ring_vm_funcs;
+		DRM_INFO("VCE enabled in VM mode\n");
+	} else {
+		for (i = 0; i < adev->vce.num_rings; i++)
+			adev->vce.ring[i].funcs = &vce_v3_0_ring_phys_funcs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_INFO("VCE enabled in physical mode\n");
 	}
 }

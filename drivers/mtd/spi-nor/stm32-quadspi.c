@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * Driver for stm32 quadspi controller
  *
  * Copyright (C) 2017, STMicroelectronics - All Rights Reserved
@@ -17,6 +18,13 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * This program. If not, see <http://www.gnu.org/licenses/>.
+=======
+ * stm32_quadspi.c
+ *
+ * Copyright (C) 2017, Ludovic Barre
+ *
+ * License terms: GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/clk.h>
 #include <linux/errno.h>
@@ -126,7 +134,10 @@
 #define STM32_MAX_MMAP_SZ	SZ_256M
 #define STM32_MAX_NORCHIP	2
 
+<<<<<<< HEAD
 #define STM32_QSPI_FIFO_SZ	32
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STM32_QSPI_FIFO_TIMEOUT_US 30000
 #define STM32_QSPI_BUSY_TIMEOUT_US 100000
 
@@ -138,7 +149,10 @@ struct stm32_qspi_flash {
 	u32 presc;
 	u32 read_mode;
 	bool registered;
+<<<<<<< HEAD
 	u32 prefetch_limit;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct stm32_qspi {
@@ -287,7 +301,10 @@ static int stm32_qspi_send(struct stm32_qspi_flash *flash,
 {
 	struct stm32_qspi *qspi = flash->qspi;
 	u32 ccr, dcr, cr;
+<<<<<<< HEAD
 	u32 last_byte;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = stm32_qspi_wait_nobusy(qspi);
@@ -330,10 +347,13 @@ static int stm32_qspi_send(struct stm32_qspi_flash *flash,
 		if (err)
 			goto abort;
 		writel_relaxed(FCR_CTCF, qspi->io_base + QUADSPI_FCR);
+<<<<<<< HEAD
 	} else {
 		last_byte = cmd->addr + cmd->len;
 		if (last_byte > flash->prefetch_limit)
 			goto abort;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;
@@ -342,9 +362,13 @@ abort:
 	cr = readl_relaxed(qspi->io_base + QUADSPI_CR) | CR_ABORT;
 	writel_relaxed(cr, qspi->io_base + QUADSPI_CR);
 
+<<<<<<< HEAD
 	if (err)
 		dev_err(qspi->dev, "%s abort err:%d\n", __func__, err);
 
+=======
+	dev_err(qspi->dev, "%s abort err:%d\n", __func__, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -355,7 +379,11 @@ static int stm32_qspi_read_reg(struct spi_nor *nor,
 	struct device *dev = flash->qspi->dev;
 	struct stm32_qspi_cmd cmd;
 
+<<<<<<< HEAD
 	dev_dbg(dev, "read_reg: cmd:%#.2x buf:%pK len:%#x\n", opcode, buf, len);
+=======
+	dev_dbg(dev, "read_reg: cmd:%#.2x buf:%p len:%#x\n", opcode, buf, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&cmd, 0, sizeof(cmd));
 	cmd.opcode = opcode;
@@ -376,7 +404,11 @@ static int stm32_qspi_write_reg(struct spi_nor *nor, u8 opcode,
 	struct device *dev = flash->qspi->dev;
 	struct stm32_qspi_cmd cmd;
 
+<<<<<<< HEAD
 	dev_dbg(dev, "write_reg: cmd:%#.2x buf:%pK len:%#x\n", opcode, buf, len);
+=======
+	dev_dbg(dev, "write_reg: cmd:%#.2x buf:%p len:%#x\n", opcode, buf, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(&cmd, 0, sizeof(cmd));
 	cmd.opcode = opcode;
@@ -398,7 +430,11 @@ static ssize_t stm32_qspi_read(struct spi_nor *nor, loff_t from, size_t len,
 	struct stm32_qspi_cmd cmd;
 	int err;
 
+<<<<<<< HEAD
 	dev_dbg(qspi->dev, "read(%#.2x): buf:%pK from:%#.8x len:%#zx\n",
+=======
+	dev_dbg(qspi->dev, "read(%#.2x): buf:%p from:%#.8x len:%#zx\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nor->read_opcode, buf, (u32)from, len);
 
 	memset(&cmd, 0, sizeof(cmd));
@@ -572,7 +608,10 @@ static int stm32_qspi_flash_setup(struct stm32_qspi *qspi,
 	}
 
 	flash->fsize = FSIZE_VAL(mtd->size);
+<<<<<<< HEAD
 	flash->prefetch_limit = mtd->size - STM32_QSPI_FIFO_SZ;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flash->read_mode = CCR_FMODE_MM;
 	if (mtd->size > qspi->mm_size)
@@ -656,7 +695,11 @@ static int stm32_qspi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	rstc = devm_reset_control_get_exclusive(dev, NULL);
+=======
+	rstc = devm_reset_control_get(dev, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR(rstc)) {
 		reset_control_assert(rstc);
 		udelay(2);

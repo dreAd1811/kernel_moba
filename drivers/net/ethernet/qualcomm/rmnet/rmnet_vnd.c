@@ -1,5 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * RMNET Data virtual network driver
  *
@@ -14,11 +28,19 @@
 #include "rmnet_private.h"
 #include "rmnet_map.h"
 #include "rmnet_vnd.h"
+<<<<<<< HEAD
 #include "rmnet_genl.h"
 #include "rmnet_trace.h"
 
 #include <soc/qcom/qmi_rmnet.h>
 #include <soc/qcom/rmnet_qmi.h>
+=======
+
+#include <soc/qcom/qmi_rmnet.h>
+#include <soc/qcom/rmnet_qmi.h>
+#define CREATE_TRACE_POINTS
+#include <trace/events/rmnet.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* RX/TX Fixup */
 
@@ -117,7 +139,11 @@ static void rmnet_vnd_uninit(struct net_device *dev)
 	gro_cells_destroy(&priv->gro_cells);
 	free_percpu(priv->pcpu_stats);
 
+<<<<<<< HEAD
 	qos = priv->qos_info;
+=======
+	qos = rcu_dereference(priv->qos_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RCU_INIT_POINTER(priv->qos_info, NULL);
 	qmi_rmnet_qos_exit_pre(qos);
 }
@@ -155,17 +181,24 @@ static void rmnet_get_stats64(struct net_device *dev,
 
 static u16 rmnet_vnd_select_queue(struct net_device *dev,
 				  struct sk_buff *skb,
+<<<<<<< HEAD
 				  struct net_device *sb_dev,
 				  select_queue_fallback_t fallback)
 {
 	u64 boost_period = 0;
 	int boost_trigger = 0;
+=======
+				  void *accel_priv,
+				  select_queue_fallback_t fallback)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rmnet_priv *priv = netdev_priv(dev);
 	int txq = 0;
 
 	if (priv->real_dev)
 		txq = qmi_rmnet_get_queue(dev, skb);
 
+<<<<<<< HEAD
 	if (rmnet_core_userspace_connected) {
 		rmnet_update_pid_and_check_boost(task_pid_nr(current),
 						 skb->len,
@@ -176,6 +209,8 @@ static u16 rmnet_vnd_select_queue(struct net_device *dev,
 			set_task_boost(1, boost_period);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (txq < dev->real_num_tx_queues) ? txq : 0;
 }
 
@@ -373,7 +408,12 @@ int rmnet_vnd_newlink(u8 id, struct net_device *rmnet_dev,
 		rmnet_dev->rtnl_link_ops = &rmnet_link_ops;
 
 		priv->mux_id = id;
+<<<<<<< HEAD
 		priv->qos_info = qmi_rmnet_qos_init(real_dev, id);
+=======
+		rcu_assign_pointer(priv->qos_info,
+				   qmi_rmnet_qos_init(real_dev, rmnet_dev, id));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		netdev_dbg(rmnet_dev, "rmnet dev created\n");
 	}
@@ -414,3 +454,11 @@ int rmnet_vnd_do_flow_control(struct net_device *rmnet_dev, int enable)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+int netif_is_rmnet(const struct net_device *dev)
+{
+	return dev->netdev_ops == &rmnet_vnd_ops;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

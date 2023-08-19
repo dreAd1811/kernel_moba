@@ -18,6 +18,7 @@
 #include <linux/io.h>
 #include <linux/mtd/rawnand.h>
 #include <linux/mtd/partitions.h>
+<<<<<<< HEAD
 #include <linux/spi/spi.h>
 #include <linux/spi/flash.h>
 #include <linux/spi/mmc_spi.h>
@@ -28,6 +29,10 @@
 #include <mach/hardware.h>
 #include <mach/irqs.h>
 #include <mach/gpio-ep93xx.h>
+=======
+
+#include <mach/hardware.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach-types.h>
 #include <asm/mach/map.h>
@@ -36,9 +41,12 @@
 #include "soc.h"
 #include "ts72xx.h"
 
+<<<<<<< HEAD
 /*************************************************************************
  * IO map
  *************************************************************************/
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct map_desc ts72xx_io_desc[] __initdata = {
 	{
 		.virtual	= (unsigned long)TS72XX_MODEL_VIRT_BASE,
@@ -55,11 +63,14 @@ static struct map_desc ts72xx_io_desc[] __initdata = {
 		.pfn		= __phys_to_pfn(TS72XX_OPTIONS2_PHYS_BASE),
 		.length		= TS72XX_OPTIONS2_SIZE,
 		.type		= MT_DEVICE,
+<<<<<<< HEAD
 	}, {
 		.virtual	= (unsigned long)TS72XX_CPLDVER_VIRT_BASE,
 		.pfn		= __phys_to_pfn(TS72XX_CPLDVER_PHYS_BASE),
 		.length		= TS72XX_CPLDVER_SIZE,
 		.type		= MT_DEVICE,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 };
 
@@ -136,6 +147,11 @@ static struct platform_nand_data ts72xx_nand_data = {
 		.nr_chips	= 1,
 		.chip_offset	= 0,
 		.chip_delay	= 15,
+<<<<<<< HEAD
+=======
+		.partitions	= ts72xx_nand_parts,
+		.nr_partitions	= ARRAY_SIZE(ts72xx_nand_parts),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.ctrl = {
 		.cmd_ctrl	= ts72xx_nand_hwcontrol,
@@ -159,8 +175,13 @@ static struct platform_device ts72xx_nand_flash = {
 	.num_resources		= ARRAY_SIZE(ts72xx_nand_resource),
 };
 
+<<<<<<< HEAD
 void __init ts72xx_register_flash(struct mtd_partition *parts, int n,
 				  resource_size_t start)
+=======
+
+static void __init ts72xx_register_flash(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * TS7200 has NOR flash all other TS72xx board have NAND flash.
@@ -168,12 +189,25 @@ void __init ts72xx_register_flash(struct mtd_partition *parts, int n,
 	if (board_is_ts7200()) {
 		ep93xx_register_flash(2, EP93XX_CS6_PHYS_BASE, SZ_16M);
 	} else {
+<<<<<<< HEAD
 		ts72xx_nand_resource[0].start = start;
 		ts72xx_nand_resource[0].end = start + SZ_16M - 1;
 
 		ts72xx_nand_data.chip.partitions = parts;
 		ts72xx_nand_data.chip.nr_partitions = n;
 
+=======
+		resource_size_t start;
+
+		if (is_ts9420_installed())
+			start = EP93XX_CS7_PHYS_BASE;
+		else
+			start = EP93XX_CS6_PHYS_BASE;
+
+		ts72xx_nand_resource[0].start = start;
+		ts72xx_nand_resource[0].end = start + SZ_16M - 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		platform_device_register(&ts72xx_nand_flash);
 	}
 }
@@ -196,6 +230,7 @@ static struct platform_device ts72xx_rtc_device = {
 	.num_resources 	= ARRAY_SIZE(ts72xx_rtc_resources),
 };
 
+<<<<<<< HEAD
 /*************************************************************************
  * Watchdog (in CPLD)
  *************************************************************************/
@@ -205,11 +240,25 @@ static struct platform_device ts72xx_rtc_device = {
 static struct resource ts72xx_wdt_resources[] = {
 	DEFINE_RES_MEM(TS72XX_WDT_CONTROL_PHYS_BASE, 0x01),
 	DEFINE_RES_MEM(TS72XX_WDT_FEED_PHYS_BASE, 0x01),
+=======
+static struct resource ts72xx_wdt_resources[] = {
+	{
+		.start	= TS72XX_WDT_CONTROL_PHYS_BASE,
+		.end	= TS72XX_WDT_CONTROL_PHYS_BASE + SZ_4K - 1,
+		.flags	= IORESOURCE_MEM,
+	},
+	{
+		.start	= TS72XX_WDT_FEED_PHYS_BASE,
+		.end	= TS72XX_WDT_FEED_PHYS_BASE + SZ_4K - 1,
+		.flags	= IORESOURCE_MEM,
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_device ts72xx_wdt_device = {
 	.name		= "ts72xx-wdt",
 	.id		= -1,
+<<<<<<< HEAD
 	.resource	= ts72xx_wdt_resources,
 	.num_resources	= ARRAY_SIZE(ts72xx_wdt_resources),
 };
@@ -217,10 +266,17 @@ static struct platform_device ts72xx_wdt_device = {
 /*************************************************************************
  * ETH
  *************************************************************************/
+=======
+	.num_resources 	= ARRAY_SIZE(ts72xx_wdt_resources),
+	.resource	= ts72xx_wdt_resources,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct ep93xx_eth_data __initdata ts72xx_eth_data = {
 	.phy_id		= 1,
 };
 
+<<<<<<< HEAD
 /*************************************************************************
  * SPI SD/MMC host
  *************************************************************************/
@@ -287,6 +343,8 @@ static struct ep93xx_spi_info bk3_spi_master __initdata = {
 /*************************************************************************
  * TS72XX support code
  *************************************************************************/
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if IS_ENABLED(CONFIG_FPGA_MGR_TS73XX)
 
 /* Relative to EP93XX_CS1_PHYS_BASE */
@@ -309,6 +367,7 @@ static struct platform_device ts73xx_fpga_device = {
 
 #endif
 
+<<<<<<< HEAD
 /*************************************************************************
  * SPI Bus
  *************************************************************************/
@@ -336,6 +395,12 @@ static void __init ts72xx_init_machine(void)
 	ts72xx_register_flash(ts72xx_nand_parts, ARRAY_SIZE(ts72xx_nand_parts),
 			      is_ts9420_installed() ?
 			      EP93XX_CS7_PHYS_BASE : EP93XX_CS6_PHYS_BASE);
+=======
+static void __init ts72xx_init_machine(void)
+{
+	ep93xx_init_devices();
+	ts72xx_register_flash();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_device_register(&ts72xx_rtc_device);
 	platform_device_register(&ts72xx_wdt_device);
 
@@ -344,8 +409,11 @@ static void __init ts72xx_init_machine(void)
 	if (board_is_ts7300())
 		platform_device_register(&ts73xx_fpga_device);
 #endif
+<<<<<<< HEAD
 	ep93xx_register_spi(&ts72xx_spi_info, ts72xx_spi_devices,
 			    ARRAY_SIZE(ts72xx_spi_devices));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 MACHINE_START(TS72XX, "Technologic Systems TS-72xx SBC")
@@ -358,6 +426,7 @@ MACHINE_START(TS72XX, "Technologic Systems TS-72xx SBC")
 	.init_late	= ep93xx_init_late,
 	.restart	= ep93xx_restart,
 MACHINE_END
+<<<<<<< HEAD
 
 /*************************************************************************
  * EP93xx I2S audio peripheral handling
@@ -421,3 +490,5 @@ MACHINE_START(BK3, "Liebherr controller BK3.1")
 	.init_late	= ep93xx_init_late,
 	.restart	= ep93xx_restart,
 MACHINE_END
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

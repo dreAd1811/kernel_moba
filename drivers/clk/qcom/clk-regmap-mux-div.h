@@ -1,13 +1,32 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2017, Linaro Limited
  * Author: Georgi Djakov <georgi.djakov@linaro.org>
+=======
+/*
+ * Copyright (c) 2015, Linaro Limited
+ * Copyright (c) 2014, 2017, The Linux Foundation. All rights reserved.
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __QCOM_CLK_REGMAP_MUX_DIV_H__
 #define __QCOM_CLK_REGMAP_MUX_DIV_H__
 
 #include <linux/clk-provider.h>
+<<<<<<< HEAD
+=======
+#include "clk-rcg.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "clk-regmap.h"
 
 /**
@@ -19,11 +38,31 @@
  * @src_shift:	lowest bit of source select field
  * @div:	the divider raw configuration value
  * @src:	the mux index which will be used if the clock is enabled
+<<<<<<< HEAD
  * @parent_map: map from parent_names index to src_sel field
  * @clkr:	handle between common and hardware-specific interfaces
  * @pclk:	the input PLL clock
  * @clk_nb:	clock notifier for rate changes of the input PLL
  */
+=======
+ * @safe_src:	the safe source mux value we switch to, while the main PLL is
+ *		reconfigured
+ * @safe_div:	the safe divider value that we set, while the main PLL is
+ *		reconfigured
+ * @safe_freq:	When switching rates from A to B, the mux div clock will
+ *		instead switch from A -> safe_freq -> B. This allows the
+ *		mux_div clock to change rates while enabled, even if this
+ *		behavior is not supported by the parent clocks.
+ *		If changing the rate of parent A also causes the rate of
+ *		parent B to change, then safe_freq must be defined.
+ *		safe_freq is expected to have a source clock which is always
+ *		on and runs at only one rate.
+ * @parent_map:	pointer to parent_map struct
+ * @clkr:	handle between common and hardware-specific interfaces
+ * @clk_nb:	clock notifier registered for clock rate change
+ */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct clk_regmap_mux_div {
 	u32				reg_offset;
 	u32				hid_width;
@@ -32,13 +71,26 @@ struct clk_regmap_mux_div {
 	u32				src_shift;
 	u32				div;
 	u32				src;
+<<<<<<< HEAD
 	const u32			*parent_map;
 	struct clk_regmap		clkr;
 	struct clk			*pclk;
+=======
+	u32				safe_src;
+	u32				safe_div;
+	unsigned long			safe_freq;
+	const struct parent_map		*parent_map;
+	struct clk_regmap		clkr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct notifier_block		clk_nb;
 };
 
 extern const struct clk_ops clk_regmap_mux_div_ops;
+<<<<<<< HEAD
 extern int mux_div_set_src_div(struct clk_regmap_mux_div *md, u32 src, u32 div);
+=======
+int __mux_div_set_src_div(struct clk_regmap_mux_div *md, u32 src, u32 div);
+int mux_div_get_src_div(struct clk_regmap_mux_div *md, u32 *src, u32 *div);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

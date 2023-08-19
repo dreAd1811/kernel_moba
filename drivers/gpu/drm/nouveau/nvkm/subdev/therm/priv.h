@@ -32,8 +32,11 @@
 
 int nvkm_therm_new_(const struct nvkm_therm_func *, struct nvkm_device *,
 		    int index, struct nvkm_therm **);
+<<<<<<< HEAD
 void nvkm_therm_ctor(struct nvkm_therm *therm, struct nvkm_device *device,
 		     int index, const struct nvkm_therm_func *func);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nvkm_fan {
 	struct nvkm_therm *parent;
@@ -68,6 +71,11 @@ int nvkm_therm_fan_set(struct nvkm_therm *, bool now, int percent);
 int nvkm_therm_fan_user_get(struct nvkm_therm *);
 int nvkm_therm_fan_user_set(struct nvkm_therm *, int percent);
 
+<<<<<<< HEAD
+=======
+int nvkm_therm_preinit(struct nvkm_therm *);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int  nvkm_therm_sensor_init(struct nvkm_therm *);
 int  nvkm_therm_sensor_fini(struct nvkm_therm *, bool suspend);
 void nvkm_therm_sensor_preinit(struct nvkm_therm *);
@@ -96,11 +104,14 @@ struct nvkm_therm_func {
 	int (*fan_sense)(struct nvkm_therm *);
 
 	void (*program_alarms)(struct nvkm_therm *);
+<<<<<<< HEAD
 
 	void (*clkgate_init)(struct nvkm_therm *,
 			     const struct nvkm_therm_clkgate_pack *);
 	void (*clkgate_enable)(struct nvkm_therm *);
 	void (*clkgate_fini)(struct nvkm_therm *, bool);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void nv40_therm_intr(struct nvkm_therm *);
@@ -116,6 +127,7 @@ void g84_therm_fini(struct nvkm_therm *);
 
 int gt215_therm_fan_sense(struct nvkm_therm *);
 
+<<<<<<< HEAD
 void gf100_clkgate_init(struct nvkm_therm *,
 			const struct nvkm_therm_clkgate_pack *);
 
@@ -131,6 +143,11 @@ void gk104_therm_init(struct nvkm_therm *);
 void gk104_clkgate_enable(struct nvkm_therm *);
 void gk104_clkgate_fini(struct nvkm_therm *, bool);
 
+=======
+void g84_therm_init(struct nvkm_therm *);
+void gf119_therm_init(struct nvkm_therm *);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int nvkm_fanpwm_create(struct nvkm_therm *, struct dcb_gpio_func *);
 int nvkm_fantog_create(struct nvkm_therm *, struct dcb_gpio_func *);
 int nvkm_fannil_create(struct nvkm_therm *);

@@ -40,6 +40,23 @@ MODULE_PARM_DESC(debug, "NETIF_MSG debug bits");
 
 #define DEFAULT_MSG_ENABLE (NETIF_MSG_DRV | NETIF_MSG_PROBE | NETIF_MSG_LINK)
 
+<<<<<<< HEAD
+=======
+struct liquidio_if_cfg_context {
+	int octeon_id;
+
+	wait_queue_head_t wc;
+
+	int cond;
+};
+
+struct liquidio_if_cfg_resp {
+	u64 rh;
+	struct liquidio_if_cfg_info cfg_info;
+	u64 status;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct liquidio_rx_ctl_context {
 	int octeon_id;
 
@@ -69,10 +86,36 @@ union tx_info {
 	} s;
 };
 
+<<<<<<< HEAD
+=======
+#define OCTNIC_MAX_SG  (MAX_SKB_FRAGS)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define OCTNIC_GSO_MAX_HEADER_SIZE 128
 #define OCTNIC_GSO_MAX_SIZE \
 		(CN23XX_DEFAULT_INPUT_JABBER - OCTNIC_GSO_MAX_HEADER_SIZE)
 
+<<<<<<< HEAD
+=======
+struct octnic_gather {
+	/* List manipulation. Next and prev pointers. */
+	struct list_head list;
+
+	/* Size of the gather component at sg in bytes. */
+	int sg_size;
+
+	/* Number of bytes that sg was adjusted to make it 8B-aligned. */
+	int adjust;
+
+	/* Gather component that can accommodate max sized fragment list
+	 * received from the IP layer.
+	 */
+	struct octeon_sg_entry *sg;
+
+	dma_addr_t sg_dma_ptr;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 liquidio_vf_probe(struct pci_dev *pdev, const struct pci_device_id *ent);
 static void liquidio_vf_remove(struct pci_dev *pdev);
@@ -265,6 +308,245 @@ static struct pci_driver liquidio_vf_pci_driver = {
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * \brief Stop Tx queues
+ * @param netdev network device
+ */
+static void txqs_stop(struct net_device *netdev)
+{
+	if (netif_is_multiqueue(netdev)) {
+		int i;
+
+		for (i = 0; i < netdev->num_tx_queues; i++)
+			netif_stop_subqueue(netdev, i);
+	} else {
+		netif_stop_queue(netdev);
+	}
+}
+
+/**
+ * \brief Start Tx queues
+ * @param netdev network device
+ */
+static void txqs_start(struct net_device *netdev)
+{
+	if (netif_is_multiqueue(netdev)) {
+		int i;
+
+		for (i = 0; i < netdev->num_tx_queues; i++)
+			netif_start_subqueue(netdev, i);
+	} else {
+		netif_start_queue(netdev);
+	}
+}
+
+/**
+ * \brief Wake Tx queues
+ * @param netdev network device
+ */
+static void txqs_wake(struct net_device *netdev)
+{
+	struct lio *lio = GET_LIO(netdev);
+
+	if (netif_is_multiqueue(netdev)) {
+		int i;
+
+		for (i = 0; i < netdev->num_tx_queues; i++) {
+			int qno = lio->linfo.txpciq[i % lio->oct_dev->num_iqs]
+				      .s.q_no;
+			if (__netif_subqueue_stopped(netdev, i)) {
+				INCR_INSTRQUEUE_PKT_COUNT(lio->oct_dev, qno,
+							  tx_restart, 1);
+				netif_wake_subqueue(netdev, i);
+			}
+		}
+	} else {
+		INCR_INSTRQUEUE_PKT_COUNT(lio->oct_dev, lio->txq,
+					  tx_restart, 1);
+		netif_wake_queue(netdev);
+	}
+}
+
+/**
+ * \brief Start Tx queue
+ * @param netdev network device
+ */
+static void start_txq(struct net_device *netdev)
+{
+	struct lio *lio = GET_LIO(netdev);
+
+	if (lio->linfo.link.s.link_up) {
+		txqs_start(netdev);
+		return;
+	}
+}
+
+/**
+ * \brief Wake a queue
+ * @param netdev network device
+ * @param q which queue to wake
+ */
+static void wake_q(struct net_device *netdev, int q)
+{
+	if (netif_is_multiqueue(netdev))
+		netif_wake_subqueue(netdev, q);
+	else
+		netif_wake_queue(netdev);
+}
+
+/**
+ * \brief Stop a queue
+ * @param netdev network device
+ * @param q which queue to stop
+ */
+static void stop_q(struct net_device *netdev, int q)
+{
+	if (netif_is_multiqueue(netdev))
+		netif_stop_subqueue(netdev, q);
+	else
+		netif_stop_queue(netdev);
+}
+
+/**
+ * Remove the node at the head of the list. The list would be empty at
+ * the end of this call if there are no more nodes in the list.
+ */
+static struct list_head *list_delete_head(struct list_head *root)
+{
+	struct list_head *node;
+
+	if ((root->prev == root) && (root->next == root))
+		node = NULL;
+	else
+		node = root->next;
+
+	if (node)
+		list_del(node);
+
+	return node;
+}
+
+/**
+ * \brief Delete gather lists
+ * @param lio per-network private data
+ */
+static void delete_glists(struct lio *lio)
+{
+	struct octnic_gather *g;
+	int i;
+
+	kfree(lio->glist_lock);
+	lio->glist_lock = NULL;
+
+	if (!lio->glist)
+		return;
+
+	for (i = 0; i < lio->linfo.num_txpciq; i++) {
+		do {
+			g = (struct octnic_gather *)
+			    list_delete_head(&lio->glist[i]);
+			if (g)
+				kfree(g);
+		} while (g);
+
+		if (lio->glists_virt_base && lio->glists_virt_base[i] &&
+		    lio->glists_dma_base && lio->glists_dma_base[i]) {
+			lio_dma_free(lio->oct_dev,
+				     lio->glist_entry_size * lio->tx_qsize,
+				     lio->glists_virt_base[i],
+				     lio->glists_dma_base[i]);
+		}
+	}
+
+	kfree(lio->glists_virt_base);
+	lio->glists_virt_base = NULL;
+
+	kfree(lio->glists_dma_base);
+	lio->glists_dma_base = NULL;
+
+	kfree(lio->glist);
+	lio->glist = NULL;
+}
+
+/**
+ * \brief Setup gather lists
+ * @param lio per-network private data
+ */
+static int setup_glists(struct lio *lio, int num_iqs)
+{
+	struct octnic_gather *g;
+	int i, j;
+
+	lio->glist_lock =
+	    kzalloc(sizeof(*lio->glist_lock) * num_iqs, GFP_KERNEL);
+	if (!lio->glist_lock)
+		return -ENOMEM;
+
+	lio->glist =
+	    kzalloc(sizeof(*lio->glist) * num_iqs, GFP_KERNEL);
+	if (!lio->glist) {
+		kfree(lio->glist_lock);
+		lio->glist_lock = NULL;
+		return -ENOMEM;
+	}
+
+	lio->glist_entry_size =
+		ROUNDUP8((ROUNDUP4(OCTNIC_MAX_SG) >> 2) * OCT_SG_ENTRY_SIZE);
+
+	/* allocate memory to store virtual and dma base address of
+	 * per glist consistent memory
+	 */
+	lio->glists_virt_base = kcalloc(num_iqs, sizeof(*lio->glists_virt_base),
+					GFP_KERNEL);
+	lio->glists_dma_base = kcalloc(num_iqs, sizeof(*lio->glists_dma_base),
+				       GFP_KERNEL);
+
+	if (!lio->glists_virt_base || !lio->glists_dma_base) {
+		delete_glists(lio);
+		return -ENOMEM;
+	}
+
+	for (i = 0; i < num_iqs; i++) {
+		spin_lock_init(&lio->glist_lock[i]);
+
+		INIT_LIST_HEAD(&lio->glist[i]);
+
+		lio->glists_virt_base[i] =
+			lio_dma_alloc(lio->oct_dev,
+				      lio->glist_entry_size * lio->tx_qsize,
+				      &lio->glists_dma_base[i]);
+
+		if (!lio->glists_virt_base[i]) {
+			delete_glists(lio);
+			return -ENOMEM;
+		}
+
+		for (j = 0; j < lio->tx_qsize; j++) {
+			g = kzalloc(sizeof(*g), GFP_KERNEL);
+			if (!g)
+				break;
+
+			g->sg = lio->glists_virt_base[i] +
+				(j * lio->glist_entry_size);
+
+			g->sg_dma_ptr = lio->glists_dma_base[i] +
+					(j * lio->glist_entry_size);
+
+			list_add_tail(&g->list, &lio->glist[i]);
+		}
+
+		if (j != lio->tx_qsize) {
+			delete_glists(lio);
+			return -ENOMEM;
+		}
+	}
+
+	return 0;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * \brief Print link information
  * @param netdev network device
  */
@@ -295,12 +577,17 @@ static void octnet_link_status_change(struct work_struct *work)
 	struct cavium_wk *wk = (struct cavium_wk *)work;
 	struct lio *lio = (struct lio *)wk->ctxptr;
 
+<<<<<<< HEAD
 	/* lio->linfo.link.s.mtu always contains max MTU of the lio interface.
 	 * this API is invoked only when new max-MTU of the interface is
 	 * less than current MTU.
 	 */
 	rtnl_lock();
 	dev_set_mtu(lio->netdev, lio->linfo.link.s.mtu);
+=======
+	rtnl_lock();
+	call_netdevice_notifiers(NETDEV_CHANGEMTU, lio->netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_unlock();
 }
 
@@ -348,7 +635,10 @@ static void update_link_status(struct net_device *netdev,
 			       union oct_link_status *ls)
 {
 	struct lio *lio = GET_LIO(netdev);
+<<<<<<< HEAD
 	int current_max_mtu = lio->linfo.link.s.mtu;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct octeon_device *oct = lio->oct_dev;
 
 	if ((lio->intf_open) && (lio->linfo.link.u64 != ls->u64)) {
@@ -359,6 +649,7 @@ static void update_link_status(struct net_device *netdev,
 
 		if (lio->linfo.link.s.link_up) {
 			netif_carrier_on(netdev);
+<<<<<<< HEAD
 			wake_txqs(netdev);
 		} else {
 			netif_carrier_off(netdev);
@@ -369,13 +660,31 @@ static void update_link_status(struct net_device *netdev,
 			dev_info(&oct->pci_dev->dev,
 				 "Max MTU Changed from %d to %d\n",
 				 current_max_mtu, lio->linfo.link.s.mtu);
+=======
+			txqs_wake(netdev);
+		} else {
+			netif_carrier_off(netdev);
+			txqs_stop(netdev);
+		}
+
+		if (lio->linfo.link.s.mtu != netdev->max_mtu) {
+			dev_info(&oct->pci_dev->dev, "Max MTU Changed from %d to %d\n",
+				 netdev->max_mtu, lio->linfo.link.s.mtu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netdev->max_mtu = lio->linfo.link.s.mtu;
 		}
 
 		if (lio->linfo.link.s.mtu < netdev->mtu) {
 			dev_warn(&oct->pci_dev->dev,
+<<<<<<< HEAD
 				 "Current MTU is higher than new max MTU; Reducing the current mtu from %d to %d\n",
 				 netdev->mtu, lio->linfo.link.s.mtu);
+=======
+				 "PF has changed the MTU for gmx port. Reducing the mtu from %d to %d\n",
+				 netdev->mtu, lio->linfo.link.s.mtu);
+			lio->mtu = lio->linfo.link.s.mtu;
+			netdev->mtu = lio->linfo.link.s.mtu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			queue_delayed_work(lio->link_status_wq.wq,
 					   &lio->link_status_wq.wk.work, 0);
 		}
@@ -411,9 +720,12 @@ liquidio_vf_probe(struct pci_dev *pdev,
 	/* set linux specific device pointer */
 	oct_dev->pci_dev = pdev;
 
+<<<<<<< HEAD
 	oct_dev->subsystem_id = pdev->subsystem_vendor |
 		(pdev->subsystem_device << 16);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (octeon_device_init(oct_dev)) {
 		liquidio_vf_remove(pdev);
 		return -ENOMEM;
@@ -485,7 +797,11 @@ static void octeon_destroy_resources(struct octeon_device *oct)
 
 		if (lio_wait_for_oq_pkts(oct))
 			dev_err(&oct->pci_dev->dev, "OQ had pending packets\n");
+<<<<<<< HEAD
 		/* fall through */
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case OCT_DEV_INTR_SET_DONE:
 		/* Disable interrupts  */
 		oct->fn_list.disable_interrupt(oct, OCTEON_ALL_INTR);
@@ -703,7 +1019,11 @@ static void liquidio_destroy_nic_device(struct octeon_device *oct, int ifidx)
 
 	cleanup_link_status_change_wq(netdev);
 
+<<<<<<< HEAD
 	lio_delete_glists(lio);
+=======
+	delete_glists(lio);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	free_netdev(netdev);
 
@@ -800,6 +1120,47 @@ static int octeon_pci_os_setup(struct octeon_device *oct)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int skb_iq(struct lio *lio, struct sk_buff *skb)
+{
+	int q = 0;
+
+	if (netif_is_multiqueue(lio->netdev))
+		q = skb->queue_mapping % lio->linfo.num_txpciq;
+
+	return q;
+}
+
+/**
+ * \brief Check Tx queue state for a given network buffer
+ * @param lio per-network private data
+ * @param skb network buffer
+ */
+static int check_txq_state(struct lio *lio, struct sk_buff *skb)
+{
+	int q = 0, iq = 0;
+
+	if (netif_is_multiqueue(lio->netdev)) {
+		q = skb->queue_mapping;
+		iq = lio->linfo.txpciq[q % lio->oct_dev->num_iqs].s.q_no;
+	} else {
+		iq = lio->txq;
+		q = iq;
+	}
+
+	if (octnet_iq_is_full(lio->oct_dev, iq))
+		return 0;
+
+	if (__netif_subqueue_stopped(lio->netdev, q)) {
+		INCR_INSTRQUEUE_PKT_COUNT(lio->oct_dev, iq, tx_restart, 1);
+		wake_q(lio->netdev, q);
+	}
+
+	return 1;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * \brief Unmap and free network buffer
  * @param buf buffer
@@ -817,6 +1178,11 @@ static void free_netbuf(void *buf)
 	dma_unmap_single(&lio->oct_dev->pci_dev->dev, finfo->dptr, skb->len,
 			 DMA_TO_DEVICE);
 
+<<<<<<< HEAD
+=======
+	check_txq_state(lio, skb);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_buffer_free(skb);
 }
 
@@ -852,12 +1218,21 @@ static void free_netsgbuf(void *buf)
 		i++;
 	}
 
+<<<<<<< HEAD
 	iq = skb_iq(lio->oct_dev, skb);
+=======
+	iq = skb_iq(lio, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&lio->glist_lock[iq]);
 	list_add_tail(&g->list, &lio->glist[iq]);
 	spin_unlock(&lio->glist_lock[iq]);
 
+<<<<<<< HEAD
+=======
+	check_txq_state(lio, skb); /* mq support: sub-queue state check */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_buffer_free(skb);
 }
 
@@ -896,13 +1271,54 @@ static void free_netsgbuf_with_resp(void *buf)
 		i++;
 	}
 
+<<<<<<< HEAD
 	iq = skb_iq(lio->oct_dev, skb);
+=======
+	iq = skb_iq(lio, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&lio->glist_lock[iq]);
 	list_add_tail(&g->list, &lio->glist[iq]);
 	spin_unlock(&lio->glist_lock[iq]);
 
 	/* Don't free the skb yet */
+<<<<<<< HEAD
+=======
+
+	check_txq_state(lio, skb);
+}
+
+/**
+ * \brief Callback for getting interface configuration
+ * @param status status of request
+ * @param buf pointer to resp structure
+ */
+static void if_cfg_callback(struct octeon_device *oct,
+			    u32 status __attribute__((unused)), void *buf)
+{
+	struct octeon_soft_command *sc = (struct octeon_soft_command *)buf;
+	struct liquidio_if_cfg_context *ctx;
+	struct liquidio_if_cfg_resp *resp;
+
+	resp = (struct liquidio_if_cfg_resp *)sc->virtrptr;
+	ctx = (struct liquidio_if_cfg_context *)sc->ctxptr;
+
+	oct = lio_get_device(ctx->octeon_id);
+	if (resp->status)
+		dev_err(&oct->pci_dev->dev, "nic if cfg instruction failed. Status: %llx\n",
+			CVM_CAST64(resp->status));
+	WRITE_ONCE(ctx->cond, 1);
+
+	snprintf(oct->fw_info.liquidio_firmware_version, 32, "%s",
+		 resp->cfg_info.liquidio_firmware_version);
+
+	/* This barrier is required to be sure that the response has been
+	 * written fully before waking up the handler
+	 */
+	wmb();
+
+	wake_up_interruptible(&ctx->wc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -930,7 +1346,11 @@ static int liquidio_open(struct net_device *netdev)
 	lio->intf_open = 1;
 
 	netif_info(lio, ifup, lio->netdev, "Interface Open, ready for traffic\n");
+<<<<<<< HEAD
 	start_txqs(netdev);
+=======
+	start_txq(netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* tell Octeon to start forwarding packets to host */
 	send_rx_ctrl_cmd(lio, 1);
@@ -953,6 +1373,18 @@ static int liquidio_stop(struct net_device *netdev)
 	/* tell Octeon to stop forwarding packets to host */
 	send_rx_ctrl_cmd(lio, 0);
 
+<<<<<<< HEAD
+=======
+	if (oct->props[lio->ifidx].napi_enabled) {
+		list_for_each_entry_safe(napi, n, &netdev->napi_list, dev_list)
+			napi_disable(napi);
+
+		oct->props[lio->ifidx].napi_enabled = 0;
+
+		oct->droq[0]->ops.poll_mode = 0;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_info(lio, ifdown, lio->netdev, "Stopping interface!\n");
 	/* Inform that netif carrier is down */
 	lio->intf_open = 0;
@@ -963,6 +1395,7 @@ static int liquidio_stop(struct net_device *netdev)
 
 	ifstate_reset(lio, LIO_IFSTATE_RUNNING);
 
+<<<<<<< HEAD
 	stop_txqs(netdev);
 
 	/* Wait for any pending Rx descriptors */
@@ -978,6 +1411,9 @@ static int liquidio_stop(struct net_device *netdev)
 
 		oct->droq[0]->ops.poll_mode = 0;
 	}
+=======
+	txqs_stop(netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(&oct->pci_dev->dev, "%s interface is stopped\n", netdev->name);
 
@@ -1151,6 +1587,7 @@ static int liquidio_set_mac(struct net_device *netdev, void *p)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void
 liquidio_get_stats64(struct net_device *netdev,
 		     struct rtnl_link_stats64 *lstats)
@@ -1160,12 +1597,30 @@ liquidio_get_stats64(struct net_device *netdev,
 	u64 pkts = 0, drop = 0, bytes = 0;
 	struct oct_droq_stats *oq_stats;
 	struct oct_iq_stats *iq_stats;
+=======
+/**
+ * \brief Net device get_stats
+ * @param netdev network device
+ */
+static struct net_device_stats *liquidio_get_stats(struct net_device *netdev)
+{
+	struct lio *lio = GET_LIO(netdev);
+	struct net_device_stats *stats = &netdev->stats;
+	u64 pkts = 0, drop = 0, bytes = 0;
+	struct oct_droq_stats *oq_stats;
+	struct oct_iq_stats *iq_stats;
+	struct octeon_device *oct;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, iq_no, oq_no;
 
 	oct = lio->oct_dev;
 
 	if (ifstate_check(lio, LIO_IFSTATE_RESETTING))
+<<<<<<< HEAD
 		return;
+=======
+		return stats;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < oct->num_iqs; i++) {
 		iq_no = lio->linfo.txpciq[i].s.q_no;
@@ -1175,9 +1630,15 @@ liquidio_get_stats64(struct net_device *netdev,
 		bytes += iq_stats->tx_tot_bytes;
 	}
 
+<<<<<<< HEAD
 	lstats->tx_packets = pkts;
 	lstats->tx_bytes = bytes;
 	lstats->tx_dropped = drop;
+=======
+	stats->tx_packets = pkts;
+	stats->tx_bytes = bytes;
+	stats->tx_dropped = drop;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pkts = 0;
 	drop = 0;
@@ -1194,6 +1655,7 @@ liquidio_get_stats64(struct net_device *netdev,
 		bytes += oq_stats->rx_bytes_received;
 	}
 
+<<<<<<< HEAD
 	lstats->rx_bytes = bytes;
 	lstats->rx_packets = pkts;
 	lstats->rx_dropped = drop;
@@ -1217,6 +1679,48 @@ liquidio_get_stats64(struct net_device *netdev,
 
 	lstats->tx_errors = lstats->tx_aborted_errors +
 		lstats->tx_carrier_errors;
+=======
+	stats->rx_bytes = bytes;
+	stats->rx_packets = pkts;
+	stats->rx_dropped = drop;
+
+	return stats;
+}
+
+/**
+ * \brief Net device change_mtu
+ * @param netdev network device
+ */
+static int liquidio_change_mtu(struct net_device *netdev, int new_mtu)
+{
+	struct octnic_ctrl_pkt nctrl;
+	struct octeon_device *oct;
+	struct lio *lio;
+	int ret = 0;
+
+	lio = GET_LIO(netdev);
+	oct = lio->oct_dev;
+
+	memset(&nctrl, 0, sizeof(struct octnic_ctrl_pkt));
+
+	nctrl.ncmd.u64 = 0;
+	nctrl.ncmd.s.cmd = OCTNET_CMD_CHANGE_MTU;
+	nctrl.ncmd.s.param1 = new_mtu;
+	nctrl.iq_no = lio->linfo.txpciq[0].s.q_no;
+	nctrl.wait_time = LIO_CMD_WAIT_TM;
+	nctrl.netpndev = (u64)netdev;
+	nctrl.cb_fn = liquidio_link_ctrl_cmd_completion;
+
+	ret = octnet_send_nic_ctrl_pkt(lio->oct_dev, &nctrl);
+	if (ret < 0) {
+		dev_err(&oct->pci_dev->dev, "Failed to set MTU\n");
+		return -EIO;
+	}
+
+	lio->mtu = new_mtu;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1337,8 +1841,12 @@ static void handle_timestamp(struct octeon_device *oct, u32 status, void *buf)
  */
 static int send_nic_timestamp_pkt(struct octeon_device *oct,
 				  struct octnic_data_pkt *ndata,
+<<<<<<< HEAD
 				  struct octnet_buf_free_info *finfo,
 				  int xmit_more)
+=======
+				  struct octnet_buf_free_info *finfo)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct octeon_soft_command *sc;
 	int ring_doorbell;
@@ -1368,7 +1876,11 @@ static int send_nic_timestamp_pkt(struct octeon_device *oct,
 
 	len = (u32)((struct octeon_instr_ih3 *)(&sc->cmd.cmd3.ih3))->dlengsz;
 
+<<<<<<< HEAD
 	ring_doorbell = !xmit_more;
+=======
+	ring_doorbell = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	retval = octeon_send_command(oct, sc->iq_no, ring_doorbell, &sc->cmd,
 				     sc, len, ndata->reqtype);
@@ -1400,7 +1912,10 @@ static int liquidio_xmit(struct sk_buff *skb, struct net_device *netdev)
 	struct octeon_device *oct;
 	int q_idx = 0, iq_no = 0;
 	union tx_info *tx_info;
+<<<<<<< HEAD
 	int xmit_more = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct lio *lio;
 	int status = 0;
 	u64 dptr = 0;
@@ -1410,9 +1925,20 @@ static int liquidio_xmit(struct sk_buff *skb, struct net_device *netdev)
 	lio = GET_LIO(netdev);
 	oct = lio->oct_dev;
 
+<<<<<<< HEAD
 	q_idx = skb_iq(lio->oct_dev, skb);
 	tag = q_idx;
 	iq_no = lio->linfo.txpciq[q_idx].s.q_no;
+=======
+	if (netif_is_multiqueue(netdev)) {
+		q_idx = skb->queue_mapping;
+		q_idx = (q_idx % (lio->linfo.num_txpciq));
+		tag = q_idx;
+		iq_no = lio->linfo.txpciq[q_idx].s.q_no;
+	} else {
+		iq_no = lio->txq;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	stats = &oct->instr_queue[iq_no]->stats;
 
@@ -1441,12 +1967,31 @@ static int liquidio_xmit(struct sk_buff *skb, struct net_device *netdev)
 
 	ndata.q_no = iq_no;
 
+<<<<<<< HEAD
 	if (octnet_iq_is_full(oct, ndata.q_no)) {
 		/* defer sending if queue is full */
 		netif_info(lio, tx_err, lio->netdev, "Transmit failed iq:%d full\n",
 			   ndata.q_no);
 		stats->tx_iq_busy++;
 		return NETDEV_TX_BUSY;
+=======
+	if (netif_is_multiqueue(netdev)) {
+		if (octnet_iq_is_full(oct, ndata.q_no)) {
+			/* defer sending if queue is full */
+			netif_info(lio, tx_err, lio->netdev, "Transmit failed iq:%d full\n",
+				   ndata.q_no);
+			stats->tx_iq_busy++;
+			return NETDEV_TX_BUSY;
+		}
+	} else {
+		if (octnet_iq_is_full(oct, lio->txq)) {
+			/* defer sending if queue is full */
+			stats->tx_iq_busy++;
+			netif_info(lio, tx_err, lio->netdev, "Transmit failed iq:%d full\n",
+				   ndata.q_no);
+			return NETDEV_TX_BUSY;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ndata.datasize = skb->len;
@@ -1491,8 +2036,13 @@ static int liquidio_xmit(struct sk_buff *skb, struct net_device *netdev)
 		int i, frags;
 
 		spin_lock(&lio->glist_lock[q_idx]);
+<<<<<<< HEAD
 		g = (struct octnic_gather *)
 			lio_list_delete_head(&lio->glist[q_idx]);
+=======
+		g = (struct octnic_gather *)list_delete_head(
+		    &lio->glist[q_idx]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock(&lio->glist_lock[q_idx]);
 
 		if (!g) {
@@ -1574,12 +2124,19 @@ static int liquidio_xmit(struct sk_buff *skb, struct net_device *netdev)
 		irh->vlan = skb_vlan_tag_get(skb) & VLAN_VID_MASK;
 	}
 
+<<<<<<< HEAD
 	xmit_more = skb->xmit_more;
 
 	if (unlikely(cmdsetup.s.timestamp))
 		status = send_nic_timestamp_pkt(oct, &ndata, finfo, xmit_more);
 	else
 		status = octnet_send_nic_data_pkt(oct, &ndata, xmit_more);
+=======
+	if (unlikely(cmdsetup.s.timestamp))
+		status = send_nic_timestamp_pkt(oct, &ndata, finfo);
+	else
+		status = octnet_send_nic_data_pkt(oct, &ndata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status == IQ_SEND_FAILED)
 		goto lio_xmit_failed;
 
@@ -1588,7 +2145,11 @@ static int liquidio_xmit(struct sk_buff *skb, struct net_device *netdev)
 	if (status == IQ_SEND_STOP) {
 		dev_err(&oct->pci_dev->dev, "Rcvd IQ_SEND_STOP signal; stopping IQ-%d\n",
 			iq_no);
+<<<<<<< HEAD
 		netif_stop_subqueue(netdev, q_idx);
+=======
+		stop_q(lio->netdev, q_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	netif_trans_update(netdev);
@@ -1608,9 +2169,12 @@ lio_xmit_failed:
 	if (dptr)
 		dma_unmap_single(&oct->pci_dev->dev, dptr,
 				 ndata.datasize, DMA_TO_DEVICE);
+<<<<<<< HEAD
 
 	octeon_ring_doorbell_locked(oct, iq_no);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_buffer_free(skb);
 	return NETDEV_TX_OK;
 }
@@ -1628,7 +2192,11 @@ static void liquidio_tx_timeout(struct net_device *netdev)
 		   "Transmit timeout tx_dropped:%ld, waking up queues now!!\n",
 		   netdev->stats.tx_dropped);
 	netif_trans_update(netdev);
+<<<<<<< HEAD
 	wake_txqs(netdev);
+=======
+	txqs_wake(netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -1693,7 +2261,11 @@ liquidio_vlan_rx_kill_vid(struct net_device *netdev,
 
 	ret = octnet_send_nic_ctrl_pkt(lio->oct_dev, &nctrl);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(&oct->pci_dev->dev, "Del VLAN filter failed in core (ret: 0x%x)\n",
+=======
+		dev_err(&oct->pci_dev->dev, "Add VLAN filter failed in core (ret: 0x%x)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret);
 	}
 	return ret;
@@ -1864,7 +2436,11 @@ static const struct net_device_ops lionetdevops = {
 	.ndo_open		= liquidio_open,
 	.ndo_stop		= liquidio_stop,
 	.ndo_start_xmit		= liquidio_xmit,
+<<<<<<< HEAD
 	.ndo_get_stats64	= liquidio_get_stats64,
+=======
+	.ndo_get_stats		= liquidio_get_stats,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_set_mac_address	= liquidio_set_mac,
 	.ndo_set_rx_mode	= liquidio_set_mcast_list,
 	.ndo_tx_timeout		= liquidio_tx_timeout,
@@ -1986,7 +2562,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
 					    OPCODE_NIC_IF_CFG, 0, if_cfg.u64,
 					    0);
 
+<<<<<<< HEAD
 		sc->callback = lio_if_cfg_callback;
+=======
+		sc->callback = if_cfg_callback;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sc->callback_arg = sc;
 		sc->wait_time = 5000;
 
@@ -2103,7 +2683,10 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
 		netdev->features = (lio->dev_capability & ~NETIF_F_LRO);
 
 		netdev->hw_features = lio->dev_capability;
+<<<<<<< HEAD
 		netdev->hw_features &= ~NETIF_F_HW_VLAN_CTAG_RX;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* MTU range: 68 - 16000 */
 		netdev->min_mtu = LIO_MIN_MTU_SIZE;
@@ -2152,7 +2735,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
 		lio->tx_qsize = octeon_get_tx_qsize(octeon_dev, lio->txq);
 		lio->rx_qsize = octeon_get_rx_qsize(octeon_dev, lio->rxq);
 
+<<<<<<< HEAD
 		if (lio_setup_glists(octeon_dev, lio, num_iqueues)) {
+=======
+		if (setup_glists(lio, num_iqueues)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(&octeon_dev->pci_dev->dev,
 				"Gather list allocation failed\n");
 			goto setup_nic_dev_fail;
@@ -2202,8 +2789,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
 			"NIC ifidx:%d Setup successful\n", i);
 
 		octeon_free_soft_command(octeon_dev, sc);
+<<<<<<< HEAD
 
 		octeon_dev->no_speed_setting = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -2345,7 +2935,11 @@ static int octeon_device_init(struct octeon_device *oct)
 	}
 	atomic_set(&oct->status, OCT_DEV_MBOX_SETUP_DONE);
 
+<<<<<<< HEAD
 	if (octeon_allocate_ioq_vector(oct, oct->sriov_info.rings_per_vf)) {
+=======
+	if (octeon_allocate_ioq_vector(oct)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&oct->pci_dev->dev, "ioq vector allocation failed\n");
 		return 1;
 	}

@@ -46,6 +46,7 @@ void foo(void)
 	OFFSET(saved_context_gdt_desc, saved_context, gdt_desc);
 	BLANK();
 
+<<<<<<< HEAD
 	/*
 	 * Offset from the entry stack to task stack stored in TSS. Kernel entry
 	 * happens on the per-cpu entry-stack, and the asm code switches to the
@@ -57,6 +58,13 @@ void foo(void)
 	       offsetofend(struct cpu_entry_area, entry_stack_page.stack));
 
 #ifdef CONFIG_STACKPROTECTOR
+=======
+	/* Offset from the sysenter stack to tss.sp0 */
+	DEFINE(TSS_sysenter_sp0, offsetof(struct cpu_entry_area, tss.x86_tss.sp0) -
+	       offsetofend(struct cpu_entry_area, entry_stack_page.stack));
+
+#ifdef CONFIG_CC_STACKPROTECTOR
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BLANK();
 	OFFSET(stack_canary_offset, stack_canary, canary);
 #endif

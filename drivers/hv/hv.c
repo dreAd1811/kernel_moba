@@ -27,8 +27,14 @@
 #include <linux/vmalloc.h>
 #include <linux/hyperv.h>
 #include <linux/version.h>
+<<<<<<< HEAD
 #include <linux/random.h>
 #include <linux/clockchips.h>
+=======
+#include <linux/interrupt.h>
+#include <linux/clockchips.h>
+#include <asm/hyperv.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mshyperv.h>
 #include "hyperv_vmbus.h"
 
@@ -37,6 +43,7 @@ struct hv_context hv_context = {
 	.synic_initialized	= false,
 };
 
+<<<<<<< HEAD
 /*
  * If false, we're using the old mechanism for stimer0 interrupts
  * where it sends a VMbus message when it expires. The old
@@ -48,6 +55,8 @@ static bool direct_mode_enabled;
 static int stimer0_irq;
 static int stimer0_vector;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HV_TIMER_FREQUENCY (10 * 1000 * 1000) /* 100ns period */
 #define HV_MAX_MAX_DELTA_TICKS 0xffffffff
 #define HV_MIN_DELTA_TICKS 1
@@ -59,12 +68,21 @@ static int stimer0_vector;
  */
 int hv_init(void)
 {
+<<<<<<< HEAD
+=======
+	if (!hv_is_hypercall_page_setup())
+		return -ENOTSUPP;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hv_context.cpu_context = alloc_percpu(struct hv_per_cpu_context);
 	if (!hv_context.cpu_context)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	direct_mode_enabled = ms_hyperv.misc_features &
 			HV_STIMER_DIRECT_MODE_AVAILABLE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -103,6 +121,7 @@ int hv_post_message(union hv_connection_id connection_id,
 	return status & 0xFFFF;
 }
 
+<<<<<<< HEAD
 /*
  * ISR for when stimer0 is operating in Direct Mode.  Direct Mode
  * does not use VMbus or any VMbus messages, so process here and not
@@ -118,6 +137,8 @@ static void hv_stimer0_isr(void)
 	add_interrupt_randomness(stimer0_vector, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hv_ce_set_next_event(unsigned long delta,
 				struct clock_event_device *evt)
 {
@@ -127,16 +148,25 @@ static int hv_ce_set_next_event(unsigned long delta,
 
 	current_tick = hyperv_cs->read(NULL);
 	current_tick += delta;
+<<<<<<< HEAD
 	hv_init_timer(0, current_tick);
+=======
+	hv_init_timer(HV_X64_MSR_STIMER0_COUNT, current_tick);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int hv_ce_shutdown(struct clock_event_device *evt)
 {
+<<<<<<< HEAD
 	hv_init_timer(0, 0);
 	hv_init_timer_config(0, 0);
 	if (direct_mode_enabled)
 		hv_disable_stimer0_percpu_irq(stimer0_irq);
+=======
+	hv_init_timer(HV_X64_MSR_STIMER0_COUNT, 0);
+	hv_init_timer_config(HV_X64_MSR_STIMER0_CONFIG, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -145,6 +175,7 @@ static int hv_ce_set_oneshot(struct clock_event_device *evt)
 {
 	union hv_timer_config timer_cfg;
 
+<<<<<<< HEAD
 	timer_cfg.as_uint64 = 0;
 	timer_cfg.enable = 1;
 	timer_cfg.auto_enable = 1;
@@ -165,6 +196,13 @@ static int hv_ce_set_oneshot(struct clock_event_device *evt)
 		timer_cfg.sintx = VMBUS_MESSAGE_SINT;
 	}
 	hv_init_timer_config(0, timer_cfg.as_uint64);
+=======
+	timer_cfg.enable = 1;
+	timer_cfg.auto_enable = 1;
+	timer_cfg.sintx = VMBUS_MESSAGE_SINT;
+	hv_init_timer_config(HV_X64_MSR_STIMER0_CONFIG, timer_cfg.as_uint64);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -189,19 +227,41 @@ static void hv_init_clockevent_device(struct clock_event_device *dev, int cpu)
 int hv_synic_alloc(void)
 {
 	int cpu;
+<<<<<<< HEAD
 
 	hv_context.hv_numa_map = kcalloc(nr_node_ids, sizeof(struct cpumask),
 					 GFP_KERNEL);
+=======
+	struct hv_per_cpu_context *hv_cpu;
+
+	/*
+	 * First, zero all per-cpu memory areas so hv_synic_free() can
+	 * detect what memory has been allocated and cleanup properly
+	 * after any failures.
+	 */
+	for_each_present_cpu(cpu) {
+		hv_cpu = per_cpu_ptr(hv_context.cpu_context, cpu);
+		memset(hv_cpu, 0, sizeof(*hv_cpu));
+	}
+
+	hv_context.hv_numa_map = kzalloc(sizeof(struct cpumask) * nr_node_ids,
+					 GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hv_context.hv_numa_map == NULL) {
 		pr_err("Unable to allocate NUMA map\n");
 		goto err;
 	}
 
 	for_each_present_cpu(cpu) {
+<<<<<<< HEAD
 		struct hv_per_cpu_context *hv_cpu
 			= per_cpu_ptr(hv_context.cpu_context, cpu);
 
 		memset(hv_cpu, 0, sizeof(*hv_cpu));
+=======
+		hv_cpu = per_cpu_ptr(hv_context.cpu_context, cpu);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tasklet_init(&hv_cpu->msg_dpc,
 			     vmbus_on_msg_dpc, (unsigned long) hv_cpu);
 
@@ -235,11 +295,14 @@ int hv_synic_alloc(void)
 		INIT_LIST_HEAD(&hv_cpu->chan_list);
 	}
 
+<<<<<<< HEAD
 	if (direct_mode_enabled &&
 	    hv_setup_stimer0_irq(&stimer0_irq, &stimer0_vector,
 				hv_stimer0_isr))
 		goto err;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 err:
 	/*
@@ -268,7 +331,11 @@ void hv_synic_free(void)
 }
 
 /*
+<<<<<<< HEAD
  * hv_synic_init - Initialize the Synthetic Interrupt Controller.
+=======
+ * hv_synic_init - Initialize the Synthethic Interrupt Controller.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * If it is already initialized by another entity (ie x2v shim), we need to
  * retrieve the initialized message and event pages.  Otherwise, we create and
@@ -300,16 +367,31 @@ int hv_synic_init(unsigned int cpu)
 	hv_set_siefp(siefp.as_uint64);
 
 	/* Setup the shared SINT. */
+<<<<<<< HEAD
 	hv_get_synint_state(VMBUS_MESSAGE_SINT, shared_sint.as_uint64);
 
 	shared_sint.vector = HYPERVISOR_CALLBACK_VECTOR;
 	shared_sint.masked = false;
 	if (ms_hyperv.hints & HV_DEPRECATING_AEOI_RECOMMENDED)
+=======
+	hv_get_synint_state(HV_X64_MSR_SINT0 + VMBUS_MESSAGE_SINT,
+			    shared_sint.as_uint64);
+
+	shared_sint.as_uint64 = 0;
+	shared_sint.vector = HYPERVISOR_CALLBACK_VECTOR;
+	shared_sint.masked = false;
+	if (ms_hyperv.hints & HV_X64_DEPRECATING_AEOI_RECOMMENDED)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		shared_sint.auto_eoi = false;
 	else
 		shared_sint.auto_eoi = true;
 
+<<<<<<< HEAD
 	hv_set_synint_state(VMBUS_MESSAGE_SINT, shared_sint.as_uint64);
+=======
+	hv_set_synint_state(HV_X64_MSR_SINT0 + VMBUS_MESSAGE_SINT,
+			    shared_sint.as_uint64);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable the global synic bit */
 	hv_get_synic_state(sctrl.as_uint64);
@@ -322,7 +404,11 @@ int hv_synic_init(unsigned int cpu)
 	/*
 	 * Register the per-cpu clockevent source.
 	 */
+<<<<<<< HEAD
 	if (ms_hyperv.features & HV_MSR_SYNTIMER_AVAILABLE)
+=======
+	if (ms_hyperv.features & HV_X64_MSR_SYNTIMER_AVAILABLE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clockevents_config_and_register(hv_cpu->clk_evt,
 						HV_TIMER_FREQUENCY,
 						HV_MIN_DELTA_TICKS,
@@ -337,12 +423,18 @@ void hv_synic_clockevents_cleanup(void)
 {
 	int cpu;
 
+<<<<<<< HEAD
 	if (!(ms_hyperv.features & HV_MSR_SYNTIMER_AVAILABLE))
 		return;
 
 	if (direct_mode_enabled)
 		hv_remove_stimer0_irq(stimer0_irq);
 
+=======
+	if (!(ms_hyperv.features & HV_X64_MSR_SYNTIMER_AVAILABLE))
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_present_cpu(cpu) {
 		struct hv_per_cpu_context *hv_cpu
 			= per_cpu_ptr(hv_context.cpu_context, cpu);
@@ -396,7 +488,11 @@ int hv_synic_cleanup(unsigned int cpu)
 		return -EBUSY;
 
 	/* Turn off clockevent device */
+<<<<<<< HEAD
 	if (ms_hyperv.features & HV_MSR_SYNTIMER_AVAILABLE) {
+=======
+	if (ms_hyperv.features & HV_X64_MSR_SYNTIMER_AVAILABLE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct hv_per_cpu_context *hv_cpu
 			= this_cpu_ptr(hv_context.cpu_context);
 
@@ -404,13 +500,23 @@ int hv_synic_cleanup(unsigned int cpu)
 		hv_ce_shutdown(hv_cpu->clk_evt);
 	}
 
+<<<<<<< HEAD
 	hv_get_synint_state(VMBUS_MESSAGE_SINT, shared_sint.as_uint64);
+=======
+	hv_get_synint_state(HV_X64_MSR_SINT0 + VMBUS_MESSAGE_SINT,
+			    shared_sint.as_uint64);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	shared_sint.masked = 1;
 
 	/* Need to correctly cleanup in the case of SMP!!! */
 	/* Disable the interrupt */
+<<<<<<< HEAD
 	hv_set_synint_state(VMBUS_MESSAGE_SINT, shared_sint.as_uint64);
+=======
+	hv_set_synint_state(HV_X64_MSR_SINT0 + VMBUS_MESSAGE_SINT,
+			    shared_sint.as_uint64);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hv_get_simp(simp.as_uint64);
 	simp.simp_enabled = 0;

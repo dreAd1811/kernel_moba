@@ -45,10 +45,17 @@
 #include <linux/slab.h>
 #include <linux/kernel.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 
 #define DRIVER_VERSION		"22-Aug-2005"
 
 
+=======
+#include <linux/ipc_logging.h>
+
+#define DRIVER_VERSION		"22-Aug-2005"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*-------------------------------------------------------------------------*/
 
 /*
@@ -87,6 +94,51 @@ static int msg_level = -1;
 module_param (msg_level, int, 0);
 MODULE_PARM_DESC (msg_level, "Override default message level");
 
+<<<<<<< HEAD
+=======
+enum netdev_id {
+	USBNET_ECM_USB0,
+	USBNET_RMMET_USB0,
+	USBNET_RMNET_USB1,
+	NUM_USBNET_IDS,
+};
+
+static const char * const netdev_names[] = {
+	"usb0",
+	"rmnet_usb0",
+	"rmnet_usb1"
+};
+
+static void *usbnet_ipc_log_ctxt[NUM_USBNET_IDS];
+
+static int name_to_netdev_id(char *name)
+{
+	if (!name)
+		goto error;
+
+	if (!strcmp(name, "usb0"))
+		return USBNET_ECM_USB0;
+	if (!strcmp(name, "rmnet_usb0"))
+		return USBNET_RMMET_USB0;
+	if (!strcmp(name, "rmnet_usb1"))
+		return USBNET_RMNET_USB1;
+
+error:
+	return -EINVAL;
+}
+
+static int debug_mask;
+module_param(debug_mask, int, 0644);
+MODULE_PARM_DESC(debug_mask, "Control data packet IPC logging");
+
+#define dbg_log_string(fmt, ...) do { \
+if ((dev->netdev_id == USBNET_RMNET_USB1 && debug_mask == 1) || \
+					debug_mask == 2) \
+	ipc_log_string(dev->ipc_log_ctxt, "%s: " fmt, \
+		       __func__, ##__VA_ARGS__); \
+} while (0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*-------------------------------------------------------------------------*/
 
 /* handles CDC Ethernet and many other network "bulk data" interfaces */
@@ -322,8 +374,15 @@ void usbnet_skb_return (struct usbnet *dev, struct sk_buff *skb)
 	struct pcpu_sw_netstats *stats64 = this_cpu_ptr(dev->stats64);
 	unsigned long flags;
 	int	status;
+<<<<<<< HEAD
 
 	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
+=======
+	struct timespec64 now;
+
+	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
+		dbg_log_string("skb %pK added to pause list", skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skb_queue_tail(&dev->rxq_pause, skb);
 		return;
 	}
@@ -334,7 +393,13 @@ void usbnet_skb_return (struct usbnet *dev, struct sk_buff *skb)
 
 	flags = u64_stats_update_begin_irqsave(&stats64->syncp);
 	stats64->rx_packets++;
+<<<<<<< HEAD
 	stats64->rx_bytes += skb->len;
+=======
+	dev->net->stats.rx_packets++;
+	stats64->rx_bytes += skb->len;
+	dev->net->stats.rx_bytes += skb->len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64_stats_update_end_irqrestore(&stats64->syncp, flags);
 
 	netif_dbg(dev, rx_status, dev->net, "< rx, len %zu, type 0x%x\n",
@@ -344,6 +409,11 @@ void usbnet_skb_return (struct usbnet *dev, struct sk_buff *skb)
 	if (skb_defer_rx_timestamp(skb))
 		return;
 
+<<<<<<< HEAD
+=======
+	getnstimeofday64(&now);
+	dbg_log_string("skb %pK, time %lu.%09lu", skb, now.tv_sec, now.tv_nsec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = netif_rx (skb);
 	if (status != NET_RX_SUCCESS)
 		netif_dbg(dev, rx_err, dev->net,
@@ -400,6 +470,11 @@ int usbnet_change_mtu (struct net_device *net, int new_mtu)
 	net->mtu = new_mtu;
 
 	dev->hard_mtu = net->mtu + net->hard_header_len;
+<<<<<<< HEAD
+=======
+	dbg_log_string("changing MTU to %d", dev->hard_mtu);
+	netdev_info(dev->net, "Changing MTU to %d\n", dev->hard_mtu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->rx_urb_size == old_hard_mtu) {
 		dev->rx_urb_size = dev->hard_mtu;
 		if (dev->rx_urb_size > old_rx_urb_size) {
@@ -466,10 +541,19 @@ static enum skb_state defer_bh(struct usbnet *dev, struct sk_buff *skb,
 void usbnet_defer_kevent (struct usbnet *dev, int work)
 {
 	set_bit (work, &dev->flags);
+<<<<<<< HEAD
 	if (!schedule_work (&dev->kevent))
 		netdev_dbg(dev->net, "kevent %d may have been dropped\n", work);
 	else
 		netdev_dbg(dev->net, "kevent %d scheduled\n", work);
+=======
+	if (!schedule_work (&dev->kevent)) {
+		if (net_ratelimit())
+			netdev_err(dev->net, "kevent %d may have been dropped\n", work);
+	} else {
+		netdev_dbg(dev->net, "kevent %d scheduled\n", work);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(usbnet_defer_kevent);
 
@@ -485,9 +569,17 @@ static int rx_submit (struct usbnet *dev, struct urb *urb, gfp_t flags)
 	unsigned long		lockflags;
 	size_t			size = dev->rx_urb_size;
 
+<<<<<<< HEAD
 	/* prevent rx skb allocation when error ratio is high */
 	if (test_bit(EVENT_RX_KILL, &dev->flags)) {
 		usb_free_urb(urb);
+=======
+	dbg_log_string("urb %pK", urb);
+	/* prevent rx skb allocation when error ratio is high */
+	if (test_bit(EVENT_RX_KILL, &dev->flags)) {
+		usb_free_urb(urb);
+		dbg_log_string("high error rate, aborting...");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOLINK;
 	}
 
@@ -497,11 +589,19 @@ static int rx_submit (struct usbnet *dev, struct urb *urb, gfp_t flags)
 		skb = __netdev_alloc_skb_ip_align(dev->net, size, flags);
 	if (!skb) {
 		netif_dbg(dev, rx_err, dev->net, "no rx skb\n");
+<<<<<<< HEAD
+=======
+		dbg_log_string("skb alloc fail");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		usbnet_defer_kevent (dev, EVENT_RX_MEMORY);
 		usb_free_urb (urb);
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
+=======
+	dbg_log_string("skb %pK", skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	entry = (struct skb_data *) skb->cb;
 	entry->urb = urb;
 	entry->dev = dev;
@@ -545,6 +645,10 @@ static int rx_submit (struct usbnet *dev, struct urb *urb, gfp_t flags)
 	}
 	spin_unlock_irqrestore (&dev->rxq.lock, lockflags);
 	if (retval) {
+<<<<<<< HEAD
+=======
+		dbg_log_string("Submission error %d", retval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_kfree_skb_any (skb);
 		usb_free_urb (urb);
 	}
@@ -569,7 +673,13 @@ static inline void rx_process (struct usbnet *dev, struct sk_buff *skb)
 	if (dev->driver_info->flags & FLAG_MULTI_PACKET)
 		goto done;
 
+<<<<<<< HEAD
 	if (skb->len < ETH_HLEN) {
+=======
+	dbg_log_string("skb %pK", skb);
+	if (skb->len < ETH_HLEN) {
+		dbg_log_string("Very short skb->len %d", skb->len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->net->stats.rx_errors++;
 		dev->net->stats.rx_length_errors++;
 		netif_dbg(dev, rx_err, dev->net, "rx length %d\n", skb->len);
@@ -591,11 +701,21 @@ static void rx_complete (struct urb *urb)
 	struct usbnet		*dev = entry->dev;
 	int			urb_status = urb->status;
 	enum skb_state		state;
+<<<<<<< HEAD
+=======
+	struct timespec64 now;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_put (skb, urb->actual_length);
 	state = rx_done;
 	entry->urb = NULL;
 
+<<<<<<< HEAD
+=======
+	getnstimeofday64(&now);
+	dbg_log_string("skb %pK, urb %pK, time %lu.%09lu",
+		       skb, urb, now.tv_sec, now.tv_nsec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (urb_status) {
 	/* success */
 	case 0:
@@ -649,6 +769,10 @@ block:
 		break;
 	}
 
+<<<<<<< HEAD
+=======
+	dbg_log_string("status %d, state %d", urb_status, state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* stop rx if packet error rate is high */
 	if (++dev->pkt_cnt > 30) {
 		dev->pkt_cnt = 0;
@@ -860,6 +984,12 @@ int usbnet_stop (struct net_device *net)
 	else
 		usb_autopm_put_interface(dev->intf);
 
+<<<<<<< HEAD
+=======
+	dbg_log_string();
+	netdev_info(dev->net, "%s\n", __func__);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL_GPL(usbnet_stop);
@@ -945,6 +1075,13 @@ int usbnet_open (struct net_device *net)
 			usb_autopm_put_interface(dev->intf);
 		}
 	}
+<<<<<<< HEAD
+=======
+
+	dbg_log_string();
+	netdev_info(dev->net, "%s\n", __func__);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 done:
 	usb_autopm_put_interface(dev->intf);
@@ -1255,14 +1392,28 @@ static void tx_complete (struct urb *urb)
 	struct sk_buff		*skb = (struct sk_buff *) urb->context;
 	struct skb_data		*entry = (struct skb_data *) skb->cb;
 	struct usbnet		*dev = entry->dev;
+<<<<<<< HEAD
 
+=======
+	struct timespec64 now;
+
+	getnstimeofday64(&now);
+	dbg_log_string("skb %pK, urb %pK, time %lu.%09lu",
+		       skb, urb, now.tv_sec, now.tv_nsec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (urb->status == 0) {
 		struct pcpu_sw_netstats *stats64 = this_cpu_ptr(dev->stats64);
 		unsigned long flags;
 
 		flags = u64_stats_update_begin_irqsave(&stats64->syncp);
 		stats64->tx_packets += entry->packets;
+<<<<<<< HEAD
 		stats64->tx_bytes += entry->length;
+=======
+		dev->net->stats.tx_packets += entry->packets;
+		stats64->tx_bytes += entry->length;
+		dev->net->stats.tx_bytes += entry->length;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64_stats_update_end_irqrestore(&stats64->syncp, flags);
 	} else {
 		dev->net->stats.tx_errors++;
@@ -1299,6 +1450,10 @@ static void tx_complete (struct urb *urb)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	dbg_log_string("status %d", urb->status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	usb_autopm_put_interface_async(dev->intf);
 	(void) defer_bh(dev, skb, &dev->txq, tx_done);
 }
@@ -1332,8 +1487,13 @@ static int build_dma_sg(const struct sk_buff *skb, struct urb *urb)
 		return 0;
 
 	/* reserve one for zero packet */
+<<<<<<< HEAD
 	urb->sg = kmalloc_array(num_sgs + 1, sizeof(struct scatterlist),
 				GFP_ATOMIC);
+=======
+	urb->sg = kmalloc((num_sgs + 1) * sizeof(struct scatterlist),
+			  GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!urb->sg)
 		return -ENOMEM;
 
@@ -1364,11 +1524,21 @@ netdev_tx_t usbnet_start_xmit (struct sk_buff *skb,
 	struct skb_data		*entry;
 	struct driver_info	*info = dev->driver_info;
 	unsigned long		flags;
+<<<<<<< HEAD
 	int retval;
+=======
+	int retval = 0;
+	struct timespec64 now;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (skb)
 		skb_tx_timestamp(skb);
 
+<<<<<<< HEAD
+=======
+	getnstimeofday64(&now);
+	dbg_log_string("skb %pK, time %lu.%09lu", skb, now.tv_sec, now.tv_nsec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	// some devices want funky USB-level framing, for
 	// win32 driver (usually) and/or hardware quirks
 	if (info->tx_fixup) {
@@ -1384,9 +1554,17 @@ netdev_tx_t usbnet_start_xmit (struct sk_buff *skb,
 
 	if (!(urb = usb_alloc_urb (0, GFP_ATOMIC))) {
 		netif_dbg(dev, tx_err, dev->net, "no urb\n");
+<<<<<<< HEAD
 		goto drop;
 	}
 
+=======
+		retval = -ENOMEM;
+		goto drop;
+	}
+
+	dbg_log_string("urb %pK", urb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	entry = (struct skb_data *) skb->cb;
 	entry->urb = urb;
 	entry->dev = dev;
@@ -1394,7 +1572,12 @@ netdev_tx_t usbnet_start_xmit (struct sk_buff *skb,
 	usb_fill_bulk_urb (urb, dev->udev, dev->out,
 			skb->data, skb->len, tx_complete, skb);
 	if (dev->can_dma_sg) {
+<<<<<<< HEAD
 		if (build_dma_sg(skb, urb) < 0)
+=======
+		retval = build_dma_sg(skb, urb);
+		if (retval < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto drop;
 	}
 	length = urb->transfer_buffer_length;
@@ -1482,6 +1665,10 @@ netdev_tx_t usbnet_start_xmit (struct sk_buff *skb,
 	if (retval) {
 		netif_dbg(dev, tx_err, dev->net, "drop, code %d\n", retval);
 drop:
+<<<<<<< HEAD
+=======
+		dbg_log_string("skb dropped, error %d", retval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->net->stats.tx_dropped++;
 not_drop:
 		if (skb)
@@ -1526,14 +1713,24 @@ err:
 
 // tasklet (work deferred from completions, in_irq) or timer
 
+<<<<<<< HEAD
 static void usbnet_bh (struct timer_list *t)
 {
 	struct usbnet		*dev = from_timer(dev, t, delay);
+=======
+static void usbnet_bh (unsigned long param)
+{
+	struct usbnet		*dev = (struct usbnet *) param;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff		*skb;
 	struct skb_data		*entry;
 
 	while ((skb = skb_dequeue (&dev->done))) {
 		entry = (struct skb_data *) skb->cb;
+<<<<<<< HEAD
+=======
+		dbg_log_string("skb %pK, state %d", skb, entry->state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (entry->state) {
 		case rx_done:
 			entry->state = rx_cleanup;
@@ -1604,6 +1801,11 @@ void usbnet_disconnect (struct usb_interface *intf)
 	if (!dev)
 		return;
 
+<<<<<<< HEAD
+=======
+	dev->ipc_log_ctxt = NULL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xdev = interface_to_usbdev (intf);
 
 	netif_info(dev, probe, dev->net, "unregister '%s' usb-%s-%s, %s\n",
@@ -1711,11 +1913,21 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
 	skb_queue_head_init (&dev->txq);
 	skb_queue_head_init (&dev->done);
 	skb_queue_head_init(&dev->rxq_pause);
+<<<<<<< HEAD
 	dev->bh.func = (void (*)(unsigned long))usbnet_bh;
 	dev->bh.data = (unsigned long)&dev->delay;
 	INIT_WORK (&dev->kevent, usbnet_deferred_kevent);
 	init_usb_anchor(&dev->deferred);
 	timer_setup(&dev->delay, usbnet_bh, 0);
+=======
+	dev->bh.func = usbnet_bh;
+	dev->bh.data = (unsigned long) dev;
+	INIT_WORK (&dev->kevent, usbnet_deferred_kevent);
+	init_usb_anchor(&dev->deferred);
+	dev->delay.function = usbnet_bh;
+	dev->delay.data = (unsigned long) dev;
+	init_timer (&dev->delay);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init (&dev->phy_mutex);
 	mutex_init(&dev->interrupt_mutex);
 	dev->interrupt_count = 0;
@@ -1824,6 +2036,13 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
 	if (dev->driver_info->flags & FLAG_LINK_INTR)
 		usbnet_link_change(dev, 0, 0);
 
+<<<<<<< HEAD
+=======
+	dev->netdev_id = name_to_netdev_id(dev->net->name);
+	if (dev->netdev_id >= 0)
+		dev->ipc_log_ctxt = usbnet_ipc_log_ctxt[dev->netdev_id];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out5:
@@ -2186,17 +2405,42 @@ EXPORT_SYMBOL_GPL(usbnet_write_cmd_async);
 
 static int __init usbnet_init(void)
 {
+<<<<<<< HEAD
+=======
+	int i = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Compiler should optimize this out. */
 	BUILD_BUG_ON(
 		FIELD_SIZEOF(struct sk_buff, cb) < sizeof(struct skb_data));
 
 	eth_random_addr(node_id);
+<<<<<<< HEAD
+=======
+	for (i = 0; i < NUM_USBNET_IDS; i++) {
+		usbnet_ipc_log_ctxt[i] =
+			ipc_log_context_create(IPC_LOG_NUM_PAGES,
+					       netdev_names[i], 0);
+		if (!usbnet_ipc_log_ctxt[i])
+			pr_err("%s: Error getting ipc_log_ctxt\n", __func__);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 module_init(usbnet_init);
 
 static void __exit usbnet_exit(void)
 {
+<<<<<<< HEAD
+=======
+	int i;
+
+	for (i = 0; i < NUM_USBNET_IDS; i++) {
+		ipc_log_context_destroy(usbnet_ipc_log_ctxt[i]);
+		usbnet_ipc_log_ctxt[i] = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 module_exit(usbnet_exit);
 

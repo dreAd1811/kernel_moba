@@ -34,10 +34,16 @@
 #include "blk-mq-debugfs.h"
 #include "blk-mq-tag.h"
 #include "blk-stat.h"
+<<<<<<< HEAD
 #include "blk-mq-sched.h"
 #include "blk-rq-qos.h"
 
 static bool blk_mq_poll(struct request_queue *q, blk_qc_t cookie);
+=======
+#include "blk-wbt.h"
+#include "blk-mq-sched.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void blk_mq_poll_stats_start(struct request_queue *q);
 static void blk_mq_poll_stats_fn(struct blk_stat_callback *cb);
 
@@ -61,10 +67,17 @@ static int blk_mq_poll_stats_bkt(const struct request *rq)
 /*
  * Check if any of the ctx's have pending work in this hardware queue
  */
+<<<<<<< HEAD
 static bool blk_mq_hctx_has_pending(struct blk_mq_hw_ctx *hctx)
 {
 	return !list_empty_careful(&hctx->dispatch) ||
 		sbitmap_any_bit_set(&hctx->ctx_map) ||
+=======
+bool blk_mq_hctx_has_pending(struct blk_mq_hw_ctx *hctx)
+{
+	return sbitmap_any_bit_set(&hctx->ctx_map) ||
+			!list_empty_careful(&hctx->dispatch) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			blk_mq_sched_has_work(hctx);
 }
 
@@ -95,6 +108,7 @@ static void blk_mq_check_inflight(struct blk_mq_hw_ctx *hctx,
 {
 	struct mq_inflight *mi = priv;
 
+<<<<<<< HEAD
 	/*
 	 * index[0] counts the specific partition that was asked for. index[1]
 	 * counts the ones that are active on the whole device, so increment
@@ -104,6 +118,21 @@ static void blk_mq_check_inflight(struct blk_mq_hw_ctx *hctx,
 		mi->inflight[0]++;
 	if (mi->part->partno)
 		mi->inflight[1]++;
+=======
+	if (test_bit(REQ_ATOM_STARTED, &rq->atomic_flags) &&
+	    !test_bit(REQ_ATOM_COMPLETE, &rq->atomic_flags)) {
+		/*
+		 * index[0] counts the specific partition that was asked
+		 * for. index[1] counts the ones that are active on the
+		 * whole device, so increment that if mi->part is indeed
+		 * a partition, and not a whole device.
+		 */
+		if (rq->part == mi->part)
+			mi->inflight[0]++;
+		if (mi->part->partno)
+			mi->inflight[1]++;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void blk_mq_in_flight(struct request_queue *q, struct hd_struct *part,
@@ -134,7 +163,11 @@ void blk_mq_in_flight_rw(struct request_queue *q, struct hd_struct *part,
 	blk_mq_queue_tag_busy_iter(q, blk_mq_check_inflight_rw, &mi);
 }
 
+<<<<<<< HEAD
 void blk_freeze_queue_start(struct request_queue *q)
+=======
+bool blk_freeze_queue_start(struct request_queue *q)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int freeze_depth;
 
@@ -143,7 +176,13 @@ void blk_freeze_queue_start(struct request_queue *q)
 		percpu_ref_kill(&q->q_usage_counter);
 		if (q->mq_ops)
 			blk_mq_run_hw_queues(q, false);
+<<<<<<< HEAD
 	}
+=======
+		return true;
+	}
+	return false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(blk_freeze_queue_start);
 
@@ -166,7 +205,11 @@ EXPORT_SYMBOL_GPL(blk_mq_freeze_queue_wait_timeout);
  * Guarantee no request is in use, so we can change any data structure of
  * the queue afterward.
  */
+<<<<<<< HEAD
 void blk_freeze_queue(struct request_queue *q)
+=======
+bool blk_freeze_queue(struct request_queue *q)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * In the !blk_mq case we are only calling this to kill the
@@ -175,6 +218,7 @@ void blk_freeze_queue(struct request_queue *q)
 	 * no blk_unfreeze_queue(), and blk_freeze_queue() is not
 	 * exported to drivers as the only user for unfreeze is blk_mq.
 	 */
+<<<<<<< HEAD
 	blk_freeze_queue_start(q);
 	if (!q->mq_ops)
 		blk_drain_queue(q);
@@ -182,12 +226,26 @@ void blk_freeze_queue(struct request_queue *q)
 }
 
 void blk_mq_freeze_queue(struct request_queue *q)
+=======
+	bool ret = blk_freeze_queue_start(q);
+	if (!q->mq_ops)
+		blk_drain_queue(q);
+	blk_mq_freeze_queue_wait(q);
+	return ret;
+}
+
+bool blk_mq_freeze_queue(struct request_queue *q)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * ...just an alias to keep freeze and unfreeze actions balanced
 	 * in the blk_mq_* namespace
 	 */
+<<<<<<< HEAD
 	blk_freeze_queue(q);
+=======
+	return blk_freeze_queue(q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(blk_mq_freeze_queue);
 
@@ -210,7 +268,15 @@ EXPORT_SYMBOL_GPL(blk_mq_unfreeze_queue);
  */
 void blk_mq_quiesce_queue_nowait(struct request_queue *q)
 {
+<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_QUIESCED, q);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(q->queue_lock, flags);
+	queue_flag_set(QUEUE_FLAG_QUIESCED, q);
+	spin_unlock_irqrestore(q->queue_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(blk_mq_quiesce_queue_nowait);
 
@@ -233,7 +299,11 @@ void blk_mq_quiesce_queue(struct request_queue *q)
 
 	queue_for_each_hw_ctx(q, hctx, i) {
 		if (hctx->flags & BLK_MQ_F_BLOCKING)
+<<<<<<< HEAD
 			synchronize_srcu(hctx->srcu);
+=======
+			synchronize_srcu(hctx->queue_rq_srcu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			rcu = true;
 	}
@@ -251,7 +321,15 @@ EXPORT_SYMBOL_GPL(blk_mq_quiesce_queue);
  */
 void blk_mq_unquiesce_queue(struct request_queue *q)
 {
+<<<<<<< HEAD
 	blk_queue_flag_clear(QUEUE_FLAG_QUIESCED, q);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(q->queue_lock, flags);
+	queue_flag_clear(QUEUE_FLAG_QUIESCED, q);
+	spin_unlock_irqrestore(q->queue_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* dispatch requests which are inserted during quiescing */
 	blk_mq_run_hw_queues(q, true);
@@ -279,14 +357,24 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 {
 	struct blk_mq_tags *tags = blk_mq_tags_from_data(data);
 	struct request *rq = tags->static_rqs[tag];
+<<<<<<< HEAD
 	req_flags_t rq_flags = 0;
+=======
+
+	rq->rq_flags = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (data->flags & BLK_MQ_REQ_INTERNAL) {
 		rq->tag = -1;
 		rq->internal_tag = tag;
 	} else {
+<<<<<<< HEAD
 		if (data->hctx->flags & BLK_MQ_F_TAG_SHARED) {
 			rq_flags = RQF_MQ_INFLIGHT;
+=======
+		if (blk_mq_tag_busy(data->hctx)) {
+			rq->rq_flags = RQF_MQ_INFLIGHT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atomic_inc(&data->hctx->nr_active);
 		}
 		rq->tag = tag;
@@ -294,6 +382,7 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 		data->hctx->tags->rqs[rq->tag] = rq;
 	}
 
+<<<<<<< HEAD
 	/* csd/requeue_work/fifo_time is initialized before use */
 	rq->q = data->q;
 	rq->mq_ctx = data->ctx;
@@ -305,12 +394,32 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 	if (blk_queue_io_stat(data->q))
 		rq->rq_flags |= RQF_IO_STAT;
 	INIT_LIST_HEAD(&rq->queuelist);
+=======
+	INIT_LIST_HEAD(&rq->queuelist);
+	/* csd/requeue_work/fifo_time is initialized before use */
+	rq->q = data->q;
+	rq->mq_ctx = data->ctx;
+	rq->cmd_flags = op;
+	if (blk_queue_io_stat(data->q))
+		rq->rq_flags |= RQF_IO_STAT;
+	/* do not touch atomic flags, it needs atomic ops against the timer */
+	rq->cpu = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_HLIST_NODE(&rq->hash);
 	RB_CLEAR_NODE(&rq->rb_node);
 	rq->rq_disk = NULL;
 	rq->part = NULL;
+<<<<<<< HEAD
 	rq->start_time_ns = ktime_get_ns();
 	rq->io_start_time_ns = 0;
+=======
+	rq->start_time = jiffies;
+#ifdef CONFIG_BLK_CGROUP
+	rq->rl = NULL;
+	set_start_time_ns(rq);
+	rq->io_start_time_ns = 0;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rq->nr_phys_segments = 0;
 #if defined(CONFIG_BLK_DEV_INTEGRITY)
 	rq->nr_integrity_segments = 0;
@@ -318,7 +427,10 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 	rq->special = NULL;
 	/* tag was already set */
 	rq->extra_len = 0;
+<<<<<<< HEAD
 	rq->__deadline = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&rq->timeout_list);
 	rq->timeout = 0;
@@ -327,12 +439,16 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
 	rq->end_io_data = NULL;
 	rq->next_rq = NULL;
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_CGROUP
 	rq->rl = NULL;
 #endif
 
 	data->ctx->rq_dispatched[op_is_sync(op)]++;
 	refcount_set(&rq->ref, 1);
+=======
+	data->ctx->rq_dispatched[op_is_sync(op)]++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rq;
 }
 
@@ -343,6 +459,7 @@ static struct request *blk_mq_get_request(struct request_queue *q,
 	struct elevator_queue *e = q->elevator;
 	struct request *rq;
 	unsigned int tag;
+<<<<<<< HEAD
 	bool put_ctx_on_error = false;
 
 	blk_queue_enter_live(q);
@@ -351,6 +468,14 @@ static struct request *blk_mq_get_request(struct request_queue *q,
 		data->ctx = blk_mq_get_ctx(q);
 		put_ctx_on_error = true;
 	}
+=======
+	struct blk_mq_ctx *local_ctx = NULL;
+
+	blk_queue_enter_live(q);
+	data->q = q;
+	if (likely(!data->ctx))
+		data->ctx = local_ctx = blk_mq_get_ctx(q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (likely(!data->hctx))
 		data->hctx = blk_mq_map_queue(q, data->ctx->cpu);
 	if (op & REQ_NOWAIT)
@@ -361,6 +486,7 @@ static struct request *blk_mq_get_request(struct request_queue *q,
 
 		/*
 		 * Flush requests are special and go directly to the
+<<<<<<< HEAD
 		 * dispatch list. Don't include reserved tags in the
 		 * limiting, as it isn't useful.
 		 */
@@ -369,12 +495,23 @@ static struct request *blk_mq_get_request(struct request_queue *q,
 			e->type->ops.mq.limit_depth(op, data);
 	} else {
 		blk_mq_tag_busy(data->hctx);
+=======
+		 * dispatch list.
+		 */
+		if (!op_is_flush(op) && e->type->ops.mq.limit_depth)
+			e->type->ops.mq.limit_depth(op, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	tag = blk_mq_get_tag(data);
 	if (tag == BLK_MQ_TAG_FAIL) {
+<<<<<<< HEAD
 		if (put_ctx_on_error) {
 			blk_mq_put_ctx(data->ctx);
+=======
+		if (local_ctx) {
+			blk_mq_put_ctx(local_ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->ctx = NULL;
 		}
 		blk_queue_exit(q);
@@ -397,13 +534,22 @@ static struct request *blk_mq_get_request(struct request_queue *q,
 }
 
 struct request *blk_mq_alloc_request(struct request_queue *q, unsigned int op,
+<<<<<<< HEAD
 		blk_mq_req_flags_t flags)
+=======
+		unsigned int flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct blk_mq_alloc_data alloc_data = { .flags = flags };
 	struct request *rq;
 	int ret;
 
+<<<<<<< HEAD
 	ret = blk_queue_enter(q, flags);
+=======
+	ret = blk_queue_enter(q, !(flags & BLK_MQ_REQ_NOWAIT) ? op :
+			op | REQ_NOWAIT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ERR_PTR(ret);
 
@@ -423,7 +569,11 @@ struct request *blk_mq_alloc_request(struct request_queue *q, unsigned int op,
 EXPORT_SYMBOL(blk_mq_alloc_request);
 
 struct request *blk_mq_alloc_request_hctx(struct request_queue *q,
+<<<<<<< HEAD
 	unsigned int op, blk_mq_req_flags_t flags, unsigned int hctx_idx)
+=======
+		unsigned int op, unsigned int flags, unsigned int hctx_idx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct blk_mq_alloc_data alloc_data = { .flags = flags };
 	struct request *rq;
@@ -442,7 +592,11 @@ struct request *blk_mq_alloc_request_hctx(struct request_queue *q,
 	if (hctx_idx >= q->nr_hw_queues)
 		return ERR_PTR(-EIO);
 
+<<<<<<< HEAD
 	ret = blk_queue_enter(q, flags);
+=======
+	ret = blk_queue_enter(q, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ERR_PTR(ret);
 
@@ -455,7 +609,11 @@ struct request *blk_mq_alloc_request_hctx(struct request_queue *q,
 		blk_queue_exit(q);
 		return ERR_PTR(-EXDEV);
 	}
+<<<<<<< HEAD
 	cpu = cpumask_first_and(alloc_data.hctx->cpumask, cpu_online_mask);
+=======
+	cpu = cpumask_first(alloc_data.hctx->cpumask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	alloc_data.ctx = __blk_mq_get_ctx(q, cpu);
 
 	rq = blk_mq_get_request(q, NULL, op, &alloc_data);
@@ -468,6 +626,7 @@ struct request *blk_mq_alloc_request_hctx(struct request_queue *q,
 }
 EXPORT_SYMBOL_GPL(blk_mq_alloc_request_hctx);
 
+<<<<<<< HEAD
 static void __blk_mq_free_request(struct request *rq)
 {
 	struct request_queue *q = rq->q;
@@ -483,12 +642,18 @@ static void __blk_mq_free_request(struct request *rq)
 	blk_queue_exit(q);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void blk_mq_free_request(struct request *rq)
 {
 	struct request_queue *q = rq->q;
 	struct elevator_queue *e = q->elevator;
 	struct blk_mq_ctx *ctx = rq->mq_ctx;
 	struct blk_mq_hw_ctx *hctx = blk_mq_map_queue(q, ctx->cpu);
+<<<<<<< HEAD
+=======
+	const int sched_tag = rq->internal_tag;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rq->rq_flags & RQF_ELVPRIV) {
 		if (e && e->type->ops.mq.finish_request)
@@ -503,6 +668,7 @@ void blk_mq_free_request(struct request *rq)
 	if (rq->rq_flags & RQF_MQ_INFLIGHT)
 		atomic_dec(&hctx->nr_active);
 
+<<<<<<< HEAD
 	if (unlikely(laptop_mode && !blk_rq_is_passthrough(rq)))
 		laptop_io_completion(q->backing_dev_info);
 
@@ -514,11 +680,24 @@ void blk_mq_free_request(struct request *rq)
 	WRITE_ONCE(rq->state, MQ_RQ_IDLE);
 	if (refcount_dec_and_test(&rq->ref))
 		__blk_mq_free_request(rq);
+=======
+	wbt_done(q->rq_wb, &rq->issue_stat);
+
+	clear_bit(REQ_ATOM_STARTED, &rq->atomic_flags);
+	clear_bit(REQ_ATOM_POLL_SLEPT, &rq->atomic_flags);
+	if (rq->tag != -1)
+		blk_mq_put_tag(hctx, hctx->tags, ctx, rq->tag);
+	if (sched_tag != -1)
+		blk_mq_put_tag(hctx, hctx->sched_tags, ctx, sched_tag);
+	blk_mq_sched_restart(hctx);
+	blk_queue_exit(q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(blk_mq_free_request);
 
 inline void __blk_mq_end_request(struct request *rq, blk_status_t error)
 {
+<<<<<<< HEAD
 	u64 now = ktime_get_ns();
 
 	if (rq->rq_flags & RQF_STATS) {
@@ -530,6 +709,12 @@ inline void __blk_mq_end_request(struct request *rq, blk_status_t error)
 
 	if (rq->end_io) {
 		rq_qos_done(rq->q, rq);
+=======
+	blk_account_io_done(rq);
+
+	if (rq->end_io) {
+		wbt_done(rq->q->rq_wb, &rq->issue_stat);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rq->end_io(rq, error);
 	} else {
 		if (unlikely(blk_bidi_rq(rq)))
@@ -560,10 +745,19 @@ static void __blk_mq_complete_request(struct request *rq)
 	bool shared = false;
 	int cpu;
 
+<<<<<<< HEAD
 	if (!blk_mq_mark_complete(rq))
 		return;
 	if (rq->internal_tag != -1)
 		blk_mq_sched_completed_request(rq);
+=======
+	if (rq->internal_tag != -1)
+		blk_mq_sched_completed_request(rq);
+	if (rq->rq_flags & RQF_STATS) {
+		blk_mq_poll_stats_start(rq->q);
+		blk_stat_add(rq);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!test_bit(QUEUE_FLAG_SAME_COMP, &rq->q->queue_flags)) {
 		rq->q->softirq_done_fn(rq);
@@ -585,6 +779,7 @@ static void __blk_mq_complete_request(struct request *rq)
 	put_cpu();
 }
 
+<<<<<<< HEAD
 static void hctx_unlock(struct blk_mq_hw_ctx *hctx, int srcu_idx)
 	__releases(hctx->srcu)
 {
@@ -605,6 +800,8 @@ static void hctx_lock(struct blk_mq_hw_ctx *hctx, int *srcu_idx)
 		*srcu_idx = srcu_read_lock(hctx->srcu);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * blk_mq_complete_request - end I/O on a request
  * @rq:		the request being processed
@@ -615,15 +812,28 @@ static void hctx_lock(struct blk_mq_hw_ctx *hctx, int *srcu_idx)
  **/
 void blk_mq_complete_request(struct request *rq)
 {
+<<<<<<< HEAD
 	if (unlikely(blk_should_fake_timeout(rq->q)))
 		return;
 	__blk_mq_complete_request(rq);
+=======
+	struct request_queue *q = rq->q;
+
+	if (unlikely(blk_should_fake_timeout(q)))
+		return;
+	if (!blk_mark_rq_complete(rq))
+		__blk_mq_complete_request(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(blk_mq_complete_request);
 
 int blk_mq_request_started(struct request *rq)
 {
+<<<<<<< HEAD
 	return blk_mq_rq_state(rq) != MQ_RQ_IDLE;
+=======
+	return test_bit(REQ_ATOM_STARTED, &rq->atomic_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(blk_mq_request_started);
 
@@ -636,6 +846,7 @@ void blk_mq_start_request(struct request *rq)
 	trace_block_rq_issue(q, rq);
 
 	if (test_bit(QUEUE_FLAG_STATS, &q->queue_flags)) {
+<<<<<<< HEAD
 		rq->io_start_time_ns = ktime_get_ns();
 #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
 		rq->throtl_size = blk_rq_sectors(rq);
@@ -648,6 +859,31 @@ void blk_mq_start_request(struct request *rq)
 
 	blk_add_timer(rq);
 	WRITE_ONCE(rq->state, MQ_RQ_IN_FLIGHT);
+=======
+		blk_stat_set_issue(&rq->issue_stat, blk_rq_sectors(rq));
+		rq->rq_flags |= RQF_STATS;
+		wbt_issue(q->rq_wb, &rq->issue_stat);
+	}
+
+	blk_add_timer(rq);
+
+	/*
+	 * Ensure that ->deadline is visible before set the started
+	 * flag and clear the completed flag.
+	 */
+	smp_mb__before_atomic();
+
+	/*
+	 * Mark us as started and clear complete. Complete might have been
+	 * set if requeue raced with timeout, which then marked it as
+	 * complete. So be sure to clear complete again when we start
+	 * the request, otherwise we'll ignore the completion event.
+	 */
+	if (!test_bit(REQ_ATOM_STARTED, &rq->atomic_flags))
+		set_bit(REQ_ATOM_STARTED, &rq->atomic_flags);
+	if (test_bit(REQ_ATOM_COMPLETE, &rq->atomic_flags))
+		clear_bit(REQ_ATOM_COMPLETE, &rq->atomic_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (q->dma_drain_size && blk_rq_bytes(rq)) {
 		/*
@@ -660,10 +896,23 @@ void blk_mq_start_request(struct request *rq)
 }
 EXPORT_SYMBOL(blk_mq_start_request);
 
+<<<<<<< HEAD
+=======
+/*
+ * When we reach here because queue is busy, REQ_ATOM_COMPLETE
+ * flag isn't set yet, so there may be race with timeout handler,
+ * but given rq->deadline is just set in .queue_rq() under
+ * this situation, the race won't be possible in reality because
+ * rq->timeout should be set as big enough to cover the window
+ * between blk_mq_start_request() called from .queue_rq() and
+ * clearing REQ_ATOM_STARTED here.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __blk_mq_requeue_request(struct request *rq)
 {
 	struct request_queue *q = rq->q;
 
+<<<<<<< HEAD
 	blk_mq_put_driver_tag(rq);
 
 	trace_block_rq_requeue(q, rq);
@@ -672,6 +921,12 @@ static void __blk_mq_requeue_request(struct request *rq)
 	if (blk_mq_request_started(rq)) {
 		WRITE_ONCE(rq->state, MQ_RQ_IDLE);
 		rq->rq_flags &= ~RQF_TIMED_OUT;
+=======
+	trace_block_rq_requeue(q, rq);
+	wbt_requeue(q->rq_wb, &rq->issue_stat);
+
+	if (test_and_clear_bit(REQ_ATOM_STARTED, &rq->atomic_flags)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (q->dma_drain_size && blk_rq_bytes(rq))
 			rq->nr_phys_segments--;
 	}
@@ -701,11 +956,16 @@ static void blk_mq_requeue_work(struct work_struct *work)
 	spin_unlock_irq(&q->requeue_lock);
 
 	list_for_each_entry_safe(rq, next, &rq_list, queuelist) {
+<<<<<<< HEAD
 		if (!(rq->rq_flags & (RQF_SOFTBARRIER | RQF_DONTPREP)))
+=======
+		if (!(rq->rq_flags & RQF_SOFTBARRIER))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		rq->rq_flags &= ~RQF_SOFTBARRIER;
 		list_del_init(&rq->queuelist);
+<<<<<<< HEAD
 		/*
 		 * If RQF_DONTPREP, rq has contained some driver specific
 		 * data, so insert it to hctx dispatch list to avoid any
@@ -715,12 +975,19 @@ static void blk_mq_requeue_work(struct work_struct *work)
 			blk_mq_request_bypass_insert(rq, false);
 		else
 			blk_mq_sched_insert_request(rq, true, false, false);
+=======
+		blk_mq_sched_insert_request(rq, true, false, false, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	while (!list_empty(&rq_list)) {
 		rq = list_entry(rq_list.next, struct request, queuelist);
 		list_del_init(&rq->queuelist);
+<<<<<<< HEAD
 		blk_mq_sched_insert_request(rq, false, false, false);
+=======
+		blk_mq_sched_insert_request(rq, false, false, false, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	blk_mq_run_hw_queues(q, false);
@@ -734,7 +1001,11 @@ void blk_mq_add_to_requeue_list(struct request *rq, bool at_head,
 
 	/*
 	 * We abuse this flag that is otherwise used by the I/O scheduler to
+<<<<<<< HEAD
 	 * request head insertion from the workqueue.
+=======
+	 * request head insertation from the workqueue.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	BUG_ON(rq->rq_flags & RQF_SOFTBARRIER);
 
@@ -754,7 +1025,11 @@ EXPORT_SYMBOL(blk_mq_add_to_requeue_list);
 
 void blk_mq_kick_requeue_list(struct request_queue *q)
 {
+<<<<<<< HEAD
 	kblockd_mod_delayed_work_on(WORK_CPU_UNBOUND, &q->requeue_work, 0);
+=======
+	kblockd_schedule_delayed_work(&q->requeue_work, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(blk_mq_kick_requeue_list);
 
@@ -777,6 +1052,7 @@ struct request *blk_mq_tag_to_rq(struct blk_mq_tags *tags, unsigned int tag)
 }
 EXPORT_SYMBOL(blk_mq_tag_to_rq);
 
+<<<<<<< HEAD
 static void blk_mq_rq_timed_out(struct request *req, bool reserved)
 {
 	req->rq_flags |= RQF_TIMED_OUT;
@@ -810,11 +1086,53 @@ static bool blk_mq_req_expired(struct request *rq, unsigned long *next)
 	else if (time_after(*next, deadline))
 		*next = deadline;
 	return false;
+=======
+struct blk_mq_timeout_data {
+	unsigned long next;
+	unsigned int next_set;
+};
+
+void blk_mq_rq_timed_out(struct request *req, bool reserved)
+{
+	const struct blk_mq_ops *ops = req->q->mq_ops;
+	enum blk_eh_timer_return ret = BLK_EH_RESET_TIMER;
+
+	/*
+	 * We know that complete is set at this point. If STARTED isn't set
+	 * anymore, then the request isn't active and the "timeout" should
+	 * just be ignored. This can happen due to the bitflag ordering.
+	 * Timeout first checks if STARTED is set, and if it is, assumes
+	 * the request is active. But if we race with completion, then
+	 * both flags will get cleared. So check here again, and ignore
+	 * a timeout event with a request that isn't active.
+	 */
+	if (!test_bit(REQ_ATOM_STARTED, &req->atomic_flags))
+		return;
+
+	if (ops->timeout)
+		ret = ops->timeout(req, reserved);
+
+	switch (ret) {
+	case BLK_EH_HANDLED:
+		__blk_mq_complete_request(req);
+		break;
+	case BLK_EH_RESET_TIMER:
+		blk_add_timer(req);
+		blk_clear_rq_complete(req);
+		break;
+	case BLK_EH_NOT_HANDLED:
+		break;
+	default:
+		printk(KERN_ERR "block: bad eh return: %d\n", ret);
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void blk_mq_check_expired(struct blk_mq_hw_ctx *hctx,
 		struct request *rq, void *priv, bool reserved)
 {
+<<<<<<< HEAD
 	unsigned long *next = priv;
 
 	/*
@@ -849,14 +1167,48 @@ static void blk_mq_check_expired(struct blk_mq_hw_ctx *hctx,
 		rq->end_io(rq, 0);
 	else if (refcount_dec_and_test(&rq->ref))
 		__blk_mq_free_request(rq);
+=======
+	struct blk_mq_timeout_data *data = priv;
+
+	if (!test_bit(REQ_ATOM_STARTED, &rq->atomic_flags))
+		return;
+
+	/*
+	 * The rq being checked may have been freed and reallocated
+	 * out already here, we avoid this race by checking rq->deadline
+	 * and REQ_ATOM_COMPLETE flag together:
+	 *
+	 * - if rq->deadline is observed as new value because of
+	 *   reusing, the rq won't be timed out because of timing.
+	 * - if rq->deadline is observed as previous value,
+	 *   REQ_ATOM_COMPLETE flag won't be cleared in reuse path
+	 *   because we put a barrier between setting rq->deadline
+	 *   and clearing the flag in blk_mq_start_request(), so
+	 *   this rq won't be timed out too.
+	 */
+	if (time_after_eq(jiffies, rq->deadline)) {
+		if (!blk_mark_rq_complete(rq))
+			blk_mq_rq_timed_out(rq, reserved);
+	} else if (!data->next_set || time_after(data->next, rq->deadline)) {
+		data->next = rq->deadline;
+		data->next_set = 1;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void blk_mq_timeout_work(struct work_struct *work)
 {
 	struct request_queue *q =
 		container_of(work, struct request_queue, timeout_work);
+<<<<<<< HEAD
 	unsigned long next = 0;
 	struct blk_mq_hw_ctx *hctx;
+=======
+	struct blk_mq_timeout_data data = {
+		.next		= 0,
+		.next_set	= 0,
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	/* A deadlock might occur if a request is stuck requiring a
@@ -875,6 +1227,7 @@ static void blk_mq_timeout_work(struct work_struct *work)
 	if (!percpu_ref_tryget(&q->q_usage_counter))
 		return;
 
+<<<<<<< HEAD
 	blk_mq_queue_tag_busy_iter(q, blk_mq_check_expired, &next);
 
 	if (next != 0) {
@@ -886,6 +1239,16 @@ static void blk_mq_timeout_work(struct work_struct *work)
 		 * also that no request has been pending for a while. Mark
 		 * each hctx as idle.
 		 */
+=======
+	blk_mq_queue_tag_busy_iter(q, blk_mq_check_expired, &data);
+
+	if (data.next_set) {
+		data.next = blk_rq_timeout(round_jiffies_up(data.next));
+		mod_timer(&q->timeout, data.next);
+	} else {
+		struct blk_mq_hw_ctx *hctx;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue_for_each_hw_ctx(q, hctx, i) {
 			/* the hctx may be unmapped, so check it here */
 			if (blk_mq_hw_queue_mapped(hctx))
@@ -906,9 +1269,15 @@ static bool flush_busy_ctx(struct sbitmap *sb, unsigned int bitnr, void *data)
 	struct blk_mq_hw_ctx *hctx = flush_data->hctx;
 	struct blk_mq_ctx *ctx = hctx->ctxs[bitnr];
 
+<<<<<<< HEAD
 	spin_lock(&ctx->lock);
 	list_splice_tail_init(&ctx->rq_list, flush_data->list);
 	sbitmap_clear_bit(sb, bitnr);
+=======
+	sbitmap_clear_bit(sb, bitnr);
+	spin_lock(&ctx->lock);
+	list_splice_tail_init(&ctx->rq_list, flush_data->list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&ctx->lock);
 	return true;
 }
@@ -928,6 +1297,7 @@ void blk_mq_flush_busy_ctxs(struct blk_mq_hw_ctx *hctx, struct list_head *list)
 }
 EXPORT_SYMBOL_GPL(blk_mq_flush_busy_ctxs);
 
+<<<<<<< HEAD
 struct dispatch_rq_data {
 	struct blk_mq_hw_ctx *hctx;
 	struct request *rq;
@@ -967,6 +1337,8 @@ struct request *blk_mq_dequeue_from_ctx(struct blk_mq_hw_ctx *hctx,
 	return data.rq;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned int queued_to_index(unsigned int queued)
 {
 	if (!queued)
@@ -975,14 +1347,26 @@ static inline unsigned int queued_to_index(unsigned int queued)
 	return min(BLK_MQ_MAX_DISPATCH_ORDER - 1, ilog2(queued) + 1);
 }
 
+<<<<<<< HEAD
 bool blk_mq_get_driver_tag(struct request *rq)
+=======
+bool blk_mq_get_driver_tag(struct request *rq, struct blk_mq_hw_ctx **hctx,
+			   bool wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct blk_mq_alloc_data data = {
 		.q = rq->q,
 		.hctx = blk_mq_map_queue(rq->q, rq->mq_ctx->cpu),
+<<<<<<< HEAD
 		.flags = BLK_MQ_REQ_NOWAIT,
 	};
 	bool shared;
+=======
+		.flags = wait ? 0 : BLK_MQ_REQ_NOWAIT,
+	};
+
+	might_sleep_if(wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rq->tag != -1)
 		goto done;
@@ -990,10 +1374,16 @@ bool blk_mq_get_driver_tag(struct request *rq)
 	if (blk_mq_tag_is_reserved(data.hctx->sched_tags, rq->internal_tag))
 		data.flags |= BLK_MQ_REQ_RESERVED;
 
+<<<<<<< HEAD
 	shared = blk_mq_tag_busy(data.hctx);
 	rq->tag = blk_mq_get_tag(&data);
 	if (rq->tag >= 0) {
 		if (shared) {
+=======
+	rq->tag = blk_mq_get_tag(&data);
+	if (rq->tag >= 0) {
+		if (blk_mq_tag_busy(data.hctx)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rq->rq_flags |= RQF_MQ_INFLIGHT;
 			atomic_inc(&data.hctx->nr_active);
 		}
@@ -1001,24 +1391,96 @@ bool blk_mq_get_driver_tag(struct request *rq)
 	}
 
 done:
+<<<<<<< HEAD
 	return rq->tag != -1;
 }
 
 static int blk_mq_dispatch_wake(wait_queue_entry_t *wait, unsigned mode,
 				int flags, void *key)
+=======
+	if (hctx)
+		*hctx = data.hctx;
+	return rq->tag != -1;
+}
+
+static void __blk_mq_put_driver_tag(struct blk_mq_hw_ctx *hctx,
+				    struct request *rq)
+{
+	blk_mq_put_tag(hctx, hctx->tags, rq->mq_ctx, rq->tag);
+	rq->tag = -1;
+
+	if (rq->rq_flags & RQF_MQ_INFLIGHT) {
+		rq->rq_flags &= ~RQF_MQ_INFLIGHT;
+		atomic_dec(&hctx->nr_active);
+	}
+}
+
+static void blk_mq_put_driver_tag_hctx(struct blk_mq_hw_ctx *hctx,
+				       struct request *rq)
+{
+	if (rq->tag == -1 || rq->internal_tag == -1)
+		return;
+
+	__blk_mq_put_driver_tag(hctx, rq);
+}
+
+static void blk_mq_put_driver_tag(struct request *rq)
+{
+	struct blk_mq_hw_ctx *hctx;
+
+	if (rq->tag == -1 || rq->internal_tag == -1)
+		return;
+
+	hctx = blk_mq_map_queue(rq->q, rq->mq_ctx->cpu);
+	__blk_mq_put_driver_tag(hctx, rq);
+}
+
+/*
+ * If we fail getting a driver tag because all the driver tags are already
+ * assigned and on the dispatch list, BUT the first entry does not have a
+ * tag, then we could deadlock. For that case, move entries with assigned
+ * driver tags to the front, leaving the set of tagged requests in the
+ * same order, and the untagged set in the same order.
+ */
+static bool reorder_tags_to_front(struct list_head *list)
+{
+	struct request *rq, *tmp, *first = NULL;
+
+	list_for_each_entry_safe_reverse(rq, tmp, list, queuelist) {
+		if (rq == first)
+			break;
+		if (rq->tag != -1) {
+			list_move(&rq->queuelist, list);
+			if (!first)
+				first = rq;
+		}
+	}
+
+	return first != NULL;
+}
+
+static int blk_mq_dispatch_wake(wait_queue_entry_t *wait, unsigned mode, int flags,
+				void *key)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct blk_mq_hw_ctx *hctx;
 
 	hctx = container_of(wait, struct blk_mq_hw_ctx, dispatch_wait);
 
+<<<<<<< HEAD
 	spin_lock(&hctx->dispatch_wait_lock);
 	list_del_init(&wait->entry);
 	spin_unlock(&hctx->dispatch_wait_lock);
 
+=======
+	list_del(&wait->entry);
+	clear_bit_unlock(BLK_MQ_S_TAG_WAITING, &hctx->state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_mq_run_hw_queue(hctx, true);
 	return 1;
 }
 
+<<<<<<< HEAD
 /*
  * Mark us waiting for a tag. For shared tags, this involves hooking us into
  * the tag wakeups. For non-shared tags, we can simply mark us needing a
@@ -1129,18 +1591,54 @@ bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list,
 	bool no_tag = false;
 	int errors, queued;
 	blk_status_t ret = BLK_STS_OK;
+=======
+static bool blk_mq_dispatch_wait_add(struct blk_mq_hw_ctx *hctx)
+{
+	struct sbq_wait_state *ws;
+
+	/*
+	 * The TAG_WAITING bit serves as a lock protecting hctx->dispatch_wait.
+	 * The thread which wins the race to grab this bit adds the hardware
+	 * queue to the wait queue.
+	 */
+	if (test_bit(BLK_MQ_S_TAG_WAITING, &hctx->state) ||
+	    test_and_set_bit_lock(BLK_MQ_S_TAG_WAITING, &hctx->state))
+		return false;
+
+	init_waitqueue_func_entry(&hctx->dispatch_wait, blk_mq_dispatch_wake);
+	ws = bt_wait_ptr(&hctx->tags->bitmap_tags, hctx);
+
+	/*
+	 * As soon as this returns, it's no longer safe to fiddle with
+	 * hctx->dispatch_wait, since a completion can wake up the wait queue
+	 * and unlock the bit.
+	 */
+	add_wait_queue(&ws->wait, &hctx->dispatch_wait);
+	return true;
+}
+
+bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list)
+{
+	struct blk_mq_hw_ctx *hctx;
+	struct request *rq;
+	int errors, queued;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (list_empty(list))
 		return false;
 
+<<<<<<< HEAD
 	WARN_ON(!list_is_singular(list) && got_budget);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Now process all the entries, sending them to the driver.
 	 */
 	errors = queued = 0;
 	do {
 		struct blk_mq_queue_data bd;
+<<<<<<< HEAD
 
 		rq = list_first_entry(list, struct request, queuelist);
 
@@ -1166,6 +1664,29 @@ bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list,
 					no_tag = true;
 				break;
 			}
+=======
+		blk_status_t ret;
+
+		rq = list_first_entry(list, struct request, queuelist);
+		if (!blk_mq_get_driver_tag(rq, &hctx, false)) {
+			if (!queued && reorder_tags_to_front(list))
+				continue;
+
+			/*
+			 * The initial allocation attempt failed, so we need to
+			 * rerun the hardware queue when a tag is freed.
+			 */
+			if (!blk_mq_dispatch_wait_add(hctx))
+				break;
+
+			/*
+			 * It's possible that a tag was freed in the window
+			 * between the allocation failure and adding the
+			 * hardware queue to the wait queue.
+			 */
+			if (!blk_mq_get_driver_tag(rq, &hctx, false))
+				break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		list_del_init(&rq->queuelist);
@@ -1179,6 +1700,7 @@ bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list,
 		if (list_empty(list))
 			bd.last = true;
 		else {
+<<<<<<< HEAD
 			nxt = list_first_entry(list, struct request, queuelist);
 			bd.last = !blk_mq_get_driver_tag(nxt);
 		}
@@ -1194,6 +1716,17 @@ bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list,
 				nxt = list_first_entry(list, struct request, queuelist);
 				blk_mq_put_driver_tag(nxt);
 			}
+=======
+			struct request *nxt;
+
+			nxt = list_first_entry(list, struct request, queuelist);
+			bd.last = !blk_mq_get_driver_tag(nxt, NULL, false);
+		}
+
+		ret = q->mq_ops->queue_rq(hctx, &bd);
+		if (ret == BLK_STS_RESOURCE) {
+			blk_mq_put_driver_tag_hctx(hctx, rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			list_add(&rq->queuelist, list);
 			__blk_mq_requeue_request(rq);
 			break;
@@ -1215,7 +1748,16 @@ bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list,
 	 * that is where we will continue on next queue run.
 	 */
 	if (!list_empty(list)) {
+<<<<<<< HEAD
 		bool needs_restart;
+=======
+		/*
+		 * If an I/O scheduler has been configured and we got a driver
+		 * tag for the next request already, free it again.
+		 */
+		rq = list_first_entry(list, struct request, queuelist);
+		blk_mq_put_driver_tag(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock(&hctx->lock);
 		list_splice_init(list, &hctx->dispatch);
@@ -1226,10 +1768,17 @@ bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list,
 		 * it is no longer set that means that it was cleared by another
 		 * thread and hence that a queue rerun is needed.
 		 *
+<<<<<<< HEAD
 		 * If 'no_tag' is set, that means that we failed getting
 		 * a driver tag with an I/O scheduler attached. If our dispatch
 		 * waitqueue is no longer active, ensure that we run the queue
 		 * AFTER adding our entries back to the list.
+=======
+		 * If TAG_WAITING is set that means that an I/O scheduler has
+		 * been configured and another thread is waiting for a driver
+		 * tag. To guarantee fairness, do not rerun this hardware queue
+		 * but let the other thread grab the driver tag.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 *
 		 * If no I/O scheduler has been configured it is possible that
 		 * the hardware queue got stopped and restarted before requests
@@ -1240,6 +1789,7 @@ bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list,
 		 * - Some but not all block drivers stop a queue before
 		 *   returning BLK_STS_RESOURCE. Two exceptions are scsi-mq
 		 *   and dm-rq.
+<<<<<<< HEAD
 		 *
 		 * If driver returns BLK_STS_RESOURCE and SCHED_RESTART
 		 * bit is set, run queue after a delay to avoid IO stalls
@@ -1263,6 +1813,13 @@ bool blk_mq_dispatch_rq_list(struct request_queue *q, struct list_head *list,
 	 */
 	if (ret == BLK_STS_RESOURCE || ret == BLK_STS_DEV_RESOURCE)
 		return false;
+=======
+		 */
+		if (!blk_mq_sched_needs_restart(hctx) &&
+		    !test_bit(BLK_MQ_S_TAG_WAITING, &hctx->state))
+			blk_mq_run_hw_queue(hctx, true);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (queued + errors) != 0;
 }
@@ -1302,6 +1859,7 @@ static void __blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx)
 	 */
 	WARN_ON_ONCE(in_interrupt());
 
+<<<<<<< HEAD
 	might_sleep_if(hctx->flags & BLK_MQ_F_BLOCKING);
 
 	hctx_lock(hctx, &srcu_idx);
@@ -1316,6 +1874,19 @@ static inline int blk_mq_first_mapped_cpu(struct blk_mq_hw_ctx *hctx)
 	if (cpu >= nr_cpu_ids)
 		cpu = cpumask_first(hctx->cpumask);
 	return cpu;
+=======
+	if (!(hctx->flags & BLK_MQ_F_BLOCKING)) {
+		rcu_read_lock();
+		blk_mq_sched_dispatch_requests(hctx);
+		rcu_read_unlock();
+	} else {
+		might_sleep();
+
+		srcu_idx = srcu_read_lock(hctx->queue_rq_srcu);
+		blk_mq_sched_dispatch_requests(hctx);
+		srcu_read_unlock(hctx->queue_rq_srcu, srcu_idx);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1326,13 +1897,17 @@ static inline int blk_mq_first_mapped_cpu(struct blk_mq_hw_ctx *hctx)
  */
 static int blk_mq_hctx_next_cpu(struct blk_mq_hw_ctx *hctx)
 {
+<<<<<<< HEAD
 	bool tried = false;
 	int next_cpu = hctx->next_cpu;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hctx->queue->nr_hw_queues == 1)
 		return WORK_CPU_UNBOUND;
 
 	if (--hctx->next_cpu_batch <= 0) {
+<<<<<<< HEAD
 select_cpu:
 		next_cpu = cpumask_next_and(next_cpu, hctx->cpumask,
 				cpu_online_mask);
@@ -1362,11 +1937,30 @@ select_cpu:
 
 	hctx->next_cpu = next_cpu;
 	return next_cpu;
+=======
+		int next_cpu;
+
+		next_cpu = cpumask_next(hctx->next_cpu, hctx->cpumask);
+		if (next_cpu >= nr_cpu_ids)
+			next_cpu = cpumask_first(hctx->cpumask);
+
+		hctx->next_cpu = next_cpu;
+		hctx->next_cpu_batch = BLK_MQ_CPU_WORK_BATCH;
+	}
+
+	return hctx->next_cpu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __blk_mq_delay_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async,
 					unsigned long msecs)
 {
+<<<<<<< HEAD
+=======
+	if (WARN_ON_ONCE(!blk_mq_hw_queue_mapped(hctx)))
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(blk_mq_hctx_stopped(hctx)))
 		return;
 
@@ -1381,8 +1975,14 @@ static void __blk_mq_delay_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async,
 		put_cpu();
 	}
 
+<<<<<<< HEAD
 	kblockd_mod_delayed_work_on(blk_mq_hctx_next_cpu(hctx), &hctx->run_work,
 				    msecs_to_jiffies(msecs));
+=======
+	kblockd_schedule_delayed_work_on(blk_mq_hctx_next_cpu(hctx),
+					 &hctx->run_work,
+					 msecs_to_jiffies(msecs));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void blk_mq_delay_run_hw_queue(struct blk_mq_hw_ctx *hctx, unsigned long msecs)
@@ -1391,6 +1991,7 @@ void blk_mq_delay_run_hw_queue(struct blk_mq_hw_ctx *hctx, unsigned long msecs)
 }
 EXPORT_SYMBOL(blk_mq_delay_run_hw_queue);
 
+<<<<<<< HEAD
 bool blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
 {
 	int srcu_idx;
@@ -1415,6 +2016,11 @@ bool blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
 	}
 
 	return false;
+=======
+void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *hctx, bool async)
+{
+	__blk_mq_delay_run_hw_queue(hctx, async, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(blk_mq_run_hw_queue);
 
@@ -1424,7 +2030,12 @@ void blk_mq_run_hw_queues(struct request_queue *q, bool async)
 	int i;
 
 	queue_for_each_hw_ctx(q, hctx, i) {
+<<<<<<< HEAD
 		if (blk_mq_hctx_stopped(hctx))
+=======
+		if (!blk_mq_hctx_has_pending(hctx) ||
+		    blk_mq_hctx_stopped(hctx))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		blk_mq_run_hw_queue(hctx, async);
@@ -1533,14 +2144,50 @@ static void blk_mq_run_work_fn(struct work_struct *work)
 	hctx = container_of(work, struct blk_mq_hw_ctx, run_work.work);
 
 	/*
+<<<<<<< HEAD
 	 * If we are stopped, don't run the queue.
 	 */
 	if (test_bit(BLK_MQ_S_STOPPED, &hctx->state))
 		return;
+=======
+	 * If we are stopped, don't run the queue. The exception is if
+	 * BLK_MQ_S_START_ON_RUN is set. For that case, we auto-clear
+	 * the STOPPED bit and run it.
+	 */
+	if (test_bit(BLK_MQ_S_STOPPED, &hctx->state)) {
+		if (!test_bit(BLK_MQ_S_START_ON_RUN, &hctx->state))
+			return;
+
+		clear_bit(BLK_MQ_S_START_ON_RUN, &hctx->state);
+		clear_bit(BLK_MQ_S_STOPPED, &hctx->state);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__blk_mq_run_hw_queue(hctx);
 }
 
+<<<<<<< HEAD
+=======
+
+void blk_mq_delay_queue(struct blk_mq_hw_ctx *hctx, unsigned long msecs)
+{
+	if (WARN_ON_ONCE(!blk_mq_hw_queue_mapped(hctx)))
+		return;
+
+	/*
+	 * Stop the hw queue, then modify currently delayed work.
+	 * This should prevent us from running the queue prematurely.
+	 * Mark the queue as auto-clearing STOPPED when it runs.
+	 */
+	blk_mq_stop_hw_queue(hctx);
+	set_bit(BLK_MQ_S_START_ON_RUN, &hctx->state);
+	kblockd_mod_delayed_work_on(blk_mq_hctx_next_cpu(hctx),
+					&hctx->run_work,
+					msecs_to_jiffies(msecs));
+}
+EXPORT_SYMBOL(blk_mq_delay_queue);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void __blk_mq_insert_req_list(struct blk_mq_hw_ctx *hctx,
 					    struct request *rq,
 					    bool at_head)
@@ -1572,7 +2219,11 @@ void __blk_mq_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
  * Should only be used carefully, when the caller knows we want to
  * bypass a potential IO scheduler on the target device.
  */
+<<<<<<< HEAD
 void blk_mq_request_bypass_insert(struct request *rq, bool run_queue)
+=======
+void blk_mq_request_bypass_insert(struct request *rq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct blk_mq_ctx *ctx = rq->mq_ctx;
 	struct blk_mq_hw_ctx *hctx = blk_mq_map_queue(rq->q, ctx->cpu);
@@ -1581,20 +2232,28 @@ void blk_mq_request_bypass_insert(struct request *rq, bool run_queue)
 	list_add_tail(&rq->queuelist, &hctx->dispatch);
 	spin_unlock(&hctx->lock);
 
+<<<<<<< HEAD
 	if (run_queue)
 		blk_mq_run_hw_queue(hctx, false);
+=======
+	blk_mq_run_hw_queue(hctx, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void blk_mq_insert_requests(struct blk_mq_hw_ctx *hctx, struct blk_mq_ctx *ctx,
 			    struct list_head *list)
 
 {
+<<<<<<< HEAD
 	struct request *rq;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * preemption doesn't flush plug list, so it's possible ctx->cpu is
 	 * offline now
 	 */
+<<<<<<< HEAD
 	list_for_each_entry(rq, list, queuelist) {
 		BUG_ON(rq->mq_ctx != ctx);
 		trace_block_rq_insert(hctx->queue, rq);
@@ -1602,6 +2261,17 @@ void blk_mq_insert_requests(struct blk_mq_hw_ctx *hctx, struct blk_mq_ctx *ctx,
 
 	spin_lock(&ctx->lock);
 	list_splice_tail_init(list, &ctx->rq_list);
+=======
+	spin_lock(&ctx->lock);
+	while (!list_empty(list)) {
+		struct request *rq;
+
+		rq = list_first_entry(list, struct request, queuelist);
+		BUG_ON(rq->mq_ctx != ctx);
+		list_del_init(&rq->queuelist);
+		__blk_mq_insert_req_list(hctx, rq, false);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_mq_hctx_mark_pending(hctx, ctx);
 	spin_unlock(&ctx->lock);
 }
@@ -1669,11 +2339,32 @@ static void blk_mq_bio_to_request(struct request *rq, struct bio *bio)
 {
 	blk_init_request_from_bio(rq, bio);
 
+<<<<<<< HEAD
 	blk_rq_set_rl(rq, blk_get_rl(rq->q, bio));
 
 	blk_account_io_start(rq, true);
 }
 
+=======
+	blk_account_io_start(rq, true);
+}
+
+static inline bool hctx_allow_merges(struct blk_mq_hw_ctx *hctx)
+{
+	return (hctx->flags & BLK_MQ_F_SHOULD_MERGE) &&
+		!blk_queue_nomerges(hctx->queue);
+}
+
+static inline void blk_mq_queue_io(struct blk_mq_hw_ctx *hctx,
+				   struct blk_mq_ctx *ctx,
+				   struct request *rq)
+{
+	spin_lock(&ctx->lock);
+	__blk_mq_insert_request(hctx, rq, false);
+	spin_unlock(&ctx->lock);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static blk_qc_t request_to_qc_t(struct blk_mq_hw_ctx *hctx, struct request *rq)
 {
 	if (rq->tag != -1)
@@ -1682,9 +2373,15 @@ static blk_qc_t request_to_qc_t(struct blk_mq_hw_ctx *hctx, struct request *rq)
 	return blk_tag_to_qc_t(rq->internal_tag, hctx->queue_num, true);
 }
 
+<<<<<<< HEAD
 static blk_status_t __blk_mq_issue_directly(struct blk_mq_hw_ctx *hctx,
 					    struct request *rq,
 					    blk_qc_t *cookie)
+=======
+static void __blk_mq_try_issue_directly(struct blk_mq_hw_ctx *hctx,
+					struct request *rq,
+					blk_qc_t *cookie, bool may_sleep)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct request_queue *q = rq->q;
 	struct blk_mq_queue_data bd = {
@@ -1693,17 +2390,40 @@ static blk_status_t __blk_mq_issue_directly(struct blk_mq_hw_ctx *hctx,
 	};
 	blk_qc_t new_cookie;
 	blk_status_t ret;
+<<<<<<< HEAD
+=======
+	bool run_queue = true;
+
+	/* RCU or SRCU read lock is needed before checking quiesced flag */
+	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(q)) {
+		run_queue = false;
+		goto insert;
+	}
+
+	if (q->elevator)
+		goto insert;
+
+	if (!blk_mq_get_driver_tag(rq, NULL, false))
+		goto insert;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	new_cookie = request_to_qc_t(hctx, rq);
 
 	/*
+<<<<<<< HEAD
 	 * For OK queue, we are done. For error, caller may kill it.
 	 * Any other error (busy), just add it to our list as we
 	 * previously would have done.
+=======
+	 * For OK queue, we are done. For error, kill it. Any other
+	 * error (busy), just add it to our list as we previously
+	 * would have done
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	ret = q->mq_ops->queue_rq(hctx, &bd);
 	switch (ret) {
 	case BLK_STS_OK:
+<<<<<<< HEAD
 		blk_mq_update_dispatch_busy(hctx, false);
 		*cookie = new_cookie;
 		break;
@@ -1760,11 +2480,27 @@ insert:
 
 	blk_mq_request_bypass_insert(rq, run_queue);
 	return BLK_STS_OK;
+=======
+		*cookie = new_cookie;
+		return;
+	case BLK_STS_RESOURCE:
+		__blk_mq_requeue_request(rq);
+		goto insert;
+	default:
+		*cookie = BLK_QC_T_NONE;
+		blk_mq_end_request(rq, ret);
+		return;
+	}
+
+insert:
+	blk_mq_sched_insert_request(rq, false, run_queue, false, may_sleep);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void blk_mq_try_issue_directly(struct blk_mq_hw_ctx *hctx,
 		struct request *rq, blk_qc_t *cookie)
 {
+<<<<<<< HEAD
 	blk_status_t ret;
 	int srcu_idx;
 
@@ -1815,6 +2551,20 @@ void blk_mq_try_issue_list_directly(struct blk_mq_hw_ctx *hctx,
 			}
 			blk_mq_end_request(rq, ret);
 		}
+=======
+	if (!(hctx->flags & BLK_MQ_F_BLOCKING)) {
+		rcu_read_lock();
+		__blk_mq_try_issue_directly(hctx, rq, cookie, false);
+		rcu_read_unlock();
+	} else {
+		unsigned int srcu_idx;
+
+		might_sleep();
+
+		srcu_idx = srcu_read_lock(hctx->queue_rq_srcu);
+		__blk_mq_try_issue_directly(hctx, rq, cookie, true);
+		srcu_read_unlock(hctx->queue_rq_srcu, srcu_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1828,6 +2578,10 @@ static blk_qc_t blk_mq_make_request(struct request_queue *q, struct bio *bio)
 	struct blk_plug *plug;
 	struct request *same_queue_rq = NULL;
 	blk_qc_t cookie;
+<<<<<<< HEAD
+=======
+	unsigned int wb_acct;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	blk_queue_bounce(q, &bio);
 
@@ -1843,19 +2597,31 @@ static blk_qc_t blk_mq_make_request(struct request_queue *q, struct bio *bio)
 	if (blk_mq_sched_bio_merge(q, bio))
 		return BLK_QC_T_NONE;
 
+<<<<<<< HEAD
 	rq_qos_throttle(q, bio, NULL);
+=======
+	wb_acct = wbt_wait(q->rq_wb, bio, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	trace_block_getrq(q, bio, bio->bi_opf);
 
 	rq = blk_mq_get_request(q, bio, bio->bi_opf, &data);
 	if (unlikely(!rq)) {
+<<<<<<< HEAD
 		rq_qos_cleanup(q, bio);
+=======
+		__wbt_done(q->rq_wb, wb_acct);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bio->bi_opf & REQ_NOWAIT)
 			bio_wouldblock_error(bio);
 		return BLK_QC_T_NONE;
 	}
 
+<<<<<<< HEAD
 	rq_qos_track(q, rq, bio);
+=======
+	wbt_track(&rq->issue_stat, wb_acct);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cookie = request_to_qc_t(data.hctx, rq);
 
@@ -1863,10 +2629,20 @@ static blk_qc_t blk_mq_make_request(struct request_queue *q, struct bio *bio)
 	if (unlikely(is_flush_fua)) {
 		blk_mq_put_ctx(data.ctx);
 		blk_mq_bio_to_request(rq, bio);
+<<<<<<< HEAD
 
 		/* bypass scheduler for flush rq */
 		blk_insert_flush(rq);
 		blk_mq_run_hw_queue(data.hctx, true);
+=======
+		if (q->elevator) {
+			blk_mq_sched_insert_request(rq, false, true, true,
+					true);
+		} else {
+			blk_insert_flush(rq);
+			blk_mq_run_hw_queue(data.hctx, true);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (plug && q->nr_hw_queues == 1) {
 		struct request *last = NULL;
 
@@ -1918,6 +2694,7 @@ static blk_qc_t blk_mq_make_request(struct request_queue *q, struct bio *bio)
 			blk_mq_try_issue_directly(data.hctx, same_queue_rq,
 					&cookie);
 		}
+<<<<<<< HEAD
 	} else if ((q->nr_hw_queues > 1 && is_sync) || (!q->elevator &&
 			!data.hctx->dispatch_busy)) {
 		blk_mq_put_ctx(data.ctx);
@@ -1927,6 +2704,21 @@ static blk_qc_t blk_mq_make_request(struct request_queue *q, struct bio *bio)
 		blk_mq_put_ctx(data.ctx);
 		blk_mq_bio_to_request(rq, bio);
 		blk_mq_sched_insert_request(rq, false, true, true);
+=======
+	} else if (q->nr_hw_queues > 1 && is_sync) {
+		blk_mq_put_ctx(data.ctx);
+		blk_mq_bio_to_request(rq, bio);
+		blk_mq_try_issue_directly(data.hctx, rq, &cookie);
+	} else if (q->elevator) {
+		blk_mq_put_ctx(data.ctx);
+		blk_mq_bio_to_request(rq, bio);
+		blk_mq_sched_insert_request(rq, false, true, true, true);
+	} else {
+		blk_mq_put_ctx(data.ctx);
+		blk_mq_bio_to_request(rq, bio);
+		blk_mq_queue_io(data.hctx, data.ctx, rq);
+		blk_mq_run_hw_queue(data.hctx, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return cookie;
@@ -1989,7 +2781,11 @@ struct blk_mq_tags *blk_mq_alloc_rq_map(struct blk_mq_tag_set *set,
 	if (!tags)
 		return NULL;
 
+<<<<<<< HEAD
 	tags->rqs = kcalloc_node(nr_tags, sizeof(struct request *),
+=======
+	tags->rqs = kzalloc_node(nr_tags * sizeof(struct request *),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY,
 				 node);
 	if (!tags->rqs) {
@@ -1997,9 +2793,15 @@ struct blk_mq_tags *blk_mq_alloc_rq_map(struct blk_mq_tag_set *set,
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	tags->static_rqs = kcalloc_node(nr_tags, sizeof(struct request *),
 					GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY,
 					node);
+=======
+	tags->static_rqs = kzalloc_node(nr_tags * sizeof(struct request *),
+				 GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY,
+				 node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!tags->static_rqs) {
 		kfree(tags->rqs);
 		blk_mq_free_tags(tags);
@@ -2014,6 +2816,7 @@ static size_t order_to_size(unsigned int order)
 	return (size_t)PAGE_SIZE << order;
 }
 
+<<<<<<< HEAD
 static int blk_mq_init_request(struct blk_mq_tag_set *set, struct request *rq,
 			       unsigned int hctx_idx, int node)
 {
@@ -2029,6 +2832,8 @@ static int blk_mq_init_request(struct blk_mq_tag_set *set, struct request *rq,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int blk_mq_alloc_rqs(struct blk_mq_tag_set *set, struct blk_mq_tags *tags,
 		     unsigned int hctx_idx, unsigned int depth)
 {
@@ -2090,9 +2895,18 @@ int blk_mq_alloc_rqs(struct blk_mq_tag_set *set, struct blk_mq_tags *tags,
 			struct request *rq = p;
 
 			tags->static_rqs[i] = rq;
+<<<<<<< HEAD
 			if (blk_mq_init_request(set, rq, hctx_idx, node)) {
 				tags->static_rqs[i] = NULL;
 				goto fail;
+=======
+			if (set->ops->init_request) {
+				if (set->ops->init_request(set, rq, hctx_idx,
+						node)) {
+					tags->static_rqs[i] = NULL;
+					goto fail;
+				}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			p += rq_size;
@@ -2157,10 +2971,24 @@ static void blk_mq_exit_hctx(struct request_queue *q,
 	if (set->ops->exit_request)
 		set->ops->exit_request(set, hctx->fq->flush_rq, hctx_idx);
 
+<<<<<<< HEAD
 	if (set->ops->exit_hctx)
 		set->ops->exit_hctx(hctx, hctx_idx);
 
 	blk_mq_remove_cpuhp(hctx);
+=======
+	blk_mq_sched_exit_hctx(q, hctx, hctx_idx);
+
+	if (set->ops->exit_hctx)
+		set->ops->exit_hctx(hctx, hctx_idx);
+
+	if (hctx->flags & BLK_MQ_F_BLOCKING)
+		cleanup_srcu_struct(hctx->queue_rq_srcu);
+
+	blk_mq_remove_cpuhp(hctx);
+	blk_free_flush_queue(hctx->fq);
+	sbitmap_free(&hctx->ctx_map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void blk_mq_exit_hw_queues(struct request_queue *q,
@@ -2200,6 +3028,7 @@ static int blk_mq_init_hctx(struct request_queue *q,
 	 * Allocate space for all possible cpus to avoid allocation at
 	 * runtime
 	 */
+<<<<<<< HEAD
 	hctx->ctxs = kmalloc_array_node(nr_cpu_ids, sizeof(void *),
 			GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY, node);
 	if (!hctx->ctxs)
@@ -2207,18 +3036,31 @@ static int blk_mq_init_hctx(struct request_queue *q,
 
 	if (sbitmap_init_node(&hctx->ctx_map, nr_cpu_ids, ilog2(8),
 				GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY, node))
+=======
+	hctx->ctxs = kmalloc_node(nr_cpu_ids * sizeof(void *),
+					GFP_KERNEL, node);
+	if (!hctx->ctxs)
+		goto unregister_cpu_notifier;
+
+	if (sbitmap_init_node(&hctx->ctx_map, nr_cpu_ids, ilog2(8), GFP_KERNEL,
+			      node))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free_ctxs;
 
 	hctx->nr_ctx = 0;
 
+<<<<<<< HEAD
 	spin_lock_init(&hctx->dispatch_wait_lock);
 	init_waitqueue_func_entry(&hctx->dispatch_wait, blk_mq_dispatch_wake);
 	INIT_LIST_HEAD(&hctx->dispatch_wait.entry);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (set->ops->init_hctx &&
 	    set->ops->init_hctx(hctx, set->driver_data, hctx_idx))
 		goto free_bitmap;
 
+<<<<<<< HEAD
 	hctx->fq = blk_alloc_flush_queue(q, hctx->numa_node, set->cmd_size,
 			GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY);
 	if (!hctx->fq)
@@ -2229,13 +3071,35 @@ static int blk_mq_init_hctx(struct request_queue *q,
 
 	if (hctx->flags & BLK_MQ_F_BLOCKING)
 		init_srcu_struct(hctx->srcu);
+=======
+	if (blk_mq_sched_init_hctx(q, hctx, hctx_idx))
+		goto exit_hctx;
+
+	hctx->fq = blk_alloc_flush_queue(q, hctx->numa_node, set->cmd_size);
+	if (!hctx->fq)
+		goto sched_exit_hctx;
+
+	if (set->ops->init_request &&
+	    set->ops->init_request(set, hctx->fq->flush_rq, hctx_idx,
+				   node))
+		goto free_fq;
+
+	if (hctx->flags & BLK_MQ_F_BLOCKING)
+		init_srcu_struct(hctx->queue_rq_srcu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	blk_mq_debugfs_register_hctx(q, hctx);
 
 	return 0;
 
  free_fq:
+<<<<<<< HEAD
 	blk_free_flush_queue(hctx->fq);
+=======
+	kfree(hctx->fq);
+ sched_exit_hctx:
+	blk_mq_sched_exit_hctx(q, hctx, hctx_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  exit_hctx:
 	if (set->ops->exit_hctx)
 		set->ops->exit_hctx(hctx, hctx_idx);
@@ -2262,11 +3126,23 @@ static void blk_mq_init_cpu_queues(struct request_queue *q,
 		INIT_LIST_HEAD(&__ctx->rq_list);
 		__ctx->queue = q;
 
+<<<<<<< HEAD
+=======
+		/* If the cpu isn't present, the cpu is mapped to first hctx */
+		if (!cpu_present(i))
+			continue;
+
+		hctx = blk_mq_map_queue(q, i);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Set local node, IFF we have more than one hw queue. If
 		 * not, we remain on the home node of the device
 		 */
+<<<<<<< HEAD
 		hctx = blk_mq_map_queue(q, i);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (nr_hw_queues > 1 && hctx->numa_node == NUMA_NO_NODE)
 			hctx->numa_node = local_memory_node(cpu_to_node(i));
 	}
@@ -2316,7 +3192,10 @@ static void blk_mq_map_swqueue(struct request_queue *q)
 	queue_for_each_hw_ctx(q, hctx, i) {
 		cpumask_clear(hctx->cpumask);
 		hctx->nr_ctx = 0;
+<<<<<<< HEAD
 		hctx->dispatch_from = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -2324,7 +3203,11 @@ static void blk_mq_map_swqueue(struct request_queue *q)
 	 *
 	 * If the cpu isn't present, the cpu is mapped to first hctx.
 	 */
+<<<<<<< HEAD
 	for_each_possible_cpu(i) {
+=======
+	for_each_present_cpu(i) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hctx_idx = q->mq_map[i];
 		/* unmapped hw queue can be remapped after CPU topo changed */
 		if (!set->tags[hctx_idx] &&
@@ -2378,7 +3261,11 @@ static void blk_mq_map_swqueue(struct request_queue *q)
 		/*
 		 * Initialize batch roundrobin counts
 		 */
+<<<<<<< HEAD
 		hctx->next_cpu = blk_mq_first_mapped_cpu(hctx);
+=======
+		hctx->next_cpu = cpumask_first(hctx->cpumask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hctx->next_cpu_batch = BLK_MQ_CPU_WORK_BATCH;
 	}
 }
@@ -2393,10 +3280,22 @@ static void queue_set_hctx_shared(struct request_queue *q, bool shared)
 	int i;
 
 	queue_for_each_hw_ctx(q, hctx, i) {
+<<<<<<< HEAD
 		if (shared)
 			hctx->flags |= BLK_MQ_F_TAG_SHARED;
 		else
 			hctx->flags &= ~BLK_MQ_F_TAG_SHARED;
+=======
+		if (shared) {
+			if (test_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state))
+				atomic_inc(&q->shared_hctx_restart);
+			hctx->flags |= BLK_MQ_F_TAG_SHARED;
+		} else {
+			if (test_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state))
+				atomic_dec(&q->shared_hctx_restart);
+			hctx->flags &= ~BLK_MQ_F_TAG_SHARED;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2427,6 +3326,10 @@ static void blk_mq_del_queue_tag_set(struct request_queue *q)
 		blk_mq_update_tag_set_depth(set, false);
 	}
 	mutex_unlock(&set->tag_list_lock);
+<<<<<<< HEAD
+=======
+	synchronize_rcu();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&q->tag_set_list);
 }
 
@@ -2437,11 +3340,16 @@ static void blk_mq_add_queue_tag_set(struct blk_mq_tag_set *set,
 
 	mutex_lock(&set->tag_list_lock);
 
+<<<<<<< HEAD
 	/*
 	 * Check to see if we're transitioning to shared (from 1 to 2 queues).
 	 */
 	if (!list_empty(&set->tag_list) &&
 	    !(set->flags & BLK_MQ_F_TAG_SHARED)) {
+=======
+	/* Check to see if we're transitioning to shared (from 1 to 2 queues). */
+	if (!list_empty(&set->tag_list) && !(set->flags & BLK_MQ_F_TAG_SHARED)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set->flags |= BLK_MQ_F_TAG_SHARED;
 		/* update existing queue */
 		blk_mq_update_tag_set_depth(set, true);
@@ -2488,7 +3396,11 @@ struct request_queue *blk_mq_init_queue(struct blk_mq_tag_set *set)
 {
 	struct request_queue *uninit_q, *q;
 
+<<<<<<< HEAD
 	uninit_q = blk_alloc_queue_node(GFP_KERNEL, set->numa_node, NULL);
+=======
+	uninit_q = blk_alloc_queue_node(GFP_KERNEL, set->numa_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!uninit_q)
 		return ERR_PTR(-ENOMEM);
 
@@ -2504,7 +3416,11 @@ static int blk_mq_hw_ctx_size(struct blk_mq_tag_set *tag_set)
 {
 	int hw_ctx_size = sizeof(struct blk_mq_hw_ctx);
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(ALIGN(offsetof(struct blk_mq_hw_ctx, srcu),
+=======
+	BUILD_BUG_ON(ALIGN(offsetof(struct blk_mq_hw_ctx, queue_rq_srcu),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   __alignof__(struct blk_mq_hw_ctx)) !=
 		     sizeof(struct blk_mq_hw_ctx));
 
@@ -2532,6 +3448,7 @@ static void blk_mq_realloc_hw_ctxs(struct blk_mq_tag_set *set,
 
 		node = blk_mq_hw_queue_to_node(q->mq_map, i);
 		hctxs[i] = kzalloc_node(blk_mq_hw_ctx_size(set),
+<<<<<<< HEAD
 				GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY,
 				node);
 		if (!hctxs[i])
@@ -2540,6 +3457,14 @@ static void blk_mq_realloc_hw_ctxs(struct blk_mq_tag_set *set,
 		if (!zalloc_cpumask_var_node(&hctxs[i]->cpumask,
 					GFP_NOIO | __GFP_NOWARN | __GFP_NORETRY,
 					node)) {
+=======
+					GFP_KERNEL, node);
+		if (!hctxs[i])
+			break;
+
+		if (!zalloc_cpumask_var_node(&hctxs[i]->cpumask, GFP_KERNEL,
+						node)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(hctxs[i]);
 			hctxs[i] = NULL;
 			break;
@@ -2593,7 +3518,11 @@ struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
 	/* init q->mq_kobj and sw queues' kobjects */
 	blk_mq_sysfs_init(q);
 
+<<<<<<< HEAD
 	q->queue_hw_ctx = kcalloc_node(nr_cpu_ids, sizeof(*(q->queue_hw_ctx)),
+=======
+	q->queue_hw_ctx = kzalloc_node(nr_cpu_ids * sizeof(*(q->queue_hw_ctx)),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						GFP_KERNEL, set->numa_node);
 	if (!q->queue_hw_ctx)
 		goto err_percpu;
@@ -2612,7 +3541,11 @@ struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
 	q->queue_flags |= QUEUE_FLAG_MQ_DEFAULT;
 
 	if (!(set->flags & BLK_MQ_F_SG_MERGE))
+<<<<<<< HEAD
 		queue_flag_set_unlocked(QUEUE_FLAG_NO_SG_MERGE, q);
+=======
+		q->queue_flags |= 1 << QUEUE_FLAG_NO_SG_MERGE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	q->sg_reserved_size = INT_MAX;
 
@@ -2621,8 +3554,11 @@ struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
 	spin_lock_init(&q->requeue_lock);
 
 	blk_queue_make_request(q, blk_mq_make_request);
+<<<<<<< HEAD
 	if (q->mq_ops->poll)
 		q->poll_fn = blk_mq_poll;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Do this after blk_queue_make_request() overrides it...
@@ -2644,7 +3580,11 @@ struct request_queue *blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
 	if (!(set->flags & BLK_MQ_F_NO_SCHED)) {
 		int ret;
 
+<<<<<<< HEAD
 		ret = elevator_init_mq(q);
+=======
+		ret = blk_mq_sched_init(q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ERR_PTR(ret);
 	}
@@ -2661,8 +3601,12 @@ err_exit:
 }
 EXPORT_SYMBOL(blk_mq_init_allocated_queue);
 
+<<<<<<< HEAD
 /* tags can _not_ be used after returning from blk_mq_exit_queue */
 void blk_mq_exit_queue(struct request_queue *q)
+=======
+void blk_mq_free_queue(struct request_queue *q)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct blk_mq_tag_set	*set = q->tag_set;
 
@@ -2680,9 +3624,16 @@ static void blk_mq_queue_reinit(struct request_queue *q)
 
 	/*
 	 * redo blk_mq_init_cpu_queues and blk_mq_init_hw_queues. FIXME: maybe
+<<<<<<< HEAD
 	 * we should change hctx numa_node according to the new topology (this
 	 * involves freeing and re-allocating memory, worth doing?)
 	 */
+=======
+	 * we should change hctx numa_node according to new topology (this
+	 * involves free and re-allocate memory, worthy doing?)
+	 */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_mq_map_swqueue(q);
 
 	blk_mq_sysfs_register(q);
@@ -2744,6 +3695,10 @@ static int blk_mq_alloc_rq_maps(struct blk_mq_tag_set *set)
 static int blk_mq_update_queue_map(struct blk_mq_tag_set *set)
 {
 	if (set->ops->map_queues) {
+<<<<<<< HEAD
+=======
+		int cpu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * transport .map_queues is usually done in the following
 		 * way:
@@ -2758,7 +3713,12 @@ static int blk_mq_update_queue_map(struct blk_mq_tag_set *set)
 		 * killing stale mapping since one CPU may not be mapped
 		 * to any hw queue.
 		 */
+<<<<<<< HEAD
 		blk_mq_clear_mq_map(set);
+=======
+		for_each_possible_cpu(cpu)
+			set->mq_map[cpu] = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return set->ops->map_queues(set);
 	} else
@@ -2768,7 +3728,11 @@ static int blk_mq_update_queue_map(struct blk_mq_tag_set *set)
 /*
  * Alloc a tag set to be associated with one or more request queues.
  * May fail with EINVAL for various error conditions. May adjust the
+<<<<<<< HEAD
  * requested depth down, if it's too large. In that case, the set
+=======
+ * requested depth down, if if it too large. In that case, the set
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * value will be stored in set->queue_depth.
  */
 int blk_mq_alloc_tag_set(struct blk_mq_tag_set *set)
@@ -2787,9 +3751,12 @@ int blk_mq_alloc_tag_set(struct blk_mq_tag_set *set)
 	if (!set->ops->queue_rq)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!set->ops->get_budget ^ !set->ops->put_budget)
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (set->queue_depth > BLK_MQ_MAX_DEPTH) {
 		pr_info("blk-mq: reduced tag depth to %u\n",
 			BLK_MQ_MAX_DEPTH);
@@ -2811,14 +3778,23 @@ int blk_mq_alloc_tag_set(struct blk_mq_tag_set *set)
 	if (set->nr_hw_queues > nr_cpu_ids)
 		set->nr_hw_queues = nr_cpu_ids;
 
+<<<<<<< HEAD
 	set->tags = kcalloc_node(nr_cpu_ids, sizeof(struct blk_mq_tags *),
+=======
+	set->tags = kzalloc_node(nr_cpu_ids * sizeof(struct blk_mq_tags *),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL, set->numa_node);
 	if (!set->tags)
 		return -ENOMEM;
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	set->mq_map = kcalloc_node(nr_cpu_ids, sizeof(*set->mq_map),
 				   GFP_KERNEL, set->numa_node);
+=======
+	set->mq_map = kzalloc_node(sizeof(*set->mq_map) * nr_cpu_ids,
+			GFP_KERNEL, set->numa_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!set->mq_map)
 		goto out_free_tags;
 
@@ -2870,7 +3846,10 @@ int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr)
 		return -EINVAL;
 
 	blk_mq_freeze_queue(q);
+<<<<<<< HEAD
 	blk_mq_quiesce_queue(q);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = 0;
 	queue_for_each_hw_ctx(q, hctx, i) {
@@ -2881,7 +3860,12 @@ int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr)
 		 * queue depth. This is similar to what the old code would do.
 		 */
 		if (!hctx->sched_tags) {
+<<<<<<< HEAD
 			ret = blk_mq_tag_update_depth(hctx, &hctx->tags, nr,
+=======
+			ret = blk_mq_tag_update_depth(hctx, &hctx->tags,
+							min(nr, set->queue_depth),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							false);
 		} else {
 			ret = blk_mq_tag_update_depth(hctx, &hctx->sched_tags,
@@ -2889,19 +3873,26 @@ int blk_mq_update_nr_requests(struct request_queue *q, unsigned int nr)
 		}
 		if (ret)
 			break;
+<<<<<<< HEAD
 		if (q->elevator && q->elevator->type->ops.mq.depth_updated)
 			q->elevator->type->ops.mq.depth_updated(hctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!ret)
 		q->nr_requests = nr;
 
+<<<<<<< HEAD
 	blk_mq_unquiesce_queue(q);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_mq_unfreeze_queue(q);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 /*
  * request_queue and elevator_type pair.
  * It is just used by __blk_mq_update_nr_hw_queues to cache
@@ -2972,11 +3963,16 @@ static void blk_mq_elv_switch_back(struct list_head *head,
 	mutex_unlock(&q->sysfs_lock);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
 							int nr_hw_queues)
 {
 	struct request_queue *q;
+<<<<<<< HEAD
 	LIST_HEAD(head);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lockdep_assert_held(&set->tag_list_lock);
 
@@ -2991,6 +3987,7 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
 	 * Sync with blk_mq_queue_tag_busy_iter.
 	 */
 	synchronize_rcu();
+<<<<<<< HEAD
 	/*
 	 * Switch IO scheduler to 'none', cleaning up the data associated
 	 * with the previous scheduler. We will switch back once we are done
@@ -2999,6 +3996,8 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
 	list_for_each_entry(q, &set->tag_list, tag_set_list)
 		if (!blk_mq_elv_switch_none(&head, q))
 			goto switch_back;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set->nr_hw_queues = nr_hw_queues;
 	blk_mq_update_queue_map(set);
@@ -3007,10 +4006,13 @@ static void __blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set,
 		blk_mq_queue_reinit(q);
 	}
 
+<<<<<<< HEAD
 switch_back:
 	list_for_each_entry(q, &set->tag_list, tag_set_list)
 		blk_mq_elv_switch_back(&head, q);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(q, &set->tag_list, tag_set_list)
 		blk_mq_unfreeze_queue(q);
 }
@@ -3027,7 +4029,11 @@ EXPORT_SYMBOL_GPL(blk_mq_update_nr_hw_queues);
 static bool blk_poll_stats_enable(struct request_queue *q)
 {
 	if (test_bit(QUEUE_FLAG_POLL_STATS, &q->queue_flags) ||
+<<<<<<< HEAD
 	    blk_queue_flag_test_and_set(QUEUE_FLAG_POLL_STATS, q))
+=======
+	    test_and_set_bit(QUEUE_FLAG_POLL_STATS, &q->queue_flags))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 	blk_stat_add_callback(q, q->poll_cb);
 	return false;
@@ -3099,7 +4105,11 @@ static bool blk_mq_poll_hybrid_sleep(struct request_queue *q,
 	unsigned int nsecs;
 	ktime_t kt;
 
+<<<<<<< HEAD
 	if (rq->rq_flags & RQF_MQ_POLL_SLEPT)
+=======
+	if (test_bit(REQ_ATOM_POLL_SLEPT, &rq->atomic_flags))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	/*
@@ -3119,7 +4129,11 @@ static bool blk_mq_poll_hybrid_sleep(struct request_queue *q,
 	if (!nsecs)
 		return false;
 
+<<<<<<< HEAD
 	rq->rq_flags |= RQF_MQ_POLL_SLEPT;
+=======
+	set_bit(REQ_ATOM_POLL_SLEPT, &rq->atomic_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * This will be replaced with the stats tracking code, using
@@ -3133,7 +4147,11 @@ static bool blk_mq_poll_hybrid_sleep(struct request_queue *q,
 
 	hrtimer_init_sleeper(&hs, current);
 	do {
+<<<<<<< HEAD
 		if (blk_mq_rq_state(rq) == MQ_RQ_COMPLETE)
+=======
+		if (test_bit(REQ_ATOM_COMPLETE, &rq->atomic_flags))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		set_current_state(TASK_UNINTERRUPTIBLE);
 		hrtimer_start_expires(&hs.timer, mode);
@@ -3188,6 +4206,7 @@ static bool __blk_mq_poll(struct blk_mq_hw_ctx *hctx, struct request *rq)
 		cpu_relax();
 	}
 
+<<<<<<< HEAD
 	__set_current_state(TASK_RUNNING);
 	return false;
 }
@@ -3200,6 +4219,25 @@ static bool blk_mq_poll(struct request_queue *q, blk_qc_t cookie)
 	if (!test_bit(QUEUE_FLAG_POLL, &q->queue_flags))
 		return false;
 
+=======
+	return false;
+}
+
+bool blk_mq_poll(struct request_queue *q, blk_qc_t cookie)
+{
+	struct blk_mq_hw_ctx *hctx;
+	struct blk_plug *plug;
+	struct request *rq;
+
+	if (!q->mq_ops || !q->mq_ops->poll || !blk_qc_t_valid(cookie) ||
+	    !test_bit(QUEUE_FLAG_POLL, &q->queue_flags))
+		return false;
+
+	plug = current->plug;
+	if (plug)
+		blk_flush_plug_list(plug, false);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hctx = q->queue_hw_ctx[blk_qc_t_to_queue_num(cookie)];
 	if (!blk_qc_t_is_internal(cookie))
 		rq = blk_mq_tag_to_rq(hctx->tags, blk_qc_t_to_tag(cookie));
@@ -3217,6 +4255,10 @@ static bool blk_mq_poll(struct request_queue *q, blk_qc_t cookie)
 
 	return __blk_mq_poll(hctx, rq);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(blk_mq_poll);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int __init blk_mq_init(void)
 {

@@ -15,6 +15,10 @@
  */
 
 #include <linux/clk.h>
+<<<<<<< HEAD
+=======
+#include <linux/clkdev.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/clk-provider.h>
 #include <linux/slab.h>
 #include <linux/spinlock.h>
@@ -81,12 +85,19 @@ static void __init sun8i_a23_mbus_setup(struct device_node *node)
 	mux->mask = SUN8I_MBUS_MUX_MASK;
 	mux->lock = &sun8i_a23_mbus_lock;
 
+<<<<<<< HEAD
 	/* The MBUS clocks needs to be always enabled */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk = clk_register_composite(NULL, clk_name, parents, num_parents,
 				     &mux->hw, &clk_mux_ops,
 				     &div->hw, &clk_divider_ops,
 				     &gate->hw, &clk_gate_ops,
+<<<<<<< HEAD
 				     CLK_IS_CRITICAL);
+=======
+				     0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(clk))
 		goto err_free_gate;
 
@@ -95,6 +106,12 @@ static void __init sun8i_a23_mbus_setup(struct device_node *node)
 		goto err_unregister_clk;
 
 	kfree(parents); /* parents is deep copied */
+<<<<<<< HEAD
+=======
+	/* The MBUS clocks needs to be always enabled */
+	__clk_get(clk);
+	clk_prepare_enable(clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return;
 

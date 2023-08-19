@@ -53,6 +53,11 @@ from docutils.utils import SystemMessagePropagation
 # common globals
 # ==============================================================================
 
+<<<<<<< HEAD
+=======
+# The version numbering follows numbering of the specification
+# (Documentation/books/kernel-doc-HOWTO).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __version__  = '1.0'
 
 PY3 = sys.version_info[0] == 3

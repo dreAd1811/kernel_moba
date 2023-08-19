@@ -14,6 +14,7 @@
 #include <linux/of.h>
 #include <linux/mfd/syscon.h>
 #include <linux/regmap.h>
+<<<<<<< HEAD
 #include <soc/at91/atmel-sfr.h>
 
 #include "pmc.h"
@@ -28,6 +29,16 @@ struct clk_utmi {
 	struct clk_hw hw;
 	struct regmap *regmap_pmc;
 	struct regmap *regmap_sfr;
+=======
+
+#include "pmc.h"
+
+#define UTMI_FIXED_MUL		40
+
+struct clk_utmi {
+	struct clk_hw hw;
+	struct regmap *regmap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define to_clk_utmi(hw) container_of(hw, struct clk_utmi, hw)
@@ -43,6 +54,7 @@ static inline bool clk_utmi_ready(struct regmap *regmap)
 
 static int clk_utmi_prepare(struct clk_hw *hw)
 {
+<<<<<<< HEAD
 	struct clk_hw *hw_parent;
 	struct clk_utmi *utmi = to_clk_utmi(hw);
 	unsigned int uckr = AT91_PMC_UPLLEN | AT91_PMC_UPLLCOUNT |
@@ -91,6 +103,15 @@ static int clk_utmi_prepare(struct clk_hw *hw)
 	regmap_update_bits(utmi->regmap_pmc, AT91_CKGR_UCKR, uckr, uckr);
 
 	while (!clk_utmi_ready(utmi->regmap_pmc))
+=======
+	struct clk_utmi *utmi = to_clk_utmi(hw);
+	unsigned int uckr = AT91_PMC_UPLLEN | AT91_PMC_UPLLCOUNT |
+			    AT91_PMC_BIASEN;
+
+	regmap_update_bits(utmi->regmap, AT91_CKGR_UCKR, uckr, uckr);
+
+	while (!clk_utmi_ready(utmi->regmap))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpu_relax();
 
 	return 0;
@@ -100,22 +121,35 @@ static int clk_utmi_is_prepared(struct clk_hw *hw)
 {
 	struct clk_utmi *utmi = to_clk_utmi(hw);
 
+<<<<<<< HEAD
 	return clk_utmi_ready(utmi->regmap_pmc);
+=======
+	return clk_utmi_ready(utmi->regmap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void clk_utmi_unprepare(struct clk_hw *hw)
 {
 	struct clk_utmi *utmi = to_clk_utmi(hw);
 
+<<<<<<< HEAD
 	regmap_update_bits(utmi->regmap_pmc, AT91_CKGR_UCKR,
 			   AT91_PMC_UPLLEN, 0);
+=======
+	regmap_update_bits(utmi->regmap, AT91_CKGR_UCKR, AT91_PMC_UPLLEN, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long clk_utmi_recalc_rate(struct clk_hw *hw,
 					  unsigned long parent_rate)
 {
+<<<<<<< HEAD
 	/* UTMI clk rate is fixed. */
 	return UTMI_RATE;
+=======
+	/* UTMI clk is a fixed clk multiplier */
+	return parent_rate * UTMI_FIXED_MUL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct clk_ops utmi_ops = {
@@ -126,7 +160,11 @@ static const struct clk_ops utmi_ops = {
 };
 
 static struct clk_hw * __init
+<<<<<<< HEAD
 at91_clk_register_utmi(struct regmap *regmap_pmc, struct regmap *regmap_sfr,
+=======
+at91_clk_register_utmi(struct regmap *regmap,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       const char *name, const char *parent_name)
 {
 	struct clk_utmi *utmi;
@@ -145,8 +183,12 @@ at91_clk_register_utmi(struct regmap *regmap_pmc, struct regmap *regmap_sfr,
 	init.flags = CLK_SET_RATE_GATE;
 
 	utmi->hw.init = &init;
+<<<<<<< HEAD
 	utmi->regmap_pmc = regmap_pmc;
 	utmi->regmap_sfr = regmap_sfr;
+=======
+	utmi->regmap = regmap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw = &utmi->hw;
 	ret = clk_hw_register(NULL, &utmi->hw);
@@ -163,12 +205,17 @@ static void __init of_at91sam9x5_clk_utmi_setup(struct device_node *np)
 	struct clk_hw *hw;
 	const char *parent_name;
 	const char *name = np->name;
+<<<<<<< HEAD
 	struct regmap *regmap_pmc, *regmap_sfr;
+=======
+	struct regmap *regmap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	parent_name = of_clk_get_parent_name(np, 0);
 
 	of_property_read_string(np, "clock-output-names", &name);
 
+<<<<<<< HEAD
 	regmap_pmc = syscon_node_to_regmap(of_get_parent(np));
 	if (IS_ERR(regmap_pmc))
 		return;
@@ -192,6 +239,13 @@ static void __init of_at91sam9x5_clk_utmi_setup(struct device_node *np)
 	}
 
 	hw = at91_clk_register_utmi(regmap_pmc, regmap_sfr, name, parent_name);
+=======
+	regmap = syscon_node_to_regmap(of_get_parent(np));
+	if (IS_ERR(regmap))
+		return;
+
+	hw = at91_clk_register_utmi(regmap, name, parent_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(hw))
 		return;
 

@@ -183,7 +183,11 @@
 			usb@ef603000 {
 				compatible = "ohci-be";
 				reg = <0xef603000 0x80>;
+<<<<<<< HEAD
 				interrupt-parent = <&UIC0>;
+=======
+				interrupts-parent = <&UIC0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupts = <0xd 0x4 0xe 0x4>;
 			};
 
@@ -219,6 +223,10 @@
 	};
 
 	chosen {
+<<<<<<< HEAD
 		stdout-path = "/plb/opb/serial@ef600300";
+=======
+		linux,stdout-path = "/plb/opb/serial@ef600300";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

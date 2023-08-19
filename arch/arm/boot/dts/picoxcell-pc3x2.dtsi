@@ -124,7 +124,11 @@
 			#size-cells = <1>;
 			ranges = <0 0x200000 0x80000>;
 
+<<<<<<< HEAD
 			rtc0: rtc@0 {
+=======
+			rtc0: rtc@00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "picochip,pc3x2-rtc";
 				clock-freq = <200000000>;
 				reg = <0x00000 0xf>;

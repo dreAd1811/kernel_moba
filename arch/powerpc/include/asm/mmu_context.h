@@ -38,7 +38,10 @@ extern long mm_iommu_ua_to_hpa(struct mm_iommu_table_group_mem_t *mem,
 		unsigned long ua, unsigned int pageshift, unsigned long *hpa);
 extern long mm_iommu_ua_to_hpa_rm(struct mm_iommu_table_group_mem_t *mem,
 		unsigned long ua, unsigned int pageshift, unsigned long *hpa);
+<<<<<<< HEAD
 extern void mm_iommu_ua_mark_dirty_rm(struct mm_struct *mm, unsigned long ua);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern long mm_iommu_mapped_inc(struct mm_iommu_table_group_mem_t *mem);
 extern void mm_iommu_mapped_dec(struct mm_iommu_table_group_mem_t *mem);
 #endif
@@ -61,6 +64,7 @@ extern int hash__alloc_context_id(void);
 extern void hash__reserve_context_id(int id);
 extern void __destroy_context(int context_id);
 static inline void mmu_context_init(void) { }
+<<<<<<< HEAD
 
 static inline int alloc_extended_context(struct mm_struct *mm,
 					 unsigned long ea)
@@ -88,12 +92,15 @@ static inline bool need_extra_context(struct mm_struct *mm, unsigned long ea)
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 extern void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next,
 			       struct task_struct *tsk);
 extern unsigned long __init_new_context(void);
 extern void __destroy_context(unsigned long context_id);
 extern void mmu_context_init(void);
+<<<<<<< HEAD
 static inline int alloc_extended_context(struct mm_struct *mm,
 					 unsigned long ea)
 {
@@ -106,6 +113,8 @@ static inline bool need_extra_context(struct mm_struct *mm, unsigned long ea)
 {
 	return false;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #if defined(CONFIG_KVM_BOOK3S_HV_POSSIBLE) && defined(CONFIG_PPC_RADIX_MMU)
@@ -118,6 +127,7 @@ extern void switch_cop(struct mm_struct *next);
 extern int use_cop(unsigned long acop, struct mm_struct *mm);
 extern void drop_cop(unsigned long acop, struct mm_struct *mm);
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 static inline void inc_mm_active_cpus(struct mm_struct *mm)
 {
@@ -181,6 +191,8 @@ static inline void mm_context_remove_copro(struct mm_struct *mm) { }
 #endif
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 			       struct task_struct *tsk);
 
@@ -217,6 +229,7 @@ static inline void enter_lazy_tlb(struct mm_struct *mm,
 #endif
 }
 
+<<<<<<< HEAD
 #ifndef CONFIG_PPC_BOOK3S_64
 static inline void arch_exit_mmap(struct mm_struct *mm)
 {
@@ -224,6 +237,17 @@ static inline void arch_exit_mmap(struct mm_struct *mm)
 #else
 extern void arch_exit_mmap(struct mm_struct *mm);
 #endif
+=======
+static inline int arch_dup_mmap(struct mm_struct *oldmm,
+				struct mm_struct *mm)
+{
+	return 0;
+}
+
+static inline void arch_exit_mmap(struct mm_struct *mm)
+{
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void arch_unmap(struct mm_struct *mm,
 			      struct vm_area_struct *vma,
@@ -238,17 +262,21 @@ static inline void arch_bprm_mm_init(struct mm_struct *mm,
 {
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_MEM_KEYS
 bool arch_vma_access_permitted(struct vm_area_struct *vma, bool write,
 			       bool execute, bool foreign);
 void arch_dup_pkeys(struct mm_struct *oldmm, struct mm_struct *mm);
 #else /* CONFIG_PPC_MEM_KEYS */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool arch_vma_access_permitted(struct vm_area_struct *vma,
 		bool write, bool execute, bool foreign)
 {
 	/* by default, allow everything */
 	return true;
 }
+<<<<<<< HEAD
 
 #define pkey_mm_init(mm)
 #define thread_pkey_regs_save(thread)
@@ -270,5 +298,7 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __KERNEL__ */
 #endif /* __ASM_POWERPC_MMU_CONTEXT_H */

@@ -202,9 +202,14 @@ static int cpufreq_p4_cpu_init(struct cpufreq_policy *policy)
 	/* the transition latency is set to be 1 higher than the maximum
 	 * transition latency of the ondemand governor */
 	policy->cpuinfo.transition_latency = 10000001;
+<<<<<<< HEAD
 	policy->freq_table = &p4clockmod_table[0];
 
 	return 0;
+=======
+
+	return cpufreq_table_validate_and_show(policy, &p4clockmod_table[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 

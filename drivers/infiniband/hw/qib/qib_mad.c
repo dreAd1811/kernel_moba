@@ -280,7 +280,11 @@ static int subn_get_nodeinfo(struct ib_smp *smp, struct ib_device *ibdev,
 {
 	struct ib_node_info *nip = (struct ib_node_info *)&smp->data;
 	struct qib_devdata *dd = dd_from_ibdev(ibdev);
+<<<<<<< HEAD
 	u32 majrev, minrev;
+=======
+	u32 vendor, majrev, minrev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned pidx = port - 1; /* IB number port from 1, hdw from 0 */
 
 	/* GUID 0 is illegal */
@@ -303,6 +307,10 @@ static int subn_get_nodeinfo(struct ib_smp *smp, struct ib_device *ibdev,
 	minrev = dd->minrev;
 	nip->revision = cpu_to_be32((majrev << 16) | minrev);
 	nip->local_port_num = port;
+<<<<<<< HEAD
+=======
+	vendor = dd->vendorid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nip->vendor_id[0] = QIB_SRC_OUI_1;
 	nip->vendor_id[1] = QIB_SRC_OUI_2;
 	nip->vendor_id[2] = QIB_SRC_OUI_3;
@@ -433,7 +441,10 @@ static int check_mkey(struct qib_ibport *ibp, struct ib_smp *smp, int mad_flags)
 			/* Bad mkey not a violation below level 2 */
 			if (ibp->rvp.mkeyprot < 2)
 				break;
+<<<<<<< HEAD
 			/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case IB_MGMT_METHOD_SET:
 		case IB_MGMT_METHOD_TRAP_REPRESS:
 			if (ibp->rvp.mkey_violations != 0xFFFF)
@@ -2446,9 +2457,15 @@ bail:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void xmit_wait_timer_func(struct timer_list *t)
 {
 	struct qib_pportdata *ppd = from_timer(ppd, t, cong_stats.timer);
+=======
+static void xmit_wait_timer_func(unsigned long opaque)
+{
+	struct qib_pportdata *ppd = (struct qib_pportdata *)opaque;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qib_devdata *dd = dd_from_ppd(ppd);
 	unsigned long flags;
 	u8 status;
@@ -2478,8 +2495,15 @@ void qib_notify_create_mad_agent(struct rvt_dev_info *rdi, int port_idx)
 
 	/* Initialize xmit_wait structure */
 	dd->pport[port_idx].cong_stats.counter = 0;
+<<<<<<< HEAD
 	timer_setup(&dd->pport[port_idx].cong_stats.timer,
 		    xmit_wait_timer_func, 0);
+=======
+	init_timer(&dd->pport[port_idx].cong_stats.timer);
+	dd->pport[port_idx].cong_stats.timer.function = xmit_wait_timer_func;
+	dd->pport[port_idx].cong_stats.timer.data =
+		(unsigned long)(&dd->pport[port_idx]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->pport[port_idx].cong_stats.timer.expires = 0;
 	add_timer(&dd->pport[port_idx].cong_stats.timer);
 }
@@ -2490,7 +2514,11 @@ void qib_notify_free_mad_agent(struct rvt_dev_info *rdi, int port_idx)
 	struct qib_devdata *dd = container_of(ibdev,
 					      struct qib_devdata, verbs_dev);
 
+<<<<<<< HEAD
 	if (dd->pport[port_idx].cong_stats.timer.function)
+=======
+	if (dd->pport[port_idx].cong_stats.timer.data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		del_timer_sync(&dd->pport[port_idx].cong_stats.timer);
 
 	if (dd->pport[port_idx].ibport_data.smi_ah)

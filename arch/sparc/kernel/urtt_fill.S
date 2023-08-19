@@ -50,12 +50,16 @@ user_rtt_fill_fixup_common:
 		SET_GL(0)
 		.previous
 
+<<<<<<< HEAD
 661:		wrpr	%g0, RTRAP_PSTATE, %pstate
 		.section		.sun_m7_1insn_patch, "ax"
 		.word			661b
 		/* Re-enable PSTATE.mcde to maintain ADI security */
 		wrpr	%g0, RTRAP_PSTATE|PSTATE_MCDE, %pstate
 		.previous
+=======
+		wrpr	%g0, RTRAP_PSTATE, %pstate
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mov	%l1, %g6
 		ldx	[%g6 + TI_TASK], %g4

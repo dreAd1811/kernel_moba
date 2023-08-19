@@ -39,7 +39,10 @@
 #include <asm/irq_remapping.h>
 
 #include <linux/crash_dump.h>
+<<<<<<< HEAD
 #include "amd_iommu.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "amd_iommu_proto.h"
 #include "amd_iommu_types.h"
 #include "irq_remapping.h"
@@ -154,7 +157,10 @@ bool amd_iommu_dump;
 bool amd_iommu_irq_remap __read_mostly;
 
 int amd_iommu_guest_ir = AMD_IOMMU_GUEST_IR_VAPIC;
+<<<<<<< HEAD
 static int amd_iommu_xt_mode = IRQ_REMAP_X2APIC_MODE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool amd_iommu_detected;
 static bool __initdata amd_iommu_disabled;
@@ -282,9 +288,15 @@ static void clear_translation_pre_enabled(struct amd_iommu *iommu)
 
 static void init_translation_status(struct amd_iommu *iommu)
 {
+<<<<<<< HEAD
 	u64 ctrl;
 
 	ctrl = readq(iommu->mmio_base + MMIO_CONTROL_OFFSET);
+=======
+	u32 ctrl;
+
+	ctrl = readl(iommu->mmio_base + MMIO_CONTROL_OFFSET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ctrl & (1<<CONTROL_IOMMU_EN))
 		iommu->flags |= AMD_IOMMU_FLAG_TRANS_PRE_ENABLED;
 }
@@ -388,30 +400,55 @@ static void iommu_set_device_table(struct amd_iommu *iommu)
 /* Generic functions to enable/disable certain features of the IOMMU. */
 static void iommu_feature_enable(struct amd_iommu *iommu, u8 bit)
 {
+<<<<<<< HEAD
 	u64 ctrl;
 
 	ctrl = readq(iommu->mmio_base +  MMIO_CONTROL_OFFSET);
 	ctrl |= (1ULL << bit);
 	writeq(ctrl, iommu->mmio_base +  MMIO_CONTROL_OFFSET);
+=======
+	u32 ctrl;
+
+	ctrl = readl(iommu->mmio_base + MMIO_CONTROL_OFFSET);
+	ctrl |= (1 << bit);
+	writel(ctrl, iommu->mmio_base + MMIO_CONTROL_OFFSET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void iommu_feature_disable(struct amd_iommu *iommu, u8 bit)
 {
+<<<<<<< HEAD
 	u64 ctrl;
 
 	ctrl = readq(iommu->mmio_base + MMIO_CONTROL_OFFSET);
 	ctrl &= ~(1ULL << bit);
 	writeq(ctrl, iommu->mmio_base + MMIO_CONTROL_OFFSET);
+=======
+	u32 ctrl;
+
+	ctrl = readl(iommu->mmio_base + MMIO_CONTROL_OFFSET);
+	ctrl &= ~(1 << bit);
+	writel(ctrl, iommu->mmio_base + MMIO_CONTROL_OFFSET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void iommu_set_inv_tlb_timeout(struct amd_iommu *iommu, int timeout)
 {
+<<<<<<< HEAD
 	u64 ctrl;
 
 	ctrl = readq(iommu->mmio_base + MMIO_CONTROL_OFFSET);
 	ctrl &= ~CTRL_INV_TO_MASK;
 	ctrl |= (timeout << CONTROL_INV_TIMEOUT) & CTRL_INV_TO_MASK;
 	writeq(ctrl, iommu->mmio_base + MMIO_CONTROL_OFFSET);
+=======
+	u32 ctrl;
+
+	ctrl = readl(iommu->mmio_base + MMIO_CONTROL_OFFSET);
+	ctrl &= ~CTRL_INV_TO_MASK;
+	ctrl |= (timeout << CONTROL_INV_TIMEOUT) & CTRL_INV_TO_MASK;
+	writel(ctrl, iommu->mmio_base + MMIO_CONTROL_OFFSET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Function to enable the hardware */
@@ -422,6 +459,12 @@ static void iommu_enable(struct amd_iommu *iommu)
 
 static void iommu_disable(struct amd_iommu *iommu)
 {
+<<<<<<< HEAD
+=======
+	if (!iommu->mmio_base)
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Disable command buffer */
 	iommu_feature_disable(iommu, CONTROL_CMDBUF_EN);
 
@@ -830,6 +873,7 @@ static int iommu_init_ga(struct amd_iommu *iommu)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void iommu_enable_xt(struct amd_iommu *iommu)
 {
 #ifdef CONFIG_IRQ_REMAP
@@ -843,6 +887,8 @@ static void iommu_enable_xt(struct amd_iommu *iommu)
 #endif /* CONFIG_IRQ_REMAP */
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void iommu_enable_gt(struct amd_iommu *iommu)
 {
 	if (!iommu_feature(iommu, FEATURE_GT))
@@ -1003,7 +1049,11 @@ static void __init set_dev_entry_from_acpi(struct amd_iommu *iommu,
 	set_iommu_for_device(iommu, devid);
 }
 
+<<<<<<< HEAD
 int __init add_special_device(u8 type, u8 id, u16 *devid, bool cmd_line)
+=======
+static int __init add_special_device(u8 type, u8 id, u16 *devid, bool cmd_line)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct devid_map *entry;
 	struct list_head *list;
@@ -1154,8 +1204,11 @@ static int __init init_iommu_from_acpi(struct amd_iommu *iommu,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	amd_iommu_apply_ivrs_quirks();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * First save the recommended feature enable bits from ACPI
 	 */
@@ -1331,8 +1384,13 @@ static int __init init_iommu_from_acpi(struct amd_iommu *iommu,
 		}
 		case IVHD_DEV_ACPI_HID: {
 			u16 devid;
+<<<<<<< HEAD
 			u8 hid[ACPIHID_HID_LEN] = {0};
 			u8 uid[ACPIHID_UID_LEN] = {0};
+=======
+			u8 hid[ACPIHID_HID_LEN];
+			u8 uid[ACPIHID_UID_LEN];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			int ret;
 
 			if (h->type != 0x40) {
@@ -1349,6 +1407,10 @@ static int __init init_iommu_from_acpi(struct amd_iommu *iommu,
 				break;
 			}
 
+<<<<<<< HEAD
+=======
+			uid[0] = '\0';
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			switch (e->uidf) {
 			case UID_NOT_PRESENT:
 
@@ -1363,8 +1425,13 @@ static int __init init_iommu_from_acpi(struct amd_iommu *iommu,
 				break;
 			case UID_IS_CHARACTER:
 
+<<<<<<< HEAD
 				memcpy(uid, (u8 *)(&e->uid), ACPIHID_UID_LEN - 1);
 				uid[ACPIHID_UID_LEN - 1] = '\0';
+=======
+				memcpy(uid, &e->uid, e->uidl);
+				uid[e->uidl] = '\0';
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				break;
 			default:
@@ -1492,7 +1559,11 @@ static int __init init_iommu_one(struct amd_iommu *iommu, struct ivhd_header *h)
 {
 	int ret;
 
+<<<<<<< HEAD
 	raw_spin_lock_init(&iommu->lock);
+=======
+	spin_lock_init(&iommu->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add IOMMU to internal data structures */
 	list_add_tail(&iommu->list, &amd_iommu_list);
@@ -1525,8 +1596,11 @@ static int __init init_iommu_one(struct amd_iommu *iommu, struct ivhd_header *h)
 			iommu->mmio_phys_end = MMIO_CNTR_CONF_OFFSET;
 		if (((h->efr_attr & (0x1 << IOMMU_FEAT_GASUP_SHIFT)) == 0))
 			amd_iommu_guest_ir = AMD_IOMMU_GUEST_IR_LEGACY;
+<<<<<<< HEAD
 		if (((h->efr_attr & (0x1 << IOMMU_FEAT_XTSUP_SHIFT)) == 0))
 			amd_iommu_xt_mode = IRQ_REMAP_XAPIC_MODE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case 0x11:
 	case 0x40:
@@ -1536,8 +1610,11 @@ static int __init init_iommu_one(struct amd_iommu *iommu, struct ivhd_header *h)
 			iommu->mmio_phys_end = MMIO_CNTR_CONF_OFFSET;
 		if (((h->efr_reg & (0x1 << IOMMU_EFR_GASUP_SHIFT)) == 0))
 			amd_iommu_guest_ir = AMD_IOMMU_GUEST_IR_LEGACY;
+<<<<<<< HEAD
 		if (((h->efr_reg & (0x1 << IOMMU_EFR_XTSUP_SHIFT)) == 0))
 			amd_iommu_xt_mode = IRQ_REMAP_XAPIC_MODE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -EINVAL;
@@ -1719,8 +1796,13 @@ static int __init iommu_init_pci(struct amd_iommu *iommu)
 	u32 range, misc, low, high;
 	int ret;
 
+<<<<<<< HEAD
 	iommu->dev = pci_get_domain_bus_and_slot(0, PCI_BUS_NUM(iommu->devid),
 						 iommu->devid & 0xff);
+=======
+	iommu->dev = pci_get_bus_and_slot(PCI_BUS_NUM(iommu->devid),
+					  iommu->devid & 0xff);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!iommu->dev)
 		return -ENODEV;
 
@@ -1786,9 +1868,14 @@ static int __init iommu_init_pci(struct amd_iommu *iommu)
 	if (is_rd890_iommu(iommu->dev)) {
 		int i, j;
 
+<<<<<<< HEAD
 		iommu->root_pdev =
 			pci_get_domain_bus_and_slot(0, iommu->dev->bus->number,
 						    PCI_DEVFN(0, 0));
+=======
+		iommu->root_pdev = pci_get_bus_and_slot(iommu->dev->bus->number,
+				PCI_DEVFN(0, 0));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Some rd890 systems may not be fully reconfigured by the
@@ -1854,8 +1941,11 @@ static void print_iommu_info(void)
 		pr_info("AMD-Vi: Interrupt remapping enabled\n");
 		if (AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir))
 			pr_info("AMD-Vi: virtual APIC enabled\n");
+<<<<<<< HEAD
 		if (amd_iommu_xt_mode == IRQ_REMAP_X2APIC_MODE)
 			pr_info("AMD-Vi: X2APIC enabled\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2193,7 +2283,10 @@ static void early_enable_iommu(struct amd_iommu *iommu)
 	iommu_enable_event_buffer(iommu);
 	iommu_set_exclusion_range(iommu);
 	iommu_enable_ga(iommu);
+<<<<<<< HEAD
 	iommu_enable_xt(iommu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iommu_enable(iommu);
 	iommu_flush_all_caches(iommu);
 }
@@ -2238,7 +2331,10 @@ static void early_enable_iommus(void)
 			iommu_enable_command_buffer(iommu);
 			iommu_enable_event_buffer(iommu);
 			iommu_enable_ga(iommu);
+<<<<<<< HEAD
 			iommu_enable_xt(iommu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iommu_set_device_table(iommu);
 			iommu_flush_all_caches(iommu);
 		}
@@ -2718,7 +2814,12 @@ int __init amd_iommu_enable(void)
 		return ret;
 
 	irq_remapping_enabled = 1;
+<<<<<<< HEAD
 	return amd_iommu_xt_mode;
+=======
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void amd_iommu_disable(void)
@@ -2747,7 +2848,10 @@ int __init amd_iommu_enable_faulting(void)
  */
 static int __init amd_iommu_init(void)
 {
+<<<<<<< HEAD
 	struct amd_iommu *iommu;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = iommu_go_to_state(IOMMU_INITIALIZED);
@@ -2757,15 +2861,23 @@ static int __init amd_iommu_init(void)
 			disable_iommus();
 			free_iommu_resources();
 		} else {
+<<<<<<< HEAD
+=======
+			struct amd_iommu *iommu;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			uninit_device_table_dma();
 			for_each_iommu(iommu)
 				iommu_flush_all_caches(iommu);
 		}
 	}
 
+<<<<<<< HEAD
 	for_each_iommu(iommu)
 		amd_iommu_debugfs_setup(iommu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2833,7 +2945,11 @@ static int __init parse_amd_iommu_intr(char *str)
 {
 	for (; *str; ++str) {
 		if (strncmp(str, "legacy", 6) == 0) {
+<<<<<<< HEAD
 			amd_iommu_guest_ir = AMD_IOMMU_GUEST_IR_LEGACY;
+=======
+			amd_iommu_guest_ir = AMD_IOMMU_GUEST_IR_LEGACY_GA;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		if (strncmp(str, "vapic", 5) == 0) {

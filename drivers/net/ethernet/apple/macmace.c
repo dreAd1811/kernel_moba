@@ -89,7 +89,11 @@ struct mace_frame {
 
 static int mace_open(struct net_device *dev);
 static int mace_close(struct net_device *dev);
+<<<<<<< HEAD
 static netdev_tx_t mace_xmit_start(struct sk_buff *skb, struct net_device *dev);
+=======
+static int mace_xmit_start(struct sk_buff *skb, struct net_device *dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mace_set_multicast(struct net_device *dev);
 static int mace_set_address(struct net_device *dev, void *addr);
 static void mace_reset(struct net_device *dev);
@@ -247,8 +251,13 @@ static int mace_probe(struct platform_device *pdev)
 	dev->netdev_ops		= &mace_netdev_ops;
 	dev->watchdog_timeo	= TX_TIMEOUT;
 
+<<<<<<< HEAD
 	pr_info("Onboard MACE, hardware address %pM, chip revision 0x%04X\n",
 		dev->dev_addr, mp->chipid);
+=======
+	printk(KERN_INFO "%s: 68K MACE, hardware address %pM\n",
+	       dev->name, dev->dev_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = register_netdev(dev);
 	if (!err)
@@ -444,7 +453,11 @@ static int mace_close(struct net_device *dev)
  * Transmit a frame
  */
 
+<<<<<<< HEAD
 static netdev_tx_t mace_xmit_start(struct sk_buff *skb, struct net_device *dev)
+=======
+static int mace_xmit_start(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mace_data *mp = netdev_priv(dev);
 	unsigned long flags;
@@ -589,6 +602,10 @@ static irqreturn_t mace_interrupt(int irq, void *dev_id)
 			else if (fs & (UFLO|LCOL|RTRY)) {
 				++dev->stats.tx_aborted_errors;
 				if (mb->xmtfs & UFLO) {
+<<<<<<< HEAD
+=======
+					printk(KERN_ERR "%s: DMA underrun.\n", dev->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					dev->stats.tx_fifo_errors++;
 					mace_txdma_reset(dev);
 				}
@@ -643,8 +660,15 @@ static void mace_dma_rx_frame(struct net_device *dev, struct mace_frame *mf)
 
 	if (frame_status & (RS_OFLO | RS_CLSN | RS_FRAMERR | RS_FCSERR)) {
 		dev->stats.rx_errors++;
+<<<<<<< HEAD
 		if (frame_status & RS_OFLO)
 			dev->stats.rx_fifo_errors++;
+=======
+		if (frame_status & RS_OFLO) {
+			printk(KERN_DEBUG "%s: fifo overflow.\n", dev->name);
+			dev->stats.rx_fifo_errors++;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (frame_status & RS_CLSN)
 			dev->stats.collisions++;
 		if (frame_status & RS_FRAMERR)
@@ -767,4 +791,22 @@ static struct platform_driver mac_mace_driver = {
 	},
 };
 
+<<<<<<< HEAD
 module_platform_driver(mac_mace_driver);
+=======
+static int __init mac_mace_init_module(void)
+{
+	if (!MACH_IS_MAC)
+		return -ENODEV;
+
+	return platform_driver_register(&mac_mace_driver);
+}
+
+static void __exit mac_mace_cleanup_module(void)
+{
+	platform_driver_unregister(&mac_mace_driver);
+}
+
+module_init(mac_mace_init_module);
+module_exit(mac_mace_cleanup_module);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

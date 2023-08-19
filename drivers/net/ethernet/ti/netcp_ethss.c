@@ -21,14 +21,20 @@
 #include <linux/io.h>
 #include <linux/module.h>
 #include <linux/of_mdio.h>
+<<<<<<< HEAD
 #include <linux/of_net.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_address.h>
 #include <linux/if_vlan.h>
 #include <linux/ptp_classify.h>
 #include <linux/net_tstamp.h>
 #include <linux/ethtool.h>
 
+<<<<<<< HEAD
 #include "cpsw.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "cpsw_ale.h"
 #include "netcp.h"
 #include "cpts.h"
@@ -43,7 +49,11 @@
 
 /* 1G Ethernet SS defines */
 #define GBE_MODULE_NAME			"netcp-gbe"
+<<<<<<< HEAD
 #define GBE_SS_VERSION_14		0x4ed2
+=======
+#define GBE_SS_VERSION_14		0x4ed21104
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GBE_SS_REG_INDEX		0
 #define GBE_SGMII34_REG_INDEX		1
@@ -73,11 +83,14 @@
 #define IS_SS_ID_NU(d) \
 	(GBE_IDENT((d)->ss_version) == GBE_SS_ID_NU)
 
+<<<<<<< HEAD
 #define IS_SS_ID_VER_14(d) \
 	(GBE_IDENT((d)->ss_version) == GBE_SS_VERSION_14)
 #define IS_SS_ID_2U(d) \
 	(GBE_IDENT((d)->ss_version) == GBE_SS_ID_2U)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GBENU_SS_REG_INDEX		0
 #define GBENU_SM_REG_INDEX		1
 #define GBENU_SGMII_MODULE_OFFSET	0x100
@@ -92,7 +105,11 @@
 
 /* 10G Ethernet SS defines */
 #define XGBE_MODULE_NAME		"netcp-xgbe"
+<<<<<<< HEAD
 #define XGBE_SS_VERSION_10		0x4ee4
+=======
+#define XGBE_SS_VERSION_10		0x4ee42100
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define XGBE_SS_REG_INDEX		0
 #define XGBE_SM_REG_INDEX		1
@@ -172,11 +189,14 @@
 #define	GBE_RXHOOK_ORDER			0
 #define GBE_DEFAULT_ALE_AGEOUT			30
 #define SLAVE_LINK_IS_XGMII(s) ((s)->link_interface >= XGMII_LINK_MAC_PHY)
+<<<<<<< HEAD
 #define SLAVE_LINK_IS_RGMII(s) \
 	(((s)->link_interface >= RGMII_LINK_MAC_PHY) && \
 	 ((s)->link_interface <= RGMII_LINK_MAC_PHY_NO_MDIO))
 #define SLAVE_LINK_IS_SGMII(s) \
 	((s)->link_interface <= SGMII_LINK_MAC_PHY_NO_MDIO)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NETCP_LINK_STATE_INVALID		-1
 
 #define GBE_SET_REG_OFS(p, rb, rn) p->rb##_ofs.rn = \
@@ -560,7 +580,10 @@ struct gbe_ss_regs {
 struct gbe_ss_regs_ofs {
 	u16	id_ver;
 	u16	control;
+<<<<<<< HEAD
 	u16	rgmii_status; /* 2U */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct gbe_switch_regs {
@@ -603,7 +626,10 @@ struct gbe_port_regs {
 struct gbe_port_regs_ofs {
 	u16	port_vlan;
 	u16	tx_pri_map;
+<<<<<<< HEAD
 	u16     rx_pri_map;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16	sa_lo;
 	u16	sa_hi;
 	u16	ts_ctl;
@@ -708,7 +734,10 @@ struct gbe_slave {
 	u32				link_interface;
 	u32				mac_control;
 	u8				phy_port_t;
+<<<<<<< HEAD
 	struct device_node		*node;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node		*phy_node;
 	struct ts_ctl                   ts_ctl;
 	struct list_head		slave_list;
@@ -1929,7 +1958,11 @@ static void keystone_get_ethtool_stats(struct net_device *ndev,
 
 	gbe_dev = gbe_intf->gbe_dev;
 	spin_lock_bh(&gbe_dev->hw_stats_lock);
+<<<<<<< HEAD
 	if (IS_SS_ID_VER_14(gbe_dev))
+=======
+	if (gbe_dev->ss_version == GBE_SS_VERSION_14)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gbe_update_stats_ver14(gbe_dev, data);
 	else
 		gbe_update_stats(gbe_dev, data);
@@ -2062,6 +2095,13 @@ static const struct ethtool_ops keystone_ethtool_ops = {
 	.get_ts_info		= keystone_get_ts_info,
 };
 
+<<<<<<< HEAD
+=======
+#define mac_hi(mac)	(((mac)[0] << 0) | ((mac)[1] << 8) |	\
+			 ((mac)[2] << 16) | ((mac)[3] << 24))
+#define mac_lo(mac)	(((mac)[4] << 0) | ((mac)[5] << 8))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gbe_set_slave_mac(struct gbe_slave *slave,
 			      struct gbe_intf *gbe_intf)
 {
@@ -2105,9 +2145,14 @@ static void netcp_ethss_link_state_action(struct gbe_priv *gbe_dev,
 				     ALE_PORT_STATE_FORWARD);
 
 		if (ndev && slave->open &&
+<<<<<<< HEAD
 		    ((slave->link_interface != SGMII_LINK_MAC_PHY) &&
 		    (slave->link_interface != RGMII_LINK_MAC_PHY) &&
 		    (slave->link_interface != XGMII_LINK_MAC_PHY)))
+=======
+		    slave->link_interface != SGMII_LINK_MAC_PHY &&
+		    slave->link_interface != XGMII_LINK_MAC_PHY)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netif_carrier_on(ndev);
 	} else {
 		writel(mac_control, GBE_REG_ADDR(slave, emac_regs,
@@ -2116,9 +2161,14 @@ static void netcp_ethss_link_state_action(struct gbe_priv *gbe_dev,
 				     ALE_PORT_STATE,
 				     ALE_PORT_STATE_DISABLE);
 		if (ndev &&
+<<<<<<< HEAD
 		    ((slave->link_interface != SGMII_LINK_MAC_PHY) &&
 		    (slave->link_interface != RGMII_LINK_MAC_PHY) &&
 		    (slave->link_interface != XGMII_LINK_MAC_PHY)))
+=======
+		    slave->link_interface != SGMII_LINK_MAC_PHY &&
+		    slave->link_interface != XGMII_LINK_MAC_PHY)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netif_carrier_off(ndev);
 	}
 
@@ -2131,6 +2181,7 @@ static bool gbe_phy_link_status(struct gbe_slave *slave)
 	 return !slave->phy || slave->phy->link;
 }
 
+<<<<<<< HEAD
 #define RGMII_REG_STATUS_LINK	BIT(0)
 
 static void netcp_2u_rgmii_get_port_link(struct gbe_priv *gbe_dev, bool *status)
@@ -2141,16 +2192,24 @@ static void netcp_2u_rgmii_get_port_link(struct gbe_priv *gbe_dev, bool *status)
 	*status = !!(val & RGMII_REG_STATUS_LINK);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void netcp_ethss_update_link_state(struct gbe_priv *gbe_dev,
 					  struct gbe_slave *slave,
 					  struct net_device *ndev)
 {
+<<<<<<< HEAD
 	bool sw_link_state = true, phy_link_state;
 	int sp = slave->slave_num, link_state;
+=======
+	int sp = slave->slave_num;
+	int phy_link_state, sgmii_link_state = 1, link_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!slave->open)
 		return;
 
+<<<<<<< HEAD
 	if (SLAVE_LINK_IS_RGMII(slave))
 		netcp_2u_rgmii_get_port_link(gbe_dev,
 					     &sw_link_state);
@@ -2160,6 +2219,15 @@ static void netcp_ethss_update_link_state(struct gbe_priv *gbe_dev,
 
 	phy_link_state = gbe_phy_link_status(slave);
 	link_state = phy_link_state & sw_link_state;
+=======
+	if (!SLAVE_LINK_IS_XGMII(slave)) {
+		sgmii_link_state =
+			netcp_sgmii_get_port_link(SGMII_BASE(gbe_dev, sp), sp);
+	}
+
+	phy_link_state = gbe_phy_link_status(slave);
+	link_state = phy_link_state & sgmii_link_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atomic_xchg(&slave->link_state, link_state) != link_state)
 		netcp_ethss_link_state_action(gbe_dev, ndev, slave,
@@ -2233,7 +2301,11 @@ static void gbe_port_config(struct gbe_priv *gbe_dev, struct gbe_slave *slave,
 		max_rx_len = NETCP_MAX_FRAME_SIZE;
 
 	/* Enable correct MII mode at SS level */
+<<<<<<< HEAD
 	if (IS_SS_ID_XGBE(gbe_dev) &&
+=======
+	if ((gbe_dev->ss_version == XGBE_SS_VERSION_10) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (slave->link_interface >= XGMII_LINK_MAC_PHY)) {
 		xgmii_mode = readl(GBE_REG_ADDR(gbe_dev, ss_regs, control));
 		xgmii_mode |= (1 << slave->slave_num);
@@ -2264,8 +2336,12 @@ static void gbe_slave_stop(struct gbe_intf *intf)
 	struct gbe_priv *gbe_dev = intf->gbe_dev;
 	struct gbe_slave *slave = intf->slave;
 
+<<<<<<< HEAD
 	if (!IS_SS_ID_2U(gbe_dev))
 		gbe_sgmii_rtreset(gbe_dev, slave, true);
+=======
+	gbe_sgmii_rtreset(gbe_dev, slave, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gbe_port_reset(slave);
 	/* Disable forwarding */
 	cpsw_ale_control_set(gbe_dev->ale, slave->port_num,
@@ -2300,6 +2376,7 @@ static int gbe_slave_open(struct gbe_intf *gbe_intf)
 
 	void (*hndlr)(struct net_device *) = gbe_adjust_link;
 
+<<<<<<< HEAD
 	if (!IS_SS_ID_2U(priv))
 		gbe_sgmii_config(priv, slave);
 	gbe_port_reset(slave);
@@ -2314,6 +2391,13 @@ static int gbe_slave_open(struct gbe_intf *gbe_intf)
 		writel(HOST_TX_PRI_MAP_DEFAULT,
 		       GBE_REG_ADDR(slave, port_regs, rx_pri_map));
 
+=======
+	gbe_sgmii_config(priv, slave);
+	gbe_port_reset(slave);
+	gbe_sgmii_rtreset(priv, slave, false);
+	gbe_port_config(priv, slave, priv->rx_packet_max);
+	gbe_set_slave_mac(slave, gbe_intf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* enable forwarding */
 	cpsw_ale_control_set(priv->ale, slave->port_num,
 			     ALE_PORT_STATE, ALE_PORT_STATE_FORWARD);
@@ -2324,6 +2408,7 @@ static int gbe_slave_open(struct gbe_intf *gbe_intf)
 		has_phy = true;
 		phy_mode = PHY_INTERFACE_MODE_SGMII;
 		slave->phy_port_t = PORT_MII;
+<<<<<<< HEAD
 	} else if (slave->link_interface == RGMII_LINK_MAC_PHY) {
 		has_phy = true;
 		phy_mode = of_get_phy_mode(slave->node);
@@ -2339,6 +2424,8 @@ static int gbe_slave_open(struct gbe_intf *gbe_intf)
 			return -EINVAL;
 		}
 		slave->phy_port_t = PORT_MII;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (slave->link_interface == XGMII_LINK_MAC_PHY) {
 		has_phy = true;
 		phy_mode = PHY_INTERFACE_MODE_NA;
@@ -2346,7 +2433,11 @@ static int gbe_slave_open(struct gbe_intf *gbe_intf)
 	}
 
 	if (has_phy) {
+<<<<<<< HEAD
 		if (IS_SS_ID_XGBE(priv))
+=======
+		if (priv->ss_version == XGBE_SS_VERSION_10)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hndlr = xgbe_adjust_link;
 
 		slave->phy = of_phy_connect(gbe_intf->ndev,
@@ -2775,6 +2866,7 @@ static inline int gbe_hwtstamp_set(struct gbe_intf *gbe_intf, struct ifreq *req)
 }
 #endif /* CONFIG_TI_CPTS */
 
+<<<<<<< HEAD
 static int gbe_set_rx_mode(void *intf_priv, bool promisc)
 {
 	struct gbe_intf *gbe_intf = intf_priv;
@@ -2830,6 +2922,8 @@ static int gbe_set_rx_mode(void *intf_priv, bool promisc)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gbe_ioctl(void *intf_priv, struct ifreq *req, int cmd)
 {
 	struct gbe_intf *gbe_intf = intf_priv;
@@ -2850,9 +2944,15 @@ static int gbe_ioctl(void *intf_priv, struct ifreq *req, int cmd)
 	return -EOPNOTSUPP;
 }
 
+<<<<<<< HEAD
 static void netcp_ethss_timer(struct timer_list *t)
 {
 	struct gbe_priv *gbe_dev = from_timer(gbe_dev, t, timer);
+=======
+static void netcp_ethss_timer(unsigned long arg)
+{
+	struct gbe_priv *gbe_dev = (struct gbe_priv *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gbe_intf *gbe_intf;
 	struct gbe_slave *slave;
 
@@ -2872,7 +2972,11 @@ static void netcp_ethss_timer(struct timer_list *t)
 	/* A timer runs as a BH, no need to block them */
 	spin_lock(&gbe_dev->hw_stats_lock);
 
+<<<<<<< HEAD
 	if (IS_SS_ID_VER_14(gbe_dev))
+=======
+	if (gbe_dev->ss_version == GBE_SS_VERSION_14)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gbe_update_stats_ver14(gbe_dev, NULL);
 	else
 		gbe_update_stats(gbe_dev, NULL);
@@ -2915,7 +3019,11 @@ static int gbe_open(void *intf_priv, struct net_device *ndev)
 		GBE_RTL_VERSION(reg), GBE_IDENT(reg));
 
 	/* For 10G and on NetCP 1.5, use directed to port */
+<<<<<<< HEAD
 	if (IS_SS_ID_XGBE(gbe_dev) || IS_SS_ID_MU(gbe_dev))
+=======
+	if ((gbe_dev->ss_version == XGBE_SS_VERSION_10) || IS_SS_ID_MU(gbe_dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gbe_intf->tx_pipe.flags = SWITCH_TO_PORT_IN_TAGINFO;
 
 	if (gbe_dev->enable_ale)
@@ -3019,10 +3127,15 @@ static int init_slave(struct gbe_priv *gbe_dev, struct gbe_slave *slave,
 		slave->link_interface = SGMII_LINK_MAC_PHY;
 	}
 
+<<<<<<< HEAD
 	slave->node = node;
 	slave->open = false;
 	if ((slave->link_interface == SGMII_LINK_MAC_PHY) ||
 	    (slave->link_interface == RGMII_LINK_MAC_PHY) ||
+=======
+	slave->open = false;
+	if ((slave->link_interface == SGMII_LINK_MAC_PHY) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (slave->link_interface == XGMII_LINK_MAC_PHY))
 		slave->phy_node = of_parse_phandle(node, "phy-handle", 0);
 	slave->port_num = gbe_get_slave_port(gbe_dev, slave->slave_num);
@@ -3034,7 +3147,11 @@ static int init_slave(struct gbe_priv *gbe_dev, struct gbe_slave *slave,
 
 	/* Emac regs memmap are contiguous but port regs are not */
 	port_reg_num = slave->slave_num;
+<<<<<<< HEAD
 	if (IS_SS_ID_VER_14(gbe_dev)) {
+=======
+	if (gbe_dev->ss_version == GBE_SS_VERSION_14) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (slave->slave_num > 1) {
 			port_reg_ofs = GBE13_SLAVE_PORT2_OFFSET;
 			port_reg_num -= 2;
@@ -3049,7 +3166,11 @@ static int init_slave(struct gbe_priv *gbe_dev, struct gbe_slave *slave,
 		emac_reg_ofs = GBENU_EMAC_OFFSET;
 		port_reg_blk_sz = 0x1000;
 		emac_reg_blk_sz = 0x1000;
+<<<<<<< HEAD
 	} else if (IS_SS_ID_XGBE(gbe_dev)) {
+=======
+	} else if (gbe_dev->ss_version == XGBE_SS_VERSION_10) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port_reg_ofs = XGBE10_SLAVE_PORT_OFFSET;
 		emac_reg_ofs = XGBE10_EMAC_OFFSET;
 		port_reg_blk_sz = 0x30;
@@ -3065,7 +3186,11 @@ static int init_slave(struct gbe_priv *gbe_dev, struct gbe_slave *slave,
 	slave->emac_regs = gbe_dev->switch_regs + emac_reg_ofs +
 				(emac_reg_blk_sz * slave->slave_num);
 
+<<<<<<< HEAD
 	if (IS_SS_ID_VER_14(gbe_dev)) {
+=======
+	if (gbe_dev->ss_version == GBE_SS_VERSION_14) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Initialize  slave port register offsets */
 		GBE_SET_REG_OFS(slave, port_regs, port_vlan);
 		GBE_SET_REG_OFS(slave, port_regs, tx_pri_map);
@@ -3086,7 +3211,10 @@ static int init_slave(struct gbe_priv *gbe_dev, struct gbe_slave *slave,
 		/* Initialize  slave port register offsets */
 		GBENU_SET_REG_OFS(slave, port_regs, port_vlan);
 		GBENU_SET_REG_OFS(slave, port_regs, tx_pri_map);
+<<<<<<< HEAD
 		GBENU_SET_REG_OFS(slave, port_regs, rx_pri_map);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		GBENU_SET_REG_OFS(slave, port_regs, sa_lo);
 		GBENU_SET_REG_OFS(slave, port_regs, sa_hi);
 		GBENU_SET_REG_OFS(slave, port_regs, ts_ctl);
@@ -3100,7 +3228,11 @@ static int init_slave(struct gbe_priv *gbe_dev, struct gbe_slave *slave,
 		GBENU_SET_REG_OFS(slave, emac_regs, mac_control);
 		GBENU_SET_REG_OFS(slave, emac_regs, soft_reset);
 
+<<<<<<< HEAD
 	} else if (IS_SS_ID_XGBE(gbe_dev)) {
+=======
+	} else if (gbe_dev->ss_version == XGBE_SS_VERSION_10) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Initialize  slave port register offsets */
 		XGBE_SET_REG_OFS(slave, port_regs, port_vlan);
 		XGBE_SET_REG_OFS(slave, port_regs, tx_pri_map);
@@ -3150,8 +3282,12 @@ static void init_secondary_ports(struct gbe_priv *gbe_dev,
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (!IS_SS_ID_2U(gbe_dev))
 			gbe_sgmii_config(gbe_dev, slave);
+=======
+		gbe_sgmii_config(gbe_dev, slave);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gbe_port_reset(slave);
 		gbe_port_config(gbe_dev, slave, gbe_dev->rx_packet_max);
 		list_add_tail(&slave->slave_list, &gbe_dev->secondary_slaves);
@@ -3185,9 +3321,12 @@ static void init_secondary_ports(struct gbe_priv *gbe_dev,
 	if (slave->link_interface == SGMII_LINK_MAC_PHY) {
 		phy_mode = PHY_INTERFACE_MODE_SGMII;
 		slave->phy_port_t = PORT_MII;
+<<<<<<< HEAD
 	} else if (slave->link_interface == RGMII_LINK_MAC_PHY) {
 		phy_mode = PHY_INTERFACE_MODE_RGMII;
 		slave->phy_port_t = PORT_MII;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		phy_mode = PHY_INTERFACE_MODE_NA;
 		slave->phy_port_t = PORT_FIBRE;
@@ -3195,7 +3334,10 @@ static void init_secondary_ports(struct gbe_priv *gbe_dev,
 
 	for_each_sec_slave(slave, gbe_dev) {
 		if ((slave->link_interface != SGMII_LINK_MAC_PHY) &&
+<<<<<<< HEAD
 		    (slave->link_interface != RGMII_LINK_MAC_PHY) &&
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    (slave->link_interface != XGMII_LINK_MAC_PHY))
 			continue;
 		slave->phy =
@@ -3206,6 +3348,10 @@ static void init_secondary_ports(struct gbe_priv *gbe_dev,
 		if (!slave->phy) {
 			dev_err(dev, "phy not found for slave %d\n",
 				slave->slave_num);
+<<<<<<< HEAD
+=======
+			slave->phy = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			dev_dbg(dev, "phy found: id is: 0x%s\n",
 				phydev_name(slave->phy));
@@ -3285,8 +3431,13 @@ static int set_xgbe_ethss10_priv(struct gbe_priv *gbe_dev,
 	gbe_dev->et_stats = xgbe10_et_stats;
 	gbe_dev->num_et_stats = ARRAY_SIZE(xgbe10_et_stats);
 
+<<<<<<< HEAD
 	gbe_dev->hw_stats = devm_kcalloc(gbe_dev->dev,
 					 gbe_dev->num_et_stats, sizeof(u64),
+=======
+	gbe_dev->hw_stats = devm_kzalloc(gbe_dev->dev,
+					 gbe_dev->num_et_stats * sizeof(u64),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 GFP_KERNEL);
 	if (!gbe_dev->hw_stats) {
 		dev_err(gbe_dev->dev, "hw_stats memory allocation failed\n");
@@ -3294,8 +3445,13 @@ static int set_xgbe_ethss10_priv(struct gbe_priv *gbe_dev,
 	}
 
 	gbe_dev->hw_stats_prev =
+<<<<<<< HEAD
 		devm_kcalloc(gbe_dev->dev,
 			     gbe_dev->num_et_stats, sizeof(u32),
+=======
+		devm_kzalloc(gbe_dev->dev,
+			     gbe_dev->num_et_stats * sizeof(u32),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     GFP_KERNEL);
 	if (!gbe_dev->hw_stats_prev) {
 		dev_err(gbe_dev->dev,
@@ -3405,8 +3561,13 @@ static int set_gbe_ethss14_priv(struct gbe_priv *gbe_dev,
 	gbe_dev->et_stats = gbe13_et_stats;
 	gbe_dev->num_et_stats = ARRAY_SIZE(gbe13_et_stats);
 
+<<<<<<< HEAD
 	gbe_dev->hw_stats = devm_kcalloc(gbe_dev->dev,
 					 gbe_dev->num_et_stats, sizeof(u64),
+=======
+	gbe_dev->hw_stats = devm_kzalloc(gbe_dev->dev,
+					 gbe_dev->num_et_stats * sizeof(u64),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 GFP_KERNEL);
 	if (!gbe_dev->hw_stats) {
 		dev_err(gbe_dev->dev, "hw_stats memory allocation failed\n");
@@ -3414,8 +3575,13 @@ static int set_gbe_ethss14_priv(struct gbe_priv *gbe_dev,
 	}
 
 	gbe_dev->hw_stats_prev =
+<<<<<<< HEAD
 		devm_kcalloc(gbe_dev->dev,
 			     gbe_dev->num_et_stats, sizeof(u32),
+=======
+		devm_kzalloc(gbe_dev->dev,
+			     gbe_dev->num_et_stats * sizeof(u32),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     GFP_KERNEL);
 	if (!gbe_dev->hw_stats_prev) {
 		dev_err(gbe_dev->dev,
@@ -3470,15 +3636,24 @@ static int set_gbenu_ethss_priv(struct gbe_priv *gbe_dev,
 	gbe_dev->num_stats_mods = gbe_dev->max_num_ports;
 	gbe_dev->et_stats = gbenu_et_stats;
 
+<<<<<<< HEAD
 	if (IS_SS_ID_MU(gbe_dev))
+=======
+	if (IS_SS_ID_NU(gbe_dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gbe_dev->num_et_stats = GBENU_ET_STATS_HOST_SIZE +
 			(gbe_dev->max_num_slaves * GBENU_ET_STATS_PORT_SIZE);
 	else
 		gbe_dev->num_et_stats = GBENU_ET_STATS_HOST_SIZE +
 					GBENU_ET_STATS_PORT_SIZE;
 
+<<<<<<< HEAD
 	gbe_dev->hw_stats = devm_kcalloc(gbe_dev->dev,
 					 gbe_dev->num_et_stats, sizeof(u64),
+=======
+	gbe_dev->hw_stats = devm_kzalloc(gbe_dev->dev,
+					 gbe_dev->num_et_stats * sizeof(u64),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 GFP_KERNEL);
 	if (!gbe_dev->hw_stats) {
 		dev_err(gbe_dev->dev, "hw_stats memory allocation failed\n");
@@ -3486,8 +3661,13 @@ static int set_gbenu_ethss_priv(struct gbe_priv *gbe_dev,
 	}
 
 	gbe_dev->hw_stats_prev =
+<<<<<<< HEAD
 		devm_kcalloc(gbe_dev->dev,
 			     gbe_dev->num_et_stats, sizeof(u32),
+=======
+		devm_kzalloc(gbe_dev->dev,
+			     gbe_dev->num_et_stats * sizeof(u32),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     GFP_KERNEL);
 	if (!gbe_dev->hw_stats_prev) {
 		dev_err(gbe_dev->dev,
@@ -3511,9 +3691,13 @@ static int set_gbenu_ethss_priv(struct gbe_priv *gbe_dev,
 	}
 	gbe_dev->switch_regs = regs;
 
+<<<<<<< HEAD
 	if (!IS_SS_ID_2U(gbe_dev))
 		gbe_dev->sgmii_port_regs =
 		       gbe_dev->ss_regs + GBENU_SGMII_MODULE_OFFSET;
+=======
+	gbe_dev->sgmii_port_regs = gbe_dev->ss_regs + GBENU_SGMII_MODULE_OFFSET;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Although sgmii modules are mem mapped to one contiguous
 	 * region on GBENU devices, setting sgmii_port34_regs allows
@@ -3536,8 +3720,11 @@ static int set_gbenu_ethss_priv(struct gbe_priv *gbe_dev,
 
 	/* Subsystem registers */
 	GBENU_SET_REG_OFS(gbe_dev, ss_regs, id_ver);
+<<<<<<< HEAD
 	/* ok to set for MU, but used by 2U only */
 	GBENU_SET_REG_OFS(gbe_dev, ss_regs, rgmii_status);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Switch module registers */
 	GBENU_SET_REG_OFS(gbe_dev, switch_regs, id_ver);
@@ -3583,7 +3770,10 @@ static int gbe_probe(struct netcp_device *netcp_device, struct device *dev,
 		gbe_dev->max_num_slaves = 8;
 	} else if (of_device_is_compatible(node, "ti,netcp-gbe-2")) {
 		gbe_dev->max_num_slaves = 1;
+<<<<<<< HEAD
 		gbe_module.set_rx_mode = gbe_set_rx_mode;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (of_device_is_compatible(node, "ti,netcp-xgbe")) {
 		gbe_dev->max_num_slaves = 2;
 	} else {
@@ -3628,7 +3818,11 @@ static int gbe_probe(struct netcp_device *netcp_device, struct device *dev,
 
 		dev_dbg(dev, "ss_version: 0x%08x\n", gbe_dev->ss_version);
 
+<<<<<<< HEAD
 		if (IS_SS_ID_VER_14(gbe_dev))
+=======
+		if (gbe_dev->ss_version == GBE_SS_VERSION_14)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = set_gbe_ethss14_priv(gbe_dev, node);
 		else if (IS_SS_ID_MU(gbe_dev))
 			ret = set_gbenu_ethss_priv(gbe_dev, node);
@@ -3730,14 +3924,24 @@ static int gbe_probe(struct netcp_device *netcp_device, struct device *dev,
 
 	spin_lock_bh(&gbe_dev->hw_stats_lock);
 	for (i = 0; i < gbe_dev->num_stats_mods; i++) {
+<<<<<<< HEAD
 		if (IS_SS_ID_VER_14(gbe_dev))
+=======
+		if (gbe_dev->ss_version == GBE_SS_VERSION_14)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gbe_reset_mod_stats_ver14(gbe_dev, i);
 		else
 			gbe_reset_mod_stats(gbe_dev, i);
 	}
 	spin_unlock_bh(&gbe_dev->hw_stats_lock);
 
+<<<<<<< HEAD
 	timer_setup(&gbe_dev->timer, netcp_ethss_timer, 0);
+=======
+	init_timer(&gbe_dev->timer);
+	gbe_dev->timer.data	 = (unsigned long)gbe_dev;
+	gbe_dev->timer.function = netcp_ethss_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gbe_dev->timer.expires	 = jiffies + GBE_TIMER_INTERVAL;
 	add_timer(&gbe_dev->timer);
 	*inst_priv = gbe_dev;
@@ -3813,6 +4017,10 @@ static int gbe_remove(struct netcp_device *netcp_device, void *inst_priv)
 	del_timer_sync(&gbe_dev->timer);
 	cpts_release(gbe_dev->cpts);
 	cpsw_ale_stop(gbe_dev->ale);
+<<<<<<< HEAD
+=======
+	cpsw_ale_destroy(gbe_dev->ale);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netcp_txpipe_close(&gbe_dev->tx_pipe);
 	free_secondary_ports(gbe_dev);
 

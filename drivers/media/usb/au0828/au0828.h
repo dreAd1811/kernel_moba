@@ -33,12 +33,21 @@
 #include <media/media-device.h>
 
 /* DVB */
+<<<<<<< HEAD
 #include <media/demux.h>
 #include <media/dmxdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
 #include <media/dvbdev.h>
+=======
+#include "demux.h"
+#include "dmxdev.h"
+#include "dvb_demux.h"
+#include "dvb_frontend.h"
+#include "dvb_net.h"
+#include "dvbdev.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "au0828-reg.h"
 #include "au0828-cards.h"
@@ -190,7 +199,11 @@ struct au0828_dev {
 	struct i2c_adapter		i2c_adap;
 	struct i2c_algorithm		i2c_algo;
 	struct i2c_client		i2c_client;
+<<<<<<< HEAD
 	u32				i2c_rc;
+=======
+	u32 				i2c_rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Digital */
 	struct au0828_dvb		dvb;
@@ -293,8 +306,13 @@ struct au0828_dev {
 /* ----------------------------------------------------------- */
 #define au0828_read(dev, reg) au0828_readreg(dev, reg)
 #define au0828_write(dev, reg, value) au0828_writereg(dev, reg, value)
+<<<<<<< HEAD
 #define au0828_andor(dev, reg, mask, value)				\
 	 au0828_writereg(dev, reg,					\
+=======
+#define au0828_andor(dev, reg, mask, value) 				\
+	 au0828_writereg(dev, reg, 					\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	(au0828_readreg(dev, reg) & ~(mask)) | ((value) & (mask)))
 
 #define au0828_set(dev, reg, bit) au0828_andor(dev, (reg), (bit), (bit))
@@ -358,7 +376,11 @@ void au0828_dvb_suspend(struct au0828_dev *dev);
 void au0828_dvb_resume(struct au0828_dev *dev);
 
 /* au0828-vbi.c */
+<<<<<<< HEAD
 extern const struct vb2_ops au0828_vbi_qops;
+=======
+extern struct vb2_ops au0828_vbi_qops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define dprintk(level, fmt, arg...)\
 	do { if (au0828_debug & level)\

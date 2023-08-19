@@ -42,7 +42,12 @@ chip. These coefficients are used to internally calibrate the signals from the
 sensors. Disabling the reload of those coefficients allows saving 10ms for each
 measurement and decrease power consumption, while losing on precision.
 
+<<<<<<< HEAD
 Some options may be set via sysfs attributes.
+=======
+Some options may be set directly in the sht15_platform_data structure
+or via sysfs attributes.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Notes:
   * The regulator supply name is set to "vcc".

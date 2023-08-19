@@ -14,7 +14,10 @@
  */
 #include <linux/clk.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
 #include <linux/slab.h>
@@ -25,11 +28,40 @@
 #include <media/videobuf2-dma-sg.h>
 
 #include "hfi_venus_io.h"
+<<<<<<< HEAD
 #include "hfi_parser.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "core.h"
 #include "helpers.h"
 #include "vdec.h"
 
+<<<<<<< HEAD
+=======
+static u32 get_framesize_uncompressed(unsigned int plane, u32 width, u32 height)
+{
+	u32 y_stride, uv_stride, y_plane;
+	u32 y_sclines, uv_sclines, uv_plane;
+	u32 size;
+
+	y_stride = ALIGN(width, 128);
+	uv_stride = ALIGN(width, 128);
+	y_sclines = ALIGN(height, 32);
+	uv_sclines = ALIGN(((height + 1) >> 1), 16);
+
+	y_plane = y_stride * y_sclines;
+	uv_plane = uv_stride * uv_sclines + SZ_4K;
+	size = y_plane + uv_plane + SZ_8K;
+
+	return ALIGN(size, SZ_4K);
+}
+
+static u32 get_framesize_compressed(unsigned int width, unsigned int height)
+{
+	return ((width * height * 3 / 2) / 2) + 128;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Three resons to keep MPLANE formats (despite that the number of planes
  * currently is one):
@@ -78,10 +110,13 @@ static const struct venus_format vdec_formats[] = {
 		.pixfmt = V4L2_PIX_FMT_XVID,
 		.num_planes = 1,
 		.type = V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE,
+<<<<<<< HEAD
 	}, {
 		.pixfmt = V4L2_PIX_FMT_HEVC,
 		.num_planes = 1,
 		.type = V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -118,6 +153,7 @@ find_format_by_index(struct venus_inst *inst, unsigned int index, u32 type)
 		return NULL;
 
 	for (i = 0; i < size; i++) {
+<<<<<<< HEAD
 		bool valid;
 
 		if (fmt[i].type != type)
@@ -128,11 +164,25 @@ find_format_by_index(struct venus_inst *inst, unsigned int index, u32 type)
 			break;
 		if (valid)
 			k++;
+=======
+		if (fmt[i].type != type)
+			continue;
+		if (k == index)
+			break;
+		k++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (i == size)
 		return NULL;
 
+<<<<<<< HEAD
+=======
+	if (type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
+	    !venus_helper_check_codec(inst, fmt[i].pixfmt))
+		return NULL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &fmt[i];
 }
 
@@ -142,6 +192,10 @@ vdec_try_fmt_common(struct venus_inst *inst, struct v4l2_format *f)
 	struct v4l2_pix_format_mplane *pixmp = &f->fmt.pix_mp;
 	struct v4l2_plane_pix_format *pfmt = pixmp->plane_fmt;
 	const struct venus_format *fmt;
+<<<<<<< HEAD
+=======
+	unsigned int p;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(pfmt[0].reserved, 0, sizeof(pfmt[0].reserved));
 	memset(pixmp->reserved, 0, sizeof(pixmp->reserved));
@@ -155,12 +209,23 @@ vdec_try_fmt_common(struct venus_inst *inst, struct v4l2_format *f)
 		else
 			return NULL;
 		fmt = find_format(inst, pixmp->pixelformat, f->type);
+<<<<<<< HEAD
 	}
 
 	pixmp->width = clamp(pixmp->width, frame_width_min(inst),
 			     frame_width_max(inst));
 	pixmp->height = clamp(pixmp->height, frame_height_min(inst),
 			      frame_height_max(inst));
+=======
+		pixmp->width = 1280;
+		pixmp->height = 720;
+	}
+
+	pixmp->width = clamp(pixmp->width, inst->cap_width.min,
+			     inst->cap_width.max);
+	pixmp->height = clamp(pixmp->height, inst->cap_height.min,
+			      inst->cap_height.max);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (f->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE)
 		pixmp->height = ALIGN(pixmp->height, 32);
@@ -170,6 +235,7 @@ vdec_try_fmt_common(struct venus_inst *inst, struct v4l2_format *f)
 	pixmp->num_planes = fmt->num_planes;
 	pixmp->flags = 0;
 
+<<<<<<< HEAD
 	pfmt[0].sizeimage = venus_helper_get_framesz(pixmp->pixelformat,
 						     pixmp->width,
 						     pixmp->height);
@@ -178,6 +244,20 @@ vdec_try_fmt_common(struct venus_inst *inst, struct v4l2_format *f)
 		pfmt[0].bytesperline = ALIGN(pixmp->width, 128);
 	else
 		pfmt[0].bytesperline = 0;
+=======
+	if (f->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE) {
+		for (p = 0; p < pixmp->num_planes; p++) {
+			pfmt[p].sizeimage =
+				get_framesize_uncompressed(p, pixmp->width,
+							   pixmp->height);
+			pfmt[p].bytesperline = ALIGN(pixmp->width, 128);
+		}
+	} else {
+		pfmt[0].sizeimage = get_framesize_compressed(pixmp->width,
+							     pixmp->height);
+		pfmt[0].bytesperline = 0;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return fmt;
 }
@@ -418,12 +498,21 @@ static int vdec_enum_framesizes(struct file *file, void *fh,
 
 	fsize->type = V4L2_FRMSIZE_TYPE_STEPWISE;
 
+<<<<<<< HEAD
 	fsize->stepwise.min_width = frame_width_min(inst);
 	fsize->stepwise.max_width = frame_width_max(inst);
 	fsize->stepwise.step_width = frame_width_step(inst);
 	fsize->stepwise.min_height = frame_height_min(inst);
 	fsize->stepwise.max_height = frame_height_max(inst);
 	fsize->stepwise.step_height = frame_height_step(inst);
+=======
+	fsize->stepwise.min_width = inst->cap_width.min;
+	fsize->stepwise.max_width = inst->cap_width.max;
+	fsize->stepwise.step_width = inst->cap_width.step_size;
+	fsize->stepwise.min_height = inst->cap_height.min;
+	fsize->stepwise.max_height = inst->cap_height.max;
+	fsize->stepwise.step_height = inst->cap_height.step_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -520,6 +609,7 @@ static const struct v4l2_ioctl_ops vdec_ioctl_ops = {
 static int vdec_set_properties(struct venus_inst *inst)
 {
 	struct vdec_controls *ctr = &inst->controls.dec;
+<<<<<<< HEAD
 	struct hfi_enable en = { .enable = 1 };
 	u32 ptype;
 	int ret;
@@ -555,6 +645,13 @@ static int vdec_output_conf(struct venus_inst *inst)
 	if (ret)
 		return ret;
 
+=======
+	struct venus_core *core = inst->core;
+	struct hfi_enable en = { .enable = 1 };
+	u32 ptype;
+	int ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (core->res->hfi_version == HFI_VERSION_1XX) {
 		ptype = HFI_PROPERTY_PARAM_VDEC_CONTINUE_DATA_TRANSFER;
 		ret = hfi_session_set_property(inst, ptype, &en);
@@ -562,6 +659,7 @@ static int vdec_output_conf(struct venus_inst *inst)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	/* Force searching UBWC formats for bigger then HD resolutions */
 	if (width > 1920 && height > ALIGN(1080, 32))
 		ubwc = true;
@@ -614,10 +712,22 @@ static int vdec_output_conf(struct venus_inst *inst)
 
 		ret = venus_helper_set_output_resolution(inst, width, height,
 							 HFI_BUFFER_OUTPUT2);
+=======
+	if (core->res->hfi_version == HFI_VERSION_3XX ||
+	    inst->cap_bufs_mode_dynamic) {
+		struct hfi_buffer_alloc_mode mode;
+
+		ptype = HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE;
+		mode.type = HFI_BUFFER_OUTPUT;
+		mode.mode = HFI_BUFFER_MODE_DYNAMIC;
+
+		ret = hfi_session_set_property(inst, ptype, &mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	if (IS_V3(core) || IS_V4(core)) {
 		if (inst->output2_buf_size) {
 			ret = venus_helper_set_bufsize(inst,
@@ -640,6 +750,16 @@ static int vdec_output_conf(struct venus_inst *inst)
 	if (ret)
 		return ret;
 
+=======
+	if (ctr->post_loop_deb_mode) {
+		ptype = HFI_PROPERTY_CONFIG_VDEC_POST_LOOP_DEBLOCKER;
+		en.enable = 1;
+		ret = hfi_session_set_property(inst, ptype, &en);
+		if (ret)
+			return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -666,6 +786,7 @@ deinit:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int vdec_num_buffers(struct venus_inst *inst, unsigned int *in_num,
 			    unsigned int *out_num)
 {
@@ -675,10 +796,18 @@ static int vdec_num_buffers(struct venus_inst *inst, unsigned int *in_num,
 
 	*in_num = *out_num = 0;
 
+=======
+static int vdec_cap_num_buffers(struct venus_inst *inst, unsigned int *num)
+{
+	struct hfi_buffer_requirements bufreq;
+	int ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = vdec_init_session(inst);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
 	if (ret)
 		goto deinit;
@@ -692,6 +821,12 @@ static int vdec_num_buffers(struct venus_inst *inst, unsigned int *in_num,
 	*out_num = HFI_BUFREQ_COUNT_MIN(&bufreq, ver);
 
 deinit:
+=======
+	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_OUTPUT, &bufreq);
+
+	*num = bufreq.count_actual;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hfi_session_deinit(inst);
 
 	return ret;
@@ -702,12 +837,19 @@ static int vdec_queue_setup(struct vb2_queue *q,
 			    unsigned int sizes[], struct device *alloc_devs[])
 {
 	struct venus_inst *inst = vb2_get_drv_priv(q);
+<<<<<<< HEAD
 	unsigned int in_num, out_num;
 	int ret = 0;
 
 	if (*num_planes) {
 		unsigned int output_buf_size = venus_helper_get_opb_size(inst);
 
+=======
+	unsigned int p, num;
+	int ret = 0;
+
+	if (*num_planes) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (q->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE &&
 		    *num_planes != inst->fmt_out->num_planes)
 			return -EINVAL;
@@ -721,12 +863,17 @@ static int vdec_queue_setup(struct vb2_queue *q,
 			return -EINVAL;
 
 		if (q->type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE &&
+<<<<<<< HEAD
 		    sizes[0] < output_buf_size)
+=======
+		    sizes[0] < inst->output_buf_size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 
 		return 0;
 	}
 
+<<<<<<< HEAD
 	ret = vdec_num_buffers(inst, &in_num, &out_num);
 	if (ret)
 		return ret;
@@ -750,6 +897,37 @@ static int vdec_queue_setup(struct vb2_queue *q,
 		inst->output_buf_size = sizes[0];
 		*num_buffers = max(*num_buffers, out_num);
 		inst->num_output_bufs = *num_buffers;
+=======
+	switch (q->type) {
+	case V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE:
+		*num_planes = inst->fmt_out->num_planes;
+		sizes[0] = get_framesize_compressed(inst->out_width,
+						    inst->out_height);
+		inst->input_buf_size = sizes[0];
+		inst->num_input_bufs = *num_buffers;
+
+		ret = vdec_cap_num_buffers(inst, &num);
+		if (ret)
+			break;
+
+		inst->num_output_bufs = num;
+		break;
+	case V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE:
+		*num_planes = inst->fmt_cap->num_planes;
+
+		ret = vdec_cap_num_buffers(inst, &num);
+		if (ret)
+			break;
+
+		*num_buffers = max(*num_buffers, num);
+
+		for (p = 0; p < *num_planes; p++)
+			sizes[p] = get_framesize_uncompressed(p, inst->width,
+							      inst->height);
+
+		inst->num_output_bufs = *num_buffers;
+		inst->output_buf_size = sizes[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		ret = -EINVAL;
@@ -761,7 +939,10 @@ static int vdec_queue_setup(struct vb2_queue *q,
 
 static int vdec_verify_conf(struct venus_inst *inst)
 {
+<<<<<<< HEAD
 	enum hfi_version ver = inst->core->res->hfi_version;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hfi_buffer_requirements bufreq;
 	int ret;
 
@@ -773,14 +954,22 @@ static int vdec_verify_conf(struct venus_inst *inst)
 		return ret;
 
 	if (inst->num_output_bufs < bufreq.count_actual ||
+<<<<<<< HEAD
 	    inst->num_output_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
+=======
+	    inst->num_output_bufs < bufreq.count_min)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	ret = venus_helper_get_bufreq(inst, HFI_BUFFER_INPUT, &bufreq);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (inst->num_input_bufs < HFI_BUFREQ_COUNT_MIN(&bufreq, ver))
+=======
+	if (inst->num_input_bufs < bufreq.count_min)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	return 0;
@@ -789,6 +978,11 @@ static int vdec_verify_conf(struct venus_inst *inst)
 static int vdec_start_streaming(struct vb2_queue *q, unsigned int count)
 {
 	struct venus_inst *inst = vb2_get_drv_priv(q);
+<<<<<<< HEAD
+=======
+	struct venus_core *core = inst->core;
+	u32 ptype;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	mutex_lock(&inst->lock);
@@ -817,20 +1011,38 @@ static int vdec_start_streaming(struct vb2_queue *q, unsigned int count)
 	if (ret)
 		goto deinit_sess;
 
+<<<<<<< HEAD
 	ret = vdec_output_conf(inst);
 	if (ret)
 		goto deinit_sess;
+=======
+	if (core->res->hfi_version == HFI_VERSION_3XX) {
+		struct hfi_buffer_size_actual buf_sz;
+
+		ptype = HFI_PROPERTY_PARAM_BUFFER_SIZE_ACTUAL;
+		buf_sz.type = HFI_BUFFER_OUTPUT;
+		buf_sz.size = inst->output_buf_size;
+
+		ret = hfi_session_set_property(inst, ptype, &buf_sz);
+		if (ret)
+			goto deinit_sess;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = vdec_verify_conf(inst);
 	if (ret)
 		goto deinit_sess;
 
 	ret = venus_helper_set_num_bufs(inst, inst->num_input_bufs,
+<<<<<<< HEAD
 					VB2_MAX_FRAME, VB2_MAX_FRAME);
 	if (ret)
 		goto deinit_sess;
 
 	ret = venus_helper_alloc_dpb_bufs(inst);
+=======
+					VB2_MAX_FRAME);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto deinit_sess;
 
@@ -885,11 +1097,17 @@ static void vdec_buf_done(struct venus_inst *inst, unsigned int buf_type,
 	vbuf->field = V4L2_FIELD_NONE;
 
 	if (type == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE) {
+<<<<<<< HEAD
 		unsigned int opb_sz = venus_helper_get_opb_size(inst);
 
 		vb = &vbuf->vb2_buf;
 		vb->planes[0].bytesused =
 			max_t(unsigned int, opb_sz, bytesused);
+=======
+		vb = &vbuf->vb2_buf;
+		vb->planes[0].bytesused =
+			max_t(unsigned int, inst->output_buf_size, bytesused);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vb->planes[0].data_offset = data_offset;
 		vb->timestamp = timestamp_us * NSEC_PER_USEC;
 		vbuf->sequence = inst->sequence_cap++;
@@ -970,7 +1188,26 @@ static void vdec_inst_init(struct venus_inst *inst)
 	inst->fps = 30;
 	inst->timeperframe.numerator = 1;
 	inst->timeperframe.denominator = 30;
+<<<<<<< HEAD
 	inst->hfi_codec = HFI_VIDEO_CODEC_H264;
+=======
+
+	inst->cap_width.min = 64;
+	inst->cap_width.max = 1920;
+	if (inst->core->res->hfi_version == HFI_VERSION_3XX)
+		inst->cap_width.max = 3840;
+	inst->cap_width.step_size = 1;
+	inst->cap_height.min = 64;
+	inst->cap_height.max = ALIGN(1080, 32);
+	if (inst->core->res->hfi_version == HFI_VERSION_3XX)
+		inst->cap_height.max = ALIGN(2160, 32);
+	inst->cap_height.step_size = 1;
+	inst->cap_framerate.min = 1;
+	inst->cap_framerate.max = 30;
+	inst->cap_framerate.step_size = 1;
+	inst->cap_mbs_per_frame.min = 16;
+	inst->cap_mbs_per_frame.max = 8160;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct v4l2_m2m_ops vdec_m2m_ops = {
@@ -1027,7 +1264,10 @@ static int vdec_open(struct file *file)
 	if (!inst)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&inst->dpbbufs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&inst->registeredbufs);
 	INIT_LIST_HEAD(&inst->internalbufs);
 	INIT_LIST_HEAD(&inst->list);
@@ -1116,9 +1356,12 @@ static const struct v4l2_file_operations vdec_fops = {
 	.unlocked_ioctl = video_ioctl2,
 	.poll = v4l2_m2m_fop_poll,
 	.mmap = v4l2_m2m_fop_mmap,
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
 	.compat_ioctl32 = v4l2_compat_ioctl32,
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int vdec_probe(struct platform_device *pdev)
@@ -1135,18 +1378,25 @@ static int vdec_probe(struct platform_device *pdev)
 	if (!core)
 		return -EPROBE_DEFER;
 
+<<<<<<< HEAD
 	if (IS_V3(core) || IS_V4(core)) {
+=======
+	if (core->res->hfi_version == HFI_VERSION_3XX) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		core->core0_clk = devm_clk_get(dev, "core");
 		if (IS_ERR(core->core0_clk))
 			return PTR_ERR(core->core0_clk);
 	}
 
+<<<<<<< HEAD
 	if (IS_V4(core)) {
 		core->core0_bus_clk = devm_clk_get(dev, "bus");
 		if (IS_ERR(core->core0_bus_clk))
 			return PTR_ERR(core->core0_bus_clk);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, core);
 
 	vdev = video_device_alloc();
@@ -1191,6 +1441,7 @@ static int vdec_remove(struct platform_device *pdev)
 static __maybe_unused int vdec_runtime_suspend(struct device *dev)
 {
 	struct venus_core *core = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int ret;
 
 	if (IS_V1(core))
@@ -1206,6 +1457,17 @@ static __maybe_unused int vdec_runtime_suspend(struct device *dev)
 	clk_disable_unprepare(core->core0_clk);
 
 	return venus_helper_power_enable(core, VIDC_SESSION_TYPE_DEC, false);
+=======
+
+	if (core->res->hfi_version == HFI_VERSION_1XX)
+		return 0;
+
+	writel(0, core->base + WRAPPER_VDEC_VCODEC_POWER_CONTROL);
+	clk_disable_unprepare(core->core0_clk);
+	writel(1, core->base + WRAPPER_VDEC_VCODEC_POWER_CONTROL);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static __maybe_unused int vdec_runtime_resume(struct device *dev)
@@ -1213,6 +1475,7 @@ static __maybe_unused int vdec_runtime_resume(struct device *dev)
 	struct venus_core *core = dev_get_drvdata(dev);
 	int ret;
 
+<<<<<<< HEAD
 	if (IS_V1(core))
 		return 0;
 
@@ -1236,6 +1499,15 @@ err_unprepare_core0:
 	clk_disable_unprepare(core->core0_clk);
 err_power_disable:
 	venus_helper_power_enable(core, VIDC_SESSION_TYPE_DEC, false);
+=======
+	if (core->res->hfi_version == HFI_VERSION_1XX)
+		return 0;
+
+	writel(0, core->base + WRAPPER_VDEC_VCODEC_POWER_CONTROL);
+	ret = clk_prepare_enable(core->core0_clk);
+	writel(1, core->base + WRAPPER_VDEC_VCODEC_POWER_CONTROL);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

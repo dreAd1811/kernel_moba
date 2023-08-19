@@ -40,8 +40,13 @@
 
 /* Offsets from lpss->priv */
 #define LPSS_PRIV_RESETS		0x04
+<<<<<<< HEAD
 #define LPSS_PRIV_RESETS_IDMA		BIT(2)
 #define LPSS_PRIV_RESETS_FUNC		0x3
+=======
+#define LPSS_PRIV_RESETS_FUNC		BIT(2)
+#define LPSS_PRIV_RESETS_IDMA		0x3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define LPSS_PRIV_ACTIVELTR		0x10
 #define LPSS_PRIV_IDLELTR		0x14
@@ -453,8 +458,11 @@ int intel_lpss_probe(struct device *dev,
 	if (ret)
 		goto err_remove_ltr;
 
+<<<<<<< HEAD
 	dev_pm_set_driver_flags(dev, DPM_FLAG_SMART_SUSPEND);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_remove_ltr:
@@ -483,9 +491,13 @@ EXPORT_SYMBOL_GPL(intel_lpss_remove);
 
 static int resume_lpss_device(struct device *dev, void *data)
 {
+<<<<<<< HEAD
 	if (!dev_pm_test_driver_flags(dev, DPM_FLAG_SMART_SUSPEND))
 		pm_runtime_resume(dev);
 
+=======
+	pm_runtime_resume(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -545,6 +557,10 @@ module_init(intel_lpss_init);
 
 static void __exit intel_lpss_exit(void)
 {
+<<<<<<< HEAD
+=======
+	ida_destroy(&intel_lpss_devid_ida);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	debugfs_remove(intel_lpss_debugfs);
 }
 module_exit(intel_lpss_exit);

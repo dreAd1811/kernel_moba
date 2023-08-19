@@ -6,7 +6,10 @@
 #include <linux/bootmem.h>	/* for max_low_pfn */
 #include <linux/swapfile.h>
 #include <linux/swapops.h>
+<<<<<<< HEAD
 #include <linux/kmemleak.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/set_memory.h>
 #include <asm/e820/api.h>
@@ -100,6 +103,7 @@ __ref void *alloc_low_pages(unsigned int num)
 	}
 
 	if ((pgt_buf_end + num) > pgt_buf_top || !can_use_brk_pgt) {
+<<<<<<< HEAD
 		unsigned long ret = 0;
 
 		if (min_pfn_mapped < max_pfn_mapped) {
@@ -116,12 +120,26 @@ __ref void *alloc_low_pages(unsigned int num)
 		if (!ret)
 			panic("alloc_low_pages: can not alloc memory");
 
+=======
+		unsigned long ret;
+		if (min_pfn_mapped >= max_pfn_mapped)
+			panic("alloc_low_pages: ran out of memory");
+		ret = memblock_find_in_range(min_pfn_mapped << PAGE_SHIFT,
+					max_pfn_mapped << PAGE_SHIFT,
+					PAGE_SIZE * num , PAGE_SIZE);
+		if (!ret)
+			panic("alloc_low_pages: can not alloc memory");
+		memblock_reserve(ret, PAGE_SIZE * num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pfn = ret >> PAGE_SHIFT;
 	} else {
 		pfn = pgt_buf_end;
 		pgt_buf_end += num;
+<<<<<<< HEAD
 		printk(KERN_DEBUG "BRK [%#010lx, %#010lx] PGTABLE\n",
 			pfn << PAGE_SHIFT, (pgt_buf_end << PAGE_SHIFT) - 1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < num; i++) {
@@ -171,6 +189,15 @@ struct map_range {
 
 static int page_size_mask;
 
+<<<<<<< HEAD
+=======
+static void enable_global_pages(void)
+{
+	if (!static_cpu_has(X86_FEATURE_PTI))
+		__supported_pte_mask |= _PAGE_GLOBAL;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init probe_page_size_mask(void)
 {
 	/*
@@ -191,6 +218,7 @@ static void __init probe_page_size_mask(void)
 	__supported_pte_mask &= ~_PAGE_GLOBAL;
 	if (boot_cpu_has(X86_FEATURE_PGE)) {
 		cr4_set_bits_and_update_boot(X86_CR4_PGE);
+<<<<<<< HEAD
 		__supported_pte_mask |= _PAGE_GLOBAL;
 	}
 
@@ -200,6 +228,11 @@ static void __init probe_page_size_mask(void)
 	if (cpu_feature_enabled(X86_FEATURE_PTI))
 		__default_kernel_pte_mask &= ~_PAGE_GLOBAL;
 
+=======
+		enable_global_pages();
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable 1 GB linear kernel mappings if available: */
 	if (direct_gbpages && boot_cpu_has(X86_FEATURE_GBPAGES)) {
 		printk(KERN_INFO "Using GB pages for direct mapping\n");
@@ -768,11 +801,14 @@ void free_init_pages(char *what, unsigned long begin, unsigned long end)
 	if (debug_pagealloc_enabled()) {
 		pr_info("debug: unmapping init [mem %#010lx-%#010lx]\n",
 			begin, end - 1);
+<<<<<<< HEAD
 		/*
 		 * Inform kmemleak about the hole in the memory since the
 		 * corresponding pages will be unmapped.
 		 */
 		kmemleak_free_part((void *)begin, end - begin);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_memory_np(begin, (end - begin) >> PAGE_SHIFT);
 	} else {
 		/*
@@ -788,6 +824,7 @@ void free_init_pages(char *what, unsigned long begin, unsigned long end)
 	}
 }
 
+<<<<<<< HEAD
 /*
  * begin/end can be in the direct map or the "high kernel mapping"
  * used for the kernel image only.  free_init_pages() will do the
@@ -823,13 +860,21 @@ void free_kernel_image_pages(void *begin, void *end)
 
 void __weak mem_encrypt_free_decrypted_mem(void) { }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __ref free_initmem(void)
 {
 	e820__reallocate_tables();
 
+<<<<<<< HEAD
 	mem_encrypt_free_decrypted_mem();
 
 	free_kernel_image_pages(&__init_begin, &__init_end);
+=======
+	free_init_pages("unused kernel",
+			(unsigned long)(&__init_begin),
+			(unsigned long)(&__init_end));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_BLK_DEV_INITRD

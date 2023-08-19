@@ -7,7 +7,11 @@ extern void __init icu_init_irq(void);
 extern void __init pxa910_init_irq(void);
 
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
+=======
+#include <linux/i2c/pxa-i2c.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_data/mtd-nand-pxa3xx.h>
 #include <video/mmp_disp.h>
 

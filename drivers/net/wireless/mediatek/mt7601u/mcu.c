@@ -58,7 +58,12 @@ static inline void trace_mt_mcu_msg_send_cs(struct mt7601u_dev *dev,
 	trace_mt_mcu_msg_send(dev, skb, csum, need_resp);
 }
 
+<<<<<<< HEAD
 static struct sk_buff *mt7601u_mcu_msg_alloc(const void *data, int len)
+=======
+static struct sk_buff *
+mt7601u_mcu_msg_alloc(struct mt7601u_dev *dev, const void *data, int len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sk_buff *skb;
 
@@ -170,7 +175,11 @@ static int mt7601u_mcu_function_select(struct mt7601u_dev *dev,
 		.value = cpu_to_le32(val),
 	};
 
+<<<<<<< HEAD
 	skb = mt7601u_mcu_msg_alloc(&msg, sizeof(msg));
+=======
+	skb = mt7601u_mcu_msg_alloc(dev, &msg, sizeof(msg));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb)
 		return -ENOMEM;
 	return mt7601u_mcu_msg_send(dev, skb, CMD_FUN_SET_OP, func == 5);
@@ -207,7 +216,11 @@ mt7601u_mcu_calibrate(struct mt7601u_dev *dev, enum mcu_calibrate cal, u32 val)
 		.value = cpu_to_le32(val),
 	};
 
+<<<<<<< HEAD
 	skb = mt7601u_mcu_msg_alloc(&msg, sizeof(msg));
+=======
+	skb = mt7601u_mcu_msg_alloc(dev, &msg, sizeof(msg));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb)
 		return -ENOMEM;
 	return mt7601u_mcu_msg_send(dev, skb, CMD_CALIBRATION_OP, true);
@@ -420,7 +433,11 @@ static int mt7601u_load_firmware(struct mt7601u_dev *dev)
 					 MT_USB_DMA_CFG_TX_BULK_EN));
 
 	if (firmware_running(dev))
+<<<<<<< HEAD
 		return firmware_request_cache(dev->dev, MT7601U_FIRMWARE);
+=======
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = request_firmware(&fw, MT7601U_FIRMWARE, dev->dev);
 	if (ret)

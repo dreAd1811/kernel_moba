@@ -32,6 +32,7 @@
 #define	BRCMF_BSS_INFO_VERSION	109 /* curr ver of brcmf_bss_info_le struct */
 #define BRCMF_BSS_RSSI_ON_CHANNEL	0x0002
 
+<<<<<<< HEAD
 #define BRCMF_STA_BRCM			0x00000001	/* Running a Broadcom driver */
 #define BRCMF_STA_WME			0x00000002	/* WMM association */
 #define BRCMF_STA_NONERP		0x00000004	/* No ERP */
@@ -56,6 +57,13 @@
 #define BRCMF_STA_WPS			0x00200000	/* WPS state */
 #define BRCMF_STA_DWDS_CAP		0x01000000	/* DWDS CAP */
 #define BRCMF_STA_DWDS			0x02000000	/* DWDS active */
+=======
+#define BRCMF_STA_WME              0x00000002      /* WMM association */
+#define BRCMF_STA_AUTHE            0x00000008      /* Authenticated */
+#define BRCMF_STA_ASSOC            0x00000010      /* Associated */
+#define BRCMF_STA_AUTHO            0x00000020      /* Authorized */
+#define BRCMF_STA_SCBSTATS         0x00004000      /* Per STA debug stats */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* size of brcmf_scan_params not including variable length array */
 #define BRCMF_SCAN_PARAMS_FIXED_SIZE	64
@@ -174,6 +182,7 @@
 #define BRCMF_MFP_CAPABLE		1
 #define BRCMF_MFP_REQUIRED		2
 
+<<<<<<< HEAD
 #define BRCMF_VHT_CAP_MCS_MAP_NSS_MAX	8
 
 /* MAX_CHUNK_LEN is the maximum length for data passing to firmware in each
@@ -191,6 +200,8 @@
 
 #define DL_TYPE_CLM			2
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* join preference types for join_pref iovar */
 enum brcmf_join_pref_types {
 	BRCMF_JOIN_PREF_RSSI = 1,
@@ -552,8 +563,11 @@ struct brcmf_sta_info_le {
 						/* w/hi bit set if basic */
 	__le32 in;		/* seconds elapsed since associated */
 	__le32 listen_interval_inms; /* Min Listen interval in ms for STA */
+<<<<<<< HEAD
 
 	/* Fields valid for ver >= 3 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 tx_pkts;	/* # of packets transmitted */
 	__le32 tx_failures;	/* # of packets failed */
 	__le32 rx_ucast_pkts;	/* # of unicast packets received */
@@ -562,8 +576,11 @@ struct brcmf_sta_info_le {
 	__le32 rx_rate;	/* Rate of last successful rx frame */
 	__le32 rx_decrypt_succeeds;	/* # of packet decrypted successfully */
 	__le32 rx_decrypt_failures;	/* # of packet decrypted failed */
+<<<<<<< HEAD
 
 	/* Fields valid for ver >= 4 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 tx_tot_pkts;    /* # of tx pkts (ucast + mcast) */
 	__le32 rx_tot_pkts;    /* # of data packets recvd (uni + mcast) */
 	__le32 tx_mcast_pkts;  /* # of mcast pkts txed */
@@ -600,6 +617,7 @@ struct brcmf_sta_info_le {
 						*/
 	__le32 rx_pkts_retried;        /* # rx with retry bit set */
 	__le32 tx_rate_fallback;       /* lowest fallback TX rate */
+<<<<<<< HEAD
 
 	/* Fields valid for ver >= 5 */
 	struct {
@@ -608,6 +626,8 @@ struct brcmf_sta_info_le {
 		u8 mcs[BRCMF_MCSSET_LEN];			/* supported mcs index bit map */
 		__le16 vht_mcs[BRCMF_VHT_CAP_MCS_MAP_NSS_MAX];	/* supported mcs index bit map per nss */
 	} rateset_adv;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct brcmf_chanspec_list {
@@ -875,6 +895,7 @@ struct brcmf_pno_macaddr_le {
 };
 
 /**
+<<<<<<< HEAD
  * struct brcmf_dload_data_le - data passing to firmware for downloading
  * @flag: flags related to download data.
  * @dload_type: type of download data.
@@ -891,6 +912,8 @@ struct brcmf_dload_data_le {
 };
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct brcmf_pno_bssid_le - bssid configuration for PNO scan.
  *
  * @bssid: BSS network identifier.

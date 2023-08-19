@@ -51,13 +51,19 @@ struct x86_init_resources {
  *				are set up.
  * @intr_init:			interrupt init code
  * @trap_init:			platform specific trap setup
+<<<<<<< HEAD
  * @intr_mode_init:		interrupt delivery mode setup
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct x86_init_irqs {
 	void (*pre_vector_init)(void);
 	void (*intr_init)(void);
 	void (*trap_init)(void);
+<<<<<<< HEAD
 	void (*intr_mode_init)(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -119,6 +125,7 @@ struct x86_init_pci {
 /**
  * struct x86_hyper_init - x86 hypervisor init functions
  * @init_platform:		platform setup
+<<<<<<< HEAD
  * @guest_late_init:		guest late init
  * @x2apic_available:		X2APIC detection
  * @init_mem_mapping:		setup early mappings during init_mem_mapping()
@@ -140,6 +147,15 @@ struct x86_hyper_init {
 struct x86_init_acpi {
 	u64 (*get_root_pointer)(void);
 	void (*reduced_hw_early_init)(void);
+=======
+ * @x2apic_available:		X2APIC detection
+ * @init_mem_mapping:		setup early mappings during init_mem_mapping()
+ */
+struct x86_hyper_init {
+	void (*init_platform)(void);
+	bool (*x2apic_available)(void);
+	void (*init_mem_mapping)(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -156,7 +172,10 @@ struct x86_init_ops {
 	struct x86_init_iommu		iommu;
 	struct x86_init_pci		pci;
 	struct x86_hyper_init		hyper;
+<<<<<<< HEAD
 	struct x86_init_acpi		acpi;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -170,7 +189,11 @@ struct x86_cpuinit_ops {
 	void (*fixup_cpu_id)(struct cpuinfo_x86 *c, int node);
 };
 
+<<<<<<< HEAD
 struct timespec64;
+=======
+struct timespec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct x86_legacy_devices - legacy x86 devices
@@ -225,8 +248,11 @@ enum x86_legacy_i8042_state {
 struct x86_legacy_features {
 	enum x86_legacy_i8042_state i8042;
 	int rtc;
+<<<<<<< HEAD
 	int warm_reset;
 	int no_vga;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int reserve_bios_regions;
 	struct x86_legacy_devices devices;
 };
@@ -264,8 +290,13 @@ struct x86_hyper_runtime {
 struct x86_platform_ops {
 	unsigned long (*calibrate_cpu)(void);
 	unsigned long (*calibrate_tsc)(void);
+<<<<<<< HEAD
 	void (*get_wallclock)(struct timespec64 *ts);
 	int (*set_wallclock)(const struct timespec64 *ts);
+=======
+	void (*get_wallclock)(struct timespec *ts);
+	int (*set_wallclock)(const struct timespec *ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*iommu_shutdown)(void);
 	bool (*is_untracked_pat_range)(u64 start, u64 end);
 	void (*nmi_init)(void);
@@ -287,20 +318,33 @@ struct x86_msi_ops {
 	void (*restore_msi_irqs)(struct pci_dev *dev);
 };
 
+<<<<<<< HEAD
 struct x86_apic_ops {
 	unsigned int	(*io_apic_read)   (unsigned int apic, unsigned int reg);
 	void		(*restore)(void);
+=======
+struct x86_io_apic_ops {
+	unsigned int	(*read)   (unsigned int apic, unsigned int reg);
+	void		(*disable)(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern struct x86_init_ops x86_init;
 extern struct x86_cpuinit_ops x86_cpuinit;
 extern struct x86_platform_ops x86_platform;
 extern struct x86_msi_ops x86_msi;
+<<<<<<< HEAD
 extern struct x86_apic_ops x86_apic_ops;
+=======
+extern struct x86_io_apic_ops x86_io_apic_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void x86_early_init_platform_quirks(void);
 extern void x86_init_noop(void);
 extern void x86_init_uint_noop(unsigned int unused);
+<<<<<<< HEAD
 extern bool x86_pnpbios_disabled(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

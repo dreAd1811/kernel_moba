@@ -4,7 +4,11 @@ KernelVersion:	3.10
 Contact:	Samuel Ortiz <sameo@linux.intel.com>
 		linux-mei@linux.intel.com
 Description:	Stores the same MODALIAS value emitted by uevent
+<<<<<<< HEAD
 		Format: mei:<mei device name>:<device uuid>:
+=======
+		Format: mei:<mei device name>:<device uuid>:<protocol version>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 What:		/sys/bus/mei/devices/.../name
 Date:		May 2015

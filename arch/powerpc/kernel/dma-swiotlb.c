@@ -46,10 +46,17 @@ static u64 swiotlb_powerpc_get_required(struct device *dev)
  * map_page, and unmap_page on highmem, use normal dma_ops
  * for everything else.
  */
+<<<<<<< HEAD
 const struct dma_map_ops powerpc_swiotlb_dma_ops = {
 	.alloc = __dma_nommu_alloc_coherent,
 	.free = __dma_nommu_free_coherent,
 	.mmap = dma_nommu_mmap_coherent,
+=======
+const struct dma_map_ops swiotlb_dma_ops = {
+	.alloc = __dma_direct_alloc_coherent,
+	.free = __dma_direct_free_coherent,
+	.mmap = dma_direct_mmap_coherent,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.map_sg = swiotlb_map_sg_attrs,
 	.unmap_sg = swiotlb_unmap_sg_attrs,
 	.dma_supported = swiotlb_dma_supported,
@@ -89,7 +96,11 @@ static int ppc_swiotlb_bus_notify(struct notifier_block *nb,
 
 	/* May need to bounce if the device can't address all of DRAM */
 	if ((dma_get_mask(dev) + 1) < memblock_end_of_DRAM())
+<<<<<<< HEAD
 		set_dma_ops(dev, &powerpc_swiotlb_dma_ops);
+=======
+		set_dma_ops(dev, &swiotlb_dma_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return NOTIFY_DONE;
 }
@@ -121,7 +132,11 @@ static int __init check_swiotlb_enabled(void)
 	if (ppc_swiotlb_enable)
 		swiotlb_print_info();
 	else
+<<<<<<< HEAD
 		swiotlb_exit();
+=======
+		swiotlb_free();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

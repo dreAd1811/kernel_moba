@@ -195,8 +195,12 @@ static int __init hest_ghes_dev_register(unsigned int ghes_count)
 	struct ghes_arr ghes_arr;
 
 	ghes_arr.count = 0;
+<<<<<<< HEAD
 	ghes_arr.ghes_devs = kmalloc_array(ghes_count, sizeof(void *),
 					   GFP_KERNEL);
+=======
+	ghes_arr.ghes_devs = kmalloc(sizeof(void *) * ghes_count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ghes_arr.ghes_devs)
 		return -ENOMEM;
 

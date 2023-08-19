@@ -140,8 +140,14 @@ static int crypto_cbc_create(struct crypto_template *tmpl, struct rtattr **tb)
 	spawn = skcipher_instance_ctx(inst);
 	err = crypto_init_spawn(spawn, alg, skcipher_crypto_instance(inst),
 				CRYPTO_ALG_TYPE_MASK);
+<<<<<<< HEAD
 	if (err)
 		goto err_put_alg;
+=======
+	crypto_mod_put(alg);
+	if (err)
+		goto err_free_inst;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = crypto_inst_setname(skcipher_crypto_instance(inst), "cbc", alg);
 	if (err)
@@ -173,15 +179,21 @@ static int crypto_cbc_create(struct crypto_template *tmpl, struct rtattr **tb)
 	err = skcipher_register_instance(tmpl, inst);
 	if (err)
 		goto err_drop_spawn;
+<<<<<<< HEAD
 	crypto_mod_put(alg);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	return err;
 
 err_drop_spawn:
 	crypto_drop_spawn(spawn);
+<<<<<<< HEAD
 err_put_alg:
 	crypto_mod_put(alg);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_inst:
 	kfree(inst);
 	goto out;

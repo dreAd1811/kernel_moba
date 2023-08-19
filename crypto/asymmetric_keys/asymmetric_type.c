@@ -1,6 +1,10 @@
 /* Asymmetric public-key cryptography key type
  *
+<<<<<<< HEAD
  * See Documentation/crypto/asymmetric-keys.txt
+=======
+ * See Documentation/security/asymmetric-keys.txt
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
  * Written by David Howells (dhowells@redhat.com)

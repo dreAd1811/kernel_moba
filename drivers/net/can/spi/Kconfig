@@ -14,4 +14,13 @@ config CAN_MCP251X
 	  Driver for the Microchip MCP251x and MCP25625 SPI CAN
 	  controllers.
 
+<<<<<<< HEAD
+=======
+
+config QTI_CAN
+	tristate "Unified driver for QTI CAN controllers"
+	depends on SPI
+	---help---
+	  Unified driver for QTI CAN controllers.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu

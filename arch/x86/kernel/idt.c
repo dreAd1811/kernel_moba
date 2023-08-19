@@ -225,7 +225,11 @@ idt_setup_from_table(gate_desc *idt, const struct idt_data *t, int size, bool sy
 		idt_init_desc(&desc, t);
 		write_idt_entry(idt, t->vector, &desc);
 		if (sys)
+<<<<<<< HEAD
 			set_bit(t->vector, system_vectors);
+=======
+			set_bit(t->vector, used_vectors);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -313,11 +317,16 @@ void __init idt_setup_apic_and_irq_gates(void)
 
 	idt_setup_from_table(idt_table, apic_idts, ARRAY_SIZE(apic_idts), true);
 
+<<<<<<< HEAD
 	for_each_clear_bit_from(i, system_vectors, FIRST_SYSTEM_VECTOR) {
+=======
+	for_each_clear_bit_from(i, used_vectors, FIRST_SYSTEM_VECTOR) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		entry = irq_entries_start + 8 * (i - FIRST_EXTERNAL_VECTOR);
 		set_intr_gate(i, entry);
 	}
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_LOCAL_APIC
 	for_each_clear_bit_from(i, system_vectors, NR_VECTORS) {
 		set_bit(i, system_vectors);
@@ -325,6 +334,17 @@ void __init idt_setup_apic_and_irq_gates(void)
 		set_intr_gate(i, entry);
 	}
 #endif
+=======
+	for_each_clear_bit_from(i, used_vectors, NR_VECTORS) {
+#ifdef CONFIG_X86_LOCAL_APIC
+		set_bit(i, used_vectors);
+		set_intr_gate(i, spurious_interrupt);
+#else
+		entry = irq_entries_start + 8 * (i - FIRST_EXTERNAL_VECTOR);
+		set_intr_gate(i, entry);
+#endif
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -356,7 +376,11 @@ void idt_invalidate(void *addr)
 
 void __init update_intr_gate(unsigned int n, const void *addr)
 {
+<<<<<<< HEAD
 	if (WARN_ON_ONCE(!test_bit(n, system_vectors)))
+=======
+	if (WARN_ON_ONCE(!test_bit(n, used_vectors)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	set_intr_gate(n, addr);
 }
@@ -364,6 +388,10 @@ void __init update_intr_gate(unsigned int n, const void *addr)
 void alloc_intr_gate(unsigned int n, const void *addr)
 {
 	BUG_ON(n < FIRST_SYSTEM_VECTOR);
+<<<<<<< HEAD
 	if (!test_and_set_bit(n, system_vectors))
+=======
+	if (!test_and_set_bit(n, used_vectors))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_intr_gate(n, addr);
 }

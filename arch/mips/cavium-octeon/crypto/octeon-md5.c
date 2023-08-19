@@ -182,6 +182,10 @@ static struct shash_alg alg = {
 		.cra_name	=	"md5",
 		.cra_driver_name=	"octeon-md5",
 		.cra_priority	=	OCTEON_CR_OPCODE_PRIORITY,
+<<<<<<< HEAD
+=======
+		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	=	MD5_HMAC_BLOCK_SIZE,
 		.cra_module	=	THIS_MODULE,
 	}

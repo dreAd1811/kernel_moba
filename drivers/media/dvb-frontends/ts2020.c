@@ -19,7 +19,11 @@
     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ts2020.h"
 #include <linux/regmap.h>
 #include <linux/math64.h>
@@ -498,8 +502,13 @@ static int ts2020_read_signal_strength(struct dvb_frontend *fe,
 static const struct dvb_tuner_ops ts2020_tuner_ops = {
 	.info = {
 		.name = "TS2020",
+<<<<<<< HEAD
 		.frequency_min_hz =  950 * MHz,
 		.frequency_max_hz = 2150 * MHz
+=======
+		.frequency_min = 950000,
+		.frequency_max = 2150000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.init = ts2020_init,
 	.release = ts2020_release,

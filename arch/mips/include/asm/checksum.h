@@ -110,7 +110,11 @@ __wsum csum_partial_copy_nocheck(const void *src, void *dst,
  */
 static inline __sum16 csum_fold(__wsum csum)
 {
+<<<<<<< HEAD
 	u32 sum = (__force u32)csum;
+=======
+	u32 sum = (__force u32)csum;;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sum += (sum << 16);
 	csum = (sum < csum);

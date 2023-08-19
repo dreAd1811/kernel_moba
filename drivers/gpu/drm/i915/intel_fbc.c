@@ -46,6 +46,19 @@ static inline bool fbc_supported(struct drm_i915_private *dev_priv)
 	return HAS_FBC(dev_priv);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool fbc_on_pipe_a_only(struct drm_i915_private *dev_priv)
+{
+	return IS_HASWELL(dev_priv) || INTEL_GEN(dev_priv) >= 8;
+}
+
+static inline bool fbc_on_plane_a_only(struct drm_i915_private *dev_priv)
+{
+	return INTEL_GEN(dev_priv) < 4;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool no_fbc_on_multiple_pipes(struct drm_i915_private *dev_priv)
 {
 	return INTEL_GEN(dev_priv) <= 3;
@@ -59,9 +72,15 @@ static inline bool no_fbc_on_multiple_pipes(struct drm_i915_private *dev_priv)
  * address we program because it starts at the real start of the buffer, so we
  * have to take this into consideration here.
  */
+<<<<<<< HEAD
 static unsigned int get_crtc_fence_y_offset(struct intel_fbc *fbc)
 {
 	return fbc->state_cache.plane.y - fbc->state_cache.plane.adjusted_y;
+=======
+static unsigned int get_crtc_fence_y_offset(struct intel_crtc *crtc)
+{
+	return crtc->base.y - crtc->adjusted_y;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -141,7 +160,11 @@ static void i8xx_fbc_activate(struct drm_i915_private *dev_priv)
 
 		/* Set it up... */
 		fbc_ctl2 = FBC_CTL_FENCE_DBL | FBC_CTL_IDLE_IMM | FBC_CTL_CPU_FENCE;
+<<<<<<< HEAD
 		fbc_ctl2 |= FBC_CTL_PLANE(params->crtc.i9xx_plane);
+=======
+		fbc_ctl2 |= FBC_CTL_PLANE(params->crtc.plane);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		I915_WRITE(FBC_CONTROL2, fbc_ctl2);
 		I915_WRITE(FBC_FENCE_OFF, params->crtc.fence_y_offset);
 	}
@@ -167,13 +190,21 @@ static void g4x_fbc_activate(struct drm_i915_private *dev_priv)
 	struct intel_fbc_reg_params *params = &dev_priv->fbc.params;
 	u32 dpfc_ctl;
 
+<<<<<<< HEAD
 	dpfc_ctl = DPFC_CTL_PLANE(params->crtc.i9xx_plane) | DPFC_SR_EN;
+=======
+	dpfc_ctl = DPFC_CTL_PLANE(params->crtc.plane) | DPFC_SR_EN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (params->fb.format->cpp[0] == 2)
 		dpfc_ctl |= DPFC_CTL_LIMIT_2X;
 	else
 		dpfc_ctl |= DPFC_CTL_LIMIT_1X;
 
+<<<<<<< HEAD
 	if (params->flags & PLANE_HAS_FENCE) {
+=======
+	if (params->vma->fence) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dpfc_ctl |= DPFC_CTL_FENCE_EN | params->vma->fence->id;
 		I915_WRITE(DPFC_FENCE_YOFF, params->crtc.fence_y_offset);
 	} else {
@@ -214,7 +245,11 @@ static void ilk_fbc_activate(struct drm_i915_private *dev_priv)
 	u32 dpfc_ctl;
 	int threshold = dev_priv->fbc.threshold;
 
+<<<<<<< HEAD
 	dpfc_ctl = DPFC_CTL_PLANE(params->crtc.i9xx_plane);
+=======
+	dpfc_ctl = DPFC_CTL_PLANE(params->crtc.plane);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (params->fb.format->cpp[0] == 2)
 		threshold++;
 
@@ -231,7 +266,11 @@ static void ilk_fbc_activate(struct drm_i915_private *dev_priv)
 		break;
 	}
 
+<<<<<<< HEAD
 	if (params->flags & PLANE_HAS_FENCE) {
+=======
+	if (params->vma->fence) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dpfc_ctl |= DPFC_CTL_FENCE_EN;
 		if (IS_GEN5(dev_priv))
 			dpfc_ctl |= params->vma->fence->id;
@@ -281,6 +320,7 @@ static void gen7_fbc_activate(struct drm_i915_private *dev_priv)
 	u32 dpfc_ctl;
 	int threshold = dev_priv->fbc.threshold;
 
+<<<<<<< HEAD
 	/* Display WA #0529: skl, kbl, bxt. */
 	if (IS_GEN9(dev_priv) && !IS_GEMINILAKE(dev_priv)) {
 		u32 val = I915_READ(CHICKEN_MISC_4);
@@ -297,6 +337,11 @@ static void gen7_fbc_activate(struct drm_i915_private *dev_priv)
 	dpfc_ctl = 0;
 	if (IS_IVYBRIDGE(dev_priv))
 		dpfc_ctl |= IVB_DPFC_CTL_PLANE(params->crtc.i9xx_plane);
+=======
+	dpfc_ctl = 0;
+	if (IS_IVYBRIDGE(dev_priv))
+		dpfc_ctl |= IVB_DPFC_CTL_PLANE(params->crtc.plane);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (params->fb.format->cpp[0] == 2)
 		threshold++;
@@ -314,7 +359,11 @@ static void gen7_fbc_activate(struct drm_i915_private *dev_priv)
 		break;
 	}
 
+<<<<<<< HEAD
 	if (params->flags & PLANE_HAS_FENCE) {
+=======
+	if (params->vma->fence) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dpfc_ctl |= IVB_DPFC_CTL_FENCE_EN;
 		I915_WRITE(SNB_DPFC_CTL_SA,
 			   SNB_CPU_FENCE_ENABLE |
@@ -399,17 +448,114 @@ bool intel_fbc_is_active(struct drm_i915_private *dev_priv)
 	return dev_priv->fbc.active;
 }
 
+<<<<<<< HEAD
 static void intel_fbc_deactivate(struct drm_i915_private *dev_priv,
 				 const char *reason)
+=======
+static void intel_fbc_work_fn(struct work_struct *__work)
+{
+	struct drm_i915_private *dev_priv =
+		container_of(__work, struct drm_i915_private, fbc.work.work);
+	struct intel_fbc *fbc = &dev_priv->fbc;
+	struct intel_fbc_work *work = &fbc->work;
+	struct intel_crtc *crtc = fbc->crtc;
+	struct drm_vblank_crtc *vblank = &dev_priv->drm.vblank[crtc->pipe];
+
+	if (drm_crtc_vblank_get(&crtc->base)) {
+		/* CRTC is now off, leave FBC deactivated */
+		mutex_lock(&fbc->lock);
+		work->scheduled = false;
+		mutex_unlock(&fbc->lock);
+		return;
+	}
+
+retry:
+	/* Delay the actual enabling to let pageflipping cease and the
+	 * display to settle before starting the compression. Note that
+	 * this delay also serves a second purpose: it allows for a
+	 * vblank to pass after disabling the FBC before we attempt
+	 * to modify the control registers.
+	 *
+	 * WaFbcWaitForVBlankBeforeEnable:ilk,snb
+	 *
+	 * It is also worth mentioning that since work->scheduled_vblank can be
+	 * updated multiple times by the other threads, hitting the timeout is
+	 * not an error condition. We'll just end up hitting the "goto retry"
+	 * case below.
+	 */
+	wait_event_timeout(vblank->queue,
+		drm_crtc_vblank_count(&crtc->base) != work->scheduled_vblank,
+		msecs_to_jiffies(50));
+
+	mutex_lock(&fbc->lock);
+
+	/* Were we cancelled? */
+	if (!work->scheduled)
+		goto out;
+
+	/* Were we delayed again while this function was sleeping? */
+	if (drm_crtc_vblank_count(&crtc->base) == work->scheduled_vblank) {
+		mutex_unlock(&fbc->lock);
+		goto retry;
+	}
+
+	intel_fbc_hw_activate(dev_priv);
+
+	work->scheduled = false;
+
+out:
+	mutex_unlock(&fbc->lock);
+	drm_crtc_vblank_put(&crtc->base);
+}
+
+static void intel_fbc_schedule_activation(struct intel_crtc *crtc)
+{
+	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+	struct intel_fbc *fbc = &dev_priv->fbc;
+	struct intel_fbc_work *work = &fbc->work;
+
+	WARN_ON(!mutex_is_locked(&fbc->lock));
+	if (WARN_ON(!fbc->enabled))
+		return;
+
+	if (drm_crtc_vblank_get(&crtc->base)) {
+		DRM_ERROR("vblank not available for FBC on pipe %c\n",
+			  pipe_name(crtc->pipe));
+		return;
+	}
+
+	/* It is useless to call intel_fbc_cancel_work() or cancel_work() in
+	 * this function since we're not releasing fbc.lock, so it won't have an
+	 * opportunity to grab it to discover that it was cancelled. So we just
+	 * update the expected jiffy count. */
+	work->scheduled = true;
+	work->scheduled_vblank = drm_crtc_vblank_count(&crtc->base);
+	drm_crtc_vblank_put(&crtc->base);
+
+	schedule_work(&work->work);
+}
+
+static void intel_fbc_deactivate(struct drm_i915_private *dev_priv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_fbc *fbc = &dev_priv->fbc;
 
 	WARN_ON(!mutex_is_locked(&fbc->lock));
 
+<<<<<<< HEAD
 	if (fbc->active)
 		intel_fbc_hw_deactivate(dev_priv);
 
 	fbc->no_fbc_reason = reason;
+=======
+	/* Calling cancel_work() here won't help due to the fact that the work
+	 * function grabs fbc->lock. Just set scheduled to false so the work
+	 * function can know it was cancelled. */
+	fbc->work.scheduled = false;
+
+	if (fbc->active)
+		intel_fbc_hw_deactivate(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool multiple_pipes_ok(struct intel_crtc *crtc,
@@ -436,6 +582,10 @@ static int find_compression_threshold(struct drm_i915_private *dev_priv,
 				      int size,
 				      int fb_cpp)
 {
+<<<<<<< HEAD
+=======
+	struct i915_ggtt *ggtt = &dev_priv->ggtt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int compression_threshold = 1;
 	int ret;
 	u64 end;
@@ -445,7 +595,11 @@ static int find_compression_threshold(struct drm_i915_private *dev_priv,
 	 * If we enable FBC using a CFB on that memory range we'll get FIFO
 	 * underruns, even if that range is not reserved by the BIOS. */
 	if (IS_BROADWELL(dev_priv) || IS_GEN9_BC(dev_priv))
+<<<<<<< HEAD
 		end = resource_size(&dev_priv->dsm) - 8 * 1024 * 1024;
+=======
+		end = ggtt->stolen_size - 8 * 1024 * 1024;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		end = U64_MAX;
 
@@ -519,6 +673,7 @@ static int intel_fbc_alloc_cfb(struct intel_crtc *crtc)
 
 		fbc->compressed_llb = compressed_llb;
 
+<<<<<<< HEAD
 		GEM_BUG_ON(range_overflows_t(u64, dev_priv->dsm.start,
 					     fbc->compressed_fb.start,
 					     U32_MAX));
@@ -529,6 +684,12 @@ static int intel_fbc_alloc_cfb(struct intel_crtc *crtc)
 			   dev_priv->dsm.start + fbc->compressed_fb.start);
 		I915_WRITE(FBC_LL_BASE,
 			   dev_priv->dsm.start + compressed_llb->start);
+=======
+		I915_WRITE(FBC_CFB_BASE,
+			   dev_priv->mm.stolen_base + fbc->compressed_fb.start);
+		I915_WRITE(FBC_LL_BASE,
+			   dev_priv->mm.stolen_base + compressed_llb->start);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	DRM_DEBUG_KMS("reserved %llu bytes of contiguous stolen space for FBC, threshold: %d\n",
@@ -573,6 +734,7 @@ void intel_fbc_cleanup_cfb(struct drm_i915_private *dev_priv)
 static bool stride_is_valid(struct drm_i915_private *dev_priv,
 			    unsigned int stride)
 {
+<<<<<<< HEAD
 	/* This should have been caught earlier. */
 	if (WARN_ON_ONCE((stride & (64 - 1)) != 0))
 		return false;
@@ -580,6 +742,13 @@ static bool stride_is_valid(struct drm_i915_private *dev_priv,
 	/* Below are the additional FBC restrictions. */
 	if (stride < 512)
 		return false;
+=======
+	/* These should have been caught earlier. */
+	WARN_ON(stride < 512);
+	WARN_ON((stride & (64 - 1)) != 0);
+
+	/* Below are the additional FBC restrictions. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_GEN2(dev_priv) || IS_GEN3(dev_priv))
 		return stride == 4096 || stride == 8192;
@@ -639,8 +808,13 @@ static bool intel_fbc_hw_tracking_covers_screen(struct intel_crtc *crtc)
 
 	intel_fbc_get_plane_source_size(&fbc->state_cache, &effective_w,
 					&effective_h);
+<<<<<<< HEAD
 	effective_w += fbc->state_cache.plane.adjusted_x;
 	effective_h += fbc->state_cache.plane.adjusted_y;
+=======
+	effective_w += crtc->adjusted_x;
+	effective_h += crtc->adjusted_y;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return effective_w <= max_w && effective_h <= max_h;
 }
@@ -655,7 +829,10 @@ static void intel_fbc_update_state_cache(struct intel_crtc *crtc,
 	struct drm_framebuffer *fb = plane_state->base.fb;
 
 	cache->vma = NULL;
+<<<<<<< HEAD
 	cache->flags = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cache->crtc.mode_flags = crtc_state->base.adjusted_mode.flags;
 	if (IS_HASWELL(dev_priv) || IS_BROADWELL(dev_priv))
@@ -670,9 +847,12 @@ static void intel_fbc_update_state_cache(struct intel_crtc *crtc,
 	cache->plane.src_w = drm_rect_width(&plane_state->base.src) >> 16;
 	cache->plane.src_h = drm_rect_height(&plane_state->base.src) >> 16;
 	cache->plane.visible = plane_state->base.visible;
+<<<<<<< HEAD
 	cache->plane.adjusted_x = plane_state->main.x;
 	cache->plane.adjusted_y = plane_state->main.y;
 	cache->plane.y = plane_state->base.src.y1 >> 16;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cache->plane.visible)
 		return;
@@ -681,9 +861,12 @@ static void intel_fbc_update_state_cache(struct intel_crtc *crtc,
 	cache->fb.stride = fb->pitches[0];
 
 	cache->vma = plane_state->vma;
+<<<<<<< HEAD
 	cache->flags = plane_state->flags;
 	if (WARN_ON(cache->flags & PLANE_HAS_FENCE && !cache->vma->fence))
 		cache->flags &= ~PLANE_HAS_FENCE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool intel_fbc_can_activate(struct intel_crtc *crtc)
@@ -705,7 +888,12 @@ static bool intel_fbc_can_activate(struct intel_crtc *crtc)
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (cache->crtc.mode_flags & DRM_MODE_FLAG_INTERLACE) {
+=======
+	if ((cache->crtc.mode_flags & DRM_MODE_FLAG_INTERLACE) ||
+	    (cache->crtc.mode_flags & DRM_MODE_FLAG_DBLSCAN)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fbc->no_fbc_reason = "incompatible mode";
 		return false;
 	}
@@ -721,6 +909,7 @@ static bool intel_fbc_can_activate(struct intel_crtc *crtc)
 	 * Note that is possible for a tiled surface to be unmappable (and
 	 * so have no fence associated with it) due to aperture constaints
 	 * at the time of pinning.
+<<<<<<< HEAD
 	 *
 	 * FIXME with 90/270 degree rotation we should use the fence on
 	 * the normal GTT view (the rotated view doesn't even have a
@@ -729,6 +918,10 @@ static bool intel_fbc_can_activate(struct intel_crtc *crtc)
 	 * rotation.
 	 */
 	if (!(cache->flags & PLANE_HAS_FENCE)) {
+=======
+	 */
+	if (!cache->vma->fence) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fbc->no_fbc_reason = "framebuffer not tiled or fenced";
 		return false;
 	}
@@ -771,6 +964,7 @@ static bool intel_fbc_can_activate(struct intel_crtc *crtc)
 		return false;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Work around a problem on GEN9+ HW, where enabling FBC on a plane
 	 * having a Y offset that isn't divisible by 4 causes FIFO underrun
@@ -782,6 +976,8 @@ static bool intel_fbc_can_activate(struct intel_crtc *crtc)
 		return false;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
@@ -794,7 +990,11 @@ static bool intel_fbc_can_enable(struct drm_i915_private *dev_priv)
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (!i915_modparams.enable_fbc) {
+=======
+	if (!i915.enable_fbc) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fbc->no_fbc_reason = "disabled per module param or by default";
 		return false;
 	}
@@ -820,20 +1020,37 @@ static void intel_fbc_get_reg_params(struct intel_crtc *crtc,
 	memset(params, 0, sizeof(*params));
 
 	params->vma = cache->vma;
+<<<<<<< HEAD
 	params->flags = cache->flags;
 
 	params->crtc.pipe = crtc->pipe;
 	params->crtc.i9xx_plane = to_intel_plane(crtc->base.primary)->i9xx_plane;
 	params->crtc.fence_y_offset = get_crtc_fence_y_offset(fbc);
+=======
+
+	params->crtc.pipe = crtc->pipe;
+	params->crtc.plane = crtc->plane;
+	params->crtc.fence_y_offset = get_crtc_fence_y_offset(crtc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	params->fb.format = cache->fb.format;
 	params->fb.stride = cache->fb.stride;
 
 	params->cfb_size = intel_fbc_calculate_cfb_size(dev_priv, cache);
+<<<<<<< HEAD
 
 	if (IS_GEN9(dev_priv) && !IS_GEMINILAKE(dev_priv))
 		params->gen9_wa_cfb_stride = DIV_ROUND_UP(cache->plane.src_w,
 						32 * fbc->threshold) * 8;
+=======
+}
+
+static bool intel_fbc_reg_params_equal(struct intel_fbc_reg_params *params1,
+				       struct intel_fbc_reg_params *params2)
+{
+	/* We can use this since intel_fbc_get_reg_params() does a memset. */
+	return memcmp(params1, params2, sizeof(*params1)) == 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_fbc_pre_update(struct intel_crtc *crtc,
@@ -842,7 +1059,10 @@ void intel_fbc_pre_update(struct intel_crtc *crtc,
 {
 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
 	struct intel_fbc *fbc = &dev_priv->fbc;
+<<<<<<< HEAD
 	const char *reason = "update pending";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!fbc_supported(dev_priv))
 		return;
@@ -850,7 +1070,11 @@ void intel_fbc_pre_update(struct intel_crtc *crtc,
 	mutex_lock(&fbc->lock);
 
 	if (!multiple_pipes_ok(crtc, plane_state)) {
+<<<<<<< HEAD
 		reason = "more than one pipe active";
+=======
+		fbc->no_fbc_reason = "more than one pipe active";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto deactivate;
 	}
 
@@ -858,14 +1082,21 @@ void intel_fbc_pre_update(struct intel_crtc *crtc,
 		goto unlock;
 
 	intel_fbc_update_state_cache(crtc, crtc_state, plane_state);
+<<<<<<< HEAD
 	fbc->flip_pending = true;
 
 deactivate:
 	intel_fbc_deactivate(dev_priv, reason);
+=======
+
+deactivate:
+	intel_fbc_deactivate(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unlock:
 	mutex_unlock(&fbc->lock);
 }
 
+<<<<<<< HEAD
 /**
  * __intel_fbc_disable - disable FBC
  * @dev_priv: i915 device instance
@@ -890,16 +1121,23 @@ static void __intel_fbc_disable(struct drm_i915_private *dev_priv)
 	fbc->crtc = NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __intel_fbc_post_update(struct intel_crtc *crtc)
 {
 	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
 	struct intel_fbc *fbc = &dev_priv->fbc;
+<<<<<<< HEAD
+=======
+	struct intel_fbc_reg_params old_params;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARN_ON(!mutex_is_locked(&fbc->lock));
 
 	if (!fbc->enabled || fbc->crtc != crtc)
 		return;
 
+<<<<<<< HEAD
 	fbc->flip_pending = false;
 	WARN_ON(fbc->active);
 
@@ -920,6 +1158,28 @@ static void __intel_fbc_post_update(struct intel_crtc *crtc)
 		intel_fbc_hw_activate(dev_priv);
 	} else
 		intel_fbc_deactivate(dev_priv, "frontbuffer write");
+=======
+	if (!intel_fbc_can_activate(crtc)) {
+		WARN_ON(fbc->active);
+		return;
+	}
+
+	old_params = fbc->params;
+	intel_fbc_get_reg_params(crtc, &fbc->params);
+
+	/* If the scanout has not changed, don't modify the FBC settings.
+	 * Note that we make the fundamental assumption that the fb->obj
+	 * cannot be unpinned (and have its GTT offset and fence revoked)
+	 * without first being decoupled from the scanout and FBC disabled.
+	 */
+	if (fbc->active &&
+	    intel_fbc_reg_params_equal(&old_params, &fbc->params))
+		return;
+
+	intel_fbc_deactivate(dev_priv);
+	intel_fbc_schedule_activation(crtc);
+	fbc->no_fbc_reason = "FBC enabled (active or scheduled)";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_fbc_post_update(struct intel_crtc *crtc)
@@ -960,7 +1220,11 @@ void intel_fbc_invalidate(struct drm_i915_private *dev_priv,
 	fbc->busy_bits |= intel_fbc_get_frontbuffer_bit(fbc) & frontbuffer_bits;
 
 	if (fbc->enabled && fbc->busy_bits)
+<<<<<<< HEAD
 		intel_fbc_deactivate(dev_priv, "frontbuffer write");
+=======
+		intel_fbc_deactivate(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&fbc->lock);
 }
@@ -984,7 +1248,11 @@ void intel_fbc_flush(struct drm_i915_private *dev_priv,
 	    (frontbuffer_bits & intel_fbc_get_frontbuffer_bit(fbc))) {
 		if (fbc->active)
 			intel_fbc_recompress(dev_priv);
+<<<<<<< HEAD
 		else if (!fbc->flip_pending)
+=======
+		else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__intel_fbc_post_update(fbc->crtc);
 	}
 
@@ -1005,11 +1273,19 @@ out:
  * enable FBC for the chosen CRTC. If it does, it will set dev_priv->fbc.crtc.
  */
 void intel_fbc_choose_crtc(struct drm_i915_private *dev_priv,
+<<<<<<< HEAD
 			   struct intel_atomic_state *state)
 {
 	struct intel_fbc *fbc = &dev_priv->fbc;
 	struct intel_plane *plane;
 	struct intel_plane_state *plane_state;
+=======
+			   struct drm_atomic_state *state)
+{
+	struct intel_fbc *fbc = &dev_priv->fbc;
+	struct drm_plane *plane;
+	struct drm_plane_state *plane_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool crtc_chosen = false;
 	int i;
 
@@ -1017,7 +1293,11 @@ void intel_fbc_choose_crtc(struct drm_i915_private *dev_priv,
 
 	/* Does this atomic commit involve the CRTC currently tied to FBC? */
 	if (fbc->crtc &&
+<<<<<<< HEAD
 	    !intel_atomic_get_new_crtc_state(state, fbc->crtc))
+=======
+	    !drm_atomic_get_existing_crtc_state(state, &fbc->crtc->base))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	if (!intel_fbc_can_enable(dev_priv))
@@ -1027,6 +1307,7 @@ void intel_fbc_choose_crtc(struct drm_i915_private *dev_priv,
 	 * plane. We could go for fancier schemes such as checking the plane
 	 * size, but this would just affect the few platforms that don't tie FBC
 	 * to pipe or plane A. */
+<<<<<<< HEAD
 	for_each_new_intel_plane_in_state(state, plane, plane_state, i) {
 		struct intel_crtc_state *crtc_state;
 		struct intel_crtc *crtc = to_intel_crtc(plane_state->base.crtc);
@@ -1040,6 +1321,27 @@ void intel_fbc_choose_crtc(struct drm_i915_private *dev_priv,
 		crtc_state = intel_atomic_get_new_crtc_state(state, crtc);
 
 		crtc_state->enable_fbc = true;
+=======
+	for_each_new_plane_in_state(state, plane, plane_state, i) {
+		struct intel_plane_state *intel_plane_state =
+			to_intel_plane_state(plane_state);
+		struct intel_crtc_state *intel_crtc_state;
+		struct intel_crtc *crtc = to_intel_crtc(plane_state->crtc);
+
+		if (!intel_plane_state->base.visible)
+			continue;
+
+		if (fbc_on_pipe_a_only(dev_priv) && crtc->pipe != PIPE_A)
+			continue;
+
+		if (fbc_on_plane_a_only(dev_priv) && crtc->plane != PLANE_A)
+			continue;
+
+		intel_crtc_state = to_intel_crtc_state(
+			drm_atomic_get_existing_crtc_state(state, &crtc->base));
+
+		intel_crtc_state->enable_fbc = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		crtc_chosen = true;
 		break;
 	}
@@ -1105,6 +1407,34 @@ out:
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * __intel_fbc_disable - disable FBC
+ * @dev_priv: i915 device instance
+ *
+ * This is the low level function that actually disables FBC. Callers should
+ * grab the FBC lock.
+ */
+static void __intel_fbc_disable(struct drm_i915_private *dev_priv)
+{
+	struct intel_fbc *fbc = &dev_priv->fbc;
+	struct intel_crtc *crtc = fbc->crtc;
+
+	WARN_ON(!mutex_is_locked(&fbc->lock));
+	WARN_ON(!fbc->enabled);
+	WARN_ON(fbc->active);
+	WARN_ON(crtc->active);
+
+	DRM_DEBUG_KMS("Disabling FBC on pipe %c\n", pipe_name(crtc->pipe));
+
+	__intel_fbc_cleanup_cfb(dev_priv);
+
+	fbc->enabled = false;
+	fbc->crtc = NULL;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * intel_fbc_disable - disable FBC if it's associated with crtc
  * @crtc: the CRTC
  *
@@ -1118,12 +1448,20 @@ void intel_fbc_disable(struct intel_crtc *crtc)
 	if (!fbc_supported(dev_priv))
 		return;
 
+<<<<<<< HEAD
 	WARN_ON(crtc->active);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&fbc->lock);
 	if (fbc->crtc == crtc)
 		__intel_fbc_disable(dev_priv);
 	mutex_unlock(&fbc->lock);
+<<<<<<< HEAD
+=======
+
+	cancel_work_sync(&fbc->work.work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1140,11 +1478,19 @@ void intel_fbc_global_disable(struct drm_i915_private *dev_priv)
 		return;
 
 	mutex_lock(&fbc->lock);
+<<<<<<< HEAD
 	if (fbc->enabled) {
 		WARN_ON(fbc->crtc->active);
 		__intel_fbc_disable(dev_priv);
 	}
 	mutex_unlock(&fbc->lock);
+=======
+	if (fbc->enabled)
+		__intel_fbc_disable(dev_priv);
+	mutex_unlock(&fbc->lock);
+
+	cancel_work_sync(&fbc->work.work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void intel_fbc_underrun_work_fn(struct work_struct *work)
@@ -1162,11 +1508,16 @@ static void intel_fbc_underrun_work_fn(struct work_struct *work)
 	DRM_DEBUG_KMS("Disabling FBC due to FIFO underrun.\n");
 	fbc->underrun_detected = true;
 
+<<<<<<< HEAD
 	intel_fbc_deactivate(dev_priv, "FIFO underrun");
+=======
+	intel_fbc_deactivate(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	mutex_unlock(&fbc->lock);
 }
 
+<<<<<<< HEAD
 /*
  * intel_fbc_reset_underrun - reset FBC fifo underrun status.
  * @dev_priv: i915 device instance
@@ -1195,6 +1546,8 @@ int intel_fbc_reset_underrun(struct drm_i915_private *dev_priv)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * intel_fbc_handle_fifo_underrun_irq - disable FBC when we get a FIFO underrun
  * @dev_priv: i915 device instance
@@ -1261,8 +1614,13 @@ void intel_fbc_init_pipe_state(struct drm_i915_private *dev_priv)
  */
 static int intel_sanitize_fbc_option(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	if (i915_modparams.enable_fbc >= 0)
 		return !!i915_modparams.enable_fbc;
+=======
+	if (i915.enable_fbc >= 0)
+		return !!i915.enable_fbc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!HAS_FBC(dev_priv))
 		return 0;
@@ -1298,24 +1656,50 @@ static bool need_fbc_vtd_wa(struct drm_i915_private *dev_priv)
 void intel_fbc_init(struct drm_i915_private *dev_priv)
 {
 	struct intel_fbc *fbc = &dev_priv->fbc;
+<<<<<<< HEAD
 
+=======
+	enum pipe pipe;
+
+	INIT_WORK(&fbc->work.work, intel_fbc_work_fn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&fbc->underrun_work, intel_fbc_underrun_work_fn);
 	mutex_init(&fbc->lock);
 	fbc->enabled = false;
 	fbc->active = false;
+<<<<<<< HEAD
+=======
+	fbc->work.scheduled = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (need_fbc_vtd_wa(dev_priv))
 		mkwrite_device_info(dev_priv)->has_fbc = false;
 
+<<<<<<< HEAD
 	i915_modparams.enable_fbc = intel_sanitize_fbc_option(dev_priv);
 	DRM_DEBUG_KMS("Sanitized enable_fbc value: %d\n",
 		      i915_modparams.enable_fbc);
+=======
+	i915.enable_fbc = intel_sanitize_fbc_option(dev_priv);
+	DRM_DEBUG_KMS("Sanitized enable_fbc value: %d\n", i915.enable_fbc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!HAS_FBC(dev_priv)) {
 		fbc->no_fbc_reason = "unsupported by this chipset";
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	for_each_pipe(dev_priv, pipe) {
+		fbc->possible_framebuffer_bits |=
+				INTEL_FRONTBUFFER_PRIMARY(pipe);
+
+		if (fbc_on_pipe_a_only(dev_priv))
+			break;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This value was pulled out of someone's hat */
 	if (INTEL_GEN(dev_priv) <= 4 && !IS_GM45(dev_priv))
 		I915_WRITE(FBC_CONTROL, 500 << FBC_CTL_INTERVAL_SHIFT);

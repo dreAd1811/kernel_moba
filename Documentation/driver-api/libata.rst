@@ -118,7 +118,12 @@ PIO data read/write
 All bmdma-style drivers must implement this hook. This is the low-level
 operation that actually copies the data bytes during a PIO data
 transfer. Typically the driver will choose one of
+<<<<<<< HEAD
 :c:func:`ata_sff_data_xfer`, or :c:func:`ata_sff_data_xfer32`.
+=======
+:c:func:`ata_sff_data_xfer_noirq`, :c:func:`ata_sff_data_xfer`, or
+:c:func:`ata_sff_data_xfer32`.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ATA command execute
 ~~~~~~~~~~~~~~~~~~~

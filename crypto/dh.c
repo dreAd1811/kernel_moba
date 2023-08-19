@@ -16,16 +16,25 @@
 #include <linux/mpi.h>
 
 struct dh_ctx {
+<<<<<<< HEAD
 	MPI p;	/* Value is guaranteed to be set. */
 	MPI q;	/* Value is optional. */
 	MPI g;	/* Value is guaranteed to be set. */
 	MPI xa;	/* Value is guaranteed to be set. */
+=======
+	MPI p;
+	MPI g;
+	MPI xa;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void dh_clear_ctx(struct dh_ctx *ctx)
 {
 	mpi_free(ctx->p);
+<<<<<<< HEAD
 	mpi_free(ctx->q);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mpi_free(ctx->g);
 	mpi_free(ctx->xa);
 	memset(ctx, 0, sizeof(*ctx));
@@ -55,6 +64,12 @@ static int dh_check_params_length(unsigned int p_len)
 
 static int dh_set_params(struct dh_ctx *ctx, struct dh *params)
 {
+<<<<<<< HEAD
+=======
+	if (unlikely(!params->p || !params->g))
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dh_check_params_length(params->p_size << 3))
 		return -EINVAL;
 
@@ -62,12 +77,15 @@ static int dh_set_params(struct dh_ctx *ctx, struct dh *params)
 	if (!ctx->p)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (params->q && params->q_size) {
 		ctx->q = mpi_read_raw_data(params->q, params->q_size);
 		if (!ctx->q)
 			return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->g = mpi_read_raw_data(params->g, params->g_size);
 	if (!ctx->g)
 		return -EINVAL;
@@ -101,6 +119,7 @@ err_clear_ctx:
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 /*
  * SP800-56A public key verification:
  *
@@ -150,6 +169,8 @@ static int dh_is_pubkey_valid(struct dh_ctx *ctx, MPI y)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dh_compute_value(struct kpp_request *req)
 {
 	struct crypto_kpp *tfm = crypto_kpp_reqtfm(req);
@@ -172,9 +193,12 @@ static int dh_compute_value(struct kpp_request *req)
 			ret = -EINVAL;
 			goto err_free_val;
 		}
+<<<<<<< HEAD
 		ret = dh_is_pubkey_valid(ctx, base);
 		if (ret)
 			goto err_free_base;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		base = ctx->g;
 	}

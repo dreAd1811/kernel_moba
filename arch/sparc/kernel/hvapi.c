@@ -41,7 +41,10 @@ static struct api_info api_table[] = {
 	{ .group = HV_GRP_SDIO_ERR,				},
 	{ .group = HV_GRP_REBOOT_DATA,				},
 	{ .group = HV_GRP_ATU,		.flags = FLAG_PRE_API	},
+<<<<<<< HEAD
 	{ .group = HV_GRP_DAX,					},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .group = HV_GRP_NIAG_PERF,	.flags = FLAG_PRE_API	},
 	{ .group = HV_GRP_FIRE_PERF,				},
 	{ .group = HV_GRP_N2_CPU,				},

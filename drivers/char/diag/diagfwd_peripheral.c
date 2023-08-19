@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/slab.h>
 #include <linux/err.h>
@@ -1229,7 +1242,12 @@ static void __diag_fwd_open(struct diagfwd_info *fwd_info)
 	 * Keeping the buffers busy for Memory Device and Multi Mode.
 	 */
 
+<<<<<<< HEAD
 	if (driver->logging_mode[DIAG_LOCAL_PROC] != DIAG_USB_MODE) {
+=======
+	if (driver->logging_mode[DIAG_LOCAL_PROC] != DIAG_USB_MODE &&
+		driver->logging_mode[DIAG_LOCAL_PROC] != DIAG_PCIE_MODE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fwd_info->buf_1) {
 			atomic_set(&fwd_info->buf_1->in_busy, 0);
 			fwd_info->buffer_status[BUF_1_INDEX] = 0;

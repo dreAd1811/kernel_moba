@@ -215,6 +215,10 @@ static int rsa_verify(struct akcipher_request *req)
 		goto err_free_m;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s = mpi_read_raw_from_sgl(req->src, req->src_len);
 	if (!s) {
 		ret = -ENOMEM;

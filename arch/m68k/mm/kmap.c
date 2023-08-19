@@ -126,10 +126,13 @@ void __iomem *__ioremap(unsigned long physaddr, unsigned long size, int cachefla
 			return (void __iomem *)physaddr;
 	}
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_COLDFIRE
 	if (__cf_internalio(physaddr))
 		return (void __iomem *) physaddr;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef DEBUG
 	printk("ioremap: 0x%lx,0x%lx(%d) - ", physaddr, size, cacheflag);
@@ -240,10 +243,13 @@ void iounmap(void __iomem *addr)
 	     ((unsigned long)addr > 0x60000000)))
 			free_io_area((__force void *)addr);
 #else
+<<<<<<< HEAD
 #ifdef CONFIG_COLDFIRE
 	if (cf_internalio(addr))
 		return;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_io_area((__force void *)addr);
 #endif
 }

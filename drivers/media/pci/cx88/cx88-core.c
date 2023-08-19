@@ -4,7 +4,11 @@
  *
  * (c) 2003 Gerd Knorr <kraxel@bytesex.org> [SuSE Labs]
  *
+<<<<<<< HEAD
  * (c) 2005-2006 Mauro Carvalho Chehab <mchehab@kernel.org>
+=======
+ * (c) 2005-2006 Mauro Carvalho Chehab <mchehab@infradead.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *     - Multituner support
  *     - video_ioctl2 conversion
  *     - PAL/M fixes

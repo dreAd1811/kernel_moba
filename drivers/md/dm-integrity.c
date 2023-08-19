@@ -6,7 +6,10 @@
  * This file is released under the GPL.
  */
 
+<<<<<<< HEAD
 #include <linux/compiler.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/device-mapper.h>
 #include <linux/dm-io.h>
@@ -18,7 +21,11 @@
 #include <crypto/hash.h>
 #include <crypto/skcipher.h>
 #include <linux/async_tx.h>
+<<<<<<< HEAD
 #include <linux/dm-bufio.h>
+=======
+#include "dm-bufio.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DM_MSG_PREFIX "integrity"
 
@@ -31,8 +38,11 @@
 #define MIN_LOG2_INTERLEAVE_SECTORS	3
 #define MAX_LOG2_INTERLEAVE_SECTORS	31
 #define METADATA_WORKQUEUE_MAX_ACTIVE	16
+<<<<<<< HEAD
 #define RECALC_SECTORS			8192
 #define RECALC_WRITE_SUPER		16
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Warning - DEBUG_PRINT prints security-sensitive data to the log,
@@ -46,8 +56,12 @@
  */
 
 #define SB_MAGIC			"integrt"
+<<<<<<< HEAD
 #define SB_VERSION_1			1
 #define SB_VERSION_2			2
+=======
+#define SB_VERSION			1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SB_SECTORS			8
 #define MAX_SECTORS_PER_BLOCK		8
 
@@ -60,12 +74,18 @@ struct superblock {
 	__u64 provided_data_sectors;	/* userspace uses this value */
 	__u32 flags;
 	__u8 log2_sectors_per_block;
+<<<<<<< HEAD
 	__u8 pad[3];
 	__u64 recalc_sector;
 };
 
 #define SB_FLAG_HAVE_JOURNAL_MAC	0x1
 #define SB_FLAG_RECALCULATING		0x2
+=======
+};
+
+#define SB_FLAG_HAVE_JOURNAL_MAC	0x1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define	JOURNAL_ENTRY_ROUNDUP		8
 
@@ -87,6 +107,7 @@ struct journal_entry {
 #define journal_entry_tag(ic, je)		((__u8 *)&(je)->last_bytes[(ic)->sectors_per_block])
 
 #if BITS_PER_LONG == 64
+<<<<<<< HEAD
 #define journal_entry_set_sector(je, x)		do { smp_wmb(); WRITE_ONCE((je)->u.sector, cpu_to_le64(x)); } while (0)
 #define journal_entry_get_sector(je)		le64_to_cpu((je)->u.sector)
 #elif defined(CONFIG_LBDAF)
@@ -94,6 +115,15 @@ struct journal_entry {
 #define journal_entry_get_sector(je)		le64_to_cpu((je)->u.sector)
 #else
 #define journal_entry_set_sector(je, x)		do { (je)->u.s.sector_lo = cpu_to_le32(x); smp_wmb(); WRITE_ONCE((je)->u.s.sector_hi, cpu_to_le32(0)); } while (0)
+=======
+#define journal_entry_set_sector(je, x)		do { smp_wmb(); ACCESS_ONCE((je)->u.sector) = cpu_to_le64(x); } while (0)
+#define journal_entry_get_sector(je)		le64_to_cpu((je)->u.sector)
+#elif defined(CONFIG_LBDAF)
+#define journal_entry_set_sector(je, x)		do { (je)->u.s.sector_lo = cpu_to_le32(x); smp_wmb(); ACCESS_ONCE((je)->u.s.sector_hi) = cpu_to_le32((x) >> 32); } while (0)
+#define journal_entry_get_sector(je)		le64_to_cpu((je)->u.sector)
+#else
+#define journal_entry_set_sector(je, x)		do { (je)->u.s.sector_lo = cpu_to_le32(x); smp_wmb(); ACCESS_ONCE((je)->u.s.sector_hi) = cpu_to_le32(0); } while (0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define journal_entry_get_sector(je)		le32_to_cpu((je)->u.s.sector_lo)
 #endif
 #define journal_entry_is_unused(je)		((je)->u.s.sector_hi == cpu_to_le32(-1))
@@ -145,11 +175,18 @@ struct alg_spec {
 
 struct dm_integrity_c {
 	struct dm_dev *dev;
+<<<<<<< HEAD
 	struct dm_dev *meta_dev;
 	unsigned tag_size;
 	__s8 log2_tag_size;
 	sector_t start;
 	mempool_t journal_io_mempool;
+=======
+	unsigned tag_size;
+	__s8 log2_tag_size;
+	sector_t start;
+	mempool_t *journal_io_mempool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dm_io_client *io;
 	struct dm_bufio_client *bufio;
 	struct workqueue_struct *metadata_wq;
@@ -177,8 +214,12 @@ struct dm_integrity_c {
 	unsigned short journal_section_sectors;
 	unsigned journal_sections;
 	unsigned journal_entries;
+<<<<<<< HEAD
 	sector_t data_device_sectors;
 	sector_t meta_device_sectors;
+=======
+	sector_t device_sectors;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned initial_sectors;
 	unsigned metadata_run;
 	__s8 log2_metadata_run;
@@ -194,9 +235,15 @@ struct dm_integrity_c {
 
 	/* these variables are locked with endio_wait.lock */
 	struct rb_root in_progress;
+<<<<<<< HEAD
 	struct list_head wait_list;
 	wait_queue_head_t endio_wait;
 	struct workqueue_struct *wait_wq;
+=======
+	wait_queue_head_t endio_wait;
+	struct workqueue_struct *wait_wq;
+	struct workqueue_struct *offload_wq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned char commit_seq;
 	commit_id_t commit_ids[N_COMMIT_IDS];
@@ -219,11 +266,14 @@ struct dm_integrity_c {
 	struct workqueue_struct *writer_wq;
 	struct work_struct writer_work;
 
+<<<<<<< HEAD
 	struct workqueue_struct *recalc_wq;
 	struct work_struct recalc_work;
 	u8 *recalc_buffer;
 	u8 *recalc_tags;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bio_list flush_bio_list;
 
 	unsigned long autocommit_jiffies;
@@ -247,6 +297,7 @@ struct dm_integrity_c {
 struct dm_integrity_range {
 	sector_t logical_sector;
 	unsigned n_sectors;
+<<<<<<< HEAD
 	bool waiting;
 	union {
 		struct rb_node node;
@@ -255,6 +306,9 @@ struct dm_integrity_range {
 			struct list_head wait_entry;
 		};
 	};
+=======
+	struct rb_node node;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct dm_integrity_io {
@@ -342,7 +396,11 @@ static void dm_integrity_io_error(struct dm_integrity_c *ic, const char *msg, in
 
 static int dm_integrity_failed(struct dm_integrity_c *ic)
 {
+<<<<<<< HEAD
 	return READ_ONCE(ic->failed);
+=======
+	return ACCESS_ONCE(ic->failed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static commit_id_t dm_integrity_commit_id(struct dm_integrity_c *ic, unsigned i,
@@ -358,6 +416,7 @@ static commit_id_t dm_integrity_commit_id(struct dm_integrity_c *ic, unsigned i,
 static void get_area_and_offset(struct dm_integrity_c *ic, sector_t data_sector,
 				sector_t *area, sector_t *offset)
 {
+<<<<<<< HEAD
 	if (!ic->meta_dev) {
 		__u8 log2_interleave_sectors = ic->sb->log2_interleave_sectors;
 		*area = data_sector >> log2_interleave_sectors;
@@ -366,6 +425,12 @@ static void get_area_and_offset(struct dm_integrity_c *ic, sector_t data_sector,
 		*area = 0;
 		*offset = data_sector;
 	}
+=======
+	__u8 log2_interleave_sectors = ic->sb->log2_interleave_sectors;
+
+	*area = data_sector >> log2_interleave_sectors;
+	*offset = (unsigned)data_sector & ((1U << log2_interleave_sectors) - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define sector_to_block(ic, n)						\
@@ -404,9 +469,12 @@ static sector_t get_data_sector(struct dm_integrity_c *ic, sector_t area, sector
 {
 	sector_t result;
 
+<<<<<<< HEAD
 	if (ic->meta_dev)
 		return offset;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	result = area << ic->sb->log2_interleave_sectors;
 	if (likely(ic->log2_metadata_run >= 0))
 		result += (area + 1) << ic->log2_metadata_run;
@@ -414,8 +482,11 @@ static sector_t get_data_sector(struct dm_integrity_c *ic, sector_t area, sector
 		result += (area + 1) * ic->metadata_run;
 
 	result += (sector_t)ic->initial_sectors + offset;
+<<<<<<< HEAD
 	result += ic->start;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return result;
 }
 
@@ -425,6 +496,7 @@ static void wraparound_section(struct dm_integrity_c *ic, unsigned *sec_ptr)
 		*sec_ptr -= ic->journal_sections;
 }
 
+<<<<<<< HEAD
 static void sb_set_version(struct dm_integrity_c *ic)
 {
 	if (ic->meta_dev || ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING))
@@ -433,6 +505,8 @@ static void sb_set_version(struct dm_integrity_c *ic)
 		ic->sb->version = SB_VERSION_1;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sync_rw_sb(struct dm_integrity_c *ic, int op, int op_flags)
 {
 	struct dm_io_request io_req;
@@ -444,7 +518,11 @@ static int sync_rw_sb(struct dm_integrity_c *ic, int op, int op_flags)
 	io_req.mem.ptr.addr = ic->sb;
 	io_req.notify.fn = NULL;
 	io_req.client = ic->io;
+<<<<<<< HEAD
 	io_loc.bdev = ic->meta_dev ? ic->meta_dev->bdev : ic->dev->bdev;
+=======
+	io_loc.bdev = ic->dev->bdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	io_loc.sector = ic->start;
 	io_loc.count = SB_SECTORS;
 
@@ -559,12 +637,16 @@ static void section_mac(struct dm_integrity_c *ic, unsigned section, __u8 result
 		}
 		memset(result + size, 0, JOURNAL_MAC_SIZE - size);
 	} else {
+<<<<<<< HEAD
 		__u8 digest[HASH_MAX_DIGESTSIZE];
 
 		if (WARN_ON(size > sizeof(digest))) {
 			dm_integrity_io_error(ic, "digest_size", -EINVAL);
 			goto err;
 		}
+=======
+		__u8 digest[size];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = crypto_shash_final(desc, digest);
 		if (unlikely(r)) {
 			dm_integrity_io_error(ic, "crypto_shash_final", r);
@@ -796,7 +878,11 @@ static void rw_journal(struct dm_integrity_c *ic, int op, int op_flags, unsigned
 		io_req.notify.fn = NULL;
 	}
 	io_req.client = ic->io;
+<<<<<<< HEAD
 	io_loc.bdev = ic->meta_dev ? ic->meta_dev->bdev : ic->dev->bdev;
+=======
+	io_loc.bdev = ic->dev->bdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	io_loc.sector = ic->start + SB_SECTORS + sector;
 	io_loc.count = n_sectors;
 
@@ -900,7 +986,11 @@ static void copy_from_journal(struct dm_integrity_c *ic, unsigned section, unsig
 	io_req.notify.context = data;
 	io_req.client = ic->io;
 	io_loc.bdev = ic->dev->bdev;
+<<<<<<< HEAD
 	io_loc.sector = target;
+=======
+	io_loc.sector = ic->start + target;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	io_loc.count = n_sectors;
 
 	r = dm_io(&io_req, 1, &io_loc, NULL);
@@ -910,6 +1000,7 @@ static void copy_from_journal(struct dm_integrity_c *ic, unsigned section, unsig
 	}
 }
 
+<<<<<<< HEAD
 static bool ranges_overlap(struct dm_integrity_range *range1, struct dm_integrity_range *range2)
 {
 	return range1->logical_sector < range2->logical_sector + range2->n_sectors &&
@@ -917,12 +1008,16 @@ static bool ranges_overlap(struct dm_integrity_range *range1, struct dm_integrit
 }
 
 static bool add_new_range(struct dm_integrity_c *ic, struct dm_integrity_range *new_range, bool check_waiting)
+=======
+static bool add_new_range(struct dm_integrity_c *ic, struct dm_integrity_range *new_range)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rb_node **n = &ic->in_progress.rb_node;
 	struct rb_node *parent;
 
 	BUG_ON((new_range->logical_sector | new_range->n_sectors) & (unsigned)(ic->sectors_per_block - 1));
 
+<<<<<<< HEAD
 	if (likely(check_waiting)) {
 		struct dm_integrity_range *range;
 		list_for_each_entry(range, &ic->wait_list, wait_entry) {
@@ -931,6 +1026,8 @@ static bool add_new_range(struct dm_integrity_c *ic, struct dm_integrity_range *
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	parent = NULL;
 
 	while (*n) {
@@ -955,6 +1052,7 @@ static bool add_new_range(struct dm_integrity_c *ic, struct dm_integrity_range *
 static void remove_range_unlocked(struct dm_integrity_c *ic, struct dm_integrity_range *range)
 {
 	rb_erase(&range->node, &ic->in_progress);
+<<<<<<< HEAD
 	while (unlikely(!list_empty(&ic->wait_list))) {
 		struct dm_integrity_range *last_range =
 			list_first_entry(&ic->wait_list, struct dm_integrity_range, wait_entry);
@@ -969,6 +1067,9 @@ static void remove_range_unlocked(struct dm_integrity_c *ic, struct dm_integrity
 		last_range->waiting = false;
 		wake_up_process(last_range_task);
 	}
+=======
+	wake_up_locked(&ic->endio_wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void remove_range(struct dm_integrity_c *ic, struct dm_integrity_range *range)
@@ -980,6 +1081,7 @@ static void remove_range(struct dm_integrity_c *ic, struct dm_integrity_range *r
 	spin_unlock_irqrestore(&ic->endio_wait.lock, flags);
 }
 
+<<<<<<< HEAD
 static void wait_and_add_new_range(struct dm_integrity_c *ic, struct dm_integrity_range *new_range)
 {
 	new_range->waiting = true;
@@ -993,6 +1095,8 @@ static void wait_and_add_new_range(struct dm_integrity_c *ic, struct dm_integrit
 	} while (unlikely(new_range->waiting));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void init_journal_node(struct journal_node *node)
 {
 	RB_CLEAR_NODE(&node->node);
@@ -1177,9 +1281,15 @@ static void sleep_on_endio_wait(struct dm_integrity_c *ic)
 	__remove_wait_queue(&ic->endio_wait, &wait);
 }
 
+<<<<<<< HEAD
 static void autocommit_fn(struct timer_list *t)
 {
 	struct dm_integrity_c *ic = from_timer(ic, t, autocommit_timer);
+=======
+static void autocommit_fn(unsigned long data)
+{
+	struct dm_integrity_c *ic = (struct dm_integrity_c *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(!dm_integrity_failed(ic)))
 		queue_work(ic->commit_wq, &ic->commit_work);
@@ -1241,7 +1351,11 @@ static void dec_in_flight(struct dm_integrity_io *dio)
 			dio->range.logical_sector += dio->range.n_sectors;
 			bio_advance(bio, dio->range.n_sectors << SECTOR_SHIFT);
 			INIT_WORK(&dio->work, integrity_bio_wait);
+<<<<<<< HEAD
 			queue_work(ic->wait_wq, &dio->work);
+=======
+			queue_work(ic->offload_wq, &dio->work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 		do_endio_flush(ic, dio);
@@ -1327,7 +1441,11 @@ static void integrity_metadata(struct work_struct *w)
 		struct bio *bio = dm_bio_from_per_bio_data(dio, sizeof(struct dm_integrity_io));
 		char *checksums;
 		unsigned extra_space = unlikely(digest_size > ic->tag_size) ? digest_size - ic->tag_size : 0;
+<<<<<<< HEAD
 		char checksums_onstack[HASH_MAX_DIGESTSIZE];
+=======
+		char checksums_onstack[ic->tag_size + extra_space];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned sectors_to_process = dio->range.n_sectors;
 		sector_t sector = dio->range.logical_sector;
 
@@ -1336,6 +1454,7 @@ static void integrity_metadata(struct work_struct *w)
 
 		checksums = kmalloc((PAGE_SIZE >> SECTOR_SHIFT >> ic->sb->log2_sectors_per_block) * ic->tag_size + extra_space,
 				    GFP_NOIO | __GFP_NORETRY | __GFP_NOWARN);
+<<<<<<< HEAD
 		if (!checksums) {
 			checksums = checksums_onstack;
 			if (WARN_ON(extra_space &&
@@ -1344,6 +1463,10 @@ static void integrity_metadata(struct work_struct *w)
 				goto error;
 			}
 		}
+=======
+		if (!checksums)
+			checksums = checksums_onstack;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		__bio_for_each_segment(bv, bio, iter, dio->orig_bi_iter) {
 			unsigned pos;
@@ -1555,7 +1678,11 @@ retry_kmap:
 				} while (++s < ic->sectors_per_block);
 #ifdef INTERNAL_VERIFY
 				if (ic->internal_hash) {
+<<<<<<< HEAD
 					char checksums_onstack[max(HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
+=======
+					char checksums_onstack[max(crypto_shash_digestsize(ic->internal_hash), ic->tag_size)];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 					integrity_sector_checksum(ic, logical_sector, mem + bv.bv_offset, checksums_onstack);
 					if (unlikely(memcmp(checksums_onstack, journal_entry_tag(ic, je), ic->tag_size))) {
@@ -1605,7 +1732,11 @@ retry_kmap:
 				if (ic->internal_hash) {
 					unsigned digest_size = crypto_shash_digestsize(ic->internal_hash);
 					if (unlikely(digest_size > ic->tag_size)) {
+<<<<<<< HEAD
 						char checksums_onstack[HASH_MAX_DIGESTSIZE];
+=======
+						char checksums_onstack[digest_size];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						integrity_sector_checksum(ic, logical_sector, (char *)js, checksums_onstack);
 						memcpy(journal_entry_tag(ic, je), checksums_onstack, ic->tag_size);
 					} else
@@ -1635,7 +1766,11 @@ retry_kmap:
 		smp_mb();
 		if (unlikely(waitqueue_active(&ic->copy_to_journal_wait)))
 			wake_up(&ic->copy_to_journal_wait);
+<<<<<<< HEAD
 		if (READ_ONCE(ic->free_sectors) <= ic->free_sectors_threshold) {
+=======
+		if (ACCESS_ONCE(ic->free_sectors) <= ic->free_sectors_threshold) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			queue_work(ic->commit_wq, &ic->commit_work);
 		} else {
 			schedule_autocommit(ic);
@@ -1667,7 +1802,11 @@ static void dm_integrity_map_continue(struct dm_integrity_io *dio, bool from_map
 
 	if (need_sync_io && from_map) {
 		INIT_WORK(&dio->work, integrity_bio_wait);
+<<<<<<< HEAD
 		queue_work(ic->metadata_wq, &dio->work);
+=======
+		queue_work(ic->offload_wq, &dio->work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1688,12 +1827,17 @@ retry:
 
 			dio->range.n_sectors = min(dio->range.n_sectors,
 						   ic->free_sectors << ic->sb->log2_sectors_per_block);
+<<<<<<< HEAD
 			if (unlikely(!dio->range.n_sectors)) {
 				if (from_map)
 					goto offload_to_thread;
 				sleep_on_endio_wait(ic);
 				goto retry;
 			}
+=======
+			if (unlikely(!dio->range.n_sectors))
+				goto sleep;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			range_sectors = dio->range.n_sectors >> ic->sb->log2_sectors_per_block;
 			ic->free_sectors -= range_sectors;
 			journal_section = ic->free_section;
@@ -1747,18 +1891,28 @@ retry:
 			}
 		}
 	}
+<<<<<<< HEAD
 	if (unlikely(!add_new_range(ic, &dio->range, true))) {
+=======
+	if (unlikely(!add_new_range(ic, &dio->range))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We must not sleep in the request routine because it could
 		 * stall bios on current->bio_list.
 		 * So, we offload the bio to a workqueue if we have to sleep.
 		 */
+<<<<<<< HEAD
 		if (from_map) {
 offload_to_thread:
+=======
+sleep:
+		if (from_map) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_unlock_irq(&ic->endio_wait.lock);
 			INIT_WORK(&dio->work, integrity_bio_wait);
 			queue_work(ic->wait_wq, &dio->work);
 			return;
+<<<<<<< HEAD
 		}
 		if (journal_read_pos != NOT_FOUND)
 			dio->range.n_sectors = ic->sectors_per_block;
@@ -1775,6 +1929,11 @@ offload_to_thread:
 				remove_range_unlocked(ic, &dio->range);
 				goto retry;
 			}
+=======
+		} else {
+			sleep_on_endio_wait(ic);
+			goto retry;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	spin_unlock_irq(&ic->endio_wait.lock);
@@ -1807,10 +1966,15 @@ offload_to_thread:
 	bio->bi_end_io = integrity_end_io;
 
 	bio->bi_iter.bi_size = dio->range.n_sectors << SECTOR_SHIFT;
+<<<<<<< HEAD
+=======
+	bio->bi_iter.bi_sector += ic->start;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	generic_make_request(bio);
 
 	if (need_sync_io) {
 		wait_for_completion_io(&read_comp);
+<<<<<<< HEAD
 		if (unlikely(ic->recalc_wq != NULL) &&
 		    ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING) &&
 		    dio->range.logical_sector + dio->range.n_sectors > le64_to_cpu(ic->sb->recalc_sector))
@@ -1819,6 +1983,11 @@ offload_to_thread:
 			integrity_metadata(&dio->work);
 		else
 skip_check:
+=======
+		if (likely(!bio->bi_status))
+			integrity_metadata(&dio->work);
+		else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dec_in_flight(dio);
 
 	} else {
@@ -1909,7 +2078,11 @@ static void integrity_commit(struct work_struct *w)
 	ic->n_committed_sections += commit_sections;
 	spin_unlock_irq(&ic->endio_wait.lock);
 
+<<<<<<< HEAD
 	if (READ_ONCE(ic->free_sectors) <= ic->free_sectors_threshold)
+=======
+	if (ACCESS_ONCE(ic->free_sectors) <= ic->free_sectors_threshold)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue_work(ic->writer_wq, &ic->writer_work);
 
 release_flush_bios:
@@ -1927,7 +2100,11 @@ static void complete_copy_from_journal(unsigned long error, void *context)
 	struct journal_completion *comp = io->comp;
 	struct dm_integrity_c *ic = comp->ic;
 	remove_range(ic, &io->range);
+<<<<<<< HEAD
 	mempool_free(io, &ic->journal_io_mempool);
+=======
+	mempool_free(io, ic->journal_io_mempool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(error != 0))
 		dm_integrity_io_error(ic, "copying from journal", -EIO);
 	complete_journal_op(comp);
@@ -1996,14 +2173,23 @@ static void do_journal_write(struct dm_integrity_c *ic, unsigned write_start,
 			}
 			next_loop = k - 1;
 
+<<<<<<< HEAD
 			io = mempool_alloc(&ic->journal_io_mempool, GFP_NOIO);
+=======
+			io = mempool_alloc(ic->journal_io_mempool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			io->comp = &comp;
 			io->range.logical_sector = sec;
 			io->range.n_sectors = (k - j) << ic->sb->log2_sectors_per_block;
 
 			spin_lock_irq(&ic->endio_wait.lock);
+<<<<<<< HEAD
 			if (unlikely(!add_new_range(ic, &io->range, true)))
 				wait_and_add_new_range(ic, &io->range);
+=======
+			while (unlikely(!add_new_range(ic, &io->range)))
+				sleep_on_endio_wait(ic);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (likely(!from_replay)) {
 				struct journal_node *section_node = &ic->journal_tree[i * ic->journal_section_entries];
@@ -2028,7 +2214,11 @@ static void do_journal_write(struct dm_integrity_c *ic, unsigned write_start,
 				if (j == k) {
 					remove_range_unlocked(ic, &io->range);
 					spin_unlock_irq(&ic->endio_wait.lock);
+<<<<<<< HEAD
 					mempool_free(io, &ic->journal_io_mempool);
+=======
+					mempool_free(io, ic->journal_io_mempool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					goto skip_io;
 				}
 				for (l = j; l < k; l++) {
@@ -2047,7 +2237,11 @@ static void do_journal_write(struct dm_integrity_c *ic, unsigned write_start,
 				    unlikely(from_replay) &&
 #endif
 				    ic->internal_hash) {
+<<<<<<< HEAD
 					char test_tag[max_t(size_t, HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
+=======
+					char test_tag[max(crypto_shash_digestsize(ic->internal_hash), ic->tag_size)];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 					integrity_sector_checksum(ic, sec + ((l - j) << ic->sb->log2_sectors_per_block),
 								  (char *)access_journal_data(ic, i, l), test_tag);
@@ -2091,7 +2285,11 @@ static void integrity_writer(struct work_struct *w)
 	unsigned prev_free_sectors;
 
 	/* the following test is not needed, but it tests the replay code */
+<<<<<<< HEAD
 	if (READ_ONCE(ic->suspending) && !ic->meta_dev)
+=======
+	if (ACCESS_ONCE(ic->suspending))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	spin_lock_irq(&ic->endio_wait.lock);
@@ -2118,6 +2316,7 @@ static void integrity_writer(struct work_struct *w)
 	spin_unlock_irq(&ic->endio_wait.lock);
 }
 
+<<<<<<< HEAD
 static void recalc_write_super(struct dm_integrity_c *ic)
 {
 	int r;
@@ -2220,6 +2419,8 @@ unlock_ret:
 	recalc_write_super(ic);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void init_journal(struct dm_integrity_c *ic, unsigned start_section,
 			 unsigned n_sections, unsigned char commit_seq)
 {
@@ -2424,15 +2625,21 @@ static void dm_integrity_postsuspend(struct dm_target *ti)
 
 	WRITE_ONCE(ic->suspending, 1);
 
+<<<<<<< HEAD
 	if (ic->recalc_wq)
 		drain_workqueue(ic->recalc_wq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	queue_work(ic->commit_wq, &ic->commit_work);
 	drain_workqueue(ic->commit_wq);
 
 	if (ic->mode == 'J') {
+<<<<<<< HEAD
 		if (ic->meta_dev)
 			queue_work(ic->writer_wq, &ic->writer_work);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drain_workqueue(ic->writer_wq);
 		dm_integrity_flush_buffers(ic);
 	}
@@ -2449,6 +2656,7 @@ static void dm_integrity_resume(struct dm_target *ti)
 	struct dm_integrity_c *ic = (struct dm_integrity_c *)ti->private;
 
 	replay_journal(ic);
+<<<<<<< HEAD
 
 	if (ic->recalc_wq && ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING)) {
 		__u64 recalc_pos = le64_to_cpu(ic->sb->recalc_sector);
@@ -2459,6 +2667,8 @@ static void dm_integrity_resume(struct dm_target *ti)
 			recalc_write_super(ic);
 		}
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dm_integrity_status(struct dm_target *ti, status_type_t type,
@@ -2470,6 +2680,7 @@ static void dm_integrity_status(struct dm_target *ti, status_type_t type,
 
 	switch (type) {
 	case STATUSTYPE_INFO:
+<<<<<<< HEAD
 		DMEMIT("%llu %llu",
 			(unsigned long long)atomic64_read(&ic->number_of_mismatches),
 			(unsigned long long)ic->provided_data_sectors);
@@ -2477,6 +2688,9 @@ static void dm_integrity_status(struct dm_target *ti, status_type_t type,
 			DMEMIT(" %llu", (unsigned long long)le64_to_cpu(ic->sb->recalc_sector));
 		else
 			DMEMIT(" -");
+=======
+		DMEMIT("%llu", (unsigned long long)atomic64_read(&ic->number_of_mismatches));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case STATUSTYPE_TABLE: {
@@ -2484,25 +2698,37 @@ static void dm_integrity_status(struct dm_target *ti, status_type_t type,
 		watermark_percentage += ic->journal_entries / 2;
 		do_div(watermark_percentage, ic->journal_entries);
 		arg_count = 5;
+<<<<<<< HEAD
 		arg_count += !!ic->meta_dev;
 		arg_count += ic->sectors_per_block != 1;
 		arg_count += !!(ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING));
+=======
+		arg_count += ic->sectors_per_block != 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		arg_count += !!ic->internal_hash_alg.alg_string;
 		arg_count += !!ic->journal_crypt_alg.alg_string;
 		arg_count += !!ic->journal_mac_alg.alg_string;
 		DMEMIT("%s %llu %u %c %u", ic->dev->name, (unsigned long long)ic->start,
 		       ic->tag_size, ic->mode, arg_count);
+<<<<<<< HEAD
 		if (ic->meta_dev)
 			DMEMIT(" meta_device:%s", ic->meta_dev->name);
 		if (ic->sectors_per_block != 1)
 			DMEMIT(" block_size:%u", ic->sectors_per_block << SECTOR_SHIFT);
 		if (ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING))
 			DMEMIT(" recalculate");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DMEMIT(" journal_sectors:%u", ic->initial_sectors - SB_SECTORS);
 		DMEMIT(" interleave_sectors:%u", 1U << ic->sb->log2_interleave_sectors);
 		DMEMIT(" buffer_sectors:%u", 1U << ic->log2_buffer_sectors);
 		DMEMIT(" journal_watermark:%u", (unsigned)watermark_percentage);
 		DMEMIT(" commit_time:%u", ic->autocommit_msec);
+<<<<<<< HEAD
+=======
+		if (ic->sectors_per_block != 1)
+			DMEMIT(" block_size:%u", ic->sectors_per_block << SECTOR_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define EMIT_ALG(a, n)							\
 		do {							\
@@ -2525,10 +2751,14 @@ static int dm_integrity_iterate_devices(struct dm_target *ti,
 {
 	struct dm_integrity_c *ic = ti->private;
 
+<<<<<<< HEAD
 	if (!ic->meta_dev)
 		return fn(ti, ic->dev, ic->start + ic->initial_sectors + ic->metadata_run, ti->len, data);
 	else
 		return fn(ti, ic->dev, 0, ti->len, data);
+=======
+	return fn(ti, ic->dev, ic->start + ic->initial_sectors + ic->metadata_run, ti->len, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dm_integrity_io_hints(struct dm_target *ti, struct queue_limits *limits)
@@ -2561,6 +2791,7 @@ static void calculate_journal_section_size(struct dm_integrity_c *ic)
 static int calculate_device_limits(struct dm_integrity_c *ic)
 {
 	__u64 initial_sectors;
+<<<<<<< HEAD
 
 	calculate_journal_section_size(ic);
 	initial_sectors = SB_SECTORS + (__u64)ic->journal_section_sectors * ic->journal_sections;
@@ -2593,6 +2824,28 @@ static int calculate_device_limits(struct dm_integrity_c *ic)
 		ic->metadata_run = 1;
 		ic->log2_metadata_run = 0;
 	}
+=======
+	sector_t last_sector, last_area, last_offset;
+
+	calculate_journal_section_size(ic);
+	initial_sectors = SB_SECTORS + (__u64)ic->journal_section_sectors * ic->journal_sections;
+	if (initial_sectors + METADATA_PADDING_SECTORS >= ic->device_sectors || initial_sectors > UINT_MAX)
+		return -EINVAL;
+	ic->initial_sectors = initial_sectors;
+
+	ic->metadata_run = roundup((__u64)ic->tag_size << (ic->sb->log2_interleave_sectors - ic->sb->log2_sectors_per_block),
+				   (__u64)(1 << SECTOR_SHIFT << METADATA_PADDING_SECTORS)) >> SECTOR_SHIFT;
+	if (!(ic->metadata_run & (ic->metadata_run - 1)))
+		ic->log2_metadata_run = __ffs(ic->metadata_run);
+	else
+		ic->log2_metadata_run = -1;
+
+	get_area_and_offset(ic, ic->provided_data_sectors - 1, &last_area, &last_offset);
+	last_sector = get_data_sector(ic, last_area, last_offset);
+
+	if (ic->start + last_sector < last_sector || ic->start + last_sector >= ic->device_sectors)
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2604,6 +2857,10 @@ static int initialize_superblock(struct dm_integrity_c *ic, unsigned journal_sec
 
 	memset(ic->sb, 0, SB_SECTORS << SECTOR_SHIFT);
 	memcpy(ic->sb->magic, SB_MAGIC, 8);
+<<<<<<< HEAD
+=======
+	ic->sb->version = SB_VERSION;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ic->sb->integrity_tag_size = cpu_to_le16(ic->tag_size);
 	ic->sb->log2_sectors_per_block = __ffs(ic->sectors_per_block);
 	if (ic->journal_mac_alg.alg_string)
@@ -2613,6 +2870,7 @@ static int initialize_superblock(struct dm_integrity_c *ic, unsigned journal_sec
 	journal_sections = journal_sectors / ic->journal_section_sectors;
 	if (!journal_sections)
 		journal_sections = 1;
+<<<<<<< HEAD
 
 	if (!ic->meta_dev) {
 		ic->sb->journal_sections = cpu_to_le32(journal_sections);
@@ -2661,6 +2919,29 @@ try_smaller_buffer:
 	ic->sb->provided_data_sectors = cpu_to_le64(ic->provided_data_sectors);
 
 	sb_set_version(ic);
+=======
+	ic->sb->journal_sections = cpu_to_le32(journal_sections);
+
+	if (!interleave_sectors)
+		interleave_sectors = DEFAULT_INTERLEAVE_SECTORS;
+	ic->sb->log2_interleave_sectors = __fls(interleave_sectors);
+	ic->sb->log2_interleave_sectors = max((__u8)MIN_LOG2_INTERLEAVE_SECTORS, ic->sb->log2_interleave_sectors);
+	ic->sb->log2_interleave_sectors = min((__u8)MAX_LOG2_INTERLEAVE_SECTORS, ic->sb->log2_interleave_sectors);
+
+	ic->provided_data_sectors = 0;
+	for (test_bit = fls64(ic->device_sectors) - 1; test_bit >= 3; test_bit--) {
+		__u64 prev_data_sectors = ic->provided_data_sectors;
+
+		ic->provided_data_sectors |= (sector_t)1 << test_bit;
+		if (calculate_device_limits(ic))
+			ic->provided_data_sectors = prev_data_sectors;
+	}
+
+	if (!ic->provided_data_sectors)
+		return -EINVAL;
+
+	ic->sb->provided_data_sectors = cpu_to_le64(ic->provided_data_sectors);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2728,9 +3009,13 @@ static struct scatterlist **dm_integrity_alloc_journal_scatterlist(struct dm_int
 	struct scatterlist **sl;
 	unsigned i;
 
+<<<<<<< HEAD
 	sl = kvmalloc_array(ic->journal_sections,
 			    sizeof(struct scatterlist *),
 			    GFP_KERNEL | __GFP_ZERO);
+=======
+	sl = kvmalloc(ic->journal_sections * sizeof(struct scatterlist *), GFP_KERNEL | __GFP_ZERO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sl)
 		return NULL;
 
@@ -2746,8 +3031,12 @@ static struct scatterlist **dm_integrity_alloc_journal_scatterlist(struct dm_int
 
 		n_pages = (end_index - start_index + 1);
 
+<<<<<<< HEAD
 		s = kvmalloc_array(n_pages, sizeof(struct scatterlist),
 				   GFP_KERNEL);
+=======
+		s = kvmalloc(n_pages * sizeof(struct scatterlist), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!s) {
 			dm_integrity_free_journal_scatterlist(ic, sl);
 			return NULL;
@@ -2926,9 +3215,13 @@ static int create_journal(struct dm_integrity_c *ic, char **error)
 				goto bad;
 			}
 
+<<<<<<< HEAD
 			sg = kvmalloc_array(ic->journal_pages + 1,
 					    sizeof(struct scatterlist),
 					    GFP_KERNEL);
+=======
+			sg = kvmalloc((ic->journal_pages + 1) * sizeof(struct scatterlist), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!sg) {
 				*error = "Unable to allocate sg list";
 				r = -ENOMEM;
@@ -2994,9 +3287,13 @@ static int create_journal(struct dm_integrity_c *ic, char **error)
 				r = -ENOMEM;
 				goto bad;
 			}
+<<<<<<< HEAD
 			ic->sk_requests = kvmalloc_array(ic->journal_sections,
 							 sizeof(struct skcipher_request *),
 							 GFP_KERNEL | __GFP_ZERO);
+=======
+			ic->sk_requests = kvmalloc(ic->journal_sections * sizeof(struct skcipher_request *), GFP_KERNEL | __GFP_ZERO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!ic->sk_requests) {
 				*error = "Unable to allocate sk requests";
 				r = -ENOMEM;
@@ -3030,8 +3327,12 @@ static int create_journal(struct dm_integrity_c *ic, char **error)
 					r = -ENOMEM;
 					goto bad;
 				}
+<<<<<<< HEAD
 				section_req->iv = kmalloc_array(ivsize, 2,
 								GFP_KERNEL);
+=======
+				section_req->iv = kmalloc(ivsize * 2, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (!section_req->iv) {
 					skcipher_request_free(section_req);
 					*error = "Unable to allocate iv";
@@ -3108,7 +3409,10 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		{0, 9, "Invalid number of feature args"},
 	};
 	unsigned journal_sectors, interleave_sectors, buffer_sectors, journal_watermark, sync_msec;
+<<<<<<< HEAD
 	bool recalculate;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool should_write_sb;
 	__u64 threshold;
 	unsigned long long start;
@@ -3129,7 +3433,10 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 	ti->per_io_data_size = sizeof(struct dm_integrity_io);
 
 	ic->in_progress = RB_ROOT;
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&ic->wait_list);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_waitqueue_head(&ic->endio_wait);
 	bio_list_init(&ic->flush_bio_list);
 	init_waitqueue_head(&ic->copy_to_journal_wait);
@@ -3165,12 +3472,21 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		goto bad;
 	}
 
+<<<<<<< HEAD
 	journal_sectors = 0;
+=======
+	ic->device_sectors = i_size_read(ic->dev->bdev->bd_inode) >> SECTOR_SHIFT;
+	journal_sectors = min((sector_t)DEFAULT_MAX_JOURNAL_SECTORS,
+			ic->device_sectors >> DEFAULT_JOURNAL_SIZE_FACTOR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	interleave_sectors = DEFAULT_INTERLEAVE_SECTORS;
 	buffer_sectors = DEFAULT_BUFFER_SECTORS;
 	journal_watermark = DEFAULT_JOURNAL_WATERMARK;
 	sync_msec = DEFAULT_SYNC_MSEC;
+<<<<<<< HEAD
 	recalculate = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ic->sectors_per_block = 1;
 
 	as.argc = argc - DIRECT_ARGUMENTS;
@@ -3189,7 +3505,11 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 			goto bad;
 		}
 		if (sscanf(opt_string, "journal_sectors:%u%c", &val, &dummy) == 1)
+<<<<<<< HEAD
 			journal_sectors = val ? val : 1;
+=======
+			journal_sectors = val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else if (sscanf(opt_string, "interleave_sectors:%u%c", &val, &dummy) == 1)
 			interleave_sectors = val;
 		else if (sscanf(opt_string, "buffer_sectors:%u%c", &val, &dummy) == 1)
@@ -3198,6 +3518,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 			journal_watermark = val;
 		else if (sscanf(opt_string, "commit_time:%u%c", &val, &dummy) == 1)
 			sync_msec = val;
+<<<<<<< HEAD
 		else if (!strncmp(opt_string, "meta_device:", strlen("meta_device:"))) {
 			if (ic->meta_dev) {
 				dm_put_device(ti, ic->meta_dev);
@@ -3209,6 +3530,9 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 				goto bad;
 			}
 		} else if (sscanf(opt_string, "block_size:%u%c", &val, &dummy) == 1) {
+=======
+		else if (sscanf(opt_string, "block_size:%u%c", &val, &dummy) == 1) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (val < 1 << SECTOR_SHIFT ||
 			    val > MAX_SECTORS_PER_BLOCK << SECTOR_SHIFT ||
 			    (val & (val -1))) {
@@ -3232,8 +3556,11 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 					    "Invalid journal_mac argument");
 			if (r)
 				goto bad;
+<<<<<<< HEAD
 		} else if (!strcmp(opt_string, "recalculate")) {
 			recalculate = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			r = -EINVAL;
 			ti->error = "Invalid argument";
@@ -3241,6 +3568,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		}
 	}
 
+<<<<<<< HEAD
 	ic->data_device_sectors = i_size_read(ic->dev->bdev->bd_inode) >> SECTOR_SHIFT;
 	if (!ic->meta_dev)
 		ic->meta_device_sectors = ic->data_device_sectors;
@@ -3256,6 +3584,8 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		buffer_sectors = 1;
 	ic->log2_buffer_sectors = min((int)__fls(buffer_sectors), 31 - SECTOR_SHIFT);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = get_mac(&ic->internal_hash, &ic->internal_hash_alg, &ti->error,
 		    "Invalid internal hash", "Error setting internal hash key");
 	if (r)
@@ -3286,7 +3616,11 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 
 	ic->autocommit_jiffies = msecs_to_jiffies(sync_msec);
 	ic->autocommit_msec = sync_msec;
+<<<<<<< HEAD
 	timer_setup(&ic->autocommit_timer, autocommit_fn, 0);
+=======
+	setup_timer(&ic->autocommit_timer, autocommit_fn, (unsigned long)ic);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ic->io = dm_io_client_create();
 	if (IS_ERR(ic->io)) {
@@ -3296,8 +3630,14 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		goto bad;
 	}
 
+<<<<<<< HEAD
 	r = mempool_init_slab_pool(&ic->journal_io_mempool, JOURNAL_IO_MEMPOOL, journal_io_cache);
 	if (r) {
+=======
+	ic->journal_io_mempool = mempool_create_slab_pool(JOURNAL_IO_MEMPOOL, journal_io_cache);
+	if (!ic->journal_io_mempool) {
+		r = -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ti->error = "Cannot allocate mempool";
 		goto bad;
 	}
@@ -3321,6 +3661,17 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		goto bad;
 	}
 
+<<<<<<< HEAD
+=======
+	ic->offload_wq = alloc_workqueue("dm-integrity-offload", WQ_MEM_RECLAIM,
+					  METADATA_WORKQUEUE_MAX_ACTIVE);
+	if (!ic->offload_wq) {
+		ti->error = "Cannot allocate workqueue";
+		r = -ENOMEM;
+		goto bad;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ic->commit_wq = alloc_workqueue("dm-integrity-commit", WQ_MEM_RECLAIM, 1);
 	if (!ic->commit_wq) {
 		ti->error = "Cannot allocate workqueue";
@@ -3370,7 +3721,11 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 			should_write_sb = true;
 	}
 
+<<<<<<< HEAD
 	if (!ic->sb->version || ic->sb->version > SB_VERSION_2) {
+=======
+	if (ic->sb->version != SB_VERSION) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = -EINVAL;
 		ti->error = "Unknown version";
 		goto bad;
@@ -3391,6 +3746,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		goto bad;
 	}
 	/* make sure that ti->max_io_len doesn't overflow */
+<<<<<<< HEAD
 	if (!ic->meta_dev) {
 		if (ic->sb->log2_interleave_sectors < MIN_LOG2_INTERLEAVE_SECTORS ||
 		    ic->sb->log2_interleave_sectors > MAX_LOG2_INTERLEAVE_SECTORS) {
@@ -3404,6 +3760,13 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 			ti->error = "Invalid interleave_sectors in the superblock";
 			goto bad;
 		}
+=======
+	if (ic->sb->log2_interleave_sectors < MIN_LOG2_INTERLEAVE_SECTORS ||
+	    ic->sb->log2_interleave_sectors > MAX_LOG2_INTERLEAVE_SECTORS) {
+		r = -EINVAL;
+		ti->error = "Invalid interleave_sectors in the superblock";
+		goto bad;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	ic->provided_data_sectors = le64_to_cpu(ic->sb->provided_data_sectors);
 	if (ic->provided_data_sectors != le64_to_cpu(ic->sb->provided_data_sectors)) {
@@ -3417,6 +3780,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
 		ti->error = "Journal mac mismatch";
 		goto bad;
 	}
+<<<<<<< HEAD
 
 try_smaller_buffer:
 	r = calculate_device_limits(ic);
@@ -3433,12 +3797,25 @@ try_smaller_buffer:
 	if (!ic->meta_dev)
 		ic->log2_buffer_sectors = min(ic->log2_buffer_sectors, (__u8)__ffs(ic->metadata_run));
 
+=======
+	r = calculate_device_limits(ic);
+	if (r) {
+		ti->error = "The device is too small";
+		goto bad;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ti->len > ic->provided_data_sectors) {
 		r = -EINVAL;
 		ti->error = "Not enough provided sectors for requested mapping size";
 		goto bad;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!buffer_sectors)
+		buffer_sectors = 1;
+	ic->log2_buffer_sectors = min3((int)__fls(buffer_sectors), (int)__ffs(ic->metadata_run), 31 - SECTOR_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	threshold = (__u64)ic->journal_entries * (100 - journal_watermark);
 	threshold += 50;
@@ -3454,7 +3831,11 @@ try_smaller_buffer:
 	DEBUG_print("	journal_sections %u\n", (unsigned)le32_to_cpu(ic->sb->journal_sections));
 	DEBUG_print("	journal_entries %u\n", ic->journal_entries);
 	DEBUG_print("	log2_interleave_sectors %d\n", ic->sb->log2_interleave_sectors);
+<<<<<<< HEAD
 	DEBUG_print("	data_device_sectors 0x%llx\n", (unsigned long long)ic->data_device_sectors);
+=======
+	DEBUG_print("	device_sectors 0x%llx\n", (unsigned long long)ic->device_sectors);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEBUG_print("	initial_sectors 0x%x\n", ic->initial_sectors);
 	DEBUG_print("	metadata_run 0x%x\n", ic->metadata_run);
 	DEBUG_print("	log2_metadata_run %d\n", ic->log2_metadata_run);
@@ -3462,6 +3843,7 @@ try_smaller_buffer:
 		    (unsigned long long)ic->provided_data_sectors);
 	DEBUG_print("	log2_buffer_sectors %u\n", ic->log2_buffer_sectors);
 
+<<<<<<< HEAD
 	if (recalculate && !(ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING))) {
 		ic->sb->flags |= cpu_to_le32(SB_FLAG_RECALCULATING);
 		ic->sb->recalc_sector = cpu_to_le64(0);
@@ -3497,6 +3879,10 @@ try_smaller_buffer:
 
 	ic->bufio = dm_bufio_client_create(ic->meta_dev ? ic->meta_dev->bdev : ic->dev->bdev,
 			1U << (SECTOR_SHIFT + ic->log2_buffer_sectors), 1, 0, NULL, NULL);
+=======
+	ic->bufio = dm_bufio_client_create(ic->dev->bdev, 1U << (SECTOR_SHIFT + ic->log2_buffer_sectors),
+					   1, 0, NULL, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ic->bufio)) {
 		r = PTR_ERR(ic->bufio);
 		ti->error = "Cannot initialize dm-bufio";
@@ -3528,11 +3914,17 @@ try_smaller_buffer:
 		ic->just_formatted = true;
 	}
 
+<<<<<<< HEAD
 	if (!ic->meta_dev) {
 		r = dm_set_target_max_io_len(ti, 1U << ic->sb->log2_interleave_sectors);
 		if (r)
 			goto bad;
 	}
+=======
+	r = dm_set_target_max_io_len(ti, 1U << ic->sb->log2_interleave_sectors);
+	if (r)
+		goto bad;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ic->internal_hash)
 		dm_integrity_set(ti, ic);
@@ -3551,16 +3943,25 @@ static void dm_integrity_dtr(struct dm_target *ti)
 	struct dm_integrity_c *ic = ti->private;
 
 	BUG_ON(!RB_EMPTY_ROOT(&ic->in_progress));
+<<<<<<< HEAD
 	BUG_ON(!list_empty(&ic->wait_list));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ic->metadata_wq)
 		destroy_workqueue(ic->metadata_wq);
 	if (ic->wait_wq)
 		destroy_workqueue(ic->wait_wq);
+<<<<<<< HEAD
+=======
+	if (ic->offload_wq)
+		destroy_workqueue(ic->offload_wq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ic->commit_wq)
 		destroy_workqueue(ic->commit_wq);
 	if (ic->writer_wq)
 		destroy_workqueue(ic->writer_wq);
+<<<<<<< HEAD
 	if (ic->recalc_wq)
 		destroy_workqueue(ic->recalc_wq);
 	if (ic->recalc_buffer)
@@ -3570,12 +3971,20 @@ static void dm_integrity_dtr(struct dm_target *ti)
 	if (ic->bufio)
 		dm_bufio_client_destroy(ic->bufio);
 	mempool_exit(&ic->journal_io_mempool);
+=======
+	if (ic->bufio)
+		dm_bufio_client_destroy(ic->bufio);
+	mempool_destroy(ic->journal_io_mempool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ic->io)
 		dm_io_client_destroy(ic->io);
 	if (ic->dev)
 		dm_put_device(ti, ic->dev);
+<<<<<<< HEAD
 	if (ic->meta_dev)
 		dm_put_device(ti, ic->meta_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dm_integrity_free_page_list(ic, ic->journal);
 	dm_integrity_free_page_list(ic, ic->journal_io);
 	dm_integrity_free_page_list(ic, ic->journal_xor);
@@ -3616,7 +4025,11 @@ static void dm_integrity_dtr(struct dm_target *ti)
 
 static struct target_type integrity_target = {
 	.name			= "integrity",
+<<<<<<< HEAD
 	.version		= {1, 2, 0},
+=======
+	.version		= {1, 1, 0},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.module			= THIS_MODULE,
 	.features		= DM_TARGET_SINGLETON | DM_TARGET_INTEGRITY,
 	.ctr			= dm_integrity_ctr,

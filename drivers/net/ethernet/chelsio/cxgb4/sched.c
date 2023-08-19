@@ -539,9 +539,12 @@ void t4_cleanup_sched(struct adapter *adap)
 		struct port_info *pi = netdev2pinfo(adap->port[j]);
 
 		s = pi->sched_tbl;
+<<<<<<< HEAD
 		if (!s)
 			continue;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < s->sched_size; i++) {
 			struct sched_class *e;
 

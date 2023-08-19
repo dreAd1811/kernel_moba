@@ -292,6 +292,7 @@ smp_cpu_init(int cpunum)
  * Slaves start using C here. Indirectly called from smp_slave_stext.
  * Do what start_kernel() and main() do for boot strap processor (aka monarch)
  */
+<<<<<<< HEAD
 void __init smp_callin(unsigned long pdce_proc)
 {
 	int slave_id = cpu_now_booting;
@@ -301,6 +302,12 @@ void __init smp_callin(unsigned long pdce_proc)
 			| PAGE0->mem_pdc) != pdce_proc);
 #endif
 
+=======
+void __init smp_callin(void)
+{
+	int slave_id = cpu_now_booting;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smp_cpu_init(slave_id);
 	preempt_disable();
 

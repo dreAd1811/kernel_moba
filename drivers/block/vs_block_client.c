@@ -147,7 +147,11 @@ static void vs_block_device_kfree(struct kref *kref)
 	put_disk(blkdev->disk);
 
 	mutex_lock(&vs_block_ida_lock);
+<<<<<<< HEAD
 	ida_free(&vs_block_ida, blkdev->id);
+=======
+	ida_remove(&vs_block_ida, blkdev->id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&vs_block_ida_lock);
 
 	if (blkdev->client)
@@ -234,14 +238,22 @@ static int vs_block_client_check_sector_size(struct block_client *client,
 		struct bio *bio)
 {
 	if (unlikely(!bio_sectors(bio))) {
+<<<<<<< HEAD
 		dev_err(&client->service->dev, "zero-length bio\n");
+=======
+		dev_err(&client->service->dev, "zero-length bio");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
 	if (unlikely(bio_size(bio) % client->client.sector_size)) {
 		dev_err(&client->service->dev,
 				"bio has %zd bytes, which is unexpected "
+<<<<<<< HEAD
 				"for sector_size of %zd bytes\n",
+=======
+				"for sector_size of %zd bytes",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				(size_t)bio_size(bio),
 				(size_t)client->client.sector_size);
 		return -EIO;
@@ -287,7 +299,11 @@ static int block_client_send_write_req(struct block_client *client,
 				vs_client_block_io_req_write_can_send(state),
 				vs_client_block_io_alloc_req_write(
 					state, &pbuf, GFP_KERNEL));
+<<<<<<< HEAD
 		err = PTR_ERR_OR_ZERO(mbuf);
+=======
+		err = IS_ERR(mbuf) ? PTR_ERR(mbuf) : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Retry if sending is no longer possible */
 	} while (err == -ECANCELED);
@@ -423,7 +439,11 @@ fail_get_client:
 
 static int vs_block_client_get_blkdev_id(struct block_client *client)
 {
+<<<<<<< HEAD
 	int id = 0;
+=======
+	int id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 retry:
@@ -432,7 +452,11 @@ retry:
 		return -ENOMEM;
 
 	mutex_lock(&vs_block_ida_lock);
+<<<<<<< HEAD
 	ret = ida_alloc_range(&vs_block_ida, 0, id, GFP_KERNEL);
+=======
+	ret = ida_get_new(&vs_block_ida, &id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&vs_block_ida_lock);
 
 	if (ret == -EAGAIN)
@@ -484,7 +508,11 @@ static int vs_block_client_disk_add(struct block_client *client)
 	 * of QUEUE_FLAG_NONROT, which prevents the I/O schedulers trying
 	 * to wait for the disk to spin.
 	 */
+<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_VIRT, blkdev->queue);
+=======
+	queue_flag_set_unlocked(QUEUE_FLAG_VIRT, blkdev->queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	blkdev->queue->queuedata = blkdev;
 
@@ -563,7 +591,11 @@ fail_free_blk_queue:
 	blk_cleanup_queue(blkdev->queue);
 fail_remove_ida:
 	mutex_lock(&vs_block_ida_lock);
+<<<<<<< HEAD
 	ida_free(&vs_block_ida, blkdev->id);
+=======
+	ida_remove(&vs_block_ida, blkdev->id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&vs_block_ida_lock);
 fail_free_blkdev:
 	kfree(blkdev);

@@ -3,7 +3,10 @@
 #
 menuconfig TOUCHSCREEN_SYNAPTICS_TCM
 	bool "Synaptics TCM touchscreen"
+<<<<<<< HEAD
 	default y
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here if you have a Synaptics TCM touchscreen connected
 	  to your system.
@@ -42,7 +45,10 @@ endchoice
 config TOUCHSCREEN_SYNAPTICS_TCM_CORE
 	tristate "Synaptics TCM core module"
 	depends on I2C || SPI_MASTER
+<<<<<<< HEAD
 	default y
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to enable core functionality.
 
@@ -54,7 +60,10 @@ config TOUCHSCREEN_SYNAPTICS_TCM_CORE
 config TOUCHSCREEN_SYNAPTICS_TCM_TOUCH
 	tristate "Synaptics TCM touch module"
 	depends on TOUCHSCREEN_SYNAPTICS_TCM_CORE
+<<<<<<< HEAD
 	default y
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to enable support for touch reporting.
 
@@ -66,7 +75,10 @@ config TOUCHSCREEN_SYNAPTICS_TCM_TOUCH
 config TOUCHSCREEN_SYNAPTICS_TCM_DEVICE
 	tristate "Synaptics TCM device module"
 	depends on TOUCHSCREEN_SYNAPTICS_TCM_CORE
+<<<<<<< HEAD
 	default y
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to enable support for TCM device functionality.
 
@@ -89,7 +101,10 @@ config TOUCHSCREEN_SYNAPTICS_TCM_TESTING
 config TOUCHSCREEN_SYNAPTICS_TCM_REFLASH
 	tristate "Synaptics TCM reflash module"
 	depends on TOUCHSCREEN_SYNAPTICS_TCM_CORE
+<<<<<<< HEAD
 	default y
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to enable support for reflash functionality.
 
@@ -101,7 +116,10 @@ config TOUCHSCREEN_SYNAPTICS_TCM_REFLASH
 config TOUCHSCREEN_SYNAPTICS_TCM_RECOVERY
 	tristate "Synaptics TCM recovery module"
 	depends on TOUCHSCREEN_SYNAPTICS_TCM_CORE
+<<<<<<< HEAD
 	default y
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to enable support for recovery functionality.
 
@@ -124,7 +142,10 @@ config TOUCHSCREEN_SYNAPTICS_TCM_ZEROFLASH
 config TOUCHSCREEN_SYNAPTICS_TCM_DIAGNOSTICS
 	tristate "Synaptics TCM diagnostics module"
 	depends on TOUCHSCREEN_SYNAPTICS_TCM_CORE
+<<<<<<< HEAD
 	default y
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to enable support for diagnostics functionality.
 

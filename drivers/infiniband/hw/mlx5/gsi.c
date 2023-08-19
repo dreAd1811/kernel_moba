@@ -477,8 +477,13 @@ static struct ib_qp *get_tx_qp(struct mlx5_ib_gsi_qp *gsi, struct ib_ud_wr *wr)
 	return gsi->tx_qps[qp_index];
 }
 
+<<<<<<< HEAD
 int mlx5_ib_gsi_post_send(struct ib_qp *qp, const struct ib_send_wr *wr,
 			  const struct ib_send_wr **bad_wr)
+=======
+int mlx5_ib_gsi_post_send(struct ib_qp *qp, struct ib_send_wr *wr,
+			  struct ib_send_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5_ib_gsi_qp *gsi = gsi_qp(qp);
 	struct ib_qp *tx_qp;
@@ -507,8 +512,12 @@ int mlx5_ib_gsi_post_send(struct ib_qp *qp, const struct ib_send_wr *wr,
 		ret = ib_post_send(tx_qp, &cur_wr.wr, bad_wr);
 		if (ret) {
 			/* Undo the effect of adding the outstanding wr */
+<<<<<<< HEAD
 			gsi->outstanding_pi = (gsi->outstanding_pi - 1) %
 					      gsi->cap.max_send_wr;
+=======
+			gsi->outstanding_pi--;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err;
 		}
 		spin_unlock_irqrestore(&gsi->lock, flags);
@@ -522,8 +531,13 @@ err:
 	return ret;
 }
 
+<<<<<<< HEAD
 int mlx5_ib_gsi_post_recv(struct ib_qp *qp, const struct ib_recv_wr *wr,
 			  const struct ib_recv_wr **bad_wr)
+=======
+int mlx5_ib_gsi_post_recv(struct ib_qp *qp, struct ib_recv_wr *wr,
+			  struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5_ib_gsi_qp *gsi = gsi_qp(qp);
 

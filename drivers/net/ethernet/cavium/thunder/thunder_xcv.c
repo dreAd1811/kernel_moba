@@ -20,7 +20,11 @@
 #include "nic.h"
 #include "thunder_bgx.h"
 
+<<<<<<< HEAD
 #define DRV_NAME	"thunder_xcv"
+=======
+#define DRV_NAME	"thunder-xcv"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_VERSION	"1.0"
 
 /* Register offsets */

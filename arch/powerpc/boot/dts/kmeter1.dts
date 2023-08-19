@@ -434,27 +434,47 @@
 				compatible = "fsl,ucc-mdio";
 
 				/* Piggy2 (UCC4, MDIO 0x00, RMII) */
+<<<<<<< HEAD
 				phy_piggy2: ethernet-phy@0 {
+=======
+				phy_piggy2: ethernet-phy@00 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x0>;
 				};
 
 				/* Eth-1 (UCC5, MDIO 0x08, RMII) */
+<<<<<<< HEAD
 				phy_eth1: ethernet-phy@8 {
+=======
+				phy_eth1: ethernet-phy@08 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x08>;
 				};
 
 				/* Eth-2 (UCC6, MDIO 0x09, RMII) */
+<<<<<<< HEAD
 				phy_eth2: ethernet-phy@9 {
+=======
+				phy_eth2: ethernet-phy@09 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x09>;
 				};
 
 				/* Eth-3 (UCC7, MDIO 0x0a, RMII) */
+<<<<<<< HEAD
 				phy_eth3: ethernet-phy@a {
+=======
+				phy_eth3: ethernet-phy@0a {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x0a>;
 				};
 
 				/* Eth-4 (UCC8, MDIO 0x0b, RMII) */
+<<<<<<< HEAD
 				phy_eth4: ethernet-phy@b {
+=======
+				phy_eth4: ethernet-phy@0b {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x0b>;
 				};
 

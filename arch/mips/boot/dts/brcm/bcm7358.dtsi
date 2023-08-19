@@ -217,6 +217,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		watchdog: watchdog@4066a8 {
 			clocks = <&upg_clk>;
 			compatible = "brcm,bcm7038-wdt";
@@ -224,6 +225,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		aon_pm_l2_intc: interrupt-controller@408240 {
 			compatible = "brcm,l2-intc";
 			reg = <0x408240 0x30>;
@@ -369,6 +372,7 @@
 			interrupt-names = "mspi_done";
 			status = "disabled";
 		};
+<<<<<<< HEAD
 
 		waketimer: waketimer@408e80 {
 			compatible = "brcm,brcmstb-waketimer";
@@ -379,5 +383,7 @@
 			clocks = <&upg_clk>;
 			status = "disabled";
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

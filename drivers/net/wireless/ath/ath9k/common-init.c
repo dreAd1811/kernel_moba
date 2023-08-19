@@ -88,7 +88,11 @@ static const struct ieee80211_channel ath9k_5ghz_chantable[] = {
 	CHAN5G(5825, 37), /* Channel 165 */
 };
 
+<<<<<<< HEAD
 /* Atheros hardware rate code addition for short preamble */
+=======
+/* Atheros hardware rate code addition for short premble */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SHPCHECK(__hw_rate, __flags) \
 	((__flags & IEEE80211_RATE_SHORT_PREAMBLE) ? (__hw_rate | 0x04 ) : 0)
 

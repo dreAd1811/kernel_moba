@@ -1,5 +1,33 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
+=======
+/*******************************************************************************
+ *
+ * Intel Ethernet Controller XL710 Family Linux Driver
+ * Copyright(c) 2013 - 2017 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ *
+ ******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _I40E_H_
 #define _I40E_H_
@@ -31,9 +59,12 @@
 #include <linux/clocksource.h>
 #include <linux/net_tstamp.h>
 #include <linux/ptp_clock_kernel.h>
+<<<<<<< HEAD
 #include <net/pkt_cls.h>
 #include <net/tc_act/tc_gact.h>
 #include <net/tc_act/tc_mirred.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "i40e_type.h"
 #include "i40e_prototype.h"
 #include "i40e_client.h"
@@ -57,7 +88,10 @@
 #define i40e_default_queues_per_vmdq(pf) \
 		(((pf)->hw_features & I40E_HW_RSS_AQ_CAPABLE) ? 4 : 1)
 #define I40E_DEFAULT_QUEUES_PER_VF	4
+<<<<<<< HEAD
 #define I40E_MAX_VF_QUEUES		16
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_DEFAULT_QUEUES_PER_TC	1 /* should be a power of 2 */
 #define i40e_pf_get_max_q_per_tc(pf) \
 		(((pf)->hw_features & I40E_HW_128_QP_RSS_CAPABLE) ? 128 : 64)
@@ -106,11 +140,14 @@
 /* default to trying for four seconds */
 #define I40E_TRY_LINK_TIMEOUT	(4 * HZ)
 
+<<<<<<< HEAD
 /* BW rate limiting */
 #define I40E_BW_CREDIT_DIVISOR		50 /* 50Mbps per BW credit */
 #define I40E_BW_MBPS_DIVISOR		125000 /* rate / (1000000 / 8) Mbps */
 #define I40E_MAX_BW_INACTIVE_ACCUM	4 /* accumulate 4 credits max */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* driver state flags */
 enum i40e_state_t {
 	__I40E_TESTING,
@@ -122,8 +159,11 @@ enum i40e_state_t {
 	__I40E_MDD_EVENT_PENDING,
 	__I40E_VFLR_EVENT_PENDING,
 	__I40E_RESET_RECOVERY_PENDING,
+<<<<<<< HEAD
 	__I40E_TIMEOUT_RECOVERY_PENDING,
 	__I40E_MISC_IRQ_REQUESTED,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__I40E_RESET_INTR_RECEIVED,
 	__I40E_REINIT_REQUESTED,
 	__I40E_PF_RESET_REQUESTED,
@@ -136,6 +176,7 @@ enum i40e_state_t {
 	__I40E_BAD_EEPROM,
 	__I40E_DOWN_REQUESTED,
 	__I40E_FD_FLUSH_REQUESTED,
+<<<<<<< HEAD
 	__I40E_FD_ATR_AUTO_DISABLED,
 	__I40E_FD_SB_AUTO_DISABLED,
 	__I40E_RESET_FAILED,
@@ -147,12 +188,20 @@ enum i40e_state_t {
 	__I40E_CLIENT_SERVICE_REQUESTED,
 	__I40E_CLIENT_L2_CHANGE,
 	__I40E_CLIENT_RESET,
+=======
+	__I40E_RESET_FAILED,
+	__I40E_PORT_SUSPENDED,
+	__I40E_VF_DISABLE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This must be last as it determines the size of the BITMAP */
 	__I40E_STATE_SIZE__,
 };
 
+<<<<<<< HEAD
 #define I40E_PF_RESET_FLAG	BIT_ULL(__I40E_PF_RESET_REQUESTED)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* VSI state flags */
 enum i40e_vsi_state_t {
 	__I40E_VSI_DOWN,
@@ -240,6 +289,7 @@ struct i40e_fdir_filter {
 	u32 fd_id;
 };
 
+<<<<<<< HEAD
 #define I40E_CLOUD_FIELD_OMAC	0x01
 #define I40E_CLOUD_FIELD_IMAC	0x02
 #define I40E_CLOUD_FIELD_IVLAN	0x04
@@ -292,6 +342,8 @@ struct i40e_cloud_filter {
 	u8 tunnel_type;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_ETH_P_LLDP			0x88cc
 
 #define I40E_DCB_PRIO_TYPE_STRICT	0
@@ -311,12 +363,18 @@ struct i40e_tc_configuration {
 	struct i40e_tc_info tc_info[I40E_MAX_TRAFFIC_CLASS];
 };
 
+<<<<<<< HEAD
 #define I40E_UDP_PORT_INDEX_UNUSED	255
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct i40e_udp_port_config {
 	/* AdminQ command interface expects port number in Host byte order */
 	u16 port;
 	u8 type;
+<<<<<<< HEAD
 	u8 filter_index;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* macros related to FLX_PIT */
@@ -388,6 +446,7 @@ struct i40e_flex_pit {
 	u8 pit_index;
 };
 
+<<<<<<< HEAD
 struct i40e_channel {
 	struct list_head list;
 	bool initialized;
@@ -407,6 +466,8 @@ struct i40e_channel {
 	struct i40e_vsi *parent_vsi;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* struct that defines the Ethernet device */
 struct i40e_pf {
 	struct pci_dev *pdev;
@@ -419,7 +480,11 @@ struct i40e_pf {
 	u16 num_vmdq_vsis;         /* num vmdq vsis this PF has set up */
 	u16 num_vmdq_qps;          /* num queue pairs per vmdq pool */
 	u16 num_vmdq_msix;         /* num queue vectors per vmdq pool */
+<<<<<<< HEAD
 	u16 num_req_vfs;           /* num VFs requested for this PF */
+=======
+	u16 num_req_vfs;           /* num VFs requested for this VF */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 num_vf_qps;            /* num queue pairs per VF */
 	u16 num_lan_qps;           /* num lan queues this PF has set up */
 	u16 num_lan_msix;          /* num queue vectors for the base PF vsi */
@@ -461,9 +526,12 @@ struct i40e_pf {
 	struct i40e_udp_port_config udp_ports[I40E_MAX_PF_UDP_OFFLOAD_PORTS];
 	u16 pending_udp_bitmap;
 
+<<<<<<< HEAD
 	struct hlist_head cloud_filter_list;
 	u16 num_cloud_filters;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum i40e_interrupt_policy int_policy;
 	u16 rx_itr_default;
 	u16 tx_itr_default;
@@ -475,6 +543,7 @@ struct i40e_pf {
 	struct timer_list service_timer;
 	struct work_struct service_task;
 
+<<<<<<< HEAD
 	u32 hw_features;
 #define I40E_HW_RSS_AQ_CAPABLE			BIT(0)
 #define I40E_HW_128_QP_RSS_CAPABLE		BIT(1)
@@ -523,6 +592,57 @@ struct i40e_pf {
 #define I40E_FLAG_FD_SB_INACTIVE		BIT(22)
 #define I40E_FLAG_FD_SB_TO_CLOUD_FILTER		BIT(23)
 #define I40E_FLAG_DISABLE_FW_LLDP		BIT(24)
+=======
+	u64 hw_features;
+#define I40E_HW_RSS_AQ_CAPABLE			BIT_ULL(0)
+#define I40E_HW_128_QP_RSS_CAPABLE		BIT_ULL(1)
+#define I40E_HW_ATR_EVICT_CAPABLE		BIT_ULL(2)
+#define I40E_HW_WB_ON_ITR_CAPABLE		BIT_ULL(3)
+#define I40E_HW_MULTIPLE_TCP_UDP_RSS_PCTYPE	BIT_ULL(4)
+#define I40E_HW_NO_PCI_LINK_CHECK		BIT_ULL(5)
+#define I40E_HW_100M_SGMII_CAPABLE		BIT_ULL(6)
+#define I40E_HW_NO_DCB_SUPPORT			BIT_ULL(7)
+#define I40E_HW_USE_SET_LLDP_MIB		BIT_ULL(8)
+#define I40E_HW_GENEVE_OFFLOAD_CAPABLE		BIT_ULL(9)
+#define I40E_HW_PTP_L4_CAPABLE			BIT_ULL(10)
+#define I40E_HW_WOL_MC_MAGIC_PKT_WAKE		BIT_ULL(11)
+#define I40E_HW_MPLS_HDR_OFFLOAD_CAPABLE	BIT_ULL(12)
+#define I40E_HW_HAVE_CRT_RETIMER		BIT_ULL(13)
+#define I40E_HW_OUTER_UDP_CSUM_CAPABLE		BIT_ULL(14)
+#define I40E_HW_PHY_CONTROLS_LEDS		BIT_ULL(15)
+#define I40E_HW_STOP_FW_LLDP			BIT_ULL(16)
+#define I40E_HW_PORT_ID_VALID			BIT_ULL(17)
+#define I40E_HW_RESTART_AUTONEG			BIT_ULL(18)
+
+	u64 flags;
+#define I40E_FLAG_RX_CSUM_ENABLED		BIT_ULL(1)
+#define I40E_FLAG_MSI_ENABLED			BIT_ULL(2)
+#define I40E_FLAG_MSIX_ENABLED			BIT_ULL(3)
+#define I40E_FLAG_HW_ATR_EVICT_ENABLED		BIT_ULL(4)
+#define I40E_FLAG_RSS_ENABLED			BIT_ULL(6)
+#define I40E_FLAG_VMDQ_ENABLED			BIT_ULL(7)
+#define I40E_FLAG_IWARP_ENABLED			BIT_ULL(10)
+#define I40E_FLAG_FILTER_SYNC			BIT_ULL(15)
+#define I40E_FLAG_SERVICE_CLIENT_REQUESTED	BIT_ULL(16)
+#define I40E_FLAG_SRIOV_ENABLED			BIT_ULL(19)
+#define I40E_FLAG_DCB_ENABLED			BIT_ULL(20)
+#define I40E_FLAG_FD_SB_ENABLED			BIT_ULL(21)
+#define I40E_FLAG_FD_ATR_ENABLED		BIT_ULL(22)
+#define I40E_FLAG_FD_SB_AUTO_DISABLED		BIT_ULL(23)
+#define I40E_FLAG_FD_ATR_AUTO_DISABLED		BIT_ULL(24)
+#define I40E_FLAG_PTP				BIT_ULL(25)
+#define I40E_FLAG_MFP_ENABLED			BIT_ULL(26)
+#define I40E_FLAG_UDP_FILTER_SYNC		BIT_ULL(27)
+#define I40E_FLAG_DCB_CAPABLE			BIT_ULL(29)
+#define I40E_FLAG_VEB_STATS_ENABLED		BIT_ULL(37)
+#define I40E_FLAG_LINK_POLLING_ENABLED		BIT_ULL(39)
+#define I40E_FLAG_VEB_MODE_ENABLED		BIT_ULL(40)
+#define I40E_FLAG_TRUE_PROMISC_SUPPORT		BIT_ULL(51)
+#define I40E_FLAG_CLIENT_RESET			BIT_ULL(54)
+#define I40E_FLAG_TEMP_LINK_POLLING		BIT_ULL(55)
+#define I40E_FLAG_CLIENT_L2_CHANGE		BIT_ULL(56)
+#define I40E_FLAG_LEGACY_RX			BIT_ULL(58)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct i40e_client_instance *cinst;
 	bool stat_offsets_loaded;
@@ -587,7 +707,11 @@ struct i40e_pf {
 	unsigned long ptp_tx_start;
 	struct hwtstamp_config tstamp_config;
 	struct mutex tmreg_lock; /* Used to protect the SYSTIME registers. */
+<<<<<<< HEAD
 	u32 ptp_adj_mult;
+=======
+	u64 ptp_base_adj;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 tx_hwtstamp_timeouts;
 	u32 tx_hwtstamp_skipped;
 	u32 rx_hwtstamp_cleared;
@@ -603,10 +727,13 @@ struct i40e_pf {
 	u32 ioremap_len;
 	u32 fd_inv;
 	u16 phy_led_val;
+<<<<<<< HEAD
 
 	u16 override_q_count;
 	u16 last_sw_conf_flags;
 	u16 last_sw_conf_valid_flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -750,7 +877,10 @@ struct i40e_vsi {
 	enum i40e_vsi_type type;  /* VSI type, e.g., LAN, FCoE, etc */
 	s16 vf_id;		/* Virtual function ID for SRIOV VSIs */
 
+<<<<<<< HEAD
 	struct tc_mqprio_qopt_offload mqprio_qopt; /* queue parameters */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40e_tc_configuration tc_config;
 	struct i40e_aqc_vsi_properties_data info;
 
@@ -772,6 +902,7 @@ struct i40e_vsi {
 	bool current_isup;	/* Sync 'link up' logging */
 	enum i40e_aq_link_speed current_speed;	/* Sync link speed logging */
 
+<<<<<<< HEAD
 	/* channel specific fields */
 	u16 cnt_q_avail;	/* num of queues available for channel usage */
 	u16 orig_rss_size;
@@ -783,6 +914,8 @@ struct i40e_vsi {
 	struct list_head ch_list;
 	u16 tc_seid_map[I40E_MAX_TRAFFIC_CLASS];
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *priv;	/* client driver data reference. */
 
 	/* VSI specific handlers */
@@ -805,7 +938,10 @@ struct i40e_q_vector {
 	struct i40e_ring_container rx;
 	struct i40e_ring_container tx;
 
+<<<<<<< HEAD
 	u8 itr_countdown;	/* when 0 should adjust adaptive ITR */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 num_ringpairs;	/* total number of ring pairs in vector */
 
 	cpumask_t affinity_mask;
@@ -814,6 +950,11 @@ struct i40e_q_vector {
 	struct rcu_head rcu;	/* to avoid race with update stats on free */
 	char name[I40E_INT_NAME_STR_LEN];
 	bool arm_wb_state;
+<<<<<<< HEAD
+=======
+#define ITR_COUNTDOWN_START 100
+	u8 itr_countdown;	/* when 0 should adjust ITR */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } ____cacheline_internodealigned_in_smp;
 
 /* lan device */
@@ -988,9 +1129,12 @@ void i40e_service_event_schedule(struct i40e_pf *pf);
 void i40e_notify_client_of_vf_msg(struct i40e_vsi *vsi, u32 vf_id,
 				  u8 *msg, u16 len);
 
+<<<<<<< HEAD
 int i40e_control_wait_tx_q(int seid, struct i40e_pf *pf, int pf_q, bool is_xdp,
 			   bool enable);
 int i40e_control_wait_rx_q(struct i40e_pf *pf, int pf_q, bool enable);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i40e_vsi_start_rings(struct i40e_vsi *vsi);
 void i40e_vsi_stop_rings(struct i40e_vsi *vsi);
 void i40e_vsi_stop_rings_no_wait(struct  i40e_vsi *vsi);
@@ -1024,7 +1168,10 @@ void i40e_notify_client_of_l2_param_changes(struct i40e_vsi *vsi);
 void i40e_notify_client_of_netdev_close(struct i40e_vsi *vsi, bool reset);
 void i40e_notify_client_of_vf_enable(struct i40e_pf *pf, u32 num_vfs);
 void i40e_notify_client_of_vf_reset(struct i40e_pf *pf, u32 vf_id);
+<<<<<<< HEAD
 void i40e_client_update_msix_info(struct i40e_pf *pf);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i40e_vf_client_capable(struct i40e_pf *pf, u32 vf_id);
 /**
  * i40e_irq_dynamic_enable - Enable default interrupt generation settings
@@ -1037,6 +1184,12 @@ static inline void i40e_irq_dynamic_enable(struct i40e_vsi *vsi, int vector)
 	struct i40e_hw *hw = &pf->hw;
 	u32 val;
 
+<<<<<<< HEAD
+=======
+	/* definitely clear the PBA here, as this function is meant to
+	 * clean out all previous interrupts AND enable the interrupt
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = I40E_PFINT_DYN_CTLN_INTENA_MASK |
 	      I40E_PFINT_DYN_CTLN_CLEARPBA_MASK |
 	      (I40E_ITR_NONE << I40E_PFINT_DYN_CTLN_ITR_INDX_SHIFT);
@@ -1045,7 +1198,11 @@ static inline void i40e_irq_dynamic_enable(struct i40e_vsi *vsi, int vector)
 }
 
 void i40e_irq_dynamic_disable_icr0(struct i40e_pf *pf);
+<<<<<<< HEAD
 void i40e_irq_dynamic_enable_icr0(struct i40e_pf *pf);
+=======
+void i40e_irq_dynamic_enable_icr0(struct i40e_pf *pf, bool clearpba);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i40e_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd);
 int i40e_open(struct net_device *netdev);
 int i40e_close(struct net_device *netdev);
@@ -1090,6 +1247,7 @@ static inline bool i40e_enabled_xdp_vsi(struct i40e_vsi *vsi)
 {
 	return !!vsi->xdp_prog;
 }
+<<<<<<< HEAD
 
 int i40e_create_queue_channel(struct i40e_vsi *vsi, struct i40e_channel *ch);
 int i40e_set_bw_limit(struct i40e_vsi *vsi, u16 seid, u64 max_tx_rate);
@@ -1099,4 +1257,6 @@ int i40e_add_del_cloud_filter(struct i40e_vsi *vsi,
 int i40e_add_del_cloud_filter_big_buf(struct i40e_vsi *vsi,
 				      struct i40e_cloud_filter *filter,
 				      bool add);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _I40E_H_ */

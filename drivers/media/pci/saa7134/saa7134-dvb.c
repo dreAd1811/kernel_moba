@@ -29,7 +29,11 @@
 
 #include <media/v4l2-common.h>
 #include "dvb-pll.h"
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include <dvb_frontend.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mt352.h"
 #include "mt352_priv.h" /* FIXME */
@@ -1195,7 +1199,11 @@ static struct s5h1411_config kworld_s5h1411_config = {
 	.inversion     = S5H1411_INVERSION_ON,
 	.status_mode   = S5H1411_DEMODLOCKING,
 	.mpeg_timing   =
+<<<<<<< HEAD
 		S5H1411_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+		S5H1411_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -1389,7 +1397,11 @@ static int dvb_init(struct saa7134_dev *dev)
 			if (configure_tda827x_fe(dev, &lifeview_trio_config,
 						 &tda827x_cfg_0) < 0)
 				goto detach_frontend;
+<<<<<<< HEAD
 		} else {		/* satellite */
+=======
+		} else {  		/* satellite */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fe0->dvb.frontend = dvb_attach(tda10086_attach, &flydvbs, &dev->i2c_adap);
 			if (fe0->dvb.frontend) {
 				if (dvb_attach(tda826x_attach, fe0->dvb.frontend, 0x63,
@@ -1659,7 +1671,11 @@ static int dvb_init(struct saa7134_dev *dev)
 			if (configure_tda827x_fe(dev, &asus_tiger_3in1_config,
 							&tda827x_cfg_2) < 0)
 				goto detach_frontend;
+<<<<<<< HEAD
 		} else {		/* satellite */
+=======
+		} else {  		/* satellite */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fe0->dvb.frontend = dvb_attach(tda10086_attach,
 						&flydvbs, &dev->i2c_adap);
 			if (fe0->dvb.frontend) {

@@ -64,7 +64,11 @@
 static DEFINE_MUTEX(drbd_main_mutex);
 static int drbd_open(struct block_device *bdev, fmode_t mode);
 static void drbd_release(struct gendisk *gd, fmode_t mode);
+<<<<<<< HEAD
 static void md_sync_timer_fn(struct timer_list *t);
+=======
+static void md_sync_timer_fn(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int w_bitmap_io(struct drbd_work *w, int unused);
 
 MODULE_AUTHOR("Philipp Reisner <phil@linbit.com>, "
@@ -124,11 +128,19 @@ struct kmem_cache *drbd_request_cache;
 struct kmem_cache *drbd_ee_cache;	/* peer requests */
 struct kmem_cache *drbd_bm_ext_cache;	/* bitmap extents */
 struct kmem_cache *drbd_al_ext_cache;	/* activity log extents */
+<<<<<<< HEAD
 mempool_t drbd_request_mempool;
 mempool_t drbd_ee_mempool;
 mempool_t drbd_md_io_page_pool;
 struct bio_set drbd_md_io_bio_set;
 struct bio_set drbd_io_bio_set;
+=======
+mempool_t *drbd_request_mempool;
+mempool_t *drbd_ee_mempool;
+mempool_t *drbd_md_io_page_pool;
+struct bio_set *drbd_md_io_bio_set;
+struct bio_set *drbd_io_bio_set;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* I do not use a standard mempool, because:
    1) I want to hand out the pre-allocated objects first.
@@ -153,10 +165,17 @@ struct bio *bio_alloc_drbd(gfp_t gfp_mask)
 {
 	struct bio *bio;
 
+<<<<<<< HEAD
 	if (!bioset_initialized(&drbd_md_io_bio_set))
 		return bio_alloc(gfp_mask, 1);
 
 	bio = bio_alloc_bioset(gfp_mask, 1, &drbd_md_io_bio_set);
+=======
+	if (!drbd_md_io_bio_set)
+		return bio_alloc(gfp_mask, 1);
+
+	bio = bio_alloc_bioset(gfp_mask, 1, drbd_md_io_bio_set);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bio)
 		return NULL;
 	return bio;
@@ -334,6 +353,11 @@ static int drbd_thread_setup(void *arg)
 		 thi->name[0],
 		 resource->name);
 
+<<<<<<< HEAD
+=======
+	allow_kernel_signal(DRBD_SIGKILL);
+	allow_kernel_signal(SIGXCPU);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 restart:
 	retval = thi->function(thi);
 
@@ -511,8 +535,12 @@ static void drbd_calc_cpu_mask(cpumask_var_t *cpu_mask)
 {
 	unsigned int *resources_per_cpu, min_index = ~0;
 
+<<<<<<< HEAD
 	resources_per_cpu = kcalloc(nr_cpu_ids, sizeof(*resources_per_cpu),
 				    GFP_KERNEL);
+=======
+	resources_per_cpu = kzalloc(nr_cpu_ids * sizeof(*resources_per_cpu), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (resources_per_cpu) {
 		struct drbd_resource *resource;
 		unsigned int cpu, min = ~0;
@@ -796,7 +824,10 @@ int __drbd_send_protocol(struct drbd_connection *connection, enum drbd_packet cm
 
 	if (nc->tentative && connection->agreed_pro_version < 92) {
 		rcu_read_unlock();
+<<<<<<< HEAD
 		mutex_unlock(&sock->mutex);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drbd_err(connection, "--dry-run is not supported by peer");
 		return -EOPNOTSUPP;
 	}
@@ -1377,7 +1408,11 @@ void drbd_send_ack_dp(struct drbd_peer_device *peer_device, enum drbd_packet cmd
 		      struct p_data *dp, int data_size)
 {
 	if (peer_device->connection->peer_integrity_tfm)
+<<<<<<< HEAD
 		data_size -= crypto_shash_digestsize(peer_device->connection->peer_integrity_tfm);
+=======
+		data_size -= crypto_ahash_digestsize(peer_device->connection->peer_integrity_tfm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_drbd_send_ack(peer_device, cmd, dp->sector, cpu_to_be32(data_size),
 		       dp->block_id);
 }
@@ -1690,7 +1725,11 @@ int drbd_send_dblock(struct drbd_peer_device *peer_device, struct drbd_request *
 	sock = &peer_device->connection->data;
 	p = drbd_prepare_command(peer_device, sock);
 	digest_size = peer_device->connection->integrity_tfm ?
+<<<<<<< HEAD
 		      crypto_shash_digestsize(peer_device->connection->integrity_tfm) : 0;
+=======
+		      crypto_ahash_digestsize(peer_device->connection->integrity_tfm) : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!p)
 		return -EIO;
@@ -1796,7 +1835,11 @@ int drbd_send_block(struct drbd_peer_device *peer_device, enum drbd_packet cmd,
 	p = drbd_prepare_command(peer_device, sock);
 
 	digest_size = peer_device->connection->integrity_tfm ?
+<<<<<<< HEAD
 		      crypto_shash_digestsize(peer_device->connection->integrity_tfm) : 0;
+=======
+		      crypto_ahash_digestsize(peer_device->connection->integrity_tfm) : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!p)
 		return -EIO;
@@ -1848,7 +1891,11 @@ int drbd_send(struct drbd_connection *connection, struct socket *sock,
 	      void *buf, size_t size, unsigned msg_flags)
 {
 	struct kvec iov = {.iov_base = buf, .iov_len = size};
+<<<<<<< HEAD
 	struct msghdr msg = {.msg_flags = msg_flags | MSG_NOSIGNAL};
+=======
+	struct msghdr msg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rv, sent = 0;
 
 	if (!sock)
@@ -1856,6 +1903,15 @@ int drbd_send(struct drbd_connection *connection, struct socket *sock,
 
 	/* THINK  if (signal_pending) return ... ? */
 
+<<<<<<< HEAD
+=======
+	msg.msg_name       = NULL;
+	msg.msg_namelen    = 0;
+	msg.msg_control    = NULL;
+	msg.msg_controllen = 0;
+	msg.msg_flags      = msg_flags | MSG_NOSIGNAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iov_iter_kvec(&msg.msg_iter, WRITE | ITER_KVEC, &iov, 1, size);
 
 	if (sock == connection->data.socket) {
@@ -2018,10 +2074,21 @@ void drbd_init_set_defaults(struct drbd_device *device)
 	device->unplug_work.cb  = w_send_write_hint;
 	device->bm_io_work.w.cb = w_bitmap_io;
 
+<<<<<<< HEAD
 	timer_setup(&device->resync_timer, resync_timer_fn, 0);
 	timer_setup(&device->md_sync_timer, md_sync_timer_fn, 0);
 	timer_setup(&device->start_resync_timer, start_resync_timer_fn, 0);
 	timer_setup(&device->request_timer, request_timer_fn, 0);
+=======
+	setup_timer(&device->resync_timer, resync_timer_fn,
+			(unsigned long)device);
+	setup_timer(&device->md_sync_timer, md_sync_timer_fn,
+			(unsigned long)device);
+	setup_timer(&device->start_resync_timer, start_resync_timer_fn,
+			(unsigned long)device);
+	setup_timer(&device->request_timer, request_timer_fn,
+			(unsigned long)device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init_waitqueue_head(&device->misc_wait);
 	init_waitqueue_head(&device->state_wait);
@@ -2098,6 +2165,7 @@ static void drbd_destroy_mempools(void)
 
 	/* D_ASSERT(device, atomic_read(&drbd_pp_vacant)==0); */
 
+<<<<<<< HEAD
 	bioset_exit(&drbd_io_bio_set);
 	bioset_exit(&drbd_md_io_bio_set);
 	mempool_exit(&drbd_md_io_page_pool);
@@ -2108,6 +2176,32 @@ static void drbd_destroy_mempools(void)
 	kmem_cache_destroy(drbd_bm_ext_cache);
 	kmem_cache_destroy(drbd_al_ext_cache);
 
+=======
+	if (drbd_io_bio_set)
+		bioset_free(drbd_io_bio_set);
+	if (drbd_md_io_bio_set)
+		bioset_free(drbd_md_io_bio_set);
+	if (drbd_md_io_page_pool)
+		mempool_destroy(drbd_md_io_page_pool);
+	if (drbd_ee_mempool)
+		mempool_destroy(drbd_ee_mempool);
+	if (drbd_request_mempool)
+		mempool_destroy(drbd_request_mempool);
+	if (drbd_ee_cache)
+		kmem_cache_destroy(drbd_ee_cache);
+	if (drbd_request_cache)
+		kmem_cache_destroy(drbd_request_cache);
+	if (drbd_bm_ext_cache)
+		kmem_cache_destroy(drbd_bm_ext_cache);
+	if (drbd_al_ext_cache)
+		kmem_cache_destroy(drbd_al_ext_cache);
+
+	drbd_io_bio_set      = NULL;
+	drbd_md_io_bio_set   = NULL;
+	drbd_md_io_page_pool = NULL;
+	drbd_ee_mempool      = NULL;
+	drbd_request_mempool = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drbd_ee_cache        = NULL;
 	drbd_request_cache   = NULL;
 	drbd_bm_ext_cache    = NULL;
@@ -2120,7 +2214,22 @@ static int drbd_create_mempools(void)
 {
 	struct page *page;
 	const int number = (DRBD_MAX_BIO_SIZE/PAGE_SIZE) * drbd_minor_count;
+<<<<<<< HEAD
 	int i, ret;
+=======
+	int i;
+
+	/* prepare our caches and mempools */
+	drbd_request_mempool = NULL;
+	drbd_ee_cache        = NULL;
+	drbd_request_cache   = NULL;
+	drbd_bm_ext_cache    = NULL;
+	drbd_al_ext_cache    = NULL;
+	drbd_pp_pool         = NULL;
+	drbd_md_io_page_pool = NULL;
+	drbd_md_io_bio_set   = NULL;
+	drbd_io_bio_set      = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* caches */
 	drbd_request_cache = kmem_cache_create(
@@ -2144,6 +2253,7 @@ static int drbd_create_mempools(void)
 		goto Enomem;
 
 	/* mempools */
+<<<<<<< HEAD
 	ret = bioset_init(&drbd_io_bio_set, BIO_POOL_SIZE, 0, 0);
 	if (ret)
 		goto Enomem;
@@ -2164,6 +2274,28 @@ static int drbd_create_mempools(void)
 
 	ret = mempool_init_slab_pool(&drbd_ee_mempool, number, drbd_ee_cache);
 	if (ret)
+=======
+	drbd_io_bio_set = bioset_create(BIO_POOL_SIZE, 0, 0);
+	if (drbd_io_bio_set == NULL)
+		goto Enomem;
+
+	drbd_md_io_bio_set = bioset_create(DRBD_MIN_POOL_PAGES, 0,
+					   BIOSET_NEED_BVECS);
+	if (drbd_md_io_bio_set == NULL)
+		goto Enomem;
+
+	drbd_md_io_page_pool = mempool_create_page_pool(DRBD_MIN_POOL_PAGES, 0);
+	if (drbd_md_io_page_pool == NULL)
+		goto Enomem;
+
+	drbd_request_mempool = mempool_create_slab_pool(number,
+		drbd_request_cache);
+	if (drbd_request_mempool == NULL)
+		goto Enomem;
+
+	drbd_ee_mempool = mempool_create_slab_pool(number, drbd_ee_cache);
+	if (drbd_ee_mempool == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto Enomem;
 
 	/* drbd's page pool */
@@ -2557,11 +2689,19 @@ void conn_free_crypto(struct drbd_connection *connection)
 {
 	drbd_free_sock(connection);
 
+<<<<<<< HEAD
 	crypto_free_shash(connection->csums_tfm);
 	crypto_free_shash(connection->verify_tfm);
 	crypto_free_shash(connection->cram_hmac_tfm);
 	crypto_free_shash(connection->integrity_tfm);
 	crypto_free_shash(connection->peer_integrity_tfm);
+=======
+	crypto_free_ahash(connection->csums_tfm);
+	crypto_free_ahash(connection->verify_tfm);
+	crypto_free_shash(connection->cram_hmac_tfm);
+	crypto_free_ahash(connection->integrity_tfm);
+	crypto_free_ahash(connection->peer_integrity_tfm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(connection->int_dig_in);
 	kfree(connection->int_dig_vv);
 
@@ -2792,7 +2932,11 @@ enum drbd_ret_code drbd_create_device(struct drbd_config_context *adm_ctx, unsig
 
 	drbd_init_set_defaults(device);
 
+<<<<<<< HEAD
 	q = blk_alloc_queue_node(GFP_KERNEL, NUMA_NO_NODE, &resource->req_lock);
+=======
+	q = blk_alloc_queue(GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!q)
 		goto out_no_q;
 	device->rq_queue = q;
@@ -2824,6 +2968,10 @@ enum drbd_ret_code drbd_create_device(struct drbd_config_context *adm_ctx, unsig
 	/* Setting the max_hw_sectors to an odd value of 8kibyte here
 	   This triggers a max_bio_size message upon first attach or connect */
 	blk_queue_max_hw_sectors(q, DRBD_MAX_BIO_SIZE_SAFE >> 8);
+<<<<<<< HEAD
+=======
+	q->queue_lock = &resource->req_lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	device->md_io.page = alloc_page(GFP_KERNEL);
 	if (!device->md_io.page)
@@ -2986,7 +3134,11 @@ static int __init drbd_init(void)
 		goto fail;
 
 	err = -ENOMEM;
+<<<<<<< HEAD
 	drbd_proc = proc_create_single("drbd", S_IFREG | 0444 , NULL, drbd_seq_show);
+=======
+	drbd_proc = proc_create_data("drbd", S_IFREG | S_IRUGO , NULL, &drbd_proc_fops, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!drbd_proc)	{
 		pr_err("unable to register proc file\n");
 		goto fail;
@@ -3686,9 +3838,15 @@ int drbd_md_test_flag(struct drbd_backing_dev *bdev, int flag)
 	return (bdev->md.flags & flag) != 0;
 }
 
+<<<<<<< HEAD
 static void md_sync_timer_fn(struct timer_list *t)
 {
 	struct drbd_device *device = from_timer(device, t, md_sync_timer);
+=======
+static void md_sync_timer_fn(unsigned long data)
+{
+	struct drbd_device *device = (struct drbd_device *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drbd_device_post_work(device, MD_SYNC);
 }
 

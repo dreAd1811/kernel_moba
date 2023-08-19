@@ -151,6 +151,7 @@ void perf_get_regs_user(struct perf_regs *regs_user,
 	regs_user_copy->sp = user_regs->sp;
 	regs_user_copy->cs = user_regs->cs;
 	regs_user_copy->ss = user_regs->ss;
+<<<<<<< HEAD
 	/*
 	 * Store user space frame-pointer value on sample
 	 * to facilitate stack unwinding for cases when
@@ -160,10 +161,22 @@ void perf_get_regs_user(struct perf_regs *regs_user,
 	regs_user_copy->bp = user_regs->bp;
 
 	regs_user_copy->bx = -1;
+=======
+
+	/*
+	 * Most system calls don't save these registers, don't report them.
+	 */
+	regs_user_copy->bx = -1;
+	regs_user_copy->bp = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regs_user_copy->r12 = -1;
 	regs_user_copy->r13 = -1;
 	regs_user_copy->r14 = -1;
 	regs_user_copy->r15 = -1;
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * For this to be at all useful, we need a reasonable guess for
 	 * the ABI.  Be careful: we're in NMI context, and we're

@@ -567,13 +567,18 @@ qat_uclo_check_image_compat(struct icp_qat_uof_encap_obj *encap_uof_obj,
 		       code_page->imp_expr_tab_offset);
 	if (uc_var_tab->entry_num || imp_var_tab->entry_num ||
 	    imp_expr_tab->entry_num) {
+<<<<<<< HEAD
 		pr_err("QAT: UOF can't contain imported variable to be parsed\n");
+=======
+		pr_err("QAT: UOF can't contain imported variable to be parsed");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	neigh_reg_tab = (struct icp_qat_uof_objtable *)
 			(encap_uof_obj->beg_uof +
 			code_page->neigh_reg_tab_offset);
 	if (neigh_reg_tab->entry_num) {
+<<<<<<< HEAD
 		pr_err("QAT: UOF can't contain shared control store feature\n");
 		return -EINVAL;
 	}
@@ -587,6 +592,21 @@ qat_uclo_check_image_compat(struct icp_qat_uof_encap_obj *encap_uof_obj,
 	}
 	if (RELOADABLE_CTX_SHARED_MODE(image->ae_mode)) {
 		pr_err("QAT: UOF can't use reloadable feature\n");
+=======
+		pr_err("QAT: UOF can't contain shared control store feature");
+		return -EINVAL;
+	}
+	if (image->numpages > 1) {
+		pr_err("QAT: UOF can't contain multiple pages");
+		return -EINVAL;
+	}
+	if (ICP_QAT_SHARED_USTORE_MODE(image->ae_mode)) {
+		pr_err("QAT: UOF can't use shared control store feature");
+		return -EFAULT;
+	}
+	if (RELOADABLE_CTX_SHARED_MODE(image->ae_mode)) {
+		pr_err("QAT: UOF can't use reloadable feature");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 	}
 	return 0;
@@ -702,7 +722,11 @@ static int qat_uclo_map_ae(struct icp_qat_fw_loader_handle *handle, int max_ae)
 		}
 	}
 	if (!mflag) {
+<<<<<<< HEAD
 		pr_err("QAT: uimage uses AE not set\n");
+=======
+		pr_err("QAT: uimage uses AE not set");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	return 0;
@@ -791,7 +815,10 @@ static int qat_uclo_init_reg(struct icp_qat_fw_loader_handle *handle,
 	case ICP_GPA_ABS:
 	case ICP_GPB_ABS:
 		ctx_mask = 0;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ICP_GPA_REL:
 	case ICP_GPB_REL:
 		return qat_hal_init_gpr(handle, ae, ctx_mask, reg_type,
@@ -801,7 +828,10 @@ static int qat_uclo_init_reg(struct icp_qat_fw_loader_handle *handle,
 	case ICP_SR_RD_ABS:
 	case ICP_DR_RD_ABS:
 		ctx_mask = 0;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ICP_SR_REL:
 	case ICP_DR_REL:
 	case ICP_SR_RD_REL:
@@ -811,7 +841,10 @@ static int qat_uclo_init_reg(struct icp_qat_fw_loader_handle *handle,
 	case ICP_SR_WR_ABS:
 	case ICP_DR_WR_ABS:
 		ctx_mask = 0;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ICP_SR_WR_REL:
 	case ICP_DR_WR_REL:
 		return qat_hal_init_wr_xfer(handle, ae, ctx_mask, reg_type,
@@ -1162,9 +1195,14 @@ static int qat_uclo_map_suof(struct icp_qat_fw_loader_handle *handle,
 	suof_handle->img_table.num_simgs = suof_ptr->num_chunks - 1;
 
 	if (suof_handle->img_table.num_simgs != 0) {
+<<<<<<< HEAD
 		suof_img_hdr = kcalloc(suof_handle->img_table.num_simgs,
 				       sizeof(img_header),
 				       GFP_KERNEL);
+=======
+		suof_img_hdr = kzalloc(suof_handle->img_table.num_simgs *
+				       sizeof(img_header), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!suof_img_hdr)
 			return -ENOMEM;
 		suof_handle->img_table.simg_hdr = suof_img_hdr;

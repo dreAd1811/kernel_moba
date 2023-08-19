@@ -84,7 +84,11 @@ static const struct i2c_adapter saa7164_i2c_adap_template = {
 	.algo              = &saa7164_i2c_algo_template,
 };
 
+<<<<<<< HEAD
 static const struct i2c_client saa7164_i2c_client_template = {
+=======
+static struct i2c_client saa7164_i2c_client_template = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name	= "saa7164 internal",
 };
 

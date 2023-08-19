@@ -10,6 +10,11 @@
 #include <linux/jump_label.h>
 #include <asm/ipl.h>
 
+<<<<<<< HEAD
+=======
+#ifdef HAVE_JUMP_LABEL
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct insn {
 	u16 opcode;
 	s32 offset;
@@ -100,3 +105,8 @@ void arch_jump_label_transform_static(struct jump_entry *entry,
 {
 	__jump_label_transform(entry, type, 1);
 }
+<<<<<<< HEAD
+=======
+
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

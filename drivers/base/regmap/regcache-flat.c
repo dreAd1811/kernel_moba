@@ -37,12 +37,18 @@ static int regcache_flat_init(struct regmap *map)
 
 	cache = map->cache;
 
+<<<<<<< HEAD
 	for (i = 0; i < map->num_reg_defaults; i++) {
 		unsigned int reg = map->reg_defaults[i].reg;
 		unsigned int index = regcache_flat_get_index(map, reg);
 
 		cache[index] = map->reg_defaults[i].def;
 	}
+=======
+	for (i = 0; i < map->num_reg_defaults; i++)
+		cache[regcache_flat_get_index(map, map->reg_defaults[i].reg)] =
+				map->reg_defaults[i].def;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -59,9 +65,14 @@ static int regcache_flat_read(struct regmap *map,
 			      unsigned int reg, unsigned int *value)
 {
 	unsigned int *cache = map->cache;
+<<<<<<< HEAD
 	unsigned int index = regcache_flat_get_index(map, reg);
 
 	*value = cache[index];
+=======
+
+	*value = cache[regcache_flat_get_index(map, reg)];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -70,9 +81,14 @@ static int regcache_flat_write(struct regmap *map, unsigned int reg,
 			       unsigned int value)
 {
 	unsigned int *cache = map->cache;
+<<<<<<< HEAD
 	unsigned int index = regcache_flat_get_index(map, reg);
 
 	cache[index] = value;
+=======
+
+	cache[regcache_flat_get_index(map, reg)] = value;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

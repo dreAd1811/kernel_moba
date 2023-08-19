@@ -18,6 +18,11 @@
  * 02110-1301, USA.
  */
 
+<<<<<<< HEAD
+=======
+#include <generated/compile.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/sched.h>
 #include <linux/sched/task_stack.h>
@@ -178,7 +183,11 @@ static const struct user_regset hexagon_regsets[] = {
 };
 
 static const struct user_regset_view hexagon_user_view = {
+<<<<<<< HEAD
 	.name = "hexagon",
+=======
+	.name = UTS_MACHINE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.e_machine = ELF_ARCH,
 	.ei_osabi = ELF_OSABI,
 	.regsets = hexagon_regsets,

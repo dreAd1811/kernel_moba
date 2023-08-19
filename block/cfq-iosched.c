@@ -210,9 +210,15 @@ struct cfqg_stats {
 	/* total time with empty current active q with other requests queued */
 	struct blkg_stat		empty_time;
 	/* fields after this shouldn't be cleared on stat reset */
+<<<<<<< HEAD
 	u64				start_group_wait_time;
 	u64				start_idle_time;
 	u64				start_empty_time;
+=======
+	uint64_t			start_group_wait_time;
+	uint64_t			start_idle_time;
+	uint64_t			start_empty_time;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint16_t			flags;
 #endif	/* CONFIG_DEBUG_BLK_CGROUP */
 #endif	/* CONFIG_CFQ_GROUP_IOSCHED */
@@ -493,13 +499,22 @@ CFQG_FLAG_FNS(empty)
 /* This should be called with the queue_lock held. */
 static void cfqg_stats_update_group_wait_time(struct cfqg_stats *stats)
 {
+<<<<<<< HEAD
 	u64 now;
+=======
+	unsigned long long now;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cfqg_stats_waiting(stats))
 		return;
 
+<<<<<<< HEAD
 	now = ktime_get_ns();
 	if (now > stats->start_group_wait_time)
+=======
+	now = sched_clock();
+	if (time_after64(now, stats->start_group_wait_time))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blkg_stat_add(&stats->group_wait_time,
 			      now - stats->start_group_wait_time);
 	cfqg_stats_clear_waiting(stats);
@@ -515,20 +530,33 @@ static void cfqg_stats_set_start_group_wait_time(struct cfq_group *cfqg,
 		return;
 	if (cfqg == curr_cfqg)
 		return;
+<<<<<<< HEAD
 	stats->start_group_wait_time = ktime_get_ns();
+=======
+	stats->start_group_wait_time = sched_clock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cfqg_stats_mark_waiting(stats);
 }
 
 /* This should be called with the queue_lock held. */
 static void cfqg_stats_end_empty_time(struct cfqg_stats *stats)
 {
+<<<<<<< HEAD
 	u64 now;
+=======
+	unsigned long long now;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cfqg_stats_empty(stats))
 		return;
 
+<<<<<<< HEAD
 	now = ktime_get_ns();
 	if (now > stats->start_empty_time)
+=======
+	now = sched_clock();
+	if (time_after64(now, stats->start_empty_time))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blkg_stat_add(&stats->empty_time,
 			      now - stats->start_empty_time);
 	cfqg_stats_clear_empty(stats);
@@ -554,7 +582,11 @@ static void cfqg_stats_set_start_empty_time(struct cfq_group *cfqg)
 	if (cfqg_stats_empty(stats))
 		return;
 
+<<<<<<< HEAD
 	stats->start_empty_time = ktime_get_ns();
+=======
+	stats->start_empty_time = sched_clock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cfqg_stats_mark_empty(stats);
 }
 
@@ -563,9 +595,15 @@ static void cfqg_stats_update_idle_time(struct cfq_group *cfqg)
 	struct cfqg_stats *stats = &cfqg->stats;
 
 	if (cfqg_stats_idling(stats)) {
+<<<<<<< HEAD
 		u64 now = ktime_get_ns();
 
 		if (now > stats->start_idle_time)
+=======
+		unsigned long long now = sched_clock();
+
+		if (time_after64(now, stats->start_idle_time))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			blkg_stat_add(&stats->idle_time,
 				      now - stats->start_idle_time);
 		cfqg_stats_clear_idling(stats);
@@ -578,7 +616,11 @@ static void cfqg_stats_set_start_idle_time(struct cfq_group *cfqg)
 
 	BUG_ON(cfqg_stats_idling(stats));
 
+<<<<<<< HEAD
 	stats->start_idle_time = ktime_get_ns();
+=======
+	stats->start_idle_time = sched_clock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cfqg_stats_mark_idling(stats);
 }
 
@@ -703,6 +745,7 @@ static inline void cfqg_stats_update_io_merged(struct cfq_group *cfqg,
 }
 
 static inline void cfqg_stats_update_completion(struct cfq_group *cfqg,
+<<<<<<< HEAD
 						u64 start_time_ns,
 						u64 io_start_time_ns,
 						unsigned int op)
@@ -716,6 +759,19 @@ static inline void cfqg_stats_update_completion(struct cfq_group *cfqg,
 	if (io_start_time_ns > start_time_ns)
 		blkg_rwstat_add(&stats->wait_time, op,
 				io_start_time_ns - start_time_ns);
+=======
+			uint64_t start_time, uint64_t io_start_time,
+			unsigned int op)
+{
+	struct cfqg_stats *stats = &cfqg->stats;
+	unsigned long long now = sched_clock();
+
+	if (time_after64(now, io_start_time))
+		blkg_rwstat_add(&stats->service_time, op, now - io_start_time);
+	if (time_after64(io_start_time, start_time))
+		blkg_rwstat_add(&stats->wait_time, op,
+				io_start_time - start_time);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* @stats = 0 */
@@ -801,9 +857,14 @@ static inline void cfqg_stats_update_io_remove(struct cfq_group *cfqg,
 static inline void cfqg_stats_update_io_merged(struct cfq_group *cfqg,
 			unsigned int op) { }
 static inline void cfqg_stats_update_completion(struct cfq_group *cfqg,
+<<<<<<< HEAD
 						u64 start_time_ns,
 						u64 io_start_time_ns,
 						unsigned int op) { }
+=======
+			uint64_t start_time, uint64_t io_start_time,
+			unsigned int op) { }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif	/* CONFIG_CFQ_GROUP_IOSCHED */
 
@@ -3729,7 +3790,10 @@ static void cfq_init_prio_data(struct cfq_queue *cfqq, struct cfq_io_cq *cic)
 	switch (ioprio_class) {
 	default:
 		printk(KERN_ERR "cfq: bad prio %x\n", ioprio_class);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IOPRIO_CLASS_NONE:
 		/*
 		 * no prio set, inherit CPU scheduling settings
@@ -4292,8 +4356,13 @@ static void cfq_completed_request(struct request_queue *q, struct request *rq)
 	cfqd->rq_in_driver--;
 	cfqq->dispatched--;
 	(RQ_CFQG(rq))->dispatched--;
+<<<<<<< HEAD
 	cfqg_stats_update_completion(cfqq->cfqg, rq->start_time_ns,
 				     rq->io_start_time_ns, rq->cmd_flags);
+=======
+	cfqg_stats_update_completion(cfqq->cfqg, rq_start_time_ns(rq),
+				     rq_io_start_time_ns(rq), rq->cmd_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cfqd->rq_in_flight[cfq_cfqq_sync(cfqq)]--;
 
@@ -4309,7 +4378,20 @@ static void cfq_completed_request(struct request_queue *q, struct request *rq)
 					cfqq_type(cfqq));
 
 		st->ttime.last_end_request = now;
+<<<<<<< HEAD
 		if (rq->start_time_ns + cfqd->cfq_fifo_expire[1] <= now)
+=======
+		/*
+		 * We have to do this check in jiffies since start_time is in
+		 * jiffies and it is not trivial to convert to ns. If
+		 * cfq_fifo_expire[1] ever comes close to 1 jiffie, this test
+		 * will become problematic but so far we are fine (the default
+		 * is 128 ms).
+		 */
+		if (!time_after(rq->start_time +
+				  nsecs_to_jiffies(cfqd->cfq_fifo_expire[1]),
+				jiffies))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cfqd->last_delayed_sync = now;
 	}
 
@@ -4852,7 +4934,11 @@ USEC_STORE_FUNCTION(cfq_target_latency_us_store, &cfqd->cfq_target_latency, 1, U
 #undef USEC_STORE_FUNCTION
 
 #define CFQ_ATTR(name) \
+<<<<<<< HEAD
 	__ATTR(name, 0644, cfq_##name##_show, cfq_##name##_store)
+=======
+	__ATTR(name, S_IRUGO|S_IWUSR, cfq_##name##_show, cfq_##name##_store)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct elv_fs_entry cfq_attrs[] = {
 	CFQ_ATTR(quantum),

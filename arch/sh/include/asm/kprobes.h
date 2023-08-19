@@ -27,6 +27,10 @@ struct kprobe;
 
 void arch_remove_kprobe(struct kprobe *);
 void kretprobe_trampoline(void);
+<<<<<<< HEAD
+=======
+void jprobe_return_end(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Architecture specific copy of original instruction*/
 struct arch_specific_insn {
@@ -42,6 +46,12 @@ struct prev_kprobe {
 /* per-cpu kprobe control block */
 struct kprobe_ctlblk {
 	unsigned long kprobe_status;
+<<<<<<< HEAD
+=======
+	unsigned long jprobe_saved_r15;
+	struct pt_regs jprobe_saved_regs;
+	kprobe_opcode_t jprobes_stack[MAX_STACK_SIZE];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct prev_kprobe prev_kprobe;
 };
 

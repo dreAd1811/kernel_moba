@@ -141,11 +141,19 @@ mISDN_read(struct file *filep, char __user *buf, size_t count, loff_t *off)
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t
 mISDN_poll(struct file *filep, poll_table *wait)
 {
 	struct mISDNtimerdev	*dev = filep->private_data;
 	__poll_t		mask = EPOLLERR;
+=======
+static unsigned int
+mISDN_poll(struct file *filep, poll_table *wait)
+{
+	struct mISDNtimerdev	*dev = filep->private_data;
+	unsigned int		mask = POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (*debug & DEBUG_TIMER)
 		printk(KERN_DEBUG "%s(%p, %p)\n", __func__, filep, wait);
@@ -153,7 +161,11 @@ mISDN_poll(struct file *filep, poll_table *wait)
 		poll_wait(filep, &dev->wait, wait);
 		mask = 0;
 		if (dev->work || !list_empty(&dev->expired))
+<<<<<<< HEAD
 			mask |= (EPOLLIN | EPOLLRDNORM);
+=======
+			mask |= (POLLIN | POLLRDNORM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (*debug & DEBUG_TIMER)
 			printk(KERN_DEBUG "%s work(%d) empty(%d)\n", __func__,
 			       dev->work, list_empty(&dev->expired));
@@ -162,9 +174,15 @@ mISDN_poll(struct file *filep, poll_table *wait)
 }
 
 static void
+<<<<<<< HEAD
 dev_expire_timer(struct timer_list *t)
 {
 	struct mISDNtimer *timer = from_timer(timer, t, tl);
+=======
+dev_expire_timer(unsigned long data)
+{
+	struct mISDNtimer *timer = (void *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u_long			flags;
 
 	spin_lock_irqsave(&timer->dev->lock, flags);
@@ -189,7 +207,11 @@ misdn_add_timer(struct mISDNtimerdev *dev, int timeout)
 		if (!timer)
 			return -ENOMEM;
 		timer->dev = dev;
+<<<<<<< HEAD
 		timer_setup(&timer->tl, dev_expire_timer, 0);
+=======
+		setup_timer(&timer->tl, dev_expire_timer, (long)timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irq(&dev->lock);
 		id = timer->id = dev->next_id++;
 		if (dev->next_id < 0)

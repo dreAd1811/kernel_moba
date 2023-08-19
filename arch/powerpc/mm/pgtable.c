@@ -54,8 +54,12 @@ static inline int pte_looks_normal(pte_t pte)
 	return 0;
 #else
 	return (pte_val(pte) &
+<<<<<<< HEAD
 		(_PAGE_PRESENT | _PAGE_SPECIAL | _PAGE_NO_CACHE | _PAGE_USER |
 		 _PAGE_PRIVILEGED)) ==
+=======
+		(_PAGE_PRESENT | _PAGE_SPECIAL | _PAGE_NO_CACHE | _PAGE_USER)) ==
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(_PAGE_PRESENT | _PAGE_USER);
 #endif
 }
@@ -221,13 +225,21 @@ int ptep_set_access_flags(struct vm_area_struct *vma, unsigned long address,
 	entry = set_access_flags_filter(entry, vma, dirty);
 	changed = !pte_same(*(ptep), entry);
 	if (changed) {
+<<<<<<< HEAD
 		assert_pte_locked(vma->vm_mm, address);
 		__ptep_set_access_flags(vma, ptep, entry,
 					address, mmu_virtual_psize);
+=======
+		if (!is_vm_hugetlb_page(vma))
+			assert_pte_locked(vma->vm_mm, address);
+		__ptep_set_access_flags(vma->vm_mm, ptep, entry, address);
+		flush_tlb_page(vma, address);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return changed;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_HUGETLB_PAGE
 extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
 				      unsigned long addr, pte_t *ptep,
@@ -270,6 +282,8 @@ extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
 }
 #endif /* CONFIG_HUGETLB_PAGE */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DEBUG_VM
 void assert_pte_locked(struct mm_struct *mm, unsigned long addr)
 {

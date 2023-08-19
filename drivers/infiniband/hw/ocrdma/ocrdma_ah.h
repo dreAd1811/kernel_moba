@@ -55,6 +55,10 @@ struct ib_ah *ocrdma_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,
 			       struct ib_udata *udata);
 int ocrdma_destroy_ah(struct ib_ah *ah);
 int ocrdma_query_ah(struct ib_ah *ah, struct rdma_ah_attr *ah_attr);
+<<<<<<< HEAD
+=======
+int ocrdma_modify_ah(struct ib_ah *ah, struct rdma_ah_attr *ah_attr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int ocrdma_process_mad(struct ib_device *,
 		       int process_mad_flags,

@@ -3,7 +3,10 @@
  * Copyright(c) 2003 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Portions of this file are derived from the ipw3945 project, as well
  * as portions of the ieee80211 subsystem header files.
@@ -71,13 +74,18 @@
  *
  ***************************************************/
 
+<<<<<<< HEAD
 int iwl_queue_space(struct iwl_trans *trans, const struct iwl_txq *q)
+=======
+int iwl_queue_space(const struct iwl_txq *q)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int max;
 	unsigned int used;
 
 	/*
 	 * To avoid ambiguity between empty and completely full queues, there
+<<<<<<< HEAD
 	 * should always be less than max_tfd_queue_size elements in the queue.
 	 * If q->n_window is smaller than max_tfd_queue_size, there is no need
 	 * to reserve any queue entries for this purpose.
@@ -93,6 +101,22 @@ int iwl_queue_space(struct iwl_trans *trans, const struct iwl_txq *q)
 	 */
 	used = (q->write_ptr - q->read_ptr) &
 		(trans->cfg->base_params->max_tfd_queue_size - 1);
+=======
+	 * should always be less than TFD_QUEUE_SIZE_MAX elements in the queue.
+	 * If q->n_window is smaller than TFD_QUEUE_SIZE_MAX, there is no need
+	 * to reserve any queue entries for this purpose.
+	 */
+	if (q->n_window < TFD_QUEUE_SIZE_MAX)
+		max = q->n_window;
+	else
+		max = TFD_QUEUE_SIZE_MAX - 1;
+
+	/*
+	 * TFD_QUEUE_SIZE_MAX is a power of 2, so the following is equivalent to
+	 * modulo by TFD_QUEUE_SIZE_MAX and is well defined.
+	 */
+	used = (q->write_ptr - q->read_ptr) & (TFD_QUEUE_SIZE_MAX - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(used > max))
 		return 0;
@@ -149,9 +173,15 @@ void iwl_pcie_free_dma_ptr(struct iwl_trans *trans, struct iwl_dma_ptr *ptr)
 	memset(ptr, 0, sizeof(*ptr));
 }
 
+<<<<<<< HEAD
 static void iwl_pcie_txq_stuck_timer(struct timer_list *t)
 {
 	struct iwl_txq *txq = from_timer(txq, t, stuck_timer);
+=======
+static void iwl_pcie_txq_stuck_timer(unsigned long data)
+{
+	struct iwl_txq *txq = (void *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iwl_trans_pcie *trans_pcie = txq->trans_pcie;
 	struct iwl_trans *trans = iwl_trans_pcie_get_trans(trans_pcie);
 
@@ -275,7 +305,11 @@ static void iwl_pcie_txq_inc_wr_ptr(struct iwl_trans *trans,
 			IWL_DEBUG_INFO(trans, "Tx queue %d requesting wakeup, GP1 = 0x%x\n",
 				       txq_id, reg);
 			iwl_set_bit(trans, CSR_GP_CNTRL,
+<<<<<<< HEAD
 				    BIT(trans->cfg->csr->flag_mac_access_req));
+=======
+				    CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			txq->need_update = true;
 			return;
 		}
@@ -380,7 +414,11 @@ static void iwl_pcie_tfd_unmap(struct iwl_trans *trans,
 	/* Sanity check on number of chunks */
 	num_tbs = iwl_pcie_tfd_get_num_tbs(trans, tfd);
 
+<<<<<<< HEAD
 	if (num_tbs > trans_pcie->max_tbs) {
+=======
+	if (num_tbs >= trans_pcie->max_tbs) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		IWL_ERR(trans, "Too many chunks: %i\n", num_tbs);
 		/* @todo issue fatal error, it is quite serious situation */
 		return;
@@ -492,18 +530,27 @@ int iwl_pcie_txq_alloc(struct iwl_trans *trans, struct iwl_txq *txq,
 		       int slots_num, bool cmd_queue)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+<<<<<<< HEAD
 	size_t tfd_sz = trans_pcie->tfd_size *
 		trans->cfg->base_params->max_tfd_queue_size;
+=======
+	size_t tfd_sz = trans_pcie->tfd_size * TFD_QUEUE_SIZE_MAX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t tb0_buf_sz;
 	int i;
 
 	if (WARN_ON(txq->entries || txq->tfds))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (trans->cfg->use_tfh)
 		tfd_sz = trans_pcie->tfd_size * slots_num;
 
 	timer_setup(&txq->stuck_timer, iwl_pcie_txq_stuck_timer, 0);
+=======
+	setup_timer(&txq->stuck_timer, iwl_pcie_txq_stuck_timer,
+		    (unsigned long)txq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	txq->trans_pcie = trans_pcie;
 
 	txq->n_window = slots_num;
@@ -559,6 +606,7 @@ int iwl_pcie_txq_init(struct iwl_trans *trans, struct iwl_txq *txq,
 		      int slots_num, bool cmd_queue)
 {
 	int ret;
+<<<<<<< HEAD
 	u32 tfd_queue_max_size = trans->cfg->base_params->max_tfd_queue_size;
 
 	txq->need_update = false;
@@ -569,6 +617,14 @@ int iwl_pcie_txq_init(struct iwl_trans *trans, struct iwl_txq *txq,
 		      "Max tfd queue size must be a power of two, but is %d",
 		      tfd_queue_max_size))
 		return -EINVAL;
+=======
+
+	txq->need_update = false;
+
+	/* TFD_QUEUE_SIZE_MAX must be power-of-two size, otherwise
+	 * iwl_queue_inc_wrap and iwl_queue_dec_wrap are broken. */
+	BUILD_BUG_ON(TFD_QUEUE_SIZE_MAX & (TFD_QUEUE_SIZE_MAX - 1));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize queue's high/low-water marks, and head/tail indexes */
 	ret = iwl_queue_init(txq, slots_num);
@@ -620,7 +676,11 @@ static void iwl_pcie_clear_cmd_in_flight(struct iwl_trans *trans)
 
 	trans_pcie->cmd_hold_nic_awake = false;
 	__iwl_trans_pcie_clear_bit(trans, CSR_GP_CNTRL,
+<<<<<<< HEAD
 				   BIT(trans->cfg->csr->flag_mac_access_req));
+=======
+				   CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -645,7 +705,11 @@ static void iwl_pcie_txq_unmap(struct iwl_trans *trans, int txq_id)
 			iwl_pcie_free_tso_page(trans_pcie, skb);
 		}
 		iwl_pcie_txq_free_tfd(trans, txq);
+<<<<<<< HEAD
 		txq->read_ptr = iwl_queue_inc_wrap(trans, txq->read_ptr);
+=======
+		txq->read_ptr = iwl_queue_inc_wrap(txq->read_ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (txq->read_ptr == txq->write_ptr) {
 			unsigned long flags;
@@ -704,8 +768,12 @@ static void iwl_pcie_txq_free(struct iwl_trans *trans, int txq_id)
 	/* De-alloc circular buffer of TFDs */
 	if (txq->tfds) {
 		dma_free_coherent(dev,
+<<<<<<< HEAD
 				  trans_pcie->tfd_size *
 				  trans->cfg->base_params->max_tfd_queue_size,
+=======
+				  trans_pcie->tfd_size * TFD_QUEUE_SIZE_MAX,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  txq->tfds, txq->dma_addr);
 		txq->dma_addr = 0;
 		txq->tfds = NULL;
@@ -925,11 +993,17 @@ static int iwl_pcie_tx_alloc(struct iwl_trans *trans)
 	int ret;
 	int txq_id, slots_num;
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+<<<<<<< HEAD
 	u16 bc_tbls_size = trans->cfg->base_params->num_of_queues;
 
 	bc_tbls_size *= (trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560) ?
 		sizeof(struct iwl_gen3_bc_tbl) :
 		sizeof(struct iwlagn_scd_bc_tbl);
+=======
+
+	u16 scd_bc_tbls_size = trans->cfg->base_params->num_of_queues *
+			sizeof(struct iwlagn_scd_bc_tbl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*It is not allowed to alloc twice, so warn when this happens.
 	 * We cannot rely on the previous allocation, so free and fail */
@@ -939,7 +1013,11 @@ static int iwl_pcie_tx_alloc(struct iwl_trans *trans)
 	}
 
 	ret = iwl_pcie_alloc_dma_ptr(trans, &trans_pcie->scd_bc_tbls,
+<<<<<<< HEAD
 				     bc_tbls_size);
+=======
+				   scd_bc_tbls_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		IWL_ERR(trans, "Scheduler BC Table allocation failed\n");
 		goto error;
@@ -1075,8 +1153,12 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
 	struct iwl_txq *txq = trans_pcie->txq[txq_id];
+<<<<<<< HEAD
 	int tfd_num = iwl_pcie_get_cmd_index(txq, ssn);
 	int read_ptr = iwl_pcie_get_cmd_index(txq, txq->read_ptr);
+=======
+	int tfd_num = ssn & (TFD_QUEUE_SIZE_MAX - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int last_to_free;
 
 	/* This function is not meant to release cmd queue*/
@@ -1091,7 +1173,11 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (read_ptr == tfd_num)
+=======
+	if (txq->read_ptr == tfd_num)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	IWL_DEBUG_TX_REPLY(trans, "[Q %d] %d -> %d (%d)\n",
@@ -1099,13 +1185,21 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
 
 	/*Since we free until index _not_ inclusive, the one before index is
 	 * the last we will free. This one must be used */
+<<<<<<< HEAD
 	last_to_free = iwl_queue_dec_wrap(trans, tfd_num);
+=======
+	last_to_free = iwl_queue_dec_wrap(tfd_num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!iwl_queue_used(txq, last_to_free)) {
 		IWL_ERR(trans,
 			"%s: Read index for DMA queue txq id (%d), last_to_free %d is out of range [0-%d] %d %d.\n",
+<<<<<<< HEAD
 			__func__, txq_id, last_to_free,
 			trans->cfg->base_params->max_tfd_queue_size,
+=======
+			__func__, txq_id, last_to_free, TFD_QUEUE_SIZE_MAX,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			txq->write_ptr, txq->read_ptr);
 		goto out;
 	}
@@ -1114,10 +1208,17 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
 		goto out;
 
 	for (;
+<<<<<<< HEAD
 	     read_ptr != tfd_num;
 	     txq->read_ptr = iwl_queue_inc_wrap(trans, txq->read_ptr),
 	     read_ptr = iwl_pcie_get_cmd_index(txq, txq->read_ptr)) {
 		struct sk_buff *skb = txq->entries[read_ptr].skb;
+=======
+	     txq->read_ptr != tfd_num;
+	     txq->read_ptr = iwl_queue_inc_wrap(txq->read_ptr)) {
+		int idx = iwl_pcie_get_cmd_index(txq, txq->read_ptr);
+		struct sk_buff *skb = txq->entries[idx].skb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (WARN_ON_ONCE(!skb))
 			continue;
@@ -1126,7 +1227,11 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
 
 		__skb_queue_tail(skbs, skb);
 
+<<<<<<< HEAD
 		txq->entries[read_ptr].skb = NULL;
+=======
+		txq->entries[idx].skb = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!trans->cfg->use_tfh)
 			iwl_pcie_txq_inval_byte_cnt_tbl(trans, txq);
@@ -1136,7 +1241,11 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
 
 	iwl_pcie_txq_progress(txq);
 
+<<<<<<< HEAD
 	if (iwl_queue_space(trans, txq) > txq->low_mark &&
+=======
+	if (iwl_queue_space(txq) > txq->low_mark &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    test_bit(txq_id, trans_pcie->queue_stopped)) {
 		struct sk_buff_head overflow_skbs;
 
@@ -1164,11 +1273,19 @@ void iwl_trans_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
 			 * In that case, iwl_queue_space will be small again
 			 * and we won't wake mac80211's queue.
 			 */
+<<<<<<< HEAD
 			iwl_trans_tx(trans, skb, dev_cmd_ptr, txq_id);
 		}
 		spin_lock_bh(&txq->lock);
 
 		if (iwl_queue_space(trans, txq) > txq->low_mark)
+=======
+			iwl_trans_pcie_tx(trans, skb, dev_cmd_ptr, txq_id);
+		}
+		spin_lock_bh(&txq->lock);
+
+		if (iwl_queue_space(txq) > txq->low_mark)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iwl_wake_queue(trans, txq);
 	}
 
@@ -1185,7 +1302,10 @@ static int iwl_pcie_set_cmd_in_flight(struct iwl_trans *trans,
 				      const struct iwl_host_cmd *cmd)
 {
 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+<<<<<<< HEAD
 	const struct iwl_cfg *cfg = trans->cfg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	lockdep_assert_held(&trans_pcie->reg_lock);
@@ -1203,6 +1323,7 @@ static int iwl_pcie_set_cmd_in_flight(struct iwl_trans *trans,
 	 * returned. This needs to be done only on NICs that have
 	 * apmg_wake_up_wa set.
 	 */
+<<<<<<< HEAD
 	if (cfg->base_params->apmg_wake_up_wa &&
 	    !trans_pcie->cmd_hold_nic_awake) {
 		__iwl_trans_pcie_set_bit(trans, CSR_GP_CNTRL,
@@ -1211,11 +1332,25 @@ static int iwl_pcie_set_cmd_in_flight(struct iwl_trans *trans,
 		ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
 				   BIT(cfg->csr->flag_val_mac_access_en),
 				   (BIT(cfg->csr->flag_mac_clock_ready) |
+=======
+	if (trans->cfg->base_params->apmg_wake_up_wa &&
+	    !trans_pcie->cmd_hold_nic_awake) {
+		__iwl_trans_pcie_set_bit(trans, CSR_GP_CNTRL,
+					 CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
+
+		ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
+				   CSR_GP_CNTRL_REG_VAL_MAC_ACCESS_EN,
+				   (CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    CSR_GP_CNTRL_REG_FLAG_GOING_TO_SLEEP),
 				   15000);
 		if (ret < 0) {
 			__iwl_trans_pcie_clear_bit(trans, CSR_GP_CNTRL,
+<<<<<<< HEAD
 					BIT(cfg->csr->flag_mac_access_req));
+=======
+					CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			IWL_ERR(trans, "Failed to wake NIC for hcmd\n");
 			return -EIO;
 		}
@@ -1238,6 +1373,7 @@ static void iwl_pcie_cmdq_reclaim(struct iwl_trans *trans, int txq_id, int idx)
 	struct iwl_txq *txq = trans_pcie->txq[txq_id];
 	unsigned long flags;
 	int nfreed = 0;
+<<<<<<< HEAD
 	u16 r;
 
 	lockdep_assert_held(&txq->lock);
@@ -1251,10 +1387,20 @@ static void iwl_pcie_cmdq_reclaim(struct iwl_trans *trans, int txq_id, int idx)
 			"%s: Read index for DMA queue txq id (%d), index %d is out of range [0-%d] %d %d.\n",
 			__func__, txq_id, idx,
 			trans->cfg->base_params->max_tfd_queue_size,
+=======
+
+	lockdep_assert_held(&txq->lock);
+
+	if ((idx >= TFD_QUEUE_SIZE_MAX) || (!iwl_queue_used(txq, idx))) {
+		IWL_ERR(trans,
+			"%s: Read index for DMA queue txq id (%d), index %d is out of range [0-%d] %d %d.\n",
+			__func__, txq_id, idx, TFD_QUEUE_SIZE_MAX,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			txq->write_ptr, txq->read_ptr);
 		return;
 	}
 
+<<<<<<< HEAD
 	for (idx = iwl_queue_inc_wrap(trans, idx); r != idx;
 	     r = iwl_queue_inc_wrap(trans, r)) {
 		txq->read_ptr = iwl_queue_inc_wrap(trans, txq->read_ptr);
@@ -1262,6 +1408,14 @@ static void iwl_pcie_cmdq_reclaim(struct iwl_trans *trans, int txq_id, int idx)
 		if (nfreed++ > 0) {
 			IWL_ERR(trans, "HCMD skipped: index (%d) %d %d\n",
 				idx, txq->write_ptr, r);
+=======
+	for (idx = iwl_queue_inc_wrap(idx); txq->read_ptr != idx;
+	     txq->read_ptr = iwl_queue_inc_wrap(txq->read_ptr)) {
+
+		if (nfreed++ > 0) {
+			IWL_ERR(trans, "HCMD skipped: index (%d) %d %d\n",
+				idx, txq->write_ptr, txq->read_ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iwl_force_nmi(trans);
 		}
 	}
@@ -1575,7 +1729,11 @@ static int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
 
 	spin_lock_bh(&txq->lock);
 
+<<<<<<< HEAD
 	if (iwl_queue_space(trans, txq) < ((cmd->flags & CMD_ASYNC) ? 2 : 1)) {
+=======
+	if (iwl_queue_space(txq) < ((cmd->flags & CMD_ASYNC) ? 2 : 1)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_bh(&txq->lock);
 
 		IWL_ERR(trans, "No space in command queue\n");
@@ -1731,7 +1889,11 @@ static int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
 	}
 
 	/* Increment and update queue's write index */
+<<<<<<< HEAD
 	txq->write_ptr = iwl_queue_inc_wrap(trans, txq->write_ptr);
+=======
+	txq->write_ptr = iwl_queue_inc_wrap(txq->write_ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwl_pcie_txq_inc_wr_ptr(trans, txq);
 
 	spin_unlock_irqrestore(&trans_pcie->reg_lock, flags);
@@ -1914,7 +2076,10 @@ static int iwl_pcie_send_hcmd_sync(struct iwl_trans *trans,
 	}
 
 	if (test_bit(STATUS_FW_ERROR, &trans->status)) {
+<<<<<<< HEAD
 		iwl_trans_dump_regs(trans);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		IWL_ERR(trans, "FW error in SYNC CMD %s\n",
 			iwl_get_cmd_string(trans, cmd->id));
 		dump_stack();
@@ -2331,11 +2496,19 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, struct sk_buff *skb,
 
 	spin_lock(&txq->lock);
 
+<<<<<<< HEAD
 	if (iwl_queue_space(trans, txq) < txq->high_mark) {
 		iwl_stop_queue(trans, txq);
 
 		/* don't put the packet on the ring, if there is no room */
 		if (unlikely(iwl_queue_space(trans, txq) < 3)) {
+=======
+	if (iwl_queue_space(txq) < txq->high_mark) {
+		iwl_stop_queue(trans, txq);
+
+		/* don't put the packet on the ring, if there is no room */
+		if (unlikely(iwl_queue_space(txq) < 3)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct iwl_device_cmd **dev_cmd_ptr;
 
 			dev_cmd_ptr = (void *)((u8 *)skb->cb +
@@ -2417,6 +2590,7 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, struct sk_buff *skb,
 		goto out_err;
 	iwl_pcie_txq_build_tfd(trans, txq, tb1_phys, tb1_len, false);
 
+<<<<<<< HEAD
 	/*
 	 * If gso_size wasn't set, don't give the frame "amsdu treatment"
 	 * (adding subframes, etc.).
@@ -2424,6 +2598,9 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, struct sk_buff *skb,
 	 * pre-built, and we just need to send the resulting skb.
 	 */
 	if (amsdu && skb_shinfo(skb)->gso_size) {
+=======
+	if (amsdu) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(iwl_fill_data_tbs_amsdu(trans, skb, txq, hdr_len,
 						     out_meta, dev_cmd,
 						     tb1_len)))
@@ -2464,7 +2641,11 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, struct sk_buff *skb,
 	}
 
 	/* Tell device the write index *just past* this latest filled TFD */
+<<<<<<< HEAD
 	txq->write_ptr = iwl_queue_inc_wrap(trans, txq->write_ptr);
+=======
+	txq->write_ptr = iwl_queue_inc_wrap(txq->write_ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!wait_write_ptr)
 		iwl_pcie_txq_inc_wr_ptr(trans, txq);
 

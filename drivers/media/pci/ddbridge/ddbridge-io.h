@@ -47,12 +47,20 @@ static inline void ddbwritel(struct ddb *dev, u32 val, u32 adr)
 
 static inline void ddbcpyto(struct ddb *dev, u32 adr, void *src, long count)
 {
+<<<<<<< HEAD
 	memcpy_toio(dev->regs + adr, src, count);
+=======
+	return memcpy_toio(dev->regs + adr, src, count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void ddbcpyfrom(struct ddb *dev, void *dst, u32 adr, long count)
 {
+<<<<<<< HEAD
 	memcpy_fromio(dst, dev->regs + adr, count);
+=======
+	return memcpy_fromio(dst, dev->regs + adr, count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline u32 safe_ddbreadl(struct ddb *dev, u32 adr)

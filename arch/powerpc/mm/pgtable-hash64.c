@@ -24,10 +24,13 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/thp.h>
 
+<<<<<<< HEAD
 #if H_PGTABLE_RANGE > (USER_VSID_RANGE * (TASK_SIZE_USER64 / TASK_CONTEXT_SIZE))
 #warning Limited user VSID range means pagetable space is wasted
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SPARSEMEM_VMEMMAP
 /*
  * vmemmap is the starting address of the virtual address space where
@@ -193,7 +196,11 @@ unsigned long hash__pmd_hugepage_update(struct mm_struct *mm, unsigned long addr
 
 #ifdef CONFIG_DEBUG_VM
 	WARN_ON(!hash__pmd_trans_huge(*pmdp) && !pmd_devmap(*pmdp));
+<<<<<<< HEAD
 	assert_spin_locked(pmd_lockptr(mm, pmdp));
+=======
+	assert_spin_locked(&mm->page_table_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	__asm__ __volatile__(
@@ -265,8 +272,12 @@ void hash__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
 				  pgtable_t pgtable)
 {
 	pgtable_t *pgtable_slot;
+<<<<<<< HEAD
 
 	assert_spin_locked(pmd_lockptr(mm, pmdp));
+=======
+	assert_spin_locked(&mm->page_table_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * we store the pgtable in the second half of PMD
 	 */
@@ -286,8 +297,12 @@ pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
 	pgtable_t pgtable;
 	pgtable_t *pgtable_slot;
 
+<<<<<<< HEAD
 	assert_spin_locked(pmd_lockptr(mm, pmdp));
 
+=======
+	assert_spin_locked(&mm->page_table_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pgtable_slot = (pgtable_t *)pmdp + PTRS_PER_PMD;
 	pgtable = *pgtable_slot;
 	/*
@@ -302,6 +317,31 @@ pgtable_t hash__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
 	return pgtable;
 }
 
+<<<<<<< HEAD
+=======
+void hash__pmdp_huge_split_prepare(struct vm_area_struct *vma,
+			       unsigned long address, pmd_t *pmdp)
+{
+	VM_BUG_ON(address & ~HPAGE_PMD_MASK);
+	VM_BUG_ON(REGION_ID(address) != USER_REGION_ID);
+	VM_BUG_ON(pmd_devmap(*pmdp));
+
+	/*
+	 * We can't mark the pmd none here, because that will cause a race
+	 * against exit_mmap. We need to continue mark pmd TRANS HUGE, while
+	 * we spilt, but at the same time we wan't rest of the ppc64 code
+	 * not to insert hash pte on this, because we will be modifying
+	 * the deposited pgtable in the caller of this function. Hence
+	 * clear the _PAGE_USER so that we move the fault handling to
+	 * higher level function and that will serialize against ptl.
+	 * We need to flush existing hash pte entries here even though,
+	 * the translation is still valid, because we will withdraw
+	 * pgtable_t after this.
+	 */
+	pmd_hugepage_update(vma->vm_mm, address, pmdp, 0, _PAGE_PRIVILEGED);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * A linux hugepage PMD was changed and the corresponding hash table entries
  * neesd to be flushed.
@@ -326,7 +366,11 @@ void hpte_do_hugepage_flush(struct mm_struct *mm, unsigned long addr,
 
 	if (!is_kernel_addr(addr)) {
 		ssize = user_segment_size(addr);
+<<<<<<< HEAD
 		vsid = get_user_vsid(&mm->context, addr, ssize);
+=======
+		vsid = get_vsid(mm->context.id, addr, ssize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WARN_ON(vsid == 0);
 	} else {
 		vsid = get_kernel_vsid(addr, mmu_kernel_ssize);

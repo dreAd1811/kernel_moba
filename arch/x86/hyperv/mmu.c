@@ -9,16 +9,48 @@
 #include <asm/mshyperv.h>
 #include <asm/msr.h>
 #include <asm/tlbflush.h>
+<<<<<<< HEAD
 #include <asm/tlb.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CREATE_TRACE_POINTS
 #include <asm/trace/hyperv.h>
 
+<<<<<<< HEAD
 /* Each gva in gva_list encodes up to 4096 pages to flush */
 #define HV_TLB_FLUSH_UNIT (4096 * PAGE_SIZE)
 
 static u64 hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
 				      const struct flush_tlb_info *info);
+=======
+/* HvFlushVirtualAddressSpace, HvFlushVirtualAddressList hypercalls */
+struct hv_flush_pcpu {
+	u64 address_space;
+	u64 flags;
+	u64 processor_mask;
+	u64 gva_list[];
+};
+
+/* HvFlushVirtualAddressSpaceEx, HvFlushVirtualAddressListEx hypercalls */
+struct hv_flush_pcpu_ex {
+	u64 address_space;
+	u64 flags;
+	struct {
+		u64 format;
+		u64 valid_bank_mask;
+		u64 bank_contents[];
+	} hv_vp_set;
+	u64 gva_list[];
+};
+
+/* Each gva in gva_list encodes up to 4096 pages to flush */
+#define HV_TLB_FLUSH_UNIT (4096 * PAGE_SIZE)
+
+static struct hv_flush_pcpu __percpu **pcpu_flush;
+
+static struct hv_flush_pcpu_ex __percpu **pcpu_flush_ex;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Fills in gva_list starting from offset. Returns the number of items added.
@@ -52,18 +84,65 @@ static inline int fill_gva_list(u64 gva_list[], int offset,
 	return gva_n - offset;
 }
 
+<<<<<<< HEAD
+=======
+/* Return the number of banks in the resulting vp_set */
+static inline int cpumask_to_vp_set(struct hv_flush_pcpu_ex *flush,
+				    const struct cpumask *cpus)
+{
+	int cpu, vcpu, vcpu_bank, vcpu_offset, nr_bank = 1;
+
+	/* valid_bank_mask can represent up to 64 banks */
+	if (hv_max_vp_index / 64 >= 64)
+		return 0;
+
+	/*
+	 * Clear all banks up to the maximum possible bank as hv_flush_pcpu_ex
+	 * structs are not cleared between calls, we risk flushing unneeded
+	 * vCPUs otherwise.
+	 */
+	for (vcpu_bank = 0; vcpu_bank <= hv_max_vp_index / 64; vcpu_bank++)
+		flush->hv_vp_set.bank_contents[vcpu_bank] = 0;
+
+	/*
+	 * Some banks may end up being empty but this is acceptable.
+	 */
+	for_each_cpu(cpu, cpus) {
+		vcpu = hv_cpu_number_to_vp_number(cpu);
+		vcpu_bank = vcpu / 64;
+		vcpu_offset = vcpu % 64;
+		__set_bit(vcpu_offset, (unsigned long *)
+			  &flush->hv_vp_set.bank_contents[vcpu_bank]);
+		if (vcpu_bank >= nr_bank)
+			nr_bank = vcpu_bank + 1;
+	}
+	flush->hv_vp_set.valid_bank_mask = GENMASK_ULL(nr_bank - 1, 0);
+
+	return nr_bank;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hyperv_flush_tlb_others(const struct cpumask *cpus,
 				    const struct flush_tlb_info *info)
 {
 	int cpu, vcpu, gva_n, max_gvas;
+<<<<<<< HEAD
 	struct hv_tlb_flush **flush_pcpu;
 	struct hv_tlb_flush *flush;
+=======
+	struct hv_flush_pcpu **flush_pcpu;
+	struct hv_flush_pcpu *flush;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 status = U64_MAX;
 	unsigned long flags;
 
 	trace_hyperv_mmu_flush_tlb_others(cpus, info);
 
+<<<<<<< HEAD
 	if (!hv_hypercall_pg)
+=======
+	if (!pcpu_flush || !hv_hypercall_pg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto do_native;
 
 	if (cpumask_empty(cpus))
@@ -71,8 +150,15 @@ static void hyperv_flush_tlb_others(const struct cpumask *cpus,
 
 	local_irq_save(flags);
 
+<<<<<<< HEAD
 	flush_pcpu = (struct hv_tlb_flush **)
 		     this_cpu_ptr(hyperv_pcpu_input_arg);
+=======
+	flush_pcpu = this_cpu_ptr(pcpu_flush);
+
+	if (unlikely(!*flush_pcpu))
+		*flush_pcpu = page_address(alloc_page(GFP_ATOMIC));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flush = *flush_pcpu;
 
@@ -98,6 +184,7 @@ static void hyperv_flush_tlb_others(const struct cpumask *cpus,
 	if (cpumask_equal(cpus, cpu_present_mask)) {
 		flush->flags |= HV_FLUSH_ALL_PROCESSORS;
 	} else {
+<<<<<<< HEAD
 		/*
 		 * From the supplied CPU set we need to figure out if we can get
 		 * away with cheaper HVCALL_FLUSH_VIRTUAL_ADDRESS_{LIST,SPACE}
@@ -121,6 +208,12 @@ static void hyperv_flush_tlb_others(const struct cpumask *cpus,
 
 			if (vcpu >= 64)
 				goto do_ex_hypercall;
+=======
+		for_each_cpu(cpu, cpus) {
+			vcpu = hv_cpu_number_to_vp_number(cpu);
+			if (vcpu >= 64)
+				goto do_native;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			__set_bit(vcpu, (unsigned long *)
 				  &flush->processor_mask);
@@ -147,12 +240,16 @@ static void hyperv_flush_tlb_others(const struct cpumask *cpus,
 		status = hv_do_rep_hypercall(HVCALL_FLUSH_VIRTUAL_ADDRESS_LIST,
 					     gva_n, 0, flush, NULL);
 	}
+<<<<<<< HEAD
 	goto check_status;
 
 do_ex_hypercall:
 	status = hyperv_flush_tlb_others_ex(cpus, info);
 
 check_status:
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local_irq_restore(flags);
 
 	if (!(status & HV_HYPERCALL_RESULT_MASK))
@@ -161,6 +258,7 @@ do_native:
 	native_flush_tlb_others(cpus, info);
 }
 
+<<<<<<< HEAD
 static u64 hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
 				      const struct flush_tlb_info *info)
 {
@@ -177,6 +275,39 @@ static u64 hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
 
 	flush = *flush_pcpu;
 
+=======
+static void hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
+				       const struct flush_tlb_info *info)
+{
+	int nr_bank = 0, max_gvas, gva_n;
+	struct hv_flush_pcpu_ex **flush_pcpu;
+	struct hv_flush_pcpu_ex *flush;
+	u64 status = U64_MAX;
+	unsigned long flags;
+
+	trace_hyperv_mmu_flush_tlb_others(cpus, info);
+
+	if (!pcpu_flush_ex || !hv_hypercall_pg)
+		goto do_native;
+
+	if (cpumask_empty(cpus))
+		return;
+
+	local_irq_save(flags);
+
+	flush_pcpu = this_cpu_ptr(pcpu_flush_ex);
+
+	if (unlikely(!*flush_pcpu))
+		*flush_pcpu = page_address(alloc_page(GFP_ATOMIC));
+
+	flush = *flush_pcpu;
+
+	if (unlikely(!flush)) {
+		local_irq_restore(flags);
+		goto do_native;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (info->mm) {
 		/*
 		 * AddressSpace argument must match the CR3 with PCID bits
@@ -192,10 +323,22 @@ static u64 hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
 
 	flush->hv_vp_set.valid_bank_mask = 0;
 
+<<<<<<< HEAD
 	flush->hv_vp_set.format = HV_GENERIC_SET_SPARSE_4K;
 	nr_bank = cpumask_to_vpset(&(flush->hv_vp_set), cpus);
 	if (nr_bank < 0)
 		return U64_MAX;
+=======
+	if (!cpumask_equal(cpus, cpu_present_mask)) {
+		flush->hv_vp_set.format = HV_GENERIC_SET_SPARCE_4K;
+		nr_bank = cpumask_to_vp_set(flush, cpus);
+	}
+
+	if (!nr_bank) {
+		flush->hv_vp_set.format = HV_GENERIC_SET_ALL;
+		flush->flags |= HV_FLUSH_ALL_PROCESSORS;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We can flush not more than max_gvas with one hypercall. Flush the
@@ -224,7 +367,16 @@ static u64 hyperv_flush_tlb_others_ex(const struct cpumask *cpus,
 			gva_n, nr_bank, flush, NULL);
 	}
 
+<<<<<<< HEAD
 	return status;
+=======
+	local_irq_restore(flags);
+
+	if (!(status & HV_HYPERCALL_RESULT_MASK))
+		return;
+do_native:
+	native_flush_tlb_others(cpus, info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void hyperv_setup_mmu_ops(void)
@@ -232,7 +384,28 @@ void hyperv_setup_mmu_ops(void)
 	if (!(ms_hyperv.hints & HV_X64_REMOTE_TLB_FLUSH_RECOMMENDED))
 		return;
 
+<<<<<<< HEAD
 	pr_info("Using hypercall for remote TLB flush\n");
 	pv_mmu_ops.flush_tlb_others = hyperv_flush_tlb_others;
 	pv_mmu_ops.tlb_remove_table = tlb_remove_table;
+=======
+	if (!(ms_hyperv.hints & HV_X64_EX_PROCESSOR_MASKS_RECOMMENDED)) {
+		pr_info("Using hypercall for remote TLB flush\n");
+		pv_mmu_ops.flush_tlb_others = hyperv_flush_tlb_others;
+	} else {
+		pr_info("Using ext hypercall for remote TLB flush\n");
+		pv_mmu_ops.flush_tlb_others = hyperv_flush_tlb_others_ex;
+	}
+}
+
+void hyper_alloc_mmu(void)
+{
+	if (!(ms_hyperv.hints & HV_X64_REMOTE_TLB_FLUSH_RECOMMENDED))
+		return;
+
+	if (!(ms_hyperv.hints & HV_X64_EX_PROCESSOR_MASKS_RECOMMENDED))
+		pcpu_flush = alloc_percpu(struct hv_flush_pcpu *);
+	else
+		pcpu_flush_ex = alloc_percpu(struct hv_flush_pcpu_ex *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

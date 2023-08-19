@@ -272,7 +272,11 @@ static int _scif_prog_signal(scif_epd_t epd, dma_addr_t dst, u64 val)
 dma_fail:
 	if (!x100)
 		dma_pool_free(ep->remote_dev->signal_pool, status,
+<<<<<<< HEAD
 			      status->src_dma_addr);
+=======
+			      src - offsetof(struct scif_status, val));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 alloc_fail:
 	return err;
 }

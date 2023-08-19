@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // flexcan.c - FLEXCAN CAN controller driver
@@ -8,6 +9,29 @@
 // Copyright (c) 2014 David Jander, Protonic Holland
 //
 // Based on code originally by Andrey Volkov <avolkov@varma-el.com>
+=======
+/*
+ * flexcan.c - FLEXCAN CAN controller driver
+ *
+ * Copyright (c) 2005-2006 Varma Electronics Oy
+ * Copyright (c) 2009 Sascha Hauer, Pengutronix
+ * Copyright (c) 2010-2017 Pengutronix, Marc Kleine-Budde <kernel@pengutronix.de>
+ * Copyright (c) 2014 David Jander, Protonic Holland
+ *
+ * Based on code originally by Andrey Volkov <avolkov@varma-el.com>
+ *
+ * LICENCE:
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation version 2.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/netdevice.h>
 #include <linux/can.h>
@@ -135,12 +159,22 @@
 
 /* FLEXCAN interrupt flag register (IFLAG) bits */
 /* Errata ERR005829 step7: Reserve first valid MB */
+<<<<<<< HEAD
 #define FLEXCAN_TX_MB_RESERVED_OFF_FIFO		8
 #define FLEXCAN_TX_MB_RESERVED_OFF_TIMESTAMP	0
 #define FLEXCAN_TX_MB				63
 #define FLEXCAN_RX_MB_OFF_TIMESTAMP_FIRST	(FLEXCAN_TX_MB_RESERVED_OFF_TIMESTAMP + 1)
 #define FLEXCAN_RX_MB_OFF_TIMESTAMP_LAST	(FLEXCAN_TX_MB - 1)
 #define FLEXCAN_IFLAG_MB(x)		BIT((x) & 0x1f)
+=======
+#define FLEXCAN_TX_MB_RESERVED_OFF_FIFO	8
+#define FLEXCAN_TX_MB_OFF_FIFO		9
+#define FLEXCAN_TX_MB_RESERVED_OFF_TIMESTAMP	0
+#define FLEXCAN_TX_MB_OFF_TIMESTAMP		1
+#define FLEXCAN_RX_MB_OFF_TIMESTAMP_FIRST	(FLEXCAN_TX_MB_OFF_TIMESTAMP + 1)
+#define FLEXCAN_RX_MB_OFF_TIMESTAMP_LAST	63
+#define FLEXCAN_IFLAG_MB(x)		BIT(x)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FLEXCAN_IFLAG_RX_FIFO_OVERFLOW	BIT(7)
 #define FLEXCAN_IFLAG_RX_FIFO_WARN	BIT(6)
 #define FLEXCAN_IFLAG_RX_FIFO_AVAILABLE	BIT(5)
@@ -172,6 +206,7 @@
  * Below is some version info we got:
  *    SOC   Version   IP-Version  Glitch- [TR]WRN_INT IRQ Err Memory err RTR re-
  *                                Filter? connected?  Passive detection  ception in MB
+<<<<<<< HEAD
  *   MX25  FlexCAN2  03.00.00.00     no        no        no       no        no
  *   MX28  FlexCAN2  03.00.04.00    yes       yes        no       no        no
  *   MX35  FlexCAN2  03.00.00.00     no        no        no       no        no
@@ -179,6 +214,14 @@
  *   MX6s  FlexCAN3  10.00.12.00    yes       yes        no       no       yes
  *   VF610 FlexCAN3  ?               no       yes        no      yes       yes?
  * LS1021A FlexCAN2  03.00.04.00     no       yes        no       no       yes
+=======
+ *   MX25  FlexCAN2  03.00.00.00     no        no         ?       no        no
+ *   MX28  FlexCAN2  03.00.04.00    yes       yes        no       no        no
+ *   MX35  FlexCAN2  03.00.00.00     no        no         ?       no        no
+ *   MX53  FlexCAN2  03.00.00.00    yes        no        no       no        no
+ *   MX6s  FlexCAN3  10.00.12.00    yes       yes        no       no       yes
+ *   VF610 FlexCAN3  ?               no       yes        no      yes       yes?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Some SOCs do not have the RX_WARN & TX_WARN interrupt line connected.
  */
@@ -188,7 +231,10 @@
 #define FLEXCAN_QUIRK_DISABLE_MECR	BIT(4) /* Disable Memory error detection */
 #define FLEXCAN_QUIRK_USE_OFF_TIMESTAMP	BIT(5) /* Use timestamp based offloading */
 #define FLEXCAN_QUIRK_BROKEN_PERR_STATE	BIT(6) /* No interrupt for error passive */
+<<<<<<< HEAD
 #define FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN	BIT(7) /* default to BE register access */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Structure of the message buffer */
 struct flexcan_mb {
@@ -258,7 +304,13 @@ struct flexcan_priv {
 	struct can_rx_offload offload;
 
 	struct flexcan_regs __iomem *regs;
+<<<<<<< HEAD
 	struct flexcan_mb __iomem *tx_mb_reserved;
+=======
+	struct flexcan_mb __iomem *tx_mb;
+	struct flexcan_mb __iomem *tx_mb_reserved;
+	u8 tx_mb_idx;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 reg_ctrl_default;
 	u32 reg_imask1_default;
 	u32 reg_imask2_default;
@@ -267,20 +319,26 @@ struct flexcan_priv {
 	struct clk *clk_per;
 	const struct flexcan_devtype_data *devtype_data;
 	struct regulator *reg_xceiver;
+<<<<<<< HEAD
 
 	/* Read and Write APIs */
 	u32 (*read)(void __iomem *addr);
 	void (*write)(u32 val, void __iomem *addr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct flexcan_devtype_data fsl_p1010_devtype_data = {
 	.quirks = FLEXCAN_QUIRK_BROKEN_WERR_STATE |
+<<<<<<< HEAD
 		FLEXCAN_QUIRK_BROKEN_PERR_STATE |
 		FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN,
 };
 
 static const struct flexcan_devtype_data fsl_imx25_devtype_data = {
 	.quirks = FLEXCAN_QUIRK_BROKEN_WERR_STATE |
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		FLEXCAN_QUIRK_BROKEN_PERR_STATE,
 };
 
@@ -299,12 +357,15 @@ static const struct flexcan_devtype_data fsl_vf610_devtype_data = {
 		FLEXCAN_QUIRK_BROKEN_PERR_STATE,
 };
 
+<<<<<<< HEAD
 static const struct flexcan_devtype_data fsl_ls1021a_r2_devtype_data = {
 	.quirks = FLEXCAN_QUIRK_DISABLE_RXFG | FLEXCAN_QUIRK_ENABLE_EACEN_RRS |
 		FLEXCAN_QUIRK_DISABLE_MECR | FLEXCAN_QUIRK_BROKEN_PERR_STATE |
 		FLEXCAN_QUIRK_USE_OFF_TIMESTAMP,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct can_bittiming_const flexcan_bittiming_const = {
 	.name = DRV_NAME,
 	.tseg1_min = 4,
@@ -317,6 +378,7 @@ static const struct can_bittiming_const flexcan_bittiming_const = {
 	.brp_inc = 1,
 };
 
+<<<<<<< HEAD
 /* FlexCAN module is essentially modelled as a little-endian IP in most
  * SoCs, i.e the registers as well as the message buffer areas are
  * implemented in a little-endian fashion.
@@ -349,13 +411,45 @@ static inline void flexcan_write_le(u32 val, void __iomem *addr)
 {
 	iowrite32(val, addr);
 }
+=======
+/* Abstract off the read/write for arm versus ppc. This
+ * assumes that PPC uses big-endian registers and everything
+ * else uses little-endian registers, independent of CPU
+ * endianness.
+ */
+#if defined(CONFIG_PPC)
+static inline u32 flexcan_read(void __iomem *addr)
+{
+	return in_be32(addr);
+}
+
+static inline void flexcan_write(u32 val, void __iomem *addr)
+{
+	out_be32(addr, val);
+}
+#else
+static inline u32 flexcan_read(void __iomem *addr)
+{
+	return readl(addr);
+}
+
+static inline void flexcan_write(u32 val, void __iomem *addr)
+{
+	writel(val, addr);
+}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void flexcan_error_irq_enable(const struct flexcan_priv *priv)
 {
 	struct flexcan_regs __iomem *regs = priv->regs;
 	u32 reg_ctrl = (priv->reg_ctrl_default | FLEXCAN_CTRL_ERR_MSK);
 
+<<<<<<< HEAD
 	priv->write(reg_ctrl, &regs->ctrl);
+=======
+	flexcan_write(reg_ctrl, &regs->ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void flexcan_error_irq_disable(const struct flexcan_priv *priv)
@@ -363,7 +457,11 @@ static inline void flexcan_error_irq_disable(const struct flexcan_priv *priv)
 	struct flexcan_regs __iomem *regs = priv->regs;
 	u32 reg_ctrl = (priv->reg_ctrl_default & ~FLEXCAN_CTRL_ERR_MSK);
 
+<<<<<<< HEAD
 	priv->write(reg_ctrl, &regs->ctrl);
+=======
+	flexcan_write(reg_ctrl, &regs->ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int flexcan_transceiver_enable(const struct flexcan_priv *priv)
@@ -388,6 +486,7 @@ static int flexcan_chip_enable(struct flexcan_priv *priv)
 	unsigned int timeout = FLEXCAN_TIMEOUT_US / 10;
 	u32 reg;
 
+<<<<<<< HEAD
 	reg = priv->read(&regs->mcr);
 	reg &= ~FLEXCAN_MCR_MDIS;
 	priv->write(reg, &regs->mcr);
@@ -396,6 +495,16 @@ static int flexcan_chip_enable(struct flexcan_priv *priv)
 		udelay(10);
 
 	if (priv->read(&regs->mcr) & FLEXCAN_MCR_LPM_ACK)
+=======
+	reg = flexcan_read(&regs->mcr);
+	reg &= ~FLEXCAN_MCR_MDIS;
+	flexcan_write(reg, &regs->mcr);
+
+	while (timeout-- && (flexcan_read(&regs->mcr) & FLEXCAN_MCR_LPM_ACK))
+		udelay(10);
+
+	if (flexcan_read(&regs->mcr) & FLEXCAN_MCR_LPM_ACK)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ETIMEDOUT;
 
 	return 0;
@@ -407,6 +516,7 @@ static int flexcan_chip_disable(struct flexcan_priv *priv)
 	unsigned int timeout = FLEXCAN_TIMEOUT_US / 10;
 	u32 reg;
 
+<<<<<<< HEAD
 	reg = priv->read(&regs->mcr);
 	reg |= FLEXCAN_MCR_MDIS;
 	priv->write(reg, &regs->mcr);
@@ -415,6 +525,16 @@ static int flexcan_chip_disable(struct flexcan_priv *priv)
 		udelay(10);
 
 	if (!(priv->read(&regs->mcr) & FLEXCAN_MCR_LPM_ACK))
+=======
+	reg = flexcan_read(&regs->mcr);
+	reg |= FLEXCAN_MCR_MDIS;
+	flexcan_write(reg, &regs->mcr);
+
+	while (timeout-- && !(flexcan_read(&regs->mcr) & FLEXCAN_MCR_LPM_ACK))
+		udelay(10);
+
+	if (!(flexcan_read(&regs->mcr) & FLEXCAN_MCR_LPM_ACK))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ETIMEDOUT;
 
 	return 0;
@@ -426,6 +546,7 @@ static int flexcan_chip_freeze(struct flexcan_priv *priv)
 	unsigned int timeout = 1000 * 1000 * 10 / priv->can.bittiming.bitrate;
 	u32 reg;
 
+<<<<<<< HEAD
 	reg = priv->read(&regs->mcr);
 	reg |= FLEXCAN_MCR_HALT;
 	priv->write(reg, &regs->mcr);
@@ -434,6 +555,16 @@ static int flexcan_chip_freeze(struct flexcan_priv *priv)
 		udelay(100);
 
 	if (!(priv->read(&regs->mcr) & FLEXCAN_MCR_FRZ_ACK))
+=======
+	reg = flexcan_read(&regs->mcr);
+	reg |= FLEXCAN_MCR_HALT;
+	flexcan_write(reg, &regs->mcr);
+
+	while (timeout-- && !(flexcan_read(&regs->mcr) & FLEXCAN_MCR_FRZ_ACK))
+		udelay(100);
+
+	if (!(flexcan_read(&regs->mcr) & FLEXCAN_MCR_FRZ_ACK))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ETIMEDOUT;
 
 	return 0;
@@ -445,6 +576,7 @@ static int flexcan_chip_unfreeze(struct flexcan_priv *priv)
 	unsigned int timeout = FLEXCAN_TIMEOUT_US / 10;
 	u32 reg;
 
+<<<<<<< HEAD
 	reg = priv->read(&regs->mcr);
 	reg &= ~FLEXCAN_MCR_HALT;
 	priv->write(reg, &regs->mcr);
@@ -453,6 +585,16 @@ static int flexcan_chip_unfreeze(struct flexcan_priv *priv)
 		udelay(10);
 
 	if (priv->read(&regs->mcr) & FLEXCAN_MCR_FRZ_ACK)
+=======
+	reg = flexcan_read(&regs->mcr);
+	reg &= ~FLEXCAN_MCR_HALT;
+	flexcan_write(reg, &regs->mcr);
+
+	while (timeout-- && (flexcan_read(&regs->mcr) & FLEXCAN_MCR_FRZ_ACK))
+		udelay(10);
+
+	if (flexcan_read(&regs->mcr) & FLEXCAN_MCR_FRZ_ACK)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ETIMEDOUT;
 
 	return 0;
@@ -463,11 +605,19 @@ static int flexcan_chip_softreset(struct flexcan_priv *priv)
 	struct flexcan_regs __iomem *regs = priv->regs;
 	unsigned int timeout = FLEXCAN_TIMEOUT_US / 10;
 
+<<<<<<< HEAD
 	priv->write(FLEXCAN_MCR_SOFTRST, &regs->mcr);
 	while (timeout-- && (priv->read(&regs->mcr) & FLEXCAN_MCR_SOFTRST))
 		udelay(10);
 
 	if (priv->read(&regs->mcr) & FLEXCAN_MCR_SOFTRST)
+=======
+	flexcan_write(FLEXCAN_MCR_SOFTRST, &regs->mcr);
+	while (timeout-- && (flexcan_read(&regs->mcr) & FLEXCAN_MCR_SOFTRST))
+		udelay(10);
+
+	if (flexcan_read(&regs->mcr) & FLEXCAN_MCR_SOFTRST)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ETIMEDOUT;
 
 	return 0;
@@ -478,7 +628,11 @@ static int __flexcan_get_berr_counter(const struct net_device *dev,
 {
 	const struct flexcan_priv *priv = netdev_priv(dev);
 	struct flexcan_regs __iomem *regs = priv->regs;
+<<<<<<< HEAD
 	u32 reg = priv->read(&regs->ecr);
+=======
+	u32 reg = flexcan_read(&regs->ecr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bec->txerr = (reg >> 0) & 0xff;
 	bec->rxerr = (reg >> 8) & 0xff;
@@ -509,10 +663,16 @@ static int flexcan_get_berr_counter(const struct net_device *dev,
 	return err;
 }
 
+<<<<<<< HEAD
 static netdev_tx_t flexcan_start_xmit(struct sk_buff *skb, struct net_device *dev)
 {
 	const struct flexcan_priv *priv = netdev_priv(dev);
 	struct flexcan_regs __iomem *regs = priv->regs;
+=======
+static int flexcan_start_xmit(struct sk_buff *skb, struct net_device *dev)
+{
+	const struct flexcan_priv *priv = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct can_frame *cf = (struct can_frame *)skb->data;
 	u32 can_id;
 	u32 data;
@@ -535,24 +695,43 @@ static netdev_tx_t flexcan_start_xmit(struct sk_buff *skb, struct net_device *de
 
 	if (cf->can_dlc > 0) {
 		data = be32_to_cpup((__be32 *)&cf->data[0]);
+<<<<<<< HEAD
 		priv->write(data, &regs->mb[FLEXCAN_TX_MB].data[0]);
 	}
 	if (cf->can_dlc > 4) {
 		data = be32_to_cpup((__be32 *)&cf->data[4]);
 		priv->write(data, &regs->mb[FLEXCAN_TX_MB].data[1]);
+=======
+		flexcan_write(data, &priv->tx_mb->data[0]);
+	}
+	if (cf->can_dlc > 4) {
+		data = be32_to_cpup((__be32 *)&cf->data[4]);
+		flexcan_write(data, &priv->tx_mb->data[1]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	can_put_echo_skb(skb, dev, 0);
 
+<<<<<<< HEAD
 	priv->write(can_id, &regs->mb[FLEXCAN_TX_MB].can_id);
 	priv->write(ctrl, &regs->mb[FLEXCAN_TX_MB].can_ctrl);
+=======
+	flexcan_write(can_id, &priv->tx_mb->can_id);
+	flexcan_write(ctrl, &priv->tx_mb->can_ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Errata ERR005829 step8:
 	 * Write twice INACTIVE(0x8) code to first MB.
 	 */
+<<<<<<< HEAD
 	priv->write(FLEXCAN_MB_CODE_TX_INACTIVE,
 		      &priv->tx_mb_reserved->can_ctrl);
 	priv->write(FLEXCAN_MB_CODE_TX_INACTIVE,
+=======
+	flexcan_write(FLEXCAN_MB_CODE_TX_INACTIVE,
+		      &priv->tx_mb_reserved->can_ctrl);
+	flexcan_write(FLEXCAN_MB_CODE_TX_INACTIVE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      &priv->tx_mb_reserved->can_ctrl);
 
 	return NETDEV_TX_OK;
@@ -561,6 +740,7 @@ static netdev_tx_t flexcan_start_xmit(struct sk_buff *skb, struct net_device *de
 static void flexcan_irq_bus_err(struct net_device *dev, u32 reg_esr)
 {
 	struct flexcan_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	struct flexcan_regs __iomem *regs = priv->regs;
 	struct sk_buff *skb;
 	struct can_frame *cf;
@@ -568,6 +748,11 @@ static void flexcan_irq_bus_err(struct net_device *dev, u32 reg_esr)
 	u32 timestamp;
 
 	timestamp = priv->read(&regs->timer) << 16;
+=======
+	struct sk_buff *skb;
+	struct can_frame *cf;
+	bool rx_errors = false, tx_errors = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb = alloc_can_err_skb(dev, &cf);
 	if (unlikely(!skb))
@@ -614,21 +799,31 @@ static void flexcan_irq_bus_err(struct net_device *dev, u32 reg_esr)
 	if (tx_errors)
 		dev->stats.tx_errors++;
 
+<<<<<<< HEAD
 	can_rx_offload_queue_sorted(&priv->offload, skb, timestamp);
+=======
+	can_rx_offload_queue_tail(&priv->offload, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void flexcan_irq_state(struct net_device *dev, u32 reg_esr)
 {
 	struct flexcan_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	struct flexcan_regs __iomem *regs = priv->regs;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *skb;
 	struct can_frame *cf;
 	enum can_state new_state, rx_state, tx_state;
 	int flt;
 	struct can_berr_counter bec;
+<<<<<<< HEAD
 	u32 timestamp;
 
 	timestamp = priv->read(&regs->timer) << 16;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flt = reg_esr & FLEXCAN_ESR_FLT_CONF_MASK;
 	if (likely(flt == FLEXCAN_ESR_FLT_CONF_ACTIVE)) {
@@ -658,7 +853,11 @@ static void flexcan_irq_state(struct net_device *dev, u32 reg_esr)
 	if (unlikely(new_state == CAN_STATE_BUS_OFF))
 		can_bus_off(dev);
 
+<<<<<<< HEAD
 	can_rx_offload_queue_sorted(&priv->offload, skb, timestamp);
+=======
+	can_rx_offload_queue_tail(&priv->offload, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline struct flexcan_priv *rx_offload_to_priv(struct can_rx_offload *offload)
@@ -679,7 +878,11 @@ static unsigned int flexcan_mailbox_read(struct can_rx_offload *offload,
 		u32 code;
 
 		do {
+<<<<<<< HEAD
 			reg_ctrl = priv->read(&mb->can_ctrl);
+=======
+			reg_ctrl = flexcan_read(&mb->can_ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} while (reg_ctrl & FLEXCAN_MB_CODE_RX_BUSY_BIT);
 
 		/* is this MB empty? */
@@ -694,17 +897,29 @@ static unsigned int flexcan_mailbox_read(struct can_rx_offload *offload,
 			offload->dev->stats.rx_errors++;
 		}
 	} else {
+<<<<<<< HEAD
 		reg_iflag1 = priv->read(&regs->iflag1);
 		if (!(reg_iflag1 & FLEXCAN_IFLAG_RX_FIFO_AVAILABLE))
 			return 0;
 
 		reg_ctrl = priv->read(&mb->can_ctrl);
+=======
+		reg_iflag1 = flexcan_read(&regs->iflag1);
+		if (!(reg_iflag1 & FLEXCAN_IFLAG_RX_FIFO_AVAILABLE))
+			return 0;
+
+		reg_ctrl = flexcan_read(&mb->can_ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* increase timstamp to full 32 bit */
 	*timestamp = reg_ctrl << 16;
 
+<<<<<<< HEAD
 	reg_id = priv->read(&mb->can_id);
+=======
+	reg_id = flexcan_read(&mb->can_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (reg_ctrl & FLEXCAN_MB_CNT_IDE)
 		cf->can_id = ((reg_id >> 0) & CAN_EFF_MASK) | CAN_EFF_FLAG;
 	else
@@ -714,13 +929,19 @@ static unsigned int flexcan_mailbox_read(struct can_rx_offload *offload,
 		cf->can_id |= CAN_RTR_FLAG;
 	cf->can_dlc = get_can_dlc((reg_ctrl >> 16) & 0xf);
 
+<<<<<<< HEAD
 	*(__be32 *)(cf->data + 0) = cpu_to_be32(priv->read(&mb->data[0]));
 	*(__be32 *)(cf->data + 4) = cpu_to_be32(priv->read(&mb->data[1]));
+=======
+	*(__be32 *)(cf->data + 0) = cpu_to_be32(flexcan_read(&mb->data[0]));
+	*(__be32 *)(cf->data + 4) = cpu_to_be32(flexcan_read(&mb->data[1]));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* mark as read */
 	if (priv->devtype_data->quirks & FLEXCAN_QUIRK_USE_OFF_TIMESTAMP) {
 		/* Clear IRQ */
 		if (n < 32)
+<<<<<<< HEAD
 			priv->write(BIT(n), &regs->iflag1);
 		else
 			priv->write(BIT(n - 32), &regs->iflag2);
@@ -734,6 +955,16 @@ static unsigned int flexcan_mailbox_read(struct can_rx_offload *offload,
 	 */
 	priv->read(&regs->timer);
 
+=======
+			flexcan_write(BIT(n), &regs->iflag1);
+		else
+			flexcan_write(BIT(n - 32), &regs->iflag2);
+	} else {
+		flexcan_write(FLEXCAN_IFLAG_RX_FIFO_AVAILABLE, &regs->iflag1);
+		flexcan_read(&regs->timer);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 1;
 }
 
@@ -743,9 +974,15 @@ static inline u64 flexcan_read_reg_iflag_rx(struct flexcan_priv *priv)
 	struct flexcan_regs __iomem *regs = priv->regs;
 	u32 iflag1, iflag2;
 
+<<<<<<< HEAD
 	iflag2 = priv->read(&regs->iflag2) & priv->reg_imask2_default &
 		~FLEXCAN_IFLAG_MB(FLEXCAN_TX_MB);
 	iflag1 = priv->read(&regs->iflag1) & priv->reg_imask1_default;
+=======
+	iflag2 = flexcan_read(&regs->iflag2) & priv->reg_imask2_default;
+	iflag1 = flexcan_read(&regs->iflag1) & priv->reg_imask1_default &
+		~FLEXCAN_IFLAG_MB(priv->tx_mb_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (u64)iflag2 << 32 | iflag1;
 }
@@ -757,9 +994,17 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
 	struct flexcan_priv *priv = netdev_priv(dev);
 	struct flexcan_regs __iomem *regs = priv->regs;
 	irqreturn_t handled = IRQ_NONE;
+<<<<<<< HEAD
 	u32 reg_iflag2, reg_esr;
 	enum can_state last_state = priv->can.state;
 
+=======
+	u32 reg_iflag1, reg_esr;
+	enum can_state last_state = priv->can.state;
+
+	reg_iflag1 = flexcan_read(&regs->iflag1);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* reception interrupt */
 	if (priv->devtype_data->quirks & FLEXCAN_QUIRK_USE_OFF_TIMESTAMP) {
 		u64 reg_iflag;
@@ -773,9 +1018,12 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
 				break;
 		}
 	} else {
+<<<<<<< HEAD
 		u32 reg_iflag1;
 
 		reg_iflag1 = priv->read(&regs->iflag1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (reg_iflag1 & FLEXCAN_IFLAG_RX_FIFO_AVAILABLE) {
 			handled = IRQ_HANDLED;
 			can_rx_offload_irq_offload_fifo(&priv->offload);
@@ -784,13 +1032,18 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
 		/* FIFO overflow interrupt */
 		if (reg_iflag1 & FLEXCAN_IFLAG_RX_FIFO_OVERFLOW) {
 			handled = IRQ_HANDLED;
+<<<<<<< HEAD
 			priv->write(FLEXCAN_IFLAG_RX_FIFO_OVERFLOW,
 				    &regs->iflag1);
+=======
+			flexcan_write(FLEXCAN_IFLAG_RX_FIFO_OVERFLOW, &regs->iflag1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev->stats.rx_over_errors++;
 			dev->stats.rx_errors++;
 		}
 	}
 
+<<<<<<< HEAD
 	reg_iflag2 = priv->read(&regs->iflag2);
 
 	/* transmission complete interrupt */
@@ -800,10 +1053,17 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
 		handled = IRQ_HANDLED;
 		stats->tx_bytes += can_rx_offload_get_echo_skb(&priv->offload,
 							       0, reg_ctrl << 16);
+=======
+	/* transmission complete interrupt */
+	if (reg_iflag1 & FLEXCAN_IFLAG_MB(priv->tx_mb_idx)) {
+		handled = IRQ_HANDLED;
+		stats->tx_bytes += can_get_echo_skb(dev, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		stats->tx_packets++;
 		can_led_event(dev, CAN_LED_EVENT_TX);
 
 		/* after sending a RTR frame MB is in RX mode */
+<<<<<<< HEAD
 		priv->write(FLEXCAN_MB_CODE_TX_INACTIVE,
 			    &regs->mb[FLEXCAN_TX_MB].can_ctrl);
 		priv->write(FLEXCAN_IFLAG_MB(FLEXCAN_TX_MB), &regs->iflag2);
@@ -811,11 +1071,24 @@ static irqreturn_t flexcan_irq(int irq, void *dev_id)
 	}
 
 	reg_esr = priv->read(&regs->esr);
+=======
+		flexcan_write(FLEXCAN_MB_CODE_TX_INACTIVE,
+			      &priv->tx_mb->can_ctrl);
+		flexcan_write(FLEXCAN_IFLAG_MB(priv->tx_mb_idx), &regs->iflag1);
+		netif_wake_queue(dev);
+	}
+
+	reg_esr = flexcan_read(&regs->esr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* ACK all bus error and state change IRQ sources */
 	if (reg_esr & FLEXCAN_ESR_ALL_INT) {
 		handled = IRQ_HANDLED;
+<<<<<<< HEAD
 		priv->write(reg_esr & FLEXCAN_ESR_ALL_INT, &regs->esr);
+=======
+		flexcan_write(reg_esr & FLEXCAN_ESR_ALL_INT, &regs->esr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* state change interrupt or broken error state quirk fix is enabled */
@@ -877,7 +1150,11 @@ static void flexcan_set_bittiming(struct net_device *dev)
 	struct flexcan_regs __iomem *regs = priv->regs;
 	u32 reg;
 
+<<<<<<< HEAD
 	reg = priv->read(&regs->ctrl);
+=======
+	reg = flexcan_read(&regs->ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg &= ~(FLEXCAN_CTRL_PRESDIV(0xff) |
 		 FLEXCAN_CTRL_RJW(0x3) |
 		 FLEXCAN_CTRL_PSEG1(0x7) |
@@ -901,11 +1178,19 @@ static void flexcan_set_bittiming(struct net_device *dev)
 		reg |= FLEXCAN_CTRL_SMP;
 
 	netdev_dbg(dev, "writing ctrl=0x%08x\n", reg);
+<<<<<<< HEAD
 	priv->write(reg, &regs->ctrl);
 
 	/* print chip status */
 	netdev_dbg(dev, "%s: mcr=0x%08x ctrl=0x%08x\n", __func__,
 		   priv->read(&regs->mcr), priv->read(&regs->ctrl));
+=======
+	flexcan_write(reg, &regs->ctrl);
+
+	/* print chip status */
+	netdev_dbg(dev, "%s: mcr=0x%08x ctrl=0x%08x\n", __func__,
+		   flexcan_read(&regs->mcr), flexcan_read(&regs->ctrl));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* flexcan_chip_start
@@ -944,6 +1229,7 @@ static int flexcan_chip_start(struct net_device *dev)
 	 * choose format C
 	 * set max mailbox number
 	 */
+<<<<<<< HEAD
 	reg_mcr = priv->read(&regs->mcr);
 	reg_mcr &= ~FLEXCAN_MCR_MAXMB(0xff);
 	reg_mcr |= FLEXCAN_MCR_FRZ | FLEXCAN_MCR_HALT | FLEXCAN_MCR_SUPV |
@@ -957,6 +1243,23 @@ static int flexcan_chip_start(struct net_device *dev)
 
 	netdev_dbg(dev, "%s: writing mcr=0x%08x", __func__, reg_mcr);
 	priv->write(reg_mcr, &regs->mcr);
+=======
+	reg_mcr = flexcan_read(&regs->mcr);
+	reg_mcr &= ~FLEXCAN_MCR_MAXMB(0xff);
+	reg_mcr |= FLEXCAN_MCR_FRZ | FLEXCAN_MCR_HALT | FLEXCAN_MCR_SUPV |
+		FLEXCAN_MCR_WRN_EN | FLEXCAN_MCR_SRX_DIS | FLEXCAN_MCR_IRMQ |
+		FLEXCAN_MCR_IDAM_C;
+
+	if (priv->devtype_data->quirks & FLEXCAN_QUIRK_USE_OFF_TIMESTAMP) {
+		reg_mcr &= ~FLEXCAN_MCR_FEN;
+		reg_mcr |= FLEXCAN_MCR_MAXMB(priv->offload.mb_last);
+	} else {
+		reg_mcr |= FLEXCAN_MCR_FEN |
+			FLEXCAN_MCR_MAXMB(priv->tx_mb_idx);
+	}
+	netdev_dbg(dev, "%s: writing mcr=0x%08x", __func__, reg_mcr);
+	flexcan_write(reg_mcr, &regs->mcr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* CTRL
 	 *
@@ -969,7 +1272,11 @@ static int flexcan_chip_start(struct net_device *dev)
 	 * enable bus off interrupt
 	 * (== FLEXCAN_CTRL_ERR_STATE)
 	 */
+<<<<<<< HEAD
 	reg_ctrl = priv->read(&regs->ctrl);
+=======
+	reg_ctrl = flexcan_read(&regs->ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg_ctrl &= ~FLEXCAN_CTRL_TSYN;
 	reg_ctrl |= FLEXCAN_CTRL_BOFF_REC | FLEXCAN_CTRL_LBUF |
 		FLEXCAN_CTRL_ERR_STATE;
@@ -989,6 +1296,7 @@ static int flexcan_chip_start(struct net_device *dev)
 	/* leave interrupts disabled for now */
 	reg_ctrl &= ~FLEXCAN_CTRL_ERR_ALL;
 	netdev_dbg(dev, "%s: writing ctrl=0x%08x", __func__, reg_ctrl);
+<<<<<<< HEAD
 	priv->write(reg_ctrl, &regs->ctrl);
 
 	if ((priv->devtype_data->quirks & FLEXCAN_QUIRK_ENABLE_EACEN_RRS)) {
@@ -1029,6 +1337,47 @@ static int flexcan_chip_start(struct net_device *dev)
 	/* clear acceptance filters */
 	for (i = 0; i < ARRAY_SIZE(regs->mb); i++)
 		priv->write(0, &regs->rximr[i]);
+=======
+	flexcan_write(reg_ctrl, &regs->ctrl);
+
+	if ((priv->devtype_data->quirks & FLEXCAN_QUIRK_ENABLE_EACEN_RRS)) {
+		reg_ctrl2 = flexcan_read(&regs->ctrl2);
+		reg_ctrl2 |= FLEXCAN_CTRL2_EACEN | FLEXCAN_CTRL2_RRS;
+		flexcan_write(reg_ctrl2, &regs->ctrl2);
+	}
+
+	/* clear and invalidate all mailboxes first */
+	for (i = priv->tx_mb_idx; i < ARRAY_SIZE(regs->mb); i++) {
+		flexcan_write(FLEXCAN_MB_CODE_RX_INACTIVE,
+			      &regs->mb[i].can_ctrl);
+	}
+
+	if (priv->devtype_data->quirks & FLEXCAN_QUIRK_USE_OFF_TIMESTAMP) {
+		for (i = priv->offload.mb_first; i <= priv->offload.mb_last; i++)
+			flexcan_write(FLEXCAN_MB_CODE_RX_EMPTY,
+				      &regs->mb[i].can_ctrl);
+	}
+
+	/* Errata ERR005829: mark first TX mailbox as INACTIVE */
+	flexcan_write(FLEXCAN_MB_CODE_TX_INACTIVE,
+		      &priv->tx_mb_reserved->can_ctrl);
+
+	/* mark TX mailbox as INACTIVE */
+	flexcan_write(FLEXCAN_MB_CODE_TX_INACTIVE,
+		      &priv->tx_mb->can_ctrl);
+
+	/* acceptance mask/acceptance code (accept everything) */
+	flexcan_write(0x0, &regs->rxgmask);
+	flexcan_write(0x0, &regs->rx14mask);
+	flexcan_write(0x0, &regs->rx15mask);
+
+	if (priv->devtype_data->quirks & FLEXCAN_QUIRK_DISABLE_RXFG)
+		flexcan_write(0x0, &regs->rxfgmask);
+
+	/* clear acceptance filters */
+	for (i = 0; i < ARRAY_SIZE(regs->mb); i++)
+		flexcan_write(0, &regs->rximr[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* On Vybrid, disable memory error detection interrupts
 	 * and freeze mode.
@@ -1041,6 +1390,7 @@ static int flexcan_chip_start(struct net_device *dev)
 		 * and Correction of Memory Errors" to write to
 		 * MECR register
 		 */
+<<<<<<< HEAD
 		reg_ctrl2 = priv->read(&regs->ctrl2);
 		reg_ctrl2 |= FLEXCAN_CTRL2_ECRWRE;
 		priv->write(reg_ctrl2, &regs->ctrl2);
@@ -1051,6 +1401,19 @@ static int flexcan_chip_start(struct net_device *dev)
 		reg_mecr &= ~(FLEXCAN_MECR_NCEFAFRZ | FLEXCAN_MECR_HANCEI_MSK |
 			      FLEXCAN_MECR_FANCEI_MSK);
 		priv->write(reg_mecr, &regs->mecr);
+=======
+		reg_ctrl2 = flexcan_read(&regs->ctrl2);
+		reg_ctrl2 |= FLEXCAN_CTRL2_ECRWRE;
+		flexcan_write(reg_ctrl2, &regs->ctrl2);
+
+		reg_mecr = flexcan_read(&regs->mecr);
+		reg_mecr &= ~FLEXCAN_MECR_ECRWRDIS;
+		flexcan_write(reg_mecr, &regs->mecr);
+		reg_mecr |= FLEXCAN_MECR_ECCDIS;
+		reg_mecr &= ~(FLEXCAN_MECR_NCEFAFRZ | FLEXCAN_MECR_HANCEI_MSK |
+			      FLEXCAN_MECR_FANCEI_MSK);
+		flexcan_write(reg_mecr, &regs->mecr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = flexcan_transceiver_enable(priv);
@@ -1066,14 +1429,24 @@ static int flexcan_chip_start(struct net_device *dev)
 
 	/* enable interrupts atomically */
 	disable_irq(dev->irq);
+<<<<<<< HEAD
 	priv->write(priv->reg_ctrl_default, &regs->ctrl);
 	priv->write(priv->reg_imask1_default, &regs->imask1);
 	priv->write(priv->reg_imask2_default, &regs->imask2);
+=======
+	flexcan_write(priv->reg_ctrl_default, &regs->ctrl);
+	flexcan_write(priv->reg_imask1_default, &regs->imask1);
+	flexcan_write(priv->reg_imask2_default, &regs->imask2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enable_irq(dev->irq);
 
 	/* print chip status */
 	netdev_dbg(dev, "%s: reading mcr=0x%08x ctrl=0x%08x\n", __func__,
+<<<<<<< HEAD
 		   priv->read(&regs->mcr), priv->read(&regs->ctrl));
+=======
+		   flexcan_read(&regs->mcr), flexcan_read(&regs->ctrl));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -1098,10 +1471,17 @@ static void flexcan_chip_stop(struct net_device *dev)
 	flexcan_chip_disable(priv);
 
 	/* Disable all interrupts */
+<<<<<<< HEAD
 	priv->write(0, &regs->imask2);
 	priv->write(0, &regs->imask1);
 	priv->write(priv->reg_ctrl_default & ~FLEXCAN_CTRL_ERR_ALL,
 		    &regs->ctrl);
+=======
+	flexcan_write(0, &regs->imask2);
+	flexcan_write(0, &regs->imask1);
+	flexcan_write(priv->reg_ctrl_default & ~FLEXCAN_CTRL_ERR_ALL,
+		      &regs->ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flexcan_transceiver_disable(priv);
 	priv->can.state = CAN_STATE_STOPPED;
@@ -1216,26 +1596,43 @@ static int register_flexcandev(struct net_device *dev)
 	err = flexcan_chip_disable(priv);
 	if (err)
 		goto out_disable_per;
+<<<<<<< HEAD
 	reg = priv->read(&regs->ctrl);
 	reg |= FLEXCAN_CTRL_CLK_SRC;
 	priv->write(reg, &regs->ctrl);
+=======
+	reg = flexcan_read(&regs->ctrl);
+	reg |= FLEXCAN_CTRL_CLK_SRC;
+	flexcan_write(reg, &regs->ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = flexcan_chip_enable(priv);
 	if (err)
 		goto out_chip_disable;
 
 	/* set freeze, halt and activate FIFO, restrict register access */
+<<<<<<< HEAD
 	reg = priv->read(&regs->mcr);
 	reg |= FLEXCAN_MCR_FRZ | FLEXCAN_MCR_HALT |
 		FLEXCAN_MCR_FEN | FLEXCAN_MCR_SUPV;
 	priv->write(reg, &regs->mcr);
+=======
+	reg = flexcan_read(&regs->mcr);
+	reg |= FLEXCAN_MCR_FRZ | FLEXCAN_MCR_HALT |
+		FLEXCAN_MCR_FEN | FLEXCAN_MCR_SUPV;
+	flexcan_write(reg, &regs->mcr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Currently we only support newer versions of this core
 	 * featuring a RX hardware FIFO (although this driver doesn't
 	 * make use of it on some cores). Older cores, found on some
 	 * Coldfire derivates are not tested.
 	 */
+<<<<<<< HEAD
 	reg = priv->read(&regs->mcr);
+=======
+	reg = flexcan_read(&regs->mcr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(reg & FLEXCAN_MCR_FEN)) {
 		netdev_err(dev, "Could not enable RX FIFO, unsupported core\n");
 		err = -ENODEV;
@@ -1263,12 +1660,17 @@ static void unregister_flexcandev(struct net_device *dev)
 static const struct of_device_id flexcan_of_match[] = {
 	{ .compatible = "fsl,imx6q-flexcan", .data = &fsl_imx6q_devtype_data, },
 	{ .compatible = "fsl,imx28-flexcan", .data = &fsl_imx28_devtype_data, },
+<<<<<<< HEAD
 	{ .compatible = "fsl,imx53-flexcan", .data = &fsl_imx25_devtype_data, },
 	{ .compatible = "fsl,imx35-flexcan", .data = &fsl_imx25_devtype_data, },
 	{ .compatible = "fsl,imx25-flexcan", .data = &fsl_imx25_devtype_data, },
 	{ .compatible = "fsl,p1010-flexcan", .data = &fsl_p1010_devtype_data, },
 	{ .compatible = "fsl,vf610-flexcan", .data = &fsl_vf610_devtype_data, },
 	{ .compatible = "fsl,ls1021ar2-flexcan", .data = &fsl_ls1021a_r2_devtype_data, },
+=======
+	{ .compatible = "fsl,p1010-flexcan", .data = &fsl_p1010_devtype_data, },
+	{ .compatible = "fsl,vf610-flexcan", .data = &fsl_vf610_devtype_data, },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, flexcan_of_match);
@@ -1348,6 +1750,7 @@ static int flexcan_probe(struct platform_device *pdev)
 	dev->flags |= IFF_ECHO;
 
 	priv = netdev_priv(dev);
+<<<<<<< HEAD
 
 	if (of_property_read_bool(pdev->dev.of_node, "big-endian") ||
 	    devtype_data->quirks & FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN) {
@@ -1358,6 +1761,8 @@ static int flexcan_probe(struct platform_device *pdev)
 		priv->write = flexcan_write_le;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->can.clock.freq = clock_freq;
 	priv->can.bittiming_const = &flexcan_bittiming_const;
 	priv->can.do_set_mode = flexcan_set_mode;
@@ -1371,6 +1776,7 @@ static int flexcan_probe(struct platform_device *pdev)
 	priv->devtype_data = devtype_data;
 	priv->reg_xceiver = reg_xceiver;
 
+<<<<<<< HEAD
 	if (priv->devtype_data->quirks & FLEXCAN_QUIRK_USE_OFF_TIMESTAMP)
 		priv->tx_mb_reserved = &regs->mb[FLEXCAN_TX_MB_RESERVED_OFF_TIMESTAMP];
 	else
@@ -1378,6 +1784,19 @@ static int flexcan_probe(struct platform_device *pdev)
 
 	priv->reg_imask1_default = 0;
 	priv->reg_imask2_default = FLEXCAN_IFLAG_MB(FLEXCAN_TX_MB);
+=======
+	if (priv->devtype_data->quirks & FLEXCAN_QUIRK_USE_OFF_TIMESTAMP) {
+		priv->tx_mb_idx = FLEXCAN_TX_MB_OFF_TIMESTAMP;
+		priv->tx_mb_reserved = &regs->mb[FLEXCAN_TX_MB_RESERVED_OFF_TIMESTAMP];
+	} else {
+		priv->tx_mb_idx = FLEXCAN_TX_MB_OFF_FIFO;
+		priv->tx_mb_reserved = &regs->mb[FLEXCAN_TX_MB_RESERVED_OFF_FIFO];
+	}
+	priv->tx_mb = &regs->mb[priv->tx_mb_idx];
+
+	priv->reg_imask1_default = FLEXCAN_IFLAG_MB(priv->tx_mb_idx);
+	priv->reg_imask2_default = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->offload.mailbox_read = flexcan_mailbox_read;
 

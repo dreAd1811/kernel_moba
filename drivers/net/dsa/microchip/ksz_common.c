@@ -394,8 +394,12 @@ static int ksz_setup(struct dsa_switch *ds)
 	return 0;
 }
 
+<<<<<<< HEAD
 static enum dsa_tag_protocol ksz_get_tag_protocol(struct dsa_switch *ds,
 						  int port)
+=======
+static enum dsa_tag_protocol ksz_get_tag_protocol(struct dsa_switch *ds)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return DSA_TAG_PROTO_KSZ;
 }
@@ -439,6 +443,7 @@ static void ksz_disable_port(struct dsa_switch *ds, int port,
 	ksz_port_cfg(dev, port, REG_PORT_CTRL_0, PORT_MAC_LOOPBACK, true);
 }
 
+<<<<<<< HEAD
 static int ksz_sset_count(struct dsa_switch *ds, int port, int sset)
 {
 	if (sset != ETH_SS_STATS)
@@ -455,6 +460,17 @@ static void ksz_get_strings(struct dsa_switch *ds, int port,
 	if (stringset != ETH_SS_STATS)
 		return;
 
+=======
+static int ksz_sset_count(struct dsa_switch *ds)
+{
+	return TOTAL_SWITCH_COUNTER_NUM;
+}
+
+static void ksz_get_strings(struct dsa_switch *ds, int port, uint8_t *buf)
+{
+	int i;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < TOTAL_SWITCH_COUNTER_NUM; i++) {
 		memcpy(buf + i * ETH_GSTRING_LEN, mib_names[i].string,
 		       ETH_GSTRING_LEN);
@@ -566,7 +582,12 @@ static int ksz_port_vlan_filtering(struct dsa_switch *ds, int port, bool flag)
 }
 
 static int ksz_port_vlan_prepare(struct dsa_switch *ds, int port,
+<<<<<<< HEAD
 				 const struct switchdev_obj_port_vlan *vlan)
+=======
+				 const struct switchdev_obj_port_vlan *vlan,
+				 struct switchdev_trans *trans)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* nothing needed */
 
@@ -574,7 +595,12 @@ static int ksz_port_vlan_prepare(struct dsa_switch *ds, int port,
 }
 
 static void ksz_port_vlan_add(struct dsa_switch *ds, int port,
+<<<<<<< HEAD
 			      const struct switchdev_obj_port_vlan *vlan)
+=======
+			      const struct switchdev_obj_port_vlan *vlan,
+			      struct switchdev_trans *trans)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ksz_device *dev = ds->priv;
 	u32 vlan_table[3];
@@ -863,14 +889,24 @@ exit:
 }
 
 static int ksz_port_mdb_prepare(struct dsa_switch *ds, int port,
+<<<<<<< HEAD
 				const struct switchdev_obj_port_mdb *mdb)
+=======
+				const struct switchdev_obj_port_mdb *mdb,
+				struct switchdev_trans *trans)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* nothing to do */
 	return 0;
 }
 
 static void ksz_port_mdb_add(struct dsa_switch *ds, int port,
+<<<<<<< HEAD
 			     const struct switchdev_obj_port_mdb *mdb)
+=======
+			     const struct switchdev_obj_port_mdb *mdb,
+			     struct switchdev_trans *trans)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ksz_device *dev = ds->priv;
 	u32 static_table[4];
@@ -1102,6 +1138,7 @@ static const struct ksz_chip_data ksz_switch_chips[] = {
 		.cpu_ports = 0x7F,	/* can be configured as cpu port */
 		.port_cnt = 7,		/* total physical port count */
 	},
+<<<<<<< HEAD
 	{
 		.chip_id = 0x00989700,
 		.dev_name = "KSZ9897",
@@ -1111,6 +1148,8 @@ static const struct ksz_chip_data ksz_switch_chips[] = {
 		.cpu_ports = 0x7F,	/* can be configured as cpu port */
 		.port_cnt = 7,		/* total physical port count */
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ksz_switch_init(struct ksz_device *dev)

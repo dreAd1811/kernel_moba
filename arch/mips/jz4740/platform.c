@@ -233,6 +233,25 @@ struct platform_device jz4740_adc_device = {
 	.resource	= jz4740_adc_resources,
 };
 
+<<<<<<< HEAD
+=======
+/* Watchdog */
+static struct resource jz4740_wdt_resources[] = {
+	{
+		.start = JZ4740_WDT_BASE_ADDR,
+		.end   = JZ4740_WDT_BASE_ADDR + 0x10 - 1,
+		.flags = IORESOURCE_MEM,
+	},
+};
+
+struct platform_device jz4740_wdt_device = {
+	.name	       = "jz4740-wdt",
+	.id	       = -1,
+	.num_resources = ARRAY_SIZE(jz4740_wdt_resources),
+	.resource      = jz4740_wdt_resources,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* PWM */
 struct platform_device jz4740_pwm_device = {
 	.name = "jz4740-pwm",

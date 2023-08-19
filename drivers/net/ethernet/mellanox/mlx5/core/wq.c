@@ -36,22 +36,38 @@
 
 u32 mlx5_wq_cyc_get_size(struct mlx5_wq_cyc *wq)
 {
+<<<<<<< HEAD
 	return (u32)wq->fbc.sz_m1 + 1;
+=======
+	return (u32)wq->sz_m1 + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 u32 mlx5_cqwq_get_size(struct mlx5_cqwq *wq)
 {
+<<<<<<< HEAD
 	return wq->fbc.sz_m1 + 1;
+=======
+	return wq->sz_m1 + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 u32 mlx5_wq_ll_get_size(struct mlx5_wq_ll *wq)
 {
+<<<<<<< HEAD
 	return (u32)wq->fbc.sz_m1 + 1;
+=======
+	return (u32)wq->sz_m1 + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 mlx5_wq_cyc_get_byte_size(struct mlx5_wq_cyc *wq)
 {
+<<<<<<< HEAD
 	return mlx5_wq_cyc_get_size(wq) << wq->fbc.log_stride;
+=======
+	return mlx5_wq_cyc_get_size(wq) << wq->log_stride;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 mlx5_wq_qp_get_byte_size(struct mlx5_wq_qp *wq)
@@ -62,18 +78,27 @@ static u32 mlx5_wq_qp_get_byte_size(struct mlx5_wq_qp *wq)
 
 static u32 mlx5_cqwq_get_byte_size(struct mlx5_cqwq *wq)
 {
+<<<<<<< HEAD
 	return mlx5_cqwq_get_size(wq) << wq->fbc.log_stride;
+=======
+	return mlx5_cqwq_get_size(wq) << wq->log_stride;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 mlx5_wq_ll_get_byte_size(struct mlx5_wq_ll *wq)
 {
+<<<<<<< HEAD
 	return mlx5_wq_ll_get_size(wq) << wq->fbc.log_stride;
+=======
+	return mlx5_wq_ll_get_size(wq) << wq->log_stride;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mlx5_wq_cyc_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		       void *wqc, struct mlx5_wq_cyc *wq,
 		       struct mlx5_wq_ctrl *wq_ctrl)
 {
+<<<<<<< HEAD
 	struct mlx5_frag_buf_ctrl *fbc = &wq->fbc;
 	int err;
 
@@ -81,6 +106,12 @@ int mlx5_wq_cyc_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		      MLX5_GET(wq, wqc, log_wq_sz),
 		      fbc);
 	wq->sz    = wq->fbc.sz_m1 + 1;
+=======
+	int err;
+
+	wq->log_stride = MLX5_GET(wq, wqc, log_wq_stride);
+	wq->sz_m1 = (1 << MLX5_GET(wq, wqc, log_wq_sz)) - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx5_db_alloc_node(mdev, &wq_ctrl->db, param->db_numa_node);
 	if (err) {
@@ -88,6 +119,7 @@ int mlx5_wq_cyc_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		return err;
 	}
 
+<<<<<<< HEAD
 	err = mlx5_frag_buf_alloc_node(mdev, mlx5_wq_cyc_get_byte_size(wq),
 				       &wq_ctrl->buf, param->buf_numa_node);
 	if (err) {
@@ -96,6 +128,16 @@ int mlx5_wq_cyc_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 	}
 
 	fbc->frag_buf = wq_ctrl->buf;
+=======
+	err = mlx5_buf_alloc_node(mdev, mlx5_wq_cyc_get_byte_size(wq),
+				  &wq_ctrl->buf, param->buf_numa_node);
+	if (err) {
+		mlx5_core_warn(mdev, "mlx5_buf_alloc_node() failed, %d\n", err);
+		goto err_db_free;
+	}
+
+	wq->buf = wq_ctrl->buf.direct.buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wq->db  = wq_ctrl->db.db;
 
 	wq_ctrl->mdev = mdev;
@@ -108,6 +150,7 @@ err_db_free:
 	return err;
 }
 
+<<<<<<< HEAD
 static void mlx5_qp_set_frag_buf(struct mlx5_frag_buf *buf,
 				 struct mlx5_wq_qp *qp)
 {
@@ -129,10 +172,13 @@ static void mlx5_qp_set_frag_buf(struct mlx5_frag_buf *buf,
 		sqb->frags--;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_wq_qp_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		      void *qpc, struct mlx5_wq_qp *wq,
 		      struct mlx5_wq_ctrl *wq_ctrl)
 {
+<<<<<<< HEAD
 	u16 sq_strides_offset;
 	u32 rq_pg_remainder;
 	int err;
@@ -148,6 +194,15 @@ int mlx5_wq_qp_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 			     MLX5_GET(qpc, qpc, log_sq_size),
 			     sq_strides_offset,
 			     &wq->sq.fbc);
+=======
+	int err;
+
+	wq->rq.log_stride = MLX5_GET(qpc, qpc, log_rq_stride) + 4;
+	wq->rq.sz_m1 = (1 << MLX5_GET(qpc, qpc, log_rq_size)) - 1;
+
+	wq->sq.log_stride = ilog2(MLX5_SEND_WQE_BB);
+	wq->sq.sz_m1 = (1 << MLX5_GET(qpc, qpc, log_sq_size)) - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx5_db_alloc_node(mdev, &wq_ctrl->db, param->db_numa_node);
 	if (err) {
@@ -155,6 +210,7 @@ int mlx5_wq_qp_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		return err;
 	}
 
+<<<<<<< HEAD
 	err = mlx5_frag_buf_alloc_node(mdev, mlx5_wq_qp_get_byte_size(wq),
 				       &wq_ctrl->buf, param->buf_numa_node);
 	if (err) {
@@ -164,6 +220,17 @@ int mlx5_wq_qp_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 
 	mlx5_qp_set_frag_buf(&wq_ctrl->buf, wq);
 
+=======
+	err = mlx5_buf_alloc_node(mdev, mlx5_wq_qp_get_byte_size(wq),
+				  &wq_ctrl->buf, param->buf_numa_node);
+	if (err) {
+		mlx5_core_warn(mdev, "mlx5_buf_alloc_node() failed, %d\n", err);
+		goto err_db_free;
+	}
+
+	wq->rq.buf = wq_ctrl->buf.direct.buf;
+	wq->sq.buf = wq->rq.buf + mlx5_wq_cyc_get_byte_size(&wq->rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wq->rq.db  = &wq_ctrl->db.db[MLX5_RCV_DBR];
 	wq->sq.db  = &wq_ctrl->db.db[MLX5_SND_DBR];
 
@@ -179,11 +246,23 @@ err_db_free:
 
 int mlx5_cqwq_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		     void *cqc, struct mlx5_cqwq *wq,
+<<<<<<< HEAD
 		     struct mlx5_wq_ctrl *wq_ctrl)
 {
 	int err;
 
 	mlx5_core_init_cq_frag_buf(&wq->fbc, cqc);
+=======
+		     struct mlx5_frag_wq_ctrl *wq_ctrl)
+{
+	int err;
+
+	wq->log_stride	= 6 + MLX5_GET(cqc, cqc, cqe_sz);
+	wq->log_sz	= MLX5_GET(cqc, cqc, log_cq_size);
+	wq->sz_m1	= (1 << wq->log_sz) - 1;
+	wq->log_frag_strides = PAGE_SHIFT - wq->log_stride;
+	wq->frag_sz_m1	= (1 << wq->log_frag_strides) - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx5_db_alloc_node(mdev, &wq_ctrl->db, param->db_numa_node);
 	if (err) {
@@ -192,7 +271,11 @@ int mlx5_cqwq_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 	}
 
 	err = mlx5_frag_buf_alloc_node(mdev, mlx5_cqwq_get_byte_size(wq),
+<<<<<<< HEAD
 				       &wq_ctrl->buf,
+=======
+				       &wq_ctrl->frag_buf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       param->buf_numa_node);
 	if (err) {
 		mlx5_core_warn(mdev, "mlx5_frag_buf_alloc_node() failed, %d\n",
@@ -200,7 +283,11 @@ int mlx5_cqwq_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		goto err_db_free;
 	}
 
+<<<<<<< HEAD
 	wq->fbc.frag_buf = wq_ctrl->buf;
+=======
+	wq->frag_buf = wq_ctrl->frag_buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wq->db  = wq_ctrl->db.db;
 
 	wq_ctrl->mdev = mdev;
@@ -217,14 +304,22 @@ int mlx5_wq_ll_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		      void *wqc, struct mlx5_wq_ll *wq,
 		      struct mlx5_wq_ctrl *wq_ctrl)
 {
+<<<<<<< HEAD
 	struct mlx5_frag_buf_ctrl *fbc = &wq->fbc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_wqe_srq_next_seg *next_seg;
 	int err;
 	int i;
 
+<<<<<<< HEAD
 	mlx5_fill_fbc(MLX5_GET(wq, wqc, log_wq_stride),
 		      MLX5_GET(wq, wqc, log_wq_sz),
 		      fbc);
+=======
+	wq->log_stride = MLX5_GET(wq, wqc, log_wq_stride);
+	wq->sz_m1 = (1 << MLX5_GET(wq, wqc, log_wq_sz)) - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx5_db_alloc_node(mdev, &wq_ctrl->db, param->db_numa_node);
 	if (err) {
@@ -232,6 +327,7 @@ int mlx5_wq_ll_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 		return err;
 	}
 
+<<<<<<< HEAD
 	err = mlx5_frag_buf_alloc_node(mdev, mlx5_wq_ll_get_byte_size(wq),
 				       &wq_ctrl->buf, param->buf_numa_node);
 	if (err) {
@@ -243,6 +339,19 @@ int mlx5_wq_ll_create(struct mlx5_core_dev *mdev, struct mlx5_wq_param *param,
 	wq->db  = wq_ctrl->db.db;
 
 	for (i = 0; i < fbc->sz_m1; i++) {
+=======
+	err = mlx5_buf_alloc_node(mdev, mlx5_wq_ll_get_byte_size(wq),
+				  &wq_ctrl->buf, param->buf_numa_node);
+	if (err) {
+		mlx5_core_warn(mdev, "mlx5_buf_alloc_node() failed, %d\n", err);
+		goto err_db_free;
+	}
+
+	wq->buf = wq_ctrl->buf.direct.buf;
+	wq->db  = wq_ctrl->db.db;
+
+	for (i = 0; i < wq->sz_m1; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		next_seg = mlx5_wq_ll_get_wqe(wq, i);
 		next_seg->next_wqe_index = cpu_to_be16(i + 1);
 	}
@@ -261,7 +370,19 @@ err_db_free:
 
 void mlx5_wq_destroy(struct mlx5_wq_ctrl *wq_ctrl)
 {
+<<<<<<< HEAD
 	mlx5_frag_buf_free(wq_ctrl->mdev, &wq_ctrl->buf);
 	mlx5_db_free(wq_ctrl->mdev, &wq_ctrl->db);
 }
 
+=======
+	mlx5_buf_free(wq_ctrl->mdev, &wq_ctrl->buf);
+	mlx5_db_free(wq_ctrl->mdev, &wq_ctrl->db);
+}
+
+void mlx5_cqwq_destroy(struct mlx5_frag_wq_ctrl *wq_ctrl)
+{
+	mlx5_frag_buf_free(wq_ctrl->mdev, &wq_ctrl->frag_buf);
+	mlx5_db_free(wq_ctrl->mdev, &wq_ctrl->db);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

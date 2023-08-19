@@ -27,6 +27,11 @@
 #ifndef __ASM_ARCH_PSC_H
 #define __ASM_ARCH_PSC_H
 
+<<<<<<< HEAD
+=======
+#define	DAVINCI_PWR_SLEEP_CNTRL_BASE	0x01C41000
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Power and Sleep Controller (PSC) Domains */
 #define DAVINCI_GPSC_ARMDOMAIN		0
 #define DAVINCI_GPSC_DSPDOMAIN		1
@@ -204,4 +209,17 @@
 #define PDCTL_NEXT		BIT(0)
 #define PDCTL_EPCGOOD		BIT(8)
 
+<<<<<<< HEAD
+=======
+#ifndef __ASSEMBLER__
+
+extern int davinci_psc_is_clk_active(unsigned int ctlr, unsigned int id);
+extern void davinci_psc_reset(unsigned int ctlr, unsigned int id,
+		bool reset);
+extern void davinci_psc_config(unsigned int domain, unsigned int ctlr,
+		unsigned int id, bool enable, u32 flags);
+
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASM_ARCH_PSC_H */

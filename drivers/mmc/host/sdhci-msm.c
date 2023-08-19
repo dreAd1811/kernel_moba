@@ -1,9 +1,27 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
  *
  * drivers/mmc/host/sdhci-msm.c - Qualcomm Technologies, Inc. MSM SDHCI Platform
  * driver source file
+=======
+/*
+ * drivers/mmc/host/sdhci-msm.c - Qualcomm Technologies, Inc. MSM SDHCI Platform
+ * driver source file
+ *
+ * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -33,9 +51,14 @@
 #include <trace/events/mmc.h>
 
 #include "sdhci-msm.h"
+<<<<<<< HEAD
 #include "sdhci-msm-ice.h"
 #include "sdhci-pltfm.h"
 #include "cqhci.h"
+=======
+#include "cmdq_hci.h"
+#include "cmdq_hci-crypto-qti.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QOS_REMOVE_DELAY_MS	10
 #define CORE_POWER		0x0
@@ -344,6 +367,12 @@ static int disable_slots;
 /* root can write, others read */
 module_param(disable_slots, int, 0644);
 
+<<<<<<< HEAD
+=======
+static bool nocmdq;
+module_param(nocmdq, bool, 0644);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum vdd_io_level {
 	/* set vdd_io_data->low_vol_level */
 	VDD_IO_LOW,
@@ -865,6 +894,7 @@ static int msm_init_cm_dll(struct sdhci_host *host,
 			| CORE_CK_OUT_EN), host->ioaddr +
 			msm_host_offset->CORE_DLL_CONFIG);
 
+<<<<<<< HEAD
 	/* For hs400es mode, no need to wait for core dll lock */
 	if (msm_host->mmc->card
 			&& !(msm_host->enhanced_strobe &&
@@ -883,6 +913,21 @@ static int msm_init_cm_dll(struct sdhci_host *host,
 			/* wait for 1us before polling again */
 			udelay(1);
 		}
+=======
+	wait_cnt = 50;
+	/* Wait until DLL_LOCK bit of DLL_STATUS register becomes '1' */
+	while (!(readl_relaxed(host->ioaddr +
+		msm_host_offset->CORE_DLL_STATUS) & CORE_DLL_LOCK)) {
+		/* max. wait for 50us sec for LOCK bit to be set */
+		if (--wait_cnt == 0) {
+			pr_err("%s: %s: DLL failed to LOCK\n",
+				mmc_hostname(mmc), __func__);
+			rc = -ETIMEDOUT;
+			goto out;
+		}
+		/* wait for 1us before polling again */
+		udelay(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
@@ -985,12 +1030,15 @@ static int sdhci_msm_cdclp533_calibration(struct sdhci_host *host)
 			CORE_CSR_CDC_CAL_TIMER_CFG0) | CORE_TIMER_ENA),
 			host->ioaddr + CORE_CSR_CDC_CAL_TIMER_CFG0);
 
+<<<<<<< HEAD
 	/*
 	 * SDHC has core_mem and hc_mem device memory and these memory
 	 * addresses do not fall within 1KB region. Hence, any update to
 	 * core_mem address space would require an mb() to ensure this gets
 	 * completed before its next update to registers within hc_mem.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mb();
 
 	/* Poll on CALIBRATION_DONE field in CORE_CSR_CDC_STATUS0 to be 1 */
@@ -1086,6 +1134,7 @@ static int sdhci_msm_cm_dll_sdc4_calibration(struct sdhci_host *host)
 				msm_host_offset->CORE_VENDOR_SPEC3)
 				| CORE_PWRSAVE_DLL), host->ioaddr +
 				msm_host_offset->CORE_VENDOR_SPEC3);
+<<<<<<< HEAD
 	/*
 	 * SDHC has core_mem and hc_mem device memory and these memory
 	 * addresses do not fall within 1KB region. Hence, any update to
@@ -1094,6 +1143,9 @@ static int sdhci_msm_cm_dll_sdc4_calibration(struct sdhci_host *host)
 	 * hc_mem.
 	 */
 	mb(); /* Register operation sync */
+=======
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	pr_debug("%s: Exit %s, ret:%d\n", mmc_hostname(host->mmc),
 			__func__, ret);
@@ -1206,6 +1258,7 @@ static void sdhci_msm_set_mmc_drv_type(struct sdhci_host *host, u32 opcode,
 			drv_type);
 }
 
+<<<<<<< HEAD
 #define IPCAT_MINOR_MASK(val) ((val & 0x0fff0000) >> 0x10)
 
 /* Enter sdcc debug mode */
@@ -1278,6 +1331,8 @@ void sdhci_msm_exit_dbg_mode(struct sdhci_host *host)
 			SDCC_DEBUG_FEATURE_CFG_REG));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int sdhci_msm_execute_tuning(struct sdhci_host *host, u32 opcode)
 {
 	unsigned long flags;
@@ -1307,12 +1362,24 @@ int sdhci_msm_execute_tuning(struct sdhci_host *host, u32 opcode)
 		return 0;
 
 	/*
+<<<<<<< HEAD
+=======
+	 * Clear tuning_done flag before tuning to ensure proper
+	 * HS400 settings.
+	 */
+	msm_host->tuning_done = 0;
+
+	/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * Don't allow re-tuning for CRC errors observed for any commands
 	 * that are sent during tuning sequence itself.
 	 */
 	if (msm_host->tuning_in_progress)
 		return 0;
+<<<<<<< HEAD
 	sdhci_msm_exit_dbg_mode(host);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msm_host->tuning_in_progress = true;
 	pr_debug("%s: Enter %s\n", mmc_hostname(mmc), __func__);
 
@@ -1422,7 +1489,11 @@ retry:
 					continue;
 				}
 				break;
+<<<<<<< HEAD
 			}
+=======
+			};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (!cmd.error && !data.error &&
@@ -1482,7 +1553,12 @@ retry:
 							tuned_phase_cnt);
 		if (rc < 0)
 			goto kfree;
+<<<<<<< HEAD
 		phase = (u8)rc;
+=======
+		else
+			phase = (u8)rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Finally set the selected phase in delay
@@ -1506,7 +1582,10 @@ retry:
 kfree:
 	kfree(data_buf);
 out:
+<<<<<<< HEAD
 	sdhci_msm_enter_dbg_mode(host);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&host->lock, flags);
 	if (!rc)
 		msm_host->tuning_done = true;
@@ -2054,6 +2133,7 @@ skip_hsr:
 	return ret;
 }
 
+<<<<<<< HEAD
 int sdhci_msm_parse_reset_data(struct device *dev,
 			struct sdhci_msm_host *msm_host)
 {
@@ -2071,6 +2151,8 @@ int sdhci_msm_parse_reset_data(struct device *dev,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Parse platform data */
 static
 struct sdhci_msm_pltfm_data *sdhci_msm_populate_pdata(struct device *dev,
@@ -2084,16 +2166,29 @@ struct sdhci_msm_pltfm_data *sdhci_msm_populate_pdata(struct device *dev,
 	u32 *clk_table = NULL;
 	int ice_clk_table_len;
 	u32 *ice_clk_table = NULL;
+<<<<<<< HEAD
 	const char *lower_bus_speed = NULL;
 	enum of_gpio_flags flags = OF_GPIO_ACTIVE_LOW;
 	int bus_clk_table_len;
 	u32 *bus_clk_table = NULL;
 	int ret = 0;
+=======
+	enum of_gpio_flags flags = OF_GPIO_ACTIVE_LOW;
+	const char *lower_bus_speed = NULL;
+	int bus_clk_table_len;
+	u32 *bus_clk_table = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
 	if (!pdata)
 		goto out;
 
+<<<<<<< HEAD
+=======
+	device_property_read_u32(dev, "post-power-on-delay-ms",
+                                &msm_host->mmc->ios.power_delay_ms);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pdata->status_gpio = of_get_named_gpio_flags(np, "cd-gpios", 0, &flags);
 	if (gpio_is_valid(pdata->status_gpio) && !(flags & OF_GPIO_ACTIVE_LOW))
 		pdata->caps2 |= MMC_CAP2_CD_ACTIVE_HIGH;
@@ -2108,6 +2203,31 @@ struct sdhci_msm_pltfm_data *sdhci_msm_populate_pdata(struct device *dev,
 		pdata->mmc_bus_width = 0;
 	}
 
+<<<<<<< HEAD
+=======
+	if (sdhci_msm_dt_get_array(dev, "qcom,devfreq,freq-table",
+			&msm_host->mmc->clk_scaling.pltfm_freq_table,
+			&msm_host->mmc->clk_scaling.pltfm_freq_table_sz, 0))
+		pr_debug("%s: no clock scaling frequencies were supplied\n",
+			dev_name(dev));
+	else if (!msm_host->mmc->clk_scaling.pltfm_freq_table ||
+			!msm_host->mmc->clk_scaling.pltfm_freq_table_sz)
+		dev_err(dev, "bad dts clock scaling frequencies\n");
+
+	/*
+	 * Few hosts can support DDR52 mode at the same lower
+	 * system voltage corner as high-speed mode. In such cases,
+	 * it is always better to put it in DDR mode which will
+	 * improve the performance without any power impact.
+	 */
+	if (!of_property_read_string(np, "qcom,scaling-lower-bus-speed-mode",
+				&lower_bus_speed)) {
+		if (!strcmp(lower_bus_speed, "DDR52"))
+			msm_host->mmc->clk_scaling.lower_bus_speed_mode |=
+				MMC_SCALING_LOWER_DDR52_MODE;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sdhci_msm_dt_get_array(dev, "qcom,clk-rates",
 			&clk_table, &clk_table_len, 0)) {
 		dev_err(dev, "failed parsing supported clock rates\n");
@@ -2128,6 +2248,7 @@ struct sdhci_msm_pltfm_data *sdhci_msm_populate_pdata(struct device *dev,
 		}
 	}
 
+<<<<<<< HEAD
 	if (msm_host->ice.pdev) {
 		if (sdhci_msm_dt_get_array(dev, "qcom,ice-clk-rates",
 				&ice_clk_table, &ice_clk_table_len, 0)) {
@@ -2170,6 +2291,22 @@ struct sdhci_msm_pltfm_data *sdhci_msm_populate_pdata(struct device *dev,
 		if (!strcmp(lower_bus_speed, "DDR52"))
 			msm_host->mmc->clk_scaling.lower_bus_speed_mode |=
 					MMC_SCALING_LOWER_DDR52_MODE;
+=======
+	if (!sdhci_msm_dt_get_array(dev, "qcom,ice-clk-rates",
+			&ice_clk_table, &ice_clk_table_len, 0)) {
+		if (ice_clk_table && ice_clk_table_len) {
+			if (ice_clk_table_len != 2) {
+				dev_err(dev, "Need max and min frequencies\n");
+				goto out;
+			}
+			pdata->sup_ice_clk_table = ice_clk_table;
+			pdata->sup_ice_clk_cnt = ice_clk_table_len;
+			pdata->ice_clk_max = pdata->sup_ice_clk_table[0];
+			pdata->ice_clk_min = pdata->sup_ice_clk_table[1];
+			dev_dbg(dev, "ICE clock rates (Hz): max: %u min: %u\n",
+				pdata->ice_clk_max, pdata->ice_clk_min);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pdata->vreg_data = devm_kzalloc(dev, sizeof(struct
@@ -2207,6 +2344,7 @@ struct sdhci_msm_pltfm_data *sdhci_msm_populate_pdata(struct device *dev,
 		if (!name)
 			continue;
 
+<<<<<<< HEAD
 		if (!strcmp(name, "HS400_1p8v"))
 			pdata->caps2 |= MMC_CAP2_HS400_1_8V;
 		else if (!strcmp(name, "HS400_1p2v"))
@@ -2219,6 +2357,20 @@ struct sdhci_msm_pltfm_data *sdhci_msm_populate_pdata(struct device *dev,
 			pdata->caps |= MMC_CAP_1_8V_DDR
 						| MMC_CAP_UHS_DDR50;
 		else if (!strcmp(name, "DDR_1p2v"))
+=======
+		if (!strncmp(name, "HS400_1p8v", sizeof("HS400_1p8v")))
+			pdata->caps2 |= MMC_CAP2_HS400_1_8V;
+		else if (!strncmp(name, "HS400_1p2v", sizeof("HS400_1p2v")))
+			pdata->caps2 |= MMC_CAP2_HS400_1_2V;
+		else if (!strncmp(name, "HS200_1p8v", sizeof("HS200_1p8v")))
+			pdata->caps2 |= MMC_CAP2_HS200_1_8V_SDR;
+		else if (!strncmp(name, "HS200_1p2v", sizeof("HS200_1p2v")))
+			pdata->caps2 |= MMC_CAP2_HS200_1_2V_SDR;
+		else if (!strncmp(name, "DDR_1p8v", sizeof("DDR_1p8v")))
+			pdata->caps |= MMC_CAP_1_8V_DDR
+						| MMC_CAP_UHS_DDR50;
+		else if (!strncmp(name, "DDR_1p2v", sizeof("DDR_1p2v")))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pdata->caps |= MMC_CAP_1_2V_DDR
 						| MMC_CAP_UHS_DDR50;
 	}
@@ -2232,19 +2384,32 @@ struct sdhci_msm_pltfm_data *sdhci_msm_populate_pdata(struct device *dev,
 	pdata->largeaddressbus =
 		of_property_read_bool(np, "qcom,large-address-bus");
 
+<<<<<<< HEAD
+=======
+	if (of_property_read_bool(np, "qcom,wakeup-on-idle"))
+		msm_host->mmc->wakeup_on_idle = true;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdhci_msm_pm_qos_parse(dev, pdata);
 
 	if (of_get_property(np, "qcom,core_3_0v_support", NULL))
 		msm_host->core_3_0v_support = true;
 
+<<<<<<< HEAD
+=======
+	pdata->sdr104_wa = of_property_read_bool(np, "qcom,sdr104-wa");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msm_host->regs_restore.is_supported =
 		of_property_read_bool(np, "qcom,restore-after-cx-collapse");
 
 	if (sdhci_msm_dt_parse_hsr_info(dev, msm_host))
 		goto out;
+<<<<<<< HEAD
 	ret = sdhci_msm_parse_reset_data(dev, msm_host);
 	if (ret)
 		dev_err(dev, "Reset data parsing error\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return pdata;
 out:
@@ -2306,7 +2471,11 @@ static inline int sdhci_msm_bus_set_vote(struct sdhci_msm_host *msm_host,
 	struct sdhci_host *host =  platform_get_drvdata(msm_host->pdev);
 	int rc = 0;
 
+<<<<<<< HEAD
 	WARN_ON(!flags);
+=======
+	BUG_ON(!flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (vote != msm_host->msm_bus_vote.curr_vote) {
 		spin_unlock_irqrestore(&host->lock, *flags);
@@ -2325,6 +2494,7 @@ out:
 	return rc;
 }
 
+<<<<<<< HEAD
 /*****************************************************************************\
  *                                                                           *
  * MSM Command Queue Engine (CQE)                                            *
@@ -2516,11 +2686,44 @@ static void sdhci_msm_cqe_add_host(struct sdhci_host *host,
 }
 #endif /* CONFIG_MMC_CQHCI */
 
+=======
+/*
+ * Internal work. Work to set 0 bandwidth for msm bus.
+ */
+static void sdhci_msm_bus_work(struct work_struct *work)
+{
+	struct sdhci_msm_host *msm_host;
+	struct sdhci_host *host;
+	unsigned long flags;
+
+	msm_host = container_of(work, struct sdhci_msm_host,
+				msm_bus_vote.vote_work.work);
+	host =  platform_get_drvdata(msm_host->pdev);
+
+	if (!msm_host->msm_bus_vote.client_handle)
+		return;
+
+	spin_lock_irqsave(&host->lock, flags);
+	/* don't vote for 0 bandwidth if any request is in progress */
+	if (!host->mrq) {
+		sdhci_msm_bus_set_vote(msm_host,
+			msm_host->msm_bus_vote.min_bw_vote, &flags);
+	} else
+		pr_warn("%s: %s: Transfer in progress. skipping bus voting to 0 bandwidth\n",
+			   mmc_hostname(host->mmc), __func__);
+	spin_unlock_irqrestore(&host->lock, flags);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This function cancels any scheduled delayed work and sets the bus
  * vote based on bw (bandwidth) argument.
  */
+<<<<<<< HEAD
 static void sdhci_msm_bus_get_and_set_vote(struct sdhci_host *host,
+=======
+static void sdhci_msm_bus_cancel_work_and_set_vote(struct sdhci_host *host,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						unsigned int bw)
 {
 	int vote;
@@ -2528,12 +2731,37 @@ static void sdhci_msm_bus_get_and_set_vote(struct sdhci_host *host,
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct sdhci_msm_host *msm_host = pltfm_host->priv;
 
+<<<<<<< HEAD
+=======
+	cancel_delayed_work_sync(&msm_host->msm_bus_vote.vote_work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&host->lock, flags);
 	vote = sdhci_msm_bus_get_vote_for_bw(msm_host, bw);
 	sdhci_msm_bus_set_vote(msm_host, vote, &flags);
 	spin_unlock_irqrestore(&host->lock, flags);
 }
 
+<<<<<<< HEAD
+=======
+#define MSM_MMC_BUS_VOTING_DELAY	200 /* msecs */
+
+/* This function queues a work which will set the bandwidth requiement to 0 */
+static void sdhci_msm_bus_queue_work(struct sdhci_host *host)
+{
+	unsigned long flags;
+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+	struct sdhci_msm_host *msm_host = pltfm_host->priv;
+
+	spin_lock_irqsave(&host->lock, flags);
+	if (msm_host->msm_bus_vote.min_bw_vote !=
+		msm_host->msm_bus_vote.curr_vote)
+		queue_delayed_work(system_wq,
+				   &msm_host->msm_bus_vote.vote_work,
+				   msecs_to_jiffies(MSM_MMC_BUS_VOTING_DELAY));
+	spin_unlock_irqrestore(&host->lock, flags);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sdhci_msm_bus_register(struct sdhci_msm_host *host,
 				struct platform_device *pdev)
 {
@@ -2604,11 +2832,30 @@ static void sdhci_msm_bus_voting(struct sdhci_host *host, u32 enable)
 	if (!msm_host->msm_bus_vote.client_handle)
 		return;
 
+<<<<<<< HEAD
 	if (enable) {
 		bw = sdhci_get_bw_required(host, ios);
 		sdhci_msm_bus_get_and_set_vote(host, bw);
 	} else {
 		sdhci_msm_bus_get_and_set_vote(host, 0);
+=======
+	bw = sdhci_get_bw_required(host, ios);
+	if (enable) {
+		sdhci_msm_bus_cancel_work_and_set_vote(host, bw);
+	} else {
+		/*
+		 * If clock gating is enabled, then remove the vote
+		 * immediately because clocks will be disabled only
+		 * after SDHCI_MSM_MMC_CLK_GATE_DELAY and thus no
+		 * additional delay is required to remove the bus vote.
+		 */
+#ifdef CONFIG_MMC_CLKGATE
+		if (host->mmc->clkgate_delay)
+			sdhci_msm_bus_cancel_work_and_set_vote(host, 0);
+		else
+#endif
+			sdhci_msm_bus_queue_work(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2857,7 +3104,11 @@ static int sdhci_msm_set_vdd_io_vol(struct sdhci_msm_pltfm_data *pdata,
 			set_level = voltage_level;
 			break;
 		default:
+<<<<<<< HEAD
 			pr_err("%s: invalid argument level = %d\n",
+=======
+			pr_err("%s: invalid argument level = %d",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					__func__, level);
 			ret = -EINVAL;
 			return ret;
@@ -2927,8 +3178,14 @@ void sdhci_msm_dump_pwr_ctrl_regs(struct sdhci_host *host)
 		sdhci_msm_readl_relaxed(host,
 			msm_host_offset->CORE_PWRCTL_CTL), irq_flags);
 
+<<<<<<< HEAD
 	mmc_log_string(host->mmc,
 		"Sts: 0x%08x | Mask: 0x%08x | Ctrl: 0x%08x, pwr isr state=0x%x\n",
+=======
+	MMC_TRACE(host->mmc,
+		"%s: Sts: 0x%08x | Mask: 0x%08x | Ctrl: 0x%08x, pwr isr state=0x%x\n",
+		__func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sdhci_msm_readb_relaxed(host,
 			msm_host_offset->CORE_PWRCTL_STATUS),
 		sdhci_msm_readb_relaxed(host,
@@ -2969,10 +3226,17 @@ static int sdhci_msm_clear_pwrctl_status(struct sdhci_host *host, u8 value)
 				msm_host_offset->CORE_PWRCTL_CLEAR);
 		/*
 		 * SDHC has core_mem and hc_mem device memory and these memory
+<<<<<<< HEAD
 		 * addresses do not fall within 1KB region. Hence, any update to
 		 * core_mem address space would require an mb() to ensure this
 		 * gets completed before its next update to registers within
 		 * hc_mem.
+=======
+		 * addresses do not fall within 1KB region. Hence, any update
+		 * to core_mem address space would require an mb() to ensure
+		 * this gets completed before its next update to registers
+		 * within hc_mem.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		mb();
 		retry--;
@@ -3082,12 +3346,15 @@ static irqreturn_t sdhci_msm_pwr_irq(int irq, void *data)
 				msm_host_offset->CORE_VENDOR_SPEC) |
 				CORE_IO_PAD_PWR_SWITCH), host->ioaddr +
 				msm_host_offset->CORE_VENDOR_SPEC);
+<<<<<<< HEAD
 	/*
 	 * SDHC has core_mem and hc_mem device memory and these memory
 	 * addresses do not fall within 1KB region. Hence, any update to
 	 * core_mem address space would require an mb() to ensure this gets
 	 * completed before its next update to registers within hc_mem.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mb();
 
 	pr_debug("%s: Handled IRQ(%d), ret=%d, ack=0x%x\n",
@@ -3215,7 +3482,11 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
 	spin_unlock_irqrestore(&host->lock, flags);
 
 	/*
+<<<<<<< HEAD
 	 * This is needed here to handle a case where IRQ gets
+=======
+	 * This is needed here to hanlde a case where IRQ gets
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * triggered even before this function is called so that
 	 * x->done counter of completion gets reset. Otherwise,
 	 * next call to wait_for_completion returns immediately
@@ -3227,9 +3498,15 @@ static void sdhci_msm_check_power_status(struct sdhci_host *host, u32 req_type)
 				msecs_to_jiffies(MSM_PWR_IRQ_TIMEOUT_MS))) {
 		__WARN_printf("%s: request(%d) timed out waiting for pwr_irq\n",
 					mmc_hostname(host->mmc), req_type);
+<<<<<<< HEAD
 		mmc_log_string(host->mmc,
 			"request(%d) timed out waiting for pwr_irq\n",
 			req_type);
+=======
+		MMC_TRACE(host->mmc,
+			"%s: request(%d) timed out waiting for pwr_irq\n",
+			__func__, req_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sdhci_msm_dump_pwr_ctrl_regs(host);
 	}
 	pr_debug("%s: %s: request %d done\n", mmc_hostname(host->mmc),
@@ -3340,8 +3617,12 @@ static void sdhci_msm_registers_save(struct sdhci_host *host)
 	const struct sdhci_msm_offset *msm_host_offset =
 					msm_host->offset;
 
+<<<<<<< HEAD
 	if (!msm_host->regs_restore.is_supported &&
 			!msm_host->reg_store)
+=======
+	if (!msm_host->regs_restore.is_supported)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	msm_host->regs_restore.vendor_func = readl_relaxed(host->ioaddr +
@@ -3405,9 +3686,14 @@ static void sdhci_msm_registers_restore(struct sdhci_host *host)
 					msm_host->offset;
 	struct mmc_ios ios = host->mmc->ios;
 
+<<<<<<< HEAD
 	if ((!msm_host->regs_restore.is_supported ||
 		!msm_host->regs_restore.is_valid) &&
 		!msm_host->reg_store)
+=======
+	if (!msm_host->regs_restore.is_supported ||
+		!msm_host->regs_restore.is_valid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	writel_relaxed(0, host->ioaddr + msm_host_offset->CORE_PWRCTL_MASK);
@@ -3540,7 +3826,12 @@ disable_pclk:
 	if (!IS_ERR(msm_host->pclk))
 		clk_disable_unprepare(msm_host->pclk);
 remove_vote:
+<<<<<<< HEAD
 	sdhci_msm_bus_voting(host, 0);
+=======
+	if (msm_host->msm_bus_vote.client_handle)
+		sdhci_msm_bus_cancel_work_and_set_vote(host, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return rc;
 }
@@ -3554,12 +3845,20 @@ static void sdhci_msm_disable_controller_clock(struct sdhci_host *host)
 		sdhci_msm_registers_save(host);
 		if (!IS_ERR(msm_host->clk))
 			clk_disable_unprepare(msm_host->clk);
+<<<<<<< HEAD
+=======
+		if (!IS_ERR(msm_host->ice_clk))
+			clk_disable_unprepare(msm_host->ice_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!IS_ERR(msm_host->bus_aggr_clk))
 			clk_disable_unprepare(msm_host->bus_aggr_clk);
 		if (!IS_ERR(msm_host->pclk))
 			clk_disable_unprepare(msm_host->pclk);
+<<<<<<< HEAD
 		if (!IS_ERR(msm_host->ice_clk))
 			clk_disable_unprepare(msm_host->ice_clk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sdhci_msm_bus_voting(host, 0);
 		atomic_set(&msm_host->controller_clock, 0);
 		pr_debug("%s: %s: disabled controller clock\n",
@@ -3613,6 +3912,7 @@ static int sdhci_msm_prepare_clocks(struct sdhci_host *host, bool enable)
 				goto disable_ff_clk;
 			}
 		}
+<<<<<<< HEAD
 		/*
 		 * SDHC has core_mem and hc_mem device memory and these memory
 		 * addresses do not fall within 1KB region. Hence, any update to
@@ -3620,10 +3920,13 @@ static int sdhci_msm_prepare_clocks(struct sdhci_host *host, bool enable)
 		 * gets completed before its next update to registers within
 		 * hc_mem.
 		 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mb();
 
 	} else if (!enable && atomic_read(&msm_host->clks_on)) {
 		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+<<<<<<< HEAD
 		/*
 		 * SDHC has core_mem and hc_mem device memory and these memory
 		 * addresses do not fall within 1KB region. Hence, any update
@@ -3631,6 +3934,8 @@ static int sdhci_msm_prepare_clocks(struct sdhci_host *host, bool enable)
 		 * this gets completed before its next update to registers
 		 * within hc_mem.
 		 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mb();
 		/*
 		 * During 1.8V signal switching the clock source must
@@ -3661,19 +3966,32 @@ disable_bus_clk:
 disable_controller_clk:
 	if (!IS_ERR_OR_NULL(msm_host->clk))
 		clk_disable_unprepare(msm_host->clk);
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(msm_host->bus_aggr_clk))
 		clk_disable_unprepare(msm_host->bus_aggr_clk);
 	if (!IS_ERR(msm_host->ice_clk))
 		clk_disable_unprepare(msm_host->ice_clk);
+=======
+	if (!IS_ERR(msm_host->ice_clk))
+		clk_disable_unprepare(msm_host->ice_clk);
+	if (!IS_ERR_OR_NULL(msm_host->bus_aggr_clk))
+		clk_disable_unprepare(msm_host->bus_aggr_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR_OR_NULL(msm_host->pclk))
 		clk_disable_unprepare(msm_host->pclk);
 	atomic_set(&msm_host->controller_clock, 0);
 remove_vote:
+<<<<<<< HEAD
 		sdhci_msm_bus_voting(host, 0);
+=======
+	if (msm_host->msm_bus_vote.client_handle)
+		sdhci_msm_bus_cancel_work_and_set_vote(host, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return rc;
 }
 
+<<<<<<< HEAD
 /*
  * After MCLK ugating, toggle the FIFO write clock to get
  * the FIFO pointers and flags to valid state.
@@ -3711,6 +4029,8 @@ static void sdhci_msm_toggle_fifo_write_clk(struct sdhci_host *host)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 {
 	int rc;
@@ -3745,7 +4065,11 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 	curr_pwrsave = !!(readl_relaxed(host->ioaddr +
 	msm_host_offset->CORE_VENDOR_SPEC) & CORE_CLK_PWRSAVE);
 	if ((clock > 400000) &&
+<<<<<<< HEAD
 	    !curr_pwrsave && card /*&& mmc_host_may_gate_card(card)*/)
+=======
+	    !curr_pwrsave && card && mmc_host_may_gate_card(card))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		writel_relaxed(readl_relaxed(host->ioaddr +
 				msm_host_offset->CORE_VENDOR_SPEC)
 				| CORE_CLK_PWRSAVE, host->ioaddr +
@@ -3754,7 +4078,11 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 	 * Disable pwrsave for a newly added card if doesn't allow clock
 	 * gating.
 	 */
+<<<<<<< HEAD
 	else if (curr_pwrsave && card /*&& !mmc_host_may_gate_card(card)*/)
+=======
+	else if (curr_pwrsave && card && !mmc_host_may_gate_card(card))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		writel_relaxed(readl_relaxed(host->ioaddr +
 				msm_host_offset->CORE_VENDOR_SPEC)
 				& ~CORE_CLK_PWRSAVE, host->ioaddr +
@@ -3817,14 +4145,45 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 					| CORE_HC_SELECT_IN_EN), host->ioaddr +
 					msm_host_offset->CORE_VENDOR_SPEC);
 		}
+<<<<<<< HEAD
 
 		sdhci_msm_toggle_fifo_write_clk(host);
 
+=======
+		/*
+		 * After MCLK ugating, toggle the FIFO write clock to get
+		 * the FIFO pointers and flags to valid state.
+		 */
+		if (msm_host->tuning_done ||
+				(card && mmc_card_strobe(card) &&
+				msm_host->enhanced_strobe)) {
+			/*
+			 * set HC_REG_DLL_CONFIG_3[1] to select MCLK as
+			 * DLL input clock
+			 */
+			writel_relaxed(((readl_relaxed(host->ioaddr +
+				msm_host_offset->CORE_DLL_CONFIG_3))
+				| RCLK_TOGGLE), host->ioaddr +
+				msm_host_offset->CORE_DLL_CONFIG_3);
+			/* ensure above write as toggling same bit quickly */
+			wmb();
+			udelay(2);
+			/*
+			 * clear HC_REG_DLL_CONFIG_3[1] to select RCLK as
+			 * DLL input clock
+			 */
+			writel_relaxed(((readl_relaxed(host->ioaddr +
+				msm_host_offset->CORE_DLL_CONFIG_3))
+				& ~RCLK_TOGGLE), host->ioaddr +
+				msm_host_offset->CORE_DLL_CONFIG_3);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!host->mmc->ios.old_rate && !msm_host->use_cdclp533) {
 			/*
 			 * Poll on DLL_LOCK and DDR_DLL_LOCK bits in
 			 * CORE_DLL_STATUS to be set.  This should get set
 			 * with in 15 us at 200 MHz.
+<<<<<<< HEAD
 			 * No need to check for DLL lock for HS400es mode
 			 */
 			if (card && mmc_card_strobe(card) &&
@@ -3839,6 +4198,13 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 					dll_lock, (dll_lock & (CORE_DLL_LOCK |
 					CORE_DDR_DLL_LOCK)), 10, 1000);
 			}
+=======
+			 */
+			rc = readl_poll_timeout(host->ioaddr +
+					msm_host_offset->CORE_DLL_STATUS,
+					dll_lock, (dll_lock & (CORE_DLL_LOCK |
+					CORE_DDR_DLL_LOCK)), 10, 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (rc == -ETIMEDOUT)
 				pr_err("%s: Unable to get DLL_LOCK/DDR_DLL_LOCK, dll_status: 0x%08x\n",
 						mmc_hostname(host->mmc),
@@ -3873,12 +4239,15 @@ static void sdhci_msm_set_clock(struct sdhci_host *host, unsigned int clock)
 				& ~CORE_HC_SELECT_IN_MASK), host->ioaddr +
 				msm_host_offset->CORE_VENDOR_SPEC);
 	}
+<<<<<<< HEAD
 	/*
 	 * SDHC has core_mem and hc_mem device memory and these memory
 	 * addresses do not fall within 1KB region. Hence, any update to
 	 * core_mem address space would require an mb() to ensure this gets
 	 * completed before its next update to registers within hc_mem.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mb();
 
 	if (sup_clock != msm_host->clk_rate) {
@@ -3985,6 +4354,7 @@ static void sdhci_msm_set_uhs_signaling(struct sdhci_host *host,
 				msm_host_offset->CORE_DLL_CONFIG)
 				| CORE_DLL_PDN), host->ioaddr +
 				msm_host_offset->CORE_DLL_CONFIG);
+<<<<<<< HEAD
 		/*
 		 * SDHC has core_mem and hc_mem device memory and these memory
 		 * addresses do not fall within 1KB region. Hence, any update to
@@ -3992,6 +4362,8 @@ static void sdhci_msm_set_uhs_signaling(struct sdhci_host *host,
 		 * gets completed before its next update to registers within
 		 * hc_mem.
 		 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mb();
 
 		/*
@@ -4008,6 +4380,39 @@ static void sdhci_msm_set_uhs_signaling(struct sdhci_host *host,
 }
 
 #define MAX_TEST_BUS 60
+<<<<<<< HEAD
+=======
+#define DRV_NAME "cmdq-host"
+static void sdhci_msm_cmdq_dump_debug_ram(struct sdhci_host *host)
+{
+	int i = 0;
+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+	struct sdhci_msm_host *msm_host = pltfm_host->priv;
+	const struct sdhci_msm_offset *msm_host_offset =
+					msm_host->offset;
+	struct cmdq_host *cq_host = host->cq_host;
+
+	u32 version = sdhci_msm_readl_relaxed(host,
+		msm_host_offset->CORE_MCI_VERSION);
+	u16 minor = version & CORE_VERSION_TARGET_MASK;
+	/* registers offset changed starting from 4.2.0 */
+	int offset = minor >= SDHCI_MSM_VER_420 ? 0 : 0x48;
+
+	if (cq_host->offset_changed)
+		offset += CQ_V5_VENDOR_CFG;
+	pr_err("---- Debug RAM dump ----\n");
+	pr_err(DRV_NAME ": Debug RAM wrap-around: 0x%08x | Debug RAM overlap: 0x%08x\n",
+	       cmdq_readl(cq_host, CQ_CMD_DBG_RAM_WA + offset),
+	       cmdq_readl(cq_host, CQ_CMD_DBG_RAM_OL + offset));
+
+	while (i < 16) {
+		pr_err(DRV_NAME ": Debug RAM dump [%d]: 0x%08x\n", i,
+		       cmdq_readl(cq_host, CQ_CMD_DBG_RAM + offset + (4 * i)));
+		i++;
+	}
+	pr_err("-------------------------\n");
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void sdhci_msm_cache_debug_data(struct sdhci_host *host)
 {
@@ -4024,6 +4429,7 @@ static void sdhci_msm_cache_debug_data(struct sdhci_host *host)
 		sizeof(struct sdhci_host));
 }
 
+<<<<<<< HEAD
 #define MAX_TEST_BUS 60
 #define DRV_NAME "cqhci-host"
 static void sdhci_msm_cqe_dump_debug_ram(struct sdhci_host *host)
@@ -4131,6 +4537,8 @@ void sdhci_msm_dump_iib(struct sdhci_host *host)
 			SDCC_DEBUG_IIB_REG + (iter * 4)));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void sdhci_msm_dump_vendor_regs(struct sdhci_host *host)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
@@ -4141,6 +4549,7 @@ void sdhci_msm_dump_vendor_regs(struct sdhci_host *host)
 	int i, index = 0;
 	u32 test_bus_val = 0;
 	u32 debug_reg[MAX_TEST_BUS] = {0};
+<<<<<<< HEAD
 	u32 sts = 0;
 
 	sdhci_msm_cache_debug_data(host);
@@ -4149,6 +4558,15 @@ void sdhci_msm_dump_vendor_regs(struct sdhci_host *host)
 		sdhci_msm_cqe_dump_debug_ram(host);
 
 	mmc_log_string(host->mmc, "Data cnt: 0x%08x | Fifo cnt: 0x%08x\n",
+=======
+
+	sdhci_msm_cache_debug_data(host);
+	pr_info("----------- VENDOR REGISTER DUMP -----------\n");
+	if (host->cq_host)
+		sdhci_msm_cmdq_dump_debug_ram(host);
+
+	MMC_TRACE(host->mmc, "Data cnt: 0x%08x | Fifo cnt: 0x%08x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sdhci_msm_readl_relaxed(host,
 			msm_host_offset->CORE_MCI_DATA_CNT),
 		sdhci_msm_readl_relaxed(host,
@@ -4188,6 +4606,7 @@ void sdhci_msm_dump_vendor_regs(struct sdhci_host *host)
 			msm_host_offset->CORE_VENDOR_SPEC_FUNC2),
 		readl_relaxed(host->ioaddr +
 			msm_host_offset->CORE_VENDOR_SPEC3));
+<<<<<<< HEAD
 
 	if (msm_host->debug_mode_enabled) {
 		sdhci_msm_dump_fsm_history(host);
@@ -4196,6 +4615,8 @@ void sdhci_msm_dump_vendor_regs(struct sdhci_host *host)
 	/* Debug feature enable not must for iib */
 	sdhci_msm_dump_iib(host);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * tbsel indicates [2:0] bits and tbsel2 indicates [7:4] bits
 	 * of CORE_TESTBUS_CONFIG register.
@@ -4222,16 +4643,20 @@ void sdhci_msm_dump_vendor_regs(struct sdhci_host *host)
 		pr_info(" Test bus[%d to %d]: 0x%08x 0x%08x 0x%08x 0x%08x\n",
 				i, i + 3, debug_reg[i], debug_reg[i+1],
 				debug_reg[i+2], debug_reg[i+3]);
+<<<<<<< HEAD
 
 	if (host->is_crypto_en) {
 		sdhci_msm_ice_get_status(host, &sts);
 		pr_info("%s: ICE status %x\n", mmc_hostname(host->mmc), sts);
 		sdhci_msm_ice_print_regs(host);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sdhci_msm_reset(struct sdhci_host *host, u8 mask)
 {
+<<<<<<< HEAD
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct sdhci_msm_host *msm_host = pltfm_host->priv;
 
@@ -4248,6 +4673,9 @@ static void sdhci_msm_reset(struct sdhci_host *host, u8 mask)
 	sdhci_reset(host, mask);
 	if ((host->mmc->caps2 & MMC_CAP2_CQE) && (mask & SDHCI_RESET_ALL))
 		cqhci_suspend(host->mmc);
+=======
+	sdhci_reset(host, mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -4375,8 +4803,11 @@ void sdhci_msm_pm_qos_irq_vote(struct sdhci_host *host)
 
 	if (!msm_host->pm_qos_irq.enabled)
 		return;
+<<<<<<< HEAD
 	if (host->power_policy > SDHCI_POWER_SAVE_MODE)
 		return;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	counter = atomic_inc_return(&msm_host->pm_qos_irq.counter);
 	/* Make sure to update the voting in case power policy has changed */
@@ -4887,6 +5318,7 @@ static int sdhci_msm_notify_load(struct sdhci_host *host, enum mmc_load state)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void sdhci_msm_hw_reset(struct sdhci_host *host)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
@@ -4939,6 +5371,9 @@ static struct sdhci_ops sdhci_msm_ops = {
 	.crypto_engine_cfg = sdhci_msm_ice_cfg,
 	.crypto_engine_cfg_end = sdhci_msm_ice_cfg_end,
 	.crypto_engine_reset = sdhci_msm_ice_reset,
+=======
+static struct sdhci_ops sdhci_msm_ops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_uhs_signaling = sdhci_msm_set_uhs_signaling,
 	.check_power_status = sdhci_msm_check_power_status,
 	.platform_execute_tuning = sdhci_msm_execute_tuning,
@@ -4961,10 +5396,13 @@ static struct sdhci_ops sdhci_msm_ops = {
 	.post_req = sdhci_msm_post_req,
 	.get_current_limit = sdhci_msm_get_current_limit,
 	.notify_load = sdhci_msm_notify_load,
+<<<<<<< HEAD
 	.irq = sdhci_msm_cqe_irq,
 	.enter_dbg_mode = sdhci_msm_enter_dbg_mode,
 	.exit_dbg_mode = sdhci_msm_exit_dbg_mode,
 	.hw_reset = sdhci_msm_hw_reset,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void sdhci_set_default_hw_caps(struct sdhci_msm_host *msm_host,
@@ -5069,7 +5507,10 @@ static void sdhci_set_default_hw_caps(struct sdhci_msm_host *msm_host,
 
 	if ((major == 1) && (minor >= 0x6b)) {
 		host->cdr_support = true;
+<<<<<<< HEAD
 		msm_host->ice_hci_support = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* 7FF projects with 7nm DLL */
@@ -5078,6 +5519,45 @@ static void sdhci_set_default_hw_caps(struct sdhci_msm_host *msm_host,
 		msm_host->use_7nm_dll = true;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MMC_CQ_HCI
+static void sdhci_msm_cmdq_init(struct sdhci_host *host,
+				struct platform_device *pdev)
+{
+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+	struct sdhci_msm_host *msm_host = pltfm_host->priv;
+
+	if (nocmdq) {
+		dev_dbg(&pdev->dev, "CMDQ disabled via cmdline\n");
+		return;
+	}
+
+	host->cq_host = cmdq_pltfm_init(pdev);
+	if (IS_ERR(host->cq_host)) {
+		dev_dbg(&pdev->dev, "cmdq-pltfm init: failed: %ld\n",
+			PTR_ERR(host->cq_host));
+		host->cq_host = NULL;
+	} else {
+		msm_host->mmc->caps2 |= MMC_CAP2_CMD_QUEUE;
+	}
+	/*
+	 * Set the vendor specific ops needed for ICE.
+	 * Default implementation if the ops are not set.
+	 */
+#ifdef CONFIG_MMC_CQ_HCI_CRYPTO_QTI
+	cmdq_crypto_qti_set_vops(host->cq_host);
+#endif
+}
+#else
+static void sdhci_msm_cmdq_init(struct sdhci_host *host,
+				struct platform_device *pdev)
+{
+
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool sdhci_msm_is_bootdevice(struct device *dev)
 {
 	if (strnstr(saved_command_line, "androidboot.bootdevice=",
@@ -5100,6 +5580,7 @@ static bool sdhci_msm_is_bootdevice(struct device *dev)
 	return true;
 }
 
+<<<<<<< HEAD
 static int sdhci_msm_setup_ice_clk(struct sdhci_msm_host *msm_host,
 						struct platform_device *pdev)
 {
@@ -5183,6 +5664,8 @@ static int sdhci_msm_get_ice_device_vops(struct sdhci_host *host,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sdhci_msm_probe(struct platform_device *pdev)
 {
 	const struct sdhci_msm_offset *msm_host_offset;
@@ -5190,8 +5673,12 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 	struct sdhci_pltfm_host *pltfm_host;
 	struct sdhci_msm_host *msm_host;
 	struct resource *core_memres = NULL;
+<<<<<<< HEAD
 	struct device_node *node = pdev->dev.of_node;
 	int ret = 0, dead = 0;
+=======
+	int ret = 0, dead = 0, tlmm_cfg = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 host_version;
 	u32 irq_status, irq_ctl;
 	struct resource *tlmm_memres = NULL;
@@ -5227,11 +5714,14 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 	msm_host->mmc = host->mmc;
 	msm_host->pdev = pdev;
 
+<<<<<<< HEAD
 	/* get the ice device vops if present */
 	ret = sdhci_msm_get_ice_device_vops(host, pdev);
 	if (ret)
 		goto out_host_free;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Extract platform data */
 	if (pdev->dev.of_node) {
 		ret = of_alias_get_id(pdev->dev.of_node, "sdhc");
@@ -5291,6 +5781,7 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 	msm_host->pclk = devm_clk_get(&pdev->dev, "iface_clk");
 	if (!IS_ERR(msm_host->pclk)) {
 		ret = clk_prepare_enable(msm_host->pclk);
+<<<<<<< HEAD
 		if (ret) {
 			dev_err(&pdev->dev, "Iface clk not enabled (%d)\n"
 					, ret);
@@ -5299,6 +5790,10 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 	} else {
 		ret = PTR_ERR(msm_host->pclk);
 		dev_err(&pdev->dev, "Iface clk get failed (%d)\n", ret);
+=======
+		if (ret)
+			goto bus_clk_disable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	atomic_set(&msm_host->controller_clock, 1);
 
@@ -5312,15 +5807,40 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	ret = sdhci_msm_setup_ice_clk(msm_host, pdev);
 	if (ret)
 		goto pclk_disable;
+=======
+	/* Setup SDC ICE clock */
+	msm_host->ice_clk = devm_clk_get(&pdev->dev, "ice_core_clk");
+	if (!IS_ERR(msm_host->ice_clk)) {
+		/* ICE core has only one clock frequency for now */
+		ret = clk_set_rate(msm_host->ice_clk,
+				msm_host->pdata->ice_clk_max);
+		if (ret) {
+			dev_err(&pdev->dev, "ICE_CLK rate set failed (%d) for %u\n",
+				ret,
+				msm_host->pdata->ice_clk_max);
+			goto bus_aggr_clk_disable;
+		}
+		ret = clk_prepare_enable(msm_host->ice_clk);
+		if (ret)
+			goto bus_aggr_clk_disable;
+
+		msm_host->ice_clk_rate =
+			msm_host->pdata->ice_clk_max;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup SDC MMC clock */
 	msm_host->clk = devm_clk_get(&pdev->dev, "core_clk");
 	if (IS_ERR(msm_host->clk)) {
 		ret = PTR_ERR(msm_host->clk);
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "Core clk get failed (%d)\n", ret);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bus_aggr_clk_disable;
 	}
 
@@ -5331,10 +5851,16 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 		goto bus_aggr_clk_disable;
 	}
 	ret = clk_prepare_enable(msm_host->clk);
+<<<<<<< HEAD
 	if (ret) {
 		dev_err(&pdev->dev, "Core clk not enabled (%d)\n", ret);
 		goto bus_aggr_clk_disable;
 	}
+=======
+	if (ret)
+		goto bus_aggr_clk_disable;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msm_host->clk_rate = sdhci_msm_get_min_clock(host);
 	atomic_set(&msm_host->clks_on, 1);
 
@@ -5360,6 +5886,12 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 	if (ret)
 		goto sleep_clk_disable;
 
+<<<<<<< HEAD
+=======
+	if (msm_host->msm_bus_vote.client_handle)
+		INIT_DELAYED_WORK(&msm_host->msm_bus_vote.vote_work,
+				  sdhci_msm_bus_work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdhci_msm_bus_voting(host, 1);
 
 	/* Setup regulators */
@@ -5398,7 +5930,19 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 			ret = -ENOMEM;
 			goto vreg_deinit;
 		}
+<<<<<<< HEAD
 		writel_relaxed(readl_relaxed(tlmm_mem) | 0x2, tlmm_mem);
+=======
+
+		ret = of_property_read_u32(pdev->dev.of_node,
+					   "tlmm_cfg",
+					   &tlmm_cfg);
+		if (ret)
+			writel_relaxed(readl_relaxed(tlmm_mem) | 0x2, tlmm_mem);
+		else
+			writel_relaxed(readl_relaxed(tlmm_mem) | tlmm_cfg,
+						 tlmm_mem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -5544,8 +6088,11 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 	msm_host->mmc->caps2 |= MMC_CAP2_MAX_DISCARD_SIZE;
 	msm_host->mmc->caps2 |= MMC_CAP2_SLEEP_AWAKE;
 	msm_host->mmc->pm_caps |= MMC_PM_KEEP_POWER | MMC_PM_WAKE_SDIO_IRQ;
+<<<<<<< HEAD
 	if (msm_host->core_reset)
 		msm_host->mmc->caps |= MMC_CAP_HW_RESET;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (msm_host->pdata->nonremovable)
 		msm_host->mmc->caps |= MMC_CAP_NONREMOVABLE;
@@ -5553,10 +6100,14 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 	if (msm_host->pdata->nonhotplug)
 		msm_host->mmc->caps2 |= MMC_CAP2_NONHOTPLUG;
 
+<<<<<<< HEAD
 	/* Initialize ICE if present */
 	ret = sdhci_msm_initialize_ice(msm_host, pdev, host);
 	if (ret == -EINVAL)
 		goto vreg_deinit;
+=======
+	msm_host->mmc->sdr104_wa = msm_host->pdata->sdr104_wa;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init_completion(&msm_host->pwr_irq_completion);
 
@@ -5619,12 +6170,17 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	if (of_device_is_compatible(node, "qcom,sdhci-msm-cqe")) {
 		dev_dbg(&pdev->dev, "node with qcom,sdhci-msm-cqe\n");
 		ret = sdhci_msm_cqe_add_host(host, pdev);
 	} else {
 		ret = sdhci_add_host(host);
 	}
+=======
+	sdhci_msm_cmdq_init(host, pdev);
+	ret = sdhci_add_host(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(&pdev->dev, "Add host failed (%d)\n", ret);
 		goto vreg_deinit;
@@ -5676,9 +6232,15 @@ static int sdhci_msm_probe(struct platform_device *pdev)
 		       mmc_hostname(host->mmc), __func__, ret);
 		device_remove_file(&pdev->dev, &msm_host->auto_cmd21_attr);
 	}
+<<<<<<< HEAD
 
 	if (sdhci_msm_is_bootdevice(&pdev->dev))
 		mmc_flush_detect_work(host->mmc);
+=======
+	if (sdhci_msm_is_bootdevice(&pdev->dev))
+		mmc_flush_detect_work(host->mmc);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Successful initialization */
 	goto out;
 
@@ -5691,7 +6253,12 @@ remove_host:
 vreg_deinit:
 	sdhci_msm_vreg_init(&pdev->dev, msm_host->pdata, false);
 bus_unregister:
+<<<<<<< HEAD
 	sdhci_msm_bus_voting(host, 0);
+=======
+	if (msm_host->msm_bus_vote.client_handle)
+		sdhci_msm_bus_cancel_work_and_set_vote(host, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdhci_msm_bus_unregister(msm_host);
 sleep_clk_disable:
 	if (!IS_ERR(msm_host->sleep_clk))
@@ -5776,9 +6343,16 @@ static int sdhci_msm_remove(struct platform_device *pdev)
 	sdhci_msm_setup_pins(pdata, true);
 	sdhci_msm_setup_pins(pdata, false);
 
+<<<<<<< HEAD
 	sdhci_msm_bus_voting(host, 0);
 	if (msm_host->msm_bus_vote.client_handle)
 		sdhci_msm_bus_unregister(msm_host);
+=======
+	if (msm_host->msm_bus_vote.client_handle) {
+		sdhci_msm_bus_cancel_work_and_set_vote(host, 0);
+		sdhci_msm_bus_unregister(msm_host);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sdhci_pltfm_free(pdev);
 
@@ -5839,7 +6413,10 @@ static int sdhci_msm_runtime_suspend(struct device *dev)
 	struct sdhci_host *host = dev_get_drvdata(dev);
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct sdhci_msm_host *msm_host = pltfm_host->priv;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ktime_t start = ktime_get();
 
 	if (host->mmc->card && mmc_card_sdio(host->mmc->card))
@@ -5850,6 +6427,7 @@ static int sdhci_msm_runtime_suspend(struct device *dev)
 defer_disable_host_irq:
 	disable_irq(msm_host->pwr_irq);
 
+<<<<<<< HEAD
 	if (host->is_crypto_en) {
 		ret = sdhci_msm_ice_suspend(host);
 		if (ret < 0)
@@ -5857,6 +6435,18 @@ defer_disable_host_irq:
 					mmc_hostname(host->mmc), ret);
 	}
 	sdhci_msm_disable_controller_clock(host);
+=======
+	/*
+	 * Remove the vote immediately only if clocks are off in which
+	 * case we might have queued work to remove vote but it may not
+	 * be completed before runtime suspend or system suspend.
+	 */
+	if (!atomic_read(&msm_host->clks_on)) {
+		if (msm_host->msm_bus_vote.client_handle)
+			sdhci_msm_bus_cancel_work_and_set_vote(host, 0);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	trace_sdhci_msm_runtime_suspend(mmc_hostname(host->mmc), 0,
 			ktime_to_us(ktime_sub(ktime_get(), start)));
 	return 0;
@@ -5867,6 +6457,7 @@ static int sdhci_msm_runtime_resume(struct device *dev)
 	struct sdhci_host *host = dev_get_drvdata(dev);
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct sdhci_msm_host *msm_host = pltfm_host->priv;
+<<<<<<< HEAD
 	int ret;
 	ktime_t start = ktime_get();
 
@@ -5889,6 +6480,10 @@ static int sdhci_msm_runtime_resume(struct device *dev)
 	}
 skip_ice_resume:
 
+=======
+	ktime_t start = ktime_get();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (host->mmc->card && mmc_card_sdio(host->mmc->card))
 		goto defer_enable_host_irq;
 
@@ -5905,10 +6500,22 @@ defer_enable_host_irq:
 static int sdhci_msm_suspend(struct device *dev)
 {
 	struct sdhci_host *host = dev_get_drvdata(dev);
+<<<<<<< HEAD
+=======
+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+	struct sdhci_msm_host *msm_host = pltfm_host->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	int sdio_cfg = 0;
 	ktime_t start = ktime_get();
 
+<<<<<<< HEAD
+=======
+	if (gpio_is_valid(msm_host->pdata->status_gpio) &&
+			 (msm_host->mmc->slot.cd_irq >= 0))
+		disable_irq(msm_host->mmc->slot.cd_irq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pm_runtime_suspended(dev)) {
 		pr_debug("%s: %s: already runtime suspended\n",
 		mmc_hostname(host->mmc), __func__);
@@ -5916,6 +6523,10 @@ static int sdhci_msm_suspend(struct device *dev)
 	}
 	ret = sdhci_msm_runtime_suspend(dev);
 out:
+<<<<<<< HEAD
+=======
+	sdhci_msm_disable_controller_clock(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (host->mmc->card && mmc_card_sdio(host->mmc->card)) {
 		sdio_cfg = sdhci_msm_cfg_sdio_wakeup(host, true);
 		if (sdio_cfg)
@@ -5930,10 +6541,22 @@ out:
 static int sdhci_msm_resume(struct device *dev)
 {
 	struct sdhci_host *host = dev_get_drvdata(dev);
+<<<<<<< HEAD
+=======
+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+	struct sdhci_msm_host *msm_host = pltfm_host->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	int sdio_cfg = 0;
 	ktime_t start = ktime_get();
 
+<<<<<<< HEAD
+=======
+	if (gpio_is_valid(msm_host->pdata->status_gpio) &&
+			 (msm_host->mmc->slot.cd_irq >= 0))
+		enable_irq(msm_host->mmc->slot.cd_irq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pm_runtime_suspended(dev)) {
 		pr_debug("%s: %s: runtime suspended, defer system resume\n",
 		mmc_hostname(host->mmc), __func__);
@@ -5977,11 +6600,49 @@ static int sdhci_msm_suspend_noirq(struct device *dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 static const struct dev_pm_ops sdhci_msm_pmops = {
 	SET_LATE_SYSTEM_SLEEP_PM_OPS(sdhci_msm_suspend, sdhci_msm_resume)
 	SET_RUNTIME_PM_OPS(sdhci_msm_runtime_suspend, sdhci_msm_runtime_resume,
 			   NULL)
 	.suspend_noirq = sdhci_msm_suspend_noirq,
+=======
+static int sdhci_msm_freeze(struct device *dev)
+{
+	struct sdhci_host *host = dev_get_drvdata(dev);
+	struct mmc_host *mmc = host->mmc;
+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+	struct sdhci_msm_host *msm_host = pltfm_host->priv;
+
+	if (gpio_is_valid(msm_host->pdata->status_gpio) &&
+			(msm_host->mmc->slot.cd_irq >= 0))
+		mmc_gpiod_free_cd_irq(mmc);
+	return 0;
+}
+
+static int sdhci_msm_restore(struct device *dev)
+{
+	struct sdhci_host *host = dev_get_drvdata(dev);
+	struct mmc_host *mmc = host->mmc;
+
+	if (mmc->inlinecrypt_support)
+		mmc->inlinecrypt_reset_needed = true;
+
+	mmc_gpiod_restore_cd_irq(mmc);
+
+	return 0;
+}
+
+static const struct dev_pm_ops sdhci_msm_pmops = {
+	.suspend_late		= sdhci_msm_suspend,
+	.resume_early		= sdhci_msm_resume,
+	.runtime_suspend	= sdhci_msm_runtime_suspend,
+	.runtime_resume		= sdhci_msm_runtime_resume,
+	.suspend_noirq		= sdhci_msm_suspend_noirq,
+	.freeze			= sdhci_msm_freeze,
+	.restore		= sdhci_msm_restore,
+	.thaw			= sdhci_msm_restore,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define SDHCI_MSM_PMOPS (&sdhci_msm_pmops)
@@ -5992,7 +6653,10 @@ static const struct dev_pm_ops sdhci_msm_pmops = {
 static const struct of_device_id sdhci_msm_dt_match[] = {
 	{.compatible = "qcom,sdhci-msm"},
 	{.compatible = "qcom,sdhci-msm-v5"},
+<<<<<<< HEAD
 	{.compatible = "qcom,sdhci-msm-cqe"},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, sdhci_msm_dt_match);
@@ -6002,6 +6666,10 @@ static struct platform_driver sdhci_msm_driver = {
 	.remove		= sdhci_msm_remove,
 	.driver		= {
 		.name	= "sdhci_msm",
+<<<<<<< HEAD
+=======
+		.owner	= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 		.of_match_table = sdhci_msm_dt_match,
 		.pm	= SDHCI_MSM_PMOPS,
@@ -6010,5 +6678,9 @@ static struct platform_driver sdhci_msm_driver = {
 
 module_platform_driver(sdhci_msm_driver);
 
+<<<<<<< HEAD
 MODULE_DESCRIPTION("Qualcomm Technologies, Inc. SDHCI driver");
+=======
+MODULE_DESCRIPTION("Qualcomm Technologies, Inc. Secure Digital Host Controller Interface driver");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

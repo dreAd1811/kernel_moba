@@ -60,8 +60,11 @@ following parameters:
 
 -  :ref:`DTV_STREAM_ID <DTV-STREAM-ID>`
 
+<<<<<<< HEAD
 -  :ref:`DTV_SCRAMBLING_SEQUENCE_INDEX <DTV-SCRAMBLING-SEQUENCE-INDEX>`
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 In addition, the :ref:`DTV QoS statistics <frontend-stat-properties>`
 are also valid.
 

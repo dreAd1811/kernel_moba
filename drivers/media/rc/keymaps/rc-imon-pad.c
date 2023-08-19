@@ -134,7 +134,12 @@ static struct rc_map_list imon_pad_map = {
 	.map = {
 		.scan     = imon_pad,
 		.size     = ARRAY_SIZE(imon_pad),
+<<<<<<< HEAD
 		.rc_proto = RC_PROTO_IMON,
+=======
+		/* actual protocol details unknown, hardware decoder */
+		.rc_proto = RC_PROTO_OTHER,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name     = RC_MAP_IMON_PAD,
 	}
 };

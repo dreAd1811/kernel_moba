@@ -780,10 +780,13 @@ static int iwl_mvm_mac_ctxt_cmd_sta(struct iwl_mvm *mvm,
 	if (vif->probe_req_reg && vif->bss_conf.assoc && vif->p2p)
 		cmd.filter_flags |= cpu_to_le32(MAC_FILTER_IN_PROBE_REQUEST);
 
+<<<<<<< HEAD
 	if (vif->bss_conf.assoc && vif->bss_conf.he_support &&
 	    !iwlwifi_mod_params.disable_11ax)
 		cmd.filter_flags |= cpu_to_le32(MAC_FILTER_IN_11AX);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return iwl_mvm_mac_ctxt_send_cmd(mvm, &cmd);
 }
 

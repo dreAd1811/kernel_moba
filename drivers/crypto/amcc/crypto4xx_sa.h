@@ -55,8 +55,11 @@ union dynamic_sa_contents {
 #define SA_OP_GROUP_BASIC			0
 #define SA_OPCODE_ENCRYPT			0
 #define SA_OPCODE_DECRYPT			0
+<<<<<<< HEAD
 #define SA_OPCODE_ENCRYPT_HASH			1
 #define SA_OPCODE_HASH_DECRYPT			1
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SA_OPCODE_HASH				3
 #define SA_CIPHER_ALG_DES			0
 #define SA_CIPHER_ALG_3DES			1
@@ -67,8 +70,11 @@ union dynamic_sa_contents {
 
 #define SA_HASH_ALG_MD5				0
 #define SA_HASH_ALG_SHA1			1
+<<<<<<< HEAD
 #define SA_HASH_ALG_GHASH			12
 #define SA_HASH_ALG_CBC_MAC			14
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SA_HASH_ALG_NULL			15
 #define SA_HASH_ALG_SHA1_DIGEST_SIZE		20
 
@@ -116,9 +122,12 @@ union sa_command_0 {
 
 #define CRYPTO_MODE_ECB				0
 #define CRYPTO_MODE_CBC				1
+<<<<<<< HEAD
 #define CRYPTO_MODE_OFB				2
 #define CRYPTO_MODE_CFB				3
 #define CRYPTO_MODE_CTR				4
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CRYPTO_FEEDBACK_MODE_NO_FB		0
 #define CRYPTO_FEEDBACK_MODE_64BIT_OFB		0
@@ -176,7 +185,11 @@ union sa_command_1 {
 } __attribute__((packed));
 
 struct dynamic_sa_ctl {
+<<<<<<< HEAD
 	union dynamic_sa_contents sa_contents;
+=======
+	u32 sa_contents;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union sa_command_0 sa_command_0;
 	union sa_command_1 sa_command_1;
 } __attribute__((packed));
@@ -185,12 +198,18 @@ struct dynamic_sa_ctl {
  * State Record for Security Association (SA)
  */
 struct  sa_state_record {
+<<<<<<< HEAD
 	__le32 save_iv[4];
 	__le32 save_hash_byte_cnt[2];
 	union {
 		u32 save_digest[16]; /* for MD5/SHA */
 		__le32 save_digest_le32[16]; /* GHASH / CBC */
 	};
+=======
+	u32 save_iv[4];
+	u32 save_hash_byte_cnt[2];
+	u32 save_digest[16];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __attribute__((packed));
 
 /**
@@ -199,8 +218,13 @@ struct  sa_state_record {
  */
 struct dynamic_sa_aes128 {
 	struct dynamic_sa_ctl	ctrl;
+<<<<<<< HEAD
 	__le32 key[4];
 	__le32 iv[4]; /* for CBC, OFC, and CFB mode */
+=======
+	u32 key[4];
+	u32 iv[4]; /* for CBC, OFC, and CFB mode */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 state_ptr;
 	u32 reserved;
 } __attribute__((packed));
@@ -213,8 +237,13 @@ struct dynamic_sa_aes128 {
  */
 struct dynamic_sa_aes192 {
 	struct dynamic_sa_ctl ctrl;
+<<<<<<< HEAD
 	__le32 key[6];
 	__le32 iv[4]; /* for CBC, OFC, and CFB mode */
+=======
+	u32 key[6];
+	u32 iv[4]; /* for CBC, OFC, and CFB mode */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 state_ptr;
 	u32 reserved;
 } __attribute__((packed));
@@ -227,8 +256,13 @@ struct dynamic_sa_aes192 {
  */
 struct dynamic_sa_aes256 {
 	struct dynamic_sa_ctl ctrl;
+<<<<<<< HEAD
 	__le32 key[8];
 	__le32 iv[4]; /* for CBC, OFC, and CFB mode */
+=======
+	u32 key[8];
+	u32 iv[4]; /* for CBC, OFC, and CFB mode */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 state_ptr;
 	u32 reserved;
 } __attribute__((packed));
@@ -238,6 +272,7 @@ struct dynamic_sa_aes256 {
 #define SA_AES_CONTENTS		0x3e000002
 
 /**
+<<<<<<< HEAD
  * Security Association (SA) for AES128 CCM
  */
 struct dynamic_sa_aes128_ccm {
@@ -268,18 +303,26 @@ struct dynamic_sa_aes128_gcm {
 #define SA_AES_GCM_CONTENTS	0x3e000402
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Security Association (SA) for HASH160: HMAC-SHA1
  */
 struct dynamic_sa_hash160 {
 	struct dynamic_sa_ctl ctrl;
+<<<<<<< HEAD
 	__le32 inner_digest[5];
 	__le32 outer_digest[5];
+=======
+	u32 inner_digest[5];
+	u32 outer_digest[5];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 state_ptr;
 	u32 reserved;
 } __attribute__((packed));
 #define SA_HASH160_LEN		(sizeof(struct dynamic_sa_hash160)/4)
 #define SA_HASH160_CONTENTS     0x2000a502
 
+<<<<<<< HEAD
 static inline u32
 get_dynamic_sa_offset_state_ptr_field(struct dynamic_sa_ctl *cts)
 {
@@ -315,4 +358,6 @@ static inline __le32 *get_dynamic_sa_inner_digest(struct dynamic_sa_ctl *cts)
 		cts->sa_contents.bf.key_size * 4);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

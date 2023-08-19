@@ -57,6 +57,7 @@ static struct gpio_desc *of_xlate_and_get_gpiod_flags(struct gpio_chip *chip,
 	return gpiochip_get_desc(chip, ret);
 }
 
+<<<<<<< HEAD
 static void of_gpio_flags_quirks(struct device_node *np,
 				 enum of_gpio_flags *flags)
 {
@@ -94,6 +95,8 @@ static void of_gpio_flags_quirks(struct device_node *np,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * of_get_named_gpiod_flags() - Get a GPIO descriptor and flags for GPIO API
  * @np:		device node to get GPIO from
@@ -113,8 +116,13 @@ struct gpio_desc *of_get_named_gpiod_flags(struct device_node *np,
 	struct gpio_desc *desc;
 	int ret;
 
+<<<<<<< HEAD
 	ret = of_parse_phandle_with_args_map(np, propname, "gpio", index,
 					     &gpiospec);
+=======
+	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells", index,
+					 &gpiospec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_debug("%s: can't parse '%s' property of node '%pOF[%d]'\n",
 			__func__, propname, np, index);
@@ -131,9 +139,12 @@ struct gpio_desc *of_get_named_gpiod_flags(struct device_node *np,
 	if (IS_ERR(desc))
 		goto out;
 
+<<<<<<< HEAD
 	if (flags)
 		of_gpio_flags_quirks(np, flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("%s: parsed '%s' property of node '%pOF[%d]' - status (%d)\n",
 		 __func__, propname, np, index,
 		 PTR_ERR_OR_ZERO(desc));
@@ -158,6 +169,7 @@ int of_get_named_gpio_flags(struct device_node *np, const char *list_name,
 }
 EXPORT_SYMBOL(of_get_named_gpio_flags);
 
+<<<<<<< HEAD
 /*
  * The SPI GPIO bindings happened before we managed to establish that GPIO
  * properties should be named "foo-gpios" so we have this special kludge for
@@ -220,6 +232,8 @@ static struct gpio_desc *of_find_regulator_gpio(struct device *dev, const char *
 	return desc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
 			       unsigned int idx,
 			       enum gpio_lookup_flags *flags)
@@ -229,7 +243,10 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
 	struct gpio_desc *desc;
 	unsigned int i;
 
+<<<<<<< HEAD
 	/* Try GPIO property "foo-gpios" and "foo-gpio" */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(gpio_suffixes); i++) {
 		if (con_id)
 			snprintf(prop_name, sizeof(prop_name), "%s-%s", con_id,
@@ -240,6 +257,7 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
 
 		desc = of_get_named_gpiod_flags(dev->of_node, prop_name, idx,
 						&of_flags);
+<<<<<<< HEAD
 		/*
 		 * -EPROBE_DEFER in our case means that we found a
 		 * valid GPIO property, but no controller has been
@@ -253,10 +271,13 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
 		if (IS_ERR(desc) && PTR_ERR(desc) == -EPROBE_DEFER)
 			return desc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!IS_ERR(desc) || (PTR_ERR(desc) != -ENOENT))
 			break;
 	}
 
+<<<<<<< HEAD
 	/* Special handling for SPI GPIOs if used */
 	if (IS_ERR(desc))
 		desc = of_find_spi_gpio(dev, con_id, &of_flags);
@@ -265,6 +286,8 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
 	if (IS_ERR(desc) && PTR_ERR(desc) != -EPROBE_DEFER)
 		desc = of_find_regulator_gpio(dev, con_id, &of_flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(desc))
 		return desc;
 
@@ -278,8 +301,13 @@ struct gpio_desc *of_find_gpio(struct device *dev, const char *con_id,
 			*flags |= GPIO_OPEN_SOURCE;
 	}
 
+<<<<<<< HEAD
 	if (of_flags & OF_GPIO_TRANSITORY)
 		*flags |= GPIO_TRANSITORY;
+=======
+	if (of_flags & OF_GPIO_SLEEP_MAY_LOOSE_VALUE)
+		*flags |= GPIO_SLEEP_MAY_LOOSE_VALUE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return desc;
 }
@@ -339,8 +367,11 @@ static struct gpio_desc *of_parse_own_gpio(struct device_node *np,
 
 	if (xlate_flags & OF_GPIO_ACTIVE_LOW)
 		*lflags |= GPIO_ACTIVE_LOW;
+<<<<<<< HEAD
 	if (xlate_flags & OF_GPIO_TRANSITORY)
 		*lflags |= GPIO_TRANSITORY;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_property_read_bool(np, "input"))
 		*dflags |= GPIOD_IN;
@@ -510,6 +541,7 @@ void of_mm_gpiochip_remove(struct of_mm_gpio_chip *mm_gc)
 }
 EXPORT_SYMBOL(of_mm_gpiochip_remove);
 
+<<<<<<< HEAD
 static void of_gpiochip_init_valid_mask(struct gpio_chip *chip)
 {
 	int len, i;
@@ -532,6 +564,8 @@ static void of_gpiochip_init_valid_mask(struct gpio_chip *chip)
 	}
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PINCTRL
 static int of_gpiochip_add_pin_range(struct gpio_chip *chip)
 {
@@ -622,6 +656,12 @@ int of_gpiochip_add(struct gpio_chip *chip)
 {
 	int status;
 
+<<<<<<< HEAD
+=======
+	if ((!chip->of_node) && (chip->parent))
+		chip->of_node = chip->parent->of_node;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!chip->of_node)
 		return 0;
 
@@ -633,8 +673,11 @@ int of_gpiochip_add(struct gpio_chip *chip)
 	if (chip->of_gpio_n_cells > MAX_PHANDLE_ARGS)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	of_gpiochip_init_valid_mask(chip);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = of_gpiochip_add_pin_range(chip);
 	if (status)
 		return status;

@@ -11,7 +11,10 @@
 #include <asm/feature-fixups.h>
 #include <asm/ppc_asm.h>
 #include <asm/synch.h>
+<<<<<<< HEAD
 #include <asm/asm-compat.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.text
 
@@ -168,6 +171,7 @@ globl(ftr_fixup_test6_expected)
 	blt	2b
 	b	3f
 	b	1b
+<<<<<<< HEAD
 3:	or	1,1,1
 	or	2,2,2
 	or	3,3,3
@@ -208,12 +212,22 @@ globl(ftr_fixup_test7_expected)
 	b	2b
 	bdnz	3b
 1:	or	1,1,1
+=======
+2:	or	1,1,1
+	or	2,2,2
+3:	or	3,3,3
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if 0
 /* Test that if we have a larger else case the assembler spots it and
  * reports an error. #if 0'ed so as not to break the build normally.
  */
+<<<<<<< HEAD
 ftr_fixup_test_too_big:
+=======
+ftr_fixup_test7:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	or	1,1,1
 BEGIN_FTR_SECTION
 	or	2,2,2

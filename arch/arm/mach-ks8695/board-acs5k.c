@@ -16,10 +16,17 @@
 #include <linux/interrupt.h>
 #include <linux/init.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
 #include <linux/i2c.h>
 #include <linux/i2c-algo-bit.h>
 #include <linux/platform_data/i2c-gpio.h>
+=======
+
+#include <linux/i2c.h>
+#include <linux/i2c-algo-bit.h>
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_data/pca953x.h>
 
 #include <linux/mtd/mtd.h>
@@ -38,6 +45,7 @@
 
 #include "generic.h"
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table acs5k_i2c_gpiod_table = {
 	.dev_id		= "i2c-gpio",
 	.table		= {
@@ -49,6 +57,11 @@ static struct gpiod_lookup_table acs5k_i2c_gpiod_table = {
 };
 
 static struct i2c_gpio_platform_data acs5k_i2c_device_platdata = {
+=======
+static struct i2c_gpio_platform_data acs5k_i2c_device_platdata = {
+	.sda_pin	= 4,
+	.scl_pin	= 5,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.udelay		= 10,
 };
 
@@ -100,10 +113,16 @@ static struct i2c_board_info acs5k_i2c_devs[] __initdata = {
 	},
 };
 
+<<<<<<< HEAD
 static void acs5k_i2c_init(void)
 {
 	/* The gpio interface */
 	gpiod_add_lookup_table(&acs5k_i2c_gpiod_table);
+=======
+static void __init acs5k_i2c_init(void)
+{
+	/* The gpio interface */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_device_register(&acs5k_i2c_device);
 	/* I2C devices */
 	i2c_register_board_info(0, acs5k_i2c_devs,

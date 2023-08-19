@@ -1,7 +1,11 @@
 config INFINIBAND_RDMAVT
 	tristate "RDMA verbs transport library"
+<<<<<<< HEAD
 	depends on 64BIT && ARCH_DMA_ADDR_T_64BIT
 	depends on PCI
+=======
+	depends on 64BIT
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select DMA_VIRT_OPS
 	---help---
 	This is a common software verbs provider for RDMA networks.

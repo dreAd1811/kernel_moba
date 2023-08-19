@@ -18,7 +18,10 @@
 
 #include <linux/slab.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/idr.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dvb/frontend.h>
 #include <asm/types.h>
 
@@ -44,7 +47,12 @@ struct dvb_pll_priv {
 };
 
 #define DVB_PLL_MAX 64
+<<<<<<< HEAD
 static DEFINE_IDA(pll_ida);
+=======
+
+static unsigned int dvb_pll_devcount;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int debug;
 module_param(debug, int, 0644);
@@ -80,8 +88,13 @@ struct dvb_pll_desc {
 
 static const struct dvb_pll_desc dvb_pll_thomson_dtt7579 = {
 	.name  = "Thomson dtt7579",
+<<<<<<< HEAD
 	.min   = 177 * MHz,
 	.max   = 858 * MHz,
+=======
+	.min   = 177000000,
+	.max   = 858000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 36166667,
 	.sleepdata = (u8[]){ 2, 0xb4, 0x03 },
 	.count = 4,
@@ -102,8 +115,13 @@ static void thomson_dtt759x_bw(struct dvb_frontend *fe, u8 *buf)
 
 static const struct dvb_pll_desc dvb_pll_thomson_dtt759x = {
 	.name  = "Thomson dtt759x",
+<<<<<<< HEAD
 	.min   = 177 * MHz,
 	.max   = 896 * MHz,
+=======
+	.min   = 177000000,
+	.max   = 896000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set   = thomson_dtt759x_bw,
 	.iffreq= 36166667,
 	.sleepdata = (u8[]){ 2, 0x84, 0x03 },
@@ -126,8 +144,13 @@ static void thomson_dtt7520x_bw(struct dvb_frontend *fe, u8 *buf)
 
 static const struct dvb_pll_desc dvb_pll_thomson_dtt7520x = {
 	.name  = "Thomson dtt7520x",
+<<<<<<< HEAD
 	.min   = 185 * MHz,
 	.max   = 900 * MHz,
+=======
+	.min   = 185000000,
+	.max   = 900000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set   = thomson_dtt7520x_bw,
 	.iffreq = 36166667,
 	.count = 7,
@@ -144,8 +167,13 @@ static const struct dvb_pll_desc dvb_pll_thomson_dtt7520x = {
 
 static const struct dvb_pll_desc dvb_pll_lg_z201 = {
 	.name  = "LG z201",
+<<<<<<< HEAD
 	.min   = 174 * MHz,
 	.max   = 862 * MHz,
+=======
+	.min   = 174000000,
+	.max   = 862000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 36166667,
 	.sleepdata = (u8[]){ 2, 0xbc, 0x03 },
 	.count = 5,
@@ -160,8 +188,13 @@ static const struct dvb_pll_desc dvb_pll_lg_z201 = {
 
 static const struct dvb_pll_desc dvb_pll_unknown_1 = {
 	.name  = "unknown 1", /* used by dntv live dvb-t */
+<<<<<<< HEAD
 	.min   = 174 * MHz,
 	.max   = 862 * MHz,
+=======
+	.min   = 174000000,
+	.max   = 862000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 36166667,
 	.count = 9,
 	.entries = {
@@ -182,8 +215,13 @@ static const struct dvb_pll_desc dvb_pll_unknown_1 = {
  */
 static const struct dvb_pll_desc dvb_pll_tua6010xs = {
 	.name  = "Infineon TUA6010XS",
+<<<<<<< HEAD
 	.min   = 44250 * kHz,
 	.max   = 858 * MHz,
+=======
+	.min   =  44250000,
+	.max   = 858000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 36125000,
 	.count = 3,
 	.entries = {
@@ -196,8 +234,13 @@ static const struct dvb_pll_desc dvb_pll_tua6010xs = {
 /* Panasonic env57h1xd5 (some Philips PLL ?) */
 static const struct dvb_pll_desc dvb_pll_env57h1xd5 = {
 	.name  = "Panasonic ENV57H1XD5",
+<<<<<<< HEAD
 	.min   = 44250 * kHz,
 	.max   = 858 * MHz,
+=======
+	.min   =  44250000,
+	.max   = 858000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 36125000,
 	.count = 4,
 	.entries = {
@@ -220,8 +263,13 @@ static void tda665x_bw(struct dvb_frontend *fe, u8 *buf)
 
 static const struct dvb_pll_desc dvb_pll_tda665x = {
 	.name  = "Philips TDA6650/TDA6651",
+<<<<<<< HEAD
 	.min   = 44250 * kHz,
 	.max   = 858 * MHz,
+=======
+	.min   =  44250000,
+	.max   = 858000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set   = tda665x_bw,
 	.iffreq= 36166667,
 	.initdata = (u8[]){ 4, 0x0b, 0xf5, 0x85, 0xab },
@@ -254,8 +302,13 @@ static void tua6034_bw(struct dvb_frontend *fe, u8 *buf)
 
 static const struct dvb_pll_desc dvb_pll_tua6034 = {
 	.name  = "Infineon TUA6034",
+<<<<<<< HEAD
 	.min   = 44250 * kHz,
 	.max   = 858 * MHz,
+=======
+	.min   =  44250000,
+	.max   = 858000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 36166667,
 	.count = 3,
 	.set   = tua6034_bw,
@@ -278,8 +331,13 @@ static void tded4_bw(struct dvb_frontend *fe, u8 *buf)
 
 static const struct dvb_pll_desc dvb_pll_tded4 = {
 	.name = "ALPS TDED4",
+<<<<<<< HEAD
 	.min =  47 * MHz,
 	.max = 863 * MHz,
+=======
+	.min = 47000000,
+	.max = 863000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 36166667,
 	.set   = tded4_bw,
 	.count = 4,
@@ -296,8 +354,13 @@ static const struct dvb_pll_desc dvb_pll_tded4 = {
  */
 static const struct dvb_pll_desc dvb_pll_tdhu2 = {
 	.name = "ALPS TDHU2",
+<<<<<<< HEAD
 	.min =  54 * MHz,
 	.max = 864 * MHz,
+=======
+	.min = 54000000,
+	.max = 864000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 44000000,
 	.count = 4,
 	.entries = {
@@ -313,8 +376,13 @@ static const struct dvb_pll_desc dvb_pll_tdhu2 = {
  */
 static const struct dvb_pll_desc dvb_pll_samsung_tbmv = {
 	.name = "Samsung TBMV30111IN / TBMV30712IN1",
+<<<<<<< HEAD
 	.min =  54 * MHz,
 	.max = 860 * MHz,
+=======
+	.min = 54000000,
+	.max = 860000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 44000000,
 	.count = 6,
 	.entries = {
@@ -332,8 +400,13 @@ static const struct dvb_pll_desc dvb_pll_samsung_tbmv = {
  */
 static const struct dvb_pll_desc dvb_pll_philips_sd1878_tda8261 = {
 	.name  = "Philips SD1878",
+<<<<<<< HEAD
 	.min   =  950 * MHz,
 	.max   = 2150 * MHz,
+=======
+	.min   =  950000,
+	.max   = 2150000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq= 249, /* zero-IF, offset 249 is to round up */
 	.count = 4,
 	.entries = {
@@ -398,8 +471,13 @@ static void opera1_bw(struct dvb_frontend *fe, u8 *buf)
 
 static const struct dvb_pll_desc dvb_pll_opera1 = {
 	.name  = "Opera Tuner",
+<<<<<<< HEAD
 	.min   =  900 * MHz,
 	.max   = 2250 * MHz,
+=======
+	.min   =  900000,
+	.max   = 2250000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.initdata = (u8[]){ 4, 0x08, 0xe5, 0xe1, 0x00 },
 	.initdata2 = (u8[]){ 4, 0x08, 0xe5, 0xe5, 0x00 },
 	.iffreq= 0,
@@ -445,8 +523,13 @@ static void samsung_dtos403ih102a_set(struct dvb_frontend *fe, u8 *buf)
 /* unknown pll used in Samsung DTOS403IH102A DVB-C tuner */
 static const struct dvb_pll_desc dvb_pll_samsung_dtos403ih102a = {
 	.name   = "Samsung DTOS403IH102A",
+<<<<<<< HEAD
 	.min    = 44250 * kHz,
 	.max    = 858 * MHz,
+=======
+	.min    =  44250000,
+	.max    = 858000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq =  36125000,
 	.count  = 8,
 	.set    = samsung_dtos403ih102a_set,
@@ -465,8 +548,13 @@ static const struct dvb_pll_desc dvb_pll_samsung_dtos403ih102a = {
 /* Samsung TDTC9251DH0 DVB-T NIM, as used on AirStar 2 */
 static const struct dvb_pll_desc dvb_pll_samsung_tdtc9251dh0 = {
 	.name	= "Samsung TDTC9251DH0",
+<<<<<<< HEAD
 	.min	=  48 * MHz,
 	.max	= 863 * MHz,
+=======
+	.min	=  48000000,
+	.max	= 863000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq	=  36166667,
 	.count	= 3,
 	.entries = {
@@ -479,8 +567,13 @@ static const struct dvb_pll_desc dvb_pll_samsung_tdtc9251dh0 = {
 /* Samsung TBDU18132 DVB-S NIM with TSA5059 PLL, used in SkyStar2 DVB-S 2.3 */
 static const struct dvb_pll_desc dvb_pll_samsung_tbdu18132 = {
 	.name = "Samsung TBDU18132",
+<<<<<<< HEAD
 	.min	=  950 * MHz,
 	.max	= 2150 * MHz, /* guesses */
+=======
+	.min	=  950000,
+	.max	= 2150000, /* guesses */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq = 0,
 	.count = 2,
 	.entries = {
@@ -500,8 +593,13 @@ static const struct dvb_pll_desc dvb_pll_samsung_tbdu18132 = {
 /* Samsung TBMU24112 DVB-S NIM with SL1935 zero-IF tuner */
 static const struct dvb_pll_desc dvb_pll_samsung_tbmu24112 = {
 	.name = "Samsung TBMU24112",
+<<<<<<< HEAD
 	.min	=  950 * MHz,
 	.max	= 2150 * MHz, /* guesses */
+=======
+	.min	=  950000,
+	.max	= 2150000, /* guesses */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq = 0,
 	.count = 2,
 	.entries = {
@@ -521,8 +619,13 @@ static const struct dvb_pll_desc dvb_pll_samsung_tbmu24112 = {
  * 822 - 862   1  *  0   0   1   0   0   0   0x88 */
 static const struct dvb_pll_desc dvb_pll_alps_tdee4 = {
 	.name = "ALPS TDEE4",
+<<<<<<< HEAD
 	.min	=  47 * MHz,
 	.max	= 862 * MHz,
+=======
+	.min	=  47000000,
+	.max	= 862000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iffreq	=  36125000,
 	.count = 4,
 	.entries = {
@@ -533,6 +636,7 @@ static const struct dvb_pll_desc dvb_pll_alps_tdee4 = {
 	}
 };
 
+<<<<<<< HEAD
 /* Infineon TUA6034 ISDB-T, used in Friio */
 /* CP cur. 50uA, AGC takeover: 103dBuV, PORT3 on */
 static const struct dvb_pll_desc dvb_pll_tua6034_friio = {
@@ -572,6 +676,8 @@ static const struct dvb_pll_desc dvb_pll_tda665x_earth_pt1 = {
 	}
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ----------------------------------------------------------- */
 
 static const struct dvb_pll_desc *pll_list[] = {
@@ -595,8 +701,11 @@ static const struct dvb_pll_desc *pll_list[] = {
 	[DVB_PLL_SAMSUNG_TDTC9251DH0]    = &dvb_pll_samsung_tdtc9251dh0,
 	[DVB_PLL_SAMSUNG_TBDU18132]	 = &dvb_pll_samsung_tbdu18132,
 	[DVB_PLL_SAMSUNG_TBMU24112]      = &dvb_pll_samsung_tbmu24112,
+<<<<<<< HEAD
 	[DVB_PLL_TUA6034_FRIIO]          = &dvb_pll_tua6034_friio,
 	[DVB_PLL_TDA665X_EARTH_PT1]      = &dvb_pll_tda665x_earth_pt1,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* ----------------------------------------------------------- */
@@ -610,6 +719,12 @@ static int dvb_pll_configure(struct dvb_frontend *fe, u8 *buf,
 	u32 div;
 	int i;
 
+<<<<<<< HEAD
+=======
+	if (frequency && (frequency < desc->min || frequency > desc->max))
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < desc->count; i++) {
 		if (frequency > desc->entries[i].limit)
 			continue;
@@ -796,7 +911,10 @@ struct dvb_frontend *dvb_pll_attach(struct dvb_frontend *fe, int pll_addr,
 	struct dvb_pll_priv *priv = NULL;
 	int ret;
 	const struct dvb_pll_desc *desc;
+<<<<<<< HEAD
 	int nr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	b1 = kmalloc(1, GFP_KERNEL);
 	if (!b1)
@@ -805,6 +923,7 @@ struct dvb_frontend *dvb_pll_attach(struct dvb_frontend *fe, int pll_addr,
 	b1[0] = 0;
 	msg.buf = b1;
 
+<<<<<<< HEAD
 	nr = ida_simple_get(&pll_ida, 0, DVB_PLL_MAX, GFP_KERNEL);
 	if (nr < 0) {
 		kfree(b1);
@@ -813,6 +932,11 @@ struct dvb_frontend *dvb_pll_attach(struct dvb_frontend *fe, int pll_addr,
 
 	if (id[nr] > DVB_PLL_UNDEFINED && id[nr] < ARRAY_SIZE(pll_list))
 		pll_desc_id = id[nr];
+=======
+	if ((id[dvb_pll_devcount] > DVB_PLL_UNDEFINED) &&
+	    (id[dvb_pll_devcount] < ARRAY_SIZE(pll_list)))
+		pll_desc_id = id[dvb_pll_devcount];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(pll_desc_id < 1 || pll_desc_id >= ARRAY_SIZE(pll_list));
 
@@ -823,26 +947,45 @@ struct dvb_frontend *dvb_pll_attach(struct dvb_frontend *fe, int pll_addr,
 			fe->ops.i2c_gate_ctrl(fe, 1);
 
 		ret = i2c_transfer (i2c, &msg, 1);
+<<<<<<< HEAD
 		if (ret != 1)
 			goto out;
+=======
+		if (ret != 1) {
+			kfree(b1);
+			return NULL;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fe->ops.i2c_gate_ctrl)
 			     fe->ops.i2c_gate_ctrl(fe, 0);
 	}
 
 	priv = kzalloc(sizeof(struct dvb_pll_priv), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!priv)
 		goto out;
+=======
+	if (!priv) {
+		kfree(b1);
+		return NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->pll_i2c_address = pll_addr;
 	priv->i2c = i2c;
 	priv->pll_desc = desc;
+<<<<<<< HEAD
 	priv->nr = nr;
+=======
+	priv->nr = dvb_pll_devcount++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(&fe->ops.tuner_ops, &dvb_pll_tuner_ops,
 	       sizeof(struct dvb_tuner_ops));
 
 	strncpy(fe->ops.tuner_ops.info.name, desc->name,
 		sizeof(fe->ops.tuner_ops.info.name));
+<<<<<<< HEAD
 
 	fe->ops.tuner_ops.info.frequency_min_hz = desc->min;
 	fe->ops.tuner_ops.info.frequency_max_hz = desc->max;
@@ -850,6 +993,10 @@ struct dvb_frontend *dvb_pll_attach(struct dvb_frontend *fe, int pll_addr,
 	dprintk("%s tuner, frequency range: %u...%u\n",
 		desc->name, desc->min, desc->max);
 
+=======
+	fe->ops.tuner_ops.info.frequency_min = desc->min;
+	fe->ops.tuner_ops.info.frequency_max = desc->max;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!desc->initdata)
 		fe->ops.tuner_ops.init = NULL;
 	if (!desc->sleepdata)
@@ -869,6 +1016,7 @@ struct dvb_frontend *dvb_pll_attach(struct dvb_frontend *fe, int pll_addr,
 	kfree(b1);
 
 	return fe;
+<<<<<<< HEAD
 out:
 	kfree(b1);
 	ida_simple_remove(&pll_ida, nr);
@@ -958,6 +1106,11 @@ static struct i2c_driver dvb_pll_driver = {
 
 module_i2c_driver(dvb_pll_driver);
 
+=======
+}
+EXPORT_SYMBOL(dvb_pll_attach);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("dvb pll library");
 MODULE_AUTHOR("Gerd Knorr");
 MODULE_LICENSE("GPL");

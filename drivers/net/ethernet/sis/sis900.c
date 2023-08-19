@@ -218,7 +218,11 @@ static void sis900_init_rxfilter (struct net_device * net_dev);
 static u16 read_eeprom(void __iomem *ioaddr, int location);
 static int mdio_read(struct net_device *net_dev, int phy_id, int location);
 static void mdio_write(struct net_device *net_dev, int phy_id, int location, int val);
+<<<<<<< HEAD
 static void sis900_timer(struct timer_list *t);
+=======
+static void sis900_timer(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sis900_check_mode (struct net_device *net_dev, struct mii_phy *mii_phy);
 static void sis900_tx_timeout(struct net_device *net_dev);
 static void sis900_init_tx_ring(struct net_device *net_dev);
@@ -1065,8 +1069,15 @@ sis900_open(struct net_device *net_dev)
 
 	/* Set the timer to switch to check for link beat and perhaps switch
 	   to an alternate media type. */
+<<<<<<< HEAD
 	timer_setup(&sis_priv->timer, sis900_timer, 0);
 	sis_priv->timer.expires = jiffies + HZ;
+=======
+	init_timer(&sis_priv->timer);
+	sis_priv->timer.expires = jiffies + HZ;
+	sis_priv->timer.data = (unsigned long)net_dev;
+	sis_priv->timer.function = sis900_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&sis_priv->timer);
 
 	return 0;
@@ -1300,10 +1311,17 @@ static void sis630_set_eq(struct net_device *net_dev, u8 revision)
  *	link status (ON/OFF) and link mode (10/100/Full/Half)
  */
 
+<<<<<<< HEAD
 static void sis900_timer(struct timer_list *t)
 {
 	struct sis900_private *sis_priv = from_timer(sis_priv, t, timer);
 	struct net_device *net_dev = sis_priv->mii_info.dev;
+=======
+static void sis900_timer(unsigned long data)
+{
+	struct net_device *net_dev = (struct net_device *)data;
+	struct sis900_private *sis_priv = netdev_priv(net_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mii_phy *mii_phy = sis_priv->mii;
 	static const int next_tick = 5*HZ;
 	int speed = 0, duplex = 0;

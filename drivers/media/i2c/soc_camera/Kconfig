@@ -1,5 +1,14 @@
 comment "soc_camera sensor drivers"
 
+<<<<<<< HEAD
+=======
+config SOC_CAMERA_IMX074
+	tristate "imx074 support"
+	depends on SOC_CAMERA && I2C
+	help
+	  This driver supports IMX074 cameras from Sony
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SOC_CAMERA_MT9M001
 	tristate "mt9m001 support"
 	depends on SOC_CAMERA && I2C
@@ -17,6 +26,15 @@ config SOC_CAMERA_MT9M111
 	  This is the legacy configuration which shouldn't be used anymore,
 	  while VIDEO_MT9M111 should be used instead.
 
+<<<<<<< HEAD
+=======
+config SOC_CAMERA_MT9T031
+	tristate "mt9t031 support"
+	depends on SOC_CAMERA && I2C
+	help
+	  This driver supports MT9T031 cameras from Micron.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SOC_CAMERA_MT9T112
 	tristate "mt9t112 support"
 	depends on SOC_CAMERA && I2C

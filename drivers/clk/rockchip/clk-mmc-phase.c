@@ -25,8 +25,11 @@ struct rockchip_mmc_clock {
 	void __iomem	*reg;
 	int		id;
 	int		shift;
+<<<<<<< HEAD
 	int		cached_phase;
 	struct notifier_block clk_rate_change_nb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define to_mmc_clock(_hw) container_of(_hw, struct rockchip_mmc_clock, hw)
@@ -162,6 +165,7 @@ static const struct clk_ops rockchip_mmc_clk_ops = {
 	.set_phase	= rockchip_mmc_set_phase,
 };
 
+<<<<<<< HEAD
 #define to_rockchip_mmc_clock(x) \
 	container_of(x, struct rockchip_mmc_clock, clk_rate_change_nb)
 static int rockchip_mmc_clk_rate_notify(struct notifier_block *nb,
@@ -197,6 +201,8 @@ static int rockchip_mmc_clk_rate_notify(struct notifier_block *nb,
 	return NOTIFY_DONE;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct clk *rockchip_clk_register_mmc(const char *name,
 				const char *const *parent_names, u8 num_parents,
 				void __iomem *reg, int shift)
@@ -204,7 +210,10 @@ struct clk *rockchip_clk_register_mmc(const char *name,
 	struct clk_init_data init;
 	struct rockchip_mmc_clock *mmc_clock;
 	struct clk *clk;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmc_clock = kmalloc(sizeof(*mmc_clock), GFP_KERNEL);
 	if (!mmc_clock)
@@ -221,6 +230,7 @@ struct clk *rockchip_clk_register_mmc(const char *name,
 	mmc_clock->shift = shift;
 
 	clk = clk_register(NULL, &mmc_clock->hw);
+<<<<<<< HEAD
 	if (IS_ERR(clk)) {
 		ret = PTR_ERR(clk);
 		goto err_register;
@@ -238,4 +248,10 @@ err_notifier:
 err_register:
 	kfree(mmc_clock);
 	return ERR_PTR(ret);
+=======
+	if (IS_ERR(clk))
+		kfree(mmc_clock);
+
+	return clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

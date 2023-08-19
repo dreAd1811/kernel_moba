@@ -42,7 +42,11 @@ static unsigned long xen_tsc_khz(void)
 	return pvclock_tsc_khz(info);
 }
 
+<<<<<<< HEAD
 static u64 xen_clocksource_read(void)
+=======
+u64 xen_clocksource_read(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
         struct pvclock_vcpu_time_info *src;
 	u64 ret;
@@ -64,7 +68,11 @@ static u64 xen_sched_clock(void)
 	return xen_clocksource_read() - xen_sched_clock_offset;
 }
 
+<<<<<<< HEAD
 static void xen_read_wallclock(struct timespec64 *ts)
+=======
+static void xen_read_wallclock(struct timespec *ts)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct shared_info *s = HYPERVISOR_shared_info;
 	struct pvclock_wall_clock *wall_clock = &(s->wc);
@@ -75,14 +83,24 @@ static void xen_read_wallclock(struct timespec64 *ts)
 	put_cpu_var(xen_vcpu);
 }
 
+<<<<<<< HEAD
 static void xen_get_wallclock(struct timespec64 *now)
+=======
+static void xen_get_wallclock(struct timespec *now)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	xen_read_wallclock(now);
 }
 
+<<<<<<< HEAD
 static int xen_set_wallclock(const struct timespec64 *now)
 {
 	return -ENODEV;
+=======
+static int xen_set_wallclock(const struct timespec *now)
+{
+	return -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int xen_pvclock_gtod_notify(struct notifier_block *nb,
@@ -474,7 +492,11 @@ static void __init xen_time_init(void)
 {
 	struct pvclock_vcpu_time_info *pvti;
 	int cpu = smp_processor_id();
+<<<<<<< HEAD
 	struct timespec64 tp;
+=======
+	struct timespec tp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* As Dom0 is never moved, no penalty on using TSC there */
 	if (xen_initial_domain())
@@ -492,7 +514,11 @@ static void __init xen_time_init(void)
 
 	/* Set initial system time with full resolution */
 	xen_read_wallclock(&tp);
+<<<<<<< HEAD
 	do_settimeofday64(&tp);
+=======
+	do_settimeofday(&tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	setup_force_cpu_cap(X86_FEATURE_TSC);
 
@@ -516,7 +542,11 @@ static void __init xen_time_init(void)
 		pvclock_gtod_register_notifier(&xen_pvclock_gtod_notifier);
 }
 
+<<<<<<< HEAD
 void __init xen_init_time_ops(void)
+=======
+void __ref xen_init_time_ops(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	xen_sched_clock_offset = xen_clocksource_read();
 	pv_time_ops = xen_time_ops;
@@ -556,7 +586,12 @@ void __init xen_hvm_init_time_ops(void)
 		return;
 
 	if (!xen_feature(XENFEAT_hvm_safe_pvclock)) {
+<<<<<<< HEAD
 		pr_info("Xen doesn't support pvclock on HVM, disable pv timer");
+=======
+		printk(KERN_INFO "Xen doesn't support pvclock on HVM,"
+				"disable pv timer\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 

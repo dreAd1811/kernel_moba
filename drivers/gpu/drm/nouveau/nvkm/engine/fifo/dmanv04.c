@@ -95,7 +95,10 @@ nv04_fifo_dma_fini(struct nvkm_fifo_chan *base)
 		nvkm_mask(device, NV04_PFIFO_CACHE1_PULL0, 0x00000001, 0);
 
 		c = fifo->ramfc;
+<<<<<<< HEAD
 		nvkm_kmap(fctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		do {
 			u32 rm = ((1ULL << c->bits) - 1) << c->regs;
 			u32 cm = ((1ULL << c->bits) - 1) << c->ctxs;
@@ -103,7 +106,10 @@ nv04_fifo_dma_fini(struct nvkm_fifo_chan *base)
 			u32 cv = (nvkm_ro32(fctx, c->ctxp + data) & ~cm);
 			nvkm_wo32(fctx, c->ctxp + data, cv | (rv << c->ctxs));
 		} while ((++c)->bits);
+<<<<<<< HEAD
 		nvkm_done(fctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		c = fifo->ramfc;
 		do {

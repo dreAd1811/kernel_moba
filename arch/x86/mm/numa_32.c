@@ -60,6 +60,20 @@ void memory_present(int nid, unsigned long start, unsigned long end)
 	}
 	printk(KERN_CONT "\n");
 }
+<<<<<<< HEAD
+=======
+
+unsigned long node_memmap_size_bytes(int nid, unsigned long start_pfn,
+					      unsigned long end_pfn)
+{
+	unsigned long nr_pages = end_pfn - start_pfn;
+
+	if (!nr_pages)
+		return 0;
+
+	return (nr_pages + 1) * sizeof(struct page);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 extern unsigned long highend_pfn, highstart_pfn;

@@ -9,6 +9,10 @@
 #include <linux/pm.h>
 #include <linux/pm_runtime.h>
 #include <linux/export.h>
+<<<<<<< HEAD
+=======
+#include <linux/suspend.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PM
 /**
@@ -297,4 +301,29 @@ void pm_generic_complete(struct device *dev)
 	if (drv && drv->pm && drv->pm->complete)
 		drv->pm->complete(dev);
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * pm_complete_with_resume_check - Complete a device power transition.
+ * @dev: Device to handle.
+ *
+ * Complete a device power transition during a system-wide power transition and
+ * optionally schedule a runtime resume of the device if the system resume in
+ * progress has been initated by the platform firmware and the device had its
+ * power.direct_complete flag set.
+ */
+void pm_complete_with_resume_check(struct device *dev)
+{
+	pm_generic_complete(dev);
+	/*
+	 * If the device had been runtime-suspended before the system went into
+	 * the sleep state it is going out of and it has never been resumed till
+	 * now, resume it in case the firmware powered it up.
+	 */
+	if (dev->power.direct_complete && pm_resume_via_firmware())
+		pm_request_resume(dev);
+}
+EXPORT_SYMBOL_GPL(pm_complete_with_resume_check);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PM_SLEEP */

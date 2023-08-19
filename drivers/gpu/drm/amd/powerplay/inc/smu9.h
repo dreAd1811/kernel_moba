@@ -58,7 +58,11 @@
 #define FEATURE_FAST_PPT_BIT            26
 #define FEATURE_GFX_EDC_BIT             27
 #define FEATURE_ACG_BIT                 28
+<<<<<<< HEAD
 #define FEATURE_PCC_LIMIT_CONTROL_BIT   29
+=======
+#define FEATURE_SPARE_29_BIT            29
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FEATURE_SPARE_30_BIT            30
 #define FEATURE_SPARE_31_BIT            31
 
@@ -94,7 +98,11 @@
 #define FEATURE_FAST_PPT_MASK            (1 << FAST_PPT_BIT                   )
 #define FEATURE_GFX_EDC_MASK             (1 << FEATURE_GFX_EDC_BIT            )
 #define FEATURE_ACG_MASK                 (1 << FEATURE_ACG_BIT                )
+<<<<<<< HEAD
 #define FEATURE_PCC_LIMIT_CONTROL_MASK   (1 << FEATURE_PCC_LIMIT_CONTROL_BIT  )
+=======
+#define FFEATURE_SPARE_29_MASK           (1 << FEATURE_SPARE_29_BIT           )
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FFEATURE_SPARE_30_MASK           (1 << FEATURE_SPARE_30_BIT           )
 #define FFEATURE_SPARE_31_MASK           (1 << FEATURE_SPARE_31_BIT           )
 /* Workload types */

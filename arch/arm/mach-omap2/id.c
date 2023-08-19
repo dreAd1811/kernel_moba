@@ -199,8 +199,13 @@ void __init omap2xxx_check_revision(void)
 
 	pr_info("%s", soc_name);
 	if ((omap_rev() >> 8) & 0x0f)
+<<<<<<< HEAD
 		pr_info("%s", soc_rev);
 	pr_info("\n");
+=======
+		pr_cont("%s", soc_rev);
+	pr_cont("\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define OMAP3_SHOW_FEATURE(feat)		\
@@ -657,11 +662,16 @@ void __init dra7xxx_check_revision(void)
 {
 	u32 idcode;
 	u16 hawkeye;
+<<<<<<< HEAD
 	u8 rev, package;
 	struct omap_die_id odi;
 
 	omap_get_die_id(&odi);
 	package = (odi.id_2 >> 16) & 0x3;
+=======
+	u8 rev;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idcode = read_tap_reg(OMAP_TAP_IDCODE);
 	hawkeye = (idcode >> 12) & 0xffff;
 	rev = (idcode >> 28) & 0xff;
@@ -670,6 +680,7 @@ void __init dra7xxx_check_revision(void)
 		switch (rev) {
 		case 0:
 		default:
+<<<<<<< HEAD
 			switch (package) {
 			case 0x2:
 				omap_revision = DRA762_ABZ_REV_ES1_0;
@@ -681,6 +692,9 @@ void __init dra7xxx_check_revision(void)
 				omap_revision = DRA762_REV_ES1_0;
 				break;
 			}
+=======
+			omap_revision = DRA762_REV_ES1_0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		break;
@@ -706,11 +720,16 @@ void __init dra7xxx_check_revision(void)
 			omap_revision = DRA722_REV_ES1_0;
 			break;
 		case 1:
+<<<<<<< HEAD
 			omap_revision = DRA722_REV_ES2_0;
 			break;
 		case 2:
 		default:
 			omap_revision = DRA722_REV_ES2_1;
+=======
+		default:
+			omap_revision = DRA722_REV_ES2_0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		break;

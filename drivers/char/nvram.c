@@ -389,9 +389,28 @@ static int nvram_proc_read(struct seq_file *seq, void *offset)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int nvram_add_proc_fs(void)
 {
 	if (!proc_create_single("driver/nvram", 0, NULL, nvram_proc_read))
+=======
+static int nvram_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, nvram_proc_read, NULL);
+}
+
+static const struct file_operations nvram_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= nvram_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+static int nvram_add_proc_fs(void)
+{
+	if (!proc_create("driver/nvram", 0, NULL, &nvram_proc_fops))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	return 0;
 }

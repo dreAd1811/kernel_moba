@@ -1,9 +1,28 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* cassini.c: Sun Microsystems Cassini(+) ethernet driver.
  *
  * Copyright (C) 2004 Sun Microsystems Inc.
  * Copyright (C) 2003 Adrian Sun (asun@darksunrising.com)
  *
+<<<<<<< HEAD
+=======
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <http://www.gnu.org/licenses/>.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This driver uses the sungem driver (c) David Miller
  * (davem@redhat.com) as its basis.
  *
@@ -4067,9 +4086,15 @@ done:
 #endif
 }
 
+<<<<<<< HEAD
 static void cas_link_timer(struct timer_list *t)
 {
 	struct cas *cp = from_timer(cp, t, link_timer);
+=======
+static void cas_link_timer(unsigned long data)
+{
+	struct cas *cp = (struct cas *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int mask, pending = 0, reset = 0;
 	unsigned long flags;
 
@@ -4971,7 +4996,11 @@ static int cas_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 					  cas_cacheline_size)) {
 			dev_err(&pdev->dev, "Could not set PCI cache "
 			       "line size\n");
+<<<<<<< HEAD
 			goto err_write_cacheline;
+=======
+			goto err_out_free_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 #endif
@@ -5027,7 +5056,13 @@ static int cas_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	spin_lock_init(&cp->stat_lock[N_TX_RINGS]);
 	mutex_init(&cp->pm_mutex);
 
+<<<<<<< HEAD
 	timer_setup(&cp->link_timer, cas_link_timer, 0);
+=======
+	init_timer(&cp->link_timer);
+	cp->link_timer.function = cas_link_timer;
+	cp->link_timer.data = (unsigned long) cp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if 1
 	/* Just in case the implementation of atomic operations
@@ -5144,7 +5179,10 @@ err_out_iounmap:
 err_out_free_res:
 	pci_release_regions(pdev);
 
+<<<<<<< HEAD
 err_write_cacheline:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Try to restore it in case the error occurred after we
 	 * set it.
 	 */

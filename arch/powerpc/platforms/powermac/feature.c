@@ -829,7 +829,11 @@ core99_ata100_enable(struct device_node *node, long value)
 
 	if (value) {
 		if (pci_device_from_OF_node(node, &pbus, &pid) == 0)
+<<<<<<< HEAD
 			pdev = pci_get_domain_bus_and_slot(0, pbus, pid);
+=======
+			pdev = pci_get_bus_and_slot(pbus, pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pdev == NULL)
 			return 0;
 		rc = pci_enable_device(pdev);
@@ -2641,7 +2645,11 @@ static void __init probe_one_macio(const char *name, const char *compat, int typ
 	phys_addr_t		addr;
 	u64			size;
 
+<<<<<<< HEAD
 	for_each_node_by_name(node, name) {
+=======
+	for (node = NULL; (node = of_find_node_by_name(node, name)) != NULL;) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!compat)
 			break;
 		if (of_device_is_compatible(node, compat))
@@ -2853,6 +2861,10 @@ set_initial_features(void)
 		}
 
 		/* Enable ATA-100 before PCI probe. */
+<<<<<<< HEAD
+=======
+		np = of_find_node_by_name(NULL, "ata-6");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for_each_node_by_name(np, "ata-6") {
 			if (np->parent
 			    && of_device_is_compatible(np->parent, "uni-north")
@@ -2889,8 +2901,15 @@ set_initial_features(void)
 	/* On all machines, switch modem & serial ports off */
 	for_each_node_by_name(np, "ch-a")
 		initial_serial_shutdown(np);
+<<<<<<< HEAD
 	for_each_node_by_name(np, "ch-b")
 		initial_serial_shutdown(np);
+=======
+	of_node_put(np);
+	for_each_node_by_name(np, "ch-b")
+		initial_serial_shutdown(np);
+	of_node_put(np);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init

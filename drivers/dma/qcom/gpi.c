@@ -1,8 +1,24 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
  */
 
+=======
+/* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <asm/dma-iommu.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/atomic.h>
 #include <linux/completion.h>
 #include <linux/debugfs.h>
@@ -279,6 +295,10 @@ static const char *const gpi_cb_event_str[MSM_GPI_QUP_MAX_EVENT] = {
 	[MSM_GPI_QUP_NOTIFY] = "NOTIFY",
 	[MSM_GPI_QUP_ERROR] = "GLOBAL ERROR",
 	[MSM_GPI_QUP_CH_ERROR] = "CHAN ERROR",
+<<<<<<< HEAD
+=======
+	[MSM_GPI_QUP_FW_ERROR] = "UNHANDLED ERROR",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[MSM_GPI_QUP_PENDING_EVENT] = "PENDING EVENT",
 	[MSM_GPI_QUP_EOT_DESC_MISMATCH] = "EOT/DESC MISMATCH",
 	[MSM_GPI_QUP_SW_ERROR] = "SW ERROR",
@@ -433,7 +453,11 @@ struct gpi_dev {
 	struct device *dev;
 	struct resource *res;
 	void __iomem *regs;
+<<<<<<< HEAD
 	void *ee_base; /*ee register base address*/
+=======
+	void __iomem *ee_base; /*ee register base address*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 max_gpii; /* maximum # of gpii instances available per gpi block */
 	u32 gpii_mask; /* gpii instances available for apps */
 	u32 ev_factor; /* ev ring length factor */
@@ -582,7 +606,10 @@ struct gpii {
 	struct gpi_reg_table dbg_reg_table;
 	bool reg_table_dump;
 	u32 dbg_gpi_irq_cnt;
+<<<<<<< HEAD
 	bool unlock_tre_set;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct gpi_desc {
@@ -1024,7 +1051,11 @@ static int gpi_config_interrupts(struct gpii *gpii,
 		  (settings == DEFAULT_IRQ_SETTINGS) ? "default" : "user_spec",
 		  (mask) ? 'T' : 'F');
 
+<<<<<<< HEAD
 	if (!gpii->configured_irq) {
+=======
+	if (gpii->configured_irq == false) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = devm_request_irq(gpii->gpi_dev->dev, gpii->irq,
 				       gpi_handle_irq, IRQF_TRIGGER_HIGH,
 				       gpii->label, gpii);
@@ -1060,7 +1091,11 @@ static int gpi_config_interrupts(struct gpii *gpii,
 					    default_reg[i].shift,
 					    default_reg[i].val);
 		gpii->cntxt_type_irq_msk = def_type;
+<<<<<<< HEAD
 	}
+=======
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gpii->configured_irq = true;
 
@@ -1303,6 +1338,10 @@ static void gpi_process_glob_err_irq(struct gpii *gpii)
 	msm_gpi_cb.error_log.routine = log_entry->routine;
 	msm_gpi_cb.error_log.type = log_entry->type;
 	msm_gpi_cb.error_log.error_code = log_entry->code;
+<<<<<<< HEAD
+=======
+	msm_gpi_cb.status = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GPII_INFO(gpii, gpii_chan->chid, "sending CB event:%s\n",
 		  TO_GPI_CB_EVENT_STR(msm_gpi_cb.cb_event));
 	GPII_ERR(gpii, gpii_chan->chid,
@@ -1449,6 +1488,7 @@ static void gpi_process_qup_notif_event(struct gpii_chan *gpii_chan,
 			      client_info->cb_param);
 }
 
+<<<<<<< HEAD
 /* free gpi_desc for the specified channel */
 static void gpi_free_chan_desc(struct gpii_chan *gpii_chan)
 {
@@ -1465,6 +1505,8 @@ static void gpi_free_chan_desc(struct gpii_chan *gpii_chan)
 	gpi_desc = NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* process DMA Immediate completion data events */
 static void gpi_process_imed_data_event(struct gpii_chan *gpii_chan,
 					struct immediate_data_event *imed_event)
@@ -1477,8 +1519,11 @@ static void gpi_process_imed_data_event(struct gpii_chan *gpii_chan,
 		(ch_ring->el_size * imed_event->tre_index);
 	struct msm_gpi_dma_async_tx_cb_param *tx_cb_param;
 	unsigned long flags;
+<<<<<<< HEAD
 	u32 chid;
 	struct gpii_chan *gpii_tx_chan = &gpii->gpii_chan[GPI_TX_CHAN];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If channel not active don't process event but let
@@ -1516,6 +1561,23 @@ static void gpi_process_imed_data_event(struct gpii_chan *gpii_chan,
 		return;
 	}
 	gpi_desc = to_gpi_desc(vd);
+<<<<<<< HEAD
+=======
+
+	/* Event TR RP gen. don't match descriptor TR */
+	if (gpi_desc->wp != tre) {
+		spin_unlock_irqrestore(&gpii_chan->vc.lock, flags);
+		GPII_ERR(gpii, gpii_chan->chid,
+			 "EOT/EOB received for wrong TRE 0x%0llx != 0x%0llx\n",
+			 to_physical(ch_ring, gpi_desc->wp),
+			 to_physical(ch_ring, tre));
+		gpi_generate_cb_event(gpii_chan, MSM_GPI_QUP_EOT_DESC_MISMATCH,
+				      __LINE__);
+		return;
+	}
+
+	list_del(&vd->node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&gpii_chan->vc.lock, flags);
 
 
@@ -1531,6 +1593,7 @@ static void gpi_process_imed_data_event(struct gpii_chan *gpii_chan,
 	/* make sure rp updates are immediately visible to all cores */
 	smp_wmb();
 
+<<<<<<< HEAD
 	/*
 	 * If unlock tre is present, don't send transfer callback on
 	 * on IEOT, wait for unlock IEOB. Free the respective channel
@@ -1560,6 +1623,8 @@ static void gpi_process_imed_data_event(struct gpii_chan *gpii_chan,
 		goto gpi_free_desc;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_cb_param = vd->tx.callback_param;
 	if (vd->tx.callback && tx_cb_param) {
 		struct msm_gpi_tre *imed_tre = &tx_cb_param->imed_tre;
@@ -1575,9 +1640,13 @@ static void gpi_process_imed_data_event(struct gpii_chan *gpii_chan,
 		tx_cb_param->status = imed_event->status;
 		vd->tx.callback(tx_cb_param);
 	}
+<<<<<<< HEAD
 
 gpi_free_desc:
 	gpi_free_chan_desc(gpii_chan);
+=======
+	kfree(gpi_desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* processing transfer completion events */
@@ -1591,8 +1660,11 @@ static void gpi_process_xfer_compl_event(struct gpii_chan *gpii_chan,
 	struct msm_gpi_dma_async_tx_cb_param *tx_cb_param;
 	struct gpi_desc *gpi_desc;
 	unsigned long flags;
+<<<<<<< HEAD
 	u32 chid;
 	struct gpii_chan *gpii_tx_chan = &gpii->gpii_chan[GPI_TX_CHAN];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* only process events on active channel */
 	if (unlikely(gpii_chan->pm_state != ACTIVE_STATE)) {
@@ -1622,6 +1694,23 @@ static void gpi_process_xfer_compl_event(struct gpii_chan *gpii_chan,
 	}
 
 	gpi_desc = to_gpi_desc(vd);
+<<<<<<< HEAD
+=======
+
+	/* TRE Event generated didn't match descriptor's TRE */
+	if (gpi_desc->wp != ev_rp) {
+		spin_unlock_irqrestore(&gpii_chan->vc.lock, flags);
+		GPII_ERR(gpii, gpii_chan->chid,
+			 "EOT\EOB received for wrong TRE 0x%0llx != 0x%0llx\n",
+			 to_physical(ch_ring, gpi_desc->wp),
+			 to_physical(ch_ring, ev_rp));
+		gpi_generate_cb_event(gpii_chan, MSM_GPI_QUP_EOT_DESC_MISMATCH,
+				      __LINE__);
+		return;
+	}
+
+	list_del(&vd->node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&gpii_chan->vc.lock, flags);
 
 
@@ -1637,6 +1726,7 @@ static void gpi_process_xfer_compl_event(struct gpii_chan *gpii_chan,
 	/* update must be visible to other cores */
 	smp_wmb();
 
+<<<<<<< HEAD
 	/*
 	 * If unlock tre is present, don't send transfer callback on
 	 * on IEOT, wait for unlock IEOB. Free the respective channel
@@ -1666,6 +1756,8 @@ static void gpi_process_xfer_compl_event(struct gpii_chan *gpii_chan,
 		goto gpi_free_desc;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_cb_param = vd->tx.callback_param;
 	if (vd->tx.callback && tx_cb_param) {
 		GPII_VERB(gpii, gpii_chan->chid,
@@ -1677,10 +1769,14 @@ static void gpi_process_xfer_compl_event(struct gpii_chan *gpii_chan,
 		tx_cb_param->status = compl_event->status;
 		vd->tx.callback(tx_cb_param);
 	}
+<<<<<<< HEAD
 
 gpi_free_desc:
 	gpi_free_chan_desc(gpii_chan);
 
+=======
+	kfree(gpi_desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* process all events */
@@ -2238,6 +2334,13 @@ int gpi_terminate_all(struct dma_chan *chan)
 		if (ret) {
 			GPII_ERR(gpii, gpii_chan->chid,
 				 "Error resetting channel ret:%d\n", ret);
+<<<<<<< HEAD
+=======
+			if (!gpii->reg_table_dump) {
+				gpi_dump_debug_reg(gpii);
+				gpii->reg_table_dump = true;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto terminate_exit;
 		}
 
@@ -2356,7 +2459,10 @@ void gpi_desc_free(struct virt_dma_desc *vd)
 	struct gpi_desc *gpi_desc = to_gpi_desc(vd);
 
 	kfree(gpi_desc);
+<<<<<<< HEAD
 	gpi_desc = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* copy tre into transfer ring */
@@ -2377,7 +2483,10 @@ struct dma_async_tx_descriptor *gpi_prep_slave_sg(struct dma_chan *chan,
 	void *tre, *wp = NULL;
 	const gfp_t gfp = GFP_ATOMIC;
 	struct gpi_desc *gpi_desc;
+<<<<<<< HEAD
 	u32 tre_type;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	GPII_VERB(gpii, gpii_chan->chid, "enter\n");
 
@@ -2411,6 +2520,7 @@ struct dma_async_tx_descriptor *gpi_prep_slave_sg(struct dma_chan *chan,
 	}
 
 	/* copy each tre into transfer ring */
+<<<<<<< HEAD
 	for_each_sg(sgl, sg, sg_len, i) {
 		tre = sg_virt(sg);
 
@@ -2426,6 +2536,12 @@ struct dma_async_tx_descriptor *gpi_prep_slave_sg(struct dma_chan *chan,
 		     j += ch_ring->el_size, tre += ch_ring->el_size)
 			gpi_queue_xfer(gpii, gpii_chan, tre, &wp);
 	}
+=======
+	for_each_sg(sgl, sg, sg_len, i)
+		for (j = 0, tre = sg_virt(sg); j < sg->length;
+		     j += ch_ring->el_size, tre += ch_ring->el_size)
+			gpi_queue_xfer(gpii, gpii_chan, tre, &wp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set up the descriptor */
 	gpi_desc->db = ch_ring->wp;
@@ -2865,11 +2981,122 @@ static void gpi_setup_debug(struct gpi_dev *gpi_dev)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static struct dma_iommu_mapping *gpi_create_mapping(struct gpi_dev *gpi_dev)
+{
+	dma_addr_t base;
+	size_t size;
+
+	/*
+	 * If S1_BYPASS enabled then iommu space is not used, however framework
+	 * still require clients to create a mapping space before attaching. So
+	 * set to smallest size required by iommu framework.
+	 */
+	if (gpi_dev->smmu_cfg & GPI_SMMU_S1_BYPASS) {
+		base = 0;
+		size = PAGE_SIZE;
+	} else {
+		base = gpi_dev->iova_base;
+		size = gpi_dev->iova_size;
+	}
+
+	GPI_LOG(gpi_dev, "Creating iommu mapping of base:0x%llx size:%lu\n",
+		base, size);
+
+	return arm_iommu_create_mapping(&platform_bus_type, base, size);
+}
+
+static int gpi_smmu_init(struct gpi_dev *gpi_dev)
+{
+	struct dma_iommu_mapping *mapping = NULL;
+	int ret;
+
+	if (gpi_dev->smmu_cfg) {
+
+		/* create mapping table */
+		mapping = gpi_create_mapping(gpi_dev);
+		if (IS_ERR(mapping)) {
+			GPI_ERR(gpi_dev,
+				"Failed to create iommu mapping, ret:%ld\n",
+				PTR_ERR(mapping));
+			return PTR_ERR(mapping);
+		}
+
+		if (gpi_dev->smmu_cfg & GPI_SMMU_S1_BYPASS) {
+			int s1_bypass = 1;
+
+			ret = iommu_domain_set_attr(mapping->domain,
+					DOMAIN_ATTR_S1_BYPASS, &s1_bypass);
+			if (ret) {
+				GPI_ERR(gpi_dev,
+					"Failed to set attr S1_BYPASS, ret:%d\n",
+					ret);
+				goto release_mapping;
+			}
+		}
+
+		if (gpi_dev->smmu_cfg & GPI_SMMU_FAST) {
+			int fast = 1;
+
+			ret = iommu_domain_set_attr(mapping->domain,
+						    DOMAIN_ATTR_FAST, &fast);
+			if (ret) {
+				GPI_ERR(gpi_dev,
+					"Failed to set attr FAST, ret:%d\n",
+					ret);
+				goto release_mapping;
+			}
+		}
+
+		if (gpi_dev->smmu_cfg & GPI_SMMU_ATOMIC) {
+			int atomic = 1;
+
+			ret = iommu_domain_set_attr(mapping->domain,
+						DOMAIN_ATTR_ATOMIC, &atomic);
+			if (ret) {
+				GPI_ERR(gpi_dev,
+					"Failed to set attr ATOMIC, ret:%d\n",
+					ret);
+				goto release_mapping;
+			}
+		}
+
+		ret = arm_iommu_attach_device(gpi_dev->dev, mapping);
+		if (ret) {
+			GPI_ERR(gpi_dev,
+				"Failed with iommu_attach, ret:%d\n", ret);
+			goto release_mapping;
+		}
+	}
+
+	GPI_LOG(gpi_dev, "Setting dma mask to 64\n");
+	ret = dma_set_mask(gpi_dev->dev, DMA_BIT_MASK(64));
+	if (ret) {
+		GPI_ERR(gpi_dev, "Error setting dma_mask to 64, ret:%d\n", ret);
+		goto error_set_mask;
+	}
+
+	return ret;
+
+error_set_mask:
+	if (gpi_dev->smmu_cfg)
+		arm_iommu_detach_device(gpi_dev->dev);
+release_mapping:
+	if (mapping)
+		arm_iommu_release_mapping(mapping);
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gpi_probe(struct platform_device *pdev)
 {
 	struct gpi_dev *gpi_dev;
 	int ret, i;
+<<<<<<< HEAD
 	const char *mode = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 gpi_ee_offset;
 
 	gpi_dev = devm_kzalloc(&pdev->dev, sizeof(*gpi_dev), GFP_KERNEL);
@@ -2917,7 +3144,11 @@ static int gpi_probe(struct platform_device *pdev)
 		GPI_LOG(gpi_dev, "No variable ee offset present\n");
 	else
 		gpi_dev->ee_base =
+<<<<<<< HEAD
 		(void *)((u64)gpi_dev->ee_base - gpi_ee_offset);
+=======
+			gpi_dev->ee_base - gpi_ee_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = of_property_read_u32(gpi_dev->dev->of_node, "qcom,ev-factor",
 				   &gpi_dev->ev_factor);
@@ -2926,6 +3157,7 @@ static int gpi_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = of_property_read_string(gpi_dev->dev->of_node,
 			"qcom,iommu-dma", &mode);
 
@@ -2933,6 +3165,41 @@ static int gpi_probe(struct platform_device *pdev)
 	if (ret) {
 		GPI_ERR(gpi_dev,
 		"Error setting dma_mask to 64, ret:%d\n", ret);
+=======
+	ret = of_property_read_u32(gpi_dev->dev->of_node, "qcom,smmu-cfg",
+				   &gpi_dev->smmu_cfg);
+	if (ret) {
+		GPI_ERR(gpi_dev, "missing 'qcom,smmu-cfg' DT node\n");
+		return ret;
+	}
+	if (gpi_dev->smmu_cfg && !(gpi_dev->smmu_cfg & GPI_SMMU_S1_BYPASS)) {
+		u64 iova_range[2];
+
+		ret = of_property_count_elems_of_size(gpi_dev->dev->of_node,
+						      "qcom,iova-range",
+						      sizeof(iova_range));
+		if (ret != 1) {
+			GPI_ERR(gpi_dev,
+				"missing or incorrect 'qcom,iova-range' DT node ret:%d\n",
+				ret);
+		}
+
+		ret = of_property_read_u64_array(gpi_dev->dev->of_node,
+					"qcom,iova-range", iova_range,
+					sizeof(iova_range) / sizeof(u64));
+		if (ret) {
+			GPI_ERR(gpi_dev,
+				"could not read DT prop 'qcom,iova-range\n");
+			return ret;
+		}
+		gpi_dev->iova_base = iova_range[0];
+		gpi_dev->iova_size = iova_range[1];
+	}
+
+	ret = gpi_smmu_init(gpi_dev);
+	if (ret) {
+		GPI_ERR(gpi_dev, "error configuring smmu, ret:%d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 

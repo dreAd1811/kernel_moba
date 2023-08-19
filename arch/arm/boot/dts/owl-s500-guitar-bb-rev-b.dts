@@ -19,15 +19,21 @@
 	chosen {
 		stdout-path = "serial3:115200n8";
 	};
+<<<<<<< HEAD
 
 	uart3_clk: uart3-clk {
 		compatible = "fixed-clock";
 		clock-frequency = <921600>;
 		#clock-cells = <0>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart3 {
 	status = "okay";
+<<<<<<< HEAD
 	clocks = <&uart3_clk>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

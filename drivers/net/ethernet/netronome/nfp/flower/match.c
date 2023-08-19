@@ -38,7 +38,11 @@
 #include "main.h"
 
 static void
+<<<<<<< HEAD
 nfp_flower_compile_meta_tci(struct nfp_flower_meta_tci *frame,
+=======
+nfp_flower_compile_meta_tci(struct nfp_flower_meta_two *frame,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    struct tc_cls_flower_offload *flow, u8 key_type,
 			    bool mask_version)
 {
@@ -46,7 +50,11 @@ nfp_flower_compile_meta_tci(struct nfp_flower_meta_tci *frame,
 	struct flow_dissector_key_vlan *flow_vlan;
 	u16 tmp_tci;
 
+<<<<<<< HEAD
 	memset(frame, 0, sizeof(struct nfp_flower_meta_tci));
+=======
+	memset(frame, 0, sizeof(struct nfp_flower_meta_two));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Populate the metadata frame. */
 	frame->nfp_flow_key_layer = key_type;
 	frame->mask_id = ~0;
@@ -56,34 +64,61 @@ nfp_flower_compile_meta_tci(struct nfp_flower_meta_tci *frame,
 						      FLOW_DISSECTOR_KEY_VLAN,
 						      target);
 		/* Populate the tci field. */
+<<<<<<< HEAD
 		tmp_tci = NFP_FLOWER_MASK_VLAN_PRESENT;
 		tmp_tci |= FIELD_PREP(NFP_FLOWER_MASK_VLAN_PRIO,
 				      flow_vlan->vlan_priority) |
 			   FIELD_PREP(NFP_FLOWER_MASK_VLAN_VID,
 				      flow_vlan->vlan_id);
 		frame->tci = cpu_to_be16(tmp_tci);
+=======
+		if (flow_vlan->vlan_id) {
+			tmp_tci = FIELD_PREP(NFP_FLOWER_MASK_VLAN_PRIO,
+					     flow_vlan->vlan_priority) |
+				  FIELD_PREP(NFP_FLOWER_MASK_VLAN_VID,
+					     flow_vlan->vlan_id) |
+				  NFP_FLOWER_MASK_VLAN_CFI;
+			frame->tci = cpu_to_be16(tmp_tci);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static void
+<<<<<<< HEAD
 nfp_flower_compile_ext_meta(struct nfp_flower_ext_meta *frame, u32 key_ext)
 {
 	frame->nfp_flow_key_layer2 = cpu_to_be32(key_ext);
+=======
+nfp_flower_compile_meta(struct nfp_flower_meta_one *frame, u8 key_type)
+{
+	frame->nfp_flow_key_layer = key_type;
+	frame->mask_id = 0;
+	frame->reserved = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
 nfp_flower_compile_port(struct nfp_flower_in_port *frame, u32 cmsg_port,
+<<<<<<< HEAD
 			bool mask_version, enum nfp_flower_tun_type tun_type)
+=======
+			bool mask_version)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (mask_version) {
 		frame->in_port = cpu_to_be32(~0);
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (tun_type)
 		frame->in_port = cpu_to_be32(NFP_FL_PORT_TYPE_TUN | tun_type);
 	else
 		frame->in_port = cpu_to_be32(cmsg_port);
+=======
+	frame->in_port = cpu_to_be32(cmsg_port);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -107,6 +142,7 @@ nfp_flower_compile_mac(struct nfp_flower_mac_mpls *frame,
 		ether_addr_copy(frame->mac_src, &addr->src[0]);
 	}
 
+<<<<<<< HEAD
 	if (dissector_uses_key(flow->dissector, FLOW_DISSECTOR_KEY_MPLS)) {
 		struct flow_dissector_key_mpls *mpls;
 		u32 t_mpls;
@@ -136,6 +172,10 @@ nfp_flower_compile_mac(struct nfp_flower_mac_mpls *frame,
 		    key_basic->n_proto == cpu_to_be16(ETH_P_MPLS_MC))
 			frame->mpls_lse = cpu_to_be32(NFP_FLOWER_MASK_MPLS_Q);
 	}
+=======
+	if (mask_version)
+		frame->mpls_lse = cpu_to_be32(~0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -158,6 +198,7 @@ nfp_flower_compile_tport(struct nfp_flower_tp_ports *frame,
 }
 
 static void
+<<<<<<< HEAD
 nfp_flower_compile_ip_ext(struct nfp_flower_ip_ext *frame,
 			  struct tc_cls_flower_offload *flow,
 			  bool mask_version)
@@ -217,13 +258,21 @@ nfp_flower_compile_ip_ext(struct nfp_flower_ip_ext *frame,
 }
 
 static void
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nfp_flower_compile_ipv4(struct nfp_flower_ipv4 *frame,
 			struct tc_cls_flower_offload *flow,
 			bool mask_version)
 {
 	struct fl_flow_key *target = mask_version ? flow->mask : flow->key;
 	struct flow_dissector_key_ipv4_addrs *addr;
+<<<<<<< HEAD
 
+=======
+	struct flow_dissector_key_basic *basic;
+
+	/* Wildcard TOS/TTL for now. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(frame, 0, sizeof(struct nfp_flower_ipv4));
 
 	if (dissector_uses_key(flow->dissector,
@@ -235,7 +284,16 @@ nfp_flower_compile_ipv4(struct nfp_flower_ipv4 *frame,
 		frame->ipv4_dst = addr->dst;
 	}
 
+<<<<<<< HEAD
 	nfp_flower_compile_ip_ext(&frame->ip_ext, flow, mask_version);
+=======
+	if (dissector_uses_key(flow->dissector, FLOW_DISSECTOR_KEY_BASIC)) {
+		basic = skb_flow_dissector_target(flow->dissector,
+						  FLOW_DISSECTOR_KEY_BASIC,
+						  target);
+		frame->proto = basic->ip_proto;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -245,7 +303,13 @@ nfp_flower_compile_ipv6(struct nfp_flower_ipv6 *frame,
 {
 	struct fl_flow_key *target = mask_version ? flow->mask : flow->key;
 	struct flow_dissector_key_ipv6_addrs *addr;
+<<<<<<< HEAD
 
+=======
+	struct flow_dissector_key_basic *basic;
+
+	/* Wildcard LABEL/TOS/TTL for now. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(frame, 0, sizeof(struct nfp_flower_ipv6));
 
 	if (dissector_uses_key(flow->dissector,
@@ -257,6 +321,7 @@ nfp_flower_compile_ipv6(struct nfp_flower_ipv6 *frame,
 		frame->ipv6_dst = addr->dst;
 	}
 
+<<<<<<< HEAD
 	nfp_flower_compile_ip_ext(&frame->ip_ext, flow, mask_version);
 }
 
@@ -314,16 +379,28 @@ nfp_flower_compile_ipv4_udp_tun(struct nfp_flower_ipv4_udp_tun *frame,
 					       target);
 		frame->tos = ip->tos;
 		frame->ttl = ip->ttl;
+=======
+	if (dissector_uses_key(flow->dissector, FLOW_DISSECTOR_KEY_BASIC)) {
+		basic = skb_flow_dissector_target(flow->dissector,
+						  FLOW_DISSECTOR_KEY_BASIC,
+						  target);
+		frame->proto = basic->ip_proto;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 int nfp_flower_compile_flow_match(struct tc_cls_flower_offload *flow,
 				  struct nfp_fl_key_ls *key_ls,
 				  struct net_device *netdev,
+<<<<<<< HEAD
 				  struct nfp_fl_payload *nfp_flow,
 				  enum nfp_flower_tun_type tun_type)
 {
 	struct nfp_repr *netdev_repr;
+=======
+				  struct nfp_fl_payload *nfp_flow)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 	u8 *ext;
 	u8 *msk;
@@ -333,6 +410,7 @@ int nfp_flower_compile_flow_match(struct tc_cls_flower_offload *flow,
 
 	ext = nfp_flow->unmasked_data;
 	msk = nfp_flow->mask_data;
+<<<<<<< HEAD
 
 	/* Populate Exact Metadata. */
 	nfp_flower_compile_meta_tci((struct nfp_flower_meta_tci *)ext,
@@ -369,6 +447,51 @@ int nfp_flower_compile_flow_match(struct tc_cls_flower_offload *flow,
 
 	ext += sizeof(struct nfp_flower_in_port);
 	msk += sizeof(struct nfp_flower_in_port);
+=======
+	if (NFP_FLOWER_LAYER_PORT & key_ls->key_layer) {
+		/* Populate Exact Metadata. */
+		nfp_flower_compile_meta_tci((struct nfp_flower_meta_two *)ext,
+					    flow, key_ls->key_layer, false);
+		/* Populate Mask Metadata. */
+		nfp_flower_compile_meta_tci((struct nfp_flower_meta_two *)msk,
+					    flow, key_ls->key_layer, true);
+		ext += sizeof(struct nfp_flower_meta_two);
+		msk += sizeof(struct nfp_flower_meta_two);
+
+		/* Populate Exact Port data. */
+		err = nfp_flower_compile_port((struct nfp_flower_in_port *)ext,
+					      nfp_repr_get_port_id(netdev),
+					      false);
+		if (err)
+			return err;
+
+		/* Populate Mask Port Data. */
+		err = nfp_flower_compile_port((struct nfp_flower_in_port *)msk,
+					      nfp_repr_get_port_id(netdev),
+					      true);
+		if (err)
+			return err;
+
+		ext += sizeof(struct nfp_flower_in_port);
+		msk += sizeof(struct nfp_flower_in_port);
+	} else {
+		/* Populate Exact Metadata. */
+		nfp_flower_compile_meta((struct nfp_flower_meta_one *)ext,
+					key_ls->key_layer);
+		/* Populate Mask Metadata. */
+		nfp_flower_compile_meta((struct nfp_flower_meta_one *)msk,
+					key_ls->key_layer);
+		ext += sizeof(struct nfp_flower_meta_one);
+		msk += sizeof(struct nfp_flower_meta_one);
+	}
+
+	if (NFP_FLOWER_LAYER_META & key_ls->key_layer) {
+		/* Additional Metadata Fields.
+		 * Currently unsupported.
+		 */
+		return -EOPNOTSUPP;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (NFP_FLOWER_LAYER_MAC & key_ls->key_layer) {
 		/* Populate Exact MAC Data. */
@@ -414,6 +537,7 @@ int nfp_flower_compile_flow_match(struct tc_cls_flower_offload *flow,
 		msk += sizeof(struct nfp_flower_ipv6);
 	}
 
+<<<<<<< HEAD
 	if (key_ls->key_layer & NFP_FLOWER_LAYER_VXLAN ||
 	    key_ls->key_layer_two & NFP_FLOWER_LAYER2_GENEVE) {
 		__be32 tun_dst;
@@ -449,5 +573,7 @@ int nfp_flower_compile_flow_match(struct tc_cls_flower_offload *flow,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

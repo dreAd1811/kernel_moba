@@ -14,12 +14,20 @@
  */
 
 #include <linux/linkage.h>
+<<<<<<< HEAD
 #include <linux/platform_data/ams-delta-fiq.h>
 
 #include <asm/assembler.h>
 #include <mach/board-ams-delta.h>
 
 #include "ams-delta-fiq.h"
+=======
+#include <asm/assembler.h>
+
+#include <mach/board-ams-delta.h>
+#include <mach/ams-delta-fiq.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "iomap.h"
 #include "soc.h"
 
@@ -135,8 +143,11 @@ restart:
 	orr r11, r11, r13			@ mask all requested interrupts
 	str r11, [r12, #OMAP1510_GPIO_INT_MASK]
 
+<<<<<<< HEAD
 	str r13, [r12, #OMAP1510_GPIO_INT_STATUS] @ ack all requested interrupts
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ands r10, r13, #KEYBRD_CLK_MASK		@ extract keyboard status - set?
 	beq hksw				@ no - try next source
 
@@ -144,6 +155,10 @@ restart:
 	@@@@@@@@@@@@@@@@@@@@@@
 	@ Keyboard clock FIQ mode interrupt handler
 	@ r10 now contains KEYBRD_CLK_MASK, use it
+<<<<<<< HEAD
+=======
+	str r10, [r12, #OMAP1510_GPIO_INT_STATUS]	@ ack the interrupt
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bic r11, r11, r10				@ unmask it
 	str r11, [r12, #OMAP1510_GPIO_INT_MASK]
 

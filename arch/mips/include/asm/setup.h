@@ -2,10 +2,15 @@
 #ifndef _MIPS_SETUP_H
 #define _MIPS_SETUP_H
 
+<<<<<<< HEAD
 #include <linux/types.h>
 #include <uapi/asm/setup.h>
 
 extern void prom_putchar(char);
+=======
+#include <uapi/asm/setup.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void setup_early_printk(void);
 
 #ifdef CONFIG_EARLY_PRINTK_8250

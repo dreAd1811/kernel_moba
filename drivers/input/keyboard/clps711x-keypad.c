@@ -109,8 +109,13 @@ static int clps711x_keypad_probe(struct platform_device *pdev)
 	if (priv->row_count < 1)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	priv->gpio_data = devm_kcalloc(dev,
 				priv->row_count, sizeof(*priv->gpio_data),
+=======
+	priv->gpio_data = devm_kzalloc(dev,
+				sizeof(*priv->gpio_data) * priv->row_count,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!priv->gpio_data)
 		return -ENOMEM;

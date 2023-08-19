@@ -72,6 +72,7 @@ struct aesni_xts_ctx {
 	u8 raw_crypt_ctx[sizeof(struct crypto_aes_ctx)] AESNI_ALIGN_ATTR;
 };
 
+<<<<<<< HEAD
 #define GCM_BLOCK_LEN 16
 
 struct gcm_context_data {
@@ -93,6 +94,12 @@ asmlinkage void aesni_enc(struct crypto_aes_ctx *ctx, u8 *out,
 			  const u8 *in);
 asmlinkage void aesni_dec(struct crypto_aes_ctx *ctx, u8 *out,
 			  const u8 *in);
+=======
+asmlinkage int aesni_set_key(struct crypto_aes_ctx *ctx, const u8 *in_key,
+			     unsigned int key_len);
+asmlinkage void aesni_enc(void *ctx, u8 *out, const u8 *in);
+asmlinkage void aesni_dec(void *ctx, u8 *out, const u8 *in);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 asmlinkage void aesni_ecb_enc(struct crypto_aes_ctx *ctx, u8 *out,
 			      const u8 *in, unsigned int len);
 asmlinkage void aesni_ecb_dec(struct crypto_aes_ctx *ctx, u8 *out,
@@ -120,7 +127,10 @@ asmlinkage void aesni_xts_crypt8(struct crypto_aes_ctx *ctx, u8 *out,
 
 /* asmlinkage void aesni_gcm_enc()
  * void *ctx,  AES Key schedule. Starts on a 16 byte boundary.
+<<<<<<< HEAD
  * struct gcm_context_data.  May be uninitialized.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * u8 *out, Ciphertext output. Encrypt in-place is allowed.
  * const u8 *in, Plaintext input
  * unsigned long plaintext_len, Length of data in bytes for encryption.
@@ -133,15 +143,22 @@ asmlinkage void aesni_xts_crypt8(struct crypto_aes_ctx *ctx, u8 *out,
  * unsigned long auth_tag_len), Authenticated Tag Length in bytes.
  *          Valid values are 16 (most likely), 12 or 8.
  */
+<<<<<<< HEAD
 asmlinkage void aesni_gcm_enc(void *ctx,
 			struct gcm_context_data *gdata, u8 *out,
+=======
+asmlinkage void aesni_gcm_enc(void *ctx, u8 *out,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			const u8 *in, unsigned long plaintext_len, u8 *iv,
 			u8 *hash_subkey, const u8 *aad, unsigned long aad_len,
 			u8 *auth_tag, unsigned long auth_tag_len);
 
 /* asmlinkage void aesni_gcm_dec()
  * void *ctx, AES Key schedule. Starts on a 16 byte boundary.
+<<<<<<< HEAD
  * struct gcm_context_data.  May be uninitialized.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * u8 *out, Plaintext output. Decrypt in-place is allowed.
  * const u8 *in, Ciphertext input
  * unsigned long ciphertext_len, Length of data in bytes for decryption.
@@ -155,12 +172,17 @@ asmlinkage void aesni_gcm_enc(void *ctx,
  * unsigned long auth_tag_len) Authenticated Tag Length in bytes.
  * Valid values are 16 (most likely), 12 or 8.
  */
+<<<<<<< HEAD
 asmlinkage void aesni_gcm_dec(void *ctx,
 			struct gcm_context_data *gdata, u8 *out,
+=======
+asmlinkage void aesni_gcm_dec(void *ctx, u8 *out,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			const u8 *in, unsigned long ciphertext_len, u8 *iv,
 			u8 *hash_subkey, const u8 *aad, unsigned long aad_len,
 			u8 *auth_tag, unsigned long auth_tag_len);
 
+<<<<<<< HEAD
 /* Scatter / Gather routines, with args similar to above */
 asmlinkage void aesni_gcm_init(void *ctx,
 			       struct gcm_context_data *gdata,
@@ -177,6 +199,8 @@ asmlinkage void aesni_gcm_dec_update(void *ctx,
 asmlinkage void aesni_gcm_finalize(void *ctx,
 				   struct gcm_context_data *gdata,
 				   u8 *auth_tag, unsigned long auth_tag_len);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_AS_AVX
 asmlinkage void aes_ctr_enc_128_avx_by8(const u8 *in, u8 *iv,
@@ -202,17 +226,26 @@ asmlinkage void aesni_gcm_dec_avx_gen2(void *ctx, u8 *out,
 			const u8 *aad, unsigned long aad_len,
 			u8 *auth_tag, unsigned long auth_tag_len);
 
+<<<<<<< HEAD
 static void aesni_gcm_enc_avx(void *ctx,
 			struct gcm_context_data *data, u8 *out,
+=======
+static void aesni_gcm_enc_avx(void *ctx, u8 *out,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			const u8 *in, unsigned long plaintext_len, u8 *iv,
 			u8 *hash_subkey, const u8 *aad, unsigned long aad_len,
 			u8 *auth_tag, unsigned long auth_tag_len)
 {
         struct crypto_aes_ctx *aes_ctx = (struct crypto_aes_ctx*)ctx;
 	if ((plaintext_len < AVX_GEN2_OPTSIZE) || (aes_ctx-> key_length != AES_KEYSIZE_128)){
+<<<<<<< HEAD
 		aesni_gcm_enc(ctx, data, out, in,
 			plaintext_len, iv, hash_subkey, aad,
 			aad_len, auth_tag, auth_tag_len);
+=======
+		aesni_gcm_enc(ctx, out, in, plaintext_len, iv, hash_subkey, aad,
+				aad_len, auth_tag, auth_tag_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		aesni_gcm_precomp_avx_gen2(ctx, hash_subkey);
 		aesni_gcm_enc_avx_gen2(ctx, out, in, plaintext_len, iv, aad,
@@ -220,17 +253,26 @@ static void aesni_gcm_enc_avx(void *ctx,
 	}
 }
 
+<<<<<<< HEAD
 static void aesni_gcm_dec_avx(void *ctx,
 			struct gcm_context_data *data, u8 *out,
+=======
+static void aesni_gcm_dec_avx(void *ctx, u8 *out,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			const u8 *in, unsigned long ciphertext_len, u8 *iv,
 			u8 *hash_subkey, const u8 *aad, unsigned long aad_len,
 			u8 *auth_tag, unsigned long auth_tag_len)
 {
         struct crypto_aes_ctx *aes_ctx = (struct crypto_aes_ctx*)ctx;
 	if ((ciphertext_len < AVX_GEN2_OPTSIZE) || (aes_ctx-> key_length != AES_KEYSIZE_128)) {
+<<<<<<< HEAD
 		aesni_gcm_dec(ctx, data, out, in,
 			ciphertext_len, iv, hash_subkey, aad,
 			aad_len, auth_tag, auth_tag_len);
+=======
+		aesni_gcm_dec(ctx, out, in, ciphertext_len, iv, hash_subkey, aad,
+				aad_len, auth_tag, auth_tag_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		aesni_gcm_precomp_avx_gen2(ctx, hash_subkey);
 		aesni_gcm_dec_avx_gen2(ctx, out, in, ciphertext_len, iv, aad,
@@ -257,17 +299,26 @@ asmlinkage void aesni_gcm_dec_avx_gen4(void *ctx, u8 *out,
 			const u8 *aad, unsigned long aad_len,
 			u8 *auth_tag, unsigned long auth_tag_len);
 
+<<<<<<< HEAD
 static void aesni_gcm_enc_avx2(void *ctx,
 			struct gcm_context_data *data, u8 *out,
+=======
+static void aesni_gcm_enc_avx2(void *ctx, u8 *out,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			const u8 *in, unsigned long plaintext_len, u8 *iv,
 			u8 *hash_subkey, const u8 *aad, unsigned long aad_len,
 			u8 *auth_tag, unsigned long auth_tag_len)
 {
        struct crypto_aes_ctx *aes_ctx = (struct crypto_aes_ctx*)ctx;
 	if ((plaintext_len < AVX_GEN2_OPTSIZE) || (aes_ctx-> key_length != AES_KEYSIZE_128)) {
+<<<<<<< HEAD
 		aesni_gcm_enc(ctx, data, out, in,
 			      plaintext_len, iv, hash_subkey, aad,
 			      aad_len, auth_tag, auth_tag_len);
+=======
+		aesni_gcm_enc(ctx, out, in, plaintext_len, iv, hash_subkey, aad,
+				aad_len, auth_tag, auth_tag_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (plaintext_len < AVX_GEN4_OPTSIZE) {
 		aesni_gcm_precomp_avx_gen2(ctx, hash_subkey);
 		aesni_gcm_enc_avx_gen2(ctx, out, in, plaintext_len, iv, aad,
@@ -279,17 +330,26 @@ static void aesni_gcm_enc_avx2(void *ctx,
 	}
 }
 
+<<<<<<< HEAD
 static void aesni_gcm_dec_avx2(void *ctx,
 	struct gcm_context_data *data, u8 *out,
+=======
+static void aesni_gcm_dec_avx2(void *ctx, u8 *out,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			const u8 *in, unsigned long ciphertext_len, u8 *iv,
 			u8 *hash_subkey, const u8 *aad, unsigned long aad_len,
 			u8 *auth_tag, unsigned long auth_tag_len)
 {
        struct crypto_aes_ctx *aes_ctx = (struct crypto_aes_ctx*)ctx;
 	if ((ciphertext_len < AVX_GEN2_OPTSIZE) || (aes_ctx-> key_length != AES_KEYSIZE_128)) {
+<<<<<<< HEAD
 		aesni_gcm_dec(ctx, data, out, in,
 			      ciphertext_len, iv, hash_subkey,
 			      aad, aad_len, auth_tag, auth_tag_len);
+=======
+		aesni_gcm_dec(ctx, out, in, ciphertext_len, iv, hash_subkey,
+				aad, aad_len, auth_tag, auth_tag_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (ciphertext_len < AVX_GEN4_OPTSIZE) {
 		aesni_gcm_precomp_avx_gen2(ctx, hash_subkey);
 		aesni_gcm_dec_avx_gen2(ctx, out, in, ciphertext_len, iv, aad,
@@ -302,6 +362,7 @@ static void aesni_gcm_dec_avx2(void *ctx,
 }
 #endif
 
+<<<<<<< HEAD
 static void (*aesni_gcm_enc_tfm)(void *ctx,
 				 struct gcm_context_data *data, u8 *out,
 				 const u8 *in, unsigned long plaintext_len,
@@ -315,6 +376,17 @@ static void (*aesni_gcm_dec_tfm)(void *ctx,
 				 u8 *iv, u8 *hash_subkey, const u8 *aad,
 				 unsigned long aad_len, u8 *auth_tag,
 				 unsigned long auth_tag_len);
+=======
+static void (*aesni_gcm_enc_tfm)(void *ctx, u8 *out,
+			const u8 *in, unsigned long plaintext_len, u8 *iv,
+			u8 *hash_subkey, const u8 *aad, unsigned long aad_len,
+			u8 *auth_tag, unsigned long auth_tag_len);
+
+static void (*aesni_gcm_dec_tfm)(void *ctx, u8 *out,
+			const u8 *in, unsigned long ciphertext_len, u8 *iv,
+			u8 *hash_subkey, const u8 *aad, unsigned long aad_len,
+			u8 *auth_tag, unsigned long auth_tag_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline struct
 aesni_rfc4106_gcm_ctx *aesni_rfc4106_gcm_ctx_get(struct crypto_aead *tfm)
@@ -791,6 +863,7 @@ static int generic_gcmaes_set_authsize(struct crypto_aead *tfm,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int gcmaes_crypt_by_sg(bool enc, struct aead_request *req,
 			      unsigned int assoclen, u8 *hash_subkey,
 			      u8 *iv, void *aes_ctx)
@@ -915,6 +988,8 @@ static int gcmaes_crypt_by_sg(bool enc, struct aead_request *req,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gcmaes_encrypt(struct aead_request *req, unsigned int assoclen,
 			  u8 *hash_subkey, u8 *iv, void *aes_ctx)
 {
@@ -924,6 +999,7 @@ static int gcmaes_encrypt(struct aead_request *req, unsigned int assoclen,
 	unsigned long auth_tag_len = crypto_aead_authsize(tfm);
 	struct scatter_walk src_sg_walk;
 	struct scatter_walk dst_sg_walk = {};
+<<<<<<< HEAD
 	struct gcm_context_data data AESNI_ALIGN_ATTR;
 
 	if (((struct crypto_aes_ctx *)aes_ctx)->key_length != AES_KEYSIZE_128 ||
@@ -932,6 +1008,9 @@ static int gcmaes_encrypt(struct aead_request *req, unsigned int assoclen,
 		return gcmaes_crypt_by_sg(true, req, assoclen, hash_subkey, iv,
 					  aes_ctx);
 	}
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sg_is_last(req->src) &&
 	    (!PageHighMem(sg_page(req->src)) ||
 	    req->src->offset + req->src->length <= PAGE_SIZE) &&
@@ -960,7 +1039,11 @@ static int gcmaes_encrypt(struct aead_request *req, unsigned int assoclen,
 	}
 
 	kernel_fpu_begin();
+<<<<<<< HEAD
 	aesni_gcm_enc_tfm(aes_ctx, &data, dst, src, req->cryptlen, iv,
+=======
+	aesni_gcm_enc_tfm(aes_ctx, dst, src, req->cryptlen, iv,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  hash_subkey, assoc, assoclen,
 			  dst + req->cryptlen, auth_tag_len);
 	kernel_fpu_end();
@@ -995,6 +1078,7 @@ static int gcmaes_decrypt(struct aead_request *req, unsigned int assoclen,
 	u8 authTag[16];
 	struct scatter_walk src_sg_walk;
 	struct scatter_walk dst_sg_walk = {};
+<<<<<<< HEAD
 	struct gcm_context_data data AESNI_ALIGN_ATTR;
 	int retval = 0;
 
@@ -1004,6 +1088,10 @@ static int gcmaes_decrypt(struct aead_request *req, unsigned int assoclen,
 		return gcmaes_crypt_by_sg(false, req, assoclen, hash_subkey, iv,
 					  aes_ctx);
 	}
+=======
+	int retval = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tempCipherLen = (unsigned long)(req->cryptlen - auth_tag_len);
 
 	if (sg_is_last(req->src) &&
@@ -1034,7 +1122,11 @@ static int gcmaes_decrypt(struct aead_request *req, unsigned int assoclen,
 
 
 	kernel_fpu_begin();
+<<<<<<< HEAD
 	aesni_gcm_dec_tfm(aes_ctx, &data, dst, src, tempCipherLen, iv,
+=======
+	aesni_gcm_dec_tfm(aes_ctx, dst, src, tempCipherLen, iv,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  hash_subkey, assoc, assoclen,
 			  authTag, auth_tag_len);
 	kernel_fpu_end();
@@ -1253,10 +1345,16 @@ static struct skcipher_alg aesni_skciphers[] = {
 	}
 };
 
+<<<<<<< HEAD
 static
 struct simd_skcipher_alg *aesni_simd_skciphers[ARRAY_SIZE(aesni_skciphers)];
 
 static struct {
+=======
+struct simd_skcipher_alg *aesni_simd_skciphers[ARRAY_SIZE(aesni_skciphers)];
+
+struct {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *algname;
 	const char *drvname;
 	const char *basename;

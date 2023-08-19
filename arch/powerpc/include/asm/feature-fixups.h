@@ -1,8 +1,11 @@
 #ifndef __ASM_POWERPC_FEATURE_FIXUPS_H
 #define __ASM_POWERPC_FEATURE_FIXUPS_H
 
+<<<<<<< HEAD
 #include <asm/asm-const.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

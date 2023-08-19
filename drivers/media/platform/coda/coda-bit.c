@@ -68,9 +68,14 @@ static void coda_command_async(struct coda_ctx *ctx, int cmd)
 {
 	struct coda_dev *dev = ctx->dev;
 
+<<<<<<< HEAD
 	if (dev->devtype->product == CODA_HX4 ||
 	    dev->devtype->product == CODA_7541 ||
 	    dev->devtype->product == CODA_960) {
+=======
+	if (dev->devtype->product == CODA_960 ||
+	    dev->devtype->product == CODA_7541) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Restore context related registers to CODA */
 		coda_write(dev, ctx->bit_stream_param,
 				CODA_REG_BIT_BIT_STREAM_PARAM);
@@ -261,12 +266,20 @@ void coda_fill_bitstream(struct coda_ctx *ctx, struct list_head *buffer_list)
 
 	while (v4l2_m2m_num_src_bufs_ready(ctx->fh.m2m_ctx) > 0) {
 		/*
+<<<<<<< HEAD
 		 * Only queue two JPEGs into the bitstream buffer to keep
 		 * latency low. We need at least one complete buffer and the
 		 * header of another buffer (for prescan) in the bitstream.
 		 */
 		if (ctx->codec->src_fourcc == V4L2_PIX_FMT_JPEG &&
 		    ctx->num_metas > 1)
+=======
+		 * Only queue a single JPEG into the bitstream buffer, except
+		 * to increase payload over 512 bytes or if in hold state.
+		 */
+		if (ctx->codec->src_fourcc == V4L2_PIX_FMT_JPEG &&
+		    (coda_get_bitstream_payload(ctx) >= 512) && !ctx->hold)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		src_buf = v4l2_m2m_next_src_buf(ctx->fh.m2m_ctx);
@@ -390,12 +403,18 @@ static int coda_alloc_framebuffers(struct coda_ctx *ctx,
 				   struct coda_q_data *q_data, u32 fourcc)
 {
 	struct coda_dev *dev = ctx->dev;
+<<<<<<< HEAD
 	unsigned int ysize, ycbcr_size;
+=======
+	int width, height;
+	int ysize;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	int i;
 
 	if (ctx->codec->src_fourcc == V4L2_PIX_FMT_H264 ||
 	    ctx->codec->dst_fourcc == V4L2_PIX_FMT_H264 ||
+<<<<<<< HEAD
 	    ctx->codec->src_fourcc == V4L2_PIX_FMT_MPEG4 ||
 	    ctx->codec->dst_fourcc == V4L2_PIX_FMT_MPEG4)
 		ysize = round_up(q_data->rect.width, 16) *
@@ -423,6 +442,30 @@ static int coda_alloc_framebuffers(struct coda_ctx *ctx,
 			coda_free_framebuffers(ctx);
 			return -ENOMEM;
 		}
+=======
+	    ctx->codec->dst_fourcc == V4L2_PIX_FMT_MPEG4) {
+		width = round_up(q_data->width, 16);
+		height = round_up(q_data->height, 16);
+	} else {
+		width = round_up(q_data->width, 8);
+		height = q_data->height;
+	}
+	ysize = width * height;
+
+	/* Allocate frame buffers */
+	for (i = 0; i < ctx->num_internal_frames; i++) {
+		size_t size;
+		char *name;
+
+		if (ctx->tiled_map_type == GDI_TILED_FRAME_MB_RASTER_MAP)
+			size = round_up(ysize, 4096) + ysize / 2;
+		else
+			size = ysize + ysize / 2;
+		if (ctx->codec->src_fourcc == V4L2_PIX_FMT_H264 &&
+		    dev->devtype->product != CODA_DX6)
+			size += ysize / 4;
+		name = kasprintf(GFP_KERNEL, "fb%d", i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = coda_alloc_context_buf(ctx, &ctx->internal_frames[i],
 					     size, name);
 		kfree(name);
@@ -454,6 +497,7 @@ static int coda_alloc_framebuffers(struct coda_ctx *ctx,
 		coda_parabuf_write(ctx, i * 3 + 1, cb);
 		coda_parabuf_write(ctx, i * 3 + 2, cr);
 
+<<<<<<< HEAD
 		if (dev->devtype->product == CODA_DX6)
 			continue;
 
@@ -464,6 +508,20 @@ static int coda_alloc_framebuffers(struct coda_ctx *ctx,
 			coda_parabuf_write(ctx, 97, mvcol);
 	}
 
+=======
+		/* mvcol buffer for h.264 */
+		if (ctx->codec->src_fourcc == V4L2_PIX_FMT_H264 &&
+		    dev->devtype->product != CODA_DX6)
+			coda_parabuf_write(ctx, 96 + i, mvcol);
+	}
+
+	/* mvcol buffer for mpeg4 */
+	if ((dev->devtype->product != CODA_DX6) &&
+	    (ctx->codec->src_fourcc == V4L2_PIX_FMT_MPEG4))
+		coda_parabuf_write(ctx, 97, ctx->internal_frames[0].paddr +
+					    ysize + ysize/4 + ysize/4);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -497,16 +555,25 @@ static int coda_alloc_context_buffers(struct coda_ctx *ctx,
 
 	if (!ctx->slicebuf.vaddr && q_data->fourcc == V4L2_PIX_FMT_H264) {
 		/* worst case slice size */
+<<<<<<< HEAD
 		size = (DIV_ROUND_UP(q_data->rect.width, 16) *
 			DIV_ROUND_UP(q_data->rect.height, 16)) * 3200 / 8 + 512;
+=======
+		size = (DIV_ROUND_UP(q_data->width, 16) *
+			DIV_ROUND_UP(q_data->height, 16)) * 3200 / 8 + 512;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = coda_alloc_context_buf(ctx, &ctx->slicebuf, size,
 					     "slicebuf");
 		if (ret < 0)
 			goto err;
 	}
 
+<<<<<<< HEAD
 	if (!ctx->psbuf.vaddr && (dev->devtype->product == CODA_HX4 ||
 				  dev->devtype->product == CODA_7541)) {
+=======
+	if (!ctx->psbuf.vaddr && dev->devtype->product == CODA_7541) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = coda_alloc_context_buf(ctx, &ctx->psbuf,
 					     CODA7_PS_BUF_SIZE, "psbuf");
 		if (ret < 0)
@@ -536,8 +603,11 @@ static int coda_encode_header(struct coda_ctx *ctx, struct vb2_v4l2_buffer *buf,
 {
 	struct vb2_buffer *vb = &buf->vb2_buf;
 	struct coda_dev *dev = ctx->dev;
+<<<<<<< HEAD
 	struct coda_q_data *q_data_src;
 	struct v4l2_rect *r;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t bufsize;
 	int ret;
 	int i;
@@ -551,6 +621,7 @@ static int coda_encode_header(struct coda_ctx *ctx, struct vb2_v4l2_buffer *buf,
 	if (dev->devtype->product == CODA_960)
 		bufsize /= 1024;
 	coda_write(dev, bufsize, CODA_CMD_ENC_HEADER_BB_SIZE);
+<<<<<<< HEAD
 	if (dev->devtype->product == CODA_960 &&
 	    ctx->codec->dst_fourcc == V4L2_PIX_FMT_H264 &&
 	    header_code == CODA_HEADER_H264_SPS) {
@@ -568,6 +639,8 @@ static int coda_encode_header(struct coda_ctx *ctx, struct vb2_v4l2_buffer *buf,
 			header_code |= CODA9_HEADER_FRAME_CROP;
 		}
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	coda_write(dev, header_code, CODA_CMD_ENC_HEADER_CODE);
 	ret = coda_command_sync(ctx, CODA_COMMAND_ENCODE_HEADER);
 	if (ret < 0) {
@@ -613,7 +686,10 @@ static void coda_setup_iram(struct coda_ctx *ctx)
 	int dbk_bits;
 	int bit_bits;
 	int ip_bits;
+<<<<<<< HEAD
 	int me_bits;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(iram_info, 0, sizeof(*iram_info));
 	iram_info->next_paddr = dev->iram.paddr;
@@ -623,23 +699,32 @@ static void coda_setup_iram(struct coda_ctx *ctx)
 		return;
 
 	switch (dev->devtype->product) {
+<<<<<<< HEAD
 	case CODA_HX4:
 		dbk_bits = CODA7_USE_HOST_DBK_ENABLE;
 		bit_bits = CODA7_USE_HOST_BIT_ENABLE;
 		ip_bits = CODA7_USE_HOST_IP_ENABLE;
 		me_bits = CODA7_USE_HOST_ME_ENABLE;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CODA_7541:
 		dbk_bits = CODA7_USE_HOST_DBK_ENABLE | CODA7_USE_DBK_ENABLE;
 		bit_bits = CODA7_USE_HOST_BIT_ENABLE | CODA7_USE_BIT_ENABLE;
 		ip_bits = CODA7_USE_HOST_IP_ENABLE | CODA7_USE_IP_ENABLE;
+<<<<<<< HEAD
 		me_bits = CODA7_USE_HOST_ME_ENABLE | CODA7_USE_ME_ENABLE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case CODA_960:
 		dbk_bits = CODA9_USE_HOST_DBK_ENABLE | CODA9_USE_DBK_ENABLE;
 		bit_bits = CODA9_USE_HOST_BIT_ENABLE | CODA7_USE_BIT_ENABLE;
 		ip_bits = CODA9_USE_HOST_IP_ENABLE | CODA7_USE_IP_ENABLE;
+<<<<<<< HEAD
 		me_bits = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default: /* CODA_DX6 */
 		return;
@@ -649,13 +734,21 @@ static void coda_setup_iram(struct coda_ctx *ctx)
 		struct coda_q_data *q_data_src;
 
 		q_data_src = get_q_data(ctx, V4L2_BUF_TYPE_VIDEO_OUTPUT);
+<<<<<<< HEAD
 		mb_width = DIV_ROUND_UP(q_data_src->rect.width, 16);
+=======
+		mb_width = DIV_ROUND_UP(q_data_src->width, 16);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		w128 = mb_width * 128;
 		w64 = mb_width * 64;
 
 		/* Prioritize in case IRAM is too small for everything */
+<<<<<<< HEAD
 		if (dev->devtype->product == CODA_HX4 ||
 		    dev->devtype->product == CODA_7541) {
+=======
+		if (dev->devtype->product == CODA_7541) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iram_info->search_ram_size = round_up(mb_width * 16 *
 							      36 + 2048, 1024);
 			iram_info->search_ram_paddr = coda_iram_alloc(iram_info,
@@ -664,7 +757,12 @@ static void coda_setup_iram(struct coda_ctx *ctx)
 				pr_err("IRAM is smaller than the search ram size\n");
 				goto out;
 			}
+<<<<<<< HEAD
 			iram_info->axi_sram_use |= me_bits;
+=======
+			iram_info->axi_sram_use |= CODA7_USE_HOST_ME_ENABLE |
+						   CODA7_USE_ME_ENABLE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* Only H.264BP and H.263P3 are considered */
@@ -716,8 +814,12 @@ out:
 		v4l2_dbg(1, coda_debug, &ctx->dev->v4l2_dev,
 			 "IRAM smaller than needed\n");
 
+<<<<<<< HEAD
 	if (dev->devtype->product == CODA_HX4 ||
 	    dev->devtype->product == CODA_7541) {
+=======
+	if (dev->devtype->product == CODA_7541) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* TODO - Enabling these causes picture errors on CODA7541 */
 		if (ctx->inst_type == CODA_INST_DECODER) {
 			/* fw 1.4.50 */
@@ -735,10 +837,15 @@ out:
 
 static u32 coda_supported_firmwares[] = {
 	CODA_FIRMWARE_VERNUM(CODA_DX6, 2, 2, 5),
+<<<<<<< HEAD
 	CODA_FIRMWARE_VERNUM(CODA_HX4, 1, 4, 50),
 	CODA_FIRMWARE_VERNUM(CODA_7541, 1, 4, 50),
 	CODA_FIRMWARE_VERNUM(CODA_960, 2, 1, 5),
 	CODA_FIRMWARE_VERNUM(CODA_960, 2, 1, 9),
+=======
+	CODA_FIRMWARE_VERNUM(CODA_7541, 1, 4, 50),
+	CODA_FIRMWARE_VERNUM(CODA_960, 2, 1, 5),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CODA_FIRMWARE_VERNUM(CODA_960, 2, 3, 10),
 	CODA_FIRMWARE_VERNUM(CODA_960, 3, 1, 1),
 };
@@ -921,7 +1028,10 @@ static int coda_start_encoding(struct coda_ctx *ctx)
 	case CODA_960:
 		coda_write(dev, 0, CODA9_GDI_WPROT_RGN_EN);
 		/* fallthrough */
+<<<<<<< HEAD
 	case CODA_HX4:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CODA_7541:
 		coda_write(dev, CODA7_STREAM_BUF_DYNALLOC_EN |
 			CODA7_STREAM_BUF_PIC_RESET, CODA_REG_BIT_STREAM_CTRL);
@@ -946,6 +1056,7 @@ static int coda_start_encoding(struct coda_ctx *ctx)
 	value = 0;
 	switch (dev->devtype->product) {
 	case CODA_DX6:
+<<<<<<< HEAD
 		value = (q_data_src->rect.width & CODADX6_PICWIDTH_MASK)
 			<< CODADX6_PICWIDTH_OFFSET;
 		value |= (q_data_src->rect.height & CODADX6_PICHEIGHT_MASK)
@@ -957,14 +1068,32 @@ static int coda_start_encoding(struct coda_ctx *ctx)
 			value = (round_up(q_data_src->rect.width, 16) &
 				 CODA7_PICWIDTH_MASK) << CODA7_PICWIDTH_OFFSET;
 			value |= (round_up(q_data_src->rect.height, 16) &
+=======
+		value = (q_data_src->width & CODADX6_PICWIDTH_MASK)
+			<< CODADX6_PICWIDTH_OFFSET;
+		value |= (q_data_src->height & CODADX6_PICHEIGHT_MASK)
+			 << CODA_PICHEIGHT_OFFSET;
+		break;
+	case CODA_7541:
+		if (dst_fourcc == V4L2_PIX_FMT_H264) {
+			value = (round_up(q_data_src->width, 16) &
+				 CODA7_PICWIDTH_MASK) << CODA7_PICWIDTH_OFFSET;
+			value |= (round_up(q_data_src->height, 16) &
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 CODA7_PICHEIGHT_MASK) << CODA_PICHEIGHT_OFFSET;
 			break;
 		}
 		/* fallthrough */
 	case CODA_960:
+<<<<<<< HEAD
 		value = (q_data_src->rect.width & CODA7_PICWIDTH_MASK)
 			<< CODA7_PICWIDTH_OFFSET;
 		value |= (q_data_src->rect.height & CODA7_PICHEIGHT_MASK)
+=======
+		value = (q_data_src->width & CODA7_PICWIDTH_MASK)
+			<< CODA7_PICWIDTH_OFFSET;
+		value |= (q_data_src->height & CODA7_PICHEIGHT_MASK)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 << CODA_PICHEIGHT_OFFSET;
 	}
 	coda_write(dev, value, CODA_CMD_ENC_SEQ_SRC_SIZE);
@@ -1118,7 +1247,10 @@ static int coda_start_encoding(struct coda_ctx *ctx)
 			value = FMO_SLICE_SAVE_BUF_SIZE << 7;
 			coda_write(dev, value, CODADX6_CMD_ENC_SEQ_FMO);
 			break;
+<<<<<<< HEAD
 		case CODA_HX4:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case CODA_7541:
 			coda_write(dev, ctx->iram_info.search_ram_paddr,
 					CODA7_CMD_ENC_SEQ_SEARCH_BASE);
@@ -1164,8 +1296,12 @@ static int coda_start_encoding(struct coda_ctx *ctx)
 	coda_write(dev, num_fb, CODA_CMD_SET_FRAME_BUF_NUM);
 	coda_write(dev, stride, CODA_CMD_SET_FRAME_BUF_STRIDE);
 
+<<<<<<< HEAD
 	if (dev->devtype->product == CODA_HX4 ||
 	    dev->devtype->product == CODA_7541) {
+=======
+	if (dev->devtype->product == CODA_7541) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		coda_write(dev, q_data_src->bytesperline,
 				CODA7_CMD_SET_FRAME_SOURCE_BUF_STRIDE);
 	}
@@ -1215,6 +1351,7 @@ static int coda_start_encoding(struct coda_ctx *ctx)
 			goto out;
 
 		/*
+<<<<<<< HEAD
 		 * If visible width or height are not aligned to macroblock
 		 * size, the crop_right and crop_bottom SPS fields must be set
 		 * to the difference between visible and coded size.  This is
@@ -1236,6 +1373,8 @@ static int coda_start_encoding(struct coda_ctx *ctx)
 		}
 
 		/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * Get PPS in the first frame and copy it to an
 		 * intermediate buffer.
 		 */
@@ -1400,8 +1539,12 @@ static int coda_prepare_encode(struct coda_ctx *ctx)
 
 	if (dev->devtype->product == CODA_960) {
 		coda_write(dev, 4/*FIXME: 0*/, CODA9_CMD_ENC_PIC_SRC_INDEX);
+<<<<<<< HEAD
 		coda_write(dev, q_data_src->bytesperline,
 			   CODA9_CMD_ENC_PIC_SRC_STRIDE);
+=======
+		coda_write(dev, q_data_src->width, CODA9_CMD_ENC_PIC_SRC_STRIDE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		coda_write(dev, 0, CODA9_CMD_ENC_PIC_SUB_FRAME_SYNC);
 
 		reg = CODA9_CMD_ENC_PIC_SRC_ADDR_Y;
@@ -1621,11 +1764,20 @@ static int coda_decoder_reqbufs(struct coda_ctx *ctx,
 
 static bool coda_reorder_enable(struct coda_ctx *ctx)
 {
+<<<<<<< HEAD
 	struct coda_dev *dev = ctx->dev;
 	int profile;
 
 	if (dev->devtype->product != CODA_HX4 &&
 	    dev->devtype->product != CODA_7541 &&
+=======
+	const char * const *profile_names;
+	const char * const *level_names;
+	struct coda_dev *dev = ctx->dev;
+	int profile, level;
+
+	if (dev->devtype->product != CODA_7541 &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    dev->devtype->product != CODA_960)
 		return false;
 
@@ -1636,9 +1788,30 @@ static bool coda_reorder_enable(struct coda_ctx *ctx)
 		return true;
 
 	profile = coda_h264_profile(ctx->params.h264_profile_idc);
+<<<<<<< HEAD
 	if (profile < 0)
 		v4l2_warn(&dev->v4l2_dev, "Unknown H264 Profile: %u\n",
 			  ctx->params.h264_profile_idc);
+=======
+	if (profile < 0) {
+		v4l2_warn(&dev->v4l2_dev, "Invalid H264 Profile: %d\n",
+			 ctx->params.h264_profile_idc);
+		return false;
+	}
+
+	level = coda_h264_level(ctx->params.h264_level_idc);
+	if (level < 0) {
+		v4l2_warn(&dev->v4l2_dev, "Invalid H264 Level: %d\n",
+			 ctx->params.h264_level_idc);
+		return false;
+	}
+
+	profile_names = v4l2_ctrl_get_menu(V4L2_CID_MPEG_VIDEO_H264_PROFILE);
+	level_names = v4l2_ctrl_get_menu(V4L2_CID_MPEG_VIDEO_H264_LEVEL);
+
+	v4l2_dbg(1, coda_debug, &dev->v4l2_dev, "H264 Profile/Level: %s L%s\n",
+		 profile_names[profile], level_names[level]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Baseline profile does not support reordering */
 	return profile > V4L2_MPEG_VIDEO_H264_PROFILE_BASELINE;
@@ -1704,8 +1877,12 @@ static int __coda_start_decoding(struct coda_ctx *ctx)
 			   CODA_CMD_DEC_SEQ_MP4_ASP_CLASS);
 	}
 	if (src_fourcc == V4L2_PIX_FMT_H264) {
+<<<<<<< HEAD
 		if (dev->devtype->product == CODA_HX4 ||
 		    dev->devtype->product == CODA_7541) {
+=======
+		if (dev->devtype->product == CODA_7541) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			coda_write(dev, ctx->psbuf.paddr,
 					CODA_CMD_DEC_SEQ_PS_BB_START);
 			coda_write(dev, (CODA7_PS_BUF_SIZE / 1024),
@@ -1716,8 +1893,11 @@ static int __coda_start_decoding(struct coda_ctx *ctx)
 			coda_write(dev, 512, CODA_CMD_DEC_SEQ_SPP_CHUNK_SIZE);
 		}
 	}
+<<<<<<< HEAD
 	if (src_fourcc == V4L2_PIX_FMT_JPEG)
 		coda_write(dev, 0, CODA_CMD_DEC_SEQ_JPG_THUMB_EN);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->devtype->product != CODA_960)
 		coda_write(dev, 0, CODA_CMD_DEC_SEQ_SRC_SIZE);
 
@@ -1835,8 +2015,12 @@ static int __coda_start_decoding(struct coda_ctx *ctx)
 				CODA_CMD_SET_FRAME_SLICE_BB_SIZE);
 	}
 
+<<<<<<< HEAD
 	if (dev->devtype->product == CODA_HX4 ||
 	    dev->devtype->product == CODA_7541) {
+=======
+	if (dev->devtype->product == CODA_7541) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int max_mb_x = 1920 / 16;
 		int max_mb_y = 1088 / 16;
 		int max_mb_num = max_mb_x * max_mb_y;
@@ -1954,7 +2138,10 @@ static int coda_prepare_decode(struct coda_ctx *ctx)
 	switch (dev->devtype->product) {
 	case CODA_DX6:
 		/* TBD */
+<<<<<<< HEAD
 	case CODA_HX4:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CODA_7541:
 		coda_write(dev, CODA_PRE_SCAN_EN, CODA_CMD_DEC_PIC_OPTION);
 		break;
@@ -2098,8 +2285,12 @@ static void coda_finish_decode(struct coda_ctx *ctx)
 		v4l2_err(&dev->v4l2_dev,
 			 "errors in %d macroblocks\n", err_mb);
 
+<<<<<<< HEAD
 	if (dev->devtype->product == CODA_HX4 ||
 	    dev->devtype->product == CODA_7541) {
+=======
+	if (dev->devtype->product == CODA_7541) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val = coda_read(dev, CODA_RET_DEC_PIC_OPTION);
 		if (val == 0) {
 			/* not enough bitstream data */

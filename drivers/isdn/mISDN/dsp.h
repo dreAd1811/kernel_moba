@@ -259,7 +259,11 @@ extern u8 *dsp_dtmf_goertzel_decode(struct dsp *dsp, u8 *data, int len,
 
 extern int dsp_tone(struct dsp *dsp, int tone);
 extern void dsp_tone_copy(struct dsp *dsp, u8 *data, int len);
+<<<<<<< HEAD
 extern void dsp_tone_timeout(struct timer_list *t);
+=======
+extern void dsp_tone_timeout(void *arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void dsp_bf_encrypt(struct dsp *dsp, u8 *data, int len);
 extern void dsp_bf_decrypt(struct dsp *dsp, u8 *data, int len);

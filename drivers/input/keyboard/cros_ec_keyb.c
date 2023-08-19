@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // ChromeOS EC keyboard driver
 //
@@ -10,6 +11,30 @@
 // motivation for this is to keep the EC firmware as simple as possible, since
 // it cannot be easily upgraded and EC flash/IRAM space is relatively
 // expensive.
+=======
+/*
+ * ChromeOS EC keyboard driver
+ *
+ * Copyright (C) 2012 Google, Inc
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * This driver uses the Chrome OS EC byte-level message-based protocol for
+ * communicating the keyboard state (which keys are pressed) from a keyboard EC
+ * to the AP over some bus (such as i2c, lpc, spi).  The EC does debouncing,
+ * but everything else (including deghosting) is done here.  The main
+ * motivation for this is to keep the EC firmware as simple as possible, since
+ * it cannot be easily upgraded and EC flash/IRAM space is relatively
+ * expensive.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/module.h>
 #include <linux/bitops.h>
@@ -160,6 +185,12 @@ static void cros_ec_keyb_process(struct cros_ec_keyb *ckdev,
 	int col, row;
 	int new_state;
 	int old_state;
+<<<<<<< HEAD
+=======
+	int num_cols;
+
+	num_cols = len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ckdev->ghost_filter && cros_ec_keyb_has_ghosting(ckdev, kb_state)) {
 		/*
@@ -229,6 +260,7 @@ static int cros_ec_keyb_work(struct notifier_block *nb,
 	u32 val;
 	unsigned int ev_type;
 
+<<<<<<< HEAD
 	/*
 	 * If not wake enabled, discard key state changes during
 	 * suspend. Switches will be re-checked in
@@ -240,21 +272,37 @@ static int cros_ec_keyb_work(struct notifier_block *nb,
 	switch (ckdev->ec->event_data.event_type) {
 	case EC_MKBP_EVENT_KEY_MATRIX:
 		pm_wakeup_event(ckdev->dev, 0);
+=======
+	switch (ckdev->ec->event_data.event_type) {
+	case EC_MKBP_EVENT_KEY_MATRIX:
+		/*
+		 * If EC is not the wake source, discard key state changes
+		 * during suspend.
+		 */
+		if (queued_during_suspend)
+			return NOTIFY_OK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ckdev->ec->event_size != ckdev->cols) {
 			dev_err(ckdev->dev,
 				"Discarded incomplete key matrix event.\n");
 			return NOTIFY_OK;
 		}
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cros_ec_keyb_process(ckdev,
 				     ckdev->ec->event_data.data.key_matrix,
 				     ckdev->ec->event_size);
 		break;
 
 	case EC_MKBP_EVENT_SYSRQ:
+<<<<<<< HEAD
 		pm_wakeup_event(ckdev->dev, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val = get_unaligned_le32(&ckdev->ec->event_data.data.sysrq);
 		dev_dbg(ckdev->dev, "sysrq code from EC: %#x\n", val);
 		handle_sysrq(val);
@@ -262,7 +310,17 @@ static int cros_ec_keyb_work(struct notifier_block *nb,
 
 	case EC_MKBP_EVENT_BUTTON:
 	case EC_MKBP_EVENT_SWITCH:
+<<<<<<< HEAD
 		pm_wakeup_event(ckdev->dev, 0);
+=======
+		/*
+		 * If EC is not the wake source, discard key state
+		 * changes during suspend. Switches will be re-checked in
+		 * cros_ec_keyb_resume() to be sure nothing is lost.
+		 */
+		if (queued_during_suspend)
+			return NOTIFY_OK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ckdev->ec->event_data.event_type == EC_MKBP_EVENT_BUTTON) {
 			val = get_unaligned_le32(
@@ -627,7 +685,10 @@ static int cros_ec_keyb_probe(struct platform_device *pdev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	device_init_wakeup(ckdev->dev, true);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -663,6 +724,10 @@ static struct platform_driver cros_ec_keyb_driver = {
 
 module_platform_driver(cros_ec_keyb_driver);
 
+<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
+=======
+MODULE_LICENSE("GPL");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("ChromeOS EC keyboard driver");
 MODULE_ALIAS("platform:cros-ec-keyb");

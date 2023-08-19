@@ -17,7 +17,13 @@
 
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #define COMMAND_LINE_SIZE 2048
+=======
+#ifdef CONFIG_COMMAND_LINE_SIZE
+#define COMMAND_LINE_SIZE CONFIG_COMMAND_LINE_SIZE
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* The list ends with an ATAG_NONE node. */
 #define ATAG_NONE	0x00000000

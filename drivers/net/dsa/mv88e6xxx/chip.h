@@ -15,12 +15,22 @@
 #include <linux/if_vlan.h>
 #include <linux/irq.h>
 #include <linux/gpio/consumer.h>
+<<<<<<< HEAD
 #include <linux/kthread.h>
 #include <linux/phy.h>
 #include <linux/ptp_clock_kernel.h>
 #include <linux/timecounter.h>
 #include <net/dsa.h>
 
+=======
+#include <linux/phy.h>
+#include <net/dsa.h>
+
+#ifndef UINT64_MAX
+#define UINT64_MAX		(u64)(~((u64)0))
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SMI_CMD			0x00
 #define SMI_CMD_BUSY		BIT(15)
 #define SMI_CMD_CLAUSE_22	BIT(12)
@@ -38,8 +48,11 @@
 #define MV88E6XXX_MAX_PVT_SWITCHES	32
 #define MV88E6XXX_MAX_PVT_PORTS		16
 
+<<<<<<< HEAD
 #define MV88E6XXX_MAX_GPIO	16
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum mv88e6xxx_egress_mode {
 	MV88E6XXX_EGRESS_MODE_UNMODIFIED,
 	MV88E6XXX_EGRESS_MODE_UNTAGGED,
@@ -106,11 +119,16 @@ struct mv88e6xxx_info {
 	const char *name;
 	unsigned int num_databases;
 	unsigned int num_ports;
+<<<<<<< HEAD
 	unsigned int num_internal_phys;
 	unsigned int num_gpio;
 	unsigned int max_vid;
 	unsigned int port_base_addr;
 	unsigned int phy_base_addr;
+=======
+	unsigned int max_vid;
+	unsigned int port_base_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int global1_addr;
 	unsigned int global2_addr;
 	unsigned int age_time_coeff;
@@ -130,9 +148,12 @@ struct mv88e6xxx_info {
 	 */
 	u8 atu_move_port_mask;
 	const struct mv88e6xxx_ops *ops;
+<<<<<<< HEAD
 
 	/* Supports PTP */
 	bool ptp_support;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mv88e6xxx_atu_entry {
@@ -153,9 +174,12 @@ struct mv88e6xxx_vtu_entry {
 
 struct mv88e6xxx_bus_ops;
 struct mv88e6xxx_irq_ops;
+<<<<<<< HEAD
 struct mv88e6xxx_gpio_ops;
 struct mv88e6xxx_avb_ops;
 struct mv88e6xxx_ptp_ops;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct mv88e6xxx_irq {
 	u16 masked;
@@ -164,6 +188,7 @@ struct mv88e6xxx_irq {
 	unsigned int nirqs;
 };
 
+<<<<<<< HEAD
 /* state flags for mv88e6xxx_port_hwtstamp::state */
 enum {
 	MV88E6XXX_HWTSTAMP_ENABLED,
@@ -203,6 +228,8 @@ struct mv88e6xxx_port {
 	int serdes_irq;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mv88e6xxx_chip {
 	const struct mv88e6xxx_info *info;
 
@@ -243,7 +270,11 @@ struct mv88e6xxx_chip {
 	struct gpio_desc *reset;
 
 	/* set to size of eeprom if supported by the switch */
+<<<<<<< HEAD
 	u32 eeprom_len;
+=======
+	int		eeprom_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* List of mdio busses */
 	struct list_head mdios;
@@ -256,6 +287,7 @@ struct mv88e6xxx_chip {
 	int irq;
 	int device_irq;
 	int watchdog_irq;
+<<<<<<< HEAD
 
 	int atu_prob_irq;
 	int vtu_prob_irq;
@@ -285,6 +317,8 @@ struct mv88e6xxx_chip {
 
 	/* Array of port structures. */
 	struct mv88e6xxx_port ports[DSA_MAX_PORTS];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mv88e6xxx_bus_ops {
@@ -305,9 +339,12 @@ struct mv88e6xxx_ops {
 	 */
 	int (*setup_errata)(struct mv88e6xxx_chip *chip);
 
+<<<<<<< HEAD
 	int (*ieee_pri_map)(struct mv88e6xxx_chip *chip);
 	int (*ip_pri_map)(struct mv88e6xxx_chip *chip);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Ingress Rate Limit unit (IRL) operations */
 	int (*irl_init_all)(struct mv88e6xxx_chip *chip, int port);
 
@@ -360,6 +397,7 @@ struct mv88e6xxx_ops {
 	 */
 	int (*port_set_duplex)(struct mv88e6xxx_chip *chip, int port, int dup);
 
+<<<<<<< HEAD
 #define PAUSE_ON		1
 #define PAUSE_OFF		0
 
@@ -367,6 +405,8 @@ struct mv88e6xxx_ops {
 	int (*port_set_pause)(struct mv88e6xxx_chip *chip, int port,
 			      int pause);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SPEED_MAX		INT_MAX
 #define SPEED_UNFORCED		-2
 
@@ -399,16 +439,22 @@ struct mv88e6xxx_ops {
 	 */
 	int (*port_set_cmode)(struct mv88e6xxx_chip *chip, int port,
 			      phy_interface_t mode);
+<<<<<<< HEAD
 	int (*port_get_cmode)(struct mv88e6xxx_chip *chip, int port, u8 *cmode);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Some devices have a per port register indicating what is
 	 * the upstream port this port should forward to.
 	 */
 	int (*port_set_upstream_port)(struct mv88e6xxx_chip *chip, int port,
 				      int upstream_port);
+<<<<<<< HEAD
 	/* Return the port link state, as required by phylink */
 	int (*port_link_state)(struct mv88e6xxx_chip *chip, int port,
 			       struct phylink_link_state *state);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Snapshot the statistics for a port. The statistics can then
 	 * be read back a leisure but still with a consistent view.
@@ -422,6 +468,7 @@ struct mv88e6xxx_ops {
 
 	/* Return the number of strings describing statistics */
 	int (*stats_get_sset_count)(struct mv88e6xxx_chip *chip);
+<<<<<<< HEAD
 	int (*stats_get_strings)(struct mv88e6xxx_chip *chip,  uint8_t *data);
 	int (*stats_get_stats)(struct mv88e6xxx_chip *chip,  int port,
 			       uint64_t *data);
@@ -433,6 +480,13 @@ struct mv88e6xxx_ops {
 
 	int (*set_cascade_port)(struct mv88e6xxx_chip *chip, int port);
 
+=======
+	void (*stats_get_strings)(struct mv88e6xxx_chip *chip,  uint8_t *data);
+	void (*stats_get_stats)(struct mv88e6xxx_chip *chip,  int port,
+				uint64_t *data);
+	int (*set_cpu_port)(struct mv88e6xxx_chip *chip, int port);
+	int (*set_egress_port)(struct mv88e6xxx_chip *chip, int port);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct mv88e6xxx_irq_ops *watchdog_ops;
 
 	int (*mgmt_rsvd2cpu)(struct mv88e6xxx_chip *chip);
@@ -440,6 +494,7 @@ struct mv88e6xxx_ops {
 	/* Power on/off a SERDES interface */
 	int (*serdes_power)(struct mv88e6xxx_chip *chip, int port, bool on);
 
+<<<<<<< HEAD
 	/* SERDES interrupt handling */
 	int (*serdes_irq_setup)(struct mv88e6xxx_chip *chip, int port);
 	void (*serdes_irq_free)(struct mv88e6xxx_chip *chip, int port);
@@ -451,11 +506,14 @@ struct mv88e6xxx_ops {
 	int (*serdes_get_stats)(struct mv88e6xxx_chip *chip,  int port,
 				uint64_t *data);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* VLAN Translation Unit operations */
 	int (*vtu_getnext)(struct mv88e6xxx_chip *chip,
 			   struct mv88e6xxx_vtu_entry *entry);
 	int (*vtu_loadpurge)(struct mv88e6xxx_chip *chip,
 			     struct mv88e6xxx_vtu_entry *entry);
+<<<<<<< HEAD
 
 	/* GPIO operations */
 	const struct mv88e6xxx_gpio_ops *gpio_ops;
@@ -473,6 +531,8 @@ struct mv88e6xxx_ops {
 	void (*phylink_validate)(struct mv88e6xxx_chip *chip, int port,
 				 unsigned long *mask,
 				 struct phylink_link_state *state);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mv88e6xxx_irq_ops {
@@ -484,6 +544,7 @@ struct mv88e6xxx_irq_ops {
 	void (*irq_free)(struct mv88e6xxx_chip *chip);
 };
 
+<<<<<<< HEAD
 struct mv88e6xxx_gpio_ops {
 	/* Get/set data on GPIO pin */
 	int (*get_data)(struct mv88e6xxx_chip *chip, unsigned int pin);
@@ -538,13 +599,19 @@ struct mv88e6xxx_ptp_ops {
 	u32 rx_filters;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STATS_TYPE_PORT		BIT(0)
 #define STATS_TYPE_BANK0	BIT(1)
 #define STATS_TYPE_BANK1	BIT(2)
 
 struct mv88e6xxx_hw_stat {
 	char string[ETH_GSTRING_LEN];
+<<<<<<< HEAD
 	size_t size;
+=======
+	int sizeof_stat;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int reg;
 	int type;
 };
@@ -569,11 +636,14 @@ static inline u16 mv88e6xxx_port_mask(struct mv88e6xxx_chip *chip)
 	return GENMASK(mv88e6xxx_num_ports(chip) - 1, 0);
 }
 
+<<<<<<< HEAD
 static inline unsigned int mv88e6xxx_num_gpio(struct mv88e6xxx_chip *chip)
 {
 	return chip->info->num_gpio;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mv88e6xxx_read(struct mv88e6xxx_chip *chip, int addr, int reg, u16 *val);
 int mv88e6xxx_write(struct mv88e6xxx_chip *chip, int addr, int reg, u16 val);
 int mv88e6xxx_update(struct mv88e6xxx_chip *chip, int addr, int reg,

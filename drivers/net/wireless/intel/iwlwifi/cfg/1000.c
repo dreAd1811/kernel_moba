@@ -1,7 +1,10 @@
 /******************************************************************************
  *
  * Copyright(c) 2008 - 2014 Intel Corporation. All rights reserved.
+<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of version 2 of the GNU General Public License as
@@ -28,6 +31,10 @@
 #include <linux/module.h>
 #include <linux/stringify.h>
 #include "iwl-config.h"
+<<<<<<< HEAD
+=======
+#include "iwl-csr.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "iwl-agn-hw.h"
 
 /* Highest firmware API version supported */
@@ -51,7 +58,10 @@
 
 static const struct iwl_base_params iwl1000_base_params = {
 	.num_of_queues = IWLAGN_NUM_QUEUES,
+<<<<<<< HEAD
 	.max_tfd_queue_size = 256,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.eeprom_size = OTP_LOW_IMAGE_SIZE,
 	.pll_cfg = true,
 	.max_ll_items = OTP_MAX_LL_ITEMS_1000,
@@ -92,8 +102,12 @@ static const struct iwl_eeprom_params iwl1000_eeprom_params = {
 	.base_params = &iwl1000_base_params,			\
 	.eeprom_params = &iwl1000_eeprom_params,		\
 	.led_mode = IWL_LED_BLINK,				\
+<<<<<<< HEAD
 	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K,	\
 	.csr = &iwl_csr_v1
+=======
+	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 const struct iwl_cfg iwl1000_bgn_cfg = {
 	.name = "Intel(R) Centrino(R) Wireless-N 1000 BGN",
@@ -119,8 +133,12 @@ const struct iwl_cfg iwl1000_bg_cfg = {
 	.eeprom_params = &iwl1000_eeprom_params,		\
 	.led_mode = IWL_LED_RF_STATE,				\
 	.rx_with_siso_diversity = true,				\
+<<<<<<< HEAD
 	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K,	\
 	.csr = &iwl_csr_v1
+=======
+	.max_ht_ampdu_exponent = IEEE80211_HT_MAX_AMPDU_64K
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 const struct iwl_cfg iwl100_bgn_cfg = {
 	.name = "Intel(R) Centrino(R) Wireless-N 100 BGN",

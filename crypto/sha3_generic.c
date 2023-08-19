@@ -5,7 +5,10 @@
  * http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
  *
  * SHA-3 code by Jeff Garzik <jeff@garzik.org>
+<<<<<<< HEAD
  *               Ard Biesheuvel <ard.biesheuvel@linaro.org>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -18,6 +21,7 @@
 #include <linux/module.h>
 #include <linux/types.h>
 #include <crypto/sha3.h>
+<<<<<<< HEAD
 #include <asm/unaligned.h>
 
 /*
@@ -36,6 +40,15 @@
 
 #define KECCAK_ROUNDS 24
 
+=======
+#include <asm/byteorder.h>
+#include <asm/unaligned.h>
+
+#define KECCAK_ROUNDS 24
+
+#define ROTL64(x, y) (((x) << (y)) | ((x) >> (64 - (y))))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const u64 keccakf_rndc[24] = {
 	0x0000000000000001ULL, 0x0000000000008082ULL, 0x800000000000808aULL,
 	0x8000000080008000ULL, 0x000000000000808bULL, 0x0000000080000001ULL,
@@ -47,6 +60,7 @@ static const u64 keccakf_rndc[24] = {
 	0x8000000000008080ULL, 0x0000000080000001ULL, 0x8000000080008008ULL
 };
 
+<<<<<<< HEAD
 /* update the state with given number of rounds */
 
 static SHA3_INLINE void keccakf_round(u64 st[25])
@@ -158,11 +172,62 @@ static void keccakf(u64 st[25])
 
 	for (round = 0; round < KECCAK_ROUNDS; round++) {
 		keccakf_round(st);
+=======
+static const int keccakf_rotc[24] = {
+	1,  3,  6,  10, 15, 21, 28, 36, 45, 55, 2,  14,
+	27, 41, 56, 8,  25, 43, 62, 18, 39, 61, 20, 44
+};
+
+static const int keccakf_piln[24] = {
+	10, 7,  11, 17, 18, 3, 5,  16, 8,  21, 24, 4,
+	15, 23, 19, 13, 12, 2, 20, 14, 22, 9,  6,  1
+};
+
+/* update the state with given number of rounds */
+
+static void keccakf(u64 st[25])
+{
+	int i, j, round;
+	u64 t, bc[5];
+
+	for (round = 0; round < KECCAK_ROUNDS; round++) {
+
+		/* Theta */
+		for (i = 0; i < 5; i++)
+			bc[i] = st[i] ^ st[i + 5] ^ st[i + 10] ^ st[i + 15]
+				^ st[i + 20];
+
+		for (i = 0; i < 5; i++) {
+			t = bc[(i + 4) % 5] ^ ROTL64(bc[(i + 1) % 5], 1);
+			for (j = 0; j < 25; j += 5)
+				st[j + i] ^= t;
+		}
+
+		/* Rho Pi */
+		t = st[1];
+		for (i = 0; i < 24; i++) {
+			j = keccakf_piln[i];
+			bc[0] = st[j];
+			st[j] = ROTL64(t, keccakf_rotc[i]);
+			t = bc[0];
+		}
+
+		/* Chi */
+		for (j = 0; j < 25; j += 5) {
+			for (i = 0; i < 5; i++)
+				bc[i] = st[j + i];
+			for (i = 0; i < 5; i++)
+				st[j + i] ^= (~bc[(i + 1) % 5]) &
+					     bc[(i + 2) % 5];
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Iota */
 		st[0] ^= keccakf_rndc[round];
 	}
 }
 
+<<<<<<< HEAD
 int crypto_sha3_init(struct shash_desc *desc)
 {
 	struct sha3_state *sctx = shash_desc_ctx(desc);
@@ -178,6 +243,49 @@ int crypto_sha3_init(struct shash_desc *desc)
 EXPORT_SYMBOL(crypto_sha3_init);
 
 int crypto_sha3_update(struct shash_desc *desc, const u8 *data,
+=======
+static void sha3_init(struct sha3_state *sctx, unsigned int digest_sz)
+{
+	memset(sctx, 0, sizeof(*sctx));
+	sctx->md_len = digest_sz;
+	sctx->rsiz = 200 - 2 * digest_sz;
+	sctx->rsizw = sctx->rsiz / 8;
+}
+
+static int sha3_224_init(struct shash_desc *desc)
+{
+	struct sha3_state *sctx = shash_desc_ctx(desc);
+
+	sha3_init(sctx, SHA3_224_DIGEST_SIZE);
+	return 0;
+}
+
+static int sha3_256_init(struct shash_desc *desc)
+{
+	struct sha3_state *sctx = shash_desc_ctx(desc);
+
+	sha3_init(sctx, SHA3_256_DIGEST_SIZE);
+	return 0;
+}
+
+static int sha3_384_init(struct shash_desc *desc)
+{
+	struct sha3_state *sctx = shash_desc_ctx(desc);
+
+	sha3_init(sctx, SHA3_384_DIGEST_SIZE);
+	return 0;
+}
+
+static int sha3_512_init(struct shash_desc *desc)
+{
+	struct sha3_state *sctx = shash_desc_ctx(desc);
+
+	sha3_init(sctx, SHA3_512_DIGEST_SIZE);
+	return 0;
+}
+
+static int sha3_update(struct shash_desc *desc, const u8 *data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       unsigned int len)
 {
 	struct sha3_state *sctx = shash_desc_ctx(desc);
@@ -213,6 +321,7 @@ int crypto_sha3_update(struct shash_desc *desc, const u8 *data,
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(crypto_sha3_update);
 
 int crypto_sha3_final(struct shash_desc *desc, u8 *out)
@@ -221,6 +330,13 @@ int crypto_sha3_final(struct shash_desc *desc, u8 *out)
 	unsigned int i, inlen = sctx->partial;
 	unsigned int digest_size = crypto_shash_digestsize(desc->tfm);
 	__le64 *digest = (__le64 *)out;
+=======
+
+static int sha3_final(struct shash_desc *desc, u8 *out)
+{
+	struct sha3_state *sctx = shash_desc_ctx(desc);
+	unsigned int i, inlen = sctx->partial;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sctx->buf[inlen++] = 0x06;
 	memset(sctx->buf + inlen, 0, sctx->rsiz - inlen);
@@ -231,15 +347,23 @@ int crypto_sha3_final(struct shash_desc *desc, u8 *out)
 
 	keccakf(sctx->st);
 
+<<<<<<< HEAD
 	for (i = 0; i < digest_size / 8; i++)
 		put_unaligned_le64(sctx->st[i], digest++);
 
 	if (digest_size & 4)
 		put_unaligned_le32(sctx->st[i], (__le32 *)digest);
+=======
+	for (i = 0; i < sctx->rsizw; i++)
+		sctx->st[i] = cpu_to_le64(sctx->st[i]);
+
+	memcpy(out, sctx->st, sctx->md_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(sctx, 0, sizeof(*sctx));
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(crypto_sha3_final);
 
 static struct shash_alg algs[] = { {
@@ -287,11 +411,108 @@ static struct shash_alg algs[] = { {
 static int __init sha3_generic_mod_init(void)
 {
 	return crypto_register_shashes(algs, ARRAY_SIZE(algs));
+=======
+
+static struct shash_alg sha3_224 = {
+	.digestsize	=	SHA3_224_DIGEST_SIZE,
+	.init		=	sha3_224_init,
+	.update		=	sha3_update,
+	.final		=	sha3_final,
+	.descsize	=	sizeof(struct sha3_state),
+	.base		=	{
+		.cra_name	=	"sha3-224",
+		.cra_driver_name =	"sha3-224-generic",
+		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
+		.cra_blocksize	=	SHA3_224_BLOCK_SIZE,
+		.cra_module	=	THIS_MODULE,
+	}
+};
+
+static struct shash_alg sha3_256 = {
+	.digestsize	=	SHA3_256_DIGEST_SIZE,
+	.init		=	sha3_256_init,
+	.update		=	sha3_update,
+	.final		=	sha3_final,
+	.descsize	=	sizeof(struct sha3_state),
+	.base		=	{
+		.cra_name	=	"sha3-256",
+		.cra_driver_name =	"sha3-256-generic",
+		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
+		.cra_blocksize	=	SHA3_256_BLOCK_SIZE,
+		.cra_module	=	THIS_MODULE,
+	}
+};
+
+static struct shash_alg sha3_384 = {
+	.digestsize	=	SHA3_384_DIGEST_SIZE,
+	.init		=	sha3_384_init,
+	.update		=	sha3_update,
+	.final		=	sha3_final,
+	.descsize	=	sizeof(struct sha3_state),
+	.base		=	{
+		.cra_name	=	"sha3-384",
+		.cra_driver_name =	"sha3-384-generic",
+		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
+		.cra_blocksize	=	SHA3_384_BLOCK_SIZE,
+		.cra_module	=	THIS_MODULE,
+	}
+};
+
+static struct shash_alg sha3_512 = {
+	.digestsize	=	SHA3_512_DIGEST_SIZE,
+	.init		=	sha3_512_init,
+	.update		=	sha3_update,
+	.final		=	sha3_final,
+	.descsize	=	sizeof(struct sha3_state),
+	.base		=	{
+		.cra_name	=	"sha3-512",
+		.cra_driver_name =	"sha3-512-generic",
+		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
+		.cra_blocksize	=	SHA3_512_BLOCK_SIZE,
+		.cra_module	=	THIS_MODULE,
+	}
+};
+
+static int __init sha3_generic_mod_init(void)
+{
+	int ret;
+
+	ret = crypto_register_shash(&sha3_224);
+	if (ret < 0)
+		goto err_out;
+	ret = crypto_register_shash(&sha3_256);
+	if (ret < 0)
+		goto err_out_224;
+	ret = crypto_register_shash(&sha3_384);
+	if (ret < 0)
+		goto err_out_256;
+	ret = crypto_register_shash(&sha3_512);
+	if (ret < 0)
+		goto err_out_384;
+
+	return 0;
+
+err_out_384:
+	crypto_unregister_shash(&sha3_384);
+err_out_256:
+	crypto_unregister_shash(&sha3_256);
+err_out_224:
+	crypto_unregister_shash(&sha3_224);
+err_out:
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit sha3_generic_mod_fini(void)
 {
+<<<<<<< HEAD
 	crypto_unregister_shashes(algs, ARRAY_SIZE(algs));
+=======
+	crypto_unregister_shash(&sha3_224);
+	crypto_unregister_shash(&sha3_256);
+	crypto_unregister_shash(&sha3_384);
+	crypto_unregister_shash(&sha3_512);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(sha3_generic_mod_init);

@@ -72,7 +72,11 @@ static inline void *kmap(struct page *page)
 	 * page table.
 	 */
 	BUILD_BUG_ON(PKMAP_BASE <
+<<<<<<< HEAD
 		     TLBTEMP_BASE_1 + TLBTEMP_SIZE);
+=======
+		     XCHAL_PAGE_TABLE_VADDR + XCHAL_PAGE_TABLE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(in_interrupt());
 	if (!PageHighMem(page))
 		return page_address(page);

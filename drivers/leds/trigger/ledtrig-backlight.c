@@ -64,7 +64,12 @@ static int fb_notifier_callback(struct notifier_block *p,
 static ssize_t bl_trig_invert_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	struct bl_trig_notifier *n = led_trigger_get_drvdata(dev);
+=======
+	struct led_classdev *led = dev_get_drvdata(dev);
+	struct bl_trig_notifier *n = led->trigger_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return sprintf(buf, "%u\n", n->invert);
 }
@@ -72,8 +77,13 @@ static ssize_t bl_trig_invert_show(struct device *dev,
 static ssize_t bl_trig_invert_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t num)
 {
+<<<<<<< HEAD
 	struct led_classdev *led = led_trigger_get_led(dev);
 	struct bl_trig_notifier *n = led_trigger_get_drvdata(dev);
+=======
+	struct led_classdev *led = dev_get_drvdata(dev);
+	struct bl_trig_notifier *n = led->trigger_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long invert;
 	int ret;
 
@@ -96,6 +106,7 @@ static ssize_t bl_trig_invert_store(struct device *dev,
 }
 static DEVICE_ATTR(inverted, 0644, bl_trig_invert_show, bl_trig_invert_store);
 
+<<<<<<< HEAD
 static struct attribute *bl_trig_attrs[] = {
 	&dev_attr_inverted.attr,
 	NULL,
@@ -103,15 +114,30 @@ static struct attribute *bl_trig_attrs[] = {
 ATTRIBUTE_GROUPS(bl_trig);
 
 static int bl_trig_activate(struct led_classdev *led)
+=======
+static void bl_trig_activate(struct led_classdev *led)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
 	struct bl_trig_notifier *n;
 
 	n = kzalloc(sizeof(struct bl_trig_notifier), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!n)
 		return -ENOMEM;
 	led_set_trigger_data(led, n);
+=======
+	led->trigger_data = n;
+	if (!n) {
+		dev_err(led->dev, "unable to allocate backlight trigger\n");
+		return;
+	}
+
+	ret = device_create_file(led->dev, &dev_attr_inverted);
+	if (ret)
+		goto err_invert;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	n->led = led;
 	n->brightness = led->brightness;
@@ -121,25 +147,65 @@ static int bl_trig_activate(struct led_classdev *led)
 	ret = fb_register_client(&n->notifier);
 	if (ret)
 		dev_err(led->dev, "unable to register backlight trigger\n");
+<<<<<<< HEAD
 
 	return 0;
+=======
+	led->activated = true;
+
+	return;
+
+err_invert:
+	led->trigger_data = NULL;
+	kfree(n);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bl_trig_deactivate(struct led_classdev *led)
 {
+<<<<<<< HEAD
 	struct bl_trig_notifier *n = led_get_trigger_data(led);
 
 	fb_unregister_client(&n->notifier);
 	kfree(n);
+=======
+	struct bl_trig_notifier *n =
+		(struct bl_trig_notifier *) led->trigger_data;
+
+	if (led->activated) {
+		device_remove_file(led->dev, &dev_attr_inverted);
+		fb_unregister_client(&n->notifier);
+		kfree(n);
+		led->activated = false;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct led_trigger bl_led_trigger = {
 	.name		= "backlight",
 	.activate	= bl_trig_activate,
+<<<<<<< HEAD
 	.deactivate	= bl_trig_deactivate,
 	.groups		= bl_trig_groups,
 };
 module_led_trigger(bl_led_trigger);
+=======
+	.deactivate	= bl_trig_deactivate
+};
+
+static int __init bl_trig_init(void)
+{
+	return led_trigger_register(&bl_led_trigger);
+}
+
+static void __exit bl_trig_exit(void)
+{
+	led_trigger_unregister(&bl_led_trigger);
+}
+
+module_init(bl_trig_init);
+module_exit(bl_trig_exit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Rodolfo Giometti <giometti@linux.it>");
 MODULE_DESCRIPTION("Backlight emulation LED trigger");

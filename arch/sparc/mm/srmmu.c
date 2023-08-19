@@ -37,6 +37,10 @@
 #include <asm/mbus.h>
 #include <asm/page.h>
 #include <asm/asi.h>
+<<<<<<< HEAD
+=======
+#include <asm/msi.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/smp.h>
 #include <asm/io.h>
 
@@ -115,6 +119,7 @@ static inline void srmmu_ctxd_set(ctxd_t *ctxp, pgd_t *pgdp)
 	set_pte((pte_t *)ctxp, pte);
 }
 
+<<<<<<< HEAD
 /*
  * Locations of MSI Registers.
  */
@@ -134,6 +139,8 @@ static void msi_set_sync(void)
 			      "i" (ASI_M_CTL), "r" (MSI_ASYNC_MODE) : "g3");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pmd_set(pmd_t *pmdp, pte_t *ptep)
 {
 	unsigned long ptp;	/* Physical address, shifted right by 4 */

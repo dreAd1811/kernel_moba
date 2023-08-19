@@ -1848,6 +1848,13 @@ static int vpfe_s_std(struct file *file, void *priv, v4l2_std_id std_id)
 	if (!(sdinfo->inputs[0].capabilities & V4L2_IN_CAP_STD))
 		return -ENODATA;
 
+<<<<<<< HEAD
+=======
+	/* if trying to set the same std then nothing to do */
+	if (vpfe_standards[vpfe->std_index].std_id == std_id)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If streaming is started, return error */
 	if (vb2_is_busy(&vpfe->buffer_queue)) {
 		vpfe_err(vpfe, "%s device busy\n", __func__);
@@ -2304,8 +2311,13 @@ vpfe_async_bound(struct v4l2_async_notifier *notifier,
 	vpfe_dbg(1, vpfe, "vpfe_async_bound\n");
 
 	for (i = 0; i < ARRAY_SIZE(vpfe->cfg->asd); i++) {
+<<<<<<< HEAD
 		if (vpfe->cfg->asd[i]->match.fwnode ==
 		    asd[i].match.fwnode) {
+=======
+		if (vpfe->cfg->asd[i]->match.fwnode.fwnode ==
+		    asd[i].match.fwnode.fwnode) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sdinfo = &vpfe->cfg->sub_devs[i];
 			vpfe->sd[i] = subdev;
 			vpfe->sd[i]->grp_id = sdinfo->grp_id;
@@ -2417,11 +2429,14 @@ static int vpfe_async_complete(struct v4l2_async_notifier *notifier)
 	return vpfe_probe_complete(vpfe);
 }
 
+<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations vpfe_async_ops = {
 	.bound = vpfe_async_bound,
 	.complete = vpfe_async_complete,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct vpfe_config *
 vpfe_get_pdata(struct platform_device *pdev)
 {
@@ -2510,7 +2525,11 @@ vpfe_get_pdata(struct platform_device *pdev)
 		}
 
 		pdata->asd[i]->match_type = V4L2_ASYNC_MATCH_FWNODE;
+<<<<<<< HEAD
 		pdata->asd[i]->match.fwnode = of_fwnode_handle(rem);
+=======
+		pdata->asd[i]->match.fwnode.fwnode = of_fwnode_handle(rem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		of_node_put(rem);
 	}
 
@@ -2586,10 +2605,15 @@ static int vpfe_probe(struct platform_device *pdev)
 
 	pm_runtime_put_sync(&pdev->dev);
 
+<<<<<<< HEAD
 	vpfe->sd = devm_kcalloc(&pdev->dev,
 				ARRAY_SIZE(vpfe->cfg->asd),
 				sizeof(struct v4l2_subdev *),
 				GFP_KERNEL);
+=======
+	vpfe->sd = devm_kzalloc(&pdev->dev, sizeof(struct v4l2_subdev *) *
+				ARRAY_SIZE(vpfe->cfg->asd), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vpfe->sd) {
 		ret = -ENOMEM;
 		goto probe_out_v4l2_unregister;
@@ -2597,7 +2621,12 @@ static int vpfe_probe(struct platform_device *pdev)
 
 	vpfe->notifier.subdevs = vpfe->cfg->asd;
 	vpfe->notifier.num_subdevs = ARRAY_SIZE(vpfe->cfg->asd);
+<<<<<<< HEAD
 	vpfe->notifier.ops = &vpfe_async_ops;
+=======
+	vpfe->notifier.bound = vpfe_async_bound;
+	vpfe->notifier.complete = vpfe_async_complete;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = v4l2_async_notifier_register(&vpfe->v4l2_dev,
 						&vpfe->notifier);
 	if (ret) {
@@ -2664,7 +2693,12 @@ static void vpfe_save_context(struct vpfe_ccdc *ccdc)
 
 static int vpfe_suspend(struct device *dev)
 {
+<<<<<<< HEAD
 	struct vpfe_device *vpfe = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct vpfe_device *vpfe = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vpfe_ccdc *ccdc = &vpfe->ccdc;
 
 	/* if streaming has not started we don't care */
@@ -2721,7 +2755,12 @@ static void vpfe_restore_context(struct vpfe_ccdc *ccdc)
 
 static int vpfe_resume(struct device *dev)
 {
+<<<<<<< HEAD
 	struct vpfe_device *vpfe = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct vpfe_device *vpfe = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vpfe_ccdc *ccdc = &vpfe->ccdc;
 
 	/* if streaming has not started we don't care */

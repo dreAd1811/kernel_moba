@@ -26,8 +26,13 @@
 #include <linux/slab.h>
 #include <linux/hugetlb.h>
 #include <linux/list.h>
+<<<<<<< HEAD
 #include <linux/stringify.h>
 
+=======
+
+#include <asm/tlbflush.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kvm_ppc.h>
 #include <asm/kvm_book3s.h>
 #include <asm/book3s/64/mmu-hash.h>
@@ -187,6 +192,7 @@ long kvmppc_gpa_to_ua(struct kvm *kvm, unsigned long gpa,
 EXPORT_SYMBOL_GPL(kvmppc_gpa_to_ua);
 
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+<<<<<<< HEAD
 static long iommu_tce_xchg_rm(struct mm_struct *mm, struct iommu_table *tbl,
 		unsigned long entry, unsigned long *hpa,
 		enum dma_data_direction *direction)
@@ -211,11 +217,18 @@ static long iommu_tce_xchg_rm(struct mm_struct *mm, struct iommu_table *tbl,
 
 static void kvmppc_rm_clear_tce(struct kvm *kvm, struct iommu_table *tbl,
 		unsigned long entry)
+=======
+static void kvmppc_rm_clear_tce(struct iommu_table *tbl, unsigned long entry)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long hpa = 0;
 	enum dma_data_direction dir = DMA_NONE;
 
+<<<<<<< HEAD
 	iommu_tce_xchg_rm(kvm->mm, tbl, entry, &hpa, &dir);
+=======
+	iommu_tce_xchg_rm(tbl, entry, &hpa, &dir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static long kvmppc_rm_tce_iommu_mapped_dec(struct kvm *kvm,
@@ -223,31 +236,55 @@ static long kvmppc_rm_tce_iommu_mapped_dec(struct kvm *kvm,
 {
 	struct mm_iommu_table_group_mem_t *mem = NULL;
 	const unsigned long pgsize = 1ULL << tbl->it_page_shift;
+<<<<<<< HEAD
 	__be64 *pua = IOMMU_TABLE_USERSPACE_ENTRY_RM(tbl, entry);
+=======
+	unsigned long *pua = IOMMU_TABLE_USERSPACE_ENTRY(tbl, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pua)
 		/* it_userspace allocation might be delayed */
 		return H_TOO_HARD;
 
+<<<<<<< HEAD
 	mem = mm_iommu_lookup_rm(kvm->mm, be64_to_cpu(*pua), pgsize);
+=======
+	pua = (void *) vmalloc_to_phys(pua);
+	if (WARN_ON_ONCE_RM(!pua))
+		return H_HARDWARE;
+
+	mem = mm_iommu_lookup_rm(kvm->mm, *pua, pgsize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mem)
 		return H_TOO_HARD;
 
 	mm_iommu_mapped_dec(mem);
 
+<<<<<<< HEAD
 	*pua = cpu_to_be64(0);
+=======
+	*pua = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return H_SUCCESS;
 }
 
+<<<<<<< HEAD
 static long kvmppc_rm_tce_iommu_do_unmap(struct kvm *kvm,
+=======
+static long kvmppc_rm_tce_iommu_unmap(struct kvm *kvm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct iommu_table *tbl, unsigned long entry)
 {
 	enum dma_data_direction dir = DMA_NONE;
 	unsigned long hpa = 0;
 	long ret;
 
+<<<<<<< HEAD
 	if (iommu_tce_xchg_rm(kvm->mm, tbl, entry, &hpa, &dir))
+=======
+	if (iommu_tce_xchg_rm(tbl, entry, &hpa, &dir))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * real mode xchg can fail if struct page crosses
 		 * a page boundary
@@ -259,11 +296,16 @@ static long kvmppc_rm_tce_iommu_do_unmap(struct kvm *kvm,
 
 	ret = kvmppc_rm_tce_iommu_mapped_dec(kvm, tbl, entry);
 	if (ret)
+<<<<<<< HEAD
 		iommu_tce_xchg_rm(kvm->mm, tbl, entry, &hpa, &dir);
+=======
+		iommu_tce_xchg_rm(tbl, entry, &hpa, &dir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static long kvmppc_rm_tce_iommu_unmap(struct kvm *kvm,
 		struct kvmppc_spapr_tce_table *stt, struct iommu_table *tbl,
 		unsigned long entry)
@@ -282,12 +324,19 @@ static long kvmppc_rm_tce_iommu_unmap(struct kvm *kvm,
 }
 
 static long kvmppc_rm_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
+=======
+static long kvmppc_rm_tce_iommu_map(struct kvm *kvm, struct iommu_table *tbl,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long entry, unsigned long ua,
 		enum dma_data_direction dir)
 {
 	long ret;
 	unsigned long hpa = 0;
+<<<<<<< HEAD
 	__be64 *pua = IOMMU_TABLE_USERSPACE_ENTRY_RM(tbl, entry);
+=======
+	unsigned long *pua = IOMMU_TABLE_USERSPACE_ENTRY(tbl, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mm_iommu_table_group_mem_t *mem;
 
 	if (!pua)
@@ -300,12 +349,25 @@ static long kvmppc_rm_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
 
 	if (WARN_ON_ONCE_RM(mm_iommu_ua_to_hpa_rm(mem, ua, tbl->it_page_shift,
 			&hpa)))
+<<<<<<< HEAD
 		return H_HARDWARE;
 
 	if (WARN_ON_ONCE_RM(mm_iommu_mapped_inc(mem)))
 		return H_CLOSED;
 
 	ret = iommu_tce_xchg_rm(kvm->mm, tbl, entry, &hpa, &dir);
+=======
+		return H_TOO_HARD;
+
+	pua = (void *) vmalloc_to_phys(pua);
+	if (WARN_ON_ONCE_RM(!pua))
+		return H_HARDWARE;
+
+	if (WARN_ON_ONCE_RM(mm_iommu_mapped_inc(mem)))
+		return H_TOO_HARD;
+
+	ret = iommu_tce_xchg_rm(tbl, entry, &hpa, &dir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		mm_iommu_mapped_dec(mem);
 		/*
@@ -318,11 +380,16 @@ static long kvmppc_rm_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
 	if (dir != DMA_NONE)
 		kvmppc_rm_tce_iommu_mapped_dec(kvm, tbl, entry);
 
+<<<<<<< HEAD
 	*pua = cpu_to_be64(ua);
+=======
+	*pua = ua;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static long kvmppc_rm_tce_iommu_map(struct kvm *kvm,
 		struct kvmppc_spapr_tce_table *stt, struct iommu_table *tbl,
 		unsigned long entry, unsigned long ua,
@@ -344,6 +411,8 @@ static long kvmppc_rm_tce_iommu_map(struct kvm *kvm,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 long kvmppc_rm_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
 		unsigned long ioba, unsigned long tce)
 {
@@ -381,10 +450,17 @@ long kvmppc_rm_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
 
 	list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
 		if (dir == DMA_NONE)
+<<<<<<< HEAD
 			ret = kvmppc_rm_tce_iommu_unmap(vcpu->kvm, stt,
 					stit->tbl, entry);
 		else
 			ret = kvmppc_rm_tce_iommu_map(vcpu->kvm, stt,
+=======
+			ret = kvmppc_rm_tce_iommu_unmap(vcpu->kvm,
+					stit->tbl, entry);
+		else
+			ret = kvmppc_rm_tce_iommu_map(vcpu->kvm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					stit->tbl, entry, ua, dir);
 
 		if (ret == H_SUCCESS)
@@ -394,7 +470,11 @@ long kvmppc_rm_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
 			return ret;
 
 		WARN_ON_ONCE_RM(1);
+<<<<<<< HEAD
 		kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl, entry);
+=======
+		kvmppc_rm_clear_tce(stit->tbl, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kvmppc_tce_put(stt, entry, tce);
@@ -501,11 +581,19 @@ long kvmppc_rm_h_put_tce_indirect(struct kvm_vcpu *vcpu,
 
 		rmap = (void *) vmalloc_to_phys(rmap);
 		if (WARN_ON_ONCE_RM(!rmap))
+<<<<<<< HEAD
 			return H_HARDWARE;
 
 		/*
 		 * Synchronize with the MMU notifier callbacks in
 		 * book3s_64_mmu_hv.c (kvm_unmap_hva_range_hv etc.).
+=======
+			return H_TOO_HARD;
+
+		/*
+		 * Synchronize with the MMU notifier callbacks in
+		 * book3s_64_mmu_hv.c (kvm_unmap_hva_hv etc.).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * While we have the rmap lock, code running on other CPUs
 		 * cannot finish unmapping the host real page that backs
 		 * this guest real page, so we are OK to access the host
@@ -534,7 +622,11 @@ long kvmppc_rm_h_put_tce_indirect(struct kvm_vcpu *vcpu,
 		}
 
 		list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
+<<<<<<< HEAD
 			ret = kvmppc_rm_tce_iommu_map(vcpu->kvm, stt,
+=======
+			ret = kvmppc_rm_tce_iommu_map(vcpu->kvm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					stit->tbl, entry + i, ua,
 					iommu_tce_direction(tce));
 
@@ -545,7 +637,11 @@ long kvmppc_rm_h_put_tce_indirect(struct kvm_vcpu *vcpu,
 				goto unlock_exit;
 
 			WARN_ON_ONCE_RM(1);
+<<<<<<< HEAD
 			kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl, entry);
+=======
+			kvmppc_rm_clear_tce(stit->tbl, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		kvmppc_tce_put(stt, entry + i, tce);
@@ -583,10 +679,17 @@ long kvmppc_rm_h_stuff_tce(struct kvm_vcpu *vcpu,
 		return H_PARAMETER;
 
 	list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
+<<<<<<< HEAD
 		unsigned long entry = ioba >> stt->page_shift;
 
 		for (i = 0; i < npages; ++i) {
 			ret = kvmppc_rm_tce_iommu_unmap(vcpu->kvm, stt,
+=======
+		unsigned long entry = ioba >> stit->tbl->it_page_shift;
+
+		for (i = 0; i < npages; ++i) {
+			ret = kvmppc_rm_tce_iommu_unmap(vcpu->kvm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					stit->tbl, entry + i);
 
 			if (ret == H_SUCCESS)
@@ -596,7 +699,11 @@ long kvmppc_rm_h_stuff_tce(struct kvm_vcpu *vcpu,
 				return ret;
 
 			WARN_ON_ONCE_RM(1);
+<<<<<<< HEAD
 			kvmppc_rm_clear_tce(vcpu->kvm, stit->tbl, entry);
+=======
+			kvmppc_rm_clear_tce(stit->tbl, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -628,7 +735,11 @@ long kvmppc_h_get_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
 	page = stt->pages[idx / TCES_PER_PAGE];
 	tbl = (u64 *)page_address(page);
 
+<<<<<<< HEAD
 	vcpu->arch.regs.gpr[4] = tbl[idx % TCES_PER_PAGE];
+=======
+	vcpu->arch.gpr[4] = tbl[idx % TCES_PER_PAGE];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return H_SUCCESS;
 }

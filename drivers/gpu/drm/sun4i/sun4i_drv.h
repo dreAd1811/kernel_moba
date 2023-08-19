@@ -19,8 +19,14 @@
 
 struct sun4i_drv {
 	struct list_head	engine_list;
+<<<<<<< HEAD
 	struct list_head	frontend_list;
 	struct list_head	tcon_list;
+=======
+	struct list_head	tcon_list;
+
+	struct drm_fbdev_cma	*fbdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif /* _SUN4I_DRV_H_ */

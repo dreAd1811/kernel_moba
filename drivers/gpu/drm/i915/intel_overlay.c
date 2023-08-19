@@ -181,9 +181,14 @@ struct intel_overlay {
 	u32 brightness, contrast, saturation;
 	u32 old_xscale, old_yscale;
 	/* register access */
+<<<<<<< HEAD
 	struct drm_i915_gem_object *reg_bo;
 	struct overlay_registers __iomem *regs;
 	u32 flip_addr;
+=======
+	u32 flip_addr;
+	struct drm_i915_gem_object *reg_bo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* flip handling */
 	struct i915_gem_active last_flip;
 };
@@ -211,14 +216,43 @@ static void i830_overlay_clock_gating(struct drm_i915_private *dev_priv,
 				  PCI_DEVFN(0, 0), I830_CLOCK_GATE, val);
 }
 
+<<<<<<< HEAD
 static void intel_overlay_submit_request(struct intel_overlay *overlay,
 					 struct i915_request *rq,
+=======
+static struct overlay_registers __iomem *
+intel_overlay_map_regs(struct intel_overlay *overlay)
+{
+	struct drm_i915_private *dev_priv = overlay->i915;
+	struct overlay_registers __iomem *regs;
+
+	if (OVERLAY_NEEDS_PHYSICAL(dev_priv))
+		regs = (struct overlay_registers __iomem *)overlay->reg_bo->phys_handle->vaddr;
+	else
+		regs = io_mapping_map_wc(&dev_priv->ggtt.mappable,
+					 overlay->flip_addr,
+					 PAGE_SIZE);
+
+	return regs;
+}
+
+static void intel_overlay_unmap_regs(struct intel_overlay *overlay,
+				     struct overlay_registers __iomem *regs)
+{
+	if (!OVERLAY_NEEDS_PHYSICAL(overlay->i915))
+		io_mapping_unmap(regs);
+}
+
+static void intel_overlay_submit_request(struct intel_overlay *overlay,
+					 struct drm_i915_gem_request *req,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 i915_gem_retire_fn retire)
 {
 	GEM_BUG_ON(i915_gem_active_peek(&overlay->last_flip,
 					&overlay->i915->drm.struct_mutex));
 	i915_gem_active_set_retire_fn(&overlay->last_flip, retire,
 				      &overlay->i915->drm.struct_mutex);
+<<<<<<< HEAD
 	i915_gem_active_set(&overlay->last_flip, rq);
 	i915_request_add(rq);
 }
@@ -228,27 +262,51 @@ static int intel_overlay_do_wait_request(struct intel_overlay *overlay,
 					 i915_gem_retire_fn retire)
 {
 	intel_overlay_submit_request(overlay, rq, retire);
+=======
+	i915_gem_active_set(&overlay->last_flip, req);
+	i915_add_request(req);
+}
+
+static int intel_overlay_do_wait_request(struct intel_overlay *overlay,
+					 struct drm_i915_gem_request *req,
+					 i915_gem_retire_fn retire)
+{
+	intel_overlay_submit_request(overlay, req, retire);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return i915_gem_active_retire(&overlay->last_flip,
 				      &overlay->i915->drm.struct_mutex);
 }
 
+<<<<<<< HEAD
 static struct i915_request *alloc_request(struct intel_overlay *overlay)
+=======
+static struct drm_i915_gem_request *alloc_request(struct intel_overlay *overlay)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *dev_priv = overlay->i915;
 	struct intel_engine_cs *engine = dev_priv->engine[RCS];
 
+<<<<<<< HEAD
 	return i915_request_alloc(engine, dev_priv->kernel_context);
+=======
+	return i915_gem_request_alloc(engine, dev_priv->kernel_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* overlay needs to be disable in OCMD reg */
 static int intel_overlay_on(struct intel_overlay *overlay)
 {
 	struct drm_i915_private *dev_priv = overlay->i915;
+<<<<<<< HEAD
 	struct i915_request *rq;
+=======
+	struct drm_i915_gem_request *req;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *cs;
 
 	WARN_ON(overlay->active);
 
+<<<<<<< HEAD
 	rq = alloc_request(overlay);
 	if (IS_ERR(rq))
 		return PTR_ERR(rq);
@@ -256,6 +314,15 @@ static int intel_overlay_on(struct intel_overlay *overlay)
 	cs = intel_ring_begin(rq, 4);
 	if (IS_ERR(cs)) {
 		i915_request_add(rq);
+=======
+	req = alloc_request(overlay);
+	if (IS_ERR(req))
+		return PTR_ERR(req);
+
+	cs = intel_ring_begin(req, 4);
+	if (IS_ERR(cs)) {
+		i915_add_request(req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(cs);
 	}
 
@@ -268,9 +335,15 @@ static int intel_overlay_on(struct intel_overlay *overlay)
 	*cs++ = overlay->flip_addr | OFC_UPDATE;
 	*cs++ = MI_WAIT_FOR_EVENT | MI_WAIT_FOR_OVERLAY_FLIP;
 	*cs++ = MI_NOOP;
+<<<<<<< HEAD
 	intel_ring_advance(rq, cs);
 
 	return intel_overlay_do_wait_request(overlay, rq, NULL);
+=======
+	intel_ring_advance(req, cs);
+
+	return intel_overlay_do_wait_request(overlay, req, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void intel_overlay_flip_prepare(struct intel_overlay *overlay,
@@ -300,7 +373,11 @@ static int intel_overlay_continue(struct intel_overlay *overlay,
 				  bool load_polyphase_filter)
 {
 	struct drm_i915_private *dev_priv = overlay->i915;
+<<<<<<< HEAD
 	struct i915_request *rq;
+=======
+	struct drm_i915_gem_request *req;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 flip_addr = overlay->flip_addr;
 	u32 tmp, *cs;
 
@@ -314,6 +391,7 @@ static int intel_overlay_continue(struct intel_overlay *overlay,
 	if (tmp & (1 << 17))
 		DRM_DEBUG("overlay underrun, DOVSTA: %x\n", tmp);
 
+<<<<<<< HEAD
 	rq = alloc_request(overlay);
 	if (IS_ERR(rq))
 		return PTR_ERR(rq);
@@ -321,16 +399,33 @@ static int intel_overlay_continue(struct intel_overlay *overlay,
 	cs = intel_ring_begin(rq, 2);
 	if (IS_ERR(cs)) {
 		i915_request_add(rq);
+=======
+	req = alloc_request(overlay);
+	if (IS_ERR(req))
+		return PTR_ERR(req);
+
+	cs = intel_ring_begin(req, 2);
+	if (IS_ERR(cs)) {
+		i915_add_request(req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(cs);
 	}
 
 	*cs++ = MI_OVERLAY_FLIP | MI_OVERLAY_CONTINUE;
 	*cs++ = flip_addr;
+<<<<<<< HEAD
 	intel_ring_advance(rq, cs);
 
 	intel_overlay_flip_prepare(overlay, vma);
 
 	intel_overlay_submit_request(overlay, rq, NULL);
+=======
+	intel_ring_advance(req, cs);
+
+	intel_overlay_flip_prepare(overlay, vma);
+
+	intel_overlay_submit_request(overlay, req, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -351,7 +446,11 @@ static void intel_overlay_release_old_vma(struct intel_overlay *overlay)
 }
 
 static void intel_overlay_release_old_vid_tail(struct i915_gem_active *active,
+<<<<<<< HEAD
 					       struct i915_request *rq)
+=======
+					       struct drm_i915_gem_request *req)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_overlay *overlay =
 		container_of(active, typeof(*overlay), last_flip);
@@ -360,7 +459,11 @@ static void intel_overlay_release_old_vid_tail(struct i915_gem_active *active,
 }
 
 static void intel_overlay_off_tail(struct i915_gem_active *active,
+<<<<<<< HEAD
 				   struct i915_request *rq)
+=======
+				   struct drm_i915_gem_request *req)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_overlay *overlay =
 		container_of(active, typeof(*overlay), last_flip);
@@ -379,7 +482,11 @@ static void intel_overlay_off_tail(struct i915_gem_active *active,
 /* overlay needs to be disabled in OCMD reg */
 static int intel_overlay_off(struct intel_overlay *overlay)
 {
+<<<<<<< HEAD
 	struct i915_request *rq;
+=======
+	struct drm_i915_gem_request *req;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *cs, flip_addr = overlay->flip_addr;
 
 	WARN_ON(!overlay->active);
@@ -390,6 +497,7 @@ static int intel_overlay_off(struct intel_overlay *overlay)
 	 * of the hw. Do it in both cases */
 	flip_addr |= OFC_UPDATE;
 
+<<<<<<< HEAD
 	rq = alloc_request(overlay);
 	if (IS_ERR(rq))
 		return PTR_ERR(rq);
@@ -397,6 +505,15 @@ static int intel_overlay_off(struct intel_overlay *overlay)
 	cs = intel_ring_begin(rq, 6);
 	if (IS_ERR(cs)) {
 		i915_request_add(rq);
+=======
+	req = alloc_request(overlay);
+	if (IS_ERR(req))
+		return PTR_ERR(req);
+
+	cs = intel_ring_begin(req, 6);
+	if (IS_ERR(cs)) {
+		i915_add_request(req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(cs);
 	}
 
@@ -410,11 +527,19 @@ static int intel_overlay_off(struct intel_overlay *overlay)
 	*cs++ = flip_addr;
 	*cs++ = MI_WAIT_FOR_EVENT | MI_WAIT_FOR_OVERLAY_FLIP;
 
+<<<<<<< HEAD
 	intel_ring_advance(rq, cs);
 
 	intel_overlay_flip_prepare(overlay, NULL);
 
 	return intel_overlay_do_wait_request(overlay, rq,
+=======
+	intel_ring_advance(req, cs);
+
+	intel_overlay_flip_prepare(overlay, NULL);
+
+	return intel_overlay_do_wait_request(overlay, req,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     intel_overlay_off_tail);
 }
 
@@ -446,6 +571,7 @@ static int intel_overlay_release_old_vid(struct intel_overlay *overlay)
 
 	if (I915_READ(ISR) & I915_OVERLAY_PLANE_FLIP_PENDING_INTERRUPT) {
 		/* synchronous slowpath */
+<<<<<<< HEAD
 		struct i915_request *rq;
 
 		rq = alloc_request(overlay);
@@ -455,14 +581,31 @@ static int intel_overlay_release_old_vid(struct intel_overlay *overlay)
 		cs = intel_ring_begin(rq, 2);
 		if (IS_ERR(cs)) {
 			i915_request_add(rq);
+=======
+		struct drm_i915_gem_request *req;
+
+		req = alloc_request(overlay);
+		if (IS_ERR(req))
+			return PTR_ERR(req);
+
+		cs = intel_ring_begin(req, 2);
+		if (IS_ERR(cs)) {
+			i915_add_request(req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return PTR_ERR(cs);
 		}
 
 		*cs++ = MI_WAIT_FOR_EVENT | MI_WAIT_FOR_OVERLAY_FLIP;
 		*cs++ = MI_NOOP;
+<<<<<<< HEAD
 		intel_ring_advance(rq, cs);
 
 		ret = intel_overlay_do_wait_request(overlay, rq,
+=======
+		intel_ring_advance(req, cs);
+
+		ret = intel_overlay_do_wait_request(overlay, req,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						    intel_overlay_release_old_vid_tail);
 		if (ret)
 			return ret;
@@ -762,6 +905,7 @@ static int intel_overlay_do_put_image(struct intel_overlay *overlay,
 				      struct drm_i915_gem_object *new_bo,
 				      struct put_image_params *params)
 {
+<<<<<<< HEAD
 	struct overlay_registers __iomem *regs = overlay->regs;
 	struct drm_i915_private *dev_priv = overlay->i915;
 	u32 swidth, swidthsw, sheight, ostride;
@@ -769,6 +913,15 @@ static int intel_overlay_do_put_image(struct intel_overlay *overlay,
 	bool scale_changed = false;
 	struct i915_vma *vma;
 	int ret, tmp_width;
+=======
+	int ret, tmp_width;
+	struct overlay_registers __iomem *regs;
+	bool scale_changed = false;
+	struct drm_i915_private *dev_priv = overlay->i915;
+	u32 swidth, swidthsw, sheight, ostride;
+	enum pipe pipe = overlay->crtc->pipe;
+	struct i915_vma *vma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lockdep_assert_held(&dev_priv->drm.struct_mutex);
 	WARN_ON(!drm_modeset_is_locked(&dev_priv->drm.mode_config.connection_mutex));
@@ -779,13 +932,20 @@ static int intel_overlay_do_put_image(struct intel_overlay *overlay,
 
 	atomic_inc(&dev_priv->gpu_error.pending_fb_pin);
 
+<<<<<<< HEAD
 	vma = i915_gem_object_pin_to_display_plane(new_bo,
 						   0, NULL, PIN_MAPPABLE);
+=======
+	vma = i915_gem_object_pin_to_display_plane(new_bo, 0, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vma)) {
 		ret = PTR_ERR(vma);
 		goto out_pin_section;
 	}
+<<<<<<< HEAD
 	intel_fb_obj_flush(new_bo, ORIGIN_DIRTYFB);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = i915_vma_put_fence(vma);
 	if (ret)
@@ -793,19 +953,40 @@ static int intel_overlay_do_put_image(struct intel_overlay *overlay,
 
 	if (!overlay->active) {
 		u32 oconfig;
+<<<<<<< HEAD
 
+=======
+		regs = intel_overlay_map_regs(overlay);
+		if (!regs) {
+			ret = -ENOMEM;
+			goto out_unpin;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		oconfig = OCONF_CC_OUT_8BIT;
 		if (IS_GEN4(dev_priv))
 			oconfig |= OCONF_CSC_MODE_BT709;
 		oconfig |= pipe == 0 ?
 			OCONF_PIPE_A : OCONF_PIPE_B;
 		iowrite32(oconfig, &regs->OCONFIG);
+<<<<<<< HEAD
+=======
+		intel_overlay_unmap_regs(overlay, regs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = intel_overlay_on(overlay);
 		if (ret != 0)
 			goto out_unpin;
 	}
 
+<<<<<<< HEAD
+=======
+	regs = intel_overlay_map_regs(overlay);
+	if (!regs) {
+		ret = -ENOMEM;
+		goto out_unpin;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iowrite32((params->dst_y << 16) | params->dst_x, &regs->DWINPOS);
 	iowrite32((params->dst_h << 16) | params->dst_w, &regs->DWINSZ);
 
@@ -849,6 +1030,11 @@ static int intel_overlay_do_put_image(struct intel_overlay *overlay,
 
 	iowrite32(overlay_cmd_reg(params), &regs->OCMD);
 
+<<<<<<< HEAD
+=======
+	intel_overlay_unmap_regs(overlay, regs);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = intel_overlay_continue(overlay, vma, scale_changed);
 	if (ret)
 		goto out_unpin;
@@ -866,6 +1052,10 @@ out_pin_section:
 int intel_overlay_switch_off(struct intel_overlay *overlay)
 {
 	struct drm_i915_private *dev_priv = overlay->i915;
+<<<<<<< HEAD
+=======
+	struct overlay_registers __iomem *regs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	lockdep_assert_held(&dev_priv->drm.struct_mutex);
@@ -882,7 +1072,13 @@ int intel_overlay_switch_off(struct intel_overlay *overlay)
 	if (ret != 0)
 		return ret;
 
+<<<<<<< HEAD
 	iowrite32(0, &overlay->regs->OCMD);
+=======
+	regs = intel_overlay_map_regs(overlay);
+	iowrite32(0, &regs->OCMD);
+	intel_overlay_unmap_regs(overlay, regs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return intel_overlay_off(overlay);
 }
@@ -1267,6 +1463,10 @@ int intel_overlay_attrs_ioctl(struct drm_device *dev, void *data,
 	struct drm_intel_overlay_attrs *attrs = data;
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct intel_overlay *overlay;
+<<<<<<< HEAD
+=======
+	struct overlay_registers __iomem *regs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	overlay = dev_priv->overlay;
@@ -1306,7 +1506,19 @@ int intel_overlay_attrs_ioctl(struct drm_device *dev, void *data,
 		overlay->contrast   = attrs->contrast;
 		overlay->saturation = attrs->saturation;
 
+<<<<<<< HEAD
 		update_reg_attrs(overlay, overlay->regs);
+=======
+		regs = intel_overlay_map_regs(overlay);
+		if (!regs) {
+			ret = -ENOMEM;
+			goto out_unlock;
+		}
+
+		update_reg_attrs(overlay, regs);
+
+		intel_overlay_unmap_regs(overlay, regs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (attrs->flags & I915_OVERLAY_UPDATE_GAMMA) {
 			if (IS_GEN2(dev_priv))
@@ -1339,6 +1551,7 @@ out_unlock:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int get_registers(struct intel_overlay *overlay, bool use_phys)
 {
 	struct drm_i915_gem_object *obj;
@@ -1380,6 +1593,14 @@ err_put_bo:
 void intel_setup_overlay(struct drm_i915_private *dev_priv)
 {
 	struct intel_overlay *overlay;
+=======
+void intel_setup_overlay(struct drm_i915_private *dev_priv)
+{
+	struct intel_overlay *overlay;
+	struct drm_i915_gem_object *reg_bo;
+	struct overlay_registers __iomem *regs;
+	struct i915_vma *vma = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!HAS_OVERLAY(dev_priv))
@@ -1389,8 +1610,51 @@ void intel_setup_overlay(struct drm_i915_private *dev_priv)
 	if (!overlay)
 		return;
 
+<<<<<<< HEAD
 	overlay->i915 = dev_priv;
 
+=======
+	mutex_lock(&dev_priv->drm.struct_mutex);
+	if (WARN_ON(dev_priv->overlay))
+		goto out_free;
+
+	overlay->i915 = dev_priv;
+
+	reg_bo = NULL;
+	if (!OVERLAY_NEEDS_PHYSICAL(dev_priv))
+		reg_bo = i915_gem_object_create_stolen(dev_priv, PAGE_SIZE);
+	if (reg_bo == NULL)
+		reg_bo = i915_gem_object_create(dev_priv, PAGE_SIZE);
+	if (IS_ERR(reg_bo))
+		goto out_free;
+	overlay->reg_bo = reg_bo;
+
+	if (OVERLAY_NEEDS_PHYSICAL(dev_priv)) {
+		ret = i915_gem_object_attach_phys(reg_bo, PAGE_SIZE);
+		if (ret) {
+			DRM_ERROR("failed to attach phys overlay regs\n");
+			goto out_free_bo;
+		}
+		overlay->flip_addr = reg_bo->phys_handle->busaddr;
+	} else {
+		vma = i915_gem_object_ggtt_pin(reg_bo, NULL,
+					       0, PAGE_SIZE, PIN_MAPPABLE);
+		if (IS_ERR(vma)) {
+			DRM_ERROR("failed to pin overlay register bo\n");
+			ret = PTR_ERR(vma);
+			goto out_free_bo;
+		}
+		overlay->flip_addr = i915_ggtt_offset(vma);
+
+		ret = i915_gem_object_set_to_gtt_domain(reg_bo, true);
+		if (ret) {
+			DRM_ERROR("failed to move overlay register bo into the GTT\n");
+			goto out_unpin_bo;
+		}
+	}
+
+	/* init all values */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	overlay->color_key = 0x0101fe;
 	overlay->color_key_enabled = true;
 	overlay->brightness = -19;
@@ -1399,6 +1663,7 @@ void intel_setup_overlay(struct drm_i915_private *dev_priv)
 
 	init_request_active(&overlay->last_flip, NULL);
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->drm.struct_mutex);
 
 	ret = get_registers(overlay, OVERLAY_NEEDS_PHYSICAL(dev_priv));
@@ -1424,10 +1689,37 @@ out_reg_bo:
 out_free:
 	mutex_unlock(&dev_priv->drm.struct_mutex);
 	kfree(overlay);
+=======
+	regs = intel_overlay_map_regs(overlay);
+	if (!regs)
+		goto out_unpin_bo;
+
+	memset_io(regs, 0, sizeof(struct overlay_registers));
+	update_polyphase_filter(regs);
+	update_reg_attrs(overlay, regs);
+
+	intel_overlay_unmap_regs(overlay, regs);
+
+	dev_priv->overlay = overlay;
+	mutex_unlock(&dev_priv->drm.struct_mutex);
+	DRM_INFO("initialized overlay support\n");
+	return;
+
+out_unpin_bo:
+	if (vma)
+		i915_vma_unpin(vma);
+out_free_bo:
+	i915_gem_object_put(reg_bo);
+out_free:
+	mutex_unlock(&dev_priv->drm.struct_mutex);
+	kfree(overlay);
+	return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_cleanup_overlay(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	struct intel_overlay *overlay;
 
 	overlay = fetch_and_zero(&dev_priv->overlay);
@@ -1444,6 +1736,18 @@ void intel_cleanup_overlay(struct drm_i915_private *dev_priv)
 	i915_gem_object_put(overlay->reg_bo);
 
 	kfree(overlay);
+=======
+	if (!dev_priv->overlay)
+		return;
+
+	/* The bo's should be free'd by the generic code already.
+	 * Furthermore modesetting teardown happens beforehand so the
+	 * hardware should be off already */
+	WARN_ON(dev_priv->overlay->active);
+
+	i915_gem_object_put(dev_priv->overlay->reg_bo);
+	kfree(dev_priv->overlay);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #if IS_ENABLED(CONFIG_DRM_I915_CAPTURE_ERROR)
@@ -1455,11 +1759,43 @@ struct intel_overlay_error_state {
 	u32 isr;
 };
 
+<<<<<<< HEAD
+=======
+static struct overlay_registers __iomem *
+intel_overlay_map_regs_atomic(struct intel_overlay *overlay)
+{
+	struct drm_i915_private *dev_priv = overlay->i915;
+	struct overlay_registers __iomem *regs;
+
+	if (OVERLAY_NEEDS_PHYSICAL(dev_priv))
+		/* Cast to make sparse happy, but it's wc memory anyway, so
+		 * equivalent to the wc io mapping on X86. */
+		regs = (struct overlay_registers __iomem *)
+			overlay->reg_bo->phys_handle->vaddr;
+	else
+		regs = io_mapping_map_atomic_wc(&dev_priv->ggtt.mappable,
+						overlay->flip_addr);
+
+	return regs;
+}
+
+static void intel_overlay_unmap_regs_atomic(struct intel_overlay *overlay,
+					struct overlay_registers __iomem *regs)
+{
+	if (!OVERLAY_NEEDS_PHYSICAL(overlay->i915))
+		io_mapping_unmap_atomic(regs);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct intel_overlay_error_state *
 intel_overlay_capture_error_state(struct drm_i915_private *dev_priv)
 {
 	struct intel_overlay *overlay = dev_priv->overlay;
 	struct intel_overlay_error_state *error;
+<<<<<<< HEAD
+=======
+	struct overlay_registers __iomem *regs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!overlay || !overlay->active)
 		return NULL;
@@ -1472,9 +1808,24 @@ intel_overlay_capture_error_state(struct drm_i915_private *dev_priv)
 	error->isr = I915_READ(ISR);
 	error->base = overlay->flip_addr;
 
+<<<<<<< HEAD
 	memcpy_fromio(&error->regs, overlay->regs, sizeof(error->regs));
 
 	return error;
+=======
+	regs = intel_overlay_map_regs_atomic(overlay);
+	if (!regs)
+		goto err;
+
+	memcpy_fromio(&error->regs, regs, sizeof(struct overlay_registers));
+	intel_overlay_unmap_regs_atomic(overlay, regs);
+
+	return error;
+
+err:
+	kfree(error);
+	return NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void

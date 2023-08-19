@@ -19,6 +19,7 @@
 	.set	push
 	.set	mips64
 	/* Set LPA on LOONGSON3 config3 */
+<<<<<<< HEAD
 	mfc0	t0, CP0_CONFIG3
 	or	t0, (0x1 << 7)
 	mtc0	t0, CP0_CONFIG3
@@ -31,6 +32,20 @@
 	mfc0	t0, CP0_CONFIG6
 	or	t0, 0x100
 	mtc0	t0, CP0_CONFIG6
+=======
+	mfc0	t0, $16, 3
+	or	t0, (0x1 << 7)
+	mtc0	t0, $16, 3
+	/* Set ELPA on LOONGSON3 pagegrain */
+	mfc0	t0, $5, 1
+	or	t0, (0x1 << 29)
+	mtc0	t0, $5, 1
+#ifdef CONFIG_LOONGSON3_ENHANCEMENT
+	/* Enable STFill Buffer */
+	mfc0	t0, $16, 6
+	or	t0, 0x100
+	mtc0	t0, $16, 6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	_ehb
 	.set	pop
@@ -45,6 +60,7 @@
 	.set	push
 	.set	mips64
 	/* Set LPA on LOONGSON3 config3 */
+<<<<<<< HEAD
 	mfc0	t0, CP0_CONFIG3
 	or	t0, (0x1 << 7)
 	mtc0	t0, CP0_CONFIG3
@@ -57,6 +73,20 @@
 	mfc0	t0, CP0_CONFIG6
 	or	t0, 0x100
 	mtc0	t0, CP0_CONFIG6
+=======
+	mfc0	t0, $16, 3
+	or	t0, (0x1 << 7)
+	mtc0	t0, $16, 3
+	/* Set ELPA on LOONGSON3 pagegrain */
+	mfc0	t0, $5, 1
+	or	t0, (0x1 << 29)
+	mtc0	t0, $5, 1
+#ifdef CONFIG_LOONGSON3_ENHANCEMENT
+	/* Enable STFill Buffer */
+	mfc0	t0, $16, 6
+	or	t0, 0x100
+	mtc0	t0, $16, 6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	_ehb
 	.set	pop

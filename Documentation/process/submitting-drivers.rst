@@ -117,7 +117,11 @@ PM support:
 		anything.  For the driver testing instructions see
 		Documentation/power/drivers-testing.txt and for a relatively
 		complete overview of the power management issues related to
+<<<<<<< HEAD
 		drivers see Documentation/driver-api/pm/devices.rst.
+=======
+		drivers see Documentation/power/admin-guide/devices.rst .
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Control:
 		In general if there is active maintenance of a driver by

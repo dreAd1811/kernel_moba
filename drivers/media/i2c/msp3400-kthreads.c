@@ -885,7 +885,11 @@ static int msp34xxg_modus(struct i2c_client *client)
 }
 
 static void msp34xxg_set_source(struct i2c_client *client, u16 reg, int in)
+<<<<<<< HEAD
 {
+=======
+ {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct msp_state *state = to_state(i2c_get_clientdata(client));
 	int source, matrix;
 

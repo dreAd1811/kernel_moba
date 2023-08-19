@@ -101,6 +101,17 @@ static void hci_uart_write_work(struct work_struct *work)
 
 /* ------- Interface to HCI layer ------ */
 
+<<<<<<< HEAD
+=======
+/* Initialize device */
+static int hci_uart_open(struct hci_dev *hdev)
+{
+	BT_DBG("%s %p", hdev->name, hdev);
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Reset device */
 static int hci_uart_flush(struct hci_dev *hdev)
 {
@@ -121,6 +132,7 @@ static int hci_uart_flush(struct hci_dev *hdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Initialize device */
 static int hci_uart_open(struct hci_dev *hdev)
 {
@@ -132,6 +144,8 @@ static int hci_uart_open(struct hci_dev *hdev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Close device */
 static int hci_uart_close(struct hci_dev *hdev)
 {
@@ -188,7 +202,11 @@ static int hci_uart_setup(struct hci_dev *hdev)
 	if (hu->proto->set_baudrate && speed) {
 		err = hu->proto->set_baudrate(hu, speed);
 		if (err)
+<<<<<<< HEAD
 			bt_dev_err(hdev, "Failed to set baudrate");
+=======
+			BT_ERR("%s: failed to set baudrate", hdev->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			serdev_device_set_baudrate(hu->serdev, speed);
 	}
@@ -202,6 +220,7 @@ static int hci_uart_setup(struct hci_dev *hdev)
 	skb = __hci_cmd_sync(hdev, HCI_OP_READ_LOCAL_VERSION, 0, NULL,
 			     HCI_INIT_TIMEOUT);
 	if (IS_ERR(skb)) {
+<<<<<<< HEAD
 		bt_dev_err(hdev, "Reading local version info failed (%ld)",
 			   PTR_ERR(skb));
 		return 0;
@@ -209,6 +228,17 @@ static int hci_uart_setup(struct hci_dev *hdev)
 
 	if (skb->len != sizeof(*ver))
 		bt_dev_err(hdev, "Event length mismatch for version info");
+=======
+		BT_ERR("%s: Reading local version information failed (%ld)",
+		       hdev->name, PTR_ERR(skb));
+		return 0;
+	}
+
+	if (skb->len != sizeof(*ver)) {
+		BT_ERR("%s: Event length mismatch for version information",
+		       hdev->name);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree_skb(skb);
 	return 0;
@@ -284,6 +314,7 @@ int hci_uart_register_device(struct hci_uart *hu,
 
 	serdev_device_set_client_ops(hu->serdev, &hci_serdev_client_ops);
 
+<<<<<<< HEAD
 	err = serdev_device_open(hu->serdev);
 	if (err)
 		return err;
@@ -291,6 +322,11 @@ int hci_uart_register_device(struct hci_uart *hu,
 	err = p->open(hu);
 	if (err)
 		goto err_open;
+=======
+	err = p->open(hu);
+	if (err)
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hu->proto = p;
 	set_bit(HCI_UART_PROTO_READY, &hu->flags);
@@ -308,7 +344,10 @@ int hci_uart_register_device(struct hci_uart *hu,
 	hdev->bus = HCI_UART;
 	hci_set_drvdata(hdev, hu);
 
+<<<<<<< HEAD
 	INIT_WORK(&hu->init_ready, hci_uart_init_work);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&hu->write_work, hci_uart_write_work);
 	percpu_init_rwsem(&hu->proto_lock);
 
@@ -358,8 +397,11 @@ err_register:
 err_alloc:
 	clear_bit(HCI_UART_PROTO_READY, &hu->flags);
 	p->close(hu);
+<<<<<<< HEAD
 err_open:
 	serdev_device_close(hu->serdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 EXPORT_SYMBOL_GPL(hci_uart_register_device);
@@ -368,12 +410,19 @@ void hci_uart_unregister_device(struct hci_uart *hu)
 {
 	struct hci_dev *hdev = hu->hdev;
 
+<<<<<<< HEAD
+=======
+	clear_bit(HCI_UART_PROTO_READY, &hu->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hci_unregister_dev(hdev);
 	hci_free_dev(hdev);
 
 	cancel_work_sync(&hu->write_work);
 
 	hu->proto->close(hu);
+<<<<<<< HEAD
 	serdev_device_close(hu->serdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(hci_uart_unregister_device);

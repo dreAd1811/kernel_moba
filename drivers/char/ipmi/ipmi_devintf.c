@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * ipmi_devintf.c
  *
@@ -9,6 +12,30 @@
  *         source@mvista.com
  *
  * Copyright 2002 MontaVista Software Inc.
+<<<<<<< HEAD
+=======
+ *
+ *  This program is free software; you can redistribute it and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation; either version 2 of the License, or (at your
+ *  option) any later version.
+ *
+ *
+ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
+ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+ *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+ *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *  You should have received a copy of the GNU General Public License along
+ *  with this program; if not, write to the Free Software Foundation, Inc.,
+ *  675 Mass Ave, Cambridge, MA 02139, USA.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -26,7 +53,11 @@
 
 struct ipmi_file_private
 {
+<<<<<<< HEAD
 	struct ipmi_user     *user;
+=======
+	ipmi_user_t          user;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t           recv_msg_lock;
 	struct list_head     recv_msgs;
 	struct file          *file;
@@ -37,6 +68,10 @@ struct ipmi_file_private
 	unsigned int         default_retry_time_ms;
 };
 
+<<<<<<< HEAD
+=======
+static DEFINE_MUTEX(ipmi_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void file_receive_handler(struct ipmi_recv_msg *msg,
 				 void                 *handler_data)
 {
@@ -44,29 +79,52 @@ static void file_receive_handler(struct ipmi_recv_msg *msg,
 	int                      was_empty;
 	unsigned long            flags;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&priv->recv_msg_lock, flags);
 	was_empty = list_empty(&priv->recv_msgs);
 	list_add_tail(&msg->link, &priv->recv_msgs);
 	spin_unlock_irqrestore(&priv->recv_msg_lock, flags);
+=======
+	spin_lock_irqsave(&(priv->recv_msg_lock), flags);
+
+	was_empty = list_empty(&(priv->recv_msgs));
+	list_add_tail(&(msg->link), &(priv->recv_msgs));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (was_empty) {
 		wake_up_interruptible(&priv->wait);
 		kill_fasync(&priv->fasync_queue, SIGIO, POLL_IN);
 	}
+<<<<<<< HEAD
 }
 
 static __poll_t ipmi_poll(struct file *file, poll_table *wait)
 {
 	struct ipmi_file_private *priv = file->private_data;
 	__poll_t             mask = 0;
+=======
+
+	spin_unlock_irqrestore(&(priv->recv_msg_lock), flags);
+}
+
+static unsigned int ipmi_poll(struct file *file, poll_table *wait)
+{
+	struct ipmi_file_private *priv = file->private_data;
+	unsigned int             mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long            flags;
 
 	poll_wait(file, &priv->wait, wait);
 
 	spin_lock_irqsave(&priv->recv_msg_lock, flags);
 
+<<<<<<< HEAD
 	if (!list_empty(&priv->recv_msgs))
 		mask |= (EPOLLIN | EPOLLRDNORM);
+=======
+	if (!list_empty(&(priv->recv_msgs)))
+		mask |= (POLLIN | POLLRDNORM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&priv->recv_msg_lock, flags);
 
@@ -76,8 +134,18 @@ static __poll_t ipmi_poll(struct file *file, poll_table *wait)
 static int ipmi_fasync(int fd, struct file *file, int on)
 {
 	struct ipmi_file_private *priv = file->private_data;
+<<<<<<< HEAD
 
 	return fasync_helper(fd, file, on, &priv->fasync_queue);
+=======
+	int                      result;
+
+	mutex_lock(&ipmi_mutex); /* could race against open() otherwise */
+	result = fasync_helper(fd, file, on, &priv->fasync_queue);
+	mutex_unlock(&ipmi_mutex);
+
+	return (result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct ipmi_user_hndl ipmi_hndlrs =
@@ -91,16 +159,28 @@ static int ipmi_open(struct inode *inode, struct file *file)
 	int                      rv;
 	struct ipmi_file_private *priv;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv = kmalloc(sizeof(*priv), GFP_KERNEL);
 	if (!priv)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&ipmi_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->file = file;
 
 	rv = ipmi_create_user(if_num,
 			      &ipmi_hndlrs,
 			      priv,
+<<<<<<< HEAD
 			      &priv->user);
+=======
+			      &(priv->user));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rv) {
 		kfree(priv);
 		goto out;
@@ -108,8 +188,13 @@ static int ipmi_open(struct inode *inode, struct file *file)
 
 	file->private_data = priv;
 
+<<<<<<< HEAD
 	spin_lock_init(&priv->recv_msg_lock);
 	INIT_LIST_HEAD(&priv->recv_msgs);
+=======
+	spin_lock_init(&(priv->recv_msg_lock));
+	INIT_LIST_HEAD(&(priv->recv_msgs));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_waitqueue_head(&priv->wait);
 	priv->fasync_queue = NULL;
 	mutex_init(&priv->recv_mutex);
@@ -119,6 +204,10 @@ static int ipmi_open(struct inode *inode, struct file *file)
 	priv->default_retry_time_ms = 0;
 
 out:
+<<<<<<< HEAD
+=======
+	mutex_unlock(&ipmi_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rv;
 }
 
@@ -126,7 +215,11 @@ static int ipmi_release(struct inode *inode, struct file *file)
 {
 	struct ipmi_file_private *priv = file->private_data;
 	int                      rv;
+<<<<<<< HEAD
 	struct ipmi_recv_msg *msg, *next;
+=======
+	struct  ipmi_recv_msg *msg, *next;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rv = ipmi_destroy_user(priv->user);
 	if (rv)
@@ -135,12 +228,20 @@ static int ipmi_release(struct inode *inode, struct file *file)
 	list_for_each_entry_safe(msg, next, &priv->recv_msgs, link)
 		ipmi_free_recv_msg(msg);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(priv);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int handle_send_req(struct ipmi_user *user,
+=======
+static int handle_send_req(ipmi_user_t     user,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   struct ipmi_req *req,
 			   int             retries,
 			   unsigned int    retry_time_ms)
@@ -177,7 +278,12 @@ static int handle_send_req(struct ipmi_user *user,
 
 		if (copy_from_user(msg.data,
 				   req->msg.data,
+<<<<<<< HEAD
 				   req->msg.data_len)) {
+=======
+				   req->msg.data_len))
+		{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rv = -EFAULT;
 			goto out;
 		}
@@ -220,24 +326,42 @@ static int handle_recv(struct ipmi_file_private *priv,
 	mutex_lock(&priv->recv_mutex);
 
 	/* Grab the message off the list. */
+<<<<<<< HEAD
 	spin_lock_irqsave(&priv->recv_msg_lock, flags);
 	if (list_empty(&(priv->recv_msgs))) {
 		spin_unlock_irqrestore(&priv->recv_msg_lock, flags);
+=======
+	spin_lock_irqsave(&(priv->recv_msg_lock), flags);
+	if (list_empty(&(priv->recv_msgs))) {
+		spin_unlock_irqrestore(&(priv->recv_msg_lock), flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rv = -EAGAIN;
 		goto recv_err;
 	}
 	entry = priv->recv_msgs.next;
 	msg = list_entry(entry, struct ipmi_recv_msg, link);
 	list_del(entry);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&priv->recv_msg_lock, flags);
 
 	addr_len = ipmi_addr_length(msg->addr.addr_type);
 	if (rsp->addr_len < addr_len) {
+=======
+	spin_unlock_irqrestore(&(priv->recv_msg_lock), flags);
+
+	addr_len = ipmi_addr_length(msg->addr.addr_type);
+	if (rsp->addr_len < addr_len)
+	{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rv = -EINVAL;
 		goto recv_putback_on_err;
 	}
 
+<<<<<<< HEAD
 	if (copy_to_user(rsp->addr, &msg->addr, addr_len)) {
+=======
+	if (copy_to_user(rsp->addr, &(msg->addr), addr_len)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rv = -EFAULT;
 		goto recv_putback_on_err;
 	}
@@ -259,7 +383,12 @@ static int handle_recv(struct ipmi_file_private *priv,
 
 		if (copy_to_user(rsp->msg.data,
 				 msg->msg.data,
+<<<<<<< HEAD
 				 msg->msg.data_len)) {
+=======
+				 msg->msg.data_len))
+		{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rv = -EFAULT;
 			goto recv_putback_on_err;
 		}
@@ -279,9 +408,15 @@ static int handle_recv(struct ipmi_file_private *priv,
 recv_putback_on_err:
 	/* If we got an error, put the message back onto
 	   the head of the queue. */
+<<<<<<< HEAD
 	spin_lock_irqsave(&priv->recv_msg_lock, flags);
 	list_add(entry, &priv->recv_msgs);
 	spin_unlock_irqrestore(&priv->recv_msg_lock, flags);
+=======
+	spin_lock_irqsave(&(priv->recv_msg_lock), flags);
+	list_add(entry, &(priv->recv_msgs));
+	spin_unlock_irqrestore(&(priv->recv_msg_lock), flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 recv_err:
 	mutex_unlock(&priv->recv_mutex);
 	return rv;
@@ -292,9 +427,15 @@ static int copyout_recv(struct ipmi_recv *rsp, void __user *to)
 	return copy_to_user(to, rsp, sizeof(struct ipmi_recv)) ? -EFAULT : 0;
 }
 
+<<<<<<< HEAD
 static long ipmi_ioctl(struct file   *file,
 		       unsigned int  cmd,
 		       unsigned long data)
+=======
+static int ipmi_ioctl(struct file   *file,
+		      unsigned int  cmd,
+		      unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int                      rv = -EINVAL;
 	struct ipmi_file_private *priv = file->private_data;
@@ -305,20 +446,30 @@ static long ipmi_ioctl(struct file   *file,
 	case IPMICTL_SEND_COMMAND:
 	{
 		struct ipmi_req req;
+<<<<<<< HEAD
 		int retries;
 		unsigned int retry_time_ms;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (copy_from_user(&req, arg, sizeof(req))) {
 			rv = -EFAULT;
 			break;
 		}
 
+<<<<<<< HEAD
 		mutex_lock(&priv->recv_mutex);
 		retries = priv->default_retries;
 		retry_time_ms = priv->default_retry_time_ms;
 		mutex_unlock(&priv->recv_mutex);
 
 		rv = handle_send_req(priv->user, &req, retries, retry_time_ms);
+=======
+		rv = handle_send_req(priv->user,
+				     &req,
+				     priv->default_retries,
+				     priv->default_retry_time_ms);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -558,10 +709,15 @@ static long ipmi_ioctl(struct file   *file,
 			break;
 		}
 
+<<<<<<< HEAD
 		mutex_lock(&priv->recv_mutex);
 		priv->default_retries = parms.retries;
 		priv->default_retry_time_ms = parms.retry_time_ms;
 		mutex_unlock(&priv->recv_mutex);
+=======
+		priv->default_retries = parms.retries;
+		priv->default_retry_time_ms = parms.retry_time_ms;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rv = 0;
 		break;
 	}
@@ -570,10 +726,15 @@ static long ipmi_ioctl(struct file   *file,
 	{
 		struct ipmi_timing_parms parms;
 
+<<<<<<< HEAD
 		mutex_lock(&priv->recv_mutex);
 		parms.retries = priv->default_retries;
 		parms.retry_time_ms = priv->default_retry_time_ms;
 		mutex_unlock(&priv->recv_mutex);
+=======
+		parms.retries = priv->default_retries;
+		parms.retry_time_ms = priv->default_retry_time_ms;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (copy_to_user(arg, &parms, sizeof(parms))) {
 			rv = -EFAULT;
@@ -608,16 +769,41 @@ static long ipmi_ioctl(struct file   *file,
 		rv = ipmi_set_maintenance_mode(priv->user, mode);
 		break;
 	}
+<<<<<<< HEAD
 
 	default:
 		rv = -ENOTTY;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
   
 	return rv;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_COMPAT
+=======
+/*
+ * Note: it doesn't make sense to take the BKL here but
+ *       not in compat_ipmi_ioctl. -arnd
+ */
+static long ipmi_unlocked_ioctl(struct file   *file,
+			        unsigned int  cmd,
+			        unsigned long data)
+{
+	int ret;
+
+	mutex_lock(&ipmi_mutex);
+	ret = ipmi_ioctl(file, cmd, data);
+	mutex_unlock(&ipmi_mutex);
+
+	return ret;
+}
+
+#ifdef CONFIG_COMPAT
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The following code contains code for supporting 32-bit compatible
  * ioctls on 64-bit kernels.  This allows running 32-bit apps on the
@@ -728,14 +914,18 @@ static long compat_ipmi_ioctl(struct file *filep, unsigned int cmd,
 	{
 		struct ipmi_req	rp;
 		struct compat_ipmi_req r32;
+<<<<<<< HEAD
 		int retries;
 		unsigned int retry_time_ms;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (copy_from_user(&r32, compat_ptr(arg), sizeof(r32)))
 			return -EFAULT;
 
 		get_compat_ipmi_req(&rp, &r32);
 
+<<<<<<< HEAD
 		mutex_lock(&priv->recv_mutex);
 		retries = priv->default_retries;
 		retry_time_ms = priv->default_retry_time_ms;
@@ -743,6 +933,11 @@ static long compat_ipmi_ioctl(struct file *filep, unsigned int cmd,
 
 		return handle_send_req(priv->user, &rp,
 				       retries, retry_time_ms);
+=======
+		return handle_send_req(priv->user, &rp,
+				priv->default_retries,
+				priv->default_retry_time_ms);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	case COMPAT_IPMICTL_SEND_COMMAND_SETTIME:
 	{
@@ -776,13 +971,34 @@ static long compat_ipmi_ioctl(struct file *filep, unsigned int cmd,
 		return ipmi_ioctl(filep, cmd, arg);
 	}
 }
+<<<<<<< HEAD
+=======
+
+static long unlocked_compat_ipmi_ioctl(struct file *filep, unsigned int cmd,
+				       unsigned long arg)
+{
+	int ret;
+
+	mutex_lock(&ipmi_mutex);
+	ret = compat_ipmi_ioctl(filep, cmd, arg);
+	mutex_unlock(&ipmi_mutex);
+
+	return ret;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static const struct file_operations ipmi_fops = {
 	.owner		= THIS_MODULE,
+<<<<<<< HEAD
 	.unlocked_ioctl	= ipmi_ioctl,
 #ifdef CONFIG_COMPAT
 	.compat_ioctl   = compat_ipmi_ioctl,
+=======
+	.unlocked_ioctl	= ipmi_unlocked_ioctl,
+#ifdef CONFIG_COMPAT
+	.compat_ioctl   = unlocked_compat_ipmi_ioctl,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	.open		= ipmi_open,
 	.release	= ipmi_release,

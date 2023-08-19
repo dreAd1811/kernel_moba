@@ -100,12 +100,20 @@ int udl_drm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
 	return ret;
 }
 
+<<<<<<< HEAD
 vm_fault_t udl_gem_fault(struct vm_fault *vmf)
+=======
+int udl_gem_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct udl_gem_object *obj = to_udl_bo(vma->vm_private_data);
 	struct page *page;
 	unsigned int page_offset;
+<<<<<<< HEAD
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
 
@@ -113,7 +121,21 @@ vm_fault_t udl_gem_fault(struct vm_fault *vmf)
 		return VM_FAULT_SIGBUS;
 
 	page = obj->pages[page_offset];
+<<<<<<< HEAD
 	return vmf_insert_page(vma, vmf->address, page);
+=======
+	ret = vm_insert_page(vma, vmf->address, page);
+	switch (ret) {
+	case -EAGAIN:
+	case 0:
+	case -ERESTARTSYS:
+		return VM_FAULT_NOPAGE;
+	case -ENOMEM:
+		return VM_FAULT_OOM;
+	default:
+		return VM_FAULT_SIGBUS;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int udl_gem_get_pages(struct udl_gem_object *obj)
@@ -203,10 +225,16 @@ int udl_gem_mmap(struct drm_file *file, struct drm_device *dev,
 {
 	struct udl_gem_object *gobj;
 	struct drm_gem_object *obj;
+<<<<<<< HEAD
 	struct udl_device *udl = to_udl(dev);
 	int ret = 0;
 
 	mutex_lock(&udl->gem_lock);
+=======
+	int ret = 0;
+
+	mutex_lock(&dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	obj = drm_gem_object_lookup(file, handle);
 	if (obj == NULL) {
 		ret = -ENOENT;
@@ -224,8 +252,14 @@ int udl_gem_mmap(struct drm_file *file, struct drm_device *dev,
 	*offset = drm_vma_node_offset_addr(&gobj->base.vma_node);
 
 out:
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(&gobj->base);
 unlock:
 	mutex_unlock(&udl->gem_lock);
+=======
+	drm_gem_object_put(&gobj->base);
+unlock:
+	mutex_unlock(&dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }

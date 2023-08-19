@@ -8,6 +8,10 @@
 #include <linux/reboot.h>
 
 struct device;
+<<<<<<< HEAD
+=======
+struct i2c_gpio_platform_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct i2c_board_info;
 struct spi_board_info;
 struct platform_device;
@@ -36,7 +40,12 @@ void ep93xx_register_flash(unsigned int width,
 			   resource_size_t start, resource_size_t size);
 
 void ep93xx_register_eth(struct ep93xx_eth_data *data, int copy_addr);
+<<<<<<< HEAD
 void ep93xx_register_i2c(struct i2c_board_info *devices, int num);
+=======
+void ep93xx_register_i2c(struct i2c_gpio_platform_data *data,
+			 struct i2c_board_info *devices, int num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ep93xx_register_spi(struct ep93xx_spi_info *info,
 			 struct spi_board_info *devices, int num);
 void ep93xx_register_fb(struct ep93xxfb_mach_info *data);

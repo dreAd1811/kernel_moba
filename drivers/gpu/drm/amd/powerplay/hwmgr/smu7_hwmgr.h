@@ -34,6 +34,14 @@
 #define SMU7_VOLTAGE_CONTROL_BY_SVID2               0x2
 #define SMU7_VOLTAGE_CONTROL_MERGED                 0x3
 
+<<<<<<< HEAD
+=======
+#define DPMTABLE_OD_UPDATE_SCLK     0x00000001
+#define DPMTABLE_OD_UPDATE_MCLK     0x00000002
+#define DPMTABLE_UPDATE_SCLK        0x00000004
+#define DPMTABLE_UPDATE_MCLK        0x00000008
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum gpu_pt_config_reg_type {
 	GPU_CONFIGREG_MMR = 0,
 	GPU_CONFIGREG_SMC_IND,
@@ -173,6 +181,7 @@ struct smu7_pcie_perf_range {
 	uint16_t  min;
 };
 
+<<<<<<< HEAD
 struct smu7_odn_clock_voltage_dependency_table {
 	uint32_t count;
 	phm_ppt_v1_clock_voltage_dependency_record entries[MAX_REGULAR_DPM_NUMBER];
@@ -205,6 +214,20 @@ struct smu7_hwmgr {
 	struct smu7_odn_dpm_table		odn_dpm_table;
 
 	uint32_t						voting_rights_clients[8];
+=======
+struct smu7_hwmgr {
+	struct smu7_dpm_table			dpm_table;
+	struct smu7_dpm_table			golden_dpm_table;
+
+	uint32_t						voting_rights_clients0;
+	uint32_t						voting_rights_clients1;
+	uint32_t						voting_rights_clients2;
+	uint32_t						voting_rights_clients3;
+	uint32_t						voting_rights_clients4;
+	uint32_t						voting_rights_clients5;
+	uint32_t						voting_rights_clients6;
+	uint32_t						voting_rights_clients7;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t						static_screen_threshold_unit;
 	uint32_t						static_screen_threshold;
 	uint32_t						voltage_control;
@@ -302,6 +325,10 @@ struct smu7_hwmgr {
 	struct smu7_pcie_perf_range          pcie_lane_power_saving;
 	bool                                      use_pcie_performance_levels;
 	bool                                      use_pcie_power_saving_levels;
+<<<<<<< HEAD
+=======
+	uint32_t                                  mclk_activity_target;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t                                  mclk_dpm0_activity_target;
 	uint32_t                                  low_sclk_interrupt_threshold;
 	uint32_t                                  last_mclk_dpm_enable_mask;
@@ -310,6 +337,10 @@ struct smu7_hwmgr {
 	/* ---- Power Gating States ---- */
 	bool                           uvd_power_gated;
 	bool                           vce_power_gated;
+<<<<<<< HEAD
+=======
+	bool                           samu_power_gated;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool                           need_long_memory_training;
 
 	/* Application power optimization parameters */
@@ -325,8 +356,11 @@ struct smu7_hwmgr {
 	uint32_t                              frame_time_x2;
 	uint16_t                              mem_latency_high;
 	uint16_t                              mem_latency_low;
+<<<<<<< HEAD
 	uint32_t                              vr_config;
 	struct profile_mode_setting           current_profile_setting;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* To convert to Q8.8 format for firmware */
@@ -361,6 +395,10 @@ enum SMU7_I2CLineID {
 #define SMU7_I2C_DDCVGACLK         0x4d
 
 #define SMU7_UNUSED_GPIO_PIN       0x7F
+<<<<<<< HEAD
+=======
+uint32_t smu7_get_xclk(struct pp_hwmgr *hwmgr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 uint8_t smu7_get_sleep_divider_id_from_clock(uint32_t clock,
 		uint32_t clock_insr);
 #endif

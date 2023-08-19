@@ -322,10 +322,13 @@ static const struct st_sensor_settings st_magn_sensors_settings[] = {
 				.mask = 0x07,
 			},
 		},
+<<<<<<< HEAD
 		.sim = {
 			.addr = 0x22,
 			.value = BIT(2),
 		},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.multi_read_bit = true,
 		.bootime = 2,
 	},
@@ -366,10 +369,15 @@ static const struct st_sensor_settings st_magn_sensors_settings[] = {
 			.mask = 0x10,
 		},
 		.drdy_irq = {
+<<<<<<< HEAD
 			.int1 = {
 				.addr = 0x62,
 				.mask = 0x01,
 			},
+=======
+			.addr = 0x62,
+			.mask_int1 = 0x01,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.stat_drdy = {
 				.addr = 0x67,
 				.mask = 0x07,
@@ -450,6 +458,10 @@ static const struct attribute_group st_magn_attribute_group = {
 };
 
 static const struct iio_info magn_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &st_magn_attribute_group,
 	.read_raw = &st_magn_read_raw,
 	.write_raw = &st_magn_write_raw,
@@ -458,6 +470,10 @@ static const struct iio_info magn_info = {
 
 #ifdef CONFIG_IIO_TRIGGER
 static const struct iio_trigger_ops st_magn_trigger_ops = {
+<<<<<<< HEAD
+=======
+	.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = ST_MAGN_TRIGGER_SET_STATE,
 	.validate_device = st_sensors_validate_device,
 };

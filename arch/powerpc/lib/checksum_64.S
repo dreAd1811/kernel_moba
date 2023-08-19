@@ -429,6 +429,7 @@ dstnr;	stb	r6,0(r4)
 	stw	r6,0(r8)
 	blr
 EXPORT_SYMBOL(csum_partial_copy_generic)
+<<<<<<< HEAD
 
 /*
  * __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
@@ -460,3 +461,5 @@ _GLOBAL(csum_ipv6_magic)
 	rlwinm	r3, r3, 16, 16, 31
 	blr
 EXPORT_SYMBOL(csum_ipv6_magic)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

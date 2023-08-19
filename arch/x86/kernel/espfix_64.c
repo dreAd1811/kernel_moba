@@ -155,14 +155,22 @@ void init_espfix_ap(int cpu)
 	page = cpu/ESPFIX_STACKS_PER_PAGE;
 
 	/* Did another CPU already set this up? */
+<<<<<<< HEAD
 	stack_page = READ_ONCE(espfix_pages[page]);
+=======
+	stack_page = ACCESS_ONCE(espfix_pages[page]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (likely(stack_page))
 		goto done;
 
 	mutex_lock(&espfix_init_mutex);
 
 	/* Did we race on the lock? */
+<<<<<<< HEAD
 	stack_page = READ_ONCE(espfix_pages[page]);
+=======
+	stack_page = ACCESS_ONCE(espfix_pages[page]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (stack_page)
 		goto unlock_done;
 
@@ -195,16 +203,23 @@ void init_espfix_ap(int cpu)
 
 	pte_p = pte_offset_kernel(&pmd, addr);
 	stack_page = page_address(alloc_pages_node(node, GFP_KERNEL, 0));
+<<<<<<< HEAD
 	/*
 	 * __PAGE_KERNEL_* includes _PAGE_GLOBAL, which we want since
 	 * this is mapped to userspace.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pte = __pte(__pa(stack_page) | ((__PAGE_KERNEL_RO | _PAGE_ENC) & ptemask));
 	for (n = 0; n < ESPFIX_PTE_CLONES; n++)
 		set_pte(&pte_p[n*PTE_STRIDE], pte);
 
 	/* Job is done for this CPU and any CPU which shares this page */
+<<<<<<< HEAD
 	WRITE_ONCE(espfix_pages[page], stack_page);
+=======
+	ACCESS_ONCE(espfix_pages[page]) = stack_page;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unlock_done:
 	mutex_unlock(&espfix_init_mutex);

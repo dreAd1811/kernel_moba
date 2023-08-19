@@ -28,6 +28,10 @@ struct shmob_drm_crtc {
 	int dpms;
 
 	const struct shmob_drm_format_info *format;
+<<<<<<< HEAD
+=======
+	void *cache;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long dma[2];
 	unsigned int line_size;
 	bool started;

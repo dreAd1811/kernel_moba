@@ -31,7 +31,10 @@
 
 #include "mei-trace.h"
 
+<<<<<<< HEAD
 #define TXE_HBUF_DEPTH (PAYLOAD_SIZE / MEI_SLOT_SIZE)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * mei_txe_reg_read - Reads 32bit data from the txe device
@@ -682,6 +685,12 @@ static void mei_txe_hw_config(struct mei_device *dev)
 
 	struct mei_txe_hw *hw = to_txe_hw(dev);
 
+<<<<<<< HEAD
+=======
+	/* Doesn't change in runtime */
+	dev->hbuf_depth = PAYLOAD_SIZE / 4;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw->aliveness = mei_txe_aliveness_get(dev);
 	hw->readiness = mei_txe_readiness_get(dev);
 
@@ -689,10 +698,15 @@ static void mei_txe_hw_config(struct mei_device *dev)
 		hw->aliveness, hw->readiness);
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * mei_txe_write - writes a message to device.
  *
  * @dev: the device structure
+<<<<<<< HEAD
  * @hdr: header of message
  * @hdr_len: header length in bytes - must multiplication of a slot (4bytes)
  * @data: payload
@@ -717,6 +731,34 @@ static int mei_txe_write(struct mei_device *dev,
 	dev_dbg(dev->dev, MEI_HDR_FMT, MEI_HDR_PRM((struct mei_msg_hdr *)hdr));
 
 	dw_cnt = mei_data2slots(hdr_len + data_len);
+=======
+ * @header: header of message
+ * @buf: message buffer will be written
+ *
+ * Return: 0 if success, <0 - otherwise.
+ */
+
+static int mei_txe_write(struct mei_device *dev,
+			 struct mei_msg_hdr *header,
+			 const unsigned char *buf)
+{
+	struct mei_txe_hw *hw = to_txe_hw(dev);
+	unsigned long rem;
+	unsigned long length;
+	int slots = dev->hbuf_depth;
+	u32 *reg_buf = (u32 *)buf;
+	u32 dw_cnt;
+	int i;
+
+	if (WARN_ON(!header || !buf))
+		return -EINVAL;
+
+	length = header->length;
+
+	dev_dbg(dev->dev, MEI_HDR_FMT, MEI_HDR_PRM(header));
+
+	dw_cnt = mei_data2slots(length);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dw_cnt > slots)
 		return -EMSGSIZE;
 
@@ -734,6 +776,7 @@ static int mei_txe_write(struct mei_device *dev,
 		return -EAGAIN;
 	}
 
+<<<<<<< HEAD
 	reg_buf = hdr;
 	for (i = 0; i < hdr_len / MEI_SLOT_SIZE; i++)
 		mei_txe_input_payload_write(dev, i, reg_buf[i]);
@@ -748,6 +791,19 @@ static int mei_txe_write(struct mei_device *dev,
 
 		memcpy(&reg, (const u8 *)data + data_len - rem, rem);
 		mei_txe_input_payload_write(dev, i + j, reg);
+=======
+	mei_txe_input_payload_write(dev, 0, *((u32 *)header));
+
+	for (i = 0; i < length / 4; i++)
+		mei_txe_input_payload_write(dev, i + 1, reg_buf[i]);
+
+	rem = length & 0x3;
+	if (rem > 0) {
+		u32 reg = 0;
+
+		memcpy(&reg, &buf[length - rem], rem);
+		mei_txe_input_payload_write(dev, i + 1, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* after each write the whole buffer is consumed */
@@ -760,6 +816,7 @@ static int mei_txe_write(struct mei_device *dev,
 }
 
 /**
+<<<<<<< HEAD
  * mei_txe_hbuf_depth - mimics the me hbuf circular buffer
  *
  * @dev: the device structure
@@ -769,6 +826,17 @@ static int mei_txe_write(struct mei_device *dev,
 static u32 mei_txe_hbuf_depth(const struct mei_device *dev)
 {
 	return TXE_HBUF_DEPTH;
+=======
+ * mei_txe_hbuf_max_len - mimics the me hbuf circular buffer
+ *
+ * @dev: the device structure
+ *
+ * Return: the PAYLOAD_SIZE - 4
+ */
+static size_t mei_txe_hbuf_max_len(const struct mei_device *dev)
+{
+	return PAYLOAD_SIZE - sizeof(struct mei_msg_hdr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -776,7 +844,11 @@ static u32 mei_txe_hbuf_depth(const struct mei_device *dev)
  *
  * @dev: the device structure
  *
+<<<<<<< HEAD
  * Return: always TXE_HBUF_DEPTH
+=======
+ * Return: always hbuf_depth
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int mei_txe_hbuf_empty_slots(struct mei_device *dev)
 {
@@ -795,7 +867,11 @@ static int mei_txe_hbuf_empty_slots(struct mei_device *dev)
 static int mei_txe_count_full_read_slots(struct mei_device *dev)
 {
 	/* read buffers has static size */
+<<<<<<< HEAD
 	return TXE_HBUF_DEPTH;
+=======
+	return  PAYLOAD_SIZE / 4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -837,7 +913,11 @@ static int mei_txe_read(struct mei_device *dev,
 	dev_dbg(dev->dev, "buffer-length = %lu buf[0]0x%08X\n",
 		len, mei_txe_out_data_read(dev, 0));
 
+<<<<<<< HEAD
 	for (i = 0; i < len / MEI_SLOT_SIZE; i++) {
+=======
+	for (i = 0; i < len / 4; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* skip header: index starts from 1 */
 		reg = mei_txe_out_data_read(dev, i + 1);
 		dev_dbg(dev->dev, "buf[%d] = 0x%08X\n", i, reg);
@@ -1125,9 +1205,13 @@ irqreturn_t mei_txe_irq_thread_handler(int irq, void *dev_id)
 	if (test_and_clear_bit(TXE_INTR_OUT_DB_BIT, &hw->intr_cause)) {
 		/* Read from TXE */
 		rets = mei_irq_read_handler(dev, &cmpl_list, &slots);
+<<<<<<< HEAD
 		if (rets &&
 		    (dev->dev_state != MEI_DEV_RESETTING &&
 		     dev->dev_state != MEI_DEV_POWER_DOWN)) {
+=======
+		if (rets && dev->dev_state != MEI_DEV_RESETTING) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev->dev,
 				"mei_irq_read_handler ret = %d.\n", rets);
 
@@ -1138,7 +1222,11 @@ irqreturn_t mei_txe_irq_thread_handler(int irq, void *dev_id)
 	/* Input Ready: Detection if host can write to SeC */
 	if (test_and_clear_bit(TXE_INTR_IN_READY_BIT, &hw->intr_cause)) {
 		dev->hbuf_is_ready = true;
+<<<<<<< HEAD
 		hw->slots = TXE_HBUF_DEPTH;
+=======
+		hw->slots = dev->hbuf_depth;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (hw->aliveness && dev->hbuf_is_ready) {
@@ -1184,7 +1272,11 @@ static const struct mei_hw_ops mei_txe_hw_ops = {
 
 	.hbuf_free_slots = mei_txe_hbuf_empty_slots,
 	.hbuf_is_ready = mei_txe_is_input_ready,
+<<<<<<< HEAD
 	.hbuf_depth = mei_txe_hbuf_depth,
+=======
+	.hbuf_max_len = mei_txe_hbuf_max_len,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.write = mei_txe_write,
 

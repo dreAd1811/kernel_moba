@@ -235,7 +235,10 @@ static const struct sdhci_pltfm_data sdhci_bcm2835_pltfm_data = {
 		  SDHCI_QUIRK_DATA_TIMEOUT_USES_SDCLK |
 		  SDHCI_QUIRK_MISSING_CAPS |
 		  SDHCI_QUIRK_NO_HISPD_BIT,
+<<<<<<< HEAD
 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ops = &sdhci_iproc_32only_ops,
 };
 

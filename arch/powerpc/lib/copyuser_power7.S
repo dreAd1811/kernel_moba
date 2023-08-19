@@ -19,11 +19,14 @@
  */
 #include <asm/ppc_asm.h>
 
+<<<<<<< HEAD
 #ifndef SELFTEST_CASE
 /* 0 == don't use VMX, 1 == use VMX */
 #define SELFTEST_CASE	0
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef __BIG_ENDIAN__
 #define LVS(VRT,RA,RB)		lvsl	VRT,RA,RB
 #define VPERM(VRT,VRA,VRB,VRC)	vperm	VRT,VRA,VRB,VRC
@@ -85,6 +88,10 @@
 
 
 _GLOBAL(__copy_tofrom_user_power7)
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_ALTIVEC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmpldi	r5,16
 	cmpldi	cr1,r5,3328
 
@@ -93,12 +100,24 @@ _GLOBAL(__copy_tofrom_user_power7)
 	std	r5,-STACKFRAMESIZE+STK_REG(R29)(r1)
 
 	blt	.Lshort_copy
+<<<<<<< HEAD
 
 #ifdef CONFIG_ALTIVEC
 test_feature = SELFTEST_CASE
 BEGIN_FTR_SECTION
 	bgt	cr1,.Lvmx_copy
 END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
+=======
+	bge	cr1,.Lvmx_copy
+#else
+	cmpldi	r5,16
+
+	std	r3,-STACKFRAMESIZE+STK_REG(R31)(r1)
+	std	r4,-STACKFRAMESIZE+STK_REG(R30)(r1)
+	std	r5,-STACKFRAMESIZE+STK_REG(R29)(r1)
+
+	blt	.Lshort_copy
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 .Lnonvmx_copy:
@@ -279,8 +298,13 @@ err1;	stb	r0,0(r3)
 	addi	r1,r1,STACKFRAMESIZE
 	b	.Lnonvmx_copy
 
+<<<<<<< HEAD
 .Lvmx_copy:
 #ifdef CONFIG_ALTIVEC
+=======
+#ifdef CONFIG_ALTIVEC
+.Lvmx_copy:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mflr	r0
 	std	r0,16(r1)
 	stdu	r1,-STACKFRAMESIZE(r1)
@@ -313,6 +337,11 @@ err1;	stb	r0,0(r3)
 	lis	r8,0x8000	/* GO=1 */
 	clrldi	r8,r8,32
 
+<<<<<<< HEAD
+=======
+.machine push
+.machine "power4"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* setup read stream 0 */
 	dcbt	0,r6,0b01000   /* addr from */
 	dcbt	0,r7,0b01010   /* length and depth from */
@@ -321,6 +350,10 @@ err1;	stb	r0,0(r3)
 	dcbtst	0,r10,0b01010  /* length and depth to */
 	eieio
 	dcbt	0,r8,0b01010	/* all streams GO */
+<<<<<<< HEAD
+=======
+.machine pop
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	beq	cr1,.Lunwind_stack_nonvmx_copy
 

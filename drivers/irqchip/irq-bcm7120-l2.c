@@ -318,6 +318,12 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	pr_info("registered %s intc (mem: 0x%p, parent IRQ(s): %d)\n",
+			intc_name, data->map_base[0], data->num_parent_irqs);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out_free_domain:

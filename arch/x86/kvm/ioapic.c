@@ -36,6 +36,10 @@
 #include <linux/io.h>
 #include <linux/slab.h>
 #include <linux/export.h>
+<<<<<<< HEAD
+=======
+#include <linux/nospec.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/processor.h>
 #include <asm/page.h>
 #include <asm/current.h>
@@ -73,6 +77,7 @@ static unsigned long ioapic_read_indirect(struct kvm_ioapic *ioapic,
 	default:
 		{
 			u32 redir_index = (ioapic->ioregsel - 0x10) >> 1;
+<<<<<<< HEAD
 			u64 redir_content;
 
 			if (redir_index < IOAPIC_NUM_PINS)
@@ -80,6 +85,16 @@ static unsigned long ioapic_read_indirect(struct kvm_ioapic *ioapic,
 					ioapic->redirtbl[redir_index].bits;
 			else
 				redir_content = ~0ULL;
+=======
+			u64 redir_content = ~0ULL;
+
+			if (redir_index < IOAPIC_NUM_PINS) {
+				u32 index = array_index_nospec(
+					redir_index, IOAPIC_NUM_PINS);
+
+				redir_content = ioapic->redirtbl[index].bits;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			result = (ioapic->ioregsel & 0x1) ?
 			    (redir_content >> 32) & 0xffffffff :
@@ -209,12 +224,21 @@ static int ioapic_set_irq(struct kvm_ioapic *ioapic, unsigned int irq,
 
 	old_irr = ioapic->irr;
 	ioapic->irr |= mask;
+<<<<<<< HEAD
 	if (edge) {
 		ioapic->irr_delivered &= ~mask;
 		if (old_irr == ioapic->irr) {
 			ret = 0;
 			goto out;
 		}
+=======
+	if (edge)
+		ioapic->irr_delivered &= ~mask;
+	if ((edge && old_irr == ioapic->irr) ||
+	    (!edge && entry.fields.remote_irr)) {
+		ret = 0;
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = ioapic_service(ioapic, irq, line_status);
@@ -297,6 +321,10 @@ static void ioapic_write_indirect(struct kvm_ioapic *ioapic, u32 val)
 		ioapic_debug("change redir index %x val %x\n", index, val);
 		if (index >= IOAPIC_NUM_PINS)
 			return;
+<<<<<<< HEAD
+=======
+		index = array_index_nospec(index, IOAPIC_NUM_PINS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		e = &ioapic->redirtbl[index];
 		mask_before = e->fields.mask;
 		/* Preserve read-only fields */
@@ -338,9 +366,13 @@ static int ioapic_service(struct kvm_ioapic *ioapic, int irq, bool line_status)
 	struct kvm_lapic_irq irqe;
 	int ret;
 
+<<<<<<< HEAD
 	if (entry->fields.mask ||
 	    (entry->fields.trig_mode == IOAPIC_LEVEL_TRIG &&
 	    entry->fields.remote_irr))
+=======
+	if (entry->fields.mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 
 	ioapic_debug("dest=%x dest_mode=%x delivery_mode=%x "

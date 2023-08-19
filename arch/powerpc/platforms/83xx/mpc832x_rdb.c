@@ -204,7 +204,11 @@ static void __init mpc832x_rdb_setup_arch(void)
 		par_io_init(np);
 		of_node_put(np);
 
+<<<<<<< HEAD
 		for_each_node_by_name(np, "ucc")
+=======
+		for (np = NULL; (np = of_find_node_by_name(np, "ucc")) != NULL;)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			par_io_of_config(np);
 	}
 #endif				/* CONFIG_QUICC_ENGINE */

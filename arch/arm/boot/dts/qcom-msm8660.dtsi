@@ -124,6 +124,7 @@
 			reg = <0x900000 0x4000>;
 		};
 
+<<<<<<< HEAD
 		gsbi6: gsbi@16500000 {
 			compatible = "qcom,gsbi-v1.0.0";
 			cell-index = <12>;
@@ -191,6 +192,8 @@
 				status = "disabled";
 			};
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		gsbi8: gsbi@19800000 {
 			compatible = "qcom,gsbi-v1.0.0";
@@ -384,6 +387,7 @@
 					#size-cells = <0>;
 					#io-channel-cells = <2>;
 
+<<<<<<< HEAD
 					vcoin: adc-channel@0 {
 						reg = <0x00 0x00>;
 					};
@@ -415,6 +419,39 @@
 						reg = <0x00 0x0e>;
 					};
 					ref_muxoff: adc-channel@f {
+=======
+					vcoin: adc-channel@00 {
+						reg = <0x00 0x00>;
+					};
+					vbat: adc-channel@01 {
+						reg = <0x00 0x01>;
+					};
+					dcin: adc-channel@02 {
+						reg = <0x00 0x02>;
+					};
+					ichg: adc-channel@03 {
+						reg = <0x00 0x03>;
+					};
+					vph_pwr: adc-channel@04 {
+						reg = <0x00 0x04>;
+					};
+					usb_vbus: adc-channel@0a {
+						reg = <0x00 0x0a>;
+					};
+					die_temp: adc-channel@0b {
+						reg = <0x00 0x0b>;
+					};
+					ref_625mv: adc-channel@0c {
+						reg = <0x00 0x0c>;
+					};
+					ref_1250mv: adc-channel@0d {
+						reg = <0x00 0x0d>;
+					};
+					ref_325mv: adc-channel@0e {
+						reg = <0x00 0x0e>;
+					};
+					ref_muxoff: adc-channel@0f {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						reg = <0x00 0x0f>;
 					};
 				};
@@ -452,7 +489,11 @@
 			clock-names = "ram";
 
 			rpmcc: clock-controller {
+<<<<<<< HEAD
 				compatible	= "qcom,rpmcc-msm8660", "qcom,rpmcc";
+=======
+				compatible	= "qcom,rpmcc-apq8660", "qcom,rpmcc";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				#clock-cells = <1>;
 			};
 

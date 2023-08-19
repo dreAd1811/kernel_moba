@@ -67,13 +67,22 @@ MODULE_DESCRIPTION(KBUILD_MODNAME "CAN netdevice driver");
  * otherwise 11 bit SFF messages.
  */
 static int msgobj15_eff;
+<<<<<<< HEAD
 module_param(msgobj15_eff, int, 0444);
+=======
+module_param(msgobj15_eff, int, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(msgobj15_eff, "Extended 29-bit frames for message object 15 "
 		 "(default: 11-bit standard frames)");
 
 static int i82527_compat;
+<<<<<<< HEAD
 module_param(i82527_compat, int, 0444);
 MODULE_PARM_DESC(i82527_compat, "Strict Intel 82527 compatibility mode "
+=======
+module_param(i82527_compat, int, S_IRUGO);
+MODULE_PARM_DESC(i82527_compat, "Strict Intel 82527 comptibility mode "
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 "without using additional functions");
 
 /*

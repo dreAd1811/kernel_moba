@@ -36,6 +36,7 @@
 #include "hns_roce_hem.h"
 #include "hns_roce_common.h"
 
+<<<<<<< HEAD
 #define DMA_ADDR_T_SHIFT		12
 #define BT_BA_SHIFT			32
 
@@ -195,6 +196,16 @@ static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
 					       int npages,
 					       unsigned long hem_alloc_size,
 					       gfp_t gfp_mask)
+=======
+#define HNS_ROCE_HEM_ALLOC_SIZE		(1 << 17)
+#define HNS_ROCE_TABLE_CHUNK_SIZE	(1 << 17)
+
+#define DMA_ADDR_T_SHIFT		12
+#define BT_BA_SHIFT			32
+
+struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev, int npages,
+					gfp_t gfp_mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hns_roce_hem_chunk *chunk = NULL;
 	struct hns_roce_hem *hem;
@@ -212,7 +223,11 @@ static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
 	hem->refcount = 0;
 	INIT_LIST_HEAD(&hem->chunk_list);
 
+<<<<<<< HEAD
 	order = get_order(hem_alloc_size);
+=======
+	order = get_order(HNS_ROCE_HEM_ALLOC_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (npages > 0) {
 		if (!chunk) {
@@ -224,7 +239,10 @@ static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
 			sg_init_table(chunk->mem, HNS_ROCE_HEM_CHUNK_LEN);
 			chunk->npages = 0;
 			chunk->nsg = 0;
+<<<<<<< HEAD
 			memset(chunk->buf, 0, sizeof(chunk->buf));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			list_add_tail(&chunk->list, &hem->chunk_list);
 		}
 
@@ -236,12 +254,21 @@ static struct hns_roce_hem *hns_roce_alloc_hem(struct hns_roce_dev *hr_dev,
 		 * memory, directly return fail.
 		 */
 		mem = &chunk->mem[chunk->npages];
+<<<<<<< HEAD
 		buf = dma_alloc_coherent(hr_dev->dev, PAGE_SIZE << order,
+=======
+		buf = dma_alloc_coherent(&hr_dev->pdev->dev, PAGE_SIZE << order,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				&sg_dma_address(mem), gfp_mask);
 		if (!buf)
 			goto fail;
 
+<<<<<<< HEAD
 		chunk->buf[chunk->npages] = buf;
+=======
+		sg_set_buf(mem, buf, PAGE_SIZE << order);
+		WARN_ON(mem->offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sg_dma_len(mem) = PAGE_SIZE << order;
 
 		++chunk->npages;
@@ -266,9 +293,15 @@ void hns_roce_free_hem(struct hns_roce_dev *hr_dev, struct hns_roce_hem *hem)
 
 	list_for_each_entry_safe(chunk, tmp, &hem->chunk_list, list) {
 		for (i = 0; i < chunk->npages; ++i)
+<<<<<<< HEAD
 			dma_free_coherent(hr_dev->dev,
 				   sg_dma_len(&chunk->mem[i]),
 				   chunk->buf[i],
+=======
+			dma_free_coherent(&hr_dev->pdev->dev,
+				   chunk->mem[i].length,
+				   lowmem_page_address(sg_page(&chunk->mem[i])),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   sg_dma_address(&chunk->mem[i]));
 		kfree(chunk);
 	}
@@ -279,8 +312,13 @@ void hns_roce_free_hem(struct hns_roce_dev *hr_dev, struct hns_roce_hem *hem)
 static int hns_roce_set_hem(struct hns_roce_dev *hr_dev,
 			    struct hns_roce_hem_table *table, unsigned long obj)
 {
+<<<<<<< HEAD
 	spinlock_t *lock = &hr_dev->bt_cmd_lock;
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+	spinlock_t *lock = &hr_dev->bt_cmd_lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long end = 0;
 	unsigned long flags;
 	struct hns_roce_hem_iter iter;
@@ -293,7 +331,11 @@ static int hns_roce_set_hem(struct hns_roce_dev *hr_dev,
 
 	/* Find the HEM(Hardware Entry Memory) entry */
 	unsigned long i = (obj & (table->num_obj - 1)) /
+<<<<<<< HEAD
 			  (table->table_chunk_size / table->obj_size);
+=======
+			  (HNS_ROCE_TABLE_CHUNK_SIZE / table->obj_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (table->type) {
 	case HEM_TYPE_QPC:
@@ -342,7 +384,11 @@ static int hns_roce_set_hem(struct hns_roce_dev *hr_dev,
 			} else {
 				break;
 			}
+<<<<<<< HEAD
 			mdelay(HW_SYNC_SLEEP_TIME_INTERVAL);
+=======
+			msleep(HW_SYNC_SLEEP_TIME_INTERVAL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		bt_cmd_l = (u32)bt_ba;
@@ -360,6 +406,7 @@ static int hns_roce_set_hem(struct hns_roce_dev *hr_dev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int hns_roce_table_mhop_get(struct hns_roce_dev *hr_dev,
 				   struct hns_roce_hem_table *table,
 				   unsigned long obj)
@@ -542,6 +589,16 @@ int hns_roce_table_get(struct hns_roce_dev *hr_dev,
 		return hns_roce_table_mhop_get(hr_dev, table, obj);
 
 	i = (obj & (table->num_obj - 1)) / (table->table_chunk_size /
+=======
+int hns_roce_table_get(struct hns_roce_dev *hr_dev,
+		       struct hns_roce_hem_table *table, unsigned long obj)
+{
+	struct device *dev = &hr_dev->pdev->dev;
+	int ret = 0;
+	unsigned long i;
+
+	i = (obj & (table->num_obj - 1)) / (HNS_ROCE_TABLE_CHUNK_SIZE /
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	     table->obj_size);
 
 	mutex_lock(&table->mutex);
@@ -552,8 +609,12 @@ int hns_roce_table_get(struct hns_roce_dev *hr_dev,
 	}
 
 	table->hem[i] = hns_roce_alloc_hem(hr_dev,
+<<<<<<< HEAD
 				       table->table_chunk_size >> PAGE_SHIFT,
 				       table->table_chunk_size,
+=======
+				       HNS_ROCE_TABLE_CHUNK_SIZE >> PAGE_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       (table->lowmem ? GFP_KERNEL :
 					GFP_HIGHUSER) | __GFP_NOWARN);
 	if (!table->hem[i]) {
@@ -563,8 +624,11 @@ int hns_roce_table_get(struct hns_roce_dev *hr_dev,
 
 	/* Set HEM base address(128K/page, pa) to Hardware */
 	if (hns_roce_set_hem(hr_dev, table, obj)) {
+<<<<<<< HEAD
 		hns_roce_free_hem(hr_dev, table->hem[i]);
 		table->hem[i] = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENODEV;
 		dev_err(dev, "set HEM base address to HW failed.\n");
 		goto out;
@@ -576,6 +640,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void hns_roce_table_mhop_put(struct hns_roce_dev *hr_dev,
 				    struct hns_roce_hem_table *table,
 				    unsigned long obj,
@@ -703,12 +768,26 @@ void hns_roce_table_put(struct hns_roce_dev *hr_dev,
 
 	i = (obj & (table->num_obj - 1)) /
 	    (table->table_chunk_size / table->obj_size);
+=======
+void hns_roce_table_put(struct hns_roce_dev *hr_dev,
+			struct hns_roce_hem_table *table, unsigned long obj)
+{
+	struct device *dev = &hr_dev->pdev->dev;
+	unsigned long i;
+
+	i = (obj & (table->num_obj - 1)) /
+	    (HNS_ROCE_TABLE_CHUNK_SIZE / table->obj_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&table->mutex);
 
 	if (--table->hem[i]->refcount == 0) {
 		/* Clear HEM base address */
+<<<<<<< HEAD
 		if (hr_dev->hw->clear_hem(hr_dev, table, obj, 0))
+=======
+		if (hr_dev->hw->clear_hem(hr_dev, table, obj))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_warn(dev, "Clear HEM base address failed.\n");
 
 		hns_roce_free_hem(hr_dev, table->hem[i]);
@@ -718,6 +797,7 @@ void hns_roce_table_put(struct hns_roce_dev *hr_dev,
 	mutex_unlock(&table->mutex);
 }
 
+<<<<<<< HEAD
 void *hns_roce_table_find(struct hns_roce_dev *hr_dev,
 			  struct hns_roce_hem_table *table,
 			  unsigned long obj, dma_addr_t *dma_handle)
@@ -733,11 +813,23 @@ void *hns_roce_table_find(struct hns_roce_dev *hr_dev,
 	int length;
 	int i, j;
 	u32 hem_idx = 0;
+=======
+void *hns_roce_table_find(struct hns_roce_hem_table *table, unsigned long obj,
+			  dma_addr_t *dma_handle)
+{
+	struct hns_roce_hem_chunk *chunk;
+	unsigned long idx;
+	int i;
+	int offset, dma_offset;
+	struct hns_roce_hem *hem;
+	struct page *page = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!table->lowmem)
 		return NULL;
 
 	mutex_lock(&table->mutex);
+<<<<<<< HEAD
 
 	if (!hns_roce_check_whether_mhop(hr_dev, table->type)) {
 		obj_per_chunk = table->table_chunk_size / table->obj_size;
@@ -763,12 +855,18 @@ void *hns_roce_table_find(struct hns_roce_dev *hr_dev,
 		if (mhop.hop_num == 2)
 			dma_offset = offset = 0;
 	}
+=======
+	idx = (obj & (table->num_obj - 1)) * table->obj_size;
+	hem = table->hem[idx / HNS_ROCE_TABLE_CHUNK_SIZE];
+	dma_offset = offset = idx % HNS_ROCE_TABLE_CHUNK_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!hem)
 		goto out;
 
 	list_for_each_entry(chunk, &hem->chunk_list, list) {
 		for (i = 0; i < chunk->npages; ++i) {
+<<<<<<< HEAD
 			length = sg_dma_len(&chunk->mem[i]);
 			if (dma_handle && dma_offset >= 0) {
 				if (length > (u32)dma_offset)
@@ -782,19 +880,40 @@ void *hns_roce_table_find(struct hns_roce_dev *hr_dev,
 				goto out;
 			}
 			offset -= length;
+=======
+			if (dma_handle && dma_offset >= 0) {
+				if (sg_dma_len(&chunk->mem[i]) >
+				    (u32)dma_offset)
+					*dma_handle = sg_dma_address(
+						&chunk->mem[i]) + dma_offset;
+				dma_offset -= sg_dma_len(&chunk->mem[i]);
+			}
+
+			if (chunk->mem[i].length > (u32)offset) {
+				page = sg_page(&chunk->mem[i]);
+				goto out;
+			}
+			offset -= chunk->mem[i].length;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 out:
 	mutex_unlock(&table->mutex);
+<<<<<<< HEAD
 	return addr;
 }
 EXPORT_SYMBOL_GPL(hns_roce_table_find);
+=======
+	return page ? lowmem_page_address(page) + offset : NULL;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int hns_roce_table_get_range(struct hns_roce_dev *hr_dev,
 			     struct hns_roce_hem_table *table,
 			     unsigned long start, unsigned long end)
 {
+<<<<<<< HEAD
 	struct hns_roce_hem_mhop mhop;
 	unsigned long inc = table->table_chunk_size / table->obj_size;
 	unsigned long i;
@@ -804,6 +923,11 @@ int hns_roce_table_get_range(struct hns_roce_dev *hr_dev,
 		hns_roce_calc_hem_mhop(hr_dev, table, NULL, &mhop);
 		inc = mhop.bt_chunk_size / table->obj_size;
 	}
+=======
+	unsigned long inc = HNS_ROCE_TABLE_CHUNK_SIZE / table->obj_size;
+	unsigned long i = 0;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate MTT entry memory according to chunk(128K) */
 	for (i = start; i <= end; i += inc) {
@@ -826,6 +950,7 @@ void hns_roce_table_put_range(struct hns_roce_dev *hr_dev,
 			      struct hns_roce_hem_table *table,
 			      unsigned long start, unsigned long end)
 {
+<<<<<<< HEAD
 	struct hns_roce_hem_mhop mhop;
 	unsigned long inc = table->table_chunk_size / table->obj_size;
 	unsigned long i;
@@ -836,6 +961,12 @@ void hns_roce_table_put_range(struct hns_roce_dev *hr_dev,
 	}
 
 	for (i = start; i <= end; i += inc)
+=======
+	unsigned long i;
+
+	for (i = start; i <= end;
+		i += HNS_ROCE_TABLE_CHUNK_SIZE / table->obj_size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hns_roce_table_put(hr_dev, table, i);
 }
 
@@ -844,6 +975,7 @@ int hns_roce_init_hem_table(struct hns_roce_dev *hr_dev,
 			    unsigned long obj_size, unsigned long nobj,
 			    int use_lowmem)
 {
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	unsigned long obj_per_chunk;
 	unsigned long num_hem;
@@ -958,6 +1090,17 @@ int hns_roce_init_hem_table(struct hns_roce_dev *hr_dev,
 				goto err_kcalloc_l0_dma;
 		}
 	}
+=======
+	unsigned long obj_per_chunk;
+	unsigned long num_hem;
+
+	obj_per_chunk = HNS_ROCE_TABLE_CHUNK_SIZE / obj_size;
+	num_hem = (nobj + obj_per_chunk - 1) / obj_per_chunk;
+
+	table->hem = kcalloc(num_hem, sizeof(*table->hem), GFP_KERNEL);
+	if (!table->hem)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	table->type = type;
 	table->num_hem = num_hem;
@@ -967,6 +1110,7 @@ int hns_roce_init_hem_table(struct hns_roce_dev *hr_dev,
 	mutex_init(&table->mutex);
 
 	return 0;
+<<<<<<< HEAD
 
 err_kcalloc_l0_dma:
 	kfree(table->bt_l0);
@@ -1016,11 +1160,14 @@ static void hns_roce_cleanup_mhop_hem_table(struct hns_roce_dev *hr_dev,
 	table->bt_l0 = NULL;
 	kfree(table->bt_l0_dma_addr);
 	table->bt_l0_dma_addr = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void hns_roce_cleanup_hem_table(struct hns_roce_dev *hr_dev,
 				struct hns_roce_hem_table *table)
 {
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	unsigned long i;
 
@@ -1033,6 +1180,15 @@ void hns_roce_cleanup_hem_table(struct hns_roce_dev *hr_dev,
 		if (table->hem[i]) {
 			if (hr_dev->hw->clear_hem(hr_dev, table,
 			    i * table->table_chunk_size / table->obj_size, 0))
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+	unsigned long i;
+
+	for (i = 0; i < table->num_hem; ++i)
+		if (table->hem[i]) {
+			if (hr_dev->hw->clear_hem(hr_dev, table,
+			    i * HNS_ROCE_TABLE_CHUNK_SIZE / table->obj_size))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dev_err(dev, "Clear HEM base address failed.\n");
 
 			hns_roce_free_hem(hr_dev, table->hem[i]);
@@ -1044,6 +1200,7 @@ void hns_roce_cleanup_hem_table(struct hns_roce_dev *hr_dev,
 void hns_roce_cleanup_hem(struct hns_roce_dev *hr_dev)
 {
 	hns_roce_cleanup_hem_table(hr_dev, &hr_dev->cq_table.table);
+<<<<<<< HEAD
 	if (hr_dev->caps.trrl_entry_sz)
 		hns_roce_cleanup_hem_table(hr_dev,
 					   &hr_dev->qp_table.trrl_table);
@@ -1053,5 +1210,10 @@ void hns_roce_cleanup_hem(struct hns_roce_dev *hr_dev)
 	if (hns_roce_check_whether_mhop(hr_dev, HEM_TYPE_CQE))
 		hns_roce_cleanup_hem_table(hr_dev,
 					   &hr_dev->mr_table.mtt_cqe_table);
+=======
+	hns_roce_cleanup_hem_table(hr_dev, &hr_dev->qp_table.irrl_table);
+	hns_roce_cleanup_hem_table(hr_dev, &hr_dev->qp_table.qp_table);
+	hns_roce_cleanup_hem_table(hr_dev, &hr_dev->mr_table.mtpt_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hns_roce_cleanup_hem_table(hr_dev, &hr_dev->mr_table.mtt_table);
 }

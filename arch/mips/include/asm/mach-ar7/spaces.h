@@ -17,6 +17,12 @@
 #define PAGE_OFFSET	_AC(0x94000000, UL)
 #define PHYS_OFFSET	_AC(0x14000000, UL)
 
+<<<<<<< HEAD
+=======
+#define UNCAC_BASE	_AC(0xb4000000, UL)	/* 0xa0000000 + PHYS_OFFSET */
+#define IO_BASE		UNCAC_BASE
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mach-generic/spaces.h>
 
 #endif /* __ASM_AR7_SPACES_H */

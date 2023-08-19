@@ -6,4 +6,9 @@ BUILTIN_DTB :=
 endif
 obj-y += $(BUILTIN_DTB)
 
+<<<<<<< HEAD
+=======
+clean-files := *.dtb.S
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #DTC_FLAGS ?= -p 1024

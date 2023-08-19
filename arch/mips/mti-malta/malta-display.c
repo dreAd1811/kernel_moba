@@ -36,10 +36,17 @@ void mips_display_message(const char *str)
 	}
 }
 
+<<<<<<< HEAD
 static void scroll_display_message(struct timer_list *unused);
 static DEFINE_TIMER(mips_scroll_timer, scroll_display_message);
 
 static void scroll_display_message(struct timer_list *unused)
+=======
+static void scroll_display_message(unsigned long data);
+static DEFINE_TIMER(mips_scroll_timer, scroll_display_message, HZ, 0);
+
+static void scroll_display_message(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	mips_display_message(&display_string[display_count++]);
 	if (display_count == max_display_count)

@@ -435,7 +435,11 @@ static int n2rng_data_read(struct hwrng *rng, u32 *data)
 			*data = np->test_data & 0xffffffff;
 			len = 4;
 		} else {
+<<<<<<< HEAD
 			dev_err(&np->op->dev, "RNG error, retesting\n");
+=======
+			dev_err(&np->op->dev, "RNG error, restesting\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			np->flags &= ~N2RNG_FLAG_READY;
 			if (!(np->flags & N2RNG_FLAG_SHUTDOWN))
 				schedule_delayed_work(&np->work, 0);

@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2014-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2017, 2019-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -14,18 +27,29 @@
 #include <linux/platform_device.h>
 #include <linux/spinlock.h>
 #include <linux/ratelimit.h>
+<<<<<<< HEAD
 #include <linux/kmemleak.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "diagchar.h"
 #include "diagfwd.h"
 #include "diag_mux.h"
 #include "diag_usb.h"
 #include "diag_memorydevice.h"
+<<<<<<< HEAD
+=======
+#include "diag_pcie.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "diagfwd_peripheral.h"
 #include "diag_ipc_logging.h"
 
 struct diag_mux_state_t *diag_mux;
 static struct diag_logger_t usb_logger;
 static struct diag_logger_t md_logger;
+<<<<<<< HEAD
+=======
+static struct diag_logger_t pcie_logger;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct diag_logger_ops usb_log_ops = {
 	.open = diag_usb_connect_all,
@@ -49,6 +73,19 @@ static struct diag_logger_ops md_log_ops = {
 	.close_peripheral = diag_md_close_peripheral,
 };
 
+<<<<<<< HEAD
+=======
+static struct diag_logger_ops pcie_log_ops = {
+	.open = diag_pcie_connect_all,
+	.close = diag_pcie_disconnect_all,
+	.open_device = diag_pcie_connect_device,
+	.close_device = diag_pcie_disconnect_device,
+	.queue_read = NULL,
+	.write = diag_pcie_write,
+	.close_peripheral = NULL
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diag_mux_init(void)
 {
 	int proc;
@@ -64,7 +101,13 @@ int diag_mux_init(void)
 	md_logger.mode = DIAG_MEMORY_DEVICE_MODE;
 	md_logger.log_ops = &md_log_ops;
 	diag_md_init();
+<<<<<<< HEAD
 
+=======
+	pcie_logger.mode = DIAG_PCIE_MODE;
+	pcie_logger.log_ops = &pcie_log_ops;
+	diag_mux->pcie_ptr = &pcie_logger;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Set USB logging as the default logger. This is the mode
 	 * Diag should be in when it initializes.
@@ -72,9 +115,24 @@ int diag_mux_init(void)
 	diag_mux->usb_ptr = &usb_logger;
 	diag_mux->md_ptr = &md_logger;
 	for (proc = 0; proc < NUM_MUX_PROC; proc++) {
+<<<<<<< HEAD
 		diag_mux->logger[proc] = &usb_logger;
 		diag_mux->mux_mask[proc] = 0;
 		diag_mux->mode[proc] = DIAG_USB_MODE;
+=======
+		switch (driver->pcie_transport_def) {
+		case DIAG_ROUTE_TO_PCIE:
+			diag_mux->logger[proc] = &pcie_logger;
+			diag_mux->mode[proc] = DIAG_PCIE_MODE;
+			break;
+		case DIAG_ROUTE_TO_USB:
+		default:
+			diag_mux->logger[proc] = &usb_logger;
+			diag_mux->mode[proc] = DIAG_USB_MODE;
+			break;
+		}
+		diag_mux->mux_mask[proc] = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -84,6 +142,50 @@ void diag_mux_exit(void)
 	kfree(diag_mux);
 }
 
+<<<<<<< HEAD
+=======
+int diag_pcie_register_ops(int proc, int ctx, struct diag_mux_ops *ops)
+{
+	int err = 0;
+
+	if (!ops)
+		return -EINVAL;
+
+	if (proc < 0 || proc >= NUM_MUX_PROC)
+		return 0;
+
+	pcie_logger.ops[proc] = ops;
+	DIAG_LOG(DIAG_DEBUG_MUX,
+	"diag: registering pcie for proc: %d\n", proc);
+	err = diag_pcie_register(proc, ctx, ops);
+	if (err) {
+		pr_err("diag: MUX: unable to register pcie operations for proc: %d, err: %d\n",
+			proc, err);
+		return err;
+	}
+	return 0;
+}
+
+int diag_usb_register_ops(int proc, int ctx, struct diag_mux_ops *ops)
+{
+	int err = 0;
+
+	if (!ops)
+		return -EINVAL;
+
+	if (proc < 0 || proc >= NUM_MUX_PROC)
+		return 0;
+	usb_logger.ops[proc] = ops;
+	err = diag_usb_register(proc, ctx, ops);
+	if (err) {
+		pr_err("diag: MUX: unable to register usb operations for proc: %d, err: %d\n",
+		       proc, err);
+		return err;
+	}
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diag_mux_register(int proc, int ctx, struct diag_mux_ops *ops)
 {
 	int err = 0;
@@ -93,6 +195,7 @@ int diag_mux_register(int proc, int ctx, struct diag_mux_ops *ops)
 
 	if (proc < 0 || proc >= NUM_MUX_PROC)
 		return 0;
+<<<<<<< HEAD
 
 	/* Register with USB logger */
 	usb_logger.ops[proc] = ops;
@@ -103,6 +206,19 @@ int diag_mux_register(int proc, int ctx, struct diag_mux_ops *ops)
 		return err;
 	}
 
+=======
+	err = diag_pcie_register_ops(proc, ctx, ops);
+	if (err) {
+		pr_err("diag: MUX: unable to register PCIe operations, continuing with USB registrations for proc: %d, err: %d\n",
+		proc, err);
+	}
+	err = diag_usb_register_ops(proc, ctx, ops);
+	if (err) {
+		pr_err("diag: MUX: unable to register USB operations for proc: %d, err: %d\n",
+		proc, err);
+		return err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	md_logger.ops[proc] = ops;
 	err = diag_md_register(proc, ctx, ops);
 	if (err) {
@@ -110,7 +226,10 @@ int diag_mux_register(int proc, int ctx, struct diag_mux_ops *ops)
 		       proc, err);
 		return err;
 	}
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -161,8 +280,22 @@ int diag_mux_write(int proc, unsigned char *buf, int len, int ctx)
 		logger = diag_mux->md_ptr;
 		log_sink = DIAG_MEMORY_DEVICE_MODE;
 	} else {
+<<<<<<< HEAD
 		logger = diag_mux->usb_ptr;
 		log_sink = DIAG_USB_MODE;
+=======
+		switch (driver->transport_set) {
+		case DIAG_ROUTE_TO_PCIE:
+			logger = diag_mux->pcie_ptr;
+			log_sink = DIAG_PCIE_MODE;
+			break;
+		case DIAG_ROUTE_TO_USB:
+		default:
+			logger = diag_mux->usb_ptr;
+			log_sink = DIAG_USB_MODE;
+			break;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!proc) {
@@ -245,6 +378,10 @@ int diag_mux_switch_logging(int proc, int *req_mode, int *peripheral_mask)
 	}
 
 	switch (*req_mode) {
+<<<<<<< HEAD
+=======
+	case DIAG_PCIE_MODE:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_USB_MODE:
 		new_mask = ~(*peripheral_mask) & diag_mux->mux_mask[proc];
 		if (new_mask != DIAG_CON_NONE)
@@ -263,11 +400,35 @@ int diag_mux_switch_logging(int proc, int *req_mode, int *peripheral_mask)
 	}
 
 	switch (diag_mux->mode[proc]) {
+<<<<<<< HEAD
+=======
+	case DIAG_PCIE_MODE:
+		if (*req_mode == DIAG_MEMORY_DEVICE_MODE) {
+			diag_mux->pcie_ptr->log_ops->close_device(proc);
+			diag_mux->logger[proc] = diag_mux->md_ptr;
+			diag_mux->md_ptr->log_ops->open_device(proc);
+		} else if (*req_mode == DIAG_USB_MODE) {
+			diag_mux->pcie_ptr->log_ops->close_device(proc);
+			diag_mux->logger[proc] = diag_mux->usb_ptr;
+			diag_mux->usb_ptr->log_ops->open_device(proc);
+		} else if (*req_mode == DIAG_MULTI_MODE) {
+			diag_mux->md_ptr->log_ops->open_device(proc);
+			diag_mux->logger[proc] = NULL;
+		}
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_USB_MODE:
 		if (*req_mode == DIAG_MEMORY_DEVICE_MODE) {
 			diag_mux->usb_ptr->log_ops->close_device(proc);
 			diag_mux->logger[proc] = diag_mux->md_ptr;
 			diag_mux->md_ptr->log_ops->open_device(proc);
+<<<<<<< HEAD
+=======
+		} else if (*req_mode == DIAG_PCIE_MODE) {
+			diag_mux->usb_ptr->log_ops->close_device(proc);
+			diag_mux->logger[proc] = diag_mux->pcie_ptr;
+			diag_mux->pcie_ptr->log_ops->open_device(proc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (*req_mode == DIAG_MULTI_MODE) {
 			diag_mux->md_ptr->log_ops->open_device(proc);
 			diag_mux->logger[proc] = NULL;
@@ -278,8 +439,21 @@ int diag_mux_switch_logging(int proc, int *req_mode, int *peripheral_mask)
 			diag_mux->md_ptr->log_ops->close_device(proc);
 			diag_mux->logger[proc] = diag_mux->usb_ptr;
 			diag_mux->usb_ptr->log_ops->open_device(proc);
+<<<<<<< HEAD
 		} else if (*req_mode == DIAG_MULTI_MODE) {
 			diag_mux->usb_ptr->log_ops->open_device(proc);
+=======
+		} else if (*req_mode == DIAG_PCIE_MODE) {
+			diag_mux->md_ptr->log_ops->close_device(proc);
+			diag_mux->logger[proc] = diag_mux->pcie_ptr;
+			diag_mux->pcie_ptr->log_ops->open_device(proc);
+		} else if (*req_mode == DIAG_MULTI_MODE) {
+			if (driver->pcie_transport_def == DIAG_ROUTE_TO_PCIE ||
+				driver->transport_set == DIAG_ROUTE_TO_PCIE)
+				diag_mux->pcie_ptr->log_ops->open_device(proc);
+			else
+				diag_mux->usb_ptr->log_ops->open_device(proc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			diag_mux->logger[proc] = NULL;
 		}
 		break;
@@ -287,6 +461,12 @@ int diag_mux_switch_logging(int proc, int *req_mode, int *peripheral_mask)
 		if (*req_mode == DIAG_USB_MODE) {
 			diag_mux->md_ptr->log_ops->close_device(proc);
 			diag_mux->logger[proc] = diag_mux->usb_ptr;
+<<<<<<< HEAD
+=======
+		} else if (*req_mode == DIAG_PCIE_MODE) {
+			diag_mux->md_ptr->log_ops->close_device(proc);
+			diag_mux->logger[proc] = diag_mux->pcie_ptr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (*req_mode == DIAG_MEMORY_DEVICE_MODE) {
 			diag_mux->usb_ptr->log_ops->close_device(proc);
 			diag_mux->logger[proc] = diag_mux->md_ptr;

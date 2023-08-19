@@ -104,6 +104,7 @@ static void error(char *x)
 	while(1);	/* Halt */
 }
 
+<<<<<<< HEAD
 const unsigned long __stack_chk_guard = 0x000a0dff;
 
 void __stack_chk_fail(void)
@@ -111,6 +112,8 @@ void __stack_chk_fail(void)
 	error("stack-protector: Kernel stack is corrupted\n");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SUPERH64
 #define stackalign	8
 #else

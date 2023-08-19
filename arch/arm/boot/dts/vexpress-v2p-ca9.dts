@@ -9,7 +9,10 @@
  */
 
 /dts-v1/;
+<<<<<<< HEAD
 #include "vexpress-v2m.dtsi"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "V2P-CA9";
@@ -302,7 +305,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	smb: smb@4000000 {
+=======
+	smb@4000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "simple-bus";
 
 		#address-cells = <2>;
@@ -358,6 +365,11 @@
 				<0 0 40 &gic 0 40 4>,
 				<0 0 41 &gic 0 41 4>,
 				<0 0 42 &gic 0 42 4>;
+<<<<<<< HEAD
+=======
+
+		/include/ "vexpress-v2m.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	site2: hsb@e0000000 {

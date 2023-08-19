@@ -563,8 +563,13 @@ static int pm8xxx_probe(struct platform_device *pdev)
 	pr_info("PMIC revision 2: %02X\n", val);
 	rev |= val << BITS_PER_BYTE;
 
+<<<<<<< HEAD
 	chip = devm_kzalloc(&pdev->dev,
 			    struct_size(chip, config, data->num_irqs),
+=======
+	chip = devm_kzalloc(&pdev->dev, sizeof(*chip) +
+			    sizeof(chip->config[0]) * data->num_irqs,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    GFP_KERNEL);
 	if (!chip)
 		return -ENOMEM;

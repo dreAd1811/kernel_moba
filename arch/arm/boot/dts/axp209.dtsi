@@ -58,11 +58,14 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	axp_adc: adc {
 		compatible = "x-powers,axp209-adc";
 		#io-channel-cells = <1>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	axp_gpio: gpio {
 		compatible = "x-powers,axp209-gpio";
 		gpio-controller;
@@ -112,7 +115,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	usb_power_supply: usb-power-supply {
+=======
+	usb_power_supply: usb_power_supply {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "x-powers,axp202-usb-power-supply";
 		status = "disabled";
 	};

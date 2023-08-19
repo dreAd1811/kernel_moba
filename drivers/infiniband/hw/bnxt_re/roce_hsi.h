@@ -954,7 +954,10 @@ struct cmdq_base {
 	#define CMDQ_BASE_OPCODE_QUERY_VERSION			   0x8bUL
 	#define CMDQ_BASE_OPCODE_MODIFY_CC			   0x8cUL
 	#define CMDQ_BASE_OPCODE_QUERY_CC			   0x8dUL
+<<<<<<< HEAD
 	#define CMDQ_BASE_OPCODE_QUERY_ROCE_STATS	   0x8eUL
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 cmd_size;
 	__le16 flags;
 	__le16 cookie;
@@ -1384,6 +1387,7 @@ struct cmdq_register_mr {
 	#define CMDQ_REGISTER_MR_LVL_LVL_0			   0x0UL
 	#define CMDQ_REGISTER_MR_LVL_LVL_1			   0x1UL
 	#define CMDQ_REGISTER_MR_LVL_LVL_2			   0x2UL
+<<<<<<< HEAD
 	#define CMDQ_REGISTER_MR_LVL_LAST             CMDQ_REGISTER_MR_LVL_LVL_2
 	#define CMDQ_REGISTER_MR_LOG2_PG_SIZE_MASK		    0x7cUL
 	#define CMDQ_REGISTER_MR_LOG2_PG_SIZE_SFT		    2
@@ -1398,6 +1402,10 @@ struct cmdq_register_mr {
 	#define CMDQ_REGISTER_MR_LOG2_PG_SIZE_LAST	\
 					CMDQ_REGISTER_MR_LOG2_PG_SIZE_PG_1G
 	#define CMDQ_REGISTER_MR_UNUSED1             0x80UL
+=======
+	#define CMDQ_REGISTER_MR_LOG2_PG_SIZE_MASK		    0x7cUL
+	#define CMDQ_REGISTER_MR_LOG2_PG_SIZE_SFT		    2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 access;
 	#define CMDQ_REGISTER_MR_ACCESS_LOCAL_WRITE		    0x1UL
 	#define CMDQ_REGISTER_MR_ACCESS_REMOTE_READ		    0x2UL
@@ -1405,6 +1413,7 @@ struct cmdq_register_mr {
 	#define CMDQ_REGISTER_MR_ACCESS_REMOTE_ATOMIC		    0x8UL
 	#define CMDQ_REGISTER_MR_ACCESS_MW_BIND		    0x10UL
 	#define CMDQ_REGISTER_MR_ACCESS_ZERO_BASED		    0x20UL
+<<<<<<< HEAD
 	__le16	log2_pbl_pg_size;
 	#define CMDQ_REGISTER_MR_LOG2_PBL_PG_SIZE_MASK   0x1fUL
 	#define CMDQ_REGISTER_MR_LOG2_PBL_PG_SIZE_SFT    0
@@ -1420,6 +1429,9 @@ struct cmdq_register_mr {
 				CMDQ_REGISTER_MR_LOG2_PBL_PG_SIZE_PG_1G
 	#define CMDQ_REGISTER_MR_UNUSED11_MASK           0xffe0UL
 	#define CMDQ_REGISTER_MR_UNUSED11_SFT            5
+=======
+	__le16 unused_1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 key;
 	__le64 pbl;
 	__le64 va;
@@ -1849,6 +1861,7 @@ struct cmdq_set_func_resources {
 	u8 resp_size;
 	u8 reserved8;
 	__le64 resp_addr;
+<<<<<<< HEAD
 	__le32 number_of_qp;
 	__le32 number_of_mrw;
 	__le32 number_of_srq;
@@ -1859,6 +1872,8 @@ struct cmdq_set_func_resources {
 	__le32 max_cq_per_vf;
 	__le32 max_gid_per_vf;
 	__le32 stat_ctx_id;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Read hardware resource context command (24 bytes) */
@@ -2073,6 +2088,7 @@ struct creq_modify_qp_resp {
 	__le16 reserved48[3];
 };
 
+<<<<<<< HEAD
 /* cmdq_query_roce_stats (size:128b/16B) */
 struct cmdq_query_roce_stats {
 	u8	opcode;
@@ -2087,6 +2103,8 @@ struct cmdq_query_roce_stats {
 	__le64	resp_addr;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Query QP command response (16 bytes) */
 struct creq_query_qp_resp {
 	u8 type;
@@ -2718,7 +2736,11 @@ struct creq_query_func_resp_sb {
 	u8 l2_db_space_size;
 	__le16 max_srq;
 	__le32 max_gid;
+<<<<<<< HEAD
 	__le32 tqm_alloc_reqs[12];
+=======
+	__le32 tqm_alloc_reqs[8];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Set resources command response (16 bytes) */
@@ -2857,6 +2879,7 @@ struct creq_query_cc_resp_sb {
 	__le64 reserved64_1;
 };
 
+<<<<<<< HEAD
 /* creq_query_roce_stats_resp (size:128b/16B) */
 struct creq_query_roce_stats_resp {
 	u8	type;
@@ -2931,6 +2954,8 @@ struct creq_query_roce_stats_resp_sb {
 	__le64	res_rx_pci_err;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* QP error notification event (16 bytes) */
 struct creq_qp_error_notification {
 	u8 type;

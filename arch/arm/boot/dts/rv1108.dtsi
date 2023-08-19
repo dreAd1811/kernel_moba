@@ -1,11 +1,56 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+=======
+/*
+ * This file is dual-licensed: you can use it either under the terms
+ * of the GPL or the X11 license, at your option. Note that this dual
+ * licensing only applies to this file, and not this project as a
+ * whole.
+ *
+ *  a) This file is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation; either version 2 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This file is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ * Or, alternatively,
+ *
+ *  b) Permission is hereby granted, free of charge, to any person
+ *     obtaining a copy of this software and associated documentation
+ *     files (the "Software"), to deal in the Software without
+ *     restriction, including without limitation the rights to use,
+ *     copy, modify, merge, publish, distribute, sublicense, and/or
+ *     sell copies of the Software, and to permit persons to whom the
+ *     Software is furnished to do so, subject to the following
+ *     conditions:
+ *
+ *     The above copyright notice and this permission notice shall be
+ *     included in all copies or substantial portions of the Software.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *     OTHER DEALINGS IN THE SOFTWARE.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/clock/rv1108-cru.h>
 #include <dt-bindings/pinctrl/rockchip.h>
+<<<<<<< HEAD
 #include <dt-bindings/thermal/thermal.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 / {
 	#address-cells = <1>;
 	#size-cells = <1>;
@@ -33,8 +78,11 @@
 			compatible = "arm,cortex-a7";
 			reg = <0xf00>;
 			clocks = <&cru ARMCLK>;
+<<<<<<< HEAD
 			#cooling-cells = <2>; /* min followed by max */
 			dynamic-power-coefficient = <75>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			operating-points-v2 = <&cpu_opp_table>;
 		};
 	};
@@ -66,7 +114,11 @@
 
 	arm-pmu {
 		compatible = "arm,cortex-a7-pmu";
+<<<<<<< HEAD
 		interrupts = <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
+=======
+		interrupts = <GIC_SPI 76 IRQ_TYPE_LEVEL_HIGH>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	timer {
@@ -294,6 +346,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	thermal-zones {
 		soc_thermal: soc-thermal {
 			polling-delay-passive = <20>;
@@ -348,6 +401,8 @@
 		status = "disabled";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adc: adc@1038c000 {
 		compatible = "rockchip,rv1108-saradc", "rockchip,rk3399-saradc";
 		reg = <0x1038c000 0x100>;
@@ -541,7 +596,11 @@
 			compatible = "rockchip,gpio-bank";
 			reg = <0x20030000 0x100>;
 			interrupts = <GIC_SPI 40 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 			clocks = <&xin24m>;
+=======
+			clocks = <&cru PCLK_GPIO0_PMU>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			gpio-controller;
 			#gpio-cells = <2>;
@@ -554,7 +613,11 @@
 			compatible = "rockchip,gpio-bank";
 			reg = <0x10310000 0x100>;
 			interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 			clocks = <&xin24m>;
+=======
+			clocks = <&cru PCLK_GPIO1>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			gpio-controller;
 			#gpio-cells = <2>;
@@ -567,7 +630,11 @@
 			compatible = "rockchip,gpio-bank";
 			reg = <0x10320000 0x100>;
 			interrupts = <GIC_SPI 42 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 			clocks = <&xin24m>;
+=======
+			clocks = <&cru PCLK_GPIO2>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			gpio-controller;
 			#gpio-cells = <2>;
@@ -580,7 +647,11 @@
 			compatible = "rockchip,gpio-bank";
 			reg = <0x10330000 0x100>;
 			interrupts = <GIC_SPI 43 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 			clocks = <&xin24m>;
+=======
+			clocks = <&cru PCLK_GPIO3>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			gpio-controller;
 			#gpio-cells = <2>;
@@ -759,6 +830,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		tsadc {
 			otp_out: otp-out {
 				rockchip,pins = <0 RK_PB7 RK_FUNC_1 &pcfg_pull_none>;
@@ -769,6 +841,8 @@
 			};
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		uart0 {
 			uart0_xfer: uart0-xfer {
 				rockchip,pins = <3 RK_PA6 RK_FUNC_1 &pcfg_pull_up>,

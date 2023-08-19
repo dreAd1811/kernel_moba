@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* Copyright (c) 2010-2015, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2010-2017, The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -14,6 +18,10 @@
 #include "hdmi.h"
 #include <linux/qcom_scm.h>
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DRM_MSM_HDCP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HDCP_REG_ENABLE 0x01
 #define HDCP_REG_DISABLE 0x00
 #define HDCP_PORT_ADDR 0x74
@@ -769,7 +777,11 @@ static int msm_hdmi_hdcp_auth_part1_key_exchange(struct hdmi_hdcp_ctrl *hdcp_ctr
 	if (rc) {
 		pr_err("%s: wait key and an ready failed\n", __func__);
 		return rc;
+<<<<<<< HEAD
 	}
+=======
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Read BCAPS and send to HDCP engine */
 	rc = msm_hdmi_hdcp_recv_bcaps(hdcp_ctrl);
@@ -1435,3 +1447,29 @@ void msm_hdmi_hdcp_destroy(struct hdmi *hdmi)
 		hdmi->hdcp_ctrl = NULL;
 	}
 }
+<<<<<<< HEAD
+=======
+
+#else
+struct hdmi_hdcp_ctrl *msm_hdmi_hdcp_init(struct hdmi *hdmi)
+{
+	return NULL;
+}
+
+void msm_hdmi_hdcp_destroy(struct hdmi *hdmi)
+{
+}
+
+void msm_hdmi_hdcp_on(struct hdmi_hdcp_ctrl *hdcp_ctrl)
+{
+}
+
+void msm_hdmi_hdcp_off(struct hdmi_hdcp_ctrl *hdcp_ctrl)
+{
+}
+
+void msm_hdmi_hdcp_irq(struct hdmi_hdcp_ctrl *hdcp_ctrl)
+{
+}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

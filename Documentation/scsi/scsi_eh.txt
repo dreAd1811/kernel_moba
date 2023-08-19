@@ -82,13 +82,33 @@ function
  1. invokes optional hostt->eh_timed_out() callback.  Return value can
     be one of
 
+<<<<<<< HEAD
+=======
+    - BLK_EH_HANDLED
+	This indicates that eh_timed_out() dealt with the timeout.
+	The command is passed back to the block layer and completed
+	via __blk_complete_requests().
+
+	*NOTE* After returning BLK_EH_HANDLED the SCSI layer is
+	assumed to be finished with the command, and no other
+	functions from the SCSI layer will be called. So this
+	should typically only be returned if the eh_timed_out()
+	handler raced with normal completion.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     - BLK_EH_RESET_TIMER
 	This indicates that more time is required to finish the
 	command.  Timer is restarted.  This action is counted as a
 	retry and only allowed scmd->allowed + 1(!) times.  Once the
+<<<<<<< HEAD
 	limit is reached, action for BLK_EH_DONE is taken instead.
 
     - BLK_EH_DONE
+=======
+	limit is reached, action for BLK_EH_NOT_HANDLED is taken instead.
+
+    - BLK_EH_NOT_HANDLED
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         eh_timed_out() callback did not handle the command.
 	Step #2 is taken.
 

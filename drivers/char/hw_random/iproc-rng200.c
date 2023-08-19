@@ -220,7 +220,10 @@ static int iproc_rng200_probe(struct platform_device *pdev)
 }
 
 static const struct of_device_id iproc_rng200_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "brcm,bcm7278-rng200", },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "brcm,iproc-rng200", },
 	{},
 };

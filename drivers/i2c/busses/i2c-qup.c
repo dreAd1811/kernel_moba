@@ -1,8 +1,25 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2009-2013, 2016-2018, The Linux Foundation. All rights reserved.
  * Copyright (c) 2014, Sony Mobile Communications AB.
  *
+=======
+/*
+ * Copyright (c) 2009-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2014, Sony Mobile Communications AB.
+ *
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/acpi.h>
@@ -64,11 +81,16 @@
 #define QUP_IN_SVC_FLAG		BIT(9)
 #define QUP_MX_OUTPUT_DONE	BIT(10)
 #define QUP_MX_INPUT_DONE	BIT(11)
+<<<<<<< HEAD
 #define OUT_BLOCK_WRITE_REQ	BIT(12)
 #define IN_BLOCK_READ_REQ	BIT(13)
 
 /* I2C mini core related values */
 #define QUP_NO_INPUT		BIT(7)
+=======
+
+/* I2C mini core related values */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define QUP_CLOCK_AUTO_GATE	BIT(13)
 #define I2C_MINI_CORE		(2 << 8)
 #define I2C_N_VAL		15
@@ -107,7 +129,10 @@
 #define QUP_TAG_V2_DATAWR              0x82
 #define QUP_TAG_V2_DATAWR_STOP         0x83
 #define QUP_TAG_V2_DATARD              0x85
+<<<<<<< HEAD
 #define QUP_TAG_V2_DATARD_NACK         0x86
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define QUP_TAG_V2_DATARD_STOP         0x87
 
 /* Status, Error flags */
@@ -122,6 +147,7 @@
 #define ONE_BYTE			0x1
 #define QUP_I2C_MX_CONFIG_DURING_RUN   BIT(31)
 
+<<<<<<< HEAD
 /* Maximum transfer length for single DMA descriptor */
 #define MX_TX_RX_LEN			SZ_64K
 #define MX_BLOCKS			(MX_TX_RX_LEN / QUP_READ_LIMIT)
@@ -212,6 +238,25 @@ struct qup_i2c_block {
 	bool		is_tx_blk_mode;
 	bool		is_rx_blk_mode;
 	u8		tags[6];
+=======
+#define MX_TX_RX_LEN			SZ_64K
+#define MX_BLOCKS			(MX_TX_RX_LEN / QUP_READ_LIMIT)
+
+/* Max timeout in ms for 32k bytes */
+#define TOUT_MAX			300
+
+/* Default values. Use these if FW query fails */
+#define DEFAULT_CLK_FREQ 100000
+#define DEFAULT_SRC_CLK 20000000
+
+struct qup_i2c_block {
+	int	count;
+	int	pos;
+	int	tx_tag_len;
+	int	rx_tag_len;
+	int	data_len;
+	u8	tags[6];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qup_i2c_tag {
@@ -223,7 +268,10 @@ struct qup_i2c_bam {
 	struct	qup_i2c_tag tag;
 	struct	dma_chan *dma;
 	struct	scatterlist *sg;
+<<<<<<< HEAD
 	unsigned int sg_cnt;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qup_i2c_dev {
@@ -240,9 +288,13 @@ struct qup_i2c_dev {
 	int			out_blk_sz;
 	int			in_blk_sz;
 
+<<<<<<< HEAD
 	int			blk_xfer_limit;
 	unsigned long		one_byte_t;
 	unsigned long		xfer_timeout;
+=======
+	unsigned long		one_byte_t;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qup_i2c_block	blk;
 
 	struct i2c_msg		*msg;
@@ -255,6 +307,7 @@ struct qup_i2c_dev {
 
 	/* To check if this is the last msg */
 	bool			is_last;
+<<<<<<< HEAD
 	bool			is_smbus_read;
 
 	/* To configure when bus is in run state */
@@ -268,24 +321,38 @@ struct qup_i2c_dev {
 	unsigned int		tag_buf_pos;
 	/* The threshold length above which block mode will be used */
 	unsigned int		blk_mode_threshold;
+=======
+
+	/* To configure when bus is in run state */
+	int			config_run;
+
+	/* dma parameters */
+	bool			is_dma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct			dma_pool *dpool;
 	struct			qup_i2c_tag start_tag;
 	struct			qup_i2c_bam brx;
 	struct			qup_i2c_bam btx;
 
 	struct completion	xfer;
+<<<<<<< HEAD
 	/* function to write data in tx fifo */
 	void (*write_tx_fifo)(struct qup_i2c_dev *qup);
 	/* function to read data from rx fifo */
 	void (*read_rx_fifo)(struct qup_i2c_dev *qup);
 	/* function to write tags in tx fifo for i2c read transfer */
 	void (*write_rx_tags)(struct qup_i2c_dev *qup);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static irqreturn_t qup_i2c_interrupt(int irq, void *dev)
 {
 	struct qup_i2c_dev *qup = dev;
+<<<<<<< HEAD
 	struct qup_i2c_block *blk = &qup->blk;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 bus_err;
 	u32 qup_err;
 	u32 opflags;
@@ -311,6 +378,7 @@ static irqreturn_t qup_i2c_interrupt(int irq, void *dev)
 	if (bus_err)
 		writel(bus_err, qup->base + QUP_I2C_STATUS);
 
+<<<<<<< HEAD
 	/*
 	 * Check for BAM mode and returns if already error has come for current
 	 * transfer. In Error case, sometimes, QUP generates more than one
@@ -370,6 +438,19 @@ static irqreturn_t qup_i2c_interrupt(int irq, void *dev)
 		if (blk->is_tx_blk_mode && !(opflags & QUP_MX_OUTPUT_DONE))
 			return IRQ_HANDLED;
 	}
+=======
+	/* Reset the QUP State in case of error */
+	if (qup_err || bus_err) {
+		writel(QUP_RESET_STATE, qup->base + QUP_STATE);
+		goto done;
+	}
+
+	if (opflags & QUP_IN_SVC_FLAG)
+		writel(QUP_IN_SVC_FLAG, qup->base + QUP_OPERATIONAL);
+
+	if (opflags & QUP_OUT_SVC_FLAG)
+		writel(QUP_OUT_SVC_FLAG, qup->base + QUP_OPERATIONAL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	qup->qup_err = qup_err;
@@ -436,6 +517,7 @@ static int qup_i2c_change_state(struct qup_i2c_dev *qup, u32 state)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Check if I2C bus returns to IDLE state */
 static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
 {
@@ -466,17 +548,157 @@ static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
 	u32 qup_tag;
 	int idx;
 	u32 val;
+=======
+/**
+ * qup_i2c_wait_ready - wait for a give number of bytes in tx/rx path
+ * @qup: The qup_i2c_dev device
+ * @op: The bit/event to wait on
+ * @val: value of the bit to wait on, 0 or 1
+ * @len: The length the bytes to be transferred
+ */
+static int qup_i2c_wait_ready(struct qup_i2c_dev *qup, int op, bool val,
+			      int len)
+{
+	unsigned long timeout;
+	u32 opflags;
+	u32 status;
+	u32 shift = __ffs(op);
+	int ret = 0;
+
+	len *= qup->one_byte_t;
+	/* timeout after a wait of twice the max time */
+	timeout = jiffies + len * 4;
+
+	for (;;) {
+		opflags = readl(qup->base + QUP_OPERATIONAL);
+		status = readl(qup->base + QUP_I2C_STATUS);
+
+		if (((opflags & op) >> shift) == val) {
+			if ((op == QUP_OUT_NOT_EMPTY) && qup->is_last) {
+				if (!(status & I2C_STATUS_BUS_ACTIVE)) {
+					ret = 0;
+					goto done;
+				}
+			} else {
+				ret = 0;
+				goto done;
+			}
+		}
+
+		if (time_after(jiffies, timeout)) {
+			ret = -ETIMEDOUT;
+			goto done;
+		}
+		usleep_range(len, len * 2);
+	}
+
+done:
+	if (qup->bus_err || qup->qup_err)
+		ret =  (qup->bus_err & QUP_I2C_NACK_FLAG) ? -ENXIO : -EIO;
+
+	return ret;
+}
+
+static void qup_i2c_set_write_mode_v2(struct qup_i2c_dev *qup,
+				      struct i2c_msg *msg)
+{
+	/* Number of entries to shift out, including the tags */
+	int total = msg->len + qup->blk.tx_tag_len;
+
+	total |= qup->config_run;
+
+	if (total < qup->out_fifo_sz) {
+		/* FIFO mode */
+		writel(QUP_REPACK_EN, qup->base + QUP_IO_MODE);
+		writel(total, qup->base + QUP_MX_WRITE_CNT);
+	} else {
+		/* BLOCK mode (transfer data on chunks) */
+		writel(QUP_OUTPUT_BLK_MODE | QUP_REPACK_EN,
+		       qup->base + QUP_IO_MODE);
+		writel(total, qup->base + QUP_MX_OUTPUT_CNT);
+	}
+}
+
+static void qup_i2c_set_write_mode(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+	/* Number of entries to shift out, including the start */
+	int total = msg->len + 1;
+
+	if (total < qup->out_fifo_sz) {
+		/* FIFO mode */
+		writel(QUP_REPACK_EN, qup->base + QUP_IO_MODE);
+		writel(total, qup->base + QUP_MX_WRITE_CNT);
+	} else {
+		/* BLOCK mode (transfer data on chunks) */
+		writel(QUP_OUTPUT_BLK_MODE | QUP_REPACK_EN,
+		       qup->base + QUP_IO_MODE);
+		writel(total, qup->base + QUP_MX_OUTPUT_CNT);
+	}
+}
+
+static int check_for_fifo_space(struct qup_i2c_dev *qup)
+{
+	int ret;
+
+	ret = qup_i2c_change_state(qup, QUP_PAUSE_STATE);
+	if (ret)
+		goto out;
+
+	ret = qup_i2c_wait_ready(qup, QUP_OUT_FULL,
+				 RESET_BIT, 4 * ONE_BYTE);
+	if (ret) {
+		/* Fifo is full. Drain out the fifo */
+		ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
+		if (ret)
+			goto out;
+
+		ret = qup_i2c_wait_ready(qup, QUP_OUT_NOT_EMPTY,
+					 RESET_BIT, 256 * ONE_BYTE);
+		if (ret) {
+			dev_err(qup->dev, "timeout for fifo out full");
+			goto out;
+		}
+
+		ret = qup_i2c_change_state(qup, QUP_PAUSE_STATE);
+		if (ret)
+			goto out;
+	}
+
+out:
+	return ret;
+}
+
+static int qup_i2c_issue_write(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+	u32 addr = msg->addr << 1;
+	u32 qup_tag;
+	int idx;
+	u32 val;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (qup->pos == 0) {
 		val = QUP_TAG_START | addr;
 		idx = 1;
+<<<<<<< HEAD
 		blk->tx_fifo_free--;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		val = 0;
 		idx = 0;
 	}
 
+<<<<<<< HEAD
 	while (blk->tx_fifo_free && qup->pos < msg->len) {
+=======
+	while (qup->pos < msg->len) {
+		/* Check that there's space in the FIFO for our pair */
+		ret = check_for_fifo_space(qup);
+		if (ret)
+			return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (qup->pos == msg->len - 1)
 			qup_tag = QUP_TAG_STOP;
 		else
@@ -493,24 +715,86 @@ static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
 
 		qup->pos++;
 		idx++;
+<<<<<<< HEAD
 		blk->tx_fifo_free--;
 	}
+=======
+	}
+
+	ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void qup_i2c_set_blk_data(struct qup_i2c_dev *qup,
 				 struct i2c_msg *msg)
 {
+<<<<<<< HEAD
 	qup->blk.pos = 0;
 	qup->blk.data_len = msg->len;
 	qup->blk.count = DIV_ROUND_UP(msg->len, qup->blk_xfer_limit);
+=======
+	memset(&qup->blk, 0, sizeof(qup->blk));
+
+	qup->blk.data_len = msg->len;
+	qup->blk.count = (msg->len + QUP_READ_LIMIT - 1) / QUP_READ_LIMIT;
+
+	/* 4 bytes for first block and 2 writes for rest */
+	qup->blk.tx_tag_len = 4 + (qup->blk.count - 1) * 2;
+
+	/* There are 2 tag bytes that are read in to fifo for every block */
+	if (msg->flags & I2C_M_RD)
+		qup->blk.rx_tag_len = qup->blk.count * 2;
+}
+
+static int qup_i2c_send_data(struct qup_i2c_dev *qup, int tlen, u8 *tbuf,
+			     int dlen, u8 *dbuf)
+{
+	u32 val = 0, idx = 0, pos = 0, i = 0, t;
+	int  len = tlen + dlen;
+	u8 *buf = tbuf;
+	int ret = 0;
+
+	while (len > 0) {
+		ret = check_for_fifo_space(qup);
+		if (ret)
+			return ret;
+
+		t = (len >= 4) ? 4 : len;
+
+		while (idx < t) {
+			if (!i && (pos >= tlen)) {
+				buf = dbuf;
+				pos = 0;
+				i = 1;
+			}
+			val |= buf[pos++] << (idx++ * 8);
+		}
+
+		writel(val, qup->base + QUP_OUT_FIFO_BASE);
+		idx  = 0;
+		val = 0;
+		len -= 4;
+	}
+
+	ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qup_i2c_get_data_len(struct qup_i2c_dev *qup)
 {
 	int data_len;
 
+<<<<<<< HEAD
 	if (qup->blk.data_len > qup->blk_xfer_limit)
 		data_len = qup->blk_xfer_limit;
+=======
+	if (qup->blk.data_len > QUP_READ_LIMIT)
+		data_len = QUP_READ_LIMIT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		data_len = qup->blk.data_len;
 
@@ -527,9 +811,15 @@ static int qup_i2c_set_tags_smb(u16 addr, u8 *tags, struct qup_i2c_dev *qup,
 {
 	int len = 0;
 
+<<<<<<< HEAD
 	if (qup->is_smbus_read) {
 		tags[len++] = QUP_TAG_V2_DATARD_STOP;
 		tags[len++] = qup_i2c_get_data_len(qup);
+=======
+	if (msg->len > 1) {
+		tags[len++] = QUP_TAG_V2_DATARD_STOP;
+		tags[len++] = qup_i2c_get_data_len(qup) - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		tags[len++] = QUP_TAG_V2_START;
 		tags[len++] = addr & 0xff;
@@ -545,7 +835,11 @@ static int qup_i2c_set_tags_smb(u16 addr, u8 *tags, struct qup_i2c_dev *qup,
 }
 
 static int qup_i2c_set_tags(u8 *tags, struct qup_i2c_dev *qup,
+<<<<<<< HEAD
 			    struct i2c_msg *msg)
+=======
+			    struct i2c_msg *msg,  int is_dma)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u16 addr = i2c_8bit_addr_from_msg(msg);
 	int len = 0;
@@ -573,9 +867,13 @@ static int qup_i2c_set_tags(u8 *tags, struct qup_i2c_dev *qup,
 			tags[len++] = QUP_TAG_V2_DATAWR_STOP;
 	} else {
 		if (msg->flags & I2C_M_RD)
+<<<<<<< HEAD
 			tags[len++] = qup->blk.pos == (qup->blk.count - 1) ?
 				      QUP_TAG_V2_DATARD_NACK :
 				      QUP_TAG_V2_DATARD;
+=======
+			tags[len++] = QUP_TAG_V2_DATARD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			tags[len++] = QUP_TAG_V2_DATAWR;
 	}
@@ -588,9 +886,38 @@ static int qup_i2c_set_tags(u8 *tags, struct qup_i2c_dev *qup,
 	else
 		tags[len++] = data_len;
 
+<<<<<<< HEAD
 	return len;
 }
 
+=======
+	if ((msg->flags & I2C_M_RD) && last && is_dma) {
+		tags[len++] = QUP_BAM_INPUT_EOT;
+		tags[len++] = QUP_BAM_FLUSH_STOP;
+	}
+
+	return len;
+}
+
+static int qup_i2c_issue_xfer_v2(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+	int data_len = 0, tag_len, index;
+	int ret;
+
+	tag_len = qup_i2c_set_tags(qup->blk.tags, qup, msg, 0);
+	index = msg->len - qup->blk.data_len;
+
+	/* only tags are written for read */
+	if (!(msg->flags & I2C_M_RD))
+		data_len = qup_i2c_get_data_len(qup);
+
+	ret = qup_i2c_send_data(qup, tag_len, qup->blk.tags,
+				data_len, &msg->buf[index]);
+	qup->blk.data_len -= data_len;
+
+	return ret;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void qup_i2c_bam_cb(void *data)
 {
@@ -650,6 +977,7 @@ static int qup_i2c_req_dma(struct qup_i2c_dev *qup)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qup_i2c_bam_make_desc(struct qup_i2c_dev *qup, struct i2c_msg *msg)
 {
 	int ret = 0, limit = QUP_READ_LIMIT;
@@ -753,6 +1081,117 @@ static int qup_i2c_bam_schedule_desc(struct qup_i2c_dev *qup)
 		return ret;
 
 	txd = dmaengine_prep_slave_sg(qup->btx.dma, qup->btx.sg, tx_cnt,
+=======
+static int qup_i2c_bam_do_xfer(struct qup_i2c_dev *qup, struct i2c_msg *msg,
+			       int num)
+{
+	struct dma_async_tx_descriptor *txd, *rxd = NULL;
+	int ret = 0, idx = 0, limit = QUP_READ_LIMIT;
+	dma_cookie_t cookie_rx, cookie_tx;
+	u32 rx_nents = 0, tx_nents = 0, len, blocks, rem;
+	u32 i, tlen, tx_len, tx_buf = 0, rx_buf = 0, off = 0;
+	u8 *tags;
+
+	while (idx < num) {
+		tx_len = 0, len = 0, i = 0;
+
+		qup->is_last = (idx == (num - 1));
+
+		qup_i2c_set_blk_data(qup, msg);
+
+		blocks = qup->blk.count;
+		rem = msg->len - (blocks - 1) * limit;
+
+		if (msg->flags & I2C_M_RD) {
+			rx_nents += (blocks * 2) + 1;
+			tx_nents += 1;
+
+			while (qup->blk.pos < blocks) {
+				tlen = (i == (blocks - 1)) ? rem : limit;
+				tags = &qup->start_tag.start[off + len];
+				len += qup_i2c_set_tags(tags, qup, msg, 1);
+				qup->blk.data_len -= tlen;
+
+				/* scratch buf to read the start and len tags */
+				ret = qup_sg_set_buf(&qup->brx.sg[rx_buf++],
+						     &qup->brx.tag.start[0],
+						     2, qup, DMA_FROM_DEVICE);
+
+				if (ret)
+					return ret;
+
+				ret = qup_sg_set_buf(&qup->brx.sg[rx_buf++],
+						     &msg->buf[limit * i],
+						     tlen, qup,
+						     DMA_FROM_DEVICE);
+				if (ret)
+					return ret;
+
+				i++;
+				qup->blk.pos = i;
+			}
+			ret = qup_sg_set_buf(&qup->btx.sg[tx_buf++],
+					     &qup->start_tag.start[off],
+					     len, qup, DMA_TO_DEVICE);
+			if (ret)
+				return ret;
+
+			off += len;
+			/* scratch buf to read the BAM EOT and FLUSH tags */
+			ret = qup_sg_set_buf(&qup->brx.sg[rx_buf++],
+					     &qup->brx.tag.start[0],
+					     2, qup, DMA_FROM_DEVICE);
+			if (ret)
+				return ret;
+		} else {
+			tx_nents += (blocks * 2);
+
+			while (qup->blk.pos < blocks) {
+				tlen = (i == (blocks - 1)) ? rem : limit;
+				tags = &qup->start_tag.start[off + tx_len];
+				len = qup_i2c_set_tags(tags, qup, msg, 1);
+				qup->blk.data_len -= tlen;
+
+				ret = qup_sg_set_buf(&qup->btx.sg[tx_buf++],
+						     tags, len,
+						     qup, DMA_TO_DEVICE);
+				if (ret)
+					return ret;
+
+				tx_len += len;
+				ret = qup_sg_set_buf(&qup->btx.sg[tx_buf++],
+						     &msg->buf[limit * i],
+						     tlen, qup, DMA_TO_DEVICE);
+				if (ret)
+					return ret;
+				i++;
+				qup->blk.pos = i;
+			}
+			off += tx_len;
+
+			if (idx == (num - 1)) {
+				len = 1;
+				if (rx_nents) {
+					qup->btx.tag.start[0] =
+							QUP_BAM_INPUT_EOT;
+					len++;
+				}
+				qup->btx.tag.start[len - 1] =
+							QUP_BAM_FLUSH_STOP;
+				ret = qup_sg_set_buf(&qup->btx.sg[tx_buf++],
+						     &qup->btx.tag.start[0],
+						     len, qup, DMA_TO_DEVICE);
+				if (ret)
+					return ret;
+				tx_nents += 1;
+			}
+		}
+		idx++;
+		msg++;
+	}
+
+	txd = dmaengine_prep_slave_sg(qup->btx.dma, qup->btx.sg, tx_nents,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      DMA_MEM_TO_DEV,
 				      DMA_PREP_INTERRUPT | DMA_PREP_FENCE);
 	if (!txd) {
@@ -761,7 +1200,11 @@ static int qup_i2c_bam_schedule_desc(struct qup_i2c_dev *qup)
 		goto desc_err;
 	}
 
+<<<<<<< HEAD
 	if (!rx_cnt) {
+=======
+	if (!rx_nents) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		txd->callback = qup_i2c_bam_cb;
 		txd->callback_param = qup;
 	}
@@ -774,9 +1217,15 @@ static int qup_i2c_bam_schedule_desc(struct qup_i2c_dev *qup)
 
 	dma_async_issue_pending(qup->btx.dma);
 
+<<<<<<< HEAD
 	if (rx_cnt) {
 		rxd = dmaengine_prep_slave_sg(qup->brx.dma, qup->brx.sg,
 					      rx_cnt, DMA_DEV_TO_MEM,
+=======
+	if (rx_nents) {
+		rxd = dmaengine_prep_slave_sg(qup->brx.dma, qup->brx.sg,
+					      rx_nents, DMA_DEV_TO_MEM,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      DMA_PREP_INTERRUPT);
 		if (!rxd) {
 			dev_err(qup->dev, "failed to get rx desc\n");
@@ -798,7 +1247,11 @@ static int qup_i2c_bam_schedule_desc(struct qup_i2c_dev *qup)
 		dma_async_issue_pending(qup->brx.dma);
 	}
 
+<<<<<<< HEAD
 	if (!wait_for_completion_timeout(&qup->xfer, qup->xfer_timeout)) {
+=======
+	if (!wait_for_completion_timeout(&qup->xfer, TOUT_MAX * HZ)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(qup->dev, "normal trans timed out\n");
 		ret = -ETIMEDOUT;
 	}
@@ -811,25 +1264,47 @@ static int qup_i2c_bam_schedule_desc(struct qup_i2c_dev *qup)
 			goto desc_err;
 		}
 
+<<<<<<< HEAD
+=======
+		if (rx_nents)
+			writel(QUP_BAM_INPUT_EOT,
+			       qup->base + QUP_OUT_FIFO_BASE);
+
+		writel(QUP_BAM_FLUSH_STOP, qup->base + QUP_OUT_FIFO_BASE);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qup_i2c_flush(qup);
 
 		/* wait for remaining interrupts to occur */
 		if (!wait_for_completion_timeout(&qup->xfer, HZ))
 			dev_err(qup->dev, "flush timed out\n");
 
+<<<<<<< HEAD
+=======
+		qup_i2c_rel_dma(qup);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret =  (qup->bus_err & QUP_I2C_NACK_FLAG) ? -ENXIO : -EIO;
 	}
 
 desc_err:
+<<<<<<< HEAD
 	dma_unmap_sg(qup->dev, qup->btx.sg, tx_cnt, DMA_TO_DEVICE);
 
 	if (rx_cnt)
 		dma_unmap_sg(qup->dev, qup->brx.sg, rx_cnt,
+=======
+	dma_unmap_sg(qup->dev, qup->btx.sg, tx_nents, DMA_TO_DEVICE);
+
+	if (rx_nents)
+		dma_unmap_sg(qup->dev, qup->brx.sg, rx_nents,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     DMA_FROM_DEVICE);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static void qup_i2c_bam_clear_tag_buffers(struct qup_i2c_dev *qup)
 {
 	qup->btx.sg_cnt = 0;
@@ -837,12 +1312,17 @@ static void qup_i2c_bam_clear_tag_buffers(struct qup_i2c_dev *qup)
 	qup->tag_buf_pos = 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
 			    int num)
 {
 	struct qup_i2c_dev *qup = i2c_get_adapdata(adap);
 	int ret = 0;
+<<<<<<< HEAD
 	int idx = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	enable_irq(qup->irq);
 	ret = qup_i2c_req_dma(qup);
@@ -865,6 +1345,7 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
 		goto out;
 
 	writel(qup->clk_ctl, qup->base + QUP_I2C_CLK_CTL);
+<<<<<<< HEAD
 	qup_i2c_bam_clear_tag_buffers(qup);
 
 	for (idx = 0; idx < num; idx++) {
@@ -893,6 +1374,11 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
 		}
 	}
 
+=======
+
+	qup->msg = msg;
+	ret = qup_i2c_bam_do_xfer(qup, qup->msg, num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	disable_irq(qup->irq);
 
@@ -906,7 +1392,11 @@ static int qup_i2c_wait_for_complete(struct qup_i2c_dev *qup,
 	unsigned long left;
 	int ret = 0;
 
+<<<<<<< HEAD
 	left = wait_for_completion_timeout(&qup->xfer, qup->xfer_timeout);
+=======
+	left = wait_for_completion_timeout(&qup->xfer, HZ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!left) {
 		writel(1, qup->base + QUP_SW_RESET);
 		ret = -ETIMEDOUT;
@@ -918,6 +1408,7 @@ static int qup_i2c_wait_for_complete(struct qup_i2c_dev *qup,
 	return ret;
 }
 
+<<<<<<< HEAD
 static void qup_i2c_read_rx_fifo_v1(struct qup_i2c_dev *qup)
 {
 	struct qup_i2c_block *blk = &qup->blk;
@@ -944,6 +1435,127 @@ static void qup_i2c_read_rx_fifo_v1(struct qup_i2c_dev *qup)
 static void qup_i2c_write_rx_tags_v1(struct qup_i2c_dev *qup)
 {
 	struct i2c_msg *msg = qup->msg;
+=======
+static int qup_i2c_write_one_v2(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+	int ret = 0;
+
+	qup->msg = msg;
+	qup->pos = 0;
+	enable_irq(qup->irq);
+	qup_i2c_set_blk_data(qup, msg);
+	qup_i2c_set_write_mode_v2(qup, msg);
+
+	ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
+	if (ret)
+		goto err;
+
+	writel(qup->clk_ctl, qup->base + QUP_I2C_CLK_CTL);
+
+	do {
+		ret = qup_i2c_issue_xfer_v2(qup, msg);
+		if (ret)
+			goto err;
+
+		ret = qup_i2c_wait_for_complete(qup, msg);
+		if (ret)
+			goto err;
+
+		qup->blk.pos++;
+	} while (qup->blk.pos < qup->blk.count);
+
+	ret = qup_i2c_wait_ready(qup, QUP_OUT_NOT_EMPTY, RESET_BIT, ONE_BYTE);
+
+err:
+	disable_irq(qup->irq);
+	qup->msg = NULL;
+
+	return ret;
+}
+
+static int qup_i2c_write_one(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+	int ret;
+
+	qup->msg = msg;
+	qup->pos = 0;
+
+	enable_irq(qup->irq);
+
+	qup_i2c_set_write_mode(qup, msg);
+
+	ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
+	if (ret)
+		goto err;
+
+	writel(qup->clk_ctl, qup->base + QUP_I2C_CLK_CTL);
+
+	do {
+		ret = qup_i2c_change_state(qup, QUP_PAUSE_STATE);
+		if (ret)
+			goto err;
+
+		ret = qup_i2c_issue_write(qup, msg);
+		if (ret)
+			goto err;
+
+		ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
+		if (ret)
+			goto err;
+
+		ret = qup_i2c_wait_for_complete(qup, msg);
+		if (ret)
+			goto err;
+	} while (qup->pos < msg->len);
+
+	/* Wait for the outstanding data in the fifo to drain */
+	ret = qup_i2c_wait_ready(qup, QUP_OUT_NOT_EMPTY, RESET_BIT, ONE_BYTE);
+err:
+	disable_irq(qup->irq);
+	qup->msg = NULL;
+
+	return ret;
+}
+
+static void qup_i2c_set_read_mode(struct qup_i2c_dev *qup, int len)
+{
+	if (len < qup->in_fifo_sz) {
+		/* FIFO mode */
+		writel(QUP_REPACK_EN, qup->base + QUP_IO_MODE);
+		writel(len, qup->base + QUP_MX_READ_CNT);
+	} else {
+		/* BLOCK mode (transfer data on chunks) */
+		writel(QUP_INPUT_BLK_MODE | QUP_REPACK_EN,
+		       qup->base + QUP_IO_MODE);
+		writel(len, qup->base + QUP_MX_INPUT_CNT);
+	}
+}
+
+static void qup_i2c_set_read_mode_v2(struct qup_i2c_dev *qup, int len)
+{
+	int tx_len = qup->blk.tx_tag_len;
+
+	len += qup->blk.rx_tag_len;
+	len |= qup->config_run;
+	tx_len |= qup->config_run;
+
+	if (len < qup->in_fifo_sz) {
+		/* FIFO mode */
+		writel(QUP_REPACK_EN, qup->base + QUP_IO_MODE);
+		writel(tx_len, qup->base + QUP_MX_WRITE_CNT);
+		writel(len, qup->base + QUP_MX_READ_CNT);
+	} else {
+		/* BLOCK mode (transfer data on chunks) */
+		writel(QUP_INPUT_BLK_MODE | QUP_REPACK_EN,
+		       qup->base + QUP_IO_MODE);
+		writel(tx_len, qup->base + QUP_MX_OUTPUT_CNT);
+		writel(len, qup->base + QUP_MX_INPUT_CNT);
+	}
+}
+
+static void qup_i2c_issue_read(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 addr, len, val;
 
 	addr = i2c_8bit_addr_from_msg(msg);
@@ -955,6 +1567,7 @@ static void qup_i2c_write_rx_tags_v1(struct qup_i2c_dev *qup)
 	writel(val, qup->base + QUP_OUT_FIFO_BASE);
 }
 
+<<<<<<< HEAD
 static void qup_i2c_conf_v1(struct qup_i2c_dev *qup)
 {
 	struct qup_i2c_block *blk = &qup->blk;
@@ -1009,11 +1622,152 @@ static int qup_i2c_conf_xfer_v1(struct qup_i2c_dev *qup, bool is_rx)
 	ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
 	if (ret)
 		return ret;
+=======
+
+static int qup_i2c_read_fifo(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+	u32 val = 0;
+	int idx;
+	int ret = 0;
+
+	for (idx = 0; qup->pos < msg->len; idx++) {
+		if ((idx & 1) == 0) {
+			/* Check that FIFO have data */
+			ret = qup_i2c_wait_ready(qup, QUP_IN_NOT_EMPTY,
+						 SET_BIT, 4 * ONE_BYTE);
+			if (ret)
+				return ret;
+
+			/* Reading 2 words at time */
+			val = readl(qup->base + QUP_IN_FIFO_BASE);
+
+			msg->buf[qup->pos++] = val & 0xFF;
+		} else {
+			msg->buf[qup->pos++] = val >> QUP_MSW_SHIFT;
+		}
+	}
+
+	return ret;
+}
+
+static int qup_i2c_read_fifo_v2(struct qup_i2c_dev *qup,
+				struct i2c_msg *msg)
+{
+	u32 val;
+	int idx, pos = 0, ret = 0, total, msg_offset = 0;
+
+	/*
+	 * If the message length is already read in
+	 * the first byte of the buffer, account for
+	 * that by setting the offset
+	 */
+	if (qup_i2c_check_msg_len(msg) && (msg->len > 1))
+		msg_offset = 1;
+	total = qup_i2c_get_data_len(qup);
+	total -= msg_offset;
+
+	/* 2 extra bytes for read tags */
+	while (pos < (total + 2)) {
+		/* Check that FIFO have data */
+		ret = qup_i2c_wait_ready(qup, QUP_IN_NOT_EMPTY,
+					 SET_BIT, 4 * ONE_BYTE);
+		if (ret) {
+			dev_err(qup->dev, "timeout for fifo not empty");
+			return ret;
+		}
+		val = readl(qup->base + QUP_IN_FIFO_BASE);
+
+		for (idx = 0; idx < 4; idx++, val >>= 8, pos++) {
+			/* first 2 bytes are tag bytes */
+			if (pos < 2)
+				continue;
+
+			if (pos >= (total + 2))
+				goto out;
+			msg->buf[qup->pos + msg_offset] = val & 0xff;
+			qup->pos++;
+		}
+	}
+
+out:
+	qup->blk.data_len -= total;
+
+	return ret;
+}
+
+static int qup_i2c_read_one_v2(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+	int ret = 0;
+
+	qup->msg = msg;
+	qup->pos  = 0;
+	enable_irq(qup->irq);
+	qup_i2c_set_blk_data(qup, msg);
+	qup_i2c_set_read_mode_v2(qup, msg->len);
+
+	ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
+	if (ret)
+		goto err;
+
+	writel(qup->clk_ctl, qup->base + QUP_I2C_CLK_CTL);
+
+	do {
+		ret = qup_i2c_issue_xfer_v2(qup, msg);
+		if (ret)
+			goto err;
+
+		ret = qup_i2c_wait_for_complete(qup, msg);
+		if (ret)
+			goto err;
+
+		ret = qup_i2c_read_fifo_v2(qup, msg);
+		if (ret)
+			goto err;
+
+		qup->blk.pos++;
+
+		/* Handle SMBus block read length */
+		if (qup_i2c_check_msg_len(msg) && (msg->len == 1)) {
+			if (msg->buf[0] > I2C_SMBUS_BLOCK_MAX) {
+				ret = -EPROTO;
+				goto err;
+			}
+			msg->len += msg->buf[0];
+			qup->pos = 0;
+			qup_i2c_set_blk_data(qup, msg);
+			/* set tag length for block read */
+			qup->blk.tx_tag_len = 2;
+			qup_i2c_set_read_mode_v2(qup, msg->buf[0]);
+		}
+	} while (qup->blk.pos < qup->blk.count);
+
+err:
+	disable_irq(qup->irq);
+	qup->msg = NULL;
+
+	return ret;
+}
+
+static int qup_i2c_read_one(struct qup_i2c_dev *qup, struct i2c_msg *msg)
+{
+	int ret;
+
+	qup->msg = msg;
+	qup->pos  = 0;
+
+	enable_irq(qup->irq);
+	qup_i2c_set_read_mode(qup, msg->len);
+
+	ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
+	if (ret)
+		goto err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(qup->clk_ctl, qup->base + QUP_I2C_CLK_CTL);
 
 	ret = qup_i2c_change_state(qup, QUP_PAUSE_STATE);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
 
 	reinit_completion(&qup->xfer);
@@ -1026,11 +1780,17 @@ static int qup_i2c_conf_xfer_v1(struct qup_i2c_dev *qup, bool is_rx)
 		else
 			qup_i2c_write_tx_fifo_v1(qup);
 	}
+=======
+		goto err;
+
+	qup_i2c_issue_read(qup, msg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = qup_i2c_change_state(qup, QUP_RUN_STATE);
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	ret = qup_i2c_wait_for_complete(qup, qup->msg);
 	if (ret)
 		goto err;
@@ -1065,6 +1825,25 @@ static int qup_i2c_read_one(struct qup_i2c_dev *qup)
 	return qup_i2c_conf_xfer_v1(qup, true);
 }
 
+=======
+	do {
+		ret = qup_i2c_wait_for_complete(qup, msg);
+		if (ret)
+			goto err;
+
+		ret = qup_i2c_read_fifo(qup, msg);
+		if (ret)
+			goto err;
+	} while (qup->pos < msg->len);
+
+err:
+	disable_irq(qup->irq);
+	qup->msg = NULL;
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qup_i2c_xfer(struct i2c_adapter *adap,
 			struct i2c_msg msgs[],
 			int num)
@@ -1103,11 +1882,18 @@ static int qup_i2c_xfer(struct i2c_adapter *adap,
 			goto out;
 		}
 
+<<<<<<< HEAD
 		qup->msg = &msgs[idx];
 		if (msgs[idx].flags & I2C_M_RD)
 			ret = qup_i2c_read_one(qup);
 		else
 			ret = qup_i2c_write_one(qup);
+=======
+		if (msgs[idx].flags & I2C_M_RD)
+			ret = qup_i2c_read_one(qup, &msgs[idx]);
+		else
+			ret = qup_i2c_write_one(qup, &msgs[idx]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret)
 			break;
@@ -1127,6 +1913,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 /*
  * Configure registers related with reconfiguration during run and call it
  * before each i2c sub transfer.
@@ -1549,12 +2336,18 @@ qup_i2c_determine_mode_v2(struct qup_i2c_dev *qup,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qup_i2c_xfer_v2(struct i2c_adapter *adap,
 			   struct i2c_msg msgs[],
 			   int num)
 {
 	struct qup_i2c_dev *qup = i2c_get_adapdata(adap);
+<<<<<<< HEAD
 	int ret, idx = 0;
+=======
+	int ret, len, idx = 0, use_dma = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qup->bus_err = 0;
 	qup->qup_err = 0;
@@ -1563,10 +2356,13 @@ static int qup_i2c_xfer_v2(struct i2c_adapter *adap,
 	if (ret < 0)
 		goto out;
 
+<<<<<<< HEAD
 	ret = qup_i2c_determine_mode_v2(qup, msgs, num);
 	if (ret)
 		goto out;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(1, qup->base + QUP_SW_RESET);
 	ret = qup_i2c_poll_state(qup, QUP_RESET_STATE);
 	if (ret)
@@ -1576,6 +2372,7 @@ static int qup_i2c_xfer_v2(struct i2c_adapter *adap,
 	writel(I2C_MINI_CORE | I2C_N_VAL_V2, qup->base + QUP_CONFIG);
 	writel(QUP_V2_TAGS_EN, qup->base + QUP_I2C_MASTER_GEN);
 
+<<<<<<< HEAD
 	if (qup_i2c_poll_state_i2c_master(qup)) {
 		ret = -EIO;
 		goto out;
@@ -1605,6 +2402,61 @@ static int qup_i2c_xfer_v2(struct i2c_adapter *adap,
 
 	if (!ret)
 		qup_i2c_change_state(qup, QUP_RESET_STATE);
+=======
+	if ((qup->is_dma)) {
+		/* All i2c_msgs should be transferred using either dma or cpu */
+		for (idx = 0; idx < num; idx++) {
+			if (msgs[idx].len == 0) {
+				ret = -EINVAL;
+				goto out;
+			}
+
+			len = (msgs[idx].len > qup->out_fifo_sz) ||
+			      (msgs[idx].len > qup->in_fifo_sz);
+
+			if ((!is_vmalloc_addr(msgs[idx].buf)) && len) {
+				use_dma = 1;
+			 } else {
+				use_dma = 0;
+				break;
+			}
+		}
+	}
+
+	idx = 0;
+
+	do {
+		if (msgs[idx].len == 0) {
+			ret = -EINVAL;
+			goto out;
+		}
+
+		if (qup_i2c_poll_state_i2c_master(qup)) {
+			ret = -EIO;
+			goto out;
+		}
+
+		qup->is_last = (idx == (num - 1));
+		if (idx)
+			qup->config_run = QUP_I2C_MX_CONFIG_DURING_RUN;
+		else
+			qup->config_run = 0;
+
+		reinit_completion(&qup->xfer);
+
+		if (use_dma) {
+			ret = qup_i2c_bam_xfer(adap, &msgs[idx], num);
+		} else {
+			if (msgs[idx].flags & I2C_M_RD)
+				ret = qup_i2c_read_one_v2(qup, &msgs[idx]);
+			else
+				ret = qup_i2c_write_one_v2(qup, &msgs[idx]);
+		}
+	} while ((idx++ < (num - 1)) && !use_dma && !ret);
+
+	if (!ret)
+		ret = qup_i2c_change_state(qup, QUP_RESET_STATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret == 0)
 		ret = num;
@@ -1657,12 +2509,15 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
 	clk_disable_unprepare(qup->pclk);
 }
 
+<<<<<<< HEAD
 static const struct acpi_device_id qup_i2c_acpi_match[] = {
 	{ "QCOM8010"},
 	{ },
 };
 MODULE_DEVICE_TABLE(acpi, qup_i2c_acpi_match);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qup_i2c_probe(struct platform_device *pdev)
 {
 	static const int blk_sizes[] = {4, 16, 32};
@@ -1674,7 +2529,10 @@ static int qup_i2c_probe(struct platform_device *pdev)
 	u32 src_clk_freq = DEFAULT_SRC_CLK;
 	u32 clk_freq = DEFAULT_CLK_FREQ;
 	int blocks;
+<<<<<<< HEAD
 	bool is_qup_v1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	qup = devm_kzalloc(&pdev->dev, sizeof(*qup), GFP_KERNEL);
 	if (!qup)
@@ -1684,6 +2542,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
 	init_completion(&qup->xfer);
 	platform_set_drvdata(pdev, qup);
 
+<<<<<<< HEAD
 	if (scl_freq) {
 		dev_notice(qup->dev, "Using override frequency of %u\n", scl_freq);
 		clk_freq = scl_freq;
@@ -1693,11 +2552,18 @@ static int qup_i2c_probe(struct platform_device *pdev)
 			dev_notice(qup->dev, "using default clock-frequency %d",
 				DEFAULT_CLK_FREQ);
 		}
+=======
+	ret = device_property_read_u32(qup->dev, "clock-frequency", &clk_freq);
+	if (ret) {
+		dev_notice(qup->dev, "using default clock-frequency %d",
+			DEFAULT_CLK_FREQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (of_device_is_compatible(pdev->dev.of_node, "qcom,i2c-qup-v1.1.1")) {
 		qup->adap.algo = &qup_i2c_algo;
 		qup->adap.quirks = &qup_i2c_quirks;
+<<<<<<< HEAD
 		is_qup_v1 = true;
 	} else {
 		qup->adap.algo = &qup_i2c_algo_v2;
@@ -1706,16 +2572,27 @@ static int qup_i2c_probe(struct platform_device *pdev)
 			goto nodma;
 		else
 			ret = qup_i2c_req_dma(qup);
+=======
+	} else {
+		qup->adap.algo = &qup_i2c_algo_v2;
+		ret = qup_i2c_req_dma(qup);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret == -EPROBE_DEFER)
 			goto fail_dma;
 		else if (ret != 0)
 			goto nodma;
 
+<<<<<<< HEAD
 		qup->max_xfer_sg_len = (MX_BLOCKS << 1);
 		blocks = (MX_DMA_BLOCKS << 1) + 1;
 		qup->btx.sg = devm_kcalloc(&pdev->dev,
 					   blocks, sizeof(*qup->btx.sg),
+=======
+		blocks = (MX_BLOCKS << 1) + 1;
+		qup->btx.sg = devm_kzalloc(&pdev->dev,
+					   sizeof(*qup->btx.sg) * blocks,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   GFP_KERNEL);
 		if (!qup->btx.sg) {
 			ret = -ENOMEM;
@@ -1723,8 +2600,13 @@ static int qup_i2c_probe(struct platform_device *pdev)
 		}
 		sg_init_table(qup->btx.sg, blocks);
 
+<<<<<<< HEAD
 		qup->brx.sg = devm_kcalloc(&pdev->dev,
 					   blocks, sizeof(*qup->brx.sg),
+=======
+		qup->brx.sg = devm_kzalloc(&pdev->dev,
+					   sizeof(*qup->brx.sg) * blocks,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   GFP_KERNEL);
 		if (!qup->brx.sg) {
 			ret = -ENOMEM;
@@ -1757,8 +2639,13 @@ static int qup_i2c_probe(struct platform_device *pdev)
 	}
 
 nodma:
+<<<<<<< HEAD
 	/* We support frequencies up to FAST Mode Plus (1MHz) */
 	if (!clk_freq || clk_freq > I2C_FAST_MODE_PLUS_FREQ) {
+=======
+	/* We support frequencies up to FAST Mode (400KHz) */
+	if (!clk_freq || clk_freq > 400000) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(qup->dev, "clock frequency not supported %d\n",
 			clk_freq);
 		return -EINVAL;
@@ -1830,13 +2717,18 @@ nodma:
 		ret = -EIO;
 		goto fail;
 	}
+<<<<<<< HEAD
 	qup->out_blk_sz = blk_sizes[size];
+=======
+	qup->out_blk_sz = blk_sizes[size] / 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	size = QUP_INPUT_BLOCK_SIZE(io_mode);
 	if (size >= ARRAY_SIZE(blk_sizes)) {
 		ret = -EIO;
 		goto fail;
 	}
+<<<<<<< HEAD
 	qup->in_blk_sz = blk_sizes[size];
 
 	if (is_qup_v1) {
@@ -1855,6 +2747,9 @@ nodma:
 		qup->read_rx_fifo = qup_i2c_read_rx_fifo_v2;
 		qup->write_rx_tags = qup_i2c_write_rx_tags_v2;
 	}
+=======
+	qup->in_blk_sz = blk_sizes[size] / 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	size = QUP_OUTPUT_FIFO_SIZE(io_mode);
 	qup->out_fifo_sz = qup->out_blk_sz * (2 << size);
@@ -1862,6 +2757,7 @@ nodma:
 	size = QUP_INPUT_FIFO_SIZE(io_mode);
 	qup->in_fifo_sz = qup->in_blk_sz * (2 << size);
 
+<<<<<<< HEAD
 	hs_div = 3;
 	if (clk_freq <= I2C_STANDARD_FREQ) {
 		fs_div = ((src_clk_freq / clk_freq) / 2) - 3;
@@ -1871,6 +2767,11 @@ nodma:
 		fs_div = ((src_clk_freq / clk_freq) - 6) * 2 / 3;
 		qup->clk_ctl = ((fs_div / 2) << 16) | (hs_div << 8) | (fs_div & 0xff);
 	}
+=======
+	fs_div = ((src_clk_freq / clk_freq) / 2) - 3;
+	hs_div = 3;
+	qup->clk_ctl = (hs_div << 8) | (fs_div & 0xff);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Time it takes for a byte to be clocked out on the bus.
@@ -1878,8 +2779,11 @@ nodma:
 	 */
 	one_bit_t = (USEC_PER_SEC / clk_freq) + 1;
 	qup->one_byte_t = one_bit_t * 9;
+<<<<<<< HEAD
 	qup->xfer_timeout = TOUT_MIN * HZ +
 		usecs_to_jiffies(MX_DMA_TX_RX_LEN * qup->one_byte_t);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(qup->dev, "IN:block:%d, fifo:%d, OUT:block:%d, fifo:%d\n",
 		qup->in_blk_sz, qup->in_fifo_sz,
@@ -1988,6 +2892,17 @@ static const struct of_device_id qup_i2c_dt_match[] = {
 };
 MODULE_DEVICE_TABLE(of, qup_i2c_dt_match);
 
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_ACPI)
+static const struct acpi_device_id qup_i2c_acpi_match[] = {
+	{ "QCOM8010"},
+	{ },
+};
+MODULE_DEVICE_TABLE(acpi, qup_i2c_acpi_match);
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver qup_i2c_driver = {
 	.probe  = qup_i2c_probe,
 	.remove = qup_i2c_remove,

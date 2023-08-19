@@ -8,9 +8,16 @@
  * All enquiries to support@picochip.com
  */
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/gpio/driver.h>
+=======
+#include <linux/gpio/driver.h>
+/* FIXME: for gpio_get_value(), replace this with direct register read */
+#include <linux/gpio.h>
+#include <linux/err.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/interrupt.h>
 #include <linux/io.h>
@@ -24,7 +31,10 @@
 #include <linux/of_irq.h>
 #include <linux/platform_device.h>
 #include <linux/property.h>
+<<<<<<< HEAD
 #include <linux/reset.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spinlock.h>
 #include <linux/platform_data/gpio-dwapb.h>
 #include <linux/slab.h>
@@ -52,9 +62,15 @@
 #define GPIO_EXT_PORTD		0x5c
 
 #define DWAPB_MAX_PORTS		4
+<<<<<<< HEAD
 #define GPIO_EXT_PORT_STRIDE	0x04 /* register stride 32 bits */
 #define GPIO_SWPORT_DR_STRIDE	0x0c /* register stride 3*32 bits */
 #define GPIO_SWPORT_DDR_STRIDE	0x0c /* register stride 3*32 bits */
+=======
+#define GPIO_EXT_PORT_SIZE	(GPIO_EXT_PORTB - GPIO_EXT_PORTA)
+#define GPIO_SWPORT_DR_SIZE	(GPIO_SWPORTB_DR - GPIO_SWPORTA_DR)
+#define GPIO_SWPORT_DDR_SIZE	(GPIO_SWPORTB_DDR - GPIO_SWPORTA_DDR)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GPIO_REG_OFFSET_V2	1
 
@@ -77,7 +93,10 @@ struct dwapb_context {
 	u32 int_type;
 	u32 int_pol;
 	u32 int_deb;
+<<<<<<< HEAD
 	u32 wake_en;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #endif
 
@@ -98,8 +117,11 @@ struct dwapb_gpio {
 	unsigned int		nr_ports;
 	struct irq_domain	*domain;
 	unsigned int		flags;
+<<<<<<< HEAD
 	struct reset_control	*rst;
 	struct clk		*clk;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline u32 gpio_reg_v2_convert(unsigned int offset)
@@ -153,6 +175,7 @@ static int dwapb_gpio_to_irq(struct gpio_chip *gc, unsigned offset)
 	return irq_find_mapping(gpio->domain, offset);
 }
 
+<<<<<<< HEAD
 static struct dwapb_gpio_port *dwapb_offs_to_port(struct dwapb_gpio *gpio, unsigned int offs)
 {
 	struct dwapb_gpio_port *port;
@@ -187,6 +210,18 @@ static void dwapb_toggle_trigger(struct dwapb_gpio *gpio, unsigned int offs)
 		pol |= BIT(offs);
 
 	dwapb_write(gpio, GPIO_INT_POLARITY, pol);
+=======
+static void dwapb_toggle_trigger(struct dwapb_gpio *gpio, unsigned int offs)
+{
+	u32 v = dwapb_read(gpio, GPIO_INT_POLARITY);
+
+	if (gpio_get_value(gpio->ports[0].gc.base + offs))
+		v &= ~BIT(offs);
+	else
+		v |= BIT(offs);
+
+	dwapb_write(gpio, GPIO_INT_POLARITY, v);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 dwapb_do_irq(struct dwapb_gpio *gpio)
@@ -255,6 +290,7 @@ static int dwapb_irq_reqres(struct irq_data *d)
 	struct irq_chip_generic *igc = irq_data_get_irq_chip_data(d);
 	struct dwapb_gpio *gpio = igc->private;
 	struct gpio_chip *gc = &gpio->ports[0].gc;
+<<<<<<< HEAD
 	int ret;
 
 	ret = gpiochip_lock_as_irq(gc, irqd_to_hwirq(d));
@@ -262,6 +298,13 @@ static int dwapb_irq_reqres(struct irq_data *d)
 		dev_err(gpio->dev, "unable to lock HW IRQ %lu for IRQ\n",
 			irqd_to_hwirq(d));
 		return ret;
+=======
+
+	if (gpiochip_lock_as_irq(gc, irqd_to_hwirq(d))) {
+		dev_err(gpio->dev, "unable to lock HW IRQ %lu for IRQ\n",
+			irqd_to_hwirq(d));
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -324,6 +367,7 @@ static int dwapb_irq_set_type(struct irq_data *d, u32 type)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 static int dwapb_irq_set_wake(struct irq_data *d, unsigned int enable)
 {
@@ -340,13 +384,19 @@ static int dwapb_irq_set_wake(struct irq_data *d, unsigned int enable)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dwapb_gpio_set_debounce(struct gpio_chip *gc,
 				   unsigned offset, unsigned debounce)
 {
 	struct dwapb_gpio_port *port = gpiochip_get_data(gc);
 	struct dwapb_gpio *gpio = port->gpio;
 	unsigned long flags, val_deb;
+<<<<<<< HEAD
 	unsigned long mask = BIT(offset);
+=======
+	unsigned long mask = gc->pin2mask(gc, offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
 
@@ -430,9 +480,12 @@ static void dwapb_configure_irqs(struct dwapb_gpio *gpio,
 		ct->chip.irq_disable = dwapb_irq_disable;
 		ct->chip.irq_request_resources = dwapb_irq_reqres;
 		ct->chip.irq_release_resources = dwapb_irq_relres;
+<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 		ct->chip.irq_set_wake = dwapb_irq_set_wake;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ct->regs.ack = gpio_reg_convert(gpio, GPIO_PORTA_EOI);
 		ct->regs.mask = gpio_reg_convert(gpio, GPIO_INTMASK);
 		ct->type = IRQ_TYPE_LEVEL_MASK;
@@ -443,6 +496,7 @@ static void dwapb_configure_irqs(struct dwapb_gpio *gpio,
 	irq_gc->chip_types[1].handler = handle_edge_irq;
 
 	if (!pp->irq_shared) {
+<<<<<<< HEAD
 		int i;
 
 		for (i = 0; i < pp->ngpio; i++) {
@@ -450,12 +504,20 @@ static void dwapb_configure_irqs(struct dwapb_gpio *gpio,
 				irq_set_chained_handler_and_data(pp->irq[i],
 						dwapb_irq_handler, gpio);
 		}
+=======
+		irq_set_chained_handler_and_data(pp->irq, dwapb_irq_handler,
+						 gpio);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * Request a shared IRQ since where MFD would have devices
 		 * using the same irq pin
 		 */
+<<<<<<< HEAD
 		err = devm_request_irq(gpio->dev, pp->irq[0],
+=======
+		err = devm_request_irq(gpio->dev, pp->irq,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       dwapb_irq_handler_mfd,
 				       IRQF_SHARED, "gpio-dwapb-mfd", gpio);
 		if (err) {
@@ -507,6 +569,7 @@ static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
 		return -ENOMEM;
 #endif
 
+<<<<<<< HEAD
 	dat = gpio->regs + GPIO_EXT_PORTA + (pp->idx * GPIO_EXT_PORT_STRIDE);
 	set = gpio->regs + GPIO_SWPORTA_DR + (pp->idx * GPIO_SWPORT_DR_STRIDE);
 	dirout = gpio->regs + GPIO_SWPORTA_DDR +
@@ -515,6 +578,15 @@ static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
 	/* This registers 32 GPIO lines per port */
 	err = bgpio_init(&port->gc, gpio->dev, 4, dat, set, NULL, dirout,
 			 NULL, 0);
+=======
+	dat = gpio->regs + GPIO_EXT_PORTA + (pp->idx * GPIO_EXT_PORT_SIZE);
+	set = gpio->regs + GPIO_SWPORTA_DR + (pp->idx * GPIO_SWPORT_DR_SIZE);
+	dirout = gpio->regs + GPIO_SWPORTA_DDR +
+		(pp->idx * GPIO_SWPORT_DDR_SIZE);
+
+	err = bgpio_init(&port->gc, gpio->dev, 4, dat, set, NULL, dirout,
+			 NULL, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		dev_err(gpio->dev, "failed to init gpio chip for port%d\n",
 			port->idx);
@@ -531,7 +603,11 @@ static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
 	if (pp->idx == 0)
 		port->gc.set_config = dwapb_gpio_set_config;
 
+<<<<<<< HEAD
 	if (pp->has_irq)
+=======
+	if (pp->irq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dwapb_configure_irqs(gpio, port, pp);
 
 	err = gpiochip_add_data(&port->gc, port);
@@ -542,7 +618,11 @@ static int dwapb_gpio_add_port(struct dwapb_gpio *gpio,
 		port->is_registered = true;
 
 	/* Add GPIO-signaled ACPI event support */
+<<<<<<< HEAD
 	if (pp->has_irq)
+=======
+	if (pp->irq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		acpi_gpiochip_request_interrupts(&port->gc);
 
 	return err;
@@ -564,7 +644,11 @@ dwapb_gpio_get_pdata(struct device *dev)
 	struct dwapb_platform_data *pdata;
 	struct dwapb_port_property *pp;
 	int nports;
+<<<<<<< HEAD
 	int i, j;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nports = device_get_child_node_count(dev);
 	if (nports == 0)
@@ -582,8 +666,11 @@ dwapb_gpio_get_pdata(struct device *dev)
 
 	i = 0;
 	device_for_each_child_node(dev, fwnode)  {
+<<<<<<< HEAD
 		struct device_node *np = NULL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pp = &pdata->properties[i++];
 		pp->fwnode = fwnode;
 
@@ -603,13 +690,17 @@ dwapb_gpio_get_pdata(struct device *dev)
 			pp->ngpio = 32;
 		}
 
+<<<<<<< HEAD
 		pp->irq_shared	= false;
 		pp->gpio_base	= -1;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Only port A can provide interrupts in all configurations of
 		 * the IP.
 		 */
+<<<<<<< HEAD
 		if (pp->idx != 0)
 			continue;
 
@@ -632,6 +723,21 @@ dwapb_gpio_get_pdata(struct device *dev)
 
 		if (!pp->has_irq)
 			dev_warn(dev, "no irq for port%d\n", pp->idx);
+=======
+		if (dev->of_node && pp->idx == 0 &&
+			fwnode_property_read_bool(fwnode,
+						  "interrupt-controller")) {
+			pp->irq = irq_of_parse_and_map(to_of_node(fwnode), 0);
+			if (!pp->irq)
+				dev_warn(dev, "no irq for port%d\n", pp->idx);
+		}
+
+		if (has_acpi_companion(dev) && pp->idx == 0)
+			pp->irq = platform_get_irq(to_platform_device(dev), 0);
+
+		pp->irq_shared	= false;
+		pp->gpio_base	= -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return pdata;
@@ -677,12 +783,15 @@ static int dwapb_gpio_probe(struct platform_device *pdev)
 	gpio->dev = &pdev->dev;
 	gpio->nr_ports = pdata->nports;
 
+<<<<<<< HEAD
 	gpio->rst = devm_reset_control_get_optional_shared(dev, NULL);
 	if (IS_ERR(gpio->rst))
 		return PTR_ERR(gpio->rst);
 
 	reset_control_deassert(gpio->rst);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio->ports = devm_kcalloc(&pdev->dev, gpio->nr_ports,
 				   sizeof(*gpio->ports), GFP_KERNEL);
 	if (!gpio->ports)
@@ -693,6 +802,7 @@ static int dwapb_gpio_probe(struct platform_device *pdev)
 	if (IS_ERR(gpio->regs))
 		return PTR_ERR(gpio->regs);
 
+<<<<<<< HEAD
 	/* Optional bus clock */
 	gpio->clk = devm_clk_get(&pdev->dev, "bus");
 	if (!IS_ERR(gpio->clk)) {
@@ -706,6 +816,17 @@ static int dwapb_gpio_probe(struct platform_device *pdev)
 	gpio->flags = 0;
 	if (dev->of_node) {
 		gpio->flags = (uintptr_t)of_device_get_match_data(dev);
+=======
+	gpio->flags = 0;
+	if (dev->of_node) {
+		const struct of_device_id *of_devid;
+
+		of_devid = of_match_device(dwapb_of_match, dev);
+		if (of_devid) {
+			if (of_devid->data)
+				gpio->flags = (uintptr_t)of_devid->data;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (has_acpi_companion(dev)) {
 		const struct acpi_device_id *acpi_id;
 
@@ -728,7 +849,10 @@ static int dwapb_gpio_probe(struct platform_device *pdev)
 out_unregister:
 	dwapb_gpio_unregister(gpio);
 	dwapb_irq_teardown(gpio);
+<<<<<<< HEAD
 	clk_disable_unprepare(gpio->clk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -739,8 +863,11 @@ static int dwapb_gpio_remove(struct platform_device *pdev)
 
 	dwapb_gpio_unregister(gpio);
 	dwapb_irq_teardown(gpio);
+<<<<<<< HEAD
 	reset_control_assert(gpio->rst);
 	clk_disable_unprepare(gpio->clk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -762,6 +889,7 @@ static int dwapb_gpio_suspend(struct device *dev)
 
 		BUG_ON(!ctx);
 
+<<<<<<< HEAD
 		offset = GPIO_SWPORTA_DDR + idx * GPIO_SWPORT_DDR_STRIDE;
 		ctx->dir = dwapb_read(gpio, offset);
 
@@ -769,6 +897,15 @@ static int dwapb_gpio_suspend(struct device *dev)
 		ctx->data = dwapb_read(gpio, offset);
 
 		offset = GPIO_EXT_PORTA + idx * GPIO_EXT_PORT_STRIDE;
+=======
+		offset = GPIO_SWPORTA_DDR + idx * GPIO_SWPORT_DDR_SIZE;
+		ctx->dir = dwapb_read(gpio, offset);
+
+		offset = GPIO_SWPORTA_DR + idx * GPIO_SWPORT_DR_SIZE;
+		ctx->data = dwapb_read(gpio, offset);
+
+		offset = GPIO_EXT_PORTA + idx * GPIO_EXT_PORT_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->ext = dwapb_read(gpio, offset);
 
 		/* Only port A can provide interrupts */
@@ -780,14 +917,21 @@ static int dwapb_gpio_suspend(struct device *dev)
 			ctx->int_deb	= dwapb_read(gpio, GPIO_PORTA_DEBOUNCE);
 
 			/* Mask out interrupts */
+<<<<<<< HEAD
 			dwapb_write(gpio, GPIO_INTMASK,
 				    0xffffffff & ~ctx->wake_en);
+=======
+			dwapb_write(gpio, GPIO_INTMASK, 0xffffffff);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	spin_unlock_irqrestore(&gc->bgpio_lock, flags);
 
+<<<<<<< HEAD
 	clk_disable_unprepare(gpio->clk);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -799,9 +943,12 @@ static int dwapb_gpio_resume(struct device *dev)
 	unsigned long flags;
 	int i;
 
+<<<<<<< HEAD
 	if (!IS_ERR(gpio->clk))
 		clk_prepare_enable(gpio->clk);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&gc->bgpio_lock, flags);
 	for (i = 0; i < gpio->nr_ports; i++) {
 		unsigned int offset;
@@ -810,6 +957,7 @@ static int dwapb_gpio_resume(struct device *dev)
 
 		BUG_ON(!ctx);
 
+<<<<<<< HEAD
 		offset = GPIO_SWPORTA_DR + idx * GPIO_SWPORT_DR_STRIDE;
 		dwapb_write(gpio, offset, ctx->data);
 
@@ -817,6 +965,15 @@ static int dwapb_gpio_resume(struct device *dev)
 		dwapb_write(gpio, offset, ctx->dir);
 
 		offset = GPIO_EXT_PORTA + idx * GPIO_EXT_PORT_STRIDE;
+=======
+		offset = GPIO_SWPORTA_DR + idx * GPIO_SWPORT_DR_SIZE;
+		dwapb_write(gpio, offset, ctx->data);
+
+		offset = GPIO_SWPORTA_DDR + idx * GPIO_SWPORT_DDR_SIZE;
+		dwapb_write(gpio, offset, ctx->dir);
+
+		offset = GPIO_EXT_PORTA + idx * GPIO_EXT_PORT_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dwapb_write(gpio, offset, ctx->ext);
 
 		/* Only port A can provide interrupts */

@@ -45,7 +45,10 @@
 #define VMAC_KEY_SIZE	128/* Must be 128, 192 or 256			*/
 #define VMAC_KEY_LEN	(VMAC_KEY_SIZE/8)
 #define VMAC_NHBYTES	128/* Must 2^i for any 3 < i < 13 Standard = 128*/
+<<<<<<< HEAD
 #define VMAC_NONCEBYTES	16
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* per-transform (per-key) context */
 struct vmac_tfm_ctx {
@@ -64,11 +67,14 @@ struct vmac_desc_ctx {
 	unsigned int partial_size;	/* size of the partial block */
 	bool first_block_processed;
 	u64 polytmp[2*VMAC_TAG_LEN/64];	/* running total of L2-hash */
+<<<<<<< HEAD
 	union {
 		u8 bytes[VMAC_NONCEBYTES];
 		__be64 pads[VMAC_NONCEBYTES / 8];
 	} nonce;
 	unsigned int nonce_size; /* nonce bytes filled so far */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -486,7 +492,10 @@ static int vmac_init(struct shash_desc *desc)
 	dctx->partial_size = 0;
 	dctx->first_block_processed = false;
 	memcpy(dctx->polytmp, tctx->polykey, sizeof(dctx->polytmp));
+<<<<<<< HEAD
 	dctx->nonce_size = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -496,6 +505,7 @@ static int vmac_update(struct shash_desc *desc, const u8 *p, unsigned int len)
 	struct vmac_desc_ctx *dctx = shash_desc_ctx(desc);
 	unsigned int n;
 
+<<<<<<< HEAD
 	/* Nonce is passed as first VMAC_NONCEBYTES bytes of data */
 	if (dctx->nonce_size < VMAC_NONCEBYTES) {
 		n = min(len, VMAC_NONCEBYTES - dctx->nonce_size);
@@ -505,6 +515,8 @@ static int vmac_update(struct shash_desc *desc, const u8 *p, unsigned int len)
 		len -= n;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dctx->partial_size) {
 		n = min(len, VMAC_NHBYTES - dctx->partial_size);
 		memcpy(&dctx->partial[dctx->partial_size], p, n);
@@ -564,6 +576,7 @@ static int vmac_final(struct shash_desc *desc, u8 *out)
 {
 	const struct vmac_tfm_ctx *tctx = crypto_shash_ctx(desc->tfm);
 	struct vmac_desc_ctx *dctx = shash_desc_ctx(desc);
+<<<<<<< HEAD
 	int index;
 	u64 hash, pad;
 
@@ -579,10 +592,21 @@ static int vmac_final(struct shash_desc *desc, u8 *out)
 	if (dctx->nonce.bytes[0] & 0x80)
 		return -EINVAL;
 
+=======
+	static const u8 nonce[16] = {}; /* TODO: this is insecure */
+	union {
+		u8 bytes[16];
+		__be64 pads[2];
+	} block;
+	int index;
+	u64 hash, pad;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Finish calculating the VHASH of the message */
 	hash = vhash_final(tctx, dctx);
 
 	/* Generate pseudorandom pad by encrypting the nonce */
+<<<<<<< HEAD
 	BUILD_BUG_ON(VMAC_NONCEBYTES != 2 * (VMAC_TAG_LEN / 8));
 	index = dctx->nonce.bytes[VMAC_NONCEBYTES - 1] & 1;
 	dctx->nonce.bytes[VMAC_NONCEBYTES - 1] &= ~1;
@@ -592,6 +616,16 @@ static int vmac_final(struct shash_desc *desc, u8 *out)
 
 	/* The VMAC is the sum of VHASH and the pseudorandom pad */
 	put_unaligned_be64(hash + pad, out);
+=======
+	memcpy(&block, nonce, 16);
+	index = block.bytes[15] & 1;
+	block.bytes[15] &= ~1;
+	crypto_cipher_encrypt_one(tctx->cipher, block.bytes, block.bytes);
+	pad = be64_to_cpu(block.pads[index]);
+
+	/* The VMAC is the sum of VHASH and the pseudorandom pad */
+	put_unaligned_le64(hash + pad, out);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -633,10 +667,17 @@ static int vmac_create(struct crypto_template *tmpl, struct rtattr **tb)
 		return PTR_ERR(alg);
 
 	err = -EINVAL;
+<<<<<<< HEAD
 	if (alg->cra_blocksize != VMAC_NONCEBYTES)
 		goto out_put_alg;
 
 	inst = shash_alloc_instance(tmpl->name, alg);
+=======
+	if (alg->cra_blocksize != 16)
+		goto out_put_alg;
+
+	inst = shash_alloc_instance("vmac", alg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = PTR_ERR(inst);
 	if (IS_ERR(inst))
 		goto out_put_alg;
@@ -673,8 +714,13 @@ out_put_alg:
 	return err;
 }
 
+<<<<<<< HEAD
 static struct crypto_template vmac64_tmpl = {
 	.name = "vmac64",
+=======
+static struct crypto_template vmac_tmpl = {
+	.name = "vmac",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.create = vmac_create,
 	.free = shash_free_instance,
 	.module = THIS_MODULE,
@@ -682,12 +728,20 @@ static struct crypto_template vmac64_tmpl = {
 
 static int __init vmac_module_init(void)
 {
+<<<<<<< HEAD
 	return crypto_register_template(&vmac64_tmpl);
+=======
+	return crypto_register_template(&vmac_tmpl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit vmac_module_exit(void)
 {
+<<<<<<< HEAD
 	crypto_unregister_template(&vmac64_tmpl);
+=======
+	crypto_unregister_template(&vmac_tmpl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(vmac_module_init);
@@ -695,4 +749,8 @@ module_exit(vmac_module_exit);
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("VMAC hash algorithm");
+<<<<<<< HEAD
 MODULE_ALIAS_CRYPTO("vmac64");
+=======
+MODULE_ALIAS_CRYPTO("vmac");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

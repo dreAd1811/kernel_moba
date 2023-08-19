@@ -162,7 +162,11 @@
 #define GPR_SIZE	8
 #define CR_SIZE		8
 
+<<<<<<< HEAD
 #define STACK_FRAME_OVERHEAD	160	 /* size of minimum stack frame */
+=======
+#define STACK_FRAME_OVERHEAD    160      /* size of minimum stack frame */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __s390x__ */
 
@@ -179,16 +183,28 @@
 #define ACR_SIZE	4
 
 
+<<<<<<< HEAD
 #define PTRACE_OLDSETOPTIONS	     21
+=======
+#define PTRACE_OLDSETOPTIONS         21
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __ASSEMBLY__
 #include <linux/stddef.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 typedef union {
 	float	f;
 	double	d;
 	__u64	ui;
+=======
+typedef union
+{
+	float   f;
+	double  d;
+        __u64   ui;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct
 	{
 		__u32 hi;
@@ -196,6 +212,7 @@ typedef union {
 	} fp;
 } freg_t;
 
+<<<<<<< HEAD
 typedef struct {
 	__u32	fpc;
 	__u32	pad;
@@ -211,6 +228,25 @@ typedef struct {
 typedef struct {
 	unsigned long mask;
 	unsigned long addr;
+=======
+typedef struct
+{
+	__u32   fpc;
+	__u32	pad;
+	freg_t  fprs[NUM_FPRS];              
+} s390_fp_regs;
+
+#define FPC_EXCEPTION_MASK      0xF8000000
+#define FPC_FLAGS_MASK          0x00F80000
+#define FPC_DXC_MASK            0x0000FF00
+#define FPC_RM_MASK             0x00000003
+
+/* this typedef defines how a Program Status Word looks like */
+typedef struct 
+{
+        unsigned long mask;
+        unsigned long addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __attribute__ ((aligned(8))) psw_t;
 
 #ifndef __s390x__
@@ -279,7 +315,12 @@ typedef struct {
 /*
  * The s390_regs structure is used to define the elf_gregset_t.
  */
+<<<<<<< HEAD
 typedef struct {
+=======
+typedef struct
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	psw_t psw;
 	unsigned long gprs[NUM_GPRS];
 	unsigned int  acrs[NUM_ACRS];
@@ -287,6 +328,7 @@ typedef struct {
 } s390_regs;
 
 /*
+<<<<<<< HEAD
  * The user_pt_regs structure exports the beginning of
  * the in-kernel pt_regs structure to user space.
  */
@@ -297,22 +339,38 @@ typedef struct {
 } user_pt_regs;
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Now for the user space program event recording (trace) definitions.
  * The following structures are used only for the ptrace interface, don't
  * touch or even look at it if you don't want to modify the user-space
  * ptrace interface. In particular stay away from it for in-kernel PER.
  */
+<<<<<<< HEAD
 typedef struct {
+=======
+typedef struct
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long cr[NUM_CR_WORDS];
 } per_cr_words;
 
 #define PER_EM_MASK 0xE8000000UL
 
+<<<<<<< HEAD
 typedef struct {
 #ifdef __s390x__
 	unsigned		       : 32;
 #endif /* __s390x__ */
 	unsigned em_branching	       : 1;
+=======
+typedef	struct
+{
+#ifdef __s390x__
+	unsigned                       : 32;
+#endif /* __s390x__ */
+	unsigned em_branching          : 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned em_instruction_fetch  : 1;
 	/*
 	 * Switching on storage alteration automatically fixes
@@ -321,21 +379,35 @@ typedef struct {
 	unsigned em_storage_alteration : 1;
 	unsigned em_gpr_alt_unused     : 1;
 	unsigned em_store_real_address : 1;
+<<<<<<< HEAD
 	unsigned		       : 3;
 	unsigned branch_addr_ctl       : 1;
 	unsigned		       : 1;
 	unsigned storage_alt_space_ctl : 1;
 	unsigned		       : 21;
+=======
+	unsigned                       : 3;
+	unsigned branch_addr_ctl       : 1;
+	unsigned                       : 1;
+	unsigned storage_alt_space_ctl : 1;
+	unsigned                       : 21;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long starting_addr;
 	unsigned long ending_addr;
 } per_cr_bits;
 
+<<<<<<< HEAD
 typedef struct {
+=======
+typedef struct
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned short perc_atmid;
 	unsigned long address;
 	unsigned char access_id;
 } per_lowcore_words;
 
+<<<<<<< HEAD
 typedef struct {
 	unsigned perc_branching		 : 1;
 	unsigned perc_instruction_fetch  : 1;
@@ -356,6 +428,30 @@ typedef struct {
 } per_lowcore_bits;
 
 typedef struct {
+=======
+typedef struct
+{
+	unsigned perc_branching          : 1;
+	unsigned perc_instruction_fetch  : 1;
+	unsigned perc_storage_alteration : 1;
+	unsigned perc_gpr_alt_unused     : 1;
+	unsigned perc_store_real_address : 1;
+	unsigned                         : 3;
+	unsigned atmid_psw_bit_31        : 1;
+	unsigned atmid_validity_bit      : 1;
+	unsigned atmid_psw_bit_32        : 1;
+	unsigned atmid_psw_bit_5         : 1;
+	unsigned atmid_psw_bit_16        : 1;
+	unsigned atmid_psw_bit_17        : 1;
+	unsigned si                      : 2;
+	unsigned long address;
+	unsigned                         : 4;
+	unsigned access_id               : 4;
+} per_lowcore_bits;
+
+typedef struct
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union {
 		per_cr_words   words;
 		per_cr_bits    bits;
@@ -365,9 +461,15 @@ typedef struct {
 	 * the kernel always sets them to zero. To enable single
 	 * stepping use ptrace(PTRACE_SINGLESTEP) instead.
 	 */
+<<<<<<< HEAD
 	unsigned  single_step	    : 1;
 	unsigned  instruction_fetch : 1;
 	unsigned		    : 30;
+=======
+	unsigned  single_step       : 1;
+	unsigned  instruction_fetch : 1;
+	unsigned                    : 30;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * These addresses are copied into cr10 & cr11 if single
 	 * stepping is switched off
@@ -377,10 +479,18 @@ typedef struct {
 	union {
 		per_lowcore_words words;
 		per_lowcore_bits  bits;
+<<<<<<< HEAD
 	} lowcore;
 } per_struct;
 
 typedef struct {
+=======
+	} lowcore; 
+} per_struct;
+
+typedef struct
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int  len;
 	unsigned long kernel_addr;
 	unsigned long process_addr;
@@ -390,12 +500,21 @@ typedef struct {
  * S/390 specific non posix ptrace requests. I chose unusual values so
  * they are unlikely to clash with future ptrace definitions.
  */
+<<<<<<< HEAD
 #define PTRACE_PEEKUSR_AREA	      0x5000
 #define PTRACE_POKEUSR_AREA	      0x5001
 #define PTRACE_PEEKTEXT_AREA	      0x5002
 #define PTRACE_PEEKDATA_AREA	      0x5003
 #define PTRACE_POKETEXT_AREA	      0x5004
 #define PTRACE_POKEDATA_AREA	      0x5005
+=======
+#define PTRACE_PEEKUSR_AREA           0x5000
+#define PTRACE_POKEUSR_AREA           0x5001
+#define PTRACE_PEEKTEXT_AREA	      0x5002
+#define PTRACE_PEEKDATA_AREA	      0x5003
+#define PTRACE_POKETEXT_AREA	      0x5004
+#define PTRACE_POKEDATA_AREA 	      0x5005
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PTRACE_GET_LAST_BREAK	      0x5006
 #define PTRACE_PEEK_SYSTEM_CALL       0x5007
 #define PTRACE_POKE_SYSTEM_CALL	      0x5008
@@ -413,19 +532,35 @@ typedef struct {
  * PT_PROT definition is loosely based on hppa bsd definition in
  * gdb/hppab-nat.c
  */
+<<<<<<< HEAD
 #define PTRACE_PROT			  21
 
 typedef enum {
+=======
+#define PTRACE_PROT                       21
+
+typedef enum
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ptprot_set_access_watchpoint,
 	ptprot_set_write_watchpoint,
 	ptprot_disable_watchpoint
 } ptprot_flags;
 
+<<<<<<< HEAD
 typedef struct {
 	unsigned long lowaddr;
 	unsigned long hiaddr;
 	ptprot_flags prot;
 } ptprot_area;
+=======
+typedef struct
+{
+	unsigned long lowaddr;
+	unsigned long hiaddr;
+	ptprot_flags prot;
+} ptprot_area;                     
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Sequence of bytes for breakpoint illegal instruction.  */
 #define S390_BREAKPOINT     {0x0,0x1}
@@ -437,7 +572,12 @@ typedef struct {
  * The user_regs_struct defines the way the user registers are
  * store on the stack for signal handling.
  */
+<<<<<<< HEAD
 struct user_regs_struct {
+=======
+struct user_regs_struct
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	psw_t psw;
 	unsigned long gprs[NUM_GPRS];
 	unsigned int  acrs[NUM_ACRS];

@@ -124,7 +124,11 @@ void mlx5_enter_error_state(struct mlx5_core_dev *dev, bool force)
 		trigger_cmd_completions(dev);
 	}
 
+<<<<<<< HEAD
 	mlx5_core_event(dev, MLX5_DEV_EVENT_SYS_ERROR, 1);
+=======
+	mlx5_core_event(dev, MLX5_DEV_EVENT_SYS_ERROR, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_core_err(dev, "end\n");
 
 unlock:
@@ -241,7 +245,11 @@ static void print_health_info(struct mlx5_core_dev *dev)
 	u32 fw;
 	int i;
 
+<<<<<<< HEAD
 	/* If the syndrome is 0, the device is OK and no need to print buffer */
+=======
+	/* If the syndrom is 0, the device is OK and no need to print buffer */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ioread8(&h->synd))
 		return;
 
@@ -285,9 +293,15 @@ void mlx5_trigger_health_work(struct mlx5_core_dev *dev)
 	spin_unlock_irqrestore(&health->wq_lock, flags);
 }
 
+<<<<<<< HEAD
 static void poll_health(struct timer_list *t)
 {
 	struct mlx5_core_dev *dev = from_timer(dev, t, priv.health.timer);
+=======
+static void poll_health(unsigned long data)
+{
+	struct mlx5_core_dev *dev = (struct mlx5_core_dev *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_core_health *health = &dev->priv.health;
 	u32 count;
 
@@ -320,13 +334,22 @@ void mlx5_start_health_poll(struct mlx5_core_dev *dev)
 {
 	struct mlx5_core_health *health = &dev->priv.health;
 
+<<<<<<< HEAD
 	timer_setup(&health->timer, poll_health, 0);
+=======
+	init_timer(&health->timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	health->sick = 0;
 	clear_bit(MLX5_DROP_NEW_HEALTH_WORK, &health->flags);
 	clear_bit(MLX5_DROP_NEW_RECOVERY_WORK, &health->flags);
 	health->health = &dev->iseg->health;
 	health->health_counter = &dev->iseg->health_counter;
 
+<<<<<<< HEAD
+=======
+	health->timer.data = (unsigned long)dev;
+	health->timer.function = poll_health;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	health->timer.expires = round_jiffies(jiffies + MLX5_HEALTH_POLL_INTERVAL);
 	add_timer(&health->timer);
 }

@@ -1,12 +1,22 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) STMicroelectronics SA 2015
  * Authors: Yannick Fertre <yannick.fertre@st.com>
  *          Hugues Fruchet <hugues.fruchet@st.com>
+<<<<<<< HEAD
  */
 
 #include <linux/module.h>
 #include <linux/mod_devicetable.h>
+=======
+ * License terms:  GNU General Public License (GPL), version 2
+ */
+
+#include <linux/module.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/slab.h>
 #include <media/v4l2-event.h>
@@ -1356,10 +1366,13 @@ static int hva_probe(struct platform_device *pdev)
 		goto err;
 	}
 
+<<<<<<< HEAD
 	ret = dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(32));
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hva->dev = dev;
 	hva->pdev = pdev;
 	platform_set_drvdata(pdev, hva);

@@ -48,6 +48,7 @@ u16 nfp_nsp_get_abi_ver_minor(struct nfp_nsp *state);
 int nfp_nsp_wait(struct nfp_nsp *state);
 int nfp_nsp_device_soft_reset(struct nfp_nsp *state);
 int nfp_nsp_load_fw(struct nfp_nsp *state, const struct firmware *fw);
+<<<<<<< HEAD
 int nfp_nsp_write_flash(struct nfp_nsp *state, const struct firmware *fw);
 int nfp_nsp_mac_reinit(struct nfp_nsp *state);
 
@@ -55,6 +56,8 @@ static inline bool nfp_nsp_has_mac_reinit(struct nfp_nsp *state)
 {
 	return nfp_nsp_get_abi_ver_minor(state) > 20;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum nfp_eth_interface {
 	NFP_INTERFACE_NONE	= 0,
@@ -80,6 +83,7 @@ enum nfp_eth_aneg {
 	NFP_ANEG_DISABLED,
 };
 
+<<<<<<< HEAD
 enum nfp_eth_fec {
 	NFP_FEC_AUTO_BIT = 0,
 	NFP_FEC_BASER_BIT,
@@ -92,12 +96,15 @@ enum nfp_eth_fec {
 #define NFP_FEC_REED_SOLOMON	BIT(NFP_FEC_REED_SOLOMON_BIT)
 #define NFP_FEC_DISABLED	BIT(NFP_FEC_DISABLED_BIT)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct nfp_eth_table - ETH table information
  * @count:	number of table entries
  * @max_index:	max of @index fields of all @ports
  * @ports:	table of ports
  *
+<<<<<<< HEAD
  * @ports.eth_index:	port index according to legacy ethX numbering
  * @ports.index:	chip-wide first channel index
  * @ports.nbi:		NBI index
@@ -121,6 +128,28 @@ enum nfp_eth_fec {
  *			subports)
  * @ports.is_split:	is interface part of a split port
  * @ports.fec_modes_supported:	bitmap of FEC modes supported
+=======
+ * @eth_index:	port index according to legacy ethX numbering
+ * @index:	chip-wide first channel index
+ * @nbi:	NBI index
+ * @base:	first channel index (within NBI)
+ * @lanes:	number of channels
+ * @speed:	interface speed (in Mbps)
+ * @interface:	interface (module) plugged in
+ * @media:	media type of the @interface
+ * @aneg:	auto negotiation mode
+ * @mac_addr:	interface MAC address
+ * @label_port:	port id
+ * @label_subport:  id of interface within port (for split ports)
+ * @enabled:	is enabled?
+ * @tx_enabled:	is TX enabled?
+ * @rx_enabled:	is RX enabled?
+ * @override_changed: is media reconfig pending?
+ *
+ * @port_type:	one of %PORT_* defines for ethtool
+ * @port_lanes:	total number of lanes on the port (sum of lanes of all subports)
+ * @is_split:	is interface part of a split port
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct nfp_eth_table {
 	unsigned int count;
@@ -136,7 +165,10 @@ struct nfp_eth_table {
 		unsigned int interface;
 		enum nfp_eth_media media;
 
+<<<<<<< HEAD
 		enum nfp_eth_fec fec;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		enum nfp_eth_aneg aneg;
 
 		u8 mac_addr[ETH_ALEN];
@@ -156,8 +188,11 @@ struct nfp_eth_table {
 		unsigned int port_lanes;
 
 		bool is_split;
+<<<<<<< HEAD
 
 		unsigned int fec_modes_supported;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} ports[0];
 };
 
@@ -168,6 +203,7 @@ __nfp_eth_read_ports(struct nfp_cpp *cpp, struct nfp_nsp *nsp);
 int nfp_eth_set_mod_enable(struct nfp_cpp *cpp, unsigned int idx, bool enable);
 int nfp_eth_set_configured(struct nfp_cpp *cpp, unsigned int idx,
 			   bool configed);
+<<<<<<< HEAD
 int
 nfp_eth_set_fec(struct nfp_cpp *cpp, unsigned int idx, enum nfp_eth_fec mode);
 
@@ -181,6 +217,8 @@ nfp_eth_supported_fec_modes(struct nfp_eth_table_port *eth_port)
 {
 	return eth_port->fec_modes_supported;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nfp_nsp *nfp_eth_config_start(struct nfp_cpp *cpp, unsigned int idx);
 int nfp_eth_config_commit_end(struct nfp_nsp *nsp);

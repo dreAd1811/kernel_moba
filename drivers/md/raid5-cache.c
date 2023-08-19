@@ -23,7 +23,11 @@
 #include <linux/types.h>
 #include "md.h"
 #include "raid5.h"
+<<<<<<< HEAD
 #include "md-bitmap.h"
+=======
+#include "bitmap.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "raid5-log.h"
 
 /*
@@ -125,9 +129,15 @@ struct r5l_log {
 	struct list_head no_mem_stripes;   /* pending stripes, -ENOMEM */
 
 	struct kmem_cache *io_kc;
+<<<<<<< HEAD
 	mempool_t io_pool;
 	struct bio_set bs;
 	mempool_t meta_pool;
+=======
+	mempool_t *io_pool;
+	struct bio_set *bs;
+	mempool_t *meta_pool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct md_thread *reclaim_thread;
 	unsigned long reclaim_target;	/* number of space that need to be
@@ -324,10 +334,17 @@ void r5c_handle_cached_data_endio(struct r5conf *conf,
 		if (sh->dev[i].written) {
 			set_bit(R5_UPTODATE, &sh->dev[i].flags);
 			r5c_return_dev_pending_writes(conf, &sh->dev[i]);
+<<<<<<< HEAD
 			md_bitmap_endwrite(conf->mddev->bitmap, sh->sector,
 					   STRIPE_SECTORS,
 					   !test_bit(STRIPE_DEGRADED, &sh->state),
 					   0);
+=======
+			bitmap_endwrite(conf->mddev->bitmap, sh->sector,
+					STRIPE_SECTORS,
+					!test_bit(STRIPE_DEGRADED, &sh->state),
+					0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -539,7 +556,11 @@ static void r5l_log_run_stripes(struct r5l_log *log)
 {
 	struct r5l_io_unit *io, *next;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&log->io_list_lock);
+=======
+	assert_spin_locked(&log->io_list_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_for_each_entry_safe(io, next, &log->running_ios, log_sibling) {
 		/* don't change list order */
@@ -555,7 +576,11 @@ static void r5l_move_to_end_ios(struct r5l_log *log)
 {
 	struct r5l_io_unit *io, *next;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&log->io_list_lock);
+=======
+	assert_spin_locked(&log->io_list_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_for_each_entry_safe(io, next, &log->running_ios, log_sibling) {
 		/* don't change list order */
@@ -579,7 +604,11 @@ static void r5l_log_endio(struct bio *bio)
 		md_error(log->rdev->mddev, log->rdev);
 
 	bio_put(bio);
+<<<<<<< HEAD
 	mempool_free(io->meta_page, &log->meta_pool);
+=======
+	mempool_free(io->meta_page, log->meta_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&log->io_list_lock, flags);
 	__r5l_set_io_unit_state(io, IO_UNIT_IO_END);
@@ -717,6 +746,10 @@ static void r5c_disable_writeback_async(struct work_struct *work)
 static void r5l_submit_current_io(struct r5l_log *log)
 {
 	struct r5l_io_unit *io = log->current_io;
+<<<<<<< HEAD
+=======
+	struct bio *bio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct r5l_meta_block *block;
 	unsigned long flags;
 	u32 crc;
@@ -729,6 +762,10 @@ static void r5l_submit_current_io(struct r5l_log *log)
 	block->meta_size = cpu_to_le32(io->meta_offset);
 	crc = crc32c_le(log->uuid_checksum, block, PAGE_SIZE);
 	block->checksum = cpu_to_le32(crc);
+<<<<<<< HEAD
+=======
+	bio = io->current_bio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	log->current_io = NULL;
 	spin_lock_irqsave(&log->io_list_lock, flags);
@@ -746,7 +783,11 @@ static void r5l_submit_current_io(struct r5l_log *log)
 
 static struct bio *r5l_bio_alloc(struct r5l_log *log)
 {
+<<<<<<< HEAD
 	struct bio *bio = bio_alloc_bioset(GFP_NOIO, BIO_MAX_PAGES, &log->bs);
+=======
+	struct bio *bio = bio_alloc_bioset(GFP_NOIO, BIO_MAX_PAGES, log->bs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bio_set_op_attrs(bio, REQ_OP_WRITE, 0);
 	bio_set_dev(bio, log->rdev->bdev);
@@ -778,7 +819,11 @@ static struct r5l_io_unit *r5l_new_meta(struct r5l_log *log)
 	struct r5l_io_unit *io;
 	struct r5l_meta_block *block;
 
+<<<<<<< HEAD
 	io = mempool_alloc(&log->io_pool, GFP_ATOMIC);
+=======
+	io = mempool_alloc(log->io_pool, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!io)
 		return NULL;
 	memset(io, 0, sizeof(*io));
@@ -789,7 +834,11 @@ static struct r5l_io_unit *r5l_new_meta(struct r5l_log *log)
 	bio_list_init(&io->flush_barriers);
 	io->state = IO_UNIT_RUNNING;
 
+<<<<<<< HEAD
 	io->meta_page = mempool_alloc(&log->meta_pool, GFP_NOIO);
+=======
+	io->meta_page = mempool_alloc(log->meta_pool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	block = page_address(io->meta_page);
 	clear_page(block);
 	block->magic = cpu_to_le32(R5LOG_MAGIC);
@@ -1109,6 +1158,12 @@ void r5l_write_stripe_run(struct r5l_log *log)
 
 int r5l_handle_flush_request(struct r5l_log *log, struct bio *bio)
 {
+<<<<<<< HEAD
+=======
+	if (!log)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_THROUGH) {
 		/*
 		 * in write through (journal only)
@@ -1195,7 +1250,11 @@ static void r5l_run_no_mem_stripe(struct r5l_log *log)
 {
 	struct stripe_head *sh;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&log->io_list_lock);
+=======
+	assert_spin_locked(&log->io_list_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!list_empty(&log->no_mem_stripes)) {
 		sh = list_first_entry(&log->no_mem_stripes,
@@ -1211,7 +1270,11 @@ static bool r5l_complete_finished_ios(struct r5l_log *log)
 	struct r5l_io_unit *io, *next;
 	bool found = false;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&log->io_list_lock);
+=======
+	assert_spin_locked(&log->io_list_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_for_each_entry_safe(io, next, &log->finished_ios, log_sibling) {
 		/* don't change list order */
@@ -1221,7 +1284,11 @@ static bool r5l_complete_finished_ios(struct r5l_log *log)
 		log->next_checkpoint = io->log_start;
 
 		list_del(&io->log_sibling);
+<<<<<<< HEAD
 		mempool_free(io, &log->io_pool);
+=======
+		mempool_free(io, log->io_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r5l_run_no_mem_stripe(log);
 
 		found = true;
@@ -1383,7 +1450,11 @@ static void r5c_flush_stripe(struct r5conf *conf, struct stripe_head *sh)
 	 * raid5_release_stripe() while holding conf->device_lock
 	 */
 	BUG_ON(test_bit(STRIPE_ON_RELEASE_LIST, &sh->state));
+<<<<<<< HEAD
 	lockdep_assert_held(&conf->device_lock);
+=======
+	assert_spin_locked(&conf->device_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_del_init(&sh->lru);
 	atomic_inc(&sh->count);
@@ -1410,7 +1481,11 @@ void r5c_flush_cache(struct r5conf *conf, int num)
 	int count;
 	struct stripe_head *sh, *next;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&conf->device_lock);
+=======
+	assert_spin_locked(&conf->device_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!conf->log)
 		return;
 
@@ -1587,6 +1662,11 @@ void r5l_wake_reclaim(struct r5l_log *log, sector_t space)
 void r5l_quiesce(struct r5l_log *log, int quiesce)
 {
 	struct mddev *mddev;
+<<<<<<< HEAD
+=======
+	if (!log)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (quiesce) {
 		/* make sure r5l_write_super_and_discard_space exits */
@@ -1645,7 +1725,11 @@ static int r5l_recovery_allocate_ra_pool(struct r5l_log *log,
 {
 	struct page *page;
 
+<<<<<<< HEAD
 	ctx->ra_bio = bio_alloc_bioset(GFP_KERNEL, BIO_MAX_PAGES, &log->bs);
+=======
+	ctx->ra_bio = bio_alloc_bioset(GFP_KERNEL, BIO_MAX_PAGES, log->bs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ctx->ra_bio)
 		return -ENOMEM;
 
@@ -2452,6 +2536,10 @@ static void r5c_recovery_flush_data_only_stripes(struct r5l_log *log,
 		raid5_release_stripe(sh);
 	}
 
+<<<<<<< HEAD
+=======
+	md_wakeup_thread(conf->mddev->thread);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* reuse conf->wait_for_quiescent in recovery */
 	wait_event(conf->wait_for_quiescent,
 		   atomic_read(&conf->active_stripes) == 0);
@@ -2494,10 +2582,17 @@ static int r5l_recovery_log(struct r5l_log *log)
 	ctx->seq += 10000;
 
 	if ((ctx->data_only_stripes == 0) && (ctx->data_parity_stripes == 0))
+<<<<<<< HEAD
 		pr_info("md/raid:%s: starting from clean shutdown\n",
 			 mdname(mddev));
 	else
 		pr_info("md/raid:%s: recovering %d data-only stripes and %d data-parity stripes\n",
+=======
+		pr_debug("md/raid:%s: starting from clean shutdown\n",
+			 mdname(mddev));
+	else
+		pr_debug("md/raid:%s: recovering %d data-only stripes and %d data-parity stripes\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 mdname(mddev), ctx->data_only_stripes,
 			 ctx->data_parity_stripes);
 
@@ -3039,6 +3134,7 @@ ioerr:
 	return ret;
 }
 
+<<<<<<< HEAD
 int r5l_start(struct r5l_log *log)
 {
 	int ret;
@@ -3056,6 +3152,8 @@ int r5l_start(struct r5l_log *log)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void r5c_update_on_rdev_error(struct mddev *mddev, struct md_rdev *rdev)
 {
 	struct r5conf *conf = mddev->private;
@@ -3075,7 +3173,10 @@ int r5l_init_log(struct r5conf *conf, struct md_rdev *rdev)
 	struct request_queue *q = bdev_get_queue(rdev->bdev);
 	struct r5l_log *log;
 	char b[BDEVNAME_SIZE];
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("md/raid:%s: using device %s as journal\n",
 		 mdname(conf->mddev), bdevname(rdev->bdev, b));
@@ -3121,6 +3222,7 @@ int r5l_init_log(struct r5conf *conf, struct md_rdev *rdev)
 	if (!log->io_kc)
 		goto io_kc;
 
+<<<<<<< HEAD
 	ret = mempool_init_slab_pool(&log->io_pool, R5L_POOL_SIZE, log->io_kc);
 	if (ret)
 		goto io_pool;
@@ -3131,6 +3233,18 @@ int r5l_init_log(struct r5conf *conf, struct md_rdev *rdev)
 
 	ret = mempool_init_page_pool(&log->meta_pool, R5L_POOL_SIZE, 0);
 	if (ret)
+=======
+	log->io_pool = mempool_create_slab_pool(R5L_POOL_SIZE, log->io_kc);
+	if (!log->io_pool)
+		goto io_pool;
+
+	log->bs = bioset_create(R5L_POOL_SIZE, 0, BIOSET_NEED_BVECS);
+	if (!log->bs)
+		goto io_bs;
+
+	log->meta_pool = mempool_create_page_pool(R5L_POOL_SIZE, 0);
+	if (!log->meta_pool)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_mempool;
 
 	spin_lock_init(&log->tree_lock);
@@ -3159,6 +3273,7 @@ int r5l_init_log(struct r5conf *conf, struct md_rdev *rdev)
 
 	rcu_assign_pointer(conf->log, log);
 
+<<<<<<< HEAD
 	set_bit(MD_HAS_JOURNAL, &conf->mddev->flags);
 	return 0;
 
@@ -3170,6 +3285,23 @@ out_mempool:
 	bioset_exit(&log->bs);
 io_bs:
 	mempool_exit(&log->io_pool);
+=======
+	if (r5l_load_log(log))
+		goto error;
+
+	set_bit(MD_HAS_JOURNAL, &conf->mddev->flags);
+	return 0;
+
+error:
+	rcu_assign_pointer(conf->log, NULL);
+	md_unregister_thread(&log->reclaim_thread);
+reclaim_thread:
+	mempool_destroy(log->meta_pool);
+out_mempool:
+	bioset_free(log->bs);
+io_bs:
+	mempool_destroy(log->io_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 io_pool:
 	kmem_cache_destroy(log->io_kc);
 io_kc:
@@ -3188,9 +3320,15 @@ void r5l_exit_log(struct r5conf *conf)
 	wake_up(&conf->mddev->sb_wait);
 	flush_work(&log->disable_writeback_work);
 	md_unregister_thread(&log->reclaim_thread);
+<<<<<<< HEAD
 	mempool_exit(&log->meta_pool);
 	bioset_exit(&log->bs);
 	mempool_exit(&log->io_pool);
+=======
+	mempool_destroy(log->meta_pool);
+	bioset_free(log->bs);
+	mempool_destroy(log->io_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kmem_cache_destroy(log->io_kc);
 	kfree(log);
 }

@@ -1,7 +1,11 @@
 /*
  * Generic MIPI DPI Panel Driver
  *
+<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * Copyright (C) 2013 Texas Instruments
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -38,12 +42,17 @@ struct panel_drv_data {
 static int panel_dpi_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
+<<<<<<< HEAD
 	struct omap_dss_device *in;
+=======
+	struct omap_dss_device *in = ddata->in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
+<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(dssdev->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(dssdev->dev, "failed to find video source\n");
@@ -57,6 +66,12 @@ static int panel_dpi_connect(struct omap_dss_device *dssdev)
 	}
 
 	ddata->in = in;
+=======
+	r = in->ops.dpi->connect(in, dssdev);
+	if (r)
+		return r;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -69,9 +84,12 @@ static void panel_dpi_disconnect(struct omap_dss_device *dssdev)
 		return;
 
 	in->ops.dpi->disconnect(in, dssdev);
+<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int panel_dpi_enable(struct omap_dss_device *dssdev)
@@ -99,7 +117,15 @@ static int panel_dpi_enable(struct omap_dss_device *dssdev)
 	}
 
 	gpiod_set_value_cansleep(ddata->enable_gpio, 1);
+<<<<<<< HEAD
 	backlight_enable(ddata->backlight);
+=======
+
+	if (ddata->backlight) {
+		ddata->backlight->props.power = FB_BLANK_UNBLANK;
+		backlight_update_status(ddata->backlight);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dssdev->state = OMAP_DSS_DISPLAY_ACTIVE;
 
@@ -114,7 +140,14 @@ static void panel_dpi_disable(struct omap_dss_device *dssdev)
 	if (!omapdss_device_is_enabled(dssdev))
 		return;
 
+<<<<<<< HEAD
 	backlight_disable(ddata->backlight);
+=======
+	if (ddata->backlight) {
+		ddata->backlight->props.power = FB_BLANK_POWERDOWN;
+		backlight_update_status(ddata->backlight);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gpiod_set_value_cansleep(ddata->enable_gpio, 0);
 	regulator_disable(ddata->vcc_supply);
@@ -169,6 +202,11 @@ static int panel_dpi_probe_of(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct device_node *node = pdev->dev.of_node;
+<<<<<<< HEAD
+=======
+	struct device_node *bl_node;
+	struct omap_dss_device *in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 	struct display_timing timing;
 	struct gpio_desc *gpio;
@@ -193,20 +231,54 @@ static int panel_dpi_probe_of(struct platform_device *pdev)
 	if (IS_ERR(ddata->vcc_supply))
 		return PTR_ERR(ddata->vcc_supply);
 
+<<<<<<< HEAD
 	ddata->backlight = devm_of_find_backlight(&pdev->dev);
 
 	if (IS_ERR(ddata->backlight))
 		return PTR_ERR(ddata->backlight);
+=======
+	bl_node = of_parse_phandle(node, "backlight", 0);
+	if (bl_node) {
+		ddata->backlight = of_find_backlight_by_node(bl_node);
+		of_node_put(bl_node);
+
+		if (!ddata->backlight)
+			return -EPROBE_DEFER;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = of_get_display_timing(node, "panel-timing", &timing);
 	if (r) {
 		dev_err(&pdev->dev, "failed to get video timing\n");
+<<<<<<< HEAD
 		return r;
+=======
+		goto error_free_backlight;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	videomode_from_timing(&timing, &ddata->vm);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	in = omapdss_of_find_source_for_first_ep(node);
+	if (IS_ERR(in)) {
+		dev_err(&pdev->dev, "failed to find video source\n");
+		r = PTR_ERR(in);
+		goto error_free_backlight;
+	}
+
+	ddata->in = in;
+
+	return 0;
+
+error_free_backlight:
+	if (ddata->backlight)
+		put_device(&ddata->backlight->dev);
+
+	return r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int panel_dpi_probe(struct platform_device *pdev)
@@ -215,6 +287,12 @@ static int panel_dpi_probe(struct platform_device *pdev)
 	struct omap_dss_device *dssdev;
 	int r;
 
+<<<<<<< HEAD
+=======
+	if (!pdev->dev.of_node)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddata = devm_kzalloc(&pdev->dev, sizeof(*ddata), GFP_KERNEL);
 	if (ddata == NULL)
 		return -ENOMEM;
@@ -235,22 +313,45 @@ static int panel_dpi_probe(struct platform_device *pdev)
 	r = omapdss_register_display(dssdev);
 	if (r) {
 		dev_err(&pdev->dev, "Failed to register panel\n");
+<<<<<<< HEAD
 		return r;
 	}
 
 	return 0;
+=======
+		goto err_reg;
+	}
+
+	return 0;
+
+err_reg:
+	omap_dss_put_device(ddata->in);
+	return r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __exit panel_dpi_remove(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
+<<<<<<< HEAD
+=======
+	struct omap_dss_device *in = ddata->in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omapdss_unregister_display(dssdev);
 
 	panel_dpi_disable(dssdev);
 	panel_dpi_disconnect(dssdev);
 
+<<<<<<< HEAD
+=======
+	omap_dss_put_device(in);
+
+	if (ddata->backlight)
+		put_device(&ddata->backlight->dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

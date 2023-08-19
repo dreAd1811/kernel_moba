@@ -44,6 +44,9 @@ static inline int fls(int x)
 #define find_first_bit		find_first_bit
 #define find_first_zero_bit	find_first_zero_bit
 
+<<<<<<< HEAD
 #include <asm-generic/bitops/find.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __UNICORE_BITOPS_H__ */

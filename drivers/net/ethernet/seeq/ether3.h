@@ -165,7 +165,10 @@ struct dev_priv {
     unsigned char tx_tail;		/* buffer nr of transmitting packet	 */
     unsigned int rx_head;		/* address to fetch next packet from	 */
     struct timer_list timer;
+<<<<<<< HEAD
     struct net_device *dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     int broken;				/* 0 = ok, 1 = something went wrong	 */
 };
 

@@ -87,8 +87,13 @@ static int __i2c_mux_smbus_xfer(struct i2c_adapter *adap,
 
 	ret = muxc->select(muxc, priv->chan_id);
 	if (ret >= 0)
+<<<<<<< HEAD
 		ret = __i2c_smbus_xfer(parent, addr, flags,
 				       read_write, command, size, data);
+=======
+		ret = parent->algo->smbus_xfer(parent, addr, flags,
+					read_write, command, size, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (muxc->deselect)
 		muxc->deselect(muxc, priv->chan_id);
 
@@ -418,7 +423,11 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
 	snprintf(symlink_name, sizeof(symlink_name), "channel-%u", chan_id);
 	WARN(sysfs_create_link(&muxc->dev->kobj, &priv->adap.dev.kobj,
 			       symlink_name),
+<<<<<<< HEAD
 	     "can't create symlink to channel %u\n", chan_id);
+=======
+	     "can't create symlink for channel %u\n", chan_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(&parent->dev, "Added multiplexed i2c bus %d\n",
 		 i2c_adapter_id(&priv->adap));
 

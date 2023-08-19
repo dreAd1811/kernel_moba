@@ -258,7 +258,11 @@ static void reg_w_var(struct gspca_dev *gspca_dev,
 			break;
 		default:
 			if (len > USB_BUF_SZ) {
+<<<<<<< HEAD
 				gspca_err(gspca_dev, "Incorrect variable sequence\n");
+=======
+				PERR("Incorrect variable sequence");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return;
 			}
 			while (len > 0) {

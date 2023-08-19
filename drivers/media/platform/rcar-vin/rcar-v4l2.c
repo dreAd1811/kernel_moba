@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Driver for Renesas R-Car VIN
  *
@@ -8,22 +11,38 @@
  * Copyright (C) 2008 Magnus Damm
  *
  * Based on the soc-camera rcar_vin driver
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute  it and/or modify it
+ * under  the terms of  the GNU General  Public License as published by the
+ * Free Software Foundation;  either version 2 of the  License, or (at your
+ * option) any later version.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/pm_runtime.h>
 
 #include <media/v4l2-event.h>
 #include <media/v4l2-ioctl.h>
+<<<<<<< HEAD
 #include <media/v4l2-mc.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/v4l2-rect.h>
 
 #include "rcar-vin.h"
 
 #define RVIN_DEFAULT_FORMAT	V4L2_PIX_FMT_YUYV
+<<<<<<< HEAD
 #define RVIN_DEFAULT_WIDTH	800
 #define RVIN_DEFAULT_HEIGHT	600
 #define RVIN_DEFAULT_FIELD	V4L2_FIELD_NONE
 #define RVIN_DEFAULT_COLORSPACE	V4L2_COLORSPACE_SRGB
+=======
+#define RVIN_MAX_WIDTH		2048
+#define RVIN_MAX_HEIGHT		2048
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* -----------------------------------------------------------------------------
  * Format Conversions
@@ -87,6 +106,7 @@ static u32 rvin_format_sizeimage(struct v4l2_pix_format *pix)
 	return pix->bytesperline * pix->height;
 }
 
+<<<<<<< HEAD
 static void rvin_format_align(struct rvin_dev *vin, struct v4l2_pix_format *pix)
 {
 	u32 walign;
@@ -132,22 +152,48 @@ static void rvin_format_align(struct rvin_dev *vin, struct v4l2_pix_format *pix)
 		pix->width, pix->height, pix->bytesperline, pix->sizeimage);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * V4L2
  */
 
+<<<<<<< HEAD
+=======
+static void rvin_reset_crop_compose(struct rvin_dev *vin)
+{
+	vin->crop.top = vin->crop.left = 0;
+	vin->crop.width = vin->source.width;
+	vin->crop.height = vin->source.height;
+
+	vin->compose.top = vin->compose.left = 0;
+	vin->compose.width = vin->format.width;
+	vin->compose.height = vin->format.height;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rvin_reset_format(struct rvin_dev *vin)
 {
 	struct v4l2_subdev_format fmt = {
 		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
+<<<<<<< HEAD
 		.pad = vin->parallel->source_pad,
 	};
 	int ret;
 
+=======
+	};
+	struct v4l2_mbus_framefmt *mf = &fmt.format;
+	int ret;
+
+	fmt.pad = vin->digital.source_pad;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = v4l2_subdev_call(vin_to_source(vin), pad, get_fmt, NULL, &fmt);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	v4l2_fill_pix_format(&vin->format, &fmt.format);
 
 	rvin_format_align(vin, &vin->format);
@@ -159,10 +205,49 @@ static int rvin_reset_format(struct rvin_dev *vin)
 
 	vin->crop = vin->source;
 	vin->compose = vin->source;
+=======
+	vin->format.width	= mf->width;
+	vin->format.height	= mf->height;
+	vin->format.colorspace	= mf->colorspace;
+	vin->format.field	= mf->field;
+
+	/*
+	 * If the subdevice uses ALTERNATE field mode and G_STD is
+	 * implemented use the VIN HW to combine the two fields to
+	 * one INTERLACED frame. The ALTERNATE field mode can still
+	 * be requested in S_FMT and be respected, this is just the
+	 * default which is applied at probing or when S_STD is called.
+	 */
+	if (vin->format.field == V4L2_FIELD_ALTERNATE &&
+	    v4l2_subdev_has_op(vin_to_source(vin), video, g_std))
+		vin->format.field = V4L2_FIELD_INTERLACED;
+
+	switch (vin->format.field) {
+	case V4L2_FIELD_TOP:
+	case V4L2_FIELD_BOTTOM:
+	case V4L2_FIELD_ALTERNATE:
+		vin->format.height /= 2;
+		break;
+	case V4L2_FIELD_NONE:
+	case V4L2_FIELD_INTERLACED_TB:
+	case V4L2_FIELD_INTERLACED_BT:
+	case V4L2_FIELD_INTERLACED:
+		break;
+	default:
+		vin->format.field = V4L2_FIELD_NONE;
+		break;
+	}
+
+	rvin_reset_crop_compose(vin);
+
+	vin->format.bytesperline = rvin_format_bytesperline(&vin->format);
+	vin->format.sizeimage = rvin_format_sizeimage(&vin->format);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rvin_try_format(struct rvin_dev *vin, u32 which,
 			   struct v4l2_pix_format *pix,
 			   struct v4l2_rect *crop, struct v4l2_rect *compose)
@@ -177,10 +262,30 @@ static int rvin_try_format(struct rvin_dev *vin, u32 which,
 	u32 width, height;
 	int ret;
 
+=======
+static int __rvin_try_format_source(struct rvin_dev *vin,
+				    u32 which,
+				    struct v4l2_pix_format *pix,
+				    struct rvin_source_fmt *source)
+{
+	struct v4l2_subdev *sd;
+	struct v4l2_subdev_pad_config *pad_cfg;
+	struct v4l2_subdev_format format = {
+		.which = which,
+	};
+	enum v4l2_field field;
+	int ret;
+
+	sd = vin_to_source(vin);
+
+	v4l2_fill_mbus_format(&format.format, pix, vin->digital.code);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pad_cfg = v4l2_subdev_alloc_pad_config(sd);
 	if (pad_cfg == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	if (!rvin_format_from_pixel(pix->pixelformat) ||
 	    (vin->info->model == RCAR_M1 &&
 	     pix->pixelformat == V4L2_PIX_FMT_XBGR32))
@@ -192,6 +297,11 @@ static int rvin_try_format(struct rvin_dev *vin, u32 which,
 	field = pix->field;
 	width = pix->width;
 	height = pix->height;
+=======
+	format.pad = vin->digital.source_pad;
+
+	field = pix->field;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_subdev_call(sd, pad, set_fmt, pad_cfg, &format);
 	if (ret < 0 && ret != -ENOIOCTLCMD)
@@ -199,6 +309,7 @@ static int rvin_try_format(struct rvin_dev *vin, u32 which,
 
 	v4l2_fill_pix_format(pix, &format.format);
 
+<<<<<<< HEAD
 	if (crop) {
 		crop->top = 0;
 		crop->left = 0;
@@ -229,6 +340,94 @@ static int rvin_try_format(struct rvin_dev *vin, u32 which,
 	}
 done:
 	v4l2_subdev_free_pad_config(pad_cfg);
+=======
+	pix->field = field;
+
+	source->width = pix->width;
+	source->height = pix->height;
+
+	vin_dbg(vin, "Source resolution: %ux%u\n", source->width,
+		source->height);
+
+done:
+	v4l2_subdev_free_pad_config(pad_cfg);
+	return ret;
+}
+
+static int __rvin_try_format(struct rvin_dev *vin,
+			     u32 which,
+			     struct v4l2_pix_format *pix,
+			     struct rvin_source_fmt *source)
+{
+	u32 rwidth, rheight, walign;
+	int ret;
+
+	/* Requested */
+	rwidth = pix->width;
+	rheight = pix->height;
+
+	/* Keep current field if no specific one is asked for */
+	if (pix->field == V4L2_FIELD_ANY)
+		pix->field = vin->format.field;
+
+	/* If requested format is not supported fallback to the default */
+	if (!rvin_format_from_pixel(pix->pixelformat)) {
+		vin_dbg(vin, "Format 0x%x not found, using default 0x%x\n",
+			pix->pixelformat, RVIN_DEFAULT_FORMAT);
+		pix->pixelformat = RVIN_DEFAULT_FORMAT;
+	}
+
+	/* Always recalculate */
+	pix->bytesperline = 0;
+	pix->sizeimage = 0;
+
+	/* Limit to source capabilities */
+	ret = __rvin_try_format_source(vin, which, pix, source);
+	if (ret)
+		return ret;
+
+	switch (pix->field) {
+	case V4L2_FIELD_TOP:
+	case V4L2_FIELD_BOTTOM:
+	case V4L2_FIELD_ALTERNATE:
+		pix->height /= 2;
+		source->height /= 2;
+		break;
+	case V4L2_FIELD_NONE:
+	case V4L2_FIELD_INTERLACED_TB:
+	case V4L2_FIELD_INTERLACED_BT:
+	case V4L2_FIELD_INTERLACED:
+		break;
+	default:
+		pix->field = V4L2_FIELD_NONE;
+		break;
+	}
+
+	/* If source can't match format try if VIN can scale */
+	if (source->width != rwidth || source->height != rheight)
+		rvin_scale_try(vin, pix, rwidth, rheight);
+
+	/* HW limit width to a multiple of 32 (2^5) for NV16 else 2 (2^1) */
+	walign = vin->format.pixelformat == V4L2_PIX_FMT_NV16 ? 5 : 1;
+
+	/* Limit to VIN capabilities */
+	v4l_bound_align_image(&pix->width, 2, RVIN_MAX_WIDTH, walign,
+			      &pix->height, 4, RVIN_MAX_HEIGHT, 2, 0);
+
+	pix->bytesperline = max_t(u32, pix->bytesperline,
+				  rvin_format_bytesperline(pix));
+	pix->sizeimage = max_t(u32, pix->sizeimage,
+			       rvin_format_sizeimage(pix));
+
+	if (vin->chip == RCAR_M1 && pix->pixelformat == V4L2_PIX_FMT_XBGR32) {
+		vin_err(vin, "pixel format XBGR32 not supported on M1\n");
+		return -EINVAL;
+	}
+
+	vin_dbg(vin, "Requested %ux%u Got %ux%u bpl: %d size: %d\n",
+		rwidth, rheight, pix->width, pix->height,
+		pix->bytesperline, pix->sizeimage);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -249,21 +448,33 @@ static int rvin_try_fmt_vid_cap(struct file *file, void *priv,
 				struct v4l2_format *f)
 {
 	struct rvin_dev *vin = video_drvdata(file);
+<<<<<<< HEAD
 
 	return rvin_try_format(vin, V4L2_SUBDEV_FORMAT_TRY, &f->fmt.pix, NULL,
 			       NULL);
+=======
+	struct rvin_source_fmt source;
+
+	return __rvin_try_format(vin, V4L2_SUBDEV_FORMAT_TRY, &f->fmt.pix,
+				 &source);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rvin_s_fmt_vid_cap(struct file *file, void *priv,
 			      struct v4l2_format *f)
 {
 	struct rvin_dev *vin = video_drvdata(file);
+<<<<<<< HEAD
 	struct v4l2_rect crop, compose;
+=======
+	struct rvin_source_fmt source;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (vb2_is_busy(&vin->queue))
 		return -EBUSY;
 
+<<<<<<< HEAD
 	ret = rvin_try_format(vin, V4L2_SUBDEV_FORMAT_ACTIVE, &f->fmt.pix,
 			      &crop, &compose);
 	if (ret)
@@ -273,6 +484,19 @@ static int rvin_s_fmt_vid_cap(struct file *file, void *priv,
 	vin->crop = crop;
 	vin->compose = compose;
 	vin->source = crop;
+=======
+	ret = __rvin_try_format(vin, V4L2_SUBDEV_FORMAT_ACTIVE, &f->fmt.pix,
+				&source);
+	if (ret)
+		return ret;
+
+	vin->source.width = source.width;
+	vin->source.height = source.height;
+
+	vin->format = f->fmt.pix;
+
+	rvin_reset_crop_compose(vin);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -357,8 +581,13 @@ static int rvin_s_selection(struct file *file, void *fh,
 		max_rect.height = vin->source.height;
 		v4l2_rect_map_inside(&r, &max_rect);
 
+<<<<<<< HEAD
 		v4l_bound_align_image(&r.width, 6, vin->source.width, 0,
 				      &r.height, 2, vin->source.height, 0, 0);
+=======
+		v4l_bound_align_image(&r.width, 2, vin->source.width, 1,
+				      &r.height, 4, vin->source.height, 2, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		r.top  = clamp_t(s32, r.top, 0, vin->source.height - r.height);
 		r.left = clamp_t(s32, r.left, 0, vin->source.width - r.width);
@@ -475,8 +704,11 @@ static int rvin_s_std(struct file *file, void *priv, v4l2_std_id a)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	vin->std = a;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Changing the standard will change the width/height */
 	return rvin_reset_format(vin);
 }
@@ -484,6 +716,7 @@ static int rvin_s_std(struct file *file, void *priv, v4l2_std_id a)
 static int rvin_g_std(struct file *file, void *priv, v4l2_std_id *a)
 {
 	struct rvin_dev *vin = video_drvdata(file);
+<<<<<<< HEAD
 
 	if (v4l2_subdev_has_op(vin_to_source(vin), pad, dv_timings_cap))
 		return -ENOIOCTLCMD;
@@ -491,6 +724,11 @@ static int rvin_g_std(struct file *file, void *priv, v4l2_std_id *a)
 	*a = vin->std;
 
 	return 0;
+=======
+	struct v4l2_subdev *sd = vin_to_source(vin);
+
+	return v4l2_subdev_call(sd, video, g_std, a);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rvin_subscribe_event(struct v4l2_fh *fh,
@@ -513,7 +751,11 @@ static int rvin_enum_dv_timings(struct file *file, void *priv_fh,
 	if (timings->pad)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	timings->pad = vin->parallel->sink_pad;
+=======
+	timings->pad = vin->digital.sink_pad;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_subdev_call(sd, pad, enum_dv_timings, timings);
 
@@ -565,7 +807,11 @@ static int rvin_dv_timings_cap(struct file *file, void *priv_fh,
 	if (cap->pad)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	cap->pad = vin->parallel->sink_pad;
+=======
+	cap->pad = vin->digital.sink_pad;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_subdev_call(sd, pad, dv_timings_cap, cap);
 
@@ -583,7 +829,11 @@ static int rvin_g_edid(struct file *file, void *fh, struct v4l2_edid *edid)
 	if (edid->pad)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	edid->pad = vin->parallel->sink_pad;
+=======
+	edid->pad = vin->digital.sink_pad;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_subdev_call(sd, pad, get_edid, edid);
 
@@ -601,7 +851,11 @@ static int rvin_s_edid(struct file *file, void *fh, struct v4l2_edid *edid)
 	if (edid->pad)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	edid->pad = vin->parallel->sink_pad;
+=======
+	edid->pad = vin->digital.sink_pad;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_subdev_call(sd, pad, set_edid, edid);
 
@@ -655,6 +909,7 @@ static const struct v4l2_ioctl_ops rvin_ioctl_ops = {
 };
 
 /* -----------------------------------------------------------------------------
+<<<<<<< HEAD
  * V4L2 Media Controller
  */
 
@@ -746,6 +1001,8 @@ static const struct v4l2_ioctl_ops rvin_mc_ioctl_ops = {
 };
 
 /* -----------------------------------------------------------------------------
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * File Operations
  */
 
@@ -888,6 +1145,7 @@ static const struct v4l2_file_operations rvin_fops = {
 	.read		= vb2_fop_read,
 };
 
+<<<<<<< HEAD
 /* -----------------------------------------------------------------------------
  * Media controller file operations
  */
@@ -964,6 +1222,16 @@ void rvin_v4l2_unregister(struct rvin_dev *vin)
 	v4l2_info(&vin->v4l2_dev, "Removing %s\n",
 		  video_device_node_name(&vin->vdev));
 
+=======
+void rvin_v4l2_remove(struct rvin_dev *vin)
+{
+	v4l2_info(&vin->v4l2_dev, "Removing %s\n",
+		  video_device_node_name(&vin->vdev));
+
+	/* Checks internaly if handlers have been init or not */
+	v4l2_ctrl_handler_free(&vin->ctrl_handler);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Checks internaly if vdev have been init or not */
 	video_unregister_device(&vin->vdev);
 }
@@ -983,6 +1251,7 @@ static void rvin_notify(struct v4l2_subdev *sd,
 	}
 }
 
+<<<<<<< HEAD
 int rvin_v4l2_register(struct rvin_dev *vin)
 {
 	struct video_device *vdev = &vin->vdev;
@@ -1016,6 +1285,60 @@ int rvin_v4l2_register(struct rvin_dev *vin)
 	}
 
 	rvin_format_align(vin, &vin->format);
+=======
+int rvin_v4l2_probe(struct rvin_dev *vin)
+{
+	struct video_device *vdev = &vin->vdev;
+	struct v4l2_subdev *sd = vin_to_source(vin);
+	int ret;
+
+	v4l2_set_subdev_hostdata(sd, vin);
+
+	vin->v4l2_dev.notify = rvin_notify;
+
+	ret = v4l2_subdev_call(sd, video, g_tvnorms, &vin->vdev.tvnorms);
+	if (ret < 0 && ret != -ENOIOCTLCMD && ret != -ENODEV)
+		return ret;
+
+	if (vin->vdev.tvnorms == 0) {
+		/* Disable the STD API if there are no tvnorms defined */
+		v4l2_disable_ioctl(&vin->vdev, VIDIOC_G_STD);
+		v4l2_disable_ioctl(&vin->vdev, VIDIOC_S_STD);
+		v4l2_disable_ioctl(&vin->vdev, VIDIOC_QUERYSTD);
+		v4l2_disable_ioctl(&vin->vdev, VIDIOC_ENUMSTD);
+	}
+
+	/* Add the controls */
+	/*
+	 * Currently the subdev with the largest number of controls (13) is
+	 * ov6550. So let's pick 16 as a hint for the control handler. Note
+	 * that this is a hint only: too large and you waste some memory, too
+	 * small and there is a (very) small performance hit when looking up
+	 * controls in the internal hash.
+	 */
+	ret = v4l2_ctrl_handler_init(&vin->ctrl_handler, 16);
+	if (ret < 0)
+		return ret;
+
+	ret = v4l2_ctrl_add_handler(&vin->ctrl_handler, sd->ctrl_handler, NULL);
+	if (ret < 0)
+		return ret;
+
+	/* video node */
+	vdev->fops = &rvin_fops;
+	vdev->v4l2_dev = &vin->v4l2_dev;
+	vdev->queue = &vin->queue;
+	strlcpy(vdev->name, KBUILD_MODNAME, sizeof(vdev->name));
+	vdev->release = video_device_release_empty;
+	vdev->ioctl_ops = &rvin_ioctl_ops;
+	vdev->lock = &vin->lock;
+	vdev->ctrl_handler = &vin->ctrl_handler;
+	vdev->device_caps = V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_STREAMING |
+		V4L2_CAP_READWRITE;
+
+	vin->format.pixelformat	= RVIN_DEFAULT_FORMAT;
+	rvin_reset_format(vin);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = video_register_device(&vin->vdev, VFL_TYPE_GRABBER, -1);
 	if (ret) {

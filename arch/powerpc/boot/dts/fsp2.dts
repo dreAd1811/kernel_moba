@@ -583,21 +583,33 @@
 			};
 		};
 
+<<<<<<< HEAD
 		OHCI1: ohci@2040000 {
+=======
+		OHCI1: ohci@02040000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ohci-le";
 			reg = <0x02040000 0xa0>;
 			interrupt-parent = <&UIC1_3>;
 			interrupts = <28 0x8 29 0x8>;
 		};
 
+<<<<<<< HEAD
 		OHCI2: ohci@2080000 {
+=======
+		OHCI2: ohci@02080000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ohci-le";
 			reg = <0x02080000 0xa0>;
 			interrupt-parent = <&UIC1_3>;
 			interrupts = <30 0x8 31 0x8>;
 		};
 
+<<<<<<< HEAD
 		EHCI: ehci@2000000 {
+=======
+		EHCI: ehci@02000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "usb-ehci";
 			reg = <0x02000000 0xa4>;
 			interrupt-parent = <&UIC1_3>;
@@ -607,7 +619,11 @@
 	};
 
 	chosen {
+<<<<<<< HEAD
 		stdout-path = "/plb/opb/serial@b0020000";
+=======
+		linux,stdout-path = "/plb/opb/serial@b0020000";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bootargs = "console=ttyS0,115200 rw log_buf_len=32768 debug";
 	};
 };

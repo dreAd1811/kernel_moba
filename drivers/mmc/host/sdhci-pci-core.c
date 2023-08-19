@@ -12,7 +12,10 @@
  *     - JMicron (hardware and technical support)
  */
 
+<<<<<<< HEAD
 #include <linux/bitfield.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/string.h>
 #include <linux/delay.h>
 #include <linux/highmem.h>
@@ -31,6 +34,7 @@
 #include <linux/mmc/sdhci-pci-data.h>
 #include <linux/acpi.h>
 
+<<<<<<< HEAD
 #include "cqhci.h"
 
 #include "sdhci.h"
@@ -69,6 +73,20 @@ static int sdhci_pci_suspend_host(struct sdhci_pci_chip *chip)
 
 	sdhci_pci_init_wakeup(chip);
 
+=======
+#include "sdhci.h"
+#include "sdhci-pci.h"
+#include "sdhci-pci-o2micro.h"
+
+static int sdhci_pci_enable_dma(struct sdhci_host *host);
+static void sdhci_pci_hw_reset(struct sdhci_host *host);
+
+#ifdef CONFIG_PM_SLEEP
+static int __sdhci_pci_suspend_host(struct sdhci_pci_chip *chip)
+{
+	int i, ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < chip->num_slots; i++) {
 		struct sdhci_pci_slot *slot = chip->slots[i];
 		struct sdhci_host *host;
@@ -85,8 +103,13 @@ static int sdhci_pci_suspend_host(struct sdhci_pci_chip *chip)
 		if (ret)
 			goto err_pci_suspend;
 
+<<<<<<< HEAD
 		if (device_may_wakeup(&chip->pdev->dev))
 			mmc_gpio_set_cd_wake(host->mmc, true);
+=======
+		if (host->mmc->pm_flags & MMC_PM_WAKE_SDIO_IRQ)
+			sdhci_enable_irq_wakeups(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -97,6 +120,39 @@ err_pci_suspend:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int sdhci_pci_init_wakeup(struct sdhci_pci_chip *chip)
+{
+	mmc_pm_flag_t pm_flags = 0;
+	int i;
+
+	for (i = 0; i < chip->num_slots; i++) {
+		struct sdhci_pci_slot *slot = chip->slots[i];
+
+		if (slot)
+			pm_flags |= slot->host->mmc->pm_flags;
+	}
+
+	return device_init_wakeup(&chip->pdev->dev,
+				  (pm_flags & MMC_PM_KEEP_POWER) &&
+				  (pm_flags & MMC_PM_WAKE_SDIO_IRQ));
+}
+
+static int sdhci_pci_suspend_host(struct sdhci_pci_chip *chip)
+{
+	int ret;
+
+	ret = __sdhci_pci_suspend_host(chip);
+	if (ret)
+		return ret;
+
+	sdhci_pci_init_wakeup(chip);
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int sdhci_pci_resume_host(struct sdhci_pci_chip *chip)
 {
 	struct sdhci_pci_slot *slot;
@@ -110,12 +166,16 @@ int sdhci_pci_resume_host(struct sdhci_pci_chip *chip)
 		ret = sdhci_resume_host(slot->host);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 
 		mmc_gpio_set_cd_wake(slot->host->mmc, false);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
+<<<<<<< HEAD
 
 static int sdhci_cqhci_suspend(struct sdhci_pci_chip *chip)
 {
@@ -138,6 +198,8 @@ static int sdhci_cqhci_resume(struct sdhci_pci_chip *chip)
 
 	return cqhci_resume(chip->slots[0]->host->mmc);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #ifdef CONFIG_PM
@@ -188,6 +250,7 @@ static int sdhci_pci_runtime_resume_host(struct sdhci_pci_chip *chip)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 static int sdhci_cqhci_runtime_suspend(struct sdhci_pci_chip *chip)
 {
@@ -230,6 +293,10 @@ static void sdhci_pci_dumpregs(struct mmc_host *mmc)
 	sdhci_dumpregs(mmc_priv(mmc));
 }
 
+=======
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*****************************************************************************\
  *                                                                           *
  * Hardware specific quirk handling                                          *
@@ -454,7 +521,10 @@ static const struct sdhci_pci_fixes sdhci_intel_pch_sdio = {
 enum {
 	INTEL_DSM_FNS		=  0,
 	INTEL_DSM_V18_SWITCH	=  3,
+<<<<<<< HEAD
 	INTEL_DSM_V33_SWITCH	=  4,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INTEL_DSM_DRV_STRENGTH	=  9,
 	INTEL_DSM_D3_RETUNE	= 10,
 };
@@ -463,9 +533,12 @@ struct intel_host {
 	u32	dsm_fns;
 	int	drv_strength;
 	bool	d3_retune;
+<<<<<<< HEAD
 	bool	rpm_retune_ok;
 	u32	glk_rx_ctrl1;
 	u32	glk_tun_val;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const guid_t intel_dsm_guid =
@@ -555,6 +628,12 @@ static int intel_select_drive_strength(struct mmc_card *card,
 	struct sdhci_pci_slot *slot = sdhci_priv(host);
 	struct intel_host *intel_host = sdhci_pci_priv(slot);
 
+<<<<<<< HEAD
+=======
+	if (!(mmc_driver_type_mask(intel_host->drv_strength) & card_drv))
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return intel_host->drv_strength;
 }
 
@@ -625,6 +704,7 @@ static void intel_hs400_enhanced_strobe(struct mmc_host *mmc,
 	sdhci_writel(host, val, INTEL_HS400_ES_REG);
 }
 
+<<<<<<< HEAD
 static int intel_start_signal_voltage_switch(struct mmc_host *mmc,
 					     struct mmc_ios *ios)
 {
@@ -656,6 +736,19 @@ static int intel_start_signal_voltage_switch(struct mmc_host *mmc,
 		 mmc_hostname(mmc), __func__, fn, err, result);
 
 	return 0;
+=======
+static void sdhci_intel_voltage_switch(struct sdhci_host *host)
+{
+	struct sdhci_pci_slot *slot = sdhci_priv(host);
+	struct intel_host *intel_host = sdhci_pci_priv(slot);
+	struct device *dev = &slot->chip->pdev->dev;
+	u32 result = 0;
+	int err;
+
+	err = intel_dsm(intel_host, dev, INTEL_DSM_V18_SWITCH, &result);
+	pr_debug("%s: %s DSM error %d result %u\n",
+		 mmc_hostname(host->mmc), __func__, err, result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct sdhci_ops sdhci_intel_byt_ops = {
@@ -666,6 +759,7 @@ static const struct sdhci_ops sdhci_intel_byt_ops = {
 	.reset			= sdhci_reset,
 	.set_uhs_signaling	= sdhci_set_uhs_signaling,
 	.hw_reset		= sdhci_pci_hw_reset,
+<<<<<<< HEAD
 };
 
 static const struct sdhci_ops sdhci_intel_glk_ops = {
@@ -677,6 +771,9 @@ static const struct sdhci_ops sdhci_intel_glk_ops = {
 	.set_uhs_signaling	= sdhci_set_uhs_signaling,
 	.hw_reset		= sdhci_pci_hw_reset,
 	.irq			= sdhci_cqhci_irq,
+=======
+	.voltage_switch		= sdhci_intel_voltage_switch,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void byt_read_dsm(struct sdhci_pci_slot *slot)
@@ -714,7 +811,10 @@ static void byt_probe_slot(struct sdhci_pci_slot *slot)
 	byt_read_dsm(slot);
 
 	ops->execute_tuning = intel_execute_tuning;
+<<<<<<< HEAD
 	ops->start_signal_voltage_switch = intel_start_signal_voltage_switch;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int byt_emmc_probe_slot(struct sdhci_pci_slot *slot)
@@ -736,18 +836,25 @@ static int glk_emmc_probe_slot(struct sdhci_pci_slot *slot)
 {
 	int ret = byt_emmc_probe_slot(slot);
 
+<<<<<<< HEAD
 	slot->host->mmc->caps2 |= MMC_CAP2_CQE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (slot->chip->pdev->device != PCI_DEVICE_ID_INTEL_GLK_EMMC) {
 		slot->host->mmc->caps2 |= MMC_CAP2_HS400_ES,
 		slot->host->mmc_host_ops.hs400_enhanced_strobe =
 						intel_hs400_enhanced_strobe;
+<<<<<<< HEAD
 		slot->host->mmc->caps2 |= MMC_CAP2_CQE_DCMD;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static const struct cqhci_host_ops glk_cqhci_ops = {
 	.enable		= sdhci_cqe_enable,
 	.disable	= sdhci_cqe_disable,
@@ -866,6 +973,8 @@ static int glk_runtime_resume(struct sdhci_pci_chip *chip)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ACPI
 static int ni_set_max_freq(struct sdhci_pci_slot *slot)
 {
@@ -927,10 +1036,13 @@ static int byt_sd_probe_slot(struct sdhci_pci_slot *slot)
 	    slot->chip->pdev->device == PCI_DEVICE_ID_INTEL_GLK_SD)
 		slot->host->mmc_host_ops.get_cd = bxt_get_cd;
 
+<<<<<<< HEAD
 	if (slot->chip->pdev->subsystem_vendor == PCI_VENDOR_ID_NI &&
 	    slot->chip->pdev->subsystem_device == PCI_SUBDEVICE_ID_NI_78E3)
 		slot->host->mmc->caps2 |= MMC_CAP2_AVOID_3_3V;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -948,6 +1060,7 @@ static const struct sdhci_pci_fixes sdhci_intel_byt_emmc = {
 static const struct sdhci_pci_fixes sdhci_intel_glk_emmc = {
 	.allow_runtime_pm	= true,
 	.probe_slot		= glk_emmc_probe_slot,
+<<<<<<< HEAD
 	.add_host		= glk_emmc_add_host,
 #ifdef CONFIG_PM_SLEEP
 	.suspend		= sdhci_cqhci_suspend,
@@ -957,11 +1070,17 @@ static const struct sdhci_pci_fixes sdhci_intel_glk_emmc = {
 	.runtime_suspend	= glk_runtime_suspend,
 	.runtime_resume		= glk_runtime_resume,
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.quirks			= SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC,
 	.quirks2		= SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
 				  SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400 |
 				  SDHCI_QUIRK2_STOP_WITH_TC,
+<<<<<<< HEAD
 	.ops			= &sdhci_intel_glk_ops,
+=======
+	.ops			= &sdhci_intel_byt_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.priv_size		= sizeof(struct intel_host),
 };
 
@@ -1057,6 +1176,18 @@ static const struct sdhci_pci_fixes sdhci_intel_mrfld_mmc = {
 	.probe_slot	= intel_mrfld_mmc_probe_slot,
 };
 
+<<<<<<< HEAD
+=======
+/* O2Micro extra registers */
+#define O2_SD_LOCK_WP		0xD3
+#define O2_SD_MULTI_VCC3V	0xEE
+#define O2_SD_CLKREQ		0xEC
+#define O2_SD_CAPS		0xE0
+#define O2_SD_ADMA1		0xE2
+#define O2_SD_ADMA2		0xE7
+#define O2_SD_INF_MOD		0xF1
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int jmicron_pmos(struct sdhci_pci_chip *chip, int on)
 {
 	u8 scratch;
@@ -1215,7 +1346,11 @@ static int jmicron_suspend(struct sdhci_pci_chip *chip)
 {
 	int i, ret;
 
+<<<<<<< HEAD
 	ret = sdhci_pci_suspend_host(chip);
+=======
+	ret = __sdhci_pci_suspend_host(chip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -1225,6 +1360,11 @@ static int jmicron_suspend(struct sdhci_pci_chip *chip)
 			jmicron_enable_mmc(chip->slots[i]->host, 0);
 	}
 
+<<<<<<< HEAD
+=======
+	sdhci_pci_init_wakeup(chip);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1559,7 +1699,10 @@ static const struct pci_device_id pci_ids[] = {
 	SDHCI_PCI_DEVICE(INTEL, SPT_SDIO,  intel_byt_sdio),
 	SDHCI_PCI_DEVICE(INTEL, SPT_SD,    intel_byt_sd),
 	SDHCI_PCI_DEVICE(INTEL, DNV_EMMC,  intel_byt_emmc),
+<<<<<<< HEAD
 	SDHCI_PCI_DEVICE(INTEL, CDF_EMMC,  intel_glk_emmc),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SDHCI_PCI_DEVICE(INTEL, BXT_EMMC,  intel_byt_emmc),
 	SDHCI_PCI_DEVICE(INTEL, BXT_SDIO,  intel_byt_sdio),
 	SDHCI_PCI_DEVICE(INTEL, BXT_SD,    intel_byt_sd),
@@ -1575,10 +1718,13 @@ static const struct pci_device_id pci_ids[] = {
 	SDHCI_PCI_DEVICE(INTEL, CNP_EMMC,  intel_glk_emmc),
 	SDHCI_PCI_DEVICE(INTEL, CNP_SD,    intel_byt_sd),
 	SDHCI_PCI_DEVICE(INTEL, CNPH_SD,   intel_byt_sd),
+<<<<<<< HEAD
 	SDHCI_PCI_DEVICE(INTEL, ICP_EMMC,  intel_glk_emmc),
 	SDHCI_PCI_DEVICE(INTEL, ICP_SD,    intel_byt_sd),
 	SDHCI_PCI_DEVICE(INTEL, CML_EMMC,  intel_glk_emmc),
 	SDHCI_PCI_DEVICE(INTEL, CML_SD,    intel_byt_sd),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SDHCI_PCI_DEVICE(O2, 8120,     o2),
 	SDHCI_PCI_DEVICE(O2, 8220,     o2),
 	SDHCI_PCI_DEVICE(O2, 8221,     o2),
@@ -1589,8 +1735,11 @@ static const struct pci_device_id pci_ids[] = {
 	SDHCI_PCI_DEVICE(O2, SDS1,     o2),
 	SDHCI_PCI_DEVICE(O2, SEABIRD0, o2),
 	SDHCI_PCI_DEVICE(O2, SEABIRD1, o2),
+<<<<<<< HEAD
 	SDHCI_PCI_DEVICE(ARASAN, PHY_EMMC, arasan),
 	SDHCI_PCI_DEVICE(SYNOPSYS, DWC_MSHC, snps),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SDHCI_PCI_DEVICE_CLASS(AMD, SYSTEM_SDHCI, PCI_CLASS_MASK, amd),
 	/* Generic SD host controller */
 	{PCI_DEVICE_CLASS(SYSTEM_SDHCI, PCI_CLASS_MASK)},
@@ -1605,7 +1754,11 @@ MODULE_DEVICE_TABLE(pci, pci_ids);
  *                                                                           *
 \*****************************************************************************/
 
+<<<<<<< HEAD
 int sdhci_pci_enable_dma(struct sdhci_host *host)
+=======
+static int sdhci_pci_enable_dma(struct sdhci_host *host)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sdhci_pci_slot *slot;
 	struct pci_dev *pdev;
@@ -1828,6 +1981,7 @@ static struct sdhci_pci_slot *sdhci_pci_probe_slot(
 		}
 	}
 
+<<<<<<< HEAD
 	host->mmc->pm_caps = MMC_PM_KEEP_POWER;
 	host->mmc->slotno = slotno;
 	host->mmc->caps2 |= MMC_CAP2_NO_PRESCAN_POWERUP;
@@ -1838,6 +1992,12 @@ static struct sdhci_pci_slot *sdhci_pci_probe_slot(
 	if (host->mmc->caps & MMC_CAP_CD_WAKE)
 		device_init_wakeup(&pdev->dev, true);
 
+=======
+	host->mmc->pm_caps = MMC_PM_KEEP_POWER | MMC_PM_WAKE_SDIO_IRQ;
+	host->mmc->slotno = slotno;
+	host->mmc->caps2 |= MMC_CAP2_NO_PRESCAN_POWERUP;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (slot->cd_idx >= 0) {
 		ret = mmc_gpiod_request_cd(host->mmc, "cd", slot->cd_idx,
 					   slot->cd_override_level, 0, NULL);

@@ -30,6 +30,7 @@
 		clock-frequency = <24000000>;
 	};
 
+<<<<<<< HEAD
 	bridge {
 		compatible = "ti,ths8134b", "ti,ths8134";
 		#address-cells = <1>;
@@ -67,6 +68,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	core-module@10000000 {
 		compatible = "arm,core-module-versatile", "syscon", "simple-mfd";
 		reg = <0x10000000 0x200>;
@@ -267,6 +270,7 @@
 			reg = <0x10120000 0x1000>;
 			interrupts = <16>;
 			clocks = <&osc1>, <&pclk>;
+<<<<<<< HEAD
 			clock-names = "clcdclk", "apb_pclk";
 			/* 800x600 16bpp @ 36MHz works fine */
 			max-memory-bandwidth = <54000000>;
@@ -300,6 +304,9 @@
 					arm,pl11x,tft-r0g0b0-pads = <0 8 16>;
 				};
 			};
+=======
+			clock-names = "clcd", "apb_pclk";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		sctl@101e0000 {
@@ -373,7 +380,11 @@
 			clock-names = "apb_pclk";
 		};
 
+<<<<<<< HEAD
 		ssp@101f4000 {
+=======
+		spi@101f4000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,pl022", "arm,primecell";
 			reg = <0x101f4000 0x1000>;
 			interrupts = <11>;
@@ -388,6 +399,7 @@
 			ranges = <0 0x10000000 0x10000>;
 
 			sysreg@0 {
+<<<<<<< HEAD
 				compatible = "arm,versatile-sysreg", "syscon", "simple-mfd";
 				reg = <0x00000 0x1000>;
 
@@ -400,6 +412,10 @@
 						};
 					};
 				};
+=======
+				compatible = "arm,versatile-sysreg", "syscon";
+				reg = <0x00000 0x1000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			aaci@4000 {

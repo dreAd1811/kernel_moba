@@ -99,7 +99,10 @@ pof_handle_data(hysdn_card *card, int datlen)
 
 	case TAG_CBOOTDTA:
 		DecryptBuf(boot, datlen);	/* we need to encrypt the buffer */
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case TAG_BOOTDTA:
 		if (card->debug_flags & LOG_POF_RECORD)
 			hysdn_addlog(card, "POF got %s len=%d offs=0x%lx",
@@ -138,7 +141,10 @@ pof_handle_data(hysdn_card *card, int datlen)
 
 	case TAG_CABSDATA:
 		DecryptBuf(boot, datlen);	/* we need to encrypt the buffer */
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case TAG_ABSDATA:
 		if (card->debug_flags & LOG_POF_RECORD)
 			hysdn_addlog(card, "POF got %s len=%d offs=0x%lx",

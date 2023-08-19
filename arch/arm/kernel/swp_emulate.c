@@ -91,6 +91,21 @@ static int proc_status_show(struct seq_file *m, void *v)
 		seq_printf(m, "Last process:\t\t%d\n", previous_pid);
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static int proc_status_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, proc_status_show, PDE_DATA(inode));
+}
+
+static const struct file_operations proc_status_fops = {
+	.open		= proc_status_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /*
@@ -100,7 +115,10 @@ static void set_segfault(struct pt_regs *regs, unsigned long addr)
 {
 	siginfo_t info;
 
+<<<<<<< HEAD
 	clear_siginfo(&info);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	down_read(&current->mm->mmap_sem);
 	if (find_vma(current->mm, addr) == NULL)
 		info.si_code = SEGV_MAPERR;
@@ -249,8 +267,12 @@ static int __init swp_emulation_init(void)
 		return 0;
 
 #ifdef CONFIG_PROC_FS
+<<<<<<< HEAD
 	if (!proc_create_single("cpu/swp_emulation", S_IRUGO, NULL,
 			proc_status_show))
+=======
+	if (!proc_create("cpu/swp_emulation", S_IRUGO, NULL, &proc_status_fops))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 #endif /* CONFIG_PROC_FS */
 

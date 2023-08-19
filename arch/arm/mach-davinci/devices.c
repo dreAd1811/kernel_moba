@@ -26,6 +26,10 @@
 
 
 #include "davinci.h"
+<<<<<<< HEAD
+=======
+#include "clock.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DAVINCI_I2C_BASE	     0x01C21000
 #define DAVINCI_ATA_BASE	     0x01C66000
@@ -281,13 +285,25 @@ static struct resource wdt_resources[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct platform_device davinci_wdt_device = {
+=======
+struct platform_device davinci_wdt_device = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name		= "davinci-wdt",
 	.id		= -1,
 	.num_resources	= ARRAY_SIZE(wdt_resources),
 	.resource	= wdt_resources,
 };
 
+<<<<<<< HEAD
+=======
+void davinci_restart(enum reboot_mode mode, const char *cmd)
+{
+	davinci_watchdog_reset(&davinci_wdt_device);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int davinci_init_wdt(void)
 {
 	return platform_device_register(&davinci_wdt_device);

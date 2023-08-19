@@ -59,6 +59,11 @@ enum bnxt_nvm_directory_type {
 #define BNX_DIR_ATTR_NO_CHKSUM			(1 << 0)
 #define BNX_DIR_ATTR_PROP_STREAM		(1 << 1)
 
+<<<<<<< HEAD
+=======
+#define BNX_PKG_LOG_MAX_LENGTH			4096
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum bnxnvm_pkglog_field_index {
 	BNX_PKG_LOG_FIELD_IDX_INSTALLED_TIMESTAMP	= 0,
 	BNX_PKG_LOG_FIELD_IDX_PKG_DESCRIPTION		= 1,

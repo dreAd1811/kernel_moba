@@ -16,7 +16,10 @@
 #include <linux/delay.h>
 #include <linux/fsi.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/of.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 #include "fsi-master.h"
@@ -122,8 +125,12 @@ static int hub_master_write(struct fsi_master *master, int link,
 
 static int hub_master_break(struct fsi_master *master, int link)
 {
+<<<<<<< HEAD
 	uint32_t addr;
 	__be32 cmd;
+=======
+	uint32_t addr, cmd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	addr = 0x4;
 	cmd = cpu_to_be32(0xc0de0000);
@@ -206,7 +213,11 @@ static int hub_master_init(struct fsi_master_hub *hub)
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	reg = cpu_to_be32(~0);
+=======
+	reg = ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = fsi_device_write(dev, FSI_MSENP0, &reg, sizeof(reg));
 	if (rc)
 		return rc;
@@ -255,7 +266,11 @@ static int hub_master_probe(struct device *dev)
 
 	reg = be32_to_cpu(__reg);
 	links = (reg >> 8) & 0xff;
+<<<<<<< HEAD
 	dev_dbg(dev, "hub version %08x (%d links)\n", reg, links);
+=======
+	dev_info(dev, "hub version %08x (%d links)\n", reg, links);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = fsi_slave_claim_range(fsi_dev->slave, FSI_HUB_LINK_OFFSET,
 			FSI_HUB_LINK_SIZE * links);
@@ -276,7 +291,10 @@ static int hub_master_probe(struct device *dev)
 
 	hub->master.dev.parent = dev;
 	hub->master.dev.release = hub_master_release;
+<<<<<<< HEAD
 	hub->master.dev.of_node = of_node_get(dev_of_node(dev));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hub->master.n_links = links;
 	hub->master.read = hub_master_read;
@@ -289,6 +307,7 @@ static int hub_master_probe(struct device *dev)
 	hub_master_init(hub);
 
 	rc = fsi_master_register(&hub->master);
+<<<<<<< HEAD
 	if (rc)
 		goto err_release;
 
@@ -302,6 +321,12 @@ static int hub_master_probe(struct device *dev)
 	get_device(&hub->master.dev);
 	return 0;
 
+=======
+	if (!rc)
+		return 0;
+
+	kfree(hub);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_release:
 	fsi_slave_release_range(fsi_dev->slave, FSI_HUB_LINK_OFFSET,
 			FSI_HUB_LINK_SIZE * links);
@@ -314,6 +339,7 @@ static int hub_master_remove(struct device *dev)
 
 	fsi_master_unregister(&hub->master);
 	fsi_slave_release_range(hub->upstream->slave, hub->addr, hub->size);
+<<<<<<< HEAD
 	of_node_put(hub->master.dev.of_node);
 
 	/*
@@ -322,6 +348,8 @@ static int hub_master_remove(struct device *dev)
 	 */
 	put_device(&hub->master.dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

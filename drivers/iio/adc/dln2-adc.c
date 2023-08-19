@@ -479,6 +479,10 @@ static const struct iio_info dln2_adc_info = {
 	.read_raw = dln2_adc_read_raw,
 	.write_raw = dln2_adc_write_raw,
 	.update_scan_mode = dln2_update_scan_mode,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
@@ -527,6 +531,13 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
 	u16 conflict;
 	unsigned int trigger_chan;
 
+<<<<<<< HEAD
+=======
+	ret = iio_triggered_buffer_postenable(indio_dev);
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&dln2->mutex);
 
 	/* Enable ADC */
@@ -540,6 +551,10 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
 				(int)conflict);
 			ret = -EBUSY;
 		}
+<<<<<<< HEAD
+=======
+		iio_triggered_buffer_predisable(indio_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -553,6 +568,10 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
 		mutex_unlock(&dln2->mutex);
 		if (ret < 0) {
 			dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
+<<<<<<< HEAD
+=======
+			iio_triggered_buffer_predisable(indio_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	} else {
@@ -560,12 +579,20 @@ static int dln2_adc_triggered_buffer_postenable(struct iio_dev *indio_dev)
 		mutex_unlock(&dln2->mutex);
 	}
 
+<<<<<<< HEAD
 	return iio_triggered_buffer_postenable(indio_dev);
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
 {
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret, ret2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dln2_adc *dln2 = iio_priv(indio_dev);
 
 	mutex_lock(&dln2->mutex);
@@ -580,12 +607,23 @@ static int dln2_adc_triggered_buffer_predisable(struct iio_dev *indio_dev)
 	ret = dln2_adc_set_port_enabled(dln2, false, NULL);
 
 	mutex_unlock(&dln2->mutex);
+<<<<<<< HEAD
 	if (ret < 0) {
 		dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
 		return ret;
 	}
 
 	return iio_triggered_buffer_predisable(indio_dev);
+=======
+	if (ret < 0)
+		dev_dbg(&dln2->pdev->dev, "Problem in %s\n", __func__);
+
+	ret2 = iio_triggered_buffer_predisable(indio_dev);
+	if (ret == 0)
+		ret = ret2;
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct iio_buffer_setup_ops dln2_adc_buffer_setup_ops = {
@@ -603,6 +641,13 @@ static void dln2_adc_event(struct platform_device *pdev, u16 echo,
 	iio_trigger_poll(dln2->trig);
 }
 
+<<<<<<< HEAD
+=======
+static const struct iio_trigger_ops dln2_adc_trigger_ops = {
+	.owner = THIS_MODULE,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dln2_adc_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -660,6 +705,10 @@ static int dln2_adc_probe(struct platform_device *pdev)
 		dev_err(dev, "failed to allocate trigger\n");
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
+=======
+	dln2->trig->ops = &dln2_adc_trigger_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iio_trigger_set_drvdata(dln2->trig, dln2);
 	devm_iio_trigger_register(dev, dln2->trig);
 	iio_trigger_set_immutable(indio_dev, dln2->trig);

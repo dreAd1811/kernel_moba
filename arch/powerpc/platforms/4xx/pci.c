@@ -1242,7 +1242,11 @@ static void __init ppc460sx_pciex_check_link(struct ppc4xx_pciex_port *port)
 	if (mbase == NULL) {
 		printk(KERN_ERR "%pOF: Can't map internal config space !",
 			port->node);
+<<<<<<< HEAD
 		goto done;
+=======
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	while (attempt && (0 == (in_le32(mbase + PECFG_460SX_DLLSTA)
@@ -1252,9 +1256,13 @@ static void __init ppc460sx_pciex_check_link(struct ppc4xx_pciex_port *port)
 	}
 	if (attempt)
 		port->link = 1;
+<<<<<<< HEAD
 done:
 	iounmap(mbase);
 
+=======
+	iounmap(mbase);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct ppc4xx_pciex_hwops ppc460sx_pcie_hwops __initdata = {
@@ -1449,7 +1457,11 @@ static int __init ppc4xx_pciex_check_core_init(struct device_node *np)
 	count = ppc4xx_pciex_hwops->core_init(np);
 	if (count > 0) {
 		ppc4xx_pciex_ports =
+<<<<<<< HEAD
 		       kcalloc(count, sizeof(struct ppc4xx_pciex_port),
+=======
+		       kzalloc(count * sizeof(struct ppc4xx_pciex_port),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL);
 		if (ppc4xx_pciex_ports) {
 			ppc4xx_pciex_port_count = count;

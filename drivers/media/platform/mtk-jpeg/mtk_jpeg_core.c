@@ -861,9 +861,20 @@ static int mtk_jpeg_job_ready(void *priv)
 	return (ctx->state == MTK_JPEG_RUNNING) ? 1 : 0;
 }
 
+<<<<<<< HEAD
 static const struct v4l2_m2m_ops mtk_jpeg_m2m_ops = {
 	.device_run = mtk_jpeg_device_run,
 	.job_ready  = mtk_jpeg_job_ready,
+=======
+static void mtk_jpeg_job_abort(void *priv)
+{
+}
+
+static const struct v4l2_m2m_ops mtk_jpeg_m2m_ops = {
+	.device_run = mtk_jpeg_device_run,
+	.job_ready  = mtk_jpeg_job_ready,
+	.job_abort  = mtk_jpeg_job_abort,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int mtk_jpeg_queue_init(void *priv, struct vb2_queue *src_vq,
@@ -1076,10 +1087,20 @@ static int mtk_jpeg_clk_init(struct mtk_jpeg_dev *jpeg)
 
 	jpeg->clk_jdec = devm_clk_get(jpeg->dev, "jpgdec");
 	if (IS_ERR(jpeg->clk_jdec))
+<<<<<<< HEAD
 		return PTR_ERR(jpeg->clk_jdec);
 
 	jpeg->clk_jdec_smi = devm_clk_get(jpeg->dev, "jpgdec-smi");
 	return PTR_ERR_OR_ZERO(jpeg->clk_jdec_smi);
+=======
+		return -EINVAL;
+
+	jpeg->clk_jdec_smi = devm_clk_get(jpeg->dev, "jpgdec-smi");
+	if (IS_ERR(jpeg->clk_jdec_smi))
+		return -EINVAL;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mtk_jpeg_probe(struct platform_device *pdev)

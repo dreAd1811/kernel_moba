@@ -84,6 +84,12 @@ struct thread_info {
 	.regs = NULL,			\
 }
 
+<<<<<<< HEAD
+=======
+#define init_thread_info        (init_thread_union.thread_info)
+#define init_stack              (init_thread_union.stack)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Tacky preprocessor trickery */
 #define	qqstr(s) qstr(s)
 #define qstr(s) #s

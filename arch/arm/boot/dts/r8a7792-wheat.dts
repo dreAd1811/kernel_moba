@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the Wheat board
  *
  * Copyright (C) 2016 Renesas Electronics Corporation
  * Copyright (C) 2016 Cogent  Embedded, Inc.
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public License
+ * version 2.  This program is licensed "as is" without any warranty of any
+ * kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -165,11 +175,14 @@
 	};
 };
 
+<<<<<<< HEAD
 &rwdt {
 	timeout-sec = <60>;
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &scif0 {
 	pinctrl-0 = <&scif0_pins>;
 	pinctrl-names = "default";
@@ -242,6 +255,7 @@
 	status = "okay";
 	clock-frequency = <400000>;
 
+<<<<<<< HEAD
 	/*
 	 * The adv75xx resets its addresses to defaults during low power mode.
 	 * Because we have two ADV7513 devices on the same bus, we must change
@@ -251,6 +265,11 @@
 		compatible = "adi,adv7513";
 		reg = <0x3d>, <0x2d>, <0x4d>, <0x5d>;
 		reg-names = "main", "cec", "edid", "packet";
+=======
+	hdmi@3d {
+		compatible = "adi,adv7513";
+		reg = <0x3d>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		adi,input-depth = <8>;
 		adi,input-colorspace = "rgb";
@@ -280,8 +299,12 @@
 
 	hdmi@39 {
 		compatible = "adi,adv7513";
+<<<<<<< HEAD
 		reg = <0x39>, <0x29>, <0x49>, <0x59>;
 		reg-names = "main", "cec", "edid", "packet";
+=======
+		reg = <0x39>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		adi,input-depth = <8>;
 		adi,input-colorspace = "rgb";
@@ -314,7 +337,12 @@
 	pinctrl-0 = <&du0_pins &du1_pins>;
 	pinctrl-names = "default";
 
+<<<<<<< HEAD
 	clocks = <&cpg CPG_MOD 724>, <&cpg CPG_MOD 723>, <&osc2_clk>;
+=======
+	clocks = <&mstp7_clks R8A7792_CLK_DU0>, <&mstp7_clks R8A7792_CLK_DU1>,
+		 <&osc2_clk>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clock-names = "du.0", "du.1", "dclkin.0";
 	status = "okay";
 

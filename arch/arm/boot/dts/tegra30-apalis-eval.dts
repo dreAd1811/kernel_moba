@@ -79,7 +79,11 @@
 	 */
 	i2c@7000c000 {
 		status = "okay";
+<<<<<<< HEAD
 		clock-frequency = <400000>;
+=======
+		clock-frequency = <100000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pcie-switch@58 {
 			compatible = "plx,pex8605";
@@ -88,7 +92,11 @@
 
 		/* M41T0M6 real time clock on carrier board */
 		rtc@68 {
+<<<<<<< HEAD
 			compatible = "st,m41t0";
+=======
+			compatible = "st,m41t00";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x68>;
 		};
 	};

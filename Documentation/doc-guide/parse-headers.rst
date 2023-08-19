@@ -32,7 +32,11 @@ SYNOPSIS
 
 \ **parse_headers.pl**\  [<options>] <C_FILE> <OUT_FILE> [<EXCEPTIONS_FILE>]
 
+<<<<<<< HEAD
 Where <options> can be: --debug, --help or --usage.
+=======
+Where <options> can be: --debug, --help or --man.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 OPTIONS
@@ -133,7 +137,11 @@ For both statements, \ **type**\  can be either one of the following:
 
 \ **symbol**\
 
+<<<<<<< HEAD
  The ignore or replace statement will apply to the name of enum value
+=======
+ The ignore or replace statement will apply to the name of enum statements
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  at C_FILE.
 
  For replace statements, \ **new_value**\  will automatically use :c:type:
@@ -177,14 +185,22 @@ BUGS
 ****
 
 
+<<<<<<< HEAD
 Report bugs to Mauro Carvalho Chehab <mchehab@kernel.org>
+=======
+Report bugs to Mauro Carvalho Chehab <mchehab@s-opensource.com>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 COPYRIGHT
 *********
 
 
+<<<<<<< HEAD
 Copyright (c) 2016 by Mauro Carvalho Chehab <mchehab+samsung@kernel.org>.
+=======
+Copyright (c) 2016 by Mauro Carvalho Chehab <mchehab@s-opensource.com>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 License GPLv2: GNU GPL version 2 <http://gnu.org/licenses/gpl.html>.
 

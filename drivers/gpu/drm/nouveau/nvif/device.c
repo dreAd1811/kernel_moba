@@ -37,9 +37,12 @@ nvif_device_time(struct nvif_device *device)
 void
 nvif_device_fini(struct nvif_device *device)
 {
+<<<<<<< HEAD
 	nvif_user_fini(device);
 	kfree(device->runlist);
 	device->runlist = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nvif_object_fini(&device->object);
 }
 
@@ -49,8 +52,11 @@ nvif_device_init(struct nvif_object *parent, u32 handle, s32 oclass,
 {
 	int ret = nvif_object_init(parent, handle, oclass, data, size,
 				   &device->object);
+<<<<<<< HEAD
 	device->runlist = NULL;
 	device->user.func = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret == 0) {
 		device->info.version = 0;
 		ret = nvif_object_mthd(&device->object, NV_DEVICE_V0_INFO,

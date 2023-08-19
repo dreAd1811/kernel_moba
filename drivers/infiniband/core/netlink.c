@@ -41,6 +41,11 @@
 #include <linux/module.h>
 #include "core_priv.h"
 
+<<<<<<< HEAD
+=======
+#include "core_priv.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_MUTEX(rdma_nl_mutex);
 static struct sock *nls;
 static struct {
@@ -81,6 +86,7 @@ static bool is_nl_valid(unsigned int type, unsigned int op)
 	if (!is_nl_msg_valid(type, op))
 		return false;
 
+<<<<<<< HEAD
 	if (!rdma_nl_types[type].cb_table) {
 		mutex_unlock(&rdma_nl_mutex);
 		request_module("rdma-netlink-subsys-%d", type);
@@ -88,6 +94,17 @@ static bool is_nl_valid(unsigned int type, unsigned int op)
 	}
 
 	cb_table = rdma_nl_types[type].cb_table;
+=======
+	cb_table = rdma_nl_types[type].cb_table;
+#ifdef CONFIG_MODULES
+	if (!cb_table) {
+		mutex_unlock(&rdma_nl_mutex);
+		request_module("rdma-netlink-subsys-%d", type);
+		mutex_lock(&rdma_nl_mutex);
+		cb_table = rdma_nl_types[type].cb_table;
+	}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cb_table || (!cb_table[op].dump && !cb_table[op].doit))
 		return false;

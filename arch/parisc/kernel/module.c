@@ -66,7 +66,10 @@
 
 #include <asm/pgtable.h>
 #include <asm/unwind.h>
+<<<<<<< HEAD
 #include <asm/sections.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if 0
 #define DEBUGP printk
@@ -955,6 +958,7 @@ void module_arch_cleanup(struct module *mod)
 {
 	deregister_unwind_table(mod);
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_64BIT
 void *dereference_module_function_descriptor(struct module *mod, void *ptr)
@@ -970,3 +974,5 @@ void *dereference_module_function_descriptor(struct module *mod, void *ptr)
 	return dereference_function_descriptor(ptr);
 }
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

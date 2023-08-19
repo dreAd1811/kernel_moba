@@ -35,7 +35,11 @@
 #include <linux/tcp.h>
 #include <linux/semaphore.h>
 #include <linux/compat.h>
+<<<<<<< HEAD
 #include <linux/refcount.h>
+=======
+#include <linux/atomic.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SIXPACK_VERSION    "Revision: 0.3.0"
 
@@ -120,7 +124,11 @@ struct sixpack {
 
 	struct timer_list	tx_t;
 	struct timer_list	resync_t;
+<<<<<<< HEAD
 	refcount_t		refcnt;
+=======
+	atomic_t		refcnt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct semaphore	dead_sem;
 	spinlock_t		lock;
 };
@@ -136,9 +144,15 @@ static int encode_sixpack(unsigned char *, unsigned char *, int, unsigned char);
  * Note that in case of DAMA operation, the data is not sent here.
  */
 
+<<<<<<< HEAD
 static void sp_xmit_on_air(struct timer_list *t)
 {
 	struct sixpack *sp = from_timer(sp, t, tx_t);
+=======
+static void sp_xmit_on_air(unsigned long channel)
+{
+	struct sixpack *sp = (struct sixpack *) channel;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int actual, when = sp->slottime;
 	static unsigned char random;
 
@@ -229,7 +243,11 @@ static void sp_encaps(struct sixpack *sp, unsigned char *icp, int len)
 		sp->xleft = count;
 		sp->xhead = sp->xbuff;
 		sp->status2 = count;
+<<<<<<< HEAD
 		sp_xmit_on_air(&sp->tx_t);
+=======
+		sp_xmit_on_air((unsigned long)sp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return;
@@ -381,7 +399,11 @@ static struct sixpack *sp_get(struct tty_struct *tty)
 	read_lock(&disc_data_lock);
 	sp = tty->disc_data;
 	if (sp)
+<<<<<<< HEAD
 		refcount_inc(&sp->refcnt);
+=======
+		atomic_inc(&sp->refcnt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	read_unlock(&disc_data_lock);
 
 	return sp;
@@ -389,7 +411,11 @@ static struct sixpack *sp_get(struct tty_struct *tty)
 
 static void sp_put(struct sixpack *sp)
 {
+<<<<<<< HEAD
 	if (refcount_dec_and_test(&sp->refcnt))
+=======
+	if (atomic_dec_and_test(&sp->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		up(&sp->dead_sem);
 }
 
@@ -500,9 +526,15 @@ static inline void tnc_set_sync_state(struct sixpack *sp, int new_tnc_state)
 		__tnc_set_sync_state(sp, new_tnc_state);
 }
 
+<<<<<<< HEAD
 static void resync_tnc(struct timer_list *t)
 {
 	struct sixpack *sp = from_timer(sp, t, resync_t);
+=======
+static void resync_tnc(unsigned long channel)
+{
+	struct sixpack *sp = (struct sixpack *) channel;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static char resync_cmd = 0xe8;
 
 	/* clear any data that might have been received */
@@ -524,7 +556,16 @@ static void resync_tnc(struct timer_list *t)
 
 
 	/* Start resync timer again -- the TNC might be still absent */
+<<<<<<< HEAD
 	mod_timer(&sp->resync_t, jiffies + SIXP_RESYNC_TIMEOUT);
+=======
+
+	del_timer(&sp->resync_t);
+	sp->resync_t.data	= (unsigned long) sp;
+	sp->resync_t.function	= resync_tnc;
+	sp->resync_t.expires	= jiffies + SIXP_RESYNC_TIMEOUT;
+	add_timer(&sp->resync_t);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int tnc_init(struct sixpack *sp)
@@ -535,7 +576,15 @@ static inline int tnc_init(struct sixpack *sp)
 
 	sp->tty->ops->write(sp->tty, &inbyte, 1);
 
+<<<<<<< HEAD
 	mod_timer(&sp->resync_t, jiffies + SIXP_RESYNC_TIMEOUT);
+=======
+	del_timer(&sp->resync_t);
+	sp->resync_t.data = (unsigned long) sp;
+	sp->resync_t.function = resync_tnc;
+	sp->resync_t.expires = jiffies + SIXP_RESYNC_TIMEOUT;
+	add_timer(&sp->resync_t);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -571,7 +620,11 @@ static int sixpack_open(struct tty_struct *tty)
 	sp->dev = dev;
 
 	spin_lock_init(&sp->lock);
+<<<<<<< HEAD
 	refcount_set(&sp->refcnt, 1);
+=======
+	atomic_set(&sp->refcnt, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sema_init(&sp->dead_sem, 0);
 
 	/* !!! length of the buffers. MTU is IP MTU, not PACLEN!  */
@@ -614,9 +667,17 @@ static int sixpack_open(struct tty_struct *tty)
 
 	netif_start_queue(dev);
 
+<<<<<<< HEAD
 	timer_setup(&sp->tx_t, sp_xmit_on_air, 0);
 
 	timer_setup(&sp->resync_t, resync_tnc, 0);
+=======
+	init_timer(&sp->tx_t);
+	sp->tx_t.function = sp_xmit_on_air;
+	sp->tx_t.data = (unsigned long) sp;
+
+	init_timer(&sp->resync_t);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_bh(&sp->lock);
 
@@ -654,10 +715,17 @@ static void sixpack_close(struct tty_struct *tty)
 {
 	struct sixpack *sp;
 
+<<<<<<< HEAD
 	write_lock_bh(&disc_data_lock);
 	sp = tty->disc_data;
 	tty->disc_data = NULL;
 	write_unlock_bh(&disc_data_lock);
+=======
+	write_lock_irq(&disc_data_lock);
+	sp = tty->disc_data;
+	tty->disc_data = NULL;
+	write_unlock_irq(&disc_data_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sp)
 		return;
 
@@ -665,7 +733,11 @@ static void sixpack_close(struct tty_struct *tty)
 	 * We have now ensured that nobody can start using ap from now on, but
 	 * we have to wait for all existing users to finish.
 	 */
+<<<<<<< HEAD
 	if (!refcount_dec_and_test(&sp->refcnt))
+=======
+	if (!atomic_dec_and_test(&sp->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		down(&sp->dead_sem);
 
 	/* We must stop the queue to avoid potentially scribbling
@@ -873,8 +945,15 @@ static void decode_data(struct sixpack *sp, unsigned char inbyte)
 
 static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
 {
+<<<<<<< HEAD
 	int actual;
 
+=======
+	unsigned char channel;
+	int actual;
+
+	channel = cmd & SIXP_CHN_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((cmd & SIXP_PRIO_DATA_MASK) != 0) {     /* idle ? */
 
 	/* RX and DCD flags can only be set in the same prio command,
@@ -913,8 +992,18 @@ static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
         /* if the state byte has been received, the TNC is present,
            so the resync timer can be reset. */
 
+<<<<<<< HEAD
 	if (sp->tnc_state == TNC_IN_SYNC)
 		mod_timer(&sp->resync_t, jiffies + SIXP_INIT_RESYNC_TIMEOUT);
+=======
+	if (sp->tnc_state == TNC_IN_SYNC) {
+		del_timer(&sp->resync_t);
+		sp->resync_t.data	= (unsigned long) sp;
+		sp->resync_t.function	= resync_tnc;
+		sp->resync_t.expires	= jiffies + SIXP_INIT_RESYNC_TIMEOUT;
+		add_timer(&sp->resync_t);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sp->status1 = cmd & SIXP_PRIO_DATA_MASK;
 }
@@ -923,9 +1012,16 @@ static void decode_prio_command(struct sixpack *sp, unsigned char cmd)
 
 static void decode_std_command(struct sixpack *sp, unsigned char cmd)
 {
+<<<<<<< HEAD
 	unsigned char checksum = 0, rest = 0;
 	short i;
 
+=======
+	unsigned char checksum = 0, rest = 0, channel;
+	short i;
+
+	channel = cmd & SIXP_CHN_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (cmd & SIXP_CMD_MASK) {     /* normal command */
 	case SIXP_SEOF:
 		if ((sp->rx_count == 0) && (sp->rx_count_cooked == 0)) {

@@ -212,11 +212,15 @@ struct filter_ctx {
 
 struct ch_filter_specification;
 
+<<<<<<< HEAD
 int cxgb4_get_free_ftid(struct net_device *dev, int family);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __cxgb4_set_filter(struct net_device *dev, int filter_id,
 		       struct ch_filter_specification *fs,
 		       struct filter_ctx *ctx);
 int __cxgb4_del_filter(struct net_device *dev, int filter_id,
+<<<<<<< HEAD
 		       struct ch_filter_specification *fs,
 		       struct filter_ctx *ctx);
 int cxgb4_set_filter(struct net_device *dev, int filter_id,
@@ -225,6 +229,12 @@ int cxgb4_del_filter(struct net_device *dev, int filter_id,
 		     struct ch_filter_specification *fs);
 int cxgb4_get_filter_counters(struct net_device *dev, unsigned int fidx,
 			      u64 *hitcnt, u64 *bytecnt, bool hash);
+=======
+		       struct filter_ctx *ctx);
+int cxgb4_set_filter(struct net_device *dev, int filter_id,
+		     struct ch_filter_specification *fs);
+int cxgb4_del_filter(struct net_device *dev, int filter_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void set_wr_txq(struct sk_buff *skb, int prio, int queue)
 {
@@ -237,7 +247,10 @@ enum cxgb4_uld {
 	CXGB4_ULD_ISCSI,
 	CXGB4_ULD_ISCSIT,
 	CXGB4_ULD_CRYPTO,
+<<<<<<< HEAD
 	CXGB4_ULD_TLS,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CXGB4_ULD_MAX
 };
 
@@ -258,8 +271,12 @@ enum cxgb4_state {
 	CXGB4_STATE_UP,
 	CXGB4_STATE_START_RECOVERY,
 	CXGB4_STATE_DOWN,
+<<<<<<< HEAD
 	CXGB4_STATE_DETACH,
 	CXGB4_STATE_FATAL_ERROR
+=======
+	CXGB4_STATE_DETACH
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum cxgb4_control {
@@ -285,12 +302,18 @@ struct cxgb4_virt_res {                      /* virtualized HW resources */
 	struct cxgb4_range iscsi;
 	struct cxgb4_range stag;
 	struct cxgb4_range rq;
+<<<<<<< HEAD
 	struct cxgb4_range srq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cxgb4_range pbl;
 	struct cxgb4_range qp;
 	struct cxgb4_range cq;
 	struct cxgb4_range ocq;
+<<<<<<< HEAD
 	struct cxgb4_range key;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int ncrypto_fc;
 };
 
@@ -301,10 +324,13 @@ struct chcr_stats_debug {
 	atomic_t complete;
 	atomic_t error;
 	atomic_t fallback;
+<<<<<<< HEAD
 	atomic_t ipsec_cnt;
 	atomic_t tls_pdu_tx;
 	atomic_t tls_pdu_rx;
 	atomic_t tls_key;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define OCQ_WIN_OFFSET(pdev, vres) \
@@ -330,7 +356,10 @@ struct cxgb4_lld_info {
 	unsigned char wr_cred;               /* WR 16-byte credits */
 	unsigned char adapter_type;          /* type of adapter */
 	unsigned char fw_api_ver;            /* FW API version */
+<<<<<<< HEAD
 	unsigned char crypto;                /* crypto support */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int fw_vers;                /* FW version */
 	unsigned int iscsi_iolen;            /* iSCSI max I/O length */
 	unsigned int cclk_ps;                /* Core clock period in psec */
@@ -359,12 +388,19 @@ struct cxgb4_lld_info {
 	void **iscsi_ppm;		     /* iscsi page pod manager */
 	int nodeid;			     /* device numa node id */
 	bool fr_nsmr_tpte_wr_support;	     /* FW supports FR_NSMR_TPTE_WR */
+<<<<<<< HEAD
 	bool write_w_imm_support;         /* FW supports WRITE_WITH_IMMEDIATE */
 	bool write_cmpl_support;             /* FW supports WRITE_CMPL WR */
 };
 
 struct cxgb4_uld_info {
 	char name[IFNAMSIZ];
+=======
+};
+
+struct cxgb4_uld_info {
+	const char *name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *handle;
 	unsigned int nrxq;
 	unsigned int rxq_size;
@@ -381,14 +417,20 @@ struct cxgb4_uld_info {
 			      struct t4_lro_mgr *lro_mgr,
 			      struct napi_struct *napi);
 	void (*lro_flush)(struct t4_lro_mgr *);
+<<<<<<< HEAD
 	int (*tx_handler)(struct sk_buff *skb, struct net_device *dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int cxgb4_register_uld(enum cxgb4_uld type, const struct cxgb4_uld_info *p);
 int cxgb4_unregister_uld(enum cxgb4_uld type);
 int cxgb4_ofld_send(struct net_device *dev, struct sk_buff *skb);
+<<<<<<< HEAD
 int cxgb4_immdata_send(struct net_device *dev, unsigned int idx,
 		       const void *src, unsigned int len);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cxgb4_crypto_send(struct net_device *dev, struct sk_buff *skb);
 unsigned int cxgb4_dbfifo_count(const struct net_device *dev, int lpfifo);
 unsigned int cxgb4_port_chan(const struct net_device *dev);

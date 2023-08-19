@@ -162,7 +162,11 @@ _GLOBAL(__setup_cpu_e5500)
 	 * the feature on the primary core, avoid doing it on the
 	 * secondary core.
 	 */
+<<<<<<< HEAD
 	andi.	r6, r3, CPU_FTR_EMB_HV
+=======
+	andis.	r6, r3, CPU_FTR_EMB_HV@h
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	beq	2f
 	rlwinm	r3, r3, 0, ~CPU_FTR_EMB_HV
 	stw	r3, CPU_SPEC_FEATURES(r4)

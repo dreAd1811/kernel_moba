@@ -166,6 +166,10 @@ static inline int cpm_command(u32 command, u8 opcode)
 }
 #endif /* CONFIG_CPM */
 
+<<<<<<< HEAD
 int cpm2_gpiochip_add32(struct device *dev);
+=======
+int cpm2_gpiochip_add32(struct device_node *np);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

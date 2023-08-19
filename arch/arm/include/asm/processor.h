@@ -48,6 +48,7 @@ struct thread_struct {
 	struct debug_info	debug;
 };
 
+<<<<<<< HEAD
 /*
  * Everything usercopied to/from thread_struct is statically-sized, so
  * no hardened usercopy whitelist is needed.
@@ -78,6 +79,19 @@ static inline void arch_thread_struct_whitelist(unsigned long *offset,
 		regs->ARM_r10 = current->mm->start_data;		\
 	} else if (!IS_ENABLED(CONFIG_MMU))				\
 		regs->ARM_r10 = current->mm->start_data;		\
+=======
+#define INIT_THREAD  {	}
+
+#ifdef CONFIG_MMU
+#define nommu_start_thread(regs) do { } while (0)
+#else
+#define nommu_start_thread(regs) regs->ARM_r10 = current->mm->start_data
+#endif
+
+#define start_thread(regs,pc,sp)					\
+({									\
+	memset(regs->uregs, 0, sizeof(regs->uregs));			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (current->personality & ADDR_LIMIT_32BIT)			\
 		regs->ARM_cpsr = USR_MODE;				\
 	else								\
@@ -87,6 +101,10 @@ static inline void arch_thread_struct_whitelist(unsigned long *offset,
 	regs->ARM_cpsr |= PSR_ENDSTATE;					\
 	regs->ARM_pc = pc & ~1;		/* pc */			\
 	regs->ARM_sp = sp;		/* sp */			\
+<<<<<<< HEAD
+=======
+	nommu_start_thread(regs);					\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 })
 
 /* Forward declaration, a strange C thing */

@@ -309,9 +309,12 @@ static void __exit omap3_l3_exit(void)
 	platform_driver_unregister(&omap3_l3_driver);
 }
 module_exit(omap3_l3_exit);
+<<<<<<< HEAD
 
 MODULE_AUTHOR("Felipe Balbi");
 MODULE_AUTHOR("Santosh Shilimkar");
 MODULE_AUTHOR("Sricharan R");
 MODULE_DESCRIPTION("OMAP3XXX L3 Interconnect Driver");
 MODULE_LICENSE("GPL");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

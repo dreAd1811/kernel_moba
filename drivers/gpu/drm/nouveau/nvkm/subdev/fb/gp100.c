@@ -26,7 +26,11 @@
 
 #include <core/memory.h>
 
+<<<<<<< HEAD
 void
+=======
+static void
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gp100_fb_init_unkn(struct nvkm_fb *base)
 {
 	struct nvkm_device *device = gf100_fb(base)->base.subdev.device;
@@ -37,6 +41,7 @@ gp100_fb_init_unkn(struct nvkm_fb *base)
 }
 
 void
+<<<<<<< HEAD
 gp100_fb_init_remapper(struct nvkm_fb *fb)
 {
 	struct nvkm_device *device = fb->subdev.device;
@@ -45,6 +50,8 @@ gp100_fb_init_remapper(struct nvkm_fb *fb)
 }
 
 void
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gp100_fb_init(struct nvkm_fb *base)
 {
 	struct gf100_fb *fb = gf100_fb(base);
@@ -56,7 +63,11 @@ gp100_fb_init(struct nvkm_fb *base)
 	nvkm_wr32(device, 0x100cc8, nvkm_memory_addr(fb->base.mmu_wr) >> 8);
 	nvkm_wr32(device, 0x100ccc, nvkm_memory_addr(fb->base.mmu_rd) >> 8);
 	nvkm_mask(device, 0x100cc4, 0x00060000,
+<<<<<<< HEAD
 		  min(nvkm_memory_size(fb->base.mmu_rd) >> 16, (u64)2) << 17);
+=======
+		  max(nvkm_memory_size(fb->base.mmu_rd) >> 16, (u64)2) << 17);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct nvkm_fb_func
@@ -64,10 +75,17 @@ gp100_fb = {
 	.dtor = gf100_fb_dtor,
 	.oneinit = gf100_fb_oneinit,
 	.init = gp100_fb_init,
+<<<<<<< HEAD
 	.init_remapper = gp100_fb_init_remapper,
 	.init_page = gm200_fb_init_page,
 	.init_unkn = gp100_fb_init_unkn,
 	.ram_new = gp100_ram_new,
+=======
+	.init_page = gm200_fb_init_page,
+	.init_unkn = gp100_fb_init_unkn,
+	.ram_new = gp100_ram_new,
+	.memtype_valid = gf100_fb_memtype_valid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

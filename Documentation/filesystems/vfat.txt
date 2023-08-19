@@ -344,4 +344,8 @@ the following:
 	   characters in the final slot are set to Unicode 0xFFFF.
 
 Finally, note that the extended name is stored in Unicode.  Each Unicode
+<<<<<<< HEAD
 character takes either two or four bytes, UTF-16LE encoded.
+=======
+character takes two bytes.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

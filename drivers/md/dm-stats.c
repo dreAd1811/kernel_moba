@@ -228,7 +228,10 @@ void dm_stats_cleanup(struct dm_stats *stats)
 		dm_stat_free(&s->rcu_head);
 	}
 	free_percpu(stats->last);
+<<<<<<< HEAD
 	mutex_destroy(&stats->mutex);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dm_stats_create(struct dm_stats *stats, sector_t start, sector_t end,
@@ -433,7 +436,11 @@ do_sync_free:
 		synchronize_rcu_expedited();
 		dm_stat_free(&s->rcu_head);
 	} else {
+<<<<<<< HEAD
 		WRITE_ONCE(dm_stat_need_rcu_barrier, 1);
+=======
+		ACCESS_ONCE(dm_stat_need_rcu_barrier) = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		call_rcu(&s->rcu_head, dm_stat_free);
 	}
 	return 0;
@@ -641,12 +648,21 @@ void dm_stats_account_io(struct dm_stats *stats, unsigned long bi_rw,
 		 */
 		last = raw_cpu_ptr(stats->last);
 		stats_aux->merged =
+<<<<<<< HEAD
 			(bi_sector == (READ_ONCE(last->last_sector) &&
 				       ((bi_rw == WRITE) ==
 					(READ_ONCE(last->last_rw) == WRITE))
 				       ));
 		WRITE_ONCE(last->last_sector, end_sector);
 		WRITE_ONCE(last->last_rw, bi_rw);
+=======
+			(bi_sector == (ACCESS_ONCE(last->last_sector) &&
+				       ((bi_rw == WRITE) ==
+					(ACCESS_ONCE(last->last_rw) == WRITE))
+				       ));
+		ACCESS_ONCE(last->last_sector) = end_sector;
+		ACCESS_ONCE(last->last_rw) = bi_rw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rcu_read_lock();
@@ -695,6 +711,7 @@ static void __dm_stat_init_temporary_percpu_totals(struct dm_stat_shared *shared
 
 	for_each_possible_cpu(cpu) {
 		p = &s->stat_percpu[cpu][x];
+<<<<<<< HEAD
 		shared->tmp.sectors[READ] += READ_ONCE(p->sectors[READ]);
 		shared->tmp.sectors[WRITE] += READ_ONCE(p->sectors[WRITE]);
 		shared->tmp.ios[READ] += READ_ONCE(p->ios[READ]);
@@ -711,6 +728,24 @@ static void __dm_stat_init_temporary_percpu_totals(struct dm_stat_shared *shared
 			unsigned i;
 			for (i = 0; i < s->n_histogram_entries + 1; i++)
 				shared->tmp.histogram[i] += READ_ONCE(p->histogram[i]);
+=======
+		shared->tmp.sectors[READ] += ACCESS_ONCE(p->sectors[READ]);
+		shared->tmp.sectors[WRITE] += ACCESS_ONCE(p->sectors[WRITE]);
+		shared->tmp.ios[READ] += ACCESS_ONCE(p->ios[READ]);
+		shared->tmp.ios[WRITE] += ACCESS_ONCE(p->ios[WRITE]);
+		shared->tmp.merges[READ] += ACCESS_ONCE(p->merges[READ]);
+		shared->tmp.merges[WRITE] += ACCESS_ONCE(p->merges[WRITE]);
+		shared->tmp.ticks[READ] += ACCESS_ONCE(p->ticks[READ]);
+		shared->tmp.ticks[WRITE] += ACCESS_ONCE(p->ticks[WRITE]);
+		shared->tmp.io_ticks[READ] += ACCESS_ONCE(p->io_ticks[READ]);
+		shared->tmp.io_ticks[WRITE] += ACCESS_ONCE(p->io_ticks[WRITE]);
+		shared->tmp.io_ticks_total += ACCESS_ONCE(p->io_ticks_total);
+		shared->tmp.time_in_queue += ACCESS_ONCE(p->time_in_queue);
+		if (s->n_histogram_entries) {
+			unsigned i;
+			for (i = 0; i < s->n_histogram_entries + 1; i++)
+				shared->tmp.histogram[i] += ACCESS_ONCE(p->histogram[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -915,9 +950,13 @@ static int parse_histogram(const char *h, unsigned *n_histogram_entries,
 		if (*q == ',')
 			(*n_histogram_entries)++;
 
+<<<<<<< HEAD
 	*histogram_boundaries = kmalloc_array(*n_histogram_entries,
 					      sizeof(unsigned long long),
 					      GFP_KERNEL);
+=======
+	*histogram_boundaries = kmalloc(*n_histogram_entries * sizeof(unsigned long long), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!*histogram_boundaries)
 		return -ENOMEM;
 

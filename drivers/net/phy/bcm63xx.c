@@ -69,6 +69,11 @@ static struct phy_driver bcm63xx_driver[] = {
 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause),
 	.flags		= PHY_HAS_INTERRUPT | PHY_IS_INTERNAL,
 	.config_init	= bcm63xx_config_init,
+<<<<<<< HEAD
+=======
+	.config_aneg	= genphy_config_aneg,
+	.read_status	= genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= bcm_phy_ack_intr,
 	.config_intr	= bcm63xx_config_intr,
 }, {
@@ -79,6 +84,11 @@ static struct phy_driver bcm63xx_driver[] = {
 	.features	= (PHY_BASIC_FEATURES | SUPPORTED_Pause),
 	.flags		= PHY_HAS_INTERRUPT | PHY_IS_INTERNAL,
 	.config_init	= bcm63xx_config_init,
+<<<<<<< HEAD
+=======
+	.config_aneg	= genphy_config_aneg,
+	.read_status	= genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt	= bcm_phy_ack_intr,
 	.config_intr	= bcm63xx_config_intr,
 } };

@@ -38,6 +38,7 @@
 void populate_pvinfo_page(struct intel_vgpu *vgpu)
 {
 	/* setup the ballooning information */
+<<<<<<< HEAD
 	vgpu_vreg64_t(vgpu, vgtif_reg(magic)) = VGT_MAGIC;
 	vgpu_vreg_t(vgpu, vgtif_reg(version_major)) = 1;
 	vgpu_vreg_t(vgpu, vgtif_reg(version_minor)) = 0;
@@ -61,6 +62,24 @@ void populate_pvinfo_page(struct intel_vgpu *vgpu)
 
 	vgpu_vreg_t(vgpu, vgtif_reg(cursor_x_hot)) = UINT_MAX;
 	vgpu_vreg_t(vgpu, vgtif_reg(cursor_y_hot)) = UINT_MAX;
+=======
+	vgpu_vreg64(vgpu, vgtif_reg(magic)) = VGT_MAGIC;
+	vgpu_vreg(vgpu, vgtif_reg(version_major)) = 1;
+	vgpu_vreg(vgpu, vgtif_reg(version_minor)) = 0;
+	vgpu_vreg(vgpu, vgtif_reg(display_ready)) = 0;
+	vgpu_vreg(vgpu, vgtif_reg(vgt_id)) = vgpu->id;
+	vgpu_vreg(vgpu, vgtif_reg(vgt_caps)) = VGT_CAPS_FULL_48BIT_PPGTT;
+	vgpu_vreg(vgpu, vgtif_reg(avail_rs.mappable_gmadr.base)) =
+		vgpu_aperture_gmadr_base(vgpu);
+	vgpu_vreg(vgpu, vgtif_reg(avail_rs.mappable_gmadr.size)) =
+		vgpu_aperture_sz(vgpu);
+	vgpu_vreg(vgpu, vgtif_reg(avail_rs.nonmappable_gmadr.base)) =
+		vgpu_hidden_gmadr_base(vgpu);
+	vgpu_vreg(vgpu, vgtif_reg(avail_rs.nonmappable_gmadr.size)) =
+		vgpu_hidden_sz(vgpu);
+
+	vgpu_vreg(vgpu, vgtif_reg(avail_rs.fence_num)) = vgpu_fence_sz(vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gvt_dbg_core("Populate PVINFO PAGE for vGPU %d\n", vgpu->id);
 	gvt_dbg_core("aperture base [GMADR] 0x%llx size 0x%llx\n",
@@ -125,7 +144,11 @@ int intel_gvt_init_vgpu_types(struct intel_gvt *gvt)
 	high_avail = gvt_hidden_sz(gvt) - HOST_HIGH_GM_SIZE;
 	num_types = sizeof(vgpu_types) / sizeof(vgpu_types[0]);
 
+<<<<<<< HEAD
 	gvt->types = kcalloc(num_types, sizeof(struct intel_vgpu_type),
+=======
+	gvt->types = kzalloc(num_types * sizeof(struct intel_vgpu_type),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     GFP_KERNEL);
 	if (!gvt->types)
 		return -ENOMEM;
@@ -222,11 +245,16 @@ void intel_gvt_activate_vgpu(struct intel_vgpu *vgpu)
  * @vgpu: virtual GPU
  *
  * This function is called when user wants to deactivate a virtual GPU.
+<<<<<<< HEAD
  * The virtual GPU will be stopped.
+=======
+ * All virtual GPU runtime information will be destroyed.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  */
 void intel_gvt_deactivate_vgpu(struct intel_vgpu *vgpu)
 {
+<<<<<<< HEAD
 	mutex_lock(&vgpu->vgpu_lock);
 
 	vgpu->active = false;
@@ -235,10 +263,23 @@ void intel_gvt_deactivate_vgpu(struct intel_vgpu *vgpu)
 		mutex_unlock(&vgpu->vgpu_lock);
 		intel_gvt_wait_vgpu_idle(vgpu);
 		mutex_lock(&vgpu->vgpu_lock);
+=======
+	struct intel_gvt *gvt = vgpu->gvt;
+
+	mutex_lock(&gvt->lock);
+
+	vgpu->active = false;
+
+	if (atomic_read(&vgpu->running_workload_num)) {
+		mutex_unlock(&gvt->lock);
+		intel_gvt_wait_vgpu_idle(vgpu);
+		mutex_lock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	intel_vgpu_stop_schedule(vgpu);
 
+<<<<<<< HEAD
 	mutex_unlock(&vgpu->vgpu_lock);
 }
 
@@ -259,6 +300,9 @@ void intel_gvt_release_vgpu(struct intel_vgpu *vgpu)
 	intel_vgpu_clean_workloads(vgpu, ALL_ENGINES);
 	intel_vgpu_dmabuf_cleanup(vgpu);
 	mutex_unlock(&vgpu->vgpu_lock);
+=======
+	mutex_unlock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -272,6 +316,7 @@ void intel_gvt_destroy_vgpu(struct intel_vgpu *vgpu)
 {
 	struct intel_gvt *gvt = vgpu->gvt;
 
+<<<<<<< HEAD
 	mutex_lock(&vgpu->vgpu_lock);
 
 	WARN(vgpu->active, "vGPU is still active!\n");
@@ -282,10 +327,23 @@ void intel_gvt_destroy_vgpu(struct intel_vgpu *vgpu)
 	intel_vgpu_clean_display(vgpu);
 	intel_vgpu_clean_opregion(vgpu);
 	intel_vgpu_reset_ggtt(vgpu, true);
+=======
+	mutex_lock(&gvt->lock);
+
+	WARN(vgpu->active, "vGPU is still active!\n");
+
+	idr_remove(&gvt->vgpu_idr, vgpu->id);
+	intel_vgpu_clean_sched_policy(vgpu);
+	intel_vgpu_clean_gvt_context(vgpu);
+	intel_vgpu_clean_execlist(vgpu);
+	intel_vgpu_clean_display(vgpu);
+	intel_vgpu_clean_opregion(vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_vgpu_clean_gtt(vgpu);
 	intel_gvt_hypervisor_detach_vgpu(vgpu);
 	intel_vgpu_free_resource(vgpu);
 	intel_vgpu_clean_mmio(vgpu);
+<<<<<<< HEAD
 	intel_vgpu_dmabuf_cleanup(vgpu);
 	mutex_unlock(&vgpu->vgpu_lock);
 
@@ -297,6 +355,12 @@ void intel_gvt_destroy_vgpu(struct intel_vgpu *vgpu)
 	mutex_unlock(&gvt->lock);
 
 	vfree(vgpu);
+=======
+	vfree(vgpu);
+
+	intel_gvt_update_vgpu_types(gvt);
+	mutex_unlock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define IDLE_VGPU_IDR 0
@@ -322,10 +386,16 @@ struct intel_vgpu *intel_gvt_create_idle_vgpu(struct intel_gvt *gvt)
 
 	vgpu->id = IDLE_VGPU_IDR;
 	vgpu->gvt = gvt;
+<<<<<<< HEAD
 	mutex_init(&vgpu->vgpu_lock);
 
 	for (i = 0; i < I915_NUM_ENGINES; i++)
 		INIT_LIST_HEAD(&vgpu->submission.workload_q_head[i]);
+=======
+
+	for (i = 0; i < I915_NUM_ENGINES; i++)
+		INIT_LIST_HEAD(&vgpu->workload_q_head[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = intel_vgpu_init_sched_policy(vgpu);
 	if (ret)
@@ -349,10 +419,14 @@ out_free_vgpu:
  */
 void intel_gvt_destroy_idle_vgpu(struct intel_vgpu *vgpu)
 {
+<<<<<<< HEAD
 	mutex_lock(&vgpu->vgpu_lock);
 	intel_vgpu_clean_sched_policy(vgpu);
 	mutex_unlock(&vgpu->vgpu_lock);
 
+=======
+	intel_vgpu_clean_sched_policy(vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vfree(vgpu);
 }
 
@@ -370,6 +444,11 @@ static struct intel_vgpu *__intel_gvt_create_vgpu(struct intel_gvt *gvt,
 	if (!vgpu)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&gvt->lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = idr_alloc(&gvt->vgpu_idr, vgpu, IDLE_VGPU_IDR + 1, GVT_MAX_VGPU,
 		GFP_KERNEL);
 	if (ret < 0)
@@ -379,11 +458,16 @@ static struct intel_vgpu *__intel_gvt_create_vgpu(struct intel_gvt *gvt,
 	vgpu->handle = param->handle;
 	vgpu->gvt = gvt;
 	vgpu->sched_ctl.weight = param->weight;
+<<<<<<< HEAD
 	mutex_init(&vgpu->vgpu_lock);
 	mutex_init(&vgpu->dmabuf_lock);
 	INIT_LIST_HEAD(&vgpu->dmabuf_obj_list_head);
 	INIT_RADIX_TREE(&vgpu->page_track_tree, GFP_KERNEL);
 	idr_init(&vgpu->object_idr);
+=======
+	bitmap_zero(vgpu->tlb_handle_pending, I915_NUM_ENGINES);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_vgpu_init_cfg_space(vgpu, param->primary);
 
 	ret = intel_vgpu_init_mmio(vgpu);
@@ -404,6 +488,7 @@ static struct intel_vgpu *__intel_gvt_create_vgpu(struct intel_gvt *gvt,
 	if (ret)
 		goto out_detach_hypervisor_vgpu;
 
+<<<<<<< HEAD
 	ret = intel_vgpu_init_opregion(vgpu);
 	if (ret)
 		goto out_clean_gtt;
@@ -438,6 +523,34 @@ out_clean_display:
 	intel_vgpu_clean_display(vgpu);
 out_clean_opregion:
 	intel_vgpu_clean_opregion(vgpu);
+=======
+	ret = intel_vgpu_init_display(vgpu, param->resolution);
+	if (ret)
+		goto out_clean_gtt;
+
+	ret = intel_vgpu_init_execlist(vgpu);
+	if (ret)
+		goto out_clean_display;
+
+	ret = intel_vgpu_init_gvt_context(vgpu);
+	if (ret)
+		goto out_clean_execlist;
+
+	ret = intel_vgpu_init_sched_policy(vgpu);
+	if (ret)
+		goto out_clean_shadow_ctx;
+
+	mutex_unlock(&gvt->lock);
+
+	return vgpu;
+
+out_clean_shadow_ctx:
+	intel_vgpu_clean_gvt_context(vgpu);
+out_clean_execlist:
+	intel_vgpu_clean_execlist(vgpu);
+out_clean_display:
+	intel_vgpu_clean_display(vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_clean_gtt:
 	intel_vgpu_clean_gtt(vgpu);
 out_detach_hypervisor_vgpu:
@@ -450,6 +563,10 @@ out_clean_idr:
 	idr_remove(&gvt->vgpu_idr, vgpu->id);
 out_free_vgpu:
 	vfree(vgpu);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ERR_PTR(ret);
 }
 
@@ -481,12 +598,21 @@ struct intel_vgpu *intel_gvt_create_vgpu(struct intel_gvt *gvt,
 	param.low_gm_sz = BYTES_TO_MB(param.low_gm_sz);
 	param.high_gm_sz = BYTES_TO_MB(param.high_gm_sz);
 
+<<<<<<< HEAD
 	mutex_lock(&gvt->lock);
 	vgpu = __intel_gvt_create_vgpu(gvt, &param);
 	if (!IS_ERR(vgpu))
 		/* calculate left instance change for types */
 		intel_gvt_update_vgpu_types(gvt);
 	mutex_unlock(&gvt->lock);
+=======
+	vgpu = __intel_gvt_create_vgpu(gvt, &param);
+	if (IS_ERR(vgpu))
+		return vgpu;
+
+	/* calculate left instance change for types */
+	intel_gvt_update_vgpu_types(gvt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return vgpu;
 }
@@ -498,7 +624,11 @@ struct intel_vgpu *intel_gvt_create_vgpu(struct intel_gvt *gvt,
  * @engine_mask: engines to reset for GT reset
  *
  * This function is called when user wants to reset a virtual GPU through
+<<<<<<< HEAD
  * device model reset or GT reset. The caller should hold the vgpu lock.
+=======
+ * device model reset or GT reset. The caller should hold the gvt lock.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * vGPU Device Model Level Reset (DMLR) simulates the PCI level reset to reset
  * the whole vGPU to default state as when it is created. This vGPU function
@@ -538,6 +668,7 @@ void intel_gvt_reset_vgpu_locked(struct intel_vgpu *vgpu, bool dmlr,
 	 * scheduler when the reset is triggered by current vgpu.
 	 */
 	if (scheduler->current_vgpu == NULL) {
+<<<<<<< HEAD
 		mutex_unlock(&vgpu->vgpu_lock);
 		intel_gvt_wait_vgpu_idle(vgpu);
 		mutex_lock(&vgpu->vgpu_lock);
@@ -548,6 +679,18 @@ void intel_gvt_reset_vgpu_locked(struct intel_vgpu *vgpu, bool dmlr,
 	if (engine_mask == ALL_ENGINES || dmlr) {
 		intel_vgpu_select_submission_ops(vgpu, ALL_ENGINES, 0);
 		intel_vgpu_invalidate_ppgtt(vgpu);
+=======
+		mutex_unlock(&gvt->lock);
+		intel_gvt_wait_vgpu_idle(vgpu);
+		mutex_lock(&gvt->lock);
+	}
+
+	intel_vgpu_reset_execlist(vgpu, resetting_eng);
+
+	/* full GPU reset or device model level reset */
+	if (engine_mask == ALL_ENGINES || dmlr) {
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*fence will not be reset during virtual reset */
 		if (dmlr) {
 			intel_vgpu_reset_gtt(vgpu);
@@ -556,9 +699,15 @@ void intel_gvt_reset_vgpu_locked(struct intel_vgpu *vgpu, bool dmlr,
 
 		intel_vgpu_reset_mmio(vgpu, dmlr);
 		populate_pvinfo_page(vgpu);
+<<<<<<< HEAD
 		intel_vgpu_reset_display(vgpu);
 
 		if (dmlr) {
+=======
+
+		if (dmlr) {
+			intel_vgpu_reset_display(vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			intel_vgpu_reset_cfg_space(vgpu);
 			/* only reset the failsafe mode when dmlr reset */
 			vgpu->failsafe = false;
@@ -580,7 +729,13 @@ void intel_gvt_reset_vgpu_locked(struct intel_vgpu *vgpu, bool dmlr,
  */
 void intel_gvt_reset_vgpu(struct intel_vgpu *vgpu)
 {
+<<<<<<< HEAD
 	mutex_lock(&vgpu->vgpu_lock);
 	intel_gvt_reset_vgpu_locked(vgpu, true, 0);
 	mutex_unlock(&vgpu->vgpu_lock);
+=======
+	mutex_lock(&vgpu->gvt->lock);
+	intel_gvt_reset_vgpu_locked(vgpu, true, 0);
+	mutex_unlock(&vgpu->gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

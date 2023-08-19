@@ -740,7 +740,11 @@ static ssize_t cyapa_show_suspend_scanrate(struct device *dev,
 					   char *buf)
 {
 	struct cyapa *cyapa = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	u8 pwr_cmd;
+=======
+	u8 pwr_cmd = cyapa->suspend_power_mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 sleep_time;
 	int len;
 	int error;

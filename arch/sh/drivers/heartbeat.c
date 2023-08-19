@@ -59,9 +59,15 @@ static inline void heartbeat_toggle_bit(struct heartbeat_data *hd,
 	}
 }
 
+<<<<<<< HEAD
 static void heartbeat_timer(struct timer_list *t)
 {
 	struct heartbeat_data *hd = from_timer(hd, t, timer);
+=======
+static void heartbeat_timer(unsigned long data)
+{
+	struct heartbeat_data *hd = (struct heartbeat_data *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static unsigned bit = 0, up = 1;
 
 	heartbeat_toggle_bit(hd, bit, hd->flags & HEARTBEAT_INVERTED);
@@ -133,7 +139,11 @@ static int heartbeat_drv_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	timer_setup(&hd->timer, heartbeat_timer, 0);
+=======
+	setup_timer(&hd->timer, heartbeat_timer, (unsigned long)hd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, hd);
 
 	return mod_timer(&hd->timer, jiffies + 1);

@@ -61,7 +61,11 @@ Registering the ports
 The port drivers will describe every Type-C port they control with struct
 typec_capability data structure, and register them with the following API:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_register_port typec_unregister_port
 
 When registering the ports, the prefer_role member in struct typec_capability
@@ -80,7 +84,11 @@ typec_partner_desc. The class copies the details of the partner during
 registration. The class offers the following API for registering/unregistering
 partners.
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_register_partner typec_unregister_partner
 
 The class will provide a handle to struct typec_partner if the registration was
@@ -92,7 +100,11 @@ should include handle to struct usb_pd_identity instance. The class will then
 create a sysfs directory for the identity under the partner device. The result
 of Discover Identity command can then be reported with the following API:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_partner_set_identity
 
 Registering Cables
@@ -113,7 +125,11 @@ typec_cable_desc and about a plug in struct typec_plug_desc. The class copies
 the details during registration. The class offers the following API for
 registering/unregistering cables and their plugs:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_register_cable typec_unregister_cable typec_register_plug typec_unregister_plug
 
 The class will provide a handle to struct typec_cable and struct typec_plug if
@@ -125,7 +141,11 @@ include handle to struct usb_pd_identity instance. The class will then create a
 sysfs directory for the identity under the cable device. The result of Discover
 Identity command can then be reported with the following API:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_cable_set_identity
 
 Notifications
@@ -135,7 +155,11 @@ When the partner has executed a role change, or when the default roles change
 during connection of a partner or cable, the port driver must use the following
 APIs to report it to the class:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_set_data_role typec_set_pwr_role typec_set_vconn_role typec_set_pwr_opmode
 
 Alternate Modes
@@ -150,7 +174,11 @@ and struct typec_altmode_desc which is a container for all the supported modes.
 Ports that support Alternate Modes need to register each SVID they support with
 the following API:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_port_register_altmode
 
 If a partner or cable plug provides a list of SVIDs as response to USB Power
@@ -159,12 +187,20 @@ registered.
 
 API for the partners:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_partner_register_altmode
 
 API for the Cable Plugs:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_plug_register_altmode
 
 So ports, partners and cable plugs will register the alternate modes with their
@@ -172,12 +208,17 @@ own functions, but the registration will always return a handle to struct
 typec_altmode on success, or NULL. The unregistration will happen with the same
 function:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: typec_unregister_altmode
 
 If a partner or cable plug enters or exits a mode, the port driver needs to
 notify the class with the following API:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/usb/typec/class.c
    :functions: typec_altmode_update_active
 
@@ -231,3 +272,7 @@ Illustration of the muxes behind a connector that supports an alternate mode::
                      ------------------------      ------------------------
                      |       USB Host       |      |       USB Device     |
                      ------------------------      ------------------------
+=======
+.. kernel-doc:: drivers/usb/typec/typec.c
+   :functions: typec_altmode_update_active
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

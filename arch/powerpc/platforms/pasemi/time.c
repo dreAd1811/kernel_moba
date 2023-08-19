@@ -21,8 +21,15 @@
 
 #include <asm/time.h>
 
+<<<<<<< HEAD
 time64_t __init pas_get_boot_time(void)
 {
 	/* Let's just return a fake date right now */
 	return mktime64(2006, 1, 1, 12, 0, 0);
+=======
+unsigned long __init pas_get_boot_time(void)
+{
+	/* Let's just return a fake date right now */
+	return mktime(2006, 1, 1, 12, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

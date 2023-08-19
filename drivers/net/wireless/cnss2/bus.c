@@ -1,9 +1,27 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved. */
+=======
+/* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "bus.h"
 #include "debug.h"
 #include "pci.h"
+<<<<<<< HEAD
+=======
+#include "usb.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum cnss_dev_bus_type cnss_get_dev_bus_type(struct device *dev)
 {
@@ -19,6 +37,7 @@ enum cnss_dev_bus_type cnss_get_dev_bus_type(struct device *dev)
 		return CNSS_BUS_NONE;
 }
 
+<<<<<<< HEAD
 enum cnss_dev_bus_type cnss_get_bus_type(unsigned long device_id)
 {
 	switch (device_id) {
@@ -31,6 +50,52 @@ enum cnss_dev_bus_type cnss_get_bus_type(unsigned long device_id)
 		cnss_pr_err("Unknown device_id: 0x%lx\n", device_id);
 		return CNSS_BUS_NONE;
 	}
+=======
+enum cnss_dev_bus_type cnss_get_bus_type(struct cnss_plat_data *plat_priv)
+{
+	int ret;
+	struct device *dev;
+	u32 bus_type = CNSS_BUS_NONE;
+
+	if (plat_priv->is_converged_dt) {
+		dev = &plat_priv->plat_dev->dev;
+		ret = of_property_read_u32(dev->of_node, "qcom,bus-type",
+					   &bus_type);
+		if (!ret)
+			cnss_pr_dbg("Got bus type[%u] from dt\n", bus_type);
+		else
+			cnss_pr_err("No bus type for converged dt\n");
+
+		return bus_type;
+	}
+
+	/* Get bus type according to device id if it's not converged DT */
+	switch (plat_priv->device_id) {
+	case QCA6174_DEVICE_ID:
+	case QCA6290_DEVICE_ID:
+	case QCA6390_DEVICE_ID:
+	case QCN7605_DEVICE_ID:
+		bus_type = CNSS_BUS_PCI;
+		break;
+	case QCN7605_COMPOSITE_DEVICE_ID:
+	case QCN7605_STANDALONE_DEVICE_ID:
+		bus_type = CNSS_BUS_USB;
+		break;
+	default:
+		cnss_pr_err("Unknown device: 0x%lx\n", plat_priv->device_id);
+		break;
+	}
+
+	return bus_type;
+}
+
+bool cnss_bus_req_mem_ind_valid(struct cnss_plat_data *plat_priv)
+{
+	if (cnss_get_bus_type(plat_priv) == CNSS_BUS_USB)
+		return false;
+	else
+		return true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void *cnss_bus_dev_to_bus_priv(struct device *dev)
@@ -60,6 +125,11 @@ struct cnss_plat_data *cnss_bus_dev_to_plat_priv(struct device *dev)
 	switch (cnss_get_dev_bus_type(dev)) {
 	case CNSS_BUS_PCI:
 		return cnss_pci_priv_to_plat_priv(bus_priv);
+<<<<<<< HEAD
+=======
+	case CNSS_BUS_USB:
+		return cnss_usb_priv_to_plat_priv(bus_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return NULL;
 	}
@@ -73,6 +143,11 @@ int cnss_bus_init(struct cnss_plat_data *plat_priv)
 	switch (plat_priv->bus_type) {
 	case CNSS_BUS_PCI:
 		return cnss_pci_init(plat_priv);
+<<<<<<< HEAD
+=======
+	case CNSS_BUS_USB:
+		return cnss_usb_init(plat_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -88,6 +163,7 @@ void cnss_bus_deinit(struct cnss_plat_data *plat_priv)
 	switch (plat_priv->bus_type) {
 	case CNSS_BUS_PCI:
 		cnss_pci_deinit(plat_priv);
+<<<<<<< HEAD
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -105,6 +181,10 @@ void cnss_bus_add_fw_prefix_name(struct cnss_plat_data *plat_priv,
 	case CNSS_BUS_PCI:
 		return cnss_pci_add_fw_prefix_name(plat_priv->bus_priv,
 						   prefix_name, name);
+=======
+	case CNSS_BUS_USB:
+		cnss_usb_deinit(plat_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -203,6 +283,7 @@ int cnss_bus_force_fw_assert_hdlr(struct cnss_plat_data *plat_priv)
 	}
 }
 
+<<<<<<< HEAD
 int cnss_bus_qmi_send_get(struct cnss_plat_data *plat_priv)
 {
 	if (!plat_priv)
@@ -237,6 +318,11 @@ void cnss_bus_fw_boot_timeout_hdlr(struct timer_list *t)
 {
 	struct cnss_plat_data *plat_priv =
 		from_timer(plat_priv, t, fw_boot_timer);
+=======
+void cnss_bus_fw_boot_timeout_hdlr(unsigned long data)
+{
+	struct cnss_plat_data *plat_priv = (struct cnss_plat_data *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!plat_priv)
 		return;
@@ -275,6 +361,11 @@ int cnss_bus_call_driver_probe(struct cnss_plat_data *plat_priv)
 	switch (plat_priv->bus_type) {
 	case CNSS_BUS_PCI:
 		return cnss_pci_call_driver_probe(plat_priv->bus_priv);
+<<<<<<< HEAD
+=======
+	case CNSS_BUS_USB:
+		return cnss_usb_call_driver_probe(plat_priv->bus_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -290,6 +381,11 @@ int cnss_bus_call_driver_remove(struct cnss_plat_data *plat_priv)
 	switch (plat_priv->bus_type) {
 	case CNSS_BUS_PCI:
 		return cnss_pci_call_driver_remove(plat_priv->bus_priv);
+<<<<<<< HEAD
+=======
+	case CNSS_BUS_USB:
+		return cnss_usb_call_driver_remove(plat_priv->bus_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -305,6 +401,11 @@ int cnss_bus_dev_powerup(struct cnss_plat_data *plat_priv)
 	switch (plat_priv->bus_type) {
 	case CNSS_BUS_PCI:
 		return cnss_pci_dev_powerup(plat_priv->bus_priv);
+<<<<<<< HEAD
+=======
+	case CNSS_BUS_USB:
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -320,6 +421,11 @@ int cnss_bus_dev_shutdown(struct cnss_plat_data *plat_priv)
 	switch (plat_priv->bus_type) {
 	case CNSS_BUS_PCI:
 		return cnss_pci_dev_shutdown(plat_priv->bus_priv);
+<<<<<<< HEAD
+=======
+	case CNSS_BUS_USB:
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -365,6 +471,11 @@ int cnss_bus_register_driver_hdlr(struct cnss_plat_data *plat_priv, void *data)
 	switch (plat_priv->bus_type) {
 	case CNSS_BUS_PCI:
 		return cnss_pci_register_driver_hdlr(plat_priv->bus_priv, data);
+<<<<<<< HEAD
+=======
+	case CNSS_BUS_USB:
+		return cnss_usb_register_driver_hdlr(plat_priv->bus_priv, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -380,6 +491,11 @@ int cnss_bus_unregister_driver_hdlr(struct cnss_plat_data *plat_priv)
 	switch (plat_priv->bus_type) {
 	case CNSS_BUS_PCI:
 		return cnss_pci_unregister_driver_hdlr(plat_priv->bus_priv);
+<<<<<<< HEAD
+=======
+	case CNSS_BUS_USB:
+		return cnss_usb_unregister_driver_hdlr(plat_priv->bus_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unsupported bus type: %d\n",
 			    plat_priv->bus_type);
@@ -420,6 +536,7 @@ int cnss_bus_update_status(struct cnss_plat_data *plat_priv,
 	}
 }
 
+<<<<<<< HEAD
 int cnss_bus_is_device_down(struct cnss_plat_data *plat_priv)
 {
 	if (!plat_priv)
@@ -513,4 +630,19 @@ int cnss_bus_get_iova_ipa(struct cnss_plat_data *plat_priv, u64 *addr,
 			    plat_priv->bus_type);
 		return -EINVAL;
 	}
+=======
+int cnss_get_msi_assignment(struct cnss_plat_data *plat_priv,
+			    char *msi_name,
+			    int *num_vectors, u32 *user_base_data,
+			    u32 *base_vector)
+{
+	struct cnss_pci_data *pci_priv;
+
+	pci_priv = plat_priv->bus_priv;
+	return cnss_get_user_msi_assignment(&pci_priv->pci_dev->dev,
+					    msi_name,
+					    num_vectors,
+					    user_base_data,
+					    base_vector);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

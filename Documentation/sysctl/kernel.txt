@@ -36,6 +36,7 @@ show up in /proc/sys/kernel:
 - hostname
 - hotplug
 - hardlockup_all_cpu_backtrace
+<<<<<<< HEAD
 - hardlockup_panic
 - hung_task_panic
 - hung_task_check_count
@@ -43,6 +44,12 @@ show up in /proc/sys/kernel:
 - hung_task_check_interval_secs
 - hung_task_warnings
 - hyperv_record_panic_msg
+=======
+- hung_task_panic
+- hung_task_check_count
+- hung_task_timeout_secs
+- hung_task_warnings
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 - kexec_load_disabled
 - kptr_restrict
 - l2cr                        [ PPC only ]
@@ -179,8 +186,12 @@ reason the device was booted / powered on. The value will be zero if this
 feature is not supported on the ARM device being booted.
 
 See the power-on-status field definitions in
+<<<<<<< HEAD
 Documentation/arm/msm/boot.txt for Qualcomm Technologies, Inc. family of
 devices.
+=======
+Documentation/arm/msm/boot.txt for Qualcomm's family of devices.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ==============================================================
 
@@ -342,6 +353,7 @@ will be initiated.
 1: on detection capture more debug information.
 ==============================================================
 
+<<<<<<< HEAD
 hardlockup_panic:
 
 This parameter can be used to control whether the kernel panics
@@ -355,6 +367,8 @@ also be set using the nmi_watchdog kernel parameter.
 
 ==============================================================
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 hotplug:
 
 Path for the hotplug policy agent.
@@ -382,7 +396,11 @@ This file shows up if CONFIG_DETECT_HUNG_TASK is enabled.
 
 hung_task_timeout_secs:
 
+<<<<<<< HEAD
 When a task in D state did not get scheduled
+=======
+Check interval. When a task in D state did not get scheduled
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 for more than this value report a warning.
 This file shows up if CONFIG_DETECT_HUNG_TASK is enabled.
 
@@ -391,6 +409,7 @@ Possible values to set are in range {0..LONG_MAX/HZ}.
 
 ==============================================================
 
+<<<<<<< HEAD
 hung_task_check_interval_secs:
 
 Hung task check interval. If hung task checking is enabled
@@ -403,6 +422,8 @@ Possible values to set are in range {0..LONG_MAX/HZ}.
 
 ==============================================================
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 hung_task_warnings:
 
 The maximum number of warnings to report. During a check interval
@@ -414,6 +435,7 @@ This file shows up if CONFIG_DETECT_HUNG_TASK is enabled.
 
 ==============================================================
 
+<<<<<<< HEAD
 hyperv_record_panic_msg:
 
 Controls whether the panic kmsg data should be reported to Hyper-V.
@@ -424,6 +446,8 @@ Controls whether the panic kmsg data should be reported to Hyper-V.
 
 ==============================================================
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 kexec_load_disabled:
 
 A toggle indicating if the kexec_load syscall has been disabled. This
@@ -441,8 +465,12 @@ kptr_restrict:
 This toggle indicates whether restrictions are placed on
 exposing kernel addresses via /proc and other interfaces.
 
+<<<<<<< HEAD
 When kptr_restrict is set to 0 (the default) the address is hashed before
 printing. (This is the equivalent to %p.)
+=======
+When kptr_restrict is set to (0), the default, there are no restrictions.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 When kptr_restrict is set to (1), kernel pointers printed using the %pK
 format specifier will be replaced with 0's unless the user has CAP_SYSLOG
@@ -490,8 +518,12 @@ Notes:
 1) kernel doesn't guarantee, that new object will have desired id. So,
 it's up to userspace, how to handle an object with "wrong" id.
 2) Toggle with non-default value will be set back to -1 by kernel after
+<<<<<<< HEAD
 successful IPC object allocation. If an IPC object allocation syscall
 fails, it is undefined if the value remains unmodified or is reset to -1.
+=======
+successful IPC object allocation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ==============================================================
 
@@ -719,8 +751,12 @@ allowed to execute.
 perf_event_paranoid:
 
 Controls use of the performance events system by unprivileged
+<<<<<<< HEAD
 users (without CAP_SYS_ADMIN).  The default value is 3 if
 CONFIG_SECURITY_PERF_EVENTS_RESTRICT is set, or 2 otherwise.
+=======
+users (without CAP_SYS_ADMIN).  The default value is 2.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  -1: Allow use of (almost) all events by all users
      Ignore mlock limit after perf_event_mlock_kb without CAP_IPC_LOCK
@@ -728,7 +764,10 @@ CONFIG_SECURITY_PERF_EVENTS_RESTRICT is set, or 2 otherwise.
      Disallow raw tracepoint access by users without CAP_SYS_ADMIN
 >=1: Disallow CPU event access by users without CAP_SYS_ADMIN
 >=2: Disallow kernel profiling by users without CAP_SYS_ADMIN
+<<<<<<< HEAD
 >=3: Disallow all event access by users without CAP_SYS_ADMIN
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ==============================================================
 
@@ -1017,6 +1056,7 @@ detect a hard lockup condition.
 
 tainted:
 
+<<<<<<< HEAD
 Non-zero if the kernel has been tainted. Numeric values, which can be
 ORed together. The letters are seen in "Tainted" line of Oops reports.
 
@@ -1045,6 +1085,34 @@ ORed together. The letters are seen in "Tainted" line of Oops reports.
  32768 (K): The kernel has been live patched.
  65536 (X): Auxiliary taint, defined and used by for distros.
 131072 (T): The kernel was built with the struct randomization plugin.
+=======
+Non-zero if the kernel has been tainted.  Numeric values, which
+can be ORed together:
+
+   1 - A module with a non-GPL license has been loaded, this
+       includes modules with no license.
+       Set by modutils >= 2.4.9 and module-init-tools.
+   2 - A module was force loaded by insmod -f.
+       Set by modutils >= 2.4.9 and module-init-tools.
+   4 - Unsafe SMP processors: SMP with CPUs not designed for SMP.
+   8 - A module was forcibly unloaded from the system by rmmod -f.
+  16 - A hardware machine check error occurred on the system.
+  32 - A bad page was discovered on the system.
+  64 - The user has asked that the system be marked "tainted".  This
+       could be because they are running software that directly modifies
+       the hardware, or for other reasons.
+ 128 - The system has died.
+ 256 - The ACPI DSDT has been overridden with one supplied by the user
+        instead of using the one provided by the hardware.
+ 512 - A kernel warning has occurred.
+1024 - A module from drivers/staging was loaded.
+2048 - The system is working around a severe firmware bug.
+4096 - An out-of-tree module has been loaded.
+8192 - An unsigned module has been loaded in a kernel supporting module
+       signature.
+16384 - A soft lockup has previously occurred on the system.
+32768 - The kernel has been live patched.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ==============================================================
 

@@ -175,11 +175,19 @@ static int tda18212_get_if_frequency(struct dvb_frontend *fe, u32 *frequency)
 
 static const struct dvb_tuner_ops tda18212_tuner_ops = {
 	.info = {
+<<<<<<< HEAD
 		.name              = "NXP TDA18212",
 
 		.frequency_min_hz  =  48 * MHz,
 		.frequency_max_hz  = 864 * MHz,
 		.frequency_step_hz =   1 * kHz,
+=======
+		.name           = "NXP TDA18212",
+
+		.frequency_min  =  48000000,
+		.frequency_max  = 864000000,
+		.frequency_step =      1000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.set_params    = tda18212_set_params,

@@ -234,9 +234,12 @@
 	POP	gp
 	RESTORE_R12_TO_R0
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARC_CURR_IN_REG
 	ld	r25, [sp, 12]
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld  sp, [sp] /* restore original sp */
 	/* orig_r0, ECR, user_r25 skipped automatically */
 .endm
@@ -318,9 +321,12 @@
 	POP	gp
 	RESTORE_R12_TO_R0
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARC_CURR_IN_REG
 	ld	r25, [sp, 12]
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld  sp, [sp] /* restore original sp */
 	/* orig_r0, ECR, user_r25 skipped automatically */
 .endm

@@ -3,7 +3,11 @@
  * (C) Copyright 2007-2011 Reuuimlla Technology Co., Ltd.
  * (C) Copyright 2007-2011 Aaron Maoye <leafy.myeh@reuuimllatech.com>
  * (C) Copyright 2013-2014 O2S GmbH <www.o2s.ch>
+<<<<<<< HEAD
  * (C) Copyright 2013-2014 David Lanzendörfer <david.lanzendoerfer@o2s.ch>
+=======
+ * (C) Copyright 2013-2014 David Lanzend�rfer <david.lanzendoerfer@o2s.ch>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * (C) Copyright 2013-2014 Hans de Goede <hdegoede@redhat.com>
  * (C) Copyright 2017 Sootech SA
  *
@@ -13,6 +17,7 @@
  * the License, or (at your option) any later version.
  */
 
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/clk/sunxi-ng.h>
 #include <linux/delay.h>
@@ -41,6 +46,38 @@
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
 #include <linux/spinlock.h>
+=======
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/io.h>
+#include <linux/device.h>
+#include <linux/interrupt.h>
+#include <linux/delay.h>
+#include <linux/err.h>
+
+#include <linux/clk.h>
+#include <linux/clk/sunxi-ng.h>
+#include <linux/gpio.h>
+#include <linux/platform_device.h>
+#include <linux/spinlock.h>
+#include <linux/scatterlist.h>
+#include <linux/dma-mapping.h>
+#include <linux/slab.h>
+#include <linux/reset.h>
+#include <linux/regulator/consumer.h>
+
+#include <linux/of_address.h>
+#include <linux/of_gpio.h>
+#include <linux/of_platform.h>
+
+#include <linux/mmc/host.h>
+#include <linux/mmc/sd.h>
+#include <linux/mmc/sdio.h>
+#include <linux/mmc/mmc.h>
+#include <linux/mmc/core.h>
+#include <linux/mmc/card.h>
+#include <linux/mmc/slot-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* register offset definitions */
 #define SDXC_REG_GCTRL	(0x00) /* SMC Global Control Register */
@@ -266,7 +303,10 @@ struct sunxi_mmc_cfg {
 };
 
 struct sunxi_mmc_host {
+<<<<<<< HEAD
 	struct device *dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mmc_host	*mmc;
 	struct reset_control *reset;
 	const struct sunxi_mmc_cfg *cfg;
@@ -320,9 +360,16 @@ static int sunxi_mmc_reset_host(struct sunxi_mmc_host *host)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int sunxi_mmc_init_host(struct sunxi_mmc_host *host)
 {
 	u32 rval;
+=======
+static int sunxi_mmc_init_host(struct mmc_host *mmc)
+{
+	u32 rval;
+	struct sunxi_mmc_host *host = mmc_priv(mmc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sunxi_mmc_reset_host(host))
 		return -EIO;
@@ -856,6 +903,7 @@ static int sunxi_mmc_clk_set_rate(struct sunxi_mmc_host *host,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void sunxi_mmc_set_bus_width(struct sunxi_mmc_host *host,
 				   unsigned char width)
 {
@@ -898,6 +946,19 @@ static void sunxi_mmc_card_power(struct sunxi_mmc_host *host,
 	case MMC_POWER_UP:
 		dev_dbg(mmc_dev(mmc), "Powering card up\n");
 
+=======
+static void sunxi_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+{
+	struct sunxi_mmc_host *host = mmc_priv(mmc);
+	u32 rval;
+
+	/* Set the power state */
+	switch (ios->power_mode) {
+	case MMC_POWER_ON:
+		break;
+
+	case MMC_POWER_UP:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!IS_ERR(mmc->supply.vmmc)) {
 			host->ferror = mmc_regulator_set_ocr(mmc,
 							     mmc->supply.vmmc,
@@ -915,16 +976,31 @@ static void sunxi_mmc_card_power(struct sunxi_mmc_host *host,
 			}
 			host->vqmmc_enabled = true;
 		}
+<<<<<<< HEAD
 		break;
 
 	case MMC_POWER_OFF:
 		dev_dbg(mmc_dev(mmc), "Powering card off\n");
 
+=======
+
+		host->ferror = sunxi_mmc_init_host(mmc);
+		if (host->ferror)
+			return;
+
+		dev_dbg(mmc_dev(mmc), "power on!\n");
+		break;
+
+	case MMC_POWER_OFF:
+		dev_dbg(mmc_dev(mmc), "power off!\n");
+		sunxi_mmc_reset_host(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!IS_ERR(mmc->supply.vmmc))
 			mmc_regulator_set_ocr(mmc, mmc->supply.vmmc, 0);
 
 		if (!IS_ERR(mmc->supply.vqmmc) && host->vqmmc_enabled)
 			regulator_disable(mmc->supply.vqmmc);
+<<<<<<< HEAD
 
 		host->vqmmc_enabled = false;
 		break;
@@ -942,6 +1018,39 @@ static void sunxi_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 	sunxi_mmc_card_power(host, ios);
 	sunxi_mmc_set_bus_width(host, ios->bus_width);
 	sunxi_mmc_set_clk(host, ios);
+=======
+		host->vqmmc_enabled = false;
+		break;
+	}
+
+	/* set bus width */
+	switch (ios->bus_width) {
+	case MMC_BUS_WIDTH_1:
+		mmc_writel(host, REG_WIDTH, SDXC_WIDTH1);
+		break;
+	case MMC_BUS_WIDTH_4:
+		mmc_writel(host, REG_WIDTH, SDXC_WIDTH4);
+		break;
+	case MMC_BUS_WIDTH_8:
+		mmc_writel(host, REG_WIDTH, SDXC_WIDTH8);
+		break;
+	}
+
+	/* set ddr mode */
+	rval = mmc_readl(host, REG_GCTRL);
+	if (ios->timing == MMC_TIMING_UHS_DDR50 ||
+	    ios->timing == MMC_TIMING_MMC_DDR52)
+		rval |= SDXC_DDR_MODE;
+	else
+		rval &= ~SDXC_DDR_MODE;
+	mmc_writel(host, REG_GCTRL, rval);
+
+	/* set up clock */
+	if (ios->power_mode) {
+		host->ferror = sunxi_mmc_clk_set_rate(host, ios);
+		/* Android code had a usleep_range(50000, 55000); here */
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sunxi_mmc_volt_switch(struct mmc_host *mmc, struct mmc_ios *ios)
@@ -963,9 +1072,12 @@ static void sunxi_mmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
 	unsigned long flags;
 	u32 imask;
 
+<<<<<<< HEAD
 	if (enable)
 		pm_runtime_get_noresume(host->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&host->lock, flags);
 
 	imask = mmc_readl(host, REG_IMASK);
@@ -978,9 +1090,12 @@ static void sunxi_mmc_enable_sdio_irq(struct mmc_host *mmc, int enable)
 	}
 	mmc_writel(host, REG_IMASK, imask);
 	spin_unlock_irqrestore(&host->lock, flags);
+<<<<<<< HEAD
 
 	if (!enable)
 		pm_runtime_put_noidle(host->mmc->parent);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sunxi_mmc_hw_reset(struct mmc_host *mmc)
@@ -1180,6 +1295,7 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
 };
 MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
 
+<<<<<<< HEAD
 static int sunxi_mmc_enable(struct sunxi_mmc_host *host)
 {
 	int ret;
@@ -1254,6 +1370,8 @@ static void sunxi_mmc_disable(struct sunxi_mmc_host *host)
 		reset_control_assert(host->reset);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sunxi_mmc_resource_request(struct sunxi_mmc_host *host,
 				      struct platform_device *pdev)
 {
@@ -1264,8 +1382,16 @@ static int sunxi_mmc_resource_request(struct sunxi_mmc_host *host,
 		return -EINVAL;
 
 	ret = mmc_regulator_get_supply(host->mmc);
+<<<<<<< HEAD
 	if (ret)
 		return ret;
+=======
+	if (ret) {
+		if (ret != -EPROBE_DEFER)
+			dev_err(&pdev->dev, "Could not get vmmc supply\n");
+		return ret;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	host->reg_base = devm_ioremap_resource(&pdev->dev,
 			      platform_get_resource(pdev, IORESOURCE_MEM, 0));
@@ -1303,6 +1429,7 @@ static int sunxi_mmc_resource_request(struct sunxi_mmc_host *host,
 	if (PTR_ERR(host->reset) == -EPROBE_DEFER)
 		return PTR_ERR(host->reset);
 
+<<<<<<< HEAD
 	ret = sunxi_mmc_enable(host);
 	if (ret)
 		return ret;
@@ -1318,6 +1445,63 @@ static int sunxi_mmc_resource_request(struct sunxi_mmc_host *host,
 
 error_disable_mmc:
 	sunxi_mmc_disable(host);
+=======
+	ret = clk_prepare_enable(host->clk_ahb);
+	if (ret) {
+		dev_err(&pdev->dev, "Enable ahb clk err %d\n", ret);
+		return ret;
+	}
+
+	ret = clk_prepare_enable(host->clk_mmc);
+	if (ret) {
+		dev_err(&pdev->dev, "Enable mmc clk err %d\n", ret);
+		goto error_disable_clk_ahb;
+	}
+
+	ret = clk_prepare_enable(host->clk_output);
+	if (ret) {
+		dev_err(&pdev->dev, "Enable output clk err %d\n", ret);
+		goto error_disable_clk_mmc;
+	}
+
+	ret = clk_prepare_enable(host->clk_sample);
+	if (ret) {
+		dev_err(&pdev->dev, "Enable sample clk err %d\n", ret);
+		goto error_disable_clk_output;
+	}
+
+	if (!IS_ERR(host->reset)) {
+		ret = reset_control_reset(host->reset);
+		if (ret) {
+			dev_err(&pdev->dev, "reset err %d\n", ret);
+			goto error_disable_clk_sample;
+		}
+	}
+
+	/*
+	 * Sometimes the controller asserts the irq on boot for some reason,
+	 * make sure the controller is in a sane state before enabling irqs.
+	 */
+	ret = sunxi_mmc_reset_host(host);
+	if (ret)
+		goto error_assert_reset;
+
+	host->irq = platform_get_irq(pdev, 0);
+	return devm_request_threaded_irq(&pdev->dev, host->irq, sunxi_mmc_irq,
+			sunxi_mmc_handle_manual_stop, 0, "sunxi-mmc", host);
+
+error_assert_reset:
+	if (!IS_ERR(host->reset))
+		reset_control_assert(host->reset);
+error_disable_clk_sample:
+	clk_disable_unprepare(host->clk_sample);
+error_disable_clk_output:
+	clk_disable_unprepare(host->clk_output);
+error_disable_clk_mmc:
+	clk_disable_unprepare(host->clk_mmc);
+error_disable_clk_ahb:
+	clk_disable_unprepare(host->clk_ahb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1332,10 +1516,15 @@ static int sunxi_mmc_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "mmc alloc host failed\n");
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, mmc);
 
 	host = mmc_priv(mmc);
 	host->dev = &pdev->dev;
+=======
+
+	host = mmc_priv(mmc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host->mmc = mmc;
 	spin_lock_init(&host->lock);
 
@@ -1388,12 +1577,17 @@ static int sunxi_mmc_probe(struct platform_device *pdev)
 				  MMC_CAP_ERASE | MMC_CAP_SDIO_IRQ;
 
 	if (host->cfg->clk_delays || host->use_new_timings)
+<<<<<<< HEAD
 		mmc->caps      |= MMC_CAP_1_8V_DDR | MMC_CAP_3_3V_DDR;
+=======
+		mmc->caps      |= MMC_CAP_1_8V_DDR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mmc_of_parse(mmc);
 	if (ret)
 		goto error_free_dma;
 
+<<<<<<< HEAD
 	/*
 	 * If we don't support delay chains in the SoC, we can't use any
 	 * of the higher speed modes. Mask them out in case the device
@@ -1418,14 +1612,21 @@ static int sunxi_mmc_probe(struct platform_device *pdev)
 	pm_runtime_use_autosuspend(&pdev->dev);
 	pm_runtime_enable(&pdev->dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = mmc_add_host(mmc);
 	if (ret)
 		goto error_free_dma;
 
+<<<<<<< HEAD
 	dev_info(&pdev->dev, "initialized, max. request size: %u KB%s\n",
 		 mmc->max_req_size >> 10,
 		 host->use_new_timings ? ", uses new timings mode" : "");
 
+=======
+	dev_info(&pdev->dev, "base:0x%p irq:%u\n", host->reg_base, host->irq);
+	platform_set_drvdata(pdev, mmc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 error_free_dma:
@@ -1441,15 +1642,30 @@ static int sunxi_mmc_remove(struct platform_device *pdev)
 	struct sunxi_mmc_host *host = mmc_priv(mmc);
 
 	mmc_remove_host(mmc);
+<<<<<<< HEAD
 	pm_runtime_force_suspend(&pdev->dev);
 	disable_irq(host->irq);
 	sunxi_mmc_disable(host);
+=======
+	disable_irq(host->irq);
+	sunxi_mmc_reset_host(host);
+
+	if (!IS_ERR(host->reset))
+		reset_control_assert(host->reset);
+
+	clk_disable_unprepare(host->clk_sample);
+	clk_disable_unprepare(host->clk_output);
+	clk_disable_unprepare(host->clk_mmc);
+	clk_disable_unprepare(host->clk_ahb);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_free_coherent(&pdev->dev, PAGE_SIZE, host->sg_cpu, host->sg_dma);
 	mmc_free_host(mmc);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 static int sunxi_mmc_runtime_resume(struct device *dev)
 {
@@ -1493,11 +1709,16 @@ static const struct dev_pm_ops sunxi_mmc_pm_ops = {
 			   NULL)
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver sunxi_mmc_driver = {
 	.driver = {
 		.name	= "sunxi-mmc",
 		.of_match_table = of_match_ptr(sunxi_mmc_of_match),
+<<<<<<< HEAD
 		.pm = &sunxi_mmc_pm_ops,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= sunxi_mmc_probe,
 	.remove		= sunxi_mmc_remove,
@@ -1506,5 +1727,9 @@ module_platform_driver(sunxi_mmc_driver);
 
 MODULE_DESCRIPTION("Allwinner's SD/MMC Card Controller Driver");
 MODULE_LICENSE("GPL v2");
+<<<<<<< HEAD
 MODULE_AUTHOR("David Lanzendörfer <david.lanzendoerfer@o2s.ch>");
+=======
+MODULE_AUTHOR("David Lanzend�rfer <david.lanzendoerfer@o2s.ch>");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_ALIAS("platform:sunxi-mmc");

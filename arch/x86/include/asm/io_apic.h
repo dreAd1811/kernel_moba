@@ -183,17 +183,30 @@ extern void disable_ioapic_support(void);
 
 extern void __init io_apic_init_mappings(void);
 extern unsigned int native_io_apic_read(unsigned int apic, unsigned int reg);
+<<<<<<< HEAD
 extern void native_restore_boot_irq_mode(void);
 
 static inline unsigned int io_apic_read(unsigned int apic, unsigned int reg)
 {
 	return x86_apic_ops.io_apic_read(apic, reg);
+=======
+extern void native_disable_io_apic(void);
+
+static inline unsigned int io_apic_read(unsigned int apic, unsigned int reg)
+{
+	return x86_io_apic_ops.read(apic, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern void setup_IO_APIC(void);
 extern void enable_IO_APIC(void);
+<<<<<<< HEAD
 extern void clear_IO_APIC(void);
 extern void restore_boot_irq_mode(void);
+=======
+extern void disable_IO_APIC(void);
+extern void setup_ioapic_dest(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int IO_APIC_get_PCI_irq_vector(int bus, int devfn, int pin);
 extern void print_IO_APICs(void);
 #else  /* !CONFIG_X86_IO_APIC */
@@ -229,11 +242,19 @@ static inline void mp_save_irq(struct mpc_intsrc *m) { }
 static inline void disable_ioapic_support(void) { }
 static inline void io_apic_init_mappings(void) { }
 #define native_io_apic_read		NULL
+<<<<<<< HEAD
 #define native_restore_boot_irq_mode	NULL
 
 static inline void setup_IO_APIC(void) { }
 static inline void enable_IO_APIC(void) { }
 static inline void restore_boot_irq_mode(void) { }
+=======
+#define native_disable_io_apic		NULL
+
+static inline void setup_IO_APIC(void) { }
+static inline void enable_IO_APIC(void) { }
+static inline void setup_ioapic_dest(void) { }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif
 

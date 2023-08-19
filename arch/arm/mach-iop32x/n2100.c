@@ -304,7 +304,11 @@ static void n2100_restart(enum reboot_mode mode, const char *cmd)
 
 static struct timer_list power_button_poll_timer;
 
+<<<<<<< HEAD
 static void power_button_poll(struct timer_list *unused)
+=======
+static void power_button_poll(unsigned long dummy)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (gpio_get_value(N2100_POWER_BUTTON) == 0) {
 		ctrl_alt_del();
@@ -335,7 +339,12 @@ static int __init n2100_request_gpios(void)
 			pr_err("could not set power GPIO as input\n");
 	}
 	/* Set up power button poll timer */
+<<<<<<< HEAD
 	timer_setup(&power_button_poll_timer, power_button_poll, 0);
+=======
+	init_timer(&power_button_poll_timer);
+	power_button_poll_timer.function = power_button_poll;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	power_button_poll_timer.expires = jiffies + (HZ / 10);
 	add_timer(&power_button_poll_timer);
 	return 0;

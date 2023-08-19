@@ -57,12 +57,21 @@ extern void sb1250_setup(void);
 #endif
 
 extern int xicor_probe(void);
+<<<<<<< HEAD
 extern int xicor_set_time(time64_t);
 extern time64_t xicor_get_time(void);
 
 extern int m41t81_probe(void);
 extern int m41t81_set_time(time64_t);
 extern time64_t m41t81_get_time(void);
+=======
+extern int xicor_set_time(unsigned long);
+extern unsigned long xicor_get_time(void);
+
+extern int m41t81_probe(void);
+extern int m41t81_set_time(unsigned long);
+extern unsigned long m41t81_get_time(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 const char *get_system_type(void)
 {
@@ -87,9 +96,15 @@ enum swarm_rtc_type {
 
 enum swarm_rtc_type swarm_rtc_type;
 
+<<<<<<< HEAD
 void read_persistent_clock64(struct timespec64 *ts)
 {
 	time64_t sec;
+=======
+void read_persistent_clock(struct timespec *ts)
+{
+	unsigned long sec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (swarm_rtc_type) {
 	case RTC_XICOR:
@@ -102,17 +117,26 @@ void read_persistent_clock64(struct timespec64 *ts)
 
 	case RTC_NONE:
 	default:
+<<<<<<< HEAD
 		sec = mktime64(2000, 1, 1, 0, 0, 0);
+=======
+		sec = mktime(2000, 1, 1, 0, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	ts->tv_sec = sec;
 	ts->tv_nsec = 0;
 }
 
+<<<<<<< HEAD
 int update_persistent_clock64(struct timespec64 now)
 {
 	time64_t sec = now.tv_sec;
 
+=======
+int rtc_mips_set_time(unsigned long sec)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (swarm_rtc_type) {
 	case RTC_XICOR:
 		return xicor_set_time(sec);

@@ -156,6 +156,7 @@ static void gf128mul_x8_bbe(be128 *x)
 	x->b = cpu_to_be64((b << 8) ^ _tt);
 }
 
+<<<<<<< HEAD
 void gf128mul_x8_ble(le128 *r, const le128 *x)
 {
 	u64 a = le64_to_cpu(x->a);
@@ -167,6 +168,8 @@ void gf128mul_x8_ble(le128 *r, const le128 *x)
 }
 EXPORT_SYMBOL(gf128mul_x8_ble);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void gf128mul_lle(be128 *r, const be128 *b)
 {
 	be128 p[8];

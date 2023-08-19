@@ -19,7 +19,10 @@
 #include <linux/phylink.h>
 #include <linux/rtnetlink.h>
 #include <linux/spinlock.h>
+<<<<<<< HEAD
 #include <linux/timer.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/workqueue.h>
 
 #include "sfp.h"
@@ -37,11 +40,15 @@ enum {
 	PHYLINK_DISABLE_LINK,
 };
 
+<<<<<<< HEAD
 /**
  * struct phylink - internal data type for phylink
  */
 struct phylink {
 	/* private: */
+=======
+struct phylink {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *netdev;
 	const struct phylink_mac_ops *ops;
 
@@ -54,6 +61,7 @@ struct phylink {
 
 	/* The link configuration settings */
 	struct phylink_link_state link_config;
+<<<<<<< HEAD
 
 	/* The current settings */
 	phy_interface_t cur_interface;
@@ -62,6 +70,9 @@ struct phylink {
 	struct timer_list link_poll;
 	void (*get_fixed_state)(struct net_device *dev,
 				struct phylink_link_state *s);
+=======
+	struct gpio_desc *link_gpio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct mutex state_mutex;
 	struct phylink_link_state phy_state;
@@ -99,6 +110,7 @@ static inline bool linkmode_empty(const unsigned long *src)
 	return bitmap_empty(src, __ETHTOOL_LINK_MODE_MASK_NBITS);
 }
 
+<<<<<<< HEAD
 /**
  * phylink_set_port_modes() - set the port type modes in the ethtool mask
  * @mask: ethtool link mode mask
@@ -106,6 +118,8 @@ static inline bool linkmode_empty(const unsigned long *src)
  * Sets all the port type modes in the ethtool mask.  MAC drivers should
  * use this in their 'validate' callback.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void phylink_set_port_modes(unsigned long *mask)
 {
 	phylink_set(mask, TP);
@@ -136,7 +150,12 @@ static const char *phylink_an_mode_str(unsigned int mode)
 	static const char *modestr[] = {
 		[MLO_AN_PHY] = "phy",
 		[MLO_AN_FIXED] = "fixed",
+<<<<<<< HEAD
 		[MLO_AN_INBAND] = "inband",
+=======
+		[MLO_AN_SGMII] = "SGMII",
+		[MLO_AN_8023Z] = "802.3z",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	return mode < ARRAY_SIZE(modestr) ? modestr[mode] : "unknown";
@@ -150,6 +169,7 @@ static int phylink_validate(struct phylink *pl, unsigned long *supported,
 	return phylink_is_empty_linkmode(supported) ? -EINVAL : 0;
 }
 
+<<<<<<< HEAD
 static int phylink_parse_fixedlink(struct phylink *pl,
 				   struct fwnode_handle *fwnode)
 {
@@ -162,15 +182,34 @@ static int phylink_parse_fixedlink(struct phylink *pl,
 	fixed_node = fwnode_get_named_child_node(fwnode, "fixed-link");
 	if (fixed_node) {
 		ret = fwnode_property_read_u32(fixed_node, "speed", &speed);
+=======
+static int phylink_parse_fixedlink(struct phylink *pl, struct device_node *np)
+{
+	struct device_node *fixed_node;
+	const struct phy_setting *s;
+	struct gpio_desc *desc;
+	const __be32 *fixed_prop;
+	u32 speed;
+	int ret, len;
+
+	fixed_node = of_get_child_by_name(np, "fixed-link");
+	if (fixed_node) {
+		ret = of_property_read_u32(fixed_node, "speed", &speed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pl->link_config.speed = speed;
 		pl->link_config.duplex = DUPLEX_HALF;
 
+<<<<<<< HEAD
 		if (fwnode_property_read_bool(fixed_node, "full-duplex"))
+=======
+		if (of_property_read_bool(fixed_node, "full-duplex"))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pl->link_config.duplex = DUPLEX_FULL;
 
 		/* We treat the "pause" and "asym-pause" terminology as
 		 * defining the link partner's ability. */
+<<<<<<< HEAD
 		if (fwnode_property_read_bool(fixed_node, "pause"))
 			pl->link_config.pause |= MLO_PAUSE_SYM;
 		if (fwnode_property_read_bool(fixed_node, "asym-pause"))
@@ -179,17 +218,33 @@ static int phylink_parse_fixedlink(struct phylink *pl,
 		if (ret == 0) {
 			desc = fwnode_get_named_gpiod(fixed_node, "link-gpios",
 						      0, GPIOD_IN, "?");
+=======
+		if (of_property_read_bool(fixed_node, "pause"))
+			pl->link_config.pause |= MLO_PAUSE_SYM;
+		if (of_property_read_bool(fixed_node, "asym-pause"))
+			pl->link_config.pause |= MLO_PAUSE_ASYM;
+
+		if (ret == 0) {
+			desc = fwnode_get_named_gpiod(&fixed_node->fwnode,
+						      "link-gpios", 0,
+						      GPIOD_IN, "?");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (!IS_ERR(desc))
 				pl->link_gpio = desc;
 			else if (desc == ERR_PTR(-EPROBE_DEFER))
 				ret = -EPROBE_DEFER;
 		}
+<<<<<<< HEAD
 		fwnode_handle_put(fixed_node);
+=======
+		of_node_put(fixed_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret)
 			return ret;
 	} else {
+<<<<<<< HEAD
 		u32 prop[5];
 
 		ret = fwnode_property_read_u32_array(fwnode, "fixed-link",
@@ -208,6 +263,20 @@ static int phylink_parse_fixedlink(struct phylink *pl,
 			if (prop[3])
 				pl->link_config.pause |= MLO_PAUSE_SYM;
 			if (prop[4])
+=======
+		fixed_prop = of_get_property(np, "fixed-link", &len);
+		if (!fixed_prop) {
+			netdev_err(pl->netdev, "broken fixed-link?\n");
+			return -EINVAL;
+		}
+		if (len == 5 * sizeof(*fixed_prop)) {
+			pl->link_config.duplex = be32_to_cpu(fixed_prop[1]) ?
+						DUPLEX_FULL : DUPLEX_HALF;
+			pl->link_config.speed = be32_to_cpu(fixed_prop[2]);
+			if (be32_to_cpu(fixed_prop[3]))
+				pl->link_config.pause |= MLO_PAUSE_SYM;
+			if (be32_to_cpu(fixed_prop[4]))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pl->link_config.pause |= MLO_PAUSE_ASYM;
 		}
 	}
@@ -245,6 +314,7 @@ static int phylink_parse_fixedlink(struct phylink *pl,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int phylink_parse_mode(struct phylink *pl, struct fwnode_handle *fwnode)
 {
 	struct fwnode_handle *dn;
@@ -256,6 +326,19 @@ static int phylink_parse_mode(struct phylink *pl, struct fwnode_handle *fwnode)
 	fwnode_handle_put(dn);
 
 	if (fwnode_property_read_string(fwnode, "managed", &managed) == 0 &&
+=======
+static int phylink_parse_mode(struct phylink *pl, struct device_node *np)
+{
+	struct device_node *dn;
+	const char *managed;
+
+	dn = of_get_child_by_name(np, "fixed-link");
+	if (dn || of_find_property(np, "fixed-link", NULL))
+		pl->link_an_mode = MLO_AN_FIXED;
+	of_node_put(dn);
+
+	if (of_property_read_string(np, "managed", &managed) == 0 &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    strcmp(managed, "in-band-status") == 0) {
 		if (pl->link_an_mode == MLO_AN_FIXED) {
 			netdev_err(pl->netdev,
@@ -269,7 +352,10 @@ static int phylink_parse_mode(struct phylink *pl, struct fwnode_handle *fwnode)
 		phylink_set(pl->supported, Asym_Pause);
 		phylink_set(pl->supported, Pause);
 		pl->link_config.an_enabled = true;
+<<<<<<< HEAD
 		pl->link_an_mode = MLO_AN_INBAND;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (pl->link_config.interface) {
 		case PHY_INTERFACE_MODE_SGMII:
@@ -279,14 +365,26 @@ static int phylink_parse_mode(struct phylink *pl, struct fwnode_handle *fwnode)
 			phylink_set(pl->supported, 100baseT_Full);
 			phylink_set(pl->supported, 1000baseT_Half);
 			phylink_set(pl->supported, 1000baseT_Full);
+<<<<<<< HEAD
+=======
+			pl->link_an_mode = MLO_AN_SGMII;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case PHY_INTERFACE_MODE_1000BASEX:
 			phylink_set(pl->supported, 1000baseX_Full);
+<<<<<<< HEAD
+=======
+			pl->link_an_mode = MLO_AN_8023Z;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case PHY_INTERFACE_MODE_2500BASEX:
 			phylink_set(pl->supported, 2500baseX_Full);
+<<<<<<< HEAD
+=======
+			pl->link_an_mode = MLO_AN_8023Z;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		case PHY_INTERFACE_MODE_10GKR:
@@ -303,6 +401,10 @@ static int phylink_parse_mode(struct phylink *pl, struct fwnode_handle *fwnode)
 			phylink_set(pl->supported, 10000baseLR_Full);
 			phylink_set(pl->supported, 10000baseLRM_Full);
 			phylink_set(pl->supported, 10000baseER_Full);
+<<<<<<< HEAD
+=======
+			pl->link_an_mode = MLO_AN_SGMII;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		default:
@@ -342,7 +444,12 @@ static void phylink_mac_config(struct phylink *pl,
 static void phylink_mac_an_restart(struct phylink *pl)
 {
 	if (pl->link_config.an_enabled &&
+<<<<<<< HEAD
 	    phy_interface_mode_is_8023z(pl->link_config.interface))
+=======
+	    (pl->link_config.interface == PHY_INTERFACE_MODE_1000BASEX ||
+	     pl->link_config.interface == PHY_INTERFACE_MODE_2500BASEX))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pl->ops->mac_an_restart(pl->netdev);
 }
 
@@ -364,11 +471,16 @@ static int phylink_get_mac_state(struct phylink *pl, struct phylink_link_state *
 }
 
 /* The fixed state is... fixed except for the link state,
+<<<<<<< HEAD
  * which may be determined by a GPIO or a callback.
+=======
+ * which may be determined by a GPIO.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void phylink_get_fixed_state(struct phylink *pl, struct phylink_link_state *state)
 {
 	*state = pl->link_config;
+<<<<<<< HEAD
 	if (pl->get_fixed_state)
 		pl->get_fixed_state(pl->netdev, state);
 	else if (pl->link_gpio)
@@ -377,6 +489,14 @@ static void phylink_get_fixed_state(struct phylink *pl, struct phylink_link_stat
 
 /* Flow control is resolved according to our and the link partners
  * advertisements using the following drawn from the 802.3 specs:
+=======
+	if (pl->link_gpio)
+		state->link = !!gpiod_get_value(pl->link_gpio);
+}
+
+/* Flow control is resolved according to our and the link partners
+ * advertisments using the following drawn from the 802.3 specs:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *  Local device  Link partner
  *  Pause AsymDir Pause AsymDir Result
  *    1     X       1     X     TX+RX
@@ -384,7 +504,11 @@ static void phylink_get_fixed_state(struct phylink *pl, struct phylink_link_stat
  *    1     1       0     1     RX
  */
 static void phylink_resolve_flow(struct phylink *pl,
+<<<<<<< HEAD
 				 struct phylink_link_state *state)
+=======
+	struct phylink_link_state *state)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int new_pause = 0;
 
@@ -450,7 +574,11 @@ static void phylink_resolve(struct work_struct *w)
 			phylink_mac_config(pl, &link_state);
 			break;
 
+<<<<<<< HEAD
 		case MLO_AN_INBAND:
+=======
+		case MLO_AN_SGMII:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			phylink_get_mac_state(pl, &link_state);
 			if (pl->phydev) {
 				bool changed = false;
@@ -476,12 +604,20 @@ static void phylink_resolve(struct work_struct *w)
 				}
 			}
 			break;
+<<<<<<< HEAD
+=======
+
+		case MLO_AN_8023Z:
+			phylink_get_mac_state(pl, &link_state);
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	if (link_state.link != netif_carrier_ok(ndev)) {
 		if (!link_state.link) {
 			netif_carrier_off(ndev);
+<<<<<<< HEAD
 			pl->ops->mac_link_down(ndev, pl->link_an_mode,
 					       pl->cur_interface);
 			netdev_info(ndev, "Link is Down\n");
@@ -489,6 +625,13 @@ static void phylink_resolve(struct work_struct *w)
 			pl->cur_interface = link_state.interface;
 			pl->ops->mac_link_up(ndev, pl->link_an_mode,
 					     pl->cur_interface, pl->phydev);
+=======
+			pl->ops->mac_link_down(ndev, pl->link_an_mode);
+			netdev_info(ndev, "Link is Down\n");
+		} else {
+			pl->ops->mac_link_up(ndev, pl->link_an_mode,
+					     pl->phydev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			netif_carrier_on(ndev);
 
@@ -523,6 +666,7 @@ static void phylink_run_resolve_and_disable(struct phylink *pl, int bit)
 	}
 }
 
+<<<<<<< HEAD
 static void phylink_fixed_poll(struct timer_list *t)
 {
 	struct phylink *pl = container_of(t, struct phylink, link_poll);
@@ -555,6 +699,19 @@ static int phylink_register_sfp(struct phylink *pl,
 	}
 
 	pl->sfp_bus = sfp_register_upstream(ref.fwnode, pl->netdev, pl,
+=======
+static const struct sfp_upstream_ops sfp_phylink_ops;
+
+static int phylink_register_sfp(struct phylink *pl, struct device_node *np)
+{
+	struct device_node *sfp_np;
+
+	sfp_np = of_parse_phandle(np, "sfp", 0);
+	if (!sfp_np)
+		return 0;
+
+	pl->sfp_bus = sfp_register_upstream(sfp_np, pl->netdev, pl,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    &sfp_phylink_ops);
 	if (!pl->sfp_bus)
 		return -ENOMEM;
@@ -562,6 +719,7 @@ static int phylink_register_sfp(struct phylink *pl,
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * phylink_create() - create a phylink instance
  * @ndev: a pointer to the &struct net_device
@@ -580,6 +738,10 @@ struct phylink *phylink_create(struct net_device *ndev,
 			       struct fwnode_handle *fwnode,
 			       phy_interface_t iface,
 			       const struct phylink_mac_ops *ops)
+=======
+struct phylink *phylink_create(struct net_device *ndev, struct device_node *np,
+	phy_interface_t iface, const struct phylink_mac_ops *ops)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct phylink *pl;
 	int ret;
@@ -593,10 +755,14 @@ struct phylink *phylink_create(struct net_device *ndev,
 	pl->netdev = ndev;
 	pl->phy_state.interface = iface;
 	pl->link_interface = iface;
+<<<<<<< HEAD
 	if (iface == PHY_INTERFACE_MODE_MOCA)
 		pl->link_port = PORT_BNC;
 	else
 		pl->link_port = PORT_MII;
+=======
+	pl->link_port = PORT_MII;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pl->link_config.interface = iface;
 	pl->link_config.pause = MLO_PAUSE_AN;
 	pl->link_config.speed = SPEED_UNKNOWN;
@@ -604,27 +770,42 @@ struct phylink *phylink_create(struct net_device *ndev,
 	pl->link_config.an_enabled = true;
 	pl->ops = ops;
 	__set_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state);
+<<<<<<< HEAD
 	timer_setup(&pl->link_poll, phylink_fixed_poll, 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bitmap_fill(pl->supported, __ETHTOOL_LINK_MODE_MASK_NBITS);
 	linkmode_copy(pl->link_config.advertising, pl->supported);
 	phylink_validate(pl, pl->supported, &pl->link_config);
 
+<<<<<<< HEAD
 	ret = phylink_parse_mode(pl, fwnode);
+=======
+	ret = phylink_parse_mode(pl, np);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		kfree(pl);
 		return ERR_PTR(ret);
 	}
 
 	if (pl->link_an_mode == MLO_AN_FIXED) {
+<<<<<<< HEAD
 		ret = phylink_parse_fixedlink(pl, fwnode);
+=======
+		ret = phylink_parse_fixedlink(pl, np);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			kfree(pl);
 			return ERR_PTR(ret);
 		}
 	}
 
+<<<<<<< HEAD
 	ret = phylink_register_sfp(pl, fwnode);
+=======
+	ret = phylink_register_sfp(pl, np);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		kfree(pl);
 		return ERR_PTR(ret);
@@ -634,6 +815,7 @@ struct phylink *phylink_create(struct net_device *ndev,
 }
 EXPORT_SYMBOL_GPL(phylink_create);
 
+<<<<<<< HEAD
 /**
  * phylink_destroy() - cleanup and destroy the phylink instance
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -641,6 +823,8 @@ EXPORT_SYMBOL_GPL(phylink_create);
  * Destroy a phylink instance. Any PHY that has been attached must have been
  * cleaned up via phylink_disconnect_phy() prior to calling this function.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void phylink_destroy(struct phylink *pl)
 {
 	if (pl->sfp_bus)
@@ -653,8 +837,12 @@ void phylink_destroy(struct phylink *pl)
 }
 EXPORT_SYMBOL_GPL(phylink_destroy);
 
+<<<<<<< HEAD
 static void phylink_phy_change(struct phy_device *phydev, bool up,
 			       bool do_carrier)
+=======
+void phylink_phy_change(struct phy_device *phydev, bool up, bool do_carrier)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct phylink *pl = phydev->phylink;
 
@@ -673,7 +861,11 @@ static void phylink_phy_change(struct phy_device *phydev, bool up,
 	phylink_run_resolve(pl);
 
 	netdev_dbg(pl->netdev, "phy link %s %s/%s/%s\n", up ? "up" : "down",
+<<<<<<< HEAD
 		   phy_modes(phydev->interface),
+=======
+	           phy_modes(phydev->interface),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   phy_speed_to_str(phydev->speed),
 		   phy_duplex_to_str(phydev->duplex));
 }
@@ -716,11 +908,19 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy)
 
 	mutex_lock(&phy->lock);
 	mutex_lock(&pl->state_mutex);
+<<<<<<< HEAD
+=======
+	pl->netdev->phydev = phy;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pl->phydev = phy;
 	linkmode_copy(pl->supported, supported);
 	linkmode_copy(pl->link_config.advertising, config.advertising);
 
+<<<<<<< HEAD
 	/* Restrict the phy advertisement according to the MAC support. */
+=======
+	/* Restrict the phy advertisment according to the MAC support. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ethtool_convert_link_mode_to_legacy_u32(&advertising, config.advertising);
 	phy->advertising = advertising;
 	mutex_unlock(&pl->state_mutex);
@@ -738,6 +938,7 @@ static int phylink_bringup_phy(struct phylink *pl, struct phy_device *phy)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __phylink_connect_phy(struct phylink *pl, struct phy_device *phy,
 		phy_interface_t interface)
 {
@@ -752,6 +953,13 @@ static int __phylink_connect_phy(struct phylink *pl, struct phy_device *phy,
 		return -EBUSY;
 
 	ret = phy_attach_direct(pl->netdev, phy, 0, interface);
+=======
+int phylink_connect_phy(struct phylink *pl, struct phy_device *phy)
+{
+	int ret;
+
+	ret = phy_attach_direct(pl->netdev, phy, 0, pl->link_interface);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -761,6 +969,7 @@ static int __phylink_connect_phy(struct phylink *pl, struct phy_device *phy,
 
 	return ret;
 }
+<<<<<<< HEAD
 
 /**
  * phylink_connect_phy() - connect a PHY to the phylink instance
@@ -803,15 +1012,25 @@ EXPORT_SYMBOL_GPL(phylink_connect_phy);
  */
 int phylink_of_phy_connect(struct phylink *pl, struct device_node *dn,
 			   u32 flags)
+=======
+EXPORT_SYMBOL_GPL(phylink_connect_phy);
+
+int phylink_of_phy_connect(struct phylink *pl, struct device_node *dn)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *phy_node;
 	struct phy_device *phy_dev;
 	int ret;
 
+<<<<<<< HEAD
 	/* Fixed links and 802.3z are handled without needing a PHY */
 	if (pl->link_an_mode == MLO_AN_FIXED ||
 	    (pl->link_an_mode == MLO_AN_INBAND &&
 	     phy_interface_mode_is_8023z(pl->link_interface)))
+=======
+	/* Fixed links are handled without needing a PHY */
+	if (pl->link_an_mode == MLO_AN_FIXED)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	phy_node = of_parse_phandle(dn, "phy-handle", 0);
@@ -821,6 +1040,7 @@ int phylink_of_phy_connect(struct phylink *pl, struct device_node *dn,
 		phy_node = of_parse_phandle(dn, "phy-device", 0);
 
 	if (!phy_node) {
+<<<<<<< HEAD
 		if (pl->link_an_mode == MLO_AN_PHY)
 			return -ENODEV;
 		return 0;
@@ -828,6 +1048,16 @@ int phylink_of_phy_connect(struct phylink *pl, struct device_node *dn,
 
 	phy_dev = of_phy_attach(pl->netdev, phy_node, flags,
 				pl->link_interface);
+=======
+		if (pl->link_an_mode == MLO_AN_PHY) {
+			netdev_err(pl->netdev, "unable to find PHY node\n");
+			return -ENODEV;
+		}
+		return 0;
+	}
+
+	phy_dev = of_phy_attach(pl->netdev, phy_node, 0, pl->link_interface);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* We're done with the phy_node handle */
 	of_node_put(phy_node);
 
@@ -842,6 +1072,7 @@ int phylink_of_phy_connect(struct phylink *pl, struct device_node *dn,
 }
 EXPORT_SYMBOL_GPL(phylink_of_phy_connect);
 
+<<<<<<< HEAD
 /**
  * phylink_disconnect_phy() - disconnect any PHY attached to the phylink
  *   instance.
@@ -849,16 +1080,26 @@ EXPORT_SYMBOL_GPL(phylink_of_phy_connect);
  *
  * Disconnect any current PHY from the phylink instance described by @pl.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void phylink_disconnect_phy(struct phylink *pl)
 {
 	struct phy_device *phy;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phy = pl->phydev;
 	if (phy) {
 		mutex_lock(&phy->lock);
 		mutex_lock(&pl->state_mutex);
+<<<<<<< HEAD
+=======
+		pl->netdev->phydev = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pl->phydev = NULL;
 		mutex_unlock(&pl->state_mutex);
 		mutex_unlock(&phy->lock);
@@ -869,6 +1110,7 @@ void phylink_disconnect_phy(struct phylink *pl)
 }
 EXPORT_SYMBOL_GPL(phylink_disconnect_phy);
 
+<<<<<<< HEAD
 /**
  * phylink_fixed_state_cb() - allow setting a fixed link callback
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -903,6 +1145,8 @@ EXPORT_SYMBOL_GPL(phylink_fixed_state_cb);
  * The MAC driver should call this driver when the state of its link
  * changes (eg, link failure, new negotiation results, etc.)
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void phylink_mac_change(struct phylink *pl, bool up)
 {
 	if (!up)
@@ -912,6 +1156,7 @@ void phylink_mac_change(struct phylink *pl, bool up)
 }
 EXPORT_SYMBOL_GPL(phylink_mac_change);
 
+<<<<<<< HEAD
 /**
  * phylink_start() - start a phylink instance
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -923,6 +1168,11 @@ EXPORT_SYMBOL_GPL(phylink_mac_change);
 void phylink_start(struct phylink *pl)
 {
 	ASSERT_RTNL();
+=======
+void phylink_start(struct phylink *pl)
+{
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netdev_info(pl->netdev, "configuring for %s/%s link mode\n",
 		    phylink_an_mode_str(pl->link_an_mode),
@@ -933,11 +1183,16 @@ void phylink_start(struct phylink *pl)
 
 	/* Apply the link configuration to the MAC when starting. This allows
 	 * a fixed-link to start with the correct parameters, and also
+<<<<<<< HEAD
 	 * ensures that we set the appropriate advertisement for Serdes links.
+=======
+	 * ensures that we set the appropriate advertisment for Serdes links.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	phylink_resolve_flow(pl, &pl->link_config);
 	phylink_mac_config(pl, &pl->link_config);
 
+<<<<<<< HEAD
 	/* Restart autonegotiation if using 802.3z to ensure that the link
 	 * parameters are properly negotiated.  This is necessary for DSA
 	 * switches using 802.3z negotiation to ensure they see our modes.
@@ -949,6 +1204,11 @@ void phylink_start(struct phylink *pl)
 
 	if (pl->link_an_mode == MLO_AN_FIXED && !IS_ERR(pl->link_gpio))
 		mod_timer(&pl->link_poll, jiffies + HZ);
+=======
+	clear_bit(PHYLINK_DISABLE_STOPPED, &pl->phylink_disable_state);
+	phylink_run_resolve(pl);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pl->sfp_bus)
 		sfp_upstream_start(pl->sfp_bus);
 	if (pl->phydev)
@@ -956,6 +1216,7 @@ void phylink_start(struct phylink *pl)
 }
 EXPORT_SYMBOL_GPL(phylink_start);
 
+<<<<<<< HEAD
 /**
  * phylink_stop() - stop a phylink instance
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -968,18 +1229,27 @@ EXPORT_SYMBOL_GPL(phylink_start);
 void phylink_stop(struct phylink *pl)
 {
 	ASSERT_RTNL();
+=======
+void phylink_stop(struct phylink *pl)
+{
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pl->phydev)
 		phy_stop(pl->phydev);
 	if (pl->sfp_bus)
 		sfp_upstream_stop(pl->sfp_bus);
+<<<<<<< HEAD
 	if (pl->link_an_mode == MLO_AN_FIXED && !IS_ERR(pl->link_gpio))
 		del_timer_sync(&pl->link_poll);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_STOPPED);
 }
 EXPORT_SYMBOL_GPL(phylink_stop);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_get_wol() - get the wake on lan parameters for the PHY
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -992,6 +1262,11 @@ EXPORT_SYMBOL_GPL(phylink_stop);
 void phylink_ethtool_get_wol(struct phylink *pl, struct ethtool_wolinfo *wol)
 {
 	ASSERT_RTNL();
+=======
+void phylink_ethtool_get_wol(struct phylink *pl, struct ethtool_wolinfo *wol)
+{
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wol->supported = 0;
 	wol->wolopts = 0;
@@ -1001,6 +1276,7 @@ void phylink_ethtool_get_wol(struct phylink *pl, struct ethtool_wolinfo *wol)
 }
 EXPORT_SYMBOL_GPL(phylink_ethtool_get_wol);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_set_wol() - set wake on lan parameters
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -1012,11 +1288,17 @@ EXPORT_SYMBOL_GPL(phylink_ethtool_get_wol);
  *
  * Returns zero on success or negative errno code.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phylink_ethtool_set_wol(struct phylink *pl, struct ethtool_wolinfo *wol)
 {
 	int ret = -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pl->phydev)
 		ret = phy_ethtool_set_wol(pl->phydev, wol);
@@ -1047,6 +1329,7 @@ static void phylink_get_ksettings(const struct phylink_link_state *state,
 				AUTONEG_DISABLE;
 }
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_ksettings_get() - get the current link settings
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -1062,6 +1345,14 @@ int phylink_ethtool_ksettings_get(struct phylink *pl,
 	struct phylink_link_state link_state;
 
 	ASSERT_RTNL();
+=======
+int phylink_ethtool_ksettings_get(struct phylink *pl,
+	struct ethtool_link_ksettings *kset)
+{
+	struct phylink_link_state link_state;
+
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pl->phydev) {
 		phy_ethtool_ksettings_get(pl->phydev, kset);
@@ -1081,13 +1372,21 @@ int phylink_ethtool_ksettings_get(struct phylink *pl,
 		phylink_get_ksettings(&link_state, kset);
 		break;
 
+<<<<<<< HEAD
 	case MLO_AN_INBAND:
+=======
+	case MLO_AN_SGMII:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* If there is a phy attached, then use the reported
 		 * settings from the phy with no modification.
 		 */
 		if (pl->phydev)
 			break;
 
+<<<<<<< HEAD
+=======
+	case MLO_AN_8023Z:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		phylink_get_mac_state(pl, &link_state);
 
 		/* The MAC is reporting the link results from its own PCS
@@ -1102,6 +1401,7 @@ int phylink_ethtool_ksettings_get(struct phylink *pl,
 }
 EXPORT_SYMBOL_GPL(phylink_ethtool_ksettings_get);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_ksettings_set() - set the link settings
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -1109,12 +1409,20 @@ EXPORT_SYMBOL_GPL(phylink_ethtool_ksettings_get);
  */
 int phylink_ethtool_ksettings_set(struct phylink *pl,
 				  const struct ethtool_link_ksettings *kset)
+=======
+int phylink_ethtool_ksettings_set(struct phylink *pl,
+	const struct ethtool_link_ksettings *kset)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ethtool_link_ksettings our_kset;
 	struct phylink_link_state config;
 	int ret;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (kset->base.autoneg != AUTONEG_DISABLE &&
 	    kset->base.autoneg != AUTONEG_ENABLE)
@@ -1122,7 +1430,11 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
 
 	config = pl->link_config;
 
+<<<<<<< HEAD
 	/* Mask out unsupported advertisements */
+=======
+	/* Mask out unsupported advertisments */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	linkmode_and(config.advertising, kset->link_modes.advertising,
 		     pl->supported);
 
@@ -1167,7 +1479,11 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
 	if (phylink_validate(pl, pl->supported, &config))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* If autonegotiation is enabled, we must have an advertisement */
+=======
+	/* If autonegotiation is enabled, we must have an advertisment */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (config.an_enabled && phylink_is_empty_linkmode(config.advertising))
 		return -EINVAL;
 
@@ -1201,6 +1517,7 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
 }
 EXPORT_SYMBOL_GPL(phylink_ethtool_ksettings_set);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_nway_reset() - restart negotiation
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -1212,11 +1529,17 @@ EXPORT_SYMBOL_GPL(phylink_ethtool_ksettings_set);
  *
  * Returns zero on success, or negative error code.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phylink_ethtool_nway_reset(struct phylink *pl)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pl->phydev)
 		ret = phy_restart_aneg(pl->phydev);
@@ -1226,6 +1549,7 @@ int phylink_ethtool_nway_reset(struct phylink *pl)
 }
 EXPORT_SYMBOL_GPL(phylink_ethtool_nway_reset);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_get_pauseparam() - get the current pause parameters
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -1235,6 +1559,12 @@ void phylink_ethtool_get_pauseparam(struct phylink *pl,
 				    struct ethtool_pauseparam *pause)
 {
 	ASSERT_RTNL();
+=======
+void phylink_ethtool_get_pauseparam(struct phylink *pl,
+				    struct ethtool_pauseparam *pause)
+{
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pause->autoneg = !!(pl->link_config.pause & MLO_PAUSE_AN);
 	pause->rx_pause = !!(pl->link_config.pause & MLO_PAUSE_RX);
@@ -1242,17 +1572,24 @@ void phylink_ethtool_get_pauseparam(struct phylink *pl,
 }
 EXPORT_SYMBOL_GPL(phylink_ethtool_get_pauseparam);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_set_pauseparam() - set the current pause parameters
  * @pl: a pointer to a &struct phylink returned from phylink_create()
  * @pause: a pointer to a &struct ethtool_pauseparam
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phylink_ethtool_set_pauseparam(struct phylink *pl,
 				   struct ethtool_pauseparam *pause)
 {
 	struct phylink_link_state *config = &pl->link_config;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!phylink_test(pl->supported, Pause) &&
 	    !phylink_test(pl->supported, Asym_Pause))
@@ -1285,7 +1622,12 @@ int phylink_ethtool_set_pauseparam(struct phylink *pl,
 			phylink_mac_config(pl, config);
 			break;
 
+<<<<<<< HEAD
 		case MLO_AN_INBAND:
+=======
+		case MLO_AN_SGMII:
+		case MLO_AN_8023Z:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			phylink_mac_config(pl, config);
 			phylink_mac_an_restart(pl);
 			break;
@@ -1296,6 +1638,7 @@ int phylink_ethtool_set_pauseparam(struct phylink *pl,
 }
 EXPORT_SYMBOL_GPL(phylink_ethtool_set_pauseparam);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_get_eee_err() - read the energy efficient ethernet error
  *   counter
@@ -1306,11 +1649,58 @@ EXPORT_SYMBOL_GPL(phylink_ethtool_set_pauseparam);
  *
  * Returns positive error counter value, or negative error code.
  */
+=======
+int phylink_ethtool_get_module_info(struct phylink *pl,
+				    struct ethtool_modinfo *modinfo)
+{
+	int ret = -EOPNOTSUPP;
+
+	WARN_ON(!lockdep_rtnl_is_held());
+
+	if (pl->sfp_bus)
+		ret = sfp_get_module_info(pl->sfp_bus, modinfo);
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(phylink_ethtool_get_module_info);
+
+int phylink_ethtool_get_module_eeprom(struct phylink *pl,
+				      struct ethtool_eeprom *ee, u8 *buf)
+{
+	int ret = -EOPNOTSUPP;
+
+	WARN_ON(!lockdep_rtnl_is_held());
+
+	if (pl->sfp_bus)
+		ret = sfp_get_module_eeprom(pl->sfp_bus, ee, buf);
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(phylink_ethtool_get_module_eeprom);
+
+int phylink_init_eee(struct phylink *pl, bool clk_stop_enable)
+{
+	int ret = -EPROTONOSUPPORT;
+
+	WARN_ON(!lockdep_rtnl_is_held());
+
+	if (pl->phydev)
+		ret = phy_init_eee(pl->phydev, clk_stop_enable);
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(phylink_init_eee);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phylink_get_eee_err(struct phylink *pl)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pl->phydev)
 		ret = phy_get_eee_err(pl->phydev);
@@ -1319,16 +1709,23 @@ int phylink_get_eee_err(struct phylink *pl)
 }
 EXPORT_SYMBOL_GPL(phylink_get_eee_err);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_get_eee() - read the energy efficient ethernet parameters
  * @pl: a pointer to a &struct phylink returned from phylink_create()
  * @eee: a pointer to a &struct ethtool_eee for the read parameters
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phylink_ethtool_get_eee(struct phylink *pl, struct ethtool_eee *eee)
 {
 	int ret = -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pl->phydev)
 		ret = phy_ethtool_get_eee(pl->phydev, eee);
@@ -1337,16 +1734,23 @@ int phylink_ethtool_get_eee(struct phylink *pl, struct ethtool_eee *eee)
 }
 EXPORT_SYMBOL_GPL(phylink_ethtool_get_eee);
 
+<<<<<<< HEAD
 /**
  * phylink_ethtool_set_eee() - set the energy efficient ethernet parameters
  * @pl: a pointer to a &struct phylink returned from phylink_create()
  * @eee: a pointer to a &struct ethtool_eee for the desired parameters
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phylink_ethtool_set_eee(struct phylink *pl, struct ethtool_eee *eee)
 {
 	int ret = -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pl->phydev)
 		ret = phy_ethtool_set_eee(pl->phydev, eee);
@@ -1481,7 +1885,13 @@ static int phylink_mii_read(struct phylink *pl, unsigned int phy_id,
 	case MLO_AN_PHY:
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	case MLO_AN_INBAND:
+=======
+	case MLO_AN_SGMII:
+		/* No phy, fall through to 8023z method */
+	case MLO_AN_8023Z:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (phy_id == 0) {
 			val = phylink_get_mac_state(pl, &state);
 			if (val < 0)
@@ -1506,13 +1916,20 @@ static int phylink_mii_write(struct phylink *pl, unsigned int phy_id,
 	case MLO_AN_PHY:
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	case MLO_AN_INBAND:
+=======
+	case MLO_AN_SGMII:
+		/* No phy, fall through to 8023z method */
+	case MLO_AN_8023Z:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * phylink_mii_ioctl() - generic mii ioctl interface
  * @pl: a pointer to a &struct phylink returned from phylink_create()
@@ -1531,11 +1948,14 @@ static int phylink_mii_write(struct phylink *pl, unsigned int phy_id,
  * %SIOCSMIIREG:
  *  set a register on the specified PHY.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int phylink_mii_ioctl(struct phylink *pl, struct ifreq *ifr, int cmd)
 {
 	struct mii_ioctl_data *mii = if_mii(ifr);
 	int  ret;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
 
 	if (pl->phydev) {
@@ -1544,6 +1964,15 @@ int phylink_mii_ioctl(struct phylink *pl, struct ifreq *ifr, int cmd)
 		case SIOCGMIIPHY:
 			mii->phy_id = pl->phydev->mdio.addr;
 			/* fall through */
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+
+	if (pl->phydev) {
+		/* PHYs only exist for MLO_AN_PHY and MLO_AN_SGMII */
+		switch (cmd) {
+		case SIOCGMIIPHY:
+			mii->phy_id = pl->phydev->mdio.addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		case SIOCGMIIREG:
 			ret = phylink_phy_read(pl, mii->phy_id, mii->reg_num);
@@ -1566,7 +1995,10 @@ int phylink_mii_ioctl(struct phylink *pl, struct ifreq *ifr, int cmd)
 		switch (cmd) {
 		case SIOCGMIIPHY:
 			mii->phy_id = 0;
+<<<<<<< HEAD
 			/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		case SIOCGMIIREG:
 			ret = phylink_mii_read(pl, mii->phy_id, mii->reg_num);
@@ -1591,6 +2023,11 @@ int phylink_mii_ioctl(struct phylink *pl, struct ifreq *ifr, int cmd)
 }
 EXPORT_SYMBOL_GPL(phylink_mii_ioctl);
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int phylink_sfp_module_insert(void *upstream,
 				     const struct sfp_eeprom_id *id)
 {
@@ -1598,6 +2035,7 @@ static int phylink_sfp_module_insert(void *upstream,
 	__ETHTOOL_DECLARE_LINK_MODE_MASK(support) = { 0, };
 	struct phylink_link_state config;
 	phy_interface_t iface;
+<<<<<<< HEAD
 	int ret = 0;
 	bool changed;
 	u8 port;
@@ -1610,6 +2048,32 @@ static int phylink_sfp_module_insert(void *upstream,
 	memset(&config, 0, sizeof(config));
 	linkmode_copy(config.advertising, support);
 	config.interface = PHY_INTERFACE_MODE_NA;
+=======
+	int mode, ret = 0;
+	bool changed;
+	u8 port;
+
+	sfp_parse_support(pl->sfp_bus, id, support);
+	port = sfp_parse_port(pl->sfp_bus, id, support);
+	iface = sfp_parse_interface(pl->sfp_bus, id);
+
+	WARN_ON(!lockdep_rtnl_is_held());
+
+	switch (iface) {
+	case PHY_INTERFACE_MODE_SGMII:
+		mode = MLO_AN_SGMII;
+		break;
+	case PHY_INTERFACE_MODE_1000BASEX:
+		mode = MLO_AN_8023Z;
+		break;
+	default:
+		return -EINVAL;
+	}
+
+	memset(&config, 0, sizeof(config));
+	linkmode_copy(config.advertising, support);
+	config.interface = iface;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	config.speed = SPEED_UNKNOWN;
 	config.duplex = DUPLEX_UNKNOWN;
 	config.pause = MLO_PAUSE_AN;
@@ -1618,6 +2082,7 @@ static int phylink_sfp_module_insert(void *upstream,
 	/* Ignore errors if we're expecting a PHY to attach later */
 	ret = phylink_validate(pl, support, &config);
 	if (ret) {
+<<<<<<< HEAD
 		netdev_err(pl->netdev, "validation with support %*pb failed: %d\n",
 			   __ETHTOOL_LINK_MODE_MASK_NBITS, support, ret);
 		return ret;
@@ -1637,16 +2102,27 @@ static int phylink_sfp_module_insert(void *upstream,
 		netdev_err(pl->netdev, "validation of %s/%s with support %*pb failed: %d\n",
 			   phylink_an_mode_str(MLO_AN_INBAND),
 			   phy_modes(config.interface),
+=======
+		netdev_err(pl->netdev, "validation of %s/%s with support %*pb failed: %d\n",
+			   phylink_an_mode_str(mode), phy_modes(config.interface),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   __ETHTOOL_LINK_MODE_MASK_NBITS, support, ret);
 		return ret;
 	}
 
 	netdev_dbg(pl->netdev, "requesting link mode %s/%s with support %*pb\n",
+<<<<<<< HEAD
 		   phylink_an_mode_str(MLO_AN_INBAND),
 		   phy_modes(config.interface),
 		   __ETHTOOL_LINK_MODE_MASK_NBITS, support);
 
 	if (phy_interface_mode_is_8023z(iface) && pl->phydev)
+=======
+		   phylink_an_mode_str(mode), phy_modes(config.interface),
+		   __ETHTOOL_LINK_MODE_MASK_NBITS, support);
+
+	if (mode == MLO_AN_8023Z && pl->phydev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	changed = !bitmap_equal(pl->supported, support,
@@ -1656,15 +2132,26 @@ static int phylink_sfp_module_insert(void *upstream,
 		linkmode_copy(pl->link_config.advertising, config.advertising);
 	}
 
+<<<<<<< HEAD
 	if (pl->link_an_mode != MLO_AN_INBAND ||
 	    pl->link_config.interface != config.interface) {
 		pl->link_config.interface = config.interface;
 		pl->link_an_mode = MLO_AN_INBAND;
+=======
+	if (pl->link_an_mode != mode ||
+	    pl->link_config.interface != config.interface) {
+		pl->link_config.interface = config.interface;
+		pl->link_an_mode = mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		changed = true;
 
 		netdev_info(pl->netdev, "switched to %s/%s link mode\n",
+<<<<<<< HEAD
 			    phylink_an_mode_str(MLO_AN_INBAND),
+=======
+			    phylink_an_mode_str(mode),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    phy_modes(config.interface));
 	}
 
@@ -1681,7 +2168,11 @@ static void phylink_sfp_link_down(void *upstream)
 {
 	struct phylink *pl = upstream;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	phylink_run_resolve_and_disable(pl, PHYLINK_DISABLE_LINK);
 }
@@ -1690,7 +2181,11 @@ static void phylink_sfp_link_up(void *upstream)
 {
 	struct phylink *pl = upstream;
 
+<<<<<<< HEAD
 	ASSERT_RTNL();
+=======
+	WARN_ON(!lockdep_rtnl_is_held());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clear_bit(PHYLINK_DISABLE_LINK, &pl->phylink_disable_state);
 	phylink_run_resolve(pl);
@@ -1698,9 +2193,13 @@ static void phylink_sfp_link_up(void *upstream)
 
 static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
 {
+<<<<<<< HEAD
 	struct phylink *pl = upstream;
 
 	return __phylink_connect_phy(upstream, phy, pl->link_config.interface);
+=======
+	return phylink_connect_phy(upstream, phy);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void phylink_sfp_disconnect_phy(void *upstream)
@@ -1716,6 +2215,7 @@ static const struct sfp_upstream_ops sfp_phylink_ops = {
 	.disconnect_phy = phylink_sfp_disconnect_phy,
 };
 
+<<<<<<< HEAD
 /* Helpers for MAC drivers */
 
 /**
@@ -1746,4 +2246,6 @@ void phylink_helper_basex_speed(struct phylink_link_state *state)
 }
 EXPORT_SYMBOL_GPL(phylink_helper_basex_speed);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

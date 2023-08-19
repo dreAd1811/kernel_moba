@@ -115,6 +115,7 @@
 
 #define I2C_CONFIG_LOAD_TIMEOUT			1000000
 
+<<<<<<< HEAD
 #define I2C_MST_FIFO_CONTROL			0x0b4
 #define I2C_MST_FIFO_CONTROL_RX_FLUSH		BIT(0)
 #define I2C_MST_FIFO_CONTROL_TX_FLUSH		BIT(1)
@@ -127,6 +128,8 @@
 #define I2C_MST_FIFO_STATUS_TX_MASK		0xff0000
 #define I2C_MST_FIFO_STATUS_TX_SHIFT		16
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * msg_end_type: The bus control which need to be send at end of transfer.
  * @MSG_END_STOP: Send stop pulse at end of transfer.
@@ -166,7 +169,10 @@ struct tegra_i2c_hw_feature {
 	u16 clk_divisor_fast_plus_mode;
 	bool has_multi_master_mode;
 	bool has_slcg_override_reg;
+<<<<<<< HEAD
 	bool has_mst_fifo;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -186,6 +192,10 @@ struct tegra_i2c_hw_feature {
  * @msg_buf_remaining: size of unsent data in the message buffer
  * @msg_read: identifies read transfers
  * @bus_clk_rate: current i2c bus clock rate
+<<<<<<< HEAD
+=======
+ * @is_suspended: prevents i2c controller accesses after suspend is called
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct tegra_i2c_dev {
 	struct device *dev;
@@ -206,6 +216,10 @@ struct tegra_i2c_dev {
 	int msg_read;
 	u32 bus_clk_rate;
 	u16 clk_divisor_non_hs_mode;
+<<<<<<< HEAD
+=======
+	bool is_suspended;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool is_multimaster_mode;
 	spinlock_t xfer_lock;
 };
@@ -279,6 +293,7 @@ static void tegra_i2c_unmask_irq(struct tegra_i2c_dev *i2c_dev, u32 mask)
 static int tegra_i2c_flush_fifos(struct tegra_i2c_dev *i2c_dev)
 {
 	unsigned long timeout = jiffies + HZ;
+<<<<<<< HEAD
 	unsigned int offset;
 	u32 mask, val;
 
@@ -297,6 +312,15 @@ static int tegra_i2c_flush_fifos(struct tegra_i2c_dev *i2c_dev)
 	i2c_writel(i2c_dev, val, offset);
 
 	while (i2c_readl(i2c_dev, offset) & mask) {
+=======
+	u32 val = i2c_readl(i2c_dev, I2C_FIFO_CONTROL);
+
+	val |= I2C_FIFO_CONTROL_TX_FLUSH | I2C_FIFO_CONTROL_RX_FLUSH;
+	i2c_writel(i2c_dev, val, I2C_FIFO_CONTROL);
+
+	while (i2c_readl(i2c_dev, I2C_FIFO_CONTROL) &
+		(I2C_FIFO_CONTROL_TX_FLUSH | I2C_FIFO_CONTROL_RX_FLUSH)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (time_after(jiffies, timeout)) {
 			dev_warn(i2c_dev->dev, "timeout waiting for fifo flush\n");
 			return -ETIMEDOUT;
@@ -314,6 +338,7 @@ static int tegra_i2c_empty_rx_fifo(struct tegra_i2c_dev *i2c_dev)
 	size_t buf_remaining = i2c_dev->msg_buf_remaining;
 	int words_to_transfer;
 
+<<<<<<< HEAD
 	if (i2c_dev->hw->has_mst_fifo) {
 		val = i2c_readl(i2c_dev, I2C_MST_FIFO_STATUS);
 		rx_fifo_avail = (val & I2C_MST_FIFO_STATUS_RX_MASK) >>
@@ -323,6 +348,11 @@ static int tegra_i2c_empty_rx_fifo(struct tegra_i2c_dev *i2c_dev)
 		rx_fifo_avail = (val & I2C_FIFO_STATUS_RX_MASK) >>
 			I2C_FIFO_STATUS_RX_SHIFT;
 	}
+=======
+	val = i2c_readl(i2c_dev, I2C_FIFO_STATUS);
+	rx_fifo_avail = (val & I2C_FIFO_STATUS_RX_MASK) >>
+		I2C_FIFO_STATUS_RX_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Rounds down to not include partial word at the end of buf */
 	words_to_transfer = buf_remaining / BYTES_PER_FIFO_WORD;
@@ -351,7 +381,10 @@ static int tegra_i2c_empty_rx_fifo(struct tegra_i2c_dev *i2c_dev)
 	BUG_ON(rx_fifo_avail > 0 && buf_remaining > 0);
 	i2c_dev->msg_buf_remaining = buf_remaining;
 	i2c_dev->msg_buf = buf;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -363,6 +396,7 @@ static int tegra_i2c_fill_tx_fifo(struct tegra_i2c_dev *i2c_dev)
 	size_t buf_remaining = i2c_dev->msg_buf_remaining;
 	int words_to_transfer;
 
+<<<<<<< HEAD
 	if (i2c_dev->hw->has_mst_fifo) {
 		val = i2c_readl(i2c_dev, I2C_MST_FIFO_STATUS);
 		tx_fifo_avail = (val & I2C_MST_FIFO_STATUS_TX_MASK) >>
@@ -372,6 +406,11 @@ static int tegra_i2c_fill_tx_fifo(struct tegra_i2c_dev *i2c_dev)
 		tx_fifo_avail = (val & I2C_FIFO_STATUS_TX_MASK) >>
 			I2C_FIFO_STATUS_TX_SHIFT;
 	}
+=======
+	val = i2c_readl(i2c_dev, I2C_FIFO_STATUS);
+	tx_fifo_avail = (val & I2C_FIFO_STATUS_TX_MASK) >>
+		I2C_FIFO_STATUS_TX_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Rounds down to not include partial word at the end of buf */
 	words_to_transfer = buf_remaining / BYTES_PER_FIFO_WORD;
@@ -553,6 +592,7 @@ static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
 		i2c_writel(i2c_dev, 0x00, I2C_SL_ADDR2);
 	}
 
+<<<<<<< HEAD
 	if (i2c_dev->hw->has_mst_fifo) {
 		val = I2C_MST_FIFO_CONTROL_TX_TRIG(8) |
 		      I2C_MST_FIFO_CONTROL_RX_TRIG(1);
@@ -562,6 +602,11 @@ static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
 			0 << I2C_FIFO_CONTROL_RX_TRIG_SHIFT;
 		i2c_writel(i2c_dev, val, I2C_FIFO_CONTROL);
 	}
+=======
+	val = 7 << I2C_FIFO_CONTROL_TX_TRIG_SHIFT |
+		0 << I2C_FIFO_CONTROL_RX_TRIG_SHIFT;
+	i2c_writel(i2c_dev, val, I2C_FIFO_CONTROL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = tegra_i2c_flush_fifos(i2c_dev);
 	if (err)
@@ -774,6 +819,12 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 	int i;
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	if (i2c_dev->is_suspended)
+		return -EBUSY;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = pm_runtime_get_sync(i2c_dev->dev);
 	if (ret < 0) {
 		dev_err(i2c_dev->dev, "runtime resume failed %d\n", ret);
@@ -845,7 +896,10 @@ static const struct tegra_i2c_hw_feature tegra20_i2c_hw = {
 	.has_config_load_reg = false,
 	.has_multi_master_mode = false,
 	.has_slcg_override_reg = false,
+<<<<<<< HEAD
 	.has_mst_fifo = false,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct tegra_i2c_hw_feature tegra30_i2c_hw = {
@@ -858,7 +912,10 @@ static const struct tegra_i2c_hw_feature tegra30_i2c_hw = {
 	.has_config_load_reg = false,
 	.has_multi_master_mode = false,
 	.has_slcg_override_reg = false,
+<<<<<<< HEAD
 	.has_mst_fifo = false,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct tegra_i2c_hw_feature tegra114_i2c_hw = {
@@ -871,7 +928,10 @@ static const struct tegra_i2c_hw_feature tegra114_i2c_hw = {
 	.has_config_load_reg = false,
 	.has_multi_master_mode = false,
 	.has_slcg_override_reg = false,
+<<<<<<< HEAD
 	.has_mst_fifo = false,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct tegra_i2c_hw_feature tegra124_i2c_hw = {
@@ -884,7 +944,10 @@ static const struct tegra_i2c_hw_feature tegra124_i2c_hw = {
 	.has_config_load_reg = true,
 	.has_multi_master_mode = false,
 	.has_slcg_override_reg = true,
+<<<<<<< HEAD
 	.has_mst_fifo = false,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct tegra_i2c_hw_feature tegra210_i2c_hw = {
@@ -897,6 +960,7 @@ static const struct tegra_i2c_hw_feature tegra210_i2c_hw = {
 	.has_config_load_reg = true,
 	.has_multi_master_mode = true,
 	.has_slcg_override_reg = true,
+<<<<<<< HEAD
 	.has_mst_fifo = false,
 };
 
@@ -911,11 +975,16 @@ static const struct tegra_i2c_hw_feature tegra194_i2c_hw = {
 	.has_multi_master_mode = true,
 	.has_slcg_override_reg = true,
 	.has_mst_fifo = true,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Match table for of_platform binding */
 static const struct of_device_id tegra_i2c_of_match[] = {
+<<<<<<< HEAD
 	{ .compatible = "nvidia,tegra194-i2c", .data = &tegra194_i2c_hw, },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "nvidia,tegra210-i2c", .data = &tegra210_i2c_hw, },
 	{ .compatible = "nvidia,tegra124-i2c", .data = &tegra124_i2c_hw, },
 	{ .compatible = "nvidia,tegra114-i2c", .data = &tegra114_i2c_hw, },
@@ -1107,9 +1176,43 @@ static int tegra_i2c_remove(struct platform_device *pdev)
 }
 
 #ifdef CONFIG_PM_SLEEP
+<<<<<<< HEAD
 static const struct dev_pm_ops tegra_i2c_pm = {
 	SET_RUNTIME_PM_OPS(tegra_i2c_runtime_suspend, tegra_i2c_runtime_resume,
 			   NULL)
+=======
+static int tegra_i2c_suspend(struct device *dev)
+{
+	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
+
+	i2c_lock_adapter(&i2c_dev->adapter);
+	i2c_dev->is_suspended = true;
+	i2c_unlock_adapter(&i2c_dev->adapter);
+
+	return 0;
+}
+
+static int tegra_i2c_resume(struct device *dev)
+{
+	struct tegra_i2c_dev *i2c_dev = dev_get_drvdata(dev);
+	int ret;
+
+	i2c_lock_adapter(&i2c_dev->adapter);
+
+	ret = tegra_i2c_init(i2c_dev);
+	if (!ret)
+		i2c_dev->is_suspended = false;
+
+	i2c_unlock_adapter(&i2c_dev->adapter);
+
+	return ret;
+}
+
+static const struct dev_pm_ops tegra_i2c_pm = {
+	SET_RUNTIME_PM_OPS(tegra_i2c_runtime_suspend, tegra_i2c_runtime_resume,
+			   NULL)
+	SET_SYSTEM_SLEEP_PM_OPS(tegra_i2c_suspend, tegra_i2c_resume)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #define TEGRA_I2C_PM	(&tegra_i2c_pm)
 #else

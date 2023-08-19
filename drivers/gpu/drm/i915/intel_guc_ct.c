@@ -24,6 +24,7 @@
 #include "i915_drv.h"
 #include "intel_guc_ct.h"
 
+<<<<<<< HEAD
 #ifdef CONFIG_DRM_I915_DEBUG_GUC
 #define CT_DEBUG_DRIVER(...)	DRM_DEBUG_DRIVER(__VA_ARGS__)
 #else
@@ -43,20 +44,26 @@ struct ct_incoming_request {
 	u32 msg[];
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum { CTB_SEND = 0, CTB_RECV = 1 };
 
 enum { CTB_OWNER_HOST = 0 };
 
+<<<<<<< HEAD
 static void ct_incoming_request_worker_func(struct work_struct *w);
 
 /**
  * intel_guc_ct_init_early - Initialize CT state without requiring device access
  * @ct: pointer to CT struct
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void intel_guc_ct_init_early(struct intel_guc_ct *ct)
 {
 	/* we're using static channel owners */
 	ct->host_channel.owner = CTB_OWNER_HOST;
+<<<<<<< HEAD
 
 	spin_lock_init(&ct->lock);
 	INIT_LIST_HEAD(&ct->pending_requests);
@@ -67,6 +74,8 @@ void intel_guc_ct_init_early(struct intel_guc_ct *ct)
 static inline struct intel_guc *ct_to_guc(struct intel_guc_ct *ct)
 {
 	return container_of(ct, struct intel_guc, ct);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline const char *guc_ct_buffer_type_to_str(u32 type)
@@ -84,8 +93,13 @@ static inline const char *guc_ct_buffer_type_to_str(u32 type)
 static void guc_ct_buffer_desc_init(struct guc_ct_buffer_desc *desc,
 				    u32 cmds_addr, u32 size, u32 owner)
 {
+<<<<<<< HEAD
 	CT_DEBUG_DRIVER("CT: desc %p init addr=%#x size=%u owner=%u\n",
 			desc, cmds_addr, size, owner);
+=======
+	DRM_DEBUG_DRIVER("CT: desc %p init addr=%#x size=%u owner=%u\n",
+			 desc, cmds_addr, size, owner);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(desc, 0, sizeof(*desc));
 	desc->addr = cmds_addr;
 	desc->size = size;
@@ -94,8 +108,13 @@ static void guc_ct_buffer_desc_init(struct guc_ct_buffer_desc *desc,
 
 static void guc_ct_buffer_desc_reset(struct guc_ct_buffer_desc *desc)
 {
+<<<<<<< HEAD
 	CT_DEBUG_DRIVER("CT: desc %p reset head=%u tail=%u\n",
 			desc, desc->head, desc->tail);
+=======
+	DRM_DEBUG_DRIVER("CT: desc %p reset head=%u tail=%u\n",
+			 desc, desc->head, desc->tail);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	desc->head = 0;
 	desc->tail = 0;
 	desc->is_in_error = 0;
@@ -114,7 +133,11 @@ static int guc_action_register_ct_buffer(struct intel_guc *guc,
 	int err;
 
 	/* Can't use generic send(), CT registration must go over MMIO */
+<<<<<<< HEAD
 	err = intel_guc_send_mmio(guc, action, ARRAY_SIZE(action), NULL, 0);
+=======
+	err = intel_guc_send_mmio(guc, action, ARRAY_SIZE(action));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		DRM_ERROR("CT: register %s buffer failed; err=%d\n",
 			  guc_ct_buffer_type_to_str(type), err);
@@ -133,7 +156,11 @@ static int guc_action_deregister_ct_buffer(struct intel_guc *guc,
 	int err;
 
 	/* Can't use generic send(), CT deregistration must go over MMIO */
+<<<<<<< HEAD
 	err = intel_guc_send_mmio(guc, action, ARRAY_SIZE(action), NULL, 0);
+=======
+	err = intel_guc_send_mmio(guc, action, ARRAY_SIZE(action));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		DRM_ERROR("CT: deregister %s buffer failed; owner=%d err=%d\n",
 			  guc_ct_buffer_type_to_str(type), owner, err);
@@ -191,8 +218,12 @@ static int ctch_init(struct intel_guc *guc,
 		err = PTR_ERR(blob);
 		goto err_vma;
 	}
+<<<<<<< HEAD
 	CT_DEBUG_DRIVER("CT: vma base=%#x\n",
 			intel_guc_ggtt_offset(guc, ctch->vma));
+=======
+	DRM_DEBUG_DRIVER("CT: vma base=%#x\n", guc_ggtt_offset(ctch->vma));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* store pointers to desc and cmds */
 	for (i = 0; i < ARRAY_SIZE(ctch->ctbs); i++) {
@@ -206,8 +237,13 @@ static int ctch_init(struct intel_guc *guc,
 err_vma:
 	i915_vma_unpin_and_release(&ctch->vma);
 err_out:
+<<<<<<< HEAD
 	CT_DEBUG_DRIVER("CT: channel %d initialization failed; err=%d\n",
 			ctch->owner, err);
+=======
+	DRM_DEBUG_DRIVER("CT: channel %d initialization failed; err=%d\n",
+			 ctch->owner, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -227,18 +263,30 @@ static int ctch_open(struct intel_guc *guc,
 	int err;
 	int i;
 
+<<<<<<< HEAD
 	CT_DEBUG_DRIVER("CT: channel %d reopen=%s\n",
 			ctch->owner, yesno(ctch_is_open(ctch)));
+=======
+	DRM_DEBUG_DRIVER("CT: channel %d reopen=%s\n",
+			 ctch->owner, yesno(ctch_is_open(ctch)));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ctch->vma) {
 		err = ctch_init(guc, ctch);
 		if (unlikely(err))
 			goto err_out;
+<<<<<<< HEAD
 		GEM_BUG_ON(!ctch->vma);
 	}
 
 	/* vma should be already allocated and map'ed */
 	base = intel_guc_ggtt_offset(guc, ctch->vma);
+=======
+	}
+
+	/* vma should be already allocated and map'ed */
+	base = guc_ggtt_offset(ctch->vma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* (re)initialize descriptors
 	 * cmds buffers are in the second half of the blob page
@@ -299,6 +347,7 @@ static u32 ctch_get_next_fence(struct intel_guc_ct_channel *ctch)
 	return ++ctch->next_fence;
 }
 
+<<<<<<< HEAD
 /**
  * DOC: CTB Host to GuC request
  *
@@ -322,6 +371,12 @@ static int ctb_write(struct intel_guc_ct_buffer *ctb,
 		     u32 len /* in dwords */,
 		     u32 fence,
 		     bool want_response)
+=======
+static int ctb_write(struct intel_guc_ct_buffer *ctb,
+		     const u32 *action,
+		     u32 len /* in dwords */,
+		     u32 fence)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct guc_ct_buffer_desc *desc = ctb->desc;
 	u32 head = desc->head / 4;	/* in dwords */
@@ -350,14 +405,19 @@ static int ctb_write(struct intel_guc_ct_buffer *ctb,
 	if (unlikely(used + len + 1 >= size))
 		return -ENOSPC;
 
+<<<<<<< HEAD
 	/*
 	 * Write the message. The format is the following:
+=======
+	/* Write the message. The format is the following:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * DW0: header (including action code)
 	 * DW1: fence
 	 * DW2+: action data
 	 */
 	header = (len << GUC_CT_MSG_LEN_SHIFT) |
 		 (GUC_CT_MSG_WRITE_FENCE_TO_DESC) |
+<<<<<<< HEAD
 		 (want_response ? GUC_CT_MSG_SEND_STATUS : 0) |
 		 (action[0] << GUC_CT_MSG_ACTION_SHIFT);
 
@@ -365,6 +425,10 @@ static int ctb_write(struct intel_guc_ct_buffer *ctb,
 			4, &header, 4, &fence,
 			4 * (len - 1), &action[1]);
 
+=======
+		 (action[0] << GUC_CT_MSG_ACTION_SHIFT);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmds[tail] = header;
 	tail = (tail + 1) % size;
 
@@ -383,6 +447,7 @@ static int ctb_write(struct intel_guc_ct_buffer *ctb,
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * wait_for_ctb_desc_update - Wait for the CT buffer descriptor update.
  * @desc:	buffer descriptor
@@ -402,6 +467,18 @@ static int ctb_write(struct intel_guc_ct_buffer *ctb,
 static int wait_for_ctb_desc_update(struct guc_ct_buffer_desc *desc,
 				    u32 fence,
 				    u32 *status)
+=======
+/* Wait for the response from the GuC.
+ * @fence:	response fence
+ * @status:	placeholder for status
+ * return:	0 response received (status is valid)
+ *		-ETIMEDOUT no response within hardcoded timeout
+ *		-EPROTO no response, ct buffer was in error
+ */
+static int wait_for_response(struct guc_ct_buffer_desc *desc,
+			     u32 fence,
+			     u32 *status)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 
@@ -433,6 +510,7 @@ static int wait_for_ctb_desc_update(struct guc_ct_buffer_desc *desc,
 	return err;
 }
 
+<<<<<<< HEAD
 /**
  * wait_for_ct_request_update - Wait for CT request state update.
  * @req:	pointer to pending request
@@ -475,18 +553,28 @@ static int ctch_send(struct intel_guc_ct *ct,
 		     u32 len,
 		     u32 *response_buf,
 		     u32 response_buf_size,
+=======
+static int ctch_send(struct intel_guc *guc,
+		     struct intel_guc_ct_channel *ctch,
+		     const u32 *action,
+		     u32 len,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     u32 *status)
 {
 	struct intel_guc_ct_buffer *ctb = &ctch->ctbs[CTB_SEND];
 	struct guc_ct_buffer_desc *desc = ctb->desc;
+<<<<<<< HEAD
 	struct ct_request request;
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 fence;
 	int err;
 
 	GEM_BUG_ON(!ctch_is_open(ctch));
 	GEM_BUG_ON(!len);
 	GEM_BUG_ON(len & ~GUC_CT_MSG_LEN_MASK);
+<<<<<<< HEAD
 	GEM_BUG_ON(!response_buf && response_buf_size);
 
 	fence = ctch_get_next_fence(ctch);
@@ -535,11 +623,28 @@ unlink:
 	spin_unlock_irqrestore(&ct->lock, flags);
 
 	return err;
+=======
+
+	fence = ctch_get_next_fence(ctch);
+	err = ctb_write(ctb, action, len, fence);
+	if (unlikely(err))
+		return err;
+
+	intel_guc_notify(guc);
+
+	err = wait_for_response(desc, fence, status);
+	if (unlikely(err))
+		return err;
+	if (*status != INTEL_GUC_STATUS_SUCCESS)
+		return -EIO;
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
  * Command Transport (CT) buffer based GuC send function.
  */
+<<<<<<< HEAD
 static int intel_guc_send_ct(struct intel_guc *guc, const u32 *action, u32 len,
 			     u32 *response_buf, u32 response_buf_size)
 {
@@ -867,6 +972,40 @@ int intel_guc_ct_enable(struct intel_guc_ct *ct)
 	int err;
 
 	GEM_BUG_ON(!HAS_GUC_CT(i915));
+=======
+static int intel_guc_send_ct(struct intel_guc *guc, const u32 *action, u32 len)
+{
+	struct intel_guc_ct_channel *ctch = &guc->ct.host_channel;
+	u32 status = ~0; /* undefined */
+	int err;
+
+	mutex_lock(&guc->send_mutex);
+
+	err = ctch_send(guc, ctch, action, len, &status);
+	if (unlikely(err)) {
+		DRM_ERROR("CT: send action %#X failed; err=%d status=%#X\n",
+			  action[0], err, status);
+	}
+
+	mutex_unlock(&guc->send_mutex);
+	return err;
+}
+
+/**
+ * Enable buffer based command transport
+ * Shall only be called for platforms with HAS_GUC_CT.
+ * @guc:	the guc
+ * return:	0 on success
+ *		non-zero on failure
+ */
+int intel_guc_enable_ct(struct intel_guc *guc)
+{
+	struct drm_i915_private *dev_priv = guc_to_i915(guc);
+	struct intel_guc_ct_channel *ctch = &guc->ct.host_channel;
+	int err;
+
+	GEM_BUG_ON(!HAS_GUC_CT(dev_priv));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = ctch_open(guc, ctch);
 	if (unlikely(err))
@@ -874,12 +1013,16 @@ int intel_guc_ct_enable(struct intel_guc_ct *ct)
 
 	/* Switch into cmd transport buffer based send() */
 	guc->send = intel_guc_send_ct;
+<<<<<<< HEAD
 	guc->handler = intel_guc_to_host_event_handler_ct;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_INFO("CT: %s\n", enableddisabled(true));
 	return 0;
 }
 
 /**
+<<<<<<< HEAD
  * intel_guc_ct_disable - Disable buffer based command transport.
  * @ct: pointer to CT struct
  *
@@ -892,6 +1035,18 @@ void intel_guc_ct_disable(struct intel_guc_ct *ct)
 	struct intel_guc_ct_channel *ctch = &ct->host_channel;
 
 	GEM_BUG_ON(!HAS_GUC_CT(i915));
+=======
+ * Disable buffer based command transport.
+ * Shall only be called for platforms with HAS_GUC_CT.
+ * @guc: the guc
+ */
+void intel_guc_disable_ct(struct intel_guc *guc)
+{
+	struct drm_i915_private *dev_priv = guc_to_i915(guc);
+	struct intel_guc_ct_channel *ctch = &guc->ct.host_channel;
+
+	GEM_BUG_ON(!HAS_GUC_CT(dev_priv));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ctch_is_open(ctch))
 		return;
@@ -900,6 +1055,9 @@ void intel_guc_ct_disable(struct intel_guc_ct *ct)
 
 	/* Disable send */
 	guc->send = intel_guc_send_nop;
+<<<<<<< HEAD
 	guc->handler = intel_guc_to_host_event_handler_nop;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_INFO("CT: %s\n", enableddisabled(false));
 }

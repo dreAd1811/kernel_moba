@@ -385,7 +385,11 @@ void omap2xxx_cm_set_mod_dividers(u32 mpu, u32 dsp, u32 gfx, u32 core, u32 mdm)
  *
  */
 
+<<<<<<< HEAD
 static const struct cm_ll_data omap2xxx_cm_ll_data = {
+=======
+static struct cm_ll_data omap2xxx_cm_ll_data = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.split_idlest_reg	= &omap2xxx_cm_split_idlest_reg,
 	.wait_module_ready	= &omap2xxx_cm_wait_module_ready,
 };

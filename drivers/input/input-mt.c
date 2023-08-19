@@ -49,7 +49,11 @@ int input_mt_init_slots(struct input_dev *dev, unsigned int num_slots,
 	if (mt)
 		return mt->num_slots != num_slots ? -EINVAL : 0;
 
+<<<<<<< HEAD
 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
+=======
+	mt = kzalloc(sizeof(*mt) + num_slots * sizeof(*mt->slots), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mt)
 		goto err_mem;
 
@@ -131,10 +135,15 @@ EXPORT_SYMBOL(input_mt_destroy_slots);
  * inactive, or if the tool type is changed, a new tracking id is
  * assigned to the slot. The tool type is only reported if the
  * corresponding absbit field is set.
+<<<<<<< HEAD
  *
  * Returns true if contact is active.
  */
 bool input_mt_report_slot_state(struct input_dev *dev,
+=======
+ */
+void input_mt_report_slot_state(struct input_dev *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				unsigned int tool_type, bool active)
 {
 	struct input_mt *mt = dev->mt;
@@ -142,24 +151,39 @@ bool input_mt_report_slot_state(struct input_dev *dev,
 	int id;
 
 	if (!mt)
+<<<<<<< HEAD
 		return false;
+=======
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	slot = &mt->slots[mt->slot];
 	slot->frame = mt->frame;
 
 	if (!active) {
 		input_event(dev, EV_ABS, ABS_MT_TRACKING_ID, -1);
+<<<<<<< HEAD
 		return false;
 	}
 
 	id = input_mt_get_value(slot, ABS_MT_TRACKING_ID);
 	if (id < 0)
+=======
+		return;
+	}
+
+	id = input_mt_get_value(slot, ABS_MT_TRACKING_ID);
+	if (id < 0 || input_mt_get_value(slot, ABS_MT_TOOL_TYPE) != tool_type)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		id = input_mt_new_trkid(mt);
 
 	input_event(dev, EV_ABS, ABS_MT_TRACKING_ID, id);
 	input_event(dev, EV_ABS, ABS_MT_TOOL_TYPE, tool_type);
+<<<<<<< HEAD
 
 	return true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(input_mt_report_slot_state);
 

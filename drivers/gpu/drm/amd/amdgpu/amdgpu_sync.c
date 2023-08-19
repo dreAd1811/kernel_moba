@@ -31,12 +31,18 @@
 #include <drm/drmP.h>
 #include "amdgpu.h"
 #include "amdgpu_trace.h"
+<<<<<<< HEAD
 #include "amdgpu_amdkfd.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct amdgpu_sync_entry {
 	struct hlist_node	node;
 	struct dma_fence	*fence;
+<<<<<<< HEAD
 	bool	explicit;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct kmem_cache *amdgpu_sync_slab;
@@ -65,7 +71,11 @@ void amdgpu_sync_create(struct amdgpu_sync *sync)
 static bool amdgpu_sync_same_dev(struct amdgpu_device *adev,
 				 struct dma_fence *f)
 {
+<<<<<<< HEAD
 	struct drm_sched_fence *s_fence = to_drm_sched_fence(f);
+=======
+	struct amd_sched_fence *s_fence = to_amd_sched_fence(f);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (s_fence) {
 		struct amdgpu_ring *ring;
@@ -86,6 +96,7 @@ static bool amdgpu_sync_same_dev(struct amdgpu_device *adev,
  */
 static void *amdgpu_sync_get_owner(struct dma_fence *f)
 {
+<<<<<<< HEAD
 	struct drm_sched_fence *s_fence;
 	struct amdgpu_amdkfd_fence *kfd_fence;
 
@@ -100,6 +111,13 @@ static void *amdgpu_sync_get_owner(struct dma_fence *f)
 	if (kfd_fence)
 		return AMDGPU_FENCE_OWNER_KFD;
 
+=======
+	struct amd_sched_fence *s_fence = to_amd_sched_fence(f);
+
+	if (s_fence)
+		return s_fence->owner;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return AMDGPU_FENCE_OWNER_UNDEFINED;
 }
 
@@ -130,7 +148,11 @@ static void amdgpu_sync_keep_later(struct dma_fence **keep,
  * Tries to add the fence to an existing hash entry. Returns true when an entry
  * was found, false otherwise.
  */
+<<<<<<< HEAD
 static bool amdgpu_sync_add_later(struct amdgpu_sync *sync, struct dma_fence *f, bool explicit)
+=======
+static bool amdgpu_sync_add_later(struct amdgpu_sync *sync, struct dma_fence *f)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct amdgpu_sync_entry *e;
 
@@ -139,10 +161,13 @@ static bool amdgpu_sync_add_later(struct amdgpu_sync *sync, struct dma_fence *f,
 			continue;
 
 		amdgpu_sync_keep_later(&e->fence, f);
+<<<<<<< HEAD
 
 		/* Preserve eplicit flag to not loose pipe line sync */
 		e->explicit |= explicit;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 	}
 	return false;
@@ -156,25 +181,40 @@ static bool amdgpu_sync_add_later(struct amdgpu_sync *sync, struct dma_fence *f,
  *
  */
 int amdgpu_sync_fence(struct amdgpu_device *adev, struct amdgpu_sync *sync,
+<<<<<<< HEAD
 		      struct dma_fence *f, bool explicit)
+=======
+		      struct dma_fence *f)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct amdgpu_sync_entry *e;
 
 	if (!f)
 		return 0;
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (amdgpu_sync_same_dev(adev, f) &&
 	    amdgpu_sync_get_owner(f) == AMDGPU_FENCE_OWNER_VM)
 		amdgpu_sync_keep_later(&sync->last_vm_update, f);
 
+<<<<<<< HEAD
 	if (amdgpu_sync_add_later(sync, f, explicit))
+=======
+	if (amdgpu_sync_add_later(sync, f))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	e = kmem_cache_alloc(amdgpu_sync_slab, GFP_KERNEL);
 	if (!e)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	e->explicit = explicit;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hash_add(sync->fences, &e->node, f->context);
 	e->fence = dma_fence_get(f);
 	return 0;
@@ -185,14 +225,22 @@ int amdgpu_sync_fence(struct amdgpu_device *adev, struct amdgpu_sync *sync,
  *
  * @sync: sync object to add fences from reservation object to
  * @resv: reservation object with embedded fence
+<<<<<<< HEAD
  * @explicit_sync: true if we should only sync to the exclusive fence
+=======
+ * @shared: true if we should only sync to the exclusive fence
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Sync to the fence
  */
 int amdgpu_sync_resv(struct amdgpu_device *adev,
 		     struct amdgpu_sync *sync,
 		     struct reservation_object *resv,
+<<<<<<< HEAD
 		     void *owner, bool explicit_sync)
+=======
+		     void *owner)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct reservation_object_list *flist;
 	struct dma_fence *f;
@@ -205,7 +253,11 @@ int amdgpu_sync_resv(struct amdgpu_device *adev,
 
 	/* always sync to the exclusive fence */
 	f = reservation_object_get_excl(resv);
+<<<<<<< HEAD
 	r = amdgpu_sync_fence(adev, sync, f, false);
+=======
+	r = amdgpu_sync_fence(adev, sync, f);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flist = reservation_object_get_list(resv);
 	if (!flist || r)
@@ -214,6 +266,7 @@ int amdgpu_sync_resv(struct amdgpu_device *adev,
 	for (i = 0; i < flist->shared_count; ++i) {
 		f = rcu_dereference_protected(flist->shared[i],
 					      reservation_object_held(resv));
+<<<<<<< HEAD
 		/* We only want to trigger KFD eviction fences on
 		 * evict or move jobs. Skip KFD fences otherwise.
 		 */
@@ -222,16 +275,23 @@ int amdgpu_sync_resv(struct amdgpu_device *adev,
 		    owner != AMDGPU_FENCE_OWNER_UNDEFINED)
 			continue;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (amdgpu_sync_same_dev(adev, f)) {
 			/* VM updates are only interesting
 			 * for other VM updates and moves.
 			 */
+<<<<<<< HEAD
+=======
+			fence_owner = amdgpu_sync_get_owner(f);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if ((owner != AMDGPU_FENCE_OWNER_UNDEFINED) &&
 			    (fence_owner != AMDGPU_FENCE_OWNER_UNDEFINED) &&
 			    ((owner == AMDGPU_FENCE_OWNER_VM) !=
 			     (fence_owner == AMDGPU_FENCE_OWNER_VM)))
 				continue;
 
+<<<<<<< HEAD
 			/* Ignore fence from the same owner and explicit one as
 			 * long as it isn't undefined.
 			 */
@@ -241,6 +301,17 @@ int amdgpu_sync_resv(struct amdgpu_device *adev,
 		}
 
 		r = amdgpu_sync_fence(adev, sync, f, false);
+=======
+			/* Ignore fence from the same owner as
+			 * long as it isn't undefined.
+			 */
+			if (owner != AMDGPU_FENCE_OWNER_UNDEFINED &&
+			    fence_owner == owner)
+				continue;
+		}
+
+		r = amdgpu_sync_fence(adev, sync, f);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (r)
 			break;
 	}
@@ -265,7 +336,11 @@ struct dma_fence *amdgpu_sync_peek_fence(struct amdgpu_sync *sync,
 
 	hash_for_each_safe(sync->fences, i, tmp, e, node) {
 		struct dma_fence *f = e->fence;
+<<<<<<< HEAD
 		struct drm_sched_fence *s_fence = to_drm_sched_fence(f);
+=======
+		struct amd_sched_fence *s_fence = to_amd_sched_fence(f);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (dma_fence_is_signaled(f)) {
 			hash_del(&e->node);
@@ -295,21 +370,35 @@ struct dma_fence *amdgpu_sync_peek_fence(struct amdgpu_sync *sync,
  * amdgpu_sync_get_fence - get the next fence from the sync object
  *
  * @sync: sync object to use
+<<<<<<< HEAD
  * @explicit: true if the next fence is explicit
  *
  * Get and removes the next fence from the sync object not signaled yet.
  */
 struct dma_fence *amdgpu_sync_get_fence(struct amdgpu_sync *sync, bool *explicit)
+=======
+ *
+ * Get and removes the next fence from the sync object not signaled yet.
+ */
+struct dma_fence *amdgpu_sync_get_fence(struct amdgpu_sync *sync)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct amdgpu_sync_entry *e;
 	struct hlist_node *tmp;
 	struct dma_fence *f;
 	int i;
+<<<<<<< HEAD
 	hash_for_each_safe(sync->fences, i, tmp, e, node) {
 
 		f = e->fence;
 		if (explicit)
 			*explicit = e->explicit;
+=======
+
+	hash_for_each_safe(sync->fences, i, tmp, e, node) {
+
+		f = e->fence;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		hash_del(&e->node);
 		kmem_cache_free(amdgpu_sync_slab, e);
@@ -322,6 +411,7 @@ struct dma_fence *amdgpu_sync_get_fence(struct amdgpu_sync *sync, bool *explicit
 	return NULL;
 }
 
+<<<<<<< HEAD
 /**
  * amdgpu_sync_clone - clone a sync object
  *
@@ -357,6 +447,8 @@ int amdgpu_sync_clone(struct amdgpu_sync *source, struct amdgpu_sync *clone)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_sync_wait(struct amdgpu_sync *sync, bool intr)
 {
 	struct amdgpu_sync_entry *e;

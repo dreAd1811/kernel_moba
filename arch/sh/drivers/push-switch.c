@@ -24,11 +24,19 @@ static ssize_t switch_show(struct device *dev,
 	struct push_switch_platform_info *psw_info = dev->platform_data;
 	return sprintf(buf, "%s\n", psw_info->name);
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RO(switch);
 
 static void switch_timer(struct timer_list *t)
 {
 	struct push_switch *psw = from_timer(psw, t, debounce);
+=======
+static DEVICE_ATTR(switch, S_IRUGO, switch_show, NULL);
+
+static void switch_timer(unsigned long data)
+{
+	struct push_switch *psw = (struct push_switch *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	schedule_work(&psw->work);
 }
@@ -78,7 +86,14 @@ static int switch_drv_probe(struct platform_device *pdev)
 	}
 
 	INIT_WORK(&psw->work, switch_work_handler);
+<<<<<<< HEAD
 	timer_setup(&psw->debounce, switch_timer, 0);
+=======
+	init_timer(&psw->debounce);
+
+	psw->debounce.function = switch_timer;
+	psw->debounce.data = (unsigned long)psw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Workqueue API brain-damage */
 	psw->pdev = pdev;

@@ -3,7 +3,10 @@
 #include <linux/sched/debug.h>
 #include <linux/stacktrace.h>
 
+<<<<<<< HEAD
 #include <asm/sections.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/stacktrace.h>
 #include <asm/traps.h>
 
@@ -64,6 +67,10 @@ EXPORT_SYMBOL(walk_stackframe);
 #ifdef CONFIG_STACKTRACE
 struct stack_trace_data {
 	struct stack_trace *trace;
+<<<<<<< HEAD
+=======
+	unsigned long last_pc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int no_sched_functions;
 	unsigned int skip;
 };
@@ -87,7 +94,20 @@ static int save_trace(struct stackframe *frame, void *d)
 	if (trace->nr_entries >= trace->max_entries)
 		return 1;
 
+<<<<<<< HEAD
 	if (!in_entry_text(frame->pc))
+=======
+	/*
+	 * in_exception_text() is designed to test if the PC is one of
+	 * the functions which has an exception stack above it, but
+	 * unfortunately what is in frame->pc is the return LR value,
+	 * not the saved PC value.  So, we need to track the previous
+	 * frame PC value when doing this.
+	 */
+	addr = data->last_pc;
+	data->last_pc = frame->pc;
+	if (!in_exception_text(addr))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	regs = (struct pt_regs *)frame->sp;
@@ -105,6 +125,10 @@ static noinline void __save_stack_trace(struct task_struct *tsk,
 	struct stackframe frame;
 
 	data.trace = trace;
+<<<<<<< HEAD
+=======
+	data.last_pc = ULONG_MAX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data.skip = trace->skip;
 	data.no_sched_functions = nosched;
 

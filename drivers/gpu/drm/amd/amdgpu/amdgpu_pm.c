@@ -1,6 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright 2017 Advanced Micro Devices, Inc.
  *
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -31,7 +34,12 @@
 #include <linux/power_supply.h>
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
+<<<<<<< HEAD
 #include <linux/nospec.h>
+=======
+
+#include "amd_powerplay.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int amdgpu_debugfs_pm_init(struct amdgpu_device *adev);
 
@@ -65,6 +73,7 @@ static const struct cg_flag_name clocks[] = {
 
 void amdgpu_pm_acpi_event_handler(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	if (adev->pm.dpm_enabled) {
 		mutex_lock(&adev->pm.mutex);
 		if (power_supply_is_system_supplied() > 0)
@@ -73,10 +82,25 @@ void amdgpu_pm_acpi_event_handler(struct amdgpu_device *adev)
 			adev->pm.ac_power = false;
 		if (adev->powerplay.pp_funcs->enable_bapm)
 			amdgpu_dpm_enable_bapm(adev, adev->pm.ac_power);
+=======
+	if (adev->pp_enabled)
+		/* TODO */
+		return;
+
+	if (adev->pm.dpm_enabled) {
+		mutex_lock(&adev->pm.mutex);
+		if (power_supply_is_system_supplied() > 0)
+			adev->pm.dpm.ac_power = true;
+		else
+			adev->pm.dpm.ac_power = false;
+		if (adev->pm.funcs->enable_bapm)
+			amdgpu_dpm_enable_bapm(adev, adev->pm.dpm.ac_power);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&adev->pm.mutex);
 	}
 }
 
+<<<<<<< HEAD
 /**
  * DOC: power_dpm_state
  *
@@ -111,6 +135,8 @@ void amdgpu_pm_acpi_event_handler(struct amdgpu_device *adev)
  *
  */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t amdgpu_get_dpm_state(struct device *dev,
 				    struct device_attribute *attr,
 				    char *buf)
@@ -119,9 +145,15 @@ static ssize_t amdgpu_get_dpm_state(struct device *dev,
 	struct amdgpu_device *adev = ddev->dev_private;
 	enum amd_pm_state_type pm;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->get_current_power_state)
 		pm = amdgpu_dpm_get_current_power_state(adev);
 	else
+=======
+	if (adev->pp_enabled) {
+		pm = amdgpu_dpm_get_current_power_state(adev);
+	} else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pm = adev->pm.dpm.user_state;
 
 	return snprintf(buf, PAGE_SIZE, "%s\n",
@@ -149,8 +181,13 @@ static ssize_t amdgpu_set_dpm_state(struct device *dev,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->dispatch_tasks) {
 		amdgpu_dpm_dispatch_task(adev, AMD_PP_TASK_ENABLE_USER_STATE, &state);
+=======
+	if (adev->pp_enabled) {
+		amdgpu_dpm_dispatch_task(adev, AMD_PP_EVENT_ENABLE_USER_STATE, &state, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mutex_lock(&adev->pm.mutex);
 		adev->pm.dpm.user_state = state;
@@ -165,6 +202,7 @@ fail:
 	return count;
 }
 
+<<<<<<< HEAD
 
 /**
  * DOC: power_dpm_force_performance_level
@@ -225,23 +263,33 @@ fail:
  *
  */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t amdgpu_get_dpm_forced_performance_level(struct device *dev,
 						struct device_attribute *attr,
 								char *buf)
 {
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
+<<<<<<< HEAD
 	enum amd_dpm_forced_level level = 0xff;
+=======
+	enum amd_dpm_forced_level level;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if  ((adev->flags & AMD_IS_PX) &&
 	     (ddev->switch_power_state != DRM_SWITCH_POWER_ON))
 		return snprintf(buf, PAGE_SIZE, "off\n");
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->get_performance_level)
 		level = amdgpu_dpm_get_performance_level(adev);
 	else
 		level = adev->pm.dpm.forced_level;
 
+=======
+	level = amdgpu_dpm_get_performance_level(adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return snprintf(buf, PAGE_SIZE, "%s\n",
 			(level == AMD_DPM_FORCED_LEVEL_AUTO) ? "auto" :
 			(level == AMD_DPM_FORCED_LEVEL_LOW) ? "low" :
@@ -262,7 +310,11 @@ static ssize_t amdgpu_set_dpm_forced_performance_level(struct device *dev,
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
 	enum amd_dpm_forced_level level;
+<<<<<<< HEAD
 	enum amd_dpm_forced_level current_level = 0xff;
+=======
+	enum amd_dpm_forced_level current_level;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	/* Can't force performance level when the card is off */
@@ -270,8 +322,12 @@ static ssize_t amdgpu_set_dpm_forced_performance_level(struct device *dev,
 	     (ddev->switch_power_state != DRM_SWITCH_POWER_ON))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->get_performance_level)
 		current_level = amdgpu_dpm_get_performance_level(adev);
+=======
+	current_level = amdgpu_dpm_get_performance_level(adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (strncmp("low", buf, strlen("low")) == 0) {
 		level = AMD_DPM_FORCED_LEVEL_LOW;
@@ -299,7 +355,13 @@ static ssize_t amdgpu_set_dpm_forced_performance_level(struct device *dev,
 	if (current_level == level)
 		return count;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->force_performance_level) {
+=======
+	if (adev->pp_enabled)
+		amdgpu_dpm_force_performance_level(adev, level);
+	else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&adev->pm.mutex);
 		if (adev->pm.dpm.thermal_active) {
 			count = -EINVAL;
@@ -327,7 +389,11 @@ static ssize_t amdgpu_get_pp_num_states(struct device *dev,
 	struct pp_states_info data;
 	int i, buf_len;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->get_pp_num_states)
+=======
+	if (adev->pp_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		amdgpu_dpm_get_pp_num_states(adev, &data);
 
 	buf_len = snprintf(buf, PAGE_SIZE, "states: %d\n", data.nums);
@@ -351,8 +417,13 @@ static ssize_t amdgpu_get_pp_cur_state(struct device *dev,
 	enum amd_pm_state_type pm = 0;
 	int i = 0;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->get_current_power_state
 		 && adev->powerplay.pp_funcs->get_pp_num_states) {
+=======
+	if (adev->pp_enabled) {
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pm = amdgpu_dpm_get_current_power_state(adev);
 		amdgpu_dpm_get_pp_num_states(adev, &data);
 
@@ -374,10 +445,32 @@ static ssize_t amdgpu_get_pp_force_state(struct device *dev,
 {
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
+<<<<<<< HEAD
 
 	if (adev->pp_force_state_enabled)
 		return amdgpu_get_pp_cur_state(dev, attr, buf);
 	else
+=======
+	struct pp_states_info data;
+	enum amd_pm_state_type pm = 0;
+	int i;
+
+	if (adev->pp_force_state_enabled && adev->pp_enabled) {
+		pm = amdgpu_dpm_get_current_power_state(adev);
+		amdgpu_dpm_get_pp_num_states(adev, &data);
+
+		for (i = 0; i < data.nums; i++) {
+			if (pm == data.states[i])
+				break;
+		}
+
+		if (i == data.nums)
+			i = -EINVAL;
+
+		return snprintf(buf, PAGE_SIZE, "%d\n", i);
+
+	} else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return snprintf(buf, PAGE_SIZE, "\n");
 }
 
@@ -394,8 +487,12 @@ static ssize_t amdgpu_set_pp_force_state(struct device *dev,
 
 	if (strlen(buf) == 1)
 		adev->pp_force_state_enabled = false;
+<<<<<<< HEAD
 	else if (adev->powerplay.pp_funcs->dispatch_tasks &&
 			adev->powerplay.pp_funcs->get_pp_num_states) {
+=======
+	else if (adev->pp_enabled) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct pp_states_info data;
 
 		ret = kstrtoul(buf, 0, &idx);
@@ -403,7 +500,10 @@ static ssize_t amdgpu_set_pp_force_state(struct device *dev,
 			count = -EINVAL;
 			goto fail;
 		}
+<<<<<<< HEAD
 		idx = array_index_nospec(idx, ARRAY_SIZE(data.states));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		amdgpu_dpm_get_pp_num_states(adev, &data);
 		state = data.states[idx];
@@ -411,7 +511,11 @@ static ssize_t amdgpu_set_pp_force_state(struct device *dev,
 		if (state != POWER_STATE_TYPE_INTERNAL_BOOT &&
 		    state != POWER_STATE_TYPE_DEFAULT) {
 			amdgpu_dpm_dispatch_task(adev,
+<<<<<<< HEAD
 					AMD_PP_TASK_ENABLE_USER_STATE, &state);
+=======
+					AMD_PP_EVENT_ENABLE_USER_STATE, &state, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adev->pp_force_state_enabled = true;
 		}
 	}
@@ -419,6 +523,7 @@ fail:
 	return count;
 }
 
+<<<<<<< HEAD
 /**
  * DOC: pp_table
  *
@@ -430,6 +535,8 @@ fail:
  *
  */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t amdgpu_get_pp_table(struct device *dev,
 		struct device_attribute *attr,
 		char *buf)
@@ -439,7 +546,11 @@ static ssize_t amdgpu_get_pp_table(struct device *dev,
 	char *table = NULL;
 	int size;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->get_pp_table)
+=======
+	if (adev->pp_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size = amdgpu_dpm_get_pp_table(adev, &table);
 	else
 		return 0;
@@ -460,12 +571,17 @@ static ssize_t amdgpu_set_pp_table(struct device *dev,
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->set_pp_table)
+=======
+	if (adev->pp_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		amdgpu_dpm_set_pp_table(adev, buf, count);
 
 	return count;
 }
 
+<<<<<<< HEAD
 /**
  * DOC: pp_od_clk_voltage
  *
@@ -594,12 +710,15 @@ static ssize_t amdgpu_get_pp_od_clk_voltage(struct device *dev,
  * E.g., echo 4 5 6 to > pp_dpm_sclk will enable sclk levels 4, 5, and 6.
  */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t amdgpu_get_pp_dpm_sclk(struct device *dev,
 		struct device_attribute *attr,
 		char *buf)
 {
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
+<<<<<<< HEAD
 
 	if (adev->powerplay.pp_funcs->print_clock_levels)
 		return amdgpu_dpm_print_clock_levels(adev, PP_SCLK, buf);
@@ -641,6 +760,16 @@ static ssize_t amdgpu_read_mask(const char *buf, size_t count, uint32_t *mask)
 	}
 
 	return 0;
+=======
+	ssize_t size = 0;
+
+	if (adev->pp_enabled)
+		size = amdgpu_dpm_print_clock_levels(adev, PP_SCLK, buf);
+	else if (adev->pm.funcs->print_clock_levels)
+		size = adev->pm.funcs->print_clock_levels(adev, PP_SCLK, buf);
+
+	return size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t amdgpu_set_pp_dpm_sclk(struct device *dev,
@@ -651,6 +780,7 @@ static ssize_t amdgpu_set_pp_dpm_sclk(struct device *dev,
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
 	int ret;
+<<<<<<< HEAD
 	uint32_t mask = 0;
 
 	ret = amdgpu_read_mask(buf, count, &mask);
@@ -660,6 +790,31 @@ static ssize_t amdgpu_set_pp_dpm_sclk(struct device *dev,
 	if (adev->powerplay.pp_funcs->force_clock_level)
 		amdgpu_dpm_force_clock_level(adev, PP_SCLK, mask);
 
+=======
+	long level;
+	uint32_t i, mask = 0;
+	char sub_str[2];
+
+	for (i = 0; i < strlen(buf); i++) {
+		if (*(buf + i) == '\n')
+			continue;
+		sub_str[0] = *(buf + i);
+		sub_str[1] = '\0';
+		ret = kstrtol(sub_str, 0, &level);
+
+		if (ret) {
+			count = -EINVAL;
+			goto fail;
+		}
+		mask |= 1 << level;
+	}
+
+	if (adev->pp_enabled)
+		amdgpu_dpm_force_clock_level(adev, PP_SCLK, mask);
+	else if (adev->pm.funcs->force_clock_level)
+		adev->pm.funcs->force_clock_level(adev, PP_SCLK, mask);
+fail:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
@@ -669,11 +824,22 @@ static ssize_t amdgpu_get_pp_dpm_mclk(struct device *dev,
 {
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
+<<<<<<< HEAD
 
 	if (adev->powerplay.pp_funcs->print_clock_levels)
 		return amdgpu_dpm_print_clock_levels(adev, PP_MCLK, buf);
 	else
 		return snprintf(buf, PAGE_SIZE, "\n");
+=======
+	ssize_t size = 0;
+
+	if (adev->pp_enabled)
+		size = amdgpu_dpm_print_clock_levels(adev, PP_MCLK, buf);
+	else if (adev->pm.funcs->print_clock_levels)
+		size = adev->pm.funcs->print_clock_levels(adev, PP_MCLK, buf);
+
+	return size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t amdgpu_set_pp_dpm_mclk(struct device *dev,
@@ -684,6 +850,7 @@ static ssize_t amdgpu_set_pp_dpm_mclk(struct device *dev,
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
 	int ret;
+<<<<<<< HEAD
 	uint32_t mask = 0;
 
 	ret = amdgpu_read_mask(buf, count, &mask);
@@ -693,6 +860,31 @@ static ssize_t amdgpu_set_pp_dpm_mclk(struct device *dev,
 	if (adev->powerplay.pp_funcs->force_clock_level)
 		amdgpu_dpm_force_clock_level(adev, PP_MCLK, mask);
 
+=======
+	long level;
+	uint32_t i, mask = 0;
+	char sub_str[2];
+
+	for (i = 0; i < strlen(buf); i++) {
+		if (*(buf + i) == '\n')
+			continue;
+		sub_str[0] = *(buf + i);
+		sub_str[1] = '\0';
+		ret = kstrtol(sub_str, 0, &level);
+
+		if (ret) {
+			count = -EINVAL;
+			goto fail;
+		}
+		mask |= 1 << level;
+	}
+
+	if (adev->pp_enabled)
+		amdgpu_dpm_force_clock_level(adev, PP_MCLK, mask);
+	else if (adev->pm.funcs->force_clock_level)
+		adev->pm.funcs->force_clock_level(adev, PP_MCLK, mask);
+fail:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
@@ -702,11 +894,22 @@ static ssize_t amdgpu_get_pp_dpm_pcie(struct device *dev,
 {
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
+<<<<<<< HEAD
 
 	if (adev->powerplay.pp_funcs->print_clock_levels)
 		return amdgpu_dpm_print_clock_levels(adev, PP_PCIE, buf);
 	else
 		return snprintf(buf, PAGE_SIZE, "\n");
+=======
+	ssize_t size = 0;
+
+	if (adev->pp_enabled)
+		size = amdgpu_dpm_print_clock_levels(adev, PP_PCIE, buf);
+	else if (adev->pm.funcs->print_clock_levels)
+		size = adev->pm.funcs->print_clock_levels(adev, PP_PCIE, buf);
+
+	return size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t amdgpu_set_pp_dpm_pcie(struct device *dev,
@@ -717,6 +920,7 @@ static ssize_t amdgpu_set_pp_dpm_pcie(struct device *dev,
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
 	int ret;
+<<<<<<< HEAD
 	uint32_t mask = 0;
 
 	ret = amdgpu_read_mask(buf, count, &mask);
@@ -726,6 +930,31 @@ static ssize_t amdgpu_set_pp_dpm_pcie(struct device *dev,
 	if (adev->powerplay.pp_funcs->force_clock_level)
 		amdgpu_dpm_force_clock_level(adev, PP_PCIE, mask);
 
+=======
+	long level;
+	uint32_t i, mask = 0;
+	char sub_str[2];
+
+	for (i = 0; i < strlen(buf); i++) {
+		if (*(buf + i) == '\n')
+			continue;
+		sub_str[0] = *(buf + i);
+		sub_str[1] = '\0';
+		ret = kstrtol(sub_str, 0, &level);
+
+		if (ret) {
+			count = -EINVAL;
+			goto fail;
+		}
+		mask |= 1 << level;
+	}
+
+	if (adev->pp_enabled)
+		amdgpu_dpm_force_clock_level(adev, PP_PCIE, mask);
+	else if (adev->pm.funcs->force_clock_level)
+		adev->pm.funcs->force_clock_level(adev, PP_PCIE, mask);
+fail:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
@@ -737,8 +966,15 @@ static ssize_t amdgpu_get_pp_sclk_od(struct device *dev,
 	struct amdgpu_device *adev = ddev->dev_private;
 	uint32_t value = 0;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->get_sclk_od)
 		value = amdgpu_dpm_get_sclk_od(adev);
+=======
+	if (adev->pp_enabled)
+		value = amdgpu_dpm_get_sclk_od(adev);
+	else if (adev->pm.funcs->get_sclk_od)
+		value = adev->pm.funcs->get_sclk_od(adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return snprintf(buf, PAGE_SIZE, "%d\n", value);
 }
@@ -759,12 +995,21 @@ static ssize_t amdgpu_set_pp_sclk_od(struct device *dev,
 		count = -EINVAL;
 		goto fail;
 	}
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->set_sclk_od)
 		amdgpu_dpm_set_sclk_od(adev, (uint32_t)value);
 
 	if (adev->powerplay.pp_funcs->dispatch_tasks) {
 		amdgpu_dpm_dispatch_task(adev, AMD_PP_TASK_READJUST_POWER_STATE, NULL);
 	} else {
+=======
+
+	if (adev->pp_enabled) {
+		amdgpu_dpm_set_sclk_od(adev, (uint32_t)value);
+		amdgpu_dpm_dispatch_task(adev, AMD_PP_EVENT_READJUST_POWER_STATE, NULL, NULL);
+	} else if (adev->pm.funcs->set_sclk_od) {
+		adev->pm.funcs->set_sclk_od(adev, (uint32_t)value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adev->pm.dpm.current_ps = adev->pm.dpm.boot_ps;
 		amdgpu_pm_compute_clocks(adev);
 	}
@@ -781,8 +1026,15 @@ static ssize_t amdgpu_get_pp_mclk_od(struct device *dev,
 	struct amdgpu_device *adev = ddev->dev_private;
 	uint32_t value = 0;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->get_mclk_od)
 		value = amdgpu_dpm_get_mclk_od(adev);
+=======
+	if (adev->pp_enabled)
+		value = amdgpu_dpm_get_mclk_od(adev);
+	else if (adev->pm.funcs->get_mclk_od)
+		value = adev->pm.funcs->get_mclk_od(adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return snprintf(buf, PAGE_SIZE, "%d\n", value);
 }
@@ -803,12 +1055,21 @@ static ssize_t amdgpu_set_pp_mclk_od(struct device *dev,
 		count = -EINVAL;
 		goto fail;
 	}
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->set_mclk_od)
 		amdgpu_dpm_set_mclk_od(adev, (uint32_t)value);
 
 	if (adev->powerplay.pp_funcs->dispatch_tasks) {
 		amdgpu_dpm_dispatch_task(adev, AMD_PP_TASK_READJUST_POWER_STATE, NULL);
 	} else {
+=======
+
+	if (adev->pp_enabled) {
+		amdgpu_dpm_set_mclk_od(adev, (uint32_t)value);
+		amdgpu_dpm_dispatch_task(adev, AMD_PP_EVENT_READJUST_POWER_STATE, NULL, NULL);
+	} else if (adev->pm.funcs->set_mclk_od) {
+		adev->pm.funcs->set_mclk_od(adev, (uint32_t)value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adev->pm.dpm.current_ps = adev->pm.dpm.boot_ps;
 		amdgpu_pm_compute_clocks(adev);
 	}
@@ -817,6 +1078,7 @@ fail:
 	return count;
 }
 
+<<<<<<< HEAD
 /**
  * DOC: pp_power_profile_mode
  *
@@ -852,10 +1114,158 @@ static ssize_t amdgpu_get_pp_power_profile_mode(struct device *dev,
 
 
 static ssize_t amdgpu_set_pp_power_profile_mode(struct device *dev,
+=======
+static ssize_t amdgpu_get_pp_power_profile(struct device *dev,
+		char *buf, struct amd_pp_profile *query)
+{
+	struct drm_device *ddev = dev_get_drvdata(dev);
+	struct amdgpu_device *adev = ddev->dev_private;
+	int ret = 0;
+
+	if (adev->pp_enabled)
+		ret = amdgpu_dpm_get_power_profile_state(
+				adev, query);
+	else if (adev->pm.funcs->get_power_profile_state)
+		ret = adev->pm.funcs->get_power_profile_state(
+				adev, query);
+
+	if (ret)
+		return ret;
+
+	return snprintf(buf, PAGE_SIZE,
+			"%d %d %d %d %d\n",
+			query->min_sclk / 100,
+			query->min_mclk / 100,
+			query->activity_threshold,
+			query->up_hyst,
+			query->down_hyst);
+}
+
+static ssize_t amdgpu_get_pp_gfx_power_profile(struct device *dev,
+		struct device_attribute *attr,
+		char *buf)
+{
+	struct amd_pp_profile query = {0};
+
+	query.type = AMD_PP_GFX_PROFILE;
+
+	return amdgpu_get_pp_power_profile(dev, buf, &query);
+}
+
+static ssize_t amdgpu_get_pp_compute_power_profile(struct device *dev,
+		struct device_attribute *attr,
+		char *buf)
+{
+	struct amd_pp_profile query = {0};
+
+	query.type = AMD_PP_COMPUTE_PROFILE;
+
+	return amdgpu_get_pp_power_profile(dev, buf, &query);
+}
+
+static ssize_t amdgpu_set_pp_power_profile(struct device *dev,
+		const char *buf,
+		size_t count,
+		struct amd_pp_profile *request)
+{
+	struct drm_device *ddev = dev_get_drvdata(dev);
+	struct amdgpu_device *adev = ddev->dev_private;
+	uint32_t loop = 0;
+	char *sub_str, buf_cpy[128], *tmp_str;
+	const char delimiter[3] = {' ', '\n', '\0'};
+	long int value;
+	int ret = 0;
+
+	if (strncmp("reset", buf, strlen("reset")) == 0) {
+		if (adev->pp_enabled)
+			ret = amdgpu_dpm_reset_power_profile_state(
+					adev, request);
+		else if (adev->pm.funcs->reset_power_profile_state)
+			ret = adev->pm.funcs->reset_power_profile_state(
+					adev, request);
+		if (ret) {
+			count = -EINVAL;
+			goto fail;
+		}
+		return count;
+	}
+
+	if (strncmp("set", buf, strlen("set")) == 0) {
+		if (adev->pp_enabled)
+			ret = amdgpu_dpm_set_power_profile_state(
+					adev, request);
+		else if (adev->pm.funcs->set_power_profile_state)
+			ret = adev->pm.funcs->set_power_profile_state(
+					adev, request);
+		if (ret) {
+			count = -EINVAL;
+			goto fail;
+		}
+		return count;
+	}
+
+	if (count + 1 >= 128) {
+		count = -EINVAL;
+		goto fail;
+	}
+
+	memcpy(buf_cpy, buf, count + 1);
+	tmp_str = buf_cpy;
+
+	while (tmp_str[0]) {
+		sub_str = strsep(&tmp_str, delimiter);
+		ret = kstrtol(sub_str, 0, &value);
+		if (ret) {
+			count = -EINVAL;
+			goto fail;
+		}
+
+		switch (loop) {
+		case 0:
+			/* input unit MHz convert to dpm table unit 10KHz*/
+			request->min_sclk = (uint32_t)value * 100;
+			break;
+		case 1:
+			/* input unit MHz convert to dpm table unit 10KHz*/
+			request->min_mclk = (uint32_t)value * 100;
+			break;
+		case 2:
+			request->activity_threshold = (uint16_t)value;
+			break;
+		case 3:
+			request->up_hyst = (uint8_t)value;
+			break;
+		case 4:
+			request->down_hyst = (uint8_t)value;
+			break;
+		default:
+			break;
+		}
+
+		loop++;
+	}
+
+	if (adev->pp_enabled)
+		ret = amdgpu_dpm_set_power_profile_state(
+				adev, request);
+	else if (adev->pm.funcs->set_power_profile_state)
+		ret = adev->pm.funcs->set_power_profile_state(
+				adev, request);
+
+	if (ret)
+		count = -EINVAL;
+
+fail:
+	return count;
+}
+
+static ssize_t amdgpu_set_pp_gfx_power_profile(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct device_attribute *attr,
 		const char *buf,
 		size_t count)
 {
+<<<<<<< HEAD
 	int ret = 0xff;
 	struct drm_device *ddev = dev_get_drvdata(dev);
 	struct amdgpu_device *adev = ddev->dev_private;
@@ -931,6 +1341,25 @@ static ssize_t amdgpu_get_busy_percent(struct device *dev,
 		return r;
 
 	return snprintf(buf, PAGE_SIZE, "%d\n", value);
+=======
+	struct amd_pp_profile request = {0};
+
+	request.type = AMD_PP_GFX_PROFILE;
+
+	return amdgpu_set_pp_power_profile(dev, buf, count, &request);
+}
+
+static ssize_t amdgpu_set_pp_compute_power_profile(struct device *dev,
+		struct device_attribute *attr,
+		const char *buf,
+		size_t count)
+{
+	struct amd_pp_profile request = {0};
+
+	request.type = AMD_PP_COMPUTE_PROFILE;
+
+	return amdgpu_set_pp_power_profile(dev, buf, count, &request);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static DEVICE_ATTR(power_dpm_state, S_IRUGO | S_IWUSR, amdgpu_get_dpm_state, amdgpu_set_dpm_state);
@@ -960,6 +1389,7 @@ static DEVICE_ATTR(pp_sclk_od, S_IRUGO | S_IWUSR,
 static DEVICE_ATTR(pp_mclk_od, S_IRUGO | S_IWUSR,
 		amdgpu_get_pp_mclk_od,
 		amdgpu_set_pp_mclk_od);
+<<<<<<< HEAD
 static DEVICE_ATTR(pp_power_profile_mode, S_IRUGO | S_IWUSR,
 		amdgpu_get_pp_power_profile_mode,
 		amdgpu_set_pp_power_profile_mode);
@@ -968,6 +1398,14 @@ static DEVICE_ATTR(pp_od_clk_voltage, S_IRUGO | S_IWUSR,
 		amdgpu_set_pp_od_clk_voltage);
 static DEVICE_ATTR(gpu_busy_percent, S_IRUGO,
 		amdgpu_get_busy_percent, NULL);
+=======
+static DEVICE_ATTR(pp_gfx_power_profile, S_IRUGO | S_IWUSR,
+		amdgpu_get_pp_gfx_power_profile,
+		amdgpu_set_pp_gfx_power_profile);
+static DEVICE_ATTR(pp_compute_power_profile, S_IRUGO | S_IWUSR,
+		amdgpu_get_pp_compute_power_profile,
+		amdgpu_set_pp_compute_power_profile);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t amdgpu_hwmon_show_temp(struct device *dev,
 				      struct device_attribute *attr,
@@ -975,13 +1413,18 @@ static ssize_t amdgpu_hwmon_show_temp(struct device *dev,
 {
 	struct amdgpu_device *adev = dev_get_drvdata(dev);
 	struct drm_device *ddev = adev->ddev;
+<<<<<<< HEAD
 	int r, temp, size = sizeof(temp);
+=======
+	int temp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Can't get temperature when the card is off */
 	if  ((adev->flags & AMD_IS_PX) &&
 	     (ddev->switch_power_state != DRM_SWITCH_POWER_ON))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* sanity check PP is enabled */
 	if (!(adev->powerplay.pp_funcs &&
 	      adev->powerplay.pp_funcs->read_sensor))
@@ -992,6 +1435,12 @@ static ssize_t amdgpu_hwmon_show_temp(struct device *dev,
 				   (void *)&temp, &size);
 	if (r)
 		return r;
+=======
+	if (!adev->pp_enabled && !adev->pm.funcs->get_temperature)
+		temp = 0;
+	else
+		temp = amdgpu_dpm_get_temperature(adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return snprintf(buf, PAGE_SIZE, "%d\n", temp);
 }
@@ -1019,7 +1468,11 @@ static ssize_t amdgpu_hwmon_get_pwm1_enable(struct device *dev,
 	struct amdgpu_device *adev = dev_get_drvdata(dev);
 	u32 pwm_mode = 0;
 
+<<<<<<< HEAD
 	if (!adev->powerplay.pp_funcs->get_fan_control_mode)
+=======
+	if (!adev->pp_enabled && !adev->pm.funcs->get_fan_control_mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	pwm_mode = amdgpu_dpm_get_fan_control_mode(adev);
@@ -1036,12 +1489,16 @@ static ssize_t amdgpu_hwmon_set_pwm1_enable(struct device *dev,
 	int err;
 	int value;
 
+<<<<<<< HEAD
 	/* Can't adjust fan when the card is off */
 	if  ((adev->flags & AMD_IS_PX) &&
 	     (adev->ddev->switch_power_state != DRM_SWITCH_POWER_ON))
 		return -EINVAL;
 
 	if (!adev->powerplay.pp_funcs->set_fan_control_mode)
+=======
+	if (!adev->pp_enabled && !adev->pm.funcs->set_fan_control_mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	err = kstrtoint(buf, 10, &value);
@@ -1075,22 +1532,31 @@ static ssize_t amdgpu_hwmon_set_pwm1(struct device *dev,
 	int err;
 	u32 value;
 
+<<<<<<< HEAD
 	/* Can't adjust fan when the card is off */
 	if  ((adev->flags & AMD_IS_PX) &&
 	     (adev->ddev->switch_power_state != DRM_SWITCH_POWER_ON))
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = kstrtou32(buf, 10, &value);
 	if (err)
 		return err;
 
 	value = (value * 100) / 255;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->set_fan_speed_percent) {
 		err = amdgpu_dpm_set_fan_speed_percent(adev, value);
 		if (err)
 			return err;
 	}
+=======
+	err = amdgpu_dpm_set_fan_speed_percent(adev, value);
+	if (err)
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
@@ -1101,6 +1567,7 @@ static ssize_t amdgpu_hwmon_get_pwm1(struct device *dev,
 {
 	struct amdgpu_device *adev = dev_get_drvdata(dev);
 	int err;
+<<<<<<< HEAD
 	u32 speed = 0;
 
 	/* Can't adjust fan when the card is off */
@@ -1113,6 +1580,13 @@ static ssize_t amdgpu_hwmon_get_pwm1(struct device *dev,
 		if (err)
 			return err;
 	}
+=======
+	u32 speed;
+
+	err = amdgpu_dpm_get_fan_speed_percent(adev, &speed);
+	if (err)
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	speed = (speed * 255) / 100;
 
@@ -1125,6 +1599,7 @@ static ssize_t amdgpu_hwmon_get_fan1_input(struct device *dev,
 {
 	struct amdgpu_device *adev = dev_get_drvdata(dev);
 	int err;
+<<<<<<< HEAD
 	u32 speed = 0;
 
 	/* Can't adjust fan when the card is off */
@@ -1366,6 +1841,17 @@ static ssize_t amdgpu_hwmon_set_power_cap(struct device *dev,
  *
  */
 
+=======
+	u32 speed;
+
+	err = amdgpu_dpm_get_fan_speed_rpm(adev, &speed);
+	if (err)
+		return err;
+
+	return sprintf(buf, "%i\n", speed);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO, amdgpu_hwmon_show_temp, NULL, 0);
 static SENSOR_DEVICE_ATTR(temp1_crit, S_IRUGO, amdgpu_hwmon_show_temp_thresh, NULL, 0);
 static SENSOR_DEVICE_ATTR(temp1_crit_hyst, S_IRUGO, amdgpu_hwmon_show_temp_thresh, NULL, 1);
@@ -1374,6 +1860,7 @@ static SENSOR_DEVICE_ATTR(pwm1_enable, S_IRUGO | S_IWUSR, amdgpu_hwmon_get_pwm1_
 static SENSOR_DEVICE_ATTR(pwm1_min, S_IRUGO, amdgpu_hwmon_get_pwm1_min, NULL, 0);
 static SENSOR_DEVICE_ATTR(pwm1_max, S_IRUGO, amdgpu_hwmon_get_pwm1_max, NULL, 0);
 static SENSOR_DEVICE_ATTR(fan1_input, S_IRUGO, amdgpu_hwmon_get_fan1_input, NULL, 0);
+<<<<<<< HEAD
 static SENSOR_DEVICE_ATTR(in0_input, S_IRUGO, amdgpu_hwmon_show_vddgfx, NULL, 0);
 static SENSOR_DEVICE_ATTR(in0_label, S_IRUGO, amdgpu_hwmon_show_vddgfx_label, NULL, 0);
 static SENSOR_DEVICE_ATTR(in1_input, S_IRUGO, amdgpu_hwmon_show_vddnb, NULL, 0);
@@ -1382,6 +1869,8 @@ static SENSOR_DEVICE_ATTR(power1_average, S_IRUGO, amdgpu_hwmon_show_power_avg, 
 static SENSOR_DEVICE_ATTR(power1_cap_max, S_IRUGO, amdgpu_hwmon_show_power_cap_max, NULL, 0);
 static SENSOR_DEVICE_ATTR(power1_cap_min, S_IRUGO, amdgpu_hwmon_show_power_cap_min, NULL, 0);
 static SENSOR_DEVICE_ATTR(power1_cap, S_IRUGO | S_IWUSR, amdgpu_hwmon_show_power_cap, amdgpu_hwmon_set_power_cap, 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *hwmon_attributes[] = {
 	&sensor_dev_attr_temp1_input.dev_attr.attr,
@@ -1392,6 +1881,7 @@ static struct attribute *hwmon_attributes[] = {
 	&sensor_dev_attr_pwm1_min.dev_attr.attr,
 	&sensor_dev_attr_pwm1_max.dev_attr.attr,
 	&sensor_dev_attr_fan1_input.dev_attr.attr,
+<<<<<<< HEAD
 	&sensor_dev_attr_in0_input.dev_attr.attr,
 	&sensor_dev_attr_in0_label.dev_attr.attr,
 	&sensor_dev_attr_in1_input.dev_attr.attr,
@@ -1400,6 +1890,8 @@ static struct attribute *hwmon_attributes[] = {
 	&sensor_dev_attr_power1_cap_max.dev_attr.attr,
 	&sensor_dev_attr_power1_cap_min.dev_attr.attr,
 	&sensor_dev_attr_power1_cap.dev_attr.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 
@@ -1410,6 +1902,7 @@ static umode_t hwmon_attributes_visible(struct kobject *kobj,
 	struct amdgpu_device *adev = dev_get_drvdata(dev);
 	umode_t effective_mode = attr->mode;
 
+<<<<<<< HEAD
 
 	/* Skip fan attributes if fan is not present */
 	if (adev->pm.no_fan && (attr == &sensor_dev_attr_pwm1.dev_attr.attr ||
@@ -1419,6 +1912,8 @@ static umode_t hwmon_attributes_visible(struct kobject *kobj,
 	    attr == &sensor_dev_attr_fan1_input.dev_attr.attr))
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Skip limit attributes if DPM is not enabled */
 	if (!adev->pm.dpm_enabled &&
 	    (attr == &sensor_dev_attr_temp1_crit.dev_attr.attr ||
@@ -1429,6 +1924,7 @@ static umode_t hwmon_attributes_visible(struct kobject *kobj,
 	     attr == &sensor_dev_attr_pwm1_min.dev_attr.attr))
 		return 0;
 
+<<<<<<< HEAD
 	/* mask fan attributes if we have no bindings for this asic to expose */
 	if ((!adev->powerplay.pp_funcs->get_fan_speed_percent &&
 	     attr == &sensor_dev_attr_pwm1.dev_attr.attr) || /* can't query fan */
@@ -1452,14 +1948,48 @@ static umode_t hwmon_attributes_visible(struct kobject *kobj,
 	/* hide max/min values if we can't both query and manage the fan */
 	if ((!adev->powerplay.pp_funcs->set_fan_speed_percent &&
 	     !adev->powerplay.pp_funcs->get_fan_speed_percent) &&
+=======
+	if (adev->pp_enabled)
+		return effective_mode;
+
+	/* Skip fan attributes if fan is not present */
+	if (adev->pm.no_fan &&
+	    (attr == &sensor_dev_attr_pwm1.dev_attr.attr ||
+	     attr == &sensor_dev_attr_pwm1_enable.dev_attr.attr ||
+	     attr == &sensor_dev_attr_pwm1_max.dev_attr.attr ||
+	     attr == &sensor_dev_attr_pwm1_min.dev_attr.attr))
+		return 0;
+
+	/* mask fan attributes if we have no bindings for this asic to expose */
+	if ((!adev->pm.funcs->get_fan_speed_percent &&
+	     attr == &sensor_dev_attr_pwm1.dev_attr.attr) || /* can't query fan */
+	    (!adev->pm.funcs->get_fan_control_mode &&
+	     attr == &sensor_dev_attr_pwm1_enable.dev_attr.attr)) /* can't query state */
+		effective_mode &= ~S_IRUGO;
+
+	if ((!adev->pm.funcs->set_fan_speed_percent &&
+	     attr == &sensor_dev_attr_pwm1.dev_attr.attr) || /* can't manage fan */
+	    (!adev->pm.funcs->set_fan_control_mode &&
+	     attr == &sensor_dev_attr_pwm1_enable.dev_attr.attr)) /* can't manage state */
+		effective_mode &= ~S_IWUSR;
+
+	/* hide max/min values if we can't both query and manage the fan */
+	if ((!adev->pm.funcs->set_fan_speed_percent &&
+	     !adev->pm.funcs->get_fan_speed_percent) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (attr == &sensor_dev_attr_pwm1_max.dev_attr.attr ||
 	     attr == &sensor_dev_attr_pwm1_min.dev_attr.attr))
 		return 0;
 
+<<<<<<< HEAD
 	/* only APUs have vddnb */
 	if (!(adev->flags & AMD_IS_APU) &&
 	    (attr == &sensor_dev_attr_in1_input.dev_attr.attr ||
 	     attr == &sensor_dev_attr_in1_label.dev_attr.attr))
+=======
+	/* requires powerplay */
+	if (attr == &sensor_dev_attr_fan1_input.dev_attr.attr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return effective_mode;
@@ -1482,15 +2012,24 @@ void amdgpu_dpm_thermal_work_handler(struct work_struct *work)
 			     pm.dpm.thermal.work);
 	/* switch to the thermal state */
 	enum amd_pm_state_type dpm_state = POWER_STATE_TYPE_INTERNAL_THERMAL;
+<<<<<<< HEAD
 	int temp, size = sizeof(temp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!adev->pm.dpm_enabled)
 		return;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs &&
 	    adev->powerplay.pp_funcs->read_sensor &&
 	    !amdgpu_dpm_read_sensor(adev, AMDGPU_PP_SENSOR_GPU_TEMP,
 				    (void *)&temp, &size)) {
+=======
+	if (adev->pm.funcs->get_temperature) {
+		int temp = amdgpu_dpm_get_temperature(adev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (temp < adev->pm.dpm.thermal.min_temp)
 			/* switch back the user state */
 			dpm_state = adev->pm.dpm.user_state;
@@ -1520,7 +2059,11 @@ static struct amdgpu_ps *amdgpu_dpm_pick_power_state(struct amdgpu_device *adev,
 		true : false;
 
 	/* check if the vblank period is too short to adjust the mclk */
+<<<<<<< HEAD
 	if (single_display && adev->powerplay.pp_funcs->vblank_too_short) {
+=======
+	if (single_display && adev->pm.funcs->vblank_too_short) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (amdgpu_dpm_vblank_too_short(adev))
 			single_display = false;
 	}
@@ -1649,7 +2192,11 @@ static void amdgpu_dpm_change_power_state_locked(struct amdgpu_device *adev)
 	struct amdgpu_ps *ps;
 	enum amd_pm_state_type dpm_state;
 	int ret;
+<<<<<<< HEAD
 	bool equal = false;
+=======
+	bool equal;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* if dpm init failed */
 	if (!adev->pm.dpm_enabled)
@@ -1669,7 +2216,11 @@ static void amdgpu_dpm_change_power_state_locked(struct amdgpu_device *adev)
 	else
 		return;
 
+<<<<<<< HEAD
 	if (amdgpu_dpm == 1 && adev->powerplay.pp_funcs->print_power_state) {
+=======
+	if (amdgpu_dpm == 1) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk("switching from power state:\n");
 		amdgpu_dpm_print_power_state(adev, adev->pm.dpm.current_ps);
 		printk("switching to power state:\n");
@@ -1678,17 +2229,27 @@ static void amdgpu_dpm_change_power_state_locked(struct amdgpu_device *adev)
 
 	/* update whether vce is active */
 	ps->vce_active = adev->pm.dpm.vce_active;
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->display_configuration_changed)
 		amdgpu_dpm_display_configuration_changed(adev);
+=======
+
+	amdgpu_dpm_display_configuration_changed(adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = amdgpu_dpm_pre_set_power_state(adev);
 	if (ret)
 		return;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->check_state_equal) {
 		if (0 != amdgpu_dpm_check_state_equal(adev, adev->pm.dpm.current_ps, adev->pm.dpm.requested_ps, &equal))
 			equal = false;
 	}
+=======
+	if ((0 != amgdpu_dpm_check_state_equal(adev, adev->pm.dpm.current_ps, adev->pm.dpm.requested_ps, &equal)))
+		equal = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (equal)
 		return;
@@ -1699,7 +2260,11 @@ static void amdgpu_dpm_change_power_state_locked(struct amdgpu_device *adev)
 	adev->pm.dpm.current_active_crtcs = adev->pm.dpm.new_active_crtcs;
 	adev->pm.dpm.current_active_crtc_count = adev->pm.dpm.new_active_crtc_count;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->force_performance_level) {
+=======
+	if (adev->pm.funcs->force_performance_level) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (adev->pm.dpm.thermal_active) {
 			enum amd_dpm_forced_level level = adev->pm.dpm.forced_level;
 			/* force low perf level for thermal */
@@ -1715,10 +2280,17 @@ static void amdgpu_dpm_change_power_state_locked(struct amdgpu_device *adev)
 
 void amdgpu_dpm_enable_uvd(struct amdgpu_device *adev, bool enable)
 {
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->set_powergating_by_smu) {
 		/* enable/disable UVD */
 		mutex_lock(&adev->pm.mutex);
 		amdgpu_dpm_set_powergating_by_smu(adev, AMD_IP_BLOCK_TYPE_UVD, !enable);
+=======
+	if (adev->pp_enabled || adev->pm.funcs->powergate_uvd) {
+		/* enable/disable UVD */
+		mutex_lock(&adev->pm.mutex);
+		amdgpu_dpm_powergate_uvd(adev, !enable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&adev->pm.mutex);
 	} else {
 		if (enable) {
@@ -1737,10 +2309,17 @@ void amdgpu_dpm_enable_uvd(struct amdgpu_device *adev, bool enable)
 
 void amdgpu_dpm_enable_vce(struct amdgpu_device *adev, bool enable)
 {
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->set_powergating_by_smu) {
 		/* enable/disable VCE */
 		mutex_lock(&adev->pm.mutex);
 		amdgpu_dpm_set_powergating_by_smu(adev, AMD_IP_BLOCK_TYPE_VCE, !enable);
+=======
+	if (adev->pp_enabled || adev->pm.funcs->powergate_vce) {
+		/* enable/disable VCE */
+		mutex_lock(&adev->pm.mutex);
+		amdgpu_dpm_powergate_vce(adev, !enable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&adev->pm.mutex);
 	} else {
 		if (enable) {
@@ -1749,6 +2328,7 @@ void amdgpu_dpm_enable_vce(struct amdgpu_device *adev, bool enable)
 			/* XXX select vce level based on ring/task */
 			adev->pm.dpm.vce_level = AMD_VCE_LEVEL_AC_ALL;
 			mutex_unlock(&adev->pm.mutex);
+<<<<<<< HEAD
 			amdgpu_device_ip_set_clockgating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
 							       AMD_CG_STATE_UNGATE);
 			amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
@@ -1759,6 +2339,18 @@ void amdgpu_dpm_enable_vce(struct amdgpu_device *adev, bool enable)
 							       AMD_PG_STATE_GATE);
 			amdgpu_device_ip_set_clockgating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
 							       AMD_CG_STATE_GATE);
+=======
+			amdgpu_set_clockgating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
+							AMD_CG_STATE_UNGATE);
+			amdgpu_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
+							AMD_PG_STATE_UNGATE);
+			amdgpu_pm_compute_clocks(adev);
+		} else {
+			amdgpu_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
+							AMD_PG_STATE_GATE);
+			amdgpu_set_clockgating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
+							AMD_CG_STATE_GATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mutex_lock(&adev->pm.mutex);
 			adev->pm.dpm.vce_active = false;
 			mutex_unlock(&adev->pm.mutex);
@@ -1772,7 +2364,12 @@ void amdgpu_pm_print_power_states(struct amdgpu_device *adev)
 {
 	int i;
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->print_power_state == NULL)
+=======
+	if (adev->pp_enabled)
+		/* TO DO */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	for (i = 0; i < adev->pm.dpm.num_ps; i++)
@@ -1787,8 +2384,15 @@ int amdgpu_pm_sysfs_init(struct amdgpu_device *adev)
 	if (adev->pm.sysfs_initialized)
 		return 0;
 
+<<<<<<< HEAD
 	if (adev->pm.dpm_enabled == 0)
 		return 0;
+=======
+	if (!adev->pp_enabled) {
+		if (adev->pm.funcs->get_temperature == NULL)
+			return 0;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adev->pm.int_hwmon_dev = hwmon_device_register_with_groups(adev->dev,
 								   DRIVER_NAME, adev,
@@ -1811,6 +2415,7 @@ int amdgpu_pm_sysfs_init(struct amdgpu_device *adev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 
 	ret = device_create_file(adev->dev, &dev_attr_pp_num_states);
 	if (ret) {
@@ -1831,6 +2436,29 @@ int amdgpu_pm_sysfs_init(struct amdgpu_device *adev)
 	if (ret) {
 		DRM_ERROR("failed to create device file pp_table\n");
 		return ret;
+=======
+	if (adev->pp_enabled) {
+		ret = device_create_file(adev->dev, &dev_attr_pp_num_states);
+		if (ret) {
+			DRM_ERROR("failed to create device file pp_num_states\n");
+			return ret;
+		}
+		ret = device_create_file(adev->dev, &dev_attr_pp_cur_state);
+		if (ret) {
+			DRM_ERROR("failed to create device file pp_cur_state\n");
+			return ret;
+		}
+		ret = device_create_file(adev->dev, &dev_attr_pp_force_state);
+		if (ret) {
+			DRM_ERROR("failed to create device file pp_force_state\n");
+			return ret;
+		}
+		ret = device_create_file(adev->dev, &dev_attr_pp_table);
+		if (ret) {
+			DRM_ERROR("failed to create device file pp_table\n");
+			return ret;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = device_create_file(adev->dev, &dev_attr_pp_dpm_sclk);
@@ -1859,6 +2487,7 @@ int amdgpu_pm_sysfs_init(struct amdgpu_device *adev)
 		return ret;
 	}
 	ret = device_create_file(adev->dev,
+<<<<<<< HEAD
 			&dev_attr_pp_power_profile_mode);
 	if (ret) {
 		DRM_ERROR("failed to create device file	"
@@ -1879,6 +2508,22 @@ int amdgpu_pm_sysfs_init(struct amdgpu_device *adev)
 				"gpu_busy_level\n");
 		return ret;
 	}
+=======
+			&dev_attr_pp_gfx_power_profile);
+	if (ret) {
+		DRM_ERROR("failed to create device file	"
+				"pp_gfx_power_profile\n");
+		return ret;
+	}
+	ret = device_create_file(adev->dev,
+			&dev_attr_pp_compute_power_profile);
+	if (ret) {
+		DRM_ERROR("failed to create device file	"
+				"pp_compute_power_profile\n");
+		return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = amdgpu_debugfs_pm_init(adev);
 	if (ret) {
 		DRM_ERROR("Failed to register debugfs file for dpm!\n");
@@ -1892,33 +2537,57 @@ int amdgpu_pm_sysfs_init(struct amdgpu_device *adev)
 
 void amdgpu_pm_sysfs_fini(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	if (adev->pm.dpm_enabled == 0)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (adev->pm.int_hwmon_dev)
 		hwmon_device_unregister(adev->pm.int_hwmon_dev);
 	device_remove_file(adev->dev, &dev_attr_power_dpm_state);
 	device_remove_file(adev->dev, &dev_attr_power_dpm_force_performance_level);
+<<<<<<< HEAD
 
 	device_remove_file(adev->dev, &dev_attr_pp_num_states);
 	device_remove_file(adev->dev, &dev_attr_pp_cur_state);
 	device_remove_file(adev->dev, &dev_attr_pp_force_state);
 	device_remove_file(adev->dev, &dev_attr_pp_table);
 
+=======
+	if (adev->pp_enabled) {
+		device_remove_file(adev->dev, &dev_attr_pp_num_states);
+		device_remove_file(adev->dev, &dev_attr_pp_cur_state);
+		device_remove_file(adev->dev, &dev_attr_pp_force_state);
+		device_remove_file(adev->dev, &dev_attr_pp_table);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_remove_file(adev->dev, &dev_attr_pp_dpm_sclk);
 	device_remove_file(adev->dev, &dev_attr_pp_dpm_mclk);
 	device_remove_file(adev->dev, &dev_attr_pp_dpm_pcie);
 	device_remove_file(adev->dev, &dev_attr_pp_sclk_od);
 	device_remove_file(adev->dev, &dev_attr_pp_mclk_od);
 	device_remove_file(adev->dev,
+<<<<<<< HEAD
 			&dev_attr_pp_power_profile_mode);
 	device_remove_file(adev->dev,
 			&dev_attr_pp_od_clk_voltage);
 	device_remove_file(adev->dev, &dev_attr_gpu_busy_percent);
+=======
+			&dev_attr_pp_gfx_power_profile);
+	device_remove_file(adev->dev,
+			&dev_attr_pp_compute_power_profile);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void amdgpu_pm_compute_clocks(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
+=======
+	struct drm_device *ddev = adev->ddev;
+	struct drm_crtc *crtc;
+	struct amdgpu_crtc *amdgpu_crtc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i = 0;
 
 	if (!adev->pm.dpm_enabled)
@@ -1933,6 +2602,7 @@ void amdgpu_pm_compute_clocks(struct amdgpu_device *adev)
 			amdgpu_fence_wait_empty(ring);
 	}
 
+<<<<<<< HEAD
 	if (adev->powerplay.pp_funcs->dispatch_tasks) {
 		if (!amdgpu_device_has_dc_support(adev)) {
 			mutex_lock(&adev->pm.mutex);
@@ -1954,6 +2624,32 @@ void amdgpu_pm_compute_clocks(struct amdgpu_device *adev)
 		mutex_lock(&adev->pm.mutex);
 		amdgpu_dpm_get_active_displays(adev);
 		amdgpu_dpm_change_power_state_locked(adev);
+=======
+	if (adev->pp_enabled) {
+		amdgpu_dpm_dispatch_task(adev, AMD_PP_EVENT_DISPLAY_CONFIG_CHANGE, NULL, NULL);
+	} else {
+		mutex_lock(&adev->pm.mutex);
+		adev->pm.dpm.new_active_crtcs = 0;
+		adev->pm.dpm.new_active_crtc_count = 0;
+		if (adev->mode_info.num_crtc && adev->mode_info.mode_config_initialized) {
+			list_for_each_entry(crtc,
+					    &ddev->mode_config.crtc_list, head) {
+				amdgpu_crtc = to_amdgpu_crtc(crtc);
+				if (crtc->enabled) {
+					adev->pm.dpm.new_active_crtcs |= (1 << amdgpu_crtc->crtc_id);
+					adev->pm.dpm.new_active_crtc_count++;
+				}
+			}
+		}
+		/* update battery/ac status */
+		if (power_supply_is_system_supplied() > 0)
+			adev->pm.dpm.ac_power = true;
+		else
+			adev->pm.dpm.ac_power = false;
+
+		amdgpu_dpm_change_power_state_locked(adev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&adev->pm.mutex);
 	}
 }
@@ -1966,7 +2662,11 @@ void amdgpu_pm_compute_clocks(struct amdgpu_device *adev)
 static int amdgpu_debugfs_pm_info_pp(struct seq_file *m, struct amdgpu_device *adev)
 {
 	uint32_t value;
+<<<<<<< HEAD
 	uint32_t query = 0;
+=======
+	struct pp_gpu_power query = {0};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int size;
 
 	/* sanity check PP is enabled */
@@ -1981,17 +2681,34 @@ static int amdgpu_debugfs_pm_info_pp(struct seq_file *m, struct amdgpu_device *a
 		seq_printf(m, "\t%u MHz (MCLK)\n", value/100);
 	if (!amdgpu_dpm_read_sensor(adev, AMDGPU_PP_SENSOR_GFX_SCLK, (void *)&value, &size))
 		seq_printf(m, "\t%u MHz (SCLK)\n", value/100);
+<<<<<<< HEAD
 	if (!amdgpu_dpm_read_sensor(adev, AMDGPU_PP_SENSOR_STABLE_PSTATE_SCLK, (void *)&value, &size))
 		seq_printf(m, "\t%u MHz (PSTATE_SCLK)\n", value/100);
 	if (!amdgpu_dpm_read_sensor(adev, AMDGPU_PP_SENSOR_STABLE_PSTATE_MCLK, (void *)&value, &size))
 		seq_printf(m, "\t%u MHz (PSTATE_MCLK)\n", value/100);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!amdgpu_dpm_read_sensor(adev, AMDGPU_PP_SENSOR_VDDGFX, (void *)&value, &size))
 		seq_printf(m, "\t%u mV (VDDGFX)\n", value);
 	if (!amdgpu_dpm_read_sensor(adev, AMDGPU_PP_SENSOR_VDDNB, (void *)&value, &size))
 		seq_printf(m, "\t%u mV (VDDNB)\n", value);
+<<<<<<< HEAD
 	size = sizeof(uint32_t);
 	if (!amdgpu_dpm_read_sensor(adev, AMDGPU_PP_SENSOR_GPU_POWER, (void *)&query, &size))
 		seq_printf(m, "\t%u.%u W (average GPU)\n", query >> 8, query & 0xff);
+=======
+	size = sizeof(query);
+	if (!amdgpu_dpm_read_sensor(adev, AMDGPU_PP_SENSOR_GPU_POWER, (void *)&query, &size)) {
+		seq_printf(m, "\t%u.%u W (VDDC)\n", query.vddc_power >> 8,
+				query.vddc_power & 0xff);
+		seq_printf(m, "\t%u.%u W (VDDCI)\n", query.vddci_power >> 8,
+				query.vddci_power & 0xff);
+		seq_printf(m, "\t%u.%u W (max GPU)\n", query.max_gpu_power >> 8,
+				query.max_gpu_power & 0xff);
+		seq_printf(m, "\t%u.%u W (average GPU)\n", query.average_gpu_power >> 8,
+				query.average_gpu_power & 0xff);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size = sizeof(value);
 	seq_printf(m, "\n");
 
@@ -2049,7 +2766,11 @@ static int amdgpu_debugfs_pm_info(struct seq_file *m, void *data)
 	struct drm_device *ddev = adev->ddev;
 	u32 flags = 0;
 
+<<<<<<< HEAD
 	amdgpu_device_ip_get_clockgating_state(adev, &flags);
+=======
+	amdgpu_get_clockgating_state(adev, &flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "Clock Gating Flags Mask: 0x%x\n", flags);
 	amdgpu_parse_cg_state(m, flags);
 	seq_printf(m, "\n");
@@ -2061,6 +2782,7 @@ static int amdgpu_debugfs_pm_info(struct seq_file *m, void *data)
 	if  ((adev->flags & AMD_IS_PX) &&
 	     (ddev->switch_power_state != DRM_SWITCH_POWER_ON)) {
 		seq_printf(m, "PX asic powered off\n");
+<<<<<<< HEAD
 	} else if (adev->powerplay.pp_funcs->debugfs_print_current_performance_level) {
 		mutex_lock(&adev->pm.mutex);
 		if (adev->powerplay.pp_funcs->debugfs_print_current_performance_level)
@@ -2070,6 +2792,17 @@ static int amdgpu_debugfs_pm_info(struct seq_file *m, void *data)
 		mutex_unlock(&adev->pm.mutex);
 	} else {
 		return amdgpu_debugfs_pm_info_pp(m, adev);
+=======
+	} else if (adev->pp_enabled) {
+		return amdgpu_debugfs_pm_info_pp(m, adev);
+	} else {
+		mutex_lock(&adev->pm.mutex);
+		if (adev->pm.funcs->debugfs_print_current_performance_level)
+			adev->pm.funcs->debugfs_print_current_performance_level(adev, m);
+		else
+			seq_printf(m, "Debugfs support not implemented for this asic\n");
+		mutex_unlock(&adev->pm.mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;

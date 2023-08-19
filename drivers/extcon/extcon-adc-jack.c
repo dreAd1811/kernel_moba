@@ -26,7 +26,11 @@
 #include <linux/workqueue.h>
 #include <linux/iio/consumer.h>
 #include <linux/extcon/extcon-adc-jack.h>
+<<<<<<< HEAD
 #include <linux/extcon-provider.h>
+=======
+#include <linux/extcon.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct adc_jack_data - internal data for adc_jack device driver
@@ -128,7 +132,11 @@ static int adc_jack_probe(struct platform_device *pdev)
 	for (i = 0; data->adc_conditions[i].id != EXTCON_NONE; i++);
 	data->num_conditions = i;
 
+<<<<<<< HEAD
 	data->chan = iio_channel_get(&pdev->dev, pdata->consumer_channel);
+=======
+	data->chan = devm_iio_channel_get(&pdev->dev, pdata->consumer_channel);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(data->chan))
 		return PTR_ERR(data->chan);
 
@@ -144,7 +152,11 @@ static int adc_jack_probe(struct platform_device *pdev)
 		return err;
 
 	data->irq = platform_get_irq(pdev, 0);
+<<<<<<< HEAD
 	if (data->irq < 0) {
+=======
+	if (!data->irq) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pdev->dev, "platform_get_irq failed\n");
 		return -ENODEV;
 	}
@@ -170,7 +182,10 @@ static int adc_jack_remove(struct platform_device *pdev)
 
 	free_irq(data->irq, data);
 	cancel_work_sync(&data->handler.work);
+<<<<<<< HEAD
 	iio_channel_release(data->chan);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

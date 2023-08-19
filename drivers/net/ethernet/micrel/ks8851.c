@@ -28,7 +28,10 @@
 #include <linux/spi/spi.h>
 #include <linux/gpio.h>
 #include <linux/of_gpio.h>
+<<<<<<< HEAD
 #include <linux/of_net.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "ks8851.h"
 
@@ -408,14 +411,19 @@ static void ks8851_read_mac_addr(struct net_device *dev)
  * @ks: The device structure
  *
  * Get or create the initial mac address for the device and then set that
+<<<<<<< HEAD
  * into the station address register. A mac address supplied in the device
  * tree takes precedence. Otherwise, if there is an EEPROM present, then
+=======
+ * into the station address register. If there is an EEPROM present, then
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * we try that. If no valid mac address is found we use eth_random_addr()
  * to create a new one.
  */
 static void ks8851_init_mac(struct ks8851_net *ks)
 {
 	struct net_device *dev = ks->netdev;
+<<<<<<< HEAD
 	const u8 *mac_addr;
 
 	mac_addr = of_get_mac_address(ks->spidev->dev.of_node);
@@ -425,6 +433,10 @@ static void ks8851_init_mac(struct ks8851_net *ks)
 		return;
 	}
 
+=======
+
+	/* first, try reading what we've got already */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ks->rc_ccr & CCR_EEPROM) {
 		ks8851_read_mac_addr(dev);
 		if (is_valid_ether_addr(dev->dev_addr))

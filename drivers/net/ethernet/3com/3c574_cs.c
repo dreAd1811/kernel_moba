@@ -225,7 +225,11 @@ static unsigned short read_eeprom(unsigned int ioaddr, int index);
 static void tc574_wait_for_completion(struct net_device *dev, int cmd);
 
 static void tc574_reset(struct net_device *dev);
+<<<<<<< HEAD
 static void media_check(struct timer_list *t);
+=======
+static void media_check(unsigned long arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int el3_open(struct net_device *dev);
 static netdev_tx_t el3_start_xmit(struct sk_buff *skb,
 					struct net_device *dev);
@@ -377,7 +381,11 @@ static int tc574_config(struct pcmcia_device *link)
 		lp->autoselect = config & Autoselect ? 1 : 0;
 	}
 
+<<<<<<< HEAD
 	timer_setup(&lp->media, media_check, 0);
+=======
+	init_timer(&lp->media);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	{
 		int phy;
@@ -681,6 +689,11 @@ static int el3_open(struct net_device *dev)
 	netif_start_queue(dev);
 	
 	tc574_reset(dev);
+<<<<<<< HEAD
+=======
+	lp->media.function = media_check;
+	lp->media.data = (unsigned long) dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lp->media.expires = jiffies + HZ;
 	add_timer(&lp->media);
 	
@@ -857,10 +870,17 @@ static irqreturn_t el3_interrupt(int irq, void *dev_id)
 	(and as a last resort, poll the NIC for events), and to monitor
 	the MII, reporting changes in cable status.
 */
+<<<<<<< HEAD
 static void media_check(struct timer_list *t)
 {
 	struct el3_private *lp = from_timer(lp, t, media);
 	struct net_device *dev = lp->p_dev->priv;
+=======
+static void media_check(unsigned long arg)
+{
+	struct net_device *dev = (struct net_device *) arg;
+	struct el3_private *lp = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int ioaddr = dev->base_addr;
 	unsigned long flags;
 	unsigned short /* cable, */ media, partner;
@@ -1046,7 +1066,10 @@ static int el3_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 	switch(cmd) {
 	case SIOCGMIIPHY:		/* Get the address of the PHY in use. */
 		data->phy_id = phy;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case SIOCGMIIREG:		/* Read the specified MII register. */
 		{
 			int saved_window;

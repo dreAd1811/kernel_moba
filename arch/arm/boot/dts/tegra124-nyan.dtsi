@@ -13,6 +13,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	/*
 	 * Note that recent version of the device tree compiler (starting with
 	 * version 1.4.2) warn about this node containing a reg property, but
@@ -32,6 +33,12 @@
 
 	/delete-node/ memory@80000000;
 
+=======
+	memory {
+		reg = <0x0 0x80000000 0x0 0x80000000>;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host1x@50000000 {
 		hdmi@54280000 {
 			status = "okay";

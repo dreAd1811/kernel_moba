@@ -355,7 +355,10 @@ acpi_evaluate_reference(acpi_handle handle,
 	}
 
 	if (package->package.count > ACPI_MAX_HANDLES) {
+<<<<<<< HEAD
 		kfree(package);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return AE_NO_MEMORY;
 	}
 	list->count = package->package.count;
@@ -737,17 +740,28 @@ bool acpi_dev_found(const char *hid)
 }
 EXPORT_SYMBOL(acpi_dev_found);
 
+<<<<<<< HEAD
 struct acpi_dev_match_info {
 	const char *dev_name;
+=======
+struct acpi_dev_present_info {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct acpi_device_id hid[2];
 	const char *uid;
 	s64 hrv;
 };
 
+<<<<<<< HEAD
 static int acpi_dev_match_cb(struct device *dev, void *data)
 {
 	struct acpi_device *adev = to_acpi_device(dev);
 	struct acpi_dev_match_info *match = data;
+=======
+static int acpi_dev_present_cb(struct device *dev, void *data)
+{
+	struct acpi_device *adev = to_acpi_device(dev);
+	struct acpi_dev_present_info *match = data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long long hrv;
 	acpi_status status;
 
@@ -758,8 +772,11 @@ static int acpi_dev_match_cb(struct device *dev, void *data)
 	    strcmp(adev->pnp.unique_id, match->uid)))
 		return 0;
 
+<<<<<<< HEAD
 	match->dev_name = acpi_dev_name(adev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (match->hrv == -1)
 		return 1;
 
@@ -792,19 +809,30 @@ static int acpi_dev_match_cb(struct device *dev, void *data)
  */
 bool acpi_dev_present(const char *hid, const char *uid, s64 hrv)
 {
+<<<<<<< HEAD
 	struct acpi_dev_match_info match = {};
+=======
+	struct acpi_dev_present_info match = {};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev;
 
 	strlcpy(match.hid[0].id, hid, sizeof(match.hid[0].id));
 	match.uid = uid;
 	match.hrv = hrv;
 
+<<<<<<< HEAD
 	dev = bus_find_device(&acpi_bus_type, NULL, &match, acpi_dev_match_cb);
 	put_device(dev);
+=======
+	dev = bus_find_device(&acpi_bus_type, NULL, &match,
+			      acpi_dev_present_cb);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return !!dev;
 }
 EXPORT_SYMBOL(acpi_dev_present);
 
+<<<<<<< HEAD
 /**
  * acpi_dev_get_first_match_name - Return name of first match of ACPI device
  * @hid: Hardware ID of the device.
@@ -831,6 +859,8 @@ acpi_dev_get_first_match_name(const char *hid, const char *uid, s64 hrv)
 }
 EXPORT_SYMBOL(acpi_dev_get_first_match_name);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * acpi_backlight= handling, this is done here rather then in video_detect.c
  * because __setup cannot be used in modules.

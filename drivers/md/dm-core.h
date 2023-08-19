@@ -31,9 +31,12 @@ struct dm_kobject_holder {
 struct mapped_device {
 	struct mutex suspend_lock;
 
+<<<<<<< HEAD
 	struct mutex table_devices_lock;
 	struct list_head table_devices;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The current mapping (struct dm_table *).
 	 * Use dm_get_live_table{_fast} or take suspend_lock for
@@ -41,6 +44,7 @@ struct mapped_device {
 	 */
 	void __rcu *map;
 
+<<<<<<< HEAD
 	unsigned long flags;
 
 	/* Protect queue and type against concurrent access. */
@@ -49,6 +53,19 @@ struct mapped_device {
 
 	int numa_node_id;
 	struct request_queue *queue;
+=======
+	struct list_head table_devices;
+	struct mutex table_devices_lock;
+
+	unsigned long flags;
+
+	struct request_queue *queue;
+	int numa_node_id;
+
+	enum dm_queue_mode type;
+	/* Protect queue and type against concurrent access. */
+	struct mutex type_lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_t holders;
 	atomic_t open_count;
@@ -56,13 +73,22 @@ struct mapped_device {
 	struct dm_target *immutable_target;
 	struct target_type *immutable_target_type;
 
+<<<<<<< HEAD
 	char name[16];
 	struct gendisk *disk;
 	struct dax_device *dax_dev;
+=======
+	struct gendisk *disk;
+	struct dax_device *dax_dev;
+	char name[16];
+
+	void *interface_ptr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * A list of ios that arrived while we were suspended.
 	 */
+<<<<<<< HEAD
 	struct work_struct work;
 	wait_queue_head_t wait;
 	atomic_t pending[2];
@@ -71,6 +97,14 @@ struct mapped_device {
 
 	void *interface_ptr;
 
+=======
+	atomic_t pending[2];
+	wait_queue_head_t wait;
+	struct work_struct work;
+	spinlock_t deferred_lock;
+	struct bio_list deferred;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Event handling.
 	 */
@@ -84,17 +118,30 @@ struct mapped_device {
 	unsigned internal_suspend_count;
 
 	/*
+<<<<<<< HEAD
 	 * io objects are allocated from here.
 	 */
 	struct bio_set io_bs;
 	struct bio_set bs;
 
 	/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * Processing queue (flush)
 	 */
 	struct workqueue_struct *wq;
 
 	/*
+<<<<<<< HEAD
+=======
+	 * io objects are allocated from here.
+	 */
+	mempool_t *io_pool;
+
+	struct bio_set *bs;
+
+	/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * freeze/thaw support require holding onto a super block
 	 */
 	struct super_block *frozen_sb;
@@ -102,11 +149,19 @@ struct mapped_device {
 	/* forced geometry settings */
 	struct hd_geometry geometry;
 
+<<<<<<< HEAD
 	/* kobject and completion */
 	struct dm_kobject_holder kobj_holder;
 
 	struct block_device *bdev;
 
+=======
+	struct block_device *bdev;
+
+	/* kobject and completion */
+	struct dm_kobject_holder kobj_holder;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* zero-length flush that will be cloned and submitted to targets */
 	struct bio flush_bio;
 
@@ -129,8 +184,14 @@ struct mapped_device {
 	struct srcu_struct io_barrier;
 };
 
+<<<<<<< HEAD
 int md_in_flight(struct mapped_device *md);
 void disable_discard(struct mapped_device *md);
+=======
+void dm_init_md_queue(struct mapped_device *md);
+void dm_init_normal_md_queue(struct mapped_device *md);
+int md_in_flight(struct mapped_device *md);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void disable_write_same(struct mapped_device *md);
 void disable_write_zeroes(struct mapped_device *md);
 

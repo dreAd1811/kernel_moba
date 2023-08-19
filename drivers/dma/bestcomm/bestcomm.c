@@ -87,8 +87,12 @@ bcom_task_alloc(int bd_count, int bd_size, int priv_size)
 
 	/* Init the BDs, if needed */
 	if (bd_count) {
+<<<<<<< HEAD
 		tsk->cookie = kmalloc_array(bd_count, sizeof(void *),
 					    GFP_KERNEL);
+=======
+		tsk->cookie = kmalloc(sizeof(void*) * bd_count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!tsk->cookie)
 			goto error;
 

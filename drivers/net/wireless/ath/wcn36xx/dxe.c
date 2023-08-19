@@ -27,6 +27,18 @@
 #include "wcn36xx.h"
 #include "txrx.h"
 
+<<<<<<< HEAD
+=======
+void *wcn36xx_dxe_get_next_bd(struct wcn36xx *wcn, bool is_low)
+{
+	struct wcn36xx_dxe_ch *ch = is_low ?
+		&wcn->dxe_tx_l_ch :
+		&wcn->dxe_tx_h_ch;
+
+	return ch->head_blk_ctl->bd_cpu_addr;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void wcn36xx_ccu_write_register(struct wcn36xx *wcn, int addr, int data)
 {
 	wcn36xx_dbg(WCN36XX_DBG_DXE,
@@ -78,6 +90,10 @@ static int wcn36xx_dxe_allocate_ctl_block(struct wcn36xx_dxe_ch *ch)
 		if (!cur_ctl)
 			goto out_fail;
 
+<<<<<<< HEAD
+=======
+		spin_lock_init(&cur_ctl->skb_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cur_ctl->ctl_blk_order = i;
 		if (i == 0) {
 			ch->head_blk_ctl = cur_ctl;
@@ -226,6 +242,7 @@ static int wcn36xx_dxe_init_descs(struct device *dev, struct wcn36xx_dxe_ch *wcn
 	return 0;
 }
 
+<<<<<<< HEAD
 static void wcn36xx_dxe_deinit_descs(struct device *dev, struct wcn36xx_dxe_ch *wcn_ch)
 {
 	size_t size;
@@ -234,6 +251,8 @@ static void wcn36xx_dxe_deinit_descs(struct device *dev, struct wcn36xx_dxe_ch *
 	dma_free_coherent(dev, size,wcn_ch->cpu_addr, wcn_ch->dma_addr);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void wcn36xx_dxe_init_tx_bd(struct wcn36xx_dxe_ch *ch,
 				   struct wcn36xx_dxe_mem_pool *pool)
 {
@@ -274,14 +293,22 @@ static int wcn36xx_dxe_enable_ch_int(struct wcn36xx *wcn, u16 wcn_ch)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int wcn36xx_dxe_fill_skb(struct device *dev,
 				struct wcn36xx_dxe_ctl *ctl,
 				gfp_t gfp)
+=======
+static int wcn36xx_dxe_fill_skb(struct device *dev, struct wcn36xx_dxe_ctl *ctl)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wcn36xx_dxe_desc *dxe = ctl->desc;
 	struct sk_buff *skb;
 
+<<<<<<< HEAD
 	skb = alloc_skb(WCN36XX_PKT_SIZE, gfp);
+=======
+	skb = alloc_skb(WCN36XX_PKT_SIZE, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (skb == NULL)
 		return -ENOMEM;
 
@@ -308,7 +335,11 @@ static int wcn36xx_dxe_ch_alloc_skb(struct wcn36xx *wcn,
 	cur_ctl = wcn_ch->head_blk_ctl;
 
 	for (i = 0; i < wcn_ch->desc_num; i++) {
+<<<<<<< HEAD
 		wcn36xx_dxe_fill_skb(wcn->dev, cur_ctl, GFP_KERNEL);
+=======
+		wcn36xx_dxe_fill_skb(wcn->dev, cur_ctl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cur_ctl = cur_ctl->next;
 	}
 
@@ -368,11 +399,17 @@ static void reap_tx_dxes(struct wcn36xx *wcn, struct wcn36xx_dxe_ch *ch)
 	spin_lock_irqsave(&ch->lock, flags);
 	ctl = ch->tail_blk_ctl;
 	do {
+<<<<<<< HEAD
 		if (READ_ONCE(ctl->desc->ctrl) & WCN36xx_DXE_CTRL_VLD)
 			break;
 
 		if (ctl->skb &&
 		    READ_ONCE(ctl->desc->ctrl) & WCN36xx_DXE_CTRL_EOP) {
+=======
+		if (ctl->desc->ctrl & WCN36XX_DXE_CTRL_VALID_MASK)
+			break;
+		if (ctl->skb) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dma_unmap_single(wcn->dev, ctl->desc->src_addr_l,
 					 ctl->skb->len, DMA_TO_DEVICE);
 			info = IEEE80211_SKB_CB(ctl->skb);
@@ -380,16 +417,29 @@ static void reap_tx_dxes(struct wcn36xx *wcn, struct wcn36xx_dxe_ch *ch)
 				/* Keep frame until TX status comes */
 				ieee80211_free_txskb(wcn->hw, ctl->skb);
 			}
+<<<<<<< HEAD
 
+=======
+			spin_lock(&ctl->skb_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (wcn->queues_stopped) {
 				wcn->queues_stopped = false;
 				ieee80211_wake_queues(wcn->hw);
 			}
+<<<<<<< HEAD
+=======
+			spin_unlock(&ctl->skb_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			ctl->skb = NULL;
 		}
 		ctl = ctl->next;
+<<<<<<< HEAD
 	} while (ctl != ch->head_blk_ctl);
+=======
+	} while (ctl != ch->head_blk_ctl &&
+	       !(ctl->desc->ctrl & WCN36XX_DXE_CTRL_VALID_MASK));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ch->tail_blk_ctl = ctl;
 	spin_unlock_irqrestore(&ch->lock, flags);
@@ -407,10 +457,16 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
 					  WCN36XX_DXE_CH_STATUS_REG_ADDR_TX_H,
 					  &int_reason);
 
+<<<<<<< HEAD
+=======
+		/* TODO: Check int_reason */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wcn36xx_dxe_write_register(wcn,
 					   WCN36XX_DXE_0_INT_CLR,
 					   WCN36XX_INT_MASK_CHAN_TX_H);
 
+<<<<<<< HEAD
 		if (int_reason & WCN36XX_CH_STAT_INT_ERR_MASK ) {
 			wcn36xx_dxe_write_register(wcn,
 						   WCN36XX_DXE_0_INT_ERR_CLR,
@@ -438,17 +494,28 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
 		if (int_reason & (WCN36XX_CH_STAT_INT_DONE_MASK |
 				  WCN36XX_CH_STAT_INT_ED_MASK))
 			reap_tx_dxes(wcn, &wcn->dxe_tx_h_ch);
+=======
+		wcn36xx_dxe_write_register(wcn, WCN36XX_DXE_0_INT_ED_CLR,
+					   WCN36XX_INT_MASK_CHAN_TX_H);
+		wcn36xx_dbg(WCN36XX_DBG_DXE, "dxe tx ready high\n");
+		reap_tx_dxes(wcn, &wcn->dxe_tx_h_ch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (int_src & WCN36XX_INT_MASK_CHAN_TX_L) {
 		wcn36xx_dxe_read_register(wcn,
 					  WCN36XX_DXE_CH_STATUS_REG_ADDR_TX_L,
 					  &int_reason);
+<<<<<<< HEAD
+=======
+		/* TODO: Check int_reason */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		wcn36xx_dxe_write_register(wcn,
 					   WCN36XX_DXE_0_INT_CLR,
 					   WCN36XX_INT_MASK_CHAN_TX_L);
 
+<<<<<<< HEAD
 
 		if (int_reason & WCN36XX_CH_STAT_INT_ERR_MASK ) {
 			wcn36xx_dxe_write_register(wcn,
@@ -477,6 +544,12 @@ static irqreturn_t wcn36xx_irq_tx_complete(int irq, void *dev)
 		if (int_reason & (WCN36XX_CH_STAT_INT_DONE_MASK |
 				  WCN36XX_CH_STAT_INT_ED_MASK))
 			reap_tx_dxes(wcn, &wcn->dxe_tx_l_ch);
+=======
+		wcn36xx_dxe_write_register(wcn, WCN36XX_DXE_0_INT_ED_CLR,
+					   WCN36XX_INT_MASK_CHAN_TX_L);
+		wcn36xx_dbg(WCN36XX_DBG_DXE, "dxe tx ready low\n");
+		reap_tx_dxes(wcn, &wcn->dxe_tx_l_ch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return IRQ_HANDLED;
@@ -486,8 +559,14 @@ static irqreturn_t wcn36xx_irq_rx_ready(int irq, void *dev)
 {
 	struct wcn36xx *wcn = (struct wcn36xx *)dev;
 
+<<<<<<< HEAD
 	wcn36xx_dxe_rx_frame(wcn);
 
+=======
+	disable_irq_nosync(wcn->rx_irq);
+	wcn36xx_dxe_rx_frame(wcn);
+	enable_irq(wcn->rx_irq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return IRQ_HANDLED;
 }
 
@@ -521,6 +600,7 @@ out_err:
 }
 
 static int wcn36xx_rx_handle_packets(struct wcn36xx *wcn,
+<<<<<<< HEAD
 				     struct wcn36xx_dxe_ch *ch,
 				     u32 ctrl,
 				     u32 en_mask,
@@ -568,6 +648,29 @@ static int wcn36xx_rx_handle_packets(struct wcn36xx *wcn,
 		skb = ctl->skb;
 		dma_addr = dxe->dst_addr_l;
 		ret = wcn36xx_dxe_fill_skb(wcn->dev, ctl, GFP_ATOMIC);
+=======
+				     struct wcn36xx_dxe_ch *ch)
+{
+	struct wcn36xx_dxe_ctl *ctl = ch->head_blk_ctl;
+	struct wcn36xx_dxe_desc *dxe = ctl->desc;
+	dma_addr_t  dma_addr;
+	struct sk_buff *skb;
+	int ret = 0, int_mask;
+	u32 value;
+
+	if (ch->ch_type == WCN36XX_DXE_CH_RX_L) {
+		value = WCN36XX_DXE_CTRL_RX_L;
+		int_mask = WCN36XX_DXE_INT_CH1_MASK;
+	} else {
+		value = WCN36XX_DXE_CTRL_RX_H;
+		int_mask = WCN36XX_DXE_INT_CH3_MASK;
+	}
+
+	while (!(dxe->ctrl & WCN36XX_DXE_CTRL_VALID_MASK)) {
+		skb = ctl->skb;
+		dma_addr = dxe->dst_addr_l;
+		ret = wcn36xx_dxe_fill_skb(wcn->dev, ctl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (0 == ret) {
 			/* new skb allocation ok. Use the new one and queue
 			 * the old one to network system.
@@ -577,6 +680,7 @@ static int wcn36xx_rx_handle_packets(struct wcn36xx *wcn,
 			wcn36xx_rx_skb(wcn, skb);
 		} /* else keep old skb not submitted and use it for rx DMA */
 
+<<<<<<< HEAD
 		dxe->ctrl = ctrl;
 		ctl = ctl->next;
 		dxe = ctl->desc;
@@ -587,6 +691,15 @@ static int wcn36xx_rx_handle_packets(struct wcn36xx *wcn,
 
 	spin_unlock(&ch->lock);
 
+=======
+		dxe->ctrl = value;
+		ctl = ctl->next;
+		dxe = ctl->desc;
+	}
+	wcn36xx_dxe_write_register(wcn, WCN36XX_DXE_ENCH_ADDR, int_mask);
+
+	ch->head_blk_ctl = ctl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -597,6 +710,7 @@ void wcn36xx_dxe_rx_frame(struct wcn36xx *wcn)
 	wcn36xx_dxe_read_register(wcn, WCN36XX_DXE_INT_SRC_RAW_REG, &int_src);
 
 	/* RX_LOW_PRI */
+<<<<<<< HEAD
 	if (int_src & WCN36XX_DXE_INT_CH1_MASK)
 		wcn36xx_rx_handle_packets(wcn, &wcn->dxe_rx_l_ch,
 					  WCN36XX_DXE_CTRL_RX_L,
@@ -611,6 +725,21 @@ void wcn36xx_dxe_rx_frame(struct wcn36xx *wcn)
 					  WCN36XX_DXE_INT_CH3_MASK,
 					  WCN36XX_INT_MASK_CHAN_RX_H,
 					  WCN36XX_DXE_CH_STATUS_REG_ADDR_RX_H);
+=======
+	if (int_src & WCN36XX_DXE_INT_CH1_MASK) {
+		wcn36xx_dxe_write_register(wcn, WCN36XX_DXE_0_INT_CLR,
+					   WCN36XX_DXE_INT_CH1_MASK);
+		wcn36xx_rx_handle_packets(wcn, &(wcn->dxe_rx_l_ch));
+	}
+
+	/* RX_HIGH_PRI */
+	if (int_src & WCN36XX_DXE_INT_CH3_MASK) {
+		/* Clean up all the INT within this channel */
+		wcn36xx_dxe_write_register(wcn, WCN36XX_DXE_0_INT_CLR,
+					   WCN36XX_DXE_INT_CH3_MASK);
+		wcn36xx_rx_handle_packets(wcn, &(wcn->dxe_rx_h_ch));
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!int_src)
 		wcn36xx_warn("No DXE interrupt pending\n");
@@ -677,12 +806,20 @@ void wcn36xx_dxe_free_mem_pools(struct wcn36xx *wcn)
 
 int wcn36xx_dxe_tx_frame(struct wcn36xx *wcn,
 			 struct wcn36xx_vif *vif_priv,
+<<<<<<< HEAD
 			 struct wcn36xx_tx_bd *bd,
 			 struct sk_buff *skb,
 			 bool is_low)
 {
 	struct wcn36xx_dxe_desc *desc_bd, *desc_skb;
 	struct wcn36xx_dxe_ctl *ctl_bd, *ctl_skb;
+=======
+			 struct sk_buff *skb,
+			 bool is_low)
+{
+	struct wcn36xx_dxe_ctl *ctl = NULL;
+	struct wcn36xx_dxe_desc *desc = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct wcn36xx_dxe_ch *ch = NULL;
 	unsigned long flags;
 	int ret;
@@ -690,14 +827,21 @@ int wcn36xx_dxe_tx_frame(struct wcn36xx *wcn,
 	ch = is_low ? &wcn->dxe_tx_l_ch : &wcn->dxe_tx_h_ch;
 
 	spin_lock_irqsave(&ch->lock, flags);
+<<<<<<< HEAD
 	ctl_bd = ch->head_blk_ctl;
 	ctl_skb = ctl_bd->next;
+=======
+	ctl = ch->head_blk_ctl;
+
+	spin_lock(&ctl->next->skb_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If skb is not null that means that we reached the tail of the ring
 	 * hence ring is full. Stop queues to let mac80211 back off until ring
 	 * has an empty slot again.
 	 */
+<<<<<<< HEAD
 	if (NULL != ctl_skb->skb) {
 		ieee80211_stop_queues(wcn->hw);
 		wcn->queues_stopped = true;
@@ -706,11 +850,46 @@ int wcn36xx_dxe_tx_frame(struct wcn36xx *wcn,
 	}
 
 	if (unlikely(ctl_skb->bd_cpu_addr)) {
+=======
+	if (NULL != ctl->next->skb) {
+		ieee80211_stop_queues(wcn->hw);
+		wcn->queues_stopped = true;
+		spin_unlock(&ctl->next->skb_lock);
+		spin_unlock_irqrestore(&ch->lock, flags);
+		return -EBUSY;
+	}
+	spin_unlock(&ctl->next->skb_lock);
+
+	ctl->skb = NULL;
+	desc = ctl->desc;
+
+	/* Set source address of the BD we send */
+	desc->src_addr_l = ctl->bd_phy_addr;
+
+	desc->dst_addr_l = ch->dxe_wq;
+	desc->fr_len = sizeof(struct wcn36xx_tx_bd);
+	desc->ctrl = ch->ctrl_bd;
+
+	wcn36xx_dbg(WCN36XX_DBG_DXE, "DXE TX\n");
+
+	wcn36xx_dbg_dump(WCN36XX_DBG_DXE_DUMP, "DESC1 >>> ",
+			 (char *)desc, sizeof(*desc));
+	wcn36xx_dbg_dump(WCN36XX_DBG_DXE_DUMP,
+			 "BD   >>> ", (char *)ctl->bd_cpu_addr,
+			 sizeof(struct wcn36xx_tx_bd));
+
+	/* Set source address of the SKB we send */
+	ctl = ctl->next;
+	ctl->skb = skb;
+	desc = ctl->desc;
+	if (ctl->bd_cpu_addr) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wcn36xx_err("bd_cpu_addr cannot be NULL for skb DXE\n");
 		ret = -EINVAL;
 		goto unlock;
 	}
 
+<<<<<<< HEAD
 	desc_bd = ctl_bd->desc;
 	desc_skb = ctl_skb->desc;
 
@@ -759,6 +938,26 @@ int wcn36xx_dxe_tx_frame(struct wcn36xx *wcn,
 	desc_skb->ctrl = ch->ctrl_skb;
 	wmb();
 	desc_bd->ctrl = ch->ctrl_bd;
+=======
+	desc->src_addr_l = dma_map_single(wcn->dev,
+					  ctl->skb->data,
+					  ctl->skb->len,
+					  DMA_TO_DEVICE);
+
+	desc->dst_addr_l = ch->dxe_wq;
+	desc->fr_len = ctl->skb->len;
+
+	/* set dxe descriptor to VALID */
+	desc->ctrl = ch->ctrl_skb;
+
+	wcn36xx_dbg_dump(WCN36XX_DBG_DXE_DUMP, "DESC2 >>> ",
+			 (char *)desc, sizeof(*desc));
+	wcn36xx_dbg_dump(WCN36XX_DBG_DXE_DUMP, "SKB   >>> ",
+			 (char *)ctl->skb->data, ctl->skb->len);
+
+	/* Move the head of the ring to the next empty descriptor */
+	 ch->head_blk_ctl = ctl->next;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * When connected and trying to send data frame chip can be in sleep
@@ -801,11 +1000,15 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
 	/***************************************/
 	/* Init descriptors for TX LOW channel */
 	/***************************************/
+<<<<<<< HEAD
 	ret = wcn36xx_dxe_init_descs(wcn->dev, &wcn->dxe_tx_l_ch);
 	if (ret) {
 		dev_err(wcn->dev, "Error allocating descriptor\n");
 		return ret;
 	}
+=======
+	wcn36xx_dxe_init_descs(wcn->dev, &wcn->dxe_tx_l_ch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wcn36xx_dxe_init_tx_bd(&wcn->dxe_tx_l_ch, &wcn->data_mem_pool);
 
 	/* Write channel head to a NEXT register */
@@ -823,12 +1026,16 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
 	/***************************************/
 	/* Init descriptors for TX HIGH channel */
 	/***************************************/
+<<<<<<< HEAD
 	ret = wcn36xx_dxe_init_descs(wcn->dev, &wcn->dxe_tx_h_ch);
 	if (ret) {
 		dev_err(wcn->dev, "Error allocating descriptor\n");
 		goto out_err_txh_ch;
 	}
 
+=======
+	wcn36xx_dxe_init_descs(wcn->dev, &wcn->dxe_tx_h_ch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wcn36xx_dxe_init_tx_bd(&wcn->dxe_tx_h_ch, &wcn->mgmt_mem_pool);
 
 	/* Write channel head to a NEXT register */
@@ -848,12 +1055,16 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
 	/***************************************/
 	/* Init descriptors for RX LOW channel */
 	/***************************************/
+<<<<<<< HEAD
 	ret = wcn36xx_dxe_init_descs(wcn->dev, &wcn->dxe_rx_l_ch);
 	if (ret) {
 		dev_err(wcn->dev, "Error allocating descriptor\n");
 		goto out_err_rxl_ch;
 	}
 
+=======
+	wcn36xx_dxe_init_descs(wcn->dev, &wcn->dxe_rx_l_ch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* For RX we need to preallocated buffers */
 	wcn36xx_dxe_ch_alloc_skb(wcn, &wcn->dxe_rx_l_ch);
@@ -883,11 +1094,15 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
 	/***************************************/
 	/* Init descriptors for RX HIGH channel */
 	/***************************************/
+<<<<<<< HEAD
 	ret = wcn36xx_dxe_init_descs(wcn->dev, &wcn->dxe_rx_h_ch);
 	if (ret) {
 		dev_err(wcn->dev, "Error allocating descriptor\n");
 		goto out_err_rxh_ch;
 	}
+=======
+	wcn36xx_dxe_init_descs(wcn->dev, &wcn->dxe_rx_h_ch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* For RX we need to prealocat buffers */
 	wcn36xx_dxe_ch_alloc_skb(wcn, &wcn->dxe_rx_h_ch);
@@ -916,6 +1131,7 @@ int wcn36xx_dxe_init(struct wcn36xx *wcn)
 
 	ret = wcn36xx_dxe_request_irqs(wcn);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto out_err_irq;
 
 	return 0;
@@ -929,6 +1145,13 @@ out_err_rxl_ch:
 out_err_txh_ch:
 	wcn36xx_dxe_deinit_descs(wcn->dev, &wcn->dxe_tx_l_ch);
 
+=======
+		goto out_err;
+
+	return 0;
+
+out_err:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

@@ -107,6 +107,10 @@ static struct skcipher_alg alg = {
 	.base.cra_priority	= 300,
 	.base.cra_blocksize	= 1,
 	.base.cra_ctxsize	= sizeof(struct chacha_ctx),
+<<<<<<< HEAD
+=======
+	.base.cra_alignmask	= sizeof(u32) - 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_module	= THIS_MODULE,
 
 	.min_keysize		= CHACHA_KEY_SIZE,

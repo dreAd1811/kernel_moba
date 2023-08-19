@@ -30,6 +30,24 @@
 #include "intel_drv.h"
 #include "i915_drv.h"
 
+<<<<<<< HEAD
+=======
+static void intel_connector_update_eld_conn_type(struct drm_connector *connector)
+{
+	u8 conn_type;
+
+	if (connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort ||
+	    connector->connector_type == DRM_MODE_CONNECTOR_eDP) {
+		conn_type = DRM_ELD_CONN_TYPE_DP;
+	} else {
+		conn_type = DRM_ELD_CONN_TYPE_HDMI;
+	}
+
+	connector->eld[DRM_ELD_SAD_COUNT_CONN_TYPE] &= ~DRM_ELD_CONN_TYPE_MASK;
+	connector->eld[DRM_ELD_SAD_COUNT_CONN_TYPE] |= conn_type;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * intel_connector_update_modes - update connector from edid
  * @connector: DRM connector device to use
@@ -40,8 +58,16 @@ int intel_connector_update_modes(struct drm_connector *connector,
 {
 	int ret;
 
+<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
 	ret = drm_add_edid_modes(connector, edid);
+=======
+	drm_mode_connector_update_edid_property(connector, edid);
+	ret = drm_add_edid_modes(connector, edid);
+	drm_edid_to_eld(connector, edid);
+
+	intel_connector_update_eld_conn_type(connector);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }

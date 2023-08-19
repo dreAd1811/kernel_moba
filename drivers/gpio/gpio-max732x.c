@@ -486,7 +486,11 @@ static irqreturn_t max732x_irq_handler(int irq, void *devid)
 
 	do {
 		level = __ffs(pending);
+<<<<<<< HEAD
 		handle_nested_irq(irq_find_mapping(chip->gpio_chip.irq.domain,
+=======
+		handle_nested_irq(irq_find_mapping(chip->gpio_chip.irqdomain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   level));
 
 		pending &= ~(1 << level);
@@ -653,12 +657,15 @@ static int max732x_probe(struct i2c_client *client,
 		chip->client_group_a = client;
 		if (nr_port > 8) {
 			c = i2c_new_dummy(client->adapter, addr_b);
+<<<<<<< HEAD
 			if (!c) {
 				dev_err(&client->dev,
 					"Failed to allocate I2C device\n");
 				ret = -ENODEV;
 				goto out_failed;
 			}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			chip->client_group_b = chip->client_dummy = c;
 		}
 		break;
@@ -666,12 +673,15 @@ static int max732x_probe(struct i2c_client *client,
 		chip->client_group_b = client;
 		if (nr_port > 8) {
 			c = i2c_new_dummy(client->adapter, addr_a);
+<<<<<<< HEAD
 			if (!c) {
 				dev_err(&client->dev,
 					"Failed to allocate I2C device\n");
 				ret = -ENODEV;
 				goto out_failed;
 			}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			chip->client_group_a = chip->client_dummy = c;
 		}
 		break;
@@ -721,7 +731,12 @@ static int max732x_probe(struct i2c_client *client,
 	return 0;
 
 out_failed:
+<<<<<<< HEAD
 	i2c_unregister_device(chip->client_dummy);
+=======
+	if (chip->client_dummy)
+		i2c_unregister_device(chip->client_dummy);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -745,7 +760,12 @@ static int max732x_remove(struct i2c_client *client)
 	gpiochip_remove(&chip->gpio_chip);
 
 	/* unregister any dummy i2c_client */
+<<<<<<< HEAD
 	i2c_unregister_device(chip->client_dummy);
+=======
+	if (chip->client_dummy)
+		i2c_unregister_device(chip->client_dummy);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

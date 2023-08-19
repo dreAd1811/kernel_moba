@@ -1,5 +1,35 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 1999 - 2018 Intel Corporation. */
+=======
+/*******************************************************************************
+
+  Intel 10 Gigabit PCI Express Linux driver
+  Copyright(c) 1999 - 2016 Intel Corporation.
+
+  This program is free software; you can redistribute it and/or modify it
+  under the terms and conditions of the GNU General Public License,
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+  more details.
+
+  You should have received a copy of the GNU General Public License along with
+  this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
+
+  The full GNU General Public License is included in this distribution in
+  the file called "COPYING".
+
+  Contact Information:
+  Linux NICS <linux.nics@intel.com>
+  e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+
+*******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/types.h>
 #include <linux/module.h>
@@ -34,7 +64,10 @@
 #include <net/tc_act/tc_mirred.h>
 #include <net/vxlan.h>
 #include <net/mpls.h>
+<<<<<<< HEAD
 #include <net/xfrm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "ixgbe.h"
 #include "ixgbe_common.h"
@@ -168,6 +201,7 @@ static struct workqueue_struct *ixgbe_wq;
 static bool ixgbe_check_cfg_remove(struct ixgbe_hw *hw, struct pci_dev *pdev);
 static void ixgbe_watchdog_link_is_down(struct ixgbe_adapter *);
 
+<<<<<<< HEAD
 static const struct net_device_ops ixgbe_netdev_ops;
 
 static bool netif_is_ixgbe(struct net_device *dev)
@@ -175,6 +209,8 @@ static bool netif_is_ixgbe(struct net_device *dev)
 	return dev && (dev->netdev_ops == &ixgbe_netdev_ops);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ixgbe_read_pci_cfg_word_parent(struct ixgbe_adapter *adapter,
 					  u32 reg, u16 *value)
 {
@@ -246,6 +282,12 @@ static void ixgbe_check_minimum_link(struct ixgbe_adapter *adapter,
 				     int expected_gts)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
+<<<<<<< HEAD
+=======
+	int max_gts = 0;
+	enum pci_bus_speed speed = PCI_SPEED_UNKNOWN;
+	enum pcie_link_width width = PCIE_LNK_WIDTH_UNKNOWN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev;
 
 	/* Some devices are not connected over PCIe and thus do not negotiate
@@ -261,7 +303,53 @@ static void ixgbe_check_minimum_link(struct ixgbe_adapter *adapter,
 	else
 		pdev = adapter->pdev;
 
+<<<<<<< HEAD
 	pcie_print_link_status(pdev);
+=======
+	if (pcie_get_minimum_link(pdev, &speed, &width) ||
+	    speed == PCI_SPEED_UNKNOWN || width == PCIE_LNK_WIDTH_UNKNOWN) {
+		e_dev_warn("Unable to determine PCI Express bandwidth.\n");
+		return;
+	}
+
+	switch (speed) {
+	case PCIE_SPEED_2_5GT:
+		/* 8b/10b encoding reduces max throughput by 20% */
+		max_gts = 2 * width;
+		break;
+	case PCIE_SPEED_5_0GT:
+		/* 8b/10b encoding reduces max throughput by 20% */
+		max_gts = 4 * width;
+		break;
+	case PCIE_SPEED_8_0GT:
+		/* 128b/130b encoding reduces throughput by less than 2% */
+		max_gts = 8 * width;
+		break;
+	default:
+		e_dev_warn("Unable to determine PCI Express bandwidth.\n");
+		return;
+	}
+
+	e_dev_info("PCI Express bandwidth of %dGT/s available\n",
+		   max_gts);
+	e_dev_info("(Speed:%s, Width: x%d, Encoding Loss:%s)\n",
+		   (speed == PCIE_SPEED_8_0GT ? "8.0GT/s" :
+		    speed == PCIE_SPEED_5_0GT ? "5.0GT/s" :
+		    speed == PCIE_SPEED_2_5GT ? "2.5GT/s" :
+		    "Unknown"),
+		   width,
+		   (speed == PCIE_SPEED_2_5GT ? "20%" :
+		    speed == PCIE_SPEED_5_0GT ? "20%" :
+		    speed == PCIE_SPEED_8_0GT ? "<2%" :
+		    "Unknown"));
+
+	if (max_gts < expected_gts) {
+		e_dev_warn("This is not sufficient for optimal performance of this card.\n");
+		e_dev_warn("For optimal performance, at least %dGT/s of bandwidth is required.\n",
+			expected_gts);
+		e_dev_warn("A slot with more lanes and/or higher speed is suggested.\n");
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ixgbe_service_event_schedule(struct ixgbe_adapter *adapter)
@@ -284,6 +372,7 @@ static void ixgbe_remove_adapter(struct ixgbe_hw *hw)
 		ixgbe_service_event_schedule(adapter);
 }
 
+<<<<<<< HEAD
 static u32 ixgbe_check_remove(struct ixgbe_hw *hw, u32 reg)
 {
 	u8 __iomem *reg_addr;
@@ -310,6 +399,25 @@ static u32 ixgbe_check_remove(struct ixgbe_hw *hw, u32 reg)
 	else
 		value = readl(reg_addr + reg);
 	return value;
+=======
+static void ixgbe_check_remove(struct ixgbe_hw *hw, u32 reg)
+{
+	u32 value;
+
+	/* The following check not only optimizes a bit by not
+	 * performing a read on the status register when the
+	 * register just read was a status register read that
+	 * returned IXGBE_FAILED_READ_REG. It also blocks any
+	 * potential recursion.
+	 */
+	if (reg == IXGBE_STATUS) {
+		ixgbe_remove_adapter(hw);
+		return;
+	}
+	value = ixgbe_read_reg(hw, IXGBE_STATUS);
+	if (value == IXGBE_FAILED_READ_REG)
+		ixgbe_remove_adapter(hw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -327,7 +435,11 @@ static u32 ixgbe_check_remove(struct ixgbe_hw *hw, u32 reg)
  */
 u32 ixgbe_read_reg(struct ixgbe_hw *hw, u32 reg)
 {
+<<<<<<< HEAD
 	u8 __iomem *reg_addr = READ_ONCE(hw->hw_addr);
+=======
+	u8 __iomem *reg_addr = ACCESS_ONCE(hw->hw_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 value;
 
 	if (ixgbe_removed(reg_addr))
@@ -355,7 +467,11 @@ u32 ixgbe_read_reg(struct ixgbe_hw *hw, u32 reg)
 writes_completed:
 	value = readl(reg_addr + reg);
 	if (unlikely(value == IXGBE_FAILED_READ_REG))
+<<<<<<< HEAD
 		value = ixgbe_check_remove(hw, reg);
+=======
+		ixgbe_check_remove(hw, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return value;
 }
 
@@ -683,8 +799,13 @@ static void ixgbe_dump(struct ixgbe_adapter *adapter)
 					ring_desc = "";
 				pr_info("T [0x%03X]    %016llX %016llX %016llX %08X %p %016llX %p%s",
 					i,
+<<<<<<< HEAD
 					le64_to_cpu((__force __le64)u0->a),
 					le64_to_cpu((__force __le64)u0->b),
+=======
+					le64_to_cpu(u0->a),
+					le64_to_cpu(u0->b),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					(u64)dma_unmap_addr(tx_buffer, dma),
 					dma_unmap_len(tx_buffer, len),
 					tx_buffer->next_to_watch,
@@ -795,15 +916,25 @@ rx_ring_summary:
 				/* Descriptor Done */
 				pr_info("RWB[0x%03X]     %016llX %016llX ---------------- %p%s\n",
 					i,
+<<<<<<< HEAD
 					le64_to_cpu((__force __le64)u0->a),
 					le64_to_cpu((__force __le64)u0->b),
+=======
+					le64_to_cpu(u0->a),
+					le64_to_cpu(u0->b),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					rx_buffer_info->skb,
 					ring_desc);
 			} else {
 				pr_info("R  [0x%03X]     %016llX %016llX %016llX %p%s\n",
 					i,
+<<<<<<< HEAD
 					le64_to_cpu((__force __le64)u0->a),
 					le64_to_cpu((__force __le64)u0->b),
+=======
+					le64_to_cpu(u0->a),
+					le64_to_cpu(u0->b),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					(u64)rx_buffer_info->dma,
 					rx_buffer_info->skb,
 					ring_desc);
@@ -1011,12 +1142,33 @@ static u64 ixgbe_get_tx_completed(struct ixgbe_ring *ring)
 
 static u64 ixgbe_get_tx_pending(struct ixgbe_ring *ring)
 {
+<<<<<<< HEAD
 	unsigned int head, tail;
 
 	head = ring->next_to_clean;
 	tail = ring->next_to_use;
 
 	return ((head <= tail) ? tail : tail + ring->count) - head;
+=======
+	struct ixgbe_adapter *adapter;
+	struct ixgbe_hw *hw;
+	u32 head, tail;
+
+	if (ring->l2_accel_priv)
+		adapter = ring->l2_accel_priv->real_adapter;
+	else
+		adapter = netdev_priv(ring->netdev);
+
+	hw = &adapter->hw;
+	head = IXGBE_READ_REG(hw, IXGBE_TDH(ring->reg_idx));
+	tail = IXGBE_READ_REG(hw, IXGBE_TDT(ring->reg_idx));
+
+	if (head != tail)
+		return (head < tail) ?
+			tail - head : (tail + ring->count - head);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool ixgbe_check_tx_hang(struct ixgbe_ring *tx_ring)
@@ -1068,9 +1220,12 @@ static void ixgbe_tx_timeout_reset(struct ixgbe_adapter *adapter)
 
 /**
  * ixgbe_tx_maxrate - callback to set the maximum per-queue bitrate
+<<<<<<< HEAD
  * @netdev: network interface device structure
  * @queue_index: Tx queue to set
  * @maxrate: desired maximum transmit bitrate
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static int ixgbe_tx_maxrate(struct net_device *netdev,
 			    int queue_index, u32 maxrate)
@@ -1111,7 +1266,11 @@ static bool ixgbe_clean_tx_irq(struct ixgbe_q_vector *q_vector,
 	struct ixgbe_adapter *adapter = q_vector->adapter;
 	struct ixgbe_tx_buffer *tx_buffer;
 	union ixgbe_adv_tx_desc *tx_desc;
+<<<<<<< HEAD
 	unsigned int total_bytes = 0, total_packets = 0, total_ipsec = 0;
+=======
+	unsigned int total_bytes = 0, total_packets = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int budget = q_vector->tx.work_limit;
 	unsigned int i = tx_ring->next_to_clean;
 
@@ -1142,12 +1301,19 @@ static bool ixgbe_clean_tx_irq(struct ixgbe_q_vector *q_vector,
 		/* update the statistics for this packet */
 		total_bytes += tx_buffer->bytecount;
 		total_packets += tx_buffer->gso_segs;
+<<<<<<< HEAD
 		if (tx_buffer->tx_flags & IXGBE_TX_FLAGS_IPSEC)
 			total_ipsec++;
 
 		/* free the skb */
 		if (ring_is_xdp(tx_ring))
 			xdp_return_frame(tx_buffer->xdpf);
+=======
+
+		/* free the skb */
+		if (ring_is_xdp(tx_ring))
+			page_frag_free(tx_buffer->data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			napi_consume_skb(tx_buffer->skb, napi_budget);
 
@@ -1206,7 +1372,10 @@ static bool ixgbe_clean_tx_irq(struct ixgbe_q_vector *q_vector,
 	u64_stats_update_end(&tx_ring->syncp);
 	q_vector->tx.total_bytes += total_bytes;
 	q_vector->tx.total_packets += total_packets;
+<<<<<<< HEAD
 	adapter->tx_ipsec += total_ipsec;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (check_for_tx_hang(tx_ring) && ixgbe_check_tx_hang(tx_ring)) {
 		/* schedule immediate reset if we believe we hung */
@@ -1560,9 +1729,13 @@ static bool ixgbe_alloc_mapped_page(struct ixgbe_ring *rx_ring,
 	bi->dma = dma;
 	bi->page = page;
 	bi->page_offset = ixgbe_rx_offset(rx_ring);
+<<<<<<< HEAD
 	page_ref_add(page, USHRT_MAX - 1);
 	bi->pagecnt_bias = USHRT_MAX;
 	rx_ring->rx_stats.alloc_rx_page++;
+=======
+	bi->pagecnt_bias = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -1696,6 +1869,7 @@ static void ixgbe_process_skb_fields(struct ixgbe_ring *rx_ring,
 		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vid);
 	}
 
+<<<<<<< HEAD
 	if (ixgbe_test_staterr(rx_desc, IXGBE_RXDADV_STAT_SECP))
 		ixgbe_ipsec_rx(rx_ring, rx_desc, skb);
 
@@ -1705,6 +1879,9 @@ static void ixgbe_process_skb_fields(struct ixgbe_ring *rx_ring,
 	else
 		macvlan_count_rx(netdev_priv(dev), skb->len + ETH_HLEN, true,
 				 false);
+=======
+	skb_record_rx_queue(skb, rx_ring->queue_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb->protocol = eth_type_trans(skb, dev);
 }
@@ -1822,6 +1999,7 @@ static void ixgbe_pull_tail(struct ixgbe_ring *rx_ring,
 static void ixgbe_dma_sync_frag(struct ixgbe_ring *rx_ring,
 				struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	/* if the page was released unmap it, else just sync our portion */
 	if (unlikely(IXGBE_CB(skb)->page_released)) {
 		dma_unmap_page_attrs(rx_ring->dev, IXGBE_CB(skb)->dma,
@@ -1829,6 +2007,9 @@ static void ixgbe_dma_sync_frag(struct ixgbe_ring *rx_ring,
 				     DMA_FROM_DEVICE,
 				     IXGBE_RX_DMA_ATTR);
 	} else if (ring_uses_build_skb(rx_ring)) {
+=======
+	if (ring_uses_build_skb(rx_ring)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long offset = (unsigned long)(skb->data) & ~PAGE_MASK;
 
 		dma_sync_single_range_for_cpu(rx_ring->dev,
@@ -1845,6 +2026,17 @@ static void ixgbe_dma_sync_frag(struct ixgbe_ring *rx_ring,
 					      skb_frag_size(frag),
 					      DMA_FROM_DEVICE);
 	}
+<<<<<<< HEAD
+=======
+
+	/* If the page was released, just unmap it. */
+	if (unlikely(IXGBE_CB(skb)->page_released)) {
+		dma_unmap_page_attrs(rx_ring->dev, IXGBE_CB(skb)->dma,
+				     ixgbe_rx_pg_size(rx_ring),
+				     DMA_FROM_DEVICE,
+				     IXGBE_RX_DMA_ATTR);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1879,6 +2071,7 @@ static bool ixgbe_cleanup_headers(struct ixgbe_ring *rx_ring,
 	if (IS_ERR(skb))
 		return true;
 
+<<<<<<< HEAD
 	/* Verify netdev is present, and that packet does not have any
 	 * errors that would be unacceptable to the netdev.
 	 */
@@ -1886,6 +2079,12 @@ static bool ixgbe_cleanup_headers(struct ixgbe_ring *rx_ring,
 	    (unlikely(ixgbe_test_staterr(rx_desc,
 					 IXGBE_RXDADV_ERR_FRAME_ERR_MASK) &&
 	     !(netdev->features & NETIF_F_RXALL)))) {
+=======
+	/* verify that the packet does not have any known errors */
+	if (unlikely(ixgbe_test_staterr(rx_desc,
+					IXGBE_RXDADV_ERR_FRAME_ERR_MASK) &&
+	    !(netdev->features & NETIF_F_RXALL))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_kfree_skb_any(skb);
 		return true;
 	}
@@ -1970,8 +2169,13 @@ static bool ixgbe_can_reuse_rx_page(struct ixgbe_rx_buffer *rx_buffer)
 	 * the pagecnt_bias and page count so that we fully restock the
 	 * number of references the driver holds.
 	 */
+<<<<<<< HEAD
 	if (unlikely(pagecnt_bias == 1)) {
 		page_ref_add(page, USHRT_MAX - 1);
+=======
+	if (unlikely(!pagecnt_bias)) {
+		page_ref_add(page, USHRT_MAX);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rx_buffer->pagecnt_bias = USHRT_MAX;
 	}
 
@@ -1982,8 +2186,13 @@ static bool ixgbe_can_reuse_rx_page(struct ixgbe_rx_buffer *rx_buffer)
  * ixgbe_add_rx_frag - Add contents of Rx buffer to sk_buff
  * @rx_ring: rx descriptor ring to transact packets on
  * @rx_buffer: buffer containing page to add
+<<<<<<< HEAD
  * @skb: sk_buff to place the data into
  * @size: size of data in rx_buffer
+=======
+ * @rx_desc: descriptor containing length of buffer written by hardware
+ * @skb: sk_buff to place the data into
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function will add the data contained in rx_buffer->page to the skb.
  * This is done either through a direct copy if the data in the buffer is
@@ -2095,6 +2304,7 @@ static struct sk_buff *ixgbe_construct_skb(struct ixgbe_ring *rx_ring,
 #if L1_CACHE_BYTES < 128
 	prefetch(xdp->data + L1_CACHE_BYTES);
 #endif
+<<<<<<< HEAD
 	/* Note, we get here by enabling legacy-rx via:
 	 *
 	 *    ethtool --set-priv-flags <dev> legacy-rx on
@@ -2110,6 +2320,8 @@ static struct sk_buff *ixgbe_construct_skb(struct ixgbe_ring *rx_ring,
 	 * change in future for legacy-rx mode on, then lets also
 	 * add xdp->data_meta handling here.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* allocate a skb to store the frags */
 	skb = napi_alloc_skb(&rx_ring->q_vector->napi, IXGBE_RX_HDR_SIZE);
@@ -2142,7 +2354,10 @@ static struct sk_buff *ixgbe_build_skb(struct ixgbe_ring *rx_ring,
 				       struct xdp_buff *xdp,
 				       union ixgbe_adv_rx_desc *rx_desc)
 {
+<<<<<<< HEAD
 	unsigned int metasize = xdp->data - xdp->data_meta;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if (PAGE_SIZE < 8192)
 	unsigned int truesize = ixgbe_rx_pg_size(rx_ring) / 2;
 #else
@@ -2152,6 +2367,7 @@ static struct sk_buff *ixgbe_build_skb(struct ixgbe_ring *rx_ring,
 #endif
 	struct sk_buff *skb;
 
+<<<<<<< HEAD
 	/* Prefetch first cache line of first page. If xdp->data_meta
 	 * is unused, this points extactly as xdp->data, otherwise we
 	 * likely have a consumer accessing first few bytes of meta
@@ -2160,6 +2376,12 @@ static struct sk_buff *ixgbe_build_skb(struct ixgbe_ring *rx_ring,
 	prefetch(xdp->data_meta);
 #if L1_CACHE_BYTES < 128
 	prefetch(xdp->data_meta + L1_CACHE_BYTES);
+=======
+	/* prefetch first cache line of first page */
+	prefetch(xdp->data);
+#if L1_CACHE_BYTES < 128
+	prefetch(xdp->data + L1_CACHE_BYTES);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/* build an skb to around the page buffer */
@@ -2170,8 +2392,11 @@ static struct sk_buff *ixgbe_build_skb(struct ixgbe_ring *rx_ring,
 	/* update pointers within the skb to store the data */
 	skb_reserve(skb, xdp->data - xdp->data_hard_start);
 	__skb_put(skb, xdp->data_end - xdp->data);
+<<<<<<< HEAD
 	if (metasize)
 		skb_metadata_set(skb, metasize);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* record DMA address if this is the start of a chain of buffers */
 	if (!ixgbe_test_staterr(rx_desc, IXGBE_RXD_STAT_EOP))
@@ -2193,7 +2418,11 @@ static struct sk_buff *ixgbe_build_skb(struct ixgbe_ring *rx_ring,
 #define IXGBE_XDP_REDIR		BIT(2)
 
 static int ixgbe_xmit_xdp_ring(struct ixgbe_adapter *adapter,
+<<<<<<< HEAD
 			       struct xdp_frame *xdpf);
+=======
+			       struct xdp_buff *xdp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct sk_buff *ixgbe_run_xdp(struct ixgbe_adapter *adapter,
 				     struct ixgbe_ring *rx_ring,
@@ -2201,7 +2430,10 @@ static struct sk_buff *ixgbe_run_xdp(struct ixgbe_adapter *adapter,
 {
 	int err, result = IXGBE_XDP_PASS;
 	struct bpf_prog *xdp_prog;
+<<<<<<< HEAD
 	struct xdp_frame *xdpf;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 act;
 
 	rcu_read_lock();
@@ -2210,19 +2442,26 @@ static struct sk_buff *ixgbe_run_xdp(struct ixgbe_adapter *adapter,
 	if (!xdp_prog)
 		goto xdp_out;
 
+<<<<<<< HEAD
 	prefetchw(xdp->data_hard_start); /* xdp_frame write */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	act = bpf_prog_run_xdp(xdp_prog, xdp);
 	switch (act) {
 	case XDP_PASS:
 		break;
 	case XDP_TX:
+<<<<<<< HEAD
 		xdpf = convert_to_xdp_frame(xdp);
 		if (unlikely(!xdpf)) {
 			result = IXGBE_XDP_CONSUMED;
 			break;
 		}
 		result = ixgbe_xmit_xdp_ring(adapter, xdpf);
+=======
+		result = ixgbe_xmit_xdp_ring(adapter, xdp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case XDP_REDIRECT:
 		err = xdp_do_redirect(adapter->netdev, xdp, xdp_prog);
@@ -2256,7 +2495,12 @@ static void ixgbe_rx_buffer_flip(struct ixgbe_ring *rx_ring,
 	rx_buffer->page_offset ^= truesize;
 #else
 	unsigned int truesize = ring_uses_build_skb(rx_ring) ?
+<<<<<<< HEAD
 				SKB_DATA_ALIGN(IXGBE_SKB_PAD + size) :
+=======
+				SKB_DATA_ALIGN(IXGBE_SKB_PAD + size) +
+				SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) :
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				SKB_DATA_ALIGN(size);
 
 	rx_buffer->page_offset += truesize;
@@ -2288,14 +2532,21 @@ static int ixgbe_clean_rx_irq(struct ixgbe_q_vector *q_vector,
 #endif /* IXGBE_FCOE */
 	u16 cleaned_count = ixgbe_desc_unused(rx_ring);
 	unsigned int xdp_xmit = 0;
+<<<<<<< HEAD
 	struct xdp_buff xdp;
 
 	xdp.rxq = &rx_ring->xdp_rxq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (likely(total_rx_packets < budget)) {
 		union ixgbe_adv_rx_desc *rx_desc;
 		struct ixgbe_rx_buffer *rx_buffer;
 		struct sk_buff *skb;
+<<<<<<< HEAD
+=======
+		struct xdp_buff xdp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int size;
 
 		/* return some buffers to hardware, one at a time is too slow */
@@ -2321,7 +2572,10 @@ static int ixgbe_clean_rx_irq(struct ixgbe_q_vector *q_vector,
 		if (!skb) {
 			xdp.data = page_address(rx_buffer->page) +
 				   rx_buffer->page_offset;
+<<<<<<< HEAD
 			xdp.data_meta = xdp.data;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			xdp.data_hard_start = xdp.data -
 					      ixgbe_rx_offset(rx_ring);
 			xdp.data_end = xdp.data + size;
@@ -2490,6 +2744,16 @@ static void ixgbe_configure_msix(struct ixgbe_adapter *adapter)
 	IXGBE_WRITE_REG(&adapter->hw, IXGBE_EIAC, mask);
 }
 
+<<<<<<< HEAD
+=======
+enum latency_range {
+	lowest_latency = 0,
+	low_latency = 1,
+	bulk_latency = 2,
+	latency_invalid = 255
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * ixgbe_update_itr - update the dynamic ITR value based on statistics
  * @q_vector: structure containing interrupt and ring information
@@ -2502,10 +2766,16 @@ static void ixgbe_configure_msix(struct ixgbe_adapter *adapter)
  *      based on theoretical maximum wire speed and thresholds were set based
  *      on testing data as well as attempting to minimize response time
  *      while increasing bulk throughput.
+<<<<<<< HEAD
+=======
+ *      this functionality is controlled by the InterruptThrottleRate module
+ *      parameter (see ixgbe_param.c)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static void ixgbe_update_itr(struct ixgbe_q_vector *q_vector,
 			     struct ixgbe_ring_container *ring_container)
 {
+<<<<<<< HEAD
 	unsigned int itr = IXGBE_ITR_ADAPTIVE_MIN_USECS |
 			   IXGBE_ITR_ADAPTIVE_LATENCY;
 	unsigned int avg_wire_size, packets, bytes;
@@ -2676,6 +2946,52 @@ clear_counts:
 
 	ring_container->total_bytes = 0;
 	ring_container->total_packets = 0;
+=======
+	int bytes = ring_container->total_bytes;
+	int packets = ring_container->total_packets;
+	u32 timepassed_us;
+	u64 bytes_perint;
+	u8 itr_setting = ring_container->itr;
+
+	if (packets == 0)
+		return;
+
+	/* simple throttlerate management
+	 *   0-10MB/s   lowest (100000 ints/s)
+	 *  10-20MB/s   low    (20000 ints/s)
+	 *  20-1249MB/s bulk   (12000 ints/s)
+	 */
+	/* what was last interrupt timeslice? */
+	timepassed_us = q_vector->itr >> 2;
+	if (timepassed_us == 0)
+		return;
+
+	bytes_perint = bytes / timepassed_us; /* bytes/usec */
+
+	switch (itr_setting) {
+	case lowest_latency:
+		if (bytes_perint > 10)
+			itr_setting = low_latency;
+		break;
+	case low_latency:
+		if (bytes_perint > 20)
+			itr_setting = bulk_latency;
+		else if (bytes_perint <= 10)
+			itr_setting = lowest_latency;
+		break;
+	case bulk_latency:
+		if (bytes_perint <= 20)
+			itr_setting = low_latency;
+		break;
+	}
+
+	/* clear work counters since we have the values we need */
+	ring_container->total_bytes = 0;
+	ring_container->total_packets = 0;
+
+	/* write updated itr to ring container */
+	ring_container->itr = itr_setting;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2717,11 +3033,17 @@ void ixgbe_write_eitr(struct ixgbe_q_vector *q_vector)
 
 static void ixgbe_set_itr(struct ixgbe_q_vector *q_vector)
 {
+<<<<<<< HEAD
 	u32 new_itr;
+=======
+	u32 new_itr = q_vector->itr;
+	u8 current_itr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ixgbe_update_itr(q_vector, &q_vector->tx);
 	ixgbe_update_itr(q_vector, &q_vector->rx);
 
+<<<<<<< HEAD
 	/* use the smallest value of new ITR delay calculations */
 	new_itr = min(q_vector->rx.itr, q_vector->tx.itr);
 
@@ -2730,6 +3052,30 @@ static void ixgbe_set_itr(struct ixgbe_q_vector *q_vector)
 	new_itr <<= 2;
 
 	if (new_itr != q_vector->itr) {
+=======
+	current_itr = max(q_vector->rx.itr, q_vector->tx.itr);
+
+	switch (current_itr) {
+	/* counts and packets in update_itr are dependent on these numbers */
+	case lowest_latency:
+		new_itr = IXGBE_100K_ITR;
+		break;
+	case low_latency:
+		new_itr = IXGBE_20K_ITR;
+		break;
+	case bulk_latency:
+		new_itr = IXGBE_12K_ITR;
+		break;
+	default:
+		break;
+	}
+
+	if (new_itr != q_vector->itr) {
+		/* do an exponential smoothing */
+		new_itr = (10 * new_itr * q_vector->itr) /
+			  ((9 * new_itr) + q_vector->itr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* save the algorithm value here */
 		q_vector->itr = new_itr;
 
@@ -2988,8 +3334,11 @@ static inline void ixgbe_irq_disable_queues(struct ixgbe_adapter *adapter,
 /**
  * ixgbe_irq_enable - Enable default interrupt generation settings
  * @adapter: board private structure
+<<<<<<< HEAD
  * @queues: enable irqs for queues
  * @flush: flush register write
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static inline void ixgbe_irq_enable(struct ixgbe_adapter *adapter, bool queues,
 				    bool flush)
@@ -3447,7 +3796,10 @@ static inline void ixgbe_irq_disable(struct ixgbe_adapter *adapter)
 
 /**
  * ixgbe_configure_msi_and_legacy - Initialize PIN (INTA...) and MSI interrupts
+<<<<<<< HEAD
  * @adapter: board private structure
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  **/
 static void ixgbe_configure_msi_and_legacy(struct ixgbe_adapter *adapter)
@@ -3559,7 +3911,11 @@ static void ixgbe_setup_mtqc(struct ixgbe_adapter *adapter)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
 	u32 rttdcs, mtqc;
+<<<<<<< HEAD
 	u8 tcs = adapter->hw_tcs;
+=======
+	u8 tcs = netdev_get_num_tc(adapter->netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hw->mac.type == ixgbe_mac_82598EB)
 		return;
@@ -3582,12 +3938,27 @@ static void ixgbe_setup_mtqc(struct ixgbe_adapter *adapter)
 		else
 			mtqc |= IXGBE_MTQC_64VF;
 	} else {
+<<<<<<< HEAD
 		if (tcs > 4)
 			mtqc = IXGBE_MTQC_RT_ENA | IXGBE_MTQC_8TC_8TQ;
 		else if (tcs > 1)
 			mtqc = IXGBE_MTQC_RT_ENA | IXGBE_MTQC_4TC_4TQ;
 		else
 			mtqc = IXGBE_MTQC_64Q_1PB;
+=======
+		if (tcs > 4) {
+			mtqc = IXGBE_MTQC_RT_ENA | IXGBE_MTQC_8TC_8TQ;
+		} else if (tcs > 1) {
+			mtqc = IXGBE_MTQC_RT_ENA | IXGBE_MTQC_4TC_4TQ;
+		} else {
+			u8 max_txq = adapter->num_tx_queues +
+				adapter->num_xdp_queues;
+			if (max_txq > 63)
+				mtqc = IXGBE_MTQC_RT_ENA | IXGBE_MTQC_4TC_4TQ;
+			else
+				mtqc = IXGBE_MTQC_64Q_1PB;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	IXGBE_WRITE_REG(hw, IXGBE_MTQC, mtqc);
@@ -3826,6 +4197,7 @@ static void ixgbe_store_vfreta(struct ixgbe_adapter *adapter)
 	u32 i, reta_entries = ixgbe_rss_indir_tbl_entries(adapter);
 	struct ixgbe_hw *hw = &adapter->hw;
 	u32 vfreta = 0;
+<<<<<<< HEAD
 
 	/* Write redirection table to HW */
 	for (i = 0; i < reta_entries; i++) {
@@ -3840,6 +4212,18 @@ static void ixgbe_store_vfreta(struct ixgbe_adapter *adapter)
 					IXGBE_PFVFRETA(i >> 2, VMDQ_P(pool)),
 					vfreta);
 		vfreta = 0;
+=======
+	unsigned int pf_pool = adapter->num_vfs;
+
+	/* Write redirection table to HW */
+	for (i = 0; i < reta_entries; i++) {
+		vfreta |= (u32)adapter->rss_indir_tbl[i] << (i & 0x3) * 8;
+		if ((i & 3) == 3) {
+			IXGBE_WRITE_REG(hw, IXGBE_PFVFRETA(i >> 2, pf_pool),
+					vfreta);
+			vfreta = 0;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3876,6 +4260,7 @@ static void ixgbe_setup_vfreta(struct ixgbe_adapter *adapter)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
 	u16 rss_i = adapter->ring_feature[RING_F_RSS].indices;
+<<<<<<< HEAD
 	int i, j;
 
 	/* Fill out hash function seeds */
@@ -3887,6 +4272,15 @@ static void ixgbe_setup_vfreta(struct ixgbe_adapter *adapter)
 					IXGBE_PFVFRSSRK(i, VMDQ_P(pool)),
 					*(adapter->rss_key + i));
 	}
+=======
+	unsigned int pf_pool = adapter->num_vfs;
+	int i, j;
+
+	/* Fill out hash function seeds */
+	for (i = 0; i < 10; i++)
+		IXGBE_WRITE_REG(hw, IXGBE_PFVFRSSRK(i, pf_pool),
+				*(adapter->rss_key + i));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Fill out the redirection table */
 	for (i = 0, j = 0; i < 64; i++, j++) {
@@ -3914,7 +4308,11 @@ static void ixgbe_setup_mrqc(struct ixgbe_adapter *adapter)
 		if (adapter->ring_feature[RING_F_RSS].mask)
 			mrqc = IXGBE_MRQC_RSSEN;
 	} else {
+<<<<<<< HEAD
 		u8 tcs = adapter->hw_tcs;
+=======
+		u8 tcs = netdev_get_num_tc(adapter->netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (adapter->flags & IXGBE_FLAG_SRIOV_ENABLED) {
 			if (tcs > 4)
@@ -3955,7 +4353,11 @@ static void ixgbe_setup_mrqc(struct ixgbe_adapter *adapter)
 
 	if ((hw->mac.type >= ixgbe_mac_X550) &&
 	    (adapter->flags & IXGBE_FLAG_SRIOV_ENABLED)) {
+<<<<<<< HEAD
 		u16 pool = adapter->num_rx_pools;
+=======
+		unsigned int pf_pool = adapter->num_vfs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Enable VF RSS mode */
 		mrqc |= IXGBE_MRQC_MULTIPLE_RSS;
@@ -3965,11 +4367,15 @@ static void ixgbe_setup_mrqc(struct ixgbe_adapter *adapter)
 		ixgbe_setup_vfreta(adapter);
 		vfmrqc = IXGBE_MRQC_RSSEN;
 		vfmrqc |= rss_field;
+<<<<<<< HEAD
 
 		while (pool--)
 			IXGBE_WRITE_REG(hw,
 					IXGBE_PFVFMRQC(VMDQ_P(pool)),
 					vfmrqc);
+=======
+		IXGBE_WRITE_REG(hw, IXGBE_PFVFMRQC(pf_pool), vfmrqc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ixgbe_setup_reta(adapter);
 		mrqc |= rss_field;
@@ -3979,8 +4385,13 @@ static void ixgbe_setup_mrqc(struct ixgbe_adapter *adapter)
 
 /**
  * ixgbe_configure_rscctl - enable RSC for the indicated ring
+<<<<<<< HEAD
  * @adapter: address of board private structure
  * @ring: structure containing ring specific data
+=======
+ * @adapter:    address of board private structure
+ * @index:      index of ring to set
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static void ixgbe_configure_rscctl(struct ixgbe_adapter *adapter,
 				   struct ixgbe_ring *ring)
@@ -4030,6 +4441,41 @@ static void ixgbe_rx_desc_queue_enable(struct ixgbe_adapter *adapter,
 	}
 }
 
+<<<<<<< HEAD
+=======
+void ixgbe_disable_rx_queue(struct ixgbe_adapter *adapter,
+			    struct ixgbe_ring *ring)
+{
+	struct ixgbe_hw *hw = &adapter->hw;
+	int wait_loop = IXGBE_MAX_RX_DESC_POLL;
+	u32 rxdctl;
+	u8 reg_idx = ring->reg_idx;
+
+	if (ixgbe_removed(hw->hw_addr))
+		return;
+	rxdctl = IXGBE_READ_REG(hw, IXGBE_RXDCTL(reg_idx));
+	rxdctl &= ~IXGBE_RXDCTL_ENABLE;
+
+	/* write value back with RXDCTL.ENABLE bit cleared */
+	IXGBE_WRITE_REG(hw, IXGBE_RXDCTL(reg_idx), rxdctl);
+
+	if (hw->mac.type == ixgbe_mac_82598EB &&
+	    !(IXGBE_READ_REG(hw, IXGBE_LINKS) & IXGBE_LINKS_UP))
+		return;
+
+	/* the hardware may take up to 100us to really disable the rx queue */
+	do {
+		udelay(10);
+		rxdctl = IXGBE_READ_REG(hw, IXGBE_RXDCTL(reg_idx));
+	} while (--wait_loop && (rxdctl & IXGBE_RXDCTL_ENABLE));
+
+	if (!wait_loop) {
+		e_err(drv, "RXDCTL.ENABLE on Rx queue %d not cleared within "
+		      "the polling period\n", reg_idx);
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ixgbe_configure_rx_ring(struct ixgbe_adapter *adapter,
 			     struct ixgbe_ring *ring)
 {
@@ -4039,6 +4485,7 @@ void ixgbe_configure_rx_ring(struct ixgbe_adapter *adapter,
 	u32 rxdctl;
 	u8 reg_idx = ring->reg_idx;
 
+<<<<<<< HEAD
 	/* disable queue to avoid use of these values while updating state */
 	rxdctl = IXGBE_READ_REG(hw, IXGBE_RXDCTL(reg_idx));
 	rxdctl &= ~IXGBE_RXDCTL_ENABLE;
@@ -4046,6 +4493,11 @@ void ixgbe_configure_rx_ring(struct ixgbe_adapter *adapter,
 	/* write value back with RXDCTL.ENABLE bit cleared */
 	IXGBE_WRITE_REG(hw, IXGBE_RXDCTL(reg_idx), rxdctl);
 	IXGBE_WRITE_FLUSH(hw);
+=======
+	/* disable queue to avoid issues while updating state */
+	rxdctl = IXGBE_READ_REG(hw, IXGBE_RXDCTL(reg_idx));
+	ixgbe_disable_rx_queue(adapter, ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	IXGBE_WRITE_REG(hw, IXGBE_RDBAL(reg_idx), (rdba & DMA_BIT_MASK(32)));
 	IXGBE_WRITE_REG(hw, IXGBE_RDBAH(reg_idx), (rdba >> 32));
@@ -4108,7 +4560,11 @@ static void ixgbe_setup_psrtype(struct ixgbe_adapter *adapter)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
 	int rss_i = adapter->ring_feature[RING_F_RSS].indices;
+<<<<<<< HEAD
 	u16 pool = adapter->num_rx_pools;
+=======
+	u16 pool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* PSRTYPE must be initialized in non 82598 adapters */
 	u32 psrtype = IXGBE_PSRTYPE_TCPHDR |
@@ -4125,15 +4581,23 @@ static void ixgbe_setup_psrtype(struct ixgbe_adapter *adapter)
 	else if (rss_i > 1)
 		psrtype |= 1u << 29;
 
+<<<<<<< HEAD
 	while (pool--)
+=======
+	for_each_set_bit(pool, &adapter->fwd_bitmask, 32)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		IXGBE_WRITE_REG(hw, IXGBE_PSRTYPE(VMDQ_P(pool)), psrtype);
 }
 
 static void ixgbe_configure_virtualization(struct ixgbe_adapter *adapter)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
+<<<<<<< HEAD
 	u16 pool = adapter->num_rx_pools;
 	u32 reg_offset, vf_shift, vmolr;
+=======
+	u32 reg_offset, vf_shift;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 gcr_ext, vmdctl;
 	int i;
 
@@ -4147,6 +4611,7 @@ static void ixgbe_configure_virtualization(struct ixgbe_adapter *adapter)
 	vmdctl |= IXGBE_VT_CTL_REPLEN;
 	IXGBE_WRITE_REG(hw, IXGBE_VT_CTL, vmdctl);
 
+<<<<<<< HEAD
 	/* accept untagged packets until a vlan tag is
 	 * specifically set for the VMDQ queue/pool
 	 */
@@ -4154,6 +4619,8 @@ static void ixgbe_configure_virtualization(struct ixgbe_adapter *adapter)
 	while (pool--)
 		IXGBE_WRITE_REG(hw, IXGBE_VMOLR(VMDQ_P(pool)), vmolr);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vf_shift = VMDQ_P(0) % 32;
 	reg_offset = (VMDQ_P(0) >= 32) ? 1 : 0;
 
@@ -4460,9 +4927,14 @@ static void ixgbe_vlan_strip_disable(struct ixgbe_adapter *adapter)
 		for (i = 0; i < adapter->num_rx_queues; i++) {
 			struct ixgbe_ring *ring = adapter->rx_ring[i];
 
+<<<<<<< HEAD
 			if (!netif_is_ixgbe(ring->netdev))
 				continue;
 
+=======
+			if (ring->l2_accel_priv)
+				continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			j = ring->reg_idx;
 			vlnctrl = IXGBE_READ_REG(hw, IXGBE_RXDCTL(j));
 			vlnctrl &= ~IXGBE_RXDCTL_VME;
@@ -4498,9 +4970,14 @@ static void ixgbe_vlan_strip_enable(struct ixgbe_adapter *adapter)
 		for (i = 0; i < adapter->num_rx_queues; i++) {
 			struct ixgbe_ring *ring = adapter->rx_ring[i];
 
+<<<<<<< HEAD
 			if (!netif_is_ixgbe(ring->netdev))
 				continue;
 
+=======
+			if (ring->l2_accel_priv)
+				continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			j = ring->reg_idx;
 			vlnctrl = IXGBE_READ_REG(hw, IXGBE_RXDCTL(j));
 			vlnctrl |= IXGBE_RXDCTL_VME;
@@ -4820,6 +5297,37 @@ int ixgbe_del_mac_filter(struct ixgbe_adapter *adapter,
 
 	return -ENOMEM;
 }
+<<<<<<< HEAD
+=======
+/**
+ * ixgbe_write_uc_addr_list - write unicast addresses to RAR table
+ * @netdev: network interface device structure
+ *
+ * Writes unicast address list to the RAR table.
+ * Returns: -ENOMEM on failure/insufficient address space
+ *                0 on no addresses written
+ *                X on writing X addresses to the RAR table
+ **/
+static int ixgbe_write_uc_addr_list(struct net_device *netdev, int vfn)
+{
+	struct ixgbe_adapter *adapter = netdev_priv(netdev);
+	int count = 0;
+
+	/* return ENOMEM indicating insufficient memory for addresses */
+	if (netdev_uc_count(netdev) > ixgbe_available_rars(adapter, vfn))
+		return -ENOMEM;
+
+	if (!netdev_uc_empty(netdev)) {
+		struct netdev_hw_addr *ha;
+		netdev_for_each_uc_addr(ha, netdev) {
+			ixgbe_del_mac_filter(adapter, ha->addr, vfn);
+			ixgbe_add_mac_filter(adapter, ha->addr, vfn);
+			count++;
+		}
+	}
+	return count;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int ixgbe_uc_sync(struct net_device *netdev, const unsigned char *addr)
 {
@@ -5141,7 +5649,11 @@ static int ixgbe_lpbthresh(struct ixgbe_adapter *adapter, int pb)
 static void ixgbe_pbthresh_setup(struct ixgbe_adapter *adapter)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
+<<<<<<< HEAD
 	int num_tc = adapter->hw_tcs;
+=======
+	int num_tc = netdev_get_num_tc(adapter->netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	if (!num_tc)
@@ -5164,7 +5676,11 @@ static void ixgbe_configure_pb(struct ixgbe_adapter *adapter)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
 	int hdrm;
+<<<<<<< HEAD
 	u8 tc = adapter->hw_tcs;
+=======
+	u8 tc = netdev_get_num_tc(adapter->netdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (adapter->flags & IXGBE_FLAG_FDIR_HASH_CAPABLE ||
 	    adapter->flags & IXGBE_FLAG_FDIR_PERFECT_CAPABLE)
@@ -5181,6 +5697,10 @@ static void ixgbe_fdir_filter_restore(struct ixgbe_adapter *adapter)
 	struct ixgbe_hw *hw = &adapter->hw;
 	struct hlist_node *node2;
 	struct ixgbe_fdir_filter *filter;
+<<<<<<< HEAD
+=======
+	u8 queue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&adapter->fdir_perfect_lock);
 
@@ -5189,17 +5709,97 @@ static void ixgbe_fdir_filter_restore(struct ixgbe_adapter *adapter)
 
 	hlist_for_each_entry_safe(filter, node2,
 				  &adapter->fdir_filter_list, fdir_node) {
+<<<<<<< HEAD
 		ixgbe_fdir_write_perfect_filter_82599(hw,
 				&filter->filter,
 				filter->sw_idx,
 				(filter->action == IXGBE_FDIR_DROP_QUEUE) ?
 				IXGBE_FDIR_DROP_QUEUE :
 				adapter->rx_ring[filter->action]->reg_idx);
+=======
+		if (filter->action == IXGBE_FDIR_DROP_QUEUE) {
+			queue = IXGBE_FDIR_DROP_QUEUE;
+		} else {
+			u32 ring = ethtool_get_flow_spec_ring(filter->action);
+			u8 vf = ethtool_get_flow_spec_ring_vf(filter->action);
+
+			if (!vf && (ring >= adapter->num_rx_queues)) {
+				e_err(drv, "FDIR restore failed without VF, ring: %u\n",
+				      ring);
+				continue;
+			} else if (vf &&
+				   ((vf > adapter->num_vfs) ||
+				     ring >= adapter->num_rx_queues_per_pool)) {
+				e_err(drv, "FDIR restore failed with VF, vf: %hhu, ring: %u\n",
+				      vf, ring);
+				continue;
+			}
+
+			/* Map the ring onto the absolute queue index */
+			if (!vf)
+				queue = adapter->rx_ring[ring]->reg_idx;
+			else
+				queue = ((vf - 1) *
+					adapter->num_rx_queues_per_pool) + ring;
+		}
+
+		ixgbe_fdir_write_perfect_filter_82599(hw,
+				&filter->filter, filter->sw_idx, queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_unlock(&adapter->fdir_perfect_lock);
 }
 
+<<<<<<< HEAD
+=======
+static void ixgbe_macvlan_set_rx_mode(struct net_device *dev, unsigned int pool,
+				      struct ixgbe_adapter *adapter)
+{
+	struct ixgbe_hw *hw = &adapter->hw;
+	u32 vmolr;
+
+	/* No unicast promiscuous support for VMDQ devices. */
+	vmolr = IXGBE_READ_REG(hw, IXGBE_VMOLR(pool));
+	vmolr |= (IXGBE_VMOLR_ROMPE | IXGBE_VMOLR_BAM | IXGBE_VMOLR_AUPE);
+
+	/* clear the affected bit */
+	vmolr &= ~IXGBE_VMOLR_MPE;
+
+	if (dev->flags & IFF_ALLMULTI) {
+		vmolr |= IXGBE_VMOLR_MPE;
+	} else {
+		vmolr |= IXGBE_VMOLR_ROMPE;
+		hw->mac.ops.update_mc_addr_list(hw, dev);
+	}
+	ixgbe_write_uc_addr_list(adapter->netdev, pool);
+	IXGBE_WRITE_REG(hw, IXGBE_VMOLR(pool), vmolr);
+}
+
+static void ixgbe_fwd_psrtype(struct ixgbe_fwd_adapter *vadapter)
+{
+	struct ixgbe_adapter *adapter = vadapter->real_adapter;
+	int rss_i = adapter->num_rx_queues_per_pool;
+	struct ixgbe_hw *hw = &adapter->hw;
+	u16 pool = vadapter->pool;
+	u32 psrtype = IXGBE_PSRTYPE_TCPHDR |
+		      IXGBE_PSRTYPE_UDPHDR |
+		      IXGBE_PSRTYPE_IPV4HDR |
+		      IXGBE_PSRTYPE_L2HDR |
+		      IXGBE_PSRTYPE_IPV6HDR;
+
+	if (hw->mac.type == ixgbe_mac_82598EB)
+		return;
+
+	if (rss_i > 3)
+		psrtype |= 2u << 29;
+	else if (rss_i > 1)
+		psrtype |= 1u << 29;
+
+	IXGBE_WRITE_REG(hw, IXGBE_PSRTYPE(VMDQ_P(pool)), psrtype);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * ixgbe_clean_rx_ring - Free Rx Buffers per Queue
  * @rx_ring: ring to free buffers from
@@ -5252,6 +5852,7 @@ static void ixgbe_clean_rx_ring(struct ixgbe_ring *rx_ring)
 	rx_ring->next_to_use = 0;
 }
 
+<<<<<<< HEAD
 static int ixgbe_fwd_ring_up(struct ixgbe_adapter *adapter,
 			     struct ixgbe_fwd_adapter *accel)
 {
@@ -5320,6 +5921,110 @@ static int ixgbe_macvlan_up(struct net_device *vdev, void *data)
 		return 0;
 
 	ixgbe_fwd_ring_up(adapter, accel);
+=======
+static void ixgbe_disable_fwd_ring(struct ixgbe_fwd_adapter *vadapter,
+				   struct ixgbe_ring *rx_ring)
+{
+	struct ixgbe_adapter *adapter = vadapter->real_adapter;
+	int index = rx_ring->queue_index + vadapter->rx_base_queue;
+
+	/* shutdown specific queue receive and wait for dma to settle */
+	ixgbe_disable_rx_queue(adapter, rx_ring);
+	usleep_range(10000, 20000);
+	ixgbe_irq_disable_queues(adapter, BIT_ULL(index));
+	ixgbe_clean_rx_ring(rx_ring);
+	rx_ring->l2_accel_priv = NULL;
+}
+
+static int ixgbe_fwd_ring_down(struct net_device *vdev,
+			       struct ixgbe_fwd_adapter *accel)
+{
+	struct ixgbe_adapter *adapter = accel->real_adapter;
+	unsigned int rxbase = accel->rx_base_queue;
+	unsigned int txbase = accel->tx_base_queue;
+	int i;
+
+	netif_tx_stop_all_queues(vdev);
+
+	for (i = 0; i < adapter->num_rx_queues_per_pool; i++) {
+		ixgbe_disable_fwd_ring(accel, adapter->rx_ring[rxbase + i]);
+		adapter->rx_ring[rxbase + i]->netdev = adapter->netdev;
+	}
+
+	for (i = 0; i < adapter->num_rx_queues_per_pool; i++) {
+		adapter->tx_ring[txbase + i]->l2_accel_priv = NULL;
+		adapter->tx_ring[txbase + i]->netdev = adapter->netdev;
+	}
+
+
+	return 0;
+}
+
+static int ixgbe_fwd_ring_up(struct net_device *vdev,
+			     struct ixgbe_fwd_adapter *accel)
+{
+	struct ixgbe_adapter *adapter = accel->real_adapter;
+	unsigned int rxbase, txbase, queues;
+	int i, baseq, err = 0;
+
+	if (!test_bit(accel->pool, &adapter->fwd_bitmask))
+		return 0;
+
+	baseq = accel->pool * adapter->num_rx_queues_per_pool;
+	netdev_dbg(vdev, "pool %i:%i queues %i:%i VSI bitmask %lx\n",
+		   accel->pool, adapter->num_rx_pools,
+		   baseq, baseq + adapter->num_rx_queues_per_pool,
+		   adapter->fwd_bitmask);
+
+	accel->netdev = vdev;
+	accel->rx_base_queue = rxbase = baseq;
+	accel->tx_base_queue = txbase = baseq;
+
+	for (i = 0; i < adapter->num_rx_queues_per_pool; i++)
+		ixgbe_disable_fwd_ring(accel, adapter->rx_ring[rxbase + i]);
+
+	for (i = 0; i < adapter->num_rx_queues_per_pool; i++) {
+		adapter->rx_ring[rxbase + i]->netdev = vdev;
+		adapter->rx_ring[rxbase + i]->l2_accel_priv = accel;
+		ixgbe_configure_rx_ring(adapter, adapter->rx_ring[rxbase + i]);
+	}
+
+	for (i = 0; i < adapter->num_rx_queues_per_pool; i++) {
+		adapter->tx_ring[txbase + i]->netdev = vdev;
+		adapter->tx_ring[txbase + i]->l2_accel_priv = accel;
+	}
+
+	queues = min_t(unsigned int,
+		       adapter->num_rx_queues_per_pool, vdev->num_tx_queues);
+	err = netif_set_real_num_tx_queues(vdev, queues);
+	if (err)
+		goto fwd_queue_err;
+
+	err = netif_set_real_num_rx_queues(vdev, queues);
+	if (err)
+		goto fwd_queue_err;
+
+	if (is_valid_ether_addr(vdev->dev_addr))
+		ixgbe_add_mac_filter(adapter, vdev->dev_addr, accel->pool);
+
+	ixgbe_fwd_psrtype(accel);
+	ixgbe_macvlan_set_rx_mode(vdev, accel->pool, adapter);
+	return err;
+fwd_queue_err:
+	ixgbe_fwd_ring_down(vdev, accel);
+	return err;
+}
+
+static int ixgbe_upper_dev_walk(struct net_device *upper, void *data)
+{
+	if (netif_is_macvlan(upper)) {
+		struct macvlan_dev *dfwd = netdev_priv(upper);
+		struct ixgbe_fwd_adapter *vadapter = dfwd->fwd_priv;
+
+		if (dfwd->fwd_priv)
+			ixgbe_fwd_ring_up(upper, vadapter);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -5327,7 +6032,11 @@ static int ixgbe_macvlan_up(struct net_device *vdev, void *data)
 static void ixgbe_configure_dfwd(struct ixgbe_adapter *adapter)
 {
 	netdev_walk_all_upper_dev_rcu(adapter->netdev,
+<<<<<<< HEAD
 				      ixgbe_macvlan_up, adapter);
+=======
+				      ixgbe_upper_dev_walk, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ixgbe_configure(struct ixgbe_adapter *adapter)
@@ -5346,7 +6055,10 @@ static void ixgbe_configure(struct ixgbe_adapter *adapter)
 
 	ixgbe_set_rx_mode(adapter->netdev);
 	ixgbe_restore_vlan(adapter);
+<<<<<<< HEAD
 	ixgbe_ipsec_restore(adapter);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (hw->mac.type) {
 	case ixgbe_mac_82599EB:
@@ -5613,6 +6325,7 @@ void ixgbe_up(struct ixgbe_adapter *adapter)
 	ixgbe_up_complete(adapter);
 }
 
+<<<<<<< HEAD
 static unsigned long ixgbe_get_completion_timeout(struct ixgbe_adapter *adapter)
 {
 	u16 devctl2;
@@ -5819,6 +6532,8 @@ dma_engine_disable:
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ixgbe_reset(struct ixgbe_adapter *adapter)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
@@ -5896,7 +6611,11 @@ static void ixgbe_clean_tx_ring(struct ixgbe_ring *tx_ring)
 
 		/* Free all the Tx ring sk_buffs */
 		if (ring_is_xdp(tx_ring))
+<<<<<<< HEAD
 			xdp_return_frame(tx_buffer->xdpf);
+=======
+			page_frag_free(tx_buffer->data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			dev_kfree_skb_any(tx_buffer->skb);
 
@@ -5990,6 +6709,24 @@ static void ixgbe_fdir_filter_exit(struct ixgbe_adapter *adapter)
 	spin_unlock(&adapter->fdir_perfect_lock);
 }
 
+<<<<<<< HEAD
+=======
+static int ixgbe_disable_macvlan(struct net_device *upper, void *data)
+{
+	if (netif_is_macvlan(upper)) {
+		struct macvlan_dev *vlan = netdev_priv(upper);
+
+		if (vlan->fwd_priv) {
+			netif_tx_stop_all_queues(upper);
+			netif_carrier_off(upper);
+			netif_tx_disable(upper);
+		}
+	}
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ixgbe_down(struct ixgbe_adapter *adapter)
 {
 	struct net_device *netdev = adapter->netdev;
@@ -6000,19 +6737,41 @@ void ixgbe_down(struct ixgbe_adapter *adapter)
 	if (test_and_set_bit(__IXGBE_DOWN, &adapter->state))
 		return; /* do nothing if already down */
 
+<<<<<<< HEAD
 	/* Shut off incoming Tx traffic */
+=======
+	/* disable receives */
+	hw->mac.ops.disable_rx(hw);
+
+	/* disable all enabled rx queues */
+	for (i = 0; i < adapter->num_rx_queues; i++)
+		/* this call also flushes the previous write */
+		ixgbe_disable_rx_queue(adapter, adapter->rx_ring[i]);
+
+	usleep_range(10000, 20000);
+
+	/* synchronize_sched() needed for pending XDP buffers to drain */
+	if (adapter->xdp_ring[0])
+		synchronize_sched();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_tx_stop_all_queues(netdev);
 
 	/* call carrier off first to avoid false dev_watchdog timeouts */
 	netif_carrier_off(netdev);
 	netif_tx_disable(netdev);
 
+<<<<<<< HEAD
 	/* Disable Rx */
 	ixgbe_disable_rx(adapter);
 
 	/* synchronize_sched() needed for pending XDP buffers to drain */
 	if (adapter->xdp_ring[0])
 		synchronize_sched();
+=======
+	/* disable any upper devices */
+	netdev_walk_all_upper_dev_rcu(adapter->netdev,
+				      ixgbe_disable_macvlan, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ixgbe_irq_disable(adapter);
 
@@ -6040,7 +6799,34 @@ void ixgbe_down(struct ixgbe_adapter *adapter)
 	}
 
 	/* disable transmits in the hardware now that interrupts are off */
+<<<<<<< HEAD
 	ixgbe_disable_tx(adapter);
+=======
+	for (i = 0; i < adapter->num_tx_queues; i++) {
+		u8 reg_idx = adapter->tx_ring[i]->reg_idx;
+		IXGBE_WRITE_REG(hw, IXGBE_TXDCTL(reg_idx), IXGBE_TXDCTL_SWFLSH);
+	}
+	for (i = 0; i < adapter->num_xdp_queues; i++) {
+		u8 reg_idx = adapter->xdp_ring[i]->reg_idx;
+
+		IXGBE_WRITE_REG(hw, IXGBE_TXDCTL(reg_idx), IXGBE_TXDCTL_SWFLSH);
+	}
+
+	/* Disable the Tx DMA engine on 82599 and later MAC */
+	switch (hw->mac.type) {
+	case ixgbe_mac_82599EB:
+	case ixgbe_mac_X540:
+	case ixgbe_mac_X550:
+	case ixgbe_mac_X550EM_x:
+	case ixgbe_mac_x550em_a:
+		IXGBE_WRITE_REG(hw, IXGBE_DMATXCTL,
+				(IXGBE_READ_REG(hw, IXGBE_DMATXCTL) &
+				 ~IXGBE_DMATXCTL_TE));
+		break;
+	default:
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pci_channel_offline(adapter->pdev))
 		ixgbe_reset(adapter);
@@ -6145,7 +6931,10 @@ static void ixgbe_init_dcb(struct ixgbe_adapter *adapter)
 /**
  * ixgbe_sw_init - Initialize general software structures (struct ixgbe_adapter)
  * @adapter: board private structure to initialize
+<<<<<<< HEAD
  * @ii: pointer to ixgbe_info for device
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * ixgbe_sw_init initializes the Adapter private data structure.
  * Fields are initialized based on PCI device information and
@@ -6180,7 +6969,10 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
 	fdir = min_t(int, IXGBE_MAX_FDIR_INDICES, num_online_cpus());
 	adapter->ring_feature[RING_F_FDIR].limit = fdir;
 	adapter->fdir_pballoc = IXGBE_FDIR_PBALLOC_64K;
+<<<<<<< HEAD
 	adapter->ring_feature[RING_F_VMDQ].limit = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_IXGBE_DCA
 	adapter->flags |= IXGBE_FLAG_DCA_CAPABLE;
 #endif
@@ -6207,9 +6999,15 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
 	for (i = 1; i < IXGBE_MAX_LINK_HANDLE; i++)
 		adapter->jump_tables[i] = NULL;
 
+<<<<<<< HEAD
 	adapter->mac_table = kcalloc(hw->mac.num_rar_entries,
 				     sizeof(struct ixgbe_mac_addr),
 				     GFP_KERNEL);
+=======
+	adapter->mac_table = kzalloc(sizeof(struct ixgbe_mac_addr) *
+				     hw->mac.num_rar_entries,
+				     GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!adapter->mac_table)
 		return -ENOMEM;
 
@@ -6290,7 +7088,10 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
 #ifdef CONFIG_IXGBE_DCB
 	ixgbe_init_dcb(adapter);
 #endif
+<<<<<<< HEAD
 	ixgbe_init_ipsec_offload(adapter);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* default flow control settings */
 	hw->fc.requested_mode = ixgbe_fc_full;
@@ -6331,7 +7132,11 @@ static int ixgbe_sw_init(struct ixgbe_adapter *adapter,
 	}
 
 	/* PF holds first pool slot */
+<<<<<<< HEAD
 	set_bit(0, adapter->fwd_bitmask);
+=======
+	set_bit(0, &adapter->fwd_bitmask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_bit(__IXGBE_DOWN, &adapter->state);
 
 	return 0;
@@ -6431,7 +7236,10 @@ err_setup_tx:
 
 /**
  * ixgbe_setup_rx_resources - allocate Rx resources (Descriptors)
+<<<<<<< HEAD
  * @adapter: pointer to ixgbe_adapter
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @rx_ring:    rx descriptor ring (for a specific queue) to setup
  *
  * Returns 0 on success, negative on failure
@@ -6442,7 +7250,11 @@ int ixgbe_setup_rx_resources(struct ixgbe_adapter *adapter,
 	struct device *dev = rx_ring->dev;
 	int orig_node = dev_to_node(dev);
 	int ring_node = -1;
+<<<<<<< HEAD
 	int size, err;
+=======
+	int size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	size = sizeof(struct ixgbe_rx_buffer) * rx_ring->count;
 
@@ -6474,6 +7286,7 @@ int ixgbe_setup_rx_resources(struct ixgbe_adapter *adapter,
 	rx_ring->next_to_clean = 0;
 	rx_ring->next_to_use = 0;
 
+<<<<<<< HEAD
 	/* XDP RX-queue info */
 	if (xdp_rxq_info_reg(&rx_ring->xdp_rxq, adapter->netdev,
 			     rx_ring->queue_index) < 0)
@@ -6486,6 +7299,8 @@ int ixgbe_setup_rx_resources(struct ixgbe_adapter *adapter,
 		goto err;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_ring->xdp_prog = adapter->xdp_prog;
 
 	return 0;
@@ -6583,7 +7398,10 @@ void ixgbe_free_rx_resources(struct ixgbe_ring *rx_ring)
 	ixgbe_clean_rx_ring(rx_ring);
 
 	rx_ring->xdp_prog = NULL;
+<<<<<<< HEAD
 	xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vfree(rx_ring->rx_buffer_info);
 	rx_ring->rx_buffer_info = NULL;
 
@@ -6627,6 +7445,7 @@ static int ixgbe_change_mtu(struct net_device *netdev, int new_mtu)
 {
 	struct ixgbe_adapter *adapter = netdev_priv(netdev);
 
+<<<<<<< HEAD
 	if (adapter->xdp_prog) {
 		int new_frame_size = new_mtu + ETH_HLEN + ETH_FCS_LEN +
 				     VLAN_HLEN;
@@ -6642,6 +7461,8 @@ static int ixgbe_change_mtu(struct net_device *netdev, int new_mtu)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * For 82599EB we cannot allow legacy VFs to enable their receive
 	 * paths when MTU greater than 1500 is configured.  So display a
@@ -6704,12 +7525,28 @@ int ixgbe_open(struct net_device *netdev)
 		goto err_req_irq;
 
 	/* Notify the stack of the actual queue counts. */
+<<<<<<< HEAD
 	queues = adapter->num_tx_queues;
+=======
+	if (adapter->num_rx_pools > 1)
+		queues = adapter->num_rx_queues_per_pool;
+	else
+		queues = adapter->num_tx_queues;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = netif_set_real_num_tx_queues(netdev, queues);
 	if (err)
 		goto err_set_queues;
 
+<<<<<<< HEAD
 	queues = adapter->num_rx_queues;
+=======
+	if (adapter->num_rx_pools > 1 &&
+	    adapter->num_rx_queues > IXGBE_MAX_L2A_QUEUES)
+		queues = IXGBE_MAX_L2A_QUEUES;
+	else
+		queues = adapter->num_rx_queues;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = netif_set_real_num_rx_queues(netdev, queues);
 	if (err)
 		goto err_set_queues;
@@ -6833,7 +7670,11 @@ static int __ixgbe_shutdown(struct pci_dev *pdev, bool *enable_wake)
 	struct ixgbe_adapter *adapter = pci_get_drvdata(pdev);
 	struct net_device *netdev = adapter->netdev;
 	struct ixgbe_hw *hw = &adapter->hw;
+<<<<<<< HEAD
 	u32 ctrl;
+=======
+	u32 ctrl, fctrl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 wufc = adapter->wol;
 #ifdef CONFIG_PM
 	int retval = 0;
@@ -6858,18 +7699,30 @@ static int __ixgbe_shutdown(struct pci_dev *pdev, bool *enable_wake)
 		hw->mac.ops.stop_link_on_d3(hw);
 
 	if (wufc) {
+<<<<<<< HEAD
 		u32 fctrl;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ixgbe_set_rx_mode(netdev);
 
 		/* enable the optics for 82599 SFP+ fiber as we can WoL */
 		if (hw->mac.ops.enable_tx_laser)
 			hw->mac.ops.enable_tx_laser(hw);
 
+<<<<<<< HEAD
 		/* enable the reception of multicast packets */
 		fctrl = IXGBE_READ_REG(hw, IXGBE_FCTRL);
 		fctrl |= IXGBE_FCTRL_MPE;
 		IXGBE_WRITE_REG(hw, IXGBE_FCTRL, fctrl);
+=======
+		/* turn on all-multi mode if wake on multicast is enabled */
+		if (wufc & IXGBE_WUFC_MC) {
+			fctrl = IXGBE_READ_REG(hw, IXGBE_FCTRL);
+			fctrl |= IXGBE_FCTRL_MPE;
+			IXGBE_WRITE_REG(hw, IXGBE_FCTRL, fctrl);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ctrl = IXGBE_READ_REG(hw, IXGBE_CTRL);
 		ctrl |= IXGBE_CTRL_GIO_DIS;
@@ -6954,7 +7807,10 @@ void ixgbe_update_stats(struct ixgbe_adapter *adapter)
 	u32 i, missed_rx = 0, mpc, bprc, lxon, lxoff, xon_off_tot;
 	u64 non_eop_descs = 0, restart_queue = 0, tx_busy = 0;
 	u64 alloc_rx_page_failed = 0, alloc_rx_buff_failed = 0;
+<<<<<<< HEAD
 	u64 alloc_rx_page = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 bytes = 0, packets = 0, hw_csum_rx_error = 0;
 
 	if (test_bit(__IXGBE_DOWN, &adapter->state) ||
@@ -6973,9 +7829,17 @@ void ixgbe_update_stats(struct ixgbe_adapter *adapter)
 	}
 
 	for (i = 0; i < adapter->num_rx_queues; i++) {
+<<<<<<< HEAD
 		struct ixgbe_ring *rx_ring = adapter->rx_ring[i];
 		non_eop_descs += rx_ring->rx_stats.non_eop_descs;
 		alloc_rx_page += rx_ring->rx_stats.alloc_rx_page;
+=======
+		struct ixgbe_ring *rx_ring = READ_ONCE(adapter->rx_ring[i]);
+
+		if (!rx_ring)
+			continue;
+		non_eop_descs += rx_ring->rx_stats.non_eop_descs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		alloc_rx_page_failed += rx_ring->rx_stats.alloc_rx_page_failed;
 		alloc_rx_buff_failed += rx_ring->rx_stats.alloc_rx_buff_failed;
 		hw_csum_rx_error += rx_ring->rx_stats.csum_err;
@@ -6983,7 +7847,10 @@ void ixgbe_update_stats(struct ixgbe_adapter *adapter)
 		packets += rx_ring->stats.packets;
 	}
 	adapter->non_eop_descs = non_eop_descs;
+<<<<<<< HEAD
 	adapter->alloc_rx_page = alloc_rx_page;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adapter->alloc_rx_page_failed = alloc_rx_page_failed;
 	adapter->alloc_rx_buff_failed = alloc_rx_buff_failed;
 	adapter->hw_csum_rx_error = hw_csum_rx_error;
@@ -6994,15 +7861,29 @@ void ixgbe_update_stats(struct ixgbe_adapter *adapter)
 	packets = 0;
 	/* gather some stats to the adapter struct that are per queue */
 	for (i = 0; i < adapter->num_tx_queues; i++) {
+<<<<<<< HEAD
 		struct ixgbe_ring *tx_ring = adapter->tx_ring[i];
+=======
+		struct ixgbe_ring *tx_ring = READ_ONCE(adapter->tx_ring[i]);
+
+		if (!tx_ring)
+			continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		restart_queue += tx_ring->tx_stats.restart_queue;
 		tx_busy += tx_ring->tx_stats.tx_busy;
 		bytes += tx_ring->stats.bytes;
 		packets += tx_ring->stats.packets;
 	}
 	for (i = 0; i < adapter->num_xdp_queues; i++) {
+<<<<<<< HEAD
 		struct ixgbe_ring *xdp_ring = adapter->xdp_ring[i];
 
+=======
+		struct ixgbe_ring *xdp_ring = READ_ONCE(adapter->xdp_ring[i]);
+
+		if (!xdp_ring)
+			continue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		restart_queue += xdp_ring->tx_stats.restart_queue;
 		tx_busy += xdp_ring->tx_stats.tx_busy;
 		bytes += xdp_ring->stats.bytes;
@@ -7266,6 +8147,10 @@ static void ixgbe_check_hang_subtask(struct ixgbe_adapter *adapter)
 /**
  * ixgbe_watchdog_update_link - update the link status
  * @adapter: pointer to the device adapter structure
+<<<<<<< HEAD
+=======
+ * @link_speed: pointer to a u32 to store the link_speed
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static void ixgbe_watchdog_update_link(struct ixgbe_adapter *adapter)
 {
@@ -7322,6 +8207,21 @@ static void ixgbe_update_default_up(struct ixgbe_adapter *adapter)
 #endif
 }
 
+<<<<<<< HEAD
+=======
+static int ixgbe_enable_macvlan(struct net_device *upper, void *data)
+{
+	if (netif_is_macvlan(upper)) {
+		struct macvlan_dev *vlan = netdev_priv(upper);
+
+		if (vlan->fwd_priv)
+			netif_tx_wake_all_queues(upper);
+	}
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * ixgbe_watchdog_link_is_up - update netif_carrier status and
  *                             print link up message
@@ -7375,9 +8275,12 @@ static void ixgbe_watchdog_link_is_up(struct ixgbe_adapter *adapter)
 	case IXGBE_LINK_SPEED_10GB_FULL:
 		speed_str = "10 Gbps";
 		break;
+<<<<<<< HEAD
 	case IXGBE_LINK_SPEED_5GB_FULL:
 		speed_str = "5 Gbps";
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IXGBE_LINK_SPEED_2_5GB_FULL:
 		speed_str = "2.5 Gbps";
 		break;
@@ -7405,6 +8308,15 @@ static void ixgbe_watchdog_link_is_up(struct ixgbe_adapter *adapter)
 	/* enable transmits */
 	netif_tx_wake_all_queues(adapter->netdev);
 
+<<<<<<< HEAD
+=======
+	/* enable any upper devices */
+	rtnl_lock();
+	netdev_walk_all_upper_dev_rcu(adapter->netdev,
+				      ixgbe_enable_macvlan, NULL);
+	rtnl_unlock();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* update the default user priority for VFs */
 	ixgbe_update_default_up(adapter);
 
@@ -7689,7 +8601,10 @@ sfp_out:
 static void ixgbe_sfp_link_config_subtask(struct ixgbe_adapter *adapter)
 {
 	struct ixgbe_hw *hw = &adapter->hw;
+<<<<<<< HEAD
 	u32 cap_speed;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 speed;
 	bool autoneg = false;
 
@@ -7702,6 +8617,7 @@ static void ixgbe_sfp_link_config_subtask(struct ixgbe_adapter *adapter)
 
 	adapter->flags &= ~IXGBE_FLAG_NEED_LINK_CONFIG;
 
+<<<<<<< HEAD
 	hw->mac.ops.get_link_capabilities(hw, &cap_speed, &autoneg);
 
 	/* advertise highest capable link speed */
@@ -7710,6 +8626,18 @@ static void ixgbe_sfp_link_config_subtask(struct ixgbe_adapter *adapter)
 	else
 		speed = cap_speed & (IXGBE_LINK_SPEED_10GB_FULL |
 				     IXGBE_LINK_SPEED_1GB_FULL);
+=======
+	speed = hw->phy.autoneg_advertised;
+	if ((!speed) && (hw->mac.ops.get_link_capabilities)) {
+		hw->mac.ops.get_link_capabilities(hw, &speed, &autoneg);
+
+		/* setup the highest link when no autoneg */
+		if (!autoneg) {
+			if (speed & IXGBE_LINK_SPEED_10GB_FULL)
+				speed = IXGBE_LINK_SPEED_10GB_FULL;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hw->mac.ops.setup_link)
 		hw->mac.ops.setup_link(hw, speed, true);
@@ -7721,11 +8649,19 @@ static void ixgbe_sfp_link_config_subtask(struct ixgbe_adapter *adapter)
 
 /**
  * ixgbe_service_timer - Timer Call-back
+<<<<<<< HEAD
  * @t: pointer to timer_list structure
  **/
 static void ixgbe_service_timer(struct timer_list *t)
 {
 	struct ixgbe_adapter *adapter = from_timer(adapter, t, service_timer);
+=======
+ * @data: pointer to adapter cast into an unsigned long
+ **/
+static void ixgbe_service_timer(unsigned long data)
+{
+	struct ixgbe_adapter *adapter = (struct ixgbe_adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long next_event_offset;
 
 	/* poll faster when waiting for link */
@@ -7765,6 +8701,7 @@ static void ixgbe_reset_subtask(struct ixgbe_adapter *adapter)
 	if (!test_and_clear_bit(__IXGBE_RESET_REQUESTED, &adapter->state))
 		return;
 
+<<<<<<< HEAD
 	rtnl_lock();
 	/* If we're already down, removing or resetting, just bail */
 	if (test_bit(__IXGBE_DOWN, &adapter->state) ||
@@ -7773,11 +8710,22 @@ static void ixgbe_reset_subtask(struct ixgbe_adapter *adapter)
 		rtnl_unlock();
 		return;
 	}
+=======
+	/* If we're already down, removing or resetting, just bail */
+	if (test_bit(__IXGBE_DOWN, &adapter->state) ||
+	    test_bit(__IXGBE_REMOVING, &adapter->state) ||
+	    test_bit(__IXGBE_RESETTING, &adapter->state))
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ixgbe_dump(adapter);
 	netdev_err(adapter->netdev, "Reset adapter\n");
 	adapter->tx_timeout_count++;
 
+<<<<<<< HEAD
+=======
+	rtnl_lock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ixgbe_reinit_locked(adapter);
 	rtnl_unlock();
 }
@@ -7827,8 +8775,12 @@ static void ixgbe_service_task(struct work_struct *work)
 
 static int ixgbe_tso(struct ixgbe_ring *tx_ring,
 		     struct ixgbe_tx_buffer *first,
+<<<<<<< HEAD
 		     u8 *hdr_len,
 		     struct ixgbe_ipsec_tx_data *itd)
+=======
+		     u8 *hdr_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 vlan_macip_lens, type_tucmd, mss_l4len_idx;
 	struct sk_buff *skb = first->skb;
@@ -7842,7 +8794,10 @@ static int ixgbe_tso(struct ixgbe_ring *tx_ring,
 		unsigned char *hdr;
 	} l4;
 	u32 paylen, l4_offset;
+<<<<<<< HEAD
 	u32 fceof_saidx = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (skb->ip_summed != CHECKSUM_PARTIAL)
@@ -7868,6 +8823,7 @@ static int ixgbe_tso(struct ixgbe_ring *tx_ring,
 	if (ip.v4->version == 4) {
 		unsigned char *csum_start = skb_checksum_start(skb);
 		unsigned char *trans_start = ip.hdr + (ip.v4->ihl * 4);
+<<<<<<< HEAD
 		int len = csum_start - trans_start;
 
 		/* IP header will have to cancel out any data that
@@ -7877,6 +8833,15 @@ static int ixgbe_tso(struct ixgbe_ring *tx_ring,
 		ip.v4->check = (skb_shinfo(skb)->gso_type & SKB_GSO_PARTIAL) ?
 					   csum_fold(csum_partial(trans_start,
 								  len, 0)) : 0;
+=======
+
+		/* IP header will have to cancel out any data that
+		 * is not a part of the outer IP header
+		 */
+		ip.v4->check = csum_fold(csum_partial(trans_start,
+						      csum_start - trans_start,
+						      0));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		type_tucmd |= IXGBE_ADVTXD_TUCMD_IPV4;
 
 		ip.v4->tot_len = 0;
@@ -7897,7 +8862,11 @@ static int ixgbe_tso(struct ixgbe_ring *tx_ring,
 
 	/* remove payload length from inner checksum */
 	paylen = skb->len - l4_offset;
+<<<<<<< HEAD
 	csum_replace_by_diff(&l4.tcp->check, (__force __wsum)htonl(paylen));
+=======
+	csum_replace_by_diff(&l4.tcp->check, htonl(paylen));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* update gso size and bytecount with header size */
 	first->gso_segs = skb_shinfo(skb)->gso_segs;
@@ -7907,15 +8876,22 @@ static int ixgbe_tso(struct ixgbe_ring *tx_ring,
 	mss_l4len_idx = (*hdr_len - l4_offset) << IXGBE_ADVTXD_L4LEN_SHIFT;
 	mss_l4len_idx |= skb_shinfo(skb)->gso_size << IXGBE_ADVTXD_MSS_SHIFT;
 
+<<<<<<< HEAD
 	fceof_saidx |= itd->sa_idx;
 	type_tucmd |= itd->flags | itd->trailer_len;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* vlan_macip_lens: HEADLEN, MACLEN, VLAN tag */
 	vlan_macip_lens = l4.hdr - ip.hdr;
 	vlan_macip_lens |= (ip.hdr - skb->data) << IXGBE_ADVTXD_MACLEN_SHIFT;
 	vlan_macip_lens |= first->tx_flags & IXGBE_TX_FLAGS_VLAN_MASK;
 
+<<<<<<< HEAD
 	ixgbe_tx_ctxtdesc(tx_ring, vlan_macip_lens, fceof_saidx, type_tucmd,
+=======
+	ixgbe_tx_ctxtdesc(tx_ring, vlan_macip_lens, 0, type_tucmd,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  mss_l4len_idx);
 
 	return 1;
@@ -7931,12 +8907,19 @@ static inline bool ixgbe_ipv6_csum_is_sctp(struct sk_buff *skb)
 }
 
 static void ixgbe_tx_csum(struct ixgbe_ring *tx_ring,
+<<<<<<< HEAD
 			  struct ixgbe_tx_buffer *first,
 			  struct ixgbe_ipsec_tx_data *itd)
 {
 	struct sk_buff *skb = first->skb;
 	u32 vlan_macip_lens = 0;
 	u32 fceof_saidx = 0;
+=======
+			  struct ixgbe_tx_buffer *first)
+{
+	struct sk_buff *skb = first->skb;
+	u32 vlan_macip_lens = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 type_tucmd = 0;
 
 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
@@ -7977,10 +8960,14 @@ no_csum:
 	vlan_macip_lens |= skb_network_offset(skb) << IXGBE_ADVTXD_MACLEN_SHIFT;
 	vlan_macip_lens |= first->tx_flags & IXGBE_TX_FLAGS_VLAN_MASK;
 
+<<<<<<< HEAD
 	fceof_saidx |= itd->sa_idx;
 	type_tucmd |= itd->flags | itd->trailer_len;
 
 	ixgbe_tx_ctxtdesc(tx_ring, vlan_macip_lens, fceof_saidx, type_tucmd, 0);
+=======
+	ixgbe_tx_ctxtdesc(tx_ring, vlan_macip_lens, 0, type_tucmd, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define IXGBE_SET_FLAG(_input, _flag, _result) \
@@ -8023,16 +9010,23 @@ static void ixgbe_tx_olinfo_status(union ixgbe_adv_tx_desc *tx_desc,
 					IXGBE_TX_FLAGS_CSUM,
 					IXGBE_ADVTXD_POPTS_TXSM);
 
+<<<<<<< HEAD
 	/* enable IPv4 checksum for TSO */
+=======
+	/* enble IPv4 checksum for TSO */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	olinfo_status |= IXGBE_SET_FLAG(tx_flags,
 					IXGBE_TX_FLAGS_IPV4,
 					IXGBE_ADVTXD_POPTS_IXSM);
 
+<<<<<<< HEAD
 	/* enable IPsec */
 	olinfo_status |= IXGBE_SET_FLAG(tx_flags,
 					IXGBE_TX_FLAGS_IPSEC,
 					IXGBE_ADVTXD_POPTS_IPSEC);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Check Context must be set if Tx switch is enabled, which it
 	 * always is for case where virtual functions are running
@@ -8381,6 +9375,7 @@ static void ixgbe_atr(struct ixgbe_ring *ring,
 					      input, common, ring->queue_index);
 }
 
+<<<<<<< HEAD
 #ifdef IXGBE_FCOE
 static u16 ixgbe_select_queue(struct net_device *dev, struct sk_buff *skb,
 			      struct net_device *sb_dev,
@@ -8400,6 +9395,22 @@ static u16 ixgbe_select_queue(struct net_device *dev, struct sk_buff *skb,
 
 		return txq;
 	}
+=======
+static u16 ixgbe_select_queue(struct net_device *dev, struct sk_buff *skb,
+			      void *accel_priv, select_queue_fallback_t fallback)
+{
+	struct ixgbe_fwd_adapter *fwd_adapter = accel_priv;
+#ifdef IXGBE_FCOE
+	struct ixgbe_adapter *adapter;
+	struct ixgbe_ring_feature *f;
+	int txq;
+#endif
+
+	if (fwd_adapter)
+		return skb->queue_mapping + fwd_adapter->tx_base_queue;
+
+#ifdef IXGBE_FCOE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * only execute the code below if protocol is FCoE
@@ -8410,11 +9421,19 @@ static u16 ixgbe_select_queue(struct net_device *dev, struct sk_buff *skb,
 	case htons(ETH_P_FIP):
 		adapter = netdev_priv(dev);
 
+<<<<<<< HEAD
 		if (!sb_dev && (adapter->flags & IXGBE_FLAG_FCOE_ENABLED))
 			break;
 		/* fall through */
 	default:
 		return fallback(dev, skb, sb_dev);
+=======
+		if (adapter->flags & IXGBE_FLAG_FCOE_ENABLED)
+			break;
+		/* fall through */
+	default:
+		return fallback(dev, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	f = &adapter->ring_feature[RING_F_FCOE];
@@ -8426,11 +9445,21 @@ static u16 ixgbe_select_queue(struct net_device *dev, struct sk_buff *skb,
 		txq -= f->indices;
 
 	return txq + f->offset;
+<<<<<<< HEAD
 }
 
 #endif
 static int ixgbe_xmit_xdp_ring(struct ixgbe_adapter *adapter,
 			       struct xdp_frame *xdpf)
+=======
+#else
+	return fallback(dev, skb);
+#endif
+}
+
+static int ixgbe_xmit_xdp_ring(struct ixgbe_adapter *adapter,
+			       struct xdp_buff *xdp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ixgbe_ring *ring = adapter->xdp_ring[smp_processor_id()];
 	struct ixgbe_tx_buffer *tx_buffer;
@@ -8439,12 +9468,20 @@ static int ixgbe_xmit_xdp_ring(struct ixgbe_adapter *adapter,
 	dma_addr_t dma;
 	u16 i;
 
+<<<<<<< HEAD
 	len = xdpf->len;
+=======
+	len = xdp->data_end - xdp->data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(!ixgbe_desc_unused(ring)))
 		return IXGBE_XDP_CONSUMED;
 
+<<<<<<< HEAD
 	dma = dma_map_single(ring->dev, xdpf->data, len, DMA_TO_DEVICE);
+=======
+	dma = dma_map_single(ring->dev, xdp->data, len, DMA_TO_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dma_mapping_error(ring->dev, dma))
 		return IXGBE_XDP_CONSUMED;
 
@@ -8459,8 +9496,12 @@ static int ixgbe_xmit_xdp_ring(struct ixgbe_adapter *adapter,
 
 	dma_unmap_len_set(tx_buffer, len, len);
 	dma_unmap_addr_set(tx_buffer, dma, dma);
+<<<<<<< HEAD
 	tx_buffer->xdpf = xdpf;
 
+=======
+	tx_buffer->data = xdp->data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_desc->read.buffer_addr = cpu_to_le64(dma);
 
 	/* put descriptor type bits */
@@ -8495,7 +9536,10 @@ netdev_tx_t ixgbe_xmit_frame_ring(struct sk_buff *skb,
 	u32 tx_flags = 0;
 	unsigned short f;
 	u16 count = TXD_USE_COUNT(skb_headlen(skb));
+<<<<<<< HEAD
 	struct ixgbe_ipsec_tx_data ipsec_tx = { 0 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be16 protocol = skb->protocol;
 	u8 hdr_len = 0;
 
@@ -8539,7 +9583,12 @@ netdev_tx_t ixgbe_xmit_frame_ring(struct sk_buff *skb,
 
 	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
 	    adapter->ptp_clock) {
+<<<<<<< HEAD
 		if (!test_and_set_bit_lock(__IXGBE_PTP_TX_IN_PROGRESS,
+=======
+		if (adapter->tstamp_config.tx_type == HWTSTAMP_TX_ON &&
+		    !test_and_set_bit_lock(__IXGBE_PTP_TX_IN_PROGRESS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   &adapter->state)) {
 			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
 			tx_flags |= IXGBE_TX_FLAGS_TSTAMP;
@@ -8600,6 +9649,7 @@ netdev_tx_t ixgbe_xmit_frame_ring(struct sk_buff *skb,
 	}
 
 #endif /* IXGBE_FCOE */
+<<<<<<< HEAD
 
 #ifdef CONFIG_XFRM_OFFLOAD
 	if (xfrm_offload(skb) &&
@@ -8611,6 +9661,13 @@ netdev_tx_t ixgbe_xmit_frame_ring(struct sk_buff *skb,
 		goto out_drop;
 	else if (!tso)
 		ixgbe_tx_csum(tx_ring, first, &ipsec_tx);
+=======
+	tso = ixgbe_tso(tx_ring, first, &hdr_len);
+	if (tso < 0)
+		goto out_drop;
+	else if (!tso)
+		ixgbe_tx_csum(tx_ring, first);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* add the ATR filter if ATR is on */
 	if (test_bit(__IXGBE_TX_FDIR_INIT_DONE, &tx_ring->state))
@@ -8735,7 +9792,11 @@ static int ixgbe_ioctl(struct net_device *netdev, struct ifreq *req, int cmd)
 /**
  * ixgbe_add_sanmac_netdev - Add the SAN MAC address to the corresponding
  * netdev->dev_addrs
+<<<<<<< HEAD
  * @dev: network interface device structure
+=======
+ * @netdev: network interface device structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns non-zero on failure
  **/
@@ -8759,7 +9820,11 @@ static int ixgbe_add_sanmac_netdev(struct net_device *dev)
 /**
  * ixgbe_del_sanmac_netdev - Removes the SAN MAC address to the corresponding
  * netdev->dev_addrs
+<<<<<<< HEAD
  * @dev: network interface device structure
+=======
+ * @netdev: network interface device structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns non-zero on failure
  **/
@@ -8777,6 +9842,31 @@ static int ixgbe_del_sanmac_netdev(struct net_device *dev)
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+/*
+ * Polling 'interrupt' - used by things like netconsole to send skbs
+ * without having to re-enable interrupts. It's not called while
+ * the interrupt routine is executing.
+ */
+static void ixgbe_netpoll(struct net_device *netdev)
+{
+	struct ixgbe_adapter *adapter = netdev_priv(netdev);
+	int i;
+
+	/* if interface is down do nothing */
+	if (test_bit(__IXGBE_DOWN, &adapter->state))
+		return;
+
+	/* loop through and schedule all active queues */
+	for (i = 0; i < adapter->num_q_vectors; i++)
+		ixgbe_msix_clean_rings(0, adapter->q_vector[i]);
+}
+
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ixgbe_get_ring_stats64(struct rtnl_link_stats64 *stats,
 				   struct ixgbe_ring *ring)
 {
@@ -8802,7 +9892,11 @@ static void ixgbe_get_stats64(struct net_device *netdev,
 
 	rcu_read_lock();
 	for (i = 0; i < adapter->num_rx_queues; i++) {
+<<<<<<< HEAD
 		struct ixgbe_ring *ring = READ_ONCE(adapter->rx_ring[i]);
+=======
+		struct ixgbe_ring *ring = ACCESS_ONCE(adapter->rx_ring[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64 bytes, packets;
 		unsigned int start;
 
@@ -8818,12 +9912,20 @@ static void ixgbe_get_stats64(struct net_device *netdev,
 	}
 
 	for (i = 0; i < adapter->num_tx_queues; i++) {
+<<<<<<< HEAD
 		struct ixgbe_ring *ring = READ_ONCE(adapter->tx_ring[i]);
+=======
+		struct ixgbe_ring *ring = ACCESS_ONCE(adapter->tx_ring[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ixgbe_get_ring_stats64(stats, ring);
 	}
 	for (i = 0; i < adapter->num_xdp_queues; i++) {
+<<<<<<< HEAD
 		struct ixgbe_ring *ring = READ_ONCE(adapter->xdp_ring[i]);
+=======
+		struct ixgbe_ring *ring = ACCESS_ONCE(adapter->xdp_ring[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ixgbe_get_ring_stats64(stats, ring);
 	}
@@ -8901,6 +10003,7 @@ static void ixgbe_set_prio_tc_map(struct ixgbe_adapter *adapter)
 }
 
 #endif /* CONFIG_IXGBE_DCB */
+<<<<<<< HEAD
 static int ixgbe_reassign_macvlan_pool(struct net_device *vdev, void *data)
 {
 	struct ixgbe_adapter *adapter = data;
@@ -8953,12 +10056,22 @@ static void ixgbe_defrag_macvlan_pools(struct net_device *dev)
  * ixgbe_setup_tc - configure net_device for multiple traffic classes
  *
  * @dev: net device to configure
+=======
+/**
+ * ixgbe_setup_tc - configure net_device for multiple traffic classes
+ *
+ * @netdev: net device to configure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @tc: number of traffic classes to enable
  */
 int ixgbe_setup_tc(struct net_device *dev, u8 tc)
 {
 	struct ixgbe_adapter *adapter = netdev_priv(dev);
 	struct ixgbe_hw *hw = &adapter->hw;
+<<<<<<< HEAD
+=======
+	bool pools;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Hardware supports up to 8 traffic classes */
 	if (tc > adapter->dcb_cfg.num_tcs.pg_tcs)
@@ -8967,6 +10080,13 @@ int ixgbe_setup_tc(struct net_device *dev, u8 tc)
 	if (hw->mac.type == ixgbe_mac_82598EB && tc && tc < MAX_TRAFFIC_CLASS)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	pools = (find_first_zero_bit(&adapter->fwd_bitmask, 32) > 1);
+	if (tc && pools && adapter->num_rx_pools > IXGBE_MAX_DCBMACVLANS)
+		return -EBUSY;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Hardware has to reinitialize queues and interrupts to
 	 * match packet buffer alignment. Unfortunately, the
 	 * hardware is not flexible enough to do this dynamically.
@@ -8980,6 +10100,7 @@ int ixgbe_setup_tc(struct net_device *dev, u8 tc)
 
 #ifdef CONFIG_IXGBE_DCB
 	if (tc) {
+<<<<<<< HEAD
 		if (adapter->xdp_prog) {
 			e_warn(probe, "DCB is not supported with XDP\n");
 
@@ -8993,6 +10114,11 @@ int ixgbe_setup_tc(struct net_device *dev, u8 tc)
 		ixgbe_set_prio_tc_map(adapter);
 
 		adapter->hw_tcs = tc;
+=======
+		netdev_set_num_tc(dev, tc);
+		ixgbe_set_prio_tc_map(adapter);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adapter->flags |= IXGBE_FLAG_DCB_ENABLED;
 
 		if (adapter->hw.mac.type == ixgbe_mac_82598EB) {
@@ -9006,7 +10132,10 @@ int ixgbe_setup_tc(struct net_device *dev, u8 tc)
 			adapter->hw.fc.requested_mode = adapter->last_lfc_mode;
 
 		adapter->flags &= ~IXGBE_FLAG_DCB_ENABLED;
+<<<<<<< HEAD
 		adapter->hw_tcs = tc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		adapter->temp_dcb_cfg.pfc_mode_enable = false;
 		adapter->dcb_cfg.pfc_mode_enable = false;
@@ -9017,8 +10146,11 @@ int ixgbe_setup_tc(struct net_device *dev, u8 tc)
 #endif /* CONFIG_IXGBE_DCB */
 	ixgbe_init_interrupt_scheme(adapter);
 
+<<<<<<< HEAD
 	ixgbe_defrag_macvlan_pools(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (netif_running(dev))
 		return ixgbe_open(dev);
 
@@ -9123,12 +10255,21 @@ struct upper_walk_data {
 static int get_macvlan_queue(struct net_device *upper, void *_data)
 {
 	if (netif_is_macvlan(upper)) {
+<<<<<<< HEAD
 		struct ixgbe_fwd_adapter *vadapter = macvlan_accel_priv(upper);
+=======
+		struct macvlan_dev *dfwd = netdev_priv(upper);
+		struct ixgbe_fwd_adapter *vadapter = dfwd->fwd_priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct upper_walk_data *data = _data;
 		struct ixgbe_adapter *adapter = data->adapter;
 		int ifindex = data->ifindex;
 
+<<<<<<< HEAD
 		if (vadapter && upper->ifindex == ifindex) {
+=======
+		if (vadapter && vadapter->netdev->ifindex == ifindex) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->queue = adapter->rx_ring[vadapter->rx_base_queue]->reg_idx;
 			data->action = data->queue;
 			return 1;
@@ -9141,7 +10282,10 @@ static int get_macvlan_queue(struct net_device *upper, void *_data)
 static int handle_redirect_action(struct ixgbe_adapter *adapter, int ifindex,
 				  u8 *queue, u64 *action)
 {
+<<<<<<< HEAD
 	struct ixgbe_ring_feature *vmdq = &adapter->ring_feature[RING_F_VMDQ];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int num_vfs = adapter->num_vfs, vf;
 	struct upper_walk_data data;
 	struct net_device *upper;
@@ -9150,7 +10294,15 @@ static int handle_redirect_action(struct ixgbe_adapter *adapter, int ifindex,
 	for (vf = 0; vf < num_vfs; ++vf) {
 		upper = pci_get_drvdata(adapter->vfinfo[vf].vfdev);
 		if (upper->ifindex == ifindex) {
+<<<<<<< HEAD
 			*queue = vf * __ALIGN_MASK(1, ~vmdq->mask);
+=======
+			if (adapter->num_rx_pools > 1)
+				*queue = vf * 2;
+			else
+				*queue = vf * adapter->num_rx_queues_per_pool;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*action = vf + 1;
 			*action <<= ETHTOOL_RX_FLOW_SPEC_RING_VF_OFF;
 			return 0;
@@ -9177,12 +10329,23 @@ static int parse_tc_actions(struct ixgbe_adapter *adapter,
 			    struct tcf_exts *exts, u64 *action, u8 *queue)
 {
 	const struct tc_action *a;
+<<<<<<< HEAD
 	int i;
+=======
+	LIST_HEAD(actions);
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tcf_exts_has_actions(exts))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	tcf_exts_for_each_action(i, a, exts) {
+=======
+	tcf_exts_to_list(exts, &actions);
+	list_for_each_entry(a, &actions, list) {
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Drop action */
 		if (is_tcf_gact_shot(a)) {
 			*action = IXGBE_FDIR_DROP_QUEUE;
@@ -9192,6 +10355,7 @@ static int parse_tc_actions(struct ixgbe_adapter *adapter,
 
 		/* Redirect to a VF or a offloaded macvlan */
 		if (is_tcf_mirred_egress_redirect(a)) {
+<<<<<<< HEAD
 			struct net_device *dev = tcf_mirred_dev(a);
 
 			if (!dev)
@@ -9201,6 +10365,15 @@ static int parse_tc_actions(struct ixgbe_adapter *adapter,
 		}
 
 		return -EINVAL;
+=======
+			int ifindex = tcf_mirred_ifindex(a);
+
+			err = handle_redirect_action(adapter, ifindex, queue,
+						     action);
+			if (err == 0)
+				return err;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return -EINVAL;
@@ -9230,8 +10403,12 @@ static int ixgbe_clsu32_build_input(struct ixgbe_fdir_filter *input,
 
 		for (j = 0; field_ptr[j].val; j++) {
 			if (field_ptr[j].off == off) {
+<<<<<<< HEAD
 				field_ptr[j].val(input, mask, (__force u32)val,
 						 (__force u32)m);
+=======
+				field_ptr[j].val(input, mask, val, m);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				input->filter.formatted.flow_type |=
 					field_ptr[j].type;
 				found_entry = true;
@@ -9240,10 +10417,15 @@ static int ixgbe_clsu32_build_input(struct ixgbe_fdir_filter *input,
 		}
 		if (nexthdr) {
 			if (nexthdr->off == cls->knode.sel->keys[i].off &&
+<<<<<<< HEAD
 			    nexthdr->val ==
 			    (__force u32)cls->knode.sel->keys[i].val &&
 			    nexthdr->mask ==
 			    (__force u32)cls->knode.sel->keys[i].mask)
+=======
+			    nexthdr->val == cls->knode.sel->keys[i].val &&
+			    nexthdr->mask == cls->knode.sel->keys[i].mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				found_jump_field = true;
 			else
 				continue;
@@ -9347,8 +10529,12 @@ static int ixgbe_configure_clsu32(struct ixgbe_adapter *adapter,
 		for (i = 0; nexthdr[i].jump; i++) {
 			if (nexthdr[i].o != cls->knode.sel->offoff ||
 			    nexthdr[i].s != cls->knode.sel->offshift ||
+<<<<<<< HEAD
 			    nexthdr[i].m !=
 			    (__force u32)cls->knode.sel->offmask)
+=======
+			    nexthdr[i].m != cls->knode.sel->offmask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return err;
 
 			jump = kzalloc(sizeof(*jump), GFP_KERNEL);
@@ -9456,9 +10642,21 @@ free_jump:
 	return err;
 }
 
+<<<<<<< HEAD
 static int ixgbe_setup_tc_cls_u32(struct ixgbe_adapter *adapter,
 				  struct tc_cls_u32_offload *cls_u32)
 {
+=======
+static int ixgbe_setup_tc_cls_u32(struct net_device *dev,
+				  struct tc_cls_u32_offload *cls_u32)
+{
+	struct ixgbe_adapter *adapter = netdev_priv(dev);
+
+	if (!is_classid_clsact_ingress(cls_u32->common.classid) ||
+	    cls_u32->common.chain_index)
+		return -EOPNOTSUPP;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (cls_u32->command) {
 	case TC_CLSU32_NEW_KNODE:
 	case TC_CLSU32_REPLACE_KNODE:
@@ -9475,6 +10673,7 @@ static int ixgbe_setup_tc_cls_u32(struct ixgbe_adapter *adapter,
 	}
 }
 
+<<<<<<< HEAD
 static int ixgbe_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
 				   void *cb_priv)
 {
@@ -9512,6 +10711,8 @@ static int ixgbe_setup_tc_block(struct net_device *dev,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ixgbe_setup_tc_mqprio(struct net_device *dev,
 				 struct tc_mqprio_qopt *mqprio)
 {
@@ -9523,9 +10724,15 @@ static int __ixgbe_setup_tc(struct net_device *dev, enum tc_setup_type type,
 			    void *type_data)
 {
 	switch (type) {
+<<<<<<< HEAD
 	case TC_SETUP_BLOCK:
 		return ixgbe_setup_tc_block(dev, type_data);
 	case TC_SETUP_QDISC_MQPRIO:
+=======
+	case TC_SETUP_CLSU32:
+		return ixgbe_setup_tc_cls_u32(dev, type_data);
+	case TC_SETUP_MQPRIO:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ixgbe_setup_tc_mqprio(dev, type_data);
 	default:
 		return -EOPNOTSUPP;
@@ -9538,7 +10745,11 @@ void ixgbe_sriov_reinit(struct ixgbe_adapter *adapter)
 	struct net_device *netdev = adapter->netdev;
 
 	rtnl_lock();
+<<<<<<< HEAD
 	ixgbe_setup_tc(netdev, adapter->hw_tcs);
+=======
+	ixgbe_setup_tc(netdev, netdev_get_num_tc(netdev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_unlock();
 }
 
@@ -9566,6 +10777,7 @@ static netdev_features_t ixgbe_fix_features(struct net_device *netdev,
 	if (!(adapter->flags2 & IXGBE_FLAG2_RSC_CAPABLE))
 		features &= ~NETIF_F_LRO;
 
+<<<<<<< HEAD
 	if (adapter->xdp_prog && (features & NETIF_F_LRO)) {
 		e_dev_err("LRO is not supported with XDP\n");
 		features &= ~NETIF_F_LRO;
@@ -9590,6 +10802,11 @@ static void ixgbe_reset_l2fw_offload(struct ixgbe_adapter *adapter)
 	ixgbe_setup_tc(adapter->netdev, adapter->hw_tcs);
 }
 
+=======
+	return features;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ixgbe_set_features(struct net_device *netdev,
 			      netdev_features_t features)
 {
@@ -9635,7 +10852,11 @@ static int ixgbe_set_features(struct net_device *netdev,
 		/* We cannot enable ATR if SR-IOV is enabled */
 		if (adapter->flags & IXGBE_FLAG_SRIOV_ENABLED ||
 		    /* We cannot enable ATR if we have 2 or more tcs */
+<<<<<<< HEAD
 		    (adapter->hw_tcs > 1) ||
+=======
+		    (netdev_get_num_tc(netdev) > 1) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    /* We cannot enable ATR if RSS is disabled */
 		    (adapter->ring_feature[RING_F_RSS].limit <= 1) ||
 		    /* A sample rate of 0 indicates ATR disabled */
@@ -9670,9 +10891,13 @@ static int ixgbe_set_features(struct net_device *netdev,
 		}
 	}
 
+<<<<<<< HEAD
 	if ((changed & NETIF_F_HW_L2FW_DOFFLOAD) && adapter->num_rx_pools > 1)
 		ixgbe_reset_l2fw_offload(adapter);
 	else if (need_reset)
+=======
+	if (need_reset)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ixgbe_do_reset(netdev);
 	else if (changed & (NETIF_F_HW_VLAN_CTAG_RX |
 			    NETIF_F_HW_VLAN_CTAG_FILTER))
@@ -9812,8 +11037,13 @@ static int ixgbe_ndo_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
 
 /**
  * ixgbe_configure_bridge_mode - set various bridge modes
+<<<<<<< HEAD
  * @adapter: the private structure
  * @mode: requested bridge mode
+=======
+ * @adapter - the private structure
+ * @mode - requested bridge mode
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Configure some settings require for various bridge modes.
  **/
@@ -9935,6 +11165,7 @@ static int ixgbe_ndo_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
 
 static void *ixgbe_fwd_add(struct net_device *pdev, struct net_device *vdev)
 {
+<<<<<<< HEAD
 	struct ixgbe_adapter *adapter = netdev_priv(pdev);
 	struct ixgbe_fwd_adapter *accel;
 	int tcs = adapter->hw_tcs ? : 1;
@@ -10027,10 +11258,84 @@ static void *ixgbe_fwd_add(struct net_device *pdev, struct net_device *vdev)
 		return ERR_PTR(err);
 
 	return accel;
+=======
+	struct ixgbe_fwd_adapter *fwd_adapter = NULL;
+	struct ixgbe_adapter *adapter = netdev_priv(pdev);
+	int used_pools = adapter->num_vfs + adapter->num_rx_pools;
+	unsigned int limit;
+	int pool, err;
+
+	/* Hardware has a limited number of available pools. Each VF, and the
+	 * PF require a pool. Check to ensure we don't attempt to use more
+	 * then the available number of pools.
+	 */
+	if (used_pools >= IXGBE_MAX_VF_FUNCTIONS)
+		return ERR_PTR(-EINVAL);
+
+#ifdef CONFIG_RPS
+	if (vdev->num_rx_queues != vdev->num_tx_queues) {
+		netdev_info(pdev, "%s: Only supports a single queue count for TX and RX\n",
+			    vdev->name);
+		return ERR_PTR(-EINVAL);
+	}
+#endif
+	/* Check for hardware restriction on number of rx/tx queues */
+	if (vdev->num_tx_queues > IXGBE_MAX_L2A_QUEUES ||
+	    vdev->num_tx_queues == IXGBE_BAD_L2A_QUEUE) {
+		netdev_info(pdev,
+			    "%s: Supports RX/TX Queue counts 1,2, and 4\n",
+			    pdev->name);
+		return ERR_PTR(-EINVAL);
+	}
+
+	if (((adapter->flags & IXGBE_FLAG_DCB_ENABLED) &&
+	      adapter->num_rx_pools > IXGBE_MAX_DCBMACVLANS - 1) ||
+	    (adapter->num_rx_pools > IXGBE_MAX_MACVLANS))
+		return ERR_PTR(-EBUSY);
+
+	fwd_adapter = kzalloc(sizeof(*fwd_adapter), GFP_KERNEL);
+	if (!fwd_adapter)
+		return ERR_PTR(-ENOMEM);
+
+	pool = find_first_zero_bit(&adapter->fwd_bitmask, 32);
+	adapter->num_rx_pools++;
+	set_bit(pool, &adapter->fwd_bitmask);
+	limit = find_last_bit(&adapter->fwd_bitmask, 32);
+
+	/* Enable VMDq flag so device will be set in VM mode */
+	adapter->flags |= IXGBE_FLAG_VMDQ_ENABLED | IXGBE_FLAG_SRIOV_ENABLED;
+	adapter->ring_feature[RING_F_VMDQ].limit = limit + 1;
+	adapter->ring_feature[RING_F_RSS].limit = vdev->num_tx_queues;
+
+	/* Force reinit of ring allocation with VMDQ enabled */
+	err = ixgbe_setup_tc(pdev, netdev_get_num_tc(pdev));
+	if (err)
+		goto fwd_add_err;
+	fwd_adapter->pool = pool;
+	fwd_adapter->real_adapter = adapter;
+
+	if (netif_running(pdev)) {
+		err = ixgbe_fwd_ring_up(vdev, fwd_adapter);
+		if (err)
+			goto fwd_add_err;
+		netif_tx_start_all_queues(vdev);
+	}
+
+	return fwd_adapter;
+fwd_add_err:
+	/* unwind counter and free adapter struct */
+	netdev_info(pdev,
+		    "%s: dfwd hardware acceleration failed\n", vdev->name);
+	clear_bit(pool, &adapter->fwd_bitmask);
+	adapter->num_rx_pools--;
+	kfree(fwd_adapter);
+	return ERR_PTR(err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ixgbe_fwd_del(struct net_device *pdev, void *priv)
 {
+<<<<<<< HEAD
 	struct ixgbe_fwd_adapter *accel = priv;
 	struct ixgbe_adapter *adapter = netdev_priv(pdev);
 	unsigned int rxbase = accel->rx_base_queue;
@@ -10063,6 +11368,25 @@ static void ixgbe_fwd_del(struct net_device *pdev, void *priv)
 
 	clear_bit(accel->pool, adapter->fwd_bitmask);
 	kfree(accel);
+=======
+	struct ixgbe_fwd_adapter *fwd_adapter = priv;
+	struct ixgbe_adapter *adapter = fwd_adapter->real_adapter;
+	unsigned int limit;
+
+	clear_bit(fwd_adapter->pool, &adapter->fwd_bitmask);
+	adapter->num_rx_pools--;
+
+	limit = find_last_bit(&adapter->fwd_bitmask, 32);
+	adapter->ring_feature[RING_F_VMDQ].limit = limit + 1;
+	ixgbe_fwd_ring_down(fwd_adapter->netdev, fwd_adapter);
+	ixgbe_setup_tc(pdev, netdev_get_num_tc(pdev));
+	netdev_dbg(pdev, "pool %i:%i queues %i:%i VSI bitmask %lx\n",
+		   fwd_adapter->pool, adapter->num_rx_pools,
+		   fwd_adapter->rx_base_queue,
+		   fwd_adapter->rx_base_queue + adapter->num_rx_queues_per_pool,
+		   adapter->fwd_bitmask);
+	kfree(fwd_adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define IXGBE_MAX_MAC_HDR_LEN		127
@@ -10092,6 +11416,7 @@ ixgbe_features_check(struct sk_buff *skb, struct net_device *dev,
 
 	/* We can only support IPV4 TSO in tunnels if we can mangle the
 	 * inner IP ID field, so strip TSO if MANGLEID is not supported.
+<<<<<<< HEAD
 	 * IPsec offoad sets skb->encapsulation but still can handle
 	 * the TSO, so it's the exception.
 	 */
@@ -10101,6 +11426,11 @@ ixgbe_features_check(struct sk_buff *skb, struct net_device *dev,
 #endif
 			features &= ~NETIF_F_TSO;
 	}
+=======
+	 */
+	if (skb->encapsulation && !(features & NETIF_F_TSO_MANGLEID))
+		features &= ~NETIF_F_TSO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return features;
 }
@@ -10135,7 +11465,11 @@ static int ixgbe_xdp_setup(struct net_device *dev, struct bpf_prog *prog)
 
 	/* If transitioning XDP modes reconfigure rings */
 	if (!!prog != !!old_prog) {
+<<<<<<< HEAD
 		int err = ixgbe_setup_tc(dev, adapter->hw_tcs);
+=======
+		int err = ixgbe_setup_tc(dev, netdev_get_num_tc(dev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (err) {
 			rcu_assign_pointer(adapter->xdp_prog, old_prog);
@@ -10143,8 +11477,12 @@ static int ixgbe_xdp_setup(struct net_device *dev, struct bpf_prog *prog)
 		}
 	} else {
 		for (i = 0; i < adapter->num_rx_queues; i++)
+<<<<<<< HEAD
 			(void)xchg(&adapter->rx_ring[i]->xdp_prog,
 			    adapter->xdp_prog);
+=======
+			xchg(&adapter->rx_ring[i]->xdp_prog, adapter->xdp_prog);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (old_prog)
@@ -10153,7 +11491,11 @@ static int ixgbe_xdp_setup(struct net_device *dev, struct bpf_prog *prog)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ixgbe_xdp(struct net_device *dev, struct netdev_bpf *xdp)
+=======
+static int ixgbe_xdp(struct net_device *dev, struct netdev_xdp *xdp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ixgbe_adapter *adapter = netdev_priv(dev);
 
@@ -10161,6 +11503,10 @@ static int ixgbe_xdp(struct net_device *dev, struct netdev_bpf *xdp)
 	case XDP_SETUP_PROG:
 		return ixgbe_xdp_setup(dev, xdp->prog);
 	case XDP_QUERY_PROG:
+<<<<<<< HEAD
+=======
+		xdp->prog_attached = !!(adapter->xdp_prog);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xdp->prog_id = adapter->xdp_prog ?
 			adapter->xdp_prog->aux->id : 0;
 		return 0;
@@ -10169,6 +11515,7 @@ static int ixgbe_xdp(struct net_device *dev, struct netdev_bpf *xdp)
 	}
 }
 
+<<<<<<< HEAD
 static void ixgbe_xdp_ring_update_tail(struct ixgbe_ring *ring)
 {
 	/* Force memory writes to complete before letting h/w know there
@@ -10185,13 +11532,23 @@ static int ixgbe_xdp_xmit(struct net_device *dev, int n,
 	struct ixgbe_ring *ring;
 	int drops = 0;
 	int i;
+=======
+static int ixgbe_xdp_xmit(struct net_device *dev, struct xdp_buff *xdp)
+{
+	struct ixgbe_adapter *adapter = netdev_priv(dev);
+	struct ixgbe_ring *ring;
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(test_bit(__IXGBE_DOWN, &adapter->state)))
 		return -ENETDOWN;
 
+<<<<<<< HEAD
 	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* During program transitions its possible adapter->xdp_prog is assigned
 	 * but ring has not been configured yet. In this case simply abort xmit.
 	 */
@@ -10199,6 +11556,7 @@ static int ixgbe_xdp_xmit(struct net_device *dev, int n,
 	if (unlikely(!ring))
 		return -ENXIO;
 
+<<<<<<< HEAD
 	for (i = 0; i < n; i++) {
 		struct xdp_frame *xdpf = frames[i];
 		int err;
@@ -10214,12 +11572,47 @@ static int ixgbe_xdp_xmit(struct net_device *dev, int n,
 		ixgbe_xdp_ring_update_tail(ring);
 
 	return n - drops;
+=======
+	err = ixgbe_xmit_xdp_ring(adapter, xdp);
+	if (err != IXGBE_XDP_TX)
+		return -ENOSPC;
+
+	return 0;
+}
+
+static void ixgbe_xdp_flush(struct net_device *dev)
+{
+	struct ixgbe_adapter *adapter = netdev_priv(dev);
+	struct ixgbe_ring *ring;
+
+	/* Its possible the device went down between xdp xmit and flush so
+	 * we need to ensure device is still up.
+	 */
+	if (unlikely(test_bit(__IXGBE_DOWN, &adapter->state)))
+		return;
+
+	ring = adapter->xdp_prog ? adapter->xdp_ring[smp_processor_id()] : NULL;
+	if (unlikely(!ring))
+		return;
+
+	/* Force memory writes to complete before letting h/w know there
+	 * are new descriptors to fetch.
+	 */
+	wmb();
+	writel(ring->next_to_use, ring->tail);
+
+	return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct net_device_ops ixgbe_netdev_ops = {
 	.ndo_open		= ixgbe_open,
 	.ndo_stop		= ixgbe_close,
 	.ndo_start_xmit		= ixgbe_xmit_frame,
+<<<<<<< HEAD
+=======
+	.ndo_select_queue	= ixgbe_select_queue,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_set_rx_mode	= ixgbe_set_rx_mode,
 	.ndo_validate_addr	= eth_validate_addr,
 	.ndo_set_mac_address	= ixgbe_set_mac,
@@ -10238,8 +11631,15 @@ static const struct net_device_ops ixgbe_netdev_ops = {
 	.ndo_get_vf_config	= ixgbe_ndo_get_vf_config,
 	.ndo_get_stats64	= ixgbe_get_stats64,
 	.ndo_setup_tc		= __ixgbe_setup_tc,
+<<<<<<< HEAD
 #ifdef IXGBE_FCOE
 	.ndo_select_queue	= ixgbe_select_queue,
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+	.ndo_poll_controller	= ixgbe_netpoll,
+#endif
+#ifdef IXGBE_FCOE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_fcoe_ddp_setup = ixgbe_fcoe_ddp_get,
 	.ndo_fcoe_ddp_target = ixgbe_fcoe_ddp_target,
 	.ndo_fcoe_ddp_done = ixgbe_fcoe_ddp_put,
@@ -10258,8 +11658,14 @@ static const struct net_device_ops ixgbe_netdev_ops = {
 	.ndo_udp_tunnel_add	= ixgbe_add_udp_tunnel_port,
 	.ndo_udp_tunnel_del	= ixgbe_del_udp_tunnel_port,
 	.ndo_features_check	= ixgbe_features_check,
+<<<<<<< HEAD
 	.ndo_bpf		= ixgbe_xdp,
 	.ndo_xdp_xmit		= ixgbe_xdp_xmit,
+=======
+	.ndo_xdp		= ixgbe_xdp,
+	.ndo_xdp_xmit		= ixgbe_xdp_xmit,
+	.ndo_xdp_flush		= ixgbe_xdp_flush,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -10308,7 +11714,11 @@ static inline int ixgbe_enumerate_functions(struct ixgbe_adapter *adapter)
  * ixgbe_wol_supported - Check whether device supports WoL
  * @adapter: the adapter private structure
  * @device_id: the device ID
+<<<<<<< HEAD
  * @subdevice_id: the subsystem device ID
+=======
+ * @subdev_id: the subsystem device ID
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function is used by probe and ethtool to determine
  * which devices have WoL support
@@ -10377,6 +11787,7 @@ bool ixgbe_wol_supported(struct ixgbe_adapter *adapter, u16 device_id,
 }
 
 /**
+<<<<<<< HEAD
  * ixgbe_set_fw_version - Set FW version
  * @adapter: the adapter private structure
  *
@@ -10412,6 +11823,8 @@ static void ixgbe_set_fw_version(struct ixgbe_adapter *adapter)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * ixgbe_probe - Device Initialization Routine
  * @pdev: PCI device information struct
  * @ent: entry in ixgbe_pci_tbl
@@ -10625,6 +12038,7 @@ skip_sriov:
 	if (hw->mac.type >= ixgbe_mac_82599EB)
 		netdev->features |= NETIF_F_SCTP_CRC;
 
+<<<<<<< HEAD
 #ifdef CONFIG_XFRM_OFFLOAD
 #define IXGBE_ESP_FEATURES	(NETIF_F_HW_ESP | \
 				 NETIF_F_HW_ESP_TX_CSUM | \
@@ -10633,6 +12047,8 @@ skip_sriov:
 	if (adapter->ipsec)
 		netdev->features |= IXGBE_ESP_FEATURES;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* copy netdev features into list of user selectable features */
 	netdev->hw_features |= netdev->features |
 			       NETIF_F_HW_VLAN_CTAG_FILTER |
@@ -10695,6 +12111,10 @@ skip_sriov:
 					 NETIF_F_FCOE_MTU;
 	}
 #endif /* IXGBE_FCOE */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (adapter->flags2 & IXGBE_FLAG2_RSC_CAPABLE)
 		netdev->hw_features |= NETIF_F_LRO;
 	if (adapter->flags2 & IXGBE_FLAG2_RSC_ENABLED)
@@ -10722,7 +12142,12 @@ skip_sriov:
 	ether_addr_copy(hw->mac.addr, hw->mac.perm_addr);
 	ixgbe_mac_set_default_filter(adapter);
 
+<<<<<<< HEAD
 	timer_setup(&adapter->service_timer, ixgbe_service_timer, 0);
+=======
+	setup_timer(&adapter->service_timer, &ixgbe_service_timer,
+		    (unsigned long) adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ixgbe_removed(hw->hw_addr)) {
 		err = -EIO;
@@ -10754,7 +12179,12 @@ skip_sriov:
 	device_set_wakeup_enable(&adapter->pdev->dev, adapter->wol);
 
 	/* save off EEPROM version number */
+<<<<<<< HEAD
 	ixgbe_set_fw_version(adapter);
+=======
+	hw->eeprom.ops.read(hw, 0x2e, &adapter->eeprom_verh);
+	hw->eeprom.ops.read(hw, 0x2d, &adapter->eeprom_verl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* pick up the PCI bus settings for reporting later */
 	if (ixgbe_pcie_from_parent(hw))
@@ -10929,7 +12359,10 @@ static void ixgbe_remove(struct pci_dev *pdev)
 	if (netdev->reg_state == NETREG_REGISTERED)
 		unregister_netdev(netdev);
 
+<<<<<<< HEAD
 	ixgbe_stop_ipsec_offload(adapter);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ixgbe_clear_interrupt_scheme(adapter);
 
 	ixgbe_release_hw_control(adapter);
@@ -11078,6 +12511,7 @@ skip_bad_vf_detection:
 	if (!test_bit(__IXGBE_SERVICE_INITED, &adapter->state))
 		return PCI_ERS_RESULT_DISCONNECT;
 
+<<<<<<< HEAD
 	if (!netif_device_present(netdev))
 		return PCI_ERS_RESULT_DISCONNECT;
 
@@ -11087,11 +12521,22 @@ skip_bad_vf_detection:
 	if (netif_running(netdev))
 		ixgbe_close_suspend(adapter);
 
+=======
+	rtnl_lock();
+	netif_device_detach(netdev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (state == pci_channel_io_perm_failure) {
 		rtnl_unlock();
 		return PCI_ERS_RESULT_DISCONNECT;
 	}
 
+<<<<<<< HEAD
+=======
+	if (netif_running(netdev))
+		ixgbe_close_suspend(adapter);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!test_and_set_bit(__IXGBE_DISABLED, &adapter->state))
 		pci_disable_device(pdev);
 	rtnl_unlock();

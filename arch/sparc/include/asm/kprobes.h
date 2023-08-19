@@ -44,6 +44,10 @@ struct kprobe_ctlblk {
 	unsigned long kprobe_status;
 	unsigned long kprobe_orig_tnpc;
 	unsigned long kprobe_orig_tstate_pil;
+<<<<<<< HEAD
+=======
+	struct pt_regs jprobe_saved_regs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct prev_kprobe prev_kprobe;
 };
 

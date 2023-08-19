@@ -404,7 +404,11 @@ static struct drm_connector *vc4_vec_connector_init(struct drm_device *dev,
 				   VC4_VEC_TV_MODE_NTSC);
 	vec->tv_mode = &vc4_vec_tv_modes[VC4_VEC_TV_MODE_NTSC];
 
+<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, vec->encoder);
+=======
+	drm_mode_connector_attach_encoder(connector, vec->encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return connector;
 }

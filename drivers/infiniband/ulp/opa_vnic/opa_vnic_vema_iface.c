@@ -176,10 +176,18 @@ void opa_vnic_get_vesw_info(struct opa_vnic_adapter *adapter,
 	for (i = 0; i < OPA_VESW_MAX_NUM_DEF_PORT; i++)
 		info->u_ucast_dlid[i] = cpu_to_be32(src->u_ucast_dlid[i]);
 
+<<<<<<< HEAD
 	info->rc = cpu_to_be32(src->rc);
 
 	memcpy(info->rsvd3, src->rsvd3, ARRAY_SIZE(src->rsvd3));
 	info->eth_mtu = cpu_to_be16(src->eth_mtu);
+=======
+	memcpy(info->rsvd3, src->rsvd3, ARRAY_SIZE(src->rsvd3));
+	for (i = 0; i < OPA_VNIC_MAX_NUM_PCP; i++)
+		info->eth_mtu[i] = cpu_to_be16(src->eth_mtu[i]);
+
+	info->eth_mtu_non_vlan = cpu_to_be16(src->eth_mtu_non_vlan);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(info->rsvd4, src->rsvd4, ARRAY_SIZE(src->rsvd4));
 }
 
@@ -210,10 +218,18 @@ void opa_vnic_set_vesw_info(struct opa_vnic_adapter *adapter,
 	for (i = 0; i < OPA_VESW_MAX_NUM_DEF_PORT; i++)
 		dst->u_ucast_dlid[i] = be32_to_cpu(info->u_ucast_dlid[i]);
 
+<<<<<<< HEAD
 	dst->rc = be32_to_cpu(info->rc);
 
 	memcpy(dst->rsvd3, info->rsvd3, ARRAY_SIZE(info->rsvd3));
 	dst->eth_mtu = be16_to_cpu(info->eth_mtu);
+=======
+	memcpy(dst->rsvd3, info->rsvd3, ARRAY_SIZE(info->rsvd3));
+	for (i = 0; i < OPA_VNIC_MAX_NUM_PCP; i++)
+		dst->eth_mtu[i] = be16_to_cpu(info->eth_mtu[i]);
+
+	dst->eth_mtu_non_vlan = be16_to_cpu(info->eth_mtu_non_vlan);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(dst->rsvd4, info->rsvd4, ARRAY_SIZE(info->rsvd4));
 }
 

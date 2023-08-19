@@ -512,6 +512,19 @@ static int kvm_unmap_hva_handler(struct kvm *kvm, gfn_t gfn, gfn_t gfn_end,
 	return 1;
 }
 
+<<<<<<< HEAD
+=======
+int kvm_unmap_hva(struct kvm *kvm, unsigned long hva)
+{
+	unsigned long end = hva + PAGE_SIZE;
+
+	handle_hva_to_gpa(kvm, hva, end, &kvm_unmap_hva_handler, NULL);
+
+	kvm_mips_callbacks->flush_shadow_all(kvm);
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kvm_unmap_hva_range(struct kvm *kvm, unsigned long start, unsigned long end)
 {
 	handle_hva_to_gpa(kvm, start, end, &kvm_unmap_hva_handler, NULL);

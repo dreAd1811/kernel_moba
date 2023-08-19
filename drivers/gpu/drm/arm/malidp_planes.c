@@ -36,9 +36,12 @@
 #define   LAYER_COMP_MASK		(0x3 << 12)
 #define   LAYER_COMP_PIXEL		(0x3 << 12)
 #define   LAYER_COMP_PLANE		(0x2 << 12)
+<<<<<<< HEAD
 #define   LAYER_ALPHA_OFFSET		(16)
 #define   LAYER_ALPHA_MASK		(0xff)
 #define   LAYER_ALPHA(x)		(((x) & LAYER_ALPHA_MASK) << LAYER_ALPHA_OFFSET)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MALIDP_LAYER_COMPOSE		0x008
 #define MALIDP_LAYER_SIZE		0x00c
 #define   LAYER_H_VAL(x)		(((x) & 0x1fff) << 0)
@@ -60,8 +63,17 @@ static void malidp_de_plane_destroy(struct drm_plane *plane)
 {
 	struct malidp_plane *mp = to_malidp_plane(plane);
 
+<<<<<<< HEAD
 	drm_plane_cleanup(plane);
 	kfree(mp);
+=======
+	if (mp->base.fb)
+		drm_framebuffer_unreference(mp->base.fb);
+
+	drm_plane_helper_disable(plane);
+	drm_plane_cleanup(plane);
+	devm_kfree(plane->dev->dev, mp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -141,12 +153,17 @@ static int malidp_se_check_scaling(struct malidp_plane *mp,
 	struct drm_crtc_state *crtc_state =
 		drm_atomic_get_existing_crtc_state(state->state, state->crtc);
 	struct malidp_crtc_state *mc;
+<<<<<<< HEAD
+=======
+	struct drm_rect clip = { 0 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 src_w, src_h;
 	int ret;
 
 	if (!crtc_state)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	mc = to_malidp_crtc_state(crtc_state);
 
 	ret = drm_atomic_helper_check_plane_state(state, crtc_state,
@@ -162,6 +179,16 @@ static int malidp_se_check_scaling(struct malidp_plane *mp,
 		src_h = state->src_h >> 16;
 	}
 
+=======
+	clip.x2 = crtc_state->adjusted_mode.hdisplay;
+	clip.y2 = crtc_state->adjusted_mode.vdisplay;
+	ret = drm_plane_helper_check_state(state, &clip, 0, INT_MAX, true, true);
+	if (ret)
+		return ret;
+
+	src_w = state->src_w >> 16;
+	src_h = state->src_h >> 16;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((state->crtc_w == src_w) && (state->crtc_h == src_h)) {
 		/* Scaling not necessary for this plane. */
 		mc->scaled_planes_mask &= ~(mp->layer->id);
@@ -171,6 +198,11 @@ static int malidp_se_check_scaling(struct malidp_plane *mp,
 	if (mp->layer->id & (DE_SMART | DE_GRAPHICS2))
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	mc = to_malidp_crtc_state(crtc_state);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mc->scaled_planes_mask |= mp->layer->id;
 	/* Defer scaling requirements calculation to the crtc check. */
 	return 0;
@@ -181,7 +213,10 @@ static int malidp_de_plane_check(struct drm_plane *plane,
 {
 	struct malidp_plane *mp = to_malidp_plane(plane);
 	struct malidp_plane_state *ms = to_malidp_plane_state(state);
+<<<<<<< HEAD
 	bool rotated = state->rotation & MALIDP_ROTATED_MASK;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_framebuffer *fb;
 	int i, ret;
 
@@ -190,16 +225,25 @@ static int malidp_de_plane_check(struct drm_plane *plane,
 
 	fb = state->fb;
 
+<<<<<<< HEAD
 	ms->format = malidp_hw_get_format_id(&mp->hwdev->hw->map,
 					     mp->layer->id,
 					     fb->format->format);
+=======
+	ms->format = malidp_hw_get_format_id(&mp->hwdev->map, mp->layer->id,
+					    fb->format->format);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ms->format == MALIDP_INVALID_FORMAT_ID)
 		return -EINVAL;
 
 	ms->n_planes = fb->format->num_planes;
 	for (i = 0; i < ms->n_planes; i++) {
+<<<<<<< HEAD
 		u8 alignment = malidp_hw_get_pitch_align(mp->hwdev, rotated);
 		if (fb->pitches[i] & (alignment - 1)) {
+=======
+		if (!malidp_hw_pitch_valid(mp->hwdev, fb->pitches[i])) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DRM_DEBUG_KMS("Invalid pitch %u for plane %d\n",
 				      fb->pitches[i], i);
 			return -EINVAL;
@@ -218,7 +262,11 @@ static int malidp_de_plane_check(struct drm_plane *plane,
 	 * third plane stride register.
 	 */
 	if (ms->n_planes == 3 &&
+<<<<<<< HEAD
 	    !(mp->hwdev->hw->features & MALIDP_DEVICE_LV_HAS_3_STRIDES) &&
+=======
+	    !(mp->hwdev->features & MALIDP_DEVICE_LV_HAS_3_STRIDES) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (state->fb->pitches[1] != state->fb->pitches[2]))
 		return -EINVAL;
 
@@ -236,9 +284,15 @@ static int malidp_de_plane_check(struct drm_plane *plane,
 	if (state->rotation & MALIDP_ROTATED_MASK) {
 		int val;
 
+<<<<<<< HEAD
 		val = mp->hwdev->hw->rotmem_required(mp->hwdev, state->crtc_w,
 						     state->crtc_h,
 						     fb->format->format);
+=======
+		val = mp->hwdev->rotmem_required(mp->hwdev, state->crtc_h,
+						 state->crtc_w,
+						 fb->format->format);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (val < 0)
 			return val;
 
@@ -258,7 +312,11 @@ static void malidp_de_set_plane_pitches(struct malidp_plane *mp,
 		return;
 
 	if (num_planes == 3)
+<<<<<<< HEAD
 		num_strides = (mp->hwdev->hw->features &
+=======
+		num_strides = (mp->hwdev->features &
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       MALIDP_DEVICE_LV_HAS_3_STRIDES) ? 3 : 2;
 
 	for (i = 0; i < num_strides; ++i)
@@ -267,6 +325,7 @@ static void malidp_de_set_plane_pitches(struct malidp_plane *mp,
 				mp->layer->stride_offset + i * 4);
 }
 
+<<<<<<< HEAD
 static const s16
 malidp_yuv2rgb_coeffs[][DRM_COLOR_RANGE_MAX][MALIDP_COLORADJ_NUM_COEFFS] = {
 	[DRM_COLOR_YCBCR_BT601][DRM_COLOR_YCBCR_LIMITED_RANGE] = {
@@ -321,16 +380,28 @@ static void malidp_de_set_color_encoding(struct malidp_plane *plane,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void malidp_de_plane_update(struct drm_plane *plane,
 				   struct drm_plane_state *old_state)
 {
 	struct malidp_plane *mp;
+<<<<<<< HEAD
 	struct malidp_plane_state *ms = to_malidp_plane_state(plane->state);
 	u32 src_w, src_h, dest_w, dest_h, val;
 	int i;
 	bool format_has_alpha = plane->state->fb->format->has_alpha;
 
 	mp = to_malidp_plane(plane);
+=======
+	const struct malidp_hw_regmap *map;
+	struct malidp_plane_state *ms = to_malidp_plane_state(plane->state);
+	u32 src_w, src_h, dest_w, dest_h, val;
+	int i;
+
+	mp = to_malidp_plane(plane);
+	map = &mp->hwdev->map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* convert src values from Q16 fixed point to integer */
 	src_w = plane->state->src_w >> 16;
@@ -354,11 +425,14 @@ static void malidp_de_plane_update(struct drm_plane *plane,
 	malidp_de_set_plane_pitches(mp, ms->n_planes,
 				    plane->state->fb->pitches);
 
+<<<<<<< HEAD
 	if ((plane->state->color_encoding != old_state->color_encoding) ||
 	    (plane->state->color_range != old_state->color_range))
 		malidp_de_set_color_encoding(mp, plane->state->color_encoding,
 					     plane->state->color_range);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	malidp_hw_write(mp->hwdev, LAYER_H_VAL(src_w) | LAYER_V_VAL(src_h),
 			mp->layer->base + MALIDP_LAYER_SIZE);
 
@@ -387,6 +461,7 @@ static void malidp_de_plane_update(struct drm_plane *plane,
 	if (plane->state->rotation & DRM_MODE_REFLECT_Y)
 		val |= LAYER_V_FLIP;
 
+<<<<<<< HEAD
 	val &= ~LAYER_COMP_MASK;
 	if (format_has_alpha) {
 
@@ -406,6 +481,14 @@ static void malidp_de_plane_update(struct drm_plane *plane,
 		/* Set layer alpha coefficient to 0xff ie fully opaque */
 		val |= LAYER_ALPHA(0xff);
 	}
+=======
+	/*
+	 * always enable pixel alpha blending until we have a way to change
+	 * blend modes
+	 */
+	val &= ~LAYER_COMP_MASK;
+	val |= LAYER_COMP_PIXEL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val &= ~LAYER_FLOWCFG(LAYER_FLOWCFG_MASK);
 	if (plane->state->crtc) {
@@ -443,7 +526,11 @@ static const struct drm_plane_helper_funcs malidp_de_plane_helper_funcs = {
 int malidp_de_planes_init(struct drm_device *drm)
 {
 	struct malidp_drm *malidp = drm->dev_private;
+<<<<<<< HEAD
 	const struct malidp_hw_regmap *map = &malidp->dev->hw->map;
+=======
+	const struct malidp_hw_regmap *map = &malidp->dev->map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct malidp_plane *plane = NULL;
 	enum drm_plane_type plane_type;
 	unsigned long crtcs = 1 << drm->mode_config.num_crtc;
@@ -500,6 +587,7 @@ int malidp_de_planes_init(struct drm_device *drm)
 		drm_plane_create_rotation_property(&plane->base, DRM_MODE_ROTATE_0, flags);
 		malidp_hw_write(malidp->dev, MALIDP_ALPHA_LUT,
 				plane->layer->base + MALIDP_LAYER_COMPOSE);
+<<<<<<< HEAD
 
 		/* Attach the YUV->RGB property only to video layers */
 		if (id & (DE_VIDEO1 | DE_VIDEO2)) {
@@ -520,6 +608,8 @@ int malidp_de_planes_init(struct drm_device *drm)
 			else
 				DRM_WARN("Failed to create video layer %d color properties\n", id);
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kfree(formats);
@@ -527,7 +617,24 @@ int malidp_de_planes_init(struct drm_device *drm)
 	return 0;
 
 cleanup:
+<<<<<<< HEAD
+=======
+	malidp_de_planes_destroy(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(formats);
 
 	return ret;
 }
+<<<<<<< HEAD
+=======
+
+void malidp_de_planes_destroy(struct drm_device *drm)
+{
+	struct drm_plane *p, *pt;
+
+	list_for_each_entry_safe(p, pt, &drm->mode_config.plane_list, head) {
+		drm_plane_cleanup(p);
+		kfree(p);
+	}
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

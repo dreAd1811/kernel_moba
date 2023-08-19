@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #
 # External soc control infrastructure and drivers
 #
@@ -40,7 +43,11 @@ config ESOC_DEBUG
 config ESOC_MDM_4x
 	bool "Add support for external modems"
 	help
+<<<<<<< HEAD
 	  In some QTI boards, an external modem such as mdm9x55 or sdx50m
+=======
+	  In some qualcomm boards, an external modem such as mdm9x55 or sdx50m
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  is connected to a primary msm. The primary soc can control/monitor
 	  the modem via gpios. The data communication with such modems can
 	  occur over PCIE or HSIC.

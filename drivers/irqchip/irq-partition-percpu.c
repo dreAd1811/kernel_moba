@@ -229,7 +229,11 @@ struct partition_desc *partition_create_desc(struct fwnode_handle *fwnode,
 		goto out;
 	desc->domain = d;
 
+<<<<<<< HEAD
 	desc->bitmap = kcalloc(BITS_TO_LONGS(nr_parts), sizeof(long),
+=======
+	desc->bitmap = kzalloc(sizeof(long) * BITS_TO_LONGS(nr_parts),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL);
 	if (WARN_ON(!desc->bitmap))
 		goto out;

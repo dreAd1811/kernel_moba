@@ -18,8 +18,13 @@ if NET_VENDOR_MARVELL
 
 config MV643XX_ETH
 	tristate "Marvell Discovery (643XX) and Orion ethernet support"
+<<<<<<< HEAD
 	depends on MV64X60 || PPC32 || PLAT_ORION || COMPILE_TEST
 	depends on INET
+=======
+	depends on (MV64X60 || PPC32 || PLAT_ORION || COMPILE_TEST) && INET
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select PHYLIB
 	select MVMDIO
 	---help---
@@ -58,8 +63,14 @@ config MVNETA_BM_ENABLE
 config MVNETA
 	tristate "Marvell Armada 370/38x/XP/37xx network interface support"
 	depends on ARCH_MVEBU || COMPILE_TEST
+<<<<<<< HEAD
 	select MVMDIO
 	select PHYLINK
+=======
+	depends on HAS_DMA
+	select MVMDIO
+	select FIXED_PHY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This driver supports the network interface units in the
 	  Marvell ARMADA XP, ARMADA 370, ARMADA 38x and
@@ -83,15 +94,24 @@ config MVNETA_BM
 config MVPP2
 	tristate "Marvell Armada 375/7K/8K network interface support"
 	depends on ARCH_MVEBU || COMPILE_TEST
+<<<<<<< HEAD
 	select MVMDIO
 	select PHYLINK
+=======
+	depends on HAS_DMA
+	select MVMDIO
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This driver supports the network interface units in the
 	  Marvell ARMADA 375, 7K and 8K SoCs.
 
 config PXA168_ETH
 	tristate "Marvell pxa168 ethernet support"
+<<<<<<< HEAD
 	depends on HAS_IOMEM
+=======
+	depends on HAS_IOMEM && HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on CPU_PXA168 || ARCH_BERLIN || COMPILE_TEST
 	select PHYLIB
 	---help---

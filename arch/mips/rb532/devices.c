@@ -310,8 +310,11 @@ static int __init plat_setup_devices(void)
 	return platform_add_devices(rb532_devs, ARRAY_SIZE(rb532_devs));
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_NET
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init setup_kmac(char *s)
 {
 	printk(KERN_INFO "korina mac = %s\n", s);
@@ -324,6 +327,9 @@ static int __init setup_kmac(char *s)
 
 __setup("kmac=", setup_kmac);
 
+<<<<<<< HEAD
 #endif /* CONFIG_NET */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 arch_initcall(plat_setup_devices);

@@ -22,9 +22,15 @@
  * may be supported using the same module.
  *
  * TODO: Test Raw bayer parameter settings and bayer capture
+<<<<<<< HEAD
  *	 Split module parameter structure to module specific ioctl structs
  *	 investigate if enum used for user space type definition
  *	 to be replaced by #defines or integer
+=======
+ * 	 Split module parameter structure to module specific ioctl structs
+ * 	 investigate if enum used for user space type definition
+ * 	 to be replaced by #defines or integer
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/platform_device.h>
 #include <linux/uaccess.h>
@@ -776,7 +782,11 @@ static void ccdc_restore_context(void)
 	regw(ccdc_ctx[CCDC_VP_OUT >> 2], CCDC_VP_OUT);
 	regw(ccdc_ctx[CCDC_PCR >> 2], CCDC_PCR);
 }
+<<<<<<< HEAD
 static const struct ccdc_hw_device ccdc_hw_dev = {
+=======
+static struct ccdc_hw_device ccdc_hw_dev = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "DM6446 CCDC",
 	.owner = THIS_MODULE,
 	.hw_ops = {

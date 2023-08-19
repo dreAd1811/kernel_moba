@@ -74,6 +74,18 @@ Helper Functions Reference
 .. kernel-doc:: drivers/gpu/drm/drm_atomic_helper.c
    :export:
 
+<<<<<<< HEAD
+=======
+Legacy CRTC/Modeset Helper Functions Reference
+==============================================
+
+.. kernel-doc:: drivers/gpu/drm/drm_crtc_helper.c
+   :doc: overview
+
+.. kernel-doc:: drivers/gpu/drm/drm_crtc_helper.c
+   :export:
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Simple KMS Helper Reference
 ===========================
 
@@ -109,6 +121,7 @@ Framebuffer CMA Helper Functions Reference
 
 .. _drm_bridges:
 
+<<<<<<< HEAD
 Framebuffer GEM Helper Reference
 ================================
 
@@ -118,6 +131,8 @@ Framebuffer GEM Helper Reference
 .. kernel-doc:: drivers/gpu/drm/drm_gem_framebuffer_helper.c
    :export:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Bridges
 =======
 
@@ -163,9 +178,12 @@ Panel Helper Reference
 .. kernel-doc:: drivers/gpu/drm/drm_panel.c
    :export:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/gpu/drm/drm_panel_orientation_quirks.c
    :export:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Display Port Helper Functions Reference
 =======================================
 
@@ -178,6 +196,7 @@ Display Port Helper Functions Reference
 .. kernel-doc:: drivers/gpu/drm/drm_dp_helper.c
    :export:
 
+<<<<<<< HEAD
 Display Port CEC Helper Functions Reference
 ===========================================
 
@@ -187,6 +206,8 @@ Display Port CEC Helper Functions Reference
 .. kernel-doc:: drivers/gpu/drm/drm_dp_cec.c
    :export:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Display Port Dual Mode Adaptor Helper Functions Reference
 =========================================================
 
@@ -291,6 +312,18 @@ Flip-work Helper Reference
 .. kernel-doc:: drivers/gpu/drm/drm_flip_work.c
    :export:
 
+<<<<<<< HEAD
+=======
+Plane Helper Reference
+======================
+
+.. kernel-doc:: drivers/gpu/drm/drm_plane_helper.c
+   :doc: overview
+
+.. kernel-doc:: drivers/gpu/drm/drm_plane_helper.c
+   :export:
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Auxiliary Modeset Helpers
 =========================
 
@@ -300,6 +333,7 @@ Auxiliary Modeset Helpers
 .. kernel-doc:: drivers/gpu/drm/drm_modeset_helper.c
    :export:
 
+<<<<<<< HEAD
 OF/DT Helpers
 =============
 
@@ -325,4 +359,13 @@ Legacy CRTC/Modeset Helper Functions Reference
    :doc: overview
 
 .. kernel-doc:: drivers/gpu/drm/drm_crtc_helper.c
+=======
+Framebuffer GEM Helper Reference
+================================
+
+.. kernel-doc:: drivers/gpu/drm/drm_gem_framebuffer_helper.c
+   :doc: overview
+
+.. kernel-doc:: drivers/gpu/drm/drm_gem_framebuffer_helper.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :export:

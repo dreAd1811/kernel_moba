@@ -144,7 +144,10 @@ do_local:
 
 	local_irq_restore(flags);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(__blk_complete_request);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * blk_complete_request - end I/O on a request

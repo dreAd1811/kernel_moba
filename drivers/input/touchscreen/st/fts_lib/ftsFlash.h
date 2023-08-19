@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * FTS Capacitive touch screen controller (FingerTipS)
  *
  * Copyright (C) 2016-2019, STMicroelectronics Limited.
+=======
+/*
+ * FTS Capacitive touch screen controller (FingerTipS)
+ *
+ * Copyright (C) 2016-2018, STMicroelectronics Limited.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Authors: AMG(Analog Mems Group) <marco.cali@st.com>
  *
  *
@@ -100,10 +107,16 @@ int flash_unlock(void);
 int fillMemory(u32 address, u8 *data, int size);
 int getFirmwareVersion(u16 *fw_vers, u16 *config_id);
 int getFWdata(const char *pathToFile, u8 **data, int *size, int from);
+<<<<<<< HEAD
 int getFWdata_nocheck(const char *pathToFile, u8 **data, int *size, int from);
 int parseBinFile(u8 *fw_data, int fw_size, struct Firmware *fw, int keep_cx);
 int readFwFile(const char *path, struct Firmware *fw, int keep_cx);
 int flash_burn(struct Firmware *fw, int force_burn, int keep_cx);
+=======
+int parseBinFile(u8 *fw_data, int fw_size, struct Firmware *fw, int keep_cx);
+int readFwFile(const char *path, struct Firmware *fw, int keep_cx);
+int flash_burn(struct Firmware fw, int force_burn, int keep_cx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int flashProcedure(const char *path, int force, int keep_cx);
 
 #endif

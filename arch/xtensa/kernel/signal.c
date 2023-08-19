@@ -28,6 +28,11 @@
 #include <asm/coprocessor.h>
 #include <asm/unistd.h>
 
+<<<<<<< HEAD
+=======
+#define DEBUG_SIG  0
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct task_struct *coproc_owners[];
 
 struct rt_sigframe
@@ -397,8 +402,15 @@ static int setup_frame(struct ksignal *ksig, sigset_t *set,
 	regs->areg[8] = (unsigned long) &frame->uc;
 	regs->threadptr = tp;
 
+<<<<<<< HEAD
 	pr_debug("SIG rt deliver (%s:%d): signal=%d sp=%p pc=%08lx\n",
 		 current->comm, current->pid, sig, frame, regs->pc);
+=======
+#if DEBUG_SIG
+	printk("SIG rt deliver (%s:%d): signal=%d sp=%p pc=%08x\n",
+		current->comm, current->pid, sig, frame, regs->pc);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -1,5 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2015-2020, The Linux Foundation. All rights reserved. */
+=======
+/* Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/firmware.h>
 #include <linux/module.h>
@@ -19,6 +33,7 @@
 #define BIN_BDF_FILE_NAME_PREFIX	"bdwlan.b"
 #define REGDB_FILE_NAME			"regdb.bin"
 #define DUMMY_BDF_FILE_NAME		"bdwlan.dmy"
+<<<<<<< HEAD
 
 #define QMI_WLFW_TIMEOUT_MS		(plat_priv->ctrl_params.qmi_timeout)
 #define QMI_WLFW_TIMEOUT_JF		msecs_to_jiffies(QMI_WLFW_TIMEOUT_MS)
@@ -30,6 +45,15 @@
 #define QMI_WLFW_MAC_READY_TIMEOUT_MS	50
 #define QMI_WLFW_MAC_READY_MAX_RETRY	200
 
+=======
+#define CE_MSI_NAME			"CE"
+
+#define QMI_WLFW_TIMEOUT_MS		(plat_priv->ctrl_params.qmi_timeout)
+#define QMI_WLFW_TIMEOUT_JF		msecs_to_jiffies(QMI_WLFW_TIMEOUT_MS)
+
+#define QMI_WLFW_MAX_RECV_BUF_SIZE	SZ_8K
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static char *cnss_qmi_mode_to_str(enum cnss_driver_mode mode)
 {
 	switch (mode) {
@@ -88,14 +112,24 @@ static int cnss_wlfw_ind_register_send_sync(struct cnss_plat_data *plat_priv)
 	req->pin_connect_result_enable = 1;
 	req->cal_done_enable_valid = 1;
 	req->cal_done_enable = 1;
+<<<<<<< HEAD
+=======
+	req->initiate_cal_download_enable_valid = 1;
+	req->initiate_cal_download_enable = 1;
+	req->initiate_cal_update_enable_valid = 1;
+	req->initiate_cal_update_enable = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->qdss_trace_req_mem_enable_valid = 1;
 	req->qdss_trace_req_mem_enable = 1;
 	req->qdss_trace_save_enable_valid = 1;
 	req->qdss_trace_save_enable = 1;
 	req->qdss_trace_free_enable_valid = 1;
 	req->qdss_trace_free_enable = 1;
+<<<<<<< HEAD
 	req->respond_get_info_enable_valid = 1;
 	req->respond_get_info_enable = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = qmi_txn_init(&plat_priv->qmi_wlfw, &txn,
 			   wlfw_ind_register_resp_msg_v01_ei, resp);
@@ -130,6 +164,7 @@ static int cnss_wlfw_ind_register_send_sync(struct cnss_plat_data *plat_priv)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (resp->fw_status_valid) {
 		if (resp->fw_status & QMI_WLFW_ALREADY_REGISTERED_V01) {
 			ret = -EALREADY;
@@ -137,14 +172,19 @@ static int cnss_wlfw_ind_register_send_sync(struct cnss_plat_data *plat_priv)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(req);
 	kfree(resp);
 	return 0;
 
 out:
 	CNSS_ASSERT(0);
+<<<<<<< HEAD
 
 qmi_registered:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(req);
 	kfree(resp);
 	return ret;
@@ -156,8 +196,11 @@ static int cnss_wlfw_host_cap_send_sync(struct cnss_plat_data *plat_priv)
 	struct wlfw_host_cap_resp_msg_v01 *resp;
 	struct qmi_txn txn;
 	int ret = 0;
+<<<<<<< HEAD
 	u64 iova_start = 0, iova_size = 0,
 	    iova_ipa_start = 0, iova_ipa_size = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cnss_pr_dbg("Sending host capability message, state: 0x%lx\n",
 		    plat_priv->driver_state);
@@ -199,6 +242,7 @@ static int cnss_wlfw_host_cap_send_sync(struct cnss_plat_data *plat_priv)
 	req->cal_done = plat_priv->cal_done;
 	cnss_pr_dbg("Calibration done is %d\n", plat_priv->cal_done);
 
+<<<<<<< HEAD
 	if (!cnss_bus_get_iova(plat_priv, &iova_start, &iova_size) &&
 	    !cnss_bus_get_iova_ipa(plat_priv, &iova_ipa_start,
 				   &iova_ipa_size)) {
@@ -209,6 +253,8 @@ static int cnss_wlfw_host_cap_send_sync(struct cnss_plat_data *plat_priv)
 			    req->ddr_range[0].start, req->ddr_range[0].size);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = qmi_txn_init(&plat_priv->qmi_wlfw, &txn,
 			   wlfw_host_cap_resp_msg_v01_ei, resp);
 	if (ret < 0) {
@@ -415,6 +461,7 @@ int cnss_wlfw_tgt_cap_send_sync(struct cnss_plat_data *plat_priv)
 			resp->fw_version_info.fw_build_timestamp,
 			QMI_WLFW_MAX_TIMESTAMP_LEN + 1);
 	}
+<<<<<<< HEAD
 	if (resp->fw_build_id_valid) {
 		resp->fw_build_id[QMI_WLFW_MAX_BUILD_ID_LEN] = '\0';
 		strlcpy(plat_priv->fw_build_id, resp->fw_build_id,
@@ -435,13 +482,25 @@ int cnss_wlfw_tgt_cap_send_sync(struct cnss_plat_data *plat_priv)
 		plat_priv->otp_version = resp->otp_version;
 
 	cnss_pr_dbg("Target capability: chip_id: 0x%x, chip_family: 0x%x, board_id: 0x%x, soc_id: 0x%x, fw_version: 0x%x, fw_build_timestamp: %s, fw_build_id: %s, otp_version: 0x%x\n",
+=======
+
+	if (resp->fw_caps_valid)
+		plat_priv->fw_pcie_gen_switch =
+			!!(resp->fw_caps & QMI_WLFW_HOST_PCIE_GEN_SWITCH_V01);
+
+	cnss_pr_dbg("Target capability: chip_id: 0x%x, chip_family: 0x%x, board_id: 0x%x, soc_id: 0x%x, fw_version: 0x%x, fw_build_timestamp: %s",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    plat_priv->chip_info.chip_id,
 		    plat_priv->chip_info.chip_family,
 		    plat_priv->board_info.board_id, plat_priv->soc_info.soc_id,
 		    plat_priv->fw_version_info.fw_version,
+<<<<<<< HEAD
 		    plat_priv->fw_version_info.fw_build_timestamp,
 		    plat_priv->fw_build_id,
 		    plat_priv->otp_version);
+=======
+		    plat_priv->fw_version_info.fw_build_timestamp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(req);
 	kfree(resp);
@@ -454,6 +513,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int cnss_get_bdf_file_name(struct cnss_plat_data *plat_priv,
 				  u32 bdf_type, char *filename,
 				  u32 filename_len)
@@ -509,17 +569,28 @@ static int cnss_get_bdf_file_name(struct cnss_plat_data *plat_priv,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cnss_wlfw_bdf_dnld_send_sync(struct cnss_plat_data *plat_priv,
 				 u32 bdf_type)
 {
 	struct wlfw_bdf_download_req_msg_v01 *req;
 	struct wlfw_bdf_download_resp_msg_v01 *resp;
 	struct qmi_txn txn;
+<<<<<<< HEAD
 	char filename[MAX_FIRMWARE_NAME_LEN];
 	const struct firmware *fw_entry = NULL;
 	const u8 *temp;
 	unsigned int remaining;
 	int ret = 0;
+=======
+	char filename[CNSS_FW_PATH_MAX_LEN];
+	const struct firmware *fw_entry;
+	const u8 *temp;
+	unsigned int remaining;
+	int ret = 0;
+	const char *fw_path;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cnss_pr_dbg("Sending BDF download message, state: 0x%lx, type: %d\n",
 		    plat_priv->driver_state, bdf_type);
@@ -534,6 +605,7 @@ int cnss_wlfw_bdf_dnld_send_sync(struct cnss_plat_data *plat_priv,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	ret = cnss_get_bdf_file_name(plat_priv, bdf_type,
 				     filename, sizeof(filename));
 	if (ret > 0) {
@@ -545,6 +617,62 @@ int cnss_wlfw_bdf_dnld_send_sync(struct cnss_plat_data *plat_priv,
 	}
 
 	ret = request_firmware(&fw_entry, filename, &plat_priv->plat_dev->dev);
+=======
+	fw_path = cnss_get_fw_path(plat_priv);
+	switch (bdf_type) {
+	case CNSS_BDF_ELF:
+		if (plat_priv->board_info.board_id == 0xFF)
+			snprintf(filename, sizeof(filename),
+				 "%s" ELF_BDF_FILE_NAME, fw_path);
+		else if (plat_priv->board_info.board_id < 0xFF)
+			snprintf(filename, sizeof(filename),
+				 "%s" ELF_BDF_FILE_NAME_PREFIX "%02x",
+				 fw_path, plat_priv->board_info.board_id);
+		else
+			snprintf(filename, sizeof(filename),
+				 "%s" BDF_FILE_NAME_PREFIX "%02x.e%02x",
+				 fw_path,
+				 plat_priv->board_info.board_id >> 8 & 0xFF,
+				 plat_priv->board_info.board_id & 0xFF);
+		break;
+	case CNSS_BDF_BIN:
+		if (plat_priv->board_info.board_id == 0xFF)
+			snprintf(filename, sizeof(filename),
+				 "%s" BIN_BDF_FILE_NAME, fw_path);
+		else if (plat_priv->board_info.board_id < 0xFF)
+			snprintf(filename, sizeof(filename),
+				 "%s" BIN_BDF_FILE_NAME_PREFIX "%02x",
+				 fw_path, plat_priv->board_info.board_id);
+		else
+			snprintf(filename, sizeof(filename),
+				 "%s" BDF_FILE_NAME_PREFIX "%02x.b%02x",
+				 fw_path,
+				 plat_priv->board_info.board_id >> 8 & 0xFF,
+				 plat_priv->board_info.board_id & 0xFF);
+		break;
+	case CNSS_BDF_REGDB:
+		snprintf(filename, sizeof(filename), REGDB_FILE_NAME);
+		break;
+	case CNSS_BDF_DUMMY:
+		cnss_pr_dbg("CNSS_BDF_DUMMY is set, sending dummy BDF\n");
+		snprintf(filename, sizeof(filename),
+			 "%s" DUMMY_BDF_FILE_NAME, fw_path);
+		temp = DUMMY_BDF_FILE_NAME;
+		remaining = CNSS_FW_PATH_MAX_LEN;
+		goto bypass_bdf;
+	default:
+		cnss_pr_err("Invalid BDF type: %d\n",
+			    plat_priv->ctrl_params.bdf_type);
+		ret = -EINVAL;
+		goto err_req_fw;
+	}
+	if (bdf_type == CNSS_BDF_REGDB)
+		ret = request_firmware_direct(&fw_entry, filename,
+					      &plat_priv->plat_dev->dev);
+	else
+		ret = request_firmware(&fw_entry, filename,
+				       &plat_priv->plat_dev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		cnss_pr_err("Failed to load BDF: %s\n", filename);
 		goto err_req_fw;
@@ -566,7 +694,11 @@ bypass_bdf:
 		req->data_valid = 1;
 		req->end_valid = 1;
 		req->bdf_type_valid = 1;
+<<<<<<< HEAD
 		req->bdf_type = bdf_type;
+=======
+		req->bdf_type = plat_priv->ctrl_params.bdf_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (remaining > QMI_WLFW_MAX_DATA_SIZE_V01) {
 			req->data_len = QMI_WLFW_MAX_DATA_SIZE_V01;
@@ -585,11 +717,19 @@ bypass_bdf:
 			goto err_send;
 		}
 
+<<<<<<< HEAD
 		ret = qmi_send_request
 			(&plat_priv->qmi_wlfw, NULL, &txn,
 			 QMI_WLFW_BDF_DOWNLOAD_REQ_V01,
 			 WLFW_BDF_DOWNLOAD_REQ_MSG_V01_MAX_MSG_LEN,
 			 wlfw_bdf_download_req_msg_v01_ei, req);
+=======
+		ret = qmi_send_request(
+			&plat_priv->qmi_wlfw, NULL, &txn,
+			QMI_WLFW_BDF_DOWNLOAD_REQ_V01,
+			WLFW_BDF_DOWNLOAD_REQ_MSG_V01_MAX_MSG_LEN,
+			wlfw_bdf_download_req_msg_v01_ei, req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			qmi_txn_cancel(&txn);
 			cnss_pr_err("Failed to send respond BDF download request, err: %d\n",
@@ -624,7 +764,11 @@ bypass_bdf:
 	return 0;
 
 err_send:
+<<<<<<< HEAD
 	if (bdf_type != CNSS_BDF_DUMMY)
+=======
+	if (plat_priv->ctrl_params.bdf_type != CNSS_BDF_DUMMY)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		release_firmware(fw_entry);
 err_req_fw:
 	if (bdf_type != CNSS_BDF_REGDB)
@@ -711,6 +855,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int cnss_wlfw_wlan_mac_req_send_sync(struct cnss_plat_data *plat_priv,
 					    u8 *mac, u32 mac_len)
 {
@@ -836,6 +981,8 @@ static void cnss_wait_for_wlfw_mac_ready(struct cnss_plat_data *plat_priv)
 	} while (true);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cnss_wlfw_wlan_mode_send_sync(struct cnss_plat_data *plat_priv,
 				  enum cnss_driver_mode mode)
 {
@@ -847,9 +994,12 @@ int cnss_wlfw_wlan_mode_send_sync(struct cnss_plat_data *plat_priv,
 	if (!plat_priv)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (mode == CNSS_MISSION && plat_priv->use_nv_mac)
 		cnss_wait_for_wlfw_mac_ready(plat_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cnss_pr_dbg("Sending mode message, mode: %s(%d), state: 0x%lx\n",
 		    cnss_qmi_mode_to_str(mode), mode, plat_priv->driver_state);
 
@@ -930,6 +1080,7 @@ int cnss_wlfw_wlan_cfg_send_sync(struct cnss_plat_data *plat_priv,
 	struct wlfw_wlan_cfg_req_msg_v01 *req;
 	struct wlfw_wlan_cfg_resp_msg_v01 *resp;
 	struct qmi_txn txn;
+<<<<<<< HEAD
 	u32 i;
 	int ret = 0;
 
@@ -939,6 +1090,17 @@ int cnss_wlfw_wlan_cfg_send_sync(struct cnss_plat_data *plat_priv,
 	cnss_pr_dbg("Sending WLAN config message, state: 0x%lx\n",
 		    plat_priv->driver_state);
 
+=======
+	u32 i, ce_id, num_vectors, user_base_data, base_vector;
+	int ret = 0;
+
+	cnss_pr_dbg("Sending WLAN config message, state: 0x%lx\n",
+		    plat_priv->driver_state);
+
+	if (!plat_priv)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req = kzalloc(sizeof(*req), GFP_KERNEL);
 	if (!req)
 		return -ENOMEM;
@@ -977,6 +1139,20 @@ int cnss_wlfw_wlan_cfg_send_sync(struct cnss_plat_data *plat_priv,
 		req->svc_cfg[i].pipe_num = config->ce_svc_cfg[i].pipe_num;
 	}
 
+<<<<<<< HEAD
+=======
+	if (config->num_shadow_reg_cfg) {
+		req->shadow_reg_valid = 1;
+		if (config->num_shadow_reg_cfg >
+		    QMI_WLFW_MAX_NUM_SHADOW_REG_V01)
+			req->shadow_reg_len = QMI_WLFW_MAX_NUM_SHADOW_REG_V01;
+		else
+			req->shadow_reg_len = config->num_shadow_reg_cfg;
+		memcpy(req->shadow_reg, config->shadow_reg_cfg,
+		       sizeof(struct wlfw_shadow_reg_cfg_s_v01)
+		       * req->shadow_reg_len);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->shadow_reg_v2_valid = 1;
 	if (config->num_shadow_reg_v2_cfg >
 	    QMI_WLFW_MAX_NUM_SHADOW_REG_V2_V01)
@@ -987,6 +1163,33 @@ int cnss_wlfw_wlan_cfg_send_sync(struct cnss_plat_data *plat_priv,
 	memcpy(req->shadow_reg_v2, config->shadow_reg_v2_cfg,
 	       sizeof(struct wlfw_shadow_reg_v2_cfg_s_v01)
 	       * req->shadow_reg_v2_len);
+<<<<<<< HEAD
+=======
+	if (config->rri_over_ddr_cfg_valid) {
+		req->rri_over_ddr_cfg_valid = 1;
+		req->rri_over_ddr_cfg.base_addr_low =
+			config->rri_over_ddr_cfg.base_addr_low;
+		req->rri_over_ddr_cfg.base_addr_high =
+			config->rri_over_ddr_cfg.base_addr_high;
+	}
+	if (config->send_msi_ce) {
+		ret = cnss_get_msi_assignment(plat_priv,
+					      CE_MSI_NAME,
+					      &num_vectors,
+					      &user_base_data,
+					      &base_vector);
+		if (!ret) {
+			req->msi_cfg_valid = 1;
+			req->msi_cfg_len = QMI_WLFW_MAX_NUM_CE_V01;
+			for (ce_id = 0; ce_id < QMI_WLFW_MAX_NUM_CE_V01;
+				ce_id++) {
+				req->msi_cfg[ce_id].ce_id = ce_id;
+				req->msi_cfg[ce_id].msi_vector =
+					(ce_id % num_vectors) + base_vector;
+			}
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = qmi_txn_init(&plat_priv->qmi_wlfw, &txn,
 			   wlfw_wlan_cfg_resp_msg_v01_ei, resp);
@@ -1268,16 +1471,24 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 int cnss_wlfw_antenna_switch_send_sync(struct cnss_plat_data *plat_priv)
 {
 	struct wlfw_antenna_switch_req_msg_v01 *req;
 	struct wlfw_antenna_switch_resp_msg_v01 *resp;
+=======
+int cnss_wlfw_send_pcie_gen_speed_sync(struct cnss_plat_data *plat_priv)
+{
+	struct wlfw_pcie_gen_switch_req_msg_v01 req;
+	struct wlfw_pcie_gen_switch_resp_msg_v01 resp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qmi_txn txn;
 	int ret = 0;
 
 	if (!plat_priv)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	cnss_pr_dbg("Sending antenna switch sync request, state: 0x%lx\n",
 		    plat_priv->driver_state);
 
@@ -1295,11 +1506,29 @@ int cnss_wlfw_antenna_switch_send_sync(struct cnss_plat_data *plat_priv)
 			   wlfw_antenna_switch_resp_msg_v01_ei, resp);
 	if (ret < 0) {
 		cnss_pr_err("Failed to initialize txn for antenna switch request, err: %d\n",
+=======
+	if (plat_priv->pcie_gen_speed == QMI_PCIE_GEN_SPEED_INVALID_V01 ||
+	    !plat_priv->fw_pcie_gen_switch) {
+		cnss_pr_dbg("PCIE Gen speed not setup\n");
+		return 0;
+	}
+
+	cnss_pr_dbg("Sending PCIE Gen speed: %d state: 0x%lx\n",
+		    plat_priv->pcie_gen_speed, plat_priv->driver_state);
+	req.pcie_speed = (enum wlfw_pcie_gen_speed_v01)
+			plat_priv->pcie_gen_speed;
+
+	ret = qmi_txn_init(&plat_priv->qmi_wlfw, &txn,
+			   wlfw_pcie_gen_switch_resp_msg_v01_ei, &resp);
+	if (ret < 0) {
+		cnss_pr_err("Failed to initialize txn for PCIE speed switch err: %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    ret);
 		goto out;
 	}
 
 	ret = qmi_send_request(&plat_priv->qmi_wlfw, NULL, &txn,
+<<<<<<< HEAD
 			       QMI_WLFW_ANTENNA_SWITCH_REQ_V01,
 			       WLFW_ANTENNA_SWITCH_REQ_MSG_V01_MAX_MSG_LEN,
 			       wlfw_antenna_switch_req_msg_v01_ei, req);
@@ -1307,16 +1536,29 @@ int cnss_wlfw_antenna_switch_send_sync(struct cnss_plat_data *plat_priv)
 		qmi_txn_cancel(&txn);
 		cnss_pr_err("Failed to send antenna switch request, err: %d\n",
 			    ret);
+=======
+			       QMI_WLFW_PCIE_GEN_SWITCH_REQ_V01,
+			       WLFW_PCIE_GEN_SWITCH_REQ_MSG_V01_MAX_MSG_LEN,
+			       wlfw_pcie_gen_switch_req_msg_v01_ei, &req);
+	if (ret < 0) {
+		qmi_txn_cancel(&txn);
+		cnss_pr_err("Failed to send PCIE speed switch, err: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
 	ret = qmi_txn_wait(&txn, QMI_WLFW_TIMEOUT_JF);
 	if (ret < 0) {
+<<<<<<< HEAD
 		cnss_pr_err("Failed to wait for response of antenna switch request, err: %d\n",
+=======
+		cnss_pr_err("Failed to wait for PCIE Gen switch resp, err: %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    ret);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (resp->resp.result != QMI_RESULT_SUCCESS_V01) {
 		cnss_pr_err("Antenna switch request failed, result: %d, err: %d\n",
 			    resp->resp.result, resp->resp.error);
@@ -1406,6 +1648,17 @@ int cnss_wlfw_antenna_grant_send_sync(struct cnss_plat_data *plat_priv)
 out:
 	kfree(req);
 	kfree(resp);
+=======
+	if (resp.resp.result != QMI_RESULT_SUCCESS_V01) {
+		cnss_pr_err("PCIE Gen Switch req failed, Speed: %d, result: %d, err: %d\n",
+			    plat_priv->pcie_gen_speed, resp.resp.result,
+			    resp.resp.error);
+		ret = -resp.resp.result;
+	}
+out:
+	/* Reset PCIE Gen speed after one time use */
+	plat_priv->pcie_gen_speed = QMI_PCIE_GEN_SPEED_INVALID_V01;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1485,6 +1738,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int cnss_wlfw_wfc_call_status_send_sync(struct cnss_plat_data *plat_priv,
 					       u32 data_len, const void *data)
 {
@@ -1687,6 +1941,8 @@ out:
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unsigned int cnss_get_qmi_timeout(struct cnss_plat_data *plat_priv)
 {
 	cnss_pr_dbg("QMI timeout is %u ms\n", QMI_WLFW_TIMEOUT_MS);
@@ -1716,9 +1972,12 @@ static void cnss_wlfw_request_mem_ind_cb(struct qmi_handle *qmi_wlfw,
 			    ind_msg->mem_seg[i].size, ind_msg->mem_seg[i].type);
 		plat_priv->fw_mem[i].type = ind_msg->mem_seg[i].type;
 		plat_priv->fw_mem[i].size = ind_msg->mem_seg[i].size;
+<<<<<<< HEAD
 		if (plat_priv->fw_mem[i].type == CNSS_MEM_TYPE_DDR)
 			plat_priv->fw_mem[i].attrs |=
 				DMA_ATTR_FORCE_CONTIGUOUS;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cnss_driver_event_post(plat_priv, CNSS_DRIVER_EVENT_REQUEST_MEM,
@@ -1749,7 +2008,10 @@ static void cnss_wlfw_fw_ready_ind_cb(struct qmi_handle *qmi_wlfw,
 {
 	struct cnss_plat_data *plat_priv =
 		container_of(qmi_wlfw, struct cnss_plat_data, qmi_wlfw);
+<<<<<<< HEAD
 	struct cnss_cal_info *cal_info;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cnss_pr_dbg("Received QMI WLFW FW ready indication\n");
 
@@ -1758,6 +2020,7 @@ static void cnss_wlfw_fw_ready_ind_cb(struct qmi_handle *qmi_wlfw,
 		return;
 	}
 
+<<<<<<< HEAD
 	cal_info = kzalloc(sizeof(*cal_info), GFP_KERNEL);
 	if (!cal_info)
 		return;
@@ -1765,6 +2028,10 @@ static void cnss_wlfw_fw_ready_ind_cb(struct qmi_handle *qmi_wlfw,
 	cal_info->cal_status = CNSS_CAL_DONE;
 	cnss_driver_event_post(plat_priv, CNSS_DRIVER_EVENT_COLD_BOOT_CAL_DONE,
 			       0, cal_info);
+=======
+	cnss_driver_event_post(plat_priv, CNSS_DRIVER_EVENT_COLD_BOOT_CAL_DONE,
+			       0, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cnss_wlfw_fw_init_done_ind_cb(struct qmi_handle *qmi_wlfw,
@@ -1819,7 +2086,10 @@ static void cnss_wlfw_cal_done_ind_cb(struct qmi_handle *qmi_wlfw,
 {
 	struct cnss_plat_data *plat_priv =
 		container_of(qmi_wlfw, struct cnss_plat_data, qmi_wlfw);
+<<<<<<< HEAD
 	struct cnss_cal_info *cal_info;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cnss_pr_dbg("Received QMI WLFW calibration done indication\n");
 
@@ -1828,6 +2098,7 @@ static void cnss_wlfw_cal_done_ind_cb(struct qmi_handle *qmi_wlfw,
 		return;
 	}
 
+<<<<<<< HEAD
 	cal_info = kzalloc(sizeof(*cal_info), GFP_KERNEL);
 	if (!cal_info)
 		return;
@@ -1835,6 +2106,17 @@ static void cnss_wlfw_cal_done_ind_cb(struct qmi_handle *qmi_wlfw,
 	cal_info->cal_status = CNSS_CAL_DONE;
 	cnss_driver_event_post(plat_priv, CNSS_DRIVER_EVENT_COLD_BOOT_CAL_DONE,
 			       0, cal_info);
+=======
+	cnss_driver_event_post(plat_priv, CNSS_DRIVER_EVENT_COLD_BOOT_CAL_DONE,
+			       0, NULL);
+}
+
+static void cnss_wlfw_initiate_cal_update_ind_cb(struct qmi_handle *qmi_wlfw,
+						 struct sockaddr_qrtr *sq,
+						 struct qmi_txn *txn,
+						 const void *data)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cnss_wlfw_qdss_trace_req_mem_ind_cb(struct qmi_handle *qmi_wlfw,
@@ -1949,6 +2231,7 @@ static void cnss_wlfw_qdss_trace_free_ind_cb(struct qmi_handle *qmi_wlfw,
 			       0, NULL);
 }
 
+<<<<<<< HEAD
 static void cnss_wlfw_respond_get_info_ind_cb(struct qmi_handle *qmi_wlfw,
 					      struct sockaddr_qrtr *sq,
 					      struct qmi_txn *txn,
@@ -1974,6 +2257,8 @@ static void cnss_wlfw_respond_get_info_ind_cb(struct qmi_handle *qmi_wlfw,
 				       (void *)ind_msg->data,
 				       ind_msg->data_len);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct qmi_msg_handler qmi_wlfw_msg_handlers[] = {
 	{
 		.type = QMI_INDICATION,
@@ -2044,11 +2329,19 @@ static struct qmi_msg_handler qmi_wlfw_msg_handlers[] = {
 	},
 	{
 		.type = QMI_INDICATION,
+<<<<<<< HEAD
 		.msg_id = QMI_WLFW_RESPOND_GET_INFO_IND_V01,
 		.ei = wlfw_respond_get_info_ind_msg_v01_ei,
 		.decoded_size =
 		sizeof(struct wlfw_respond_get_info_ind_msg_v01),
 		.fn = cnss_wlfw_respond_get_info_ind_cb
+=======
+		.msg_id = QMI_WLFW_INITIATE_CAL_UPDATE_IND_V01,
+		.ei = wlfw_initiate_cal_update_ind_msg_v01_ei,
+		.decoded_size =
+			sizeof(struct wlfw_initiate_cal_update_ind_msg_v01),
+		.fn = cnss_wlfw_initiate_cal_update_ind_cb
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{}
 };
@@ -2096,22 +2389,30 @@ int cnss_wlfw_server_arrive(struct cnss_plat_data *plat_priv, void *data)
 	if (!plat_priv)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (test_bit(CNSS_QMI_WLFW_CONNECTED, &plat_priv->driver_state)) {
 		cnss_pr_err("Unexpected WLFW server arrive\n");
 		CNSS_ASSERT(0);
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = cnss_wlfw_connect_to_server(plat_priv, data);
 	if (ret < 0)
 		goto out;
 
 	ret = cnss_wlfw_ind_register_send_sync(plat_priv);
+<<<<<<< HEAD
 	if (ret < 0) {
 		if (ret == -EALREADY)
 			ret = 0;
 		goto out;
 	}
+=======
+	if (ret < 0)
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = cnss_wlfw_host_cap_send_sync(plat_priv);
 	if (ret < 0)
@@ -2187,9 +2488,24 @@ int cnss_qmi_init(struct cnss_plat_data *plat_priv)
 		cnss_pr_err("Failed to initialize QMI handle, err: %d\n", ret);
 		goto out;
 	}
+<<<<<<< HEAD
 
 	ret = qmi_add_lookup(&plat_priv->qmi_wlfw, WLFW_SERVICE_ID_V01,
 			     WLFW_SERVICE_VERS_V01, WLFW_SERVICE_INS_ID_V01);
+=======
+	/* In order to support dual wlan card attach case,
+	 * need separate qmi service instance id for each dev
+	 */
+	if (plat_priv->qrtr_node_id != 0 &&
+	    plat_priv->wlfw_service_instance_id != 0)
+		ret = qmi_add_lookup(&plat_priv->qmi_wlfw, WLFW_SERVICE_ID_V01,
+				     WLFW_SERVICE_VERS_V01,
+				     plat_priv->wlfw_service_instance_id);
+	else
+		ret = qmi_add_lookup(&plat_priv->qmi_wlfw, WLFW_SERVICE_ID_V01,
+				     WLFW_SERVICE_VERS_V01,
+				     WLFW_SERVICE_INS_ID_V01);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		cnss_pr_err("Failed to add QMI lookup, err: %d\n", ret);
 
@@ -2201,6 +2517,7 @@ void cnss_qmi_deinit(struct cnss_plat_data *plat_priv)
 {
 	qmi_handle_release(&plat_priv->qmi_wlfw);
 }
+<<<<<<< HEAD
 
 int coex_antenna_switch_to_wlan_send_sync_msg(struct cnss_plat_data *plat_priv)
 {
@@ -2585,3 +2902,5 @@ void cnss_unregister_ims_service(struct cnss_plat_data *plat_priv)
 {
 	qmi_handle_release(&plat_priv->ims_qmi);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

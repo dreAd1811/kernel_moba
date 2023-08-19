@@ -6,6 +6,7 @@
 	#size-cells = <1>;
 	interrupt-parent = <&pic>;
 
+<<<<<<< HEAD
 	aliases {
 		uart0 = &serial0;
 	};
@@ -13,6 +14,10 @@
 	chosen {
 		bootargs = "earlycon";
 		stdout-path = "uart0:115200";
+=======
+	chosen {
+		bootargs = "console=uart,mmio,0x90000000,115200";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	memory@0 {

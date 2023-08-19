@@ -26,7 +26,10 @@
 #include <linux/kvm_para.h>
 #include <linux/slab.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/pagemap.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/reg.h>
 #include <asm/sections.h>
@@ -674,13 +677,21 @@ static void kvm_use_magic_page(void)
 {
 	u32 *p;
 	u32 *start, *end;
+<<<<<<< HEAD
+=======
+	u32 tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 features;
 
 	/* Tell the host to map the magic page to -4096 on all CPUs */
 	on_each_cpu(kvm_map_magic_page, &features, 1);
 
 	/* Quick self-test to see if the mapping works */
+<<<<<<< HEAD
 	if (!fault_in_pages_readable((const char *)KVM_MAGIC_PAGE, sizeof(u32))) {
+=======
+	if (__get_user(tmp, (u32*)KVM_MAGIC_PAGE)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kvm_patching_worked = false;
 		return;
 	}

@@ -71,18 +71,28 @@ int amdgpu_atomfirmware_allocate_fb_scratch(struct amdgpu_device *adev)
 	struct atom_context *ctx = adev->mode_info.atom_context;
 	int index = get_index_into_master_table(atom_master_list_of_data_tables_v2_1,
 						vram_usagebyfirmware);
+<<<<<<< HEAD
 	struct vram_usagebyfirmware_v2_1 *	firmware_usage;
 	uint32_t start_addr, size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint16_t data_offset;
 	int usage_bytes = 0;
 
 	if (amdgpu_atom_parse_data_header(ctx, index, NULL, NULL, NULL, &data_offset)) {
+<<<<<<< HEAD
 		firmware_usage = (struct vram_usagebyfirmware_v2_1 *)(ctx->bios + data_offset);
+=======
+		struct vram_usagebyfirmware_v2_1 *firmware_usage =
+			(struct vram_usagebyfirmware_v2_1 *)(ctx->bios + data_offset);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_DEBUG("atom firmware requested %08x %dkb fw %dkb drv\n",
 			  le32_to_cpu(firmware_usage->start_address_in_kb),
 			  le16_to_cpu(firmware_usage->used_by_firmware_in_kb),
 			  le16_to_cpu(firmware_usage->used_by_driver_in_kb));
 
+<<<<<<< HEAD
 		start_addr = le32_to_cpu(firmware_usage->start_address_in_kb);
 		size = le16_to_cpu(firmware_usage->used_by_firmware_in_kb);
 
@@ -98,6 +108,9 @@ int amdgpu_atomfirmware_allocate_fb_scratch(struct amdgpu_device *adev)
 		} else {
 			usage_bytes = le16_to_cpu(firmware_usage->used_by_driver_in_kb) << 10;
 		}
+=======
+		usage_bytes = le16_to_cpu(firmware_usage->used_by_driver_in_kb) * 1024;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	ctx->scratch_size_bytes = 0;
 	if (usage_bytes == 0)
@@ -114,9 +127,12 @@ union igp_info {
 	struct atom_integrated_system_info_v1_11 v11;
 };
 
+<<<<<<< HEAD
 union umc_info {
 	struct atom_umc_info_v3_1 v31;
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Return vram width from integrated system info table, if available,
  * or 0 if not.
@@ -146,6 +162,7 @@ int amdgpu_atomfirmware_get_vram_width(struct amdgpu_device *adev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int convert_atom_mem_type_to_vram_type (struct amdgpu_device *adev,
 					       int atom_mem_type)
 {
@@ -234,6 +251,8 @@ int amdgpu_atomfirmware_get_vram_type(struct amdgpu_device *adev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union firmware_info {
 	struct atom_firmware_info_v3_1 v31;
 };
@@ -242,6 +261,13 @@ union smu_info {
 	struct atom_smu_info_v3_1 v31;
 };
 
+<<<<<<< HEAD
+=======
+union umc_info {
+	struct atom_umc_info_v3_1 v31;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_atomfirmware_get_clock_info(struct amdgpu_device *adev)
 {
 	struct amdgpu_mode_info *mode_info = &adev->mode_info;
@@ -322,6 +348,7 @@ int amdgpu_atomfirmware_get_clock_info(struct amdgpu_device *adev)
 
 	return ret;
 }
+<<<<<<< HEAD
 
 union gfx_info {
 	struct  atom_gfx_info_v2_4 v24;
@@ -366,3 +393,5 @@ int amdgpu_atomfirmware_get_gfx_info(struct amdgpu_device *adev)
 	}
 	return -EINVAL;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

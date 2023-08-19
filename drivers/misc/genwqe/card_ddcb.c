@@ -500,7 +500,11 @@ int __genwqe_wait_ddcb(struct genwqe_dev *cd, struct ddcb_requ *req)
 
 	rc = wait_event_interruptible_timeout(queue->ddcb_waitqs[ddcb_no],
 				ddcb_requ_finished(cd, req),
+<<<<<<< HEAD
 				GENWQE_DDCB_SOFTWARE_TIMEOUT * HZ);
+=======
+				genwqe_ddcb_software_timeout * HZ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We need to distinguish 3 cases here:
@@ -633,7 +637,11 @@ int __genwqe_purge_ddcb(struct genwqe_dev *cd, struct ddcb_requ *req)
 	__be32 old, new;
 
 	/* unsigned long flags; */
+<<<<<<< HEAD
 	if (GENWQE_DDCB_SOFTWARE_TIMEOUT <= 0) {
+=======
+	if (genwqe_ddcb_software_timeout <= 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&pci_dev->dev,
 			"[%s] err: software timeout is not set!\n", __func__);
 		return -EFAULT;
@@ -641,7 +649,11 @@ int __genwqe_purge_ddcb(struct genwqe_dev *cd, struct ddcb_requ *req)
 
 	pddcb = &queue->ddcb_vaddr[req->num];
 
+<<<<<<< HEAD
 	for (t = 0; t < GENWQE_DDCB_SOFTWARE_TIMEOUT * 10; t++) {
+=======
+	for (t = 0; t < genwqe_ddcb_software_timeout * 10; t++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock_irqsave(&queue->ddcb_lock, flags);
 
@@ -718,7 +730,11 @@ go_home:
 
 	dev_err(&pci_dev->dev,
 		"[%s] err: DDCB#%d not purged and not completed after %d seconds QSTAT=%016llx!!\n",
+<<<<<<< HEAD
 		__func__, req->num, GENWQE_DDCB_SOFTWARE_TIMEOUT,
+=======
+		__func__, req->num, genwqe_ddcb_software_timeout,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue_status);
 
 	print_ddcb_info(cd, req->queue);
@@ -778,7 +794,11 @@ int __genwqe_enqueue_ddcb(struct genwqe_dev *cd, struct ddcb_requ *req,
 	/* FIXME circumvention to improve performance when no irq is
 	 * there.
 	 */
+<<<<<<< HEAD
 	if (GENWQE_POLLING_ENABLED)
+=======
+	if (genwqe_polling_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		genwqe_check_ddcb_queue(cd, queue);
 
 	/*
@@ -878,7 +898,11 @@ int __genwqe_enqueue_ddcb(struct genwqe_dev *cd, struct ddcb_requ *req,
 	pddcb->icrc_hsi_shi_32 = cpu_to_be32((u32)icrc << 16);
 
 	/* enable DDCB completion irq */
+<<<<<<< HEAD
 	if (!GENWQE_POLLING_ENABLED)
+=======
+	if (!genwqe_polling_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pddcb->icrc_hsi_shi_32 |= DDCB_INTR_BE32;
 
 	dev_dbg(&pci_dev->dev, "INPUT DDCB#%d\n", req->num);
@@ -1028,10 +1052,17 @@ static int setup_ddcb_queue(struct genwqe_dev *cd, struct ddcb_queue *queue)
 	unsigned int queue_size;
 	struct pci_dev *pci_dev = cd->pci_dev;
 
+<<<<<<< HEAD
 	if (GENWQE_DDCB_MAX < 2)
 		return -EINVAL;
 
 	queue_size = roundup(GENWQE_DDCB_MAX * sizeof(struct ddcb), PAGE_SIZE);
+=======
+	if (genwqe_ddcb_max < 2)
+		return -EINVAL;
+
+	queue_size = roundup(genwqe_ddcb_max * sizeof(struct ddcb), PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	queue->ddcbs_in_flight = 0;  /* statistics */
 	queue->ddcbs_max_in_flight = 0;
@@ -1040,7 +1071,11 @@ static int setup_ddcb_queue(struct genwqe_dev *cd, struct ddcb_queue *queue)
 	queue->wait_on_busy = 0;
 
 	queue->ddcb_seq	  = 0x100; /* start sequence number */
+<<<<<<< HEAD
 	queue->ddcb_max	  = GENWQE_DDCB_MAX;
+=======
+	queue->ddcb_max	  = genwqe_ddcb_max; /* module parameter */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	queue->ddcb_vaddr = __genwqe_alloc_consistent(cd, queue_size,
 						&queue->ddcb_daddr);
 	if (queue->ddcb_vaddr == NULL) {
@@ -1048,16 +1083,26 @@ static int setup_ddcb_queue(struct genwqe_dev *cd, struct ddcb_queue *queue)
 			"[%s] **err: could not allocate DDCB **\n", __func__);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	queue->ddcb_req = kcalloc(queue->ddcb_max, sizeof(struct ddcb_requ *),
 				  GFP_KERNEL);
+=======
+	queue->ddcb_req = kzalloc(sizeof(struct ddcb_requ *) *
+				  queue->ddcb_max, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!queue->ddcb_req) {
 		rc = -ENOMEM;
 		goto free_ddcbs;
 	}
 
+<<<<<<< HEAD
 	queue->ddcb_waitqs = kcalloc(queue->ddcb_max,
 				     sizeof(wait_queue_head_t),
 				     GFP_KERNEL);
+=======
+	queue->ddcb_waitqs = kzalloc(sizeof(wait_queue_head_t) *
+				     queue->ddcb_max, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!queue->ddcb_waitqs) {
 		rc = -ENOMEM;
 		goto free_requs;
@@ -1195,7 +1240,11 @@ static int genwqe_card_thread(void *data)
 
 		genwqe_check_ddcb_queue(cd, &cd->queue);
 
+<<<<<<< HEAD
 		if (GENWQE_POLLING_ENABLED) {
+=======
+		if (genwqe_polling_enabled) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = wait_event_interruptible_timeout(
 				cd->queue_waitq,
 				genwqe_ddcbs_in_flight(cd) ||
@@ -1341,7 +1390,11 @@ static int queue_wake_up_all(struct genwqe_dev *cd)
 int genwqe_finish_queue(struct genwqe_dev *cd)
 {
 	int i, rc = 0, in_flight;
+<<<<<<< HEAD
 	int waitmax = GENWQE_DDCB_SOFTWARE_TIMEOUT;
+=======
+	int waitmax = genwqe_ddcb_software_timeout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pci_dev = cd->pci_dev;
 	struct ddcb_queue *queue = &cd->queue;
 

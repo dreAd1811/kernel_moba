@@ -274,6 +274,7 @@ enum qed_iov_wq_flag {
 
 #ifdef CONFIG_QED_SRIOV
 /**
+<<<<<<< HEAD
  * @brief Check if given VF ID @vfid is valid
  *        w.r.t. @b_enabled_only value
  *        if b_enabled_only = true - only enabled VF id is valid
@@ -291,6 +292,8 @@ bool qed_iov_is_valid_vfid(struct qed_hwfn *p_hwfn,
 			   bool b_enabled_only, bool b_non_malicious);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @brief - Given a VF index, return index of next [including that] active VF.
  *
  * @param p_hwfn
@@ -393,6 +396,7 @@ void qed_vf_start_iov_wq(struct qed_dev *cdev);
 int qed_sriov_disable(struct qed_dev *cdev, bool pci_enabled);
 void qed_inform_vf_link_state(struct qed_hwfn *hwfn);
 #else
+<<<<<<< HEAD
 static inline bool
 qed_iov_is_valid_vfid(struct qed_hwfn *p_hwfn,
 		      int rel_vf_id, bool b_enabled_only, bool b_non_malicious)
@@ -400,6 +404,8 @@ qed_iov_is_valid_vfid(struct qed_hwfn *p_hwfn,
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u16 qed_iov_get_next_active_vf(struct qed_hwfn *p_hwfn,
 					     u16 rel_vf_id)
 {

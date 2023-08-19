@@ -169,10 +169,15 @@ void qed_cxt_hw_init_pf(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt);
  *
  * @param p_hwfn
  * @param p_ptt
+<<<<<<< HEAD
  * @param is_pf_loading
  */
 void qed_qm_init_pf(struct qed_hwfn *p_hwfn,
 		    struct qed_ptt *p_ptt, bool is_pf_loading);
+=======
+ */
+void qed_qm_init_pf(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * @brief Reconfigures QM pf on the fly
@@ -235,7 +240,10 @@ u32 qed_cxt_get_proto_tid_count(struct qed_hwfn *p_hwfn,
 				enum protocol_type type);
 u32 qed_cxt_get_proto_cid_start(struct qed_hwfn *p_hwfn,
 				enum protocol_type type);
+<<<<<<< HEAD
 u32 qed_cxt_get_srq_count(struct qed_hwfn *p_hwfn);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int qed_cxt_free_proto_ilt(struct qed_hwfn *p_hwfn, enum protocol_type proto);
 
 #define QED_CTX_WORKING_MEM 0

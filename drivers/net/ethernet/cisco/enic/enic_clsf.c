@@ -122,9 +122,15 @@ struct enic_rfs_fltr_node *htbl_fltr_search(struct enic *enic, u16 fltr_id)
 }
 
 #ifdef CONFIG_RFS_ACCEL
+<<<<<<< HEAD
 void enic_flow_may_expire(struct timer_list *t)
 {
 	struct enic *enic = from_timer(enic, t, rfs_h.rfs_may_expire);
+=======
+void enic_flow_may_expire(unsigned long data)
+{
+	struct enic *enic = (struct enic *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool res;
 	int j;
 

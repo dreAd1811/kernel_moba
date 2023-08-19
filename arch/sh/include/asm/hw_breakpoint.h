@@ -10,6 +10,10 @@
 #include <linux/types.h>
 
 struct arch_hw_breakpoint {
+<<<<<<< HEAD
+=======
+	char		*name; /* Contains name of the symbol to set bkpt */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long	address;
 	u16		len;
 	u16		type;
@@ -40,7 +44,10 @@ struct sh_ubc {
 	struct clk	*clk;	/* optional interface clock / MSTP bit */
 };
 
+<<<<<<< HEAD
 struct perf_event_attr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct perf_event;
 struct task_struct;
 struct pmu;
@@ -54,10 +61,15 @@ static inline int hw_breakpoint_slots(int type)
 }
 
 /* arch/sh/kernel/hw_breakpoint.c */
+<<<<<<< HEAD
 extern int arch_check_bp_in_kernelspace(struct arch_hw_breakpoint *hw);
 extern int hw_breakpoint_arch_parse(struct perf_event *bp,
 				    const struct perf_event_attr *attr,
 				    struct arch_hw_breakpoint *hw);
+=======
+extern int arch_check_bp_in_kernelspace(struct perf_event *bp);
+extern int arch_validate_hwbkpt_settings(struct perf_event *bp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
 					   unsigned long val, void *data);
 

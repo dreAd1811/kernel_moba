@@ -235,7 +235,11 @@ kfree_err:
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t
+=======
+static unsigned int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mbox_test_message_poll(struct file *filp, struct poll_table_struct *wait)
 {
 	struct mbox_test_device *tdev = filp->private_data;
@@ -243,7 +247,11 @@ mbox_test_message_poll(struct file *filp, struct poll_table_struct *wait)
 	poll_wait(filp, &tdev->waitq, wait);
 
 	if (mbox_test_message_data_ready(tdev))
+<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
+=======
+		return POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -363,6 +371,7 @@ static int mbox_test_probe(struct platform_device *pdev)
 
 	/* It's okay for MMIO to be NULL */
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+<<<<<<< HEAD
 	size = resource_size(res);
 	tdev->tx_mmio = devm_ioremap_resource(&pdev->dev, res);
 	if (PTR_ERR(tdev->tx_mmio) == -EBUSY)
@@ -379,6 +388,26 @@ static int mbox_test_probe(struct platform_device *pdev)
 		tdev->rx_mmio = devm_ioremap(&pdev->dev, res->start, size);
 	else if (IS_ERR(tdev->rx_mmio))
 		tdev->rx_mmio = tdev->tx_mmio;
+=======
+	tdev->tx_mmio = devm_ioremap_resource(&pdev->dev, res);
+	if (PTR_ERR(tdev->tx_mmio) == -EBUSY) {
+		/* if reserved area in SRAM, try just ioremap */
+		size = resource_size(res);
+		tdev->tx_mmio = devm_ioremap(&pdev->dev, res->start, size);
+	} else if (IS_ERR(tdev->tx_mmio)) {
+		tdev->tx_mmio = NULL;
+	}
+
+	/* If specified, second reg entry is Rx MMIO */
+	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+	tdev->rx_mmio = devm_ioremap_resource(&pdev->dev, res);
+	if (PTR_ERR(tdev->rx_mmio) == -EBUSY) {
+		size = resource_size(res);
+		tdev->rx_mmio = devm_ioremap(&pdev->dev, res->start, size);
+	} else if (IS_ERR(tdev->rx_mmio)) {
+		tdev->rx_mmio = tdev->tx_mmio;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tdev->tx_channel = mbox_test_request_channel(pdev, "tx");
 	tdev->rx_channel = mbox_test_request_channel(pdev, "rx");

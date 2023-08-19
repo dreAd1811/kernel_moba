@@ -278,10 +278,13 @@
 #define MCFGPIO_IRQ_VECBASE	(MCFINT_VECBASE - MCFGPIO_IRQ_MIN)
 #define MCFGPIO_PIN_MAX		87
 
+<<<<<<< HEAD
 /*
  *  DSPI module.
  */
 #define MCFDSPI_BASE0		0xfc05c000
 #define MCF_IRQ_DSPI0		(MCFINT0_VECBASE + MCFINT0_DSPI0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* m5441xsim_h */

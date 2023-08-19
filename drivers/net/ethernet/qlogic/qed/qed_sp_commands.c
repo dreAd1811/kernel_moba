@@ -47,6 +47,7 @@
 #include "qed_sp.h"
 #include "qed_sriov.h"
 
+<<<<<<< HEAD
 void qed_sp_destroy_request(struct qed_hwfn *p_hwfn,
 			    struct qed_spq_entry *p_ent)
 {
@@ -60,6 +61,8 @@ void qed_sp_destroy_request(struct qed_hwfn *p_hwfn,
 		qed_spq_return_entry(p_hwfn, p_ent);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int qed_sp_init_request(struct qed_hwfn *p_hwfn,
 			struct qed_spq_entry **pp_ent,
 			u8 cmd, u8 protocol, struct qed_sp_init_data *p_data)
@@ -124,7 +127,18 @@ int qed_sp_init_request(struct qed_hwfn *p_hwfn,
 	return 0;
 
 err:
+<<<<<<< HEAD
 	qed_sp_destroy_request(p_hwfn, p_ent);
+=======
+	/* qed_spq_get_entry() can either get an entry from the free_pool,
+	 * or, if no entries are left, allocate a new entry and add it to
+	 * the unlimited_pending list.
+	 */
+	if (p_ent->queue == &p_hwfn->p_spq->unlimited_pending)
+		kfree(p_ent);
+	else
+		qed_spq_return_entry(p_hwfn, p_ent);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return -EINVAL;
 }
@@ -324,7 +338,11 @@ qed_tunn_set_pf_start_params(struct qed_hwfn *p_hwfn,
 int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
 		    struct qed_ptt *p_ptt,
 		    struct qed_tunnel_info *p_tunn,
+<<<<<<< HEAD
 		    bool allow_npar_tx_switch)
+=======
+		    enum qed_mf_mode mode, bool allow_npar_tx_switch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pf_start_ramrod_data *p_ramrod = NULL;
 	u16 sb = qed_int_get_sp_sb_id(p_hwfn);
@@ -332,7 +350,11 @@ int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
 	struct qed_spq_entry *p_ent = NULL;
 	struct qed_sp_init_data init_data;
 	int rc = -EINVAL;
+<<<<<<< HEAD
 	u8 page_cnt, i;
+=======
+	u8 page_cnt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* update initial eq producer */
 	qed_eq_prod_update(p_hwfn,
@@ -357,6 +379,7 @@ int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
 	p_ramrod->dont_log_ramrods	= 0;
 	p_ramrod->log_type_mask		= cpu_to_le16(0xf);
 
+<<<<<<< HEAD
 	if (test_bit(QED_MF_OVLAN_CLSS, &p_hwfn->cdev->mf_bits))
 		p_ramrod->mf_mode = MF_OVLAN;
 	else
@@ -387,6 +410,21 @@ int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
 		p_ramrod->outer_tag_config.outer_tag.tci |=
 		    cpu_to_le16(((u16)p_hwfn->ufp_info.tc << 13));
 	}
+=======
+	switch (mode) {
+	case QED_MF_DEFAULT:
+	case QED_MF_NPAR:
+		p_ramrod->mf_mode = MF_NPAR;
+		break;
+	case QED_MF_OVLAN:
+		p_ramrod->mf_mode = MF_OVLAN;
+		break;
+	default:
+		DP_NOTICE(p_hwfn, "Unsupported MF mode, init as DEFAULT\n");
+		p_ramrod->mf_mode = MF_NPAR;
+	}
+	p_ramrod->outer_tag = p_hwfn->hw_info.ovlan;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Place EQ address in RAMROD */
 	DMA_REGPAIR_LE(p_ramrod->event_ring_pbl_addr,
@@ -398,7 +436,11 @@ int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
 
 	qed_tunn_set_pf_start_params(p_hwfn, p_tunn, &p_ramrod->tunnel_config);
 
+<<<<<<< HEAD
 	if (test_bit(QED_MF_INTER_PF_SWITCH, &p_hwfn->cdev->mf_bits))
+=======
+	if (IS_MF_SI(p_hwfn))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p_ramrod->allow_npar_tx_switching = allow_npar_tx_switch;
 
 	switch (p_hwfn->hw_info.personality) {
@@ -412,7 +454,10 @@ int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
 		p_ramrod->personality = PERSONALITY_ISCSI;
 		break;
 	case QED_PCI_ETH_ROCE:
+<<<<<<< HEAD
 	case QED_PCI_ETH_IWARP:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p_ramrod->personality = PERSONALITY_RDMA_AND_ETH;
 		break;
 	default:
@@ -431,8 +476,13 @@ int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
 	p_ramrod->hsi_fp_ver.minor_ver_arr[ETH_VER_KEY] = ETH_HSI_VER_MINOR;
 
 	DP_VERBOSE(p_hwfn, QED_MSG_SPQ,
+<<<<<<< HEAD
 		   "Setting event_ring_sb [id %04x index %02x], outer_tag.tci [%d]\n",
 		   sb, sb_index, p_ramrod->outer_tag_config.outer_tag.tci);
+=======
+		   "Setting event_ring_sb [id %04x index %02x], outer_tag [%d]\n",
+		   sb, sb_index, p_ramrod->outer_tag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = qed_spq_post(p_hwfn, p_ent, NULL);
 
@@ -467,6 +517,7 @@ int qed_sp_pf_update(struct qed_hwfn *p_hwfn)
 	return qed_spq_post(p_hwfn, p_ent, NULL);
 }
 
+<<<<<<< HEAD
 int qed_sp_pf_update_ufp(struct qed_hwfn *p_hwfn)
 {
 	struct qed_spq_entry *p_ent = NULL;
@@ -500,6 +551,8 @@ int qed_sp_pf_update_ufp(struct qed_hwfn *p_hwfn)
 	return qed_spq_post(p_hwfn, p_ent, NULL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Set pf update ramrod command params */
 int qed_sp_pf_update_tunn_cfg(struct qed_hwfn *p_hwfn,
 			      struct qed_ptt *p_ptt,

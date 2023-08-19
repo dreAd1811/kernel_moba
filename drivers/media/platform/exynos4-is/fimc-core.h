@@ -303,7 +303,11 @@ struct fimc_m2m_device {
  * @input: capture input type, grp_id of the attached subdev
  * @user_subdev_api: true if subdevs are not configured by the host driver
  * @inh_sensor_ctrls: a flag indicating v4l2 controls are inherited from
+<<<<<<< HEAD
  *		      an image sensor subdev
+=======
+ * 		      an image sensor subdev
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct fimc_vid_cap {
 	struct fimc_ctx			*ctx;

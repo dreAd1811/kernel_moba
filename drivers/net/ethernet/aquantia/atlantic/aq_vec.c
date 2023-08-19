@@ -19,7 +19,12 @@
 #include <linux/netdevice.h>
 
 struct aq_vec_s {
+<<<<<<< HEAD
 	const struct aq_hw_ops *aq_hw_ops;
+=======
+	struct aq_obj_s header;
+	struct aq_hw_ops *aq_hw_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct aq_hw_s *aq_hw;
 	struct aq_nic_s *aq_nic;
 	unsigned int tx_rings;
@@ -35,12 +40,21 @@ struct aq_vec_s {
 static int aq_vec_poll(struct napi_struct *napi, int budget)
 {
 	struct aq_vec_s *self = container_of(napi, struct aq_vec_s, napi);
+<<<<<<< HEAD
 	unsigned int sw_tail_old = 0U;
 	struct aq_ring_s *ring = NULL;
 	bool was_tx_cleaned = true;
 	unsigned int i = 0U;
 	int work_done = 0;
 	int err = 0;
+=======
+	struct aq_ring_s *ring = NULL;
+	int work_done = 0;
+	int err = 0;
+	unsigned int i = 0U;
+	unsigned int sw_tail_old = 0U;
+	bool was_tx_cleaned = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!self) {
 		err = -EINVAL;
@@ -57,8 +71,14 @@ static int aq_vec_poll(struct napi_struct *napi, int budget)
 
 			if (ring[AQ_VEC_TX_ID].sw_head !=
 			    ring[AQ_VEC_TX_ID].hw_head) {
+<<<<<<< HEAD
 				was_tx_cleaned = aq_ring_tx_clean(&ring[AQ_VEC_TX_ID]);
 				aq_ring_update_queue_state(&ring[AQ_VEC_TX_ID]);
+=======
+				aq_ring_tx_clean(&ring[AQ_VEC_TX_ID]);
+				aq_ring_update_queue_state(&ring[AQ_VEC_TX_ID]);
+				was_tx_cleaned = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			err = self->aq_hw_ops->hw_ring_rx_receive(self->aq_hw,
@@ -89,8 +109,12 @@ static int aq_vec_poll(struct napi_struct *napi, int budget)
 			}
 		}
 
+<<<<<<< HEAD
 err_exit:
 		if (!was_tx_cleaned)
+=======
+		if (was_tx_cleaned)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			work_done = budget;
 
 		if (work_done < budget) {
@@ -99,7 +123,11 @@ err_exit:
 					1U << self->aq_ring_param.vec_idx);
 		}
 	}
+<<<<<<< HEAD
 
+=======
+err_exit:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return work_done;
 }
 
@@ -165,7 +193,11 @@ err_exit:
 	return self;
 }
 
+<<<<<<< HEAD
 int aq_vec_init(struct aq_vec_s *self, const struct aq_hw_ops *aq_hw_ops,
+=======
+int aq_vec_init(struct aq_vec_s *self, struct aq_hw_ops *aq_hw_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct aq_hw_s *aq_hw)
 {
 	struct aq_ring_s *ring = NULL;
@@ -309,6 +341,7 @@ irqreturn_t aq_vec_isr_legacy(int irq, void *private)
 {
 	struct aq_vec_s *self = private;
 	u64 irq_mask = 0U;
+<<<<<<< HEAD
 	irqreturn_t err = 0;
 
 	if (!self) {
@@ -318,6 +351,15 @@ irqreturn_t aq_vec_isr_legacy(int irq, void *private)
 	err = self->aq_hw_ops->hw_irq_read(self->aq_hw, &irq_mask);
 	if (err < 0)
 		goto err_exit;
+=======
+	int err;
+
+	if (!self)
+		return IRQ_NONE;
+	err = self->aq_hw_ops->hw_irq_read(self->aq_hw, &irq_mask);
+	if (err < 0)
+		return IRQ_NONE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (irq_mask) {
 		self->aq_hw_ops->hw_irq_disable(self->aq_hw,
@@ -325,11 +367,18 @@ irqreturn_t aq_vec_isr_legacy(int irq, void *private)
 		napi_schedule(&self->napi);
 	} else {
 		self->aq_hw_ops->hw_irq_enable(self->aq_hw, 1U);
+<<<<<<< HEAD
 		err = IRQ_NONE;
 	}
 
 err_exit:
 	return err >= 0 ? IRQ_HANDLED : IRQ_NONE;
+=======
+		return IRQ_NONE;
+	}
+
+	return IRQ_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 cpumask_t *aq_vec_get_affinity_mask(struct aq_vec_s *self)

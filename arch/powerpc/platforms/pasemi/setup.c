@@ -207,7 +207,12 @@ static __init void pas_init_IRQ(void)
 			break;
 		}
 	if (!mpic_node) {
+<<<<<<< HEAD
 		pr_err("Failed to locate the MPIC interrupt controller\n");
+=======
+		printk(KERN_ERR
+			"Failed to locate the MPIC interrupt controller\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -216,12 +221,20 @@ static __init void pas_init_IRQ(void)
 	naddr = of_n_addr_cells(root);
 	opprop = of_get_property(root, "platform-open-pic", &opplen);
 	if (!opprop) {
+<<<<<<< HEAD
 		pr_err("No platform-open-pic property.\n");
+=======
+		printk(KERN_ERR "No platform-open-pic property.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		of_node_put(root);
 		return;
 	}
 	openpic_addr = of_read_number(opprop, naddr);
+<<<<<<< HEAD
 	pr_debug("OpenPIC addr: %lx\n", openpic_addr);
+=======
+	printk(KERN_DEBUG "OpenPIC addr: %lx\n", openpic_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mpic_flags = MPIC_LARGE_VECTORS | MPIC_NO_BIAS | MPIC_NO_RESET;
 
@@ -264,13 +277,18 @@ static int pas_machine_check_handler(struct pt_regs *regs)
 	srr1 = regs->msr;
 
 	if (nmi_virq && mpic_get_mcirq() == nmi_virq) {
+<<<<<<< HEAD
 		pr_err("NMI delivered\n");
+=======
+		printk(KERN_ERR "NMI delivered\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		debugger(regs);
 		mpic_end_irq(irq_get_irq_data(nmi_virq));
 		goto out;
 	}
 
 	dsisr = mfspr(SPRN_DSISR);
+<<<<<<< HEAD
 	pr_err("Machine Check on CPU %d\n", cpu);
 	pr_err("SRR0  0x%016lx SRR1 0x%016lx\n", srr0, srr1);
 	pr_err("DSISR 0x%016lx DAR  0x%016lx\n", dsisr, regs->dar);
@@ -306,10 +324,48 @@ static int pas_machine_check_handler(struct pt_regs *regs)
 
 	if (srr1 & 0x40000) {
 		pr_err("I-side SLB multiple hit\n");
+=======
+	printk(KERN_ERR "Machine Check on CPU %d\n", cpu);
+	printk(KERN_ERR "SRR0  0x%016lx SRR1 0x%016lx\n", srr0, srr1);
+	printk(KERN_ERR "DSISR 0x%016lx DAR  0x%016lx\n", dsisr, regs->dar);
+	printk(KERN_ERR "BER   0x%016lx MER  0x%016lx\n", mfspr(SPRN_PA6T_BER),
+		mfspr(SPRN_PA6T_MER));
+	printk(KERN_ERR "IER   0x%016lx DER  0x%016lx\n", mfspr(SPRN_PA6T_IER),
+		mfspr(SPRN_PA6T_DER));
+	printk(KERN_ERR "Cause:\n");
+
+	if (srr1 & 0x200000)
+		printk(KERN_ERR "Signalled by SDC\n");
+
+	if (srr1 & 0x100000) {
+		printk(KERN_ERR "Load/Store detected error:\n");
+		if (dsisr & 0x8000)
+			printk(KERN_ERR "D-cache ECC double-bit error or bus error\n");
+		if (dsisr & 0x4000)
+			printk(KERN_ERR "LSU snoop response error\n");
+		if (dsisr & 0x2000) {
+			printk(KERN_ERR "MMU SLB multi-hit or invalid B field\n");
+			dump_slb = 1;
+		}
+		if (dsisr & 0x1000)
+			printk(KERN_ERR "Recoverable Duptags\n");
+		if (dsisr & 0x800)
+			printk(KERN_ERR "Recoverable D-cache parity error count overflow\n");
+		if (dsisr & 0x400)
+			printk(KERN_ERR "TLB parity error count overflow\n");
+	}
+
+	if (srr1 & 0x80000)
+		printk(KERN_ERR "Bus Error\n");
+
+	if (srr1 & 0x40000) {
+		printk(KERN_ERR "I-side SLB multiple hit\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dump_slb = 1;
 	}
 
 	if (srr1 & 0x20000)
+<<<<<<< HEAD
 		pr_err("I-cache parity error hit\n");
 
 	if (num_mce_regs == 0)
@@ -319,17 +375,36 @@ static int pas_machine_check_handler(struct pt_regs *regs)
 
 	for (i = 0; i < num_mce_regs; i++)
 		pr_err("%s: 0x%08x\n", mce_regs[i].name,
+=======
+		printk(KERN_ERR "I-cache parity error hit\n");
+
+	if (num_mce_regs == 0)
+		printk(KERN_ERR "No MCE registers mapped yet, can't dump\n");
+	else
+		printk(KERN_ERR "SoC debug registers:\n");
+
+	for (i = 0; i < num_mce_regs; i++)
+		printk(KERN_ERR "%s: 0x%08x\n", mce_regs[i].name,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			in_le32(mce_regs[i].addr));
 
 	if (dump_slb) {
 		unsigned long e, v;
 		int i;
 
+<<<<<<< HEAD
 		pr_err("slb contents:\n");
 		for (i = 0; i < mmu_slb_size; i++) {
 			asm volatile("slbmfee  %0,%1" : "=r" (e) : "r" (i));
 			asm volatile("slbmfev  %0,%1" : "=r" (v) : "r" (i));
 			pr_err("%02d %016lx %016lx\n", i, e, v);
+=======
+		printk(KERN_ERR "slb contents:\n");
+		for (i = 0; i < mmu_slb_size; i++) {
+			asm volatile("slbmfee  %0,%1" : "=r" (e) : "r" (i));
+			asm volatile("slbmfev  %0,%1" : "=r" (v) : "r" (i));
+			printk(KERN_ERR "%02d %016lx %016lx\n", i, e, v);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -362,7 +437,11 @@ static int pcmcia_notify(struct notifier_block *nb, unsigned long action,
 		return 0;
 
 	/* We use the direct ops for localbus */
+<<<<<<< HEAD
 	dev->dma_ops = &dma_nommu_ops;
+=======
+	dev->dma_ops = &dma_direct_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -1,7 +1,10 @@
 /*
  * Copyright (c) 2005-2011 Atheros Communications Inc.
  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+<<<<<<< HEAD
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -25,7 +28,10 @@
 #include "mac.h"
 
 #include <linux/log2.h>
+<<<<<<< HEAD
 #include <linux/bitfield.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* when under memory pressure rx ring refill may fail and needs a retry */
 #define HTT_RX_RING_REFILL_RETRY_MS 50
@@ -182,7 +188,11 @@ static int __ath10k_htt_rx_ring_fill_n(struct ath10k_htt *htt, int num)
 		rxcb = ATH10K_SKB_RXCB(skb);
 		rxcb->paddr = paddr;
 		htt->rx_ring.netbufs_ring[idx] = skb;
+<<<<<<< HEAD
 		ath10k_htt_set_paddrs_ring(htt, paddr, idx);
+=======
+		htt->rx_ops->htt_set_paddrs_ring(htt, paddr, idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		htt->rx_ring.fill_cnt++;
 
 		if (htt->rx_ring.in_ord_rx) {
@@ -253,9 +263,15 @@ static void ath10k_htt_rx_msdu_buff_replenish(struct ath10k_htt *htt)
 	spin_unlock_bh(&htt->rx_ring.lock);
 }
 
+<<<<<<< HEAD
 static void ath10k_htt_rx_ring_refill_retry(struct timer_list *t)
 {
 	struct ath10k_htt *htt = from_timer(htt, t, rx_ring.refill_retry_timer);
+=======
+static void ath10k_htt_rx_ring_refill_retry(unsigned long arg)
+{
+	struct ath10k_htt *htt = (struct ath10k_htt *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ath10k_htt_rx_msdu_buff_replenish(htt);
 }
@@ -290,8 +306,13 @@ void ath10k_htt_rx_free(struct ath10k_htt *htt)
 	spin_unlock_bh(&htt->rx_ring.lock);
 
 	dma_free_coherent(htt->ar->dev,
+<<<<<<< HEAD
 			  ath10k_htt_get_rx_ring_size(htt),
 			  ath10k_htt_get_vaddr_ring(htt),
+=======
+			  htt->rx_ops->htt_get_rx_ring_size(htt),
+			  htt->rx_ops->htt_get_vaddr_ring(htt),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  htt->rx_ring.base_paddr);
 
 	dma_free_coherent(htt->ar->dev,
@@ -318,7 +339,11 @@ static inline struct sk_buff *ath10k_htt_rx_netbuf_pop(struct ath10k_htt *htt)
 	idx = htt->rx_ring.sw_rd_idx.msdu_payld;
 	msdu = htt->rx_ring.netbufs_ring[idx];
 	htt->rx_ring.netbufs_ring[idx] = NULL;
+<<<<<<< HEAD
 	ath10k_htt_reset_paddrs_ring(htt, idx);
+=======
+	htt->rx_ops->htt_reset_paddrs_ring(htt, idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	idx++;
 	idx &= htt->rx_ring.size_mask;
@@ -585,18 +610,30 @@ int ath10k_htt_rx_alloc(struct ath10k_htt *htt)
 	}
 
 	htt->rx_ring.netbufs_ring =
+<<<<<<< HEAD
 		kcalloc(htt->rx_ring.size, sizeof(struct sk_buff *),
+=======
+		kzalloc(htt->rx_ring.size * sizeof(struct sk_buff *),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GFP_KERNEL);
 	if (!htt->rx_ring.netbufs_ring)
 		goto err_netbuf;
 
+<<<<<<< HEAD
 	size = ath10k_htt_get_rx_ring_size(htt);
+=======
+	size = htt->rx_ops->htt_get_rx_ring_size(htt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vaddr_ring = dma_alloc_coherent(htt->ar->dev, size, &paddr, GFP_KERNEL);
 	if (!vaddr_ring)
 		goto err_dma_ring;
 
+<<<<<<< HEAD
 	ath10k_htt_config_paddrs_ring(htt, vaddr_ring);
+=======
+	htt->rx_ops->htt_config_paddrs_ring(htt, vaddr_ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	htt->rx_ring.base_paddr = paddr;
 
 	vaddr = dma_alloc_coherent(htt->ar->dev,
@@ -611,7 +648,11 @@ int ath10k_htt_rx_alloc(struct ath10k_htt *htt)
 	*htt->rx_ring.alloc_idx.vaddr = 0;
 
 	/* Initialize the Rx refill retry timer */
+<<<<<<< HEAD
 	timer_setup(timer, ath10k_htt_rx_ring_refill_retry, 0);
+=======
+	setup_timer(timer, ath10k_htt_rx_ring_refill_retry, (unsigned long)htt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&htt->rx_ring.lock);
 
@@ -630,7 +671,11 @@ int ath10k_htt_rx_alloc(struct ath10k_htt *htt)
 
 err_dma_idx:
 	dma_free_coherent(htt->ar->dev,
+<<<<<<< HEAD
 			  ath10k_htt_get_rx_ring_size(htt),
+=======
+			  htt->rx_ops->htt_get_rx_ring_size(htt),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  vaddr_ring,
 			  htt->rx_ring.base_paddr);
 err_dma_ring:
@@ -669,6 +714,7 @@ static int ath10k_htt_rx_crypto_param_len(struct ath10k *ar,
 
 #define MICHAEL_MIC_LEN 8
 
+<<<<<<< HEAD
 static int ath10k_htt_rx_crypto_mic_len(struct ath10k *ar,
 					enum htt_rx_mpdu_encrypt_type type)
 {
@@ -679,6 +725,20 @@ static int ath10k_htt_rx_crypto_mic_len(struct ath10k *ar,
 	case HTT_RX_MPDU_ENCRYPT_TKIP_WITHOUT_MIC:
 	case HTT_RX_MPDU_ENCRYPT_TKIP_WPA:
 		return 0;
+=======
+static int ath10k_htt_rx_crypto_tail_len(struct ath10k *ar,
+					 enum htt_rx_mpdu_encrypt_type type)
+{
+	switch (type) {
+	case HTT_RX_MPDU_ENCRYPT_NONE:
+		return 0;
+	case HTT_RX_MPDU_ENCRYPT_WEP40:
+	case HTT_RX_MPDU_ENCRYPT_WEP104:
+		return IEEE80211_WEP_ICV_LEN;
+	case HTT_RX_MPDU_ENCRYPT_TKIP_WITHOUT_MIC:
+	case HTT_RX_MPDU_ENCRYPT_TKIP_WPA:
+		return IEEE80211_TKIP_ICV_LEN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HTT_RX_MPDU_ENCRYPT_AES_CCM_WPA2:
 		return IEEE80211_CCMP_MIC_LEN;
 	case HTT_RX_MPDU_ENCRYPT_AES_CCM256_WPA2:
@@ -695,6 +755,7 @@ static int ath10k_htt_rx_crypto_mic_len(struct ath10k *ar,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ath10k_htt_rx_crypto_icv_len(struct ath10k *ar,
 					enum htt_rx_mpdu_encrypt_type type)
 {
@@ -720,6 +781,8 @@ static int ath10k_htt_rx_crypto_icv_len(struct ath10k *ar,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct amsdu_subframe_hdr {
 	u8 dst[ETH_ALEN];
 	u8 src[ETH_ALEN];
@@ -728,6 +791,7 @@ struct amsdu_subframe_hdr {
 
 #define GROUP_ID_IS_SU_MIMO(x) ((x) == 0 || (x) == 63)
 
+<<<<<<< HEAD
 static inline u8 ath10k_bw_to_mac80211_bw(u8 bw)
 {
 	u8 ret = 0;
@@ -750,6 +814,8 @@ static inline u8 ath10k_bw_to_mac80211_bw(u8 bw)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ath10k_htt_rx_h_rates(struct ath10k *ar,
 				  struct ieee80211_rx_status *status,
 				  struct htt_rx_desc *rxd)
@@ -852,7 +918,27 @@ static void ath10k_htt_rx_h_rates(struct ath10k *ar,
 		if (sgi)
 			status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
 
+<<<<<<< HEAD
 		status->bw = ath10k_bw_to_mac80211_bw(bw);
+=======
+		switch (bw) {
+		/* 20MHZ */
+		case 0:
+			break;
+		/* 40MHZ */
+		case 1:
+			status->bw = RATE_INFO_BW_40;
+			break;
+		/* 80MHZ */
+		case 2:
+			status->bw = RATE_INFO_BW_80;
+			break;
+		case 3:
+			status->bw = RATE_INFO_BW_160;
+			break;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status->encoding = RX_ENC_VHT;
 		break;
 	default:
@@ -1092,7 +1178,11 @@ static void ath10k_htt_rx_h_queue_msdu(struct ath10k *ar,
 	status = IEEE80211_SKB_RXCB(skb);
 	*status = *rx_status;
 
+<<<<<<< HEAD
 	skb_queue_tail(&ar->htt.rx_msdus_q, skb);
+=======
+	__skb_queue_tail(&ar->htt.rx_msdus_q, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ath10k_process_rx(struct ath10k *ar, struct sk_buff *skb)
@@ -1204,6 +1294,7 @@ static void ath10k_htt_rx_h_undecap_raw(struct ath10k *ar,
 	/* Tail */
 	if (status->flag & RX_FLAG_IV_STRIPPED) {
 		skb_trim(msdu, msdu->len -
+<<<<<<< HEAD
 			 ath10k_htt_rx_crypto_mic_len(ar, enctype));
 
 		skb_trim(msdu, msdu->len -
@@ -1218,13 +1309,31 @@ static void ath10k_htt_rx_h_undecap_raw(struct ath10k *ar,
 		if (status->flag & RX_FLAG_ICV_STRIPPED)
 			skb_trim(msdu, msdu->len -
 				 ath10k_htt_rx_crypto_icv_len(ar, enctype));
+=======
+			 ath10k_htt_rx_crypto_tail_len(ar, enctype));
+	} else {
+		/* MIC */
+		if ((status->flag & RX_FLAG_MIC_STRIPPED) &&
+		    enctype == HTT_RX_MPDU_ENCRYPT_AES_CCM_WPA2)
+			skb_trim(msdu, msdu->len - 8);
+
+		/* ICV */
+		if (status->flag & RX_FLAG_ICV_STRIPPED &&
+		    enctype != HTT_RX_MPDU_ENCRYPT_AES_CCM_WPA2)
+			skb_trim(msdu, msdu->len -
+				 ath10k_htt_rx_crypto_tail_len(ar, enctype));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* MMIC */
 	if ((status->flag & RX_FLAG_MMIC_STRIPPED) &&
 	    !ieee80211_has_morefrags(hdr->frame_control) &&
 	    enctype == HTT_RX_MPDU_ENCRYPT_TKIP_WPA)
+<<<<<<< HEAD
 		skb_trim(msdu, msdu->len - MICHAEL_MIC_LEN);
+=======
+		skb_trim(msdu, msdu->len - 8);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Head */
 	if (status->flag & RX_FLAG_IV_STRIPPED) {
@@ -1513,9 +1622,13 @@ static void ath10k_htt_rx_h_csum_offload(struct sk_buff *msdu)
 static void ath10k_htt_rx_h_mpdu(struct ath10k *ar,
 				 struct sk_buff_head *amsdu,
 				 struct ieee80211_rx_status *status,
+<<<<<<< HEAD
 				 bool fill_crypt_header,
 				 u8 *rx_hdr,
 				 enum ath10k_pkt_rx_err *err)
+=======
+				 bool fill_crypt_header)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sk_buff *first;
 	struct sk_buff *last;
@@ -1551,9 +1664,12 @@ static void ath10k_htt_rx_h_mpdu(struct ath10k *ar,
 	hdr = (void *)rxd->rx_hdr_status;
 	memcpy(first_hdr, hdr, RX_HTT_HDR_STATUS_LEN);
 
+<<<<<<< HEAD
 	if (rx_hdr)
 		memcpy(rx_hdr, hdr, RX_HTT_HDR_STATUS_LEN);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Each A-MSDU subframe will use the original header as the base and be
 	 * reported as a separate MSDU so strip the A-MSDU bit from QoS Ctl.
 	 */
@@ -1597,6 +1713,7 @@ static void ath10k_htt_rx_h_mpdu(struct ath10k *ar,
 	if (has_tkip_err)
 		status->flag |= RX_FLAG_MMIC_ERROR;
 
+<<<<<<< HEAD
 	if (err) {
 		if (has_fcs_err)
 			*err = ATH10K_PKT_RX_ERR_FCS;
@@ -1608,6 +1725,8 @@ static void ath10k_htt_rx_h_mpdu(struct ath10k *ar,
 			*err = ATH10K_PKT_RX_ERR_PEER_IDX_INVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Firmware reports all necessary management frames via WMI already.
 	 * They are not reported to monitor interfaces at all so pass the ones
 	 * coming via HTT to monitor interfaces instead. This simplifies
@@ -1678,13 +1797,20 @@ static void ath10k_htt_rx_h_enqueue(struct ath10k *ar,
 	}
 }
 
+<<<<<<< HEAD
 static int ath10k_unchain_msdu(struct sk_buff_head *amsdu,
 			       unsigned long int *unchain_cnt)
+=======
+static int ath10k_unchain_msdu(struct sk_buff_head *amsdu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sk_buff *skb, *first;
 	int space;
 	int total_len = 0;
+<<<<<<< HEAD
 	int amsdu_len = skb_queue_len(amsdu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TODO:  Might could optimize this by using
 	 * skb_try_coalesce or similar method to
@@ -1720,16 +1846,23 @@ static int ath10k_unchain_msdu(struct sk_buff_head *amsdu,
 	}
 
 	__skb_queue_head(amsdu, first);
+<<<<<<< HEAD
 
 	*unchain_cnt += amsdu_len - 1;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void ath10k_htt_rx_h_unchain(struct ath10k *ar,
+<<<<<<< HEAD
 				    struct sk_buff_head *amsdu,
 				    unsigned long int *drop_cnt,
 				    unsigned long int *unchain_cnt)
+=======
+				    struct sk_buff_head *amsdu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sk_buff *first;
 	struct htt_rx_desc *rxd;
@@ -1747,12 +1880,19 @@ static void ath10k_htt_rx_h_unchain(struct ath10k *ar,
 	 */
 	if (decap != RX_MSDU_DECAP_RAW ||
 	    skb_queue_len(amsdu) != 1 + rxd->frag_info.ring2_more_count) {
+<<<<<<< HEAD
 		*drop_cnt += skb_queue_len(amsdu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__skb_queue_purge(amsdu);
 		return;
 	}
 
+<<<<<<< HEAD
 	ath10k_unchain_msdu(amsdu, unchain_cnt);
+=======
+	ath10k_unchain_msdu(amsdu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool ath10k_htt_rx_amsdu_allowed(struct ath10k *ar,
@@ -1778,8 +1918,12 @@ static bool ath10k_htt_rx_amsdu_allowed(struct ath10k *ar,
 
 static void ath10k_htt_rx_h_filter(struct ath10k *ar,
 				   struct sk_buff_head *amsdu,
+<<<<<<< HEAD
 				   struct ieee80211_rx_status *rx_status,
 				   unsigned long int *drop_cnt)
+=======
+				   struct ieee80211_rx_status *rx_status)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (skb_queue_empty(amsdu))
 		return;
@@ -1787,9 +1931,12 @@ static void ath10k_htt_rx_h_filter(struct ath10k *ar,
 	if (ath10k_htt_rx_amsdu_allowed(ar, amsdu, rx_status))
 		return;
 
+<<<<<<< HEAD
 	if (drop_cnt)
 		*drop_cnt += skb_queue_len(amsdu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__skb_queue_purge(amsdu);
 }
 
@@ -1799,12 +1946,15 @@ static int ath10k_htt_rx_handle_amsdu(struct ath10k_htt *htt)
 	struct ieee80211_rx_status *rx_status = &htt->rx_status;
 	struct sk_buff_head amsdu;
 	int ret;
+<<<<<<< HEAD
 	unsigned long int drop_cnt = 0;
 	unsigned long int unchain_cnt = 0;
 	unsigned long int drop_cnt_filter = 0;
 	unsigned long int msdus_to_queue, num_msdus;
 	enum ath10k_pkt_rx_err err = ATH10K_PKT_RX_ERR_MAX;
 	u8 first_hdr[RX_HTT_HDR_STATUS_LEN];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__skb_queue_head_init(&amsdu);
 
@@ -1826,12 +1976,16 @@ static int ath10k_htt_rx_handle_amsdu(struct ath10k_htt *htt)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	num_msdus = skb_queue_len(&amsdu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ath10k_htt_rx_h_ppdu(ar, &amsdu, rx_status, 0xffff);
 
 	/* only for ret = 1 indicates chained msdus */
 	if (ret > 0)
+<<<<<<< HEAD
 		ath10k_htt_rx_h_unchain(ar, &amsdu, &drop_cnt, &unchain_cnt);
 
 	ath10k_htt_rx_h_filter(ar, &amsdu, rx_status, &drop_cnt_filter);
@@ -1843,6 +1997,14 @@ static int ath10k_htt_rx_handle_amsdu(struct ath10k_htt *htt)
 				       unchain_cnt, drop_cnt, drop_cnt_filter,
 				       msdus_to_queue);
 
+=======
+		ath10k_htt_rx_h_unchain(ar, &amsdu);
+
+	ath10k_htt_rx_h_filter(ar, &amsdu, rx_status);
+	ath10k_htt_rx_h_mpdu(ar, &amsdu, rx_status, true);
+	ath10k_htt_rx_h_enqueue(ar, &amsdu, rx_status);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1853,6 +2015,7 @@ static void ath10k_htt_rx_proc_rx_ind(struct ath10k_htt *htt,
 	struct htt_rx_indication_mpdu_range *mpdu_ranges;
 	int num_mpdu_ranges;
 	int i, mpdu_count = 0;
+<<<<<<< HEAD
 	u16 peer_id;
 	u8 tid;
 
@@ -1861,6 +2024,11 @@ static void ath10k_htt_rx_proc_rx_ind(struct ath10k_htt *htt,
 	peer_id = __le16_to_cpu(rx->hdr.peer_id);
 	tid =  MS(rx->hdr.info0, HTT_RX_INDICATION_INFO0_EXT_TID);
 
+=======
+
+	num_mpdu_ranges = MS(__le32_to_cpu(rx->hdr.info1),
+			     HTT_RX_INDICATION_INFO1_NUM_MPDU_RANGES);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mpdu_ranges = htt_rx_ind_get_mpdu_ranges(rx);
 
 	ath10k_dbg_dump(ar, ATH10K_DBG_HTT_DUMP, NULL, "htt rx ind: ",
@@ -1872,9 +2040,12 @@ static void ath10k_htt_rx_proc_rx_ind(struct ath10k_htt *htt,
 		mpdu_count += mpdu_ranges[i].mpdu_count;
 
 	atomic_add(mpdu_count, &htt->num_mpdus_ready);
+<<<<<<< HEAD
 
 	ath10k_sta_update_rx_tid_stats_ampdu(ar, peer_id, tid, mpdu_ranges,
 					     num_mpdu_ranges);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ath10k_htt_rx_tx_compl_ind(struct ath10k *ar,
@@ -2184,9 +2355,14 @@ static int ath10k_htt_rx_in_ord_ind(struct ath10k *ar, struct sk_buff *skb)
 			 * should still give an idea about rx rate to the user.
 			 */
 			ath10k_htt_rx_h_ppdu(ar, &amsdu, status, vdev_id);
+<<<<<<< HEAD
 			ath10k_htt_rx_h_filter(ar, &amsdu, status, NULL);
 			ath10k_htt_rx_h_mpdu(ar, &amsdu, status, false, NULL,
 					     NULL);
+=======
+			ath10k_htt_rx_h_filter(ar, &amsdu, status);
+			ath10k_htt_rx_h_mpdu(ar, &amsdu, status, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ath10k_htt_rx_h_enqueue(ar, &amsdu, status);
 			break;
 		case -EAGAIN:
@@ -2560,7 +2736,11 @@ ath10k_update_per_peer_tx_stats(struct ath10k *ar,
 		arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
 
 	arsta->txrate.nss = txrate.nss;
+<<<<<<< HEAD
 	arsta->txrate.bw = ath10k_bw_to_mac80211_bw(txrate.bw);
+=======
+	arsta->txrate.bw = txrate.bw + RATE_INFO_BW_20;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ath10k_htt_fetch_peer_stats(struct ath10k *ar,
@@ -2589,7 +2769,11 @@ static void ath10k_htt_fetch_peer_stats(struct ath10k *ar,
 	rcu_read_lock();
 	spin_lock_bh(&ar->data_lock);
 	peer = ath10k_peer_find_by_id(ar, peer_id);
+<<<<<<< HEAD
 	if (!peer || !peer->sta) {
+=======
+	if (!peer) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ath10k_warn(ar, "Invalid peer id %d peer stats buffer\n",
 			    peer_id);
 		goto out;
@@ -2642,7 +2826,11 @@ static void ath10k_fetch_10_2_tx_stats(struct ath10k *ar, u8 *data)
 	rcu_read_lock();
 	spin_lock_bh(&ar->data_lock);
 	peer = ath10k_peer_find_by_id(ar, peer_id);
+<<<<<<< HEAD
 	if (!peer || !peer->sta) {
+=======
+	if (!peer) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ath10k_warn(ar, "Invalid peer id %d in peer stats buffer\n",
 			    peer_id);
 		goto out;
@@ -2723,13 +2911,17 @@ bool ath10k_htt_t2h_msg_handler(struct ath10k *ar, struct sk_buff *skb)
 	case HTT_T2H_MSG_TYPE_MGMT_TX_COMPLETION: {
 		struct htt_tx_done tx_done = {};
 		int status = __le32_to_cpu(resp->mgmt_tx_completion.status);
+<<<<<<< HEAD
 		int info = __le32_to_cpu(resp->mgmt_tx_completion.info);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		tx_done.msdu_id = __le32_to_cpu(resp->mgmt_tx_completion.desc_id);
 
 		switch (status) {
 		case HTT_MGMT_TX_STATUS_OK:
 			tx_done.status = HTT_TX_COMPL_STATE_ACK;
+<<<<<<< HEAD
 			if (test_bit(WMI_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS,
 				     ar->wmi.svc_map) &&
 			    (resp->mgmt_tx_completion.flags &
@@ -2738,6 +2930,8 @@ bool ath10k_htt_t2h_msg_handler(struct ath10k *ar, struct sk_buff *skb)
 				FIELD_GET(HTT_MGMT_TX_CMPL_INFO_ACK_RSSI_MASK,
 					  info);
 			}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case HTT_MGMT_TX_STATUS_RETRY:
 			tx_done.status = HTT_TX_COMPL_STATE_NOACK;
@@ -2813,7 +3007,11 @@ bool ath10k_htt_t2h_msg_handler(struct ath10k *ar, struct sk_buff *skb)
 		break;
 	}
 	case HTT_T2H_MSG_TYPE_RX_IN_ORD_PADDR_IND: {
+<<<<<<< HEAD
 		skb_queue_tail(&htt->rx_in_ord_compl_q, skb);
+=======
+		__skb_queue_tail(&htt->rx_in_ord_compl_q, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 	}
 	case HTT_T2H_MSG_TYPE_TX_CREDIT_UPDATE_IND:
@@ -2877,7 +3075,11 @@ static int ath10k_htt_rx_deliver_msdu(struct ath10k *ar, int quota, int budget)
 		if (skb_queue_empty(&ar->htt.rx_msdus_q))
 			break;
 
+<<<<<<< HEAD
 		skb = skb_dequeue(&ar->htt.rx_msdus_q);
+=======
+		skb = __skb_dequeue(&ar->htt.rx_msdus_q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!skb)
 			break;
 		ath10k_process_rx(ar, skb);
@@ -2908,7 +3110,11 @@ int ath10k_htt_txrx_compl_task(struct ath10k *ar, int budget)
 		goto exit;
 	}
 
+<<<<<<< HEAD
 	while ((skb = skb_dequeue(&htt->rx_in_ord_compl_q))) {
+=======
+	while ((skb = __skb_dequeue(&htt->rx_in_ord_compl_q))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_bh(&htt->rx_ring.lock);
 		ret = ath10k_htt_rx_in_ord_ind(ar, skb);
 		spin_unlock_bh(&htt->rx_ring.lock);

@@ -48,7 +48,11 @@ nv04_display_create(struct drm_device *dev)
 	if (!disp)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	nvif_object_map(&drm->client.device.object, NULL, 0);
+=======
+	nvif_object_map(&drm->client.device.object);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nouveau_display(dev)->priv = disp;
 	nouveau_display(dev)->dtor = nv04_display_destroy;

@@ -48,9 +48,15 @@ int sun3_hwclk(int set, struct rtc_time *t)
 		todintersil->hour = t->tm_hour;
 		todintersil->minute = t->tm_min;
 		todintersil->second = t->tm_sec;
+<<<<<<< HEAD
 		todintersil->month = t->tm_mon + 1;
 		todintersil->day = t->tm_mday;
 		todintersil->year = (t->tm_year - 68) % 100;
+=======
+		todintersil->month = t->tm_mon;
+		todintersil->day = t->tm_mday;
+		todintersil->year = t->tm_year - 68;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		todintersil->weekday = t->tm_wday;
 	} else {
 		/* read clock */
@@ -58,12 +64,19 @@ int sun3_hwclk(int set, struct rtc_time *t)
 		t->tm_hour = todintersil->hour;
 		t->tm_min = todintersil->minute;
 		t->tm_sec = todintersil->second;
+<<<<<<< HEAD
 		t->tm_mon = todintersil->month - 1;
 		t->tm_mday = todintersil->day;
 		t->tm_year = todintersil->year + 68;
 		t->tm_wday = todintersil->weekday;
 		if (t->tm_year < 70)
 			t->tm_year += 100;
+=======
+		t->tm_mon = todintersil->month;
+		t->tm_mday = todintersil->day;
+		t->tm_year = todintersil->year + 68;
+		t->tm_wday = todintersil->weekday;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	intersil_clock->cmd_reg = START_VAL;

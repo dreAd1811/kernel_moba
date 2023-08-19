@@ -93,9 +93,12 @@ int st_sensors_set_odr(struct iio_dev *indio_dev, unsigned int odr)
 	struct st_sensor_odr_avl odr_out = {0, 0};
 	struct st_sensor_data *sdata = iio_priv(indio_dev);
 
+<<<<<<< HEAD
 	if (!sdata->sensor_settings->odr.addr)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = st_sensors_match_odr(sdata->sensor_settings, odr, &odr_out);
 	if (err < 0)
 		goto st_sensors_match_odr_error;
@@ -224,6 +227,7 @@ EXPORT_SYMBOL(st_sensors_set_enable);
 int st_sensors_set_axis_enable(struct iio_dev *indio_dev, u8 axis_enable)
 {
 	struct st_sensor_data *sdata = iio_priv(indio_dev);
+<<<<<<< HEAD
 	int err = 0;
 
 	if (sdata->sensor_settings->enable_axis.addr)
@@ -232,6 +236,13 @@ int st_sensors_set_axis_enable(struct iio_dev *indio_dev, u8 axis_enable)
 				sdata->sensor_settings->enable_axis.mask,
 				axis_enable);
 	return err;
+=======
+
+	return st_sensors_write_data_with_mask(indio_dev,
+				sdata->sensor_settings->enable_axis.addr,
+				sdata->sensor_settings->enable_axis.mask,
+				axis_enable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(st_sensors_set_axis_enable);
 
@@ -289,8 +300,12 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
 	struct st_sensor_data *sdata = iio_priv(indio_dev);
 
 	/* Sensor does not support interrupts */
+<<<<<<< HEAD
 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
+=======
+	if (sdata->sensor_settings->drdy_irq.addr == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pdata->drdy_int_pin)
 			dev_info(&indio_dev->dev,
 				 "DRDY on pin INT%d specified, but sensor "
@@ -301,7 +316,11 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
 
 	switch (pdata->drdy_int_pin) {
 	case 1:
+<<<<<<< HEAD
 		if (!sdata->sensor_settings->drdy_irq.int1.mask) {
+=======
+		if (sdata->sensor_settings->drdy_irq.mask_int1 == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(&indio_dev->dev,
 					"DRDY on INT1 not available.\n");
 			return -EINVAL;
@@ -309,7 +328,11 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
 		sdata->drdy_int_pin = 1;
 		break;
 	case 2:
+<<<<<<< HEAD
 		if (!sdata->sensor_settings->drdy_irq.int2.mask) {
+=======
+		if (sdata->sensor_settings->drdy_irq.mask_int2 == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(&indio_dev->dev,
 					"DRDY on INT2 not available.\n");
 			return -EINVAL;
@@ -322,8 +345,12 @@ static int st_sensors_set_drdy_int_pin(struct iio_dev *indio_dev,
 	}
 
 	if (pdata->open_drain) {
+<<<<<<< HEAD
 		if (!sdata->sensor_settings->drdy_irq.int1.addr_od &&
 		    !sdata->sensor_settings->drdy_irq.int2.addr_od)
+=======
+		if (!sdata->sensor_settings->drdy_irq.addr_od)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(&indio_dev->dev,
 				"open drain requested but unsupported.\n");
 		else
@@ -380,7 +407,12 @@ void st_sensors_of_name_probe(struct device *dev,
 		return;
 
 	/* The name from the OF match takes precedence if present */
+<<<<<<< HEAD
 	strlcpy(name, of_id->data, len);
+=======
+	strncpy(name, of_id->data, len);
+	name[len - 1] = '\0';
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(st_sensors_of_name_probe);
 #else
@@ -449,6 +481,7 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
 	}
 
 	if (sdata->int_pin_open_drain) {
+<<<<<<< HEAD
 		u8 addr, mask;
 
 		if (sdata->drdy_int_pin == 1) {
@@ -464,6 +497,13 @@ int st_sensors_init_sensor(struct iio_dev *indio_dev,
 			 sdata->drdy_int_pin);
 		err = st_sensors_write_data_with_mask(indio_dev, addr,
 						      mask, 1);
+=======
+		dev_info(&indio_dev->dev,
+			 "set interrupt line to open drain mode\n");
+		err = st_sensors_write_data_with_mask(indio_dev,
+				sdata->sensor_settings->drdy_irq.addr_od,
+				sdata->sensor_settings->drdy_irq.mask_od, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0)
 			return err;
 	}
@@ -477,11 +517,18 @@ EXPORT_SYMBOL(st_sensors_init_sensor);
 int st_sensors_set_dataready_irq(struct iio_dev *indio_dev, bool enable)
 {
 	int err;
+<<<<<<< HEAD
 	u8 drdy_addr, drdy_mask;
 	struct st_sensor_data *sdata = iio_priv(indio_dev);
 
 	if (!sdata->sensor_settings->drdy_irq.int1.addr &&
 	    !sdata->sensor_settings->drdy_irq.int2.addr) {
+=======
+	u8 drdy_mask;
+	struct st_sensor_data *sdata = iio_priv(indio_dev);
+
+	if (!sdata->sensor_settings->drdy_irq.addr) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * there are some devices (e.g. LIS3MDL) where drdy line is
 		 * routed to a given pin and it is not possible to select a
@@ -503,6 +550,7 @@ int st_sensors_set_dataready_irq(struct iio_dev *indio_dev, bool enable)
 			goto st_accel_set_dataready_irq_error;
 	}
 
+<<<<<<< HEAD
 	if (sdata->drdy_int_pin == 1) {
 		drdy_addr = sdata->sensor_settings->drdy_irq.int1.addr;
 		drdy_mask = sdata->sensor_settings->drdy_irq.int1.mask;
@@ -510,13 +558,25 @@ int st_sensors_set_dataready_irq(struct iio_dev *indio_dev, bool enable)
 		drdy_addr = sdata->sensor_settings->drdy_irq.int2.addr;
 		drdy_mask = sdata->sensor_settings->drdy_irq.int2.mask;
 	}
+=======
+	if (sdata->drdy_int_pin == 1)
+		drdy_mask = sdata->sensor_settings->drdy_irq.mask_int1;
+	else
+		drdy_mask = sdata->sensor_settings->drdy_irq.mask_int2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Flag to the poll function that the hardware trigger is in use */
 	sdata->hw_irq_trigger = enable;
 
 	/* Enable/Disable the interrupt generator for data ready. */
+<<<<<<< HEAD
 	err = st_sensors_write_data_with_mask(indio_dev, drdy_addr,
 					      drdy_mask, (int)enable);
+=======
+	err = st_sensors_write_data_with_mask(indio_dev,
+					sdata->sensor_settings->drdy_irq.addr,
+					drdy_mask, (int)enable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 st_accel_set_dataready_irq_error:
 	return err;

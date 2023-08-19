@@ -1,10 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Nodes for Marvell 628x Synology devices
  *
  * Andrew Lunn <andrew@lunn.ch>
  * Ben Peddell <klightspeed@killerwolves.net>
  *
+<<<<<<< HEAD
+=======
+ * This file is licensed under the terms of the GNU General Public
+ * License version 2.  This program is licensed "as is" without any
+ * warranty of any kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 / {
@@ -206,32 +215,56 @@
 				spi-max-frequency = <20000000>;
 				mode = <0>;
 
+<<<<<<< HEAD
 				partition@0 {
+=======
+				partition@00000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x00000000 0x00080000>;
 					label = "RedBoot";
 				};
 
+<<<<<<< HEAD
 				partition@80000 {
+=======
+				partition@00080000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x00080000 0x00200000>;
 					label = "zImage";
 				};
 
+<<<<<<< HEAD
 				partition@280000 {
+=======
+				partition@00280000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x00280000 0x00140000>;
 					label = "rd.gz";
 				};
 
+<<<<<<< HEAD
 				partition@3c0000 {
+=======
+				partition@003c0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x003c0000 0x00010000>;
 					label = "vendor";
 				};
 
+<<<<<<< HEAD
 				partition@3d0000 {
+=======
+				partition@003d0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x003d0000 0x00020000>;
 					label = "RedBoot config";
 				};
 
+<<<<<<< HEAD
 				partition@3f0000 {
+=======
+				partition@003f0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <0x003f0000 0x00010000>;
 					label = "FIS directory";
 				};

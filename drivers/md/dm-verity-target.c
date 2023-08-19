@@ -62,6 +62,17 @@ struct dm_verity_prefetch_work {
 struct buffer_aux {
 	int hash_verified;
 };
+<<<<<<< HEAD
+=======
+/*
+ * While system shutdown, skip verity work for I/O error.
+ */
+static inline bool verity_is_system_shutting_down(void)
+{
+	return system_state == SYSTEM_HALT || system_state == SYSTEM_POWER_OFF
+		|| system_state == SYSTEM_RESTART;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Initialize struct buffer_aux for a freshly created buffer.
@@ -93,16 +104,67 @@ static sector_t verity_position_at_level(struct dm_verity *v, sector_t block,
 	return block >> (level * v->hash_per_block_bits);
 }
 
+<<<<<<< HEAD
 static int verity_hash_update(struct dm_verity *v, struct ahash_request *req,
 				const u8 *data, size_t len,
 				struct crypto_wait *wait)
+=======
+/*
+ * Callback function for asynchrnous crypto API completion notification
+ */
+static void verity_op_done(struct crypto_async_request *base, int err)
+{
+	struct verity_result *res = (struct verity_result *)base->data;
+
+	if (err == -EINPROGRESS)
+		return;
+
+	res->err = err;
+	complete(&res->completion);
+}
+
+/*
+ * Wait for async crypto API callback
+ */
+static inline int verity_complete_op(struct verity_result *res, int ret)
+{
+	switch (ret) {
+	case 0:
+		break;
+
+	case -EINPROGRESS:
+	case -EBUSY:
+		ret = wait_for_completion_interruptible(&res->completion);
+		if (!ret)
+			ret = res->err;
+		reinit_completion(&res->completion);
+		break;
+
+	default:
+		DMERR("verity_wait_hash: crypto op submission failed: %d", ret);
+	}
+
+	if (unlikely(ret < 0))
+		DMERR("verity_wait_hash: crypto op failed: %d", ret);
+
+	return ret;
+}
+
+static int verity_hash_update(struct dm_verity *v, struct ahash_request *req,
+				const u8 *data, size_t len,
+				struct verity_result *res)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct scatterlist sg;
 
 	if (likely(!is_vmalloc_addr(data))) {
 		sg_init_one(&sg, data, len);
 		ahash_request_set_crypt(req, &sg, NULL, len);
+<<<<<<< HEAD
 		return crypto_wait_req(crypto_ahash_update(req), wait);
+=======
+		return verity_complete_op(res, crypto_ahash_update(req));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		do {
 			int r;
@@ -111,7 +173,11 @@ static int verity_hash_update(struct dm_verity *v, struct ahash_request *req,
 			sg_init_table(&sg, 1);
 			sg_set_page(&sg, vmalloc_to_page(data), this_step, offset_in_page(data));
 			ahash_request_set_crypt(req, &sg, NULL, this_step);
+<<<<<<< HEAD
 			r = crypto_wait_req(crypto_ahash_update(req), wait);
+=======
+			r = verity_complete_op(res, crypto_ahash_update(req));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (unlikely(r))
 				return r;
 			data += this_step;
@@ -125,17 +191,28 @@ static int verity_hash_update(struct dm_verity *v, struct ahash_request *req,
  * Wrapper for crypto_ahash_init, which handles verity salting.
  */
 static int verity_hash_init(struct dm_verity *v, struct ahash_request *req,
+<<<<<<< HEAD
 				struct crypto_wait *wait)
+=======
+				struct verity_result *res)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r;
 
 	ahash_request_set_tfm(req, v->tfm);
 	ahash_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP |
 					CRYPTO_TFM_REQ_MAY_BACKLOG,
+<<<<<<< HEAD
 					crypto_req_done, (void *)wait);
 	crypto_init_wait(wait);
 
 	r = crypto_wait_req(crypto_ahash_init(req), wait);
+=======
+					verity_op_done, (void *)res);
+	init_completion(&res->completion);
+
+	r = verity_complete_op(res, crypto_ahash_init(req));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(r < 0)) {
 		DMERR("crypto_ahash_init failed: %d", r);
@@ -143,18 +220,30 @@ static int verity_hash_init(struct dm_verity *v, struct ahash_request *req,
 	}
 
 	if (likely(v->salt_size && (v->version >= 1)))
+<<<<<<< HEAD
 		r = verity_hash_update(v, req, v->salt, v->salt_size, wait);
+=======
+		r = verity_hash_update(v, req, v->salt, v->salt_size, res);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
 
 static int verity_hash_final(struct dm_verity *v, struct ahash_request *req,
+<<<<<<< HEAD
 			     u8 *digest, struct crypto_wait *wait)
+=======
+			     u8 *digest, struct verity_result *res)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r;
 
 	if (unlikely(v->salt_size && (!v->version))) {
+<<<<<<< HEAD
 		r = verity_hash_update(v, req, v->salt, v->salt_size, wait);
+=======
+		r = verity_hash_update(v, req, v->salt, v->salt_size, res);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (r < 0) {
 			DMERR("verity_hash_final failed updating salt: %d", r);
@@ -163,7 +252,11 @@ static int verity_hash_final(struct dm_verity *v, struct ahash_request *req,
 	}
 
 	ahash_request_set_crypt(req, NULL, digest, 0);
+<<<<<<< HEAD
 	r = crypto_wait_req(crypto_ahash_final(req), wait);
+=======
+	r = verity_complete_op(res, crypto_ahash_final(req));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return r;
 }
@@ -172,6 +265,7 @@ int verity_hash(struct dm_verity *v, struct ahash_request *req,
 		const u8 *data, size_t len, u8 *digest)
 {
 	int r;
+<<<<<<< HEAD
 	struct crypto_wait wait;
 
 	r = verity_hash_init(v, req, &wait);
@@ -183,6 +277,19 @@ int verity_hash(struct dm_verity *v, struct ahash_request *req,
 		goto out;
 
 	r = verity_hash_final(v, req, digest, &wait);
+=======
+	struct verity_result res;
+
+	r = verity_hash_init(v, req, &res);
+	if (unlikely(r < 0))
+		goto out;
+
+	r = verity_hash_update(v, req, data, len, &res);
+	if (unlikely(r < 0))
+		goto out;
+
+	r = verity_hash_final(v, req, digest, &res);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	return r;
@@ -368,8 +475,13 @@ out:
 /*
  * Calculates the digest for the given bio
  */
+<<<<<<< HEAD
 static int verity_for_io_block(struct dm_verity *v, struct dm_verity_io *io,
 			       struct bvec_iter *iter, struct crypto_wait *wait)
+=======
+int verity_for_io_block(struct dm_verity *v, struct dm_verity_io *io,
+			struct bvec_iter *iter, struct verity_result *res)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int todo = 1 << v->data_dev_block_bits;
 	struct bio *bio = dm_bio_from_per_bio_data(io, v->ti->per_io_data_size);
@@ -394,7 +506,11 @@ static int verity_for_io_block(struct dm_verity *v, struct dm_verity_io *io,
 		 */
 		sg_set_page(&sg, bv.bv_page, len, bv.bv_offset);
 		ahash_request_set_crypt(req, &sg, NULL, len);
+<<<<<<< HEAD
 		r = crypto_wait_req(crypto_ahash_update(req), wait);
+=======
+		r = verity_complete_op(res, crypto_ahash_update(req));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (unlikely(r < 0)) {
 			DMERR("verity_for_io_block crypto op failed: %d", r);
@@ -474,7 +590,11 @@ static int verity_verify_io(struct dm_verity_io *io)
 	struct dm_verity *v = io->v;
 	struct bvec_iter start;
 	unsigned b;
+<<<<<<< HEAD
 	struct crypto_wait wait;
+=======
+	struct verity_result res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (b = 0; b < io->n_blocks; b++) {
 		int r;
@@ -506,17 +626,29 @@ static int verity_verify_io(struct dm_verity_io *io)
 			continue;
 		}
 
+<<<<<<< HEAD
 		r = verity_hash_init(v, req, &wait);
+=======
+		r = verity_hash_init(v, req, &res);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(r < 0))
 			return r;
 
 		start = io->iter;
+<<<<<<< HEAD
 		r = verity_for_io_block(v, io, &io->iter, &wait);
+=======
+		r = verity_for_io_block(v, io, &io->iter, &res);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(r < 0))
 			return r;
 
 		r = verity_hash_final(v, req, verity_io_real_digest(v, io),
+<<<<<<< HEAD
 					&wait);
+=======
+					&res);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(r < 0))
 			return r;
 
@@ -564,7 +696,12 @@ static void verity_end_io(struct bio *bio)
 {
 	struct dm_verity_io *io = bio->bi_private;
 
+<<<<<<< HEAD
 	if (bio->bi_status && !verity_fec_is_enabled(io->v)) {
+=======
+	if (bio->bi_status &&
+		(!verity_fec_is_enabled(io->v) || verity_is_system_shutting_down())) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		verity_finish_io(io, bio->bi_status);
 		return;
 	}
@@ -584,7 +721,10 @@ static void verity_prefetch_io(struct work_struct *work)
 		container_of(work, struct dm_verity_prefetch_work, work);
 	struct dm_verity *v = pw->v;
 	int i;
+<<<<<<< HEAD
 	sector_t prefetch_size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = v->levels - 2; i >= 0; i--) {
 		sector_t hash_block_start;
@@ -592,7 +732,11 @@ static void verity_prefetch_io(struct work_struct *work)
 		verity_hash_at_level(v, pw->block, i, &hash_block_start, NULL);
 		verity_hash_at_level(v, pw->block + pw->n_blocks - 1, i, &hash_block_end, NULL);
 		if (!i) {
+<<<<<<< HEAD
 			unsigned cluster = READ_ONCE(dm_verity_prefetch_cluster);
+=======
+			unsigned cluster = ACCESS_ONCE(dm_verity_prefetch_cluster);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			cluster >>= v->data_dev_block_bits;
 			if (unlikely(!cluster))
@@ -607,6 +751,7 @@ static void verity_prefetch_io(struct work_struct *work)
 				hash_block_end = v->hash_blocks - 1;
 		}
 no_prefetch_cluster:
+<<<<<<< HEAD
 		// for emmc, it is more efficient to send bigger read
 		prefetch_size = max((sector_t)CONFIG_DM_VERITY_HASH_PREFETCH_MIN_SIZE,
 			hash_block_end - hash_block_start + 1);
@@ -615,6 +760,10 @@ no_prefetch_cluster:
 		}
 		dm_bufio_prefetch(v->bufio, hash_block_start,
 				  prefetch_size);
+=======
+		dm_bufio_prefetch(v->bufio, hash_block_start,
+				  hash_block_end - hash_block_start + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kfree(pw);
@@ -682,6 +831,10 @@ int verity_map(struct dm_target *ti, struct bio *bio)
 
 	return DM_MAPIO_SUBMITTED;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(verity_map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Status: V (valid) or C (corruption found)
@@ -749,8 +902,15 @@ void verity_status(struct dm_target *ti, status_type_t type,
 		break;
 	}
 }
+<<<<<<< HEAD
 
 int verity_prepare_ioctl(struct dm_target *ti, struct block_device **bdev)
+=======
+EXPORT_SYMBOL_GPL(verity_status);
+
+int verity_prepare_ioctl(struct dm_target *ti,
+		struct block_device **bdev, fmode_t *mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dm_verity *v = ti->private;
 
@@ -761,6 +921,10 @@ int verity_prepare_ioctl(struct dm_target *ti, struct block_device **bdev)
 		return 1;
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(verity_prepare_ioctl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int verity_iterate_devices(struct dm_target *ti,
 				  iterate_devices_callout_fn fn, void *data)
@@ -769,6 +933,10 @@ int verity_iterate_devices(struct dm_target *ti,
 
 	return fn(ti, v->data_dev, v->data_start, ti->len, data);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(verity_iterate_devices);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void verity_io_hints(struct dm_target *ti, struct queue_limits *limits)
 {
@@ -782,6 +950,10 @@ void verity_io_hints(struct dm_target *ti, struct queue_limits *limits)
 
 	blk_limits_io_min(limits, limits->logical_block_size);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(verity_io_hints);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void verity_dtr(struct dm_target *ti)
 {
@@ -813,6 +985,10 @@ void verity_dtr(struct dm_target *ti)
 
 	kfree(v);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(verity_dtr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int verity_alloc_most_once(struct dm_verity *v)
 {
@@ -824,9 +1000,14 @@ static int verity_alloc_most_once(struct dm_verity *v)
 		return -E2BIG;
 	}
 
+<<<<<<< HEAD
 	v->validated_blocks = kvcalloc(BITS_TO_LONGS(v->data_blocks),
 				       sizeof(unsigned long),
 				       GFP_KERNEL);
+=======
+	v->validated_blocks = kvzalloc(BITS_TO_LONGS(v->data_blocks) *
+				       sizeof(unsigned long), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!v->validated_blocks) {
 		ti->error = "failed to allocate bitset for check_at_most_once";
 		return -ENOMEM;
@@ -1191,6 +1372,10 @@ bad:
 
 	return r;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(verity_ctr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct target_type verity_target = {
 	.name		= "verity",

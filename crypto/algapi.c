@@ -10,7 +10,10 @@
  *
  */
 
+<<<<<<< HEAD
 #include <crypto/algapi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/err.h>
 #include <linux/errno.h>
 #include <linux/fips.h>
@@ -57,6 +60,7 @@ static int crypto_check_alg(struct crypto_alg *alg)
 	if (alg->cra_alignmask & (alg->cra_alignmask + 1))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* General maximums for all algs. */
 	if (alg->cra_alignmask > MAX_ALGAPI_ALIGNMASK)
 		return -EINVAL;
@@ -78,6 +82,15 @@ static int crypto_check_alg(struct crypto_alg *alg)
 		return -EINVAL;
 
 	refcount_set(&alg->cra_refcnt, 1);
+=======
+	if (alg->cra_blocksize > PAGE_SIZE / 8)
+		return -EINVAL;
+
+	if (alg->cra_priority < 0)
+		return -EINVAL;
+
+	atomic_set(&alg->cra_refcnt, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return crypto_set_driver_name(alg);
 }
@@ -138,6 +151,10 @@ static void crypto_remove_instance(struct crypto_instance *inst,
 	if (!tmpl || !crypto_tmpl_get(tmpl))
 		return;
 
+<<<<<<< HEAD
+=======
+	crypto_notify(CRYPTO_MSG_ALG_UNREGISTER, &inst->alg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_move(&inst->alg.cra_list, list);
 	hlist_del(&inst->list);
 	inst->alg.cra_destroy = crypto_destroy_instance;
@@ -250,7 +267,11 @@ static struct crypto_larval *__crypto_register_alg(struct crypto_alg *alg)
 	if (!larval->adult)
 		goto free_larval;
 
+<<<<<<< HEAD
 	refcount_set(&larval->alg.cra_refcnt, 1);
+=======
+	atomic_set(&larval->alg.cra_refcnt, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(larval->alg.cra_driver_name, alg->cra_driver_name,
 	       CRYPTO_MAX_ALG_NAME);
 	larval->alg.cra_priority = alg->cra_priority;
@@ -406,6 +427,10 @@ static int crypto_remove_alg(struct crypto_alg *alg, struct list_head *list)
 
 	alg->cra_flags |= CRYPTO_ALG_DEAD;
 
+<<<<<<< HEAD
+=======
+	crypto_notify(CRYPTO_MSG_ALG_UNREGISTER, alg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_del_init(&alg->cra_list);
 	crypto_remove_spawns(alg, list, NULL);
 
@@ -424,7 +449,11 @@ int crypto_unregister_alg(struct crypto_alg *alg)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	BUG_ON(refcount_read(&alg->cra_refcnt) != 1);
+=======
+	BUG_ON(atomic_read(&alg->cra_refcnt) != 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (alg->cra_destroy)
 		alg->cra_destroy(alg);
 
@@ -483,6 +512,10 @@ int crypto_register_template(struct crypto_template *tmpl)
 	}
 
 	list_add(&tmpl->list, &crypto_template_list);
+<<<<<<< HEAD
+=======
+	crypto_notify(CRYPTO_MSG_TMPL_REGISTER, tmpl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = 0;
 out:
 	up_write(&crypto_alg_sem);
@@ -509,10 +542,19 @@ void crypto_unregister_template(struct crypto_template *tmpl)
 		BUG_ON(err);
 	}
 
+<<<<<<< HEAD
 	up_write(&crypto_alg_sem);
 
 	hlist_for_each_entry_safe(inst, n, list, list) {
 		BUG_ON(refcount_read(&inst->alg.cra_refcnt) != 1);
+=======
+	crypto_notify(CRYPTO_MSG_TMPL_UNREGISTER, tmpl);
+
+	up_write(&crypto_alg_sem);
+
+	hlist_for_each_entry_safe(inst, n, list, list) {
+		BUG_ON(atomic_read(&inst->alg.cra_refcnt) != 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		crypto_free_instance(inst);
 	}
 	crypto_remove_final(&users);
@@ -558,6 +600,12 @@ int crypto_register_instance(struct crypto_template *tmpl,
 	inst->alg.cra_module = tmpl->module;
 	inst->alg.cra_flags |= CRYPTO_ALG_INSTANCE;
 
+<<<<<<< HEAD
+=======
+	if (unlikely(!crypto_mod_get(&inst->alg)))
+		return -EAGAIN;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	down_write(&crypto_alg_sem);
 
 	larval = __crypto_register_alg(&inst->alg);
@@ -575,9 +623,20 @@ unlock:
 		goto err;
 
 	crypto_wait_for_test(larval);
+<<<<<<< HEAD
 	err = 0;
 
 err:
+=======
+
+	/* Remove instance if test failed */
+	if (!(inst->alg.cra_flags & CRYPTO_ALG_TESTED))
+		crypto_unregister_instance(inst);
+	err = 0;
+
+err:
+	crypto_mod_put(&inst->alg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 EXPORT_SYMBOL_GPL(crypto_register_instance);
@@ -654,11 +713,17 @@ EXPORT_SYMBOL_GPL(crypto_grab_spawn);
 
 void crypto_drop_spawn(struct crypto_spawn *spawn)
 {
+<<<<<<< HEAD
 	if (!spawn->alg)
 		return;
 
 	down_write(&crypto_alg_sem);
 	list_del(&spawn->list);
+=======
+	down_write(&crypto_alg_sem);
+	if (spawn->alg)
+		list_del(&spawn->list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_write(&crypto_alg_sem);
 }
 EXPORT_SYMBOL_GPL(crypto_drop_spawn);
@@ -666,6 +731,7 @@ EXPORT_SYMBOL_GPL(crypto_drop_spawn);
 static struct crypto_alg *crypto_spawn_alg(struct crypto_spawn *spawn)
 {
 	struct crypto_alg *alg;
+<<<<<<< HEAD
 	struct crypto_alg *alg2;
 
 	down_read(&crypto_alg_sem);
@@ -682,6 +748,18 @@ static struct crypto_alg *crypto_spawn_alg(struct crypto_spawn *spawn)
 	}
 
 	return alg;
+=======
+
+	down_read(&crypto_alg_sem);
+	alg = spawn->alg;
+	if (alg && !crypto_mod_get(alg)) {
+		alg->cra_flags |= CRYPTO_ALG_DYING;
+		alg = NULL;
+	}
+	up_read(&crypto_alg_sem);
+
+	return alg ?: ERR_PTR(-EAGAIN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct crypto_tfm *crypto_spawn_tfm(struct crypto_spawn *spawn, u32 type,
@@ -911,11 +989,17 @@ int crypto_enqueue_request(struct crypto_queue *queue,
 	int err = -EINPROGRESS;
 
 	if (unlikely(queue->qlen >= queue->max_qlen)) {
+<<<<<<< HEAD
 		if (!(request->flags & CRYPTO_TFM_REQ_MAY_BACKLOG)) {
 			err = -ENOSPC;
 			goto out;
 		}
 		err = -EBUSY;
+=======
+		err = -EBUSY;
+		if (!(request->flags & CRYPTO_TFM_REQ_MAY_BACKLOG))
+			goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (queue->backlog == &queue->list)
 			queue->backlog = &request->list;
 	}

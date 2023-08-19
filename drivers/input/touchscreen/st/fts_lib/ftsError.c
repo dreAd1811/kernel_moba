@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * FTS Capacitive touch screen controller (FingerTipS)
  *
  * Copyright (C) 2016-2019, STMicroelectronics Limited.
+=======
+/*
+ * FTS Capacitive touch screen controller (FingerTipS)
+ *
+ * Copyright (C) 2016-2018, STMicroelectronics Limited.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Authors: AMG(Analog Mems Group) <marco.cali@st.com>
  *
  *
@@ -207,7 +214,11 @@ int errorHandler(u8 *event, int size)
 				tag, __func__);
 			break;
 		case 0x04:
+<<<<<<< HEAD
 			pr_err("Lockdown Memory Corrupted!\n");
+=======
+			pr_err("Lockdown Memory Corrupted!");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			logError(1, "%s %s:Please contact ST for support!\n",
 				tag, __func__);
 			break;
@@ -227,7 +238,11 @@ int errorHandler(u8 *event, int size)
 				tag, __func__);
 			break;
 		case 0x21:
+<<<<<<< HEAD
 			pr_err("Exceeded maximum number of\n");
+=======
+			pr_err("Exceeded maximum number of ");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			logError(1,
 				"%s %s:Lockdown code REWRITE into IC!\n",
 				tag, __func__);
@@ -241,7 +256,11 @@ int errorHandler(u8 *event, int size)
 			logError(1, "Lockdown REWRITE command format wrong!\n");
 			break;
 		case 0x24:
+<<<<<<< HEAD
 			pr_err("Lockdown Memory Corrupted!\n");
+=======
+			pr_err("Lockdown Memory Corrupted!");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			logError(1, "%s %s:Please contact ST for support!\n",
 				tag, __func__);
 			break;

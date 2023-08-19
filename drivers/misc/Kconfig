@@ -53,7 +53,11 @@ config AD525X_DPOT_SPI
 
 config ATMEL_TCLIB
 	bool "Atmel AT32/AT91 Timer/Counter Library"
+<<<<<<< HEAD
 	depends on ARCH_AT91
+=======
+	depends on (AVR32 || ARCH_AT91)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Select this if you want a library to allocate the Timer/Counter
 	  blocks found on many Atmel processors.  This facilitates using
@@ -75,6 +79,10 @@ config ATMEL_TCB_CLKSRC
 config ATMEL_TCB_CLKSRC_BLOCK
 	int
 	depends on ATMEL_TCB_CLKSRC
+<<<<<<< HEAD
+=======
+	prompt "TC Block" if CPU_AT32AP700X
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default 0
 	range 0 1
 	help
@@ -113,6 +121,7 @@ config IBM_ASM
 	  for information on the specific driver level and support statement
 	  for your IBM server.
 
+<<<<<<< HEAD
 config IBMVMC
 	tristate "IBM Virtual Management Channel support"
 	depends on PPC_PSERIES
@@ -127,6 +136,8 @@ config IBMVMC
 	  To compile this driver as a module, choose M here: the
 	  module will be called ibmvmc.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config PHANTOM
 	tristate "Sensable PHANToM (PCI)"
 	depends on PCI
@@ -205,7 +216,11 @@ config ICS932S401
 
 config ATMEL_SSC
 	tristate "Device driver for Atmel SSC peripheral"
+<<<<<<< HEAD
 	depends on HAS_IOMEM && (ARCH_AT91 || COMPILE_TEST)
+=======
+	depends on HAS_IOMEM && (AVR32 || ARCH_AT91 || COMPILE_TEST)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	  This option enables device driver support for Atmel Synchronized
 	  Serial Communication peripheral (SSC).
@@ -406,6 +421,19 @@ config SPEAR13XX_PCIE_GADGET
 	 entry will be created for that controller. User can use these
 	 sysfs node to configure PCIe EP as per his requirements.
 
+<<<<<<< HEAD
+=======
+config TI_DAC7512
+	tristate "Texas Instruments DAC7512"
+	depends on SPI && SYSFS
+	help
+	  If you say yes here you get support for the Texas Instruments
+	  DAC7512 16-bit digital-to-analog converter.
+
+	  This driver can also be built as a module. If so, the module
+	  will be called ti_dac7512.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config VMWARE_BALLOON
 	tristate "VMware Balloon Driver"
 	depends on VMWARE_VMCI && X86 && HYPERVISOR_GUEST
@@ -479,6 +507,7 @@ config SRAM_EXEC
 config HDCP_QSEECOM
 	tristate "QTI High-Bandwidth Digital Content Protection Module"
 	help
+<<<<<<< HEAD
 	This module implements HDCP 2.2 features over external interfaces
 	such as the DisplayPort interface. It exposes APIs for the interface
 	driver to communicate with QTI Secure Execution Environment (QSEE)
@@ -492,6 +521,29 @@ config QSEECOM
 	  QTI Secure Execution Environment (QSEE) using Secure Channel
 	  Manager (SCM) interface. It exposes APIs for both userspace and
 	  kernel clients.
+=======
+	  This module implements HDCP 2.2 features over external interfaces
+	  such as the DisplayPort interface. It exposes APIs for the interface
+	  driver to communicate with QTI Secure Execution Environment (QSEE)
+	  via the QSEECOM Driver and also communicates with the Receiver via
+	  APIs exposed by the interface driver.
+
+config QSEECOM
+        tristate "QTI Secure Execution Communicator driver"
+        help
+          Provides a communication interface between userspace and
+          QTI Secure Execution Environment (QSEE) using Secure Channel
+          Manager (SCM) interface. It exposes APIs for both userspace and
+          kernel clients.
+
+config PROFILER
+       tristate "Qualcomm Technologies, Inc. trustzone Communicator driver"
+       help
+         Provides a communication interface between userspace and
+         trustzone using Secure Channel Manager (SCM) interface.
+         It exposes APIs for userspace to get system profiling
+         information.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config VEXPRESS_SYSCFG
 	bool "Versatile Express System Configuration driver"
@@ -526,10 +578,13 @@ config PCI_ENDPOINT_TEST
            Enable this configuration option to enable the host side test driver
            for PCI Endpoint.
 
+<<<<<<< HEAD
 config MISC_RTSX
 	tristate
 	default MISC_RTSX_PCI || MISC_RTSX_USB
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config UID_SYS_STATS
 	bool "Per-UID statistics"
 	depends on PROFILING && TASK_XACCT && TASK_IO_ACCOUNTING
@@ -551,6 +606,18 @@ config MEMORY_STATE_TIME
 	help
 	  Memory time statistics exported to /sys/kernel/memory_state_time
 
+<<<<<<< HEAD
+=======
+config QPNP_MISC
+	tristate "QPNP Misc Peripheral"
+	depends on MFD_SPMI_PMIC
+	help
+	  Say 'y' here to include support for the QTI QPNP MISC
+	  peripheral. The MISC peripheral holds the USB ID interrupt
+	  and the driver provides an API to check if this interrupt
+	  is available on the current PMIC chip.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config OKL4_USER_VIRQ
 	tristate "User space accessible OKL4 virtual interrupts"
 	depends on OKL4_GUEST
@@ -585,6 +652,7 @@ config TEST_IRQ_REQUESTER
 
 	  If in doubt, say N.
 
+<<<<<<< HEAD
 config WIGIG_SENSING_SPI
 	tristate "Sensing over 60GHz using wil6210 / SPI bus"
 	depends on SPI && WIL6210
@@ -613,6 +681,8 @@ config QTI_MAXIM_FAN_CONTROLLER
 	  Also, this driver initializes the power for the fan controller
 	  and exposes sysfs node to control different speeds of fan.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
@@ -625,8 +695,11 @@ source "drivers/misc/mic/Kconfig"
 source "drivers/misc/genwqe/Kconfig"
 source "drivers/misc/echo/Kconfig"
 source "drivers/misc/cxl/Kconfig"
+<<<<<<< HEAD
 source "drivers/misc/ocxl/Kconfig"
 source "drivers/misc/cardreader/Kconfig"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/misc/fpr_FingerprintCard/Kconfig"
 endmenu
 

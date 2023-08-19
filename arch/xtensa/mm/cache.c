@@ -33,6 +33,12 @@
 #include <asm/pgalloc.h>
 #include <asm/pgtable.h>
 
+<<<<<<< HEAD
+=======
+//#define printd(x...) printk(x)
+#define printd(x...) do { } while(0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* 
  * Note:
  * The kernel provides one architecture bit PG_arch_1 in the page flags that 
@@ -127,7 +133,11 @@ EXPORT_SYMBOL(copy_user_highpage);
 
 void flush_dcache_page(struct page *page)
 {
+<<<<<<< HEAD
 	struct address_space *mapping = page_mapping_file(page);
+=======
+	struct address_space *mapping = page_mapping(page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we have a mapping but the page is not mapped to user-space

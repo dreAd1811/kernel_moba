@@ -24,6 +24,11 @@
 			clock-latency = <300000>; /* From legacy driver */
 
 			/* cooling options */
+<<<<<<< HEAD
+=======
+			cooling-min-level = <0>;
+			cooling-max-level = <3>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#cooling-cells = <2>; /* min followed by max */
 		};
 	};

@@ -151,6 +151,7 @@ static int setup_frame_32(void *sig_return, struct ksignal *ksig,
 	return 0;
 }
 
+<<<<<<< HEAD
 asmlinkage void sys32_rt_sigreturn(void)
 {
 	struct rt_sigframe32 __user *frame;
@@ -160,6 +161,15 @@ asmlinkage void sys32_rt_sigreturn(void)
 
 	regs = current_pt_regs();
 	frame = (struct rt_sigframe32 __user *)regs->regs[29];
+=======
+asmlinkage void sys32_rt_sigreturn(nabi_no_regargs struct pt_regs regs)
+{
+	struct rt_sigframe32 __user *frame;
+	sigset_t set;
+	int sig;
+
+	frame = (struct rt_sigframe32 __user *) regs.regs[29];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
 		goto badframe;
 	if (__copy_conv_sigset_from_user(&set, &frame->rs_uc.uc_sigmask))
@@ -167,7 +177,11 @@ asmlinkage void sys32_rt_sigreturn(void)
 
 	set_current_blocked(&set);
 
+<<<<<<< HEAD
 	sig = restore_sigcontext32(regs, &frame->rs_uc.uc_mcontext);
+=======
+	sig = restore_sigcontext32(&regs, &frame->rs_uc.uc_mcontext);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sig < 0)
 		goto badframe;
 	else if (sig)
@@ -182,8 +196,13 @@ asmlinkage void sys32_rt_sigreturn(void)
 	__asm__ __volatile__(
 		"move\t$29, %0\n\t"
 		"j\tsyscall_exit"
+<<<<<<< HEAD
 		: /* no outputs */
 		: "r" (regs));
+=======
+		:/* no outputs */
+		:"r" (&regs));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Unreached */
 
 badframe:
@@ -253,6 +272,7 @@ struct mips_abi mips_abi_32 = {
 };
 
 
+<<<<<<< HEAD
 asmlinkage void sys32_sigreturn(void)
 {
 	struct sigframe32 __user *frame;
@@ -262,6 +282,15 @@ asmlinkage void sys32_sigreturn(void)
 
 	regs = current_pt_regs();
 	frame = (struct sigframe32 __user *)regs->regs[29];
+=======
+asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
+{
+	struct sigframe32 __user *frame;
+	sigset_t blocked;
+	int sig;
+
+	frame = (struct sigframe32 __user *) regs.regs[29];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!access_ok(VERIFY_READ, frame, sizeof(*frame)))
 		goto badframe;
 	if (__copy_conv_sigset_from_user(&blocked, &frame->sf_mask))
@@ -269,7 +298,11 @@ asmlinkage void sys32_sigreturn(void)
 
 	set_current_blocked(&blocked);
 
+<<<<<<< HEAD
 	sig = restore_sigcontext32(regs, &frame->sf_sc);
+=======
+	sig = restore_sigcontext32(&regs, &frame->sf_sc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sig < 0)
 		goto badframe;
 	else if (sig)
@@ -281,8 +314,13 @@ asmlinkage void sys32_sigreturn(void)
 	__asm__ __volatile__(
 		"move\t$29, %0\n\t"
 		"j\tsyscall_exit"
+<<<<<<< HEAD
 		: /* no outputs */
 		: "r" (regs));
+=======
+		:/* no outputs */
+		:"r" (&regs));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Unreached */
 
 badframe:

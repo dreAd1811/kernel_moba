@@ -40,6 +40,18 @@
  * For such calls PSCI_FN_NATIVE(version, name) will choose the appropriate
  * (native-width) function ID.
  */
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_THUMB2_KERNEL
+#define cpu_resume_secondary cpu_resume_arm
+extern void cpu_resume_arm(void);
+#else
+#define cpu_resume_secondary cpu_resume
+extern void cpu_resume(void);
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_64BIT
 #define PSCI_FN_NATIVE(version, name)	PSCI_##version##_FN64_##name
 #else
@@ -88,7 +100,10 @@ static u32 psci_function_id[PSCI_FN_MAX];
 				PSCI_1_0_EXT_POWER_STATE_TYPE_MASK)
 
 static u32 psci_cpu_suspend_feature;
+<<<<<<< HEAD
 static bool psci_system_reset2_supported;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool psci_has_ext_power_state(void)
 {
@@ -254,6 +269,7 @@ static int get_set_conduit_method(struct device_node *np)
 
 static void psci_sys_reset(enum reboot_mode reboot_mode, const char *cmd)
 {
+<<<<<<< HEAD
 	if ((reboot_mode == REBOOT_WARM || reboot_mode == REBOOT_SOFT) &&
 	    psci_system_reset2_supported) {
 		/*
@@ -265,6 +281,9 @@ static void psci_sys_reset(enum reboot_mode reboot_mode, const char *cmd)
 	} else {
 		invoke_psci_fn(PSCI_0_2_FN_SYSTEM_RESET, 0, 0, 0);
 	}
+=======
+	invoke_psci_fn(PSCI_0_2_FN_SYSTEM_RESET, 0, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void psci_sys_poweroff(void)
@@ -279,8 +298,14 @@ static int __init psci_features(u32 psci_func_id)
 }
 
 #ifdef CONFIG_CPU_IDLE
+<<<<<<< HEAD
 static DEFINE_PER_CPU_READ_MOSTLY(u32 *, psci_power_state);
 
+=======
+static __maybe_unused DEFINE_PER_CPU_READ_MOSTLY(u32 *, psci_power_state);
+
+#ifdef CONFIG_DT_IDLE_STATES
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int psci_dt_cpu_init_idle(struct device_node *cpu_node, int cpu)
 {
 	int i, ret, count = 0;
@@ -333,6 +358,13 @@ free_mem:
 	kfree(psci_states);
 	return ret;
 }
+<<<<<<< HEAD
+=======
+#else
+static int psci_dt_cpu_init_idle(struct device_node *cpu_node, int cpu)
+{ return 0; }
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_ACPI
 #include <acpi/processor.h>
@@ -411,7 +443,11 @@ int psci_cpu_init_idle(unsigned int cpu)
 static int psci_suspend_finisher(unsigned long state_id)
 {
 	return psci_ops.cpu_suspend(state_id,
+<<<<<<< HEAD
 				    __pa_symbol(cpu_resume));
+=======
+				    __pa_symbol(cpu_resume_secondary));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 int psci_cpu_suspend_enter(unsigned long state_id)
 {
@@ -446,7 +482,11 @@ CPUIDLE_METHOD_OF_DECLARE(psci, "psci", &psci_cpuidle_ops);
 static int psci_system_suspend(unsigned long unused)
 {
 	return invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
+<<<<<<< HEAD
 			      __pa_symbol(cpu_resume), 0, 0);
+=======
+			      __pa_symbol(cpu_resume_secondary), 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int psci_system_suspend_enter(suspend_state_t state)
@@ -459,6 +499,7 @@ static const struct platform_suspend_ops psci_suspend_ops = {
 	.enter          = psci_system_suspend_enter,
 };
 
+<<<<<<< HEAD
 static void __init psci_init_system_reset2(void)
 {
 	int ret;
@@ -469,6 +510,8 @@ static void __init psci_init_system_reset2(void)
 		psci_system_reset2_supported = true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init psci_init_system_suspend(void)
 {
 	int ret;
@@ -606,7 +649,10 @@ static int __init psci_probe(void)
 		psci_init_smccc();
 		psci_init_cpu_suspend();
 		psci_init_system_suspend();
+<<<<<<< HEAD
 		psci_init_system_reset2();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;

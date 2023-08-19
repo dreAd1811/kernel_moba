@@ -616,9 +616,15 @@ static void r592_update_card_detect(struct r592_device *dev)
 }
 
 /* Timer routine that fires 1 second after last card detection event, */
+<<<<<<< HEAD
 static void r592_detect_timer(struct timer_list *t)
 {
 	struct r592_device *dev = from_timer(dev, t, detect_timer);
+=======
+static void r592_detect_timer(long unsigned int data)
+{
+	struct r592_device *dev = (struct r592_device *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r592_update_card_detect(dev);
 	memstick_detect_change(dev->host);
 }
@@ -770,7 +776,12 @@ static int r592_probe(struct pci_dev *pdev, const struct pci_device_id *id)
 	spin_lock_init(&dev->io_thread_lock);
 	init_completion(&dev->dma_done);
 	INIT_KFIFO(dev->pio_fifo);
+<<<<<<< HEAD
 	timer_setup(&dev->detect_timer, r592_detect_timer, 0);
+=======
+	setup_timer(&dev->detect_timer,
+		r592_detect_timer, (long unsigned int)dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Host initialization */
 	host->caps = MEMSTICK_CAP_PAR4;

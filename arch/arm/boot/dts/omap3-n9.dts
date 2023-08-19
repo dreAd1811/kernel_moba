@@ -11,7 +11,10 @@
 /dts-v1/;
 
 #include "omap3-n950-n9.dtsi"
+<<<<<<< HEAD
 #include <dt-bindings/input/input.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "Nokia N9";
@@ -27,7 +30,10 @@
 		clocks = <&isp 0>;
 		clock-frequency = <9600000>;
 		nokia,nvm-size = <(16 * 64)>;
+<<<<<<< HEAD
 		flash-leds = <&as3645a_flash &as3645a_indicator>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		port {
 			smia_1_1: endpoint {
 				link-frequencies = /bits/ 64 <199200000 210000000 499200000>;
@@ -39,6 +45,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &i2c3 {
 	ak8975@0f {
 		compatible = "asahi-kasei,ak8975";
@@ -46,6 +53,8 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &isp {
 	vdd-csiphy1-supply = <&vaux2>;
 	vdd-csiphy2-supply = <&vaux2>;
@@ -80,9 +89,12 @@
 	st,max-limit-y = <46>;
 	st,max-limit-z = <46>;
 };
+<<<<<<< HEAD
 
 &twl_keypad {
 	linux,keymap = < MATRIX_KEY(6, 8, KEY_VOLUMEUP)
 			 MATRIX_KEY(7, 8, KEY_VOLUMEDOWN)
 			 >;
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

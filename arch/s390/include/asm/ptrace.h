@@ -13,12 +13,18 @@
 #define PIF_SYSCALL		0	/* inside a system call */
 #define PIF_PER_TRAP		1	/* deliver sigtrap on return to user */
 #define PIF_SYSCALL_RESTART	2	/* restart the current system call */
+<<<<<<< HEAD
 #define PIF_GUEST_FAULT		3	/* indicates program check in sie64a */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define _PIF_SYSCALL		_BITUL(PIF_SYSCALL)
 #define _PIF_PER_TRAP		_BITUL(PIF_PER_TRAP)
 #define _PIF_SYSCALL_RESTART	_BITUL(PIF_SYSCALL_RESTART)
+<<<<<<< HEAD
 #define _PIF_GUEST_FAULT	_BITUL(PIF_GUEST_FAULT)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __ASSEMBLY__
 
@@ -74,6 +80,7 @@ enum {
  */
 struct pt_regs 
 {
+<<<<<<< HEAD
 	union {
 		user_pt_regs user_regs;
 		struct {
@@ -82,6 +89,11 @@ struct pt_regs
 			unsigned long gprs[NUM_GPRS];
 		};
 	};
+=======
+	unsigned long args[1];
+	psw_t psw;
+	unsigned long gprs[NUM_GPRS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long orig_gpr2;
 	unsigned int int_code;
 	unsigned int int_parm;

@@ -16,7 +16,13 @@
 #include <linux/preempt.h>
 #include <linux/init.h>
 
+<<<<<<< HEAD
 #include <asm/delay.h>
+=======
+#include <asm/processor.h>
+#include <asm/delay.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/special_insns.h>    /* for mfctl() */
 #include <asm/processor.h> /* for boot_cpu_data */
 

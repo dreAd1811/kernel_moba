@@ -3,14 +3,25 @@
 #define _ASM_POWERPC_BOOK3S_64_HASH_H
 #ifdef __KERNEL__
 
+<<<<<<< HEAD
 #include <asm/asm-const.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Common bits between 4K and 64K pages in a linux-style PTE.
  * Additional bits may be defined in pgtable-hash64-*.h
  *
  */
 #define H_PTE_NONE_MASK		_PAGE_HPTEFLAGS
+<<<<<<< HEAD
+=======
+#define H_PAGE_F_GIX_SHIFT	56
+#define H_PAGE_BUSY		_RPAGE_RSV1 /* software: PTE & hash are busy */
+#define H_PAGE_F_SECOND		_RPAGE_RSV2	/* HPTE is in 2ndary HPTEG */
+#define H_PAGE_F_GIX		(_RPAGE_RSV3 | _RPAGE_RSV4 | _RPAGE_RPN44)
+#define H_PAGE_HASHPTE		_RPAGE_RPN43	/* PTE has associated HPTE */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC_64K_PAGES
 #include <asm/book3s/64/hash-64k.h>
@@ -25,6 +36,7 @@
 				 H_PUD_INDEX_SIZE + H_PGD_INDEX_SIZE + PAGE_SHIFT)
 #define H_PGTABLE_RANGE		(ASM_CONST(1) << H_PGTABLE_EADDR_SIZE)
 
+<<<<<<< HEAD
 /*
  * We store the slot details in the second half of page table.
  * Increase the pud level table so that hugetlb ptes can be stored
@@ -34,6 +46,16 @@
 #define H_PUD_CACHE_INDEX	(H_PUD_INDEX_SIZE + 1)
 #else
 #define H_PUD_CACHE_INDEX	(H_PUD_INDEX_SIZE)
+=======
+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) &&  defined(CONFIG_PPC_64K_PAGES)
+/*
+ * only with hash 64k we need to use the second half of pmd page table
+ * to store pointer to deposited pgtable_t
+ */
+#define H_PMD_CACHE_INDEX	(H_PMD_INDEX_SIZE + 1)
+#else
+#define H_PMD_CACHE_INDEX	H_PMD_INDEX_SIZE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 /*
  * Define the address range of the kernel non-linear virtual area
@@ -165,9 +187,12 @@ static inline int hash__pte_none(pte_t pte)
 	return (pte_val(pte) & ~H_PTE_NONE_MASK) == 0;
 }
 
+<<<<<<< HEAD
 unsigned long pte_get_hash_gslot(unsigned long vpn, unsigned long shift,
 		int ssize, real_pte_t rpte, unsigned int subpg_index);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* This low level function performs the actual PTE insertion
  * Setting the PTE depends on the MMU type and other factors. It's
  * an horrible mess that I'm not going to try to clean up now but
@@ -204,7 +229,11 @@ extern int __meminit hash__vmemmap_create_mapping(unsigned long start,
 extern void hash__vmemmap_remove_mapping(unsigned long start,
 				     unsigned long page_size);
 
+<<<<<<< HEAD
 int hash__create_section_mapping(unsigned long start, unsigned long end, int nid);
+=======
+int hash__create_section_mapping(unsigned long start, unsigned long end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int hash__remove_section_mapping(unsigned long start, unsigned long end);
 
 #endif /* !__ASSEMBLY__ */

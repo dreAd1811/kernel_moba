@@ -48,7 +48,11 @@ static ssize_t eeh_show_##_name(struct device *dev,      \
 	                                                      \
 	return sprintf(buf, _format "\n", edev->_memb);       \
 }                                                        \
+<<<<<<< HEAD
 static DEVICE_ATTR(_name, 0444, eeh_show_##_name, NULL);
+=======
+static DEVICE_ATTR(_name, S_IRUGO, eeh_show_##_name, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 EEH_SHOW_ATTR(eeh_mode,            mode,            "0x%x");
 EEH_SHOW_ATTR(eeh_pe_config_addr,  pe_config_addr,  "0x%x");
@@ -90,6 +94,7 @@ static ssize_t eeh_pe_state_store(struct device *dev,
 
 static DEVICE_ATTR_RW(eeh_pe_state);
 
+<<<<<<< HEAD
 #ifdef CONFIG_PCI_IOV
 static ssize_t eeh_notify_resume_show(struct device *dev,
 				      struct device_attribute *attr, char *buf)
@@ -149,6 +154,8 @@ static inline int eeh_notify_resume_add(struct pci_dev *pdev) { return 0; }
 static inline void eeh_notify_resume_remove(struct pci_dev *pdev) { }
 #endif /* CONFIG_PCI_IOV */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void eeh_sysfs_add_device(struct pci_dev *pdev)
 {
 	struct eeh_dev *edev = pci_dev_to_eeh_dev(pdev);
@@ -163,7 +170,10 @@ void eeh_sysfs_add_device(struct pci_dev *pdev)
 	rc += device_create_file(&pdev->dev, &dev_attr_eeh_mode);
 	rc += device_create_file(&pdev->dev, &dev_attr_eeh_pe_config_addr);
 	rc += device_create_file(&pdev->dev, &dev_attr_eeh_pe_state);
+<<<<<<< HEAD
 	rc += eeh_notify_resume_add(pdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rc)
 		pr_warn("EEH: Unable to create sysfs entries\n");
@@ -189,8 +199,11 @@ void eeh_sysfs_remove_device(struct pci_dev *pdev)
 	device_remove_file(&pdev->dev, &dev_attr_eeh_pe_config_addr);
 	device_remove_file(&pdev->dev, &dev_attr_eeh_pe_state);
 
+<<<<<<< HEAD
 	eeh_notify_resume_remove(pdev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (edev)
 		edev->mode &= ~EEH_DEV_SYSFS;
 }

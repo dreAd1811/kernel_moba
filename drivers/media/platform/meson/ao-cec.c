@@ -524,7 +524,11 @@ static int meson_ao_cec_transmit(struct cec_adapter *adap, u8 attempts,
 		return ret;
 
 	if (reg == TX_BUSY) {
+<<<<<<< HEAD
 		dev_dbg(&ao_cec->pdev->dev, "%s: busy TX: aborting\n",
+=======
+		dev_err(&ao_cec->pdev->dev, "%s: busy TX: aborting\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__);
 		meson_ao_cec_write(ao_cec, CEC_TX_MSG_CMD, TX_ABORT, &ret);
 	}

@@ -152,7 +152,11 @@ static struct shash_alg ghash_alg = {
 		.cra_name	= "__ghash",
 		.cra_driver_name = "__driver-ghash-ce",
 		.cra_priority	= 0,
+<<<<<<< HEAD
 		.cra_flags	= CRYPTO_ALG_INTERNAL,
+=======
+		.cra_flags	= CRYPTO_ALG_TYPE_SHASH | CRYPTO_ALG_INTERNAL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	= GHASH_BLOCK_SIZE,
 		.cra_ctxsize	= sizeof(struct ghash_key),
 		.cra_module	= THIS_MODULE,
@@ -308,8 +312,14 @@ static struct ahash_alg ghash_async_alg = {
 		.cra_name	= "ghash",
 		.cra_driver_name = "ghash-ce",
 		.cra_priority	= 300,
+<<<<<<< HEAD
 		.cra_flags	= CRYPTO_ALG_ASYNC,
 		.cra_blocksize	= GHASH_BLOCK_SIZE,
+=======
+		.cra_flags	= CRYPTO_ALG_TYPE_AHASH | CRYPTO_ALG_ASYNC,
+		.cra_blocksize	= GHASH_BLOCK_SIZE,
+		.cra_type	= &crypto_ahash_type,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_ctxsize	= sizeof(struct ghash_async_ctx),
 		.cra_module	= THIS_MODULE,
 		.cra_init	= ghash_async_init_tfm,

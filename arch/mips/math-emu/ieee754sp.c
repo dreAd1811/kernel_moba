@@ -65,7 +65,11 @@ union ieee754sp __cold ieee754sp_nanxcpt(union ieee754sp r)
 	return r;
 }
 
+<<<<<<< HEAD
 static unsigned int ieee754sp_get_rounding(int sn, unsigned int xm)
+=======
+static unsigned ieee754sp_get_rounding(int sn, unsigned xm)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* inexact must round of 3 bits
 	 */
@@ -96,7 +100,11 @@ static unsigned int ieee754sp_get_rounding(int sn, unsigned int xm)
  * xe is an unbiased exponent
  * xm is 3bit extended precision value.
  */
+<<<<<<< HEAD
 union ieee754sp ieee754sp_format(int sn, int xe, unsigned int xm)
+=======
+union ieee754sp ieee754sp_format(int sn, int xe, unsigned xm)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	assert(xm);		/* we don't gen exact zeros (probably should) */
 

@@ -10,6 +10,7 @@
 
 /* BEGIN: CPUM_CF COUNTER DEFINITIONS =================================== */
 
+<<<<<<< HEAD
 CPUMF_EVENT_ATTR(cf_fvn1, CPU_CYCLES, 0x0000);
 CPUMF_EVENT_ATTR(cf_fvn1, INSTRUCTIONS, 0x0001);
 CPUMF_EVENT_ATTR(cf_fvn1, L1I_DIR_WRITES, 0x0002);
@@ -46,6 +47,36 @@ CPUMF_EVENT_ATTR(cf_svn_generic, AES_FUNCTIONS, 0x004c);
 CPUMF_EVENT_ATTR(cf_svn_generic, AES_CYCLES, 0x004d);
 CPUMF_EVENT_ATTR(cf_svn_generic, AES_BLOCKED_FUNCTIONS, 0x004e);
 CPUMF_EVENT_ATTR(cf_svn_generic, AES_BLOCKED_CYCLES, 0x004f);
+=======
+CPUMF_EVENT_ATTR(cf, CPU_CYCLES, 0x0000);
+CPUMF_EVENT_ATTR(cf, INSTRUCTIONS, 0x0001);
+CPUMF_EVENT_ATTR(cf, L1I_DIR_WRITES, 0x0002);
+CPUMF_EVENT_ATTR(cf, L1I_PENALTY_CYCLES, 0x0003);
+CPUMF_EVENT_ATTR(cf, PROBLEM_STATE_CPU_CYCLES, 0x0020);
+CPUMF_EVENT_ATTR(cf, PROBLEM_STATE_INSTRUCTIONS, 0x0021);
+CPUMF_EVENT_ATTR(cf, PROBLEM_STATE_L1I_DIR_WRITES, 0x0022);
+CPUMF_EVENT_ATTR(cf, PROBLEM_STATE_L1I_PENALTY_CYCLES, 0x0023);
+CPUMF_EVENT_ATTR(cf, PROBLEM_STATE_L1D_DIR_WRITES, 0x0024);
+CPUMF_EVENT_ATTR(cf, PROBLEM_STATE_L1D_PENALTY_CYCLES, 0x0025);
+CPUMF_EVENT_ATTR(cf, L1D_DIR_WRITES, 0x0004);
+CPUMF_EVENT_ATTR(cf, L1D_PENALTY_CYCLES, 0x0005);
+CPUMF_EVENT_ATTR(cf, PRNG_FUNCTIONS, 0x0040);
+CPUMF_EVENT_ATTR(cf, PRNG_CYCLES, 0x0041);
+CPUMF_EVENT_ATTR(cf, PRNG_BLOCKED_FUNCTIONS, 0x0042);
+CPUMF_EVENT_ATTR(cf, PRNG_BLOCKED_CYCLES, 0x0043);
+CPUMF_EVENT_ATTR(cf, SHA_FUNCTIONS, 0x0044);
+CPUMF_EVENT_ATTR(cf, SHA_CYCLES, 0x0045);
+CPUMF_EVENT_ATTR(cf, SHA_BLOCKED_FUNCTIONS, 0x0046);
+CPUMF_EVENT_ATTR(cf, SHA_BLOCKED_CYCLES, 0x0047);
+CPUMF_EVENT_ATTR(cf, DEA_FUNCTIONS, 0x0048);
+CPUMF_EVENT_ATTR(cf, DEA_CYCLES, 0x0049);
+CPUMF_EVENT_ATTR(cf, DEA_BLOCKED_FUNCTIONS, 0x004a);
+CPUMF_EVENT_ATTR(cf, DEA_BLOCKED_CYCLES, 0x004b);
+CPUMF_EVENT_ATTR(cf, AES_FUNCTIONS, 0x004c);
+CPUMF_EVENT_ATTR(cf, AES_CYCLES, 0x004d);
+CPUMF_EVENT_ATTR(cf, AES_BLOCKED_FUNCTIONS, 0x004e);
+CPUMF_EVENT_ATTR(cf, AES_BLOCKED_CYCLES, 0x004f);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CPUMF_EVENT_ATTR(cf_z10, L1I_L2_SOURCED_WRITES, 0x0080);
 CPUMF_EVENT_ATTR(cf_z10, L1D_L2_SOURCED_WRITES, 0x0081);
 CPUMF_EVENT_ATTR(cf_z10, L1I_L3_LOCAL_WRITES, 0x0082);
@@ -123,7 +154,11 @@ CPUMF_EVENT_ATTR(cf_zec12, L1I_OFFBOOK_L3_SOURCED_WRITES_IV, 0x00a1);
 CPUMF_EVENT_ATTR(cf_zec12, TX_NC_TABORT, 0x00b1);
 CPUMF_EVENT_ATTR(cf_zec12, TX_C_TABORT_NO_SPECIAL, 0x00b2);
 CPUMF_EVENT_ATTR(cf_zec12, TX_C_TABORT_SPECIAL, 0x00b3);
+<<<<<<< HEAD
 CPUMF_EVENT_ATTR(cf_z13, L1D_RO_EXCL_WRITES, 0x0080);
+=======
+CPUMF_EVENT_ATTR(cf_z13, L1D_WRITES_RO_EXCL, 0x0080);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CPUMF_EVENT_ATTR(cf_z13, DTLB1_WRITES, 0x0081);
 CPUMF_EVENT_ATTR(cf_z13, DTLB1_MISSES, 0x0082);
 CPUMF_EVENT_ATTR(cf_z13, DTLB1_HPAGE_WRITES, 0x0083);
@@ -179,6 +214,7 @@ CPUMF_EVENT_ATTR(cf_z13, TX_C_TABORT_NO_SPECIAL, 0x00db);
 CPUMF_EVENT_ATTR(cf_z13, TX_C_TABORT_SPECIAL, 0x00dc);
 CPUMF_EVENT_ATTR(cf_z13, MT_DIAG_CYCLES_ONE_THR_ACTIVE, 0x01c0);
 CPUMF_EVENT_ATTR(cf_z13, MT_DIAG_CYCLES_TWO_THR_ACTIVE, 0x01c1);
+<<<<<<< HEAD
 CPUMF_EVENT_ATTR(cf_z14, L1D_RO_EXCL_WRITES, 0x0080);
 CPUMF_EVENT_ATTR(cf_z14, DTLB2_WRITES, 0x0081);
 CPUMF_EVENT_ATTR(cf_z14, DTLB2_MISSES, 0x0082);
@@ -278,6 +314,38 @@ static struct attribute *cpumcf_svn_generic_pmu_event_attr[] __initdata = {
 	CPUMF_EVENT_PTR(cf_svn_generic, AES_CYCLES),
 	CPUMF_EVENT_PTR(cf_svn_generic, AES_BLOCKED_FUNCTIONS),
 	CPUMF_EVENT_PTR(cf_svn_generic, AES_BLOCKED_CYCLES),
+=======
+
+static struct attribute *cpumcf_pmu_event_attr[] __initdata = {
+	CPUMF_EVENT_PTR(cf, CPU_CYCLES),
+	CPUMF_EVENT_PTR(cf, INSTRUCTIONS),
+	CPUMF_EVENT_PTR(cf, L1I_DIR_WRITES),
+	CPUMF_EVENT_PTR(cf, L1I_PENALTY_CYCLES),
+	CPUMF_EVENT_PTR(cf, PROBLEM_STATE_CPU_CYCLES),
+	CPUMF_EVENT_PTR(cf, PROBLEM_STATE_INSTRUCTIONS),
+	CPUMF_EVENT_PTR(cf, PROBLEM_STATE_L1I_DIR_WRITES),
+	CPUMF_EVENT_PTR(cf, PROBLEM_STATE_L1I_PENALTY_CYCLES),
+	CPUMF_EVENT_PTR(cf, PROBLEM_STATE_L1D_DIR_WRITES),
+	CPUMF_EVENT_PTR(cf, PROBLEM_STATE_L1D_PENALTY_CYCLES),
+	CPUMF_EVENT_PTR(cf, L1D_DIR_WRITES),
+	CPUMF_EVENT_PTR(cf, L1D_PENALTY_CYCLES),
+	CPUMF_EVENT_PTR(cf, PRNG_FUNCTIONS),
+	CPUMF_EVENT_PTR(cf, PRNG_CYCLES),
+	CPUMF_EVENT_PTR(cf, PRNG_BLOCKED_FUNCTIONS),
+	CPUMF_EVENT_PTR(cf, PRNG_BLOCKED_CYCLES),
+	CPUMF_EVENT_PTR(cf, SHA_FUNCTIONS),
+	CPUMF_EVENT_PTR(cf, SHA_CYCLES),
+	CPUMF_EVENT_PTR(cf, SHA_BLOCKED_FUNCTIONS),
+	CPUMF_EVENT_PTR(cf, SHA_BLOCKED_CYCLES),
+	CPUMF_EVENT_PTR(cf, DEA_FUNCTIONS),
+	CPUMF_EVENT_PTR(cf, DEA_CYCLES),
+	CPUMF_EVENT_PTR(cf, DEA_BLOCKED_FUNCTIONS),
+	CPUMF_EVENT_PTR(cf, DEA_BLOCKED_CYCLES),
+	CPUMF_EVENT_PTR(cf, AES_FUNCTIONS),
+	CPUMF_EVENT_PTR(cf, AES_CYCLES),
+	CPUMF_EVENT_PTR(cf, AES_BLOCKED_FUNCTIONS),
+	CPUMF_EVENT_PTR(cf, AES_BLOCKED_CYCLES),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 
@@ -371,7 +439,11 @@ static struct attribute *cpumcf_zec12_pmu_event_attr[] __initdata = {
 };
 
 static struct attribute *cpumcf_z13_pmu_event_attr[] __initdata = {
+<<<<<<< HEAD
 	CPUMF_EVENT_PTR(cf_z13, L1D_RO_EXCL_WRITES),
+=======
+	CPUMF_EVENT_PTR(cf_z13, L1D_WRITES_RO_EXCL),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	CPUMF_EVENT_PTR(cf_z13, DTLB1_WRITES),
 	CPUMF_EVENT_PTR(cf_z13, DTLB1_MISSES),
 	CPUMF_EVENT_PTR(cf_z13, DTLB1_HPAGE_WRITES),
@@ -430,6 +502,7 @@ static struct attribute *cpumcf_z13_pmu_event_attr[] __initdata = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static struct attribute *cpumcf_z14_pmu_event_attr[] __initdata = {
 	CPUMF_EVENT_PTR(cf_z14, L1D_RO_EXCL_WRITES),
 	CPUMF_EVENT_PTR(cf_z14, DTLB2_WRITES),
@@ -487,6 +560,8 @@ static struct attribute *cpumcf_z14_pmu_event_attr[] __initdata = {
 	NULL,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* END: CPUM_CF COUNTER DEFINITIONS ===================================== */
 
 static struct attribute_group cpumcf_pmu_events_group = {
@@ -513,8 +588,12 @@ static const struct attribute_group *cpumcf_pmu_attr_groups[] = {
 
 
 static __init struct attribute **merge_attr(struct attribute **a,
+<<<<<<< HEAD
 					    struct attribute **b,
 					    struct attribute **c)
+=======
+					    struct attribute **b)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct attribute **new;
 	int j, i;
@@ -523,11 +602,17 @@ static __init struct attribute **merge_attr(struct attribute **a,
 		;
 	for (i = 0; b[i]; i++)
 		j++;
+<<<<<<< HEAD
 	for (i = 0; c[i]; i++)
 		j++;
 	j++;
 
 	new = kmalloc_array(j, sizeof(struct attribute *), GFP_KERNEL);
+=======
+	j++;
+
+	new = kmalloc(sizeof(struct attribute *) * j, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!new)
 		return NULL;
 	j = 0;
@@ -535,8 +620,11 @@ static __init struct attribute **merge_attr(struct attribute **a,
 		new[j++] = a[i];
 	for (i = 0; b[i]; i++)
 		new[j++] = b[i];
+<<<<<<< HEAD
 	for (i = 0; c[i]; i++)
 		new[j++] = c[i];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	new[j] = NULL;
 
 	return new;
@@ -544,6 +632,7 @@ static __init struct attribute **merge_attr(struct attribute **a,
 
 __init const struct attribute_group **cpumf_cf_event_group(void)
 {
+<<<<<<< HEAD
 	struct attribute **combined, **model, **cfvn, **csvn;
 	struct attribute *none[] = { NULL };
 	struct cpumf_ctr_info ci;
@@ -564,6 +653,12 @@ __init const struct attribute_group **cpumf_cf_event_group(void)
 	csvn = cpumcf_svn_generic_pmu_event_attr;
 
 	/* Determine model-specific counter set(s) */
+=======
+	struct attribute **combined, **model;
+	struct attribute *none[] = { NULL };
+	struct cpuid cpu_id;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	get_cpu_id(&cpu_id);
 	switch (cpu_id.machine) {
 	case 0x2097:
@@ -582,16 +677,23 @@ __init const struct attribute_group **cpumf_cf_event_group(void)
 	case 0x2965:
 		model = cpumcf_z13_pmu_event_attr;
 		break;
+<<<<<<< HEAD
 	case 0x3906:
 	case 0x3907:
 		model = cpumcf_z14_pmu_event_attr;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		model = none;
 		break;
 	}
 
+<<<<<<< HEAD
 	combined = merge_attr(cfvn, csvn, model);
+=======
+	combined = merge_attr(cpumcf_pmu_event_attr, model);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (combined)
 		cpumcf_pmu_events_group.attrs = combined;
 	return cpumcf_pmu_attr_groups;

@@ -109,7 +109,11 @@ static int zx_vga_connector_get_modes(struct drm_connector *connector)
 	 */
 	zx_writel(vga->mmio + VGA_AUTO_DETECT_SEL, VGA_DETECT_SEL_HAS_DEVICE);
 
+<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
+=======
+	drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_add_edid_modes(connector, edid);
 	kfree(edid);
 
@@ -175,7 +179,11 @@ static int zx_vga_register(struct drm_device *drm, struct zx_vga *vga)
 
 	drm_connector_helper_add(connector, &zx_vga_connector_helper_funcs);
 
+<<<<<<< HEAD
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_DEV_ERROR(dev, "failed to attach encoder: %d\n", ret);
 		goto clean_connector;

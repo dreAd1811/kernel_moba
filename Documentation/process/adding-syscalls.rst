@@ -222,7 +222,11 @@ your new syscall number may get adjusted to resolve conflicts.
 The file ``kernel/sys_ni.c`` provides a fallback stub implementation of each
 system call, returning ``-ENOSYS``.  Add your new system call here too::
 
+<<<<<<< HEAD
     COND_SYSCALL(xyzzy);
+=======
+    cond_syscall(sys_xyzzy);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Your new kernel functionality, and the system call that controls it, should
 normally be optional, so add a ``CONFIG`` option (typically to
@@ -360,7 +364,11 @@ First, the entry in ``arch/x86/entry/syscalls/syscall_32.tbl`` gets an extra
 column to indicate that a 32-bit userspace program running on a 64-bit kernel
 should hit the compat entry point::
 
+<<<<<<< HEAD
     380   i386     xyzzy     sys_xyzzy    __ia32_compat_sys_xyzzy
+=======
+    380   i386     xyzzy     sys_xyzzy    compat_sys_xyzzy
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Second, you need to figure out what should happen for the x32 ABI version of
 the new system call.  There's a choice here: the layout of the arguments
@@ -373,7 +381,11 @@ the compatibility wrapper::
 
     333   64       xyzzy     sys_xyzzy
     ...
+<<<<<<< HEAD
     555   x32      xyzzy     __x32_compat_sys_xyzzy
+=======
+    555   x32      xyzzy     compat_sys_xyzzy
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 If no pointers are involved, then it is preferable to re-use the 64-bit system
 call for the x32 ABI (and consequently the entry in
@@ -487,6 +499,7 @@ patchset, for the convenience of reviewers.
 The man page should be cc'ed to linux-man@vger.kernel.org
 For more details, see https://www.kernel.org/doc/man-pages/patches.html
 
+<<<<<<< HEAD
 
 Do not call System Calls in the Kernel
 --------------------------------------
@@ -519,6 +532,8 @@ Exceptions to this rule are only allowed in architecture-specific overrides,
 architecture-specific compatibility wrappers, or other code in arch/.
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 References and Sources
 ----------------------
 

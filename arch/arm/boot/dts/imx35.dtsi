@@ -1,8 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright 2012 Steffen Trumtrar, Pengutronix
 //
 // based on imx27.dtsi
+=======
+/*
+ * Copyright 2012 Steffen Trumtrar, Pengutronix
+ *
+ * based on imx27.dtsi
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 2 as published by the
+ * Free Software Foundation.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "imx35-pinfunc.h"
 
@@ -16,7 +28,11 @@
 	 * Also for U-Boot there must be a pre-existing /memory node.
 	 */
 	chosen {};
+<<<<<<< HEAD
 	memory { device_type = "memory"; };
+=======
+	memory { device_type = "memory"; reg = <0 0>; };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	aliases {
 		ethernet0 = &fec;
@@ -299,7 +315,11 @@
 			};
 
 			can1: can@53fe4000 {
+<<<<<<< HEAD
 				compatible = "fsl,imx35-flexcan", "fsl,imx25-flexcan";
+=======
+				compatible = "fsl,imx35-flexcan", "fsl,p1010-flexcan";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0x53fe4000 0x1000>;
 				clocks = <&clks 33>, <&clks 33>;
 				clock-names = "ipg", "per";
@@ -308,7 +328,11 @@
 			};
 
 			can2: can@53fe8000 {
+<<<<<<< HEAD
 				compatible = "fsl,imx35-flexcan", "fsl,imx25-flexcan";
+=======
+				compatible = "fsl,imx35-flexcan", "fsl,p1010-flexcan";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0x53fe8000 0x1000>;
 				clocks = <&clks 34>, <&clks 34>;
 				clock-names = "ipg", "per";
@@ -398,13 +422,19 @@
 		usbphy0: usb-phy@0 {
 			reg = <0>;
 			compatible = "usb-nop-xceiv";
+<<<<<<< HEAD
 			#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		usbphy1: usb-phy@1 {
 			reg = <1>;
 			compatible = "usb-nop-xceiv";
+<<<<<<< HEAD
 			#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };

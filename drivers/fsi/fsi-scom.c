@@ -20,6 +20,7 @@
 #include <linux/fs.h>
 #include <linux/uaccess.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/cdev.h>
 #include <linux/list.h>
 
@@ -27,10 +28,21 @@
 
 #define FSI_ENGID_SCOM		0x5
 
+=======
+#include <linux/miscdevice.h>
+#include <linux/list.h>
+#include <linux/idr.h>
+
+#define FSI_ENGID_SCOM		0x5
+
+#define SCOM_FSI2PIB_DELAY	50
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* SCOM engine register set */
 #define SCOM_DATA0_REG		0x00
 #define SCOM_DATA1_REG		0x04
 #define SCOM_CMD_REG		0x08
+<<<<<<< HEAD
 #define SCOM_FSI2PIB_RESET_REG	0x18
 #define SCOM_STATUS_REG		0x1C /* Read */
 #define SCOM_PIB_RESET_REG	0x1C /* Write */
@@ -71,10 +83,17 @@
 /* Retries */
 #define SCOM_MAX_RETRIES		100	/* Retries on busy */
 #define SCOM_MAX_IND_RETRIES		10	/* Retries indirect not ready */
+=======
+#define SCOM_RESET_REG		0x1C
+
+#define SCOM_RESET_CMD		0x80000000
+#define SCOM_WRITE_CMD		0x80000000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct scom_device {
 	struct list_head link;
 	struct fsi_device *fsi_dev;
+<<<<<<< HEAD
 	struct device dev;
 	struct cdev cdev;
 	struct mutex lock;
@@ -86,6 +105,24 @@ static int __put_scom(struct scom_device *scom_dev, uint64_t value,
 {
 	__be32 data, raw_status;
 	int rc;
+=======
+	struct miscdevice mdev;
+	char	name[32];
+	int idx;
+};
+
+#define to_scom_dev(x)		container_of((x), struct scom_device, mdev)
+
+static struct list_head scom_devices;
+
+static DEFINE_IDA(scom_ida);
+
+static int put_scom(struct scom_device *scom_dev, uint64_t value,
+			uint32_t addr)
+{
+	int rc;
+	uint32_t data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = cpu_to_be32((value >> 32) & 0xffffffff);
 	rc = fsi_device_write(scom_dev->fsi_dev, SCOM_DATA0_REG, &data,
@@ -100,6 +137,7 @@ static int __put_scom(struct scom_device *scom_dev, uint64_t value,
 		return rc;
 
 	data = cpu_to_be32(SCOM_WRITE_CMD | addr);
+<<<<<<< HEAD
 	rc = fsi_device_write(scom_dev->fsi_dev, SCOM_CMD_REG, &data,
 				sizeof(uint32_t));
 	if (rc)
@@ -122,10 +160,25 @@ static int __get_scom(struct scom_device *scom_dev, uint64_t *value,
 
 	*value = 0ULL;
 	data = cpu_to_be32(SCOM_READ_CMD | addr);
+=======
+	return fsi_device_write(scom_dev->fsi_dev, SCOM_CMD_REG, &data,
+				sizeof(uint32_t));
+}
+
+static int get_scom(struct scom_device *scom_dev, uint64_t *value,
+			uint32_t addr)
+{
+	uint32_t result, data;
+	int rc;
+
+	*value = 0ULL;
+	data = cpu_to_be32(addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = fsi_device_write(scom_dev->fsi_dev, SCOM_CMD_REG, &data,
 				sizeof(uint32_t));
 	if (rc)
 		return rc;
+<<<<<<< HEAD
 	rc = fsi_device_read(scom_dev->fsi_dev, SCOM_STATUS_REG, &raw_status,
 			     sizeof(uint32_t));
 	if (rc)
@@ -365,16 +418,48 @@ static ssize_t scom_read(struct file *filep, char __user *buf, size_t len,
 	struct device *dev = &scom->fsi_dev->dev;
 	uint64_t val;
 	int rc;
+=======
+
+	rc = fsi_device_read(scom_dev->fsi_dev, SCOM_DATA0_REG, &result,
+				sizeof(uint32_t));
+	if (rc)
+		return rc;
+
+	*value |= (uint64_t)cpu_to_be32(result) << 32;
+	rc = fsi_device_read(scom_dev->fsi_dev, SCOM_DATA1_REG, &result,
+				sizeof(uint32_t));
+	if (rc)
+		return rc;
+
+	*value |= cpu_to_be32(result);
+
+	return 0;
+}
+
+static ssize_t scom_read(struct file *filep, char __user *buf, size_t len,
+			loff_t *offset)
+{
+	int rc;
+	struct miscdevice *mdev =
+				(struct miscdevice *)filep->private_data;
+	struct scom_device *scom = to_scom_dev(mdev);
+	struct device *dev = &scom->fsi_dev->dev;
+	uint64_t val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (len != sizeof(uint64_t))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	mutex_lock(&scom->lock);
 	if (scom->dead)
 		rc = -ENODEV;
 	else
 		rc = get_scom(scom, &val, *offset);
 	mutex_unlock(&scom->lock);
+=======
+	rc = get_scom(scom, &val, *offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		dev_dbg(dev, "get_scom fail:%d\n", rc);
 		return rc;
@@ -388,10 +473,18 @@ static ssize_t scom_read(struct file *filep, char __user *buf, size_t len,
 }
 
 static ssize_t scom_write(struct file *filep, const char __user *buf,
+<<<<<<< HEAD
 			  size_t len, loff_t *offset)
 {
 	int rc;
 	struct scom_device *scom = filep->private_data;
+=======
+			size_t len, loff_t *offset)
+{
+	int rc;
+	struct miscdevice *mdev = filep->private_data;
+	struct scom_device *scom = to_scom_dev(mdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev = &scom->fsi_dev->dev;
 	uint64_t val;
 
@@ -404,12 +497,16 @@ static ssize_t scom_write(struct file *filep, const char __user *buf,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&scom->lock);
 	if (scom->dead)
 		rc = -ENODEV;
 	else
 		rc = put_scom(scom, val, *offset);
 	mutex_unlock(&scom->lock);
+=======
+	rc = put_scom(scom, val, *offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		dev_dbg(dev, "put_scom failed with:%d\n", rc);
 		return rc;
@@ -433,6 +530,7 @@ static loff_t scom_llseek(struct file *file, loff_t offset, int whence)
 	return offset;
 }
 
+<<<<<<< HEAD
 static void raw_convert_status(struct scom_access *acc, uint32_t status)
 {
 	acc->pib_status = (status & SCOM_STATUS_PIB_RESP_MASK) >>
@@ -620,10 +718,43 @@ static int scom_probe(struct device *dev)
  err:
 	put_device(&scom->dev);
 	return rc;
+=======
+static const struct file_operations scom_fops = {
+	.owner	= THIS_MODULE,
+	.llseek	= scom_llseek,
+	.read	= scom_read,
+	.write	= scom_write,
+};
+
+static int scom_probe(struct device *dev)
+{
+	uint32_t data;
+	struct fsi_device *fsi_dev = to_fsi_dev(dev);
+	struct scom_device *scom;
+
+	scom = devm_kzalloc(dev, sizeof(*scom), GFP_KERNEL);
+	if (!scom)
+		return -ENOMEM;
+
+	scom->idx = ida_simple_get(&scom_ida, 1, INT_MAX, GFP_KERNEL);
+	snprintf(scom->name, sizeof(scom->name), "scom%d", scom->idx);
+	scom->fsi_dev = fsi_dev;
+	scom->mdev.minor = MISC_DYNAMIC_MINOR;
+	scom->mdev.fops = &scom_fops;
+	scom->mdev.name = scom->name;
+	scom->mdev.parent = dev;
+	list_add(&scom->link, &scom_devices);
+
+	data = cpu_to_be32(SCOM_RESET_CMD);
+	fsi_device_write(fsi_dev, SCOM_RESET_REG, &data, sizeof(uint32_t));
+
+	return misc_register(&scom->mdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int scom_remove(struct device *dev)
 {
+<<<<<<< HEAD
 	struct scom_device *scom = dev_get_drvdata(dev);
 
 	mutex_lock(&scom->lock);
@@ -632,6 +763,18 @@ static int scom_remove(struct device *dev)
 	cdev_device_del(&scom->cdev, &scom->dev);
 	fsi_free_minor(scom->dev.devt);
 	put_device(&scom->dev);
+=======
+	struct scom_device *scom, *scom_tmp;
+	struct fsi_device *fsi_dev = to_fsi_dev(dev);
+
+	list_for_each_entry_safe(scom, scom_tmp, &scom_devices, link) {
+		if (scom->fsi_dev == fsi_dev) {
+			list_del(&scom->link);
+			ida_simple_remove(&scom_ida, scom->idx);
+			misc_deregister(&scom->mdev);
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -656,11 +799,26 @@ static struct fsi_driver scom_drv = {
 
 static int scom_init(void)
 {
+<<<<<<< HEAD
+=======
+	INIT_LIST_HEAD(&scom_devices);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return fsi_driver_register(&scom_drv);
 }
 
 static void scom_exit(void)
 {
+<<<<<<< HEAD
+=======
+	struct list_head *pos;
+	struct scom_device *scom;
+
+	list_for_each(pos, &scom_devices) {
+		scom = list_entry(pos, struct scom_device, link);
+		misc_deregister(&scom->mdev);
+		devm_kfree(&scom->fsi_dev->dev, scom);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fsi_driver_unregister(&scom_drv);
 }
 

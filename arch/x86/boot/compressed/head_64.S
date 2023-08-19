@@ -33,7 +33,10 @@
 #include <asm/processor-flags.h>
 #include <asm/asm-offsets.h>
 #include <asm/bootparam.h>
+<<<<<<< HEAD
 #include "pgtable.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Locally defined symbols should be marked hidden:
@@ -42,6 +45,10 @@
 	.hidden _ebss
 	.hidden _got
 	.hidden _egot
+<<<<<<< HEAD
+=======
+	.hidden _end
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__HEAD
 	.code32
@@ -106,7 +113,11 @@ ENTRY(startup_32)
 	notl	%eax
 	andl	%eax, %ebx
 	cmpl	$LOAD_PHYSICAL_ADDR, %ebx
+<<<<<<< HEAD
 	jge	1f
+=======
+	jae	1f
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	movl	$LOAD_PHYSICAL_ADDR, %ebx
 1:
@@ -132,6 +143,7 @@ ENTRY(startup_32)
  /*
   * Build early 4G boot pagetable
   */
+<<<<<<< HEAD
 	/*
 	 * If SEV is active then set the encryption mask in the page tables.
 	 * This will insure that when the kernel is copied and decompressed
@@ -145,6 +157,8 @@ ENTRY(startup_32)
 	bts	%eax, %edx	/* Set encryption mask for page tables */
 1:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Initialize Page tables to 0 */
 	leal	pgtable(%ebx), %edi
 	xorl	%eax, %eax
@@ -155,14 +169,20 @@ ENTRY(startup_32)
 	leal	pgtable + 0(%ebx), %edi
 	leal	0x1007 (%edi), %eax
 	movl	%eax, 0(%edi)
+<<<<<<< HEAD
 	addl	%edx, 4(%edi)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Build Level 3 */
 	leal	pgtable + 0x1000(%ebx), %edi
 	leal	0x1007(%edi), %eax
 	movl	$4, %ecx
 1:	movl	%eax, 0x00(%edi)
+<<<<<<< HEAD
 	addl	%edx, 0x04(%edi)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addl	$0x00001000, %eax
 	addl	$8, %edi
 	decl	%ecx
@@ -173,7 +193,10 @@ ENTRY(startup_32)
 	movl	$0x00000183, %eax
 	movl	$2048, %ecx
 1:	movl	%eax, 0(%edi)
+<<<<<<< HEAD
 	addl	%edx, 4(%edi)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addl	$0x00200000, %eax
 	addl	$8, %edi
 	decl	%ecx
@@ -244,6 +267,14 @@ ENTRY(efi32_stub_entry)
 	leal	efi32_config(%ebp), %eax
 	movl	%eax, efi_config(%ebp)
 
+<<<<<<< HEAD
+=======
+	/* Disable paging */
+	movl	%cr0, %eax
+	btrl	$X86_CR0_PG_BIT, %eax
+	movl	%eax, %cr0
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jmp	startup_32
 ENDPROC(efi32_stub_entry)
 #endif
@@ -292,7 +323,11 @@ ENTRY(startup_64)
 	notq	%rax
 	andq	%rax, %rbp
 	cmpq	$LOAD_PHYSICAL_ADDR, %rbp
+<<<<<<< HEAD
 	jge	1f
+=======
+	jae	1f
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	movq	$LOAD_PHYSICAL_ADDR, %rbp
 1:
@@ -305,6 +340,7 @@ ENTRY(startup_64)
 	/* Set up the stack */
 	leaq	boot_stack_end(%rbx), %rsp
 
+<<<<<<< HEAD
 	/*
 	 * paging_prepare() and cleanup_trampoline() below can have GOT
 	 * references. Adjust the table with address we are running at.
@@ -400,11 +436,63 @@ trampoline_return:
 	leaq	top_pgtable(%rbx), %rdi
 	call	cleanup_trampoline
 	popq	%rsi
+=======
+#ifdef CONFIG_X86_5LEVEL
+	/*
+	 * Check if we need to enable 5-level paging.
+	 * RSI holds real mode data and need to be preserved across
+	 * a function call.
+	 */
+	pushq	%rsi
+	call	l5_paging_required
+	popq	%rsi
+
+	/* If l5_paging_required() returned zero, we're done here. */
+	cmpq	$0, %rax
+	je	lvl5
+
+	/*
+	 * At this point we are in long mode with 4-level paging enabled,
+	 * but we want to enable 5-level paging.
+	 *
+	 * The problem is that we cannot do it directly. Setting LA57 in
+	 * long mode would trigger #GP. So we need to switch off long mode
+	 * first.
+	 *
+	 * NOTE: This is not going to work if bootloader put us above 4G
+	 * limit.
+	 *
+	 * The first step is go into compatibility mode.
+	 */
+
+	/* Clear additional page table */
+	leaq	lvl5_pgtable(%rbx), %rdi
+	xorq	%rax, %rax
+	movq	$(PAGE_SIZE/8), %rcx
+	rep	stosq
+
+	/*
+	 * Setup current CR3 as the first and only entry in a new top level
+	 * page table.
+	 */
+	movq	%cr3, %rdi
+	leaq	0x7 (%rdi), %rax
+	movq	%rax, lvl5_pgtable(%rbx)
+
+	/* Switch to compatibility mode (CS.L = 0 CS.D = 1) via far return */
+	pushq	$__KERNEL32_CS
+	leaq	compatible_mode(%rip), %rax
+	pushq	%rax
+	lretq
+lvl5:
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Zero EFLAGS */
 	pushq	$0
 	popfq
 
+<<<<<<< HEAD
 	/*
 	 * Previously we've adjusted the GOT with address the binary was
 	 * loaded at. Now we need to re-adjust for relocation address.
@@ -420,6 +508,8 @@ trampoline_return:
 	movq	%rbx, %rdi
 	call	adjust_got
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copy the compressed kernel to the end of our buffer
  * where decompression in place becomes safe.
@@ -521,6 +611,22 @@ relocated:
 	rep	stosq
 
 /*
+<<<<<<< HEAD
+=======
+ * Adjust our own GOT
+ */
+	leaq	_got(%rip), %rdx
+	leaq	_egot(%rip), %rcx
+1:
+	cmpq	%rcx, %rdx
+	jae	2f
+	addq	%rbx, (%rdx)
+	addq	$8, %rdx
+	jmp	1b
+2:
+	
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Do the extraction, and jump to the new kernel..
  */
 	pushq	%rsi			/* Save the real mode argument */
@@ -538,6 +644,7 @@ relocated:
  */
 	jmp	*%rax
 
+<<<<<<< HEAD
 /*
  * Adjust the global offset table
  *
@@ -569,18 +676,28 @@ adjust_got:
  */
 ENTRY(trampoline_32bit_src)
 	/* Set up data and stack segments */
+=======
+	.code32
+#ifdef CONFIG_X86_5LEVEL
+compatible_mode:
+	/* Setup data and stack segments */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movl	$__KERNEL_DS, %eax
 	movl	%eax, %ds
 	movl	%eax, %ss
 
+<<<<<<< HEAD
 	/* Set up new stack */
 	leal	TRAMPOLINE_32BIT_STACK_END(%ecx), %esp
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Disable paging */
 	movl	%cr0, %eax
 	btrl	$X86_CR0_PG_BIT, %eax
 	movl	%eax, %cr0
 
+<<<<<<< HEAD
 	/* Check what paging mode we want to be in after the trampoline */
 	cmpl	$0, %edx
 	jz	1f
@@ -626,10 +743,33 @@ ENTRY(trampoline_32bit_src)
 	pushl	%eax
 
 	/* Enable paging again */
+=======
+	/* Point CR3 to 5-level paging */
+	leal	lvl5_pgtable(%ebx), %eax
+	movl	%eax, %cr3
+
+	/* Enable PAE and LA57 mode */
+	movl	%cr4, %eax
+	orl	$(X86_CR4_PAE | X86_CR4_LA57), %eax
+	movl	%eax, %cr4
+
+	/* Calculate address we are running at */
+	call	1f
+1:	popl	%edi
+	subl	$1b, %edi
+
+	/* Prepare stack for far return to Long Mode */
+	pushl	$__KERNEL_CS
+	leal	lvl5(%edi), %eax
+	push	%eax
+
+	/* Enable paging back */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movl	$(X86_CR0_PG | X86_CR0_PE), %eax
 	movl	%eax, %cr0
 
 	lret
+<<<<<<< HEAD
 
 	.code64
 paging_enabled:
@@ -646,6 +786,12 @@ paging_enabled:
 	.code32
 no_longmode:
 	/* This isn't an x86-64 CPU, so hang intentionally, we cannot continue */
+=======
+#endif
+
+no_longmode:
+	/* This isn't an x86-64 CPU so hang */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 1:
 	hlt
 	jmp     1b
@@ -653,11 +799,14 @@ no_longmode:
 #include "../../kernel/verify_cpu.S"
 
 	.data
+<<<<<<< HEAD
 gdt64:
 	.word	gdt_end - gdt
 	.long	0
 	.word	0
 	.quad   0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gdt:
 	.word	gdt_end - gdt
 	.long	gdt
@@ -706,6 +855,7 @@ boot_stack_end:
 	.balign 4096
 pgtable:
 	.fill BOOT_PGT_SIZE, 1, 0
+<<<<<<< HEAD
 
 /*
  * The page table is going to be used instead of page table in the trampoline
@@ -713,3 +863,9 @@ pgtable:
  */
 top_pgtable:
 	.fill PAGE_SIZE, 1, 0
+=======
+#ifdef CONFIG_X86_5LEVEL
+lvl5_pgtable:
+	.fill PAGE_SIZE, 1, 0
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

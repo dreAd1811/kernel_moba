@@ -1,4 +1,5 @@
 #
+<<<<<<< HEAD
 # Copyright 2017 Advanced Micro Devices, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a
@@ -20,6 +21,8 @@
 # OTHER DEALINGS IN THE SOFTWARE.
 #
 #
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # Makefile for the ACP, which is a sub-component
 # of AMDSOC/AMDGPU drm driver.
 # It provides the HW control for ACP related functionalities.

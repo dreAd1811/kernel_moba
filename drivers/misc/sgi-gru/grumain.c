@@ -926,7 +926,11 @@ again:
  *
  * 	Note: gru segments alway mmaped on GRU_GSEG_PAGESIZE boundaries.
  */
+<<<<<<< HEAD
 vm_fault_t gru_fault(struct vm_fault *vmf)
+=======
+int gru_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct gru_thread_state *gts;

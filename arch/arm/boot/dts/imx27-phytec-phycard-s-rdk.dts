@@ -81,8 +81,13 @@
 	imx27-phycard-s-rdk {
 		pinctrl_i2c1: i2c1grp {
 			fsl,pins = <
+<<<<<<< HEAD
 				MX27_PAD_I2C2_SDA__I2C2_SDA 0x0
 				MX27_PAD_I2C2_SCL__I2C2_SCL 0x0
+=======
+				MX27_PAD_I2C_DATA__I2C_DATA 0x0
+				MX27_PAD_I2C_CLK__I2C_CLK 0x0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			>;
 		};
 

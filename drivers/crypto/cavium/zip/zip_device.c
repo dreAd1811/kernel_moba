@@ -87,12 +87,20 @@ u32 zip_load_instr(union zip_inst_s *instr,
 	 * Distribute the instructions between the enabled queues based on
 	 * the CPU id.
 	 */
+<<<<<<< HEAD
 	if (raw_smp_processor_id() % 2 == 0)
+=======
+	if (smp_processor_id() % 2 == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue = 0;
 	else
 		queue = 1;
 
+<<<<<<< HEAD
 	zip_dbg("CPU Core: %d Queue number:%d", raw_smp_processor_id(), queue);
+=======
+	zip_dbg("CPU Core: %d Queue number:%d", smp_processor_id(), queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Take cmd buffer lock */
 	spin_lock(&zip_dev->iq[queue].lock);

@@ -11,6 +11,10 @@
 #include <linux/module.h>
 #include <linux/ptrace.h>
 #include <linux/sched/debug.h>
+<<<<<<< HEAD
+=======
+#include <linux/kallsyms.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bug.h>
 
 #include <asm/soc.h>
@@ -244,6 +248,10 @@ static struct exception_info eexcept_table[128] = {
 static void do_trap(struct exception_info *except_info, struct pt_regs *regs)
 {
 	unsigned long addr = instruction_pointer(regs);
+<<<<<<< HEAD
+=======
+	siginfo_t info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (except_info->code != TRAP_BRKPT)
 		pr_err("TRAP: %s PC[0x%lx] signo[%d] code[%d]\n",
@@ -252,8 +260,17 @@ static void do_trap(struct exception_info *except_info, struct pt_regs *regs)
 
 	die_if_kernel(except_info->kernel_str, regs, addr);
 
+<<<<<<< HEAD
 	force_sig_fault(except_info->signo, except_info->code,
 			(void __user *)addr, current);
+=======
+	info.si_signo = except_info->signo;
+	info.si_errno = 0;
+	info.si_code  = except_info->code;
+	info.si_addr  = (void __user *)addr;
+
+	force_sig_info(except_info->signo, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -369,7 +386,12 @@ static void show_trace(unsigned long *stack, unsigned long *endstack)
 			if (i % 5 == 0)
 				pr_debug("\n	    ");
 #endif
+<<<<<<< HEAD
 			pr_debug(" [<%08lx>] %pS\n", addr, (void *)addr);
+=======
+			pr_debug(" [<%08lx>]", addr);
+			print_symbol(" %s\n", addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i++;
 		}
 	}

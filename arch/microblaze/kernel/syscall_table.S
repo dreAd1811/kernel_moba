@@ -400,5 +400,8 @@ ENTRY(sys_call_table)
 	.long sys_pkey_alloc
 	.long sys_pkey_free
 	.long sys_statx
+<<<<<<< HEAD
 	.long sys_io_pgetevents
 	.long sys_rseq
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

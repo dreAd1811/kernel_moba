@@ -12,8 +12,11 @@
 #ifdef CONFIG_GENERIC_CSUM
 #include <asm-generic/checksum.h>
 #else
+<<<<<<< HEAD
 #include <linux/bitops.h>
 #include <linux/in6.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Computes the checksum of a memory block at src, length len,
  * and adds in "sum" (32-bit), while copying the block to dst.
@@ -57,7 +60,15 @@ static inline __sum16 csum_fold(__wsum sum)
 
 static inline u32 from64to32(u64 x)
 {
+<<<<<<< HEAD
 	return (x + ror64(x, 32)) >> 32;
+=======
+	/* add up 32-bit and 32-bit for 32+c bit */
+	x = (x & 0xffffffff) + (x >> 32);
+	/* add up carry.. */
+	x = (x & 0xffffffff) + (x >> 32);
+	return (u32)x;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline __wsum csum_tcpudp_nofold(__be32 saddr, __be32 daddr, __u32 len,
@@ -110,7 +121,11 @@ static inline __wsum csum_add(__wsum csum, __wsum addend)
 
 #ifdef __powerpc64__
 	res += (__force u64)addend;
+<<<<<<< HEAD
 	return (__force __wsum)((u32)res + (res >> 32));
+=======
+	return (__force __wsum) from64to32(res);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 	asm("addc %0,%0,%1;"
 	    "addze %0,%0;"
@@ -212,11 +227,14 @@ static inline __sum16 ip_compute_csum(const void *buff, int len)
 	return csum_fold(csum_partial(buff, len, 0));
 }
 
+<<<<<<< HEAD
 #define _HAVE_ARCH_IPV6_CSUM
 __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
 			const struct in6_addr *daddr,
 			__u32 len, __u8 proto, __wsum sum);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #endif /* __KERNEL__ */
 #endif

@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2008-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2008-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -20,14 +33,21 @@
 #define DIAG_SET_FEATURE_MASK(x) (feature_bytes[(x)/8] |= (1 << (x & 0x7)))
 
 #define MAX_USERSPACE_BUF_SIZ	100000
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct diag_mask_info msg_mask;
 struct diag_mask_info msg_bt_mask;
 struct diag_mask_info log_mask;
 struct diag_mask_info event_mask;
 
+<<<<<<< HEAD
 static int diag_subid_info[MAX_SIM_NUM] = {[0 ... (MAX_SIM_NUM - 1)] =
 	INVALID_INDEX};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct diag_ssid_range_t msg_mask_tbl[] = {
 	{ .ssid_first = MSG_SSID_0, .ssid_last = MSG_SSID_0_LAST },
 	{ .ssid_first = MSG_SSID_1, .ssid_last = MSG_SSID_1_LAST },
@@ -60,6 +80,7 @@ static const struct diag_ssid_range_t msg_mask_tbl[] = {
 static int diag_save_user_msg_mask(struct diag_md_session_t *info);
 static int diag_save_user_log_mask(struct diag_md_session_t *info);
 
+<<<<<<< HEAD
 static int __diag_multisim_mask_init(struct diag_mask_info *mask_info,
 	int mask_len, int subid_index);
 
@@ -98,6 +119,8 @@ struct diag_multisim_masks
 		return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int diag_check_update(int md_peripheral, int pid)
 {
 	int ret;
@@ -133,12 +156,17 @@ static int diag_apps_responds(void)
 	return 1;
 }
 
+<<<<<<< HEAD
 static void diag_send_log_mask_update(uint8_t peripheral,
 		int equip_id, int sub_index, int preset_id)
+=======
+static void diag_send_log_mask_update(uint8_t peripheral, int equip_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0, send_once = 0, i;
 	int header_len = sizeof(struct diag_ctrl_log_mask);
 	uint8_t *buf = NULL, *temp = NULL;
+<<<<<<< HEAD
 	uint8_t upd = 0, status, eq_id;
 	uint32_t mask_size = 0, pd_mask = 0, num_items = 0;
 	struct diag_ctrl_log_mask ctrl_pkt;
@@ -147,6 +175,14 @@ static void diag_send_log_mask_update(uint8_t peripheral,
 	struct diag_log_mask_t *mask = NULL;
 	struct diagfwd_info *fwd_info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+	uint8_t upd = 0;
+	uint32_t mask_size = 0, pd_mask = 0;
+	struct diag_ctrl_log_mask ctrl_pkt;
+	struct diag_mask_info *mask_info = NULL;
+	struct diag_log_mask_t *mask = NULL;
+	struct diagfwd_info *fwd_info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int proc = DIAG_LOCAL_PROC;
 
 	if (peripheral >= NUM_PERIPHERALS)
@@ -185,6 +221,7 @@ static void diag_send_log_mask_update(uint8_t peripheral,
 	if (!mask_info || !mask_info->ptr || !mask_info->update_buf)
 		return;
 
+<<<<<<< HEAD
 	mutex_lock(&mask_info->lock);
 	if (sub_index >= 0) {
 		ms_ptr = diag_get_ms_ptr_index(mask_info->ms_ptr, sub_index);
@@ -201,6 +238,35 @@ static void diag_send_log_mask_update(uint8_t peripheral,
 		goto err;
 	buf = mask_info->update_buf;
 
+=======
+	mask = (struct diag_log_mask_t *)mask_info->ptr;
+	if (!mask->ptr)
+		return;
+	buf = mask_info->update_buf;
+
+	switch (mask_info->status) {
+	case DIAG_CTRL_MASK_ALL_DISABLED:
+		ctrl_pkt.equip_id = 0;
+		ctrl_pkt.num_items = 0;
+		ctrl_pkt.log_mask_size = 0;
+		send_once = 1;
+		break;
+	case DIAG_CTRL_MASK_ALL_ENABLED:
+		ctrl_pkt.equip_id = 0;
+		ctrl_pkt.num_items = 0;
+		ctrl_pkt.log_mask_size = 0;
+		send_once = 1;
+		break;
+	case DIAG_CTRL_MASK_VALID:
+		send_once = 0;
+		break;
+	default:
+		pr_debug("diag: In %s, invalid log_mask status\n", __func__);
+		return;
+	}
+
+	mutex_lock(&mask_info->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < MAX_EQUIP_ID; i++, mask++) {
 		if (!mask->ptr)
 			continue;
@@ -209,6 +275,7 @@ static void diag_send_log_mask_update(uint8_t peripheral,
 			continue;
 
 		mutex_lock(&mask->lock);
+<<<<<<< HEAD
 		switch (status) {
 		case DIAG_CTRL_MASK_ALL_DISABLED:
 		case DIAG_CTRL_MASK_ALL_ENABLED:
@@ -261,6 +328,19 @@ proceed_sub_pkt:
 			mask_size;
 		header_len = sizeof(struct diag_ctrl_msg_mask_sub);
 send_cntrl_pkt:
+=======
+		ctrl_pkt.cmd_type = DIAG_CTRL_MSG_LOG_MASK;
+		ctrl_pkt.stream_id = 1;
+		ctrl_pkt.status = mask_info->status;
+		if (mask_info->status == DIAG_CTRL_MASK_VALID) {
+			mask_size = LOG_ITEMS_TO_SIZE(mask->num_items_tools);
+			ctrl_pkt.equip_id = i;
+			ctrl_pkt.num_items = mask->num_items_tools;
+			ctrl_pkt.log_mask_size = mask_size;
+		}
+		ctrl_pkt.data_len = LOG_MASK_CTRL_HEADER_LEN + mask_size;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (header_len + mask_size > mask_info->update_buf_len) {
 			temp = krealloc(buf, header_len + mask_size,
 					GFP_KERNEL);
@@ -275,19 +355,29 @@ send_cntrl_pkt:
 			buf = temp;
 		}
 
+<<<<<<< HEAD
 		if (sub_index >= 0 && preset_id > 0)
 			memcpy(buf, &ctrl_pkt_sub, sizeof(ctrl_pkt_sub));
 		else
 			memcpy(buf, &ctrl_pkt, sizeof(ctrl_pkt));
 
+=======
+		memcpy(buf, &ctrl_pkt, header_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mask_size > 0)
 			memcpy(buf + header_len, mask->ptr, mask_size);
 		mutex_unlock(&mask->lock);
 
 		DIAG_LOG(DIAG_DEBUG_MASKS,
+<<<<<<< HEAD
 			 "sending ctrl pkt to %d, equip_id %d num_items %d size %d\n",
 			 peripheral, eq_id, num_items,
 			 mask_size);
+=======
+			 "sending ctrl pkt to %d, e %d num_items %d size %d\n",
+			 peripheral, i, ctrl_pkt.num_items,
+			 ctrl_pkt.log_mask_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		err = diagfwd_write(peripheral, TYPE_CNTL,
 				    buf, header_len + mask_size);
@@ -298,6 +388,7 @@ send_cntrl_pkt:
 			break;
 
 	}
+<<<<<<< HEAD
 err:
 	mutex_unlock(&mask_info->lock);
 }
@@ -317,6 +408,21 @@ static void diag_send_event_mask_update(uint8_t peripheral, int sub_index,
 	struct diag_mask_info *mask_info = NULL;
 	struct diagfwd_info *fwd_info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+	mutex_unlock(&mask_info->lock);
+}
+
+static void diag_send_event_mask_update(uint8_t peripheral)
+{
+	uint8_t *buf = NULL, *temp = NULL;
+	uint8_t upd = 0;
+	uint32_t pd_mask = 0;
+	int num_bytes = EVENT_COUNT_TO_BYTES(driver->last_event_id);
+	int write_len = 0, err = 0, i = 0, temp_len = 0;
+	struct diag_ctrl_event_mask header;
+	struct diag_mask_info *mask_info = NULL;
+	struct diagfwd_info *fwd_info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int proc = DIAG_LOCAL_PROC;
 
 	if (num_bytes <= 0 || num_bytes > driver->event_mask_size) {
@@ -361,6 +467,7 @@ static void diag_send_event_mask_update(uint8_t peripheral, int sub_index,
 	if (!mask_info || !mask_info->ptr || !mask_info->update_buf)
 		return;
 
+<<<<<<< HEAD
 	mutex_lock(&mask_info->lock);
 
 	buf = mask_info->update_buf;
@@ -392,6 +499,28 @@ static void diag_send_event_mask_update(uint8_t peripheral, int sub_index,
 		event_mask_size = num_bytes;
 		if (num_bytes + header_len > mask_info->update_buf_len) {
 			temp_len = num_bytes + header_len;
+=======
+	buf = mask_info->update_buf;
+	mutex_lock(&mask_info->lock);
+	header.cmd_type = DIAG_CTRL_MSG_EVENT_MASK;
+	header.stream_id = 1;
+	header.status = mask_info->status;
+
+	switch (mask_info->status) {
+	case DIAG_CTRL_MASK_ALL_DISABLED:
+		header.event_config = 0;
+		header.event_mask_size = 0;
+		break;
+	case DIAG_CTRL_MASK_ALL_ENABLED:
+		header.event_config = 1;
+		header.event_mask_size = 0;
+		break;
+	case DIAG_CTRL_MASK_VALID:
+		header.event_config = 1;
+		header.event_mask_size = num_bytes;
+		if (num_bytes + sizeof(header) > mask_info->update_buf_len) {
+			temp_len = num_bytes + sizeof(header);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			temp = krealloc(buf, temp_len, GFP_KERNEL);
 			if (!temp) {
 				pr_err("diag: Unable to realloc event mask update buffer\n");
@@ -402,6 +531,7 @@ static void diag_send_event_mask_update(uint8_t peripheral, int sub_index,
 				buf = temp;
 			}
 		}
+<<<<<<< HEAD
 		if (num_bytes > 0) {
 			if (ms_ptr)
 				memcpy(buf + header_len,
@@ -410,6 +540,11 @@ static void diag_send_event_mask_update(uint8_t peripheral, int sub_index,
 				memcpy(buf + header_len,
 				mask_info->ptr, num_bytes);
 		} else {
+=======
+		if (num_bytes > 0)
+			memcpy(buf + sizeof(header), mask_info->ptr, num_bytes);
+		else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("diag: num_bytes(%d) is not satisfying length condition\n",
 				num_bytes);
 			goto err;
@@ -418,6 +553,7 @@ static void diag_send_event_mask_update(uint8_t peripheral, int sub_index,
 		break;
 	default:
 		pr_debug("diag: In %s, invalid status %d\n", __func__,
+<<<<<<< HEAD
 			 status);
 		goto err;
 	}
@@ -453,6 +589,15 @@ proceed_sub_pkt:
 	memcpy(buf, &header_sub, sizeof(header_sub));
 	write_len += sizeof(header_sub);
 send_pkt:
+=======
+			 mask_info->status);
+		goto err;
+	}
+	header.data_len = EVENT_MASK_CTRL_HEADER_LEN + header.event_mask_size;
+	memcpy(buf, &header, sizeof(header));
+	write_len += sizeof(header);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = diagfwd_write(peripheral, TYPE_CNTL, buf, write_len);
 	if (err && err != -ENODEV)
 		pr_err_ratelimited("diag: Unable to send event masks to peripheral %d\n",
@@ -461,11 +606,18 @@ err:
 	mutex_unlock(&mask_info->lock);
 }
 
+<<<<<<< HEAD
 static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last,
 	int sub_index, int preset)
 {
 	int i, err = 0, temp_len = 0, status = 0;
 	int header_len = 0;
+=======
+static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last)
+{
+	int i, err = 0, temp_len = 0;
+	int header_len = sizeof(struct diag_ctrl_msg_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint8_t *buf = NULL, *temp = NULL;
 	uint8_t upd = 0;
 	uint8_t msg_mask_tbl_count_local = 0;
@@ -473,10 +625,15 @@ static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last,
 	struct diag_mask_info *mask_info = NULL;
 	struct diag_msg_mask_t *mask = NULL;
 	struct diag_ctrl_msg_mask header;
+<<<<<<< HEAD
 	struct diag_ctrl_msg_mask_sub header_sub;
 	struct diagfwd_info *fwd_info = NULL;
 	struct diag_md_session_t *md_session_info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+	struct diagfwd_info *fwd_info = NULL;
+	struct diag_md_session_t *md_session_info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int proc = DIAG_LOCAL_PROC;
 
 	if (peripheral >= NUM_PERIPHERALS)
@@ -520,17 +677,28 @@ static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last,
 
 	if (!mask_info || !mask_info->ptr || !mask_info->update_buf)
 		return;
+<<<<<<< HEAD
 	if (sub_index >= 0 && preset > 0)
 		header_len = sizeof(struct diag_ctrl_msg_mask_sub);
 	else
 		header_len = sizeof(struct diag_ctrl_msg_mask);
 	mutex_lock(&driver->msg_mask_lock);
+=======
+	mutex_lock(&driver->msg_mask_lock);
+	mask = (struct diag_msg_mask_t *)mask_info->ptr;
+	if (!mask->ptr) {
+		mutex_unlock(&driver->msg_mask_lock);
+		return;
+	}
+	buf = mask_info->update_buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (md_session_info)
 		msg_mask_tbl_count_local = md_session_info->msg_mask_tbl_count;
 	else
 		msg_mask_tbl_count_local = driver->msg_mask_tbl_count;
 	mutex_unlock(&driver->msg_mask_lock);
 	mutex_lock(&mask_info->lock);
+<<<<<<< HEAD
 	buf = mask_info->update_buf;
 	if (sub_index >= 0) {
 		ms_ptr = diag_get_ms_ptr_index(mask_info->ms_ptr, sub_index);
@@ -547,6 +715,9 @@ static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last,
 		goto err;
 	}
 	switch (status) {
+=======
+	switch (mask_info->status) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_CTRL_MASK_ALL_DISABLED:
 		mask_size = 0;
 		break;
@@ -557,7 +728,11 @@ static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last,
 		break;
 	default:
 		pr_debug("diag: In %s, invalid status: %d\n", __func__,
+<<<<<<< HEAD
 			status);
+=======
+			 mask_info->status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -572,6 +747,7 @@ static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last,
 		}
 
 		mutex_lock(&mask->lock);
+<<<<<<< HEAD
 		if (status == DIAG_CTRL_MASK_VALID) {
 			mask_size =
 				mask->ssid_last_tools - mask->ssid_first + 1;
@@ -583,6 +759,14 @@ static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last,
 				else
 					goto proceed_legacy_pkt;
 			}
+=======
+		if (mask_info->status == DIAG_CTRL_MASK_VALID) {
+			mask_size =
+				mask->ssid_last_tools - mask->ssid_first + 1;
+			temp_len = mask_size * sizeof(uint32_t);
+			if (temp_len + header_len <= mask_info->update_buf_len)
+				goto proceed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			temp = krealloc(mask_info->update_buf, temp_len,
 					GFP_KERNEL);
 			if (!temp) {
@@ -597,10 +781,17 @@ static void diag_send_msg_mask_update(uint8_t peripheral, int first, int last,
 				pr_debug("diag: In %s, successfully reallocated msg_mask update buffer to len: %d\n",
 					 __func__, mask_info->update_buf_len);
 			}
+<<<<<<< HEAD
 		} else if (status == DIAG_CTRL_MASK_ALL_ENABLED) {
 			mask_size = 1;
 		}
 proceed_legacy_pkt:
+=======
+		} else if (mask_info->status == DIAG_CTRL_MASK_ALL_ENABLED) {
+			mask_size = 1;
+		}
+proceed:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		header.cmd_type = DIAG_CTRL_MSG_F3_MASK;
 		header.status = mask_info->status;
 		header.stream_id = 1;
@@ -610,6 +801,7 @@ proceed_legacy_pkt:
 		header.msg_mask_size = mask_size;
 		mask_size *= sizeof(uint32_t);
 		header.data_len = MSG_MASK_CTRL_HEADER_LEN + mask_size;
+<<<<<<< HEAD
 		memcpy(buf, &header, sizeof(header));
 		if (mask_size > 0)
 			memcpy(buf + header_len, mask->ptr, mask_size);
@@ -646,6 +838,9 @@ proceed_sub_pkt:
 		mask_size *= sizeof(uint32_t);
 		header_sub.data_len = MSG_MASK_CTRL_HEADER_LEN_SUB + mask_size;
 		memcpy(buf, &header_sub, sizeof(header_sub));
+=======
+		memcpy(buf, &header, header_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mask_size > 0)
 			memcpy(buf + header_len, mask->ptr, mask_size);
 		mutex_unlock(&mask->lock);
@@ -741,6 +936,7 @@ static void diag_send_feature_mask_update(uint8_t peripheral)
 				ENABLE_PKT_HEADER_UNTAGGING;
 		}
 	}
+<<<<<<< HEAD
 	if (driver->supports_pd_buffering)
 		if (driver->feature[peripheral].pd_buffering)
 			DIAG_SET_FEATURE_MASK(F_DIAG_PD_BUFFERING);
@@ -751,6 +947,11 @@ static void diag_send_feature_mask_update(uint8_t peripheral)
 	if (driver->supports_sockets)
 		DIAG_SET_FEATURE_MASK(F_DIAG_SOCKETS_ENABLED);
 	DIAG_SET_FEATURE_MASK(F_DIAG_MULTI_SIM_SUPPORT);
+=======
+	DIAG_SET_FEATURE_MASK(F_DIAG_MASK_CENTRALIZATION);
+	if (driver->supports_sockets)
+		DIAG_SET_FEATURE_MASK(F_DIAG_SOCKETS_ENABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memcpy(buf + header_size, &feature_bytes, FEATURE_MASK_LEN);
 	total_len = header_size + FEATURE_MASK_LEN;
@@ -768,18 +969,30 @@ static void diag_send_feature_mask_update(uint8_t peripheral)
 }
 
 static int diag_cmd_get_ssid_range(unsigned char *src_buf, int src_len,
+<<<<<<< HEAD
 		unsigned char *dest_buf, int dest_len, int pid, int cmd_ver)
 {
 	int i, sub_index;
+=======
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int write_len = 0;
 	uint8_t msg_mask_tbl_count = 0;
 	struct diag_msg_mask_t *mask_ptr = NULL;
 	struct diag_msg_ssid_query_t rsp;
+<<<<<<< HEAD
 	struct diag_msg_ssid_query_sub_t rsp_ms;
 	struct diag_ssid_range_t ssid_range;
 	struct diag_mask_info *mask_info = NULL;
 	struct diag_md_session_t *info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+	struct diag_ssid_range_t ssid_range;
+	struct diag_mask_info *mask_info = NULL;
+	struct diag_md_session_t *info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -792,6 +1005,15 @@ static int diag_cmd_get_ssid_range(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!diag_apps_responds()) {
 		mutex_unlock(&driver->md_session_lock);
@@ -800,6 +1022,7 @@ static int diag_cmd_get_ssid_range(unsigned char *src_buf, int src_len,
 	mutex_lock(&driver->msg_mask_lock);
 	msg_mask_tbl_count = (info) ? info->msg_mask_tbl_count :
 		driver->msg_mask_tbl_count;
+<<<<<<< HEAD
 	if (cmd_ver) {
 		memcpy(&rsp_ms, src_buf, src_len);
 		rsp_ms.status = MSG_STATUS_SUCCESS;
@@ -833,6 +1056,16 @@ static int diag_cmd_get_ssid_range(unsigned char *src_buf, int src_len,
 			__func__);
 		goto err;
 	}
+=======
+	rsp.cmd_code = DIAG_CMD_MSG_CONFIG;
+	rsp.sub_cmd = DIAG_CMD_OP_GET_SSID_RANGE;
+	rsp.status = MSG_STATUS_SUCCESS;
+	rsp.padding = 0;
+	rsp.count = msg_mask_tbl_count;
+	memcpy(dest_buf, &rsp, sizeof(rsp));
+	write_len += sizeof(rsp);
+	mask_ptr = (struct diag_msg_mask_t *)mask_info->ptr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < msg_mask_tbl_count; i++, mask_ptr++) {
 		if (write_len + sizeof(ssid_range) > dest_len) {
 			pr_err("diag: In %s, Truncating response due to size limitations of rsp buffer\n",
@@ -844,13 +1077,17 @@ static int diag_cmd_get_ssid_range(unsigned char *src_buf, int src_len,
 		memcpy(dest_buf + write_len, &ssid_range, sizeof(ssid_range));
 		write_len += sizeof(ssid_range);
 	}
+<<<<<<< HEAD
 err:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&driver->msg_mask_lock);
 	mutex_unlock(&driver->md_session_lock);
 	return write_len;
 }
 
 static int diag_cmd_get_build_mask(unsigned char *src_buf, int src_len,
+<<<<<<< HEAD
 		unsigned char *dest_buf, int dest_len, int pid, int cmd_ver)
 {
 	int i = 0;
@@ -864,6 +1101,17 @@ static int diag_cmd_get_build_mask(unsigned char *src_buf, int src_len,
 	struct diag_build_mask_req_sub_t *req_sub = NULL;
 	struct diag_msg_build_mask_sub_t rsp_sub;
 	struct diag_ssid_range_t ssid_range;
+=======
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int i = 0;
+	int write_len = 0;
+	int num_entries = 0;
+	int copy_len = 0;
+	struct diag_msg_mask_t *build_mask = NULL;
+	struct diag_build_mask_req_t *req = NULL;
+	struct diag_msg_build_mask_t rsp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!src_buf || !dest_buf || dest_len <= 0 ||
 		src_len < sizeof(struct diag_build_mask_req_t)) {
@@ -875,6 +1123,7 @@ static int diag_cmd_get_build_mask(unsigned char *src_buf, int src_len,
 	if (!diag_apps_responds())
 		return 0;
 	mutex_lock(&driver->msg_mask_lock);
+<<<<<<< HEAD
 	build_mask = (struct diag_msg_mask_t *)msg_bt_mask.ptr;
 	if (!cmd_ver) {
 		if (src_len < sizeof(struct diag_build_mask_req_t))
@@ -943,26 +1192,71 @@ static int diag_cmd_get_build_mask(unsigned char *src_buf, int src_len,
 	}
 	write_len += header_len;
 fail:
+=======
+	req = (struct diag_build_mask_req_t *)src_buf;
+	rsp.cmd_code = DIAG_CMD_MSG_CONFIG;
+	rsp.sub_cmd = DIAG_CMD_OP_GET_BUILD_MASK;
+	rsp.ssid_first = req->ssid_first;
+	rsp.ssid_last = req->ssid_last;
+	rsp.status = MSG_STATUS_FAIL;
+	rsp.padding = 0;
+	build_mask = (struct diag_msg_mask_t *)msg_bt_mask.ptr;
+	for (i = 0; i < driver->bt_msg_mask_tbl_count; i++, build_mask++) {
+		if (!build_mask->ptr)
+			continue;
+		if (build_mask->ssid_first != req->ssid_first)
+			continue;
+		num_entries = req->ssid_last - req->ssid_first + 1;
+		if (num_entries > build_mask->range) {
+			pr_warn("diag: In %s, truncating ssid range for ssid_first: %d ssid_last %d\n",
+				__func__, req->ssid_first, req->ssid_last);
+			num_entries = build_mask->range;
+			req->ssid_last = req->ssid_first + build_mask->range;
+		}
+		copy_len = num_entries * sizeof(uint32_t);
+		if (copy_len + sizeof(rsp) > dest_len)
+			copy_len = dest_len - sizeof(rsp);
+		memcpy(dest_buf + sizeof(rsp), build_mask->ptr, copy_len);
+		write_len += copy_len;
+		rsp.ssid_last = build_mask->ssid_last;
+		rsp.status = MSG_STATUS_SUCCESS;
+		break;
+	}
+	memcpy(dest_buf, &rsp, sizeof(rsp));
+	write_len += sizeof(rsp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&driver->msg_mask_lock);
 	return write_len;
 }
 
 static int diag_cmd_get_msg_mask(unsigned char *src_buf, int src_len,
+<<<<<<< HEAD
 		unsigned char *dest_buf, int dest_len, int pid, int cmd_ver)
 {
 	int i, sub_index;
 	int write_len = 0, header_len = 0, status = MSG_STATUS_FAIL;
+=======
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int i;
+	int write_len = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t mask_size = 0;
 	uint8_t msg_mask_tbl_count = 0;
 	struct diag_msg_mask_t *mask = NULL;
 	struct diag_build_mask_req_t *req = NULL;
 	struct diag_msg_build_mask_t rsp;
+<<<<<<< HEAD
 	struct diag_msg_build_mask_sub_t *req_sub = NULL;
 	struct diag_msg_build_mask_sub_t rsp_sub;
 	struct diag_mask_info *mask_info = NULL;
 	struct diag_md_session_t *info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
 	struct diag_ssid_range_t ssid_range;
+=======
+	struct diag_mask_info *mask_info = NULL;
+	struct diag_md_session_t *info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -976,6 +1270,15 @@ static int diag_cmd_get_msg_mask(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!diag_apps_responds()) {
 		mutex_unlock(&driver->md_session_lock);
 		return 0;
@@ -984,6 +1287,7 @@ static int diag_cmd_get_msg_mask(unsigned char *src_buf, int src_len,
 	mutex_lock(&driver->msg_mask_lock);
 	msg_mask_tbl_count = (info) ? info->msg_mask_tbl_count :
 			driver->msg_mask_tbl_count;
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		if (src_len < sizeof(struct diag_build_mask_req_t))
 			goto err;
@@ -1024,16 +1328,38 @@ static int diag_cmd_get_msg_mask(unsigned char *src_buf, int src_len,
 			__func__);
 		write_len = -EINVAL;
 		goto err;
+=======
+	req = (struct diag_build_mask_req_t *)src_buf;
+	rsp.cmd_code = DIAG_CMD_MSG_CONFIG;
+	rsp.sub_cmd = DIAG_CMD_OP_GET_MSG_MASK;
+	rsp.ssid_first = req->ssid_first;
+	rsp.ssid_last = req->ssid_last;
+	rsp.status = MSG_STATUS_FAIL;
+	rsp.padding = 0;
+	mask = (struct diag_msg_mask_t *)mask_info->ptr;
+	if (!mask->ptr) {
+		pr_err("diag: Invalid input in %s, mask->ptr: %pK\n",
+			__func__, mask->ptr);
+		mutex_unlock(&driver->msg_mask_lock);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	for (i = 0; i < msg_mask_tbl_count; i++, mask++) {
 		if (!mask->ptr)
 			continue;
+<<<<<<< HEAD
 		if ((ssid_range.ssid_first < mask->ssid_first) ||
 		    (ssid_range.ssid_first > mask->ssid_last_tools)) {
+=======
+		if ((req->ssid_first < mask->ssid_first) ||
+		    (req->ssid_first > mask->ssid_last_tools)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 		mask_size = mask->range * sizeof(uint32_t);
 		/* Copy msg mask only till the end of the rsp buffer */
+<<<<<<< HEAD
 		if (mask_size + header_len > dest_len)
 			mask_size = dest_len - header_len;
 		memcpy(dest_buf + header_len, mask->ptr, mask_size);
@@ -1051,11 +1377,23 @@ static int diag_cmd_get_msg_mask(unsigned char *src_buf, int src_len,
 		write_len += header_len;
 	}
 err:
+=======
+		if (mask_size + sizeof(rsp) > dest_len)
+			mask_size = dest_len - sizeof(rsp);
+		memcpy(dest_buf + sizeof(rsp), mask->ptr, mask_size);
+		write_len += mask_size;
+		rsp.status = MSG_STATUS_SUCCESS;
+		break;
+	}
+	memcpy(dest_buf, &rsp, sizeof(rsp));
+	write_len += sizeof(rsp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&driver->msg_mask_lock);
 	mutex_unlock(&driver->md_session_lock);
 	return write_len;
 }
 
+<<<<<<< HEAD
 
 static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 		unsigned char *dest_buf, int dest_len, int pid, int cmd_ver)
@@ -1076,6 +1414,22 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 	struct diag_ssid_range_t ssid_range;
 	struct diag_multisim_masks *ms_ptr = NULL;
 	int preset = 0, ret_val = 0;
+=======
+static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	uint32_t mask_size = 0, offset = 0;
+	uint32_t *temp = NULL;
+	int write_len = 0, i = 0, found = 0, peripheral, ret_val = 0;
+	int header_len = sizeof(struct diag_msg_build_mask_t);
+	struct diag_msg_mask_t *mask = NULL;
+	struct diag_msg_build_mask_t *req = NULL;
+	struct diag_msg_build_mask_t rsp;
+	struct diag_mask_info *mask_info = NULL;
+	struct diag_msg_mask_t *mask_next = NULL;
+	struct diag_md_session_t *info = NULL;
+	uint8_t msg_mask_tbl_count = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -1089,6 +1443,7 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 
 	mutex_lock(&mask_info->lock);
 	mutex_lock(&driver->msg_mask_lock);
@@ -1124,6 +1479,26 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 		pr_err("diag: In %s, Invalid mask\n",
 			__func__);
 		goto err;
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+
+	req = (struct diag_msg_build_mask_t *)src_buf;
+	mutex_lock(&mask_info->lock);
+	mutex_lock(&driver->msg_mask_lock);
+	mask = (struct diag_msg_mask_t *)mask_info->ptr;
+	if (!mask->ptr) {
+		pr_err("diag: Invalid input in %s, mask->ptr: %pK\n",
+			__func__, mask->ptr);
+		mutex_unlock(&driver->msg_mask_lock);
+		mutex_unlock(&mask_info->lock);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	msg_mask_tbl_count = (info) ? info->msg_mask_tbl_count :
 			driver->msg_mask_tbl_count;
@@ -1133,6 +1508,7 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 		if (i < (msg_mask_tbl_count - 1)) {
 			mask_next = mask;
 			mask_next++;
+<<<<<<< HEAD
 		} else {
 			mask_next = NULL;
 		}
@@ -1142,12 +1518,24 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 			mask->ssid_first + MAX_SSID_PER_RANGE) ||
 			(mask_next &&
 			(ssid_range.ssid_first >= mask_next->ssid_first))) {
+=======
+		} else
+			mask_next = NULL;
+
+		if ((req->ssid_first < mask->ssid_first) ||
+		    (req->ssid_first > mask->ssid_first + MAX_SSID_PER_RANGE) ||
+		    (mask_next && (req->ssid_first >= mask_next->ssid_first))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 		mask_next = NULL;
 		found = 1;
 		mutex_lock(&mask->lock);
+<<<<<<< HEAD
 		mask_size = ssid_range.ssid_last - ssid_range.ssid_first + 1;
+=======
+		mask_size = req->ssid_last - req->ssid_first + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mask_size > MAX_SSID_PER_RANGE) {
 			pr_warn("diag: In %s, truncating ssid range, %d-%d to max allowed: %d\n",
 				__func__, mask->ssid_first, mask->ssid_last,
@@ -1157,10 +1545,17 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 			mask->ssid_last_tools =
 				mask->ssid_first + mask->range_tools;
 		}
+<<<<<<< HEAD
 		if (ssid_range.ssid_last > mask->ssid_last_tools) {
 			pr_debug("diag: Msg SSID range mismatch\n");
 			if (mask_size != MAX_SSID_PER_RANGE)
 				mask->ssid_last_tools = ssid_range.ssid_last;
+=======
+		if (req->ssid_last > mask->ssid_last_tools) {
+			pr_debug("diag: Msg SSID range mismatch\n");
+			if (mask_size != MAX_SSID_PER_RANGE)
+				mask->ssid_last_tools = req->ssid_last;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mask->range_tools =
 				mask->ssid_last_tools - mask->ssid_first + 1;
 			temp = krealloc(mask->ptr,
@@ -1170,13 +1565,24 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 				pr_err_ratelimited("diag: In %s, unable to allocate memory for msg mask ptr, mask_size: %d\n",
 						   __func__, mask_size);
 				mutex_unlock(&mask->lock);
+<<<<<<< HEAD
 				ret = -ENOMEM;
 				goto err;
+=======
+				mutex_unlock(&driver->msg_mask_lock);
+				mutex_unlock(&mask_info->lock);
+				mutex_unlock(&driver->md_session_lock);
+				return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			mask->ptr = temp;
 		}
 
+<<<<<<< HEAD
 		offset = ssid_range.ssid_first - mask->ssid_first;
+=======
+		offset = req->ssid_first - mask->ssid_first;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (offset + mask_size > mask->range_tools) {
 			pr_err("diag: In %s, Not in msg mask range, mask_size: %d, offset: %d\n",
 			       __func__, mask_size, offset);
@@ -1188,6 +1594,7 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 			memcpy(mask->ptr + offset, src_buf + header_len,
 				mask_size);
 		mutex_unlock(&mask->lock);
+<<<<<<< HEAD
 		status = DIAG_CTRL_MASK_VALID;
 		break;
 	}
@@ -1195,6 +1602,11 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 		ms_ptr->status = status;
 	else
 		mask_info->status = status;
+=======
+		mask_info->status = DIAG_CTRL_MASK_VALID;
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&driver->msg_mask_lock);
 	mutex_unlock(&mask_info->lock);
 	mutex_unlock(&driver->md_session_lock);
@@ -1203,6 +1615,7 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 	 * Apps processor must send the response to this command. Frame the
 	 * response.
 	 */
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		rsp.cmd_code = DIAG_CMD_MSG_CONFIG;
 		rsp.sub_cmd = DIAG_CMD_OP_SET_MSG_MASK;
@@ -1218,6 +1631,16 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 		memcpy(dest_buf, &rsp_sub, sizeof(rsp_sub));
 		write_len += header_len;
 	}
+=======
+	rsp.cmd_code = DIAG_CMD_MSG_CONFIG;
+	rsp.sub_cmd = DIAG_CMD_OP_SET_MSG_MASK;
+	rsp.ssid_first = req->ssid_first;
+	rsp.ssid_last = req->ssid_last;
+	rsp.status = found;
+	rsp.padding = 0;
+	memcpy(dest_buf, &rsp, header_len);
+	write_len += header_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!found)
 		goto end;
 	if (mask_size + write_len > dest_len)
@@ -1245,6 +1668,7 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 			peripheral = diag_search_peripheral_by_pd(i);
 		else
 			peripheral = i;
+<<<<<<< HEAD
 		if (peripheral < 0 || peripheral >= NUM_PERIPHERALS)
 			continue;
 		if (sub_index >= 0 &&
@@ -1253,10 +1677,16 @@ static int diag_cmd_set_msg_mask(unsigned char *src_buf, int src_len,
 		mutex_lock(&driver->md_session_lock);
 		diag_send_msg_mask_update(peripheral, ssid_range.ssid_first,
 			ssid_range.ssid_last, sub_index, preset);
+=======
+		mutex_lock(&driver->md_session_lock);
+		diag_send_msg_mask_update(peripheral, req->ssid_first,
+			req->ssid_last);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&driver->md_session_lock);
 	}
 end:
 	return write_len;
+<<<<<<< HEAD
 err:
 	mutex_unlock(&driver->msg_mask_lock);
 	mutex_unlock(&mask_info->lock);
@@ -1273,13 +1703,27 @@ static int diag_cmd_set_all_msg_mask(unsigned char *src_buf, int src_len,
 	struct diag_msg_config_rsp_t *req = NULL;
 	struct diag_msg_config_rsp_sub_t rsp_sub;
 	struct diag_msg_config_rsp_sub_t *req_sub = NULL;
+=======
+}
+
+static int diag_cmd_set_all_msg_mask(unsigned char *src_buf, int src_len,
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int i, write_len = 0, peripheral, ret_val = 0;
+	int header_len = sizeof(struct diag_msg_config_rsp_t);
+	struct diag_msg_config_rsp_t rsp;
+	struct diag_msg_config_rsp_t *req = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct diag_msg_mask_t *mask = NULL;
 	struct diag_mask_info *mask_info = NULL;
 	struct diag_md_session_t *info = NULL;
 	uint8_t msg_mask_tbl_count = 0;
+<<<<<<< HEAD
 	uint32_t rt_mask;
 	struct diag_multisim_masks *ms_ptr = NULL;
 	int preset = 0, ret_val = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -1293,6 +1737,7 @@ static int diag_cmd_set_all_msg_mask(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 
 	mutex_lock(&mask_info->lock);
 	mutex_lock(&driver->msg_mask_lock);
@@ -1341,6 +1786,37 @@ static int diag_cmd_set_all_msg_mask(unsigned char *src_buf, int src_len,
 		if (mask && mask->ptr) {
 			mutex_lock(&mask->lock);
 			memset(mask->ptr, rt_mask,
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+
+	req = (struct diag_msg_config_rsp_t *)src_buf;
+
+	mutex_lock(&mask_info->lock);
+	mutex_lock(&driver->msg_mask_lock);
+
+	mask = (struct diag_msg_mask_t *)mask_info->ptr;
+	if (!mask->ptr) {
+		pr_err("diag: Invalid input in %s, mask->ptr: %pK\n",
+			__func__, mask->ptr);
+		mutex_unlock(&driver->msg_mask_lock);
+		mutex_unlock(&mask_info->lock);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+	msg_mask_tbl_count = (info) ? info->msg_mask_tbl_count :
+			driver->msg_mask_tbl_count;
+	mask_info->status = (req->rt_mask) ? DIAG_CTRL_MASK_ALL_ENABLED :
+					   DIAG_CTRL_MASK_ALL_DISABLED;
+	for (i = 0; i < msg_mask_tbl_count; i++, mask++) {
+		if (mask && mask->ptr) {
+			mutex_lock(&mask->lock);
+			memset(mask->ptr, req->rt_mask,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       mask->range * sizeof(uint32_t));
 			mutex_unlock(&mask->lock);
 		}
@@ -1353,6 +1829,7 @@ static int diag_cmd_set_all_msg_mask(unsigned char *src_buf, int src_len,
 	 * Apps processor must send the response to this command. Frame the
 	 * response.
 	 */
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		rsp.cmd_code = DIAG_CMD_MSG_CONFIG;
 		rsp.sub_cmd = DIAG_CMD_OP_SET_ALL_MSG_MASK;
@@ -1367,6 +1844,16 @@ static int diag_cmd_set_all_msg_mask(unsigned char *src_buf, int src_len,
 		memcpy(dest_buf, &rsp_sub, sizeof(rsp_sub));
 		write_len += header_len;
 	}
+=======
+	rsp.cmd_code = DIAG_CMD_MSG_CONFIG;
+	rsp.sub_cmd = DIAG_CMD_OP_SET_ALL_MSG_MASK;
+	rsp.status = MSG_STATUS_SUCCESS;
+	rsp.padding = 0;
+	rsp.rt_mask = req->rt_mask;
+	memcpy(dest_buf, &rsp, header_len);
+	write_len += header_len;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < NUM_MD_SESSIONS; i++) {
 		if (i == APPS_DATA) {
 			mutex_lock(&driver->md_session_lock);
@@ -1387,6 +1874,7 @@ static int diag_cmd_set_all_msg_mask(unsigned char *src_buf, int src_len,
 			peripheral = diag_search_peripheral_by_pd(i);
 		else
 			peripheral = i;
+<<<<<<< HEAD
 		if (peripheral < 0 || peripheral >= NUM_PERIPHERALS)
 			continue;
 		if (sub_index >= 0 &&
@@ -1395,10 +1883,15 @@ static int diag_cmd_set_all_msg_mask(unsigned char *src_buf, int src_len,
 		mutex_lock(&driver->md_session_lock);
 		diag_send_msg_mask_update(peripheral, ALL_SSID, ALL_SSID,
 			sub_index, preset);
+=======
+		mutex_lock(&driver->md_session_lock);
+		diag_send_msg_mask_update(peripheral, ALL_SSID, ALL_SSID);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&driver->md_session_lock);
 	}
 
 	return write_len;
+<<<<<<< HEAD
 err:
 	mutex_unlock(&driver->msg_mask_lock);
 	mutex_unlock(&mask_info->lock);
@@ -1415,6 +1908,16 @@ static int diag_cmd_get_event_mask(unsigned char *src_buf, int src_len,
 	struct diag_event_mask_config_sub_t rsp_sub;
 	struct diag_event_mask_req_sub_t *req = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+}
+
+static int diag_cmd_get_event_mask(unsigned char *src_buf, int src_len,
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int write_len = 0;
+	uint32_t mask_size;
+	struct diag_event_mask_config_t rsp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!src_buf || !dest_buf || src_len <= 0 || dest_len <= 0) {
 		pr_err("diag: Invalid input in %s, src_buf: %pK, src_len: %d, dest_buf: %pK, dest_len: %d\n",
@@ -1432,6 +1935,7 @@ static int diag_cmd_get_event_mask(unsigned char *src_buf, int src_len,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		rsp.cmd_code = DIAG_CMD_GET_EVENT_MASK;
 		rsp.status = EVENT_STATUS_SUCCESS;
@@ -1467,10 +1971,22 @@ copy_mask:
 		memcpy(dest_buf + write_len, ms_ptr->sub_ptr, mask_size);
 	}
 	write_len += mask_size;
+=======
+	rsp.cmd_code = DIAG_CMD_GET_EVENT_MASK;
+	rsp.status = EVENT_STATUS_SUCCESS;
+	rsp.padding = 0;
+	rsp.num_bits = driver->last_event_id + 1;
+	memcpy(dest_buf, &rsp, sizeof(rsp));
+	write_len += sizeof(rsp);
+	memcpy(dest_buf + write_len, event_mask.ptr, mask_size);
+	write_len += mask_size;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return write_len;
 }
 
 static int diag_cmd_update_event_mask(unsigned char *src_buf, int src_len,
+<<<<<<< HEAD
 		unsigned char *dest_buf, int dest_len, int pid, int cmd_ver)
 {
 	int i, write_len = 0, mask_len = 0, peripheral;
@@ -1483,6 +1999,16 @@ static int diag_cmd_update_event_mask(unsigned char *src_buf, int src_len,
 	struct diag_mask_info *mask_info = NULL;
 	struct diag_md_session_t *info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int i, write_len = 0, mask_len = 0, peripheral;
+	int header_len = sizeof(struct diag_event_mask_config_t);
+	struct diag_event_mask_config_t rsp;
+	struct diag_event_mask_config_t *req;
+	struct diag_mask_info *mask_info = NULL;
+	struct diag_md_session_t *info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -1495,6 +2021,7 @@ static int diag_cmd_update_event_mask(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	mutex_lock(&mask_info->lock);
 	if (!mask_info->ptr) {
 		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
@@ -1538,6 +2065,27 @@ static int diag_cmd_update_event_mask(unsigned char *src_buf, int src_len,
 			memcpy(mask_info->ptr, src_buf + header_len, mask_len);
 		mask_info->status = DIAG_CTRL_MASK_VALID;
 	}
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+	req = (struct diag_event_mask_config_t *)src_buf;
+	mask_len = EVENT_COUNT_TO_BYTES(req->num_bits);
+	if (mask_len <= 0 || mask_len > event_mask.mask_len) {
+		pr_err("diag: In %s, invalid event mask len: %d\n", __func__,
+		       mask_len);
+		mutex_unlock(&driver->md_session_lock);
+		return -EIO;
+	}
+
+	mutex_lock(&mask_info->lock);
+	if (src_len >= header_len + mask_len - 1)
+		memcpy(mask_info->ptr, src_buf + header_len, mask_len);
+	mask_info->status = DIAG_CTRL_MASK_VALID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&mask_info->lock);
 	mutex_unlock(&driver->md_session_lock);
 	if (diag_check_update(APPS_DATA, pid))
@@ -1547,6 +2095,7 @@ static int diag_cmd_update_event_mask(unsigned char *src_buf, int src_len,
 	 * Apps processor must send the response to this command. Frame the
 	 * response.
 	 */
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		rsp.cmd_code = DIAG_CMD_SET_EVENT_MASK;
 		rsp.status = EVENT_STATUS_SUCCESS;
@@ -1569,6 +2118,14 @@ static int diag_cmd_update_event_mask(unsigned char *src_buf, int src_len,
 		memcpy(dest_buf, &rsp_sub, sizeof(rsp_sub));
 		write_len += header_len;
 	}
+=======
+	rsp.cmd_code = DIAG_CMD_SET_EVENT_MASK;
+	rsp.status = EVENT_STATUS_SUCCESS;
+	rsp.padding = 0;
+	rsp.num_bits = driver->last_event_id + 1;
+	memcpy(dest_buf, &rsp, header_len);
+	write_len += header_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(dest_buf + write_len, src_buf + header_len, mask_len);
 	write_len += mask_len;
 
@@ -1581,6 +2138,7 @@ static int diag_cmd_update_event_mask(unsigned char *src_buf, int src_len,
 			peripheral = diag_search_peripheral_by_pd(i);
 		else
 			peripheral = i;
+<<<<<<< HEAD
 		if (peripheral < 0 || peripheral >= NUM_PERIPHERALS)
 			continue;
 		if (sub_index >= 0 &&
@@ -1588,10 +2146,15 @@ static int diag_cmd_update_event_mask(unsigned char *src_buf, int src_len,
 			continue;
 		mutex_lock(&driver->md_session_lock);
 		diag_send_event_mask_update(peripheral, sub_index, preset);
+=======
+		mutex_lock(&driver->md_session_lock);
+		diag_send_event_mask_update(peripheral);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&driver->md_session_lock);
 	}
 
 	return write_len;
+<<<<<<< HEAD
 err:
 	mutex_unlock(&mask_info->lock);
 	mutex_unlock(&driver->md_session_lock);
@@ -1603,12 +2166,23 @@ static int diag_cmd_toggle_events(unsigned char *src_buf, int src_len,
 {
 	int write_len = 0, i, peripheral;
 	int sub_index = INVALID_INDEX, preset = 0, ret = -EINVAL;
+=======
+}
+
+static int diag_cmd_toggle_events(unsigned char *src_buf, int src_len,
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int write_len = 0, i, peripheral;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint8_t toggle = 0;
 	struct diag_event_report_t header;
 	struct diag_mask_info *mask_info = NULL;
 	struct diag_md_session_t *info = NULL;
+<<<<<<< HEAD
 	struct diag_event_mask_req_sub_t *req = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -1621,6 +2195,7 @@ static int diag_cmd_toggle_events(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	mutex_lock(&mask_info->lock);
 	if (!mask_info->ptr) {
 		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
@@ -1660,6 +2235,23 @@ static int diag_cmd_toggle_events(unsigned char *src_buf, int src_len,
 			mask_info->status = DIAG_CTRL_MASK_ALL_DISABLED;
 			memset(mask_info->ptr, 0, mask_info->mask_len);
 		}
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+
+	toggle = *(src_buf + 1);
+	mutex_lock(&mask_info->lock);
+	if (toggle) {
+		mask_info->status = DIAG_CTRL_MASK_ALL_ENABLED;
+		memset(mask_info->ptr, 0xFF, mask_info->mask_len);
+	} else {
+		mask_info->status = DIAG_CTRL_MASK_ALL_DISABLED;
+		memset(mask_info->ptr, 0, mask_info->mask_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&mask_info->lock);
 	mutex_unlock(&driver->md_session_lock);
@@ -1670,6 +2262,7 @@ static int diag_cmd_toggle_events(unsigned char *src_buf, int src_len,
 	 * Apps processor must send the response to this command. Frame the
 	 * response.
 	 */
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		header.cmd_code = DIAG_CMD_EVENT_TOGGLE;
 		header.padding = 0;
@@ -1679,6 +2272,10 @@ static int diag_cmd_toggle_events(unsigned char *src_buf, int src_len,
 		memcpy(dest_buf, src_buf, src_len);
 		write_len += src_len;
 	}
+=======
+	header.cmd_code = DIAG_CMD_EVENT_TOGGLE;
+	header.padding = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < NUM_MD_SESSIONS; i++) {
 		if (i == APPS_DATA)
 			continue;
@@ -1688,6 +2285,7 @@ static int diag_cmd_toggle_events(unsigned char *src_buf, int src_len,
 			peripheral = diag_search_peripheral_by_pd(i);
 		else
 			peripheral = i;
+<<<<<<< HEAD
 		if (peripheral < 0 || peripheral >= NUM_PERIPHERALS)
 			continue;
 		if (sub_index >= 0 &&
@@ -1721,6 +2319,33 @@ static int diag_cmd_get_log_mask(unsigned char *src_buf, int src_len,
 	struct diag_mask_info *mask_info = NULL;
 	struct diag_md_session_t *info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+		mutex_lock(&driver->md_session_lock);
+		diag_send_event_mask_update(peripheral);
+		mutex_unlock(&driver->md_session_lock);
+	}
+	memcpy(dest_buf, &header, sizeof(header));
+	write_len += sizeof(header);
+
+	return write_len;
+}
+
+static int diag_cmd_get_log_mask(unsigned char *src_buf, int src_len,
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int i;
+	int status = LOG_STATUS_INVALID;
+	int write_len = 0;
+	int read_len = 0;
+	int req_header_len = sizeof(struct diag_log_config_req_t);
+	int rsp_header_len = sizeof(struct diag_log_config_rsp_t);
+	uint32_t mask_size = 0;
+	struct diag_log_mask_t *log_item = NULL;
+	struct diag_log_config_get_req_t *req;
+	struct diag_log_config_rsp_t rsp;
+	struct diag_mask_info *mask_info = NULL;
+	struct diag_md_session_t *info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -1734,6 +2359,7 @@ static int diag_cmd_get_log_mask(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	mutex_lock(&mask_info->lock);
 
 	if (!diag_apps_responds())
@@ -1787,18 +2413,52 @@ static int diag_cmd_get_log_mask(unsigned char *src_buf, int src_len,
 		write_len = -EINVAL;
 		goto err;
 	}
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+
+	if (!diag_apps_responds()) {
+		mutex_unlock(&driver->md_session_lock);
+		return 0;
+	}
+
+	req = (struct diag_log_config_get_req_t *)src_buf;
+	read_len += req_header_len;
+
+	rsp.cmd_code = DIAG_CMD_LOG_CONFIG;
+	rsp.padding[0] = 0;
+	rsp.padding[1] = 0;
+	rsp.padding[2] = 0;
+	rsp.sub_cmd = DIAG_CMD_OP_GET_LOG_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Don't copy the response header now. Copy at the end after
 	 * calculating the status field value
 	 */
 	write_len += rsp_header_len;
 
+<<<<<<< HEAD
 	for (i = 0; i < MAX_EQUIP_ID; i++, log_item++) {
 		if (!log_item || !log_item->ptr) {
 			write_len = -EINVAL;
 			goto err;
 		}
 		if (log_item->equip_id != equip_id)
+=======
+	log_item = (struct diag_log_mask_t *)mask_info->ptr;
+	if (!log_item->ptr) {
+		pr_err("diag: Invalid input in %s, mask: %pK\n",
+			__func__, log_item);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+	for (i = 0; i < MAX_EQUIP_ID; i++, log_item++) {
+		if (log_item->equip_id != req->equip_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		mutex_lock(&log_item->lock);
 		mask_size = LOG_ITEMS_TO_SIZE(log_item->num_items_tools);
@@ -1832,6 +2492,7 @@ static int diag_cmd_get_log_mask(unsigned char *src_buf, int src_len,
 		status = LOG_STATUS_SUCCESS;
 		break;
 	}
+<<<<<<< HEAD
 	if (cmd_ver) {
 		rsp_sub.status = status;
 		memcpy(dest_buf, &rsp_sub, sizeof(rsp_sub));
@@ -1841,11 +2502,18 @@ static int diag_cmd_get_log_mask(unsigned char *src_buf, int src_len,
 	}
 err:
 	mutex_unlock(&mask_info->lock);
+=======
+
+	rsp.status = status;
+	memcpy(dest_buf, &rsp, rsp_header_len);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&driver->md_session_lock);
 	return write_len;
 }
 
 static int diag_cmd_get_log_range(unsigned char *src_buf, int src_len,
+<<<<<<< HEAD
 		unsigned char *dest_buf, int dest_len, int pid, int cmd_ver)
 {
 	int i, sub_index = INVALID_INDEX;
@@ -1855,6 +2523,17 @@ static int diag_cmd_get_log_range(unsigned char *src_buf, int src_len,
 	struct diag_log_config_req_sub_t *req;
 	struct diag_log_mask_t *mask = NULL;
 	struct diag_multisim_masks *ms_ptr;
+=======
+			unsigned char *dest_buf, int dest_len, int pid)
+{
+	int i;
+	int write_len = 0;
+	struct diag_log_config_rsp_t rsp;
+	struct diag_log_mask_t *mask = (struct diag_log_mask_t *)log_mask.ptr;
+
+	if (!mask)
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!diag_apps_responds())
 		return 0;
@@ -1865,6 +2544,7 @@ static int diag_cmd_get_log_range(unsigned char *src_buf, int src_len,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		mask = (struct diag_log_mask_t *)log_mask.ptr;
 		rsp.cmd_code = DIAG_CMD_LOG_CONFIG;
@@ -1906,6 +2586,18 @@ static int diag_cmd_get_log_range(unsigned char *src_buf, int src_len,
 	for (i = 0; i < MAX_EQUIP_ID && write_len < dest_len; i++, mask++) {
 		if (!mask)
 			return -EINVAL;
+=======
+	rsp.cmd_code = DIAG_CMD_LOG_CONFIG;
+	rsp.padding[0] = 0;
+	rsp.padding[1] = 0;
+	rsp.padding[2] = 0;
+	rsp.sub_cmd = DIAG_CMD_OP_GET_LOG_RANGE;
+	rsp.status = LOG_STATUS_SUCCESS;
+	memcpy(dest_buf, &rsp, sizeof(rsp));
+	write_len += sizeof(rsp);
+
+	for (i = 0; i < MAX_EQUIP_ID && write_len < dest_len; i++, mask++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*(uint32_t *)(dest_buf + write_len) = mask->num_items_tools;
 		write_len += sizeof(uint32_t);
 	}
@@ -1915,6 +2607,7 @@ static int diag_cmd_get_log_range(unsigned char *src_buf, int src_len,
 
 static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 				 unsigned char *dest_buf, int dest_len,
+<<<<<<< HEAD
 				 int pid, int cmd_ver)
 {
 	int i, peripheral, write_len = 0;
@@ -1932,6 +2625,22 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 	unsigned char *temp_buf = NULL;
 	struct diag_md_session_t *info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+				 int pid)
+{
+	int i, peripheral, write_len = 0;
+	int status = LOG_STATUS_SUCCESS;
+	int read_len = 0, payload_len = 0, ret_val = 0;
+	int req_header_len = sizeof(struct diag_log_config_req_t);
+	int rsp_header_len = sizeof(struct diag_log_config_set_rsp_t);
+	uint32_t mask_size = 0;
+	struct diag_log_config_req_t *req;
+	struct diag_log_config_set_rsp_t rsp;
+	struct diag_log_mask_t *mask = NULL;
+	struct diag_mask_info *mask_info = NULL;
+	unsigned char *temp_buf = NULL;
+	struct diag_md_session_t *info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -1945,6 +2654,7 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 
 	mutex_lock(&mask_info->lock);
 	if (!cmd_ver) {
@@ -2009,36 +2719,89 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 		if (!mask || !mask->ptr)
 			continue;
 		if (mask->equip_id != range.equip_id)
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+
+	req = (struct diag_log_config_req_t *)src_buf;
+	read_len += req_header_len;
+	mask = (struct diag_log_mask_t *)mask_info->ptr;
+	if (!mask->ptr) {
+		pr_err("diag: Invalid input in %s, mask->ptr: %pK\n",
+			__func__, mask->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+	if (req->equip_id >= MAX_EQUIP_ID) {
+		pr_err("diag: In %s, Invalid logging mask request, equip_id: %d\n",
+		       __func__, req->equip_id);
+		status = LOG_STATUS_INVALID;
+	}
+
+	if (req->num_items == 0) {
+		pr_err("diag: In %s, Invalid number of items in log mask request, equip_id: %d\n",
+		       __func__, req->equip_id);
+		status = LOG_STATUS_INVALID;
+	}
+
+	mutex_lock(&mask_info->lock);
+	for (i = 0; i < MAX_EQUIP_ID && !status; i++, mask++) {
+		if (!mask || !mask->ptr)
+			continue;
+		if (mask->equip_id != req->equip_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		mutex_lock(&mask->lock);
 
 		DIAG_LOG(DIAG_DEBUG_MASKS, "e: %d current: %d %d new: %d %d",
 			 mask->equip_id, mask->num_items_tools,
+<<<<<<< HEAD
 			 mask->range_tools, range.num_items,
 			 LOG_ITEMS_TO_SIZE(range.num_items));
+=======
+			 mask->range_tools, req->num_items,
+			 LOG_ITEMS_TO_SIZE(req->num_items));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If the size of the log mask cannot fit into our
 		 * buffer, trim till we have space left in the buffer.
 		 * num_items should then reflect the items that we have
 		 * in our buffer.
 		 */
+<<<<<<< HEAD
 		mask->num_items_tools = (range.num_items > MAX_ITEMS_ALLOWED) ?
 					MAX_ITEMS_ALLOWED : range.num_items;
+=======
+		mask->num_items_tools = (req->num_items > MAX_ITEMS_ALLOWED) ?
+					MAX_ITEMS_ALLOWED : req->num_items;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mask_size = LOG_ITEMS_TO_SIZE(mask->num_items_tools);
 		memset(mask->ptr, 0, mask->range_tools);
 		if (mask_size > mask->range_tools) {
 			DIAG_LOG(DIAG_DEBUG_MASKS,
 				 "log range mismatch, e: %d old: %d new: %d\n",
+<<<<<<< HEAD
 				 range.equip_id, mask->range_tools,
+=======
+				 req->equip_id, mask->range_tools,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 LOG_ITEMS_TO_SIZE(mask->num_items_tools));
 			/* Change in the mask reported by tools */
 			temp_buf = krealloc(mask->ptr, mask_size, GFP_KERNEL);
 			if (!temp_buf) {
+<<<<<<< HEAD
 				if (ms_ptr)
 					ms_ptr->status = DIAG_CTRL_MASK_INVALID;
 				else
 					mask_info->status =
 						DIAG_CTRL_MASK_INVALID;
+=======
+				mask_info->status = DIAG_CTRL_MASK_INVALID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				mutex_unlock(&mask->lock);
 				break;
 			}
@@ -2046,11 +2809,16 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 			memset(mask->ptr, 0, mask_size);
 			mask->range_tools = mask_size;
 		}
+<<<<<<< HEAD
 		range.num_items = mask->num_items_tools;
+=======
+		req->num_items = mask->num_items_tools;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mask_size > 0 && src_len >= read_len + mask_size)
 			memcpy(mask->ptr, src_buf + read_len, mask_size);
 		DIAG_LOG(DIAG_DEBUG_MASKS,
 			 "copying log mask, e %d num %d range %d size %d\n",
+<<<<<<< HEAD
 			 range.equip_id, mask->num_items_tools,
 			 mask->range_tools, mask_size);
 		mutex_unlock(&mask->lock);
@@ -2058,6 +2826,12 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 			ms_ptr->status = DIAG_CTRL_MASK_VALID;
 		else
 			mask_info->status = DIAG_CTRL_MASK_VALID;
+=======
+			 req->equip_id, mask->num_items_tools,
+			 mask->range_tools, mask_size);
+		mutex_unlock(&mask->lock);
+		mask_info->status = DIAG_CTRL_MASK_VALID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	mutex_unlock(&mask_info->lock);
@@ -2067,12 +2841,17 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 	 * Apps processor must send the response to this command. Frame the
 	 * response.
 	 */
+<<<<<<< HEAD
 	payload_len = LOG_ITEMS_TO_SIZE(range.num_items);
+=======
+	payload_len = LOG_ITEMS_TO_SIZE(req->num_items);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((payload_len + rsp_header_len > dest_len) || (payload_len == 0)) {
 		pr_err("diag: In %s, invalid length, payload_len: %d, header_len: %d, dest_len: %d\n",
 		       __func__, payload_len, rsp_header_len, dest_len);
 		status = LOG_STATUS_FAIL;
 	}
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		rsp.cmd_code = DIAG_CMD_LOG_CONFIG;
 		rsp.padding[0] = 0;
@@ -2100,6 +2879,18 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 		memcpy(dest_buf + write_len, &range, sizeof(range));
 		write_len += sizeof(range);
 	}
+=======
+	rsp.cmd_code = DIAG_CMD_LOG_CONFIG;
+	rsp.padding[0] = 0;
+	rsp.padding[1] = 0;
+	rsp.padding[2] = 0;
+	rsp.sub_cmd = DIAG_CMD_OP_SET_LOG_MASK;
+	rsp.status = status;
+	rsp.equip_id = req->equip_id;
+	rsp.num_items = req->num_items;
+	memcpy(dest_buf, &rsp, rsp_header_len);
+	write_len += rsp_header_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status != LOG_STATUS_SUCCESS)
 		goto end;
 	memcpy(dest_buf + write_len, src_buf + read_len, payload_len);
@@ -2125,6 +2916,7 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 			peripheral = diag_search_peripheral_by_pd(i);
 		else
 			peripheral = i;
+<<<<<<< HEAD
 		if (peripheral < 0 || peripheral >= NUM_PERIPHERALS)
 			continue;
 		if (sub_index >= 0 &&
@@ -2133,6 +2925,10 @@ static int diag_cmd_set_log_mask(unsigned char *src_buf, int src_len,
 		mutex_lock(&driver->md_session_lock);
 		diag_send_log_mask_update(peripheral, range.equip_id,
 			sub_index, preset);
+=======
+		mutex_lock(&driver->md_session_lock);
+		diag_send_log_mask_update(peripheral, req->equip_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&driver->md_session_lock);
 	}
 end:
@@ -2140,17 +2936,26 @@ end:
 }
 
 static int diag_cmd_disable_log_mask(unsigned char *src_buf, int src_len,
+<<<<<<< HEAD
 		unsigned char *dest_buf, int dest_len, int pid, int cmd_ver)
+=======
+			unsigned char *dest_buf, int dest_len, int pid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct diag_mask_info *mask_info = NULL;
 	struct diag_log_mask_t *mask = NULL;
 	struct diag_log_config_rsp_t header;
+<<<<<<< HEAD
 	struct diag_log_config_rsp_sub_t rsp;
 	struct diag_log_config_rsp_sub_t *req;
 	int write_len = 0, i, peripheral;
 	int preset = 0, sub_index = INVALID_INDEX, ret_val = 0;
 	struct diag_md_session_t *info = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+	int write_len = 0, i, peripheral, ret_val = 0;
+	struct diag_md_session_t *info = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->md_session_lock);
 	info = diag_md_session_get_pid(pid);
@@ -2164,6 +2969,7 @@ static int diag_cmd_disable_log_mask(unsigned char *src_buf, int src_len,
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 
 	if (!cmd_ver) {
 		mask = (struct diag_log_mask_t *)mask_info->ptr;
@@ -2191,6 +2997,18 @@ static int diag_cmd_disable_log_mask(unsigned char *src_buf, int src_len,
 	if (!mask || !mask->ptr) {
 		pr_err("diag: In %s, Invalid mask\n",
 			__func__);
+=======
+	if (!mask_info->ptr) {
+		pr_err("diag: In %s, invalid input mask_info->ptr: %pK\n",
+			__func__, mask_info->ptr);
+		mutex_unlock(&driver->md_session_lock);
+		return -EINVAL;
+	}
+	mask = (struct diag_log_mask_t *)mask_info->ptr;
+	if (!mask->ptr) {
+		pr_err("diag: Invalid input in %s, mask->ptr: %pK\n",
+			__func__, mask->ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&driver->md_session_lock);
 		return -EINVAL;
 	}
@@ -2208,6 +3026,7 @@ static int diag_cmd_disable_log_mask(unsigned char *src_buf, int src_len,
 	 * Apps processor must send the response to this command. Frame the
 	 * response.
 	 */
+<<<<<<< HEAD
 	if (!cmd_ver) {
 		header.cmd_code = DIAG_CMD_LOG_CONFIG;
 		header.padding[0] = 0;
@@ -2231,6 +3050,16 @@ static int diag_cmd_disable_log_mask(unsigned char *src_buf, int src_len,
 		write_len += sizeof(rsp);
 		preset = req->preset_id;
 	}
+=======
+	header.cmd_code = DIAG_CMD_LOG_CONFIG;
+	header.padding[0] = 0;
+	header.padding[1] = 0;
+	header.padding[2] = 0;
+	header.sub_cmd = DIAG_CMD_OP_LOG_DISABLE;
+	header.status = LOG_STATUS_SUCCESS;
+	memcpy(dest_buf, &header, sizeof(struct diag_log_config_rsp_t));
+	write_len += sizeof(struct diag_log_config_rsp_t);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < NUM_MD_SESSIONS; i++) {
 		if (i == APPS_DATA) {
 			mutex_lock(&driver->md_session_lock);
@@ -2251,6 +3080,7 @@ static int diag_cmd_disable_log_mask(unsigned char *src_buf, int src_len,
 			peripheral = diag_search_peripheral_by_pd(i);
 		else
 			peripheral = i;
+<<<<<<< HEAD
 		if (peripheral < 0 || peripheral >= NUM_PERIPHERALS)
 			continue;
 		if (sub_index >= 0 &&
@@ -2259,15 +3089,24 @@ static int diag_cmd_disable_log_mask(unsigned char *src_buf, int src_len,
 		mutex_lock(&driver->md_session_lock);
 		diag_send_log_mask_update(peripheral, ALL_EQUIP_ID,
 			sub_index, preset);
+=======
+		mutex_lock(&driver->md_session_lock);
+		diag_send_log_mask_update(peripheral, ALL_EQUIP_ID);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&driver->md_session_lock);
 	}
 
 	return write_len;
 }
 
+<<<<<<< HEAD
 
 int diag_create_msg_mask_table_entry(struct diag_msg_mask_t *msg_mask,
 			struct diag_ssid_range_t *range, int subid_index)
+=======
+int diag_create_msg_mask_table_entry(struct diag_msg_mask_t *msg_mask,
+				     struct diag_ssid_range_t *range)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!msg_mask || !range)
 		return -EIO;
@@ -2280,6 +3119,7 @@ int diag_create_msg_mask_table_entry(struct diag_msg_mask_t *msg_mask,
 	if (msg_mask->range < MAX_SSID_PER_RANGE)
 		msg_mask->range = MAX_SSID_PER_RANGE;
 	msg_mask->range_tools = msg_mask->range;
+<<<<<<< HEAD
 	if (subid_index >= 0) {
 		msg_mask->id_valid = 1;
 		msg_mask->sub_id = diag_subid_info[subid_index];
@@ -2287,6 +3127,8 @@ int diag_create_msg_mask_table_entry(struct diag_msg_mask_t *msg_mask,
 		msg_mask->id_valid = 0;
 		msg_mask->sub_id = 0;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&msg_mask->lock);
 	if (msg_mask->range > 0) {
 		msg_mask->ptr = kcalloc(msg_mask->range, sizeof(uint32_t),
@@ -2298,6 +3140,7 @@ int diag_create_msg_mask_table_entry(struct diag_msg_mask_t *msg_mask,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int diag_create_msg_mask_table(int subid_index)
 {
 	int i, err = 0;
@@ -2313,6 +3156,14 @@ static int diag_create_msg_mask_table(int subid_index)
 	else
 		mask = (struct diag_msg_mask_t *)msg_mask.ptr;
 
+=======
+static int diag_create_msg_mask_table(void)
+{
+	int i, err = 0;
+	struct diag_msg_mask_t *mask = (struct diag_msg_mask_t *)msg_mask.ptr;
+	struct diag_ssid_range_t range;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&msg_mask.lock);
 	mutex_lock(&driver->msg_mask_lock);
 	driver->msg_mask_tbl_count = MSG_MASK_TBL_CNT;
@@ -2320,12 +3171,19 @@ static int diag_create_msg_mask_table(int subid_index)
 			i++, mask++) {
 		range.ssid_first = msg_mask_tbl[i].ssid_first;
 		range.ssid_last = msg_mask_tbl[i].ssid_last;
+<<<<<<< HEAD
 		err = diag_create_msg_mask_table_entry(mask,
 				&range, subid_index);
 		if (err)
 			break;
 	}
 
+=======
+		err = diag_create_msg_mask_table_entry(mask, &range);
+		if (err)
+			break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&driver->msg_mask_lock);
 	mutex_unlock(&msg_mask.lock);
 	return err;
@@ -2347,8 +3205,12 @@ static int diag_create_build_time_mask(void)
 			i++, build_mask++) {
 		range.ssid_first = msg_mask_tbl[i].ssid_first;
 		range.ssid_last = msg_mask_tbl[i].ssid_last;
+<<<<<<< HEAD
 		err = diag_create_msg_mask_table_entry(build_mask, &range,
 			INVALID_INDEX);
+=======
+		err = diag_create_msg_mask_table_entry(build_mask, &range);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			break;
 		switch (build_mask->ssid_first) {
@@ -2460,14 +3322,21 @@ static int diag_create_build_time_mask(void)
 	return err;
 }
 
+<<<<<<< HEAD
 static int diag_create_log_mask_table(int subid_index)
 {
 	struct diag_log_mask_t *mask = NULL;
 	struct diag_multisim_masks *ms_mask = NULL;
+=======
+static int diag_create_log_mask_table(void)
+{
+	struct diag_log_mask_t *mask = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint8_t i;
 	int err = 0;
 
 	mutex_lock(&log_mask.lock);
+<<<<<<< HEAD
 	if (subid_index >= 0)
 		ms_mask = diag_get_ms_ptr_index(log_mask.ms_ptr,
 			subid_index);
@@ -2475,6 +3344,9 @@ static int diag_create_log_mask_table(int subid_index)
 		mask = (struct diag_log_mask_t *)ms_mask->sub_ptr;
 	else
 		mask = (struct diag_log_mask_t *)(log_mask.ptr);
+=======
+	mask = (struct diag_log_mask_t *)(log_mask.ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; (i < MAX_EQUIP_ID) && mask; i++, mask++) {
 		mask->equip_id = i;
 		mask->num_items = LOG_GET_ITEM_NUM(log_code_last_tbl[i]);
@@ -2491,6 +3363,7 @@ static int diag_create_log_mask_table(int subid_index)
 			break;
 		}
 		kmemleak_not_leak(mask->ptr);
+<<<<<<< HEAD
 		if (subid_index >= 0) {
 			mask->id_valid = 1;
 			mask->sub_id = diag_subid_info[subid_index];
@@ -2498,6 +3371,8 @@ static int diag_create_log_mask_table(int subid_index)
 			mask->id_valid = 0;
 			mask->sub_id = 0;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&log_mask.lock);
 	return err;
@@ -2554,6 +3429,7 @@ static void __diag_mask_exit(struct diag_mask_info *mask_info)
 	mutex_unlock(&mask_info->lock);
 }
 
+<<<<<<< HEAD
 static int diag_log_mask_copy_sub(struct diag_mask_info *dest,
 		struct diag_mask_info *src, int sub_index)
 {
@@ -2610,6 +3486,8 @@ static int diag_log_mask_copy_sub(struct diag_mask_info *dest,
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diag_log_mask_copy(struct diag_mask_info *dest, struct diag_mask_info *src)
 {
 	int i, err = 0;
@@ -2648,12 +3526,15 @@ int diag_log_mask_copy(struct diag_mask_info *dest, struct diag_mask_info *src)
 	}
 	mutex_unlock(&dest->lock);
 
+<<<<<<< HEAD
 	for (i = 0; (i < MAX_SIM_NUM) && (diag_subid_info[i] != INVALID_INDEX);
 		i++) {
 		err = diag_log_mask_copy_sub(dest, src, i);
 		if (err)
 			break;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -2693,7 +3574,11 @@ static int diag_msg_mask_init(void)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	err = diag_create_msg_mask_table(INVALID_INDEX);
+=======
+	err = diag_create_msg_mask_table();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("diag: Unable to create msg masks, err: %d\n", err);
 		return err;
@@ -2715,6 +3600,7 @@ static int diag_msg_mask_init(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int diag_msg_mask_copy_sub(struct diag_md_session_t *new_session,
 	struct diag_mask_info *dest, struct diag_mask_info *src, int sub_index)
 {
@@ -2780,6 +3666,8 @@ static int diag_msg_mask_copy_sub(struct diag_md_session_t *new_session,
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diag_msg_mask_copy(struct diag_md_session_t *new_session,
 	struct diag_mask_info *dest, struct diag_mask_info *src)
 {
@@ -2812,8 +3700,12 @@ int diag_msg_mask_copy(struct diag_md_session_t *new_session,
 	for (i = 0; i < new_session->msg_mask_tbl_count; i++) {
 		range.ssid_first = src_mask->ssid_first;
 		range.ssid_last = src_mask->ssid_last;
+<<<<<<< HEAD
 		err = diag_create_msg_mask_table_entry(dest_mask, &range,
 			INVALID_INDEX);
+=======
+		err = diag_create_msg_mask_table_entry(dest_mask, &range);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			break;
 		if (src_mask->range_tools < dest_mask->range)
@@ -2826,6 +3718,7 @@ int diag_msg_mask_copy(struct diag_md_session_t *new_session,
 	}
 	mutex_unlock(&driver->msg_mask_lock);
 	mutex_unlock(&dest->lock);
+<<<<<<< HEAD
 
 	for (i = 0; (i < MAX_SIM_NUM) && (diag_subid_info[i] != INVALID_INDEX);
 		i++) {
@@ -2833,6 +3726,8 @@ int diag_msg_mask_copy(struct diag_md_session_t *new_session,
 		if (err)
 			break;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -2871,8 +3766,11 @@ static void diag_msg_mask_exit(void)
 {
 	int i;
 	struct diag_msg_mask_t *mask = NULL;
+<<<<<<< HEAD
 	struct diag_msg_mask_t *sub_mask = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&driver->msg_mask_lock);
 	mask = (struct diag_msg_mask_t *)(msg_mask.ptr);
@@ -2884,6 +3782,7 @@ static void diag_msg_mask_exit(void)
 	}
 	kfree(msg_mask.update_buf);
 	msg_mask.update_buf = NULL;
+<<<<<<< HEAD
 	ms_ptr = (struct diag_multisim_masks *)(msg_mask.ms_ptr);
 	while (ms_ptr) {
 		sub_mask = (struct diag_msg_mask_t *)ms_ptr->sub_ptr;
@@ -2899,6 +3798,8 @@ static void diag_msg_mask_exit(void)
 		ms_ptr = ms_ptr->next;
 	}
 	msg_mask.ms_ptr = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vfree(msg_mask.update_buf_client);
 	msg_mask.update_buf_client = NULL;
 	mutex_unlock(&driver->msg_mask_lock);
@@ -2948,7 +3849,11 @@ static int diag_log_mask_init(void)
 	err = __diag_mask_init(&log_mask, LOG_MASK_SIZE, APPS_BUF_SIZE);
 	if (err)
 		return err;
+<<<<<<< HEAD
 	err = diag_create_log_mask_table(INVALID_INDEX);
+=======
+	err = diag_create_log_mask_table();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 	driver->log_mask = &log_mask;
@@ -2970,8 +3875,11 @@ static void diag_log_mask_exit(void)
 {
 	int i;
 	struct diag_log_mask_t *mask = NULL;
+<<<<<<< HEAD
 	struct diag_log_mask_t *sub_mask = NULL;
 	struct diag_multisim_masks *ms_ptr = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mask = (struct diag_log_mask_t *)(log_mask.ptr);
 	if (mask) {
@@ -2981,6 +3889,7 @@ static void diag_log_mask_exit(void)
 	}
 
 	kfree(log_mask.update_buf);
+<<<<<<< HEAD
 	ms_ptr = (struct diag_multisim_masks *)(log_mask.ms_ptr);
 	while (ms_ptr) {
 		sub_mask = (struct diag_log_mask_t *)ms_ptr->sub_ptr;
@@ -2995,6 +3904,8 @@ static void diag_log_mask_exit(void)
 		ms_ptr = ms_ptr->next;
 	}
 	log_mask.ms_ptr = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vfree(log_mask.update_buf_client);
 	log_mask.update_buf_client = NULL;
 }
@@ -3017,6 +3928,7 @@ static int diag_event_mask_init(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int diag_event_mask_copy_sub(struct diag_mask_info *dest,
 			 struct diag_mask_info *src, int sub_index)
 {
@@ -3054,6 +3966,12 @@ int diag_event_mask_copy(struct diag_mask_info *dest,
 			 struct diag_mask_info *src)
 {
 	int err = 0, i;
+=======
+int diag_event_mask_copy(struct diag_mask_info *dest,
+			 struct diag_mask_info *src)
+{
+	int err = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!src || !dest)
 		return -EINVAL;
@@ -3069,12 +3987,15 @@ int diag_event_mask_copy(struct diag_mask_info *dest,
 	memcpy(dest->ptr, src->ptr, dest->mask_len);
 	mutex_unlock(&dest->lock);
 
+<<<<<<< HEAD
 	for (i = 0; (i < MAX_SIM_NUM) && (diag_subid_info[i] != INVALID_INDEX);
 		i++) {
 		err = diag_event_mask_copy_sub(dest, src, i);
 		if (err)
 			break;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -3088,6 +4009,7 @@ void diag_event_mask_free(struct diag_mask_info *mask_info)
 
 static void diag_event_mask_exit(void)
 {
+<<<<<<< HEAD
 	struct diag_multisim_masks *ms_ptr = NULL;
 
 	kfree(event_mask.ptr);
@@ -3100,6 +4022,11 @@ static void diag_event_mask_exit(void)
 		ms_ptr = ms_ptr->next;
 	}
 	event_mask.ms_ptr = NULL;
+=======
+	kfree(event_mask.ptr);
+	kfree(event_mask.update_buf);
+	vfree(event_mask.update_buf_client);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int diag_copy_to_user_msg_mask(char __user *buf, size_t count,
@@ -3312,20 +4239,30 @@ void diag_send_updates_peripheral(uint8_t peripheral)
 		mutex_lock(&driver->md_session_lock);
 		if (driver->set_mask_cmd) {
 			diag_send_msg_mask_update(peripheral,
+<<<<<<< HEAD
 				ALL_SSID, ALL_SSID,
 				INVALID_INDEX, LEGACY_MASK_CMD);
 			diag_send_log_mask_update(peripheral, ALL_EQUIP_ID,
 				INVALID_INDEX, LEGACY_MASK_CMD);
 			diag_send_event_mask_update(peripheral, INVALID_INDEX,
 				LEGACY_MASK_CMD);
+=======
+				ALL_SSID, ALL_SSID);
+			diag_send_log_mask_update(peripheral, ALL_EQUIP_ID);
+			diag_send_event_mask_update(peripheral);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		mutex_unlock(&driver->md_session_lock);
 		diag_send_real_time_update(peripheral,
 				driver->real_time_mode[DIAG_LOCAL_PROC]);
 		diag_send_peripheral_buffering_mode(
 					&driver->buffering_mode[peripheral]);
+<<<<<<< HEAD
 		if (P_FMASK_DIAGID_V2(peripheral))
 			diag_send_hw_accel_status(peripheral);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Clear mask_update variable afer updating
 		 * logging masks to peripheral.
@@ -3336,6 +4273,7 @@ void diag_send_updates_peripheral(uint8_t peripheral)
 	}
 }
 
+<<<<<<< HEAD
 static int diag_check_multisim_support(struct diag_pkt_header_t *header)
 {
 	if (!header)
@@ -3360,11 +4298,23 @@ int diag_process_apps_masks(unsigned char *buf, int len, int pid)
 	int (*hdlr)(unsigned char *src_buf, int src_len,
 			unsigned char *dest_buf, int dest_len, int pid,
 			int cmd_ver) = NULL;
+=======
+int diag_process_apps_masks(unsigned char *buf, int len, int pid)
+{
+	int size = 0, sub_cmd = 0;
+	int (*hdlr)(unsigned char *src_buf, int src_len,
+		    unsigned char *dest_buf, int dest_len, int pid) = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!buf || len <= 0)
 		return -EINVAL;
 
 	if (*buf == DIAG_CMD_LOG_CONFIG) {
+<<<<<<< HEAD
+=======
+		if (len < (2 * sizeof(int)))
+			return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sub_cmd = *(int *)(buf + sizeof(int));
 		switch (sub_cmd) {
 		case DIAG_CMD_OP_LOG_DISABLE:
@@ -3382,6 +4332,11 @@ int diag_process_apps_masks(unsigned char *buf, int len, int pid)
 			break;
 		}
 	} else if (*buf == DIAG_CMD_MSG_CONFIG) {
+<<<<<<< HEAD
+=======
+		if (len < (2 * sizeof(uint8_t)))
+			return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sub_cmd = *(uint8_t *)(buf + sizeof(uint8_t));
 		switch (sub_cmd) {
 		case DIAG_CMD_OP_GET_SSID_RANGE:
@@ -3411,6 +4366,7 @@ int diag_process_apps_masks(unsigned char *buf, int len, int pid)
 		hdlr = diag_cmd_toggle_events;
 		driver->set_mask_cmd = 1;
 	}
+<<<<<<< HEAD
 	if (len >= sizeof(struct diag_pkt_header_t))
 		header = (struct diag_pkt_header_t *)buf;
 	if (diag_check_multisim_support(header)) {
@@ -3502,10 +4458,17 @@ int diag_process_apps_masks(unsigned char *buf, int len, int pid)
 	if (hdlr)
 		size = hdlr(buf, len, driver->apps_rsp_buf,
 			    DIAG_MAX_RSP_SIZE, pid, cmd_version);
+=======
+
+	if (hdlr)
+		size = hdlr(buf, len, driver->apps_rsp_buf,
+			    DIAG_MAX_RSP_SIZE, pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (size > 0) ? size : 0;
 }
 
+<<<<<<< HEAD
 static int __diag_multisim_mask_init(struct diag_mask_info *mask_info,
 		int mask_len, int subid_index)
 {
@@ -3636,6 +4599,8 @@ fail:
 	return -ENOMEM;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diag_masks_init(void)
 {
 	int err = 0;
@@ -3664,6 +4629,10 @@ int diag_masks_init(void)
 			goto fail;
 		kmemleak_not_leak(driver->buf_feature_mask_update);
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 fail:
 	pr_err("diag: Could not initialize diag mask buffers\n");

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #
 # Multiplexer devices
 #
@@ -21,6 +24,7 @@ config MUX_ADG792A
 	  To compile the driver as a module, choose M here: the module will
 	  be called mux-adg792a.
 
+<<<<<<< HEAD
 config MUX_ADGS1408
 	tristate "Analog Devices ADGS1408/ADGS1409 Multiplexers"
 	depends on SPI
@@ -31,6 +35,8 @@ config MUX_ADGS1408
 	  To compile the driver as a module, choose M here: the module will
 	  be called mux-adgs1408.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MUX_GPIO
 	tristate "GPIO-controlled Multiplexer"
 	depends on GPIOLIB || COMPILE_TEST

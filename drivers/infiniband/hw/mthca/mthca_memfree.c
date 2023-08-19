@@ -367,7 +367,11 @@ struct mthca_icm_table *mthca_alloc_icm_table(struct mthca_dev *dev,
 	obj_per_chunk = MTHCA_TABLE_CHUNK_SIZE / obj_size;
 	num_icm = DIV_ROUND_UP(nobj, obj_per_chunk);
 
+<<<<<<< HEAD
 	table = kmalloc(struct_size(table, icm, num_icm), GFP_KERNEL);
+=======
+	table = kmalloc(sizeof *table + num_icm * sizeof *table->icm, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!table)
 		return NULL;
 
@@ -472,7 +476,11 @@ int mthca_map_user_db(struct mthca_dev *dev, struct mthca_uar *uar,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	ret = get_user_pages_fast(uaddr & PAGE_MASK, 1, FOLL_WRITE, pages);
+=======
+	ret = get_user_pages(uaddr & PAGE_MASK, 1, FOLL_WRITE, pages, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto out;
 
@@ -529,7 +537,11 @@ struct mthca_user_db_table *mthca_init_user_db_tab(struct mthca_dev *dev)
 		return NULL;
 
 	npages = dev->uar_table.uarc_size / MTHCA_ICM_PAGE_SIZE;
+<<<<<<< HEAD
 	db_tab = kmalloc(struct_size(db_tab, page, npages), GFP_KERNEL);
+=======
+	db_tab = kmalloc(sizeof *db_tab + npages * sizeof *db_tab->page, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!db_tab)
 		return ERR_PTR(-ENOMEM);
 
@@ -623,12 +635,21 @@ int mthca_alloc_db(struct mthca_dev *dev, enum mthca_db_type type,
 	page = dev->db_tab->page + end;
 
 alloc:
+<<<<<<< HEAD
 	page->db_rec = dma_zalloc_coherent(&dev->pdev->dev, MTHCA_ICM_PAGE_SIZE,
 					   &page->mapping, GFP_KERNEL);
+=======
+	page->db_rec = dma_alloc_coherent(&dev->pdev->dev, MTHCA_ICM_PAGE_SIZE,
+					  &page->mapping, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!page->db_rec) {
 		ret = -ENOMEM;
 		goto out;
 	}
+<<<<<<< HEAD
+=======
+	memset(page->db_rec, 0, MTHCA_ICM_PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mthca_MAP_ICM_page(dev, page->mapping,
 				 mthca_uarc_virt(dev, &dev->driver_uar, i));
@@ -712,9 +733,15 @@ int mthca_init_db_tab(struct mthca_dev *dev)
 	dev->db_tab->max_group1 = 0;
 	dev->db_tab->min_group2 = dev->db_tab->npages - 1;
 
+<<<<<<< HEAD
 	dev->db_tab->page = kmalloc_array(dev->db_tab->npages,
 					  sizeof(*dev->db_tab->page),
 					  GFP_KERNEL);
+=======
+	dev->db_tab->page = kmalloc(dev->db_tab->npages *
+				    sizeof *dev->db_tab->page,
+				    GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev->db_tab->page) {
 		kfree(dev->db_tab);
 		return -ENOMEM;

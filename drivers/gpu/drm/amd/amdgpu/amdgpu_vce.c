@@ -40,17 +40,26 @@
 
 /* Firmware Names */
 #ifdef CONFIG_DRM_AMDGPU_CIK
+<<<<<<< HEAD
 #define FIRMWARE_BONAIRE	"amdgpu/bonaire_vce.bin"
 #define FIRMWARE_KABINI	"amdgpu/kabini_vce.bin"
 #define FIRMWARE_KAVERI	"amdgpu/kaveri_vce.bin"
 #define FIRMWARE_HAWAII	"amdgpu/hawaii_vce.bin"
 #define FIRMWARE_MULLINS	"amdgpu/mullins_vce.bin"
+=======
+#define FIRMWARE_BONAIRE	"radeon/bonaire_vce.bin"
+#define FIRMWARE_KABINI	"radeon/kabini_vce.bin"
+#define FIRMWARE_KAVERI	"radeon/kaveri_vce.bin"
+#define FIRMWARE_HAWAII	"radeon/hawaii_vce.bin"
+#define FIRMWARE_MULLINS	"radeon/mullins_vce.bin"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #define FIRMWARE_TONGA		"amdgpu/tonga_vce.bin"
 #define FIRMWARE_CARRIZO	"amdgpu/carrizo_vce.bin"
 #define FIRMWARE_FIJI		"amdgpu/fiji_vce.bin"
 #define FIRMWARE_STONEY		"amdgpu/stoney_vce.bin"
 #define FIRMWARE_POLARIS10	"amdgpu/polaris10_vce.bin"
+<<<<<<< HEAD
 #define FIRMWARE_POLARIS11	"amdgpu/polaris11_vce.bin"
 #define FIRMWARE_POLARIS12	"amdgpu/polaris12_vce.bin"
 #define FIRMWARE_VEGAM		"amdgpu/vegam_vce.bin"
@@ -58,6 +67,12 @@
 #define FIRMWARE_VEGA10		"amdgpu/vega10_vce.bin"
 #define FIRMWARE_VEGA12		"amdgpu/vega12_vce.bin"
 #define FIRMWARE_VEGA20		"amdgpu/vega20_vce.bin"
+=======
+#define FIRMWARE_POLARIS11         "amdgpu/polaris11_vce.bin"
+#define FIRMWARE_POLARIS12         "amdgpu/polaris12_vce.bin"
+
+#define FIRMWARE_VEGA10		"amdgpu/vega10_vce.bin"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_DRM_AMDGPU_CIK
 MODULE_FIRMWARE(FIRMWARE_BONAIRE);
@@ -73,11 +88,16 @@ MODULE_FIRMWARE(FIRMWARE_STONEY);
 MODULE_FIRMWARE(FIRMWARE_POLARIS10);
 MODULE_FIRMWARE(FIRMWARE_POLARIS11);
 MODULE_FIRMWARE(FIRMWARE_POLARIS12);
+<<<<<<< HEAD
 MODULE_FIRMWARE(FIRMWARE_VEGAM);
 
 MODULE_FIRMWARE(FIRMWARE_VEGA10);
 MODULE_FIRMWARE(FIRMWARE_VEGA12);
 MODULE_FIRMWARE(FIRMWARE_VEGA20);
+=======
+
+MODULE_FIRMWARE(FIRMWARE_VEGA10);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void amdgpu_vce_idle_work_handler(struct work_struct *work);
 
@@ -90,6 +110,11 @@ static void amdgpu_vce_idle_work_handler(struct work_struct *work);
  */
 int amdgpu_vce_sw_init(struct amdgpu_device *adev, unsigned long size)
 {
+<<<<<<< HEAD
+=======
+	struct amdgpu_ring *ring;
+	struct amd_sched_rq *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *fw_name;
 	const struct common_firmware_header *hdr;
 	unsigned ucode_version, version_major, version_minor, binary_id;
@@ -131,6 +156,7 @@ int amdgpu_vce_sw_init(struct amdgpu_device *adev, unsigned long size)
 	case CHIP_POLARIS11:
 		fw_name = FIRMWARE_POLARIS11;
 		break;
+<<<<<<< HEAD
 	case CHIP_POLARIS12:
 		fw_name = FIRMWARE_POLARIS12;
 		break;
@@ -145,6 +171,13 @@ int amdgpu_vce_sw_init(struct amdgpu_device *adev, unsigned long size)
 		break;
 	case CHIP_VEGA20:
 		fw_name = FIRMWARE_VEGA20;
+=======
+	case CHIP_VEGA10:
+		fw_name = FIRMWARE_VEGA10;
+		break;
+	case CHIP_POLARIS12:
+		fw_name = FIRMWARE_POLARIS12;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	default:
@@ -186,6 +219,18 @@ int amdgpu_vce_sw_init(struct amdgpu_device *adev, unsigned long size)
 		return r;
 	}
 
+<<<<<<< HEAD
+=======
+	ring = &adev->vce.ring[0];
+	rq = &ring->sched.sched_rq[AMD_SCHED_PRIORITY_NORMAL];
+	r = amd_sched_entity_init(&ring->sched, &adev->vce.entity,
+				  rq, amdgpu_sched_jobs);
+	if (r != 0) {
+		DRM_ERROR("Failed setting up VCE run queue.\n");
+		return r;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < AMDGPU_MAX_VCE_HANDLES; ++i) {
 		atomic_set(&adev->vce.handles[i], 0);
 		adev->vce.filp[i] = NULL;
@@ -211,7 +256,11 @@ int amdgpu_vce_sw_fini(struct amdgpu_device *adev)
 	if (adev->vce.vcpu_bo == NULL)
 		return 0;
 
+<<<<<<< HEAD
 	drm_sched_entity_destroy(&adev->vce.entity);
+=======
+	amd_sched_entity_fini(&adev->vce.ring[0].sched, &adev->vce.entity);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	amdgpu_bo_free_kernel(&adev->vce.vcpu_bo, &adev->vce.gpu_addr,
 		(void **)&adev->vce.cpu_addr);
@@ -226,6 +275,7 @@ int amdgpu_vce_sw_fini(struct amdgpu_device *adev)
 }
 
 /**
+<<<<<<< HEAD
  * amdgpu_vce_entity_init - init entity
  *
  * @adev: amdgpu_device pointer
@@ -249,6 +299,8 @@ int amdgpu_vce_entity_init(struct amdgpu_device *adev)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * amdgpu_vce_suspend - unpin VCE fw memory
  *
  * @adev: amdgpu_device pointer
@@ -328,6 +380,12 @@ static void amdgpu_vce_idle_work_handler(struct work_struct *work)
 		container_of(work, struct amdgpu_device, vce.idle_work.work);
 	unsigned i, count = 0;
 
+<<<<<<< HEAD
+=======
+	if (amdgpu_sriov_vf(adev))
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < adev->vce.num_rings; i++)
 		count += amdgpu_fence_count_emitted(&adev->vce.ring[i]);
 
@@ -336,10 +394,17 @@ static void amdgpu_vce_idle_work_handler(struct work_struct *work)
 			amdgpu_dpm_enable_vce(adev, false);
 		} else {
 			amdgpu_asic_set_vce_clocks(adev, 0, 0);
+<<<<<<< HEAD
 			amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
 							       AMD_PG_STATE_GATE);
 			amdgpu_device_ip_set_clockgating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
 							       AMD_CG_STATE_GATE);
+=======
+			amdgpu_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
+							    AMD_PG_STATE_GATE);
+			amdgpu_set_clockgating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
+							    AMD_CG_STATE_GATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		schedule_delayed_work(&adev->vce.idle_work, VCE_IDLE_TIMEOUT);
@@ -368,10 +433,17 @@ void amdgpu_vce_ring_begin_use(struct amdgpu_ring *ring)
 			amdgpu_dpm_enable_vce(adev, true);
 		} else {
 			amdgpu_asic_set_vce_clocks(adev, 53300, 40000);
+<<<<<<< HEAD
 			amdgpu_device_ip_set_clockgating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
 							       AMD_CG_STATE_UNGATE);
 			amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
 							       AMD_PG_STATE_UNGATE);
+=======
+			amdgpu_set_clockgating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
+							    AMD_CG_STATE_UNGATE);
+			amdgpu_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCE,
+							    AMD_PG_STATE_UNGATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		}
 	}
@@ -387,8 +459,12 @@ void amdgpu_vce_ring_begin_use(struct amdgpu_ring *ring)
  */
 void amdgpu_vce_ring_end_use(struct amdgpu_ring *ring)
 {
+<<<<<<< HEAD
 	if (!amdgpu_sriov_vf(ring->adev))
 		schedule_delayed_work(&ring->adev->vce.idle_work, VCE_IDLE_TIMEOUT);
+=======
+	schedule_delayed_work(&ring->adev->vce.idle_work, VCE_IDLE_TIMEOUT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -483,10 +559,19 @@ int amdgpu_vce_get_create_msg(struct amdgpu_ring *ring, uint32_t handle,
 	for (i = ib->length_dw; i < ib_size_dw; ++i)
 		ib->ptr[i] = 0x0;
 
+<<<<<<< HEAD
 	r = amdgpu_job_submit_direct(job, ring, &f);
 	if (r)
 		goto err;
 
+=======
+	r = amdgpu_ib_schedule(ring, 1, ib, NULL, &f);
+	job->fence = dma_fence_get(f);
+	if (r)
+		goto err;
+
+	amdgpu_job_free(job);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fence)
 		*fence = dma_fence_get(f);
 	dma_fence_put(f);
@@ -543,6 +628,7 @@ int amdgpu_vce_get_destroy_msg(struct amdgpu_ring *ring, uint32_t handle,
 	for (i = ib->length_dw; i < ib_size_dw; ++i)
 		ib->ptr[i] = 0x0;
 
+<<<<<<< HEAD
 	if (direct)
 		r = amdgpu_job_submit_direct(job, ring, &f);
 	else
@@ -550,6 +636,21 @@ int amdgpu_vce_get_destroy_msg(struct amdgpu_ring *ring, uint32_t handle,
 				      AMDGPU_FENCE_OWNER_UNDEFINED, &f);
 	if (r)
 		goto err;
+=======
+	if (direct) {
+		r = amdgpu_ib_schedule(ring, 1, ib, NULL, &f);
+		job->fence = dma_fence_get(f);
+		if (r)
+			goto err;
+
+		amdgpu_job_free(job);
+	} else {
+		r = amdgpu_job_submit(job, ring, &ring->adev->vce.entity,
+				      AMDGPU_FENCE_OWNER_UNDEFINED, &f);
+		if (r)
+			goto err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fence)
 		*fence = dma_fence_get(f);
@@ -562,6 +663,7 @@ err:
 }
 
 /**
+<<<<<<< HEAD
  * amdgpu_vce_cs_validate_bo - make sure not to cross 4GB boundary
  *
  * @p: parser context
@@ -611,6 +713,8 @@ static int amdgpu_vce_validate_bo(struct amdgpu_cs_parser *p, uint32_t ib_idx,
 
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * amdgpu_vce_cs_reloc - command submission relocation
  *
  * @p: parser context
@@ -626,7 +730,10 @@ static int amdgpu_vce_cs_reloc(struct amdgpu_cs_parser *p, uint32_t ib_idx,
 	struct amdgpu_bo_va_mapping *mapping;
 	struct amdgpu_bo *bo;
 	uint64_t addr;
+<<<<<<< HEAD
 	int r;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (index == 0xffffffff)
 		index = 0;
@@ -635,11 +742,19 @@ static int amdgpu_vce_cs_reloc(struct amdgpu_cs_parser *p, uint32_t ib_idx,
 	       ((uint64_t)amdgpu_get_ib_value(p, ib_idx, hi)) << 32;
 	addr += ((uint64_t)size) * ((uint64_t)index);
 
+<<<<<<< HEAD
 	r = amdgpu_cs_find_mapping(p, addr, &bo, &mapping);
 	if (r) {
 		DRM_ERROR("Can't find BO for addr 0x%010Lx %d %d %d %d\n",
 			  addr, lo, hi, size, index);
 		return r;
+=======
+	mapping = amdgpu_cs_find_mapping(p, addr, &bo);
+	if (mapping == NULL) {
+		DRM_ERROR("Can't find BO for addr 0x%010Lx %d %d %d %d\n",
+			  addr, lo, hi, size, index);
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if ((addr + (uint64_t)size) >
@@ -715,13 +830,25 @@ int amdgpu_vce_ring_parse_cs(struct amdgpu_cs_parser *p, uint32_t ib_idx)
 	uint32_t allocated = 0;
 	uint32_t tmp, handle = 0;
 	uint32_t *size = &tmp;
+<<<<<<< HEAD
 	unsigned idx;
 	int i, r = 0;
+=======
+	int i, r = 0, idx = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p->job->vm = NULL;
 	ib->gpu_addr = amdgpu_sa_bo_gpu_addr(ib->sa_bo);
 
+<<<<<<< HEAD
 	for (idx = 0; idx < ib->length_dw;) {
+=======
+	r = amdgpu_cs_sysvm_access_required(p);
+	if (r)
+		return r;
+
+	while (idx < ib->length_dw) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		uint32_t len = amdgpu_get_ib_value(p, ib_idx, idx);
 		uint32_t cmd = amdgpu_get_ib_value(p, ib_idx, idx + 1);
 
@@ -732,6 +859,7 @@ int amdgpu_vce_ring_parse_cs(struct amdgpu_cs_parser *p, uint32_t ib_idx)
 		}
 
 		switch (cmd) {
+<<<<<<< HEAD
 		case 0x00000002: /* task info */
 			fb_idx = amdgpu_get_ib_value(p, ib_idx, idx + 6);
 			bs_idx = amdgpu_get_ib_value(p, ib_idx, idx + 7);
@@ -792,6 +920,8 @@ int amdgpu_vce_ring_parse_cs(struct amdgpu_cs_parser *p, uint32_t ib_idx)
 		uint32_t cmd = amdgpu_get_ib_value(p, ib_idx, idx + 1);
 
 		switch (cmd) {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 0x00000001: /* session */
 			handle = amdgpu_get_ib_value(p, ib_idx, idx + 2);
 			session_idx = amdgpu_vce_validate_handle(p, handle,
@@ -887,6 +1017,7 @@ int amdgpu_vce_ring_parse_cs(struct amdgpu_cs_parser *p, uint32_t ib_idx)
 				goto out;
 			break;
 
+<<<<<<< HEAD
 		case 0x0500000d: /* MV buffer */
 			r = amdgpu_vce_cs_reloc(p, ib_idx, idx + 3,
 							idx + 2, *size, 0);
@@ -899,6 +1030,8 @@ int amdgpu_vce_ring_parse_cs(struct amdgpu_cs_parser *p, uint32_t ib_idx)
 				goto out;
 			break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			DRM_ERROR("invalid VCE command (0x%x)!\n", cmd);
 			r = -EINVAL;
@@ -1033,7 +1166,11 @@ out:
  *
  */
 void amdgpu_vce_ring_emit_ib(struct amdgpu_ring *ring, struct amdgpu_ib *ib,
+<<<<<<< HEAD
 			     unsigned vmid, bool ctx_switch)
+=======
+			     unsigned vm_id, bool ctx_switch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	amdgpu_ring_write(ring, VCE_CMD_IB);
 	amdgpu_ring_write(ring, lower_32_bits(ib->gpu_addr));
@@ -1070,7 +1207,11 @@ void amdgpu_vce_ring_emit_fence(struct amdgpu_ring *ring, u64 addr, u64 seq,
 int amdgpu_vce_ring_test_ring(struct amdgpu_ring *ring)
 {
 	struct amdgpu_device *adev = ring->adev;
+<<<<<<< HEAD
 	uint32_t rptr;
+=======
+	uint32_t rptr = amdgpu_ring_get_rptr(ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i;
 	int r, timeout = adev->usec_timeout;
 
@@ -1084,9 +1225,12 @@ int amdgpu_vce_ring_test_ring(struct amdgpu_ring *ring)
 			  ring->idx, r);
 		return r;
 	}
+<<<<<<< HEAD
 
 	rptr = amdgpu_ring_get_rptr(ring);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amdgpu_ring_write(ring, VCE_CMD_END);
 	amdgpu_ring_commit(ring);
 
@@ -1097,7 +1241,11 @@ int amdgpu_vce_ring_test_ring(struct amdgpu_ring *ring)
 	}
 
 	if (i < timeout) {
+<<<<<<< HEAD
 		DRM_DEBUG("ring test on %d succeeded in %d usecs\n",
+=======
+		DRM_INFO("ring test on %d succeeded in %d usecs\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 ring->idx, i);
 	} else {
 		DRM_ERROR("amdgpu: ring %d test failed\n",
@@ -1142,7 +1290,11 @@ int amdgpu_vce_ring_test_ib(struct amdgpu_ring *ring, long timeout)
 	} else if (r < 0) {
 		DRM_ERROR("amdgpu: fence wait failed (%ld).\n", r);
 	} else {
+<<<<<<< HEAD
 		DRM_DEBUG("ib test on ring %d succeeded\n", ring->idx);
+=======
+		DRM_INFO("ib test on ring %d succeeded\n", ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = 0;
 	}
 error:

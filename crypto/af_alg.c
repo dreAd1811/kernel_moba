@@ -133,12 +133,17 @@ EXPORT_SYMBOL_GPL(af_alg_release);
 void af_alg_release_parent(struct sock *sk)
 {
 	struct alg_sock *ask = alg_sk(sk);
+<<<<<<< HEAD
 	unsigned int nokey = ask->nokey_refcnt;
 	bool last = nokey && !ask->refcnt;
+=======
+	unsigned int nokey = atomic_read(&ask->nokey_refcnt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sk = ask->parent;
 	ask = alg_sk(sk);
 
+<<<<<<< HEAD
 	lock_sock(sk);
 	ask->nokey_refcnt -= nokey;
 	if (!last)
@@ -146,6 +151,12 @@ void af_alg_release_parent(struct sock *sk)
 	release_sock(sk);
 
 	if (last)
+=======
+	if (nokey)
+		atomic_dec(&ask->nokey_refcnt);
+
+	if (atomic_dec_and_test(&ask->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sock_put(sk);
 }
 EXPORT_SYMBOL_GPL(af_alg_release_parent);
@@ -190,7 +201,11 @@ static int alg_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
 
 	err = -EBUSY;
 	lock_sock(sk);
+<<<<<<< HEAD
 	if (ask->refcnt | ask->nokey_refcnt)
+=======
+	if (atomic_read(&ask->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto unlock;
 
 	swap(ask->type, type);
@@ -239,7 +254,11 @@ static int alg_setsockopt(struct socket *sock, int level, int optname,
 	int err = -EBUSY;
 
 	lock_sock(sk);
+<<<<<<< HEAD
 	if (ask->refcnt)
+=======
+	if (atomic_read(&ask->refcnt) != atomic_read(&ask->nokey_refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto unlock;
 
 	type = ask->type;
@@ -306,12 +325,23 @@ int af_alg_accept(struct sock *sk, struct socket *newsock, bool kern)
 
 	sk2->sk_family = PF_ALG;
 
+<<<<<<< HEAD
 	if (nokey || !ask->refcnt++)
 		sock_hold(sk);
 	ask->nokey_refcnt += nokey;
 	alg_sk(sk2)->parent = sk;
 	alg_sk(sk2)->type = type;
 	alg_sk(sk2)->nokey_refcnt = nokey;
+=======
+	if (atomic_inc_return_relaxed(&ask->refcnt) == 1)
+		sock_hold(sk);
+	if (nokey) {
+		atomic_inc(&ask->nokey_refcnt);
+		atomic_set(&alg_sk(sk2)->nokey_refcnt, 1);
+	}
+	alg_sk(sk2)->parent = sk;
+	alg_sk(sk2)->type = type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	newsock->ops = type->ops;
 	newsock->state = SS_CONNECTED;
@@ -349,6 +379,10 @@ static const struct proto_ops alg_proto_ops = {
 	.sendpage	=	sock_no_sendpage,
 	.sendmsg	=	sock_no_sendmsg,
 	.recvmsg	=	sock_no_recvmsg,
+<<<<<<< HEAD
+=======
+	.poll		=	sock_no_poll,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.bind		=	alg_bind,
 	.release	=	af_alg_release,
@@ -484,6 +518,36 @@ int af_alg_cmsg_send(struct msghdr *msg, struct af_alg_control *con)
 }
 EXPORT_SYMBOL_GPL(af_alg_cmsg_send);
 
+<<<<<<< HEAD
+=======
+int af_alg_wait_for_completion(int err, struct af_alg_completion *completion)
+{
+	switch (err) {
+	case -EINPROGRESS:
+	case -EBUSY:
+		wait_for_completion(&completion->completion);
+		reinit_completion(&completion->completion);
+		err = completion->err;
+		break;
+	};
+
+	return err;
+}
+EXPORT_SYMBOL_GPL(af_alg_wait_for_completion);
+
+void af_alg_complete(struct crypto_async_request *req, int err)
+{
+	struct af_alg_completion *completion = req->data;
+
+	if (err == -EINPROGRESS)
+		return;
+
+	completion->err = err;
+	complete(&completion->completion);
+}
+EXPORT_SYMBOL_GPL(af_alg_complete);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * af_alg_alloc_tsgl - allocate the TX SGL
  *
@@ -502,8 +566,13 @@ int af_alg_alloc_tsgl(struct sock *sk)
 		sg = sgl->sg;
 
 	if (!sg || sgl->cur >= MAX_SGL_ENTS) {
+<<<<<<< HEAD
 		sgl = sock_kmalloc(sk,
 				   struct_size(sgl, sg, (MAX_SGL_ENTS + 1)),
+=======
+		sgl = sock_kmalloc(sk, sizeof(*sgl) +
+				       sizeof(sgl->sg[0]) * (MAX_SGL_ENTS + 1),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 		if (!sgl)
 			return -ENOMEM;
@@ -736,9 +805,15 @@ void af_alg_wmem_wakeup(struct sock *sk)
 	rcu_read_lock();
 	wq = rcu_dereference(sk->sk_wq);
 	if (skwq_has_sleeper(wq))
+<<<<<<< HEAD
 		wake_up_interruptible_sync_poll(&wq->wait, EPOLLIN |
 							   EPOLLRDNORM |
 							   EPOLLRDBAND);
+=======
+		wake_up_interruptible_sync_poll(&wq->wait, POLLIN |
+							   POLLRDNORM |
+							   POLLRDBAND);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sk_wake_async(sk, SOCK_WAKE_WAITD, POLL_IN);
 	rcu_read_unlock();
 }
@@ -801,9 +876,15 @@ void af_alg_data_wakeup(struct sock *sk)
 	rcu_read_lock();
 	wq = rcu_dereference(sk->sk_wq);
 	if (skwq_has_sleeper(wq))
+<<<<<<< HEAD
 		wake_up_interruptible_sync_poll(&wq->wait, EPOLLOUT |
 							   EPOLLRDNORM |
 							   EPOLLRDBAND);
+=======
+		wake_up_interruptible_sync_poll(&wq->wait, POLLOUT |
+							   POLLRDNORM |
+							   POLLRDBAND);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sk_wake_async(sk, SOCK_WAKE_SPACE, POLL_OUT);
 	rcu_read_unlock();
 }
@@ -1058,19 +1139,28 @@ void af_alg_async_cb(struct crypto_async_request *_req, int err)
 	af_alg_free_resources(areq);
 	sock_put(sk);
 
+<<<<<<< HEAD
 	iocb->ki_complete(iocb, err ? err : resultlen, 0);
+=======
+	iocb->ki_complete(iocb, err ? err : (int)resultlen, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(af_alg_async_cb);
 
 /**
  * af_alg_poll - poll system call handler
  */
+<<<<<<< HEAD
 __poll_t af_alg_poll(struct file *file, struct socket *sock,
+=======
+unsigned int af_alg_poll(struct file *file, struct socket *sock,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 poll_table *wait)
 {
 	struct sock *sk = sock->sk;
 	struct alg_sock *ask = alg_sk(sk);
 	struct af_alg_ctx *ctx = ask->private;
+<<<<<<< HEAD
 	__poll_t mask;
 
 	sock_poll_wait(file, sock, wait);
@@ -1081,6 +1171,18 @@ __poll_t af_alg_poll(struct file *file, struct socket *sock,
 
 	if (af_alg_writable(sk))
 		mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
+=======
+	unsigned int mask;
+
+	sock_poll_wait(file, sk_sleep(sk), wait);
+	mask = 0;
+
+	if (!ctx->more || ctx->used)
+		mask |= POLLIN | POLLRDNORM;
+
+	if (af_alg_writable(sk))
+		mask |= POLLOUT | POLLWRNORM | POLLWRBAND;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

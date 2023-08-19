@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
+=======
+/* arch/arm/plat-samsung/include/plat/devs.h
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (c) 2011 Samsung Electronics Co., Ltd.
  *		http://www.samsung.com
  *
@@ -7,7 +12,15 @@
  * Ben Dooks <ben@simtec.co.uk>
  *
  * Header file for s3c2410 standard platform devices
+<<<<<<< HEAD
  */
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __PLAT_DEVS_H
 #define __PLAT_DEVS_H __FILE__

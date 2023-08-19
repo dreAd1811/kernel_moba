@@ -9,11 +9,17 @@
 #include <linux/clk.h>
 #include <linux/cpu.h>
 #include <linux/cpufreq.h>
+<<<<<<< HEAD
 #include <linux/cpu_cooling.h>
 #include <linux/err.h>
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
+=======
+#include <linux/err.h>
+#include <linux/module.h>
+#include <linux/of.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_opp.h>
 #include <linux/platform_device.h>
 #include <linux/regulator/consumer.h>
@@ -26,6 +32,7 @@ static struct regulator *arm_reg;
 static struct regulator *pu_reg;
 static struct regulator *soc_reg;
 
+<<<<<<< HEAD
 enum IMX6_CPUFREQ_CLKS {
 	ARM,
 	PLL1_SYS,
@@ -55,6 +62,21 @@ static struct thermal_cooling_device *cdev;
 static bool free_opp;
 static struct cpufreq_frequency_table *freq_table;
 static unsigned int max_freq;
+=======
+static struct clk *arm_clk;
+static struct clk *pll1_sys_clk;
+static struct clk *pll1_sw_clk;
+static struct clk *step_clk;
+static struct clk *pll2_pfd2_396m_clk;
+
+/* clk used by i.MX6UL */
+static struct clk *pll2_bus_clk;
+static struct clk *secondary_sel_clk;
+
+static struct device *cpu_dev;
+static bool free_opp;
+static struct cpufreq_frequency_table *freq_table;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int transition_latency;
 
 static u32 *imx6_soc_volt;
@@ -70,7 +92,11 @@ static int imx6q_set_target(struct cpufreq_policy *policy, unsigned int index)
 
 	new_freq = freq_table[index].frequency;
 	freq_hz = new_freq * 1000;
+<<<<<<< HEAD
 	old_freq = clk_get_rate(clks[ARM].clk) / 1000;
+=======
+	old_freq = clk_get_rate(arm_clk) / 1000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	opp = dev_pm_opp_find_freq_ceil(cpu_dev, &freq_hz);
 	if (IS_ERR(opp)) {
@@ -129,6 +155,7 @@ static int imx6q_set_target(struct cpufreq_policy *policy, unsigned int index)
 		 * voltage of 528MHz, so lower the CPU frequency to one
 		 * half before changing CPU frequency.
 		 */
+<<<<<<< HEAD
 		clk_set_rate(clks[ARM].clk, (old_freq >> 1) * 1000);
 		clk_set_parent(clks[PLL1_SW].clk, clks[PLL1_SYS].clk);
 		if (freq_hz > clk_get_rate(clks[PLL2_PFD2_396M].clk))
@@ -153,11 +180,35 @@ static int imx6q_set_target(struct cpufreq_policy *policy, unsigned int index)
 			/* pll1_sys needs to be enabled for divider rate change to work. */
 			pll1_sys_temp_enabled = true;
 			clk_prepare_enable(clks[PLL1_SYS].clk);
+=======
+		clk_set_rate(arm_clk, (old_freq >> 1) * 1000);
+		clk_set_parent(pll1_sw_clk, pll1_sys_clk);
+		if (freq_hz > clk_get_rate(pll2_pfd2_396m_clk))
+			clk_set_parent(secondary_sel_clk, pll2_bus_clk);
+		else
+			clk_set_parent(secondary_sel_clk, pll2_pfd2_396m_clk);
+		clk_set_parent(step_clk, secondary_sel_clk);
+		clk_set_parent(pll1_sw_clk, step_clk);
+	} else {
+		clk_set_parent(step_clk, pll2_pfd2_396m_clk);
+		clk_set_parent(pll1_sw_clk, step_clk);
+		if (freq_hz > clk_get_rate(pll2_pfd2_396m_clk)) {
+			clk_set_rate(pll1_sys_clk, new_freq * 1000);
+			clk_set_parent(pll1_sw_clk, pll1_sys_clk);
+		} else {
+			/* pll1_sys needs to be enabled for divider rate change to work. */
+			pll1_sys_temp_enabled = true;
+			clk_prepare_enable(pll1_sys_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	/* Ensure the arm clock divider is what we expect */
+<<<<<<< HEAD
 	ret = clk_set_rate(clks[ARM].clk, new_freq * 1000);
+=======
+	ret = clk_set_rate(arm_clk, new_freq * 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		int ret1;
 
@@ -171,7 +222,11 @@ static int imx6q_set_target(struct cpufreq_policy *policy, unsigned int index)
 
 	/* PLL1 is only needed until after ARM-PODF is set. */
 	if (pll1_sys_temp_enabled)
+<<<<<<< HEAD
 		clk_disable_unprepare(clks[PLL1_SYS].clk);
+=======
+		clk_disable_unprepare(pll1_sys_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* scaling down?  scale voltage after frequency */
 	if (new_freq < old_freq) {
@@ -198,6 +253,7 @@ static int imx6q_set_target(struct cpufreq_policy *policy, unsigned int index)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void imx6q_cpufreq_ready(struct cpufreq_policy *policy)
 {
 	cdev = of_cpufreq_cooling_register(policy);
@@ -208,17 +264,26 @@ static void imx6q_cpufreq_ready(struct cpufreq_policy *policy)
 			PTR_ERR(cdev));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int imx6q_cpufreq_init(struct cpufreq_policy *policy)
 {
 	int ret;
 
+<<<<<<< HEAD
 	policy->clk = clks[ARM].clk;
 	ret = cpufreq_generic_init(policy, freq_table, transition_latency);
 	policy->suspend_freq = max_freq;
+=======
+	policy->clk = arm_clk;
+	ret = cpufreq_generic_init(policy, freq_table, transition_latency);
+	policy->suspend_freq = policy->max;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static int imx6q_cpufreq_exit(struct cpufreq_policy *policy)
 {
 	cpufreq_cooling_unregister(cdev);
@@ -226,19 +291,26 @@ static int imx6q_cpufreq_exit(struct cpufreq_policy *policy)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct cpufreq_driver imx6q_cpufreq_driver = {
 	.flags = CPUFREQ_NEED_INITIAL_FREQ_CHECK,
 	.verify = cpufreq_generic_frequency_table_verify,
 	.target_index = imx6q_set_target,
 	.get = cpufreq_generic_get,
 	.init = imx6q_cpufreq_init,
+<<<<<<< HEAD
 	.exit = imx6q_cpufreq_exit,
 	.name = "imx6q-cpufreq",
 	.ready = imx6q_cpufreq_ready,
+=======
+	.name = "imx6q-cpufreq",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attr = cpufreq_generic_attr,
 	.suspend = cpufreq_generic_suspend,
 };
 
+<<<<<<< HEAD
 #define OCOTP_CFG3			0x440
 #define OCOTP_CFG3_SPEED_SHIFT		16
 #define OCOTP_CFG3_SPEED_1P2GHZ		0x3
@@ -344,6 +416,8 @@ put_node:
 	of_node_put(np);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int imx6q_cpufreq_probe(struct platform_device *pdev)
 {
 	struct device_node *np;
@@ -366,6 +440,7 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
 		return -ENOENT;
 	}
 
+<<<<<<< HEAD
 	if (of_machine_is_compatible("fsl,imx6ul") ||
 	    of_machine_is_compatible("fsl,imx6ull"))
 		num_clks = IMX6UL_CPUFREQ_CLK_NUM;
@@ -375,6 +450,30 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
 	ret = clk_bulk_get(cpu_dev, num_clks, clks);
 	if (ret)
 		goto put_node;
+=======
+	arm_clk = clk_get(cpu_dev, "arm");
+	pll1_sys_clk = clk_get(cpu_dev, "pll1_sys");
+	pll1_sw_clk = clk_get(cpu_dev, "pll1_sw");
+	step_clk = clk_get(cpu_dev, "step");
+	pll2_pfd2_396m_clk = clk_get(cpu_dev, "pll2_pfd2_396m");
+	if (IS_ERR(arm_clk) || IS_ERR(pll1_sys_clk) || IS_ERR(pll1_sw_clk) ||
+	    IS_ERR(step_clk) || IS_ERR(pll2_pfd2_396m_clk)) {
+		dev_err(cpu_dev, "failed to get clocks\n");
+		ret = -ENOENT;
+		goto put_clk;
+	}
+
+	if (of_machine_is_compatible("fsl,imx6ul") ||
+	    of_machine_is_compatible("fsl,imx6ull")) {
+		pll2_bus_clk = clk_get(cpu_dev, "pll2_bus");
+		secondary_sel_clk = clk_get(cpu_dev, "secondary_sel");
+		if (IS_ERR(pll2_bus_clk) || IS_ERR(secondary_sel_clk)) {
+			dev_err(cpu_dev, "failed to get clocks specific to imx6ul\n");
+			ret = -ENOENT;
+			goto put_clk;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	arm_reg = regulator_get(cpu_dev, "arm");
 	pu_reg = regulator_get_optional(cpu_dev, "pu");
@@ -392,6 +491,7 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
 		goto put_reg;
 	}
 
+<<<<<<< HEAD
 	ret = dev_pm_opp_of_add_table(cpu_dev);
 	if (ret < 0) {
 		dev_err(cpu_dev, "failed to init OPP table: %d\n", ret);
@@ -411,6 +511,30 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
 		ret = num;
 		dev_err(cpu_dev, "no OPP table is found: %d\n", ret);
 		goto out_free_opp;
+=======
+	/*
+	 * We expect an OPP table supplied by platform.
+	 * Just, incase the platform did not supply the OPP
+	 * table, it will try to get it.
+	 */
+	num = dev_pm_opp_get_opp_count(cpu_dev);
+	if (num < 0) {
+		ret = dev_pm_opp_of_add_table(cpu_dev);
+		if (ret < 0) {
+			dev_err(cpu_dev, "failed to init OPP table: %d\n", ret);
+			goto put_reg;
+		}
+
+		/* Because we have added the OPPs here, we must free them */
+		free_opp = true;
+
+		num = dev_pm_opp_get_opp_count(cpu_dev);
+		if (num < 0) {
+			ret = num;
+			dev_err(cpu_dev, "no OPP table is found: %d\n", ret);
+			goto out_free_opp;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = dev_pm_opp_init_cpufreq_table(cpu_dev, &freq_table);
@@ -420,8 +544,12 @@ static int imx6q_cpufreq_probe(struct platform_device *pdev)
 	}
 
 	/* Make imx6_soc_volt array's size same as arm opp number */
+<<<<<<< HEAD
 	imx6_soc_volt = devm_kcalloc(cpu_dev, num, sizeof(*imx6_soc_volt),
 				     GFP_KERNEL);
+=======
+	imx6_soc_volt = devm_kzalloc(cpu_dev, sizeof(*imx6_soc_volt) * num, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (imx6_soc_volt == NULL) {
 		ret = -ENOMEM;
 		goto free_freq_table;
@@ -482,12 +610,20 @@ soc_opp_out:
 	 * freq_table initialised from OPP is therefore sorted in the
 	 * same order.
 	 */
+<<<<<<< HEAD
 	max_freq = freq_table[--num].frequency;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	opp = dev_pm_opp_find_freq_exact(cpu_dev,
 				  freq_table[0].frequency * 1000, true);
 	min_volt = dev_pm_opp_get_voltage(opp);
 	dev_pm_opp_put(opp);
+<<<<<<< HEAD
 	opp = dev_pm_opp_find_freq_exact(cpu_dev, max_freq * 1000, true);
+=======
+	opp = dev_pm_opp_find_freq_exact(cpu_dev,
+				  freq_table[--num].frequency * 1000, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	max_volt = dev_pm_opp_get_voltage(opp);
 	dev_pm_opp_put(opp);
 
@@ -516,11 +652,30 @@ put_reg:
 		regulator_put(pu_reg);
 	if (!IS_ERR(soc_reg))
 		regulator_put(soc_reg);
+<<<<<<< HEAD
 
 	clk_bulk_put(num_clks, clks);
 put_node:
 	of_node_put(np);
 
+=======
+put_clk:
+	if (!IS_ERR(arm_clk))
+		clk_put(arm_clk);
+	if (!IS_ERR(pll1_sys_clk))
+		clk_put(pll1_sys_clk);
+	if (!IS_ERR(pll1_sw_clk))
+		clk_put(pll1_sw_clk);
+	if (!IS_ERR(step_clk))
+		clk_put(step_clk);
+	if (!IS_ERR(pll2_pfd2_396m_clk))
+		clk_put(pll2_pfd2_396m_clk);
+	if (!IS_ERR(pll2_bus_clk))
+		clk_put(pll2_bus_clk);
+	if (!IS_ERR(secondary_sel_clk))
+		clk_put(secondary_sel_clk);
+	of_node_put(np);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -534,8 +689,18 @@ static int imx6q_cpufreq_remove(struct platform_device *pdev)
 	if (!IS_ERR(pu_reg))
 		regulator_put(pu_reg);
 	regulator_put(soc_reg);
+<<<<<<< HEAD
 
 	clk_bulk_put(num_clks, clks);
+=======
+	clk_put(arm_clk);
+	clk_put(pll1_sys_clk);
+	clk_put(pll1_sw_clk);
+	clk_put(step_clk);
+	clk_put(pll2_pfd2_396m_clk);
+	clk_put(pll2_bus_clk);
+	clk_put(secondary_sel_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -549,7 +714,10 @@ static struct platform_driver imx6q_cpufreq_platdrv = {
 };
 module_platform_driver(imx6q_cpufreq_platdrv);
 
+<<<<<<< HEAD
 MODULE_ALIAS("platform:imx6q-cpufreq");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Shawn Guo <shawn.guo@linaro.org>");
 MODULE_DESCRIPTION("Freescale i.MX6Q cpufreq driver");
 MODULE_LICENSE("GPL");

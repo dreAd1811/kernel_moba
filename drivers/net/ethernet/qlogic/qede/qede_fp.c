@@ -408,12 +408,21 @@ static void qede_xdp_tx_int(struct qede_dev *edev, struct qede_tx_queue *txq)
 
 static int qede_tx_int(struct qede_dev *edev, struct qede_tx_queue *txq)
 {
+<<<<<<< HEAD
 	unsigned int pkts_compl = 0, bytes_compl = 0;
 	struct netdev_queue *netdev_txq;
 	u16 hw_bd_cons;
 	int rc;
 
 	netdev_txq = netdev_get_tx_queue(edev->ndev, txq->ndev_txq_id);
+=======
+	struct netdev_queue *netdev_txq;
+	u16 hw_bd_cons;
+	unsigned int pkts_compl = 0, bytes_compl = 0;
+	int rc;
+
+	netdev_txq = netdev_get_tx_queue(edev->ndev, txq->index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hw_bd_cons = le16_to_cpu(*txq->hw_cons_ptr);
 	barrier();
@@ -660,8 +669,12 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
 
 	/* Add one frag and update the appropriate fields in the skb */
 	skb_fill_page_desc(skb, tpa_info->frag_id++,
+<<<<<<< HEAD
 			   current_bd->data,
 			   current_bd->page_offset + rxq->rx_headroom,
+=======
+			   current_bd->data, current_bd->page_offset,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   len_on_bd);
 
 	if (unlikely(qede_realloc_rx_buffer(rxq, current_bd))) {
@@ -672,7 +685,12 @@ static int qede_fill_frag_skb(struct qede_dev *edev,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	qede_rx_bd_ring_consume(rxq);
+=======
+	qed_chain_consume(&rxq->rx_bd_ring);
+	rxq->sw_rx_cons++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb->data_len += len_on_bd;
 	skb->truesize += rxq->rx_buf_seg_size;
@@ -721,6 +739,7 @@ static u8 qede_check_tunn_csum(u16 flag)
 	return QEDE_CSUM_UNNECESSARY | tcsum;
 }
 
+<<<<<<< HEAD
 static inline struct sk_buff *
 qede_build_skb(struct qede_rx_queue *rxq,
 	       struct sw_rx_data *bd, u16 len, u16 pad)
@@ -811,11 +830,14 @@ out:
 	return skb;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void qede_tpa_start(struct qede_dev *edev,
 			   struct qede_rx_queue *rxq,
 			   struct eth_fast_path_rx_tpa_start_cqe *cqe)
 {
 	struct qede_agg_info *tpa_info = &rxq->tpa_info[cqe->tpa_agg_index];
+<<<<<<< HEAD
 	struct sw_rx_data *sw_rx_data_cons;
 	u16 pad;
 
@@ -837,13 +859,67 @@ static void qede_tpa_start(struct qede_dev *edev,
 		 */
 		tpa_info->tpa_start_fail = true;
 		qede_rx_bd_ring_consume(rxq);
+=======
+	struct eth_rx_bd *rx_bd_cons = qed_chain_consume(&rxq->rx_bd_ring);
+	struct eth_rx_bd *rx_bd_prod = qed_chain_produce(&rxq->rx_bd_ring);
+	struct sw_rx_data *replace_buf = &tpa_info->buffer;
+	dma_addr_t mapping = tpa_info->buffer_mapping;
+	struct sw_rx_data *sw_rx_data_cons;
+	struct sw_rx_data *sw_rx_data_prod;
+
+	sw_rx_data_cons = &rxq->sw_rx_ring[rxq->sw_rx_cons & NUM_RX_BDS_MAX];
+	sw_rx_data_prod = &rxq->sw_rx_ring[rxq->sw_rx_prod & NUM_RX_BDS_MAX];
+
+	/* Use pre-allocated replacement buffer - we can't release the agg.
+	 * start until its over and we don't want to risk allocation failing
+	 * here, so re-allocate when aggregation will be over.
+	 */
+	sw_rx_data_prod->mapping = replace_buf->mapping;
+
+	sw_rx_data_prod->data = replace_buf->data;
+	rx_bd_prod->addr.hi = cpu_to_le32(upper_32_bits(mapping));
+	rx_bd_prod->addr.lo = cpu_to_le32(lower_32_bits(mapping));
+	sw_rx_data_prod->page_offset = replace_buf->page_offset;
+
+	rxq->sw_rx_prod++;
+
+	/* move partial skb from cons to pool (don't unmap yet)
+	 * save mapping, incase we drop the packet later on.
+	 */
+	tpa_info->buffer = *sw_rx_data_cons;
+	mapping = HILO_U64(le32_to_cpu(rx_bd_cons->addr.hi),
+			   le32_to_cpu(rx_bd_cons->addr.lo));
+
+	tpa_info->buffer_mapping = mapping;
+	rxq->sw_rx_cons++;
+
+	/* set tpa state to start only if we are able to allocate skb
+	 * for this aggregation, otherwise mark as error and aggregation will
+	 * be dropped
+	 */
+	tpa_info->skb = netdev_alloc_skb(edev->ndev,
+					 le16_to_cpu(cqe->len_on_first_bd));
+	if (unlikely(!tpa_info->skb)) {
+		DP_NOTICE(edev, "Failed to allocate SKB for gro\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tpa_info->state = QEDE_AGG_STATE_ERROR;
 		goto cons_buf;
 	}
 
+<<<<<<< HEAD
 	tpa_info->frag_id = 0;
 	tpa_info->state = QEDE_AGG_STATE_START;
 
+=======
+	/* Start filling in the aggregation info */
+	skb_put(tpa_info->skb, le16_to_cpu(cqe->len_on_first_bd));
+	tpa_info->frag_id = 0;
+	tpa_info->state = QEDE_AGG_STATE_START;
+
+	/* Store some information from first CQE */
+	tpa_info->start_cqe_placement_offset = cqe->placement_offset;
+	tpa_info->start_cqe_bd_len = le16_to_cpu(cqe->len_on_first_bd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((le16_to_cpu(cqe->pars_flags.flags) >>
 	     PARSING_AND_ERR_FLAGS_TAG8021QEXIST_SHIFT) &
 	    PARSING_AND_ERR_FLAGS_TAG8021QEXIST_MASK)
@@ -964,10 +1040,13 @@ static int qede_tpa_end(struct qede_dev *edev,
 	tpa_info = &rxq->tpa_info[cqe->tpa_agg_index];
 	skb = tpa_info->skb;
 
+<<<<<<< HEAD
 	if (tpa_info->buffer.page_offset == PAGE_SIZE)
 		dma_unmap_page(rxq->dev, tpa_info->buffer.mapping,
 			       PAGE_SIZE, rxq->data_direction);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; cqe->len_list[i]; i++)
 		qede_fill_frag_skb(edev, rxq, cqe->tpa_agg_index,
 				   le16_to_cpu(cqe->len_list[i]));
@@ -988,6 +1067,14 @@ static int qede_tpa_end(struct qede_dev *edev,
 		       "Strange - total packet len [cqe] is %4x but SKB has len %04x\n",
 		       le16_to_cpu(cqe->total_packet_len), skb->len);
 
+<<<<<<< HEAD
+=======
+	memcpy(skb->data,
+	       page_address(tpa_info->buffer.data) +
+	       tpa_info->start_cqe_placement_offset +
+	       tpa_info->buffer.page_offset, tpa_info->start_cqe_bd_len);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Finalize the SKB */
 	skb->protocol = eth_type_trans(skb, edev->ndev);
 	skb->ip_summed = CHECKSUM_UNNECESSARY;
@@ -1004,12 +1091,15 @@ static int qede_tpa_end(struct qede_dev *edev,
 	return 1;
 err:
 	tpa_info->state = QEDE_AGG_STATE_NONE;
+<<<<<<< HEAD
 
 	if (tpa_info->tpa_start_fail) {
 		qede_reuse_page(rxq, &tpa_info->buffer);
 		tpa_info->tpa_start_fail = false;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_kfree_skb_any(tpa_info->skb);
 	tpa_info->skb = NULL;
 	return 0;
@@ -1072,9 +1162,13 @@ static bool qede_rx_xdp(struct qede_dev *edev,
 
 	xdp.data_hard_start = page_address(bd->data);
 	xdp.data = xdp.data_hard_start + *data_offset;
+<<<<<<< HEAD
 	xdp_set_data_meta_invalid(&xdp);
 	xdp.data_end = xdp.data + *len;
 	xdp.rxq = &rxq->xdp_rxq;
+=======
+	xdp.data_end = xdp.data + *len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Queues always have a full reset currently, so for the time
 	 * being until there's atomic program replace just mark read
@@ -1119,10 +1213,15 @@ static bool qede_rx_xdp(struct qede_dev *edev,
 
 	default:
 		bpf_warn_invalid_xdp_action(act);
+<<<<<<< HEAD
 		/* Fall through */
 	case XDP_ABORTED:
 		trace_xdp_exception(edev->ndev, prog, act);
 		/* Fall through */
+=======
+	case XDP_ABORTED:
+		trace_xdp_exception(edev->ndev, prog, act);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case XDP_DROP:
 		qede_recycle_rx_bd_ring(rxq, cqe->bd_num);
 	}
@@ -1130,6 +1229,68 @@ static bool qede_rx_xdp(struct qede_dev *edev,
 	return false;
 }
 
+<<<<<<< HEAD
+=======
+static struct sk_buff *qede_rx_allocate_skb(struct qede_dev *edev,
+					    struct qede_rx_queue *rxq,
+					    struct sw_rx_data *bd, u16 len,
+					    u16 pad)
+{
+	unsigned int offset = bd->page_offset + pad;
+	struct skb_frag_struct *frag;
+	struct page *page = bd->data;
+	unsigned int pull_len;
+	struct sk_buff *skb;
+	unsigned char *va;
+
+	/* Allocate a new SKB with a sufficient large header len */
+	skb = netdev_alloc_skb(edev->ndev, QEDE_RX_HDR_SIZE);
+	if (unlikely(!skb))
+		return NULL;
+
+	/* Copy data into SKB - if it's small, we can simply copy it and
+	 * re-use the already allcoated & mapped memory.
+	 */
+	if (len + pad <= edev->rx_copybreak) {
+		skb_put_data(skb, page_address(page) + offset, len);
+		qede_reuse_page(rxq, bd);
+		goto out;
+	}
+
+	frag = &skb_shinfo(skb)->frags[0];
+
+	skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+			page, offset, len, rxq->rx_buf_seg_size);
+
+	va = skb_frag_address(frag);
+	pull_len = eth_get_headlen(va, QEDE_RX_HDR_SIZE);
+
+	/* Align the pull_len to optimize memcpy */
+	memcpy(skb->data, va, ALIGN(pull_len, sizeof(long)));
+
+	/* Correct the skb & frag sizes offset after the pull */
+	skb_frag_size_sub(frag, pull_len);
+	frag->page_offset += pull_len;
+	skb->data_len -= pull_len;
+	skb->tail += pull_len;
+
+	if (unlikely(qede_realloc_rx_buffer(rxq, bd))) {
+		/* Incr page ref count to reuse on allocation failure so
+		 * that it doesn't get freed while freeing SKB [as its
+		 * already mapped there].
+		 */
+		page_ref_inc(page);
+		dev_kfree_skb_any(skb);
+		return NULL;
+	}
+
+out:
+	/* We've consumed the first BD and prepared an SKB */
+	qede_rx_bd_ring_consume(rxq);
+	return skb;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qede_rx_build_jumbo(struct qede_dev *edev,
 			       struct qede_rx_queue *rxq,
 			       struct sk_buff *skb,
@@ -1170,7 +1331,11 @@ static int qede_rx_build_jumbo(struct qede_dev *edev,
 			       PAGE_SIZE, DMA_FROM_DEVICE);
 
 		skb_fill_page_desc(skb, skb_shinfo(skb)->nr_frags++,
+<<<<<<< HEAD
 				   bd->data, rxq->rx_headroom, cur_size);
+=======
+				   bd->data, 0, cur_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		skb->truesize += PAGE_SIZE;
 		skb->data_len += cur_size;
@@ -1269,7 +1434,11 @@ static int qede_rx_process_cqe(struct qede_dev *edev,
 	/* Basic validation passed; Need to prepare an SKB. This would also
 	 * guarantee to finally consume the first BD upon success.
 	 */
+<<<<<<< HEAD
 	skb = qede_rx_build_skb(edev, rxq, bd, len, pad);
+=======
+	skb = qede_rx_allocate_skb(edev, rxq, bd, len, pad);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb) {
 		rxq->rx_alloc_errors++;
 		qede_recycle_rx_bd_ring(rxq, fp_cqe->bd_num);
@@ -1365,6 +1534,7 @@ static bool qede_poll_is_more_work(struct qede_fastpath *fp)
 		if (qede_txq_has_work(fp->xdp_tx))
 			return true;
 
+<<<<<<< HEAD
 	if (likely(fp->type & QEDE_FASTPATH_TX)) {
 		int cos;
 
@@ -1373,6 +1543,11 @@ static bool qede_poll_is_more_work(struct qede_fastpath *fp)
 				return true;
 		}
 	}
+=======
+	if (likely(fp->type & QEDE_FASTPATH_TX))
+		if (qede_txq_has_work(fp->txq))
+			return true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return false;
 }
@@ -1387,6 +1562,7 @@ int qede_poll(struct napi_struct *napi, int budget)
 	struct qede_dev *edev = fp->edev;
 	int rx_work_done = 0;
 
+<<<<<<< HEAD
 	if (likely(fp->type & QEDE_FASTPATH_TX)) {
 		int cos;
 
@@ -1395,6 +1571,10 @@ int qede_poll(struct napi_struct *napi, int budget)
 				qede_tx_int(edev, &fp->txq[cos]);
 		}
 	}
+=======
+	if (likely(fp->type & QEDE_FASTPATH_TX) && qede_txq_has_work(fp->txq))
+		qede_tx_int(edev, fp->txq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((fp->type & QEDE_FASTPATH_XDP) && qede_txq_has_work(fp->xdp_tx))
 		qede_xdp_tx_int(edev, fp->xdp_tx);
@@ -1455,8 +1635,13 @@ netdev_tx_t qede_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 
 	/* Get tx-queue context and netdev index */
 	txq_index = skb_get_queue_mapping(skb);
+<<<<<<< HEAD
 	WARN_ON(txq_index >= QEDE_TSS_COUNT(edev) * edev->dev_info.num_tc);
 	txq = QEDE_NDEV_TXQ_ID_TO_TXQ(edev, txq_index);
+=======
+	WARN_ON(txq_index >= QEDE_TSS_COUNT(edev));
+	txq = edev->fp_array[edev->fp_num_rx + txq_index].txq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netdev_txq = netdev_get_tx_queue(ndev, txq_index);
 
 	WARN_ON(qed_chain_get_elem_left(&txq->tx_pbl) < (MAX_SKB_FRAGS + 1));
@@ -1695,6 +1880,7 @@ netdev_tx_t qede_start_xmit(struct sk_buff *skb, struct net_device *ndev)
 	return NETDEV_TX_OK;
 }
 
+<<<<<<< HEAD
 u16 qede_select_queue(struct net_device *dev, struct sk_buff *skb,
 		      struct net_device *sb_dev,
 		      select_queue_fallback_t fallback)
@@ -1708,6 +1894,8 @@ u16 qede_select_queue(struct net_device *dev, struct sk_buff *skb,
 		fallback(dev, skb, NULL) % total_txq :  0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* 8B udp header + 8B base tunnel header + 32B option length */
 #define QEDE_MAX_TUN_HDR_LEN 48
 

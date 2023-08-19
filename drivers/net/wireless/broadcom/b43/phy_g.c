@@ -2297,7 +2297,11 @@ static u8 b43_gphy_aci_detect(struct b43_wldev *dev, u8 channel)
 static u8 b43_gphy_aci_scan(struct b43_wldev *dev)
 {
 	struct b43_phy *phy = &dev->phy;
+<<<<<<< HEAD
 	u8 ret[13] = { 0 };
+=======
+	u8 ret[13];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int channel = phy->channel;
 	unsigned int i, j, start, end;
 

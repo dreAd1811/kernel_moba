@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
 /**********************************************************
  * Copyright 1998-2015 VMware, Inc.
+=======
+/**********************************************************
+ * Copyright 1998-2015 VMware, Inc.  All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -47,10 +52,17 @@
  * the SVGA3D protocol and remain reserved; they should not be used in the
  * future.
  *
+<<<<<<< HEAD
  * IDs between 1040 and 2999 (inclusive) are available for use by the
  * current SVGA3D protocol.
  *
  * FIFO clients other than SVGA3D should stay below 1000, or at 3000
+=======
+ * IDs between 1040 and 1999 (inclusive) are available for use by the
+ * current SVGA3D protocol.
+ *
+ * FIFO clients other than SVGA3D should stay below 1000, or at 2000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * and up.
  */
 
@@ -90,6 +102,7 @@ typedef enum {
    SVGA_3D_CMD_BLIT_SURFACE_TO_SCREEN                     = 1069,
    SVGA_3D_CMD_SURFACE_DEFINE_V2                          = 1070,
    SVGA_3D_CMD_GENERATE_MIPMAPS                           = 1071,
+<<<<<<< HEAD
    SVGA_3D_CMD_DEAD4                                      = 1072,
    SVGA_3D_CMD_DEAD5                                      = 1073,
    SVGA_3D_CMD_DEAD6                                      = 1074,
@@ -103,6 +116,21 @@ typedef enum {
    SVGA_3D_CMD_SCREEN_DMA                                 = 1082,
    SVGA_3D_CMD_DEAD1                                      = 1083,
    SVGA_3D_CMD_DEAD2                                      = 1084,
+=======
+   SVGA_3D_CMD_VIDEO_CREATE_DECODER                       = 1072,
+   SVGA_3D_CMD_VIDEO_DESTROY_DECODER                      = 1073,
+   SVGA_3D_CMD_VIDEO_CREATE_PROCESSOR                     = 1074,
+   SVGA_3D_CMD_VIDEO_DESTROY_PROCESSOR                    = 1075,
+   SVGA_3D_CMD_VIDEO_DECODE_START_FRAME                   = 1076,
+   SVGA_3D_CMD_VIDEO_DECODE_RENDER                        = 1077,
+   SVGA_3D_CMD_VIDEO_DECODE_END_FRAME                     = 1078,
+   SVGA_3D_CMD_VIDEO_PROCESS_FRAME                        = 1079,
+   SVGA_3D_CMD_ACTIVATE_SURFACE                           = 1080,
+   SVGA_3D_CMD_DEACTIVATE_SURFACE                         = 1081,
+   SVGA_3D_CMD_SCREEN_DMA                                 = 1082,
+   SVGA_3D_CMD_SET_UNITY_SURFACE_COOKIE                   = 1083,
+   SVGA_3D_CMD_OPEN_CONTEXT_SURFACE                       = 1084,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
    SVGA_3D_CMD_LOGICOPS_BITBLT                            = 1085,
    SVGA_3D_CMD_LOGICOPS_TRANSBLT                          = 1086,
@@ -218,7 +246,11 @@ typedef enum {
    SVGA_3D_CMD_DX_CLEAR_DEPTHSTENCIL_VIEW                 = 1177,
    SVGA_3D_CMD_DX_PRED_COPY_REGION                        = 1178,
    SVGA_3D_CMD_DX_PRED_COPY                               = 1179,
+<<<<<<< HEAD
    SVGA_3D_CMD_DX_PRESENTBLT                              = 1180,
+=======
+   SVGA_3D_CMD_DX_STRETCHBLT                              = 1180,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA_3D_CMD_DX_GENMIPS                                 = 1181,
    SVGA_3D_CMD_DX_UPDATE_SUBRESOURCE                      = 1182,
    SVGA_3D_CMD_DX_READBACK_SUBRESOURCE                    = 1183,
@@ -255,7 +287,11 @@ typedef enum {
    SVGA_3D_CMD_DX_READBACK_ALL_QUERY                      = 1214,
    SVGA_3D_CMD_DX_PRED_TRANSFER_FROM_BUFFER               = 1215,
    SVGA_3D_CMD_DX_MOB_FENCE_64                            = 1216,
+<<<<<<< HEAD
    SVGA_3D_CMD_DX_BIND_ALL_SHADER                         = 1217,
+=======
+   SVGA_3D_CMD_DX_BIND_SHADER_ON_CONTEXT                  = 1217,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA_3D_CMD_DX_HINT                                    = 1218,
    SVGA_3D_CMD_DX_BUFFER_UPDATE                           = 1219,
    SVGA_3D_CMD_DX_SET_VS_CONSTANT_BUFFER_OFFSET           = 1220,
@@ -263,12 +299,17 @@ typedef enum {
    SVGA_3D_CMD_DX_SET_GS_CONSTANT_BUFFER_OFFSET           = 1222,
 
    /*
+<<<<<<< HEAD
     * Reserve some IDs to be used for the SM5 shader types.
+=======
+    * Reserve some IDs to be used for the DX11 shader types.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     */
    SVGA_3D_CMD_DX_RESERVED1                               = 1223,
    SVGA_3D_CMD_DX_RESERVED2                               = 1224,
    SVGA_3D_CMD_DX_RESERVED3                               = 1225,
 
+<<<<<<< HEAD
    SVGA_3D_CMD_DX_COND_BIND_ALL_SHADER                    = 1226,
    SVGA_3D_CMD_DX_MAX                                     = 1227,
 
@@ -304,6 +345,13 @@ typedef enum {
 
 #define SVGA_NUM_3D_CMD (SVGA_3D_CMD_MAX - SVGA_3D_CMD_BASE)
 
+=======
+   SVGA_3D_CMD_DX_MAX                                     = 1226,
+   SVGA_3D_CMD_MAX                                        = 1226,
+   SVGA_3D_CMD_FUTURE_MAX                                 = 3000
+} SVGAFifo3dCmdId;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FIFO command format definitions:
  */
@@ -332,7 +380,11 @@ typedef
 #include "vmware_pack_begin.h"
 struct {
    uint32                      sid;
+<<<<<<< HEAD
    SVGA3dSurface1Flags         surfaceFlags;
+=======
+   SVGA3dSurfaceFlags          surfaceFlags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA3dSurfaceFormat         format;
    /*
     * If surfaceFlags has SVGA3D_SURFACE_CUBEMAP bit set, all SVGA3dSurfaceFace
@@ -358,7 +410,11 @@ typedef
 #include "vmware_pack_begin.h"
 struct {
    uint32                      sid;
+<<<<<<< HEAD
    SVGA3dSurface1Flags         surfaceFlags;
+=======
+   SVGA3dSurfaceFlags          surfaceFlags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA3dSurfaceFormat         format;
    /*
     * If surfaceFlags has SVGA3D_SURFACE_CUBEMAP bit set, all SVGA3dSurfaceFace
@@ -490,6 +546,7 @@ struct {
 #include "vmware_pack_end.h"
 SVGA3dCmdSurfaceCopy;               /* SVGA_3D_CMD_SURFACE_COPY */
 
+<<<<<<< HEAD
 /*
  * Perform a surface copy within the same image.
  * The src/dest boxes are allowed to overlap.
@@ -512,6 +569,8 @@ struct {
 #include "vmware_pack_end.h"
 SVGA3dCmdWholeSurfaceCopy;               /* SVGA_3D_CMD_WHOLE_SURFACE_COPY */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef
 #include "vmware_pack_begin.h"
 struct {
@@ -825,6 +884,7 @@ struct {
 #include "vmware_pack_end.h"
 SVGA3dVertexElement;
 
+<<<<<<< HEAD
 /*
  * Should the vertex element respect the stream value?  The high bit of the
  * stream should be set to indicate that the stream should be respected.  If
@@ -836,6 +896,8 @@ SVGA3dVertexElement;
  */
 #define SVGA3D_VERTEX_ELEMENT_RESPECT_STREAM (1 << 7)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef
 #include "vmware_pack_begin.h"
 struct {
@@ -1166,6 +1228,11 @@ struct {
 #include "vmware_pack_end.h"
 SVGA3dCmdGenerateMipmaps;             /* SVGA_3D_CMD_GENERATE_MIPMAPS */
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef
 #include "vmware_pack_begin.h"
 struct {
@@ -1209,6 +1276,41 @@ struct SVGA3dCmdScreenDMA {
 SVGA3dCmdScreenDMA;        /* SVGA_3D_CMD_SCREEN_DMA */
 
 /*
+<<<<<<< HEAD
+=======
+ * Set Unity Surface Cookie
+ *
+ * Associates the supplied cookie with the surface id for use with
+ * Unity.  This cookie is a hint from guest to host, there is no way
+ * for the guest to readback the cookie and the host is free to drop
+ * the cookie association at will.  The default value for the cookie
+ * on all surfaces is 0.
+ */
+
+typedef
+#include "vmware_pack_begin.h"
+struct SVGA3dCmdSetUnitySurfaceCookie {
+   uint32 sid;
+   uint64 cookie;
+}
+#include "vmware_pack_end.h"
+SVGA3dCmdSetUnitySurfaceCookie;   /* SVGA_3D_CMD_SET_UNITY_SURFACE_COOKIE */
+
+/*
+ * Open a context-specific surface in a non-context-specific manner.
+ */
+
+typedef
+#include "vmware_pack_begin.h"
+struct SVGA3dCmdOpenContextSurface {
+   uint32 sid;
+}
+#include "vmware_pack_end.h"
+SVGA3dCmdOpenContextSurface;   /* SVGA_3D_CMD_OPEN_CONTEXT_SURFACE */
+
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Logic ops
  */
 
@@ -1354,7 +1456,11 @@ typedef
 #include "vmware_pack_begin.h"
 struct {
    SVGA3dSurfaceFormat format;
+<<<<<<< HEAD
    SVGA3dSurface1Flags surface1Flags;
+=======
+   SVGA3dSurfaceFlags surfaceFlags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    uint32 numMipLevels;
    uint32 multisampleCount;
    SVGA3dTextureFilter autogenFilter;
@@ -1362,11 +1468,15 @@ struct {
    SVGAMobId mobid;
    uint32 arraySize;
    uint32 mobPitch;
+<<<<<<< HEAD
    SVGA3dSurface2Flags surface2Flags;
    uint8 multisamplePattern;
    uint8 qualityLevel;
    uint8  pad0[2];
    uint32 pad1[3];
+=======
+   uint32 pad[5];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #include "vmware_pack_end.h"
 SVGAOTableSurfaceEntry;
@@ -1394,8 +1504,12 @@ struct {
 SVGAOTableShaderEntry;
 #define SVGA3D_OTABLE_SHADER_ENTRY_SIZE (sizeof(SVGAOTableShaderEntry))
 
+<<<<<<< HEAD
 #define SVGA_STFLAG_PRIMARY  (1 << 0)
 #define SVGA_STFLAG_RESERVED (1 << 1) /* Added with cap SVGA_CAP_HP_CMD_QUEUE */
+=======
+#define SVGA_STFLAG_PRIMARY (1 << 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef uint32 SVGAScreenTargetFlags;
 
 typedef
@@ -1563,6 +1677,7 @@ struct {
 #include "vmware_pack_end.h"
 SVGA3dCmdSetOTableBase64;  /* SVGA_3D_CMD_SET_OTABLE_BASE64 */
 
+<<<<<<< HEAD
 /*
  * Guests using SVGA_3D_CMD_GROW_OTABLE are promising that
  * the new OTable contains the same contents as the old one, except possibly
@@ -1582,6 +1697,8 @@ struct {
 #include "vmware_pack_end.h"
 SVGA3dCmdGrowOTable;  /* SVGA_3D_CMD_GROW_OTABLE */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef
 #include "vmware_pack_begin.h"
 struct {
@@ -1669,7 +1786,11 @@ typedef
 #include "vmware_pack_begin.h"
 struct SVGA3dCmdDefineGBSurface {
    uint32 sid;
+<<<<<<< HEAD
    SVGA3dSurface1Flags surfaceFlags;
+=======
+   SVGA3dSurfaceFlags surfaceFlags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA3dSurfaceFormat format;
    uint32 numMipLevels;
    uint32 multisampleCount;
@@ -1680,6 +1801,7 @@ struct SVGA3dCmdDefineGBSurface {
 SVGA3dCmdDefineGBSurface;   /* SVGA_3D_CMD_DEFINE_GB_SURFACE */
 
 /*
+<<<<<<< HEAD
  * Defines a guest-backed surface, adding the arraySize field.
  */
 typedef
@@ -1719,6 +1841,8 @@ struct SVGA3dCmdDefineGBSurface_v3 {
 SVGA3dCmdDefineGBSurface_v3;   /* SVGA_3D_CMD_DEFINE_GB_SURFACE_V3 */
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Destroy a guest-backed surface.
  */
 
@@ -1765,7 +1889,11 @@ SVGA3dCmdBindGBSurfaceWithPitch;   /* SVGA_3D_CMD_BIND_GB_SURFACE_WITH_PITCH */
 
 typedef
 #include "vmware_pack_begin.h"
+<<<<<<< HEAD
 struct SVGA3dCmdCondBindGBSurface {
+=======
+struct{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    uint32 sid;
    SVGAMobId testMobid;
    SVGAMobId mobid;
@@ -2159,6 +2287,7 @@ struct {
    uint32 mobOffset;
 }
 #include "vmware_pack_end.h"
+<<<<<<< HEAD
 SVGA3dCmdGBMobFence;  /* SVGA_3D_CMD_GB_MOB_FENCE */
 
 typedef
@@ -2180,5 +2309,8 @@ SVGA3dCmdScreenCopy;  /* SVGA_3D_CMD_SCREEN_COPY */
 #define SVGA_SCREEN_COPY_STATUS_FAILURE 0x00
 #define SVGA_SCREEN_COPY_STATUS_SUCCESS 0x01
 #define SVGA_SCREEN_COPY_STATUS_INVALID 0xFFFFFFFF
+=======
+SVGA3dCmdGBMobFence;  /* SVGA_3D_CMD_GB_MOB_FENCE*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _SVGA3D_CMD_H_ */

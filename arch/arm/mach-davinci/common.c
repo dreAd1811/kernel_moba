@@ -20,6 +20,11 @@
 #include <mach/common.h>
 #include <mach/cputype.h>
 
+<<<<<<< HEAD
+=======
+#include "clock.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct davinci_soc_info davinci_soc_info;
 EXPORT_SYMBOL(davinci_soc_info);
 
@@ -75,7 +80,11 @@ static int __init davinci_init_id(struct davinci_soc_info *soc_info)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 void __init davinci_common_init(const struct davinci_soc_info *soc_info)
+=======
+void __init davinci_common_init(struct davinci_soc_info *soc_info)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -116,4 +125,8 @@ err:
 void __init davinci_init_late(void)
 {
 	davinci_cpufreq_init();
+<<<<<<< HEAD
+=======
+	davinci_clk_disable_unused();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

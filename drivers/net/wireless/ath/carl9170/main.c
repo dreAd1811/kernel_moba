@@ -48,11 +48,19 @@
 #include "cmd.h"
 
 static bool modparam_nohwcrypt;
+<<<<<<< HEAD
 module_param_named(nohwcrypt, modparam_nohwcrypt, bool, 0444);
 MODULE_PARM_DESC(nohwcrypt, "Disable hardware crypto offload.");
 
 int modparam_noht;
 module_param_named(noht, modparam_noht, int, 0444);
+=======
+module_param_named(nohwcrypt, modparam_nohwcrypt, bool, S_IRUGO);
+MODULE_PARM_DESC(nohwcrypt, "Disable hardware crypto offload.");
+
+int modparam_noht;
+module_param_named(noht, modparam_noht, int, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(noht, "Disable MPDU aggregation.");
 
 #define RATE(_bitrate, _hw_rate, _txpidx, _flags) {	\
@@ -582,11 +590,18 @@ static int carl9170_init_interface(struct ar9170 *ar,
 	ar->disable_offload |= ((vif->type != NL80211_IFTYPE_STATION) &&
 	    (vif->type != NL80211_IFTYPE_AP));
 
+<<<<<<< HEAD
 	/* While the driver supports HW offload in a single
 	 * P2P client configuration, it doesn't support HW
 	 * offload in the favourit, concurrent P2P GO+CLIENT
 	 * configuration. Hence, HW offload will always be
 	 * disabled for P2P.
+=======
+	/* The driver used to have P2P GO+CLIENT support,
+	 * but since this was dropped and we don't know if
+	 * there are any gremlins lurking in the shadows,
+	 * so best we keep HW offload disabled for P2P.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	ar->disable_offload |= vif->p2p;
 
@@ -639,6 +654,7 @@ static int carl9170_op_add_interface(struct ieee80211_hw *hw,
 			if (vif->type == NL80211_IFTYPE_STATION)
 				break;
 
+<<<<<<< HEAD
 			/* P2P GO [master] use-case
 			 * Because the P2P GO station is selected dynamically
 			 * by all participating peers of a WIFI Direct network,
@@ -651,6 +667,8 @@ static int carl9170_op_add_interface(struct ieee80211_hw *hw,
 				break;
 			}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			err = -EBUSY;
 			rcu_read_unlock();
 
@@ -1958,7 +1976,11 @@ static int carl9170_parse_eeprom(struct ar9170 *ar)
 	if (!bands)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ar->survey = kcalloc(chans, sizeof(struct survey_info), GFP_KERNEL);
+=======
+	ar->survey = kzalloc(sizeof(struct survey_info) * chans, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ar->survey)
 		return -ENOMEM;
 	ar->num_channels = chans;
@@ -1988,9 +2010,14 @@ int carl9170_register(struct ar9170 *ar)
 	if (WARN_ON(ar->mem_bitmap))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ar->mem_bitmap = kcalloc(roundup(ar->fw.mem_blocks, BITS_PER_LONG),
 				 sizeof(unsigned long),
 				 GFP_KERNEL);
+=======
+	ar->mem_bitmap = kzalloc(roundup(ar->fw.mem_blocks, BITS_PER_LONG) *
+				 sizeof(unsigned long), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ar->mem_bitmap)
 		return -ENOMEM;

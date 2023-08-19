@@ -260,6 +260,7 @@ int of_led_classdev_register(struct device *parent, struct device_node *np,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	mutex_init(&led_cdev->led_access);
 	mutex_lock(&led_cdev->led_access);
 	led_cdev->dev = device_create_with_groups(leds_class, parent, 0,
@@ -268,6 +269,12 @@ int of_led_classdev_register(struct device *parent, struct device_node *np,
 		mutex_unlock(&led_cdev->led_access);
 		return PTR_ERR(led_cdev->dev);
 	}
+=======
+	led_cdev->dev = device_create_with_groups(leds_class, parent, 0,
+				led_cdev, led_cdev->groups, "%s", name);
+	if (IS_ERR(led_cdev->dev))
+		return PTR_ERR(led_cdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	led_cdev->dev->of_node = np;
 
 	if (ret)
@@ -278,7 +285,10 @@ int of_led_classdev_register(struct device *parent, struct device_node *np,
 		ret = led_add_brightness_hw_changed(led_cdev);
 		if (ret) {
 			device_unregister(led_cdev->dev);
+<<<<<<< HEAD
 			mutex_unlock(&led_cdev->led_access);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}
@@ -290,6 +300,10 @@ int of_led_classdev_register(struct device *parent, struct device_node *np,
 #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
 	led_cdev->brightness_hw_changed = -1;
 #endif
+<<<<<<< HEAD
+=======
+	mutex_init(&led_cdev->led_access);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* add to the list of leds */
 	down_write(&leds_list_lock);
 	list_add_tail(&led_cdev->node, &leds_list);
@@ -306,8 +320,11 @@ int of_led_classdev_register(struct device *parent, struct device_node *np,
 	led_trigger_set_default(led_cdev);
 #endif
 
+<<<<<<< HEAD
 	mutex_unlock(&led_cdev->led_access);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(parent, "Registered led device: %s\n",
 			led_cdev->name);
 

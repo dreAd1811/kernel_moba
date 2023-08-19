@@ -21,10 +21,16 @@ typedef union {
 #endif	/* !__ASSEMBLY__ */
 
 #ifdef CONFIG_PARAVIRT
+<<<<<<< HEAD
 #define SHARED_KERNEL_PMD	((!static_cpu_has(X86_FEATURE_PTI) &&	\
 				 (pv_info.shared_kernel_pmd)))
 #else
 #define SHARED_KERNEL_PMD	(!static_cpu_has(X86_FEATURE_PTI))
+=======
+#define SHARED_KERNEL_PMD	(pv_info.shared_kernel_pmd)
+#else
+#define SHARED_KERNEL_PMD	1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /*
@@ -45,7 +51,10 @@ typedef union {
  */
 #define PTRS_PER_PTE	512
 
+<<<<<<< HEAD
 #define MAX_POSSIBLE_PHYSMEM_BITS	36
 #define PGD_KERNEL_START	(CONFIG_PAGE_OFFSET >> PGDIR_SHIFT)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _ASM_X86_PGTABLE_3LEVEL_DEFS_H */

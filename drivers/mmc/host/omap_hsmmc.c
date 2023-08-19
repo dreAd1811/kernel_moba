@@ -147,6 +147,13 @@
 #define OMAP_MMC_MAX_CLOCK	52000000
 #define DRIVER_NAME		"omap_hsmmc"
 
+<<<<<<< HEAD
+=======
+#define VDD_1V8			1800000		/* 180000 uV */
+#define VDD_3V0			3000000		/* 300000 uV */
+#define VDD_165_195		(ffs(MMC_VDD_165_195) - 1)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * One controller can have multiple slots, like on some omap boards using
  * omap.c controller driver. Luckily this is not currently done on any known
@@ -304,7 +311,12 @@ err_set_ocr:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int omap_hsmmc_set_pbias(struct omap_hsmmc_host *host, bool power_on)
+=======
+static int omap_hsmmc_set_pbias(struct omap_hsmmc_host *host, bool power_on,
+				int vdd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -312,6 +324,20 @@ static int omap_hsmmc_set_pbias(struct omap_hsmmc_host *host, bool power_on)
 		return 0;
 
 	if (power_on) {
+<<<<<<< HEAD
+=======
+		if (vdd <= VDD_165_195)
+			ret = regulator_set_voltage(host->pbias, VDD_1V8,
+						    VDD_1V8);
+		else
+			ret = regulator_set_voltage(host->pbias, VDD_3V0,
+						    VDD_3V0);
+		if (ret < 0) {
+			dev_err(host->dev, "pbias set voltage fail\n");
+			return ret;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (host->pbias_enabled == 0) {
 			ret = regulator_enable(host->pbias);
 			if (ret) {
@@ -334,7 +360,12 @@ static int omap_hsmmc_set_pbias(struct omap_hsmmc_host *host, bool power_on)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int omap_hsmmc_set_power(struct omap_hsmmc_host *host, int power_on)
+=======
+static int omap_hsmmc_set_power(struct omap_hsmmc_host *host, int power_on,
+				int vdd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mmc_host *mmc = host->mmc;
 	int ret = 0;
@@ -346,7 +377,11 @@ static int omap_hsmmc_set_power(struct omap_hsmmc_host *host, int power_on)
 	if (IS_ERR(mmc->supply.vmmc))
 		return 0;
 
+<<<<<<< HEAD
 	ret = omap_hsmmc_set_pbias(host, false);
+=======
+	ret = omap_hsmmc_set_pbias(host, false, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -368,7 +403,11 @@ static int omap_hsmmc_set_power(struct omap_hsmmc_host *host, int power_on)
 		if (ret)
 			return ret;
 
+<<<<<<< HEAD
 		ret = omap_hsmmc_set_pbias(host, true);
+=======
+		ret = omap_hsmmc_set_pbias(host, true, vdd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err_set_voltage;
 	} else {
@@ -445,7 +484,11 @@ static int omap_hsmmc_reg_get(struct omap_hsmmc_host *host)
 
 
 	ret = mmc_regulator_get_supply(mmc);
+<<<<<<< HEAD
 	if (ret)
+=======
+	if (ret == -EPROBE_DEFER)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	/* Allow an aux regulator */
@@ -1203,11 +1246,19 @@ static int omap_hsmmc_switch_opcond(struct omap_hsmmc_host *host, int vdd)
 		clk_disable_unprepare(host->dbclk);
 
 	/* Turn the power off */
+<<<<<<< HEAD
 	ret = omap_hsmmc_set_power(host, 0);
 
 	/* Turn the power ON with given VDD 1.8 or 3.0v */
 	if (!ret)
 		ret = omap_hsmmc_set_power(host, 1);
+=======
+	ret = omap_hsmmc_set_power(host, 0, 0);
+
+	/* Turn the power ON with given VDD 1.8 or 3.0v */
+	if (!ret)
+		ret = omap_hsmmc_set_power(host, 1, vdd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (host->dbclk)
 		clk_prepare_enable(host->dbclk);
 
@@ -1604,10 +1655,17 @@ static void omap_hsmmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
 	if (ios->power_mode != host->power_mode) {
 		switch (ios->power_mode) {
 		case MMC_POWER_OFF:
+<<<<<<< HEAD
 			omap_hsmmc_set_power(host, 0);
 			break;
 		case MMC_POWER_UP:
 			omap_hsmmc_set_power(host, 1);
+=======
+			omap_hsmmc_set_power(host, 0, 0);
+			break;
+		case MMC_POWER_UP:
+			omap_hsmmc_set_power(host, 1, ios->vdd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case MMC_POWER_ON:
 			do_send_init_stream = 1;
@@ -1661,6 +1719,39 @@ static void omap_hsmmc_init_card(struct mmc_host *mmc, struct mmc_card *card)
 
 	if (mmc_pdata(host)->init_card)
 		mmc_pdata(host)->init_card(card);
+<<<<<<< HEAD
+=======
+	else if (card->type == MMC_TYPE_SDIO ||
+		 card->type == MMC_TYPE_SD_COMBO) {
+		struct device_node *np = mmc_dev(mmc)->of_node;
+
+		/*
+		 * REVISIT: should be moved to sdio core and made more
+		 * general e.g. by expanding the DT bindings of child nodes
+		 * to provide a mechanism to provide this information:
+		 * Documentation/devicetree/bindings/mmc/mmc-card.txt
+		 */
+
+		np = of_get_compatible_child(np, "ti,wl1251");
+		if (np) {
+			/*
+			 * We have TI wl1251 attached to MMC3. Pass this
+			 * information to the SDIO core because it can't be
+			 * probed by normal methods.
+			 */
+
+			dev_info(host->dev, "found wl1251\n");
+			card->quirks |= MMC_QUIRK_NONSTD_SDIO;
+			card->cccr.wide_bus = 1;
+			card->cis.vendor = 0x104c;
+			card->cis.device = 0x9066;
+			card->cis.blksize = 512;
+			card->cis.max_dtr = 24000000;
+			card->ocr = 0x80;
+			of_node_put(np);
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void omap_hsmmc_enable_sdio_irq(struct mmc_host *mmc, int enable)

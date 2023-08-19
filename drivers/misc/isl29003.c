@@ -78,7 +78,10 @@ static int __isl29003_read_reg(struct i2c_client *client,
 			       u32 reg, u8 mask, u8 shift)
 {
 	struct isl29003_data *data = i2c_get_clientdata(client);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (data->reg_cache[reg] & mask) >> shift;
 }
 
@@ -161,7 +164,10 @@ static int isl29003_get_power_state(struct i2c_client *client)
 {
 	struct isl29003_data *data = i2c_get_clientdata(client);
 	u8 cmdreg = data->reg_cache[ISL29003_REG_COMMAND];
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ~cmdreg & ISL29003_ADC_PD;
 }
 
@@ -198,7 +204,10 @@ static ssize_t isl29003_show_range(struct device *dev,
 				   struct device_attribute *attr, char *buf)
 {
 	struct i2c_client *client = to_i2c_client(dev);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%i\n", isl29003_get_range(client));
 }
 
@@ -234,7 +243,10 @@ static ssize_t isl29003_show_resolution(struct device *dev,
 					char *buf)
 {
 	struct i2c_client *client = to_i2c_client(dev);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n", isl29003_get_resolution(client));
 }
 
@@ -268,7 +280,10 @@ static ssize_t isl29003_show_mode(struct device *dev,
 				  struct device_attribute *attr, char *buf)
 {
 	struct i2c_client *client = to_i2c_client(dev);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n", isl29003_get_mode(client));
 }
 
@@ -303,7 +318,10 @@ static ssize_t isl29003_show_power_state(struct device *dev,
 					 char *buf)
 {
 	struct i2c_client *client = to_i2c_client(dev);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n", isl29003_get_power_state(client));
 }
 
@@ -367,7 +385,10 @@ static int isl29003_init_client(struct i2c_client *client)
 	 * if one of the reads fails, we consider the init failed */
 	for (i = 0; i < ARRAY_SIZE(data->reg_cache); i++) {
 		int v = i2c_smbus_read_byte_data(client, i);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (v < 0)
 			return -ENODEV;
 

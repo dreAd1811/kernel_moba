@@ -55,8 +55,13 @@
 #include "fw_qos.h"
 
 #define DRV_NAME	"mlx4_core"
+<<<<<<< HEAD
 #define DRV_VERSION	"4.0-0"
 #define DRV_NAME_FOR_FW		"Linux," DRV_NAME "," DRV_VERSION
+=======
+#define PFX		DRV_NAME ": "
+#define DRV_VERSION	"4.0-0"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MLX4_FS_UDP_UC_EN		(1 << 1)
 #define MLX4_FS_TCP_UC_EN		(1 << 2)
@@ -84,6 +89,10 @@ enum {
 	MLX4_MIN_MGM_LOG_ENTRY_SIZE = 7,
 	MLX4_MAX_MGM_LOG_ENTRY_SIZE = 12,
 	MLX4_MAX_QP_PER_MGM = 4 * ((1 << MLX4_MAX_MGM_LOG_ENTRY_SIZE) / 16 - 2),
+<<<<<<< HEAD
+=======
+	MLX4_MTT_ENTRY_PER_SEG	= 8,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum {
@@ -1041,10 +1050,14 @@ void mlx4_start_catas_poll(struct mlx4_dev *dev);
 void mlx4_stop_catas_poll(struct mlx4_dev *dev);
 int mlx4_catas_init(struct mlx4_dev *dev);
 void mlx4_catas_end(struct mlx4_dev *dev);
+<<<<<<< HEAD
 int mlx4_crdump_init(struct mlx4_dev *dev);
 void mlx4_crdump_end(struct mlx4_dev *dev);
 int mlx4_restart_one(struct pci_dev *pdev, bool reload,
 		     struct devlink *devlink);
+=======
+int mlx4_restart_one(struct pci_dev *pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx4_register_device(struct mlx4_dev *dev);
 void mlx4_unregister_device(struct mlx4_dev *dev);
 void mlx4_dispatch_event(struct mlx4_dev *dev, enum mlx4_dev_event type,
@@ -1229,8 +1242,11 @@ void mlx4_srq_event(struct mlx4_dev *dev, u32 srqn, int event_type);
 void mlx4_enter_error_state(struct mlx4_dev_persistent *persist);
 int mlx4_comm_internal_err(u32 slave_read);
 
+<<<<<<< HEAD
 int mlx4_crdump_collect(struct mlx4_dev *dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx4_SENSE_PORT(struct mlx4_dev *dev, int port,
 		    enum mlx4_port_type *type);
 void mlx4_do_sense_ports(struct mlx4_dev *dev,

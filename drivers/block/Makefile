@@ -36,11 +36,16 @@ obj-$(CONFIG_BLK_DEV_RBD)     += rbd.o
 obj-$(CONFIG_BLK_DEV_PCIESSD_MTIP32XX)	+= mtip32xx/
 
 obj-$(CONFIG_BLK_DEV_RSXX) += rsxx/
+<<<<<<< HEAD
 obj-$(CONFIG_ZRAM) += zram/
 
 obj-$(CONFIG_BLK_DEV_NULL_BLK)	+= null_blk.o
 null_blk-objs	:= null_blk_main.o
 null_blk-$(CONFIG_BLK_DEV_ZONED) += null_blk_zoned.o
+=======
+obj-$(CONFIG_BLK_DEV_NULL_BLK)	+= null_blk.o
+obj-$(CONFIG_ZRAM) += zram/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 skd-y		:= skd_main.o
 swim_mod-y	:= swim.o swim_asm.o

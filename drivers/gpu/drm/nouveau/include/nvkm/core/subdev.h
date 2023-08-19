@@ -17,7 +17,10 @@ struct nvkm_subdev_func {
 	void *(*dtor)(struct nvkm_subdev *);
 	int (*preinit)(struct nvkm_subdev *);
 	int (*oneinit)(struct nvkm_subdev *);
+<<<<<<< HEAD
 	int (*info)(struct nvkm_subdev *, u64 mthd, u64 *data);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*init)(struct nvkm_subdev *);
 	int (*fini)(struct nvkm_subdev *, bool suspend);
 	void (*intr)(struct nvkm_subdev *);
@@ -30,13 +33,20 @@ void nvkm_subdev_del(struct nvkm_subdev **);
 int  nvkm_subdev_preinit(struct nvkm_subdev *);
 int  nvkm_subdev_init(struct nvkm_subdev *);
 int  nvkm_subdev_fini(struct nvkm_subdev *, bool suspend);
+<<<<<<< HEAD
 int  nvkm_subdev_info(struct nvkm_subdev *, u64, u64 *);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void nvkm_subdev_intr(struct nvkm_subdev *);
 
 /* subdev logging */
 #define nvkm_printk_(s,l,p,f,a...) do {                                        \
 	const struct nvkm_subdev *_subdev = (s);                               \
+<<<<<<< HEAD
 	if (CONFIG_NOUVEAU_DEBUG >= (l) && _subdev->debug >= (l)) {            \
+=======
+	if (_subdev->debug >= (l)) {                                           \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_##p(_subdev->device->dev, "%s: "f,                         \
 			nvkm_subdev_name[_subdev->index], ##a);                \
 	}                                                                      \

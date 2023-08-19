@@ -17,6 +17,15 @@
 
 #define PCI_IRQ_NONE		0xffffffff
 
+<<<<<<< HEAD
+=======
+/* Dynamic DMA mapping stuff.
+ */
+#define PCI_DMA_BUS_IS_PHYS	(0)
+
+struct pci_dev;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __KERNEL__ */
 
 #ifndef CONFIG_LEON_PCI

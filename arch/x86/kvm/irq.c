@@ -73,6 +73,7 @@ static int kvm_cpu_has_extint(struct kvm_vcpu *v)
  */
 int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v)
 {
+<<<<<<< HEAD
 	/*
 	 * FIXME: interrupt.injected represents an interrupt that it's
 	 * side-effects have already been applied (e.g. bit from IRR
@@ -86,11 +87,19 @@ int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v)
 	 */
 	if (!lapic_in_kernel(v))
 		return v->arch.interrupt.injected;
+=======
+	if (!lapic_in_kernel(v))
+		return v->arch.interrupt.pending;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (kvm_cpu_has_extint(v))
 		return 1;
 
+<<<<<<< HEAD
 	if (!is_guest_mode(v) && kvm_vcpu_apicv_active(v))
+=======
+	if (kvm_vcpu_apicv_active(v))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return kvm_apic_has_interrupt(v) != -1; /* LAPIC */
@@ -102,6 +111,7 @@ int kvm_cpu_has_injectable_intr(struct kvm_vcpu *v)
  */
 int kvm_cpu_has_interrupt(struct kvm_vcpu *v)
 {
+<<<<<<< HEAD
 	/*
 	 * FIXME: interrupt.injected represents an interrupt that it's
 	 * side-effects have already been applied (e.g. bit from IRR
@@ -115,6 +125,10 @@ int kvm_cpu_has_interrupt(struct kvm_vcpu *v)
 	 */
 	if (!lapic_in_kernel(v))
 		return v->arch.interrupt.injected;
+=======
+	if (!lapic_in_kernel(v))
+		return v->arch.interrupt.pending;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (kvm_cpu_has_extint(v))
 		return 1;
@@ -172,6 +186,7 @@ void __kvm_migrate_timers(struct kvm_vcpu *vcpu)
 	__kvm_migrate_apic_timer(vcpu);
 	__kvm_migrate_pit_timer(vcpu);
 }
+<<<<<<< HEAD
 
 bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args)
 {
@@ -179,3 +194,5 @@ bool kvm_arch_irqfd_allowed(struct kvm *kvm, struct kvm_irqfd *args)
 
 	return resample ? irqchip_kernel(kvm) : irqchip_in_kernel(kvm);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

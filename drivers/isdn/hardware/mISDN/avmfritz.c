@@ -361,7 +361,10 @@ modehdlc(struct bchannel *bch, int protocol)
 	switch (protocol) {
 	case -1: /* used for init */
 		bch->state = -1;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ISDN_P_NONE:
 		if (bch->state == ISDN_P_NONE)
 			break;

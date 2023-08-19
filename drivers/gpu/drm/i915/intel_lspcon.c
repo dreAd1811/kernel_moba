@@ -56,7 +56,11 @@ static enum drm_lspcon_mode lspcon_get_current_mode(struct intel_lspcon *lspcon)
 	struct i2c_adapter *adapter = &lspcon_to_intel_dp(lspcon)->aux.ddc;
 
 	if (drm_lspcon_get_mode(adapter, &current_mode)) {
+<<<<<<< HEAD
 		DRM_DEBUG_KMS("Error reading LSPCON mode\n");
+=======
+		DRM_ERROR("Error reading LSPCON mode\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return DRM_LSPCON_MODE_INVALID;
 	}
 	return current_mode;
@@ -68,15 +72,26 @@ static enum drm_lspcon_mode lspcon_wait_mode(struct intel_lspcon *lspcon,
 	enum drm_lspcon_mode current_mode;
 
 	current_mode = lspcon_get_current_mode(lspcon);
+<<<<<<< HEAD
 	if (current_mode == mode)
+=======
+	if (current_mode == mode || current_mode == DRM_LSPCON_MODE_INVALID)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	DRM_DEBUG_KMS("Waiting for LSPCON mode %s to settle\n",
 		      lspcon_mode_name(mode));
 
+<<<<<<< HEAD
 	wait_for((current_mode = lspcon_get_current_mode(lspcon)) == mode, 400);
 	if (current_mode != mode)
 		DRM_ERROR("LSPCON mode hasn't settled\n");
+=======
+	wait_for((current_mode = lspcon_get_current_mode(lspcon)) == mode ||
+                current_mode == DRM_LSPCON_MODE_INVALID, 400);
+	if (current_mode != mode)
+		DRM_DEBUG_KMS("LSPCON mode hasn't settled\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	DRM_DEBUG_KMS("Current LSPCON mode %s\n",
@@ -116,7 +131,11 @@ static int lspcon_change_mode(struct intel_lspcon *lspcon,
 
 static bool lspcon_wake_native_aux_ch(struct intel_lspcon *lspcon)
 {
+<<<<<<< HEAD
 	u8 rev;
+=======
+	uint8_t rev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (drm_dp_dpcd_readb(&lspcon_to_intel_dp(lspcon)->aux, DP_DPCD_REV,
 			      &rev) != 1) {
@@ -132,7 +151,10 @@ static bool lspcon_wake_native_aux_ch(struct intel_lspcon *lspcon)
 
 static bool lspcon_probe(struct intel_lspcon *lspcon)
 {
+<<<<<<< HEAD
 	int retry;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum drm_dp_dual_mode_type adaptor_type;
 	struct i2c_adapter *adapter = &lspcon_to_intel_dp(lspcon)->aux.ddc;
 	enum drm_lspcon_mode expected_mode;
@@ -141,6 +163,7 @@ static bool lspcon_probe(struct intel_lspcon *lspcon)
 			DRM_LSPCON_MODE_PCON : DRM_LSPCON_MODE_LS;
 
 	/* Lets probe the adaptor and check its type */
+<<<<<<< HEAD
 	for (retry = 0; retry < 6; retry++) {
 		if (retry)
 			usleep_range(500, 1000);
@@ -153,6 +176,12 @@ static bool lspcon_probe(struct intel_lspcon *lspcon)
 	if (adaptor_type != DRM_DP_DUAL_MODE_LSPCON) {
 		DRM_DEBUG_KMS("No LSPCON detected, found %s\n",
 			       drm_dp_get_dual_mode_type_name(adaptor_type));
+=======
+	adaptor_type = drm_dp_dual_mode_detect(adapter);
+	if (adaptor_type != DRM_DP_DUAL_MODE_LSPCON) {
+		DRM_DEBUG_KMS("No LSPCON detected, found %s\n",
+			drm_dp_get_dual_mode_type_name(adaptor_type));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 	}
 
@@ -167,10 +196,18 @@ static void lspcon_resume_in_pcon_wa(struct intel_lspcon *lspcon)
 {
 	struct intel_dp *intel_dp = lspcon_to_intel_dp(lspcon);
 	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
+<<<<<<< HEAD
 	unsigned long start = jiffies;
 
 	while (1) {
 		if (intel_digital_port_connected(&dig_port->base)) {
+=======
+	struct drm_i915_private *dev_priv = to_i915(dig_port->base.base.dev);
+	unsigned long start = jiffies;
+
+	while (1) {
+		if (intel_digital_port_connected(dev_priv, dig_port)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DRM_DEBUG_KMS("LSPCON recovering in PCON mode after %u ms\n",
 				      jiffies_to_msecs(jiffies - start));
 			return;

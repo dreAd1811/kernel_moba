@@ -222,7 +222,11 @@ static int vtty_write(struct tty_struct *tty, const unsigned char *buf,
 		if (err) {
 			port->ops.free_msg_buf(port, mbuf, &pbuf);
 			dev_err(&port->service->dev,
+<<<<<<< HEAD
 					"send failed: %d - resetting service\n",
+=======
+					"send failed: %d - resetting service",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					err);
 			vs_service_reset(port->service, port->service);
 			return -EIO;

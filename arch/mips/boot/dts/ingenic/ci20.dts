@@ -36,6 +36,7 @@
 	clock-frequency = <48000000>;
 };
 
+<<<<<<< HEAD
 &mmc0 {
 	status = "okay";
 
@@ -58,6 +59,8 @@
 	pinctrl-0 = <&pins_mmc1>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart0 {
 	status = "okay";
 
@@ -132,22 +135,38 @@
 					reg = <0x0 0x0 0x0 0x800000>;
 				};
 
+<<<<<<< HEAD
 				partition@800000 {
+=======
+				partition@0x800000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					label = "u-boot";
 					reg = <0x0 0x800000 0x0 0x200000>;
 				};
 
+<<<<<<< HEAD
 				partition@a00000 {
+=======
+				partition@0xa00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					label = "u-boot-env";
 					reg = <0x0 0xa00000 0x0 0x200000>;
 				};
 
+<<<<<<< HEAD
 				partition@c00000 {
+=======
+				partition@0xc00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					label = "boot";
 					reg = <0x0 0xc00000 0x0 0x4000000>;
 				};
 
+<<<<<<< HEAD
 				partition@4c00000 {
+=======
+				partition@0x8c00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					label = "system";
 					reg = <0x0 0x4c00000 0x1 0xfb400000>;
 				};
@@ -225,6 +244,7 @@
 		groups = "nemc-cs6";
 		bias-disable;
 	};
+<<<<<<< HEAD
 
 	pins_mmc0: mmc0 {
 		function = "mmc0";
@@ -237,4 +257,6 @@
 		groups = "mmc1-1bit-d", "mmc1-4bit-d";
 		bias-disable;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

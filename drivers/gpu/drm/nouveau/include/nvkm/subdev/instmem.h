@@ -10,7 +10,10 @@ struct nvkm_instmem {
 
 	spinlock_t lock;
 	struct list_head list;
+<<<<<<< HEAD
 	struct list_head boot;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 reserved;
 
 	struct nvkm_memory *vbios;

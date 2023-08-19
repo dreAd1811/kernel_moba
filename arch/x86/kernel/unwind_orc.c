@@ -5,6 +5,10 @@
 #include <asm/unwind.h>
 #include <asm/orc_types.h>
 #include <asm/orc_lookup.h>
+<<<<<<< HEAD
+=======
+#include <asm/sections.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define orc_warn(fmt, ...) \
 	printk_deferred_once(KERN_WARNING pr_fmt("WARNING: " fmt), ##__VA_ARGS__)
@@ -73,6 +77,7 @@ static struct orc_entry *orc_module_find(unsigned long ip)
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_FTRACE
 static struct orc_entry *orc_find(unsigned long ip);
 
@@ -113,6 +118,8 @@ static struct orc_entry *orc_ftrace_find(unsigned long ip)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * If we crash with IP==0, the last successfully executed instruction
  * was probably an indirect function call with a NULL function pointer,
@@ -129,11 +136,14 @@ static struct orc_entry null_orc_entry = {
 
 static struct orc_entry *orc_find(unsigned long ip)
 {
+<<<<<<< HEAD
 	static struct orc_entry *orc;
 
 	if (!orc_init)
 		return NULL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ip == 0)
 		return &null_orc_entry;
 
@@ -164,16 +174,24 @@ static struct orc_entry *orc_find(unsigned long ip)
 	}
 
 	/* vmlinux .init slow lookup: */
+<<<<<<< HEAD
 	if (init_kernel_text(ip))
+=======
+	if (ip >= (unsigned long)_sinittext && ip < (unsigned long)_einittext)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return __orc_find(__start_orc_unwind_ip, __start_orc_unwind,
 				  __stop_orc_unwind_ip - __start_orc_unwind_ip, ip);
 
 	/* Module lookup: */
+<<<<<<< HEAD
 	orc = orc_module_find(ip);
 	if (orc)
 		return orc;
 
 	return orc_ftrace_find(ip);
+=======
+	return orc_module_find(ip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void orc_sort_swap(void *_a, void *_b, int size)
@@ -215,7 +233,11 @@ static int orc_sort_cmp(const void *_a, const void *_b)
 	 * whitelisted .o files which didn't get objtool generation.
 	 */
 	orc_a = cur_orc_table + (a - cur_orc_ip_table);
+<<<<<<< HEAD
 	return orc_a->sp_reg == ORC_REG_UNDEFINED && !orc_a->end ? -1 : 1;
+=======
+	return orc_a->sp_reg == ORC_REG_UNDEFINED ? -1 : 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_MODULES
@@ -303,12 +325,25 @@ EXPORT_SYMBOL_GPL(unwind_get_return_address);
 
 unsigned long *unwind_get_return_address_ptr(struct unwind_state *state)
 {
+<<<<<<< HEAD
+=======
+	struct task_struct *task = state->task;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unwind_done(state))
 		return NULL;
 
 	if (state->regs)
 		return &state->regs->ip;
 
+<<<<<<< HEAD
+=======
+	if (task != current && state->sp == task->thread.sp) {
+		struct inactive_task_frame *frame = (void *)task->thread.sp;
+		return &frame->ret_addr;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (state->sp)
 		return (unsigned long *)state->sp - 1;
 
@@ -369,7 +404,11 @@ static bool deref_stack_iret_regs(struct unwind_state *state, unsigned long addr
 
 bool unwind_next_frame(struct unwind_state *state)
 {
+<<<<<<< HEAD
 	unsigned long ip_p, sp, orig_ip = state->ip, prev_sp = state->sp;
+=======
+	unsigned long ip_p, sp, orig_ip, prev_sp = state->sp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum stack_type prev_type = state->stack_info.type;
 	struct orc_entry *orc;
 	bool indirect = false;
@@ -380,9 +419,15 @@ bool unwind_next_frame(struct unwind_state *state)
 	/* Don't let modules unload while we're reading their ORC data. */
 	preempt_disable();
 
+<<<<<<< HEAD
 	/* End-of-stack check for user tasks: */
 	if (state->regs && user_mode(state->regs))
 		goto the_end;
+=======
+	/* Have we reached the end? */
+	if (state->regs && user_mode(state->regs))
+		goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Find the orc_entry associated with the text address.
@@ -391,6 +436,7 @@ bool unwind_next_frame(struct unwind_state *state)
 	 * calls and calls to noreturn functions.
 	 */
 	orc = orc_find(state->signal ? state->ip : state->ip - 1);
+<<<<<<< HEAD
 	if (!orc)
 		goto err;
 
@@ -401,6 +447,11 @@ bool unwind_next_frame(struct unwind_state *state)
 
 		goto the_end;
 	}
+=======
+	if (!orc || orc->sp_reg == ORC_REG_UNDEFINED)
+		goto done;
+	orig_ip = state->ip;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Find the previous frame's stack: */
 	switch (orc->sp_reg) {
@@ -426,7 +477,11 @@ bool unwind_next_frame(struct unwind_state *state)
 		if (!state->regs || !state->full_regs) {
 			orc_warn("missing regs for base reg R10 at ip %pB\n",
 				 (void *)state->ip);
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		sp = state->regs->r10;
 		break;
@@ -435,7 +490,11 @@ bool unwind_next_frame(struct unwind_state *state)
 		if (!state->regs || !state->full_regs) {
 			orc_warn("missing regs for base reg R13 at ip %pB\n",
 				 (void *)state->ip);
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		sp = state->regs->r13;
 		break;
@@ -444,7 +503,11 @@ bool unwind_next_frame(struct unwind_state *state)
 		if (!state->regs || !state->full_regs) {
 			orc_warn("missing regs for base reg DI at ip %pB\n",
 				 (void *)state->ip);
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		sp = state->regs->di;
 		break;
@@ -453,7 +516,11 @@ bool unwind_next_frame(struct unwind_state *state)
 		if (!state->regs || !state->full_regs) {
 			orc_warn("missing regs for base reg DX at ip %pB\n",
 				 (void *)state->ip);
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		sp = state->regs->dx;
 		break;
@@ -461,12 +528,20 @@ bool unwind_next_frame(struct unwind_state *state)
 	default:
 		orc_warn("unknown SP base reg %d for ip %pB\n",
 			 orc->sp_reg, (void *)state->ip);
+<<<<<<< HEAD
 		goto err;
+=======
+		goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (indirect) {
 		if (!deref_stack_reg(state, sp, &sp))
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Find IP, SP and possibly regs: */
@@ -475,7 +550,11 @@ bool unwind_next_frame(struct unwind_state *state)
 		ip_p = sp - sizeof(long);
 
 		if (!deref_stack_reg(state, ip_p, &state->ip))
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		state->ip = ftrace_graph_ret_addr(state->task, &state->graph_idx,
 						  state->ip, (void *)ip_p);
@@ -489,7 +568,11 @@ bool unwind_next_frame(struct unwind_state *state)
 		if (!deref_stack_regs(state, sp, &state->ip, &state->sp)) {
 			orc_warn("can't dereference registers at %p for ip %pB\n",
 				 (void *)sp, (void *)orig_ip);
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		state->regs = (struct pt_regs *)sp;
@@ -501,7 +584,11 @@ bool unwind_next_frame(struct unwind_state *state)
 		if (!deref_stack_iret_regs(state, sp, &state->ip, &state->sp)) {
 			orc_warn("can't dereference iret registers at %p for ip %pB\n",
 				 (void *)sp, (void *)orig_ip);
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		state->regs = (void *)sp - IRET_FRAME_OFFSET;
@@ -512,7 +599,11 @@ bool unwind_next_frame(struct unwind_state *state)
 	default:
 		orc_warn("unknown .orc_unwind entry type %d for ip %pB\n",
 			 orc->type, (void *)orig_ip);
+<<<<<<< HEAD
 		break;
+=======
+		goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Find BP: */
@@ -524,18 +615,30 @@ bool unwind_next_frame(struct unwind_state *state)
 
 	case ORC_REG_PREV_SP:
 		if (!deref_stack_reg(state, sp + orc->bp_offset, &state->bp))
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case ORC_REG_BP:
 		if (!deref_stack_reg(state, state->bp + orc->bp_offset, &state->bp))
+<<<<<<< HEAD
 			goto err;
+=======
+			goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	default:
 		orc_warn("unknown BP base reg %d for ip %pB\n",
 			 orc->bp_reg, (void *)orig_ip);
+<<<<<<< HEAD
 		goto err;
+=======
+		goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Prevent a recursive loop due to bad ORC data: */
@@ -544,16 +647,24 @@ bool unwind_next_frame(struct unwind_state *state)
 	    state->sp <= prev_sp) {
 		orc_warn("stack going in the wrong direction? ip=%pB\n",
 			 (void *)orig_ip);
+<<<<<<< HEAD
 		goto err;
+=======
+		goto done;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	preempt_enable();
 	return true;
 
+<<<<<<< HEAD
 err:
 	state->error = true;
 
 the_end:
+=======
+done:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	preempt_enable();
 	state->stack_info.type = STACK_TYPE_UNKNOWN;
 	return false;
@@ -566,17 +677,31 @@ void __unwind_start(struct unwind_state *state, struct task_struct *task,
 	memset(state, 0, sizeof(*state));
 	state->task = task;
 
+<<<<<<< HEAD
+=======
+	if (!orc_init)
+		goto err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Refuse to unwind the stack of a task while it's executing on another
 	 * CPU.  This check is racy, but that's ok: the unwinder has other
 	 * checks to prevent it from going off the rails.
 	 */
 	if (task_on_another_cpu(task))
+<<<<<<< HEAD
 		goto done;
 
 	if (regs) {
 		if (user_mode(regs))
 			goto done;
+=======
+		goto err;
+
+	if (regs) {
+		if (user_mode(regs))
+			goto the_end;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		state->ip = regs->ip;
 		state->sp = kernel_stack_pointer(regs);
@@ -609,6 +734,10 @@ void __unwind_start(struct unwind_state *state, struct task_struct *task,
 		 * generate some kind of backtrace if this happens.
 		 */
 		void *next_page = (void *)PAGE_ALIGN((unsigned long)state->sp);
+<<<<<<< HEAD
+=======
+		state->error = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (get_stack_info(next_page, state->task, &state->stack_info,
 				   &state->stack_mask))
 			return;
@@ -629,13 +758,24 @@ void __unwind_start(struct unwind_state *state, struct task_struct *task,
 	/* Otherwise, skip ahead to the user-specified starting frame: */
 	while (!unwind_done(state) &&
 	       (!on_stack(&state->stack_info, first_frame, sizeof(long)) ||
+<<<<<<< HEAD
 			state->sp <= (unsigned long)first_frame))
+=======
+			state->sp < (unsigned long)first_frame))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unwind_next_frame(state);
 
 	return;
 
+<<<<<<< HEAD
 done:
 	state->stack_info.type = STACK_TYPE_UNKNOWN;
 	return;
+=======
+err:
+	state->error = true;
+the_end:
+	state->stack_info.type = STACK_TYPE_UNKNOWN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(__unwind_start);

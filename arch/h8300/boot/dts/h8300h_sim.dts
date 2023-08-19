@@ -73,7 +73,11 @@
 	timer16: timer@ffff68 {
 		compatible = "renesas,16bit-timer";
 		reg = <0xffff68 8>, <0xffff60 8>;
+<<<<<<< HEAD
 		interrupts = <26 0>;
+=======
+		interrupts = <24 0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		renesas,channel = <0>;
 		clocks = <&fclk>;
 		clock-names = "fck";

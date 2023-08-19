@@ -27,7 +27,10 @@
 #include <linux/uaccess.h>
 
 #include <asm/cacheflush.h>
+<<<<<<< HEAD
 #include <asm/system_misc.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/unistd.h>
 
 static long
@@ -58,7 +61,11 @@ do_compat_cache_op(unsigned long start, unsigned long end, int flags)
 	if (end < start || flags)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (!access_ok(VERIFY_READ, (const void __user *)start, end - start))
+=======
+	if (!access_ok(VERIFY_READ, start, end - start))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	return __do_compat_cache_op(start, end);
@@ -66,11 +73,19 @@ do_compat_cache_op(unsigned long start, unsigned long end, int flags)
 /*
  * Handle all unrecognised system calls.
  */
+<<<<<<< HEAD
 long compat_arm_syscall(struct pt_regs *regs, int scno)
 {
 	siginfo_t info;
 
 	switch (scno) {
+=======
+long compat_arm_syscall(struct pt_regs *regs)
+{
+	unsigned int no = regs->regs[7];
+
+	switch (no) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Flush a region from virtual address 'r0' to virtual address 'r1'
 	 * _exclusive_.  There is no alignment requirement on either address;
@@ -89,7 +104,11 @@ long compat_arm_syscall(struct pt_regs *regs, int scno)
 		return do_compat_cache_op(regs->regs[0], regs->regs[1], regs->regs[2]);
 
 	case __ARM_NR_compat_set_tls:
+<<<<<<< HEAD
 		current->thread.uw.tp_value = regs->regs[0];
+=======
+		current->thread.tp_value = regs->regs[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Protect against register corruption from context switch.
@@ -100,6 +119,7 @@ long compat_arm_syscall(struct pt_regs *regs, int scno)
 		return 0;
 
 	default:
+<<<<<<< HEAD
 		/*
 		 * Calls 0xf0xxx..0xf07ff are defined to return -ENOSYS
 		 * if not implemented, rather than raising SIGILL. This
@@ -120,4 +140,8 @@ long compat_arm_syscall(struct pt_regs *regs, int scno)
 
 	arm64_notify_die("Oops - bad compat syscall(2)", regs, &info, scno);
 	return 0;
+=======
+		return -ENOSYS;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

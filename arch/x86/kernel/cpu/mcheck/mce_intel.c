@@ -489,17 +489,31 @@ static void intel_ppin_init(struct cpuinfo_x86 *c)
 			return;
 
 		if ((val & 3UL) == 1UL) {
+<<<<<<< HEAD
 			/* PPIN available but disabled: */
 			return;
 		}
 
 		/* If PPIN is disabled, but not locked, try to enable: */
 		if (!(val & 3UL)) {
+=======
+			/* PPIN locked in disabled mode */
+			return;
+		}
+
+		/* If PPIN is disabled, try to enable */
+		if (!(val & 2UL)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wrmsrl_safe(MSR_PPIN_CTL,  val | 2UL);
 			rdmsrl_safe(MSR_PPIN_CTL, &val);
 		}
 
+<<<<<<< HEAD
 		if ((val & 3UL) == 2UL)
+=======
+		/* Is the enable bit set? */
+		if (val & 2UL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			set_cpu_cap(c, X86_FEATURE_INTEL_PPIN);
 	}
 }

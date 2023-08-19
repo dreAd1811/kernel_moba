@@ -8,6 +8,7 @@
  */
 
 #include <linux/bitops.h>
+<<<<<<< HEAD
 #include <linux/debugfs.h>
 #include <linux/device.h>
 #include <linux/fs.h>
@@ -31,6 +32,14 @@
 #define CFFPS_INPUT_HISTORY_CMD			0xD6
 #define CFFPS_INPUT_HISTORY_SIZE		100
 
+=======
+#include <linux/device.h>
+#include <linux/i2c.h>
+#include <linux/module.h>
+
+#include "pmbus.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* STATUS_MFR_SPECIFIC bits */
 #define CFFPS_MFR_FAN_FAULT			BIT(0)
 #define CFFPS_MFR_THERMAL_FAULT			BIT(1)
@@ -41,6 +50,7 @@
 #define CFFPS_MFR_VAUX_FAULT			BIT(6)
 #define CFFPS_MFR_CURRENT_SHARE_WARNING		BIT(7)
 
+<<<<<<< HEAD
 #define CFFPS_LED_BLINK				BIT(0)
 #define CFFPS_LED_ON				BIT(1)
 #define CFFPS_LED_OFF				BIT(2)
@@ -188,6 +198,8 @@ static const struct file_operations ibm_cffps_fops = {
 	.open = simple_open,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ibm_cffps_read_byte_data(struct i2c_client *client, int page,
 				    int reg)
 {
@@ -269,6 +281,7 @@ static int ibm_cffps_read_word_data(struct i2c_client *client, int page,
 	return rc;
 }
 
+<<<<<<< HEAD
 static void ibm_cffps_led_brightness_set(struct led_classdev *led_cdev,
 					 enum led_brightness brightness)
 {
@@ -332,6 +345,8 @@ static void ibm_cffps_create_led_class(struct ibm_cffps *psu)
 		dev_warn(dev, "failed to register led class: %d\n", rc);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct pmbus_driver_info ibm_cffps_info = {
 	.pages = 1,
 	.func[0] = PMBUS_HAVE_VIN | PMBUS_HAVE_VOUT | PMBUS_HAVE_IOUT |
@@ -343,6 +358,7 @@ static struct pmbus_driver_info ibm_cffps_info = {
 	.read_word_data = ibm_cffps_read_word_data,
 };
 
+<<<<<<< HEAD
 static struct pmbus_platform_data ibm_cffps_pdata = {
 	.flags = PMBUS_SKIP_STATUS_CHECK,
 };
@@ -406,6 +422,12 @@ static int ibm_cffps_probe(struct i2c_client *client,
 			    &ibm_cffps_fops);
 
 	return 0;
+=======
+static int ibm_cffps_probe(struct i2c_client *client,
+			   const struct i2c_device_id *id)
+{
+	return pmbus_do_probe(client, id, &ibm_cffps_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct i2c_device_id ibm_cffps_id[] = {

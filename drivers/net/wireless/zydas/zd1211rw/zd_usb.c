@@ -371,27 +371,43 @@ static inline void handle_regs_int_override(struct urb *urb)
 {
 	struct zd_usb *usb = urb->context;
 	struct zd_usb_interrupt *intr = &usb->intr;
+<<<<<<< HEAD
 	unsigned long flags;
 
 	spin_lock_irqsave(&intr->lock, flags);
+=======
+
+	spin_lock(&intr->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (atomic_read(&intr->read_regs_enabled)) {
 		atomic_set(&intr->read_regs_enabled, 0);
 		intr->read_regs_int_overridden = 1;
 		complete(&intr->read_regs.completion);
 	}
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&intr->lock, flags);
+=======
+	spin_unlock(&intr->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void handle_regs_int(struct urb *urb)
 {
 	struct zd_usb *usb = urb->context;
 	struct zd_usb_interrupt *intr = &usb->intr;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int len;
 	u16 int_num;
 
 	ZD_ASSERT(in_interrupt());
+<<<<<<< HEAD
 	spin_lock_irqsave(&intr->lock, flags);
+=======
+	spin_lock(&intr->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int_num = le16_to_cpu(*(__le16 *)(urb->transfer_buffer+2));
 	if (int_num == CR_INTERRUPT) {
@@ -427,7 +443,11 @@ static inline void handle_regs_int(struct urb *urb)
 	}
 
 out:
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&intr->lock, flags);
+=======
+	spin_unlock(&intr->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* CR_INTERRUPT might override read_reg too. */
 	if (int_num == CR_INTERRUPT && atomic_read(&intr->read_regs_enabled))
@@ -667,7 +687,10 @@ static void rx_urb_complete(struct urb *urb)
 	struct zd_usb_rx *rx;
 	const u8 *buffer;
 	unsigned int length;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (urb->status) {
 	case 0:
@@ -696,6 +719,7 @@ static void rx_urb_complete(struct urb *urb)
 		/* If there is an old first fragment, we don't care. */
 		dev_dbg_f(urb_dev(urb), "*** first fragment ***\n");
 		ZD_ASSERT(length <= ARRAY_SIZE(rx->fragment));
+<<<<<<< HEAD
 		spin_lock_irqsave(&rx->lock, flags);
 		memcpy(rx->fragment, buffer, length);
 		rx->fragment_length = length;
@@ -704,6 +728,16 @@ static void rx_urb_complete(struct urb *urb)
 	}
 
 	spin_lock_irqsave(&rx->lock, flags);
+=======
+		spin_lock(&rx->lock);
+		memcpy(rx->fragment, buffer, length);
+		rx->fragment_length = length;
+		spin_unlock(&rx->lock);
+		goto resubmit;
+	}
+
+	spin_lock(&rx->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rx->fragment_length > 0) {
 		/* We are on a second fragment, we believe */
 		ZD_ASSERT(length + rx->fragment_length <=
@@ -713,9 +747,15 @@ static void rx_urb_complete(struct urb *urb)
 		handle_rx_packet(usb, rx->fragment,
 			         rx->fragment_length + length);
 		rx->fragment_length = 0;
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&rx->lock, flags);
 	} else {
 		spin_unlock_irqrestore(&rx->lock, flags);
+=======
+		spin_unlock(&rx->lock);
+	} else {
+		spin_unlock(&rx->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		handle_rx_packet(usb, buffer, length);
 	}
 
@@ -1275,7 +1315,11 @@ static void print_id(struct usb_device *udev)
 static int eject_installer(struct usb_interface *intf)
 {
 	struct usb_device *udev = interface_to_usbdev(intf);
+<<<<<<< HEAD
 	struct usb_host_interface *iface_desc = &intf->altsetting[0];
+=======
+	struct usb_host_interface *iface_desc = intf->cur_altsetting;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct usb_endpoint_descriptor *endpoint;
 	unsigned char *cmd;
 	u8 bulk_out_ep;

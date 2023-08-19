@@ -242,6 +242,7 @@ static int siena_dimension_resources(struct efx_nic *efx)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* On all Falcon-architecture NICs, PFs use BAR 0 for I/O space and BAR 2(&3)
  * for memory.
  */
@@ -250,6 +251,8 @@ static unsigned int siena_mem_bar(struct efx_nic *efx)
 	return 2;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int siena_mem_map_size(struct efx_nic *efx)
 {
 	return FR_CZ_MC_TREG_SMEM +
@@ -350,11 +353,19 @@ static int siena_rx_pull_rss_config(struct efx_nic *efx)
 	 * siena_rx_push_rss_config, below)
 	 */
 	efx_reado(efx, &temp, FR_CZ_RX_RSS_IPV6_REG1);
+<<<<<<< HEAD
 	memcpy(efx->rss_context.rx_hash_key, &temp, sizeof(temp));
 	efx_reado(efx, &temp, FR_CZ_RX_RSS_IPV6_REG2);
 	memcpy(efx->rss_context.rx_hash_key + sizeof(temp), &temp, sizeof(temp));
 	efx_reado(efx, &temp, FR_CZ_RX_RSS_IPV6_REG3);
 	memcpy(efx->rss_context.rx_hash_key + 2 * sizeof(temp), &temp,
+=======
+	memcpy(efx->rx_hash_key, &temp, sizeof(temp));
+	efx_reado(efx, &temp, FR_CZ_RX_RSS_IPV6_REG2);
+	memcpy(efx->rx_hash_key + sizeof(temp), &temp, sizeof(temp));
+	efx_reado(efx, &temp, FR_CZ_RX_RSS_IPV6_REG3);
+	memcpy(efx->rx_hash_key + 2 * sizeof(temp), &temp,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       FRF_CZ_RX_RSS_IPV6_TKEY_HI_WIDTH / 8);
 	efx_farch_rx_pull_indir_table(efx);
 	return 0;
@@ -367,6 +378,7 @@ static int siena_rx_push_rss_config(struct efx_nic *efx, bool user,
 
 	/* Set hash key for IPv4 */
 	if (key)
+<<<<<<< HEAD
 		memcpy(efx->rss_context.rx_hash_key, key, sizeof(temp));
 	memcpy(&temp, efx->rss_context.rx_hash_key, sizeof(temp));
 	efx_writeo(efx, &temp, FR_BZ_RX_RSS_TKEY);
@@ -387,6 +399,28 @@ static int siena_rx_push_rss_config(struct efx_nic *efx, bool user,
 
 	memcpy(efx->rss_context.rx_indir_table, rx_indir_table,
 	       sizeof(efx->rss_context.rx_indir_table));
+=======
+		memcpy(efx->rx_hash_key, key, sizeof(temp));
+	memcpy(&temp, efx->rx_hash_key, sizeof(temp));
+	efx_writeo(efx, &temp, FR_BZ_RX_RSS_TKEY);
+
+	/* Enable IPv6 RSS */
+	BUILD_BUG_ON(sizeof(efx->rx_hash_key) <
+		     2 * sizeof(temp) + FRF_CZ_RX_RSS_IPV6_TKEY_HI_WIDTH / 8 ||
+		     FRF_CZ_RX_RSS_IPV6_TKEY_HI_LBN != 0);
+	memcpy(&temp, efx->rx_hash_key, sizeof(temp));
+	efx_writeo(efx, &temp, FR_CZ_RX_RSS_IPV6_REG1);
+	memcpy(&temp, efx->rx_hash_key + sizeof(temp), sizeof(temp));
+	efx_writeo(efx, &temp, FR_CZ_RX_RSS_IPV6_REG2);
+	EFX_POPULATE_OWORD_2(temp, FRF_CZ_RX_RSS_IPV6_THASH_ENABLE, 1,
+			     FRF_CZ_RX_RSS_IPV6_IP_THASH_ENABLE, 1);
+	memcpy(&temp, efx->rx_hash_key + 2 * sizeof(temp),
+	       FRF_CZ_RX_RSS_IPV6_TKEY_HI_WIDTH / 8);
+	efx_writeo(efx, &temp, FR_CZ_RX_RSS_IPV6_REG3);
+
+	memcpy(efx->rx_indir_table, rx_indir_table,
+	       sizeof(efx->rx_indir_table));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	efx_farch_rx_push_indir_table(efx);
 
 	return 0;
@@ -432,8 +466,13 @@ static int siena_init_nic(struct efx_nic *efx)
 			    EFX_RX_USR_BUF_SIZE >> 5);
 	efx_writeo(efx, &temp, FR_AZ_RX_CFG);
 
+<<<<<<< HEAD
 	siena_rx_push_rss_config(efx, false, efx->rss_context.rx_indir_table, NULL);
 	efx->rss_context.context_id = 0; /* indicates RSS is active */
+=======
+	siena_rx_push_rss_config(efx, false, efx->rx_indir_table, NULL);
+	efx->rss_active = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable event logging */
 	rc = efx_mcdi_log_ctrl(efx, true, false, 0);
@@ -555,7 +594,11 @@ static int siena_try_update_nic_stats(struct efx_nic *efx)
 
 	dma_stats = efx->stats_buffer.addr;
 
+<<<<<<< HEAD
 	generation_end = dma_stats[efx->num_mac_stats - 1];
+=======
+	generation_end = dma_stats[MC_CMD_MAC_GENERATION_END];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (generation_end == EFX_MC_STATS_GENERATION_INVALID)
 		return 0;
 	rmb();
@@ -958,7 +1001,11 @@ fail:
 
 const struct efx_nic_type siena_a0_nic_type = {
 	.is_vf = false,
+<<<<<<< HEAD
 	.mem_bar = siena_mem_bar,
+=======
+	.mem_bar = EFX_MEM_BAR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mem_map_size = siena_mem_map_size,
 	.probe = siena_probe_nic,
 	.remove = siena_remove_nic,
@@ -1035,6 +1082,10 @@ const struct efx_nic_type siena_a0_nic_type = {
 	.filter_get_rx_id_limit = efx_farch_filter_get_rx_id_limit,
 	.filter_get_rx_ids = efx_farch_filter_get_rx_ids,
 #ifdef CONFIG_RFS_ACCEL
+<<<<<<< HEAD
+=======
+	.filter_rfs_insert = efx_farch_filter_rfs_insert,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.filter_rfs_expire_one = efx_farch_filter_rfs_expire_one,
 #endif
 #ifdef CONFIG_SFC_MTD

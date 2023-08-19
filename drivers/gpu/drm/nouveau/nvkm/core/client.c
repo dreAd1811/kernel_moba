@@ -301,7 +301,10 @@ nvkm_client_new(const char *name, u64 device, const char *cfg,
 	client->debug = nvkm_dbgopt(dbg, "CLIENT");
 	client->objroot = RB_ROOT;
 	client->ntfy = ntfy;
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&client->umem);
 	spin_lock_init(&client->lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

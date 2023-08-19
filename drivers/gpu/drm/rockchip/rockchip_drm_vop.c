@@ -76,9 +76,12 @@
 #define VOP_WIN_GET_YRGBADDR(vop, win) \
 		vop_readl(vop, win->base + win->phy->yrgb_mst.offset)
 
+<<<<<<< HEAD
 #define VOP_WIN_TO_INDEX(vop_win) \
 	((vop_win) - (vop_win)->vop->win)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define to_vop(x) container_of(x, struct vop, crtc)
 #define to_vop_win(x) container_of(x, struct vop_win, base)
 
@@ -98,6 +101,12 @@ struct vop {
 	struct drm_device *drm_dev;
 	bool is_enabled;
 
+<<<<<<< HEAD
+=======
+	/* mutex vsync_ work */
+	struct mutex vsync_mutex;
+	bool vsync_work_pending;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct completion dsp_hold_completion;
 
 	/* protected by dev->event_lock */
@@ -120,8 +129,11 @@ struct vop {
 	spinlock_t reg_lock;
 	/* lock vop irq reg */
 	spinlock_t irq_lock;
+<<<<<<< HEAD
 	/* protects crtc enable/disable */
 	struct mutex vop_lock;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int irq;
 
@@ -162,7 +174,11 @@ static void vop_reg_set(struct vop *vop, const struct vop_reg *reg,
 	int offset, mask, shift;
 
 	if (!reg || !reg->mask) {
+<<<<<<< HEAD
 		DRM_DEV_DEBUG(vop->dev, "Warning: not support %s\n", reg_name);
+=======
+		dev_dbg(vop->dev, "Warning: not support %s\n", reg_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -243,15 +259,44 @@ static enum vop_data_format vop_convert_format(uint32_t format)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static bool is_yuv_support(uint32_t format)
+{
+	switch (format) {
+	case DRM_FORMAT_NV12:
+	case DRM_FORMAT_NV16:
+	case DRM_FORMAT_NV24:
+		return true;
+	default:
+		return false;
+	}
+}
+
+static bool is_alpha_support(uint32_t format)
+{
+	switch (format) {
+	case DRM_FORMAT_ARGB8888:
+	case DRM_FORMAT_ABGR8888:
+		return true;
+	default:
+		return false;
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static uint16_t scl_vop_cal_scale(enum scale_mode mode, uint32_t src,
 				  uint32_t dst, bool is_horizontal,
 				  int vsu_mode, int *vskiplines)
 {
 	uint16_t val = 1 << SCL_FT_DEFAULT_FIXPOINT_SHIFT;
 
+<<<<<<< HEAD
 	if (vskiplines)
 		*vskiplines = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (is_horizontal) {
 		if (mode == SCALE_UP)
 			val = GET_SCL_FT_BIC(src, dst);
@@ -286,19 +331,27 @@ static void scl_vop_cal_scl_fac(struct vop *vop, const struct vop_win_data *win,
 	uint16_t cbcr_ver_scl_mode = SCALE_NONE;
 	int hsub = drm_format_horz_chroma_subsampling(pixel_format);
 	int vsub = drm_format_vert_chroma_subsampling(pixel_format);
+<<<<<<< HEAD
 	const struct drm_format_info *info;
 	bool is_yuv = false;
+=======
+	bool is_yuv = is_yuv_support(pixel_format);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint16_t cbcr_src_w = src_w / hsub;
 	uint16_t cbcr_src_h = src_h / vsub;
 	uint16_t vsu_mode;
 	uint16_t lb_mode;
 	uint32_t val;
+<<<<<<< HEAD
 	int vskiplines;
 
 	info = drm_format_info(pixel_format);
 
 	if (info->is_yuv)
 		is_yuv = true;
+=======
+	int vskiplines = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dst_w > 3840) {
 		DRM_DEV_ERROR(vop->dev, "Maximum dst width (3840) exceeded\n");
@@ -480,6 +533,7 @@ static void vop_line_flag_irq_disable(struct vop *vop)
 	spin_unlock_irqrestore(&vop->irq_lock, flags);
 }
 
+<<<<<<< HEAD
 static int vop_core_clks_enable(struct vop *vop)
 {
 	int ret;
@@ -517,6 +571,8 @@ static void vop_win_disable(struct vop *vop, const struct vop_win_data *win)
 	VOP_WIN_SET(vop, win, enable, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int vop_enable(struct drm_crtc *crtc)
 {
 	struct vop *vop = to_vop(crtc);
@@ -524,17 +580,33 @@ static int vop_enable(struct drm_crtc *crtc)
 
 	ret = pm_runtime_get_sync(vop->dev);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to get pm runtime: %d\n", ret);
 		return ret;
 	}
 
 	ret = vop_core_clks_enable(vop);
+=======
+		dev_err(vop->dev, "failed to get pm runtime: %d\n", ret);
+		return ret;
+	}
+
+	ret = clk_enable(vop->hclk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (WARN_ON(ret < 0))
 		goto err_put_pm_runtime;
 
 	ret = clk_enable(vop->dclk);
 	if (WARN_ON(ret < 0))
+<<<<<<< HEAD
 		goto err_disable_core;
+=======
+		goto err_disable_hclk;
+
+	ret = clk_enable(vop->aclk);
+	if (WARN_ON(ret < 0))
+		goto err_disable_dclk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Slave iommu shares power, irq and clock with vop.  It was associated
@@ -544,6 +616,7 @@ static int vop_enable(struct drm_crtc *crtc)
 	 */
 	ret = rockchip_drm_dma_attach_device(vop->drm_dev, vop->dev);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev,
 			      "failed to attach dma mapping, %d\n", ret);
 		goto err_disable_dclk;
@@ -553,6 +626,13 @@ static int vop_enable(struct drm_crtc *crtc)
 	for (i = 0; i < vop->len; i += 4)
 		writel_relaxed(vop->regsbak[i / 4], vop->regs + i);
 
+=======
+		dev_err(vop->dev, "failed to attach dma mapping, %d\n", ret);
+		goto err_disable_aclk;
+	}
+
+	memcpy(vop->regs, vop->regsbak, vop->len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We need to make sure that all windows are disabled before we
 	 * enable the crtc. Otherwise we might try to scan from a destroyed
@@ -562,9 +642,16 @@ static int vop_enable(struct drm_crtc *crtc)
 		struct vop_win *vop_win = &vop->win[i];
 		const struct vop_win_data *win = vop_win->data;
 
+<<<<<<< HEAD
 		vop_win_disable(vop, win);
 	}
 	spin_unlock(&vop->reg_lock);
+=======
+		spin_lock(&vop->reg_lock);
+		VOP_WIN_SET(vop, win, enable, 0);
+		spin_unlock(&vop->reg_lock);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vop_cfg_done(vop);
 
@@ -579,14 +666,28 @@ static int vop_enable(struct drm_crtc *crtc)
 
 	spin_unlock(&vop->reg_lock);
 
+<<<<<<< HEAD
+=======
+	enable_irq(vop->irq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_crtc_vblank_on(crtc);
 
 	return 0;
 
+<<<<<<< HEAD
 err_disable_dclk:
 	clk_disable(vop->dclk);
 err_disable_core:
 	vop_core_clks_disable(vop);
+=======
+err_disable_aclk:
+	clk_disable(vop->aclk);
+err_disable_dclk:
+	clk_disable(vop->dclk);
+err_disable_hclk:
+	clk_disable(vop->hclk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_put_pm_runtime:
 	pm_runtime_put_sync(vop->dev);
 	return ret;
@@ -599,7 +700,12 @@ static void vop_crtc_atomic_disable(struct drm_crtc *crtc,
 
 	WARN_ON(vop->event);
 
+<<<<<<< HEAD
 	mutex_lock(&vop->vop_lock);
+=======
+	rockchip_drm_psr_deactivate(&vop->crtc);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_crtc_vblank_off(crtc);
 
 	/*
@@ -622,6 +728,11 @@ static void vop_crtc_atomic_disable(struct drm_crtc *crtc,
 
 	vop_dsp_hold_valid_irq_disable(vop);
 
+<<<<<<< HEAD
+=======
+	disable_irq(vop->irq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vop->is_enabled = false;
 
 	/*
@@ -630,9 +741,15 @@ static void vop_crtc_atomic_disable(struct drm_crtc *crtc,
 	rockchip_drm_dma_detach_device(vop->drm_dev, vop->dev);
 
 	clk_disable(vop->dclk);
+<<<<<<< HEAD
 	vop_core_clks_disable(vop);
 	pm_runtime_put(vop->dev);
 	mutex_unlock(&vop->vop_lock);
+=======
+	clk_disable(vop->aclk);
+	clk_disable(vop->hclk);
+	pm_runtime_put(vop->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (crtc->state->event && !crtc->state->active) {
 		spin_lock_irq(&crtc->dev->event_lock);
@@ -657,6 +774,10 @@ static int vop_plane_atomic_check(struct drm_plane *plane,
 	struct vop_win *vop_win = to_vop_win(plane);
 	const struct vop_win_data *win = vop_win->data;
 	int ret;
+<<<<<<< HEAD
+=======
+	struct drm_rect clip;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int min_scale = win->phy->scl ? FRAC_16_16(1, 8) :
 					DRM_PLANE_HELPER_NO_SCALING;
 	int max_scale = win->phy->scl ? FRAC_16_16(8, 1) :
@@ -669,9 +790,20 @@ static int vop_plane_atomic_check(struct drm_plane *plane,
 	if (WARN_ON(!crtc_state))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = drm_atomic_helper_check_plane_state(state, crtc_state,
 						  min_scale, max_scale,
 						  true, true);
+=======
+	clip.x1 = 0;
+	clip.y1 = 0;
+	clip.x2 = crtc_state->adjusted_mode.hdisplay;
+	clip.y2 = crtc_state->adjusted_mode.vdisplay;
+
+	ret = drm_plane_helper_check_state(state, &clip,
+					   min_scale, max_scale,
+					   true, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -686,7 +818,11 @@ static int vop_plane_atomic_check(struct drm_plane *plane,
 	 * Src.x1 can be odd when do clip, but yuv plane start point
 	 * need align with 2 pixel.
 	 */
+<<<<<<< HEAD
 	if (fb->format->is_yuv && ((state->src.x1 >> 16) % 2)) {
+=======
+	if (is_yuv_support(fb->format->format) && ((state->src.x1 >> 16) % 2)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_ERROR("Invalid Source: Yuv format not support odd xpos\n");
 		return -EINVAL;
 	}
@@ -706,7 +842,11 @@ static void vop_plane_atomic_disable(struct drm_plane *plane,
 
 	spin_lock(&vop->reg_lock);
 
+<<<<<<< HEAD
 	vop_win_disable(vop, win);
+=======
+	VOP_WIN_SET(vop, win, enable, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock(&vop->reg_lock);
 }
@@ -731,7 +871,10 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
 	dma_addr_t dma_addr;
 	uint32_t val;
 	bool rb_swap;
+<<<<<<< HEAD
 	int win_index = VOP_WIN_TO_INDEX(vop_win);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int format;
 
 	/*
@@ -748,7 +891,11 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
 		return;
 	}
 
+<<<<<<< HEAD
 	obj = fb->obj[0];
+=======
+	obj = rockchip_fb_get_gem_obj(fb, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rk_obj = to_rockchip_obj(obj);
 
 	actual_w = drm_rect_width(src) >> 16;
@@ -773,12 +920,20 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
 	VOP_WIN_SET(vop, win, format, format);
 	VOP_WIN_SET(vop, win, yrgb_vir, DIV_ROUND_UP(fb->pitches[0], 4));
 	VOP_WIN_SET(vop, win, yrgb_mst, dma_addr);
+<<<<<<< HEAD
 	if (fb->format->is_yuv) {
+=======
+	if (is_yuv_support(fb->format->format)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int hsub = drm_format_horz_chroma_subsampling(fb->format->format);
 		int vsub = drm_format_vert_chroma_subsampling(fb->format->format);
 		int bpp = fb->format->cpp[1];
 
+<<<<<<< HEAD
 		uv_obj = fb->obj[1];
+=======
+		uv_obj = rockchip_fb_get_gem_obj(fb, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rk_uv_obj = to_rockchip_obj(uv_obj);
 
 		offset = (src->x1 >> 16) * bpp / hsub;
@@ -801,6 +956,7 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
 	rb_swap = has_rb_swapped(fb->format->format);
 	VOP_WIN_SET(vop, win, rb_swap, rb_swap);
 
+<<<<<<< HEAD
 	/*
 	 * Blending win0 with the background color doesn't seem to work
 	 * correctly. We only get the background color, no matter the contents
@@ -809,6 +965,9 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
 	 * so we can just disable blending to get the correct result.
 	 */
 	if (fb->format->has_alpha && win_index > 0) {
+=======
+	if (is_alpha_support(fb->format->format)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		VOP_WIN_SET(vop, win, dst_alpha_ctl,
 			    DST_FACTOR_M0(ALPHA_SRC_INVERSE));
 		val = SRC_ALPHA_EN(1) | SRC_COLOR_M0(ALPHA_SRC_PRE_MUL) |
@@ -906,13 +1065,19 @@ static void vop_crtc_atomic_enable(struct drm_crtc *crtc,
 	uint32_t pin_pol, val;
 	int ret;
 
+<<<<<<< HEAD
 	mutex_lock(&vop->vop_lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(vop->event);
 
 	ret = vop_enable(crtc);
 	if (ret) {
+<<<<<<< HEAD
 		mutex_unlock(&vop->vop_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_DEV_ERROR(vop->dev, "Failed to enable vop (%d)\n", ret);
 		return;
 	}
@@ -957,12 +1122,15 @@ static void vop_crtc_atomic_enable(struct drm_crtc *crtc,
 	if (s->output_mode == ROCKCHIP_OUT_MODE_AAAA &&
 	    !(vop_data->feature & VOP_FEATURE_OUTPUT_RGB10))
 		s->output_mode = ROCKCHIP_OUT_MODE_P888;
+<<<<<<< HEAD
 
 	if (s->output_mode == ROCKCHIP_OUT_MODE_AAAA && s->output_bpc == 8)
 		VOP_REG_SET(vop, common, pre_dither_down, 1);
 	else
 		VOP_REG_SET(vop, common, pre_dither_down, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VOP_REG_SET(vop, common, out_mode, s->output_mode);
 
 	VOP_REG_SET(vop, modeset, htotal_pw, (htotal << 16) | hsync_len);
@@ -982,7 +1150,12 @@ static void vop_crtc_atomic_enable(struct drm_crtc *crtc,
 	clk_set_rate(vop->dclk, adjusted_mode->clock * 1000);
 
 	VOP_REG_SET(vop, common, standby, 0);
+<<<<<<< HEAD
 	mutex_unlock(&vop->vop_lock);
+=======
+
+	rockchip_drm_psr_activate(&vop->crtc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool vop_fs_irq_is_pending(struct vop *vop)
@@ -1055,6 +1228,7 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
 			continue;
 
 		drm_framebuffer_get(old_plane_state->fb);
+<<<<<<< HEAD
 		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
 		drm_flip_work_queue(&vop->fb_unref_work, old_plane_state->fb);
 		set_bit(VOP_PENDING_FB_UNREF, &vop->pending);
@@ -1064,6 +1238,24 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
 static const struct drm_crtc_helper_funcs vop_crtc_helper_funcs = {
 	.mode_fixup = vop_crtc_mode_fixup,
 	.atomic_flush = vop_crtc_atomic_flush,
+=======
+		drm_flip_work_queue(&vop->fb_unref_work, old_plane_state->fb);
+		set_bit(VOP_PENDING_FB_UNREF, &vop->pending);
+		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
+	}
+}
+
+static void vop_crtc_atomic_begin(struct drm_crtc *crtc,
+				  struct drm_crtc_state *old_crtc_state)
+{
+	rockchip_drm_psr_flush(crtc);
+}
+
+static const struct drm_crtc_helper_funcs vop_crtc_helper_funcs = {
+	.mode_fixup = vop_crtc_mode_fixup,
+	.atomic_flush = vop_crtc_atomic_flush,
+	.atomic_begin = vop_crtc_atomic_begin,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_enable = vop_crtc_atomic_enable,
 	.atomic_disable = vop_crtc_atomic_disable,
 };
@@ -1178,14 +1370,24 @@ static void vop_handle_vblank(struct vop *vop)
 {
 	struct drm_device *drm = vop->drm_dev;
 	struct drm_crtc *crtc = &vop->crtc;
+<<<<<<< HEAD
 
 	spin_lock(&drm->event_lock);
+=======
+	unsigned long flags;
+
+	spin_lock_irqsave(&drm->event_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vop->event) {
 		drm_crtc_send_vblank_event(crtc, vop->event);
 		drm_crtc_vblank_put(crtc);
 		vop->event = NULL;
 	}
+<<<<<<< HEAD
 	spin_unlock(&drm->event_lock);
+=======
+	spin_unlock_irqrestore(&drm->event_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_and_clear_bit(VOP_PENDING_FB_UNREF, &vop->pending))
 		drm_flip_work_commit(&vop->fb_unref_work, system_unbound_wq);
@@ -1196,6 +1398,7 @@ static irqreturn_t vop_isr(int irq, void *data)
 	struct vop *vop = data;
 	struct drm_crtc *crtc = &vop->crtc;
 	uint32_t active_irqs;
+<<<<<<< HEAD
 	int ret = IRQ_NONE;
 
 	/*
@@ -1215,17 +1418,35 @@ static irqreturn_t vop_isr(int irq, void *data)
 	 * must hold irq_lock to avoid a race with enable/disable_vblank().
 	*/
 	spin_lock(&vop->irq_lock);
+=======
+	unsigned long flags;
+	int ret = IRQ_NONE;
+
+	/*
+	 * interrupt register has interrupt status, enable and clear bits, we
+	 * must hold irq_lock to avoid a race with enable/disable_vblank().
+	*/
+	spin_lock_irqsave(&vop->irq_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	active_irqs = VOP_INTR_GET_TYPE(vop, status, INTR_MASK);
 	/* Clear all active interrupt sources */
 	if (active_irqs)
 		VOP_INTR_SET_TYPE(vop, clear, active_irqs, 1);
 
+<<<<<<< HEAD
 	spin_unlock(&vop->irq_lock);
 
 	/* This is expected for vop iommu irqs, since the irq is shared */
 	if (!active_irqs)
 		goto out_disable;
+=======
+	spin_unlock_irqrestore(&vop->irq_lock, flags);
+
+	/* This is expected for vop iommu irqs, since the irq is shared */
+	if (!active_irqs)
+		return IRQ_NONE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (active_irqs & DSP_HOLD_VALID_INTR) {
 		complete(&vop->dsp_hold_completion);
@@ -1251,10 +1472,13 @@ static irqreturn_t vop_isr(int irq, void *data)
 		DRM_DEV_ERROR(vop->dev, "Unknown VOP IRQs: %#02x\n",
 			      active_irqs);
 
+<<<<<<< HEAD
 out_disable:
 	vop_core_clks_disable(vop);
 out:
 	pm_runtime_put(vop->dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1315,7 +1539,11 @@ static int vop_create_crtc(struct vop *vop)
 	for (i = 0; i < vop_data->win_size; i++) {
 		struct vop_win *vop_win = &vop->win[i];
 		const struct vop_win_data *win_data = vop_win->data;
+<<<<<<< HEAD
 		unsigned long possible_crtcs = drm_crtc_mask(crtc);
+=======
+		unsigned long possible_crtcs = 1 << drm_crtc_index(crtc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (win_data->type != DRM_PLANE_TYPE_OVERLAY)
 			continue;
@@ -1396,42 +1624,70 @@ static int vop_initial(struct vop *vop)
 
 	vop->hclk = devm_clk_get(vop->dev, "hclk_vop");
 	if (IS_ERR(vop->hclk)) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to get hclk source\n");
+=======
+		dev_err(vop->dev, "failed to get hclk source\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(vop->hclk);
 	}
 	vop->aclk = devm_clk_get(vop->dev, "aclk_vop");
 	if (IS_ERR(vop->aclk)) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to get aclk source\n");
+=======
+		dev_err(vop->dev, "failed to get aclk source\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(vop->aclk);
 	}
 	vop->dclk = devm_clk_get(vop->dev, "dclk_vop");
 	if (IS_ERR(vop->dclk)) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to get dclk source\n");
+=======
+		dev_err(vop->dev, "failed to get dclk source\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(vop->dclk);
 	}
 
 	ret = pm_runtime_get_sync(vop->dev);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to get pm runtime: %d\n", ret);
+=======
+		dev_err(vop->dev, "failed to get pm runtime: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = clk_prepare(vop->dclk);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to prepare dclk\n");
+=======
+		dev_err(vop->dev, "failed to prepare dclk\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_put_pm_runtime;
 	}
 
 	/* Enable both the hclk and aclk to setup the vop */
 	ret = clk_prepare_enable(vop->hclk);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to prepare/enable hclk\n");
+=======
+		dev_err(vop->dev, "failed to prepare/enable hclk\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_unprepare_dclk;
 	}
 
 	ret = clk_prepare_enable(vop->aclk);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to prepare/enable aclk\n");
+=======
+		dev_err(vop->dev, "failed to prepare/enable aclk\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_disable_hclk;
 	}
 
@@ -1440,7 +1696,11 @@ static int vop_initial(struct vop *vop)
 	 */
 	ahb_rst = devm_reset_control_get(vop->dev, "ahb");
 	if (IS_ERR(ahb_rst)) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to get ahb reset\n");
+=======
+		dev_err(vop->dev, "failed to get ahb reset\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = PTR_ERR(ahb_rst);
 		goto err_disable_aclk;
 	}
@@ -1451,8 +1711,12 @@ static int vop_initial(struct vop *vop)
 	VOP_INTR_SET_TYPE(vop, clear, INTR_MASK, 1);
 	VOP_INTR_SET_TYPE(vop, enable, INTR_MASK, 0);
 
+<<<<<<< HEAD
 	for (i = 0; i < vop->len; i += sizeof(u32))
 		vop->regsbak[i / 4] = readl_relaxed(vop->regs + i);
+=======
+	memcpy(vop->regsbak, vop->regs, vop->len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	VOP_REG_SET(vop, misc, global_regdone_en, 1);
 	VOP_REG_SET(vop, common, dsp_blank, 0);
@@ -1462,7 +1726,11 @@ static int vop_initial(struct vop *vop)
 		int channel = i * 2 + 1;
 
 		VOP_WIN_SET(vop, win, channel, (channel + 1) << 4 | channel);
+<<<<<<< HEAD
 		vop_win_disable(vop, win);
+=======
+		VOP_WIN_SET(vop, win, enable, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		VOP_WIN_SET(vop, win, gate, 1);
 	}
 
@@ -1473,7 +1741,11 @@ static int vop_initial(struct vop *vop)
 	 */
 	vop->dclk_rst = devm_reset_control_get(vop->dev, "dclk");
 	if (IS_ERR(vop->dclk_rst)) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "failed to get dclk reset\n");
+=======
+		dev_err(vop->dev, "failed to get dclk reset\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = PTR_ERR(vop->dclk_rst);
 		goto err_disable_aclk;
 	}
@@ -1532,11 +1804,15 @@ int rockchip_drm_wait_vact_end(struct drm_crtc *crtc, unsigned int mstimeout)
 {
 	struct vop *vop = to_vop(crtc);
 	unsigned long jiffies_left;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!crtc || !vop->is_enabled)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	mutex_lock(&vop->vop_lock);
 	if (mstimeout <= 0) {
 		ret = -EINVAL;
@@ -1547,6 +1823,13 @@ int rockchip_drm_wait_vact_end(struct drm_crtc *crtc, unsigned int mstimeout)
 		ret = -EBUSY;
 		goto out;
 	}
+=======
+	if (mstimeout <= 0)
+		return -EINVAL;
+
+	if (vop_line_flag_irq_is_enabled(vop))
+		return -EBUSY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reinit_completion(&vop->line_flag_completion);
 	vop_line_flag_irq_enable(vop);
@@ -1556,6 +1839,7 @@ int rockchip_drm_wait_vact_end(struct drm_crtc *crtc, unsigned int mstimeout)
 	vop_line_flag_irq_disable(vop);
 
 	if (jiffies_left == 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(vop->dev, "Timeout waiting for IRQ\n");
 		ret = -ETIMEDOUT;
 		goto out;
@@ -1564,6 +1848,13 @@ int rockchip_drm_wait_vact_end(struct drm_crtc *crtc, unsigned int mstimeout)
 out:
 	mutex_unlock(&vop->vop_lock);
 	return ret;
+=======
+		dev_err(vop->dev, "Timeout waiting for IRQ\n");
+		return -ETIMEDOUT;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(rockchip_drm_wait_vact_end);
 
@@ -1606,14 +1897,23 @@ static int vop_bind(struct device *dev, struct device *master, void *data)
 
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "cannot find irq for vop\n");
+=======
+		dev_err(dev, "cannot find irq for vop\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return irq;
 	}
 	vop->irq = (unsigned int)irq;
 
 	spin_lock_init(&vop->reg_lock);
 	spin_lock_init(&vop->irq_lock);
+<<<<<<< HEAD
 	mutex_init(&vop->vop_lock);
+=======
+
+	mutex_init(&vop->vsync_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = vop_create_crtc(vop);
 	if (ret)
@@ -1623,8 +1923,12 @@ static int vop_bind(struct device *dev, struct device *master, void *data)
 
 	ret = vop_initial(vop);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(&pdev->dev,
 			      "cannot initial vop dev - err %d\n", ret);
+=======
+		dev_err(&pdev->dev, "cannot initial vop dev - err %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_disable_pm_runtime;
 	}
 
@@ -1633,6 +1937,12 @@ static int vop_bind(struct device *dev, struct device *master, void *data)
 	if (ret)
 		goto err_disable_pm_runtime;
 
+<<<<<<< HEAD
+=======
+	/* IRQ is initially disabled; it gets enabled in power_on */
+	disable_irq(vop->irq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_disable_pm_runtime:

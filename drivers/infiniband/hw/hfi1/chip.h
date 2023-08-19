@@ -196,6 +196,7 @@
 #define LSTATE_ARMED   0x3
 #define LSTATE_ACTIVE  0x4
 
+<<<<<<< HEAD
 /* DCC_CFG_RESET reset states */
 #define LCB_RX_FPE_TX_FPE_INTO_RESET   (DCC_CFG_RESET_RESET_LCB    | \
 					DCC_CFG_RESET_RESET_TX_FPE | \
@@ -205,6 +206,8 @@
 
 #define LCB_RX_FPE_TX_FPE_OUT_OF_RESET  DCC_CFG_RESET_ENABLE_CCLK_BCC /* 0x10 */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* DC8051_STS_CUR_STATE port values (physical link states) */
 #define PLS_DISABLED			   0x30
 #define PLS_OFFLINE				   0x90
@@ -292,7 +295,10 @@
 #define HREQ_SET_TX_EQ_ABS	0x04
 #define HREQ_SET_TX_EQ_REL	0x05
 #define HREQ_ENABLE		0x06
+<<<<<<< HEAD
 #define HREQ_LCB_RESET		0x07
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HREQ_CONFIG_DONE	0xfe
 #define HREQ_INTERFACE_TEST	0xff
 
@@ -393,7 +399,11 @@
 #define TX_SETTINGS		     0x06
 #define VERIFY_CAP_LOCAL_PHY	     0x07
 #define VERIFY_CAP_LOCAL_FABRIC	     0x08
+<<<<<<< HEAD
 #define VERIFY_CAP_LOCAL_LINK_MODE   0x09
+=======
+#define VERIFY_CAP_LOCAL_LINK_WIDTH  0x09
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define LOCAL_DEVICE_ID		     0x0a
 #define RESERVED_REGISTERS	     0x0b
 #define LOCAL_LNI_INFO		     0x0c
@@ -518,7 +528,10 @@
 #define DOWN_REMOTE_REASON_SHIFT 16
 #define DOWN_REMOTE_REASON_MASK  0xff
 
+<<<<<<< HEAD
 #define HOST_INTERFACE_VERSION 1
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HOST_INTERFACE_VERSION_SHIFT 16
 #define HOST_INTERFACE_VERSION_MASK  0xff
 
@@ -571,7 +584,11 @@ enum {
 /* timeouts */
 #define LINK_RESTART_DELAY 1000		/* link restart delay, in ms */
 #define TIMEOUT_8051_START 5000         /* 8051 start timeout, in ms */
+<<<<<<< HEAD
 #define DC8051_COMMAND_TIMEOUT 1000	/* DC8051 command timeout, in ms */
+=======
+#define DC8051_COMMAND_TIMEOUT 20000	/* DC8051 command timeout, in ms */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FREEZE_STATUS_TIMEOUT 20	/* wait for freeze indicators, in ms */
 #define VL_STATUS_CLEAR_TIMEOUT 5000	/* per-VL status clear, in ms */
 #define CCE_STATUS_TIMEOUT 10		/* time to clear CCE Status, in ms */
@@ -594,10 +611,13 @@ enum {
 #define LOOPBACK_LCB	2
 #define LOOPBACK_CABLE	3	/* external cable */
 
+<<<<<<< HEAD
 /* set up bits in MISC_CONFIG_BITS */
 #define LOOPBACK_SERDES_CONFIG_BIT_MASK_SHIFT 0
 #define EXT_CFG_LCB_RESET_SUPPORTED_SHIFT     3
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* read and write hardware registers */
 u64 read_csr(const struct hfi1_devdata *dd, u32 offset);
 void write_csr(const struct hfi1_devdata *dd, u32 offset, u64 value);
@@ -656,6 +676,7 @@ static inline void write_uctxt_csr(struct hfi1_devdata *dd, int ctxt,
 	write_csr(dd, offset0 + (0x1000 * ctxt), value);
 }
 
+<<<<<<< HEAD
 static inline u32 chip_rcv_contexts(struct hfi1_devdata *dd)
 {
 	return read_csr(dd, RCV_CONTEXTS);
@@ -686,6 +707,8 @@ static inline u32 chip_rcv_array_count(struct hfi1_devdata *dd)
 	return read_csr(dd, RCV_ARRAY_CNT);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u64 create_pbc(struct hfi1_pportdata *ppd, u64 flags, int srate_mbs, u32 vl,
 	       u32 dw_len);
 
@@ -777,8 +800,13 @@ int read_8051_config(struct hfi1_devdata *, u8, u8, u32 *);
 int start_link(struct hfi1_pportdata *ppd);
 int bringup_serdes(struct hfi1_pportdata *ppd);
 void set_intr_state(struct hfi1_devdata *dd, u32 enable);
+<<<<<<< HEAD
 bool apply_link_downgrade_policy(struct hfi1_pportdata *ppd,
 				 bool refresh_widths);
+=======
+void apply_link_downgrade_policy(struct hfi1_pportdata *ppd,
+				 int refresh_widths);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void update_usrhead(struct hfi1_ctxtdata *rcd, u32 hd, u32 updegr, u32 egrhd,
 		    u32 intr_adjust, u32 npkts);
 int stop_drain_data_vls(struct hfi1_devdata *dd);
@@ -909,6 +937,10 @@ enum {
 	C_DC_PG_STS_TX_MBE_CNT,
 	C_SW_CPU_INTR,
 	C_SW_CPU_RCV_LIM,
+<<<<<<< HEAD
+=======
+	C_SW_CTX0_SEQ_DROP,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	C_SW_VTX_WAIT,
 	C_SW_PIO_WAIT,
 	C_SW_PIO_DRAIN,

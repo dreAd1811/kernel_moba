@@ -68,7 +68,10 @@ struct nvkm_specdom {
 };
 
 #define nvkm_perfdom(p) container_of((p), struct nvkm_perfdom, object)
+<<<<<<< HEAD
 #include <core/object.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nvkm_perfdom {
 	struct nvkm_object object;

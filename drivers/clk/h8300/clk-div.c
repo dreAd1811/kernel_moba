@@ -24,13 +24,21 @@ static void __init h8300_div_clk_setup(struct device_node *node)
 
 	num_parents = of_clk_get_parent_count(node);
 	if (!num_parents) {
+<<<<<<< HEAD
 		pr_err("%s: no parent found\n", clk_name);
+=======
+		pr_err("%s: no parent found", clk_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	divcr = of_iomap(node, 0);
 	if (divcr == NULL) {
+<<<<<<< HEAD
 		pr_err("%s: failed to map divide register\n", clk_name);
+=======
+		pr_err("%s: failed to map divide register", clk_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error;
 	}
 	offset = (unsigned long)divcr & 3;

@@ -14,6 +14,15 @@
 
 #include "aq_common.h"
 
+<<<<<<< HEAD
+=======
+#define AQ_DIMOF(_ARY_)  ARRAY_SIZE(_ARY_)
+
+struct aq_obj_s {
+	atomic_t flags;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void aq_utils_obj_set(atomic_t *flags, u32 mask)
 {
 	unsigned long flags_old, flags_new;

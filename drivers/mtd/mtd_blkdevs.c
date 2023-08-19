@@ -82,6 +82,10 @@ static blk_status_t do_blktrans_request(struct mtd_blktrans_ops *tr,
 
 	block = blk_rq_pos(req) << 9 >> tr->blkshift;
 	nsect = blk_rq_cur_bytes(req) >> tr->blkshift;
+<<<<<<< HEAD
+=======
+	buf = bio_data(req->bio);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (req_op(req) == REQ_OP_FLUSH) {
 		if (tr->flush(dev))
@@ -99,6 +103,7 @@ static blk_status_t do_blktrans_request(struct mtd_blktrans_ops *tr,
 			return BLK_STS_IOERR;
 		return BLK_STS_OK;
 	case REQ_OP_READ:
+<<<<<<< HEAD
 		buf = kmap(bio_page(req->bio)) + bio_offset(req->bio);
 		for (; nsect > 0; nsect--, block++, buf += tr->blksize) {
 			if (tr->readsect(dev, block, buf)) {
@@ -107,6 +112,11 @@ static blk_status_t do_blktrans_request(struct mtd_blktrans_ops *tr,
 			}
 		}
 		kunmap(bio_page(req->bio));
+=======
+		for (; nsect > 0; nsect--, block++, buf += tr->blksize)
+			if (tr->readsect(dev, block, buf))
+				return BLK_STS_IOERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rq_flush_dcache_pages(req);
 		return BLK_STS_OK;
 	case REQ_OP_WRITE:
@@ -114,6 +124,7 @@ static blk_status_t do_blktrans_request(struct mtd_blktrans_ops *tr,
 			return BLK_STS_IOERR;
 
 		rq_flush_dcache_pages(req);
+<<<<<<< HEAD
 		buf = kmap(bio_page(req->bio)) + bio_offset(req->bio);
 		for (; nsect > 0; nsect--, block++, buf += tr->blksize) {
 			if (tr->writesect(dev, block, buf)) {
@@ -122,6 +133,11 @@ static blk_status_t do_blktrans_request(struct mtd_blktrans_ops *tr,
 			}
 		}
 		kunmap(bio_page(req->bio));
+=======
+		for (; nsect > 0; nsect--, block++, buf += tr->blksize)
+			if (tr->writesect(dev, block, buf))
+				return BLK_STS_IOERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return BLK_STS_OK;
 	default:
 		return BLK_STS_IOERR;
@@ -427,11 +443,20 @@ int add_mtd_blktrans_dev(struct mtd_blktrans_dev *new)
 	new->rq->queuedata = new;
 	blk_queue_logical_block_size(new->rq, tr->blksize);
 
+<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_NONROT, new->rq);
 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, new->rq);
 
 	if (tr->discard) {
 		blk_queue_flag_set(QUEUE_FLAG_DISCARD, new->rq);
+=======
+	blk_queue_bounce_limit(new->rq, BLK_BOUNCE_HIGH);
+	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, new->rq);
+	queue_flag_clear_unlocked(QUEUE_FLAG_ADD_RANDOM, new->rq);
+
+	if (tr->discard) {
+		queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, new->rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blk_queue_max_discard_sectors(new->rq, UINT_MAX);
 	}
 

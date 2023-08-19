@@ -177,6 +177,7 @@
 #endif /* defined(CONFIG_MMU) && XCHAL_HAVE_PTP_MMU &&
 	  XCHAL_HAVE_SPANNING_WAY */
 
+<<<<<<< HEAD
 	.endm
 
 	.macro	initialize_cacheattr
@@ -207,6 +208,38 @@
 	bgeu	a5, a8, 1b
 
 	isync
+=======
+#if !defined(CONFIG_MMU) && XCHAL_HAVE_TLBS && \
+		(XCHAL_DCACHE_SIZE || XCHAL_ICACHE_SIZE)
+	/* Enable data and instruction cache in the DEFAULT_MEMORY region
+	 * if the processor has DTLB and ITLB.
+	 */
+
+	movi	a5, PLATFORM_DEFAULT_MEM_START | XCHAL_SPANNING_WAY
+	movi	a6, ~_PAGE_ATTRIB_MASK
+	movi	a7, CA_WRITEBACK
+	movi	a8, 0x20000000
+	movi	a9, PLATFORM_DEFAULT_MEM_SIZE
+	j	2f
+1:
+	sub	a9, a9, a8
+2:
+#if XCHAL_DCACHE_SIZE
+	rdtlb1	a3, a5
+	and	a3, a3, a6
+	or	a3, a3, a7
+	wdtlb	a3, a5
+#endif
+#if XCHAL_ICACHE_SIZE
+	ritlb1	a4, a5
+	and	a4, a4, a6
+	or	a4, a4, a7
+	witlb	a4, a5
+#endif
+	add	a5, a5, a8
+	bltu	a8, a9, 1b
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	.endm

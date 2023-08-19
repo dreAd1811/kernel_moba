@@ -485,7 +485,11 @@ static int ch7006_encoder_init(struct i2c_client *client,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct i2c_device_id ch7006_ids[] = {
+=======
+static struct i2c_device_id ch7006_ids[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "ch7006", 0 },
 	{ }
 };

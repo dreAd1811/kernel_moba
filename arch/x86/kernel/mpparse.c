@@ -281,7 +281,11 @@ static void __init construct_default_ioirq_mptable(int mpc_default_type)
 	int ELCR_fallback = 0;
 
 	intsrc.type = MP_INTSRC;
+<<<<<<< HEAD
 	intsrc.irqflag = MP_IRQTRIG_DEFAULT | MP_IRQPOL_DEFAULT;
+=======
+	intsrc.irqflag = 0;	/* conforming */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intsrc.srcbus = 0;
 	intsrc.dstapic = mpc_ioapic_id(0);
 
@@ -324,6 +328,7 @@ static void __init construct_default_ioirq_mptable(int mpc_default_type)
 			 *  copy that information over to the MP table in the
 			 *  irqflag field (level sensitive, active high polarity).
 			 */
+<<<<<<< HEAD
 			if (ELCR_trigger(i)) {
 				intsrc.irqflag = MP_IRQTRIG_LEVEL |
 						 MP_IRQPOL_ACTIVE_HIGH;
@@ -331,6 +336,12 @@ static void __init construct_default_ioirq_mptable(int mpc_default_type)
 				intsrc.irqflag = MP_IRQTRIG_DEFAULT |
 						 MP_IRQPOL_DEFAULT;
 			}
+=======
+			if (ELCR_trigger(i))
+				intsrc.irqflag = 13;
+			else
+				intsrc.irqflag = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		intsrc.srcbusirq = i;
@@ -422,7 +433,11 @@ static inline void __init construct_default_ISA_mptable(int mpc_default_type)
 	construct_ioapic_table(mpc_default_type);
 
 	lintsrc.type = MP_LINTSRC;
+<<<<<<< HEAD
 	lintsrc.irqflag = MP_IRQTRIG_DEFAULT | MP_IRQPOL_DEFAULT;
+=======
+	lintsrc.irqflag = 0;		/* conforming */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lintsrc.srcbusid = 0;
 	lintsrc.srcbusirq = 0;
 	lintsrc.destapic = MP_APIC_ALL;
@@ -665,7 +680,11 @@ static int  __init get_MP_intsrc_index(struct mpc_intsrc *m)
 	if (m->irqtype != mp_INT)
 		return 0;
 
+<<<<<<< HEAD
 	if (m->irqflag != (MP_IRQTRIG_LEVEL | MP_IRQPOL_ACTIVE_LOW))
+=======
+	if (m->irqflag != 0x0f)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* not legacy */
@@ -674,8 +693,12 @@ static int  __init get_MP_intsrc_index(struct mpc_intsrc *m)
 		if (mp_irqs[i].irqtype != mp_INT)
 			continue;
 
+<<<<<<< HEAD
 		if (mp_irqs[i].irqflag != (MP_IRQTRIG_LEVEL |
 					   MP_IRQPOL_ACTIVE_LOW))
+=======
+		if (mp_irqs[i].irqflag != 0x0f)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		if (mp_irqs[i].srcbus != m->srcbus)
@@ -786,8 +809,12 @@ static int  __init replace_intsrc_all(struct mpc_table *mpc,
 		if (mp_irqs[i].irqtype != mp_INT)
 			continue;
 
+<<<<<<< HEAD
 		if (mp_irqs[i].irqflag != (MP_IRQTRIG_LEVEL |
 					   MP_IRQPOL_ACTIVE_LOW))
+=======
+		if (mp_irqs[i].irqflag != 0x0f)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		if (nr_m_spare > 0) {

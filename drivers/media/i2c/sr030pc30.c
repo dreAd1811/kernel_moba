@@ -511,6 +511,7 @@ static int sr030pc30_get_fmt(struct v4l2_subdev *sd,
 static const struct sr030pc30_format *try_fmt(struct v4l2_subdev *sd,
 					      struct v4l2_mbus_framefmt *mf)
 {
+<<<<<<< HEAD
 	int i;
 
 	sr030pc30_try_frame_size(mf);
@@ -521,6 +522,15 @@ static const struct sr030pc30_format *try_fmt(struct v4l2_subdev *sd,
 	}
 	if (i == ARRAY_SIZE(sr030pc30_formats))
 		i = 0;
+=======
+	int i = ARRAY_SIZE(sr030pc30_formats);
+
+	sr030pc30_try_frame_size(mf);
+
+	while (i--)
+		if (mf->code == sr030pc30_formats[i].code)
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mf->code = sr030pc30_formats[i].code;
 

@@ -41,6 +41,7 @@ enum samsung_pll_type {
 	pll_1460x,
 };
 
+<<<<<<< HEAD
 #define PLL_RATE(_fin, _m, _p, _s, _k, _ks) \
 	((u64)(_fin) * (BIT(_ks) * (_m) + (_k)) / BIT(_ks) / ((_p) << (_s)))
 #define PLL_VALID_RATE(_fin, _fout, _m, _p, _s, _k, _ks) ((_fout) + \
@@ -50,11 +51,17 @@ enum samsung_pll_type {
 	{							\
 		.rate	=	PLL_VALID_RATE(_fin, _rate,	\
 				_m, _p, _s, 0, 16),		\
+=======
+#define PLL_35XX_RATE(_rate, _m, _p, _s)			\
+	{							\
+		.rate	=	(_rate),				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mdiv	=	(_m),				\
 		.pdiv	=	(_p),				\
 		.sdiv	=	(_s),				\
 	}
 
+<<<<<<< HEAD
 #define PLL_S3C2410_MPLL_RATE(_fin, _rate, _m, _p, _s)		\
 	{							\
 		.rate	=	PLL_VALID_RATE(_fin, _rate,	\
@@ -77,26 +84,43 @@ enum samsung_pll_type {
 	{							\
 		.rate	=	PLL_VALID_RATE(_fin, _rate,	\
 				_m, _p, _s, _k, 16),		\
+=======
+#define PLL_36XX_RATE(_rate, _m, _p, _s, _k)			\
+	{							\
+		.rate	=	(_rate),				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mdiv	=	(_m),				\
 		.pdiv	=	(_p),				\
 		.sdiv	=	(_s),				\
 		.kdiv	=	(_k),				\
 	}
 
+<<<<<<< HEAD
 #define PLL_4508_RATE(_fin, _rate, _m, _p, _s, _afc)		\
 	{							\
 		.rate	=	PLL_VALID_RATE(_fin, _rate,	\
 				_m, _p, _s - 1, 0, 16),		\
+=======
+#define PLL_45XX_RATE(_rate, _m, _p, _s, _afc)			\
+	{							\
+		.rate	=	(_rate),			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mdiv	=	(_m),				\
 		.pdiv	=	(_p),				\
 		.sdiv	=	(_s),				\
 		.afc	=	(_afc),				\
 	}
 
+<<<<<<< HEAD
 #define PLL_4600_RATE(_fin, _rate, _m, _p, _s, _k, _vsel)	\
 	{							\
 		.rate	=	PLL_VALID_RATE(_fin, _rate,	\
 				_m, _p, _s, _k, 16),		\
+=======
+#define PLL_4600_RATE(_rate, _m, _p, _s, _k, _vsel)		\
+	{							\
+		.rate	=	(_rate),			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mdiv	=	(_m),				\
 		.pdiv	=	(_p),				\
 		.sdiv	=	(_s),				\
@@ -104,10 +128,16 @@ enum samsung_pll_type {
 		.vsel	=	(_vsel),			\
 	}
 
+<<<<<<< HEAD
 #define PLL_4650_RATE(_fin, _rate, _m, _p, _s, _k, _mfr, _mrr, _vsel) \
 	{							\
 		.rate	=	PLL_VALID_RATE(_fin, _rate,	\
 				_m, _p, _s, _k, 10),		\
+=======
+#define PLL_4650_RATE(_rate, _m, _p, _s, _k, _mfr, _mrr, _vsel)	\
+	{							\
+		.rate	=	(_rate),			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.mdiv	=	(_m),				\
 		.pdiv	=	(_p),				\
 		.sdiv	=	(_s),				\

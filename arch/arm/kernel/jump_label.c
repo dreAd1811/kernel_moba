@@ -4,6 +4,11 @@
 #include <asm/patch.h>
 #include <asm/insn.h>
 
+<<<<<<< HEAD
+=======
+#ifdef HAVE_JUMP_LABEL
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __arch_jump_label_transform(struct jump_entry *entry,
 					enum jump_label_type type,
 					bool is_static)
@@ -33,3 +38,8 @@ void arch_jump_label_transform_static(struct jump_entry *entry,
 {
 	__arch_jump_label_transform(entry, type, true);
 }
+<<<<<<< HEAD
+=======
+
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

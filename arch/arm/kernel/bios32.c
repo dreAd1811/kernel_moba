@@ -527,7 +527,11 @@ void pci_common_init_dev(struct device *parent, struct hw_pci *hw)
 	struct pci_sys_data *sys;
 	LIST_HEAD(head);
 
+<<<<<<< HEAD
 	pci_add_flags(PCI_REASSIGN_ALL_BUS);
+=======
+	pci_add_flags(PCI_REASSIGN_ALL_RSRC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hw->preinit)
 		hw->preinit();
 	pcibios_init_hw(parent, hw, &head);

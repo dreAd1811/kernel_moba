@@ -460,6 +460,10 @@ void do_ide_request(struct request_queue *q)
 	struct ide_host *host = hwif->host;
 	struct request	*rq = NULL;
 	ide_startstop_t	startstop;
+<<<<<<< HEAD
+=======
+	unsigned long queue_run_ms = 3; /* old plug delay */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irq(q->queue_lock);
 
@@ -479,6 +483,12 @@ repeat:
 		prev_port = hwif->host->cur_port;
 		if (drive->dev_flags & IDE_DFLAG_SLEEPING &&
 		    time_after(drive->sleep, jiffies)) {
+<<<<<<< HEAD
+=======
+			unsigned long left = jiffies - drive->sleep;
+
+			queue_run_ms = jiffies_to_msecs(left + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ide_unlock_port(hwif);
 			goto plug_device;
 		}
@@ -535,7 +545,11 @@ repeat:
 		 */
 		if ((drive->dev_flags & IDE_DFLAG_BLOCKED) &&
 		    ata_pm_request(rq) == 0 &&
+<<<<<<< HEAD
 		    (rq->rq_flags & RQF_PREEMPT) == 0) {
+=======
+		    (rq->cmd_flags & REQ_PREEMPT) == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* there should be no pending command at this point */
 			ide_unlock_port(hwif);
 			goto plug_device;
@@ -607,9 +621,15 @@ static int drive_is_ready(ide_drive_t *drive)
  *	logic that wants cleaning up.
  */
  
+<<<<<<< HEAD
 void ide_timer_expiry (struct timer_list *t)
 {
 	ide_hwif_t	*hwif = from_timer(hwif, t, timer);
+=======
+void ide_timer_expiry (unsigned long data)
+{
+	ide_hwif_t	*hwif = (ide_hwif_t *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ide_drive_t	*uninitialized_var(drive);
 	ide_handler_t	*handler;
 	unsigned long	flags;
@@ -655,7 +675,12 @@ void ide_timer_expiry (struct timer_list *t)
 		spin_unlock(&hwif->lock);
 		/* disable_irq_nosync ?? */
 		disable_irq(hwif->irq);
+<<<<<<< HEAD
 
+=======
+		/* local CPU only, as if we were handling an interrupt */
+		local_irq_disable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (hwif->polling) {
 			startstop = handler(drive);
 		} else if (drive_is_ready(drive)) {
@@ -674,7 +699,10 @@ void ide_timer_expiry (struct timer_list *t)
 				startstop = ide_error(drive, "irq timeout",
 					hwif->tp_ops->read_status(hwif));
 		}
+<<<<<<< HEAD
 		/* Disable interrupts again, `handler' might have enabled it */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irq(&hwif->lock);
 		enable_irq(hwif->irq);
 		if (startstop == ide_stopped && hwif->polling == 0) {

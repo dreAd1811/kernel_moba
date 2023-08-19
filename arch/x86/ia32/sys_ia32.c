@@ -41,17 +41,25 @@
 #include <linux/highuid.h>
 #include <linux/sysctl.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/sched/task.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mman.h>
 #include <asm/types.h>
 #include <linux/uaccess.h>
 #include <linux/atomic.h>
 #include <asm/vgtod.h>
+<<<<<<< HEAD
 #include <asm/ia32.h>
+=======
+#include <asm/sys_ia32.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define AA(__x)		((unsigned long)(__x))
 
 
+<<<<<<< HEAD
 COMPAT_SYSCALL_DEFINE3(x86_truncate64, const char __user *, filename,
 		       unsigned long, offset_low, unsigned long, offset_high)
 {
@@ -63,6 +71,19 @@ COMPAT_SYSCALL_DEFINE3(x86_ftruncate64, unsigned int, fd,
 		       unsigned long, offset_low, unsigned long, offset_high)
 {
 	return ksys_ftruncate(fd, ((loff_t) offset_high << 32) | offset_low);
+=======
+asmlinkage long sys32_truncate64(const char __user *filename,
+				 unsigned long offset_low,
+				 unsigned long offset_high)
+{
+       return sys_truncate(filename, ((loff_t) offset_high << 32) | offset_low);
+}
+
+asmlinkage long sys32_ftruncate64(unsigned int fd, unsigned long offset_low,
+				  unsigned long offset_high)
+{
+       return sys_ftruncate(fd, ((loff_t) offset_high << 32) | offset_low);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -97,8 +118,13 @@ static int cp_stat64(struct stat64 __user *ubuf, struct kstat *stat)
 	return 0;
 }
 
+<<<<<<< HEAD
 COMPAT_SYSCALL_DEFINE2(x86_stat64, const char __user *, filename,
 		       struct stat64 __user *, statbuf)
+=======
+asmlinkage long sys32_stat64(const char __user *filename,
+			     struct stat64 __user *statbuf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kstat stat;
 	int ret = vfs_stat(filename, &stat);
@@ -108,8 +134,13 @@ COMPAT_SYSCALL_DEFINE2(x86_stat64, const char __user *, filename,
 	return ret;
 }
 
+<<<<<<< HEAD
 COMPAT_SYSCALL_DEFINE2(x86_lstat64, const char __user *, filename,
 		       struct stat64 __user *, statbuf)
+=======
+asmlinkage long sys32_lstat64(const char __user *filename,
+			      struct stat64 __user *statbuf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kstat stat;
 	int ret = vfs_lstat(filename, &stat);
@@ -118,8 +149,12 @@ COMPAT_SYSCALL_DEFINE2(x86_lstat64, const char __user *, filename,
 	return ret;
 }
 
+<<<<<<< HEAD
 COMPAT_SYSCALL_DEFINE2(x86_fstat64, unsigned int, fd,
 		       struct stat64 __user *, statbuf)
+=======
+asmlinkage long sys32_fstat64(unsigned int fd, struct stat64 __user *statbuf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kstat stat;
 	int ret = vfs_fstat(fd, &stat);
@@ -128,9 +163,14 @@ COMPAT_SYSCALL_DEFINE2(x86_fstat64, unsigned int, fd,
 	return ret;
 }
 
+<<<<<<< HEAD
 COMPAT_SYSCALL_DEFINE4(x86_fstatat, unsigned int, dfd,
 		       const char __user *, filename,
 		       struct stat64 __user *, statbuf, int, flag)
+=======
+asmlinkage long sys32_fstatat(unsigned int dfd, const char __user *filename,
+			      struct stat64 __user *statbuf, int flag)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kstat stat;
 	int error;
@@ -156,7 +196,11 @@ struct mmap_arg_struct32 {
 	unsigned int offset;
 };
 
+<<<<<<< HEAD
 COMPAT_SYSCALL_DEFINE1(x86_mmap, struct mmap_arg_struct32 __user *, arg)
+=======
+asmlinkage long sys32_mmap(struct mmap_arg_struct32 __user *arg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mmap_arg_struct32 a;
 
@@ -166,6 +210,7 @@ COMPAT_SYSCALL_DEFINE1(x86_mmap, struct mmap_arg_struct32 __user *, arg)
 	if (a.offset & ~PAGE_MASK)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	return ksys_mmap_pgoff(a.addr, a.len, a.prot, a.flags, a.fd,
 			       a.offset>>PAGE_SHIFT);
 }
@@ -183,6 +228,31 @@ COMPAT_SYSCALL_DEFINE5(x86_pwrite, unsigned int, fd, const char __user *, ubuf,
 {
 	return ksys_pwrite64(fd, ubuf, count,
 			     ((loff_t)AA(poshi) << 32) | AA(poslo));
+=======
+	return sys_mmap_pgoff(a.addr, a.len, a.prot, a.flags, a.fd,
+			       a.offset>>PAGE_SHIFT);
+}
+
+asmlinkage long sys32_waitpid(compat_pid_t pid, unsigned int __user *stat_addr,
+			      int options)
+{
+	return compat_sys_wait4(pid, stat_addr, options, NULL);
+}
+
+/* warning: next two assume little endian */
+asmlinkage long sys32_pread(unsigned int fd, char __user *ubuf, u32 count,
+			    u32 poslo, u32 poshi)
+{
+	return sys_pread64(fd, ubuf, count,
+			 ((loff_t)AA(poshi) << 32) | AA(poslo));
+}
+
+asmlinkage long sys32_pwrite(unsigned int fd, const char __user *ubuf,
+			     u32 count, u32 poslo, u32 poshi)
+{
+	return sys_pwrite64(fd, ubuf, count,
+			  ((loff_t)AA(poshi) << 32) | AA(poslo));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -190,6 +260,7 @@ COMPAT_SYSCALL_DEFINE5(x86_pwrite, unsigned int, fd, const char __user *, ubuf,
  * Some system calls that need sign extended arguments. This could be
  * done by a generic wrapper.
  */
+<<<<<<< HEAD
 COMPAT_SYSCALL_DEFINE6(x86_fadvise64_64, int, fd, __u32, offset_low,
 		       __u32, offset_high, __u32, len_low, __u32, len_high,
 		       int, advice)
@@ -239,4 +310,42 @@ COMPAT_SYSCALL_DEFINE5(x86_clone, unsigned long, clone_flags,
 {
 	return _do_fork(clone_flags, newsp, 0, parent_tidptr, child_tidptr,
 			tls_val);
+=======
+long sys32_fadvise64_64(int fd, __u32 offset_low, __u32 offset_high,
+			__u32 len_low, __u32 len_high, int advice)
+{
+	return sys_fadvise64_64(fd,
+			       (((u64)offset_high)<<32) | offset_low,
+			       (((u64)len_high)<<32) | len_low,
+				advice);
+}
+
+asmlinkage ssize_t sys32_readahead(int fd, unsigned off_lo, unsigned off_hi,
+				   size_t count)
+{
+	return sys_readahead(fd, ((u64)off_hi << 32) | off_lo, count);
+}
+
+asmlinkage long sys32_sync_file_range(int fd, unsigned off_low, unsigned off_hi,
+				      unsigned n_low, unsigned n_hi,  int flags)
+{
+	return sys_sync_file_range(fd,
+				   ((u64)off_hi << 32) | off_low,
+				   ((u64)n_hi << 32) | n_low, flags);
+}
+
+asmlinkage long sys32_fadvise64(int fd, unsigned offset_lo, unsigned offset_hi,
+				size_t len, int advice)
+{
+	return sys_fadvise64_64(fd, ((u64)offset_hi << 32) | offset_lo,
+				len, advice);
+}
+
+asmlinkage long sys32_fallocate(int fd, int mode, unsigned offset_lo,
+				unsigned offset_hi, unsigned len_lo,
+				unsigned len_hi)
+{
+	return sys_fallocate(fd, mode, ((u64)offset_hi << 32) | offset_lo,
+			     ((u64)len_hi << 32) | len_lo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -1,5 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (c) 2017 Intel Corporation.
+=======
+/*
+ * Copyright (c) 2017 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License version
+ * 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/acpi.h>
 #include <linux/i2c.h>
@@ -93,6 +109,10 @@ struct ov13858_reg_list {
 
 /* Link frequency config */
 struct ov13858_link_freq_config {
+<<<<<<< HEAD
+=======
+	u32 pixel_rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 pixels_per_line;
 
 	/* PLL registers for this link frequency */
@@ -183,7 +203,10 @@ static const struct ov13858_reg mode_4224x3136_regs[] = {
 	{0x3624, 0x1c},
 	{0x3640, 0x10},
 	{0x3641, 0x70},
+<<<<<<< HEAD
 	{0x3660, 0x04},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0x3661, 0x80},
 	{0x3662, 0x12},
 	{0x3664, 0x73},
@@ -227,11 +250,19 @@ static const struct ov13858_reg mode_4224x3136_regs[] = {
 	{0x3800, 0x00},
 	{0x3801, 0x00},
 	{0x3802, 0x00},
+<<<<<<< HEAD
 	{0x3803, 0x08},
 	{0x3804, 0x10},
 	{0x3805, 0x9f},
 	{0x3806, 0x0c},
 	{0x3807, 0x57},
+=======
+	{0x3803, 0x00},
+	{0x3804, 0x10},
+	{0x3805, 0x9f},
+	{0x3806, 0x0c},
+	{0x3807, 0x5f},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0x3808, 0x10},
 	{0x3809, 0x80},
 	{0x380a, 0x0c},
@@ -374,7 +405,10 @@ static const struct ov13858_reg mode_2112x1568_regs[] = {
 	{0x3624, 0x1c},
 	{0x3640, 0x10},
 	{0x3641, 0x70},
+<<<<<<< HEAD
 	{0x3660, 0x04},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0x3661, 0x80},
 	{0x3662, 0x10},
 	{0x3664, 0x73},
@@ -565,7 +599,10 @@ static const struct ov13858_reg mode_2112x1188_regs[] = {
 	{0x3624, 0x1c},
 	{0x3640, 0x10},
 	{0x3641, 0x70},
+<<<<<<< HEAD
 	{0x3660, 0x04},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0x3661, 0x80},
 	{0x3662, 0x10},
 	{0x3664, 0x73},
@@ -756,7 +793,10 @@ static const struct ov13858_reg mode_1056x784_regs[] = {
 	{0x3624, 0x1c},
 	{0x3640, 0x10},
 	{0x3641, 0x70},
+<<<<<<< HEAD
 	{0x3660, 0x04},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0x3661, 0x80},
 	{0x3662, 0x08},
 	{0x3664, 0x73},
@@ -940,6 +980,7 @@ static const char * const ov13858_test_pattern_menu[] = {
 #define OV13858_LINK_FREQ_INDEX_0	0
 #define OV13858_LINK_FREQ_INDEX_1	1
 
+<<<<<<< HEAD
 /*
  * pixel_rate = link_freq * data-rate * nr_of_lanes / bits_per_sample
  * data rate => double data rate; number of lanes => 4; bits per pixel => 10
@@ -952,6 +993,8 @@ static u64 link_freq_to_pixel_rate(u64 f)
 	return f;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Menu items for LINK_FREQ V4L2 control */
 static const s64 link_freq_menu_items[OV13858_NUM_OF_LINK_FREQS] = {
 	OV13858_LINK_FREQ_540MHZ,
@@ -962,6 +1005,11 @@ static const s64 link_freq_menu_items[OV13858_NUM_OF_LINK_FREQS] = {
 static const struct ov13858_link_freq_config
 			link_freq_configs[OV13858_NUM_OF_LINK_FREQS] = {
 	{
+<<<<<<< HEAD
+=======
+		/* pixel_rate = link_freq * 2 * nr_of_lanes / bits_per_sample */
+		.pixel_rate = (OV13858_LINK_FREQ_540MHZ * 2 * 4) / 10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.pixels_per_line = OV13858_PPL_540MHZ,
 		.reg_list = {
 			.num_of_regs = ARRAY_SIZE(mipi_data_rate_1080mbps),
@@ -969,6 +1017,11 @@ static const struct ov13858_link_freq_config
 		}
 	},
 	{
+<<<<<<< HEAD
+=======
+		/* pixel_rate = link_freq * 2 * nr_of_lanes / bits_per_sample */
+		.pixel_rate = (OV13858_LINK_FREQ_270MHZ * 2 * 4) / 10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.pixels_per_line = OV13858_PPL_270MHZ,
 		.reg_list = {
 			.num_of_regs = ARRAY_SIZE(mipi_data_rate_540mbps),
@@ -1050,15 +1103,24 @@ struct ov13858 {
 #define to_ov13858(_sd)	container_of(_sd, struct ov13858, sd)
 
 /* Read registers up to 4 at a time */
+<<<<<<< HEAD
 static int ov13858_read_reg(struct ov13858 *ov13858, u16 reg, u32 len,
 			    u32 *val)
+=======
+static int ov13858_read_reg(struct ov13858 *ov13858, u16 reg, u32 len, u32 *val)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i2c_client *client = v4l2_get_subdevdata(&ov13858->sd);
 	struct i2c_msg msgs[2];
 	u8 *data_be_p;
 	int ret;
+<<<<<<< HEAD
 	__be32 data_be = 0;
 	__be16 reg_addr_be = cpu_to_be16(reg);
+=======
+	u32 data_be = 0;
+	u16 reg_addr_be = cpu_to_be16(reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (len > 4)
 		return -EINVAL;
@@ -1086,13 +1148,20 @@ static int ov13858_read_reg(struct ov13858 *ov13858, u16 reg, u32 len,
 }
 
 /* Write registers up to 4 at a time */
+<<<<<<< HEAD
 static int ov13858_write_reg(struct ov13858 *ov13858, u16 reg, u32 len,
 			     u32 __val)
+=======
+static int ov13858_write_reg(struct ov13858 *ov13858, u16 reg, u32 len, u32 val)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i2c_client *client = v4l2_get_subdevdata(&ov13858->sd);
 	int buf_i, val_i;
 	u8 buf[6], *val_p;
+<<<<<<< HEAD
 	__be32 val;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (len > 4)
 		return -EINVAL;
@@ -1100,7 +1169,11 @@ static int ov13858_write_reg(struct ov13858 *ov13858, u16 reg, u32 len,
 	buf[0] = reg >> 8;
 	buf[1] = reg & 0xff;
 
+<<<<<<< HEAD
 	val = cpu_to_be32(__val);
+=======
+	val = cpu_to_be32(val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val_p = (u8 *)&val;
 	buf_i = 2;
 	val_i = 4 - len;
@@ -1344,6 +1417,42 @@ static int ov13858_get_pad_format(struct v4l2_subdev *sd,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Calculate resolution distance
+ */
+static int
+ov13858_get_resolution_dist(const struct ov13858_mode *mode,
+			    struct v4l2_mbus_framefmt *framefmt)
+{
+	return abs(mode->width - framefmt->width) +
+	       abs(mode->height - framefmt->height);
+}
+
+/*
+ * Find the closest supported resolution to the requested resolution
+ */
+static const struct ov13858_mode *
+ov13858_find_best_fit(struct ov13858 *ov13858,
+		      struct v4l2_subdev_format *fmt)
+{
+	int i, dist, cur_best_fit = 0, cur_best_fit_dist = -1;
+	struct v4l2_mbus_framefmt *framefmt = &fmt->format;
+
+	for (i = 0; i < ARRAY_SIZE(supported_modes); i++) {
+		dist = ov13858_get_resolution_dist(&supported_modes[i],
+						   framefmt);
+		if (cur_best_fit_dist == -1 || dist < cur_best_fit_dist) {
+			cur_best_fit_dist = dist;
+			cur_best_fit = i;
+		}
+	}
+
+	return &supported_modes[cur_best_fit];
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 ov13858_set_pad_format(struct v4l2_subdev *sd,
 		       struct v4l2_subdev_pad_config *cfg,
@@ -1355,8 +1464,11 @@ ov13858_set_pad_format(struct v4l2_subdev *sd,
 	s32 vblank_def;
 	s32 vblank_min;
 	s64 h_blank;
+<<<<<<< HEAD
 	s64 pixel_rate;
 	s64 link_freq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&ov13858->mutex);
 
@@ -1364,10 +1476,14 @@ ov13858_set_pad_format(struct v4l2_subdev *sd,
 	if (fmt->format.code != MEDIA_BUS_FMT_SGRBG10_1X10)
 		fmt->format.code = MEDIA_BUS_FMT_SGRBG10_1X10;
 
+<<<<<<< HEAD
 	mode = v4l2_find_nearest_size(supported_modes,
 				      ARRAY_SIZE(supported_modes),
 				      width, height,
 				      fmt->format.width, fmt->format.height);
+=======
+	mode = ov13858_find_best_fit(ov13858, fmt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ov13858_update_pad_format(mode, fmt);
 	if (fmt->which == V4L2_SUBDEV_FORMAT_TRY) {
 		framefmt = v4l2_subdev_get_try_format(sd, cfg, fmt->pad);
@@ -1375,10 +1491,16 @@ ov13858_set_pad_format(struct v4l2_subdev *sd,
 	} else {
 		ov13858->cur_mode = mode;
 		__v4l2_ctrl_s_ctrl(ov13858->link_freq, mode->link_freq_index);
+<<<<<<< HEAD
 		link_freq = link_freq_menu_items[mode->link_freq_index];
 		pixel_rate = link_freq_to_pixel_rate(link_freq);
 		__v4l2_ctrl_s_ctrl_int64(ov13858->pixel_rate, pixel_rate);
 
+=======
+		__v4l2_ctrl_s_ctrl_int64(
+			ov13858->pixel_rate,
+			link_freq_configs[mode->link_freq_index].pixel_rate);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Update limits and set FPS to default */
 		vblank_def = ov13858->cur_mode->vts_def -
 			     ov13858->cur_mode->height;
@@ -1531,7 +1653,11 @@ static int __maybe_unused ov13858_resume(struct device *dev)
 
 error:
 	ov13858_stop_streaming(ov13858);
+<<<<<<< HEAD
 	ov13858->streaming = false;
+=======
+	ov13858->streaming = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1593,10 +1719,13 @@ static int ov13858_init_controls(struct ov13858 *ov13858)
 	s64 exposure_max;
 	s64 vblank_def;
 	s64 vblank_min;
+<<<<<<< HEAD
 	s64 hblank;
 	s64 pixel_rate_min;
 	s64 pixel_rate_max;
 	const struct ov13858_mode *mode;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ctrl_hdlr = &ov13858->ctrl_handler;
@@ -1614,6 +1743,7 @@ static int ov13858_init_controls(struct ov13858 *ov13858)
 				link_freq_menu_items);
 	ov13858->link_freq->flags |= V4L2_CTRL_FLAG_READ_ONLY;
 
+<<<<<<< HEAD
 	pixel_rate_max = link_freq_to_pixel_rate(link_freq_menu_items[0]);
 	pixel_rate_min = link_freq_to_pixel_rate(link_freq_menu_items[1]);
 	/* By default, PIXEL_RATE is read only */
@@ -1638,6 +1768,31 @@ static int ov13858_init_controls(struct ov13858 *ov13858)
 	ov13858->hblank->flags |= V4L2_CTRL_FLAG_READ_ONLY;
 
 	exposure_max = mode->vts_def - 8;
+=======
+	/* By default, PIXEL_RATE is read only */
+	ov13858->pixel_rate = v4l2_ctrl_new_std(ctrl_hdlr, &ov13858_ctrl_ops,
+					V4L2_CID_PIXEL_RATE, 0,
+					link_freq_configs[0].pixel_rate, 1,
+					link_freq_configs[0].pixel_rate);
+
+	vblank_def = ov13858->cur_mode->vts_def - ov13858->cur_mode->height;
+	vblank_min = ov13858->cur_mode->vts_min - ov13858->cur_mode->height;
+	ov13858->vblank = v4l2_ctrl_new_std(
+				ctrl_hdlr, &ov13858_ctrl_ops, V4L2_CID_VBLANK,
+				vblank_min,
+				OV13858_VTS_MAX - ov13858->cur_mode->height, 1,
+				vblank_def);
+
+	ov13858->hblank = v4l2_ctrl_new_std(
+				ctrl_hdlr, &ov13858_ctrl_ops, V4L2_CID_HBLANK,
+				OV13858_PPL_540MHZ - ov13858->cur_mode->width,
+				OV13858_PPL_540MHZ - ov13858->cur_mode->width,
+				1,
+				OV13858_PPL_540MHZ - ov13858->cur_mode->width);
+	ov13858->hblank->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+
+	exposure_max = ov13858->cur_mode->vts_def - 8;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ov13858->exposure = v4l2_ctrl_new_std(
 				ctrl_hdlr, &ov13858_ctrl_ops,
 				V4L2_CID_EXPOSURE, OV13858_EXPOSURE_MIN,
@@ -1727,7 +1882,11 @@ static int ov13858_probe(struct i2c_client *client,
 		goto error_handler_free;
 	}
 
+<<<<<<< HEAD
 	ret = v4l2_async_register_subdev_sensor_common(&ov13858->sd);
+=======
+	ret = v4l2_async_register_subdev(&ov13858->sd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error_media_entity;
 
@@ -1796,6 +1955,10 @@ MODULE_DEVICE_TABLE(acpi, ov13858_acpi_ids);
 static struct i2c_driver ov13858_i2c_driver = {
 	.driver = {
 		.name = "ov13858",
+<<<<<<< HEAD
+=======
+		.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.pm = &ov13858_pm_ops,
 		.acpi_match_table = ACPI_PTR(ov13858_acpi_ids),
 	},

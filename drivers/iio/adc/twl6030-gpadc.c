@@ -843,6 +843,10 @@ static const struct iio_chan_spec twl6032_gpadc_iio_channels[] = {
 
 static const struct iio_info twl6030_gpadc_iio_info = {
 	.read_raw = &twl6030_gpadc_read_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct twl6030_gpadc_platform_data twl6030_pdata = {
@@ -898,10 +902,16 @@ static int twl6030_gpadc_probe(struct platform_device *pdev)
 
 	gpadc = iio_priv(indio_dev);
 
+<<<<<<< HEAD
 	gpadc->twl6030_cal_tbl = devm_kcalloc(dev,
 					pdata->nchannels,
 					sizeof(*gpadc->twl6030_cal_tbl),
 					GFP_KERNEL);
+=======
+	gpadc->twl6030_cal_tbl = devm_kzalloc(dev,
+					sizeof(*gpadc->twl6030_cal_tbl) *
+					pdata->nchannels, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gpadc->twl6030_cal_tbl)
 		return -ENOMEM;
 

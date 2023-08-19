@@ -252,7 +252,11 @@ int st21nfca_hci_se_io(struct nfc_hci_dev *hdev, u32 se_idx,
 }
 EXPORT_SYMBOL(st21nfca_hci_se_io);
 
+<<<<<<< HEAD
 static void st21nfca_se_wt_timeout(struct timer_list *t)
+=======
+static void st21nfca_se_wt_timeout(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * No answer from the secure element
@@ -265,8 +269,12 @@ static void st21nfca_se_wt_timeout(struct timer_list *t)
 	 */
 	/* hardware reset managed through VCC_UICC_OUT power supply */
 	u8 param = 0x01;
+<<<<<<< HEAD
 	struct st21nfca_hci_info *info = from_timer(info, t,
 						    se_info.bwi_timer);
+=======
+	struct st21nfca_hci_info *info = (struct st21nfca_hci_info *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("\n");
 
@@ -284,10 +292,16 @@ static void st21nfca_se_wt_timeout(struct timer_list *t)
 	info->se_info.cb(info->se_info.cb_context, NULL, 0, -ETIME);
 }
 
+<<<<<<< HEAD
 static void st21nfca_se_activation_timeout(struct timer_list *t)
 {
 	struct st21nfca_hci_info *info = from_timer(info, t,
 						    se_info.se_active_timer);
+=======
+static void st21nfca_se_activation_timeout(unsigned long data)
+{
+	struct st21nfca_hci_info *info = (struct st21nfca_hci_info *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("\n");
 
@@ -406,11 +420,22 @@ void st21nfca_se_init(struct nfc_hci_dev *hdev)
 
 	init_completion(&info->se_info.req_completion);
 	/* initialize timers */
+<<<<<<< HEAD
 	timer_setup(&info->se_info.bwi_timer, st21nfca_se_wt_timeout, 0);
 	info->se_info.bwi_active = false;
 
 	timer_setup(&info->se_info.se_active_timer,
 		    st21nfca_se_activation_timeout, 0);
+=======
+	init_timer(&info->se_info.bwi_timer);
+	info->se_info.bwi_timer.data = (unsigned long)info;
+	info->se_info.bwi_timer.function = st21nfca_se_wt_timeout;
+	info->se_info.bwi_active = false;
+
+	init_timer(&info->se_info.se_active_timer);
+	info->se_info.se_active_timer.data = (unsigned long)info;
+	info->se_info.se_active_timer.function = st21nfca_se_activation_timeout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->se_info.se_active = false;
 
 	info->se_info.count_pipes = 0;

@@ -30,6 +30,11 @@
  * SOFTWARE.
  */
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_RFS_ACCEL
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/hash.h>
 #include <linux/mlx5/fs.h>
 #include <linux/ip.h>
@@ -90,7 +95,11 @@ static enum mlx5e_traffic_types arfs_get_tt(enum arfs_type type)
 
 static int arfs_disable(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
 	struct mlx5_flow_destination dest = {};
+=======
+	struct mlx5_flow_destination dest;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5e_tir *tir = priv->indir_tir;
 	int err = 0;
 	int tt;
@@ -124,7 +133,11 @@ int mlx5e_arfs_disable(struct mlx5e_priv *priv)
 
 int mlx5e_arfs_enable(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
 	struct mlx5_flow_destination dest = {};
+=======
+	struct mlx5_flow_destination dest;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 	int tt;
 	int i;
@@ -173,7 +186,11 @@ static int arfs_add_default_rule(struct mlx5e_priv *priv,
 {
 	struct arfs_table *arfs_t = &priv->fs.arfs.arfs_tables[type];
 	struct mlx5e_tir *tir = priv->indir_tir;
+<<<<<<< HEAD
 	struct mlx5_flow_destination dest = {};
+=======
+	struct mlx5_flow_destination dest;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_DECLARE_FLOW_ACT(flow_act);
 	struct mlx5_flow_spec *spec;
 	enum mlx5e_traffic_types tt;
@@ -211,7 +228,11 @@ out:
 }
 
 #define MLX5E_ARFS_NUM_GROUPS	2
+<<<<<<< HEAD
 #define MLX5E_ARFS_GROUP1_SIZE	(BIT(16) - 1)
+=======
+#define MLX5E_ARFS_GROUP1_SIZE	BIT(12)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MLX5E_ARFS_GROUP2_SIZE	BIT(0)
 #define MLX5E_ARFS_TABLE_SIZE	(MLX5E_ARFS_GROUP1_SIZE +\
 				 MLX5E_ARFS_GROUP2_SIZE)
@@ -458,7 +479,11 @@ static struct mlx5_flow_handle *arfs_add_rule(struct mlx5e_priv *priv,
 	struct mlx5e_arfs_tables *arfs = &priv->fs.arfs;
 	struct arfs_tuple *tuple = &arfs_rule->tuple;
 	struct mlx5_flow_handle *rule = NULL;
+<<<<<<< HEAD
 	struct mlx5_flow_destination dest = {};
+=======
+	struct mlx5_flow_destination dest;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_DECLARE_FLOW_ACT(flow_act);
 	struct arfs_table *arfs_table;
 	struct mlx5_flow_spec *spec;
@@ -549,7 +574,11 @@ out:
 static void arfs_modify_rule_rq(struct mlx5e_priv *priv,
 				struct mlx5_flow_handle *rule, u16 rxq)
 {
+<<<<<<< HEAD
 	struct mlx5_flow_destination dst = {};
+=======
+	struct mlx5_flow_destination dst;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 
 	dst.type = MLX5_FLOW_DESTINATION_TYPE_TIR;
@@ -557,7 +586,11 @@ static void arfs_modify_rule_rq(struct mlx5e_priv *priv,
 	err =  mlx5_modify_rule_destination(rule, &dst, NULL);
 	if (err)
 		netdev_warn(priv->netdev,
+<<<<<<< HEAD
 			    "Failed to modify aRFS rule destination to rq=%d\n", rxq);
+=======
+			    "Failed to modfiy aRFS rule destination to rq=%d\n", rxq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void arfs_handle_work(struct work_struct *work)
@@ -707,4 +740,8 @@ int mlx5e_rx_flow_steer(struct net_device *dev, const struct sk_buff *skb,
 	spin_unlock_bh(&arfs->arfs_lock);
 	return arfs_rule->filter_id;
 }
+<<<<<<< HEAD
 
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

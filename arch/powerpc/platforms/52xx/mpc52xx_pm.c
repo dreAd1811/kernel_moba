@@ -117,10 +117,14 @@ int mpc52xx_pm_enter(suspend_state_t state)
 	u32 intr_main_mask;
 	void __iomem * irq_0x500 = (void __iomem *)CONFIG_KERNEL_START + 0x500;
 	unsigned long irq_0x500_stop = (unsigned long)irq_0x500 + mpc52xx_ds_cached_size;
+<<<<<<< HEAD
 	char saved_0x500[0x600-0x500];
 
 	if (WARN_ON(mpc52xx_ds_cached_size > sizeof(saved_0x500)))
 		return -ENOMEM;
+=======
+	char saved_0x500[mpc52xx_ds_cached_size];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* disable all interrupts in PIC */
 	intr_main_mask = in_be32(&intr->main_mask);

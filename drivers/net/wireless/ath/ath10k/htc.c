@@ -87,7 +87,12 @@ static void ath10k_htc_prepare_tx_skb(struct ath10k_htc_ep *ep,
 	hdr->eid = ep->eid;
 	hdr->len = __cpu_to_le16(skb->len - sizeof(*hdr));
 	hdr->flags = 0;
+<<<<<<< HEAD
 	hdr->flags |= ATH10K_HTC_FLAG_NEED_CREDIT_UPDATE;
+=======
+	if (ep->tx_credit_flow_enabled)
+		hdr->flags |= ATH10K_HTC_FLAG_NEED_CREDIT_UPDATE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_bh(&ep->htc->tx_lock);
 	hdr->seq_no = ep->seq_no++;
@@ -274,7 +279,11 @@ ath10k_htc_process_lookahead_bundle(struct ath10k_htc *htc,
 	struct ath10k *ar = htc->ar;
 	int bundle_cnt = len / sizeof(*report);
 
+<<<<<<< HEAD
 	if (!bundle_cnt || (bundle_cnt > HTC_HOST_MAX_MSG_PER_RX_BUNDLE)) {
+=======
+	if (!bundle_cnt || (bundle_cnt > HTC_HOST_MAX_MSG_PER_BUNDLE)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ath10k_warn(ar, "Invalid lookahead bundle count: %d\n",
 			    bundle_cnt);
 		return -EINVAL;
@@ -655,7 +664,11 @@ int ath10k_htc_wait_target(struct ath10k_htc *htc)
 	    sizeof(msg->hdr) + sizeof(msg->ready_ext)) {
 		htc->max_msgs_per_htc_bundle =
 			min_t(u8, msg->ready_ext.max_msgs_per_htc_bundle,
+<<<<<<< HEAD
 			      HTC_HOST_MAX_MSG_PER_RX_BUNDLE);
+=======
+			      HTC_HOST_MAX_MSG_PER_BUNDLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ath10k_dbg(ar, ATH10K_DBG_HTC,
 			   "Extended ready message. RX bundle size: %d\n",
 			   htc->max_msgs_per_htc_bundle);

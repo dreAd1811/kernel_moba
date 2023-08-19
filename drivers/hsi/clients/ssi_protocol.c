@@ -464,10 +464,17 @@ static void ssip_error(struct hsi_client *cl)
 	hsi_async_read(cl, msg);
 }
 
+<<<<<<< HEAD
 static void ssip_keep_alive(struct timer_list *t)
 {
 	struct ssi_protocol *ssi = from_timer(ssi, t, keep_alive);
 	struct hsi_client *cl = ssi->cl;
+=======
+static void ssip_keep_alive(unsigned long data)
+{
+	struct hsi_client *cl = (struct hsi_client *)data;
+	struct ssi_protocol *ssi = hsi_client_drvdata(cl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&cl->device, "Keep alive kick in: m(%d) r(%d) s(%d)\n",
 		ssi->main_state, ssi->recv_state, ssi->send_state);
@@ -490,6 +497,7 @@ static void ssip_keep_alive(struct timer_list *t)
 	spin_unlock(&ssi->lock);
 }
 
+<<<<<<< HEAD
 static void ssip_rx_wd(struct timer_list *t)
 {
 	struct ssi_protocol *ssi = from_timer(ssi, t, rx_wd);
@@ -505,6 +513,13 @@ static void ssip_tx_wd(struct timer_list *t)
 	struct hsi_client *cl = ssi->cl;
 
 	dev_err(&cl->device, "Watchdog triggered\n");
+=======
+static void ssip_wd(unsigned long data)
+{
+	struct hsi_client *cl = (struct hsi_client *)data;
+
+	dev_err(&cl->device, "Watchdog trigerred\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ssip_error(cl);
 }
 
@@ -993,8 +1008,13 @@ static int ssip_pn_xmit(struct sk_buff *skb, struct net_device *dev)
 		goto inc_dropped;
 
 	/*
+<<<<<<< HEAD
 	 * Modem sends Phonet messages over SSI with its own endianness.
 	 * Assume that modem has the same endianness as we do.
+=======
+	 * Modem sends Phonet messages over SSI with its own endianess...
+	 * Assume that modem has the same endianess as we do.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (skb_cow_head(skb, 0))
 		goto drop;
@@ -1088,6 +1108,7 @@ static int ssi_protocol_probe(struct device *dev)
 	int err;
 
 	ssi = kzalloc(sizeof(*ssi), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!ssi)
 		return -ENOMEM;
 
@@ -1095,6 +1116,23 @@ static int ssi_protocol_probe(struct device *dev)
 	timer_setup(&ssi->rx_wd, ssip_rx_wd, TIMER_DEFERRABLE);
 	timer_setup(&ssi->tx_wd, ssip_tx_wd, TIMER_DEFERRABLE);
 	timer_setup(&ssi->keep_alive, ssip_keep_alive, 0);
+=======
+	if (!ssi) {
+		dev_err(dev, "No memory for ssi protocol\n");
+		return -ENOMEM;
+	}
+
+	spin_lock_init(&ssi->lock);
+	init_timer_deferrable(&ssi->rx_wd);
+	init_timer_deferrable(&ssi->tx_wd);
+	init_timer(&ssi->keep_alive);
+	ssi->rx_wd.data = (unsigned long)cl;
+	ssi->rx_wd.function = ssip_wd;
+	ssi->tx_wd.data = (unsigned long)cl;
+	ssi->tx_wd.function = ssip_wd;
+	ssi->keep_alive.data = (unsigned long)cl;
+	ssi->keep_alive.function = ssip_keep_alive;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&ssi->txqueue);
 	INIT_LIST_HEAD(&ssi->cmdqueue);
 	atomic_set(&ssi->tx_usecnt, 0);

@@ -29,12 +29,16 @@
 #include <linux/slab.h>
 #include <linux/cpu.h>
 #include <linux/average.h>
+<<<<<<< HEAD
 #include <linux/filter.h>
 #include <linux/kernel.h>
 #include <linux/pci.h>
 #include <net/route.h>
 #include <net/xdp.h>
 #include <net/net_failover.h>
+=======
+#include <net/route.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int napi_weight = NAPI_POLL_WEIGHT;
 module_param(napi_weight, int, 0444);
@@ -53,12 +57,15 @@ module_param(napi_tx, bool, 0644);
 /* Amount of XDP headroom to prepend to packets for use by xdp_adjust_head */
 #define VIRTIO_XDP_HEADROOM 256
 
+<<<<<<< HEAD
 /* Separating two types of XDP xmit */
 #define VIRTIO_XDP_TX		BIT(0)
 #define VIRTIO_XDP_REDIR	BIT(1)
 
 #define VIRTIO_XDP_FLAG	BIT(0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* RX packet size EWMA. The average packet size is used to determine the packet
  * buffer size when refilling RX rings. As the entire RX ring may be refilled
  * at once, the weight is chosen so that the EWMA will be insensitive to short-
@@ -76,6 +83,7 @@ static const unsigned long guest_offloads[] = {
 	VIRTIO_NET_F_GUEST_CSUM
 };
 
+<<<<<<< HEAD
 struct virtnet_stat_desc {
 	char desc[ETH_GSTRING_LEN];
 	size_t offset;
@@ -127,6 +135,18 @@ static const struct virtnet_stat_desc virtnet_rq_stats_desc[] = {
 #define VIRTNET_SQ_STATS_LEN	ARRAY_SIZE(virtnet_sq_stats_desc)
 #define VIRTNET_RQ_STATS_LEN	ARRAY_SIZE(virtnet_rq_stats_desc)
 
+=======
+struct virtnet_stats {
+	struct u64_stats_sync tx_syncp;
+	struct u64_stats_sync rx_syncp;
+	u64 tx_bytes;
+	u64 tx_packets;
+
+	u64 rx_bytes;
+	u64 rx_packets;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Internal representation of a send virtqueue */
 struct send_queue {
 	/* Virtqueue associated with this send _queue */
@@ -138,8 +158,11 @@ struct send_queue {
 	/* Name of the send queue: output.$index */
 	char name[40];
 
+<<<<<<< HEAD
 	struct virtnet_sq_stats stats;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct napi_struct napi;
 };
 
@@ -152,8 +175,11 @@ struct receive_queue {
 
 	struct bpf_prog __rcu *xdp_prog;
 
+<<<<<<< HEAD
 	struct virtnet_rq_stats stats;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Chain pages by the private ptr. */
 	struct page *pages;
 
@@ -171,8 +197,11 @@ struct receive_queue {
 
 	/* Name of this receive queue: input.$index */
 	char name[40];
+<<<<<<< HEAD
 
 	struct xdp_rxq_info xdp_rxq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Control VQ buffers: protected by the rtnl lock */
@@ -183,7 +212,11 @@ struct control_buf {
 	u8 promisc;
 	u8 allmulti;
 	__virtio16 vid;
+<<<<<<< HEAD
 	__virtio64 offloads;
+=======
+	u64 offloads;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct virtnet_info {
@@ -218,6 +251,12 @@ struct virtnet_info {
 	/* Packet virtio header size */
 	u8 hdr_len;
 
+<<<<<<< HEAD
+=======
+	/* Active statistics */
+	struct virtnet_stats __percpu *stats;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Work struct for refilling if we run low on memory. */
 	struct delayed_work refill;
 
@@ -238,9 +277,12 @@ struct virtnet_info {
 	u32 speed;
 
 	unsigned long guest_offloads;
+<<<<<<< HEAD
 
 	/* failover when STANDBY feature enabled */
 	struct failover *failover;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct padded_vnet_hdr {
@@ -253,6 +295,7 @@ struct padded_vnet_hdr {
 	char padding[4];
 };
 
+<<<<<<< HEAD
 static bool is_xdp_frame(void *ptr)
 {
 	return (unsigned long)ptr & VIRTIO_XDP_FLAG;
@@ -268,6 +311,8 @@ static struct xdp_frame *ptr_to_xdp(void *ptr)
 	return (struct xdp_frame *)((unsigned long)ptr & ~VIRTIO_XDP_FLAG);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Converting between virtqueue no. and kernel tx/rx queue no.
  * 0:rx0 1:tx0 2:rx1 3:tx1 ... 2N:rxN 2N+1:txN 2N+2:cvq
  */
@@ -455,6 +500,7 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
 	return skb;
 }
 
+<<<<<<< HEAD
 static int __virtnet_xdp_xmit_one(struct virtnet_info *vi,
 				   struct send_queue *sq,
 				   struct xdp_frame *xdpf)
@@ -566,6 +612,46 @@ out:
 	u64_stats_update_end(&sq->stats.syncp);
 
 	return ret;
+=======
+static bool virtnet_xdp_xmit(struct virtnet_info *vi,
+			     struct receive_queue *rq,
+			     struct xdp_buff *xdp)
+{
+	struct virtio_net_hdr_mrg_rxbuf *hdr;
+	unsigned int len;
+	struct send_queue *sq;
+	unsigned int qp;
+	void *xdp_sent;
+	int err;
+
+	qp = vi->curr_queue_pairs - vi->xdp_queue_pairs + smp_processor_id();
+	sq = &vi->sq[qp];
+
+	/* Free up any pending old buffers before queueing new ones. */
+	while ((xdp_sent = virtqueue_get_buf(sq->vq, &len)) != NULL) {
+		struct page *sent_page = virt_to_head_page(xdp_sent);
+
+		put_page(sent_page);
+	}
+
+	xdp->data -= vi->hdr_len;
+	/* Zero header and leave csum up to XDP layers */
+	hdr = xdp->data;
+	memset(hdr, 0, vi->hdr_len);
+
+	sg_init_one(sq->sg, xdp->data, xdp->data_end - xdp->data);
+
+	err = virtqueue_add_outbuf(sq->vq, sq->sg, 1, xdp->data, GFP_ATOMIC);
+	if (unlikely(err)) {
+		struct page *page = virt_to_head_page(xdp->data);
+
+		put_page(page);
+		return false;
+	}
+
+	virtqueue_kick(sq->vq);
+	return true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int virtnet_get_headroom(struct virtnet_info *vi)
@@ -603,7 +689,10 @@ static struct page *xdp_linearize_page(struct receive_queue *rq,
 	page_off += *len;
 
 	while (--*num_buf) {
+<<<<<<< HEAD
 		int tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int buflen;
 		void *buf;
 		int off;
@@ -618,7 +707,11 @@ static struct page *xdp_linearize_page(struct receive_queue *rq,
 		/* guard against a misconfigured or uncooperative backend that
 		 * is sending packet larger than the MTU.
 		 */
+<<<<<<< HEAD
 		if ((page_off + buflen + tailroom) > PAGE_SIZE) {
+=======
+		if ((page_off + buflen) > PAGE_SIZE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			put_page(p);
 			goto err_buf;
 		}
@@ -641,9 +734,13 @@ static struct sk_buff *receive_small(struct net_device *dev,
 				     struct virtnet_info *vi,
 				     struct receive_queue *rq,
 				     void *buf, void *ctx,
+<<<<<<< HEAD
 				     unsigned int len,
 				     unsigned int *xdp_xmit,
 				     struct virtnet_rq_stats *stats)
+=======
+				     unsigned int len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sk_buff *skb;
 	struct bpf_prog *xdp_prog;
@@ -655,16 +752,23 @@ static struct sk_buff *receive_small(struct net_device *dev,
 	struct page *page = virt_to_head_page(buf);
 	unsigned int delta = 0;
 	struct page *xdp_page;
+<<<<<<< HEAD
 	int err;
 
 	len -= vi->hdr_len;
 	stats->bytes += len;
+=======
+	len -= vi->hdr_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rcu_read_lock();
 	xdp_prog = rcu_dereference(rq->xdp_prog);
 	if (xdp_prog) {
 		struct virtio_net_hdr_mrg_rxbuf *hdr = buf + header_offset;
+<<<<<<< HEAD
 		struct xdp_frame *xdpf;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct xdp_buff xdp;
 		void *orig_data;
 		u32 act;
@@ -695,17 +799,24 @@ static struct sk_buff *receive_small(struct net_device *dev,
 
 		xdp.data_hard_start = buf + VIRTNET_RX_PAD + vi->hdr_len;
 		xdp.data = xdp.data_hard_start + xdp_headroom;
+<<<<<<< HEAD
 		xdp_set_data_meta_invalid(&xdp);
 		xdp.data_end = xdp.data + len;
 		xdp.rxq = &rq->xdp_rxq;
 		orig_data = xdp.data;
 		act = bpf_prog_run_xdp(xdp_prog, &xdp);
 		stats->xdp_packets++;
+=======
+		xdp.data_end = xdp.data + len;
+		orig_data = xdp.data;
+		act = bpf_prog_run_xdp(xdp_prog, &xdp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (act) {
 		case XDP_PASS:
 			/* Recalculate length in case bpf program changed it */
 			delta = orig_data - xdp.data;
+<<<<<<< HEAD
 			len = xdp.data_end - xdp.data;
 			break;
 		case XDP_TX:
@@ -727,11 +838,20 @@ static struct sk_buff *receive_small(struct net_device *dev,
 			if (err)
 				goto err_xdp;
 			*xdp_xmit |= VIRTIO_XDP_REDIR;
+=======
+			break;
+		case XDP_TX:
+			if (unlikely(!virtnet_xdp_xmit(vi, rq, &xdp)))
+				trace_xdp_exception(vi->dev, xdp_prog, act);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rcu_read_unlock();
 			goto xdp_xmit;
 		default:
 			bpf_warn_invalid_xdp_action(act);
+<<<<<<< HEAD
 			/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case XDP_ABORTED:
 			trace_xdp_exception(vi->dev, xdp_prog, act);
 		case XDP_DROP:
@@ -746,7 +866,11 @@ static struct sk_buff *receive_small(struct net_device *dev,
 		goto err;
 	}
 	skb_reserve(skb, headroom - delta);
+<<<<<<< HEAD
 	skb_put(skb, len);
+=======
+	skb_put(skb, len + delta);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!delta) {
 		buf += header_offset;
 		memcpy(skb_vnet_hdr(skb), buf, vi->hdr_len);
@@ -757,8 +881,12 @@ err:
 
 err_xdp:
 	rcu_read_unlock();
+<<<<<<< HEAD
 	stats->xdp_drops++;
 	stats->drops++;
+=======
+	dev->stats.rx_dropped++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	put_page(page);
 xdp_xmit:
 	return NULL;
@@ -768,21 +896,32 @@ static struct sk_buff *receive_big(struct net_device *dev,
 				   struct virtnet_info *vi,
 				   struct receive_queue *rq,
 				   void *buf,
+<<<<<<< HEAD
 				   unsigned int len,
 				   struct virtnet_rq_stats *stats)
+=======
+				   unsigned int len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct page *page = buf;
 	struct sk_buff *skb = page_to_skb(vi, rq, page, 0, len,
 					  PAGE_SIZE, true);
 
+<<<<<<< HEAD
 	stats->bytes += len - vi->hdr_len;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!skb))
 		goto err;
 
 	return skb;
 
 err:
+<<<<<<< HEAD
 	stats->drops++;
+=======
+	dev->stats.rx_dropped++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	give_pages(rq, page);
 	return NULL;
 }
@@ -792,9 +931,13 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 					 struct receive_queue *rq,
 					 void *buf,
 					 void *ctx,
+<<<<<<< HEAD
 					 unsigned int len,
 					 unsigned int *xdp_xmit,
 					 struct virtnet_rq_stats *stats)
+=======
+					 unsigned int len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct virtio_net_hdr_mrg_rxbuf *hdr = buf;
 	u16 num_buf = virtio16_to_cpu(vi->vdev, hdr->num_buffers);
@@ -804,15 +947,23 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 	struct bpf_prog *xdp_prog;
 	unsigned int truesize;
 	unsigned int headroom = mergeable_ctx_to_headroom(ctx);
+<<<<<<< HEAD
 	int err;
 
 	head_skb = NULL;
 	stats->bytes += len - vi->hdr_len;
+=======
+
+	head_skb = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rcu_read_lock();
 	xdp_prog = rcu_dereference(rq->xdp_prog);
 	if (xdp_prog) {
+<<<<<<< HEAD
 		struct xdp_frame *xdpf;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct page *xdp_page;
 		struct xdp_buff xdp;
 		void *data;
@@ -825,12 +976,16 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 		if (unlikely(hdr->hdr.gso_type))
 			goto err_xdp;
 
+<<<<<<< HEAD
 		/* This happens when rx buffer size is underestimated
 		 * or headroom is not enough because of the buffer
 		 * was refilled before XDP is set. This should only
 		 * happen for the first several packets, so we don't
 		 * care much about its performance.
 		 */
+=======
+		/* This happens when rx buffer size is underestimated */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(num_buf > 1 ||
 			     headroom < virtnet_get_headroom(vi))) {
 			/* linearize data for XDP */
@@ -851,12 +1006,17 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 		data = page_address(xdp_page) + offset;
 		xdp.data_hard_start = data - VIRTIO_XDP_HEADROOM + vi->hdr_len;
 		xdp.data = data + vi->hdr_len;
+<<<<<<< HEAD
 		xdp_set_data_meta_invalid(&xdp);
 		xdp.data_end = xdp.data + (len - vi->hdr_len);
 		xdp.rxq = &rq->xdp_rxq;
 
 		act = bpf_prog_run_xdp(xdp_prog, &xdp);
 		stats->xdp_packets++;
+=======
+		xdp.data_end = xdp.data + (len - vi->hdr_len);
+		act = bpf_prog_run_xdp(xdp_prog, &xdp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (act) {
 		case XDP_PASS:
@@ -867,10 +1027,13 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 			offset = xdp.data -
 					page_address(xdp_page) - vi->hdr_len;
 
+<<<<<<< HEAD
 			/* recalculate len if xdp.data or xdp.data_end were
 			 * adjusted
 			 */
 			len = xdp.data_end - xdp.data + vi->hdr_len;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* We can only create skb based on xdp_page. */
 			if (unlikely(xdp_page != page)) {
 				rcu_read_unlock();
@@ -878,10 +1041,15 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 				head_skb = page_to_skb(vi, rq, xdp_page,
 						       offset, len,
 						       PAGE_SIZE, false);
+<<<<<<< HEAD
+=======
+				ewma_pkt_len_add(&rq->mrg_avg_pkt_len, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return head_skb;
 			}
 			break;
 		case XDP_TX:
+<<<<<<< HEAD
 			stats->xdp_tx++;
 			xdpf = convert_to_xdp_frame(&xdp);
 			if (unlikely(!xdpf))
@@ -907,12 +1075,18 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 				goto err_xdp;
 			}
 			*xdp_xmit |= VIRTIO_XDP_REDIR;
+=======
+			if (unlikely(!virtnet_xdp_xmit(vi, rq, &xdp)))
+				trace_xdp_exception(vi->dev, xdp_prog, act);
+			ewma_pkt_len_add(&rq->mrg_avg_pkt_len, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (unlikely(xdp_page != page))
 				put_page(page);
 			rcu_read_unlock();
 			goto xdp_xmit;
 		default:
 			bpf_warn_invalid_xdp_action(act);
+<<<<<<< HEAD
 			/* fall through */
 		case XDP_ABORTED:
 			trace_xdp_exception(vi->dev, xdp_prog, act);
@@ -920,6 +1094,14 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 		case XDP_DROP:
 			if (unlikely(xdp_page != page))
 				__free_pages(xdp_page, 0);
+=======
+		case XDP_ABORTED:
+			trace_xdp_exception(vi->dev, xdp_prog, act);
+		case XDP_DROP:
+			if (unlikely(xdp_page != page))
+				__free_pages(xdp_page, 0);
+			ewma_pkt_len_add(&rq->mrg_avg_pkt_len, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto err_xdp;
 		}
 	}
@@ -951,7 +1133,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 			goto err_buf;
 		}
 
+<<<<<<< HEAD
 		stats->bytes += len;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		page = virt_to_head_page(buf);
 
 		truesize = mergeable_ctx_to_truesize(ctx);
@@ -997,7 +1182,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
 
 err_xdp:
 	rcu_read_unlock();
+<<<<<<< HEAD
 	stats->xdp_drops++;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_skb:
 	put_page(page);
 	while (num_buf-- > 1) {
@@ -1008,25 +1196,41 @@ err_skb:
 			dev->stats.rx_length_errors++;
 			break;
 		}
+<<<<<<< HEAD
 		stats->bytes += len;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		page = virt_to_head_page(buf);
 		put_page(page);
 	}
 err_buf:
+<<<<<<< HEAD
 	stats->drops++;
+=======
+	dev->stats.rx_dropped++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_kfree_skb(head_skb);
 xdp_xmit:
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
 			void *buf, unsigned int len, void **ctx,
 			unsigned int *xdp_xmit,
 			struct virtnet_rq_stats *stats)
+=======
+static int receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
+		       void *buf, unsigned int len, void **ctx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *dev = vi->dev;
 	struct sk_buff *skb;
 	struct virtio_net_hdr_mrg_rxbuf *hdr;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(len < vi->hdr_len + ETH_HLEN)) {
 		pr_debug("%s: short packet %i\n", dev->name, len);
@@ -1038,6 +1242,7 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
 		} else {
 			put_page(virt_to_head_page(buf));
 		}
+<<<<<<< HEAD
 		return;
 	}
 
@@ -1054,6 +1259,25 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
 
 	hdr = skb_vnet_hdr(skb);
 
+=======
+		return 0;
+	}
+
+	if (vi->mergeable_rx_bufs)
+		skb = receive_mergeable(dev, vi, rq, buf, ctx, len);
+	else if (vi->big_packets)
+		skb = receive_big(dev, vi, rq, buf, len);
+	else
+		skb = receive_small(dev, vi, rq, buf, ctx, len);
+
+	if (unlikely(!skb))
+		return 0;
+
+	hdr = skb_vnet_hdr(skb);
+
+	ret = skb->len;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hdr->hdr.flags & VIRTIO_NET_HDR_F_DATA_VALID)
 		skb->ip_summed = CHECKSUM_UNNECESSARY;
 
@@ -1070,11 +1294,19 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
 		 ntohs(skb->protocol), skb->len, skb->pkt_type);
 
 	napi_gro_receive(&rq->napi, skb);
+<<<<<<< HEAD
 	return;
+=======
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 frame_err:
 	dev->stats.rx_frame_errors++;
 	dev_kfree_skb(skb);
+<<<<<<< HEAD
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Unlike mergeable buffers, all buffers are allocated to the
@@ -1158,18 +1390,27 @@ static int add_recvbuf_big(struct virtnet_info *vi, struct receive_queue *rq,
 }
 
 static unsigned int get_mergeable_buf_len(struct receive_queue *rq,
+<<<<<<< HEAD
 					  struct ewma_pkt_len *avg_pkt_len,
 					  unsigned int room)
+=======
+					  struct ewma_pkt_len *avg_pkt_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const size_t hdr_len = sizeof(struct virtio_net_hdr_mrg_rxbuf);
 	unsigned int len;
 
+<<<<<<< HEAD
 	if (room)
 		return PAGE_SIZE - room;
 
 	len = hdr_len +	clamp_t(unsigned int, ewma_pkt_len_read(avg_pkt_len),
 				rq->min_buf_len, PAGE_SIZE - hdr_len);
 
+=======
+	len = hdr_len + clamp_t(unsigned int, ewma_pkt_len_read(avg_pkt_len),
+				rq->min_buf_len, PAGE_SIZE - hdr_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ALIGN(len, L1_CACHE_BYTES);
 }
 
@@ -1178,27 +1419,41 @@ static int add_recvbuf_mergeable(struct virtnet_info *vi,
 {
 	struct page_frag *alloc_frag = &rq->alloc_frag;
 	unsigned int headroom = virtnet_get_headroom(vi);
+<<<<<<< HEAD
 	unsigned int tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
 	unsigned int room = SKB_DATA_ALIGN(headroom + tailroom);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *buf;
 	void *ctx;
 	int err;
 	unsigned int len, hole;
 
+<<<<<<< HEAD
 	/* Extra tailroom is needed to satisfy XDP's assumption. This
 	 * means rx frags coalescing won't work, but consider we've
 	 * disabled GSO for XDP, it won't be a big issue.
 	 */
 	len = get_mergeable_buf_len(rq, &rq->mrg_avg_pkt_len, room);
 	if (unlikely(!skb_page_frag_refill(len + room, alloc_frag, gfp)))
+=======
+	len = get_mergeable_buf_len(rq, &rq->mrg_avg_pkt_len);
+	if (unlikely(!skb_page_frag_refill(len + headroom, alloc_frag, gfp)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	buf = (char *)page_address(alloc_frag->page) + alloc_frag->offset;
 	buf += headroom; /* advance address leaving hole at front of pkt */
 	get_page(alloc_frag->page);
+<<<<<<< HEAD
 	alloc_frag->offset += len + room;
 	hole = alloc_frag->size - alloc_frag->offset;
 	if (hole < len + room) {
+=======
+	alloc_frag->offset += len + headroom;
+	hole = alloc_frag->size - alloc_frag->offset;
+	if (hole < len + headroom) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* To avoid internal fragmentation, if there is very likely not
 		 * enough space for another buffer, add the remaining space to
 		 * the current buffer.
@@ -1229,6 +1484,10 @@ static bool try_fill_recv(struct virtnet_info *vi, struct receive_queue *rq,
 	int err;
 	bool oom;
 
+<<<<<<< HEAD
+=======
+	gfp |= __GFP_COLD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	do {
 		if (vi->mergeable_rx_bufs)
 			err = add_recvbuf_mergeable(vi, rq, gfp);
@@ -1241,12 +1500,16 @@ static bool try_fill_recv(struct virtnet_info *vi, struct receive_queue *rq,
 		if (err)
 			break;
 	} while (rq->vq->num_free);
+<<<<<<< HEAD
 	if (virtqueue_kick_prepare(rq->vq) && virtqueue_notify(rq->vq)) {
 		u64_stats_update_begin(&rq->stats.syncp);
 		rq->stats.kicks++;
 		u64_stats_update_end(&rq->stats.syncp);
 	}
 
+=======
+	virtqueue_kick(rq->vq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return !oom;
 }
 
@@ -1317,6 +1580,7 @@ static void refill_work(struct work_struct *work)
 	}
 }
 
+<<<<<<< HEAD
 static int virtnet_receive(struct receive_queue *rq, int budget,
 			   unsigned int *xdp_xmit)
 {
@@ -1325,10 +1589,19 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
 	unsigned int len;
 	void *buf;
 	int i;
+=======
+static int virtnet_receive(struct receive_queue *rq, int budget)
+{
+	struct virtnet_info *vi = rq->vq->vdev->priv;
+	unsigned int len, received = 0, bytes = 0;
+	void *buf;
+	struct virtnet_stats *stats = this_cpu_ptr(vi->stats);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!vi->big_packets || vi->mergeable_rx_bufs) {
 		void *ctx;
 
+<<<<<<< HEAD
 		while (stats.packets < budget &&
 		       (buf = virtqueue_get_buf_ctx(rq->vq, &len, &ctx))) {
 			receive_buf(vi, rq, buf, len, ctx, xdp_xmit, &stats);
@@ -1339,6 +1612,18 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
 		       (buf = virtqueue_get_buf(rq->vq, &len)) != NULL) {
 			receive_buf(vi, rq, buf, len, NULL, xdp_xmit, &stats);
 			stats.packets++;
+=======
+		while (received < budget &&
+		       (buf = virtqueue_get_buf_ctx(rq->vq, &len, &ctx))) {
+			bytes += receive_buf(vi, rq, buf, len, ctx);
+			received++;
+		}
+	} else {
+		while (received < budget &&
+		       (buf = virtqueue_get_buf(rq->vq, &len)) != NULL) {
+			bytes += receive_buf(vi, rq, buf, len, NULL);
+			received++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1347,6 +1632,7 @@ static int virtnet_receive(struct receive_queue *rq, int budget,
 			schedule_delayed_work(&vi->refill, 0);
 	}
 
+<<<<<<< HEAD
 	u64_stats_update_begin(&rq->stats.syncp);
 	for (i = 0; i < VIRTNET_RQ_STATS_LEN; i++) {
 		size_t offset = virtnet_rq_stats_desc[i].offset;
@@ -1382,6 +1668,32 @@ static void free_old_xmit_skbs(struct send_queue *sq, bool in_napi)
 			xdp_return_frame(frame);
 		}
 		packets++;
+=======
+	u64_stats_update_begin(&stats->rx_syncp);
+	stats->rx_bytes += bytes;
+	stats->rx_packets += received;
+	u64_stats_update_end(&stats->rx_syncp);
+
+	return received;
+}
+
+static void free_old_xmit_skbs(struct send_queue *sq)
+{
+	struct sk_buff *skb;
+	unsigned int len;
+	struct virtnet_info *vi = sq->vq->vdev->priv;
+	struct virtnet_stats *stats = this_cpu_ptr(vi->stats);
+	unsigned int packets = 0;
+	unsigned int bytes = 0;
+
+	while ((skb = virtqueue_get_buf(sq->vq, &len)) != NULL) {
+		pr_debug("Sent skb %p\n", skb);
+
+		bytes += skb->len;
+		packets++;
+
+		dev_consume_skb_any(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Avoid overhead when no packets have been processed
@@ -1390,10 +1702,17 @@ static void free_old_xmit_skbs(struct send_queue *sq, bool in_napi)
 	if (!packets)
 		return;
 
+<<<<<<< HEAD
 	u64_stats_update_begin(&sq->stats.syncp);
 	sq->stats.bytes += bytes;
 	sq->stats.packets += packets;
 	u64_stats_update_end(&sq->stats.syncp);
+=======
+	u64_stats_update_begin(&stats->tx_syncp);
+	stats->tx_bytes += bytes;
+	stats->tx_packets += packets;
+	u64_stats_update_end(&stats->tx_syncp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool is_xdp_raw_buffer_queue(struct virtnet_info *vi, int q)
@@ -1417,7 +1736,11 @@ static void virtnet_poll_cleantx(struct receive_queue *rq)
 		return;
 
 	if (__netif_tx_trylock(txq)) {
+<<<<<<< HEAD
 		free_old_xmit_skbs(sq, true);
+=======
+		free_old_xmit_skbs(sq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__netif_tx_unlock(txq);
 	}
 
@@ -1429,6 +1752,7 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
 {
 	struct receive_queue *rq =
 		container_of(napi, struct receive_queue, napi);
+<<<<<<< HEAD
 	struct virtnet_info *vi = rq->vq->vdev->priv;
 	struct send_queue *sq;
 	unsigned int received;
@@ -1437,11 +1761,19 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
 	virtnet_poll_cleantx(rq);
 
 	received = virtnet_receive(rq, budget, &xdp_xmit);
+=======
+	unsigned int received;
+
+	virtnet_poll_cleantx(rq);
+
+	received = virtnet_receive(rq, budget);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Out of packets? */
 	if (received < budget)
 		virtqueue_napi_complete(napi, rq->vq, received);
 
+<<<<<<< HEAD
 	if (xdp_xmit & VIRTIO_XDP_REDIR)
 		xdp_do_flush_map();
 
@@ -1454,19 +1786,26 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return received;
 }
 
 static int virtnet_open(struct net_device *dev)
 {
 	struct virtnet_info *vi = netdev_priv(dev);
+<<<<<<< HEAD
 	int i, err;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < vi->max_queue_pairs; i++) {
 		if (i < vi->curr_queue_pairs)
 			/* Make sure we have some buffers: if oom use wq. */
 			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
 				schedule_delayed_work(&vi->refill, 0);
+<<<<<<< HEAD
 
 		err = xdp_rxq_info_reg(&vi->rq[i].xdp_rxq, dev, i);
 		if (err < 0)
@@ -1479,6 +1818,8 @@ static int virtnet_open(struct net_device *dev)
 			return err;
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		virtnet_napi_enable(vi->rq[i].vq, &vi->rq[i].napi);
 		virtnet_napi_tx_enable(vi, vi->sq[i].vq, &vi->sq[i].napi);
 	}
@@ -1501,7 +1842,11 @@ static int virtnet_poll_tx(struct napi_struct *napi, int budget)
 
 	txq = netdev_get_tx_queue(vi->dev, index);
 	__netif_tx_lock(txq, raw_smp_processor_id());
+<<<<<<< HEAD
 	free_old_xmit_skbs(sq, true);
+=======
+	free_old_xmit_skbs(sq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__netif_tx_unlock(txq);
 
 	virtqueue_napi_complete(napi, sq->vq, 0);
@@ -1570,7 +1915,11 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
 	bool use_napi = sq->napi.weight;
 
 	/* Free up any pending old buffers before queueing new ones. */
+<<<<<<< HEAD
 	free_old_xmit_skbs(sq, false);
+=======
+	free_old_xmit_skbs(sq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (use_napi && kick)
 		virtqueue_enable_cb_delayed(sq->vq);
@@ -1613,7 +1962,11 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
 		if (!use_napi &&
 		    unlikely(!virtqueue_enable_cb_delayed(sq->vq))) {
 			/* More just got used, free them then recheck. */
+<<<<<<< HEAD
 			free_old_xmit_skbs(sq, false);
+=======
+			free_old_xmit_skbs(sq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (sq->vq->num_free >= 2+MAX_SKB_FRAGS) {
 				netif_start_subqueue(dev, qnum);
 				virtqueue_disable_cb(sq->vq);
@@ -1621,6 +1974,7 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
 		}
 	}
 
+<<<<<<< HEAD
 	if (kick || netif_xmit_stopped(txq)) {
 		if (virtqueue_kick_prepare(sq->vq) && virtqueue_notify(sq->vq)) {
 			u64_stats_update_begin(&sq->stats.syncp);
@@ -1628,6 +1982,10 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
 			u64_stats_update_end(&sq->stats.syncp);
 		}
 	}
+=======
+	if (kick || netif_xmit_stopped(txq))
+		virtqueue_kick(sq->vq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return NETDEV_TX_OK;
 }
@@ -1684,9 +2042,12 @@ static int virtnet_set_mac_address(struct net_device *dev, void *p)
 	struct sockaddr *addr;
 	struct scatterlist sg;
 
+<<<<<<< HEAD
 	if (virtio_has_feature(vi->vdev, VIRTIO_NET_F_STANDBY))
 		return -EOPNOTSUPP;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr = kmemdup(p, sizeof(*addr), GFP_KERNEL);
 	if (!addr)
 		return -ENOMEM;
@@ -1727,6 +2088,7 @@ static void virtnet_stats(struct net_device *dev,
 			  struct rtnl_link_stats64 *tot)
 {
 	struct virtnet_info *vi = netdev_priv(dev);
+<<<<<<< HEAD
 	unsigned int start;
 	int i;
 
@@ -1747,20 +2109,61 @@ static void virtnet_stats(struct net_device *dev,
 			rbytes   = rq->stats.bytes;
 			rdrops   = rq->stats.drops;
 		} while (u64_stats_fetch_retry_irq(&rq->stats.syncp, start));
+=======
+	int cpu;
+	unsigned int start;
+
+	for_each_possible_cpu(cpu) {
+		struct virtnet_stats *stats = per_cpu_ptr(vi->stats, cpu);
+		u64 tpackets, tbytes, rpackets, rbytes;
+
+		do {
+			start = u64_stats_fetch_begin_irq(&stats->tx_syncp);
+			tpackets = stats->tx_packets;
+			tbytes   = stats->tx_bytes;
+		} while (u64_stats_fetch_retry_irq(&stats->tx_syncp, start));
+
+		do {
+			start = u64_stats_fetch_begin_irq(&stats->rx_syncp);
+			rpackets = stats->rx_packets;
+			rbytes   = stats->rx_bytes;
+		} while (u64_stats_fetch_retry_irq(&stats->rx_syncp, start));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		tot->rx_packets += rpackets;
 		tot->tx_packets += tpackets;
 		tot->rx_bytes   += rbytes;
 		tot->tx_bytes   += tbytes;
+<<<<<<< HEAD
 		tot->rx_dropped += rdrops;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	tot->tx_dropped = dev->stats.tx_dropped;
 	tot->tx_fifo_errors = dev->stats.tx_fifo_errors;
+<<<<<<< HEAD
+=======
+	tot->rx_dropped = dev->stats.rx_dropped;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tot->rx_length_errors = dev->stats.rx_length_errors;
 	tot->rx_frame_errors = dev->stats.rx_frame_errors;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+static void virtnet_netpoll(struct net_device *dev)
+{
+	struct virtnet_info *vi = netdev_priv(dev);
+	int i;
+
+	for (i = 0; i < vi->curr_queue_pairs; i++)
+		napi_schedule(&vi->rq[i].napi);
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void virtnet_ack_link_announce(struct virtnet_info *vi)
 {
 	rtnl_lock();
@@ -1815,7 +2218,10 @@ static int virtnet_close(struct net_device *dev)
 	cancel_delayed_work_sync(&vi->refill);
 
 	for (i = 0; i < vi->max_queue_pairs; i++) {
+<<<<<<< HEAD
 		xdp_rxq_info_unreg(&vi->rq[i].xdp_rxq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		napi_disable(&vi->rq[i].napi);
 		virtnet_napi_tx_disable(&vi->sq[i].napi);
 	}
@@ -1929,8 +2335,13 @@ static void virtnet_clean_affinity(struct virtnet_info *vi, long hcpu)
 
 	if (vi->affinity_hint_set) {
 		for (i = 0; i < vi->max_queue_pairs; i++) {
+<<<<<<< HEAD
 			virtqueue_set_affinity(vi->rq[i].vq, NULL);
 			virtqueue_set_affinity(vi->sq[i].vq, NULL);
+=======
+			virtqueue_set_affinity(vi->rq[i].vq, -1);
+			virtqueue_set_affinity(vi->sq[i].vq, -1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		vi->affinity_hint_set = false;
@@ -1939,6 +2350,7 @@ static void virtnet_clean_affinity(struct virtnet_info *vi, long hcpu)
 
 static void virtnet_set_affinity(struct virtnet_info *vi)
 {
+<<<<<<< HEAD
 	cpumask_var_t mask;
 	int stragglers;
 	int group_size;
@@ -1947,10 +2359,22 @@ static void virtnet_set_affinity(struct virtnet_info *vi)
 	int stride;
 
 	if (!zalloc_cpumask_var(&mask, GFP_KERNEL)) {
+=======
+	int i;
+	int cpu;
+
+	/* In multiqueue mode, when the number of cpu is equal to the number of
+	 * queue pairs, we let the queue pairs to be private to one cpu by
+	 * setting the affinity hint to eliminate the contention.
+	 */
+	if (vi->curr_queue_pairs == 1 ||
+	    vi->max_queue_pairs != num_online_cpus()) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		virtnet_clean_affinity(vi, -1);
 		return;
 	}
 
+<<<<<<< HEAD
 	num_cpu = num_online_cpus();
 	stride = max_t(int, num_cpu / vi->curr_queue_pairs, 1);
 	stragglers = num_cpu >= vi->curr_queue_pairs ?
@@ -1974,6 +2398,17 @@ static void virtnet_set_affinity(struct virtnet_info *vi)
 
 	vi->affinity_hint_set = true;
 	free_cpumask_var(mask);
+=======
+	i = 0;
+	for_each_online_cpu(cpu) {
+		virtqueue_set_affinity(vi->rq[i].vq, cpu);
+		virtqueue_set_affinity(vi->sq[i].vq, cpu);
+		netif_set_xps_queue(vi->dev, cpumask_of(cpu), i);
+		i++;
+	}
+
+	vi->affinity_hint_set = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int virtnet_cpu_online(unsigned int cpu, struct hlist_node *node)
@@ -2086,6 +2521,7 @@ static int virtnet_set_channels(struct net_device *dev,
 	return err;
 }
 
+<<<<<<< HEAD
 static void virtnet_get_strings(struct net_device *dev, u32 stringset, u8 *data)
 {
 	struct virtnet_info *vi = netdev_priv(dev);
@@ -2163,6 +2599,8 @@ static void virtnet_get_ethtool_stats(struct net_device *dev,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void virtnet_get_channels(struct net_device *dev,
 				 struct ethtool_channels *channels)
 {
@@ -2240,6 +2678,7 @@ static void virtnet_init_settings(struct net_device *dev)
 	vi->duplex = DUPLEX_UNKNOWN;
 }
 
+<<<<<<< HEAD
 static void virtnet_update_settings(struct virtnet_info *vi)
 {
 	u32 speed;
@@ -2258,13 +2697,18 @@ static void virtnet_update_settings(struct virtnet_info *vi)
 		vi->duplex = duplex;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops virtnet_ethtool_ops = {
 	.get_drvinfo = virtnet_get_drvinfo,
 	.get_link = ethtool_op_get_link,
 	.get_ringparam = virtnet_get_ringparam,
+<<<<<<< HEAD
 	.get_strings = virtnet_get_strings,
 	.get_sset_count = virtnet_get_sset_count,
 	.get_ethtool_stats = virtnet_get_ethtool_stats,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_channels = virtnet_set_channels,
 	.get_channels = virtnet_get_channels,
 	.get_ts_info = ethtool_op_get_ts_info,
@@ -2402,10 +2846,13 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	old_prog = rtnl_dereference(vi->rq[0].xdp_prog);
 	if (!prog && !old_prog)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (prog) {
 		prog = bpf_prog_add(prog, vi->max_queue_pairs - 1);
 		if (IS_ERR(prog))
@@ -2420,6 +2867,7 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
 		}
 	}
 
+<<<<<<< HEAD
 	if (!prog) {
 		for (i = 0; i < vi->max_queue_pairs; i++) {
 			rcu_assign_pointer(vi->rq[i].xdp_prog, prog);
@@ -2429,12 +2877,15 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
 		synchronize_net();
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = _virtnet_set_queues(vi, curr_qp + xdp_qp);
 	if (err)
 		goto err;
 	netif_set_real_num_rx_queues(dev, curr_qp + xdp_qp);
 	vi->xdp_queue_pairs = xdp_qp;
 
+<<<<<<< HEAD
 	if (prog) {
 		for (i = 0; i < vi->max_queue_pairs; i++) {
 			rcu_assign_pointer(vi->rq[i].xdp_prog, prog);
@@ -2444,6 +2895,17 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
 	}
 
 	for (i = 0; i < vi->max_queue_pairs; i++) {
+=======
+	for (i = 0; i < vi->max_queue_pairs; i++) {
+		old_prog = rtnl_dereference(vi->rq[i].xdp_prog);
+		rcu_assign_pointer(vi->rq[i].xdp_prog, prog);
+		if (i == 0) {
+			if (!old_prog)
+				virtnet_clear_guest_offloads(vi);
+			if (!prog)
+				virtnet_restore_guest_offloads(vi);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (old_prog)
 			bpf_prog_put(old_prog);
 		if (netif_running(dev)) {
@@ -2456,12 +2918,15 @@ static int virtnet_xdp_set(struct net_device *dev, struct bpf_prog *prog,
 	return 0;
 
 err:
+<<<<<<< HEAD
 	if (!prog) {
 		virtnet_clear_guest_offloads(vi);
 		for (i = 0; i < vi->max_queue_pairs; i++)
 			rcu_assign_pointer(vi->rq[i].xdp_prog, old_prog);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (netif_running(dev)) {
 		for (i = 0; i < vi->max_queue_pairs; i++) {
 			virtnet_napi_enable(vi->rq[i].vq, &vi->rq[i].napi);
@@ -2488,19 +2953,28 @@ static u32 virtnet_xdp_query(struct net_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int virtnet_xdp(struct net_device *dev, struct netdev_bpf *xdp)
+=======
+static int virtnet_xdp(struct net_device *dev, struct netdev_xdp *xdp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (xdp->command) {
 	case XDP_SETUP_PROG:
 		return virtnet_xdp_set(dev, xdp->prog, xdp->extack);
 	case XDP_QUERY_PROG:
 		xdp->prog_id = virtnet_xdp_query(dev);
+<<<<<<< HEAD
+=======
+		xdp->prog_attached = !!xdp->prog_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	default:
 		return -EINVAL;
 	}
 }
 
+<<<<<<< HEAD
 static int virtnet_get_phys_port_name(struct net_device *dev, char *buf,
 				      size_t len)
 {
@@ -2517,6 +2991,8 @@ static int virtnet_get_phys_port_name(struct net_device *dev, char *buf,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops virtnet_netdev = {
 	.ndo_open            = virtnet_open,
 	.ndo_stop   	     = virtnet_close,
@@ -2527,10 +3003,18 @@ static const struct net_device_ops virtnet_netdev = {
 	.ndo_get_stats64     = virtnet_stats,
 	.ndo_vlan_rx_add_vid = virtnet_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid = virtnet_vlan_rx_kill_vid,
+<<<<<<< HEAD
 	.ndo_bpf		= virtnet_xdp,
 	.ndo_xdp_xmit		= virtnet_xdp_xmit,
 	.ndo_features_check	= passthru_features_check,
 	.ndo_get_phys_port_name	= virtnet_get_phys_port_name,
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+	.ndo_poll_controller = virtnet_netpoll,
+#endif
+	.ndo_xdp		= virtnet_xdp,
+	.ndo_features_check	= passthru_features_check,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void virtnet_config_changed_work(struct work_struct *work)
@@ -2557,7 +3041,10 @@ static void virtnet_config_changed_work(struct work_struct *work)
 	vi->status = v;
 
 	if (vi->status & VIRTIO_NET_S_LINK_UP) {
+<<<<<<< HEAD
 		virtnet_update_settings(vi);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_carrier_on(vi->dev);
 		netif_tx_wake_all_queues(vi->dev);
 	} else {
@@ -2632,10 +3119,17 @@ static void free_unused_bufs(struct virtnet_info *vi)
 	for (i = 0; i < vi->max_queue_pairs; i++) {
 		struct virtqueue *vq = vi->sq[i].vq;
 		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL) {
+<<<<<<< HEAD
 			if (!is_xdp_frame(buf))
 				dev_kfree_skb(buf);
 			else
 				xdp_return_frame(ptr_to_xdp(buf));
+=======
+			if (!is_xdp_raw_buffer_queue(vi, i))
+				dev_kfree_skb(buf);
+			else
+				put_page(virt_to_head_page(buf));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -2698,6 +3192,7 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
 		    virtio_has_feature(vi->vdev, VIRTIO_NET_F_CTRL_VQ);
 
 	/* Allocate space for find_vqs parameters */
+<<<<<<< HEAD
 	vqs = kcalloc(total_vqs, sizeof(*vqs), GFP_KERNEL);
 	if (!vqs)
 		goto err_vq;
@@ -2709,6 +3204,19 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
 		goto err_names;
 	if (!vi->big_packets || vi->mergeable_rx_bufs) {
 		ctx = kcalloc(total_vqs, sizeof(*ctx), GFP_KERNEL);
+=======
+	vqs = kzalloc(total_vqs * sizeof(*vqs), GFP_KERNEL);
+	if (!vqs)
+		goto err_vq;
+	callbacks = kmalloc(total_vqs * sizeof(*callbacks), GFP_KERNEL);
+	if (!callbacks)
+		goto err_callback;
+	names = kmalloc(total_vqs * sizeof(*names), GFP_KERNEL);
+	if (!names)
+		goto err_names;
+	if (!vi->big_packets || vi->mergeable_rx_bufs) {
+		ctx = kzalloc(total_vqs * sizeof(*ctx), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ctx)
 			goto err_ctx;
 	} else {
@@ -2750,8 +3258,17 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
 		vi->sq[i].vq = vqs[txq2vq(i)];
 	}
 
+<<<<<<< HEAD
 	/* run here: ret == 0. */
 
+=======
+	kfree(names);
+	kfree(callbacks);
+	kfree(vqs);
+	kfree(ctx);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_find:
 	kfree(ctx);
@@ -2772,10 +3289,17 @@ static int virtnet_alloc_queues(struct virtnet_info *vi)
 	vi->ctrl = kzalloc(sizeof(*vi->ctrl), GFP_KERNEL);
 	if (!vi->ctrl)
 		goto err_ctrl;
+<<<<<<< HEAD
 	vi->sq = kcalloc(vi->max_queue_pairs, sizeof(*vi->sq), GFP_KERNEL);
 	if (!vi->sq)
 		goto err_sq;
 	vi->rq = kcalloc(vi->max_queue_pairs, sizeof(*vi->rq), GFP_KERNEL);
+=======
+	vi->sq = kzalloc(sizeof(*vi->sq) * vi->max_queue_pairs, GFP_KERNEL);
+	if (!vi->sq)
+		goto err_sq;
+	vi->rq = kzalloc(sizeof(*vi->rq) * vi->max_queue_pairs, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vi->rq)
 		goto err_rq;
 
@@ -2790,9 +3314,12 @@ static int virtnet_alloc_queues(struct virtnet_info *vi)
 		sg_init_table(vi->rq[i].sg, ARRAY_SIZE(vi->rq[i].sg));
 		ewma_pkt_len_init(&vi->rq[i].mrg_avg_pkt_len);
 		sg_init_table(vi->sq[i].sg, ARRAY_SIZE(vi->sq[i].sg));
+<<<<<<< HEAD
 
 		u64_stats_init(&vi->rq[i].stats.syncp);
 		u64_stats_init(&vi->sq[i].stats.syncp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -2836,15 +3363,22 @@ static ssize_t mergeable_rx_buffer_size_show(struct netdev_rx_queue *queue,
 {
 	struct virtnet_info *vi = netdev_priv(queue->dev);
 	unsigned int queue_index = get_netdev_rx_queue_index(queue);
+<<<<<<< HEAD
 	unsigned int headroom = virtnet_get_headroom(vi);
 	unsigned int tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ewma_pkt_len *avg;
 
 	BUG_ON(queue_index >= vi->max_queue_pairs);
 	avg = &vi->rq[queue_index].mrg_avg_pkt_len;
 	return sprintf(buf, "%u\n",
+<<<<<<< HEAD
 		       get_mergeable_buf_len(&vi->rq[queue_index], avg,
 				       SKB_DATA_ALIGN(headroom + tailroom)));
+=======
+		       get_mergeable_buf_len(&vi->rq[queue_index], avg));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct rx_queue_attribute mergeable_rx_buffer_size_attribute =
@@ -2922,7 +3456,11 @@ static int virtnet_validate(struct virtio_device *vdev)
 
 static int virtnet_probe(struct virtio_device *vdev)
 {
+<<<<<<< HEAD
 	int i, err = -ENOMEM;
+=======
+	int i, err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *dev;
 	struct virtnet_info *vi;
 	u16 max_queue_pairs;
@@ -2999,6 +3537,20 @@ static int virtnet_probe(struct virtio_device *vdev)
 	vi->dev = dev;
 	vi->vdev = vdev;
 	vdev->priv = vi;
+<<<<<<< HEAD
+=======
+	vi->stats = alloc_percpu(struct virtnet_stats);
+	err = -ENOMEM;
+	if (vi->stats == NULL)
+		goto free;
+
+	for_each_possible_cpu(i) {
+		struct virtnet_stats *virtnet_stats;
+		virtnet_stats = per_cpu_ptr(vi->stats, i);
+		u64_stats_init(&virtnet_stats->tx_syncp);
+		u64_stats_init(&virtnet_stats->rx_syncp);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&vi->config_work, virtnet_config_changed_work);
 
@@ -3035,7 +3587,11 @@ static int virtnet_probe(struct virtio_device *vdev)
 			 */
 			dev_err(&vdev->dev, "device MTU appears to have changed "
 				"it is now %d < %d", mtu, dev->min_mtu);
+<<<<<<< HEAD
 			goto free;
+=======
+			goto free_stats;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		dev->mtu = mtu;
@@ -3059,7 +3615,11 @@ static int virtnet_probe(struct virtio_device *vdev)
 	/* Allocate/initialize the rx/tx queues, and invoke find_vqs */
 	err = init_vqs(vi);
 	if (err)
+<<<<<<< HEAD
 		goto free;
+=======
+		goto free_stats;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_SYSFS
 	if (vi->mergeable_rx_bufs)
@@ -3070,6 +3630,7 @@ static int virtnet_probe(struct virtio_device *vdev)
 
 	virtnet_init_settings(dev);
 
+<<<<<<< HEAD
 	if (virtio_has_feature(vdev, VIRTIO_NET_F_STANDBY)) {
 		vi->failover = net_failover_create(vi->dev);
 		if (IS_ERR(vi->failover)) {
@@ -3082,6 +3643,12 @@ static int virtnet_probe(struct virtio_device *vdev)
 	if (err) {
 		pr_debug("virtio_net: registering device failed\n");
 		goto free_failover;
+=======
+	err = register_netdev(dev);
+	if (err) {
+		pr_debug("virtio_net: registering device failed\n");
+		goto free_vqs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	virtio_device_ready(vdev);
@@ -3101,7 +3668,10 @@ static int virtnet_probe(struct virtio_device *vdev)
 		schedule_work(&vi->config_work);
 	} else {
 		vi->status = VIRTIO_NET_S_LINK_UP;
+<<<<<<< HEAD
 		virtnet_update_settings(vi);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_carrier_on(dev);
 	}
 
@@ -3118,12 +3688,20 @@ free_unregister_netdev:
 	vi->vdev->config->reset(vdev);
 
 	unregister_netdev(dev);
+<<<<<<< HEAD
 free_failover:
 	net_failover_destroy(vi->failover);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 free_vqs:
 	cancel_delayed_work_sync(&vi->refill);
 	free_receive_page_frags(vi);
 	virtnet_del_vqs(vi);
+<<<<<<< HEAD
+=======
+free_stats:
+	free_percpu(vi->stats);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 free:
 	free_netdev(dev);
 	return err;
@@ -3154,10 +3732,16 @@ static void virtnet_remove(struct virtio_device *vdev)
 
 	unregister_netdev(vi->dev);
 
+<<<<<<< HEAD
 	net_failover_destroy(vi->failover);
 
 	remove_vq_common(vi);
 
+=======
+	remove_vq_common(vi);
+
+	free_percpu(vi->stats);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_netdev(vi->dev);
 }
 
@@ -3204,8 +3788,12 @@ static struct virtio_device_id id_table[] = {
 	VIRTIO_NET_F_CTRL_RX, VIRTIO_NET_F_CTRL_VLAN, \
 	VIRTIO_NET_F_GUEST_ANNOUNCE, VIRTIO_NET_F_MQ, \
 	VIRTIO_NET_F_CTRL_MAC_ADDR, \
+<<<<<<< HEAD
 	VIRTIO_NET_F_MTU, VIRTIO_NET_F_CTRL_GUEST_OFFLOADS, \
 	VIRTIO_NET_F_SPEED_DUPLEX, VIRTIO_NET_F_STANDBY
+=======
+	VIRTIO_NET_F_MTU, VIRTIO_NET_F_CTRL_GUEST_OFFLOADS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned int features[] = {
 	VIRTNET_FEATURES,

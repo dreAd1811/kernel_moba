@@ -39,7 +39,10 @@
 #include <crypto/algapi.h>
 #include "t4_hw.h"
 #include "cxgb4.h"
+<<<<<<< HEAD
 #include "t4_msg.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "cxgb4_uld.h"
 
 #define DRV_MODULE_NAME "chcr"
@@ -54,12 +57,17 @@
 #define MAC_ERROR_BIT		0
 #define CHK_MAC_ERR_BIT(x)	(((x) >> MAC_ERROR_BIT) & 1)
 #define MAX_SALT                4
+<<<<<<< HEAD
 #define CIP_WR_MIN_LEN (sizeof(struct chcr_wr) + \
 		    sizeof(struct cpl_rx_phys_dsgl) + \
 		    sizeof(struct ulptx_sgl) + 16) //IV
 
 #define HASH_WR_MIN_LEN (sizeof(struct chcr_wr) + \
 			DUMMY_BYTES + \
+=======
+#define WR_MIN_LEN (sizeof(struct chcr_wr) + \
+		    sizeof(struct cpl_rx_phys_dsgl) + \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    sizeof(struct ulptx_sgl))
 
 #define padap(dev) pci_get_drvdata(dev->u_ctx->lldi.pdev)
@@ -69,6 +77,7 @@ struct uld_ctx;
 struct _key_ctx {
 	__be32 ctx_hdr;
 	u8 salt[MAX_SALT];
+<<<<<<< HEAD
 	__be64 iv_to_auth;
 	unsigned char key[0];
 };
@@ -121,6 +130,12 @@ struct _key_ctx {
 #define KEYCTX_TX_WR_AUTHIN_G(x) \
 	(((x) >> KEYCTX_TX_WR_AUTHIN_S) & KEYCTX_TX_WR_AUTHIN_M)
 
+=======
+	__be64 reserverd;
+	unsigned char key[0];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct chcr_wr {
 	struct fw_crypto_lookaside_wr wreq;
 	struct ulp_txpkt ulptx;
@@ -142,6 +157,7 @@ struct uld_ctx {
 	struct chcr_dev *dev;
 };
 
+<<<<<<< HEAD
 struct sge_opaque_hdr {
 	void *dev;
 	dma_addr_t addr[MAX_SKB_FRAGS + 1];
@@ -182,14 +198,22 @@ static inline unsigned int sgl_len(unsigned int n)
 }
 
 struct uld_ctx *assign_chcr_device(void);
+=======
+struct uld_ctx * assign_chcr_device(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int chcr_send_wr(struct sk_buff *skb);
 int start_crypto(void);
 int stop_crypto(void);
 int chcr_uld_rx_handler(void *handle, const __be64 *rsp,
 			const struct pkt_gl *pgl);
+<<<<<<< HEAD
 int chcr_uld_tx_handler(struct sk_buff *skb, struct net_device *dev);
 int chcr_handle_resp(struct crypto_async_request *req, unsigned char *input,
 		     int err);
 int chcr_ipsec_xmit(struct sk_buff *skb, struct net_device *dev);
 void chcr_add_xfrmops(const struct cxgb4_lld_info *lld);
+=======
+int chcr_handle_resp(struct crypto_async_request *req, unsigned char *input,
+		     int err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __CHCR_CORE_H__ */

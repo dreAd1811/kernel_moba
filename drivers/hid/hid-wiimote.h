@@ -89,8 +89,11 @@ enum wiimote_exttype {
 	WIIMOTE_EXT_CLASSIC_CONTROLLER,
 	WIIMOTE_EXT_BALANCE_BOARD,
 	WIIMOTE_EXT_PRO_CONTROLLER,
+<<<<<<< HEAD
 	WIIMOTE_EXT_DRUMS,
 	WIIMOTE_EXT_GUITAR,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WIIMOTE_EXT_NUM,
 };
 
@@ -139,7 +142,10 @@ struct wiimote_state {
 	/* calibration/cache data */
 	__u16 calib_bboard[4][3];
 	__s16 calib_pro_sticks[4];
+<<<<<<< HEAD
 	__u8 pressure_drums[7];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__u8 cache_rumble;
 };
 

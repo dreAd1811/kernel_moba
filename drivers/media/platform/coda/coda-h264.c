@@ -108,6 +108,7 @@ int coda_h264_level(int level_idc)
 	case 32: return V4L2_MPEG_VIDEO_H264_LEVEL_3_2;
 	case 40: return V4L2_MPEG_VIDEO_H264_LEVEL_4_0;
 	case 41: return V4L2_MPEG_VIDEO_H264_LEVEL_4_1;
+<<<<<<< HEAD
 	case 42: return V4L2_MPEG_VIDEO_H264_LEVEL_4_2;
 	case 50: return V4L2_MPEG_VIDEO_H264_LEVEL_5_0;
 	case 51: return V4L2_MPEG_VIDEO_H264_LEVEL_5_1;
@@ -430,3 +431,8 @@ int coda_h264_sps_fixup(struct coda_ctx *ctx, int width, int height, char *buf,
 
 	return 0;
 }
+=======
+	default: return -EINVAL;
+	}
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -384,7 +384,11 @@ void ath9k_htc_set_tsfadjust(struct ath9k_htc_priv *priv,
 
 static void ath9k_htc_beacon_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
 {
+<<<<<<< HEAD
 	bool *beacon_configured = data;
+=======
+	bool *beacon_configured = (bool *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath9k_htc_vif *avp = (struct ath9k_htc_vif *) vif->drv_priv;
 
 	if (vif->type == NL80211_IFTYPE_STATION &&

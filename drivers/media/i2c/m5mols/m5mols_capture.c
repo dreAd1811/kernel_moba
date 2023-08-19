@@ -33,10 +33,13 @@
 
 /**
  * m5mols_read_rational - I2C read of a rational number
+<<<<<<< HEAD
  * @sd: sub-device, as pointed by struct v4l2_subdev
  * @addr_num: numerator register
  * @addr_den: denominator register
  * @val: place to store the division result
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Read numerator and denominator from registers @addr_num and @addr_den
  * respectively and return the division result in @val.
@@ -57,7 +60,10 @@ static int m5mols_read_rational(struct v4l2_subdev *sd, u32 addr_num,
 
 /**
  * m5mols_capture_info - Gather captured image information
+<<<<<<< HEAD
  * @info: M-5MOLS driver data structure
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * For now it gathers only EXIF information and file size.
  */

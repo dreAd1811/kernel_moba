@@ -18,7 +18,10 @@
 #define __ASM_PERF_EVENT_H
 
 #include <asm/stack_pointer.h>
+<<<<<<< HEAD
 #include <asm/ptrace.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define	ARMV8_PMU_MAX_COUNTERS	32
 #define	ARMV8_PMU_COUNTER_MASK	(ARMV8_PMU_MAX_COUNTERS - 1)
@@ -80,7 +83,10 @@ struct pt_regs;
 extern unsigned long perf_instruction_pointer(struct pt_regs *regs);
 extern unsigned long perf_misc_flags(struct pt_regs *regs);
 #define perf_misc_flags(regs)	perf_misc_flags(regs)
+<<<<<<< HEAD
 #define perf_arch_bpf_user_pt_regs(regs) &regs->user_regs
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define perf_arch_fetch_caller_regs(regs, __ip) { \

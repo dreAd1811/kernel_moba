@@ -71,6 +71,7 @@ Other Functions
 .. kernel-doc:: fs/block_dev.c
    :export:
 
+<<<<<<< HEAD
 .. kernel-doc:: fs/anon_inodes.c
    :export:
 
@@ -104,6 +105,8 @@ Other Functions
 .. kernel-doc:: fs/xattr.c
    :export:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 The proc filesystem
 ===================
 
@@ -359,3 +362,7 @@ encryption of files and directories.
     :maxdepth: 2
 
     fscrypt
+<<<<<<< HEAD
+=======
+    fsverity
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

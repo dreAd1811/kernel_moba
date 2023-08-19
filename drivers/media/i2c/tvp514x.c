@@ -86,7 +86,10 @@ static int tvp514x_s_stream(struct v4l2_subdev *sd, int enable);
 /**
  * struct tvp514x_decoder - TVP5146/47 decoder object
  * @sd: Subdevice Slave handle
+<<<<<<< HEAD
  * @hdl: embedded &struct v4l2_ctrl_handler
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @tvp514x_regs: copy of hw's regs with preset values.
  * @pdata: Board specific
  * @ver: Chip version
@@ -99,9 +102,12 @@ static int tvp514x_s_stream(struct v4l2_subdev *sd, int enable);
  * @std_list: Standards list
  * @input: Input routing at chip level
  * @output: Output routing at chip level
+<<<<<<< HEAD
  * @pad: subdev media pad associated with the decoder
  * @format: media bus frame format
  * @int_seq: driver's register init sequence
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct tvp514x_decoder {
 	struct v4l2_subdev sd;
@@ -215,7 +221,11 @@ static struct tvp514x_reg tvp514x_reg_list_default[] = {
 	{TOK_TERM, 0, 0},
 };
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * List of image formats supported by TVP5146/47 decoder
  * Currently we are using 8 bit mode only, but can be
  * extended to 10/20 bit mode.
@@ -230,7 +240,11 @@ static const struct v4l2_fmtdesc tvp514x_fmt_list[] = {
 	},
 };
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Supported standards -
  *
  * Currently supports two standards only, need to add support for rest of the
@@ -747,47 +761,95 @@ static int tvp514x_s_ctrl(struct v4l2_ctrl *ctrl)
 }
 
 /**
+<<<<<<< HEAD
  * tvp514x_g_frame_interval() - V4L2 decoder interface handler
  * @sd: pointer to standard V4L2 sub-device structure
  * @ival: pointer to a v4l2_subdev_frame_interval structure
+=======
+ * tvp514x_g_parm() - V4L2 decoder interface handler for g_parm
+ * @sd: pointer to standard V4L2 sub-device structure
+ * @a: pointer to standard V4L2 VIDIOC_G_PARM ioctl structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns the decoder's video CAPTURE parameters.
  */
 static int
+<<<<<<< HEAD
 tvp514x_g_frame_interval(struct v4l2_subdev *sd,
 			 struct v4l2_subdev_frame_interval *ival)
 {
 	struct tvp514x_decoder *decoder = to_decoder(sd);
 	enum tvp514x_std current_std;
 
+=======
+tvp514x_g_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *a)
+{
+	struct tvp514x_decoder *decoder = to_decoder(sd);
+	struct v4l2_captureparm *cparm;
+	enum tvp514x_std current_std;
+
+	if (a == NULL)
+		return -EINVAL;
+
+	if (a->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		/* only capture is supported */
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* get the current standard */
 	current_std = decoder->current_std;
 
+<<<<<<< HEAD
 	ival->interval =
+=======
+	cparm = &a->parm.capture;
+	cparm->capability = V4L2_CAP_TIMEPERFRAME;
+	cparm->timeperframe =
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		decoder->std_list[current_std].standard.frameperiod;
 
 	return 0;
 }
 
 /**
+<<<<<<< HEAD
  * tvp514x_s_frame_interval() - V4L2 decoder interface handler
  * @sd: pointer to standard V4L2 sub-device structure
  * @ival: pointer to a v4l2_subdev_frame_interval structure
+=======
+ * tvp514x_s_parm() - V4L2 decoder interface handler for s_parm
+ * @sd: pointer to standard V4L2 sub-device structure
+ * @a: pointer to standard V4L2 VIDIOC_S_PARM ioctl structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Configures the decoder to use the input parameters, if possible. If
  * not possible, returns the appropriate error code.
  */
 static int
+<<<<<<< HEAD
 tvp514x_s_frame_interval(struct v4l2_subdev *sd,
 			 struct v4l2_subdev_frame_interval *ival)
+=======
+tvp514x_s_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *a)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tvp514x_decoder *decoder = to_decoder(sd);
 	struct v4l2_fract *timeperframe;
 	enum tvp514x_std current_std;
 
+<<<<<<< HEAD
 
 	timeperframe = &ival->interval;
+=======
+	if (a == NULL)
+		return -EINVAL;
+
+	if (a->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		/* only capture is supported */
+		return -EINVAL;
+
+	timeperframe = &a->parm.capture.timeperframe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* get the current standard */
 	current_std = decoder->current_std;
@@ -922,7 +984,11 @@ static int tvp514x_get_pad_format(struct v4l2_subdev *sd,
  * tvp514x_set_pad_format() - V4L2 decoder interface handler for set pad format
  * @sd: pointer to standard V4L2 sub-device structure
  * @cfg: pad configuration
+<<<<<<< HEAD
  * @fmt: pointer to v4l2_subdev_format structure
+=======
+ * @format: pointer to v4l2_subdev_format structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Set pad format for the output pad
  */
@@ -948,8 +1014,13 @@ static const struct v4l2_subdev_video_ops tvp514x_video_ops = {
 	.s_std = tvp514x_s_std,
 	.s_routing = tvp514x_s_routing,
 	.querystd = tvp514x_querystd,
+<<<<<<< HEAD
 	.g_frame_interval = tvp514x_g_frame_interval,
 	.s_frame_interval = tvp514x_s_frame_interval,
+=======
+	.g_parm = tvp514x_g_parm,
+	.s_parm = tvp514x_s_parm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.s_stream = tvp514x_s_stream,
 };
 
@@ -1084,7 +1155,11 @@ tvp514x_probe(struct i2c_client *client, const struct i2c_device_id *id)
 #if defined(CONFIG_MEDIA_CONTROLLER)
 	decoder->pad.flags = MEDIA_PAD_FL_SOURCE;
 	decoder->sd.flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
+<<<<<<< HEAD
 	decoder->sd.entity.function = MEDIA_ENT_F_ATV_DECODER;
+=======
+	decoder->sd.entity.flags |= MEDIA_ENT_F_ATV_DECODER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = media_entity_pads_init(&decoder->sd.entity, 1, &decoder->pad);
 	if (ret < 0) {
@@ -1118,7 +1193,13 @@ tvp514x_probe(struct i2c_client *client, const struct i2c_device_id *id)
 done:
 	if (ret < 0) {
 		v4l2_ctrl_handler_free(&decoder->hdl);
+<<<<<<< HEAD
 		media_entity_cleanup(&decoder->sd.entity);
+=======
+#if defined(CONFIG_MEDIA_CONTROLLER)
+		media_entity_cleanup(&decoder->sd.entity);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return ret;
 }
@@ -1136,7 +1217,13 @@ static int tvp514x_remove(struct i2c_client *client)
 	struct tvp514x_decoder *decoder = to_decoder(sd);
 
 	v4l2_async_unregister_subdev(&decoder->sd);
+<<<<<<< HEAD
 	media_entity_cleanup(&decoder->sd.entity);
+=======
+#if defined(CONFIG_MEDIA_CONTROLLER)
+	media_entity_cleanup(&decoder->sd.entity);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_ctrl_handler_free(&decoder->hdl);
 	return 0;
 }
@@ -1186,7 +1273,11 @@ static const struct tvp514x_reg tvp514xm_init_reg_seq[] = {
 	{TOK_TERM, 0, 0},
 };
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * I2C Device Table -
  *
  * name - Name of the actual device/chip.

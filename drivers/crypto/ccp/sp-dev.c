@@ -198,8 +198,11 @@ int sp_init(struct sp_device *sp)
 	if (sp->dev_vdata->ccp_vdata)
 		ccp_dev_init(sp);
 
+<<<<<<< HEAD
 	if (sp->dev_vdata->psp_vdata)
 		psp_dev_init(sp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -208,9 +211,12 @@ void sp_destroy(struct sp_device *sp)
 	if (sp->dev_vdata->ccp_vdata)
 		ccp_dev_destroy(sp);
 
+<<<<<<< HEAD
 	if (sp->dev_vdata->psp_vdata)
 		psp_dev_destroy(sp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sp_del_device(sp);
 }
 
@@ -242,6 +248,7 @@ int sp_resume(struct sp_device *sp)
 }
 #endif
 
+<<<<<<< HEAD
 struct sp_device *sp_get_psp_master_device(void)
 {
 	struct sp_device *i, *ret = NULL;
@@ -263,6 +270,8 @@ unlock:
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init sp_mod_init(void)
 {
 #ifdef CONFIG_X86
@@ -272,10 +281,13 @@ static int __init sp_mod_init(void)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 #ifdef CONFIG_CRYPTO_DEV_SP_PSP
 	psp_pci_init();
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 #endif
 
@@ -295,11 +307,14 @@ static int __init sp_mod_init(void)
 static void __exit sp_mod_exit(void)
 {
 #ifdef CONFIG_X86
+<<<<<<< HEAD
 
 #ifdef CONFIG_CRYPTO_DEV_SP_PSP
 	psp_pci_exit();
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sp_pci_exit();
 #endif
 

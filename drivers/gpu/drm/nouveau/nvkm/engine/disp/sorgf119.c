@@ -152,6 +152,18 @@ gf119_sor_state(struct nvkm_ior *sor, struct nvkm_ior_state *state)
 	state->head = ctrl & 0x0000000f;
 }
 
+<<<<<<< HEAD
+=======
+int
+gf119_sor_new_(const struct nvkm_ior_func *func, struct nvkm_disp *disp, int id)
+{
+	struct nvkm_device *device = disp->engine.subdev.device;
+	if (!(nvkm_rd32(device, 0x612004) & (0x00000100 << id)))
+		return 0;
+	return nvkm_ior_new_(func, disp, SOR, id);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct nvkm_ior_func
 gf119_sor = {
 	.state = gf119_sor_state,
@@ -180,6 +192,7 @@ gf119_sor = {
 int
 gf119_sor_new(struct nvkm_disp *disp, int id)
 {
+<<<<<<< HEAD
 	return nvkm_ior_new_(&gf119_sor, disp, SOR, id);
 }
 
@@ -189,4 +202,7 @@ gf119_sor_cnt(struct nvkm_disp *disp, unsigned long *pmask)
 	struct nvkm_device *device = disp->engine.subdev.device;
 	*pmask = (nvkm_rd32(device, 0x612004) & 0x0000ff00) >> 8;
 	return 8;
+=======
+	return gf119_sor_new_(&gf119_sor, disp, id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -201,7 +201,11 @@ static const struct file_operations nfp_xdp_q_fops = {
 	.llseek = seq_lseek
 };
 
+<<<<<<< HEAD
 void nfp_net_debugfs_vnic_add(struct nfp_net *nn, struct dentry *ddir)
+=======
+void nfp_net_debugfs_vnic_add(struct nfp_net *nn, struct dentry *ddir, int id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dentry *queues, *tx, *rx, *xdp;
 	char name[20];
@@ -211,7 +215,11 @@ void nfp_net_debugfs_vnic_add(struct nfp_net *nn, struct dentry *ddir)
 		return;
 
 	if (nfp_net_is_data_vnic(nn))
+<<<<<<< HEAD
 		sprintf(name, "vnic%d", nn->id);
+=======
+		sprintf(name, "vnic%d", id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		strcpy(name, "ctrl-vnic");
 	nn->debugfs_dir = debugfs_create_dir(name, ddir);
@@ -231,15 +239,25 @@ void nfp_net_debugfs_vnic_add(struct nfp_net *nn, struct dentry *ddir)
 
 	for (i = 0; i < min(nn->max_rx_rings, nn->max_r_vecs); i++) {
 		sprintf(name, "%d", i);
+<<<<<<< HEAD
 		debugfs_create_file(name, 0400, rx,
 				    &nn->r_vecs[i], &nfp_rx_q_fops);
 		debugfs_create_file(name, 0400, xdp,
+=======
+		debugfs_create_file(name, S_IRUSR, rx,
+				    &nn->r_vecs[i], &nfp_rx_q_fops);
+		debugfs_create_file(name, S_IRUSR, xdp,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    &nn->r_vecs[i], &nfp_xdp_q_fops);
 	}
 
 	for (i = 0; i < min(nn->max_tx_rings, nn->max_r_vecs); i++) {
 		sprintf(name, "%d", i);
+<<<<<<< HEAD
 		debugfs_create_file(name, 0400, tx,
+=======
+		debugfs_create_file(name, S_IRUSR, tx,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    &nn->r_vecs[i], &nfp_tx_q_fops);
 	}
 }

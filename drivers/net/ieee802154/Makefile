@@ -6,5 +6,8 @@ obj-$(CONFIG_IEEE802154_CC2520) += cc2520.o
 obj-$(CONFIG_IEEE802154_ATUSB) += atusb.o
 obj-$(CONFIG_IEEE802154_ADF7242) += adf7242.o
 obj-$(CONFIG_IEEE802154_CA8210) += ca8210.o
+<<<<<<< HEAD
 obj-$(CONFIG_IEEE802154_MCR20A) += mcr20a.o
 obj-$(CONFIG_IEEE802154_HWSIM) += mac802154_hwsim.o
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

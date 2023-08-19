@@ -2,7 +2,11 @@
 #define DEF_RVTCQ_H
 
 /*
+<<<<<<< HEAD
  * Copyright(c) 2016 - 2018 Intel Corporation.
+=======
+ * Copyright(c) 2016 Intel Corporation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -59,6 +63,11 @@ int rvt_destroy_cq(struct ib_cq *ibcq);
 int rvt_req_notify_cq(struct ib_cq *ibcq, enum ib_cq_notify_flags notify_flags);
 int rvt_resize_cq(struct ib_cq *ibcq, int cqe, struct ib_udata *udata);
 int rvt_poll_cq(struct ib_cq *ibcq, int num_entries, struct ib_wc *entry);
+<<<<<<< HEAD
 int rvt_driver_cq_init(void);
 void rvt_cq_exit(void);
+=======
+int rvt_driver_cq_init(struct rvt_dev_info *rdi);
+void rvt_cq_exit(struct rvt_dev_info *rdi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif          /* DEF_RVTCQ_H */

@@ -9,7 +9,10 @@
  *
  */
 
+<<<<<<< HEAD
 #include <linux/compiler.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/errno.h>
 #include <linux/kernel.h>
@@ -2236,9 +2239,15 @@ static void send_listen(capidrv_contr *card)
 	send_message(card, &cmdcmsg);
 }
 
+<<<<<<< HEAD
 static void listentimerfunc(struct timer_list *t)
 {
 	capidrv_contr *card = from_timer(card, t, listentimer);
+=======
+static void listentimerfunc(unsigned long x)
+{
+	capidrv_contr *card = (capidrv_contr *)x;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (card->state != ST_LISTEN_NONE && card->state != ST_LISTEN_ACTIVE)
 		printk(KERN_ERR "%s: controller dead ??\n", card->name);
 	send_listen(card);
@@ -2265,12 +2274,20 @@ static int capidrv_addcontr(u16 contr, struct capi_profile *profp)
 		return -1;
 	}
 	card->owner = THIS_MODULE;
+<<<<<<< HEAD
 	timer_setup(&card->listentimer, listentimerfunc, 0);
 	strcpy(card->name, id);
 	card->contrnr = contr;
 	card->nbchan = profp->nbchannel;
 	card->bchans = kmalloc_array(card->nbchan, sizeof(capidrv_bchan),
 				     GFP_ATOMIC);
+=======
+	setup_timer(&card->listentimer, listentimerfunc, (unsigned long)card);
+	strcpy(card->name, id);
+	card->contrnr = contr;
+	card->nbchan = profp->nbchannel;
+	card->bchans = kmalloc(sizeof(capidrv_bchan) * card->nbchan, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!card->bchans) {
 		printk(KERN_WARNING
 		       "capidrv: (%s) Could not allocate bchan-structs.\n", id);
@@ -2452,7 +2469,11 @@ lower_callback(struct notifier_block *nb, unsigned long val, void *v)
  * /proc/capi/capidrv:
  * nrecvctlpkt nrecvdatapkt nsendctlpkt nsenddatapkt
  */
+<<<<<<< HEAD
 static int __maybe_unused capidrv_proc_show(struct seq_file *m, void *v)
+=======
+static int capidrv_proc_show(struct seq_file *m, void *v)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	seq_printf(m, "%lu %lu %lu %lu\n",
 		   global.ap.nrecvctlpkt,
@@ -2462,9 +2483,28 @@ static int __maybe_unused capidrv_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void __init proc_init(void)
 {
 	proc_create_single("capi/capidrv", 0, NULL, capidrv_proc_show);
+=======
+static int capidrv_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, capidrv_proc_show, NULL);
+}
+
+static const struct file_operations capidrv_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= capidrv_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+static void __init proc_init(void)
+{
+	proc_create("capi/capidrv", 0, NULL, &capidrv_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit proc_exit(void)

@@ -11,9 +11,15 @@
  *	under the terms of the GNU General Public License as published by the
  *	Free Software Foundation, version 2.
  *
+<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
  */
 #include <media/dvb-usb-ids.h>
+=======
+ * see Documentation/dvb/README.dvb-usb for more information
+ */
+#include "dvb-usb-ids.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "dw2102.h"
 #include "si21xx.h"
 #include "stv0299.h"
@@ -61,7 +67,13 @@
 #define P1100_FIRMWARE  "dvb-usb-p1100.fw"
 #define P7500_FIRMWARE  "dvb-usb-p7500.fw"
 
+<<<<<<< HEAD
 #define	err_str "did not find the firmware file '%s'. You can use <kernel_dir>/scripts/get_dvb_firmware to get the firmware"
+=======
+#define	err_str "did not find the firmware file. (%s) " \
+		"Please see linux/Documentation/dvb/ for more details " \
+		"on firmware-problems."
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct dw2102_state {
 	u8 initialized;

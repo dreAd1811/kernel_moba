@@ -6,6 +6,7 @@
  * fsyscall gettimeofday data
  */
 
+<<<<<<< HEAD
 /* like timespec, but includes "shifted nanoseconds" */
 struct time_sn_spec {
 	u64	sec;
@@ -16,6 +17,12 @@ struct fsyscall_gtod_data_t {
 	seqcount_t	seq;
 	struct time_sn_spec wall_time;
 	struct time_sn_spec monotonic_time;
+=======
+struct fsyscall_gtod_data_t {
+	seqcount_t	seq;
+	struct timespec	wall_time;
+	struct timespec monotonic_time;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64		clk_mask;
 	u32		clk_mult;
 	u32		clk_shift;

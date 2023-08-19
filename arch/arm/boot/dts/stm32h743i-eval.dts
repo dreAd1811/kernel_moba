@@ -68,6 +68,7 @@
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
 	};
+<<<<<<< HEAD
 
 	usbotg_hs_phy: usb-phy {
 		#phy-cells = <0>;
@@ -79,6 +80,12 @@
 };
 
 &adc_12 {
+=======
+};
+
+&adc_12 {
+	vdda-supply = <&vdda>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vref-supply = <&vdda>;
 	status = "okay";
 	adc1: adc@0 {
@@ -89,6 +96,7 @@
 };
 
 &clk_hse {
+<<<<<<< HEAD
 	clock-frequency = <25000000>;
 };
 
@@ -102,6 +110,9 @@
 
 &rtc {
 	status = "okay";
+=======
+	clock-frequency = <125000000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usart1 {
@@ -110,6 +121,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usbotg_hs {
 	pinctrl-0 = <&usbotg_hs_pins_a>;
 	pinctrl-names = "default";
@@ -118,3 +130,5 @@
 	dr_mode = "otg";
 	status = "okay";
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

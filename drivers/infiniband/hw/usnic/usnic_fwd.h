@@ -57,7 +57,11 @@ struct usnic_fwd_dev {
 	char				mac[ETH_ALEN];
 	unsigned int			mtu;
 	__be32				inaddr;
+<<<<<<< HEAD
 	char				name[IFNAMSIZ];
+=======
+	char				name[IFNAMSIZ+1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct usnic_fwd_flow {

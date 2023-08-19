@@ -7,11 +7,18 @@ Contents:
  - Overview.
  - Usage.
  - Mountpoints.
+<<<<<<< HEAD
  - Dynamic root.
  - Proc filesystem.
  - The cell database.
  - Security.
  - The @sys substitution.
+=======
+ - Proc filesystem.
+ - The cell database.
+ - Security.
+ - Examples.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 ========
@@ -92,8 +99,13 @@ Filesystems can be mounted anywhere by commands similar to the following:
 	mount -t afs "#root.cell." /afs/cambridge
 
 Where the initial character is either a hash or a percent symbol depending on
+<<<<<<< HEAD
 whether you definitely want a R/W volume (percent) or whether you'd prefer a
 R/O volume, but are willing to use a R/W volume instead (hash).
+=======
+whether you definitely want a R/W volume (hash) or whether you'd prefer a R/O
+volume, but are willing to use a R/W volume instead (percent).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 The name of the volume can be suffixes with ".backup" or ".readonly" to
 specify connection to only volumes of those types.
@@ -128,6 +140,7 @@ mounted on /afs in one go by doing:
 	umount /afs
 
 
+<<<<<<< HEAD
 ============
 DYNAMIC ROOT
 ============
@@ -144,6 +157,8 @@ looks up a cell of the same name, for example:
 	ls /afs/grand.central.org/
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ===============
 PROC FILESYSTEM
 ===============
@@ -230,6 +245,7 @@ If a file is opened with a particular key and then the file descriptor is
 passed to a process that doesn't have that key (perhaps over an AF_UNIX
 socket), then the operations on the file will be made with key that was used to
 open the file.
+<<<<<<< HEAD
 
 
 =====================
@@ -256,3 +272,5 @@ order given.
 
 By default, the list will contain one item that conforms to the pattern
 "<arch>_linux_26", amd64 being the name for x86_64.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <dt-bindings/clock/tegra20-car.h>
 #include <dt-bindings/gpio/tegra-gpio.h>
+<<<<<<< HEAD
 #include <dt-bindings/memory/tegra20-mc.h>
 #include <dt-bindings/pinctrl/pinctrl-tegra.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
@@ -28,6 +29,16 @@
 			pool;
 		};
 	};
+=======
+#include <dt-bindings/pinctrl/pinctrl-tegra.h>
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+
+#include "skeleton.dtsi"
+
+/ {
+	compatible = "nvidia,tegra20";
+	interrupt-parent = <&lic>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	host1x@50000000 {
 		compatible = "nvidia,tegra20-host1x", "simple-bus";
@@ -269,6 +280,7 @@
 		*/
 	};
 
+<<<<<<< HEAD
 	vde@6001a000 {
 		compatible = "nvidia,tegra20-vde";
 		reg = <0x6001a000 0x1000   /* Syntax Engine */
@@ -292,6 +304,8 @@
 		resets = <&tegra_car 61>, <&mc TEGRA20_MC_RESET_VDE>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	apbmisc@70000800 {
 		compatible = "nvidia,tegra20-apbmisc";
 		reg = <0x70000800 0x64   /* Chip revision */
@@ -432,6 +446,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	nand-controller@70008000 {
 		compatible = "nvidia,tegra20-nand";
 		reg = <0x70008000 0x100>;
@@ -447,6 +462,8 @@
 		status = "disabled";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pwm: pwm@7000a000 {
 		compatible = "nvidia,tegra20-pwm";
 		reg = <0x7000a000 0x100>;
@@ -615,12 +632,19 @@
 		clock-names = "pclk", "clk32k_in";
 	};
 
+<<<<<<< HEAD
 	mc: memory-controller@7000f000 {
+=======
+	memory-controller@7000f000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "nvidia,tegra20-mc";
 		reg = <0x7000f000 0x024
 		       0x7000f03c 0x3c4>;
 		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
 		#reset-cells = <1>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	iommu@7000f024 {

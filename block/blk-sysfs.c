@@ -276,10 +276,19 @@ queue_store_##name(struct request_queue *q, const char *page, size_t count) \
 	if (neg)							\
 		val = !val;						\
 									\
+<<<<<<< HEAD
 	if (val)							\
 		blk_queue_flag_set(QUEUE_FLAG_##flag, q);		\
 	else								\
 		blk_queue_flag_clear(QUEUE_FLAG_##flag, q);		\
+=======
+	spin_lock_irq(q->queue_lock);					\
+	if (val)							\
+		queue_flag_set(QUEUE_FLAG_##flag, q);			\
+	else								\
+		queue_flag_clear(QUEUE_FLAG_##flag, q);			\
+	spin_unlock_irq(q->queue_lock);					\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;							\
 }
 
@@ -412,26 +421,46 @@ static ssize_t queue_poll_store(struct request_queue *q, const char *page,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	if (poll_on)
 		blk_queue_flag_set(QUEUE_FLAG_POLL, q);
 	else
 		blk_queue_flag_clear(QUEUE_FLAG_POLL, q);
+=======
+	spin_lock_irq(q->queue_lock);
+	if (poll_on)
+		queue_flag_set(QUEUE_FLAG_POLL, q);
+	else
+		queue_flag_clear(QUEUE_FLAG_POLL, q);
+	spin_unlock_irq(q->queue_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
 static ssize_t queue_wb_lat_show(struct request_queue *q, char *page)
 {
+<<<<<<< HEAD
 	if (!wbt_rq_qos(q))
 		return -EINVAL;
 
 	return sprintf(page, "%llu\n", div_u64(wbt_get_min_lat(q), 1000));
+=======
+	if (!q->rq_wb)
+		return -EINVAL;
+
+	return sprintf(page, "%llu\n", div_u64(q->rq_wb->min_lat_nsec, 1000));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t queue_wb_lat_store(struct request_queue *q, const char *page,
 				  size_t count)
 {
+<<<<<<< HEAD
 	struct rq_qos *rqos;
+=======
+	struct rq_wb *rwb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ssize_t ret;
 	s64 val;
 
@@ -441,6 +470,7 @@ static ssize_t queue_wb_lat_store(struct request_queue *q, const char *page,
 	if (val < -1)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	rqos = wbt_rq_qos(q);
 	if (!rqos) {
 		ret = wbt_init(q);
@@ -473,6 +503,28 @@ static ssize_t queue_wb_lat_store(struct request_queue *q, const char *page,
 	} else
 		blk_queue_bypass_end(q);
 
+=======
+	rwb = q->rq_wb;
+	if (!rwb) {
+		ret = wbt_init(q);
+		if (ret)
+			return ret;
+
+		rwb = q->rq_wb;
+		if (!rwb)
+			return -EINVAL;
+	}
+
+	if (val == -1)
+		rwb->min_lat_nsec = wbt_default_latency_nsec(q);
+	else if (val >= 0)
+		rwb->min_lat_nsec = val * 1000ULL;
+
+	if (rwb->enable_state == WBT_STATE_ON_DEFAULT)
+		rwb->enable_state = WBT_STATE_ON_MANUAL;
+
+	wbt_update_limits(rwb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return count;
 }
 
@@ -498,187 +550,320 @@ static ssize_t queue_wc_store(struct request_queue *q, const char *page,
 	if (set == -1)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (set)
 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
 	else
 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
+=======
+	spin_lock_irq(q->queue_lock);
+	if (set)
+		queue_flag_set(QUEUE_FLAG_WC, q);
+	else
+		queue_flag_clear(QUEUE_FLAG_WC, q);
+	spin_unlock_irq(q->queue_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t queue_fua_show(struct request_queue *q, char *page)
 {
 	return sprintf(page, "%u\n", test_bit(QUEUE_FLAG_FUA, &q->queue_flags));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static ssize_t queue_dax_show(struct request_queue *q, char *page)
 {
 	return queue_var_show(blk_queue_dax(q), page);
 }
 
 static struct queue_sysfs_entry queue_requests_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "nr_requests", .mode = 0644 },
+=======
+	.attr = {.name = "nr_requests", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_requests_show,
 	.store = queue_requests_store,
 };
 
 static struct queue_sysfs_entry queue_ra_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "read_ahead_kb", .mode = 0644 },
+=======
+	.attr = {.name = "read_ahead_kb", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_ra_show,
 	.store = queue_ra_store,
 };
 
 static struct queue_sysfs_entry queue_max_sectors_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "max_sectors_kb", .mode = 0644 },
+=======
+	.attr = {.name = "max_sectors_kb", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_max_sectors_show,
 	.store = queue_max_sectors_store,
 };
 
 static struct queue_sysfs_entry queue_max_hw_sectors_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "max_hw_sectors_kb", .mode = 0444 },
+=======
+	.attr = {.name = "max_hw_sectors_kb", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_max_hw_sectors_show,
 };
 
 static struct queue_sysfs_entry queue_max_segments_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "max_segments", .mode = 0444 },
+=======
+	.attr = {.name = "max_segments", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_max_segments_show,
 };
 
 static struct queue_sysfs_entry queue_max_discard_segments_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "max_discard_segments", .mode = 0444 },
+=======
+	.attr = {.name = "max_discard_segments", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_max_discard_segments_show,
 };
 
 static struct queue_sysfs_entry queue_max_integrity_segments_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "max_integrity_segments", .mode = 0444 },
+=======
+	.attr = {.name = "max_integrity_segments", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_max_integrity_segments_show,
 };
 
 static struct queue_sysfs_entry queue_max_segment_size_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "max_segment_size", .mode = 0444 },
+=======
+	.attr = {.name = "max_segment_size", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_max_segment_size_show,
 };
 
 static struct queue_sysfs_entry queue_iosched_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "scheduler", .mode = 0644 },
+=======
+	.attr = {.name = "scheduler", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = elv_iosched_show,
 	.store = elv_iosched_store,
 };
 
 static struct queue_sysfs_entry queue_hw_sector_size_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "hw_sector_size", .mode = 0444 },
+=======
+	.attr = {.name = "hw_sector_size", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_logical_block_size_show,
 };
 
 static struct queue_sysfs_entry queue_logical_block_size_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "logical_block_size", .mode = 0444 },
+=======
+	.attr = {.name = "logical_block_size", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_logical_block_size_show,
 };
 
 static struct queue_sysfs_entry queue_physical_block_size_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "physical_block_size", .mode = 0444 },
+=======
+	.attr = {.name = "physical_block_size", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_physical_block_size_show,
 };
 
 static struct queue_sysfs_entry queue_chunk_sectors_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "chunk_sectors", .mode = 0444 },
+=======
+	.attr = {.name = "chunk_sectors", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_chunk_sectors_show,
 };
 
 static struct queue_sysfs_entry queue_io_min_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "minimum_io_size", .mode = 0444 },
+=======
+	.attr = {.name = "minimum_io_size", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_io_min_show,
 };
 
 static struct queue_sysfs_entry queue_io_opt_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "optimal_io_size", .mode = 0444 },
+=======
+	.attr = {.name = "optimal_io_size", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_io_opt_show,
 };
 
 static struct queue_sysfs_entry queue_discard_granularity_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "discard_granularity", .mode = 0444 },
+=======
+	.attr = {.name = "discard_granularity", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_discard_granularity_show,
 };
 
 static struct queue_sysfs_entry queue_discard_max_hw_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "discard_max_hw_bytes", .mode = 0444 },
+=======
+	.attr = {.name = "discard_max_hw_bytes", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_discard_max_hw_show,
 };
 
 static struct queue_sysfs_entry queue_discard_max_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "discard_max_bytes", .mode = 0644 },
+=======
+	.attr = {.name = "discard_max_bytes", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_discard_max_show,
 	.store = queue_discard_max_store,
 };
 
 static struct queue_sysfs_entry queue_discard_zeroes_data_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "discard_zeroes_data", .mode = 0444 },
+=======
+	.attr = {.name = "discard_zeroes_data", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_discard_zeroes_data_show,
 };
 
 static struct queue_sysfs_entry queue_write_same_max_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "write_same_max_bytes", .mode = 0444 },
+=======
+	.attr = {.name = "write_same_max_bytes", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_write_same_max_show,
 };
 
 static struct queue_sysfs_entry queue_write_zeroes_max_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "write_zeroes_max_bytes", .mode = 0444 },
+=======
+	.attr = {.name = "write_zeroes_max_bytes", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_write_zeroes_max_show,
 };
 
 static struct queue_sysfs_entry queue_nonrot_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "rotational", .mode = 0644 },
+=======
+	.attr = {.name = "rotational", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_show_nonrot,
 	.store = queue_store_nonrot,
 };
 
 static struct queue_sysfs_entry queue_zoned_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "zoned", .mode = 0444 },
+=======
+	.attr = {.name = "zoned", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_zoned_show,
 };
 
 static struct queue_sysfs_entry queue_nomerges_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "nomerges", .mode = 0644 },
+=======
+	.attr = {.name = "nomerges", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_nomerges_show,
 	.store = queue_nomerges_store,
 };
 
 static struct queue_sysfs_entry queue_rq_affinity_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "rq_affinity", .mode = 0644 },
+=======
+	.attr = {.name = "rq_affinity", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_rq_affinity_show,
 	.store = queue_rq_affinity_store,
 };
 
 static struct queue_sysfs_entry queue_iostats_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "iostats", .mode = 0644 },
+=======
+	.attr = {.name = "iostats", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_show_iostats,
 	.store = queue_store_iostats,
 };
 
 static struct queue_sysfs_entry queue_random_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "add_random", .mode = 0644 },
+=======
+	.attr = {.name = "add_random", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_show_random,
 	.store = queue_store_random,
 };
 
 static struct queue_sysfs_entry queue_poll_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "io_poll", .mode = 0644 },
+=======
+	.attr = {.name = "io_poll", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_poll_show,
 	.store = queue_poll_store,
 };
 
 static struct queue_sysfs_entry queue_poll_delay_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "io_poll_delay", .mode = 0644 },
+=======
+	.attr = {.name = "io_poll_delay", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_poll_delay_show,
 	.store = queue_poll_delay_store,
 };
 
 static struct queue_sysfs_entry queue_wc_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "write_cache", .mode = 0644 },
+=======
+	.attr = {.name = "write_cache", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_wc_show,
 	.store = queue_wc_store,
 };
 
+<<<<<<< HEAD
 static struct queue_sysfs_entry queue_fua_entry = {
 	.attr = {.name = "fua", .mode = 0444 },
 	.show = queue_fua_show,
@@ -686,18 +871,30 @@ static struct queue_sysfs_entry queue_fua_entry = {
 
 static struct queue_sysfs_entry queue_dax_entry = {
 	.attr = {.name = "dax", .mode = 0444 },
+=======
+static struct queue_sysfs_entry queue_dax_entry = {
+	.attr = {.name = "dax", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_dax_show,
 };
 
 static struct queue_sysfs_entry queue_wb_lat_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "wbt_lat_usec", .mode = 0644 },
+=======
+	.attr = {.name = "wbt_lat_usec", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = queue_wb_lat_show,
 	.store = queue_wb_lat_store,
 };
 
 #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
 static struct queue_sysfs_entry throtl_sample_time_entry = {
+<<<<<<< HEAD
 	.attr = {.name = "throttle_sample_time", .mode = 0644 },
+=======
+	.attr = {.name = "throttle_sample_time", .mode = S_IRUGO | S_IWUSR },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = blk_throtl_sample_time_show,
 	.store = blk_throtl_sample_time_store,
 };
@@ -733,7 +930,10 @@ static struct attribute *default_attrs[] = {
 	&queue_random_entry.attr,
 	&queue_poll_entry.attr,
 	&queue_wc_entry.attr,
+<<<<<<< HEAD
 	&queue_fua_entry.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&queue_dax_entry.attr,
 	&queue_wb_lat_entry.attr,
 	&queue_poll_delay_entry.attr,
@@ -819,6 +1019,7 @@ static void __blk_release_queue(struct work_struct *work)
 		blk_stat_remove_callback(q, q->poll_cb);
 	blk_stat_free_callback(q->poll_cb);
 
+<<<<<<< HEAD
 	if (!blk_queue_dead(q)) {
 		/*
 		 * Last reference was dropped without having called
@@ -834,6 +1035,8 @@ static void __blk_release_queue(struct work_struct *work)
 	     "request queue %p is being released but it has not yet been removed from the blkcg controller\n",
 	     q);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_free_queue_stats(q->stats);
 
 	if (q->mq_ops)
@@ -857,7 +1060,12 @@ static void __blk_release_queue(struct work_struct *work)
 	if (q->mq_ops)
 		blk_mq_debugfs_unregister(q);
 
+<<<<<<< HEAD
 	bioset_exit(&q->bio_split);
+=======
+	if (q->bio_split)
+		bioset_free(q->bio_split);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ida_simple_remove(&blk_queue_ida, q->id);
 	call_rcu(&q->rcu_head, blk_free_queue_rcu);
@@ -883,10 +1091,13 @@ struct kobj_type blk_queue_ktype = {
 	.release	= blk_release_queue,
 };
 
+<<<<<<< HEAD
 /**
  * blk_register_queue - register a block layer queue with sysfs
  * @disk: Disk of which the request queue should be registered with sysfs.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int blk_register_queue(struct gendisk *disk)
 {
 	int ret;
@@ -943,12 +1154,19 @@ int blk_register_queue(struct gendisk *disk)
 	if (q->request_fn || (q->mq_ops && q->elevator)) {
 		ret = elv_register_queue(q);
 		if (ret) {
+<<<<<<< HEAD
 			mutex_unlock(&q->sysfs_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kobject_uevent(&q->kobj, KOBJ_REMOVE);
 			kobject_del(&q->kobj);
 			blk_trace_remove_sysfs(dev);
 			kobject_put(&dev->kobj);
+<<<<<<< HEAD
 			return ret;
+=======
+			goto unlock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	ret = 0;
@@ -956,6 +1174,7 @@ unlock:
 	mutex_unlock(&q->sysfs_lock);
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(blk_register_queue);
 
 /**
@@ -965,6 +1184,9 @@ EXPORT_SYMBOL_GPL(blk_register_queue);
  * Note: the caller is responsible for guaranteeing that this function is called
  * after blk_register_queue() has finished.
  */
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void blk_unregister_queue(struct gendisk *disk)
 {
 	struct request_queue *q = disk->queue;
@@ -972,6 +1194,7 @@ void blk_unregister_queue(struct gendisk *disk)
 	if (WARN_ON(!q))
 		return;
 
+<<<<<<< HEAD
 	/* Return early if disk->queue was never registered. */
 	if (!test_bit(QUEUE_FLAG_REGISTERED, &q->queue_flags))
 		return;
@@ -992,10 +1215,25 @@ void blk_unregister_queue(struct gendisk *disk)
 	if (q->mq_ops)
 		blk_mq_unregister_dev(disk_to_dev(disk), q);
 	mutex_unlock(&q->sysfs_lock);
+=======
+	mutex_lock(&q->sysfs_lock);
+	queue_flag_clear_unlocked(QUEUE_FLAG_REGISTERED, q);
+	mutex_unlock(&q->sysfs_lock);
+
+	wbt_exit(q);
+
+
+	if (q->mq_ops)
+		blk_mq_unregister_dev(disk_to_dev(disk), q);
+
+	if (q->request_fn || (q->mq_ops && q->elevator))
+		elv_unregister_queue(q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kobject_uevent(&q->kobj, KOBJ_REMOVE);
 	kobject_del(&q->kobj);
 	blk_trace_remove_sysfs(disk_to_dev(disk));
+<<<<<<< HEAD
 
 	rq_qos_exit(q);
 
@@ -1004,5 +1242,7 @@ void blk_unregister_queue(struct gendisk *disk)
 		elv_unregister_queue(q);
 	mutex_unlock(&q->sysfs_lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kobject_put(&disk_to_dev(disk)->kobj);
 }

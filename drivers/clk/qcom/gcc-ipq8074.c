@@ -28,14 +28,22 @@
 #include "clk-rcg.h"
 #include "clk-branch.h"
 #include "clk-alpha-pll.h"
+<<<<<<< HEAD
 #include "clk-regmap-divider.h"
 #include "clk-regmap-mux.h"
 #include "reset.h"
 
+=======
+#include "reset.h"
+
+#define F(f, s, h, m, n) { (f), (s), (2 * (h) - 1), (m), (n) }
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	P_XO,
 	P_GPLL0,
 	P_GPLL0_DIV2,
+<<<<<<< HEAD
 	P_GPLL2,
 	P_GPLL4,
 	P_GPLL6,
@@ -54,6 +62,8 @@ enum {
 	P_UNIPHY1_TX,
 	P_UNIPHY2_RX,
 	P_UNIPHY2_TX,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const char * const gcc_xo_gpll0_gpll0_out_main_div2[] = {
@@ -68,6 +78,7 @@ static const struct parent_map gcc_xo_gpll0_gpll0_out_main_div2_map[] = {
 	{ P_GPLL0_DIV2, 4 },
 };
 
+<<<<<<< HEAD
 static const char * const gcc_xo_gpll0[] = {
 	"xo",
 	"gpll0",
@@ -407,6 +418,10 @@ static const struct parent_map gcc_xo_gpll0_gpll6_gpll0_sleep_clk_map[] = {
 static struct clk_alpha_pll gpll0_main = {
 	.offset = 0x21000,
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
+=======
+static struct clk_alpha_pll gpll0_main = {
+	.offset = 0x21000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clkr = {
 		.enable_reg = 0x0b000,
 		.enable_mask = BIT(0),
@@ -437,14 +452,18 @@ static struct clk_fixed_factor gpll0_out_main_div2 = {
 
 static struct clk_alpha_pll_postdiv gpll0 = {
 	.offset = 0x21000,
+<<<<<<< HEAD
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
 	.width = 4,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clkr.hw.init = &(struct clk_init_data){
 		.name = "gpll0",
 		.parent_names = (const char *[]){
 			"gpll0_main"
 		},
 		.num_parents = 1,
+<<<<<<< HEAD
 		.ops = &clk_alpha_pll_postdiv_ro_ops,
 	},
 };
@@ -625,6 +644,9 @@ static struct clk_alpha_pll_postdiv nss_crypto_pll = {
 		.num_parents = 1,
 		.ops = &clk_alpha_pll_postdiv_ro_ops,
 		.flags = CLK_SET_RATE_PARENT,
+=======
+		.ops = &clk_alpha_pll_postdiv_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -964,6 +986,7 @@ static struct clk_rcg2 blsp1_uart6_apps_clk_src = {
 	},
 };
 
+<<<<<<< HEAD
 static const struct freq_tbl ftbl_pcie_axi_clk_src[] = {
 	F(19200000, P_XO, 1, 0, 0),
 	F(200000000, P_GPLL0, 4, 0, 0),
@@ -2021,6 +2044,8 @@ static struct clk_rcg2 gp3_clk_src = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clk_branch gcc_blsp1_ahb_clk = {
 	.halt_reg = 0x01008,
 	.clkr = {
@@ -2396,6 +2421,7 @@ static struct clk_branch gcc_qpic_clk = {
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_branch gcc_pcie0_ahb_clk = {
 	.halt_reg = 0x75010,
 	.clkr = {
@@ -4332,11 +4358,17 @@ static struct clk_hw *gcc_ipq8074_hws[] = {
 	&gcc_xo_div4_clk_src.hw,
 	&nss_noc_clk_src.hw,
 	&nss_ppe_cdiv_clk_src.hw,
+=======
+static struct clk_hw *gcc_ipq8074_hws[] = {
+	&gpll0_out_main_div2.hw,
+	&pcnoc_clk_src.hw,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct clk_regmap *gcc_ipq8074_clks[] = {
 	[GPLL0_MAIN] = &gpll0_main.clkr,
 	[GPLL0] = &gpll0.clkr,
+<<<<<<< HEAD
 	[GPLL2_MAIN] = &gpll2_main.clkr,
 	[GPLL2] = &gpll2.clkr,
 	[GPLL4_MAIN] = &gpll4_main.clkr,
@@ -4347,6 +4379,8 @@ static struct clk_regmap *gcc_ipq8074_clks[] = {
 	[UBI32_PLL] = &ubi32_pll.clkr,
 	[NSS_CRYPTO_PLL_MAIN] = &nss_crypto_pll_main.clkr,
 	[NSS_CRYPTO_PLL] = &nss_crypto_pll.clkr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[PCNOC_BFDCD_CLK_SRC] = &pcnoc_bfdcd_clk_src.clkr,
 	[GCC_SLEEP_CLK_SRC] = &gcc_sleep_clk_src.clkr,
 	[BLSP1_QUP1_I2C_APPS_CLK_SRC] = &blsp1_qup1_i2c_apps_clk_src.clkr,
@@ -4367,6 +4401,7 @@ static struct clk_regmap *gcc_ipq8074_clks[] = {
 	[BLSP1_UART4_APPS_CLK_SRC] = &blsp1_uart4_apps_clk_src.clkr,
 	[BLSP1_UART5_APPS_CLK_SRC] = &blsp1_uart5_apps_clk_src.clkr,
 	[BLSP1_UART6_APPS_CLK_SRC] = &blsp1_uart6_apps_clk_src.clkr,
+<<<<<<< HEAD
 	[PCIE0_AXI_CLK_SRC] = &pcie0_axi_clk_src.clkr,
 	[PCIE0_AUX_CLK_SRC] = &pcie0_aux_clk_src.clkr,
 	[PCIE0_PIPE_CLK_SRC] = &pcie0_pipe_clk_src.clkr,
@@ -4424,6 +4459,8 @@ static struct clk_regmap *gcc_ipq8074_clks[] = {
 	[GP1_CLK_SRC] = &gp1_clk_src.clkr,
 	[GP2_CLK_SRC] = &gp2_clk_src.clkr,
 	[GP3_CLK_SRC] = &gp3_clk_src.clkr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[GCC_BLSP1_AHB_CLK] = &gcc_blsp1_ahb_clk.clkr,
 	[GCC_BLSP1_QUP1_I2C_APPS_CLK] = &gcc_blsp1_qup1_i2c_apps_clk.clkr,
 	[GCC_BLSP1_QUP1_SPI_APPS_CLK] = &gcc_blsp1_qup1_spi_apps_clk.clkr,
@@ -4446,6 +4483,7 @@ static struct clk_regmap *gcc_ipq8074_clks[] = {
 	[GCC_PRNG_AHB_CLK] = &gcc_prng_ahb_clk.clkr,
 	[GCC_QPIC_AHB_CLK] = &gcc_qpic_ahb_clk.clkr,
 	[GCC_QPIC_CLK] = &gcc_qpic_clk.clkr,
+<<<<<<< HEAD
 	[GCC_PCIE0_AHB_CLK] = &gcc_pcie0_ahb_clk.clkr,
 	[GCC_PCIE0_AUX_CLK] = &gcc_pcie0_aux_clk.clkr,
 	[GCC_PCIE0_AXI_M_CLK] = &gcc_pcie0_axi_m_clk.clkr,
@@ -4559,6 +4597,8 @@ static struct clk_regmap *gcc_ipq8074_clks[] = {
 	[GCC_GP1_CLK] = &gcc_gp1_clk.clkr,
 	[GCC_GP2_CLK] = &gcc_gp2_clk.clkr,
 	[GCC_GP3_CLK] = &gcc_gp3_clk.clkr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct qcom_reset_map gcc_ipq8074_resets[] = {
@@ -4651,6 +4691,7 @@ static const struct qcom_reset_map gcc_ipq8074_resets[] = {
 	[GCC_APC0_VOLTAGE_DROOP_DETECTOR_BCR] = { 0x78000, 0 },
 	[GCC_APC1_VOLTAGE_DROOP_DETECTOR_BCR] = { 0x79000, 0 },
 	[GCC_SMMU_CATS_BCR] = { 0x7c000, 0 },
+<<<<<<< HEAD
 	[GCC_UBI0_AXI_ARES] = { 0x68010, 0 },
 	[GCC_UBI0_AHB_ARES] = { 0x68010, 1 },
 	[GCC_UBI0_NC_AXI_ARES] = { 0x68010, 2 },
@@ -4693,6 +4734,8 @@ static const struct qcom_reset_map gcc_ipq8074_resets[] = {
 	[GCC_PCIE1_AXI_SLAVE_ARES] = { 0x76040, 4 },
 	[GCC_PCIE1_AHB_ARES] = { 0x76040, 5 },
 	[GCC_PCIE1_AXI_MASTER_STICKY_ARES] = { 0x76040, 6 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id gcc_ipq8074_match_table[] = {

@@ -46,6 +46,11 @@ static const struct mtk_fixed_clk top_fixed_clks[] = {
 		340 * MHZ),
 	FIXED_CLK(CLK_TOP_HDMI_0_PLL340M, "hdmi_0_pll340m", "clk26m",
 		340 * MHZ),
+<<<<<<< HEAD
+=======
+	FIXED_CLK(CLK_TOP_HDMITX_CLKDIG_CTS, "hdmitx_dig_cts", "clk26m",
+		300 * MHZ),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	FIXED_CLK(CLK_TOP_HADDS2_FB, "hadds2_fbclk", "clk26m",
 		27 * MHZ),
 	FIXED_CLK(CLK_TOP_WBG_DIG_416M, "wbg_dig_ck_416m", "clk26m",
@@ -749,7 +754,11 @@ static const struct mtk_fixed_factor infra_fixed_divs[] = {
 
 static struct clk_onecell_data *infra_clk_data;
 
+<<<<<<< HEAD
 static void __init mtk_infrasys_init_early(struct device_node *node)
+=======
+static void mtk_infrasys_init_early(struct device_node *node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r, i;
 
@@ -975,10 +984,13 @@ static const struct mtk_pll_data apmixed_plls[] = {
 				21, 0x2d0, 4, 0x0, 0x2d4, 0),
 };
 
+<<<<<<< HEAD
 static const struct mtk_fixed_factor apmixed_fixed_divs[] = {
 	FACTOR(CLK_APMIXED_HDMI_REF, "hdmi_ref", "tvdpll", 1, 1),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mtk_apmixedsys_init(struct platform_device *pdev)
 {
 	struct clk_onecell_data *clk_data;
@@ -990,8 +1002,11 @@ static int mtk_apmixedsys_init(struct platform_device *pdev)
 
 	mtk_clk_register_plls(node, apmixed_plls, ARRAY_SIZE(apmixed_plls),
 								clk_data);
+<<<<<<< HEAD
 	mtk_clk_register_factors(apmixed_fixed_divs, ARRAY_SIZE(apmixed_fixed_divs),
 								clk_data);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return of_clk_add_provider(node, of_clk_src_onecell_get, clk_data);
 }

@@ -1,8 +1,12 @@
 /*
  * at91sam9rlek.dts - Device Tree file for Atmel at91sam9rl reference board
  *
+<<<<<<< HEAD
  *  Copyright (C) 2014 Microchip
  *  Alexandre Belloni <alexandre.belloni@free-electrons.com>
+=======
+ *  Copyright (C) 2014  Alexandre Belloni <alexandre.belloni@free-electrons.com>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Licensed under GPLv2 only
  */
@@ -33,7 +37,11 @@
 	};
 
 	ahb {
+<<<<<<< HEAD
 		fb0: fb@500000 {
+=======
+		fb0: fb@00500000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			display = <&display0>;
 			status = "okay";
 
@@ -125,6 +133,7 @@
 		};
 
 		apb {
+<<<<<<< HEAD
 			tcb0: timer@fffa0000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -137,6 +146,8 @@
 				};
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mmc0: mmc@fffa4000 {
 				pinctrl-0 = <
 					&pinctrl_board_mmc0

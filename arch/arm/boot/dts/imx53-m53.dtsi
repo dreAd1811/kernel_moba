@@ -15,7 +15,11 @@
 	model = "Aries/DENX M53";
 	compatible = "aries,imx53-m53", "denx,imx53-m53", "fsl,imx53";
 
+<<<<<<< HEAD
 	memory@70000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x70000000 0x20000000>,
 		      <0xb0000000 0x20000000>;
 	};
@@ -53,6 +57,11 @@
 
 	stmpe610@41 {
 		compatible = "st,stmpe610";
+<<<<<<< HEAD
+=======
+		#address-cells = <1>;
+		#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x41>;
 		id = <0>;
 		blocks = <0x5>;
@@ -62,6 +71,10 @@
 
 		stmpe_touchscreen {
 			compatible = "st,stmpe-ts";
+<<<<<<< HEAD
+=======
+			reg = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			st,sample-time = <4>;
 			st,mod-12b = <1>;
 			st,ref-sel = <0>;

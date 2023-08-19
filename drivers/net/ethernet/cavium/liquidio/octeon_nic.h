@@ -279,8 +279,12 @@ octeon_alloc_soft_command_resp(struct octeon_device    *oct,
  * queue should be stopped, and IQ_SEND_OK if it sent okay.
  */
 int octnet_send_nic_data_pkt(struct octeon_device *oct,
+<<<<<<< HEAD
 			     struct octnic_data_pkt *ndata,
 			     int xmit_more);
+=======
+			     struct octnic_data_pkt *ndata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /** Send a NIC control packet to the device
  * @param oct - octeon device pointer

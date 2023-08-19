@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
 /**************************************************************************
  *
  * Copyright 2009-2015 VMware, Inc., Palo Alto, CA., USA
+=======
+/**************************************************************************
+ *
+ * Copyright © 2009-2015 VMware, Inc., Palo Alto, CA., USA
+ * All Rights Reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -43,9 +50,15 @@
 #include <linux/sync_file.h>
 
 #define VMWGFX_DRIVER_NAME "vmwgfx"
+<<<<<<< HEAD
 #define VMWGFX_DRIVER_DATE "20180704"
 #define VMWGFX_DRIVER_MAJOR 2
 #define VMWGFX_DRIVER_MINOR 15
+=======
+#define VMWGFX_DRIVER_DATE "20170612"
+#define VMWGFX_DRIVER_MAJOR 2
+#define VMWGFX_DRIVER_MINOR 14
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VMWGFX_DRIVER_PATCHLEVEL 0
 #define VMWGFX_FILE_PAGE_OFFSET 0x00100000
 #define VMWGFX_FIFO_STATIC_SIZE (1024*1024)
@@ -83,17 +96,27 @@
 struct vmw_fpriv {
 	struct drm_master *locked_master;
 	struct ttm_object_file *tfile;
+<<<<<<< HEAD
 	bool gb_aware; /* user-space is guest-backed aware */
 };
 
 struct vmw_buffer_object {
+=======
+	bool gb_aware;
+};
+
+struct vmw_dma_buffer {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_buffer_object base;
 	struct list_head res_list;
 	s32 pin_count;
 	/* Not ref-counted.  Protected by binding_mutex */
 	struct vmw_resource *dx_query_ctx;
+<<<<<<< HEAD
 	/* Protected by reservation */
 	struct ttm_bo_kmap_obj map;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -120,7 +143,11 @@ struct vmw_resource {
 	unsigned long backup_size;
 	bool res_dirty; /* Protected by backup buffer reserved */
 	bool backup_dirty; /* Protected by backup buffer reserved */
+<<<<<<< HEAD
 	struct vmw_buffer_object *backup;
+=======
+	struct vmw_dma_buffer *backup;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long backup_offset;
 	unsigned long pin_count; /* Protected by resource reserved */
 	const struct vmw_res_func *func;
@@ -166,7 +193,11 @@ struct vmw_surface_offset;
 
 struct vmw_surface {
 	struct vmw_resource res;
+<<<<<<< HEAD
 	SVGA3dSurfaceAllFlags flags;
+=======
+	uint32_t flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t format;
 	uint32_t mip_levels[DRM_VMW_MAX_SURFACE_FACES];
 	struct drm_vmw_size base_size;
@@ -180,8 +211,11 @@ struct vmw_surface {
 	SVGA3dTextureFilter autogen_filter;
 	uint32_t multisample_count;
 	struct list_head view_list;
+<<<<<<< HEAD
 	SVGA3dMSPattern multisample_pattern;
 	SVGA3dMSQualityLevel quality_level;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct vmw_marker_queue {
@@ -306,7 +340,11 @@ struct vmw_sw_context{
 	uint32_t cmd_bounce_size;
 	struct list_head resource_list;
 	struct list_head ctx_resource_list; /* For contexts and cotables */
+<<<<<<< HEAD
 	struct vmw_buffer_object *cur_query_bo;
+=======
+	struct vmw_dma_buffer *cur_query_bo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head res_relocations;
 	uint32_t *buf_start;
 	struct vmw_res_cache_entry res_cache[vmw_res_max];
@@ -317,7 +355,11 @@ struct vmw_sw_context{
 	bool staged_bindings_inuse;
 	struct list_head staged_cmd_res;
 	struct vmw_resource_val_node *dx_ctx_node;
+<<<<<<< HEAD
 	struct vmw_buffer_object *dx_query_mob;
+=======
+	struct vmw_dma_buffer *dx_query_mob;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vmw_resource *dx_query_ctx;
 	struct vmw_cmdbuf_res_manager *man;
 };
@@ -388,7 +430,10 @@ struct vmw_private {
 	uint32_t initial_height;
 	u32 *mmio_virt;
 	uint32_t capabilities;
+<<<<<<< HEAD
 	uint32_t capabilities2;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t max_gmr_ids;
 	uint32_t max_gmr_pages;
 	uint32_t max_mob_pages;
@@ -400,7 +445,10 @@ struct vmw_private {
 	spinlock_t cap_lock;
 	bool has_dx;
 	bool assume_16bpp;
+<<<<<<< HEAD
 	bool has_sm4_1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * VGA registers.
@@ -416,6 +464,7 @@ struct vmw_private {
 	uint32_t num_displays;
 
 	/*
+<<<<<<< HEAD
 	 * Currently requested_layout_mutex is used to protect the gui
 	 * positionig state in display unit. With that use case currently this
 	 * mutex is only taken during layout ioctl and atomic check_modeset.
@@ -425,6 +474,8 @@ struct vmw_private {
 	struct mutex requested_layout_mutex;
 
 	/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * Framebuffer info.
 	 */
 
@@ -438,7 +489,10 @@ struct vmw_private {
 	struct vmw_framebuffer *implicit_fb;
 	struct mutex global_kms_state_mutex;
 	spinlock_t cursor_lock;
+<<<<<<< HEAD
 	struct drm_atomic_state *suspend_state;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Context and surface management.
@@ -510,8 +564,13 @@ struct vmw_private {
 	struct vmw_master *active_master;
 	struct vmw_master fbdev_master;
 	struct notifier_block pm_nb;
+<<<<<<< HEAD
 	bool refuse_hibernation;
 	bool suspend_locked;
+=======
+	bool suspended;
+	bool refuse_hibernation;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct mutex release_mutex;
 	atomic_t num_fifo_resources;
@@ -526,8 +585,13 @@ struct vmw_private {
 	 * are protected by the cmdbuf mutex.
 	 */
 
+<<<<<<< HEAD
 	struct vmw_buffer_object *dummy_query_bo;
 	struct vmw_buffer_object *pinned_bo;
+=======
+	struct vmw_dma_buffer *dummy_query_bo;
+	struct vmw_dma_buffer *pinned_bo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t query_cid;
 	uint32_t query_cid_valid;
 	bool dummy_query_bo_pinned;
@@ -636,13 +700,50 @@ extern int vmw_user_lookup_handle(struct vmw_private *dev_priv,
 				  struct ttm_object_file *tfile,
 				  uint32_t handle,
 				  struct vmw_surface **out_surf,
+<<<<<<< HEAD
 				  struct vmw_buffer_object **out_buf);
+=======
+				  struct vmw_dma_buffer **out_buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int vmw_user_resource_lookup_handle(
 	struct vmw_private *dev_priv,
 	struct ttm_object_file *tfile,
 	uint32_t handle,
 	const struct vmw_user_resource_conv *converter,
 	struct vmw_resource **p_res);
+<<<<<<< HEAD
+=======
+extern void vmw_dmabuf_bo_free(struct ttm_buffer_object *bo);
+extern int vmw_dmabuf_init(struct vmw_private *dev_priv,
+			   struct vmw_dma_buffer *vmw_bo,
+			   size_t size, struct ttm_placement *placement,
+			   bool interuptable,
+			   void (*bo_free) (struct ttm_buffer_object *bo));
+extern int vmw_user_dmabuf_verify_access(struct ttm_buffer_object *bo,
+				  struct ttm_object_file *tfile);
+extern int vmw_user_dmabuf_alloc(struct vmw_private *dev_priv,
+				 struct ttm_object_file *tfile,
+				 uint32_t size,
+				 bool shareable,
+				 uint32_t *handle,
+				 struct vmw_dma_buffer **p_dma_buf,
+				 struct ttm_base_object **p_base);
+extern int vmw_user_dmabuf_reference(struct ttm_object_file *tfile,
+				     struct vmw_dma_buffer *dma_buf,
+				     uint32_t *handle);
+extern int vmw_dmabuf_alloc_ioctl(struct drm_device *dev, void *data,
+				  struct drm_file *file_priv);
+extern int vmw_dmabuf_unref_ioctl(struct drm_device *dev, void *data,
+				  struct drm_file *file_priv);
+extern int vmw_user_dmabuf_synccpu_ioctl(struct drm_device *dev, void *data,
+					 struct drm_file *file_priv);
+extern uint32_t vmw_dmabuf_validate_node(struct ttm_buffer_object *bo,
+					 uint32_t cur_validate_node);
+extern void vmw_dmabuf_validate_clear(struct ttm_buffer_object *bo);
+extern int vmw_user_dmabuf_lookup(struct ttm_object_file *tfile,
+				  uint32_t id, struct vmw_dma_buffer **out,
+				  struct ttm_base_object **base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int vmw_stream_claim_ioctl(struct drm_device *dev, void *data,
 				  struct drm_file *file_priv);
 extern int vmw_stream_unref_ioctl(struct drm_device *dev, void *data,
@@ -653,6 +754,7 @@ extern int vmw_user_stream_lookup(struct vmw_private *dev_priv,
 				  struct vmw_resource **out);
 extern void vmw_resource_unreserve(struct vmw_resource *res,
 				   bool switch_backup,
+<<<<<<< HEAD
 				   struct vmw_buffer_object *new_backup,
 				   unsigned long new_backup_offset);
 extern void vmw_query_move_notify(struct ttm_buffer_object *bo,
@@ -717,6 +819,41 @@ extern void vmw_bo_unmap(struct vmw_buffer_object *vbo);
 extern void vmw_bo_move_notify(struct ttm_buffer_object *bo,
 			       struct ttm_mem_reg *mem);
 extern void vmw_bo_swap_notify(struct ttm_buffer_object *bo);
+=======
+				   struct vmw_dma_buffer *new_backup,
+				   unsigned long new_backup_offset);
+extern void vmw_resource_move_notify(struct ttm_buffer_object *bo,
+				     struct ttm_mem_reg *mem);
+extern void vmw_query_move_notify(struct ttm_buffer_object *bo,
+				  struct ttm_mem_reg *mem);
+extern int vmw_query_readback_all(struct vmw_dma_buffer *dx_query_mob);
+extern void vmw_fence_single_bo(struct ttm_buffer_object *bo,
+				struct vmw_fence_obj *fence);
+extern void vmw_resource_evict_all(struct vmw_private *dev_priv);
+
+/**
+ * DMA buffer helper routines - vmwgfx_dmabuf.c
+ */
+extern int vmw_dmabuf_pin_in_placement(struct vmw_private *vmw_priv,
+				       struct vmw_dma_buffer *bo,
+				       struct ttm_placement *placement,
+				       bool interruptible);
+extern int vmw_dmabuf_pin_in_vram(struct vmw_private *dev_priv,
+				  struct vmw_dma_buffer *buf,
+				  bool interruptible);
+extern int vmw_dmabuf_pin_in_vram_or_gmr(struct vmw_private *dev_priv,
+					 struct vmw_dma_buffer *buf,
+					 bool interruptible);
+extern int vmw_dmabuf_pin_in_start_of_vram(struct vmw_private *vmw_priv,
+					   struct vmw_dma_buffer *bo,
+					   bool interruptible);
+extern int vmw_dmabuf_unpin(struct vmw_private *vmw_priv,
+			    struct vmw_dma_buffer *bo,
+			    bool interruptible);
+extern void vmw_bo_get_guest_ptr(const struct ttm_buffer_object *buf,
+				 SVGAGuestPtr *ptr);
+extern void vmw_bo_pin_reserved(struct vmw_dma_buffer *bo, bool pin);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * Misc Ioctl functionality - vmwgfx_ioctl.c
@@ -730,7 +867,11 @@ extern int vmw_present_ioctl(struct drm_device *dev, void *data,
 			     struct drm_file *file_priv);
 extern int vmw_present_readback_ioctl(struct drm_device *dev, void *data,
 				      struct drm_file *file_priv);
+<<<<<<< HEAD
 extern __poll_t vmw_fops_poll(struct file *filp,
+=======
+extern unsigned int vmw_fops_poll(struct file *filp,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct poll_table_struct *wait);
 extern ssize_t vmw_fops_read(struct file *filp, char __user *buffer,
 			     size_t count, loff_t *offset);
@@ -768,7 +909,11 @@ extern void vmw_ttm_global_release(struct vmw_private *dev_priv);
 extern int vmw_mmap(struct file *filp, struct vm_area_struct *vma);
 
 /**
+<<<<<<< HEAD
  * TTM buffer object driver - vmwgfx_ttm_buffer.c
+=======
+ * TTM buffer object driver - vmwgfx_buffer.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 extern const size_t vmw_tt_size;
@@ -783,7 +928,10 @@ extern struct ttm_placement vmw_evictable_placement;
 extern struct ttm_placement vmw_srf_placement;
 extern struct ttm_placement vmw_mob_placement;
 extern struct ttm_placement vmw_mob_ne_placement;
+<<<<<<< HEAD
 extern struct ttm_placement vmw_nonfixed_placement;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct ttm_bo_driver vmw_bo_driver;
 extern int vmw_dma_quiescent(struct drm_device *dev);
 extern int vmw_bo_map_dma(struct ttm_buffer_object *bo);
@@ -956,8 +1104,11 @@ int vmw_kms_present(struct vmw_private *dev_priv,
 int vmw_kms_update_layout_ioctl(struct drm_device *dev, void *data,
 				struct drm_file *file_priv);
 void vmw_kms_legacy_hotspot_clear(struct vmw_private *dev_priv);
+<<<<<<< HEAD
 int vmw_kms_suspend(struct drm_device *dev);
 int vmw_kms_resume(struct drm_device *dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void vmw_kms_lost_device(struct drm_device *dev);
 
 int vmw_dumb_create(struct drm_file *file_priv,
@@ -1051,8 +1202,13 @@ vmw_context_binding_state(struct vmw_resource *ctx);
 extern void vmw_dx_context_scrub_cotables(struct vmw_resource *ctx,
 					  bool readback);
 extern int vmw_context_bind_dx_query(struct vmw_resource *ctx_res,
+<<<<<<< HEAD
 				     struct vmw_buffer_object *mob);
 extern struct vmw_buffer_object *
+=======
+				     struct vmw_dma_buffer *mob);
+extern struct vmw_dma_buffer *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 vmw_context_get_dx_query_mob(struct vmw_resource *ctx_res);
 
 
@@ -1080,13 +1236,18 @@ extern int vmw_surface_validate(struct vmw_private *dev_priv,
 				struct vmw_surface *srf);
 int vmw_surface_gb_priv_define(struct drm_device *dev,
 			       uint32_t user_accounting_size,
+<<<<<<< HEAD
 			       SVGA3dSurfaceAllFlags svga3d_flags,
+=======
+			       uint32_t svga3d_flags,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       SVGA3dSurfaceFormat format,
 			       bool for_scanout,
 			       uint32_t num_mip_levels,
 			       uint32_t multisample_count,
 			       uint32_t array_size,
 			       struct drm_vmw_size size,
+<<<<<<< HEAD
 			       SVGA3dMSPattern multisample_pattern,
 			       SVGA3dMSQualityLevel quality_level,
 			       struct vmw_surface **srf_out);
@@ -1096,6 +1257,9 @@ extern int vmw_gb_surface_define_ext_ioctl(struct drm_device *dev,
 extern int vmw_gb_surface_reference_ext_ioctl(struct drm_device *dev,
 					      void *data,
 					      struct drm_file *file_priv);
+=======
+			       struct vmw_surface **srf_out);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Shader management - vmwgfx_shader.c
@@ -1194,6 +1358,7 @@ extern int vmw_cmdbuf_cur_flush(struct vmw_cmdbuf_man *man,
 				bool interruptible);
 extern void vmw_cmdbuf_irqthread(struct vmw_cmdbuf_man *man);
 
+<<<<<<< HEAD
 /* CPU blit utilities - vmwgfx_blit.c */
 
 /**
@@ -1246,6 +1411,8 @@ int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
 int vmw_host_get_guestinfo(const char *guest_info_param,
 			   char *buffer, size_t *length);
 int vmw_host_log(const char *log);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * Inline helper functions
@@ -1266,9 +1433,15 @@ static inline struct vmw_surface *vmw_surface_reference(struct vmw_surface *srf)
 	return srf;
 }
 
+<<<<<<< HEAD
 static inline void vmw_bo_unreference(struct vmw_buffer_object **buf)
 {
 	struct vmw_buffer_object *tmp_buf = *buf;
+=======
+static inline void vmw_dmabuf_unreference(struct vmw_dma_buffer **buf)
+{
+	struct vmw_dma_buffer *tmp_buf = *buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*buf = NULL;
 	if (tmp_buf != NULL) {
@@ -1278,8 +1451,12 @@ static inline void vmw_bo_unreference(struct vmw_buffer_object **buf)
 	}
 }
 
+<<<<<<< HEAD
 static inline struct vmw_buffer_object *
 vmw_bo_reference(struct vmw_buffer_object *buf)
+=======
+static inline struct vmw_dma_buffer *vmw_dmabuf_reference(struct vmw_dma_buffer *buf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (ttm_bo_reference(&buf->base))
 		return buf;
@@ -1326,4 +1503,13 @@ static inline void vmw_mmio_write(u32 value, u32 *addr)
 {
 	WRITE_ONCE(*addr, value);
 }
+<<<<<<< HEAD
+=======
+
+/**
+ * Add vmw_msg module function
+ */
+extern int vmw_host_log(const char *log);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

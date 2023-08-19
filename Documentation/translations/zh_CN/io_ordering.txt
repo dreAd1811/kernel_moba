@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Chinese translated version of Documentation/io_ordering.txt
+=======
+Chinese translated version of Documentation/io_orderings.txt
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 If you have any comment or update to the content, please contact the
 original document maintainer directly.  However, if you have a problem

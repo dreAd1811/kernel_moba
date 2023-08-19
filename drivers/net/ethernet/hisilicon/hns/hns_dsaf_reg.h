@@ -1036,9 +1036,18 @@ static inline void dsaf_write_syscon(struct regmap *base, u32 reg, u32 value)
 	regmap_write(base, reg, value);
 }
 
+<<<<<<< HEAD
 static inline int dsaf_read_syscon(struct regmap *base, u32 reg, u32 *val)
 {
 	return regmap_read(base, reg, val);
+=======
+static inline u32 dsaf_read_syscon(struct regmap *base, u32 reg)
+{
+	unsigned int val;
+
+	regmap_read(base, reg, &val);
+	return val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define dsaf_read_dev(a, reg) \

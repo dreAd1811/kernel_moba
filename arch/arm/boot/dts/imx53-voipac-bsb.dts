@@ -130,10 +130,16 @@
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
 
+<<<<<<< HEAD
 	sgtl5000: codec@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		#sound-dai-cells = <0>;
+=======
+	sgtl5000: codec@0a {
+		compatible = "fsl,sgtl5000";
+		reg = <0x0a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		VDDA-supply = <&reg_3p3v>;
 		VDDIO-supply = <&reg_3p3v>;
 		clocks = <&clks 150>;

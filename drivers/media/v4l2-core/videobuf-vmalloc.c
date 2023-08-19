@@ -6,7 +6,11 @@
  * into PAGE_SIZE chunks).  They also assume the driver does not need
  * to touch the video data.
  *
+<<<<<<< HEAD
  * (c) 2007 Mauro Carvalho Chehab, <mchehab@kernel.org>
+=======
+ * (c) 2007 Mauro Carvalho Chehab, <mchehab@infradead.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,7 +45,11 @@ static int debug;
 module_param(debug, int, 0644);
 
 MODULE_DESCRIPTION("helper module to manage video4linux vmalloc buffers");
+<<<<<<< HEAD
 MODULE_AUTHOR("Mauro Carvalho Chehab <mchehab@kernel.org>");
+=======
+MODULE_AUTHOR("Mauro Carvalho Chehab <mchehab@infradead.org>");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 
 #define dprintk(level, fmt, arg...)					\

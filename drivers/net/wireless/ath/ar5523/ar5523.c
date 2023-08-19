@@ -255,7 +255,12 @@ static int ar5523_cmd(struct ar5523 *ar, u32 code, const void *idata,
 
 	if (flags & AR5523_CMD_FLAG_MAGIC)
 		hdr->magic = cpu_to_be32(1 << 24);
+<<<<<<< HEAD
 	memcpy(hdr + 1, idata, ilen);
+=======
+	if (ilen)
+		memcpy(hdr + 1, idata, ilen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cmd->odata = odata;
 	cmd->olen = olen;
@@ -889,9 +894,15 @@ static void ar5523_tx_work(struct work_struct *work)
 	mutex_unlock(&ar->mutex);
 }
 
+<<<<<<< HEAD
 static void ar5523_tx_wd_timer(struct timer_list *t)
 {
 	struct ar5523 *ar = from_timer(ar, t, tx_wd_timer);
+=======
+static void ar5523_tx_wd_timer(unsigned long arg)
+{
+	struct ar5523 *ar = (struct ar5523 *) arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ar5523_dbg(ar, "TX watchdog timer triggered\n");
 	ieee80211_queue_work(ar->hw, &ar->tx_wd_work);
@@ -1599,7 +1610,12 @@ static int ar5523_probe(struct usb_interface *intf,
 	mutex_init(&ar->mutex);
 
 	INIT_DELAYED_WORK(&ar->stat_work, ar5523_stat_work);
+<<<<<<< HEAD
 	timer_setup(&ar->tx_wd_timer, ar5523_tx_wd_timer, 0);
+=======
+	init_timer(&ar->tx_wd_timer);
+	setup_timer(&ar->tx_wd_timer, ar5523_tx_wd_timer, (unsigned long) ar);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_WORK(&ar->tx_wd_work, ar5523_tx_wd_work);
 	INIT_WORK(&ar->tx_work, ar5523_tx_work);
 	INIT_LIST_HEAD(&ar->tx_queue_pending);

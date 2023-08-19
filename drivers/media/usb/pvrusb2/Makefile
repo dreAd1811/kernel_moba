@@ -17,5 +17,11 @@ pvrusb2-objs	:= pvrusb2-i2c-core.o \
 
 obj-$(CONFIG_VIDEO_PVRUSB2) += pvrusb2.o
 
+<<<<<<< HEAD
 ccflags-y += -Idrivers/media/tuners
+=======
+ccflags-y += -Idrivers/media/i2c
+ccflags-y += -Idrivers/media/tuners
+ccflags-y += -Idrivers/media/dvb-core
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ccflags-y += -Idrivers/media/dvb-frontends

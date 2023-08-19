@@ -273,6 +273,13 @@ add_ie_rates(u8 *tlv, const u8 *ie, int *nrates)
 	int hw, ap, ap_max = ie[1];
 	u8 hw_rate;
 
+<<<<<<< HEAD
+=======
+	if (ap_max > MAX_RATES) {
+		lbs_deb_assoc("invalid rates\n");
+		return tlv;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Advance past IE header */
 	ie += 2;
 
@@ -1559,10 +1566,17 @@ static int lbs_cfg_get_station(struct wiphy *wiphy, struct net_device *dev,
 	int ret;
 	size_t i;
 
+<<<<<<< HEAD
 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BYTES) |
 			 BIT_ULL(NL80211_STA_INFO_TX_PACKETS) |
 			 BIT_ULL(NL80211_STA_INFO_RX_BYTES) |
 			 BIT_ULL(NL80211_STA_INFO_RX_PACKETS);
+=======
+	sinfo->filled |= BIT(NL80211_STA_INFO_TX_BYTES) |
+			 BIT(NL80211_STA_INFO_TX_PACKETS) |
+			 BIT(NL80211_STA_INFO_RX_BYTES) |
+			 BIT(NL80211_STA_INFO_RX_PACKETS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sinfo->tx_bytes = priv->dev->stats.tx_bytes;
 	sinfo->tx_packets = priv->dev->stats.tx_packets;
 	sinfo->rx_bytes = priv->dev->stats.rx_bytes;
@@ -1572,14 +1586,22 @@ static int lbs_cfg_get_station(struct wiphy *wiphy, struct net_device *dev,
 	ret = lbs_get_rssi(priv, &signal, &noise);
 	if (ret == 0) {
 		sinfo->signal = signal;
+<<<<<<< HEAD
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
+=======
+		sinfo->filled |= BIT(NL80211_STA_INFO_SIGNAL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Convert priv->cur_rate from hw_value to NL80211 value */
 	for (i = 0; i < ARRAY_SIZE(lbs_rates); i++) {
 		if (priv->cur_rate == lbs_rates[i].hw_value) {
 			sinfo->txrate.legacy = lbs_rates[i].bitrate;
+<<<<<<< HEAD
 			sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
+=======
+			sinfo->filled |= BIT(NL80211_STA_INFO_TX_BITRATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -1699,6 +1721,12 @@ static void lbs_join_post(struct lbs_private *priv,
 				  0, GFP_KERNEL);
 	cfg80211_put_bss(priv->wdev->wiphy, bss);
 
+<<<<<<< HEAD
+=======
+	memcpy(priv->wdev->ssid, params->ssid, params->ssid_len);
+	priv->wdev->ssid_len = params->ssid_len;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cfg80211_ibss_joined(priv->dev, bssid, params->chandef.chan,
 			     GFP_KERNEL);
 
@@ -1717,6 +1745,12 @@ static int lbs_ibss_join_existing(struct lbs_private *priv,
 	struct cmd_ds_802_11_ad_hoc_join cmd;
 	u8 preamble = RADIO_PREAMBLE_SHORT;
 	int ret = 0;
+<<<<<<< HEAD
+=======
+	int hw, i;
+	u8 rates_max;
+	u8 *rates;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TODO: set preamble based on scan result */
 	ret = lbs_set_radio(priv, preamble, 1);
@@ -1775,9 +1809,20 @@ static int lbs_ibss_join_existing(struct lbs_private *priv,
 	if (!rates_eid) {
 		lbs_add_rates(cmd.bss.rates);
 	} else {
+<<<<<<< HEAD
 		int hw, i;
 		u8 rates_max = rates_eid[1];
 		u8 *rates = cmd.bss.rates;
+=======
+		rates_max = rates_eid[1];
+		if (rates_max > MAX_RATES) {
+			lbs_deb_join("invalid rates");
+			rcu_read_unlock();
+			ret = -EINVAL;
+			goto out;
+		}
+		rates = cmd.bss.rates;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (hw = 0; hw < ARRAY_SIZE(lbs_rates); hw++) {
 			u8 hw_rate = lbs_rates[hw].bitrate / 5;
 			for (i = 0; i < rates_max; i++) {

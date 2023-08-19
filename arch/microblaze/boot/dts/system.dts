@@ -44,7 +44,11 @@
 	} ;
 	chosen {
 		bootargs = "console=ttyUL0,115200 highres=on";
+<<<<<<< HEAD
 		stdout-path = "/plb@0/serial@84000000";
+=======
+		linux,stdout-path = "/plb@0/serial@84000000";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} ;
 	cpus {
 		#address-cells = <1>;

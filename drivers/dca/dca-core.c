@@ -270,7 +270,11 @@ EXPORT_SYMBOL_GPL(dca_remove_requester);
  * @dev - the device that wants dca service
  * @cpu - the cpuid as returned by get_cpu()
  */
+<<<<<<< HEAD
 static u8 dca_common_get_tag(struct device *dev, int cpu)
+=======
+u8 dca_common_get_tag(struct device *dev, int cpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dca_provider *dca;
 	u8 tag;

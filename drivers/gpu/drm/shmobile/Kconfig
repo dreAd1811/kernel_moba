@@ -2,6 +2,10 @@ config DRM_SHMOBILE
 	tristate "DRM Support for SH Mobile"
 	depends on DRM && ARM
 	depends on ARCH_SHMOBILE || COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on FB_SH_MOBILE_MERAM || !FB_SH_MOBILE_MERAM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select BACKLIGHT_CLASS_DEVICE
 	select BACKLIGHT_LCD_SUPPORT
 	select DRM_KMS_HELPER

@@ -11,6 +11,7 @@
  * GNU General Public License for more details.
  */
 #include <linux/serial_reg.h>
+<<<<<<< HEAD
 #include <asm/cputype.h>
 
 /* Physical register offset and virtual register offset */
@@ -23,13 +24,26 @@
 /* Product id can be read from here */
 #define SUN_TOP_CTRL_BASE	REG_PHYS_ADDR(0x404000)
 #define SUN_TOP_CTRL_BASE_V7	REG_PHYS_ADDR_V7(0x404000)
+=======
+
+/* Physical register offset and virtual register offset */
+#define REG_PHYS_BASE		0xf0000000
+#define REG_VIRT_BASE		0xfc000000
+#define REG_PHYS_ADDR(x)	((x) + REG_PHYS_BASE)
+
+/* Product id can be read from here */
+#define SUN_TOP_CTRL_BASE	REG_PHYS_ADDR(0x404000)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define UARTA_3390		REG_PHYS_ADDR(0x40a900)
 #define UARTA_7250		REG_PHYS_ADDR(0x40b400)
 #define UARTA_7260		REG_PHYS_ADDR(0x40c000)
 #define UARTA_7268		UARTA_7260
 #define UARTA_7271		UARTA_7268
+<<<<<<< HEAD
 #define UARTA_7278		REG_PHYS_ADDR_V7(0x40c000)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define UARTA_7364		REG_PHYS_ADDR(0x40b000)
 #define UARTA_7366		UARTA_7364
 #define UARTA_74371		REG_PHYS_ADDR(0x406b00)
@@ -60,6 +74,7 @@
 		mov	\rv, #0			@ yes; record init is done
 		str	\rv, [\tmp]
 
+<<<<<<< HEAD
 		/* Check for V7 memory map if B53 */
 		mrc	p15, 0, \rv, c0, c0, 0	@ get Main ID register
 		ldr	\rp, =ARM_CPU_PART_MASK
@@ -77,6 +92,11 @@
 10:		ldrne	\rp, =SUN_TOP_CTRL_BASE	@ load SUN_TOP_CTRL PA
 		ldr	\rv, [\rp, #0]		@ get register contents
 ARM_BE8(	rev	\rv, \rv )
+=======
+		/* Check SUN_TOP_CTRL base */
+		ldr	\rp, =SUN_TOP_CTRL_BASE	@ load SUN_TOP_CTRL PA
+		ldr	\rv, [\rp, #0]		@ get register contents
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		and	\rv, \rv, #0xffffff00	@ strip revision bits [7:0]
 
 		/* Chip specific detection starts here */
@@ -90,7 +110,10 @@ ARM_BE8(	rev	\rv, \rv )
 27:		checkuart(\rp, \rv, 0x07437100, 74371)
 28:		checkuart(\rp, \rv, 0x74390000, 7439)
 29:		checkuart(\rp, \rv, 0x74450000, 7445)
+<<<<<<< HEAD
 30:		checkuart(\rp, \rv, 0x72780000, 7278)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* No valid UART found */
 90:		mov	\rp, #0
@@ -118,13 +141,19 @@ ARM_BE8(	rev	\rv, \rv )
 		.endm
 
 		.macro	store, rd, rx:vararg
+<<<<<<< HEAD
 ARM_BE8(	rev	\rd, \rd )
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		str	\rd, \rx
 		.endm
 
 		.macro	load, rd, rx:vararg
 		ldr	\rd, \rx
+<<<<<<< HEAD
 ARM_BE8(	rev	\rd, \rd )
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.endm
 
 		.macro	senduart,rd,rx

@@ -1,32 +1,56 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) 2017 Marvell
  *
  * Antoine Tenart <antoine.tenart@free-electrons.com>
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public
+ * License version 2. This program is licensed "as is" without any
+ * warranty of any kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __SAFEXCEL_H__
 #define __SAFEXCEL_H__
 
+<<<<<<< HEAD
 #include <crypto/aead.h>
 #include <crypto/algapi.h>
 #include <crypto/internal/hash.h>
 #include <crypto/sha.h>
+=======
+#include <crypto/algapi.h>
+#include <crypto/internal/hash.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <crypto/skcipher.h>
 
 #define EIP197_HIA_VERSION_LE			0xca35
 #define EIP197_HIA_VERSION_BE			0x35ca
 
 /* Static configuration */
+<<<<<<< HEAD
 #define EIP197_DEFAULT_RING_SIZE		400
 #define EIP197_MAX_TOKENS			8
 #define EIP197_MAX_RINGS			4
 #define EIP197_FETCH_COUNT			1
 #define EIP197_MAX_BATCH_SZ			64
+=======
+#define EIP197_DEFAULT_RING_SIZE		64
+#define EIP197_MAX_TOKENS			5
+#define EIP197_MAX_RINGS			4
+#define EIP197_FETCH_COUNT			1
+#define EIP197_MAX_BATCH_SZ			EIP197_DEFAULT_RING_SIZE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define EIP197_GFP_FLAGS(base)	((base).flags & CRYPTO_TFM_REQ_MAY_SLEEP ? \
 				 GFP_KERNEL : GFP_ATOMIC)
 
+<<<<<<< HEAD
 /* Custom on-stack requests (for invalidation) */
 #define EIP197_SKCIPHER_REQ_SIZE	sizeof(struct skcipher_request) + \
 					sizeof(struct safexcel_cipher_req)
@@ -126,6 +150,57 @@
 #define EIP197_MST_CTRL				0xfff4
 
 /* EIP197-specific registers, no indirection */
+=======
+/* CDR/RDR register offsets */
+#define EIP197_HIA_xDR_OFF(r)			(0x80000 + (r) * 0x1000)
+#define EIP197_HIA_CDR(r)			(EIP197_HIA_xDR_OFF(r))
+#define EIP197_HIA_RDR(r)			(EIP197_HIA_xDR_OFF(r) + 0x800)
+#define EIP197_HIA_xDR_RING_BASE_ADDR_LO	0x0
+#define EIP197_HIA_xDR_RING_BASE_ADDR_HI	0x4
+#define EIP197_HIA_xDR_RING_SIZE		0x18
+#define EIP197_HIA_xDR_DESC_SIZE		0x1c
+#define EIP197_HIA_xDR_CFG			0x20
+#define EIP197_HIA_xDR_DMA_CFG			0x24
+#define EIP197_HIA_xDR_THRESH			0x28
+#define EIP197_HIA_xDR_PREP_COUNT		0x2c
+#define EIP197_HIA_xDR_PROC_COUNT		0x30
+#define EIP197_HIA_xDR_PREP_PNTR		0x34
+#define EIP197_HIA_xDR_PROC_PNTR		0x38
+#define EIP197_HIA_xDR_STAT			0x3c
+
+/* register offsets */
+#define EIP197_HIA_DFE_CFG			0x8c000
+#define EIP197_HIA_DFE_THR_CTRL			0x8c040
+#define EIP197_HIA_DFE_THR_STAT			0x8c044
+#define EIP197_HIA_DSE_CFG			0x8d000
+#define EIP197_HIA_DSE_THR_CTRL			0x8d040
+#define EIP197_HIA_DSE_THR_STAT			0x8d044
+#define EIP197_HIA_RA_PE_CTRL			0x90010
+#define EIP197_HIA_RA_PE_STAT			0x90014
+#define EIP197_HIA_AIC_R_OFF(r)			((r) * 0x1000)
+#define EIP197_HIA_AIC_R_ENABLE_CTRL(r)		(0x9e808 - EIP197_HIA_AIC_R_OFF(r))
+#define EIP197_HIA_AIC_R_ENABLED_STAT(r)	(0x9e810 - EIP197_HIA_AIC_R_OFF(r))
+#define EIP197_HIA_AIC_R_ACK(r)			(0x9e810 - EIP197_HIA_AIC_R_OFF(r))
+#define EIP197_HIA_AIC_R_ENABLE_CLR(r)		(0x9e814 - EIP197_HIA_AIC_R_OFF(r))
+#define EIP197_HIA_AIC_G_ENABLE_CTRL		0x9f808
+#define EIP197_HIA_AIC_G_ENABLED_STAT		0x9f810
+#define EIP197_HIA_AIC_G_ACK			0x9f810
+#define EIP197_HIA_MST_CTRL			0x9fff4
+#define EIP197_HIA_OPTIONS			0x9fff8
+#define EIP197_HIA_VERSION			0x9fffc
+#define EIP197_PE_IN_DBUF_THRES			0xa0000
+#define EIP197_PE_IN_TBUF_THRES			0xa0100
+#define EIP197_PE_ICE_SCRATCH_RAM		0xa0800
+#define EIP197_PE_ICE_PUE_CTRL			0xa0c80
+#define EIP197_PE_ICE_SCRATCH_CTRL		0xa0d04
+#define EIP197_PE_ICE_FPP_CTRL			0xa0d80
+#define EIP197_PE_ICE_RAM_CTRL			0xa0ff0
+#define EIP197_PE_EIP96_FUNCTION_EN		0xa1004
+#define EIP197_PE_EIP96_CONTEXT_CTRL		0xa1008
+#define EIP197_PE_EIP96_CONTEXT_STAT		0xa100c
+#define EIP197_PE_OUT_DBUF_THRES		0xa1c00
+#define EIP197_PE_OUT_TBUF_THRES		0xa1d00
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_CLASSIFICATION_RAMS		0xe0000
 #define EIP197_TRC_CTRL				0xf0800
 #define EIP197_TRC_LASTRES			0xf0804
@@ -139,13 +214,21 @@
 #define EIP197_TRC_ECCDATASTAT			0xf083c
 #define EIP197_TRC_ECCDATA			0xf0840
 #define EIP197_CS_RAM_CTRL			0xf7ff0
+<<<<<<< HEAD
+=======
+#define EIP197_MST_CTRL				0xffff4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* EIP197_HIA_xDR_DESC_SIZE */
 #define EIP197_xDR_DESC_MODE_64BIT		BIT(31)
 
 /* EIP197_HIA_xDR_DMA_CFG */
 #define EIP197_HIA_xDR_WR_RES_BUF		BIT(22)
+<<<<<<< HEAD
 #define EIP197_HIA_xDR_WR_CTRL_BUF		BIT(23)
+=======
+#define EIP197_HIA_xDR_WR_CTRL_BUG		BIT(23)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_HIA_xDR_WR_OWN_BUF		BIT(24)
 #define EIP197_HIA_xDR_CFG_WR_CACHE(n)		(((n) & 0x7) << 25)
 #define EIP197_HIA_xDR_CFG_RD_CACHE(n)		(((n) & 0x7) << 29)
@@ -165,8 +248,11 @@
 #define EIP197_xDR_PREP_CLR_COUNT		BIT(31)
 
 /* EIP197_HIA_xDR_PROC_COUNT */
+<<<<<<< HEAD
 #define EIP197_xDR_PROC_xD_PKT_OFFSET		24
 #define EIP197_xDR_PROC_xD_PKT_MASK		GENMASK(6, 0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_xDR_PROC_xD_COUNT(n)		((n) << 2)
 #define EIP197_xDR_PROC_xD_PKT(n)		((n) << 24)
 #define EIP197_xDR_PROC_CLR_COUNT		BIT(31)
@@ -181,11 +267,14 @@
 #define EIP197_HIA_RA_PE_CTRL_RESET		BIT(31)
 #define EIP197_HIA_RA_PE_CTRL_EN		BIT(30)
 
+<<<<<<< HEAD
 /* EIP197_HIA_OPTIONS */
 #define EIP197_N_PES_OFFSET			4
 #define EIP197_N_PES_MASK			GENMASK(4, 0)
 #define EIP97_N_PES_MASK			GENMASK(2, 0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* EIP197_HIA_AIC_R_ENABLE_CTRL */
 #define EIP197_CDR_IRQ(n)			BIT((n) * 2)
 #define EIP197_RDR_IRQ(n)			BIT((n) * 2 + 1)
@@ -194,7 +283,11 @@
 #define EIP197_HIA_DxE_CFG_MIN_DATA_SIZE(n)	((n) << 0)
 #define EIP197_HIA_DxE_CFG_DATA_CACHE_CTRL(n)	(((n) & 0x7) << 4)
 #define EIP197_HIA_DxE_CFG_MAX_DATA_SIZE(n)	((n) << 8)
+<<<<<<< HEAD
 #define EIP197_HIA_DSE_CFG_ALWAYS_BUFFERABLE	GENMASK(15, 14)
+=======
+#define EIP197_HIA_DSE_CFG_ALLWAYS_BUFFERABLE	GENMASK(15, 14)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_HIA_DxE_CFG_MIN_CTRL_SIZE(n)	((n) << 16)
 #define EIP197_HIA_DxE_CFG_CTRL_CACHE_CTRL(n)	(((n) & 0x7) << 20)
 #define EIP197_HIA_DxE_CFG_MAX_CTRL_SIZE(n)	((n) << 24)
@@ -219,7 +312,10 @@
 #define WR_CACHE_4BITS				(WR_CACHE_3BITS << 1 | BIT(0))
 #define EIP197_MST_CTRL_RD_CACHE(n)		(((n) & 0xf) << 0)
 #define EIP197_MST_CTRL_WD_CACHE(n)		(((n) & 0xf) << 4)
+<<<<<<< HEAD
 #define EIP197_MST_CTRL_TX_MAX_CMD(n)		(((n) & 0xf) << 20)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_MST_CTRL_BYTE_SWAP		BIT(24)
 #define EIP197_MST_CTRL_NO_BYTE_SWAP		BIT(25)
 
@@ -290,7 +386,11 @@ struct safexcel_context_record {
 	u32 control0;
 	u32 control1;
 
+<<<<<<< HEAD
 	__le32 data[40];
+=======
+	__le32 data[12];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 /* control0 */
@@ -302,25 +402,39 @@ struct safexcel_context_record {
 #define CONTEXT_CONTROL_TYPE_CRYPTO_IN		0x5
 #define CONTEXT_CONTROL_TYPE_ENCRYPT_HASH_OUT	0x6
 #define CONTEXT_CONTROL_TYPE_DECRYPT_HASH_IN	0x7
+<<<<<<< HEAD
 #define CONTEXT_CONTROL_TYPE_HASH_ENCRYPT_OUT	0xe
 #define CONTEXT_CONTROL_TYPE_HASH_DECRYPT_IN	0xf
+=======
+#define CONTEXT_CONTROL_TYPE_HASH_ENCRYPT_OUT	0x14
+#define CONTEXT_CONTROL_TYPE_HASH_DECRYPT_OUT	0x15
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CONTEXT_CONTROL_RESTART_HASH		BIT(4)
 #define CONTEXT_CONTROL_NO_FINISH_HASH		BIT(5)
 #define CONTEXT_CONTROL_SIZE(n)			((n) << 8)
 #define CONTEXT_CONTROL_KEY_EN			BIT(16)
+<<<<<<< HEAD
 #define CONTEXT_CONTROL_CRYPTO_ALG_DES		(0x0 << 17)
 #define CONTEXT_CONTROL_CRYPTO_ALG_3DES		(0x2 << 17)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CONTEXT_CONTROL_CRYPTO_ALG_AES128	(0x5 << 17)
 #define CONTEXT_CONTROL_CRYPTO_ALG_AES192	(0x6 << 17)
 #define CONTEXT_CONTROL_CRYPTO_ALG_AES256	(0x7 << 17)
 #define CONTEXT_CONTROL_DIGEST_PRECOMPUTED	(0x1 << 21)
 #define CONTEXT_CONTROL_DIGEST_HMAC		(0x3 << 21)
+<<<<<<< HEAD
 #define CONTEXT_CONTROL_CRYPTO_ALG_MD5		(0x0 << 23)
 #define CONTEXT_CONTROL_CRYPTO_ALG_SHA1		(0x2 << 23)
 #define CONTEXT_CONTROL_CRYPTO_ALG_SHA224	(0x4 << 23)
 #define CONTEXT_CONTROL_CRYPTO_ALG_SHA256	(0x3 << 23)
 #define CONTEXT_CONTROL_CRYPTO_ALG_SHA384	(0x6 << 23)
 #define CONTEXT_CONTROL_CRYPTO_ALG_SHA512	(0x5 << 23)
+=======
+#define CONTEXT_CONTROL_CRYPTO_ALG_SHA1		(0x2 << 23)
+#define CONTEXT_CONTROL_CRYPTO_ALG_SHA224	(0x4 << 23)
+#define CONTEXT_CONTROL_CRYPTO_ALG_SHA256	(0x3 << 23)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CONTEXT_CONTROL_INV_FR			(0x5 << 24)
 #define CONTEXT_CONTROL_INV_TR			(0x6 << 24)
 
@@ -335,11 +449,14 @@ struct safexcel_context_record {
 #define CONTEXT_CONTROL_COUNTER_MODE		BIT(10)
 #define CONTEXT_CONTROL_HASH_STORE		BIT(19)
 
+<<<<<<< HEAD
 /* The hash counter given to the engine in the context has a granularity of
  * 64 bits.
  */
 #define EIP197_COUNTER_BLOCK_SIZE		64
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* EIP197_CS_RAM_CTRL */
 #define EIP197_TRC_ENABLE_0			BIT(4)
 #define EIP197_TRC_ENABLE_1			BIT(5)
@@ -362,12 +479,17 @@ struct safexcel_context_record {
 #define EIP197_TRC_PARAMS2_RC_SZ_SMALL(n)	((n) << 18)
 
 /* Cache helpers */
+<<<<<<< HEAD
 #define EIP197B_CS_RC_MAX			52
 #define EIP197D_CS_RC_MAX			96
+=======
+#define EIP197_CS_RC_MAX			52
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_CS_RC_SIZE			(4 * sizeof(u32))
 #define EIP197_CS_RC_NEXT(x)			(x)
 #define EIP197_CS_RC_PREV(x)			((x) << 10)
 #define EIP197_RC_NULL				0x3ff
+<<<<<<< HEAD
 #define EIP197B_CS_TRC_REC_WC			59
 #define EIP197D_CS_TRC_REC_WC			64
 #define EIP197B_CS_TRC_LG_REC_WC		73
@@ -375,6 +497,10 @@ struct safexcel_context_record {
 #define EIP197B_CS_HT_WC			64
 #define EIP197D_CS_HT_WC			256
 
+=======
+#define EIP197_CS_TRC_REC_WC			59
+#define EIP197_CS_TRC_LG_REC_WC			73
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Result data */
 struct result_data_desc {
@@ -423,15 +549,21 @@ struct safexcel_token {
 	u8 opcode:4;
 } __packed;
 
+<<<<<<< HEAD
 #define EIP197_TOKEN_HASH_RESULT_VERIFY		BIT(16)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_TOKEN_STAT_LAST_HASH		BIT(0)
 #define EIP197_TOKEN_STAT_LAST_PACKET		BIT(1)
 #define EIP197_TOKEN_OPCODE_DIRECTION		0x0
 #define EIP197_TOKEN_OPCODE_INSERT		0x2
 #define EIP197_TOKEN_OPCODE_NOOP		EIP197_TOKEN_OPCODE_INSERT
+<<<<<<< HEAD
 #define EIP197_TOKEN_OPCODE_RETRIEVE		0x4
 #define EIP197_TOKEN_OPCODE_VERIFY		0xd
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_TOKEN_OPCODE_BYPASS		GENMASK(3, 0)
 
 static inline void eip197_noop_token(struct safexcel_token *token)
@@ -469,7 +601,10 @@ struct safexcel_control_data_desc {
 #define EIP197_OPTION_MAGIC_VALUE	BIT(0)
 #define EIP197_OPTION_64BIT_CTX		BIT(1)
 #define EIP197_OPTION_CTX_CTRL_IN_CMD	BIT(8)
+<<<<<<< HEAD
 #define EIP197_OPTION_2_TOKEN_IV_CMD	GENMASK(11, 10)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EIP197_OPTION_4_TOKEN_IV_CMD	GENMASK(11, 9)
 
 #define EIP197_TYPE_EXTENDED		0x3
@@ -500,7 +635,11 @@ enum eip197_fw {
 	FW_NB
 };
 
+<<<<<<< HEAD
 struct safexcel_desc_ring {
+=======
+struct safexcel_ring {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *base;
 	void *base_end;
 	dma_addr_t base_dma;
@@ -509,18 +648,35 @@ struct safexcel_desc_ring {
 	void *write;
 	void *read;
 
+<<<<<<< HEAD
 	/* descriptor element offset */
+=======
+	/* number of elements used in the ring */
+	unsigned nr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned offset;
 };
 
 enum safexcel_alg_type {
 	SAFEXCEL_ALG_TYPE_SKCIPHER,
+<<<<<<< HEAD
 	SAFEXCEL_ALG_TYPE_AEAD,
 	SAFEXCEL_ALG_TYPE_AHASH,
 };
 
 struct safexcel_config {
 	u32 pes;
+=======
+	SAFEXCEL_ALG_TYPE_AHASH,
+};
+
+struct safexcel_request {
+	struct list_head list;
+	struct crypto_async_request *req;
+};
+
+struct safexcel_config {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 rings;
 
 	u32 cd_size;
@@ -536,6 +692,7 @@ struct safexcel_work_data {
 	int ring;
 };
 
+<<<<<<< HEAD
 struct safexcel_ring {
 	spinlock_t lock;
 
@@ -589,10 +746,13 @@ enum safexcel_flags {
 	EIP197_TRC_CACHE = BIT(0),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct safexcel_crypto_priv {
 	void __iomem *base;
 	struct device *dev;
 	struct clk *clk;
+<<<<<<< HEAD
 	struct clk *reg_clk;
 	struct safexcel_config config;
 
@@ -600,17 +760,46 @@ struct safexcel_crypto_priv {
 	struct safexcel_register_offsets offsets;
 	u32 flags;
 
+=======
+	struct safexcel_config config;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* context DMA pool */
 	struct dma_pool *context_pool;
 
 	atomic_t ring_used;
 
+<<<<<<< HEAD
 	struct safexcel_ring *ring;
+=======
+	struct {
+		spinlock_t lock;
+		spinlock_t egress_lock;
+
+		struct list_head list;
+		struct workqueue_struct *workqueue;
+		struct safexcel_work_data work_data;
+
+		/* command/result rings */
+		struct safexcel_ring cdr;
+		struct safexcel_ring rdr;
+
+		/* queue */
+		struct crypto_queue queue;
+		spinlock_t queue_lock;
+		bool need_dequeue;
+	} ring[EIP197_MAX_RINGS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct safexcel_context {
 	int (*send)(struct crypto_async_request *req, int ring,
+<<<<<<< HEAD
 		    int *commands, int *results);
+=======
+		    struct safexcel_request *request, int *commands,
+		    int *results);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*handle_result)(struct safexcel_crypto_priv *priv, int ring,
 			     struct crypto_async_request *req, bool *complete,
 			     int *ret);
@@ -620,6 +809,7 @@ struct safexcel_context {
 	int ring;
 	bool needs_inv;
 	bool exit_inv;
+<<<<<<< HEAD
 };
 
 struct safexcel_ahash_export_state {
@@ -630,6 +820,14 @@ struct safexcel_ahash_export_state {
 
 	u32 state[SHA512_DIGEST_SIZE / sizeof(u32)];
 	u8 cache[SHA512_BLOCK_SIZE];
+=======
+
+	/* Used for ahash requests */
+	dma_addr_t result_dma;
+	void *cache;
+	dma_addr_t cache_dma;
+	unsigned int cache_sz;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -640,10 +838,15 @@ struct safexcel_ahash_export_state {
 struct safexcel_alg_template {
 	struct safexcel_crypto_priv *priv;
 	enum safexcel_alg_type type;
+<<<<<<< HEAD
 	u32 engines;
 	union {
 		struct skcipher_alg skcipher;
 		struct aead_alg aead;
+=======
+	union {
+		struct skcipher_alg skcipher;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct ahash_alg ahash;
 	} alg;
 };
@@ -654,6 +857,7 @@ struct safexcel_inv_result {
 };
 
 void safexcel_dequeue(struct safexcel_crypto_priv *priv, int ring);
+<<<<<<< HEAD
 int safexcel_rdesc_check_errors(struct safexcel_crypto_priv *priv,
 				struct safexcel_result_desc *rdesc);
 void safexcel_complete(struct safexcel_crypto_priv *priv, int ring);
@@ -669,6 +873,25 @@ void *safexcel_ring_next_rptr(struct safexcel_crypto_priv *priv,
 void *safexcel_ring_first_rptr(struct safexcel_crypto_priv *priv, int  ring);
 void safexcel_ring_rollback_wptr(struct safexcel_crypto_priv *priv,
 				 struct safexcel_desc_ring *ring);
+=======
+void safexcel_complete(struct safexcel_crypto_priv *priv, int ring);
+void safexcel_free_context(struct safexcel_crypto_priv *priv,
+				  struct crypto_async_request *req,
+				  int result_sz);
+int safexcel_invalidate_cache(struct crypto_async_request *async,
+			      struct safexcel_context *ctx,
+			      struct safexcel_crypto_priv *priv,
+			      dma_addr_t ctxr_dma, int ring,
+			      struct safexcel_request *request);
+int safexcel_init_ring_descriptors(struct safexcel_crypto_priv *priv,
+				   struct safexcel_ring *cdr,
+				   struct safexcel_ring *rdr);
+int safexcel_select_ring(struct safexcel_crypto_priv *priv);
+void *safexcel_ring_next_rptr(struct safexcel_crypto_priv *priv,
+			      struct safexcel_ring *ring);
+void safexcel_ring_rollback_wptr(struct safexcel_crypto_priv *priv,
+				 struct safexcel_ring *ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct safexcel_command_desc *safexcel_add_cdesc(struct safexcel_crypto_priv *priv,
 						 int ring_id,
 						 bool first, bool last,
@@ -679,6 +902,7 @@ struct safexcel_result_desc *safexcel_add_rdesc(struct safexcel_crypto_priv *pri
 						 int ring_id,
 						bool first, bool last,
 						dma_addr_t data, u32 len);
+<<<<<<< HEAD
 int safexcel_ring_first_rdr_index(struct safexcel_crypto_priv *priv,
 				  int ring);
 int safexcel_ring_rdr_rdesc_index(struct safexcel_crypto_priv *priv,
@@ -718,5 +942,16 @@ extern struct safexcel_alg_template safexcel_alg_authenc_hmac_sha224_cbc_aes;
 extern struct safexcel_alg_template safexcel_alg_authenc_hmac_sha256_cbc_aes;
 extern struct safexcel_alg_template safexcel_alg_authenc_hmac_sha384_cbc_aes;
 extern struct safexcel_alg_template safexcel_alg_authenc_hmac_sha512_cbc_aes;
+=======
+void safexcel_inv_complete(struct crypto_async_request *req, int error);
+
+/* available algorithms */
+extern struct safexcel_alg_template safexcel_alg_ecb_aes;
+extern struct safexcel_alg_template safexcel_alg_cbc_aes;
+extern struct safexcel_alg_template safexcel_alg_sha1;
+extern struct safexcel_alg_template safexcel_alg_sha224;
+extern struct safexcel_alg_template safexcel_alg_sha256;
+extern struct safexcel_alg_template safexcel_alg_hmac_sha1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

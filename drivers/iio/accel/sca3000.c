@@ -982,7 +982,11 @@ static int sca3000_read_data(struct sca3000_state *st,
 	st->tx[0] = SCA3000_READ_REG(reg_address_high);
 	ret = spi_sync_transfer(st->us, xfer, ARRAY_SIZE(xfer));
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(get_device(&st->us->dev), "problem reading register");
+=======
+		dev_err(&st->us->dev, "problem reading register\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -1450,6 +1454,10 @@ static const struct iio_info sca3000_info = {
 	.write_event_value = &sca3000_write_event_value,
 	.read_event_config = &sca3000_read_event_config,
 	.write_event_config = &sca3000_write_event_config,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sca3000_probe(struct spi_device *spi)
@@ -1482,9 +1490,13 @@ static int sca3000_probe(struct spi_device *spi)
 	}
 	indio_dev->modes = INDIO_DIRECT_MODE;
 
+<<<<<<< HEAD
 	ret = sca3000_configure_ring(indio_dev);
 	if (ret)
 		return ret;
+=======
+	sca3000_configure_ring(indio_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (spi->irq) {
 		ret = request_threaded_irq(spi->irq,

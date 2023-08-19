@@ -31,7 +31,10 @@
 #define dmb(opt)	asm volatile("dmb " #opt : : : "memory")
 #define dsb(opt)	asm volatile("dsb " #opt : : : "memory")
 
+<<<<<<< HEAD
 #define psb_csync()	asm volatile("hint #17" : : : "memory")
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define csdb()		asm volatile("hint #20" : : : "memory")
 
 #define mb()		dsb(sy)
@@ -128,6 +131,7 @@ do {									\
 	__u.__val;							\
 })
 
+<<<<<<< HEAD
 #define smp_cond_load_relaxed(ptr, cond_expr)				\
 ({									\
 	typeof(ptr) __PTR = (ptr);					\
@@ -141,6 +145,8 @@ do {									\
 	VAL;								\
 })
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define smp_cond_load_acquire(ptr, cond_expr)				\
 ({									\
 	typeof(ptr) __PTR = (ptr);					\

@@ -51,7 +51,11 @@ static LIST_HEAD(rmid_free_lru);
  *     may have a occupancy value > intel_cqm_threshold. User can change
  *     the threshold occupancy value.
  */
+<<<<<<< HEAD
 static unsigned int rmid_limbo_count;
+=======
+unsigned int rmid_limbo_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * @rmid_entry - The entry in the limbo and free lists.
@@ -225,6 +229,7 @@ void free_rmid(u32 rmid)
 		list_add_tail(&entry->list, &rmid_free_lru);
 }
 
+<<<<<<< HEAD
 static u64 mbm_overflow_count(u64 prev_msr, u64 cur_msr)
 {
 	u64 shift = 64 - MBM_CNTR_WIDTH, chunks;
@@ -237,6 +242,12 @@ static int __mon_event_count(u32 rmid, struct rmid_read *rr)
 {
 	struct mbm_state *m;
 	u64 chunks, tval;
+=======
+static int __mon_event_count(u32 rmid, struct rmid_read *rr)
+{
+	u64 chunks, shift, tval;
+	struct mbm_state *m;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tval = __rmid_read(rmid, rr->evtid);
 	if (tval & (RMID_VAL_ERROR | RMID_VAL_UNAVAIL)) {
@@ -262,12 +273,23 @@ static int __mon_event_count(u32 rmid, struct rmid_read *rr)
 	}
 
 	if (rr->first) {
+<<<<<<< HEAD
 		memset(m, 0, sizeof(struct mbm_state));
 		m->prev_bw_msr = m->prev_msr = tval;
 		return 0;
 	}
 
 	chunks = mbm_overflow_count(m->prev_msr, tval);
+=======
+		m->prev_msr = tval;
+		m->chunks = 0;
+		return 0;
+	}
+
+	shift = 64 - MBM_CNTR_WIDTH;
+	chunks = (tval << shift) - (m->prev_msr << shift);
+	chunks >>= shift;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	m->chunks += chunks;
 	m->prev_msr = tval;
 
@@ -276,6 +298,7 @@ static int __mon_event_count(u32 rmid, struct rmid_read *rr)
 }
 
 /*
+<<<<<<< HEAD
  * Supporting function to calculate the memory bandwidth
  * and delta bandwidth in MBps.
  */
@@ -302,6 +325,8 @@ static void mbm_bw_count(u32 rmid, struct rmid_read *rr)
 }
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This is called via IPI to read the CQM/MBM counters
  * on a domain.
  */
@@ -329,6 +354,7 @@ void mon_event_count(void *info)
 	}
 }
 
+<<<<<<< HEAD
 /*
  * Feedback loop for MBA software controller (mba_sc)
  *
@@ -444,6 +470,8 @@ static void update_mba_bw(struct rdtgroup *rgrp, struct rdt_domain *dom_mbm)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mbm_update(struct rdt_domain *d, int rmid)
 {
 	struct rmid_read rr;
@@ -461,6 +489,7 @@ static void mbm_update(struct rdt_domain *d, int rmid)
 	}
 	if (is_mbm_local_enabled()) {
 		rr.evtid = QOS_L3_MBM_LOCAL_EVENT_ID;
+<<<<<<< HEAD
 
 		/*
 		 * Call the MBA software controller only for the
@@ -471,6 +500,9 @@ static void mbm_update(struct rdt_domain *d, int rmid)
 			__mon_event_count(rmid, &rr);
 		else
 			mbm_bw_count(rmid, &rr);
+=======
+		__mon_event_count(rmid, &rr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -541,9 +573,12 @@ void mbm_handle_overflow(struct work_struct *work)
 		head = &prgrp->mon.crdtgrp_list;
 		list_for_each_entry(crgrp, head, mon.crdtgrp_list)
 			mbm_update(d, crgrp->mon.rmid);
+<<<<<<< HEAD
 
 		if (is_mba_sc(NULL))
 			update_mba_bw(prgrp, d);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	schedule_delayed_work_on(cpu, &d->mbm_over, delay);

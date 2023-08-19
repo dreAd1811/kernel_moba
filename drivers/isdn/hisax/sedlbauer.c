@@ -558,7 +558,11 @@ static int setup_sedlbauer_isapnp(struct IsdnCard *card, int *bytecnt)
 				card->para[1] = pnp_port_start(pnp_d, 0);
 				card->para[0] = pnp_irq(pnp_d, 0);
 
+<<<<<<< HEAD
 				if (card->para[0] == -1 || !card->para[1]) {
+=======
+				if (!card->para[0] || !card->para[1]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					printk(KERN_ERR "Sedlbauer PnP:some resources are missing %ld/%lx\n",
 					       card->para[0], card->para[1]);
 					pnp_disable_dev(pnp_d);

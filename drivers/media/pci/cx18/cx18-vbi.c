@@ -47,7 +47,11 @@ static void copy_vbi_data(struct cx18 *cx, int lines, u32 pts_stamp)
 		0x00, 0x00, 0x01, 0xbd,		    /* Priv Stream 1 start */
 		0x00, 0x1a,			    /* length */
 		0x84, 0x80, 0x07,		    /* flags, hdr data len */
+<<<<<<< HEAD
 		0x21, 0x00, 0x5d, 0x63, 0xa7,	    /* PTS, markers */
+=======
+		0x21, 0x00, 0x5d, 0x63, 0xa7, 	    /* PTS, markers */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		0xff, 0xff			    /* stuffing */
 	};
 	const int sd = sizeof(mpeg_hdr_data);	/* start of vbi data */

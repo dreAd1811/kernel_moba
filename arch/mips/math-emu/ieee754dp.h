@@ -55,9 +55,12 @@ static inline int ieee754dp_finite(union ieee754dp x)
 #define XDPSRS1(v)	\
 	(((v) >> 1) | ((v) & 1))
 
+<<<<<<< HEAD
 /* 32bit * 32bit => 64bit unsigned integer multiplication */
 #define DPXMULT(x, y)	((u64)(x) * (u64)y)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* convert denormal to normalized with extended exponent */
 #define DPDNORMx(m,e) \
 	while ((m >> DP_FBITS) == 0) { m <<= 1; e--; }

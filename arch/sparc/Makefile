@@ -9,10 +9,17 @@
 # Copyright (C) 1998 Jakub Jelinek (jj@ultra.linux.cz)
 
 # We are not yet configured - so test on arch
+<<<<<<< HEAD
 ifeq ($(ARCH),sparc64)
         KBUILD_DEFCONFIG := sparc64_defconfig
 else
         KBUILD_DEFCONFIG := sparc32_defconfig
+=======
+ifeq ($(ARCH),sparc)
+        KBUILD_DEFCONFIG := sparc32_defconfig
+else
+        KBUILD_DEFCONFIG := sparc64_defconfig
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 ifeq ($(CONFIG_SPARC32),y)
@@ -21,7 +28,11 @@ ifeq ($(CONFIG_SPARC32),y)
 #
 
 CHECKFLAGS     += -D__sparc__
+<<<<<<< HEAD
 KBUILD_LDFLAGS := -m elf32_sparc
+=======
+LDFLAGS        := -m elf32_sparc
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 export BITS    := 32
 UTS_MACHINE    := sparc
 
@@ -39,8 +50,13 @@ else
 # sparc64
 #
 
+<<<<<<< HEAD
 CHECKFLAGS    += -D__sparc__ -D__sparc_v9__ -D__arch64__
 KBUILD_LDFLAGS := -m elf64_sparc
+=======
+CHECKFLAGS    += -D__sparc__ -D__sparc_v9__ -D__arch64__ -m64
+LDFLAGS       := -m elf64_sparc
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 export BITS   := 64
 UTS_MACHINE   := sparc64
 
@@ -81,10 +97,13 @@ install:
 archclean:
 	$(Q)$(MAKE) $(clean)=$(boot)
 
+<<<<<<< HEAD
 PHONY += vdso_install
 vdso_install:
 	$(Q)$(MAKE) $(build)=arch/sparc/vdso $@
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # This is the image used for packaging
 KBUILD_IMAGE := $(boot)/zImage
 

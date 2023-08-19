@@ -14,6 +14,7 @@
 #include <asm-generic/module.h>
 
 
+<<<<<<< HEAD
 #ifdef CONFIG_MPROFILE_KERNEL
 #define MODULE_ARCH_VERMAGIC_FTRACE	"mprofile-kernel "
 #else
@@ -28,6 +29,12 @@
 
 #define MODULE_ARCH_VERMAGIC MODULE_ARCH_VERMAGIC_FTRACE MODULE_ARCH_VERMAGIC_RELOCATABLE
 
+=======
+#ifdef CC_USING_MPROFILE_KERNEL
+#define MODULE_ARCH_VERMAGIC	"mprofile-kernel"
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __powerpc64__
 /*
  * Thanks to Paul M for explaining this.
@@ -50,14 +57,23 @@ struct mod_arch_specific {
 	unsigned int stubs_section;	/* Index of stubs section in module */
 	unsigned int toc_section;	/* What section is the TOC? */
 	bool toc_fixed;			/* Have we fixed up .TOC.? */
+<<<<<<< HEAD
 
 	/* For module function descriptor dereference */
 	unsigned long start_opd;
 	unsigned long end_opd;
+=======
+#ifdef CONFIG_DYNAMIC_FTRACE
+	unsigned long toc;
+	unsigned long tramp;
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* powerpc64 */
 	/* Indices of PLT sections within module. */
 	unsigned int core_plt_section;
 	unsigned int init_plt_section;
+<<<<<<< HEAD
 #endif /* powerpc64 */
 
 #ifdef CONFIG_DYNAMIC_FTRACE
@@ -66,6 +82,12 @@ struct mod_arch_specific {
 	unsigned long tramp_regs;
 #endif
 #endif
+=======
+#ifdef CONFIG_DYNAMIC_FTRACE
+	unsigned long tramp;
+#endif
+#endif /* powerpc64 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* List of BUG addresses, source line numbers and filenames */
 	struct list_head bug_list;

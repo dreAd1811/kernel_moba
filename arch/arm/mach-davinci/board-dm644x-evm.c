@@ -13,11 +13,17 @@
 #include <linux/dma-mapping.h>
 #include <linux/platform_device.h>
 #include <linux/gpio.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
 #include <linux/i2c.h>
 #include <linux/platform_data/pcf857x.h>
 #include <linux/platform_data/at24.h>
 #include <linux/platform_data/gpio-davinci.h>
+=======
+#include <linux/i2c.h>
+#include <linux/platform_data/pcf857x.h>
+#include <linux/platform_data/at24.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/rawnand.h>
 #include <linux/mtd/partitions.h>
@@ -42,7 +48,10 @@
 #include <linux/platform_data/mmc-davinci.h>
 #include <linux/platform_data/usb-davinci.h>
 #include <linux/platform_data/mtd-davinci-aemif.h>
+<<<<<<< HEAD
 #include <linux/platform_data/ti-aemif.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "davinci.h"
 
@@ -154,7 +163,10 @@ static struct davinci_aemif_timing davinci_evm_nandflash_timing = {
 };
 
 static struct davinci_nand_pdata davinci_evm_nandflash_data = {
+<<<<<<< HEAD
 	.core_chipsel	= 0,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.parts		= davinci_evm_nandflash_partition,
 	.nr_parts	= ARRAY_SIZE(davinci_evm_nandflash_partition),
 	.ecc_mode	= NAND_ECC_HW,
@@ -175,6 +187,7 @@ static struct resource davinci_evm_nandflash_resource[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct resource davinci_evm_aemif_resource[] = {
 	{
 		.start		= DM644X_ASYNC_EMIF_CONTROL_BASE,
@@ -216,6 +229,16 @@ static struct platform_device davinci_evm_aemif_device = {
 	},
 	.resource		= davinci_evm_aemif_resource,
 	.num_resources		= ARRAY_SIZE(davinci_evm_aemif_resource),
+=======
+static struct platform_device davinci_evm_nandflash_device = {
+	.name		= "davinci_nand",
+	.id		= 0,
+	.dev		= {
+		.platform_data	= &davinci_evm_nandflash_data,
+	},
+	.num_resources	= ARRAY_SIZE(davinci_evm_nandflash_resource),
+	.resource	= davinci_evm_nandflash_resource,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static u64 davinci_fb_dma_mask = DMA_BIT_MASK(32);
@@ -632,6 +655,7 @@ static struct i2c_board_info __initdata i2c_info[] =  {
 	},
 };
 
+<<<<<<< HEAD
 #define DM644X_I2C_SDA_PIN	GPIO_TO_PIN(2, 12)
 #define DM644X_I2C_SCL_PIN	GPIO_TO_PIN(2, 11)
 
@@ -645,18 +669,28 @@ static struct gpiod_lookup_table i2c_recovery_gpiod_table = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The msp430 uses a slow bitbanged I2C implementation (ergo 20 KHz),
  * which requires 100 usec of idle bus after i2c writes sent to it.
  */
 static struct davinci_i2c_platform_data i2c_pdata = {
 	.bus_freq	= 20 /* kHz */,
 	.bus_delay	= 100 /* usec */,
+<<<<<<< HEAD
 	.gpio_recovery	= true,
+=======
+	.sda_pin        = 44,
+	.scl_pin        = 43,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void __init evm_init_i2c(void)
 {
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&i2c_recovery_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	davinci_init_i2c(&i2c_pdata);
 	i2c_add_driver(&dm6446evm_msp_driver);
 	i2c_register_board_info(1, i2c_info, ARRAY_SIZE(i2c_info));
@@ -807,10 +841,13 @@ static __init void davinci_evm_init(void)
 	struct clk *aemif_clk;
 	struct davinci_soc_info *soc_info = &davinci_soc_info;
 
+<<<<<<< HEAD
 	dm644x_register_clocks();
 
 	dm644x_init_devices();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = dm644x_gpio_register();
 	if (ret)
 		pr_warn("%s: GPIO init failed: %d\n", __func__, ret);
@@ -829,7 +866,16 @@ static __init void davinci_evm_init(void)
 
 		/* only one device will be jumpered and detected */
 		if (HAS_NAND) {
+<<<<<<< HEAD
 			platform_device_register(&davinci_evm_aemif_device);
+=======
+			platform_device_register(&davinci_evm_nandflash_device);
+
+			if (davinci_aemif_setup(&davinci_evm_nandflash_device))
+				pr_warn("%s: Cannot configure AEMIF\n",
+					__func__);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_I2C
 			evm_leds[7].default_trigger = "nand-disk";
 #endif
@@ -866,8 +912,16 @@ MACHINE_START(DAVINCI_EVM, "DaVinci DM644x EVM")
 	.atag_offset  = 0x100,
 	.map_io	      = davinci_evm_map_io,
 	.init_irq     = davinci_irq_init,
+<<<<<<< HEAD
 	.init_time	= dm644x_init_time,
 	.init_machine = davinci_evm_init,
 	.init_late	= davinci_init_late,
 	.dma_zone_size	= SZ_128M,
+=======
+	.init_time	= davinci_timer_init,
+	.init_machine = davinci_evm_init,
+	.init_late	= davinci_init_late,
+	.dma_zone_size	= SZ_128M,
+	.restart	= davinci_restart,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MACHINE_END

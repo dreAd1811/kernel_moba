@@ -38,7 +38,11 @@
  * Each device has a channels list, which runs unlocked but is never modified
  * once the device is registered, it's just setup by the driver.
  *
+<<<<<<< HEAD
  * See Documentation/driver-api/dmaengine for more details
+=======
+ * See Documentation/dmaengine.txt for more details
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
@@ -161,7 +165,13 @@ static void chan_dev_release(struct device *dev)
 
 	chan_dev = container_of(dev, typeof(*chan_dev), device);
 	if (atomic_dec_and_test(chan_dev->idr_ref)) {
+<<<<<<< HEAD
 		ida_free(&dma_ida, chan_dev->dev_id);
+=======
+		mutex_lock(&dma_list_mutex);
+		ida_remove(&dma_ida, chan_dev->dev_id);
+		mutex_unlock(&dma_list_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(chan_dev->idr_ref);
 	}
 	kfree(chan_dev);
@@ -190,7 +200,11 @@ __dma_device_satisfies_mask(struct dma_device *device,
 
 static struct module *dma_chan_to_owner(struct dma_chan *chan)
 {
+<<<<<<< HEAD
 	return chan->device->dev->driver->owner;
+=======
+	return chan->device->owner;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -498,8 +512,17 @@ int dma_get_slave_caps(struct dma_chan *chan, struct dma_slave_caps *caps)
 	caps->max_burst = device->max_burst;
 	caps->residue_granularity = device->residue_granularity;
 	caps->descriptor_reuse = device->descriptor_reuse;
+<<<<<<< HEAD
 	caps->cmd_pause = !!device->device_pause;
 	caps->cmd_resume = !!device->device_resume;
+=======
+
+	/*
+	 * Some devices implement only pause (e.g. to get residuum) but no
+	 * resume. However cmd_pause is advertised as pause AND resume.
+	 */
+	caps->cmd_pause = !!(device->device_pause && device->device_resume);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	caps->cmd_terminate = !!device->device_terminate_all;
 
 	return 0;
@@ -768,6 +791,7 @@ struct dma_chan *dma_request_chan_by_mask(const dma_cap_mask_t *mask)
 		return ERR_PTR(-ENODEV);
 
 	chan = __dma_request_channel(mask, NULL, NULL);
+<<<<<<< HEAD
 	if (!chan) {
 		mutex_lock(&dma_list_mutex);
 		if (list_empty(&dma_device_list))
@@ -776,6 +800,10 @@ struct dma_chan *dma_request_chan_by_mask(const dma_cap_mask_t *mask)
 			chan = ERR_PTR(-ENODEV);
 		mutex_unlock(&dma_list_mutex);
 	}
+=======
+	if (!chan)
+		chan = ERR_PTR(-ENODEV);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return chan;
 }
@@ -896,12 +924,26 @@ static bool device_has_all_tx_types(struct dma_device *device)
 
 static int get_dma_id(struct dma_device *device)
 {
+<<<<<<< HEAD
 	int rc = ida_alloc(&dma_ida, GFP_KERNEL);
 
 	if (rc < 0)
 		return rc;
 	device->dev_id = rc;
 	return 0;
+=======
+	int rc;
+
+	do {
+		if (!ida_pre_get(&dma_ida, GFP_KERNEL))
+			return -ENOMEM;
+		mutex_lock(&dma_list_mutex);
+		rc = ida_get_new(&dma_ida, &device->dev_id);
+		mutex_unlock(&dma_list_mutex);
+	} while (rc == -EAGAIN);
+
+	return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -923,6 +965,11 @@ int dma_async_device_register(struct dma_device *device)
 		return -EIO;
 	}
 
+<<<<<<< HEAD
+=======
+	device->owner = device->dev->driver->owner;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dma_has_cap(DMA_MEMCPY, device->cap_mask) && !device->device_prep_dma_memcpy) {
 		dev_err(device->dev,
 			"Device claims capability %s, but op is not defined\n",
@@ -1085,7 +1132,13 @@ int dma_async_device_register(struct dma_device *device)
 err_out:
 	/* if we never registered a channel just release the idr */
 	if (atomic_read(idr_ref) == 0) {
+<<<<<<< HEAD
 		ida_free(&dma_ida, device->dev_id);
+=======
+		mutex_lock(&dma_list_mutex);
+		ida_remove(&dma_ida, device->dev_id);
+		mutex_unlock(&dma_list_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(idr_ref);
 		return rc;
 	}
@@ -1132,6 +1185,7 @@ void dma_async_device_unregister(struct dma_device *device)
 }
 EXPORT_SYMBOL(dma_async_device_unregister);
 
+<<<<<<< HEAD
 static void dmam_device_release(struct device *dev, void *res)
 {
 	struct dma_device *device;
@@ -1167,6 +1221,8 @@ int dmaenginem_async_device_register(struct dma_device *device)
 }
 EXPORT_SYMBOL(dmaenginem_async_device_register);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dmaengine_unmap_pool {
 	struct kmem_cache *cache;
 	const char *name;

@@ -239,11 +239,14 @@
 		device-width = <1>;
 	};
 
+<<<<<<< HEAD
 	nand@2,0 {
 		compatible = "fsl,ifc-nand";
 		reg = <0x2 0x0 0x10000>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fpga: board-control@3,0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -336,6 +339,7 @@
 &uart1 {
 	status = "okay";
 };
+<<<<<<< HEAD
 
 &can0 {
 	status = "okay";
@@ -352,3 +356,5 @@
 &can3 {
 	status = "disabled";
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -38,7 +38,10 @@
 extern struct platform_device ip32_rtc_device;
 
 static struct timer_list power_timer, blink_timer;
+<<<<<<< HEAD
 static unsigned long blink_timer_timeout;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int has_panicked, shutting_down;
 
 static __noreturn void ip32_poweroff(void *data)
@@ -72,11 +75,19 @@ static void ip32_machine_restart(char *cmd)
 	unreachable();
 }
 
+<<<<<<< HEAD
 static void blink_timeout(struct timer_list *unused)
 {
 	unsigned long led = mace->perif.ctrl.misc ^ MACEISA_LED_RED;
 	mace->perif.ctrl.misc = led;
 	mod_timer(&blink_timer, jiffies + blink_timer_timeout);
+=======
+static void blink_timeout(unsigned long data)
+{
+	unsigned long led = mace->perif.ctrl.misc ^ MACEISA_LED_RED;
+	mace->perif.ctrl.misc = led;
+	mod_timer(&blink_timer, jiffies + data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ip32_machine_halt(void)
@@ -84,7 +95,11 @@ static void ip32_machine_halt(void)
 	ip32_poweroff(&ip32_rtc_device);
 }
 
+<<<<<<< HEAD
 static void power_timeout(struct timer_list *unused)
+=======
+static void power_timeout(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ip32_poweroff(&ip32_rtc_device);
 }
@@ -100,10 +115,18 @@ void ip32_prepare_poweroff(void)
 	}
 
 	shutting_down = 1;
+<<<<<<< HEAD
 	blink_timer_timeout = POWERDOWN_FREQ;
 	blink_timeout(&blink_timer);
 
 	timer_setup(&power_timer, power_timeout, 0);
+=======
+	blink_timer.data = POWERDOWN_FREQ;
+	blink_timeout(POWERDOWN_FREQ);
+
+	init_timer(&power_timer);
+	power_timer.function = power_timeout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	power_timer.expires = jiffies + POWERDOWN_TIMEOUT * HZ;
 	add_timer(&power_timer);
 }
@@ -121,8 +144,13 @@ static int panic_event(struct notifier_block *this, unsigned long event,
 	led = mace->perif.ctrl.misc | MACEISA_LED_GREEN;
 	mace->perif.ctrl.misc = led;
 
+<<<<<<< HEAD
 	blink_timer_timeout = PANIC_FREQ;
 	blink_timeout(&blink_timer);
+=======
+	blink_timer.data = PANIC_FREQ;
+	blink_timeout(PANIC_FREQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return NOTIFY_DONE;
 }
@@ -143,7 +171,12 @@ static __init int ip32_reboot_setup(void)
 	_machine_halt = ip32_machine_halt;
 	pm_power_off = ip32_machine_halt;
 
+<<<<<<< HEAD
 	timer_setup(&blink_timer, blink_timeout, 0);
+=======
+	init_timer(&blink_timer);
+	blink_timer.function = blink_timeout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
 
 	return 0;

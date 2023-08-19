@@ -74,9 +74,15 @@ typedef struct drm_via_private {
 	volatile uint32_t *last_pause_ptr;
 	volatile uint32_t *hw_addr_ptr;
 	drm_via_ring_buffer_t ring;
+<<<<<<< HEAD
 	ktime_t last_vblank;
 	int last_vblank_valid;
 	ktime_t nsec_per_vblank;
+=======
+	struct timeval last_vblank;
+	int last_vblank_valid;
+	unsigned usec_per_vblank;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_t vbl_received;
 	drm_via_state_t hc_state;
 	char pci_buf[VIA_PCI_BUF_SIZE];

@@ -101,13 +101,24 @@ static int cirrus_crtc_do_set_base(struct drm_crtc *crtc,
 				int x, int y, int atomic)
 {
 	struct cirrus_device *cdev = crtc->dev->dev_private;
+<<<<<<< HEAD
+=======
+	struct drm_gem_object *obj;
+	struct cirrus_framebuffer *cirrus_fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cirrus_bo *bo;
 	int ret;
 	u64 gpu_addr;
 
 	/* push the previous fb to system ram */
 	if (!atomic && fb) {
+<<<<<<< HEAD
 		bo = gem_to_cirrus_bo(fb->obj[0]);
+=======
+		cirrus_fb = to_cirrus_framebuffer(fb);
+		obj = cirrus_fb->obj;
+		bo = gem_to_cirrus_bo(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = cirrus_bo_reserve(bo, false);
 		if (ret)
 			return ret;
@@ -115,7 +126,13 @@ static int cirrus_crtc_do_set_base(struct drm_crtc *crtc,
 		cirrus_bo_unreserve(bo);
 	}
 
+<<<<<<< HEAD
 	bo = gem_to_cirrus_bo(crtc->primary->fb->obj[0]);
+=======
+	cirrus_fb = to_cirrus_framebuffer(crtc->primary->fb);
+	obj = cirrus_fb->obj;
+	bo = gem_to_cirrus_bo(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = cirrus_bo_reserve(bo, false);
 	if (ret)
@@ -127,7 +144,11 @@ static int cirrus_crtc_do_set_base(struct drm_crtc *crtc,
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (cdev->mode_info.gfbdev->gfb == crtc->primary->fb) {
+=======
+	if (&cdev->mode_info.gfbdev->gfb == cirrus_fb) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* if pushing console in kmap it */
 		ret = ttm_bo_kmap(&bo->bo, 0, bo->bo.num_pages, &bo->kmap);
 		if (ret)
@@ -530,7 +551,11 @@ int cirrus_modeset_init(struct cirrus_device *cdev)
 		return -1;
 	}
 
+<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
+=======
+	drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = cirrus_fbdev_init(cdev);
 	if (ret) {

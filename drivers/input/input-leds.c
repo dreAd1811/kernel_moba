@@ -98,7 +98,12 @@ static int input_leds_connect(struct input_handler *handler,
 	if (!num_leds)
 		return -ENXIO;
 
+<<<<<<< HEAD
 	leds = kzalloc(struct_size(leds, leds, num_leds), GFP_KERNEL);
+=======
+	leds = kzalloc(sizeof(*leds) + num_leds * sizeof(*leds->leds),
+		       GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!leds)
 		return -ENOMEM;
 

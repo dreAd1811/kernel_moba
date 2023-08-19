@@ -227,7 +227,13 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
 			   unsigned long frame_pointer)
 {
 	unsigned long return_hooker = (unsigned long) &return_to_handler;
+<<<<<<< HEAD
 	unsigned long old;
+=======
+	struct ftrace_graph_ent trace;
+	unsigned long old;
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(atomic_read(&current->tracing_graph_pause)))
 		return;
@@ -235,8 +241,26 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
 	old = *parent;
 	*parent = return_hooker;
 
+<<<<<<< HEAD
 	if (function_graph_enter(old, self_addr, frame_pointer, NULL))
 		*parent = old;
+=======
+	trace.func = self_addr;
+	trace.depth = current->curr_ret_stack + 1;
+
+	/* Only trace if the calling function expects to */
+	if (!ftrace_graph_entry(&trace)) {
+		*parent = old;
+		return;
+	}
+
+	err = ftrace_push_return_trace(old, self_addr, &trace.depth,
+				       frame_pointer, NULL);
+	if (err == -EBUSY) {
+		*parent = old;
+		return;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_DYNAMIC_FTRACE

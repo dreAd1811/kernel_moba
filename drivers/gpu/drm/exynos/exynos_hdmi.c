@@ -40,7 +40,11 @@
 #include <linux/component.h>
 #include <linux/mfd/syscon.h>
 #include <linux/regmap.h>
+<<<<<<< HEAD
 #include <sound/hdmi-codec.h>
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/exynos_drm.h>
 
 #include <media/cec-notifier.h>
@@ -111,6 +115,7 @@ struct hdmi_driver_data {
 	struct string_array_spec clk_muxes;
 };
 
+<<<<<<< HEAD
 struct hdmi_audio {
 	struct platform_device		*pdev;
 	struct hdmi_audio_infoframe	infoframe;
@@ -118,13 +123,22 @@ struct hdmi_audio {
 	bool				mute;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hdmi_context {
 	struct drm_encoder		encoder;
 	struct device			*dev;
 	struct drm_device		*drm_dev;
 	struct drm_connector		connector;
+<<<<<<< HEAD
 	bool				dvi_mode;
 	struct delayed_work		hotplug_work;
+=======
+	bool				powered;
+	bool				dvi_mode;
+	struct delayed_work		hotplug_work;
+	struct drm_display_mode		current_mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cec_notifier		*notifier;
 	const struct hdmi_driver_data	*drv_data;
 
@@ -142,11 +156,14 @@ struct hdmi_context {
 	struct regulator		*reg_hdmi_en;
 	struct exynos_drm_clk		phy_clk;
 	struct drm_bridge		*bridge;
+<<<<<<< HEAD
 
 	/* mutex protecting subsequent fields below */
 	struct mutex			mutex;
 	struct hdmi_audio		audio;
 	bool				powered;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct hdmi_context *encoder_to_hdmi(struct drm_encoder *e)
@@ -308,6 +325,7 @@ static const struct hdmiphy_config hdmiphy_v14_configs[] = {
 		},
 	},
 	{
+<<<<<<< HEAD
 		.pixel_clock = 85500000,
 		.conf = {
 			0x01, 0xd1, 0x24, 0x11, 0x40, 0x40, 0xd0, 0x08,
@@ -317,6 +335,8 @@ static const struct hdmiphy_config hdmiphy_v14_configs[] = {
 		},
 	},
 	{
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.pixel_clock = 106500000,
 		.conf = {
 			0x01, 0xd1, 0x2c, 0x12, 0x40, 0x0c, 0x09, 0x08,
@@ -787,6 +807,7 @@ static int hdmi_clk_set_parents(struct hdmi_context *hdata, bool to_phy)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int hdmi_audio_infoframe_apply(struct hdmi_context *hdata)
 {
 	struct hdmi_audio_infoframe *infoframe = &hdata->audio.infoframe;
@@ -806,6 +827,10 @@ static int hdmi_audio_infoframe_apply(struct hdmi_context *hdata)
 static void hdmi_reg_infoframes(struct hdmi_context *hdata)
 {
 	struct drm_display_mode *m = &hdata->encoder.crtc->state->mode;
+=======
+static void hdmi_reg_infoframes(struct hdmi_context *hdata)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union hdmi_infoframe frm;
 	u8 buf[25];
 	int ret;
@@ -819,7 +844,12 @@ static void hdmi_reg_infoframes(struct hdmi_context *hdata)
 		return;
 	}
 
+<<<<<<< HEAD
 	ret = drm_hdmi_avi_infoframe_from_display_mode(&frm.avi, m, false);
+=======
+	ret = drm_hdmi_avi_infoframe_from_display_mode(&frm.avi,
+			&hdata->current_mode, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret)
 		ret = hdmi_avi_infoframe_pack(&frm.avi, buf, sizeof(buf));
 	if (ret > 0) {
@@ -830,7 +860,11 @@ static void hdmi_reg_infoframes(struct hdmi_context *hdata)
 	}
 
 	ret = drm_hdmi_vendor_infoframe_from_display_mode(&frm.vendor.hdmi,
+<<<<<<< HEAD
 							  &hdata->connector, m);
+=======
+			&hdata->current_mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret)
 		ret = hdmi_vendor_infoframe_pack(&frm.vendor.hdmi, buf,
 				sizeof(buf));
@@ -840,7 +874,19 @@ static void hdmi_reg_infoframes(struct hdmi_context *hdata)
 		hdmi_reg_write_buf(hdata, HDMI_VSI_DATA(0), buf + 3, ret - 3);
 	}
 
+<<<<<<< HEAD
 	hdmi_audio_infoframe_apply(hdata);
+=======
+	ret = hdmi_audio_infoframe_init(&frm.audio);
+	if (!ret) {
+		frm.audio.channels = 2;
+		ret = hdmi_audio_infoframe_pack(&frm.audio, buf, sizeof(buf));
+	}
+	if (ret > 0) {
+		hdmi_reg_writeb(hdata, HDMI_AUI_CON, HDMI_AUI_CON_EVERY_VSYNC);
+		hdmi_reg_write_buf(hdata, HDMI_AUI_HEADER0, buf, ret);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static enum drm_connector_status hdmi_detect(struct drm_connector *connector,
@@ -888,7 +934,11 @@ static int hdmi_get_modes(struct drm_connector *connector)
 		(hdata->dvi_mode ? "dvi monitor" : "hdmi monitor"),
 		edid->width_cm, edid->height_cm);
 
+<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
+=======
+	drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cec_notifier_set_phys_addr_from_edid(hdata->notifier, edid);
 
 	ret = drm_add_edid_modes(connector, edid);
@@ -951,9 +1001,17 @@ static int hdmi_create_connector(struct drm_encoder *encoder)
 	}
 
 	drm_connector_helper_add(connector, &hdmi_connector_helper_funcs);
+<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
 
 	if (hdata->bridge) {
+=======
+	drm_mode_connector_attach_encoder(connector, encoder);
+
+	if (hdata->bridge) {
+		encoder->bridge = hdata->bridge;
+		hdata->bridge->encoder = encoder;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_bridge_attach(encoder, hdata->bridge, NULL);
 		if (ret)
 			DRM_ERROR("Failed to attach bridge\n");
@@ -1028,6 +1086,7 @@ static void hdmi_reg_acr(struct hdmi_context *hdata, u32 freq)
 	hdmi_reg_writeb(hdata, HDMI_ACR_CON, 4);
 }
 
+<<<<<<< HEAD
 static void hdmi_audio_config(struct hdmi_context *hdata)
 {
 	u32 bit_ch = 1;
@@ -1040,6 +1099,25 @@ static void hdmi_audio_config(struct hdmi_context *hdata)
 		break;
 	case 24:
 		data_num = 3;
+=======
+static void hdmi_audio_init(struct hdmi_context *hdata)
+{
+	u32 sample_rate, bits_per_sample;
+	u32 data_num, bit_ch, sample_frq;
+	u32 val;
+
+	sample_rate = 44100;
+	bits_per_sample = 16;
+
+	switch (bits_per_sample) {
+	case 20:
+		data_num = 2;
+		bit_ch = 1;
+		break;
+	case 24:
+		data_num = 3;
+		bit_ch = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		data_num = 1;
@@ -1047,7 +1125,11 @@ static void hdmi_audio_config(struct hdmi_context *hdata)
 		break;
 	}
 
+<<<<<<< HEAD
 	hdmi_reg_acr(hdata, hdata->audio.params.sample_rate);
+=======
+	hdmi_reg_acr(hdata, sample_rate);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdmi_reg_writeb(hdata, HDMI_I2S_MUX_CON, HDMI_I2S_IN_DISABLE
 				| HDMI_I2S_AUD_I2S | HDMI_I2S_CUV_I2S_ENABLE
@@ -1057,6 +1139,15 @@ static void hdmi_audio_config(struct hdmi_context *hdata)
 			| HDMI_I2S_CH1_EN | HDMI_I2S_CH2_EN);
 
 	hdmi_reg_writeb(hdata, HDMI_I2S_MUX_CUV, HDMI_I2S_CUV_RL_EN);
+<<<<<<< HEAD
+=======
+
+	sample_frq = (sample_rate == 44100) ? 0 :
+			(sample_rate == 48000) ? 2 :
+			(sample_rate == 32000) ? 3 :
+			(sample_rate == 96000) ? 0xa : 0x0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdmi_reg_writeb(hdata, HDMI_I2S_CLK_CON, HDMI_I2S_CLK_DIS);
 	hdmi_reg_writeb(hdata, HDMI_I2S_CLK_CON, HDMI_I2S_CLK_EN);
 
@@ -1066,6 +1157,7 @@ static void hdmi_audio_config(struct hdmi_context *hdata)
 	/* Configuration I2S input ports. Configure I2S_PIN_SEL_0~4 */
 	hdmi_reg_writeb(hdata, HDMI_I2S_PIN_SEL_0, HDMI_I2S_SEL_SCLK(5)
 			| HDMI_I2S_SEL_LRCK(6));
+<<<<<<< HEAD
 
 	hdmi_reg_writeb(hdata, HDMI_I2S_PIN_SEL_1, HDMI_I2S_SEL_SDATA1(3)
 			| HDMI_I2S_SEL_SDATA0(4));
@@ -1073,6 +1165,12 @@ static void hdmi_audio_config(struct hdmi_context *hdata)
 	hdmi_reg_writeb(hdata, HDMI_I2S_PIN_SEL_2, HDMI_I2S_SEL_SDATA3(1)
 			| HDMI_I2S_SEL_SDATA2(2));
 
+=======
+	hdmi_reg_writeb(hdata, HDMI_I2S_PIN_SEL_1, HDMI_I2S_SEL_SDATA1(1)
+			| HDMI_I2S_SEL_SDATA2(4));
+	hdmi_reg_writeb(hdata, HDMI_I2S_PIN_SEL_2, HDMI_I2S_SEL_SDATA3(1)
+			| HDMI_I2S_SEL_SDATA2(2));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdmi_reg_writeb(hdata, HDMI_I2S_PIN_SEL_3, HDMI_I2S_SEL_DSD(0));
 
 	/* I2S_CON_1 & 2 */
@@ -1083,14 +1181,32 @@ static void hdmi_audio_config(struct hdmi_context *hdata)
 			| HDMI_I2S_SET_SDATA_BIT(data_num)
 			| HDMI_I2S_BASIC_FORMAT);
 
+<<<<<<< HEAD
 	/* Configuration of the audio channel status registers */
 	for (i = 0; i < HDMI_I2S_CH_ST_MAXNUM; i++)
 		hdmi_reg_writeb(hdata, HDMI_I2S_CH_ST(i),
 				hdata->audio.params.iec.status[i]);
+=======
+	/* Configure register related to CUV information */
+	hdmi_reg_writeb(hdata, HDMI_I2S_CH_ST_0, HDMI_I2S_CH_STATUS_MODE_0
+			| HDMI_I2S_2AUD_CH_WITHOUT_PREEMPH
+			| HDMI_I2S_COPYRIGHT
+			| HDMI_I2S_LINEAR_PCM
+			| HDMI_I2S_CONSUMER_FORMAT);
+	hdmi_reg_writeb(hdata, HDMI_I2S_CH_ST_1, HDMI_I2S_CD_PLAYER);
+	hdmi_reg_writeb(hdata, HDMI_I2S_CH_ST_2, HDMI_I2S_SET_SOURCE_NUM(0));
+	hdmi_reg_writeb(hdata, HDMI_I2S_CH_ST_3, HDMI_I2S_CLK_ACCUR_LEVEL_2
+			| HDMI_I2S_SET_SMP_FREQ(sample_frq));
+	hdmi_reg_writeb(hdata, HDMI_I2S_CH_ST_4,
+			HDMI_I2S_ORG_SMP_FREQ_44_1
+			| HDMI_I2S_WORD_LEN_MAX24_24BITS
+			| HDMI_I2S_WORD_LEN_MAX_24BITS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdmi_reg_writeb(hdata, HDMI_I2S_CH_ST_CON, HDMI_I2S_CH_STATUS_RELOAD);
 }
 
+<<<<<<< HEAD
 static void hdmi_audio_control(struct hdmi_context *hdata)
 {
 	bool enable = !hdata->audio.mute;
@@ -1101,15 +1217,30 @@ static void hdmi_audio_control(struct hdmi_context *hdata)
 	hdmi_reg_writeb(hdata, HDMI_AUI_CON, enable ?
 			HDMI_AVI_CON_EVERY_VSYNC : HDMI_AUI_CON_NO_TRAN);
 	hdmi_reg_writemask(hdata, HDMI_CON_0, enable ?
+=======
+static void hdmi_audio_control(struct hdmi_context *hdata, bool onoff)
+{
+	if (hdata->dvi_mode)
+		return;
+
+	hdmi_reg_writeb(hdata, HDMI_AUI_CON, onoff ? 2 : 0);
+	hdmi_reg_writemask(hdata, HDMI_CON_0, onoff ?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			HDMI_ASP_EN : HDMI_ASP_DIS, HDMI_ASP_MASK);
 }
 
 static void hdmi_start(struct hdmi_context *hdata, bool start)
 {
+<<<<<<< HEAD
 	struct drm_display_mode *m = &hdata->encoder.crtc->state->mode;
 	u32 val = start ? HDMI_TG_EN : 0;
 
 	if (m->flags & DRM_MODE_FLAG_INTERLACE)
+=======
+	u32 val = start ? HDMI_TG_EN : 0;
+
+	if (hdata->current_mode.flags & DRM_MODE_FLAG_INTERLACE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val |= HDMI_FIELD_EN;
 
 	hdmi_reg_writemask(hdata, HDMI_CON_0, val, HDMI_EN);
@@ -1179,7 +1310,11 @@ static void hdmiphy_wait_for_pll(struct hdmi_context *hdata)
 
 static void hdmi_v13_mode_apply(struct hdmi_context *hdata)
 {
+<<<<<<< HEAD
 	struct drm_display_mode *m = &hdata->encoder.crtc->state->mode;
+=======
+	struct drm_display_mode *m = &hdata->current_mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int val;
 
 	hdmi_reg_writev(hdata, HDMI_H_BLANK_0, 2, m->htotal - m->hdisplay);
@@ -1258,6 +1393,7 @@ static void hdmi_v13_mode_apply(struct hdmi_context *hdata)
 
 static void hdmi_v14_mode_apply(struct hdmi_context *hdata)
 {
+<<<<<<< HEAD
 	struct drm_display_mode *m = &hdata->encoder.crtc->state->mode;
 	struct drm_display_mode *am =
 				&hdata->encoder.crtc->state->adjusted_mode;
@@ -1271,6 +1407,9 @@ static void hdmi_v14_mode_apply(struct hdmi_context *hdata)
 	if ((m->vdisplay != am->vdisplay) &&
 	    (m->hdisplay == 1280 || m->hdisplay == 1024 || m->hdisplay == 1366))
 		hquirk = 258;
+=======
+	struct drm_display_mode *m = &hdata->current_mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdmi_reg_writev(hdata, HDMI_H_BLANK_0, 2, m->htotal - m->hdisplay);
 	hdmi_reg_writev(hdata, HDMI_V_LINE_0, 2, m->vtotal);
@@ -1364,9 +1503,14 @@ static void hdmi_v14_mode_apply(struct hdmi_context *hdata)
 	hdmi_reg_writev(hdata, HDMI_V_SYNC_LINE_AFT_PXL_6_0, 2, 0xffff);
 
 	hdmi_reg_writev(hdata, HDMI_TG_H_FSZ_L, 2, m->htotal);
+<<<<<<< HEAD
 	hdmi_reg_writev(hdata, HDMI_TG_HACT_ST_L, 2,
 					m->htotal - m->hdisplay - hquirk);
 	hdmi_reg_writev(hdata, HDMI_TG_HACT_SZ_L, 2, m->hdisplay + hquirk);
+=======
+	hdmi_reg_writev(hdata, HDMI_TG_HACT_ST_L, 2, m->htotal - m->hdisplay);
+	hdmi_reg_writev(hdata, HDMI_TG_HACT_SZ_L, 2, m->hdisplay);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdmi_reg_writev(hdata, HDMI_TG_V_FSZ_L, 2, m->vtotal);
 	if (hdata->drv_data == &exynos5433_hdmi_driver_data)
 		hdmi_reg_writeb(hdata, HDMI_TG_DECON_EN, 1);
@@ -1404,11 +1548,18 @@ static void hdmiphy_enable_mode_set(struct hdmi_context *hdata, bool enable)
 
 static void hdmiphy_conf_apply(struct hdmi_context *hdata)
 {
+<<<<<<< HEAD
 	struct drm_display_mode *m = &hdata->encoder.crtc->state->mode;
 	int ret;
 	const u8 *phy_conf;
 
 	ret = hdmi_find_phy_conf(hdata, m->clock * 1000);
+=======
+	int ret;
+	const u8 *phy_conf;
+
+	ret = hdmi_find_phy_conf(hdata, hdata->current_mode.clock * 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		DRM_ERROR("failed to find hdmiphy conf\n");
 		return;
@@ -1431,14 +1582,38 @@ static void hdmiphy_conf_apply(struct hdmi_context *hdata)
 	hdmiphy_wait_for_pll(hdata);
 }
 
+<<<<<<< HEAD
 /* Should be called with hdata->mutex mutex held */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hdmi_conf_apply(struct hdmi_context *hdata)
 {
 	hdmi_start(hdata, false);
 	hdmi_conf_init(hdata);
+<<<<<<< HEAD
 	hdmi_audio_config(hdata);
 	hdmi_mode_apply(hdata);
 	hdmi_audio_control(hdata);
+=======
+	hdmi_audio_init(hdata);
+	hdmi_mode_apply(hdata);
+	hdmi_audio_control(hdata, true);
+}
+
+static void hdmi_mode_set(struct drm_encoder *encoder,
+			  struct drm_display_mode *mode,
+			  struct drm_display_mode *adjusted_mode)
+{
+	struct hdmi_context *hdata = encoder_to_hdmi(encoder);
+	struct drm_display_mode *m = adjusted_mode;
+
+	DRM_DEBUG_KMS("xres=%d, yres=%d, refresh=%d, intl=%s\n",
+		m->hdisplay, m->vdisplay,
+		m->vrefresh, (m->flags & DRM_MODE_FLAG_INTERLACE) ?
+		"INTERLACED" : "PROGRESSIVE");
+
+	drm_mode_copy(&hdata->current_mode, m);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hdmi_set_refclk(struct hdmi_context *hdata, bool on)
@@ -1450,7 +1625,10 @@ static void hdmi_set_refclk(struct hdmi_context *hdata, bool on)
 			   SYSREG_HDMI_REFCLK_INT_CLK, on ? ~0 : 0);
 }
 
+<<<<<<< HEAD
 /* Should be called with hdata->mutex mutex held. */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hdmiphy_enable(struct hdmi_context *hdata)
 {
 	if (hdata->powered)
@@ -1473,7 +1651,10 @@ static void hdmiphy_enable(struct hdmi_context *hdata)
 	hdata->powered = true;
 }
 
+<<<<<<< HEAD
 /* Should be called with hdata->mutex mutex held. */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hdmiphy_disable(struct hdmi_context *hdata)
 {
 	if (!hdata->powered)
@@ -1499,18 +1680,24 @@ static void hdmi_enable(struct drm_encoder *encoder)
 {
 	struct hdmi_context *hdata = encoder_to_hdmi(encoder);
 
+<<<<<<< HEAD
 	mutex_lock(&hdata->mutex);
 
 	hdmiphy_enable(hdata);
 	hdmi_conf_apply(hdata);
 
 	mutex_unlock(&hdata->mutex);
+=======
+	hdmiphy_enable(hdata);
+	hdmi_conf_apply(hdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hdmi_disable(struct drm_encoder *encoder)
 {
 	struct hdmi_context *hdata = encoder_to_hdmi(encoder);
 
+<<<<<<< HEAD
 	mutex_lock(&hdata->mutex);
 
 	if (hdata->powered) {
@@ -1531,10 +1718,30 @@ static void hdmi_disable(struct drm_encoder *encoder)
 	}
 
 	mutex_unlock(&hdata->mutex);
+=======
+	if (!hdata->powered)
+		return;
+
+	/*
+	 * The SFRs of VP and Mixer are updated by Vertical Sync of
+	 * Timing generator which is a part of HDMI so the sequence
+	 * to disable TV Subsystem should be as following,
+	 *	VP -> Mixer -> HDMI
+	 *
+	 * To achieve such sequence HDMI is disabled together with HDMI PHY, via
+	 * pipe clock callback.
+	 */
+	cancel_delayed_work(&hdata->hotplug_work);
+	cec_notifier_set_phys_addr(hdata->notifier, CEC_PHYS_ADDR_INVALID);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct drm_encoder_helper_funcs exynos_hdmi_encoder_helper_funcs = {
 	.mode_fixup	= hdmi_mode_fixup,
+<<<<<<< HEAD
+=======
+	.mode_set	= hdmi_mode_set,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable		= hdmi_enable,
 	.disable	= hdmi_disable,
 };
@@ -1543,6 +1750,7 @@ static const struct drm_encoder_funcs exynos_hdmi_encoder_funcs = {
 	.destroy = drm_encoder_cleanup,
 };
 
+<<<<<<< HEAD
 static void hdmi_audio_shutdown(struct device *dev, void *data)
 {
 	struct hdmi_context *hdata = dev_get_drvdata(dev);
@@ -1636,6 +1844,8 @@ static int hdmi_register_audio_device(struct hdmi_context *hdata)
 	return PTR_ERR_OR_ZERO(hdata->audio.pdev);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hdmi_hotplug_work_func(struct work_struct *work)
 {
 	struct hdmi_context *hdata;
@@ -1692,7 +1902,11 @@ static int hdmi_clk_init(struct hdmi_context *hdata)
 	if (!count)
 		return 0;
 
+<<<<<<< HEAD
 	clks = devm_kcalloc(dev, count, sizeof(*clks), GFP_KERNEL);
+=======
+	clks = devm_kzalloc(dev, sizeof(*clks) * count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!clks)
 		return -ENOMEM;
 
@@ -1711,14 +1925,20 @@ static void hdmiphy_clk_enable(struct exynos_drm_clk *clk, bool enable)
 {
 	struct hdmi_context *hdata = container_of(clk, struct hdmi_context,
 						  phy_clk);
+<<<<<<< HEAD
 	mutex_lock(&hdata->mutex);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (enable)
 		hdmiphy_enable(hdata);
 	else
 		hdmiphy_disable(hdata);
+<<<<<<< HEAD
 
 	mutex_unlock(&hdata->mutex);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int hdmi_bridge_init(struct hdmi_context *hdata)
@@ -1929,7 +2149,10 @@ out:
 
 static int hdmi_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct hdmi_audio_infoframe *audio_infoframe;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev = &pdev->dev;
 	struct hdmi_context *hdata;
 	struct resource *res;
@@ -1945,8 +2168,11 @@ static int hdmi_probe(struct platform_device *pdev)
 
 	hdata->dev = dev;
 
+<<<<<<< HEAD
 	mutex_init(&hdata->mutex);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = hdmi_resources_init(hdata);
 	if (ret) {
 		if (ret != -EPROBE_DEFER)
@@ -2006,6 +2232,7 @@ static int hdmi_probe(struct platform_device *pdev)
 
 	pm_runtime_enable(dev);
 
+<<<<<<< HEAD
 	audio_infoframe = &hdata->audio.infoframe;
 	hdmi_audio_infoframe_init(audio_infoframe);
 	audio_infoframe->coding_type = HDMI_AUDIO_CODING_TYPE_STREAM;
@@ -2026,6 +2253,14 @@ static int hdmi_probe(struct platform_device *pdev)
 err_unregister_audio:
 	platform_device_unregister(hdata->audio.pdev);
 
+=======
+	ret = component_add(&pdev->dev, &hdmi_component_ops);
+	if (ret)
+		goto err_notifier_put;
+
+	return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_notifier_put:
 	cec_notifier_put(hdata->notifier);
 	pm_runtime_disable(dev);
@@ -2049,7 +2284,10 @@ static int hdmi_remove(struct platform_device *pdev)
 	cec_notifier_set_phys_addr(hdata->notifier, CEC_PHYS_ADDR_INVALID);
 
 	component_del(&pdev->dev, &hdmi_component_ops);
+<<<<<<< HEAD
 	platform_device_unregister(hdata->audio.pdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cec_notifier_put(hdata->notifier);
 	pm_runtime_disable(&pdev->dev);
@@ -2065,8 +2303,11 @@ static int hdmi_remove(struct platform_device *pdev)
 
 	put_device(&hdata->ddc_adpt->dev);
 
+<<<<<<< HEAD
 	mutex_destroy(&hdata->mutex);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2093,8 +2334,11 @@ static int __maybe_unused exynos_hdmi_resume(struct device *dev)
 
 static const struct dev_pm_ops exynos_hdmi_pm_ops = {
 	SET_RUNTIME_PM_OPS(exynos_hdmi_suspend, exynos_hdmi_resume, NULL)
+<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct platform_driver hdmi_driver = {

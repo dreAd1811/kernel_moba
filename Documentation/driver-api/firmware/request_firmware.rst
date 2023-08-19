@@ -17,6 +17,7 @@ an error is returned.
 
 request_firmware
 ----------------
+<<<<<<< HEAD
 .. kernel-doc:: drivers/base/firmware_loader/main.c
    :functions: request_firmware
 
@@ -28,11 +29,23 @@ firmware_request_nowarn
 request_firmware_direct
 -----------------------
 .. kernel-doc:: drivers/base/firmware_loader/main.c
+=======
+.. kernel-doc:: drivers/base/firmware_class.c
+   :functions: request_firmware
+
+request_firmware_direct
+-----------------------
+.. kernel-doc:: drivers/base/firmware_class.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: request_firmware_direct
 
 request_firmware_into_buf
 -------------------------
+<<<<<<< HEAD
 .. kernel-doc:: drivers/base/firmware_loader/main.c
+=======
+.. kernel-doc:: drivers/base/firmware_class.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: request_firmware_into_buf
 
 Asynchronous firmware requests
@@ -46,6 +59,7 @@ in atomic contexts.
 
 request_firmware_nowait
 -----------------------
+<<<<<<< HEAD
 .. kernel-doc:: drivers/base/firmware_loader/main.c
    :functions: request_firmware_nowait
 
@@ -63,6 +77,11 @@ firmware_request_cache()
 .. kernel-doc:: drivers/base/firmware_loader/main.c
    :functions: firmware_request_cache
 
+=======
+.. kernel-doc:: drivers/base/firmware_class.c
+   :functions: request_firmware_nowait
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 request firmware API expected driver use
 ========================================
 

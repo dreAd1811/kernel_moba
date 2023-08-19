@@ -42,6 +42,7 @@
 				status = "okay";
 			};
 
+<<<<<<< HEAD
 			tcb0: timer@f8008000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -54,6 +55,8 @@
 				};
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i2c0: i2c@f8010000 {
 				status = "okay";
 
@@ -181,7 +184,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		usb0: ohci@500000 {
+=======
+		usb0: ohci@00500000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			num-ports = <1>;
 			atmel,vbus-gpio = <&pioB 7 GPIO_ACTIVE_LOW>;
 			status = "okay";

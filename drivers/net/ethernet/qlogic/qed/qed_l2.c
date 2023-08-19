@@ -98,7 +98,11 @@ int qed_l2_alloc(struct qed_hwfn *p_hwfn)
 		p_l2_info->queues = max_t(u8, rx, tx);
 	}
 
+<<<<<<< HEAD
 	pp_qids = kcalloc(p_l2_info->queues, sizeof(unsigned long *),
+=======
+	pp_qids = kzalloc(sizeof(unsigned long *) * p_l2_info->queues,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  GFP_KERNEL);
 	if (!pp_qids)
 		return -ENOMEM;
@@ -221,9 +225,16 @@ _qed_eth_queue_to_cid(struct qed_hwfn *p_hwfn,
 	struct qed_queue_cid *p_cid;
 	int rc;
 
+<<<<<<< HEAD
 	p_cid = vzalloc(sizeof(*p_cid));
 	if (!p_cid)
 		return NULL;
+=======
+	p_cid = vmalloc(sizeof(*p_cid));
+	if (!p_cid)
+		return NULL;
+	memset(p_cid, 0, sizeof(*p_cid));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p_cid->opaque_fid = opaque_fid;
 	p_cid->cid = cid;
@@ -586,9 +597,12 @@ qed_sp_update_accept_mode(struct qed_hwfn *p_hwfn,
 		SET_FIELD(state, ETH_VPORT_RX_MODE_BCAST_ACCEPT_ALL,
 			  !!(accept_filter & QED_ACCEPT_BCAST));
 
+<<<<<<< HEAD
 		SET_FIELD(state, ETH_VPORT_RX_MODE_ACCEPT_ANY_VNI,
 			  !!(accept_filter & QED_ACCEPT_ANY_VNI));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p_ramrod->rx_mode.state = cpu_to_le16(state);
 		DP_VERBOSE(p_hwfn, QED_MSG_SP,
 			   "p_ramrod->rx_mode.state = 0x%x\n", state);
@@ -744,7 +758,12 @@ int qed_sp_vport_update(struct qed_hwfn *p_hwfn,
 
 	rc = qed_sp_vport_update_rss(p_hwfn, p_ramrod, p_rss_params);
 	if (rc) {
+<<<<<<< HEAD
 		qed_sp_destroy_request(p_hwfn, p_ent);
+=======
+		/* Return spq entry which is taken in qed_sp_init_request()*/
+		qed_spq_return_entry(p_hwfn, p_ent);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
@@ -1363,7 +1382,10 @@ qed_filter_ucast_common(struct qed_hwfn *p_hwfn,
 			DP_NOTICE(p_hwfn,
 				  "%d is not supported yet\n",
 				  p_filter_cmd->opcode);
+<<<<<<< HEAD
 			qed_sp_destroy_request(p_hwfn, *pp_ent);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 
@@ -1631,10 +1653,16 @@ static void __qed_get_vport_pstats_addrlen(struct qed_hwfn *p_hwfn,
 	}
 }
 
+<<<<<<< HEAD
 static void __qed_get_vport_pstats(struct qed_hwfn *p_hwfn,
 				   struct qed_ptt *p_ptt,
 				   struct qed_eth_stats *p_stats,
 				   u16 statistics_bin)
+=======
+static noinline_for_stack void
+__qed_get_vport_pstats(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
+		       struct qed_eth_stats *p_stats, u16 statistics_bin)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct eth_pstorm_per_queue_stat pstats;
 	u32 pstats_addr = 0, pstats_len = 0;
@@ -1661,10 +1689,16 @@ static void __qed_get_vport_pstats(struct qed_hwfn *p_hwfn,
 	    HILO_64_REGPAIR(pstats.error_drop_pkts);
 }
 
+<<<<<<< HEAD
 static void __qed_get_vport_tstats(struct qed_hwfn *p_hwfn,
 				   struct qed_ptt *p_ptt,
 				   struct qed_eth_stats *p_stats,
 				   u16 statistics_bin)
+=======
+static noinline_for_stack void
+__qed_get_vport_tstats(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
+		       struct qed_eth_stats *p_stats, u16 statistics_bin)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tstorm_per_port_stat tstats;
 	u32 tstats_addr, tstats_len;
@@ -1688,8 +1722,11 @@ static void __qed_get_vport_tstats(struct qed_hwfn *p_hwfn,
 	    HILO_64_REGPAIR(tstats.mftag_filter_discard);
 	p_stats->common.mac_filter_discards +=
 	    HILO_64_REGPAIR(tstats.eth_mac_filter_discard);
+<<<<<<< HEAD
 	p_stats->common.gft_filter_drop +=
 		HILO_64_REGPAIR(tstats.eth_gft_drop_pkt);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __qed_get_vport_ustats_addrlen(struct qed_hwfn *p_hwfn,
@@ -1709,10 +1746,16 @@ static void __qed_get_vport_ustats_addrlen(struct qed_hwfn *p_hwfn,
 	}
 }
 
+<<<<<<< HEAD
 static void __qed_get_vport_ustats(struct qed_hwfn *p_hwfn,
 				   struct qed_ptt *p_ptt,
 				   struct qed_eth_stats *p_stats,
 				   u16 statistics_bin)
+=======
+static noinline_for_stack
+void __qed_get_vport_ustats(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
+			    struct qed_eth_stats *p_stats, u16 statistics_bin)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct eth_ustorm_per_queue_stat ustats;
 	u32 ustats_addr = 0, ustats_len = 0;
@@ -1751,10 +1794,16 @@ static void __qed_get_vport_mstats_addrlen(struct qed_hwfn *p_hwfn,
 	}
 }
 
+<<<<<<< HEAD
 static void __qed_get_vport_mstats(struct qed_hwfn *p_hwfn,
 				   struct qed_ptt *p_ptt,
 				   struct qed_eth_stats *p_stats,
 				   u16 statistics_bin)
+=======
+static noinline_for_stack void
+__qed_get_vport_mstats(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
+		       struct qed_eth_stats *p_stats, u16 statistics_bin)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct eth_mstorm_per_queue_stat mstats;
 	u32 mstats_addr = 0, mstats_len = 0;
@@ -1780,9 +1829,15 @@ static void __qed_get_vport_mstats(struct qed_hwfn *p_hwfn,
 	    HILO_64_REGPAIR(mstats.tpa_coalesced_bytes);
 }
 
+<<<<<<< HEAD
 static void __qed_get_vport_port_stats(struct qed_hwfn *p_hwfn,
 				       struct qed_ptt *p_ptt,
 				       struct qed_eth_stats *p_stats)
+=======
+static noinline_for_stack void
+__qed_get_vport_port_stats(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
+			   struct qed_eth_stats *p_stats)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_eth_stats_common *p_common = &p_stats->common;
 	struct port_stats port_stats;
@@ -1865,11 +1920,14 @@ static void __qed_get_vport_port_stats(struct qed_hwfn *p_hwfn,
 		p_ah->tx_1519_to_max_byte_packets =
 		    port_stats.eth.u1.ah1.t1519_to_max;
 	}
+<<<<<<< HEAD
 
 	p_common->link_change_count = qed_rd(p_hwfn, p_ptt,
 					     p_hwfn->mcp_info->port_addr +
 					     offsetof(struct public_port,
 						      link_change_count));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __qed_get_vport_stats(struct qed_hwfn *p_hwfn,
@@ -1977,6 +2035,7 @@ void qed_reset_vport_stats(struct qed_dev *cdev)
 
 	/* PORT statistics are not necessarily reset, so we need to
 	 * read and create a baseline for future statistics.
+<<<<<<< HEAD
 	 * Link change stat is maintained by MFW, return its value as is.
 	 */
 	if (!cdev->reset_stats) {
@@ -2028,6 +2087,42 @@ int
 qed_configure_rfs_ntuple_filter(struct qed_hwfn *p_hwfn,
 				struct qed_spq_comp_cb *p_cb,
 				struct qed_ntuple_filter_params *p_params)
+=======
+	 */
+	if (!cdev->reset_stats)
+		DP_INFO(cdev, "Reset stats not allocated\n");
+	else
+		_qed_get_vport_stats(cdev, cdev->reset_stats);
+}
+
+static void
+qed_arfs_mode_configure(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
+			struct qed_arfs_config_params *p_cfg_params)
+{
+	if (p_cfg_params->arfs_enable) {
+		qed_set_rfs_mode_enable(p_hwfn, p_ptt, p_hwfn->rel_pf_id,
+					p_cfg_params->tcp, p_cfg_params->udp,
+					p_cfg_params->ipv4, p_cfg_params->ipv6);
+		DP_VERBOSE(p_hwfn, QED_MSG_SP,
+			   "tcp = %s, udp = %s, ipv4 = %s, ipv6 =%s\n",
+			   p_cfg_params->tcp ? "Enable" : "Disable",
+			   p_cfg_params->udp ? "Enable" : "Disable",
+			   p_cfg_params->ipv4 ? "Enable" : "Disable",
+			   p_cfg_params->ipv6 ? "Enable" : "Disable");
+	} else {
+		qed_set_rfs_mode_disable(p_hwfn, p_ptt, p_hwfn->rel_pf_id);
+	}
+
+	DP_VERBOSE(p_hwfn, QED_MSG_SP, "Configured ARFS mode : %s\n",
+		   p_cfg_params->arfs_enable ? "Enable" : "Disable");
+}
+
+static int
+qed_configure_rfs_ntuple_filter(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
+				struct qed_spq_comp_cb *p_cb,
+				dma_addr_t p_addr, u16 length, u16 qid,
+				u8 vport_id, bool b_is_add)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rx_update_gft_filter_data *p_ramrod = NULL;
 	struct qed_spq_entry *p_ent = NULL;
@@ -2036,6 +2131,17 @@ qed_configure_rfs_ntuple_filter(struct qed_hwfn *p_hwfn,
 	u8 abs_vport_id = 0;
 	int rc = -EINVAL;
 
+<<<<<<< HEAD
+=======
+	rc = qed_fw_vport(p_hwfn, vport_id, &abs_vport_id);
+	if (rc)
+		return rc;
+
+	rc = qed_fw_l2_queue(p_hwfn, qid, &abs_rx_q_id);
+	if (rc)
+		return rc;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get SPQ entry */
 	memset(&init_data, 0, sizeof(init_data));
 	init_data.cid = qed_spq_get_cid(p_hwfn);
@@ -2056,6 +2162,7 @@ qed_configure_rfs_ntuple_filter(struct qed_hwfn *p_hwfn,
 		return rc;
 
 	p_ramrod = &p_ent->ramrod.rx_update_gft;
+<<<<<<< HEAD
 
 	DMA_REGPAIR_LE(p_ramrod->pkt_hdr_addr, p_params->addr);
 	p_ramrod->pkt_hdr_length = cpu_to_le16(p_params->length);
@@ -2084,10 +2191,19 @@ qed_configure_rfs_ntuple_filter(struct qed_hwfn *p_hwfn,
 	p_ramrod->flow_id = 0;
 	p_ramrod->filter_action = p_params->b_is_add ? GFT_ADD_FILTER
 	    : GFT_DELETE_FILTER;
+=======
+	DMA_REGPAIR_LE(p_ramrod->pkt_hdr_addr, p_addr);
+	p_ramrod->pkt_hdr_length = cpu_to_le16(length);
+	p_ramrod->rx_qid_or_action_icid = cpu_to_le16(abs_rx_q_id);
+	p_ramrod->vport_id = abs_vport_id;
+	p_ramrod->filter_type = RFS_FILTER_TYPE;
+	p_ramrod->filter_action = b_is_add ? GFT_ADD_FILTER : GFT_DELETE_FILTER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DP_VERBOSE(p_hwfn, QED_MSG_SP,
 		   "V[%0x], Q[%04x] - %s filter from 0x%llx [length %04xb]\n",
 		   abs_vport_id, abs_rx_q_id,
+<<<<<<< HEAD
 		   p_params->b_is_add ? "Adding" : "Removing",
 		   (u64)p_params->addr, p_params->length);
 
@@ -2096,6 +2212,11 @@ qed_configure_rfs_ntuple_filter(struct qed_hwfn *p_hwfn,
 err:
 	qed_sp_destroy_request(p_hwfn, p_ent);
 	return rc;
+=======
+		   b_is_add ? "Adding" : "Removing", (u64)p_addr, length);
+
+	return qed_spq_post(p_hwfn, p_ent, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int qed_get_rxq_coalesce(struct qed_hwfn *p_hwfn,
@@ -2201,17 +2322,28 @@ out:
 static int qed_fill_eth_dev_info(struct qed_dev *cdev,
 				 struct qed_dev_eth_info *info)
 {
+<<<<<<< HEAD
 	struct qed_hwfn *p_hwfn = QED_LEADING_HWFN(cdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	memset(info, 0, sizeof(*info));
 
+<<<<<<< HEAD
+=======
+	info->num_tc = 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_PF(cdev)) {
 		int max_vf_vlan_filters = 0;
 		int max_vf_mac_filters = 0;
 
+<<<<<<< HEAD
 		info->num_tc = p_hwfn->hw_info.num_hw_tc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cdev->int_params.out.int_mode == QED_INT_MODE_MSIX) {
 			u16 num_queues = 0;
 
@@ -2263,8 +2395,11 @@ static int qed_fill_eth_dev_info(struct qed_dev *cdev,
 	} else {
 		u16 total_cids = 0;
 
+<<<<<<< HEAD
 		info->num_tc = 1;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Determine queues &  XDP support */
 		for_each_hwfn(cdev, i) {
 			struct qed_hwfn *p_hwfn = &cdev->hwfns[i];
@@ -2451,7 +2586,11 @@ static int qed_update_vport(struct qed_dev *cdev,
 	if (!cdev)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	rss = vzalloc(array_size(sizeof(*rss), cdev->num_hwfns));
+=======
+	rss = vzalloc(sizeof(*rss) * cdev->num_hwfns);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rss)
 		return -ENOMEM;
 
@@ -2571,7 +2710,11 @@ static int qed_start_txq(struct qed_dev *cdev,
 
 	rc = qed_eth_tx_queue_start(p_hwfn,
 				    p_hwfn->hw_info.opaque_fid,
+<<<<<<< HEAD
 				    p_params, p_params->tc,
+=======
+				    p_params, 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    pbl_addr, pbl_size, ret_params);
 
 	if (rc) {
@@ -2799,8 +2942,12 @@ static int qed_configure_filter(struct qed_dev *cdev,
 	}
 }
 
+<<<<<<< HEAD
 static int qed_configure_arfs_searcher(struct qed_dev *cdev,
 				       enum qed_filter_config_mode mode)
+=======
+static int qed_configure_arfs_searcher(struct qed_dev *cdev, bool en_searcher)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_hwfn *p_hwfn = QED_LEADING_HWFN(cdev);
 	struct qed_arfs_config_params arfs_config_params;
@@ -2810,7 +2957,12 @@ static int qed_configure_arfs_searcher(struct qed_dev *cdev,
 	arfs_config_params.udp = true;
 	arfs_config_params.ipv4 = true;
 	arfs_config_params.ipv6 = true;
+<<<<<<< HEAD
 	arfs_config_params.mode = mode;
+=======
+	arfs_config_params.arfs_enable = en_searcher;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qed_arfs_mode_configure(p_hwfn, p_hwfn->p_arfs_ptt,
 				&arfs_config_params);
 	return 0;
@@ -2818,8 +2970,13 @@ static int qed_configure_arfs_searcher(struct qed_dev *cdev,
 
 static void
 qed_arfs_sp_response_handler(struct qed_hwfn *p_hwfn,
+<<<<<<< HEAD
 			     void *cookie,
 			     union event_ring_data *data, u8 fw_return_code)
+=======
+			     void *cookie, union event_ring_data *data,
+			     u8 fw_return_code)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_common_cb_ops *op = p_hwfn->cdev->protocol_ops.common;
 	void *dev = p_hwfn->cdev->ops_cookie;
@@ -2827,10 +2984,17 @@ qed_arfs_sp_response_handler(struct qed_hwfn *p_hwfn,
 	op->arfs_filter_op(dev, cookie, fw_return_code);
 }
 
+<<<<<<< HEAD
 static int
 qed_ntuple_arfs_filter_config(struct qed_dev *cdev,
 			      void *cookie,
 			      struct qed_ntuple_filter_params *params)
+=======
+static int qed_ntuple_arfs_filter_config(struct qed_dev *cdev, void *cookie,
+					 dma_addr_t mapping, u16 length,
+					 u16 vport_id, u16 rx_queue_id,
+					 bool add_filter)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct qed_hwfn *p_hwfn = QED_LEADING_HWFN(cdev);
 	struct qed_spq_comp_cb cb;
@@ -2839,6 +3003,7 @@ qed_ntuple_arfs_filter_config(struct qed_dev *cdev,
 	cb.function = qed_arfs_sp_response_handler;
 	cb.cookie = cookie;
 
+<<<<<<< HEAD
 	if (params->b_is_vf) {
 		if (!qed_iov_is_valid_vfid(p_hwfn, params->vf_id, false,
 					   false)) {
@@ -2852,6 +3017,11 @@ qed_ntuple_arfs_filter_config(struct qed_dev *cdev,
 	}
 
 	rc = qed_configure_rfs_ntuple_filter(p_hwfn, &cb, params);
+=======
+	rc = qed_configure_rfs_ntuple_filter(p_hwfn, p_hwfn->p_arfs_ptt,
+					     &cb, mapping, length, rx_queue_id,
+					     vport_id, add_filter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		DP_NOTICE(p_hwfn,
 			  "Failed to issue a-RFS filter configuration\n");
@@ -2883,6 +3053,7 @@ static int qed_fp_cqe_completion(struct qed_dev *dev,
 				      cqe);
 }
 
+<<<<<<< HEAD
 static int qed_req_bulletin_update_mac(struct qed_dev *cdev, u8 *mac)
 {
 	int i, ret;
@@ -2901,6 +3072,8 @@ static int qed_req_bulletin_update_mac(struct qed_dev *cdev, u8 *mac)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_QED_SRIOV
 extern const struct qed_iov_hv_ops qed_iov_ops_pass;
 #endif
@@ -2938,7 +3111,10 @@ static const struct qed_eth_ops qed_eth_ops_pass = {
 	.ntuple_filter_config = &qed_ntuple_arfs_filter_config,
 	.configure_arfs_searcher = &qed_configure_arfs_searcher,
 	.get_coalesce = &qed_get_coalesce,
+<<<<<<< HEAD
 	.req_bulletin_update_mac = &qed_req_bulletin_update_mac,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct qed_eth_ops *qed_get_eth_ops(void)

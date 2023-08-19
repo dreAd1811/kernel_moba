@@ -63,14 +63,20 @@
 	hsusb2_phy: hsusb2_phy {
 		compatible = "usb-nop-xceiv";
 		reset-gpios = <&gpio3 12 GPIO_ACTIVE_LOW>; /* gpio3_76 HUB_RESET */
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* HS USB Host PHY on PORT 3 */
 	hsusb3_phy: hsusb3_phy {
 		compatible = "usb-nop-xceiv";
 		reset-gpios = <&gpio3 19 GPIO_ACTIVE_LOW>; /* gpio3_83 ETH_RESET */
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	leds {
@@ -181,6 +187,7 @@
 			OMAP5_IOPAD(0x0042, PIN_INPUT_PULLDOWN | MUX_MODE6)  /* llib_wakereqin.gpio1_wk15 */
 		>;
 	};
+<<<<<<< HEAD
 
 	palmas_sys_nirq_pins: pinmux_palmas_sys_nirq_pins {
 		pinctrl-single,pins = <
@@ -188,6 +195,8 @@
 			OMAP5_IOPAD(0x068, PIN_INPUT_PULLUP | MUX_MODE0)
 		>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &omap5_pmx_core {
@@ -421,11 +430,16 @@
 
 	palmas: palmas@48 {
 		compatible = "ti,palmas";
+<<<<<<< HEAD
 		reg = <0x48>;
 		pinctrl-0 = <&palmas_sys_nirq_pins>;
 		pinctrl-names = "default";
 		/* sys_nirq/ext_sys_irq pins get inverted at mpuss wakeupgen */
 		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_SPI 7 IRQ_TYPE_NONE>; /* IRQ_SYS_1N */
+		reg = <0x48>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		interrupt-controller;
 		#interrupt-cells = <2>;
 		ti,system-power-controller;

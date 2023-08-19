@@ -638,7 +638,12 @@ done:	if (!THROTTLE_TX_PKTS)
  * now, or set the card to generates an interrupt when ready
  * for the packet.
  */
+<<<<<<< HEAD
 static int smc_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+=======
+static netdev_tx_t
+smc_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct smc_local *lp = netdev_priv(dev);
 	void __iomem *ioaddr = lp->base;
@@ -2019,10 +2024,24 @@ static int smc_probe(struct net_device *dev, void __iomem *ioaddr,
 #  endif
 	if (lp->cfg.flags & SMC91X_USE_DMA) {
 		dma_cap_mask_t mask;
+<<<<<<< HEAD
 
 		dma_cap_zero(mask);
 		dma_cap_set(DMA_SLAVE, mask);
 		lp->dma_chan = dma_request_channel(mask, NULL, NULL);
+=======
+		struct pxad_param param;
+
+		dma_cap_zero(mask);
+		dma_cap_set(DMA_SLAVE, mask);
+		param.prio = PXAD_PRIO_LOWEST;
+		param.drcmr = -1UL;
+
+		lp->dma_chan =
+			dma_request_slave_channel_compat(mask, pxad_filter_fn,
+							 &param, &dev->dev,
+							 "data");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 
@@ -2286,7 +2305,11 @@ static int smc_drv_probe(struct platform_device *pdev)
 		ret = try_toggle_control_gpio(&pdev->dev, &lp->power_gpio,
 					      "power", 0, 0, 100);
 		if (ret)
+<<<<<<< HEAD
 			return ret;
+=======
+			goto out_free_netdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Optional reset GPIO configured? Minimum 100 ns reset needed
@@ -2295,7 +2318,11 @@ static int smc_drv_probe(struct platform_device *pdev)
 		ret = try_toggle_control_gpio(&pdev->dev, &lp->reset_gpio,
 					      "reset", 0, 0, 100);
 		if (ret)
+<<<<<<< HEAD
 			return ret;
+=======
+			goto out_free_netdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * Need to wait for optional EEPROM to load, max 750 us according

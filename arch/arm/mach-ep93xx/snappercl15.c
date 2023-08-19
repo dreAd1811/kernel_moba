@@ -21,6 +21,10 @@
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/i2c.h>
+<<<<<<< HEAD
+=======
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/fb.h>
 
 #include <linux/mtd/partitions.h>
@@ -126,6 +130,18 @@ static struct ep93xx_eth_data __initdata snappercl15_eth_data = {
 	.phy_id			= 1,
 };
 
+<<<<<<< HEAD
+=======
+static struct i2c_gpio_platform_data __initdata snappercl15_i2c_gpio_data = {
+	.sda_pin		= EP93XX_GPIO_LINE_EEDAT,
+	.sda_is_open_drain	= 0,
+	.scl_pin		= EP93XX_GPIO_LINE_EECLK,
+	.scl_is_open_drain	= 0,
+	.udelay			= 0,
+	.timeout		= 0,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct i2c_board_info __initdata snappercl15_i2c_data[] = {
 	{
 		/* Audio codec */
@@ -151,7 +167,11 @@ static void __init snappercl15_init_machine(void)
 {
 	ep93xx_init_devices();
 	ep93xx_register_eth(&snappercl15_eth_data, 1);
+<<<<<<< HEAD
 	ep93xx_register_i2c(snappercl15_i2c_data,
+=======
+	ep93xx_register_i2c(&snappercl15_i2c_gpio_data, snappercl15_i2c_data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    ARRAY_SIZE(snappercl15_i2c_data));
 	ep93xx_register_fb(&snappercl15_fb_info);
 	snappercl15_register_audio();

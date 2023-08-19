@@ -214,7 +214,12 @@ static ssize_t show_hibernate(struct device *dev,
 	return sprintf(buf, "%d\n", KERN_DT_UPDATE);
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(hibernate, 0644, show_hibernate, store_hibernate);
+=======
+static DEVICE_ATTR(hibernate, S_IWUSR | S_IRUGO,
+		   show_hibernate, store_hibernate);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct bus_type suspend_subsys = {
 	.name = "power",

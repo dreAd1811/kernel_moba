@@ -32,8 +32,11 @@ enum st_accel_type {
 	H3LIS331DL,
 	LIS331DL,
 	LIS3LV02DL,
+<<<<<<< HEAD
 	LIS2DW12,
 	LIS3DHH,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ST_ACCEL_MAX,
 };
 
@@ -54,8 +57,11 @@ enum st_accel_type {
 #define LIS2DH12_ACCEL_DEV_NAME		"lis2dh12_accel"
 #define LIS3L02DQ_ACCEL_DEV_NAME	"lis3l02dq"
 #define LNG2DM_ACCEL_DEV_NAME		"lng2dm"
+<<<<<<< HEAD
 #define LIS2DW12_ACCEL_DEV_NAME		"lis2dw12"
 #define LIS3DHH_ACCEL_DEV_NAME		"lis3dhh"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
 * struct st_sensors_platform_data - default accel platform data

@@ -1,6 +1,32 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 1999 - 2018 Intel Corporation. */
 
+=======
+/*******************************************************************************
+ *
+ *  Intel 10 Gigabit PCI Express Linux driver
+ *  Copyright(c) 1999 - 2016 Intel Corporation.
+ *
+ *  This program is free software; you can redistribute it and/or modify it
+ *  under the terms and conditions of the GNU General Public License,
+ *  version 2, as published by the Free Software Foundation.
+ *
+ *  This program is distributed in the hope it will be useful, but WITHOUT
+ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ *  more details.
+ *
+ *  The full GNU General Public License is included in this distribution in
+ *  the file called "COPYING".
+ *
+ *  Contact Information:
+ *  Linux NICS <linux.nics@intel.com>
+ *  e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ *  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ *
+ ******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ixgbe_x540.h"
 #include "ixgbe_type.h"
 #include "ixgbe_common.h"
@@ -878,9 +904,14 @@ static s32 ixgbe_read_ee_hostif_buffer_X550(struct ixgbe_hw *hw,
 		buffer.hdr.req.checksum = FW_DEFAULT_CHECKSUM;
 
 		/* convert offset from words to bytes */
+<<<<<<< HEAD
 		buffer.address = (__force u32)cpu_to_be32((offset +
 							   current_word) * 2);
 		buffer.length = (__force u16)cpu_to_be16(words_to_read * 2);
+=======
+		buffer.address = cpu_to_be32((offset + current_word) * 2);
+		buffer.length = cpu_to_be16(words_to_read * 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		buffer.pad2 = 0;
 		buffer.pad3 = 0;
 
@@ -930,7 +961,11 @@ static s32 ixgbe_checksum_ptr_x550(struct ixgbe_hw *hw, u16 ptr,
 	u16 length, bufsz, i, start;
 	u16 *local_buffer;
 
+<<<<<<< HEAD
 	bufsz = ARRAY_SIZE(buf);
+=======
+	bufsz = sizeof(buf) / sizeof(buf[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Read a chunk at the pointer location */
 	if (!buffer) {
@@ -1090,9 +1125,15 @@ static s32 ixgbe_read_ee_hostif_X550(struct ixgbe_hw *hw, u16 offset, u16 *data)
 	buffer.hdr.req.checksum = FW_DEFAULT_CHECKSUM;
 
 	/* convert offset from words to bytes */
+<<<<<<< HEAD
 	buffer.address = (__force u32)cpu_to_be32(offset * 2);
 	/* one word */
 	buffer.length = (__force u16)cpu_to_be16(sizeof(u16));
+=======
+	buffer.address = cpu_to_be32(offset * 2);
+	/* one word */
+	buffer.length = cpu_to_be16(sizeof(u16));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = hw->mac.ops.acquire_swfw_sync(hw, mask);
 	if (status)
@@ -1623,12 +1664,19 @@ static s32 ixgbe_supported_sfp_modules_X550em(struct ixgbe_hw *hw, bool *linear)
 }
 
 /**
+<<<<<<< HEAD
  * ixgbe_setup_mac_link_sfp_x550em - Configure the KR PHY for SFP.
  * @hw: pointer to hardware structure
  * @speed: the link speed to force
  * @autoneg_wait_to_complete: unused
  *
  * Configures the extern PHY and the integrated KR PHY for SFP support.
+=======
+ *  ixgbe_setup_mac_link_sfp_x550em - Configure the KR PHY for SFP.
+ *  @hw: pointer to hardware structure
+ *
+ *  Configures the extern PHY and the integrated KR PHY for SFP support.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static s32
 ixgbe_setup_mac_link_sfp_x550em(struct ixgbe_hw *hw,
@@ -1720,8 +1768,11 @@ static s32 ixgbe_setup_sfi_x550a(struct ixgbe_hw *hw, ixgbe_link_speed *speed)
 /**
  * ixgbe_setup_mac_link_sfp_n - Setup internal PHY for native SFP
  * @hw: pointer to hardware structure
+<<<<<<< HEAD
  * @speed: link speed
  * @autoneg_wait_to_complete: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Configure the the integrated PHY for native SFP support.
  */
@@ -1769,8 +1820,11 @@ ixgbe_setup_mac_link_sfp_n(struct ixgbe_hw *hw, ixgbe_link_speed speed,
 /**
  * ixgbe_setup_mac_link_sfp_x550a - Setup internal PHY for SFP
  * @hw: pointer to hardware structure
+<<<<<<< HEAD
  * @speed: link speed
  * @autoneg_wait_to_complete: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Configure the the integrated PHY for SFP support.
  */
@@ -1828,9 +1882,15 @@ ixgbe_setup_mac_link_sfp_x550a(struct ixgbe_hw *hw, ixgbe_link_speed speed,
 			 (IXGBE_CS4227_EDC_MODE_SR << 1));
 
 	if (setup_linear)
+<<<<<<< HEAD
 		reg_phy_ext |= (IXGBE_CS4227_EDC_MODE_CX1 << 1) | 1;
 	else
 		reg_phy_ext |= (IXGBE_CS4227_EDC_MODE_SR << 1) | 1;
+=======
+		reg_phy_ext = (IXGBE_CS4227_EDC_MODE_CX1 << 1) | 1;
+	else
+		reg_phy_ext = (IXGBE_CS4227_EDC_MODE_SR << 1) | 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret_val = hw->phy.ops.write_reg(hw, reg_slice,
 					IXGBE_MDIO_ZERO_DEV_TYPE, reg_phy_ext);
@@ -1846,7 +1906,11 @@ ixgbe_setup_mac_link_sfp_x550a(struct ixgbe_hw *hw, ixgbe_link_speed speed,
  * ixgbe_setup_mac_link_t_X550em - Sets the auto advertised link speed
  * @hw: pointer to hardware structure
  * @speed: new link speed
+<<<<<<< HEAD
  * @autoneg_wait: true when waiting for completion is needed
+=======
+ * @autoneg_wait_to_complete: true when waiting for completion is needed
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Setup internal/external PHY link speed based on link speed, then set
  * external PHY auto advertised link speed.
@@ -1930,8 +1994,11 @@ static s32 ixgbe_check_link_t_X550em(struct ixgbe_hw *hw,
 /**
  * ixgbe_setup_sgmii - Set up link for sgmii
  * @hw: pointer to hardware structure
+<<<<<<< HEAD
  * @speed: unused
  * @autoneg_wait_to_complete: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static s32
 ixgbe_setup_sgmii(struct ixgbe_hw *hw, __always_unused ixgbe_link_speed speed,
@@ -2003,8 +2070,11 @@ ixgbe_setup_sgmii(struct ixgbe_hw *hw, __always_unused ixgbe_link_speed speed,
 /**
  * ixgbe_setup_sgmii_fw - Set up link for sgmii with firmware-controlled PHYs
  * @hw: pointer to hardware structure
+<<<<<<< HEAD
  * @speed: the link speed to force
  * @autoneg_wait: true when waiting for completion is needed
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static s32 ixgbe_setup_sgmii_fw(struct ixgbe_hw *hw, ixgbe_link_speed speed,
 				bool autoneg_wait)
@@ -3187,9 +3257,12 @@ static s32 ixgbe_init_phy_ops_X550em(struct ixgbe_hw *hw)
 
 	/* Identify the PHY or SFP module */
 	ret_val = phy->ops.identify(hw);
+<<<<<<< HEAD
 	if (ret_val == IXGBE_ERR_SFP_NOT_SUPPORTED ||
 	    ret_val == IXGBE_ERR_PHY_ADDR_INVALID)
 		return ret_val;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup function pointers based on detected hardware */
 	ixgbe_init_mac_link_ops_X550em(hw);
@@ -3392,10 +3465,16 @@ static s32 ixgbe_reset_hw_X550em(struct ixgbe_hw *hw)
 	ixgbe_clear_tx_pending(hw);
 
 	/* PHY ops must be identified and initialized prior to reset */
+<<<<<<< HEAD
 	status = hw->phy.ops.init(hw);
 	if (status == IXGBE_ERR_SFP_NOT_SUPPORTED ||
 	    status == IXGBE_ERR_PHY_ADDR_INVALID)
 		return status;
+=======
+
+	/* Identify PHY and related function pointers */
+	status = hw->phy.ops.init(hw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* start the external PHY */
 	if (hw->phy.type == ixgbe_phy_x550em_ext_t) {
@@ -3731,7 +3810,10 @@ static void ixgbe_release_swfw_sync_x550em_a(struct ixgbe_hw *hw, u32 mask)
  * ixgbe_read_phy_reg_x550a - Reads specified PHY register
  * @hw: pointer to hardware structure
  * @reg_addr: 32 bit address of PHY register to read
+<<<<<<< HEAD
  * @device_type: 5 bit device type
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @phy_data: Pointer to read data from PHY register
  *
  * Reads a value from a specified PHY register using the SWFW lock and PHY
@@ -3887,7 +3969,11 @@ static const struct ixgbe_mac_operations mac_ops_X550EM_x_fw = {
 	.write_iosf_sb_reg	= ixgbe_write_iosf_sb_reg_x550,
 };
 
+<<<<<<< HEAD
 static const struct ixgbe_mac_operations mac_ops_x550em_a = {
+=======
+static struct ixgbe_mac_operations mac_ops_x550em_a = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	X550_COMMON_MAC
 	.led_on			= ixgbe_led_on_t_x550em,
 	.led_off		= ixgbe_led_off_t_x550em,
@@ -3908,7 +3994,11 @@ static const struct ixgbe_mac_operations mac_ops_x550em_a = {
 	.write_iosf_sb_reg	= ixgbe_write_iosf_sb_reg_x550a,
 };
 
+<<<<<<< HEAD
 static const struct ixgbe_mac_operations mac_ops_x550em_a_fw = {
+=======
+static struct ixgbe_mac_operations mac_ops_x550em_a_fw = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	X550_COMMON_MAC
 	.led_on			= ixgbe_led_on_generic,
 	.led_off		= ixgbe_led_off_generic,

@@ -268,8 +268,14 @@ static size_t eeh_dump_dev_log(struct eeh_dev *edev, char *buf, size_t len)
 	return n;
 }
 
+<<<<<<< HEAD
 static void *eeh_dump_pe_log(struct eeh_pe *pe, void *flag)
 {
+=======
+static void *eeh_dump_pe_log(void *data, void *flag)
+{
+	struct eeh_pe *pe = data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct eeh_dev *edev, *tmp;
 	size_t *plen = flag;
 
@@ -407,7 +413,13 @@ static int eeh_phb_check_failure(struct eeh_pe *pe)
 	/* Check PHB state */
 	ret = eeh_ops->get_state(phb_pe, NULL);
 	if ((ret < 0) ||
+<<<<<<< HEAD
 	    (ret == EEH_STATE_NOT_SUPPORT) || eeh_state_active(ret)) {
+=======
+	    (ret == EEH_STATE_NOT_SUPPORT) ||
+	    (ret & (EEH_STATE_MMIO_ACTIVE | EEH_STATE_DMA_ACTIVE)) ==
+	    (EEH_STATE_MMIO_ACTIVE | EEH_STATE_DMA_ACTIVE)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = 0;
 		goto out;
 	}
@@ -444,6 +456,10 @@ out:
 int eeh_dev_check_failure(struct eeh_dev *edev)
 {
 	int ret;
+<<<<<<< HEAD
+=======
+	int active_flags = (EEH_STATE_MMIO_ACTIVE | EEH_STATE_DMA_ACTIVE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	struct device_node *dn;
 	struct pci_dev *dev;
@@ -535,7 +551,12 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
 	 * state, PE is in good state.
 	 */
 	if ((ret < 0) ||
+<<<<<<< HEAD
 	    (ret == EEH_STATE_NOT_SUPPORT) || eeh_state_active(ret)) {
+=======
+	    (ret == EEH_STATE_NOT_SUPPORT) ||
+	    ((ret & active_flags) == active_flags)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		eeh_stats.false_positives++;
 		pe->false_positives++;
 		rc = 0;
@@ -555,12 +576,18 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
 
 		/* Frozen parent PE ? */
 		ret = eeh_ops->get_state(parent_pe, NULL);
+<<<<<<< HEAD
 		if (ret > 0 && !eeh_state_active(ret)) {
 			pe = parent_pe;
 			pr_err("EEH: Failure of PHB#%x-PE#%x will be handled at parent PHB#%x-PE#%x.\n",
 			       pe->phb->global_number, pe->addr,
 			       pe->phb->global_number, parent_pe->addr);
 		}
+=======
+		if (ret > 0 &&
+		    (ret & active_flags) != active_flags)
+			pe = parent_pe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Next parent level */
 		parent_pe = parent_pe->parent;
@@ -703,9 +730,15 @@ int eeh_pci_enable(struct eeh_pe *pe, int function)
 	return rc;
 }
 
+<<<<<<< HEAD
 static void *eeh_disable_and_save_dev_state(struct eeh_dev *edev,
 					    void *userdata)
 {
+=======
+static void *eeh_disable_and_save_dev_state(void *data, void *userdata)
+{
+	struct eeh_dev *edev = data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev = eeh_dev_to_pci_dev(edev);
 	struct pci_dev *dev = userdata;
 
@@ -731,8 +764,14 @@ static void *eeh_disable_and_save_dev_state(struct eeh_dev *edev,
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void *eeh_restore_dev_state(struct eeh_dev *edev, void *userdata)
 {
+=======
+static void *eeh_restore_dev_state(void *data, void *userdata)
+{
+	struct eeh_dev *edev = data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
 	struct pci_dev *pdev = eeh_dev_to_pci_dev(edev);
 	struct pci_dev *dev = userdata;
@@ -751,6 +790,7 @@ static void *eeh_restore_dev_state(struct eeh_dev *edev, void *userdata)
 	return NULL;
 }
 
+<<<<<<< HEAD
 int eeh_restore_vf_config(struct pci_dn *pdn)
 {
 	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
@@ -810,6 +850,8 @@ int eeh_restore_vf_config(struct pci_dn *pdn)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * pcibios_set_pcie_reset_state - Set PCI-E reset state
  * @dev: pci device struct
@@ -872,10 +914,18 @@ int pcibios_set_pcie_reset_state(struct pci_dev *dev, enum pcie_reset_state stat
  * the indicated device and its children so that the bunch of the
  * devices could be reset properly.
  */
+<<<<<<< HEAD
 static void *eeh_set_dev_freset(struct eeh_dev *edev, void *flag)
 {
 	struct pci_dev *dev;
 	unsigned int *freset = (unsigned int *)flag;
+=======
+static void *eeh_set_dev_freset(void *data, void *flag)
+{
+	struct pci_dev *dev;
+	unsigned int *freset = (unsigned int *)flag;
+	struct eeh_dev *edev = (struct eeh_dev *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = eeh_dev_to_pci_dev(edev);
 	if (dev)
@@ -898,6 +948,10 @@ static void *eeh_set_dev_freset(struct eeh_dev *edev, void *flag)
  */
 int eeh_pe_reset_full(struct eeh_pe *pe)
 {
+<<<<<<< HEAD
+=======
+	int active_flags = (EEH_STATE_MMIO_ACTIVE | EEH_STATE_DMA_ACTIVE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int reset_state = (EEH_PE_RESET | EEH_PE_CFG_BLOCKED);
 	int type = EEH_RESET_HOT;
 	unsigned int freset = 0;
@@ -928,7 +982,11 @@ int eeh_pe_reset_full(struct eeh_pe *pe)
 
 		/* Wait until the PE is in a functioning state */
 		state = eeh_ops->wait_state(pe, PCI_BUS_RESET_WAIT_MSEC);
+<<<<<<< HEAD
 		if (eeh_state_active(state))
+=======
+		if ((state & active_flags) == active_flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		if (state < 0) {
@@ -1040,6 +1098,7 @@ static struct notifier_block eeh_reboot_nb = {
 	.notifier_call = eeh_reboot_notifier,
 };
 
+<<<<<<< HEAD
 void eeh_probe_devices(void)
 {
 	struct pci_controller *hose, *tmp;
@@ -1052,6 +1111,8 @@ void eeh_probe_devices(void)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * eeh_init - EEH initialization
  *
@@ -1067,11 +1128,30 @@ void eeh_probe_devices(void)
  * Even if force-off is set, the EEH hardware is still enabled, so that
  * newer systems can boot.
  */
+<<<<<<< HEAD
 static int eeh_init(void)
 {
 	struct pci_controller *hose, *tmp;
 	int ret = 0;
 
+=======
+int eeh_init(void)
+{
+	struct pci_controller *hose, *tmp;
+	struct pci_dn *pdn;
+	static int cnt = 0;
+	int ret = 0;
+
+	/*
+	 * We have to delay the initialization on PowerNV after
+	 * the PCI hierarchy tree has been built because the PEs
+	 * are figured out based on PCI devices instead of device
+	 * tree nodes
+	 */
+	if (machine_is(powernv) && cnt++ <= 0)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Register reboot notifier */
 	ret = register_reboot_notifier(&eeh_reboot_nb);
 	if (ret) {
@@ -1097,11 +1177,34 @@ static int eeh_init(void)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	eeh_probe_devices();
 
 	if (eeh_enabled())
 		pr_info("EEH: PCI Enhanced I/O Error Handling Enabled\n");
 	else if (!eeh_has_flag(EEH_POSTPONED_PROBE))
+=======
+	/* Enable EEH for all adapters */
+	list_for_each_entry_safe(hose, tmp, &hose_list, list_node) {
+		pdn = hose->pci_data;
+		traverse_pci_dn(pdn, eeh_ops->probe, NULL);
+	}
+
+	/*
+	 * Call platform post-initialization. Actually, It's good chance
+	 * to inform platform that EEH is ready to supply service if the
+	 * I/O cache stuff has been built up.
+	 */
+	if (eeh_ops->post_init) {
+		ret = eeh_ops->post_init();
+		if (ret)
+			return ret;
+	}
+
+	if (eeh_enabled())
+		pr_info("EEH: PCI Enhanced I/O Error Handling Enabled\n");
+	else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_info("EEH: No capable adapters found\n");
 
 	return ret;
@@ -1361,15 +1464,26 @@ static int eeh_pe_change_owner(struct eeh_pe *pe)
 	struct eeh_dev *edev, *tmp;
 	struct pci_dev *pdev;
 	struct pci_device_id *id;
+<<<<<<< HEAD
 	int ret;
 
 	/* Check PE state */
+=======
+	int flags, ret;
+
+	/* Check PE state */
+	flags = (EEH_STATE_MMIO_ACTIVE | EEH_STATE_DMA_ACTIVE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = eeh_ops->get_state(pe, NULL);
 	if (ret < 0 || ret == EEH_STATE_NOT_SUPPORT)
 		return 0;
 
 	/* Unfrozen PE, nothing to do */
+<<<<<<< HEAD
 	if (eeh_state_active(ret))
+=======
+	if ((ret & flags) == flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Frozen PE, check if it needs PE level reset */
@@ -1790,6 +1904,21 @@ static int proc_eeh_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int proc_eeh_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, proc_eeh_show, NULL);
+}
+
+static const struct file_operations proc_eeh_operations = {
+	.open      = proc_eeh_open,
+	.read      = seq_read,
+	.llseek    = seq_lseek,
+	.release   = single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DEBUG_FS
 static int eeh_enable_dbgfs_set(void *data, u64 val)
 {
@@ -1798,6 +1927,13 @@ static int eeh_enable_dbgfs_set(void *data, u64 val)
 	else
 		eeh_add_flag(EEH_FORCE_DISABLED);
 
+<<<<<<< HEAD
+=======
+	/* Notify the backend */
+	if (eeh_ops->post_init)
+		eeh_ops->post_init();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1831,7 +1967,11 @@ DEFINE_SIMPLE_ATTRIBUTE(eeh_freeze_dbgfs_ops, eeh_freeze_dbgfs_get,
 static int __init eeh_init_proc(void)
 {
 	if (machine_is(pseries) || machine_is(powernv)) {
+<<<<<<< HEAD
 		proc_create_single("powerpc/eeh", 0, NULL, proc_eeh_show);
+=======
+		proc_create("powerpc/eeh", 0, NULL, &proc_eeh_operations);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DEBUG_FS
 		debugfs_create_file("eeh_enable", 0600,
                                     powerpc_debugfs_root, NULL,

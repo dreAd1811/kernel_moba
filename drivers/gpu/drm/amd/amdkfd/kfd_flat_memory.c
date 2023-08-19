@@ -275,6 +275,7 @@
  * for FLAT_* / S_LOAD operations.
  */
 
+<<<<<<< HEAD
 #define MAKE_GPUVM_APP_BASE_VI(gpu_num) \
 	(((uint64_t)(gpu_num) << 61) + 0x1000000000000L)
 
@@ -283,10 +284,22 @@
 
 #define MAKE_SCRATCH_APP_BASE_VI() \
 	(((uint64_t)(0x1UL) << 61) + 0x100000000L)
+=======
+#define MAKE_GPUVM_APP_BASE(gpu_num) \
+	(((uint64_t)(gpu_num) << 61) + 0x1000000000000L)
+
+#define MAKE_GPUVM_APP_LIMIT(base) \
+	(((uint64_t)(base) & \
+		0xFFFFFF0000000000UL) | 0xFFFFFFFFFFL)
+
+#define MAKE_SCRATCH_APP_BASE(gpu_num) \
+	(((uint64_t)(gpu_num) << 61) + 0x100000000L)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAKE_SCRATCH_APP_LIMIT(base) \
 	(((uint64_t)base & 0xFFFFFFFF00000000UL) | 0xFFFFFFFF)
 
+<<<<<<< HEAD
 #define MAKE_LDS_APP_BASE_VI() \
 	(((uint64_t)(0x1UL) << 61) + 0x0)
 #define MAKE_LDS_APP_LIMIT(base) \
@@ -361,6 +374,13 @@ static void kfd_init_apertures_v9(struct kfd_process_device *pdd, uint8_t id)
 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
 }
 
+=======
+#define MAKE_LDS_APP_BASE(gpu_num) \
+	(((uint64_t)(gpu_num) << 61) + 0x0)
+#define MAKE_LDS_APP_LIMIT(base) \
+	(((uint64_t)(base) & 0xFFFFFFFF00000000UL) | 0xFFFFFFFF)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int kfd_init_apertures(struct kfd_process *process)
 {
 	uint8_t id  = 0;
@@ -368,19 +388,31 @@ int kfd_init_apertures(struct kfd_process *process)
 	struct kfd_process_device *pdd;
 
 	/*Iterating over all devices*/
+<<<<<<< HEAD
 	while (kfd_topology_enum_kfd_devices(id, &dev) == 0) {
 		if (!dev) {
 			id++; /* Skip non GPU devices */
 			continue;
 		}
+=======
+	while ((dev = kfd_topology_enum_kfd_devices(id)) != NULL &&
+		id < NUM_OF_SUPPORTED_GPUS) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pdd = kfd_create_process_device_data(dev, process);
 		if (!pdd) {
 			pr_err("Failed to create process device data\n");
+<<<<<<< HEAD
 			return -ENOMEM;
 		}
 		/*
 		 * For 64 bit process apertures will be statically reserved in
+=======
+			return -1;
+		}
+		/*
+		 * For 64 bit process aperture will be statically reserved in
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * the x86_64 non canonical process address space
 		 * amdkfd doesn't currently support apertures for 32 bit process
 		 */
@@ -389,6 +421,7 @@ int kfd_init_apertures(struct kfd_process *process)
 			pdd->gpuvm_base = pdd->gpuvm_limit = 0;
 			pdd->scratch_base = pdd->scratch_limit = 0;
 		} else {
+<<<<<<< HEAD
 			switch (dev->device_info->asic_family) {
 			case CHIP_KAVERI:
 			case CHIP_HAWAII:
@@ -416,6 +449,25 @@ int kfd_init_apertures(struct kfd_process *process)
 				pdd->qpd.cwsr_base = SVM_CWSR_BASE;
 				pdd->qpd.ib_base = SVM_IB_BASE;
 			}
+=======
+			/*
+			 * node id couldn't be 0 - the three MSB bits of
+			 * aperture shoudn't be 0
+			 */
+			pdd->lds_base = MAKE_LDS_APP_BASE(id + 1);
+
+			pdd->lds_limit = MAKE_LDS_APP_LIMIT(pdd->lds_base);
+
+			pdd->gpuvm_base = MAKE_GPUVM_APP_BASE(id + 1);
+
+			pdd->gpuvm_limit =
+					MAKE_GPUVM_APP_LIMIT(pdd->gpuvm_base);
+
+			pdd->scratch_base = MAKE_SCRATCH_APP_BASE(id + 1);
+
+			pdd->scratch_limit =
+				MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		dev_dbg(kfd_device, "node id %u\n", id);

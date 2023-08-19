@@ -73,9 +73,12 @@ static void req_retry(struct rxe_qp *qp)
 	int npsn;
 	int first = 1;
 
+<<<<<<< HEAD
 	wqe = queue_head(qp->sq.queue);
 	npsn = (qp->comp.psn - wqe->first_psn) & BTH_PSN_MASK;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qp->req.wqe_index	= consumer_index(qp->sq.queue);
 	qp->req.psn		= qp->comp.psn;
 	qp->req.opcode		= -1;
@@ -107,20 +110,40 @@ static void req_retry(struct rxe_qp *qp)
 		if (first) {
 			first = 0;
 
+<<<<<<< HEAD
 			if (mask & WR_WRITE_OR_SEND_MASK)
 				retry_first_write_send(qp, wqe, mask, npsn);
 
 			if (mask & WR_READ_MASK)
 				wqe->iova += npsn * qp->mtu;
+=======
+			if (mask & WR_WRITE_OR_SEND_MASK) {
+				npsn = (qp->comp.psn - wqe->first_psn) &
+					BTH_PSN_MASK;
+				retry_first_write_send(qp, wqe, mask, npsn);
+			}
+
+			if (mask & WR_READ_MASK) {
+				npsn = (wqe->dma.length - wqe->dma.resid) /
+					qp->mtu;
+				wqe->iova += npsn * qp->mtu;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		wqe->state = wqe_state_posted;
 	}
 }
 
+<<<<<<< HEAD
 void rnr_nak_timer(struct timer_list *t)
 {
 	struct rxe_qp *qp = from_timer(qp, t, rnr_nak_timer);
+=======
+void rnr_nak_timer(unsigned long data)
+{
+	struct rxe_qp *qp = (struct rxe_qp *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("qp#%d rnr nak timer fired\n", qp_num(qp));
 	rxe_run_task(&qp->req.task, 1);
@@ -435,7 +458,11 @@ static struct sk_buff *init_req_packet(struct rxe_qp *qp,
 	if (pkt->mask & RXE_RETH_MASK) {
 		reth_set_rkey(pkt, ibwr->wr.rdma.rkey);
 		reth_set_va(pkt, wqe->iova);
+<<<<<<< HEAD
 		reth_set_len(pkt, wqe->dma.length);
+=======
+		reth_set_len(pkt, wqe->dma.resid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (pkt->mask & RXE_IMMDT_MASK)
@@ -490,13 +517,26 @@ static int fill_packet(struct rxe_qp *qp, struct rxe_send_wqe *wqe,
 			wqe->dma.resid -= paylen;
 			wqe->dma.sge_offset += paylen;
 		} else {
+<<<<<<< HEAD
 			err = copy_data(qp->pd, 0, &wqe->dma,
+=======
+			err = copy_data(rxe, qp->pd, 0, &wqe->dma,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					payload_addr(pkt), paylen,
 					from_mem_obj,
 					&crc);
 			if (err)
 				return err;
 		}
+<<<<<<< HEAD
+=======
+		if (bth_pad(pkt)) {
+			u8 *pad = payload_addr(pkt) + paylen;
+
+			memset(pad, 0, bth_pad(pkt));
+			crc = rxe_crc32(rxe, crc, pad, bth_pad(pkt));
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	p = payload_addr(pkt) + paylen + bth_pad(pkt);
 
@@ -713,7 +753,10 @@ next_wqe:
 
 	if (fill_packet(qp, wqe, &pkt, skb, payload)) {
 		pr_debug("qp#%d Error during fill packet\n", qp_num(qp));
+<<<<<<< HEAD
 		kfree_skb(skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -745,6 +788,10 @@ next_wqe:
 	goto next_wqe;
 
 err:
+<<<<<<< HEAD
+=======
+	kfree_skb(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wqe->status = IB_WC_LOC_PROT_ERR;
 	wqe->state = wqe_state_error;
 	__rxe_do_task(&qp->comp.task);

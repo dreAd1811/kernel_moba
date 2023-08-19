@@ -1,12 +1,25 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the iWave-RZG1M-20M Qseven SOM
  *
  * Copyright (C) 2017 Renesas Electronics Corp.
+<<<<<<< HEAD
  */
 
 #include "r8a7743.dtsi"
 #include <dt-bindings/gpio/gpio.h>
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public License
+ * version 2.  This program is licensed "as is" without any warranty of any
+ * kind, whether express or implied.
+ */
+
+#include "r8a7743.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "iwave,g20m", "renesas,r8a7743";
@@ -31,10 +44,13 @@
 	};
 };
 
+<<<<<<< HEAD
 &cmt0 {
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &extal_clk {
 	clock-frequency = <20000000>;
 };
@@ -44,6 +60,7 @@
 		groups = "mmc_data8_b", "mmc_ctrl";
 		function = "mmc";
 	};
+<<<<<<< HEAD
 
 	qspi_pins: qspi {
 		groups = "qspi_ctrl", "qspi_data2";
@@ -55,6 +72,8 @@
 		function = "sdhi0";
 		power-source = <3300>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &mmcif0 {
@@ -66,6 +85,7 @@
 	non-removable;
 	status = "okay";
 };
+<<<<<<< HEAD
 
 &qspi {
 	pinctrl-0 = <&qspi_pins>;
@@ -102,3 +122,5 @@
 	cd-gpios = <&gpio7 11 GPIO_ACTIVE_LOW>;
 	status = "okay";
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

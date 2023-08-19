@@ -145,6 +145,7 @@ extern int __get_user_64t_1(void *);
 extern int __get_user_64t_2(void *);
 extern int __get_user_64t_4(void *);
 
+<<<<<<< HEAD
 #define __GUP_CLOBBER_1	"lr", "cc"
 #ifdef CONFIG_CPU_USE_DOMAINS
 #define __GUP_CLOBBER_2	"ip", "lr", "cc"
@@ -154,12 +155,27 @@ extern int __get_user_64t_4(void *);
 #define __GUP_CLOBBER_4	"lr", "cc"
 #define __GUP_CLOBBER_32t_8 "lr", "cc"
 #define __GUP_CLOBBER_8	"lr", "cc"
+=======
+#define __GUP_CLOBBER_1	"lr", "cc" __asmbl_clobber("ip")
+#ifdef CONFIG_CPU_USE_DOMAINS
+#define __GUP_CLOBBER_2	"ip", "lr", "cc"
+#else
+#define __GUP_CLOBBER_2 "lr", "cc" __asmbl_clobber("ip")
+#endif
+#define __GUP_CLOBBER_4	"lr", "cc" __asmbl_clobber("ip")
+#define __GUP_CLOBBER_32t_8 "lr", "cc" __asmbl_clobber("ip")
+#define __GUP_CLOBBER_8	"lr", "cc" __asmbl_clobber("ip")
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define __get_user_x(__r2, __p, __e, __l, __s)				\
 	   __asm__ __volatile__ (					\
 		__asmeq("%0", "r0") __asmeq("%1", "r2")			\
 		__asmeq("%3", "r1")					\
+<<<<<<< HEAD
 		"bl	__get_user_" #__s				\
+=======
+		__asmbl("", "ip", "__get_user_" #__s)			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "=&r" (__e), "=r" (__r2)				\
 		: "0" (__p), "r" (__l)					\
 		: __GUP_CLOBBER_##__s)
@@ -181,7 +197,11 @@ extern int __get_user_64t_4(void *);
 	   __asm__ __volatile__ (					\
 		__asmeq("%0", "r0") __asmeq("%1", "r2")			\
 		__asmeq("%3", "r1")					\
+<<<<<<< HEAD
 		"bl	__get_user_64t_" #__s				\
+=======
+		__asmbl("", "ip", "__get_user_64t_" #__s)		\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "=&r" (__e), "=r" (__r2)				\
 		: "0" (__p), "r" (__l)					\
 		: __GUP_CLOBBER_##__s)
@@ -193,7 +213,11 @@ extern int __get_user_64t_4(void *);
 #define __get_user_check(x, p)						\
 	({								\
 		unsigned long __limit = current_thread_info()->addr_limit - 1; \
+<<<<<<< HEAD
 		register typeof(*(p)) __user *__p asm("r0") = (p);	\
+=======
+		register const typeof(*(p)) __user *__p asm("r0") = (p);\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		register __inttype(x) __r2 asm("r2");			\
 		register unsigned long __l asm("r1") = __limit;		\
 		register int __e asm("r0");				\
@@ -251,7 +275,11 @@ extern int __put_user_8(void *, unsigned long long);
 		__asm__ __volatile__ (					\
 			__asmeq("%0", "r0") __asmeq("%2", "r2")		\
 			__asmeq("%3", "r1")				\
+<<<<<<< HEAD
 			"bl	__put_user_" #__s			\
+=======
+			__asmbl("", "ip", "__put_user_" #__s)		\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			: "=&r" (__e)					\
 			: "0" (__p), "r" (__r2), "r" (__l)		\
 			: "ip", "lr", "cc");				\
@@ -349,6 +377,16 @@ do {									\
 #define __get_user_asm_byte(x, addr, err)			\
 	__get_user_asm(x, addr, err, ldrb)
 
+<<<<<<< HEAD
+=======
+#if __LINUX_ARM_ARCH__ >= 6
+
+#define __get_user_asm_half(x, addr, err)			\
+	__get_user_asm(x, addr, err, ldrh)
+
+#else
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ARMEB__
 #define __get_user_asm_half(x, __gu_addr, err)			\
 ({								\
@@ -367,6 +405,11 @@ do {									\
 })
 #endif
 
+<<<<<<< HEAD
+=======
+#endif /* __LINUX_ARM_ARCH__ >= 6 */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __get_user_asm_word(x, addr, err)			\
 	__get_user_asm(x, addr, err, ldr)
 #endif
@@ -442,6 +485,16 @@ do {									\
 #define __put_user_asm_byte(x, __pu_addr, err)			\
 	__put_user_asm(x, __pu_addr, err, strb)
 
+<<<<<<< HEAD
+=======
+#if __LINUX_ARM_ARCH__ >= 6
+
+#define __put_user_asm_half(x, __pu_addr, err)			\
+	__put_user_asm(x, __pu_addr, err, strh)
+
+#else
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ARMEB__
 #define __put_user_asm_half(x, __pu_addr, err)			\
 ({								\
@@ -458,6 +511,11 @@ do {									\
 })
 #endif
 
+<<<<<<< HEAD
+=======
+#endif /* __LINUX_ARM_ARCH__ >= 6 */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __put_user_asm_word(x, __pu_addr, err)			\
 	__put_user_asm(x, __pu_addr, err, str)
 

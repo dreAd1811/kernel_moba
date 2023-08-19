@@ -27,7 +27,10 @@
 #include <asm/barrier.h>
 #include <asm/cacheflush.h>
 #include <asm/cputype.h>
+<<<<<<< HEAD
 #include <asm/daifflags.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/irqflags.h>
 #include <asm/kexec.h>
 #include <asm/memory.h>
@@ -41,6 +44,10 @@
 #include <asm/suspend.h>
 #include <asm/sysreg.h>
 #include <asm/virt.h>
+<<<<<<< HEAD
+=======
+#include <soc/qcom/boot_stats.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Hibernate core relies on this value being 0 on resume, and marks it
@@ -85,6 +92,17 @@ static struct arch_hibernate_hdr {
 	void		(*reenter_kernel)(void);
 
 	/*
+<<<<<<< HEAD
+=======
+	 * Another entry point if jump to kernel happens with mmu disabled,
+	 * generally done when restoring hibernation image from bootloader
+	 * context
+	 */
+
+	phys_addr_t	phys_reenter_kernel;
+
+	/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * We need to know where the __hyp_stub_vectors are after restore to
 	 * re-configure el2.
 	 */
@@ -127,6 +145,10 @@ int arch_hibernation_header_save(void *addr, unsigned int max_size)
 	arch_hdr_invariants(&hdr->invariants);
 	hdr->ttbr1_el1		= __pa_symbol(swapper_pg_dir);
 	hdr->reenter_kernel	= _cpu_resume;
+<<<<<<< HEAD
+=======
+	hdr->phys_reenter_kernel  = __pa(cpu_resume);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We can't use __hyp_get_vectors() because kvm may still be loaded */
 	if (el2_reset_needed())
@@ -202,10 +224,17 @@ static int create_safe_exec_page(void *src_start, size_t length,
 				 gfp_t mask)
 {
 	int rc = 0;
+<<<<<<< HEAD
 	pgd_t *pgdp;
 	pud_t *pudp;
 	pmd_t *pmdp;
 	pte_t *ptep;
+=======
+	pgd_t *pgd;
+	pud_t *pud;
+	pmd_t *pmd;
+	pte_t *pte;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long dst = (unsigned long)allocator(mask);
 
 	if (!dst) {
@@ -214,6 +243,7 @@ static int create_safe_exec_page(void *src_start, size_t length,
 	}
 
 	memcpy((void *)dst, src_start, length);
+<<<<<<< HEAD
 	__flush_icache_range(dst, dst + length);
 
 	pgdp = pgd_offset_raw(allocator(mask), dst_addr);
@@ -248,6 +278,42 @@ static int create_safe_exec_page(void *src_start, size_t length,
 
 	ptep = pte_offset_kernel(pmdp, dst_addr);
 	set_pte(ptep, pfn_pte(virt_to_pfn(dst), PAGE_KERNEL_EXEC));
+=======
+	flush_icache_range(dst, dst + length);
+
+	pgd = pgd_offset_raw(allocator(mask), dst_addr);
+	if (pgd_none(*pgd)) {
+		pud = allocator(mask);
+		if (!pud) {
+			rc = -ENOMEM;
+			goto out;
+		}
+		pgd_populate(&init_mm, pgd, pud);
+	}
+
+	pud = pud_offset(pgd, dst_addr);
+	if (pud_none(*pud)) {
+		pmd = allocator(mask);
+		if (!pmd) {
+			rc = -ENOMEM;
+			goto out;
+		}
+		pud_populate(&init_mm, pud, pmd);
+	}
+
+	pmd = pmd_offset(pud, dst_addr);
+	if (pmd_none(*pmd)) {
+		pte = allocator(mask);
+		if (!pte) {
+			rc = -ENOMEM;
+			goto out;
+		}
+		pmd_populate_kernel(&init_mm, pmd, pte);
+	}
+
+	pte = pte_offset_kernel(pmd, dst_addr);
+	set_pte(pte, pfn_pte(virt_to_pfn(dst), PAGE_KERNEL_EXEC));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Load our new page tables. A strict BBM approach requires that we
@@ -263,7 +329,11 @@ static int create_safe_exec_page(void *src_start, size_t length,
 	 */
 	cpu_set_reserved_ttbr0();
 	local_flush_tlb_all();
+<<<<<<< HEAD
 	write_sysreg(phys_to_ttbr(virt_to_phys(pgdp)), ttbr0_el1);
+=======
+	write_sysreg(virt_to_phys(pgd), ttbr0_el1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isb();
 
 	*phys_dst_addr = virt_to_phys((void *)dst);
@@ -285,7 +355,11 @@ int swsusp_arch_suspend(void)
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
 	flags = local_daif_save();
+=======
+	local_dbg_save(flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (__cpu_suspend_enter(&state)) {
 		/* make the crash dump kernel image visible/saveable */
@@ -294,6 +368,10 @@ int swsusp_arch_suspend(void)
 		sleep_cpu = smp_processor_id();
 		ret = swsusp_save();
 	} else {
+<<<<<<< HEAD
+=======
+		place_marker("M - Image Kernel Start");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Clean kernel core startup/idle code to PoC*/
 		dcache_clean_range(__mmuoff_data_start, __mmuoff_data_end);
 		dcache_clean_range(__idmap_text_start, __idmap_text_end);
@@ -328,14 +406,25 @@ int swsusp_arch_suspend(void)
 		}
 	}
 
+<<<<<<< HEAD
 	local_daif_restore(flags);
+=======
+	local_dbg_restore(flags);
+	place_marker("PM: Kernel restore start!");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
 {
 	pte_t pte = READ_ONCE(*src_ptep);
+=======
+static void _copy_pte(pte_t *dst_pte, pte_t *src_pte, unsigned long addr)
+{
+	pte_t pte = *src_pte;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pte_valid(pte)) {
 		/*
@@ -343,7 +432,11 @@ static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
 		 * read only (code, rodata). Clear the RDONLY bit from
 		 * the temporary mappings we use during restore.
 		 */
+<<<<<<< HEAD
 		set_pte(dst_ptep, pte_mkwrite(pte));
+=======
+		set_pte(dst_pte, pte_mkwrite(pte));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (debug_pagealloc_enabled() && !pte_none(pte)) {
 		/*
 		 * debug_pagealloc will removed the PTE_VALID bit if
@@ -356,6 +449,7 @@ static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
 		 */
 		BUG_ON(!pfn_valid(pte_pfn(pte)));
 
+<<<<<<< HEAD
 		set_pte(dst_ptep, pte_mkpresent(pte_mkwrite(pte)));
 	}
 }
@@ -377,10 +471,34 @@ static int copy_pte(pmd_t *dst_pmdp, pmd_t *src_pmdp, unsigned long start,
 	do {
 		_copy_pte(dst_ptep, src_ptep, addr);
 	} while (dst_ptep++, src_ptep++, addr += PAGE_SIZE, addr != end);
+=======
+		set_pte(dst_pte, pte_mkpresent(pte_mkwrite(pte)));
+	}
+}
+
+static int copy_pte(pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long start,
+		    unsigned long end)
+{
+	pte_t *src_pte;
+	pte_t *dst_pte;
+	unsigned long addr = start;
+
+	dst_pte = (pte_t *)get_safe_page(GFP_ATOMIC);
+	if (!dst_pte)
+		return -ENOMEM;
+	pmd_populate_kernel(&init_mm, dst_pmd, dst_pte);
+	dst_pte = pte_offset_kernel(dst_pmd, start);
+
+	src_pte = pte_offset_kernel(src_pmd, start);
+	do {
+		_copy_pte(dst_pte, src_pte, addr);
+	} while (dst_pte++, src_pte++, addr += PAGE_SIZE, addr != end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int copy_pmd(pud_t *dst_pudp, pud_t *src_pudp, unsigned long start,
 		    unsigned long end)
 {
@@ -412,10 +530,42 @@ static int copy_pmd(pud_t *dst_pudp, pud_t *src_pudp, unsigned long start,
 				__pmd(pmd_val(pmd) & ~PMD_SECT_RDONLY));
 		}
 	} while (dst_pmdp++, src_pmdp++, addr = next, addr != end);
+=======
+static int copy_pmd(pud_t *dst_pud, pud_t *src_pud, unsigned long start,
+		    unsigned long end)
+{
+	pmd_t *src_pmd;
+	pmd_t *dst_pmd;
+	unsigned long next;
+	unsigned long addr = start;
+
+	if (pud_none(*dst_pud)) {
+		dst_pmd = (pmd_t *)get_safe_page(GFP_ATOMIC);
+		if (!dst_pmd)
+			return -ENOMEM;
+		pud_populate(&init_mm, dst_pud, dst_pmd);
+	}
+	dst_pmd = pmd_offset(dst_pud, start);
+
+	src_pmd = pmd_offset(src_pud, start);
+	do {
+		next = pmd_addr_end(addr, end);
+		if (pmd_none(*src_pmd))
+			continue;
+		if (pmd_table(*src_pmd)) {
+			if (copy_pte(dst_pmd, src_pmd, addr, next))
+				return -ENOMEM;
+		} else {
+			set_pmd(dst_pmd,
+				__pmd(pmd_val(*src_pmd) & ~PMD_SECT_RDONLY));
+		}
+	} while (dst_pmd++, src_pmd++, addr = next, addr != end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int copy_pud(pgd_t *dst_pgdp, pgd_t *src_pgdp, unsigned long start,
 		    unsigned long end)
 {
@@ -447,15 +597,51 @@ static int copy_pud(pgd_t *dst_pgdp, pgd_t *src_pgdp, unsigned long start,
 				__pud(pud_val(pud) & ~PMD_SECT_RDONLY));
 		}
 	} while (dst_pudp++, src_pudp++, addr = next, addr != end);
+=======
+static int copy_pud(pgd_t *dst_pgd, pgd_t *src_pgd, unsigned long start,
+		    unsigned long end)
+{
+	pud_t *dst_pud;
+	pud_t *src_pud;
+	unsigned long next;
+	unsigned long addr = start;
+
+	if (pgd_none(*dst_pgd)) {
+		dst_pud = (pud_t *)get_safe_page(GFP_ATOMIC);
+		if (!dst_pud)
+			return -ENOMEM;
+		pgd_populate(&init_mm, dst_pgd, dst_pud);
+	}
+	dst_pud = pud_offset(dst_pgd, start);
+
+	src_pud = pud_offset(src_pgd, start);
+	do {
+		next = pud_addr_end(addr, end);
+		if (pud_none(*src_pud))
+			continue;
+		if (pud_table(*(src_pud))) {
+			if (copy_pmd(dst_pud, src_pud, addr, next))
+				return -ENOMEM;
+		} else {
+			set_pud(dst_pud,
+				__pud(pud_val(*src_pud) & ~PMD_SECT_RDONLY));
+		}
+	} while (dst_pud++, src_pud++, addr = next, addr != end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int copy_page_tables(pgd_t *dst_pgdp, unsigned long start,
+=======
+static int copy_page_tables(pgd_t *dst_pgd, unsigned long start,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    unsigned long end)
 {
 	unsigned long next;
 	unsigned long addr = start;
+<<<<<<< HEAD
 	pgd_t *src_pgdp = pgd_offset_k(start);
 
 	dst_pgdp = pgd_offset_raw(dst_pgdp, start);
@@ -466,6 +652,18 @@ static int copy_page_tables(pgd_t *dst_pgdp, unsigned long start,
 		if (copy_pud(dst_pgdp, src_pgdp, addr, next))
 			return -ENOMEM;
 	} while (dst_pgdp++, src_pgdp++, addr = next, addr != end);
+=======
+	pgd_t *src_pgd = pgd_offset_k(start);
+
+	dst_pgd = pgd_offset_raw(dst_pgd, start);
+	do {
+		next = pgd_addr_end(addr, end);
+		if (pgd_none(*src_pgd))
+			continue;
+		if (copy_pud(dst_pgd, src_pgd, addr, next))
+			return -ENOMEM;
+	} while (dst_pgd++, src_pgd++, addr = next, addr != end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

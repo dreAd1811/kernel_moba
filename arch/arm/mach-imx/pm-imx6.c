@@ -130,6 +130,7 @@ static const u32 imx6sl_mmdc_io_offset[] __initconst = {
 	0x330, 0x334, 0x320,        /* SDCKE0, SDCKE1, RESET */
 };
 
+<<<<<<< HEAD
 static const u32 imx6sll_mmdc_io_offset[] __initconst = {
 	0x294, 0x298, 0x29c, 0x2a0, /* DQM0 ~ DQM3 */
 	0x544, 0x54c, 0x554, 0x558, /* GPR_B0DS ~ GPR_B3DS */
@@ -137,6 +138,8 @@ static const u32 imx6sll_mmdc_io_offset[] __initconst = {
 	0x2a4, 0x2a8,		    /* SDCKE0, SDCKE1*/
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const u32 imx6sx_mmdc_io_offset[] __initconst = {
 	0x2ec, 0x2f0, 0x2f4, 0x2f8, /* DQM0 ~ DQM3 */
 	0x60c, 0x610, 0x61c, 0x620, /* GPR_B0DS ~ GPR_B3DS */
@@ -182,6 +185,7 @@ static const struct imx6_pm_socdata imx6sl_pm_data __initconst = {
 	.mmdc_io_offset = imx6sl_mmdc_io_offset,
 };
 
+<<<<<<< HEAD
 static const struct imx6_pm_socdata imx6sll_pm_data __initconst = {
 	.mmdc_compat = "fsl,imx6sll-mmdc",
 	.src_compat = "fsl,imx6sll-src",
@@ -192,6 +196,8 @@ static const struct imx6_pm_socdata imx6sll_pm_data __initconst = {
 	.mmdc_io_offset = imx6sll_mmdc_io_offset,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct imx6_pm_socdata imx6sx_pm_data __initconst = {
 	.mmdc_compat = "fsl,imx6sx-mmdc",
 	.src_compat = "fsl,imx6sx-src",
@@ -313,7 +319,11 @@ int imx6_set_lpm(enum mxc_cpu_pwr_mode mode)
 		if (cpu_is_imx6sl())
 			val |= BM_CLPCR_BYPASS_PMIC_READY;
 		if (cpu_is_imx6sl() || cpu_is_imx6sx() || cpu_is_imx6ul() ||
+<<<<<<< HEAD
 		    cpu_is_imx6ull() || cpu_is_imx6sll())
+=======
+		    cpu_is_imx6ull())
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			val |= BM_CLPCR_BYP_MMDC_CH0_LPM_HS;
 		else
 			val |= BM_CLPCR_BYP_MMDC_CH1_LPM_HS;
@@ -331,7 +341,11 @@ int imx6_set_lpm(enum mxc_cpu_pwr_mode mode)
 		if (cpu_is_imx6sl() || cpu_is_imx6sx())
 			val |= BM_CLPCR_BYPASS_PMIC_READY;
 		if (cpu_is_imx6sl() || cpu_is_imx6sx() || cpu_is_imx6ul() ||
+<<<<<<< HEAD
 		    cpu_is_imx6ull() || cpu_is_imx6sll())
+=======
+		    cpu_is_imx6ull())
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			val |= BM_CLPCR_BYP_MMDC_CH0_LPM_HS;
 		else
 			val |= BM_CLPCR_BYP_MMDC_CH1_LPM_HS;
@@ -445,8 +459,15 @@ static int __init imx6_pm_get_base(struct imx6_pm_base *base,
 	int ret = 0;
 
 	node = of_find_compatible_node(NULL, NULL, compat);
+<<<<<<< HEAD
 	if (!node)
 		return -ENODEV;
+=======
+	if (!node) {
+		ret = -ENODEV;
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = of_address_to_resource(node, 0, &res);
 	if (ret)
@@ -459,6 +480,10 @@ static int __init imx6_pm_get_base(struct imx6_pm_base *base,
 
 put_node:
 	of_node_put(node);
+<<<<<<< HEAD
+=======
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -497,14 +522,22 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
 	if (!ocram_pool) {
 		pr_warn("%s: ocram pool unavailable!\n", __func__);
 		ret = -ENODEV;
+<<<<<<< HEAD
 		goto put_node;
+=======
+		goto put_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ocram_base = gen_pool_alloc(ocram_pool, MX6Q_SUSPEND_OCRAM_SIZE);
 	if (!ocram_base) {
 		pr_warn("%s: unable to alloc ocram!\n", __func__);
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto put_node;
+=======
+		goto put_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ocram_pbase = gen_pool_virt_to_phys(ocram_pool, ocram_base);
@@ -527,7 +560,11 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
 	ret = imx6_pm_get_base(&pm_info->mmdc_base, socdata->mmdc_compat);
 	if (ret) {
 		pr_warn("%s: failed to get mmdc base %d!\n", __func__, ret);
+<<<<<<< HEAD
 		goto put_node;
+=======
+		goto put_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = imx6_pm_get_base(&pm_info->src_base, socdata->src_compat);
@@ -574,7 +611,11 @@ static int __init imx6q_suspend_init(const struct imx6_pm_socdata *socdata)
 		&imx6_suspend,
 		MX6Q_SUSPEND_OCRAM_SIZE - sizeof(*pm_info));
 
+<<<<<<< HEAD
 	goto put_node;
+=======
+	goto put_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 pl310_cache_map_failed:
 	iounmap(pm_info->gpc_base.vbase);
@@ -584,6 +625,11 @@ iomuxc_map_failed:
 	iounmap(pm_info->src_base.vbase);
 src_map_failed:
 	iounmap(pm_info->mmdc_base.vbase);
+<<<<<<< HEAD
+=======
+put_device:
+	put_device(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 put_node:
 	of_node_put(node);
 
@@ -618,6 +664,31 @@ static void __init imx6_pm_common_init(const struct imx6_pm_socdata
 				   IMX6Q_GPR1_GINT);
 }
 
+<<<<<<< HEAD
+=======
+static void imx6_pm_stby_poweroff(void)
+{
+	imx6_set_lpm(STOP_POWER_OFF);
+	imx6q_suspend_finish(0);
+
+	mdelay(1000);
+
+	pr_emerg("Unable to poweroff system\n");
+}
+
+static int imx6_pm_stby_poweroff_probe(void)
+{
+	if (pm_power_off) {
+		pr_warn("%s: pm_power_off already claimed  %p %pf!\n",
+			__func__, pm_power_off, pm_power_off);
+		return -EBUSY;
+	}
+
+	pm_power_off = imx6_pm_stby_poweroff;
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init imx6_pm_ccm_init(const char *ccm_compat)
 {
 	struct device_node *np;
@@ -634,6 +705,12 @@ void __init imx6_pm_ccm_init(const char *ccm_compat)
 	val = readl_relaxed(ccm_base + CLPCR);
 	val &= ~BM_CLPCR_LPM;
 	writel_relaxed(val, ccm_base + CLPCR);
+<<<<<<< HEAD
+=======
+
+	if (of_property_read_bool(np, "fsl,pmic-stby-poweroff"))
+		imx6_pm_stby_poweroff_probe();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init imx6q_pm_init(void)
@@ -648,6 +725,7 @@ void __init imx6dl_pm_init(void)
 
 void __init imx6sl_pm_init(void)
 {
+<<<<<<< HEAD
 	struct regmap *gpr;
 
 	if (cpu_is_imx6sl()) {
@@ -659,6 +737,9 @@ void __init imx6sl_pm_init(void)
 			regmap_update_bits(gpr, IOMUXC_GPR5,
 				IMX6SLL_GPR5_AFCG_X_BYPASS_MASK, 0);
 	}
+=======
+	imx6_pm_common_init(&imx6sl_pm_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init imx6sx_pm_init(void)

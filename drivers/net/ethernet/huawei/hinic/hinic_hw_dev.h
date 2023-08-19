@@ -104,8 +104,13 @@ struct hinic_cmd_hw_ioctxt {
 
 	u8      rsvd2;
 	u8      rsvd3;
+<<<<<<< HEAD
 	u8      rsvd4;
 	u8      rsvd5;
+=======
+	u8      ppf_idx;
+	u8      rsvd4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u16     rq_depth;
 	u16     rx_buf_sz_idx;

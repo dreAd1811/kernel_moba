@@ -2,7 +2,11 @@
  * radio-aztech.c - Aztech radio card driver
  *
  * Converted to the radio-isa framework by Hans Verkuil <hans.verkuil@xs4all.nl>
+<<<<<<< HEAD
  * Converted to V4L2 API by Mauro Carvalho Chehab <mchehab@kernel.org>
+=======
+ * Converted to V4L2 API by Mauro Carvalho Chehab <mchehab@infradead.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Adapted to support the Video for Linux API by
  * Russell Kroll <rkroll@exploits.org>.  Based on original tuner code by:
  *
@@ -15,7 +19,11 @@
  * Fully tested with the Keene USB FM Transmitter and the v4l2-compliance tool.
 */
 
+<<<<<<< HEAD
 #include <linux/module.h>	/* Modules			*/
+=======
+#include <linux/module.h>	/* Modules 			*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>		/* Initdata			*/
 #include <linux/ioport.h>	/* request_region		*/
 #include <linux/delay.h>	/* udelay			*/

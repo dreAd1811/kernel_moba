@@ -13,7 +13,11 @@
 
 #define __ARCH_IRQ_STAT	1
 
+<<<<<<< HEAD
 #define local_softirq_pending_ref	ia64_cpu_info.softirq_pending
+=======
+#define local_softirq_pending()		(local_cpu_data->softirq_pending)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/threads.h>
 #include <linux/irq.h>

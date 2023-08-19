@@ -1,15 +1,28 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Source for the GR-Peach board
  *
  * Copyright (C) 2017 Jacopo Mondi <jacopo+renesas@jmondi.org>
  * Copyright (C) 2016 Renesas Electronics
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public License
+ * version 2.  This program is licensed "as is" without any warranty of any
+ * kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
 #include "r7s72100.dtsi"
+<<<<<<< HEAD
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/pinctrl/r7s72100-pinctrl.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "GR-Peach";
@@ -27,6 +40,10 @@
 	memory@20000000 {
 		device_type = "memory";
 		reg = <0x20000000 0x00a00000>;
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	lbsc {
@@ -49,6 +66,7 @@
 			reg = <0x00600000 0x00200000>;
 		};
 	};
+<<<<<<< HEAD
 
 	leds {
 		status = "okay";
@@ -87,6 +105,8 @@
 			 <RZA1_PINMUX(10, 10, 4)>,/* P10_10 = ET_RXD2 */
 			 <RZA1_PINMUX(10, 11, 4)>;/* P10_11 = ET_RXD3 */
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &extal_clk {
@@ -97,6 +117,7 @@
 	clock-frequency = <48000000>;
 };
 
+<<<<<<< HEAD
 &mtu2 {
 	status = "okay";
 };
@@ -132,3 +153,8 @@
 		reset-delay-us = <5>;
 	};
 };
+=======
+&scif2 {
+	status = "okay";
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

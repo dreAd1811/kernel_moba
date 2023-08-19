@@ -649,10 +649,18 @@ static void DecompressBand23(struct pwc_dec23_private *pdec,
 }
 
 /**
+<<<<<<< HEAD
  * Uncompress a pwc23 buffer.
  * @pdev: pointer to pwc device's internal struct
  * @src: raw data
  * @dst: image output
+=======
+ *
+ * Uncompress a pwc23 buffer.
+ *
+ * src: raw data
+ * dst: image output
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void pwc_dec23_decompress(struct pwc_device *pdev,
 			  const void *src,

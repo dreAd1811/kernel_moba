@@ -79,7 +79,11 @@ static int panel_bridge_attach(struct drm_bridge *bridge)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	drm_connector_attach_encoder(&panel_bridge->connector,
+=======
+	drm_mode_connector_attach_encoder(&panel_bridge->connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  bridge->encoder);
 
 	ret = drm_panel_attach(panel_bridge->panel, &panel_bridge->connector);
@@ -188,6 +192,7 @@ EXPORT_SYMBOL(drm_panel_bridge_add);
  */
 void drm_panel_bridge_remove(struct drm_bridge *bridge)
 {
+<<<<<<< HEAD
 	struct panel_bridge *panel_bridge;
 
 	if (!bridge)
@@ -197,6 +202,9 @@ void drm_panel_bridge_remove(struct drm_bridge *bridge)
 		return;
 
 	panel_bridge = drm_bridge_to_panel_bridge(bridge);
+=======
+	struct panel_bridge *panel_bridge = drm_bridge_to_panel_bridge(bridge);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_bridge_remove(bridge);
 	devm_kfree(panel_bridge->panel->dev, bridge);

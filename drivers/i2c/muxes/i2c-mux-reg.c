@@ -107,9 +107,15 @@ static int i2c_mux_reg_probe_dt(struct regmux *mux,
 	put_device(&adapter->dev);
 
 	mux->data.n_values = of_get_child_count(np);
+<<<<<<< HEAD
 	if (of_property_read_bool(np, "little-endian")) {
 		mux->data.little_endian = true;
 	} else if (of_property_read_bool(np, "big-endian")) {
+=======
+	if (of_find_property(np, "little-endian", NULL)) {
+		mux->data.little_endian = true;
+	} else if (of_find_property(np, "big-endian", NULL)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mux->data.little_endian = false;
 	} else {
 #if defined(__BYTE_ORDER) ? __BYTE_ORDER == __LITTLE_ENDIAN : \
@@ -122,6 +128,7 @@ static int i2c_mux_reg_probe_dt(struct regmux *mux,
 #error Endianness not defined?
 #endif
 	}
+<<<<<<< HEAD
 	mux->data.write_only = of_property_read_bool(np, "write-only");
 
 	values = devm_kcalloc(&pdev->dev,
@@ -129,6 +136,20 @@ static int i2c_mux_reg_probe_dt(struct regmux *mux,
 			      GFP_KERNEL);
 	if (!values)
 		return -ENOMEM;
+=======
+	if (of_find_property(np, "write-only", NULL))
+		mux->data.write_only = true;
+	else
+		mux->data.write_only = false;
+
+	values = devm_kzalloc(&pdev->dev,
+			      sizeof(*mux->data.values) * mux->data.n_values,
+			      GFP_KERNEL);
+	if (!values) {
+		dev_err(&pdev->dev, "Cannot allocate values array");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_child_of_node(np, child) {
 		of_property_read_u32(child, "reg", values + i);
@@ -175,9 +196,12 @@ static int i2c_mux_reg_probe(struct platform_device *pdev)
 			sizeof(mux->data));
 	} else {
 		ret = i2c_mux_reg_probe_dt(mux, pdev);
+<<<<<<< HEAD
 		if (ret == -EPROBE_DEFER)
 			return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			dev_err(&pdev->dev, "Error parsing device tree");
 			return ret;

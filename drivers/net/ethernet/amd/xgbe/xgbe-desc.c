@@ -295,7 +295,11 @@ again:
 	order = alloc_order;
 
 	/* Try to obtain pages, decreasing order if necessary */
+<<<<<<< HEAD
 	gfp = GFP_ATOMIC | __GFP_COMP | __GFP_NOWARN;
+=======
+	gfp = GFP_ATOMIC | __GFP_COLD | __GFP_COMP | __GFP_NOWARN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (order >= 0) {
 		pages = alloc_pages_node(node, gfp, order);
 		if (pages)

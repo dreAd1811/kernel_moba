@@ -29,6 +29,7 @@
 
 #define VIRTIO_GPU_FBCON_POLL_PERIOD (HZ / 60)
 
+<<<<<<< HEAD
 struct virtio_gpu_fbdev {
 	struct drm_fb_helper           helper;
 	struct virtio_gpu_framebuffer  vgfb;
@@ -36,6 +37,8 @@ struct virtio_gpu_fbdev {
 	struct delayed_work            work;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int virtio_gpu_dirty_update(struct virtio_gpu_framebuffer *fb,
 				   bool store, int x, int y,
 				   int width, int height)
@@ -102,7 +105,11 @@ static int virtio_gpu_dirty_update(struct virtio_gpu_framebuffer *fb,
 
 		offset = (y * fb->base.pitches[0]) + x * bpp;
 
+<<<<<<< HEAD
 		virtio_gpu_cmd_transfer_to_host_2d(vgdev, obj->hw_res_handle,
+=======
+		virtio_gpu_cmd_transfer_to_host_2d(vgdev, obj,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   offset,
 						   cpu_to_le32(w),
 						   cpu_to_le32(h),
@@ -210,12 +217,15 @@ static struct fb_ops virtio_gpufb_ops = {
 	.fb_imageblit = virtio_gpu_3d_imageblit,
 };
 
+<<<<<<< HEAD
 static int virtio_gpu_vmap_fb(struct virtio_gpu_device *vgdev,
 			      struct virtio_gpu_object *obj)
 {
 	return virtio_gpu_object_kmap(obj, NULL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int virtio_gpufb_create(struct drm_fb_helper *helper,
 			       struct drm_fb_helper_surface_size *sizes)
 {
@@ -226,8 +236,13 @@ static int virtio_gpufb_create(struct drm_fb_helper *helper,
 	struct fb_info *info;
 	struct drm_framebuffer *fb;
 	struct drm_mode_fb_cmd2 mode_cmd = {};
+<<<<<<< HEAD
 	struct virtio_gpu_object *obj;
 	uint32_t resid, format, size;
+=======
+        struct virtio_gpu_object_params parms = {};
+	struct virtio_gpu_object *obj;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	mode_cmd.width = sizes->surface_width;
@@ -235,6 +250,7 @@ static int virtio_gpufb_create(struct drm_fb_helper *helper,
 	mode_cmd.pitches[0] = mode_cmd.width * 4;
 	mode_cmd.pixel_format = drm_mode_legacy_fb_format(32, 24);
 
+<<<<<<< HEAD
 	format = virtio_gpu_translate_format(mode_cmd.pixel_format);
 	if (format == 0)
 		return -EINVAL;
@@ -251,11 +267,33 @@ static int virtio_gpufb_create(struct drm_fb_helper *helper,
 	ret = virtio_gpu_vmap_fb(vgdev, obj);
 	if (ret) {
 		DRM_ERROR("failed to vmap fb %d\n", ret);
+=======
+	parms.format = virtio_gpu_translate_format(mode_cmd.pixel_format);
+	if (parms.format == 0)
+		return -EINVAL;
+
+	parms.size = mode_cmd.pitches[0] * mode_cmd.height;
+	parms.width = mode_cmd.width;
+	parms.height = mode_cmd.height;
+	obj = virtio_gpu_alloc_object(dev, &parms, NULL);
+	if (IS_ERR(obj))
+		return PTR_ERR(obj);
+
+	virtio_gpu_cmd_create_resource(vgdev, obj, &parms, NULL);
+
+	ret = virtio_gpu_object_kmap(obj);
+	if (ret) {
+		DRM_ERROR("failed to kmap fb %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_obj_vmap;
 	}
 
 	/* attach the object to the resource */
+<<<<<<< HEAD
 	ret = virtio_gpu_object_attach(vgdev, obj, resid, NULL);
+=======
+	ret = virtio_gpu_object_attach(vgdev, obj, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err_obj_attach;
 
@@ -291,7 +329,11 @@ static int virtio_gpufb_create(struct drm_fb_helper *helper,
 	return 0;
 
 err_fb_alloc:
+<<<<<<< HEAD
 	virtio_gpu_cmd_resource_inval_backing(vgdev, resid);
+=======
+	virtio_gpu_object_detach(vgdev, obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_obj_attach:
 err_obj_vmap:
 	virtio_gpu_gem_free_object(&obj->gem_base);

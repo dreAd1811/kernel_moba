@@ -25,7 +25,10 @@ struct rcar_du_device;
  * @dev: the DU device
  * @mmio_offset: registers offset in the device memory map
  * @index: group index
+<<<<<<< HEAD
  * @channels_mask: bitmask of populated DU channels in this group
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @num_crtcs: number of CRTCs in this group (1 or 2)
  * @use_count: number of users of the group (rcar_du_group_(get|put))
  * @used_crtcs: number of CRTCs currently in use
@@ -40,7 +43,10 @@ struct rcar_du_group {
 	unsigned int mmio_offset;
 	unsigned int index;
 
+<<<<<<< HEAD
 	unsigned int channels_mask;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int num_crtcs;
 	unsigned int use_count;
 	unsigned int used_crtcs;

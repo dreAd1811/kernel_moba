@@ -58,7 +58,11 @@ optprobe_template_entry:
 	std	r5,_XER(r1)
 	mfcr	r5
 	std	r5,_CCR(r1)
+<<<<<<< HEAD
 	lbz     r5,PACAIRQSOFTMASK(r13)
+=======
+	lbz     r5,PACASOFTIRQEN(r13)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	std     r5,SOFTE(r1)
 
 	/*

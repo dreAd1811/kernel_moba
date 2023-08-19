@@ -13,22 +13,37 @@
 	#address-cells = <1>;
 	#size-cells = <1>;
 
+<<<<<<< HEAD
 	memory@0 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* 128 MB SDRAM in 2 x Hynix HY5DU121622DTP-D43 */
 		device_type = "memory";
 		reg = <0x00000000 0x8000000>;
 	};
 
 	chosen {
+<<<<<<< HEAD
 		bootargs = "console=ttyS0,19200n8 root=/dev/sda1 rw rootwait";
 		stdout-path = "uart0:19200n8";
+=======
+		stdout-path = "uart0:115200n8";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	gpio_keys {
 		compatible = "gpio-keys";
+<<<<<<< HEAD
 
 		button-esc {
 			debounce-interval = <50>;
+=======
+		#address-cells = <1>;
+		#size-cells = <0>;
+		button-esc {
+			debounce_interval = <50>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			linux,code = <KEY_ESC>;
 			label = "reset";
@@ -36,7 +51,11 @@
 			gpios = <&gpio0 8 GPIO_ACTIVE_LOW>;
 		};
 		button-eject {
+<<<<<<< HEAD
 			debounce-interval = <50>;
+=======
+			debounce_interval = <50>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 			linux,code = <KEY_EJECTCD>;
 			label = "unmount";
@@ -45,6 +64,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	vdisp: regulator {
 		compatible = "regulator-fixed";
 		regulator-name = "display-power";
@@ -86,6 +106,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	leds {
 		compatible = "gpio-leds";
 		led-wps {
@@ -98,7 +120,11 @@
 		/*
 		 * These two LEDs are on the side of the device.
 		 * For electrical reasons, both LEDs cannot be active
+<<<<<<< HEAD
 		 * at the same time so only blue or orange can be on at
+=======
+		 * at the same time so only blue or orange can on at
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * one time. Enabling both makes the LED go dark.
 		 * The LEDs both sit inside the unmount button and the
 		 * label on the case says "unmount".
@@ -108,14 +134,20 @@
 			/* Collides with LPC_SERIRQ, UART DTR, SSP FSC pins */
 			gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
+<<<<<<< HEAD
 			linux,default-trigger = "disk-read";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 		led-orange-hd {
 			label = "dir685:orange:HD";
 			/* Collides with LPC_LAD[2], UART DSR, SSP ECLK pins */
 			gpios = <&gpio0 12 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
+<<<<<<< HEAD
 			linux,default-trigger = "disk-write";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -142,8 +174,13 @@
 	gpio-i2c {
 		compatible = "i2c-gpio";
 		/* Collides with ICE */
+<<<<<<< HEAD
 		sda-gpios = <&gpio0 5 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
 		scl-gpios = <&gpio0 6 (GPIO_ACTIVE_HIGH|GPIO_OPEN_DRAIN)>;
+=======
+		gpios = <&gpio0 5 0>, /* SDA */
+			<&gpio0 6 0>; /* SCL */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#address-cells = <1>;
 		#size-cells = <0>;
 
@@ -156,6 +193,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	/* This is a RealTek RTL8366RB switch and PHY using SMI over GPIO */
 	switch {
 		compatible = "realtek,rtl8366rb";
@@ -262,6 +300,11 @@
 			 * GPIO poke around in the flash controller registers.
 			 */
 			/* status = "okay"; */
+=======
+	soc {
+		flash@30000000 {
+			status = "okay";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* 32MB of flash */
 			reg = <0x30000000 0x02000000>;
 
@@ -313,12 +356,19 @@
 				 * gpio0bgrp cover line 7 used by WPS LED
 				 * gpio0cgrp cover line 8, 13 used by keys
 				 *           and 11, 12 used by the HD LEDs
+<<<<<<< HEAD
 				 *           and line 14, 15 used by RTL8366
 				 *           RESET and phy ready
 				 * gpio0egrp cover line 16 used by VDISP
 				 * gpio0fgrp cover line 17 used by TK IRQ
 				 * gpio0ggrp cover line 20 used by panel CS
 				 * gpio0hgrp cover line 21,22 used by RTL8366RB MDIO
+=======
+				 * gpio0egrp cover line 16 used by VDISP
+				 * gpio0fgrp cover line 17 used by TK IRQ
+				 * gpio0ggrp cover line 20 used by panel CS
+				 * gpio0hgrp cover line 21,22 used by RTL8366RB
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 */
 				gpio0_default_pins: pinctrl-gpio0 {
 					mux {
@@ -342,6 +392,7 @@
 						groups = "gpio1bgrp";
 					};
 				};
+<<<<<<< HEAD
 				pinctrl-gmii {
 					mux {
 						function = "gmii";
@@ -368,6 +419,8 @@
 						drive-strength = <16>;
 					};
 				};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
@@ -409,6 +462,7 @@
 				<0x6000 0 0 4 &pci_intc 2>;
 		};
 
+<<<<<<< HEAD
 		ethernet@60000000 {
 			status = "okay";
 
@@ -439,5 +493,10 @@
 				};
 			};
 		};
+=======
+		ata@63000000 {
+			status = "okay";
+		};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

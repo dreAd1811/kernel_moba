@@ -158,7 +158,10 @@ struct clk_hw *clk_hw_register_gate(struct device *dev, const char *name,
 
 	hw = &gate->hw;
 	ret = clk_hw_register(dev, hw);
+<<<<<<< HEAD
 	hw->init = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		kfree(gate);
 		hw = ERR_PTR(ret);

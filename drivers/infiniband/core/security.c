@@ -30,6 +30,11 @@
  * SOFTWARE.
  */
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SECURITY_INFINIBAND
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/security.h>
 #include <linux/completion.h>
 #include <linux/list.h>
@@ -336,6 +341,7 @@ static struct ib_ports_pkeys *get_new_pps(const struct ib_qp *qp,
 	if (!new_pps)
 		return NULL;
 
+<<<<<<< HEAD
 	if (qp_attr_mask & (IB_QP_PKEY_INDEX | IB_QP_PORT)) {
 		if (!qp_pps) {
 			new_pps->main.port_num = qp_attr->port_num;
@@ -357,6 +363,22 @@ static struct ib_ports_pkeys *get_new_pps(const struct ib_qp *qp,
 		if (qp_pps->main.state != IB_PORT_PKEY_NOT_VALID)
 			new_pps->main.state = IB_PORT_PKEY_VALID;
 	}
+=======
+	if (qp_attr_mask & IB_QP_PORT)
+		new_pps->main.port_num = qp_attr->port_num;
+	else if (qp_pps)
+		new_pps->main.port_num = qp_pps->main.port_num;
+
+	if (qp_attr_mask & IB_QP_PKEY_INDEX)
+		new_pps->main.pkey_index = qp_attr->pkey_index;
+	else if (qp_pps)
+		new_pps->main.pkey_index = qp_pps->main.pkey_index;
+
+	if (((qp_attr_mask & IB_QP_PKEY_INDEX) &&
+	     (qp_attr_mask & IB_QP_PORT)) ||
+	    (qp_pps && qp_pps->main.state != IB_PORT_PKEY_NOT_VALID))
+		new_pps->main.state = IB_PORT_PKEY_VALID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (qp_attr_mask & IB_QP_ALT_PATH) {
 		new_pps->alt.port_num = qp_attr->alt_port_num;
@@ -651,11 +673,20 @@ int ib_security_modify_qp(struct ib_qp *qp,
 	}
 	return ret;
 }
+<<<<<<< HEAD
 
 static int ib_security_pkey_access(struct ib_device *dev,
 				   u8 port_num,
 				   u16 pkey_index,
 				   void *sec)
+=======
+EXPORT_SYMBOL(ib_security_modify_qp);
+
+int ib_security_pkey_access(struct ib_device *dev,
+			    u8 port_num,
+			    u16 pkey_index,
+			    void *sec)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 subnet_prefix;
 	u16 pkey;
@@ -675,6 +706,10 @@ static int ib_security_pkey_access(struct ib_device *dev,
 
 	return security_ib_pkey_access(sec, subnet_prefix, pkey);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(ib_security_pkey_access);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int ib_mad_agent_security_change(struct notifier_block *nb,
 					unsigned long event,
@@ -754,3 +789,8 @@ int ib_mad_enforce_security(struct ib_mad_agent_private *map, u16 pkey_index)
 				       pkey_index,
 				       map->agent.security);
 }
+<<<<<<< HEAD
+=======
+
+#endif /* CONFIG_SECURITY_INFINIBAND */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

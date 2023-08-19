@@ -57,7 +57,11 @@
 #include "vt.h"
 #include "trace.h"
 
+<<<<<<< HEAD
 static void rvt_rc_timeout(struct timer_list *t);
+=======
+static void rvt_rc_timeout(unsigned long arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Convert the AETH RNR timeout code into the number of microseconds.
@@ -238,7 +242,11 @@ int rvt_driver_qp_init(struct rvt_dev_info *rdi)
 	rdi->qp_dev->qp_table_size = rdi->dparms.qp_table_size;
 	rdi->qp_dev->qp_table_bits = ilog2(rdi->dparms.qp_table_size);
 	rdi->qp_dev->qp_table =
+<<<<<<< HEAD
 		kmalloc_array_node(rdi->qp_dev->qp_table_size,
+=======
+		kmalloc_node(rdi->qp_dev->qp_table_size *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     sizeof(*rdi->qp_dev->qp_table),
 			     GFP_KERNEL, rdi->dparms.node);
 	if (!rdi->qp_dev->qp_table)
@@ -269,7 +277,11 @@ no_qp_table:
 
 /**
  * free_all_qps - check for QPs still in use
+<<<<<<< HEAD
  * @rdi: rvt device info structure
+=======
+ * @qpt: the QP table to empty
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * There should not be any QPs still in use.
  * Free memory for table.
@@ -335,9 +347,15 @@ static inline unsigned mk_qpn(struct rvt_qpn_table *qpt,
 /**
  * alloc_qpn - Allocate the next available qpn or zero/one for QP type
  *	       IB_QPT_SMI/IB_QPT_GSI
+<<<<<<< HEAD
  * @rdi: rvt device info structure
  * @qpt: queue pair number table pointer
  * @port_num: IB port number, 1 based, comes from core
+=======
+ *@rdi:	rvt device info structure
+ *@qpt: queue pair number table pointer
+ *@port_num: IB port number, 1 based, comes from core
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return: The queue pair number
  */
@@ -718,6 +736,10 @@ static void rvt_reset_qp(struct rvt_dev_info *rdi, struct rvt_qp *qp,
 
 		/* take qp out the hash and wait for it to be unused */
 		rvt_remove_qp(rdi, qp);
+<<<<<<< HEAD
+=======
+		wait_event(qp->wait, !atomic_read(&qp->refcount));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* grab the lock b/c it was locked at call time */
 		spin_lock_irq(&qp->r_lock);
@@ -781,15 +803,23 @@ struct ib_qp *rvt_create_qp(struct ib_pd *ibpd,
 	if (!rdi)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	if (init_attr->cap.max_send_sge > rdi->dparms.props.max_send_sge ||
+=======
+	if (init_attr->cap.max_send_sge > rdi->dparms.props.max_sge ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    init_attr->cap.max_send_wr > rdi->dparms.props.max_qp_wr ||
 	    init_attr->create_flags)
 		return ERR_PTR(-EINVAL);
 
 	/* Check receive queue parameters if no SRQ is specified. */
 	if (!init_attr->srq) {
+<<<<<<< HEAD
 		if (init_attr->cap.max_recv_sge >
 		    rdi->dparms.props.max_recv_sge ||
+=======
+		if (init_attr->cap.max_recv_sge > rdi->dparms.props.max_sge ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    init_attr->cap.max_recv_wr > rdi->dparms.props.max_qp_wr)
 			return ERR_PTR(-EINVAL);
 
@@ -808,14 +838,21 @@ struct ib_qp *rvt_create_qp(struct ib_pd *ibpd,
 		if (init_attr->port_num == 0 ||
 		    init_attr->port_num > ibpd->device->phys_port_cnt)
 			return ERR_PTR(-EINVAL);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IB_QPT_UC:
 	case IB_QPT_RC:
 	case IB_QPT_UD:
 		sz = sizeof(struct rvt_sge) *
 			init_attr->cap.max_send_sge +
 			sizeof(struct rvt_swqe);
+<<<<<<< HEAD
 		swq = vzalloc_node(array_size(sz, sqsize), rdi->dparms.node);
+=======
+		swq = vzalloc_node(sqsize * sz, rdi->dparms.node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!swq)
 			return ERR_PTR(-ENOMEM);
 
@@ -838,15 +875,27 @@ struct ib_qp *rvt_create_qp(struct ib_pd *ibpd,
 		RCU_INIT_POINTER(qp->next, NULL);
 		if (init_attr->qp_type == IB_QPT_RC) {
 			qp->s_ack_queue =
+<<<<<<< HEAD
 				kcalloc_node(rvt_max_atomic(rdi),
 					     sizeof(*qp->s_ack_queue),
 					     GFP_KERNEL,
 					     rdi->dparms.node);
+=======
+				kzalloc_node(
+					sizeof(*qp->s_ack_queue) *
+					 rvt_max_atomic(rdi),
+					GFP_KERNEL,
+					rdi->dparms.node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!qp->s_ack_queue)
 				goto bail_qp;
 		}
 		/* initialize timers needed for rc qp */
+<<<<<<< HEAD
 		timer_setup(&qp->s_timer, rvt_rc_timeout, 0);
+=======
+		setup_timer(&qp->s_timer, rvt_rc_timeout, (unsigned long)qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hrtimer_init(&qp->s_rnr_timer, CLOCK_MONOTONIC,
 			     HRTIMER_MODE_REL);
 		qp->s_rnr_timer.function = rvt_rc_rnr_retry;
@@ -895,6 +944,11 @@ struct ib_qp *rvt_create_qp(struct ib_pd *ibpd,
 		atomic_set(&qp->refcount, 0);
 		atomic_set(&qp->local_ops_pending, 0);
 		init_waitqueue_head(&qp->wait);
+<<<<<<< HEAD
+=======
+		init_timer(&qp->s_timer);
+		qp->s_timer.data = (unsigned long)qp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		INIT_LIST_HEAD(&qp->rspwait);
 		qp->state = IB_QPS_RESET;
 		qp->s_wq = swq;
@@ -1072,7 +1126,11 @@ int rvt_error_qp(struct rvt_qp *qp, enum ib_wc_status err)
 	rdi->driver_f.notify_error_qp(qp);
 
 	/* Schedule the sending tasklet to drain the send work queue. */
+<<<<<<< HEAD
 	if (READ_ONCE(qp->s_last) != qp->s_head)
+=======
+	if (ACCESS_ONCE(qp->s_last) != qp->s_head)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rdi->driver_f.schedule_send(qp);
 
 	rvt_clear_mr_refs(qp, 0);
@@ -1338,13 +1396,21 @@ int rvt_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		qp->qp_access_flags = attr->qp_access_flags;
 
 	if (attr_mask & IB_QP_AV) {
+<<<<<<< HEAD
 		rdma_replace_ah_attr(&qp->remote_ah_attr, &attr->ah_attr);
+=======
+		qp->remote_ah_attr = attr->ah_attr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qp->s_srate = rdma_ah_get_static_rate(&attr->ah_attr);
 		qp->srate_mbps = ib_rate_to_mbps(qp->s_srate);
 	}
 
 	if (attr_mask & IB_QP_ALT_PATH) {
+<<<<<<< HEAD
 		rdma_replace_ah_attr(&qp->alt_ah_attr, &attr->alt_ah_attr);
+=======
+		qp->alt_ah_attr = attr->alt_ah_attr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		qp->s_alt_pkey_index = attr->alt_pkey_index;
 	}
 
@@ -1442,7 +1508,10 @@ int rvt_destroy_qp(struct ib_qp *ibqp)
 	spin_unlock(&qp->s_hlock);
 	spin_unlock_irq(&qp->r_lock);
 
+<<<<<<< HEAD
 	wait_event(qp->wait, !atomic_read(&qp->refcount));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* qpn is now available for use again */
 	rvt_free_qpn(&rdi->qp_dev->qpn_table, qp->ibqp.qp_num);
 
@@ -1461,8 +1530,11 @@ int rvt_destroy_qp(struct ib_qp *ibqp)
 	vfree(qp->s_wq);
 	rdi->driver_f.qp_priv_free(rdi, qp);
 	kfree(qp->s_ack_queue);
+<<<<<<< HEAD
 	rdma_destroy_ah_attr(&qp->remote_ah_attr);
 	rdma_destroy_ah_attr(&qp->alt_ah_attr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(qp);
 	return 0;
 }
@@ -1539,8 +1611,13 @@ int rvt_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
  *
  * Return: 0 on success otherwise errno
  */
+<<<<<<< HEAD
 int rvt_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 		  const struct ib_recv_wr **bad_wr)
+=======
+int rvt_post_recv(struct ib_qp *ibqp, struct ib_recv_wr *wr,
+		  struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rvt_qp *qp = ibqp_to_rvtqp(ibqp);
 	struct rvt_rwq *wq = qp->r_rq.wq;
@@ -1621,7 +1698,11 @@ int rvt_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
 static inline int rvt_qp_valid_operation(
 	struct rvt_qp *qp,
 	const struct rvt_operation_params *post_parms,
+<<<<<<< HEAD
 	const struct ib_send_wr *wr)
+=======
+	struct ib_send_wr *wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int len;
 
@@ -1653,9 +1734,15 @@ static inline int rvt_qp_valid_operation(
 
 /**
  * rvt_qp_is_avail - determine queue capacity
+<<<<<<< HEAD
  * @qp: the qp
  * @rdi: the rdmavt device
  * @reserved_op: is reserved operation
+=======
+ * @qp - the qp
+ * @rdi - the rdmavt device
+ * @reserved_op - is reserved operation
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This assumes the s_hlock is held but the s_last
  * qp variable is uncontrolled.
@@ -1687,7 +1774,12 @@ static inline int rvt_qp_is_avail(
 	/* non-reserved operations */
 	if (likely(qp->s_avail))
 		return 0;
+<<<<<<< HEAD
 	slast = READ_ONCE(qp->s_last);
+=======
+	smp_read_barrier_depends(); /* see rc.c */
+	slast = ACCESS_ONCE(qp->s_last);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (qp->s_head >= slast)
 		avail = qp->s_size - (qp->s_head - slast);
 	else
@@ -1718,7 +1810,11 @@ static inline int rvt_qp_is_avail(
  * @wr: the work request to send
  */
 static int rvt_post_one_wr(struct rvt_qp *qp,
+<<<<<<< HEAD
 			   const struct ib_send_wr *wr,
+=======
+			   struct ib_send_wr *wr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   int *call_send)
 {
 	struct rvt_swqe *wqe;
@@ -1892,8 +1988,13 @@ bail_inval_free:
  *
  * Return: 0 on success else errno
  */
+<<<<<<< HEAD
 int rvt_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 		  const struct ib_send_wr **bad_wr)
+=======
+int rvt_post_send(struct ib_qp *ibqp, struct ib_send_wr *wr,
+		  struct ib_send_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rvt_qp *qp = ibqp_to_rvtqp(ibqp);
 	struct rvt_dev_info *rdi = ib_to_rvt(ibqp->device);
@@ -1918,7 +2019,11 @@ int rvt_post_send(struct ib_qp *ibqp, const struct ib_send_wr *wr,
 	 * ahead and kick the send engine into gear. Otherwise we will always
 	 * just schedule the send to happen later.
 	 */
+<<<<<<< HEAD
 	call_send = qp->s_head == READ_ONCE(qp->s_last) && !wr->next;
+=======
+	call_send = qp->s_head == ACCESS_ONCE(qp->s_last) && !wr->next;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (; wr; wr = wr->next) {
 		err = rvt_post_one_wr(qp, wr, &call_send);
@@ -1949,8 +2054,13 @@ bail:
  *
  * Return: 0 on success else errno
  */
+<<<<<<< HEAD
 int rvt_post_srq_recv(struct ib_srq *ibsrq, const struct ib_recv_wr *wr,
 		      const struct ib_recv_wr **bad_wr)
+=======
+int rvt_post_srq_recv(struct ib_srq *ibsrq, struct ib_recv_wr *wr,
+		      struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rvt_srq *srq = ibsrq_to_rvtsrq(ibsrq);
 	struct rvt_rwq *wq;
@@ -1990,6 +2100,7 @@ int rvt_post_srq_recv(struct ib_srq *ibsrq, const struct ib_recv_wr *wr,
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Validate a RWQE and fill in the SGE state.
  * Return 1 if OK.
@@ -2139,6 +2250,8 @@ bail:
 }
 EXPORT_SYMBOL(rvt_get_rwqe);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * qp_comm_est - handle trap with QP established
  * @qp: the QP
@@ -2226,9 +2339,14 @@ void rvt_add_rnr_timer(struct rvt_qp *qp, u32 aeth)
 	lockdep_assert_held(&qp->s_lock);
 	qp->s_flags |= RVT_S_WAIT_RNR;
 	to = rvt_aeth_to_usec(aeth);
+<<<<<<< HEAD
 	trace_rvt_rnrnak_add(qp, to);
 	hrtimer_start(&qp->s_rnr_timer,
 		      ns_to_ktime(1000 * to), HRTIMER_MODE_REL_PINNED);
+=======
+	hrtimer_start(&qp->s_rnr_timer,
+		      ns_to_ktime(1000 * to), HRTIMER_MODE_REL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(rvt_add_rnr_timer);
 
@@ -2256,14 +2374,27 @@ EXPORT_SYMBOL(rvt_stop_rc_timers);
  * stop an rnr timer and return if the timer
  * had been pending.
  */
+<<<<<<< HEAD
 static void rvt_stop_rnr_timer(struct rvt_qp *qp)
 {
+=======
+static int rvt_stop_rnr_timer(struct rvt_qp *qp)
+{
+	int rval = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lockdep_assert_held(&qp->s_lock);
 	/* Remove QP from rnr timer */
 	if (qp->s_flags & RVT_S_WAIT_RNR) {
 		qp->s_flags &= ~RVT_S_WAIT_RNR;
+<<<<<<< HEAD
 		trace_rvt_rnrnak_stop(qp, 0);
 	}
+=======
+		rval = hrtimer_try_to_cancel(&qp->s_rnr_timer);
+	}
+	return rval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2280,9 +2411,15 @@ EXPORT_SYMBOL(rvt_del_timers_sync);
 /**
  * This is called from s_timer for missing responses.
  */
+<<<<<<< HEAD
 static void rvt_rc_timeout(struct timer_list *t)
 {
 	struct rvt_qp *qp = from_timer(qp, t, s_timer);
+=======
+static void rvt_rc_timeout(unsigned long arg)
+{
+	struct rvt_qp *qp = (struct rvt_qp *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rvt_dev_info *rdi = ib_to_rvt(qp->ibqp.device);
 	unsigned long flags;
 
@@ -2316,7 +2453,10 @@ enum hrtimer_restart rvt_rc_rnr_retry(struct hrtimer *t)
 
 	spin_lock_irqsave(&qp->s_lock, flags);
 	rvt_stop_rnr_timer(qp);
+<<<<<<< HEAD
 	trace_rvt_rnrnak_timeout(qp, 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdi->driver_f.schedule_send(qp);
 	spin_unlock_irqrestore(&qp->s_lock, flags);
 	return HRTIMER_NORESTART;
@@ -2325,8 +2465,13 @@ EXPORT_SYMBOL(rvt_rc_rnr_retry);
 
 /**
  * rvt_qp_iter_init - initial for QP iteration
+<<<<<<< HEAD
  * @rdi: rvt devinfo
  * @v: u64 value
+=======
+ * @rdi - rvt devinfo
+ * @v - u64 value
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This returns an iterator suitable for iterating QPs
  * in the system.

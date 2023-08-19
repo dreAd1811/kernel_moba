@@ -2,7 +2,11 @@
 /*
  * CP Assist for Cryptographic Functions (CPACF)
  *
+<<<<<<< HEAD
  * Copyright IBM Corp. 2003, 2017
+=======
+ * Copyright IBM Corp. 2003, 2016
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author(s): Thomas Spatzier
  *	      Jan Glauber
  *	      Harald Freudenberger (freude@de.ibm.com)
@@ -134,6 +138,7 @@
 #define CPACF_PRNO_TRNG_Q_R2C_RATIO	0x70
 #define CPACF_PRNO_TRNG			0x72
 
+<<<<<<< HEAD
 /*
  * Function codes for the KMA (CIPHER MESSAGE WITH AUTHENTICATION)
  * instruction
@@ -150,6 +155,8 @@
 #define CPACF_KMA_LAAD	0x200	/* Last-AAD */
 #define CPACF_KMA_HS	0x400	/* Hash-subkey Supplied */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef struct { unsigned char bytes[16]; } cpacf_mask_t;
 
 /**
@@ -195,8 +202,11 @@ static inline int __cpacf_check_opcode(unsigned int opcode)
 		return test_facility(77);	/* check for MSA4 */
 	case CPACF_PRNO:
 		return test_facility(57);	/* check for MSA5 */
+<<<<<<< HEAD
 	case CPACF_KMA:
 		return test_facility(146);	/* check for MSA8 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		BUG();
 	}
@@ -488,6 +498,7 @@ static inline void cpacf_pckmo(long func, void *param)
 		: "cc", "memory");
 }
 
+<<<<<<< HEAD
 /**
  * cpacf_kma() - executes the KMA (CIPHER MESSAGE WITH AUTHENTICATION)
  *		 instruction
@@ -520,4 +531,6 @@ static inline void cpacf_kma(unsigned long func, void *param, u8 *dest,
 		: "cc", "memory");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _ASM_S390_CPACF_H */

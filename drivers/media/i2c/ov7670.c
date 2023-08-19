@@ -21,7 +21,10 @@
 #include <linux/gpio/consumer.h>
 #include <media/v4l2-device.h>
 #include <media/v4l2-ctrls.h>
+<<<<<<< HEAD
 #include <media/v4l2-fwnode.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/v4l2-mediabus.h>
 #include <media/v4l2-image-sizes.h>
 #include <media/i2c/ov7670.h>
@@ -164,11 +167,14 @@ MODULE_PARM_DESC(debug, "Debug level (0-1)");
 #define   DBLV_X6	  0x8a	  /* clock x6 */
 #define   DBLV_X8	  0xca	  /* clock x8 */
 
+<<<<<<< HEAD
 #define REG_SCALING_XSC	0x70	/* Test pattern and horizontal scale factor */
 #define   TEST_PATTTERN_0 0x80
 #define REG_SCALING_YSC	0x71	/* Test pattern and vertical scale factor */
 #define   TEST_PATTTERN_1 0x80
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_REG76	0x76	/* OV's name */
 #define   R76_BLKPCOR	  0x80	  /* Black pixel correction enable */
 #define   R76_WHTPCOR	  0x40	  /* White pixel correction enable */
@@ -219,9 +225,12 @@ struct ov7670_devtype {
 struct ov7670_format_struct;  /* coming later */
 struct ov7670_info {
 	struct v4l2_subdev sd;
+<<<<<<< HEAD
 #if defined(CONFIG_MEDIA_CONTROLLER)
 	struct media_pad pad;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct v4l2_ctrl_handler hdl;
 	struct {
 		/* gain cluster */
@@ -238,12 +247,18 @@ struct ov7670_info {
 		struct v4l2_ctrl *saturation;
 		struct v4l2_ctrl *hue;
 	};
+<<<<<<< HEAD
 	struct v4l2_mbus_framefmt format;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ov7670_format_struct *fmt;  /* Current format */
 	struct clk *clk;
 	struct gpio_desc *resetb_gpio;
 	struct gpio_desc *pwdn_gpio;
+<<<<<<< HEAD
 	unsigned int mbus_config;	/* Media bus configuration flags */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int min_width;			/* Filter out smaller sizes */
 	int min_height;			/* Filter out smaller sizes */
 	int clock_speed;		/* External clock speed (MHz) */
@@ -299,8 +314,12 @@ static struct regval_list ov7670_default_regs[] = {
 
 	{ REG_COM3, 0 },	{ REG_COM14, 0 },
 	/* Mystery scaling numbers */
+<<<<<<< HEAD
 	{ REG_SCALING_XSC, 0x3a },
 	{ REG_SCALING_YSC, 0x35 },
+=======
+	{ 0x70, 0x3a },		{ 0x71, 0x35 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ 0x72, 0x11 },		{ 0x73, 0xf0 },
 	{ 0xa2, 0x02 },		{ REG_COM10, 0x0 },
 
@@ -414,12 +433,21 @@ static struct regval_list ov7670_fmt_yuv422[] = {
 	{ REG_COM1, 0 },	/* CCIR601 */
 	{ REG_COM15, COM15_R00FF },
 	{ REG_COM9, 0x48 }, /* 32x gain ceiling; 0x8 is reserved bit */
+<<<<<<< HEAD
 	{ 0x4f, 0x80 },		/* "matrix coefficient 1" */
 	{ 0x50, 0x80 },		/* "matrix coefficient 2" */
 	{ 0x51, 0    },		/* vb */
 	{ 0x52, 0x22 },		/* "matrix coefficient 4" */
 	{ 0x53, 0x5e },		/* "matrix coefficient 5" */
 	{ 0x54, 0x80 },		/* "matrix coefficient 6" */
+=======
+	{ 0x4f, 0x80 }, 	/* "matrix coefficient 1" */
+	{ 0x50, 0x80 }, 	/* "matrix coefficient 2" */
+	{ 0x51, 0    },		/* vb */
+	{ 0x52, 0x22 }, 	/* "matrix coefficient 4" */
+	{ 0x53, 0x5e }, 	/* "matrix coefficient 5" */
+	{ 0x54, 0x80 }, 	/* "matrix coefficient 6" */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ REG_COM13, COM13_GAMMA|COM13_UVSAT },
 	{ 0xff, 0xff },
 };
@@ -429,6 +457,7 @@ static struct regval_list ov7670_fmt_rgb565[] = {
 	{ REG_RGB444, 0 },	/* No RGB444 please */
 	{ REG_COM1, 0x0 },	/* CCIR601 */
 	{ REG_COM15, COM15_RGB565 },
+<<<<<<< HEAD
 	{ REG_COM9, 0x38 },	/* 16x gain ceiling; 0x8 is reserved bit */
 	{ 0x4f, 0xb3 },		/* "matrix coefficient 1" */
 	{ 0x50, 0xb3 },		/* "matrix coefficient 2" */
@@ -436,6 +465,15 @@ static struct regval_list ov7670_fmt_rgb565[] = {
 	{ 0x52, 0x3d },		/* "matrix coefficient 4" */
 	{ 0x53, 0xa7 },		/* "matrix coefficient 5" */
 	{ 0x54, 0xe4 },		/* "matrix coefficient 6" */
+=======
+	{ REG_COM9, 0x38 }, 	/* 16x gain ceiling; 0x8 is reserved bit */
+	{ 0x4f, 0xb3 }, 	/* "matrix coefficient 1" */
+	{ 0x50, 0xb3 }, 	/* "matrix coefficient 2" */
+	{ 0x51, 0    },		/* vb */
+	{ 0x52, 0x3d }, 	/* "matrix coefficient 4" */
+	{ 0x53, 0xa7 }, 	/* "matrix coefficient 5" */
+	{ 0x54, 0xe4 }, 	/* "matrix coefficient 6" */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ REG_COM13, COM13_GAMMA|COM13_UVSAT },
 	{ 0xff, 0xff },
 };
@@ -445,6 +483,7 @@ static struct regval_list ov7670_fmt_rgb444[] = {
 	{ REG_RGB444, R444_ENABLE },	/* Enable xxxxrrrr ggggbbbb */
 	{ REG_COM1, 0x0 },	/* CCIR601 */
 	{ REG_COM15, COM15_R01FE|COM15_RGB565 }, /* Data range needed? */
+<<<<<<< HEAD
 	{ REG_COM9, 0x38 },	/* 16x gain ceiling; 0x8 is reserved bit */
 	{ 0x4f, 0xb3 },		/* "matrix coefficient 1" */
 	{ 0x50, 0xb3 },		/* "matrix coefficient 2" */
@@ -452,6 +491,15 @@ static struct regval_list ov7670_fmt_rgb444[] = {
 	{ 0x52, 0x3d },		/* "matrix coefficient 4" */
 	{ 0x53, 0xa7 },		/* "matrix coefficient 5" */
 	{ 0x54, 0xe4 },		/* "matrix coefficient 6" */
+=======
+	{ REG_COM9, 0x38 }, 	/* 16x gain ceiling; 0x8 is reserved bit */
+	{ 0x4f, 0xb3 }, 	/* "matrix coefficient 1" */
+	{ 0x50, 0xb3 }, 	/* "matrix coefficient 2" */
+	{ 0x51, 0    },		/* vb */
+	{ 0x52, 0x3d }, 	/* "matrix coefficient 4" */
+	{ 0x53, 0xa7 }, 	/* "matrix coefficient 5" */
+	{ 0x54, 0xe4 }, 	/* "matrix coefficient 6" */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ REG_COM13, COM13_GAMMA|COM13_UVSAT|0x2 },  /* Magic rsvd bit */
 	{ 0xff, 0xff },
 };
@@ -576,6 +624,7 @@ static int ov7670_write(struct v4l2_subdev *sd, unsigned char reg,
 		return ov7670_write_i2c(sd, reg, value);
 }
 
+<<<<<<< HEAD
 static int ov7670_update_bits(struct v4l2_subdev *sd, unsigned char reg,
 		unsigned char mask, unsigned char value)
 {
@@ -589,6 +638,8 @@ static int ov7670_update_bits(struct v4l2_subdev *sd, unsigned char reg,
 	return ov7670_write(sd, reg, (orig & ~mask) | (value & mask));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Write a list of register settings; ff/ff stops the process.
  */
@@ -669,7 +720,11 @@ static struct ov7670_format_struct {
 	{
 		.mbus_code	= MEDIA_BUS_FMT_YUYV8_2X8,
 		.colorspace	= V4L2_COLORSPACE_SRGB,
+<<<<<<< HEAD
 		.regs		= ov7670_fmt_yuv422,
+=======
+		.regs 		= ov7670_fmt_yuv422,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cmatrix	= { 128, -128, 0, -34, -94, 128 },
 	},
 	{
@@ -687,7 +742,11 @@ static struct ov7670_format_struct {
 	{
 		.mbus_code	= MEDIA_BUS_FMT_SBGGR8_1X8,
 		.colorspace	= V4L2_COLORSPACE_SRGB,
+<<<<<<< HEAD
 		.regs		= ov7670_fmt_raw,
+=======
+		.regs 		= ov7670_fmt_raw,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cmatrix	= { 0, 0, 0, 0, 0, 0 },
 	},
 };
@@ -997,9 +1056,12 @@ static int ov7670_try_fmt_internal(struct v4l2_subdev *sd,
 	fmt->width = wsize->width;
 	fmt->height = wsize->height;
 	fmt->colorspace = ov7670_formats[index].colorspace;
+<<<<<<< HEAD
 
 	info->format = *fmt;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1013,10 +1075,14 @@ static int ov7670_set_fmt(struct v4l2_subdev *sd,
 	struct ov7670_format_struct *ovfmt;
 	struct ov7670_win_size *wsize;
 	struct ov7670_info *info = to_state(sd);
+<<<<<<< HEAD
 #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
 	struct v4l2_mbus_framefmt *mbus_fmt;
 #endif
 	unsigned char com7, com10 = 0;
+=======
+	unsigned char com7;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (format->pad)
@@ -1026,6 +1092,7 @@ static int ov7670_set_fmt(struct v4l2_subdev *sd,
 		ret = ov7670_try_fmt_internal(sd, &format->format, NULL, NULL);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
 		mbus_fmt = v4l2_subdev_get_try_format(sd, cfg, format->pad);
 		*mbus_fmt = format->format;
@@ -1036,6 +1103,14 @@ static int ov7670_set_fmt(struct v4l2_subdev *sd,
 	}
 
 	ret = ov7670_try_fmt_internal(sd, &format->format, &ovfmt, &wsize);
+=======
+		cfg->try_fmt = format->format;
+		return 0;
+	}
+
+	ret = ov7670_try_fmt_internal(sd, &format->format, &ovfmt, &wsize);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 	/*
@@ -1046,6 +1121,7 @@ static int ov7670_set_fmt(struct v4l2_subdev *sd,
 	 */
 	com7 = ovfmt->regs[0].value;
 	com7 |= wsize->com7_bit;
+<<<<<<< HEAD
 	ret = ov7670_write(sd, REG_COM7, com7);
 	if (ret)
 		return ret;
@@ -1081,6 +1157,18 @@ static int ov7670_set_fmt(struct v4l2_subdev *sd,
 			return ret;
 	}
 
+=======
+	ov7670_write(sd, REG_COM7, com7);
+	/*
+	 * Now write the rest of the array.  Also store start/stops
+	 */
+	ov7670_write_array(sd, ovfmt->regs + 1);
+	ov7670_set_hw(sd, wsize->hstart, wsize->hstop, wsize->vstart,
+			wsize->vstop);
+	ret = 0;
+	if (wsize->regs)
+		ret = ov7670_write_array(sd, wsize->regs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->fmt = ovfmt;
 
 	/*
@@ -1093,6 +1181,7 @@ static int ov7670_set_fmt(struct v4l2_subdev *sd,
 	 * to write it unconditionally, and that will make the frame
 	 * rate persistent too.
 	 */
+<<<<<<< HEAD
 	ret = ov7670_write(sd, REG_CLKRC, info->clkrc);
 	if (ret)
 		return ret;
@@ -1121,6 +1210,10 @@ static int ov7670_get_fmt(struct v4l2_subdev *sd,
 		format->format = info->format;
 	}
 
+=======
+	if (ret == 0)
+		ret = ov7670_write(sd, REG_CLKRC, info->clkrc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1128,6 +1221,7 @@ static int ov7670_get_fmt(struct v4l2_subdev *sd,
  * Implement G/S_PARM.  There is a "high quality" mode we could try
  * to do someday; for now, we just do the frame rate tweak.
  */
+<<<<<<< HEAD
 static int ov7670_g_frame_interval(struct v4l2_subdev *sd,
 				   struct v4l2_subdev_frame_interval *ival)
 {
@@ -1135,10 +1229,23 @@ static int ov7670_g_frame_interval(struct v4l2_subdev *sd,
 
 
 	info->devtype->get_framerate(sd, &ival->interval);
+=======
+static int ov7670_g_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *parms)
+{
+	struct v4l2_captureparm *cp = &parms->parm.capture;
+	struct ov7670_info *info = to_state(sd);
+
+	if (parms->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		return -EINVAL;
+
+	cp->capability = V4L2_CAP_TIMEPERFRAME;
+	info->devtype->get_framerate(sd, &cp->timeperframe);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ov7670_s_frame_interval(struct v4l2_subdev *sd,
 				   struct v4l2_subdev_frame_interval *ival)
 {
@@ -1146,6 +1253,18 @@ static int ov7670_s_frame_interval(struct v4l2_subdev *sd,
 	struct ov7670_info *info = to_state(sd);
 
 
+=======
+static int ov7670_s_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *parms)
+{
+	struct v4l2_captureparm *cp = &parms->parm.capture;
+	struct v4l2_fract *tpf = &cp->timeperframe;
+	struct ov7670_info *info = to_state(sd);
+
+	if (parms->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		return -EINVAL;
+
+	cp->capability = V4L2_CAP_TIMEPERFRAME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return info->devtype->set_framerate(sd, tpf);
 }
 
@@ -1511,6 +1630,7 @@ static int ov7670_s_autoexp(struct v4l2_subdev *sd,
 	return ret;
 }
 
+<<<<<<< HEAD
 static const char * const ov7670_test_pattern_menu[] = {
 	"No test output",
 	"Shifting \"1\"",
@@ -1530,6 +1650,8 @@ static int ov7670_s_test_pattern(struct v4l2_subdev *sd, int value)
 	return ov7670_update_bits(sd, REG_SCALING_YSC, TEST_PATTTERN_1,
 				value & BIT(1) ? TEST_PATTTERN_1 : 0);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int ov7670_g_volatile_ctrl(struct v4l2_ctrl *ctrl)
 {
@@ -1576,8 +1698,11 @@ static int ov7670_s_ctrl(struct v4l2_ctrl *ctrl)
 			return ov7670_s_exp(sd, info->exposure->val);
 		}
 		return ov7670_s_autoexp(sd, ctrl->val);
+<<<<<<< HEAD
 	case V4L2_CID_TEST_PATTERN:
 		return ov7670_s_test_pattern(sd, ctrl->val);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return -EINVAL;
 }
@@ -1606,6 +1731,7 @@ static int ov7670_s_register(struct v4l2_subdev *sd, const struct v4l2_dbg_regis
 }
 #endif
 
+<<<<<<< HEAD
 static int ov7670_s_power(struct v4l2_subdev *sd, int on)
 {
 	struct ov7670_info *info = to_state(sd);
@@ -1646,6 +1772,8 @@ static int ov7670_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ----------------------------------------------------------------------- */
 
 static const struct v4l2_subdev_core_ops ov7670_core_ops = {
@@ -1658,15 +1786,23 @@ static const struct v4l2_subdev_core_ops ov7670_core_ops = {
 };
 
 static const struct v4l2_subdev_video_ops ov7670_video_ops = {
+<<<<<<< HEAD
 	.s_frame_interval = ov7670_s_frame_interval,
 	.g_frame_interval = ov7670_g_frame_interval,
+=======
+	.s_parm = ov7670_s_parm,
+	.g_parm = ov7670_g_parm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct v4l2_subdev_pad_ops ov7670_pad_ops = {
 	.enum_frame_interval = ov7670_enum_frame_interval,
 	.enum_frame_size = ov7670_enum_frame_size,
 	.enum_mbus_code = ov7670_enum_mbus_code,
+<<<<<<< HEAD
 	.get_fmt = ov7670_get_fmt,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_fmt = ov7670_set_fmt,
 };
 
@@ -1676,12 +1812,15 @@ static const struct v4l2_subdev_ops ov7670_ops = {
 	.pad = &ov7670_pad_ops,
 };
 
+<<<<<<< HEAD
 #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
 static const struct v4l2_subdev_internal_ops ov7670_subdev_internal_ops = {
 	.open = ov7670_open,
 };
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ----------------------------------------------------------------------- */
 
 static const struct ov7670_devtype ov7670_devdata[] = {
@@ -1720,6 +1859,7 @@ static int ov7670_init_gpio(struct i2c_client *client, struct ov7670_info *info)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * ov7670_parse_dt() - Parse device tree to collect mbus configuration
  *			properties
@@ -1757,6 +1897,8 @@ static int ov7670_parse_dt(struct device *dev,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ov7670_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
@@ -1771,6 +1913,7 @@ static int ov7670_probe(struct i2c_client *client,
 	sd = &info->sd;
 	v4l2_i2c_subdev_init(sd, client, &ov7670_ops);
 
+<<<<<<< HEAD
 #ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
 	sd->internal_ops = &ov7670_subdev_internal_ops;
 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE;
@@ -1784,6 +1927,10 @@ static int ov7670_probe(struct i2c_client *client,
 			return ret;
 
 	} else if (client->dev.platform_data) {
+=======
+	info->clock_speed = 30; /* default: a guess */
+	if (client->dev.platform_data) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct ov7670_config *config = client->dev.platform_data;
 
 		/*
@@ -1816,7 +1963,10 @@ static int ov7670_probe(struct i2c_client *client,
 		ret = clk_prepare_enable(info->clk);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info->clock_speed = clk_get_rate(info->clk) / 1000000;
 		if (info->clock_speed < 10 || info->clock_speed > 48) {
 			ret = -EINVAL;
@@ -1828,24 +1978,34 @@ static int ov7670_probe(struct i2c_client *client,
 	if (ret)
 		goto clk_disable;
 
+<<<<<<< HEAD
 	ov7670_s_power(sd, 1);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Make sure it's an ov7670 */
 	ret = ov7670_detect(sd);
 	if (ret) {
 		v4l_dbg(1, debug, client,
 			"chip found @ 0x%x (%s) is not an ov7670 chip.\n",
 			client->addr << 1, client->adapter->name);
+<<<<<<< HEAD
 		goto power_off;
+=======
+		goto clk_disable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	v4l_info(client, "chip found @ 0x%02x (%s)\n",
 			client->addr << 1, client->adapter->name);
 
 	info->devtype = &ov7670_devdata[id->driver_data];
 	info->fmt = &ov7670_formats[0];
+<<<<<<< HEAD
 
 	ov7670_get_default_format(sd, &info->format);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->clkrc = 0;
 
 	/* Set default frame rate to 30 fps */
@@ -1853,6 +2013,12 @@ static int ov7670_probe(struct i2c_client *client,
 	tpf.denominator = 30;
 	info->devtype->set_framerate(sd, &tpf);
 
+<<<<<<< HEAD
+=======
+	if (info->pclk_hb_disable)
+		ov7670_write(sd, REG_COM10, COM10_PCLK_HB);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_ctrl_handler_init(&info->hdl, 10);
 	v4l2_ctrl_new_std(&info->hdl, &ov7670_ctrl_ops,
 			V4L2_CID_BRIGHTNESS, 0, 255, 1, 128);
@@ -1875,10 +2041,13 @@ static int ov7670_probe(struct i2c_client *client,
 	info->auto_exposure = v4l2_ctrl_new_std_menu(&info->hdl, &ov7670_ctrl_ops,
 			V4L2_CID_EXPOSURE_AUTO, V4L2_EXPOSURE_MANUAL, 0,
 			V4L2_EXPOSURE_AUTO);
+<<<<<<< HEAD
 	v4l2_ctrl_new_std_menu_items(&info->hdl, &ov7670_ctrl_ops,
 			V4L2_CID_TEST_PATTERN,
 			ARRAY_SIZE(ov7670_test_pattern_menu) - 1, 0, 0,
 			ov7670_test_pattern_menu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sd->ctrl_handler = &info->hdl;
 	if (info->hdl.error) {
 		ret = info->hdl.error;
@@ -1893,6 +2062,7 @@ static int ov7670_probe(struct i2c_client *client,
 	v4l2_ctrl_auto_cluster(2, &info->auto_exposure,
 			       V4L2_EXPOSURE_MANUAL, false);
 	v4l2_ctrl_cluster(2, &info->saturation);
+<<<<<<< HEAD
 
 #if defined(CONFIG_MEDIA_CONTROLLER)
 	info->pad.flags = MEDIA_PAD_FL_SOURCE;
@@ -1902,10 +2072,13 @@ static int ov7670_probe(struct i2c_client *client,
 		goto hdl_free;
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_ctrl_handler_setup(&info->hdl);
 
 	ret = v4l2_async_register_subdev(&info->sd);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto entity_cleanup;
 
 	return 0;
@@ -1916,6 +2089,14 @@ hdl_free:
 	v4l2_ctrl_handler_free(&info->hdl);
 power_off:
 	ov7670_s_power(sd, 0);
+=======
+		goto hdl_free;
+
+	return 0;
+
+hdl_free:
+	v4l2_ctrl_handler_free(&info->hdl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 clk_disable:
 	clk_disable_unprepare(info->clk);
 	return ret;
@@ -1927,11 +2108,17 @@ static int ov7670_remove(struct i2c_client *client)
 	struct v4l2_subdev *sd = i2c_get_clientdata(client);
 	struct ov7670_info *info = to_state(sd);
 
+<<<<<<< HEAD
 	v4l2_async_unregister_subdev(sd);
 	v4l2_ctrl_handler_free(&info->hdl);
 	clk_disable_unprepare(info->clk);
 	media_entity_cleanup(&info->sd.entity);
 	ov7670_s_power(sd, 0);
+=======
+	v4l2_device_unregister_subdev(sd);
+	v4l2_ctrl_handler_free(&info->hdl);
+	clk_disable_unprepare(info->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

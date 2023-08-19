@@ -461,7 +461,11 @@ static bool nes_nic_send(struct sk_buff *skb, struct net_device *netdev)
 /**
  * nes_netdev_start_xmit
  */
+<<<<<<< HEAD
 static netdev_tx_t nes_netdev_start_xmit(struct sk_buff *skb, struct net_device *netdev)
+=======
+static int nes_netdev_start_xmit(struct sk_buff *skb, struct net_device *netdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nes_vnic *nesvnic = netdev_priv(netdev);
 	struct nes_device *nesdev = nesvnic->nesdev;
@@ -904,7 +908,11 @@ static void nes_netdev_set_multicast_list(struct net_device *netdev)
 		int i;
 		struct netdev_hw_addr *ha;
 
+<<<<<<< HEAD
 		addrs = kmalloc_array(mc_count, ETH_ALEN, GFP_ATOMIC);
+=======
+		addrs = kmalloc(ETH_ALEN * mc_count, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!addrs) {
 			set_allmulti(nesdev, nic_active_bit);
 			goto unlock;
@@ -926,10 +934,18 @@ static void nes_netdev_set_multicast_list(struct net_device *netdev)
 				nesadapter->pft_mcast_map[mc_index] !=
 					nesvnic->nic_index &&
 					mc_index < max_pft_entries_avaiable) {
+<<<<<<< HEAD
 				nes_debug(NES_DBG_NIC_RX,
 					  "mc_index=%d skipping nic_index=%d, used for=%d\n",
 					  mc_index, nesvnic->nic_index,
 					  nesadapter->pft_mcast_map[mc_index]);
+=======
+						nes_debug(NES_DBG_NIC_RX,
+					"mc_index=%d skipping nic_index=%d, "
+					"used for=%d \n", mc_index,
+					nesvnic->nic_index,
+					nesadapter->pft_mcast_map[mc_index]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				mc_index++;
 			}
 			if (mc_index >= max_pft_entries_avaiable)
@@ -1745,7 +1761,12 @@ struct net_device *nes_netdev_init(struct nes_device *nesdev,
 		nesvnic->rdma_enabled = 0;
 	}
 	nesvnic->nic_cq.cq_number = nesvnic->nic.qp_id;
+<<<<<<< HEAD
 	timer_setup(&nesvnic->event_timer, NULL, 0);
+=======
+	init_timer(&nesvnic->event_timer);
+	nesvnic->event_timer.function = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&nesvnic->tx_lock);
 	spin_lock_init(&nesvnic->port_ibevent_lock);
 	nesdev->netdev[nesdev->netdev_count] = netdev;

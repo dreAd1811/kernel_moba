@@ -16,7 +16,10 @@
  * GNU General Public License for more details.
  */
 
+<<<<<<< HEAD
 #include <linux/acpi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/completion.h>
 #include <linux/delay.h>
 #include <linux/i2c.h>
@@ -26,7 +29,10 @@
 #include <linux/mfd/intel_soc_pmic.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/power/bq24190_charger.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 #define CHT_WC_I2C_CTRL			0x5e24
@@ -279,16 +285,22 @@ static const struct irq_chip cht_wc_i2c_irq_chip = {
 	.name			= "cht_wc_ext_chrg_irq_chip",
 };
 
+<<<<<<< HEAD
 static const char * const bq24190_suppliers[] = {
 	"tcpm-source-psy-i2c-fusb302" };
 
 static const struct property_entry bq24190_props[] = {
 	PROPERTY_ENTRY_STRING_ARRAY("supplied-from", bq24190_suppliers),
+=======
+static const struct property_entry bq24190_props[] = {
+	PROPERTY_ENTRY_STRING("extcon-name", "cht_wcove_pwrsrc"),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PROPERTY_ENTRY_BOOL("omit-battery-class"),
 	PROPERTY_ENTRY_BOOL("disable-reset"),
 	{ }
 };
 
+<<<<<<< HEAD
 static struct regulator_consumer_supply fusb302_consumer = {
 	.supply = "vbus",
 	/* Must match fusb302 dev_name in intel_cht_int33fe.c */
@@ -309,6 +321,8 @@ static struct bq24190_platform_data bq24190_pdata = {
 	.regulator_init_data = &bq24190_vbus_init_data,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
 {
 	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
@@ -316,9 +330,13 @@ static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
 	struct i2c_board_info board_info = {
 		.type = "bq24190",
 		.addr = 0x6b,
+<<<<<<< HEAD
 		.dev_name = "bq24190",
 		.properties = bq24190_props,
 		.platform_data = &bq24190_pdata,
+=======
+		.properties = bq24190_props,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	int ret, reg, irq;
 
@@ -387,6 +405,7 @@ static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
 	if (ret)
 		goto remove_irq_domain;
 
+<<<<<<< HEAD
 	/*
 	 * Normally the Whiskey Cove PMIC is paired with a TI bq24292i charger,
 	 * connected to this i2c bus, and a max17047 fuel-gauge and a fusb302
@@ -402,6 +421,13 @@ static int cht_wc_i2c_adap_i2c_probe(struct platform_device *pdev)
 			ret = -ENOMEM;
 			goto del_adapter;
 		}
+=======
+	board_info.irq = adap->client_irq;
+	adap->client = i2c_new_device(&adap->adapter, &board_info);
+	if (!adap->client) {
+		ret = -ENOMEM;
+		goto del_adapter;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	platform_set_drvdata(pdev, adap);
@@ -418,15 +444,23 @@ static int cht_wc_i2c_adap_i2c_remove(struct platform_device *pdev)
 {
 	struct cht_wc_i2c_adap *adap = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	if (adap->client)
 		i2c_unregister_device(adap->client);
+=======
+	i2c_unregister_device(adap->client);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_del_adapter(&adap->adapter);
 	irq_domain_remove(adap->irq_domain);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct platform_device_id cht_wc_i2c_adap_id_table[] = {
+=======
+static struct platform_device_id cht_wc_i2c_adap_id_table[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .name = "cht_wcove_ext_chgr" },
 	{},
 };

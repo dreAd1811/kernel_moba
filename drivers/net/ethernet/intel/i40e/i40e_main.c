@@ -1,5 +1,33 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
+=======
+/*******************************************************************************
+ *
+ * Intel Ethernet Controller XL710 Family Linux Driver
+ * Copyright(c) 2013 - 2017 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ *
+ ******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/etherdevice.h>
 #include <linux/of_net.h>
@@ -24,8 +52,13 @@ static const char i40e_driver_string[] =
 #define DRV_KERN "-k"
 
 #define DRV_VERSION_MAJOR 2
+<<<<<<< HEAD
 #define DRV_VERSION_MINOR 3
 #define DRV_VERSION_BUILD 2
+=======
+#define DRV_VERSION_MINOR 1
+#define DRV_VERSION_BUILD 14
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_VERSION __stringify(DRV_VERSION_MAJOR) "." \
 	     __stringify(DRV_VERSION_MINOR) "." \
 	     __stringify(DRV_VERSION_BUILD)    DRV_KERN
@@ -46,9 +79,12 @@ static int i40e_reset(struct i40e_pf *pf);
 static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired);
 static void i40e_fdir_sb_setup(struct i40e_pf *pf);
 static int i40e_veb_get_bw_info(struct i40e_veb *veb);
+<<<<<<< HEAD
 static int i40e_get_capabilities(struct i40e_pf *pf,
 				 enum i40e_admin_queue_opc list_type);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* i40e_pci_tbl - PCI Device ID Table
  *
@@ -186,8 +222,13 @@ static int i40e_get_lump(struct i40e_pf *pf, struct i40e_lump_tracking *pile,
 
 	if (!pile || needed == 0 || id >= I40E_PILE_VALID_BIT) {
 		dev_info(&pf->pdev->dev,
+<<<<<<< HEAD
 			 "param err: pile=%s needed=%d id=0x%04x\n",
 			 pile ? "<valid>" : "<null>", needed, id);
+=======
+			 "param err: pile=%p needed=%d id=0x%04x\n",
+			 pile, needed, id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -254,8 +295,13 @@ static int i40e_put_lump(struct i40e_lump_tracking *pile, u16 index, u16 id)
 
 /**
  * i40e_find_vsi_from_id - searches for the vsi with the given id
+<<<<<<< HEAD
  * @pf: the pf structure to search for the vsi
  * @id: id of the vsi it is searching for
+=======
+ * @pf - the pf structure to search for the vsi
+ * @id - id of the vsi it is searching for
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 struct i40e_vsi *i40e_find_vsi_from_id(struct i40e_pf *pf, u16 id)
 {
@@ -336,10 +382,13 @@ static void i40e_tx_timeout(struct net_device *netdev)
 		      (pf->tx_timeout_last_recovery + netdev->watchdog_timeo)))
 		return;   /* don't do any new action before the next timeout */
 
+<<<<<<< HEAD
 	/* don't kick off another recovery if one is already pending */
 	if (test_and_set_bit(__I40E_TIMEOUT_RECOVERY_PENDING, pf->state))
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tx_ring) {
 		head = i40e_get_head(tx_ring);
 		/* Read interrupt register */
@@ -415,7 +464,10 @@ static void i40e_get_netdev_stats_struct_tx(struct i40e_ring *ring,
 /**
  * i40e_get_netdev_stats_struct - Get statistics for netdev interface
  * @netdev: network interface device structure
+<<<<<<< HEAD
  * @stats: data structure to store statistics
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns the address of the device statistics structure.
  * The statistics are actually updated from the service task.
@@ -424,9 +476,15 @@ static void i40e_get_netdev_stats_struct(struct net_device *netdev,
 				  struct rtnl_link_stats64 *stats)
 {
 	struct i40e_netdev_priv *np = netdev_priv(netdev);
+<<<<<<< HEAD
 	struct i40e_vsi *vsi = np->vsi;
 	struct rtnl_link_stats64 *vsi_stats = i40e_get_vsi_stats_struct(vsi);
 	struct i40e_ring *ring;
+=======
+	struct i40e_ring *tx_ring, *rx_ring;
+	struct i40e_vsi *vsi = np->vsi;
+	struct rtnl_link_stats64 *vsi_stats = i40e_get_vsi_stats_struct(vsi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	if (test_bit(__I40E_VSI_DOWN, vsi->state))
@@ -440,6 +498,7 @@ static void i40e_get_netdev_stats_struct(struct net_device *netdev,
 		u64 bytes, packets;
 		unsigned int start;
 
+<<<<<<< HEAD
 		ring = READ_ONCE(vsi->tx_rings[i]);
 		if (!ring)
 			continue;
@@ -456,10 +515,29 @@ static void i40e_get_netdev_stats_struct(struct net_device *netdev,
 			packets = ring->stats.packets;
 			bytes   = ring->stats.bytes;
 		} while (u64_stats_fetch_retry_irq(&ring->syncp, start));
+=======
+		tx_ring = ACCESS_ONCE(vsi->tx_rings[i]);
+		if (!tx_ring)
+			continue;
+		i40e_get_netdev_stats_struct_tx(tx_ring, stats);
+
+		rx_ring = &tx_ring[1];
+
+		do {
+			start = u64_stats_fetch_begin_irq(&rx_ring->syncp);
+			packets = rx_ring->stats.packets;
+			bytes   = rx_ring->stats.bytes;
+		} while (u64_stats_fetch_retry_irq(&rx_ring->syncp, start));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		stats->rx_packets += packets;
 		stats->rx_bytes   += bytes;
 
+<<<<<<< HEAD
+=======
+		if (i40e_enabled_xdp_vsi(vsi))
+			i40e_get_netdev_stats_struct_tx(&rx_ring[1], stats);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	rcu_read_unlock();
 
@@ -587,6 +665,7 @@ static void i40e_stat_update32(struct i40e_hw *hw, u32 reg,
 }
 
 /**
+<<<<<<< HEAD
  * i40e_stat_update_and_clear32 - read and clear hw reg, update a 32 bit stat
  * @hw: ptr to the hardware info
  * @reg: the hw reg to read and clear
@@ -601,6 +680,8 @@ static void i40e_stat_update_and_clear32(struct i40e_hw *hw, u32 reg, u64 *stat)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_update_eth_stats - Update VSI-specific ethernet statistics counters.
  * @vsi: the VSI to be updated
  **/
@@ -792,7 +873,11 @@ static void i40e_update_vsi_stats(struct i40e_vsi *vsi)
 	rcu_read_lock();
 	for (q = 0; q < vsi->num_queue_pairs; q++) {
 		/* locate Tx ring */
+<<<<<<< HEAD
 		p = READ_ONCE(vsi->tx_rings[q]);
+=======
+		p = ACCESS_ONCE(vsi->tx_rings[q]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		do {
 			start = u64_stats_fetch_begin_irq(&p->syncp);
@@ -1041,6 +1126,7 @@ static void i40e_update_pf_stats(struct i40e_pf *pf)
 			   &osd->rx_jabber, &nsd->rx_jabber);
 
 	/* FDIR stats */
+<<<<<<< HEAD
 	i40e_stat_update_and_clear32(hw,
 			I40E_GLQF_PCNT(I40E_FD_ATR_STAT_IDX(hw->pf_id)),
 			&nsd->fd_atr_match);
@@ -1050,6 +1136,20 @@ static void i40e_update_pf_stats(struct i40e_pf *pf)
 	i40e_stat_update_and_clear32(hw,
 			I40E_GLQF_PCNT(I40E_FD_ATR_TUNNEL_STAT_IDX(hw->pf_id)),
 			&nsd->fd_atr_tunnel_match);
+=======
+	i40e_stat_update32(hw,
+			   I40E_GLQF_PCNT(I40E_FD_ATR_STAT_IDX(pf->hw.pf_id)),
+			   pf->stat_offsets_loaded,
+			   &osd->fd_atr_match, &nsd->fd_atr_match);
+	i40e_stat_update32(hw,
+			   I40E_GLQF_PCNT(I40E_FD_SB_STAT_IDX(pf->hw.pf_id)),
+			   pf->stat_offsets_loaded,
+			   &osd->fd_sb_match, &nsd->fd_sb_match);
+	i40e_stat_update32(hw,
+		      I40E_GLQF_PCNT(I40E_FD_ATR_TUNNEL_STAT_IDX(pf->hw.pf_id)),
+		      pf->stat_offsets_loaded,
+		      &osd->fd_atr_tunnel_match, &nsd->fd_atr_tunnel_match);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val = rd32(hw, I40E_PRTPM_EEE_STAT);
 	nsd->tx_lpi_status =
@@ -1066,13 +1166,21 @@ static void i40e_update_pf_stats(struct i40e_pf *pf)
 			   &osd->rx_lpi_count, &nsd->rx_lpi_count);
 
 	if (pf->flags & I40E_FLAG_FD_SB_ENABLED &&
+<<<<<<< HEAD
 	    !test_bit(__I40E_FD_SB_AUTO_DISABLED, pf->state))
+=======
+	    !(pf->flags & I40E_FLAG_FD_SB_AUTO_DISABLED))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nsd->fd_sb_status = true;
 	else
 		nsd->fd_sb_status = false;
 
 	if (pf->flags & I40E_FLAG_FD_ATR_ENABLED &&
+<<<<<<< HEAD
 	    !test_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state))
+=======
+	    !(pf->flags & I40E_FLAG_FD_ATR_AUTO_DISABLED))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nsd->fd_atr_status = true;
 	else
 		nsd->fd_atr_status = false;
@@ -1358,14 +1466,29 @@ struct i40e_mac_filter *i40e_add_filter(struct i40e_vsi *vsi,
 
 		ether_addr_copy(f->macaddr, macaddr);
 		f->vlan = vlan;
+<<<<<<< HEAD
 		f->state = I40E_FILTER_NEW;
+=======
+		/* If we're in overflow promisc mode, set the state directly
+		 * to failed, so we don't bother to try sending the filter
+		 * to the hardware.
+		 */
+		if (test_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state))
+			f->state = I40E_FILTER_FAILED;
+		else
+			f->state = I40E_FILTER_NEW;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		INIT_HLIST_NODE(&f->hlist);
 
 		key = i40e_addr_to_hkey(macaddr);
 		hash_add(vsi->mac_filter_hash, &f->hlist, key);
 
 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+<<<<<<< HEAD
 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
+=======
+		vsi->back->flags |= I40E_FLAG_FILTER_SYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* If we're asked to add a filter that has been marked for removal, it
@@ -1415,7 +1538,11 @@ void __i40e_del_filter(struct i40e_vsi *vsi, struct i40e_mac_filter *f)
 	}
 
 	vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+<<<<<<< HEAD
 	set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
+=======
+	vsi->back->flags |= I40E_FLAG_FILTER_SYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1576,6 +1703,7 @@ static int i40e_set_mac(struct net_device *netdev, void *p)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_config_rss_aq - Prepare for RSS using AQ commands
  * @vsi: vsi structure
  * @seed: RSS hash seed
@@ -1740,6 +1868,8 @@ static int i40e_vsi_setup_queue_map_mqprio(struct i40e_vsi *vsi,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_vsi_setup_queue_map - Setup a VSI queue map based on enabled_tc
  * @vsi: the VSI being setup
  * @ctxt: VSI context structure
@@ -1756,7 +1886,11 @@ static void i40e_vsi_setup_queue_map(struct i40e_vsi *vsi,
 	struct i40e_pf *pf = vsi->back;
 	u16 sections = 0;
 	u8 netdev_tc = 0;
+<<<<<<< HEAD
 	u16 numtc = 1;
+=======
+	u16 numtc = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 qcount;
 	u8 offset;
 	u16 qmap;
@@ -1766,11 +1900,17 @@ static void i40e_vsi_setup_queue_map(struct i40e_vsi *vsi,
 	sections = I40E_AQ_VSI_PROP_QUEUE_MAP_VALID;
 	offset = 0;
 
+<<<<<<< HEAD
 	/* Number of queues per enabled TC */
 	num_tc_qps = vsi->alloc_queue_pairs;
 	if (enabled_tc && (vsi->back->flags & I40E_FLAG_DCB_ENABLED)) {
 		/* Find numtc from enabled TC bitmap */
 		for (i = 0, numtc = 0; i < I40E_MAX_TRAFFIC_CLASS; i++) {
+=======
+	if (enabled_tc && (vsi->back->flags & I40E_FLAG_DCB_ENABLED)) {
+		/* Find numtc from enabled TC bitmap */
+		for (i = 0; i < I40E_MAX_TRAFFIC_CLASS; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (enabled_tc & BIT(i)) /* TC is enabled */
 				numtc++;
 		}
@@ -1778,17 +1918,31 @@ static void i40e_vsi_setup_queue_map(struct i40e_vsi *vsi,
 			dev_warn(&pf->pdev->dev, "DCB is enabled but no TC enabled, forcing TC0\n");
 			numtc = 1;
 		}
+<<<<<<< HEAD
 		num_tc_qps = num_tc_qps / numtc;
 		num_tc_qps = min_t(int, num_tc_qps,
 				   i40e_pf_get_max_q_per_tc(pf));
+=======
+	} else {
+		/* At least TC0 is enabled in case of non-DCB case */
+		numtc = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	vsi->tc_config.numtc = numtc;
 	vsi->tc_config.enabled_tc = enabled_tc ? enabled_tc : 1;
+<<<<<<< HEAD
 
 	/* Do not allow use more TC queue pairs than MSI-X vectors exist */
 	if (pf->flags & I40E_FLAG_MSIX_ENABLED)
 		num_tc_qps = min_t(int, num_tc_qps, pf->num_lan_msix);
+=======
+	/* Number of queues per enabled TC */
+	qcount = vsi->alloc_queue_pairs;
+
+	num_tc_qps = qcount / numtc;
+	num_tc_qps = min_t(int, num_tc_qps, i40e_pf_get_max_q_per_tc(pf));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup queue offset/count for all TCs for given VSI */
 	for (i = 0; i < I40E_MAX_TRAFFIC_CLASS; i++) {
@@ -1799,6 +1953,7 @@ static void i40e_vsi_setup_queue_map(struct i40e_vsi *vsi,
 
 			switch (vsi->type) {
 			case I40E_VSI_MAIN:
+<<<<<<< HEAD
 				if (!(pf->flags & (I40E_FLAG_FD_SB_ENABLED |
 				    I40E_FLAG_FD_ATR_ENABLED)) ||
 				    vsi->tc_config.enabled_tc != 1) {
@@ -1807,6 +1962,11 @@ static void i40e_vsi_setup_queue_map(struct i40e_vsi *vsi,
 					break;
 				}
 				/* fall through */
+=======
+				qcount = min_t(int, pf->alloc_rss_size,
+					       num_tc_qps);
+				break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			case I40E_VSI_FDIR:
 			case I40E_VSI_SRIOV:
 			case I40E_VSI_VMDQ2:
@@ -1939,8 +2099,18 @@ static void i40e_set_rx_mode(struct net_device *netdev)
 	/* check for other flag changes */
 	if (vsi->current_netdev_flags != vsi->netdev->flags) {
 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+<<<<<<< HEAD
 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
 	}
+=======
+		vsi->back->flags |= I40E_FLAG_FILTER_SYNC;
+	}
+
+	/* schedule our worker thread which will take care of
+	 * applying the new filter changes
+	 */
+	i40e_service_event_schedule(vsi->back);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2011,7 +2181,11 @@ struct i40e_new_mac_filter *i40e_next_filter(struct i40e_new_mac_filter *next)
  * from firmware
  * @count: Number of filters added
  * @add_list: return data from fw
+<<<<<<< HEAD
  * @add_head: pointer to first filter in current batch
+=======
+ * @head: pointer to first filter in current batch
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * MAC filter entries from list were slated to be added to device. Returns
  * number of successful filters. Note that 0 does NOT mean success!
@@ -2088,16 +2262,28 @@ void i40e_aqc_del_filters(struct i40e_vsi *vsi, const char *vsi_name,
  * @list: the list of filters to send to firmware
  * @add_head: Position in the add hlist
  * @num_add: the number of filters to add
+<<<<<<< HEAD
  *
  * Send a request to firmware via AdminQ to add a chunk of filters. Will set
  * __I40E_VSI_OVERFLOW_PROMISC bit in vsi->state if the firmware has run out of
  * space for more filters.
+=======
+ * @promisc_change: set to true on exit if promiscuous mode was forced on
+ *
+ * Send a request to firmware via AdminQ to add a chunk of filters. Will set
+ * promisc_changed to true if the firmware has run out of space for more
+ * filters.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static
 void i40e_aqc_add_filters(struct i40e_vsi *vsi, const char *vsi_name,
 			  struct i40e_aqc_add_macvlan_element_data *list,
 			  struct i40e_new_mac_filter *add_head,
+<<<<<<< HEAD
 			  int num_add)
+=======
+			  int num_add, bool *promisc_changed)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_hw *hw = &vsi->back->hw;
 	int aq_err, fcnt;
@@ -2107,6 +2293,10 @@ void i40e_aqc_add_filters(struct i40e_vsi *vsi, const char *vsi_name,
 	fcnt = i40e_update_filter_state(num_add, list, add_head);
 
 	if (fcnt != num_add) {
+<<<<<<< HEAD
+=======
+		*promisc_changed = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
 		dev_warn(&vsi->back->pdev->dev,
 			 "Error %s adding RX filters on %s, promiscuous mode forced on\n",
@@ -2118,7 +2308,10 @@ void i40e_aqc_add_filters(struct i40e_vsi *vsi, const char *vsi_name,
 /**
  * i40e_aqc_broadcast_filter - Set promiscuous broadcast flags
  * @vsi: pointer to the VSI
+<<<<<<< HEAD
  * @vsi_name: the VSI name
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @f: filter data
  *
  * This function sets or clears the promiscuous broadcast flags for VLAN
@@ -2148,6 +2341,7 @@ i40e_aqc_broadcast_filter(struct i40e_vsi *vsi, const char *vsi_name,
 							    NULL);
 	}
 
+<<<<<<< HEAD
 	if (aq_ret) {
 		set_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
 		dev_warn(&vsi->back->pdev->dev,
@@ -2222,6 +2416,13 @@ static int i40e_set_promiscuous(struct i40e_pf *pf, bool promisc)
 
 	if (!aq_ret)
 		pf->cur_promisc = promisc;
+=======
+	if (aq_ret)
+		dev_warn(&vsi->back->pdev->dev,
+			 "Error %s setting broadcast promiscuous mode on %s\n",
+			 i40e_aq_str(hw, hw->aq.asq_last_status),
+			 vsi_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return aq_ret;
 }
@@ -2240,9 +2441,15 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 	struct i40e_mac_filter *f;
 	struct i40e_new_mac_filter *new, *add_head = NULL;
 	struct i40e_hw *hw = &vsi->back->hw;
+<<<<<<< HEAD
 	bool old_overflow, new_overflow;
 	unsigned int failed_filters = 0;
 	unsigned int vlan_filters = 0;
+=======
+	unsigned int failed_filters = 0;
+	unsigned int vlan_filters = 0;
+	bool promisc_changed = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char vsi_name[16] = "PF";
 	int filter_list_len = 0;
 	i40e_status aq_ret = 0;
@@ -2264,8 +2471,11 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 		usleep_range(1000, 2000);
 	pf = vsi->back;
 
+<<<<<<< HEAD
 	old_overflow = test_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vsi->netdev) {
 		changed_flags = vsi->current_netdev_flags ^ vsi->netdev->flags;
 		vsi->current_netdev_flags = vsi->netdev->flags;
@@ -2398,6 +2608,15 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 
 		num_add = 0;
 		hlist_for_each_entry_safe(new, h, &tmp_add_list, hlist) {
+<<<<<<< HEAD
+=======
+			if (test_bit(__I40E_VSI_OVERFLOW_PROMISC,
+				     vsi->state)) {
+				new->state = I40E_FILTER_FAILED;
+				continue;
+			}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* handle broadcast filters by updating the broadcast
 			 * promiscuous flag instead of adding a MAC filter.
 			 */
@@ -2433,14 +2652,23 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 			/* flush a full buffer */
 			if (num_add == filter_list_len) {
 				i40e_aqc_add_filters(vsi, vsi_name, add_list,
+<<<<<<< HEAD
 						     add_head, num_add);
+=======
+						     add_head, num_add,
+						     &promisc_changed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				memset(add_list, 0, list_size);
 				num_add = 0;
 			}
 		}
 		if (num_add) {
 			i40e_aqc_add_filters(vsi, vsi_name, add_list, add_head,
+<<<<<<< HEAD
 					     num_add);
+=======
+					     num_add, &promisc_changed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		/* Now move all of the filters from the temp add list back to
 		 * the VSI's list.
@@ -2469,16 +2697,35 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 	}
 	spin_unlock_bh(&vsi->mac_filter_hash_lock);
 
+<<<<<<< HEAD
+=======
+	/* If promiscuous mode has changed, we need to calculate a new
+	 * threshold for when we are safe to exit
+	 */
+	if (promisc_changed)
+		vsi->promisc_threshold = (vsi->active_filters * 3) / 4;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check if we are able to exit overflow promiscuous mode. We can
 	 * safely exit if we didn't just enter, we no longer have any failed
 	 * filters, and we have reduced filters below the threshold value.
 	 */
+<<<<<<< HEAD
 	if (old_overflow && !failed_filters &&
 	    vsi->active_filters < vsi->promisc_threshold) {
+=======
+	if (test_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state) &&
+	    !promisc_changed && !failed_filters &&
+	    (vsi->active_filters < vsi->promisc_threshold)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(&pf->pdev->dev,
 			 "filter logjam cleared on %s, leaving overflow promiscuous mode\n",
 			 vsi_name);
 		clear_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
+<<<<<<< HEAD
+=======
+		promisc_changed = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vsi->promisc_threshold = 0;
 	}
 
@@ -2488,6 +2735,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	new_overflow = test_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
 
 	/* If we are entering overflow promiscuous, we need to calculate a new
@@ -2496,6 +2744,8 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 	if (!old_overflow && new_overflow)
 		vsi->promisc_threshold = (vsi->active_filters * 3) / 4;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* check for changes in promiscuous modes */
 	if (changed_flags & IFF_ALLMULTI) {
 		bool cur_multipromisc;
@@ -2516,6 +2766,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 		}
 	}
 
+<<<<<<< HEAD
 	if ((changed_flags & IFF_PROMISC) || old_overflow != new_overflow) {
 		bool cur_promisc;
 
@@ -2531,6 +2782,89 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
 				 vsi_name,
 				 i40e_stat_str(hw, aq_ret),
 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+=======
+	if ((changed_flags & IFF_PROMISC) || promisc_changed) {
+		bool cur_promisc;
+
+		cur_promisc = (!!(vsi->current_netdev_flags & IFF_PROMISC) ||
+			       test_bit(__I40E_VSI_OVERFLOW_PROMISC,
+					vsi->state));
+		if ((vsi->type == I40E_VSI_MAIN) &&
+		    (pf->lan_veb != I40E_NO_VEB) &&
+		    !(pf->flags & I40E_FLAG_MFP_ENABLED)) {
+			/* set defport ON for Main VSI instead of true promisc
+			 * this way we will get all unicast/multicast and VLAN
+			 * promisc behavior but will not get VF or VMDq traffic
+			 * replicated on the Main VSI.
+			 */
+			if (pf->cur_promisc != cur_promisc) {
+				pf->cur_promisc = cur_promisc;
+				if (cur_promisc)
+					aq_ret =
+					      i40e_aq_set_default_vsi(hw,
+								      vsi->seid,
+								      NULL);
+				else
+					aq_ret =
+					    i40e_aq_clear_default_vsi(hw,
+								      vsi->seid,
+								      NULL);
+				if (aq_ret) {
+					retval = i40e_aq_rc_to_posix(aq_ret,
+							hw->aq.asq_last_status);
+					dev_info(&pf->pdev->dev,
+						 "Set default VSI failed on %s, err %s, aq_err %s\n",
+						 vsi_name,
+						 i40e_stat_str(hw, aq_ret),
+						 i40e_aq_str(hw,
+						     hw->aq.asq_last_status));
+				}
+			}
+		} else {
+			aq_ret = i40e_aq_set_vsi_unicast_promiscuous(
+							  hw,
+							  vsi->seid,
+							  cur_promisc, NULL,
+							  true);
+			if (aq_ret) {
+				retval =
+				i40e_aq_rc_to_posix(aq_ret,
+						    hw->aq.asq_last_status);
+				dev_info(&pf->pdev->dev,
+					 "set unicast promisc failed on %s, err %s, aq_err %s\n",
+					 vsi_name,
+					 i40e_stat_str(hw, aq_ret),
+					 i40e_aq_str(hw,
+						     hw->aq.asq_last_status));
+			}
+			aq_ret = i40e_aq_set_vsi_multicast_promiscuous(
+							  hw,
+							  vsi->seid,
+							  cur_promisc, NULL);
+			if (aq_ret) {
+				retval =
+				i40e_aq_rc_to_posix(aq_ret,
+						    hw->aq.asq_last_status);
+				dev_info(&pf->pdev->dev,
+					 "set multicast promisc failed on %s, err %s, aq_err %s\n",
+					 vsi_name,
+					 i40e_stat_str(hw, aq_ret),
+					 i40e_aq_str(hw,
+						     hw->aq.asq_last_status));
+			}
+		}
+		aq_ret = i40e_aq_set_vsi_broadcast(&vsi->back->hw,
+						   vsi->seid,
+						   cur_promisc, NULL);
+		if (aq_ret) {
+			retval = i40e_aq_rc_to_posix(aq_ret,
+						     pf->hw.aq.asq_last_status);
+			dev_info(&pf->pdev->dev,
+				 "set brdcast promisc failed, err %s, aq_err %s\n",
+					 i40e_stat_str(hw, aq_ret),
+					 i40e_aq_str(hw,
+						     hw->aq.asq_last_status));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 out:
@@ -2562,6 +2896,7 @@ static void i40e_sync_filters_subtask(struct i40e_pf *pf)
 {
 	int v;
 
+<<<<<<< HEAD
 	if (!pf)
 		return;
 	if (!test_and_clear_bit(__I40E_MACVLAN_SYNC_PENDING, pf->state))
@@ -2570,6 +2905,11 @@ static void i40e_sync_filters_subtask(struct i40e_pf *pf)
 		set_bit(__I40E_MACVLAN_SYNC_PENDING, pf->state);
 		return;
 	}
+=======
+	if (!pf || !(pf->flags & I40E_FLAG_FILTER_SYNC))
+		return;
+	pf->flags &= ~I40E_FLAG_FILTER_SYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (v = 0; v < pf->num_alloc_vsi; v++) {
 		if (pf->vsi[v] &&
@@ -2578,13 +2918,20 @@ static void i40e_sync_filters_subtask(struct i40e_pf *pf)
 
 			if (ret) {
 				/* come back and try again later */
+<<<<<<< HEAD
 				set_bit(__I40E_MACVLAN_SYNC_PENDING,
 					pf->state);
+=======
+				pf->flags |= I40E_FLAG_FILTER_SYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			}
 		}
 	}
+<<<<<<< HEAD
 	clear_bit(__I40E_VF_DISABLE, pf->state);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2624,8 +2971,13 @@ static int i40e_change_mtu(struct net_device *netdev, int new_mtu)
 	netdev->mtu = new_mtu;
 	if (netif_running(netdev))
 		i40e_vsi_reinit_locked(vsi);
+<<<<<<< HEAD
 	set_bit(__I40E_CLIENT_SERVICE_REQUESTED, pf->state);
 	set_bit(__I40E_CLIENT_L2_CHANGE, pf->state);
+=======
+	pf->flags |= (I40E_FLAG_SERVICE_CLIENT_REQUESTED |
+		      I40E_FLAG_CLIENT_L2_CHANGE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2720,6 +3072,25 @@ void i40e_vlan_stripping_disable(struct i40e_vsi *vsi)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * i40e_vlan_rx_register - Setup or shutdown vlan offload
+ * @netdev: network interface to be adjusted
+ * @features: netdev features to test if VLAN offload is enabled or not
+ **/
+static void i40e_vlan_rx_register(struct net_device *netdev, u32 features)
+{
+	struct i40e_netdev_priv *np = netdev_priv(netdev);
+	struct i40e_vsi *vsi = np->vsi;
+
+	if (features & NETIF_F_HW_VLAN_CTAG_RX)
+		i40e_vlan_stripping_enable(vsi);
+	else
+		i40e_vlan_stripping_disable(vsi);
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_add_vlan_all_mac - Add a MAC/VLAN filter for each existing MAC address
  * @vsi: the vsi being configured
  * @vid: vlan id to be added (0 = untagged only , -1 = any)
@@ -2838,7 +3209,10 @@ void i40e_vsi_kill_vlan(struct i40e_vsi *vsi, u16 vid)
 /**
  * i40e_vlan_rx_add_vid - Add a vlan id filter to HW offload
  * @netdev: network interface to be adjusted
+<<<<<<< HEAD
  * @proto: unused protocol value
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @vid: vlan id to be added
  *
  * net_device_ops implementation for adding vlan ids
@@ -2861,6 +3235,7 @@ static int i40e_vlan_rx_add_vid(struct net_device *netdev,
 }
 
 /**
+<<<<<<< HEAD
  * i40e_vlan_rx_add_vid_up - Add a vlan id filter to HW offload in UP path
  * @netdev: network interface to be adjusted
  * @proto: unused protocol value
@@ -2881,6 +3256,10 @@ static void i40e_vlan_rx_add_vid_up(struct net_device *netdev,
  * i40e_vlan_rx_kill_vid - Remove a vlan id filter from HW offload
  * @netdev: network interface to be adjusted
  * @proto: unused protocol value
+=======
+ * i40e_vlan_rx_kill_vid - Remove a vlan id filter from HW offload
+ * @netdev: network interface to be adjusted
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @vid: vlan id to be removed
  *
  * net_device_ops implementation for removing vlan ids
@@ -2913,6 +3292,7 @@ static void i40e_restore_vlan(struct i40e_vsi *vsi)
 	if (!vsi->netdev)
 		return;
 
+<<<<<<< HEAD
 	if (vsi->netdev->features & NETIF_F_HW_VLAN_CTAG_RX)
 		i40e_vlan_stripping_enable(vsi);
 	else
@@ -2921,6 +3301,13 @@ static void i40e_restore_vlan(struct i40e_vsi *vsi)
 	for_each_set_bit(vid, vsi->active_vlans, VLAN_N_VID)
 		i40e_vlan_rx_add_vid_up(vsi->netdev, htons(ETH_P_8021Q),
 					vid);
+=======
+	i40e_vlan_rx_register(vsi->netdev, vsi->netdev->features);
+
+	for_each_set_bit(vid, vsi->active_vlans, VLAN_N_VID)
+		i40e_vlan_rx_add_vid(vsi->netdev, htons(ETH_P_8021Q),
+				     vid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3062,6 +3449,7 @@ static void i40e_vsi_free_rx_resources(struct i40e_vsi *vsi)
  **/
 static void i40e_config_xps_tx_ring(struct i40e_ring *ring)
 {
+<<<<<<< HEAD
 	int cpu;
 
 	if (!ring->q_vector || !ring->netdev || ring->ch)
@@ -3074,6 +3462,25 @@ static void i40e_config_xps_tx_ring(struct i40e_ring *ring)
 	cpu = cpumask_local_spread(ring->q_vector->v_idx, -1);
 	netif_set_xps_queue(ring->netdev, get_cpu_mask(cpu),
 			    ring->queue_index);
+=======
+	struct i40e_vsi *vsi = ring->vsi;
+	int cpu;
+
+	if (!ring->q_vector || !ring->netdev)
+		return;
+
+	if ((vsi->tc_config.numtc <= 1) &&
+	    !test_and_set_bit(__I40E_TX_XPS_INIT_DONE, &ring->state)) {
+		cpu = cpumask_local_spread(ring->q_vector->v_idx, -1);
+		netif_set_xps_queue(ring->netdev, get_cpu_mask(cpu),
+				    ring->queue_index);
+	}
+
+	/* schedule our worker thread which will take care of
+	 * applying the new filter changes
+	 */
+	i40e_service_event_schedule(vsi->back);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3127,6 +3534,7 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
 	 * initialization. This has to be done regardless of
 	 * DCB as by default everything is mapped to TC0.
 	 */
+<<<<<<< HEAD
 
 	if (ring->ch)
 		tx_ctx.rdylist =
@@ -3135,6 +3543,9 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
 	else
 		tx_ctx.rdylist = le16_to_cpu(vsi->info.qs_handle[ring->dcb_tc]);
 
+=======
+	tx_ctx.rdylist = le16_to_cpu(vsi->info.qs_handle[ring->dcb_tc]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_ctx.rdylist_act = 0;
 
 	/* clear the context in the HMC */
@@ -3156,6 +3567,7 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
 	}
 
 	/* Now associate this queue with this PCI function */
+<<<<<<< HEAD
 	if (ring->ch) {
 		if (ring->ch->type == I40E_VSI_VMDQ2)
 			qtx_ctl = I40E_QTX_CTL_VM_QUEUE;
@@ -3173,6 +3585,14 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
 		} else {
 			qtx_ctl = I40E_QTX_CTL_PF_QUEUE;
 		}
+=======
+	if (vsi->type == I40E_VSI_VMDQ2) {
+		qtx_ctl = I40E_QTX_CTL_VM_QUEUE;
+		qtx_ctl |= ((vsi->id) << I40E_QTX_CTL_VFVM_INDX_SHIFT) &
+			   I40E_QTX_CTL_VFVM_INDX_MASK;
+	} else {
+		qtx_ctl = I40E_QTX_CTL_PF_QUEUE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	qtx_ctl |= ((hw->pf_id << I40E_QTX_CTL_PF_INDX_SHIFT) &
@@ -3201,7 +3621,11 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
 	struct i40e_hmc_obj_rxq rx_ctx;
 	i40e_status err = 0;
 
+<<<<<<< HEAD
 	bitmap_zero(ring->state, __I40E_RING_STATE_NBITS);
+=======
+	ring->state = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* clear the context structure first */
 	memset(&rx_ctx, 0, sizeof(rx_ctx));
@@ -3226,7 +3650,11 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
 	if (hw->revision_id == 0)
 		rx_ctx.lrxqthresh = 0;
 	else
+<<<<<<< HEAD
 		rx_ctx.lrxqthresh = 1;
+=======
+		rx_ctx.lrxqthresh = 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_ctx.crcstrip = 1;
 	rx_ctx.l2tsel = 1;
 	/* this controls whether VLAN is stripped from inner headers */
@@ -3341,7 +3769,10 @@ static void i40e_vsi_config_dcb_rings(struct i40e_vsi *vsi)
 			rx_ring->dcb_tc = 0;
 			tx_ring->dcb_tc = 0;
 		}
+<<<<<<< HEAD
 		return;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (n = 0; n < I40E_MAX_TRAFFIC_CLASS; n++) {
@@ -3437,6 +3868,7 @@ static void i40e_vsi_configure_msix(struct i40e_vsi *vsi)
 	for (i = 0; i < vsi->num_q_vectors; i++, vector++) {
 		struct i40e_q_vector *q_vector = vsi->q_vectors[i];
 
+<<<<<<< HEAD
 		q_vector->rx.next_update = jiffies + 1;
 		q_vector->rx.target_itr =
 			ITR_TO_REG(vsi->rx_rings[i]->itr_setting);
@@ -3451,6 +3883,17 @@ static void i40e_vsi_configure_msix(struct i40e_vsi *vsi)
 		     q_vector->tx.target_itr);
 		q_vector->tx.current_itr = q_vector->tx.target_itr;
 
+=======
+		q_vector->itr_countdown = ITR_COUNTDOWN_START;
+		q_vector->rx.itr = ITR_TO_REG(vsi->rx_rings[i]->rx_itr_setting);
+		q_vector->rx.latency_range = I40E_LOW_LATENCY;
+		wr32(hw, I40E_PFINT_ITRN(I40E_RX_ITR, vector - 1),
+		     q_vector->rx.itr);
+		q_vector->tx.itr = ITR_TO_REG(vsi->tx_rings[i]->tx_itr_setting);
+		q_vector->tx.latency_range = I40E_LOW_LATENCY;
+		wr32(hw, I40E_PFINT_ITRN(I40E_TX_ITR, vector - 1),
+		     q_vector->tx.itr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wr32(hw, I40E_PFINT_RATEN(vector - 1),
 		     i40e_intrl_usec_to_reg(vsi->int_rate_limit));
 
@@ -3502,7 +3945,11 @@ static void i40e_vsi_configure_msix(struct i40e_vsi *vsi)
 
 /**
  * i40e_enable_misc_int_causes - enable the non-queue interrupts
+<<<<<<< HEAD
  * @pf: pointer to private device data structure
+=======
+ * @hw: ptr to the hardware info
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static void i40e_enable_misc_int_causes(struct i40e_pf *pf)
 {
@@ -3551,6 +3998,7 @@ static void i40e_configure_msi_and_legacy(struct i40e_vsi *vsi)
 	u32 val;
 
 	/* set the ITR configuration */
+<<<<<<< HEAD
 	q_vector->rx.next_update = jiffies + 1;
 	q_vector->rx.target_itr = ITR_TO_REG(vsi->rx_rings[0]->itr_setting);
 	wr32(hw, I40E_PFINT_ITR0(I40E_RX_ITR), q_vector->rx.target_itr);
@@ -3559,6 +4007,15 @@ static void i40e_configure_msi_and_legacy(struct i40e_vsi *vsi)
 	q_vector->tx.target_itr = ITR_TO_REG(vsi->tx_rings[0]->itr_setting);
 	wr32(hw, I40E_PFINT_ITR0(I40E_TX_ITR), q_vector->tx.target_itr);
 	q_vector->tx.current_itr = q_vector->tx.target_itr;
+=======
+	q_vector->itr_countdown = ITR_COUNTDOWN_START;
+	q_vector->rx.itr = ITR_TO_REG(vsi->rx_rings[0]->rx_itr_setting);
+	q_vector->rx.latency_range = I40E_LOW_LATENCY;
+	wr32(hw, I40E_PFINT_ITR0(I40E_RX_ITR), q_vector->rx.itr);
+	q_vector->tx.itr = ITR_TO_REG(vsi->tx_rings[0]->tx_itr_setting);
+	q_vector->tx.latency_range = I40E_LOW_LATENCY;
+	wr32(hw, I40E_PFINT_ITR0(I40E_TX_ITR), q_vector->tx.itr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i40e_enable_misc_int_causes(pf);
 
@@ -3606,14 +4063,24 @@ void i40e_irq_dynamic_disable_icr0(struct i40e_pf *pf)
 /**
  * i40e_irq_dynamic_enable_icr0 - Enable default interrupt generation for icr0
  * @pf: board private structure
+<<<<<<< HEAD
  **/
 void i40e_irq_dynamic_enable_icr0(struct i40e_pf *pf)
+=======
+ * @clearpba: true when all pending interrupt events should be cleared
+ **/
+void i40e_irq_dynamic_enable_icr0(struct i40e_pf *pf, bool clearpba)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_hw *hw = &pf->hw;
 	u32 val;
 
 	val = I40E_PFINT_DYN_CTL0_INTENA_MASK   |
+<<<<<<< HEAD
 	      I40E_PFINT_DYN_CTL0_CLEARPBA_MASK |
+=======
+	      (clearpba ? I40E_PFINT_DYN_CTL0_CLEARPBA_MASK : 0) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	      (I40E_ITR_NONE << I40E_PFINT_DYN_CTL0_ITR_INDX_SHIFT);
 
 	wr32(hw, I40E_PFINT_DYN_CTL0, val);
@@ -3799,7 +4266,11 @@ static int i40e_vsi_enable_irq(struct i40e_vsi *vsi)
 		for (i = 0; i < vsi->num_q_vectors; i++)
 			i40e_irq_dynamic_enable(vsi, i);
 	} else {
+<<<<<<< HEAD
 		i40e_irq_dynamic_enable_icr0(pf);
+=======
+		i40e_irq_dynamic_enable_icr0(pf, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	i40e_flush(&pf->hw);
@@ -3807,20 +4278,30 @@ static int i40e_vsi_enable_irq(struct i40e_vsi *vsi)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_free_misc_vector - Free the vector that handles non-queue events
  * @pf: board private structure
  **/
 static void i40e_free_misc_vector(struct i40e_pf *pf)
+=======
+ * i40e_stop_misc_vector - Stop the vector that handles non-queue events
+ * @pf: board private structure
+ **/
+static void i40e_stop_misc_vector(struct i40e_pf *pf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Disable ICR 0 */
 	wr32(&pf->hw, I40E_PFINT_ICR0_ENA, 0);
 	i40e_flush(&pf->hw);
+<<<<<<< HEAD
 
 	if (pf->flags & I40E_FLAG_MSIX_ENABLED && pf->msix_entries) {
 		synchronize_irq(pf->msix_entries[0].vector);
 		free_irq(pf->msix_entries[0].vector, pf);
 		clear_bit(__I40E_MISC_IRQ_REQUESTED, pf->state);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3948,7 +4429,11 @@ enable_intr:
 	wr32(hw, I40E_PFINT_ICR0_ENA, ena_mask);
 	if (!test_bit(__I40E_DOWN, pf->state)) {
 		i40e_service_event_schedule(pf);
+<<<<<<< HEAD
 		i40e_irq_dynamic_enable_icr0(pf);
+=======
+		i40e_irq_dynamic_enable_icr0(pf, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -4121,7 +4606,10 @@ static void i40e_vsi_map_rings_to_vectors(struct i40e_vsi *vsi)
 		num_ringpairs = DIV_ROUND_UP(qp_remaining, q_vectors - v_start);
 
 		q_vector->num_ringpairs = num_ringpairs;
+<<<<<<< HEAD
 		q_vector->reg_idx = q_vector->v_idx + vsi->base_vector - 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		q_vector->rx.count = 0;
 		q_vector->tx.count = 0;
@@ -4272,8 +4760,13 @@ static void i40e_control_tx_q(struct i40e_pf *pf, int pf_q, bool enable)
  * @is_xdp: true if the queue is used for XDP
  * @enable: start or stop the queue
  **/
+<<<<<<< HEAD
 int i40e_control_wait_tx_q(int seid, struct i40e_pf *pf, int pf_q,
 			   bool is_xdp, bool enable)
+=======
+static int i40e_control_wait_tx_q(int seid, struct i40e_pf *pf, int pf_q,
+				  bool is_xdp, bool enable)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -4318,6 +4811,10 @@ static int i40e_vsi_control_tx(struct i40e_vsi *vsi, bool enable)
 		if (ret)
 			break;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -4356,9 +4853,15 @@ static int i40e_pf_rxq_wait(struct i40e_pf *pf, int pf_q, bool enable)
  * @pf_q: the PF queue to configure
  * @enable: start or stop the queue
  *
+<<<<<<< HEAD
  * This function enables or disables a single queue. Note that
  * any delay required after the operation is expected to be
  * handled by the caller of this function.
+=======
+ * This function enables or disables a single queue. Note that any delay
+ * required after the operation is expected to be handled by the caller of
+ * this function.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  **/
 static void i40e_control_rx_q(struct i40e_pf *pf, int pf_q, bool enable)
 {
@@ -4388,6 +4891,7 @@ static void i40e_control_rx_q(struct i40e_pf *pf, int pf_q, bool enable)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_control_wait_rx_q
  * @pf: the PF structure
  * @pf_q: queue being configured
@@ -4412,6 +4916,8 @@ int i40e_control_wait_rx_q(struct i40e_pf *pf, int pf_q, bool enable)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_vsi_control_rx - Start or stop a VSI's rings
  * @vsi: the VSI being configured
  * @enable: start or stop the rings
@@ -4423,7 +4929,14 @@ static int i40e_vsi_control_rx(struct i40e_vsi *vsi, bool enable)
 
 	pf_q = vsi->base_queue;
 	for (i = 0; i < vsi->num_queue_pairs; i++, pf_q++) {
+<<<<<<< HEAD
 		ret = i40e_control_wait_rx_q(pf, pf_q, enable);
+=======
+		i40e_control_rx_q(pf, pf_q, enable);
+
+		/* wait for the change to finish */
+		ret = i40e_pf_rxq_wait(pf, pf_q, enable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			dev_info(&pf->pdev->dev,
 				 "VSI seid %d Rx ring %d %sable timeout\n",
@@ -4696,7 +5209,15 @@ static void i40e_clear_interrupt_scheme(struct i40e_pf *pf)
 {
 	int i;
 
+<<<<<<< HEAD
 	i40e_free_misc_vector(pf);
+=======
+	i40e_stop_misc_vector(pf);
+	if (pf->flags & I40E_FLAG_MSIX_ENABLED && pf->msix_entries) {
+		synchronize_irq(pf->msix_entries[0].vector);
+		free_irq(pf->msix_entries[0].vector, pf);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i40e_put_lump(pf->irq_pile, pf->iwarp_base_vector,
 		      I40E_IWARP_IRQ_PILE_ID);
@@ -4759,9 +5280,15 @@ static void i40e_vsi_close(struct i40e_vsi *vsi)
 	i40e_vsi_free_tx_resources(vsi);
 	i40e_vsi_free_rx_resources(vsi);
 	vsi->current_netdev_flags = 0;
+<<<<<<< HEAD
 	set_bit(__I40E_CLIENT_SERVICE_REQUESTED, pf->state);
 	if (test_bit(__I40E_RESET_RECOVERY_PENDING, pf->state))
 		set_bit(__I40E_CLIENT_RESET, pf->state);
+=======
+	pf->flags |= I40E_FLAG_SERVICE_CLIENT_REQUESTED;
+	if (test_bit(__I40E_RESET_RECOVERY_PENDING, pf->state))
+		pf->flags |=  I40E_FLAG_CLIENT_RESET;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -4897,6 +5424,107 @@ static int i40e_pf_wait_queues_disabled(struct i40e_pf *pf)
 #endif
 
 /**
+<<<<<<< HEAD
+=======
+ * i40e_detect_recover_hung_queue - Function to detect and recover hung_queue
+ * @q_idx: TX queue number
+ * @vsi: Pointer to VSI struct
+ *
+ * This function checks specified queue for given VSI. Detects hung condition.
+ * We proactively detect hung TX queues by checking if interrupts are disabled
+ * but there are pending descriptors.  If it appears hung, attempt to recover
+ * by triggering a SW interrupt.
+ **/
+static void i40e_detect_recover_hung_queue(int q_idx, struct i40e_vsi *vsi)
+{
+	struct i40e_ring *tx_ring = NULL;
+	struct i40e_pf	*pf;
+	u32 val, tx_pending;
+	int i;
+
+	pf = vsi->back;
+
+	/* now that we have an index, find the tx_ring struct */
+	for (i = 0; i < vsi->num_queue_pairs; i++) {
+		if (vsi->tx_rings[i] && vsi->tx_rings[i]->desc) {
+			if (q_idx == vsi->tx_rings[i]->queue_index) {
+				tx_ring = vsi->tx_rings[i];
+				break;
+			}
+		}
+	}
+
+	if (!tx_ring)
+		return;
+
+	/* Read interrupt register */
+	if (pf->flags & I40E_FLAG_MSIX_ENABLED)
+		val = rd32(&pf->hw,
+			   I40E_PFINT_DYN_CTLN(tx_ring->q_vector->v_idx +
+					       tx_ring->vsi->base_vector - 1));
+	else
+		val = rd32(&pf->hw, I40E_PFINT_DYN_CTL0);
+
+	tx_pending = i40e_get_tx_pending(tx_ring);
+
+	/* Interrupts are disabled and TX pending is non-zero,
+	 * trigger the SW interrupt (don't wait). Worst case
+	 * there will be one extra interrupt which may result
+	 * into not cleaning any queues because queues are cleaned.
+	 */
+	if (tx_pending && (!(val & I40E_PFINT_DYN_CTLN_INTENA_MASK)))
+		i40e_force_wb(vsi, tx_ring->q_vector);
+}
+
+/**
+ * i40e_detect_recover_hung - Function to detect and recover hung_queues
+ * @pf:  pointer to PF struct
+ *
+ * LAN VSI has netdev and netdev has TX queues. This function is to check
+ * each of those TX queues if they are hung, trigger recovery by issuing
+ * SW interrupt.
+ **/
+static void i40e_detect_recover_hung(struct i40e_pf *pf)
+{
+	struct net_device *netdev;
+	struct i40e_vsi *vsi;
+	unsigned int i;
+
+	/* Only for LAN VSI */
+	vsi = pf->vsi[pf->lan_vsi];
+
+	if (!vsi)
+		return;
+
+	/* Make sure, VSI state is not DOWN/RECOVERY_PENDING */
+	if (test_bit(__I40E_VSI_DOWN, vsi->back->state) ||
+	    test_bit(__I40E_RESET_RECOVERY_PENDING, vsi->back->state))
+		return;
+
+	/* Make sure type is MAIN VSI */
+	if (vsi->type != I40E_VSI_MAIN)
+		return;
+
+	netdev = vsi->netdev;
+	if (!netdev)
+		return;
+
+	/* Bail out if netif_carrier is not OK */
+	if (!netif_carrier_ok(netdev))
+		return;
+
+	/* Go thru' TX queues for netdev */
+	for (i = 0; i < netdev->num_tx_queues; i++) {
+		struct netdev_queue *q;
+
+		q = netdev_get_tx_queue(netdev, i);
+		if (q)
+			i40e_detect_recover_hung_queue(i, vsi);
+	}
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_get_iscsi_tc_map - Return TC map for iSCSI APP
  * @pf: pointer to PF
  *
@@ -4987,6 +5615,7 @@ static u8 i40e_dcb_get_enabled_tc(struct i40e_dcbx_config *dcbcfg)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_mqprio_get_enabled_tc - Get enabled traffic classes
  * @pf: PF being queried
  *
@@ -5005,6 +5634,8 @@ static u8 i40e_mqprio_get_enabled_tc(struct i40e_pf *pf)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_pf_get_num_tc - Get enabled traffic classes for PF
  * @pf: PF being queried
  *
@@ -5017,10 +5648,14 @@ static u8 i40e_pf_get_num_tc(struct i40e_pf *pf)
 	u8 num_tc = 0;
 	struct i40e_dcbx_config *dcbcfg = &hw->local_dcbx_config;
 
+<<<<<<< HEAD
 	if (pf->flags & I40E_FLAG_TC_MQPRIO)
 		return pf->vsi[pf->lan_vsi]->mqprio_qopt.qopt.num_tc;
 
 	/* If neither MQPRIO nor DCB is enabled, then always use single TC */
+=======
+	/* If DCB is not enabled then always in single TC */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(pf->flags & I40E_FLAG_DCB_ENABLED))
 		return 1;
 
@@ -5049,12 +5684,16 @@ static u8 i40e_pf_get_num_tc(struct i40e_pf *pf)
  **/
 static u8 i40e_pf_get_tc_map(struct i40e_pf *pf)
 {
+<<<<<<< HEAD
 	if (pf->flags & I40E_FLAG_TC_MQPRIO)
 		return i40e_mqprio_get_enabled_tc(pf);
 
 	/* If neither MQPRIO nor DCB is enabled for this PF then just return
 	 * default TC
 	 */
+=======
+	/* If DCB is not enabled for this PF then just return default TC */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(pf->flags & I40E_FLAG_DCB_ENABLED))
 		return I40E_DEFAULT_TRAFFIC_CLASS;
 
@@ -5133,7 +5772,11 @@ static int i40e_vsi_get_bw_info(struct i40e_vsi *vsi)
  * i40e_vsi_configure_bw_alloc - Configure VSI BW allocation per TC
  * @vsi: the VSI being configured
  * @enabled_tc: TC bitmap
+<<<<<<< HEAD
  * @bw_share: BW shared credits per TC
+=======
+ * @bw_credits: BW shared credits per TC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns 0 on success, negative value on failure
  **/
@@ -5141,6 +5784,7 @@ static int i40e_vsi_configure_bw_alloc(struct i40e_vsi *vsi, u8 enabled_tc,
 				       u8 *bw_share)
 {
 	struct i40e_aqc_configure_vsi_tc_bw_data bw_data;
+<<<<<<< HEAD
 	struct i40e_pf *pf = vsi->back;
 	i40e_status ret;
 	int i;
@@ -5156,15 +5800,29 @@ static int i40e_vsi_configure_bw_alloc(struct i40e_vsi *vsi, u8 enabled_tc,
 				 vsi->seid);
 		return ret;
 	}
+=======
+	i40e_status ret;
+	int i;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bw_data.tc_valid_bits = enabled_tc;
 	for (i = 0; i < I40E_MAX_TRAFFIC_CLASS; i++)
 		bw_data.tc_bw_credits[i] = bw_share[i];
 
+<<<<<<< HEAD
 	ret = i40e_aq_config_vsi_tc_bw(&pf->hw, vsi->seid, &bw_data, NULL);
 	if (ret) {
 		dev_info(&pf->pdev->dev,
 			 "AQ command Config VSI BW allocation per TC failed = %d\n",
 			 pf->hw.aq.asq_last_status);
+=======
+	ret = i40e_aq_config_vsi_tc_bw(&vsi->back->hw, vsi->seid, &bw_data,
+				       NULL);
+	if (ret) {
+		dev_info(&vsi->back->pdev->dev,
+			 "AQ command Config VSI BW allocation per TC failed = %d\n",
+			 vsi->back->hw.aq.asq_last_status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -5217,9 +5875,12 @@ static void i40e_vsi_config_netdev_tc(struct i40e_vsi *vsi, u8 enabled_tc)
 					vsi->tc_config.tc_info[i].qoffset);
 	}
 
+<<<<<<< HEAD
 	if (pf->flags & I40E_FLAG_TC_MQPRIO)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Assign UP2TC map for the VSI */
 	for (i = 0; i < I40E_MAX_USER_PRIORITY; i++) {
 		/* Get the actual TC# for the UP */
@@ -5265,15 +5926,22 @@ static void i40e_vsi_update_queue_map(struct i40e_vsi *vsi,
 static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
 {
 	u8 bw_share[I40E_MAX_TRAFFIC_CLASS] = {0};
+<<<<<<< HEAD
 	struct i40e_pf *pf = vsi->back;
 	struct i40e_hw *hw = &pf->hw;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40e_vsi_context ctxt;
 	int ret = 0;
 	int i;
 
 	/* Check if enabled_tc is same as existing or new TCs */
+<<<<<<< HEAD
 	if (vsi->tc_config.enabled_tc == enabled_tc &&
 	    vsi->mqprio_qopt.mode != TC_MQPRIO_MODE_CHANNEL)
+=======
+	if (vsi->tc_config.enabled_tc == enabled_tc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 
 	/* Enable ETS TCs with equal BW Share for now across all VSIs */
@@ -5284,6 +5952,7 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
 
 	ret = i40e_vsi_configure_bw_alloc(vsi, enabled_tc, bw_share);
 	if (ret) {
+<<<<<<< HEAD
 		struct i40e_aqc_query_vsi_bw_config_resp bw_config = {0};
 
 		dev_info(&pf->pdev->dev,
@@ -5318,6 +5987,12 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
 				enabled_tc, vsi->seid);
 			goto out;
 		}
+=======
+		dev_info(&vsi->back->pdev->dev,
+			 "Failed configuring TC map %d for VSI %d\n",
+			 enabled_tc, vsi->seid);
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Update Queue Pairs Mapping for currently enabled UPs */
@@ -5326,6 +6001,7 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
 	ctxt.vf_num = 0;
 	ctxt.uplink_seid = vsi->uplink_seid;
 	ctxt.info = vsi->info;
+<<<<<<< HEAD
 	if (vsi->back->flags & I40E_FLAG_TC_MQPRIO) {
 		ret = i40e_vsi_setup_queue_map_mqprio(vsi, &ctxt, enabled_tc);
 		if (ret)
@@ -5348,12 +6024,17 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
 		}
 		vsi->reconfig_rss = false;
 	}
+=======
+	i40e_vsi_setup_queue_map(vsi, &ctxt, enabled_tc, false);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (vsi->back->flags & I40E_FLAG_IWARP_ENABLED) {
 		ctxt.info.valid_sections |=
 				cpu_to_le16(I40E_AQ_VSI_PROP_QUEUE_OPT_VALID);
 		ctxt.info.queueing_opt_flags |= I40E_AQ_VSI_QUE_OPT_TCP_ENA;
 	}
 
+<<<<<<< HEAD
 	/* Update the VSI after updating the VSI queue-mapping
 	 * information
 	 */
@@ -5363,6 +6044,16 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
 			 "Update vsi tc config failed, err %s aq_err %s\n",
 			 i40e_stat_str(hw, ret),
 			 i40e_aq_str(hw, hw->aq.asq_last_status));
+=======
+	/* Update the VSI after updating the VSI queue-mapping information */
+	ret = i40e_aq_update_vsi_params(&vsi->back->hw, &ctxt, NULL);
+	if (ret) {
+		dev_info(&vsi->back->pdev->dev,
+			 "Update vsi tc config failed, err %s aq_err %s\n",
+			 i40e_stat_str(&vsi->back->hw, ret),
+			 i40e_aq_str(&vsi->back->hw,
+				     vsi->back->hw.aq.asq_last_status));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 	/* update the local VSI info with updated queue map */
@@ -5372,10 +6063,18 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
 	/* Update current VSI BW information */
 	ret = i40e_vsi_get_bw_info(vsi);
 	if (ret) {
+<<<<<<< HEAD
 		dev_info(&pf->pdev->dev,
 			 "Failed updating vsi bw info, err %s aq_err %s\n",
 			 i40e_stat_str(hw, ret),
 			 i40e_aq_str(hw, hw->aq.asq_last_status));
+=======
+		dev_info(&vsi->back->pdev->dev,
+			 "Failed updating vsi bw info, err %s aq_err %s\n",
+			 i40e_stat_str(&vsi->back->hw, ret),
+			 i40e_aq_str(&vsi->back->hw,
+				     vsi->back->hw.aq.asq_last_status));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -5386,6 +6085,7 @@ out:
 }
 
 /**
+<<<<<<< HEAD
  * i40e_get_link_speed - Returns link speed for the interface
  * @vsi: VSI to be configured
  *
@@ -6197,6 +6897,8 @@ err_free:
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_veb_config_tc - Configure TCs for given VEB
  * @veb: given VEB
  * @enabled_tc: TC bitmap
@@ -6341,11 +7043,16 @@ static int i40e_init_pf_dcb(struct i40e_pf *pf)
 	struct i40e_hw *hw = &pf->hw;
 	int err = 0;
 
+<<<<<<< HEAD
 	/* Do not enable DCB for SW1 and SW2 images even if the FW is capable
 	 * Also do not enable DCBx if FW LLDP agent is disabled
 	 */
 	if ((pf->hw_features & I40E_HW_NO_DCB_SUPPORT) ||
 	    (pf->flags & I40E_FLAG_DISABLE_FW_LLDP))
+=======
+	/* Do not enable DCB for SW1 and SW2 images even if the FW is capable */
+	if (pf->hw_features & I40E_HW_NO_DCB_SUPPORT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	/* Get the initial DCB configuration */
@@ -6372,9 +7079,12 @@ static int i40e_init_pf_dcb(struct i40e_pf *pf)
 			dev_dbg(&pf->pdev->dev,
 				"DCBX offload is supported for this PF.\n");
 		}
+<<<<<<< HEAD
 	} else if (pf->hw.aq.asq_last_status == I40E_AQ_RC_EPERM) {
 		dev_info(&pf->pdev->dev, "FW LLDP disabled for this PF.\n");
 		pf->flags |= I40E_FLAG_DISABLE_FW_LLDP;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		dev_info(&pf->pdev->dev,
 			 "Query for DCB configuration failed, err %s aq_err %s\n",
@@ -6391,19 +7101,29 @@ out:
 /**
  * i40e_print_link_message - print link up or down
  * @vsi: the VSI for which link needs a message
+<<<<<<< HEAD
  * @isup: true of link is up, false otherwise
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void i40e_print_link_message(struct i40e_vsi *vsi, bool isup)
 {
 	enum i40e_aq_link_speed new_speed;
+<<<<<<< HEAD
 	struct i40e_pf *pf = vsi->back;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *speed = "Unknown";
 	char *fc = "Unknown";
 	char *fec = "";
 	char *req_fec = "";
 	char *an = "";
 
+<<<<<<< HEAD
 	new_speed = pf->hw.phy.link_info.link_speed;
+=======
+	new_speed = vsi->back->hw.phy.link_info.link_speed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((vsi->current_isup == isup) && (vsi->current_speed == new_speed))
 		return;
@@ -6417,6 +7137,7 @@ void i40e_print_link_message(struct i40e_vsi *vsi, bool isup)
 	/* Warn user if link speed on NPAR enabled partition is not at
 	 * least 10GB
 	 */
+<<<<<<< HEAD
 	if (pf->hw.func_caps.npar_enable &&
 	    (pf->hw.phy.link_info.link_speed == I40E_LINK_SPEED_1GB ||
 	     pf->hw.phy.link_info.link_speed == I40E_LINK_SPEED_100MB))
@@ -6424,6 +7145,15 @@ void i40e_print_link_message(struct i40e_vsi *vsi, bool isup)
 			    "The partition detected link speed that is less than 10Gbps\n");
 
 	switch (pf->hw.phy.link_info.link_speed) {
+=======
+	if (vsi->back->hw.func_caps.npar_enable &&
+	    (vsi->back->hw.phy.link_info.link_speed == I40E_LINK_SPEED_1GB ||
+	     vsi->back->hw.phy.link_info.link_speed == I40E_LINK_SPEED_100MB))
+		netdev_warn(vsi->netdev,
+			    "The partition detected link speed that is less than 10Gbps\n");
+
+	switch (vsi->back->hw.phy.link_info.link_speed) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I40E_LINK_SPEED_40GB:
 		speed = "40 G";
 		break;
@@ -6446,7 +7176,11 @@ void i40e_print_link_message(struct i40e_vsi *vsi, bool isup)
 		break;
 	}
 
+<<<<<<< HEAD
 	switch (pf->hw.fc.current_mode) {
+=======
+	switch (vsi->back->hw.fc.current_mode) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case I40E_FC_FULL:
 		fc = "RX/TX";
 		break;
@@ -6461,11 +7195,16 @@ void i40e_print_link_message(struct i40e_vsi *vsi, bool isup)
 		break;
 	}
 
+<<<<<<< HEAD
 	if (pf->hw.phy.link_info.link_speed == I40E_LINK_SPEED_25GB) {
+=======
+	if (vsi->back->hw.phy.link_info.link_speed == I40E_LINK_SPEED_25GB) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req_fec = ", Requested FEC: None";
 		fec = ", FEC: None";
 		an = ", Autoneg: False";
 
+<<<<<<< HEAD
 		if (pf->hw.phy.link_info.an_info & I40E_AQ_AN_COMPLETED)
 			an = ", Autoneg: True";
 
@@ -6473,6 +7212,15 @@ void i40e_print_link_message(struct i40e_vsi *vsi, bool isup)
 		    I40E_AQ_CONFIG_FEC_KR_ENA)
 			fec = ", FEC: CL74 FC-FEC/BASE-R";
 		else if (pf->hw.phy.link_info.fec_info &
+=======
+		if (vsi->back->hw.phy.link_info.an_info & I40E_AQ_AN_COMPLETED)
+			an = ", Autoneg: True";
+
+		if (vsi->back->hw.phy.link_info.fec_info &
+		    I40E_AQ_CONFIG_FEC_KR_ENA)
+			fec = ", FEC: CL74 FC-FEC/BASE-R";
+		else if (vsi->back->hw.phy.link_info.fec_info &
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 I40E_AQ_CONFIG_FEC_RS_ENA)
 			fec = ", FEC: CL108 RS-FEC";
 
@@ -6521,6 +7269,18 @@ static int i40e_up_complete(struct i40e_vsi *vsi)
 		i40e_print_link_message(vsi, true);
 		netif_tx_start_all_queues(vsi->netdev);
 		netif_carrier_on(vsi->netdev);
+<<<<<<< HEAD
+=======
+	} else if (vsi->netdev) {
+		i40e_print_link_message(vsi, false);
+		/* need to check for qualified module here*/
+		if ((pf->hw.phy.link_info.link_info &
+			I40E_AQ_MEDIA_AVAILABLE) &&
+		    (!(pf->hw.phy.link_info.an_info &
+			I40E_AQ_QUALIFIED_MODULE)))
+			netdev_err(vsi->netdev,
+				   "the driver failed to link because an unqualified module was detected.");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* replay FDIR SB filters */
@@ -6534,7 +7294,11 @@ static int i40e_up_complete(struct i40e_vsi *vsi)
 	/* On the next run of the service_task, notify any clients of the new
 	 * opened netdev
 	 */
+<<<<<<< HEAD
 	set_bit(__I40E_CLIENT_SERVICE_REQUESTED, pf->state);
+=======
+	pf->flags |= I40E_FLAG_SERVICE_CLIENT_REQUESTED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_service_event_schedule(pf);
 
 	return 0;
@@ -6576,6 +7340,7 @@ int i40e_up(struct i40e_vsi *vsi)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_force_link_state - Force the link status
  * @pf: board private structure
  * @is_up: whether the link state should be forced up or down
@@ -6647,6 +7412,8 @@ static i40e_status i40e_force_link_state(struct i40e_pf *pf, bool is_up)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_down - Shutdown the connection processing
  * @vsi: the VSI being stopped
  **/
@@ -6663,9 +7430,12 @@ void i40e_down(struct i40e_vsi *vsi)
 	}
 	i40e_vsi_disable_irq(vsi);
 	i40e_vsi_stop_rings(vsi);
+<<<<<<< HEAD
 	if (vsi->type == I40E_VSI_MAIN &&
 	    vsi->back->flags & I40E_FLAG_LINK_DOWN_ON_CLOSE_ENABLED)
 		i40e_force_link_state(vsi->back, false);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_napi_disable_all(vsi);
 
 	for (i = 0; i < vsi->num_queue_pairs; i++) {
@@ -6678,6 +7448,7 @@ void i40e_down(struct i40e_vsi *vsi)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_validate_mqprio_qopt- validate queue mapping info
  * @vsi: the VSI being configured
  * @mqprio_qopt: queue parametrs
@@ -6776,10 +7547,30 @@ static int i40e_setup_tc(struct net_device *netdev, void *type_data)
 		pf->flags &= ~I40E_FLAG_TC_MQPRIO;
 		memcpy(&vsi->mqprio_qopt, mqprio_qopt, sizeof(*mqprio_qopt));
 		goto config_tc;
+=======
+ * i40e_setup_tc - configure multiple traffic classes
+ * @netdev: net device to configure
+ * @tc: number of traffic classes to enable
+ **/
+static int i40e_setup_tc(struct net_device *netdev, u8 tc)
+{
+	struct i40e_netdev_priv *np = netdev_priv(netdev);
+	struct i40e_vsi *vsi = np->vsi;
+	struct i40e_pf *pf = vsi->back;
+	u8 enabled_tc = 0;
+	int ret = -EINVAL;
+	int i;
+
+	/* Check if DCB enabled to continue */
+	if (!(pf->flags & I40E_FLAG_DCB_ENABLED)) {
+		netdev_info(netdev, "DCB is not enabled for adapter\n");
+		goto exit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Check if MFP enabled */
 	if (pf->flags & I40E_FLAG_MFP_ENABLED) {
+<<<<<<< HEAD
 		netdev_info(netdev,
 			    "Configuring TC not supported in MFP mode\n");
 		return ret;
@@ -6830,19 +7621,41 @@ config_tc:
 	/* Requesting same TC configuration as already enabled */
 	if (enabled_tc == vsi->tc_config.enabled_tc &&
 	    mode != TC_MQPRIO_MODE_CHANNEL)
+=======
+		netdev_info(netdev, "Configuring TC not supported in MFP mode\n");
+		goto exit;
+	}
+
+	/* Check whether tc count is within enabled limit */
+	if (tc > i40e_pf_get_num_tc(pf)) {
+		netdev_info(netdev, "TC count greater than enabled on link for adapter\n");
+		goto exit;
+	}
+
+	/* Generate TC map for number of tc requested */
+	for (i = 0; i < tc; i++)
+		enabled_tc |= BIT(i);
+
+	/* Requesting same TC configuration as already enabled */
+	if (enabled_tc == vsi->tc_config.enabled_tc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* Quiesce VSI queues */
 	i40e_quiesce_vsi(vsi);
 
+<<<<<<< HEAD
 	if (!hw && !(pf->flags & I40E_FLAG_TC_MQPRIO))
 		i40e_remove_queue_channels(vsi);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Configure VSI for enabled TCs */
 	ret = i40e_vsi_config_tc(vsi, enabled_tc);
 	if (ret) {
 		netdev_info(netdev, "Failed configuring TC for VSI seid=%d\n",
 			    vsi->seid);
+<<<<<<< HEAD
 		need_reset = true;
 		goto exit;
 	}
@@ -7600,6 +8413,29 @@ static int __i40e_setup_tc(struct net_device *netdev, enum tc_setup_type type,
 	default:
 		return -EOPNOTSUPP;
 	}
+=======
+		goto exit;
+	}
+
+	/* Unquiesce VSI */
+	i40e_unquiesce_vsi(vsi);
+
+exit:
+	return ret;
+}
+
+static int __i40e_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+			   void *type_data)
+{
+	struct tc_mqprio_qopt *mqprio = type_data;
+
+	if (type != TC_SETUP_MQPRIO)
+		return -EOPNOTSUPP;
+
+	mqprio->hw = TC_MQPRIO_HW_OFFLOAD_TCS;
+
+	return i40e_setup_tc(netdev, mqprio->num_tc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -7628,9 +8464,12 @@ int i40e_open(struct net_device *netdev)
 
 	netif_carrier_off(netdev);
 
+<<<<<<< HEAD
 	if (i40e_force_link_state(pf, true))
 		return -EAGAIN;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = i40e_vsi_open(vsi);
 	if (err)
 		return err;
@@ -7720,7 +8559,11 @@ err_setup_rx:
 err_setup_tx:
 	i40e_vsi_free_tx_resources(vsi);
 	if (vsi == pf->vsi[pf->lan_vsi])
+<<<<<<< HEAD
 		i40e_do_reset(pf, I40E_PF_RESET_FLAG, true);
+=======
+		i40e_do_reset(pf, BIT_ULL(__I40E_PF_RESET_REQUESTED), true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
@@ -7786,6 +8629,7 @@ static void i40e_fdir_filter_exit(struct i40e_pf *pf)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_cloud_filter_exit - Cleans up the cloud filters
  * @pf: Pointer to PF
  *
@@ -7813,6 +8657,8 @@ static void i40e_cloud_filter_exit(struct i40e_pf *pf)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_close - Disables a network interface
  * @netdev: network interface device structure
  *
@@ -7878,7 +8724,11 @@ void i40e_do_reset(struct i40e_pf *pf, u32 reset_flags, bool lock_acquired)
 		wr32(&pf->hw, I40E_GLGEN_RTRIG, val);
 		i40e_flush(&pf->hw);
 
+<<<<<<< HEAD
 	} else if (reset_flags & I40E_PF_RESET_FLAG) {
+=======
+	} else if (reset_flags & BIT_ULL(__I40E_PF_RESET_REQUESTED)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Request a PF Reset
 		 *
@@ -8079,8 +8929,13 @@ static int i40e_handle_lldp_event(struct i40e_pf *pf,
 		i40e_service_event_schedule(pf);
 	} else {
 		i40e_pf_unquiesce_all_vsi(pf);
+<<<<<<< HEAD
 	set_bit(__I40E_CLIENT_SERVICE_REQUESTED, pf->state);
 	set_bit(__I40E_CLIENT_L2_CHANGE, pf->state);
+=======
+	pf->flags |= (I40E_FLAG_SERVICE_CLIENT_REQUESTED |
+		      I40E_FLAG_CLIENT_L2_CHANGE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 exit:
@@ -8181,6 +9036,7 @@ u32 i40e_get_global_fd_count(struct i40e_pf *pf)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_reenable_fdir_sb - Restore FDir SB capability
  * @pf: board private structure
  **/
@@ -8260,6 +9116,8 @@ static void i40e_delete_invalid_filter(struct i40e_pf *pf,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_fdir_check_and_reenable - Function to reenabe FD ATR or SB if disabled
  * @pf: board private structure
  **/
@@ -8277,23 +9135,55 @@ void i40e_fdir_check_and_reenable(struct i40e_pf *pf)
 	fcnt_avail = pf->fdir_pf_filter_count;
 	if ((fcnt_prog < (fcnt_avail - I40E_FDIR_BUFFER_HEAD_ROOM)) ||
 	    (pf->fd_add_err == 0) ||
+<<<<<<< HEAD
 	    (i40e_get_current_atr_cnt(pf) < pf->fd_atr_cnt))
 		i40e_reenable_fdir_sb(pf);
+=======
+	    (i40e_get_current_atr_cnt(pf) < pf->fd_atr_cnt)) {
+		if (pf->flags & I40E_FLAG_FD_SB_AUTO_DISABLED) {
+			pf->flags &= ~I40E_FLAG_FD_SB_AUTO_DISABLED;
+			if ((pf->flags & I40E_FLAG_FD_SB_ENABLED) &&
+			    (I40E_DEBUG_FD & pf->hw.debug_mask))
+				dev_info(&pf->pdev->dev, "FD Sideband/ntuple is being enabled since we have space in the table now\n");
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We should wait for even more space before re-enabling ATR.
 	 * Additionally, we cannot enable ATR as long as we still have TCP SB
 	 * rules active.
 	 */
 	if ((fcnt_prog < (fcnt_avail - I40E_FDIR_BUFFER_HEAD_ROOM_FOR_ATR)) &&
+<<<<<<< HEAD
 	    (pf->fd_tcp4_filter_cnt == 0))
 		i40e_reenable_fdir_atr(pf);
+=======
+	    (pf->fd_tcp4_filter_cnt == 0)) {
+		if (pf->flags & I40E_FLAG_FD_ATR_AUTO_DISABLED) {
+			pf->flags &= ~I40E_FLAG_FD_ATR_AUTO_DISABLED;
+			if ((pf->flags & I40E_FLAG_FD_ATR_ENABLED) &&
+			    (I40E_DEBUG_FD & pf->hw.debug_mask))
+				dev_info(&pf->pdev->dev, "ATR is being enabled since we have space in the table and there are no conflicting ntuple rules\n");
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* if hw had a problem adding a filter, delete it */
 	if (pf->fd_inv > 0) {
 		hlist_for_each_entry_safe(filter, node,
+<<<<<<< HEAD
 					  &pf->fdir_filter_list, fdir_node)
 			if (filter->fd_id == pf->fd_inv)
 				i40e_delete_invalid_filter(pf, filter);
+=======
+					  &pf->fdir_filter_list, fdir_node) {
+			if (filter->fd_id == pf->fd_inv) {
+				hlist_del(&filter->fdir_node);
+				kfree(filter);
+				pf->fdir_pf_active_filters--;
+			}
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -8330,7 +9220,11 @@ static void i40e_fdir_flush_and_replay(struct i40e_pf *pf)
 	}
 
 	pf->fd_flush_timestamp = jiffies;
+<<<<<<< HEAD
 	set_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state);
+=======
+	pf->flags |= I40E_FLAG_FD_ATR_AUTO_DISABLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* flush all filters */
 	wr32(&pf->hw, I40E_PFQF_CTL_1,
 	     I40E_PFQF_CTL_1_CLEARFDTABLE_MASK);
@@ -8350,7 +9244,11 @@ static void i40e_fdir_flush_and_replay(struct i40e_pf *pf)
 		/* replay sideband filters */
 		i40e_fdir_filter_restore(pf->vsi[pf->lan_vsi]);
 		if (!disable_atr && !pf->fd_tcp4_filter_cnt)
+<<<<<<< HEAD
 			clear_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state);
+=======
+			pf->flags &= ~I40E_FLAG_FD_ATR_AUTO_DISABLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clear_bit(__I40E_FD_FLUSH_REQUESTED, pf->state);
 		if (I40E_DEBUG_FD & pf->hw.debug_mask)
 			dev_info(&pf->pdev->dev, "FD Filter table flushed and FD-SB replayed.\n");
@@ -8474,12 +9372,21 @@ static void i40e_link_event(struct i40e_pf *pf)
 
 	/* On success, disable temp link polling */
 	if (status == I40E_SUCCESS) {
+<<<<<<< HEAD
 		clear_bit(__I40E_TEMP_LINK_POLLING, pf->state);
+=======
+		if (pf->flags & I40E_FLAG_TEMP_LINK_POLLING)
+			pf->flags &= ~I40E_FLAG_TEMP_LINK_POLLING;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* Enable link polling temporarily until i40e_get_link_status
 		 * returns I40E_SUCCESS
 		 */
+<<<<<<< HEAD
 		set_bit(__I40E_TEMP_LINK_POLLING, pf->state);
+=======
+		pf->flags |= I40E_FLAG_TEMP_LINK_POLLING;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_dbg(&pf->pdev->dev, "couldn't get link state, status: %d\n",
 			status);
 		return;
@@ -8494,7 +9401,12 @@ static void i40e_link_event(struct i40e_pf *pf)
 	     new_link == netif_carrier_ok(vsi->netdev)))
 		return;
 
+<<<<<<< HEAD
 	i40e_print_link_message(vsi, new_link);
+=======
+	if (!test_bit(__I40E_VSI_DOWN, vsi->state))
+		i40e_print_link_message(vsi, new_link);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Notify the base of the switch tree connected to
 	 * the link.  Floating VEBs are not notified.
@@ -8531,7 +9443,11 @@ static void i40e_watchdog_subtask(struct i40e_pf *pf)
 	pf->service_timer_previous = jiffies;
 
 	if ((pf->flags & I40E_FLAG_LINK_POLLING_ENABLED) ||
+<<<<<<< HEAD
 	    test_bit(__I40E_TEMP_LINK_POLLING, pf->state))
+=======
+	    (pf->flags & I40E_FLAG_TEMP_LINK_POLLING))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i40e_link_event(pf);
 
 	/* Update the stats for active netdevs so the network stack
@@ -8617,6 +9533,7 @@ static void i40e_handle_link_event(struct i40e_pf *pf,
 	 */
 	i40e_link_event(pf);
 
+<<<<<<< HEAD
 	/* Check if module meets thermal requirements */
 	if (status->phy_type == I40E_PHY_TYPE_NOT_SUPPORTED_HIGH_TEMP) {
 		dev_err(&pf->pdev->dev,
@@ -8637,6 +9554,14 @@ static void i40e_handle_link_event(struct i40e_pf *pf,
 				"Refer to the Intel(R) Ethernet Adapters and Devices User Guide for a list of supported modules.\n");
 		}
 	}
+=======
+	/* check for unqualified module, if link is down */
+	if ((status->link_info & I40E_AQ_MEDIA_AVAILABLE) &&
+	    (!(status->an_info & I40E_AQ_QUALIFIED_MODULE)) &&
+	    (!(status->link_info & I40E_AQ_LINK_UP)))
+		dev_err(&pf->pdev->dev,
+			"The driver failed to link because an unqualified module was detected.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -8978,8 +9903,12 @@ end_reconstitute:
  * i40e_get_capabilities - get info about the HW
  * @pf: the PF struct
  **/
+<<<<<<< HEAD
 static int i40e_get_capabilities(struct i40e_pf *pf,
 				 enum i40e_admin_queue_opc list_type)
+=======
+static int i40e_get_capabilities(struct i40e_pf *pf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_aqc_list_capabilities_element_resp *cap_buf;
 	u16 data_size;
@@ -8994,8 +9923,14 @@ static int i40e_get_capabilities(struct i40e_pf *pf,
 
 		/* this loads the data into the hw struct for us */
 		err = i40e_aq_discover_capabilities(&pf->hw, cap_buf, buf_len,
+<<<<<<< HEAD
 						    &data_size, list_type,
 						    NULL);
+=======
+					    &data_size,
+					    i40e_aqc_opc_list_func_capabilities,
+					    NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* data loaded, buffer no longer needed */
 		kfree(cap_buf);
 
@@ -9012,6 +9947,7 @@ static int i40e_get_capabilities(struct i40e_pf *pf,
 		}
 	} while (err);
 
+<<<<<<< HEAD
 	if (pf->hw.debug_mask & I40E_DEBUG_USER) {
 		if (list_type == i40e_aqc_opc_list_func_capabilities) {
 			dev_info(&pf->pdev->dev,
@@ -9050,6 +9986,28 @@ static int i40e_get_capabilities(struct i40e_pf *pf,
 			pf->hw.func_caps.num_vsis = DEF_NUM_VSI;
 		}
 	}
+=======
+	if (pf->hw.debug_mask & I40E_DEBUG_USER)
+		dev_info(&pf->pdev->dev,
+			 "pf=%d, num_vfs=%d, msix_pf=%d, msix_vf=%d, fd_g=%d, fd_b=%d, pf_max_q=%d num_vsi=%d\n",
+			 pf->hw.pf_id, pf->hw.func_caps.num_vfs,
+			 pf->hw.func_caps.num_msix_vectors,
+			 pf->hw.func_caps.num_msix_vectors_vf,
+			 pf->hw.func_caps.fd_filters_guaranteed,
+			 pf->hw.func_caps.fd_filters_best_effort,
+			 pf->hw.func_caps.num_tx_qp,
+			 pf->hw.func_caps.num_vsis);
+
+#define DEF_NUM_VSI (1 + (pf->hw.func_caps.fcoe ? 1 : 0) \
+		       + pf->hw.func_caps.num_vfs)
+	if (pf->hw.revision_id == 0 && (DEF_NUM_VSI > pf->hw.func_caps.num_vsis)) {
+		dev_info(&pf->pdev->dev,
+			 "got num_vsis %d, setting num_vsis to %d\n",
+			 pf->hw.func_caps.num_vsis, DEF_NUM_VSI);
+		pf->hw.func_caps.num_vsis = DEF_NUM_VSI;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -9091,7 +10049,10 @@ static void i40e_fdir_sb_setup(struct i40e_pf *pf)
 		if (!vsi) {
 			dev_info(&pf->pdev->dev, "Couldn't create FDir VSI\n");
 			pf->flags &= ~I40E_FLAG_FD_SB_ENABLED;
+<<<<<<< HEAD
 			pf->flags |= I40E_FLAG_FD_SB_INACTIVE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	}
@@ -9114,6 +10075,7 @@ static void i40e_fdir_teardown(struct i40e_pf *pf)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_rebuild_cloud_filters - Rebuilds cloud filters for VSIs
  * @vsi: PF main vsi
  * @seid: seid of main or channel VSIs
@@ -9214,6 +10176,8 @@ static int i40e_rebuild_channels(struct i40e_vsi *vsi)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_prep_for_reset - prep for the core to reset
  * @pf: board private structure
  * @lock_acquired: indicates whether or not the lock has been acquired
@@ -9349,7 +10313,10 @@ static int i40e_reset(struct i40e_pf *pf)
  **/
 static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 {
+<<<<<<< HEAD
 	struct i40e_vsi *vsi = pf->vsi[pf->lan_vsi];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i40e_hw *hw = &pf->hw;
 	u8 set_fc_aq_fail = 0;
 	i40e_status ret;
@@ -9386,7 +10353,11 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 		i40e_verify_eeprom(pf);
 
 	i40e_clear_pxe_mode(hw);
+<<<<<<< HEAD
 	ret = i40e_get_capabilities(pf, i40e_aqc_opc_list_func_capabilities);
+=======
+	ret = i40e_get_capabilities(pf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto end_core_reset;
 
@@ -9402,9 +10373,12 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 		goto end_core_reset;
 	}
 
+<<<<<<< HEAD
 	/* Enable FW to write a default DCB config on link-up */
 	i40e_aq_set_dcb_parameters(hw, true, NULL);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_I40E_DCB
 	ret = i40e_init_pf_dcb(pf);
 	if (ret) {
@@ -9446,7 +10420,11 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 	 * If there were VEBs but the reconstitution failed, we'll try
 	 * try to recover minimal use by getting the basic PF VSI working.
 	 */
+<<<<<<< HEAD
 	if (vsi->uplink_seid != pf->mac_seid) {
+=======
+	if (pf->vsi[pf->lan_vsi]->uplink_seid != pf->mac_seid) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_dbg(&pf->pdev->dev, "attempting to rebuild switch\n");
 		/* find the one VEB connected to the MAC, and find orphans */
 		for (v = 0; v < I40E_MAX_VEB; v++) {
@@ -9470,7 +10448,12 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 					dev_info(&pf->pdev->dev,
 						 "rebuild of switch failed: %d, will try to set up simple PF connection\n",
 						 ret);
+<<<<<<< HEAD
 					vsi->uplink_seid = pf->mac_seid;
+=======
+					pf->vsi[pf->lan_vsi]->uplink_seid
+								= pf->mac_seid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					break;
 				} else if (pf->veb[v]->uplink_seid == 0) {
 					dev_info(&pf->pdev->dev,
@@ -9481,10 +10464,17 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 		}
 	}
 
+<<<<<<< HEAD
 	if (vsi->uplink_seid == pf->mac_seid) {
 		dev_dbg(&pf->pdev->dev, "attempting to rebuild PF VSI\n");
 		/* no VEB, so rebuild only the Main VSI */
 		ret = i40e_add_vsi(vsi);
+=======
+	if (pf->vsi[pf->lan_vsi]->uplink_seid == pf->mac_seid) {
+		dev_dbg(&pf->pdev->dev, "attempting to rebuild PF VSI\n");
+		/* no VEB, so rebuild only the Main VSI */
+		ret = i40e_add_vsi(pf->vsi[pf->lan_vsi]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			dev_info(&pf->pdev->dev,
 				 "rebuild of Main VSI failed: %d\n", ret);
@@ -9492,6 +10482,7 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 		}
 	}
 
+<<<<<<< HEAD
 	if (vsi->mqprio_qopt.max_rate[0]) {
 		u64 max_tx_rate = vsi->mqprio_qopt.max_rate[0];
 		u64 credits = 0;
@@ -9521,6 +10512,8 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 	if (ret)
 		goto end_unlock;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reconfigure hardware for allowing smaller MSS in the case
 	 * of TSO, so that we avoid the MDD being fired and causing
 	 * a reset in the case of small MSS+TSO.
@@ -9564,6 +10557,7 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 	if (!lock_acquired)
 		rtnl_unlock();
 
+<<<<<<< HEAD
 	/* Restore promiscuous settings */
 	ret = i40e_set_promiscuous(pf, pf->cur_promisc);
 	if (ret)
@@ -9573,6 +10567,8 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
 			 i40e_stat_str(&pf->hw, ret),
 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_reset_all_vfs(pf, true);
 
 	/* tell the firmware that we're starting */
@@ -9588,7 +10584,10 @@ end_core_reset:
 	clear_bit(__I40E_RESET_FAILED, pf->state);
 clear_recovery:
 	clear_bit(__I40E_RESET_RECOVERY_PENDING, pf->state);
+<<<<<<< HEAD
 	clear_bit(__I40E_TIMEOUT_RECOVERY_PENDING, pf->state);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -9734,9 +10733,15 @@ static void i40e_handle_mdd_event(struct i40e_pf *pf)
 	i40e_flush(hw);
 }
 
+<<<<<<< HEAD
 static const char *i40e_tunnel_name(u8 type)
 {
 	switch (type) {
+=======
+static const char *i40e_tunnel_name(struct i40e_udp_port_config *port)
+{
+	switch (port->type) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case UDP_TUNNEL_TYPE_VXLAN:
 		return "vxlan";
 	case UDP_TUNNEL_TYPE_GENEVE:
@@ -9760,7 +10765,11 @@ static void i40e_sync_udp_filters(struct i40e_pf *pf)
 			pf->pending_udp_bitmap |= BIT_ULL(i);
 	}
 
+<<<<<<< HEAD
 	set_bit(__I40E_UDP_FILTER_SYNC_PENDING, pf->state);
+=======
+	pf->flags |= I40E_FLAG_UDP_FILTER_SYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -9770,6 +10779,7 @@ static void i40e_sync_udp_filters(struct i40e_pf *pf)
 static void i40e_sync_udp_filters_subtask(struct i40e_pf *pf)
 {
 	struct i40e_hw *hw = &pf->hw;
+<<<<<<< HEAD
 	u8 filter_index, type;
 	u16 port;
 	int i;
@@ -9806,10 +10816,32 @@ static void i40e_sync_udp_filters_subtask(struct i40e_pf *pf)
 
 			/* reacquire RTNL so we can update filter_index */
 			rtnl_lock();
+=======
+	i40e_status ret;
+	u16 port;
+	int i;
+
+	if (!(pf->flags & I40E_FLAG_UDP_FILTER_SYNC))
+		return;
+
+	pf->flags &= ~I40E_FLAG_UDP_FILTER_SYNC;
+
+	for (i = 0; i < I40E_MAX_PF_UDP_OFFLOAD_PORTS; i++) {
+		if (pf->pending_udp_bitmap & BIT_ULL(i)) {
+			pf->pending_udp_bitmap &= ~BIT_ULL(i);
+			port = pf->udp_ports[i].port;
+			if (port)
+				ret = i40e_aq_add_udp_tunnel(hw, port,
+							pf->udp_ports[i].type,
+							NULL, NULL);
+			else
+				ret = i40e_aq_del_udp_tunnel(hw, i, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (ret) {
 				dev_info(&pf->pdev->dev,
 					 "%s %s port %d, index %d failed, err %s aq_err %s\n",
+<<<<<<< HEAD
 					 i40e_tunnel_name(type),
 					 port ? "add" : "delete",
 					 port,
@@ -9832,6 +10864,18 @@ static void i40e_sync_udp_filters_subtask(struct i40e_pf *pf)
 	}
 
 	rtnl_unlock();
+=======
+					 i40e_tunnel_name(&pf->udp_ports[i]),
+					 port ? "add" : "delete",
+					 port, i,
+					 i40e_stat_str(&pf->hw, ret),
+					 i40e_aq_str(&pf->hw,
+						     pf->hw.aq.asq_last_status));
+				pf->udp_ports[i].port = 0;
+			}
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -9852,13 +10896,18 @@ static void i40e_service_task(struct work_struct *work)
 	if (test_and_set_bit(__I40E_SERVICE_SCHED, pf->state))
 		return;
 
+<<<<<<< HEAD
 	i40e_detect_recover_hung(pf->vsi[pf->lan_vsi]);
+=======
+	i40e_detect_recover_hung(pf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_sync_filters_subtask(pf);
 	i40e_reset_subtask(pf);
 	i40e_handle_mdd_event(pf);
 	i40e_vc_process_vflr_event(pf);
 	i40e_watchdog_subtask(pf);
 	i40e_fdir_reinit_subtask(pf);
+<<<<<<< HEAD
 	if (test_and_clear_bit(__I40E_CLIENT_RESET, pf->state)) {
 		/* Client subtask will reopen next time through. */
 		i40e_notify_client_of_netdev_close(pf->vsi[pf->lan_vsi], true);
@@ -9868,6 +10917,19 @@ static void i40e_service_task(struct work_struct *work)
 				       pf->state))
 			i40e_notify_client_of_l2_param_changes(
 							pf->vsi[pf->lan_vsi]);
+=======
+	if (pf->flags & I40E_FLAG_CLIENT_RESET) {
+		/* Client subtask will reopen next time through. */
+		i40e_notify_client_of_netdev_close(pf->vsi[pf->lan_vsi], true);
+		pf->flags &= ~I40E_FLAG_CLIENT_RESET;
+	} else {
+		i40e_client_subtask(pf);
+		if (pf->flags & I40E_FLAG_CLIENT_L2_CHANGE) {
+			i40e_notify_client_of_l2_param_changes(
+							pf->vsi[pf->lan_vsi]);
+			pf->flags &= ~I40E_FLAG_CLIENT_L2_CHANGE;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	i40e_sync_filters_subtask(pf);
 	i40e_sync_udp_filters_subtask(pf);
@@ -9892,9 +10954,15 @@ static void i40e_service_task(struct work_struct *work)
  * i40e_service_timer - timer callback
  * @data: pointer to PF struct
  **/
+<<<<<<< HEAD
 static void i40e_service_timer(struct timer_list *t)
 {
 	struct i40e_pf *pf = from_timer(pf, t, service_timer);
+=======
+static void i40e_service_timer(unsigned long data)
+{
+	struct i40e_pf *pf = (struct i40e_pf *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mod_timer(&pf->service_timer,
 		  round_jiffies(jiffies + pf->service_timer_period));
@@ -9951,7 +11019,11 @@ static int i40e_set_num_rings_in_vsi(struct i40e_vsi *vsi)
 
 /**
  * i40e_vsi_alloc_arrays - Allocate queue and vector pointer arrays for the vsi
+<<<<<<< HEAD
  * @vsi: VSI pointer
+=======
+ * @type: VSI pointer
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @alloc_qvectors: a bool to specify if q_vectors need to be allocated.
  *
  * On error: returns error code (negative)
@@ -10078,7 +11150,11 @@ unlock_pf:
 
 /**
  * i40e_vsi_free_arrays - Free queue and vector pointer arrays for the VSI
+<<<<<<< HEAD
  * @vsi: VSI pointer
+=======
+ * @type: VSI pointer
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @free_qvectors: a bool to specify if q_vectors need to be freed.
  *
  * On error: returns error code (negative)
@@ -10131,17 +11207,30 @@ static int i40e_vsi_clear(struct i40e_vsi *vsi)
 
 	mutex_lock(&pf->switch_mutex);
 	if (!pf->vsi[vsi->idx]) {
+<<<<<<< HEAD
 		dev_err(&pf->pdev->dev, "pf->vsi[%d] is NULL, just free vsi[%d](type %d)\n",
 			vsi->idx, vsi->idx, vsi->type);
+=======
+		dev_err(&pf->pdev->dev, "pf->vsi[%d] is NULL, just free vsi[%d](%p,type %d)\n",
+			vsi->idx, vsi->idx, vsi, vsi->type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto unlock_vsi;
 	}
 
 	if (pf->vsi[vsi->idx] != vsi) {
 		dev_err(&pf->pdev->dev,
+<<<<<<< HEAD
 			"pf->vsi[%d](type %d) != vsi[%d](type %d): no free!\n",
 			pf->vsi[vsi->idx]->idx,
 			pf->vsi[vsi->idx]->type,
 			vsi->idx, vsi->type);
+=======
+			"pf->vsi[%d](%p, type %d) != vsi[%d](%p,type %d): no free!\n",
+			pf->vsi[vsi->idx]->idx,
+			pf->vsi[vsi->idx],
+			pf->vsi[vsi->idx]->type,
+			vsi->idx, vsi, vsi->type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto unlock_vsi;
 	}
 
@@ -10211,7 +11300,11 @@ static int i40e_alloc_rings(struct i40e_vsi *vsi)
 		ring->dcb_tc = 0;
 		if (vsi->back->hw_features & I40E_HW_WB_ON_ITR_CAPABLE)
 			ring->flags = I40E_TXR_FLAGS_WB_ON_ITR;
+<<<<<<< HEAD
 		ring->itr_setting = pf->tx_itr_default;
+=======
+		ring->tx_itr_setting = pf->tx_itr_default;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vsi->tx_rings[i] = ring++;
 
 		if (!i40e_enabled_xdp_vsi(vsi))
@@ -10229,7 +11322,11 @@ static int i40e_alloc_rings(struct i40e_vsi *vsi)
 		if (vsi->back->hw_features & I40E_HW_WB_ON_ITR_CAPABLE)
 			ring->flags = I40E_TXR_FLAGS_WB_ON_ITR;
 		set_ring_xdp(ring);
+<<<<<<< HEAD
 		ring->itr_setting = pf->tx_itr_default;
+=======
+		ring->tx_itr_setting = pf->tx_itr_default;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vsi->xdp_rings[i] = ring++;
 
 setup_rx:
@@ -10242,7 +11339,11 @@ setup_rx:
 		ring->count = vsi->num_desc;
 		ring->size = 0;
 		ring->dcb_tc = 0;
+<<<<<<< HEAD
 		ring->itr_setting = pf->rx_itr_default;
+=======
+		ring->rx_itr_setting = pf->rx_itr_default;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vsi->rx_rings[i] = ring;
 	}
 
@@ -10353,21 +11454,31 @@ static int i40e_init_msix(struct i40e_pf *pf)
 
 	/* any vectors left over go for VMDq support */
 	if (pf->flags & I40E_FLAG_VMDQ_ENABLED) {
+<<<<<<< HEAD
+=======
+		int vmdq_vecs_wanted = pf->num_vmdq_vsis * pf->num_vmdq_qps;
+		int vmdq_vecs = min_t(int, vectors_left, vmdq_vecs_wanted);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!vectors_left) {
 			pf->num_vmdq_msix = 0;
 			pf->num_vmdq_qps = 0;
 		} else {
+<<<<<<< HEAD
 			int vmdq_vecs_wanted =
 				pf->num_vmdq_vsis * pf->num_vmdq_qps;
 			int vmdq_vecs =
 				min_t(int, vectors_left, vmdq_vecs_wanted);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* if we're short on vectors for what's desired, we limit
 			 * the queues per vmdq.  If this is still more than are
 			 * available, the user will need to change the number of
 			 * queues/vectors used by the PF later with the ethtool
 			 * channels command
 			 */
+<<<<<<< HEAD
 			if (vectors_left < vmdq_vecs_wanted) {
 				pf->num_vmdq_qps = 1;
 				vmdq_vecs_wanted = pf->num_vmdq_vsis;
@@ -10375,6 +11486,10 @@ static int i40e_init_msix(struct i40e_pf *pf)
 						  vectors_left,
 						  vmdq_vecs_wanted);
 			}
+=======
+			if (vmdq_vecs < vmdq_vecs_wanted)
+				pf->num_vmdq_qps = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pf->num_vmdq_msix = pf->num_vmdq_qps;
 
 			v_budget += vmdq_vecs;
@@ -10422,7 +11537,11 @@ static int i40e_init_msix(struct i40e_pf *pf)
 		pf->num_lan_qps = 1;
 		pf->num_lan_msix = 1;
 
+<<<<<<< HEAD
 	} else if (v_actual != v_budget) {
+=======
+	} else if (!vectors_left) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* If we have limited resources, we will start with no vectors
 		 * for the special features and then allocate vectors to some
 		 * of these features based on the policy and at the end disable
@@ -10431,8 +11550,12 @@ static int i40e_init_msix(struct i40e_pf *pf)
 		int vec;
 
 		dev_info(&pf->pdev->dev,
+<<<<<<< HEAD
 			 "MSI-X vector limit reached with %d, wanted %d, attempting to redistribute vectors\n",
 			 v_actual, v_budget);
+=======
+			 "MSI-X vector limit reached, attempting to redistribute vectors\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* reserve the misc vector */
 		vec = v_actual - 1;
 
@@ -10480,7 +11603,10 @@ static int i40e_init_msix(struct i40e_pf *pf)
 	    (pf->num_fdsb_msix == 0)) {
 		dev_info(&pf->pdev->dev, "Sideband Flowdir disabled, not enough MSI-X vectors\n");
 		pf->flags &= ~I40E_FLAG_FD_SB_ENABLED;
+<<<<<<< HEAD
 		pf->flags |= I40E_FLAG_FD_SB_INACTIVE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if ((pf->flags & I40E_FLAG_VMDQ_ENABLED) &&
 	    (pf->num_vmdq_msix == 0)) {
@@ -10528,6 +11654,12 @@ static int i40e_vsi_alloc_q_vector(struct i40e_vsi *vsi, int v_idx, int cpu)
 		netif_napi_add(vsi->netdev, &q_vector->napi,
 			       i40e_napi_poll, NAPI_POLL_WEIGHT);
 
+<<<<<<< HEAD
+=======
+	q_vector->rx.latency_range = I40E_LOW_LATENCY;
+	q_vector->tx.latency_range = I40E_LOW_LATENCY;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* tie q_vector and vsi together */
 	vsi->q_vectors[v_idx] = q_vector;
 
@@ -10595,7 +11727,10 @@ static int i40e_init_interrupt_scheme(struct i40e_pf *pf)
 				       I40E_FLAG_FD_SB_ENABLED	|
 				       I40E_FLAG_FD_ATR_ENABLED	|
 				       I40E_FLAG_VMDQ_ENABLED);
+<<<<<<< HEAD
 			pf->flags |= I40E_FLAG_FD_SB_INACTIVE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* rework the queue expectations without MSIX */
 			i40e_determine_queue_usage(pf);
@@ -10620,9 +11755,16 @@ static int i40e_init_interrupt_scheme(struct i40e_pf *pf)
 	/* set up vector assignment tracking */
 	size = sizeof(struct i40e_lump_tracking) + (sizeof(u16) * vectors);
 	pf->irq_pile = kzalloc(size, GFP_KERNEL);
+<<<<<<< HEAD
 	if (!pf->irq_pile)
 		return -ENOMEM;
 
+=======
+	if (!pf->irq_pile) {
+		dev_err(&pf->pdev->dev, "error allocating irq_pile memory\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pf->irq_pile->num_entries = vectors;
 	pf->irq_pile->search_hint = 0;
 
@@ -10633,6 +11775,7 @@ static int i40e_init_interrupt_scheme(struct i40e_pf *pf)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_restore_interrupt_scheme - Restore the interrupt scheme
  * @pf: private board data structure
  *
@@ -10685,6 +11828,8 @@ err_unwind:
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_setup_misc_vector - Setup the misc vector to handle non queue events
  * @pf: board private structure
  *
@@ -10697,12 +11842,22 @@ static int i40e_setup_misc_vector(struct i40e_pf *pf)
 	struct i40e_hw *hw = &pf->hw;
 	int err = 0;
 
+<<<<<<< HEAD
 	/* Only request the IRQ once, the first time through. */
 	if (!test_and_set_bit(__I40E_MISC_IRQ_REQUESTED, pf->state)) {
 		err = request_irq(pf->msix_entries[0].vector,
 				  i40e_intr, 0, pf->int_name, pf);
 		if (err) {
 			clear_bit(__I40E_MISC_IRQ_REQUESTED, pf->state);
+=======
+	/* Only request the irq if this is the first time through, and
+	 * not when we're rebuilding after a Reset
+	 */
+	if (!test_bit(__I40E_RESET_RECOVERY_PENDING, pf->state)) {
+		err = request_irq(pf->msix_entries[0].vector,
+				  i40e_intr, 0, pf->int_name, pf);
+		if (err) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_info(&pf->pdev->dev,
 				 "request_irq for %s failed: %d\n",
 				 pf->int_name, err);
@@ -10718,12 +11873,58 @@ static int i40e_setup_misc_vector(struct i40e_pf *pf)
 
 	i40e_flush(hw);
 
+<<<<<<< HEAD
 	i40e_irq_dynamic_enable_icr0(pf);
+=======
+	i40e_irq_dynamic_enable_icr0(pf, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * i40e_config_rss_aq - Prepare for RSS using AQ commands
+ * @vsi: vsi structure
+ * @seed: RSS hash seed
+ **/
+static int i40e_config_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
+			      u8 *lut, u16 lut_size)
+{
+	struct i40e_pf *pf = vsi->back;
+	struct i40e_hw *hw = &pf->hw;
+	int ret = 0;
+
+	if (seed) {
+		struct i40e_aqc_get_set_rss_key_data *seed_dw =
+			(struct i40e_aqc_get_set_rss_key_data *)seed;
+		ret = i40e_aq_set_rss_key(hw, vsi->id, seed_dw);
+		if (ret) {
+			dev_info(&pf->pdev->dev,
+				 "Cannot set RSS key, err %s aq_err %s\n",
+				 i40e_stat_str(hw, ret),
+				 i40e_aq_str(hw, hw->aq.asq_last_status));
+			return ret;
+		}
+	}
+	if (lut) {
+		bool pf_lut = vsi->type == I40E_VSI_MAIN ? true : false;
+
+		ret = i40e_aq_set_rss_lut(hw, vsi->id, pf_lut, lut, lut_size);
+		if (ret) {
+			dev_info(&pf->pdev->dev,
+				 "Cannot set RSS lut, err %s aq_err %s\n",
+				 i40e_stat_str(hw, ret),
+				 i40e_aq_str(hw, hw->aq.asq_last_status));
+			return ret;
+		}
+	}
+	return ret;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_get_rss_aq - Get RSS keys and lut by using AQ commands
  * @vsi: Pointer to vsi structure
  * @seed: Buffter to store the hash keys
@@ -10770,6 +11971,49 @@ static int i40e_get_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * i40e_vsi_config_rss - Prepare for VSI(VMDq) RSS if used
+ * @vsi: VSI structure
+ **/
+static int i40e_vsi_config_rss(struct i40e_vsi *vsi)
+{
+	u8 seed[I40E_HKEY_ARRAY_SIZE];
+	struct i40e_pf *pf = vsi->back;
+	u8 *lut;
+	int ret;
+
+	if (!(pf->hw_features & I40E_HW_RSS_AQ_CAPABLE))
+		return 0;
+
+	if (!vsi->rss_size)
+		vsi->rss_size = min_t(int, pf->alloc_rss_size,
+				      vsi->num_queue_pairs);
+	if (!vsi->rss_size)
+		return -EINVAL;
+
+	lut = kzalloc(vsi->rss_table_size, GFP_KERNEL);
+	if (!lut)
+		return -ENOMEM;
+	/* Use the user configured hash keys and lookup table if there is one,
+	 * otherwise use default
+	 */
+	if (vsi->rss_lut_user)
+		memcpy(lut, vsi->rss_lut_user, vsi->rss_table_size);
+	else
+		i40e_fill_rss_lut(pf, lut, vsi->rss_table_size, vsi->rss_size);
+	if (vsi->rss_hkey_user)
+		memcpy(seed, vsi->rss_hkey_user, I40E_HKEY_ARRAY_SIZE);
+	else
+		netdev_rss_key_fill((void *)seed, I40E_HKEY_ARRAY_SIZE);
+	ret = i40e_config_rss_aq(vsi, seed, lut, vsi->rss_table_size);
+	kfree(lut);
+
+	return ret;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_config_rss_reg - Configure RSS keys and lut by writing registers
  * @vsi: Pointer to vsi structure
  * @seed: RSS hash seed
@@ -10881,7 +12125,11 @@ int i40e_config_rss(struct i40e_vsi *vsi, u8 *seed, u8 *lut, u16 lut_size)
  * @vsi: Pointer to VSI structure
  * @seed: Buffer to store the keys
  * @lut: Buffer to store the lookup table entries
+<<<<<<< HEAD
  * @lut_size: Size of buffer to store the lookup table entries
+=======
+ * lut_size: Size of buffer to store the lookup table entries
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns 0 on success, negative on failure
  */
@@ -10943,6 +12191,7 @@ static int i40e_pf_config_rss(struct i40e_pf *pf)
 	/* Determine the RSS size of the VSI */
 	if (!vsi->rss_size) {
 		u16 qcount;
+<<<<<<< HEAD
 		/* If the firmware does something weird during VSI init, we
 		 * could end up with zero TCs. Check for that to avoid
 		 * divide-by-zero. It probably won't pass traffic, but it also
@@ -10950,6 +12199,10 @@ static int i40e_pf_config_rss(struct i40e_pf *pf)
 		 */
 		qcount = vsi->num_queue_pairs /
 			 (vsi->tc_config.numtc ? vsi->tc_config.numtc : 1);
+=======
+
+		qcount = vsi->num_queue_pairs / vsi->tc_config.numtc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vsi->rss_size = min_t(int, pf->alloc_rss_size, qcount);
 	}
 	if (!vsi->rss_size)
@@ -11137,7 +12390,11 @@ i40e_status i40e_commit_partition_bw_setting(struct i40e_pf *pf)
 	ret = i40e_aq_update_nvm(&pf->hw,
 				 I40E_SR_NVM_CONTROL_WORD,
 				 0x10, sizeof(nvm_word),
+<<<<<<< HEAD
 				 &nvm_word, true, 0, NULL);
+=======
+				 &nvm_word, true, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Save off last admin queue command status before releasing
 	 * the NVM
 	 */
@@ -11172,8 +12429,13 @@ static int i40e_sw_init(struct i40e_pf *pf)
 		    I40E_FLAG_MSIX_ENABLED;
 
 	/* Set default ITR */
+<<<<<<< HEAD
 	pf->rx_itr_default = I40E_ITR_RX_DEF;
 	pf->tx_itr_default = I40E_ITR_TX_DEF;
+=======
+	pf->rx_itr_default = I40E_ITR_DYNAMIC | I40E_ITR_RX_DEF;
+	pf->tx_itr_default = I40E_ITR_DYNAMIC | I40E_ITR_TX_DEF;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Depending on PF configurations, it is possible that the RSS
 	 * maximum might end up larger than the available queues
@@ -11273,22 +12535,31 @@ static int i40e_sw_init(struct i40e_pf *pf)
 	    (pf->hw.aq.fw_maj_ver >= 5)))
 		pf->hw_features |= I40E_HW_USE_SET_LLDP_MIB;
 
+<<<<<<< HEAD
 	/* Enable PTP L4 if FW > v6.0 */
 	if (pf->hw.mac.type == I40E_MAC_XL710 &&
 	    pf->hw.aq.fw_maj_ver >= 6)
 		pf->hw_features |= I40E_HW_PTP_L4_CAPABLE;
 
 	if (pf->hw.func_caps.vmdq && num_online_cpus() != 1) {
+=======
+	if (pf->hw.func_caps.vmdq) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pf->num_vmdq_vsis = I40E_DEFAULT_NUM_VMDQ_VSI;
 		pf->flags |= I40E_FLAG_VMDQ_ENABLED;
 		pf->num_vmdq_qps = i40e_default_queues_per_vmdq(pf);
 	}
 
+<<<<<<< HEAD
 	if (pf->hw.func_caps.iwarp && num_online_cpus() != 1) {
+=======
+	if (pf->hw.func_caps.iwarp) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pf->flags |= I40E_FLAG_IWARP_ENABLED;
 		/* IWARP needs one extra vector for CQP just like MISC.*/
 		pf->num_iwarp_msix = (int)num_online_cpus() + 1;
 	}
+<<<<<<< HEAD
 	/* Stopping the FW LLDP engine is only supported on the
 	 * XL710 with a FW ver >= 1.7.  Also, stopping FW LLDP
 	 * engine is not supported if NPAR is functioning on this
@@ -11299,6 +12570,8 @@ static int i40e_sw_init(struct i40e_pf *pf)
 	    (pf->hw.aq.api_maj_ver > 1 ||
 	     (pf->hw.aq.api_maj_ver == 1 && pf->hw.aq.api_min_ver > 6)))
 		pf->hw_features |= I40E_HW_STOPPABLE_FW_LLDP;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PCI_IOV
 	if (pf->hw.func_caps.num_vfs && pf->hw.partition_id == 1) {
@@ -11353,6 +12626,7 @@ bool i40e_set_ntuple(struct i40e_pf *pf, netdev_features_t features)
 		/* Enable filters and mark for reset */
 		if (!(pf->flags & I40E_FLAG_FD_SB_ENABLED))
 			need_reset = true;
+<<<<<<< HEAD
 		/* enable FD_SB only if there is MSI-X vector and no cloud
 		 * filters exist
 		 */
@@ -11360,24 +12634,43 @@ bool i40e_set_ntuple(struct i40e_pf *pf, netdev_features_t features)
 			pf->flags |= I40E_FLAG_FD_SB_ENABLED;
 			pf->flags &= ~I40E_FLAG_FD_SB_INACTIVE;
 		}
+=======
+		/* enable FD_SB only if there is MSI-X vector */
+		if (pf->num_fdsb_msix > 0)
+			pf->flags |= I40E_FLAG_FD_SB_ENABLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* turn off filters, mark for reset and clear SW filter list */
 		if (pf->flags & I40E_FLAG_FD_SB_ENABLED) {
 			need_reset = true;
 			i40e_fdir_filter_exit(pf);
 		}
+<<<<<<< HEAD
 		pf->flags &= ~I40E_FLAG_FD_SB_ENABLED;
 		clear_bit(__I40E_FD_SB_AUTO_DISABLED, pf->state);
 		pf->flags |= I40E_FLAG_FD_SB_INACTIVE;
 
+=======
+		pf->flags &= ~(I40E_FLAG_FD_SB_ENABLED |
+			       I40E_FLAG_FD_SB_AUTO_DISABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* reset fd counters */
 		pf->fd_add_err = 0;
 		pf->fd_atr_cnt = 0;
 		/* if ATR was auto disabled it can be re-enabled. */
+<<<<<<< HEAD
 		if (test_and_clear_bit(__I40E_FD_ATR_AUTO_DISABLED, pf->state))
 			if ((pf->flags & I40E_FLAG_FD_ATR_ENABLED) &&
 			    (I40E_DEBUG_FD & pf->hw.debug_mask))
 				dev_info(&pf->pdev->dev, "ATR re-enabled.\n");
+=======
+		if (pf->flags & I40E_FLAG_FD_ATR_AUTO_DISABLED) {
+			pf->flags &= ~I40E_FLAG_FD_ATR_AUTO_DISABLED;
+			if ((pf->flags & I40E_FLAG_FD_ATR_ENABLED) &&
+			    (I40E_DEBUG_FD & pf->hw.debug_mask))
+				dev_info(&pf->pdev->dev, "ATR re-enabled.\n");
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return need_reset;
 }
@@ -11429,6 +12722,7 @@ static int i40e_set_features(struct net_device *netdev,
 	else
 		i40e_vlan_stripping_disable(vsi);
 
+<<<<<<< HEAD
 	if (!(features & NETIF_F_HW_TC) && pf->num_cloud_filters) {
 		dev_err(&pf->pdev->dev,
 			"Offloaded tc filters active, can't turn hw_tc_offload off");
@@ -11439,6 +12733,12 @@ static int i40e_set_features(struct net_device *netdev,
 
 	if (need_reset)
 		i40e_do_reset(pf, I40E_PF_RESET_FLAG, true);
+=======
+	need_reset = i40e_set_ntuple(pf, features);
+
+	if (need_reset)
+		i40e_do_reset(pf, BIT_ULL(__I40E_PF_RESET_REQUESTED), true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -11455,11 +12755,14 @@ static u8 i40e_get_udp_port_idx(struct i40e_pf *pf, u16 port)
 	u8 i;
 
 	for (i = 0; i < I40E_MAX_PF_UDP_OFFLOAD_PORTS; i++) {
+<<<<<<< HEAD
 		/* Do not report ports with pending deletions as
 		 * being available.
 		 */
 		if (!port && (pf->pending_udp_bitmap & BIT_ULL(i)))
 			continue;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pf->udp_ports[i].port == port)
 			return i;
 	}
@@ -11514,9 +12817,14 @@ static void i40e_udp_tunnel_add(struct net_device *netdev,
 
 	/* New port: add it and mark its index in the bitmap */
 	pf->udp_ports[next_idx].port = port;
+<<<<<<< HEAD
 	pf->udp_ports[next_idx].filter_index = I40E_UDP_PORT_INDEX_UNUSED;
 	pf->pending_udp_bitmap |= BIT_ULL(next_idx);
 	set_bit(__I40E_UDP_FILTER_SYNC_PENDING, pf->state);
+=======
+	pf->pending_udp_bitmap |= BIT_ULL(next_idx);
+	pf->flags |= I40E_FLAG_UDP_FILTER_SYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -11556,6 +12864,7 @@ static void i40e_udp_tunnel_del(struct net_device *netdev,
 	 * and make it pending
 	 */
 	pf->udp_ports[idx].port = 0;
+<<<<<<< HEAD
 
 	/* Toggle pending bit instead of setting it. This way if we are
 	 * deleting a port that has yet to be added we just clear the pending
@@ -11563,6 +12872,10 @@ static void i40e_udp_tunnel_del(struct net_device *netdev,
 	 */
 	pf->pending_udp_bitmap ^= BIT_ULL(idx);
 	set_bit(__I40E_UDP_FILTER_SYNC_PENDING, pf->state);
+=======
+	pf->pending_udp_bitmap |= BIT_ULL(idx);
+	pf->flags |= I40E_FLAG_UDP_FILTER_SYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return;
 not_found:
@@ -11592,7 +12905,10 @@ static int i40e_get_phys_port_id(struct net_device *netdev,
  * @tb: pointer to array of nladdr (unused)
  * @dev: the net device pointer
  * @addr: the MAC address entry being added
+<<<<<<< HEAD
  * @vid: VLAN ID
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @flags: instructions from stack about fdb operation
  */
 static int i40e_ndo_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
@@ -11638,7 +12954,10 @@ static int i40e_ndo_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
  * i40e_ndo_bridge_setlink - Set the hardware bridge mode
  * @dev: the netdev being configured
  * @nlh: RTNL message
+<<<<<<< HEAD
  * @flags: bridge flags
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Inserts a new hardware bridge if not already created and
  * enables the bridging mode requested (VEB or VEPA). If the
@@ -11703,7 +13022,12 @@ static int i40e_ndo_bridge_setlink(struct net_device *dev,
 				pf->flags |= I40E_FLAG_VEB_MODE_ENABLED;
 			else
 				pf->flags &= ~I40E_FLAG_VEB_MODE_ENABLED;
+<<<<<<< HEAD
 			i40e_do_reset(pf, I40E_PF_RESET_FLAG, true);
+=======
+			i40e_do_reset(pf, BIT_ULL(__I40E_PF_RESET_REQUESTED),
+				      true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -11851,12 +13175,20 @@ static int i40e_xdp_setup(struct i40e_vsi *vsi,
 }
 
 /**
+<<<<<<< HEAD
  * i40e_xdp - implements ndo_bpf for i40e
+=======
+ * i40e_xdp - implements ndo_xdp for i40e
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: netdevice
  * @xdp: XDP command
  **/
 static int i40e_xdp(struct net_device *dev,
+<<<<<<< HEAD
 		    struct netdev_bpf *xdp)
+=======
+		    struct netdev_xdp *xdp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40e_netdev_priv *np = netdev_priv(dev);
 	struct i40e_vsi *vsi = np->vsi;
@@ -11868,6 +13200,10 @@ static int i40e_xdp(struct net_device *dev,
 	case XDP_SETUP_PROG:
 		return i40e_xdp_setup(vsi, xdp->prog);
 	case XDP_QUERY_PROG:
+<<<<<<< HEAD
+=======
+		xdp->prog_attached = i40e_enabled_xdp_vsi(vsi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xdp->prog_id = vsi->xdp_prog ? vsi->xdp_prog->aux->id : 0;
 		return 0;
 	default:
@@ -11907,8 +13243,12 @@ static const struct net_device_ops i40e_netdev_ops = {
 	.ndo_features_check	= i40e_features_check,
 	.ndo_bridge_getlink	= i40e_ndo_bridge_getlink,
 	.ndo_bridge_setlink	= i40e_ndo_bridge_setlink,
+<<<<<<< HEAD
 	.ndo_bpf		= i40e_xdp,
 	.ndo_xdp_xmit		= i40e_xdp_xmit,
+=======
+	.ndo_xdp		= i40e_xdp,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -11969,8 +13309,12 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
 	netdev->vlan_features |= hw_enc_features | NETIF_F_TSO_MANGLEID;
 
 	if (!(pf->flags & I40E_FLAG_MFP_ENABLED))
+<<<<<<< HEAD
 		netdev->hw_features |= NETIF_F_NTUPLE | NETIF_F_HW_TC;
 
+=======
+		netdev->hw_features |= NETIF_F_NTUPLE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw_features = hw_enc_features		|
 		      NETIF_F_HW_VLAN_CTAG_TX	|
 		      NETIF_F_HW_VLAN_CTAG_RX;
@@ -12006,7 +13350,11 @@ static int i40e_config_netdev(struct i40e_vsi *vsi)
 		snprintf(netdev->name, IFNAMSIZ, "%.*sv%%d",
 			 IFNAMSIZ - 4,
 			 pf->vsi[pf->lan_vsi]->netdev->name);
+<<<<<<< HEAD
 		eth_random_addr(mac_addr);
+=======
+		random_ether_addr(mac_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock_bh(&vsi->mac_filter_hash_lock);
 		i40e_add_mac_filter(vsi, mac_addr);
@@ -12151,6 +13499,7 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
 
 		enabled_tc = i40e_pf_get_tc_map(pf);
 
+<<<<<<< HEAD
 		/* Source pruning is enabled by default, so the flag is
 		 * negative logic - if it's set, we need to fiddle with
 		 * the VSI to disable source pruning.
@@ -12176,6 +13525,8 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
 			}
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* MFP mode setup queue map and update VSI */
 		if ((pf->flags & I40E_FLAG_MFP_ENABLED) &&
 		    !(pf->hw.func_caps.iscsi)) { /* NIC type PF */
@@ -12331,7 +13682,11 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
 
 	if (f_count) {
 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+<<<<<<< HEAD
 		set_bit(__I40E_MACVLAN_SYNC_PENDING, pf->state);
+=======
+		pf->flags |= I40E_FLAG_FILTER_SYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Update VSI BW information */
@@ -13278,16 +14633,25 @@ static int i40e_setup_pf_switch(struct i40e_pf *pf, bool reinit)
 	*/
 
 	if ((pf->hw.pf_id == 0) &&
+<<<<<<< HEAD
 	    !(pf->flags & I40E_FLAG_TRUE_PROMISC_SUPPORT)) {
 		flags = I40E_AQ_SET_SWITCH_CFG_PROMISC;
 		pf->last_sw_conf_flags = flags;
 	}
+=======
+	    !(pf->flags & I40E_FLAG_TRUE_PROMISC_SUPPORT))
+		flags = I40E_AQ_SET_SWITCH_CFG_PROMISC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pf->hw.pf_id == 0) {
 		u16 valid_flags;
 
 		valid_flags = I40E_AQ_SET_SWITCH_CFG_PROMISC;
+<<<<<<< HEAD
 		ret = i40e_aq_set_switch_config(&pf->hw, flags, valid_flags, 0,
+=======
+		ret = i40e_aq_set_switch_config(&pf->hw, flags, valid_flags,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						NULL);
 		if (ret && pf->hw.aq.asq_last_status != I40E_AQ_RC_ESRCH) {
 			dev_info(&pf->pdev->dev,
@@ -13297,7 +14661,10 @@ static int i40e_setup_pf_switch(struct i40e_pf *pf, bool reinit)
 					     pf->hw.aq.asq_last_status));
 			/* not a fatal problem, just keep going */
 		}
+<<<<<<< HEAD
 		pf->last_sw_conf_valid_flags = valid_flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* first time setup */
@@ -13318,7 +14685,10 @@ static int i40e_setup_pf_switch(struct i40e_pf *pf, bool reinit)
 			vsi = i40e_vsi_reinit_setup(pf->vsi[pf->lan_vsi]);
 		if (!vsi) {
 			dev_info(&pf->pdev->dev, "setup of MAIN VSI failed\n");
+<<<<<<< HEAD
 			i40e_cloud_filter_exit(pf);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i40e_fdir_teardown(pf);
 			return -EAGAIN;
 		}
@@ -13370,7 +14740,10 @@ static int i40e_setup_pf_switch(struct i40e_pf *pf, bool reinit)
 static void i40e_determine_queue_usage(struct i40e_pf *pf)
 {
 	int queues_left;
+<<<<<<< HEAD
 	int q_max;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pf->num_lan_qps = 0;
 
@@ -13395,7 +14768,10 @@ static void i40e_determine_queue_usage(struct i40e_pf *pf)
 			       I40E_FLAG_DCB_ENABLED	|
 			       I40E_FLAG_SRIOV_ENABLED	|
 			       I40E_FLAG_VMDQ_ENABLED);
+<<<<<<< HEAD
 		pf->flags |= I40E_FLAG_FD_SB_INACTIVE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (!(pf->flags & (I40E_FLAG_RSS_ENABLED |
 				  I40E_FLAG_FD_SB_ENABLED |
 				  I40E_FLAG_FD_ATR_ENABLED |
@@ -13410,7 +14786,10 @@ static void i40e_determine_queue_usage(struct i40e_pf *pf)
 			       I40E_FLAG_FD_ATR_ENABLED	|
 			       I40E_FLAG_DCB_ENABLED	|
 			       I40E_FLAG_VMDQ_ENABLED);
+<<<<<<< HEAD
 		pf->flags |= I40E_FLAG_FD_SB_INACTIVE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* Not enough queues for all TCs */
 		if ((pf->flags & I40E_FLAG_DCB_CAPABLE) &&
@@ -13419,12 +14798,19 @@ static void i40e_determine_queue_usage(struct i40e_pf *pf)
 					I40E_FLAG_DCB_ENABLED);
 			dev_info(&pf->pdev->dev, "not enough queues for DCB. DCB is disabled.\n");
 		}
+<<<<<<< HEAD
 
 		/* limit lan qps to the smaller of qps, cpus or msix */
 		q_max = max_t(int, pf->rss_size_max, num_online_cpus());
 		q_max = min_t(int, q_max, pf->hw.func_caps.num_tx_qp);
 		q_max = min_t(int, q_max, pf->hw.func_caps.num_msix_vectors);
 		pf->num_lan_qps = q_max;
+=======
+		pf->num_lan_qps = max_t(int, pf->rss_size_max,
+					num_online_cpus());
+		pf->num_lan_qps = min_t(int, pf->num_lan_qps,
+					pf->hw.func_caps.num_tx_qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		queues_left -= pf->num_lan_qps;
 	}
@@ -13434,7 +14820,10 @@ static void i40e_determine_queue_usage(struct i40e_pf *pf)
 			queues_left -= 1; /* save 1 queue for FD */
 		} else {
 			pf->flags &= ~I40E_FLAG_FD_SB_ENABLED;
+<<<<<<< HEAD
 			pf->flags |= I40E_FLAG_FD_SB_INACTIVE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_info(&pf->pdev->dev, "not enough queues for Flow Director. Flow Director feature is disabled\n");
 		}
 	}
@@ -13641,6 +15030,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	hw->bus.bus_id = pdev->bus->number;
 	pf->instance = pfs_found;
 
+<<<<<<< HEAD
 	/* Select something other than the 802.1ad ethertype for the
 	 * switch to use internally and drop on ingress.
 	 */
@@ -13648,6 +15038,8 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	hw->first_tag = ETH_P_8021AD;
 	hw->second_tag = ETH_P_8021Q;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&pf->l3_flex_pit_list);
 	INIT_LIST_HEAD(&pf->l4_flex_pit_list);
 
@@ -13724,10 +15116,18 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		 i40e_nvm_version_str(hw));
 
 	if (hw->aq.api_maj_ver == I40E_FW_API_VERSION_MAJOR &&
+<<<<<<< HEAD
 	    hw->aq.api_min_ver > I40E_FW_MINOR_VERSION(hw))
 		dev_info(&pdev->dev,
 			 "The driver for the device detected a newer version of the NVM image than expected. Please install the most recent version of the network driver.\n");
 	else if (hw->aq.api_maj_ver == 1 && hw->aq.api_min_ver < 4)
+=======
+	    hw->aq.api_min_ver > I40E_FW_API_VERSION_MINOR)
+		dev_info(&pdev->dev,
+			 "The driver for the device detected a newer version of the NVM image than expected. Please install the most recent version of the network driver.\n");
+	else if (hw->aq.api_maj_ver < I40E_FW_API_VERSION_MAJOR ||
+		 hw->aq.api_min_ver < (I40E_FW_API_VERSION_MINOR - 1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(&pdev->dev,
 			 "The driver for the device detected an older version of the NVM image than expected. Please update the NVM image.\n");
 
@@ -13738,7 +15138,11 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		dev_warn(&pdev->dev, "This device is a pre-production adapter/LOM. Please be aware there may be issues with your hardware. If you are experiencing problems please contact your Intel or hardware representative who provided you with this hardware.\n");
 
 	i40e_clear_pxe_mode(hw);
+<<<<<<< HEAD
 	err = i40e_get_capabilities(pf, i40e_aqc_opc_list_func_capabilities);
+=======
+	err = i40e_get_capabilities(pf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_adminq_setup;
 
@@ -13787,10 +15191,13 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	pci_set_drvdata(pdev, pf);
 	pci_save_state(pdev);
+<<<<<<< HEAD
 
 	/* Enable FW to write default DCB config on link-up */
 	i40e_aq_set_dcb_parameters(hw, true, NULL);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_I40E_DCB
 	err = i40e_init_pf_dcb(pf);
 	if (err) {
@@ -13801,7 +15208,11 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 #endif /* CONFIG_I40E_DCB */
 
 	/* set up periodic task facility */
+<<<<<<< HEAD
 	timer_setup(&pf->service_timer, i40e_service_timer, 0);
+=======
+	setup_timer(&pf->service_timer, i40e_service_timer, (unsigned long)pf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pf->service_timer_period = HZ;
 
 	INIT_WORK(&pf->service_task, i40e_service_task);
@@ -13853,7 +15264,10 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		dev_info(&pdev->dev, "setup_pf_switch failed: %d\n", err);
 		goto err_vsis;
 	}
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&pf->vsi[pf->lan_vsi]->ch_list);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Make sure flow control is set according to current settings */
 	err = i40e_set_fc(hw, &set_fc_aq_fail, true);
@@ -14125,7 +15539,11 @@ static void i40e_remove(struct pci_dev *pdev)
 	/* no more scheduling of any task */
 	set_bit(__I40E_SUSPENDED, pf->state);
 	set_bit(__I40E_DOWN, pf->state);
+<<<<<<< HEAD
 	if (pf->service_timer.function)
+=======
+	if (pf->service_timer.data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		del_timer_sync(&pf->service_timer);
 	if (pf->service_task.func)
 		cancel_work_sync(&pf->service_task);
@@ -14160,8 +15578,11 @@ static void i40e_remove(struct pci_dev *pdev)
 	if (pf->vsi[pf->lan_vsi])
 		i40e_vsi_release(pf->vsi[pf->lan_vsi]);
 
+<<<<<<< HEAD
 	i40e_cloud_filter_exit(pf);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* remove attached clients */
 	if (pf->flags & I40E_FLAG_IWARP_ENABLED) {
 		ret_code = i40e_lan_del_device(pf);
@@ -14187,6 +15608,10 @@ static void i40e_remove(struct pci_dev *pdev)
 	mutex_destroy(&hw->aq.asq_mutex);
 
 	/* Clear all dynamic memory lists of rings, q_vectors, and VSIs */
+<<<<<<< HEAD
+=======
+	rtnl_lock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_clear_interrupt_scheme(pf);
 	for (i = 0; i < pf->num_alloc_vsi; i++) {
 		if (pf->vsi[i]) {
@@ -14195,6 +15620,10 @@ static void i40e_remove(struct pci_dev *pdev)
 			pf->vsi[i] = NULL;
 		}
 	}
+<<<<<<< HEAD
+=======
+	rtnl_unlock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < I40E_MAX_VEB; i++) {
 		kfree(pf->veb[i]);
@@ -14215,7 +15644,10 @@ static void i40e_remove(struct pci_dev *pdev)
 /**
  * i40e_pci_error_detected - warning that something funky happened in PCI land
  * @pdev: PCI device information struct
+<<<<<<< HEAD
  * @error: the type of PCI error
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Called to warn that something happened and the error handling steps
  * are in progress.  Allows the driver to quiesce things, be ready for
@@ -14288,6 +15720,7 @@ static pci_ers_result_t i40e_pci_error_slot_reset(struct pci_dev *pdev)
 }
 
 /**
+<<<<<<< HEAD
  * i40e_pci_error_reset_prepare - prepare device driver for pci reset
  * @pdev: PCI device information struct
  */
@@ -14310,6 +15743,8 @@ static void i40e_pci_error_reset_done(struct pci_dev *pdev)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40e_pci_error_resume - restart operations after PCI error recovery
  * @pdev: PCI device information struct
  *
@@ -14385,10 +15820,22 @@ static void i40e_shutdown(struct pci_dev *pdev)
 
 	set_bit(__I40E_SUSPENDED, pf->state);
 	set_bit(__I40E_DOWN, pf->state);
+<<<<<<< HEAD
 
 	del_timer_sync(&pf->service_timer);
 	cancel_work_sync(&pf->service_task);
 	i40e_cloud_filter_exit(pf);
+=======
+	rtnl_lock();
+	i40e_prep_for_reset(pf, true);
+	rtnl_unlock();
+
+	wr32(hw, I40E_PFPM_APM, (pf->wol_en ? I40E_PFPM_APM_APME_MASK : 0));
+	wr32(hw, I40E_PFPM_WUFC, (pf->wol_en ? I40E_PFPM_WUFC_MAG_MASK : 0));
+
+	del_timer_sync(&pf->service_timer);
+	cancel_work_sync(&pf->service_task);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_fdir_teardown(pf);
 
 	/* Client close must be called explicitly here because the timer
@@ -14406,7 +15853,17 @@ static void i40e_shutdown(struct pci_dev *pdev)
 	wr32(hw, I40E_PFPM_WUFC,
 	     (pf->wol_en ? I40E_PFPM_WUFC_MAG_MASK : 0));
 
+<<<<<<< HEAD
 	i40e_clear_interrupt_scheme(pf);
+=======
+	/* Since we're going to destroy queues during the
+	 * i40e_clear_interrupt_scheme() we should hold the RTNL lock for this
+	 * whole section
+	 */
+	rtnl_lock();
+	i40e_clear_interrupt_scheme(pf);
+	rtnl_unlock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (system_state == SYSTEM_POWER_OFF) {
 		pci_wake_from_d3(pdev, pf->wol_en);
@@ -14414,6 +15871,7 @@ static void i40e_shutdown(struct pci_dev *pdev)
 	}
 }
 
+<<<<<<< HEAD
 /**
  * i40e_suspend - PM callback for moving to D3
  * @dev: generic device information structure
@@ -14449,10 +15907,31 @@ static int __maybe_unused i40e_suspend(struct device *dev)
 	rtnl_lock();
 
 	i40e_prep_for_reset(pf, true);
+=======
+#ifdef CONFIG_PM
+/**
+ * i40e_suspend - PCI callback for moving to D3
+ * @pdev: PCI device information struct
+ **/
+static int i40e_suspend(struct pci_dev *pdev, pm_message_t state)
+{
+	struct i40e_pf *pf = pci_get_drvdata(pdev);
+	struct i40e_hw *hw = &pf->hw;
+	int retval = 0;
+
+	set_bit(__I40E_SUSPENDED, pf->state);
+	set_bit(__I40E_DOWN, pf->state);
+
+	if (pf->wol_en && (pf->hw_features & I40E_HW_WOL_MC_MAGIC_PKT_WAKE))
+		i40e_enable_mc_magic_wake(pf);
+
+	i40e_prep_for_reset(pf, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wr32(hw, I40E_PFPM_APM, (pf->wol_en ? I40E_PFPM_APM_APME_MASK : 0));
 	wr32(hw, I40E_PFPM_WUFC, (pf->wol_en ? I40E_PFPM_WUFC_MAG_MASK : 0));
 
+<<<<<<< HEAD
 	/* Clear the interrupt scheme and release our IRQs so that the system
 	 * can safely hibernate even when there are a large number of CPUs.
 	 * Otherwise hibernation might fail when mapping all the vectors back
@@ -14504,10 +15983,68 @@ static int __maybe_unused i40e_resume(struct device *dev)
 	/* Restart the service task */
 	mod_timer(&pf->service_timer,
 		  round_jiffies(jiffies + pf->service_timer_period));
+=======
+	i40e_stop_misc_vector(pf);
+	if (pf->msix_entries) {
+		synchronize_irq(pf->msix_entries[0].vector);
+		free_irq(pf->msix_entries[0].vector, pf);
+	}
+	retval = pci_save_state(pdev);
+	if (retval)
+		return retval;
+
+	pci_wake_from_d3(pdev, pf->wol_en);
+	pci_set_power_state(pdev, PCI_D3hot);
+
+	return retval;
+}
+
+/**
+ * i40e_resume - PCI callback for waking up from D3
+ * @pdev: PCI device information struct
+ **/
+static int i40e_resume(struct pci_dev *pdev)
+{
+	struct i40e_pf *pf = pci_get_drvdata(pdev);
+	u32 err;
+
+	pci_set_power_state(pdev, PCI_D0);
+	pci_restore_state(pdev);
+	/* pci_restore_state() clears dev->state_saves, so
+	 * call pci_save_state() again to restore it.
+	 */
+	pci_save_state(pdev);
+
+	err = pci_enable_device_mem(pdev);
+	if (err) {
+		dev_err(&pdev->dev, "Cannot enable PCI device from suspend\n");
+		return err;
+	}
+	pci_set_master(pdev);
+
+	/* no wakeup events while running */
+	pci_wake_from_d3(pdev, false);
+
+	/* handling the reset will rebuild the device state */
+	if (test_and_clear_bit(__I40E_SUSPENDED, pf->state)) {
+		clear_bit(__I40E_DOWN, pf->state);
+		if (pf->msix_entries) {
+			err = request_irq(pf->msix_entries[0].vector,
+					  i40e_intr, 0, pf->int_name, pf);
+			if (err) {
+				dev_err(&pf->pdev->dev,
+					"request_irq for %s failed: %d\n",
+					pf->int_name, err);
+			}
+		}
+		i40e_reset_and_rebuild(pf, false, false);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct pci_error_handlers i40e_err_handler = {
 	.error_detected = i40e_pci_error_detected,
 	.slot_reset = i40e_pci_error_slot_reset,
@@ -14518,14 +16055,30 @@ static const struct pci_error_handlers i40e_err_handler = {
 
 static SIMPLE_DEV_PM_OPS(i40e_pm_ops, i40e_suspend, i40e_resume);
 
+=======
+#endif
+static const struct pci_error_handlers i40e_err_handler = {
+	.error_detected = i40e_pci_error_detected,
+	.slot_reset = i40e_pci_error_slot_reset,
+	.resume = i40e_pci_error_resume,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct pci_driver i40e_driver = {
 	.name     = i40e_driver_name,
 	.id_table = i40e_pci_tbl,
 	.probe    = i40e_probe,
 	.remove   = i40e_remove,
+<<<<<<< HEAD
 	.driver   = {
 		.pm = &i40e_pm_ops,
 	},
+=======
+#ifdef CONFIG_PM
+	.suspend  = i40e_suspend,
+	.resume   = i40e_resume,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.shutdown = i40e_shutdown,
 	.err_handler = &i40e_err_handler,
 	.sriov_configure = i40e_pci_sriov_configure,

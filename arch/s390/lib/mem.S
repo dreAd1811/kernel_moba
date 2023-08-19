@@ -84,10 +84,15 @@ ENTRY(memset)
 .Lmemset_exit:
 	BR_EX	%r14
 .Lmemset_fill:
+<<<<<<< HEAD
+=======
+	stc	%r3,0(%r2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cghi	%r4,1
 	lgr	%r1,%r2
 	je	.Lmemset_fill_exit
 	aghi	%r4,-2
+<<<<<<< HEAD
 	srlg	%r5,%r4,8
 	ltgr	%r5,%r5
 	jz	.Lmemset_fill_remainder
@@ -103,6 +108,19 @@ ENTRY(memset)
 	BR_EX	%r14
 .Lmemset_fill_exit:
 	stc	%r3,0(%r1)
+=======
+	srlg	%r3,%r4,8
+	ltgr	%r3,%r3
+	jz	.Lmemset_fill_remainder
+.Lmemset_fill_loop:
+	mvc	1(256,%r1),0(%r1)
+	la	%r1,256(%r1)
+	brctg	%r3,.Lmemset_fill_loop
+.Lmemset_fill_remainder:
+	larl	%r3,.Lmemset_mvc
+	ex	%r4,0(%r3)
+.Lmemset_fill_exit:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BR_EX	%r14
 .Lmemset_xc:
 	xc	0(1,%r1),0(%r1)
@@ -137,6 +155,7 @@ ENTRY(memcpy)
 .Lmemcpy_mvc:
 	mvc	0(1,%r1),0(%r3)
 EXPORT_SYMBOL(memcpy)
+<<<<<<< HEAD
 
 /*
  * __memset16/32/64
@@ -182,3 +201,5 @@ EXPORT_SYMBOL(__memset32)
 
 __MEMSET 64,8,stg
 EXPORT_SYMBOL(__memset64)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

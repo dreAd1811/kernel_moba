@@ -697,7 +697,11 @@ static void meth_add_to_tx_ring(struct meth_private *priv, struct sk_buff *skb)
 /*
  * Transmit a packet (called by the kernel)
  */
+<<<<<<< HEAD
 static netdev_tx_t meth_tx(struct sk_buff *skb, struct net_device *dev)
+=======
+static int meth_tx(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct meth_private *priv = netdev_priv(dev);
 	unsigned long flags;

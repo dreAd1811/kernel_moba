@@ -524,7 +524,11 @@ static void bcm_sysport_get_wol(struct net_device *dev,
 {
 	struct bcm_sysport_priv *priv = netdev_priv(dev);
 
+<<<<<<< HEAD
 	wol->supported = WAKE_MAGIC | WAKE_MAGICSECURE | WAKE_FILTER;
+=======
+	wol->supported = WAKE_MAGIC | WAKE_MAGICSECURE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wol->wolopts = priv->wolopts;
 
 	if (!(priv->wolopts & WAKE_MAGICSECURE))
@@ -538,7 +542,11 @@ static int bcm_sysport_set_wol(struct net_device *dev,
 {
 	struct bcm_sysport_priv *priv = netdev_priv(dev);
 	struct device *kdev = &priv->pdev->dev;
+<<<<<<< HEAD
 	u32 supported = WAKE_MAGIC | WAKE_MAGICSECURE | WAKE_FILTER;
+=======
+	u32 supported = WAKE_MAGIC | WAKE_MAGICSECURE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!device_can_wakeup(kdev))
 		return -ENOTSUPP;
@@ -568,6 +576,7 @@ static int bcm_sysport_set_wol(struct net_device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void bcm_sysport_set_rx_coalesce(struct bcm_sysport_priv *priv,
 					u32 usecs, u32 pkts)
 {
@@ -596,6 +605,8 @@ static void bcm_sysport_set_tx_coalesce(struct bcm_sysport_tx_ring *ring,
 	tdma_writel(priv, reg, TDMA_DESC_RING_INTR_CONTROL(ring->index));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bcm_sysport_get_coalesce(struct net_device *dev,
 				    struct ethtool_coalesce *ec)
 {
@@ -611,7 +622,10 @@ static int bcm_sysport_get_coalesce(struct net_device *dev,
 
 	ec->rx_coalesce_usecs = (reg >> RDMA_TIMEOUT_SHIFT) * 8192 / 1000;
 	ec->rx_max_coalesced_frames = reg & RDMA_INTR_THRESH_MASK;
+<<<<<<< HEAD
 	ec->use_adaptive_rx_coalesce = priv->dim.use_dim;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -620,9 +634,14 @@ static int bcm_sysport_set_coalesce(struct net_device *dev,
 				    struct ethtool_coalesce *ec)
 {
 	struct bcm_sysport_priv *priv = netdev_priv(dev);
+<<<<<<< HEAD
 	struct net_dim_cq_moder moder;
 	u32 usecs, pkts;
 	unsigned int i;
+=======
+	unsigned int i;
+	u32 reg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Base system clock is 125Mhz, DMA timeout is this reference clock
 	 * divided by 1024, which yield roughly 8.192 us, our maximum value has
@@ -635,6 +654,7 @@ static int bcm_sysport_set_coalesce(struct net_device *dev,
 		return -EINVAL;
 
 	if ((ec->tx_coalesce_usecs == 0 && ec->tx_max_coalesced_frames == 0) ||
+<<<<<<< HEAD
 	    (ec->rx_coalesce_usecs == 0 && ec->rx_max_coalesced_frames == 0) ||
 	    ec->use_adaptive_tx_coalesce)
 		return -EINVAL;
@@ -657,6 +677,28 @@ static int bcm_sysport_set_coalesce(struct net_device *dev,
 
 	/* Apply desired coalescing parameters */
 	bcm_sysport_set_rx_coalesce(priv, usecs, pkts);
+=======
+	    (ec->rx_coalesce_usecs == 0 && ec->rx_max_coalesced_frames == 0))
+		return -EINVAL;
+
+	for (i = 0; i < dev->num_tx_queues; i++) {
+		reg = tdma_readl(priv, TDMA_DESC_RING_INTR_CONTROL(i));
+		reg &= ~(RING_INTR_THRESH_MASK |
+			 RING_TIMEOUT_MASK << RING_TIMEOUT_SHIFT);
+		reg |= ec->tx_max_coalesced_frames;
+		reg |= DIV_ROUND_UP(ec->tx_coalesce_usecs * 1000, 8192) <<
+			 RING_TIMEOUT_SHIFT;
+		tdma_writel(priv, reg, TDMA_DESC_RING_INTR_CONTROL(i));
+	}
+
+	reg = rdma_readl(priv, RDMA_MBDONE_INTR);
+	reg &= ~(RDMA_INTR_THRESH_MASK |
+		 RDMA_TIMEOUT_MASK << RDMA_TIMEOUT_SHIFT);
+	reg |= ec->rx_max_coalesced_frames;
+	reg |= DIV_ROUND_UP(ec->rx_coalesce_usecs * 1000, 8192) <<
+			    RDMA_TIMEOUT_SHIFT;
+	rdma_writel(priv, reg, RDMA_MBDONE_INTR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -677,7 +719,12 @@ static struct sk_buff *bcm_sysport_rx_refill(struct bcm_sysport_priv *priv,
 	dma_addr_t mapping;
 
 	/* Allocate a new SKB for a new packet */
+<<<<<<< HEAD
 	skb = netdev_alloc_skb(priv->netdev, RX_BUF_LENGTH);
+=======
+	skb = __netdev_alloc_skb(priv->netdev, RX_BUF_LENGTH,
+				 GFP_ATOMIC | __GFP_NOWARN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb) {
 		priv->mib.alloc_rx_buff_failed++;
 		netif_err(priv, rx_err, ndev, "SKB alloc failed\n");
@@ -735,7 +782,10 @@ static unsigned int bcm_sysport_desc_rx(struct bcm_sysport_priv *priv,
 	struct bcm_sysport_stats64 *stats64 = &priv->stats64;
 	struct net_device *ndev = priv->netdev;
 	unsigned int processed = 0, to_process;
+<<<<<<< HEAD
 	unsigned int processed_bytes = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bcm_sysport_cb *cb;
 	struct sk_buff *skb;
 	unsigned int p_index;
@@ -827,7 +877,10 @@ static unsigned int bcm_sysport_desc_rx(struct bcm_sysport_priv *priv,
 		 */
 		skb_pull(skb, sizeof(*rsb) + 2);
 		len -= (sizeof(*rsb) + 2);
+<<<<<<< HEAD
 		processed_bytes += len;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* UniMAC may forward CRC */
 		if (priv->crc_fwd) {
@@ -852,9 +905,12 @@ next:
 			priv->rx_read_ptr = 0;
 	}
 
+<<<<<<< HEAD
 	priv->dim.packets = processed;
 	priv->dim.bytes = processed_bytes;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return processed;
 }
 
@@ -1003,7 +1059,10 @@ static int bcm_sysport_poll(struct napi_struct *napi, int budget)
 {
 	struct bcm_sysport_priv *priv =
 		container_of(napi, struct bcm_sysport_priv, napi);
+<<<<<<< HEAD
 	struct net_dim_sample dim_sample;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int work_done = 0;
 
 	work_done = bcm_sysport_desc_rx(priv, budget);
@@ -1026,6 +1085,7 @@ static int bcm_sysport_poll(struct napi_struct *napi, int budget)
 		intrl2_0_mask_clear(priv, INTRL2_0_RDMA_MBDONE);
 	}
 
+<<<<<<< HEAD
 	if (priv->dim.use_dim) {
 		net_dim_sample(priv->dim.event_ctr, priv->dim.packets,
 			       priv->dim.bytes, &dim_sample);
@@ -1059,10 +1119,16 @@ static void mpd_enable_set(struct bcm_sysport_priv *priv, bool enable)
 	rbuf_writel(priv, reg, RBUF_CONTROL);
 }
 
+=======
+	return work_done;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void bcm_sysport_resume_from_wol(struct bcm_sysport_priv *priv)
 {
 	u32 reg;
 
+<<<<<<< HEAD
 	/* Disable RXCHK, active filters and Broadcom tag matching */
 	reg = rxchk_readl(priv, RXCHK_CONTROL);
 	reg &= ~(RXCHK_BRCM_TAG_MATCH_MASK <<
@@ -1071,6 +1137,12 @@ static void bcm_sysport_resume_from_wol(struct bcm_sysport_priv *priv)
 
 	/* Clear the MagicPacket detection logic */
 	mpd_enable_set(priv, false);
+=======
+	/* Clear the MagicPacket detection logic */
+	reg = umac_readl(priv, UMAC_MPD_CTRL);
+	reg &= ~MPD_EN;
+	umac_writel(priv, reg, UMAC_MPD_CTRL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg = intrl2_0_readl(priv, INTRL2_CPU_STATUS);
 	if (reg & INTRL2_0_MPD)
@@ -1086,6 +1158,7 @@ static void bcm_sysport_resume_from_wol(struct bcm_sysport_priv *priv)
 	netif_dbg(priv, wol, priv->netdev, "resumed from WOL\n");
 }
 
+<<<<<<< HEAD
 static void bcm_sysport_dim_work(struct work_struct *work)
 {
 	struct net_dim *dim = container_of(work, struct net_dim, work);
@@ -1100,6 +1173,8 @@ static void bcm_sysport_dim_work(struct work_struct *work)
 	dim->state = NET_DIM_START_MEASURE;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* RX and misc interrupt routine */
 static irqreturn_t bcm_sysport_rx_isr(int irq, void *dev_id)
 {
@@ -1118,7 +1193,10 @@ static irqreturn_t bcm_sysport_rx_isr(int irq, void *dev_id)
 	}
 
 	if (priv->irq0_stat & INTRL2_0_RDMA_MBDONE) {
+<<<<<<< HEAD
 		priv->dim.event_ctr++;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (likely(napi_schedule_prep(&priv->napi))) {
 			/* disable RX interrupts */
 			intrl2_0_mask_set(priv, INTRL2_0_RDMA_MBDONE);
@@ -1217,7 +1295,11 @@ static struct sk_buff *bcm_sysport_insert_tsb(struct sk_buff *skb,
 	u32 csum_info;
 	u8 ip_proto;
 	u16 csum_start;
+<<<<<<< HEAD
 	__be16 ip_ver;
+=======
+	u16 ip_ver;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Re-allocate SKB if needed */
 	if (unlikely(skb_headroom(skb) < sizeof(*tsb))) {
@@ -1236,12 +1318,21 @@ static struct sk_buff *bcm_sysport_insert_tsb(struct sk_buff *skb,
 	memset(tsb, 0, sizeof(*tsb));
 
 	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+<<<<<<< HEAD
 		ip_ver = skb->protocol;
 		switch (ip_ver) {
 		case htons(ETH_P_IP):
 			ip_proto = ip_hdr(skb)->protocol;
 			break;
 		case htons(ETH_P_IPV6):
+=======
+		ip_ver = htons(skb->protocol);
+		switch (ip_ver) {
+		case ETH_P_IP:
+			ip_proto = ip_hdr(skb)->protocol;
+			break;
+		case ETH_P_IPV6:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ip_proto = ipv6_hdr(skb)->nexthdr;
 			break;
 		default:
@@ -1255,8 +1346,12 @@ static struct sk_buff *bcm_sysport_insert_tsb(struct sk_buff *skb,
 
 		if (ip_proto == IPPROTO_TCP || ip_proto == IPPROTO_UDP) {
 			csum_info |= L4_LENGTH_VALID;
+<<<<<<< HEAD
 			if (ip_proto == IPPROTO_UDP &&
 			    ip_ver == htons(ETH_P_IP))
+=======
+			if (ip_proto == IPPROTO_UDP && ip_ver == ETH_P_IP)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				csum_info |= L4_UDP;
 		} else {
 			csum_info = 0;
@@ -1297,6 +1392,21 @@ static netdev_tx_t bcm_sysport_xmit(struct sk_buff *skb,
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+	/* The Ethernet switch we are interfaced with needs packets to be at
+	 * least 64 bytes (including FCS) otherwise they will be discarded when
+	 * they enter the switch port logic. When Broadcom tags are enabled, we
+	 * need to make sure that packets are at least 68 bytes
+	 * (including FCS and tag) because the length verification is done after
+	 * the Broadcom tag is stripped off the ingress packet.
+	 */
+	if (skb_put_padto(skb, ETH_ZLEN + ENET_BRCM_TAG_LEN)) {
+		ret = NETDEV_TX_OK;
+		goto out;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Insert TSB and checksum infos */
 	if (priv->tsb_en) {
 		skb = bcm_sysport_insert_tsb(skb, dev);
@@ -1439,6 +1549,7 @@ out:
 		phy_print_status(phydev);
 }
 
+<<<<<<< HEAD
 static void bcm_sysport_init_dim(struct bcm_sysport_priv *priv,
 				 void (*cb)(struct work_struct *work))
 {
@@ -1470,6 +1581,8 @@ static void bcm_sysport_init_rx_coalesce(struct bcm_sysport_priv *priv)
 	bcm_sysport_set_rx_coalesce(priv, usecs, pkts);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bcm_sysport_init_tx_ring(struct bcm_sysport_priv *priv,
 				    unsigned int index)
 {
@@ -1517,6 +1630,7 @@ static int bcm_sysport_init_tx_ring(struct bcm_sysport_priv *priv,
 	tdma_writel(priv, 0, TDMA_DESC_RING_COUNT(index));
 	tdma_writel(priv, 1, TDMA_DESC_RING_INTR_CONTROL(index));
 	tdma_writel(priv, 0, TDMA_DESC_RING_PROD_CONS_INDEX(index));
+<<<<<<< HEAD
 
 	/* Configure QID and port mapping */
 	reg = tdma_readl(priv, TDMA_DESC_RING_MAPPING(index));
@@ -1535,6 +1649,11 @@ static int bcm_sysport_init_tx_ring(struct bcm_sysport_priv *priv,
 	reg |= tdma_control_bit(priv, ACB_ALGO);
 	tdma_writel(priv, reg, TDMA_CONTROL);
 
+=======
+	tdma_writel(priv, RING_IGNORE_STATUS, TDMA_DESC_RING_MAPPING(index));
+	tdma_writel(priv, 0, TDMA_DESC_RING_PCP_DEI_VID(index));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Do not use tdma_control_bit() here because TSB_SWAP1 collides
 	 * with the original definition of ACB_ALGO
 	 */
@@ -1563,9 +1682,14 @@ static int bcm_sysport_init_tx_ring(struct bcm_sysport_priv *priv,
 	napi_enable(&ring->napi);
 
 	netif_dbg(priv, hw, priv->netdev,
+<<<<<<< HEAD
 		  "TDMA cfg, size=%d, desc_cpu=%p switch q=%d,port=%d\n",
 		  ring->size, ring->desc_cpu, ring->switch_queue,
 		  ring->switch_port);
+=======
+		  "TDMA cfg, size=%d, desc_cpu=%p\n",
+		  ring->size, ring->desc_cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1710,6 +1834,11 @@ static int bcm_sysport_init_rx_ring(struct bcm_sysport_priv *priv)
 	rdma_writel(priv, 0, RDMA_END_ADDR_HI);
 	rdma_writel(priv, priv->num_rx_desc_words - 1, RDMA_END_ADDR_LO);
 
+<<<<<<< HEAD
+=======
+	rdma_writel(priv, 1, RDMA_MBDONE_INTR);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_dbg(priv, hw, priv->netdev,
 		  "RDMA cfg, num_rx_bds=%d, rx_bds=%p\n",
 		  priv->num_rx_bds, priv->rx_bds);
@@ -1877,8 +2006,11 @@ static void bcm_sysport_netif_start(struct net_device *dev)
 	struct bcm_sysport_priv *priv = netdev_priv(dev);
 
 	/* Enable NAPI */
+<<<<<<< HEAD
 	bcm_sysport_init_dim(priv, bcm_sysport_dim_work);
 	bcm_sysport_init_rx_coalesce(priv);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	napi_enable(&priv->napi);
 
 	/* Enable RX interrupt and TX ring full interrupt */
@@ -2063,7 +2195,10 @@ static void bcm_sysport_netif_stop(struct net_device *dev)
 	/* stop all software from updating hardware */
 	netif_tx_disable(dev);
 	napi_disable(&priv->napi);
+<<<<<<< HEAD
 	cancel_work_sync(&priv->dim.dim.work);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy_stop(dev->phydev);
 
 	/* mask all interrupts */
@@ -2114,6 +2249,7 @@ static int bcm_sysport_stop(struct net_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bcm_sysport_rule_find(struct bcm_sysport_priv *priv,
 				 u64 location)
 {
@@ -2240,6 +2376,8 @@ static int bcm_sysport_set_rxnfc(struct net_device *dev,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops bcm_sysport_ethtool_ops = {
 	.get_drvinfo		= bcm_sysport_get_drvinfo,
 	.get_msglevel		= bcm_sysport_get_msglvl,
@@ -2254,6 +2392,7 @@ static const struct ethtool_ops bcm_sysport_ethtool_ops = {
 	.set_coalesce		= bcm_sysport_set_coalesce,
 	.get_link_ksettings     = phy_ethtool_get_link_ksettings,
 	.set_link_ksettings     = phy_ethtool_set_link_ksettings,
+<<<<<<< HEAD
 	.get_rxnfc		= bcm_sysport_get_rxnfc,
 	.set_rxnfc		= bcm_sysport_set_rxnfc,
 };
@@ -2281,6 +2420,10 @@ static u16 bcm_sysport_select_queue(struct net_device *dev, struct sk_buff *skb,
 	return tx_ring->index;
 }
 
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops bcm_sysport_netdev_ops = {
 	.ndo_start_xmit		= bcm_sysport_xmit,
 	.ndo_tx_timeout		= bcm_sysport_tx_timeout,
@@ -2293,6 +2436,7 @@ static const struct net_device_ops bcm_sysport_netdev_ops = {
 	.ndo_poll_controller	= bcm_sysport_poll_controller,
 #endif
 	.ndo_get_stats64	= bcm_sysport_get_stats64,
+<<<<<<< HEAD
 	.ndo_select_queue	= bcm_sysport_select_queue,
 };
 
@@ -2374,6 +2518,10 @@ static int bcm_sysport_dsa_notifier(struct notifier_block *nb,
 	return notifier_from_errno(bcm_sysport_map_queues(nb, info));
 }
 
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REV_FMT	"v%2x.%02x"
 
 static const struct bcm_sysport_hw_params bcm_sysport_params[] = {
@@ -2470,7 +2618,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
 
 	priv->phy_interface = of_get_phy_mode(dn);
 	/* Default to GMII interface mode */
+<<<<<<< HEAD
 	if (priv->phy_interface < 0)
+=======
+	if ((int)priv->phy_interface < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		priv->phy_interface = PHY_INTERFACE_MODE_GMII;
 
 	/* In the case of a fixed PHY, the DT node associated
@@ -2519,6 +2671,7 @@ static int bcm_sysport_probe(struct platform_device *pdev)
 	/* libphy will adjust the link state accordingly */
 	netif_carrier_off(dev);
 
+<<<<<<< HEAD
 	priv->rx_max_coalesced_frames = 1;
 	u64_stats_init(&priv->syncp);
 
@@ -2534,6 +2687,14 @@ static int bcm_sysport_probe(struct platform_device *pdev)
 	if (ret) {
 		dev_err(&pdev->dev, "failed to register net_device\n");
 		goto err_deregister_notifier;
+=======
+	u64_stats_init(&priv->syncp);
+
+	ret = register_netdev(dev);
+	if (ret) {
+		dev_err(&pdev->dev, "failed to register net_device\n");
+		goto err_deregister_fixed_link;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	priv->rev = topctrl_readl(priv, REV_CNTL) & REV_MASK;
@@ -2546,8 +2707,11 @@ static int bcm_sysport_probe(struct platform_device *pdev)
 
 	return 0;
 
+<<<<<<< HEAD
 err_deregister_notifier:
 	unregister_dsa_notifier(&priv->dsa_notifier);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_deregister_fixed_link:
 	if (of_phy_is_fixed_link(dn))
 		of_phy_deregister_fixed_link(dn);
@@ -2559,13 +2723,19 @@ err_free_netdev:
 static int bcm_sysport_remove(struct platform_device *pdev)
 {
 	struct net_device *dev = dev_get_drvdata(&pdev->dev);
+<<<<<<< HEAD
 	struct bcm_sysport_priv *priv = netdev_priv(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node *dn = pdev->dev.of_node;
 
 	/* Not much to do, ndo_close has been called
 	 * and we use managed allocations
 	 */
+<<<<<<< HEAD
 	unregister_dsa_notifier(&priv->dsa_notifier);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unregister_netdev(dev);
 	if (of_phy_is_fixed_link(dn))
 		of_phy_deregister_fixed_link(dn);
@@ -2575,16 +2745,27 @@ static int bcm_sysport_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM_SLEEP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
 {
 	struct net_device *ndev = priv->netdev;
 	unsigned int timeout = 1000;
+<<<<<<< HEAD
 	unsigned int index, i = 0;
 	u32 reg;
 
 	reg = umac_readl(priv, UMAC_MPD_CTRL);
 	if (priv->wolopts & (WAKE_MAGIC | WAKE_MAGICSECURE))
 		reg |= MPD_EN;
+=======
+	u32 reg;
+
+	reg = umac_readl(priv, UMAC_MPD_CTRL);
+	reg |= MPD_EN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg &= ~PSW_EN;
 	if (priv->wolopts & WAKE_MAGICSECURE) {
 		/* Program the SecureOn password */
@@ -2596,6 +2777,7 @@ static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
 	}
 	umac_writel(priv, reg, UMAC_MPD_CTRL);
 
+<<<<<<< HEAD
 	if (priv->wolopts & WAKE_FILTER) {
 		/* Turn on ACPI matching to steal packets from RBUF */
 		reg = rbuf_readl(priv, RBUF_CONTROL);
@@ -2617,6 +2799,8 @@ static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
 		rxchk_writel(priv, reg, RXCHK_CONTROL);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Make sure RBUF entered WoL mode as result */
 	do {
 		reg = rbuf_readl(priv, RBUF_STATUS);
@@ -2628,7 +2812,13 @@ static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
 
 	/* Do not leave the UniMAC RBUF matching only MPD packets */
 	if (!timeout) {
+<<<<<<< HEAD
 		mpd_enable_set(priv, false);
+=======
+		reg = umac_readl(priv, UMAC_MPD_CTRL);
+		reg &= ~MPD_EN;
+		umac_writel(priv, reg, UMAC_MPD_CTRL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_err(priv, wol, ndev, "failed to enter WOL mode\n");
 		return -ETIMEDOUT;
 	}
@@ -2641,7 +2831,11 @@ static int bcm_sysport_suspend_to_wol(struct bcm_sysport_priv *priv)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused bcm_sysport_suspend(struct device *d)
+=======
+static int bcm_sysport_suspend(struct device *d)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *dev = dev_get_drvdata(d);
 	struct bcm_sysport_priv *priv = netdev_priv(dev);
@@ -2703,7 +2897,11 @@ static int __maybe_unused bcm_sysport_suspend(struct device *d)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused bcm_sysport_resume(struct device *d)
+=======
+static int bcm_sysport_resume(struct device *d)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *dev = dev_get_drvdata(d);
 	struct bcm_sysport_priv *priv = netdev_priv(dev);
@@ -2716,6 +2914,12 @@ static int __maybe_unused bcm_sysport_resume(struct device *d)
 
 	umac_reset(priv);
 
+<<<<<<< HEAD
+=======
+	/* Disable the UniMAC RX/TX */
+	umac_enable_set(priv, CMD_RX_EN | CMD_TX_EN, 0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* We may have been suspended and never received a WOL event that
 	 * would turn off MPD detection, take care of that now
 	 */
@@ -2796,6 +3000,10 @@ out_free_tx_rings:
 		bcm_sysport_fini_tx_ring(priv, i);
 	return ret;
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static SIMPLE_DEV_PM_OPS(bcm_sysport_pm_ops,
 		bcm_sysport_suspend, bcm_sysport_resume);

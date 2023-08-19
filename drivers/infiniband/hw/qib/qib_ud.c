@@ -139,7 +139,11 @@ static void qib_ud_loopback(struct rvt_qp *sqp, struct rvt_swqe *swqe)
 	else {
 		int ret;
 
+<<<<<<< HEAD
 		ret = rvt_get_rwqe(qp, false);
+=======
+		ret = qib_get_rwqe(qp, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			rvt_rc_error(qp, IB_WC_LOC_QP_OP_ERR);
 			goto bail_unlock;
@@ -252,7 +256,12 @@ int qib_make_ud_req(struct rvt_qp *qp, unsigned long *flags)
 		if (!(ib_rvt_state_ops[qp->state] & RVT_FLUSH_SEND))
 			goto bail;
 		/* We are in the error state, flush the work request. */
+<<<<<<< HEAD
 		if (qp->s_last == READ_ONCE(qp->s_head))
+=======
+		smp_read_barrier_depends(); /* see post_one_send */
+		if (qp->s_last == ACCESS_ONCE(qp->s_head))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto bail;
 		/* If DMAs are in progress, we can't flush immediately. */
 		if (atomic_read(&priv->s_dma_busy)) {
@@ -265,7 +274,12 @@ int qib_make_ud_req(struct rvt_qp *qp, unsigned long *flags)
 	}
 
 	/* see post_one_send() */
+<<<<<<< HEAD
 	if (qp->s_cur == READ_ONCE(qp->s_head))
+=======
+	smp_read_barrier_depends();
+	if (qp->s_cur == ACCESS_ONCE(qp->s_head))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bail;
 
 	wqe = rvt_get_swqe_ptr(qp, qp->s_cur);
@@ -533,7 +547,11 @@ void qib_ud_rcv(struct qib_ibport *ibp, struct ib_header *hdr,
 	else {
 		int ret;
 
+<<<<<<< HEAD
 		ret = rvt_get_rwqe(qp, false);
+=======
+		ret = qib_get_rwqe(qp, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			rvt_rc_error(qp, IB_WC_LOC_QP_OP_ERR);
 			return;
@@ -578,7 +596,12 @@ void qib_ud_rcv(struct qib_ibport *ibp, struct ib_header *hdr,
 	wc.port_num = qp->port_num;
 	/* Signal completion event if the solicited bit is set. */
 	rvt_cq_enter(ibcq_to_rvtcq(qp->ibqp.recv_cq), &wc,
+<<<<<<< HEAD
 		     ib_bth_is_solicited(ohdr));
+=======
+		     (ohdr->bth[0] &
+			cpu_to_be32(IB_BTH_SOLICITED)) != 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 
 drop:

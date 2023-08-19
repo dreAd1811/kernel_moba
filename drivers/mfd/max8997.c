@@ -148,6 +148,7 @@ static struct max8997_platform_data *max8997_i2c_parse_dt_pdata(
 	struct max8997_platform_data *pd;
 
 	pd = devm_kzalloc(dev, sizeof(*pd), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!pd)
 		return ERR_PTR(-ENOMEM);
 
@@ -159,6 +160,15 @@ static struct max8997_platform_data *max8997_i2c_parse_dt_pdata(
 	 * not parsed here.
 	 */
 
+=======
+	if (!pd) {
+		dev_err(dev, "could not allocate memory for pdata\n");
+		return ERR_PTR(-ENOMEM);
+	}
+
+	pd->ono = irq_of_parse_and_map(dev->of_node, 1);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pd;
 }
 
@@ -246,7 +256,11 @@ static int max8997_i2c_probe(struct i2c_client *i2c,
 	 */
 
 	/* MAX8997 has a power button input. */
+<<<<<<< HEAD
 	device_init_wakeup(max8997->dev, pdata->wakeup);
+=======
+	device_init_wakeup(max8997->dev, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 

@@ -17,10 +17,18 @@
 #include <asm/bug.h>
 #include <asm/ptrace.h>
 
+<<<<<<< HEAD
 /*
  *
  * ftrace_caller()/ftrace_regs_caller() is the function that replaces _mcount()
  * when ftrace is active.
+=======
+#ifdef CONFIG_DYNAMIC_FTRACE
+/*
+ *
+ * ftrace_caller() is the function that replaces _mcount() when ftrace is
+ * active.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * We arrive here after a function A calls function B, and we are the trace
  * function for B. When we enter r1 points to A's stack frame, B has not yet
@@ -36,7 +44,11 @@
  * Our job is to save the register state into a struct pt_regs (on the stack)
  * and then arrange for the ftrace function to be called.
  */
+<<<<<<< HEAD
 _GLOBAL(ftrace_regs_caller)
+=======
+_GLOBAL(ftrace_caller)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Save the original return address in A's stack frame */
 	std	r0,LRSAVE(r1)
 
@@ -46,12 +58,15 @@ _GLOBAL(ftrace_regs_caller)
 	/* Save all gprs to pt_regs */
 	SAVE_GPR(0, r1)
 	SAVE_10GPRS(2, r1)
+<<<<<<< HEAD
 
 	/* Ok to continue? */
 	lbz	r3, PACA_FTRACE_ENABLED(r13)
 	cmpdi	r3, 0
 	beq	ftrace_no_trace
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SAVE_10GPRS(12, r1)
 	SAVE_10GPRS(22, r1)
 
@@ -99,6 +114,7 @@ _GLOBAL(ftrace_regs_caller)
 	addi    r6, r1 ,STACK_FRAME_OVERHEAD
 
 	/* ftrace_call(r3, r4, r5, r6) */
+<<<<<<< HEAD
 .globl ftrace_regs_call
 ftrace_regs_call:
 	bl	ftrace_stub
@@ -111,6 +127,46 @@ ftrace_regs_call:
 	cmpd	r14, r3		/* has NIP been altered? */
 #endif
 
+=======
+.globl ftrace_call
+ftrace_call:
+	bl	ftrace_stub
+	nop
+
+	/* Load the possibly modified NIP */
+	ld	r15, _NIP(r1)
+
+#ifdef CONFIG_LIVEPATCH
+	cmpd	r14, r15	/* has NIP been altered? */
+#endif
+
+#if defined(CONFIG_LIVEPATCH) && defined(CONFIG_KPROBES_ON_FTRACE)
+	/* NIP has not been altered, skip over further checks */
+	beq	1f
+
+	/* Check if there is an active kprobe on us */
+	subi	r3, r14, 4
+	bl	is_current_kprobe_addr
+	nop
+
+	/*
+	 * If r3 == 1, then this is a kprobe/jprobe.
+	 * else, this is livepatched function.
+	 *
+	 * The conditional branch for livepatch_handler below will use the
+	 * result of this comparison. For kprobe/jprobe, we just need to branch to
+	 * the new NIP, not call livepatch_handler. The branch below is bne, so we
+	 * want CR0[EQ] to be true if this is a kprobe/jprobe. Which means we want
+	 * CR0[EQ] = (r3 == 1).
+	 */
+	cmpdi	r3, 1
+1:
+#endif
+
+	/* Load CTR with the possibly modified NIP */
+	mtctr	r15
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Restore gprs */
 	REST_GPR(0,r1)
 	REST_10GPRS(2,r1)
@@ -128,11 +184,21 @@ ftrace_regs_call:
 	addi r1, r1, SWITCH_FRAME_SIZE
 
 #ifdef CONFIG_LIVEPATCH
+<<<<<<< HEAD
         /* Based on the cmpd above, if the NIP was altered handle livepatch */
 	bne-	livepatch_handler
 #endif
 
 ftrace_caller_common:
+=======
+        /*
+	 * Based on the cmpd or cmpdi above, if the NIP was altered and we're
+	 * not on a kprobe/jprobe, then handle livepatch.
+	 */
+	bne-	livepatch_handler
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 .globl ftrace_graph_call
 ftrace_graph_call:
@@ -145,6 +211,7 @@ _GLOBAL(ftrace_graph_stub)
 _GLOBAL(ftrace_stub)
 	blr
 
+<<<<<<< HEAD
 ftrace_no_trace:
 	mflr	r3
 	mtctr	r3
@@ -213,6 +280,8 @@ ftrace_call:
 	/* Handle function_graph or go back */
 	b	ftrace_caller_common
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_LIVEPATCH
 	/*
 	 * This function runs in the mcount context, between two functions. As
@@ -281,6 +350,11 @@ livepatch_handler:
 	blr
 #endif /* CONFIG_LIVEPATCH */
 
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_DYNAMIC_FTRACE */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 _GLOBAL(ftrace_graph_caller)
 	stdu	r1, -112(r1)

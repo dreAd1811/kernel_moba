@@ -61,7 +61,11 @@ static int alloc_gm(struct intel_vgpu *vgpu, bool high_gm)
 	}
 
 	mutex_lock(&dev_priv->drm.struct_mutex);
+<<<<<<< HEAD
 	ret = i915_gem_gtt_insert(&dev_priv->ggtt.vm, node,
+=======
+	ret = i915_gem_gtt_insert(&dev_priv->ggtt.base, node,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  size, I915_GTT_PAGE_SIZE,
 				  I915_COLOR_UNEVICTABLE,
 				  start, end, flags);
@@ -131,7 +135,11 @@ void intel_vgpu_write_fence(struct intel_vgpu *vgpu,
 
 	assert_rpm_wakelock_held(dev_priv);
 
+<<<<<<< HEAD
 	if (WARN_ON(fence >= vgpu_fence_sz(vgpu)))
+=======
+	if (WARN_ON(fence > vgpu_fence_sz(vgpu)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	reg = vgpu->fence.regs[fence];
@@ -173,8 +181,13 @@ static void free_vgpu_fence(struct intel_vgpu *vgpu)
 	_clear_vgpu_fence(vgpu);
 	for (i = 0; i < vgpu_fence_sz(vgpu); i++) {
 		reg = vgpu->fence.regs[i];
+<<<<<<< HEAD
 		i915_unreserve_fence(reg);
 		vgpu->fence.regs[i] = NULL;
+=======
+		list_add_tail(&reg->link,
+			      &dev_priv->mm.fence_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&dev_priv->drm.struct_mutex);
 
@@ -187,11 +200,16 @@ static int alloc_vgpu_fence(struct intel_vgpu *vgpu)
 	struct drm_i915_private *dev_priv = gvt->dev_priv;
 	struct drm_i915_fence_reg *reg;
 	int i;
+<<<<<<< HEAD
+=======
+	struct list_head *pos, *q;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_runtime_pm_get(dev_priv);
 
 	/* Request fences from host */
 	mutex_lock(&dev_priv->drm.struct_mutex);
+<<<<<<< HEAD
 
 	for (i = 0; i < vgpu_fence_sz(vgpu); i++) {
 		reg = i915_reserve_fence(dev_priv);
@@ -200,6 +218,20 @@ static int alloc_vgpu_fence(struct intel_vgpu *vgpu)
 
 		vgpu->fence.regs[i] = reg;
 	}
+=======
+	i = 0;
+	list_for_each_safe(pos, q, &dev_priv->mm.fence_list) {
+		reg = list_entry(pos, struct drm_i915_fence_reg, link);
+		if (reg->pin_count || reg->vma)
+			continue;
+		list_del(pos);
+		vgpu->fence.regs[i] = reg;
+		if (++i == vgpu_fence_sz(vgpu))
+			break;
+	}
+	if (i != vgpu_fence_sz(vgpu))
+		goto out_free_fence;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	_clear_vgpu_fence(vgpu);
 
@@ -207,14 +239,22 @@ static int alloc_vgpu_fence(struct intel_vgpu *vgpu)
 	intel_runtime_pm_put(dev_priv);
 	return 0;
 out_free_fence:
+<<<<<<< HEAD
 	gvt_vgpu_err("Failed to alloc fences\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Return fences to host, if fail */
 	for (i = 0; i < vgpu_fence_sz(vgpu); i++) {
 		reg = vgpu->fence.regs[i];
 		if (!reg)
 			continue;
+<<<<<<< HEAD
 		i915_unreserve_fence(reg);
 		vgpu->fence.regs[i] = NULL;
+=======
+		list_add_tail(&reg->link,
+			      &dev_priv->mm.fence_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&dev_priv->drm.struct_mutex);
 	intel_runtime_pm_put(dev_priv);

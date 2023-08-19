@@ -25,6 +25,13 @@
 
 #include <linux/irqchip/irq-omap-intc.h>
 
+<<<<<<< HEAD
+=======
+/* Define these here for now until we drop all board-files */
+#define OMAP24XX_IC_BASE	0x480fe000
+#define OMAP34XX_IC_BASE	0x48200000
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* selected INTC register offsets */
 
 #define INTC_REVISION		0x0000
@@ -66,8 +73,13 @@ static struct omap_intc_regs intc_context;
 
 static struct irq_domain *domain;
 static void __iomem *omap_irq_base;
+<<<<<<< HEAD
 static int omap_nr_pending;
 static int omap_nr_irqs;
+=======
+static int omap_nr_pending = 3;
+static int omap_nr_irqs = 96;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void intc_writel(u32 reg, u32 val)
 {
@@ -360,6 +372,17 @@ omap_intc_handle_irq(struct pt_regs *regs)
 	handle_domain_irq(domain, irqnr, regs);
 }
 
+<<<<<<< HEAD
+=======
+void __init omap3_init_irq(void)
+{
+	omap_nr_irqs = 96;
+	omap_nr_pending = 3;
+	omap_init_irq(OMAP34XX_IC_BASE, NULL);
+	set_handle_irq(omap_intc_handle_irq);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init intc_of_init(struct device_node *node,
 			     struct device_node *parent)
 {

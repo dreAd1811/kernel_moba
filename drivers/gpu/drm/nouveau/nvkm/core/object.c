@@ -102,6 +102,7 @@ nvkm_object_ntfy(struct nvkm_object *object, u32 mthd,
 }
 
 int
+<<<<<<< HEAD
 nvkm_object_map(struct nvkm_object *object, void *argv, u32 argc,
 		enum nvkm_object_map *type, u64 *addr, u64 *size)
 {
@@ -115,6 +116,12 @@ nvkm_object_unmap(struct nvkm_object *object)
 {
 	if (likely(object->func->unmap))
 		return object->func->unmap(object);
+=======
+nvkm_object_map(struct nvkm_object *object, u64 *addr, u32 *size)
+{
+	if (likely(object->func->map))
+		return object->func->map(object, addr, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENODEV;
 }
 
@@ -268,7 +275,10 @@ nvkm_object_dtor(struct nvkm_object *object)
 	}
 
 	nvif_debug(object, "destroy running...\n");
+<<<<<<< HEAD
 	nvkm_object_unmap(object);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (object->func->dtor)
 		data = object->func->dtor(object);
 	nvkm_engine_unref(&object->engine);

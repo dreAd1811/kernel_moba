@@ -58,12 +58,19 @@
 #include "iwl-drv.h"
 #include "runtime.h"
 #include "dbg.h"
+<<<<<<< HEAD
 #include "debugfs.h"
 
 void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
 			const struct iwl_fw *fw,
 			const struct iwl_fw_runtime_ops *ops, void *ops_ctx,
 			struct dentry *dbgfs_dir)
+=======
+
+void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
+			 const struct iwl_fw *fw,
+			 const struct iwl_fw_runtime_ops *ops, void *ops_ctx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	memset(fwrt, 0, sizeof(*fwrt));
 	fwrt->trans = trans;
@@ -73,6 +80,7 @@ void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
 	fwrt->ops = ops;
 	fwrt->ops_ctx = ops_ctx;
 	INIT_DELAYED_WORK(&fwrt->dump.wk, iwl_fw_error_dump_wk);
+<<<<<<< HEAD
 	iwl_fwrt_dbgfs_register(fwrt, dbgfs_dir);
 }
 IWL_EXPORT_SYMBOL(iwl_fw_runtime_init);
@@ -88,3 +96,7 @@ void iwl_fw_runtime_resume(struct iwl_fw_runtime *fwrt)
 	iwl_fw_resume_timestamp(fwrt);
 }
 IWL_EXPORT_SYMBOL(iwl_fw_runtime_resume);
+=======
+}
+IWL_EXPORT_SYMBOL(iwl_fw_runtime_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

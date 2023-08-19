@@ -21,7 +21,10 @@
 #include <linux/of_address.h>
 #include <linux/clk/ti.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/timekeeping.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "clock.h"
 
 #define NO_IDLEST			0x1
@@ -47,7 +50,10 @@ static bool _early_timeout = true;
 struct omap_clkctrl_provider {
 	void __iomem *base;
 	struct list_head clocks;
+<<<<<<< HEAD
 	char *clkdm_name;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct omap_clkctrl_clk {
@@ -91,6 +97,7 @@ static bool _omap4_is_ready(u32 val)
 
 static bool _omap4_is_timeout(union omap4_timeout *time, u32 timeout)
 {
+<<<<<<< HEAD
 	/*
 	 * There are two special cases where ktime_to_ns() can't be
 	 * used to track the timeouts. First one is during early boot
@@ -103,6 +110,9 @@ static bool _omap4_is_timeout(union omap4_timeout *time, u32 timeout)
 	 * at least on am43xx platform.
 	 */
 	if (unlikely(_early_timeout || timekeeping_suspended)) {
+=======
+	if (unlikely(_early_timeout)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (time->cycles++ < timeout) {
 			udelay(1);
 			return false;
@@ -221,7 +231,10 @@ static const struct clk_ops omap4_clkctrl_clk_ops = {
 	.enable		= _omap4_clkctrl_clk_enable,
 	.disable	= _omap4_clkctrl_clk_disable,
 	.is_enabled	= _omap4_clkctrl_clk_is_enabled,
+<<<<<<< HEAD
 	.init		= omap2_init_clk_clkdm,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct clk_hw *_ti_omap4_clkctrl_xlate(struct of_phandle_args *clkspec,
@@ -338,9 +351,12 @@ _ti_clkctrl_setup_mux(struct omap_clkctrl_provider *provider,
 	}
 
 	mux->mask = num_parents;
+<<<<<<< HEAD
 	if (!(mux->flags & CLK_MUX_INDEX_ONE))
 		mux->mask--;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mux->mask = (1 << fls(mux->mask)) - 1;
 
 	mux->shift = data->bit;
@@ -360,7 +376,10 @@ _ti_clkctrl_setup_div(struct omap_clkctrl_provider *provider,
 {
 	struct clk_omap_divider *div;
 	const struct omap_clkctrl_div_data *div_data = data->data;
+<<<<<<< HEAD
 	u8 div_flags = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	div = kzalloc(sizeof(*div), GFP_KERNEL);
 	if (!div)
@@ -368,6 +387,7 @@ _ti_clkctrl_setup_div(struct omap_clkctrl_provider *provider,
 
 	div->reg.ptr = reg;
 	div->shift = data->bit;
+<<<<<<< HEAD
 	div->flags = div_data->flags;
 
 	if (div->flags & CLK_DIVIDER_POWER_OF_TWO)
@@ -378,6 +398,14 @@ _ti_clkctrl_setup_div(struct omap_clkctrl_provider *provider,
 				      &div->width, &div->table)) {
 		pr_err("%s: Data parsing for %pOF:%04x:%d failed\n", __func__,
 		       node, offset, data->bit);
+=======
+
+	if (ti_clk_parse_divider_data((int *)div_data->dividers,
+				      div_data->max_div, 0, 0,
+				      &div->width, &div->table)) {
+		pr_err("%s: Data parsing for %s:%04x:%d failed\n", __func__,
+		       node->name, offset, data->bit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(div);
 		return;
 	}
@@ -425,12 +453,15 @@ _ti_clkctrl_setup_subclks(struct omap_clkctrl_provider *provider,
 	}
 }
 
+<<<<<<< HEAD
 static void __init _clkctrl_add_provider(void *data,
 					 struct device_node *np)
 {
 	of_clk_add_hw_provider(np, _ti_omap4_clkctrl_xlate, data);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 {
 	struct omap_clkctrl_provider *provider;
@@ -442,7 +473,10 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 	struct omap_clkctrl_clk *clkctrl_clk;
 	const __be32 *addrp;
 	u32 addr;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	addrp = of_get_address(node, 0, NULL, NULL);
 	addr = (u32)of_translate_address(node, addrp);
@@ -451,6 +485,7 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 	if (of_machine_is_compatible("ti,omap4"))
 		data = omap4_clkctrl_data;
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_SOC_OMAP5
 	if (of_machine_is_compatible("ti,omap5"))
 		data = omap5_clkctrl_data;
@@ -476,6 +511,8 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 	if (of_machine_is_compatible("ti,dm816"))
 		data = dm816_clkctrl_data;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (data->addr) {
 		if (addr == data->addr)
@@ -485,7 +522,11 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 	}
 
 	if (!data->addr) {
+<<<<<<< HEAD
 		pr_err("%pOF not found from clkctrl data.\n", node);
+=======
+		pr_err("%s not found from clkctrl data.\n", node->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -495,6 +536,7 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 
 	provider->base = of_iomap(node, 0);
 
+<<<<<<< HEAD
 	provider->clkdm_name = kmalloc(strlen(node->parent->name) + 3,
 				       GFP_KERNEL);
 	if (!provider->clkdm_name) {
@@ -510,6 +552,8 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 	provider->clkdm_name[strlen(provider->clkdm_name) - 2] = 0;
 	strcat(provider->clkdm_name, "clkdm");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&provider->clocks);
 
 	/* Generate clocks */
@@ -532,6 +576,7 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 		if (reg_data->flags & CLKF_NO_IDLEST)
 			hw->flags |= NO_IDLEST;
 
+<<<<<<< HEAD
 		if (reg_data->clkdm_name)
 			hw->clkdm_name = reg_data->clkdm_name;
 		else
@@ -542,6 +587,11 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 		init.flags = 0;
 		if (reg_data->flags & CLKF_SET_RATE_PARENT)
 			init.flags |= CLK_SET_RATE_PARENT;
+=======
+		init.parent_names = &reg_data->parent;
+		init.num_parents = 1;
+		init.flags = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		init.name = kasprintf(GFP_KERNEL, "%s:%s:%04x:%d",
 				      node->parent->name, node->name,
 				      reg_data->offset, 0);
@@ -564,10 +614,14 @@ static void __init _ti_omap4_clkctrl_setup(struct device_node *node)
 		reg_data++;
 	}
 
+<<<<<<< HEAD
 	ret = of_clk_add_hw_provider(node, _ti_omap4_clkctrl_xlate, provider);
 	if (ret == -EPROBE_DEFER)
 		ti_clk_retry_init(node, provider, _clkctrl_add_provider);
 
+=======
+	of_clk_add_hw_provider(node, _ti_omap4_clkctrl_xlate, provider);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 
 cleanup:

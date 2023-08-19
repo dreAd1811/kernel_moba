@@ -222,7 +222,11 @@ int ishtp_hid_probe(unsigned int cur_hid_dev,
 err_hid_device:
 	kfree(hid_data);
 err_hid_data:
+<<<<<<< HEAD
 	kfree(hid);
+=======
+	hid_destroy_device(hid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rv;
 }
 

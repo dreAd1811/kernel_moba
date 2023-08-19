@@ -68,9 +68,15 @@ static int lvds_encoder_probe(struct platform_device *pdev)
 
 	panel = of_drm_find_panel(panel_node);
 	of_node_put(panel_node);
+<<<<<<< HEAD
 	if (IS_ERR(panel)) {
 		dev_dbg(&pdev->dev, "panel not found, deferring probe\n");
 		return PTR_ERR(panel);
+=======
+	if (!panel) {
+		dev_dbg(&pdev->dev, "panel not found, deferring probe\n");
+		return -EPROBE_DEFER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	lvds_encoder->panel_bridge =

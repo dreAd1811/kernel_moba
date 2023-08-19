@@ -230,9 +230,15 @@ static bool xennet_can_sg(struct net_device *dev)
 }
 
 
+<<<<<<< HEAD
 static void rx_refill_timeout(struct timer_list *t)
 {
 	struct netfront_queue *queue = from_timer(queue, t, rx_refill_timer);
+=======
+static void rx_refill_timeout(unsigned long data)
+{
+	struct netfront_queue *queue = (struct netfront_queue *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	napi_schedule(&queue->napi);
 }
 
@@ -545,8 +551,12 @@ static int xennet_count_skb_slots(struct sk_buff *skb)
 }
 
 static u16 xennet_select_queue(struct net_device *dev, struct sk_buff *skb,
+<<<<<<< HEAD
 			       struct net_device *sb_dev,
 			       select_queue_fallback_t fallback)
+=======
+			       void *accel_priv, select_queue_fallback_t fallback)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int num_queues = dev->real_num_tx_queues;
 	u32 hash;
@@ -565,7 +575,11 @@ static u16 xennet_select_queue(struct net_device *dev, struct sk_buff *skb,
 
 #define MAX_XEN_SKB_FRAGS (65536 / XEN_PAGE_SIZE + 1)
 
+<<<<<<< HEAD
 static netdev_tx_t xennet_start_xmit(struct sk_buff *skb, struct net_device *dev)
+=======
+static int xennet_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct netfront_info *np = netdev_priv(dev);
 	struct netfront_stats *tx_stats = this_cpu_ptr(np->tx_stats);
@@ -1615,7 +1629,12 @@ static int xennet_init_queue(struct netfront_queue *queue)
 	spin_lock_init(&queue->tx_lock);
 	spin_lock_init(&queue->rx_lock);
 
+<<<<<<< HEAD
 	timer_setup(&queue->rx_refill_timer, rx_refill_timeout, 0);
+=======
+	setup_timer(&queue->rx_refill_timer, rx_refill_timeout,
+		    (unsigned long)queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	devid = strrchr(queue->info->xbdev->nodename, '/') + 1;
 	snprintf(queue->name, sizeof(queue->name), "vif%s-q%u",
@@ -2126,9 +2145,15 @@ static ssize_t store_rxbuf(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(rxbuf_min, 0644, show_rxbuf, store_rxbuf);
 static DEVICE_ATTR(rxbuf_max, 0644, show_rxbuf, store_rxbuf);
 static DEVICE_ATTR(rxbuf_cur, 0444, show_rxbuf, NULL);
+=======
+static DEVICE_ATTR(rxbuf_min, S_IRUGO|S_IWUSR, show_rxbuf, store_rxbuf);
+static DEVICE_ATTR(rxbuf_max, S_IRUGO|S_IWUSR, show_rxbuf, store_rxbuf);
+static DEVICE_ATTR(rxbuf_cur, S_IRUGO, show_rxbuf, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *xennet_dev_attrs[] = {
 	&dev_attr_rxbuf_min.attr,

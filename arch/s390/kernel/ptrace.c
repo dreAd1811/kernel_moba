@@ -31,9 +31,12 @@
 #include <linux/uaccess.h>
 #include <asm/unistd.h>
 #include <asm/switch_to.h>
+<<<<<<< HEAD
 #include <asm/runtime_instr.h>
 #include <asm/facility.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "entry.h"
 
 #ifdef CONFIG_COMPAT
@@ -48,17 +51,27 @@ void update_cr_regs(struct task_struct *task)
 	struct pt_regs *regs = task_pt_regs(task);
 	struct thread_struct *thread = &task->thread;
 	struct per_regs old, new;
+<<<<<<< HEAD
 	union ctlreg0 cr0_old, cr0_new;
 	union ctlreg2 cr2_old, cr2_new;
 	int cr0_changed, cr2_changed;
 
 	__ctl_store(cr0_old.val, 0, 0);
 	__ctl_store(cr2_old.val, 2, 2);
+=======
+	unsigned long cr0_old, cr0_new;
+	unsigned long cr2_old, cr2_new;
+	int cr0_changed, cr2_changed;
+
+	__ctl_store(cr0_old, 0, 0);
+	__ctl_store(cr2_old, 2, 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cr0_new = cr0_old;
 	cr2_new = cr2_old;
 	/* Take care of the enable/disable of transactional execution. */
 	if (MACHINE_HAS_TE) {
 		/* Set or clear transaction execution TXC bit 8. */
+<<<<<<< HEAD
 		cr0_new.tcx = 1;
 		if (task->thread.per_flags & PER_FLAG_NO_TE)
 			cr0_new.tcx = 0;
@@ -69,10 +82,23 @@ void update_cr_regs(struct task_struct *task)
 				cr2_new.tdc = 1;
 			else
 				cr2_new.tdc = 2;
+=======
+		cr0_new |= (1UL << 55);
+		if (task->thread.per_flags & PER_FLAG_NO_TE)
+			cr0_new &= ~(1UL << 55);
+		/* Set or clear transaction execution TDC bits 62 and 63. */
+		cr2_new &= ~3UL;
+		if (task->thread.per_flags & PER_FLAG_TE_ABORT_RAND) {
+			if (task->thread.per_flags & PER_FLAG_TE_ABORT_RAND_TEND)
+				cr2_new |= 1UL;
+			else
+				cr2_new |= 2UL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	/* Take care of enable/disable of guarded storage. */
 	if (MACHINE_HAS_GS) {
+<<<<<<< HEAD
 		cr2_new.gse = 0;
 		if (task->thread.gs_cb)
 			cr2_new.gse = 1;
@@ -84,6 +110,19 @@ void update_cr_regs(struct task_struct *task)
 		__ctl_load(cr0_new.val, 0, 0);
 	if (cr2_changed)
 		__ctl_load(cr2_new.val, 2, 2);
+=======
+		cr2_new &= ~(1UL << 4);
+		if (task->thread.gs_cb)
+			cr2_new |= (1UL << 4);
+	}
+	/* Load control register 0/2 iff changed */
+	cr0_changed = cr0_new != cr0_old;
+	cr2_changed = cr2_new != cr2_old;
+	if (cr0_changed)
+		__ctl_load(cr0_new, 0, 0);
+	if (cr2_changed)
+		__ctl_load(cr2_new, 2, 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Copy user specified PER registers */
 	new.control = thread->per_user.control;
 	new.start = thread->per_user.start;
@@ -325,6 +364,28 @@ static inline void __poke_user_per(struct task_struct *child,
 		child->thread.per_user.end = data;
 }
 
+<<<<<<< HEAD
+=======
+static void fixup_int_code(struct task_struct *child, addr_t data)
+{
+	struct pt_regs *regs = task_pt_regs(child);
+	int ilc = regs->int_code >> 16;
+	u16 insn;
+
+	if (ilc > 6)
+		return;
+
+	if (ptrace_access_vm(child, regs->psw.addr - (regs->int_code >> 16),
+			&insn, sizeof(insn), FOLL_FORCE) != sizeof(insn))
+		return;
+
+	/* double check that tracee stopped on svc instruction */
+	if ((insn >> 8) != 0xa)
+		return;
+
+	regs->int_code = 0x20000 | (data & 0xffff);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Write a word to the user area of a process at location addr. This
  * operation does have an additional problem compared to peek_user.
@@ -336,7 +397,13 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
 	struct user *dummy = NULL;
 	addr_t offset;
 
+<<<<<<< HEAD
 	if (addr < (addr_t) &dummy->regs.acrs) {
+=======
+
+	if (addr < (addr_t) &dummy->regs.acrs) {
+		struct pt_regs *regs = task_pt_regs(child);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * psw and gprs are stored on the stack
 		 */
@@ -354,7 +421,15 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
 				/* Invalid addressing mode bits */
 				return -EINVAL;
 		}
+<<<<<<< HEAD
 		*(addr_t *)((addr_t) &task_pt_regs(child)->psw + addr) = data;
+=======
+
+		if (test_pt_regs_flag(regs, PIF_SYSCALL) &&
+			addr == offsetof(struct user, regs.gprs[2]))
+			fixup_int_code(child, data);
+		*(addr_t *)((addr_t) &regs->psw + addr) = data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	} else if (addr < (addr_t) (&dummy->regs.orig_gpr2)) {
 		/*
@@ -720,6 +795,13 @@ static int __poke_user_compat(struct task_struct *child,
 			regs->psw.mask = (regs->psw.mask & ~PSW_MASK_BA) |
 				(__u64)(tmp & PSW32_ADDR_AMODE);
 		} else {
+<<<<<<< HEAD
+=======
+
+			if (test_pt_regs_flag(regs, PIF_SYSCALL) &&
+				addr == offsetof(struct compat_user, regs.gprs[2]))
+				fixup_int_code(child, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* gpr 0-15 */
 			*(__u32*)((addr_t) &regs->psw + addr*2 + 4) = tmp;
 		}
@@ -1243,6 +1325,7 @@ static int s390_gs_bc_set(struct task_struct *target,
 				  data, 0, sizeof(struct gs_cb));
 }
 
+<<<<<<< HEAD
 static bool is_ri_cb_valid(struct runtime_instr_cb *cb)
 {
 	return (cb->rca & 0x1f) == 0 &&
@@ -1333,6 +1416,8 @@ static int s390_runtime_instr_set(struct task_struct *target,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct user_regset s390_regsets[] = {
 	{
 		.core_note_type = NT_PRSTATUS,
@@ -1406,6 +1491,7 @@ static const struct user_regset s390_regsets[] = {
 		.get = s390_gs_bc_get,
 		.set = s390_gs_bc_set,
 	},
+<<<<<<< HEAD
 	{
 		.core_note_type = NT_S390_RI_CB,
 		.n = sizeof(struct runtime_instr_cb) / sizeof(__u64),
@@ -1414,6 +1500,8 @@ static const struct user_regset s390_regsets[] = {
 		.get = s390_runtime_instr_get,
 		.set = s390_runtime_instr_set,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct user_regset_view user_s390_view = {
@@ -1650,6 +1738,7 @@ static const struct user_regset s390_compat_regsets[] = {
 		.get = s390_gs_cb_get,
 		.set = s390_gs_cb_set,
 	},
+<<<<<<< HEAD
 	{
 		.core_note_type = NT_S390_GS_BC,
 		.n = sizeof(struct gs_cb) / sizeof(__u64),
@@ -1666,6 +1755,8 @@ static const struct user_regset s390_compat_regsets[] = {
 		.get = s390_runtime_instr_get,
 		.set = s390_runtime_instr_set,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct user_regset_view user_s390_compat_view = {

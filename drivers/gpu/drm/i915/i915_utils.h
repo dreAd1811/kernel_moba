@@ -40,10 +40,17 @@
 #undef WARN_ON_ONCE
 #define WARN_ON_ONCE(x) WARN_ONCE((x), "%s", "WARN_ON_ONCE(" __stringify(x) ")")
 
+<<<<<<< HEAD
 #define MISSING_CASE(x) WARN(1, "Missing case (%s == %ld)\n", \
 			     __stringify(x), (long)(x))
 
 #if defined(GCC_VERSION) && GCC_VERSION >= 70000
+=======
+#define MISSING_CASE(x) WARN(1, "Missing switch case (%lu) in %s\n", \
+			     (long)(x), __func__)
+
+#if GCC_VERSION >= 70000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define add_overflows(A, B) \
 	__builtin_add_overflow_p((A), (B), (typeof((A) + (B)))0)
 #else
@@ -83,11 +90,16 @@
 	(typeof(ptr))(__v & -BIT(n));					\
 })
 
+<<<<<<< HEAD
 #define ptr_pack_bits(ptr, bits, n) ({					\
 	unsigned long __bits = (bits);					\
 	GEM_BUG_ON(__bits & -BIT(n));					\
 	((typeof(ptr))((unsigned long)(ptr) | __bits));			\
 })
+=======
+#define ptr_pack_bits(ptr, bits, n)					\
+	((typeof(ptr))((unsigned long)(ptr) | (bits)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define page_mask_bits(ptr) ptr_mask_bits(ptr, PAGE_SHIFT)
 #define page_unmask_bits(ptr) ptr_unmask_bits(ptr, PAGE_SHIFT)
@@ -102,11 +114,14 @@
 	__T;								\
 })
 
+<<<<<<< HEAD
 static inline u64 ptr_to_u64(const void *ptr)
 {
 	return (uintptr_t)ptr;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define u64_to_ptr(T, x) ({						\
 	typecheck(u64, x);						\
 	(T *)(uintptr_t)(x);						\
@@ -127,6 +142,7 @@ static inline void __list_del_many(struct list_head *head,
 	WRITE_ONCE(head->next, first);
 }
 
+<<<<<<< HEAD
 /*
  * Wait until the work is finally complete, even if it tries to postpone
  * by requeueing itself. Note, that if the worker never cancels itself,
@@ -155,4 +171,6 @@ static inline const char *enableddisabled(bool v)
 	return v ? "enabled" : "disabled";
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* !__I915_UTILS_H */

@@ -233,7 +233,10 @@ static int octeon_i2c_check_status(struct octeon_i2c *i2c, int final_read)
 		return -EOPNOTSUPP;
 
 	case STAT_TXDATA_NAK:
+<<<<<<< HEAD
 	case STAT_BUS_ERROR:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	case STAT_TXADDR_NAK:
 	case STAT_RXADDR_NAK:

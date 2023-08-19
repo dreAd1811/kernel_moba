@@ -547,7 +547,11 @@ int xen_alloc_p2m_entry(unsigned long pfn)
 	if (p2m_top_mfn && pfn < MAX_P2M_PFN) {
 		topidx = p2m_top_index(pfn);
 		top_mfn_p = &p2m_top_mfn[topidx];
+<<<<<<< HEAD
 		mid_mfn = READ_ONCE(p2m_top_mfn_p[topidx]);
+=======
+		mid_mfn = ACCESS_ONCE(p2m_top_mfn_p[topidx]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		BUG_ON(virt_to_mfn(mid_mfn) != *top_mfn_p);
 

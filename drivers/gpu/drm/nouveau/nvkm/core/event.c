@@ -84,8 +84,12 @@ int
 nvkm_event_init(const struct nvkm_event_func *func, int types_nr, int index_nr,
 		struct nvkm_event *event)
 {
+<<<<<<< HEAD
 	event->refs = kzalloc(array3_size(index_nr, types_nr,
 					  sizeof(*event->refs)),
+=======
+	event->refs = kzalloc(sizeof(*event->refs) * index_nr * types_nr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      GFP_KERNEL);
 	if (!event->refs)
 		return -ENOMEM;

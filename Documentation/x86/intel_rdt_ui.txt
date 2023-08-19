@@ -7,6 +7,7 @@ Tony Luck <tony.luck@intel.com>
 Vikas Shivappa <vikas.shivappa@intel.com>
 
 This feature is enabled by the CONFIG_INTEL_RDT Kconfig and the
+<<<<<<< HEAD
 X86 /proc/cpuinfo flag bits:
 RDT (Resource Director Technology) Allocation - "rdt_a"
 CAT (Cache Allocation Technology) - "cat_l3", "cat_l2"
@@ -18,10 +19,18 @@ MBA (Memory Bandwidth Allocation) - "mba"
 To use the feature mount the file system:
 
  # mount -t resctrl resctrl [-o cdp[,cdpl2][,mba_MBps]] /sys/fs/resctrl
+=======
+X86 /proc/cpuinfo flag bits "rdt", "cqm", "cat_l3" and "cdp_l3".
+
+To use the feature mount the file system:
+
+ # mount -t resctrl resctrl [-o cdp] /sys/fs/resctrl
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 mount options are:
 
 "cdp": Enable code/data prioritization in L3 cache allocations.
+<<<<<<< HEAD
 "cdpl2": Enable code/data prioritization in L2 cache allocations.
 "mba_MBps": Enable the MBA Software Controller(mba_sc) to specify MBA
  bandwidth in MBps
@@ -34,6 +43,11 @@ pseudo-locking is a unique way of using cache control to "pin" or
 "lock" data in the cache. Details can be found in
 "Cache Pseudo-Locking".
 
+=======
+
+RDT features are orthogonal. A particular system may support only
+monitoring, only control, or both monitoring and control.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 The mount succeeds if either of allocation or monitoring is present, but
 only those files and directories supported by the system will be created.
@@ -69,6 +83,7 @@ related to allocation:
 			some platforms support devices that have their
 			own settings for cache use which can over-ride
 			these bits.
+<<<<<<< HEAD
 "bit_usage":		Annotated capacity bitmasks showing how all
 			instances of the resource are used. The legend is:
 			"0" - Corresponding region is unused. When the system's
@@ -92,6 +107,8 @@ related to allocation:
 			      one resource group. No sharing allowed.
 			"P" - Corresponding region is pseudo-locked. No
 			      sharing allowed.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Memory bandwitdh(MB) subdirectory contains the following files
 with respect to allocation:
@@ -125,6 +142,7 @@ with the following files:
 			bytes) at which a previously used LLC_occupancy
 			counter can be considered for re-use.
 
+<<<<<<< HEAD
 Finally, in the top level of the "info" directory there is a file
 named "last_cmd_status". This is reset with every "command" issued
 via the file system (making new directories or writing to any of the
@@ -136,6 +154,8 @@ conveyed in the error returns from file operations. E.g.
 	bash: echo: write error: Invalid argument
 	# cat info/last_cmd_status
 	mask f7 has non-consecutive 1-bits
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Resource alloc and monitor groups
 ---------------------------------
@@ -178,9 +198,12 @@ All groups contain the following files:
 	CPUs to/from this group. As with the tasks file a hierarchy is
 	maintained where MON groups may only include CPUs owned by the
 	parent CTRL_MON group.
+<<<<<<< HEAD
 	When the resouce group is in pseudo-locked mode this file will
 	only be readable, reflecting the CPUs associated with the
 	pseudo-locked region.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 "cpus_list":
@@ -193,6 +216,7 @@ When control is enabled all CTRL_MON groups will also contain:
 	A list of all the resources available to this group.
 	Each resource has its own line and format - see below for details.
 
+<<<<<<< HEAD
 "size":
 	Mirrors the display of the "schemata" file to display the size in
 	bytes of each allocation instead of the bits representing the
@@ -208,6 +232,8 @@ When control is enabled all CTRL_MON groups will also contain:
 	file. On successful pseudo-locked region creation the mode will
 	automatically change to "pseudo-locked".
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 When monitoring is enabled all MON groups will also contain:
 
 "mon_data":
@@ -317,11 +343,18 @@ and 0xA are not.  On a system with a 20-bit mask each bit represents 5%
 of the capacity of the cache. You could partition the cache into four
 equal parts with masks: 0x1f, 0x3e0, 0x7c00, 0xf8000.
 
+<<<<<<< HEAD
 Memory bandwidth Allocation and monitoring
 ------------------------------------------
 
 For Memory bandwidth resource, by default the user controls the resource
 by indicating the percentage of total memory bandwidth.
+=======
+Memory bandwidth(b/w) percentage
+--------------------------------
+For Memory b/w resource, user controls the resource by indicating the
+percentage of total memory b/w.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 The minimum bandwidth percentage value for each cpu model is predefined
 and can be looked up through "info/MB/min_bandwidth". The bandwidth
@@ -333,6 +366,7 @@ to the next control step available on the hardware.
 The bandwidth throttling is a core specific mechanism on some of Intel
 SKUs. Using a high bandwidth and a low bandwidth setting on two threads
 sharing a core will result in both threads being throttled to use the
+<<<<<<< HEAD
 low bandwidth. The fact that Memory bandwidth allocation(MBA) is a core
 specific mechanism where as memory bandwidth monitoring(MBM) is done at
 the package level may lead to confusion when users try to apply control
@@ -374,6 +408,9 @@ By default, the schemata would take the bandwidth percentage values
 where as user can switch to the "MBA software controller" mode using
 a mount option 'mba_MBps'. The schemata format is specified in the below
 sections.
+=======
+low bandwidth.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 L3 schemata file details (code and data prioritization disabled)
 ----------------------------------------------------------------
@@ -396,13 +433,19 @@ schemata format is always:
 
 	L2:<cache_id0>=<cbm>;<cache_id1>=<cbm>;...
 
+<<<<<<< HEAD
 Memory bandwidth Allocation (default mode)
 ------------------------------------------
+=======
+Memory b/w Allocation details
+-----------------------------
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Memory b/w domain is L3 cache.
 
 	MB:<cache_id0>=bandwidth0;<cache_id1>=bandwidth1;...
 
+<<<<<<< HEAD
 Memory bandwidth Allocation specified in MBps
 ---------------------------------------------
 
@@ -410,6 +453,8 @@ Memory bandwidth domain is L3 cache.
 
 	MB:<cache_id0>=bw_MBps0;<cache_id1>=bw_MBps1;...
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Reading/writing the schemata file
 ---------------------------------
 Reading the schemata file will show the state of all resources
@@ -424,6 +469,7 @@ L3CODE:0=fffff;1=fffff;2=fffff;3=fffff
 L3DATA:0=fffff;1=fffff;2=3c0;3=fffff
 L3CODE:0=fffff;1=fffff;2=fffff;3=fffff
 
+<<<<<<< HEAD
 Cache Pseudo-Locking
 --------------------
 CAT enables a user to specify the amount of cache space that an
@@ -588,6 +634,8 @@ and misses using the platform's precision counters.
  pseudo_lock_mea-1672  [002] ....  3132.860500: pseudo_lock_l2: hits=4097 miss=0
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Examples for RDT allocation usage:
 
 Example 1
@@ -617,6 +665,7 @@ allocations can overlap or not. The allocations specifies the maximum
 b/w that the group may be able to use and the system admin can configure
 the b/w accordingly.
 
+<<<<<<< HEAD
 If the MBA is specified in MB(megabytes) then user can enter the max b/w in MB
 rather than the percentage values.
 
@@ -626,6 +675,8 @@ rather than the percentage values.
 In the above example the tasks in "p1" and "p0" on socket 0 would use a max b/w
 of 1024MB where as on socket 1 they would use 500MB.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Example 2
 ---------
 Again two sockets, but this time with a more realistic 20-bit mask.
@@ -711,6 +762,7 @@ siblings and only the real time threads are scheduled on the cores 4-7.
 
 # echo F0 > p0/cpus
 
+<<<<<<< HEAD
 Example 4
 ---------
 
@@ -877,6 +929,9 @@ int main(int argc, char *argv[])
 
 Locking between applications
 ----------------------------
+=======
+4) Locking between applications
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Certain operations on the resctrl filesystem, composed of read/writes
 to/from multiple files, must be atomic.
@@ -884,7 +939,11 @@ to/from multiple files, must be atomic.
 As an example, the allocation of an exclusive reservation of L3 cache
 involves:
 
+<<<<<<< HEAD
   1. Read the cbmmasks from each directory or the per-resource "bit_usage"
+=======
+  1. Read the cbmmasks from each directory
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   2. Find a contiguous set of bits in the global CBM bitmask that is clear
      in any of the directory cbmmasks
   3. Create a new directory
@@ -1104,7 +1163,11 @@ occupancy of the real time threads on these cores.
 # mkdir p1
 
 Move the cpus 4-7 over to p1
+<<<<<<< HEAD
 # echo f0 > p1/cpus
+=======
+# echo f0 > p0/cpus
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 View the llc occupancy snapshot
 

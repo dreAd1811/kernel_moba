@@ -51,7 +51,10 @@
 	compatible = "sinovoip,bananapi-m64", "allwinner,sun50i-a64";
 
 	aliases {
+<<<<<<< HEAD
 		ethernet0 = &emac;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		serial0 = &uart0;
 		serial1 = &uart1;
 	};
@@ -60,6 +63,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	leds {
 		compatible = "gpio-leds";
 
@@ -80,20 +84,26 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wifi_pwrseq: wifi_pwrseq {
 		compatible = "mmc-pwrseq-simple";
 		reset-gpios = <&r_pio 0 2 GPIO_ACTIVE_LOW>; /* PL2 */
 	};
 };
 
+<<<<<<< HEAD
 &ehci0 {
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehci1 {
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &emac {
 	pinctrl-names = "default";
 	pinctrl-0 = <&rgmii_pins>;
@@ -103,6 +113,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c1_pins>;
@@ -113,6 +125,7 @@
 	bias-pull-up;
 };
 
+<<<<<<< HEAD
 &mdio {
 	ext_rgmii_phy: ethernet-phy@1 {
 		compatible = "ethernet-phy-ieee802.3-c22";
@@ -120,11 +133,18 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &mmc0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc0_pins>;
 	vmmc-supply = <&reg_dcdc1>;
+<<<<<<< HEAD
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
+=======
+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	disable-wp;
 	bus-width = <4>;
 	status = "okay";
@@ -159,10 +179,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &ohci0 {
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ohci1 {
 	status = "okay";
 };
@@ -175,12 +198,16 @@
 		reg = <0x3a3>;
 		interrupt-parent = <&r_intc>;
 		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
+<<<<<<< HEAD
 		x-powers,drive-vbus-en; /* set N_VBUSEN as output pin */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
 #include "axp803.dtsi"
 
+<<<<<<< HEAD
 &reg_aldo1 {
 	/*
 	 * This regulator also drives the PE pingroup GPIOs,
@@ -192,6 +219,8 @@
 	regulator-name = "afvcc-csi";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &reg_aldo2 {
 	regulator-always-on;
 	regulator-min-microvolt = <1800000>;
@@ -207,11 +236,14 @@
 };
 
 &reg_dc1sw {
+<<<<<<< HEAD
 	/*
 	 * This regulator also indirectly drives the PD pingroup GPIOs,
 	 * which also controls the power LED.
 	 */
 	regulator-always-on;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	regulator-name = "vcc-phy";
 };
 
@@ -263,11 +295,14 @@
 	regulator-name = "vcc-wifi-io";
 };
 
+<<<<<<< HEAD
 &reg_drivevbus {
 	regulator-name = "usb0-vbus";
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &reg_eldo1 {
 	regulator-min-microvolt = <1800000>;
 	regulator-max-microvolt = <1800000>;
@@ -296,10 +331,13 @@
 	regulator-name = "vcc-rtc";
 };
 
+<<<<<<< HEAD
 &simplefb_hdmi {
 	vcc-hdmi-supply = <&reg_dldo1>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pins_a>;
@@ -312,6 +350,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usb_otg {
 	dr_mode = "otg";
 	status = "okay";
@@ -320,5 +359,8 @@
 &usbphy {
 	usb0_id_det-gpios = <&pio 7 9 GPIO_ACTIVE_HIGH>; /* PH9 */
 	usb0_vbus-supply = <&reg_drivevbus>;
+=======
+&usbphy {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };

@@ -38,6 +38,17 @@
 /* Currently only for RTL8723B */
 #define EXT_VENDOR_ID				(BIT(18) | BIT(19))
 
+<<<<<<< HEAD
+=======
+enum rx_packet_type {
+	NORMAL_RX,
+	TX_REPORT1,
+	TX_REPORT2,
+	HIS_REPORT,
+	C2H_PACKET,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rtl_desc_qsel {
 	QSLT_BK = 0x2,
 	QSLT_BE = 0x0,

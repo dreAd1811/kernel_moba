@@ -37,7 +37,10 @@ struct qtnf_pcie_bus_priv {
 	/* lock for tx0 operations */
 	spinlock_t tx0_lock;
 	u8 msi_enabled;
+<<<<<<< HEAD
 	u8 tx_stopped;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int mps;
 
 	struct workqueue_struct *workqueue;

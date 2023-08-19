@@ -359,13 +359,25 @@ static struct clk *icst_clk_setup(struct device *dev,
 	struct clk_init_data init;
 	struct icst_params *pclone;
 
+<<<<<<< HEAD
 	icst = kzalloc(sizeof(*icst), GFP_KERNEL);
 	if (!icst)
 		return ERR_PTR(-ENOMEM);
+=======
+	icst = kzalloc(sizeof(struct clk_icst), GFP_KERNEL);
+	if (!icst) {
+		pr_err("could not allocate ICST clock!\n");
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pclone = kmemdup(desc->params, sizeof(*pclone), GFP_KERNEL);
 	if (!pclone) {
 		kfree(icst);
+<<<<<<< HEAD
+=======
+		pr_err("could not clone ICST params\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-ENOMEM);
 	}
 

@@ -177,7 +177,10 @@ int its_map_vlpi(int irq, struct its_vlpi_map *map)
 			.map      = map,
 		},
 	};
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The host will never see that interrupt firing again, so it
@@ -185,11 +188,15 @@ int its_map_vlpi(int irq, struct its_vlpi_map *map)
 	 */
 	irq_set_status_flags(irq, IRQ_DISABLE_UNLAZY);
 
+<<<<<<< HEAD
 	ret = irq_set_vcpu_affinity(irq, &info);
 	if (ret)
 		irq_clear_status_flags(irq, IRQ_DISABLE_UNLAZY);
 
 	return ret;
+=======
+	return irq_set_vcpu_affinity(irq, &info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int its_get_vlpi(int irq, struct its_vlpi_map *map)

@@ -59,7 +59,11 @@ class KernelDocDirective(Directive):
     optional_arguments = 4
     option_spec = {
         'doc': directives.unchanged_required,
+<<<<<<< HEAD
         'functions': directives.unchanged,
+=======
+        'functions': directives.unchanged_required,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         'export': directives.unchanged,
         'internal': directives.unchanged,
     }
@@ -87,12 +91,17 @@ class KernelDocDirective(Directive):
         elif 'doc' in self.options:
             cmd += ['-function', str(self.options.get('doc'))]
         elif 'functions' in self.options:
+<<<<<<< HEAD
             functions = self.options.get('functions').split()
             if functions:
                 for f in functions:
                     cmd += ['-function', f]
             else:
                 cmd += ['-no-doc-sections']
+=======
+            for f in str(self.options.get('functions')).split():
+                cmd += ['-function', f]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
         for pattern in export_file_patterns:
             for f in glob.glob(env.config.kerneldoc_srctree + '/' + pattern):

@@ -75,7 +75,11 @@
 };
 
 &bus {
+<<<<<<< HEAD
 	flash: nor@0 {
+=======
+	flash: nor@00000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "cfi-flash";
 		reg = <0 0x00000000 0x02000000>;
 		bank-width = <2>;

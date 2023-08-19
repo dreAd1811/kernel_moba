@@ -51,7 +51,11 @@
 #include <linux/input.h>
 #include <linux/spinlock.h>
 
+<<<<<<< HEAD
 #include <media/dvb_ca_en50221.h>
+=======
+#include "dvb_ca_en50221.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DEBICICAM		0x02420000
 
@@ -1181,14 +1185,23 @@ static u8 read_pwm(struct budget_av *budget_av)
 #define SUBID_DVBS_KNC1_PLUS		0x0011
 #define SUBID_DVBS_TYPHOON		0x4f56
 #define SUBID_DVBS_CINERGY1200		0x1154
+<<<<<<< HEAD
 #define SUBID_DVBS_CYNERGY1200N		0x1155
+=======
+#define SUBID_DVBS_CYNERGY1200N 	0x1155
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUBID_DVBS_TV_STAR		0x0014
 #define SUBID_DVBS_TV_STAR_PLUS_X4	0x0015
 #define SUBID_DVBS_TV_STAR_CI		0x0016
 #define SUBID_DVBS2_KNC1		0x0018
 #define SUBID_DVBS2_KNC1_OEM		0x0019
+<<<<<<< HEAD
 #define SUBID_DVBS_EASYWATCH_1		0x001a
 #define SUBID_DVBS_EASYWATCH_2		0x001b
+=======
+#define SUBID_DVBS_EASYWATCH_1  	0x001a
+#define SUBID_DVBS_EASYWATCH_2  	0x001b
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUBID_DVBS2_EASYWATCH		0x001d
 #define SUBID_DVBS_EASYWATCH		0x001e
 

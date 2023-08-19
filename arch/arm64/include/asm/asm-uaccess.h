@@ -13,12 +13,21 @@
  */
 #ifdef CONFIG_ARM64_SW_TTBR0_PAN
 	.macro	__uaccess_ttbr0_disable, tmp1
+<<<<<<< HEAD
 	mrs	\tmp1, ttbr1_el1			// swapper_pg_dir
 	bic	\tmp1, \tmp1, #TTBR_ASID_MASK
 	sub	\tmp1, \tmp1, #RESERVED_TTBR0_SIZE	// reserved_ttbr0 just before swapper_pg_dir
 	msr	ttbr0_el1, \tmp1			// set reserved TTBR0_EL1
 	isb
 	add	\tmp1, \tmp1, #RESERVED_TTBR0_SIZE
+=======
+	mrs	\tmp1, ttbr1_el1		// swapper_pg_dir
+	bic	\tmp1, \tmp1, #TTBR_ASID_MASK
+	add	\tmp1, \tmp1, #SWAPPER_DIR_SIZE	// reserved_ttbr0 at the end of swapper_pg_dir
+	msr	ttbr0_el1, \tmp1		// set reserved TTBR0_EL1
+	isb
+	sub	\tmp1, \tmp1, #SWAPPER_DIR_SIZE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msr	ttbr1_el1, \tmp1		// set reserved ASID
 	isb
 	.endm
@@ -78,10 +87,16 @@ alternative_else_nop_endif
 /*
  * Remove the address tag from a virtual address, if present.
  */
+<<<<<<< HEAD
 	.macro	clear_address_tag, dst, addr
 	tst	\addr, #(1 << 55)
 	bic	\dst, \addr, #(0xff << 56)
 	csel	\dst, \dst, \addr, eq
+=======
+	.macro	untagged_addr, dst, addr
+	sbfx	\dst, \addr, #0, #56
+	and	\dst, \dst, \addr
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.endm
 
 #endif

@@ -20,13 +20,22 @@
  *
  */
 
+<<<<<<< HEAD
 #include <crypto/algapi.h>
 #include <crypto/des.h>
 #include <crypto/internal/skcipher.h>
+=======
+#include <asm/processor.h>
+#include <crypto/des.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/crypto.h>
 #include <linux/init.h>
 #include <linux/module.h>
 #include <linux/types.h>
+<<<<<<< HEAD
+=======
+#include <crypto/algapi.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct des3_ede_x86_ctx {
 	u32 enc_expkey[DES3_EDE_EXPKEY_WORDS];
@@ -83,6 +92,7 @@ static void des3_ede_x86_decrypt(struct crypto_tfm *tfm, u8 *dst, const u8 *src)
 	des3_ede_dec_blk(crypto_tfm_ctx(tfm), dst, src);
 }
 
+<<<<<<< HEAD
 static int ecb_crypt(struct skcipher_request *req, const u32 *expkey)
 {
 	const unsigned int bsize = DES3_EDE_BLOCK_SIZE;
@@ -95,6 +105,20 @@ static int ecb_crypt(struct skcipher_request *req, const u32 *expkey)
 	while ((nbytes = walk.nbytes)) {
 		u8 *wsrc = walk.src.virt.addr;
 		u8 *wdst = walk.dst.virt.addr;
+=======
+static int ecb_crypt(struct blkcipher_desc *desc, struct blkcipher_walk *walk,
+		     const u32 *expkey)
+{
+	unsigned int bsize = DES3_EDE_BLOCK_SIZE;
+	unsigned int nbytes;
+	int err;
+
+	err = blkcipher_walk_virt(desc, walk);
+
+	while ((nbytes = walk->nbytes)) {
+		u8 *wsrc = walk->src.virt.addr;
+		u8 *wdst = walk->dst.virt.addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Process four block batch */
 		if (nbytes >= bsize * 3) {
@@ -121,12 +145,17 @@ static int ecb_crypt(struct skcipher_request *req, const u32 *expkey)
 		} while (nbytes >= bsize);
 
 done:
+<<<<<<< HEAD
 		err = skcipher_walk_done(&walk, nbytes);
+=======
+		err = blkcipher_walk_done(desc, walk, nbytes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;
 }
 
+<<<<<<< HEAD
 static int ecb_encrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
@@ -146,6 +175,32 @@ static int ecb_decrypt(struct skcipher_request *req)
 static unsigned int __cbc_encrypt(struct des3_ede_x86_ctx *ctx,
 				  struct skcipher_walk *walk)
 {
+=======
+static int ecb_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+		       struct scatterlist *src, unsigned int nbytes)
+{
+	struct des3_ede_x86_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+	struct blkcipher_walk walk;
+
+	blkcipher_walk_init(&walk, dst, src, nbytes);
+	return ecb_crypt(desc, &walk, ctx->enc_expkey);
+}
+
+static int ecb_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+		       struct scatterlist *src, unsigned int nbytes)
+{
+	struct des3_ede_x86_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+	struct blkcipher_walk walk;
+
+	blkcipher_walk_init(&walk, dst, src, nbytes);
+	return ecb_crypt(desc, &walk, ctx->dec_expkey);
+}
+
+static unsigned int __cbc_encrypt(struct blkcipher_desc *desc,
+				  struct blkcipher_walk *walk)
+{
+	struct des3_ede_x86_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int bsize = DES3_EDE_BLOCK_SIZE;
 	unsigned int nbytes = walk->nbytes;
 	u64 *src = (u64 *)walk->src.virt.addr;
@@ -166,6 +221,7 @@ static unsigned int __cbc_encrypt(struct des3_ede_x86_ctx *ctx,
 	return nbytes;
 }
 
+<<<<<<< HEAD
 static int cbc_encrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
@@ -179,14 +235,35 @@ static int cbc_encrypt(struct skcipher_request *req)
 	while ((nbytes = walk.nbytes)) {
 		nbytes = __cbc_encrypt(ctx, &walk);
 		err = skcipher_walk_done(&walk, nbytes);
+=======
+static int cbc_encrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+		       struct scatterlist *src, unsigned int nbytes)
+{
+	struct blkcipher_walk walk;
+	int err;
+
+	blkcipher_walk_init(&walk, dst, src, nbytes);
+	err = blkcipher_walk_virt(desc, &walk);
+
+	while ((nbytes = walk.nbytes)) {
+		nbytes = __cbc_encrypt(desc, &walk);
+		err = blkcipher_walk_done(desc, &walk, nbytes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;
 }
 
+<<<<<<< HEAD
 static unsigned int __cbc_decrypt(struct des3_ede_x86_ctx *ctx,
 				  struct skcipher_walk *walk)
 {
+=======
+static unsigned int __cbc_decrypt(struct blkcipher_desc *desc,
+				  struct blkcipher_walk *walk)
+{
+	struct des3_ede_x86_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int bsize = DES3_EDE_BLOCK_SIZE;
 	unsigned int nbytes = walk->nbytes;
 	u64 *src = (u64 *)walk->src.virt.addr;
@@ -245,6 +322,7 @@ done:
 	return nbytes;
 }
 
+<<<<<<< HEAD
 static int cbc_decrypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
@@ -258,13 +336,31 @@ static int cbc_decrypt(struct skcipher_request *req)
 	while ((nbytes = walk.nbytes)) {
 		nbytes = __cbc_decrypt(ctx, &walk);
 		err = skcipher_walk_done(&walk, nbytes);
+=======
+static int cbc_decrypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+		       struct scatterlist *src, unsigned int nbytes)
+{
+	struct blkcipher_walk walk;
+	int err;
+
+	blkcipher_walk_init(&walk, dst, src, nbytes);
+	err = blkcipher_walk_virt(desc, &walk);
+
+	while ((nbytes = walk.nbytes)) {
+		nbytes = __cbc_decrypt(desc, &walk);
+		err = blkcipher_walk_done(desc, &walk, nbytes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;
 }
 
 static void ctr_crypt_final(struct des3_ede_x86_ctx *ctx,
+<<<<<<< HEAD
 			    struct skcipher_walk *walk)
+=======
+			    struct blkcipher_walk *walk)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 *ctrblk = walk->iv;
 	u8 keystream[DES3_EDE_BLOCK_SIZE];
@@ -278,9 +374,16 @@ static void ctr_crypt_final(struct des3_ede_x86_ctx *ctx,
 	crypto_inc(ctrblk, DES3_EDE_BLOCK_SIZE);
 }
 
+<<<<<<< HEAD
 static unsigned int __ctr_crypt(struct des3_ede_x86_ctx *ctx,
 				struct skcipher_walk *walk)
 {
+=======
+static unsigned int __ctr_crypt(struct blkcipher_desc *desc,
+				struct blkcipher_walk *walk)
+{
+	struct des3_ede_x86_ctx *ctx = crypto_blkcipher_ctx(desc->tfm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int bsize = DES3_EDE_BLOCK_SIZE;
 	unsigned int nbytes = walk->nbytes;
 	__be64 *src = (__be64 *)walk->src.virt.addr;
@@ -328,6 +431,7 @@ done:
 	return nbytes;
 }
 
+<<<<<<< HEAD
 static int ctr_crypt(struct skcipher_request *req)
 {
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
@@ -346,6 +450,25 @@ static int ctr_crypt(struct skcipher_request *req)
 	if (nbytes) {
 		ctr_crypt_final(ctx, &walk);
 		err = skcipher_walk_done(&walk, 0);
+=======
+static int ctr_crypt(struct blkcipher_desc *desc, struct scatterlist *dst,
+		     struct scatterlist *src, unsigned int nbytes)
+{
+	struct blkcipher_walk walk;
+	int err;
+
+	blkcipher_walk_init(&walk, dst, src, nbytes);
+	err = blkcipher_walk_virt_block(desc, &walk, DES3_EDE_BLOCK_SIZE);
+
+	while ((nbytes = walk.nbytes) >= DES3_EDE_BLOCK_SIZE) {
+		nbytes = __ctr_crypt(desc, &walk);
+		err = blkcipher_walk_done(desc, &walk, nbytes);
+	}
+
+	if (walk.nbytes) {
+		ctr_crypt_final(crypto_blkcipher_ctx(desc->tfm), &walk);
+		err = blkcipher_walk_done(desc, &walk, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;
@@ -377,6 +500,7 @@ static int des3_ede_x86_setkey(struct crypto_tfm *tfm, const u8 *key,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int des3_ede_x86_setkey_skcipher(struct crypto_skcipher *tfm,
 					const u8 *key,
 					unsigned int keylen)
@@ -385,6 +509,9 @@ static int des3_ede_x86_setkey_skcipher(struct crypto_skcipher *tfm,
 }
 
 static struct crypto_alg des3_ede_cipher = {
+=======
+static struct crypto_alg des3_ede_algs[4] = { {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cra_name		= "des3_ede",
 	.cra_driver_name	= "des3_ede-asm",
 	.cra_priority		= 200,
@@ -402,6 +529,7 @@ static struct crypto_alg des3_ede_cipher = {
 			.cia_decrypt		= des3_ede_x86_decrypt,
 		}
 	}
+<<<<<<< HEAD
 };
 
 static struct skcipher_alg des3_ede_skciphers[] = {
@@ -446,6 +574,68 @@ static struct skcipher_alg des3_ede_skciphers[] = {
 		.decrypt		= ctr_crypt,
 	}
 };
+=======
+}, {
+	.cra_name		= "ecb(des3_ede)",
+	.cra_driver_name	= "ecb-des3_ede-asm",
+	.cra_priority		= 300,
+	.cra_flags		= CRYPTO_ALG_TYPE_BLKCIPHER,
+	.cra_blocksize		= DES3_EDE_BLOCK_SIZE,
+	.cra_ctxsize		= sizeof(struct des3_ede_x86_ctx),
+	.cra_alignmask		= 0,
+	.cra_type		= &crypto_blkcipher_type,
+	.cra_module		= THIS_MODULE,
+	.cra_u = {
+		.blkcipher = {
+			.min_keysize	= DES3_EDE_KEY_SIZE,
+			.max_keysize	= DES3_EDE_KEY_SIZE,
+			.setkey		= des3_ede_x86_setkey,
+			.encrypt	= ecb_encrypt,
+			.decrypt	= ecb_decrypt,
+		},
+	},
+}, {
+	.cra_name		= "cbc(des3_ede)",
+	.cra_driver_name	= "cbc-des3_ede-asm",
+	.cra_priority		= 300,
+	.cra_flags		= CRYPTO_ALG_TYPE_BLKCIPHER,
+	.cra_blocksize		= DES3_EDE_BLOCK_SIZE,
+	.cra_ctxsize		= sizeof(struct des3_ede_x86_ctx),
+	.cra_alignmask		= 0,
+	.cra_type		= &crypto_blkcipher_type,
+	.cra_module		= THIS_MODULE,
+	.cra_u = {
+		.blkcipher = {
+			.min_keysize	= DES3_EDE_KEY_SIZE,
+			.max_keysize	= DES3_EDE_KEY_SIZE,
+			.ivsize		= DES3_EDE_BLOCK_SIZE,
+			.setkey		= des3_ede_x86_setkey,
+			.encrypt	= cbc_encrypt,
+			.decrypt	= cbc_decrypt,
+		},
+	},
+}, {
+	.cra_name		= "ctr(des3_ede)",
+	.cra_driver_name	= "ctr-des3_ede-asm",
+	.cra_priority		= 300,
+	.cra_flags		= CRYPTO_ALG_TYPE_BLKCIPHER,
+	.cra_blocksize		= 1,
+	.cra_ctxsize		= sizeof(struct des3_ede_x86_ctx),
+	.cra_alignmask		= 0,
+	.cra_type		= &crypto_blkcipher_type,
+	.cra_module		= THIS_MODULE,
+	.cra_u = {
+		.blkcipher = {
+			.min_keysize	= DES3_EDE_KEY_SIZE,
+			.max_keysize	= DES3_EDE_KEY_SIZE,
+			.ivsize		= DES3_EDE_BLOCK_SIZE,
+			.setkey		= des3_ede_x86_setkey,
+			.encrypt	= ctr_crypt,
+			.decrypt	= ctr_crypt,
+		},
+	},
+} };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool is_blacklisted_cpu(void)
 {
@@ -470,13 +660,17 @@ MODULE_PARM_DESC(force, "Force module load, ignore CPU blacklist");
 
 static int __init des3_ede_x86_init(void)
 {
+<<<<<<< HEAD
 	int err;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!force && is_blacklisted_cpu()) {
 		pr_info("des3_ede-x86_64: performance on this CPU would be suboptimal: disabling des3_ede-x86_64.\n");
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	err = crypto_register_alg(&des3_ede_cipher);
 	if (err)
 		return err;
@@ -487,13 +681,20 @@ static int __init des3_ede_x86_init(void)
 		crypto_unregister_alg(&des3_ede_cipher);
 
 	return err;
+=======
+	return crypto_register_algs(des3_ede_algs, ARRAY_SIZE(des3_ede_algs));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit des3_ede_x86_fini(void)
 {
+<<<<<<< HEAD
 	crypto_unregister_alg(&des3_ede_cipher);
 	crypto_unregister_skciphers(des3_ede_skciphers,
 				    ARRAY_SIZE(des3_ede_skciphers));
+=======
+	crypto_unregister_algs(des3_ede_algs, ARRAY_SIZE(des3_ede_algs));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(des3_ede_x86_init);

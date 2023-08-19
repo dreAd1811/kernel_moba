@@ -15,6 +15,7 @@
 #include <linux/module.h>
 #include <crypto/aead.h>
 #include <linux/etherdevice.h>
+<<<<<<< HEAD
 #include <linux/rtnetlink.h>
 #include <linux/refcount.h>
 #include <net/genetlink.h>
@@ -25,6 +26,18 @@
 
 typedef u64 __bitwise sci_t;
 
+=======
+#include <linux/netdevice.h>
+#include <linux/rtnetlink.h>
+#include <net/genetlink.h>
+#include <net/sock.h>
+#include <net/gro_cells.h>
+#include <linux/phy.h>
+#include <linux/if_arp.h>
+
+#include <uapi/linux/if_macsec.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MACSEC_SCI_LEN 8
 
 /* SecTAG length = macsec_eth_header without the optional SCI */
@@ -62,8 +75,11 @@ struct macsec_eth_header {
 #define GCM_AES_IV_LEN 12
 #define DEFAULT_ICV_LEN 16
 
+<<<<<<< HEAD
 #define MACSEC_NUM_AN 4 /* 2 bits for the association number */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define for_each_rxsc(secy, sc)			\
 	for (sc = rcu_dereference_bh(secy->rx_sc);	\
 	     sc;				\
@@ -81,6 +97,7 @@ struct gcm_iv {
 	__be32 pn;
 };
 
+<<<<<<< HEAD
 /**
  * struct macsec_key - SA key
  * @id: user-provided key identifier
@@ -253,6 +270,10 @@ struct macsec_secy {
 	struct macsec_rx_sc __rcu *rx_sc;
 };
 
+=======
+#define MACSEC_VALIDATE_DEFAULT MACSEC_VALIDATE_STRICT
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pcpu_secy_stats {
 	struct macsec_dev_stats stats;
 	struct u64_stats_sync syncp;
@@ -315,7 +336,11 @@ static struct macsec_rx_sa *macsec_rxsa_get(struct macsec_rx_sa __rcu *ptr)
 	if (!sa || !sa->active)
 		return NULL;
 
+<<<<<<< HEAD
 	if (!refcount_inc_not_zero(&sa->refcnt))
+=======
+	if (!atomic_inc_not_zero(&sa->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 
 	return sa;
@@ -331,12 +356,20 @@ static void free_rx_sc_rcu(struct rcu_head *head)
 
 static struct macsec_rx_sc *macsec_rxsc_get(struct macsec_rx_sc *sc)
 {
+<<<<<<< HEAD
 	return refcount_inc_not_zero(&sc->refcnt) ? sc : NULL;
+=======
+	return atomic_inc_not_zero(&sc->refcnt) ? sc : NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void macsec_rxsc_put(struct macsec_rx_sc *sc)
 {
+<<<<<<< HEAD
 	if (refcount_dec_and_test(&sc->refcnt))
+=======
+	if (atomic_dec_and_test(&sc->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		call_rcu(&sc->rcu_head, free_rx_sc_rcu);
 }
 
@@ -351,7 +384,11 @@ static void free_rxsa(struct rcu_head *head)
 
 static void macsec_rxsa_put(struct macsec_rx_sa *sa)
 {
+<<<<<<< HEAD
 	if (refcount_dec_and_test(&sa->refcnt))
+=======
+	if (atomic_dec_and_test(&sa->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		call_rcu(&sa->rcu, free_rxsa);
 }
 
@@ -362,7 +399,11 @@ static struct macsec_tx_sa *macsec_txsa_get(struct macsec_tx_sa __rcu *ptr)
 	if (!sa || !sa->active)
 		return NULL;
 
+<<<<<<< HEAD
 	if (!refcount_inc_not_zero(&sa->refcnt))
+=======
+	if (!atomic_inc_not_zero(&sa->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 
 	return sa;
@@ -379,7 +420,11 @@ static void free_txsa(struct rcu_head *head)
 
 static void macsec_txsa_put(struct macsec_tx_sa *sa)
 {
+<<<<<<< HEAD
 	if (refcount_dec_and_test(&sa->refcnt))
+=======
+	if (atomic_dec_and_test(&sa->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		call_rcu(&sa->rcu, free_txsa);
 }
 
@@ -393,10 +438,14 @@ static struct macsec_cb *macsec_skb_cb(struct sk_buff *skb)
 #define MACSEC_PORT_SCB (0x0000)
 #define MACSEC_UNDEF_SCI ((__force sci_t)0xffffffffffffffffULL)
 
+<<<<<<< HEAD
 #define MACSEC_GCM_AES_128_SAK_LEN 16
 #define MACSEC_GCM_AES_256_SAK_LEN 32
 
 #define DEFAULT_SAK_LEN MACSEC_GCM_AES_128_SAK_LEN
+=======
+#define DEFAULT_SAK_LEN 16
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DEFAULT_SEND_SCI true
 #define DEFAULT_ENCRYPT false
 #define DEFAULT_ENCODING_SA 0
@@ -485,6 +534,47 @@ static void macsec_set_shortlen(struct macsec_eth_header *h, size_t data_len)
 		h->short_length = data_len;
 }
 
+<<<<<<< HEAD
+=======
+/* Checks if underlying layers implement MACsec offloading functions
+ * and returns a pointer to the MACsec ops struct if any (also updates
+ * the MACsec context device reference if provided).
+ */
+static const struct macsec_ops *macsec_get_ops(struct macsec_dev *dev,
+					       struct macsec_context *ctx)
+{
+	struct phy_device *phydev;
+
+	if (!dev || !dev->real_dev)
+		return NULL;
+
+	/* Check if the PHY device provides MACsec ops */
+	phydev = dev->real_dev->phydev;
+	if (phydev && phydev->macsec_ops) {
+		if (ctx) {
+			memset(ctx, 0, sizeof(*ctx));
+			ctx->phydev = phydev;
+			ctx->is_phy = 1;
+		}
+
+		return phydev->macsec_ops;
+	}
+
+	/* Check if the net device provides MACsec ops */
+	if (dev->real_dev->features & NETIF_F_HW_MACSEC &&
+	    dev->real_dev->macsec_ops) {
+		if (ctx) {
+			memset(ctx, 0, sizeof(*ctx));
+			ctx->netdev = dev->real_dev;
+		}
+
+		return dev->real_dev->macsec_ops;
+	}
+
+	return NULL;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* validate MACsec packet according to IEEE 802.1AE-2006 9.12 */
 static bool macsec_validate_skb(struct sk_buff *skb, u16 icv_len)
 {
@@ -537,6 +627,31 @@ static struct macsec_eth_header *macsec_ethhdr(struct sk_buff *skb)
 	return (struct macsec_eth_header *)skb_mac_header(skb);
 }
 
+<<<<<<< HEAD
+=======
+static sci_t dev_to_sci(struct net_device *dev, __be16 port)
+{
+	return make_sci(dev->dev_addr, port);
+}
+
+static void __macsec_pn_wrapped(struct macsec_secy *secy,
+				struct macsec_tx_sa *tx_sa)
+{
+	pr_debug("PN wrapped, transitioning to !oper\n");
+	tx_sa->active = false;
+	if (secy->protect_frames)
+		secy->operational = false;
+}
+
+void macsec_pn_wrapped(struct macsec_secy *secy, struct macsec_tx_sa *tx_sa)
+{
+	spin_lock_bh(&tx_sa->lock);
+	__macsec_pn_wrapped(secy, tx_sa);
+	spin_unlock_bh(&tx_sa->lock);
+}
+EXPORT_SYMBOL_GPL(macsec_pn_wrapped);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u32 tx_sa_update_pn(struct macsec_tx_sa *tx_sa, struct macsec_secy *secy)
 {
 	u32 pn;
@@ -545,12 +660,17 @@ static u32 tx_sa_update_pn(struct macsec_tx_sa *tx_sa, struct macsec_secy *secy)
 	pn = tx_sa->next_pn;
 
 	tx_sa->next_pn++;
+<<<<<<< HEAD
 	if (tx_sa->next_pn == 0) {
 		pr_debug("PN wrapped, transitioning to !oper\n");
 		tx_sa->active = false;
 		if (secy->protect_frames)
 			secy->operational = false;
 	}
+=======
+	if (tx_sa->next_pn == 0)
+		__macsec_pn_wrapped(secy, tx_sa);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_bh(&tx_sa->lock);
 
 	return pn;
@@ -1034,14 +1154,23 @@ static struct macsec_rx_sc *find_rx_sc_rtnl(struct macsec_secy *secy, sci_t sci)
 	return NULL;
 }
 
+<<<<<<< HEAD
 static void handle_not_macsec(struct sk_buff *skb)
 {
+=======
+static enum rx_handler_result handle_not_macsec(struct sk_buff *skb)
+{
+	/* Deliver to the uncontrolled port by default */
+	enum rx_handler_result ret = RX_HANDLER_PASS;
+	struct ethhdr *hdr = eth_hdr(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct macsec_rxh_data *rxd;
 	struct macsec_dev *macsec;
 
 	rcu_read_lock();
 	rxd = macsec_data_rcu(skb->dev);
 
+<<<<<<< HEAD
 	/* 10.6 If the management control validateFrames is not
 	 * Strict, frames without a SecTAG are received, counted, and
 	 * delivered to the Controlled Port
@@ -1050,6 +1179,58 @@ static void handle_not_macsec(struct sk_buff *skb)
 		struct sk_buff *nskb;
 		struct pcpu_secy_stats *secy_stats = this_cpu_ptr(macsec->stats);
 
+=======
+	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
+		struct sk_buff *nskb;
+		struct pcpu_secy_stats *secy_stats = this_cpu_ptr(macsec->stats);
+		struct net_device *ndev = macsec->secy.netdev;
+
+		/* When HW offload is enabled, HW decodes frames and strips the
+		 * SecTAG, so we have to deduce which port to deliver to.
+		 */
+		if (macsec_get_ops(macsec, NULL) && netif_running(ndev)) {
+			if (hdr->h_proto == htons(ETH_P_PAE))
+				continue;
+
+			if (ndev->flags & IFF_PROMISC) {
+				nskb = skb_clone(skb, GFP_ATOMIC);
+				if (!nskb)
+					break;
+
+				count_rx(ndev, nskb->len);
+				nskb->dev = ndev;
+				netif_rx(nskb);
+			} else if (ether_addr_equal_64bits(hdr->h_dest,
+							   ndev->dev_addr)) {
+				/* HW offload enabled, divert skb */
+				skb->dev = ndev;
+				skb->pkt_type = PACKET_HOST;
+				count_rx(ndev, skb->len);
+				ret = RX_HANDLER_ANOTHER;
+				goto out;
+			} else if (is_multicast_ether_addr_64bits(hdr->h_dest)) {
+				/* multicast frame, deliver on this port as well */
+				nskb = skb_clone(skb, GFP_ATOMIC);
+				if (!nskb)
+					break;
+
+				nskb->dev = ndev;
+				if (ether_addr_equal_64bits(hdr->h_dest, ndev->broadcast))
+					nskb->pkt_type = PACKET_BROADCAST;
+				else
+					nskb->pkt_type = PACKET_MULTICAST;
+
+				count_rx(ndev, nskb->len);
+				netif_rx(nskb);
+			}
+			continue;
+		}
+
+		/* 10.6 If the management control validateFrames is not
+		 * Strict, frames without a SecTAG are received, counted, and
+		 * delivered to the Controlled Port
+		 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (macsec->secy.validate_frames == MACSEC_VALIDATE_STRICT) {
 			u64_stats_update_begin(&secy_stats->syncp);
 			secy_stats->stats.InPktsNoTag++;
@@ -1071,7 +1252,13 @@ static void handle_not_macsec(struct sk_buff *skb)
 		}
 	}
 
+<<<<<<< HEAD
 	rcu_read_unlock();
+=======
+out:
+	rcu_read_unlock();
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
@@ -1096,12 +1283,17 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
 		goto drop_direct;
 
 	hdr = macsec_ethhdr(skb);
+<<<<<<< HEAD
 	if (hdr->eth.h_proto != htons(ETH_P_MACSEC)) {
 		handle_not_macsec(skb);
 
 		/* and deliver to the uncontrolled port */
 		return RX_HANDLER_PASS;
 	}
+=======
+	if (hdr->eth.h_proto != htons(ETH_P_MACSEC))
+		return handle_not_macsec(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb = skb_unshare(skb, GFP_ATOMIC);
 	*pskb = skb;
@@ -1312,7 +1504,12 @@ static struct crypto_aead *macsec_alloc_tfm(char *key, int key_len, int icv_len)
 	struct crypto_aead *tfm;
 	int ret;
 
+<<<<<<< HEAD
 	tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
+=======
+	/* Pick a sync gcm(aes) cipher to ensure order is preserved. */
+	tfm = crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_ERR(tfm))
 		return tfm;
@@ -1346,7 +1543,11 @@ static int init_rx_sa(struct macsec_rx_sa *rx_sa, char *sak, int key_len,
 
 	rx_sa->active = false;
 	rx_sa->next_pn = 1;
+<<<<<<< HEAD
 	refcount_set(&rx_sa->refcnt, 1);
+=======
+	atomic_set(&rx_sa->refcnt, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&rx_sa->lock);
 
 	return 0;
@@ -1417,7 +1618,11 @@ static struct macsec_rx_sc *create_rx_sc(struct net_device *dev, sci_t sci)
 
 	rx_sc->sci = sci;
 	rx_sc->active = true;
+<<<<<<< HEAD
 	refcount_set(&rx_sc->refcnt, 1);
+=======
+	atomic_set(&rx_sc->refcnt, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	secy = &macsec_priv(dev)->secy;
 	rcu_assign_pointer(rx_sc->next, secy->rx_sc);
@@ -1443,7 +1648,11 @@ static int init_tx_sa(struct macsec_tx_sa *tx_sa, char *sak, int key_len,
 	}
 
 	tx_sa->active = false;
+<<<<<<< HEAD
 	refcount_set(&tx_sa->refcnt, 1);
+=======
+	atomic_set(&tx_sa->refcnt, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&tx_sa->lock);
 
 	return 0;
@@ -1607,6 +1816,43 @@ static const struct nla_policy macsec_genl_sa_policy[NUM_MACSEC_SA_ATTR] = {
 				 .len = MACSEC_MAX_KEY_LEN, },
 };
 
+<<<<<<< HEAD
+=======
+/* Offloads an operation to a device driver */
+static int macsec_offload(int (* const func)(struct macsec_context *),
+			  struct macsec_context *ctx)
+{
+	int ret;
+
+	if (unlikely(!func))
+		return 0;
+
+	if (ctx->is_phy)
+		mutex_lock(&ctx->phydev->lock);
+
+	/* Phase I: prepare. The drive should fail here if there are going to be
+	 * issues in the commit phase.
+	 */
+	ctx->prepare = true;
+	ret = (*func)(ctx);
+	if (ret)
+		goto phy_unlock;
+
+	/* Phase II: commit. This step cannot fail. */
+	ctx->prepare = false;
+	ret = (*func)(ctx);
+	/* This should never happen: commit is not allowed to fail */
+	if (unlikely(ret))
+		WARN(1, "MACsec offloading commit failed (%d)\n", ret);
+
+phy_unlock:
+	if (ctx->is_phy)
+		mutex_unlock(&ctx->phydev->lock);
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int parse_sa_config(struct nlattr **attrs, struct nlattr **tb_sa)
 {
 	if (!attrs[MACSEC_ATTR_SA_CONFIG])
@@ -1662,11 +1908,22 @@ static int macsec_add_rxsa(struct sk_buff *skb, struct genl_info *info)
 	struct net_device *dev;
 	struct nlattr **attrs = info->attrs;
 	struct macsec_secy *secy;
+<<<<<<< HEAD
 	struct macsec_rx_sc *rx_sc;
 	struct macsec_rx_sa *rx_sa;
 	unsigned char assoc_num;
 	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
 	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+=======
+	struct macsec_rx_sc *rx_sc, *prev_sc;
+	struct macsec_rx_sa *rx_sa;
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	unsigned char assoc_num;
+	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
+	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+	bool was_active;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
@@ -1723,11 +1980,41 @@ static int macsec_add_rxsa(struct sk_buff *skb, struct genl_info *info)
 		spin_unlock_bh(&rx_sa->lock);
 	}
 
+<<<<<<< HEAD
 	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
 		rx_sa->active = !!nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
 
 	nla_memcpy(rx_sa->key.id, tb_sa[MACSEC_SA_ATTR_KEYID], MACSEC_KEYID_LEN);
 	rx_sa->sc = rx_sc;
+=======
+	was_active = rx_sa->active;
+	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
+		rx_sa->active = !!nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
+
+	prev_sc = rx_sa->sc;
+	rx_sa->sc = rx_sc;
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.sa.assoc_num = assoc_num;
+		ctx.sa.rx_sa = rx_sa;
+		ctx.secy = secy;
+		memcpy(ctx.sa.key, nla_data(tb_sa[MACSEC_SA_ATTR_KEY]),
+		       MACSEC_KEYID_LEN);
+
+		err = macsec_offload(ops->mdo_add_rxsa, &ctx);
+		if (err) {
+			rx_sa->active = was_active;
+			rx_sa->sc = prev_sc;
+			kfree(rx_sa);
+			rtnl_unlock();
+			return err;
+		}
+	}
+
+	nla_memcpy(rx_sa->key.id, tb_sa[MACSEC_SA_ATTR_KEYID], MACSEC_KEYID_LEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcu_assign_pointer(rx_sc->sa[assoc_num], rx_sa);
 
 	rtnl_unlock();
@@ -1753,8 +2040,18 @@ static int macsec_add_rxsc(struct sk_buff *skb, struct genl_info *info)
 	struct net_device *dev;
 	sci_t sci = MACSEC_UNDEF_SCI;
 	struct nlattr **attrs = info->attrs;
+<<<<<<< HEAD
 	struct macsec_rx_sc *rx_sc;
 	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
+=======
+	struct macsec_secy *secy;
+	struct macsec_rx_sc *rx_sc;
+	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	bool was_active;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
 		return -EINVAL;
@@ -1772,6 +2069,10 @@ static int macsec_add_rxsc(struct sk_buff *skb, struct genl_info *info)
 		return PTR_ERR(dev);
 	}
 
+<<<<<<< HEAD
+=======
+	secy = &macsec_priv(dev)->secy;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sci = nla_get_sci(tb_rxsc[MACSEC_RXSC_ATTR_SCI]);
 
 	rx_sc = create_rx_sc(dev, sci);
@@ -1780,9 +2081,29 @@ static int macsec_add_rxsc(struct sk_buff *skb, struct genl_info *info)
 		return PTR_ERR(rx_sc);
 	}
 
+<<<<<<< HEAD
 	if (tb_rxsc[MACSEC_RXSC_ATTR_ACTIVE])
 		rx_sc->active = !!nla_get_u8(tb_rxsc[MACSEC_RXSC_ATTR_ACTIVE]);
 
+=======
+	was_active = rx_sc->active;
+	if (tb_rxsc[MACSEC_RXSC_ATTR_ACTIVE])
+		rx_sc->active = !!nla_get_u8(tb_rxsc[MACSEC_RXSC_ATTR_ACTIVE]);
+
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.rx_sc = rx_sc;
+		ctx.secy = secy;
+
+		ret = macsec_offload(ops->mdo_add_rxsc, &ctx);
+		if (ret) {
+			rx_sc->active = was_active;
+			rtnl_unlock();
+			return ret;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_unlock();
 
 	return 0;
@@ -1820,8 +2141,17 @@ static int macsec_add_txsa(struct sk_buff *skb, struct genl_info *info)
 	struct macsec_secy *secy;
 	struct macsec_tx_sc *tx_sc;
 	struct macsec_tx_sa *tx_sa;
+<<<<<<< HEAD
 	unsigned char assoc_num;
 	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	unsigned char assoc_num;
+	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+	bool was_operational, was_active;
+	u32 prev_pn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
@@ -1872,6 +2202,7 @@ static int macsec_add_txsa(struct sk_buff *skb, struct genl_info *info)
 		return err;
 	}
 
+<<<<<<< HEAD
 	nla_memcpy(tx_sa->key.id, tb_sa[MACSEC_SA_ATTR_KEYID], MACSEC_KEYID_LEN);
 
 	spin_lock_bh(&tx_sa->lock);
@@ -1884,6 +2215,45 @@ static int macsec_add_txsa(struct sk_buff *skb, struct genl_info *info)
 	if (assoc_num == tx_sc->encoding_sa && tx_sa->active)
 		secy->operational = true;
 
+=======
+	spin_lock_bh(&tx_sa->lock);
+	prev_pn = tx_sa->next_pn;
+	tx_sa->next_pn = nla_get_u32(tb_sa[MACSEC_SA_ATTR_PN]);
+	spin_unlock_bh(&tx_sa->lock);
+
+	was_active = tx_sa->active;
+	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
+		tx_sa->active = !!nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
+
+	was_operational = secy->operational;
+	if (assoc_num == tx_sc->encoding_sa && tx_sa->active)
+		secy->operational = true;
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.sa.assoc_num = assoc_num;
+		ctx.sa.tx_sa = tx_sa;
+		ctx.secy = secy;
+		memcpy(ctx.sa.key, nla_data(tb_sa[MACSEC_SA_ATTR_KEY]),
+		       MACSEC_KEYID_LEN);
+
+		err = macsec_offload(ops->mdo_add_txsa, &ctx);
+		if (err) {
+			spin_lock_bh(&tx_sa->lock);
+			tx_sa->next_pn = prev_pn;
+			spin_unlock_bh(&tx_sa->lock);
+
+			tx_sa->active = was_active;
+			secy->operational = was_operational;
+			kfree(tx_sa);
+			rtnl_unlock();
+			return err;
+		}
+	}
+
+	nla_memcpy(tx_sa->key.id, tb_sa[MACSEC_SA_ATTR_KEYID], MACSEC_KEYID_LEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcu_assign_pointer(tx_sc->sa[assoc_num], tx_sa);
 
 	rtnl_unlock();
@@ -1898,9 +2268,18 @@ static int macsec_del_rxsa(struct sk_buff *skb, struct genl_info *info)
 	struct macsec_secy *secy;
 	struct macsec_rx_sc *rx_sc;
 	struct macsec_rx_sa *rx_sa;
+<<<<<<< HEAD
 	u8 assoc_num;
 	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
 	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	u8 assoc_num;
+	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
+	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
 		return -EINVAL;
@@ -1924,6 +2303,23 @@ static int macsec_del_rxsa(struct sk_buff *skb, struct genl_info *info)
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
+=======
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.sa.assoc_num = assoc_num;
+		ctx.sa.rx_sa = rx_sa;
+		ctx.secy = secy;
+
+		ret = macsec_offload(ops->mdo_del_rxsa, &ctx);
+		if (ret) {
+			rtnl_unlock();
+			return ret;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RCU_INIT_POINTER(rx_sc->sa[assoc_num], NULL);
 	clear_rx_sa(rx_sa);
 
@@ -1938,8 +2334,16 @@ static int macsec_del_rxsc(struct sk_buff *skb, struct genl_info *info)
 	struct net_device *dev;
 	struct macsec_secy *secy;
 	struct macsec_rx_sc *rx_sc;
+<<<<<<< HEAD
 	sci_t sci;
 	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	sci_t sci;
+	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
 		return -EINVAL;
@@ -1966,6 +2370,21 @@ static int macsec_del_rxsc(struct sk_buff *skb, struct genl_info *info)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
+=======
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.rx_sc = rx_sc;
+		ctx.secy = secy;
+		ret = macsec_offload(ops->mdo_del_rxsc, &ctx);
+		if (ret) {
+			rtnl_unlock();
+			return ret;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_rx_sc(rx_sc);
 	rtnl_unlock();
 
@@ -1979,8 +2398,16 @@ static int macsec_del_txsa(struct sk_buff *skb, struct genl_info *info)
 	struct macsec_secy *secy;
 	struct macsec_tx_sc *tx_sc;
 	struct macsec_tx_sa *tx_sa;
+<<<<<<< HEAD
 	u8 assoc_num;
 	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	u8 assoc_num;
+	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
 		return -EINVAL;
@@ -2001,6 +2428,23 @@ static int macsec_del_txsa(struct sk_buff *skb, struct genl_info *info)
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
+=======
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.sa.assoc_num = assoc_num;
+		ctx.sa.tx_sa = tx_sa;
+		ctx.secy = secy;
+
+		ret = macsec_offload(ops->mdo_del_txsa, &ctx);
+		if (ret) {
+			rtnl_unlock();
+			return ret;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RCU_INIT_POINTER(tx_sc->sa[assoc_num], NULL);
 	clear_tx_sa(tx_sa);
 
@@ -2037,8 +2481,18 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
 	struct macsec_secy *secy;
 	struct macsec_tx_sc *tx_sc;
 	struct macsec_tx_sa *tx_sa;
+<<<<<<< HEAD
 	u8 assoc_num;
 	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	u8 assoc_num;
+	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+	bool was_operational, was_active;
+	u32 prev_pn = 0;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
 		return -EINVAL;
@@ -2059,10 +2513,15 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
 
 	if (tb_sa[MACSEC_SA_ATTR_PN]) {
 		spin_lock_bh(&tx_sa->lock);
+<<<<<<< HEAD
+=======
+		prev_pn = tx_sa->next_pn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tx_sa->next_pn = nla_get_u32(tb_sa[MACSEC_SA_ATTR_PN]);
 		spin_unlock_bh(&tx_sa->lock);
 	}
 
+<<<<<<< HEAD
 	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
 		tx_sa->active = nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
 
@@ -2072,6 +2531,39 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
 	rtnl_unlock();
 
 	return 0;
+=======
+	was_active = tx_sa->active;
+	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
+		tx_sa->active = nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
+
+	was_operational = secy->operational;
+	if (assoc_num == tx_sc->encoding_sa)
+		secy->operational = tx_sa->active;
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.sa.assoc_num = assoc_num;
+		ctx.sa.tx_sa = tx_sa;
+		ctx.secy = secy;
+
+		ret = macsec_offload(ops->mdo_upd_txsa, &ctx);
+		if (ret) {
+			if (tb_sa[MACSEC_SA_ATTR_PN]) {
+				spin_lock_bh(&tx_sa->lock);
+				tx_sa->next_pn = prev_pn;
+				spin_unlock_bh(&tx_sa->lock);
+			}
+
+			tx_sa->active = was_active;
+			secy->operational = was_operational;
+		}
+	}
+
+	rtnl_unlock();
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
@@ -2081,9 +2573,20 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
 	struct macsec_secy *secy;
 	struct macsec_rx_sc *rx_sc;
 	struct macsec_rx_sa *rx_sa;
+<<<<<<< HEAD
 	u8 assoc_num;
 	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
 	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	u8 assoc_num;
+	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
+	struct nlattr *tb_sa[MACSEC_SA_ATTR_MAX + 1];
+	bool was_active;
+	u32 prev_pn = 0;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
 		return -EINVAL;
@@ -2107,15 +2610,47 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
 
 	if (tb_sa[MACSEC_SA_ATTR_PN]) {
 		spin_lock_bh(&rx_sa->lock);
+<<<<<<< HEAD
+=======
+		prev_pn = rx_sa->next_pn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rx_sa->next_pn = nla_get_u32(tb_sa[MACSEC_SA_ATTR_PN]);
 		spin_unlock_bh(&rx_sa->lock);
 	}
 
+<<<<<<< HEAD
 	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
 		rx_sa->active = nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
 
 	rtnl_unlock();
 	return 0;
+=======
+	was_active = rx_sa->active;
+	if (tb_sa[MACSEC_SA_ATTR_ACTIVE])
+		rx_sa->active = nla_get_u8(tb_sa[MACSEC_SA_ATTR_ACTIVE]);
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.sa.assoc_num = assoc_num;
+		ctx.sa.rx_sa = rx_sa;
+		ctx.secy = secy;
+
+		ret = macsec_offload(ops->mdo_upd_rxsa, &ctx);
+		if (ret) {
+			if (tb_sa[MACSEC_SA_ATTR_PN]) {
+				spin_lock_bh(&rx_sa->lock);
+				rx_sa->next_pn = prev_pn;
+				spin_unlock_bh(&rx_sa->lock);
+			}
+
+			rx_sa->active = was_active;
+		}
+	}
+
+	rtnl_unlock();
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int macsec_upd_rxsc(struct sk_buff *skb, struct genl_info *info)
@@ -2125,6 +2660,14 @@ static int macsec_upd_rxsc(struct sk_buff *skb, struct genl_info *info)
 	struct macsec_secy *secy;
 	struct macsec_rx_sc *rx_sc;
 	struct nlattr *tb_rxsc[MACSEC_RXSC_ATTR_MAX + 1];
+<<<<<<< HEAD
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	unsigned int prev_n_rx_sc;
+	bool was_active;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!attrs[MACSEC_ATTR_IFINDEX])
 		return -EINVAL;
@@ -2142,6 +2685,11 @@ static int macsec_upd_rxsc(struct sk_buff *skb, struct genl_info *info)
 		return PTR_ERR(rx_sc);
 	}
 
+<<<<<<< HEAD
+=======
+	was_active = rx_sc->active;
+	prev_n_rx_sc = secy->n_rx_sc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tb_rxsc[MACSEC_RXSC_ATTR_ACTIVE]) {
 		bool new = !!nla_get_u8(tb_rxsc[MACSEC_RXSC_ATTR_ACTIVE]);
 
@@ -2151,11 +2699,29 @@ static int macsec_upd_rxsc(struct sk_buff *skb, struct genl_info *info)
 		rx_sc->active = new;
 	}
 
+<<<<<<< HEAD
+=======
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.rx_sc = rx_sc;
+		ctx.secy = secy;
+
+		ret = macsec_offload(ops->mdo_upd_rxsc, &ctx);
+		if (ret) {
+			secy->n_rx_sc = prev_n_rx_sc;
+			rx_sc->active = was_active;
+			rtnl_unlock();
+			return 0;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_unlock();
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int copy_tx_sa_stats(struct sk_buff *skb,
 			     struct macsec_tx_sa_stats __percpu *pstats)
 {
@@ -2171,11 +2737,48 @@ static int copy_tx_sa_stats(struct sk_buff *skb,
 
 	if (nla_put_u32(skb, MACSEC_SA_STATS_ATTR_OUT_PKTS_PROTECTED, sum.OutPktsProtected) ||
 	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_OUT_PKTS_ENCRYPTED, sum.OutPktsEncrypted))
+=======
+static void get_tx_sa_stats(struct net_device *dev, int an,
+			    struct macsec_tx_sa *tx_sa,
+			    struct macsec_tx_sa_stats *sum)
+{
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	int err = -EOPNOTSUPP;
+	int cpu;
+
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.sa.assoc_num = an;
+		ctx.sa.tx_sa = tx_sa;
+		ctx.stats.tx_sa_stats = sum;
+		ctx.secy = &macsec_priv(dev)->secy;
+		err = macsec_offload(ops->mdo_get_tx_sa_stats, &ctx);
+	}
+
+	if (err == -EOPNOTSUPP) {
+		for_each_possible_cpu(cpu) {
+			const struct macsec_tx_sa_stats *stats =
+				per_cpu_ptr(tx_sa->stats, cpu);
+
+			sum->OutPktsProtected += stats->OutPktsProtected;
+			sum->OutPktsEncrypted += stats->OutPktsEncrypted;
+		}
+	}
+
+}
+
+static int copy_tx_sa_stats(struct sk_buff *skb, struct macsec_tx_sa_stats *sum)
+{
+	if (nla_put_u32(skb, MACSEC_SA_STATS_ATTR_OUT_PKTS_PROTECTED, sum->OutPktsProtected) ||
+	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_OUT_PKTS_ENCRYPTED, sum->OutPktsEncrypted))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EMSGSIZE;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int copy_rx_sa_stats(struct sk_buff *skb,
 			     struct macsec_rx_sa_stats __percpu *pstats)
 {
@@ -2197,11 +2800,56 @@ static int copy_rx_sa_stats(struct sk_buff *skb,
 	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_IN_PKTS_NOT_VALID, sum.InPktsNotValid) ||
 	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_IN_PKTS_NOT_USING_SA, sum.InPktsNotUsingSA) ||
 	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_IN_PKTS_UNUSED_SA, sum.InPktsUnusedSA))
+=======
+static void get_rx_sa_stats(struct net_device *dev,
+			    struct macsec_rx_sc *rx_sc, int an,
+			    struct macsec_rx_sa *rx_sa,
+			    struct macsec_rx_sa_stats *sum)
+{
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	int err = -EOPNOTSUPP;
+	int cpu;
+
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.sa.assoc_num = an;
+		ctx.sa.rx_sa = rx_sa;
+		ctx.stats.rx_sa_stats = sum;
+		ctx.secy = &macsec_priv(dev)->secy;
+		ctx.rx_sc = rx_sc;
+		err = macsec_offload(ops->mdo_get_rx_sa_stats, &ctx);
+	}
+
+	if (err == -EOPNOTSUPP) {
+		for_each_possible_cpu(cpu) {
+			const struct macsec_rx_sa_stats *stats =
+				per_cpu_ptr(rx_sa->stats, cpu);
+
+			sum->InPktsOK         += stats->InPktsOK;
+			sum->InPktsInvalid    += stats->InPktsInvalid;
+			sum->InPktsNotValid   += stats->InPktsNotValid;
+			sum->InPktsNotUsingSA += stats->InPktsNotUsingSA;
+			sum->InPktsUnusedSA   += stats->InPktsUnusedSA;
+		}
+	}
+}
+
+static int copy_rx_sa_stats(struct sk_buff *skb,
+			    struct macsec_rx_sa_stats *sum)
+{
+	if (nla_put_u32(skb, MACSEC_SA_STATS_ATTR_IN_PKTS_OK, sum->InPktsOK) ||
+	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_IN_PKTS_INVALID, sum->InPktsInvalid) ||
+	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_IN_PKTS_NOT_VALID, sum->InPktsNotValid) ||
+	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_IN_PKTS_NOT_USING_SA, sum->InPktsNotUsingSA) ||
+	    nla_put_u32(skb, MACSEC_SA_STATS_ATTR_IN_PKTS_UNUSED_SA, sum->InPktsUnusedSA))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EMSGSIZE;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int copy_rx_sc_stats(struct sk_buff *skb,
 			     struct pcpu_rx_sc_stats __percpu *pstats)
 {
@@ -2260,12 +2908,89 @@ static int copy_rx_sc_stats(struct sk_buff *skb,
 			      MACSEC_RXSC_STATS_ATTR_PAD) ||
 	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_UNUSED_SA,
 			      sum.InPktsUnusedSA,
+=======
+static void get_rx_sc_stats(struct net_device *dev,
+			    struct macsec_rx_sc *rx_sc,
+			    struct macsec_rx_sc_stats *sum)
+{
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	int err = -EOPNOTSUPP;
+	int cpu;
+
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.stats.rx_sc_stats = sum;
+		ctx.secy = &macsec_priv(dev)->secy;
+		ctx.rx_sc = rx_sc;
+		err = macsec_offload(ops->mdo_get_rx_sc_stats, &ctx);
+	}
+
+	if (err == -EOPNOTSUPP) {
+		for_each_possible_cpu(cpu) {
+			const struct pcpu_rx_sc_stats *stats;
+			struct macsec_rx_sc_stats tmp;
+			unsigned int start;
+
+			stats = per_cpu_ptr(rx_sc->stats, cpu);
+			do {
+				start = u64_stats_fetch_begin_irq(&stats->syncp);
+				memcpy(&tmp, &stats->stats, sizeof(tmp));
+			} while (u64_stats_fetch_retry_irq(&stats->syncp, start));
+
+			sum->InOctetsValidated += tmp.InOctetsValidated;
+			sum->InOctetsDecrypted += tmp.InOctetsDecrypted;
+			sum->InPktsUnchecked   += tmp.InPktsUnchecked;
+			sum->InPktsDelayed     += tmp.InPktsDelayed;
+			sum->InPktsOK          += tmp.InPktsOK;
+			sum->InPktsInvalid     += tmp.InPktsInvalid;
+			sum->InPktsLate        += tmp.InPktsLate;
+			sum->InPktsNotValid    += tmp.InPktsNotValid;
+			sum->InPktsNotUsingSA  += tmp.InPktsNotUsingSA;
+			sum->InPktsUnusedSA    += tmp.InPktsUnusedSA;
+		}
+	}
+}
+
+static int copy_rx_sc_stats(struct sk_buff *skb, struct macsec_rx_sc_stats *sum)
+{
+	if (nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_OCTETS_VALIDATED,
+			      sum->InOctetsValidated,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_OCTETS_DECRYPTED,
+			      sum->InOctetsDecrypted,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_UNCHECKED,
+			      sum->InPktsUnchecked,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_DELAYED,
+			      sum->InPktsDelayed,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_OK,
+			      sum->InPktsOK,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_INVALID,
+			      sum->InPktsInvalid,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_LATE,
+			      sum->InPktsLate,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_NOT_VALID,
+			      sum->InPktsNotValid,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_NOT_USING_SA,
+			      sum->InPktsNotUsingSA,
+			      MACSEC_RXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_RXSC_STATS_ATTR_IN_PKTS_UNUSED_SA,
+			      sum->InPktsUnusedSA,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      MACSEC_RXSC_STATS_ATTR_PAD))
 		return -EMSGSIZE;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int copy_tx_sc_stats(struct sk_buff *skb,
 			     struct pcpu_tx_sc_stats __percpu *pstats)
 {
@@ -2300,12 +3025,63 @@ static int copy_tx_sc_stats(struct sk_buff *skb,
 			      MACSEC_TXSC_STATS_ATTR_PAD) ||
 	    nla_put_u64_64bit(skb, MACSEC_TXSC_STATS_ATTR_OUT_OCTETS_ENCRYPTED,
 			      sum.OutOctetsEncrypted,
+=======
+static void get_tx_sc_stats(struct net_device *dev, struct macsec_tx_sc_stats *sum)
+{
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	int err = -EOPNOTSUPP;
+	int cpu;
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.stats.tx_sc_stats = sum;
+		ctx.secy = &macsec_priv(dev)->secy;
+		err = macsec_offload(ops->mdo_get_tx_sc_stats, &ctx);
+	}
+
+	if (err == -EOPNOTSUPP) {
+		for_each_possible_cpu(cpu) {
+			const struct pcpu_tx_sc_stats *stats;
+			struct macsec_tx_sc_stats tmp;
+			unsigned int start;
+
+			stats = per_cpu_ptr(macsec_priv(dev)->secy.tx_sc.stats, cpu);
+			do {
+				start = u64_stats_fetch_begin_irq(&stats->syncp);
+				memcpy(&tmp, &stats->stats, sizeof(tmp));
+			} while (u64_stats_fetch_retry_irq(&stats->syncp, start));
+
+			sum->OutPktsProtected   += tmp.OutPktsProtected;
+			sum->OutPktsEncrypted   += tmp.OutPktsEncrypted;
+			sum->OutOctetsProtected += tmp.OutOctetsProtected;
+			sum->OutOctetsEncrypted += tmp.OutOctetsEncrypted;
+		}
+	}
+}
+
+static int copy_tx_sc_stats(struct sk_buff *skb, struct macsec_tx_sc_stats *sum)
+{
+	if (nla_put_u64_64bit(skb, MACSEC_TXSC_STATS_ATTR_OUT_PKTS_PROTECTED,
+			      sum->OutPktsProtected,
+			      MACSEC_TXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_TXSC_STATS_ATTR_OUT_PKTS_ENCRYPTED,
+			      sum->OutPktsEncrypted,
+			      MACSEC_TXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_TXSC_STATS_ATTR_OUT_OCTETS_PROTECTED,
+			      sum->OutOctetsProtected,
+			      MACSEC_TXSC_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_TXSC_STATS_ATTR_OUT_OCTETS_ENCRYPTED,
+			      sum->OutOctetsEncrypted,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      MACSEC_TXSC_STATS_ATTR_PAD))
 		return -EMSGSIZE;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int copy_secy_stats(struct sk_buff *skb,
 			    struct pcpu_secy_stats __percpu *pstats)
 {
@@ -2356,6 +3132,71 @@ static int copy_secy_stats(struct sk_buff *skb,
 			      MACSEC_SECY_STATS_ATTR_PAD) ||
 	    nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_IN_PKTS_OVERRUN,
 			      sum.InPktsOverrun,
+=======
+static void get_secy_stats(struct net_device *dev, struct macsec_dev_stats *sum)
+{
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	int err = -EOPNOTSUPP;
+	int cpu;
+
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.stats.dev_stats = sum;
+		ctx.secy = &macsec_priv(dev)->secy;
+		err = macsec_offload(ops->mdo_get_dev_stats, &ctx);
+	}
+
+	if (err == -EOPNOTSUPP) {
+		for_each_possible_cpu(cpu) {
+			const struct pcpu_secy_stats *stats;
+			struct macsec_dev_stats tmp;
+			unsigned int start;
+
+			stats = per_cpu_ptr(macsec_priv(dev)->stats, cpu);
+			do {
+				start = u64_stats_fetch_begin_irq(&stats->syncp);
+				memcpy(&tmp, &stats->stats, sizeof(tmp));
+			} while (u64_stats_fetch_retry_irq(&stats->syncp, start));
+
+			sum->OutPktsUntagged  += tmp.OutPktsUntagged;
+			sum->InPktsUntagged   += tmp.InPktsUntagged;
+			sum->OutPktsTooLong   += tmp.OutPktsTooLong;
+			sum->InPktsNoTag      += tmp.InPktsNoTag;
+			sum->InPktsBadTag     += tmp.InPktsBadTag;
+			sum->InPktsUnknownSCI += tmp.InPktsUnknownSCI;
+			sum->InPktsNoSCI      += tmp.InPktsNoSCI;
+			sum->InPktsOverrun    += tmp.InPktsOverrun;
+		}
+	}
+}
+
+static int copy_secy_stats(struct sk_buff *skb, struct macsec_dev_stats *sum)
+{
+	if (nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_OUT_PKTS_UNTAGGED,
+			      sum->OutPktsUntagged,
+			      MACSEC_SECY_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_IN_PKTS_UNTAGGED,
+			      sum->InPktsUntagged,
+			      MACSEC_SECY_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_OUT_PKTS_TOO_LONG,
+			      sum->OutPktsTooLong,
+			      MACSEC_SECY_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_IN_PKTS_NO_TAG,
+			      sum->InPktsNoTag,
+			      MACSEC_SECY_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_IN_PKTS_BAD_TAG,
+			      sum->InPktsBadTag,
+			      MACSEC_SECY_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_IN_PKTS_UNKNOWN_SCI,
+			      sum->InPktsUnknownSCI,
+			      MACSEC_SECY_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_IN_PKTS_NO_SCI,
+			      sum->InPktsNoSCI,
+			      MACSEC_SECY_STATS_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_SECY_STATS_ATTR_IN_PKTS_OVERRUN,
+			      sum->InPktsOverrun,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      MACSEC_SECY_STATS_ATTR_PAD))
 		return -EMSGSIZE;
 
@@ -2366,11 +3207,15 @@ static int nla_put_secy(struct macsec_secy *secy, struct sk_buff *skb)
 {
 	struct macsec_tx_sc *tx_sc = &secy->tx_sc;
 	struct nlattr *secy_nest = nla_nest_start(skb, MACSEC_ATTR_SECY);
+<<<<<<< HEAD
 	u64 csid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!secy_nest)
 		return 1;
 
+<<<<<<< HEAD
 	switch (secy->key_len) {
 	case MACSEC_GCM_AES_128_SAK_LEN:
 		csid = MACSEC_DEFAULT_CIPHER_ID;
@@ -2386,6 +3231,13 @@ static int nla_put_secy(struct macsec_secy *secy, struct sk_buff *skb)
 			MACSEC_SECY_ATTR_PAD) ||
 	    nla_put_u64_64bit(skb, MACSEC_SECY_ATTR_CIPHER_SUITE,
 			      csid, MACSEC_SECY_ATTR_PAD) ||
+=======
+	if (nla_put_sci(skb, MACSEC_SECY_ATTR_SCI, secy->sci,
+			MACSEC_SECY_ATTR_PAD) ||
+	    nla_put_u64_64bit(skb, MACSEC_SECY_ATTR_CIPHER_SUITE,
+			      MACSEC_DEFAULT_CIPHER_ID,
+			      MACSEC_SECY_ATTR_PAD) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    nla_put_u8(skb, MACSEC_SECY_ATTR_ICV_LEN, secy->icv_len) ||
 	    nla_put_u8(skb, MACSEC_SECY_ATTR_OPER, secy->operational) ||
 	    nla_put_u8(skb, MACSEC_SECY_ATTR_PROTECT, secy->protect_frames) ||
@@ -2417,6 +3269,14 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 	struct macsec_rx_sc *rx_sc;
 	struct macsec_tx_sc *tx_sc = &secy->tx_sc;
 	struct nlattr *txsa_list, *rxsc_list;
+<<<<<<< HEAD
+=======
+	struct macsec_dev_stats dev_stats = {0, };
+	struct macsec_tx_sc_stats tx_sc_stats = {0, };
+	struct macsec_tx_sa_stats tx_sa_stats = {0, };
+	struct macsec_rx_sc_stats rx_sc_stats = {0, };
+	struct macsec_rx_sa_stats rx_sa_stats = {0, };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, j;
 	void *hdr;
 	struct nlattr *attr;
@@ -2426,7 +3286,11 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 	if (!hdr)
 		return -EMSGSIZE;
 
+<<<<<<< HEAD
 	genl_dump_check_consistent(cb, hdr);
+=======
+	genl_dump_check_consistent(cb, hdr, &macsec_fam);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (nla_put_u32(skb, MACSEC_ATTR_IFINDEX, dev->ifindex))
 		goto nla_put_failure;
@@ -2437,7 +3301,13 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 	attr = nla_nest_start(skb, MACSEC_ATTR_TXSC_STATS);
 	if (!attr)
 		goto nla_put_failure;
+<<<<<<< HEAD
 	if (copy_tx_sc_stats(skb, tx_sc->stats)) {
+=======
+
+	get_tx_sc_stats(dev, &tx_sc_stats);
+	if (copy_tx_sc_stats(skb, &tx_sc_stats)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nla_nest_cancel(skb, attr);
 		goto nla_put_failure;
 	}
@@ -2446,7 +3316,12 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 	attr = nla_nest_start(skb, MACSEC_ATTR_SECY_STATS);
 	if (!attr)
 		goto nla_put_failure;
+<<<<<<< HEAD
 	if (copy_secy_stats(skb, macsec_priv(dev)->stats)) {
+=======
+	get_secy_stats(dev, &dev_stats);
+	if (copy_secy_stats(skb, &dev_stats)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nla_nest_cancel(skb, attr);
 		goto nla_put_failure;
 	}
@@ -2468,6 +3343,25 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 			goto nla_put_failure;
 		}
 
+<<<<<<< HEAD
+=======
+		attr = nla_nest_start(skb, MACSEC_SA_ATTR_STATS);
+		if (!attr) {
+			nla_nest_cancel(skb, txsa_nest);
+			nla_nest_cancel(skb, txsa_list);
+			goto nla_put_failure;
+		}
+		memset(&tx_sa_stats, 0, sizeof (tx_sa_stats));
+		get_tx_sa_stats(dev, i, tx_sa, &tx_sa_stats);
+		if (copy_tx_sa_stats(skb, &tx_sa_stats)) {
+			nla_nest_cancel(skb, attr);
+			nla_nest_cancel(skb, txsa_nest);
+			nla_nest_cancel(skb, txsa_list);
+			goto nla_put_failure;
+		}
+		nla_nest_end(skb, attr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (nla_put_u8(skb, MACSEC_SA_ATTR_AN, i) ||
 		    nla_put_u32(skb, MACSEC_SA_ATTR_PN, tx_sa->next_pn) ||
 		    nla_put(skb, MACSEC_SA_ATTR_KEYID, MACSEC_KEYID_LEN, tx_sa->key.id) ||
@@ -2477,6 +3371,7 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 			goto nla_put_failure;
 		}
 
+<<<<<<< HEAD
 		attr = nla_nest_start(skb, MACSEC_SA_ATTR_STATS);
 		if (!attr) {
 			nla_nest_cancel(skb, txsa_nest);
@@ -2491,6 +3386,8 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 		}
 		nla_nest_end(skb, attr);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nla_nest_end(skb, txsa_nest);
 	}
 	nla_nest_end(skb, txsa_list);
@@ -2524,7 +3421,13 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 			nla_nest_cancel(skb, rxsc_list);
 			goto nla_put_failure;
 		}
+<<<<<<< HEAD
 		if (copy_rx_sc_stats(skb, rx_sc->stats)) {
+=======
+		memset(&rx_sc_stats, 0, sizeof(rx_sc_stats));
+		get_rx_sc_stats(dev, rx_sc, &rx_sc_stats);
+		if (copy_rx_sc_stats(skb, &rx_sc_stats)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nla_nest_cancel(skb, attr);
 			nla_nest_cancel(skb, rxsc_nest);
 			nla_nest_cancel(skb, rxsc_list);
@@ -2561,7 +3464,13 @@ static int dump_secy(struct macsec_secy *secy, struct net_device *dev,
 				nla_nest_cancel(skb, rxsc_list);
 				goto nla_put_failure;
 			}
+<<<<<<< HEAD
 			if (copy_rx_sa_stats(skb, rx_sa->stats)) {
+=======
+			memset(&rx_sa_stats, 0, sizeof(rx_sa_stats));
+			get_rx_sa_stats(dev, rx_sc, i, rx_sa, &rx_sa_stats);
+			if (copy_rx_sa_stats(skb, &rx_sa_stats)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nla_nest_cancel(skb, attr);
 				nla_nest_cancel(skb, rxsa_list);
 				nla_nest_cancel(skb, rxsc_nest);
@@ -2712,11 +3621,23 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
 {
 	struct macsec_dev *macsec = netdev_priv(dev);
 	struct macsec_secy *secy = &macsec->secy;
+<<<<<<< HEAD
 	struct pcpu_secy_stats *secy_stats;
 	int ret, len;
 
 	/* 10.5 */
 	if (!secy->protect_frames) {
+=======
+	struct macsec_tx_sc *tx_sc = &secy->tx_sc;
+	struct pcpu_secy_stats *secy_stats;
+	struct macsec_tx_sa *tx_sa;
+	int ret, len;
+
+	tx_sa = macsec_txsa_get(tx_sc->sa[tx_sc->encoding_sa]);
+
+	/* 10.5 */
+	if (!secy->protect_frames || macsec_get_ops(netdev_priv(dev), NULL)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		secy_stats = this_cpu_ptr(macsec->stats);
 		u64_stats_update_begin(&secy_stats->syncp);
 		secy_stats->stats.OutPktsUntagged++;
@@ -2750,14 +3671,32 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
 	return ret;
 }
 
+<<<<<<< HEAD
 #define MACSEC_FEATURES \
 	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST)
 static struct lock_class_key macsec_netdev_addr_lock_key;
 
+=======
+#define SW_MACSEC_FEATURES \
+	(NETIF_F_SG | NETIF_F_HIGHDMA | NETIF_F_FRAGLIST)
+static struct lock_class_key macsec_netdev_addr_lock_key;
+
+/* If h/w offloading is enabled, use real device features save for
+ *   VLAN_FEATURES - they require additional ops
+ *   HW_MACSEC - no reason to report it
+ */
+#define REAL_DEV_FEATURES(dev) \
+	((dev)->features & ~(NETIF_F_VLAN_FEATURES | NETIF_F_HW_MACSEC))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int macsec_dev_init(struct net_device *dev)
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
 	struct net_device *real_dev = macsec->real_dev;
+<<<<<<< HEAD
+=======
+	const struct macsec_ops *ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	dev->tstats = netdev_alloc_pcpu_stats(struct pcpu_sw_netstats);
@@ -2770,8 +3709,18 @@ static int macsec_dev_init(struct net_device *dev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	dev->features = real_dev->features & MACSEC_FEATURES;
 	dev->features |= NETIF_F_LLTX | NETIF_F_GSO_SOFTWARE;
+=======
+	ops = macsec_get_ops(netdev_priv(dev), NULL);
+	if (ops) {
+		dev->features = REAL_DEV_FEATURES(real_dev);
+	} else {
+		dev->features = real_dev->features & SW_MACSEC_FEATURES;
+		dev->features |= NETIF_F_LLTX | NETIF_F_GSO_SOFTWARE;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->needed_headroom = real_dev->needed_headroom +
 			       MACSEC_NEEDED_HEADROOM;
@@ -2799,8 +3748,18 @@ static netdev_features_t macsec_fix_features(struct net_device *dev,
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
 	struct net_device *real_dev = macsec->real_dev;
+<<<<<<< HEAD
 
 	features &= (real_dev->features & MACSEC_FEATURES) |
+=======
+	const struct macsec_ops *ops;
+
+	ops = macsec_get_ops(netdev_priv(dev), NULL);
+	if (ops)
+		return REAL_DEV_FEATURES(real_dev);
+
+	features &= (real_dev->features & SW_MACSEC_FEATURES) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    NETIF_F_GSO_SOFTWARE | NETIF_F_SOFT_FEATURES;
 	features |= NETIF_F_LLTX;
 
@@ -2811,11 +3770,18 @@ static int macsec_dev_open(struct net_device *dev)
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
 	struct net_device *real_dev = macsec->real_dev;
+<<<<<<< HEAD
 	int err;
 
 	if (!(real_dev->flags & IFF_UP))
 		return -ENETDOWN;
 
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+	int err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = dev_uc_add(real_dev, dev->dev_addr);
 	if (err < 0)
 		return err;
@@ -2832,6 +3798,18 @@ static int macsec_dev_open(struct net_device *dev)
 			goto clear_allmulti;
 	}
 
+<<<<<<< HEAD
+=======
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.secy = &macsec->secy;
+		err = macsec_offload(ops->mdo_dev_open, &ctx);
+		if (err)
+			goto clear_allmulti;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (netif_carrier_ok(real_dev))
 		netif_carrier_on(dev);
 
@@ -2849,9 +3827,24 @@ static int macsec_dev_stop(struct net_device *dev)
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
 	struct net_device *real_dev = macsec->real_dev;
+<<<<<<< HEAD
 
 	netif_carrier_off(dev);
 
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+
+	netif_carrier_off(dev);
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.secy = &macsec->secy;
+		macsec_offload(ops->mdo_dev_stop, &ctx);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_mc_unsync(real_dev, dev);
 	dev_uc_unsync(real_dev, dev);
 
@@ -2889,10 +3882,23 @@ static void macsec_dev_set_rx_mode(struct net_device *dev)
 	dev_uc_sync(real_dev, dev);
 }
 
+<<<<<<< HEAD
+=======
+static sci_t dev_to_sci(struct net_device *dev, __be16 port)
+{
+	return make_sci(dev->dev_addr, port);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int macsec_set_mac_address(struct net_device *dev, void *p)
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
 	struct net_device *real_dev = macsec->real_dev;
+<<<<<<< HEAD
+=======
+	const struct macsec_ops *ops;
+	struct macsec_context ctx;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sockaddr *addr = p;
 	int err;
 
@@ -2910,6 +3916,19 @@ static int macsec_set_mac_address(struct net_device *dev, void *p)
 
 out:
 	ether_addr_copy(dev->dev_addr, addr->sa_data);
+<<<<<<< HEAD
+=======
+
+	macsec->secy.sci = dev_to_sci(dev, MACSEC_PORT_ES);
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.secy = &macsec->secy;
+		return macsec_offload(ops->mdo_upd_secy, &ctx);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2992,6 +4011,10 @@ static const struct device_type macsec_type = {
 
 static const struct nla_policy macsec_rtnl_policy[IFLA_MACSEC_MAX + 1] = {
 	[IFLA_MACSEC_SCI] = { .type = NLA_U64 },
+<<<<<<< HEAD
+=======
+	[IFLA_MACSEC_PORT] = { .type = NLA_U16 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[IFLA_MACSEC_ICV_LEN] = { .type = NLA_U8 },
 	[IFLA_MACSEC_CIPHER_SUITE] = { .type = NLA_U64 },
 	[IFLA_MACSEC_WINDOW] = { .type = NLA_U32 },
@@ -3008,12 +4031,18 @@ static const struct nla_policy macsec_rtnl_policy[IFLA_MACSEC_MAX + 1] = {
 static void macsec_free_netdev(struct net_device *dev)
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
+<<<<<<< HEAD
 	struct net_device *real_dev = macsec->real_dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	free_percpu(macsec->stats);
 	free_percpu(macsec->secy.tx_sc.stats);
 
+<<<<<<< HEAD
 	dev_put(real_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void macsec_setup(struct net_device *dev)
@@ -3030,8 +4059,13 @@ static void macsec_setup(struct net_device *dev)
 	eth_zero_addr(dev->broadcast);
 }
 
+<<<<<<< HEAD
 static int macsec_changelink_common(struct net_device *dev,
 				    struct nlattr *data[])
+=======
+static void macsec_changelink_common(struct net_device *dev,
+				     struct nlattr *data[])
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct macsec_secy *secy;
 	struct macsec_tx_sc *tx_sc;
@@ -3071,6 +4105,7 @@ static int macsec_changelink_common(struct net_device *dev,
 
 	if (data[IFLA_MACSEC_VALIDATION])
 		secy->validate_frames = nla_get_u8(data[IFLA_MACSEC_VALIDATION]);
+<<<<<<< HEAD
 
 	if (data[IFLA_MACSEC_CIPHER_SUITE]) {
 		switch (nla_get_u64(data[IFLA_MACSEC_CIPHER_SUITE])) {
@@ -3087,12 +4122,21 @@ static int macsec_changelink_common(struct net_device *dev,
 	}
 
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int macsec_changelink(struct net_device *dev, struct nlattr *tb[],
 			     struct nlattr *data[],
 			     struct netlink_ext_ack *extack)
 {
+<<<<<<< HEAD
+=======
+	struct macsec_dev *macsec = macsec_priv(dev);
+	struct macsec_context ctx;
+	const struct macsec_ops *ops;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data)
 		return 0;
 
@@ -3102,7 +4146,20 @@ static int macsec_changelink(struct net_device *dev, struct nlattr *tb[],
 	    data[IFLA_MACSEC_PORT])
 		return -EINVAL;
 
+<<<<<<< HEAD
 	return macsec_changelink_common(dev, data);
+=======
+	macsec_changelink_common(dev, data);
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.secy = &macsec->secy;
+		return macsec_offload(ops->mdo_upd_secy, &ctx);
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void macsec_del_dev(struct macsec_dev *macsec)
@@ -3144,6 +4201,18 @@ static void macsec_dellink(struct net_device *dev, struct list_head *head)
 	struct macsec_dev *macsec = macsec_priv(dev);
 	struct net_device *real_dev = macsec->real_dev;
 	struct macsec_rxh_data *rxd = macsec_data_rtnl(real_dev);
+<<<<<<< HEAD
+=======
+	struct macsec_context ctx;
+	const struct macsec_ops *ops;
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.secy = &macsec->secy;
+		macsec_offload(ops->mdo_del_secy, &ctx);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	macsec_common_dellink(dev, head);
 
@@ -3193,11 +4262,14 @@ static bool sci_exists(struct net_device *dev, sci_t sci)
 	return false;
 }
 
+<<<<<<< HEAD
 static sci_t dev_to_sci(struct net_device *dev, __be16 port)
 {
 	return make_sci(dev->dev_addr, port);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int macsec_add_dev(struct net_device *dev, sci_t sci, u8 icv_len)
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
@@ -3240,17 +4312,33 @@ static int macsec_newlink(struct net *net, struct net_device *dev,
 			  struct netlink_ext_ack *extack)
 {
 	struct macsec_dev *macsec = macsec_priv(dev);
+<<<<<<< HEAD
 	struct net_device *real_dev;
 	int err;
 	sci_t sci;
 	u8 icv_len = DEFAULT_ICV_LEN;
 	rx_handler_func_t *rx_handler;
+=======
+	struct macsec_context ctx;
+	const struct macsec_ops *ops;
+	u8 icv_len = DEFAULT_ICV_LEN;
+	rx_handler_func_t *rx_handler;
+	u8 icv_len = DEFAULT_ICV_LEN;
+	struct net_device *real_dev;
+	int err, mtu;
+	sci_t sci;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tb[IFLA_LINK])
 		return -EINVAL;
 	real_dev = __dev_get_by_index(net, nla_get_u32(tb[IFLA_LINK]));
 	if (!real_dev)
 		return -ENODEV;
+<<<<<<< HEAD
+=======
+	if (real_dev->type != ARPHRD_ETHER)
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->priv_flags |= IFF_MACSEC;
 
@@ -3258,7 +4346,15 @@ static int macsec_newlink(struct net *net, struct net_device *dev,
 
 	if (data && data[IFLA_MACSEC_ICV_LEN])
 		icv_len = nla_get_u8(data[IFLA_MACSEC_ICV_LEN]);
+<<<<<<< HEAD
 	dev->mtu = real_dev->mtu - icv_len - macsec_extra_len(true);
+=======
+	mtu = real_dev->mtu - icv_len - macsec_extra_len(true);
+	if (mtu < 0)
+		dev->mtu = 0;
+	else
+		dev->mtu = mtu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rx_handler = rtnl_dereference(real_dev->rx_handler);
 	if (rx_handler && rx_handler != macsec_handle_frame)
@@ -3268,15 +4364,22 @@ static int macsec_newlink(struct net *net, struct net_device *dev,
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	dev_hold(real_dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	macsec->nest_level = dev_get_nest_level(real_dev) + 1;
 	netdev_lockdep_set_classes(dev);
 	lockdep_set_class_and_subclass(&dev->addr_list_lock,
 				       &macsec_netdev_addr_lock_key,
 				       macsec_get_nest_level(dev));
 
+<<<<<<< HEAD
 	err = netdev_upper_dev_link(real_dev, dev, extack);
+=======
+	err = netdev_upper_dev_link(real_dev, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto unregister;
 
@@ -3299,8 +4402,19 @@ static int macsec_newlink(struct net *net, struct net_device *dev,
 	if (err)
 		goto unlink;
 
+<<<<<<< HEAD
 	if (data) {
 		err = macsec_changelink_common(dev, data);
+=======
+	if (data)
+		macsec_changelink_common(dev, data);
+
+	/* If h/w offloading is available, propagate to the device */
+	ops = macsec_get_ops(netdev_priv(dev), &ctx);
+	if (ops) {
+		ctx.secy = &macsec->secy;
+		err = macsec_offload(ops->mdo_add_secy, &ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto del_dev;
 	}
@@ -3309,6 +4423,12 @@ static int macsec_newlink(struct net *net, struct net_device *dev,
 	if (err < 0)
 		goto del_dev;
 
+<<<<<<< HEAD
+=======
+	netif_stacked_transfer_operstate(real_dev, dev);
+	linkwatch_fire_event(dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	macsec_generation++;
 
 	return 0;
@@ -3352,9 +4472,14 @@ static int macsec_validate_attr(struct nlattr *tb[], struct nlattr *data[],
 	}
 
 	switch (csid) {
+<<<<<<< HEAD
 	case MACSEC_CIPHER_ID_GCM_AES_128:
 	case MACSEC_CIPHER_ID_GCM_AES_256:
 	case MACSEC_DEFAULT_CIPHER_ID:
+=======
+	case MACSEC_DEFAULT_CIPHER_ID:
+	case MACSEC_DEFAULT_CIPHER_ALT:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (icv_len < MACSEC_MIN_ICV_LEN ||
 		    icv_len > MACSEC_STD_ICV_LEN)
 			return -EINVAL;
@@ -3423,6 +4548,7 @@ static int macsec_fill_info(struct sk_buff *skb,
 {
 	struct macsec_secy *secy = &macsec_priv(dev)->secy;
 	struct macsec_tx_sc *tx_sc = &secy->tx_sc;
+<<<<<<< HEAD
 	u64 csid;
 
 	switch (secy->key_len) {
@@ -3435,12 +4561,18 @@ static int macsec_fill_info(struct sk_buff *skb,
 	default:
 		goto nla_put_failure;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (nla_put_sci(skb, IFLA_MACSEC_SCI, secy->sci,
 			IFLA_MACSEC_PAD) ||
 	    nla_put_u8(skb, IFLA_MACSEC_ICV_LEN, secy->icv_len) ||
 	    nla_put_u64_64bit(skb, IFLA_MACSEC_CIPHER_SUITE,
+<<<<<<< HEAD
 			      csid, IFLA_MACSEC_PAD) ||
+=======
+			      MACSEC_DEFAULT_CIPHER_ID, IFLA_MACSEC_PAD) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    nla_put_u8(skb, IFLA_MACSEC_ENCODING_SA, tx_sc->encoding_sa) ||
 	    nla_put_u8(skb, IFLA_MACSEC_ENCRYPT, tx_sc->encrypt) ||
 	    nla_put_u8(skb, IFLA_MACSEC_PROTECT, secy->protect_frames) ||
@@ -3493,6 +4625,23 @@ static int macsec_notify(struct notifier_block *this, unsigned long event,
 		return NOTIFY_DONE;
 
 	switch (event) {
+<<<<<<< HEAD
+=======
+	case NETDEV_DOWN:
+	case NETDEV_UP:
+	case NETDEV_CHANGE: {
+		struct macsec_dev *m, *n;
+		struct macsec_rxh_data *rxd;
+
+		rxd = macsec_data_rtnl(real_dev);
+		list_for_each_entry_safe(m, n, &rxd->secys, secys) {
+			struct net_device *dev = m->secy.netdev;
+
+			netif_stacked_transfer_operstate(real_dev, dev);
+		}
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case NETDEV_UNREGISTER: {
 		struct macsec_dev *m, *n;
 		struct macsec_rxh_data *rxd;

@@ -2,7 +2,10 @@
 #include <dt-bindings/clock/bcm2835.h>
 #include <dt-bindings/clock/bcm2835-aux.h>
 #include <dt-bindings/gpio/gpio.h>
+<<<<<<< HEAD
 #include <dt-bindings/interrupt-controller/irq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* firmware-provided startup stubs live here, where the secondary CPUs are
  * spinning.
@@ -39,7 +42,11 @@
 
 			trips {
 				cpu-crit {
+<<<<<<< HEAD
 					temperature	= <80000>;
+=======
+					temperature	= <90000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					hysteresis	= <0>;
 					type		= "critical";
 				};
@@ -66,12 +73,15 @@
 			clock-frequency = <1000000>;
 		};
 
+<<<<<<< HEAD
 		txp@7e004000 {
 			compatible = "brcm,bcm2835-txp";
 			reg = <0x7e004000 0x20>;
 			interrupts = <1 11>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma: dma@7e007000 {
 			compatible = "brcm,bcm2835-dma";
 			reg = <0x7e007000 0xf00>;
@@ -142,7 +152,10 @@
 		rng@7e104000 {
 			compatible = "brcm,bcm2835-rng";
 			reg = <0x7e104000 0x10>;
+<<<<<<< HEAD
 			interrupts = <2 29>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		mailbox: mailbox@7e00b880 {
@@ -230,7 +243,10 @@
 			gpclk2_gpio43: gpclk2_gpio43 {
 				brcm,pins = <43>;
 				brcm,function = <BCM2835_FSEL_ALT0>;
+<<<<<<< HEAD
 				brcm,pull = <BCM2835_PUD_OFF>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			i2c0_gpio0: i2c0_gpio0 {
@@ -343,12 +359,18 @@
 			uart0_ctsrts_gpio30: uart0_ctsrts_gpio30 {
 				brcm,pins = <30 31>;
 				brcm,function = <BCM2835_FSEL_ALT3>;
+<<<<<<< HEAD
 				brcm,pull = <BCM2835_PUD_UP BCM2835_PUD_OFF>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 			uart0_gpio32: uart0_gpio32 {
 				brcm,pins = <32 33>;
 				brcm,function = <BCM2835_FSEL_ALT3>;
+<<<<<<< HEAD
 				brcm,pull = <BCM2835_PUD_OFF BCM2835_PUD_UP>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 			uart0_gpio36: uart0_gpio36 {
 				brcm,pins = <36 37>;
@@ -448,6 +470,7 @@
 			interrupts = <2 14>; /* pwa1 */
 		};
 
+<<<<<<< HEAD
 		dpi: dpi@7e208000 {
 			compatible = "brcm,bcm2835-dpi";
 			reg = <0x7e208000 0x8c>;
@@ -459,6 +482,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dsi0: dsi@7e209000 {
 			compatible = "brcm,bcm2835-dsi0";
 			reg = <0x7e209000 0x78>;
@@ -476,6 +501,10 @@
 					     "dsi0_ddr2",
 					     "dsi0_ddr";
 
+<<<<<<< HEAD
+=======
+			status = "disabled";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		thermal: thermal@7e212000 {
@@ -486,7 +515,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		aux: aux@7e215000 {
+=======
+		aux: aux@0x7e215000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "brcm,bcm2835-aux";
 			#clock-cells = <1>;
 			reg = <0x7e215000 0x8>;
@@ -661,6 +694,9 @@
 
 	usbphy: phy {
 		compatible = "usb-nop-xceiv";
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

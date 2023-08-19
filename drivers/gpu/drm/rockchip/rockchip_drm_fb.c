@@ -18,13 +18,59 @@
 #include <drm/drm_atomic.h>
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_crtc_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "rockchip_drm_drv.h"
 #include "rockchip_drm_fb.h"
 #include "rockchip_drm_gem.h"
 #include "rockchip_drm_psr.h"
 
+<<<<<<< HEAD
+=======
+#define to_rockchip_fb(x) container_of(x, struct rockchip_drm_fb, fb)
+
+struct rockchip_drm_fb {
+	struct drm_framebuffer fb;
+	struct drm_gem_object *obj[ROCKCHIP_MAX_FB_BUFFER];
+};
+
+struct drm_gem_object *rockchip_fb_get_gem_obj(struct drm_framebuffer *fb,
+					       unsigned int plane)
+{
+	struct rockchip_drm_fb *rk_fb = to_rockchip_fb(fb);
+
+	if (plane >= ROCKCHIP_MAX_FB_BUFFER)
+		return NULL;
+
+	return rk_fb->obj[plane];
+}
+
+static void rockchip_drm_fb_destroy(struct drm_framebuffer *fb)
+{
+	struct rockchip_drm_fb *rockchip_fb = to_rockchip_fb(fb);
+	int i;
+
+	for (i = 0; i < ROCKCHIP_MAX_FB_BUFFER; i++)
+		drm_gem_object_put_unlocked(rockchip_fb->obj[i]);
+
+	drm_framebuffer_cleanup(fb);
+	kfree(rockchip_fb);
+}
+
+static int rockchip_drm_fb_create_handle(struct drm_framebuffer *fb,
+					 struct drm_file *file_priv,
+					 unsigned int *handle)
+{
+	struct rockchip_drm_fb *rockchip_fb = to_rockchip_fb(fb);
+
+	return drm_gem_handle_create(file_priv,
+				     rockchip_fb->obj[0], handle);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rockchip_drm_fb_dirty(struct drm_framebuffer *fb,
 				 struct drm_file *file,
 				 unsigned int flags, unsigned int color,
@@ -36,6 +82,7 @@ static int rockchip_drm_fb_dirty(struct drm_framebuffer *fb,
 }
 
 static const struct drm_framebuffer_funcs rockchip_drm_fb_funcs = {
+<<<<<<< HEAD
 	.destroy       = drm_gem_fb_destroy,
 	.create_handle = drm_gem_fb_create_handle,
 	.dirty	       = rockchip_drm_fb_dirty,
@@ -68,13 +115,51 @@ rockchip_fb_alloc(struct drm_device *dev, const struct drm_mode_fb_cmd2 *mode_cm
 	}
 
 	return fb;
+=======
+	.destroy	= rockchip_drm_fb_destroy,
+	.create_handle	= rockchip_drm_fb_create_handle,
+	.dirty		= rockchip_drm_fb_dirty,
+};
+
+static struct rockchip_drm_fb *
+rockchip_fb_alloc(struct drm_device *dev, const struct drm_mode_fb_cmd2 *mode_cmd,
+		  struct drm_gem_object **obj, unsigned int num_planes)
+{
+	struct rockchip_drm_fb *rockchip_fb;
+	int ret;
+	int i;
+
+	rockchip_fb = kzalloc(sizeof(*rockchip_fb), GFP_KERNEL);
+	if (!rockchip_fb)
+		return ERR_PTR(-ENOMEM);
+
+	drm_helper_mode_fill_fb_struct(dev, &rockchip_fb->fb, mode_cmd);
+
+	for (i = 0; i < num_planes; i++)
+		rockchip_fb->obj[i] = obj[i];
+
+	ret = drm_framebuffer_init(dev, &rockchip_fb->fb,
+				   &rockchip_drm_fb_funcs);
+	if (ret) {
+		dev_err(dev->dev, "Failed to initialize framebuffer: %d\n",
+			ret);
+		kfree(rockchip_fb);
+		return ERR_PTR(ret);
+	}
+
+	return rockchip_fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct drm_framebuffer *
 rockchip_user_fb_create(struct drm_device *dev, struct drm_file *file_priv,
 			const struct drm_mode_fb_cmd2 *mode_cmd)
 {
+<<<<<<< HEAD
 	struct drm_framebuffer *fb;
+=======
+	struct rockchip_drm_fb *rockchip_fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_gem_object *objs[ROCKCHIP_MAX_FB_BUFFER];
 	struct drm_gem_object *obj;
 	unsigned int hsub;
@@ -95,8 +180,12 @@ rockchip_user_fb_create(struct drm_device *dev, struct drm_file *file_priv,
 
 		obj = drm_gem_object_lookup(file_priv, mode_cmd->handles[i]);
 		if (!obj) {
+<<<<<<< HEAD
 			DRM_DEV_ERROR(dev->dev,
 				      "Failed to lookup GEM object\n");
+=======
+			dev_err(dev->dev, "Failed to lookup GEM object\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -ENXIO;
 			goto err_gem_object_unreference;
 		}
@@ -113,6 +202,7 @@ rockchip_user_fb_create(struct drm_device *dev, struct drm_file *file_priv,
 		objs[i] = obj;
 	}
 
+<<<<<<< HEAD
 	fb = rockchip_fb_alloc(dev, mode_cmd, objs, i);
 	if (IS_ERR(fb)) {
 		ret = PTR_ERR(fb);
@@ -120,6 +210,15 @@ rockchip_user_fb_create(struct drm_device *dev, struct drm_file *file_priv,
 	}
 
 	return fb;
+=======
+	rockchip_fb = rockchip_fb_alloc(dev, mode_cmd, objs, i);
+	if (IS_ERR(rockchip_fb)) {
+		ret = PTR_ERR(rockchip_fb);
+		goto err_gem_object_unreference;
+	}
+
+	return &rockchip_fb->fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_gem_object_unreference:
 	for (i--; i >= 0; i--)
@@ -127,6 +226,7 @@ err_gem_object_unreference:
 	return ERR_PTR(ret);
 }
 
+<<<<<<< HEAD
 static void
 rockchip_drm_psr_inhibit_get_state(struct drm_atomic_state *state)
 {
@@ -188,11 +288,26 @@ rockchip_atomic_helper_commit_tail_rpm(struct drm_atomic_state *old_state)
 
 static const struct drm_mode_config_helper_funcs rockchip_mode_config_helpers = {
 	.atomic_commit_tail = rockchip_atomic_helper_commit_tail_rpm,
+=======
+static void rockchip_drm_output_poll_changed(struct drm_device *dev)
+{
+	struct rockchip_drm_private *private = dev->dev_private;
+
+	drm_fb_helper_hotplug_event(&private->fbdev_helper);
+}
+
+static const struct drm_mode_config_helper_funcs rockchip_mode_config_helpers = {
+	.atomic_commit_tail = drm_atomic_helper_commit_tail_rpm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct drm_mode_config_funcs rockchip_drm_mode_config_funcs = {
 	.fb_create = rockchip_user_fb_create,
+<<<<<<< HEAD
 	.output_poll_changed = drm_fb_helper_output_poll_changed,
+=======
+	.output_poll_changed = rockchip_drm_output_poll_changed,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_check = drm_atomic_helper_check,
 	.atomic_commit = drm_atomic_helper_commit,
 };
@@ -202,6 +317,7 @@ rockchip_drm_framebuffer_init(struct drm_device *dev,
 			      const struct drm_mode_fb_cmd2 *mode_cmd,
 			      struct drm_gem_object *obj)
 {
+<<<<<<< HEAD
 	struct drm_framebuffer *fb;
 
 	fb = rockchip_fb_alloc(dev, mode_cmd, &obj, 1);
@@ -209,6 +325,15 @@ rockchip_drm_framebuffer_init(struct drm_device *dev,
 		return ERR_CAST(fb);
 
 	return fb;
+=======
+	struct rockchip_drm_fb *rockchip_fb;
+
+	rockchip_fb = rockchip_fb_alloc(dev, mode_cmd, &obj, 1);
+	if (IS_ERR(rockchip_fb))
+		return ERR_CAST(rockchip_fb);
+
+	return &rockchip_fb->fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void rockchip_drm_mode_config_init(struct drm_device *dev)

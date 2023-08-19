@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /**************************************************************************
  *
  * Copyright 2011-2014 VMware, Inc., Palo Alto, CA., USA
+=======
+/**************************************************************************
+ *
+ * Copyright © 2011-2014 VMware, Inc., Palo Alto, CA., USA
+ * All Rights Reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -175,6 +182,10 @@ static long vmw_fence_wait(struct dma_fence *f, bool intr, signed long timeout)
 	struct vmw_private *dev_priv = fman->dev_priv;
 	struct vmwgfx_wait_cb cb;
 	long ret = timeout;
+<<<<<<< HEAD
+=======
+	unsigned long irq_flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(vmw_fence_obj_signaled(fence)))
 		return timeout;
@@ -182,7 +193,11 @@ static long vmw_fence_wait(struct dma_fence *f, bool intr, signed long timeout)
 	vmw_fifo_ping_host(dev_priv, SVGA_SYNC_GENERIC);
 	vmw_seqno_waiter_add(dev_priv);
 
+<<<<<<< HEAD
 	spin_lock(f->lock);
+=======
+	spin_lock_irqsave(f->lock, irq_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (intr && signal_pending(current)) {
 		ret = -ERESTARTSYS;
@@ -193,6 +208,7 @@ static long vmw_fence_wait(struct dma_fence *f, bool intr, signed long timeout)
 	cb.task = current;
 	list_add(&cb.base.node, &f->cb_list);
 
+<<<<<<< HEAD
 	for (;;) {
 		__vmw_fences_update(fman);
 
@@ -201,10 +217,18 @@ static long vmw_fence_wait(struct dma_fence *f, bool intr, signed long timeout)
 		 * DMA_FENCE_FLAG_SIGNALED_BIT + wakeup is protected by the
 		 * fence spinlock.
 		 */
+=======
+	while (ret > 0) {
+		__vmw_fences_update(fman);
+		if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &f->flags))
+			break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (intr)
 			__set_current_state(TASK_INTERRUPTIBLE);
 		else
 			__set_current_state(TASK_UNINTERRUPTIBLE);
+<<<<<<< HEAD
 
 		if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &f->flags)) {
 			if (ret == 0 && timeout > 0)
@@ -232,6 +256,23 @@ static long vmw_fence_wait(struct dma_fence *f, bool intr, signed long timeout)
 
 out:
 	spin_unlock(f->lock);
+=======
+		spin_unlock_irqrestore(f->lock, irq_flags);
+
+		ret = schedule_timeout(ret);
+
+		spin_lock_irqsave(f->lock, irq_flags);
+		if (ret > 0 && intr && signal_pending(current))
+			ret = -ERESTARTSYS;
+	}
+
+	if (!list_empty(&cb.base.node))
+		list_del(&cb.base.node);
+	__set_current_state(TASK_RUNNING);
+
+out:
+	spin_unlock_irqrestore(f->lock, irq_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vmw_seqno_waiter_remove(dev_priv);
 
@@ -602,10 +643,13 @@ int vmw_user_fence_create(struct drm_file *file_priv,
 	struct vmw_user_fence *ufence;
 	struct vmw_fence_obj *tmp;
 	struct ttm_mem_global *mem_glob = vmw_mem_glob(fman->dev_priv);
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = {
 		.interruptible = false,
 		.no_wait_gpu = false
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/*
@@ -614,7 +658,11 @@ int vmw_user_fence_create(struct drm_file *file_priv,
 	 */
 
 	ret = ttm_mem_global_alloc(mem_glob, fman->user_fence_size,
+<<<<<<< HEAD
 				   &ctx);
+=======
+				   false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret != 0))
 		return ret;
 
@@ -915,12 +963,20 @@ static void vmw_event_fence_action_seq_passed(struct vmw_fence_action *action)
 	spin_lock_irq(&dev->event_lock);
 
 	if (likely(eaction->tv_sec != NULL)) {
+<<<<<<< HEAD
 		struct timespec64 ts;
 
 		ktime_get_ts64(&ts);
 		/* monotonic time, so no y2038 overflow */
 		*eaction->tv_sec = ts.tv_sec;
 		*eaction->tv_usec = ts.tv_nsec / NSEC_PER_USEC;
+=======
+		struct timeval tv;
+
+		do_gettimeofday(&tv);
+		*eaction->tv_sec = tv.tv_sec;
+		*eaction->tv_usec = tv.tv_usec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	drm_send_event_locked(dev, eaction->event);

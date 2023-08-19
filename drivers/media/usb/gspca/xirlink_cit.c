@@ -704,8 +704,12 @@ static int cit_read_reg(struct gspca_dev *gspca_dev, u16 index, int verbose)
 	}
 
 	if (verbose)
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "Register %04x value: %02x\n",
 			  index, buf[0]);
+=======
+		PDEBUG(D_PROBE, "Register %04x value: %02x", index, buf[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1452,6 +1456,12 @@ static int cit_get_packet_size(struct gspca_dev *gspca_dev)
 		return -EIO;
 	}
 
+<<<<<<< HEAD
+=======
+	if (alt->desc.bNumEndpoints < 1)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return le16_to_cpu(alt->endpoint[0].desc.wMaxPacketSize);
 }
 
@@ -1472,11 +1482,18 @@ static int cit_get_clock_div(struct gspca_dev *gspca_dev)
 			fps[clock_div - 1] * 3 / 2)
 		clock_div--;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE,
 		  "PacketSize: %d, res: %dx%d -> using clockdiv: %d (%d fps)\n",
 		  packet_size,
 		  gspca_dev->pixfmt.width, gspca_dev->pixfmt.height,
 		  clock_div, fps[clock_div]);
+=======
+	PDEBUG(D_PROBE,
+	       "PacketSize: %d, res: %dx%d -> using clockdiv: %d (%d fps)",
+	       packet_size, gspca_dev->pixfmt.width, gspca_dev->pixfmt.height,
+	       clock_div, fps[clock_div]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return clock_div;
 }
@@ -2636,6 +2653,10 @@ static int sd_start(struct gspca_dev *gspca_dev)
 
 static int sd_isoc_init(struct gspca_dev *gspca_dev)
 {
+<<<<<<< HEAD
+=======
+	struct usb_interface_cache *intfc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct usb_host_interface *alt;
 	int max_packet_size;
 
@@ -2651,8 +2672,22 @@ static int sd_isoc_init(struct gspca_dev *gspca_dev)
 		break;
 	}
 
+<<<<<<< HEAD
 	/* Start isoc bandwidth "negotiation" at max isoc bandwidth */
 	alt = &gspca_dev->dev->actconfig->intf_cache[0]->altsetting[1];
+=======
+	intfc = gspca_dev->dev->actconfig->intf_cache[0];
+
+	if (intfc->num_altsetting < 2)
+		return -ENODEV;
+
+	alt = &intfc->altsetting[1];
+
+	if (alt->desc.bNumEndpoints < 1)
+		return -ENODEV;
+
+	/* Start isoc bandwidth "negotiation" at max isoc bandwidth */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	alt->endpoint[0].desc.wMaxPacketSize = cpu_to_le16(max_packet_size);
 
 	return 0;
@@ -2675,6 +2710,12 @@ static int sd_isoc_nego(struct gspca_dev *gspca_dev)
 		break;
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Existence of altsetting and endpoint was verified in sd_isoc_init()
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	alt = &gspca_dev->dev->actconfig->intf_cache[0]->altsetting[1];
 	packet_size = le16_to_cpu(alt->endpoint[0].desc.wMaxPacketSize);
 	if (packet_size <= min_packet_size)
@@ -2867,6 +2908,7 @@ static u8 *cit_find_sof(struct gspca_dev *gspca_dev, u8 *data, int len)
 				sd->sof_read = 0;
 				if (data[i] == 0xff) {
 					if (i >= 4)
+<<<<<<< HEAD
 						gspca_dbg(gspca_dev, D_FRAM,
 							  "header found at offset: %d: %02x %02x 00 %3ph\n\n",
 							  i - 1,
@@ -2878,6 +2920,19 @@ static u8 *cit_find_sof(struct gspca_dev *gspca_dev, u8 *data, int len)
 							  "header found at offset: %d: 00 %3ph\n\n",
 							  i - 1,
 							  &data[i]);
+=======
+						PDEBUG(D_FRAM,
+						       "header found at offset: %d: %02x %02x 00 %3ph\n",
+						       i - 1,
+						       data[i - 4],
+						       data[i - 3],
+						       &data[i]);
+					else
+						PDEBUG(D_FRAM,
+						       "header found at offset: %d: 00 %3ph\n",
+						       i - 1,
+						       &data[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return data + i + (sd->sof_len - 1);
 				}
 				break;

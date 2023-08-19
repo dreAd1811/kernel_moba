@@ -156,7 +156,11 @@ The classic stack buffer overflow involves writing past the expected end
 of a variable stored on the stack, ultimately writing a controlled value
 to the stack frame's stored return address. The most widely used defense
 is the presence of a stack canary between the stack variables and the
+<<<<<<< HEAD
 return address (``CONFIG_STACKPROTECTOR``), which is verified just before
+=======
+return address (``CONFIG_CC_STACKPROTECTOR``), which is verified just before
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 the function returns. Other defenses include things like shadow stacks.
 
 Stack depth overflow
@@ -270,6 +274,7 @@ attacks, it is important to defend against exposure of both kernel memory
 addresses and kernel memory contents (since they may contain kernel
 addresses or other sensitive things like canary values).
 
+<<<<<<< HEAD
 Kernel addresses
 ----------------
 
@@ -285,6 +290,8 @@ addresses printed with the specifier %p are hashed before printing.
 [*] If KALLSYMS is enabled and symbol lookup fails, the raw address is
 printed. If KALLSYMS is not enabled the raw address is printed.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Unique identifiers
 ------------------
 

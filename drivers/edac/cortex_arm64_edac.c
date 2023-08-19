@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2018, The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -614,7 +618,11 @@ static void arm64_erp_local_handler(void *info)
 	default:
 		edac_printk(KERN_CRIT, EDAC_CPU, "Unknown CPU Part Number in MIDR: %#04x (%#08x)\n",
 						 partnum, cpuid);
+<<<<<<< HEAD
 	}
+=======
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Acklowledge internal error in L2ECTLR */
 	spin_lock_irqsave(&l2ectlr_lock, flags2);
@@ -781,7 +789,11 @@ static void check_sbe_event(struct erp_drvdata *drv)
 	case ARM_CPU_PART_KRYO2XX_GOLD:
 		kryo2xx_gold_parse_l2merrsr(&errdata);
 	break;
+<<<<<<< HEAD
 	}
+=======
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&local_handler_lock, flags);
 }
 
@@ -989,6 +1001,10 @@ static struct platform_driver arm64_cpu_erp_driver = {
 	.probe = arm64_cpu_erp_probe,
 	.driver = {
 		.name = "arm64_cpu_cache_erp",
+<<<<<<< HEAD
+=======
+		.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = of_match_ptr(arm64_cpu_erp_match_table),
 	},
 };

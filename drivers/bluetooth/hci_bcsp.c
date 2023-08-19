@@ -65,7 +65,10 @@ struct bcsp_struct {
 	u8	rxseq_txack;		/* rxseq == txack. */
 	u8	rxack;			/* Last packet sent by us that the peer ack'ed */
 	struct	timer_list tbcsp;
+<<<<<<< HEAD
 	struct	hci_uart *hu;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	enum {
 		BCSP_W4_PKT_DELIMITER,
@@ -606,6 +609,10 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
 			if (*ptr == 0xc0) {
 				BT_ERR("Short BCSP packet");
 				kfree_skb(bcsp->rx_skb);
+<<<<<<< HEAD
+=======
+				bcsp->rx_skb = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				bcsp->rx_state = BCSP_W4_PKT_START;
 				bcsp->rx_count = 0;
 			} else
@@ -621,6 +628,10 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
 			    bcsp->rx_skb->data[2])) != bcsp->rx_skb->data[3]) {
 				BT_ERR("Error in BCSP hdr checksum");
 				kfree_skb(bcsp->rx_skb);
+<<<<<<< HEAD
+=======
+				bcsp->rx_skb = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				bcsp->rx_state = BCSP_W4_PKT_DELIMITER;
 				bcsp->rx_count = 0;
 				continue;
@@ -645,6 +656,10 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
 				       bscp_get_crc(bcsp));
 
 				kfree_skb(bcsp->rx_skb);
+<<<<<<< HEAD
+=======
+				bcsp->rx_skb = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				bcsp->rx_state = BCSP_W4_PKT_DELIMITER;
 				bcsp->rx_count = 0;
 				continue;
@@ -698,10 +713,17 @@ static int bcsp_recv(struct hci_uart *hu, const void *data, int count)
 }
 
 	/* Arrange to retransmit all messages in the relq. */
+<<<<<<< HEAD
 static void bcsp_timed_event(struct timer_list *t)
 {
 	struct bcsp_struct *bcsp = from_timer(bcsp, t, tbcsp);
 	struct hci_uart *hu = bcsp->hu;
+=======
+static void bcsp_timed_event(unsigned long arg)
+{
+	struct hci_uart *hu = (struct hci_uart *)arg;
+	struct bcsp_struct *bcsp = hu->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *skb;
 	unsigned long flags;
 
@@ -730,12 +752,19 @@ static int bcsp_open(struct hci_uart *hu)
 		return -ENOMEM;
 
 	hu->priv = bcsp;
+<<<<<<< HEAD
 	bcsp->hu = hu;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb_queue_head_init(&bcsp->unack);
 	skb_queue_head_init(&bcsp->rel);
 	skb_queue_head_init(&bcsp->unrel);
 
+<<<<<<< HEAD
 	timer_setup(&bcsp->tbcsp, bcsp_timed_event, 0);
+=======
+	setup_timer(&bcsp->tbcsp, bcsp_timed_event, (u_long)hu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bcsp->rx_state = BCSP_W4_PKT_DELIMITER;
 

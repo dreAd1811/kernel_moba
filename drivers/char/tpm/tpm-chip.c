@@ -26,9 +26,14 @@
 #include <linux/spinlock.h>
 #include <linux/freezer.h>
 #include <linux/major.h>
+<<<<<<< HEAD
 #include <linux/tpm_eventlog.h>
 #include <linux/hw_random.h>
 #include "tpm.h"
+=======
+#include "tpm.h"
+#include "tpm_eventlog.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 DEFINE_IDR(dev_nums_idr);
 static DEFINE_MUTEX(idr_lock);
@@ -81,16 +86,29 @@ void tpm_put_ops(struct tpm_chip *chip)
 EXPORT_SYMBOL_GPL(tpm_put_ops);
 
 /**
+<<<<<<< HEAD
  * tpm_default_chip() - find a TPM chip and get a reference to it
  */
 struct tpm_chip *tpm_default_chip(void)
 {
 	struct tpm_chip *chip, *res = NULL;
 	int chip_num = 0;
+=======
+ * tpm_chip_find_get() - return tpm_chip for a given chip number
+ * @chip_num: id to find
+ *
+ * The return'd chip has been tpm_try_get_ops'd and must be released via
+ * tpm_put_ops
+ */
+struct tpm_chip *tpm_chip_find_get(int chip_num)
+{
+	struct tpm_chip *chip, *res = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int chip_prev;
 
 	mutex_lock(&idr_lock);
 
+<<<<<<< HEAD
 	do {
 		chip_prev = chip_num;
 		chip = idr_get_next(&dev_nums_idr, &chip_num);
@@ -100,11 +118,29 @@ struct tpm_chip *tpm_default_chip(void)
 			break;
 		}
 	} while (chip_prev != chip_num);
+=======
+	if (chip_num == TPM_ANY_NUM) {
+		chip_num = 0;
+		do {
+			chip_prev = chip_num;
+			chip = idr_get_next(&dev_nums_idr, &chip_num);
+			if (chip && !tpm_try_get_ops(chip)) {
+				res = chip;
+				break;
+			}
+		} while (chip_prev != chip_num);
+	} else {
+		chip = idr_find(&dev_nums_idr, chip_num);
+		if (chip && !tpm_try_get_ops(chip))
+			res = chip;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&idr_lock);
 
 	return res;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(tpm_default_chip);
 
 /**
@@ -142,6 +178,8 @@ struct tpm_chip *tpm_find_get_ops(struct tpm_chip *chip)
 		return NULL;
 	return chip;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * tpm_dev_release() - free chip memory and the device number
@@ -417,6 +455,7 @@ static int tpm_add_legacy_sysfs(struct tpm_chip *chip)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 static int tpm_hwrng_read(struct hwrng *rng, void *data, size_t max, bool wait)
 {
@@ -437,6 +476,8 @@ static int tpm_add_hwrng(struct tpm_chip *chip)
 	return hwrng_register(&chip->hwrng);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * tpm_chip_register() - create a character device for the TPM chip
  * @chip: TPM chip to use.
@@ -469,6 +510,7 @@ int tpm_chip_register(struct tpm_chip *chip)
 
 	tpm_add_ppi(chip);
 
+<<<<<<< HEAD
 	rc = tpm_add_hwrng(chip);
 	if (rc)
 		goto out_ppi;
@@ -476,6 +518,13 @@ int tpm_chip_register(struct tpm_chip *chip)
 	rc = tpm_add_char_device(chip);
 	if (rc)
 		goto out_hwrng;
+=======
+	rc = tpm_add_char_device(chip);
+	if (rc) {
+		tpm_bios_log_teardown(chip);
+		return rc;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = tpm_add_legacy_sysfs(chip);
 	if (rc) {
@@ -484,6 +533,7 @@ int tpm_chip_register(struct tpm_chip *chip)
 	}
 
 	return 0;
+<<<<<<< HEAD
 
 out_hwrng:
 	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM))
@@ -492,6 +542,8 @@ out_ppi:
 	tpm_bios_log_teardown(chip);
 
 	return rc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(tpm_chip_register);
 
@@ -511,8 +563,11 @@ EXPORT_SYMBOL_GPL(tpm_chip_register);
 void tpm_chip_unregister(struct tpm_chip *chip)
 {
 	tpm_del_legacy_sysfs(chip);
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_HW_RANDOM_TPM))
 		hwrng_unregister(&chip->hwrng);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tpm_bios_log_teardown(chip);
 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
 		cdev_device_del(&chip->cdevs, &chip->devs);

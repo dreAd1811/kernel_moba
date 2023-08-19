@@ -13,6 +13,10 @@
 #include <linux/string.h>
 #include <linux/types.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
+=======
+#include <asm/compat.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/diag.h>
 #include <asm/sclp.h>
 #include "hypfs.h"

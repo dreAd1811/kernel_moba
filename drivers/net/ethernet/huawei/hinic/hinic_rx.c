@@ -26,7 +26,10 @@
 #include <linux/skbuff.h>
 #include <linux/dma-mapping.h>
 #include <linux/prefetch.h>
+<<<<<<< HEAD
 #include <linux/cpumask.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/barrier.h>
 
 #include "hinic_common.h"
@@ -172,10 +175,18 @@ static int rx_alloc_pkts(struct hinic_rxq *rxq)
 	struct hinic_sge sge;
 	dma_addr_t dma_addr;
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	u16 prod_idx;
 	int i;
 
 	free_wqebbs = hinic_get_rq_free_wqebbs(rxq->rq);
+=======
+	int i, alloc_more;
+	u16 prod_idx;
+
+	free_wqebbs = hinic_get_rq_free_wqebbs(rxq->rq);
+	alloc_more = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Limit the allocation chunks */
 	if (free_wqebbs > nic_dev->rx_weight)
@@ -185,6 +196,10 @@ static int rx_alloc_pkts(struct hinic_rxq *rxq)
 		skb = rx_alloc_skb(rxq, &dma_addr);
 		if (!skb) {
 			netdev_err(rxq->netdev, "Failed to alloc Rx skb\n");
+<<<<<<< HEAD
+=======
+			alloc_more = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto skb_out;
 		}
 
@@ -194,6 +209,10 @@ static int rx_alloc_pkts(struct hinic_rxq *rxq)
 					  &prod_idx);
 		if (!rq_wqe) {
 			rx_free_skb(rxq, skb, dma_addr);
+<<<<<<< HEAD
+=======
+			alloc_more = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto skb_out;
 		}
 
@@ -209,7 +228,13 @@ skb_out:
 		hinic_rq_update(rxq->rq, prod_idx);
 	}
 
+<<<<<<< HEAD
 	tasklet_schedule(&rxq->rx_task);
+=======
+	if (alloc_more)
+		tasklet_schedule(&rxq->rx_task);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return i;
 }
 
@@ -353,7 +378,11 @@ static int rxq_recv(struct hinic_rxq *rxq, int budget)
 	}
 
 	if (pkts)
+<<<<<<< HEAD
 		tasklet_schedule(&rxq->rx_task); /* rx_alloc_pkts */
+=======
+		tasklet_schedule(&rxq->rx_task); /* hinic_rx_alloc_pkts */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u64_stats_update_begin(&rxq->rxq_stats.syncp);
 	rxq->rxq_stats.pkts += pkts;
@@ -413,8 +442,11 @@ static int rx_request_irq(struct hinic_rxq *rxq)
 	struct hinic_dev *nic_dev = netdev_priv(rxq->netdev);
 	struct hinic_hwdev *hwdev = nic_dev->hwdev;
 	struct hinic_rq *rq = rxq->rq;
+<<<<<<< HEAD
 	struct hinic_qp *qp;
 	struct cpumask mask;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	rx_add_napi(rxq);
@@ -430,16 +462,23 @@ static int rx_request_irq(struct hinic_rxq *rxq)
 		return err;
 	}
 
+<<<<<<< HEAD
 	qp = container_of(rq, struct hinic_qp, rq);
 	cpumask_set_cpu(qp->q_id % num_online_cpus(), &mask);
 	return irq_set_affinity_hint(rq->irq, &mask);
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rx_free_irq(struct hinic_rxq *rxq)
 {
 	struct hinic_rq *rq = rxq->rq;
 
+<<<<<<< HEAD
 	irq_set_affinity_hint(rq->irq, NULL);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_irq(rq->irq, rxq);
 	rx_del_napi(rxq);
 }

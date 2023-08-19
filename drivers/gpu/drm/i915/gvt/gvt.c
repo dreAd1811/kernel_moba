@@ -36,8 +36,11 @@
 
 #include "i915_drv.h"
 #include "gvt.h"
+<<<<<<< HEAD
 #include <linux/vfio.h>
 #include <linux/mdev.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct intel_gvt_host intel_gvt_host;
 
@@ -46,6 +49,7 @@ static const char * const supported_hypervisors[] = {
 	[INTEL_GVT_HYPERVISOR_KVM] = "KVM",
 };
 
+<<<<<<< HEAD
 static struct intel_vgpu_type *intel_gvt_find_vgpu_type(struct intel_gvt *gvt,
 		const char *name)
 {
@@ -169,6 +173,8 @@ static void intel_gvt_cleanup_vgpu_type_groups(struct intel_gvt *gvt)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct intel_gvt_ops intel_gvt_ops = {
 	.emulate_cfg_read = intel_vgpu_emulate_cfg_read,
 	.emulate_cfg_write = intel_vgpu_emulate_cfg_write,
@@ -176,6 +182,7 @@ static const struct intel_gvt_ops intel_gvt_ops = {
 	.emulate_mmio_write = intel_vgpu_emulate_mmio_write,
 	.vgpu_create = intel_gvt_create_vgpu,
 	.vgpu_destroy = intel_gvt_destroy_vgpu,
+<<<<<<< HEAD
 	.vgpu_release = intel_gvt_release_vgpu,
 	.vgpu_reset = intel_gvt_reset_vgpu,
 	.vgpu_activate = intel_gvt_activate_vgpu,
@@ -185,6 +192,11 @@ static const struct intel_gvt_ops intel_gvt_ops = {
 	.vgpu_query_plane = intel_vgpu_query_plane,
 	.vgpu_get_dmabuf = intel_vgpu_get_dmabuf,
 	.write_protect_handler = intel_vgpu_page_track_handler,
+=======
+	.vgpu_reset = intel_gvt_reset_vgpu,
+	.vgpu_activate = intel_gvt_activate_vgpu,
+	.vgpu_deactivate = intel_gvt_deactivate_vgpu,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -239,6 +251,7 @@ static void init_device_info(struct intel_gvt *gvt)
 	struct intel_gvt_device_info *info = &gvt->device_info;
 	struct pci_dev *pdev = gvt->dev_priv->drm.pdev;
 
+<<<<<<< HEAD
 	info->max_support_vgpus = 8;
 	info->cfg_space_size = PCI_CFG_SPACE_EXP_SIZE;
 	info->mmio_size = 2 * 1024 * 1024;
@@ -248,6 +261,20 @@ static void init_device_info(struct intel_gvt *gvt)
 	info->gtt_entry_size_shift = 3;
 	info->gmadr_bytes_in_cmd = 8;
 	info->max_surface_size = 36 * 1024 * 1024;
+=======
+	if (IS_BROADWELL(gvt->dev_priv) || IS_SKYLAKE(gvt->dev_priv)
+		|| IS_KABYLAKE(gvt->dev_priv)) {
+		info->max_support_vgpus = 8;
+		info->cfg_space_size = 256;
+		info->mmio_size = 2 * 1024 * 1024;
+		info->mmio_bar = 0;
+		info->gtt_start_offset = 8 * 1024 * 1024;
+		info->gtt_entry_size = 8;
+		info->gtt_entry_size_shift = 3;
+		info->gmadr_bytes_in_cmd = 8;
+		info->max_surface_size = 36 * 1024 * 1024;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->msi_cap_offset = pdev->msi_cap;
 }
 
@@ -269,8 +296,16 @@ static int gvt_service_thread(void *data)
 			continue;
 
 		if (test_and_clear_bit(INTEL_GVT_REQUEST_EMULATE_VBLANK,
+<<<<<<< HEAD
 					(void *)&gvt->service_request))
 			intel_gvt_emulate_vblank(gvt);
+=======
+					(void *)&gvt->service_request)) {
+			mutex_lock(&gvt->lock);
+			intel_gvt_emulate_vblank(gvt);
+			mutex_unlock(&gvt->lock);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (test_bit(INTEL_GVT_REQUEST_SCHED,
 				(void *)&gvt->service_request) ||
@@ -316,22 +351,41 @@ void intel_gvt_clean_device(struct drm_i915_private *dev_priv)
 	if (WARN_ON(!gvt))
 		return;
 
+<<<<<<< HEAD
 	intel_gvt_destroy_idle_vgpu(gvt->idle_vgpu);
 	intel_gvt_hypervisor_host_exit(&dev_priv->drm.pdev->dev, gvt);
 	intel_gvt_cleanup_vgpu_type_groups(gvt);
 	intel_gvt_clean_vgpu_types(gvt);
 
 	intel_gvt_debugfs_clean(gvt);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clean_service_thread(gvt);
 	intel_gvt_clean_cmd_parser(gvt);
 	intel_gvt_clean_sched_policy(gvt);
 	intel_gvt_clean_workload_scheduler(gvt);
+<<<<<<< HEAD
 	intel_gvt_clean_gtt(gvt);
 	intel_gvt_clean_irq(gvt);
 	intel_gvt_free_firmware(gvt);
 	intel_gvt_clean_mmio_info(gvt);
 	idr_destroy(&gvt->vgpu_idr);
 
+=======
+	intel_gvt_clean_opregion(gvt);
+	intel_gvt_clean_gtt(gvt);
+	intel_gvt_clean_irq(gvt);
+	intel_gvt_clean_mmio_info(gvt);
+	intel_gvt_free_firmware(gvt);
+
+	intel_gvt_hypervisor_host_exit(&dev_priv->drm.pdev->dev, gvt);
+	intel_gvt_clean_vgpu_types(gvt);
+
+	idr_destroy(&gvt->vgpu_idr);
+
+	intel_gvt_destroy_idle_vgpu(gvt->idle_vgpu);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dev_priv->gvt);
 	dev_priv->gvt = NULL;
 }
@@ -372,7 +426,10 @@ int intel_gvt_init_device(struct drm_i915_private *dev_priv)
 	idr_init(&gvt->vgpu_idr);
 	spin_lock_init(&gvt->scheduler.mmio_context_lock);
 	mutex_init(&gvt->lock);
+<<<<<<< HEAD
 	mutex_init(&gvt->sched_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gvt->dev_priv = dev_priv;
 
 	init_device_info(gvt);
@@ -381,8 +438,11 @@ int intel_gvt_init_device(struct drm_i915_private *dev_priv)
 	if (ret)
 		goto out_clean_idr;
 
+<<<<<<< HEAD
 	intel_gvt_init_engine_mmio_context(gvt);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = intel_gvt_load_firmware(gvt);
 	if (ret)
 		goto out_clean_mmio_info;
@@ -395,10 +455,21 @@ int intel_gvt_init_device(struct drm_i915_private *dev_priv)
 	if (ret)
 		goto out_clean_irq;
 
+<<<<<<< HEAD
 	ret = intel_gvt_init_workload_scheduler(gvt);
 	if (ret)
 		goto out_clean_gtt;
 
+=======
+	ret = intel_gvt_init_opregion(gvt);
+	if (ret)
+		goto out_clean_gtt;
+
+	ret = intel_gvt_init_workload_scheduler(gvt);
+	if (ret)
+		goto out_clean_opregion;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = intel_gvt_init_sched_policy(gvt);
 	if (ret)
 		goto out_clean_workload_scheduler;
@@ -415,12 +486,15 @@ int intel_gvt_init_device(struct drm_i915_private *dev_priv)
 	if (ret)
 		goto out_clean_thread;
 
+<<<<<<< HEAD
 	ret = intel_gvt_init_vgpu_type_groups(gvt);
 	if (ret == false) {
 		gvt_err("failed to init vgpu type groups: %d\n", ret);
 		goto out_clean_types;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = intel_gvt_hypervisor_host_init(&dev_priv->drm.pdev->dev, gvt,
 				&intel_gvt_ops);
 	if (ret) {
@@ -436,10 +510,13 @@ int intel_gvt_init_device(struct drm_i915_private *dev_priv)
 	}
 	gvt->idle_vgpu = vgpu;
 
+<<<<<<< HEAD
 	ret = intel_gvt_debugfs_init(gvt);
 	if (ret)
 		gvt_err("debugfs registeration failed, go on.\n");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gvt_dbg_core("gvt device initialization is done\n");
 	dev_priv->gvt = gvt;
 	return 0;
@@ -454,6 +531,11 @@ out_clean_sched_policy:
 	intel_gvt_clean_sched_policy(gvt);
 out_clean_workload_scheduler:
 	intel_gvt_clean_workload_scheduler(gvt);
+<<<<<<< HEAD
+=======
+out_clean_opregion:
+	intel_gvt_clean_opregion(gvt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_clean_gtt:
 	intel_gvt_clean_gtt(gvt);
 out_clean_irq:
@@ -467,7 +549,10 @@ out_clean_idr:
 	kfree(gvt);
 	return ret;
 }
+<<<<<<< HEAD
 
 #if IS_ENABLED(CONFIG_DRM_I915_GVT_KVMGT)
 MODULE_SOFTDEP("pre: kvmgt");
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

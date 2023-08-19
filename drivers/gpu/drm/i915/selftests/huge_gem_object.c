@@ -37,7 +37,12 @@ static void huge_free_pages(struct drm_i915_gem_object *obj,
 	kfree(pages);
 }
 
+<<<<<<< HEAD
 static int huge_get_pages(struct drm_i915_gem_object *obj)
+=======
+static struct sg_table *
+huge_get_pages(struct drm_i915_gem_object *obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #define GFP (GFP_KERNEL | __GFP_NOWARN | __GFP_NORETRY)
 	const unsigned long nreal = obj->scratch / PAGE_SIZE;
@@ -48,11 +53,19 @@ static int huge_get_pages(struct drm_i915_gem_object *obj)
 
 	pages = kmalloc(sizeof(*pages), GFP);
 	if (!pages)
+<<<<<<< HEAD
 		return -ENOMEM;
 
 	if (sg_alloc_table(pages, npages, GFP)) {
 		kfree(pages);
 		return -ENOMEM;
+=======
+		return ERR_PTR(-ENOMEM);
+
+	if (sg_alloc_table(pages, npages, GFP)) {
+		kfree(pages);
+		return ERR_PTR(-ENOMEM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sg = pages->sgl;
@@ -80,6 +93,7 @@ static int huge_get_pages(struct drm_i915_gem_object *obj)
 	if (i915_gem_gtt_prepare_pages(obj, pages))
 		goto err;
 
+<<<<<<< HEAD
 	__i915_gem_object_set_pages(obj, pages, PAGE_SIZE);
 
 	return 0;
@@ -88,6 +102,13 @@ err:
 	huge_free_pages(obj, pages);
 
 	return -ENOMEM;
+=======
+	return pages;
+
+err:
+	huge_free_pages(obj, pages);
+	return ERR_PTR(-ENOMEM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef GFP
 }
 
@@ -129,8 +150,13 @@ huge_gem_object(struct drm_i915_private *i915,
 	drm_gem_private_object_init(&i915->drm, &obj->base, dma_size);
 	i915_gem_object_init(obj, &huge_ops);
 
+<<<<<<< HEAD
 	obj->read_domains = I915_GEM_DOMAIN_CPU;
 	obj->write_domain = I915_GEM_DOMAIN_CPU;
+=======
+	obj->base.read_domains = I915_GEM_DOMAIN_CPU;
+	obj->base.write_domain = I915_GEM_DOMAIN_CPU;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cache_level = HAS_LLC(i915) ? I915_CACHE_LLC : I915_CACHE_NONE;
 	i915_gem_object_set_cache_coherency(obj, cache_level);
 	obj->scratch = phys_size;

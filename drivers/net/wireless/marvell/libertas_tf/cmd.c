@@ -69,7 +69,11 @@ static void lbtf_geo_init(struct lbtf_private *priv)
 			break;
 		}
 
+<<<<<<< HEAD
 	for (ch = priv->range.start; ch < priv->range.end; ch++)
+=======
+	for (ch = range->start; ch < range->end; ch++)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		priv->channels[CHAN_TO_IDX(ch)].flags = 0;
 }
 

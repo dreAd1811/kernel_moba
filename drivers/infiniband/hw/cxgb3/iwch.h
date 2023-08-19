@@ -162,6 +162,10 @@ static inline int insert_handle(struct iwch_dev *rhp, struct idr *idr,
 	spin_unlock_irq(&rhp->lock);
 	idr_preload_end();
 
+<<<<<<< HEAD
+=======
+	BUG_ON(ret == -ENOSPC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret < 0 ? ret : 0;
 }
 

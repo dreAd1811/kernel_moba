@@ -254,7 +254,13 @@ configuration.
 	channels->min = channels->max = 2;
 
 	/* set DAI0 to 16 bit */
+<<<<<<< HEAD
 	params_set_format(params, SNDRV_PCM_FORMAT_S16_LE);
+=======
+	snd_mask_set(&params->masks[SNDRV_PCM_HW_PARAM_FORMAT -
+				    SNDRV_PCM_HW_PARAM_FIRST_MASK],
+				    SNDRV_PCM_FORMAT_S16_LE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
   }
 

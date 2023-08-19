@@ -30,9 +30,26 @@
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+<<<<<<< HEAD
 #include "stingray-board-base.dtsi"
 
 / {
+=======
+#include "stingray.dtsi"
+
+/ {
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	aliases {
+		serial0 = &uart1;
+		serial1 = &uart0;
+		serial2 = &uart2;
+		serial3 = &uart3;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdio0_vddo_ctrl_reg: sdio0_vddo_ctrl {
 		compatible = "regulator-gpio";
 		regulator-name = "sdio0_vddo_ctrl_reg";
@@ -56,6 +73,14 @@
 	};
 };
 
+<<<<<<< HEAD
+=======
+&memory { /* Default DRAM banks */
+	reg = <0x00000000 0x80000000 0x0 0x80000000>, /* 2G @ 2G */
+	      <0x00000008 0x80000000 0x1 0x80000000>; /* 6G @ 34G */
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &sata0 {
 	status = "okay";
 };
@@ -120,6 +145,21 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&mdio_mux_iproc {
+	mdio@10 {
+		gphy0: eth-phy@10 {
+			reg = <0x10>;
+		};
+	};
+};
+
+&uart1 {
+	status = "okay";
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &pwm {
 	status = "okay";
 };
@@ -147,6 +187,11 @@
 };
 
 &enet {
+<<<<<<< HEAD
+=======
+	phy-mode = "rgmii-id";
+	phy-handle = <&gphy0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -167,10 +212,19 @@
 
 &sdio0 {
 	vqmmc-supply = <&sdio0_vddo_ctrl_reg>;
+<<<<<<< HEAD
+=======
+	non-removable;
+	full-pwr-cycle;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &sdio1 {
 	vqmmc-supply = <&sdio1_vddo_ctrl_reg>;
+<<<<<<< HEAD
+=======
+	full-pwr-cycle;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };

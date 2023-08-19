@@ -19,7 +19,11 @@
 		#address-cells = <2>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		cpu@0 {
+=======
+		cpu@000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "apm,potenza", "arm,armv8";
 			reg = <0x0 0x000>;
@@ -27,7 +31,11 @@
 			cpu-release-addr = <0x1 0x0000fff8>;
 			next-level-cache = <&xgene_L2_0>;
 		};
+<<<<<<< HEAD
 		cpu@1 {
+=======
+		cpu@001 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "apm,potenza", "arm,armv8";
 			reg = <0x0 0x001>;

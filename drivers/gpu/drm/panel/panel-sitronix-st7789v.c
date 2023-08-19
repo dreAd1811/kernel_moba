@@ -419,6 +419,10 @@ static int st7789v_remove(struct spi_device *spi)
 {
 	struct st7789v *ctx = spi_get_drvdata(spi);
 
+<<<<<<< HEAD
+=======
+	drm_panel_detach(&ctx->panel);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_panel_remove(&ctx->panel);
 
 	if (ctx->backlight)

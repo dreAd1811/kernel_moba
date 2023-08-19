@@ -128,10 +128,21 @@ MODULE_DEVICE_TABLE(of, ts4900_gpio_of_match_table);
 static int ts4900_gpio_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
+<<<<<<< HEAD
+=======
+	const struct of_device_id *match;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ts4900_gpio_priv *priv;
 	u32 ngpio;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	match = of_match_device(ts4900_gpio_of_match_table, &client->dev);
+	if (!match)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (of_property_read_u32(client->dev.of_node, "ngpios", &ngpio))
 		ngpio = DEFAULT_PIN_NUMBER;
 
@@ -143,7 +154,11 @@ static int ts4900_gpio_probe(struct i2c_client *client,
 	priv->gpio_chip.label = "ts4900-gpio";
 	priv->gpio_chip.ngpio = ngpio;
 	priv->gpio_chip.parent = &client->dev;
+<<<<<<< HEAD
 	priv->input_bit = (uintptr_t)of_device_get_match_data(&client->dev);
+=======
+	priv->input_bit = (uintptr_t)match->data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->regmap = devm_regmap_init_i2c(client, &ts4900_regmap_config);
 	if (IS_ERR(priv->regmap)) {

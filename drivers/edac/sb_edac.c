@@ -36,7 +36,11 @@ static LIST_HEAD(sbridge_edac_list);
  * Alter this version for the module when modifications are made
  */
 #define SBRIDGE_REVISION    " Ver: 1.1.2 "
+<<<<<<< HEAD
 #define EDAC_MOD_STR	    "sb_edac"
+=======
+#define EDAC_MOD_STR      "sbridge_edac"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Debug macros
@@ -110,10 +114,13 @@ static const u32 knl_interleave_list[] = {
 	0xdc, 0xe4, 0xec, 0xf4, 0xfc, /* 15-19 */
 	0x104, 0x10c, 0x114, 0x11c,   /* 20-23 */
 };
+<<<<<<< HEAD
 #define MAX_INTERLEAVE							\
 	(max_t(unsigned int, ARRAY_SIZE(sbridge_interleave_list),	\
 	       max_t(unsigned int, ARRAY_SIZE(ibridge_interleave_list),	\
 		     ARRAY_SIZE(knl_interleave_list))))
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct interleave_pkg {
 	unsigned char start;
@@ -325,6 +332,10 @@ struct sbridge_info {
 	const u32	*interleave_list;
 	const struct interleave_pkg *interleave_pkg;
 	u8		max_sad;
+<<<<<<< HEAD
+=======
+	u8		max_interleave;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8		(*get_node_id)(struct sbridge_pvt *pvt);
 	enum mem_type	(*get_memory_type)(struct sbridge_pvt *pvt);
 	enum dev_type	(*get_width)(struct sbridge_pvt *pvt, u32 mtr);
@@ -352,7 +363,10 @@ struct pci_id_table {
 
 struct sbridge_dev {
 	struct list_head	list;
+<<<<<<< HEAD
 	int			seg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8			bus, mc;
 	u8			node_id, source_id;
 	struct pci_dev		**pdev;
@@ -730,8 +744,12 @@ static inline int numcol(u32 mtr)
 	return 1 << cols;
 }
 
+<<<<<<< HEAD
 static struct sbridge_dev *get_sbridge_dev(int seg, u8 bus, enum domain dom,
 					   int multi_bus,
+=======
+static struct sbridge_dev *get_sbridge_dev(u8 bus, enum domain dom, int multi_bus,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct sbridge_dev *prev)
 {
 	struct sbridge_dev *sbridge_dev;
@@ -749,15 +767,23 @@ static struct sbridge_dev *get_sbridge_dev(int seg, u8 bus, enum domain dom,
 				      : sbridge_edac_list.next, struct sbridge_dev, list);
 
 	list_for_each_entry_from(sbridge_dev, &sbridge_edac_list, list) {
+<<<<<<< HEAD
 		if ((sbridge_dev->seg == seg) && (sbridge_dev->bus == bus) &&
 				(dom == SOCK || dom == sbridge_dev->dom))
+=======
+		if (sbridge_dev->bus == bus && (dom == SOCK || dom == sbridge_dev->dom))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return sbridge_dev;
 	}
 
 	return NULL;
 }
 
+<<<<<<< HEAD
 static struct sbridge_dev *alloc_sbridge_dev(int seg, u8 bus, enum domain dom,
+=======
+static struct sbridge_dev *alloc_sbridge_dev(u8 bus, enum domain dom,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     const struct pci_id_table *table)
 {
 	struct sbridge_dev *sbridge_dev;
@@ -774,7 +800,10 @@ static struct sbridge_dev *alloc_sbridge_dev(int seg, u8 bus, enum domain dom,
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	sbridge_dev->seg = seg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sbridge_dev->bus = bus;
 	sbridge_dev->dom = dom;
 	sbridge_dev->n_devs = table->n_devs_per_imc;
@@ -1325,7 +1354,13 @@ static int knl_get_dimm_capacity(struct sbridge_pvt *pvt, u64 *mc_sizes)
 	int cur_reg_start;
 	int mc;
 	int channel;
+<<<<<<< HEAD
 	int participants[KNL_MAX_CHANNELS];
+=======
+	int way;
+	int participants[KNL_MAX_CHANNELS];
+	int participant_count = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < KNL_MAX_CHANNELS; i++)
 		mc_sizes[i] = 0;
@@ -1500,14 +1535,31 @@ static int knl_get_dimm_capacity(struct sbridge_pvt *pvt, u64 *mc_sizes)
 		 * this channel mapped to the given target?
 		 */
 		for (channel = 0; channel < KNL_MAX_CHANNELS; channel++) {
+<<<<<<< HEAD
 			int target;
 			int cha;
 
 			for (target = 0; target < KNL_MAX_CHANNELS; target++) {
+=======
+			for (way = 0; way < intrlv_ways; way++) {
+				int target;
+				int cha;
+
+				if (KNL_MOD3(dram_rule))
+					target = way;
+				else
+					target = 0x7 & sad_pkg(
+				pvt->info.interleave_pkg, interleave_reg, way);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				for (cha = 0; cha < KNL_MAX_CHAS; cha++) {
 					if (knl_get_mc_route(target,
 						mc_route_reg[cha]) == channel
 						&& !participants[channel]) {
+<<<<<<< HEAD
+=======
+						participant_count++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						participants[channel] = 1;
 						break;
 					}
@@ -1515,6 +1567,13 @@ static int knl_get_dimm_capacity(struct sbridge_pvt *pvt, u64 *mc_sizes)
 			}
 		}
 
+<<<<<<< HEAD
+=======
+		if (participant_count != intrlv_ways)
+			edac_dbg(0, "participant_count (%d) != interleave_ways (%d): DIMM size may be incorrect\n",
+				participant_count, intrlv_ways);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (channel = 0; channel < KNL_MAX_CHANNELS; channel++) {
 			mc = knl_channel_mc(channel);
 			if (participants[channel]) {
@@ -1906,7 +1965,11 @@ static int get_memory_error_data(struct mem_ctl_info *mci,
 	int			n_rir, n_sads, n_tads, sad_way, sck_xch;
 	int			sad_interl, idx, base_ch;
 	int			interleave_mode, shiftup = 0;
+<<<<<<< HEAD
 	unsigned int		sad_interleave[MAX_INTERLEAVE];
+=======
+	unsigned		sad_interleave[pvt->info.max_interleave];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32			reg, dram_rule;
 	u8			ch_way, sck_way, pkg, sad_ha = 0;
 	u32			tad_offset;
@@ -2250,7 +2313,10 @@ static int sbridge_get_onedevice(struct pci_dev **prev,
 	struct sbridge_dev *sbridge_dev = NULL;
 	const struct pci_id_descr *dev_descr = &table->descr[devno];
 	struct pci_dev *pdev = NULL;
+<<<<<<< HEAD
 	int seg = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 bus = 0;
 	int i = 0;
 
@@ -2281,12 +2347,19 @@ static int sbridge_get_onedevice(struct pci_dev **prev,
 		/* End of list, leave */
 		return -ENODEV;
 	}
+<<<<<<< HEAD
 	seg = pci_domain_nr(pdev->bus);
 	bus = pdev->bus->number;
 
 next_imc:
 	sbridge_dev = get_sbridge_dev(seg, bus, dev_descr->dom,
 				      multi_bus, sbridge_dev);
+=======
+	bus = pdev->bus->number;
+
+next_imc:
+	sbridge_dev = get_sbridge_dev(bus, dev_descr->dom, multi_bus, sbridge_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sbridge_dev) {
 		/* If the HA1 wasn't found, don't create EDAC second memory controller */
 		if (dev_descr->dom == IMC1 && devno != 1) {
@@ -2299,7 +2372,11 @@ next_imc:
 		if (dev_descr->dom == SOCK)
 			goto out_imc;
 
+<<<<<<< HEAD
 		sbridge_dev = alloc_sbridge_dev(seg, bus, dev_descr->dom, table);
+=======
+		sbridge_dev = alloc_sbridge_dev(bus, dev_descr->dom, table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!sbridge_dev) {
 			pci_dev_put(pdev);
 			return -ENOMEM;
@@ -2912,6 +2989,7 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 	 *	cccc = channel
 	 * If the mask doesn't match, report an error to the parsing logic
 	 */
+<<<<<<< HEAD
 	if (! ((errcode & 0xef80) == 0x80)) {
 		optype = "Can't parse: it is not a mem";
 	} else {
@@ -2941,6 +3019,29 @@ static void sbridge_mce_output_error(struct mem_ctl_info *mci,
 	if (!GET_BITFIELD(m->status, 58, 58))
 		return;
 
+=======
+	switch (optypenum) {
+	case 0:
+		optype = "generic undef request error";
+		break;
+	case 1:
+		optype = "memory read error";
+		break;
+	case 2:
+		optype = "memory write error";
+		break;
+	case 3:
+		optype = "addr/cmd error";
+		break;
+	case 4:
+		optype = "memory scrubbing error";
+		break;
+	default:
+		optype = "reserved";
+		break;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pvt->info.type == KNIGHTS_LANDING) {
 		if (channel == 14) {
 			edac_dbg(0, "%s%s err_code:%04x:%04x EDRAM bank %d\n",
@@ -3046,17 +3147,23 @@ static int sbridge_mce_check_error(struct notifier_block *nb, unsigned long val,
 {
 	struct mce *mce = (struct mce *)data;
 	struct mem_ctl_info *mci;
+<<<<<<< HEAD
 	struct sbridge_pvt *pvt;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *type;
 
 	if (edac_get_report_status() == EDAC_REPORTING_DISABLED)
 		return NOTIFY_DONE;
 
+<<<<<<< HEAD
 	mci = get_mci_for_node_id(mce->socketid, IMC0);
 	if (!mci)
 		return NOTIFY_DONE;
 	pvt = mci->pvt_info;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Just let mcelog handle it if the error is
 	 * outside the memory controller. A memory error
@@ -3066,6 +3173,25 @@ static int sbridge_mce_check_error(struct notifier_block *nb, unsigned long val,
 	if ((mce->status & 0xefff) >> 7 != 1)
 		return NOTIFY_DONE;
 
+<<<<<<< HEAD
+=======
+	/* Check ADDRV bit in STATUS */
+	if (!GET_BITFIELD(mce->status, 58, 58))
+		return NOTIFY_DONE;
+
+	/* Check MISCV bit in STATUS */
+	if (!GET_BITFIELD(mce->status, 59, 59))
+		return NOTIFY_DONE;
+
+	/* Check address type in MISC (physical address only) */
+	if (GET_BITFIELD(mce->misc, 6, 8) != 2)
+		return NOTIFY_DONE;
+
+	mci = get_mci_for_node_id(mce->socketid, IMC0);
+	if (!mci)
+		return NOTIFY_DONE;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mce->mcgstatus & MCG_STATUS_MCIP)
 		type = "Exception";
 	else
@@ -3161,7 +3287,11 @@ static int sbridge_register_mci(struct sbridge_dev *sbridge_dev, enum type type)
 		MEM_FLAG_DDR4 : MEM_FLAG_DDR3;
 	mci->edac_ctl_cap = EDAC_FLAG_NONE;
 	mci->edac_cap = EDAC_FLAG_NONE;
+<<<<<<< HEAD
 	mci->mod_name = EDAC_MOD_STR;
+=======
+	mci->mod_name = "sb_edac.c";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mci->dev_name = pci_name(pdev);
 	mci->ctl_page_to_phys = NULL;
 
@@ -3180,6 +3310,10 @@ static int sbridge_register_mci(struct sbridge_dev *sbridge_dev, enum type type)
 		pvt->info.dram_attr = dram_attr;
 		pvt->info.max_sad = ARRAY_SIZE(ibridge_dram_rule);
 		pvt->info.interleave_list = ibridge_interleave_list;
+<<<<<<< HEAD
+=======
+		pvt->info.max_interleave = ARRAY_SIZE(ibridge_interleave_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pvt->info.interleave_pkg = ibridge_interleave_pkg;
 		pvt->info.get_width = ibridge_get_width;
 
@@ -3204,6 +3338,10 @@ static int sbridge_register_mci(struct sbridge_dev *sbridge_dev, enum type type)
 		pvt->info.dram_attr = dram_attr;
 		pvt->info.max_sad = ARRAY_SIZE(sbridge_dram_rule);
 		pvt->info.interleave_list = sbridge_interleave_list;
+<<<<<<< HEAD
+=======
+		pvt->info.max_interleave = ARRAY_SIZE(sbridge_interleave_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pvt->info.interleave_pkg = sbridge_interleave_pkg;
 		pvt->info.get_width = sbridge_get_width;
 
@@ -3228,6 +3366,10 @@ static int sbridge_register_mci(struct sbridge_dev *sbridge_dev, enum type type)
 		pvt->info.dram_attr = dram_attr;
 		pvt->info.max_sad = ARRAY_SIZE(ibridge_dram_rule);
 		pvt->info.interleave_list = ibridge_interleave_list;
+<<<<<<< HEAD
+=======
+		pvt->info.max_interleave = ARRAY_SIZE(ibridge_interleave_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pvt->info.interleave_pkg = ibridge_interleave_pkg;
 		pvt->info.get_width = ibridge_get_width;
 
@@ -3252,6 +3394,10 @@ static int sbridge_register_mci(struct sbridge_dev *sbridge_dev, enum type type)
 		pvt->info.dram_attr = dram_attr;
 		pvt->info.max_sad = ARRAY_SIZE(ibridge_dram_rule);
 		pvt->info.interleave_list = ibridge_interleave_list;
+<<<<<<< HEAD
+=======
+		pvt->info.max_interleave = ARRAY_SIZE(ibridge_interleave_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pvt->info.interleave_pkg = ibridge_interleave_pkg;
 		pvt->info.get_width = broadwell_get_width;
 
@@ -3276,6 +3422,10 @@ static int sbridge_register_mci(struct sbridge_dev *sbridge_dev, enum type type)
 		pvt->info.dram_attr = dram_attr_knl;
 		pvt->info.max_sad = ARRAY_SIZE(knl_dram_rule);
 		pvt->info.interleave_list = knl_interleave_list;
+<<<<<<< HEAD
+=======
+		pvt->info.max_interleave = ARRAY_SIZE(knl_interleave_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pvt->info.interleave_pkg = ibridge_interleave_pkg;
 		pvt->info.get_width = knl_get_width;
 
@@ -3288,11 +3438,14 @@ static int sbridge_register_mci(struct sbridge_dev *sbridge_dev, enum type type)
 		break;
 	}
 
+<<<<<<< HEAD
 	if (!mci->ctl_name) {
 		rc = -ENOMEM;
 		goto fail0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get dimm basic config and the memory layout */
 	rc = get_dimm_config(mci);
 	if (rc < 0) {
@@ -3408,15 +3561,21 @@ static void sbridge_remove(void)
 static int __init sbridge_init(void)
 {
 	const struct x86_cpu_id *id;
+<<<<<<< HEAD
 	const char *owner;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	edac_dbg(2, "\n");
 
+<<<<<<< HEAD
 	owner = edac_get_owner();
 	if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
 		return -EBUSY;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	id = x86_match_cpu(sbridge_cpuids);
 	if (!id)
 		return -ENODEV;

@@ -54,6 +54,7 @@ static inline int ieee754_class_nan(int xc)
 }
 
 #define COMPXSP \
+<<<<<<< HEAD
 	unsigned int xm; int xe; int xs __maybe_unused; int xc
 
 #define COMPYSP \
@@ -61,6 +62,15 @@ static inline int ieee754_class_nan(int xc)
 
 #define COMPZSP \
 	unsigned int zm; int ze; int zs; int zc
+=======
+	unsigned xm; int xe; int xs __maybe_unused; int xc
+
+#define COMPYSP \
+	unsigned ym; int ye; int ys; int yc
+
+#define COMPZSP \
+	unsigned zm; int ze; int zs; int zc
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define EXPLODESP(v, vc, vs, ve, vm)					\
 {									\

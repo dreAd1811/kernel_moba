@@ -1,5 +1,33 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
+=======
+/*******************************************************************************
+ *
+ * Intel Ethernet Controller XL710 Family Linux Virtual Function Driver
+ * Copyright(c) 2013 - 2016 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ *
+ ******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _I40EVF_H_
 #define _I40EVF_H_
@@ -29,10 +57,14 @@
 #include <linux/socket.h>
 #include <linux/jiffies.h>
 #include <net/ip6_checksum.h>
+<<<<<<< HEAD
 #include <net/pkt_cls.h>
 #include <net/udp.h>
 #include <net/tc_act/tc_gact.h>
 #include <net/tc_act/tc_mirred.h>
+=======
+#include <net/udp.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "i40e_type.h"
 #include <linux/avf/virtchnl.h>
@@ -81,11 +113,18 @@ struct i40e_vsi {
 #define I40E_TX_DESC(R, i) (&(((struct i40e_tx_desc *)((R)->desc))[i]))
 #define I40E_TX_CTXTDESC(R, i) \
 	(&(((struct i40e_tx_context_desc *)((R)->desc))[i]))
+<<<<<<< HEAD
 #define I40EVF_MAX_REQ_QUEUES 4
 
 #define I40EVF_HKEY_ARRAY_SIZE ((I40E_VFQF_HKEY_MAX_INDEX + 1) * 4)
 #define I40EVF_HLUT_ARRAY_SIZE ((I40E_VFQF_HLUT_MAX_INDEX + 1) * 4)
 #define I40EVF_MBPS_DIVISOR	125000 /* divisor to convert to Mbps */
+=======
+#define MAX_QUEUES 16
+
+#define I40EVF_HKEY_ARRAY_SIZE ((I40E_VFQF_HKEY_MAX_INDEX + 1) * 4)
+#define I40EVF_HLUT_ARRAY_SIZE ((I40E_VFQF_HLUT_MAX_INDEX + 1) * 4)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* MAX_MSIX_Q_VECTORS of these are allocated,
  * but we only use one per queue-specific vector.
@@ -94,6 +133,7 @@ struct i40e_q_vector {
 	struct i40evf_adapter *adapter;
 	struct i40e_vsi *vsi;
 	struct napi_struct napi;
+<<<<<<< HEAD
 	struct i40e_ring_container rx;
 	struct i40e_ring_container tx;
 	u32 ring_mask;
@@ -101,6 +141,16 @@ struct i40e_q_vector {
 	u8 num_ringpairs;	/* total number of ring pairs in vector */
 	u16 v_idx;		/* index in the vsi->q_vector array. */
 	u16 reg_idx;		/* register index of the interrupt */
+=======
+	unsigned long reg_idx;
+	struct i40e_ring_container rx;
+	struct i40e_ring_container tx;
+	u32 ring_mask;
+	u8 num_ringpairs;	/* total number of ring pairs in vector */
+#define ITR_COUNTDOWN_START 100
+	u8 itr_countdown;	/* when 0 or 1 update ITR */
+	int v_idx;	/* vector index in list */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char name[IFNAMSIZ + 15];
 	bool arm_wb_state;
 	cpumask_t affinity_mask;
@@ -148,6 +198,7 @@ struct i40evf_vlan_filter {
 	bool add;		/* filter needs to be added */
 };
 
+<<<<<<< HEAD
 #define I40EVF_MAX_TRAFFIC_CLASS	4
 /* State of traffic class creation */
 enum i40evf_tc_state_t {
@@ -170,6 +221,8 @@ enum i40evf_cloud_filter_state_t {
 	__I40EVF_CF_ACTIVE,	 /* cloud filter is active */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Driver state. The order of these is important! */
 enum i40evf_state_t {
 	__I40EVF_STARTUP,		/* driver loaded, probe complete */
@@ -191,6 +244,7 @@ enum i40evf_critical_section_t {
 	__I40EVF_IN_REMOVE_TASK,	/* device being removed */
 };
 
+<<<<<<< HEAD
 #define I40EVF_CLOUD_FIELD_OMAC		0x01
 #define I40EVF_CLOUD_FIELD_IMAC		0x02
 #define I40EVF_CLOUD_FIELD_IVLAN	0x04
@@ -221,6 +275,8 @@ struct i40evf_cloud_filter {
 	bool add;		/* filter needs to be added */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* board specific private data structure */
 struct i40evf_adapter {
 	struct timer_list watchdog_timer;
@@ -231,16 +287,25 @@ struct i40evf_adapter {
 	wait_queue_head_t down_waitqueue;
 	struct i40e_q_vector *q_vectors;
 	struct list_head vlan_filter_list;
+<<<<<<< HEAD
 	struct list_head mac_filter_list;
 	/* Lock to protect accesses to MAC and VLAN lists */
 	spinlock_t mac_vlan_list_lock;
 	char misc_vector_name[IFNAMSIZ + 9];
 	int num_active_queues;
 	int num_req_queues;
+=======
+	char misc_vector_name[IFNAMSIZ + 9];
+	int num_active_queues;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TX */
 	struct i40e_ring *tx_rings;
 	u32 tx_timeout_count;
+<<<<<<< HEAD
+=======
+	struct list_head mac_filter_list;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 tx_desc_count;
 
 	/* RX */
@@ -256,6 +321,7 @@ struct i40evf_adapter {
 
 	u32 flags;
 #define I40EVF_FLAG_RX_CSUM_ENABLED		BIT(0)
+<<<<<<< HEAD
 #define I40EVF_FLAG_PF_COMMS_FAILED		BIT(3)
 #define I40EVF_FLAG_RESET_PENDING		BIT(4)
 #define I40EVF_FLAG_RESET_NEEDED		BIT(5)
@@ -270,6 +336,23 @@ struct i40evf_adapter {
 #define I40EVF_FLAG_LEGACY_RX			BIT(15)
 #define I40EVF_FLAG_REINIT_ITR_NEEDED		BIT(16)
 #define I40EVF_FLAG_QUEUES_DISABLED		BIT(17)
+=======
+#define I40EVF_FLAG_IMIR_ENABLED		BIT(5)
+#define I40EVF_FLAG_MQ_CAPABLE			BIT(6)
+#define I40EVF_FLAG_PF_COMMS_FAILED		BIT(8)
+#define I40EVF_FLAG_RESET_PENDING		BIT(9)
+#define I40EVF_FLAG_RESET_NEEDED		BIT(10)
+#define I40EVF_FLAG_WB_ON_ITR_CAPABLE		BIT(11)
+#define I40EVF_FLAG_OUTER_UDP_CSUM_CAPABLE	BIT(12)
+#define I40EVF_FLAG_ADDR_SET_BY_PF		BIT(13)
+#define I40EVF_FLAG_SERVICE_CLIENT_REQUESTED	BIT(14)
+#define I40EVF_FLAG_CLIENT_NEEDS_OPEN		BIT(15)
+#define I40EVF_FLAG_CLIENT_NEEDS_CLOSE		BIT(16)
+#define I40EVF_FLAG_CLIENT_NEEDS_L2_PARAMS	BIT(17)
+#define I40EVF_FLAG_PROMISC_ON			BIT(18)
+#define I40EVF_FLAG_ALLMULTI_ON			BIT(19)
+#define I40EVF_FLAG_LEGACY_RX			BIT(20)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* duplicates for common code */
 #define I40E_FLAG_DCB_ENABLED			0
 #define I40E_FLAG_RX_CSUM_ENABLED		I40EVF_FLAG_RX_CSUM_ENABLED
@@ -298,10 +381,13 @@ struct i40evf_adapter {
 #define I40EVF_FLAG_AQ_RELEASE_ALLMULTI		BIT(18)
 #define I40EVF_FLAG_AQ_ENABLE_VLAN_STRIPPING	BIT(19)
 #define I40EVF_FLAG_AQ_DISABLE_VLAN_STRIPPING	BIT(20)
+<<<<<<< HEAD
 #define I40EVF_FLAG_AQ_ENABLE_CHANNELS		BIT(21)
 #define I40EVF_FLAG_AQ_DISABLE_CHANNELS		BIT(22)
 #define I40EVF_FLAG_AQ_ADD_CLOUD_FILTER		BIT(23)
 #define I40EVF_FLAG_AQ_DEL_CLOUD_FILTER		BIT(24)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* OS defined structs */
 	struct net_device *netdev;
@@ -347,6 +433,7 @@ struct i40evf_adapter {
 	u16 rss_lut_size;
 	u8 *rss_key;
 	u8 *rss_lut;
+<<<<<<< HEAD
 	/* ADQ related members */
 	struct i40evf_channel_config ch_config;
 	u8 num_tc;
@@ -354,6 +441,8 @@ struct i40evf_adapter {
 	/* lock to protest access to the cloud filter list */
 	spinlock_t cloud_filter_list_lock;
 	u16 num_cloud_filters;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -395,7 +484,10 @@ void i40evf_deconfigure_queues(struct i40evf_adapter *adapter);
 void i40evf_enable_queues(struct i40evf_adapter *adapter);
 void i40evf_disable_queues(struct i40evf_adapter *adapter);
 void i40evf_map_queues(struct i40evf_adapter *adapter);
+<<<<<<< HEAD
 int i40evf_request_queues(struct i40evf_adapter *adapter, int num);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void i40evf_add_ether_addrs(struct i40evf_adapter *adapter);
 void i40evf_del_ether_addrs(struct i40evf_adapter *adapter);
 void i40evf_add_vlans(struct i40evf_adapter *adapter);
@@ -420,8 +512,11 @@ void i40evf_notify_client_message(struct i40e_vsi *vsi, u8 *msg, u16 len);
 void i40evf_notify_client_l2_params(struct i40e_vsi *vsi);
 void i40evf_notify_client_open(struct i40e_vsi *vsi);
 void i40evf_notify_client_close(struct i40e_vsi *vsi, bool reset);
+<<<<<<< HEAD
 void i40evf_enable_channels(struct i40evf_adapter *adapter);
 void i40evf_disable_channels(struct i40evf_adapter *adapter);
 void i40evf_add_cloud_filter(struct i40evf_adapter *adapter);
 void i40evf_del_cloud_filter(struct i40evf_adapter *adapter);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _I40EVF_H_ */

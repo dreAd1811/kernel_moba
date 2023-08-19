@@ -76,7 +76,11 @@ static struct ucc_tdm_info utdm_primary_info = {
 	},
 };
 
+<<<<<<< HEAD
 static struct ucc_tdm_info utdm_info[MAX_HDLC_NUM];
+=======
+static struct ucc_tdm_info utdm_info[UCC_MAX_NUM];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int uhdlc_init(struct ucc_hdlc_private *priv)
 {
@@ -198,14 +202,22 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
 		goto free_tx_bd;
 	}
 
+<<<<<<< HEAD
 	priv->rx_skbuff = kcalloc(priv->rx_ring_size,
 				  sizeof(*priv->rx_skbuff),
+=======
+	priv->rx_skbuff = kzalloc(priv->rx_ring_size * sizeof(*priv->rx_skbuff),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	if (!priv->rx_skbuff)
 		goto free_ucc_pram;
 
+<<<<<<< HEAD
 	priv->tx_skbuff = kcalloc(priv->tx_ring_size,
 				  sizeof(*priv->tx_skbuff),
+=======
+	priv->tx_skbuff = kzalloc(priv->tx_ring_size * sizeof(*priv->tx_skbuff),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	if (!priv->tx_skbuff)
 		goto free_rx_skbuff;
@@ -242,6 +254,14 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
 		ret = -ENOMEM;
 		goto free_riptr;
 	}
+<<<<<<< HEAD
+=======
+	if (riptr != (u16)riptr || tiptr != (u16)tiptr) {
+		dev_err(priv->dev, "MURAM allocation out of addressable range\n");
+		ret = -ENOMEM;
+		goto free_tiptr;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set RIPTR, TIPTR */
 	iowrite16be(riptr, &priv->ucc_pram->riptr);
@@ -272,10 +292,17 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
 	iowrite16be(DEFAULT_HDLC_ADDR, &priv->ucc_pram->haddr4);
 
 	/* Get BD buffer */
+<<<<<<< HEAD
 	bd_buffer = dma_zalloc_coherent(priv->dev,
 					(RX_BD_RING_LEN + TX_BD_RING_LEN) *
 					MAX_RX_BUF_LENGTH,
 					&bd_dma_addr, GFP_KERNEL);
+=======
+	bd_buffer = dma_alloc_coherent(priv->dev,
+				       (RX_BD_RING_LEN + TX_BD_RING_LEN) *
+				       MAX_RX_BUF_LENGTH,
+				       &bd_dma_addr, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!bd_buffer) {
 		dev_err(priv->dev, "Could not allocate buffer descriptors\n");
@@ -283,6 +310,12 @@ static int uhdlc_init(struct ucc_hdlc_private *priv)
 		goto free_tiptr;
 	}
 
+<<<<<<< HEAD
+=======
+	memset(bd_buffer, 0, (RX_BD_RING_LEN + TX_BD_RING_LEN)
+			* MAX_RX_BUF_LENGTH);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->rx_buffer = bd_buffer;
 	priv->tx_buffer = bd_buffer + RX_BD_RING_LEN * MAX_RX_BUF_LENGTH;
 
@@ -1113,7 +1146,10 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
 	if (register_hdlc_device(dev)) {
 		ret = -ENOBUFS;
 		pr_err("ucc_hdlc: unable to register hdlc device\n");
+<<<<<<< HEAD
 		free_netdev(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free_dev;
 	}
 

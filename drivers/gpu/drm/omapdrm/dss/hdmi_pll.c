@@ -1,7 +1,11 @@
 /*
  * HDMI PLL
  *
+<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * Copyright (C) 2013 Texas Instruments Incorporated
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 as published by
@@ -48,7 +52,11 @@ static int hdmi_pll_enable(struct dss_pll *dsspll)
 	r = pm_runtime_get_sync(&pll->pdev->dev);
 	WARN_ON(r < 0);
 
+<<<<<<< HEAD
 	dss_ctrl_pll_enable(dsspll, true);
+=======
+	dss_ctrl_pll_enable(DSS_PLL_HDMI, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = hdmi_wp_set_pll_pwr(wp, HDMI_PLLPWRCMD_BOTHON_ALLCLKS);
 	if (r)
@@ -65,7 +73,11 @@ static void hdmi_pll_disable(struct dss_pll *dsspll)
 
 	hdmi_wp_set_pll_pwr(wp, HDMI_PLLPWRCMD_ALLOFF);
 
+<<<<<<< HEAD
 	dss_ctrl_pll_enable(dsspll, false);
+=======
+	dss_ctrl_pll_enable(DSS_PLL_HDMI, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	r = pm_runtime_put_sync(&pll->pdev->dev);
 	WARN_ON(r < 0 && r != -ENOSYS);
@@ -128,8 +140,12 @@ static const struct dss_pll_hw dss_omap5_hdmi_pll_hw = {
 	.has_refsel = true,
 };
 
+<<<<<<< HEAD
 static int hdmi_init_pll_data(struct dss_device *dss,
 			      struct platform_device *pdev,
+=======
+static int hdmi_init_pll_data(struct platform_device *pdev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      struct hdmi_pll_data *hpll)
 {
 	struct dss_pll *pll = &hpll->pll;
@@ -154,15 +170,24 @@ static int hdmi_init_pll_data(struct dss_device *dss,
 
 	pll->ops = &hdmi_pll_ops;
 
+<<<<<<< HEAD
 	r = dss_pll_register(dss, pll);
+=======
+	r = dss_pll_register(pll);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 int hdmi_pll_init(struct dss_device *dss, struct platform_device *pdev,
 		  struct hdmi_pll_data *pll, struct hdmi_wp_data *wp)
+=======
+int hdmi_pll_init(struct platform_device *pdev, struct hdmi_pll_data *pll,
+	struct hdmi_wp_data *wp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r;
 	struct resource *res;
@@ -175,7 +200,11 @@ int hdmi_pll_init(struct dss_device *dss, struct platform_device *pdev,
 	if (IS_ERR(pll->base))
 		return PTR_ERR(pll->base);
 
+<<<<<<< HEAD
 	r = hdmi_init_pll_data(dss, pdev, pll);
+=======
+	r = hdmi_init_pll_data(pdev, pll);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		DSSERR("failed to init HDMI PLL\n");
 		return r;

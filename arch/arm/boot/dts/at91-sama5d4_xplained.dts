@@ -130,6 +130,7 @@
 				status = "okay";
 			};
 
+<<<<<<< HEAD
 			tcb2: timer@fc024000 {
 				timer0: timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -142,6 +143,8 @@
 				};
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			adc0: adc@fc034000 {
 				pinctrl-names = "default";
 				pinctrl-0 = <
@@ -182,14 +185,22 @@
 			};
 		};
 
+<<<<<<< HEAD
 		usb0: gadget@400000 {
+=======
+		usb0: gadget@00400000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atmel,vbus-gpio = <&pioE 31 GPIO_ACTIVE_HIGH>;
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_usba_vbus>;
 			status = "okay";
 		};
 
+<<<<<<< HEAD
 		usb1: ohci@500000 {
+=======
+		usb1: ohci@00500000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			num-ports = <3>;
 			atmel,vbus-gpio = <0
 					   &pioE 11 GPIO_ACTIVE_HIGH
@@ -198,7 +209,11 @@
 			status = "okay";
 		};
 
+<<<<<<< HEAD
 		usb2: ehci@600000 {
+=======
+		usb2: ehci@00600000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "okay";
 		};
 
@@ -252,7 +267,11 @@
 
 						rootfs@800000 {
 							label = "rootfs";
+<<<<<<< HEAD
 							reg = <0x800000 0x0f800000>;
+=======
+							reg = <0x800000 0x1f800000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						};
 					};
 				};

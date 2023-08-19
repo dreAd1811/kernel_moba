@@ -26,7 +26,11 @@
 
 	memory {
 		device_type = "memory";
+<<<<<<< HEAD
 		reg = <0x0 0x40000000>;
+=======
+		reg = <0x0 0x10000000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -59,7 +63,10 @@
 	mdio {
 		#address-cells = <0x1>;
 		#size-cells = <0x0>;
+<<<<<<< HEAD
 		compatible = "snps,dwmac-mdio";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		phy1: phy@0 {
 			compatible = "ethernet-phy-ieee802.3-c22";
 			device_type = "ethernet-phy";

@@ -3,7 +3,10 @@
  *
  * Authors: Peter Guo <peter.guo@bayhubtech.com>
  *          Adam Lee <adam.lee@canonical.com>
+<<<<<<< HEAD
  *          Ernest Zhang <ernest.zhang@bayhubtech.com>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -17,6 +20,7 @@
  */
 
 #include <linux/pci.h>
+<<<<<<< HEAD
 #include <linux/mmc/host.h>
 #include <linux/mmc/mmc.h>
 #include <linux/delay.h>
@@ -137,6 +141,12 @@ static int sdhci_o2_execute_tuning(struct mmc_host *mmc, u32 opcode)
 	host->flags &= ~SDHCI_HS400_TUNING;
 	return 0;
 }
+=======
+
+#include "sdhci.h"
+#include "sdhci-pci.h"
+#include "sdhci-pci-o2micro.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void o2_pci_set_baseclk(struct sdhci_pci_chip *chip, u32 value)
 {
@@ -263,6 +273,7 @@ static void sdhci_pci_o2_fujin2_pci_init(struct sdhci_pci_chip *chip)
 	pci_write_config_dword(chip->pdev, O2_SD_MISC_CTRL4, scratch_32);
 }
 
+<<<<<<< HEAD
 static void sdhci_pci_o2_enable_msi(struct sdhci_pci_chip *chip,
 				    struct sdhci_host *host)
 {
@@ -286,10 +297,13 @@ static void sdhci_pci_o2_enable_msi(struct sdhci_pci_chip *chip,
 	host->irq = pci_irq_vector(chip->pdev, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
 {
 	struct sdhci_pci_chip *chip;
 	struct sdhci_host *host;
+<<<<<<< HEAD
 	u32 reg, caps;
 	int ret;
 
@@ -305,6 +319,12 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
 	if (caps & SDHCI_CAN_DO_8BIT)
 		host->mmc->caps |= MMC_CAP_8_BIT_DATA;
 
+=======
+	u32 reg;
+
+	chip = slot->chip;
+	host = slot->host;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (chip->pdev->device) {
 	case PCI_DEVICE_ID_O2_SDS0:
 	case PCI_DEVICE_ID_O2_SEABIRD0:
@@ -315,6 +335,7 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
 		if (reg & 0x1)
 			host->quirks |= SDHCI_QUIRK_MULTIBLOCK_READ_ACMD12;
 
+<<<<<<< HEAD
 		sdhci_pci_o2_enable_msi(chip, host);
 
 		if (chip->pdev->device == PCI_DEVICE_ID_O2_SEABIRD0) {
@@ -334,6 +355,8 @@ int sdhci_pci_o2_probe_slot(struct sdhci_pci_slot *slot)
 
 		host->mmc_host_ops.execute_tuning = sdhci_o2_execute_tuning;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (chip->pdev->device != PCI_DEVICE_ID_O2_FUJIN2)
 			break;
 		/* set dll watch dog timer */
@@ -430,8 +453,14 @@ int sdhci_pci_o2_probe(struct sdhci_pci_chip *chip)
 
 			/* Check Whether subId is 0x11 or 0x12 */
 			if ((scratch_32 == 0x11) || (scratch_32 == 0x12)) {
+<<<<<<< HEAD
 				scratch_32 = 0x25100000;
 
+=======
+				scratch_32 = 0x2c280000;
+
+				/* Set Base Clock to 208MZ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				o2_pci_set_baseclk(chip, scratch_32);
 				ret = pci_read_config_dword(chip->pdev,
 							    O2_SD_FUNC_REG4,
@@ -527,7 +556,11 @@ int sdhci_pci_o2_probe(struct sdhci_pci_chip *chip)
 					       O2_SD_PLL_SETTING, scratch_32);
 		} else {
 			scratch_32 &= 0x0000FFFF;
+<<<<<<< HEAD
 			scratch_32 |= 0x25100000;
+=======
+			scratch_32 |= 0x2c280000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			pci_write_config_dword(chip->pdev,
 					       O2_SD_PLL_SETTING, scratch_32);

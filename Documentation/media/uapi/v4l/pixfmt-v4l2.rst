@@ -40,10 +40,16 @@ Single-planar format structure
 	RGB formats in :ref:`rgb-formats`, YUV formats in
 	:ref:`yuv-formats`, and reserved codes in
 	:ref:`reserved-formats`
+<<<<<<< HEAD
     * - __u32
       - ``field``
       - Field order, from enum :c:type:`v4l2_field`.
         Video images are typically interlaced. Applications can request to
+=======
+    * - enum :c:type::`v4l2_field`
+      - ``field``
+      - Video images are typically interlaced. Applications can request to
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	capture or output only the top or bottom field, or both fields
 	interlaced or sequentially stored in one buffer or alternating in
 	separate buffers. Drivers return the actual field order selected.
@@ -83,10 +89,16 @@ Single-planar format structure
 	driver. Usually this is ``bytesperline`` times ``height``. When
 	the image consists of variable length compressed data this is the
 	maximum number of bytes required to hold an image.
+<<<<<<< HEAD
     * - __u32
       - ``colorspace``
       - Image colorspace, from enum :c:type:`v4l2_colorspace`.
         This information supplements the ``pixelformat`` and must be set
+=======
+    * - enum :c:type:`v4l2_colorspace`
+      - ``colorspace``
+      - This information supplements the ``pixelformat`` and must be set
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	by the driver for capture streams and by the application for
 	output streams, see :ref:`colorspaces`.
     * - __u32
@@ -118,6 +130,7 @@ Single-planar format structure
     * - __u32
       - ``flags``
       - Flags set by the application or driver, see :ref:`format-flags`.
+<<<<<<< HEAD
     * - union {
       - (anonymous)
       -
@@ -146,5 +159,25 @@ Single-planar format structure
       - ``xfer_func``
       - Transfer function, from enum :c:type:`v4l2_xfer_func`.
         This information supplements the ``colorspace`` and must be set by
+=======
+    * - enum :c:type:`v4l2_ycbcr_encoding`
+      - ``ycbcr_enc``
+      - This information supplements the ``colorspace`` and must be set by
+	the driver for capture streams and by the application for output
+	streams, see :ref:`colorspaces`.
+    * - enum :c:type:`v4l2_hsv_encoding`
+      - ``hsv_enc``
+      - This information supplements the ``colorspace`` and must be set by
+	the driver for capture streams and by the application for output
+	streams, see :ref:`colorspaces`.
+    * - enum :c:type:`v4l2_quantization`
+      - ``quantization``
+      - This information supplements the ``colorspace`` and must be set by
+	the driver for capture streams and by the application for output
+	streams, see :ref:`colorspaces`.
+    * - enum :c:type:`v4l2_xfer_func`
+      - ``xfer_func``
+      - This information supplements the ``colorspace`` and must be set by
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	the driver for capture streams and by the application for output
 	streams, see :ref:`colorspaces`.

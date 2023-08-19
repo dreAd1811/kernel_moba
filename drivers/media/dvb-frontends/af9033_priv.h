@@ -18,12 +18,20 @@
 #ifndef AF9033_PRIV_H
 #define AF9033_PRIV_H
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "af9033.h"
 #include <linux/math64.h>
 #include <linux/regmap.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <media/dvb_math.h>
+=======
+#include "dvb_math.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct reg_val {
 	u32 reg;

@@ -274,7 +274,11 @@ sleep states and the hibernation state ("suspend-to-disk").  Each phase involves
 executing callbacks for every device before the next phase begins.  Not all
 buses or classes support all these callbacks and not all drivers use all the
 callbacks.  The various phases always run after tasks have been frozen and
+<<<<<<< HEAD
 before they are unfrozen.  Furthermore, the ``*_noirq`` phases run at a time
+=======
+before they are unfrozen.  Furthermore, the ``*_noirq phases`` run at a time
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 when IRQ handlers have been disabled (except for those marked with the
 IRQF_NO_SUSPEND flag).
 
@@ -328,10 +332,14 @@ the phases are: ``prepare``, ``suspend``, ``suspend_late``, ``suspend_noirq``.
 	After the ``->prepare`` callback method returns, no new children may be
 	registered below the device.  The method may also prepare the device or
 	driver in some way for the upcoming system power transition, but it
+<<<<<<< HEAD
 	should not put the device into a low-power state.  Moreover, if the
 	device supports runtime power management, the ``->prepare`` callback
 	method must not update its state in case it is necessary to resume it
 	from runtime suspend later on.
+=======
+	should not put the device into a low-power state.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	For devices supporting runtime power management, the return value of the
 	prepare callback can be used to indicate to the PM core that it may
@@ -354,6 +362,7 @@ the phases are: ``prepare``, ``suspend``, ``suspend_late``, ``suspend_noirq``.
 	is because all such devices are initially set to runtime-suspended with
 	runtime PM disabled.
 
+<<<<<<< HEAD
 	This feature also can be controlled by device drivers by using the
 	``DPM_FLAG_NEVER_SKIP`` and ``DPM_FLAG_SMART_PREPARE`` driver power
 	management flags.  [Typically, they are set at the time the driver is
@@ -368,11 +377,14 @@ the phases are: ``prepare``, ``suspend``, ``suspend_late``, ``suspend_noirq``.
 	``->prepare`` callback if the driver's one also has returned a positive
 	value.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     2.	The ``->suspend`` methods should quiesce the device to stop it from
 	performing I/O.  They also may save the device registers and put it into
 	the appropriate low-power state, depending on the bus type the device is
 	on, and they may enable wakeup events.
 
+<<<<<<< HEAD
 	However, for devices supporting runtime power management, the
 	``->suspend`` methods provided by subsystems (bus types and PM domains
 	in particular) must follow an additional rule regarding what can be done
@@ -383,6 +395,8 @@ the phases are: ``prepare``, ``suspend``, ``suspend_late``, ``suspend_noirq``.
 	time (in case the drivers need to resume the devices from runtime
 	suspend in their ``->suspend`` methods).
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     3.	For a number of devices it is convenient to split suspend into the
 	"quiesce device" and "save device state" phases, in which cases
 	``suspend_late`` is meant to do the latter.  It is always executed after
@@ -756,6 +770,7 @@ state temporarily, for example so that its system wakeup capability can be
 disabled.  This all depends on the hardware and the design of the subsystem and
 device driver in question.
 
+<<<<<<< HEAD
 If it is necessary to resume a device from runtime suspend during a system-wide
 transition into a sleep state, that can be done by calling
 :c:func:`pm_runtime_resume` for it from the ``->suspend`` callback (or its
@@ -825,3 +840,10 @@ proper system suspend (rather than anything related to hibernation) and the
 device's wakeup settings are suitable for runtime PM (that is, it cannot
 generate wakeup signals at all or it is allowed to wake up the system from
 sleep).
+=======
+During system-wide resume from a sleep state it's easiest to put devices into
+the full-power state, as explained in :file:`Documentation/power/runtime_pm.txt`.
+Refer to that document for more information regarding this particular issue as
+well as for information on the device runtime power management framework in
+general.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

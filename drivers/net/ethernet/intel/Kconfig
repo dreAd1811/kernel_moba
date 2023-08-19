@@ -33,7 +33,11 @@ config E100
 	  to identify the adapter.
 
 	  More specific information on configuring the driver is in
+<<<<<<< HEAD
 	  <file:Documentation/networking/e100.rst>.
+=======
+	  <file:Documentation/networking/e100.txt>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here. The module
 	  will be called e100.
@@ -49,7 +53,11 @@ config E1000
 	  <http://support.intel.com>
 
 	  More specific information on configuring the driver is in
+<<<<<<< HEAD
 	  <file:Documentation/networking/e1000.rst>.
+=======
+	  <file:Documentation/networking/e1000.txt>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here. The module
 	  will be called e1000.
@@ -94,7 +102,11 @@ config IGB
 	  <http://support.intel.com>
 
 	  More specific information on configuring the driver is in
+<<<<<<< HEAD
 	  <file:Documentation/networking/e1000.rst>.
+=======
+	  <file:Documentation/networking/e1000.txt>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here. The module
 	  will be called igb.
@@ -130,7 +142,11 @@ config IGBVF
 	  <http://support.intel.com>
 
 	  More specific information on configuring the driver is in
+<<<<<<< HEAD
 	  <file:Documentation/networking/e1000.rst>.
+=======
+	  <file:Documentation/networking/e1000.txt>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here. The module
 	  will be called igbvf.
@@ -251,6 +267,7 @@ config I40EVF
 	  will be called i40evf.  MSI-X interrupt support is required
 	  for this driver to work correctly.
 
+<<<<<<< HEAD
 config ICE
 	tristate "Intel(R) Ethernet Connection E800 Series Support"
 	default n
@@ -265,6 +282,8 @@ config ICE
 	  To compile this driver as a module, choose M here. The module
 	  will be called ice.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config FM10K
 	tristate "Intel(R) FM10000 Ethernet Switch Host Interface Support"
 	default n

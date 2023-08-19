@@ -58,6 +58,7 @@
 #define	V7M_SCB_CCSIDR		0x80	/* Cache size ID register */
 #define	V7M_SCB_CSSELR		0x84	/* Cache size selection register */
 
+<<<<<<< HEAD
 /* Memory-mapped MPU registers for M-class */
 #define MPU_TYPE		0x90
 #define MPU_CTRL		0x94
@@ -76,6 +77,8 @@
 #define PMSAv8_MAIR0		0xc0
 #define PMSAv8_MAIR1		0xc4
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Cache opeartions */
 #define	V7M_SCB_ICIALLU		0x250	/* I-cache invalidate all to PoU */
 #define	V7M_SCB_ICIMVAU		0x258	/* I-cache invalidate by MVA to PoU */

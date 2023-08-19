@@ -105,7 +105,11 @@ void uninitGPIO(struct cx231xx *dev)
 
 /******************************************************************************
  *                    A F E - B L O C K    C O N T R O L   functions          *
+<<<<<<< HEAD
  *				[ANALOG FRONT END]			      *
+=======
+ * 				[ANALOG FRONT END]			      *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  ******************************************************************************/
 static int afe_write_byte(struct cx231xx *dev, u16 saddr, u8 data)
 {
@@ -2168,7 +2172,11 @@ int cx231xx_tuner_post_channel_change(struct cx231xx *dev)
 }
 
 /******************************************************************************
+<<<<<<< HEAD
  *		    I 2 S - B L O C K    C O N T R O L   functions            *
+=======
+ *        	    I 2 S - B L O C K    C O N T R O L   functions            *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  ******************************************************************************/
 int cx231xx_i2s_blk_initialize(struct cx231xx *dev)
 {

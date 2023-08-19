@@ -558,7 +558,10 @@ static int zynq_fpga_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct zynq_fpga_priv *priv;
+<<<<<<< HEAD
 	struct fpga_manager *mgr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *res;
 	int err;
 
@@ -614,6 +617,7 @@ static int zynq_fpga_probe(struct platform_device *pdev)
 
 	clk_disable(priv->clk);
 
+<<<<<<< HEAD
 	mgr = fpga_mgr_create(dev, "Xilinx Zynq FPGA Manager",
 			      &zynq_fpga_ops, priv);
 	if (!mgr)
@@ -625,6 +629,12 @@ static int zynq_fpga_probe(struct platform_device *pdev)
 	if (err) {
 		dev_err(dev, "unable to register FPGA manager\n");
 		fpga_mgr_free(mgr);
+=======
+	err = fpga_mgr_register(dev, "Xilinx Zynq FPGA Manager",
+				&zynq_fpga_ops, priv);
+	if (err) {
+		dev_err(dev, "unable to register FPGA manager\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clk_unprepare(priv->clk);
 		return err;
 	}
@@ -640,7 +650,11 @@ static int zynq_fpga_remove(struct platform_device *pdev)
 	mgr = platform_get_drvdata(pdev);
 	priv = mgr->priv;
 
+<<<<<<< HEAD
 	fpga_mgr_unregister(mgr);
+=======
+	fpga_mgr_unregister(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_unprepare(priv->clk);
 

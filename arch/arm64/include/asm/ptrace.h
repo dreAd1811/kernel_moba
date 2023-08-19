@@ -67,7 +67,39 @@
 #endif
 
 /* AArch32 CPSR bits, as seen in AArch32 */
+<<<<<<< HEAD
 #define COMPAT_PSR_DIT_BIT	0x00200000
+=======
+#define COMPAT_PSR_MODE_MASK	0x0000001f
+#define COMPAT_PSR_MODE_USR	0x00000010
+#define COMPAT_PSR_MODE_FIQ	0x00000011
+#define COMPAT_PSR_MODE_IRQ	0x00000012
+#define COMPAT_PSR_MODE_SVC	0x00000013
+#define COMPAT_PSR_MODE_ABT	0x00000017
+#define COMPAT_PSR_MODE_HYP	0x0000001a
+#define COMPAT_PSR_MODE_UND	0x0000001b
+#define COMPAT_PSR_MODE_SYS	0x0000001f
+#define COMPAT_PSR_T_BIT	0x00000020
+#define COMPAT_PSR_F_BIT	0x00000040
+#define COMPAT_PSR_I_BIT	0x00000080
+#define COMPAT_PSR_A_BIT	0x00000100
+#define COMPAT_PSR_E_BIT	0x00000200
+#define COMPAT_PSR_DIT_BIT	0x00200000
+#define COMPAT_PSR_J_BIT	0x01000000
+#define COMPAT_PSR_Q_BIT	0x08000000
+#define COMPAT_PSR_V_BIT	0x10000000
+#define COMPAT_PSR_C_BIT	0x20000000
+#define COMPAT_PSR_Z_BIT	0x40000000
+#define COMPAT_PSR_N_BIT	0x80000000
+#define COMPAT_PSR_IT_MASK	0x0600fc00	/* If-Then execution state mask */
+#define COMPAT_PSR_GE_MASK	0x000f0000
+
+#ifdef CONFIG_CPU_BIG_ENDIAN
+#define COMPAT_PSR_ENDSTATE	COMPAT_PSR_E_BIT
+#else
+#define COMPAT_PSR_ENDSTATE	0
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * These are 'magic' values for PTRACE_PEEKUSR that return info about where a
@@ -184,9 +216,19 @@ static inline void forget_syscall(struct pt_regs *regs)
 
 #ifdef CONFIG_COMPAT
 #define compat_thumb_mode(regs) \
+<<<<<<< HEAD
 	(((regs)->pstate & PSR_AA32_T_BIT))
 #else
 #define compat_thumb_mode(regs) (0)
+=======
+	(((regs)->pstate & COMPAT_PSR_T_BIT))
+#define compat_arm_instr_set(regs) \
+	(((regs)->pstate & (COMPAT_PSR_T_BIT | COMPAT_PSR_J_BIT)) == 0)
+#else
+#define compat_thumb_mode(regs) (0)
+#define compat_arm_instr_set(regs) (0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define user_mode(regs)	\

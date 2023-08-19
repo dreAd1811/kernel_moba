@@ -13,6 +13,10 @@
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/fb.h>
+<<<<<<< HEAD
+=======
+#include <linux/prefetch.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/unaligned.h>
 
 #include <drm/drmP.h>
@@ -50,6 +54,12 @@ static int udl_trim_hline(const u8 *bback, const u8 **bfront, int *width_bytes)
 	int start = width;
 	int end = width;
 
+<<<<<<< HEAD
+=======
+	prefetch((void *) front);
+	prefetch((void *) back);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (j = 0; j < width; j++) {
 		if (back[j] != front[j]) {
 			start = j;
@@ -136,6 +146,11 @@ static void udl_compress_hline16(
 		const u8 *cmd_pixel_start, *cmd_pixel_end = NULL;
 		uint16_t pixel_val16;
 
+<<<<<<< HEAD
+=======
+		prefetchw((void *) cmd); /* pull in one cache line at least */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*cmd++ = 0xaf;
 		*cmd++ = 0x6b;
 		*cmd++ = (uint8_t) ((dev_addr >> 16) & 0xFF);
@@ -152,6 +167,10 @@ static void udl_compress_hline16(
 					(unsigned long)(pixel_end - pixel) >> log_bpp,
 					(unsigned long)(cmd_buffer_end - 1 - cmd) / 2) << log_bpp);
 
+<<<<<<< HEAD
+=======
+		prefetch_range((void *) pixel, cmd_pixel_end - pixel);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pixel_val16 = get_pixel_val16(pixel, log_bpp);
 
 		while (pixel < cmd_pixel_end) {

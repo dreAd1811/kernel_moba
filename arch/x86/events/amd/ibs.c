@@ -389,7 +389,12 @@ static inline void perf_ibs_disable_event(struct perf_ibs *perf_ibs,
 					  struct hw_perf_event *hwc, u64 config)
 {
 	config &= ~perf_ibs->cnt_mask;
+<<<<<<< HEAD
 	wrmsrl(hwc->config_base, config);
+=======
+	if (boot_cpu_data.x86 == 0x10)
+		wrmsrl(hwc->config_base, config);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	config &= ~perf_ibs->enable_mask;
 	wrmsrl(hwc->config_base, config);
 }
@@ -564,7 +569,12 @@ static struct perf_ibs perf_ibs_op = {
 	},
 	.msr			= MSR_AMD64_IBSOPCTL,
 	.config_mask		= IBS_OP_CONFIG_MASK,
+<<<<<<< HEAD
 	.cnt_mask		= IBS_OP_MAX_CNT,
+=======
+	.cnt_mask		= IBS_OP_MAX_CNT | IBS_OP_CUR_CNT |
+				  IBS_OP_CUR_CNT_RAND,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable_mask		= IBS_OP_ENABLE,
 	.valid_mask		= IBS_OP_VAL,
 	.max_period		= IBS_OP_MAX_CNT << 4,
@@ -625,7 +635,11 @@ fail:
 	if (event->attr.sample_type & PERF_SAMPLE_RAW)
 		offset_max = perf_ibs->offset_max;
 	else if (check_rip)
+<<<<<<< HEAD
 		offset_max = 2;
+=======
+		offset_max = 3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		offset_max = 1;
 	do {
@@ -900,7 +914,11 @@ static void force_ibs_eilvt_setup(void)
 	if (!ibs_eilvt_valid())
 		goto out;
 
+<<<<<<< HEAD
 	pr_info("LVT offset %d assigned\n", offset);
+=======
+	pr_info("IBS: LVT offset %d assigned\n", offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return;
 out:

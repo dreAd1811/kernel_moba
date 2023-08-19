@@ -22,8 +22,14 @@
 #include <linux/gpio.h>
 #include <linux/mfd/tps65910.h>
 
+<<<<<<< HEAD
 #define COMP1					0
 #define COMP2					1
+=======
+#define COMP					0
+#define COMP1					1
+#define COMP2					2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Comparator 1 voltage selection table in millivolts */
 static const u16 COMP_VSEL_TABLE[] = {
@@ -62,6 +68,12 @@ static int comp_threshold_set(struct tps65910 *tps65910, int id, int voltage)
 	int ret;
 	u8 index = 0, val;
 
+<<<<<<< HEAD
+=======
+	if (id == COMP)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (curr_voltage < tps_comp.uV_max) {
 		curr_voltage = tps_comp.vsel_table[index];
 		if (curr_voltage >= voltage)
@@ -74,7 +86,11 @@ static int comp_threshold_set(struct tps65910 *tps65910, int id, int voltage)
 		return -EINVAL;
 
 	val = index << 1;
+<<<<<<< HEAD
 	ret = tps65910_reg_write(tps65910, tps_comp.reg, val);
+=======
+	ret = tps65910->write(tps65910, tps_comp.reg, 1, &val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -82,10 +98,20 @@ static int comp_threshold_set(struct tps65910 *tps65910, int id, int voltage)
 static int comp_threshold_get(struct tps65910 *tps65910, int id)
 {
 	struct comparator tps_comp = tps_comparators[id];
+<<<<<<< HEAD
 	unsigned int val;
 	int ret;
 
 	ret = tps65910_reg_read(tps65910, tps_comp.reg, &val);
+=======
+	int ret;
+	u8 val;
+
+	if (id == COMP)
+		return 0;
+
+	ret = tps65910->read(tps65910, tps_comp.reg, 1, &val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 

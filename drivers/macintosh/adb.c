@@ -65,7 +65,11 @@ static struct adb_driver *adb_driver_list[] = {
 #ifdef CONFIG_ADB_IOP
 	&adb_iop_driver,
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_ADB_PMU
+=======
+#if defined(CONFIG_ADB_PMU) || defined(CONFIG_ADB_PMU68K)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&via_pmu_driver,
 #endif
 #ifdef CONFIG_ADB_MACIO
@@ -203,17 +207,29 @@ static int adb_scan_bus(void)
 	}
 
 	/* Now fill in the handler_id field of the adb_handler entries. */
+<<<<<<< HEAD
 	pr_debug("adb devices:\n");
+=======
+	printk(KERN_DEBUG "adb devices:");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 1; i < 16; i++) {
 		if (adb_handler[i].original_address == 0)
 			continue;
 		adb_request(&req, NULL, ADBREQ_SYNC | ADBREQ_REPLY, 1,
 			    (i << 4) | 0xf);
 		adb_handler[i].handler_id = req.reply[2];
+<<<<<<< HEAD
 		pr_debug(" [%d]: %d %x\n", i, adb_handler[i].original_address,
 			 adb_handler[i].handler_id);
 		devmask |= 1 << i;
 	}
+=======
+		printk(" [%d]: %d %x", i, adb_handler[i].original_address,
+		       adb_handler[i].handler_id);
+		devmask |= 1 << i;
+	}
+	printk("\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return devmask;
 }
 
@@ -224,9 +240,15 @@ static int adb_scan_bus(void)
 static int
 adb_probe_task(void *x)
 {
+<<<<<<< HEAD
 	pr_debug("adb: starting probe task...\n");
 	do_adb_reset_bus();
 	pr_debug("adb: finished probe task...\n");
+=======
+	printk(KERN_INFO "adb: starting probe task...\n");
+	do_adb_reset_bus();
+	printk(KERN_INFO "adb: finished probe task...\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	up(&adb_probe_mutex);
 
@@ -336,7 +358,11 @@ static int __init adb_init(void)
 	    adb_controller->init())
 		adb_controller = NULL;
 	if (adb_controller == NULL) {
+<<<<<<< HEAD
 		pr_warn("Warning: no ADB interface detected\n");
+=======
+		printk(KERN_WARNING "Warning: no ADB interface detected\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 #ifdef CONFIG_PPC
 		if (of_machine_is_compatible("AAPL,PowerBook1998") ||
@@ -479,7 +505,12 @@ adb_register(int default_id, int handler_id, struct adb_ids *ids,
 		    (!handler_id || (handler_id == adb_handler[i].handler_id) || 
 		    try_handler_change(i, handler_id))) {
 			if (adb_handler[i].handler != 0) {
+<<<<<<< HEAD
 				pr_err("Two handlers for ADB device %d\n",
+=======
+				printk(KERN_ERR
+				       "Two handlers for ADB device %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       default_id);
 				continue;
 			}
@@ -533,10 +564,17 @@ adb_input(unsigned char *buf, int nb, int autopoll)
 		
 	id = buf[0] >> 4;
 	if (dump_adb_input) {
+<<<<<<< HEAD
 		pr_info("adb packet: ");
 		for (i = 0; i < nb; ++i)
 			pr_cont(" %x", buf[i]);
 		pr_cont(", id = %d\n", id);
+=======
+		printk(KERN_INFO "adb packet: ");
+		for (i = 0; i < nb; ++i)
+			printk(" %x", buf[i]);
+		printk(", id = %d\n", id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	write_lock_irqsave(&adb_handler_lock, flags);
 	handler = adb_handler[id].handler;
@@ -882,7 +920,11 @@ static void __init
 adbdev_init(void)
 {
 	if (register_chrdev(ADB_MAJOR, "adb", &adb_fops)) {
+<<<<<<< HEAD
 		pr_err("adb: unable to get major %d\n", ADB_MAJOR);
+=======
+		printk(KERN_ERR "adb: unable to get major %d\n", ADB_MAJOR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 

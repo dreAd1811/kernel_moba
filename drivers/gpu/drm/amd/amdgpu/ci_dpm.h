@@ -295,6 +295,16 @@ struct ci_power_info {
 	bool fan_is_controlled_by_smc;
 	u32 t_min;
 	u32 fan_ctrl_default_mode;
+<<<<<<< HEAD
+=======
+
+	/* power profile */
+	struct amd_pp_profile gfx_power_profile;
+	struct amd_pp_profile compute_power_profile;
+	struct amd_pp_profile default_gfx_power_profile;
+	struct amd_pp_profile default_compute_power_profile;
+	enum amd_pp_profile_type current_power_profile;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define CISLANDS_VOLTAGE_CONTROL_NONE                   0x0

@@ -46,15 +46,22 @@ static void mvme16x_get_model(char *model);
 extern void mvme16x_sched_init(irq_handler_t handler);
 extern u32 mvme16x_gettimeoffset(void);
 extern int mvme16x_hwclk (int, struct rtc_time *);
+<<<<<<< HEAD
+=======
+extern int mvme16x_set_clock_mmss (unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void mvme16x_reset (void);
 
 int bcd2int (unsigned char b);
 
+<<<<<<< HEAD
 /* Save tick handler routine pointer, will point to xtime_update() in
  * kernel/time/timekeeping.c, called via mvme16x_process_int() */
 
 static irq_handler_t tick_handler;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unsigned short mvme16x_config;
 EXPORT_SYMBOL(mvme16x_config);
@@ -279,6 +286,10 @@ void __init config_mvme16x(void)
     mach_init_IRQ        = mvme16x_init_IRQ;
     arch_gettimeoffset   = mvme16x_gettimeoffset;
     mach_hwclk           = mvme16x_hwclk;
+<<<<<<< HEAD
+=======
+    mach_set_clock_mmss	 = mvme16x_set_clock_mmss;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     mach_reset		 = mvme16x_reset;
     mach_get_model       = mvme16x_get_model;
     mach_get_hardware_list = mvme16x_get_hardware_list;
@@ -352,8 +363,20 @@ static irqreturn_t mvme16x_abort_int (int irq, void *dev_id)
 
 static irqreturn_t mvme16x_timer_int (int irq, void *dev_id)
 {
+<<<<<<< HEAD
     *(volatile unsigned char *)0xfff4201b |= 8;
     return tick_handler(irq, dev_id);
+=======
+	irq_handler_t timer_routine = dev_id;
+	unsigned long flags;
+
+	local_irq_save(flags);
+	*(volatile unsigned char *)0xfff4201b |= 8;
+	timer_routine(0, NULL);
+	local_irq_restore(flags);
+
+	return IRQ_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mvme16x_sched_init (irq_handler_t timer_routine)
@@ -361,14 +384,22 @@ void mvme16x_sched_init (irq_handler_t timer_routine)
     uint16_t brdno = be16_to_cpu(mvme_bdid.brdno);
     int irq;
 
+<<<<<<< HEAD
     tick_handler = timer_routine;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     /* Using PCCchip2 or MC2 chip tick timer 1 */
     *(volatile unsigned long *)0xfff42008 = 0;
     *(volatile unsigned long *)0xfff42004 = 10000;	/* 10ms */
     *(volatile unsigned char *)0xfff42017 |= 3;
     *(volatile unsigned char *)0xfff4201b = 0x16;
+<<<<<<< HEAD
     if (request_irq(MVME16x_IRQ_TIMER, mvme16x_timer_int, 0,
 				"timer", mvme16x_timer_int))
+=======
+    if (request_irq(MVME16x_IRQ_TIMER, mvme16x_timer_int, 0, "timer",
+                    timer_routine))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	panic ("Couldn't register timer int");
 
     if (brdno == 0x0162 || brdno == 0x172)
@@ -398,14 +429,30 @@ int mvme16x_hwclk(int op, struct rtc_time *t)
 	if (!op) {
 		rtc->ctrl = RTC_READ;
 		t->tm_year = bcd2int (rtc->bcd_year);
+<<<<<<< HEAD
 		t->tm_mon  = bcd2int(rtc->bcd_mth) - 1;
+=======
+		t->tm_mon  = bcd2int (rtc->bcd_mth);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		t->tm_mday = bcd2int (rtc->bcd_dom);
 		t->tm_hour = bcd2int (rtc->bcd_hr);
 		t->tm_min  = bcd2int (rtc->bcd_min);
 		t->tm_sec  = bcd2int (rtc->bcd_sec);
 		rtc->ctrl = 0;
+<<<<<<< HEAD
 		if (t->tm_year < 70)
 			t->tm_year += 100;
 	}
 	return 0;
 }
+=======
+	}
+	return 0;
+}
+
+int mvme16x_set_clock_mmss (unsigned long nowtime)
+{
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

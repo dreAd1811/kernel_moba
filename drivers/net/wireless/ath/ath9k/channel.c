@@ -29,7 +29,10 @@ static int ath_set_channel(struct ath_softc *sc)
 	struct cfg80211_chan_def *chandef = &sc->cur_chan->chandef;
 	struct ieee80211_channel *chan = chandef->chan;
 	int pos = chan->hw_value;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int old_pos = -1;
 	int r;
 
@@ -43,9 +46,15 @@ static int ath_set_channel(struct ath_softc *sc)
 		chan->center_freq, chandef->width);
 
 	/* update survey stats for the old channel before switching */
+<<<<<<< HEAD
 	spin_lock_irqsave(&common->cc_lock, flags);
 	ath_update_survey_stats(sc);
 	spin_unlock_irqrestore(&common->cc_lock, flags);
+=======
+	spin_lock_bh(&common->cc_lock);
+	ath_update_survey_stats(sc);
+	spin_unlock_bh(&common->cc_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ath9k_cmn_get_channel(hw, ah, chandef);
 
@@ -233,9 +242,15 @@ static const char *chanctx_state_string(enum ath_chanctx_state state)
 static u32 chanctx_event_delta(struct ath_softc *sc)
 {
 	u64 ms;
+<<<<<<< HEAD
 	struct timespec64 ts, *old;
 
 	ktime_get_raw_ts64(&ts);
+=======
+	struct timespec ts, *old;
+
+	getrawmonotonic(&ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	old = &sc->last_event_time;
 	ms = ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
 	ms -= old->tv_sec * 1000 + old->tv_nsec / 1000000;
@@ -334,7 +349,11 @@ ath_chanctx_get_next(struct ath_softc *sc, struct ath_chanctx *ctx)
 static void ath_chanctx_adjust_tbtt_delta(struct ath_softc *sc)
 {
 	struct ath_chanctx *prev, *cur;
+<<<<<<< HEAD
 	struct timespec64 ts;
+=======
+	struct timespec ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cur_tsf, prev_tsf, beacon_int;
 	s32 offset;
 
@@ -346,7 +365,11 @@ static void ath_chanctx_adjust_tbtt_delta(struct ath_softc *sc)
 	if (!prev->switch_after_beacon)
 		return;
 
+<<<<<<< HEAD
 	ktime_get_raw_ts64(&ts);
+=======
+	getrawmonotonic(&ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cur_tsf = (u32) cur->tsf_val +
 		  ath9k_hw_get_tsf_offset(&cur->tsf_ts, &ts);
 
@@ -1043,9 +1066,15 @@ static void ath_scan_channel_start(struct ath_softc *sc)
 	mod_timer(&sc->offchannel.timer, jiffies + sc->offchannel.duration);
 }
 
+<<<<<<< HEAD
 static void ath_chanctx_timer(struct timer_list *t)
 {
 	struct ath_softc *sc = from_timer(sc, t, sched.timer);
+=======
+static void ath_chanctx_timer(unsigned long data)
+{
+	struct ath_softc *sc = (struct ath_softc *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
 
 	ath_dbg(common, CHAN_CTX,
@@ -1054,9 +1083,15 @@ static void ath_chanctx_timer(struct timer_list *t)
 	ath_chanctx_event(sc, NULL, ATH_CHANCTX_EVENT_TSF_TIMER);
 }
 
+<<<<<<< HEAD
 static void ath_offchannel_timer(struct timer_list *t)
 {
 	struct ath_softc *sc = from_timer(sc, t, offchannel.timer);
+=======
+static void ath_offchannel_timer(unsigned long data)
+{
+	struct ath_softc *sc = (struct ath_softc *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_chanctx *ctx;
 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
 
@@ -1230,7 +1265,11 @@ void ath_chanctx_set_next(struct ath_softc *sc, bool force)
 {
 	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
 	struct ath_chanctx *old_ctx;
+<<<<<<< HEAD
 	struct timespec64 ts;
+=======
+	struct timespec ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool measure_time = false;
 	bool send_ps = false;
 	bool queues_stopped = false;
@@ -1260,7 +1299,11 @@ void ath_chanctx_set_next(struct ath_softc *sc, bool force)
 		spin_unlock_bh(&sc->chan_lock);
 
 		if (sc->next_chan == &sc->offchannel.chan) {
+<<<<<<< HEAD
 			ktime_get_raw_ts64(&ts);
+=======
+			getrawmonotonic(&ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			measure_time = true;
 		}
 
@@ -1277,7 +1320,11 @@ void ath_chanctx_set_next(struct ath_softc *sc, bool force)
 		spin_lock_bh(&sc->chan_lock);
 
 		if (sc->cur_chan != &sc->offchannel.chan) {
+<<<<<<< HEAD
 			ktime_get_raw_ts64(&sc->cur_chan->tsf_ts);
+=======
+			getrawmonotonic(&sc->cur_chan->tsf_ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sc->cur_chan->tsf_val = ath9k_hw_gettsf64(sc->sc_ah);
 		}
 	}
@@ -1362,8 +1409,15 @@ void ath9k_init_channel_context(struct ath_softc *sc)
 {
 	INIT_WORK(&sc->chanctx_work, ath_chanctx_work);
 
+<<<<<<< HEAD
 	timer_setup(&sc->offchannel.timer, ath_offchannel_timer, 0);
 	timer_setup(&sc->sched.timer, ath_chanctx_timer, 0);
+=======
+	setup_timer(&sc->offchannel.timer, ath_offchannel_timer,
+		    (unsigned long)sc);
+	setup_timer(&sc->sched.timer, ath_chanctx_timer,
+		    (unsigned long)sc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init_completion(&sc->go_beacon);
 }

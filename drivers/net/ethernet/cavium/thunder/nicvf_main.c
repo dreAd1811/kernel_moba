@@ -20,16 +20,24 @@
 #include <linux/bpf.h>
 #include <linux/bpf_trace.h>
 #include <linux/filter.h>
+<<<<<<< HEAD
 #include <linux/net_tstamp.h>
 #include <linux/workqueue.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "nic_reg.h"
 #include "nic.h"
 #include "nicvf_queues.h"
 #include "thunder_bgx.h"
+<<<<<<< HEAD
 #include "../common/cavium_ptp.h"
 
 #define DRV_NAME	"nicvf"
+=======
+
+#define DRV_NAME	"thunder-nicvf"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_VERSION	"1.0"
 
 /* NOTE: Packets bigger than 1530 are split across multiple pages and XDP needs
@@ -71,6 +79,7 @@ module_param(debug, int, 0644);
 MODULE_PARM_DESC(debug, "Debug message level bitmap");
 
 static int cpi_alg = CPI_ALG_NONE;
+<<<<<<< HEAD
 module_param(cpi_alg, int, 0444);
 MODULE_PARM_DESC(cpi_alg,
 		 "PFC algorithm (0=none, 1=VLAN, 2=VLAN16, 3=IP Diffserv)");
@@ -78,6 +87,12 @@ MODULE_PARM_DESC(cpi_alg,
 /* workqueue for handling kernel ndo_set_rx_mode() calls */
 static struct workqueue_struct *nicvf_rx_mode_wq;
 
+=======
+module_param(cpi_alg, int, S_IRUGO);
+MODULE_PARM_DESC(cpi_alg,
+		 "PFC algorithm (0=none, 1=VLAN, 2=VLAN16, 3=IP Diffserv)");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u8 nicvf_netdev_qidx(struct nicvf *nic, u8 qidx)
 {
 	if (nic->sqs_mode)
@@ -526,7 +541,11 @@ static int nicvf_init_resources(struct nicvf *nic)
 
 static inline bool nicvf_xdp_rx(struct nicvf *nic, struct bpf_prog *prog,
 				struct cqe_rx_t *cqe_rx, struct snd_queue *sq,
+<<<<<<< HEAD
 				struct rcv_queue *rq, struct sk_buff **skb)
+=======
+				struct sk_buff **skb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct xdp_buff xdp;
 	struct page *page;
@@ -547,18 +566,28 @@ static inline bool nicvf_xdp_rx(struct nicvf *nic, struct bpf_prog *prog,
 
 	xdp.data_hard_start = page_address(page);
 	xdp.data = (void *)cpu_addr;
+<<<<<<< HEAD
 	xdp_set_data_meta_invalid(&xdp);
 	xdp.data_end = xdp.data + len;
 	xdp.rxq = &rq->xdp_rxq;
+=======
+	xdp.data_end = xdp.data + len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	orig_data = xdp.data;
 
 	rcu_read_lock();
 	action = bpf_prog_run_xdp(prog, &xdp);
 	rcu_read_unlock();
 
+<<<<<<< HEAD
 	len = xdp.data_end - xdp.data;
 	/* Check if XDP program has changed headers */
 	if (orig_data != xdp.data) {
+=======
+	/* Check if XDP program has changed headers */
+	if (orig_data != xdp.data) {
+		len = xdp.data_end - xdp.data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		offset = orig_data - xdp.data;
 		dma_addr -= offset;
 	}
@@ -614,6 +643,7 @@ static inline bool nicvf_xdp_rx(struct nicvf *nic, struct bpf_prog *prog,
 	return false;
 }
 
+<<<<<<< HEAD
 static void nicvf_snd_ptp_handler(struct net_device *netdev,
 				  struct cqe_send_t *cqe_tx)
 {
@@ -652,6 +682,8 @@ no_tstamp:
 	smp_wmb();
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void nicvf_snd_pkt_handler(struct net_device *netdev,
 				  struct cqe_send_t *cqe_tx,
 				  int budget, int *subdesc_cnt,
@@ -708,12 +740,16 @@ static void nicvf_snd_pkt_handler(struct net_device *netdev,
 		prefetch(skb);
 		(*tx_pkts)++;
 		*tx_bytes += skb->len;
+<<<<<<< HEAD
 		/* If timestamp is requested for this skb, don't free it */
 		if (skb_shinfo(skb)->tx_flags & SKBTX_IN_PROGRESS &&
 		    !nic->pnicvf->ptp_skb)
 			nic->pnicvf->ptp_skb = skb;
 		else
 			napi_consume_skb(skb, budget);
+=======
+		napi_consume_skb(skb, budget);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sq->skbuff[cqe_tx->sqe_ptr] = (u64)NULL;
 	} else {
 		/* In case of SW TSO on 88xx, only last segment will have
@@ -752,6 +788,7 @@ static inline void nicvf_set_rxhash(struct net_device *netdev,
 	skb_set_hash(skb, hash, hash_type);
 }
 
+<<<<<<< HEAD
 static inline void nicvf_set_rxtstamp(struct nicvf *nic, struct sk_buff *skb)
 {
 	u64 ns;
@@ -771,6 +808,11 @@ static void nicvf_rcv_pkt_handler(struct net_device *netdev,
 				  struct napi_struct *napi,
 				  struct cqe_rx_t *cqe_rx,
 				  struct snd_queue *sq, struct rcv_queue *rq)
+=======
+static void nicvf_rcv_pkt_handler(struct net_device *netdev,
+				  struct napi_struct *napi,
+				  struct cqe_rx_t *cqe_rx, struct snd_queue *sq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sk_buff *skb = NULL;
 	struct nicvf *nic = netdev_priv(netdev);
@@ -796,7 +838,11 @@ static void nicvf_rcv_pkt_handler(struct net_device *netdev,
 	/* For XDP, ignore pkts spanning multiple pages */
 	if (nic->xdp_prog && (cqe_rx->rb_cnt == 1)) {
 		/* Packet consumed by XDP */
+<<<<<<< HEAD
 		if (nicvf_xdp_rx(snic, nic->xdp_prog, cqe_rx, sq, rq, &skb))
+=======
+		if (nicvf_xdp_rx(snic, nic->xdp_prog, cqe_rx, sq, &skb))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 	} else {
 		skb = nicvf_get_rcv_skb(snic, cqe_rx,
@@ -818,7 +864,10 @@ static void nicvf_rcv_pkt_handler(struct net_device *netdev,
 		return;
 	}
 
+<<<<<<< HEAD
 	nicvf_set_rxtstamp(nic, skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nicvf_set_rxhash(netdev, cqe_rx, skb);
 
 	skb_record_rx_queue(skb, rq_idx);
@@ -854,7 +903,10 @@ static int nicvf_cq_intr_handler(struct net_device *netdev, u8 cq_idx,
 	struct cqe_rx_t *cq_desc;
 	struct netdev_queue *txq;
 	struct snd_queue *sq = &qs->sq[cq_idx];
+<<<<<<< HEAD
 	struct rcv_queue *rq = &qs->rq[cq_idx];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int tx_pkts = 0, tx_bytes = 0, txq_idx;
 
 	spin_lock_bh(&cq->lock);
@@ -885,7 +937,11 @@ loop:
 
 		switch (cq_desc->cqe_type) {
 		case CQE_TYPE_RX:
+<<<<<<< HEAD
 			nicvf_rcv_pkt_handler(netdev, napi, cq_desc, sq, rq);
+=======
+			nicvf_rcv_pkt_handler(netdev, napi, cq_desc, sq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			work_done++;
 		break;
 		case CQE_TYPE_SEND:
@@ -894,12 +950,19 @@ loop:
 					      &tx_pkts, &tx_bytes);
 			tx_done++;
 		break;
+<<<<<<< HEAD
 		case CQE_TYPE_SEND_PTP:
 			nicvf_snd_ptp_handler(netdev, (void *)cq_desc);
 		break;
 		case CQE_TYPE_INVALID:
 		case CQE_TYPE_RX_SPLIT:
 		case CQE_TYPE_RX_TCP:
+=======
+		case CQE_TYPE_INVALID:
+		case CQE_TYPE_RX_SPLIT:
+		case CQE_TYPE_RX_TCP:
+		case CQE_TYPE_SEND_PTP:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Ignore for now */
 		break;
 		}
@@ -1395,18 +1458,22 @@ int nicvf_stop(struct net_device *netdev)
 
 	nicvf_free_cq_poll(nic);
 
+<<<<<<< HEAD
 	/* Free any pending SKB saved to receive timestamp */
 	if (nic->ptp_skb) {
 		dev_kfree_skb_any(nic->ptp_skb);
 		nic->ptp_skb = NULL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Clear multiqset info */
 	nic->pnicvf = nic;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int nicvf_config_hw_rx_tstamp(struct nicvf *nic, bool enable)
 {
 	union nic_mbx mbx = {};
@@ -1417,6 +1484,8 @@ static int nicvf_config_hw_rx_tstamp(struct nicvf *nic, bool enable)
 	return nicvf_send_msg_to_pf(nic, &mbx);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int nicvf_update_hw_max_frs(struct nicvf *nic, int mtu)
 {
 	union nic_mbx mbx = {};
@@ -1485,12 +1554,15 @@ int nicvf_open(struct net_device *netdev)
 	if (nic->sqs_mode)
 		nicvf_get_primary_vf_struct(nic);
 
+<<<<<<< HEAD
 	/* Configure PTP timestamp */
 	if (nic->ptp_clock)
 		nicvf_config_hw_rx_tstamp(nic, nic->hw_rx_tstamp);
 	atomic_set(&nic->tx_ptp_skbs, 0);
 	nic->ptp_skb = NULL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Configure receive side scaling and MTU */
 	if (!nic->sqs_mode) {
 		nicvf_rss_init(nic);
@@ -1865,7 +1937,11 @@ static int nicvf_xdp_setup(struct nicvf *nic, struct bpf_prog *prog)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int nicvf_xdp(struct net_device *netdev, struct netdev_bpf *xdp)
+=======
+static int nicvf_xdp(struct net_device *netdev, struct netdev_xdp *xdp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nicvf *nic = netdev_priv(netdev);
 
@@ -1880,6 +1956,10 @@ static int nicvf_xdp(struct net_device *netdev, struct netdev_bpf *xdp)
 	case XDP_SETUP_PROG:
 		return nicvf_xdp_setup(nic, xdp->prog);
 	case XDP_QUERY_PROG:
+<<<<<<< HEAD
+=======
+		xdp->prog_attached = !!nic->xdp_prog;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		xdp->prog_id = nic->xdp_prog ? nic->xdp_prog->aux->id : 0;
 		return 0;
 	default:
@@ -1887,6 +1967,7 @@ static int nicvf_xdp(struct net_device *netdev, struct netdev_bpf *xdp)
 	}
 }
 
+<<<<<<< HEAD
 static int nicvf_config_hwtstamp(struct net_device *netdev, struct ifreq *ifr)
 {
 	struct hwtstamp_config config;
@@ -2065,6 +2146,8 @@ static void nicvf_set_rx_mode(struct net_device *netdev)
 	spin_unlock(&nic->rx_mode_wq_lock);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops nicvf_netdev_ops = {
 	.ndo_open		= nicvf_open,
 	.ndo_stop		= nicvf_stop,
@@ -2075,9 +2158,13 @@ static const struct net_device_ops nicvf_netdev_ops = {
 	.ndo_tx_timeout         = nicvf_tx_timeout,
 	.ndo_fix_features       = nicvf_fix_features,
 	.ndo_set_features       = nicvf_set_features,
+<<<<<<< HEAD
 	.ndo_bpf		= nicvf_xdp,
 	.ndo_do_ioctl           = nicvf_ioctl,
 	.ndo_set_rx_mode        = nicvf_set_rx_mode,
+=======
+	.ndo_xdp		= nicvf_xdp,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
@@ -2087,6 +2174,7 @@ static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	struct nicvf *nic;
 	int    err, qcount;
 	u16    sdevid;
+<<<<<<< HEAD
 	struct cavium_ptp *ptp_clock;
 
 	ptp_clock = cavium_ptp_get();
@@ -2097,6 +2185,8 @@ static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		else
 			return PTR_ERR(ptp_clock);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = pci_enable_device(pdev);
 	if (err) {
@@ -2151,7 +2241,10 @@ static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	 */
 	if (!nic->t88)
 		nic->max_queues *= 2;
+<<<<<<< HEAD
 	nic->ptp_clock = ptp_clock;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* MAP VF's configuration registers */
 	nic->reg_base = pcim_iomap(pdev, PCI_CFG_REG_BAR_NUM, 0);
@@ -2218,9 +2311,12 @@ static int nicvf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	INIT_WORK(&nic->reset_task, nicvf_reset_task);
 
+<<<<<<< HEAD
 	INIT_DELAYED_WORK(&nic->rx_mode_work.work, nicvf_set_rx_mode_task);
 	spin_lock_init(&nic->rx_mode_wq_lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = register_netdev(netdev);
 	if (err) {
 		dev_err(dev, "Failed to register netdevice\n");
@@ -2259,8 +2355,11 @@ static void nicvf_remove(struct pci_dev *pdev)
 	nic = netdev_priv(netdev);
 	pnetdev = nic->pnicvf->netdev;
 
+<<<<<<< HEAD
 	cancel_delayed_work_sync(&nic->rx_mode_work.work);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check if this Qset is assigned to different VF.
 	 * If yes, clean primary and all secondary Qsets.
 	 */
@@ -2270,7 +2369,10 @@ static void nicvf_remove(struct pci_dev *pdev)
 	pci_set_drvdata(pdev, NULL);
 	if (nic->drv_stats)
 		free_percpu(nic->drv_stats);
+<<<<<<< HEAD
 	cavium_ptp_put(nic->ptp_clock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_netdev(netdev);
 	pci_release_regions(pdev);
 	pci_disable_device(pdev);
@@ -2292,17 +2394,24 @@ static struct pci_driver nicvf_driver = {
 static int __init nicvf_init_module(void)
 {
 	pr_info("%s, ver %s\n", DRV_NAME, DRV_VERSION);
+<<<<<<< HEAD
 	nicvf_rx_mode_wq = alloc_ordered_workqueue("nicvf_generic",
 						   WQ_MEM_RECLAIM);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pci_register_driver(&nicvf_driver);
 }
 
 static void __exit nicvf_cleanup_module(void)
 {
+<<<<<<< HEAD
 	if (nicvf_rx_mode_wq) {
 		destroy_workqueue(nicvf_rx_mode_wq);
 		nicvf_rx_mode_wq = NULL;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_unregister_driver(&nicvf_driver);
 }
 

@@ -59,6 +59,10 @@ struct polaris10_smumgr {
 	struct SMU74_Discrete_PmFuses  power_tune_table;
 	struct polaris10_range_table                range_table[NUM_SCLK_RANGE];
 	const struct polaris10_pt_defaults       *power_tune_defaults;
+<<<<<<< HEAD
+=======
+	uint32_t               activity_target[SMU74_MAX_LEVELS_GRAPHICS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t               bif_sclk_table[SMU74_MAX_LEVELS_LINK];
 };
 

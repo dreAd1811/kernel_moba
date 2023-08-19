@@ -63,7 +63,11 @@ static int __init proc_ppc64_init(void)
 {
 	struct proc_dir_entry *pde;
 
+<<<<<<< HEAD
 	pde = proc_create_data("powerpc/systemcfg", S_IFREG | 0444, NULL,
+=======
+	pde = proc_create_data("powerpc/systemcfg", S_IFREG|S_IRUGO, NULL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       &page_map_fops, vdso_data);
 	if (!pde)
 		return 1;

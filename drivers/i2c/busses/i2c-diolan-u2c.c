@@ -360,11 +360,19 @@ static int diolan_usb_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
 			if (ret < 0)
 				goto abort;
 		}
+<<<<<<< HEAD
 		ret = diolan_i2c_put_byte_ack(dev,
 					      i2c_8bit_addr_from_msg(pmsg));
 		if (ret < 0)
 			goto abort;
 		if (pmsg->flags & I2C_M_RD) {
+=======
+		if (pmsg->flags & I2C_M_RD) {
+			ret =
+			    diolan_i2c_put_byte_ack(dev, (pmsg->addr << 1) | 1);
+			if (ret < 0)
+				goto abort;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			for (j = 0; j < pmsg->len; j++) {
 				u8 byte;
 				bool ack = j < pmsg->len - 1;
@@ -393,6 +401,12 @@ static int diolan_usb_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
 				pmsg->buf[j] = byte;
 			}
 		} else {
+<<<<<<< HEAD
+=======
+			ret = diolan_i2c_put_byte_ack(dev, pmsg->addr << 1);
+			if (ret < 0)
+				goto abort;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			for (j = 0; j < pmsg->len; j++) {
 				ret = diolan_i2c_put_byte_ack(dev,
 							      pmsg->buf[j]);

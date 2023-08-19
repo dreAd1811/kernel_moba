@@ -29,6 +29,10 @@
 #include <asm/mach/time.h>
 
 #include <linux/i2c.h>
+<<<<<<< HEAD
+=======
+#include <linux/platform_data/at24.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mfd/mc13xxx.h>
 
 #include "common.h"
@@ -144,9 +148,21 @@ static const struct imxi2c_platform_data vpr200_i2c0_data __initconst = {
 	.bitrate = 50000,
 };
 
+<<<<<<< HEAD
 static struct i2c_board_info vpr200_i2c_devices[] = {
 	{
 		I2C_BOARD_INFO("24c02", 0x50), /* E0=0, E1=0, E2=0 */
+=======
+static struct at24_platform_data vpr200_eeprom = {
+	.byte_len = 2048 / 8,
+	.page_size = 1,
+};
+
+static struct i2c_board_info vpr200_i2c_devices[] = {
+	{
+		I2C_BOARD_INFO("at24", 0x50), /* E0=0, E1=0, E2=0 */
+		.platform_data = &vpr200_eeprom,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}, {
 		I2C_BOARD_INFO("mc13892", 0x08),
 		.platform_data = &vpr200_pmic,

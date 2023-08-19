@@ -211,7 +211,11 @@ radeon_link_encoder_connector(struct drm_device *dev)
 		list_for_each_entry(encoder, &dev->mode_config.encoder_list, head) {
 			radeon_encoder = to_radeon_encoder(encoder);
 			if (radeon_encoder->devices & radeon_connector->devices) {
+<<<<<<< HEAD
 				drm_connector_attach_encoder(connector, encoder);
+=======
+				drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (radeon_encoder->devices & (ATOM_DEVICE_LCD_SUPPORT))
 					radeon_encoder_add_backlight(radeon_encoder, connector);
 			}

@@ -171,7 +171,11 @@ int po1030_probe(struct sd *sd)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Probing for a po1030 sensor\n");
+=======
+	PDEBUG(D_PROBE, "Probing for a po1030 sensor");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Run the pre-init to actually probe the unit */
 	for (i = 0; i < ARRAY_SIZE(preinit_po1030); i++) {
@@ -410,11 +414,19 @@ static int po1030_set_exposure(struct gspca_dev *gspca_dev, __s32 val)
 	u8 i2c_data;
 	int err;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set exposure to %d\n", val & 0xffff);
 
 	i2c_data = ((val & 0xff00) >> 8);
 	gspca_dbg(gspca_dev, D_CONF, "Set exposure to high byte to 0x%x\n",
 		  i2c_data);
+=======
+	PDEBUG(D_CONF, "Set exposure to %d", val & 0xffff);
+
+	i2c_data = ((val & 0xff00) >> 8);
+	PDEBUG(D_CONF, "Set exposure to high byte to 0x%x",
+	       i2c_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_write_sensor(sd, PO1030_INTEGLINES_H,
 				  &i2c_data, 1);
@@ -422,8 +434,13 @@ static int po1030_set_exposure(struct gspca_dev *gspca_dev, __s32 val)
 		return err;
 
 	i2c_data = (val & 0xff);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set exposure to low byte to 0x%x\n",
 		  i2c_data);
+=======
+	PDEBUG(D_CONF, "Set exposure to low byte to 0x%x",
+	       i2c_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, PO1030_INTEGLINES_M,
 				  &i2c_data, 1);
 
@@ -437,7 +454,11 @@ static int po1030_set_gain(struct gspca_dev *gspca_dev, __s32 val)
 	int err;
 
 	i2c_data = val & 0xff;
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set global gain to %d\n", i2c_data);
+=======
+	PDEBUG(D_CONF, "Set global gain to %d", i2c_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, PO1030_GLOBALGAIN,
 				 &i2c_data, 1);
 	return err;
@@ -449,8 +470,12 @@ static int po1030_set_hvflip(struct gspca_dev *gspca_dev)
 	u8 i2c_data;
 	int err;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set hvflip %d %d\n",
 		  sd->hflip->val, sd->vflip->val);
+=======
+	PDEBUG(D_CONF, "Set hvflip %d %d", sd->hflip->val, sd->vflip->val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_read_sensor(sd, PO1030_CONTROL2, &i2c_data, 1);
 	if (err < 0)
 		return err;
@@ -471,7 +496,11 @@ static int po1030_set_red_balance(struct gspca_dev *gspca_dev, __s32 val)
 	int err;
 
 	i2c_data = val & 0xff;
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set red gain to %d\n", i2c_data);
+=======
+	PDEBUG(D_CONF, "Set red gain to %d", i2c_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, PO1030_RED_GAIN,
 				  &i2c_data, 1);
 	return err;
@@ -484,7 +513,11 @@ static int po1030_set_blue_balance(struct gspca_dev *gspca_dev, __s32 val)
 	int err;
 
 	i2c_data = val & 0xff;
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set blue gain to %d\n", i2c_data);
+=======
+	PDEBUG(D_CONF, "Set blue gain to %d", i2c_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = m5602_write_sensor(sd, PO1030_BLUE_GAIN,
 				  &i2c_data, 1);
 
@@ -498,7 +531,11 @@ static int po1030_set_green_balance(struct gspca_dev *gspca_dev, __s32 val)
 	int err;
 
 	i2c_data = val & 0xff;
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set green gain to %d\n", i2c_data);
+=======
+	PDEBUG(D_CONF, "Set green gain to %d", i2c_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_write_sensor(sd, PO1030_GREEN_1_GAIN,
 			   &i2c_data, 1);
@@ -520,7 +557,11 @@ static int po1030_set_auto_white_balance(struct gspca_dev *gspca_dev,
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set auto white balance to %d\n", val);
+=======
+	PDEBUG(D_CONF, "Set auto white balance to %d", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_data = (i2c_data & 0xfe) | (val & 0x01);
 	err = m5602_write_sensor(sd, PO1030_AUTOCTRL1, &i2c_data, 1);
 	return err;
@@ -537,7 +578,11 @@ static int po1030_set_auto_exposure(struct gspca_dev *gspca_dev,
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set auto exposure to %d\n", val);
+=======
+	PDEBUG(D_CONF, "Set auto exposure to %d", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = (val == V4L2_EXPOSURE_AUTO);
 	i2c_data = (i2c_data & 0xfd) | ((val & 0x01) << 1);
 	return m5602_write_sensor(sd, PO1030_AUTOCTRL1, &i2c_data, 1);

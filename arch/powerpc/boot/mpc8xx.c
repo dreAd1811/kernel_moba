@@ -24,7 +24,11 @@ u32 mpc885_get_clock(u32 crystal)
 {
 	u32 *immr;
 	u32 plprcr;
+<<<<<<< HEAD
 	int mfi, mfn, mfd, pdf;
+=======
+	int mfi, mfn, mfd, pdf, div;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 ret;
 
 	immr = fsl_get_immr();
@@ -43,6 +47,10 @@ u32 mpc885_get_clock(u32 crystal)
 	}
 
 	pdf = (plprcr >> 1) & 0xf;
+<<<<<<< HEAD
+=======
+	div = (plprcr >> 20) & 3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfd = (plprcr >> 22) & 0x1f;
 	mfn = (plprcr >> 27) & 0x1f;
 

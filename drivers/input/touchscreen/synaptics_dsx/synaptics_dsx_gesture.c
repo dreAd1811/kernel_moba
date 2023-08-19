@@ -3,6 +3,10 @@
  *
  * Copyright (C) 2012-2016 Synaptics Incorporated. All rights reserved.
  *
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
  * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
  *
@@ -388,6 +392,7 @@ struct synaptics_rmi4_udg_handle {
 };
 
 static struct device_attribute attrs[] = {
+<<<<<<< HEAD
 	__ATTR(engine_enable, (S_IWUSR | S_IWGRP),
 			synaptics_rmi4_show_error,
 			udg_sysfs_engine_enable_store),
@@ -428,6 +433,48 @@ static struct device_attribute attrs[] = {
 			synaptics_rmi4_show_error,
 			udg_sysfs_template_clear_store),
 	__ATTR(trace_size, S_IRUGO,
+=======
+	__ATTR(engine_enable, 0220,
+			synaptics_rmi4_show_error,
+			udg_sysfs_engine_enable_store),
+	__ATTR(detection_enable, 0220,
+			synaptics_rmi4_show_error,
+			udg_sysfs_detection_enable_store),
+	__ATTR(detection_score, 0444,
+			udg_sysfs_detection_score_show,
+			synaptics_rmi4_store_error),
+	__ATTR(detection_index, 0444,
+			udg_sysfs_detection_index_show,
+			synaptics_rmi4_store_error),
+	__ATTR(registration_enable, 0220,
+			synaptics_rmi4_show_error,
+			udg_sysfs_registration_enable_store),
+	__ATTR(registration_begin, 0220,
+			synaptics_rmi4_show_error,
+			udg_sysfs_registration_begin_store),
+	__ATTR(registration_status, 0444,
+			udg_sysfs_registration_status_show,
+			synaptics_rmi4_store_error),
+	__ATTR(template_size, 0444,
+			udg_sysfs_template_size_show,
+			synaptics_rmi4_store_error),
+	__ATTR(template_max_index, 0444,
+			udg_sysfs_template_max_index_show,
+			synaptics_rmi4_store_error),
+	__ATTR(template_detection, 0444,
+			udg_sysfs_template_detection_show,
+			synaptics_rmi4_store_error),
+	__ATTR(template_index, 0220,
+			synaptics_rmi4_show_error,
+			udg_sysfs_template_index_store),
+	__ATTR(template_valid, 0664,
+			udg_sysfs_template_valid_show,
+			udg_sysfs_template_valid_store),
+	__ATTR(template_clear, 0220,
+			synaptics_rmi4_show_error,
+			udg_sysfs_template_clear_store),
+	__ATTR(trace_size, 0444,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			udg_sysfs_trace_size_show,
 			synaptics_rmi4_store_error),
 };
@@ -435,7 +482,11 @@ static struct device_attribute attrs[] = {
 static struct bin_attribute template_data = {
 	.attr = {
 		.name = "template_data",
+<<<<<<< HEAD
 		.mode = (S_IRUGO | S_IWUSR | S_IWGRP),
+=======
+		.mode = 0664,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.size = 0,
 	.read = udg_sysfs_template_data_show,
@@ -445,7 +496,11 @@ static struct bin_attribute template_data = {
 static struct bin_attribute trace_data = {
 	.attr = {
 		.name = "trace_data",
+<<<<<<< HEAD
 		.mode = S_IRUGO,
+=======
+		.mode = 0444,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.size = 0,
 	.read = udg_sysfs_trace_data_show,
@@ -453,6 +508,7 @@ static struct bin_attribute trace_data = {
 };
 
 static struct device_attribute params[] = {
+<<<<<<< HEAD
 	__ATTR(template_displacement, (S_IRUGO | S_IWUSR | S_IWGRP),
 			udg_sysfs_template_displacement_show,
 			udg_sysfs_template_displacement_store),
@@ -469,6 +525,24 @@ static struct device_attribute params[] = {
 			udg_sysfs_match_metric_threshold_show,
 			udg_sysfs_match_metric_threshold_store),
 	__ATTR(max_inter_stroke_time, (S_IRUGO | S_IWUSR | S_IWGRP),
+=======
+	__ATTR(template_displacement, 0664,
+			udg_sysfs_template_displacement_show,
+			udg_sysfs_template_displacement_store),
+	__ATTR(rotation_invariance, 0664,
+			udg_sysfs_rotation_invariance_show,
+			udg_sysfs_rotation_invariance_store),
+	__ATTR(scale_invariance, 0664,
+			udg_sysfs_scale_invariance_show,
+			udg_sysfs_scale_invariance_store),
+	__ATTR(threshold_factor, 0664,
+			udg_sysfs_threshold_factor_show,
+			udg_sysfs_threshold_factor_store),
+	__ATTR(match_metric_threshold, 0664,
+			udg_sysfs_match_metric_threshold_show,
+			udg_sysfs_match_metric_threshold_store),
+	__ATTR(max_inter_stroke_time, 0664,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			udg_sysfs_max_inter_stroke_time_show,
 			udg_sysfs_max_inter_stroke_time_store),
 };
@@ -489,7 +563,11 @@ static ssize_t udg_sysfs_engine_enable_store(struct device *dev,
 	bool enable;
 	unsigned int input;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input == 1)
@@ -513,7 +591,11 @@ static ssize_t udg_sysfs_detection_enable_store(struct device *dev,
 	bool enable;
 	unsigned int input;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input == 1)
@@ -553,7 +635,11 @@ static ssize_t udg_sysfs_registration_enable_store(struct device *dev,
 	struct synaptics_rmi4_f12_control_41 control_41;
 	struct synaptics_rmi4_data *rmi4_data = udg->rmi4_data;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input == 1)
@@ -632,7 +718,11 @@ static ssize_t udg_sysfs_registration_begin_store(struct device *dev,
 	struct synaptics_rmi4_f12_control_41 control_41;
 	struct synaptics_rmi4_data *rmi4_data = udg->rmi4_data;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input == 1)
@@ -820,7 +910,11 @@ static ssize_t udg_sysfs_template_clear_store(struct device *dev,
 	const char cmd[] = {'0', 0};
 	struct synaptics_rmi4_data *rmi4_data = udg->rmi4_data;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input != 1)

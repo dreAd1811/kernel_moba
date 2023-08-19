@@ -97,7 +97,11 @@ void free_pgd_slow(struct mm_struct *mm, pgd_t *pgd)
 	pte = pmd_pgtable(*pmd);
 	pmd_clear(pmd);
 	pte_free(mm, pte);
+<<<<<<< HEAD
 	mm_dec_nr_ptes(mm);
+=======
+	atomic_long_dec(&mm->nr_ptes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pmd_free(mm, pmd);
 	mm_dec_nr_pmds(mm);
 free:

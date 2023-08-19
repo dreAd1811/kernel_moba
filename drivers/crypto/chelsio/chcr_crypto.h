@@ -134,16 +134,26 @@
 #define CRYPTO_ALG_SUB_TYPE_HASH_HMAC       0x01000000
 #define CRYPTO_ALG_SUB_TYPE_AEAD_RFC4106    0x02000000
 #define CRYPTO_ALG_SUB_TYPE_AEAD_GCM	    0x03000000
+<<<<<<< HEAD
 #define CRYPTO_ALG_SUB_TYPE_CBC_SHA	    0x04000000
 #define CRYPTO_ALG_SUB_TYPE_AEAD_CCM        0x05000000
 #define CRYPTO_ALG_SUB_TYPE_AEAD_RFC4309    0x06000000
 #define CRYPTO_ALG_SUB_TYPE_CBC_NULL	    0x07000000
+=======
+#define CRYPTO_ALG_SUB_TYPE_AEAD_AUTHENC    0x04000000
+#define CRYPTO_ALG_SUB_TYPE_AEAD_CCM        0x05000000
+#define CRYPTO_ALG_SUB_TYPE_AEAD_RFC4309    0x06000000
+#define CRYPTO_ALG_SUB_TYPE_AEAD_NULL       0x07000000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CRYPTO_ALG_SUB_TYPE_CTR             0x08000000
 #define CRYPTO_ALG_SUB_TYPE_CTR_RFC3686     0x09000000
 #define CRYPTO_ALG_SUB_TYPE_XTS		    0x0a000000
 #define CRYPTO_ALG_SUB_TYPE_CBC		    0x0b000000
+<<<<<<< HEAD
 #define CRYPTO_ALG_SUB_TYPE_CTR_SHA	    0x0c000000
 #define CRYPTO_ALG_SUB_TYPE_CTR_NULL   0x0d000000
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CRYPTO_ALG_TYPE_HMAC (CRYPTO_ALG_TYPE_AHASH |\
 			      CRYPTO_ALG_SUB_TYPE_HASH_HMAC)
 
@@ -151,6 +161,7 @@
 
 #define CHCR_HASH_MAX_BLOCK_SIZE_64  64
 #define CHCR_HASH_MAX_BLOCK_SIZE_128 128
+<<<<<<< HEAD
 #define CHCR_SRC_SG_SIZE (0x10000 - sizeof(int))
 #define CHCR_DST_SG_SIZE 2048
 
@@ -171,6 +182,14 @@ static inline struct chcr_context *h_ctx(struct crypto_ahash *tfm)
 
 struct ablk_ctx {
 	struct crypto_sync_skcipher *sw_cipher;
+=======
+#define CHCR_SG_SIZE 2048
+
+/* Aligned to 128 bit boundary */
+
+struct ablk_ctx {
+	struct crypto_skcipher *sw_cipher;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct crypto_cipher *aes_generic;
 	__be32 key_ctx_hdr;
 	unsigned int enckey_len;
@@ -181,6 +200,7 @@ struct ablk_ctx {
 };
 struct chcr_aead_reqctx {
 	struct	sk_buff	*skb;
+<<<<<<< HEAD
 	dma_addr_t iv_dma;
 	dma_addr_t b0_dma;
 	unsigned int b0_len;
@@ -210,6 +230,16 @@ struct dsgl_walk {
 	struct scatterlist *last_sg;
 	struct cpl_rx_phys_dsgl *dsgl;
 	struct phys_sge_pairs *to;
+=======
+	struct scatterlist *dst;
+	struct scatterlist *newdstsg;
+	struct scatterlist srcffwd[2];
+	struct scatterlist dstffwd[2];
+	short int dst_nents;
+	u16 verify;
+	u8 iv[CHCR_MAX_CRYPTO_IV_LEN];
+	unsigned char scratch_pad[MAX_SCRATCH_PAD_SIZE];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct chcr_gcm_ctx {
@@ -227,6 +257,7 @@ struct __aead_ctx {
 	struct chcr_authenc_ctx authenc[0];
 };
 
+<<<<<<< HEAD
 struct chcr_aead_ctx {
 	__be32 key_ctx_hdr;
 	unsigned int enckey_len;
@@ -234,11 +265,27 @@ struct chcr_aead_ctx {
 	u8 salt[MAX_SALT];
 	u8 key[CHCR_AES_MAX_KEY_LEN];
 	u8 nonce[4];
+=======
+
+
+struct chcr_aead_ctx {
+	__be32 key_ctx_hdr;
+	unsigned int enckey_len;
+	struct crypto_skcipher *null;
+	struct crypto_aead *sw_cipher;
+	u8 salt[MAX_SALT];
+	u8 key[CHCR_AES_MAX_KEY_LEN];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 hmac_ctrl;
 	u16 mayverify;
 	struct	__aead_ctx ctx[0];
 };
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hmac_ctx {
 	struct crypto_shash *base_hash;
 	u8 ipad[CHCR_HASH_MAX_BLOCK_SIZE_128];
@@ -260,6 +307,7 @@ struct chcr_context {
 	struct __crypto_ctx crypto_ctx[0];
 };
 
+<<<<<<< HEAD
 struct chcr_hctx_per_wr {
 	struct scatterlist *srcsg;
 	struct sk_buff *skb;
@@ -286,10 +334,25 @@ struct chcr_ahash_req_ctx {
 	u8 partial_hash[CHCR_HASH_MAX_DIGEST_SIZE];
 	u8 bfr1[CHCR_HASH_MAX_BLOCK_SIZE_128];
 	u8 bfr2[CHCR_HASH_MAX_BLOCK_SIZE_128];
+=======
+struct chcr_ahash_req_ctx {
+	u32 result;
+	u8 bfr1[CHCR_HASH_MAX_BLOCK_SIZE_128];
+	u8 bfr2[CHCR_HASH_MAX_BLOCK_SIZE_128];
+	u8 *reqbfr;
+	u8 *skbfr;
+	u8 reqlen;
+	/* DMA the partial hash in it */
+	u8 partial_hash[CHCR_HASH_MAX_DIGEST_SIZE];
+	u64 data_len;  /* Data len till time */
+	/* SKB which is being sent to the hardware for processing */
+	struct sk_buff *skb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct chcr_blkcipher_req_ctx {
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	struct scatterlist *dstsg;
 	unsigned int processed;
 	unsigned int last_req_len;
@@ -298,6 +361,16 @@ struct chcr_blkcipher_req_ctx {
 	unsigned int dst_ofst;
 	unsigned int op;
 	u16 imm;
+=======
+	struct scatterlist srcffwd[2];
+	struct scatterlist dstffwd[2];
+	struct scatterlist *dstsg;
+	struct scatterlist *dst;
+	struct scatterlist *newdstsg;
+	unsigned int processed;
+	unsigned int op;
+	short int dst_nents;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 iv[CHCR_MAX_CRYPTO_IV_LEN];
 };
 
@@ -311,6 +384,7 @@ struct chcr_alg_template {
 	} alg;
 };
 
+<<<<<<< HEAD
 typedef struct sk_buff *(*create_wr_t)(struct aead_request *req,
 				       unsigned short qid,
 				       int size);
@@ -341,4 +415,40 @@ void chcr_add_hash_src_ent(struct ahash_request *req, struct ulptx_sgl *ulptx,
 int chcr_hash_dma_map(struct device *dev, struct ahash_request *req);
 void chcr_hash_dma_unmap(struct device *dev, struct ahash_request *req);
 void chcr_aead_common_exit(struct aead_request *req);
+=======
+struct chcr_req_ctx {
+	union {
+		struct ahash_request *ahash_req;
+		struct aead_request *aead_req;
+		struct ablkcipher_request *ablk_req;
+	} req;
+	union {
+		struct chcr_ahash_req_ctx *ahash_ctx;
+		struct chcr_aead_reqctx *reqctx;
+		struct chcr_blkcipher_req_ctx *ablk_ctx;
+	} ctx;
+};
+
+struct sge_opaque_hdr {
+	void *dev;
+	dma_addr_t addr[MAX_SKB_FRAGS + 1];
+};
+
+typedef struct sk_buff *(*create_wr_t)(struct aead_request *req,
+				       unsigned short qid,
+				       int size,
+				       unsigned short op_type);
+
+static int chcr_aead_op(struct aead_request *req_base,
+			  unsigned short op_type,
+			  int size,
+			  create_wr_t create_wr_fn);
+static inline int get_aead_subtype(struct crypto_aead *aead);
+static int is_newsg(struct scatterlist *sgl, unsigned int *newents);
+static struct scatterlist *alloc_new_sg(struct scatterlist *sgl,
+					unsigned int nents);
+static inline void free_new_sg(struct scatterlist *sgl);
+static int chcr_handle_cipher_resp(struct ablkcipher_request *req,
+				   unsigned char *input, int err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __CHCR_CRYPTO_H__ */

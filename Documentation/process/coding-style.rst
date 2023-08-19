@@ -200,6 +200,7 @@ statement; in the latter case use braces in both branches:
 		otherwise();
 	}
 
+<<<<<<< HEAD
 Also, use braces when a loop contains more than a single simple statement:
 
 .. code-block:: c
@@ -209,6 +210,8 @@ Also, use braces when a loop contains more than a single simple statement:
 			do_something();
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 3.1) Spaces
 ***********
 
@@ -631,6 +634,7 @@ options ``-kr -i8`` (stands for ``K&R, 8 character indents``), or use
 re-formatting you may want to take a look at the man page.  But
 remember: ``indent`` is not a fix for bad programming.
 
+<<<<<<< HEAD
 Note that you can also use the ``clang-format`` tool to help you with
 these rules, to quickly re-format parts of your code automatically,
 and to review full files in order to spot coding style mistakes,
@@ -639,6 +643,8 @@ for aligning variables/macros, for reflowing text and other similar tasks.
 See the file :ref:`Documentation/process/clang-format.rst <clangformat>`
 for more details.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 10) Kconfig configuration files
 -------------------------------

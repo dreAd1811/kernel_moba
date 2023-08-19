@@ -11,10 +11,13 @@
 extern unsigned long max_pfn;
 extern unsigned long phys_base;
 
+<<<<<<< HEAD
 extern unsigned long page_offset_base;
 extern unsigned long vmalloc_base;
 extern unsigned long vmemmap_base;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned long __phys_addr_nodebug(unsigned long x)
 {
 	unsigned long y = x - __START_KERNEL_map;
@@ -51,7 +54,11 @@ static inline void clear_page(void *page)
 			   clear_page_erms, X86_FEATURE_ERMS,
 			   "=D" (page),
 			   "0" (page)
+<<<<<<< HEAD
 			   : "cc", "memory", "rax", "rcx");
+=======
+			   : "memory", "rax", "rcx");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void copy_page(void *to, void *from);

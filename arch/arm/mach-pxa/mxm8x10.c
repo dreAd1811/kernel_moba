@@ -22,7 +22,11 @@
 #include <linux/serial_8250.h>
 #include <linux/dm9000.h>
 #include <linux/gpio.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
+=======
+#include <linux/i2c/pxa-i2c.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/platform_data/mtd-nand-pxa3xx.h>
 
@@ -359,7 +363,11 @@ void __init mxm_8x10_ac97_init(void)
 }
 
 /* NAND flash Support */
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTD_NAND_MARVELL)
+=======
+#if defined(CONFIG_MTD_NAND_PXA3xx) || defined(CONFIG_MTD_NAND_PXA3xx_MODULE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NAND_BLOCK_SIZE SZ_128K
 #define NB(x)           (NAND_BLOCK_SIZE * (x))
 static struct mtd_partition mxm_8x10_nand_partitions[] = {
@@ -389,9 +397,17 @@ static struct mtd_partition mxm_8x10_nand_partitions[] = {
 };
 
 static struct pxa3xx_nand_platform_data mxm_8x10_nand_info = {
+<<<<<<< HEAD
 	.keep_config	= 1,
 	.parts		= mxm_8x10_nand_partitions,
 	.nr_parts	= ARRAY_SIZE(mxm_8x10_nand_partitions)
+=======
+	.enable_arbiter	= 1,
+	.keep_config	= 1,
+	.num_cs		= 1,
+	.parts[0]	= mxm_8x10_nand_partitions,
+	.nr_parts[0]	= ARRAY_SIZE(mxm_8x10_nand_partitions)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void __init mxm_8x10_nand_init(void)
@@ -400,7 +416,11 @@ static void __init mxm_8x10_nand_init(void)
 }
 #else
 static inline void mxm_8x10_nand_init(void) {}
+<<<<<<< HEAD
 #endif /* IS_ENABLED(CONFIG_MTD_NAND_MARVELL) */
+=======
+#endif /* CONFIG_MTD_NAND_PXA3xx || CONFIG_MTD_NAND_PXA3xx_MODULE */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Ethernet support: Davicom DM9000 */
 static struct resource dm9k_resources[] = {

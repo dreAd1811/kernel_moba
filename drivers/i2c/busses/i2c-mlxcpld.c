@@ -45,16 +45,23 @@
 #define MLXCPLD_I2C_VALID_FLAG		(I2C_M_RECV_LEN | I2C_M_RD)
 #define MLXCPLD_I2C_BUS_NUM		1
 #define MLXCPLD_I2C_DATA_REG_SZ		36
+<<<<<<< HEAD
 #define MLXCPLD_I2C_DATA_SZ_BIT		BIT(5)
 #define MLXCPLD_I2C_DATA_SZ_MASK	GENMASK(6, 5)
 #define MLXCPLD_I2C_SMBUS_BLK_BIT	BIT(7)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MLXCPLD_I2C_MAX_ADDR_LEN	4
 #define MLXCPLD_I2C_RETR_NUM		2
 #define MLXCPLD_I2C_XFER_TO		500000 /* usec */
 #define MLXCPLD_I2C_POLL_TIME		2000   /* usec */
 
 /* LPC I2C registers */
+<<<<<<< HEAD
 #define MLXCPLD_LPCI2C_CPBLTY_REG	0x0
+=======
+#define MLXCPLD_LPCI2C_LPF_REG		0x0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MLXCPLD_LPCI2C_CTRL_REG		0x1
 #define MLXCPLD_LPCI2C_HALF_CYC_REG	0x4
 #define MLXCPLD_LPCI2C_I2C_HOLD_REG	0x5
@@ -86,7 +93,10 @@ struct mlxcpld_i2c_priv {
 	struct mutex lock;
 	struct  mlxcpld_i2c_curr_xfer xfer;
 	struct device *dev;
+<<<<<<< HEAD
 	bool smbus_block;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void mlxcpld_i2c_lpc_write_buf(u8 *data, u8 len, u32 addr)
@@ -234,7 +244,11 @@ static void mlxcpld_i2c_set_transf_data(struct mlxcpld_i2c_priv *priv,
 	 * All upper layers currently are never use transfer with more than
 	 * 2 messages. Actually, it's also not so relevant in Mellanox systems
 	 * because of HW limitation. Max size of transfer is not more than 32
+<<<<<<< HEAD
 	 * or 68 bytes in the current x86 LPCI2C bridge.
+=======
+	 * bytes in the current x86 LPCI2C bridge.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	priv->xfer.cmd = msgs[num - 1].flags & I2C_M_RD;
 
@@ -299,7 +313,11 @@ static int mlxcpld_i2c_wait_for_free(struct mlxcpld_i2c_priv *priv)
 static int mlxcpld_i2c_wait_for_tc(struct mlxcpld_i2c_priv *priv)
 {
 	int status, i, timeout = 0;
+<<<<<<< HEAD
 	u8 datalen, val;
+=======
+	u8 datalen;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		usleep_range(MLXCPLD_I2C_POLL_TIME / 2, MLXCPLD_I2C_POLL_TIME);
@@ -328,6 +346,7 @@ static int mlxcpld_i2c_wait_for_tc(struct mlxcpld_i2c_priv *priv)
 		 * Actual read data len will be always the same as
 		 * requested len. 0xff (line pull-up) will be returned
 		 * if slave has no data to return. Thus don't read
+<<<<<<< HEAD
 		 * MLXCPLD_LPCI2C_NUM_DAT_REG reg from CPLD.  Only in case of
 		 * SMBus block read transaction data len can be different,
 		 * check this case.
@@ -344,6 +363,11 @@ static int mlxcpld_i2c_wait_for_tc(struct mlxcpld_i2c_priv *priv)
 		} else {
 			datalen = priv->xfer.data_len;
 		}
+=======
+		 * MLXCPLD_LPCI2C_NUM_DAT_REG reg from CPLD.
+		 */
+		datalen = priv->xfer.data_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mlxcpld_i2c_read_comm(priv, MLXCPLD_LPCI2C_DATA_REG,
 				      priv->xfer.msg[i].buf, datalen);
@@ -361,6 +385,7 @@ static int mlxcpld_i2c_wait_for_tc(struct mlxcpld_i2c_priv *priv)
 static void mlxcpld_i2c_xfer_msg(struct mlxcpld_i2c_priv *priv)
 {
 	int i, len = 0;
+<<<<<<< HEAD
 	u8 cmd, val;
 
 	mlxcpld_i2c_write_comm(priv, MLXCPLD_LPCI2C_NUM_DAT_REG,
@@ -375,6 +400,14 @@ static void mlxcpld_i2c_xfer_msg(struct mlxcpld_i2c_priv *priv)
 		val |= MLXCPLD_I2C_SMBUS_BLK_BIT;
 
 	mlxcpld_i2c_write_comm(priv, MLXCPLD_LPCI2C_NUM_ADDR_REG, &val, 1);
+=======
+	u8 cmd;
+
+	mlxcpld_i2c_write_comm(priv, MLXCPLD_LPCI2C_NUM_DAT_REG,
+			       &priv->xfer.data_len, 1);
+	mlxcpld_i2c_write_comm(priv, MLXCPLD_LPCI2C_NUM_ADDR_REG,
+			       &priv->xfer.addr_width, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < priv->xfer.msg_num; i++) {
 		if ((priv->xfer.msg[i].flags & I2C_M_RD) != I2C_M_RD) {
@@ -450,6 +483,7 @@ static int mlxcpld_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs,
 
 static u32 mlxcpld_i2c_func(struct i2c_adapter *adap)
 {
+<<<<<<< HEAD
 	struct mlxcpld_i2c_priv *priv = i2c_get_adapdata(adap);
 
 	if (priv->smbus_block)
@@ -458,6 +492,9 @@ static u32 mlxcpld_i2c_func(struct i2c_adapter *adap)
 	else
 		return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL |
 			I2C_FUNC_SMBUS_I2C_BLOCK;
+=======
+	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL | I2C_FUNC_SMBUS_BLOCK_DATA;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct i2c_algorithm mlxcpld_i2c_algo = {
@@ -472,6 +509,7 @@ static const struct i2c_adapter_quirks mlxcpld_i2c_quirks = {
 	.max_comb_1st_msg_len = 4,
 };
 
+<<<<<<< HEAD
 static const struct i2c_adapter_quirks mlxcpld_i2c_quirks_ext = {
 	.flags = I2C_AQ_COMB_WRITE_THEN_READ,
 	.max_read_len = MLXCPLD_I2C_DATA_REG_SZ * 2 - MLXCPLD_I2C_MAX_ADDR_LEN,
@@ -479,6 +517,8 @@ static const struct i2c_adapter_quirks mlxcpld_i2c_quirks_ext = {
 	.max_comb_1st_msg_len = 4,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct i2c_adapter mlxcpld_i2c_adapter = {
 	.owner          = THIS_MODULE,
 	.name           = "i2c-mlxcpld",
@@ -493,7 +533,10 @@ static int mlxcpld_i2c_probe(struct platform_device *pdev)
 {
 	struct mlxcpld_i2c_priv *priv;
 	int err;
+<<<<<<< HEAD
 	u8 val;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
@@ -503,6 +546,7 @@ static int mlxcpld_i2c_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, priv);
 
 	priv->dev = &pdev->dev;
+<<<<<<< HEAD
 	priv->base_addr = MLXPLAT_CPLD_LPC_I2C_BASE_ADDR;
 
 	/* Register with i2c layer */
@@ -519,6 +563,14 @@ static int mlxcpld_i2c_probe(struct platform_device *pdev)
 		mlxcpld_i2c_adapter.nr = pdev->id;
 	priv->adap = mlxcpld_i2c_adapter;
 	priv->adap.dev.parent = &pdev->dev;
+=======
+
+	/* Register with i2c layer */
+	mlxcpld_i2c_adapter.timeout = usecs_to_jiffies(MLXCPLD_I2C_XFER_TO);
+	priv->adap = mlxcpld_i2c_adapter;
+	priv->adap.dev.parent = &pdev->dev;
+	priv->base_addr = MLXPLAT_CPLD_LPC_I2C_BASE_ADDR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_set_adapdata(&priv->adap, priv);
 
 	err = i2c_add_numbered_adapter(&priv->adap);

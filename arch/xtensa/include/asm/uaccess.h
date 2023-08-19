@@ -44,8 +44,11 @@
 #define __access_ok(addr, size) (__kernel_ok || __user_ok((addr), (size)))
 #define access_ok(type, addr, size) __access_ok((unsigned long)(addr), (size))
 
+<<<<<<< HEAD
 #define user_addr_max() (uaccess_kernel() ? ~0UL : TASK_SIZE)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * These are the main single-value transfer routines.  They
  * automatically use the right size if we just have the right pointer
@@ -263,7 +266,11 @@ raw_copy_to_user(void __user *to, const void *from, unsigned long n)
 static inline unsigned long
 __xtensa_clear_user(void *addr, unsigned long size)
 {
+<<<<<<< HEAD
 	if (!__memset(addr, 0, size))
+=======
+	if ( ! memset(addr, 0, size) )
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return size;
 	return 0;
 }
@@ -279,8 +286,11 @@ clear_user(void *addr, unsigned long size)
 #define __clear_user  __xtensa_clear_user
 
 
+<<<<<<< HEAD
 #ifndef CONFIG_GENERIC_STRNCPY_FROM_USER
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern long __strncpy_user(char *, const char *, long);
 
 static inline long
@@ -290,9 +300,12 @@ strncpy_from_user(char *dst, const char *src, long count)
 		return __strncpy_user(dst, src, count);
 	return -EFAULT;
 }
+<<<<<<< HEAD
 #else
 long strncpy_from_user(char *dst, const char *src, long count);
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Return the size of a string (including the ending 0!)

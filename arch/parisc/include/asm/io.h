@@ -183,6 +183,7 @@ static inline unsigned char readb(const volatile void __iomem *addr)
 }
 static inline unsigned short readw(const volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	return le16_to_cpu((__le16 __force) __raw_readw(addr));
 }
 static inline unsigned int readl(const volatile void __iomem *addr)
@@ -192,6 +193,17 @@ static inline unsigned int readl(const volatile void __iomem *addr)
 static inline unsigned long long readq(const volatile void __iomem *addr)
 {
 	return le64_to_cpu((__le64 __force) __raw_readq(addr));
+=======
+	return le16_to_cpu(__raw_readw(addr));
+}
+static inline unsigned int readl(const volatile void __iomem *addr)
+{
+	return le32_to_cpu(__raw_readl(addr));
+}
+static inline unsigned long long readq(const volatile void __iomem *addr)
+{
+	return le64_to_cpu(__raw_readq(addr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void writeb(unsigned char b, volatile void __iomem *addr)
@@ -200,6 +212,7 @@ static inline void writeb(unsigned char b, volatile void __iomem *addr)
 }
 static inline void writew(unsigned short w, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	__raw_writew((__u16 __force) cpu_to_le16(w), addr);
 }
 static inline void writel(unsigned int l, volatile void __iomem *addr)
@@ -209,6 +222,17 @@ static inline void writel(unsigned int l, volatile void __iomem *addr)
 static inline void writeq(unsigned long long q, volatile void __iomem *addr)
 {
 	__raw_writeq((__u64 __force) cpu_to_le64(q), addr);
+=======
+	__raw_writew(cpu_to_le16(w), addr);
+}
+static inline void writel(unsigned int l, volatile void __iomem *addr)
+{
+	__raw_writel(cpu_to_le32(l), addr);
+}
+static inline void writeq(unsigned long long q, volatile void __iomem *addr)
+{
+	__raw_writeq(cpu_to_le64(q), addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define	readb	readb

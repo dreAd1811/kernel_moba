@@ -53,6 +53,11 @@ static inline void dsb_sev(void)
  * memory.
  */
 
+<<<<<<< HEAD
+=======
+#define arch_spin_lock_flags(lock, flags) arch_spin_lock(lock)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void arch_spin_lock(arch_spinlock_t *lock)
 {
 	unsigned long tmp;
@@ -72,7 +77,11 @@ static inline void arch_spin_lock(arch_spinlock_t *lock)
 
 	while (lockval.tickets.next != lockval.tickets.owner) {
 		wfe();
+<<<<<<< HEAD
 		lockval.tickets.owner = READ_ONCE(lock->tickets.owner);
+=======
+		lockval.tickets.owner = ACCESS_ONCE(lock->tickets.owner);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	smp_mb();
@@ -192,6 +201,12 @@ static inline void arch_write_unlock(arch_rwlock_t *rw)
 	dsb_sev();
 }
 
+<<<<<<< HEAD
+=======
+/* write_can_lock - would write_trylock() succeed? */
+#define arch_write_can_lock(x)		(ACCESS_ONCE((x)->lock) == 0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Read locks are a bit more hairy:
  *  - Exclusively load the lock value.
@@ -269,4 +284,17 @@ static inline int arch_read_trylock(arch_rwlock_t *rw)
 	}
 }
 
+<<<<<<< HEAD
+=======
+/* read_can_lock - would read_trylock() succeed? */
+#define arch_read_can_lock(x)		(ACCESS_ONCE((x)->lock) < 0x80000000)
+
+#define arch_read_lock_flags(lock, flags) arch_read_lock(lock)
+#define arch_write_lock_flags(lock, flags) arch_write_lock(lock)
+
+#define arch_spin_relax(lock)	cpu_relax()
+#define arch_read_relax(lock)	cpu_relax()
+#define arch_write_relax(lock)	cpu_relax()
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASM_SPINLOCK_H */

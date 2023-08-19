@@ -54,7 +54,11 @@ static struct usbtv_norm_params norm_params[] = {
 		.cap_height = 480,
 	},
 	{
+<<<<<<< HEAD
 		.norm = V4L2_STD_625_50,
+=======
+		.norm = V4L2_STD_PAL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cap_width = 720,
 		.cap_height = 576,
 	}
@@ -77,7 +81,11 @@ static int usbtv_configure_for_norm(struct usbtv *usbtv, v4l2_std_id norm)
 		usbtv->height = params->cap_height;
 		usbtv->n_chunks = usbtv->width * usbtv->height
 						/ 4 / USBTV_CHUNK;
+<<<<<<< HEAD
 		usbtv->norm = norm;
+=======
+		usbtv->norm = params->norm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 		ret = -EINVAL;
 
@@ -121,6 +129,7 @@ static int usbtv_select_input(struct usbtv *usbtv, int input)
 	return ret;
 }
 
+<<<<<<< HEAD
 static uint16_t usbtv_norm_to_16f_reg(v4l2_std_id norm)
 {
 	/* NTSC M/M-JP/M-KR */
@@ -159,19 +168,33 @@ static int usbtv_select_norm(struct usbtv *usbtv, v4l2_std_id norm)
 		{ USBTV_BASE + 0x010f, 0x00a2 },
 		{ USBTV_BASE + 0x0112, 0x00b0 },
 		{ USBTV_BASE + 0x0115, 0x0015 },
+=======
+static int usbtv_select_norm(struct usbtv *usbtv, v4l2_std_id norm)
+{
+	int ret;
+	static const u16 pal[][2] = {
+		{ USBTV_BASE + 0x001a, 0x0068 },
+		{ USBTV_BASE + 0x010e, 0x0072 },
+		{ USBTV_BASE + 0x010f, 0x00a2 },
+		{ USBTV_BASE + 0x0112, 0x00b0 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ USBTV_BASE + 0x0117, 0x0001 },
 		{ USBTV_BASE + 0x0118, 0x002c },
 		{ USBTV_BASE + 0x012d, 0x0010 },
 		{ USBTV_BASE + 0x012f, 0x0020 },
+<<<<<<< HEAD
 		{ USBTV_BASE + 0x0220, 0x002e },
 		{ USBTV_BASE + 0x0225, 0x0008 },
 		{ USBTV_BASE + 0x024e, 0x0002 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ USBTV_BASE + 0x024f, 0x0002 },
 		{ USBTV_BASE + 0x0254, 0x0059 },
 		{ USBTV_BASE + 0x025a, 0x0016 },
 		{ USBTV_BASE + 0x025b, 0x0035 },
 		{ USBTV_BASE + 0x0263, 0x0017 },
 		{ USBTV_BASE + 0x0266, 0x0016 },
+<<<<<<< HEAD
 		{ USBTV_BASE + 0x0267, 0x0036 },
 		/* End image tuning */
 		{ USBTV_BASE + 0x024e, 0x0002 },
@@ -187,19 +210,33 @@ static int usbtv_select_norm(struct usbtv *usbtv, v4l2_std_id norm)
 		{ USBTV_BASE + 0x010f, 0x009c },
 		{ USBTV_BASE + 0x0112, 0x00f0 },
 		{ USBTV_BASE + 0x0115, 0x0015 },
+=======
+		{ USBTV_BASE + 0x0267, 0x0036 }
+	};
+
+	static const u16 ntsc[][2] = {
+		{ USBTV_BASE + 0x001a, 0x0079 },
+		{ USBTV_BASE + 0x010e, 0x0068 },
+		{ USBTV_BASE + 0x010f, 0x009c },
+		{ USBTV_BASE + 0x0112, 0x00f0 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ USBTV_BASE + 0x0117, 0x0000 },
 		{ USBTV_BASE + 0x0118, 0x00fc },
 		{ USBTV_BASE + 0x012d, 0x0004 },
 		{ USBTV_BASE + 0x012f, 0x0008 },
+<<<<<<< HEAD
 		{ USBTV_BASE + 0x0220, 0x002e },
 		{ USBTV_BASE + 0x0225, 0x0008 },
 		{ USBTV_BASE + 0x024e, 0x0002 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ USBTV_BASE + 0x024f, 0x0001 },
 		{ USBTV_BASE + 0x0254, 0x005f },
 		{ USBTV_BASE + 0x025a, 0x0012 },
 		{ USBTV_BASE + 0x025b, 0x0001 },
 		{ USBTV_BASE + 0x0263, 0x001c },
 		{ USBTV_BASE + 0x0266, 0x0011 },
+<<<<<<< HEAD
 		{ USBTV_BASE + 0x0267, 0x0005 },
 		/* End image tuning */
 		{ USBTV_BASE + 0x024e, 0x0002 },
@@ -232,11 +269,15 @@ static int usbtv_select_norm(struct usbtv *usbtv, v4l2_std_id norm)
 		/* End image tuning */
 		{ USBTV_BASE + 0x024e, 0x0002 },
 		{ USBTV_BASE + 0x024f, 0x0002 },
+=======
+		{ USBTV_BASE + 0x0267, 0x0005 }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	ret = usbtv_configure_for_norm(usbtv, norm);
 
 	if (!ret) {
+<<<<<<< HEAD
 		/* Masks for norms using a NTSC or PAL color encoding. */
 		static const v4l2_std_id ntsc_mask =
 			V4L2_STD_NTSC | V4L2_STD_NTSC_443;
@@ -259,6 +300,12 @@ static int usbtv_select_norm(struct usbtv *usbtv, v4l2_std_id norm)
 			{ USBTV_BASE + 0x016f, usbtv_norm_to_16f_reg(norm) }
 		};
 		ret = usbtv_set_regs(usbtv, cfg, ARRAY_SIZE(cfg));
+=======
+		if (norm & V4L2_STD_525_60)
+			ret = usbtv_set_regs(usbtv, ntsc, ARRAY_SIZE(ntsc));
+		else if (norm & V4L2_STD_PAL)
+			ret = usbtv_set_regs(usbtv, pal, ARRAY_SIZE(pal));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -328,6 +375,18 @@ static int usbtv_setup_capture(struct usbtv *usbtv)
 		{ USBTV_BASE + 0x0158, 0x001f },
 		{ USBTV_BASE + 0x0159, 0x0006 },
 		{ USBTV_BASE + 0x015d, 0x0000 },
+<<<<<<< HEAD
+=======
+
+		{ USBTV_BASE + 0x0003, 0x0004 },
+		{ USBTV_BASE + 0x0100, 0x00d3 },
+		{ USBTV_BASE + 0x0115, 0x0015 },
+		{ USBTV_BASE + 0x0220, 0x002e },
+		{ USBTV_BASE + 0x0225, 0x0008 },
+		{ USBTV_BASE + 0x024e, 0x0002 },
+		{ USBTV_BASE + 0x024e, 0x0002 },
+		{ USBTV_BASE + 0x024f, 0x0002 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	ret = usbtv_set_regs(usbtv, setup, ARRAY_SIZE(setup));
@@ -507,7 +566,11 @@ static struct urb *usbtv_setup_iso_transfer(struct usbtv *usbtv)
 	ip->pipe = usb_rcvisocpipe(usbtv->udev, USBTV_VIDEO_ENDP);
 	ip->interval = 1;
 	ip->transfer_flags = URB_ISO_ASAP;
+<<<<<<< HEAD
 	ip->transfer_buffer = kcalloc(USBTV_ISOC_PACKETS, size,
+=======
+	ip->transfer_buffer = kzalloc(size * USBTV_ISOC_PACKETS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						GFP_KERNEL);
 	if (!ip->transfer_buffer) {
 		usb_free_urb(ip);
@@ -670,7 +733,11 @@ static int usbtv_s_std(struct file *file, void *priv, v4l2_std_id norm)
 	int ret = -EINVAL;
 	struct usbtv *usbtv = video_drvdata(file);
 
+<<<<<<< HEAD
 	if (norm & USBTV_TV_STD)
+=======
+	if ((norm & V4L2_STD_525_60) || (norm & V4L2_STD_PAL))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = usbtv_select_norm(usbtv, norm);
 
 	return ret;
@@ -781,8 +848,11 @@ static const struct vb2_ops usbtv_vb2_ops = {
 	.buf_queue = usbtv_buf_queue,
 	.start_streaming = usbtv_start_streaming,
 	.stop_streaming = usbtv_stop_streaming,
+<<<<<<< HEAD
 	.wait_prepare = vb2_ops_wait_prepare,
 	.wait_finish = vb2_ops_wait_finish,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int usbtv_s_ctrl(struct v4l2_ctrl *ctrl)
@@ -805,7 +875,12 @@ static int usbtv_s_ctrl(struct v4l2_ctrl *ctrl)
 		ret = usb_control_msg(usbtv->udev,
 			usb_rcvctrlpipe(usbtv->udev, 0), USBTV_CONTROL_REG,
 			USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+<<<<<<< HEAD
 			0, USBTV_BASE + 0x0244, (void *)data, 3, 0);
+=======
+			0, USBTV_BASE + 0x0244, (void *)data, 3,
+			USB_CTRL_GET_TIMEOUT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			goto error;
 	}
@@ -856,7 +931,11 @@ static int usbtv_s_ctrl(struct v4l2_ctrl *ctrl)
 	ret = usb_control_msg(usbtv->udev, usb_sndctrlpipe(usbtv->udev, 0),
 			USBTV_CONTROL_REG,
 			USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+<<<<<<< HEAD
 			0, index, (void *)data, size, 0);
+=======
+			0, index, (void *)data, size, USB_CTRL_SET_TIMEOUT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error:
 	if (ret < 0)

@@ -113,6 +113,10 @@
 #define	ELOOP		249	/* Too many symbolic links encountered */
 #define	ENOSYS		251	/* Function not implemented */
 
+<<<<<<< HEAD
+=======
+#define ENOTSUP		252	/* Function not implemented (POSIX.4 / HPUX) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ECANCELLED	253	/* aio request was canceled before complete (POSIX.4 / HPUX) */
 #define ECANCELED	ECANCELLED	/* SuSv3 and Solaris wants one 'L' */
 

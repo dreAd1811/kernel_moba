@@ -304,10 +304,18 @@ static int nb8800_poll(struct napi_struct *napi, int budget)
 
 again:
 	do {
+<<<<<<< HEAD
+=======
+		struct nb8800_rx_buf *rxb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned int len;
 
 		next = (last + 1) % RX_DESC_COUNT;
 
+<<<<<<< HEAD
+=======
+		rxb = &priv->rx_bufs[next];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rxd = &priv->rx_descs[next];
 
 		if (!rxd->report)

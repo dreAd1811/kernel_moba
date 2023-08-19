@@ -9,7 +9,10 @@ config ARCH_UNIPHIER
 	select HAVE_ARM_SCU
 	select HAVE_ARM_TWD if SMP
 	select PINCTRL
+<<<<<<< HEAD
 	select RESET_CONTROLLER
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Support for UniPhier SoC family developed by Socionext Inc.
 	  (formerly, System LSI Business Division of Panasonic Corporation)

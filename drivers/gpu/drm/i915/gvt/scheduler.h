@@ -80,9 +80,16 @@ struct intel_shadow_wa_ctx {
 struct intel_vgpu_workload {
 	struct intel_vgpu *vgpu;
 	int ring_id;
+<<<<<<< HEAD
 	struct i915_request *req;
 	/* if this workload has been dispatched to i915? */
 	bool dispatched;
+=======
+	struct drm_i915_gem_request *req;
+	/* if this workload has been dispatched to i915? */
+	bool dispatched;
+	bool shadowed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status;
 
 	struct intel_vgpu_mm *shadow_mm;
@@ -109,6 +116,7 @@ struct intel_vgpu_workload {
 	/* shadow batch buffer */
 	struct list_head shadow_bb;
 	struct intel_shadow_wa_ctx wa_ctx;
+<<<<<<< HEAD
 
 	/* oa registers */
 	u32 oactxctrl;
@@ -131,6 +139,28 @@ struct intel_vgpu_shadow_bb {
 	(&(vgpu->submission.workload_q_head[ring_id]))
 
 void intel_vgpu_queue_workload(struct intel_vgpu_workload *workload);
+=======
+};
+
+/* Intel shadow batch buffer is a i915 gem object */
+struct intel_shadow_bb_entry {
+	struct list_head list;
+	struct drm_i915_gem_object *obj;
+	void *va;
+	unsigned long len;
+	u32 *bb_start_cmd_va;
+};
+
+#define workload_q_head(vgpu, ring_id) \
+	(&(vgpu->workload_q_head[ring_id]))
+
+#define queue_workload(workload) do { \
+	list_add_tail(&workload->list, \
+	workload_q_head(workload->vgpu, workload->ring_id)); \
+	wake_up(&workload->vgpu->gvt-> \
+	scheduler.waitq[workload->ring_id]); \
+} while (0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int intel_gvt_init_workload_scheduler(struct intel_gvt *gvt);
 
@@ -138,6 +168,7 @@ void intel_gvt_clean_workload_scheduler(struct intel_gvt *gvt);
 
 void intel_gvt_wait_vgpu_idle(struct intel_vgpu *vgpu);
 
+<<<<<<< HEAD
 int intel_vgpu_setup_submission(struct intel_vgpu *vgpu);
 
 void intel_vgpu_reset_submission(struct intel_vgpu *vgpu,
@@ -160,5 +191,10 @@ void intel_vgpu_destroy_workload(struct intel_vgpu_workload *workload);
 
 void intel_vgpu_clean_workloads(struct intel_vgpu *vgpu,
 				unsigned long engine_mask);
+=======
+int intel_vgpu_init_gvt_context(struct intel_vgpu *vgpu);
+
+void intel_vgpu_clean_gvt_context(struct intel_vgpu *vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

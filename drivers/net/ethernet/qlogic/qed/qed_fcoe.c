@@ -115,7 +115,11 @@ qed_sp_fcoe_func_start(struct qed_hwfn *p_hwfn,
 	struct qed_fcoe_pf_params *fcoe_pf_params = NULL;
 	struct fcoe_init_ramrod_params *p_ramrod = NULL;
 	struct fcoe_init_func_ramrod_data *p_data;
+<<<<<<< HEAD
 	struct e4_fcoe_conn_context *p_cxt = NULL;
+=======
+	struct fcoe_conn_context *p_cxt = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qed_spq_entry *p_ent = NULL;
 	struct qed_sp_init_data init_data;
 	struct qed_cxt_info cxt_info;
@@ -147,8 +151,12 @@ qed_sp_fcoe_func_start(struct qed_hwfn *p_hwfn,
 		       "Cannot satisfy CQ amount. CQs requested %d, CQs available %d. Aborting function start\n",
 		       fcoe_pf_params->num_cqs,
 		       p_hwfn->hw_info.feat_num[QED_FCOE_CQ]);
+<<<<<<< HEAD
 		rc = -EINVAL;
 		goto err;
+=======
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	p_data->mtu = cpu_to_le16(fcoe_pf_params->mtu);
@@ -157,18 +165,30 @@ qed_sp_fcoe_func_start(struct qed_hwfn *p_hwfn,
 
 	rc = qed_cxt_acquire_cid(p_hwfn, PROTOCOLID_FCOE, &dummy_cid);
 	if (rc)
+<<<<<<< HEAD
 		goto err;
+=======
+		return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cxt_info.iid = dummy_cid;
 	rc = qed_cxt_get_cid_info(p_hwfn, &cxt_info);
 	if (rc) {
 		DP_NOTICE(p_hwfn, "Cannot find context info for dummy cid=%d\n",
 			  dummy_cid);
+<<<<<<< HEAD
 		goto err;
 	}
 	p_cxt = cxt_info.p_cxt;
 	SET_FIELD(p_cxt->tstorm_ag_context.flags3,
 		  E4_TSTORM_FCOE_CONN_AG_CTX_DUMMY_TIMER_CF_EN, 1);
+=======
+		return rc;
+	}
+	p_cxt = cxt_info.p_cxt;
+	SET_FIELD(p_cxt->tstorm_ag_context.flags3,
+		  TSTORM_FCOE_CONN_AG_CTX_DUMMY_TIMER_CF_EN, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fcoe_pf_params->dummy_icid = (u16)dummy_cid;
 
@@ -241,10 +261,13 @@ qed_sp_fcoe_func_start(struct qed_hwfn *p_hwfn,
 	rc = qed_spq_post(p_hwfn, p_ent, NULL);
 
 	return rc;
+<<<<<<< HEAD
 
 err:
 	qed_sp_destroy_request(p_hwfn, p_ent);
 	return rc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -318,9 +341,12 @@ qed_sp_fcoe_conn_offload(struct qed_hwfn *p_hwfn,
 	p_data->d_id.addr_mid = p_conn->d_id.addr_mid;
 	p_data->d_id.addr_lo = p_conn->d_id.addr_lo;
 	p_data->flags = p_conn->flags;
+<<<<<<< HEAD
 	if (test_bit(QED_MF_UFP_SPECIFIC, &p_hwfn->cdev->mf_bits))
 		SET_FIELD(p_data->flags,
 			  FCOE_CONN_OFFLOAD_RAMROD_DATA_B_SINGLE_VLAN, 1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	p_data->def_q_idx = p_conn->def_q_idx;
 
 	return qed_spq_post(p_hwfn, p_ent, NULL);
@@ -576,7 +602,11 @@ int qed_fcoe_alloc(struct qed_hwfn *p_hwfn)
 
 void qed_fcoe_setup(struct qed_hwfn *p_hwfn)
 {
+<<<<<<< HEAD
 	struct e4_fcoe_task_context *p_task_ctx = NULL;
+=======
+	struct fcoe_task_context *p_task_ctx = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 	u32 i;
 
@@ -588,13 +618,21 @@ void qed_fcoe_setup(struct qed_hwfn *p_hwfn)
 		if (rc)
 			continue;
 
+<<<<<<< HEAD
 		memset(p_task_ctx, 0, sizeof(struct e4_fcoe_task_context));
+=======
+		memset(p_task_ctx, 0, sizeof(struct fcoe_task_context));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		SET_FIELD(p_task_ctx->timer_context.logical_client_0,
 			  TIMERS_CONTEXT_VALIDLC0, 1);
 		SET_FIELD(p_task_ctx->timer_context.logical_client_1,
 			  TIMERS_CONTEXT_VALIDLC1, 1);
 		SET_FIELD(p_task_ctx->tstorm_ag_context.flags0,
+<<<<<<< HEAD
 			  E4_TSTORM_FCOE_TASK_AG_CTX_CONNECTION_TYPE, 1);
+=======
+			  TSTORM_FCOE_TASK_AG_CTX_CONNECTION_TYPE, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

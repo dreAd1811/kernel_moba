@@ -313,7 +313,11 @@ in a mount namespace.
 ----------------------------------------------------------
 
 Documentation for the files in /proc/sys/fs/binfmt_misc is
+<<<<<<< HEAD
 in Documentation/admin-guide/binfmt-misc.rst.
+=======
+in Documentation/binfmt_misc.txt.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 3. /proc/sys/fs/mqueue - POSIX message queues filesystem

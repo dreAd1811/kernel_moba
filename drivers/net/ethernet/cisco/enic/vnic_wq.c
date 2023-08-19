@@ -35,7 +35,11 @@ static int vnic_wq_alloc_bufs(struct vnic_wq *wq)
 	unsigned int blks = VNIC_WQ_BUF_BLKS_NEEDED(count);
 
 	for (i = 0; i < blks; i++) {
+<<<<<<< HEAD
 		wq->bufs[i] = kzalloc(VNIC_WQ_BUF_BLK_SZ(count), GFP_KERNEL);
+=======
+		wq->bufs[i] = kzalloc(VNIC_WQ_BUF_BLK_SZ(count), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!wq->bufs[i])
 			return -ENOMEM;
 	}

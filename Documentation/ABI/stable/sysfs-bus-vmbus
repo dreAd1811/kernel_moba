@@ -1,25 +1,41 @@
+<<<<<<< HEAD
 What:		/sys/bus/vmbus/devices/<UUID>/id
+=======
+What:		/sys/bus/vmbus/devices/vmbus_*/id
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Date:		Jul 2009
 KernelVersion:	2.6.31
 Contact:	K. Y. Srinivasan <kys@microsoft.com>
 Description:	The VMBus child_relid of the device's primary channel
 Users:		tools/hv/lsvmbus
 
+<<<<<<< HEAD
 What:		/sys/bus/vmbus/devices/<UUID>/class_id
+=======
+What:		/sys/bus/vmbus/devices/vmbus_*/class_id
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Date:		Jul 2009
 KernelVersion:	2.6.31
 Contact:	K. Y. Srinivasan <kys@microsoft.com>
 Description:	The VMBus interface type GUID of the device
 Users:		tools/hv/lsvmbus
 
+<<<<<<< HEAD
 What:		/sys/bus/vmbus/devices/<UUID>/device_id
+=======
+What:		/sys/bus/vmbus/devices/vmbus_*/device_id
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Date:		Jul 2009
 KernelVersion:	2.6.31
 Contact:	K. Y. Srinivasan <kys@microsoft.com>
 Description:	The VMBus interface instance GUID of the device
 Users:		tools/hv/lsvmbus
 
+<<<<<<< HEAD
 What:		/sys/bus/vmbus/devices/<UUID>/channel_vp_mapping
+=======
+What:		/sys/bus/vmbus/devices/vmbus_*/channel_vp_mapping
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Date:		Jul 2015
 KernelVersion:	4.2.0
 Contact:	K. Y. Srinivasan <kys@microsoft.com>
@@ -28,19 +44,28 @@ Description:	The mapping of which primary/sub channels are bound to which
 		Format: <channel's child_relid:the bound cpu's number>
 Users:		tools/hv/lsvmbus
 
+<<<<<<< HEAD
 What:		/sys/bus/vmbus/devices/<UUID>/device
+=======
+What:		/sys/bus/vmbus/devices/vmbus_*/device
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Date:		Dec. 2015
 KernelVersion:	4.5
 Contact:	K. Y. Srinivasan <kys@microsoft.com>
 Description:	The 16 bit device ID of the device
 Users:		tools/hv/lsvmbus and user level RDMA libraries
 
+<<<<<<< HEAD
 What:		/sys/bus/vmbus/devices/<UUID>/vendor
+=======
+What:		/sys/bus/vmbus/devices/vmbus_*/vendor
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Date:		Dec. 2015
 KernelVersion:	4.5
 Contact:	K. Y. Srinivasan <kys@microsoft.com>
 Description:	The 16 bit vendor ID of the device
 Users:		tools/hv/lsvmbus and user level RDMA libraries
+<<<<<<< HEAD
 
 What:		/sys/bus/vmbus/devices/<UUID>/numa_node
 Date:		Jul 2018
@@ -146,3 +171,5 @@ KernelVersion:	4.16
 Contact:	Stephen Hemminger <sthemmin@microsoft.com>
 Description:	Binary file created by uio_hv_generic for ring buffer
 Users:		Userspace drivers
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

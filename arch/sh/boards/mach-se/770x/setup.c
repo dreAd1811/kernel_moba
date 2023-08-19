@@ -124,6 +124,7 @@ static struct sh_eth_plat_data sh_eth_plat = {
 static struct resource sh_eth0_resources[] = {
 	[0] = {
 		.start = SH_ETH0_BASE,
+<<<<<<< HEAD
 		.end = SH_ETH0_BASE + 0x1B8 - 1,
 		.flags = IORESOURCE_MEM,
 	},
@@ -133,6 +134,12 @@ static struct resource sh_eth0_resources[] = {
 		.flags = IORESOURCE_MEM,
 	},
 	[2] = {
+=======
+		.end = SH_ETH0_BASE + 0x1B8,
+		.flags = IORESOURCE_MEM,
+	},
+	[1] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.start = SH_ETH0_IRQ,
 		.end = SH_ETH0_IRQ,
 		.flags = IORESOURCE_IRQ,
@@ -152,6 +159,7 @@ static struct platform_device sh_eth0_device = {
 static struct resource sh_eth1_resources[] = {
 	[0] = {
 		.start = SH_ETH1_BASE,
+<<<<<<< HEAD
 		.end = SH_ETH1_BASE + 0x1B8 - 1,
 		.flags = IORESOURCE_MEM,
 	},
@@ -161,6 +169,12 @@ static struct resource sh_eth1_resources[] = {
 		.flags = IORESOURCE_MEM,
 	},
 	[2] = {
+=======
+		.end = SH_ETH1_BASE + 0x1B8,
+		.flags = IORESOURCE_MEM,
+	},
+	[1] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.start = SH_ETH1_IRQ,
 		.end = SH_ETH1_IRQ,
 		.flags = IORESOURCE_IRQ,

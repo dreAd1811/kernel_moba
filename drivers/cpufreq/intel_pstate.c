@@ -26,6 +26,10 @@
 #include <linux/sysfs.h>
 #include <linux/types.h>
 #include <linux/fs.h>
+<<<<<<< HEAD
+=======
+#include <linux/debugfs.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/acpi.h>
 #include <linux/vmalloc.h>
 #include <trace/events/power.h>
@@ -221,11 +225,14 @@ struct global_params {
  *			preference/bias
  * @epp_saved:		Saved EPP/EPB during system suspend or CPU offline
  *			operation
+<<<<<<< HEAD
  * @hwp_req_cached:	Cached value of the last HWP Request MSR
  * @hwp_cap_cached:	Cached value of the last HWP Capabilities MSR
  * @last_io_update:	Last time when IO wake flag was set
  * @sched_flags:	Store scheduler flags for possible cross CPU update
  * @hwp_boost_min:	Last HWP boosted min performance
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This structure stores per CPU instance data for all CPUs.
  */
@@ -258,11 +265,14 @@ struct cpudata {
 	s16 epp_policy;
 	s16 epp_default;
 	s16 epp_saved;
+<<<<<<< HEAD
 	u64 hwp_req_cached;
 	u64 hwp_cap_cached;
 	u64 last_io_update;
 	unsigned int sched_flags;
 	u32 hwp_boost_min;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct cpudata **all_cpu_data;
@@ -296,7 +306,10 @@ static struct pstate_funcs pstate_funcs __read_mostly;
 static int hwp_active __read_mostly;
 static int hwp_mode_bdw __read_mostly;
 static bool per_cpu_limits __read_mostly;
+<<<<<<< HEAD
 static bool hwp_boost __read_mostly;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct cpufreq_driver *intel_pstate_driver __read_mostly;
 
@@ -311,12 +324,17 @@ static DEFINE_MUTEX(intel_pstate_limits_lock);
 
 #ifdef CONFIG_ACPI
 
+<<<<<<< HEAD
 static bool intel_pstate_acpi_pm_profile_server(void)
+=======
+static bool intel_pstate_get_ppc_enable_status(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (acpi_gbl_FADT.preferred_profile == PM_ENTERPRISE_SERVER ||
 	    acpi_gbl_FADT.preferred_profile == PM_PERFORMANCE_SERVER)
 		return true;
 
+<<<<<<< HEAD
 	return false;
 }
 
@@ -325,6 +343,8 @@ static bool intel_pstate_get_ppc_enable_status(void)
 	if (intel_pstate_acpi_pm_profile_server())
 		return true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return acpi_ppc;
 }
 
@@ -467,11 +487,14 @@ static inline void intel_pstate_init_acpi_perf_limits(struct cpufreq_policy *pol
 static inline void intel_pstate_exit_perf_limits(struct cpufreq_policy *policy)
 {
 }
+<<<<<<< HEAD
 
 static inline bool intel_pstate_acpi_pm_profile_server(void)
 {
 	return false;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static inline void update_turbo_state(void)
@@ -670,18 +693,34 @@ static ssize_t store_energy_performance_preference(
 {
 	struct cpudata *cpu_data = all_cpu_data[policy->cpu];
 	char str_preference[21];
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret, i = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = sscanf(buf, "%20s", str_preference);
 	if (ret != 1)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = match_string(energy_perf_strings, -1, str_preference);
 	if (ret < 0)
 		return ret;
 
 	intel_pstate_set_energy_pref_index(cpu_data, ret);
 	return count;
+=======
+	while (energy_perf_strings[i] != NULL) {
+		if (!strcmp(str_preference, energy_perf_strings[i])) {
+			intel_pstate_set_energy_pref_index(cpu_data, i);
+			return count;
+		}
+		++i;
+	}
+
+	return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t show_energy_performance_preference(
@@ -711,7 +750,10 @@ static void intel_pstate_get_hwp_max(unsigned int cpu, int *phy_max,
 	u64 cap;
 
 	rdmsrl_on_cpu(cpu, MSR_HWP_CAPABILITIES, &cap);
+<<<<<<< HEAD
 	WRITE_ONCE(all_cpu_data[cpu]->hwp_cap_cached, cap);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (global.no_turbo)
 		*current_max = HWP_GUARANTEED_PERF(cap);
 	else
@@ -786,7 +828,10 @@ update_epp:
 		intel_pstate_set_epb(cpu, epp);
 	}
 skip_epp:
+<<<<<<< HEAD
 	WRITE_ONCE(cpu_data->hwp_req_cached, value);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wrmsrl_on_cpu(cpu, MSR_HWP_REQUEST, value);
 }
 
@@ -957,7 +1002,11 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
 
 	update_turbo_state();
 	if (global.turbo_disabled) {
+<<<<<<< HEAD
 		pr_warn("Turbo disabled by BIOS or unavailable on processor\n");
+=======
+		pr_notice_once("Turbo disabled by BIOS or unavailable on processor\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&intel_pstate_limits_lock);
 		mutex_unlock(&intel_pstate_driver_lock);
 		return -EPERM;
@@ -1044,6 +1093,7 @@ static ssize_t store_min_perf_pct(struct kobject *a, struct kobj_attribute *b,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t show_hwp_dynamic_boost(struct kobject *kobj,
 				struct kobj_attribute *attr, char *buf)
 {
@@ -1069,6 +1119,8 @@ static ssize_t store_hwp_dynamic_boost(struct kobject *a,
 	return count;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 show_one(max_perf_pct, max_perf_pct);
 show_one(min_perf_pct, min_perf_pct);
 
@@ -1078,7 +1130,10 @@ define_one_global_rw(max_perf_pct);
 define_one_global_rw(min_perf_pct);
 define_one_global_ro(turbo_pct);
 define_one_global_ro(num_pstates);
+<<<<<<< HEAD
 define_one_global_rw(hwp_dynamic_boost);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *intel_pstate_attributes[] = {
 	&status.attr,
@@ -1119,11 +1174,14 @@ static void __init intel_pstate_sysfs_expose_params(void)
 	rc = sysfs_create_file(intel_pstate_kobject, &min_perf_pct.attr);
 	WARN_ON(rc);
 
+<<<<<<< HEAD
 	if (hwp_active) {
 		rc = sysfs_create_file(intel_pstate_kobject,
 				       &hwp_dynamic_boost.attr);
 		WARN_ON(rc);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 /************************** sysfs end ************************/
 
@@ -1444,6 +1502,7 @@ static void intel_pstate_get_cpu_pstates(struct cpudata *cpu)
 	intel_pstate_set_min_pstate(cpu);
 }
 
+<<<<<<< HEAD
 /*
  * Long hold time will keep high perf limits for long time,
  * which negatively impacts perf/watt for some workloads,
@@ -1554,6 +1613,8 @@ static inline void intel_pstate_update_util_hwp(struct update_util_data *data,
 		intel_pstate_update_util_hwp_local(cpu, time);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void intel_pstate_calc_avg_perf(struct cpudata *cpu)
 {
 	struct sample *sample = &cpu->sample;
@@ -1772,6 +1833,18 @@ static const struct pstate_funcs knl_funcs = {
 	.get_val = core_get_val,
 };
 
+<<<<<<< HEAD
+=======
+static const struct pstate_funcs bxt_funcs = {
+	.get_max = core_get_max_pstate,
+	.get_max_physical = core_get_max_pstate_physical,
+	.get_min = core_get_min_pstate,
+	.get_turbo = core_get_turbo_pstate,
+	.get_scaling = core_get_scaling,
+	.get_val = core_get_val,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ICPU(model, policy) \
 	{ X86_VENDOR_INTEL, 6, model, X86_FEATURE_APERFMPERF,\
 			(unsigned long)&policy }
@@ -1795,9 +1868,14 @@ static const struct x86_cpu_id intel_pstate_cpu_ids[] = {
 	ICPU(INTEL_FAM6_BROADWELL_XEON_D,	core_funcs),
 	ICPU(INTEL_FAM6_XEON_PHI_KNL,		knl_funcs),
 	ICPU(INTEL_FAM6_XEON_PHI_KNM,		knl_funcs),
+<<<<<<< HEAD
 	ICPU(INTEL_FAM6_ATOM_GOLDMONT,		core_funcs),
 	ICPU(INTEL_FAM6_ATOM_GOLDMONT_PLUS,     core_funcs),
 	ICPU(INTEL_FAM6_SKYLAKE_X,		core_funcs),
+=======
+	ICPU(INTEL_FAM6_ATOM_GOLDMONT,		bxt_funcs),
+	ICPU(INTEL_FAM6_ATOM_GOLDMONT_PLUS,     bxt_funcs),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{}
 };
 MODULE_DEVICE_TABLE(x86cpu, intel_pstate_cpu_ids);
@@ -1814,12 +1892,15 @@ static const struct x86_cpu_id intel_pstate_cpu_ee_disable_ids[] = {
 	{}
 };
 
+<<<<<<< HEAD
 static const struct x86_cpu_id intel_pstate_hwp_boost_ids[] = {
 	ICPU(INTEL_FAM6_SKYLAKE_X, core_funcs),
 	ICPU(INTEL_FAM6_SKYLAKE_DESKTOP, core_funcs),
 	{}
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int intel_pstate_init_cpu(unsigned int cpunum)
 {
 	struct cpudata *cpu;
@@ -1850,10 +1931,13 @@ static int intel_pstate_init_cpu(unsigned int cpunum)
 			intel_pstate_disable_ee(cpunum);
 
 		intel_pstate_hwp_enable(cpu);
+<<<<<<< HEAD
 
 		id = x86_match_cpu(intel_pstate_hwp_boost_ids);
 		if (id && intel_pstate_acpi_pm_profile_server())
 			hwp_boost = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	intel_pstate_get_cpu_pstates(cpu);
@@ -1867,7 +1951,11 @@ static void intel_pstate_set_update_util_hook(unsigned int cpu_num)
 {
 	struct cpudata *cpu = all_cpu_data[cpu_num];
 
+<<<<<<< HEAD
 	if (hwp_active && !hwp_boost)
+=======
+	if (hwp_active)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (cpu->update_util_set)
@@ -1876,9 +1964,13 @@ static void intel_pstate_set_update_util_hook(unsigned int cpu_num)
 	/* Prevent intel_pstate_update_util() from using stale data. */
 	cpu->sample.time = 0;
 	cpufreq_add_update_util_hook(cpu_num, &cpu->update_util,
+<<<<<<< HEAD
 				     (hwp_active ?
 				      intel_pstate_update_util_hwp :
 				      intel_pstate_update_util));
+=======
+				     intel_pstate_update_util);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpu->update_util_set = true;
 }
 
@@ -1990,6 +2082,7 @@ static int intel_pstate_set_policy(struct cpufreq_policy *policy)
 		intel_pstate_set_update_util_hook(policy->cpu);
 	}
 
+<<<<<<< HEAD
 	if (hwp_active) {
 		/*
 		 * When hwp_boost was active before and dynamically it
@@ -2000,6 +2093,10 @@ static int intel_pstate_set_policy(struct cpufreq_policy *policy)
 			intel_pstate_clear_update_util_hook(policy->cpu);
 		intel_pstate_hwp_set(policy->cpu);
 	}
+=======
+	if (hwp_active)
+		intel_pstate_hwp_set(policy->cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&intel_pstate_limits_lock);
 
@@ -2009,8 +2106,12 @@ static int intel_pstate_set_policy(struct cpufreq_policy *policy)
 static void intel_pstate_adjust_policy_max(struct cpufreq_policy *policy,
 					 struct cpudata *cpu)
 {
+<<<<<<< HEAD
 	if (!hwp_active &&
 	    cpu->pstate.max_pstate_physical > cpu->pstate.max_pstate &&
+=======
+	if (cpu->pstate.max_pstate_physical > cpu->pstate.max_pstate &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    policy->max < policy->cpuinfo.max_freq &&
 	    policy->max > cpu->pstate.max_freq) {
 		pr_debug("policy->max > max non turbo frequency\n");
@@ -2084,6 +2185,7 @@ static int __intel_pstate_cpu_init(struct cpufreq_policy *policy)
 			cpu->pstate.max_pstate : cpu->pstate.turbo_pstate;
 	policy->cpuinfo.max_freq *= cpu->pstate.scaling;
 
+<<<<<<< HEAD
 	if (hwp_active) {
 		unsigned int max_freq;
 
@@ -2093,6 +2195,8 @@ static int __intel_pstate_cpu_init(struct cpufreq_policy *policy)
 			policy->cpuinfo.max_freq = max_freq;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_pstate_init_acpi_perf_limits(policy);
 
 	policy->fast_switch_possible = true;
@@ -2142,6 +2246,7 @@ static int intel_cpufreq_verify_policy(struct cpufreq_policy *policy)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Use of trace in passive mode:
  *
  * In passive mode the trace core_busy field (also known as the
@@ -2180,13 +2285,19 @@ static void intel_cpufreq_trace(struct cpudata *cpu, unsigned int trace_type, in
 		fp_toint(cpu->iowait_boost * 100));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int intel_cpufreq_target(struct cpufreq_policy *policy,
 				unsigned int target_freq,
 				unsigned int relation)
 {
 	struct cpudata *cpu = all_cpu_data[policy->cpu];
 	struct cpufreq_freqs freqs;
+<<<<<<< HEAD
 	int target_pstate, old_pstate;
+=======
+	int target_pstate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	update_turbo_state();
 
@@ -2206,14 +2317,20 @@ static int intel_cpufreq_target(struct cpufreq_policy *policy,
 		break;
 	}
 	target_pstate = intel_pstate_prepare_request(cpu, target_pstate);
+<<<<<<< HEAD
 	old_pstate = cpu->pstate.current_pstate;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (target_pstate != cpu->pstate.current_pstate) {
 		cpu->pstate.current_pstate = target_pstate;
 		wrmsrl_on_cpu(policy->cpu, MSR_IA32_PERF_CTL,
 			      pstate_funcs.get_val(cpu, target_pstate));
 	}
 	freqs.new = target_pstate * cpu->pstate.scaling;
+<<<<<<< HEAD
 	intel_cpufreq_trace(cpu, INTEL_PSTATE_TRACE_TARGET, old_pstate);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpufreq_freq_transition_end(policy, &freqs, false);
 
 	return 0;
@@ -2223,15 +2340,23 @@ static unsigned int intel_cpufreq_fast_switch(struct cpufreq_policy *policy,
 					      unsigned int target_freq)
 {
 	struct cpudata *cpu = all_cpu_data[policy->cpu];
+<<<<<<< HEAD
 	int target_pstate, old_pstate;
+=======
+	int target_pstate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	update_turbo_state();
 
 	target_pstate = DIV_ROUND_UP(target_freq, cpu->pstate.scaling);
 	target_pstate = intel_pstate_prepare_request(cpu, target_pstate);
+<<<<<<< HEAD
 	old_pstate = cpu->pstate.current_pstate;
 	intel_pstate_update_pstate(cpu, target_pstate);
 	intel_cpufreq_trace(cpu, INTEL_PSTATE_TRACE_FAST_SWITCH, old_pstate);
+=======
+	intel_pstate_update_pstate(cpu, target_pstate);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return target_pstate * cpu->pstate.scaling;
 }
 
@@ -2565,7 +2690,11 @@ hwp_cpu_matched:
 
 	pr_info("Intel P-state driver initializing\n");
 
+<<<<<<< HEAD
 	all_cpu_data = vzalloc(array_size(sizeof(void *), num_possible_cpus()));
+=======
+	all_cpu_data = vzalloc(sizeof(void *) * num_possible_cpus());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!all_cpu_data)
 		return -ENOMEM;
 

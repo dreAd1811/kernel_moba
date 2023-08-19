@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2014-2015, 2017-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2015, 2017-2018, 2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __ESOC_MDM_H__
@@ -24,8 +37,13 @@
 #define MDM9x55_PCIE			"PCIe"
 #define SDX50M_LABEL			"SDX50M"
 #define SDX50M_PCIE			"PCIe"
+<<<<<<< HEAD
 #define SDX55M_LABEL			"SDX55M"
 #define SDX55M_PCIE			"PCIe"
+=======
+#define SDXPRAIRIE_LABEL		"SDXPRAIRIE"
+#define MARMOT_LABEL			"MARMOT"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MDM2AP_STATUS_TIMEOUT_MS	120000L
 #define MDM_MODEM_TIMEOUT		3000
 #define DEF_RAMDUMP_TIMEOUT		120000
@@ -123,6 +141,7 @@ void mdm_wait_for_status_low(struct mdm_ctrl *mdm, bool atomic);
 
 static inline int mdm_toggle_soft_reset(struct mdm_ctrl *mdm, bool atomic)
 {
+<<<<<<< HEAD
 	if (mdm->pon_ops->soft_reset)
 		return mdm->pon_ops->soft_reset(mdm, atomic);
 	return -ENOENT;
@@ -156,9 +175,36 @@ static inline int mdm_pon_setup(struct mdm_ctrl *mdm)
 	if (mdm->pon_ops->setup)
 		return mdm->pon_ops->setup(mdm);
 	return -ENOENT;
+=======
+	return mdm->pon_ops->soft_reset(mdm, atomic);
+}
+static inline int mdm_do_first_power_on(struct mdm_ctrl *mdm)
+{
+	return mdm->pon_ops->pon(mdm);
+}
+static inline int mdm_power_down(struct mdm_ctrl *mdm)
+{
+	return mdm->pon_ops->poff_force(mdm);
+}
+static inline void mdm_cold_reset(struct mdm_ctrl *mdm)
+{
+	mdm->pon_ops->cold_reset(mdm);
+}
+static inline int mdm_pon_dt_init(struct mdm_ctrl *mdm)
+{
+	return mdm->pon_ops->dt_init(mdm);
+}
+static inline int mdm_pon_setup(struct mdm_ctrl *mdm)
+{
+	return mdm->pon_ops->setup(mdm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern struct mdm_pon_ops mdm9x55_pon_ops;
 extern struct mdm_pon_ops sdx50m_pon_ops;
+<<<<<<< HEAD
 extern struct mdm_pon_ops sdx55m_pon_ops;
+=======
+extern struct mdm_pon_ops sdxmarmot_pon_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

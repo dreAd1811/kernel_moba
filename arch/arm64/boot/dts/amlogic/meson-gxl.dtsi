@@ -1,7 +1,51 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
  * Copyright (c) 2016 Endless Computers, Inc.
  * Author: Carlo Caione <carlo@endlessm.com>
+=======
+/*
+ * Copyright (c) 2016 Endless Computers, Inc.
+ * Author: Carlo Caione <carlo@endlessm.com>
+ *
+ * This file is dual-licensed: you can use it either under the terms
+ * of the GPL or the X11 license, at your option. Note that this dual
+ * licensing only applies to this file, and not this project as a
+ * whole.
+ *
+ *  a) This library is free software; you can redistribute it and/or
+ *     modify it under the terms of the GNU General Public License as
+ *     published by the Free Software Foundation; either version 2 of the
+ *     License, or (at your option) any later version.
+ *
+ *     This library is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ * Or, alternatively,
+ *
+ *  b) Permission is hereby granted, free of charge, to any person
+ *     obtaining a copy of this software and associated documentation
+ *     files (the "Software"), to deal in the Software without
+ *     restriction, including without limitation the rights to use,
+ *     copy, modify, merge, publish, distribute, sublicense, and/or
+ *     sell copies of the Software, and to permit persons to whom the
+ *     Software is furnished to do so, subject to the following
+ *     conditions:
+ *
+ *     The above copyright notice and this permission notice shall be
+ *     included in all copies or substantial portions of the Software.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *     OTHER DEALINGS IN THE SOFTWARE.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "meson-gx.dtsi"
@@ -13,6 +57,7 @@
 / {
 	compatible = "amlogic,meson-gxl";
 
+<<<<<<< HEAD
 	soc {
 		usb0: usb@c9000000 {
 			status = "disabled";
@@ -35,10 +80,18 @@
 				snps,dis_u2_susphy_quirk;
 				phys = <&usb3_phy>, <&usb2_phy0>, <&usb2_phy1>;
 			};
+=======
+	reserved-memory {
+		/* Alternate 3 MiB reserved for ARM Trusted Firmware (BL31) */
+		secmon_reserved_alt: secmon@05000000 {
+			reg = <0x0 0x05000000 0x0 0x300000>;
+			no-map;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };
 
+<<<<<<< HEAD
 &apb {
 	usb2_phy0: phy@78000 {
 		compatible = "amlogic,meson-gxl-usb2-phy";
@@ -75,6 +128,8 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ethmac {
 	reg = <0x0 0xc9410000 0x0 0x10000
 	       0x0 0xc8834540 0x0 0x4>;
@@ -241,12 +296,15 @@
 	compatible = "amlogic,meson-gxl-aoclkc", "amlogic,meson-gx-aoclkc";
 };
 
+<<<<<<< HEAD
 &gpio_intc {
 	compatible = "amlogic,meson-gpio-intc",
 		     "amlogic,meson-gxl-gpio-intc";
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &hdmi_tx {
 	compatible = "amlogic,meson-gxl-dw-hdmi", "amlogic,meson-gx-dw-hdmi";
 	resets = <&reset RESET_HDMITX_CAPB3>,
@@ -259,6 +317,7 @@
 	clock-names = "isfr", "iahb", "venci";
 };
 
+<<<<<<< HEAD
 &sysctrl {
 	clkc: clock-controller {
 		compatible = "amlogic,gxl-clkc";
@@ -266,6 +325,21 @@
 	};
 };
 
+=======
+&hiubus {
+	clkc: clock-controller@0 {
+		compatible = "amlogic,gxl-clkc", "amlogic,gxbb-clkc";
+		#clock-cells = <1>;
+		reg = <0x0 0x0 0x0 0x3db>;
+	};
+};
+
+&hwrng {
+	clocks = <&clkc CLKID_RNG0>;
+	clock-names = "core";
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c_A {
 	clocks = <&clkc CLKID_I2C>;
 };
@@ -297,13 +371,18 @@
 			reg-names = "mux", "pull", "pull-enable", "gpio";
 			gpio-controller;
 			#gpio-cells = <2>;
+<<<<<<< HEAD
 			gpio-ranges = <&pinctrl_periphs 0 0 100>;
+=======
+			gpio-ranges = <&pinctrl_periphs 0 10 101>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		emmc_pins: emmc {
 			mux {
 				groups = "emmc_nand_d07",
 				       "emmc_cmd",
+<<<<<<< HEAD
 				       "emmc_clk";
 				function = "emmc";
 			};
@@ -312,6 +391,10 @@
 		emmc_ds_pins: emmc-ds {
 			mux {
 				groups = "emmc_ds";
+=======
+				       "emmc_clk",
+				       "emmc_ds";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				function = "emmc";
 			};
 		};
@@ -337,7 +420,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		spi_pins: spi {
+=======
+		spi_pins: spi-pins {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mux {
 				groups = "spi_miso",
 					"spi_mosi",
@@ -646,7 +733,10 @@
 
 			internal_phy: ethernet-phy@8 {
 				compatible = "ethernet-phy-id0181.4400", "ethernet-phy-ieee802.3-c22";
+<<<<<<< HEAD
 				interrupts = <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <8>;
 				max-speed = <100>;
 			};
@@ -660,6 +750,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &pwrc_vpu {
 	resets = <&reset RESET_VIU>,
 		 <&reset RESET_VENC>,
@@ -702,13 +793,22 @@
 			       <0>; /* Do Nothing */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &saradc {
 	compatible = "amlogic,meson-gxl-saradc", "amlogic,meson-saradc";
 	clocks = <&xtal>,
 		 <&clkc CLKID_SAR_ADC>,
+<<<<<<< HEAD
 		 <&clkc CLKID_SAR_ADC_CLK>,
 		 <&clkc CLKID_SAR_ADC_SEL>;
 	clock-names = "clkin", "core", "adc_clk", "adc_sel";
+=======
+		 <&clkc CLKID_SANA>,
+		 <&clkc CLKID_SAR_ADC_CLK>,
+		 <&clkc CLKID_SAR_ADC_SEL>;
+	clock-names = "clkin", "core", "sana", "adc_clk", "adc_sel";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &sd_emmc_a {
@@ -716,15 +816,22 @@
 		 <&clkc CLKID_SD_EMMC_A_CLK0>,
 		 <&clkc CLKID_FCLK_DIV2>;
 	clock-names = "core", "clkin0", "clkin1";
+<<<<<<< HEAD
 	resets = <&reset RESET_SD_EMMC_A>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &sd_emmc_b {
 	clocks = <&clkc CLKID_SD_EMMC_B>,
 		 <&clkc CLKID_SD_EMMC_B_CLK0>,
 		 <&clkc CLKID_FCLK_DIV2>;
+<<<<<<< HEAD
 	clock-names = "core", "clkin0", "clkin1";
 	resets = <&reset RESET_SD_EMMC_B>;
+=======
+       clock-names = "core", "clkin0", "clkin1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &sd_emmc_c {
@@ -732,7 +839,10 @@
 		 <&clkc CLKID_SD_EMMC_C_CLK0>,
 		 <&clkc CLKID_FCLK_DIV2>;
 	clock-names = "core", "clkin0", "clkin1";
+<<<<<<< HEAD
 	resets = <&reset RESET_SD_EMMC_C>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &spicc {
@@ -748,30 +858,53 @@
 
 &uart_A {
 	clocks = <&xtal>, <&clkc CLKID_UART0>, <&xtal>;
+<<<<<<< HEAD
 	clock-names = "xtal", "pclk", "baud";
 };
 
 &uart_AO {
 	clocks = <&xtal>, <&clkc_AO CLKID_AO_UART1>, <&xtal>;
+=======
+	clock-names = "xtal", "core", "baud";
+};
+
+&uart_AO {
+	clocks = <&xtal>, <&clkc CLKID_CLK81>, <&xtal>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clock-names = "xtal", "pclk", "baud";
 };
 
 &uart_AO_B {
+<<<<<<< HEAD
 	clocks = <&xtal>, <&clkc_AO CLKID_AO_UART2>, <&xtal>;
+=======
+	clocks = <&xtal>, <&clkc CLKID_CLK81>, <&xtal>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clock-names = "xtal", "pclk", "baud";
 };
 
 &uart_B {
 	clocks = <&xtal>, <&clkc CLKID_UART1>, <&xtal>;
+<<<<<<< HEAD
 	clock-names = "xtal", "pclk", "baud";
+=======
+	clock-names = "xtal", "core", "baud";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart_C {
 	clocks = <&xtal>, <&clkc CLKID_UART2>, <&xtal>;
+<<<<<<< HEAD
 	clock-names = "xtal", "pclk", "baud";
+=======
+	clock-names = "xtal", "core", "baud";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &vpu {
 	compatible = "amlogic,meson-gxl-vpu", "amlogic,meson-gx-vpu";
+<<<<<<< HEAD
 	power-domains = <&pwrc_vpu>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

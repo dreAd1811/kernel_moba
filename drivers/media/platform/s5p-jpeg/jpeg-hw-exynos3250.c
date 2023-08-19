@@ -425,9 +425,15 @@ unsigned int exynos3250_jpeg_get_int_status(void __iomem *regs)
 }
 
 void exynos3250_jpeg_clear_int_status(void __iomem *regs,
+<<<<<<< HEAD
 				      unsigned int value)
 {
 	writel(value, regs + EXYNOS3250_JPGINTST);
+=======
+						unsigned int value)
+{
+	return writel(value, regs + EXYNOS3250_JPGINTST);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 unsigned int exynos3250_jpeg_operating(void __iomem *regs)

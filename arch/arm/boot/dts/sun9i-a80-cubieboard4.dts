@@ -62,6 +62,11 @@
 
 	leds {
 		compatible = "gpio-leds";
+<<<<<<< HEAD
+=======
+		pinctrl-names = "default";
+		pinctrl-0 = <&led_pins_cubieboard4>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		green {
 			label = "cubieboard4:green:usr";
@@ -74,6 +79,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	vga-connector {
 		compatible = "vga-connector";
 		label = "vga";
@@ -121,6 +127,9 @@
 	};
 
 	wifi_pwrseq: wifi-pwrseq {
+=======
+	wifi_pwrseq: wifi_pwrseq {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "mmc-pwrseq-simple";
 		clocks = <&ac100_rtc 1>;
 		clock-names = "ext_clock";
@@ -129,6 +138,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &de {
 	status = "okay";
 };
@@ -145,12 +155,25 @@
 	vmmc-supply = <&reg_dcdc1>;
 	bus-width = <4>;
 	cd-gpios = <&pio 7 18 GPIO_ACTIVE_LOW>; /* PH18 */
+=======
+&mmc0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc0_pins>, <&mmc0_cd_pin_cubieboard4>;
+	vmmc-supply = <&reg_dcdc1>;
+	bus-width = <4>;
+	cd-gpios = <&pio 7 18 GPIO_ACTIVE_HIGH>; /* PH18 */
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &mmc1 {
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&mmc1_pins>;
+=======
+	pinctrl-0 = <&mmc1_pins>, <&wifi_en_pin_cubieboard4>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmmc-supply = <&reg_dldo1>;
 	vqmmc-supply = <&reg_cldo3>;
 	mmc-pwrseq = <&wifi_pwrseq>;
@@ -183,10 +206,36 @@
 	clocks = <&ac100_rtc 0>;
 };
 
+<<<<<<< HEAD
+=======
+&pio {
+	led_pins_cubieboard4: led-pins@0 {
+		pins = "PH6", "PH17";
+		function = "gpio_out";
+	};
+
+	mmc0_cd_pin_cubieboard4: mmc0_cd_pin@0 {
+		pins = "PH18";
+		function = "gpio_in";
+		bias-pull-up;
+	};
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &r_ir {
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&r_pio {
+	wifi_en_pin_cubieboard4: wifi_en_pin@0 {
+		pins = "PL2";
+		function = "gpio_out";
+	};
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &r_rsb {
 	status = "okay";
 
@@ -458,6 +507,7 @@
 
 #include "axp809.dtsi"
 
+<<<<<<< HEAD
 &tcon0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&lcd0_rgb888_pins>;
@@ -473,5 +523,10 @@
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_ph_pins>;
+=======
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };

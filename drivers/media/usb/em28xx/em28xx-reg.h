@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0 */
+<<<<<<< HEAD
 
 /*
  * em28xx-reg.h - Register definitions for em28xx driver
@@ -17,6 +18,21 @@
 #define EM_GPO_1   ((unsigned char)BIT(1))
 #define EM_GPO_2   ((unsigned char)BIT(2))
 #define EM_GPO_3   ((unsigned char)BIT(3))
+=======
+#define EM_GPIO_0  (1 << 0)
+#define EM_GPIO_1  (1 << 1)
+#define EM_GPIO_2  (1 << 2)
+#define EM_GPIO_3  (1 << 3)
+#define EM_GPIO_4  (1 << 4)
+#define EM_GPIO_5  (1 << 5)
+#define EM_GPIO_6  (1 << 6)
+#define EM_GPIO_7  (1 << 7)
+
+#define EM_GPO_0   (1 << 0)
+#define EM_GPO_1   (1 << 1)
+#define EM_GPO_2   (1 << 2)
+#define EM_GPO_3   (1 << 3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* em28xx endpoints */
 /* 0x82:   (always ?) analog */
@@ -208,11 +224,18 @@
 #define EM28XX_R43_AC97BUSY	0x43
 
 #define EM28XX_R45_IR		0x45
+<<<<<<< HEAD
 	/*
 	 * 0x45  bit 7    - parity bit
 	 *	 bits 6-0 - count
 	 * 0x46  IR brand
 	 *  0x47  IR data
+=======
+	/* 0x45  bit 7    - parity bit
+		 bits 6-0 - count
+	   0x46  IR brand
+	   0x47  IR data
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 
 /* em2874 registers */
@@ -255,12 +278,21 @@
 #define EM2874_IR_RC6_MODE_6A   0x0b
 
 /* em2874 Transport Stream Enable Register (0x5f) */
+<<<<<<< HEAD
 #define EM2874_TS1_CAPTURE_ENABLE ((unsigned char)BIT(0))
 #define EM2874_TS1_FILTER_ENABLE  ((unsigned char)BIT(1))
 #define EM2874_TS1_NULL_DISCARD   ((unsigned char)BIT(2))
 #define EM2874_TS2_CAPTURE_ENABLE ((unsigned char)BIT(4))
 #define EM2874_TS2_FILTER_ENABLE  ((unsigned char)BIT(5))
 #define EM2874_TS2_NULL_DISCARD   ((unsigned char)BIT(6))
+=======
+#define EM2874_TS1_CAPTURE_ENABLE (1 << 0)
+#define EM2874_TS1_FILTER_ENABLE  (1 << 1)
+#define EM2874_TS1_NULL_DISCARD   (1 << 2)
+#define EM2874_TS2_CAPTURE_ENABLE (1 << 4)
+#define EM2874_TS2_FILTER_ENABLE  (1 << 5)
+#define EM2874_TS2_NULL_DISCARD   (1 << 6)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* register settings */
 #define EM2800_AUDIO_SRC_TUNER  0x0d

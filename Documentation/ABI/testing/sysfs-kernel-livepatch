@@ -33,6 +33,7 @@ Description:
 		An attribute which indicates whether the patch is currently in
 		transition.
 
+<<<<<<< HEAD
 What:		/sys/kernel/livepatch/<patch>/signal
 Date:		Nov 2017
 KernelVersion:	4.15.0
@@ -59,6 +60,8 @@ Description:
 		disabled when the feature is used. See
 		Documentation/livepatch/livepatch.txt for more information.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 What:		/sys/kernel/livepatch/<patch>/<object>
 Date:		Nov 2014
 KernelVersion:	3.19.0

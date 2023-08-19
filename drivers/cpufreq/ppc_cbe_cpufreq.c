@@ -122,8 +122,14 @@ static int cbe_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	cpumask_copy(policy->cpus, cpu_sibling_mask(policy->cpu));
 #endif
 
+<<<<<<< HEAD
 	policy->freq_table = cbe_freqs;
 	return 0;
+=======
+	/* this ensures that policy->cpuinfo_min
+	 * and policy->cpuinfo_max are set correctly */
+	return cpufreq_table_validate_and_show(policy, cbe_freqs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cbe_cpufreq_target(struct cpufreq_policy *policy,

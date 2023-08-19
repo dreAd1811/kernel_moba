@@ -35,7 +35,10 @@ nvkm_subdev_name[NVKM_SUBDEV_NR] = {
 	[NVKM_SUBDEV_BUS     ] = "bus",
 	[NVKM_SUBDEV_CLK     ] = "clk",
 	[NVKM_SUBDEV_DEVINIT ] = "devinit",
+<<<<<<< HEAD
 	[NVKM_SUBDEV_FAULT   ] = "fault",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[NVKM_SUBDEV_FB      ] = "fb",
 	[NVKM_SUBDEV_FUSE    ] = "fuse",
 	[NVKM_SUBDEV_GPIO    ] = "gpio",
@@ -61,9 +64,12 @@ nvkm_subdev_name[NVKM_SUBDEV_NR] = {
 	[NVKM_ENGINE_CE3     ] = "ce3",
 	[NVKM_ENGINE_CE4     ] = "ce4",
 	[NVKM_ENGINE_CE5     ] = "ce5",
+<<<<<<< HEAD
 	[NVKM_ENGINE_CE6     ] = "ce6",
 	[NVKM_ENGINE_CE7     ] = "ce7",
 	[NVKM_ENGINE_CE8     ] = "ce8",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[NVKM_ENGINE_CIPHER  ] = "cipher",
 	[NVKM_ENGINE_DISP    ] = "disp",
 	[NVKM_ENGINE_DMAOBJ  ] = "dma",
@@ -96,6 +102,7 @@ nvkm_subdev_intr(struct nvkm_subdev *subdev)
 }
 
 int
+<<<<<<< HEAD
 nvkm_subdev_info(struct nvkm_subdev *subdev, u64 mthd, u64 *data)
 {
 	if (subdev->func->info)
@@ -104,6 +111,8 @@ nvkm_subdev_info(struct nvkm_subdev *subdev, u64 mthd, u64 *data)
 }
 
 int
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm_subdev_fini(struct nvkm_subdev *subdev, bool suspend)
 {
 	struct nvkm_device *device = subdev->device;

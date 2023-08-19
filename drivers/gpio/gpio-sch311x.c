@@ -17,15 +17,26 @@
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
+=======
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bitops.h>
 #include <linux/io.h>
 
 #define DRV_NAME			"gpio-sch311x"
 
+<<<<<<< HEAD
 #define SCH311X_GPIO_CONF_DIR		BIT(0)
 #define SCH311X_GPIO_CONF_INVERT	BIT(1)
 #define SCH311X_GPIO_CONF_OPEN_DRAIN	BIT(7)
+=======
+#define SCH311X_GPIO_CONF_OUT		0x00
+#define SCH311X_GPIO_CONF_IN		0x01
+#define SCH311X_GPIO_CONF_INVERT	0x02
+#define SCH311X_GPIO_CONF_OPEN_DRAIN	0x80
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SIO_CONFIG_KEY_ENTER		0x55
 #define SIO_CONFIG_KEY_EXIT		0xaa
@@ -162,7 +173,11 @@ static void sch311x_gpio_free(struct gpio_chip *chip, unsigned offset)
 static int sch311x_gpio_get(struct gpio_chip *chip, unsigned offset)
 {
 	struct sch311x_gpio_block *block = gpiochip_get_data(chip);
+<<<<<<< HEAD
 	u8 data;
+=======
+	unsigned char data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&block->lock);
 	data = inb(block->runtime_reg + block->data_reg);
@@ -174,7 +189,11 @@ static int sch311x_gpio_get(struct gpio_chip *chip, unsigned offset)
 static void __sch311x_gpio_set(struct sch311x_gpio_block *block,
 			       unsigned offset, int value)
 {
+<<<<<<< HEAD
 	u8 data = inb(block->runtime_reg + block->data_reg);
+=======
+	unsigned char data = inb(block->runtime_reg + block->data_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (value)
 		data |= BIT(offset);
 	else
@@ -195,12 +214,19 @@ static void sch311x_gpio_set(struct gpio_chip *chip, unsigned offset,
 static int sch311x_gpio_direction_in(struct gpio_chip *chip, unsigned offset)
 {
 	struct sch311x_gpio_block *block = gpiochip_get_data(chip);
+<<<<<<< HEAD
 	u8 data;
 
 	spin_lock(&block->lock);
 	data = inb(block->runtime_reg + block->config_regs[offset]);
 	data |= SCH311X_GPIO_CONF_DIR;
 	outb(data, block->runtime_reg + block->config_regs[offset]);
+=======
+
+	spin_lock(&block->lock);
+	outb(SCH311X_GPIO_CONF_IN, block->runtime_reg +
+	     block->config_regs[offset]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&block->lock);
 
 	return 0;
@@ -210,6 +236,7 @@ static int sch311x_gpio_direction_out(struct gpio_chip *chip, unsigned offset,
 				      int value)
 {
 	struct sch311x_gpio_block *block = gpiochip_get_data(chip);
+<<<<<<< HEAD
 	u8 data;
 
 	spin_lock(&block->lock);
@@ -217,12 +244,21 @@ static int sch311x_gpio_direction_out(struct gpio_chip *chip, unsigned offset,
 	data = inb(block->runtime_reg + block->config_regs[offset]);
 	data &= ~SCH311X_GPIO_CONF_DIR;
 	outb(data, block->runtime_reg + block->config_regs[offset]);
+=======
+
+	spin_lock(&block->lock);
+
+	outb(SCH311X_GPIO_CONF_OUT, block->runtime_reg +
+	     block->config_regs[offset]);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__sch311x_gpio_set(block, offset, value);
 
 	spin_unlock(&block->lock);
 	return 0;
 }
 
+<<<<<<< HEAD
 static int sch311x_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
 {
 	struct sch311x_gpio_block *block = gpiochip_get_data(chip);
@@ -263,6 +299,8 @@ static int sch311x_gpio_set_config(struct gpio_chip *chip, unsigned offset,
 	return -ENOTSUPP;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sch311x_gpio_probe(struct platform_device *pdev)
 {
 	struct sch311x_pdev_data *pdata = dev_get_platdata(&pdev->dev);
@@ -295,8 +333,11 @@ static int sch311x_gpio_probe(struct platform_device *pdev)
 		block->chip.free = sch311x_gpio_free;
 		block->chip.direction_input = sch311x_gpio_direction_in;
 		block->chip.direction_output = sch311x_gpio_direction_out;
+<<<<<<< HEAD
 		block->chip.get_direction = sch311x_gpio_get_direction;
 		block->chip.set_config = sch311x_gpio_set_config;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		block->chip.get = sch311x_gpio_get;
 		block->chip.set = sch311x_gpio_set;
 		block->chip.ngpio = 8;
@@ -353,7 +394,11 @@ static int __init sch311x_detect(int sio_config_port, unsigned short *addr)
 {
 	int err = 0, reg;
 	unsigned short base_addr;
+<<<<<<< HEAD
 	u8 dev_id;
+=======
+	unsigned char dev_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = sch311x_sio_enter(sio_config_port);
 	if (err)

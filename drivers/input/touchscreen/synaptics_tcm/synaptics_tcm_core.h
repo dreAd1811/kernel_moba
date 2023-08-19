@@ -42,7 +42,11 @@
 #include <linux/slab.h>
 #include <linux/input/synaptics_tcm.h>
 #ifdef CONFIG_DRM
+<<<<<<< HEAD
 #include <drm/drm_panel.h>
+=======
+#include <linux/msm_drm_notify.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #elif CONFIG_FB
 #include <linux/fb.h>
 #include <linux/notifier.h>
@@ -522,8 +526,11 @@ struct syna_tcm_hw_interface {
 	const struct syna_tcm_bus_io *bus_io;
 };
 
+<<<<<<< HEAD
 struct drm_panel *tcm_get_panel(void);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int syna_tcm_bus_init(void);
 
 void syna_tcm_bus_exit(void);

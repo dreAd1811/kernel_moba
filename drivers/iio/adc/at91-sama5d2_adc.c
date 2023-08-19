@@ -16,8 +16,11 @@
 
 #include <linux/bitops.h>
 #include <linux/clk.h>
+<<<<<<< HEAD
 #include <linux/dma-mapping.h>
 #include <linux/dmaengine.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/io.h>
 #include <linux/module.h>
@@ -102,6 +105,7 @@
 #define AT91_SAMA5D2_LCDR	0x20
 /* Interrupt Enable Register */
 #define AT91_SAMA5D2_IER	0x24
+<<<<<<< HEAD
 /* Interrupt Enable Register - TS X measurement ready */
 #define AT91_SAMA5D2_IER_XRDY   BIT(20)
 /* Interrupt Enable Register - TS Y measurement ready */
@@ -114,14 +118,19 @@
 #define AT91_SAMA5D2_IER_PEN    BIT(29)
 /* Interrupt Enable Register - No pen detect */
 #define AT91_SAMA5D2_IER_NOPEN  BIT(30)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Interrupt Disable Register */
 #define AT91_SAMA5D2_IDR	0x28
 /* Interrupt Mask Register */
 #define AT91_SAMA5D2_IMR	0x2c
 /* Interrupt Status Register */
 #define AT91_SAMA5D2_ISR	0x30
+<<<<<<< HEAD
 /* Interrupt Status Register - Pen touching sense status */
 #define AT91_SAMA5D2_ISR_PENS   BIT(31)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Last Channel Trigger Mode Register */
 #define AT91_SAMA5D2_LCTMR	0x34
 /* Last Channel Compare Window Register */
@@ -130,6 +139,7 @@
 #define AT91_SAMA5D2_OVER	0x3c
 /* Extended Mode Register */
 #define AT91_SAMA5D2_EMR	0x40
+<<<<<<< HEAD
 /* Extended Mode Register - Oversampling rate */
 #define AT91_SAMA5D2_EMR_OSR(V)			((V) << 16)
 #define AT91_SAMA5D2_EMR_OSR_MASK		GENMASK(17, 16)
@@ -139,6 +149,8 @@
 
 /* Extended Mode Register - Averaging on single trigger event */
 #define AT91_SAMA5D2_EMR_ASTE(V)		((V) << 20)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Compare Window Register */
 #define AT91_SAMA5D2_CWR	0x44
 /* Channel Gain Register */
@@ -152,6 +164,7 @@
 #define AT91_SAMA5D2_CDR0	0x50
 /* Analog Control Register */
 #define AT91_SAMA5D2_ACR	0x94
+<<<<<<< HEAD
 /* Analog Control Register - Pen detect sensitivity mask */
 #define AT91_SAMA5D2_ACR_PENDETSENS_MASK        GENMASK(1, 0)
 
@@ -184,6 +197,10 @@
 /* Touchscreen Mode Register - Enable pen detection */
 #define AT91_SAMA5D2_TSMR_PENDET_ENA            BIT(24)
 
+=======
+/* Touchscreen Mode Register */
+#define AT91_SAMA5D2_TSMR	0xb0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Touchscreen X Position Register */
 #define AT91_SAMA5D2_XPOSR	0xb4
 /* Touchscreen Y Position Register */
@@ -202,12 +219,15 @@
 #define AT91_SAMA5D2_TRGR_TRGMOD_EXT_TRIG_FALL 2
 /* Trigger Mode external trigger any edge */
 #define AT91_SAMA5D2_TRGR_TRGMOD_EXT_TRIG_ANY 3
+<<<<<<< HEAD
 /* Trigger Mode internal periodic */
 #define AT91_SAMA5D2_TRGR_TRGMOD_PERIODIC 5
 /* Trigger Mode - trigger period mask */
 #define AT91_SAMA5D2_TRGR_TRGPER_MASK           GENMASK(31, 16)
 /* Trigger Mode - trigger period */
 #define AT91_SAMA5D2_TRGR_TRGPER(x)             ((x) << 16)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Correction Select Register */
 #define AT91_SAMA5D2_COSR	0xd0
@@ -226,6 +246,7 @@
 #define AT91_SAMA5D2_SINGLE_CHAN_CNT 12
 #define AT91_SAMA5D2_DIFF_CHAN_CNT 6
 
+<<<<<<< HEAD
 #define AT91_SAMA5D2_TIMESTAMP_CHAN_IDX (AT91_SAMA5D2_SINGLE_CHAN_CNT + \
 					 AT91_SAMA5D2_DIFF_CHAN_CNT + 1)
 
@@ -262,6 +283,17 @@
 #define AT91_OSR_4SAMPLES		4
 #define AT91_OSR_16SAMPLES		16
 
+=======
+/*
+ * Maximum number of bytes to hold conversion from all channels
+ * plus the timestamp
+ */
+#define AT91_BUFFER_MAX_BYTES ((AT91_SAMA5D2_SINGLE_CHAN_CNT +		\
+				AT91_SAMA5D2_DIFF_CHAN_CNT) * 2 + 8)
+
+#define AT91_BUFFER_MAX_HWORDS (AT91_BUFFER_MAX_BYTES / 2)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AT91_SAMA5D2_CHAN_SINGLE(num, addr)				\
 	{								\
 		.type = IIO_VOLTAGE,					\
@@ -270,13 +302,21 @@
 		.scan_index = num,					\
 		.scan_type = {						\
 			.sign = 'u',					\
+<<<<<<< HEAD
 			.realbits = 14,					\
+=======
+			.realbits = 12,					\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.storagebits = 16,				\
 		},							\
 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+<<<<<<< HEAD
 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ)|\
 				BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
+=======
+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.datasheet_name = "CH"#num,				\
 		.indexed = 1,						\
 	}
@@ -291,17 +331,26 @@
 		.scan_index = num + AT91_SAMA5D2_SINGLE_CHAN_CNT,	\
 		.scan_type = {						\
 			.sign = 's',					\
+<<<<<<< HEAD
 			.realbits = 14,					\
+=======
+			.realbits = 12,					\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.storagebits = 16,				\
 		},							\
 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
+<<<<<<< HEAD
 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ)|\
 				BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
+=======
+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.datasheet_name = "CH"#num"-CH"#num2,			\
 		.indexed = 1,						\
 	}
 
+<<<<<<< HEAD
 #define AT91_SAMA5D2_CHAN_TOUCH(num, name, mod)				\
 	{								\
 		.type = IIO_POSITIONRELATIVE,				\
@@ -335,6 +384,8 @@
 		.datasheet_name = name,					\
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define at91_adc_readl(st, reg)		readl_relaxed(st->base + reg)
 #define at91_adc_writel(st, reg, val)	writel_relaxed(val, st->base + reg)
 
@@ -351,6 +402,7 @@ struct at91_adc_trigger {
 	bool				hw_trig;
 };
 
+<<<<<<< HEAD
 /**
  * at91_adc_dma - at91-sama5d2 dma information struct
  * @dma_chan:		the dma channel acquired
@@ -389,6 +441,8 @@ struct at91_adc_touch {
 	struct work_struct		workq;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct at91_adc_state {
 	void __iomem			*base;
 	int				irq;
@@ -396,17 +450,25 @@ struct at91_adc_state {
 	struct regulator		*reg;
 	struct regulator		*vref;
 	int				vref_uv;
+<<<<<<< HEAD
 	unsigned int			current_sample_rate;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct iio_trigger		*trig;
 	const struct at91_adc_trigger	*selected_trig;
 	const struct iio_chan_spec	*chan;
 	bool				conversion_done;
 	u32				conversion_value;
+<<<<<<< HEAD
 	unsigned int			oversampling_ratio;
 	struct at91_adc_soc_info	soc_info;
 	wait_queue_head_t		wq_data_available;
 	struct at91_adc_dma		dma_st;
 	struct at91_adc_touch		touch_st;
+=======
+	struct at91_adc_soc_info	soc_info;
+	wait_queue_head_t		wq_data_available;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16				buffer[AT91_BUFFER_MAX_HWORDS];
 	/*
 	 * lock to prevent concurrent 'single conversion' requests through
@@ -461,10 +523,15 @@ static const struct iio_chan_spec at91_adc_channels[] = {
 	AT91_SAMA5D2_CHAN_DIFF(6, 7, 0x68),
 	AT91_SAMA5D2_CHAN_DIFF(8, 9, 0x70),
 	AT91_SAMA5D2_CHAN_DIFF(10, 11, 0x78),
+<<<<<<< HEAD
 	IIO_CHAN_SOFT_TIMESTAMP(AT91_SAMA5D2_TIMESTAMP_CHAN_IDX),
 	AT91_SAMA5D2_CHAN_TOUCH(AT91_SAMA5D2_TOUCH_X_CHAN_IDX, "x", IIO_MOD_X),
 	AT91_SAMA5D2_CHAN_TOUCH(AT91_SAMA5D2_TOUCH_Y_CHAN_IDX, "y", IIO_MOD_Y),
 	AT91_SAMA5D2_CHAN_PRESSURE(AT91_SAMA5D2_TOUCH_P_CHAN_IDX, "pressure"),
+=======
+	IIO_CHAN_SOFT_TIMESTAMP(AT91_SAMA5D2_SINGLE_CHAN_CNT
+				+ AT91_SAMA5D2_DIFF_CHAN_CNT + 1),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int at91_adc_chan_xlate(struct iio_dev *indio_dev, int chan)
@@ -488,6 +555,7 @@ at91_adc_chan_get(struct iio_dev *indio_dev, int chan)
 	return indio_dev->channels + index;
 }
 
+<<<<<<< HEAD
 static inline int at91_adc_of_xlate(struct iio_dev *indio_dev,
 				    const struct of_phandle_args *iiospec)
 {
@@ -713,6 +781,8 @@ static int at91_adc_read_pressure(struct at91_adc_state *st, int chan, u16 *val)
 	return IIO_VAL_INT;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
 {
 	struct iio_dev *indio = iio_trigger_get_drvdata(trig);
@@ -731,6 +801,7 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
 
 	for_each_set_bit(bit, indio->active_scan_mask, indio->num_channels) {
 		struct iio_chan_spec const *chan = at91_adc_chan_get(indio, bit);
+<<<<<<< HEAD
 
 		if (!chan)
 			continue;
@@ -738,10 +809,30 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
 		if (chan->type == IIO_POSITIONRELATIVE ||
 		    chan->type == IIO_PRESSURE)
 			continue;
+=======
+		u32 cor;
+
+		if (!chan)
+			continue;
+		if (state) {
+			cor = at91_adc_readl(st, AT91_SAMA5D2_COR);
+
+			if (chan->differential)
+				cor |= (BIT(chan->channel) |
+					BIT(chan->channel2)) <<
+					AT91_SAMA5D2_COR_DIFF_OFFSET;
+			else
+				cor &= ~(BIT(chan->channel) <<
+				       AT91_SAMA5D2_COR_DIFF_OFFSET);
+
+			at91_adc_writel(st, AT91_SAMA5D2_COR, cor);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (state) {
 			at91_adc_writel(st, AT91_SAMA5D2_CHER,
 					BIT(chan->channel));
+<<<<<<< HEAD
 			/* enable irq only if not using DMA */
 			if (!st->dma_st.dma_chan) {
 				at91_adc_writel(st, AT91_SAMA5D2_IER,
@@ -753,6 +844,13 @@ static int at91_adc_configure_trigger(struct iio_trigger *trig, bool state)
 				at91_adc_writel(st, AT91_SAMA5D2_IDR,
 						BIT(chan->channel));
 			}
+=======
+			at91_adc_writel(st, AT91_SAMA5D2_IER,
+					BIT(chan->channel));
+		} else {
+			at91_adc_writel(st, AT91_SAMA5D2_IDR,
+					BIT(chan->channel));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			at91_adc_writel(st, AT91_SAMA5D2_CHDR,
 					BIT(chan->channel));
 		}
@@ -766,10 +864,13 @@ static int at91_adc_reenable_trigger(struct iio_trigger *trig)
 	struct iio_dev *indio = iio_trigger_get_drvdata(trig);
 	struct at91_adc_state *st = iio_priv(indio);
 
+<<<<<<< HEAD
 	/* if we are using DMA, we must not reenable irq after each trigger */
 	if (st->dma_st.dma_chan)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enable_irq(st->irq);
 
 	/* Needed to ACK the DRDY interruption */
@@ -778,6 +879,7 @@ static int at91_adc_reenable_trigger(struct iio_trigger *trig)
 }
 
 static const struct iio_trigger_ops at91_adc_trigger_ops = {
+<<<<<<< HEAD
 	.set_trigger_state = &at91_adc_configure_trigger,
 	.try_reenable = &at91_adc_reenable_trigger,
 	.validate_device = iio_trigger_validate_own_device,
@@ -963,6 +1065,11 @@ static int at91_adc_buffer_predisable(struct iio_dev *indio_dev)
 static const struct iio_buffer_setup_ops at91_buffer_setup_ops = {
 	.postenable = &at91_adc_buffer_postenable,
 	.predisable = &at91_adc_buffer_predisable,
+=======
+	.owner = THIS_MODULE,
+	.set_trigger_state = &at91_adc_configure_trigger,
+	.try_reenable = &at91_adc_reenable_trigger,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct iio_trigger *at91_adc_allocate_trigger(struct iio_dev *indio,
@@ -1001,6 +1108,7 @@ static int at91_adc_trigger_init(struct iio_dev *indio)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void at91_adc_trigger_handler_nodma(struct iio_dev *indio_dev,
 					   struct iio_poll_func *pf)
 {
@@ -1101,12 +1209,36 @@ static irqreturn_t at91_adc_trigger_handler(int irq, void *p)
 		at91_adc_trigger_handler_nodma(indio_dev, pf);
 
 	iio_trigger_notify_done(indio_dev->trig);
+=======
+static irqreturn_t at91_adc_trigger_handler(int irq, void *p)
+{
+	struct iio_poll_func *pf = p;
+	struct iio_dev *indio = pf->indio_dev;
+	struct at91_adc_state *st = iio_priv(indio);
+	int i = 0;
+	u8 bit;
+
+	for_each_set_bit(bit, indio->active_scan_mask, indio->num_channels) {
+		struct iio_chan_spec const *chan =
+					at91_adc_chan_get(indio, bit);
+
+		if (!chan)
+			continue;
+		st->buffer[i] = at91_adc_readl(st, chan->address);
+		i++;
+	}
+
+	iio_push_to_buffers_with_timestamp(indio, st->buffer, pf->timestamp);
+
+	iio_trigger_notify_done(indio->trig);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }
 
 static int at91_adc_buffer_init(struct iio_dev *indio)
 {
+<<<<<<< HEAD
 	struct at91_adc_state *st = iio_priv(indio);
 
 	if (st->selected_trig->hw_trig) {
@@ -1121,6 +1253,11 @@ static int at91_adc_buffer_init(struct iio_dev *indio)
 	indio->setup_ops = &at91_buffer_setup_ops;
 
 	return 0;
+=======
+	return devm_iio_triggered_buffer_setup(&indio->dev, indio,
+			&iio_pollfunc_store_time,
+			&at91_adc_trigger_handler, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned at91_adc_startup_time(unsigned startup_time_min,
@@ -1166,6 +1303,7 @@ static void at91_adc_setup_samp_freq(struct at91_adc_state *st, unsigned freq)
 
 	dev_dbg(&indio_dev->dev, "freq: %u, startup: %u, prescal: %u\n",
 		freq, startup, prescal);
+<<<<<<< HEAD
 	st->current_sample_rate = freq;
 }
 
@@ -1243,6 +1381,21 @@ static void at91_adc_workq_handler(struct work_struct *workq)
 	struct iio_dev *indio_dev = iio_priv_to_dev(st);
 
 	iio_push_to_buffers(indio_dev, st->buffer);
+=======
+}
+
+static unsigned at91_adc_get_sample_freq(struct at91_adc_state *st)
+{
+	unsigned f_adc, f_per = clk_get_rate(st->per_clk);
+	unsigned mr, prescal;
+
+	mr = at91_adc_readl(st, AT91_SAMA5D2_MR);
+	prescal = (mr >> AT91_SAMA5D2_MR_PRESCAL_OFFSET)
+		  & AT91_SAMA5D2_MR_PRESCAL_MAX;
+	f_adc = f_per / (2 * (prescal + 1));
+
+	return f_adc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t at91_adc_interrupt(int irq, void *private)
@@ -1251,6 +1404,7 @@ static irqreturn_t at91_adc_interrupt(int irq, void *private)
 	struct at91_adc_state *st = iio_priv(indio);
 	u32 status = at91_adc_readl(st, AT91_SAMA5D2_ISR);
 	u32 imr = at91_adc_readl(st, AT91_SAMA5D2_IMR);
+<<<<<<< HEAD
 	u32 rdy_mask = AT91_SAMA5D2_IER_XRDY | AT91_SAMA5D2_IER_YRDY |
 			AT91_SAMA5D2_IER_PRDY;
 
@@ -1284,6 +1438,16 @@ static irqreturn_t at91_adc_interrupt(int irq, void *private)
 		WARN(true, "Unexpected irq occurred\n");
 	} else if (!iio_buffer_enabled(indio)) {
 		/* software requested conversion */
+=======
+
+	if (!(status & imr))
+		return IRQ_NONE;
+
+	if (iio_buffer_enabled(indio)) {
+		disable_irq_nosync(irq);
+		iio_trigger_poll(indio->trig);
+	} else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		st->conversion_value = at91_adc_readl(st, st->chan->address);
 		st->conversion_done = true;
 		wake_up_interruptible(&st->wq_data_available);
@@ -1291,6 +1455,7 @@ static irqreturn_t at91_adc_interrupt(int irq, void *private)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
 				  struct iio_chan_spec const *chan, int *val)
 {
@@ -1376,15 +1541,65 @@ static int at91_adc_read_info_raw(struct iio_dev *indio_dev,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int at91_adc_read_raw(struct iio_dev *indio_dev,
 			     struct iio_chan_spec const *chan,
 			     int *val, int *val2, long mask)
 {
 	struct at91_adc_state *st = iio_priv(indio_dev);
+<<<<<<< HEAD
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
 		return at91_adc_read_info_raw(indio_dev, chan, val);
+=======
+	u32 cor = 0;
+	int ret;
+
+	switch (mask) {
+	case IIO_CHAN_INFO_RAW:
+		/* we cannot use software trigger if hw trigger enabled */
+		ret = iio_device_claim_direct_mode(indio_dev);
+		if (ret)
+			return ret;
+
+		mutex_lock(&st->lock);
+
+		st->chan = chan;
+
+		if (chan->differential)
+			cor = (BIT(chan->channel) | BIT(chan->channel2)) <<
+			      AT91_SAMA5D2_COR_DIFF_OFFSET;
+
+		at91_adc_writel(st, AT91_SAMA5D2_COR, cor);
+		at91_adc_writel(st, AT91_SAMA5D2_CHER, BIT(chan->channel));
+		at91_adc_writel(st, AT91_SAMA5D2_IER, BIT(chan->channel));
+		at91_adc_writel(st, AT91_SAMA5D2_CR, AT91_SAMA5D2_CR_START);
+
+		ret = wait_event_interruptible_timeout(st->wq_data_available,
+						       st->conversion_done,
+						       msecs_to_jiffies(1000));
+		if (ret == 0)
+			ret = -ETIMEDOUT;
+
+		if (ret > 0) {
+			*val = st->conversion_value;
+			if (chan->scan_type.sign == 's')
+				*val = sign_extend32(*val, 11);
+			ret = IIO_VAL_INT;
+			st->conversion_done = false;
+		}
+
+		at91_adc_writel(st, AT91_SAMA5D2_IDR, BIT(chan->channel));
+		at91_adc_writel(st, AT91_SAMA5D2_CHDR, BIT(chan->channel));
+
+		mutex_unlock(&st->lock);
+
+		iio_device_release_direct_mode(indio_dev);
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IIO_CHAN_INFO_SCALE:
 		*val = st->vref_uv / 1000;
 		if (chan->differential)
@@ -1396,10 +1611,13 @@ static int at91_adc_read_raw(struct iio_dev *indio_dev,
 		*val = at91_adc_get_sample_freq(st);
 		return IIO_VAL_INT;
 
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 		*val = st->oversampling_ratio;
 		return IIO_VAL_INT;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -1411,6 +1629,7 @@ static int at91_adc_write_raw(struct iio_dev *indio_dev,
 {
 	struct at91_adc_state *st = iio_priv(indio_dev);
 
+<<<<<<< HEAD
 	switch (mask) {
 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 		if ((val != AT91_OSR_1SAMPLES) && (val != AT91_OSR_4SAMPLES) &&
@@ -1544,10 +1763,21 @@ static int at91_adc_set_watermark(struct iio_dev *indio_dev, unsigned int val)
 		at91_adc_dma_disable(to_platform_device(&indio_dev->dev));
 	else if (val > 1)
 		at91_adc_dma_init(to_platform_device(&indio_dev->dev));
+=======
+	if (mask != IIO_CHAN_INFO_SAMP_FREQ)
+		return -EINVAL;
+
+	if (val < st->soc_info.min_sample_rate ||
+	    val > st->soc_info.max_sample_rate)
+		return -EINVAL;
+
+	at91_adc_setup_samp_freq(st, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int at91_adc_update_scan_mode(struct iio_dev *indio_dev,
 				     const unsigned long *scan_mask)
 {
@@ -1565,6 +1795,13 @@ static int at91_adc_update_scan_mode(struct iio_dev *indio_dev,
 		return -EINVAL;
 	return 0;
 }
+=======
+static const struct iio_info at91_adc_info = {
+	.read_raw = &at91_adc_read_raw,
+	.write_raw = &at91_adc_write_raw,
+	.driver_module = THIS_MODULE,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void at91_adc_hw_init(struct at91_adc_state *st)
 {
@@ -1578,6 +1815,7 @@ static void at91_adc_hw_init(struct at91_adc_state *st)
 			AT91_SAMA5D2_MR_TRANSFER(2) | AT91_SAMA5D2_MR_ANACH);
 
 	at91_adc_setup_samp_freq(st, st->soc_info.min_sample_rate);
+<<<<<<< HEAD
 
 	/* configure extended mode register */
 	at91_adc_config_emr(st);
@@ -1642,6 +1880,10 @@ static const struct iio_info at91_adc_info = {
 	.hwfifo_set_watermark = &at91_adc_set_watermark,
 };
 
+=======
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int at91_adc_probe(struct platform_device *pdev)
 {
 	struct iio_dev *indio_dev;
@@ -1656,13 +1898,18 @@ static int at91_adc_probe(struct platform_device *pdev)
 
 	indio_dev->dev.parent = &pdev->dev;
 	indio_dev->name = dev_name(&pdev->dev);
+<<<<<<< HEAD
 	indio_dev->modes = INDIO_DIRECT_MODE | INDIO_BUFFER_SOFTWARE;
+=======
+	indio_dev->modes = INDIO_DIRECT_MODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	indio_dev->info = &at91_adc_info;
 	indio_dev->channels = at91_adc_channels;
 	indio_dev->num_channels = ARRAY_SIZE(at91_adc_channels);
 
 	st = iio_priv(indio_dev);
 
+<<<<<<< HEAD
 	bitmap_set(&st->touch_st.channels_bitmask,
 		   AT91_SAMA5D2_TOUCH_X_CHAN_IDX, 1);
 	bitmap_set(&st->touch_st.channels_bitmask,
@@ -1672,6 +1919,8 @@ static int at91_adc_probe(struct platform_device *pdev)
 
 	st->oversampling_ratio = AT91_OSR_1SAMPLES;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = of_property_read_u32(pdev->dev.of_node,
 				   "atmel,min-sample-rate-hz",
 				   &st->soc_info.min_sample_rate);
@@ -1721,15 +1970,21 @@ static int at91_adc_probe(struct platform_device *pdev)
 
 	init_waitqueue_head(&st->wq_data_available);
 	mutex_init(&st->lock);
+<<<<<<< HEAD
 	INIT_WORK(&st->touch_st.workq, at91_adc_workq_handler);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!res)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* if we plan to use DMA, we need the physical address of the regs */
 	st->dma_st.phys_addr = res->start;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	st->base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(st->base))
 		return PTR_ERR(st->base);
@@ -1781,6 +2036,7 @@ static int at91_adc_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, indio_dev);
 
+<<<<<<< HEAD
 	ret = at91_adc_buffer_init(indio_dev);
 	if (ret < 0) {
 		dev_err(&pdev->dev, "couldn't initialize the buffer.\n");
@@ -1788,11 +2044,21 @@ static int at91_adc_probe(struct platform_device *pdev)
 	}
 
 	if (st->selected_trig->hw_trig) {
+=======
+	if (st->selected_trig->hw_trig) {
+		ret = at91_adc_buffer_init(indio_dev);
+		if (ret < 0) {
+			dev_err(&pdev->dev, "couldn't initialize the buffer.\n");
+			goto per_clk_disable_unprepare;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = at91_adc_trigger_init(indio_dev);
 		if (ret < 0) {
 			dev_err(&pdev->dev, "couldn't setup the triggers.\n");
 			goto per_clk_disable_unprepare;
 		}
+<<<<<<< HEAD
 		/*
 		 * Initially the iio buffer has a length of 2 and
 		 * a watermark of 1
@@ -1809,6 +2075,13 @@ static int at91_adc_probe(struct platform_device *pdev)
 	ret = iio_device_register(indio_dev);
 	if (ret < 0)
 		goto dma_disable;
+=======
+	}
+
+	ret = iio_device_register(indio_dev);
+	if (ret < 0)
+		goto per_clk_disable_unprepare;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (st->selected_trig->hw_trig)
 		dev_info(&pdev->dev, "setting up trigger as %s\n",
@@ -1819,8 +2092,11 @@ static int at91_adc_probe(struct platform_device *pdev)
 
 	return 0;
 
+<<<<<<< HEAD
 dma_disable:
 	at91_adc_dma_disable(pdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 per_clk_disable_unprepare:
 	clk_disable_unprepare(st->per_clk);
 vref_disable:
@@ -1837,8 +2113,11 @@ static int at91_adc_remove(struct platform_device *pdev)
 
 	iio_device_unregister(indio_dev);
 
+<<<<<<< HEAD
 	at91_adc_dma_disable(pdev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(st->per_clk);
 
 	regulator_disable(st->vref);
@@ -1894,6 +2173,7 @@ static __maybe_unused int at91_adc_resume(struct device *dev)
 	at91_adc_hw_init(st);
 
 	/* reconfiguring trigger hardware state */
+<<<<<<< HEAD
 	if (!iio_buffer_enabled(indio_dev))
 		return 0;
 
@@ -1908,6 +2188,11 @@ static __maybe_unused int at91_adc_resume(struct device *dev)
 	}
 
 	/* not needed but more explicit */
+=======
+	if (iio_buffer_enabled(indio_dev))
+		at91_adc_configure_trigger(st->trig, true);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 vref_disable_resume:

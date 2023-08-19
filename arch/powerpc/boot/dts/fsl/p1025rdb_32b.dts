@@ -106,7 +106,11 @@
 				interrupts = <4 1 0 0>;
 				reg = <0x6>;
 			};
+<<<<<<< HEAD
 			qe_phy1: ethernet-phy@3 {
+=======
+			qe_phy1: ethernet-phy@03 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				interrupt-parent = <&mpic>;
 				interrupts = <5 1 0 0>;
 				reg = <0x3>;

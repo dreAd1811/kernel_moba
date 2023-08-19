@@ -11,14 +11,20 @@
 
 /* Build Configuration Registers */
 #define ARC_REG_AUX_DCCM	0x18	/* DCCM Base Addr ARCv2 */
+<<<<<<< HEAD
 #define ARC_REG_ERP_CTRL	0x3F	/* ARCv2 Error protection control */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARC_REG_DCCM_BASE_BUILD	0x61	/* DCCM Base Addr ARCompact */
 #define ARC_REG_CRC_BCR		0x62
 #define ARC_REG_VECBASE_BCR	0x68
 #define ARC_REG_PERIBASE_BCR	0x69
 #define ARC_REG_FP_BCR		0x6B	/* ARCompact: Single-Precision FPU */
 #define ARC_REG_DPFP_BCR	0x6C	/* ARCompact: Dbl Precision FPU */
+<<<<<<< HEAD
 #define ARC_REG_ERP_BUILD	0xc7	/* ARCv2 Error protection Build: ECC/Parity */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARC_REG_FP_V2_BCR	0xc8	/* ARCv2 FPU */
 #define ARC_REG_SLC_BCR		0xce
 #define ARC_REG_DCCM_BUILD	0x74	/* DCCM size (common) */
@@ -34,6 +40,7 @@
 #define ARC_REG_D_UNCACH_BCR	0x6A
 #define ARC_REG_BPU_BCR		0xc0
 #define ARC_REG_ISA_CFG_BCR	0xc1
+<<<<<<< HEAD
 #define ARC_REG_LPB_BUILD	0xE9	/* ARCv2 Loop Buffer Build */
 #define ARC_REG_RTT_BCR		0xF2
 #define ARC_REG_IRQ_BCR		0xF3
@@ -42,6 +49,13 @@
 #define ARC_REG_CLUSTER_BCR	0xcf
 #define ARC_REG_AUX_ICCM	0x208	/* ICCM Base Addr (ARCv2) */
 #define ARC_REG_LPB_CTRL	0x488	/* ARCv2 Loop Buffer control */
+=======
+#define ARC_REG_RTT_BCR		0xF2
+#define ARC_REG_IRQ_BCR		0xF3
+#define ARC_REG_SMART_BCR	0xFF
+#define ARC_REG_CLUSTER_BCR	0xcf
+#define ARC_REG_AUX_ICCM	0x208	/* ICCM Base Addr (ARCv2) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Common for ARCompact and ARCv2 status register */
 #define ARC_REG_STATUS32	0x0A
@@ -151,6 +165,7 @@ struct bcr_isa_arcv2 {
 #endif
 };
 
+<<<<<<< HEAD
 struct bcr_uarch_build_arcv2 {
 #ifdef CONFIG_CPU_BIG_ENDIAN
 	unsigned int pad:8, prod:8, maj:8, min:8;
@@ -159,6 +174,8 @@ struct bcr_uarch_build_arcv2 {
 #endif
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bcr_mpy {
 #ifdef CONFIG_CPU_BIG_ENDIAN
 	unsigned int pad:8, x1616:8, dsp:4, cycles:2, type:2, ver:8;
@@ -242,6 +259,7 @@ struct bcr_bpu_arcv2 {
 #endif
 };
 
+<<<<<<< HEAD
 /* Error Protection Build: ECC/Parity */
 struct bcr_erp {
 #ifdef CONFIG_CPU_BIG_ENDIAN
@@ -268,6 +286,8 @@ struct bcr_lpb {
 #endif
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bcr_generic {
 #ifdef CONFIG_CPU_BIG_ENDIAN
 	unsigned int info:24, ver:8;
@@ -309,7 +329,11 @@ struct cpuinfo_arc {
 	struct cpuinfo_arc_ccm iccm, dccm;
 	struct {
 		unsigned int swap:1, norm:1, minmax:1, barrel:1, crc:1, swape:1, pad1:2,
+<<<<<<< HEAD
 			     fpu_sp:1, fpu_dp:1, dual:1, dual_enb:1, pad2:4,
+=======
+			     fpu_sp:1, fpu_dp:1, dual_iss_enb:1, dual_iss_exist:1, pad2:4,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     debug:1, ap:1, smart:1, rtt:1, pad3:4,
 			     timer0:1, timer1:1, rtc:1, gfrc:1, pad4:4;
 	} extn;

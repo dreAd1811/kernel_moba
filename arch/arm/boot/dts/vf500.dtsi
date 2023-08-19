@@ -39,16 +39,23 @@
  *     OTHER DEALINGS IN THE SOFTWARE.
  */
 
+<<<<<<< HEAD
+=======
+#include "skeleton.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "vfxxx.dtsi"
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 
 / {
+<<<<<<< HEAD
 	#address-cells = <1>;
 	#size-cells = <1>;
 	chosen { };
 	aliases { };
 	memory { device_type = "memory"; };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -63,7 +70,11 @@
 	soc {
 		aips-bus@40000000 {
 
+<<<<<<< HEAD
 			intc: interrupt-controller@40003000 {
+=======
+			intc: interrupt-controller@40002000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "arm,cortex-a9-gic";
 				#interrupt-cells = <3>;
 				interrupt-controller;

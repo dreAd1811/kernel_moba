@@ -56,12 +56,20 @@ Overview
 
 The basic object structure KMS presents to userspace is fairly simple.
 Framebuffers (represented by :c:type:`struct drm_framebuffer <drm_framebuffer>`,
+<<<<<<< HEAD
 see `Frame Buffer Abstraction`_) feed into planes. Planes are represented by
 :c:type:`struct drm_plane <drm_plane>`, see `Plane Abstraction`_ for more
 details. One or more (or even no) planes feed their pixel data into a CRTC
 (represented by :c:type:`struct drm_crtc <drm_crtc>`, see `CRTC Abstraction`_)
 for blending. The precise blending step is explained in more detail in `Plane
 Composition Properties`_ and related chapters.
+=======
+see `Frame Buffer Abstraction`_) feed into planes. One or more (or even no)
+planes feed their pixel data into a CRTC (represented by :c:type:`struct
+drm_crtc <drm_crtc>`, see `CRTC Abstraction`_) for blending. The precise
+blending step is explained in more detail in `Plane Composition Properties`_ and
+related chapters.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 For the output routing the first step is encoders (represented by
 :c:type:`struct drm_encoder <drm_encoder>`, see `Encoder Abstraction`_). Those
@@ -264,20 +272,30 @@ Taken all together there's two consequences for the atomic design:
 
 - An atomic update is assembled and validated as an entirely free-standing pile
   of structures within the :c:type:`drm_atomic_state <drm_atomic_state>`
+<<<<<<< HEAD
   container. Driver private state structures are also tracked in the same
   structure; see the next chapter.  Only when a state is committed is it applied
   to the driver and modeset objects. This way rolling back an update boils down
   to releasing memory and unreferencing objects like framebuffers.
+=======
+  container. Again drivers can subclass that container for their own state
+  structure tracking needs. Only when a state is committed is it applied to the
+  driver and modeset objects. This way rolling back an update boils down to
+  releasing memory and unreferencing objects like framebuffers.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Read on in this chapter, and also in :ref:`drm_atomic_helper` for more detailed
 coverage of specific topics.
 
+<<<<<<< HEAD
 Handling Driver Private State
 -----------------------------
 
 .. kernel-doc:: drivers/gpu/drm/drm_atomic.c
    :doc: handling driver private state
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Atomic Mode Setting Function Reference
 --------------------------------------
 
@@ -287,9 +305,12 @@ Atomic Mode Setting Function Reference
 .. kernel-doc:: drivers/gpu/drm/drm_atomic.c
    :export:
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/gpu/drm/drm_atomic.c
    :internal:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CRTC Abstraction
 ================
 
@@ -374,6 +395,7 @@ Connector Functions Reference
 .. kernel-doc:: drivers/gpu/drm/drm_connector.c
    :export:
 
+<<<<<<< HEAD
 Writeback Connectors
 --------------------
 
@@ -383,6 +405,8 @@ Writeback Connectors
 .. kernel-doc:: drivers/gpu/drm/drm_writeback.c
   :export:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Encoder Abstraction
 ===================
 
@@ -467,7 +491,11 @@ Output discovery and initialization example
         drm_encoder_init(dev, &intel_output->enc, &intel_crt_enc_funcs,
                  DRM_MODE_ENCODER_DAC);
 
+<<<<<<< HEAD
         drm_connector_attach_encoder(&intel_output->base,
+=======
+        drm_mode_connector_attach_encoder(&intel_output->base,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
                           &intel_output->enc);
 
         /* Set up the DDC bus. */
@@ -527,12 +555,15 @@ Standard Connector Properties
 .. kernel-doc:: drivers/gpu/drm/drm_connector.c
    :doc: standard connector properties
 
+<<<<<<< HEAD
 HDMI Specific Connector Properties
 ----------------------------------
 
 .. kernel-doc:: drivers/gpu/drm/drm_connector.c
    :doc: HDMI connector properties
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Plane Composition Properties
 ----------------------------
 
@@ -566,9 +597,14 @@ Explicit Fencing Properties
 Existing KMS Properties
 -----------------------
 
+<<<<<<< HEAD
 The following table gives description of drm properties exposed by various
 modules/drivers. Because this table is very unwieldy, do not add any new
 properties here. Instead document them in a section above.
+=======
+The following table gives description of drm properties exposed by
+various modules/drivers.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. csv-table::
    :header-rows: 1

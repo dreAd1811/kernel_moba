@@ -136,6 +136,7 @@ struct pci_ops dc21285_ops = {
 static struct timer_list serr_timer;
 static struct timer_list perr_timer;
 
+<<<<<<< HEAD
 static void dc21285_enable_error(struct timer_list *timer)
 {
 	del_timer(timer);
@@ -144,6 +145,21 @@ static void dc21285_enable_error(struct timer_list *timer)
 		enable_irq(IRQ_PCI_SERR);
 	else if (timer == &perr_timer)
 		enable_irq(IRQ_PCI_PERR);
+=======
+static void dc21285_enable_error(unsigned long __data)
+{
+	switch (__data) {
+	case IRQ_PCI_SERR:
+		del_timer(&serr_timer);
+		break;
+
+	case IRQ_PCI_PERR:
+		del_timer(&perr_timer);
+		break;
+	}
+
+	enable_irq(__data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -252,7 +268,11 @@ int __init dc21285_setup(int nr, struct pci_sys_data *sys)
 	if (nr || !footbridge_cfn_mode())
 		return 0;
 
+<<<<<<< HEAD
 	res = kcalloc(2, sizeof(struct resource), GFP_KERNEL);
+=======
+	res = kzalloc(sizeof(struct resource) * 2, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!res) {
 		printk("out of memory for root bus resources");
 		return 0;
@@ -318,8 +338,18 @@ void __init dc21285_preinit(void)
 		*CSR_PCICMD = (*CSR_PCICMD & 0xffff) | PCICMD_ERROR_BITS;
 	}
 
+<<<<<<< HEAD
 	timer_setup(&serr_timer, dc21285_enable_error, 0);
 	timer_setup(&perr_timer, dc21285_enable_error, 0);
+=======
+	init_timer(&serr_timer);
+	init_timer(&perr_timer);
+
+	serr_timer.data = IRQ_PCI_SERR;
+	serr_timer.function = dc21285_enable_error;
+	perr_timer.data = IRQ_PCI_PERR;
+	perr_timer.function = dc21285_enable_error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We don't care if these fail.

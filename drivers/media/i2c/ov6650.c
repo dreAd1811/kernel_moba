@@ -201,9 +201,14 @@ struct ov6650 {
 	struct v4l2_rect	rect;		/* sensor cropping window */
 	unsigned long		pclk_limit;	/* from host */
 	unsigned long		pclk_max;	/* from resolution and format */
+<<<<<<< HEAD
 	struct v4l2_fract	tpf;		/* as requested with s_frame_interval */
 	u32 code;
 	enum v4l2_colorspace	colorspace;
+=======
+	struct v4l2_fract	tpf;		/* as requested with s_parm */
+	u32 code;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -216,6 +221,20 @@ static u32 ov6650_codes[] = {
 	MEDIA_BUS_FMT_Y8_1X8,
 };
 
+<<<<<<< HEAD
+=======
+static const struct v4l2_mbus_framefmt ov6650_def_fmt = {
+	.width		= W_CIF,
+	.height		= H_CIF,
+	.code		= MEDIA_BUS_FMT_SBGGR8_1X8,
+	.colorspace	= V4L2_COLORSPACE_SRGB,
+	.field		= V4L2_FIELD_NONE,
+	.ycbcr_enc	= V4L2_YCBCR_ENC_DEFAULT,
+	.quantization	= V4L2_QUANTIZATION_DEFAULT,
+	.xfer_func	= V4L2_XFER_FUNC_DEFAULT,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* read a register */
 static int ov6650_reg_read(struct i2c_client *client, u8 reg, u8 *val)
 {
@@ -469,13 +488,17 @@ static int ov6650_set_selection(struct v4l2_subdev *sd,
 {
 	struct i2c_client *client = v4l2_get_subdevdata(sd);
 	struct ov6650 *priv = to_ov6650(client);
+<<<<<<< HEAD
 	struct v4l2_rect rect = sel->r;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (sel->which != V4L2_SUBDEV_FORMAT_ACTIVE ||
 	    sel->target != V4L2_SEL_TGT_CROP)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	v4l_bound_align_image(&rect.width, 2, W_CIF, 1,
 			      &rect.height, 2, H_CIF, 1, 0);
 	v4l_bound_align_image(&rect.left, DEF_HSTRT << 1,
@@ -501,6 +524,35 @@ static int ov6650_set_selection(struct v4l2_subdev *sd,
 	}
 	if (!ret)
 		priv->rect.height = rect.height;
+=======
+	v4l_bound_align_image(&sel->r.width, 2, W_CIF, 1,
+			      &sel->r.height, 2, H_CIF, 1, 0);
+	v4l_bound_align_image(&sel->r.left, DEF_HSTRT << 1,
+			      (DEF_HSTRT << 1) + W_CIF - (__s32)sel->r.width, 1,
+			      &sel->r.top, DEF_VSTRT << 1,
+			      (DEF_VSTRT << 1) + H_CIF - (__s32)sel->r.height,
+			      1, 0);
+
+	ret = ov6650_reg_write(client, REG_HSTRT, sel->r.left >> 1);
+	if (!ret) {
+		priv->rect.width += priv->rect.left - sel->r.left;
+		priv->rect.left = sel->r.left;
+		ret = ov6650_reg_write(client, REG_HSTOP,
+				       (sel->r.left + sel->r.width) >> 1);
+	}
+	if (!ret) {
+		priv->rect.width = sel->r.width;
+		ret = ov6650_reg_write(client, REG_VSTRT, sel->r.top >> 1);
+	}
+	if (!ret) {
+		priv->rect.height += priv->rect.top - sel->r.top;
+		priv->rect.top = sel->r.top;
+		ret = ov6650_reg_write(client, REG_VSTOP,
+				       (sel->r.top + sel->r.height) >> 1);
+	}
+	if (!ret)
+		priv->rect.height = sel->r.height;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -516,12 +568,29 @@ static int ov6650_get_fmt(struct v4l2_subdev *sd,
 	if (format->pad)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	mf->width	= priv->rect.width >> priv->half_scale;
 	mf->height	= priv->rect.height >> priv->half_scale;
 	mf->code	= priv->code;
 	mf->colorspace	= priv->colorspace;
 	mf->field	= V4L2_FIELD_NONE;
 
+=======
+	/* initialize response with default media bus frame format */
+	*mf = ov6650_def_fmt;
+
+	/* update media bus format code and frame size */
+	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+		mf->width = cfg->try_fmt.width;
+		mf->height = cfg->try_fmt.height;
+		mf->code = cfg->try_fmt.code;
+
+	} else {
+		mf->width = priv->rect.width >> priv->half_scale;
+		mf->height = priv->rect.height >> priv->half_scale;
+		mf->code = priv->code;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -614,7 +683,10 @@ static int ov6650_s_fmt(struct v4l2_subdev *sd, struct v4l2_mbus_framefmt *mf)
 		dev_err(&client->dev, "Pixel format not handled: 0x%x\n", code);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	priv->code = code;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (code == MEDIA_BUS_FMT_Y8_1X8 ||
 			code == MEDIA_BUS_FMT_SBGGR8_1X8) {
@@ -627,11 +699,14 @@ static int ov6650_s_fmt(struct v4l2_subdev *sd, struct v4l2_mbus_framefmt *mf)
 		priv->pclk_max = 8000000;
 	}
 
+<<<<<<< HEAD
 	if (code == MEDIA_BUS_FMT_SBGGR8_1X8)
 		priv->colorspace = V4L2_COLORSPACE_SRGB;
 	else if (code != 0)
 		priv->colorspace = V4L2_COLORSPACE_JPEG;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (half_scale) {
 		dev_dbg(&client->dev, "max resolution: QCIF\n");
 		coma_set |= COMA_QCIF;
@@ -640,7 +715,10 @@ static int ov6650_s_fmt(struct v4l2_subdev *sd, struct v4l2_mbus_framefmt *mf)
 		dev_dbg(&client->dev, "max resolution: CIF\n");
 		coma_mask |= COMA_QCIF;
 	}
+<<<<<<< HEAD
 	priv->half_scale = half_scale;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clkrc = CLKRC_12MHz;
 	mclk = 12000000;
@@ -658,6 +736,7 @@ static int ov6650_s_fmt(struct v4l2_subdev *sd, struct v4l2_mbus_framefmt *mf)
 		ret = ov6650_reg_rmw(client, REG_COMA, coma_set, coma_mask);
 	if (!ret)
 		ret = ov6650_reg_write(client, REG_CLKRC, clkrc);
+<<<<<<< HEAD
 	if (!ret)
 		ret = ov6650_reg_rmw(client, REG_COML, coml_set, coml_mask);
 
@@ -666,6 +745,16 @@ static int ov6650_s_fmt(struct v4l2_subdev *sd, struct v4l2_mbus_framefmt *mf)
 		mf->width = priv->rect.width >> half_scale;
 		mf->height = priv->rect.height >> half_scale;
 	}
+=======
+	if (!ret) {
+		priv->half_scale = half_scale;
+
+		ret = ov6650_reg_rmw(client, REG_COML, coml_set, coml_mask);
+	}
+	if (!ret)
+		priv->code = code;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -684,8 +773,11 @@ static int ov6650_set_fmt(struct v4l2_subdev *sd,
 		v4l_bound_align_image(&mf->width, 2, W_CIF, 1,
 				&mf->height, 2, H_CIF, 1, 0);
 
+<<<<<<< HEAD
 	mf->field = V4L2_FIELD_NONE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (mf->code) {
 	case MEDIA_BUS_FMT_Y10_1X10:
 		mf->code = MEDIA_BUS_FMT_Y8_1X8;
@@ -695,12 +787,16 @@ static int ov6650_set_fmt(struct v4l2_subdev *sd,
 	case MEDIA_BUS_FMT_YUYV8_2X8:
 	case MEDIA_BUS_FMT_VYUY8_2X8:
 	case MEDIA_BUS_FMT_UYVY8_2X8:
+<<<<<<< HEAD
 		mf->colorspace = V4L2_COLORSPACE_JPEG;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		mf->code = MEDIA_BUS_FMT_SBGGR8_1X8;
 		/* fall through */
 	case MEDIA_BUS_FMT_SBGGR8_1X8:
+<<<<<<< HEAD
 		mf->colorspace = V4L2_COLORSPACE_SRGB;
 		break;
 	}
@@ -709,6 +805,36 @@ static int ov6650_set_fmt(struct v4l2_subdev *sd,
 		return ov6650_s_fmt(sd, mf);
 	cfg->try_fmt = *mf;
 
+=======
+		break;
+	}
+
+	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+		/* store media bus format code and frame size in pad config */
+		cfg->try_fmt.width = mf->width;
+		cfg->try_fmt.height = mf->height;
+		cfg->try_fmt.code = mf->code;
+
+		/* return default mbus frame format updated with pad config */
+		*mf = ov6650_def_fmt;
+		mf->width = cfg->try_fmt.width;
+		mf->height = cfg->try_fmt.height;
+		mf->code = cfg->try_fmt.code;
+
+	} else {
+		/* apply new media bus format code and frame size */
+		int ret = ov6650_s_fmt(sd, mf);
+
+		if (ret)
+			return ret;
+
+		/* return default format updated with active size and code */
+		*mf = ov6650_def_fmt;
+		mf->width = priv->rect.width >> priv->half_scale;
+		mf->height = priv->rect.height >> priv->half_scale;
+		mf->code = priv->code;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -723,6 +849,7 @@ static int ov6650_enum_mbus_code(struct v4l2_subdev *sd,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ov6650_g_frame_interval(struct v4l2_subdev *sd,
 				   struct v4l2_subdev_frame_interval *ival)
 {
@@ -735,10 +862,30 @@ static int ov6650_g_frame_interval(struct v4l2_subdev *sd,
 
 	dev_dbg(&client->dev, "Frame interval: %u/%u s\n",
 		ival->interval.numerator, ival->interval.denominator);
+=======
+static int ov6650_g_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *parms)
+{
+	struct i2c_client *client = v4l2_get_subdevdata(sd);
+	struct ov6650 *priv = to_ov6650(client);
+	struct v4l2_captureparm *cp = &parms->parm.capture;
+
+	if (parms->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		return -EINVAL;
+
+	memset(cp, 0, sizeof(*cp));
+	cp->capability = V4L2_CAP_TIMEPERFRAME;
+	cp->timeperframe.numerator = GET_CLKRC_DIV(to_clkrc(&priv->tpf,
+			priv->pclk_limit, priv->pclk_max));
+	cp->timeperframe.denominator = FRAME_RATE_MAX;
+
+	dev_dbg(&client->dev, "Frame interval: %u/%u s\n",
+		cp->timeperframe.numerator, cp->timeperframe.denominator);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ov6650_s_frame_interval(struct v4l2_subdev *sd,
 				   struct v4l2_subdev_frame_interval *ival)
 {
@@ -748,6 +895,23 @@ static int ov6650_s_frame_interval(struct v4l2_subdev *sd,
 	int div, ret;
 	u8 clkrc;
 
+=======
+static int ov6650_s_parm(struct v4l2_subdev *sd, struct v4l2_streamparm *parms)
+{
+	struct i2c_client *client = v4l2_get_subdevdata(sd);
+	struct ov6650 *priv = to_ov6650(client);
+	struct v4l2_captureparm *cp = &parms->parm.capture;
+	struct v4l2_fract *tpf = &cp->timeperframe;
+	int div, ret;
+	u8 clkrc;
+
+	if (parms->type != V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		return -EINVAL;
+
+	if (cp->extendedmode != 0)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tpf->numerator == 0 || tpf->denominator == 0)
 		div = 1;  /* Reset to full rate */
 	else
@@ -924,8 +1088,13 @@ static int ov6650_s_mbus_config(struct v4l2_subdev *sd,
 
 static const struct v4l2_subdev_video_ops ov6650_video_ops = {
 	.s_stream	= ov6650_s_stream,
+<<<<<<< HEAD
 	.g_frame_interval = ov6650_g_frame_interval,
 	.s_frame_interval = ov6650_s_frame_interval,
+=======
+	.g_parm		= ov6650_g_parm,
+	.s_parm		= ov6650_s_parm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.g_mbus_config	= ov6650_g_mbus_config,
 	.s_mbus_config	= ov6650_s_mbus_config,
 };
@@ -954,8 +1123,16 @@ static int ov6650_probe(struct i2c_client *client,
 	int ret;
 
 	priv = devm_kzalloc(&client->dev, sizeof(*priv), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!priv)
 		return -ENOMEM;
+=======
+	if (!priv) {
+		dev_err(&client->dev,
+			"Failed to allocate memory for private data!\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	v4l2_i2c_subdev_init(&priv->subdev, client, &ov6650_subdev_ops);
 	v4l2_ctrl_handler_init(&priv->hdl, 13);
@@ -1002,7 +1179,10 @@ static int ov6650_probe(struct i2c_client *client,
 	priv->rect.height = H_CIF;
 	priv->half_scale  = false;
 	priv->code	  = MEDIA_BUS_FMT_YUYV8_2X8;
+<<<<<<< HEAD
 	priv->colorspace  = V4L2_COLORSPACE_JPEG;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = ov6650_video_probe(client);
 	if (ret)

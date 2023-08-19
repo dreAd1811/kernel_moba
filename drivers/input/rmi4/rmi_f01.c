@@ -570,19 +570,29 @@ static int rmi_f01_probe(struct rmi_function *fn)
 
 	dev_set_drvdata(&fn->dev, f01);
 
+<<<<<<< HEAD
 	error = sysfs_create_group(&fn->rmi_dev->dev.kobj, &rmi_f01_attr_group);
 	if (error)
 		dev_warn(&fn->dev, "Failed to create sysfs group: %d\n", error);
+=======
+	error = devm_device_add_group(&fn->rmi_dev->dev, &rmi_f01_attr_group);
+	if (error)
+		dev_warn(&fn->dev,
+			 "Failed to create attribute group: %d\n", error);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void rmi_f01_remove(struct rmi_function *fn)
 {
 	/* Note that the bus device is used, not the F01 device */
 	sysfs_remove_group(&fn->rmi_dev->dev.kobj, &rmi_f01_attr_group);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rmi_f01_config(struct rmi_function *fn)
 {
 	struct f01_data *f01 = dev_get_drvdata(&fn->dev);
@@ -681,9 +691,15 @@ static int rmi_f01_resume(struct rmi_function *fn)
 	return 0;
 }
 
+<<<<<<< HEAD
 static irqreturn_t rmi_f01_attention(int irq, void *ctx)
 {
 	struct rmi_function *fn = ctx;
+=======
+static int rmi_f01_attention(struct rmi_function *fn,
+			     unsigned long *irq_bits)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rmi_device *rmi_dev = fn->rmi_dev;
 	int error;
 	u8 device_status;
@@ -692,7 +708,11 @@ static irqreturn_t rmi_f01_attention(int irq, void *ctx)
 	if (error) {
 		dev_err(&fn->dev,
 			"Failed to read device status: %d.\n", error);
+<<<<<<< HEAD
 		return IRQ_RETVAL(error);
+=======
+		return error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (RMI_F01_STATUS_BOOTLOADER(device_status))
@@ -704,11 +724,19 @@ static irqreturn_t rmi_f01_attention(int irq, void *ctx)
 		error = rmi_dev->driver->reset_handler(rmi_dev);
 		if (error) {
 			dev_err(&fn->dev, "Device reset failed: %d\n", error);
+<<<<<<< HEAD
 			return IRQ_RETVAL(error);
 		}
 	}
 
 	return IRQ_HANDLED;
+=======
+			return error;
+		}
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct rmi_function_handler rmi_f01_handler = {
@@ -722,7 +750,10 @@ struct rmi_function_handler rmi_f01_handler = {
 	},
 	.func		= 0x01,
 	.probe		= rmi_f01_probe,
+<<<<<<< HEAD
 	.remove		= rmi_f01_remove,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config		= rmi_f01_config,
 	.attention	= rmi_f01_attention,
 	.suspend	= rmi_f01_suspend,

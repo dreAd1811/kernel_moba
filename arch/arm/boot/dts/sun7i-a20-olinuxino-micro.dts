@@ -66,6 +66,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	hdmi-connector {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -77,6 +78,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
@@ -103,10 +106,13 @@
 	cpu-supply = <&reg_dcdc2>;
 };
 
+<<<<<<< HEAD
 &de {
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehci0 {
 	status = "okay";
 };
@@ -117,7 +123,11 @@
 
 &gmac {
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&gmac_pins_mii_a>, <&gmac_txerr>;
+=======
+	pinctrl-0 = <&gmac_pins_mii_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy = <&phy1>;
 	phy-mode = "mii";
 	status = "okay";
@@ -127,6 +137,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &hdmi {
 	status = "okay";
 };
@@ -137,6 +148,8 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c0_pins_a>;
@@ -226,7 +239,12 @@
 	pinctrl-0 = <&mmc0_pins_a>;
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
+<<<<<<< HEAD
 	cd-gpios = <&pio 7 1 GPIO_ACTIVE_LOW>; /* PH1 */
+=======
+	cd-gpios = <&pio 7 1 GPIO_ACTIVE_HIGH>; /* PH1 */
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -235,7 +253,12 @@
 	pinctrl-0 = <&mmc3_pins_a>, <&mmc3_cd_pin_olinuxinom>;
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
+<<<<<<< HEAD
 	cd-gpios = <&pio 7 11 GPIO_ACTIVE_LOW>; /* PH11 */
+=======
+	cd-gpios = <&pio 7 11 GPIO_ACTIVE_HIGH>; /* PH11 */
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -252,11 +275,14 @@
 };
 
 &pio {
+<<<<<<< HEAD
 	gmac_txerr: gmac_txerr@0 {
 		pins = "PA17";
 		function = "gmac";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc3_cd_pin_olinuxinom: mmc3_cd_pin@0 {
 		pins = "PH11";
 		function = "gpio_in";
@@ -284,6 +310,7 @@
 
 #include "axp209.dtsi"
 
+<<<<<<< HEAD
 &ac_power_supply {
 	status = "okay";
 };
@@ -292,6 +319,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &reg_dcdc2 {
 	regulator-always-on;
 	regulator-min-microvolt = <1000000>;
@@ -366,10 +395,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usb_power_supply {
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usbphy {
 	pinctrl-names = "default";
 	pinctrl-0 = <&usb0_id_detect_pin>, <&usb0_vbus_detect_pin>;

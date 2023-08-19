@@ -1,5 +1,23 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: ISC
 /* Copyright (c) 2016,2018-2019 The Linux Foundation. All rights reserved. */
+=======
+/*
+ * Copyright (c) 2016,2018 The Linux Foundation. All rights reserved.
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/device.h>
 #include <linux/sysfs.h>
@@ -8,9 +26,15 @@
 #include "wmi.h"
 
 static ssize_t
+<<<<<<< HEAD
 ftm_txrx_offset_show(struct device *dev,
 		     struct device_attribute *attr,
 		     char *buf)
+=======
+wil_ftm_txrx_offset_sysfs_show(struct device *dev,
+			       struct device_attribute *attr,
+			       char *buf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wil6210_priv *wil = dev_get_drvdata(dev);
 	struct wil6210_vif *vif = ndev_to_vif(wil->main_ndev);
@@ -41,6 +65,7 @@ ftm_txrx_offset_show(struct device *dev,
 	return len;
 }
 
+<<<<<<< HEAD
 int wil_ftm_offset_set(struct wil6210_priv *wil, const char *buf)
 {
 	wil->ftm_txrx_offset.enabled = 0;
@@ -78,6 +103,54 @@ static ssize_t
 board_file_show(struct device *dev,
 		struct device_attribute *attr,
 		char *buf)
+=======
+static ssize_t
+wil_ftm_txrx_offset_sysfs_store(struct device *dev,
+				struct device_attribute *attr,
+				const char *buf, size_t count)
+{
+	struct wil6210_priv *wil = dev_get_drvdata(dev);
+	struct wil6210_vif *vif = ndev_to_vif(wil->main_ndev);
+	struct wmi_tof_set_tx_rx_offset_cmd cmd;
+	struct {
+		struct wmi_cmd_hdr wmi;
+		struct wmi_tof_set_tx_rx_offset_event evt;
+	} __packed reply;
+	unsigned int tx_offset, rx_offset;
+	int rc;
+
+	if (sscanf(buf, "%u %u", &tx_offset, &rx_offset) != 2)
+		return -EINVAL;
+
+	if (!test_bit(WMI_FW_CAPABILITY_FTM, wil->fw_capabilities))
+		return -EOPNOTSUPP;
+
+	memset(&cmd, 0, sizeof(cmd));
+	cmd.tx_offset = cpu_to_le32(tx_offset);
+	cmd.rx_offset = cpu_to_le32(rx_offset);
+	memset(&reply, 0, sizeof(reply));
+	rc = wmi_call(wil, WMI_TOF_SET_TX_RX_OFFSET_CMDID, vif->mid,
+		      &cmd, sizeof(cmd), WMI_TOF_SET_TX_RX_OFFSET_EVENTID,
+		      &reply, sizeof(reply), 100);
+	if (rc < 0)
+		return rc;
+	if (reply.evt.status) {
+		wil_err(wil, "set_tof_tx_rx_offset failed, error %d\n",
+			reply.evt.status);
+		return -EIO;
+	}
+	return count;
+}
+
+static DEVICE_ATTR(ftm_txrx_offset, 0644,
+		   wil_ftm_txrx_offset_sysfs_show,
+		   wil_ftm_txrx_offset_sysfs_store);
+
+static ssize_t
+wil_board_file_sysfs_show(struct device *dev,
+			  struct device_attribute *attr,
+			  char *buf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wil6210_priv *wil = dev_get_drvdata(dev);
 
@@ -86,9 +159,18 @@ board_file_show(struct device *dev,
 	return strlen(buf);
 }
 
+<<<<<<< HEAD
 int wil_board_file_set(struct wil6210_priv *wil, const char *buf,
 		       size_t count)
 {
+=======
+static ssize_t
+wil_board_file_sysfs_store(struct device *dev,
+			   struct device_attribute *attr,
+			   const char *buf, size_t count)
+{
+	struct wil6210_priv *wil = dev_get_drvdata(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t len;
 
 	mutex_lock(&wil->mutex);
@@ -110,6 +192,7 @@ int wil_board_file_set(struct wil6210_priv *wil, const char *buf,
 	}
 	mutex_unlock(&wil->mutex);
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -133,6 +216,17 @@ static DEVICE_ATTR_RW(board_file);
 static ssize_t
 thermal_throttling_show(struct device *dev, struct device_attribute *attr,
 			char *buf)
+=======
+	return count;
+}
+
+static DEVICE_ATTR(board_file, 0644,
+		   wil_board_file_sysfs_show,
+		   wil_board_file_sysfs_store);
+
+static ssize_t
+wil_tt_sysfs_show(struct device *dev, struct device_attribute *attr, char *buf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wil6210_priv *wil = dev_get_drvdata(dev);
 	ssize_t len;
@@ -168,9 +262,17 @@ thermal_throttling_show(struct device *dev, struct device_attribute *attr,
 	return len;
 }
 
+<<<<<<< HEAD
 int wil_tt_set(struct wil6210_priv *wil, const char *buf,
 	       size_t count)
 {
+=======
+static ssize_t
+wil_tt_sysfs_store(struct device *dev, struct device_attribute *attr,
+		   const char *buf, size_t count)
+{
+	struct wil6210_priv *wil = dev_get_drvdata(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, rc = -EINVAL;
 	char *token, *dupbuf, *tmp;
 	struct wmi_tt_data tt_data = {
@@ -226,15 +328,24 @@ int wil_tt_set(struct wil6210_priv *wil, const char *buf,
 			tt_data.rf_enabled = 1;
 	}
 
+<<<<<<< HEAD
 	wil->tt_data = tt_data;
 	wil->tt_data_set = true;
 	rc = 0;
 
+=======
+	rc = wmi_set_tt_cfg(wil, &tt_data);
+	if (rc)
+		goto out;
+
+	rc = count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	kfree(tmp);
 	return rc;
 }
 
+<<<<<<< HEAD
 static ssize_t
 thermal_throttling_store(struct device *dev, struct device_attribute *attr,
 			 const char *buf, size_t count)
@@ -258,6 +369,14 @@ static DEVICE_ATTR_RW(thermal_throttling);
 static ssize_t
 fst_link_loss_show(struct device *dev, struct device_attribute *attr,
 		   char *buf)
+=======
+static DEVICE_ATTR(thermal_throttling, 0644,
+		   wil_tt_sysfs_show, wil_tt_sysfs_store);
+
+static ssize_t
+wil_fst_link_loss_sysfs_show(struct device *dev, struct device_attribute *attr,
+			     char *buf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wil6210_priv *wil = dev_get_drvdata(dev);
 	ssize_t len = 0;
@@ -274,8 +393,13 @@ fst_link_loss_show(struct device *dev, struct device_attribute *attr,
 }
 
 static ssize_t
+<<<<<<< HEAD
 fst_link_loss_store(struct device *dev, struct device_attribute *attr,
 		    const char *buf, size_t count)
+=======
+wil_fst_link_loss_sysfs_store(struct device *dev, struct device_attribute *attr,
+			      const char *buf, size_t count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wil6210_priv *wil = dev_get_drvdata(dev);
 	u8 addr[ETH_ALEN];
@@ -315,6 +439,7 @@ out:
 	return rc;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(fst_link_loss);
 
 static ssize_t
@@ -410,6 +535,15 @@ static DEVICE_ATTR_RW(vr_profile);
 static ssize_t
 snr_thresh_show(struct device *dev, struct device_attribute *attr,
 		char *buf)
+=======
+static DEVICE_ATTR(fst_link_loss, 0644,
+		   wil_fst_link_loss_sysfs_show,
+		   wil_fst_link_loss_sysfs_store);
+
+static ssize_t
+wil_snr_thresh_sysfs_show(struct device *dev, struct device_attribute *attr,
+			  char *buf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct wil6210_priv *wil = dev_get_drvdata(dev);
 	ssize_t len = 0;
@@ -421,6 +555,7 @@ snr_thresh_show(struct device *dev, struct device_attribute *attr,
 	return len;
 }
 
+<<<<<<< HEAD
 int wil_snr_thresh_set(struct wil6210_priv *wil, const char *buf)
 {
 	wil->snr_thresh.enabled = 0;
@@ -449,13 +584,35 @@ snr_thresh_store(struct device *dev,
 
 	rc = wmi_set_snr_thresh(wil, wil->snr_thresh.omni,
 				wil->snr_thresh.direct);
+=======
+static ssize_t
+wil_snr_thresh_sysfs_store(struct device *dev,
+			   struct device_attribute *attr,
+			   const char *buf, size_t count)
+{
+	struct wil6210_priv *wil = dev_get_drvdata(dev);
+	int rc;
+	short omni, direct;
+
+	/* to disable snr threshold, set both omni and direct to 0 */
+	if (sscanf(buf, "%hd %hd", &omni, &direct) != 2)
+		return -EINVAL;
+
+	rc = wmi_set_snr_thresh(wil, omni, direct);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rc)
 		rc = count;
 
 	return rc;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(snr_thresh);
+=======
+static DEVICE_ATTR(snr_thresh, 0644,
+		   wil_snr_thresh_sysfs_show,
+		   wil_snr_thresh_sysfs_store);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *wil6210_sysfs_entries[] = {
 	&dev_attr_ftm_txrx_offset.attr,
@@ -463,8 +620,11 @@ static struct attribute *wil6210_sysfs_entries[] = {
 	&dev_attr_thermal_throttling.attr,
 	&dev_attr_fst_link_loss.attr,
 	&dev_attr_snr_thresh.attr,
+<<<<<<< HEAD
 	&dev_attr_vr_profile.attr,
 	&dev_attr_fst_config.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 

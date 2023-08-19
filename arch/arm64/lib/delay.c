@@ -24,6 +24,7 @@
 #include <linux/module.h>
 #include <linux/timex.h>
 
+<<<<<<< HEAD
 #include <clocksource/arm_arch_timer.h>
 
 #define USECS_TO_CYCLES(time_usecs)			\
@@ -34,10 +35,13 @@ static inline unsigned long xloops_to_cycles(unsigned long xloops)
 	return (xloops * loops_per_jiffy * HZ) >> 32;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __delay(unsigned long cycles)
 {
 	cycles_t start = get_cycles();
 
+<<<<<<< HEAD
 	if (arch_timer_evtstrm_available()) {
 		const cycles_t timer_evt_period =
 			USECS_TO_CYCLES(ARCH_TIMER_EVT_STREAM_PERIOD_US);
@@ -46,6 +50,8 @@ void __delay(unsigned long cycles)
 			wfe();
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while ((get_cycles() - start) < cycles)
 		cpu_relax();
 }
@@ -53,7 +59,14 @@ EXPORT_SYMBOL(__delay);
 
 inline void __const_udelay(unsigned long xloops)
 {
+<<<<<<< HEAD
 	__delay(xloops_to_cycles(xloops));
+=======
+	unsigned long loops;
+
+	loops = xloops * loops_per_jiffy * HZ;
+	__delay(loops >> 32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(__const_udelay);
 

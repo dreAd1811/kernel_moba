@@ -20,6 +20,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  *
  * Authors: Ben Skeggs
+<<<<<<< HEAD
  *          Lyude Paul
  */
 #include "gk104.h"
@@ -70,6 +71,12 @@ gk104_fb_clkgate_pack[] = {
 	{}
 };
 
+=======
+ */
+#include "gf100.h"
+#include "ram.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct nvkm_fb_func
 gk104_fb = {
 	.dtor = gf100_fb_dtor,
@@ -78,8 +85,12 @@ gk104_fb = {
 	.init_page = gf100_fb_init_page,
 	.intr = gf100_fb_intr,
 	.ram_new = gk104_ram_new,
+<<<<<<< HEAD
 	.default_bigpage = 17,
 	.clkgate_pack = gk104_fb_clkgate_pack,
+=======
+	.memtype_valid = gf100_fb_memtype_valid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

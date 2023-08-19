@@ -90,8 +90,13 @@ int mthca_alloc_init(struct mthca_alloc *alloc, u32 num, u32 mask,
 	alloc->max  = num;
 	alloc->mask = mask;
 	spin_lock_init(&alloc->lock);
+<<<<<<< HEAD
 	alloc->table = kmalloc_array(BITS_TO_LONGS(num), sizeof(long),
 				     GFP_KERNEL);
+=======
+	alloc->table = kmalloc(BITS_TO_LONGS(num) * sizeof (long),
+			       GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!alloc->table)
 		return -ENOMEM;
 
@@ -162,8 +167,12 @@ int mthca_array_init(struct mthca_array *array, int nent)
 	int npage = (nent * sizeof (void *) + PAGE_SIZE - 1) / PAGE_SIZE;
 	int i;
 
+<<<<<<< HEAD
 	array->page_list = kmalloc_array(npage, sizeof(*array->page_list),
 					 GFP_KERNEL);
+=======
+	array->page_list = kmalloc(npage * sizeof *array->page_list, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!array->page_list)
 		return -ENOMEM;
 
@@ -221,8 +230,12 @@ int mthca_buf_alloc(struct mthca_dev *dev, int size, int max_direct,
 			npages *= 2;
 		}
 
+<<<<<<< HEAD
 		dma_list = kmalloc_array(npages, sizeof(*dma_list),
 					 GFP_KERNEL);
+=======
+		dma_list = kmalloc(npages * sizeof *dma_list, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!dma_list)
 			goto err_free;
 
@@ -233,6 +246,7 @@ int mthca_buf_alloc(struct mthca_dev *dev, int size, int max_direct,
 		npages     = (size + PAGE_SIZE - 1) / PAGE_SIZE;
 		shift      = PAGE_SHIFT;
 
+<<<<<<< HEAD
 		dma_list = kmalloc_array(npages, sizeof(*dma_list),
 					 GFP_KERNEL);
 		if (!dma_list)
@@ -241,6 +255,14 @@ int mthca_buf_alloc(struct mthca_dev *dev, int size, int max_direct,
 		buf->page_list = kmalloc_array(npages,
 					       sizeof(*buf->page_list),
 					       GFP_KERNEL);
+=======
+		dma_list = kmalloc(npages * sizeof *dma_list, GFP_KERNEL);
+		if (!dma_list)
+			return -ENOMEM;
+
+		buf->page_list = kmalloc(npages * sizeof *buf->page_list,
+					 GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!buf->page_list)
 			goto err_out;
 

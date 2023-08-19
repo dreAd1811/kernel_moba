@@ -270,7 +270,11 @@ void rtl88e_dm_set_tx_ant_by_tx_info(struct ieee80211_hw *hw,
 void rtl88e_dm_ant_sel_statistics(struct ieee80211_hw *hw,
 				  u8 antsel_tr_mux, u32 mac_id,
 				  u32 rx_pwdb_all);
+<<<<<<< HEAD
 void rtl88e_dm_fast_antenna_training_callback(struct timer_list *t);
+=======
+void rtl88e_dm_fast_antenna_training_callback(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void rtl88e_dm_init(struct ieee80211_hw *hw);
 void rtl88e_dm_watchdog(struct ieee80211_hw *hw);
 void rtl88e_dm_write_dig(struct ieee80211_hw *hw);

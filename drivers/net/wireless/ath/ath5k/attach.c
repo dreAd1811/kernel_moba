@@ -327,7 +327,11 @@ int ath5k_hw_init(struct ath5k_hw *ah)
 	ath5k_hw_set_lladdr(ah, zero_mac);
 
 	/* Set BSSID to bcast address: ff:ff:ff:ff:ff:ff for now */
+<<<<<<< HEAD
 	eth_broadcast_addr(common->curbssid);
+=======
+	memcpy(common->curbssid, ath_bcast_mac, ETH_ALEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ath5k_hw_set_bssid(ah);
 	ath5k_hw_set_opmode(ah, ah->opmode);
 

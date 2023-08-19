@@ -205,7 +205,12 @@ static int __init tangox_irq_init(void __iomem *base, struct resource *baseres,
 
 	tangox_irq_domain_init(dom);
 
+<<<<<<< HEAD
 	irq_set_chained_handler_and_data(irq, tangox_irq_handler, dom);
+=======
+	irq_set_chained_handler(irq, tangox_irq_handler);
+	irq_set_handler_data(irq, dom);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

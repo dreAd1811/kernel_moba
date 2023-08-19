@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Authors: Fabien Dessenne <fabien.dessenne@st.com> for STMicroelectronics.
+=======
+/*
+ * Copyright (C) STMicroelectronics SA 2014
+ * Authors: Fabien Dessenne <fabien.dessenne@st.com> for STMicroelectronics.
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/errno.h>
@@ -651,8 +658,12 @@ static int bdisp_release(struct file *file)
 
 	dev_dbg(bdisp->dev, "%s\n", __func__);
 
+<<<<<<< HEAD
 	if (mutex_lock_interruptible(&bdisp->lock))
 		return -ERESTARTSYS;
+=======
+	mutex_lock(&bdisp->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
 
@@ -723,7 +734,11 @@ static int bdisp_enum_fmt(struct file *file, void *fh, struct v4l2_fmtdesc *f)
 static int bdisp_g_fmt(struct file *file, void *fh, struct v4l2_format *f)
 {
 	struct bdisp_ctx *ctx = fh_to_ctx(fh);
+<<<<<<< HEAD
 	struct v4l2_pix_format *pix;
+=======
+	struct v4l2_pix_format *pix = &f->fmt.pix;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bdisp_frame *frame  = ctx_get_frame(ctx, f->type);
 
 	if (IS_ERR(frame)) {
@@ -1297,10 +1312,13 @@ static int bdisp_probe(struct platform_device *pdev)
 	if (!bdisp)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = dma_coerce_mask_and_coherent(dev, DMA_BIT_MASK(32));
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bdisp->pdev = pdev;
 	bdisp->dev = dev;
 	platform_set_drvdata(pdev, bdisp);

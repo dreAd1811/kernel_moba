@@ -6,6 +6,7 @@
 obj-$(CONFIG_COMMON_CLK)	+= clk.o clk-pll.o clk-cpu.o
 obj-$(CONFIG_SOC_EXYNOS3250)	+= clk-exynos3250.o
 obj-$(CONFIG_ARCH_EXYNOS4)	+= clk-exynos4.o
+<<<<<<< HEAD
 obj-$(CONFIG_ARCH_EXYNOS4)	+= clk-exynos4412-isp.o
 obj-$(CONFIG_SOC_EXYNOS5250)	+= clk-exynos5250.o
 obj-$(CONFIG_SOC_EXYNOS5250)	+= clk-exynos5-subcmu.o
@@ -14,6 +15,14 @@ obj-$(CONFIG_SOC_EXYNOS5410)	+= clk-exynos5410.o
 obj-$(CONFIG_SOC_EXYNOS5420)	+= clk-exynos5420.o
 obj-$(CONFIG_SOC_EXYNOS5420)	+= clk-exynos5-subcmu.o
 obj-$(CONFIG_EXYNOS_ARM64_COMMON_CLK)	+= clk-exynos5433.o
+=======
+obj-$(CONFIG_SOC_EXYNOS5250)	+= clk-exynos5250.o
+obj-$(CONFIG_SOC_EXYNOS5260)	+= clk-exynos5260.o
+obj-$(CONFIG_SOC_EXYNOS5410)	+= clk-exynos5410.o
+obj-$(CONFIG_SOC_EXYNOS5420)	+= clk-exynos5420.o
+obj-$(CONFIG_EXYNOS_ARM64_COMMON_CLK)	+= clk-exynos5433.o
+obj-$(CONFIG_SOC_EXYNOS5440)	+= clk-exynos5440.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_EXYNOS_AUDSS_CLK_CON) += clk-exynos-audss.o
 obj-$(CONFIG_ARCH_EXYNOS)	+= clk-exynos-clkout.o
 obj-$(CONFIG_EXYNOS_ARM64_COMMON_CLK)	+= clk-exynos7.o

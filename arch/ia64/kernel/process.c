@@ -13,6 +13,10 @@
 #include <linux/pm.h>
 #include <linux/elf.h>
 #include <linux/errno.h>
+<<<<<<< HEAD
+=======
+#include <linux/kallsyms.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/mm.h>
 #include <linux/slab.h>
@@ -68,6 +72,10 @@ void
 ia64_do_show_stack (struct unw_frame_info *info, void *arg)
 {
 	unsigned long ip, sp, bsp;
+<<<<<<< HEAD
+=======
+	char buf[128];			/* don't make it so big that it overflows the stack! */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk("\nCall Trace:\n");
 	do {
@@ -77,9 +85,17 @@ ia64_do_show_stack (struct unw_frame_info *info, void *arg)
 
 		unw_get_sp(info, &sp);
 		unw_get_bsp(info, &bsp);
+<<<<<<< HEAD
 		printk(" [<%016lx>] %pS\n"
 			 "                                sp=%016lx bsp=%016lx\n",
 			 ip, (void *)ip, sp, bsp);
+=======
+		snprintf(buf, sizeof(buf),
+			 " [<%016lx>] %%s\n"
+			 "                                sp=%016lx bsp=%016lx\n",
+			 ip, sp, bsp);
+		print_symbol(buf, ip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (unw_unwind(info) >= 0);
 }
 
@@ -107,7 +123,11 @@ show_regs (struct pt_regs *regs)
 	printk("psr : %016lx ifs : %016lx ip  : [<%016lx>]    %s (%s)\n",
 	       regs->cr_ipsr, regs->cr_ifs, ip, print_tainted(),
 	       init_utsname()->release);
+<<<<<<< HEAD
 	printk("ip is at %pS\n", (void *)ip);
+=======
+	print_symbol("ip is at %s\n", ip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printk("unat: %016lx pfs : %016lx rsc : %016lx\n",
 	       regs->ar_unat, regs->ar_pfs, regs->ar_rsc);
 	printk("rnat: %016lx bsps: %016lx pr  : %016lx\n",

@@ -4,7 +4,11 @@
  * numbering scheme from the Princples of Operations: most significant bit
  * has bit number 0.
  *
+<<<<<<< HEAD
  *    Copyright IBM Corp. 2015, 2018
+=======
+ *    Copyright IBM Corp. 2015
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  */
 
@@ -62,6 +66,7 @@ static struct facility_def facility_defs[] = {
 		}
 	},
 	{
+<<<<<<< HEAD
 		/*
 		 * FACILITIES_KVM contains the list of facilities that are part
 		 * of the default facility mask and list that are passed to the
@@ -69,6 +74,8 @@ static struct facility_def facility_defs[] = {
 		 * with the non-hypervisor managed bits, is the maximum list of
 		 * guest facilities supported by KVM.
 		 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name = "FACILITIES_KVM",
 		.bits = (int[]){
 			0,  /* N3 instructions */
@@ -96,6 +103,7 @@ static struct facility_def facility_defs[] = {
 			-1  /* END */
 		}
 	},
+<<<<<<< HEAD
 	{
 		/*
 		 * FACILITIES_KVM_CPUMODEL contains the list of facilities
@@ -110,6 +118,8 @@ static struct facility_def facility_defs[] = {
 			-1  /* END */
 		}
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void print_facility_list(struct facility_def *def)
@@ -149,8 +159,13 @@ static void print_facility_lists(void)
 
 int main(int argc, char **argv)
 {
+<<<<<<< HEAD
 	printf("#ifndef __ASM_S390_FACILITY_DEFS__\n");
 	printf("#define __ASM_S390_FACILITY_DEFS__\n");
+=======
+	printf("#ifndef __ASM_S390_FACILITIES__\n");
+	printf("#define __ASM_S390_FACILITIES__\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	printf("/*\n");
 	printf(" * DO NOT MODIFY.\n");
 	printf(" *\n");

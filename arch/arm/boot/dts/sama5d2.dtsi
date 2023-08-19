@@ -124,7 +124,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	ns_sram: sram@200000 {
+=======
+	ns_sram: sram@00200000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "mmio-sram";
 		reg = <0x00200000 0x20000>;
 	};
@@ -135,13 +139,21 @@
 		#size-cells = <1>;
 		ranges;
 
+<<<<<<< HEAD
 		nfc_sram: sram@100000 {
+=======
+		nfc_sram: sram@00100000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mmio-sram";
 			no-memory-wc;
 			reg = <0x00100000 0x2400>;
 		};
 
+<<<<<<< HEAD
 		usb0: gadget@300000 {
+=======
+		usb0: gadget@00300000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <0>;
 			compatible = "atmel,sama5d3-udc";
@@ -271,7 +283,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		usb1: ohci@400000 {
+=======
+		usb1: ohci@00400000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "atmel,at91rm9200-ohci", "usb-ohci";
 			reg = <0x00400000 0x100000>;
 			interrupts = <41 IRQ_TYPE_LEVEL_HIGH 2>;
@@ -280,7 +296,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		usb2: ehci@500000 {
+=======
+		usb2: ehci@00500000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "atmel,at91sam9g45-ehci", "usb-ehci";
 			reg = <0x00500000 0x100000>;
 			interrupts = <41 IRQ_TYPE_LEVEL_HIGH 2>;
@@ -289,7 +309,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		L2: cache-controller@a00000 {
+=======
+		L2: cache-controller@00a00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,pl310-cache";
 			reg = <0x00a00000 0x1000>;
 			interrupts = <63 IRQ_TYPE_LEVEL_HIGH 4>;
@@ -1094,9 +1118,13 @@
 			};
 
 			tcb0: timer@f800c000 {
+<<<<<<< HEAD
 				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
 				#address-cells = <1>;
 				#size-cells = <0>;
+=======
+				compatible = "atmel,at91sam9x5-tcb";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xf800c000 0x100>;
 				interrupts = <35 IRQ_TYPE_LEVEL_HIGH 0>;
 				clocks = <&tcb0_clk>, <&clk32k>;
@@ -1104,9 +1132,13 @@
 			};
 
 			tcb1: timer@f8010000 {
+<<<<<<< HEAD
 				compatible = "atmel,at91sam9x5-tcb", "simple-mfd", "syscon";
 				#address-cells = <1>;
 				#size-cells = <0>;
+=======
+				compatible = "atmel,at91sam9x5-tcb";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xf8010000 0x100>;
 				interrupts = <36 IRQ_TYPE_LEVEL_HIGH 0>;
 				clocks = <&tcb1_clk>, <&clk32k>;
@@ -1431,8 +1463,11 @@
 				interrupts = <40 IRQ_TYPE_LEVEL_HIGH 7>;
 				clocks = <&adc_clk>;
 				clock-names = "adc_clk";
+<<<<<<< HEAD
 				dmas = <&dma0 (AT91_XDMAC_DT_MEM_IF(0) | AT91_XDMAC_DT_PER_IF(1) | AT91_XDMAC_DT_PERID(25))>;
 				dma-names = "rx";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				atmel,min-sample-rate-hz = <200000>;
 				atmel,max-sample-rate-hz = <20000000>;
 				atmel,startup-time-ms = <4>;

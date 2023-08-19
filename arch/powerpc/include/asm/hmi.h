@@ -42,8 +42,11 @@ extern void wait_for_tb_resync(void);
 static inline void wait_for_subcore_guest_exit(void) { }
 static inline void wait_for_tb_resync(void) { }
 #endif
+<<<<<<< HEAD
 
 struct pt_regs;
 extern long hmi_handle_debugtrig(struct pt_regs *regs);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASM_PPC64_HMI_H__ */

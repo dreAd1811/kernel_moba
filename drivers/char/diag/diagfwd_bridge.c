@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -10,6 +23,7 @@
 #include <linux/workqueue.h>
 #include <linux/ratelimit.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #ifdef USB_QCOM_DIAG_BRIDGE
 #include <linux/smux.h>
 #endif
@@ -31,6 +45,21 @@
 
 #define BRIDGE_TO_MUX(x)	(x + DIAG_MUX_BRIDGE_BASE)
 
+=======
+#include "diag_mux.h"
+#include "diagfwd_bridge.h"
+#include "diagfwd_hsic.h"
+#include "diagfwd_mhi.h"
+#include "diag_dci.h"
+#include "diag_ipc_logging.h"
+#include <linux/of.h>
+
+#define BRIDGE_TO_MUX(x)	(x + DIAG_MUX_BRIDGE_BASE)
+
+/* variable to identify which interface is selected to bridging with mdm */
+static bool hsic_interface_active;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct diagfwd_bridge_info bridge_info[NUM_REMOTE_DEV] = {
 	{
 		.id = DIAGFWD_MDM,
@@ -45,6 +74,7 @@ struct diagfwd_bridge_info bridge_info[NUM_REMOTE_DEV] = {
 		.dci_wq = NULL,
 	},
 	{
+<<<<<<< HEAD
 		.id = DIAGFWD_MDM2,
 		.type = DIAG_DATA_TYPE,
 		.name = "MDM_2",
@@ -57,6 +87,8 @@ struct diagfwd_bridge_info bridge_info[NUM_REMOTE_DEV] = {
 		.dci_wq = NULL,
 	},
 	{
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.id = DIAGFWD_MDM_DCI,
 		.type = DIAG_DCI_TYPE,
 		.name = "MDM_DCI",
@@ -68,6 +100,7 @@ struct diagfwd_bridge_info bridge_info[NUM_REMOTE_DEV] = {
 		.dci_read_len = 0,
 		.dci_wq = NULL,
 	},
+<<<<<<< HEAD
 	{
 		.id = DIAGFWD_MDM_DCI_2,
 		.type = DIAG_DCI_TYPE,
@@ -80,6 +113,8 @@ struct diagfwd_bridge_info bridge_info[NUM_REMOTE_DEV] = {
 		.dci_read_len = 0,
 		.dci_wq = NULL,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int diagfwd_bridge_mux_connect(int id, int mode)
@@ -114,7 +149,11 @@ static int diagfwd_bridge_mux_write_done(unsigned char *buf, int len,
 		DIAG_LOG(DIAG_DEBUG_BRIDGE,
 		"Write done completion received for buf %pK len:%d\n",
 			buf, len);
+<<<<<<< HEAD
 		ch->dev_ops->fwd_complete(ch->id, ch->ctxt, buf, len, 0);
+=======
+		ch->dev_ops->fwd_complete(ch->ctxt, buf, len, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -136,7 +175,11 @@ static void bridge_dci_read_work_fn(struct work_struct *work)
 	diag_process_remote_dci_read_data(ch->id, ch->dci_read_buf,
 					  ch->dci_read_len);
 	if (ch->dev_ops && ch->dev_ops->fwd_complete) {
+<<<<<<< HEAD
 		ch->dev_ops->fwd_complete(ch->id, ch->ctxt, ch->dci_read_ptr,
+=======
+		ch->dev_ops->fwd_complete(ch->ctxt, ch->dci_read_ptr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  ch->dci_read_len, 0);
 	}
 }
@@ -148,8 +191,12 @@ int diagfwd_bridge_register(int id, int ctxt, struct diag_remote_dev_ops *ops)
 	char wq_name[DIAG_BRIDGE_NAME_SZ + 10];
 
 	if (!ops) {
+<<<<<<< HEAD
 		pr_err("diag: Invalid pointers ops: %pK ctxt: %d id: %d\n",
 			ops, ctxt, id);
+=======
+		pr_err("diag: Invalid pointers ops: %pK ctxt: %d\n", ops, ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -227,7 +274,11 @@ int diag_remote_dev_read_done(int id, unsigned char *buf, int len)
 	if (ch->type == DIAG_DATA_TYPE) {
 		err = diag_mux_write(BRIDGE_TO_MUX(id), buf, len, id);
 		if (ch->dev_ops && ch->dev_ops->queue_read)
+<<<<<<< HEAD
 			ch->dev_ops->queue_read(id, ch->ctxt);
+=======
+			ch->dev_ops->queue_read(ch->ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 	/*
@@ -271,6 +322,7 @@ int diag_remote_dev_write_done(int id, unsigned char *buf, int len, int ctxt)
 	return err;
 }
 
+<<<<<<< HEAD
 int diagfwd_bridge_init(void)
 {
 	int err = 0;
@@ -298,13 +350,19 @@ void diagfwd_bridge_exit(void)
 	#endif
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int diagfwd_bridge_close(int id)
 {
 	if (id < 0 || id >= NUM_REMOTE_DEV)
 		return -EINVAL;
 	if (bridge_info[id].dev_ops && bridge_info[id].dev_ops->close)
+<<<<<<< HEAD
 		return bridge_info[id].dev_ops->close(bridge_info[id].id,
 						bridge_info[id].ctxt);
+=======
+		return bridge_info[id].dev_ops->close(bridge_info[id].ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -313,9 +371,14 @@ int diagfwd_bridge_write(int id, unsigned char *buf, int len)
 	if (id < 0 || id >= NUM_REMOTE_DEV)
 		return -EINVAL;
 	if (bridge_info[id].dev_ops && bridge_info[id].dev_ops->write) {
+<<<<<<< HEAD
 		return bridge_info[id].dev_ops->write(bridge_info[id].id,
 							bridge_info[id].ctxt,
 							buf, len, 0);
+=======
+		return bridge_info[id].dev_ops->write(bridge_info[id].ctxt,
+						      buf, len, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -329,7 +392,11 @@ uint16_t diag_get_remote_device_mask(void)
 		if (bridge_info[i].inited &&
 		    bridge_info[i].type == DIAG_DATA_TYPE &&
 		    (bridge_info[i].dev_ops->remote_proc_check &&
+<<<<<<< HEAD
 		    bridge_info[i].dev_ops->remote_proc_check(i))) {
+=======
+		    bridge_info[i].dev_ops->remote_proc_check())) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			remote_dev |= 1 << i;
 		}
 	}
@@ -337,3 +404,36 @@ uint16_t diag_get_remote_device_mask(void)
 	return remote_dev;
 }
 
+<<<<<<< HEAD
+=======
+void diag_register_with_bridge(void)
+{
+	struct device_node *dev_node;
+
+	if (IS_ENABLED(CONFIG_USB_QTI_DIAG_BRIDGE) &&
+	    IS_ENABLED(CONFIG_MHI_BUS)) {
+		dev_node = of_find_node_by_name(NULL, "qcom,diag");
+		if (dev_node) {
+			hsic_interface_active = of_property_read_bool(dev_node,
+				"qcom,usb-enabled");
+			if (hsic_interface_active) {
+				diag_register_with_hsic();
+				return;
+			}
+		}
+		diag_register_with_mhi();
+	} else if (IS_ENABLED(CONFIG_USB_QTI_DIAG_BRIDGE)) {
+		hsic_interface_active = true;
+		diag_register_with_hsic();
+	} else if (IS_ENABLED(CONFIG_MHI_BUS))
+		diag_register_with_mhi();
+}
+
+void diag_unregister_bridge(void)
+{
+	if (hsic_interface_active)
+		diag_unregister_hsic();
+	else if (IS_ENABLED(CONFIG_MHI_BUS))
+		diag_unregister_mhi();
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

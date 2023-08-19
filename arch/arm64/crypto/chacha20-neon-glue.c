@@ -37,19 +37,26 @@ static void chacha20_doneon(u32 *state, u8 *dst, const u8 *src,
 	u8 buf[CHACHA_BLOCK_SIZE];
 
 	while (bytes >= CHACHA_BLOCK_SIZE * 4) {
+<<<<<<< HEAD
 		kernel_neon_begin();
 		chacha20_4block_xor_neon(state, dst, src);
 		kernel_neon_end();
+=======
+		chacha20_4block_xor_neon(state, dst, src);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bytes -= CHACHA_BLOCK_SIZE * 4;
 		src += CHACHA_BLOCK_SIZE * 4;
 		dst += CHACHA_BLOCK_SIZE * 4;
 		state[12] += 4;
 	}
+<<<<<<< HEAD
 
 	if (!bytes)
 		return;
 
 	kernel_neon_begin();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (bytes >= CHACHA_BLOCK_SIZE) {
 		chacha20_block_xor_neon(state, dst, src);
 		bytes -= CHACHA_BLOCK_SIZE;
@@ -62,7 +69,10 @@ static void chacha20_doneon(u32 *state, u8 *dst, const u8 *src,
 		chacha20_block_xor_neon(state, buf, buf);
 		memcpy(dst, buf, bytes);
 	}
+<<<<<<< HEAD
 	kernel_neon_end();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int chacha20_neon(struct skcipher_request *req)
@@ -76,10 +86,18 @@ static int chacha20_neon(struct skcipher_request *req)
 	if (!may_use_simd() || req->cryptlen <= CHACHA_BLOCK_SIZE)
 		return crypto_chacha_crypt(req);
 
+<<<<<<< HEAD
 	err = skcipher_walk_virt(&walk, req, false);
 
 	crypto_chacha_init(state, ctx, walk.iv);
 
+=======
+	err = skcipher_walk_virt(&walk, req, true);
+
+	crypto_chacha_init(state, ctx, walk.iv);
+
+	kernel_neon_begin();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (walk.nbytes > 0) {
 		unsigned int nbytes = walk.nbytes;
 
@@ -90,6 +108,10 @@ static int chacha20_neon(struct skcipher_request *req)
 				nbytes);
 		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
 	}
+<<<<<<< HEAD
+=======
+	kernel_neon_end();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }

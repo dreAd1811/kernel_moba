@@ -1,9 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * R-Car Gen3 Digital Radio Interface (DRIF) driver
  *
  * Copyright (C) 2017 Renesas Electronics Corporation
  *
+<<<<<<< HEAD
+=======
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -270,7 +281,11 @@ static int rcar_drif_alloc_dmachannels(struct rcar_drif_sdr *sdr)
 {
 	struct dma_slave_config dma_cfg;
 	unsigned int i;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_rcar_drif_channel(i, &sdr->cur_ch_mask) {
 		struct rcar_drif *ch = sdr->ch[i];
@@ -278,7 +293,10 @@ static int rcar_drif_alloc_dmachannels(struct rcar_drif_sdr *sdr)
 		ch->dmach = dma_request_slave_channel(&ch->pdev->dev, "rx");
 		if (!ch->dmach) {
 			rdrif_err(sdr, "ch%u: dma channel req failed\n", i);
+<<<<<<< HEAD
 			ret = -ENODEV;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto dmach_error;
 		}
 
@@ -627,7 +645,11 @@ static int rcar_drif_enable_rx(struct rcar_drif_sdr *sdr)
 {
 	unsigned int i;
 	u32 ctr;
+<<<<<<< HEAD
 	int ret = -EINVAL;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * When both internal channels are enabled, they can be synchronized
@@ -912,6 +934,10 @@ static int rcar_drif_g_fmt_sdr_cap(struct file *file, void *priv,
 {
 	struct rcar_drif_sdr *sdr = video_drvdata(file);
 
+<<<<<<< HEAD
+=======
+	memset(f->fmt.sdr.reserved, 0, sizeof(f->fmt.sdr.reserved));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	f->fmt.sdr.pixelformat = sdr->fmt->pixelformat;
 	f->fmt.sdr.buffersize = sdr->fmt->buffersize;
 
@@ -1104,7 +1130,11 @@ static int rcar_drif_notify_bound(struct v4l2_async_notifier *notifier,
 	struct rcar_drif_sdr *sdr =
 		container_of(notifier, struct rcar_drif_sdr, notifier);
 
+<<<<<<< HEAD
 	if (sdr->ep.asd.match.fwnode !=
+=======
+	if (sdr->ep.asd.match.fwnode.fwnode !=
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    of_fwnode_handle(subdev->dev->of_node)) {
 		rdrif_err(sdr, "subdev %s cannot bind\n", subdev->name);
 		return -EINVAL;
@@ -1182,12 +1212,15 @@ error:
 	return ret;
 }
 
+<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations rcar_drif_notify_ops = {
 	.bound = rcar_drif_notify_bound,
 	.unbind = rcar_drif_notify_unbind,
 	.complete = rcar_drif_notify_complete,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Read endpoint properties */
 static void rcar_drif_get_ep_properties(struct rcar_drif_sdr *sdr,
 					struct fwnode_handle *fwnode)
@@ -1232,7 +1265,11 @@ static int rcar_drif_parse_subdevs(struct rcar_drif_sdr *sdr)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	sdr->ep.asd.match.fwnode = fwnode;
+=======
+	sdr->ep.asd.match.fwnode.fwnode = fwnode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdr->ep.asd.match_type = V4L2_ASYNC_MATCH_FWNODE;
 	notifier->num_subdevs++;
 
@@ -1350,7 +1387,13 @@ static int rcar_drif_sdr_probe(struct rcar_drif_sdr *sdr)
 	if (ret)
 		goto error;
 
+<<<<<<< HEAD
 	sdr->notifier.ops = &rcar_drif_notify_ops;
+=======
+	sdr->notifier.bound = rcar_drif_notify_bound;
+	sdr->notifier.unbind = rcar_drif_notify_unbind;
+	sdr->notifier.complete = rcar_drif_notify_complete;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Register notifier */
 	ret = v4l2_async_notifier_register(&sdr->v4l2_dev, &sdr->notifier);
@@ -1495,5 +1538,9 @@ module_platform_driver(rcar_drif_driver);
 
 MODULE_DESCRIPTION("Renesas R-Car Gen3 DRIF driver");
 MODULE_ALIAS("platform:" RCAR_DRIF_DRV_NAME);
+<<<<<<< HEAD
 MODULE_LICENSE("GPL");
+=======
+MODULE_LICENSE("GPL v2");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Ramesh Shanmugasundaram <ramesh.shanmugasundaram@bp.renesas.com>");

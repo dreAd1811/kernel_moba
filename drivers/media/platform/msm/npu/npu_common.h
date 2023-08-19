@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _NPU_COMMON_H
@@ -22,9 +35,12 @@
 #include <linux/types.h>
 #include <linux/uaccess.h>
 #include <linux/mailbox/qmp.h>
+<<<<<<< HEAD
 #include <linux/msm-bus.h>
 #include <linux/mailbox_controller.h>
 #include <linux/reset.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "npu_mgr.h"
 
@@ -32,7 +48,11 @@
  * Defines
  * -------------------------------------------------------------------------
  */
+<<<<<<< HEAD
 #define NPU_MAX_MBOX_NUM	    4
+=======
+#define NPU_MAX_MBOX_NUM	    2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NPU_MBOX_LOW_PRI	    0
 #define NPU_MBOX_HIGH_PRI	    1
 
@@ -40,13 +60,20 @@
 #define ROW_BYTES 16
 #define GROUP_BYTES 4
 
+<<<<<<< HEAD
 #define NUM_MAX_CLK_NUM			48
+=======
+#define NUM_MAX_CLK_NUM			24
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NPU_MAX_REGULATOR_NUM	2
 #define NPU_MAX_DT_NAME_LEN	    21
 #define NPU_MAX_PWRLEVELS		8
 #define NPU_MAX_STATS_BUF_SIZE 16384
 #define NPU_MAX_PATCH_NUM		160
+<<<<<<< HEAD
 #define NPU_MAX_BW_DEVS			4
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PERF_MODE_DEFAULT 0
 
@@ -62,6 +89,7 @@ enum npu_power_level {
 	NPU_PWRLEVEL_OFF = 0xFFFFFFFF,
 };
 
+<<<<<<< HEAD
 #define NPU_ERR(fmt, args...)                            \
 	pr_err("NPU_ERR: %s: %d " fmt, __func__,  __LINE__, ##args)
 #define NPU_WARN(fmt, args...)                           \
@@ -71,6 +99,8 @@ enum npu_power_level {
 #define NPU_DBG(fmt, args...)                           \
 	pr_debug("NPU_DBG: %s: %d " fmt, __func__,  __LINE__, ##args)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -------------------------------------------------------------------------
  * Data Structures
  * -------------------------------------------------------------------------
@@ -97,7 +127,10 @@ struct npu_ion_buf {
 struct npu_clk {
 	struct clk *clk;
 	char clk_name[NPU_MAX_DT_NAME_LEN];
+<<<<<<< HEAD
 	struct reset_control *reset;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct npu_regulator {
@@ -128,9 +161,12 @@ struct npu_mbox {
 	struct mbox_chan *chan;
 	struct npu_device *npu_dev;
 	uint32_t id;
+<<<<<<< HEAD
 	uint32_t client_id;
 	uint32_t signal_id;
 	bool send_data_pending;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -184,8 +220,12 @@ struct npu_pwrctrl {
 	uint32_t min_pwrlevel;
 	uint32_t num_pwrlevels;
 
+<<<<<<< HEAD
 	struct device *devbw[NPU_MAX_BW_DEVS];
 	uint32_t devbw_num;
+=======
+	struct device *devbw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t bwmon_enabled;
 	uint32_t uc_pwrlevel;
 	uint32_t cdsprm_pwrlevel;
@@ -207,17 +247,25 @@ struct npu_thermalctrl {
 	uint32_t pwr_level;
 };
 
+<<<<<<< HEAD
 #define NPU_MAX_IRQ		8
+=======
+#define NPU_MAX_IRQ		3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct npu_irq {
 	char *name;
 	int irq;
 	int irq_type;
+<<<<<<< HEAD
 	irq_handler_t handler;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct npu_io_data {
 	size_t size;
+<<<<<<< HEAD
 	phys_addr_t phy_addr;
 	void __iomem *base;
 };
@@ -243,6 +291,11 @@ struct mbox_bridge_data {
 	void *priv_data;
 };
 
+=======
+	void __iomem *base;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct npu_device {
 	struct mutex dev_lock;
 
@@ -255,9 +308,13 @@ struct npu_device {
 
 	struct npu_io_data core_io;
 	struct npu_io_data tcm_io;
+<<<<<<< HEAD
 	struct npu_io_data cc_io;
 	struct npu_io_data tcsr_io;
 	struct npu_io_data apss_shared_io;
+=======
+	struct npu_io_data bwmon_io;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct npu_io_data qfprom_io;
 
 	uint32_t core_clk_num;
@@ -267,7 +324,10 @@ struct npu_device {
 	struct npu_regulator regulators[NPU_MAX_DT_NAME_LEN];
 
 	struct npu_irq irq[NPU_MAX_IRQ];
+<<<<<<< HEAD
 	bool irq_enabled;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct device *cb_device;
 
@@ -275,14 +335,21 @@ struct npu_device {
 	struct npu_smmu_ctx smmu_ctx;
 	struct npu_debugfs_ctx debugfs_ctx;
 
+<<<<<<< HEAD
 	struct npu_mbox *mbox_aop;
 	struct npu_mbox mbox[NPU_MAX_MBOX_NUM];
 	struct mbox_bridge_data mbox_bridge_data;
+=======
+	struct npu_mbox mbox_aop;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct thermal_cooling_device *tcdev;
 	struct npu_pwrctrl pwrctrl;
 	struct npu_thermalctrl thermalctrl;
+<<<<<<< HEAD
 	struct npu_bwctrl bwctrl;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct llcc_slice_desc *sys_cache;
 	uint32_t execute_v2_flag;
@@ -306,6 +373,7 @@ struct npu_client {
 	struct list_head mapped_buffer_list;
 };
 
+<<<<<<< HEAD
 struct ipcc_mbox_chan {
 	u16 client_id;
 	u16 signal_id;
@@ -314,6 +382,8 @@ struct ipcc_mbox_chan {
 	struct npu_device *npu_dev;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -------------------------------------------------------------------------
  * Function Prototypes
  * -------------------------------------------------------------------------
@@ -326,6 +396,7 @@ void npu_disable_core_power(struct npu_device *npu_dev);
 int npu_enable_post_pil_clocks(struct npu_device *npu_dev);
 void npu_disable_post_pil_clocks(struct npu_device *npu_dev);
 
+<<<<<<< HEAD
 irqreturn_t npu_ipc_intr_hdlr(int irq, void *ptr);
 irqreturn_t npu_general_intr_hdlr(int irq, void *ptr);
 irqreturn_t npu_err_intr_hdlr(int irq, void *ptr);
@@ -344,4 +415,15 @@ int npu_process_kevent(struct npu_client *client, struct npu_kevent *kevt);
 int npu_notify_cdsprm_cxlimit_activity(struct npu_device *npu_dev, bool enable);
 int npu_bridge_mbox_send_data(struct npu_host_ctx *host_ctx,
 	struct npu_mbox *mbox, void *data);
+=======
+irqreturn_t npu_intr_hdler(int irq, void *ptr);
+
+int npu_set_uc_power_level(struct npu_device *npu_dev,
+	uint32_t pwr_level);
+
+int fw_init(struct npu_device *npu_dev);
+void fw_deinit(struct npu_device *npu_dev, bool ssr, bool fw_alive);
+int npu_notify_cdsprm_cxlimit_activity(struct npu_device *npu_dev, bool enable);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _NPU_COMMON_H */

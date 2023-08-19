@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2002,2007-2018, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2002,2007-2017,2020 The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __ADRENO_PM4TYPES_H
 #define __ADRENO_PM4TYPES_H
@@ -95,6 +109,11 @@
 /* A5XX Enable yield in RB only */
 #define CP_YIELD_ENABLE 0x1C
 
+<<<<<<< HEAD
+=======
+#define CP_WHERE_AM_I 0x62
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Enable/Disable/Defer A5x global preemption model */
 #define CP_PREEMPT_ENABLE_GLOBAL    0x69
 
@@ -384,6 +403,7 @@ static inline uint cp_invalidate_state(struct adreno_device *adreno_dev,
 	return cmds - start;
 }
 
+<<<<<<< HEAD
 static inline u32 cp_protected_mode(struct adreno_device *adreno_dev,
 		u32 *cmds, int on)
 {
@@ -402,4 +422,6 @@ static inline u32 cp_identifier(struct adreno_device *adreno_dev,
 	return 2;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* __ADRENO_PM4TYPES_H */

@@ -22,7 +22,11 @@
 #ifndef _CX231XX_VBI_H
 #define _CX231XX_VBI_H
 
+<<<<<<< HEAD
 extern const struct videobuf_queue_ops cx231xx_vbi_qops;
+=======
+extern struct videobuf_queue_ops cx231xx_vbi_qops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define   NTSC_VBI_START_LINE 10	/* line 10 - 21 */
 #define   NTSC_VBI_END_LINE   21

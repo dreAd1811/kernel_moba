@@ -54,7 +54,10 @@
 
 	aliases {
 		serial0 = &uart_AO;
+<<<<<<< HEAD
 		mmc0 = &sd_card_slot;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	memory {
@@ -70,6 +73,7 @@
 			default-state = "off";
 		};
 	};
+<<<<<<< HEAD
 
 	tflash_vdd: regulator-tflash_vdd {
 		/*
@@ -176,6 +180,8 @@
 		vmmc-supply = <&tflash_vdd>;
 		vqmmc-supply = <&tf_io>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart_AO {
@@ -183,6 +189,7 @@
 	pinctrl-0 = <&uart_ao_a_pins>;
 	pinctrl-names = "default";
 };
+<<<<<<< HEAD
 
 &usb1_phy {
 	status = "okay";
@@ -191,3 +198,5 @@
 &usb1 {
 	status = "okay";
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

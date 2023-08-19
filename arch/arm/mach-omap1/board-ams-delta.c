@@ -12,7 +12,10 @@
  * published by the Free Software Foundation.
  */
 #include <linux/gpio/driver.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -41,10 +44,17 @@
 #include <mach/mux.h>
 
 #include <mach/hardware.h>
+<<<<<<< HEAD
 #include "camera.h"
 #include <mach/usb.h>
 
 #include "ams-delta-fiq.h"
+=======
+#include <mach/ams-delta-fiq.h>
+#include "camera.h"
+#include <mach/usb.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "iomap.h"
 #include "common.h"
 
@@ -157,7 +167,11 @@ static struct map_desc ams_delta_io_desc[] __initdata = {
 	}
 };
 
+<<<<<<< HEAD
 static const struct omap_lcd_config ams_delta_lcd_config __initconst = {
+=======
+static struct omap_lcd_config ams_delta_lcd_config __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ctrl_name	= "internal",
 };
 
@@ -179,10 +193,14 @@ static struct resource latch1_resources[] = {
 	},
 };
 
+<<<<<<< HEAD
 #define LATCH1_LABEL	"latch1"
 
 static struct bgpio_pdata latch1_pdata = {
 	.label	= LATCH1_LABEL,
+=======
+static struct bgpio_pdata latch1_pdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base	= LATCH1_GPIO_BASE,
 	.ngpio	= LATCH1_NGPIO,
 };
@@ -197,6 +215,7 @@ static struct platform_device latch1_gpio_device = {
 	},
 };
 
+<<<<<<< HEAD
 #define LATCH1_PIN_LED_CAMERA		0
 #define LATCH1_PIN_LED_ADVERT		1
 #define LATCH1_PIN_LED_MAIL		2
@@ -206,6 +225,8 @@ static struct platform_device latch1_gpio_device = {
 #define LATCH1_PIN_DOCKIT1		6
 #define LATCH1_PIN_DOCKIT2		7
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct resource latch2_resources[] = {
 	[0] = {
 		.name	= "dat",
@@ -215,10 +236,14 @@ static struct resource latch2_resources[] = {
 	},
 };
 
+<<<<<<< HEAD
 #define LATCH2_LABEL	"latch2"
 
 static struct bgpio_pdata latch2_pdata = {
 	.label	= LATCH2_LABEL,
+=======
+static struct bgpio_pdata latch2_pdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base	= AMS_DELTA_LATCH2_GPIO_BASE,
 	.ngpio	= AMS_DELTA_LATCH2_NGPIO,
 };
@@ -233,6 +258,7 @@ static struct platform_device latch2_gpio_device = {
 	},
 };
 
+<<<<<<< HEAD
 #define LATCH2_PIN_LCD_VBLEN		0
 #define LATCH2_PIN_LCD_NDISP		1
 #define LATCH2_PIN_NAND_NCE		2
@@ -250,6 +276,8 @@ static struct platform_device latch2_gpio_device = {
 #define LATCH2_PIN_HOOKFLASH1		14
 #define LATCH2_PIN_HOOKFLASH2		15
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct gpio latch_gpios[] __initconst = {
 	{
 		.gpio	= LATCH1_GPIO_BASE + 6,
@@ -272,6 +300,14 @@ static const struct gpio latch_gpios[] __initconst = {
 		.label	= "scard_cmdvcc",
 	},
 	{
+<<<<<<< HEAD
+=======
+		.gpio	= AMS_DELTA_GPIO_PIN_MODEM_CODEC,
+		.flags	= GPIOF_OUT_INIT_LOW,
+		.label	= "modem_codec",
+	},
+	{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.gpio	= AMS_DELTA_LATCH2_GPIO_BASE + 14,
 		.flags	= GPIOF_OUT_INIT_LOW,
 		.label	= "hookflash1",
@@ -351,6 +387,7 @@ static struct platform_device ams_delta_nand_device = {
 	.resource	= ams_delta_nand_resources,
 };
 
+<<<<<<< HEAD
 #define OMAP_GPIO_LABEL	"gpio-0-15"
 
 static struct gpiod_lookup_table ams_delta_nand_gpio_table = {
@@ -367,6 +404,8 @@ static struct gpiod_lookup_table ams_delta_nand_gpio_table = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct resource ams_delta_kp_resources[] = {
 	[0] = {
 		.start	= INT_KEYBOARD,
@@ -402,6 +441,7 @@ static struct platform_device ams_delta_lcd_device = {
 	.id	= -1,
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table ams_delta_lcd_gpio_table = {
 	.table = {
 		GPIO_LOOKUP(LATCH2_LABEL, LATCH2_PIN_LCD_VBLEN, "vblen", 0),
@@ -419,11 +459,18 @@ static struct gpio_led gpio_leds[] __initdata = {
 	[LATCH1_PIN_LED_CAMERA] = {
 		.name		 = "camera",
 		.gpio		 = -EINVAL,
+=======
+static const struct gpio_led gpio_leds[] __initconst = {
+	{
+		.name		 = "camera",
+		.gpio		 = LATCH1_GPIO_BASE + 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.default_state	 = LEDS_GPIO_DEFSTATE_OFF,
 #ifdef CONFIG_LEDS_TRIGGERS
 		.default_trigger = "ams_delta_camera",
 #endif
 	},
+<<<<<<< HEAD
 	[LATCH1_PIN_LED_ADVERT] = {
 		.name		 = "advert",
 		.gpio		 = -EINVAL,
@@ -447,6 +494,31 @@ static struct gpio_led gpio_leds[] __initdata = {
 	[LATCH1_PIN_LED_VOICE] = {
 		.name		 = "voice",
 		.gpio		 = -EINVAL,
+=======
+	{
+		.name		 = "advert",
+		.gpio		 = LATCH1_GPIO_BASE + 1,
+		.default_state	 = LEDS_GPIO_DEFSTATE_OFF,
+	},
+	{
+		.name		 = "email",
+		.gpio		 = LATCH1_GPIO_BASE + 2,
+		.default_state	 = LEDS_GPIO_DEFSTATE_OFF,
+	},
+	{
+		.name		 = "handsfree",
+		.gpio		 = LATCH1_GPIO_BASE + 3,
+		.default_state	 = LEDS_GPIO_DEFSTATE_OFF,
+	},
+	{
+		.name		 = "voicemail",
+		.gpio		 = LATCH1_GPIO_BASE + 4,
+		.default_state	 = LEDS_GPIO_DEFSTATE_OFF,
+	},
+	{
+		.name		 = "voice",
+		.gpio		 = LATCH1_GPIO_BASE + 5,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.default_state	 = LEDS_GPIO_DEFSTATE_OFF,
 	},
 };
@@ -506,6 +578,7 @@ static struct platform_device ams_delta_audio_device = {
 	.id     = -1,
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table ams_delta_audio_gpio_table = {
 	.table = {
 		GPIO_LOOKUP(OMAP_GPIO_LABEL, AMS_DELTA_GPIO_PIN_HOOK_SWITCH,
@@ -516,11 +589,14 @@ static struct gpiod_lookup_table ams_delta_audio_gpio_table = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_device cx20442_codec_device = {
 	.name   = "cx20442-codec",
 	.id     = -1,
 };
 
+<<<<<<< HEAD
 static struct resource ams_delta_serio_resources[] = {
 	{
 		.flags	= IORESOURCE_IRQ,
@@ -589,18 +665,27 @@ static struct gpiod_lookup_table keybrd_pwr_gpio_table = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_device *ams_delta_devices[] __initdata = {
 	&latch1_gpio_device,
 	&latch2_gpio_device,
 	&ams_delta_kp_device,
 	&ams_delta_camera_device,
 	&ams_delta_audio_device,
+<<<<<<< HEAD
 	&ams_delta_serio_device,
+=======
+};
+
+static struct platform_device *late_devices[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&ams_delta_nand_device,
 	&ams_delta_lcd_device,
 	&cx20442_codec_device,
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table *ams_delta_gpio_tables[] __initdata = {
 	&ams_delta_audio_gpio_table,
 	&keybrd_pwr_gpio_table,
@@ -652,6 +737,8 @@ static void __init omap_gpio_deps_init(void)
 	ams_delta_init_fiq(chip, &ams_delta_serio_device);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init ams_delta_init(void)
 {
 	/* mux pins for uarts */
@@ -672,9 +759,12 @@ static void __init ams_delta_init(void)
 	omap_cfg_reg(J19_1610_CAM_D6);
 	omap_cfg_reg(J18_1610_CAM_D7);
 
+<<<<<<< HEAD
 	omap_gpio_deps_init();
 	gpiod_add_hogs(ams_delta_gpio_hogs);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	omap_serial_init();
 	omap_register_i2c_bus(1, 100, NULL, 0);
 
@@ -684,6 +774,7 @@ static void __init ams_delta_init(void)
 	led_trigger_register_simple("ams_delta_camera",
 			&ams_delta_camera_led_trigger);
 #endif
+<<<<<<< HEAD
 	platform_add_devices(ams_delta_devices, ARRAY_SIZE(ams_delta_devices));
 
 	/*
@@ -715,6 +806,12 @@ static void __init ams_delta_init(void)
 	 */
 	gpiod_add_lookup_tables(ams_delta_gpio_tables,
 				ARRAY_SIZE(ams_delta_gpio_tables));
+=======
+	gpio_led_register_device(-1, &leds_pdata);
+	platform_add_devices(ams_delta_devices, ARRAY_SIZE(ams_delta_devices));
+
+	ams_delta_init_fiq();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omap_writew(omap_readw(ARM_RSTCT1) | 0x0004, ARM_RSTCT1);
 
@@ -772,6 +869,7 @@ static struct platform_device ams_delta_modem_device = {
 	},
 };
 
+<<<<<<< HEAD
 /*
  * leds-gpio driver doesn't make use of GPIO lookup tables,
  * it has to be provided with GPIO numbers over platform data
@@ -816,11 +914,16 @@ static void __init ams_delta_led_init(struct gpio_chip *chip)
 static int __init ams_delta_gpio_init(void)
 {
 	struct gpio_chip *chip;
+=======
+static int __init late_init(void)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (!machine_is_ams_delta())
 		return -ENODEV;
 
+<<<<<<< HEAD
 	chip = gpiochip_find(LATCH1_LABEL, gpiochip_match_by_label);
 	if (!chip)
 		pr_err("%s: latch1 GPIO chip not found\n", __func__);
@@ -850,6 +953,21 @@ static int __init modem_nreset_init(void)
 static int __init ams_delta_modem_init(void)
 {
 	int err;
+=======
+	err = gpio_request_array(latch_gpios, ARRAY_SIZE(latch_gpios));
+	if (err) {
+		pr_err("Couldn't take over latch1/latch2 GPIO pins\n");
+		return err;
+	}
+
+	platform_add_devices(late_devices, ARRAY_SIZE(late_devices));
+
+	err = platform_device_register(&modem_nreset_device);
+	if (err) {
+		pr_err("Couldn't register the modem regulator device\n");
+		return err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omap_cfg_reg(M14_1510_GPIO2);
 	ams_delta_modem_ports[0].irq =
@@ -870,6 +988,7 @@ static int __init ams_delta_modem_init(void)
 
 	err = platform_device_register(&ams_delta_modem_device);
 	if (err)
+<<<<<<< HEAD
 		gpio_free(AMS_DELTA_GPIO_PIN_MODEM_IRQ);
 
 	return err;
@@ -886,6 +1005,9 @@ static int __init late_init(void)
 	err = ams_delta_modem_init();
 	if (err)
 		return err;
+=======
+		goto gpio_free;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Once the modem device is registered, the modem_nreset
@@ -901,6 +1023,10 @@ static int __init late_init(void)
 
 unregister:
 	platform_device_unregister(&ams_delta_modem_device);
+<<<<<<< HEAD
+=======
+gpio_free:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio_free(AMS_DELTA_GPIO_PIN_MODEM_IRQ);
 	return err;
 }

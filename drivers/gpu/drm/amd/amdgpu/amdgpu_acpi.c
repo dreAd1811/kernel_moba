@@ -34,6 +34,7 @@
 #include "amd_acpi.h"
 #include "atom.h"
 
+<<<<<<< HEAD
 struct amdgpu_atif_notification_cfg {
 	bool enabled;
 	int command_code;
@@ -73,6 +74,8 @@ struct amdgpu_atif {
 	struct amdgpu_encoder *encoder_for_bl;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Call the ATIF method
  */
 /**
@@ -85,9 +88,14 @@ struct amdgpu_atif {
  * Executes the requested ATIF function (all asics).
  * Returns a pointer to the acpi output buffer.
  */
+<<<<<<< HEAD
 static union acpi_object *amdgpu_atif_call(struct amdgpu_atif *atif,
 					   int function,
 					   struct acpi_buffer *params)
+=======
+static union acpi_object *amdgpu_atif_call(acpi_handle handle, int function,
+		struct acpi_buffer *params)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	acpi_status status;
 	union acpi_object atif_arg_elements[2];
@@ -110,8 +118,12 @@ static union acpi_object *amdgpu_atif_call(struct amdgpu_atif *atif,
 		atif_arg_elements[1].integer.value = 0;
 	}
 
+<<<<<<< HEAD
 	status = acpi_evaluate_object(atif->handle, NULL, &atif_arg,
 				      &buffer);
+=======
+	status = acpi_evaluate_object(handle, "ATIF", &atif_arg, &buffer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Fail only if calling the method fails and ATIF is supported */
 	if (ACPI_FAILURE(status) && status != AE_NOT_FOUND) {
@@ -182,14 +194,23 @@ static void amdgpu_atif_parse_functions(struct amdgpu_atif_functions *f, u32 mas
  * (all asics).
  * returns 0 on success, error on failure.
  */
+<<<<<<< HEAD
 static int amdgpu_atif_verify_interface(struct amdgpu_atif *atif)
+=======
+static int amdgpu_atif_verify_interface(acpi_handle handle,
+		struct amdgpu_atif *atif)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	union acpi_object *info;
 	struct atif_verify_interface output;
 	size_t size;
 	int err = 0;
 
+<<<<<<< HEAD
 	info = amdgpu_atif_call(atif, ATIF_FUNCTION_VERIFY_INTERFACE, NULL);
+=======
+	info = amdgpu_atif_call(handle, ATIF_FUNCTION_VERIFY_INTERFACE, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!info)
 		return -EIO;
 
@@ -216,6 +237,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 static acpi_handle amdgpu_atif_probe_handle(acpi_handle dhandle)
 {
 	acpi_handle handle = NULL;
@@ -245,6 +267,8 @@ out:
 	return handle;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * amdgpu_atif_get_notification_params - determine notify configuration
  *
@@ -257,16 +281,27 @@ out:
  * where n is specified in the result if a notifier is used.
  * Returns 0 on success, error on failure.
  */
+<<<<<<< HEAD
 static int amdgpu_atif_get_notification_params(struct amdgpu_atif *atif)
 {
 	union acpi_object *info;
 	struct amdgpu_atif_notification_cfg *n = &atif->notification_cfg;
+=======
+static int amdgpu_atif_get_notification_params(acpi_handle handle,
+		struct amdgpu_atif_notification_cfg *n)
+{
+	union acpi_object *info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct atif_system_params params;
 	size_t size;
 	int err = 0;
 
+<<<<<<< HEAD
 	info = amdgpu_atif_call(atif, ATIF_FUNCTION_GET_SYSTEM_PARAMETERS,
 				NULL);
+=======
+	info = amdgpu_atif_call(handle, ATIF_FUNCTION_GET_SYSTEM_PARAMETERS, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!info) {
 		err = -EIO;
 		goto out;
@@ -320,15 +355,24 @@ out:
  * (all asics).
  * Returns 0 on success, error on failure.
  */
+<<<<<<< HEAD
 static int amdgpu_atif_get_sbios_requests(struct amdgpu_atif *atif,
 					  struct atif_sbios_requests *req)
+=======
+static int amdgpu_atif_get_sbios_requests(acpi_handle handle,
+		struct atif_sbios_requests *req)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	union acpi_object *info;
 	size_t size;
 	int count = 0;
 
+<<<<<<< HEAD
 	info = amdgpu_atif_call(atif, ATIF_FUNCTION_GET_SYSTEM_BIOS_REQUESTS,
 				NULL);
+=======
+	info = amdgpu_atif_call(handle, ATIF_FUNCTION_GET_SYSTEM_BIOS_REQUESTS, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!info)
 		return -EIO;
 
@@ -358,6 +402,7 @@ out:
  *
  * Checks the acpi event and if it matches an atif event,
  * handles it.
+<<<<<<< HEAD
  *
  * Returns:
  * NOTIFY_BAD or NOTIFY_DONE, depending on the event.
@@ -366,6 +411,16 @@ static int amdgpu_atif_handler(struct amdgpu_device *adev,
 			       struct acpi_bus_event *event)
 {
 	struct amdgpu_atif *atif = adev->atif;
+=======
+ * Returns NOTIFY code
+ */
+static int amdgpu_atif_handler(struct amdgpu_device *adev,
+			struct acpi_bus_event *event)
+{
+	struct amdgpu_atif *atif = &adev->atif;
+	struct atif_sbios_requests req;
+	acpi_handle handle;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int count;
 
 	DRM_DEBUG_DRIVER("event, device_class = %s, type = %#x\n",
@@ -374,6 +429,7 @@ static int amdgpu_atif_handler(struct amdgpu_device *adev,
 	if (strcmp(event->device_class, ACPI_VIDEO_CLASS) != 0)
 		return NOTIFY_DONE;
 
+<<<<<<< HEAD
 	/* Is this actually our event? */
 	if (!atif ||
 	    !atif->notification_cfg.enabled ||
@@ -426,6 +482,50 @@ static int amdgpu_atif_handler(struct amdgpu_device *adev,
 		}
 		/* TODO: check other events */
 	}
+=======
+	if (!atif->notification_cfg.enabled ||
+	    event->type != atif->notification_cfg.command_code)
+		/* Not our event */
+		return NOTIFY_DONE;
+
+	/* Check pending SBIOS requests */
+	handle = ACPI_HANDLE(&adev->pdev->dev);
+	count = amdgpu_atif_get_sbios_requests(handle, &req);
+
+	if (count <= 0)
+		return NOTIFY_DONE;
+
+	DRM_DEBUG_DRIVER("ATIF: %d pending SBIOS requests\n", count);
+
+	if (req.pending & ATIF_PANEL_BRIGHTNESS_CHANGE_REQUEST) {
+		struct amdgpu_encoder *enc = atif->encoder_for_bl;
+
+		if (enc) {
+			struct amdgpu_encoder_atom_dig *dig = enc->enc_priv;
+
+			DRM_DEBUG_DRIVER("Changing brightness to %d\n",
+					req.backlight_level);
+
+			amdgpu_display_backlight_set_level(adev, enc, req.backlight_level);
+
+#if defined(CONFIG_BACKLIGHT_CLASS_DEVICE) || defined(CONFIG_BACKLIGHT_CLASS_DEVICE_MODULE)
+			backlight_force_update(dig->bl_dev,
+					       BACKLIGHT_UPDATE_HOTKEY);
+#endif
+		}
+	}
+	if (req.pending & ATIF_DGPU_DISPLAY_EVENT) {
+		if ((adev->flags & AMD_IS_PX) &&
+		    amdgpu_atpx_dgpu_req_power_for_displays()) {
+			pm_runtime_get_sync(adev->ddev->dev);
+			/* Just fire off a uevent and let userspace tell us what to do */
+			drm_helper_hpd_irq_event(adev->ddev);
+			pm_runtime_mark_last_busy(adev->ddev->dev);
+			pm_runtime_put_autosuspend(adev->ddev->dev);
+		}
+	}
+	/* TODO: check other events */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We've handled the event, stop the notifier chain. The ACPI interface
 	 * overloads ACPI_VIDEO_NOTIFY_PROBE, we don't want to send that to
@@ -722,8 +822,13 @@ static int amdgpu_acpi_event(struct notifier_block *nb,
  */
 int amdgpu_acpi_init(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	acpi_handle handle, atif_handle;
 	struct amdgpu_atif *atif;
+=======
+	acpi_handle handle;
+	struct amdgpu_atif *atif = &adev->atif;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_atcs *atcs = &adev->atcs;
 	int ret;
 
@@ -739,6 +844,7 @@ int amdgpu_acpi_init(struct amdgpu_device *adev)
 		DRM_DEBUG_DRIVER("Call to ATCS verify_interface failed: %d\n", ret);
 	}
 
+<<<<<<< HEAD
 	/* Probe for ATIF, and initialize it if found */
 	atif_handle = amdgpu_atif_probe_handle(handle);
 	if (!atif_handle)
@@ -759,6 +865,14 @@ int amdgpu_acpi_init(struct amdgpu_device *adev)
 		goto out;
 	}
 	adev->atif = atif;
+=======
+	/* Call the ATIF method */
+	ret = amdgpu_atif_verify_interface(handle, atif);
+	if (ret) {
+		DRM_DEBUG_DRIVER("Call to ATIF verify_interface failed: %d\n", ret);
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (atif->notifications.brightness_change) {
 		struct drm_encoder *tmp;
@@ -788,7 +902,12 @@ int amdgpu_acpi_init(struct amdgpu_device *adev)
 	}
 
 	if (atif->functions.system_params) {
+<<<<<<< HEAD
 		ret = amdgpu_atif_get_notification_params(atif);
+=======
+		ret = amdgpu_atif_get_notification_params(handle,
+				&atif->notification_cfg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			DRM_DEBUG_DRIVER("Call to GET_SYSTEM_PARAMS failed: %d\n",
 					ret);
@@ -814,6 +933,9 @@ out:
 void amdgpu_acpi_fini(struct amdgpu_device *adev)
 {
 	unregister_acpi_notifier(&adev->acpi_nb);
+<<<<<<< HEAD
 	if (adev->atif)
 		kfree(adev->atif);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -38,6 +38,10 @@
 #include <media/v4l2-fh.h>
 #include <media/rc-core.h>
 #include <media/i2c/ir-kbd-i2c.h>
+<<<<<<< HEAD
+=======
+#include <media/videobuf-dvb.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "cx231xx-reg.h"
 #include "cx231xx-pcb-cfg.h"
@@ -79,9 +83,12 @@
 #define CX231XX_BOARD_TERRATEC_GRABBY 22
 #define CX231XX_BOARD_EVROMEDIA_FULL_HYBRID_FULLHD 23
 #define CX231XX_BOARD_ASTROMETA_T2HYBRID 24
+<<<<<<< HEAD
 #define CX231XX_BOARD_THE_IMAGING_SOURCE_DFG_USB2_PRO 25
 #define CX231XX_BOARD_HAUPPAUGE_935C 26
 #define CX231XX_BOARD_HAUPPAUGE_975 27
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Limits minimum and default number of buffers */
 #define CX231XX_MIN_BUF                 4
@@ -344,7 +351,10 @@ struct cx231xx_board {
 
 	/* demod related */
 	int demod_addr;
+<<<<<<< HEAD
 	int demod_addr2;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 demod_xfer_mode;	/* 0 - Serial; 1 - parallel */
 
 	/* GPIO Pins */
@@ -545,6 +555,11 @@ struct cx231xx_tsport {
 	int                        nr;
 	int                        sram_chno;
 
+<<<<<<< HEAD
+=======
+	struct videobuf_dvb_frontends frontends;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* dma queues */
 
 	u32                        ts_packet_size;

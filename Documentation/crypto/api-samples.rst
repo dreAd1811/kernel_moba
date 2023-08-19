@@ -7,18 +7,45 @@ Code Example For Symmetric Key Cipher Operation
 ::
 
 
+<<<<<<< HEAD
+=======
+    struct tcrypt_result {
+        struct completion completion;
+        int err;
+    };
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     /* tie all data structures together */
     struct skcipher_def {
         struct scatterlist sg;
         struct crypto_skcipher *tfm;
         struct skcipher_request *req;
+<<<<<<< HEAD
         struct crypto_wait wait;
     };
 
+=======
+        struct tcrypt_result result;
+    };
+
+    /* Callback function */
+    static void test_skcipher_cb(struct crypto_async_request *req, int error)
+    {
+        struct tcrypt_result *result = req->data;
+
+        if (error == -EINPROGRESS)
+            return;
+        result->err = error;
+        complete(&result->completion);
+        pr_info("Encryption finished successfully\n");
+    }
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     /* Perform cipher operation */
     static unsigned int test_skcipher_encdec(struct skcipher_def *sk,
                          int enc)
     {
+<<<<<<< HEAD
         int rc;
 
         if (enc)
@@ -28,6 +55,32 @@ Code Example For Symmetric Key Cipher Operation
 
 	if (rc)
 		pr_info("skcipher encrypt returned with result %d\n", rc);
+=======
+        int rc = 0;
+
+        if (enc)
+            rc = crypto_skcipher_encrypt(sk->req);
+        else
+            rc = crypto_skcipher_decrypt(sk->req);
+
+        switch (rc) {
+        case 0:
+            break;
+        case -EINPROGRESS:
+        case -EBUSY:
+            rc = wait_for_completion_interruptible(
+                &sk->result.completion);
+            if (!rc && !sk->result.err) {
+                reinit_completion(&sk->result.completion);
+                break;
+            }
+        default:
+            pr_info("skcipher encrypt returned with %d result %d\n",
+                rc, sk->result.err);
+            break;
+        }
+        init_completion(&sk->result.completion);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
         return rc;
     }
@@ -57,8 +110,13 @@ Code Example For Symmetric Key Cipher Operation
         }
 
         skcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+<<<<<<< HEAD
                           crypto_req_done,
                           &sk.wait);
+=======
+                          test_skcipher_cb,
+                          &sk.result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
         /* AES 256 with random key */
         get_random_bytes(&key, 32);
@@ -90,7 +148,11 @@ Code Example For Symmetric Key Cipher Operation
         /* We encrypt one block */
         sg_init_one(&sk.sg, scratchpad, 16);
         skcipher_request_set_crypt(req, &sk.sg, &sk.sg, 16, ivdata);
+<<<<<<< HEAD
         crypto_init_wait(&sk.wait);
+=======
+        init_completion(&sk.result.completion);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
         /* encrypt data */
         ret = test_skcipher_encdec(&sk, 1);
@@ -162,7 +224,11 @@ Code Example For Use of Operational State Memory With SHASH
         char *hash_alg_name = "sha1-padlock-nano";
         int ret;
 
+<<<<<<< HEAD
         alg = crypto_alloc_shash(hash_alg_name, 0, 0);
+=======
+        alg = crypto_alloc_shash(hash_alg_name, CRYPTO_ALG_TYPE_SHASH, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         if (IS_ERR(alg)) {
                 pr_info("can't alloc alg %s\n", hash_alg_name);
                 return PTR_ERR(alg);

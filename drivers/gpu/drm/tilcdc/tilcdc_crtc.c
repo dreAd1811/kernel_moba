@@ -51,8 +51,17 @@ struct tilcdc_crtc {
 	ktime_t last_vblank;
 	unsigned int hvtotal_us;
 
+<<<<<<< HEAD
 	struct drm_framebuffer *next_fb;
 
+=======
+	struct drm_framebuffer *curr_fb;
+	struct drm_framebuffer *next_fb;
+
+	/* for deferred fb unref's: */
+	struct drm_flip_work unref_work;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Only set if an external encoder is connected */
 	bool simulate_vesa_sync;
 
@@ -66,8 +75,25 @@ struct tilcdc_crtc {
 };
 #define to_tilcdc_crtc(x) container_of(x, struct tilcdc_crtc, base)
 
+<<<<<<< HEAD
 static void set_scanout(struct drm_crtc *crtc, struct drm_framebuffer *fb)
 {
+=======
+static void unref_worker(struct drm_flip_work *work, void *val)
+{
+	struct tilcdc_crtc *tilcdc_crtc =
+		container_of(work, struct tilcdc_crtc, unref_work);
+	struct drm_device *dev = tilcdc_crtc->base.dev;
+
+	mutex_lock(&dev->mode_config.mutex);
+	drm_framebuffer_unreference(val);
+	mutex_unlock(&dev->mode_config.mutex);
+}
+
+static void set_scanout(struct drm_crtc *crtc, struct drm_framebuffer *fb)
+{
+	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *dev = crtc->dev;
 	struct tilcdc_drm_private *priv = dev->dev_private;
 	struct drm_gem_cma_object *gem;
@@ -92,6 +118,15 @@ static void set_scanout(struct drm_crtc *crtc, struct drm_framebuffer *fb)
 
 	dma_base_and_ceiling = (u64)end << 32 | start;
 	tilcdc_write64(dev, LCDC_DMA_FB_BASE_ADDR_0_REG, dma_base_and_ceiling);
+<<<<<<< HEAD
+=======
+
+	if (tilcdc_crtc->curr_fb)
+		drm_flip_work_queue(&tilcdc_crtc->unref_work,
+			tilcdc_crtc->curr_fb);
+
+	tilcdc_crtc->curr_fb = fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -224,7 +259,11 @@ static void tilcdc_crtc_set_clk(struct drm_crtc *crtc)
 
 	ret = clk_set_rate(priv->clk, req_rate * clkdiv);
 	clk_rate = clk_get_rate(priv->clk);
+<<<<<<< HEAD
 	if (ret < 0 || tilcdc_pclk_diff(req_rate, clk_rate) > 5) {
+=======
+	if (ret < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If we fail to set the clock rate (some architectures don't
 		 * use the common clock framework yet and may not implement
@@ -272,7 +311,11 @@ static void tilcdc_crtc_set_clk(struct drm_crtc *crtc)
 				LCDC_V2_CORE_CLK_EN);
 }
 
+<<<<<<< HEAD
 static uint tilcdc_mode_hvtotal(const struct drm_display_mode *mode)
+=======
+uint tilcdc_mode_hvtotal(const struct drm_display_mode *mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (uint) div_u64(1000llu * mode->htotal * mode->vtotal,
 			      mode->clock);
@@ -442,6 +485,11 @@ static void tilcdc_crtc_set_mode(struct drm_crtc *crtc)
 
 	set_scanout(crtc, fb);
 
+<<<<<<< HEAD
+=======
+	drm_framebuffer_reference(fb);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	crtc->hwmode = crtc->state->adjusted_mode;
 
 	tilcdc_crtc->hvtotal_us =
@@ -454,6 +502,10 @@ static void tilcdc_crtc_enable(struct drm_crtc *crtc)
 	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
 	unsigned long flags;
 
+<<<<<<< HEAD
+=======
+	WARN_ON(!drm_modeset_is_locked(&crtc->mutex));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&tilcdc_crtc->enable_lock);
 	if (tilcdc_crtc->enabled || tilcdc_crtc->shutdown) {
 		mutex_unlock(&tilcdc_crtc->enable_lock);
@@ -500,6 +552,10 @@ static void tilcdc_crtc_off(struct drm_crtc *crtc, bool shutdown)
 {
 	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
 	struct drm_device *dev = crtc->dev;
+<<<<<<< HEAD
+=======
+	struct tilcdc_drm_private *priv = dev->dev_private;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	mutex_lock(&tilcdc_crtc->enable_lock);
@@ -529,12 +585,33 @@ static void tilcdc_crtc_off(struct drm_crtc *crtc, bool shutdown)
 
 	pm_runtime_put_sync(dev->dev);
 
+<<<<<<< HEAD
+=======
+	if (tilcdc_crtc->next_fb) {
+		drm_flip_work_queue(&tilcdc_crtc->unref_work,
+				    tilcdc_crtc->next_fb);
+		tilcdc_crtc->next_fb = NULL;
+	}
+
+	if (tilcdc_crtc->curr_fb) {
+		drm_flip_work_queue(&tilcdc_crtc->unref_work,
+				    tilcdc_crtc->curr_fb);
+		tilcdc_crtc->curr_fb = NULL;
+	}
+
+	drm_flip_work_commit(&tilcdc_crtc->unref_work, priv->wq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tilcdc_crtc->enabled = false;
 	mutex_unlock(&tilcdc_crtc->enable_lock);
 }
 
 static void tilcdc_crtc_disable(struct drm_crtc *crtc)
 {
+<<<<<<< HEAD
+=======
+	WARN_ON(!drm_modeset_is_locked(&crtc->mutex));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tilcdc_crtc_off(crtc, false);
 }
 
@@ -575,14 +652,27 @@ out:
 
 static void tilcdc_crtc_destroy(struct drm_crtc *crtc)
 {
+<<<<<<< HEAD
 	struct tilcdc_drm_private *priv = crtc->dev->dev_private;
 
 	tilcdc_crtc_shutdown(crtc);
+=======
+	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
+	struct tilcdc_drm_private *priv = crtc->dev->dev_private;
+
+	drm_modeset_lock(&crtc->mutex, NULL);
+	tilcdc_crtc_disable(crtc);
+	drm_modeset_unlock(&crtc->mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flush_workqueue(priv->wq);
 
 	of_node_put(crtc->port);
 	drm_crtc_cleanup(crtc);
+<<<<<<< HEAD
+=======
+	drm_flip_work_cleanup(&tilcdc_crtc->unref_work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
@@ -592,11 +682,22 @@ int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
 	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
 	struct drm_device *dev = crtc->dev;
 
+<<<<<<< HEAD
+=======
+	WARN_ON(!drm_modeset_is_locked(&crtc->mutex));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tilcdc_crtc->event) {
 		dev_err(dev->dev, "already pending page flip!\n");
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
+=======
+	drm_framebuffer_reference(fb);
+
+	crtc->primary->fb = fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tilcdc_crtc->event = event;
 
 	mutex_lock(&tilcdc_crtc->enable_lock);
@@ -689,6 +790,7 @@ static void tilcdc_crtc_disable_vblank(struct drm_crtc *crtc)
 {
 }
 
+<<<<<<< HEAD
 static void tilcdc_crtc_reset(struct drm_crtc *crtc)
 {
 	struct tilcdc_crtc *tilcdc_crtc = to_tilcdc_crtc(crtc);
@@ -717,11 +819,17 @@ static void tilcdc_crtc_reset(struct drm_crtc *crtc)
 	pm_runtime_put_sync(dev->dev);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct drm_crtc_funcs tilcdc_crtc_funcs = {
 	.destroy        = tilcdc_crtc_destroy,
 	.set_config     = drm_atomic_helper_set_config,
 	.page_flip      = drm_atomic_helper_page_flip,
+<<<<<<< HEAD
 	.reset		= tilcdc_crtc_reset,
+=======
+	.reset		= drm_atomic_helper_crtc_reset,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_duplicate_state = drm_atomic_helper_crtc_duplicate_state,
 	.atomic_destroy_state = drm_atomic_helper_crtc_destroy_state,
 	.enable_vblank	= tilcdc_crtc_enable_vblank,
@@ -892,6 +1000,11 @@ irqreturn_t tilcdc_crtc_irq(struct drm_crtc *crtc)
 
 		now = ktime_get();
 
+<<<<<<< HEAD
+=======
+		drm_flip_work_commit(&tilcdc_crtc->unref_work, priv->wq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&tilcdc_crtc->irq_lock, flags);
 
 		tilcdc_crtc->last_vblank = now;
@@ -994,8 +1107,15 @@ int tilcdc_crtc_create(struct drm_device *dev)
 	int ret;
 
 	tilcdc_crtc = devm_kzalloc(dev->dev, sizeof(*tilcdc_crtc), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!tilcdc_crtc)
 		return -ENOMEM;
+=======
+	if (!tilcdc_crtc) {
+		dev_err(dev->dev, "allocation failed\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init_completion(&tilcdc_crtc->palette_loaded);
 	tilcdc_crtc->palette_base = dmam_alloc_coherent(dev->dev,
@@ -1016,6 +1136,12 @@ int tilcdc_crtc_create(struct drm_device *dev)
 
 	init_waitqueue_head(&tilcdc_crtc->frame_done_wq);
 
+<<<<<<< HEAD
+=======
+	drm_flip_work_init(&tilcdc_crtc->unref_work,
+			"unref", unref_worker);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&tilcdc_crtc->irq_lock);
 	INIT_WORK(&tilcdc_crtc->recover_work, tilcdc_crtc_recover_work);
 

@@ -47,7 +47,10 @@
 #include <dt-bindings/clock/meson8b-clkc.h>
 #include <dt-bindings/gpio/meson8b-gpio.h>
 #include <dt-bindings/reset/amlogic,meson8b-reset.h>
+<<<<<<< HEAD
 #include <dt-bindings/reset/amlogic,meson8b-clkc-reset.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "meson.dtsi"
 
 / {
@@ -55,38 +58,61 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		cpu0: cpu@200 {
+=======
+		cpu@200 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "arm,cortex-a5";
 			next-level-cache = <&L2>;
 			reg = <0x200>;
+<<<<<<< HEAD
 			enable-method = "amlogic,meson8b-smp";
 			resets = <&clkc CLKC_RESET_CPU0_SOFT_RESET>;
 		};
 
 		cpu1: cpu@201 {
+=======
+		};
+
+		cpu@201 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "arm,cortex-a5";
 			next-level-cache = <&L2>;
 			reg = <0x201>;
+<<<<<<< HEAD
 			enable-method = "amlogic,meson8b-smp";
 			resets = <&clkc CLKC_RESET_CPU1_SOFT_RESET>;
 		};
 
 		cpu2: cpu@202 {
+=======
+		};
+
+		cpu@202 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "arm,cortex-a5";
 			next-level-cache = <&L2>;
 			reg = <0x202>;
+<<<<<<< HEAD
 			enable-method = "amlogic,meson8b-smp";
 			resets = <&clkc CLKC_RESET_CPU2_SOFT_RESET>;
 		};
 
 		cpu3: cpu@203 {
+=======
+		};
+
+		cpu@203 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "arm,cortex-a5";
 			next-level-cache = <&L2>;
 			reg = <0x203>;
+<<<<<<< HEAD
 			enable-method = "amlogic,meson8b-smp";
 			resets = <&clkc CLKC_RESET_CPU3_SOFT_RESET>;
 		};
@@ -110,6 +136,8 @@
 		hwrom@0 {
 			reg = <0x0 0x200000>;
 			no-map;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -120,11 +148,14 @@
 }; /* end of / */
 
 &aobus {
+<<<<<<< HEAD
 	pmu: pmu@e0 {
 		compatible = "amlogic,meson8b-pmu", "syscon";
 		reg = <0xe0 0x18>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl_aobus: pinctrl@84 {
 		compatible = "amlogic,meson8b-aobus-pinctrl";
 		reg = <0x84 0xc>;
@@ -139,7 +170,11 @@
 			reg-names = "mux", "pull", "gpio";
 			gpio-controller;
 			#gpio-cells = <2>;
+<<<<<<< HEAD
 			gpio-ranges = <&pinctrl_aobus 0 0 16>;
+=======
+			gpio-ranges = <&pinctrl_aobus 0 130 16>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		uart_ao_a_pins: uart_ao_a {
@@ -148,6 +183,7 @@
 				function = "uart_ao";
 			};
 		};
+<<<<<<< HEAD
 
 		ir_recv_pins: remote {
 			mux {
@@ -155,6 +191,8 @@
 				function = "remote";
 			};
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -163,11 +201,16 @@
 		#clock-cells = <1>;
 		#reset-cells = <1>;
 		compatible = "amlogic,meson8b-clkc";
+<<<<<<< HEAD
 		reg = <0x8000 0x4>, <0x4000 0x460>;
+=======
+		reg = <0x8000 0x4>, <0x4000 0x400>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	reset: reset-controller@4404 {
 		compatible = "amlogic,meson8b-reset";
+<<<<<<< HEAD
 		reg = <0x4404 0x9c>;
 		#reset-cells = <1>;
 	};
@@ -177,6 +220,12 @@
 		reg = <0x81a8 0x14>;
 	};
 
+=======
+		reg = <0x4404 0x20>;
+		#reset-cells = <1>;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pwm_ef: pwm@86c0 {
 		compatible = "amlogic,meson8b-pwm";
 		reg = <0x86c0 0x10>;
@@ -199,6 +248,7 @@
 			reg-names = "mux", "pull", "pull-enable", "gpio";
 			gpio-controller;
 			#gpio-cells = <2>;
+<<<<<<< HEAD
 			gpio-ranges = <&pinctrl_cbus 0 0 83>;
 		};
 
@@ -229,10 +279,14 @@
 					"sd_d3_b", "sd_clk_b", "sd_cmd_b";
 				function = "sd_b";
 			};
+=======
+			gpio-ranges = <&pinctrl_cbus 0 0 130>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };
 
+<<<<<<< HEAD
 &ahb_sram {
 	smp-sram@1ff80 {
 		compatible = "amlogic,meson8b-smp-sram";
@@ -266,6 +320,11 @@
 	compatible = "amlogic,meson-gpio-intc",
 		     "amlogic,meson8b-gpio-intc";
 	status = "okay";
+=======
+&ethmac {
+	clocks = <&clkc CLKID_ETH>;
+	clock-names = "stmmaceth";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &hwrng {
@@ -274,6 +333,7 @@
 	clock-names = "core";
 };
 
+<<<<<<< HEAD
 &i2c_AO {
 	clocks = <&clkc CLKID_CLK81>;
 };
@@ -286,13 +346,18 @@
 	clocks = <&clkc CLKID_I2C>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &L2 {
 	arm,data-latency = <3 3 3>;
 	arm,tag-latency = <2 2 2>;
 	arm,filter-ranges = <0x100000 0xc0000000>;
+<<<<<<< HEAD
 	prefetch-data = <1>;
 	prefetch-instr = <1>;
 	arm,shared-override;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pwm_ab {
@@ -306,6 +371,7 @@
 &saradc {
 	compatible = "amlogic,meson8b-saradc", "amlogic,meson-saradc";
 	clocks = <&clkc CLKID_XTAL>,
+<<<<<<< HEAD
 		<&clkc CLKID_SAR_ADC>;
 	clock-names = "clkin", "core";
 };
@@ -338,6 +404,27 @@
 	compatible = "amlogic,meson8b-uart", "amlogic,meson-uart";
 	clocks = <&clkc CLKID_CLK81>, <&clkc CLKID_XTAL>, <&clkc CLKID_UART2>;
 	clock-names = "baud", "xtal", "pclk";
+=======
+		<&clkc CLKID_SAR_ADC>,
+		<&clkc CLKID_SANA>;
+	clock-names = "clkin", "core", "sana";
+};
+
+&uart_AO {
+	clocks = <&clkc CLKID_CLK81>;
+};
+
+&uart_A {
+	clocks = <&clkc CLKID_CLK81>;
+};
+
+&uart_B {
+	clocks = <&clkc CLKID_CLK81>;
+};
+
+&uart_C {
+	clocks = <&clkc CLKID_CLK81>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb0 {

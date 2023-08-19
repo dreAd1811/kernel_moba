@@ -132,10 +132,13 @@ int cpuidle_find_deepest_state(struct cpuidle_driver *drv,
 static void enter_s2idle_proper(struct cpuidle_driver *drv,
 				struct cpuidle_device *dev, int index)
 {
+<<<<<<< HEAD
 	ktime_t time_start, time_end;
 
 	time_start = ns_to_ktime(local_clock());
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * trace_suspend_resume() called by tick_freeze() for the last CPU
 	 * executing it contains RCU usage regarded as invalid in the idle
@@ -157,11 +160,14 @@ static void enter_s2idle_proper(struct cpuidle_driver *drv,
 	 */
 	RCU_NONIDLE(tick_unfreeze());
 	start_critical_timings();
+<<<<<<< HEAD
 
 	time_end = ns_to_ktime(local_clock());
 
 	dev->states_usage[index].s2idle_time += ktime_us_delta(time_end, time_start);
 	dev->states_usage[index].s2idle_usage++;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -404,12 +410,18 @@ int cpuidle_enable_device(struct cpuidle_device *dev)
 	if (dev->enabled)
 		return 0;
 
+<<<<<<< HEAD
 	if (!cpuidle_curr_governor)
 		return -EIO;
 
 	drv = cpuidle_get_cpu_driver(dev);
 
 	if (!drv)
+=======
+	drv = cpuidle_get_cpu_driver(dev);
+
+	if (!drv || !cpuidle_curr_governor)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 
 	if (!dev->registered)
@@ -419,11 +431,17 @@ int cpuidle_enable_device(struct cpuidle_device *dev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (cpuidle_curr_governor->enable) {
 		ret = cpuidle_curr_governor->enable(drv, dev);
 		if (ret)
 			goto fail_sysfs;
 	}
+=======
+	if (cpuidle_curr_governor->enable &&
+	    (ret = cpuidle_curr_governor->enable(drv, dev)))
+		goto fail_sysfs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	smp_wmb();
 

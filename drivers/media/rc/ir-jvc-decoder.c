@@ -39,7 +39,11 @@ enum jvc_state {
 /**
  * ir_jvc_decode() - Decode one JVC pulse or space
  * @dev:	the struct rc_dev descriptor of the device
+<<<<<<< HEAD
  * @ev:   the struct ir_raw_event descriptor of the pulse/space
+=======
+ * @duration:   the struct ir_raw_event descriptor of the pulse/space
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function returns -EINVAL if the pulse violates the state machine
  */
@@ -56,8 +60,13 @@ static int ir_jvc_decode(struct rc_dev *dev, struct ir_raw_event ev)
 	if (!geq_margin(ev.duration, JVC_UNIT, JVC_UNIT / 2))
 		goto out;
 
+<<<<<<< HEAD
 	dev_dbg(&dev->dev, "JVC decode started at state %d (%uus %s)\n",
 		data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+=======
+	IR_dprintk(2, "JVC decode started at state %d (%uus %s)\n",
+		   data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 again:
 	switch (data->state) {
@@ -136,15 +145,26 @@ again:
 			u32 scancode;
 			scancode = (bitrev8((data->bits >> 8) & 0xff) << 8) |
 				   (bitrev8((data->bits >> 0) & 0xff) << 0);
+<<<<<<< HEAD
 			dev_dbg(&dev->dev, "JVC scancode 0x%04x\n", scancode);
+=======
+			IR_dprintk(1, "JVC scancode 0x%04x\n", scancode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc_keydown(dev, RC_PROTO_JVC, scancode, data->toggle);
 			data->first = false;
 			data->old_bits = data->bits;
 		} else if (data->bits == data->old_bits) {
+<<<<<<< HEAD
 			dev_dbg(&dev->dev, "JVC repeat\n");
 			rc_repeat(dev);
 		} else {
 			dev_dbg(&dev->dev, "JVC invalid repeat msg\n");
+=======
+			IR_dprintk(1, "JVC repeat\n");
+			rc_repeat(dev);
+		} else {
+			IR_dprintk(1, "JVC invalid repeat msg\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
@@ -164,8 +184,13 @@ again:
 	}
 
 out:
+<<<<<<< HEAD
 	dev_dbg(&dev->dev, "JVC decode failed at state %d (%uus %s)\n",
 		data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+=======
+	IR_dprintk(1, "JVC decode failed at state %d (%uus %s)\n",
+		   data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->state = STATE_INACTIVE;
 	return -EINVAL;
 }
@@ -212,8 +237,11 @@ static struct ir_raw_handler jvc_handler = {
 	.protocols	= RC_PROTO_BIT_JVC,
 	.decode		= ir_jvc_decode,
 	.encode		= ir_jvc_encode,
+<<<<<<< HEAD
 	.carrier	= 38000,
 	.min_timeout	= JVC_TRAILER_SPACE,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init ir_jvc_decode_init(void)

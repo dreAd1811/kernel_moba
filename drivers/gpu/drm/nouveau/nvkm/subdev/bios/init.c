@@ -36,8 +36,11 @@
 #include <subdev/i2c.h>
 #include <subdev/vga.h>
 
+<<<<<<< HEAD
 #include <linux/kernel.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define bioslog(lvl, fmt, args...) do {                                        \
 	nvkm_printk(init->subdev, lvl, info, "0x%08x[%c]: "fmt,                \
 		    init->offset, init_exec(init) ?                            \
@@ -2273,6 +2276,11 @@ static struct nvbios_init_opcode {
 	[0xaa] = { init_reserved },
 };
 
+<<<<<<< HEAD
+=======
+#define init_opcode_nr (sizeof(init_opcode) / sizeof(init_opcode[0]))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int
 nvbios_exec(struct nvbios_init *init)
 {
@@ -2281,8 +2289,12 @@ nvbios_exec(struct nvbios_init *init)
 	init->nested++;
 	while (init->offset) {
 		u8 opcode = nvbios_rd08(bios, init->offset);
+<<<<<<< HEAD
 		if (opcode >= ARRAY_SIZE(init_opcode) ||
 		    !init_opcode[opcode].exec) {
+=======
+		if (opcode >= init_opcode_nr || !init_opcode[opcode].exec) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			error("unknown opcode 0x%02x\n", opcode);
 			return -EINVAL;
 		}

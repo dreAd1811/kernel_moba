@@ -3,8 +3,11 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+<<<<<<< HEAD
 .. _linux_doc:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 The Linux Kernel documentation
 ==============================
 
@@ -15,6 +18,7 @@ documents into a coherent whole.  Please note that improvements to the
 documentation are welcome; join the linux-doc list at vger.kernel.org if
 you want to help out.
 
+<<<<<<< HEAD
 Licensing documentation
 -----------------------
 
@@ -27,6 +31,8 @@ tree, as well as links to the full license text.
 
    process/license-rules.rst
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 User-oriented documentation
 ---------------------------
 
@@ -47,7 +53,11 @@ the kernel interface as seen by application developers.
 .. toctree::
    :maxdepth: 2
 
+<<<<<<< HEAD
    userspace-api/index
+=======
+   userspace-api/index	      
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Introduction to kernel development
@@ -66,8 +76,11 @@ merged much easier.
    dev-tools/index
    doc-guide/index
    kernel-hacking/index
+<<<<<<< HEAD
    trace/index
    maintainer/index
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Kernel API documentation
 ------------------------
@@ -91,8 +104,11 @@ needed).
    sound/index
    crypto/index
    filesystems/index
+<<<<<<< HEAD
    vm/index
    bpf/index
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Architecture-specific documentation
 -----------------------------------
@@ -106,6 +122,7 @@ implementation.
    sh/index
    x86/index
 
+<<<<<<< HEAD
 Filesystem Documentation
 ------------------------
 
@@ -124,6 +141,31 @@ Translations
    :maxdepth: 2
 
    translations/index
+=======
+Korean translations
+-------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   translations/ko_KR/index
+
+Chinese translations
+--------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   translations/zh_CN/index
+
+Japanese translations
+---------------------
+
+.. toctree::
+   :maxdepth: 1
+
+   translations/ja_JP/index
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Indices and tables
 ==================

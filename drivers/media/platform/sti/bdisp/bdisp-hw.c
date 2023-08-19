@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Authors: Fabien Dessenne <fabien.dessenne@st.com> for STMicroelectronics.
+=======
+/*
+ * Copyright (C) STMicroelectronics SA 2014
+ * Authors: Fabien Dessenne <fabien.dessenne@st.com> for STMicroelectronics.
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/delay.h>
@@ -14,8 +21,13 @@
 #define MAX_SRC_WIDTH           2048
 
 /* Reset & boot poll config */
+<<<<<<< HEAD
 #define POLL_RST_MAX            50
 #define POLL_RST_DELAY_MS       20
+=======
+#define POLL_RST_MAX            500
+#define POLL_RST_DELAY_MS       2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum bdisp_target_plan {
 	BDISP_RGB,
@@ -382,7 +394,11 @@ int bdisp_hw_reset(struct bdisp_dev *bdisp)
 	for (i = 0; i < POLL_RST_MAX; i++) {
 		if (readl(bdisp->regs + BLT_STA1) & BLT_STA1_IDLE)
 			break;
+<<<<<<< HEAD
 		msleep(POLL_RST_DELAY_MS);
+=======
+		udelay(POLL_RST_DELAY_MS * 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (i == POLL_RST_MAX)
 		dev_err(bdisp->dev, "Reset timeout\n");
@@ -455,7 +471,11 @@ int bdisp_hw_alloc_nodes(struct bdisp_ctx *ctx)
 
 	/* Allocate all the nodes within a single memory page */
 	base = dma_alloc_attrs(dev, node_size * MAX_NB_NODE, &paddr,
+<<<<<<< HEAD
 			       GFP_KERNEL, DMA_ATTR_WRITE_COMBINE);
+=======
+			       GFP_KERNEL | GFP_DMA, DMA_ATTR_WRITE_COMBINE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!base) {
 		dev_err(dev, "%s no mem\n", __func__);
 		return -ENOMEM;
@@ -1064,7 +1084,11 @@ static void bdisp_hw_save_request(struct bdisp_ctx *ctx)
 		if (!copy_node[i]) {
 			copy_node[i] = devm_kzalloc(ctx->bdisp_dev->dev,
 						    sizeof(*copy_node[i]),
+<<<<<<< HEAD
 						    GFP_ATOMIC);
+=======
+						    GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!copy_node[i])
 				return;
 		}

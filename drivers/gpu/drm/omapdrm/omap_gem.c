@@ -1,5 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * drivers/gpu/drm/omapdrm/omap_gem.c
+ *
+ * Copyright (C) 2011 Texas Instruments
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Rob Clark <rob.clark@linaro.org>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -39,6 +45,7 @@ struct omap_gem_object {
 
 	struct list_head mm_list;
 
+<<<<<<< HEAD
 	u32 flags;
 
 	/** width/height for tiled formats (rounded up to slot boundaries) */
@@ -49,6 +56,15 @@ struct omap_gem_object {
 
 	/** protects dma_addr_cnt, block, pages, dma_addrs and vaddr */
 	struct mutex lock;
+=======
+	uint32_t flags;
+
+	/** width/height for tiled formats (rounded up to slot boundaries) */
+	uint16_t width, height;
+
+	/** roll applied when mapping to DMM */
+	uint32_t roll;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/**
 	 * dma_addr contains the buffer DMA address. It is valid for
@@ -76,7 +92,11 @@ struct omap_gem_object {
 	/**
 	 * # of users of dma_addr
 	 */
+<<<<<<< HEAD
 	u32 dma_addr_cnt;
+=======
+	uint32_t dma_addr_cnt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/**
 	 * If the buffer has been imported from a dmabuf the OMAP_DB_DMABUF flag
@@ -140,12 +160,21 @@ struct omap_drm_usergart {
  */
 
 /** get mmap offset */
+<<<<<<< HEAD
 u64 omap_gem_mmap_offset(struct drm_gem_object *obj)
+=======
+static uint64_t mmap_offset(struct drm_gem_object *obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_device *dev = obj->dev;
 	int ret;
 	size_t size;
 
+<<<<<<< HEAD
+=======
+	WARN_ON(!mutex_is_locked(&dev->struct_mutex));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Make it mmapable */
 	size = omap_gem_mmap_size(obj);
 	ret = drm_gem_create_mmap_offset_size(obj, size);
@@ -157,7 +186,11 @@ u64 omap_gem_mmap_offset(struct drm_gem_object *obj)
 	return drm_vma_node_offset_addr(&obj->vma_node);
 }
 
+<<<<<<< HEAD
 static bool omap_gem_is_contiguous(struct omap_gem_object *omap_obj)
+=======
+static bool is_contiguous(struct omap_gem_object *omap_obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (omap_obj->flags & OMAP_BO_MEM_DMA_API)
 		return true;
@@ -172,14 +205,22 @@ static bool omap_gem_is_contiguous(struct omap_gem_object *omap_obj)
  * Eviction
  */
 
+<<<<<<< HEAD
 static void omap_gem_evict_entry(struct drm_gem_object *obj,
+=======
+static void evict_entry(struct drm_gem_object *obj,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		enum tiler_fmt fmt, struct omap_drm_usergart_entry *entry)
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	struct omap_drm_private *priv = obj->dev->dev_private;
 	int n = priv->usergart[fmt].height;
 	size_t size = PAGE_SIZE * n;
+<<<<<<< HEAD
 	loff_t off = omap_gem_mmap_offset(obj) +
+=======
+	loff_t off = mmap_offset(obj) +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			(entry->obj_pgoff << PAGE_SHIFT);
 	const int m = DIV_ROUND_UP(omap_obj->width << fmt, PAGE_SIZE);
 
@@ -200,7 +241,11 @@ static void omap_gem_evict_entry(struct drm_gem_object *obj,
 }
 
 /* Evict a buffer from usergart, if it is mapped there */
+<<<<<<< HEAD
 static void omap_gem_evict(struct drm_gem_object *obj)
+=======
+static void evict(struct drm_gem_object *obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	struct omap_drm_private *priv = obj->dev->dev_private;
@@ -214,7 +259,11 @@ static void omap_gem_evict(struct drm_gem_object *obj)
 				&priv->usergart[fmt].entry[i];
 
 			if (entry->obj == obj)
+<<<<<<< HEAD
 				omap_gem_evict_entry(obj, fmt, entry);
+=======
+				evict_entry(obj, fmt, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -223,10 +272,14 @@ static void omap_gem_evict(struct drm_gem_object *obj)
  * Page Management
  */
 
+<<<<<<< HEAD
 /*
  * Ensure backing pages are allocated. Must be called with the omap_obj.lock
  * held.
  */
+=======
+/** ensure backing pages are allocated */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int omap_gem_attach_pages(struct drm_gem_object *obj)
 {
 	struct drm_device *dev = obj->dev;
@@ -236,6 +289,7 @@ static int omap_gem_attach_pages(struct drm_gem_object *obj)
 	int i, ret;
 	dma_addr_t *addrs;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&omap_obj->lock);
 
 	/*
@@ -244,6 +298,9 @@ static int omap_gem_attach_pages(struct drm_gem_object *obj)
 	 */
 	if (!(omap_obj->flags & OMAP_BO_MEM_SHMEM) || omap_obj->pages)
 		return 0;
+=======
+	WARN_ON(omap_obj->pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pages = drm_gem_get_pages(obj);
 	if (IS_ERR(pages)) {
@@ -255,7 +312,11 @@ static int omap_gem_attach_pages(struct drm_gem_object *obj)
 	 * DSS, GPU, etc. are not cache coherent:
 	 */
 	if (omap_obj->flags & (OMAP_BO_WC|OMAP_BO_UNCACHED)) {
+<<<<<<< HEAD
 		addrs = kmalloc_array(npages, sizeof(*addrs), GFP_KERNEL);
+=======
+		addrs = kmalloc(npages * sizeof(*addrs), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!addrs) {
 			ret = -ENOMEM;
 			goto free_pages;
@@ -279,7 +340,11 @@ static int omap_gem_attach_pages(struct drm_gem_object *obj)
 			}
 		}
 	} else {
+<<<<<<< HEAD
 		addrs = kcalloc(npages, sizeof(*addrs), GFP_KERNEL);
+=======
+		addrs = kzalloc(npages * sizeof(*addrs), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!addrs) {
 			ret = -ENOMEM;
 			goto free_pages;
@@ -299,15 +364,44 @@ free_pages:
 	return ret;
 }
 
+<<<<<<< HEAD
 /* Release backing pages. Must be called with the omap_obj.lock held. */
+=======
+/* acquire pages when needed (for example, for DMA where physically
+ * contiguous buffer is not required
+ */
+static int get_pages(struct drm_gem_object *obj, struct page ***pages)
+{
+	struct omap_gem_object *omap_obj = to_omap_bo(obj);
+	int ret = 0;
+
+	if ((omap_obj->flags & OMAP_BO_MEM_SHMEM) && !omap_obj->pages) {
+		ret = omap_gem_attach_pages(obj);
+		if (ret) {
+			dev_err(obj->dev->dev, "could not attach pages\n");
+			return ret;
+		}
+	}
+
+	/* TODO: even phys-contig.. we should have a list of pages? */
+	*pages = omap_obj->pages;
+
+	return 0;
+}
+
+/** release backing pages */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void omap_gem_detach_pages(struct drm_gem_object *obj)
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	unsigned int npages = obj->size >> PAGE_SHIFT;
 	unsigned int i;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&omap_obj->lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < npages; i++) {
 		if (omap_obj->dma_addrs[i])
 			dma_unmap_page(obj->dev->dev, omap_obj->dma_addrs[i],
@@ -322,11 +416,27 @@ static void omap_gem_detach_pages(struct drm_gem_object *obj)
 }
 
 /* get buffer flags */
+<<<<<<< HEAD
 u32 omap_gem_flags(struct drm_gem_object *obj)
+=======
+uint32_t omap_gem_flags(struct drm_gem_object *obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return to_omap_bo(obj)->flags;
 }
 
+<<<<<<< HEAD
+=======
+uint64_t omap_gem_mmap_offset(struct drm_gem_object *obj)
+{
+	uint64_t offset;
+	mutex_lock(&obj->dev->struct_mutex);
+	offset = mmap_offset(obj);
+	mutex_unlock(&obj->dev->struct_mutex);
+	return offset;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /** get mmap size */
 size_t omap_gem_mmap_size(struct drm_gem_object *obj)
 {
@@ -352,7 +462,11 @@ size_t omap_gem_mmap_size(struct drm_gem_object *obj)
  */
 
 /* Normal handling for the case of faulting in non-tiled buffers */
+<<<<<<< HEAD
 static vm_fault_t omap_gem_fault_1d(struct drm_gem_object *obj,
+=======
+static int fault_1d(struct drm_gem_object *obj,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct vm_area_struct *vma, struct vm_fault *vmf)
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
@@ -366,19 +480,31 @@ static vm_fault_t omap_gem_fault_1d(struct drm_gem_object *obj,
 		omap_gem_cpu_sync_page(obj, pgoff);
 		pfn = page_to_pfn(omap_obj->pages[pgoff]);
 	} else {
+<<<<<<< HEAD
 		BUG_ON(!omap_gem_is_contiguous(omap_obj));
+=======
+		BUG_ON(!is_contiguous(omap_obj));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pfn = (omap_obj->dma_addr >> PAGE_SHIFT) + pgoff;
 	}
 
 	VERB("Inserting %p pfn %lx, pa %lx", (void *)vmf->address,
 			pfn, pfn << PAGE_SHIFT);
 
+<<<<<<< HEAD
 	return vmf_insert_mixed(vma, vmf->address,
 			__pfn_to_pfn_t(pfn, PFN_DEV));
 }
 
 /* Special handling for the case of faulting in 2d tiled buffers */
 static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
+=======
+	return vm_insert_mixed(vma, vmf->address, __pfn_to_pfn_t(pfn, PFN_DEV));
+}
+
+/* Special handling for the case of faulting in 2d tiled buffers */
+static int fault_2d(struct drm_gem_object *obj,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct vm_area_struct *vma, struct vm_fault *vmf)
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
@@ -389,8 +515,12 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
 	unsigned long pfn;
 	pgoff_t pgoff, base_pgoff;
 	unsigned long vaddr;
+<<<<<<< HEAD
 	int i, err, slots;
 	vm_fault_t ret = VM_FAULT_NOPAGE;
+=======
+	int i, ret, slots;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Note the height of the slot is also equal to the number of pages
@@ -426,7 +556,11 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
 
 	/* evict previous buffer using this usergart entry, if any: */
 	if (entry->obj)
+<<<<<<< HEAD
 		omap_gem_evict_entry(entry->obj, fmt, entry);
+=======
+		evict_entry(entry->obj, fmt, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	entry->obj = obj;
 	entry->obj_pgoff = base_pgoff;
@@ -456,10 +590,16 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
 	memset(pages + slots, 0,
 			sizeof(struct page *) * (n - slots));
 
+<<<<<<< HEAD
 	err = tiler_pin(entry->block, pages, ARRAY_SIZE(pages), 0, true);
 	if (err) {
 		ret = vmf_error(err);
 		dev_err(obj->dev->dev, "failed to pin: %d\n", err);
+=======
+	ret = tiler_pin(entry->block, pages, ARRAY_SIZE(pages), 0, true);
+	if (ret) {
+		dev_err(obj->dev->dev, "failed to pin: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -469,10 +609,14 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
 			pfn, pfn << PAGE_SHIFT);
 
 	for (i = n; i > 0; i--) {
+<<<<<<< HEAD
 		ret = vmf_insert_mixed(vma,
 			vaddr, __pfn_to_pfn_t(pfn, PFN_DEV));
 		if (ret & VM_FAULT_ERROR)
 			break;
+=======
+		vm_insert_mixed(vma, vaddr, __pfn_to_pfn_t(pfn, PFN_DEV));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pfn += priv->usergart[fmt].stride_pfn;
 		vaddr += PAGE_SIZE * m;
 	}
@@ -481,7 +625,11 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
 	priv->usergart[fmt].last = (priv->usergart[fmt].last + 1)
 				 % NUM_USERGART_ENTRIES;
 
+<<<<<<< HEAD
 	return ret;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -496,17 +644,28 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
  * vma->vm_private_data points to the GEM object that is backing this
  * mapping.
  */
+<<<<<<< HEAD
 vm_fault_t omap_gem_fault(struct vm_fault *vmf)
+=======
+int omap_gem_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_gem_object *obj = vma->vm_private_data;
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
+<<<<<<< HEAD
 	int err;
 	vm_fault_t ret;
+=======
+	struct drm_device *dev = obj->dev;
+	struct page **pages;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Make sure we don't parallel update on a fault, nor move or remove
 	 * something from beneath our feet
 	 */
+<<<<<<< HEAD
 	mutex_lock(&omap_obj->lock);
 
 	/* if a shmem backed object, make sure we have pages attached now */
@@ -515,6 +674,14 @@ vm_fault_t omap_gem_fault(struct vm_fault *vmf)
 		ret = vmf_error(err);
 		goto fail;
 	}
+=======
+	mutex_lock(&dev->struct_mutex);
+
+	/* if a shmem backed object, make sure we have pages attached now */
+	ret = get_pages(obj, &pages);
+	if (ret)
+		goto fail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* where should we do corresponding put_pages().. we are mapping
 	 * the original page, rather than thru a GART, so we can't rely
@@ -523,6 +690,7 @@ vm_fault_t omap_gem_fault(struct vm_fault *vmf)
 	 */
 
 	if (omap_obj->flags & OMAP_BO_TILED)
+<<<<<<< HEAD
 		ret = omap_gem_fault_2d(obj, vma, vmf);
 	else
 		ret = omap_gem_fault_1d(obj, vma, vmf);
@@ -531,6 +699,30 @@ vm_fault_t omap_gem_fault(struct vm_fault *vmf)
 fail:
 	mutex_unlock(&omap_obj->lock);
 	return ret;
+=======
+		ret = fault_2d(obj, vma, vmf);
+	else
+		ret = fault_1d(obj, vma, vmf);
+
+
+fail:
+	mutex_unlock(&dev->struct_mutex);
+	switch (ret) {
+	case 0:
+	case -ERESTARTSYS:
+	case -EINTR:
+	case -EBUSY:
+		/*
+		 * EBUSY is ok: this just means that another thread
+		 * already did the job.
+		 */
+		return VM_FAULT_NOPAGE;
+	case -ENOMEM:
+		return VM_FAULT_OOM;
+	default:
+		return VM_FAULT_SIGBUS;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /** We override mainly to fix up some of the vm mapping flags.. */
@@ -624,7 +816,11 @@ int omap_gem_dumb_create(struct drm_file *file, struct drm_device *dev,
  * into user memory. We don't have to do much here at the moment.
  */
 int omap_gem_dumb_map_offset(struct drm_file *file, struct drm_device *dev,
+<<<<<<< HEAD
 		u32 handle, u64 *offset)
+=======
+		uint32_t handle, uint64_t *offset)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_gem_object *obj;
 	int ret = 0;
@@ -650,10 +846,17 @@ fail:
  *
  * Call only from non-atomic contexts.
  */
+<<<<<<< HEAD
 int omap_gem_roll(struct drm_gem_object *obj, u32 roll)
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	u32 npages = obj->size >> PAGE_SHIFT;
+=======
+int omap_gem_roll(struct drm_gem_object *obj, uint32_t roll)
+{
+	struct omap_gem_object *omap_obj = to_omap_bo(obj);
+	uint32_t npages = obj->size >> PAGE_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	if (roll > npages) {
@@ -663,6 +866,7 @@ int omap_gem_roll(struct drm_gem_object *obj, u32 roll)
 
 	omap_obj->roll = roll;
 
+<<<<<<< HEAD
 	mutex_lock(&omap_obj->lock);
 
 	/* if we aren't mapped yet, we don't need to do anything */
@@ -673,12 +877,27 @@ int omap_gem_roll(struct drm_gem_object *obj, u32 roll)
 
 		ret = tiler_pin(omap_obj->block, omap_obj->pages, npages,
 				roll, true);
+=======
+	mutex_lock(&obj->dev->struct_mutex);
+
+	/* if we aren't mapped yet, we don't need to do anything */
+	if (omap_obj->block) {
+		struct page **pages;
+		ret = get_pages(obj, &pages);
+		if (ret)
+			goto fail;
+		ret = tiler_pin(omap_obj->block, pages, npages, roll, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			dev_err(obj->dev->dev, "could not repin: %d\n", ret);
 	}
 
 fail:
+<<<<<<< HEAD
 	mutex_unlock(&omap_obj->lock);
+=======
+	mutex_unlock(&obj->dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -697,7 +916,11 @@ fail:
  * the omap_obj->dma_addrs[i] is set to the DMA address, and the page is
  * unmapped from the CPU.
  */
+<<<<<<< HEAD
 static inline bool omap_gem_is_cached_coherent(struct drm_gem_object *obj)
+=======
+static inline bool is_cached_coherent(struct drm_gem_object *obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 
@@ -713,7 +936,11 @@ void omap_gem_cpu_sync_page(struct drm_gem_object *obj, int pgoff)
 	struct drm_device *dev = obj->dev;
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 
+<<<<<<< HEAD
 	if (omap_gem_is_cached_coherent(obj))
+=======
+	if (is_cached_coherent(obj))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (omap_obj->dma_addrs[pgoff]) {
@@ -733,7 +960,11 @@ void omap_gem_dma_sync_buffer(struct drm_gem_object *obj,
 	struct page **pages = omap_obj->pages;
 	bool dirty = false;
 
+<<<<<<< HEAD
 	if (omap_gem_is_cached_coherent(obj))
+=======
+	if (is_cached_coherent(obj))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	for (i = 0; i < npages; i++) {
@@ -779,17 +1010,30 @@ int omap_gem_pin(struct drm_gem_object *obj, dma_addr_t *dma_addr)
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	int ret = 0;
 
+<<<<<<< HEAD
 	mutex_lock(&omap_obj->lock);
 
 	if (!omap_gem_is_contiguous(omap_obj) && priv->has_dmm) {
 		if (omap_obj->dma_addr_cnt == 0) {
 			u32 npages = obj->size >> PAGE_SHIFT;
+=======
+	mutex_lock(&obj->dev->struct_mutex);
+
+	if (!is_contiguous(omap_obj) && priv->has_dmm) {
+		if (omap_obj->dma_addr_cnt == 0) {
+			struct page **pages;
+			uint32_t npages = obj->size >> PAGE_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			enum tiler_fmt fmt = gem2fmt(omap_obj->flags);
 			struct tiler_block *block;
 
 			BUG_ON(omap_obj->block);
 
+<<<<<<< HEAD
 			ret = omap_gem_attach_pages(obj);
+=======
+			ret = get_pages(obj, &pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				goto fail;
 
@@ -809,7 +1053,11 @@ int omap_gem_pin(struct drm_gem_object *obj, dma_addr_t *dma_addr)
 			}
 
 			/* TODO: enable async refill.. */
+<<<<<<< HEAD
 			ret = tiler_pin(block, omap_obj->pages, npages,
+=======
+			ret = tiler_pin(block, pages, npages,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					omap_obj->roll, true);
 			if (ret) {
 				tiler_release(block);
@@ -827,7 +1075,11 @@ int omap_gem_pin(struct drm_gem_object *obj, dma_addr_t *dma_addr)
 		omap_obj->dma_addr_cnt++;
 
 		*dma_addr = omap_obj->dma_addr;
+<<<<<<< HEAD
 	} else if (omap_gem_is_contiguous(omap_obj)) {
+=======
+	} else if (is_contiguous(omap_obj)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*dma_addr = omap_obj->dma_addr;
 	} else {
 		ret = -EINVAL;
@@ -835,7 +1087,11 @@ int omap_gem_pin(struct drm_gem_object *obj, dma_addr_t *dma_addr)
 	}
 
 fail:
+<<<<<<< HEAD
 	mutex_unlock(&omap_obj->lock);
+=======
+	mutex_unlock(&obj->dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -853,8 +1109,12 @@ void omap_gem_unpin(struct drm_gem_object *obj)
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	int ret;
 
+<<<<<<< HEAD
 	mutex_lock(&omap_obj->lock);
 
+=======
+	mutex_lock(&obj->dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (omap_obj->dma_addr_cnt > 0) {
 		omap_obj->dma_addr_cnt--;
 		if (omap_obj->dma_addr_cnt == 0) {
@@ -873,34 +1133,54 @@ void omap_gem_unpin(struct drm_gem_object *obj)
 		}
 	}
 
+<<<<<<< HEAD
 	mutex_unlock(&omap_obj->lock);
+=======
+	mutex_unlock(&obj->dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Get rotated scanout address (only valid if already pinned), at the
  * specified orientation and x,y offset from top-left corner of buffer
  * (only valid for tiled 2d buffers)
  */
+<<<<<<< HEAD
 int omap_gem_rotated_dma_addr(struct drm_gem_object *obj, u32 orient,
+=======
+int omap_gem_rotated_dma_addr(struct drm_gem_object *obj, uint32_t orient,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int x, int y, dma_addr_t *dma_addr)
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	int ret = -EINVAL;
 
+<<<<<<< HEAD
 	mutex_lock(&omap_obj->lock);
 
+=======
+	mutex_lock(&obj->dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((omap_obj->dma_addr_cnt > 0) && omap_obj->block &&
 			(omap_obj->flags & OMAP_BO_TILED)) {
 		*dma_addr = tiler_tsptr(omap_obj->block, orient, x, y);
 		ret = 0;
 	}
+<<<<<<< HEAD
 
 	mutex_unlock(&omap_obj->lock);
 
+=======
+	mutex_unlock(&obj->dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 /* Get tiler stride for the buffer (only valid for 2d tiled buffers) */
+<<<<<<< HEAD
 int omap_gem_tiled_stride(struct drm_gem_object *obj, u32 orient)
+=======
+int omap_gem_tiled_stride(struct drm_gem_object *obj, uint32_t orient)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	int ret = -EINVAL;
@@ -922,6 +1202,7 @@ int omap_gem_tiled_stride(struct drm_gem_object *obj, u32 orient)
 int omap_gem_get_pages(struct drm_gem_object *obj, struct page ***pages,
 		bool remap)
 {
+<<<<<<< HEAD
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 	int ret = 0;
 
@@ -943,6 +1224,19 @@ int omap_gem_get_pages(struct drm_gem_object *obj, struct page ***pages,
 unlock:
 	mutex_unlock(&omap_obj->lock);
 
+=======
+	int ret;
+	if (!remap) {
+		struct omap_gem_object *omap_obj = to_omap_bo(obj);
+		if (!omap_obj->pages)
+			return -ENOMEM;
+		*pages = omap_obj->pages;
+		return 0;
+	}
+	mutex_lock(&obj->dev->struct_mutex);
+	ret = get_pages(obj, pages);
+	mutex_unlock(&obj->dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -957,13 +1251,20 @@ int omap_gem_put_pages(struct drm_gem_object *obj)
 }
 
 #ifdef CONFIG_DRM_FBDEV_EMULATION
+<<<<<<< HEAD
 /*
  * Get kernel virtual address for CPU access.. this more or less only
  * exists for omap_fbdev.
+=======
+/* Get kernel virtual address for CPU access.. this more or less only
+ * exists for omap_fbdev.  This should be called with struct_mutex
+ * held.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void *omap_gem_vaddr(struct drm_gem_object *obj)
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
+<<<<<<< HEAD
 	void *vaddr;
 	int ret;
 
@@ -985,6 +1286,18 @@ void *omap_gem_vaddr(struct drm_gem_object *obj)
 unlock:
 	mutex_unlock(&omap_obj->lock);
 	return vaddr;
+=======
+	WARN_ON(!mutex_is_locked(&obj->dev->struct_mutex));
+	if (!omap_obj->vaddr) {
+		struct page **pages;
+		int ret = get_pages(obj, &pages);
+		if (ret)
+			return ERR_PTR(ret);
+		omap_obj->vaddr = vmap(pages, obj->size >> PAGE_SHIFT,
+				VM_MAP, pgprot_writecombine(PAGE_KERNEL));
+	}
+	return omap_obj->vaddr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
@@ -994,6 +1307,7 @@ unlock:
 
 #ifdef CONFIG_PM
 /* re-pin objects in DMM in resume path: */
+<<<<<<< HEAD
 int omap_gem_resume(struct drm_device *dev)
 {
 	struct omap_drm_private *priv = dev->dev_private;
@@ -1006,20 +1320,42 @@ int omap_gem_resume(struct drm_device *dev)
 			struct drm_gem_object *obj = &omap_obj->base;
 			u32 npages = obj->size >> PAGE_SHIFT;
 
+=======
+int omap_gem_resume(struct device *dev)
+{
+	struct drm_device *drm_dev = dev_get_drvdata(dev);
+	struct omap_drm_private *priv = drm_dev->dev_private;
+	struct omap_gem_object *omap_obj;
+	int ret = 0;
+
+	list_for_each_entry(omap_obj, &priv->obj_list, mm_list) {
+		if (omap_obj->block) {
+			struct drm_gem_object *obj = &omap_obj->base;
+			uint32_t npages = obj->size >> PAGE_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			WARN_ON(!omap_obj->pages);  /* this can't happen */
 			ret = tiler_pin(omap_obj->block,
 					omap_obj->pages, npages,
 					omap_obj->roll, true);
 			if (ret) {
+<<<<<<< HEAD
 				dev_err(dev->dev, "could not repin: %d\n", ret);
 				goto done;
+=======
+				dev_err(dev, "could not repin: %d\n", ret);
+				return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
 
+<<<<<<< HEAD
 done:
 	mutex_unlock(&priv->list_lock);
 	return ret;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
@@ -1031,12 +1367,19 @@ done:
 void omap_gem_describe(struct drm_gem_object *obj, struct seq_file *m)
 {
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
+<<<<<<< HEAD
 	u64 off;
 
 	off = drm_vma_node_start(&obj->vma_node);
 
 	mutex_lock(&omap_obj->lock);
 
+=======
+	uint64_t off;
+
+	off = drm_vma_node_start(&obj->vma_node);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "%08x: %2d (%2d) %08llx %pad (%2d) %p %4d",
 			omap_obj->flags, obj->name, kref_read(&obj->refcount),
 			off, &omap_obj->dma_addr, omap_obj->dma_addr_cnt,
@@ -1054,8 +1397,11 @@ void omap_gem_describe(struct drm_gem_object *obj, struct seq_file *m)
 		seq_printf(m, " %zu", obj->size);
 	}
 
+<<<<<<< HEAD
 	mutex_unlock(&omap_obj->lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "\n");
 }
 
@@ -1087,6 +1433,7 @@ void omap_gem_free_object(struct drm_gem_object *obj)
 	struct omap_drm_private *priv = dev->dev_private;
 	struct omap_gem_object *omap_obj = to_omap_bo(obj);
 
+<<<<<<< HEAD
 	omap_gem_evict(obj);
 
 	mutex_lock(&priv->list_lock);
@@ -1102,6 +1449,19 @@ void omap_gem_free_object(struct drm_gem_object *obj)
 	mutex_lock(&omap_obj->lock);
 
 	/* The object should not be pinned. */
+=======
+	evict(obj);
+
+	WARN_ON(!mutex_is_locked(&dev->struct_mutex));
+
+	spin_lock(&priv->list_lock);
+	list_del(&omap_obj->mm_list);
+	spin_unlock(&priv->list_lock);
+
+	/* this means the object is still pinned.. which really should
+	 * not happen.  I think..
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN_ON(omap_obj->dma_addr_cnt > 0);
 
 	if (omap_obj->pages) {
@@ -1120,18 +1480,27 @@ void omap_gem_free_object(struct drm_gem_object *obj)
 		drm_prime_gem_destroy(obj, omap_obj->sgt);
 	}
 
+<<<<<<< HEAD
 	mutex_unlock(&omap_obj->lock);
 
 	drm_gem_object_release(obj);
 
 	mutex_destroy(&omap_obj->lock);
 
+=======
+	drm_gem_object_release(obj);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(omap_obj);
 }
 
 /* GEM buffer object constructor */
 struct drm_gem_object *omap_gem_new(struct drm_device *dev,
+<<<<<<< HEAD
 		union omap_gem_size gsize, u32 flags)
+=======
+		union omap_gem_size gsize, uint32_t flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct omap_drm_private *priv = dev->dev_private;
 	struct omap_gem_object *omap_obj;
@@ -1181,7 +1550,10 @@ struct drm_gem_object *omap_gem_new(struct drm_device *dev,
 
 	obj = &omap_obj->base;
 	omap_obj->flags = flags;
+<<<<<<< HEAD
 	mutex_init(&omap_obj->lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (flags & OMAP_BO_TILED) {
 		/*
@@ -1221,9 +1593,15 @@ struct drm_gem_object *omap_gem_new(struct drm_device *dev,
 			goto err_release;
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&priv->list_lock);
 	list_add(&omap_obj->mm_list, &priv->obj_list);
 	mutex_unlock(&priv->list_lock);
+=======
+	spin_lock(&priv->list_lock);
+	list_add(&omap_obj->mm_list, &priv->obj_list);
+	spin_unlock(&priv->list_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return obj;
 
@@ -1246,6 +1624,7 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
 	if (sgt->orig_nents != 1 && !priv->has_dmm)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	gsize.bytes = PAGE_ALIGN(size);
 	obj = omap_gem_new(dev, gsize, OMAP_BO_MEM_DMABUF | OMAP_BO_WC);
 	if (!obj)
@@ -1255,6 +1634,18 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
 
 	mutex_lock(&omap_obj->lock);
 
+=======
+	mutex_lock(&dev->struct_mutex);
+
+	gsize.bytes = PAGE_ALIGN(size);
+	obj = omap_gem_new(dev, gsize, OMAP_BO_MEM_DMABUF | OMAP_BO_WC);
+	if (!obj) {
+		obj = ERR_PTR(-ENOMEM);
+		goto done;
+	}
+
+	omap_obj = to_omap_bo(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	omap_obj->sgt = sgt;
 
 	if (sgt->orig_nents == 1) {
@@ -1290,13 +1681,21 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
 	}
 
 done:
+<<<<<<< HEAD
 	mutex_unlock(&omap_obj->lock);
+=======
+	mutex_unlock(&dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return obj;
 }
 
 /* convenience method to construct a GEM buffer object, and userspace handle */
 int omap_gem_new_handle(struct drm_device *dev, struct drm_file *file,
+<<<<<<< HEAD
 		union omap_gem_size gsize, u32 flags, u32 *handle)
+=======
+		union omap_gem_size gsize, uint32_t flags, uint32_t *handle)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_gem_object *obj;
 	int ret;
@@ -1343,8 +1742,12 @@ void omap_gem_init(struct drm_device *dev)
 
 	/* reserve 4k aligned/wide regions for userspace mappings: */
 	for (i = 0; i < ARRAY_SIZE(fmts); i++) {
+<<<<<<< HEAD
 		u16 h = 1, w = PAGE_SIZE >> i;
 
+=======
+		uint16_t h = 1, w = PAGE_SIZE >> i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tiler_align(fmts[i], &w, &h);
 		/* note: since each region is 1 4kb page wide, and minimum
 		 * number of rows, the height ends up being the same as the

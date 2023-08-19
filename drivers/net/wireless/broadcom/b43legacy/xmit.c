@@ -571,6 +571,10 @@ void b43legacy_rx(struct b43legacy_wldev *dev,
 	default:
 		b43legacywarn(dev->wl, "Unexpected value for chanstat (0x%X)\n",
 		       chanstat);
+<<<<<<< HEAD
+=======
+		goto drop;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	memcpy(IEEE80211_SKB_RXCB(skb), &status, sizeof(status));

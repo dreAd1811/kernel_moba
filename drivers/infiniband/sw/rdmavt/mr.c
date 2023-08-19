@@ -285,7 +285,11 @@ static struct rvt_mr *__rvt_alloc_mr(int count, struct ib_pd *pd)
 
 	/* Allocate struct plus pointers to first level page tables. */
 	m = (count + RVT_SEGSZ - 1) / RVT_SEGSZ;
+<<<<<<< HEAD
 	mr = kzalloc(struct_size(mr, mr.map, m), GFP_KERNEL);
+=======
+	mr = kzalloc(sizeof(*mr) + m * sizeof(mr->mr.map[0]), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mr)
 		goto bail;
 
@@ -735,7 +739,11 @@ struct ib_fmr *rvt_alloc_fmr(struct ib_pd *pd, int mr_access_flags,
 
 	/* Allocate struct plus pointers to first level page tables. */
 	m = (fmr_attr->max_pages + RVT_SEGSZ - 1) / RVT_SEGSZ;
+<<<<<<< HEAD
 	fmr = kzalloc(struct_size(fmr, mr.map, m), GFP_KERNEL);
+=======
+	fmr = kzalloc(sizeof(*fmr) + m * sizeof(fmr->mr.map[0]), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!fmr)
 		goto bail;
 
@@ -775,7 +783,11 @@ bail:
 
 /**
  * rvt_map_phys_fmr - set up a fast memory region
+<<<<<<< HEAD
  * @ibfmr: the fast memory region to set up
+=======
+ * @ibmfr: the fast memory region to set up
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @page_list: the list of pages to associate with the fast memory region
  * @list_len: the number of pages to associate with the fast memory region
  * @iova: the virtual address of the start of the fast memory region

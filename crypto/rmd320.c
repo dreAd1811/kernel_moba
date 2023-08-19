@@ -53,7 +53,11 @@ struct rmd320_ctx {
 
 static void rmd320_transform(u32 *state, const __le32 *in)
 {
+<<<<<<< HEAD
 	u32 aa, bb, cc, dd, ee, aaa, bbb, ccc, ddd, eee;
+=======
+	u32 aa, bb, cc, dd, ee, aaa, bbb, ccc, ddd, eee, tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialize left lane */
 	aa = state[0];
@@ -106,7 +110,11 @@ static void rmd320_transform(u32 *state, const __le32 *in)
 	ROUND(aaa, bbb, ccc, ddd, eee, F5, KK1, in[12],  6);
 
 	/* Swap contents of "a" registers */
+<<<<<<< HEAD
 	swap(aa, aaa);
+=======
+	tmp = aa; aa = aaa; aaa = tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* round 2: left lane" */
 	ROUND(ee, aa, bb, cc, dd, F2, K2, in[7],   7);
@@ -145,7 +153,11 @@ static void rmd320_transform(u32 *state, const __le32 *in)
 	ROUND(eee, aaa, bbb, ccc, ddd, F4, KK2, in[2],  11);
 
 	/* Swap contents of "b" registers */
+<<<<<<< HEAD
 	swap(bb, bbb);
+=======
+	tmp = bb; bb = bbb; bbb = tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* round 3: left lane" */
 	ROUND(dd, ee, aa, bb, cc, F3, K3, in[3],  11);
@@ -184,7 +196,11 @@ static void rmd320_transform(u32 *state, const __le32 *in)
 	ROUND(ddd, eee, aaa, bbb, ccc, F3, KK3, in[13],  5);
 
 	/* Swap contents of "c" registers */
+<<<<<<< HEAD
 	swap(cc, ccc);
+=======
+	tmp = cc; cc = ccc; ccc = tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* round 4: left lane" */
 	ROUND(cc, dd, ee, aa, bb, F4, K4, in[1],  11);
@@ -223,7 +239,11 @@ static void rmd320_transform(u32 *state, const __le32 *in)
 	ROUND(ccc, ddd, eee, aaa, bbb, F2, KK4, in[14],  8);
 
 	/* Swap contents of "d" registers */
+<<<<<<< HEAD
 	swap(dd, ddd);
+=======
+	tmp = dd; dd = ddd; ddd = tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* round 5: left lane" */
 	ROUND(bb, cc, dd, ee, aa, F5, K5, in[4],   9);
@@ -262,7 +282,11 @@ static void rmd320_transform(u32 *state, const __le32 *in)
 	ROUND(bbb, ccc, ddd, eee, aaa, F1, KK5, in[11], 11);
 
 	/* Swap contents of "e" registers */
+<<<<<<< HEAD
 	swap(ee, eee);
+=======
+	tmp = ee; ee = eee; eee = tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* combine results */
 	state[0] += aa;
@@ -275,6 +299,11 @@ static void rmd320_transform(u32 *state, const __le32 *in)
 	state[7] += ccc;
 	state[8] += ddd;
 	state[9] += eee;
+<<<<<<< HEAD
+=======
+
+	return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rmd320_init(struct shash_desc *desc)
@@ -371,6 +400,10 @@ static struct shash_alg alg = {
 	.descsize	=	sizeof(struct rmd320_ctx),
 	.base		=	{
 		.cra_name	 =	"rmd320",
+<<<<<<< HEAD
+=======
+		.cra_flags	 =	CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	 =	RMD320_BLOCK_SIZE,
 		.cra_module	 =	THIS_MODULE,
 	}

@@ -99,7 +99,11 @@ static int smp_spin_table_cpu_prepare(unsigned int cpu)
 	 * boot-loader's endianess before jumping. This is mandated by
 	 * the boot protocol.
 	 */
+<<<<<<< HEAD
 	writeq_relaxed(__pa_symbol(secondary_holding_pen), release_addr);
+=======
+	writeq_relaxed(__pa_function(secondary_holding_pen), release_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__flush_dcache_area((__force void *)release_addr,
 			    sizeof(*release_addr));
 

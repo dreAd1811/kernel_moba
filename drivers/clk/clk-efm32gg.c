@@ -25,8 +25,13 @@ static void __init efm32gg_cmu_init(struct device_node *np)
 	void __iomem *base;
 	struct clk_hw **hws;
 
+<<<<<<< HEAD
 	clk_data = kzalloc(struct_size(clk_data, hws, CMU_MAX_CLKS),
 			   GFP_KERNEL);
+=======
+	clk_data = kzalloc(sizeof(*clk_data) +
+			   sizeof(*clk_data->hws) * CMU_MAX_CLKS, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!clk_data)
 		return;

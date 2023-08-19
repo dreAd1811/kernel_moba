@@ -17,7 +17,11 @@
  *   - Gyroscope supported full-scale [dps]: +-125/+-245/+-500/+-1000/+-2000
  *   - FIFO size: 8KB
  *
+<<<<<<< HEAD
  * - LSM6DS3H/LSM6DSL/LSM6DSM/ISM330DLC:
+=======
+ * - LSM6DS3H/LSM6DSL/LSM6DSM:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *   - Accelerometer/Gyroscope supported ODR [Hz]: 13, 26, 52, 104, 208, 416
  *   - Accelerometer supported full-scale [g]: +-2/+-4/+-8/+-16
  *   - Gyroscope supported full-scale [dps]: +-125/+-245/+-500/+-1000/+-2000
@@ -37,13 +41,21 @@
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
 #include <linux/pm.h>
+<<<<<<< HEAD
 #include <linux/regmap.h>
 #include <linux/bitfield.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/platform_data/st_sensors_pdata.h>
 
 #include "st_lsm6dsx.h"
 
+<<<<<<< HEAD
+=======
+#define ST_LSM6DSX_REG_ACC_DEC_MASK		GENMASK(2, 0)
+#define ST_LSM6DSX_REG_GYRO_DEC_MASK		GENMASK(5, 3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ST_LSM6DSX_REG_INT1_ADDR		0x0d
 #define ST_LSM6DSX_REG_INT2_ADDR		0x0e
 #define ST_LSM6DSX_REG_FIFO_FTH_IRQ_MASK	BIT(3)
@@ -54,6 +66,13 @@
 #define ST_LSM6DSX_REG_BDU_MASK			BIT(6)
 #define ST_LSM6DSX_REG_INT2_ON_INT1_ADDR	0x13
 #define ST_LSM6DSX_REG_INT2_ON_INT1_MASK	BIT(5)
+<<<<<<< HEAD
+=======
+#define ST_LSM6DSX_REG_ROUNDING_ADDR		0x16
+#define ST_LSM6DSX_REG_ROUNDING_MASK		BIT(2)
+#define ST_LSM6DSX_REG_LIR_ADDR			0x58
+#define ST_LSM6DSX_REG_LIR_MASK			BIT(0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ST_LSM6DSX_REG_ACC_ODR_ADDR		0x10
 #define ST_LSM6DSX_REG_ACC_ODR_MASK		GENMASK(7, 4)
@@ -156,6 +175,7 @@ static const struct st_lsm6dsx_fs_table_entry st_lsm6dsx_fs_table[] = {
 static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
 	{
 		.wai = 0x69,
+<<<<<<< HEAD
 		.max_fifo_size = 1365,
 		.id = {
 			[0] = ST_LSM6DS3_ID,
@@ -292,6 +312,26 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
 				.addr = 0x09,
 				.mask = GENMASK(5, 3),
 			},
+=======
+		.max_fifo_size = 8192,
+		.id = {
+			[0] = ST_LSM6DS3_ID,
+		},
+	},
+	{
+		.wai = 0x69,
+		.max_fifo_size = 4096,
+		.id = {
+			[0] = ST_LSM6DS3H_ID,
+		},
+	},
+	{
+		.wai = 0x6a,
+		.max_fifo_size = 4096,
+		.id = {
+			[0] = ST_LSM6DSL_ID,
+			[1] = ST_LSM6DSM_ID,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 	},
 };
@@ -334,9 +374,42 @@ static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
 	IIO_CHAN_SOFT_TIMESTAMP(3),
 };
 
+<<<<<<< HEAD
 static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
 {
 	int err, i, j, data;
+=======
+int st_lsm6dsx_write_with_mask(struct st_lsm6dsx_hw *hw, u8 addr, u8 mask,
+			       u8 val)
+{
+	u8 data;
+	int err;
+
+	mutex_lock(&hw->lock);
+
+	err = hw->tf->read(hw->dev, addr, sizeof(data), &data);
+	if (err < 0) {
+		dev_err(hw->dev, "failed to read %02x register\n", addr);
+		goto out;
+	}
+
+	data = (data & ~mask) | ((val << __ffs(mask)) & mask);
+
+	err = hw->tf->write(hw->dev, addr, sizeof(data), &data);
+	if (err < 0)
+		dev_err(hw->dev, "failed to write %02x register\n", addr);
+
+out:
+	mutex_unlock(&hw->lock);
+
+	return err;
+}
+
+static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
+{
+	int err, i, j;
+	u8 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(st_lsm6dsx_sensor_settings); i++) {
 		for (j = 0; j < ST_LSM6DSX_MAX_ID; j++) {
@@ -352,7 +425,12 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	err = regmap_read(hw->regmap, ST_LSM6DSX_REG_WHOAMI_ADDR, &data);
+=======
+	err = hw->tf->read(hw->dev, ST_LSM6DSX_REG_WHOAMI_ADDR, sizeof(data),
+			   &data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0) {
 		dev_err(hw->dev, "failed to read whoami register\n");
 		return err;
@@ -371,22 +449,38 @@ static int st_lsm6dsx_check_whoami(struct st_lsm6dsx_hw *hw, int id)
 static int st_lsm6dsx_set_full_scale(struct st_lsm6dsx_sensor *sensor,
 				     u32 gain)
 {
+<<<<<<< HEAD
 	struct st_lsm6dsx_hw *hw = sensor->hw;
 	const struct st_lsm6dsx_reg *reg;
+=======
+	enum st_lsm6dsx_sensor_id id = sensor->id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, err;
 	u8 val;
 
 	for (i = 0; i < ST_LSM6DSX_FS_LIST_SIZE; i++)
+<<<<<<< HEAD
 		if (st_lsm6dsx_fs_table[sensor->id].fs_avl[i].gain == gain)
+=======
+		if (st_lsm6dsx_fs_table[id].fs_avl[i].gain == gain)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 	if (i == ST_LSM6DSX_FS_LIST_SIZE)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	val = st_lsm6dsx_fs_table[sensor->id].fs_avl[i].val;
 	reg = &st_lsm6dsx_fs_table[sensor->id].reg;
 	err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
 				 ST_LSM6DSX_SHIFT_VAL(val, reg->mask));
+=======
+	val = st_lsm6dsx_fs_table[id].fs_avl[i].val;
+	err = st_lsm6dsx_write_with_mask(sensor->hw,
+					 st_lsm6dsx_fs_table[id].reg.addr,
+					 st_lsm6dsx_fs_table[id].reg.mask,
+					 val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return err;
 
@@ -408,14 +502,22 @@ static int st_lsm6dsx_check_odr(struct st_lsm6dsx_sensor *sensor, u16 odr,
 		return -EINVAL;
 
 	*val = st_lsm6dsx_odr_table[sensor->id].odr_avl[i].val;
+<<<<<<< HEAD
+=======
+	sensor->odr = odr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u16 odr)
 {
+<<<<<<< HEAD
 	struct st_lsm6dsx_hw *hw = sensor->hw;
 	const struct st_lsm6dsx_reg *reg;
+=======
+	enum st_lsm6dsx_sensor_id id = sensor->id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 	u8 val;
 
@@ -423,9 +525,16 @@ static int st_lsm6dsx_set_odr(struct st_lsm6dsx_sensor *sensor, u16 odr)
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	reg = &st_lsm6dsx_odr_table[sensor->id].reg;
 	return regmap_update_bits(hw->regmap, reg->addr, reg->mask,
 				  ST_LSM6DSX_SHIFT_VAL(val, reg->mask));
+=======
+	return st_lsm6dsx_write_with_mask(sensor->hw,
+					  st_lsm6dsx_odr_table[id].reg.addr,
+					  st_lsm6dsx_odr_table[id].reg.mask,
+					  val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int st_lsm6dsx_sensor_enable(struct st_lsm6dsx_sensor *sensor)
@@ -443,6 +552,7 @@ int st_lsm6dsx_sensor_enable(struct st_lsm6dsx_sensor *sensor)
 
 int st_lsm6dsx_sensor_disable(struct st_lsm6dsx_sensor *sensor)
 {
+<<<<<<< HEAD
 	struct st_lsm6dsx_hw *hw = sensor->hw;
 	const struct st_lsm6dsx_reg *reg;
 	int err;
@@ -454,6 +564,18 @@ int st_lsm6dsx_sensor_disable(struct st_lsm6dsx_sensor *sensor)
 		return err;
 
 	sensor->hw->enable_mask &= ~BIT(sensor->id);
+=======
+	enum st_lsm6dsx_sensor_id id = sensor->id;
+	int err;
+
+	err = st_lsm6dsx_write_with_mask(sensor->hw,
+					 st_lsm6dsx_odr_table[id].reg.addr,
+					 st_lsm6dsx_odr_table[id].reg.mask, 0);
+	if (err < 0)
+		return err;
+
+	sensor->hw->enable_mask &= ~BIT(id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -461,7 +583,10 @@ int st_lsm6dsx_sensor_disable(struct st_lsm6dsx_sensor *sensor)
 static int st_lsm6dsx_read_oneshot(struct st_lsm6dsx_sensor *sensor,
 				   u8 addr, int *val)
 {
+<<<<<<< HEAD
 	struct st_lsm6dsx_hw *hw = sensor->hw;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err, delay;
 	__le16 data;
 
@@ -472,7 +597,12 @@ static int st_lsm6dsx_read_oneshot(struct st_lsm6dsx_sensor *sensor,
 	delay = 1000000 / sensor->odr;
 	usleep_range(delay, 2 * delay);
 
+<<<<<<< HEAD
 	err = regmap_bulk_read(hw->regmap, addr, &data, sizeof(data));
+=======
+	err = sensor->hw->tf->read(sensor->hw->dev, addr, sizeof(data),
+				   (u8 *)&data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return err;
 
@@ -535,8 +665,11 @@ static int st_lsm6dsx_write_raw(struct iio_dev *iio_dev,
 		u8 data;
 
 		err = st_lsm6dsx_check_odr(sensor, val, &data);
+<<<<<<< HEAD
 		if (!err)
 			sensor->odr = val;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	default:
@@ -553,6 +686,7 @@ static int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
 {
 	struct st_lsm6dsx_sensor *sensor = iio_priv(iio_dev);
 	struct st_lsm6dsx_hw *hw = sensor->hw;
+<<<<<<< HEAD
 	int err;
 
 	if (val < 1 || val > hw->settings->max_fifo_size)
@@ -564,6 +698,15 @@ static int st_lsm6dsx_set_watermark(struct iio_dev *iio_dev, unsigned int val)
 
 	mutex_unlock(&hw->conf_lock);
 
+=======
+	int err, max_fifo_len;
+
+	max_fifo_len = hw->settings->max_fifo_size / ST_LSM6DSX_SAMPLE_SIZE;
+	if (val < 1 || val > max_fifo_len)
+		return -EINVAL;
+
+	err = st_lsm6dsx_update_watermark(sensor, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return err;
 
@@ -622,6 +765,10 @@ static const struct attribute_group st_lsm6dsx_acc_attribute_group = {
 };
 
 static const struct iio_info st_lsm6dsx_acc_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &st_lsm6dsx_acc_attribute_group,
 	.read_raw = st_lsm6dsx_read_raw,
 	.write_raw = st_lsm6dsx_write_raw,
@@ -639,6 +786,10 @@ static const struct attribute_group st_lsm6dsx_gyro_attribute_group = {
 };
 
 static const struct iio_info st_lsm6dsx_gyro_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &st_lsm6dsx_gyro_attribute_group,
 	.read_raw = st_lsm6dsx_read_raw,
 	.write_raw = st_lsm6dsx_write_raw,
@@ -685,6 +836,7 @@ static int st_lsm6dsx_get_drdy_reg(struct st_lsm6dsx_hw *hw, u8 *drdy_reg)
 	return err;
 }
 
+<<<<<<< HEAD
 static int st_lsm6dsx_init_hw_timer(struct st_lsm6dsx_hw *hw)
 {
 	const struct st_lsm6dsx_hw_ts_settings *ts_settings;
@@ -730,15 +882,42 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
 
 	err = regmap_write(hw->regmap, ST_LSM6DSX_REG_RESET_ADDR,
 			   ST_LSM6DSX_REG_RESET_MASK);
+=======
+static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
+{
+	u8 data, drdy_int_reg;
+	int err;
+
+	data = ST_LSM6DSX_REG_RESET_MASK;
+	err = hw->tf->write(hw->dev, ST_LSM6DSX_REG_RESET_ADDR, sizeof(data),
+			    &data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return err;
 
 	msleep(200);
 
+<<<<<<< HEAD
 	/* enable Block Data Update */
 	err = regmap_update_bits(hw->regmap, ST_LSM6DSX_REG_BDU_ADDR,
 				 ST_LSM6DSX_REG_BDU_MASK,
 				 FIELD_PREP(ST_LSM6DSX_REG_BDU_MASK, 1));
+=======
+	/* latch interrupts */
+	err = st_lsm6dsx_write_with_mask(hw, ST_LSM6DSX_REG_LIR_ADDR,
+					 ST_LSM6DSX_REG_LIR_MASK, 1);
+	if (err < 0)
+		return err;
+
+	/* enable Block Data Update */
+	err = st_lsm6dsx_write_with_mask(hw, ST_LSM6DSX_REG_BDU_ADDR,
+					 ST_LSM6DSX_REG_BDU_MASK, 1);
+	if (err < 0)
+		return err;
+
+	err = st_lsm6dsx_write_with_mask(hw, ST_LSM6DSX_REG_ROUNDING_ADDR,
+					 ST_LSM6DSX_REG_ROUNDING_MASK, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return err;
 
@@ -747,6 +926,7 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	err = regmap_update_bits(hw->regmap, drdy_int_reg,
 				 ST_LSM6DSX_REG_FIFO_FTH_IRQ_MASK,
 				 FIELD_PREP(ST_LSM6DSX_REG_FIFO_FTH_IRQ_MASK,
@@ -755,6 +935,10 @@ static int st_lsm6dsx_init_device(struct st_lsm6dsx_hw *hw)
 		return err;
 
 	return st_lsm6dsx_init_hw_timer(hw);
+=======
+	return st_lsm6dsx_write_with_mask(hw, drdy_int_reg,
+					  ST_LSM6DSX_REG_FIFO_FTH_IRQ_MASK, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
@@ -785,6 +969,10 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
 		iio_dev->num_channels = ARRAY_SIZE(st_lsm6dsx_acc_channels);
 		iio_dev->info = &st_lsm6dsx_acc_info;
 
+<<<<<<< HEAD
+=======
+		sensor->decimator_mask = ST_LSM6DSX_REG_ACC_DEC_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		scnprintf(sensor->name, sizeof(sensor->name), "%s_accel",
 			  name);
 		break;
@@ -793,6 +981,10 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
 		iio_dev->num_channels = ARRAY_SIZE(st_lsm6dsx_gyro_channels);
 		iio_dev->info = &st_lsm6dsx_gyro_info;
 
+<<<<<<< HEAD
+=======
+		sensor->decimator_mask = ST_LSM6DSX_REG_GYRO_DEC_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		scnprintf(sensor->name, sizeof(sensor->name), "%s_gyro",
 			  name);
 		break;
@@ -805,7 +997,11 @@ static struct iio_dev *st_lsm6dsx_alloc_iiodev(struct st_lsm6dsx_hw *hw,
 }
 
 int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
+<<<<<<< HEAD
 		     struct regmap *regmap)
+=======
+		     const struct st_lsm6dsx_transfer_function *tf_ops)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct st_lsm6dsx_hw *hw;
 	int i, err;
@@ -816,6 +1012,7 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
 
 	dev_set_drvdata(dev, (void *)hw);
 
+<<<<<<< HEAD
 	mutex_init(&hw->fifo_lock);
 	mutex_init(&hw->conf_lock);
 
@@ -826,6 +1023,14 @@ int st_lsm6dsx_probe(struct device *dev, int irq, int hw_id, const char *name,
 	hw->dev = dev;
 	hw->irq = irq;
 	hw->regmap = regmap;
+=======
+	mutex_init(&hw->lock);
+	mutex_init(&hw->fifo_lock);
+
+	hw->dev = dev;
+	hw->irq = irq;
+	hw->tf = tf_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = st_lsm6dsx_check_whoami(hw, hw_id);
 	if (err < 0)
@@ -861,7 +1066,10 @@ static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
 {
 	struct st_lsm6dsx_hw *hw = dev_get_drvdata(dev);
 	struct st_lsm6dsx_sensor *sensor;
+<<<<<<< HEAD
 	const struct st_lsm6dsx_reg *reg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, err = 0;
 
 	for (i = 0; i < ST_LSM6DSX_ID_MAX; i++) {
@@ -869,9 +1077,15 @@ static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
 		if (!(hw->enable_mask & BIT(sensor->id)))
 			continue;
 
+<<<<<<< HEAD
 		reg = &st_lsm6dsx_odr_table[sensor->id].reg;
 		err = regmap_update_bits(hw->regmap, reg->addr, reg->mask,
 					 ST_LSM6DSX_SHIFT_VAL(0, reg->mask));
+=======
+		err = st_lsm6dsx_write_with_mask(hw,
+				st_lsm6dsx_odr_table[sensor->id].reg.addr,
+				st_lsm6dsx_odr_table[sensor->id].reg.mask, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0)
 			return err;
 	}

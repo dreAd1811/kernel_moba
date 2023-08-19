@@ -1,9 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Performance event support for the System z CPU-measurement Sampling Facility
  *
  * Copyright IBM Corp. 2013, 2018
  * Author(s): Hendrik Brueckner <brueckner@linux.vnet.ibm.com>
+=======
+/*
+ * Performance event support for the System z CPU-measurement Sampling Facility
+ *
+ * Copyright IBM Corp. 2013
+ * Author(s): Hendrik Brueckner <brueckner@linux.vnet.ibm.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License (version 2 only)
+ * as published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define KMSG_COMPONENT	"cpum_sf"
 #define pr_fmt(fmt)	KMSG_COMPONENT ": " fmt
@@ -12,7 +24,10 @@
 #include <linux/kernel_stat.h>
 #include <linux/perf_event.h>
 #include <linux/percpu.h>
+<<<<<<< HEAD
 #include <linux/pid.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/notifier.h>
 #include <linux/export.h>
 #include <linux/slab.h>
@@ -75,6 +90,7 @@ struct sf_buffer {
 	unsigned long	 *tail;	    /* last sample-data-block-table */
 };
 
+<<<<<<< HEAD
 struct aux_buffer {
 	struct sf_buffer sfb;
 	unsigned long head;	   /* index of SDB of buffer head */
@@ -84,6 +100,8 @@ struct aux_buffer {
 	unsigned long *sdbt_index; /* SDBT address for fast lookup */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cpu_hw_sf {
 	/* CPU-measurement sampling information block */
 	struct hws_qsi_info_block qsi;
@@ -92,7 +110,10 @@ struct cpu_hw_sf {
 	struct sf_buffer sfb;	    /* Sampling buffer */
 	unsigned int flags;	    /* Status flags */
 	struct perf_event *event;   /* Scheduled perf event */
+<<<<<<< HEAD
 	struct perf_output_handle handle; /* AUX buffer output handle */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 static DEFINE_PER_CPU(struct cpu_hw_sf, cpu_hw_sf);
 
@@ -193,7 +214,11 @@ static int realloc_sampling_buffer(struct sf_buffer *sfb,
 				   unsigned long num_sdb, gfp_t gfp_flags)
 {
 	int i, rc;
+<<<<<<< HEAD
 	unsigned long *new, *tail;
+=======
+	unsigned long *new, *tail, *tail_prev = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!sfb->sdbt || !sfb->tail)
 		return -EINVAL;
@@ -232,6 +257,10 @@ static int realloc_sampling_buffer(struct sf_buffer *sfb,
 			sfb->num_sdbt++;
 			/* Link current page to tail of chain */
 			*tail = (unsigned long)(void *) new + 1;
+<<<<<<< HEAD
+=======
+			tail_prev = tail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tail = new;
 		}
 
@@ -241,10 +270,29 @@ static int realloc_sampling_buffer(struct sf_buffer *sfb,
 		 * issue, a new realloc call (if required) might succeed.
 		 */
 		rc = alloc_sample_data_block(tail, gfp_flags);
+<<<<<<< HEAD
 		if (rc)
 			break;
 		sfb->num_sdb++;
 		tail++;
+=======
+		if (rc) {
+			/* Undo last SDBT. An SDBT with no SDB at its first
+			 * entry but with an SDBT entry instead can not be
+			 * handled by the interrupt handler code.
+			 * Avoid this situation.
+			 */
+			if (tail_prev) {
+				sfb->num_sdbt--;
+				free_page((unsigned long) new);
+				tail = tail_prev;
+			}
+			break;
+		}
+		sfb->num_sdb++;
+		tail++;
+		tail_prev = new = NULL;	/* Allocated at least one SBD */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Link sampling buffer to its origin */
@@ -349,6 +397,25 @@ static void sfb_init_allocs(unsigned long num, struct hw_perf_event *hwc)
 	sfb_account_allocs(num, hwc);
 }
 
+<<<<<<< HEAD
+=======
+static size_t event_sample_size(struct hw_perf_event *hwc)
+{
+	struct sf_raw_sample *sfr = (struct sf_raw_sample *) RAWSAMPLE_REG(hwc);
+	size_t sample_size;
+
+	/* The sample size depends on the sampling function: The basic-sampling
+	 * function must be always enabled, diagnostic-sampling function is
+	 * optional.
+	 */
+	sample_size = sfr->bsdes;
+	if (SAMPL_DIAG_MODE(hwc))
+		sample_size += sfr->dsdes;
+
+	return sample_size;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void deallocate_buffers(struct cpu_hw_sf *cpuhw)
 {
 	if (cpuhw->sfb.sdbt)
@@ -358,7 +425,39 @@ static void deallocate_buffers(struct cpu_hw_sf *cpuhw)
 static int allocate_buffers(struct cpu_hw_sf *cpuhw, struct hw_perf_event *hwc)
 {
 	unsigned long n_sdb, freq, factor;
+<<<<<<< HEAD
 	size_t sample_size;
+=======
+	size_t sfr_size, sample_size;
+	struct sf_raw_sample *sfr;
+
+	/* Allocate raw sample buffer
+	 *
+	 *    The raw sample buffer is used to temporarily store sampling data
+	 *    entries for perf raw sample processing.  The buffer size mainly
+	 *    depends on the size of diagnostic-sampling data entries which is
+	 *    machine-specific.  The exact size calculation includes:
+	 *	1. The first 4 bytes of diagnostic-sampling data entries are
+	 *	   already reflected in the sf_raw_sample structure.  Subtract
+	 *	   these bytes.
+	 *	2. The perf raw sample data must be 8-byte aligned (u64) and
+	 *	   perf's internal data size must be considered too.  So add
+	 *	   an additional u32 for correct alignment and subtract before
+	 *	   allocating the buffer.
+	 *	3. Store the raw sample buffer pointer in the perf event
+	 *	   hardware structure.
+	 */
+	sfr_size = ALIGN((sizeof(*sfr) - sizeof(sfr->diag) + cpuhw->qsi.dsdes) +
+			 sizeof(u32), sizeof(u64));
+	sfr_size -= sizeof(u32);
+	sfr = kzalloc(sfr_size, GFP_KERNEL);
+	if (!sfr)
+		return -ENOMEM;
+	sfr->size = sfr_size;
+	sfr->bsdes = cpuhw->qsi.bsdes;
+	sfr->dsdes = cpuhw->qsi.dsdes;
+	RAWSAMPLE_REG(hwc) = (unsigned long) sfr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Calculate sampling buffers using 4K pages
 	 *
@@ -384,7 +483,11 @@ static int allocate_buffers(struct cpu_hw_sf *cpuhw, struct hw_perf_event *hwc)
 	 *	 ensure a minimum of CPUM_SF_MIN_SDBT (one table can manage up
 	 *	 to 511 SDBs).
 	 */
+<<<<<<< HEAD
 	sample_size = sizeof(struct hws_basic_entry);
+=======
+	sample_size = event_sample_size(hwc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	freq = sample_rate_to_freq(&cpuhw->qsi, SAMPL_RATE(hwc));
 	factor = 1;
 	n_sdb = DIV_ROUND_UP(freq, factor * ((PAGE_SIZE-64) / sample_size));
@@ -583,6 +686,13 @@ static int reserve_pmc_hardware(void)
 
 static void hw_perf_event_destroy(struct perf_event *event)
 {
+<<<<<<< HEAD
+=======
+	/* Free raw sample buffer */
+	if (RAWSAMPLE_REG(&event->hw))
+		kfree((void *) RAWSAMPLE_REG(&event->hw));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Release PMC if this is the last perf event */
 	if (!atomic_add_unless(&num_events, -1, 1)) {
 		mutex_lock(&pmc_reserve_mutex);
@@ -602,8 +712,20 @@ static void hw_init_period(struct hw_perf_event *hwc, u64 period)
 static void hw_reset_registers(struct hw_perf_event *hwc,
 			       unsigned long *sdbt_origin)
 {
+<<<<<<< HEAD
 	/* (Re)set to first sample-data-block-table */
 	TEAR_REG(hwc) = (unsigned long) sdbt_origin;
+=======
+	struct sf_raw_sample *sfr;
+
+	/* (Re)set to first sample-data-block-table */
+	TEAR_REG(hwc) = (unsigned long) sdbt_origin;
+
+	/* (Re)set raw sampling buffer register */
+	sfr = (struct sf_raw_sample *) RAWSAMPLE_REG(hwc);
+	memset(&sfr->basic, 0, sizeof(sfr->basic));
+	memset(&sfr->diag, 0, sfr->dsdes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long hw_limit_rate(const struct hws_qsi_info_block *si,
@@ -613,6 +735,7 @@ static unsigned long hw_limit_rate(const struct hws_qsi_info_block *si,
 		       si->min_sampl_rate, si->max_sampl_rate);
 }
 
+<<<<<<< HEAD
 static u32 cpumsf_pid_type(struct perf_event *event,
 			   u32 pid, enum pid_type type)
 {
@@ -674,6 +797,8 @@ out:
 	rcu_read_unlock();
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __hw_perf_event_init(struct perf_event *event)
 {
 	struct cpu_hw_sf *cpuhw;
@@ -788,10 +913,13 @@ static int __hw_perf_event_init(struct perf_event *event)
 	hwc->extra_reg.reg = REG_OVERFLOW;
 	OVERFLOW_REG(hwc) = 0;
 
+<<<<<<< HEAD
 	/* Use AUX buffer. No need to allocate it by ourself */
 	if (attr->config == PERF_EVENT_CPUM_SF_DIAG)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Allocate the per-CPU sampling buffer using the CPU information
 	 * from the event.  If the event is not pinned to a particular
 	 * CPU (event->cpu == -1; or cpuhw == NULL), allocate sampling
@@ -811,6 +939,7 @@ static int __hw_perf_event_init(struct perf_event *event)
 				break;
 		}
 	}
+<<<<<<< HEAD
 
 	/* If PID/TID sampling is active, replace the default overflow
 	 * handler to extract and resolve the PIDs from the basic-sampling
@@ -819,6 +948,8 @@ static int __hw_perf_event_init(struct perf_event *event)
 	if (event->attr.sample_type & PERF_SAMPLE_TID)
 		if (is_default_overflow_handler(event))
 			event->overflow_handler = cpumsf_output_event_pid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return err;
 }
@@ -853,8 +984,17 @@ static int cpumsf_pmu_event_init(struct perf_event *event)
 	}
 
 	/* Check online status of the CPU to which the event is pinned */
+<<<<<<< HEAD
 	if (event->cpu >= 0 && !cpu_online(event->cpu))
 			return -ENODEV;
+=======
+	if (event->cpu >= 0) {
+		if ((unsigned int)event->cpu >= nr_cpumask_bits)
+			return -ENODEV;
+		if (!cpu_online(event->cpu))
+			return -ENODEV;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Force reset of idle/hv excludes regardless of what the
 	 * user requested.
@@ -896,6 +1036,7 @@ static void cpumsf_pmu_enable(struct pmu *pmu)
 	 */
 	if (cpuhw->event) {
 		hwc = &cpuhw->event->hw;
+<<<<<<< HEAD
 		if (!(SAMPL_DIAG_MODE(hwc))) {
 			/*
 			 * Account number of overflow-designated
@@ -905,6 +1046,12 @@ static void cpumsf_pmu_enable(struct pmu *pmu)
 			if (sfb_has_pending_allocs(&cpuhw->sfb, hwc))
 				extend_sampling_buffer(&cpuhw->sfb, hwc);
 		}
+=======
+		/* Account number of overflow-designated buffer extents */
+		sfb_account_overflows(cpuhw, hwc);
+		if (sfb_has_pending_allocs(&cpuhw->sfb, hwc))
+			extend_sampling_buffer(&cpuhw->sfb, hwc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* (Re)enable the PMU and sampling facility */
@@ -919,9 +1066,12 @@ static void cpumsf_pmu_enable(struct pmu *pmu)
 		return;
 	}
 
+<<<<<<< HEAD
 	/* Load current program parameter */
 	lpp(&S390_lowcore.lpp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	debug_sprintf_event(sfdbg, 6, "pmu_enable: es=%i cs=%i ed=%i cd=%i "
 			    "tear=%p dear=%p\n", cpuhw->lsctl.es, cpuhw->lsctl.cs,
 			    cpuhw->lsctl.ed, cpuhw->lsctl.cd,
@@ -1005,16 +1155,33 @@ static int perf_exclude_event(struct perf_event *event, struct pt_regs *regs,
  *
  * Return non-zero if an event overflow occurred.
  */
+<<<<<<< HEAD
 static int perf_push_sample(struct perf_event *event,
 			    struct hws_basic_entry *basic)
+=======
+static int perf_push_sample(struct perf_event *event, struct sf_raw_sample *sfr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int overflow;
 	struct pt_regs regs;
 	struct perf_sf_sde_regs *sde_regs;
 	struct perf_sample_data data;
+<<<<<<< HEAD
 
 	/* Setup perf sample */
 	perf_sample_data_init(&data, 0, event->hw.last_period);
+=======
+	struct perf_raw_record raw = {
+		.frag = {
+			.size = sfr->size,
+			.data = sfr,
+		},
+	};
+
+	/* Setup perf sample */
+	perf_sample_data_init(&data, 0, event->hw.last_period);
+	data.raw = &raw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup pt_regs to look like an CPU-measurement external interrupt
 	 * using the Program Request Alert code.  The regs.int_parm_long
@@ -1026,11 +1193,19 @@ static int perf_push_sample(struct perf_event *event,
 	regs.int_parm = CPU_MF_INT_SF_PRA;
 	sde_regs = (struct perf_sf_sde_regs *) &regs.int_parm_long;
 
+<<<<<<< HEAD
 	psw_bits(regs.psw).ia	= basic->ia;
 	psw_bits(regs.psw).dat	= basic->T;
 	psw_bits(regs.psw).wait = basic->W;
 	psw_bits(regs.psw).pstate = basic->P;
 	psw_bits(regs.psw).as	= basic->AS;
+=======
+	psw_bits(regs.psw).ia	= sfr->basic.ia;
+	psw_bits(regs.psw).dat	= sfr->basic.T;
+	psw_bits(regs.psw).wait = sfr->basic.W;
+	psw_bits(regs.psw).pstate = sfr->basic.P;
+	psw_bits(regs.psw).as	= sfr->basic.AS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Use the hardware provided configuration level to decide if the
@@ -1043,7 +1218,11 @@ static int perf_push_sample(struct perf_event *event,
 	 * If the value differs from 0xffff (the host value), we assume to
 	 * be a KVM guest.
 	 */
+<<<<<<< HEAD
 	switch (basic->CL) {
+=======
+	switch (sfr->basic.CL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 1: /* logical partition */
 		sde_regs->in_guest = 0;
 		break;
@@ -1051,17 +1230,24 @@ static int perf_push_sample(struct perf_event *event,
 		sde_regs->in_guest = 1;
 		break;
 	default: /* old machine, use heuristics */
+<<<<<<< HEAD
 		if (basic->gpp || basic->prim_asn != 0xffff)
+=======
+		if (sfr->basic.gpp || sfr->basic.prim_asn != 0xffff)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sde_regs->in_guest = 1;
 		break;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Store the PID value from the sample-data-entry to be
 	 * processed and resolved by cpumsf_output_event_pid().
 	 */
 	data.tid_entry.pid = basic->hpp & LPP_PID_MASK;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	overflow = 0;
 	if (perf_exclude_event(event, &regs, sde_regs))
 		goto out;
@@ -1079,12 +1265,84 @@ static void perf_event_count_update(struct perf_event *event, u64 count)
 	local64_add(count, &event->count);
 }
 
+<<<<<<< HEAD
 static void debug_sample_entry(struct hws_basic_entry *sample,
 			       struct hws_trailer_entry *te)
 {
 	debug_sprintf_event(sfdbg, 4, "hw_collect_samples: Found unknown "
 			    "sampling data entry: te->f=%i basic.def=%04x (%p)\n",
 			    te->f, sample->def, sample);
+=======
+static int sample_format_is_valid(struct hws_combined_entry *sample,
+				   unsigned int flags)
+{
+	if (likely(flags & PERF_CPUM_SF_BASIC_MODE))
+		/* Only basic-sampling data entries with data-entry-format
+		 * version of 0x0001 can be processed.
+		 */
+		if (sample->basic.def != 0x0001)
+			return 0;
+	if (flags & PERF_CPUM_SF_DIAG_MODE)
+		/* The data-entry-format number of diagnostic-sampling data
+		 * entries can vary.  Because diagnostic data is just passed
+		 * through, do only a sanity check on the DEF.
+		 */
+		if (sample->diag.def < 0x8001)
+			return 0;
+	return 1;
+}
+
+static int sample_is_consistent(struct hws_combined_entry *sample,
+				unsigned long flags)
+{
+	/* This check applies only to basic-sampling data entries of potentially
+	 * combined-sampling data entries.  Invalid entries cannot be processed
+	 * by the PMU and, thus, do not deliver an associated
+	 * diagnostic-sampling data entry.
+	 */
+	if (unlikely(!(flags & PERF_CPUM_SF_BASIC_MODE)))
+		return 0;
+	/*
+	 * Samples are skipped, if they are invalid or for which the
+	 * instruction address is not predictable, i.e., the wait-state bit is
+	 * set.
+	 */
+	if (sample->basic.I || sample->basic.W)
+		return 0;
+	return 1;
+}
+
+static void reset_sample_slot(struct hws_combined_entry *sample,
+			      unsigned long flags)
+{
+	if (likely(flags & PERF_CPUM_SF_BASIC_MODE))
+		sample->basic.def = 0;
+	if (flags & PERF_CPUM_SF_DIAG_MODE)
+		sample->diag.def = 0;
+}
+
+static void sfr_store_sample(struct sf_raw_sample *sfr,
+			     struct hws_combined_entry *sample)
+{
+	if (likely(sfr->format & PERF_CPUM_SF_BASIC_MODE))
+		sfr->basic = sample->basic;
+	if (sfr->format & PERF_CPUM_SF_DIAG_MODE)
+		memcpy(&sfr->diag, &sample->diag, sfr->dsdes);
+}
+
+static void debug_sample_entry(struct hws_combined_entry *sample,
+			       struct hws_trailer_entry *te,
+			       unsigned long flags)
+{
+	debug_sprintf_event(sfdbg, 4, "hw_collect_samples: Found unknown "
+			    "sampling data entry: te->f=%i basic.def=%04x (%p)"
+			    " diag.def=%04x (%p)\n", te->f,
+			    sample->basic.def, &sample->basic,
+			    (flags & PERF_CPUM_SF_DIAG_MODE)
+					? sample->diag.def : 0xFFFF,
+			    (flags & PERF_CPUM_SF_DIAG_MODE)
+					?  &sample->diag : NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* hw_collect_samples() - Walk through a sample-data-block and collect samples
@@ -1110,6 +1368,7 @@ static void debug_sample_entry(struct hws_basic_entry *sample,
 static void hw_collect_samples(struct perf_event *event, unsigned long *sdbt,
 			       unsigned long long *overflow)
 {
+<<<<<<< HEAD
 	struct hws_trailer_entry *te;
 	struct hws_basic_entry *sample;
 
@@ -1118,29 +1377,63 @@ static void hw_collect_samples(struct perf_event *event, unsigned long *sdbt,
 	while ((unsigned long *) sample < (unsigned long *) te) {
 		/* Check for an empty sample */
 		if (!sample->def)
+=======
+	unsigned long flags = SAMPL_FLAGS(&event->hw);
+	struct hws_combined_entry *sample;
+	struct hws_trailer_entry *te;
+	struct sf_raw_sample *sfr;
+	size_t sample_size;
+
+	/* Prepare and initialize raw sample data */
+	sfr = (struct sf_raw_sample *) RAWSAMPLE_REG(&event->hw);
+	sfr->format = flags & PERF_CPUM_SF_MODE_MASK;
+
+	sample_size = event_sample_size(&event->hw);
+	te = (struct hws_trailer_entry *) trailer_entry_ptr(*sdbt);
+	sample = (struct hws_combined_entry *) *sdbt;
+	while ((unsigned long *) sample < (unsigned long *) te) {
+		/* Check for an empty sample */
+		if (!sample->basic.def)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		/* Update perf event period */
 		perf_event_count_update(event, SAMPL_RATE(&event->hw));
 
+<<<<<<< HEAD
 		/* Check whether sample is valid */
 		if (sample->def == 0x0001) {
+=======
+		/* Check sampling data entry */
+		if (sample_format_is_valid(sample, flags)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* If an event overflow occurred, the PMU is stopped to
 			 * throttle event delivery.  Remaining sample data is
 			 * discarded.
 			 */
 			if (!*overflow) {
+<<<<<<< HEAD
 				/* Check whether sample is consistent */
 				if (sample->I == 0 && sample->W == 0) {
 					/* Deliver sample data to perf */
 					*overflow = perf_push_sample(event,
 								     sample);
+=======
+				if (sample_is_consistent(sample, flags)) {
+					/* Deliver sample data to perf */
+					sfr_store_sample(sfr, sample);
+					*overflow = perf_push_sample(event, sfr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				}
 			} else
 				/* Count discarded samples */
 				*overflow += 1;
 		} else {
+<<<<<<< HEAD
 			debug_sample_entry(sample, te);
+=======
+			debug_sample_entry(sample, te, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Sample slot is not yet written or other record.
 			 *
 			 * This condition can occur if the buffer was reused
@@ -1156,8 +1449,13 @@ static void hw_collect_samples(struct perf_event *event, unsigned long *sdbt,
 		}
 
 		/* Reset sample slot and advance to next sample */
+<<<<<<< HEAD
 		sample->def = 0;
 		sample++;
+=======
+		reset_sample_slot(sample, flags);
+		sample += sample_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1183,6 +1481,7 @@ static void hw_perf_event_update(struct perf_event *event, int flush_all)
 	unsigned long long event_overflow, sampl_overflow, num_sdb, te_flags;
 	int done;
 
+<<<<<<< HEAD
 	/*
 	 * AUX buffer is used when in diagnostic sampling mode.
 	 * No perf events/samples are created.
@@ -1190,6 +1489,8 @@ static void hw_perf_event_update(struct perf_event *event, int flush_all)
 	if (SAMPL_DIAG_MODE(&event->hw))
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (flush_all && SDB_FULL_BLOCKS(hwc))
 		flush_all = 0;
 
@@ -1248,24 +1549,47 @@ static void hw_perf_event_update(struct perf_event *event, int flush_all)
 		 */
 		if (flush_all && done)
 			break;
+<<<<<<< HEAD
 
 		/* If an event overflow happened, discard samples by
 		 * processing any remaining sample-data-blocks.
 		 */
 		if (event_overflow)
 			flush_all = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Account sample overflows in the event hardware structure */
 	if (sampl_overflow)
 		OVERFLOW_REG(hwc) = DIV_ROUND_UP(OVERFLOW_REG(hwc) +
 						 sampl_overflow, 1 + num_sdb);
+<<<<<<< HEAD
+=======
+
+	/* Perf_event_overflow() and perf_event_account_interrupt() limit
+	 * the interrupt rate to an upper limit. Roughly 1000 samples per
+	 * task tick.
+	 * Hitting this limit results in a large number
+	 * of throttled REF_REPORT_THROTTLE entries and the samples
+	 * are dropped.
+	 * Slightly increase the interval to avoid hitting this limit.
+	 */
+	if (event_overflow) {
+		SAMPL_RATE(hwc) += DIV_ROUND_UP(SAMPL_RATE(hwc), 10);
+		debug_sprintf_event(sfdbg, 1, "%s: rate adjustment %ld\n",
+				    __func__,
+				    DIV_ROUND_UP(SAMPL_RATE(hwc), 10));
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sampl_overflow || event_overflow)
 		debug_sprintf_event(sfdbg, 4, "hw_perf_event_update: "
 				    "overflow stats: sample=%llu event=%llu\n",
 				    sampl_overflow, event_overflow);
 }
 
+<<<<<<< HEAD
 #define AUX_SDB_INDEX(aux, i) ((i) % aux->sfb.num_sdb)
 #define AUX_SDB_NUM(aux, start, end) (end >= start ? end - start + 1 : 0)
 #define AUX_SDB_NUM_ALERT(aux) AUX_SDB_NUM(aux, aux->head, aux->alert_mark)
@@ -1711,6 +2035,8 @@ no_aux:
 	return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cpumsf_pmu_read(struct perf_event *event)
 {
 	/* Nothing to do ... updates are interrupt-driven */
@@ -1762,13 +2088,20 @@ static void cpumsf_pmu_stop(struct perf_event *event, int flags)
 static int cpumsf_pmu_add(struct perf_event *event, int flags)
 {
 	struct cpu_hw_sf *cpuhw = this_cpu_ptr(&cpu_hw_sf);
+<<<<<<< HEAD
 	struct aux_buffer *aux;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (cpuhw->flags & PMU_F_IN_USE)
 		return -EAGAIN;
 
+<<<<<<< HEAD
 	if (!SAMPL_DIAG_MODE(&event->hw) && !cpuhw->sfb.sdbt)
+=======
+	if (!cpuhw->sfb.sdbt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	err = 0;
@@ -1783,12 +2116,19 @@ static int cpumsf_pmu_add(struct perf_event *event, int flags)
 	 */
 	cpuhw->lsctl.s = 0;
 	cpuhw->lsctl.h = 1;
+<<<<<<< HEAD
 	cpuhw->lsctl.interval = SAMPL_RATE(&event->hw);
 	if (!SAMPL_DIAG_MODE(&event->hw)) {
 		cpuhw->lsctl.tear = (unsigned long) cpuhw->sfb.sdbt;
 		cpuhw->lsctl.dear = *(unsigned long *) cpuhw->sfb.sdbt;
 		hw_reset_registers(&event->hw, cpuhw->sfb.sdbt);
 	}
+=======
+	cpuhw->lsctl.tear = (unsigned long) cpuhw->sfb.sdbt;
+	cpuhw->lsctl.dear = *(unsigned long *) cpuhw->sfb.sdbt;
+	cpuhw->lsctl.interval = SAMPL_RATE(&event->hw);
+	hw_reset_registers(&event->hw, cpuhw->sfb.sdbt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Ensure sampling functions are in the disabled state.  If disabled,
 	 * switch on sampling enable control. */
@@ -1796,6 +2136,7 @@ static int cpumsf_pmu_add(struct perf_event *event, int flags)
 		err = -EAGAIN;
 		goto out;
 	}
+<<<<<<< HEAD
 	if (SAMPL_DIAG_MODE(&event->hw)) {
 		aux = perf_aux_output_begin(&cpuhw->handle, event);
 		if (!aux) {
@@ -1808,6 +2149,11 @@ static int cpumsf_pmu_add(struct perf_event *event, int flags)
 		cpuhw->lsctl.ed = 1;
 	}
 	cpuhw->lsctl.es = 1;
+=======
+	cpuhw->lsctl.es = 1;
+	if (SAMPL_DIAG_MODE(&event->hw))
+		cpuhw->lsctl.ed = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set in_use flag and store event */
 	cpuhw->event = event;
@@ -1833,8 +2179,11 @@ static void cpumsf_pmu_del(struct perf_event *event, int flags)
 	cpuhw->flags &= ~PMU_F_IN_USE;
 	cpuhw->event = NULL;
 
+<<<<<<< HEAD
 	if (SAMPL_DIAG_MODE(&event->hw))
 		aux_output_end(&cpuhw->handle);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	perf_event_update_userpage(event);
 	perf_pmu_enable(event->pmu);
 }
@@ -1882,9 +2231,12 @@ static struct pmu cpumf_sampling = {
 	.read	      = cpumsf_pmu_read,
 
 	.attr_groups  = cpumsf_pmu_attr_groups,
+<<<<<<< HEAD
 
 	.setup_aux    = aux_buffer_setup,
 	.free_aux     = aux_buffer_free,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void cpumf_measurement_alert(struct ext_code ext_code,
@@ -1908,10 +2260,14 @@ static void cpumf_measurement_alert(struct ext_code ext_code,
 	/* Program alert request */
 	if (alert & CPU_MF_INT_SF_PRA) {
 		if (cpuhw->flags & PMU_F_IN_USE)
+<<<<<<< HEAD
 			if (SAMPL_DIAG_MODE(&cpuhw->event->hw))
 				hw_collect_aux(cpuhw);
 			else
 				hw_perf_event_update(cpuhw->event, 0);
+=======
+			hw_perf_event_update(cpuhw->event, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			WARN_ON_ONCE(!(cpuhw->flags & PMU_F_IN_USE));
 	}
@@ -2030,9 +2386,12 @@ static int __init init_cpum_sampling_pmu(void)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	if (!si.as && !si.ad)
 		return -ENODEV;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (si.bsdes != sizeof(struct hws_basic_entry)) {
 		pr_cpumsf_err(RS_INIT_FAILURE_BSDES);
 		return -EINVAL;
@@ -2045,14 +2404,25 @@ static int __init init_cpum_sampling_pmu(void)
 	}
 
 	sfdbg = debug_register(KMSG_COMPONENT, 2, 1, 80);
+<<<<<<< HEAD
 	if (!sfdbg)
 		pr_err("Registering for s390dbf failed\n");
+=======
+	if (!sfdbg) {
+		pr_err("Registering for s390dbf failed\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	debug_register_view(sfdbg, &debug_sprintf_view);
 
 	err = register_external_irq(EXT_IRQ_MEASURE_ALERT,
 				    cpumf_measurement_alert);
 	if (err) {
 		pr_cpumsf_err(RS_INIT_FAILURE_ALRT);
+<<<<<<< HEAD
+=======
+		debug_unregister(sfdbg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -2061,6 +2431,10 @@ static int __init init_cpum_sampling_pmu(void)
 		pr_cpumsf_err(RS_INIT_FAILURE_PERF);
 		unregister_external_irq(EXT_IRQ_MEASURE_ALERT,
 					cpumf_measurement_alert);
+<<<<<<< HEAD
+=======
+		debug_unregister(sfdbg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 

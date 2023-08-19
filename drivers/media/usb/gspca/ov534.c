@@ -612,7 +612,11 @@ static void ov534_reg_write(struct gspca_dev *gspca_dev, u16 reg, u8 val)
 	if (gspca_dev->usb_err < 0)
 		return;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "SET 01 0000 %04x %02x\n", reg, val);
+=======
+	PDEBUG(D_USBO, "SET 01 0000 %04x %02x", reg, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gspca_dev->usb_buf[0] = val;
 	ret = usb_control_msg(udev,
 			      usb_sndctrlpipe(udev, 0),
@@ -637,8 +641,12 @@ static u8 ov534_reg_read(struct gspca_dev *gspca_dev, u16 reg)
 			      0x01,
 			      USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
 			      0x00, reg, gspca_dev->usb_buf, 1, CTRL_TIMEOUT);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBI, "GET 01 0000 %04x %02x\n",
 		  reg, gspca_dev->usb_buf[0]);
+=======
+	PDEBUG(D_USBI, "GET 01 0000 %04x %02x", reg, gspca_dev->usb_buf[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("read failed %d\n", ret);
 		gspca_dev->usb_err = ret;
@@ -657,7 +665,11 @@ static void ov534_set_led(struct gspca_dev *gspca_dev, int status)
 {
 	u8 data;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "led status: %d\n", status);
+=======
+	PDEBUG(D_CONF, "led status: %d", status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = ov534_reg_read(gspca_dev, 0x21);
 	data |= 0x80;
@@ -695,8 +707,13 @@ static int sccb_check_status(struct gspca_dev *gspca_dev)
 		case 0x03:
 			break;
 		default:
+<<<<<<< HEAD
 			gspca_err(gspca_dev, "sccb status 0x%02x, attempt %d/5\n",
 				  data, i + 1);
+=======
+			PERR("sccb status 0x%02x, attempt %d/5",
+			       data, i + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return 0;
@@ -704,7 +721,11 @@ static int sccb_check_status(struct gspca_dev *gspca_dev)
 
 static void sccb_reg_write(struct gspca_dev *gspca_dev, u8 reg, u8 val)
 {
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "sccb write: %02x %02x\n", reg, val);
+=======
+	PDEBUG(D_USBO, "sccb write: %02x %02x", reg, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ov534_reg_write(gspca_dev, OV534_REG_SUBADDR, reg);
 	ov534_reg_write(gspca_dev, OV534_REG_WRITE, val);
 	ov534_reg_write(gspca_dev, OV534_REG_OPERATION, OV534_OP_WRITE_3);
@@ -806,7 +827,11 @@ static void set_frame_rate(struct gspca_dev *gspca_dev)
 	sccb_reg_write(gspca_dev, 0x0d, r->r0d);
 	ov534_reg_write(gspca_dev, 0xe5, r->re5);
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "frame_rate: %d\n", r->fps);
+=======
+	PDEBUG(D_PROBE, "frame_rate: %d", r->fps);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sethue(struct gspca_dev *gspca_dev, s32 val)
@@ -1289,7 +1314,11 @@ static int sd_init(struct gspca_dev *gspca_dev)
 	sensor_id = sccb_reg_read(gspca_dev, 0x0a) << 8;
 	sccb_reg_read(gspca_dev, 0x0b);
 	sensor_id |= sccb_reg_read(gspca_dev, 0x0b);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Sensor ID: %04x\n", sensor_id);
+=======
+	PDEBUG(D_PROBE, "Sensor ID: %04x", sensor_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((sensor_id & 0xfff0) == 0x7670) {
 		sd->sensor = SENSOR_OV767x;
@@ -1413,19 +1442,31 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 
 		/* Verify UVC header.  Header length is always 12 */
 		if (data[0] != 12 || len < 12) {
+<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "bad header\n");
+=======
+			PDEBUG(D_PACK, "bad header");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto discard;
 		}
 
 		/* Check errors */
 		if (data[1] & UVC_STREAM_ERR) {
+<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "payload error\n");
+=======
+			PDEBUG(D_PACK, "payload error");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto discard;
 		}
 
 		/* Extract PTS and FID */
 		if (!(data[1] & UVC_STREAM_PTS)) {
+<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_PACK, "PTS not present\n");
+=======
+			PDEBUG(D_PACK, "PTS not present");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto discard;
 		}
 		this_pts = (data[5] << 24) | (data[4] << 16)
@@ -1448,7 +1489,11 @@ static void sd_pkt_scan(struct gspca_dev *gspca_dev,
 			 && gspca_dev->image_len + len - 12 !=
 				   gspca_dev->pixfmt.width *
 					gspca_dev->pixfmt.height * 2) {
+<<<<<<< HEAD
 				gspca_dbg(gspca_dev, D_PACK, "wrong sized frame\n");
+=======
+				PDEBUG(D_PACK, "wrong sized frame");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto discard;
 			}
 			gspca_frame_add(gspca_dev, LAST_PACKET,
@@ -1481,6 +1526,10 @@ static void sd_get_streamparm(struct gspca_dev *gspca_dev,
 	struct v4l2_fract *tpf = &cp->timeperframe;
 	struct sd *sd = (struct sd *) gspca_dev;
 
+<<<<<<< HEAD
+=======
+	cp->capability |= V4L2_CAP_TIMEPERFRAME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tpf->numerator = 1;
 	tpf->denominator = sd->frame_rate;
 }

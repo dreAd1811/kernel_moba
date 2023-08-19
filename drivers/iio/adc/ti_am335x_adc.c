@@ -523,7 +523,11 @@ static int tiadc_read_raw(struct iio_dev *indio_dev,
 	}
 	am335x_tsc_se_adc_done(adc_dev->mfd_tscadc);
 
+<<<<<<< HEAD
 	if (!found)
+=======
+	if (found == false)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret =  -EBUSY;
 
 err_unlock:
@@ -533,6 +537,10 @@ err_unlock:
 
 static const struct iio_info tiadc_info = {
 	.read_raw = &tiadc_read_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int tiadc_request_dma(struct platform_device *pdev,

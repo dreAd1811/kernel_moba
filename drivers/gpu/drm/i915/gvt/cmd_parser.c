@@ -172,7 +172,10 @@ struct decode_info {
 #define OP_MEDIA_INTERFACE_DESCRIPTOR_LOAD      OP_3D_MEDIA(0x2, 0x0, 0x2)
 #define OP_MEDIA_GATEWAY_STATE                  OP_3D_MEDIA(0x2, 0x0, 0x3)
 #define OP_MEDIA_STATE_FLUSH                    OP_3D_MEDIA(0x2, 0x0, 0x4)
+<<<<<<< HEAD
 #define OP_MEDIA_POOL_STATE                     OP_3D_MEDIA(0x2, 0x0, 0x5)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define OP_MEDIA_OBJECT                         OP_3D_MEDIA(0x2, 0x1, 0x0)
 #define OP_MEDIA_OBJECT_PRT                     OP_3D_MEDIA(0x2, 0x1, 0x2)
@@ -472,7 +475,10 @@ struct parser_exec_state {
 	 * used when ret from 2nd level batch buffer
 	 */
 	int saved_buf_addr_type;
+<<<<<<< HEAD
 	bool is_ctx_wa;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct cmd_info *info;
 
@@ -711,6 +717,7 @@ static void parser_exec_state_dump(struct parser_exec_state *s)
 
 	print_opcode(cmd_val(s, 0), s->ring_id);
 
+<<<<<<< HEAD
 	s->ip_va = (u32 *)((((u64)s->ip_va) >> 12) << 12);
 
 	while (cnt < 1024) {
@@ -718,6 +725,20 @@ static void parser_exec_state_dump(struct parser_exec_state *s)
 		for (i = 0; i < 8; i++)
 			gvt_dbg_cmd("%08x ", cmd_val(s, i));
 		gvt_dbg_cmd("\n");
+=======
+	/* print the whole page to trace */
+	pr_err("    ip_va=%p: %08x %08x %08x %08x\n",
+			s->ip_va, cmd_val(s, 0), cmd_val(s, 1),
+			cmd_val(s, 2), cmd_val(s, 3));
+
+	s->ip_va = (u32 *)((((u64)s->ip_va) >> 12) << 12);
+
+	while (cnt < 1024) {
+		pr_err("ip_va=%p: ", s->ip_va);
+		for (i = 0; i < 8; i++)
+			pr_err("%08x ", cmd_val(s, i));
+		pr_err("\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		s->ip_va += 8 * sizeof(u32);
 		cnt += 8;
@@ -814,6 +835,7 @@ static inline bool is_force_nonpriv_mmio(unsigned int offset)
 }
 
 static int force_nonpriv_reg_handler(struct parser_exec_state *s,
+<<<<<<< HEAD
 		unsigned int offset, unsigned int index, char *cmd)
 {
 	struct intel_gvt *gvt = s->vgpu->gvt;
@@ -855,6 +877,18 @@ static int mocs_cmd_reg_handler(struct parser_exec_state *s,
 	if (!is_mocs_mmio(offset))
 		return -EINVAL;
 	vgpu_vreg(s->vgpu, offset) = cmd_val(s, index + 1);
+=======
+				     unsigned int offset, unsigned int index)
+{
+	struct intel_gvt *gvt = s->vgpu->gvt;
+	unsigned int data = cmd_val(s, index + 1);
+
+	if (!intel_gvt_in_force_nonpriv_whitelist(gvt, data)) {
+		gvt_err("Unexpected forcenonpriv 0x%x LRI write, value=0x%x\n",
+			offset, data);
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -863,18 +897,29 @@ static int cmd_reg_handler(struct parser_exec_state *s,
 {
 	struct intel_vgpu *vgpu = s->vgpu;
 	struct intel_gvt *gvt = vgpu->gvt;
+<<<<<<< HEAD
 	u32 ctx_sr_ctl;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (offset + 4 > gvt->device_info.mmio_size) {
 		gvt_vgpu_err("%s access to (%x) outside of MMIO range\n",
 				cmd, offset);
+<<<<<<< HEAD
 		return -EFAULT;
+=======
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!intel_gvt_mmio_is_cmd_access(gvt, offset)) {
 		gvt_vgpu_err("%s access to non-render register (%x)\n",
 				cmd, offset);
+<<<<<<< HEAD
 		return -EBADRQC;
+=======
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (is_shadowed_mmio(offset)) {
@@ -882,6 +927,7 @@ static int cmd_reg_handler(struct parser_exec_state *s,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (is_mocs_mmio(offset) &&
 	    mocs_cmd_reg_handler(s, offset, index))
 		return -EINVAL;
@@ -889,6 +935,11 @@ static int cmd_reg_handler(struct parser_exec_state *s,
 	if (is_force_nonpriv_mmio(offset) &&
 		force_nonpriv_reg_handler(s, offset, index, cmd))
 		return -EPERM;
+=======
+	if (is_force_nonpriv_mmio(offset) &&
+	    force_nonpriv_reg_handler(s, offset, index))
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (offset == i915_mmio_reg_offset(DERRMR) ||
 		offset == i915_mmio_reg_offset(FORCEWAKE_MT)) {
@@ -896,6 +947,7 @@ static int cmd_reg_handler(struct parser_exec_state *s,
 		patch_value(s, cmd_ptr(s, index), VGT_PVINFO_PAGE);
 	}
 
+<<<<<<< HEAD
 	/* TODO
 	 * Right now only scan LRI command on KBL and in inhibit context.
 	 * It's good enough to support initializing mmio by lri command in
@@ -918,6 +970,8 @@ static int cmd_reg_handler(struct parser_exec_state *s,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* TODO: Update the global mask if this MMIO is a masked-MMIO */
 	intel_gvt_mmio_set_cmd_accessed(gvt, offset);
 	return 0;
@@ -949,14 +1003,21 @@ static int cmd_handler_lri(struct parser_exec_state *s)
 					i915_mmio_reg_offset(DERRMR))
 				ret |= 0;
 			else
+<<<<<<< HEAD
 				ret |= (cmd_reg_inhibit(s, i)) ?
 					-EBADRQC : 0;
+=======
+				ret |= (cmd_reg_inhibit(s, i)) ? -EINVAL : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (ret)
 			break;
 		ret |= cmd_reg_handler(s, cmd_reg(s, i), i, "lri");
+<<<<<<< HEAD
 		if (ret)
 			break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return ret;
 }
@@ -970,6 +1031,7 @@ static int cmd_handler_lrr(struct parser_exec_state *s)
 		if (IS_BROADWELL(s->vgpu->gvt->dev_priv))
 			ret |= ((cmd_reg_inhibit(s, i) ||
 					(cmd_reg_inhibit(s, i + 1)))) ?
+<<<<<<< HEAD
 				-EBADRQC : 0;
 		if (ret)
 			break;
@@ -979,6 +1041,13 @@ static int cmd_handler_lrr(struct parser_exec_state *s)
 		ret |= cmd_reg_handler(s, cmd_reg(s, i + 1), i, "lrr-dst");
 		if (ret)
 			break;
+=======
+				-EINVAL : 0;
+		if (ret)
+			break;
+		ret |= cmd_reg_handler(s, cmd_reg(s, i), i, "lrr-src");
+		ret |= cmd_reg_handler(s, cmd_reg(s, i + 1), i, "lrr-dst");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return ret;
 }
@@ -996,19 +1065,29 @@ static int cmd_handler_lrm(struct parser_exec_state *s)
 
 	for (i = 1; i < cmd_len;) {
 		if (IS_BROADWELL(gvt->dev_priv))
+<<<<<<< HEAD
 			ret |= (cmd_reg_inhibit(s, i)) ? -EBADRQC : 0;
 		if (ret)
 			break;
 		ret |= cmd_reg_handler(s, cmd_reg(s, i), i, "lrm");
 		if (ret)
 			break;
+=======
+			ret |= (cmd_reg_inhibit(s, i)) ? -EINVAL : 0;
+		if (ret)
+			break;
+		ret |= cmd_reg_handler(s, cmd_reg(s, i), i, "lrm");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cmd_val(s, 0) & (1 << 22)) {
 			gma = cmd_gma(s, i + 1);
 			if (gmadr_bytes == 8)
 				gma |= (cmd_gma_hi(s, i + 2)) << 32;
 			ret |= cmd_address_audit(s, gma, sizeof(u32), false);
+<<<<<<< HEAD
 			if (ret)
 				break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		i += gmadr_dw_number(s) + 1;
 	}
@@ -1024,15 +1103,21 @@ static int cmd_handler_srm(struct parser_exec_state *s)
 
 	for (i = 1; i < cmd_len;) {
 		ret |= cmd_reg_handler(s, cmd_reg(s, i), i, "srm");
+<<<<<<< HEAD
 		if (ret)
 			break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cmd_val(s, 0) & (1 << 22)) {
 			gma = cmd_gma(s, i + 1);
 			if (gmadr_bytes == 8)
 				gma |= (cmd_gma_hi(s, i + 2)) << 32;
 			ret |= cmd_address_audit(s, gma, sizeof(u32), false);
+<<<<<<< HEAD
 			if (ret)
 				break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		i += gmadr_dw_number(s) + 1;
 	}
@@ -1120,7 +1205,10 @@ static int cmd_handler_mi_user_interrupt(struct parser_exec_state *s)
 {
 	set_bit(cmd_interrupt_events[s->ring_id].mi_user_interrupt,
 			s->workload->pending_events);
+<<<<<<< HEAD
 	patch_value(s, cmd_ptr(s, 0), MI_NOOP);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1187,7 +1275,11 @@ static int gen8_decode_mi_display_flip(struct parser_exec_state *s,
 
 	v = (dword0 & GENMASK(21, 19)) >> 19;
 	if (WARN_ON(v >= ARRAY_SIZE(gen8_plane_code)))
+<<<<<<< HEAD
 		return -EBADRQC;
+=======
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	info->pipe = gen8_plane_code[v].pipe;
 	info->plane = gen8_plane_code[v].plane;
@@ -1207,7 +1299,11 @@ static int gen8_decode_mi_display_flip(struct parser_exec_state *s,
 		info->surf_reg = SPRSURF(info->pipe);
 	} else {
 		WARN_ON(1);
+<<<<<<< HEAD
 		return -EBADRQC;
+=======
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -1256,7 +1352,11 @@ static int skl_decode_mi_display_flip(struct parser_exec_state *s,
 
 	default:
 		gvt_vgpu_err("unknown plane code %d\n", plane);
+<<<<<<< HEAD
 		return -EBADRQC;
+=======
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	info->stride_val = (dword1 & GENMASK(15, 6)) >> 6;
@@ -1280,6 +1380,7 @@ static int gen8_check_mi_display_flip(struct parser_exec_state *s,
 	if (!info->async_flip)
 		return 0;
 
+<<<<<<< HEAD
 	if (IS_SKYLAKE(dev_priv)
 		|| IS_KABYLAKE(dev_priv)
 		|| IS_BROXTON(dev_priv)) {
@@ -1290,6 +1391,16 @@ static int gen8_check_mi_display_flip(struct parser_exec_state *s,
 		stride = (vgpu_vreg_t(s->vgpu, info->stride_reg) &
 				GENMASK(15, 6)) >> 6;
 		tile = (vgpu_vreg_t(s->vgpu, info->ctrl_reg) & (1 << 10)) >> 10;
+=======
+	if (IS_SKYLAKE(dev_priv) || IS_KABYLAKE(dev_priv)) {
+		stride = vgpu_vreg(s->vgpu, info->stride_reg) & GENMASK(9, 0);
+		tile = (vgpu_vreg(s->vgpu, info->ctrl_reg) &
+				GENMASK(12, 10)) >> 10;
+	} else {
+		stride = (vgpu_vreg(s->vgpu, info->stride_reg) &
+				GENMASK(15, 6)) >> 6;
+		tile = (vgpu_vreg(s->vgpu, info->ctrl_reg) & (1 << 10)) >> 10;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (stride != info->stride_val)
@@ -1308,6 +1419,7 @@ static int gen8_update_plane_mmio_from_mi_display_flip(
 	struct drm_i915_private *dev_priv = s->vgpu->gvt->dev_priv;
 	struct intel_vgpu *vgpu = s->vgpu;
 
+<<<<<<< HEAD
 	set_mask_bits(&vgpu_vreg_t(vgpu, info->surf_reg), GENMASK(31, 12),
 		      info->surf_val << 12);
 	if (IS_SKYLAKE(dev_priv)
@@ -1325,6 +1437,23 @@ static int gen8_update_plane_mmio_from_mi_display_flip(
 	}
 
 	vgpu_vreg_t(vgpu, PIPE_FRMCOUNT_G4X(info->pipe))++;
+=======
+	set_mask_bits(&vgpu_vreg(vgpu, info->surf_reg), GENMASK(31, 12),
+		      info->surf_val << 12);
+	if (IS_SKYLAKE(dev_priv) || IS_KABYLAKE(dev_priv)) {
+		set_mask_bits(&vgpu_vreg(vgpu, info->stride_reg), GENMASK(9, 0),
+			      info->stride_val);
+		set_mask_bits(&vgpu_vreg(vgpu, info->ctrl_reg), GENMASK(12, 10),
+			      info->tile_val << 10);
+	} else {
+		set_mask_bits(&vgpu_vreg(vgpu, info->stride_reg), GENMASK(15, 6),
+			      info->stride_val << 6);
+		set_mask_bits(&vgpu_vreg(vgpu, info->ctrl_reg), GENMASK(10, 10),
+			      info->tile_val << 10);
+	}
+
+	vgpu_vreg(vgpu, PIPE_FRMCOUNT_G4X(info->pipe))++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_vgpu_trigger_virtual_event(vgpu, info->event);
 	return 0;
 }
@@ -1336,9 +1465,13 @@ static int decode_mi_display_flip(struct parser_exec_state *s,
 
 	if (IS_BROADWELL(dev_priv))
 		return gen8_decode_mi_display_flip(s, info);
+<<<<<<< HEAD
 	if (IS_SKYLAKE(dev_priv)
 		|| IS_KABYLAKE(dev_priv)
 		|| IS_BROXTON(dev_priv))
+=======
+	if (IS_SKYLAKE(dev_priv) || IS_KABYLAKE(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return skl_decode_mi_display_flip(s, info);
 
 	return -ENODEV;
@@ -1347,14 +1480,34 @@ static int decode_mi_display_flip(struct parser_exec_state *s,
 static int check_mi_display_flip(struct parser_exec_state *s,
 		struct mi_display_flip_command_info *info)
 {
+<<<<<<< HEAD
 	return gen8_check_mi_display_flip(s, info);
+=======
+	struct drm_i915_private *dev_priv = s->vgpu->gvt->dev_priv;
+
+	if (IS_BROADWELL(dev_priv)
+		|| IS_SKYLAKE(dev_priv)
+		|| IS_KABYLAKE(dev_priv))
+		return gen8_check_mi_display_flip(s, info);
+	return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int update_plane_mmio_from_mi_display_flip(
 		struct parser_exec_state *s,
 		struct mi_display_flip_command_info *info)
 {
+<<<<<<< HEAD
 	return gen8_update_plane_mmio_from_mi_display_flip(s, info);
+=======
+	struct drm_i915_private *dev_priv = s->vgpu->gvt->dev_priv;
+
+	if (IS_BROADWELL(dev_priv)
+		|| IS_SKYLAKE(dev_priv)
+		|| IS_KABYLAKE(dev_priv))
+		return gen8_update_plane_mmio_from_mi_display_flip(s, info);
+	return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cmd_handler_mi_display_flip(struct parser_exec_state *s)
@@ -1413,6 +1566,7 @@ static unsigned long get_gma_bb_from_cmd(struct parser_exec_state *s, int index)
 {
 	unsigned long addr;
 	unsigned long gma_high, gma_low;
+<<<<<<< HEAD
 	struct intel_vgpu *vgpu = s->vgpu;
 	int gmadr_bytes = vgpu->gvt->device_info.gmadr_bytes_in_cmd;
 
@@ -1420,6 +1574,12 @@ static unsigned long get_gma_bb_from_cmd(struct parser_exec_state *s, int index)
 		gvt_vgpu_err("invalid gma bytes %d\n", gmadr_bytes);
 		return INTEL_GVT_INVALID_ADDR;
 	}
+=======
+	int gmadr_bytes = s->vgpu->gvt->device_info.gmadr_bytes_in_cmd;
+
+	if (WARN_ON(gmadr_bytes != 4 && gmadr_bytes != 8))
+		return INTEL_GVT_INVALID_ADDR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gma_low = cmd_val(s, index) & BATCH_BUFFER_ADDR_MASK;
 	if (gmadr_bytes == 4) {
@@ -1442,6 +1602,7 @@ static inline int cmd_address_audit(struct parser_exec_state *s,
 	if (op_size > max_surface_size) {
 		gvt_vgpu_err("command address audit fail name %s\n",
 			s->info->name);
+<<<<<<< HEAD
 		return -EFAULT;
 	}
 
@@ -1452,6 +1613,18 @@ static inline int cmd_address_audit(struct parser_exec_state *s,
 		}
 	} else if (!intel_gvt_ggtt_validate_range(vgpu, guest_gma, op_size)) {
 		ret = -EFAULT;
+=======
+		return -EINVAL;
+	}
+
+	if (index_mode)	{
+		if (guest_gma >= GTT_PAGE_SIZE / sizeof(u64)) {
+			ret = -EINVAL;
+			goto err;
+		}
+	} else if (!intel_gvt_ggtt_validate_range(vgpu, guest_gma, op_size)) {
+		ret = -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -1507,7 +1680,11 @@ static inline int unexpected_cmd(struct parser_exec_state *s)
 
 	gvt_vgpu_err("Unexpected %s in command buffer!\n", s->info->name);
 
+<<<<<<< HEAD
 	return -EBADRQC;
+=======
+	return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cmd_handler_mi_semaphore_wait(struct parser_exec_state *s)
@@ -1613,10 +1790,17 @@ static int copy_gma_to_hva(struct intel_vgpu *vgpu, struct intel_vgpu_mm *mm,
 			return -EFAULT;
 		}
 
+<<<<<<< HEAD
 		offset = gma & (I915_GTT_PAGE_SIZE - 1);
 
 		copy_len = (end_gma - gma) >= (I915_GTT_PAGE_SIZE - offset) ?
 			I915_GTT_PAGE_SIZE - offset : end_gma - gma;
+=======
+		offset = gma & (GTT_PAGE_SIZE - 1);
+
+		copy_len = (end_gma - gma) >= (GTT_PAGE_SIZE - offset) ?
+			GTT_PAGE_SIZE - offset : end_gma - gma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		intel_gvt_hypervisor_read_gpa(vgpu, gpa, va + len, copy_len);
 
@@ -1633,6 +1817,7 @@ static int copy_gma_to_hva(struct intel_vgpu *vgpu, struct intel_vgpu_mm *mm,
  */
 static int batch_buffer_needs_scan(struct parser_exec_state *s)
 {
+<<<<<<< HEAD
 	/* Decide privilege based on address space */
 	if (cmd_val(s, 0) & (1 << 8) &&
 			!(s->vgpu->scan_nonprivbb & (1 << s->ring_id)))
@@ -1693,10 +1878,69 @@ static int find_bb_size(struct parser_exec_state *s, unsigned long *bb_size)
 	} while (!bb_end);
 
 	return 0;
+=======
+	struct intel_gvt *gvt = s->vgpu->gvt;
+
+	if (IS_BROADWELL(gvt->dev_priv) || IS_SKYLAKE(gvt->dev_priv)
+		|| IS_KABYLAKE(gvt->dev_priv)) {
+		/* BDW decides privilege based on address space */
+		if (cmd_val(s, 0) & (1 << 8))
+			return 0;
+	}
+	return 1;
+}
+
+static uint32_t find_bb_size(struct parser_exec_state *s)
+{
+	unsigned long gma = 0;
+	struct cmd_info *info;
+	uint32_t bb_size = 0;
+	uint32_t cmd_len = 0;
+	bool met_bb_end = false;
+	struct intel_vgpu *vgpu = s->vgpu;
+	u32 cmd;
+
+	/* get the start gm address of the batch buffer */
+	gma = get_gma_bb_from_cmd(s, 1);
+	cmd = cmd_val(s, 0);
+
+	info = get_cmd_info(s->vgpu->gvt, cmd, s->ring_id);
+	if (info == NULL) {
+		gvt_vgpu_err("unknown cmd 0x%x, opcode=0x%x\n",
+				cmd, get_opcode(cmd, s->ring_id));
+		return -EINVAL;
+	}
+	do {
+		copy_gma_to_hva(s->vgpu, s->vgpu->gtt.ggtt_mm,
+				gma, gma + 4, &cmd);
+		info = get_cmd_info(s->vgpu->gvt, cmd, s->ring_id);
+		if (info == NULL) {
+			gvt_vgpu_err("unknown cmd 0x%x, opcode=0x%x\n",
+				cmd, get_opcode(cmd, s->ring_id));
+			return -EINVAL;
+		}
+
+		if (info->opcode == OP_MI_BATCH_BUFFER_END) {
+			met_bb_end = true;
+		} else if (info->opcode == OP_MI_BATCH_BUFFER_START) {
+			if (BATCH_BUFFER_2ND_LEVEL_BIT(cmd) == 0) {
+				/* chained batch buffer */
+				met_bb_end = true;
+			}
+		}
+		cmd_len = get_cmd_length(info, cmd) << 2;
+		bb_size += cmd_len;
+		gma += cmd_len;
+
+	} while (!met_bb_end);
+
+	return bb_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int perform_bb_shadow(struct parser_exec_state *s)
 {
+<<<<<<< HEAD
 	struct intel_vgpu *vgpu = s->vgpu;
 	struct intel_vgpu_shadow_bb *bb;
 	unsigned long gma = 0;
@@ -1777,6 +2021,61 @@ static int perform_bb_shadow(struct parser_exec_state *s)
 	else
 		bb->bb_offset = 0;
 
+=======
+	struct intel_shadow_bb_entry *entry_obj;
+	struct intel_vgpu *vgpu = s->vgpu;
+	unsigned long gma = 0;
+	uint32_t bb_size;
+	void *dst = NULL;
+	int ret = 0;
+
+	/* get the start gm address of the batch buffer */
+	gma = get_gma_bb_from_cmd(s, 1);
+
+	/* get the size of the batch buffer */
+	bb_size = find_bb_size(s);
+
+	/* allocate shadow batch buffer */
+	entry_obj = kmalloc(sizeof(*entry_obj), GFP_KERNEL);
+	if (entry_obj == NULL)
+		return -ENOMEM;
+
+	entry_obj->obj =
+		i915_gem_object_create(s->vgpu->gvt->dev_priv,
+				       roundup(bb_size, PAGE_SIZE));
+	if (IS_ERR(entry_obj->obj)) {
+		ret = PTR_ERR(entry_obj->obj);
+		goto free_entry;
+	}
+	entry_obj->len = bb_size;
+	INIT_LIST_HEAD(&entry_obj->list);
+
+	dst = i915_gem_object_pin_map(entry_obj->obj, I915_MAP_WB);
+	if (IS_ERR(dst)) {
+		ret = PTR_ERR(dst);
+		goto put_obj;
+	}
+
+	ret = i915_gem_object_set_to_cpu_domain(entry_obj->obj, false);
+	if (ret) {
+		gvt_vgpu_err("failed to set shadow batch to CPU\n");
+		goto unmap_src;
+	}
+
+	entry_obj->va = dst;
+	entry_obj->bb_start_cmd_va = s->ip_va;
+
+	/* copy batch buffer to shadow batch buffer*/
+	ret = copy_gma_to_hva(s->vgpu, s->vgpu->gtt.ggtt_mm,
+			      gma, gma + bb_size,
+			      dst);
+	if (ret < 0) {
+		gvt_vgpu_err("fail to copy guest ring buffer\n");
+		goto unmap_src;
+	}
+
+	list_add(&entry_obj->list, &s->workload->shadow_bb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * ip_va saves the virtual address of the shadow batch buffer, while
 	 * ip_gma saves the graphics address of the original batch buffer.
@@ -1785,6 +2084,7 @@ static int perform_bb_shadow(struct parser_exec_state *s)
 	 * buffer's gma in pair. After all, we don't want to pin the shadow
 	 * buffer here (too early).
 	 */
+<<<<<<< HEAD
 	s->ip_va = bb->va + gma_start_offset;
 	s->ip_gma = gma;
 	return 0;
@@ -1796,6 +2096,19 @@ err_free_obj:
 	i915_gem_object_put(bb->obj);
 err_free_bb:
 	kfree(bb);
+=======
+	s->ip_va = dst;
+	s->ip_gma = gma;
+
+	return 0;
+
+unmap_src:
+	i915_gem_object_unpin_map(entry_obj->obj);
+put_obj:
+	i915_gem_object_put(entry_obj->obj);
+free_entry:
+	kfree(entry_obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1807,13 +2120,21 @@ static int cmd_handler_mi_batch_buffer_start(struct parser_exec_state *s)
 
 	if (s->buf_type == BATCH_BUFFER_2ND_LEVEL) {
 		gvt_vgpu_err("Found MI_BATCH_BUFFER_START in 2nd level BB\n");
+<<<<<<< HEAD
 		return -EFAULT;
+=======
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	second_level = BATCH_BUFFER_2ND_LEVEL_BIT(cmd_val(s, 0)) == 1;
 	if (second_level && (s->buf_type != BATCH_BUFFER_INSTRUCTION)) {
 		gvt_vgpu_err("Jumping to 2nd level BB from RB is not allowed\n");
+<<<<<<< HEAD
 		return -EFAULT;
+=======
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	s->saved_buf_addr_type = s->buf_addr_type;
@@ -1837,6 +2158,10 @@ static int cmd_handler_mi_batch_buffer_start(struct parser_exec_state *s)
 		if (ret < 0)
 			return ret;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2362,9 +2687,12 @@ static struct cmd_info cmd_info[] = {
 	{"MEDIA_STATE_FLUSH", OP_MEDIA_STATE_FLUSH, F_LEN_VAR, R_RCS, D_ALL,
 		0, 16, NULL},
 
+<<<<<<< HEAD
 	{"MEDIA_POOL_STATE", OP_MEDIA_POOL_STATE, F_LEN_VAR, R_RCS, D_ALL,
 		0, 16, NULL},
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"MEDIA_OBJECT", OP_MEDIA_OBJECT, F_LEN_VAR, R_RCS, D_ALL, 0, 16, NULL},
 
 	{"MEDIA_CURBE_LOAD", OP_MEDIA_CURBE_LOAD, F_LEN_VAR, R_RCS, D_ALL,
@@ -2527,18 +2855,28 @@ static int cmd_parser_exec(struct parser_exec_state *s)
 
 	info = get_cmd_info(s->vgpu->gvt, cmd, s->ring_id);
 	if (info == NULL) {
+<<<<<<< HEAD
 		gvt_vgpu_err("unknown cmd 0x%x, opcode=0x%x, addr_type=%s, ring %d, workload=%p\n",
 				cmd, get_opcode(cmd, s->ring_id),
 				(s->buf_addr_type == PPGTT_BUFFER) ?
 				"ppgtt" : "ggtt", s->ring_id, s->workload);
 		return -EBADRQC;
+=======
+		gvt_vgpu_err("unknown cmd 0x%x, opcode=0x%x\n",
+				cmd, get_opcode(cmd, s->ring_id));
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	s->info = info;
 
 	trace_gvt_command(vgpu->id, s->ring_id, s->ip_gma, s->ip_va,
+<<<<<<< HEAD
 			  cmd_length(s), s->buf_type, s->buf_addr_type,
 			  s->workload, info->name);
+=======
+			  cmd_length(s), s->buf_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (info->handler) {
 		ret = info->handler(s);
@@ -2567,10 +2905,13 @@ static inline bool gma_out_of_range(unsigned long gma,
 		return (gma > gma_tail) && (gma < gma_head);
 }
 
+<<<<<<< HEAD
 /* Keep the consistent return type, e.g EBADRQC for unknown
  * cmd, EFAULT for invalid address, EPERM for nonpriv. later
  * works as the input of VM healthy status.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int command_scan(struct parser_exec_state *s,
 		unsigned long rb_head, unsigned long rb_tail,
 		unsigned long rb_start, unsigned long rb_len)
@@ -2593,7 +2934,11 @@ static int command_scan(struct parser_exec_state *s,
 					s->ip_gma, rb_start,
 					gma_bottom);
 				parser_exec_state_dump(s);
+<<<<<<< HEAD
 				return -EFAULT;
+=======
+				return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			if (gma_out_of_range(s->ip_gma, gma_head, gma_tail)) {
 				gvt_vgpu_err("ip_gma %lx out of range."
@@ -2622,7 +2967,11 @@ static int scan_workload(struct intel_vgpu_workload *workload)
 	int ret = 0;
 
 	/* ring base is page aligned */
+<<<<<<< HEAD
 	if (WARN_ON(!IS_ALIGNED(workload->rb_start, I915_GTT_PAGE_SIZE)))
+=======
+	if (WARN_ON(!IS_ALIGNED(workload->rb_start, GTT_PAGE_SIZE)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	gma_head = workload->rb_start + workload->rb_head;
@@ -2639,7 +2988,10 @@ static int scan_workload(struct intel_vgpu_workload *workload)
 	s.ring_tail = gma_tail;
 	s.rb_va = workload->shadow_ring_buffer_va;
 	s.workload = workload;
+<<<<<<< HEAD
 	s.is_ctx_wa = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((bypass_scan_mask & (1 << workload->ring_id)) ||
 		gma_head == gma_tail)
@@ -2672,8 +3024,12 @@ static int scan_wa_ctx(struct intel_shadow_wa_ctx *wa_ctx)
 				wa_ctx);
 
 	/* ring base is page aligned */
+<<<<<<< HEAD
 	if (WARN_ON(!IS_ALIGNED(wa_ctx->indirect_ctx.guest_gma,
 					I915_GTT_PAGE_SIZE)))
+=======
+	if (WARN_ON(!IS_ALIGNED(wa_ctx->indirect_ctx.guest_gma, GTT_PAGE_SIZE)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	ring_tail = wa_ctx->indirect_ctx.size + 3 * sizeof(uint32_t);
@@ -2693,7 +3049,10 @@ static int scan_wa_ctx(struct intel_shadow_wa_ctx *wa_ctx)
 	s.ring_tail = gma_tail;
 	s.rb_va = wa_ctx->indirect_ctx.shadow_va;
 	s.workload = workload;
+<<<<<<< HEAD
 	s.is_ctx_wa = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_gvt_ggtt_validate_range(s.vgpu, s.ring_start, s.ring_size)) {
 		ret = -EINVAL;
@@ -2713,10 +3072,15 @@ out:
 static int shadow_workload_ring_buffer(struct intel_vgpu_workload *workload)
 {
 	struct intel_vgpu *vgpu = workload->vgpu;
+<<<<<<< HEAD
 	struct intel_vgpu_submission *s = &vgpu->submission;
 	unsigned long gma_head, gma_tail, gma_top, guest_rb_size;
 	void *shadow_ring_buffer_va;
 	int ring_id = workload->ring_id;
+=======
+	unsigned long gma_head, gma_tail, gma_top, guest_rb_size;
+	u32 *cs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	guest_rb_size = _RING_CTL_BUF_SIZE(workload->rb_ctl);
@@ -2729,6 +3093,7 @@ static int shadow_workload_ring_buffer(struct intel_vgpu_workload *workload)
 	gma_tail = workload->rb_start + workload->rb_tail;
 	gma_top = workload->rb_start + guest_rb_size;
 
+<<<<<<< HEAD
 	if (workload->rb_len > s->ring_scan_buffer_size[ring_id]) {
 		void *p;
 
@@ -2747,26 +3112,52 @@ static int shadow_workload_ring_buffer(struct intel_vgpu_workload *workload)
 
 	/* get shadow ring buffer va */
 	workload->shadow_ring_buffer_va = shadow_ring_buffer_va;
+=======
+	/* allocate shadow ring buffer */
+	cs = intel_ring_begin(workload->req, workload->rb_len / sizeof(u32));
+	if (IS_ERR(cs))
+		return PTR_ERR(cs);
+
+	/* get shadow ring buffer va */
+	workload->shadow_ring_buffer_va = cs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* head > tail --> copy head <-> top */
 	if (gma_head > gma_tail) {
 		ret = copy_gma_to_hva(vgpu, vgpu->gtt.ggtt_mm,
+<<<<<<< HEAD
 				      gma_head, gma_top, shadow_ring_buffer_va);
+=======
+				      gma_head, gma_top, cs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			gvt_vgpu_err("fail to copy guest ring buffer\n");
 			return ret;
 		}
+<<<<<<< HEAD
 		shadow_ring_buffer_va += ret;
+=======
+		cs += ret / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gma_head = workload->rb_start;
 	}
 
 	/* copy head or start <-> tail */
+<<<<<<< HEAD
 	ret = copy_gma_to_hva(vgpu, vgpu->gtt.ggtt_mm, gma_head, gma_tail,
 				shadow_ring_buffer_va);
+=======
+	ret = copy_gma_to_hva(vgpu, vgpu->gtt.ggtt_mm, gma_head, gma_tail, cs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		gvt_vgpu_err("fail to copy guest ring buffer\n");
 		return ret;
 	}
+<<<<<<< HEAD
+=======
+	cs += ret / sizeof(u32);
+	intel_ring_advance(workload->req, cs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2889,12 +3280,20 @@ int intel_gvt_scan_and_shadow_wa_ctx(struct intel_shadow_wa_ctx *wa_ctx)
 }
 
 static struct cmd_info *find_cmd_entry_any_ring(struct intel_gvt *gvt,
+<<<<<<< HEAD
 		unsigned int opcode, unsigned long rings)
+=======
+		unsigned int opcode, int rings)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cmd_info *info = NULL;
 	unsigned int ring;
 
+<<<<<<< HEAD
 	for_each_set_bit(ring, &rings, I915_NUM_ENGINES) {
+=======
+	for_each_set_bit(ring, (unsigned long *)&rings, I915_NUM_ENGINES) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info = find_cmd_entry(gvt, opcode, ring);
 		if (info)
 			break;

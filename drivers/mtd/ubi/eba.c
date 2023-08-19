@@ -384,7 +384,11 @@ static int leb_write_lock(struct ubi_device *ubi, int vol_id, int lnum)
 }
 
 /**
+<<<<<<< HEAD
  * leb_write_trylock - try to lock logical eraseblock for writing.
+=======
+ * leb_write_lock - lock logical eraseblock for writing.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ubi: UBI device description object
  * @vol_id: volume ID
  * @lnum: logical eraseblock number
@@ -513,7 +517,10 @@ static int check_mapping(struct ubi_device *ubi, struct ubi_volume *vol, int lnu
 {
 	int err;
 	struct ubi_vid_io_buf *vidb;
+<<<<<<< HEAD
 	struct ubi_vid_hdr *vid_hdr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ubi->fast_attach)
 		return 0;
@@ -553,6 +560,7 @@ static int check_mapping(struct ubi_device *ubi, struct ubi_volume *vol, int lnu
 			*pnum, err);
 
 		goto out_free;
+<<<<<<< HEAD
 	} else {
 		int found_vol_id, found_lnum;
 
@@ -569,6 +577,8 @@ static int check_mapping(struct ubi_device *ubi, struct ubi_volume *vol, int lnu
 			err = -EINVAL;
 			goto out_free;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	set_bit(lnum, vol->checkmap);
@@ -1536,11 +1546,19 @@ int self_check_eba(struct ubi_device *ubi, struct ubi_attach_info *ai_fastmap,
 
 	num_volumes = ubi->vtbl_slots + UBI_INT_VOL_COUNT;
 
+<<<<<<< HEAD
 	scan_eba = kmalloc_array(num_volumes, sizeof(*scan_eba), GFP_KERNEL);
 	if (!scan_eba)
 		return -ENOMEM;
 
 	fm_eba = kmalloc_array(num_volumes, sizeof(*fm_eba), GFP_KERNEL);
+=======
+	scan_eba = kmalloc(sizeof(*scan_eba) * num_volumes, GFP_KERNEL);
+	if (!scan_eba)
+		return -ENOMEM;
+
+	fm_eba = kmalloc(sizeof(*fm_eba) * num_volumes, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!fm_eba) {
 		kfree(scan_eba);
 		return -ENOMEM;
@@ -1551,17 +1569,27 @@ int self_check_eba(struct ubi_device *ubi, struct ubi_attach_info *ai_fastmap,
 		if (!vol)
 			continue;
 
+<<<<<<< HEAD
 		scan_eba[i] = kmalloc_array(vol->reserved_pebs,
 					    sizeof(**scan_eba),
 					    GFP_KERNEL);
+=======
+		scan_eba[i] = kmalloc(vol->reserved_pebs * sizeof(**scan_eba),
+				      GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!scan_eba[i]) {
 			ret = -ENOMEM;
 			goto out_free;
 		}
 
+<<<<<<< HEAD
 		fm_eba[i] = kmalloc_array(vol->reserved_pebs,
 					  sizeof(**fm_eba),
 					  GFP_KERNEL);
+=======
+		fm_eba[i] = kmalloc(vol->reserved_pebs * sizeof(**fm_eba),
+				    GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!fm_eba[i]) {
 			ret = -ENOMEM;
 			goto out_free;

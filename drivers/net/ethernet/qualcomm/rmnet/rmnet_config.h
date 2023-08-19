@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright (c) 2013-2014, 2016-2019 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2014, 2016-2020 The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * RMNET Data configuration engine
  *
@@ -15,7 +28,15 @@
 #define RMNET_MAX_VEID 4
 
 struct rmnet_endpoint {
+<<<<<<< HEAD
 	u8 mux_id;
+=======
+	union {
+		u8 mux_id;
+		__be32 ifa_address;
+		struct in6_addr in6addr;
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *egress_dev;
 	struct hlist_node hlnode;
 };
@@ -25,6 +46,14 @@ struct rmnet_agg_stats {
 	u64 ul_agg_alloc;
 };
 
+<<<<<<< HEAD
+=======
+struct rmnet_ip_route_endpoint {
+	struct in6_addr addr;
+	struct net_device *egress_dev;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rmnet_port_priv_stats {
 	u64 dl_hdr_last_qmap_vers;
 	u64 dl_hdr_last_ep_id;
@@ -185,8 +214,19 @@ int rmnet_is_real_dev_registered(const struct net_device *real_dev);
 struct rmnet_port *rmnet_get_port(struct net_device *real_dev);
 struct rmnet_endpoint *rmnet_get_endpoint(struct rmnet_port *port, u8 mux_id);
 int rmnet_add_bridge(struct net_device *rmnet_dev,
+<<<<<<< HEAD
 		     struct net_device *slave_dev,
 		     struct netlink_ext_ack *extack);
 int rmnet_del_bridge(struct net_device *rmnet_dev,
 		     struct net_device *slave_dev);
+=======
+		     struct net_device *slave_dev);
+int rmnet_del_bridge(struct net_device *rmnet_dev,
+		     struct net_device *slave_dev);
+
+struct rmnet_endpoint *rmnet_get_ip6_route_endpoint(struct rmnet_port *port,
+						    struct in6_addr *addr);
+struct rmnet_endpoint *rmnet_get_ip4_route_endpoint(struct rmnet_port *port,
+						    __be32 *ifa_address);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _RMNET_CONFIG_H_ */

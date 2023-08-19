@@ -71,6 +71,7 @@ config VIDEO_EM28XX_DVB
 	  Empiatech em28xx chips.
 
 config VIDEO_EM28XX_RC
+<<<<<<< HEAD
 	tristate "EM28XX Remote Controller support"
 	depends on RC_CORE
 	depends on VIDEO_EM28XX
@@ -78,3 +79,12 @@ config VIDEO_EM28XX_RC
 	default VIDEO_EM28XX
 	---help---
 	  Enables Remote Controller support on em28xx driver.
+=======
+        tristate "EM28XX Remote Controller support"
+        depends on RC_CORE
+        depends on VIDEO_EM28XX
+        depends on !(RC_CORE=m && VIDEO_EM28XX=y)
+        default VIDEO_EM28XX
+        ---help---
+          Enables Remote Controller support on em28xx driver.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

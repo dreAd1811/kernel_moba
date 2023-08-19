@@ -189,6 +189,7 @@ Description:
 		The file will read "hotplug", "wired" and "not used" if the
 		information is available, and "unknown" otherwise.
 
+<<<<<<< HEAD
 What:		/sys/bus/usb/devices/.../(hub interface)/portX/quirks
 Date:		May 2018
 Contact:	Nicolas Boichat <drinkcat@chromium.org>
@@ -221,6 +222,8 @@ Description:
 		to user space. This file will contain an unsigned 32 bit value
 		which wraps to 0 after its maximum is reached.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 What:		/sys/bus/usb/devices/.../(hub interface)/portX/usb3_lpm_permit
 Date:		November 2015
 Contact:	Lu Baolu <baolu.lu@linux.intel.com>
@@ -258,6 +261,7 @@ Description:
 		Supported values are 0 - 15.
 		More information on how besl values map to microseconds can be found in
 		USB 2.0 ECN Errata for Link Power Management, section 4.10)
+<<<<<<< HEAD
 
 What:		/sys/bus/usb/devices/.../rx_lanes
 Date:		March 2018
@@ -276,3 +280,5 @@ Description:
 		USB 3.2 adds Dual-lane support, 2 rx and 2 tx -lanes over Type-C.
 		Inter-Chip SSIC devices support asymmetric lanes up to 4 lanes per
 		direction. Devices before USB 3.2 are single lane (tx_lanes = 1)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

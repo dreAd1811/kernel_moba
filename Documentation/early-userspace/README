@@ -66,17 +66,29 @@ early userspace image can be built by an unprivileged user.
 
 As a technical note, when directories and files are specified, the
 entire CONFIG_INITRAMFS_SOURCE is passed to
+<<<<<<< HEAD
 usr/gen_initramfs_list.sh.  This means that CONFIG_INITRAMFS_SOURCE
+=======
+scripts/gen_initramfs_list.sh.  This means that CONFIG_INITRAMFS_SOURCE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 can really be interpreted as any legal argument to
 gen_initramfs_list.sh.  If a directory is specified as an argument then
 the contents are scanned, uid/gid translation is performed, and
 usr/gen_init_cpio file directives are output.  If a directory is
+<<<<<<< HEAD
 specified as an argument to usr/gen_initramfs_list.sh then the
+=======
+specified as an argument to scripts/gen_initramfs_list.sh then the
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 contents of the file are simply copied to the output.  All of the output
 directives from directory scanning and file contents copying are
 processed by usr/gen_init_cpio.
 
+<<<<<<< HEAD
 See also 'usr/gen_initramfs_list.sh -h'.
+=======
+See also 'scripts/gen_initramfs_list.sh -h'.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Where's this all leading?
 =========================

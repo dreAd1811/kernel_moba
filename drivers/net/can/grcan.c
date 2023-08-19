@@ -807,10 +807,17 @@ static irqreturn_t grcan_interrupt(int irq, void *dev_id)
  * is not ONGOING (TX might be stuck in ONGOING due to a harwrware bug
  * for single shot)
  */
+<<<<<<< HEAD
 static void grcan_running_reset(struct timer_list *t)
 {
 	struct grcan_priv *priv = from_timer(priv, t, rr_timer);
 	struct net_device *dev = priv->dev;
+=======
+static void grcan_running_reset(unsigned long data)
+{
+	struct net_device *dev = (struct net_device *)data;
+	struct grcan_priv *priv = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct grcan_registers __iomem *regs = priv->regs;
 	unsigned long flags;
 
@@ -898,10 +905,17 @@ static inline void grcan_reset_timer(struct timer_list *timer, __u32 bitrate)
 }
 
 /* Disable channels and schedule a running reset */
+<<<<<<< HEAD
 static void grcan_initiate_running_reset(struct timer_list *t)
 {
 	struct grcan_priv *priv = from_timer(priv, t, hang_timer);
 	struct net_device *dev = priv->dev;
+=======
+static void grcan_initiate_running_reset(unsigned long data)
+{
+	struct net_device *dev = (struct net_device *)data;
+	struct grcan_priv *priv = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct grcan_registers __iomem *regs = priv->regs;
 	unsigned long flags;
 
@@ -1057,7 +1071,11 @@ static int grcan_open(struct net_device *dev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	priv->echo_skb = kcalloc(dma->tx.size, sizeof(*priv->echo_skb),
+=======
+	priv->echo_skb = kzalloc(dma->tx.size * sizeof(*priv->echo_skb),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 	if (!priv->echo_skb) {
 		err = -ENOMEM;
@@ -1066,7 +1084,11 @@ static int grcan_open(struct net_device *dev)
 	priv->can.echo_skb_max = dma->tx.size;
 	priv->can.echo_skb = priv->echo_skb;
 
+<<<<<<< HEAD
 	priv->txdlc = kcalloc(dma->tx.size, sizeof(*priv->txdlc), GFP_KERNEL);
+=======
+	priv->txdlc = kzalloc(dma->tx.size * sizeof(*priv->txdlc), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->txdlc) {
 		err = -ENOMEM;
 		goto exit_free_echo_skb;
@@ -1484,7 +1506,11 @@ static netdev_tx_t grcan_start_xmit(struct sk_buff *skb,
 		}							\
 	}								\
 	module_param_named(name, grcan_module_config.name,		\
+<<<<<<< HEAD
 			   mtype, 0444);				\
+=======
+			   mtype, S_IRUGO);				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MODULE_PARM_DESC(name, desc)
 
 #define GRCAN_CONFIG_ATTR(name, desc)					\
@@ -1513,7 +1539,11 @@ static netdev_tx_t grcan_start_xmit(struct sk_buff *skb,
 		struct grcan_priv *priv = netdev_priv(dev);		\
 		return sprintf(buf, "%d\n", priv->config.name);		\
 	}								\
+<<<<<<< HEAD
 	static DEVICE_ATTR(name, 0644,					\
+=======
+	static DEVICE_ATTR(name, S_IRUGO | S_IWUSR,			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   grcan_show_##name,				\
 			   grcan_store_##name);				\
 	GRCAN_MODULE_PARAM(name, ushort, GRCAN_NOT_BOOL, desc)
@@ -1626,8 +1656,18 @@ static int grcan_setup_netdev(struct platform_device *ofdev,
 	spin_lock_init(&priv->lock);
 
 	if (priv->need_txbug_workaround) {
+<<<<<<< HEAD
 		timer_setup(&priv->rr_timer, grcan_running_reset, 0);
 		timer_setup(&priv->hang_timer, grcan_initiate_running_reset, 0);
+=======
+		init_timer(&priv->rr_timer);
+		priv->rr_timer.function = grcan_running_reset;
+		priv->rr_timer.data = (unsigned long)dev;
+
+		init_timer(&priv->hang_timer);
+		priv->hang_timer.function = grcan_initiate_running_reset;
+		priv->hang_timer.data = (unsigned long)dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	netif_napi_add(dev, &priv->napi, grcan_poll, GRCAN_NAPI_WEIGHT);

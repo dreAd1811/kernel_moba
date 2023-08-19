@@ -276,7 +276,11 @@ static int __init libipw_init(void)
 				" proc directory\n");
 		return -EIO;
 	}
+<<<<<<< HEAD
 	e = proc_create("debug_level", 0644, libipw_proc,
+=======
+	e = proc_create("debug_level", S_IRUGO | S_IWUSR, libipw_proc,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			&debug_level_proc_fops);
 	if (!e) {
 		remove_proc_entry(DRV_PROCNAME, init_net.proc_net);

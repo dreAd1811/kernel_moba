@@ -51,6 +51,7 @@ struct bpf_jit {
 
 #define BPF_SIZE_MAX	0xffff	/* Max size for program (16 bit branches) */
 
+<<<<<<< HEAD
 #define SEEN_MEM	(1 << 0)	/* use mem[] for temporary storage */
 #define SEEN_RET0	(1 << 1)	/* ret0_ip points to a valid return 0 */
 #define SEEN_LITERAL	(1 << 2)	/* code uses literals */
@@ -58,14 +59,30 @@ struct bpf_jit {
 #define SEEN_TAIL_CALL	(1 << 4)	/* code uses tail calls */
 #define SEEN_REG_AX	(1 << 5)	/* code uses constant blinding */
 #define SEEN_STACK	(SEEN_FUNC | SEEN_MEM)
+=======
+#define SEEN_SKB	1	/* skb access */
+#define SEEN_MEM	2	/* use mem[] for temporary storage */
+#define SEEN_RET0	4	/* ret0_ip points to a valid return 0 */
+#define SEEN_LITERAL	8	/* code uses literals */
+#define SEEN_FUNC	16	/* calls C functions */
+#define SEEN_TAIL_CALL	32	/* code uses tail calls */
+#define SEEN_REG_AX	64	/* code uses constant blinding */
+#define SEEN_STACK	(SEEN_FUNC | SEEN_MEM | SEEN_SKB)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * s390 registers
  */
 #define REG_W0		(MAX_BPF_JIT_REG + 0)	/* Work register 1 (even) */
 #define REG_W1		(MAX_BPF_JIT_REG + 1)	/* Work register 2 (odd) */
+<<<<<<< HEAD
 #define REG_L		(MAX_BPF_JIT_REG + 2)	/* Literal pool register */
 #define REG_15		(MAX_BPF_JIT_REG + 3)	/* Register 15 */
+=======
+#define REG_SKB_DATA	(MAX_BPF_JIT_REG + 2)	/* SKB data register */
+#define REG_L		(MAX_BPF_JIT_REG + 3)	/* Literal pool register */
+#define REG_15		(MAX_BPF_JIT_REG + 4)	/* Register 15 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define REG_0		REG_W0			/* Register 0 */
 #define REG_1		REG_W1			/* Register 1 */
 #define REG_2		BPF_REG_1		/* Register 2 */
@@ -90,8 +107,15 @@ static const int reg2hex[] = {
 	[BPF_REG_9]	= 10,
 	/* BPF stack pointer */
 	[BPF_REG_FP]	= 13,
+<<<<<<< HEAD
 	/* Register for blinding */
 	[BPF_REG_AX]	= 12,
+=======
+	/* Register for blinding (shared with REG_SKB_DATA) */
+	[BPF_REG_AX]	= 12,
+	/* SKB data pointer */
+	[REG_SKB_DATA]	= 12,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Work registers for s390x backend */
 	[REG_W0]	= 0,
 	[REG_W1]	= 1,
@@ -330,12 +354,20 @@ static void save_regs(struct bpf_jit *jit, u32 rs, u32 re)
 /*
  * Restore registers from "rs" (register start) to "re" (register end) on stack
  */
+<<<<<<< HEAD
 static void restore_regs(struct bpf_jit *jit, u32 rs, u32 re, u32 stack_depth)
+=======
+static void restore_regs(struct bpf_jit *jit, u32 rs, u32 re)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 off = STK_OFF_R6 + (rs - 6) * 8;
 
 	if (jit->seen & SEEN_STACK)
+<<<<<<< HEAD
 		off += STK_OFF + stack_depth;
+=======
+		off += STK_OFF;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rs == re)
 		/* lg %rs,off(%r15) */
@@ -379,7 +411,11 @@ static int get_end(struct bpf_jit *jit, int start)
  * Save and restore clobbered registers (6-15) on stack.
  * We save/restore registers in chunks with gap >= 2 registers.
  */
+<<<<<<< HEAD
 static void save_restore_regs(struct bpf_jit *jit, int op, u32 stack_depth)
+=======
+static void save_restore_regs(struct bpf_jit *jit, int op)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 
 	int re = 6, rs;
@@ -392,18 +428,50 @@ static void save_restore_regs(struct bpf_jit *jit, int op, u32 stack_depth)
 		if (op == REGS_SAVE)
 			save_regs(jit, rs, re);
 		else
+<<<<<<< HEAD
 			restore_regs(jit, rs, re, stack_depth);
+=======
+			restore_regs(jit, rs, re);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		re++;
 	} while (re <= 15);
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * For SKB access %b1 contains the SKB pointer. For "bpf_jit.S"
+ * we store the SKB header length on the stack and the SKB data
+ * pointer in REG_SKB_DATA if BPF_REG_AX is not used.
+ */
+static void emit_load_skb_data_hlen(struct bpf_jit *jit)
+{
+	/* Header length: llgf %w1,<len>(%b1) */
+	EMIT6_DISP_LH(0xe3000000, 0x0016, REG_W1, REG_0, BPF_REG_1,
+		      offsetof(struct sk_buff, len));
+	/* s %w1,<data_len>(%b1) */
+	EMIT4_DISP(0x5b000000, REG_W1, BPF_REG_1,
+		   offsetof(struct sk_buff, data_len));
+	/* stg %w1,ST_OFF_HLEN(%r0,%r15) */
+	EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W1, REG_0, REG_15, STK_OFF_HLEN);
+	if (!(jit->seen & SEEN_REG_AX))
+		/* lg %skb_data,data_off(%b1) */
+		EMIT6_DISP_LH(0xe3000000, 0x0004, REG_SKB_DATA, REG_0,
+			      BPF_REG_1, offsetof(struct sk_buff, data));
+}
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Emit function prologue
  *
  * Save registers and create stack frame if necessary.
  * See stack frame layout desription in "bpf_jit.h"!
  */
+<<<<<<< HEAD
 static void bpf_jit_prologue(struct bpf_jit *jit, u32 stack_depth)
+=======
+static void bpf_jit_prologue(struct bpf_jit *jit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (jit->seen & SEEN_TAIL_CALL) {
 		/* xc STK_OFF_TCCNT(4,%r15),STK_OFF_TCCNT(%r15) */
@@ -416,7 +484,11 @@ static void bpf_jit_prologue(struct bpf_jit *jit, u32 stack_depth)
 	/* Tail calls have to skip above initialization */
 	jit->tail_call_start = jit->prg;
 	/* Save registers */
+<<<<<<< HEAD
 	save_restore_regs(jit, REGS_SAVE, stack_depth);
+=======
+	save_restore_regs(jit, REGS_SAVE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Setup literal pool */
 	if (jit->seen & SEEN_LITERAL) {
 		/* basr %r13,0 */
@@ -431,18 +503,35 @@ static void bpf_jit_prologue(struct bpf_jit *jit, u32 stack_depth)
 		/* la %bfp,STK_160_UNUSED(%r15) (BPF frame pointer) */
 		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15, STK_160_UNUSED);
 		/* aghi %r15,-STK_OFF */
+<<<<<<< HEAD
 		EMIT4_IMM(0xa70b0000, REG_15, -(STK_OFF + stack_depth));
+=======
+		EMIT4_IMM(0xa70b0000, REG_15, -STK_OFF);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (jit->seen & SEEN_FUNC)
 			/* stg %w1,152(%r15) (backchain) */
 			EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W1, REG_0,
 				      REG_15, 152);
 	}
+<<<<<<< HEAD
+=======
+	if (jit->seen & SEEN_SKB) {
+		emit_load_skb_data_hlen(jit);
+		/* stg %b1,ST_OFF_SKBP(%r0,%r15) */
+		EMIT6_DISP_LH(0xe3000000, 0x0024, BPF_REG_1, REG_0, REG_15,
+			      STK_OFF_SKBP);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
  * Function epilogue
  */
+<<<<<<< HEAD
 static void bpf_jit_epilogue(struct bpf_jit *jit, u32 stack_depth)
+=======
+static void bpf_jit_epilogue(struct bpf_jit *jit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Return 0 */
 	if (jit->seen & SEEN_RET0) {
@@ -454,7 +543,11 @@ static void bpf_jit_epilogue(struct bpf_jit *jit, u32 stack_depth)
 	/* Load exit code: lgr %r2,%b0 */
 	EMIT4(0xb9040000, REG_2, BPF_REG_0);
 	/* Restore registers */
+<<<<<<< HEAD
 	save_restore_regs(jit, REGS_RESTORE, stack_depth);
+=======
+	save_restore_regs(jit, REGS_RESTORE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ENABLED(CC_USING_EXPOLINE) && !nospec_disable) {
 		jit->r14_thunk_ip = jit->prg;
 		/* Generate __s390_indirect_jump_r14 thunk */
@@ -504,12 +597,19 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp, int i
 {
 	struct bpf_insn *insn = &fp->insnsi[i];
 	int jmp_off, last, insn_count = 1;
+<<<<<<< HEAD
+=======
+	unsigned int func_addr, mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 dst_reg = insn->dst_reg;
 	u32 src_reg = insn->src_reg;
 	u32 *addrs = jit->addrs;
 	s32 imm = insn->imm;
 	s16 off = insn->off;
+<<<<<<< HEAD
 	unsigned int mask;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dst_reg == BPF_REG_AX || src_reg == BPF_REG_AX)
 		jit->seen |= SEEN_REG_AX;
@@ -631,6 +731,14 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp, int i
 	{
 		int rc_reg = BPF_OP(insn->code) == BPF_DIV ? REG_W1 : REG_W0;
 
+<<<<<<< HEAD
+=======
+		jit->seen |= SEEN_RET0;
+		/* ltr %src,%src (if src == 0 goto fail) */
+		EMIT2(0x1200, src_reg, src_reg);
+		/* jz <ret0> */
+		EMIT4_PCREL(0xa7840000, jit->ret0_ip - jit->prg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* lhi %w0,0 */
 		EMIT4_IMM(0xa7080000, REG_W0, 0);
 		/* lr %w1,%dst */
@@ -646,6 +754,14 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp, int i
 	{
 		int rc_reg = BPF_OP(insn->code) == BPF_DIV ? REG_W1 : REG_W0;
 
+<<<<<<< HEAD
+=======
+		jit->seen |= SEEN_RET0;
+		/* ltgr %src,%src (if src == 0 goto fail) */
+		EMIT4(0xb9020000, src_reg, src_reg);
+		/* jz <ret0> */
+		EMIT4_PCREL(0xa7840000, jit->ret0_ip - jit->prg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* lghi %w0,0 */
 		EMIT4_IMM(0xa7090000, REG_W0, 0);
 		/* lgr %w1,%dst */
@@ -996,6 +1112,16 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp, int i
 		}
 		/* lgr %b0,%r2: load return value into %b0 */
 		EMIT4(0xb9040000, BPF_REG_0, REG_2);
+<<<<<<< HEAD
+=======
+		if ((jit->seen & SEEN_SKB) &&
+		    bpf_helper_changes_pkt_data((void *)func)) {
+			/* lg %b1,ST_OFF_SKBP(%r15) */
+			EMIT6_DISP_LH(0xe3000000, 0x0004, BPF_REG_1, REG_0,
+				      REG_15, STK_OFF_SKBP);
+			emit_load_skb_data_hlen(jit);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	case BPF_JMP | BPF_TAIL_CALL:
@@ -1025,7 +1151,11 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp, int i
 		 */
 
 		if (jit->seen & SEEN_STACK)
+<<<<<<< HEAD
 			off = STK_OFF_TCCNT + STK_OFF + fp->aux->stack_depth;
+=======
+			off = STK_OFF_TCCNT + STK_OFF;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			off = STK_OFF_TCCNT;
 		/* lhi %w0,1 */
@@ -1055,7 +1185,11 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp, int i
 		/*
 		 * Restore registers before calling function
 		 */
+<<<<<<< HEAD
 		save_restore_regs(jit, REGS_RESTORE, fp->aux->stack_depth);
+=======
+		save_restore_regs(jit, REGS_RESTORE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * goto *(prog->bpf_func + tail_call_start);
@@ -1197,6 +1331,76 @@ branch_oc:
 		jmp_off = addrs[i + off + 1] - (addrs[i + 1] - 4);
 		EMIT4_PCREL(0xa7040000 | mask << 8, jmp_off);
 		break;
+<<<<<<< HEAD
+=======
+	/*
+	 * BPF_LD
+	 */
+	case BPF_LD | BPF_ABS | BPF_B: /* b0 = *(u8 *) (skb->data+imm) */
+	case BPF_LD | BPF_IND | BPF_B: /* b0 = *(u8 *) (skb->data+imm+src) */
+		if ((BPF_MODE(insn->code) == BPF_ABS) && (imm >= 0))
+			func_addr = __pa(sk_load_byte_pos);
+		else
+			func_addr = __pa(sk_load_byte);
+		goto call_fn;
+	case BPF_LD | BPF_ABS | BPF_H: /* b0 = *(u16 *) (skb->data+imm) */
+	case BPF_LD | BPF_IND | BPF_H: /* b0 = *(u16 *) (skb->data+imm+src) */
+		if ((BPF_MODE(insn->code) == BPF_ABS) && (imm >= 0))
+			func_addr = __pa(sk_load_half_pos);
+		else
+			func_addr = __pa(sk_load_half);
+		goto call_fn;
+	case BPF_LD | BPF_ABS | BPF_W: /* b0 = *(u32 *) (skb->data+imm) */
+	case BPF_LD | BPF_IND | BPF_W: /* b0 = *(u32 *) (skb->data+imm+src) */
+		if ((BPF_MODE(insn->code) == BPF_ABS) && (imm >= 0))
+			func_addr = __pa(sk_load_word_pos);
+		else
+			func_addr = __pa(sk_load_word);
+		goto call_fn;
+call_fn:
+		jit->seen |= SEEN_SKB | SEEN_RET0 | SEEN_FUNC;
+		REG_SET_SEEN(REG_14); /* Return address of possible func call */
+
+		/*
+		 * Implicit input:
+		 *  BPF_REG_6	 (R7) : skb pointer
+		 *  REG_SKB_DATA (R12): skb data pointer (if no BPF_REG_AX)
+		 *
+		 * Calculated input:
+		 *  BPF_REG_2	 (R3) : offset of byte(s) to fetch in skb
+		 *  BPF_REG_5	 (R6) : return address
+		 *
+		 * Output:
+		 *  BPF_REG_0	 (R14): data read from skb
+		 *
+		 * Scratch registers (BPF_REG_1-5)
+		 */
+
+		/* Call function: llilf %w1,func_addr  */
+		EMIT6_IMM(0xc00f0000, REG_W1, func_addr);
+
+		/* Offset: lgfi %b2,imm */
+		EMIT6_IMM(0xc0010000, BPF_REG_2, imm);
+		if (BPF_MODE(insn->code) == BPF_IND)
+			/* agfr %b2,%src (%src is s32 here) */
+			EMIT4(0xb9180000, BPF_REG_2, src_reg);
+
+		/* Reload REG_SKB_DATA if BPF_REG_AX is used */
+		if (jit->seen & SEEN_REG_AX)
+			/* lg %skb_data,data_off(%b6) */
+			EMIT6_DISP_LH(0xe3000000, 0x0004, REG_SKB_DATA, REG_0,
+				      BPF_REG_6, offsetof(struct sk_buff, data));
+		/* basr %b5,%w1 (%b5 is call saved) */
+		EMIT2(0x0d00, BPF_REG_5, REG_W1);
+
+		/*
+		 * Note: For fast access we jump directly after the
+		 * jnz instruction from bpf_jit.S
+		 */
+		/* jnz <ret0> */
+		EMIT4_PCREL(0xa7740000, jit->ret0_ip - jit->prg);
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default: /* too complex, give up */
 		pr_err("Unknown opcode %02x\n", insn->code);
 		return -1;
@@ -1214,7 +1418,11 @@ static int bpf_jit_prog(struct bpf_jit *jit, struct bpf_prog *fp)
 	jit->lit = jit->lit_start;
 	jit->prg = 0;
 
+<<<<<<< HEAD
 	bpf_jit_prologue(jit, fp->aux->stack_depth);
+=======
+	bpf_jit_prologue(jit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < fp->len; i += insn_count) {
 		insn_count = bpf_jit_insn(jit, fp, i);
 		if (insn_count < 0)
@@ -1222,7 +1430,11 @@ static int bpf_jit_prog(struct bpf_jit *jit, struct bpf_prog *fp)
 		/* Next instruction address */
 		jit->addrs[i + insn_count] = jit->prg;
 	}
+<<<<<<< HEAD
 	bpf_jit_epilogue(jit, fp->aux->stack_depth);
+=======
+	bpf_jit_epilogue(jit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	jit->lit_start = jit->prg;
 	jit->size = jit->lit;
@@ -1241,7 +1453,11 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
 	struct bpf_jit jit;
 	int pass;
 
+<<<<<<< HEAD
 	if (!fp->jit_requested)
+=======
+	if (!bpf_jit_enable)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return orig_fp;
 
 	tmp = bpf_jit_blind_constants(fp);

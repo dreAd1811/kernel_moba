@@ -195,11 +195,20 @@ static int radeon_dp_mst_get_ddc_modes(struct drm_connector *connector)
 	radeon_connector->edid = edid;
 	DRM_DEBUG_KMS("edid retrieved %p\n", edid);
 	if (radeon_connector->edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(&radeon_connector->base, radeon_connector->edid);
 		ret = drm_add_edid_modes(&radeon_connector->base, radeon_connector->edid);
 		return ret;
 	}
 	drm_connector_update_edid_property(&radeon_connector->base, NULL);
+=======
+		drm_mode_connector_update_edid_property(&radeon_connector->base, radeon_connector->edid);
+		ret = drm_add_edid_modes(&radeon_connector->base, radeon_connector->edid);
+		drm_edid_to_eld(&radeon_connector->base, radeon_connector->edid);
+		return ret;
+	}
+	drm_mode_connector_update_edid_property(&radeon_connector->base, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -290,7 +299,11 @@ static struct drm_connector *radeon_dp_add_mst_connector(struct drm_dp_mst_topol
 
 	drm_object_attach_property(&connector->base, dev->mode_config.path_property, 0);
 	drm_object_attach_property(&connector->base, dev->mode_config.tile_property, 0);
+<<<<<<< HEAD
 	drm_connector_set_path_property(connector, pathprop);
+=======
+	drm_mode_connector_set_path_property(connector, pathprop);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return connector;
 }
@@ -328,7 +341,11 @@ static void radeon_dp_mst_hotplug(struct drm_dp_mst_topology_mgr *mgr)
 	drm_kms_helper_hotplug_event(dev);
 }
 
+<<<<<<< HEAD
 static const struct drm_dp_mst_topology_cbs mst_cbs = {
+=======
+const struct drm_dp_mst_topology_cbs mst_cbs = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.add_connector = radeon_dp_add_mst_connector,
 	.register_connector = radeon_dp_register_mst_connector,
 	.destroy_connector = radeon_dp_destroy_mst_connector,
@@ -718,7 +735,11 @@ radeon_dp_mst_check_status(struct radeon_connector *radeon_connector)
 				       DP_SINK_COUNT_ESI, esi, 8);
 go_again:
 		if (dret == 8) {
+<<<<<<< HEAD
 			DRM_DEBUG_KMS("got esi %3ph\n", esi);
+=======
+			DRM_DEBUG_KMS("got esi %02x %02x %02x\n", esi[0], esi[1], esi[2]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = drm_dp_mst_hpd_irq(&radeon_connector->mst_mgr, esi, &handled);
 
 			if (handled) {
@@ -733,7 +754,11 @@ go_again:
 				dret = drm_dp_dpcd_read(&radeon_connector->ddc_bus->aux,
 							DP_SINK_COUNT_ESI, esi, 8);
 				if (dret == 8) {
+<<<<<<< HEAD
 					DRM_DEBUG_KMS("got esi2 %3ph\n", esi);
+=======
+					DRM_DEBUG_KMS("got esi2 %02x %02x %02x\n", esi[0], esi[1], esi[2]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					goto go_again;
 				}
 			} else

@@ -21,6 +21,11 @@
 
 #include <dt-bindings/interrupt-controller/mvebu-icu.h>
 
+<<<<<<< HEAD
+=======
+#include "irq-mvebu-gicp.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ICU registers */
 #define ICU_SETSPI_NSR_AL	0x10
 #define ICU_SETSPI_NSR_AH	0x14
@@ -41,7 +46,10 @@ struct mvebu_icu {
 	void __iomem *base;
 	struct irq_domain *domain;
 	struct device *dev;
+<<<<<<< HEAD
 	atomic_t initialized;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mvebu_icu_irq_data {
@@ -50,6 +58,7 @@ struct mvebu_icu_irq_data {
 	unsigned int type;
 };
 
+<<<<<<< HEAD
 static void mvebu_icu_init(struct mvebu_icu *icu, struct msi_msg *msg)
 {
 	if (atomic_cmpxchg(&icu->initialized, false, true))
@@ -62,6 +71,8 @@ static void mvebu_icu_init(struct mvebu_icu *icu, struct msi_msg *msg)
 	writel_relaxed(msg[1].address_lo, icu->base + ICU_CLRSPI_NSR_AL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mvebu_icu_write_msg(struct msi_desc *desc, struct msi_msg *msg)
 {
 	struct irq_data *d = irq_get_irq_data(desc->irq);
@@ -70,8 +81,11 @@ static void mvebu_icu_write_msg(struct msi_desc *desc, struct msi_msg *msg)
 	unsigned int icu_int;
 
 	if (msg->address_lo || msg->address_hi) {
+<<<<<<< HEAD
 		/* One off initialization */
 		mvebu_icu_init(icu, msg);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Configure the ICU with irq number & type */
 		icu_int = msg->data | ICU_INT_ENABLE;
 		if (icu_irqd->type & IRQ_TYPE_EDGE_RISING)
@@ -105,7 +119,11 @@ static int
 mvebu_icu_irq_domain_translate(struct irq_domain *d, struct irq_fwspec *fwspec,
 			       unsigned long *hwirq, unsigned int *type)
 {
+<<<<<<< HEAD
 	struct mvebu_icu *icu = d->host_data;
+=======
+	struct mvebu_icu *icu = platform_msi_get_host_data(d);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int icu_group;
 
 	/* Check the count of the parameters in dt */
@@ -210,7 +228,13 @@ static int mvebu_icu_probe(struct platform_device *pdev)
 	struct device_node *node = pdev->dev.of_node;
 	struct device_node *gicp_dn;
 	struct resource *res;
+<<<<<<< HEAD
 	int i;
+=======
+	phys_addr_t setspi, clrspi;
+	u32 i, icu_int;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	icu = devm_kzalloc(&pdev->dev, sizeof(struct mvebu_icu),
 			   GFP_KERNEL);
@@ -253,12 +277,29 @@ static int mvebu_icu_probe(struct platform_device *pdev)
 	if (!gicp_dn)
 		return -ENODEV;
 
+<<<<<<< HEAD
+=======
+	ret = mvebu_gicp_get_doorbells(gicp_dn, &setspi, &clrspi);
+	if (ret)
+		return ret;
+
+	/* Set Clear/Set ICU SPI message address in AP */
+	writel_relaxed(upper_32_bits(setspi), icu->base + ICU_SETSPI_NSR_AH);
+	writel_relaxed(lower_32_bits(setspi), icu->base + ICU_SETSPI_NSR_AL);
+	writel_relaxed(upper_32_bits(clrspi), icu->base + ICU_CLRSPI_NSR_AH);
+	writel_relaxed(lower_32_bits(clrspi), icu->base + ICU_CLRSPI_NSR_AL);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Clean all ICU interrupts with type SPI_NSR, required to
 	 * avoid unpredictable SPI assignments done by firmware.
 	 */
 	for (i = 0 ; i < ICU_MAX_IRQS ; i++) {
+<<<<<<< HEAD
 		u32 icu_int = readl_relaxed(icu->base + ICU_INT_CFG(i));
+=======
+		icu_int = readl(icu->base + ICU_INT_CFG(i));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((icu_int >> ICU_GROUP_SHIFT) == ICU_GRP_NSR)
 			writel_relaxed(0x0, icu->base + ICU_INT_CFG(i));
 	}

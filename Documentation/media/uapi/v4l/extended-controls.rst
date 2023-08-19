@@ -284,7 +284,11 @@ enum v4l2_mpeg_stream_vbi_fmt -
     * - ``V4L2_MPEG_STREAM_VBI_FMT_IVTV``
       - VBI in private packets, IVTV format (documented in the kernel
 	sources in the file
+<<<<<<< HEAD
 	``Documentation/media/v4l-drivers/cx2341x.rst``)
+=======
+	``Documentation/video4linux/cx2341x/README.vbi``)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 
@@ -1955,6 +1959,7 @@ enum v4l2_vp8_golden_frame_sel -
 ``V4L2_CID_MPEG_VIDEO_VPX_P_FRAME_QP (integer)``
     Quantization parameter for a P frame for VP8.
 
+<<<<<<< HEAD
 .. _v4l2-mpeg-video-vp8-profile:
 
 ``V4L2_CID_MPEG_VIDEO_VP8_PROFILE``
@@ -2410,6 +2415,11 @@ enum v4l2_mpeg_video_hevc_size_of_length_field -
     Indicates whether to generate SPS and PPS at every IDR. Setting it to 0
     disables generating SPS and PPS at every IDR. Setting it to one enables
     generating SPS and PPS at every IDR.
+=======
+``V4L2_CID_MPEG_VIDEO_VPX_PROFILE (integer)``
+    Select the desired profile for VPx encoder. Acceptable values are 0,
+    1, 2 and 3 corresponding to encoder profiles 0, 1, 2 and 3.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 .. _camera-controls:
@@ -3607,7 +3617,11 @@ enum v4l2_dv_it_content_type -
     HDMI carries 5V on one of the pins). This is often used to power an
     eeprom which contains EDID information, such that the source can
     read the EDID even if the sink is in standby/power off. Each bit
+<<<<<<< HEAD
     corresponds to an input pad on the receiver. If an input pad
+=======
+    corresponds to an input pad on the transmitter. If an input pad
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     cannot detect whether power is present, then the bit for that pad
     will be 0. This read-only control is applicable to DVI-D, HDMI and
     DisplayPort connectors.

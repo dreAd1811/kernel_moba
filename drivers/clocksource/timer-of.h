@@ -33,7 +33,10 @@ struct of_timer_clk {
 
 struct timer_of {
 	unsigned int flags;
+<<<<<<< HEAD
 	struct device_node *np;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clock_event_device clkevt;
 	struct of_timer_base of_base;
 	struct of_timer_irq  of_irq;
@@ -68,7 +71,10 @@ static inline unsigned long timer_of_period(struct timer_of *to)
 
 extern int __init timer_of_init(struct device_node *np,
 				struct timer_of *to);
+<<<<<<< HEAD
 
 extern void __init timer_of_cleanup(struct timer_of *to);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

@@ -12,20 +12,31 @@
  *
  */
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/component.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/clk.h>
 #include <linux/pm_runtime.h>
 #include <linux/mfd/syscon.h>
+<<<<<<< HEAD
 #include <linux/of_device.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regmap.h>
 
 #include <drm/drmP.h>
 #include <drm/exynos_drm.h>
 #include "regs-gsc.h"
 #include "exynos_drm_drv.h"
+<<<<<<< HEAD
 #include "exynos_drm_iommu.h"
 #include "exynos_drm_ipp.h"
+=======
+#include "exynos_drm_ipp.h"
+#include "exynos_drm_gsc.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * GSC stands for General SCaler and
@@ -33,10 +44,33 @@
  * input DMA reads image data from the memory.
  * output DMA writes image data to memory.
  * GSC supports image rotation and image effect functions.
+<<<<<<< HEAD
  */
 
 
 #define GSC_MAX_CLOCKS	8
+=======
+ *
+ * M2M operation : supports crop/scale/rotation/csc so on.
+ * Memory ----> GSC H/W ----> Memory.
+ * Writeback operation : supports cloned screen with FIMD.
+ * FIMD ----> GSC H/W ----> Memory.
+ * Output operation : supports direct display using local path.
+ * Memory ----> GSC H/W ----> FIMD, Mixer.
+ */
+
+/*
+ * TODO
+ * 1. check suspend/resume api if needed.
+ * 2. need to check use case platform_device_id.
+ * 3. check src/dst size with, height.
+ * 4. added check_prepare api for right register.
+ * 5. need to add supported list in prop_list.
+ * 6. check prescaler/scaler optimization.
+ */
+
+#define GSC_MAX_DEVS	4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GSC_MAX_SRC		4
 #define GSC_MAX_DST		16
 #define GSC_RESET_TIMEOUT	50
@@ -51,6 +85,11 @@
 #define GSC_SC_DOWN_RATIO_4_8		131072
 #define GSC_SC_DOWN_RATIO_3_8		174762
 #define GSC_SC_DOWN_RATIO_2_8		262144
+<<<<<<< HEAD
+=======
+#define GSC_REFRESH_MIN	12
+#define GSC_REFRESH_MAX	60
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GSC_CROP_MAX	8192
 #define GSC_CROP_MIN	32
 #define GSC_SCALE_MAX	4224
@@ -61,9 +100,16 @@
 #define GSC_COEF_H_8T	8
 #define GSC_COEF_V_4T	4
 #define GSC_COEF_DEPTH	3
+<<<<<<< HEAD
 #define GSC_AUTOSUSPEND_DELAY		2000
 
 #define get_gsc_context(dev)	platform_get_drvdata(to_platform_device(dev))
+=======
+
+#define get_gsc_context(dev)	platform_get_drvdata(to_platform_device(dev))
+#define get_ctx_from_ippdrv(ippdrv)	container_of(ippdrv,\
+					struct gsc_context, ippdrv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define gsc_read(offset)		readl(ctx->regs + (offset))
 #define gsc_write(cfg, offset)	writel(cfg, ctx->regs + (offset))
 
@@ -87,15 +133,44 @@ struct gsc_scaler {
 };
 
 /*
+<<<<<<< HEAD
  * A structure of gsc context.
  *
  * @regs_res: register resources.
  * @regs: memory mapped io registers.
+=======
+ * A structure of scaler capability.
+ *
+ * find user manual 49.2 features.
+ * @tile_w: tile mode or rotation width.
+ * @tile_h: tile mode or rotation height.
+ * @w: other cases width.
+ * @h: other cases height.
+ */
+struct gsc_capability {
+	/* tile or rotation */
+	u32	tile_w;
+	u32	tile_h;
+	/* other cases */
+	u32	w;
+	u32	h;
+};
+
+/*
+ * A structure of gsc context.
+ *
+ * @ippdrv: prepare initialization using ippdrv.
+ * @regs_res: register resources.
+ * @regs: memory mapped io registers.
+ * @sysreg: handle to SYSREG block regmap.
+ * @lock: locking of operations.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @gsc_clk: gsc gate clock.
  * @sc: scaler infomations.
  * @id: gsc id.
  * @irq: irq number.
  * @rotation: supports rotation of src.
+<<<<<<< HEAD
  */
 struct gsc_context {
 	struct exynos_drm_ipp ipp;
@@ -110,10 +185,22 @@ struct gsc_context {
 	const char	**clk_names;
 	struct clk	*clocks[GSC_MAX_CLOCKS];
 	int		num_clocks;
+=======
+ * @suspended: qos operations.
+ */
+struct gsc_context {
+	struct exynos_drm_ippdrv	ippdrv;
+	struct resource	*regs_res;
+	void __iomem	*regs;
+	struct regmap	*sysreg;
+	struct mutex	lock;
+	struct clk	*gsc_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gsc_scaler	sc;
 	int	id;
 	int	irq;
 	bool	rotation;
+<<<<<<< HEAD
 };
 
 /**
@@ -128,6 +215,9 @@ struct gsc_driverdata {
 	int		num_limits;
 	const char	*clk_names[GSC_MAX_CLOCKS];
 	int		num_clocks;
+=======
+	bool	suspended;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* 8-tap Filter Coefficient */
@@ -418,6 +508,28 @@ static int gsc_sw_reset(struct gsc_context *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void gsc_set_gscblk_fimd_wb(struct gsc_context *ctx, bool enable)
+{
+	unsigned int gscblk_cfg;
+
+	if (!ctx->sysreg)
+		return;
+
+	regmap_read(ctx->sysreg, SYSREG_GSCBLK_CFG1, &gscblk_cfg);
+
+	if (enable)
+		gscblk_cfg |= GSC_BLK_DISP1WB_DEST(ctx->id) |
+				GSC_BLK_GSCL_WB_IN_SRC_SEL(ctx->id) |
+				GSC_BLK_SW_RESET_WB_DEST(ctx->id);
+	else
+		gscblk_cfg |= GSC_BLK_PXLASYNC_LO_MASK_WB(ctx->id);
+
+	regmap_write(ctx->sysreg, SYSREG_GSCBLK_CFG1, gscblk_cfg);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gsc_handle_irq(struct gsc_context *ctx, bool enable,
 		bool overflow, bool done)
 {
@@ -448,8 +560,15 @@ static void gsc_handle_irq(struct gsc_context *ctx, bool enable,
 }
 
 
+<<<<<<< HEAD
 static void gsc_src_set_fmt(struct gsc_context *ctx, u32 fmt)
 {
+=======
+static int gsc_src_set_fmt(struct device *dev, u32 fmt)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cfg;
 
 	DRM_DEBUG_KMS("fmt[0x%x]\n", fmt);
@@ -465,7 +584,10 @@ static void gsc_src_set_fmt(struct gsc_context *ctx, u32 fmt)
 		cfg |= GSC_IN_RGB565;
 		break;
 	case DRM_FORMAT_XRGB8888:
+<<<<<<< HEAD
 	case DRM_FORMAT_ARGB8888:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cfg |= GSC_IN_XRGB8888;
 		break;
 	case DRM_FORMAT_BGRX8888:
@@ -512,6 +634,7 @@ static void gsc_src_set_fmt(struct gsc_context *ctx, u32 fmt)
 	case DRM_FORMAT_NV16:
 		cfg |= (GSC_IN_CHROMA_ORDER_CBCR | GSC_IN_YUV422_2P);
 		break;
+<<<<<<< HEAD
 	}
 
 	gsc_write(cfg, GSC_IN_CON);
@@ -522,10 +645,33 @@ static void gsc_src_set_transf(struct gsc_context *ctx, unsigned int rotation)
 	unsigned int degree = rotation & DRM_MODE_ROTATE_MASK;
 	u32 cfg;
 
+=======
+	default:
+		dev_err(ippdrv->dev, "invalid target yuv order 0x%x.\n", fmt);
+		return -EINVAL;
+	}
+
+	gsc_write(cfg, GSC_IN_CON);
+
+	return 0;
+}
+
+static int gsc_src_set_transf(struct device *dev,
+		enum drm_exynos_degree degree,
+		enum drm_exynos_flip flip, bool *swap)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	u32 cfg;
+
+	DRM_DEBUG_KMS("degree[%d]flip[0x%x]\n", degree, flip);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cfg = gsc_read(GSC_IN_CON);
 	cfg &= ~GSC_IN_ROT_MASK;
 
 	switch (degree) {
+<<<<<<< HEAD
 	case DRM_MODE_ROTATE_0:
 		if (rotation & DRM_MODE_REFLECT_X)
 			cfg |= GSC_IN_ROT_XFLIP;
@@ -553,11 +699,45 @@ static void gsc_src_set_transf(struct gsc_context *ctx, unsigned int rotation)
 		if (rotation & DRM_MODE_REFLECT_Y)
 			cfg &= ~GSC_IN_ROT_YFLIP;
 		break;
+=======
+	case EXYNOS_DRM_DEGREE_0:
+		if (flip & EXYNOS_DRM_FLIP_VERTICAL)
+			cfg |= GSC_IN_ROT_XFLIP;
+		if (flip & EXYNOS_DRM_FLIP_HORIZONTAL)
+			cfg |= GSC_IN_ROT_YFLIP;
+		break;
+	case EXYNOS_DRM_DEGREE_90:
+		if (flip & EXYNOS_DRM_FLIP_VERTICAL)
+			cfg |= GSC_IN_ROT_90_XFLIP;
+		else if (flip & EXYNOS_DRM_FLIP_HORIZONTAL)
+			cfg |= GSC_IN_ROT_90_YFLIP;
+		else
+			cfg |= GSC_IN_ROT_90;
+		break;
+	case EXYNOS_DRM_DEGREE_180:
+		cfg |= GSC_IN_ROT_180;
+		if (flip & EXYNOS_DRM_FLIP_VERTICAL)
+			cfg &= ~GSC_IN_ROT_XFLIP;
+		if (flip & EXYNOS_DRM_FLIP_HORIZONTAL)
+			cfg &= ~GSC_IN_ROT_YFLIP;
+		break;
+	case EXYNOS_DRM_DEGREE_270:
+		cfg |= GSC_IN_ROT_270;
+		if (flip & EXYNOS_DRM_FLIP_VERTICAL)
+			cfg &= ~GSC_IN_ROT_XFLIP;
+		if (flip & EXYNOS_DRM_FLIP_HORIZONTAL)
+			cfg &= ~GSC_IN_ROT_YFLIP;
+		break;
+	default:
+		dev_err(ippdrv->dev, "invalid degree value %d.\n", degree);
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	gsc_write(cfg, GSC_IN_CON);
 
 	ctx->rotation = (cfg & GSC_IN_ROT_90) ? 1 : 0;
+<<<<<<< HEAD
 }
 
 static void gsc_src_set_size(struct gsc_context *ctx,
@@ -576,20 +756,66 @@ static void gsc_src_set_size(struct gsc_context *ctx,
 		GSC_CROPPED_HEIGHT(buf->rect.h));
 	gsc_write(cfg, GSC_CROPPED_SIZE);
 
+=======
+	*swap = ctx->rotation;
+
+	return 0;
+}
+
+static int gsc_src_set_size(struct device *dev, int swap,
+		struct drm_exynos_pos *pos, struct drm_exynos_sz *sz)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct drm_exynos_pos img_pos = *pos;
+	struct gsc_scaler *sc = &ctx->sc;
+	u32 cfg;
+
+	DRM_DEBUG_KMS("swap[%d]x[%d]y[%d]w[%d]h[%d]\n",
+		swap, pos->x, pos->y, pos->w, pos->h);
+
+	if (swap) {
+		img_pos.w = pos->h;
+		img_pos.h = pos->w;
+	}
+
+	/* pixel offset */
+	cfg = (GSC_SRCIMG_OFFSET_X(img_pos.x) |
+		GSC_SRCIMG_OFFSET_Y(img_pos.y));
+	gsc_write(cfg, GSC_SRCIMG_OFFSET);
+
+	/* cropped size */
+	cfg = (GSC_CROPPED_WIDTH(img_pos.w) |
+		GSC_CROPPED_HEIGHT(img_pos.h));
+	gsc_write(cfg, GSC_CROPPED_SIZE);
+
+	DRM_DEBUG_KMS("hsize[%d]vsize[%d]\n", sz->hsize, sz->vsize);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* original size */
 	cfg = gsc_read(GSC_SRCIMG_SIZE);
 	cfg &= ~(GSC_SRCIMG_HEIGHT_MASK |
 		GSC_SRCIMG_WIDTH_MASK);
 
+<<<<<<< HEAD
 	cfg |= (GSC_SRCIMG_WIDTH(buf->buf.pitch[0] / buf->format->cpp[0]) |
 		GSC_SRCIMG_HEIGHT(buf->buf.height));
+=======
+	cfg |= (GSC_SRCIMG_WIDTH(sz->hsize) |
+		GSC_SRCIMG_HEIGHT(sz->vsize));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gsc_write(cfg, GSC_SRCIMG_SIZE);
 
 	cfg = gsc_read(GSC_IN_CON);
 	cfg &= ~GSC_IN_RGB_TYPE_MASK;
 
+<<<<<<< HEAD
 	if (buf->rect.w >= GSC_WIDTH_ITU_709)
+=======
+	DRM_DEBUG_KMS("width[%d]range[%d]\n", pos->w, sc->range);
+
+	if (pos->w >= GSC_WIDTH_ITU_709)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (sc->range)
 			cfg |= GSC_IN_RGB_HD_WIDE;
 		else
@@ -601,6 +827,7 @@ static void gsc_src_set_size(struct gsc_context *ctx,
 			cfg |= GSC_IN_RGB_SD_NARROW;
 
 	gsc_write(cfg, GSC_IN_CON);
+<<<<<<< HEAD
 }
 
 static void gsc_src_set_buf_seq(struct gsc_context *ctx, u32 buf_id,
@@ -613,12 +840,44 @@ static void gsc_src_set_buf_seq(struct gsc_context *ctx, u32 buf_id,
 	/* mask register set */
 	cfg = gsc_read(GSC_IN_BASE_ADDR_Y_MASK);
 
+=======
+
+	return 0;
+}
+
+static int gsc_src_set_buf_seq(struct gsc_context *ctx, u32 buf_id,
+		enum drm_exynos_ipp_buf_type buf_type)
+{
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	bool masked;
+	u32 cfg;
+	u32 mask = 0x00000001 << buf_id;
+
+	DRM_DEBUG_KMS("buf_id[%d]buf_type[%d]\n", buf_id, buf_type);
+
+	/* mask register set */
+	cfg = gsc_read(GSC_IN_BASE_ADDR_Y_MASK);
+
+	switch (buf_type) {
+	case IPP_BUF_ENQUEUE:
+		masked = false;
+		break;
+	case IPP_BUF_DEQUEUE:
+		masked = true;
+		break;
+	default:
+		dev_err(ippdrv->dev, "invalid buf ctrl parameter.\n");
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* sequence id */
 	cfg &= ~mask;
 	cfg |= masked << buf_id;
 	gsc_write(cfg, GSC_IN_BASE_ADDR_Y_MASK);
 	gsc_write(cfg, GSC_IN_BASE_ADDR_CB_MASK);
 	gsc_write(cfg, GSC_IN_BASE_ADDR_CR_MASK);
+<<<<<<< HEAD
 }
 
 static void gsc_src_set_addr(struct gsc_context *ctx, u32 buf_id,
@@ -634,6 +893,70 @@ static void gsc_src_set_addr(struct gsc_context *ctx, u32 buf_id,
 
 static void gsc_dst_set_fmt(struct gsc_context *ctx, u32 fmt)
 {
+=======
+
+	return 0;
+}
+
+static int gsc_src_set_addr(struct device *dev,
+		struct drm_exynos_ipp_buf_info *buf_info, u32 buf_id,
+		enum drm_exynos_ipp_buf_type buf_type)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	struct drm_exynos_ipp_cmd_node *c_node = ippdrv->c_node;
+	struct drm_exynos_ipp_property *property;
+
+	if (!c_node) {
+		DRM_ERROR("failed to get c_node.\n");
+		return -EFAULT;
+	}
+
+	property = &c_node->property;
+
+	DRM_DEBUG_KMS("prop_id[%d]buf_id[%d]buf_type[%d]\n",
+		property->prop_id, buf_id, buf_type);
+
+	if (buf_id > GSC_MAX_SRC) {
+		dev_info(ippdrv->dev, "invalid buf_id %d.\n", buf_id);
+		return -EINVAL;
+	}
+
+	/* address register set */
+	switch (buf_type) {
+	case IPP_BUF_ENQUEUE:
+		gsc_write(buf_info->base[EXYNOS_DRM_PLANAR_Y],
+			GSC_IN_BASE_ADDR_Y(buf_id));
+		gsc_write(buf_info->base[EXYNOS_DRM_PLANAR_CB],
+			GSC_IN_BASE_ADDR_CB(buf_id));
+		gsc_write(buf_info->base[EXYNOS_DRM_PLANAR_CR],
+			GSC_IN_BASE_ADDR_CR(buf_id));
+		break;
+	case IPP_BUF_DEQUEUE:
+		gsc_write(0x0, GSC_IN_BASE_ADDR_Y(buf_id));
+		gsc_write(0x0, GSC_IN_BASE_ADDR_CB(buf_id));
+		gsc_write(0x0, GSC_IN_BASE_ADDR_CR(buf_id));
+		break;
+	default:
+		/* bypass */
+		break;
+	}
+
+	return gsc_src_set_buf_seq(ctx, buf_id, buf_type);
+}
+
+static struct exynos_drm_ipp_ops gsc_src_ops = {
+	.set_fmt = gsc_src_set_fmt,
+	.set_transf = gsc_src_set_transf,
+	.set_size = gsc_src_set_size,
+	.set_addr = gsc_src_set_addr,
+};
+
+static int gsc_dst_set_fmt(struct device *dev, u32 fmt)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cfg;
 
 	DRM_DEBUG_KMS("fmt[0x%x]\n", fmt);
@@ -648,9 +971,14 @@ static void gsc_dst_set_fmt(struct gsc_context *ctx, u32 fmt)
 	case DRM_FORMAT_RGB565:
 		cfg |= GSC_OUT_RGB565;
 		break;
+<<<<<<< HEAD
 	case DRM_FORMAT_ARGB8888:
 	case DRM_FORMAT_XRGB8888:
 		cfg |= (GSC_OUT_XRGB8888 | GSC_OUT_GLOBAL_ALPHA(0xff));
+=======
+	case DRM_FORMAT_XRGB8888:
+		cfg |= GSC_OUT_XRGB8888;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case DRM_FORMAT_BGRX8888:
 		cfg |= (GSC_OUT_XRGB8888 | GSC_OUT_RB_SWAP);
@@ -696,9 +1024,75 @@ static void gsc_dst_set_fmt(struct gsc_context *ctx, u32 fmt)
 	case DRM_FORMAT_NV16:
 		cfg |= (GSC_OUT_CHROMA_ORDER_CBCR | GSC_OUT_YUV422_2P);
 		break;
+<<<<<<< HEAD
 	}
 
 	gsc_write(cfg, GSC_OUT_CON);
+=======
+	default:
+		dev_err(ippdrv->dev, "invalid target yuv order 0x%x.\n", fmt);
+		return -EINVAL;
+	}
+
+	gsc_write(cfg, GSC_OUT_CON);
+
+	return 0;
+}
+
+static int gsc_dst_set_transf(struct device *dev,
+		enum drm_exynos_degree degree,
+		enum drm_exynos_flip flip, bool *swap)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	u32 cfg;
+
+	DRM_DEBUG_KMS("degree[%d]flip[0x%x]\n", degree, flip);
+
+	cfg = gsc_read(GSC_IN_CON);
+	cfg &= ~GSC_IN_ROT_MASK;
+
+	switch (degree) {
+	case EXYNOS_DRM_DEGREE_0:
+		if (flip & EXYNOS_DRM_FLIP_VERTICAL)
+			cfg |= GSC_IN_ROT_XFLIP;
+		if (flip & EXYNOS_DRM_FLIP_HORIZONTAL)
+			cfg |= GSC_IN_ROT_YFLIP;
+		break;
+	case EXYNOS_DRM_DEGREE_90:
+		if (flip & EXYNOS_DRM_FLIP_VERTICAL)
+			cfg |= GSC_IN_ROT_90_XFLIP;
+		else if (flip & EXYNOS_DRM_FLIP_HORIZONTAL)
+			cfg |= GSC_IN_ROT_90_YFLIP;
+		else
+			cfg |= GSC_IN_ROT_90;
+		break;
+	case EXYNOS_DRM_DEGREE_180:
+		cfg |= GSC_IN_ROT_180;
+		if (flip & EXYNOS_DRM_FLIP_VERTICAL)
+			cfg &= ~GSC_IN_ROT_XFLIP;
+		if (flip & EXYNOS_DRM_FLIP_HORIZONTAL)
+			cfg &= ~GSC_IN_ROT_YFLIP;
+		break;
+	case EXYNOS_DRM_DEGREE_270:
+		cfg |= GSC_IN_ROT_270;
+		if (flip & EXYNOS_DRM_FLIP_VERTICAL)
+			cfg &= ~GSC_IN_ROT_XFLIP;
+		if (flip & EXYNOS_DRM_FLIP_HORIZONTAL)
+			cfg &= ~GSC_IN_ROT_YFLIP;
+		break;
+	default:
+		dev_err(ippdrv->dev, "invalid degree value %d.\n", degree);
+		return -EINVAL;
+	}
+
+	gsc_write(cfg, GSC_IN_CON);
+
+	ctx->rotation = (cfg & GSC_IN_ROT_90) ? 1 : 0;
+	*swap = ctx->rotation;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gsc_get_ratio_shift(u32 src, u32 dst, u32 *ratio)
@@ -736,9 +1130,15 @@ static void gsc_get_prescaler_shfactor(u32 hratio, u32 vratio, u32 *shfactor)
 }
 
 static int gsc_set_prescaler(struct gsc_context *ctx, struct gsc_scaler *sc,
+<<<<<<< HEAD
 			     struct drm_exynos_ipp_task_rect *src,
 			     struct drm_exynos_ipp_task_rect *dst)
 {
+=======
+		struct drm_exynos_pos *src, struct drm_exynos_pos *dst)
+{
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cfg;
 	u32 src_w, src_h, dst_w, dst_h;
 	int ret = 0;
@@ -756,13 +1156,21 @@ static int gsc_set_prescaler(struct gsc_context *ctx, struct gsc_scaler *sc,
 
 	ret = gsc_get_ratio_shift(src_w, dst_w, &sc->pre_hratio);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(ctx->dev, "failed to get ratio horizontal.\n");
+=======
+		dev_err(ippdrv->dev, "failed to get ratio horizontal.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = gsc_get_ratio_shift(src_h, dst_h, &sc->pre_vratio);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(ctx->dev, "failed to get ratio vertical.\n");
+=======
+		dev_err(ippdrv->dev, "failed to get ratio vertical.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -856,6 +1264,7 @@ static void gsc_set_scaler(struct gsc_context *ctx, struct gsc_scaler *sc)
 	gsc_write(cfg, GSC_MAIN_V_RATIO);
 }
 
+<<<<<<< HEAD
 static void gsc_dst_set_size(struct gsc_context *ctx,
 			     struct exynos_drm_ipp_buffer *buf)
 {
@@ -881,12 +1290,53 @@ static void gsc_dst_set_size(struct gsc_context *ctx,
 	cfg &= ~(GSC_DSTIMG_HEIGHT_MASK | GSC_DSTIMG_WIDTH_MASK);
 	cfg |= GSC_DSTIMG_WIDTH(buf->buf.pitch[0] / buf->format->cpp[0]) |
 	       GSC_DSTIMG_HEIGHT(buf->buf.height);
+=======
+static int gsc_dst_set_size(struct device *dev, int swap,
+		struct drm_exynos_pos *pos, struct drm_exynos_sz *sz)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct drm_exynos_pos img_pos = *pos;
+	struct gsc_scaler *sc = &ctx->sc;
+	u32 cfg;
+
+	DRM_DEBUG_KMS("swap[%d]x[%d]y[%d]w[%d]h[%d]\n",
+		swap, pos->x, pos->y, pos->w, pos->h);
+
+	if (swap) {
+		img_pos.w = pos->h;
+		img_pos.h = pos->w;
+	}
+
+	/* pixel offset */
+	cfg = (GSC_DSTIMG_OFFSET_X(pos->x) |
+		GSC_DSTIMG_OFFSET_Y(pos->y));
+	gsc_write(cfg, GSC_DSTIMG_OFFSET);
+
+	/* scaled size */
+	cfg = (GSC_SCALED_WIDTH(img_pos.w) | GSC_SCALED_HEIGHT(img_pos.h));
+	gsc_write(cfg, GSC_SCALED_SIZE);
+
+	DRM_DEBUG_KMS("hsize[%d]vsize[%d]\n", sz->hsize, sz->vsize);
+
+	/* original size */
+	cfg = gsc_read(GSC_DSTIMG_SIZE);
+	cfg &= ~(GSC_DSTIMG_HEIGHT_MASK |
+		GSC_DSTIMG_WIDTH_MASK);
+	cfg |= (GSC_DSTIMG_WIDTH(sz->hsize) |
+		GSC_DSTIMG_HEIGHT(sz->vsize));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gsc_write(cfg, GSC_DSTIMG_SIZE);
 
 	cfg = gsc_read(GSC_OUT_CON);
 	cfg &= ~GSC_OUT_RGB_TYPE_MASK;
 
+<<<<<<< HEAD
 	if (buf->rect.w >= GSC_WIDTH_ITU_709)
+=======
+	DRM_DEBUG_KMS("width[%d]range[%d]\n", pos->w, sc->range);
+
+	if (pos->w >= GSC_WIDTH_ITU_709)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (sc->range)
 			cfg |= GSC_OUT_RGB_HD_WIDE;
 		else
@@ -898,6 +1348,11 @@ static void gsc_dst_set_size(struct gsc_context *ctx,
 			cfg |= GSC_OUT_RGB_SD_NARROW;
 
 	gsc_write(cfg, GSC_OUT_CON);
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gsc_dst_get_buf_seq(struct gsc_context *ctx)
@@ -916,16 +1371,47 @@ static int gsc_dst_get_buf_seq(struct gsc_context *ctx)
 	return buf_num;
 }
 
+<<<<<<< HEAD
 static void gsc_dst_set_buf_seq(struct gsc_context *ctx, u32 buf_id,
 				bool enqueue)
 {
 	bool masked = !enqueue;
 	u32 cfg;
 	u32 mask = 0x00000001 << buf_id;
+=======
+static int gsc_dst_set_buf_seq(struct gsc_context *ctx, u32 buf_id,
+		enum drm_exynos_ipp_buf_type buf_type)
+{
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	bool masked;
+	u32 cfg;
+	u32 mask = 0x00000001 << buf_id;
+	int ret = 0;
+
+	DRM_DEBUG_KMS("buf_id[%d]buf_type[%d]\n", buf_id, buf_type);
+
+	mutex_lock(&ctx->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* mask register set */
 	cfg = gsc_read(GSC_OUT_BASE_ADDR_Y_MASK);
 
+<<<<<<< HEAD
+=======
+	switch (buf_type) {
+	case IPP_BUF_ENQUEUE:
+		masked = false;
+		break;
+	case IPP_BUF_DEQUEUE:
+		masked = true;
+		break;
+	default:
+		dev_err(ippdrv->dev, "invalid buf ctrl parameter.\n");
+		ret =  -EINVAL;
+		goto err_unlock;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* sequence id */
 	cfg &= ~mask;
 	cfg |= masked << buf_id;
@@ -934,6 +1420,7 @@ static void gsc_dst_set_buf_seq(struct gsc_context *ctx, u32 buf_id,
 	gsc_write(cfg, GSC_OUT_BASE_ADDR_CR_MASK);
 
 	/* interrupt enable */
+<<<<<<< HEAD
 	if (enqueue && gsc_dst_get_buf_seq(ctx) >= GSC_BUF_START)
 		gsc_handle_irq(ctx, true, false, true);
 
@@ -951,12 +1438,99 @@ static void gsc_dst_set_addr(struct gsc_context *ctx,
 	gsc_write(buf->dma_addr[2], GSC_OUT_BASE_ADDR_CR(buf_id));
 
 	gsc_dst_set_buf_seq(ctx, buf_id, true);
+=======
+	if (buf_type == IPP_BUF_ENQUEUE &&
+	    gsc_dst_get_buf_seq(ctx) >= GSC_BUF_START)
+		gsc_handle_irq(ctx, true, false, true);
+
+	/* interrupt disable */
+	if (buf_type == IPP_BUF_DEQUEUE &&
+	    gsc_dst_get_buf_seq(ctx) <= GSC_BUF_STOP)
+		gsc_handle_irq(ctx, false, false, true);
+
+err_unlock:
+	mutex_unlock(&ctx->lock);
+	return ret;
+}
+
+static int gsc_dst_set_addr(struct device *dev,
+		struct drm_exynos_ipp_buf_info *buf_info, u32 buf_id,
+		enum drm_exynos_ipp_buf_type buf_type)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	struct drm_exynos_ipp_cmd_node *c_node = ippdrv->c_node;
+	struct drm_exynos_ipp_property *property;
+
+	if (!c_node) {
+		DRM_ERROR("failed to get c_node.\n");
+		return -EFAULT;
+	}
+
+	property = &c_node->property;
+
+	DRM_DEBUG_KMS("prop_id[%d]buf_id[%d]buf_type[%d]\n",
+		property->prop_id, buf_id, buf_type);
+
+	if (buf_id > GSC_MAX_DST) {
+		dev_info(ippdrv->dev, "invalid buf_id %d.\n", buf_id);
+		return -EINVAL;
+	}
+
+	/* address register set */
+	switch (buf_type) {
+	case IPP_BUF_ENQUEUE:
+		gsc_write(buf_info->base[EXYNOS_DRM_PLANAR_Y],
+			GSC_OUT_BASE_ADDR_Y(buf_id));
+		gsc_write(buf_info->base[EXYNOS_DRM_PLANAR_CB],
+			GSC_OUT_BASE_ADDR_CB(buf_id));
+		gsc_write(buf_info->base[EXYNOS_DRM_PLANAR_CR],
+			GSC_OUT_BASE_ADDR_CR(buf_id));
+		break;
+	case IPP_BUF_DEQUEUE:
+		gsc_write(0x0, GSC_OUT_BASE_ADDR_Y(buf_id));
+		gsc_write(0x0, GSC_OUT_BASE_ADDR_CB(buf_id));
+		gsc_write(0x0, GSC_OUT_BASE_ADDR_CR(buf_id));
+		break;
+	default:
+		/* bypass */
+		break;
+	}
+
+	return gsc_dst_set_buf_seq(ctx, buf_id, buf_type);
+}
+
+static struct exynos_drm_ipp_ops gsc_dst_ops = {
+	.set_fmt = gsc_dst_set_fmt,
+	.set_transf = gsc_dst_set_transf,
+	.set_size = gsc_dst_set_size,
+	.set_addr = gsc_dst_set_addr,
+};
+
+static int gsc_clk_ctrl(struct gsc_context *ctx, bool enable)
+{
+	DRM_DEBUG_KMS("enable[%d]\n", enable);
+
+	if (enable) {
+		clk_prepare_enable(ctx->gsc_clk);
+		ctx->suspended = false;
+	} else {
+		clk_disable_unprepare(ctx->gsc_clk);
+		ctx->suspended = true;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gsc_get_src_buf_index(struct gsc_context *ctx)
 {
 	u32 cfg, curr_index, i;
 	u32 buf_id = GSC_MAX_SRC;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_KMS("gsc id[%d]\n", ctx->id);
 
@@ -970,15 +1544,29 @@ static int gsc_get_src_buf_index(struct gsc_context *ctx)
 		}
 	}
 
+<<<<<<< HEAD
 	DRM_DEBUG_KMS("cfg[0x%x]curr_index[%d]buf_id[%d]\n", cfg,
 		curr_index, buf_id);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (buf_id == GSC_MAX_SRC) {
 		DRM_ERROR("failed to get in buffer index.\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	gsc_src_set_buf_seq(ctx, buf_id, false);
+=======
+	ret = gsc_src_set_buf_seq(ctx, buf_id, IPP_BUF_DEQUEUE);
+	if (ret < 0) {
+		DRM_ERROR("failed to dequeue.\n");
+		return ret;
+	}
+
+	DRM_DEBUG_KMS("cfg[0x%x]curr_index[%d]buf_id[%d]\n", cfg,
+		curr_index, buf_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return buf_id;
 }
@@ -987,6 +1575,10 @@ static int gsc_get_dst_buf_index(struct gsc_context *ctx)
 {
 	u32 cfg, curr_index, i;
 	u32 buf_id = GSC_MAX_DST;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_KMS("gsc id[%d]\n", ctx->id);
 
@@ -1005,7 +1597,15 @@ static int gsc_get_dst_buf_index(struct gsc_context *ctx)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	gsc_dst_set_buf_seq(ctx, buf_id, false);
+=======
+	ret = gsc_dst_set_buf_seq(ctx, buf_id, IPP_BUF_DEQUEUE);
+	if (ret < 0) {
+		DRM_ERROR("failed to dequeue.\n");
+		return ret;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_KMS("cfg[0x%x]curr_index[%d]buf_id[%d]\n", cfg,
 		curr_index, buf_id);
@@ -1016,13 +1616,23 @@ static int gsc_get_dst_buf_index(struct gsc_context *ctx)
 static irqreturn_t gsc_irq_handler(int irq, void *dev_id)
 {
 	struct gsc_context *ctx = dev_id;
+<<<<<<< HEAD
 	u32 status;
 	int err = 0;
+=======
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	struct drm_exynos_ipp_cmd_node *c_node = ippdrv->c_node;
+	struct drm_exynos_ipp_event_work *event_work =
+		c_node->event_work;
+	u32 status;
+	int buf_id[EXYNOS_DRM_OPS_MAX];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_KMS("gsc id[%d]\n", ctx->id);
 
 	status = gsc_read(GSC_IRQ);
 	if (status & GSC_IRQ_STATUS_OR_IRQ) {
+<<<<<<< HEAD
 		dev_err(ctx->dev, "occurred overflow at %d, status 0x%x.\n",
 			ctx->id, status);
 		err = -EINVAL;
@@ -1051,20 +1661,215 @@ static irqreturn_t gsc_irq_handler(int irq, void *dev_id)
 		pm_runtime_mark_last_busy(ctx->dev);
 		pm_runtime_put_autosuspend(ctx->dev);
 		exynos_drm_ipp_task_done(task, err);
+=======
+		dev_err(ippdrv->dev, "occurred overflow at %d, status 0x%x.\n",
+			ctx->id, status);
+		return IRQ_NONE;
+	}
+
+	if (status & GSC_IRQ_STATUS_OR_FRM_DONE) {
+		dev_dbg(ippdrv->dev, "occurred frame done at %d, status 0x%x.\n",
+			ctx->id, status);
+
+		buf_id[EXYNOS_DRM_OPS_SRC] = gsc_get_src_buf_index(ctx);
+		if (buf_id[EXYNOS_DRM_OPS_SRC] < 0)
+			return IRQ_HANDLED;
+
+		buf_id[EXYNOS_DRM_OPS_DST] = gsc_get_dst_buf_index(ctx);
+		if (buf_id[EXYNOS_DRM_OPS_DST] < 0)
+			return IRQ_HANDLED;
+
+		DRM_DEBUG_KMS("buf_id_src[%d]buf_id_dst[%d]\n",
+			buf_id[EXYNOS_DRM_OPS_SRC], buf_id[EXYNOS_DRM_OPS_DST]);
+
+		event_work->ippdrv = ippdrv;
+		event_work->buf_id[EXYNOS_DRM_OPS_SRC] =
+			buf_id[EXYNOS_DRM_OPS_SRC];
+		event_work->buf_id[EXYNOS_DRM_OPS_DST] =
+			buf_id[EXYNOS_DRM_OPS_DST];
+		queue_work(ippdrv->event_workq, &event_work->work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static int gsc_reset(struct gsc_context *ctx)
 {
+=======
+static int gsc_init_prop_list(struct exynos_drm_ippdrv *ippdrv)
+{
+	struct drm_exynos_ipp_prop_list *prop_list = &ippdrv->prop_list;
+
+	prop_list->version = 1;
+	prop_list->writeback = 1;
+	prop_list->refresh_min = GSC_REFRESH_MIN;
+	prop_list->refresh_max = GSC_REFRESH_MAX;
+	prop_list->flip = (1 << EXYNOS_DRM_FLIP_VERTICAL) |
+				(1 << EXYNOS_DRM_FLIP_HORIZONTAL);
+	prop_list->degree = (1 << EXYNOS_DRM_DEGREE_0) |
+				(1 << EXYNOS_DRM_DEGREE_90) |
+				(1 << EXYNOS_DRM_DEGREE_180) |
+				(1 << EXYNOS_DRM_DEGREE_270);
+	prop_list->csc = 1;
+	prop_list->crop = 1;
+	prop_list->crop_max.hsize = GSC_CROP_MAX;
+	prop_list->crop_max.vsize = GSC_CROP_MAX;
+	prop_list->crop_min.hsize = GSC_CROP_MIN;
+	prop_list->crop_min.vsize = GSC_CROP_MIN;
+	prop_list->scale = 1;
+	prop_list->scale_max.hsize = GSC_SCALE_MAX;
+	prop_list->scale_max.vsize = GSC_SCALE_MAX;
+	prop_list->scale_min.hsize = GSC_SCALE_MIN;
+	prop_list->scale_min.vsize = GSC_SCALE_MIN;
+
+	return 0;
+}
+
+static inline bool gsc_check_drm_flip(enum drm_exynos_flip flip)
+{
+	switch (flip) {
+	case EXYNOS_DRM_FLIP_NONE:
+	case EXYNOS_DRM_FLIP_VERTICAL:
+	case EXYNOS_DRM_FLIP_HORIZONTAL:
+	case EXYNOS_DRM_FLIP_BOTH:
+		return true;
+	default:
+		DRM_DEBUG_KMS("invalid flip\n");
+		return false;
+	}
+}
+
+static int gsc_ippdrv_check_property(struct device *dev,
+		struct drm_exynos_ipp_property *property)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	struct drm_exynos_ipp_prop_list *pp = &ippdrv->prop_list;
+	struct drm_exynos_ipp_config *config;
+	struct drm_exynos_pos *pos;
+	struct drm_exynos_sz *sz;
+	bool swap;
+	int i;
+
+	for_each_ipp_ops(i) {
+		if ((i == EXYNOS_DRM_OPS_SRC) &&
+			(property->cmd == IPP_CMD_WB))
+			continue;
+
+		config = &property->config[i];
+		pos = &config->pos;
+		sz = &config->sz;
+
+		/* check for flip */
+		if (!gsc_check_drm_flip(config->flip)) {
+			DRM_ERROR("invalid flip.\n");
+			goto err_property;
+		}
+
+		/* check for degree */
+		switch (config->degree) {
+		case EXYNOS_DRM_DEGREE_90:
+		case EXYNOS_DRM_DEGREE_270:
+			swap = true;
+			break;
+		case EXYNOS_DRM_DEGREE_0:
+		case EXYNOS_DRM_DEGREE_180:
+			swap = false;
+			break;
+		default:
+			DRM_ERROR("invalid degree.\n");
+			goto err_property;
+		}
+
+		/* check for buffer bound */
+		if ((pos->x + pos->w > sz->hsize) ||
+			(pos->y + pos->h > sz->vsize)) {
+			DRM_ERROR("out of buf bound.\n");
+			goto err_property;
+		}
+
+		/* check for crop */
+		if ((i == EXYNOS_DRM_OPS_SRC) && (pp->crop)) {
+			if (swap) {
+				if ((pos->h < pp->crop_min.hsize) ||
+					(sz->vsize > pp->crop_max.hsize) ||
+					(pos->w < pp->crop_min.vsize) ||
+					(sz->hsize > pp->crop_max.vsize)) {
+					DRM_ERROR("out of crop size.\n");
+					goto err_property;
+				}
+			} else {
+				if ((pos->w < pp->crop_min.hsize) ||
+					(sz->hsize > pp->crop_max.hsize) ||
+					(pos->h < pp->crop_min.vsize) ||
+					(sz->vsize > pp->crop_max.vsize)) {
+					DRM_ERROR("out of crop size.\n");
+					goto err_property;
+				}
+			}
+		}
+
+		/* check for scale */
+		if ((i == EXYNOS_DRM_OPS_DST) && (pp->scale)) {
+			if (swap) {
+				if ((pos->h < pp->scale_min.hsize) ||
+					(sz->vsize > pp->scale_max.hsize) ||
+					(pos->w < pp->scale_min.vsize) ||
+					(sz->hsize > pp->scale_max.vsize)) {
+					DRM_ERROR("out of scale size.\n");
+					goto err_property;
+				}
+			} else {
+				if ((pos->w < pp->scale_min.hsize) ||
+					(sz->hsize > pp->scale_max.hsize) ||
+					(pos->h < pp->scale_min.vsize) ||
+					(sz->vsize > pp->scale_max.vsize)) {
+					DRM_ERROR("out of scale size.\n");
+					goto err_property;
+				}
+			}
+		}
+	}
+
+	return 0;
+
+err_property:
+	for_each_ipp_ops(i) {
+		if ((i == EXYNOS_DRM_OPS_SRC) &&
+			(property->cmd == IPP_CMD_WB))
+			continue;
+
+		config = &property->config[i];
+		pos = &config->pos;
+		sz = &config->sz;
+
+		DRM_ERROR("[%s]f[%d]r[%d]pos[%d %d %d %d]sz[%d %d]\n",
+			i ? "dst" : "src", config->flip, config->degree,
+			pos->x, pos->y, pos->w, pos->h,
+			sz->hsize, sz->vsize);
+	}
+
+	return -EINVAL;
+}
+
+
+static int gsc_ippdrv_reset(struct device *dev)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gsc_scaler *sc = &ctx->sc;
 	int ret;
 
 	/* reset h/w block */
 	ret = gsc_sw_reset(ctx);
 	if (ret < 0) {
+<<<<<<< HEAD
 		dev_err(ctx->dev, "failed to reset hardware.\n");
+=======
+		dev_err(dev, "failed to reset hardware.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -1075,6 +1880,7 @@ static int gsc_reset(struct gsc_context *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void gsc_start(struct gsc_context *ctx)
 {
 	u32 cfg;
@@ -1098,12 +1904,105 @@ static void gsc_start(struct gsc_context *ctx)
 	cfg = gsc_read(GSC_OUT_CON);
 	cfg |= GSC_OUT_PATH_MEMORY;
 	gsc_write(cfg, GSC_OUT_CON);
+=======
+static int gsc_ippdrv_start(struct device *dev, enum drm_exynos_ipp_cmd cmd)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+	struct drm_exynos_ipp_cmd_node *c_node = ippdrv->c_node;
+	struct drm_exynos_ipp_property *property;
+	struct drm_exynos_ipp_config *config;
+	struct drm_exynos_pos	img_pos[EXYNOS_DRM_OPS_MAX];
+	struct drm_exynos_ipp_set_wb set_wb;
+	u32 cfg;
+	int ret, i;
+
+	DRM_DEBUG_KMS("cmd[%d]\n", cmd);
+
+	if (!c_node) {
+		DRM_ERROR("failed to get c_node.\n");
+		return -EINVAL;
+	}
+
+	property = &c_node->property;
+
+	gsc_handle_irq(ctx, true, false, true);
+
+	for_each_ipp_ops(i) {
+		config = &property->config[i];
+		img_pos[i] = config->pos;
+	}
+
+	switch (cmd) {
+	case IPP_CMD_M2M:
+		/* enable one shot */
+		cfg = gsc_read(GSC_ENABLE);
+		cfg &= ~(GSC_ENABLE_ON_CLEAR_MASK |
+			GSC_ENABLE_CLK_GATE_MODE_MASK);
+		cfg |= GSC_ENABLE_ON_CLEAR_ONESHOT;
+		gsc_write(cfg, GSC_ENABLE);
+
+		/* src dma memory */
+		cfg = gsc_read(GSC_IN_CON);
+		cfg &= ~(GSC_IN_PATH_MASK | GSC_IN_LOCAL_SEL_MASK);
+		cfg |= GSC_IN_PATH_MEMORY;
+		gsc_write(cfg, GSC_IN_CON);
+
+		/* dst dma memory */
+		cfg = gsc_read(GSC_OUT_CON);
+		cfg |= GSC_OUT_PATH_MEMORY;
+		gsc_write(cfg, GSC_OUT_CON);
+		break;
+	case IPP_CMD_WB:
+		set_wb.enable = 1;
+		set_wb.refresh = property->refresh_rate;
+		gsc_set_gscblk_fimd_wb(ctx, set_wb.enable);
+		exynos_drm_ippnb_send_event(IPP_SET_WRITEBACK, (void *)&set_wb);
+
+		/* src local path */
+		cfg = gsc_read(GSC_IN_CON);
+		cfg &= ~(GSC_IN_PATH_MASK | GSC_IN_LOCAL_SEL_MASK);
+		cfg |= (GSC_IN_PATH_LOCAL | GSC_IN_LOCAL_FIMD_WB);
+		gsc_write(cfg, GSC_IN_CON);
+
+		/* dst dma memory */
+		cfg = gsc_read(GSC_OUT_CON);
+		cfg |= GSC_OUT_PATH_MEMORY;
+		gsc_write(cfg, GSC_OUT_CON);
+		break;
+	case IPP_CMD_OUTPUT:
+		/* src dma memory */
+		cfg = gsc_read(GSC_IN_CON);
+		cfg &= ~(GSC_IN_PATH_MASK | GSC_IN_LOCAL_SEL_MASK);
+		cfg |= GSC_IN_PATH_MEMORY;
+		gsc_write(cfg, GSC_IN_CON);
+
+		/* dst local path */
+		cfg = gsc_read(GSC_OUT_CON);
+		cfg |= GSC_OUT_PATH_MEMORY;
+		gsc_write(cfg, GSC_OUT_CON);
+		break;
+	default:
+		ret = -EINVAL;
+		dev_err(dev, "invalid operations.\n");
+		return ret;
+	}
+
+	ret = gsc_set_prescaler(ctx, &ctx->sc,
+		&img_pos[EXYNOS_DRM_OPS_SRC],
+		&img_pos[EXYNOS_DRM_OPS_DST]);
+	if (ret) {
+		dev_err(dev, "failed to set prescaler.\n");
+		return ret;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gsc_set_scaler(ctx, &ctx->sc);
 
 	cfg = gsc_read(GSC_ENABLE);
 	cfg |= GSC_ENABLE_ON;
 	gsc_write(cfg, GSC_ENABLE);
+<<<<<<< HEAD
 }
 
 static int gsc_commit(struct exynos_drm_ipp *ipp,
@@ -1131,10 +2030,13 @@ static int gsc_commit(struct exynos_drm_ipp *ipp,
 	gsc_dst_set_addr(ctx, 0, &task->dst);
 	gsc_set_prescaler(ctx, &ctx->sc, &task->src.rect, &task->dst.rect);
 	gsc_start(ctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static void gsc_abort(struct exynos_drm_ipp *ipp,
 			  struct exynos_drm_ipp_task *task)
 {
@@ -1208,11 +2110,55 @@ static int gsc_probe(struct platform_device *pdev)
 	struct gsc_context *ctx;
 	struct resource *res;
 	int ret, i;
+=======
+static void gsc_ippdrv_stop(struct device *dev, enum drm_exynos_ipp_cmd cmd)
+{
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct drm_exynos_ipp_set_wb set_wb = {0, 0};
+	u32 cfg;
+
+	DRM_DEBUG_KMS("cmd[%d]\n", cmd);
+
+	switch (cmd) {
+	case IPP_CMD_M2M:
+		/* bypass */
+		break;
+	case IPP_CMD_WB:
+		gsc_set_gscblk_fimd_wb(ctx, set_wb.enable);
+		exynos_drm_ippnb_send_event(IPP_SET_WRITEBACK, (void *)&set_wb);
+		break;
+	case IPP_CMD_OUTPUT:
+	default:
+		dev_err(dev, "invalid operations.\n");
+		break;
+	}
+
+	gsc_handle_irq(ctx, false, false, true);
+
+	/* reset sequence */
+	gsc_write(0xff, GSC_OUT_BASE_ADDR_Y_MASK);
+	gsc_write(0xff, GSC_OUT_BASE_ADDR_CB_MASK);
+	gsc_write(0xff, GSC_OUT_BASE_ADDR_CR_MASK);
+
+	cfg = gsc_read(GSC_ENABLE);
+	cfg &= ~GSC_ENABLE_ON;
+	gsc_write(cfg, GSC_ENABLE);
+}
+
+static int gsc_probe(struct platform_device *pdev)
+{
+	struct device *dev = &pdev->dev;
+	struct gsc_context *ctx;
+	struct resource *res;
+	struct exynos_drm_ippdrv *ippdrv;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
 	if (!ctx)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	formats = devm_kcalloc(dev,
 			       ARRAY_SIZE(gsc_formats), sizeof(*formats),
 			       GFP_KERNEL);
@@ -1242,6 +2188,22 @@ static int gsc_probe(struct platform_device *pdev)
 				ctx->clk_names[i]);
 			return PTR_ERR(ctx->clocks[i]);
 		}
+=======
+	if (dev->of_node) {
+		ctx->sysreg = syscon_regmap_lookup_by_phandle(dev->of_node,
+							"samsung,sysreg");
+		if (IS_ERR(ctx->sysreg)) {
+			dev_warn(dev, "failed to get system register.\n");
+			ctx->sysreg = NULL;
+		}
+	}
+
+	/* clock control */
+	ctx->gsc_clk = devm_clk_get(dev, "gscl");
+	if (IS_ERR(ctx->gsc_clk)) {
+		dev_err(dev, "failed to get gsc clock.\n");
+		return PTR_ERR(ctx->gsc_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* resource memory */
@@ -1258,8 +2220,13 @@ static int gsc_probe(struct platform_device *pdev)
 	}
 
 	ctx->irq = res->start;
+<<<<<<< HEAD
 	ret = devm_request_irq(dev, ctx->irq, gsc_irq_handler, 0,
 			       dev_name(dev), ctx);
+=======
+	ret = devm_request_threaded_irq(dev, ctx->irq, NULL, gsc_irq_handler,
+		IRQF_ONESHOT, "drm_gsc", ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		dev_err(dev, "failed to request irq.\n");
 		return ret;
@@ -1268,6 +2235,7 @@ static int gsc_probe(struct platform_device *pdev)
 	/* context initailization */
 	ctx->id = pdev->id;
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, ctx);
 
 	pm_runtime_use_autosuspend(dev);
@@ -1277,13 +2245,45 @@ static int gsc_probe(struct platform_device *pdev)
 	ret = component_add(dev, &gsc_component_ops);
 	if (ret)
 		goto err_pm_dis;
+=======
+	ippdrv = &ctx->ippdrv;
+	ippdrv->dev = dev;
+	ippdrv->ops[EXYNOS_DRM_OPS_SRC] = &gsc_src_ops;
+	ippdrv->ops[EXYNOS_DRM_OPS_DST] = &gsc_dst_ops;
+	ippdrv->check_property = gsc_ippdrv_check_property;
+	ippdrv->reset = gsc_ippdrv_reset;
+	ippdrv->start = gsc_ippdrv_start;
+	ippdrv->stop = gsc_ippdrv_stop;
+	ret = gsc_init_prop_list(ippdrv);
+	if (ret < 0) {
+		dev_err(dev, "failed to init property list.\n");
+		return ret;
+	}
+
+	DRM_DEBUG_KMS("id[%d]ippdrv[%pK]\n", ctx->id, ippdrv);
+
+	mutex_init(&ctx->lock);
+	platform_set_drvdata(pdev, ctx);
+
+	pm_runtime_enable(dev);
+
+	ret = exynos_drm_ippdrv_register(ippdrv);
+	if (ret < 0) {
+		dev_err(dev, "failed to register drm gsc device.\n");
+		goto err_ippdrv_register;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(dev, "drm gsc registered successfully.\n");
 
 	return 0;
 
+<<<<<<< HEAD
 err_pm_dis:
 	pm_runtime_dont_use_autosuspend(dev);
+=======
+err_ippdrv_register:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_disable(dev);
 	return ret;
 }
@@ -1291,8 +2291,18 @@ err_pm_dis:
 static int gsc_remove(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
 
 	pm_runtime_dont_use_autosuspend(dev);
+=======
+	struct gsc_context *ctx = get_gsc_context(dev);
+	struct exynos_drm_ippdrv *ippdrv = &ctx->ippdrv;
+
+	exynos_drm_ippdrv_unregister(ippdrv);
+	mutex_destroy(&ctx->lock);
+
+	pm_runtime_set_suspended(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_disable(dev);
 
 	return 0;
@@ -1301,6 +2311,7 @@ static int gsc_remove(struct platform_device *pdev)
 static int __maybe_unused gsc_runtime_suspend(struct device *dev)
 {
 	struct gsc_context *ctx = get_gsc_context(dev);
+<<<<<<< HEAD
 	int i;
 
 	DRM_DEBUG_KMS("id[%d]\n", ctx->id);
@@ -1309,11 +2320,18 @@ static int __maybe_unused gsc_runtime_suspend(struct device *dev)
 		clk_disable_unprepare(ctx->clocks[i]);
 
 	return 0;
+=======
+
+	DRM_DEBUG_KMS("id[%d]\n", ctx->id);
+
+	return  gsc_clk_ctrl(ctx, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __maybe_unused gsc_runtime_resume(struct device *dev)
 {
 	struct gsc_context *ctx = get_gsc_context(dev);
+<<<<<<< HEAD
 	int i, ret;
 
 	DRM_DEBUG_KMS("id[%d]\n", ctx->id);
@@ -1327,6 +2345,12 @@ static int __maybe_unused gsc_runtime_resume(struct device *dev)
 		}
 	}
 	return 0;
+=======
+
+	DRM_DEBUG_KMS("id[%d]\n", ctx->id);
+
+	return  gsc_clk_ctrl(ctx, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct dev_pm_ops gsc_pm_ops = {
@@ -1335,6 +2359,7 @@ static const struct dev_pm_ops gsc_pm_ops = {
 	SET_RUNTIME_PM_OPS(gsc_runtime_suspend, gsc_runtime_resume, NULL)
 };
 
+<<<<<<< HEAD
 static const struct drm_exynos_ipp_limit gsc_5250_limits[] = {
 	{ IPP_SIZE_LIMIT(BUFFER, .h = { 32, 4800, 8 }, .v = { 16, 3344, 8 }) },
 	{ IPP_SIZE_LIMIT(AREA, .h = { 16, 4800, 2 }, .v = { 8, 3344, 2 }) },
@@ -1395,6 +2420,11 @@ static const struct of_device_id exynos_drm_gsc_of_match[] = {
 		.data = &gsc_exynos5433_drvdata,
 	}, {
 	},
+=======
+static const struct of_device_id exynos_drm_gsc_of_match[] = {
+	{ .compatible = "samsung,exynos5-gsc" },
+	{ },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 MODULE_DEVICE_TABLE(of, exynos_drm_gsc_of_match);
 
@@ -1408,3 +2438,7 @@ struct platform_driver gsc_driver = {
 		.of_match_table = of_match_ptr(exynos_drm_gsc_of_match),
 	},
 };
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -22,9 +22,12 @@
  *
  */
 
+<<<<<<< HEAD
 #include <drm/drm_print.h>
 
 #include "intel_device_info.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "i915_drv.h"
 
 #define PLATFORM_NAME(x) [INTEL_##x] = #x
@@ -56,7 +59,10 @@ static const char * const platform_names[] = {
 	PLATFORM_NAME(GEMINILAKE),
 	PLATFORM_NAME(COFFEELAKE),
 	PLATFORM_NAME(CANNONLAKE),
+<<<<<<< HEAD
 	PLATFORM_NAME(ICELAKE),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #undef PLATFORM_NAME
 
@@ -71,14 +77,29 @@ const char *intel_platform_name(enum intel_platform platform)
 	return platform_names[platform];
 }
 
+<<<<<<< HEAD
 void intel_device_info_dump_flags(const struct intel_device_info *info,
 				  struct drm_printer *p)
 {
 #define PRINT_FLAG(name) drm_printf(p, "%s: %s\n", #name, yesno(info->name));
+=======
+void intel_device_info_dump(struct drm_i915_private *dev_priv)
+{
+	const struct intel_device_info *info = &dev_priv->info;
+
+	DRM_DEBUG_DRIVER("i915 device info: platform=%s gen=%i pciid=0x%04x rev=0x%02x",
+			 intel_platform_name(info->platform),
+			 info->gen,
+			 dev_priv->drm.pdev->device,
+			 dev_priv->drm.pdev->revision);
+#define PRINT_FLAG(name) \
+	DRM_DEBUG_DRIVER("i915 device info: " #name ": %s", yesno(info->name))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEV_INFO_FOR_EACH_FLAG(PRINT_FLAG);
 #undef PRINT_FLAG
 }
 
+<<<<<<< HEAD
 static void sseu_dump(const struct sseu_dev_info *sseu, struct drm_printer *p)
 {
 	int s;
@@ -278,10 +299,17 @@ static void cherryview_sseu_info_init(struct drm_i915_private *dev_priv)
 {
 	struct sseu_dev_info *sseu = &mkwrite_device_info(dev_priv)->sseu;
 	u32 fuse;
+=======
+static void cherryview_sseu_info_init(struct drm_i915_private *dev_priv)
+{
+	struct sseu_dev_info *sseu = &mkwrite_device_info(dev_priv)->sseu;
+	u32 fuse, eu_dis;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fuse = I915_READ(CHV_FUSE_GT);
 
 	sseu->slice_mask = BIT(0);
+<<<<<<< HEAD
 	sseu->max_slices = 1;
 	sseu->max_subslices = 2;
 	sseu->max_eus_per_subslice = 8;
@@ -310,6 +338,23 @@ static void cherryview_sseu_info_init(struct drm_i915_private *dev_priv)
 
 	sseu->eu_total = compute_eu_total(sseu);
 
+=======
+
+	if (!(fuse & CHV_FGT_DISABLE_SS0)) {
+		sseu->subslice_mask |= BIT(0);
+		eu_dis = fuse & (CHV_FGT_EU_DIS_SS0_R0_MASK |
+				 CHV_FGT_EU_DIS_SS0_R1_MASK);
+		sseu->eu_total += 8 - hweight32(eu_dis);
+	}
+
+	if (!(fuse & CHV_FGT_DISABLE_SS1)) {
+		sseu->subslice_mask |= BIT(1);
+		eu_dis = fuse & (CHV_FGT_EU_DIS_SS1_R0_MASK |
+				 CHV_FGT_EU_DIS_SS1_R1_MASK);
+		sseu->eu_total += 8 - hweight32(eu_dis);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * CHV expected to always have a uniform distribution of EU
 	 * across subslices.
@@ -331,35 +376,56 @@ static void gen9_sseu_info_init(struct drm_i915_private *dev_priv)
 {
 	struct intel_device_info *info = mkwrite_device_info(dev_priv);
 	struct sseu_dev_info *sseu = &info->sseu;
+<<<<<<< HEAD
 	int s, ss;
 	u32 fuse2, eu_disable, subslice_mask;
 	const u8 eu_mask = 0xff;
+=======
+	int s_max = 3, ss_max = 4, eu_max = 8;
+	int s, ss;
+	u32 fuse2, eu_disable;
+	u8 eu_mask = 0xff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fuse2 = I915_READ(GEN8_FUSE2);
 	sseu->slice_mask = (fuse2 & GEN8_F2_S_ENA_MASK) >> GEN8_F2_S_ENA_SHIFT;
 
+<<<<<<< HEAD
 	/* BXT has a single slice and at most 3 subslices. */
 	sseu->max_slices = IS_GEN9_LP(dev_priv) ? 1 : 3;
 	sseu->max_subslices = IS_GEN9_LP(dev_priv) ? 3 : 4;
 	sseu->max_eus_per_subslice = 8;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The subslice disable field is global, i.e. it applies
 	 * to each of the enabled slices.
 	*/
+<<<<<<< HEAD
 	subslice_mask = (1 << sseu->max_subslices) - 1;
 	subslice_mask &= ~((fuse2 & GEN9_F2_SS_DIS_MASK) >>
 			   GEN9_F2_SS_DIS_SHIFT);
+=======
+	sseu->subslice_mask = (1 << ss_max) - 1;
+	sseu->subslice_mask &= ~((fuse2 & GEN9_F2_SS_DIS_MASK) >>
+				 GEN9_F2_SS_DIS_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Iterate through enabled slices and subslices to
 	 * count the total enabled EU.
 	*/
+<<<<<<< HEAD
 	for (s = 0; s < sseu->max_slices; s++) {
+=======
+	for (s = 0; s < s_max; s++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!(sseu->slice_mask & BIT(s)))
 			/* skip disabled slice */
 			continue;
 
+<<<<<<< HEAD
 		sseu->subslice_mask[s] = subslice_mask;
 
 		eu_disable = I915_READ(GEN9_EU_DISABLE(s));
@@ -377,6 +443,18 @@ static void gen9_sseu_info_init(struct drm_i915_private *dev_priv)
 
 			eu_per_ss = sseu->max_eus_per_subslice -
 				hweight8(eu_disabled_mask);
+=======
+		eu_disable = I915_READ(GEN9_EU_DISABLE(s));
+		for (ss = 0; ss < ss_max; ss++) {
+			int eu_per_ss;
+
+			if (!(sseu->subslice_mask & BIT(ss)))
+				/* skip disabled subslice */
+				continue;
+
+			eu_per_ss = eu_max - hweight8((eu_disable >> (ss*8)) &
+						      eu_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/*
 			 * Record which subslice(s) has(have) 7 EUs. we
@@ -385,11 +463,19 @@ static void gen9_sseu_info_init(struct drm_i915_private *dev_priv)
 			 */
 			if (eu_per_ss == 7)
 				sseu->subslice_7eu[s] |= BIT(ss);
+<<<<<<< HEAD
 		}
 	}
 
 	sseu->eu_total = compute_eu_total(sseu);
 
+=======
+
+			sseu->eu_total += eu_per_ss;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * SKL is expected to always have a uniform distribution
 	 * of EU across subslices with the exception that any one
@@ -415,8 +501,23 @@ static void gen9_sseu_info_init(struct drm_i915_private *dev_priv)
 	sseu->has_eu_pg = sseu->eu_per_subslice > 2;
 
 	if (IS_GEN9_LP(dev_priv)) {
+<<<<<<< HEAD
 #define IS_SS_DISABLED(ss)	(!(sseu->subslice_mask[0] & BIT(ss)))
 		info->has_pooled_eu = hweight8(sseu->subslice_mask[0]) == 3;
+=======
+#define IS_SS_DISABLED(ss)	(!(sseu->subslice_mask & BIT(ss)))
+		info->has_pooled_eu = hweight8(sseu->subslice_mask) == 3;
+
+		/*
+		 * There is a HW issue in 2x6 fused down parts that requires
+		 * Pooled EU to be enabled as a WA. The pool configuration
+		 * changes depending upon which subslice is fused down. This
+		 * doesn't affect if the device has all 3 subslices enabled.
+		 */
+		/* WaEnablePooledEuFor2x6:bxt */
+		info->has_pooled_eu |= (hweight8(sseu->subslice_mask) == 2 &&
+					IS_BXT_REVID(dev_priv, 0, BXT_REVID_B_LAST));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		sseu->min_eu_in_pool = 0;
 		if (info->has_pooled_eu) {
@@ -434,6 +535,7 @@ static void gen9_sseu_info_init(struct drm_i915_private *dev_priv)
 static void broadwell_sseu_info_init(struct drm_i915_private *dev_priv)
 {
 	struct sseu_dev_info *sseu = &mkwrite_device_info(dev_priv)->sseu;
+<<<<<<< HEAD
 	int s, ss;
 	u32 fuse2, subslice_mask, eu_disable[3]; /* s_max */
 
@@ -443,13 +545,27 @@ static void broadwell_sseu_info_init(struct drm_i915_private *dev_priv)
 	sseu->max_subslices = 3;
 	sseu->max_eus_per_subslice = 8;
 
+=======
+	const int s_max = 3, ss_max = 3, eu_max = 8;
+	int s, ss;
+	u32 fuse2, eu_disable[3]; /* s_max */
+
+	fuse2 = I915_READ(GEN8_FUSE2);
+	sseu->slice_mask = (fuse2 & GEN8_F2_S_ENA_MASK) >> GEN8_F2_S_ENA_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The subslice disable field is global, i.e. it applies
 	 * to each of the enabled slices.
 	 */
+<<<<<<< HEAD
 	subslice_mask = GENMASK(sseu->max_subslices - 1, 0);
 	subslice_mask &= ~((fuse2 & GEN8_F2_SS_DIS_MASK) >>
 			   GEN8_F2_SS_DIS_SHIFT);
+=======
+	sseu->subslice_mask = GENMASK(ss_max - 1, 0);
+	sseu->subslice_mask &= ~((fuse2 & GEN8_F2_SS_DIS_MASK) >>
+				 GEN8_F2_SS_DIS_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	eu_disable[0] = I915_READ(GEN8_EU_DISABLE0) & GEN8_EU_DIS0_S0_MASK;
 	eu_disable[1] = (I915_READ(GEN8_EU_DISABLE0) >> GEN8_EU_DIS0_S1_SHIFT) |
@@ -463,11 +579,16 @@ static void broadwell_sseu_info_init(struct drm_i915_private *dev_priv)
 	 * Iterate through enabled slices and subslices to
 	 * count the total enabled EU.
 	 */
+<<<<<<< HEAD
 	for (s = 0; s < sseu->max_slices; s++) {
+=======
+	for (s = 0; s < s_max; s++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!(sseu->slice_mask & BIT(s)))
 			/* skip disabled slice */
 			continue;
 
+<<<<<<< HEAD
 		sseu->subslice_mask[s] = subslice_mask;
 
 		for (ss = 0; ss < sseu->max_subslices; ss++) {
@@ -484,10 +605,21 @@ static void broadwell_sseu_info_init(struct drm_i915_private *dev_priv)
 			sseu_set_eus(sseu, s, ss, ~eu_disabled_mask);
 
 			n_disabled = hweight8(eu_disabled_mask);
+=======
+		for (ss = 0; ss < ss_max; ss++) {
+			u32 n_disabled;
+
+			if (!(sseu->subslice_mask & BIT(ss)))
+				/* skip disabled subslice */
+				continue;
+
+			n_disabled = hweight8(eu_disable[s] >> (ss * eu_max));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/*
 			 * Record which subslices have 7 EUs.
 			 */
+<<<<<<< HEAD
 			if (sseu->max_eus_per_subslice - n_disabled == 7)
 				sseu->subslice_7eu[s] |= 1 << ss;
 		}
@@ -495,6 +627,15 @@ static void broadwell_sseu_info_init(struct drm_i915_private *dev_priv)
 
 	sseu->eu_total = compute_eu_total(sseu);
 
+=======
+			if (eu_max - n_disabled == 7)
+				sseu->subslice_7eu[s] |= 1 << ss;
+
+			sseu->eu_total += eu_max - n_disabled;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * BDW is expected to always have a uniform distribution of EU across
 	 * subslices with the exception that any one EU in any one subslice may
@@ -513,6 +654,7 @@ static void broadwell_sseu_info_init(struct drm_i915_private *dev_priv)
 	sseu->has_eu_pg = 0;
 }
 
+<<<<<<< HEAD
 static void haswell_sseu_info_init(struct drm_i915_private *dev_priv)
 {
 	struct intel_device_info *info = mkwrite_device_info(dev_priv);
@@ -723,6 +865,9 @@ static u32 read_timestamp_frequency(struct drm_i915_private *dev_priv)
  * intel_device_info_runtime_init - initialize runtime info
  * @info: intel device info struct
  *
+=======
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Determine various intel_device_info fields at runtime.
  *
  * Use it when either:
@@ -735,6 +880,7 @@ static u32 read_timestamp_frequency(struct drm_i915_private *dev_priv)
  *   - after the PCH has been detected,
  *   - before the first usage of the fields it can tweak.
  */
+<<<<<<< HEAD
 void intel_device_info_runtime_init(struct intel_device_info *info)
 {
 	struct drm_i915_private *dev_priv =
@@ -745,14 +891,25 @@ void intel_device_info_runtime_init(struct intel_device_info *info)
 		for_each_pipe(dev_priv, pipe)
 			info->num_scalers[pipe] = 2;
 	} else if (INTEL_GEN(dev_priv) == 9) {
+=======
+void intel_device_info_runtime_init(struct drm_i915_private *dev_priv)
+{
+	struct intel_device_info *info = mkwrite_device_info(dev_priv);
+	enum pipe pipe;
+
+	if (INTEL_GEN(dev_priv) >= 9) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info->num_scalers[PIPE_A] = 2;
 		info->num_scalers[PIPE_B] = 2;
 		info->num_scalers[PIPE_C] = 1;
 	}
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(I915_NUM_ENGINES >
 		     sizeof(intel_ring_mask_t) * BITS_PER_BYTE);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Skylake and Broxton currently don't expose the topmost plane as its
 	 * use is exclusive with the legacy cursor and we only want to expose
@@ -776,7 +933,11 @@ void intel_device_info_runtime_init(struct intel_device_info *info)
 			info->num_sprites[pipe] = 1;
 	}
 
+<<<<<<< HEAD
 	if (i915_modparams.disable_display) {
+=======
+	if (i915.disable_display) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_INFO("Display disabled (module parameter)\n");
 		info->num_pipes = 0;
 	} else if (info->num_pipes > 0 &&
@@ -838,6 +999,7 @@ void intel_device_info_runtime_init(struct intel_device_info *info)
 	}
 
 	/* Initialize slice/subslice/EU info */
+<<<<<<< HEAD
 	if (IS_HASWELL(dev_priv))
 		haswell_sseu_info_init(dev_priv);
 	else if (IS_CHERRYVIEW(dev_priv))
@@ -908,4 +1070,30 @@ void intel_device_info_init_mmio(struct drm_i915_private *dev_priv)
 		info->ring_mask &= ~ENGINE_MASK(_VECS(i));
 		DRM_DEBUG_DRIVER("vecs%u fused off\n", i);
 	}
+=======
+	if (IS_CHERRYVIEW(dev_priv))
+		cherryview_sseu_info_init(dev_priv);
+	else if (IS_BROADWELL(dev_priv))
+		broadwell_sseu_info_init(dev_priv);
+	else if (INTEL_INFO(dev_priv)->gen >= 9)
+		gen9_sseu_info_init(dev_priv);
+
+	info->has_snoop = !info->has_llc;
+
+	DRM_DEBUG_DRIVER("slice mask: %04x\n", info->sseu.slice_mask);
+	DRM_DEBUG_DRIVER("slice total: %u\n", hweight8(info->sseu.slice_mask));
+	DRM_DEBUG_DRIVER("subslice total: %u\n",
+			 sseu_subslice_total(&info->sseu));
+	DRM_DEBUG_DRIVER("subslice mask %04x\n", info->sseu.subslice_mask);
+	DRM_DEBUG_DRIVER("subslice per slice: %u\n",
+			 hweight8(info->sseu.subslice_mask));
+	DRM_DEBUG_DRIVER("EU total: %u\n", info->sseu.eu_total);
+	DRM_DEBUG_DRIVER("EU per subslice: %u\n", info->sseu.eu_per_subslice);
+	DRM_DEBUG_DRIVER("has slice power gating: %s\n",
+			 info->sseu.has_slice_pg ? "y" : "n");
+	DRM_DEBUG_DRIVER("has subslice power gating: %s\n",
+			 info->sseu.has_subslice_pg ? "y" : "n");
+	DRM_DEBUG_DRIVER("has EU power gating: %s\n",
+			 info->sseu.has_eu_pg ? "y" : "n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

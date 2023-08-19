@@ -129,6 +129,7 @@ config MOUSE_PS2_ELANTECH
 
 	  This driver exposes some configuration registers via sysfs
 	  entries. For further information,
+<<<<<<< HEAD
 	  see <file:Documentation/input/devices/elantech.rst>.
 
 	  If unsure, say N.
@@ -145,6 +146,12 @@ config MOUSE_PS2_ELANTECH_SMBUS
 
 	  If unsure, say Y.
 
+=======
+	  see <file:Documentation/input/elantech.txt>.
+
+	  If unsure, say N.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MOUSE_PS2_SENTELIC
 	bool "Sentelic Finger Sensing Pad PS/2 protocol extension"
 	depends on MOUSE_PS2
@@ -228,7 +235,11 @@ config MOUSE_APPLETOUCH
 	  scrolling in X11.
 
 	  For further information, see
+<<<<<<< HEAD
 	  <file:Documentation/input/devices/appletouch.rst>.
+=======
+	  <file:Documentation/input/appletouch.txt>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called appletouch.
@@ -251,7 +262,11 @@ config MOUSE_BCM5974
 
 	  The interface is currently identical to the appletouch interface,
 	  for further information, see
+<<<<<<< HEAD
 	  <file:Documentation/input/devices/appletouch.rst>.
+=======
+	  <file:Documentation/input/appletouch.txt>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called bcm5974.

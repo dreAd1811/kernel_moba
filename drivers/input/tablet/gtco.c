@@ -875,18 +875,26 @@ static int gtco_probe(struct usb_interface *usbinterface,
 	}
 
 	/* Sanity check that a device has an endpoint */
+<<<<<<< HEAD
 	if (usbinterface->altsetting[0].desc.bNumEndpoints < 1) {
+=======
+	if (usbinterface->cur_altsetting->desc.bNumEndpoints < 1) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(&usbinterface->dev,
 			"Invalid number of endpoints\n");
 		error = -EINVAL;
 		goto err_free_urb;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * The endpoint is always altsetting 0, we know this since we know
 	 * this device only has one interrupt endpoint
 	 */
 	endpoint = &usbinterface->altsetting[0].endpoint[0].desc;
+=======
+	endpoint = &usbinterface->cur_altsetting->endpoint[0].desc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Some debug */
 	dev_dbg(&usbinterface->dev, "gtco # interfaces: %d\n", usbinterface->num_altsetting);
@@ -973,7 +981,11 @@ static int gtco_probe(struct usb_interface *usbinterface,
 	input_dev->dev.parent = &usbinterface->dev;
 
 	/* Setup the URB, it will be posted later on open of input device */
+<<<<<<< HEAD
 	endpoint = &usbinterface->altsetting[0].endpoint[0].desc;
+=======
+	endpoint = &usbinterface->cur_altsetting->endpoint[0].desc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	usb_fill_int_urb(gtco->urbinfo,
 			 udev,

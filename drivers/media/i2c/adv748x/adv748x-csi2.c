@@ -223,12 +223,22 @@ static const struct v4l2_subdev_ops adv748x_csi2_ops = {
 
 int adv748x_csi2_set_pixelrate(struct v4l2_subdev *sd, s64 rate)
 {
+<<<<<<< HEAD
 	struct adv748x_csi2 *tx = adv748x_sd_to_csi2(sd);
 
 	if (!tx->pixel_rate)
 		return -EINVAL;
 
 	return v4l2_ctrl_s_ctrl_int64(tx->pixel_rate, rate);
+=======
+	struct v4l2_ctrl *ctrl;
+
+	ctrl = v4l2_ctrl_find(sd->ctrl_handler, V4L2_CID_PIXEL_RATE);
+	if (!ctrl)
+		return -EINVAL;
+
+	return v4l2_ctrl_s_ctrl_int64(ctrl, rate);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int adv748x_csi2_s_ctrl(struct v4l2_ctrl *ctrl)
@@ -250,10 +260,15 @@ static int adv748x_csi2_init_controls(struct adv748x_csi2 *tx)
 
 	v4l2_ctrl_handler_init(&tx->ctrl_hdl, 1);
 
+<<<<<<< HEAD
 	tx->pixel_rate = v4l2_ctrl_new_std(&tx->ctrl_hdl,
 					   &adv748x_csi2_ctrl_ops,
 					   V4L2_CID_PIXEL_RATE, 1, INT_MAX,
 					   1, 1);
+=======
+	v4l2_ctrl_new_std(&tx->ctrl_hdl, &adv748x_csi2_ctrl_ops,
+			  V4L2_CID_PIXEL_RATE, 1, INT_MAX, 1, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tx->sd.ctrl_handler = &tx->ctrl_hdl;
 	if (tx->ctrl_hdl.error) {
@@ -266,6 +281,7 @@ static int adv748x_csi2_init_controls(struct adv748x_csi2 *tx)
 
 int adv748x_csi2_init(struct adv748x_state *state, struct adv748x_csi2 *tx)
 {
+<<<<<<< HEAD
 	struct device_node *ep;
 	int ret;
 
@@ -279,16 +295,30 @@ int adv748x_csi2_init(struct adv748x_state *state, struct adv748x_csi2 *tx)
 				is_txa(tx) ? "txa" : "txb");
 		return -ENODEV;
 	}
+=======
+	int ret;
+
+	if (!is_tx_enabled(tx))
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Initialise the virtual channel */
 	adv748x_csi2_set_virtual_channel(tx, 0);
 
 	adv748x_subdev_init(&tx->sd, state, &adv748x_csi2_ops,
+<<<<<<< HEAD
 			    MEDIA_ENT_F_VID_IF_BRIDGE,
 			    is_txa(tx) ? "txa" : "txb");
 
 	/* Ensure that matching is based upon the endpoint fwnodes */
 	tx->sd.fwnode = of_fwnode_handle(ep);
+=======
+			    MEDIA_ENT_F_UNKNOWN,
+			    is_txa(tx) ? "txa" : "txb");
+
+	/* Ensure that matching is based upon the endpoint fwnodes */
+	tx->sd.fwnode = of_fwnode_handle(state->endpoints[tx->port]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Register internal ops for incremental subdev registration */
 	tx->sd.internal_ops = &adv748x_csi2_internal_ops;
@@ -321,6 +351,12 @@ err_free_media:
 
 void adv748x_csi2_cleanup(struct adv748x_csi2 *tx)
 {
+<<<<<<< HEAD
+=======
+	if (!is_tx_enabled(tx))
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_async_unregister_subdev(&tx->sd);
 	media_entity_cleanup(&tx->sd.entity);
 	v4l2_ctrl_handler_free(&tx->ctrl_hdl);

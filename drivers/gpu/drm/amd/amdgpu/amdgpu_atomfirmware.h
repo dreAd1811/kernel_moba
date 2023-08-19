@@ -28,8 +28,12 @@ bool amdgpu_atomfirmware_gpu_supports_virtualization(struct amdgpu_device *adev)
 void amdgpu_atomfirmware_scratch_regs_init(struct amdgpu_device *adev);
 int amdgpu_atomfirmware_allocate_fb_scratch(struct amdgpu_device *adev);
 int amdgpu_atomfirmware_get_vram_width(struct amdgpu_device *adev);
+<<<<<<< HEAD
 int amdgpu_atomfirmware_get_vram_type(struct amdgpu_device *adev);
 int amdgpu_atomfirmware_get_clock_info(struct amdgpu_device *adev);
 int amdgpu_atomfirmware_get_gfx_info(struct amdgpu_device *adev);
+=======
+int amdgpu_atomfirmware_get_clock_info(struct amdgpu_device *adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

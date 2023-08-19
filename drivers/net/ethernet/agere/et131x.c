@@ -3080,9 +3080,15 @@ err_out:
  * The routine called when the error timer expires, to track the number of
  * recurring errors.
  */
+<<<<<<< HEAD
 static void et131x_error_timer_handler(struct timer_list *t)
 {
 	struct et131x_adapter *adapter = from_timer(adapter, t, error_timer);
+=======
+static void et131x_error_timer_handler(unsigned long data)
+{
+	struct et131x_adapter *adapter = (struct et131x_adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct phy_device *phydev = adapter->netdev->phydev;
 
 	if (et1310_in_phy_coma(adapter)) {
@@ -3624,9 +3630,17 @@ static int et131x_open(struct net_device *netdev)
 	int result;
 
 	/* Start the timer to track NIC errors */
+<<<<<<< HEAD
 	timer_setup(&adapter->error_timer, et131x_error_timer_handler, 0);
 	adapter->error_timer.expires = jiffies +
 		msecs_to_jiffies(TX_ERROR_PERIOD);
+=======
+	init_timer(&adapter->error_timer);
+	adapter->error_timer.expires = jiffies +
+		msecs_to_jiffies(TX_ERROR_PERIOD);
+	adapter->error_timer.function = et131x_error_timer_handler;
+	adapter->error_timer.data = (unsigned long)adapter;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&adapter->error_timer);
 
 	result = request_irq(irq, et131x_isr,

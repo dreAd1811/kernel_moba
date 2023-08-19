@@ -202,9 +202,15 @@ void gameport_stop_polling(struct gameport *gameport)
 }
 EXPORT_SYMBOL(gameport_stop_polling);
 
+<<<<<<< HEAD
 static void gameport_run_poll_handler(struct timer_list *t)
 {
 	struct gameport *gameport = from_timer(gameport, t, poll_timer);
+=======
+static void gameport_run_poll_handler(unsigned long d)
+{
+	struct gameport *gameport = (struct gameport *)d;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gameport->poll_handler(gameport);
 	if (gameport->poll_cnt)
@@ -542,7 +548,12 @@ static void gameport_init_port(struct gameport *gameport)
 
 	INIT_LIST_HEAD(&gameport->node);
 	spin_lock_init(&gameport->timer_lock);
+<<<<<<< HEAD
 	timer_setup(&gameport->poll_timer, gameport_run_poll_handler, 0);
+=======
+	setup_timer(&gameport->poll_timer, gameport_run_poll_handler,
+		    (unsigned long)gameport);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

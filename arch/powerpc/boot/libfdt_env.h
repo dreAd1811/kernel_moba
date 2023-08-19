@@ -5,8 +5,19 @@
 #include <types.h>
 #include <string.h>
 
+<<<<<<< HEAD
 #include "of.h"
 
+=======
+#define INT_MAX			((int)(~0U>>1))
+#define UINT32_MAX		((u32)~0U)
+#define INT32_MAX		((s32)(UINT32_MAX >> 1))
+
+#include "of.h"
+
+typedef u32 uint32_t;
+typedef u64 uint64_t;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef unsigned long uintptr_t;
 
 typedef __be16 fdt16_t;

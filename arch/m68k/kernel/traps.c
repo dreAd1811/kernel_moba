@@ -1007,9 +1007,15 @@ void bad_super_trap (struct frame *fp)
 
 asmlinkage void trap_c(struct frame *fp)
 {
+<<<<<<< HEAD
 	int sig, si_code;
 	void __user *addr;
 	int vector = (fp->ptregs.vector >> 2) & 0xff;
+=======
+	int sig;
+	int vector = (fp->ptregs.vector >> 2) & 0xff;
+	siginfo_t info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fp->ptregs.sr & PS_S) {
 		if (vector == VEC_TRACE) {
@@ -1029,12 +1035,17 @@ asmlinkage void trap_c(struct frame *fp)
 	/* send the appropriate signal to the user program */
 	switch (vector) {
 	    case VEC_ADDRERR:
+<<<<<<< HEAD
 		si_code = BUS_ADRALN;
+=======
+		info.si_code = BUS_ADRALN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sig = SIGBUS;
 		break;
 	    case VEC_ILLEGAL:
 	    case VEC_LINE10:
 	    case VEC_LINE11:
+<<<<<<< HEAD
 		si_code = ILL_ILLOPC;
 		sig = SIGILL;
 		break;
@@ -1044,6 +1055,17 @@ asmlinkage void trap_c(struct frame *fp)
 		break;
 	    case VEC_COPROC:
 		si_code = ILL_COPROC;
+=======
+		info.si_code = ILL_ILLOPC;
+		sig = SIGILL;
+		break;
+	    case VEC_PRIV:
+		info.si_code = ILL_PRVOPC;
+		sig = SIGILL;
+		break;
+	    case VEC_COPROC:
+		info.si_code = ILL_COPROC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sig = SIGILL;
 		break;
 	    case VEC_TRAP1:
@@ -1060,12 +1082,17 @@ asmlinkage void trap_c(struct frame *fp)
 	    case VEC_TRAP12:
 	    case VEC_TRAP13:
 	    case VEC_TRAP14:
+<<<<<<< HEAD
 		si_code = ILL_ILLTRP;
+=======
+		info.si_code = ILL_ILLTRP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sig = SIGILL;
 		break;
 	    case VEC_FPBRUC:
 	    case VEC_FPOE:
 	    case VEC_FPNAN:
+<<<<<<< HEAD
 		si_code = FPE_FLTINV;
 		sig = SIGFPE;
 		break;
@@ -1087,10 +1114,34 @@ asmlinkage void trap_c(struct frame *fp)
 		break;
 	    case VEC_ZERODIV:
 		si_code = FPE_INTDIV;
+=======
+		info.si_code = FPE_FLTINV;
+		sig = SIGFPE;
+		break;
+	    case VEC_FPIR:
+		info.si_code = FPE_FLTRES;
+		sig = SIGFPE;
+		break;
+	    case VEC_FPDIVZ:
+		info.si_code = FPE_FLTDIV;
+		sig = SIGFPE;
+		break;
+	    case VEC_FPUNDER:
+		info.si_code = FPE_FLTUND;
+		sig = SIGFPE;
+		break;
+	    case VEC_FPOVER:
+		info.si_code = FPE_FLTOVF;
+		sig = SIGFPE;
+		break;
+	    case VEC_ZERODIV:
+		info.si_code = FPE_INTDIV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sig = SIGFPE;
 		break;
 	    case VEC_CHK:
 	    case VEC_TRAP:
+<<<<<<< HEAD
 		si_code = FPE_INTOVF;
 		sig = SIGFPE;
 		break;
@@ -1128,6 +1179,47 @@ asmlinkage void trap_c(struct frame *fp)
 		break;
 	}
 	force_sig_fault(sig, si_code, addr, current);
+=======
+		info.si_code = FPE_INTOVF;
+		sig = SIGFPE;
+		break;
+	    case VEC_TRACE:		/* ptrace single step */
+		info.si_code = TRAP_TRACE;
+		sig = SIGTRAP;
+		break;
+	    case VEC_TRAP15:		/* breakpoint */
+		info.si_code = TRAP_BRKPT;
+		sig = SIGTRAP;
+		break;
+	    default:
+		info.si_code = ILL_ILLOPC;
+		sig = SIGILL;
+		break;
+	}
+	info.si_signo = sig;
+	info.si_errno = 0;
+	switch (fp->ptregs.format) {
+	    default:
+		info.si_addr = (void *) fp->ptregs.pc;
+		break;
+	    case 2:
+		info.si_addr = (void *) fp->un.fmt2.iaddr;
+		break;
+	    case 7:
+		info.si_addr = (void *) fp->un.fmt7.effaddr;
+		break;
+	    case 9:
+		info.si_addr = (void *) fp->un.fmt9.iaddr;
+		break;
+	    case 10:
+		info.si_addr = (void *) fp->un.fmta.daddr;
+		break;
+	    case 11:
+		info.si_addr = (void *) fp->un.fmtb.daddr;
+		break;
+	}
+	force_sig_info (sig, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void die_if_kernel (char *str, struct pt_regs *fp, int nr)
@@ -1159,6 +1251,16 @@ asmlinkage void fpsp040_die(void)
 #ifdef CONFIG_M68KFPU_EMU
 asmlinkage void fpemu_signal(int signal, int code, void *addr)
 {
+<<<<<<< HEAD
 	force_sig_fault(signal, code, addr, current);
+=======
+	siginfo_t info;
+
+	info.si_signo = signal;
+	info.si_errno = 0;
+	info.si_code = code;
+	info.si_addr = addr;
+	force_sig_info(signal, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif

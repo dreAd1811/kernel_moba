@@ -69,7 +69,11 @@ struct asyncppp {
 
 	struct tasklet_struct tsk;
 
+<<<<<<< HEAD
 	refcount_t	refcnt;
+=======
+	atomic_t	refcnt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct semaphore dead_sem;
 	struct ppp_channel chan;	/* interface to generic ppp layer */
 	unsigned char	obuf[OBUFSIZE];
@@ -140,14 +144,22 @@ static struct asyncppp *ap_get(struct tty_struct *tty)
 	read_lock(&disc_data_lock);
 	ap = tty->disc_data;
 	if (ap != NULL)
+<<<<<<< HEAD
 		refcount_inc(&ap->refcnt);
+=======
+		atomic_inc(&ap->refcnt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	read_unlock(&disc_data_lock);
 	return ap;
 }
 
 static void ap_put(struct asyncppp *ap)
 {
+<<<<<<< HEAD
 	if (refcount_dec_and_test(&ap->refcnt))
+=======
+	if (atomic_dec_and_test(&ap->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		up(&ap->dead_sem);
 }
 
@@ -185,7 +197,11 @@ ppp_asynctty_open(struct tty_struct *tty)
 	skb_queue_head_init(&ap->rqueue);
 	tasklet_init(&ap->tsk, ppp_async_process, (unsigned long) ap);
 
+<<<<<<< HEAD
 	refcount_set(&ap->refcnt, 1);
+=======
+	atomic_set(&ap->refcnt, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sema_init(&ap->dead_sem, 0);
 
 	ap->chan.private = ap;
@@ -234,7 +250,11 @@ ppp_asynctty_close(struct tty_struct *tty)
 	 * our channel ops (i.e. ppp_async_send/ioctl) are in progress
 	 * by the time it returns.
 	 */
+<<<<<<< HEAD
 	if (!refcount_dec_and_test(&ap->refcnt))
+=======
+	if (!atomic_dec_and_test(&ap->refcnt))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		down(&ap->dead_sem);
 	tasklet_kill(&ap->tsk);
 
@@ -334,7 +354,11 @@ ppp_asynctty_ioctl(struct tty_struct *tty, struct file *file,
 }
 
 /* No kernel lock - fine */
+<<<<<<< HEAD
 static __poll_t
+=======
+static unsigned int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ppp_asynctty_poll(struct tty_struct *tty, struct file *file, poll_table *wait)
 {
 	return 0;
@@ -878,6 +902,7 @@ ppp_async_input(struct asyncppp *ap, const unsigned char *buf,
 				skb = dev_alloc_skb(ap->mru + PPP_HDRLEN + 2);
 				if (!skb)
 					goto nomem;
+<<<<<<< HEAD
  				ap->rpkt = skb;
  			}
  			if (skb->len == 0) {
@@ -887,6 +912,17 @@ ppp_async_input(struct asyncppp *ap, const unsigned char *buf,
  				 * process_input_packet, but we do not have
  				 * enough chars here to test buf[1] and buf[2].
  				 */
+=======
+				ap->rpkt = skb;
+			}
+			if (skb->len == 0) {
+				/* Try to get the payload 4-byte aligned.
+				 * This should match the
+				 * PPP_ALLSTATIONS/PPP_UI/compressed tests in
+				 * process_input_packet, but we do not have
+				 * enough chars here to test buf[1] and buf[2].
+				 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (buf[0] != PPP_ALLSTATIONS)
 					skb_reserve(skb, 2 + (buf[0] & 1));
 			}

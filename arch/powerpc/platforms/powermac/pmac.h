@@ -15,7 +15,11 @@ struct rtc_time;
 extern int pmac_newworld;
 
 extern long pmac_time_init(void);
+<<<<<<< HEAD
 extern time64_t pmac_get_boot_time(void);
+=======
+extern unsigned long pmac_get_boot_time(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void pmac_get_rtc_time(struct rtc_time *);
 extern int pmac_set_rtc_time(struct rtc_time *);
 extern void pmac_read_rtc_time(void);

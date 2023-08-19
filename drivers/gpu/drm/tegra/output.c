@@ -9,11 +9,15 @@
 
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_panel.h>
+<<<<<<< HEAD
 
 #include "drm.h"
 #include "dc.h"
 
 #include <media/cec-notifier.h>
+=======
+#include "drm.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int tegra_output_connector_get_modes(struct drm_connector *connector)
 {
@@ -36,11 +40,19 @@ int tegra_output_connector_get_modes(struct drm_connector *connector)
 	else if (output->ddc)
 		edid = drm_get_edid(connector, output->ddc);
 
+<<<<<<< HEAD
 	cec_notifier_set_phys_addr_from_edid(output->notifier, edid);
 	drm_connector_update_edid_property(connector, edid);
 
 	if (edid) {
 		err = drm_add_edid_modes(connector, edid);
+=======
+	drm_mode_connector_update_edid_property(connector, edid);
+
+	if (edid) {
+		err = drm_add_edid_modes(connector, edid);
+		drm_edid_to_eld(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(edid);
 	}
 
@@ -72,9 +84,12 @@ tegra_output_connector_detect(struct drm_connector *connector, bool force)
 			status = connector_status_connected;
 	}
 
+<<<<<<< HEAD
 	if (status != connector_status_connected)
 		cec_notifier_phys_addr_invalidate(output->notifier);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return status;
 }
 
@@ -110,8 +125,13 @@ int tegra_output_probe(struct tegra_output *output)
 	panel = of_parse_phandle(output->of_node, "nvidia,panel", 0);
 	if (panel) {
 		output->panel = of_drm_find_panel(panel);
+<<<<<<< HEAD
 		if (IS_ERR(output->panel))
 			return PTR_ERR(output->panel);
+=======
+		if (!output->panel)
+			return -EPROBE_DEFER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		of_node_put(panel);
 	}
@@ -220,6 +240,7 @@ void tegra_output_exit(struct tegra_output *output)
 	if (output->panel)
 		drm_panel_detach(output->panel);
 }
+<<<<<<< HEAD
 
 void tegra_output_find_possible_crtcs(struct tegra_output *output,
 				      struct drm_device *drm)
@@ -242,3 +263,5 @@ void tegra_output_find_possible_crtcs(struct tegra_output *output,
 
 	output->encoder.possible_crtcs = mask;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -4,15 +4,21 @@ config ALPHA
 	default y
 	select ARCH_MIGHT_HAVE_PC_PARPORT
 	select ARCH_MIGHT_HAVE_PC_SERIO
+<<<<<<< HEAD
 	select ARCH_NO_PREEMPT
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARCH_USE_CMPXCHG_LOCKREF
 	select HAVE_AOUT
 	select HAVE_IDE
 	select HAVE_OPROFILE
 	select HAVE_PCSPKR_PLATFORM
 	select HAVE_PERF_EVENTS
+<<<<<<< HEAD
 	select NEED_DMA_MAP_STATE
 	select NEED_SG_DMA_LENGTH
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select VIRT_TO_BUS
 	select GENERIC_IRQ_PROBE
 	select AUTO_IRQ_AFFINITY if SMP
@@ -21,7 +27,10 @@ config ALPHA
 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
 	select AUDIT_ARCH
 	select GENERIC_CLOCKEVENTS
+<<<<<<< HEAD
 	select GENERIC_CPU_VULNERABILITIES
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select GENERIC_SMP_IDLE_THREAD
 	select GENERIC_STRNCPY_FROM_USER
 	select GENERIC_STRNLEN_USER
@@ -67,6 +76,18 @@ config ZONE_DMA
 	bool
 	default y
 
+<<<<<<< HEAD
+=======
+config ARCH_DMA_ADDR_T_64BIT
+	def_bool y
+
+config NEED_DMA_MAP_STATE
+       def_bool y
+
+config NEED_SG_DMA_LENGTH
+	def_bool y
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config GENERIC_ISA_DMA
 	bool
 	default y
@@ -75,6 +96,12 @@ config PGTABLE_LEVELS
 	int
 	default 3
 
+<<<<<<< HEAD
+=======
+source "init/Kconfig"
+source "kernel/Kconfig.freezer"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config AUDIT_ARCH
 	bool
 
@@ -201,8 +228,11 @@ config ALPHA_EIGER
 
 config ALPHA_JENSEN
 	bool "Jensen"
+<<<<<<< HEAD
 	depends on BROKEN
 	select DMA_DIRECT_OPS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  DEC PC 150 AXP (aka Jensen): This is a very old Digital system - one
 	  of the first-generation Alpha systems. A number of these systems
@@ -337,6 +367,12 @@ config PCI_DOMAINS
 config PCI_SYSCALL
 	def_bool PCI
 
+<<<<<<< HEAD
+=======
+config IOMMU_HELPER
+	def_bool PCI
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ALPHA_NONAME
 	bool
 	depends on ALPHA_BOOK1 || ALPHA_NONAME_CH
@@ -497,7 +533,11 @@ config ALPHA_QEMU
 
 	  Generic kernels will auto-detect QEMU.  But when building a
 	  system-specific kernel, the assumption is that we want to
+<<<<<<< HEAD
 	  eliminate as many runtime tests as possible.
+=======
+	  elimiate as many runtime tests as possible.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  If unsure, say N.
 
@@ -553,6 +593,14 @@ config SMP
 
 	  If you don't know what to do here, say N.
 
+<<<<<<< HEAD
+=======
+config HAVE_DEC_LOCK
+	bool
+	depends on SMP
+	default y
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config NR_CPUS
 	int "Maximum number of CPUs (2-32)"
 	range 2 32
@@ -569,7 +617,13 @@ config ARCH_DISCONTIGMEM_ENABLE
 	  Say Y to support efficient handling of discontiguous physical memory,
 	  for architectures which are either NUMA (Non-Uniform Memory Access)
 	  or have huge holes in the physical address space for other reasons.
+<<<<<<< HEAD
 	  See <file:Documentation/vm/numa.rst> for more.
+=======
+	  See <file:Documentation/vm/numa> for more.
+
+source "mm/Kconfig"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config NUMA
 	bool "NUMA Support (EXPERIMENTAL)"
@@ -709,11 +763,36 @@ config SRM_ENV
 	  This driver is also available as a module and will be called
 	  srm_env then.
 
+<<<<<<< HEAD
 endmenu
 
+=======
+source "fs/Kconfig.binfmt"
+
+endmenu
+
+source "net/Kconfig"
+
+source "drivers/Kconfig"
+
+source "fs/Kconfig"
+
+source "arch/alpha/Kconfig.debug"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # DUMMY_CONSOLE may be defined in drivers/video/console/Kconfig
 # but we also need it if VGA_HOSE is set
 config DUMMY_CONSOLE
 	bool
 	depends on VGA_HOSE
 	default y
+<<<<<<< HEAD
+=======
+
+source "security/Kconfig"
+
+source "crypto/Kconfig"
+
+source "lib/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -29,12 +29,19 @@
 #include <linux/leds.h>
 #include <linux/gpio.h>
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-gpio.h>
 #include <linux/gpio/machine.h>
 #include <asm/bootinfo.h>
 #include <asm/idle.h>
 #include <asm/reboot.h>
 #include <asm/setup.h>
+=======
+#include <linux/i2c-gpio.h>
+#include <asm/bootinfo.h>
+#include <asm/idle.h>
+#include <asm/reboot.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mach-au1x00/au1000.h>
 #include <asm/mach-au1x00/gpio-au1000.h>
 #include <prom.h>
@@ -61,7 +68,11 @@ void __init prom_init(void)
 	add_memory_region(0, memsize, BOOT_MEM_RAM);
 }
 
+<<<<<<< HEAD
 void prom_putchar(char c)
+=======
+void prom_putchar(unsigned char c)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	alchemy_uart_putchar(AU1000_UART0_PHYS_ADDR, c);
 }
@@ -191,7 +202,11 @@ static struct platform_device gpr_mtd_device = {
 /*
  * LEDs
  */
+<<<<<<< HEAD
 static const struct gpio_led gpr_gpio_leds[] = {
+=======
+static struct gpio_led gpr_gpio_leds[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{	/* green */
 		.name			= "gpr:green",
 		.gpio			= 4,
@@ -220,6 +235,7 @@ static struct platform_device gpr_led_devices = {
 /*
  * I2C
  */
+<<<<<<< HEAD
 static struct gpiod_lookup_table gpr_i2c_gpiod_table = {
 	.dev_id = "i2c-gpio",
 	.table = {
@@ -241,6 +257,12 @@ static struct i2c_gpio_platform_data gpr_i2c_data = {
 	 * property of the alchemy GPIO controller.
 	 */
 	.sda_is_open_drain	= 1,
+=======
+static struct i2c_gpio_platform_data gpr_i2c_data = {
+	.sda_pin		= 209,
+	.sda_is_open_drain	= 1,
+	.scl_pin		= 210,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.scl_is_open_drain	= 1,
 	.udelay			= 2,		/* ~100 kHz */
 	.timeout		= HZ,
@@ -314,7 +336,10 @@ arch_initcall(gpr_pci_init);
 
 static int __init gpr_dev_init(void)
 {
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&gpr_i2c_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_register_board_info(0, gpr_i2c_info, ARRAY_SIZE(gpr_i2c_info));
 
 	return platform_add_devices(gpr_devices, ARRAY_SIZE(gpr_devices));

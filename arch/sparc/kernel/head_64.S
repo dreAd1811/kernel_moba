@@ -641,8 +641,11 @@ niagara4_patch:
 	 nop
 	call	niagara4_patch_pageops
 	 nop
+<<<<<<< HEAD
 	call	niagara4_patch_fls
 	 nop
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ba,a,pt	%xcc, 80f
 	 nop
@@ -897,7 +900,10 @@ sparc64_boot_end:
 #include "syscalls.S"
 #include "helpers.S"
 #include "sun4v_tlb_miss.S"
+<<<<<<< HEAD
 #include "sun4v_mcd.S"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "sun4v_ivec.S"
 #include "ktlb.S"
 #include "tsb.S"

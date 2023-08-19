@@ -57,9 +57,16 @@ irqreturn_t qxl_irq_handler(int irq, void *arg)
 		 * to avoid endless loops).
 		 */
 		qdev->irq_received_error++;
+<<<<<<< HEAD
 		DRM_WARN("driver is in bug mode\n");
 	}
 	if (pending & QXL_INTERRUPT_CLIENT_MONITORS_CONFIG) {
+=======
+		qxl_io_log(qdev, "%s: driver is in bug mode.\n", __func__);
+	}
+	if (pending & QXL_INTERRUPT_CLIENT_MONITORS_CONFIG) {
+		qxl_io_log(qdev, "QXL_INTERRUPT_CLIENT_MONITORS_CONFIG\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		schedule_work(&qdev->client_monitors_config_work);
 	}
 	qdev->ram_header->int_mask = QXL_INTERRUPT_MASK;

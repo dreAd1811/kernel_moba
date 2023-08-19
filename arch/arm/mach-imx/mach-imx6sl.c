@@ -18,7 +18,10 @@
 
 #include "common.h"
 #include "cpuidle.h"
+<<<<<<< HEAD
 #include "hardware.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void __init imx6sl_fec_init(void)
 {
@@ -42,10 +45,14 @@ static void __init imx6sl_init_late(void)
 	if (IS_ENABLED(CONFIG_ARM_IMX6Q_CPUFREQ))
 		platform_device_register_simple("imx6q-cpufreq", -1, NULL, 0);
 
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_SOC_IMX6SL) && cpu_is_imx6sl())
 		imx6sl_cpuidle_init();
 	else if (IS_ENABLED(CONFIG_SOC_IMX6SLL))
 		imx6sx_cpuidle_init();
+=======
+	imx6sl_cpuidle_init();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init imx6sl_init_machine(void)
@@ -58,8 +65,12 @@ static void __init imx6sl_init_machine(void)
 
 	of_platform_default_populate(NULL, NULL, parent);
 
+<<<<<<< HEAD
 	if (cpu_is_imx6sl())
 		imx6sl_fec_init();
+=======
+	imx6sl_fec_init();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	imx_anatop_init();
 	imx6sl_pm_init();
 }
@@ -71,15 +82,22 @@ static void __init imx6sl_init_irq(void)
 	imx_init_l2cache();
 	imx_src_init();
 	irqchip_init();
+<<<<<<< HEAD
 	if (cpu_is_imx6sl())
 		imx6_pm_ccm_init("fsl,imx6sl-ccm");
 	else
 		imx6_pm_ccm_init("fsl,imx6sll-ccm");
+=======
+	imx6_pm_ccm_init("fsl,imx6sl-ccm");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const char * const imx6sl_dt_compat[] __initconst = {
 	"fsl,imx6sl",
+<<<<<<< HEAD
 	"fsl,imx6sll",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 

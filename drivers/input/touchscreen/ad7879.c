@@ -237,9 +237,15 @@ static void ad7879_ts_event_release(struct ad7879 *ts)
 	input_sync(input_dev);
 }
 
+<<<<<<< HEAD
 static void ad7879_timer(struct timer_list *t)
 {
 	struct ad7879 *ts = from_timer(ts, t, timer);
+=======
+static void ad7879_timer(unsigned long handle)
+{
+	struct ad7879 *ts = (void *)handle;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ad7879_ts_event_release(ts);
 }
@@ -524,6 +530,16 @@ static int ad7879_parse_dt(struct device *dev, struct ad7879 *ts)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void ad7879_cleanup_sysfs(void *_ts)
+{
+	struct ad7879 *ts = _ts;
+
+	sysfs_remove_group(&ts->dev->kobj, &ad7879_attr_group);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int ad7879_probe(struct device *dev, struct regmap *regmap,
 		 int irq, u16 bustype, u8 devid)
 {
@@ -570,7 +586,11 @@ int ad7879_probe(struct device *dev, struct regmap *regmap,
 	ts->irq = irq;
 	ts->regmap = regmap;
 
+<<<<<<< HEAD
 	timer_setup(&ts->timer, ad7879_timer, 0);
+=======
+	setup_timer(&ts->timer, ad7879_timer, (unsigned long) ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	snprintf(ts->phys, sizeof(ts->phys), "%s/input0", dev_name(dev));
 
 	input_dev->name = "AD7879 Touchscreen";
@@ -651,7 +671,15 @@ int ad7879_probe(struct device *dev, struct regmap *regmap,
 
 	__ad7879_disable(ts);
 
+<<<<<<< HEAD
 	err = devm_device_add_group(dev, &ad7879_attr_group);
+=======
+	err = sysfs_create_group(&dev->kobj, &ad7879_attr_group);
+	if (err)
+		return err;
+
+	err = devm_add_action_or_reset(dev, ad7879_cleanup_sysfs, ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 

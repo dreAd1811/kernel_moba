@@ -1,24 +1,46 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // Melfas MMS114/MMS152 touchscreen device driver
 //
 // Copyright (c) 2012 Samsung Electronics Co., Ltd.
 // Author: Joonyoung Shim <jy0922.shim@samsung.com>
+=======
+/*
+ * Copyright (C) 2012 Samsung Electronics Co.Ltd
+ * Author: Joonyoung Shim <jy0922.shim@samsung.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/module.h>
 #include <linux/delay.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/of_device.h>
 #include <linux/i2c.h>
 #include <linux/input/mt.h>
 #include <linux/input/touchscreen.h>
 #include <linux/interrupt.h>
+=======
+#include <linux/i2c.h>
+#include <linux/input/mt.h>
+#include <linux/interrupt.h>
+#include <linux/platform_data/mms114.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
 
 /* Write only registers */
 #define MMS114_MODE_CONTROL		0x01
 #define MMS114_OPERATION_MODE_MASK	0xE
+<<<<<<< HEAD
 #define MMS114_ACTIVE			BIT(1)
+=======
+#define MMS114_ACTIVE			(1 << 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MMS114_XY_RESOLUTION_H		0x02
 #define MMS114_X_RESOLUTION		0x03
@@ -28,12 +50,18 @@
 
 /* Read only registers */
 #define MMS114_PACKET_SIZE		0x0F
+<<<<<<< HEAD
 #define MMS114_INFORMATION		0x10
 #define MMS114_TSP_REV			0xF0
 
 #define MMS152_FW_REV			0xE1
 #define MMS152_COMPAT_GROUP		0xF2
 
+=======
+#define MMS114_INFOMATION		0x10
+#define MMS114_TSP_REV			0xF0
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Minimum delay time is 50us between stop and start signal of i2c */
 #define MMS114_I2C_DELAY		50
 
@@ -51,20 +79,27 @@
 #define MMS114_TYPE_TOUCHSCREEN		1
 #define MMS114_TYPE_TOUCHKEY		2
 
+<<<<<<< HEAD
 enum mms_type {
 	TYPE_MMS114	= 114,
 	TYPE_MMS152	= 152,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mms114_data {
 	struct i2c_client	*client;
 	struct input_dev	*input_dev;
 	struct regulator	*core_reg;
 	struct regulator	*io_reg;
+<<<<<<< HEAD
 	struct touchscreen_properties props;
 	enum mms_type		type;
 	unsigned int		contact_threshold;
 	unsigned int		moving_threshold;
+=======
+	const struct mms114_platform_data	*pdata;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Use cache data for mode control register(write only) */
 	u8			cache_mode_control;
@@ -152,6 +187,10 @@ static int mms114_write_reg(struct mms114_data *data, unsigned int reg,
 
 static void mms114_process_mt(struct mms114_data *data, struct mms114_touch *touch)
 {
+<<<<<<< HEAD
+=======
+	const struct mms114_platform_data *pdata = data->pdata;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_client *client = data->client;
 	struct input_dev *input_dev = data->input_dev;
 	unsigned int id;
@@ -171,6 +210,19 @@ static void mms114_process_mt(struct mms114_data *data, struct mms114_touch *tou
 	id = touch->id - 1;
 	x = touch->x_lo | touch->x_hi << 8;
 	y = touch->y_lo | touch->y_hi << 8;
+<<<<<<< HEAD
+=======
+	if (x > pdata->x_size || y > pdata->y_size) {
+		dev_dbg(&client->dev,
+			"Wrong touch coordinates (%d, %d)\n", x, y);
+		return;
+	}
+
+	if (pdata->x_invert)
+		x = pdata->x_size - x;
+	if (pdata->y_invert)
+		y = pdata->y_size - y;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&client->dev,
 		"id: %d, type: %d, pressed: %d, x: %d, y: %d, width: %d, strength: %d\n",
@@ -181,8 +233,14 @@ static void mms114_process_mt(struct mms114_data *data, struct mms114_touch *tou
 	input_mt_report_slot_state(input_dev, MT_TOOL_FINGER, touch->pressed);
 
 	if (touch->pressed) {
+<<<<<<< HEAD
 		touchscreen_report_pos(input_dev, &data->props, x, y, true);
 		input_report_abs(input_dev, ABS_MT_TOUCH_MAJOR, touch->width);
+=======
+		input_report_abs(input_dev, ABS_MT_TOUCH_MAJOR, touch->width);
+		input_report_abs(input_dev, ABS_MT_POSITION_X, x);
+		input_report_abs(input_dev, ABS_MT_POSITION_Y, y);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		input_report_abs(input_dev, ABS_MT_PRESSURE, touch->strength);
 	}
 }
@@ -210,7 +268,11 @@ static irqreturn_t mms114_interrupt(int irq, void *dev_id)
 
 	touch_size = packet_size / MMS114_PACKET_NUM;
 
+<<<<<<< HEAD
 	error = __mms114_read_reg(data, MMS114_INFORMATION, packet_size,
+=======
+	error = __mms114_read_reg(data, MMS114_INFOMATION, packet_size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			(u8 *)touch);
 	if (error < 0)
 		goto out;
@@ -246,6 +308,7 @@ static int mms114_get_version(struct mms114_data *data)
 {
 	struct device *dev = &data->client->dev;
 	u8 buf[6];
+<<<<<<< HEAD
 	int group;
 	int error;
 
@@ -273,13 +336,27 @@ static int mms114_get_version(struct mms114_data *data)
 			 buf[0], buf[1], buf[3]);
 		break;
 	}
+=======
+	int error;
+
+	error = __mms114_read_reg(data, MMS114_TSP_REV, 6, buf);
+	if (error < 0)
+		return error;
+
+	dev_info(dev, "TSP Rev: 0x%x, HW Rev: 0x%x, Firmware Ver: 0x%x\n",
+		 buf[0], buf[1], buf[3]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int mms114_setup_regs(struct mms114_data *data)
 {
+<<<<<<< HEAD
 	const struct touchscreen_properties *props = &data->props;
+=======
+	const struct mms114_platform_data *pdata = data->pdata;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int val;
 	int error;
 
@@ -287,40 +364,68 @@ static int mms114_setup_regs(struct mms114_data *data)
 	if (error < 0)
 		return error;
 
+<<<<<<< HEAD
 	/* MMS152 has no configuration or power on registers */
 	if (data->type == TYPE_MMS152)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = mms114_set_active(data, true);
 	if (error < 0)
 		return error;
 
+<<<<<<< HEAD
 	val = (props->max_x >> 8) & 0xf;
 	val |= ((props->max_y >> 8) & 0xf) << 4;
+=======
+	val = (pdata->x_size >> 8) & 0xf;
+	val |= ((pdata->y_size >> 8) & 0xf) << 4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = mms114_write_reg(data, MMS114_XY_RESOLUTION_H, val);
 	if (error < 0)
 		return error;
 
+<<<<<<< HEAD
 	val = props->max_x & 0xff;
+=======
+	val = pdata->x_size & 0xff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = mms114_write_reg(data, MMS114_X_RESOLUTION, val);
 	if (error < 0)
 		return error;
 
+<<<<<<< HEAD
 	val = props->max_x & 0xff;
+=======
+	val = pdata->y_size & 0xff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = mms114_write_reg(data, MMS114_Y_RESOLUTION, val);
 	if (error < 0)
 		return error;
 
+<<<<<<< HEAD
 	if (data->contact_threshold) {
 		error = mms114_write_reg(data, MMS114_CONTACT_THRESHOLD,
 				data->contact_threshold);
+=======
+	if (pdata->contact_threshold) {
+		error = mms114_write_reg(data, MMS114_CONTACT_THRESHOLD,
+				pdata->contact_threshold);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (error < 0)
 			return error;
 	}
 
+<<<<<<< HEAD
 	if (data->moving_threshold) {
 		error = mms114_write_reg(data, MMS114_MOVING_THRESHOLD,
 				data->moving_threshold);
+=======
+	if (pdata->moving_threshold) {
+		error = mms114_write_reg(data, MMS114_MOVING_THRESHOLD,
+				pdata->moving_threshold);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (error < 0)
 			return error;
 	}
@@ -346,7 +451,11 @@ static int mms114_start(struct mms114_data *data)
 		return error;
 	}
 
+<<<<<<< HEAD
 	msleep(MMS114_POWERON_DELAY);
+=======
+	mdelay(MMS114_POWERON_DELAY);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	error = mms114_setup_regs(data);
 	if (error < 0) {
@@ -355,6 +464,12 @@ static int mms114_start(struct mms114_data *data)
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	if (data->pdata->cfg_pin)
+		data->pdata->cfg_pin(true);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enable_irq(client->irq);
 
 	return 0;
@@ -367,6 +482,12 @@ static void mms114_stop(struct mms114_data *data)
 
 	disable_irq(client->irq);
 
+<<<<<<< HEAD
+=======
+	if (data->pdata->cfg_pin)
+		data->pdata->cfg_pin(false);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = regulator_disable(data->io_reg);
 	if (error)
 		dev_warn(&client->dev, "Failed to disable vdd: %d\n", error);
@@ -390,6 +511,7 @@ static void mms114_input_close(struct input_dev *dev)
 	mms114_stop(data);
 }
 
+<<<<<<< HEAD
 static int mms114_parse_legacy_bindings(struct mms114_data *data)
 {
 	struct device *dev = &data->client->dev;
@@ -419,15 +541,77 @@ static int mms114_parse_legacy_bindings(struct mms114_data *data)
 
 	return 0;
 }
+=======
+#ifdef CONFIG_OF
+static struct mms114_platform_data *mms114_parse_dt(struct device *dev)
+{
+	struct mms114_platform_data *pdata;
+	struct device_node *np = dev->of_node;
+
+	if (!np)
+		return NULL;
+
+	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
+	if (!pdata) {
+		dev_err(dev, "failed to allocate platform data\n");
+		return NULL;
+	}
+
+	if (of_property_read_u32(np, "x-size", &pdata->x_size)) {
+		dev_err(dev, "failed to get x-size property\n");
+		return NULL;
+	}
+
+	if (of_property_read_u32(np, "y-size", &pdata->y_size)) {
+		dev_err(dev, "failed to get y-size property\n");
+		return NULL;
+	}
+
+	of_property_read_u32(np, "contact-threshold",
+				&pdata->contact_threshold);
+	of_property_read_u32(np, "moving-threshold",
+				&pdata->moving_threshold);
+
+	if (of_find_property(np, "x-invert", NULL))
+		pdata->x_invert = true;
+	if (of_find_property(np, "y-invert", NULL))
+		pdata->y_invert = true;
+
+	return pdata;
+}
+#else
+static inline struct mms114_platform_data *mms114_parse_dt(struct device *dev)
+{
+	return NULL;
+}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int mms114_probe(struct i2c_client *client,
 				  const struct i2c_device_id *id)
 {
+<<<<<<< HEAD
 	struct mms114_data *data;
 	struct input_dev *input_dev;
 	const void *match_data;
 	int error;
 
+=======
+	const struct mms114_platform_data *pdata;
+	struct mms114_data *data;
+	struct input_dev *input_dev;
+	int error;
+
+	pdata = dev_get_platdata(&client->dev);
+	if (!pdata)
+		pdata = mms114_parse_dt(&client->dev);
+
+	if (!pdata) {
+		dev_err(&client->dev, "Need platform data\n");
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!i2c_check_functionality(client->adapter,
 				I2C_FUNC_PROTOCOL_MANGLING)) {
 		dev_err(&client->dev,
@@ -445,6 +629,7 @@ static int mms114_probe(struct i2c_client *client,
 
 	data->client = client;
 	data->input_dev = input_dev;
+<<<<<<< HEAD
 
 	/* FIXME: switch to device_get_match_data() when available */
 	match_data = of_device_get_match_data(&client->dev);
@@ -493,15 +678,38 @@ static int mms114_probe(struct i2c_client *client,
 	if (!input_dev->name)
 		return -ENOMEM;
 
+=======
+	data->pdata = pdata;
+
+	input_dev->name = "MELFAS MMS114 Touchscreen";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_dev->id.bustype = BUS_I2C;
 	input_dev->dev.parent = &client->dev;
 	input_dev->open = mms114_input_open;
 	input_dev->close = mms114_input_close;
 
+<<<<<<< HEAD
 	error = input_mt_init_slots(input_dev, MMS114_MAX_TOUCH,
 				    INPUT_MT_DIRECT);
 	if (error)
 		return error;
+=======
+	__set_bit(EV_ABS, input_dev->evbit);
+	__set_bit(EV_KEY, input_dev->evbit);
+	__set_bit(BTN_TOUCH, input_dev->keybit);
+	input_set_abs_params(input_dev, ABS_X, 0, data->pdata->x_size, 0, 0);
+	input_set_abs_params(input_dev, ABS_Y, 0, data->pdata->y_size, 0, 0);
+
+	/* For multi touch */
+	input_mt_init_slots(input_dev, MMS114_MAX_TOUCH, 0);
+	input_set_abs_params(input_dev, ABS_MT_TOUCH_MAJOR,
+			     0, MMS114_MAX_AREA, 0, 0);
+	input_set_abs_params(input_dev, ABS_MT_POSITION_X,
+			     0, data->pdata->x_size, 0, 0);
+	input_set_abs_params(input_dev, ABS_MT_POSITION_Y,
+			     0, data->pdata->y_size, 0, 0);
+	input_set_abs_params(input_dev, ABS_MT_PRESSURE, 0, 255, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	input_set_drvdata(input_dev, data);
 	i2c_set_clientdata(client, data);
@@ -522,9 +730,15 @@ static int mms114_probe(struct i2c_client *client,
 		return error;
 	}
 
+<<<<<<< HEAD
 	error = devm_request_threaded_irq(&client->dev, client->irq,
 					  NULL, mms114_interrupt, IRQF_ONESHOT,
 					  dev_name(&client->dev), data);
+=======
+	error = devm_request_threaded_irq(&client->dev, client->irq, NULL,
+			mms114_interrupt, IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
+			dev_name(&client->dev), data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error) {
 		dev_err(&client->dev, "Failed to register interrupt\n");
 		return error;
@@ -594,6 +808,7 @@ MODULE_DEVICE_TABLE(i2c, mms114_id);
 
 #ifdef CONFIG_OF
 static const struct of_device_id mms114_dt_match[] = {
+<<<<<<< HEAD
 	{
 		.compatible = "melfas,mms114",
 		.data = (void *)TYPE_MMS114,
@@ -601,6 +816,9 @@ static const struct of_device_id mms114_dt_match[] = {
 		.compatible = "melfas,mms152",
 		.data = (void *)TYPE_MMS152,
 	},
+=======
+	{ .compatible = "melfas,mms114" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, mms114_dt_match);
@@ -621,4 +839,8 @@ module_i2c_driver(mms114_driver);
 /* Module information */
 MODULE_AUTHOR("Joonyoung Shim <jy0922.shim@samsung.com>");
 MODULE_DESCRIPTION("MELFAS mms114 Touchscreen driver");
+<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
+=======
+MODULE_LICENSE("GPL");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

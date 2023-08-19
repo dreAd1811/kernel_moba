@@ -35,6 +35,7 @@ Description:	Read fpga manager state as a string.
 		* write complete	= Doing post programming steps
 		* write complete error	= Error while doing post programming
 		* operating		= FPGA is programmed and operating
+<<<<<<< HEAD
 
 What:		/sys/class/fpga_manager/<fpga>/status
 Date:		June 2018
@@ -59,3 +60,5 @@ Description:	Read fpga manager status as a string.
 						  reconfiguration hardware
 		* reconfig fifo overflow error	- FIFO overflow detected by
 						  reconfiguration hardware
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

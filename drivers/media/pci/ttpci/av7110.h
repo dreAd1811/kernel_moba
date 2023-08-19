@@ -17,6 +17,7 @@
 #include <linux/dvb/net.h>
 #include <linux/mutex.h>
 
+<<<<<<< HEAD
 #include <media/dvbdev.h>
 #include <media/demux.h>
 #include <media/dvb_demux.h>
@@ -25,6 +26,16 @@
 #include <media/dvb_net.h>
 #include <media/dvb_ringbuffer.h>
 #include <media/dvb_frontend.h>
+=======
+#include "dvbdev.h"
+#include "demux.h"
+#include "dvb_demux.h"
+#include "dmxdev.h"
+#include "dvb_filter.h"
+#include "dvb_net.h"
+#include "dvb_ringbuffer.h"
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ves1820.h"
 #include "ves1x93.h"
 #include "stv0299.h"
@@ -52,7 +63,11 @@ extern int av7110_debug;
 enum {AV_PES_STREAM, PS_STREAM, TS_STREAM, PES_STREAM};
 
 enum av7110_video_mode {
+<<<<<<< HEAD
 	AV7110_VIDEO_MODE_PAL	= 0,
+=======
+	AV7110_VIDEO_MODE_PAL 	= 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	AV7110_VIDEO_MODE_NTSC	= 1
 };
 
@@ -94,7 +109,11 @@ struct infrared {
 	u8			inversion;
 	u16			last_key;
 	u16			last_toggle;
+<<<<<<< HEAD
 	bool			keypressed;
+=======
+	u8			delay_timer_finished;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 

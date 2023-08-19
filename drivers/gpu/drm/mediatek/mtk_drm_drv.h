@@ -17,7 +17,11 @@
 #include <linux/io.h>
 #include "mtk_drm_ddp_comp.h"
 
+<<<<<<< HEAD
 #define MAX_CRTC	3
+=======
+#define MAX_CRTC	2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX_CONNECTOR	2
 
 struct device;
@@ -33,9 +37,12 @@ struct mtk_mmsys_driver_data {
 	unsigned int main_len;
 	const enum mtk_ddp_comp_id *ext_path;
 	unsigned int ext_len;
+<<<<<<< HEAD
 	const enum mtk_ddp_comp_id *third_path;
 	unsigned int third_len;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool shadow_register;
 };
 

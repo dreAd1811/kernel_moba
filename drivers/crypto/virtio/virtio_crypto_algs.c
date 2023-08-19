@@ -29,7 +29,10 @@
 
 
 struct virtio_crypto_ablkcipher_ctx {
+<<<<<<< HEAD
 	struct crypto_engine_ctx enginectx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct virtio_crypto *vcrypto;
 	struct crypto_tfm *tfm;
 
@@ -49,6 +52,7 @@ struct virtio_crypto_sym_request {
 	bool encrypt;
 };
 
+<<<<<<< HEAD
 struct virtio_crypto_algo {
 	uint32_t algonum;
 	uint32_t service;
@@ -56,11 +60,17 @@ struct virtio_crypto_algo {
 	struct crypto_alg algo;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The algs_lock protects the below global virtio_crypto_active_devs
  * and crypto algorithms registion.
  */
 static DEFINE_MUTEX(algs_lock);
+<<<<<<< HEAD
+=======
+static unsigned int virtio_crypto_active_devs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void virtio_crypto_ablkcipher_finalize_req(
 	struct virtio_crypto_sym_request *vc_sym_req,
 	struct ablkcipher_request *req,
@@ -117,8 +127,11 @@ virtio_crypto_alg_validate_key(int key_len, uint32_t *alg)
 		*alg = VIRTIO_CRYPTO_CIPHER_AES_CBC;
 		break;
 	default:
+<<<<<<< HEAD
 		pr_err("virtio_crypto: Unsupported key length: %d\n",
 			key_len);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	return 0;
@@ -318,6 +331,7 @@ static int virtio_crypto_ablkcipher_setkey(struct crypto_ablkcipher *tfm,
 					 unsigned int keylen)
 {
 	struct virtio_crypto_ablkcipher_ctx *ctx = crypto_ablkcipher_ctx(tfm);
+<<<<<<< HEAD
 	uint32_t alg;
 	int ret;
 
@@ -325,14 +339,24 @@ static int virtio_crypto_ablkcipher_setkey(struct crypto_ablkcipher *tfm,
 	if (ret)
 		return ret;
 
+=======
+	int ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ctx->vcrypto) {
 		/* New key */
 		int node = virtio_crypto_get_current_node();
 		struct virtio_crypto *vcrypto =
+<<<<<<< HEAD
 				      virtcrypto_get_dev_node(node,
 				      VIRTIO_CRYPTO_SERVICE_CIPHER, alg);
 		if (!vcrypto) {
 			pr_err("virtio_crypto: Could not find a virtio device in the system or unsupported algo\n");
+=======
+				      virtcrypto_get_dev_node(node);
+		if (!vcrypto) {
+			pr_err("virtio_crypto: Could not find a virtio device in the system");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ENODEV;
 		}
 
@@ -369,13 +393,27 @@ __virtio_crypto_ablkcipher_do_req(struct virtio_crypto_sym_request *vc_sym_req,
 	int err;
 	unsigned long flags;
 	struct scatterlist outhdr, iv_sg, status_sg, **sgs;
+<<<<<<< HEAD
 	int i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 dst_len;
 	unsigned int num_out = 0, num_in = 0;
 	int sg_total;
 	uint8_t *iv;
+<<<<<<< HEAD
 
 	src_nents = sg_nents_for_len(req->src, req->nbytes);
+=======
+	struct scatterlist *sg;
+
+	src_nents = sg_nents_for_len(req->src, req->nbytes);
+	if (src_nents < 0) {
+		pr_err("Invalid number of src SG.\n");
+		return src_nents;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dst_nents = sg_nents(req->dst);
 
 	pr_debug("virtio_crypto: Number of sgs (src_nents: %d, dst_nents: %d)\n",
@@ -383,12 +421,20 @@ __virtio_crypto_ablkcipher_do_req(struct virtio_crypto_sym_request *vc_sym_req,
 
 	/* Why 3?  outhdr + iv + inhdr */
 	sg_total = src_nents + dst_nents + 3;
+<<<<<<< HEAD
 	sgs = kcalloc_node(sg_total, sizeof(*sgs), GFP_KERNEL,
+=======
+	sgs = kzalloc_node(sg_total * sizeof(*sgs), GFP_ATOMIC,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dev_to_node(&vcrypto->vdev->dev));
 	if (!sgs)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	req_data = kzalloc_node(sizeof(*req_data), GFP_KERNEL,
+=======
+	req_data = kzalloc_node(sizeof(*req_data), GFP_ATOMIC,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dev_to_node(&vcrypto->vdev->dev));
 	if (!req_data) {
 		kfree(sgs);
@@ -421,6 +467,10 @@ __virtio_crypto_ablkcipher_do_req(struct virtio_crypto_sym_request *vc_sym_req,
 		goto free;
 	}
 
+<<<<<<< HEAD
+=======
+	dst_len = min_t(unsigned int, req->nbytes, dst_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("virtio_crypto: src_len: %u, dst_len: %llu\n",
 			req->nbytes, dst_len);
 
@@ -456,12 +506,21 @@ __virtio_crypto_ablkcipher_do_req(struct virtio_crypto_sym_request *vc_sym_req,
 	vc_sym_req->iv = iv;
 
 	/* Source data */
+<<<<<<< HEAD
 	for (i = 0; i < src_nents; i++)
 		sgs[num_out++] = &req->src[i];
 
 	/* Destination data */
 	for (i = 0; i < dst_nents; i++)
 		sgs[num_out + num_in++] = &req->dst[i];
+=======
+	for (sg = req->src; src_nents; sg = sg_next(sg), src_nents--)
+		sgs[num_out++] = sg;
+
+	/* Destination data */
+	for (sg = req->dst; sg; sg = sg_next(sg))
+		sgs[num_out + num_in++] = sg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Status */
 	sg_init_one(&status_sg, &vc_req->status, sizeof(vc_req->status));
@@ -498,13 +557,25 @@ static int virtio_crypto_ablkcipher_encrypt(struct ablkcipher_request *req)
 	/* Use the first data virtqueue as default */
 	struct data_queue *data_vq = &vcrypto->data_vq[0];
 
+<<<<<<< HEAD
+=======
+	if (!req->nbytes)
+		return 0;
+	if (req->nbytes % AES_BLOCK_SIZE)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vc_req->dataq = data_vq;
 	vc_req->alg_cb = virtio_crypto_dataq_sym_callback;
 	vc_sym_req->ablkcipher_ctx = ctx;
 	vc_sym_req->ablkcipher_req = req;
 	vc_sym_req->encrypt = true;
 
+<<<<<<< HEAD
 	return crypto_transfer_ablkcipher_request_to_engine(data_vq->engine, req);
+=======
+	return crypto_transfer_cipher_request_to_engine(data_vq->engine, req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int virtio_crypto_ablkcipher_decrypt(struct ablkcipher_request *req)
@@ -518,13 +589,25 @@ static int virtio_crypto_ablkcipher_decrypt(struct ablkcipher_request *req)
 	/* Use the first data virtqueue as default */
 	struct data_queue *data_vq = &vcrypto->data_vq[0];
 
+<<<<<<< HEAD
+=======
+	if (!req->nbytes)
+		return 0;
+	if (req->nbytes % AES_BLOCK_SIZE)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vc_req->dataq = data_vq;
 	vc_req->alg_cb = virtio_crypto_dataq_sym_callback;
 	vc_sym_req->ablkcipher_ctx = ctx;
 	vc_sym_req->ablkcipher_req = req;
 	vc_sym_req->encrypt = false;
 
+<<<<<<< HEAD
 	return crypto_transfer_ablkcipher_request_to_engine(data_vq->engine, req);
+=======
+	return crypto_transfer_cipher_request_to_engine(data_vq->engine, req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int virtio_crypto_ablkcipher_init(struct crypto_tfm *tfm)
@@ -534,9 +617,12 @@ static int virtio_crypto_ablkcipher_init(struct crypto_tfm *tfm)
 	tfm->crt_ablkcipher.reqsize = sizeof(struct virtio_crypto_sym_request);
 	ctx->tfm = tfm;
 
+<<<<<<< HEAD
 	ctx->enginectx.op.do_one_request = virtio_crypto_ablkcipher_crypt_req;
 	ctx->enginectx.op.prepare_request = NULL;
 	ctx->enginectx.op.unprepare_request = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -554,9 +640,15 @@ static void virtio_crypto_ablkcipher_exit(struct crypto_tfm *tfm)
 }
 
 int virtio_crypto_ablkcipher_crypt_req(
+<<<<<<< HEAD
 	struct crypto_engine *engine, void *vreq)
 {
 	struct ablkcipher_request *req = container_of(vreq, struct ablkcipher_request, base);
+=======
+	struct crypto_engine *engine,
+	struct ablkcipher_request *req)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct virtio_crypto_sym_request *vc_sym_req =
 				ablkcipher_request_ctx(req);
 	struct virtio_crypto_request *vc_req = &vc_sym_req->base;
@@ -577,6 +669,7 @@ static void virtio_crypto_ablkcipher_finalize_req(
 	struct ablkcipher_request *req,
 	int err)
 {
+<<<<<<< HEAD
 	crypto_finalize_ablkcipher_request(vc_sym_req->base.dataq->engine,
 					   req, err);
 	kzfree(vc_sym_req->iv);
@@ -607,10 +700,40 @@ static struct virtio_crypto_algo virtio_crypto_algs[] = { {
 				.max_keysize = AES_MAX_KEY_SIZE,
 				.ivsize = AES_BLOCK_SIZE,
 			},
+=======
+	kzfree(vc_sym_req->iv);
+	virtcrypto_clear_request(&vc_sym_req->base);
+
+	crypto_finalize_cipher_request(vc_sym_req->base.dataq->engine,
+					   req, err);
+}
+
+static struct crypto_alg virtio_crypto_algs[] = { {
+	.cra_name = "cbc(aes)",
+	.cra_driver_name = "virtio_crypto_aes_cbc",
+	.cra_priority = 150,
+	.cra_flags = CRYPTO_ALG_TYPE_ABLKCIPHER | CRYPTO_ALG_ASYNC,
+	.cra_blocksize = AES_BLOCK_SIZE,
+	.cra_ctxsize  = sizeof(struct virtio_crypto_ablkcipher_ctx),
+	.cra_alignmask = 0,
+	.cra_module = THIS_MODULE,
+	.cra_type = &crypto_ablkcipher_type,
+	.cra_init = virtio_crypto_ablkcipher_init,
+	.cra_exit = virtio_crypto_ablkcipher_exit,
+	.cra_u = {
+	   .ablkcipher = {
+			.setkey = virtio_crypto_ablkcipher_setkey,
+			.decrypt = virtio_crypto_ablkcipher_decrypt,
+			.encrypt = virtio_crypto_ablkcipher_encrypt,
+			.min_keysize = AES_MIN_KEY_SIZE,
+			.max_keysize = AES_MAX_KEY_SIZE,
+			.ivsize = AES_BLOCK_SIZE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 	},
 } };
 
+<<<<<<< HEAD
 int virtio_crypto_algs_register(struct virtio_crypto *vcrypto)
 {
 	int ret = 0;
@@ -636,12 +759,27 @@ int virtio_crypto_algs_register(struct virtio_crypto *vcrypto)
 		dev_info(&vcrypto->vdev->dev, "Registered algo %s\n",
 			 virtio_crypto_algs[i].algo.cra_name);
 	}
+=======
+int virtio_crypto_algs_register(void)
+{
+	int ret = 0;
+
+	mutex_lock(&algs_lock);
+	if (++virtio_crypto_active_devs != 1)
+		goto unlock;
+
+	ret = crypto_register_algs(virtio_crypto_algs,
+			ARRAY_SIZE(virtio_crypto_algs));
+	if (ret)
+		virtio_crypto_active_devs--;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unlock:
 	mutex_unlock(&algs_lock);
 	return ret;
 }
 
+<<<<<<< HEAD
 void virtio_crypto_algs_unregister(struct virtio_crypto *vcrypto)
 {
 	int i = 0;
@@ -663,5 +801,17 @@ void virtio_crypto_algs_unregister(struct virtio_crypto *vcrypto)
 		virtio_crypto_algs[i].active_devs--;
 	}
 
+=======
+void virtio_crypto_algs_unregister(void)
+{
+	mutex_lock(&algs_lock);
+	if (--virtio_crypto_active_devs != 0)
+		goto unlock;
+
+	crypto_unregister_algs(virtio_crypto_algs,
+			ARRAY_SIZE(virtio_crypto_algs));
+
+unlock:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&algs_lock);
 }

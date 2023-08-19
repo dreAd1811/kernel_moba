@@ -82,6 +82,7 @@ static inline struct v4l2_subdev *to_sd(struct v4l2_ctrl *ctrl)
 /* ----------------------------------------------------------------------- */
 
 /* for audio mode */
+<<<<<<< HEAD
 #define TUNER_AUDIO_MONO	0  /* LL */
 #define TUNER_AUDIO_STEREO	1  /* LR */
 #define TUNER_AUDIO_LANG1	2  /* LL */
@@ -89,6 +90,15 @@ static inline struct v4l2_subdev *to_sd(struct v4l2_ctrl *ctrl)
 
 #define SAA717X_NTSC_WIDTH	(704)
 #define SAA717X_NTSC_HEIGHT	(480)
+=======
+#define TUNER_AUDIO_MONO   	0  /* LL */
+#define TUNER_AUDIO_STEREO 	1  /* LR */
+#define TUNER_AUDIO_LANG1  	2  /* LL */
+#define TUNER_AUDIO_LANG2  	3  /* RR */
+
+#define SAA717X_NTSC_WIDTH   	(704)
+#define SAA717X_NTSC_HEIGHT  	(480)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ----------------------------------------------------------------------- */
 

@@ -21,6 +21,11 @@
 #include <asm/octeon/cvmx-pci-defs.h>
 #include <asm/octeon/pci-octeon.h>
 
+<<<<<<< HEAD
+=======
+#include <dma-coherence.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define USE_OCTEON_INTERNAL_ARBITER
 
 /*
@@ -164,6 +169,11 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
 		pci_write_config_dword(dev, pos + PCI_ERR_ROOT_STATUS, dconfig);
 	}
 
+<<<<<<< HEAD
+=======
+	dev->dev.dma_ops = octeon_pci_dma_map_ops;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

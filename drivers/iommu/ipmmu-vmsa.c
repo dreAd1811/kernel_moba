@@ -19,26 +19,36 @@
 #include <linux/iommu.h>
 #include <linux/module.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/of_device.h>
 #include <linux/of_iommu.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
 #include <linux/sizes.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/sys_soc.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(CONFIG_ARM) && !defined(CONFIG_IOMMU_DMA)
 #include <asm/dma-iommu.h>
 #include <asm/pgalloc.h>
+<<<<<<< HEAD
 #else
 #define arm_iommu_create_mapping(...)	NULL
 #define arm_iommu_attach_device(...)	-ENODEV
 #define arm_iommu_release_mapping(...)	do {} while (0)
 #define arm_iommu_detach_device(...)	do {} while (0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #include "io-pgtable.h"
 
+<<<<<<< HEAD
 #define IPMMU_CTX_MAX 8
 
 struct ipmmu_features {
@@ -49,20 +59,31 @@ struct ipmmu_features {
 	bool twobit_imttbcr_sl0;
 	bool reserved_context;
 };
+=======
+#define IPMMU_CTX_MAX 1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ipmmu_vmsa_device {
 	struct device *dev;
 	void __iomem *base;
 	struct iommu_device iommu;
+<<<<<<< HEAD
 	struct ipmmu_vmsa_device *root;
 	const struct ipmmu_features *features;
 	unsigned int num_utlbs;
 	unsigned int num_ctx;
+=======
+
+	unsigned int num_utlbs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t lock;			/* Protects ctx and domains[] */
 	DECLARE_BITMAP(ctx, IPMMU_CTX_MAX);
 	struct ipmmu_vmsa_domain *domains[IPMMU_CTX_MAX];
 
+<<<<<<< HEAD
 	struct iommu_group *group;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dma_iommu_mapping *mapping;
 };
 
@@ -77,12 +98,25 @@ struct ipmmu_vmsa_domain {
 	struct mutex mutex;			/* Protects mappings */
 };
 
+<<<<<<< HEAD
+=======
+struct ipmmu_vmsa_iommu_priv {
+	struct ipmmu_vmsa_device *mmu;
+	struct device *dev;
+	struct list_head list;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct ipmmu_vmsa_domain *to_vmsa_domain(struct iommu_domain *dom)
 {
 	return container_of(dom, struct ipmmu_vmsa_domain, io_domain);
 }
 
+<<<<<<< HEAD
 static struct ipmmu_vmsa_device *to_ipmmu(struct device *dev)
+=======
+static struct ipmmu_vmsa_iommu_priv *to_priv(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return dev->iommu_fwspec ? dev->iommu_fwspec->iommu_priv : NULL;
 }
@@ -147,10 +181,13 @@ static struct ipmmu_vmsa_device *to_ipmmu(struct device *dev)
 #define IMTTBCR_TSZ0_MASK		(7 << 0)
 #define IMTTBCR_TSZ0_SHIFT		O
 
+<<<<<<< HEAD
 #define IMTTBCR_SL0_TWOBIT_LVL_3	(0 << 6)
 #define IMTTBCR_SL0_TWOBIT_LVL_2	(1 << 6)
 #define IMTTBCR_SL0_TWOBIT_LVL_1	(2 << 6)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IMBUSCR				0x000c
 #define IMBUSCR_DVM			(1 << 2)
 #define IMBUSCR_BUSSEL_SYS		(0 << 0)
@@ -195,9 +232,13 @@ static struct ipmmu_vmsa_device *to_ipmmu(struct device *dev)
 #define IMPMBA(n)			(0x0280 + ((n) * 4))
 #define IMPMBD(n)			(0x02c0 + ((n) * 4))
 
+<<<<<<< HEAD
 #define IMUCTR(n)			((n) < 32 ? IMUCTR0(n) : IMUCTR32(n))
 #define IMUCTR0(n)			(0x0300 + ((n) * 16))
 #define IMUCTR32(n)			(0x0600 + (((n) - 32) * 16))
+=======
+#define IMUCTR(n)			(0x0300 + ((n) * 16))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IMUCTR_FIXADDEN			(1 << 31)
 #define IMUCTR_FIXADD_MASK		(0xff << 16)
 #define IMUCTR_FIXADD_SHIFT		16
@@ -207,15 +248,20 @@ static struct ipmmu_vmsa_device *to_ipmmu(struct device *dev)
 #define IMUCTR_FLUSH			(1 << 1)
 #define IMUCTR_MMUEN			(1 << 0)
 
+<<<<<<< HEAD
 #define IMUASID(n)			((n) < 32 ? IMUASID0(n) : IMUASID32(n))
 #define IMUASID0(n)			(0x0308 + ((n) * 16))
 #define IMUASID32(n)			(0x0608 + (((n) - 32) * 16))
+=======
+#define IMUASID(n)			(0x0308 + ((n) * 16))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IMUASID_ASID8_MASK		(0xff << 8)
 #define IMUASID_ASID8_SHIFT		8
 #define IMUASID_ASID0_MASK		(0xff << 0)
 #define IMUASID_ASID0_SHIFT		0
 
 /* -----------------------------------------------------------------------------
+<<<<<<< HEAD
  * Root device handling
  */
 
@@ -246,6 +292,8 @@ static struct ipmmu_vmsa_device *ipmmu_find_root(void)
 }
 
 /* -----------------------------------------------------------------------------
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Read/Write Access
  */
 
@@ -260,6 +308,7 @@ static void ipmmu_write(struct ipmmu_vmsa_device *mmu, unsigned int offset,
 	iowrite32(data, mmu->base + offset);
 }
 
+<<<<<<< HEAD
 static u32 ipmmu_ctx_read_root(struct ipmmu_vmsa_domain *domain,
 			       unsigned int reg)
 {
@@ -283,6 +332,17 @@ static void ipmmu_ctx_write_all(struct ipmmu_vmsa_domain *domain,
 
 	ipmmu_write(domain->mmu->root,
 		    domain->context_id * IM_CTX_SIZE + reg, data);
+=======
+static u32 ipmmu_ctx_read(struct ipmmu_vmsa_domain *domain, unsigned int reg)
+{
+	return ipmmu_read(domain->mmu, domain->context_id * IM_CTX_SIZE + reg);
+}
+
+static void ipmmu_ctx_write(struct ipmmu_vmsa_domain *domain, unsigned int reg,
+			    u32 data)
+{
+	ipmmu_write(domain->mmu, domain->context_id * IM_CTX_SIZE + reg, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -----------------------------------------------------------------------------
@@ -294,7 +354,11 @@ static void ipmmu_tlb_sync(struct ipmmu_vmsa_domain *domain)
 {
 	unsigned int count = 0;
 
+<<<<<<< HEAD
 	while (ipmmu_ctx_read_root(domain, IMCTR) & IMCTR_FLUSH) {
+=======
+	while (ipmmu_ctx_read(domain, IMCTR) & IMCTR_FLUSH) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpu_relax();
 		if (++count == TLB_LOOP_TIMEOUT) {
 			dev_err_ratelimited(domain->mmu->dev,
@@ -309,9 +373,15 @@ static void ipmmu_tlb_invalidate(struct ipmmu_vmsa_domain *domain)
 {
 	u32 reg;
 
+<<<<<<< HEAD
 	reg = ipmmu_ctx_read_root(domain, IMCTR);
 	reg |= IMCTR_FLUSH;
 	ipmmu_ctx_write_all(domain, IMCTR, reg);
+=======
+	reg = ipmmu_ctx_read(domain, IMCTR);
+	reg |= IMCTR_FLUSH;
+	ipmmu_ctx_write(domain, IMCTR, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ipmmu_tlb_sync(domain);
 }
@@ -379,12 +449,20 @@ static int ipmmu_domain_allocate_context(struct ipmmu_vmsa_device *mmu,
 
 	spin_lock_irqsave(&mmu->lock, flags);
 
+<<<<<<< HEAD
 	ret = find_first_zero_bit(mmu->ctx, mmu->num_ctx);
 	if (ret != mmu->num_ctx) {
 		mmu->domains[ret] = domain;
 		set_bit(ret, mmu->ctx);
 	} else
 		ret = -EBUSY;
+=======
+	ret = find_first_zero_bit(mmu->ctx, IPMMU_CTX_MAX);
+	if (ret != IPMMU_CTX_MAX) {
+		mmu->domains[ret] = domain;
+		set_bit(ret, mmu->ctx);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&mmu->lock, flags);
 
@@ -407,7 +485,10 @@ static void ipmmu_domain_free_context(struct ipmmu_vmsa_device *mmu,
 static int ipmmu_domain_init_context(struct ipmmu_vmsa_domain *domain)
 {
 	u64 ttbr;
+<<<<<<< HEAD
 	u32 tmp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/*
@@ -432,35 +513,55 @@ static int ipmmu_domain_init_context(struct ipmmu_vmsa_domain *domain)
 	 * TODO: Add support for coherent walk through CCI with DVM and remove
 	 * cache handling. For now, delegate it to the io-pgtable code.
 	 */
+<<<<<<< HEAD
 	domain->cfg.iommu_dev = domain->mmu->root->dev;
+=======
+	domain->cfg.iommu_dev = domain->mmu->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Find an unused context.
 	 */
+<<<<<<< HEAD
 	ret = ipmmu_domain_allocate_context(domain->mmu->root, domain);
 	if (ret < 0)
 		return ret;
+=======
+	ret = ipmmu_domain_allocate_context(domain->mmu, domain);
+	if (ret == IPMMU_CTX_MAX)
+		return -EBUSY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	domain->context_id = ret;
 
 	domain->iop = alloc_io_pgtable_ops(ARM_32_LPAE_S1, &domain->cfg,
 					   domain);
 	if (!domain->iop) {
+<<<<<<< HEAD
 		ipmmu_domain_free_context(domain->mmu->root,
 					  domain->context_id);
+=======
+		ipmmu_domain_free_context(domain->mmu, domain->context_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	/* TTBR0 */
 	ttbr = domain->cfg.arm_lpae_s1_cfg.ttbr[0];
+<<<<<<< HEAD
 	ipmmu_ctx_write_root(domain, IMTTLBR0, ttbr);
 	ipmmu_ctx_write_root(domain, IMTTUBR0, ttbr >> 32);
+=======
+	ipmmu_ctx_write(domain, IMTTLBR0, ttbr);
+	ipmmu_ctx_write(domain, IMTTUBR0, ttbr >> 32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * TTBCR
 	 * We use long descriptors with inner-shareable WBWA tables and allocate
 	 * the whole 32-bit VA space to TTBR0.
 	 */
+<<<<<<< HEAD
 	if (domain->mmu->features->twobit_imttbcr_sl0)
 		tmp = IMTTBCR_SL0_TWOBIT_LVL_1;
 	else
@@ -479,12 +580,29 @@ static int ipmmu_domain_init_context(struct ipmmu_vmsa_domain *domain)
 		ipmmu_ctx_write_root(domain, IMBUSCR,
 				     ipmmu_ctx_read_root(domain, IMBUSCR) &
 				     ~(IMBUSCR_DVM | IMBUSCR_BUSSEL_MASK));
+=======
+	ipmmu_ctx_write(domain, IMTTBCR, IMTTBCR_EAE |
+			IMTTBCR_SH0_INNER_SHAREABLE | IMTTBCR_ORGN0_WB_WA |
+			IMTTBCR_IRGN0_WB_WA | IMTTBCR_SL0_LVL_1);
+
+	/* MAIR0 */
+	ipmmu_ctx_write(domain, IMMAIR0, domain->cfg.arm_lpae_s1_cfg.mair[0]);
+
+	/* IMBUSCR */
+	ipmmu_ctx_write(domain, IMBUSCR,
+			ipmmu_ctx_read(domain, IMBUSCR) &
+			~(IMBUSCR_DVM | IMBUSCR_BUSSEL_MASK));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * IMSTR
 	 * Clear all interrupt flags.
 	 */
+<<<<<<< HEAD
 	ipmmu_ctx_write_root(domain, IMSTR, ipmmu_ctx_read_root(domain, IMSTR));
+=======
+	ipmmu_ctx_write(domain, IMSTR, ipmmu_ctx_read(domain, IMSTR));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * IMCTR
@@ -493,8 +611,12 @@ static int ipmmu_domain_init_context(struct ipmmu_vmsa_domain *domain)
 	 * software management as we have no use for it. Flush the TLB as
 	 * required when modifying the context registers.
 	 */
+<<<<<<< HEAD
 	ipmmu_ctx_write_all(domain, IMCTR,
 			    IMCTR_INTEN | IMCTR_FLUSH | IMCTR_MMUEN);
+=======
+	ipmmu_ctx_write(domain, IMCTR, IMCTR_INTEN | IMCTR_FLUSH | IMCTR_MMUEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -510,9 +632,15 @@ static void ipmmu_domain_destroy_context(struct ipmmu_vmsa_domain *domain)
 	 *
 	 * TODO: Is TLB flush really needed ?
 	 */
+<<<<<<< HEAD
 	ipmmu_ctx_write_all(domain, IMCTR, IMCTR_FLUSH);
 	ipmmu_tlb_sync(domain);
 	ipmmu_domain_free_context(domain->mmu->root, domain->context_id);
+=======
+	ipmmu_ctx_write(domain, IMCTR, IMCTR_FLUSH);
+	ipmmu_tlb_sync(domain);
+	ipmmu_domain_free_context(domain->mmu, domain->context_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -----------------------------------------------------------------------------
@@ -526,11 +654,19 @@ static irqreturn_t ipmmu_domain_irq(struct ipmmu_vmsa_domain *domain)
 	u32 status;
 	u32 iova;
 
+<<<<<<< HEAD
 	status = ipmmu_ctx_read_root(domain, IMSTR);
 	if (!(status & err_mask))
 		return IRQ_NONE;
 
 	iova = ipmmu_ctx_read_root(domain, IMEAR);
+=======
+	status = ipmmu_ctx_read(domain, IMSTR);
+	if (!(status & err_mask))
+		return IRQ_NONE;
+
+	iova = ipmmu_ctx_read(domain, IMEAR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Clear the error status flags. Unlike traditional interrupt flag
@@ -538,7 +674,11 @@ static irqreturn_t ipmmu_domain_irq(struct ipmmu_vmsa_domain *domain)
 	 * seems to require 0. The error address register must be read before,
 	 * otherwise its value will be 0.
 	 */
+<<<<<<< HEAD
 	ipmmu_ctx_write_root(domain, IMSTR, 0);
+=======
+	ipmmu_ctx_write(domain, IMSTR, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Log fatal errors. */
 	if (status & IMSTR_MHIT)
@@ -579,7 +719,11 @@ static irqreturn_t ipmmu_irq(int irq, void *dev)
 	/*
 	 * Check interrupts for all active contexts.
 	 */
+<<<<<<< HEAD
 	for (i = 0; i < mmu->num_ctx; i++) {
+=======
+	for (i = 0; i < IPMMU_CTX_MAX; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!mmu->domains[i])
 			continue;
 		if (ipmmu_domain_irq(mmu->domains[i]) == IRQ_HANDLED)
@@ -608,6 +752,7 @@ static struct iommu_domain *__ipmmu_domain_alloc(unsigned type)
 	return &domain->io_domain;
 }
 
+<<<<<<< HEAD
 static struct iommu_domain *ipmmu_domain_alloc(unsigned type)
 {
 	struct iommu_domain *io_domain = NULL;
@@ -629,6 +774,8 @@ static struct iommu_domain *ipmmu_domain_alloc(unsigned type)
 	return io_domain;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ipmmu_domain_free(struct iommu_domain *io_domain)
 {
 	struct ipmmu_vmsa_domain *domain = to_vmsa_domain(io_domain);
@@ -637,7 +784,10 @@ static void ipmmu_domain_free(struct iommu_domain *io_domain)
 	 * Free the domain resources. We assume that all devices have already
 	 * been detached.
 	 */
+<<<<<<< HEAD
 	iommu_put_dma_cookie(io_domain);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ipmmu_domain_destroy_context(domain);
 	free_io_pgtable_ops(domain->iop);
 	kfree(domain);
@@ -646,13 +796,23 @@ static void ipmmu_domain_free(struct iommu_domain *io_domain)
 static int ipmmu_attach_device(struct iommu_domain *io_domain,
 			       struct device *dev)
 {
+<<<<<<< HEAD
 	struct iommu_fwspec *fwspec = dev->iommu_fwspec;
 	struct ipmmu_vmsa_device *mmu = to_ipmmu(dev);
+=======
+	struct ipmmu_vmsa_iommu_priv *priv = to_priv(dev);
+	struct iommu_fwspec *fwspec = dev->iommu_fwspec;
+	struct ipmmu_vmsa_device *mmu = priv->mmu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ipmmu_vmsa_domain *domain = to_vmsa_domain(io_domain);
 	unsigned int i;
 	int ret = 0;
 
+<<<<<<< HEAD
 	if (!mmu) {
+=======
+	if (!priv || !priv->mmu) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "Cannot attach to IPMMU\n");
 		return -ENXIO;
 	}
@@ -663,6 +823,7 @@ static int ipmmu_attach_device(struct iommu_domain *io_domain,
 		/* The domain hasn't been used yet, initialize it. */
 		domain->mmu = mmu;
 		ret = ipmmu_domain_init_context(domain);
+<<<<<<< HEAD
 		if (ret < 0) {
 			dev_err(dev, "Unable to initialize IPMMU context\n");
 			domain->mmu = NULL;
@@ -670,6 +831,8 @@ static int ipmmu_attach_device(struct iommu_domain *io_domain,
 			dev_info(dev, "Using IPMMU context %u\n",
 				 domain->context_id);
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (domain->mmu != mmu) {
 		/*
 		 * Something is wrong, we can't attach two devices using
@@ -726,6 +889,7 @@ static size_t ipmmu_unmap(struct iommu_domain *io_domain, unsigned long iova,
 	return domain->iop->unmap(domain->iop, iova, size);
 }
 
+<<<<<<< HEAD
 static void ipmmu_iotlb_sync(struct iommu_domain *io_domain)
 {
 	struct ipmmu_vmsa_domain *domain = to_vmsa_domain(io_domain);
@@ -734,6 +898,8 @@ static void ipmmu_iotlb_sync(struct iommu_domain *io_domain)
 		ipmmu_tlb_flush_all(domain);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static phys_addr_t ipmmu_iova_to_phys(struct iommu_domain *io_domain,
 				      dma_addr_t iova)
 {
@@ -748,11 +914,16 @@ static int ipmmu_init_platform_device(struct device *dev,
 				      struct of_phandle_args *args)
 {
 	struct platform_device *ipmmu_pdev;
+<<<<<<< HEAD
+=======
+	struct ipmmu_vmsa_iommu_priv *priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ipmmu_pdev = of_find_device_by_node(args->np);
 	if (!ipmmu_pdev)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	dev->iommu_fwspec->iommu_priv = platform_get_drvdata(ipmmu_pdev);
 	return 0;
 }
@@ -783,22 +954,71 @@ static int ipmmu_of_xlate(struct device *dev,
 
 	/* Initialize once - xlate() will call multiple times */
 	if (to_ipmmu(dev))
+=======
+	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+	if (!priv)
+		return -ENOMEM;
+
+	priv->mmu = platform_get_drvdata(ipmmu_pdev);
+	priv->dev = dev;
+	dev->iommu_fwspec->iommu_priv = priv;
+	return 0;
+}
+
+static int ipmmu_of_xlate(struct device *dev,
+			  struct of_phandle_args *spec)
+{
+	iommu_fwspec_add_ids(dev, spec->args, 1);
+
+	/* Initialize once - xlate() will call multiple times */
+	if (to_priv(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return ipmmu_init_platform_device(dev, spec);
 }
 
+<<<<<<< HEAD
 static int ipmmu_init_arm_mapping(struct device *dev)
 {
 	struct ipmmu_vmsa_device *mmu = to_ipmmu(dev);
 	struct iommu_group *group;
 	int ret;
 
+=======
+#if defined(CONFIG_ARM) && !defined(CONFIG_IOMMU_DMA)
+
+static struct iommu_domain *ipmmu_domain_alloc(unsigned type)
+{
+	if (type != IOMMU_DOMAIN_UNMANAGED)
+		return NULL;
+
+	return __ipmmu_domain_alloc(type);
+}
+
+static int ipmmu_add_device(struct device *dev)
+{
+	struct ipmmu_vmsa_device *mmu = NULL;
+	struct iommu_group *group;
+	int ret;
+
+	/*
+	 * Only let through devices that have been verified in xlate()
+	 */
+	if (!to_priv(dev))
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Create a device group and add the device to it. */
 	group = iommu_group_alloc();
 	if (IS_ERR(group)) {
 		dev_err(dev, "Failed to allocate IOMMU group\n");
+<<<<<<< HEAD
 		return PTR_ERR(group);
+=======
+		ret = PTR_ERR(group);
+		goto error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = iommu_group_add_device(group, dev);
@@ -806,7 +1026,12 @@ static int ipmmu_init_arm_mapping(struct device *dev)
 
 	if (ret < 0) {
 		dev_err(dev, "Failed to add device to IPMMU group\n");
+<<<<<<< HEAD
 		return ret;
+=======
+		group = NULL;
+		goto error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -818,6 +1043,10 @@ static int ipmmu_init_arm_mapping(struct device *dev)
 	 * - Make the mapping size configurable ? We currently use a 2GB mapping
 	 *   at a 1GB offset to ensure that NULL VAs will fault.
 	 */
+<<<<<<< HEAD
+=======
+	mmu = to_priv(dev)->mmu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mmu->mapping) {
 		struct dma_iommu_mapping *mapping;
 
@@ -842,6 +1071,7 @@ static int ipmmu_init_arm_mapping(struct device *dev)
 	return 0;
 
 error:
+<<<<<<< HEAD
 	iommu_group_remove_device(dev);
 	if (mmu->mapping)
 		arm_iommu_release_mapping(mmu->mapping);
@@ -870,12 +1100,24 @@ static int ipmmu_add_device(struct device *dev)
 	return 0;
 }
 
+=======
+	if (mmu)
+		arm_iommu_release_mapping(mmu->mapping);
+
+	if (!IS_ERR_OR_NULL(group))
+		iommu_group_remove_device(dev);
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ipmmu_remove_device(struct device *dev)
 {
 	arm_iommu_detach_device(dev);
 	iommu_group_remove_device(dev);
 }
 
+<<<<<<< HEAD
 static struct iommu_group *ipmmu_find_group(struct device *dev)
 {
 	struct ipmmu_vmsa_device *mmu = to_ipmmu(dev);
@@ -891,6 +1133,8 @@ static struct iommu_group *ipmmu_find_group(struct device *dev)
 	return group;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct iommu_ops ipmmu_ops = {
 	.domain_alloc = ipmmu_domain_alloc,
 	.domain_free = ipmmu_domain_free,
@@ -898,16 +1142,149 @@ static const struct iommu_ops ipmmu_ops = {
 	.detach_dev = ipmmu_detach_device,
 	.map = ipmmu_map,
 	.unmap = ipmmu_unmap,
+<<<<<<< HEAD
 	.flush_iotlb_all = ipmmu_iotlb_sync,
 	.iotlb_sync = ipmmu_iotlb_sync,
 	.iova_to_phys = ipmmu_iova_to_phys,
 	.add_device = ipmmu_add_device,
 	.remove_device = ipmmu_remove_device,
 	.device_group = ipmmu_find_group,
+=======
+	.map_sg = default_iommu_map_sg,
+	.iova_to_phys = ipmmu_iova_to_phys,
+	.add_device = ipmmu_add_device,
+	.remove_device = ipmmu_remove_device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pgsize_bitmap = SZ_1G | SZ_2M | SZ_4K,
 	.of_xlate = ipmmu_of_xlate,
 };
 
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_ARM && CONFIG_IOMMU_DMA */
+
+#ifdef CONFIG_IOMMU_DMA
+
+static DEFINE_SPINLOCK(ipmmu_slave_devices_lock);
+static LIST_HEAD(ipmmu_slave_devices);
+
+static struct iommu_domain *ipmmu_domain_alloc_dma(unsigned type)
+{
+	struct iommu_domain *io_domain = NULL;
+
+	switch (type) {
+	case IOMMU_DOMAIN_UNMANAGED:
+		io_domain = __ipmmu_domain_alloc(type);
+		break;
+
+	case IOMMU_DOMAIN_DMA:
+		io_domain = __ipmmu_domain_alloc(type);
+		if (io_domain)
+			iommu_get_dma_cookie(io_domain);
+		break;
+	}
+
+	return io_domain;
+}
+
+static void ipmmu_domain_free_dma(struct iommu_domain *io_domain)
+{
+	switch (io_domain->type) {
+	case IOMMU_DOMAIN_DMA:
+		iommu_put_dma_cookie(io_domain);
+		/* fall-through */
+	default:
+		ipmmu_domain_free(io_domain);
+		break;
+	}
+}
+
+static int ipmmu_add_device_dma(struct device *dev)
+{
+	struct iommu_group *group;
+
+	/*
+	 * Only let through devices that have been verified in xlate()
+	 */
+	if (!to_priv(dev))
+		return -ENODEV;
+
+	group = iommu_group_get_for_dev(dev);
+	if (IS_ERR(group))
+		return PTR_ERR(group);
+
+	spin_lock(&ipmmu_slave_devices_lock);
+	list_add(&to_priv(dev)->list, &ipmmu_slave_devices);
+	spin_unlock(&ipmmu_slave_devices_lock);
+	return 0;
+}
+
+static void ipmmu_remove_device_dma(struct device *dev)
+{
+	struct ipmmu_vmsa_iommu_priv *priv = to_priv(dev);
+
+	spin_lock(&ipmmu_slave_devices_lock);
+	list_del(&priv->list);
+	spin_unlock(&ipmmu_slave_devices_lock);
+
+	iommu_group_remove_device(dev);
+}
+
+static struct device *ipmmu_find_sibling_device(struct device *dev)
+{
+	struct ipmmu_vmsa_iommu_priv *priv = to_priv(dev);
+	struct ipmmu_vmsa_iommu_priv *sibling_priv = NULL;
+	bool found = false;
+
+	spin_lock(&ipmmu_slave_devices_lock);
+
+	list_for_each_entry(sibling_priv, &ipmmu_slave_devices, list) {
+		if (priv == sibling_priv)
+			continue;
+		if (sibling_priv->mmu == priv->mmu) {
+			found = true;
+			break;
+		}
+	}
+
+	spin_unlock(&ipmmu_slave_devices_lock);
+
+	return found ? sibling_priv->dev : NULL;
+}
+
+static struct iommu_group *ipmmu_find_group_dma(struct device *dev)
+{
+	struct iommu_group *group;
+	struct device *sibling;
+
+	sibling = ipmmu_find_sibling_device(dev);
+	if (sibling)
+		group = iommu_group_get(sibling);
+	if (!sibling || IS_ERR(group))
+		group = generic_device_group(dev);
+
+	return group;
+}
+
+static const struct iommu_ops ipmmu_ops = {
+	.domain_alloc = ipmmu_domain_alloc_dma,
+	.domain_free = ipmmu_domain_free_dma,
+	.attach_dev = ipmmu_attach_device,
+	.detach_dev = ipmmu_detach_device,
+	.map = ipmmu_map,
+	.unmap = ipmmu_unmap,
+	.map_sg = default_iommu_map_sg,
+	.iova_to_phys = ipmmu_iova_to_phys,
+	.add_device = ipmmu_add_device_dma,
+	.remove_device = ipmmu_remove_device_dma,
+	.device_group = ipmmu_find_group_dma,
+	.pgsize_bitmap = SZ_1G | SZ_2M | SZ_4K,
+	.of_xlate = ipmmu_of_xlate,
+};
+
+#endif /* CONFIG_IOMMU_DMA */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Probe/remove and init
  */
@@ -917,6 +1294,7 @@ static void ipmmu_device_reset(struct ipmmu_vmsa_device *mmu)
 	unsigned int i;
 
 	/* Disable all contexts. */
+<<<<<<< HEAD
 	for (i = 0; i < mmu->num_ctx; ++i)
 		ipmmu_write(mmu, i * IM_CTX_SIZE + IMCTR, 0);
 }
@@ -965,6 +1343,12 @@ static const struct of_device_id ipmmu_of_ids[] = {
 
 MODULE_DEVICE_TABLE(of, ipmmu_of_ids);
 
+=======
+	for (i = 0; i < 4; ++i)
+		ipmmu_write(mmu, i * IM_CTX_SIZE + IMCTR, 0);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ipmmu_probe(struct platform_device *pdev)
 {
 	struct ipmmu_vmsa_device *mmu;
@@ -979,11 +1363,17 @@ static int ipmmu_probe(struct platform_device *pdev)
 	}
 
 	mmu->dev = &pdev->dev;
+<<<<<<< HEAD
 	mmu->num_utlbs = 48;
 	spin_lock_init(&mmu->lock);
 	bitmap_zero(mmu->ctx, IPMMU_CTX_MAX);
 	mmu->features = of_device_get_match_data(&pdev->dev);
 	dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(40));
+=======
+	mmu->num_utlbs = 32;
+	spin_lock_init(&mmu->lock);
+	bitmap_zero(mmu->ctx, IPMMU_CTX_MAX);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Map I/O memory and request IRQ. */
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
@@ -1003,6 +1393,7 @@ static int ipmmu_probe(struct platform_device *pdev)
 	 * Offset the registers base unconditionally to point to the non-secure
 	 * alias space for now.
 	 */
+<<<<<<< HEAD
 	if (mmu->features->use_ns_alias_offset)
 		mmu->base += IM_NS_ALIAS_OFFSET;
 
@@ -1074,6 +1465,37 @@ static int ipmmu_probe(struct platform_device *pdev)
 #endif
 	}
 
+=======
+	mmu->base += IM_NS_ALIAS_OFFSET;
+
+	irq = platform_get_irq(pdev, 0);
+	if (irq < 0) {
+		dev_err(&pdev->dev, "no IRQ found\n");
+		return irq;
+	}
+
+	ret = devm_request_irq(&pdev->dev, irq, ipmmu_irq, 0,
+			       dev_name(&pdev->dev), mmu);
+	if (ret < 0) {
+		dev_err(&pdev->dev, "failed to request IRQ %d\n", irq);
+		return ret;
+	}
+
+	ipmmu_device_reset(mmu);
+
+	ret = iommu_device_sysfs_add(&mmu->iommu, &pdev->dev, NULL,
+				     dev_name(&pdev->dev));
+	if (ret)
+		return ret;
+
+	iommu_device_set_ops(&mmu->iommu, &ipmmu_ops);
+	iommu_device_set_fwnode(&mmu->iommu, &pdev->dev.of_node->fwnode);
+
+	ret = iommu_device_register(&mmu->iommu);
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We can't create the ARM mapping here as it requires the bus to have
 	 * an IOMMU, which only happens when bus_set_iommu() is called in
@@ -1092,13 +1514,27 @@ static int ipmmu_remove(struct platform_device *pdev)
 	iommu_device_sysfs_remove(&mmu->iommu);
 	iommu_device_unregister(&mmu->iommu);
 
+<<<<<<< HEAD
 	arm_iommu_release_mapping(mmu->mapping);
+=======
+#if defined(CONFIG_ARM) && !defined(CONFIG_IOMMU_DMA)
+	arm_iommu_release_mapping(mmu->mapping);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ipmmu_device_reset(mmu);
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static const struct of_device_id ipmmu_of_ids[] = {
+	{ .compatible = "renesas,ipmmu-vmsa", },
+	{ }
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct platform_driver ipmmu_driver = {
 	.driver = {
 		.name = "ipmmu-vmsa",
@@ -1110,6 +1546,7 @@ static struct platform_driver ipmmu_driver = {
 
 static int __init ipmmu_init(void)
 {
+<<<<<<< HEAD
 	struct device_node *np;
 	static bool setup_done;
 	int ret;
@@ -1123,16 +1560,26 @@ static int __init ipmmu_init(void)
 
 	of_node_put(np);
 
+=======
+	int ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = platform_driver_register(&ipmmu_driver);
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 #if defined(CONFIG_ARM) && !defined(CONFIG_IOMMU_DMA)
 	if (!iommu_present(&platform_bus_type))
 		bus_set_iommu(&platform_bus_type, &ipmmu_ops);
 #endif
 
 	setup_done = true;
+=======
+	if (!iommu_present(&platform_bus_type))
+		bus_set_iommu(&platform_bus_type, &ipmmu_ops);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

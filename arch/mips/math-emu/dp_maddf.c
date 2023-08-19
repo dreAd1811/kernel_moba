@@ -16,7 +16,11 @@
 
 
 /* 128 bits shift right logical with rounding. */
+<<<<<<< HEAD
 static void srl128(u64 *hptr, u64 *lptr, int count)
+=======
+void srl128(u64 *hptr, u64 *lptr, int count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 low;
 
@@ -45,10 +49,17 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
 {
 	int re;
 	int rs;
+<<<<<<< HEAD
 	unsigned int lxm;
 	unsigned int hxm;
 	unsigned int lym;
 	unsigned int hym;
+=======
+	unsigned lxm;
+	unsigned hxm;
+	unsigned lym;
+	unsigned hym;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 lrm;
 	u64 hrm;
 	u64 lzm;
@@ -157,7 +168,10 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
 
 	case CLPAIR(IEEE754_CLASS_DNORM, IEEE754_CLASS_DNORM):
 		DPDNORMX;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_DNORM):
 		if (zc == IEEE754_CLASS_INF)
@@ -174,7 +188,11 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
 	case CLPAIR(IEEE754_CLASS_NORM, IEEE754_CLASS_NORM):
 		if (zc == IEEE754_CLASS_INF)
 			return ieee754dp_inf(zs);
+<<<<<<< HEAD
 		/* continue to real computations */
+=======
+		/* fall through to real computations */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Finally get to do some computation */
@@ -202,6 +220,12 @@ static union ieee754dp _dp_maddf(union ieee754dp z, union ieee754dp x,
 	 * Multiply 64 bits xm and ym to give 128 bits result in hrm:lrm.
 	 */
 
+<<<<<<< HEAD
+=======
+	/* 32 * 32 => 64 */
+#define DPXMULT(x, y)	((u64)(x) * (u64)y)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lxm = xm;
 	hxm = xm >> 32;
 	lym = ym;

@@ -162,9 +162,13 @@ static void solo_gpiochip_set(struct gpio_chip *chip,
 
 int solo_gpio_init(struct solo_dev *solo_dev)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_GPIOLIB
 	int ret;
 #endif
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	solo_gpio_config(solo_dev);
 #ifdef CONFIG_GPIOLIB

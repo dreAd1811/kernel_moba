@@ -23,7 +23,10 @@
 #include <linux/regmap.h>
 #include <linux/ahci_platform.h>
 #include <linux/of_device.h>
+<<<<<<< HEAD
 #include <linux/of_gpio.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mfd/syscon.h>
 #include <linux/mfd/syscon/imx6q-iomuxc-gpr.h>
 #include <linux/libata.h>
@@ -54,6 +57,7 @@ enum {
 	/* Clock Reset Register */
 	IMX_CLOCK_RESET				= 0x7f3f,
 	IMX_CLOCK_RESET_RESET			= 1 << 0,
+<<<<<<< HEAD
 	/* IMX8QM HSIO AHCI definitions */
 	IMX8QM_SATA_PHY_RX_IMPED_RATIO_OFFSET	= 0x03,
 	IMX8QM_SATA_PHY_TX_IMPED_RATIO_OFFSET	= 0x09,
@@ -90,13 +94,18 @@ enum {
 	IMX8QM_CTRL_BUTTON_RST_N		= BIT(21),
 	IMX8QM_CTRL_POWER_UP_RST_N		= BIT(23),
 	IMX8QM_CTRL_LTSSM_ENABLE		= BIT(4),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum ahci_imx_type {
 	AHCI_IMX53,
 	AHCI_IMX6Q,
+<<<<<<< HEAD
 	AHCI_IMX6QP,
 	AHCI_IMX8QM,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct imx_ahci_priv {
@@ -105,6 +114,7 @@ struct imx_ahci_priv {
 	struct clk *sata_clk;
 	struct clk *sata_ref_clk;
 	struct clk *ahb_clk;
+<<<<<<< HEAD
 	struct clk *epcs_tx_clk;
 	struct clk *epcs_rx_clk;
 	struct clk *phy_apbclk;
@@ -112,11 +122,16 @@ struct imx_ahci_priv {
 	struct clk *phy_pclk1;
 	void __iomem *phy_base;
 	int clkreq_gpio;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct regmap *gpr;
 	bool no_device;
 	bool first_time;
 	u32 phy_params;
+<<<<<<< HEAD
 	u32 imped_ratio;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ahci_imx_hotplug;
@@ -235,12 +250,16 @@ static int imx_phy_reg_read(u16 *val, void __iomem *mmio)
 
 static int imx_sata_phy_reset(struct ahci_host_priv *hpriv)
 {
+<<<<<<< HEAD
 	struct imx_ahci_priv *imxpriv = hpriv->plat_data;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *mmio = hpriv->mmio;
 	int timeout = 10;
 	u16 val;
 	int ret;
 
+<<<<<<< HEAD
 	if (imxpriv->type == AHCI_IMX6QP) {
 		/* 6qp adds the sata reset mechanism, use it for 6qp sata */
 		regmap_update_bits(imxpriv->gpr, IOMUXC_GPR5,
@@ -255,6 +274,8 @@ static int imx_sata_phy_reset(struct ahci_host_priv *hpriv)
 		return 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reset SATA PHY by setting RESET bit of PHY register CLOCK_RESET */
 	ret = imx_phy_reg_addressing(IMX_CLOCK_RESET, mmio);
 	if (ret)
@@ -292,7 +313,11 @@ static int read_adc_sum(void *dev, u16 rtune_ctl_reg, void __iomem * mmio)
 {
 	u16 adc_out_reg, read_sum;
 	u32 index, read_attempt;
+<<<<<<< HEAD
 	const u32 attempt_limit = 200;
+=======
+	const u32 attempt_limit = 100;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	imx_phy_reg_addressing(SATA_PHY_CR_CLOCK_RTUNE_CTL, mmio);
 	imx_phy_reg_write(rtune_ctl_reg, mmio);
@@ -453,6 +478,7 @@ static struct attribute *fsl_sata_ahci_attrs[] = {
 };
 ATTRIBUTE_GROUPS(fsl_sata_ahci);
 
+<<<<<<< HEAD
 static int imx8_sata_enable(struct ahci_host_priv *hpriv)
 {
 	u32 val, reg;
@@ -654,6 +680,8 @@ disable_phy_pclk0:
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int imx_sata_enable(struct ahci_host_priv *hpriv)
 {
 	struct imx_ahci_priv *imxpriv = hpriv->plat_data;
@@ -671,7 +699,11 @@ static int imx_sata_enable(struct ahci_host_priv *hpriv)
 	if (ret < 0)
 		goto disable_regulator;
 
+<<<<<<< HEAD
 	if (imxpriv->type == AHCI_IMX6Q || imxpriv->type == AHCI_IMX6QP) {
+=======
+	if (imxpriv->type == AHCI_IMX6Q) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * set PHY Paremeters, two steps to configure the GPR13,
 		 * one write for rest of parameters, mask of first write
@@ -701,8 +733,11 @@ static int imx_sata_enable(struct ahci_host_priv *hpriv)
 			dev_err(dev, "failed to reset phy: %d\n", ret);
 			goto disable_clk;
 		}
+<<<<<<< HEAD
 	} else if (imxpriv->type == AHCI_IMX8QM) {
 		ret = imx8_sata_enable(hpriv);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	usleep_range(1000, 2000);
@@ -724,6 +759,7 @@ static void imx_sata_disable(struct ahci_host_priv *hpriv)
 	if (imxpriv->no_device)
 		return;
 
+<<<<<<< HEAD
 	switch (imxpriv->type) {
 	case AHCI_IMX6QP:
 		regmap_update_bits(imxpriv->gpr, IOMUXC_GPR5,
@@ -747,6 +783,12 @@ static void imx_sata_disable(struct ahci_host_priv *hpriv)
 
 	default:
 		break;
+=======
+	if (imxpriv->type == AHCI_IMX6Q) {
+		regmap_update_bits(imxpriv->gpr, IOMUXC_GPR13,
+				   IMX6Q_GPR13_SATA_MPLL_CLK_EN,
+				   !IMX6Q_GPR13_SATA_MPLL_CLK_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	clk_disable_unprepare(imxpriv->sata_ref_clk);
@@ -797,7 +839,11 @@ static int ahci_imx_softreset(struct ata_link *link, unsigned int *class,
 
 	if (imxpriv->type == AHCI_IMX53)
 		ret = ahci_pmp_retry_srst_ops.softreset(link, class, deadline);
+<<<<<<< HEAD
 	else
+=======
+	else if (imxpriv->type == AHCI_IMX6Q)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = ahci_ops.softreset(link, class, deadline);
 
 	return ret;
@@ -820,8 +866,11 @@ static const struct ata_port_info ahci_imx_port_info = {
 static const struct of_device_id imx_ahci_of_match[] = {
 	{ .compatible = "fsl,imx53-ahci", .data = (void *)AHCI_IMX53 },
 	{ .compatible = "fsl,imx6q-ahci", .data = (void *)AHCI_IMX6Q },
+<<<<<<< HEAD
 	{ .compatible = "fsl,imx6qp-ahci", .data = (void *)AHCI_IMX6QP },
 	{ .compatible = "fsl,imx8qm-ahci", .data = (void *)AHCI_IMX8QM },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, imx_ahci_of_match);
@@ -989,6 +1038,7 @@ static struct scsi_host_template ahci_platform_sht = {
 	AHCI_SHT(DRV_NAME),
 };
 
+<<<<<<< HEAD
 static int imx8_sata_probe(struct device *dev, struct imx_ahci_priv *imxpriv)
 {
 	int ret;
@@ -1062,6 +1112,8 @@ static int imx8_sata_probe(struct device *dev, struct imx_ahci_priv *imxpriv)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int imx_ahci_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
@@ -1102,7 +1154,11 @@ static int imx_ahci_probe(struct platform_device *pdev)
 		return PTR_ERR(imxpriv->ahb_clk);
 	}
 
+<<<<<<< HEAD
 	if (imxpriv->type == AHCI_IMX6Q || imxpriv->type == AHCI_IMX6QP) {
+=======
+	if (imxpriv->type == AHCI_IMX6Q) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 reg_value;
 
 		imxpriv->gpr = syscon_regmap_lookup_by_compatible(
@@ -1121,6 +1177,7 @@ static int imx_ahci_probe(struct platform_device *pdev)
 				   IMX6Q_GPR13_SATA_RX_DPLL_MODE_2P_4F |
 				   IMX6Q_GPR13_SATA_SPD_MODE_3P0G |
 				   reg_value;
+<<<<<<< HEAD
 	} else if (imxpriv->type == AHCI_IMX8QM) {
 		ret =  imx8_sata_probe(dev, imxpriv);
 		if (ret)
@@ -1128,6 +1185,11 @@ static int imx_ahci_probe(struct platform_device *pdev)
 	}
 
 	hpriv = ahci_platform_get_resources(pdev, 0);
+=======
+	}
+
+	hpriv = ahci_platform_get_resources(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(hpriv))
 		return PTR_ERR(hpriv);
 

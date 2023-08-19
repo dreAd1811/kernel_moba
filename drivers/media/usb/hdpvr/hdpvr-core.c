@@ -366,9 +366,22 @@ static int hdpvr_probe(struct usb_interface *interface,
 		goto error_free_buffers;
 	}
 
+<<<<<<< HEAD
 	client = hdpvr_register_ir_i2c(dev);
 	if (!client) {
 		v4l2_err(&dev->v4l2_dev, "i2c IR device register failed\n");
+=======
+	client = hdpvr_register_ir_rx_i2c(dev);
+	if (!client) {
+		v4l2_err(&dev->v4l2_dev, "i2c IR RX device register failed\n");
+		retval = -ENODEV;
+		goto reg_fail;
+	}
+
+	client = hdpvr_register_ir_tx_i2c(dev);
+	if (!client) {
+		v4l2_err(&dev->v4l2_dev, "i2c IR TX device register failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retval = -ENODEV;
 		goto reg_fail;
 	}

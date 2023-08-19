@@ -30,7 +30,11 @@ static int mxs_suspend_enter(suspend_state_t state)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct platform_suspend_ops mxs_suspend_ops = {
+=======
+static struct platform_suspend_ops mxs_suspend_ops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enter = mxs_suspend_enter,
 	.valid = suspend_valid_only_mem,
 };

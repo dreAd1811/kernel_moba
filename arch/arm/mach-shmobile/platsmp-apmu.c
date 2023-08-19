@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * SMP support for SoCs with APMU
  *
  * Copyright (C) 2014  Renesas Electronics Corporation
  * Copyright (C) 2013  Magnus Damm
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/cpu_pm.h>
 #include <linux/delay.h>
@@ -20,6 +30,10 @@
 #include <asm/smp_plat.h>
 #include <asm/suspend.h>
 #include "common.h"
+<<<<<<< HEAD
+=======
+#include "platsmp-apmu.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "rcar-gen2.h"
 
 static struct {
@@ -83,6 +97,7 @@ static int __maybe_unused apmu_wrap(int cpu, int (*fn)(void __iomem *p, int cpu)
 	return p ? fn(p, apmu_cpus[cpu].bit) : -EINVAL;
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_SUSPEND)
 /* nicked from arch/arm/mach-exynos/hotplug.c */
 static inline void cpu_enter_lowpower_a15(void)
@@ -181,6 +196,8 @@ void __init shmobile_smp_apmu_suspend_init(void)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SMP
 static void apmu_init_cpu(struct resource *res, int cpu, int bit)
 {
@@ -200,6 +217,41 @@ static void apmu_init_cpu(struct resource *res, int cpu, int bit)
 	writel(x, apmu_cpus[cpu].iomem + DBGRCR_OFFS);
 }
 
+<<<<<<< HEAD
+=======
+static void apmu_parse_cfg(void (*fn)(struct resource *res, int cpu, int bit),
+			   struct rcar_apmu_config *apmu_config, int num)
+{
+	int id;
+	int k;
+	int bit, index;
+	bool is_allowed;
+
+	for (k = 0; k < num; k++) {
+		/* only enable the cluster that includes the boot CPU */
+		is_allowed = false;
+		for (bit = 0; bit < ARRAY_SIZE(apmu_config[k].cpus); bit++) {
+			id = apmu_config[k].cpus[bit];
+			if (id >= 0) {
+				if (id == cpu_logical_map(0))
+					is_allowed = true;
+			}
+		}
+		if (!is_allowed)
+			continue;
+
+		for (bit = 0; bit < ARRAY_SIZE(apmu_config[k].cpus); bit++) {
+			id = apmu_config[k].cpus[bit];
+			if (id >= 0) {
+				index = get_logical_index(id);
+				if (index >= 0)
+					fn(&apmu_config[k].iomem, index, bit);
+			}
+		}
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id apmu_ids[] = {
 	{ .compatible = "renesas,apmu" },
 	{ /*sentinel*/ }
@@ -253,6 +305,7 @@ static void __init shmobile_smp_apmu_setup_boot(void)
 {
 	/* install boot code shared by all CPUs */
 	shmobile_boot_fn = __pa_symbol(shmobile_smp_boot);
+<<<<<<< HEAD
 	shmobile_boot_fn_gen2 = shmobile_boot_fn;
 }
 
@@ -261,6 +314,22 @@ static int shmobile_smp_apmu_boot_secondary(unsigned int cpu,
 {
 	/* For this particular CPU register boot vector */
 	shmobile_smp_hook(cpu, __pa_symbol(shmobile_boot_apmu), 0);
+=======
+}
+
+void __init shmobile_smp_apmu_prepare_cpus(unsigned int max_cpus,
+					   struct rcar_apmu_config *apmu_config,
+					   int num)
+{
+	shmobile_smp_apmu_setup_boot();
+	apmu_parse_cfg(apmu_init_cpu, apmu_config, num);
+}
+
+int shmobile_smp_apmu_boot_secondary(unsigned int cpu, struct task_struct *idle)
+{
+	/* For this particular CPU register boot vector */
+	shmobile_smp_hook(cpu, __pa_symbol(secondary_startup), 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return apmu_wrap(cpu, apmu_power_on);
 }
@@ -284,3 +353,104 @@ static struct smp_operations apmu_smp_ops __initdata = {
 
 CPU_METHOD_OF_DECLARE(shmobile_smp_apmu, "renesas,apmu", &apmu_smp_ops);
 #endif /* CONFIG_SMP */
+<<<<<<< HEAD
+=======
+
+#if defined(CONFIG_HOTPLUG_CPU) || defined(CONFIG_SUSPEND)
+/* nicked from arch/arm/mach-exynos/hotplug.c */
+static inline void cpu_enter_lowpower_a15(void)
+{
+	unsigned int v;
+
+	asm volatile(
+	"       mrc     p15, 0, %0, c1, c0, 0\n"
+	"       bic     %0, %0, %1\n"
+	"       mcr     p15, 0, %0, c1, c0, 0\n"
+		: "=&r" (v)
+		: "Ir" (CR_C)
+		: "cc");
+
+	flush_cache_louis();
+
+	asm volatile(
+	/*
+	 * Turn off coherency
+	 */
+	"       mrc     p15, 0, %0, c1, c0, 1\n"
+	"       bic     %0, %0, %1\n"
+	"       mcr     p15, 0, %0, c1, c0, 1\n"
+		: "=&r" (v)
+		: "Ir" (0x40)
+		: "cc");
+
+	isb();
+	dsb();
+}
+
+static void shmobile_smp_apmu_cpu_shutdown(unsigned int cpu)
+{
+
+	/* Select next sleep mode using the APMU */
+	apmu_wrap(cpu, apmu_power_off);
+
+	/* Do ARM specific CPU shutdown */
+	cpu_enter_lowpower_a15();
+}
+
+static inline void cpu_leave_lowpower(void)
+{
+	unsigned int v;
+
+	asm volatile("mrc    p15, 0, %0, c1, c0, 0\n"
+		     "       orr     %0, %0, %1\n"
+		     "       mcr     p15, 0, %0, c1, c0, 0\n"
+		     "       mrc     p15, 0, %0, c1, c0, 1\n"
+		     "       orr     %0, %0, %2\n"
+		     "       mcr     p15, 0, %0, c1, c0, 1\n"
+		     : "=&r" (v)
+		     : "Ir" (CR_C), "Ir" (0x40)
+		     : "cc");
+}
+#endif
+
+#if defined(CONFIG_HOTPLUG_CPU)
+void shmobile_smp_apmu_cpu_die(unsigned int cpu)
+{
+	/* For this particular CPU deregister boot vector */
+	shmobile_smp_hook(cpu, 0, 0);
+
+	/* Shutdown CPU core */
+	shmobile_smp_apmu_cpu_shutdown(cpu);
+
+	/* jump to shared mach-shmobile sleep / reset code */
+	shmobile_smp_sleep();
+}
+
+int shmobile_smp_apmu_cpu_kill(unsigned int cpu)
+{
+	return apmu_wrap(cpu, apmu_power_off_poll);
+}
+#endif
+
+#if defined(CONFIG_SUSPEND)
+static int shmobile_smp_apmu_do_suspend(unsigned long cpu)
+{
+	shmobile_smp_hook(cpu, __pa_symbol(cpu_resume), 0);
+	shmobile_smp_apmu_cpu_shutdown(cpu);
+	cpu_do_idle(); /* WFI selects Core Standby */
+	return 1;
+}
+
+static int shmobile_smp_apmu_enter_suspend(suspend_state_t state)
+{
+	cpu_suspend(smp_processor_id(), shmobile_smp_apmu_do_suspend);
+	cpu_leave_lowpower();
+	return 0;
+}
+
+void __init shmobile_smp_apmu_suspend_init(void)
+{
+	shmobile_suspend_ops.enter = shmobile_smp_apmu_enter_suspend;
+}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

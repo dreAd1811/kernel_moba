@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2013-2014, 2018, 2019, The Linux Foundation. All rights reserved.
+=======
+/*
+ * Copyright (c) 2013-2014, 2018-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "devbw: " fmt
@@ -93,6 +107,67 @@ static int devbw_get_dev_status(struct device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#define PROP_OPERATING_POINTS_V2 "operating-points-v2"
+
+static int add_opp_prop_from_child(struct device *dev,
+				struct device_node *of_child)
+{
+	struct property *prop;
+	int len = 0, ret = 0;
+	void *value;
+	const void *p_val;
+
+	p_val = of_get_property(of_child, PROP_OPERATING_POINTS_V2, &len);
+	if (!p_val)
+		return -ENODEV;
+	value = devm_kzalloc(dev, len, GFP_KERNEL);
+	if (!value)
+		return -ENOMEM;
+	memcpy(value, p_val, len);
+	prop = devm_kzalloc(dev, sizeof(*prop), GFP_KERNEL);
+	if (!prop) {
+		devm_kfree(dev, value);
+		return -ENOMEM;
+	}
+	prop->name = "operating-points-v2";
+	prop->value = value;
+	prop->length = len;
+	ret = of_add_property(dev->of_node, prop);
+	if (ret) {
+		devm_kfree(dev, value);
+		devm_kfree(dev, prop);
+		dev_err(dev, "failed to add property: %d\n", ret);
+	}
+
+	return ret;
+}
+
+static int parse_child_nodes_for_opp(struct device *dev)
+{
+	struct device_node *of_child;
+	int ddr_type_of = -1;
+	int ddr_type = of_fdt_get_ddrtype();
+	int ret = -EINVAL;
+
+	for_each_child_of_node(dev->of_node, of_child) {
+		ret = of_property_read_u32(of_child, "qcom,ddr-type",
+						&ddr_type_of);
+		if (!ret && (ddr_type == ddr_type_of)) {
+			dev_dbg(dev, "ddr-type = %d, is matching DT entry\n",
+						ddr_type_of);
+			ret = add_opp_prop_from_child(dev, of_child);
+			if (ret)
+				return ret;
+			return dev_pm_opp_of_add_table(dev);
+		}
+		ret = -ENODEV;
+	}
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PROP_PORTS "qcom,src-dst-ports"
 #define PROP_ACTIVE "qcom,active-only"
 
@@ -103,8 +178,11 @@ int devfreq_add_devbw(struct device *dev)
 	u32 ports[MAX_PATHS * 2];
 	const char *gov_name;
 	int ret, len, i, num_paths;
+<<<<<<< HEAD
 	struct opp_table *opp_table;
 	u32 version;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	d = devm_kzalloc(dev, sizeof(*d), GFP_KERNEL);
 	if (!d)
@@ -150,6 +228,7 @@ int devfreq_add_devbw(struct device *dev)
 	p->polling_ms = 50;
 	p->target = devbw_target;
 	p->get_dev_status = devbw_get_dev_status;
+<<<<<<< HEAD
 
 	if (of_device_is_compatible(dev->of_node, "qcom,devbw-ddr")) {
 		version = (1 << of_fdt_get_ddrtype());
@@ -161,6 +240,13 @@ int devfreq_add_devbw(struct device *dev)
 	}
 
 	ret = dev_pm_opp_of_add_table(dev);
+=======
+	if (of_get_child_count(dev->of_node))
+		ret = parse_child_nodes_for_opp(dev);
+	else
+		ret = dev_pm_opp_of_add_table(dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		dev_err(dev, "Couldn't parse OPP table:%d\n", ret);
 
@@ -216,8 +302,11 @@ static int devfreq_devbw_remove(struct platform_device *pdev)
 }
 
 static const struct of_device_id devbw_match_table[] = {
+<<<<<<< HEAD
 	{ .compatible = "qcom,devbw-llcc" },
 	{ .compatible = "qcom,devbw-ddr" },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "qcom,devbw" },
 	{}
 };

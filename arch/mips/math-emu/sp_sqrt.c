@@ -82,8 +82,12 @@ union ieee754sp ieee754sp_sqrt(union ieee754sp x)
 
 	/* generate sqrt(x) bit by bit */
 	ix += ix;
+<<<<<<< HEAD
 	s = 0;
 	q = 0;			/* q = sqrt(x) */
+=======
+	q = s = 0;		/* q = sqrt(x) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = 0x01000000;		/* r = moving bit from right to left */
 
 	while (r != 0) {

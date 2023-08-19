@@ -19,8 +19,13 @@
  */
 
 #include <linux/acpi.h>
+<<<<<<< HEAD
 #include <linux/extcon-provider.h>
 #include <linux/gpio/consumer.h>
+=======
+#include <linux/extcon.h>
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
@@ -50,11 +55,15 @@ static const struct acpi_gpio_params vbus_gpios = { INT3496_GPIO_VBUS_EN, 0, fal
 static const struct acpi_gpio_params mux_gpios = { INT3496_GPIO_USB_MUX, 0, false };
 
 static const struct acpi_gpio_mapping acpi_int3496_default_gpios[] = {
+<<<<<<< HEAD
 	/*
 	 * Some platforms have a bug in ACPI GPIO description making IRQ
 	 * GPIO to be output only. Ask the GPIO core to ignore this limit.
 	 */
 	{ "id-gpios", &id_gpios, 1, ACPI_GPIO_QUIRK_NO_IO_RESTRICTION },
+=======
+	{ "id-gpios", &id_gpios, 1 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "vbus-gpios", &vbus_gpios, 1 },
 	{ "mux-gpios", &mux_gpios, 1 },
 	{ },
@@ -116,6 +125,12 @@ static int int3496_probe(struct platform_device *pdev)
 		ret = PTR_ERR(data->gpio_usb_id);
 		dev_err(dev, "can't request USB ID GPIO: %d\n", ret);
 		return ret;
+<<<<<<< HEAD
+=======
+	} else if (gpiod_get_direction(data->gpio_usb_id) != GPIOF_DIR_IN) {
+		dev_warn(dev, FW_BUG "USB ID GPIO not in input mode, fixing\n");
+		gpiod_direction_input(data->gpio_usb_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	data->usb_id_irq = gpiod_to_irq(data->gpio_usb_id);

@@ -26,7 +26,10 @@
 #include <linux/memblock.h>
 #include <linux/slab.h>
 #include <linux/reboot.h>
+<<<<<<< HEAD
 #include <linux/syscalls.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/prom.h>
 #include <asm/rtas.h>
@@ -79,7 +82,11 @@ static unsigned long lock_rtas(void)
 
 	local_irq_save(flags);
 	preempt_disable();
+<<<<<<< HEAD
 	arch_spin_lock(&rtas.lock);
+=======
+	arch_spin_lock_flags(&rtas.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return flags;
 }
 
@@ -985,6 +992,10 @@ int rtas_ibm_suspend_me(u64 handle)
 		goto out;
 	}
 
+<<<<<<< HEAD
+=======
+	cpu_hotplug_disable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stop_topology_update();
 
 	/* Call function on all CPUs.  One of us will make the
@@ -999,6 +1010,10 @@ int rtas_ibm_suspend_me(u64 handle)
 		printk(KERN_ERR "Error doing global join\n");
 
 	start_topology_update();
+<<<<<<< HEAD
+=======
+	cpu_hotplug_enable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Take down CPUs not online prior to suspend */
 	cpuret = rtas_offline_cpus_mask(offline_mask);
@@ -1056,7 +1071,11 @@ struct pseries_errorlog *get_pseries_errorlog(struct rtas_error_log *log,
 }
 
 /* We assume to be passed big endian arguments */
+<<<<<<< HEAD
 SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
+=======
+asmlinkage int ppc_rtas(struct rtas_args __user *uargs)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtas_args args;
 	unsigned long flags;

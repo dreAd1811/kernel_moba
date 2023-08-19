@@ -276,6 +276,10 @@ void mei_me_cl_rm_by_uuid(struct mei_device *dev, const uuid_le *uuid)
 	down_write(&dev->me_clients_rwsem);
 	me_cl = __mei_me_cl_by_uuid(dev, uuid);
 	__mei_me_cl_del(dev, me_cl);
+<<<<<<< HEAD
+=======
+	mei_me_cl_put(me_cl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_write(&dev->me_clients_rwsem);
 }
 
@@ -297,6 +301,10 @@ void mei_me_cl_rm_by_uuid_id(struct mei_device *dev, const uuid_le *uuid, u8 id)
 	down_write(&dev->me_clients_rwsem);
 	me_cl = __mei_me_cl_by_uuid_id(dev, uuid, id);
 	__mei_me_cl_del(dev, me_cl);
+<<<<<<< HEAD
+=======
+	mei_me_cl_put(me_cl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_write(&dev->me_clients_rwsem);
 }
 
@@ -350,6 +358,7 @@ void mei_io_cb_free(struct mei_cl_cb *cb)
 }
 
 /**
+<<<<<<< HEAD
  * mei_tx_cb_queue - queue tx callback
  *
  * Locking: called under "dev->device_lock" lock
@@ -380,6 +389,8 @@ static inline void mei_tx_cb_dequeue(struct mei_cl_cb *cb)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * mei_io_cb_init - allocate and initialize io callback
  *
  * @cl: mei client
@@ -407,6 +418,7 @@ static struct mei_cl_cb *mei_io_cb_init(struct mei_cl *cl,
 }
 
 /**
+<<<<<<< HEAD
  * mei_io_list_flush_cl - removes cbs belonging to the cl.
  *
  * @head:  an instance of our list structure
@@ -420,15 +432,40 @@ static void mei_io_list_flush_cl(struct list_head *head,
 	list_for_each_entry_safe(cb, next, head, list) {
 		if (mei_cl_cmp_id(cl, cb->cl))
 			list_del_init(&cb->list);
+=======
+ * __mei_io_list_flush_cl - removes and frees cbs belonging to cl.
+ *
+ * @head:  an instance of our list structure
+ * @cl:    host client, can be NULL for flushing the whole list
+ * @free:  whether to free the cbs
+ */
+static void __mei_io_list_flush_cl(struct list_head *head,
+				   const struct mei_cl *cl, bool free)
+{
+	struct mei_cl_cb *cb, *next;
+
+	/* enable removing everything if no cl is specified */
+	list_for_each_entry_safe(cb, next, head, list) {
+		if (!cl || mei_cl_cmp_id(cl, cb->cl)) {
+			list_del_init(&cb->list);
+			if (free)
+				mei_io_cb_free(cb);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 /**
+<<<<<<< HEAD
  * mei_io_tx_list_free_cl - removes cb belonging to the cl and free them
+=======
+ * mei_io_list_flush_cl - removes list entry belonging to cl.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @head: An instance of our list structure
  * @cl: host client
  */
+<<<<<<< HEAD
 static void mei_io_tx_list_free_cl(struct list_head *head,
 				   const struct mei_cl *cl)
 {
@@ -438,6 +475,24 @@ static void mei_io_tx_list_free_cl(struct list_head *head,
 		if (mei_cl_cmp_id(cl, cb->cl))
 			mei_tx_cb_dequeue(cb);
 	}
+=======
+static inline void mei_io_list_flush_cl(struct list_head *head,
+					const struct mei_cl *cl)
+{
+	__mei_io_list_flush_cl(head, cl, false);
+}
+
+/**
+ * mei_io_list_free_cl - removes cb belonging to cl and free them
+ *
+ * @head: An instance of our list structure
+ * @cl: host client
+ */
+static inline void mei_io_list_free_cl(struct list_head *head,
+				       const struct mei_cl *cl)
+{
+	__mei_io_list_flush_cl(head, cl, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -556,8 +611,13 @@ int mei_cl_flush_queues(struct mei_cl *cl, const struct file *fp)
 	dev = cl->dev;
 
 	cl_dbg(dev, cl, "remove list entry belonging to cl\n");
+<<<<<<< HEAD
 	mei_io_tx_list_free_cl(&cl->dev->write_list, cl);
 	mei_io_tx_list_free_cl(&cl->dev->write_waiting_list, cl);
+=======
+	mei_io_list_free_cl(&cl->dev->write_list, cl);
+	mei_io_list_free_cl(&cl->dev->write_waiting_list, cl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mei_io_list_flush_cl(&cl->dev->ctrl_wr_list, cl);
 	mei_io_list_flush_cl(&cl->dev->ctrl_rd_list, cl);
 	mei_io_list_free_fp(&cl->rd_pending, fp);
@@ -774,8 +834,13 @@ static void mei_cl_set_disconnected(struct mei_cl *cl)
 		return;
 
 	cl->state = MEI_FILE_DISCONNECTED;
+<<<<<<< HEAD
 	mei_io_tx_list_free_cl(&dev->write_list, cl);
 	mei_io_tx_list_free_cl(&dev->write_waiting_list, cl);
+=======
+	mei_io_list_free_cl(&dev->write_list, cl);
+	mei_io_list_free_cl(&dev->write_waiting_list, cl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mei_io_list_flush_cl(&dev->ctrl_rd_list, cl);
 	mei_io_list_flush_cl(&dev->ctrl_wr_list, cl);
 	mei_cl_wake_all(cl);
@@ -783,6 +848,11 @@ static void mei_cl_set_disconnected(struct mei_cl *cl)
 	cl->tx_flow_ctrl_creds = 0;
 	cl->timer_count = 0;
 
+<<<<<<< HEAD
+=======
+	mei_cl_bus_module_put(cl);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cl->me_cl)
 		return;
 
@@ -863,12 +933,19 @@ int mei_cl_irq_disconnect(struct mei_cl *cl, struct mei_cl_cb *cb,
 	int slots;
 	int ret;
 
+<<<<<<< HEAD
 	msg_slots = mei_hbm2slots(sizeof(struct hbm_client_connect_request));
 	slots = mei_hbuf_empty_slots(dev);
 	if (slots < 0)
 		return -EOVERFLOW;
 
 	if ((u32)slots < msg_slots)
+=======
+	msg_slots = mei_data2slots(sizeof(struct hbm_client_connect_request));
+	slots = mei_hbuf_empty_slots(dev);
+
+	if (slots < msg_slots)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EMSGSIZE;
 
 	ret = mei_cl_send_disconnect(cl, cb);
@@ -963,12 +1040,15 @@ int mei_cl_disconnect(struct mei_cl *cl)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	if (dev->dev_state == MEI_DEV_POWER_DOWN) {
 		cl_dbg(dev, cl, "Device is powering down, don't bother with disconnection\n");
 		mei_cl_set_disconnected(cl);
 		return 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rets = pm_runtime_get(dev->dev);
 	if (rets < 0 && rets != -EINPROGRESS) {
 		pm_runtime_put_noidle(dev->dev);
@@ -1055,6 +1135,7 @@ int mei_cl_irq_connect(struct mei_cl *cl, struct mei_cl_cb *cb,
 	int slots;
 	int rets;
 
+<<<<<<< HEAD
 	if (mei_cl_is_other_connecting(cl))
 		return 0;
 
@@ -1064,6 +1145,15 @@ int mei_cl_irq_connect(struct mei_cl *cl, struct mei_cl_cb *cb,
 		return -EOVERFLOW;
 
 	if ((u32)slots < msg_slots)
+=======
+	msg_slots = mei_data2slots(sizeof(struct hbm_client_connect_request));
+	slots = mei_hbuf_empty_slots(dev);
+
+	if (mei_cl_is_other_connecting(cl))
+		return 0;
+
+	if (slots < msg_slots)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EMSGSIZE;
 
 	rets = mei_cl_send_connect(cl, cb);
@@ -1096,6 +1186,12 @@ int mei_cl_connect(struct mei_cl *cl, struct mei_me_client *me_cl,
 
 	dev = cl->dev;
 
+<<<<<<< HEAD
+=======
+	if (!mei_cl_bus_module_get(cl))
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rets = mei_cl_set_connecting(cl, me_cl);
 	if (rets)
 		goto nortpm;
@@ -1298,12 +1394,19 @@ int mei_cl_irq_notify(struct mei_cl *cl, struct mei_cl_cb *cb,
 	int ret;
 	bool request;
 
+<<<<<<< HEAD
 	msg_slots = mei_hbm2slots(sizeof(struct hbm_client_connect_request));
 	slots = mei_hbuf_empty_slots(dev);
 	if (slots < 0)
 		return -EOVERFLOW;
 
 	if ((u32)slots < msg_slots)
+=======
+	msg_slots = mei_data2slots(sizeof(struct hbm_client_connect_request));
+	slots = mei_hbuf_empty_slots(dev);
+
+	if (slots < msg_slots)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EMSGSIZE;
 
 	request = mei_cl_notify_fop2req(cb->fop_type);
@@ -1539,6 +1642,7 @@ nortpm:
 }
 
 /**
+<<<<<<< HEAD
  * mei_msg_hdr_init - initialize mei message header
  *
  * @mei_hdr: mei message header
@@ -1556,6 +1660,8 @@ static void mei_msg_hdr_init(struct mei_msg_hdr *mei_hdr, struct mei_cl_cb *cb)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * mei_cl_irq_write - write a message to device
  *	from the interrupt thread context
  *
@@ -1571,10 +1677,16 @@ int mei_cl_irq_write(struct mei_cl *cl, struct mei_cl_cb *cb,
 	struct mei_device *dev;
 	struct mei_msg_data *buf;
 	struct mei_msg_hdr mei_hdr;
+<<<<<<< HEAD
 	size_t hdr_len = sizeof(mei_hdr);
 	size_t len;
 	size_t hbuf_len;
 	int hbuf_slots;
+=======
+	size_t len;
+	u32 msg_slots;
+	int slots;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rets;
 	bool first_chunk;
 
@@ -1596,6 +1708,7 @@ int mei_cl_irq_write(struct mei_cl *cl, struct mei_cl_cb *cb,
 		return 0;
 	}
 
+<<<<<<< HEAD
 	len = buf->size - cb->buf_idx;
 	hbuf_slots = mei_hbuf_empty_slots(dev);
 	if (hbuf_slots < 0) {
@@ -1617,20 +1730,50 @@ int mei_cl_irq_write(struct mei_cl *cl, struct mei_cl_cb *cb,
 	} else if ((u32)hbuf_slots == mei_hbuf_depth(dev)) {
 		mei_hdr.length = hbuf_len - hdr_len;
 	} else {
+=======
+	slots = mei_hbuf_empty_slots(dev);
+	len = buf->size - cb->buf_idx;
+	msg_slots = mei_data2slots(len);
+
+	mei_hdr.host_addr = mei_cl_host_addr(cl);
+	mei_hdr.me_addr = mei_cl_me_id(cl);
+	mei_hdr.reserved = 0;
+	mei_hdr.internal = cb->internal;
+
+	if (slots >= msg_slots) {
+		mei_hdr.length = len;
+		mei_hdr.msg_complete = 1;
+	/* Split the message only if we can write the whole host buffer */
+	} else if (slots == dev->hbuf_depth) {
+		msg_slots = slots;
+		len = (slots * sizeof(u32)) - sizeof(struct mei_msg_hdr);
+		mei_hdr.length = len;
+		mei_hdr.msg_complete = 0;
+	} else {
+		/* wait for next time the host buffer is empty */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
 	cl_dbg(dev, cl, "buf: size = %zu idx = %zu\n",
 			cb->buf.size, cb->buf_idx);
 
+<<<<<<< HEAD
 	rets = mei_write_message(dev, &mei_hdr, hdr_len,
 				 buf->data + cb->buf_idx, mei_hdr.length);
+=======
+	rets = mei_write_message(dev, &mei_hdr, buf->data + cb->buf_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rets)
 		goto err;
 
 	cl->status = 0;
 	cl->writing_state = MEI_WRITING;
 	cb->buf_idx += mei_hdr.length;
+<<<<<<< HEAD
+=======
+	cb->completed = mei_hdr.msg_complete == 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (first_chunk) {
 		if (mei_cl_tx_flow_ctrl_creds_reduce(cl)) {
@@ -1659,16 +1802,25 @@ err:
  *
  * Return: number of bytes sent on success, <0 on failure.
  */
+<<<<<<< HEAD
 ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb)
+=======
+int mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mei_device *dev;
 	struct mei_msg_data *buf;
 	struct mei_msg_hdr mei_hdr;
+<<<<<<< HEAD
 	size_t hdr_len = sizeof(mei_hdr);
 	size_t len;
 	size_t hbuf_len;
 	int hbuf_slots;
 	ssize_t rets;
+=======
+	int size;
+	int rets;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool blocking;
 
 	if (WARN_ON(!cl || !cl->dev))
@@ -1680,26 +1832,46 @@ ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb)
 	dev = cl->dev;
 
 	buf = &cb->buf;
+<<<<<<< HEAD
 	len = buf->size;
 	blocking = cb->blocking;
 
 	cl_dbg(dev, cl, "len=%zd\n", len);
+=======
+	size = buf->size;
+	blocking = cb->blocking;
+
+	cl_dbg(dev, cl, "size=%d\n", size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rets = pm_runtime_get(dev->dev);
 	if (rets < 0 && rets != -EINPROGRESS) {
 		pm_runtime_put_noidle(dev->dev);
+<<<<<<< HEAD
 		cl_err(dev, cl, "rpm: get failed %zd\n", rets);
+=======
+		cl_err(dev, cl, "rpm: get failed %d\n", rets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free;
 	}
 
 	cb->buf_idx = 0;
 	cl->writing_state = MEI_IDLE;
 
+<<<<<<< HEAD
+=======
+	mei_hdr.host_addr = mei_cl_host_addr(cl);
+	mei_hdr.me_addr = mei_cl_me_id(cl);
+	mei_hdr.reserved = 0;
+	mei_hdr.msg_complete = 0;
+	mei_hdr.internal = cb->internal;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rets = mei_cl_tx_flow_ctrl_creds(cl);
 	if (rets < 0)
 		goto err;
 
+<<<<<<< HEAD
 	mei_msg_hdr_init(&mei_hdr, cb);
 
 	if (rets == 0) {
@@ -1731,6 +1903,29 @@ ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb)
 
 	rets = mei_write_message(dev, &mei_hdr, hdr_len,
 				 buf->data, mei_hdr.length);
+=======
+	if (rets == 0) {
+		cl_dbg(dev, cl, "No flow control credentials: not sending.\n");
+		rets = size;
+		goto out;
+	}
+	if (!mei_hbuf_acquire(dev)) {
+		cl_dbg(dev, cl, "Cannot acquire the host buffer: not sending.\n");
+		rets = size;
+		goto out;
+	}
+
+	/* Check for a maximum length */
+	if (size > mei_hbuf_max_len(dev)) {
+		mei_hdr.length = mei_hbuf_max_len(dev);
+		mei_hdr.msg_complete = 0;
+	} else {
+		mei_hdr.length = size;
+		mei_hdr.msg_complete = 1;
+	}
+
+	rets = mei_write_message(dev, &mei_hdr, buf->data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rets)
 		goto err;
 
@@ -1740,12 +1935,22 @@ ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb)
 
 	cl->writing_state = MEI_WRITING;
 	cb->buf_idx = mei_hdr.length;
+<<<<<<< HEAD
 
 out:
 	if (mei_hdr.msg_complete)
 		mei_tx_cb_enqueue(cb, &dev->write_waiting_list);
 	else
 		mei_tx_cb_enqueue(cb, &dev->write_list);
+=======
+	cb->completed = mei_hdr.msg_complete == 1;
+
+out:
+	if (mei_hdr.msg_complete)
+		list_add_tail(&cb->list, &dev->write_waiting_list);
+	else
+		list_add_tail(&cb->list, &dev->write_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cb = NULL;
 	if (blocking && cl->writing_state != MEI_WRITE_COMPLETE) {
@@ -1767,7 +1972,11 @@ out:
 		}
 	}
 
+<<<<<<< HEAD
 	rets = len;
+=======
+	rets = size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	cl_dbg(dev, cl, "rpm: autosuspend\n");
 	pm_runtime_mark_last_busy(dev->dev);
@@ -1791,7 +2000,11 @@ void mei_cl_complete(struct mei_cl *cl, struct mei_cl_cb *cb)
 
 	switch (cb->fop_type) {
 	case MEI_FOP_WRITE:
+<<<<<<< HEAD
 		mei_tx_cb_dequeue(cb);
+=======
+		mei_io_cb_free(cb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cl->writing_state = MEI_WRITE_COMPLETE;
 		if (waitqueue_active(&cl->tx_wait)) {
 			wake_up_interruptible(&cl->tx_wait);

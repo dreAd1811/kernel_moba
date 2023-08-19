@@ -23,7 +23,11 @@
 #ifndef __MXGPU_VI_H__
 #define __MXGPU_VI_H__
 
+<<<<<<< HEAD
 #define VI_MAILBOX_TIMEDOUT	12000
+=======
+#define VI_MAILBOX_TIMEDOUT	5000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VI_MAILBOX_RESET_TIME	12
 
 /* VI mailbox messages request */

@@ -21,7 +21,15 @@
 
 /************************************************************************/
 
+<<<<<<< HEAD
 #define SECTORS_PER_FRAME	(CD_FRAMESIZE >> SECTOR_SHIFT)
+=======
+#define SECTOR_BITS 		9
+#ifndef SECTOR_SIZE
+#define SECTOR_SIZE		(1 << SECTOR_BITS)
+#endif
+#define SECTORS_PER_FRAME	(CD_FRAMESIZE >> SECTOR_BITS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SECTOR_BUFFER_SIZE	(CD_FRAMESIZE * 32)
 
 /* Capabilities Page size including 8 bytes of Mode Page Header */
@@ -98,11 +106,19 @@ void ide_cd_log_error(const char *, struct request *, struct request_sense *);
 
 /* ide-cd.c functions used by ide-cd_ioctl.c */
 int ide_cd_queue_pc(ide_drive_t *, const unsigned char *, int, void *,
+<<<<<<< HEAD
 		    unsigned *, struct scsi_sense_hdr *, int, req_flags_t);
 int ide_cd_read_toc(ide_drive_t *);
 int ide_cdrom_get_capabilities(ide_drive_t *, u8 *);
 void ide_cdrom_update_speed(ide_drive_t *, u8 *);
 int cdrom_check_status(ide_drive_t *, struct scsi_sense_hdr *);
+=======
+		    unsigned *, struct request_sense *, int, req_flags_t);
+int ide_cd_read_toc(ide_drive_t *, struct request_sense *);
+int ide_cdrom_get_capabilities(ide_drive_t *, u8 *);
+void ide_cdrom_update_speed(ide_drive_t *, u8 *);
+int cdrom_check_status(ide_drive_t *, struct request_sense *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ide-cd_ioctl.c */
 int ide_cdrom_open_real(struct cdrom_device_info *, int);

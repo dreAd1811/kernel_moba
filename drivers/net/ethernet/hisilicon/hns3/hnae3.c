@@ -1,7 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 // Copyright (c) 2016-2017 Hisilicon Limited.
 
 #include <linux/list.h>
+=======
+/*
+ * Copyright (c) 2016-2017 Hisilicon Limited.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
+#include <linux/list.h>
+#include <linux/slab.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spinlock.h>
 
 #include "hnae3.h"
@@ -29,6 +43,7 @@ static bool hnae3_client_match(enum hnae3_client_type client_type,
 	return false;
 }
 
+<<<<<<< HEAD
 static void hnae3_set_client_init_flag(struct hnae3_client *client,
 				       struct hnae3_ae_dev *ae_dev, int inited)
 {
@@ -72,6 +87,8 @@ static int hnae3_get_client_init_flag(struct hnae3_client *client,
 	return inited;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hnae3_match_n_instantiate(struct hnae3_client *client,
 				     struct hnae3_ae_dev *ae_dev, bool is_reg)
 {
@@ -79,13 +96,18 @@ static int hnae3_match_n_instantiate(struct hnae3_client *client,
 
 	/* check if this client matches the type of ae_dev */
 	if (!(hnae3_client_match(client->type, ae_dev->dev_type) &&
+<<<<<<< HEAD
 	      hnae3_get_bit(ae_dev->flag, HNAE3_DEV_INITED_B))) {
+=======
+	      hnae_get_bit(ae_dev->flag, HNAE3_DEV_INITED_B))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
 	/* now, (un-)instantiate client by calling lower layer */
 	if (is_reg) {
 		ret = ae_dev->ops->init_client_instance(client, ae_dev);
+<<<<<<< HEAD
 		if (ret) {
 			dev_err(&ae_dev->pdev->dev,
 				"fail to instantiate client, ret = %d\n", ret);
@@ -102,6 +124,15 @@ static int hnae3_match_n_instantiate(struct hnae3_client *client,
 		hnae3_set_client_init_flag(client, ae_dev, 0);
 	}
 
+=======
+		if (ret)
+			dev_err(&ae_dev->pdev->dev,
+				"fail to instantiate client\n");
+		return ret;
+	}
+
+	ae_dev->ops->uninit_client_instance(client, ae_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -128,14 +159,22 @@ int hnae3_register_client(struct hnae3_client *client)
 		ret = hnae3_match_n_instantiate(client, ae_dev, true);
 		if (ret)
 			dev_err(&ae_dev->pdev->dev,
+<<<<<<< HEAD
 				"match and instantiation failed for port, ret = %d\n",
 				ret);
+=======
+				"match and instantiation failed for port\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 exit:
 	mutex_unlock(&hnae3_common_lock);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(hnae3_register_client);
 
@@ -158,7 +197,11 @@ EXPORT_SYMBOL(hnae3_unregister_client);
  * @ae_algo: AE algorithm
  * NOTE: the duplicated name will not be checked
  */
+<<<<<<< HEAD
 void hnae3_register_ae_algo(struct hnae3_ae_algo *ae_algo)
+=======
+int hnae3_register_ae_algo(struct hnae3_ae_algo *ae_algo)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct pci_device_id *id;
 	struct hnae3_ae_dev *ae_dev;
@@ -179,12 +222,20 @@ void hnae3_register_ae_algo(struct hnae3_ae_algo *ae_algo)
 		ae_dev->ops = ae_algo->ops;
 		ret = ae_algo->ops->init_ae_dev(ae_dev);
 		if (ret) {
+<<<<<<< HEAD
 			dev_err(&ae_dev->pdev->dev,
 				"init ae_dev error, ret = %d\n", ret);
 			continue;
 		}
 
 		hnae3_set_bit(ae_dev->flag, HNAE3_DEV_INITED_B, 1);
+=======
+			dev_err(&ae_dev->pdev->dev, "init ae_dev error.\n");
+			continue;
+		}
+
+		hnae_set_bit(ae_dev->flag, HNAE3_DEV_INITED_B, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* check the client list for the match with this ae_dev type and
 		 * initialize the figure out client instance
@@ -193,12 +244,21 @@ void hnae3_register_ae_algo(struct hnae3_ae_algo *ae_algo)
 			ret = hnae3_match_n_instantiate(client, ae_dev, true);
 			if (ret)
 				dev_err(&ae_dev->pdev->dev,
+<<<<<<< HEAD
 					"match and instantiation failed, ret = %d\n",
 					ret);
+=======
+					"match and instantiation failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	mutex_unlock(&hnae3_common_lock);
+<<<<<<< HEAD
+=======
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(hnae3_register_ae_algo);
 
@@ -214,9 +274,12 @@ void hnae3_unregister_ae_algo(struct hnae3_ae_algo *ae_algo)
 	mutex_lock(&hnae3_common_lock);
 	/* Check if there are matched ae_dev */
 	list_for_each_entry(ae_dev, &hnae3_ae_dev_list, node) {
+<<<<<<< HEAD
 		if (!hnae3_get_bit(ae_dev->flag, HNAE3_DEV_INITED_B))
 			continue;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		id = pci_match_id(ae_algo->pdev_id_table, ae_dev->pdev);
 		if (!id)
 			continue;
@@ -228,8 +291,12 @@ void hnae3_unregister_ae_algo(struct hnae3_ae_algo *ae_algo)
 			hnae3_match_n_instantiate(client, ae_dev, false);
 
 		ae_algo->ops->uninit_ae_dev(ae_dev);
+<<<<<<< HEAD
 		hnae3_set_bit(ae_dev->flag, HNAE3_DEV_INITED_B, 0);
 		ae_dev->ops = NULL;
+=======
+		hnae_set_bit(ae_dev->flag, HNAE3_DEV_INITED_B, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	list_del(&ae_algo->node);
@@ -241,7 +308,11 @@ EXPORT_SYMBOL(hnae3_unregister_ae_algo);
  * @ae_dev: the AE device
  * NOTE: the duplicated name will not be checked
  */
+<<<<<<< HEAD
 void hnae3_register_ae_dev(struct hnae3_ae_dev *ae_dev)
+=======
+int hnae3_register_ae_dev(struct hnae3_ae_dev *ae_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct pci_device_id *id;
 	struct hnae3_ae_algo *ae_algo;
@@ -249,7 +320,10 @@ void hnae3_register_ae_dev(struct hnae3_ae_dev *ae_dev)
 	int ret = 0;
 
 	mutex_lock(&hnae3_common_lock);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_add_tail(&ae_dev->node, &hnae3_ae_dev_list);
 
 	/* Check if there are matched ae_algo */
@@ -268,12 +342,20 @@ void hnae3_register_ae_dev(struct hnae3_ae_dev *ae_dev)
 		/* ae_dev init should set flag */
 		ret = ae_dev->ops->init_ae_dev(ae_dev);
 		if (ret) {
+<<<<<<< HEAD
 			dev_err(&ae_dev->pdev->dev,
 				"init ae_dev error, ret = %d\n", ret);
 			goto out_err;
 		}
 
 		hnae3_set_bit(ae_dev->flag, HNAE3_DEV_INITED_B, 1);
+=======
+			dev_err(&ae_dev->pdev->dev, "init ae_dev error\n");
+			goto out_err;
+		}
+
+		hnae_set_bit(ae_dev->flag, HNAE3_DEV_INITED_B, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -284,12 +366,21 @@ void hnae3_register_ae_dev(struct hnae3_ae_dev *ae_dev)
 		ret = hnae3_match_n_instantiate(client, ae_dev, true);
 		if (ret)
 			dev_err(&ae_dev->pdev->dev,
+<<<<<<< HEAD
 				"match and instantiation failed, ret = %d\n",
 				ret);
+=======
+				"match and instantiation failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out_err:
 	mutex_unlock(&hnae3_common_lock);
+<<<<<<< HEAD
+=======
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(hnae3_register_ae_dev);
 
@@ -305,9 +396,12 @@ void hnae3_unregister_ae_dev(struct hnae3_ae_dev *ae_dev)
 	mutex_lock(&hnae3_common_lock);
 	/* Check if there are matched ae_algo */
 	list_for_each_entry(ae_algo, &hnae3_ae_algo_list, node) {
+<<<<<<< HEAD
 		if (!hnae3_get_bit(ae_dev->flag, HNAE3_DEV_INITED_B))
 			continue;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		id = pci_match_id(ae_algo->pdev_id_table, ae_dev->pdev);
 		if (!id)
 			continue;
@@ -316,8 +410,12 @@ void hnae3_unregister_ae_dev(struct hnae3_ae_dev *ae_dev)
 			hnae3_match_n_instantiate(client, ae_dev, false);
 
 		ae_algo->ops->uninit_ae_dev(ae_dev);
+<<<<<<< HEAD
 		hnae3_set_bit(ae_dev->flag, HNAE3_DEV_INITED_B, 0);
 		ae_dev->ops = NULL;
+=======
+		hnae_set_bit(ae_dev->flag, HNAE3_DEV_INITED_B, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	list_del(&ae_dev->node);
@@ -328,4 +426,7 @@ EXPORT_SYMBOL(hnae3_unregister_ae_dev);
 MODULE_AUTHOR("Huawei Tech. Co., Ltd.");
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("HNAE3(Hisilicon Network Acceleration Engine) Framework");
+<<<<<<< HEAD
 MODULE_VERSION(HNAE3_MOD_VERSION);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

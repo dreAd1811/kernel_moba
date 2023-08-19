@@ -11,7 +11,10 @@ config DRM_MEDIATEK
 	select DRM_PANEL
 	select MEMORY
 	select MTK_SMI
+<<<<<<< HEAD
 	select VIDEOMODE_HELPERS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Choose this option if you have a Mediatek SoCs.
 	  The module will be called mediatek-drm

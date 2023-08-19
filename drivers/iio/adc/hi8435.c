@@ -408,6 +408,10 @@ static const struct iio_chan_spec hi8435_channels[] = {
 };
 
 static const struct iio_info hi8435_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = hi8435_read_raw,
 	.read_event_config = hi8435_read_event_config,
 	.write_event_config = hi8435_write_event_config,

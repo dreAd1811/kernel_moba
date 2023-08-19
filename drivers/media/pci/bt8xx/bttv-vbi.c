@@ -233,7 +233,11 @@ static void vbi_buffer_release(struct videobuf_queue *q, struct videobuf_buffer 
 	bttv_dma_free(q,fh->btv,buf);
 }
 
+<<<<<<< HEAD
 const struct videobuf_queue_ops bttv_vbi_qops = {
+=======
+struct videobuf_queue_ops bttv_vbi_qops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.buf_setup    = vbi_buffer_setup,
 	.buf_prepare  = vbi_buffer_prepare,
 	.buf_queue    = vbi_buffer_queue,

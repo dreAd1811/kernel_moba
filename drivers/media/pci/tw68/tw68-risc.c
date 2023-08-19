@@ -29,6 +29,7 @@
 #include "tw68.h"
 
 /**
+<<<<<<< HEAD
  * tw68_risc_field
  *  @rp:	pointer to current risc program position
  *  @sglist:	pointer to "scatter-gather list" of buffer pointers
@@ -38,6 +39,16 @@
  *  @padding:	number of bytes of padding to add
  *  @lines:	number of lines in field
  *  @jump:	insert a jump at the start
+=======
+ *  @rp		pointer to current risc program position
+ *  @sglist	pointer to "scatter-gather list" of buffer pointers
+ *  @offset	offset to target memory buffer
+ *  @sync_line	0 -> no sync, 1 -> odd sync, 2 -> even sync
+ *  @bpl	number of bytes per scan line
+ *  @padding	number of bytes of padding to add
+ *  @lines	number of lines in field
+ *  @jump	insert a jump at the start
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static __le32 *tw68_risc_field(__le32 *rp, struct scatterlist *sglist,
 			    unsigned int offset, u32 sync_line,
@@ -121,6 +132,7 @@ static __le32 *tw68_risc_field(__le32 *rp, struct scatterlist *sglist,
  *	memory for the dma controller "program" and then fills in that
  *	memory with the appropriate "instructions".
  *
+<<<<<<< HEAD
  *	@pci:		structure with info about the pci
  *			slot which our device is in.
  *	@buf:		structure with info about the memory
@@ -133,6 +145,20 @@ static __le32 *tw68_risc_field(__le32 *rp, struct scatterlist *sglist,
  *	@bpl:		number of data bytes per scan line
  *	@padding:	number of extra bytes to add at end of line
  *	@lines:		number of scan lines
+=======
+ *	@pci_dev	structure with info about the pci
+ *			slot which our device is in.
+ *	@risc		structure with info about the memory
+ *			used for our controller program.
+ *	@sglist		scatter-gather list entry
+ *	@top_offset	offset within the risc program area for the
+ *			first odd frame line
+ *	@bottom_offset	offset within the risc program area for the
+ *			first even frame line
+ *	@bpl		number of data bytes per scan line
+ *	@padding	number of extra bytes to add at end of line
+ *	@lines		number of scan lines
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int tw68_risc_buffer(struct pci_dev *pci,
 			struct tw68_buf *buf,

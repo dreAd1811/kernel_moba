@@ -1,5 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // Copyright (c) 2017 Intel Corporation.
+=======
+/*
+ * Copyright (c) 2017 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License version
+ * 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/acpi.h>
 #include <linux/i2c.h>
@@ -379,10 +395,14 @@ static const struct ov5670_reg mode_2592x1944_regs[] = {
 	{0x5792, 0x00},
 	{0x5793, 0x52},
 	{0x5794, 0xa3},
+<<<<<<< HEAD
 	{0x3503, 0x00},
 	{0x5045, 0x05},
 	{0x4003, 0x40},
 	{0x5048, 0x40}
+=======
+	{0x3503, 0x00}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct ov5670_reg mode_1296x972_regs[] = {
@@ -645,10 +665,14 @@ static const struct ov5670_reg mode_1296x972_regs[] = {
 	{0x5792, 0x00},
 	{0x5793, 0x52},
 	{0x5794, 0xa3},
+<<<<<<< HEAD
 	{0x3503, 0x00},
 	{0x5045, 0x05},
 	{0x4003, 0x40},
 	{0x5048, 0x40}
+=======
+	{0x3503, 0x00}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct ov5670_reg mode_648x486_regs[] = {
@@ -911,10 +935,14 @@ static const struct ov5670_reg mode_648x486_regs[] = {
 	{0x5792, 0x00},
 	{0x5793, 0x52},
 	{0x5794, 0xa3},
+<<<<<<< HEAD
 	{0x3503, 0x00},
 	{0x5045, 0x05},
 	{0x4003, 0x40},
 	{0x5048, 0x40}
+=======
+	{0x3503, 0x00}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct ov5670_reg mode_2560x1440_regs[] = {
@@ -1176,10 +1204,14 @@ static const struct ov5670_reg mode_2560x1440_regs[] = {
 	{0x5791, 0x06},
 	{0x5792, 0x00},
 	{0x5793, 0x52},
+<<<<<<< HEAD
 	{0x5794, 0xa3},
 	{0x5045, 0x05},
 	{0x4003, 0x40},
 	{0x5048, 0x40}
+=======
+	{0x5794, 0xa3}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct ov5670_reg mode_1280x720_regs[] = {
@@ -1442,10 +1474,14 @@ static const struct ov5670_reg mode_1280x720_regs[] = {
 	{0x5792, 0x00},
 	{0x5793, 0x52},
 	{0x5794, 0xa3},
+<<<<<<< HEAD
 	{0x3503, 0x00},
 	{0x5045, 0x05},
 	{0x4003, 0x40},
 	{0x5048, 0x40}
+=======
+	{0x3503, 0x00}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct ov5670_reg mode_640x360_regs[] = {
@@ -1708,10 +1744,14 @@ static const struct ov5670_reg mode_640x360_regs[] = {
 	{0x5792, 0x00},
 	{0x5793, 0x52},
 	{0x5794, 0xa3},
+<<<<<<< HEAD
 	{0x3503, 0x00},
 	{0x5045, 0x05},
 	{0x4003, 0x40},
 	{0x5048, 0x40}
+=======
+	{0x3503, 0x00}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const char * const ov5670_test_pattern_menu[] = {
@@ -1842,8 +1882,13 @@ static int ov5670_read_reg(struct ov5670 *ov5670, u16 reg, unsigned int len,
 	struct i2c_client *client = v4l2_get_subdevdata(&ov5670->sd);
 	struct i2c_msg msgs[2];
 	u8 *data_be_p;
+<<<<<<< HEAD
 	__be32 data_be = 0;
 	__be16 reg_addr_be = cpu_to_be16(reg);
+=======
+	u32 data_be = 0;
+	u16 reg_addr_be = cpu_to_be16(reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (len > 4)
@@ -1880,7 +1925,10 @@ static int ov5670_write_reg(struct ov5670 *ov5670, u16 reg, unsigned int len,
 	int val_i;
 	u8 buf[6];
 	u8 *val_p;
+<<<<<<< HEAD
 	__be32 tmp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (len > 4)
 		return -EINVAL;
@@ -1888,8 +1936,13 @@ static int ov5670_write_reg(struct ov5670 *ov5670, u16 reg, unsigned int len,
 	buf[0] = reg >> 8;
 	buf[1] = reg & 0xff;
 
+<<<<<<< HEAD
 	tmp = cpu_to_be32(val);
 	val_p = (u8 *)&tmp;
+=======
+	val = cpu_to_be32(val);
+	val_p = (u8 *)&val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf_i = 2;
 	val_i = 4 - len;
 
@@ -2170,6 +2223,39 @@ static int ov5670_enum_frame_size(struct v4l2_subdev *sd,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/* Calculate resolution distance */
+static int ov5670_get_reso_dist(const struct ov5670_mode *mode,
+				struct v4l2_mbus_framefmt *framefmt)
+{
+	return abs(mode->width - framefmt->width) +
+	       abs(mode->height - framefmt->height);
+}
+
+/* Find the closest supported resolution to the requested resolution */
+static const struct ov5670_mode *ov5670_find_best_fit(
+						struct ov5670 *ov5670,
+						struct v4l2_subdev_format *fmt)
+{
+	struct v4l2_mbus_framefmt *framefmt = &fmt->format;
+	int dist;
+	int cur_best_fit = 0;
+	int cur_best_fit_dist = -1;
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(supported_modes); i++) {
+		dist = ov5670_get_reso_dist(&supported_modes[i], framefmt);
+		if (cur_best_fit_dist == -1 || dist < cur_best_fit_dist) {
+			cur_best_fit_dist = dist;
+			cur_best_fit = i;
+		}
+	}
+
+	return &supported_modes[cur_best_fit];
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ov5670_update_pad_format(const struct ov5670_mode *mode,
 				     struct v4l2_subdev_format *fmt)
 {
@@ -2219,10 +2305,14 @@ static int ov5670_set_pad_format(struct v4l2_subdev *sd,
 
 	fmt->format.code = MEDIA_BUS_FMT_SGRBG10_1X10;
 
+<<<<<<< HEAD
 	mode = v4l2_find_nearest_size(supported_modes,
 				      ARRAY_SIZE(supported_modes),
 				      width, height,
 				      fmt->format.width, fmt->format.height);
+=======
+	mode = ov5670_find_best_fit(ov5670, fmt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ov5670_update_pad_format(mode, fmt);
 	if (fmt->which == V4L2_SUBDEV_FORMAT_TRY) {
 		*v4l2_subdev_get_try_format(sd, cfg, fmt->pad) = fmt->format;
@@ -2304,6 +2394,11 @@ static int ov5670_start_streaming(struct ov5670 *ov5670)
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	ov5670->streaming = true;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2317,6 +2412,11 @@ static int ov5670_stop_streaming(struct ov5670 *ov5670)
 	if (ret)
 		dev_err(&client->dev, "%s failed to set stream\n", __func__);
 
+<<<<<<< HEAD
+=======
+	ov5670->streaming = false;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Return success even if it was an error, as there is nothing the
 	 * caller can do about it.
 	 */
@@ -2347,7 +2447,10 @@ static int ov5670_set_stream(struct v4l2_subdev *sd, int enable)
 		ret = ov5670_stop_streaming(ov5670);
 		pm_runtime_put(&client->dev);
 	}
+<<<<<<< HEAD
 	ov5670->streaming = enable;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	goto unlock_and_return;
 
 error:
@@ -2492,7 +2595,11 @@ static int ov5670_probe(struct i2c_client *client)
 	}
 
 	/* Async register for subdev */
+<<<<<<< HEAD
 	ret = v4l2_async_register_subdev_sensor_common(&ov5670->sd);
+=======
+	ret = v4l2_async_register_subdev(&ov5670->sd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		err_msg = "v4l2_async_register_subdev() error";
 		goto error_entity_cleanup;

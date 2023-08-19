@@ -1,9 +1,16 @@
 /*
  * Touch Screen driver for EETI's I2C connected touch screen panels
+<<<<<<< HEAD
  *   Copyright (c) 2009,2018 Daniel Mack <daniel@zonque.org>
  *
  * See EETI's software guide for the protocol specification:
  *   http://home.eeti.com.tw/documentation.html
+=======
+ *   Copyright (c) 2009 Daniel Mack <daniel@caiaq.de>
+ *
+ * See EETI's software guide for the protocol specification:
+ *   http://home.eeti.com.tw/web20/eg/guide.htm
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Based on migor_ts.c
  *   Copyright (c) 2008 Magnus Damm
@@ -25,22 +32,45 @@
  */
 
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/kernel.h>
 #include <linux/input.h>
 #include <linux/input/touchscreen.h>
+=======
+#include <linux/moduleparam.h>
+#include <linux/kernel.h>
+#include <linux/input.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/i2c.h>
 #include <linux/timer.h>
 #include <linux/gpio/consumer.h>
+<<<<<<< HEAD
 #include <linux/of.h>
 #include <linux/slab.h>
 #include <asm/unaligned.h>
 
+=======
+#include <linux/slab.h>
+#include <asm/unaligned.h>
+
+static bool flip_x;
+module_param(flip_x, bool, 0644);
+MODULE_PARM_DESC(flip_x, "flip x coordinate");
+
+static bool flip_y;
+module_param(flip_y, bool, 0644);
+MODULE_PARM_DESC(flip_y, "flip y coordinate");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct eeti_ts {
 	struct i2c_client *client;
 	struct input_dev *input;
 	struct gpio_desc *attn_gpio;
+<<<<<<< HEAD
 	struct touchscreen_properties props;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool running;
 };
 
@@ -67,10 +97,24 @@ static void eeti_ts_report_event(struct eeti_ts *eeti, u8 *buf)
 	x >>= res - EETI_TS_BITDEPTH;
 	y >>= res - EETI_TS_BITDEPTH;
 
+<<<<<<< HEAD
 	if (buf[0] & REPORT_BIT_HAS_PRESSURE)
 		input_report_abs(eeti->input, ABS_PRESSURE, buf[5]);
 
 	touchscreen_report_pos(eeti->input, &eeti->props, x, y, false);
+=======
+	if (flip_x)
+		x = EETI_MAXVAL - x;
+
+	if (flip_y)
+		y = EETI_MAXVAL - y;
+
+	if (buf[0] & REPORT_BIT_HAS_PRESSURE)
+		input_report_abs(eeti->input, ABS_PRESSURE, buf[5]);
+
+	input_report_abs(eeti->input, ABS_X, x);
+	input_report_abs(eeti->input, ABS_Y, y);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_report_key(eeti->input, BTN_TOUCH, buf[0] & REPORT_BIT_PRESSED);
 	input_sync(eeti->input);
 }
@@ -165,8 +209,11 @@ static int eeti_ts_probe(struct i2c_client *client,
 	input_set_abs_params(input, ABS_Y, 0, EETI_MAXVAL, 0, 0);
 	input_set_abs_params(input, ABS_PRESSURE, 0, 0xff, 0, 0);
 
+<<<<<<< HEAD
 	touchscreen_parse_properties(input, false, &eeti->props);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input->name = client->name;
 	input->id.bustype = BUS_I2C;
 	input->open = eeti_ts_open;
@@ -251,6 +298,7 @@ static const struct i2c_device_id eeti_ts_id[] = {
 };
 MODULE_DEVICE_TABLE(i2c, eeti_ts_id);
 
+<<<<<<< HEAD
 #ifdef CONFIG_OF
 static const struct of_device_id of_eeti_ts_match[] = {
 	{ .compatible = "eeti,exc3000-i2c", },
@@ -258,11 +306,16 @@ static const struct of_device_id of_eeti_ts_match[] = {
 };
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct i2c_driver eeti_ts_driver = {
 	.driver = {
 		.name = "eeti_ts",
 		.pm = &eeti_ts_pm,
+<<<<<<< HEAD
 		.of_match_table = of_match_ptr(of_eeti_ts_match),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe = eeti_ts_probe,
 	.id_table = eeti_ts_id,
@@ -271,5 +324,9 @@ static struct i2c_driver eeti_ts_driver = {
 module_i2c_driver(eeti_ts_driver);
 
 MODULE_DESCRIPTION("EETI Touchscreen driver");
+<<<<<<< HEAD
 MODULE_AUTHOR("Daniel Mack <daniel@zonque.org>");
+=======
+MODULE_AUTHOR("Daniel Mack <daniel@caiaq.de>");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

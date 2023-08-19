@@ -1,19 +1,38 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 /dts-v1/;
 #include "aspeed-g5.dtsi"
 #include <dt-bindings/gpio/aspeed-gpio.h>
+=======
+// SPDX-License-Identifier: GPL-2.0
+/dts-v1/;
+
+#include "aspeed-g5.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "Romulus BMC";
 	compatible = "ibm,romulus-bmc", "aspeed,ast2500";
 
+<<<<<<< HEAD
+=======
+	aliases {
+		serial4 = &uart5;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chosen {
 		stdout-path = &uart5;
 		bootargs = "console=ttyS4,115200 earlyprintk";
 	};
 
+<<<<<<< HEAD
 	memory@80000000 {
 		reg = <0x80000000 0x20000000>;
+=======
+	memory {
+		reg = <0x80000000 0x40000000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	reserved-memory {
@@ -21,6 +40,7 @@
 		#size-cells = <1>;
 		ranges;
 
+<<<<<<< HEAD
 		vga_memory: framebuffer@9f000000 {
 			no-map;
 			reg = <0x9f000000 0x01000000>; /* 16M */
@@ -74,6 +94,11 @@
 			label = "id-button";
 			gpios = <&gpio ASPEED_GPIO(Q, 7) GPIO_ACTIVE_LOW>;
 			linux,code = <ASPEED_GPIO(Q, 7)>;
+=======
+		vga_memory: framebuffer@bf000000 {
+			no-map;
+			reg = <0xbf000000 0x01000000>; /* 16M */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };
@@ -84,7 +109,10 @@
 		status = "okay";
 		m25p,fast-read;
 		label = "bmc";
+<<<<<<< HEAD
 #include "openbmc-flash-layout.dtsi"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -100,12 +128,15 @@
 	};
 };
 
+<<<<<<< HEAD
 &lpc_ctrl {
 	status = "okay";
 	memory-region = <&flash_memory>;
 	flash = <&spi1>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart1 {
 	/* Rear RS-232 connector */
 	status = "okay";
@@ -133,6 +164,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_rmii1_default>;
 };
+<<<<<<< HEAD
 
 &i2c1 {
 	status = "okay";
@@ -274,3 +306,5 @@
 &ibt {
 	status = "okay";
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

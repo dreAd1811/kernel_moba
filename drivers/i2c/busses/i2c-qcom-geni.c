@@ -1,6 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+=======
+/*
+ * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -19,8 +34,12 @@
 #include <linux/ipc_logging.h>
 #include <linux/dmaengine.h>
 #include <linux/msm_gpi.h>
+<<<<<<< HEAD
 #include <linux/ioctl.h>
 #include <linux/pinctrl/consumer.h>
+=======
+#include <soc/qcom/boot_stats.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 #define SE_I2C_TX_TRANS_LEN		(0x26C)
@@ -83,6 +102,22 @@ enum i2c_se_mode {
 	GSI_ONLY,
 };
 
+<<<<<<< HEAD
+=======
+struct geni_i2c_clk_fld {
+	u32	clk_freq_out;
+	u8	clk_div;
+	u8	t_high;
+	u8	t_low;
+	u8	t_cycle;
+};
+
+struct geni_i2c_ssr {
+	struct mutex ssr_lock;
+	bool is_ssr_down;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dbg_buf_ctxt {
 	void *virt_buf;
 	void *map_buf;
@@ -103,11 +138,16 @@ struct geni_i2c_dev {
 	int cur_rd;
 	struct device *wrapper_dev;
 	void *ipcl;
+<<<<<<< HEAD
 	int clk_fld_idx;
 	struct dma_chan *tx_c;
 	struct dma_chan *rx_c;
 	struct msm_gpi_tre lock_t;
 	struct msm_gpi_tre unlock_t;
+=======
+	struct dma_chan *tx_c;
+	struct dma_chan *rx_c;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct msm_gpi_tre cfg0_t;
 	struct msm_gpi_tre go_t;
 	struct msm_gpi_tre tx_t;
@@ -125,11 +165,22 @@ struct geni_i2c_dev {
 	struct msm_gpi_dma_async_tx_cb_param rx_cb;
 	enum i2c_se_mode se_mode;
 	bool cmd_done;
+<<<<<<< HEAD
 	bool is_shared;
+=======
+	struct geni_i2c_clk_fld geni_i2c_clk_param;
+	struct geni_i2c_ssr i2c_ssr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 dbg_num;
 	struct dbg_buf_ctxt *dbg_buf_ptr;
 };
 
+<<<<<<< HEAD
+=======
+static void ssr_i2c_force_suspend(struct device *dev);
+static void ssr_i2c_force_resume(struct device *dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct geni_i2c_dev *gi2c_dev_dbg[MAX_SE];
 static int arr_idx;
 
@@ -155,6 +206,7 @@ static struct geni_i2c_err_log gi2c_log[] = {
 	[GENI_TIMEOUT] = {-ETIMEDOUT, "I2C TXN timed out"},
 };
 
+<<<<<<< HEAD
 struct geni_i2c_clk_fld {
 	u32	clk_freq_out;
 	u8	clk_div;
@@ -163,6 +215,8 @@ struct geni_i2c_clk_fld {
 	u8	t_cycle;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct geni_i2c_clk_fld geni_i2c_clk_map[] = {
 	{KHz(100), 7, 10, 11, 26},
 	{KHz(400), 2,  5, 12, 24},
@@ -172,12 +226,16 @@ static struct geni_i2c_clk_fld geni_i2c_clk_map[] = {
 static int geni_i2c_clk_map_idx(struct geni_i2c_dev *gi2c)
 {
 	int i;
+<<<<<<< HEAD
 	int ret = 0;
 	bool clk_map_present = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct geni_i2c_clk_fld *itr = geni_i2c_clk_map;
 
 	for (i = 0; i < ARRAY_SIZE(geni_i2c_clk_map); i++, itr++) {
 		if (itr->clk_freq_out == gi2c->i2c_rsc.clk_freq_out) {
+<<<<<<< HEAD
 			clk_map_present = true;
 			break;
 		}
@@ -189,10 +247,24 @@ static int geni_i2c_clk_map_idx(struct geni_i2c_dev *gi2c)
 		ret = -EINVAL;
 
 	return ret;
+=======
+			gi2c->geni_i2c_clk_param.clk_freq_out =
+							itr->clk_freq_out;
+			gi2c->geni_i2c_clk_param.clk_div = itr->clk_div;
+			gi2c->geni_i2c_clk_param.t_high = itr->t_high;
+			gi2c->geni_i2c_clk_param.t_low = itr->t_low;
+			gi2c->geni_i2c_clk_param.t_cycle = itr->t_cycle;
+			return 0;
+		}
+	}
+
+	return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void qcom_geni_i2c_conf(struct geni_i2c_dev *gi2c, int dfs)
 {
+<<<<<<< HEAD
 	struct geni_i2c_clk_fld *itr = geni_i2c_clk_map + gi2c->clk_fld_idx;
 
 	geni_write_reg(dfs, gi2c->base, SE_GENI_CLK_SEL);
@@ -200,6 +272,16 @@ static inline void qcom_geni_i2c_conf(struct geni_i2c_dev *gi2c, int dfs)
 	geni_write_reg((itr->clk_div << 4) | 1, gi2c->base, GENI_SER_M_CLK_CFG);
 	geni_write_reg(((itr->t_high << 20) | (itr->t_low << 10) |
 			itr->t_cycle), gi2c->base, SE_I2C_SCL_COUNTERS);
+=======
+	geni_write_reg(dfs, gi2c->base, SE_GENI_CLK_SEL);
+
+	geni_write_reg((gi2c->geni_i2c_clk_param.clk_div << 4) | 1,
+				gi2c->base, GENI_SER_M_CLK_CFG);
+	geni_write_reg(((gi2c->geni_i2c_clk_param.t_high << 20) |
+			(gi2c->geni_i2c_clk_param.t_low << 10) |
+			gi2c->geni_i2c_clk_param.t_cycle), gi2c->base,
+					SE_I2C_SCL_COUNTERS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Ensure Clk config completes before return.
@@ -209,6 +291,7 @@ static inline void qcom_geni_i2c_conf(struct geni_i2c_dev *gi2c, int dfs)
 
 static inline void qcom_geni_i2c_calc_timeout(struct geni_i2c_dev *gi2c)
 {
+<<<<<<< HEAD
 
 	struct geni_i2c_clk_fld *clk_itr = geni_i2c_clk_map + gi2c->clk_fld_idx;
 	size_t bit_cnt = gi2c->cur->len*9;
@@ -218,6 +301,14 @@ static inline void qcom_geni_i2c_calc_timeout(struct geni_i2c_dev *gi2c)
 
 	gi2c->xfer_timeout = usecs_to_jiffies(xfer_max_usec);
 
+=======
+	size_t bit_usec = (gi2c->cur->len * 9 * USEC_PER_SEC)/
+				gi2c->geni_i2c_clk_param.clk_freq_out;
+	size_t xfer_max_usec = (bit_usec * I2C_TIMEOUT_SAFETY_COEFFICIENT) +
+							I2C_TIMEOUT_MIN_USEC;
+
+	gi2c->xfer_timeout = usecs_to_jiffies(xfer_max_usec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void geni_i2c_err(struct geni_i2c_dev *gi2c, int err)
@@ -239,6 +330,7 @@ static irqreturn_t geni_i2c_irq(int irq, void *dev)
 {
 	struct geni_i2c_dev *gi2c = dev;
 	int i, j;
+<<<<<<< HEAD
 	u32 m_stat = readl_relaxed(gi2c->base + SE_GENI_M_IRQ_STATUS);
 	u32 rx_st = readl_relaxed(gi2c->base + SE_GENI_RX_FIFO_STATUS);
 	u32 dm_tx_st = readl_relaxed(gi2c->base + SE_DMA_TX_IRQ_STAT);
@@ -246,6 +338,25 @@ static irqreturn_t geni_i2c_irq(int irq, void *dev)
 	u32 dma = readl_relaxed(gi2c->base + SE_GENI_DMA_MODE_EN);
 	struct i2c_msg *cur = gi2c->cur;
 
+=======
+	u32 m_stat, rx_st, dm_tx_st, dm_rx_st, dma;
+	struct i2c_msg *cur = gi2c->cur;
+
+	if (gi2c->i2c_ssr.is_ssr_down) {
+		gi2c->cmd_done = false;
+		complete(&gi2c->xfer);
+		GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
+			"%s: SSR down\n", __func__);
+		return IRQ_HANDLED;
+	}
+
+	m_stat = readl_relaxed(gi2c->base + SE_GENI_M_IRQ_STATUS);
+	rx_st = readl_relaxed(gi2c->base + SE_GENI_RX_FIFO_STATUS);
+	dm_tx_st = readl_relaxed(gi2c->base + SE_DMA_TX_IRQ_STAT);
+	dm_rx_st = readl_relaxed(gi2c->base + SE_DMA_RX_IRQ_STAT);
+	dma = readl_relaxed(gi2c->base + SE_GENI_DMA_MODE_EN);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cur) {
 		geni_se_dump_dbg_regs(&gi2c->i2c_rsc, gi2c->base, gi2c->ipcl);
 		GENI_SE_ERR(gi2c->ipcl, false, gi2c->dev, "Spurious irq\n");
@@ -287,6 +398,12 @@ static irqreturn_t geni_i2c_irq(int irq, void *dev)
 			u32 temp;
 			int p;
 
+<<<<<<< HEAD
+=======
+			if (gi2c->i2c_ssr.is_ssr_down)
+				break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			temp = readl_relaxed(gi2c->base + SE_GENI_RX_FIFOn);
 			for (i = gi2c->cur_rd, p = 0; (i < cur->len && p < 4);
 				i++, p++)
@@ -307,6 +424,13 @@ static irqreturn_t geni_i2c_irq(int irq, void *dev)
 			for (i = gi2c->cur_wr, p = 0; (i < cur->len && p < 4);
 				i++, p++)
 				temp |= (((u32)(cur->buf[i]) << (p * 8)));
+<<<<<<< HEAD
+=======
+
+			if (gi2c->i2c_ssr.is_ssr_down)
+				break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			writel_relaxed(temp, gi2c->base + SE_GENI_TX_FIFOn);
 			gi2c->cur_wr = i;
 			dev_dbg(gi2c->dev, "FIFO i:%d,wrote 0x%x\n", i, temp);
@@ -319,6 +443,17 @@ static irqreturn_t geni_i2c_irq(int irq, void *dev)
 		}
 	}
 irqret:
+<<<<<<< HEAD
+=======
+	if (gi2c->i2c_ssr.is_ssr_down) {
+		gi2c->cmd_done = false;
+		complete(&gi2c->xfer);
+		GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
+				"%s: SSR down\n", __func__);
+		return IRQ_HANDLED;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (m_stat)
 		writel_relaxed(m_stat, gi2c->base + SE_GENI_M_IRQ_CLEAR);
 
@@ -360,6 +495,10 @@ static void gi2c_ev_cb(struct dma_chan *ch, struct msm_gpi_cb const *cb_str,
 	case MSM_GPI_QUP_MAX_EVENT:
 		/* fall through to stall impacted channel */
 	case MSM_GPI_QUP_CH_ERROR:
+<<<<<<< HEAD
+=======
+	case MSM_GPI_QUP_FW_ERROR:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MSM_GPI_QUP_PENDING_EVENT:
 	case MSM_GPI_QUP_EOT_DESC_MISMATCH:
 		break;
@@ -377,9 +516,15 @@ static void gi2c_ev_cb(struct dma_chan *ch, struct msm_gpi_cb const *cb_str,
 	}
 	if (cb_str->cb_event != MSM_GPI_QUP_NOTIFY)
 		GENI_SE_ERR(gi2c->ipcl, true, gi2c->dev,
+<<<<<<< HEAD
 			"GSI QN err:0x%x, status:0x%x, err:%d slv_addr: 0x%x R/W: %d\n",
 			cb_str->error_log.error_code, m_stat,
 			cb_str->cb_event, gi2c->cur->addr, gi2c->cur->flags);
+=======
+			"GSI QN err:0x%x, status:0x%x, err:%d\n",
+			cb_str->error_log.error_code, m_stat,
+			cb_str->cb_event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gi2c_gsi_cb_err(struct msm_gpi_dma_async_tx_cb_param *cb,
@@ -405,8 +550,15 @@ static void gi2c_gsi_tx_cb(void *ptr)
 	struct msm_gpi_dma_async_tx_cb_param *tx_cb = ptr;
 	struct geni_i2c_dev *gi2c = tx_cb->userdata;
 
+<<<<<<< HEAD
 	gi2c_gsi_cb_err(tx_cb, "TX");
 	complete(&gi2c->xfer);
+=======
+	if (!(gi2c->cur->flags & I2C_M_RD)) {
+		gi2c_gsi_cb_err(tx_cb, "TX");
+		complete(&gi2c->xfer);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gi2c_gsi_rx_cb(void *ptr)
@@ -426,6 +578,18 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 	struct geni_i2c_dev *gi2c = i2c_get_adapdata(adap);
 	int i, ret = 0, timeout = 0;
 
+<<<<<<< HEAD
+=======
+	ret = pinctrl_select_state(gi2c->i2c_rsc.geni_pinctrl,
+				gi2c->i2c_rsc.geni_gpio_active);
+	if (ret) {
+		GENI_SE_ERR(gi2c->ipcl, true, gi2c->dev,
+			"%s: Error %d pinctrl_select_state active\n",
+			__func__, ret);
+		return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gi2c->tx_c) {
 		gi2c->tx_c = dma_request_slave_channel(gi2c->dev, "tx");
 		if (!gi2c->tx_c) {
@@ -466,6 +630,7 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 		}
 	}
 
+<<<<<<< HEAD
 	if (gi2c->is_shared) {
 		struct msm_gpi_tre *lock_t = &gi2c->lock_t;
 		struct msm_gpi_tre *unlock_t = &gi2c->unlock_t;
@@ -486,16 +651,28 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 	if (!gi2c->cfg_sent) {
 		struct geni_i2c_clk_fld *itr = geni_i2c_clk_map +
 							gi2c->clk_fld_idx;
+=======
+	if (!gi2c->cfg_sent) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct msm_gpi_tre *cfg0 = &gi2c->cfg0_t;
 
 		/* config0 */
 		cfg0->dword[0] = MSM_GPI_I2C_CONFIG0_TRE_DWORD0(I2C_PACK_EN,
+<<<<<<< HEAD
 								itr->t_cycle,
 								itr->t_high,
 								itr->t_low);
 		cfg0->dword[1] = MSM_GPI_I2C_CONFIG0_TRE_DWORD1(0, 0);
 		cfg0->dword[2] = MSM_GPI_I2C_CONFIG0_TRE_DWORD2(0,
 								itr->clk_div);
+=======
+					gi2c->geni_i2c_clk_param.t_cycle,
+					gi2c->geni_i2c_clk_param.t_high,
+					gi2c->geni_i2c_clk_param.t_low);
+		cfg0->dword[1] = MSM_GPI_I2C_CONFIG0_TRE_DWORD1(0, 0);
+		cfg0->dword[2] = MSM_GPI_I2C_CONFIG0_TRE_DWORD2(0,
+					gi2c->geni_i2c_clk_param.clk_div);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cfg0->dword[3] = MSM_GPI_I2C_CONFIG0_TRE_DWORD3(0, 0, 0, 0, 1);
 
 		gi2c->tx_cb.userdata = gi2c;
@@ -506,12 +683,16 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 		u8 op = (msgs[i].flags & I2C_M_RD) ? 2 : 1;
 		int segs = 3 - op;
 		int index = 0;
+<<<<<<< HEAD
 		u8 *dma_buf = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int stretch = (i < (num - 1));
 		dma_cookie_t tx_cookie, rx_cookie;
 		struct msm_gpi_tre *go_t = &gi2c->go_t;
 		struct device *rx_dev = gi2c->wrapper_dev;
 		struct device *tx_dev = gi2c->wrapper_dev;
+<<<<<<< HEAD
 
 		gi2c->cur = &msgs[i];
 
@@ -543,6 +724,21 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 			sg_set_buf(&gi2c->tx_sg[index++], &gi2c->cfg0_t,
 						sizeof(gi2c->cfg0_t));
 			gi2c->cfg_sent = 1;
+=======
+		reinit_completion(&gi2c->xfer);
+
+		gi2c->cur = &msgs[i];
+		qcom_geni_i2c_calc_timeout(gi2c);
+		if (!gi2c->cfg_sent) {
+			segs++;
+			sg_init_table(gi2c->tx_sg, segs);
+			sg_set_buf(gi2c->tx_sg, &gi2c->cfg0_t,
+						sizeof(gi2c->cfg0_t));
+			gi2c->cfg_sent = 1;
+			index++;
+		} else {
+			sg_init_table(gi2c->tx_sg, segs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		go_t->dword[0] = MSM_GPI_I2C_GO_TRE_DWORD0((stretch << 2),
@@ -551,6 +747,7 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 
 		if (msgs[i].flags & I2C_M_RD) {
 			go_t->dword[2] = MSM_GPI_I2C_GO_TRE_DWORD2(msgs[i].len);
+<<<<<<< HEAD
 			/*
 			 * For Rx Go tre: Set ieob for non-shared se and for all
 			 * but last transfer in shared se
@@ -566,6 +763,14 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 			go_t->dword[2] = MSM_GPI_I2C_GO_TRE_DWORD2(0);
 			go_t->dword[3] = MSM_GPI_I2C_GO_TRE_DWORD3(0, 0, 0, 0,
 								1);
+=======
+			go_t->dword[3] = MSM_GPI_I2C_GO_TRE_DWORD3(1, 0, 0, 1,
+									0);
+		} else {
+			go_t->dword[2] = MSM_GPI_I2C_GO_TRE_DWORD2(0);
+			go_t->dword[3] = MSM_GPI_I2C_GO_TRE_DWORD3(0, 0, 0, 0,
+									1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		sg_set_buf(&gi2c->tx_sg[index++], &gi2c->go_t,
@@ -576,19 +781,30 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 				"msg[%d].len:%d R\n", i, gi2c->cur->len);
 			sg_init_table(&gi2c->rx_sg, 1);
 			ret = geni_se_iommu_map_buf(rx_dev, &gi2c->rx_ph,
+<<<<<<< HEAD
 						dma_buf, msgs[i].len,
+=======
+						msgs[i].buf, msgs[i].len,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						DMA_FROM_DEVICE);
 			if (ret) {
 				GENI_SE_ERR(gi2c->ipcl, true, gi2c->dev,
 					    "geni_se_iommu_map_buf for rx failed :%d\n",
 					    ret);
+<<<<<<< HEAD
 				i2c_put_dma_safe_msg_buf(dma_buf, &msgs[i],
 								false);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto geni_i2c_gsi_xfer_out;
 
 			} else if (gi2c->dbg_buf_ptr) {
 				gi2c->dbg_buf_ptr[i].virt_buf =
+<<<<<<< HEAD
 							(void *)dma_buf;
+=======
+							(void *)msgs[i].buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gi2c->dbg_buf_ptr[i].map_buf =
 							(void *)&gi2c->rx_ph;
 			}
@@ -598,7 +814,10 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 				MSM_GPI_DMA_W_BUFFER_TRE_DWORD1(gi2c->rx_ph);
 			gi2c->rx_t.dword[2] =
 				MSM_GPI_DMA_W_BUFFER_TRE_DWORD2(msgs[i].len);
+<<<<<<< HEAD
 			/* Set ieot for all Rx/Tx DMA tres */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gi2c->rx_t.dword[3] =
 				MSM_GPI_DMA_W_BUFFER_TRE_DWORD3(0, 0, 1, 0, 0);
 
@@ -625,19 +844,30 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 			GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
 				"msg[%d].len:%d W\n", i, gi2c->cur->len);
 			ret = geni_se_iommu_map_buf(tx_dev, &gi2c->tx_ph,
+<<<<<<< HEAD
 						dma_buf, msgs[i].len,
+=======
+						msgs[i].buf, msgs[i].len,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						DMA_TO_DEVICE);
 			if (ret) {
 				GENI_SE_ERR(gi2c->ipcl, true, gi2c->dev,
 					    "geni_se_iommu_map_buf for tx failed :%d\n",
 					    ret);
+<<<<<<< HEAD
 				i2c_put_dma_safe_msg_buf(dma_buf, &msgs[i],
 								false);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto geni_i2c_gsi_xfer_out;
 
 			} else if (gi2c->dbg_buf_ptr) {
 				gi2c->dbg_buf_ptr[i].virt_buf =
+<<<<<<< HEAD
 							(void *)dma_buf;
+=======
+							(void *)msgs[i].buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gi2c->dbg_buf_ptr[i].map_buf =
 							(void *)&gi2c->tx_ph;
 			}
@@ -648,6 +878,7 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 				MSM_GPI_DMA_W_BUFFER_TRE_DWORD1(gi2c->tx_ph);
 			gi2c->tx_t.dword[2] =
 				MSM_GPI_DMA_W_BUFFER_TRE_DWORD2(msgs[i].len);
+<<<<<<< HEAD
 			if (gi2c->is_shared && i == num-1)
 				/*
 				 * For Tx: unlock tre is send for last transfer
@@ -657,18 +888,24 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 				MSM_GPI_DMA_W_BUFFER_TRE_DWORD3(0, 0, 1, 0, 1);
 			else
 				gi2c->tx_t.dword[3] =
+=======
+			gi2c->tx_t.dword[3] =
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				MSM_GPI_DMA_W_BUFFER_TRE_DWORD3(0, 0, 1, 0, 0);
 
 			sg_set_buf(&gi2c->tx_sg[index++], &gi2c->tx_t,
 							  sizeof(gi2c->tx_t));
 		}
 
+<<<<<<< HEAD
 		if (gi2c->is_shared && i == num-1) {
 			/* Send unlock tre at the end of last transfer */
 			sg_set_buf(&gi2c->tx_sg[index++],
 				&gi2c->unlock_t, sizeof(gi2c->unlock_t));
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gi2c->tx_desc = dmaengine_prep_slave_sg(gi2c->tx_c, gi2c->tx_sg,
 						segs, DMA_MEM_TO_DEV,
 						(DMA_PREP_INTERRUPT |
@@ -688,6 +925,10 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 
 		timeout = wait_for_completion_timeout(&gi2c->xfer,
 						gi2c->xfer_timeout);
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!timeout) {
 			GENI_SE_ERR(gi2c->ipcl, true, gi2c->dev,
 				"I2C gsi xfer timeout:%u flags:%d addr:0x%x\n",
@@ -698,6 +939,7 @@ static int geni_i2c_gsi_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
 			gi2c->err = -ETIMEDOUT;
 		}
 geni_i2c_err_prep_sg:
+<<<<<<< HEAD
 		if (gi2c->err) {
 			dmaengine_terminate_all(gi2c->tx_c);
 			gi2c->cfg_sent = 0;
@@ -706,20 +948,36 @@ geni_i2c_err_prep_sg:
 			/* Resend cfg tre for every new message on shared se */
 			gi2c->cfg_sent = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (msgs[i].flags & I2C_M_RD)
 			geni_se_iommu_unmap_buf(rx_dev, &gi2c->rx_ph,
 				msgs[i].len, DMA_FROM_DEVICE);
 		else
 			geni_se_iommu_unmap_buf(tx_dev, &gi2c->tx_ph,
 				msgs[i].len, DMA_TO_DEVICE);
+<<<<<<< HEAD
 		i2c_put_dma_safe_msg_buf(dma_buf, &msgs[i], !gi2c->err);
 		if (gi2c->err)
 			goto geni_i2c_gsi_xfer_out;
+=======
+
+		if (gi2c->err) {
+			dmaengine_terminate_all(gi2c->tx_c);
+			gi2c->cfg_sent = 0;
+			goto geni_i2c_gsi_xfer_out;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 geni_i2c_gsi_xfer_out:
 	if (!ret && gi2c->err)
 		ret = gi2c->err;
+<<<<<<< HEAD
+=======
+	pinctrl_select_state(gi2c->i2c_rsc.geni_pinctrl,
+				gi2c->i2c_rsc.geni_gpio_sleep);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -731,7 +989,10 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 	int i, ret = 0, timeout = 0;
 
 	gi2c->err = 0;
+<<<<<<< HEAD
 	reinit_completion(&gi2c->xfer);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Client to respect system suspend */
 	if (!pm_runtime_enabled(gi2c->dev)) {
@@ -740,6 +1001,17 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 		return -EACCES;
 	}
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&gi2c->i2c_ssr.ssr_lock);
+	if (gi2c->i2c_ssr.is_ssr_down) {
+		GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
+			"%s: SSR Down\n", __func__);
+		mutex_unlock(&gi2c->i2c_ssr.ssr_lock);
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = pm_runtime_get_sync(gi2c->dev);
 	if (ret < 0) {
 		GENI_SE_ERR(gi2c->ipcl, true, gi2c->dev,
@@ -747,6 +1019,10 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 		pm_runtime_put_noidle(gi2c->dev);
 		/* Set device in suspended since resume failed */
 		pm_runtime_set_suspended(gi2c->dev);
+<<<<<<< HEAD
+=======
+		mutex_unlock(&gi2c->i2c_ssr.ssr_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -764,16 +1040,22 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 	if (gi2c->se_mode == GSI_ONLY) {
 		ret = geni_i2c_gsi_xfer(adap, msgs, num);
 		goto geni_i2c_txn_ret;
+<<<<<<< HEAD
 	} else {
 		/* Don't set shared flag in non-GSI mode */
 		gi2c->is_shared = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < num; i++) {
 		int stretch = (i < (num - 1));
 		u32 m_param = 0;
 		u32 m_cmd = 0;
+<<<<<<< HEAD
 		u8 *dma_buf = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma_addr_t tx_dma = 0;
 		dma_addr_t rx_dma = 0;
 		enum se_xfer_mode mode = FIFO_MODE;
@@ -785,13 +1067,17 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 		gi2c->cur = &msgs[i];
 		qcom_geni_i2c_calc_timeout(gi2c);
 		mode = msgs[i].len > 32 ? SE_DMA : FIFO_MODE;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = geni_se_select_mode(gi2c->base, mode);
 		if (ret) {
 			dev_err(gi2c->dev, "%s: Error mode init %d:%d:%d\n",
 				__func__, mode, i, msgs[i].len);
 			break;
 		}
+<<<<<<< HEAD
 
 		if (mode == SE_DMA) {
 			dma_buf = i2c_get_dma_safe_msg_buf(&msgs[i], 1);
@@ -801,6 +1087,8 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 			}
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (msgs[i].flags & I2C_M_RD) {
 			GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
 				"msgs[%d].len:%d R\n", i, msgs[i].len);
@@ -810,19 +1098,31 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 			geni_setup_m_cmd(gi2c->base, m_cmd, m_param);
 			if (mode == SE_DMA) {
 				ret = geni_se_rx_dma_prep(gi2c->wrapper_dev,
+<<<<<<< HEAD
 							gi2c->base, dma_buf,
 							msgs[i].len, &rx_dma);
 				if (ret) {
 					i2c_put_dma_safe_msg_buf(dma_buf,
 							&msgs[i], false);
+=======
+							gi2c->base, msgs[i].buf,
+							msgs[i].len, &rx_dma);
+				if (ret) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					mode = FIFO_MODE;
 					ret = geni_se_select_mode(gi2c->base,
 								  mode);
 				} else if (gi2c->dbg_buf_ptr) {
 					gi2c->dbg_buf_ptr[i].virt_buf =
+<<<<<<< HEAD
 								(void *)dma_buf;
 					gi2c->dbg_buf_ptr[i].map_buf =
 								(void *)&rx_dma;
+=======
+							(void *)msgs[i].buf;
+					gi2c->dbg_buf_ptr[i].map_buf =
+							(void *)&rx_dma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				}
 			}
 		} else {
@@ -834,19 +1134,31 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 			geni_setup_m_cmd(gi2c->base, m_cmd, m_param);
 			if (mode == SE_DMA) {
 				ret = geni_se_tx_dma_prep(gi2c->wrapper_dev,
+<<<<<<< HEAD
 							gi2c->base, dma_buf,
 							msgs[i].len, &tx_dma);
 				if (ret) {
 					i2c_put_dma_safe_msg_buf(dma_buf,
 							&msgs[i], false);
+=======
+							gi2c->base, msgs[i].buf,
+							msgs[i].len, &tx_dma);
+				if (ret) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					mode = FIFO_MODE;
 					ret = geni_se_select_mode(gi2c->base,
 								  mode);
 				} else if (gi2c->dbg_buf_ptr) {
 					gi2c->dbg_buf_ptr[i].virt_buf =
+<<<<<<< HEAD
 								(void *)dma_buf;
 					gi2c->dbg_buf_ptr[i].map_buf =
 								(void *)&tx_dma;
+=======
+							(void *)msgs[i].buf;
+					gi2c->dbg_buf_ptr[i].map_buf =
+							(void *)&tx_dma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				}
 			}
 			if (mode == FIFO_MODE) /* Get FIFO IRQ */
@@ -855,8 +1167,21 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 		}
 		/* Ensure FIFO write go through before waiting for Done evet */
 		mb();
+<<<<<<< HEAD
 		timeout = wait_for_completion_timeout(&gi2c->xfer,
 						gi2c->xfer_timeout);
+=======
+		mutex_unlock(&gi2c->i2c_ssr.ssr_lock);
+		timeout = wait_for_completion_timeout(&gi2c->xfer,
+						gi2c->xfer_timeout);
+		mutex_lock(&gi2c->i2c_ssr.ssr_lock);
+		if (gi2c->i2c_ssr.is_ssr_down) {
+			ret = -EINVAL;
+			GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
+				"%s: SSR Down\n", __func__);
+			goto geni_i2c_txn_ret;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!timeout) {
 			GENI_SE_ERR(gi2c->ipcl, true, gi2c->dev,
 				"I2C xfer timeout: %d\n", gi2c->xfer_timeout);
@@ -866,14 +1191,35 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 		if (gi2c->err) {
 			reinit_completion(&gi2c->xfer);
 			geni_cancel_m_cmd(gi2c->base);
+<<<<<<< HEAD
 			timeout = wait_for_completion_timeout(&gi2c->xfer, HZ);
+=======
+			mutex_unlock(&gi2c->i2c_ssr.ssr_lock);
+			timeout = wait_for_completion_timeout(&gi2c->xfer, HZ);
+			mutex_lock(&gi2c->i2c_ssr.ssr_lock);
+			if (gi2c->i2c_ssr.is_ssr_down) {
+				ret = -EINVAL;
+				GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
+					"%s: SSR Down\n", __func__);
+				goto geni_i2c_txn_ret;
+			}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!timeout) {
 				GENI_SE_ERR(gi2c->ipcl, true, gi2c->dev,
 					"Abort\n");
 				geni_abort_m_cmd(gi2c->base);
 			}
 		}
+<<<<<<< HEAD
 
+=======
+		gi2c->cur_wr = 0;
+		gi2c->cur_rd = 0;
+
+		gi2c->cur_wr = 0;
+		gi2c->cur_rd = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mode == SE_DMA) {
 			if (gi2c->err) {
 				reinit_completion(&gi2c->xfer);
@@ -889,7 +1235,10 @@ static int geni_i2c_xfer(struct i2c_adapter *adap,
 					      msgs[i].len);
 			geni_se_tx_dma_unprep(gi2c->wrapper_dev, tx_dma,
 					      msgs[i].len);
+<<<<<<< HEAD
 			i2c_put_dma_safe_msg_buf(dma_buf, &msgs[i], !gi2c->err);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		ret = gi2c->err;
@@ -905,12 +1254,19 @@ geni_i2c_txn_ret:
 
 	pm_runtime_mark_last_busy(gi2c->dev);
 	pm_runtime_put_autosuspend(gi2c->dev);
+<<<<<<< HEAD
 	gi2c->cur_wr = 0;
 	gi2c->cur_rd = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gi2c->cur = NULL;
 	gi2c->err = 0;
 	GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
 			"i2c txn ret:%d\n", ret);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&gi2c->i2c_ssr.ssr_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -931,6 +1287,11 @@ static int geni_i2c_probe(struct platform_device *pdev)
 	struct platform_device *wrapper_pdev;
 	struct device_node *wrapper_ph_node;
 	int ret;
+<<<<<<< HEAD
+=======
+	char boot_marker[40];
+	u32 geni_i2c_clk_map_dt[5];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gi2c = devm_kzalloc(&pdev->dev, sizeof(*gi2c), GFP_KERNEL);
 	if (!gi2c)
@@ -941,6 +1302,12 @@ static int geni_i2c_probe(struct platform_device *pdev)
 		gi2c_dev_dbg[arr_idx] = gi2c;
 
 	gi2c->dev = &pdev->dev;
+<<<<<<< HEAD
+=======
+	snprintf(boot_marker, sizeof(boot_marker),
+				"M - DRIVER GENI_I2C Init");
+	place_marker(boot_marker);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!res)
@@ -1016,6 +1383,7 @@ static int geni_i2c_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (of_property_read_bool(pdev->dev.of_node, "qcom,shared")) {
 		gi2c->is_shared = true;
 		dev_info(&pdev->dev, "Multi-EE usecase\n");
@@ -1027,6 +1395,32 @@ static int geni_i2c_probe(struct platform_device *pdev)
 			"Bus frequency not specified, default to 400KHz.\n");
 		gi2c->i2c_rsc.clk_freq_out = KHz(400);
 	}
+=======
+	if (of_property_read_u32_array(pdev->dev.of_node, "qcom,clk-cfg",
+		geni_i2c_clk_map_dt, 5)) {
+		if (of_property_read_u32(pdev->dev.of_node, "qcom,clk-freq-out",
+				&gi2c->i2c_rsc.clk_freq_out))
+			gi2c->i2c_rsc.clk_freq_out = KHz(400);
+
+		ret = geni_i2c_clk_map_idx(gi2c);
+		if (ret) {
+			dev_err(gi2c->dev, "Invalid clk frequency %d KHz: %d\n",
+				gi2c->i2c_rsc.clk_freq_out, ret);
+			return ret;
+		}
+	} else {
+		gi2c->geni_i2c_clk_param.clk_freq_out = geni_i2c_clk_map_dt[0];
+		gi2c->geni_i2c_clk_param.clk_div = (u8)geni_i2c_clk_map_dt[1];
+		gi2c->geni_i2c_clk_param.t_high = (u8)geni_i2c_clk_map_dt[2];
+		gi2c->geni_i2c_clk_param.t_low = (u8)geni_i2c_clk_map_dt[3];
+		gi2c->geni_i2c_clk_param.t_cycle = (u8)geni_i2c_clk_map_dt[4];
+		gi2c->i2c_rsc.clk_freq_out =
+					gi2c->geni_i2c_clk_param.clk_freq_out;
+		dev_info(&pdev->dev, "Clk-cfg array present\n");
+	}
+	dev_info(&pdev->dev, "Bus frequency is set to %dHz.\n",
+						gi2c->i2c_rsc.clk_freq_out);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gi2c->irq = platform_get_irq(pdev, 0);
 	if (gi2c->irq < 0) {
@@ -1034,6 +1428,7 @@ static int geni_i2c_probe(struct platform_device *pdev)
 		return gi2c->irq;
 	}
 
+<<<<<<< HEAD
 	ret = geni_i2c_clk_map_idx(gi2c);
 	if (ret) {
 		dev_err(gi2c->dev, "Invalid clk frequency %d KHz: %d\n",
@@ -1041,6 +1436,8 @@ static int geni_i2c_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
 	if (ret) {
 		ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
@@ -1072,12 +1469,24 @@ static int geni_i2c_probe(struct platform_device *pdev)
 	pm_runtime_set_autosuspend_delay(gi2c->dev, I2C_AUTO_SUSPEND_DELAY);
 	pm_runtime_use_autosuspend(gi2c->dev);
 	pm_runtime_enable(gi2c->dev);
+<<<<<<< HEAD
+=======
+	gi2c->i2c_rsc.rsc_ssr.force_suspend = ssr_i2c_force_suspend;
+	gi2c->i2c_rsc.rsc_ssr.force_resume = ssr_i2c_force_resume;
+	mutex_init(&gi2c->i2c_ssr.ssr_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = i2c_add_adapter(&gi2c->adap);
 	if (ret) {
 		dev_err(gi2c->dev, "Add adapter failed\n");
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	snprintf(boot_marker, sizeof(boot_marker),
+				"M - DRIVER GENI_I2C_%d Ready", gi2c->adap.nr);
+	place_marker(boot_marker);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(gi2c->dev, "I2C probed\n");
 	return 0;
 }
@@ -1101,10 +1510,24 @@ static int geni_i2c_resume_noirq(struct device *device)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int geni_i2c_hib_resume_noirq(struct device *device)
+{
+	struct geni_i2c_dev *gi2c = dev_get_drvdata(device);
+
+	GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
+				    "%s\n", __func__);
+	gi2c->se_mode = UNINITIALIZED;
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PM
 static int geni_i2c_runtime_suspend(struct device *dev)
 {
 	struct geni_i2c_dev *gi2c = dev_get_drvdata(dev);
+<<<<<<< HEAD
 
 	if (gi2c->se_mode == FIFO_SE_DMA)
 		disable_irq(gi2c->irq);
@@ -1117,6 +1540,23 @@ static int geni_i2c_runtime_suspend(struct device *dev)
 	}
 	GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev, "%s\n", __func__);
 	return 0;
+=======
+	int ret = 0;
+
+	if (gi2c->se_mode == FIFO_SE_DMA) {
+		disable_irq(gi2c->irq);
+		ret = se_geni_resources_off(&gi2c->i2c_rsc);
+	} else {
+		/* GPIO is set to sleep state already. So just clocks off */
+		ret = se_geni_clks_off(&gi2c->i2c_rsc);
+	}
+	if (ret)
+		GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev,
+			"%s failed ret:%d\n", __func__, ret);
+
+	GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev, "%s\n", __func__);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int geni_i2c_runtime_resume(struct device *dev)
@@ -1127,11 +1567,23 @@ static int geni_i2c_runtime_resume(struct device *dev)
 	if (!gi2c->ipcl) {
 		char ipc_name[I2C_NAME_SIZE];
 
+<<<<<<< HEAD
 		snprintf(ipc_name, I2C_NAME_SIZE, "%s", dev_name(gi2c->dev));
 		gi2c->ipcl = ipc_log_context_create(2, ipc_name, 0);
 	}
 
 	ret = se_geni_resources_on(&gi2c->i2c_rsc);
+=======
+		snprintf(ipc_name, I2C_NAME_SIZE, "i2c-%d", gi2c->adap.nr);
+		gi2c->ipcl = ipc_log_context_create(2, ipc_name, 0);
+	}
+
+	if (gi2c->se_mode != GSI_ONLY)
+		ret = se_geni_resources_on(&gi2c->i2c_rsc);
+	else
+		ret = se_geni_clks_on(&gi2c->i2c_rsc);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -1220,8 +1672,49 @@ static const struct dev_pm_ops geni_i2c_pm_ops = {
 	.resume_noirq		= geni_i2c_resume_noirq,
 	.runtime_suspend	= geni_i2c_runtime_suspend,
 	.runtime_resume		= geni_i2c_runtime_resume,
+<<<<<<< HEAD
 };
 
+=======
+	.freeze			= geni_i2c_suspend_noirq,
+	.restore		= geni_i2c_hib_resume_noirq,
+	.thaw		= geni_i2c_hib_resume_noirq,
+};
+
+static void ssr_i2c_force_suspend(struct device *dev)
+{
+	struct geni_i2c_dev *gi2c = dev_get_drvdata(dev);
+	int ret = 0;
+
+	mutex_lock(&gi2c->i2c_ssr.ssr_lock);
+	gi2c->i2c_ssr.is_ssr_down = true;
+	if (!pm_runtime_status_suspended(gi2c->dev)) {
+		ret =  geni_i2c_runtime_suspend(gi2c->dev);
+		if (ret) {
+			dev_err(gi2c->dev, "%s failed ret:%d\n", __func__, ret);
+		} else {
+			pm_runtime_disable(gi2c->dev);
+			pm_runtime_set_suspended(gi2c->dev);
+			pm_runtime_enable(gi2c->dev);
+		}
+	}
+
+	GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev, "%s done\n", __func__);
+	mutex_unlock(&gi2c->i2c_ssr.ssr_lock);
+}
+
+static void ssr_i2c_force_resume(struct device *dev)
+{
+	struct geni_i2c_dev *gi2c = dev_get_drvdata(dev);
+
+	mutex_lock(&gi2c->i2c_ssr.ssr_lock);
+	gi2c->i2c_ssr.is_ssr_down = false;
+	gi2c->se_mode = UNINITIALIZED;
+	GENI_SE_DBG(gi2c->ipcl, false, gi2c->dev, "%s done\n", __func__);
+	mutex_unlock(&gi2c->i2c_ssr.ssr_lock);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id geni_i2c_dt_match[] = {
 	{ .compatible = "qcom,i2c-geni" },
 	{}

@@ -273,13 +273,23 @@ static int saa7134_alsa_dma_init(struct saa7134_dev *dev, int nr_pages)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	pr_debug("vmalloc is at addr %p, size=%d\n",
 		 dma->vaddr, nr_pages << PAGE_SHIFT);
+=======
+	pr_debug("vmalloc is at addr 0x%08lx, size=%d\n",
+				(unsigned long)dma->vaddr,
+				nr_pages << PAGE_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(dma->vaddr, 0, nr_pages << PAGE_SHIFT);
 	dma->nr_pages = nr_pages;
 
+<<<<<<< HEAD
 	dma->sglist = vzalloc(array_size(sizeof(*dma->sglist), dma->nr_pages));
+=======
+	dma->sglist = vzalloc(dma->nr_pages * sizeof(*dma->sglist));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (NULL == dma->sglist)
 		goto vzalloc_err;
 

@@ -21,7 +21,11 @@
 
 #include "cx23885.h"
 #include "cimax2.h"
+<<<<<<< HEAD
 #include <media/dvb_ca_en50221.h>
+=======
+#include "dvb_ca_en50221.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Max transfer size done by I2C transfer functions */
 #define MAX_XFER_SIZE  64
@@ -54,7 +58,11 @@
 #define NETUP_CI_CTL		0x04
 #define NETUP_CI_RD		1
 
+<<<<<<< HEAD
 #define NETUP_IRQ_DETAM		0x1
+=======
+#define NETUP_IRQ_DETAM 	0x1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NETUP_IRQ_IRQAM		0x4
 
 static unsigned int ci_dbg;

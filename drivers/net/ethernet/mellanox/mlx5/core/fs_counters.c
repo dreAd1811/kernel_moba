@@ -243,7 +243,10 @@ err_out:
 
 	return ERR_PTR(err);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(mlx5_fc_create);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void mlx5_fc_destroy(struct mlx5_core_dev *dev, struct mlx5_fc *counter)
 {
@@ -261,7 +264,10 @@ void mlx5_fc_destroy(struct mlx5_core_dev *dev, struct mlx5_fc *counter)
 	mlx5_cmd_fc_free(dev, counter->id);
 	kfree(counter);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(mlx5_fc_destroy);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mlx5_init_fc_stats(struct mlx5_core_dev *dev)
 {
@@ -314,6 +320,7 @@ void mlx5_cleanup_fc_stats(struct mlx5_core_dev *dev)
 	}
 }
 
+<<<<<<< HEAD
 int mlx5_fc_query(struct mlx5_core_dev *dev, struct mlx5_fc *counter,
 		  u64 *packets, u64 *bytes)
 {
@@ -321,6 +328,8 @@ int mlx5_fc_query(struct mlx5_core_dev *dev, struct mlx5_fc *counter,
 }
 EXPORT_SYMBOL(mlx5_fc_query);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u64 mlx5_fc_query_lastuse(struct mlx5_fc *counter)
 {
 	return counter->cache.lastuse;

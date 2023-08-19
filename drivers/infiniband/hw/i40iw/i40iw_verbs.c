@@ -38,7 +38,10 @@
 #include <linux/highmem.h>
 #include <linux/time.h>
 #include <linux/hugetlb.h>
+<<<<<<< HEAD
 #include <linux/irq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/byteorder.h>
 #include <net/ip.h>
 #include <rdma/ib_verbs.h>
@@ -70,9 +73,14 @@ static int i40iw_query_device(struct ib_device *ibdev,
 	props->hw_ver = (u32)iwdev->sc_dev.hw_rev;
 	props->max_mr_size = I40IW_MAX_OUTBOUND_MESSAGE_SIZE;
 	props->max_qp = iwdev->max_qp - iwdev->used_qps;
+<<<<<<< HEAD
 	props->max_qp_wr = I40IW_MAX_QP_WRS;
 	props->max_send_sge = I40IW_MAX_WQ_FRAGMENT_COUNT;
 	props->max_recv_sge = I40IW_MAX_WQ_FRAGMENT_COUNT;
+=======
+	props->max_qp_wr = (I40IW_MAX_WQ_ENTRIES >> 2) - 1;
+	props->max_sge = I40IW_MAX_WQ_FRAGMENT_COUNT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	props->max_cq = iwdev->max_cq - iwdev->used_cqs;
 	props->max_cqe = iwdev->max_cqe;
 	props->max_mr = iwdev->max_mr - iwdev->used_mrs;
@@ -383,6 +391,25 @@ static int i40iw_dealloc_pd(struct ib_pd *ibpd)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * i40iw_qp_roundup - return round up qp ring size
+ * @wr_ring_size: ring size to round up
+ */
+static int i40iw_qp_roundup(u32 wr_ring_size)
+{
+	int scount = 1;
+
+	if (wr_ring_size < I40IWQP_SW_MIN_WQSIZE)
+		wr_ring_size = I40IWQP_SW_MIN_WQSIZE;
+
+	for (wr_ring_size--; scount <= 16; scount *= 2)
+		wr_ring_size |= wr_ring_size >> scount;
+	return ++wr_ring_size;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40iw_get_pbl - Retrieve pbl from a list given a virtual
  * address
  * @va: user virtual address
@@ -395,7 +422,10 @@ static struct i40iw_pbl *i40iw_get_pbl(unsigned long va,
 
 	list_for_each_entry(iwpbl, pbl_list, list) {
 		if (iwpbl->user_base == va) {
+<<<<<<< HEAD
 			iwpbl->on_list = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			list_del(&iwpbl->list);
 			return iwpbl;
 		}
@@ -503,11 +533,16 @@ static int i40iw_setup_kmode_qp(struct i40iw_device *iwdev,
 {
 	struct i40iw_dma_mem *mem = &iwqp->kqp.dma_mem;
 	u32 sqdepth, rqdepth;
+<<<<<<< HEAD
+=======
+	u32 sq_size, rq_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 sqshift;
 	u32 size;
 	enum i40iw_status_code status;
 	struct i40iw_qp_uk_init_info *ukinfo = &info->qp_uk_init_info;
 
+<<<<<<< HEAD
 	i40iw_get_wqe_shift(ukinfo->max_sq_frag_cnt, ukinfo->max_inline_data, &sqshift);
 	status = i40iw_get_sqdepth(ukinfo->sq_size, sqshift, &sqdepth);
 	if (status)
@@ -516,6 +551,17 @@ static int i40iw_setup_kmode_qp(struct i40iw_device *iwdev,
 	status = i40iw_get_rqdepth(ukinfo->rq_size, I40IW_MAX_RQ_WQE_SHIFT, &rqdepth);
 	if (status)
 		return -ENOMEM;
+=======
+	sq_size = i40iw_qp_roundup(ukinfo->sq_size + 1);
+	rq_size = i40iw_qp_roundup(ukinfo->rq_size + 1);
+
+	status = i40iw_get_wqe_shift(sq_size, ukinfo->max_sq_frag_cnt, ukinfo->max_inline_data, &sqshift);
+	if (status)
+		return -ENOMEM;
+
+	sqdepth = sq_size << sqshift;
+	rqdepth = rq_size << I40IW_MAX_RQ_WQE_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	size = sqdepth * sizeof(struct i40iw_sq_uk_wr_trk_info) + (rqdepth << 3);
 	iwqp->kqp.wrid_mem = kzalloc(size, GFP_KERNEL);
@@ -545,8 +591,13 @@ static int i40iw_setup_kmode_qp(struct i40iw_device *iwdev,
 	ukinfo->shadow_area = ukinfo->rq[rqdepth].elem;
 	info->shadow_area_pa = info->rq_pa + (rqdepth * I40IW_QP_WQE_MIN_SIZE);
 
+<<<<<<< HEAD
 	ukinfo->sq_size = sqdepth >> sqshift;
 	ukinfo->rq_size = rqdepth >> I40IW_MAX_RQ_WQE_SHIFT;
+=======
+	ukinfo->sq_size = sq_size;
+	ukinfo->rq_size = rq_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ukinfo->qp_id = iwqp->ibqp.qp_num;
 	return 0;
 }
@@ -835,10 +886,17 @@ static int i40iw_query_qp(struct ib_qp *ibqp,
 void i40iw_hw_modify_qp(struct i40iw_device *iwdev, struct i40iw_qp *iwqp,
 			struct i40iw_modify_qp_info *info, bool wait)
 {
+<<<<<<< HEAD
 	struct i40iw_cqp_request *cqp_request;
 	struct cqp_commands_info *cqp_info;
 	struct i40iw_modify_qp_info *m_info;
 	struct i40iw_gen_ae_info ae_info;
+=======
+	enum i40iw_status_code status;
+	struct i40iw_cqp_request *cqp_request;
+	struct cqp_commands_info *cqp_info;
+	struct i40iw_modify_qp_info *m_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cqp_request = i40iw_get_cqp_request(&iwdev->cqp, wait);
 	if (!cqp_request)
@@ -851,6 +909,7 @@ void i40iw_hw_modify_qp(struct i40iw_device *iwdev, struct i40iw_qp *iwqp,
 	cqp_info->post_sq = 1;
 	cqp_info->in.u.qp_modify.qp = &iwqp->sc_qp;
 	cqp_info->in.u.qp_modify.scratch = (uintptr_t)cqp_request;
+<<<<<<< HEAD
 	if (!i40iw_handle_cqp_op(iwdev, cqp_request))
 		return;
 
@@ -870,6 +929,11 @@ void i40iw_hw_modify_qp(struct i40iw_device *iwdev, struct i40iw_qp *iwqp,
 	default:
 		break;
 	}
+=======
+	status = i40iw_handle_cqp_op(iwdev, cqp_request);
+	if (status)
+		i40iw_pr_err("CQP-OP Modify QP fail");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -982,6 +1046,13 @@ int i40iw_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 
 		iwqp->ibqp_state = attr->qp_state;
 
+<<<<<<< HEAD
+=======
+		if (issue_modify_qp)
+			iwqp->iwarp_state = info.next_iwarp_state;
+		else
+			info.next_iwarp_state = iwqp->iwarp_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (attr_mask & IB_QP_ACCESS_FLAGS) {
 		ctx_info->iwarp_info_valid = true;
@@ -1019,6 +1090,7 @@ int i40iw_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 
 	spin_unlock_irqrestore(&iwqp->lock, flags);
 
+<<<<<<< HEAD
 	if (issue_modify_qp) {
 		i40iw_hw_modify_qp(iwdev, iwqp, &info, true);
 
@@ -1027,6 +1099,11 @@ int i40iw_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		spin_unlock_irqrestore(&iwqp->lock, flags);
 	}
 
+=======
+	if (issue_modify_qp)
+		i40iw_hw_modify_qp(iwdev, iwqp, &info, true);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (issue_modify_qp && (iwqp->ibqp_state > IB_QPS_RTS)) {
 		if (dont_wait) {
 			if (iwqp->cm_id && iwqp->hw_tcp_state) {
@@ -1904,7 +1981,10 @@ static struct ib_mr *i40iw_reg_user_mr(struct ib_pd *pd,
 			goto error;
 		spin_lock_irqsave(&ucontext->qp_reg_mem_list_lock, flags);
 		list_add_tail(&iwpbl->list, &ucontext->qp_reg_mem_list);
+<<<<<<< HEAD
 		iwpbl->on_list = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&ucontext->qp_reg_mem_list_lock, flags);
 		break;
 	case IW_MEMREG_TYPE_CQ:
@@ -1915,7 +1995,10 @@ static struct ib_mr *i40iw_reg_user_mr(struct ib_pd *pd,
 
 		spin_lock_irqsave(&ucontext->cq_reg_mem_list_lock, flags);
 		list_add_tail(&iwpbl->list, &ucontext->cq_reg_mem_list);
+<<<<<<< HEAD
 		iwpbl->on_list = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&ucontext->cq_reg_mem_list_lock, flags);
 		break;
 	case IW_MEMREG_TYPE_MEM:
@@ -2053,18 +2136,28 @@ static void i40iw_del_memlist(struct i40iw_mr *iwmr,
 	switch (iwmr->type) {
 	case IW_MEMREG_TYPE_CQ:
 		spin_lock_irqsave(&ucontext->cq_reg_mem_list_lock, flags);
+<<<<<<< HEAD
 		if (iwpbl->on_list) {
 			iwpbl->on_list = false;
 			list_del(&iwpbl->list);
 		}
+=======
+		if (!list_empty(&ucontext->cq_reg_mem_list))
+			list_del(&iwpbl->list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&ucontext->cq_reg_mem_list_lock, flags);
 		break;
 	case IW_MEMREG_TYPE_QP:
 		spin_lock_irqsave(&ucontext->qp_reg_mem_list_lock, flags);
+<<<<<<< HEAD
 		if (iwpbl->on_list) {
 			iwpbl->on_list = false;
 			list_del(&iwpbl->list);
 		}
+=======
+		if (!list_empty(&ucontext->qp_reg_mem_list))
+			list_del(&iwpbl->list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&ucontext->qp_reg_mem_list_lock, flags);
 		break;
 	default:
@@ -2203,8 +2296,13 @@ static void i40iw_copy_sg_list(struct i40iw_sge *sg_list, struct ib_sge *sgl, in
  * @bad_wr: return of bad wr if err
  */
 static int i40iw_post_send(struct ib_qp *ibqp,
+<<<<<<< HEAD
 			   const struct ib_send_wr *ib_wr,
 			   const struct ib_send_wr **bad_wr)
+=======
+			   struct ib_send_wr *ib_wr,
+			   struct ib_send_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40iw_qp *iwqp;
 	struct i40iw_qp_uk *ukqp;
@@ -2218,12 +2316,15 @@ static int i40iw_post_send(struct ib_qp *ibqp,
 	ukqp = &iwqp->sc_qp.qp_uk;
 
 	spin_lock_irqsave(&iwqp->lock, flags);
+<<<<<<< HEAD
 
 	if (iwqp->flush_issued) {
 		err = -EINVAL;
 		goto out;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (ib_wr) {
 		inv_stag = false;
 		memset(&info, 0, sizeof(info));
@@ -2274,12 +2375,20 @@ static int i40iw_post_send(struct ib_qp *ibqp,
 				info.op.inline_rdma_write.len = ib_wr->sg_list[0].length;
 				info.op.inline_rdma_write.rem_addr.tag_off = rdma_wr(ib_wr)->remote_addr;
 				info.op.inline_rdma_write.rem_addr.stag = rdma_wr(ib_wr)->rkey;
+<<<<<<< HEAD
+=======
+				info.op.inline_rdma_write.rem_addr.len = ib_wr->sg_list->length;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = ukqp->ops.iw_inline_rdma_write(ukqp, &info, false);
 			} else {
 				info.op.rdma_write.lo_sg_list = (void *)ib_wr->sg_list;
 				info.op.rdma_write.num_lo_sges = ib_wr->num_sge;
 				info.op.rdma_write.rem_addr.tag_off = rdma_wr(ib_wr)->remote_addr;
 				info.op.rdma_write.rem_addr.stag = rdma_wr(ib_wr)->rkey;
+<<<<<<< HEAD
+=======
+				info.op.rdma_write.rem_addr.len = ib_wr->sg_list->length;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = ukqp->ops.iw_rdma_write(ukqp, &info, false);
 			}
 
@@ -2301,6 +2410,10 @@ static int i40iw_post_send(struct ib_qp *ibqp,
 			info.op_type = I40IW_OP_TYPE_RDMA_READ;
 			info.op.rdma_read.rem_addr.tag_off = rdma_wr(ib_wr)->remote_addr;
 			info.op.rdma_read.rem_addr.stag = rdma_wr(ib_wr)->rkey;
+<<<<<<< HEAD
+=======
+			info.op.rdma_read.rem_addr.len = ib_wr->sg_list->length;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			info.op.rdma_read.lo_addr.tag_off = ib_wr->sg_list->addr;
 			info.op.rdma_read.lo_addr.stag = ib_wr->sg_list->lkey;
 			info.op.rdma_read.lo_addr.len = ib_wr->sg_list->length;
@@ -2363,7 +2476,10 @@ static int i40iw_post_send(struct ib_qp *ibqp,
 		ib_wr = ib_wr->next;
 	}
 
+<<<<<<< HEAD
 out:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		*bad_wr = ib_wr;
 	else
@@ -2379,8 +2495,14 @@ out:
  * @ib_wr: work request for receive
  * @bad_wr: bad wr caused an error
  */
+<<<<<<< HEAD
 static int i40iw_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *ib_wr,
 			   const struct ib_recv_wr **bad_wr)
+=======
+static int i40iw_post_recv(struct ib_qp *ibqp,
+			   struct ib_recv_wr *ib_wr,
+			   struct ib_recv_wr **bad_wr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i40iw_qp *iwqp;
 	struct i40iw_qp_uk *ukqp;
@@ -2395,12 +2517,15 @@ static int i40iw_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *ib_wr,
 
 	memset(&post_recv, 0, sizeof(post_recv));
 	spin_lock_irqsave(&iwqp->lock, flags);
+<<<<<<< HEAD
 
 	if (iwqp->flush_issued) {
 		err = -EINVAL;
 		goto out;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (ib_wr) {
 		post_recv.num_sges = ib_wr->num_sge;
 		post_recv.wr_id = ib_wr->wr_id;
@@ -2705,6 +2830,24 @@ static int i40iw_query_gid(struct ib_device *ibdev,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * i40iw_modify_port  Modify port properties
+ * @ibdev: device pointer from stack
+ * @port: port number
+ * @port_modify_mask: mask for port modifications
+ * @props: port properties
+ */
+static int i40iw_modify_port(struct ib_device *ibdev,
+			     u8 port,
+			     int port_modify_mask,
+			     struct ib_port_modify *props)
+{
+	return -ENOSYS;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40iw_query_pkey - Query partition key
  * @ibdev: device pointer from stack
  * @port: port number
@@ -2721,6 +2864,7 @@ static int i40iw_query_pkey(struct ib_device *ibdev,
 }
 
 /**
+<<<<<<< HEAD
  * i40iw_get_vector_affinity - report IRQ affinity mask
  * @ibdev: IB device
  * @comp_vector: completion vector index
@@ -2737,6 +2881,27 @@ static const struct cpumask *i40iw_get_vector_affinity(struct ib_device *ibdev,
 		msix_vec = &iwdev->iw_msixtbl[comp_vector + 1];
 
 	return irq_get_affinity_mask(msix_vec->irq);
+=======
+ * i40iw_create_ah - create address handle
+ * @ibpd: ptr of pd
+ * @ah_attr: address handle attributes
+ */
+static struct ib_ah *i40iw_create_ah(struct ib_pd *ibpd,
+				     struct rdma_ah_attr *attr,
+				     struct ib_udata *udata)
+
+{
+	return ERR_PTR(-ENOSYS);
+}
+
+/**
+ * i40iw_destroy_ah - Destroy address handle
+ * @ah: pointer to address handle
+ */
+static int i40iw_destroy_ah(struct ib_ah *ah)
+{
+	return -ENOSYS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2787,6 +2952,10 @@ static struct i40iw_ib_device *i40iw_init_rdma_device(struct i40iw_device *iwdev
 	iwibdev->ibdev.num_comp_vectors = iwdev->ceqs_count;
 	iwibdev->ibdev.dev.parent = &pcidev->dev;
 	iwibdev->ibdev.query_port = i40iw_query_port;
+<<<<<<< HEAD
+=======
+	iwibdev->ibdev.modify_port = i40iw_modify_port;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwibdev->ibdev.query_pkey = i40iw_query_pkey;
 	iwibdev->ibdev.query_gid = i40iw_query_gid;
 	iwibdev->ibdev.alloc_ucontext = i40iw_alloc_ucontext;
@@ -2806,6 +2975,11 @@ static struct i40iw_ib_device *i40iw_init_rdma_device(struct i40iw_device *iwdev
 	iwibdev->ibdev.alloc_hw_stats = i40iw_alloc_hw_stats;
 	iwibdev->ibdev.get_hw_stats = i40iw_get_hw_stats;
 	iwibdev->ibdev.query_device = i40iw_query_device;
+<<<<<<< HEAD
+=======
+	iwibdev->ibdev.create_ah = i40iw_create_ah;
+	iwibdev->ibdev.destroy_ah = i40iw_destroy_ah;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iwibdev->ibdev.drain_sq = i40iw_drain_sq;
 	iwibdev->ibdev.drain_rq = i40iw_drain_rq;
 	iwibdev->ibdev.alloc_mr = i40iw_alloc_mr;
@@ -2832,7 +3006,10 @@ static struct i40iw_ib_device *i40iw_init_rdma_device(struct i40iw_device *iwdev
 	iwibdev->ibdev.req_notify_cq = i40iw_req_notify_cq;
 	iwibdev->ibdev.post_send = i40iw_post_send;
 	iwibdev->ibdev.post_recv = i40iw_post_recv;
+<<<<<<< HEAD
 	iwibdev->ibdev.get_vector_affinity = i40iw_get_vector_affinity;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return iwibdev;
 }
@@ -2898,7 +3075,10 @@ int i40iw_register_rdma_device(struct i40iw_device *iwdev)
 		return -ENOMEM;
 	iwibdev = iwdev->iwibdev;
 
+<<<<<<< HEAD
 	iwibdev->ibdev.driver_id = RDMA_DRIVER_I40IW;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ib_register_device(&iwibdev->ibdev, NULL);
 	if (ret)
 		goto error;

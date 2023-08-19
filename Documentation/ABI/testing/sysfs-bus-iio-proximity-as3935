@@ -1,7 +1,11 @@
 What		/sys/bus/iio/devices/iio:deviceX/in_proximity_input
 Date:		March 2014
 KernelVersion:	3.15
+<<<<<<< HEAD
 Contact:	Matt Ranostay <matt.ranostay@konsulko.com>
+=======
+Contact:	Matt Ranostay <mranostay@gmail.com>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Description:
 		Get the current distance in meters of storm (1km steps)
 		1000-40000 = distance in meters
@@ -9,7 +13,11 @@ Description:
 What		/sys/bus/iio/devices/iio:deviceX/sensor_sensitivity
 Date:		March 2014
 KernelVersion:	3.15
+<<<<<<< HEAD
 Contact:	Matt Ranostay <matt.ranostay@konsulko.com>
+=======
+Contact:	Matt Ranostay <mranostay@gmail.com>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Description:
 		Show or set the gain boost of the amp, from 0-31 range.
 		18 = indoors (default)

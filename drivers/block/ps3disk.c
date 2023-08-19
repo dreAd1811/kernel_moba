@@ -465,8 +465,14 @@ static int ps3disk_probe(struct ps3_system_bus_device *_dev)
 	priv->queue = queue;
 	queue->queuedata = dev;
 
+<<<<<<< HEAD
 	blk_queue_max_hw_sectors(queue, dev->bounce_size >> 9);
 	blk_queue_segment_boundary(queue, -1UL);
+=======
+	blk_queue_bounce_limit(queue, BLK_BOUNCE_HIGH);
+
+	blk_queue_max_hw_sectors(queue, dev->bounce_size >> 9);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_queue_dma_alignment(queue, dev->blk_size-1);
 	blk_queue_logical_block_size(queue, dev->blk_size);
 

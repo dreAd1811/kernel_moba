@@ -31,6 +31,10 @@ choice
 
 	config SOC_RT305X
 		bool "RT305x"
+<<<<<<< HEAD
+=======
+		select USB_ARCH_HAS_HCD
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	config SOC_RT3883
 		bool "RT3883"

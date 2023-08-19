@@ -1,11 +1,19 @@
 /*
  * generic helper functions for handling video4linux capture buffers
  *
+<<<<<<< HEAD
  * (c) 2007 Mauro Carvalho Chehab, <mchehab@kernel.org>
  *
  * Highly based on video-buf written originally by:
  * (c) 2001,02 Gerd Knorr <kraxel@bytesex.org>
  * (c) 2006 Mauro Carvalho Chehab, <mchehab@kernel.org>
+=======
+ * (c) 2007 Mauro Carvalho Chehab, <mchehab@infradead.org>
+ *
+ * Highly based on video-buf written originally by:
+ * (c) 2001,02 Gerd Knorr <kraxel@bytesex.org>
+ * (c) 2006 Mauro Carvalho Chehab, <mchehab@infradead.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * (c) 2006 Ted Walther and John Sokol
  *
  * This program is free software; you can redistribute it and/or modify
@@ -38,7 +46,11 @@ static int debug;
 module_param(debug, int, 0644);
 
 MODULE_DESCRIPTION("helper module to manage video4linux buffers");
+<<<<<<< HEAD
 MODULE_AUTHOR("Mauro Carvalho Chehab <mchehab@kernel.org>");
+=======
+MODULE_AUTHOR("Mauro Carvalho Chehab <mchehab@infradead.org>");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 
 #define dprintk(level, fmt, arg...)					\
@@ -222,7 +234,11 @@ int videobuf_queue_is_busy(struct videobuf_queue *q)
 }
 EXPORT_SYMBOL_GPL(videobuf_queue_is_busy);
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * __videobuf_free() - free all the buffers and their control structures
  *
  * This function can only be called if streaming/reading is off, i.e. no buffers
@@ -1118,6 +1134,7 @@ done:
 }
 EXPORT_SYMBOL_GPL(videobuf_read_stream);
 
+<<<<<<< HEAD
 __poll_t videobuf_poll_stream(struct file *file,
 				  struct videobuf_queue *q,
 				  poll_table *wait)
@@ -1125,17 +1142,34 @@ __poll_t videobuf_poll_stream(struct file *file,
 	__poll_t req_events = poll_requested_events(wait);
 	struct videobuf_buffer *buf = NULL;
 	__poll_t rc = 0;
+=======
+unsigned int videobuf_poll_stream(struct file *file,
+				  struct videobuf_queue *q,
+				  poll_table *wait)
+{
+	unsigned long req_events = poll_requested_events(wait);
+	struct videobuf_buffer *buf = NULL;
+	unsigned int rc = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	videobuf_queue_lock(q);
 	if (q->streaming) {
 		if (!list_empty(&q->stream))
 			buf = list_entry(q->stream.next,
 					 struct videobuf_buffer, stream);
+<<<<<<< HEAD
 	} else if (req_events & (EPOLLIN | EPOLLRDNORM)) {
 		if (!q->reading)
 			__videobuf_read_start(q);
 		if (!q->reading) {
 			rc = EPOLLERR;
+=======
+	} else if (req_events & (POLLIN | POLLRDNORM)) {
+		if (!q->reading)
+			__videobuf_read_start(q);
+		if (!q->reading) {
+			rc = POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (NULL == q->read_buf) {
 			q->read_buf = list_entry(q->stream.next,
 						 struct videobuf_buffer,
@@ -1146,7 +1180,11 @@ __poll_t videobuf_poll_stream(struct file *file,
 		buf = q->read_buf;
 	}
 	if (!buf)
+<<<<<<< HEAD
 		rc = EPOLLERR;
+=======
+		rc = POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (0 == rc) {
 		poll_wait(file, &buf->done, wait);
@@ -1157,10 +1195,17 @@ __poll_t videobuf_poll_stream(struct file *file,
 			case V4L2_BUF_TYPE_VBI_OUTPUT:
 			case V4L2_BUF_TYPE_SLICED_VBI_OUTPUT:
 			case V4L2_BUF_TYPE_SDR_OUTPUT:
+<<<<<<< HEAD
 				rc = EPOLLOUT | EPOLLWRNORM;
 				break;
 			default:
 				rc = EPOLLIN | EPOLLRDNORM;
+=======
+				rc = POLLOUT | POLLWRNORM;
+				break;
+			default:
+				rc = POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			}
 		}

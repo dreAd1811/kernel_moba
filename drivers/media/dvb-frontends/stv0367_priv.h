@@ -35,6 +35,10 @@
 #endif
 
 /* MACRO definitions */
+<<<<<<< HEAD
+=======
+#define ABS(X) ((X) < 0 ? (-1 * (X)) : (X))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX(X, Y) ((X) >= (Y) ? (X) : (Y))
 #define MIN(X, Y) ((X) <= (Y) ? (X) : (Y))
 #define INRANGE(X, Y, Z) \

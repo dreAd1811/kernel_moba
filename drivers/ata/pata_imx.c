@@ -17,7 +17,10 @@
 #include <linux/clk.h>
 #include <linux/libata.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 
 #define DRV_NAME "pata_imx"
@@ -103,7 +106,11 @@ static struct scsi_host_template pata_imx_sht = {
 
 static struct ata_port_operations pata_imx_port_ops = {
 	.inherits		= &ata_sff_port_ops,
+<<<<<<< HEAD
 	.sff_data_xfer		= ata_sff_data_xfer32,
+=======
+	.sff_data_xfer		= ata_sff_data_xfer_noirq,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cable_detect		= ata_cable_unknown,
 	.set_piomode		= pata_imx_set_piomode,
 };

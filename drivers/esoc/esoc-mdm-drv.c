@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2013-2015, 2017-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2015, 2017-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/delay.h>
@@ -28,6 +41,7 @@ enum esoc_pon_state {
 
 enum {
 	 PWR_OFF = 0x1,
+<<<<<<< HEAD
 	 SHUTDOWN,
 	 RESET,
 	 PEER_CRASH,
@@ -36,13 +50,26 @@ enum {
 	 PWR_ON,
 	 BOOT,
 	 RUN,
+=======
+	 PWR_ON,
+	 BOOT,
+	 RUN,
+	 CRASH,
+	 IN_DEBUG,
+	 SHUTDOWN,
+	 RESET,
+	 PEER_CRASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mdm_drv {
 	unsigned int mode;
 	struct esoc_eng cmd_eng;
 	struct completion pon_done;
+<<<<<<< HEAD
 	struct completion ssr_ready;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct completion req_eng_wait;
 	struct esoc_clink *esoc_clink;
 	enum esoc_pon_state pon_state;
@@ -55,7 +82,11 @@ struct mdm_drv {
 };
 #define to_mdm_drv(d)	container_of(d, struct mdm_drv, cmd_eng)
 
+<<<<<<< HEAD
 #define S3_RESET_DELAY_MS	1000
+=======
+#define S3_RESET_DELAY_MS	2000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void esoc_client_link_power_off(struct esoc_clink *esoc_clink,
 							unsigned int flags);
@@ -143,6 +174,7 @@ static void mdm_handle_clink_evt(enum esoc_evt evt,
 		"ESOC_INVALID_STATE: Calling complete with state: PON_FAIL\n");
 		mdm_drv->pon_state = PON_FAIL;
 		complete(&mdm_drv->pon_done);
+<<<<<<< HEAD
 		complete(&mdm_drv->ssr_ready);
 		break;
 	case ESOC_BOOT_STATE:
@@ -151,6 +183,8 @@ static void mdm_handle_clink_evt(enum esoc_evt evt,
 			"ESOC_BOOT_STATE: Observed status high from modem.\n");
 			mdm_drv->mode = BOOT;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case ESOC_RUN_STATE:
 		esoc_mdm_log(
@@ -158,14 +192,20 @@ static void mdm_handle_clink_evt(enum esoc_evt evt,
 		mdm_drv->pon_state = PON_SUCCESS;
 		mdm_drv->mode = RUN,
 		complete(&mdm_drv->pon_done);
+<<<<<<< HEAD
 		complete(&mdm_drv->ssr_ready);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case ESOC_RETRY_PON_EVT:
 		esoc_mdm_log(
 		"ESOC_RETRY_PON_EVT: Calling complete with state: PON_RETRY\n");
 		mdm_drv->pon_state = PON_RETRY;
 		complete(&mdm_drv->pon_done);
+<<<<<<< HEAD
 		complete(&mdm_drv->ssr_ready);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case ESOC_UNEXPECTED_RESET:
 		esoc_mdm_log("evt_state: ESOC_UNEXPECTED_RESET\n");
@@ -175,6 +215,7 @@ static void mdm_handle_clink_evt(enum esoc_evt evt,
 			esoc_mdm_log("evt_state: ESOC_ERR_FATAL\n");
 
 		/*
+<<<<<<< HEAD
 		 * Ignore all modem errfatals if the status is not up
 		 * or modem in run state.
 		 */
@@ -184,6 +225,21 @@ static void mdm_handle_clink_evt(enum esoc_evt evt,
 			return;
 		}
 		esoc_mdm_log("Setting crash flag\n");
+=======
+		 * Modem can crash while we are waiting for pon_done during
+		 * a subsystem_get(). Setting mode to CRASH will prevent a
+		 * subsequent subsystem_get() from entering poweron ops. Avoid
+		 * this by seting mode to CRASH only if device was up and
+		 * running.
+		 */
+		if (mdm_drv->mode == CRASH)
+			esoc_mdm_log(
+			"Modem in crash state already. Ignoring.\n");
+		if (mdm_drv->mode != RUN)
+			esoc_mdm_log("Modem not up. Ignoring.\n");
+		if (mdm_drv->mode == CRASH || mdm_drv->mode != RUN)
+			return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mdm_drv->mode = CRASH;
 		queue_work(mdm_drv->mdm_queue, &mdm_drv->ssr_work);
 		break;
@@ -202,6 +258,7 @@ static void mdm_ssr_fn(struct work_struct *work)
 	struct mdm_drv *mdm_drv = container_of(work, struct mdm_drv, ssr_work);
 	struct mdm_ctrl *mdm = get_esoc_clink_data(mdm_drv->esoc_clink);
 
+<<<<<<< HEAD
 	/* Wait for pon to complete. Start SSR only if pon is success */
 	wait_for_completion(&mdm_drv->ssr_ready);
 	if (mdm_drv->pon_state != PON_SUCCESS) {
@@ -211,6 +268,12 @@ static void mdm_ssr_fn(struct work_struct *work)
 
 	esoc_client_link_mdm_crash(mdm_drv->esoc_clink);
 	mdm_wait_for_status_low(mdm, false);
+=======
+	esoc_client_link_mdm_crash(mdm_drv->esoc_clink);
+
+	mdm_wait_for_status_low(mdm, false);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	esoc_mdm_log("Starting SSR work\n");
 
 	/*
@@ -374,9 +437,13 @@ static void mdm_subsys_retry_powerup_cleanup(struct esoc_clink *esoc_clink,
 	esoc_client_link_power_off(esoc_clink, poff_flags);
 	mdm_disable_irqs(mdm);
 	mdm_drv->pon_state = PON_INIT;
+<<<<<<< HEAD
 	mdm_drv->mode = PWR_OFF;
 	reinit_completion(&mdm_drv->pon_done);
 	reinit_completion(&mdm_drv->ssr_ready);
+=======
+	reinit_completion(&mdm_drv->pon_done);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reinit_completion(&mdm_drv->req_eng_wait);
 }
 
@@ -424,7 +491,10 @@ static int mdm_handle_boot_fail(struct esoc_clink *esoc_clink, u8 *pon_trial)
 		break;
 	case BOOT_FAIL_ACTION_NOP:
 		esoc_mdm_log("Leaving the modem in its curent state\n");
+<<<<<<< HEAD
 		mdm_drv->mode = PWR_OFF;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	case BOOT_FAIL_ACTION_SHUTDOWN:
 	default:
@@ -516,6 +586,10 @@ static int mdm_subsys_powerup(const struct subsys_desc *crashed_subsys)
 		} else if (mdm_drv->pon_state == PON_RETRY) {
 			esoc_mdm_log(
 			"Boot failed. Doing cleanup and attempting to retry\n");
+<<<<<<< HEAD
+=======
+			pon_trial++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mdm_subsys_retry_powerup_cleanup(esoc_clink, 0);
 		} else if (mdm_drv->pon_state == PON_SUCCESS) {
 			break;
@@ -587,7 +661,10 @@ int esoc_ssr_probe(struct esoc_clink *esoc_clink, struct esoc_drv *drv)
 	}
 	esoc_set_drv_data(esoc_clink, mdm_drv);
 	init_completion(&mdm_drv->pon_done);
+<<<<<<< HEAD
 	init_completion(&mdm_drv->ssr_ready);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_completion(&mdm_drv->req_eng_wait);
 	INIT_WORK(&mdm_drv->ssr_work, mdm_ssr_fn);
 	mdm_drv->esoc_clink = esoc_clink;
@@ -626,7 +703,11 @@ static struct esoc_compat compat_table[] = {
 		.data = NULL,
 	},
 	{
+<<<<<<< HEAD
 		.name = "SDX55M",
+=======
+		.name = "SDXPRAIRIE",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.data = NULL,
 	},
 };
@@ -641,6 +722,7 @@ static struct esoc_drv esoc_ssr_drv = {
 	},
 };
 
+<<<<<<< HEAD
 static char bootreason[10];
 static int __init boot_reason_param(char *line)
 {
@@ -654,6 +736,10 @@ int __init esoc_ssr_init(void)
 {
     if(strncmp(bootreason, "usb_chg", 7)==0)
         return 0;
+=======
+int __init esoc_ssr_init(void)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return esoc_drv_register(&esoc_ssr_drv);
 }
 module_init(esoc_ssr_init);

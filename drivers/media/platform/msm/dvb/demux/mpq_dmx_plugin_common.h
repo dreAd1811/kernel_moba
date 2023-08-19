@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2012-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _MPQ_DMX_PLUGIN_COMMON_H
@@ -8,11 +21,19 @@
 
 #include <linux/msm_ion.h>
 
+<<<<<<< HEAD
 #include <media/dvbdev.h>
 #include <media/dmxdev.h>
 #include <media/demux.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
+=======
+#include "dvbdev.h"
+#include "dmxdev.h"
+#include "demux.h"
+#include "dvb_demux.h"
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "mpq_adapter.h"
 #include "mpq_sdmx.h"
 
@@ -415,7 +436,11 @@ struct mpq_demux {
 	struct dvb_demux demux;
 	struct dmxdev dmxdev;
 	struct dmx_frontend fe_memory;
+<<<<<<< HEAD
 	enum dmx_source_t source;
+=======
+	dmx_source_t source;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int is_initialized;
 	struct ion_client *ion_client;
 	struct mutex mutex;
@@ -560,7 +585,11 @@ void mpq_dmx_plugin_exit(void);
  * Can be used by the underlying plugins to implement kernel
  * demux API set_source routine.
  */
+<<<<<<< HEAD
 int mpq_dmx_set_source(struct dmx_demux *demux, const enum dmx_source_t *src);
+=======
+int mpq_dmx_set_source(struct dmx_demux *demux, const dmx_source_t *src);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * mpq_dmx_map_buffer - map user-space buffer into kernel space.

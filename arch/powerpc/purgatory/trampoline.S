@@ -12,7 +12,19 @@
  * Software Foundation (version 2 of the License).
  */
 
+<<<<<<< HEAD
 #include <asm/asm-compat.h>
+=======
+#if defined(__LITTLE_ENDIAN__)
+#define STWX_BE	stwbrx
+#define LWZX_BE	lwbrx
+#elif defined(__BIG_ENDIAN__)
+#define STWX_BE	stwx
+#define LWZX_BE	lwzx
+#else
+#error no endianness defined!
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.machine ppc64
 	.balign 256

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
@@ -5,6 +6,23 @@
  * Description: CoreSight Trace Port Interface Unit driver
  */
 
+=======
+/* Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+ *
+ * Description: CoreSight Trace Port Interface Unit driver
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#include <linux/atomic.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/device.h>
@@ -68,13 +86,22 @@ static void tpiu_enable_hw(struct tpiu_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
 static int tpiu_enable(struct coresight_device *csdev, u32 mode)
+=======
+static int tpiu_enable(struct coresight_device *csdev, u32 mode, void *__unused)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tpiu_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
 
 	tpiu_enable_hw(drvdata);
+<<<<<<< HEAD
 
 	dev_info(drvdata->dev, "TPIU enabled\n");
+=======
+	atomic_inc(csdev->refcnt);
+	dev_dbg(drvdata->dev, "TPIU enabled\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -94,6 +121,7 @@ static void tpiu_disable_hw(struct tpiu_drvdata *drvdata)
 	CS_LOCK(drvdata->base);
 }
 
+<<<<<<< HEAD
 static void tpiu_disable(struct coresight_device *csdev)
 {
 	struct tpiu_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
@@ -101,6 +129,19 @@ static void tpiu_disable(struct coresight_device *csdev)
 	tpiu_disable_hw(drvdata);
 
 	dev_info(drvdata->dev, "TPIU disabled\n");
+=======
+static int tpiu_disable(struct coresight_device *csdev)
+{
+	struct tpiu_drvdata *drvdata = dev_get_drvdata(csdev->dev.parent);
+
+	if (atomic_dec_return(csdev->refcnt))
+		return -EBUSY;
+
+	tpiu_disable_hw(drvdata);
+
+	dev_dbg(drvdata->dev, "TPIU disabled\n");
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct coresight_ops_sink tpiu_sink_ops = {
@@ -193,8 +234,13 @@ static const struct dev_pm_ops tpiu_dev_pm_ops = {
 
 static const struct amba_id tpiu_ids[] = {
 	{
+<<<<<<< HEAD
 		.id	= 0x000bb912,
 		.mask	= 0x000fffff,
+=======
+		.id	= 0x0003b912,
+		.mask	= 0x0003ffff,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.id	= 0x0004b912,

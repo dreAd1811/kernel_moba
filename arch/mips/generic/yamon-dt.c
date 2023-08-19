@@ -28,6 +28,11 @@ __init int yamon_dt_append_cmdline(void *fdt)
 	/* find or add chosen node */
 	chosen_off = fdt_path_offset(fdt, "/chosen");
 	if (chosen_off == -FDT_ERR_NOTFOUND)
+<<<<<<< HEAD
+=======
+		chosen_off = fdt_path_offset(fdt, "/chosen@0");
+	if (chosen_off == -FDT_ERR_NOTFOUND)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chosen_off = fdt_add_subnode(fdt, 0, "chosen");
 	if (chosen_off < 0) {
 		pr_err("Unable to find or add DT chosen node: %d\n",
@@ -219,6 +224,11 @@ __init int yamon_dt_serial_config(void *fdt)
 	/* find or add chosen node */
 	chosen_off = fdt_path_offset(fdt, "/chosen");
 	if (chosen_off == -FDT_ERR_NOTFOUND)
+<<<<<<< HEAD
+=======
+		chosen_off = fdt_path_offset(fdt, "/chosen@0");
+	if (chosen_off == -FDT_ERR_NOTFOUND)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chosen_off = fdt_add_subnode(fdt, 0, "chosen");
 	if (chosen_off < 0) {
 		pr_err("Unable to find or add DT chosen node: %d\n",

@@ -164,13 +164,21 @@ void rt2x00debug_dump_frame(struct rt2x00_dev *rt2x00dev,
 	struct skb_frame_desc *skbdesc = get_skb_frame_desc(skb);
 	struct sk_buff *skbcopy;
 	struct rt2x00dump_hdr *dump_hdr;
+<<<<<<< HEAD
 	struct timespec64 timestamp;
+=======
+	struct timeval timestamp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 data_len;
 
 	if (likely(!test_bit(FRAME_DUMP_FILE_OPEN, &intf->frame_dump_flags)))
 		return;
 
+<<<<<<< HEAD
 	ktime_get_ts64(&timestamp);
+=======
+	do_gettimeofday(&timestamp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (skb_queue_len(&intf->frame_dump_skbqueue) > 20) {
 		rt2x00_dbg(rt2x00dev, "txrx dump queue length exceeded\n");
@@ -200,8 +208,12 @@ void rt2x00debug_dump_frame(struct rt2x00_dev *rt2x00dev,
 	dump_hdr->queue_index = entry->queue->qid;
 	dump_hdr->entry_index = entry->entry_idx;
 	dump_hdr->timestamp_sec = cpu_to_le32(timestamp.tv_sec);
+<<<<<<< HEAD
 	dump_hdr->timestamp_usec = cpu_to_le32(timestamp.tv_nsec /
 					       NSEC_PER_USEC);
+=======
+	dump_hdr->timestamp_usec = cpu_to_le32(timestamp.tv_usec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!(skbdesc->flags & SKBDESC_DESC_IN_SKB))
 		skb_put_data(skbcopy, skbdesc->desc, skbdesc->desc_len);
@@ -301,7 +313,11 @@ exit:
 	return status;
 }
 
+<<<<<<< HEAD
 static __poll_t rt2x00debug_poll_queue_dump(struct file *file,
+=======
+static unsigned int rt2x00debug_poll_queue_dump(struct file *file,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						poll_table *wait)
 {
 	struct rt2x00debug_intf *intf = file->private_data;
@@ -309,7 +325,11 @@ static __poll_t rt2x00debug_poll_queue_dump(struct file *file,
 	poll_wait(file, &intf->frame_dump_waitqueue, wait);
 
 	if (!skb_queue_empty(&intf->frame_dump_skbqueue))
+<<<<<<< HEAD
 		return EPOLLOUT | EPOLLWRNORM;
+=======
+		return POLLOUT | POLLWRNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -397,7 +417,11 @@ static ssize_t rt2x00debug_read_crypto_stats(struct file *file,
 	if (*offset)
 		return 0;
 
+<<<<<<< HEAD
 	data = kcalloc(1 + CIPHER_MAX, MAX_LINE_LENGTH, GFP_KERNEL);
+=======
+	data = kzalloc((1 + CIPHER_MAX) * MAX_LINE_LENGTH, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data)
 		return -ENOMEM;
 
@@ -606,7 +630,11 @@ static struct dentry *rt2x00debug_create_file_driver(const char *name,
 	data += sprintf(data, "version:\t%s\n", DRV_VERSION);
 	blob->size = strlen(blob->data);
 
+<<<<<<< HEAD
 	return debugfs_create_blob(name, 0400, intf->driver_folder, blob);
+=======
+	return debugfs_create_blob(name, S_IRUSR, intf->driver_folder, blob);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct dentry *rt2x00debug_create_file_chipset(const char *name,
@@ -647,7 +675,11 @@ static struct dentry *rt2x00debug_create_file_chipset(const char *name,
 
 	blob->size = strlen(blob->data);
 
+<<<<<<< HEAD
 	return debugfs_create_blob(name, 0400, intf->driver_folder, blob);
+=======
+	return debugfs_create_blob(name, S_IRUSR, intf->driver_folder, blob);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void rt2x00debug_register(struct rt2x00_dev *rt2x00dev)
@@ -682,13 +714,21 @@ void rt2x00debug_register(struct rt2x00_dev *rt2x00dev)
 	if (IS_ERR(intf->chipset_entry) || !intf->chipset_entry)
 		goto exit;
 
+<<<<<<< HEAD
 	intf->dev_flags = debugfs_create_file("dev_flags", 0400,
+=======
+	intf->dev_flags = debugfs_create_file("dev_flags", S_IRUSR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      intf->driver_folder, intf,
 					      &rt2x00debug_fop_dev_flags);
 	if (IS_ERR(intf->dev_flags) || !intf->dev_flags)
 		goto exit;
 
+<<<<<<< HEAD
 	intf->cap_flags = debugfs_create_file("cap_flags", 0400,
+=======
+	intf->cap_flags = debugfs_create_file("cap_flags", S_IRUSR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      intf->driver_folder, intf,
 					      &rt2x00debug_fop_cap_flags);
 	if (IS_ERR(intf->cap_flags) || !intf->cap_flags)
@@ -699,6 +739,7 @@ void rt2x00debug_register(struct rt2x00_dev *rt2x00dev)
 	if (IS_ERR(intf->register_folder) || !intf->register_folder)
 		goto exit;
 
+<<<<<<< HEAD
 #define RT2X00DEBUGFS_CREATE_REGISTER_ENTRY(__intf, __name)		\
 ({									\
 	if (debug->__name.read) {					\
@@ -721,6 +762,29 @@ void rt2x00debug_register(struct rt2x00_dev *rt2x00dev)
 		    !(__intf)->__name##_val_entry)			\
 			goto exit;					\
 	}								\
+=======
+#define RT2X00DEBUGFS_CREATE_REGISTER_ENTRY(__intf, __name)			\
+({										\
+	if (debug->__name.read) {						\
+		(__intf)->__name##_off_entry =					\
+		debugfs_create_u32(__stringify(__name) "_offset",		\
+				       S_IRUSR | S_IWUSR,			\
+				       (__intf)->register_folder,		\
+				       &(__intf)->offset_##__name);		\
+		if (IS_ERR((__intf)->__name##_off_entry)			\
+				|| !(__intf)->__name##_off_entry)		\
+			goto exit;						\
+										\
+		(__intf)->__name##_val_entry =					\
+		debugfs_create_file(__stringify(__name) "_value",		\
+					S_IRUSR | S_IWUSR,			\
+					(__intf)->register_folder,		\
+					(__intf), &rt2x00debug_fop_##__name);	\
+		if (IS_ERR((__intf)->__name##_val_entry)			\
+				|| !(__intf)->__name##_val_entry)		\
+			goto exit;						\
+	}									\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 })
 
 	RT2X00DEBUGFS_CREATE_REGISTER_ENTRY(intf, csr);
@@ -737,8 +801,13 @@ void rt2x00debug_register(struct rt2x00_dev *rt2x00dev)
 		goto exit;
 
 	intf->queue_frame_dump_entry =
+<<<<<<< HEAD
 		debugfs_create_file("dump", 0400, intf->queue_folder,
 				    intf, &rt2x00debug_fop_queue_dump);
+=======
+	    debugfs_create_file("dump", S_IRUSR, intf->queue_folder,
+				intf, &rt2x00debug_fop_queue_dump);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(intf->queue_frame_dump_entry)
 		|| !intf->queue_frame_dump_entry)
 		goto exit;
@@ -747,15 +816,25 @@ void rt2x00debug_register(struct rt2x00_dev *rt2x00dev)
 	init_waitqueue_head(&intf->frame_dump_waitqueue);
 
 	intf->queue_stats_entry =
+<<<<<<< HEAD
 		debugfs_create_file("queue", 0400, intf->queue_folder,
 				    intf, &rt2x00debug_fop_queue_stats);
+=======
+	    debugfs_create_file("queue", S_IRUSR, intf->queue_folder,
+				intf, &rt2x00debug_fop_queue_stats);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_RT2X00_LIB_CRYPTO
 	if (rt2x00_has_cap_hw_crypto(rt2x00dev))
 		intf->crypto_stats_entry =
+<<<<<<< HEAD
 			debugfs_create_file("crypto", 0444, intf->queue_folder,
 					    intf,
 					    &rt2x00debug_fop_crypto_stats);
+=======
+		    debugfs_create_file("crypto", S_IRUGO, intf->queue_folder,
+					intf, &rt2x00debug_fop_crypto_stats);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	return;

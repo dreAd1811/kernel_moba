@@ -145,7 +145,11 @@ static int ns_ioctl(struct atm_dev *dev, unsigned int cmd, void __user * arg);
 #ifdef EXTRA_DEBUG
 static void which_list(ns_dev * card, struct sk_buff *skb);
 #endif
+<<<<<<< HEAD
 static void ns_poll(struct timer_list *unused);
+=======
+static void ns_poll(unsigned long arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ns_phy_put(struct atm_dev *dev, unsigned char value,
 		       unsigned long addr);
 static unsigned char ns_phy_get(struct atm_dev *dev, unsigned long addr);
@@ -284,8 +288,15 @@ static int __init nicstar_init(void)
 	XPRINTK("nicstar: nicstar_init() returned.\n");
 
 	if (!error) {
+<<<<<<< HEAD
 		timer_setup(&ns_timer, ns_poll, 0);
 		ns_timer.expires = jiffies + NS_POLL_PERIOD;
+=======
+		init_timer(&ns_timer);
+		ns_timer.expires = jiffies + NS_POLL_PERIOD;
+		ns_timer.data = 0UL;
+		ns_timer.function = ns_poll;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		add_timer(&ns_timer);
 	}
 
@@ -2679,7 +2690,11 @@ static void which_list(ns_dev * card, struct sk_buff *skb)
 }
 #endif /* EXTRA_DEBUG */
 
+<<<<<<< HEAD
 static void ns_poll(struct timer_list *unused)
+=======
+static void ns_poll(unsigned long arg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	ns_dev *card;

@@ -55,16 +55,22 @@ LIRC features
 
 ``LIRC_CAN_REC_MODE2``
 
+<<<<<<< HEAD
     This is raw IR driver for receiving. This means that
     :ref:`LIRC_MODE_MODE2 <lirc-mode-MODE2>` is used. This also implies
     that :ref:`LIRC_MODE_SCANCODE <lirc-mode-SCANCODE>` is also supported,
     as long as the kernel is recent enough. Use the
     :ref:`lirc_set_rec_mode` to switch modes.
+=======
+    The driver is capable of receiving using
+    :ref:`LIRC_MODE_MODE2 <lirc-mode-MODE2>`.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. _LIRC-CAN-REC-LIRCCODE:
 
 ``LIRC_CAN_REC_LIRCCODE``
 
+<<<<<<< HEAD
     Unused. Kept just to avoid breaking uAPI.
 
 .. _LIRC-CAN-REC-SCANCODE:
@@ -73,6 +79,10 @@ LIRC features
 
     This is a scancode driver for receiving. This means that
     :ref:`LIRC_MODE_SCANCODE <lirc-mode-SCANCODE>` is used.
+=======
+    The driver is capable of receiving using
+    :ref:`LIRC_MODE_LIRCCODE <lirc-mode-LIRCCODE>`.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. _LIRC-CAN-SET-SEND-CARRIER:
 
@@ -166,10 +176,14 @@ LIRC features
 ``LIRC_CAN_SEND_PULSE``
 
     The driver supports sending (also called as IR blasting or IR TX) using
+<<<<<<< HEAD
     :ref:`LIRC_MODE_PULSE <lirc-mode-pulse>`. This implies that
     :ref:`LIRC_MODE_SCANCODE <lirc-mode-SCANCODE>` is also supported for
     transmit, as long as the kernel is recent enough. Use the
     :ref:`lirc_set_send_mode` to switch modes.
+=======
+    :ref:`LIRC_MODE_PULSE <lirc-mode-pulse>`.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .. _LIRC-CAN-SEND-MODE2:
 
@@ -182,7 +196,12 @@ LIRC features
 
 ``LIRC_CAN_SEND_LIRCCODE``
 
+<<<<<<< HEAD
     Unused. Kept just to avoid breaking uAPI.
+=======
+    The driver supports sending (also called as IR blasting or IR TX) using
+    :ref:`LIRC_MODE_LIRCCODE <lirc-mode-LIRCCODE>`.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Return Value

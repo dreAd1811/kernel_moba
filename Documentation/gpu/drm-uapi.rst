@@ -168,6 +168,7 @@ IOCTL Support on Device Nodes
 .. kernel-doc:: drivers/gpu/drm/drm_ioctl.c
    :doc: driver specific ioctls
 
+<<<<<<< HEAD
 Recommended IOCTL Return Values
 -------------------------------
 
@@ -223,6 +224,8 @@ usage is in line with the common meanings. The above list tries to just document
 DRM specific patterns. Note that ENOTTY has the slightly unintuitive meaning of
 "this IOCTL does not exist", and is used exactly as such in DRM.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .. kernel-doc:: include/drm/drm_ioctl.h
    :internal:
 

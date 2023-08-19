@@ -126,11 +126,27 @@ unsigned long prepare_ftrace_return(unsigned long parent,
 				    unsigned long frame_pointer)
 {
 	unsigned long return_hooker = (unsigned long) &return_to_handler;
+<<<<<<< HEAD
+=======
+	struct ftrace_graph_ent trace;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(atomic_read(&current->tracing_graph_pause)))
 		return parent + 8UL;
 
+<<<<<<< HEAD
 	if (function_graph_enter(parent, self_addr, frame_pointer, NULL))
+=======
+	trace.func = self_addr;
+	trace.depth = current->curr_ret_stack + 1;
+
+	/* Only trace if the calling function expects to */
+	if (!ftrace_graph_entry(&trace))
+		return parent + 8UL;
+
+	if (ftrace_push_return_trace(parent, self_addr, &trace.depth,
+				     frame_pointer, NULL) == -EBUSY)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return parent + 8UL;
 
 	return return_hooker;

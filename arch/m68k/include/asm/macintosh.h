@@ -4,7 +4,10 @@
 
 #include <linux/seq_file.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/irq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/bootinfo-mac.h>
 
@@ -34,7 +37,11 @@ struct mac_model
 	char ide_type;
 	char scc_type;
 	char ether_type;
+<<<<<<< HEAD
 	char expansion_type;
+=======
+	char nubus_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char floppy_type;
 };
 
@@ -58,6 +65,10 @@ struct mac_model
 #define MAC_SCSI_IIFX		5
 #define MAC_SCSI_DUO		6
 #define MAC_SCSI_LC		7
+<<<<<<< HEAD
+=======
+#define MAC_SCSI_LATE		8
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAC_IDE_NONE		0
 #define MAC_IDE_QUADRA		1
@@ -73,11 +84,16 @@ struct mac_model
 #define MAC_ETHER_SONIC		1
 #define MAC_ETHER_MACE		2
 
+<<<<<<< HEAD
 #define MAC_EXP_NONE		0
 #define MAC_EXP_PDS		1 /* Accepts only a PDS card */
 #define MAC_EXP_NUBUS		2 /* Accepts only NuBus card(s) */
 #define MAC_EXP_PDS_NUBUS	3 /* Accepts PDS card and/or NuBus card(s) */
 #define MAC_EXP_PDS_COMM	4 /* Accepts PDS card or Comm Slot card */
+=======
+#define MAC_NO_NUBUS		0
+#define MAC_NUBUS		1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MAC_FLOPPY_IWM		0
 #define MAC_FLOPPY_SWIM_ADDR1	1

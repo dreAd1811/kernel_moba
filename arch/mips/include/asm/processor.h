@@ -368,6 +368,11 @@ struct task_struct;
 /* Free all resources held by a thread. */
 #define release_thread(thread) do { } while(0)
 
+<<<<<<< HEAD
+=======
+extern unsigned long thread_saved_pc(struct task_struct *tsk);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Do necessary setup to start up a newly executed thread.
  */

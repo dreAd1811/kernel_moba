@@ -57,7 +57,11 @@ islpci_eth_cleanup_transmit(islpci_private *priv,
 
 #if VERBOSE > SHOW_ERROR_MESSAGES
 			DEBUG(SHOW_TRACING,
+<<<<<<< HEAD
 			      "cleanup skb %p skb->data %p skb->len %u truesize %u\n",
+=======
+			      "cleanup skb %p skb->data %p skb->len %u truesize %u\n ",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      skb, skb->data, skb->len, skb->truesize);
 #endif
 
@@ -328,7 +332,11 @@ islpci_eth_receive(islpci_private *priv)
 
 #if VERBOSE > SHOW_ERROR_MESSAGES
 	DEBUG(SHOW_TRACING,
+<<<<<<< HEAD
 	      "frq->addr %x skb->data %p skb->len %u offset %u truesize %u\n",
+=======
+	      "frq->addr %x skb->data %p skb->len %u offset %u truesize %u\n ",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	      control_block->rx_data_low[priv->free_data_rx].address, skb->data,
 	      skb->len, offset, skb->truesize);
 #endif
@@ -436,7 +444,11 @@ islpci_eth_receive(islpci_private *priv)
 
 #if VERBOSE > SHOW_ERROR_MESSAGES
 		DEBUG(SHOW_TRACING,
+<<<<<<< HEAD
 		      "new alloc skb %p skb->data %p skb->len %u index %u truesize %u\n",
+=======
+		      "new alloc skb %p skb->data %p skb->len %u index %u truesize %u\n ",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      skb, skb->data, skb->len, index, skb->truesize);
 #endif
 

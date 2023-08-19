@@ -50,7 +50,11 @@
 	model = "Warp i.MX7 Board";
 	compatible = "warp,imx7s-warp", "fsl,imx7s";
 
+<<<<<<< HEAD
 	memory@80000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x80000000 0x20000000>;
 	};
 
@@ -113,12 +117,23 @@
 	assigned-clock-rates = <884736000>;
 };
 
+<<<<<<< HEAD
+=======
+&cpu0 {
+	arm-supply = <&sw1a_reg>;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c1>;
 	status = "okay";
 
+<<<<<<< HEAD
 	pmic: pfuze3000@8 {
+=======
+	pmic: pfuze3000@08 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,pfuze3000";
 		reg = <0x08>;
 
@@ -222,7 +237,11 @@
 	pinctrl-0 = <&pinctrl_i2c4>;
 	status = "okay";
 
+<<<<<<< HEAD
 	codec: sgtl5000@a {
+=======
+	codec: sgtl5000@0a {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#sound-dai-cells = <0>;
 		reg = <0x0a>;
 		compatible = "fsl,sgtl5000";
@@ -267,6 +286,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &uart6 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_uart6>;
@@ -276,6 +296,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usbotg1 {
 	dr_mode = "peripheral";
 	status = "okay";
@@ -384,6 +406,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	pinctrl_uart6: uart6grp {
 		fsl,pins = <
 			MX7D_PAD_ECSPI1_MOSI__UART6_DTE_RX	0x79
@@ -391,6 +414,8 @@
 		>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl_usdhc1: usdhc1grp {
 		fsl,pins = <
 			MX7D_PAD_SD1_CMD__SD1_CMD	0x59

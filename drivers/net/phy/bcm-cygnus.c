@@ -136,6 +136,11 @@ static struct phy_driver bcm_cygnus_phy_driver[] = {
 	.name          = "Broadcom Cygnus PHY",
 	.features      = PHY_GBIT_FEATURES,
 	.config_init   = bcm_cygnus_config_init,
+<<<<<<< HEAD
+=======
+	.config_aneg   = genphy_config_aneg,
+	.read_status   = genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt = bcm_phy_ack_intr,
 	.config_intr   = bcm_phy_config_intr,
 	.suspend       = genphy_suspend,

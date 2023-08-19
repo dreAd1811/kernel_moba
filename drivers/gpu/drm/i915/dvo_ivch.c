@@ -59,17 +59,26 @@
  * This must not be set while VR01_DVO_BYPASS_ENABLE is set.
  */
 # define VR01_LCD_ENABLE		(1 << 2)
+<<<<<<< HEAD
 /* Enables the DVO repeater. */
 # define VR01_DVO_BYPASS_ENABLE		(1 << 1)
 /* Enables the DVO clock */
 # define VR01_DVO_ENABLE		(1 << 0)
 /* Enable dithering for 18bpp panels. Not documented. */
+=======
+/** Enables the DVO repeater. */
+# define VR01_DVO_BYPASS_ENABLE		(1 << 1)
+/** Enables the DVO clock */
+# define VR01_DVO_ENABLE		(1 << 0)
+/** Enable dithering for 18bpp panels. Not documented. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # define VR01_DITHER_ENABLE             (1 << 4)
 
 /*
  * LCD Interface Format
  */
 #define VR10		0x10
+<<<<<<< HEAD
 /* Enables LVDS output instead of CMOS */
 # define VR10_LVDS_ENABLE		(1 << 4)
 /* Enables 18-bit LVDS output. */
@@ -81,6 +90,19 @@
 /* Enables 2x24-bit LVDS output */
 # define VR10_INTERFACE_2X24		(3 << 2)
 /* Mask that defines the depth of the pipeline */
+=======
+/** Enables LVDS output instead of CMOS */
+# define VR10_LVDS_ENABLE		(1 << 4)
+/** Enables 18-bit LVDS output. */
+# define VR10_INTERFACE_1X18		(0 << 2)
+/** Enables 24-bit LVDS or CMOS output */
+# define VR10_INTERFACE_1X24		(1 << 2)
+/** Enables 2x18-bit LVDS or CMOS output. */
+# define VR10_INTERFACE_2X18		(2 << 2)
+/** Enables 2x24-bit LVDS output */
+# define VR10_INTERFACE_2X24		(3 << 2)
+/** Mask that defines the depth of the pipeline */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # define VR10_INTERFACE_DEPTH_MASK      (3 << 2)
 
 /*
@@ -97,7 +119,11 @@
  * Panel power down status
  */
 #define VR30		0x30
+<<<<<<< HEAD
 /* Read only bit indicating that the panel is not in a safe poweroff state. */
+=======
+/** Read only bit indicating that the panel is not in a safe poweroff state. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # define VR30_PANEL_ON			(1 << 15)
 
 #define VR40		0x40
@@ -161,7 +187,11 @@
  * instead. The following list contains all registers that
  * require saving.
  */
+<<<<<<< HEAD
 static const u16 backup_addresses[] = {
+=======
+static const uint16_t backup_addresses[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	0x11, 0x12,
 	0x18, 0x19, 0x1a, 0x1f,
 	0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,
@@ -174,21 +204,37 @@ static const u16 backup_addresses[] = {
 struct ivch_priv {
 	bool quiet;
 
+<<<<<<< HEAD
 	u16 width, height;
 
 	/* Register backup */
 
 	u16 reg_backup[ARRAY_SIZE(backup_addresses)];
+=======
+	uint16_t width, height;
+
+	/* Register backup */
+
+	uint16_t reg_backup[ARRAY_SIZE(backup_addresses)];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
 static void ivch_dump_regs(struct intel_dvo_device *dvo);
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Reads a register on the ivch.
  *
  * Each of the 256 registers are 16 bits long.
  */
+<<<<<<< HEAD
 static bool ivch_read(struct intel_dvo_device *dvo, int addr, u16 *data)
+=======
+static bool ivch_read(struct intel_dvo_device *dvo, int addr, uint16_t *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ivch_priv *priv = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
@@ -230,8 +276,13 @@ static bool ivch_read(struct intel_dvo_device *dvo, int addr, u16 *data)
 	return false;
 }
 
+<<<<<<< HEAD
 /* Writes a 16-bit register on the ivch */
 static bool ivch_write(struct intel_dvo_device *dvo, int addr, u16 data)
+=======
+/** Writes a 16-bit register on the ivch */
+static bool ivch_write(struct intel_dvo_device *dvo, int addr, uint16_t data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ivch_priv *priv = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
@@ -258,12 +309,20 @@ static bool ivch_write(struct intel_dvo_device *dvo, int addr, u16 data)
 	return false;
 }
 
+<<<<<<< HEAD
 /* Probes the given bus and slave address for an ivch */
+=======
+/** Probes the given bus and slave address for an ivch */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool ivch_init(struct intel_dvo_device *dvo,
 		      struct i2c_adapter *adapter)
 {
 	struct ivch_priv *priv;
+<<<<<<< HEAD
 	u16 temp;
+=======
+	uint16_t temp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	priv = kzalloc(sizeof(struct ivch_priv), GFP_KERNEL);
@@ -338,11 +397,19 @@ static void ivch_reset(struct intel_dvo_device *dvo)
 		ivch_write(dvo, backup_addresses[i], priv->reg_backup[i]);
 }
 
+<<<<<<< HEAD
 /* Sets the power state of the panel connected to the ivch */
 static void ivch_dpms(struct intel_dvo_device *dvo, bool enable)
 {
 	int i;
 	u16 vr01, vr30, backlight;
+=======
+/** Sets the power state of the panel connected to the ivch */
+static void ivch_dpms(struct intel_dvo_device *dvo, bool enable)
+{
+	int i;
+	uint16_t vr01, vr30, backlight;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ivch_reset(dvo);
 
@@ -379,7 +446,11 @@ static void ivch_dpms(struct intel_dvo_device *dvo, bool enable)
 
 static bool ivch_get_hw_state(struct intel_dvo_device *dvo)
 {
+<<<<<<< HEAD
 	u16 vr01;
+=======
+	uint16_t vr01;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ivch_reset(dvo);
 
@@ -398,9 +469,15 @@ static void ivch_mode_set(struct intel_dvo_device *dvo,
 			  const struct drm_display_mode *adjusted_mode)
 {
 	struct ivch_priv *priv = dvo->dev_priv;
+<<<<<<< HEAD
 	u16 vr40 = 0;
 	u16 vr01 = 0;
 	u16 vr10;
+=======
+	uint16_t vr40 = 0;
+	uint16_t vr01 = 0;
+	uint16_t vr10;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ivch_reset(dvo);
 
@@ -416,7 +493,11 @@ static void ivch_mode_set(struct intel_dvo_device *dvo,
 
 	if (mode->hdisplay != adjusted_mode->crtc_hdisplay ||
 	    mode->vdisplay != adjusted_mode->crtc_vdisplay) {
+<<<<<<< HEAD
 		u16 x_ratio, y_ratio;
+=======
+		uint16_t x_ratio, y_ratio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		vr01 |= VR01_PANEL_FIT_ENABLE;
 		vr40 |= VR40_CLOCK_GATING_ENABLE;
@@ -438,7 +519,11 @@ static void ivch_mode_set(struct intel_dvo_device *dvo,
 
 static void ivch_dump_regs(struct intel_dvo_device *dvo)
 {
+<<<<<<< HEAD
 	u16 val;
+=======
+	uint16_t val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ivch_read(dvo, VR00, &val);
 	DRM_DEBUG_KMS("VR00: 0x%04x\n", val);

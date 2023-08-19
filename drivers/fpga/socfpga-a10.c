@@ -1,9 +1,29 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FPGA Manager Driver for Altera Arria10 SoCFPGA
  *
  * Copyright (C) 2015-2016 Altera Corporation
+<<<<<<< HEAD
  */
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/clk.h>
 #include <linux/device.h>
 #include <linux/delay.h>
@@ -470,7 +490,10 @@ static int socfpga_a10_fpga_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct a10_fpga_priv *priv;
 	void __iomem *reg_base;
+<<<<<<< HEAD
 	struct fpga_manager *mgr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *res;
 	int ret;
 
@@ -508,6 +531,7 @@ static int socfpga_a10_fpga_probe(struct platform_device *pdev)
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
 	mgr = fpga_mgr_create(dev, "SoCFPGA Arria10 FPGA Manager",
 			      &socfpga_a10_fpga_mgr_ops, priv);
 	if (!mgr)
@@ -523,6 +547,10 @@ static int socfpga_a10_fpga_probe(struct platform_device *pdev)
 	}
 
 	return 0;
+=======
+	return fpga_mgr_register(dev, "SoCFPGA Arria10 FPGA Manager",
+				 &socfpga_a10_fpga_mgr_ops, priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int socfpga_a10_fpga_remove(struct platform_device *pdev)
@@ -530,7 +558,11 @@ static int socfpga_a10_fpga_remove(struct platform_device *pdev)
 	struct fpga_manager *mgr = platform_get_drvdata(pdev);
 	struct a10_fpga_priv *priv = mgr->priv;
 
+<<<<<<< HEAD
 	fpga_mgr_unregister(mgr);
+=======
+	fpga_mgr_unregister(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(priv->clk);
 
 	return 0;

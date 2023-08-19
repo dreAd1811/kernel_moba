@@ -33,10 +33,18 @@ void
 gp100_grctx_generate_pagepool(struct gf100_grctx *info)
 {
 	const struct gf100_grctx_func *grctx = info->gr->func->grctx;
+<<<<<<< HEAD
 	const int s = 8;
 	const int b = mmio_vram(info, grctx->pagepool_size, (1 << s), true);
 	mmio_refn(info, 0x40800c, 0x00000000, s, b);
 	mmio_wr32(info, 0x408010, 0x8007d800);
+=======
+	const u32 access = NV_MEM_ACCESS_RW | NV_MEM_ACCESS_SYS;
+	const int s = 8;
+	const int b = mmio_vram(info, grctx->pagepool_size, (1 << s), access);
+	mmio_refn(info, 0x40800c, 0x00000000, s, b);
+	mmio_wr32(info, 0x408010, 0x80000000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmio_refn(info, 0x419004, 0x00000000, s, b);
 	mmio_wr32(info, 0x419008, 0x00000000);
 }
@@ -48,6 +56,7 @@ gp100_grctx_generate_attrib(struct gf100_grctx *info)
 	const struct gf100_grctx_func *grctx = gr->func->grctx;
 	const u32  alpha = grctx->alpha_nr;
 	const u32 attrib = grctx->attrib_nr;
+<<<<<<< HEAD
 	const int s = 12;
 	const int max_batches = 0xffff;
 	u32 size = grctx->alpha_nr_max * gr->tpc_total;
@@ -59,6 +68,17 @@ gp100_grctx_generate_attrib(struct gf100_grctx *info)
 		size += grctx->attrib_nr_max * gr->ppc_nr[gpc] * gr->ppc_tpc_max;
 	size = ((size * 0x20) + 128) & ~127;
 	b = mmio_vram(info, size, (1 << s), false);
+=======
+	const u32 pertpc = 0x20 * (grctx->attrib_nr_max + grctx->alpha_nr_max);
+	const u32   size = roundup(gr->tpc_total * pertpc, 0x80);
+	const u32 access = NV_MEM_ACCESS_RW;
+	const int s = 12;
+	const int b = mmio_vram(info, size, (1 << s), access);
+	const int max_batches = 0xffff;
+	u32 ao = 0;
+	u32 bo = ao + grctx->alpha_nr_max * gr->tpc_total;
+	int gpc, ppc, n = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmio_refn(info, 0x418810, 0x80000000, s, b);
 	mmio_refn(info, 0x419848, 0x10000000, s, b);
@@ -72,7 +92,11 @@ gp100_grctx_generate_attrib(struct gf100_grctx *info)
 	for (gpc = 0; gpc < gr->gpc_nr; gpc++) {
 		for (ppc = 0; ppc < gr->ppc_nr[gpc]; ppc++, n++) {
 			const u32 as =  alpha * gr->ppc_tpc_nr[gpc][ppc];
+<<<<<<< HEAD
 			const u32 bs = attrib * gr->ppc_tpc_max;
+=======
+			const u32 bs = attrib * gr->ppc_tpc_nr[gpc][ppc];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			const u32 u = 0x418ea0 + (n * 0x04);
 			const u32 o = PPC_UNIT(gpc, ppc, 0);
 			if (!(gr->ppc_mask[gpc] & (1 << ppc)))
@@ -80,7 +104,11 @@ gp100_grctx_generate_attrib(struct gf100_grctx *info)
 			mmio_wr32(info, o + 0xc0, bs);
 			mmio_wr32(info, o + 0xf4, bo);
 			mmio_wr32(info, o + 0xf0, bs);
+<<<<<<< HEAD
 			bo += grctx->attrib_nr_max * gr->ppc_tpc_max;
+=======
+			bo += grctx->attrib_nr_max * gr->ppc_tpc_nr[gpc][ppc];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mmio_wr32(info, o + 0xe4, as);
 			mmio_wr32(info, o + 0xf8, ao);
 			ao += grctx->alpha_nr_max * gr->ppc_tpc_nr[gpc][ppc];
@@ -92,6 +120,7 @@ gp100_grctx_generate_attrib(struct gf100_grctx *info)
 	mmio_wr32(info, 0x41befc, 0x00000000);
 }
 
+<<<<<<< HEAD
 void
 gp100_grctx_generate_smid_config(struct gf100_gr *gr)
 {
@@ -105,10 +134,37 @@ gp100_grctx_generate_smid_config(struct gf100_gr *gr)
 		const u8 tpc = gr->sm[sm].tpc;
 		dist[sm / 4] |= ((gpc << 4) | tpc) << ((sm % 4) * 8);
 		gpcs[gpc + (gr->func->gpc_nr * (tpc / 4))] |= sm << ((tpc % 4) * 8);
+=======
+static void
+gp100_grctx_generate_405b60(struct gf100_gr *gr)
+{
+	struct nvkm_device *device = gr->base.engine.subdev.device;
+	const u32 dist_nr = DIV_ROUND_UP(gr->tpc_total, 4);
+	u32 dist[TPC_MAX / 4] = {};
+	u32 gpcs[GPC_MAX * 2] = {};
+	u8  tpcnr[GPC_MAX];
+	int tpc, gpc, i;
+
+	memcpy(tpcnr, gr->tpc_nr, sizeof(gr->tpc_nr));
+
+	/* won't result in the same distribution as the binary driver where
+	 * some of the gpcs have more tpcs than others, but this shall do
+	 * for the moment.  the code for earlier gpus has this issue too.
+	 */
+	for (gpc = -1, i = 0; i < gr->tpc_total; i++) {
+		do {
+			gpc = (gpc + 1) % gr->gpc_nr;
+		} while(!tpcnr[gpc]);
+		tpc = gr->tpc_nr[gpc] - tpcnr[gpc]--;
+
+		dist[i / 4] |= ((gpc << 4) | tpc) << ((i % 4) * 8);
+		gpcs[gpc + (gr->gpc_nr * (tpc / 4))] |= i << (tpc * 8);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < dist_nr; i++)
 		nvkm_wr32(device, 0x405b60 + (i * 4), dist[i]);
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(gpcs); i++)
 		nvkm_wr32(device, 0x405ba0 + (i * 4), gpcs[i]);
 }
@@ -116,6 +172,53 @@ gp100_grctx_generate_smid_config(struct gf100_gr *gr)
 const struct gf100_grctx_func
 gp100_grctx = {
 	.main  = gf100_grctx_generate_main,
+=======
+	for (i = 0; i < gr->gpc_nr * 2; i++)
+		nvkm_wr32(device, 0x405ba0 + (i * 4), gpcs[i]);
+}
+
+void
+gp100_grctx_generate_main(struct gf100_gr *gr, struct gf100_grctx *info)
+{
+	struct nvkm_device *device = gr->base.engine.subdev.device;
+	const struct gf100_grctx_func *grctx = gr->func->grctx;
+	u32 idle_timeout, tmp;
+	int i;
+
+	gf100_gr_mmio(gr, gr->fuc_sw_ctx);
+
+	idle_timeout = nvkm_mask(device, 0x404154, 0xffffffff, 0x00000000);
+
+	grctx->pagepool(info);
+	grctx->bundle(info);
+	grctx->attrib(info);
+	grctx->unkn(gr);
+
+	gm200_grctx_generate_tpcid(gr);
+	gf100_grctx_generate_r406028(gr);
+	gk104_grctx_generate_r418bb8(gr);
+
+	for (i = 0; i < 8; i++)
+		nvkm_wr32(device, 0x4064d0 + (i * 0x04), 0x00000000);
+	nvkm_wr32(device, 0x406500, 0x00000000);
+
+	nvkm_wr32(device, 0x405b00, (gr->tpc_total << 8) | gr->gpc_nr);
+
+	for (tmp = 0, i = 0; i < gr->gpc_nr; i++)
+		tmp |= ((1 << gr->tpc_nr[i]) - 1) << (i * 5);
+	nvkm_wr32(device, 0x4041c4, tmp);
+
+	gp100_grctx_generate_405b60(gr);
+
+	gf100_gr_icmd(gr, gr->fuc_bundle);
+	nvkm_wr32(device, 0x404154, idle_timeout);
+	gf100_gr_mthd(gr, gr->fuc_method);
+}
+
+const struct gf100_grctx_func
+gp100_grctx = {
+	.main  = gp100_grctx_generate_main,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.unkn  = gk104_grctx_generate_unkn,
 	.bundle = gm107_grctx_generate_bundle,
 	.bundle_size = 0x3000,
@@ -128,6 +231,7 @@ gp100_grctx = {
 	.attrib_nr = 0x440,
 	.alpha_nr_max = 0xc00,
 	.alpha_nr = 0x800,
+<<<<<<< HEAD
 	.sm_id = gm107_grctx_generate_sm_id,
 	.rop_mapping = gf117_grctx_generate_rop_mapping,
 	.dist_skip_table = gm200_grctx_generate_dist_skip_table,
@@ -136,4 +240,6 @@ gp100_grctx = {
 	.tpc_mask = gm200_grctx_generate_tpc_mask,
 	.smid_config = gp100_grctx_generate_smid_config,
 	.r419a3c = gm200_grctx_generate_r419a3c,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

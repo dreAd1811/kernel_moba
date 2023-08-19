@@ -13,10 +13,18 @@
 
 OBJCOPYFLAGS	:=-O binary -R .comment -S
 
+<<<<<<< HEAD
 ifneq ($(MACHINE),)
 include $(MACHINE)/Makefile.boot
 endif
 include $(srctree)/arch/arm/boot/dts/Makefile
+=======
+include $(srctree)/arch/arm/boot/dts/Makefile
+ifneq ($(DTSSUBDIR),)
+DTSSUBDIR_INCS=$(foreach DIR, $(DTSSUBDIR), $(addsuffix /Makefile, $(addprefix $(srctree)/arch/arm/boot/dts/, $(DIR))))
+include $(DTSSUBDIR_INCS)
+endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # Note: the following conditions must always be true:
 #   ZRELADDR == virt_to_phys(PAGE_OFFSET + TEXT_OFFSET)
@@ -35,6 +43,7 @@ ifneq ($(DTB_NAMES),)
 DTB_LIST := $(addsuffix .dtb,$(DTB_NAMES))
 DTB_OBJS := $(addprefix $(obj)/dts/,$(DTB_LIST))
 else
+<<<<<<< HEAD
 # Use the same way as ARM64 does to have dtb files appended
 #  to kernel image.
 # For dt overlay support, currently there isn't have any
@@ -45,11 +54,14 @@ else
 # generated during the build.
 # Note that dtb obj directory will always be cleaned at the
 # beginning of kernel build.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 DTB_OBJS := $(shell find $(obj)/dts/ -name \*.dtb)
 endif
 
 ifeq ($(CONFIG_XIP_KERNEL),y)
 
+<<<<<<< HEAD
 cmd_deflate_xip_data = $(CONFIG_SHELL) -c \
 	'$(srctree)/$(src)/deflate_xip_data.sh $< $@ || { rm -f $@; false; }'
 
@@ -63,6 +75,10 @@ endif
 
 $(obj)/xipImage: vmlinux FORCE
 	$(call if_changed,mkxip)
+=======
+$(obj)/xipImage: vmlinux FORCE
+	$(call if_changed,objcopy)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	@$(kecho) '  Physical Address of xipImage: $(CONFIG_XIP_PHYS_ADDR)'
 
 $(obj)/Image $(obj)/zImage: FORCE
@@ -79,6 +95,17 @@ $(obj)/xipImage: FORCE
 $(obj)/Image: vmlinux FORCE
 	$(call if_changed,objcopy)
 
+<<<<<<< HEAD
+=======
+$(obj)/Image-dtb-hdr: $(obj)/Image FORCE
+	echo -n 'UNCOMPRESSED_IMG' > $@ && \
+	$(call size_append, $(filter-out FORCE,$^)) >> $@
+
+$(obj)/Image-dtb: $(obj)/Image-dtb-hdr $(obj)/Image $(DTB_OBJS) FORCE
+	$(call if_changed,cat)
+	@echo '  Kernel: $@ is ready'
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 $(obj)/compressed/vmlinux: $(obj)/Image FORCE
 	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
 

@@ -49,7 +49,11 @@
  *
  */
 
+<<<<<<< HEAD
 void local_flush_tlb_all(void)
+=======
+void flush_tlb_all(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	unsigned long num_tlb_sets;
@@ -86,7 +90,11 @@ void local_flush_tlb_all(void)
 #define flush_itlb_page_no_eir(addr) \
 	mtspr_off(SPR_ITLBMR_BASE(0), ITLB_OFFSET(addr), 0);
 
+<<<<<<< HEAD
 void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long addr)
+=======
+void flush_tlb_page(struct vm_area_struct *vma, unsigned long addr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (have_dtlbeir)
 		flush_dtlb_page_eir(addr);
@@ -99,8 +107,13 @@ void local_flush_tlb_page(struct vm_area_struct *vma, unsigned long addr)
 		flush_itlb_page_no_eir(addr);
 }
 
+<<<<<<< HEAD
 void local_flush_tlb_range(struct vm_area_struct *vma,
 			   unsigned long start, unsigned long end)
+=======
+void flush_tlb_range(struct vm_area_struct *vma,
+		     unsigned long start, unsigned long end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int addr;
 	bool dtlbeir;
@@ -129,13 +142,21 @@ void local_flush_tlb_range(struct vm_area_struct *vma,
  * This should be changed to loop over over mm and call flush_tlb_range.
  */
 
+<<<<<<< HEAD
 void local_flush_tlb_mm(struct mm_struct *mm)
+=======
+void flush_tlb_mm(struct mm_struct *mm)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 
 	/* Was seeing bugs with the mm struct passed to us. Scrapped most of
 	   this function. */
 	/* Several architctures do this */
+<<<<<<< HEAD
 	local_flush_tlb_all();
+=======
+	flush_tlb_all();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* called in schedule() just before actually doing the switch_to */
@@ -149,14 +170,22 @@ void switch_mm(struct mm_struct *prev, struct mm_struct *next,
 	 * might be invalid at points where we still need to derefer
 	 * the pgd.
 	 */
+<<<<<<< HEAD
 	current_pgd[smp_processor_id()] = next->pgd;
+=======
+	current_pgd = next->pgd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We don't have context support implemented, so flush all
 	 * entries belonging to previous map
 	 */
 
 	if (prev != next)
+<<<<<<< HEAD
 		local_flush_tlb_mm(prev);
+=======
+		flush_tlb_mm(prev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 

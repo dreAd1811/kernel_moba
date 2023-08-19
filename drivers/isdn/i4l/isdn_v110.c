@@ -354,7 +354,10 @@ EncodeMatrix(unsigned char *buf, int len, unsigned char *m, int mlen)
 				printk(KERN_WARNING "isdn_v110 (EncodeMatrix): buffer full!\n");
 				return line;
 			}
+<<<<<<< HEAD
 			/* else: fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 128:
 			m[line] = 128;	/* leftmost -> set byte to 1000000 */
 			mbit = 64;	/* current bit in the matrix line */
@@ -387,6 +390,7 @@ EncodeMatrix(unsigned char *buf, int len, unsigned char *m, int mlen)
 		switch (++line % 10) {
 		case 1:
 			m[line++] = 0xfe;
+<<<<<<< HEAD
 			/* fall through */
 		case 2:
 			m[line++] = 0xfe;
@@ -409,6 +413,22 @@ EncodeMatrix(unsigned char *buf, int len, unsigned char *m, int mlen)
 		case 8:
 			m[line++] = 0xfe;
 			/* fall through */
+=======
+		case 2:
+			m[line++] = 0xfe;
+		case 3:
+			m[line++] = 0xfe;
+		case 4:
+			m[line++] = 0xfe;
+		case 5:
+			m[line++] = 0xbf;
+		case 6:
+			m[line++] = 0xfe;
+		case 7:
+			m[line++] = 0xfe;
+		case 8:
+			m[line++] = 0xfe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 9:
 			m[line++] = 0xfe;
 		}

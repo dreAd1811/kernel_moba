@@ -25,7 +25,12 @@
  */
 void __memcpy_fromio(void *to, const volatile void __iomem *from, size_t count)
 {
+<<<<<<< HEAD
 	while (count && !IS_ALIGNED((unsigned long)from, 8)) {
+=======
+	while (count && (!IS_ALIGNED((unsigned long)from, 8) ||
+			 !IS_ALIGNED((unsigned long)to, 8))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*(u8 *)to = __raw_readb_no_log(from);
 		from++;
 		to++;
@@ -53,22 +58,36 @@ EXPORT_SYMBOL(__memcpy_fromio);
  */
 void __memcpy_toio(volatile void __iomem *to, const void *from, size_t count)
 {
+<<<<<<< HEAD
 	while (count && !IS_ALIGNED((unsigned long)to, 8)) {
 		__raw_writeb_no_log(*(u8 *)from, to);
+=======
+	while (count && (!IS_ALIGNED((unsigned long)to, 8) ||
+			 !IS_ALIGNED((unsigned long)from, 8))) {
+		__raw_writeb_no_log(*(volatile u8 *)from, to);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		from++;
 		to++;
 		count--;
 	}
 
 	while (count >= 8) {
+<<<<<<< HEAD
 		__raw_writeq_no_log(*(u64 *)from, to);
+=======
+		__raw_writeq_no_log(*(volatile u64 *)from, to);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		from += 8;
 		to += 8;
 		count -= 8;
 	}
 
 	while (count) {
+<<<<<<< HEAD
 		__raw_writeb_no_log(*(u8 *)from, to);
+=======
+		__raw_writeb_no_log(*(volatile u8 *)from, to);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		from++;
 		to++;
 		count--;

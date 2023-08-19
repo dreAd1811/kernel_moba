@@ -614,7 +614,11 @@ static ssize_t qib_diagpkt_write(struct file *fp,
 	}
 
 	if (copy_from_user(tmpbuf,
+<<<<<<< HEAD
 			   u64_to_user_ptr(dp.data),
+=======
+			   (const void __user *) (unsigned long) dp.data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   dp.len)) {
 		ret = -EFAULT;
 		goto bail;
@@ -761,6 +765,10 @@ static ssize_t qib_diag_read(struct file *fp, char __user *data,
 {
 	struct qib_diag_client *dc = fp->private_data;
 	struct qib_devdata *dd = dc->dd;
+<<<<<<< HEAD
+=======
+	void __iomem *kreg_base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ssize_t ret;
 
 	if (dc->pid != current->pid) {
@@ -768,6 +776,11 @@ static ssize_t qib_diag_read(struct file *fp, char __user *data,
 		goto bail;
 	}
 
+<<<<<<< HEAD
+=======
+	kreg_base = dd->kregbase;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (count == 0)
 		ret = 0;
 	else if ((count % 4) || (*off % 4))
@@ -835,6 +848,10 @@ static ssize_t qib_diag_write(struct file *fp, const char __user *data,
 {
 	struct qib_diag_client *dc = fp->private_data;
 	struct qib_devdata *dd = dc->dd;
+<<<<<<< HEAD
+=======
+	void __iomem *kreg_base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ssize_t ret;
 
 	if (dc->pid != current->pid) {
@@ -842,6 +859,11 @@ static ssize_t qib_diag_write(struct file *fp, const char __user *data,
 		goto bail;
 	}
 
+<<<<<<< HEAD
+=======
+	kreg_base = dd->kregbase;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (count == 0)
 		ret = 0;
 	else if ((count % 4) || (*off % 4))

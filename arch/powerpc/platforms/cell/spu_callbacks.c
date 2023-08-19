@@ -44,7 +44,11 @@ static void *spu_syscall_table[] = {
 
 #define SYSCALL_SPU(func)	sys_##func,
 #define COMPAT_SYS_SPU(func)	sys_##func,
+<<<<<<< HEAD
 #define COMPAT_SPU_NEW(func)	sys_##func,
+=======
+#define PPC_SYS_SPU(func)	ppc_##func,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SYSX_SPU(f, f3264, f32)	f,
 
 #include <asm/systbl.h>

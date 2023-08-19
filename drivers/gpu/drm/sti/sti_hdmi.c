@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Author: Vincent Abriou <vincent.abriou@st.com> for STMicroelectronics.
+=======
+/*
+ * Copyright (C) STMicroelectronics SA 2014
+ * Author: Vincent Abriou <vincent.abriou@st.com> for STMicroelectronics.
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -515,9 +522,13 @@ static int hdmi_vendor_infoframe_config(struct sti_hdmi *hdmi)
 
 	DRM_DEBUG_DRIVER("\n");
 
+<<<<<<< HEAD
 	ret = drm_hdmi_vendor_infoframe_from_display_mode(&infoframe,
 							  hdmi->drm_connector,
 							  mode);
+=======
+	ret = drm_hdmi_vendor_infoframe_from_display_mode(&infoframe, mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		/*
 		 * Going into that statement does not means vendor infoframe
@@ -977,7 +988,12 @@ static int sti_hdmi_connector_get_modes(struct drm_connector *connector)
 	cec_notifier_set_phys_addr_from_edid(hdmi->notifier, edid);
 
 	count = drm_add_edid_modes(connector, edid);
+<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
+=======
+	drm_mode_connector_update_edid_property(connector, edid);
+	drm_edid_to_eld(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(edid);
 	return count;
@@ -1290,7 +1306,11 @@ static int sti_hdmi_bind(struct device *dev, struct device *master, void *data)
 
 	hdmi->drm_connector = drm_connector;
 
+<<<<<<< HEAD
 	err = drm_connector_attach_encoder(drm_connector, encoder);
+=======
+	err = drm_mode_connector_attach_encoder(drm_connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		DRM_ERROR("Failed to attach a connector to a encoder\n");
 		goto err_sysfs;
@@ -1315,7 +1335,10 @@ static int sti_hdmi_bind(struct device *dev, struct device *master, void *data)
 	return 0;
 
 err_sysfs:
+<<<<<<< HEAD
 	drm_bridge_remove(bridge);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdmi->drm_connector = NULL;
 	return -EINVAL;
 }
@@ -1415,11 +1438,14 @@ static int sti_hdmi_probe(struct platform_device *pdev)
 	init_waitqueue_head(&hdmi->wait_event);
 
 	hdmi->irq = platform_get_irq_byname(pdev, "irq");
+<<<<<<< HEAD
 	if (hdmi->irq < 0) {
 		DRM_ERROR("Cannot get HDMI irq\n");
 		ret = hdmi->irq;
 		goto release_adapter;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = devm_request_threaded_irq(dev, hdmi->irq, hdmi_irq,
 			hdmi_irq_thread, IRQF_ONESHOT, dev_name(dev), hdmi);

@@ -138,7 +138,11 @@ static int ttpci_eeprom_read_encodedMAC(struct i2c_adapter *adapter, u8 * encode
 
 int ttpci_eeprom_parse_mac(struct i2c_adapter *adapter, u8 *proposed_mac)
 {
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret, i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 encodedMAC[20];
 	u8 decodedMAC[6];
 
@@ -153,8 +157,16 @@ int ttpci_eeprom_parse_mac(struct i2c_adapter *adapter, u8 *proposed_mac)
 	ret = getmac_tt(decodedMAC, encodedMAC);
 	if( ret != 0 ) {
 		dprintk("adapter failed MAC signature check\n");
+<<<<<<< HEAD
 		dprintk("encoded MAC from EEPROM was %*phC",
 			(int)sizeof(encodedMAC), &encodedMAC);
+=======
+		dprintk("encoded MAC from EEPROM was " );
+		for(i=0; i<19; i++) {
+			dprintk( "%.2x:", encodedMAC[i]);
+		}
+		dprintk("%.2x\n", encodedMAC[19]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		eth_zero_addr(proposed_mac);
 		return ret;
 	}

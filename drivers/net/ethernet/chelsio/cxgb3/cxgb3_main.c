@@ -777,11 +777,19 @@ static ssize_t store_nservers(struct device *d, struct device_attribute *attr,
 
 #define CXGB3_ATTR_R(name, val_expr) \
 CXGB3_SHOW(name, val_expr) \
+<<<<<<< HEAD
 static DEVICE_ATTR(name, 0444, show_##name, NULL)
 
 #define CXGB3_ATTR_RW(name, val_expr, store_method) \
 CXGB3_SHOW(name, val_expr) \
 static DEVICE_ATTR(name, 0644, show_##name, store_method)
+=======
+static DEVICE_ATTR(name, S_IRUGO, show_##name, NULL)
+
+#define CXGB3_ATTR_RW(name, val_expr, store_method) \
+CXGB3_SHOW(name, val_expr) \
+static DEVICE_ATTR(name, S_IRUGO | S_IWUSR, show_##name, store_method)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CXGB3_ATTR_R(cam_size, t3_mc5_size(&adap->mc5));
 CXGB3_ATTR_RW(nfilters, adap->params.mc5.nfilters, store_nfilters);
@@ -860,7 +868,11 @@ static ssize_t store_##name(struct device *d, struct device_attribute *attr, \
 { \
 	return tm_attr_store(d, buf, len, sched); \
 } \
+<<<<<<< HEAD
 static DEVICE_ATTR(name, 0644, show_##name, store_##name)
+=======
+static DEVICE_ATTR(name, S_IRUGO | S_IWUSR, show_##name, store_##name)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 TM_ATTR(sched0, 0);
 TM_ATTR(sched1, 1);
@@ -2449,6 +2461,11 @@ static int cxgb_extension_ioctl(struct net_device *dev, void __user *useraddr)
 
 		if (!is_offload(adapter))
 			return -EOPNOTSUPP;
+<<<<<<< HEAD
+=======
+		if (!capable(CAP_NET_ADMIN))
+			return -EPERM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!(adapter->flags & FULL_INIT_DONE))
 			return -EIO;	/* need the memory controllers */
 		if (copy_from_user(&t, useraddr, sizeof(t)))
@@ -3323,7 +3340,10 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		netdev->ethtool_ops = &cxgb_ethtool_ops;
 		netdev->min_mtu = 81;
 		netdev->max_mtu = ETH_MAX_MTU;
+<<<<<<< HEAD
 		netdev->dev_port = pi->port_id;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pci_set_drvdata(pdev, adapter);
@@ -3381,17 +3401,23 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	err = sysfs_create_group(&adapter->port[0]->dev.kobj,
 				 &cxgb3_attr_group);
+<<<<<<< HEAD
 	if (err) {
 		dev_err(&pdev->dev, "cannot create sysfs group\n");
 		goto out_close_led;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	print_port_info(adapter, ai);
 	return 0;
 
+<<<<<<< HEAD
 out_close_led:
 	t3_set_reg_field(adapter, A_T3DBG_GPIO_EN, F_GPIO0_OUT_VAL, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_free_dev:
 	iounmap(adapter->regs);
 	for (i = ai->nports0 + ai->nports1 - 1; i >= 0; --i)

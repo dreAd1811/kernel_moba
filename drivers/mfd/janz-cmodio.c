@@ -183,8 +183,15 @@ static int cmodio_pci_probe(struct pci_dev *dev,
 	int ret;
 
 	priv = devm_kzalloc(&dev->dev, sizeof(*priv), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!priv)
 		return -ENOMEM;
+=======
+	if (!priv) {
+		dev_err(&dev->dev, "unable to allocate private data\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_set_drvdata(dev, priv);
 	priv->pdev = dev;

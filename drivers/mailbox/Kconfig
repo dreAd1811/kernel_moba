@@ -15,12 +15,15 @@ config ARM_MHU
 	  The controller has 3 mailbox channels, the last of which can be
 	  used in Secure mode only.
 
+<<<<<<< HEAD
 config IMX_MBOX
 	tristate "i.MX Mailbox"
 	depends on ARCH_MXC || COMPILE_TEST
 	help
 	  Mailbox implementation for i.MX Messaging Unit (MU).
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config PLATFORM_MHU
 	tristate "Platform MHU Mailbox"
 	depends on OF
@@ -114,6 +117,7 @@ config TI_MESSAGE_MANAGER
 	  multiple processors within the SoC. Select this driver if your
 	  platform has support for the hardware block.
 
+<<<<<<< HEAD
 config HI3660_MBOX
 	tristate "Hi3660 Mailbox" if EXPERT
 	depends on (ARCH_HISI || COMPILE_TEST)
@@ -129,6 +133,11 @@ config HI6220_MBOX
 	depends on (ARCH_HISI || COMPILE_TEST)
 	depends on OF
 	default ARCH_HISI
+=======
+config HI6220_MBOX
+	tristate "Hi6220 Mailbox"
+	depends on ARCH_HISI
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  An implementation of the hi6220 mailbox. It is used to send message
 	  between application processors and MCU. Say Y here if you want to
@@ -150,9 +159,25 @@ config QCOM_APCS_IPC
 	  providing an interface for invoking the inter-process communication
 	  signals from the application processor to other masters.
 
+<<<<<<< HEAD
 config TEGRA_HSP_MBOX
 	bool "Tegra HSP (Hardware Synchronization Primitives) Driver"
 	depends on ARCH_TEGRA
+=======
+config QCOM_GVM_IPC
+	tristate "Qualcomm Technologies, Inc. GVM IPC driver"
+	depends on ARCH_QCOM
+	help
+	  Say y here to enable support for the GVM IPC mailbox driver,
+	  This driver will providing an interface for invoking the communication
+	  between GVM and primary host through virtual IRQ line. It signals from
+	  the GVM to primary host and primary host will send different signal to
+	  remote sub system.
+
+config TEGRA_HSP_MBOX
+	bool "Tegra HSP (Hardware Synchronization Primitives) Driver"
+	depends on ARCH_TEGRA_186_SOC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  The Tegra HSP driver is used for the interprocessor communication
 	  between different remote processors and host processors on Tegra186
@@ -172,6 +197,10 @@ config XGENE_SLIMPRO_MBOX
 config BCM_PDC_MBOX
 	tristate "Broadcom FlexSparx DMA Mailbox"
 	depends on ARCH_BCM_IPROC || COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Mailbox implementation for the Broadcom FlexSparx DMA ring manager,
 	  which provides access to various offload engines on Broadcom
@@ -180,14 +209,21 @@ config BCM_PDC_MBOX
 config BCM_FLEXRM_MBOX
 	tristate "Broadcom FlexRM Mailbox"
 	depends on ARM64
+<<<<<<< HEAD
 	depends on ARCH_BCM_IPROC || COMPILE_TEST
 	select GENERIC_MSI_IRQ_DOMAIN
 	default m if ARCH_BCM_IPROC
+=======
+	depends on HAS_DMA
+	select GENERIC_MSI_IRQ_DOMAIN
+	default ARCH_BCM_IPROC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Mailbox implementation of the Broadcom FlexRM ring manager,
 	  which provides access to various offload engines on Broadcom
 	  SoCs. Say Y here if you want to use the Broadcom FlexRM.
 
+<<<<<<< HEAD
 config STM32_IPCC
 	tristate "STM32 IPCC Mailbox"
 	depends on MACH_STM32MP157
@@ -213,4 +249,20 @@ config MSM_QMP
 	  QMP is a lightweight communication protocol for sending messages to
 	  a remote processor. This protocol fits into the Generic Mailbox
 	  Framework. QMP uses a mailbox located in shared memory.
+=======
+config QTI_RPMH_MBOX
+	bool "TCS Mailbox for QTI RPMH Communication"
+	depends on ARCH_QCOM
+	help
+	  Support for communication with the hardened-RPM blocks in
+	  Qualcomm Technologies Inc (QTI) SoCs using TCS hardware mailbox.
+
+config MSM_QMP
+         bool "QTI Mailbox Protocol(QMP)"
+         help
+           QMP is a lightweight communication protocol for sending messages to
+           a remote processor. This protocol fits into the Generic Mailbox
+           Framework. QMP uses a mailbox located in shared memory.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif

@@ -15,6 +15,12 @@
 
 struct clk;
 
+<<<<<<< HEAD
+=======
+extern int clk_register(struct clk *clk);
+extern void clk_unregister(struct clk *clk);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int davinci_clk_reset_assert(struct clk *c);
 int davinci_clk_reset_deassert(struct clk *c);
 

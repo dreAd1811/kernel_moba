@@ -55,6 +55,37 @@ MODULE_PARM_DESC(msi, "Control MSI interrupts: 0-disable (default), 1-enable");
 #endif
 #endif
 
+<<<<<<< HEAD
+=======
+int ci_bitrate = 70000;
+module_param(ci_bitrate, int, 0444);
+MODULE_PARM_DESC(ci_bitrate, " Bitrate in KHz for output to CI.");
+
+int ts_loop = -1;
+module_param(ts_loop, int, 0444);
+MODULE_PARM_DESC(ts_loop, "TS in/out test loop on port ts_loop");
+
+int xo2_speed = 2;
+module_param(xo2_speed, int, 0444);
+MODULE_PARM_DESC(xo2_speed, "default transfer speed for xo2 based duoflex, 0=55,1=75,2=90,3=104 MBit/s, default=2, use attribute to change for individual cards");
+
+#ifdef __arm__
+int alt_dma = 1;
+#else
+int alt_dma;
+#endif
+module_param(alt_dma, int, 0444);
+MODULE_PARM_DESC(alt_dma, "use alternative DMA buffer handling");
+
+int no_init;
+module_param(no_init, int, 0444);
+MODULE_PARM_DESC(no_init, "do not initialize most devices");
+
+int stv0910_single;
+module_param(stv0910_single, int, 0444);
+MODULE_PARM_DESC(stv0910_single, "use stv0910 cards as single demods");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /****************************************************************************/
 /****************************************************************************/
 /****************************************************************************/
@@ -65,6 +96,7 @@ static void ddb_irq_disable(struct ddb *dev)
 	ddbwritel(dev, 0, MSI1_ENABLE);
 }
 
+<<<<<<< HEAD
 static void ddb_msi_exit(struct ddb *dev)
 {
 #ifdef CONFIG_PCI_MSI
@@ -73,24 +105,42 @@ static void ddb_msi_exit(struct ddb *dev)
 #endif
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ddb_irq_exit(struct ddb *dev)
 {
 	ddb_irq_disable(dev);
 	if (dev->msi == 2)
+<<<<<<< HEAD
 		free_irq(pci_irq_vector(dev->pdev, 1), dev);
 	free_irq(pci_irq_vector(dev->pdev, 0), dev);
+=======
+		free_irq(dev->pdev->irq + 1, dev);
+	free_irq(dev->pdev->irq, dev);
+#ifdef CONFIG_PCI_MSI
+	if (dev->msi)
+		pci_disable_msi(dev->pdev);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ddb_remove(struct pci_dev *pdev)
 {
+<<<<<<< HEAD
 	struct ddb *dev = (struct ddb *)pci_get_drvdata(pdev);
+=======
+	struct ddb *dev = (struct ddb *) pci_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ddb_device_destroy(dev);
 	ddb_ports_detach(dev);
 	ddb_i2c_release(dev);
 
 	ddb_irq_exit(dev);
+<<<<<<< HEAD
 	ddb_msi_exit(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddb_ports_release(dev);
 	ddb_buffers_free(dev);
 
@@ -105,6 +155,7 @@ static void ddb_irq_msi(struct ddb *dev, int nr)
 	int stat;
 
 	if (msi && pci_msi_enabled()) {
+<<<<<<< HEAD
 		stat = pci_alloc_irq_vectors(dev->pdev, 1, nr,
 					     PCI_IRQ_MSI | PCI_IRQ_MSIX);
 		if (stat >= 1) {
@@ -114,6 +165,15 @@ static void ddb_irq_msi(struct ddb *dev, int nr)
 		} else {
 			dev_info(dev->dev, "MSI not available.\n");
 		}
+=======
+		stat = pci_alloc_irq_vectors(dev->pdev, 1, nr, PCI_IRQ_MSI);
+		if (stat >= 1) {
+			dev->msi = stat;
+			dev_info(dev->dev, "using %d MSI interrupt(s)\n",
+				dev->msi);
+		} else
+			dev_info(dev->dev, "MSI not available.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 #endif
@@ -138,6 +198,7 @@ static int ddb_irq_init(struct ddb *dev)
 	if (dev->msi)
 		irq_flag = 0;
 	if (dev->msi == 2) {
+<<<<<<< HEAD
 		stat = request_irq(pci_irq_vector(dev->pdev, 0),
 				   ddb_irq_handler0, irq_flag, "ddbridge",
 				   (void *)dev);
@@ -148,14 +209,29 @@ static int ddb_irq_init(struct ddb *dev)
 				   (void *)dev);
 		if (stat < 0) {
 			free_irq(pci_irq_vector(dev->pdev, 0), dev);
+=======
+		stat = request_irq(dev->pdev->irq, ddb_irq_handler0,
+				   irq_flag, "ddbridge", (void *) dev);
+		if (stat < 0)
+			return stat;
+		stat = request_irq(dev->pdev->irq + 1, ddb_irq_handler1,
+				   irq_flag, "ddbridge", (void *) dev);
+		if (stat < 0) {
+			free_irq(dev->pdev->irq, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return stat;
 		}
 	} else
 #endif
 	{
+<<<<<<< HEAD
 		stat = request_irq(pci_irq_vector(dev->pdev, 0),
 				   ddb_irq_handler, irq_flag, "ddbridge",
 				   (void *)dev);
+=======
+		stat = request_irq(dev->pdev->irq, ddb_irq_handler,
+				   irq_flag, "ddbridge", (void *) dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (stat < 0)
 			return stat;
 	}
@@ -170,7 +246,11 @@ static int ddb_irq_init(struct ddb *dev)
 }
 
 static int ddb_probe(struct pci_dev *pdev,
+<<<<<<< HEAD
 		     const struct pci_device_id *id)
+=======
+			       const struct pci_device_id *id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ddb *dev;
 	int stat = 0;
@@ -184,8 +264,13 @@ static int ddb_probe(struct pci_dev *pdev,
 		if (pci_set_dma_mask(pdev, DMA_BIT_MASK(32)))
 			return -ENODEV;
 
+<<<<<<< HEAD
 	dev = vzalloc(sizeof(*dev));
 	if (!dev)
+=======
+	dev = vzalloc(sizeof(struct ddb));
+	if (dev == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	mutex_init(&dev->mutex);
@@ -198,7 +283,10 @@ static int ddb_probe(struct pci_dev *pdev,
 	dev->link[0].ids.device = id->device;
 	dev->link[0].ids.subvendor = id->subvendor;
 	dev->link[0].ids.subdevice = pdev->subsystem_device;
+<<<<<<< HEAD
 	dev->link[0].ids.devid = (id->device << 16) | id->vendor;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->link[0].dev = dev;
 	dev->link[0].info = get_ddb_info(id->vendor, id->device,
@@ -225,7 +313,11 @@ static int ddb_probe(struct pci_dev *pdev,
 	dev->link[0].ids.regmapid = ddbreadl(dev, 4);
 
 	dev_info(&pdev->dev, "HW %08x REGMAP %08x\n",
+<<<<<<< HEAD
 		 dev->link[0].ids.hwid, dev->link[0].ids.regmapid);
+=======
+		dev->link[0].ids.hwid, dev->link[0].ids.regmapid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ddbwritel(dev, 0, DMA_BASE_READ);
 	ddbwritel(dev, 0, DMA_BASE_WRITE);
@@ -240,7 +332,12 @@ static int ddb_probe(struct pci_dev *pdev,
 	ddb_irq_exit(dev);
 fail0:
 	dev_err(&pdev->dev, "fail0\n");
+<<<<<<< HEAD
 	ddb_msi_exit(dev);
+=======
+	if (dev->msi)
+		pci_disable_msi(dev->pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fail:
 	dev_err(&pdev->dev, "fail\n");
 
@@ -264,7 +361,10 @@ static const struct pci_device_id ddb_id_table[] = {
 	DDB_DEVICE_ANY(0x0006),
 	DDB_DEVICE_ANY(0x0007),
 	DDB_DEVICE_ANY(0x0008),
+<<<<<<< HEAD
 	DDB_DEVICE_ANY(0x0009),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DDB_DEVICE_ANY(0x0011),
 	DDB_DEVICE_ANY(0x0012),
 	DDB_DEVICE_ANY(0x0013),
@@ -292,11 +392,16 @@ static struct pci_driver ddb_pci_driver = {
 
 static __init int module_init_ddbridge(void)
 {
+<<<<<<< HEAD
 	int stat;
+=======
+	int stat = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_info("Digital Devices PCIE bridge driver "
 		DDBRIDGE_VERSION
 		", Copyright (C) 2010-17 Digital Devices GmbH\n");
+<<<<<<< HEAD
 	stat = ddb_init_ddbridge();
 	if (stat < 0)
 		return stat;
@@ -304,13 +409,33 @@ static __init int module_init_ddbridge(void)
 	if (stat < 0)
 		ddb_exit_ddbridge(0, stat);
 
+=======
+	if (ddb_class_create() < 0)
+		return -1;
+	ddb_wq = create_workqueue("ddbridge");
+	if (ddb_wq == NULL)
+		goto exit1;
+	stat = pci_register_driver(&ddb_pci_driver);
+	if (stat < 0)
+		goto exit2;
+	return stat;
+exit2:
+	destroy_workqueue(ddb_wq);
+exit1:
+	ddb_class_destroy();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return stat;
 }
 
 static __exit void module_exit_ddbridge(void)
 {
 	pci_unregister_driver(&ddb_pci_driver);
+<<<<<<< HEAD
 	ddb_exit_ddbridge(0, 0);
+=======
+	destroy_workqueue(ddb_wq);
+	ddb_class_destroy();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(module_init_ddbridge);

@@ -567,7 +567,11 @@ static struct carm_request *carm_get_special(struct carm_host *host)
 	if (!crq)
 		return NULL;
 
+<<<<<<< HEAD
 	rq = blk_get_request(host->oob_q, REQ_OP_DRV_OUT, 0);
+=======
+	rq = blk_get_request(host->oob_q, REQ_OP_DRV_OUT, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq)) {
 		spin_lock_irqsave(&host->lock, flags);
 		carm_put_request(host, crq);

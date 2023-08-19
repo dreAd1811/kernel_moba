@@ -519,6 +519,7 @@
 &cpu {
 	cpu0-supply = <&tps>;
 };
+<<<<<<< HEAD
 
 &cpu0_opp_table {
 	/*
@@ -533,3 +534,5 @@
 		opp-suspend;
 	};
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

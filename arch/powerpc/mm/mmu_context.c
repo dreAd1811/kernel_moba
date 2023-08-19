@@ -12,7 +12,10 @@
 
 #include <linux/mm.h>
 #include <linux/cpu.h>
+<<<<<<< HEAD
 #include <linux/sched/mm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mmu_context.h>
 
@@ -35,6 +38,18 @@ static inline void switch_mm_pgdir(struct task_struct *tsk,
 				   struct mm_struct *mm) { }
 #endif
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PPC_BOOK3S_64
+static inline void inc_mm_active_cpus(struct mm_struct *mm)
+{
+	atomic_inc(&mm->context.active_cpus);
+}
+#else
+static inline void inc_mm_active_cpus(struct mm_struct *mm) { }
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 			struct task_struct *tsk)
 {
@@ -57,6 +72,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 		 * in switch_slb(), and/or the store of paca->mm_ctx_id in
 		 * copy_mm_to_paca().
 		 *
+<<<<<<< HEAD
 		 * On the other side, the barrier is in mm/tlb-radix.c for
 		 * radix which orders earlier stores to clear the PTEs vs
 		 * the load of mm_cpumask. And pte_xchg which does the same
@@ -65,6 +81,10 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 		 * This full barrier is needed by membarrier when switching
 		 * between processes after store to rq->curr, before user-space
 		 * memory accesses.
+=======
+		 * On the read side the barrier is in pte_xchg(), which orders
+		 * the store to the PTE vs the load of mm_cpumask.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		smp_mb();
 
@@ -87,8 +107,11 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
 
 	if (new_on_cpu)
 		radix_kvm_prefetch_workaround(next);
+<<<<<<< HEAD
 	else
 		membarrier_arch_switch_mm(prev, next, tsk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The actual HW switching method differs between the various

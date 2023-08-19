@@ -286,10 +286,16 @@ static void __init pxa3xx_register_plls(void)
 	clk_register_fixed_rate(NULL, "osc_13mhz", NULL,
 				CLK_GET_RATE_NOCACHE,
 				13 * MHz);
+<<<<<<< HEAD
 	clkdev_pxa_register(CLK_OSC32k768, "osc_32_768khz", NULL,
 			    clk_register_fixed_rate(NULL, "osc_32_768khz", NULL,
 						    CLK_GET_RATE_NOCACHE,
 						    32768));
+=======
+	clk_register_fixed_rate(NULL, "osc_32_768khz", NULL,
+				CLK_GET_RATE_NOCACHE,
+				32768);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_register_fixed_rate(NULL, "ring_osc_120mhz", NULL,
 				CLK_GET_RATE_NOCACHE,
 				120 * MHz);
@@ -330,16 +336,23 @@ static void __init pxa3xx_dummy_clocks_init(void)
 
 static void __init pxa3xx_base_clocks_init(void)
 {
+<<<<<<< HEAD
 	struct clk *clk;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pxa3xx_register_plls();
 	pxa3xx_register_core();
 	clk_register_clk_pxa3xx_system_bus();
 	clk_register_clk_pxa3xx_ac97();
 	clk_register_clk_pxa3xx_smemc();
+<<<<<<< HEAD
 	clk = clk_register_gate(NULL, "CLK_POUT",
 				"osc_13mhz", 0, OSCC, 11, 0, NULL);
 	clk_register_clkdev(clk, "CLK_POUT", NULL);
+=======
+	clk_register_gate(NULL, "CLK_POUT", "osc_13mhz", 0, OSCC, 11, 0, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clkdev_pxa_register(CLK_OSTIMER, "OSTIMER0", NULL,
 			    clk_register_fixed_factor(NULL, "os-timer0",
 						      "osc_13mhz", 0, 1, 4));

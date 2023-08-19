@@ -134,10 +134,17 @@ int maple_set_rtc_time(struct rtc_time *tm)
 
 static struct resource rtc_iores = {
 	.name = "rtc",
+<<<<<<< HEAD
 	.flags = IORESOURCE_IO | IORESOURCE_BUSY,
 };
 
 time64_t __init maple_get_boot_time(void)
+=======
+	.flags = IORESOURCE_BUSY,
+};
+
+unsigned long __init maple_get_boot_time(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtc_time tm;
 	struct device_node *rtcs;
@@ -170,6 +177,11 @@ time64_t __init maple_get_boot_time(void)
 	request_resource(&ioport_resource, &rtc_iores);
 
 	maple_get_rtc_time(&tm);
+<<<<<<< HEAD
 	return rtc_tm_to_time64(&tm);
+=======
+	return mktime(tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday,
+		      tm.tm_hour, tm.tm_min, tm.tm_sec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 

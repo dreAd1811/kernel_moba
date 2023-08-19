@@ -1898,6 +1898,7 @@ static int mwifiex_cmd_get_wakeup_reason(struct mwifiex_private *priv,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mwifiex_cmd_get_chan_info(struct host_cmd_ds_command *cmd,
 				     u16 cmd_action)
 {
@@ -1917,6 +1918,8 @@ static int mwifiex_cmd_get_chan_info(struct host_cmd_ds_command *cmd,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* This function check if the command is supported by firmware */
 static int mwifiex_is_cmd_supported(struct mwifiex_private *priv, u16 cmd_no)
 {
@@ -2225,6 +2228,7 @@ int mwifiex_sta_prepare_cmd(struct mwifiex_private *priv, uint16_t cmd_no,
 	case HostCmd_CMD_CHAN_REGION_CFG:
 		ret = mwifiex_cmd_chan_region_cfg(priv, cmd_ptr, cmd_action);
 		break;
+<<<<<<< HEAD
 	case HostCmd_CMD_FW_DUMP_EVENT:
 		cmd_ptr->command = cpu_to_le16(cmd_no);
 		cmd_ptr->size = cpu_to_le16(S_DS_GEN);
@@ -2232,6 +2236,8 @@ int mwifiex_sta_prepare_cmd(struct mwifiex_private *priv, uint16_t cmd_no,
 	case HostCmd_CMD_STA_CONFIGURE:
 		ret = mwifiex_cmd_get_chan_info(cmd_ptr, cmd_action);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		mwifiex_dbg(priv->adapter, ERROR,
 			    "PREP_CMD: unknown cmd- %#x\n", cmd_no);

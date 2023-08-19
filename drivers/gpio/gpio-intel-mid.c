@@ -295,7 +295,11 @@ static void intel_mid_irq_handler(struct irq_desc *desc)
 			mask = BIT(gpio);
 			/* Clear before handling so we can't lose an edge */
 			writel(mask, gedr);
+<<<<<<< HEAD
 			generic_handle_irq(irq_find_mapping(gc->irq.domain,
+=======
+			generic_handle_irq(irq_find_mapping(gc->irqdomain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							    base + gpio));
 		}
 	}
@@ -361,8 +365,15 @@ static int intel_gpio_probe(struct pci_dev *pdev,
 	pcim_iounmap_regions(pdev, 1 << 1);
 
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!priv)
 		return -ENOMEM;
+=======
+	if (!priv) {
+		dev_err(&pdev->dev, "can't allocate chip data\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->reg_base = pcim_iomap_table(pdev)[0];
 	priv->chip.label = dev_name(&pdev->dev);

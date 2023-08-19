@@ -210,8 +210,11 @@ int __i915_subtests(const char *caller,
 			return -EINTR;
 
 		pr_debug(DRIVER_NAME ": Running %s/%s\n", caller, st->name);
+<<<<<<< HEAD
 		GEM_TRACE("Running %s/%s\n", caller, st->name);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = st->func(data);
 		if (err && err != -EINTR) {
 			pr_err(DRIVER_NAME "/%s: %s failed with error %d\n",

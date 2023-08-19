@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
 /**********************************************************
  * Copyright 1998-2015 VMware, Inc.
+=======
+/**********************************************************
+ * Copyright 1998-2015 VMware, Inc.  All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -230,9 +235,15 @@ typedef enum {
    SVGA3D_DEVCAP_DEAD2                             = 94,
 
    /*
+<<<<<<< HEAD
     * Does the device support DXContexts?
     */
    SVGA3D_DEVCAP_DXCONTEXT                         = 95,
+=======
+    * Does the device support the DX commands?
+    */
+   SVGA3D_DEVCAP_DX                                = 95,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
    /*
     * What is the maximum size of a texture array?
@@ -242,6 +253,7 @@ typedef enum {
    SVGA3D_DEVCAP_MAX_TEXTURE_ARRAY_SIZE            = 96,
 
    /*
+<<<<<<< HEAD
     * What is the maximum number of vertex buffers or vertex input registers
     * that can be expected to work correctly with a DXContext?
     *
@@ -257,10 +269,15 @@ typedef enum {
     * If guest-drivers are able to expose a lower-limit, it's recommended
     * that they clamp to this value.  Otherwise, the host will make a
     * best-effort on case-by-case basis if guests exceed this.
+=======
+    * What is the maximum number of vertex buffers that can
+    * be used in the DXContext inputAssembly?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     */
    SVGA3D_DEVCAP_DX_MAX_VERTEXBUFFERS              = 97,
 
    /*
+<<<<<<< HEAD
     * What is the maximum number of constant buffers that can be expected to
     * work correctly with a DX context?
     *
@@ -270,11 +287,17 @@ typedef enum {
     * If guest-drivers are able to expose a lower-limit, it's recommended
     * that they clamp to this value.  Otherwise, the host will make a
     * best-effort on case-by-case basis if guests exceed this.
+=======
+    * What is the maximum number of constant buffers
+    * that can be expected to work correctly with a
+    * DX context?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     */
    SVGA3D_DEVCAP_DX_MAX_CONSTANT_BUFFERS           = 98,
 
    /*
     * Does the device support provoking vertex control?
+<<<<<<< HEAD
     *
     * If this cap is present, the provokingVertexLast field in the
     * rasterizer state is enabled.  (Guests can then set it to FALSE,
@@ -283,6 +306,9 @@ typedef enum {
     *
     * If this cap is FALSE, then guests should set the provokingVertexLast
     * to FALSE, otherwise rendering behavior is undefined.
+=======
+    * If zero, the first vertex will always be the provoking vertex.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     */
    SVGA3D_DEVCAP_DX_PROVOKING_VERTEX               = 99,
 
@@ -308,7 +334,11 @@ typedef enum {
    SVGA3D_DEVCAP_DXFMT_BUMPU8V8                    = 119,
    SVGA3D_DEVCAP_DXFMT_BUMPL6V5U5                  = 120,
    SVGA3D_DEVCAP_DXFMT_BUMPX8L8V8U8                = 121,
+<<<<<<< HEAD
    SVGA3D_DEVCAP_DXFMT_FORMAT_DEAD1                = 122,
+=======
+   SVGA3D_DEVCAP_DXFMT_BUMPL8V8U8                  = 122,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA3D_DEVCAP_DXFMT_ARGB_S10E5                  = 123,
    SVGA3D_DEVCAP_DXFMT_ARGB_S23E8                  = 124,
    SVGA3D_DEVCAP_DXFMT_A2R10G10B10                 = 125,
@@ -347,8 +377,13 @@ typedef enum {
    SVGA3D_DEVCAP_DXFMT_R32G32_SINT                 = 158,
    SVGA3D_DEVCAP_DXFMT_R32G8X24_TYPELESS           = 159,
    SVGA3D_DEVCAP_DXFMT_D32_FLOAT_S8X24_UINT        = 160,
+<<<<<<< HEAD
    SVGA3D_DEVCAP_DXFMT_R32_FLOAT_X8X24             = 161,
    SVGA3D_DEVCAP_DXFMT_X32_G8X24_UINT              = 162,
+=======
+   SVGA3D_DEVCAP_DXFMT_R32_FLOAT_X8X24_TYPELESS    = 161,
+   SVGA3D_DEVCAP_DXFMT_X32_TYPELESS_G8X24_UINT     = 162,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA3D_DEVCAP_DXFMT_R10G10B10A2_TYPELESS        = 163,
    SVGA3D_DEVCAP_DXFMT_R10G10B10A2_UINT            = 164,
    SVGA3D_DEVCAP_DXFMT_R11G11B10_FLOAT             = 165,
@@ -366,8 +401,13 @@ typedef enum {
    SVGA3D_DEVCAP_DXFMT_R32_SINT                    = 177,
    SVGA3D_DEVCAP_DXFMT_R24G8_TYPELESS              = 178,
    SVGA3D_DEVCAP_DXFMT_D24_UNORM_S8_UINT           = 179,
+<<<<<<< HEAD
    SVGA3D_DEVCAP_DXFMT_R24_UNORM_X8                = 180,
    SVGA3D_DEVCAP_DXFMT_X24_G8_UINT                 = 181,
+=======
+   SVGA3D_DEVCAP_DXFMT_R24_UNORM_X8_TYPELESS       = 180,
+   SVGA3D_DEVCAP_DXFMT_X24_TYPELESS_G8_UINT        = 181,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA3D_DEVCAP_DXFMT_R8G8_TYPELESS               = 182,
    SVGA3D_DEVCAP_DXFMT_R8G8_UNORM                  = 183,
    SVGA3D_DEVCAP_DXFMT_R8G8_UINT                   = 184,
@@ -431,6 +471,7 @@ typedef enum {
    SVGA3D_DEVCAP_DXFMT_BC4_UNORM                   = 242,
    SVGA3D_DEVCAP_DXFMT_BC5_UNORM                   = 243,
 
+<<<<<<< HEAD
    /*
     * Advertises shaderModel 4.1 support, independent blend-states,
     * cube-map arrays, and a higher vertex input registers limit.
@@ -442,6 +483,8 @@ typedef enum {
    SVGA3D_DEVCAP_MULTISAMPLE_2X                    = 245,
    SVGA3D_DEVCAP_MULTISAMPLE_4X                    = 246,
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA3D_DEVCAP_MAX                       /* This must be the last index. */
 } SVGA3dDevCapIndex;
 
@@ -457,7 +500,13 @@ typedef enum {
  * MIPS: Does the format support mip levels?
  * ARRAY: Does the format support texture arrays?
  * VOLUME: Does the format support having volume?
+<<<<<<< HEAD
  * MULTISAMPLE: Does the format support multisample?
+=======
+ * MULTISAMPLE_2: Does the format support 2x multisample?
+ * MULTISAMPLE_4: Does the format support 4x multisample?
+ * MULTISAMPLE_8: Does the format support 8x multisample?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define SVGA3D_DXFMT_SUPPORTED                (1 <<  0)
 #define SVGA3D_DXFMT_SHADER_SAMPLE            (1 <<  1)
@@ -468,8 +517,25 @@ typedef enum {
 #define SVGA3D_DXFMT_ARRAY                    (1 <<  6)
 #define SVGA3D_DXFMT_VOLUME                   (1 <<  7)
 #define SVGA3D_DXFMT_DX_VERTEX_BUFFER         (1 <<  8)
+<<<<<<< HEAD
 #define SVGA3D_DXFMT_MULTISAMPLE              (1 <<  9)
 #define SVGA3D_DXFMT_MAX                      (1 << 10)
+=======
+#define SVGADX_DXFMT_MULTISAMPLE_2            (1 <<  9)
+#define SVGADX_DXFMT_MULTISAMPLE_4            (1 << 10)
+#define SVGADX_DXFMT_MULTISAMPLE_8            (1 << 11)
+#define SVGADX_DXFMT_MAX                      (1 << 12)
+
+/*
+ * Convenience mask for any multisample capability.
+ *
+ * The multisample bits imply both load and render capability.
+ */
+#define SVGA3D_DXFMT_MULTISAMPLE ( \
+           SVGADX_DXFMT_MULTISAMPLE_2 | \
+           SVGADX_DXFMT_MULTISAMPLE_4 | \
+           SVGADX_DXFMT_MULTISAMPLE_8 )
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 typedef union {
    Bool   b;

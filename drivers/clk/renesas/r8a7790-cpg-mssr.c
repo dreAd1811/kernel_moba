@@ -140,7 +140,10 @@ static const struct mssr_mod_clk r8a7790_mod_clks[] __initconst = {
 	DEF_MOD("cmt1",			 329,	R8A7790_CLK_R),
 	DEF_MOD("usbhs-dmac0",		 330,	R8A7790_CLK_HP),
 	DEF_MOD("usbhs-dmac1",		 331,	R8A7790_CLK_HP),
+<<<<<<< HEAD
 	DEF_MOD("rwdt",			 402,	R8A7790_CLK_R),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEF_MOD("irqc",			 407,	R8A7790_CLK_CP),
 	DEF_MOD("intc-sys",		 408,	R8A7790_CLK_ZS),
 	DEF_MOD("audio-dmac1",		 501,	R8A7790_CLK_HP),
@@ -212,7 +215,10 @@ static const struct mssr_mod_clk r8a7790_mod_clks[] __initconst = {
 };
 
 static const unsigned int r8a7790_crit_mod_clks[] __initconst = {
+<<<<<<< HEAD
 	MOD_CLK_ID(402),	/* RWDT */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MOD_CLK_ID(408),	/* INTC-SYS (GIC) */
 };
 

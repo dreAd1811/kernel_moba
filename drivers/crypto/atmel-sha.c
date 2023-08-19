@@ -1921,12 +1921,16 @@ static int atmel_sha_hmac_setkey(struct crypto_ahash *tfm, const u8 *key,
 {
 	struct atmel_sha_hmac_ctx *hmac = crypto_ahash_ctx(tfm);
 
+<<<<<<< HEAD
 	if (atmel_sha_hmac_key_set(&hmac->hkey, key, keylen)) {
 		crypto_ahash_set_flags(tfm, CRYPTO_TFM_RES_BAD_KEY_LEN);
 		return -EINVAL;
 	}
 
 	return 0;
+=======
+	return atmel_sha_hmac_key_set(&hmac->hkey, key, keylen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int atmel_sha_hmac_init(struct ahash_request *req)
@@ -2316,7 +2320,13 @@ struct atmel_sha_authenc_ctx *atmel_sha_authenc_spawn(unsigned long mode)
 		goto error;
 	}
 
+<<<<<<< HEAD
 	tfm = crypto_alloc_ahash(name, 0, 0);
+=======
+	tfm = crypto_alloc_ahash(name,
+				 CRYPTO_ALG_TYPE_AHASH,
+				 CRYPTO_ALG_TYPE_AHASH_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(tfm)) {
 		err = PTR_ERR(tfm);
 		goto error;
@@ -2626,6 +2636,10 @@ static bool atmel_sha_filter(struct dma_chan *chan, void *slave)
 static int atmel_sha_dma_init(struct atmel_sha_dev *dd,
 				struct crypto_platform_data *pdata)
 {
+<<<<<<< HEAD
+=======
+	int err = -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_cap_mask_t mask_in;
 
 	/* Try to grab DMA channel */
@@ -2636,7 +2650,11 @@ static int atmel_sha_dma_init(struct atmel_sha_dev *dd,
 			atmel_sha_filter, &pdata->dma_slave->rxdata, dd->dev, "tx");
 	if (!dd->dma_lch_in.chan) {
 		dev_warn(dd->dev, "no DMA channel available\n");
+<<<<<<< HEAD
 		return -ENODEV;
+=======
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dd->dma_lch_in.dma_conf.direction = DMA_MEM_TO_DEV;
@@ -2724,14 +2742,28 @@ static struct crypto_platform_data *atmel_sha_of_init(struct platform_device *pd
 	}
 
 	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!pdata)
 		return ERR_PTR(-ENOMEM);
+=======
+	if (!pdata) {
+		dev_err(&pdev->dev, "could not allocate memory for pdata\n");
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata->dma_slave = devm_kzalloc(&pdev->dev,
 					sizeof(*(pdata->dma_slave)),
 					GFP_KERNEL);
+<<<<<<< HEAD
 	if (!pdata->dma_slave)
 		return ERR_PTR(-ENOMEM);
+=======
+	if (!pdata->dma_slave) {
+		dev_err(&pdev->dev, "could not allocate memory for dma_slave\n");
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return pdata;
 }
@@ -2752,6 +2784,10 @@ static int atmel_sha_probe(struct platform_device *pdev)
 
 	sha_dd = devm_kzalloc(&pdev->dev, sizeof(*sha_dd), GFP_KERNEL);
 	if (sha_dd == NULL) {
+<<<<<<< HEAD
+=======
+		dev_err(dev, "unable to alloc data struct.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENOMEM;
 		goto sha_dd_err;
 	}
@@ -2770,6 +2806,11 @@ static int atmel_sha_probe(struct platform_device *pdev)
 
 	crypto_init_queue(&sha_dd->queue, ATMEL_SHA_QUEUE_LENGTH);
 
+<<<<<<< HEAD
+=======
+	sha_dd->irq = -1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Get the base address */
 	sha_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (!sha_res) {

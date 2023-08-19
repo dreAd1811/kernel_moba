@@ -60,18 +60,31 @@ static int mr_exceeds_hw_limits(struct c4iw_dev *dev, u64 length)
 
 static int _c4iw_write_mem_dma_aligned(struct c4iw_rdev *rdev, u32 addr,
 				       u32 len, dma_addr_t data,
+<<<<<<< HEAD
 				       struct sk_buff *skb,
 				       struct c4iw_wr_wait *wr_waitp)
+=======
+				       int wait, struct sk_buff *skb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ulp_mem_io *req;
 	struct ulptx_sgl *sgl;
 	u8 wr_len;
 	int ret = 0;
+<<<<<<< HEAD
 
 	addr &= 0x7FFFFFF;
 
 	if (wr_waitp)
 		c4iw_init_wr_wait(wr_waitp);
+=======
+	struct c4iw_wr_wait wr_wait;
+
+	addr &= 0x7FFFFFF;
+
+	if (wait)
+		c4iw_init_wr_wait(&wr_wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wr_len = roundup(sizeof(*req) + sizeof(*sgl), 16);
 
 	if (!skb) {
@@ -84,8 +97,13 @@ static int _c4iw_write_mem_dma_aligned(struct c4iw_rdev *rdev, u32 addr,
 	req = __skb_put_zero(skb, wr_len);
 	INIT_ULPTX_WR(req, wr_len, 0, 0);
 	req->wr.wr_hi = cpu_to_be32(FW_WR_OP_V(FW_ULPTX_WR) |
+<<<<<<< HEAD
 			(wr_waitp ? FW_WR_COMPL_F : 0));
 	req->wr.wr_lo = wr_waitp ? (__force __be64)(unsigned long)wr_waitp : 0L;
+=======
+			(wait ? FW_WR_COMPL_F : 0));
+	req->wr.wr_lo = wait ? (__force __be64)(unsigned long) &wr_wait : 0L;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->wr.wr_mid = cpu_to_be32(FW_WR_LEN16_V(DIV_ROUND_UP(wr_len, 16)));
 	req->cmd = cpu_to_be32(ULPTX_CMD_V(ULP_TX_MEM_WRITE) |
 			       T5_ULP_MEMIO_ORDER_V(1) |
@@ -100,21 +118,37 @@ static int _c4iw_write_mem_dma_aligned(struct c4iw_rdev *rdev, u32 addr,
 	sgl->len0 = cpu_to_be32(len);
 	sgl->addr0 = cpu_to_be64(data);
 
+<<<<<<< HEAD
 	if (wr_waitp)
 		ret = c4iw_ref_send_wait(rdev, skb, wr_waitp, 0, 0, __func__);
 	else
 		ret = c4iw_ofld_send(rdev, skb);
+=======
+	ret = c4iw_ofld_send(rdev, skb);
+	if (ret)
+		return ret;
+	if (wait)
+		ret = c4iw_wait_for_reply(rdev, &wr_wait, 0, 0, __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int _c4iw_write_mem_inline(struct c4iw_rdev *rdev, u32 addr, u32 len,
+<<<<<<< HEAD
 				  void *data, struct sk_buff *skb,
 				  struct c4iw_wr_wait *wr_waitp)
+=======
+				  void *data, struct sk_buff *skb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ulp_mem_io *req;
 	struct ulptx_idata *sc;
 	u8 wr_len, *to_dp, *from_dp;
 	int copy_len, num_wqe, i, ret = 0;
+<<<<<<< HEAD
+=======
+	struct c4iw_wr_wait wr_wait;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be32 cmd = cpu_to_be32(ULPTX_CMD_V(ULP_TX_MEM_WRITE));
 
 	if (is_t4(rdev->lldi.adapter_type))
@@ -123,9 +157,15 @@ static int _c4iw_write_mem_inline(struct c4iw_rdev *rdev, u32 addr, u32 len,
 		cmd |= cpu_to_be32(T5_ULP_MEMIO_IMM_F);
 
 	addr &= 0x7FFFFFF;
+<<<<<<< HEAD
 	pr_debug("addr 0x%x len %u\n", addr, len);
 	num_wqe = DIV_ROUND_UP(len, C4IW_MAX_INLINE_SIZE);
 	c4iw_init_wr_wait(wr_waitp);
+=======
+	pr_debug("%s addr 0x%x len %u\n", __func__, addr, len);
+	num_wqe = DIV_ROUND_UP(len, C4IW_MAX_INLINE_SIZE);
+	c4iw_init_wr_wait(&wr_wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < num_wqe; i++) {
 
 		copy_len = len > C4IW_MAX_INLINE_SIZE ? C4IW_MAX_INLINE_SIZE :
@@ -146,7 +186,11 @@ static int _c4iw_write_mem_inline(struct c4iw_rdev *rdev, u32 addr, u32 len,
 		if (i == (num_wqe-1)) {
 			req->wr.wr_hi = cpu_to_be32(FW_WR_OP_V(FW_ULPTX_WR) |
 						    FW_WR_COMPL_F);
+<<<<<<< HEAD
 			req->wr.wr_lo = (__force __be64)(unsigned long)wr_waitp;
+=======
+			req->wr.wr_lo = (__force __be64)(unsigned long)&wr_wait;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else
 			req->wr.wr_hi = cpu_to_be32(FW_WR_OP_V(FW_ULPTX_WR));
 		req->wr.wr_mid = cpu_to_be32(
@@ -172,6 +216,7 @@ static int _c4iw_write_mem_inline(struct c4iw_rdev *rdev, u32 addr, u32 len,
 		if (copy_len % T4_ULPTX_MIN_IO)
 			memset(to_dp + copy_len, 0, T4_ULPTX_MIN_IO -
 			       (copy_len % T4_ULPTX_MIN_IO));
+<<<<<<< HEAD
 		if (i == (num_wqe-1))
 			ret = c4iw_ref_send_wait(rdev, skb, wr_waitp, 0, 0,
 						 __func__);
@@ -183,12 +228,26 @@ static int _c4iw_write_mem_inline(struct c4iw_rdev *rdev, u32 addr, u32 len,
 		len -= C4IW_MAX_INLINE_SIZE;
 	}
 
+=======
+		ret = c4iw_ofld_send(rdev, skb);
+		skb = NULL;
+		if (ret)
+			return ret;
+		len -= C4IW_MAX_INLINE_SIZE;
+	}
+
+	ret = c4iw_wait_for_reply(rdev, &wr_wait, 0, 0, __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int _c4iw_write_mem_dma(struct c4iw_rdev *rdev, u32 addr, u32 len,
+<<<<<<< HEAD
 			       void *data, struct sk_buff *skb,
 			       struct c4iw_wr_wait *wr_waitp)
+=======
+			       void *data, struct sk_buff *skb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 remain = len;
 	u32 dmalen;
@@ -211,7 +270,11 @@ static int _c4iw_write_mem_dma(struct c4iw_rdev *rdev, u32 addr, u32 len,
 			dmalen = T4_ULPTX_MAX_DMA;
 		remain -= dmalen;
 		ret = _c4iw_write_mem_dma_aligned(rdev, addr, dmalen, daddr,
+<<<<<<< HEAD
 						 skb, remain ? NULL : wr_waitp);
+=======
+						 !remain, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto out;
 		addr += dmalen >> 5;
@@ -219,8 +282,12 @@ static int _c4iw_write_mem_dma(struct c4iw_rdev *rdev, u32 addr, u32 len,
 		daddr += dmalen;
 	}
 	if (remain)
+<<<<<<< HEAD
 		ret = _c4iw_write_mem_inline(rdev, addr, remain, data, skb,
 					     wr_waitp);
+=======
+		ret = _c4iw_write_mem_inline(rdev, addr, remain, data, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	dma_unmap_single(&rdev->lldi.pdev->dev, save, len, DMA_TO_DEVICE);
 	return ret;
@@ -231,6 +298,7 @@ out:
  * If data is NULL, clear len byte of memory to zero.
  */
 static int write_adapter_mem(struct c4iw_rdev *rdev, u32 addr, u32 len,
+<<<<<<< HEAD
 			     void *data, struct sk_buff *skb,
 			     struct c4iw_wr_wait *wr_waitp)
 {
@@ -258,6 +326,25 @@ static int write_adapter_mem(struct c4iw_rdev *rdev, u32 addr, u32 len,
 out:
 	return ret;
 
+=======
+			     void *data, struct sk_buff *skb)
+{
+	if (rdev->lldi.ulptx_memwrite_dsgl && use_dsgl) {
+		if (len > inline_threshold) {
+			if (_c4iw_write_mem_dma(rdev, addr, len, data, skb)) {
+				pr_warn_ratelimited("%s: dma map failure (non fatal)\n",
+						    pci_name(rdev->lldi.pdev));
+				return _c4iw_write_mem_inline(rdev, addr, len,
+							      data, skb);
+			} else {
+				return 0;
+			}
+		} else
+			return _c4iw_write_mem_inline(rdev, addr,
+						      len, data, skb);
+	} else
+		return _c4iw_write_mem_inline(rdev, addr, len, data, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -271,7 +358,11 @@ static int write_tpt_entry(struct c4iw_rdev *rdev, u32 reset_tpt_entry,
 			   enum fw_ri_stag_type type, enum fw_ri_mem_perms perm,
 			   int bind_enabled, u32 zbva, u64 to,
 			   u64 len, u8 page_size, u32 pbl_size, u32 pbl_addr,
+<<<<<<< HEAD
 			   struct sk_buff *skb, struct c4iw_wr_wait *wr_waitp)
+=======
+			   struct sk_buff *skb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 	struct fw_ri_tpte *tpt;
@@ -304,8 +395,13 @@ static int write_tpt_entry(struct c4iw_rdev *rdev, u32 reset_tpt_entry,
 		mutex_unlock(&rdev->stats.lock);
 		*stag = (stag_idx << 8) | (atomic_inc_return(&key) & 0xff);
 	}
+<<<<<<< HEAD
 	pr_debug("stag_state 0x%0x type 0x%0x pdid 0x%0x, stag_idx 0x%x\n",
 		 stag_state, type, pdid, stag_idx);
+=======
+	pr_debug("%s stag_state 0x%0x type 0x%0x pdid 0x%0x, stag_idx 0x%x\n",
+		 __func__, stag_state, type, pdid, stag_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* write TPT entry */
 	if (reset_tpt_entry)
@@ -330,7 +426,11 @@ static int write_tpt_entry(struct c4iw_rdev *rdev, u32 reset_tpt_entry,
 	}
 	err = write_adapter_mem(rdev, stag_idx +
 				(rdev->lldi.vr->stag.start >> 5),
+<<<<<<< HEAD
 				sizeof(*tpt), tpt, skb, wr_waitp);
+=======
+				sizeof(*tpt), tpt, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (reset_tpt_entry) {
 		c4iw_put_resource(&rdev->resource.tpt_table, stag_idx);
@@ -343,6 +443,7 @@ static int write_tpt_entry(struct c4iw_rdev *rdev, u32 reset_tpt_entry,
 }
 
 static int write_pbl(struct c4iw_rdev *rdev, __be64 *pbl,
+<<<<<<< HEAD
 		     u32 pbl_addr, u32 pbl_size, struct c4iw_wr_wait *wr_waitp)
 {
 	int err;
@@ -353,10 +454,22 @@ static int write_pbl(struct c4iw_rdev *rdev, __be64 *pbl,
 
 	err = write_adapter_mem(rdev, pbl_addr >> 5, pbl_size << 3, pbl, NULL,
 				wr_waitp);
+=======
+		     u32 pbl_addr, u32 pbl_size)
+{
+	int err;
+
+	pr_debug("%s *pdb_addr 0x%x, pbl_base 0x%x, pbl_size %d\n",
+		 __func__, pbl_addr, rdev->lldi.vr->pbl.start,
+		 pbl_size);
+
+	err = write_adapter_mem(rdev, pbl_addr >> 5, pbl_size << 3, pbl, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
 static int dereg_mem(struct c4iw_rdev *rdev, u32 stag, u32 pbl_size,
+<<<<<<< HEAD
 		     u32 pbl_addr, struct sk_buff *skb,
 		     struct c4iw_wr_wait *wr_waitp)
 {
@@ -387,6 +500,34 @@ static int allocate_stag(struct c4iw_rdev *rdev, u32 *stag, u32 pdid,
 	*stag = T4_STAG_UNSET;
 	return write_tpt_entry(rdev, 0, stag, 0, pdid, FW_RI_STAG_NSMR, 0, 0, 0,
 			       0UL, 0, 0, pbl_size, pbl_addr, NULL, wr_waitp);
+=======
+		     u32 pbl_addr, struct sk_buff *skb)
+{
+	return write_tpt_entry(rdev, 1, &stag, 0, 0, 0, 0, 0, 0, 0UL, 0, 0,
+			       pbl_size, pbl_addr, skb);
+}
+
+static int allocate_window(struct c4iw_rdev *rdev, u32 * stag, u32 pdid)
+{
+	*stag = T4_STAG_UNSET;
+	return write_tpt_entry(rdev, 0, stag, 0, pdid, FW_RI_STAG_MW, 0, 0, 0,
+			       0UL, 0, 0, 0, 0, NULL);
+}
+
+static int deallocate_window(struct c4iw_rdev *rdev, u32 stag,
+			     struct sk_buff *skb)
+{
+	return write_tpt_entry(rdev, 1, &stag, 0, 0, 0, 0, 0, 0, 0UL, 0, 0, 0,
+			       0, skb);
+}
+
+static int allocate_stag(struct c4iw_rdev *rdev, u32 *stag, u32 pdid,
+			 u32 pbl_size, u32 pbl_addr)
+{
+	*stag = T4_STAG_UNSET;
+	return write_tpt_entry(rdev, 0, stag, 0, pdid, FW_RI_STAG_NSMR, 0, 0, 0,
+			       0UL, 0, 0, pbl_size, pbl_addr, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int finish_mem_reg(struct c4iw_mr *mhp, u32 stag)
@@ -397,10 +538,14 @@ static int finish_mem_reg(struct c4iw_mr *mhp, u32 stag)
 	mhp->attr.stag = stag;
 	mmid = stag >> 8;
 	mhp->ibmr.rkey = mhp->ibmr.lkey = stag;
+<<<<<<< HEAD
 	mhp->ibmr.length = mhp->attr.len;
 	mhp->ibmr.iova = mhp->attr.va_fbo;
 	mhp->ibmr.page_size = 1U << (mhp->attr.page_size + 12);
 	pr_debug("mmid 0x%x mhp %p\n", mmid, mhp);
+=======
+	pr_debug("%s mmid 0x%x mhp %p\n", __func__, mmid, mhp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return insert_handle(mhp->rhp, &mhp->rhp->mmidr, mhp, mmid);
 }
 
@@ -416,15 +561,23 @@ static int register_mem(struct c4iw_dev *rhp, struct c4iw_pd *php,
 			      mhp->attr.mw_bind_enable, mhp->attr.zbva,
 			      mhp->attr.va_fbo, mhp->attr.len ?
 			      mhp->attr.len : -1, shift - 12,
+<<<<<<< HEAD
 			      mhp->attr.pbl_size, mhp->attr.pbl_addr, NULL,
 			      mhp->wr_waitp);
+=======
+			      mhp->attr.pbl_size, mhp->attr.pbl_addr, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	ret = finish_mem_reg(mhp, stag);
 	if (ret) {
 		dereg_mem(&rhp->rdev, mhp->attr.stag, mhp->attr.pbl_size,
+<<<<<<< HEAD
 			  mhp->attr.pbl_addr, mhp->dereg_skb, mhp->wr_waitp);
+=======
+			  mhp->attr.pbl_addr, mhp->dereg_skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mhp->dereg_skb = NULL;
 	}
 	return ret;
@@ -451,24 +604,35 @@ struct ib_mr *c4iw_get_dma_mr(struct ib_pd *pd, int acc)
 	int ret;
 	u32 stag = T4_STAG_UNSET;
 
+<<<<<<< HEAD
 	pr_debug("ib_pd %p\n", pd);
+=======
+	pr_debug("%s ib_pd %p\n", __func__, pd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	php = to_c4iw_pd(pd);
 	rhp = php->rhp;
 
 	mhp = kzalloc(sizeof(*mhp), GFP_KERNEL);
 	if (!mhp)
 		return ERR_PTR(-ENOMEM);
+<<<<<<< HEAD
 	mhp->wr_waitp = c4iw_alloc_wr_wait(GFP_KERNEL);
 	if (!mhp->wr_waitp) {
 		ret = -ENOMEM;
 		goto err_free_mhp;
 	}
 	c4iw_init_wr_wait(mhp->wr_waitp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mhp->dereg_skb = alloc_skb(SGE_MAX_WR_LEN, GFP_KERNEL);
 	if (!mhp->dereg_skb) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err_free_wr_wait;
+=======
+		goto err0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mhp->rhp = rhp;
@@ -484,6 +648,7 @@ struct ib_mr *c4iw_get_dma_mr(struct ib_pd *pd, int acc)
 	ret = write_tpt_entry(&rhp->rdev, 0, &stag, 1, php->pdid,
 			      FW_RI_STAG_NSMR, mhp->attr.perms,
 			      mhp->attr.mw_bind_enable, 0, 0, ~0ULL, 0, 0, 0,
+<<<<<<< HEAD
 			      NULL, mhp->wr_waitp);
 	if (ret)
 		goto err_free_skb;
@@ -500,6 +665,22 @@ err_free_skb:
 err_free_wr_wait:
 	c4iw_put_wr_wait(mhp->wr_waitp);
 err_free_mhp:
+=======
+			      NULL);
+	if (ret)
+		goto err1;
+
+	ret = finish_mem_reg(mhp, stag);
+	if (ret)
+		goto err2;
+	return &mhp->ibmr;
+err2:
+	dereg_mem(&rhp->rdev, mhp->attr.stag, mhp->attr.pbl_size,
+		  mhp->attr.pbl_addr, mhp->dereg_skb);
+err1:
+	kfree_skb(mhp->dereg_skb);
+err0:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(mhp);
 	return ERR_PTR(ret);
 }
@@ -510,13 +691,21 @@ struct ib_mr *c4iw_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	__be64 *pages;
 	int shift, n, len;
 	int i, k, entry;
+<<<<<<< HEAD
 	int err = -ENOMEM;
+=======
+	int err = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scatterlist *sg;
 	struct c4iw_dev *rhp;
 	struct c4iw_pd *php;
 	struct c4iw_mr *mhp;
 
+<<<<<<< HEAD
 	pr_debug("ib_pd %p\n", pd);
+=======
+	pr_debug("%s ib_pd %p\n", __func__, pd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (length == ~0ULL)
 		return ERR_PTR(-EINVAL);
@@ -533,6 +722,7 @@ struct ib_mr *c4iw_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	mhp = kzalloc(sizeof(*mhp), GFP_KERNEL);
 	if (!mhp)
 		return ERR_PTR(-ENOMEM);
+<<<<<<< HEAD
 	mhp->wr_waitp = c4iw_alloc_wr_wait(GFP_KERNEL);
 	if (!mhp->wr_waitp)
 		goto err_free_mhp;
@@ -540,24 +730,49 @@ struct ib_mr *c4iw_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	mhp->dereg_skb = alloc_skb(SGE_MAX_WR_LEN, GFP_KERNEL);
 	if (!mhp->dereg_skb)
 		goto err_free_wr_wait;
+=======
+
+	mhp->dereg_skb = alloc_skb(SGE_MAX_WR_LEN, GFP_KERNEL);
+	if (!mhp->dereg_skb) {
+		kfree(mhp);
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mhp->rhp = rhp;
 
 	mhp->umem = ib_umem_get(pd->uobject->context, start, length, acc, 0);
+<<<<<<< HEAD
 	if (IS_ERR(mhp->umem))
 		goto err_free_skb;
+=======
+	if (IS_ERR(mhp->umem)) {
+		err = PTR_ERR(mhp->umem);
+		kfree_skb(mhp->dereg_skb);
+		kfree(mhp);
+		return ERR_PTR(err);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	shift = mhp->umem->page_shift;
 
 	n = mhp->umem->nmap;
 	err = alloc_pbl(mhp, n);
 	if (err)
+<<<<<<< HEAD
 		goto err_umem_release;
+=======
+		goto err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pages = (__be64 *) __get_free_page(GFP_KERNEL);
 	if (!pages) {
 		err = -ENOMEM;
+<<<<<<< HEAD
 		goto err_pbl_free;
+=======
+		goto err_pbl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	i = n = 0;
@@ -570,8 +785,12 @@ struct ib_mr *c4iw_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 			if (i == PAGE_SIZE / sizeof *pages) {
 				err = write_pbl(&mhp->rhp->rdev,
 				      pages,
+<<<<<<< HEAD
 				      mhp->attr.pbl_addr + (n << 3), i,
 				      mhp->wr_waitp);
+=======
+				      mhp->attr.pbl_addr + (n << 3), i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (err)
 					goto pbl_done;
 				n += i;
@@ -582,13 +801,21 @@ struct ib_mr *c4iw_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 
 	if (i)
 		err = write_pbl(&mhp->rhp->rdev, pages,
+<<<<<<< HEAD
 				mhp->attr.pbl_addr + (n << 3), i,
 				mhp->wr_waitp);
+=======
+				     mhp->attr.pbl_addr + (n << 3), i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 pbl_done:
 	free_page((unsigned long) pages);
 	if (err)
+<<<<<<< HEAD
 		goto err_pbl_free;
+=======
+		goto err_pbl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mhp->attr.pdid = php->pdid;
 	mhp->attr.zbva = 0;
@@ -599,6 +826,7 @@ pbl_done:
 
 	err = register_mem(rhp, php, mhp, shift);
 	if (err)
+<<<<<<< HEAD
 		goto err_pbl_free;
 
 	return &mhp->ibmr;
@@ -613,6 +841,19 @@ err_free_skb:
 err_free_wr_wait:
 	c4iw_put_wr_wait(mhp->wr_waitp);
 err_free_mhp:
+=======
+		goto err_pbl;
+
+	return &mhp->ibmr;
+
+err_pbl:
+	c4iw_pblpool_free(&mhp->rhp->rdev, mhp->attr.pbl_addr,
+			      mhp->attr.pbl_size << 3);
+
+err:
+	ib_umem_release(mhp->umem);
+	kfree_skb(mhp->dereg_skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(mhp);
 	return ERR_PTR(err);
 }
@@ -636,12 +877,18 @@ struct ib_mw *c4iw_alloc_mw(struct ib_pd *pd, enum ib_mw_type type,
 	if (!mhp)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	mhp->wr_waitp = c4iw_alloc_wr_wait(GFP_KERNEL);
 	if (!mhp->wr_waitp) {
+=======
+	mhp->dereg_skb = alloc_skb(SGE_MAX_WR_LEN, GFP_KERNEL);
+	if (!mhp->dereg_skb) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto free_mhp;
 	}
 
+<<<<<<< HEAD
 	mhp->dereg_skb = alloc_skb(SGE_MAX_WR_LEN, GFP_KERNEL);
 	if (!mhp->dereg_skb) {
 		ret = -ENOMEM;
@@ -649,6 +896,9 @@ struct ib_mw *c4iw_alloc_mw(struct ib_pd *pd, enum ib_mw_type type,
 	}
 
 	ret = allocate_window(&rhp->rdev, &stag, php->pdid, mhp->wr_waitp);
+=======
+	ret = allocate_window(&rhp->rdev, &stag, php->pdid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto free_skb;
 	mhp->rhp = rhp;
@@ -661,6 +911,7 @@ struct ib_mw *c4iw_alloc_mw(struct ib_pd *pd, enum ib_mw_type type,
 		ret = -ENOMEM;
 		goto dealloc_win;
 	}
+<<<<<<< HEAD
 	pr_debug("mmid 0x%x mhp %p stag 0x%x\n", mmid, mhp, stag);
 	return &(mhp->ibmw);
 
@@ -671,6 +922,15 @@ free_skb:
 	kfree_skb(mhp->dereg_skb);
 free_wr_wait:
 	c4iw_put_wr_wait(mhp->wr_waitp);
+=======
+	pr_debug("%s mmid 0x%x mhp %p stag 0x%x\n", __func__, mmid, mhp, stag);
+	return &(mhp->ibmw);
+
+dealloc_win:
+	deallocate_window(&rhp->rdev, mhp->attr.stag, mhp->dereg_skb);
+free_skb:
+	kfree_skb(mhp->dereg_skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 free_mhp:
 	kfree(mhp);
 	return ERR_PTR(ret);
@@ -686,12 +946,19 @@ int c4iw_dealloc_mw(struct ib_mw *mw)
 	rhp = mhp->rhp;
 	mmid = (mw->rkey) >> 8;
 	remove_handle(rhp, &rhp->mmidr, mmid);
+<<<<<<< HEAD
 	deallocate_window(&rhp->rdev, mhp->attr.stag, mhp->dereg_skb,
 			  mhp->wr_waitp);
 	kfree_skb(mhp->dereg_skb);
 	c4iw_put_wr_wait(mhp->wr_waitp);
 	kfree(mhp);
 	pr_debug("ib_mw %p mmid 0x%x ptr %p\n", mw, mmid, mhp);
+=======
+	deallocate_window(&rhp->rdev, mhp->attr.stag, mhp->dereg_skb);
+	kfree_skb(mhp->dereg_skb);
+	kfree(mhp);
+	pr_debug("%s ib_mw %p mmid 0x%x ptr %p\n", __func__, mw, mmid, mhp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -721,6 +988,7 @@ struct ib_mr *c4iw_alloc_mr(struct ib_pd *pd,
 		goto err;
 	}
 
+<<<<<<< HEAD
 	mhp->wr_waitp = c4iw_alloc_wr_wait(GFP_KERNEL);
 	if (!mhp->wr_waitp) {
 		ret = -ENOMEM;
@@ -728,17 +996,24 @@ struct ib_mr *c4iw_alloc_mr(struct ib_pd *pd,
 	}
 	c4iw_init_wr_wait(mhp->wr_waitp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mhp->mpl = dma_alloc_coherent(&rhp->rdev.lldi.pdev->dev,
 				      length, &mhp->mpl_addr, GFP_KERNEL);
 	if (!mhp->mpl) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err_free_wr_wait;
+=======
+		goto err_mpl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mhp->max_mpl_len = length;
 
 	mhp->rhp = rhp;
 	ret = alloc_pbl(mhp, max_num_sg);
 	if (ret)
+<<<<<<< HEAD
 		goto err_free_dma;
 	mhp->attr.pbl_size = max_num_sg;
 	ret = allocate_stag(&rhp->rdev, &stag, php->pdid,
@@ -746,6 +1021,14 @@ struct ib_mr *c4iw_alloc_mr(struct ib_pd *pd,
 			    mhp->wr_waitp);
 	if (ret)
 		goto err_free_pbl;
+=======
+		goto err1;
+	mhp->attr.pbl_size = max_num_sg;
+	ret = allocate_stag(&rhp->rdev, &stag, php->pdid,
+				 mhp->attr.pbl_size, mhp->attr.pbl_addr);
+	if (ret)
+		goto err2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mhp->attr.pdid = php->pdid;
 	mhp->attr.type = FW_RI_STAG_NSMR;
 	mhp->attr.stag = stag;
@@ -754,6 +1037,7 @@ struct ib_mr *c4iw_alloc_mr(struct ib_pd *pd,
 	mhp->ibmr.rkey = mhp->ibmr.lkey = stag;
 	if (insert_handle(rhp, &rhp->mmidr, mhp, mmid)) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err_dereg;
 	}
 
@@ -771,6 +1055,23 @@ err_free_dma:
 err_free_wr_wait:
 	c4iw_put_wr_wait(mhp->wr_waitp);
 err_free_mhp:
+=======
+		goto err3;
+	}
+
+	pr_debug("%s mmid 0x%x mhp %p stag 0x%x\n", __func__, mmid, mhp, stag);
+	return &(mhp->ibmr);
+err3:
+	dereg_mem(&rhp->rdev, stag, mhp->attr.pbl_size,
+		  mhp->attr.pbl_addr, mhp->dereg_skb);
+err2:
+	c4iw_pblpool_free(&mhp->rhp->rdev, mhp->attr.pbl_addr,
+			      mhp->attr.pbl_size << 3);
+err1:
+	dma_free_coherent(&mhp->rhp->rdev.lldi.pdev->dev,
+			  mhp->max_mpl_len, mhp->mpl, mhp->mpl_addr);
+err_mpl:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(mhp);
 err:
 	return ERR_PTR(ret);
@@ -804,7 +1105,11 @@ int c4iw_dereg_mr(struct ib_mr *ib_mr)
 	struct c4iw_mr *mhp;
 	u32 mmid;
 
+<<<<<<< HEAD
 	pr_debug("ib_mr %p\n", ib_mr);
+=======
+	pr_debug("%s ib_mr %p\n", __func__, ib_mr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mhp = to_c4iw_mr(ib_mr);
 	rhp = mhp->rhp;
@@ -814,7 +1119,11 @@ int c4iw_dereg_mr(struct ib_mr *ib_mr)
 		dma_free_coherent(&mhp->rhp->rdev.lldi.pdev->dev,
 				  mhp->max_mpl_len, mhp->mpl, mhp->mpl_addr);
 	dereg_mem(&rhp->rdev, mhp->attr.stag, mhp->attr.pbl_size,
+<<<<<<< HEAD
 		  mhp->attr.pbl_addr, mhp->dereg_skb, mhp->wr_waitp);
+=======
+		  mhp->attr.pbl_addr, mhp->dereg_skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mhp->attr.pbl_size)
 		c4iw_pblpool_free(&mhp->rhp->rdev, mhp->attr.pbl_addr,
 				  mhp->attr.pbl_size << 3);
@@ -822,8 +1131,12 @@ int c4iw_dereg_mr(struct ib_mr *ib_mr)
 		kfree((void *) (unsigned long) mhp->kva);
 	if (mhp->umem)
 		ib_umem_release(mhp->umem);
+<<<<<<< HEAD
 	pr_debug("mmid 0x%x ptr %p\n", mmid, mhp);
 	c4iw_put_wr_wait(mhp->wr_waitp);
+=======
+	pr_debug("%s mmid 0x%x ptr %p\n", __func__, mmid, mhp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(mhp);
 	return 0;
 }

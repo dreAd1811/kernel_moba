@@ -118,6 +118,7 @@ static u32 si_ih_get_wptr(struct amdgpu_device *adev)
 	return (wptr & adev->irq.ih.ptr_mask);
 }
 
+<<<<<<< HEAD
 /**
  * si_ih_prescreen_iv - prescreen an interrupt vector
  *
@@ -131,6 +132,8 @@ static bool si_ih_prescreen_iv(struct amdgpu_device *adev)
 	return true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void si_ih_decode_iv(struct amdgpu_device *adev,
 			     struct amdgpu_iv_entry *entry)
 {
@@ -146,7 +149,11 @@ static void si_ih_decode_iv(struct amdgpu_device *adev,
 	entry->src_id = dw[0] & 0xff;
 	entry->src_data[0] = dw[1] & 0xfffffff;
 	entry->ring_id = dw[2] & 0xff;
+<<<<<<< HEAD
 	entry->vmid = (dw[2] >> 8) & 0xff;
+=======
+	entry->vm_id = (dw[2] >> 8) & 0xff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adev->irq.ih.rptr += 16;
 }
@@ -301,7 +308,10 @@ static const struct amd_ip_funcs si_ih_ip_funcs = {
 
 static const struct amdgpu_ih_funcs si_ih_funcs = {
 	.get_wptr = si_ih_get_wptr,
+<<<<<<< HEAD
 	.prescreen_iv = si_ih_prescreen_iv,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.decode_iv = si_ih_decode_iv,
 	.set_rptr = si_ih_set_rptr
 };

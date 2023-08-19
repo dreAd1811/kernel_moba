@@ -121,7 +121,10 @@
 #define HFI_EXTRADATA_METADATA_FILLER			0x7fe00002
 
 #define HFI_INDEX_EXTRADATA_INPUT_CROP			0x0700000e
+<<<<<<< HEAD
 #define HFI_INDEX_EXTRADATA_OUTPUT_CROP			0x0700000f
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HFI_INDEX_EXTRADATA_DIGITAL_ZOOM		0x07000010
 #define HFI_INDEX_EXTRADATA_ASPECT_RATIO		0x7f100003
 
@@ -377,6 +380,7 @@
 #define HFI_BUFFER_OUTPUT2			0x3
 #define HFI_BUFFER_INTERNAL_PERSIST		0x4
 #define HFI_BUFFER_INTERNAL_PERSIST_1		0x5
+<<<<<<< HEAD
 #define HFI_BUFFER_INTERNAL_SCRATCH(ver)	\
 	(((ver) == HFI_VERSION_4XX) ? 0x6 : 0x1000001)
 #define HFI_BUFFER_INTERNAL_SCRATCH_1(ver)	\
@@ -389,6 +393,15 @@
 	(((ver) == HFI_VERSION_4XX) ? 0xa : 0x1000003)
 #define HFI_BUFFER_EXTRADATA_OUTPUT2(ver)	\
 	(((ver) == HFI_VERSION_4XX) ? 0xb : 0x1000004)
+=======
+#define HFI_BUFFER_INTERNAL_SCRATCH		0x1000001
+#define HFI_BUFFER_EXTRADATA_INPUT		0x1000002
+#define HFI_BUFFER_EXTRADATA_OUTPUT		0x1000003
+#define HFI_BUFFER_EXTRADATA_OUTPUT2		0x1000004
+#define HFI_BUFFER_INTERNAL_SCRATCH_1		0x1000005
+#define HFI_BUFFER_INTERNAL_SCRATCH_2		0x1000006
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HFI_BUFFER_TYPE_MAX			11
 
 #define HFI_BUFFER_MODE_STATIC			0x1000001
@@ -430,14 +443,20 @@
 #define HFI_PROPERTY_PARAM_CODEC_MASK_SUPPORTED			0x100e
 #define HFI_PROPERTY_PARAM_MVC_BUFFER_LAYOUT			0x100f
 #define HFI_PROPERTY_PARAM_MAX_SESSIONS_SUPPORTED		0x1010
+<<<<<<< HEAD
 #define HFI_PROPERTY_PARAM_WORK_MODE				0x1015
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * HFI_PROPERTY_CONFIG_COMMON_START
  * HFI_DOMAIN_BASE_COMMON + HFI_ARCH_COMMON_OFFSET + 0x2000
  */
 #define HFI_PROPERTY_CONFIG_FRAME_RATE				0x2001
+<<<<<<< HEAD
 #define HFI_PROPERTY_CONFIG_VIDEOCORES_USAGE			0x2002
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * HFI_PROPERTY_PARAM_VDEC_COMMON_START
@@ -446,9 +465,12 @@
 #define HFI_PROPERTY_PARAM_VDEC_MULTI_STREAM			0x1003001
 #define HFI_PROPERTY_PARAM_VDEC_CONCEAL_COLOR			0x1003002
 #define HFI_PROPERTY_PARAM_VDEC_NONCP_OUTPUT2			0x1003003
+<<<<<<< HEAD
 #define HFI_PROPERTY_PARAM_VDEC_PIXEL_BITDEPTH			0x1003007
 #define HFI_PROPERTY_PARAM_VDEC_PIC_STRUCT			0x1003009
 #define HFI_PROPERTY_PARAM_VDEC_COLOUR_SPACE			0x100300a
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * HFI_PROPERTY_CONFIG_VDEC_COMMON_START
@@ -529,7 +551,10 @@
 enum hfi_version {
 	HFI_VERSION_1XX,
 	HFI_VERSION_3XX,
+<<<<<<< HEAD
 	HFI_VERSION_4XX
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct hfi_buffer_info {
@@ -597,8 +622,13 @@ struct hfi_enable {
 
 struct hfi_h264_db_control {
 	u32 mode;
+<<<<<<< HEAD
 	s32 slice_alpha_offset;
 	s32 slice_beta_offset;
+=======
+	u32 slice_alpha_offset;
+	u32 slice_beta_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define HFI_H264_ENTROPY_CAVLC			0x1
@@ -779,6 +809,7 @@ struct hfi_framesize {
 	u32 height;
 };
 
+<<<<<<< HEAD
 #define VIDC_CORE_ID_DEFAULT	0
 #define VIDC_CORE_ID_1		1
 #define VIDC_CORE_ID_2		2
@@ -795,12 +826,15 @@ struct hfi_video_work_mode {
 	u32 video_work_mode;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hfi_h264_vui_timing_info {
 	u32 enable;
 	u32 fixed_framerate;
 	u32 time_scale;
 };
 
+<<<<<<< HEAD
 struct hfi_bit_depth {
 	u32 buffer_type;
 	u32 bit_depth;
@@ -829,6 +863,8 @@ struct hfi_extradata_input_crop {
 	u32 height;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HFI_COLOR_FORMAT_MONOCHROME		0x01
 #define HFI_COLOR_FORMAT_NV12			0x02
 #define HFI_COLOR_FORMAT_NV21			0x03
@@ -858,6 +894,7 @@ struct hfi_uncompressed_format_select {
 	u32 format;
 };
 
+<<<<<<< HEAD
 struct hfi_uncompressed_plane_constraints {
 	u32 stride_multiples;
 	u32 max_stride;
@@ -875,6 +912,12 @@ struct hfi_uncompressed_format_supported {
 	u32 buffer_type;
 	u32 format_entries;
 	struct hfi_uncompressed_plane_info plane_info[1];
+=======
+struct hfi_uncompressed_format_supported {
+	u32 buffer_type;
+	u32 format_entries;
+	u32 format_info[1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct hfi_uncompressed_plane_actual {
@@ -888,6 +931,22 @@ struct hfi_uncompressed_plane_actual_info {
 	struct hfi_uncompressed_plane_actual plane_format[1];
 };
 
+<<<<<<< HEAD
+=======
+struct hfi_uncompressed_plane_constraints {
+	u32 stride_multiples;
+	u32 max_stride;
+	u32 min_plane_buffer_height_multiple;
+	u32 buffer_alignment;
+};
+
+struct hfi_uncompressed_plane_info {
+	u32 format;
+	u32 num_planes;
+	struct hfi_uncompressed_plane_constraints plane_format[1];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hfi_uncompressed_plane_actual_constraints_info {
 	u32 buffer_type;
 	u32 num_planes;
@@ -1017,12 +1076,15 @@ struct hfi_buffer_count_actual {
 	u32 count_actual;
 };
 
+<<<<<<< HEAD
 struct hfi_buffer_count_actual_4xx {
 	u32 type;
 	u32 count_actual;
 	u32 count_min_host;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hfi_buffer_size_actual {
 	u32 type;
 	u32 size;
@@ -1033,6 +1095,7 @@ struct hfi_buffer_display_hold_count_actual {
 	u32 hold_count;
 };
 
+<<<<<<< HEAD
 /* HFI 4XX reorder the fields, use these macros */
 #define HFI_BUFREQ_HOLD_COUNT(bufreq, ver)	\
 	((ver) == HFI_VERSION_4XX ? 0 : (bufreq)->hold_count)
@@ -1041,6 +1104,8 @@ struct hfi_buffer_display_hold_count_actual {
 #define HFI_BUFREQ_COUNT_MIN_HOST(bufreq, ver)	\
 	((ver) == HFI_VERSION_4XX ? (bufreq)->count_min : 0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hfi_buffer_requirements {
 	u32 type;
 	u32 size;

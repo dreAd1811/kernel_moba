@@ -19,14 +19,29 @@ obj-$(CONFIG_CORESIGHT_SOURCE_ETM4X) += coresight-etm4x.o \
 obj-$(CONFIG_CORESIGHT_DYNAMIC_REPLICATOR) += coresight-dynamic-replicator.o
 obj-$(CONFIG_CORESIGHT_STM) += coresight-stm.o
 obj-$(CONFIG_CORESIGHT_CPU_DEBUG) += coresight-cpu-debug.o
+<<<<<<< HEAD
 obj-$(CONFIG_CORESIGHT_CATU) += coresight-catu.o
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_CORESIGHT_CTI) += coresight-cti.o
 obj-$(CONFIG_CORESIGHT_OST) += coresight-ost.o
 obj-$(CONFIG_CORESIGHT_TPDA) += coresight-tpda.o
 obj-$(CONFIG_CORESIGHT_TPDM) += coresight-tpdm.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_CORESIGHT_EVENT) += coresight-event.o
+obj-$(CONFIG_CORESIGHT_CTI) += coresight-cti.o
+obj-$(CONFIG_CORESIGHT_QPDI) += coresight-qpdi.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-$(CONFIG_CORESIGHT_CSR) += coresight-csr.o
 obj-$(CONFIG_CORESIGHT_HWEVENT) += coresight-hwevent.o
 obj-$(CONFIG_CORESIGHT_DUMMY) += coresight-dummy.o
 obj-$(CONFIG_CORESIGHT_REMOTE_ETM) += coresight-remote-etm.o
 obj-$(CONFIG_CORESIGHT_CSR) += coresight-csr.o
+<<<<<<< HEAD
 obj-$(CONFIG_CORESIGHT_TGU) += coresight-tgu.o
+=======
+obj-$(CONFIG_CORESIGHT_TGU) += coresight-tgu.o apss_tgu.o
+obj-$(CONFIG_CORESIGHT_DBGUI) += coresight-dbgui.o
+obj-$(CONFIG_CORESIGHT_CATU) += coresight-catu.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -2,7 +2,10 @@
  * omap iommu: tlb and pagetable primitives
  *
  * Copyright (C) 2008-2010 Nokia Corporation
+<<<<<<< HEAD
  * Copyright (C) 2013-2017 Texas Instruments Incorporated - http://www.ti.com/
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Written by Hiroshi DOYU <Hiroshi.DOYU@nokia.com>,
  *		Paul Mundt and Toshihiro Kobayashi
@@ -72,6 +75,7 @@ static struct omap_iommu_domain *to_omap_domain(struct iommu_domain *dom)
  **/
 void omap_iommu_save_ctx(struct device *dev)
 {
+<<<<<<< HEAD
 	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
 	struct omap_iommu *obj;
 	u32 *p;
@@ -89,6 +93,15 @@ void omap_iommu_save_ctx(struct device *dev)
 				p[i]);
 		}
 		arch_data++;
+=======
+	struct omap_iommu *obj = dev_to_omap_iommu(dev);
+	u32 *p = obj->ctx;
+	int i;
+
+	for (i = 0; i < (MMU_REG_SIZE / sizeof(u32)); i++) {
+		p[i] = iommu_read_reg(obj, i * sizeof(u32));
+		dev_dbg(obj->dev, "%s\t[%02d] %08x\n", __func__, i, p[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 EXPORT_SYMBOL_GPL(omap_iommu_save_ctx);
@@ -99,6 +112,7 @@ EXPORT_SYMBOL_GPL(omap_iommu_save_ctx);
  **/
 void omap_iommu_restore_ctx(struct device *dev)
 {
+<<<<<<< HEAD
 	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
 	struct omap_iommu *obj;
 	u32 *p;
@@ -116,6 +130,15 @@ void omap_iommu_restore_ctx(struct device *dev)
 				p[i]);
 		}
 		arch_data++;
+=======
+	struct omap_iommu *obj = dev_to_omap_iommu(dev);
+	u32 *p = obj->ctx;
+	int i;
+
+	for (i = 0; i < (MMU_REG_SIZE / sizeof(u32)); i++) {
+		iommu_write_reg(obj, p[i], i * sizeof(u32));
+		dev_dbg(obj->dev, "%s\t[%02d] %08x\n", __func__, i, p[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 EXPORT_SYMBOL_GPL(omap_iommu_restore_ctx);
@@ -826,7 +849,11 @@ static irqreturn_t iommu_fault_handler(int irq, void *data)
 	struct iommu_domain *domain = obj->domain;
 	struct omap_iommu_domain *omap_domain = to_omap_domain(domain);
 
+<<<<<<< HEAD
 	if (!omap_domain->dev)
+=======
+	if (!omap_domain->iommu_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return IRQ_NONE;
 
 	errs = iommu_report_fault(obj, &da);
@@ -914,6 +941,7 @@ static void omap_iommu_detach(struct omap_iommu *obj)
 	dev_dbg(obj->dev, "%s: %s\n", __func__, obj->name);
 }
 
+<<<<<<< HEAD
 static bool omap_iommu_can_register(struct platform_device *pdev)
 {
 	struct device_node *np = pdev->dev.of_node;
@@ -932,6 +960,8 @@ static bool omap_iommu_can_register(struct platform_device *pdev)
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int omap_iommu_dra7_get_dsp_system_cfg(struct platform_device *pdev,
 					      struct omap_iommu *obj)
 {
@@ -1023,6 +1053,7 @@ static int omap_iommu_probe(struct platform_device *pdev)
 		return err;
 	platform_set_drvdata(pdev, obj);
 
+<<<<<<< HEAD
 	if (omap_iommu_can_register(pdev)) {
 		obj->group = iommu_group_alloc();
 		if (IS_ERR(obj->group))
@@ -1039,6 +1070,21 @@ static int omap_iommu_probe(struct platform_device *pdev)
 		if (err)
 			goto out_sysfs;
 	}
+=======
+	obj->group = iommu_group_alloc();
+	if (IS_ERR(obj->group))
+		return PTR_ERR(obj->group);
+
+	err = iommu_device_sysfs_add(&obj->iommu, obj->dev, NULL, obj->name);
+	if (err)
+		goto out_group;
+
+	iommu_device_set_ops(&obj->iommu, &omap_iommu_ops);
+
+	err = iommu_device_register(&obj->iommu);
+	if (err)
+		goto out_sysfs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_irq_safe(obj->dev);
 	pm_runtime_enable(obj->dev);
@@ -1060,6 +1106,7 @@ static int omap_iommu_remove(struct platform_device *pdev)
 {
 	struct omap_iommu *obj = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	if (obj->group) {
 		iommu_group_put(obj->group);
 		obj->group = NULL;
@@ -1067,6 +1114,13 @@ static int omap_iommu_remove(struct platform_device *pdev)
 		iommu_device_sysfs_remove(&obj->iommu);
 		iommu_device_unregister(&obj->iommu);
 	}
+=======
+	iommu_group_put(obj->group);
+	obj->group = NULL;
+
+	iommu_device_sysfs_remove(&obj->iommu);
+	iommu_device_unregister(&obj->iommu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omap_iommu_debugfs_remove(obj);
 
@@ -1112,6 +1166,7 @@ static int omap_iommu_map(struct iommu_domain *domain, unsigned long da,
 			  phys_addr_t pa, size_t bytes, int prot)
 {
 	struct omap_iommu_domain *omap_domain = to_omap_domain(domain);
+<<<<<<< HEAD
 	struct device *dev = omap_domain->dev;
 	struct omap_iommu_device *iommu;
 	struct omap_iommu *oiommu;
@@ -1119,6 +1174,13 @@ static int omap_iommu_map(struct iommu_domain *domain, unsigned long da,
 	int omap_pgsz;
 	u32 ret = -EINVAL;
 	int i;
+=======
+	struct omap_iommu *oiommu = omap_domain->iommu_dev;
+	struct device *dev = oiommu->dev;
+	struct iotlb_entry e;
+	int omap_pgsz;
+	u32 ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omap_pgsz = bytes_to_iopgsz(bytes);
 	if (omap_pgsz < 0) {
@@ -1130,6 +1192,7 @@ static int omap_iommu_map(struct iommu_domain *domain, unsigned long da,
 
 	iotlb_init_entry(&e, da, pa, omap_pgsz);
 
+<<<<<<< HEAD
 	iommu = omap_domain->iommus;
 	for (i = 0; i < omap_domain->num_iommus; i++, iommu++) {
 		oiommu = iommu->iommu_dev;
@@ -1148,6 +1211,11 @@ static int omap_iommu_map(struct iommu_domain *domain, unsigned long da,
 			iopgtable_clear_entry(oiommu, da);
 		}
 	}
+=======
+	ret = omap_iopgtable_store_entry(oiommu, &e);
+	if (ret)
+		dev_err(dev, "omap_iopgtable_store_entry failed: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1156,6 +1224,7 @@ static size_t omap_iommu_unmap(struct iommu_domain *domain, unsigned long da,
 			       size_t size)
 {
 	struct omap_iommu_domain *omap_domain = to_omap_domain(domain);
+<<<<<<< HEAD
 	struct device *dev = omap_domain->dev;
 	struct omap_iommu_device *iommu;
 	struct omap_iommu *oiommu;
@@ -1240,6 +1309,14 @@ static void omap_iommu_detach_fini(struct omap_iommu_domain *odomain)
 	kfree(odomain->iommus);
 	odomain->num_iommus = 0;
 	odomain->iommus = NULL;
+=======
+	struct omap_iommu *oiommu = omap_domain->iommu_dev;
+	struct device *dev = oiommu->dev;
+
+	dev_dbg(dev, "unmapping da 0x%lx size %u\n", da, size);
+
+	return iopgtable_clear_entry(oiommu, da);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -1247,10 +1324,15 @@ omap_iommu_attach_dev(struct iommu_domain *domain, struct device *dev)
 {
 	struct omap_iommu_domain *omap_domain = to_omap_domain(domain);
 	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
+<<<<<<< HEAD
 	struct omap_iommu_device *iommu;
 	struct omap_iommu *oiommu;
 	int ret = 0;
 	int i;
+=======
+	struct omap_iommu *oiommu;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!arch_data || !arch_data->iommu_dev) {
 		dev_err(dev, "device doesn't have an associated iommu\n");
@@ -1259,13 +1341,19 @@ omap_iommu_attach_dev(struct iommu_domain *domain, struct device *dev)
 
 	spin_lock(&omap_domain->lock);
 
+<<<<<<< HEAD
 	/* only a single client device can be attached to a domain */
 	if (omap_domain->dev) {
+=======
+	/* only a single device is supported per domain for now */
+	if (omap_domain->iommu_dev) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "iommu domain is already attached\n");
 		ret = -EBUSY;
 		goto out;
 	}
 
+<<<<<<< HEAD
 	ret = omap_iommu_attach_init(dev, omap_domain);
 	if (ret) {
 		dev_err(dev, "failed to allocate required iommu data %d\n",
@@ -1302,6 +1390,21 @@ attach_fail:
 	}
 init_fail:
 	omap_iommu_detach_fini(omap_domain);
+=======
+	oiommu = arch_data->iommu_dev;
+
+	/* get a handle to and enable the omap iommu */
+	ret = omap_iommu_attach(oiommu, omap_domain->pgtable);
+	if (ret) {
+		dev_err(dev, "can't get omap iommu: %d\n", ret);
+		goto out;
+	}
+
+	omap_domain->iommu_dev = oiommu;
+	omap_domain->dev = dev;
+	oiommu->domain = domain;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	spin_unlock(&omap_domain->lock);
 	return ret;
@@ -1310,6 +1413,7 @@ out:
 static void _omap_iommu_detach_dev(struct omap_iommu_domain *omap_domain,
 				   struct device *dev)
 {
+<<<<<<< HEAD
 	struct omap_iommu_arch_data *arch_data = dev->archdata.iommu;
 	struct omap_iommu_device *iommu = omap_domain->iommus;
 	struct omap_iommu *oiommu;
@@ -1344,6 +1448,23 @@ static void _omap_iommu_detach_dev(struct omap_iommu_domain *omap_domain,
 	omap_iommu_detach_fini(omap_domain);
 
 	omap_domain->dev = NULL;
+=======
+	struct omap_iommu *oiommu = dev_to_omap_iommu(dev);
+
+	/* only a single device is supported per domain for now */
+	if (omap_domain->iommu_dev != oiommu) {
+		dev_err(dev, "invalid iommu device\n");
+		return;
+	}
+
+	iopgtable_clear_entry_all(oiommu);
+
+	omap_iommu_detach(oiommu);
+
+	omap_domain->iommu_dev = NULL;
+	omap_domain->dev = NULL;
+	oiommu->domain = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void omap_iommu_detach_dev(struct iommu_domain *domain,
@@ -1365,7 +1486,22 @@ static struct iommu_domain *omap_iommu_domain_alloc(unsigned type)
 
 	omap_domain = kzalloc(sizeof(*omap_domain), GFP_KERNEL);
 	if (!omap_domain)
+<<<<<<< HEAD
 		return NULL;
+=======
+		goto out;
+
+	omap_domain->pgtable = kzalloc(IOPGD_TABLE_SIZE, GFP_KERNEL);
+	if (!omap_domain->pgtable)
+		goto fail_nomem;
+
+	/*
+	 * should never fail, but please keep this around to ensure
+	 * we keep the hardware happy
+	 */
+	if (WARN_ON(!IS_ALIGNED((long)omap_domain->pgtable, IOPGD_TABLE_SIZE)))
+		goto fail_align;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&omap_domain->lock);
 
@@ -1374,6 +1510,16 @@ static struct iommu_domain *omap_iommu_domain_alloc(unsigned type)
 	omap_domain->domain.geometry.force_aperture = true;
 
 	return &omap_domain->domain;
+<<<<<<< HEAD
+=======
+
+fail_align:
+	kfree(omap_domain->pgtable);
+fail_nomem:
+	kfree(omap_domain);
+out:
+	return NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void omap_iommu_domain_free(struct iommu_domain *domain)
@@ -1384,9 +1530,16 @@ static void omap_iommu_domain_free(struct iommu_domain *domain)
 	 * An iommu device is still attached
 	 * (currently, only one device can be attached) ?
 	 */
+<<<<<<< HEAD
 	if (omap_domain->dev)
 		_omap_iommu_detach_dev(omap_domain, omap_domain->dev);
 
+=======
+	if (omap_domain->iommu_dev)
+		_omap_iommu_detach_dev(omap_domain, omap_domain->dev);
+
+	kfree(omap_domain->pgtable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(omap_domain);
 }
 
@@ -1394,16 +1547,23 @@ static phys_addr_t omap_iommu_iova_to_phys(struct iommu_domain *domain,
 					   dma_addr_t da)
 {
 	struct omap_iommu_domain *omap_domain = to_omap_domain(domain);
+<<<<<<< HEAD
 	struct omap_iommu_device *iommu = omap_domain->iommus;
 	struct omap_iommu *oiommu = iommu->iommu_dev;
+=======
+	struct omap_iommu *oiommu = omap_domain->iommu_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev = oiommu->dev;
 	u32 *pgd, *pte;
 	phys_addr_t ret = 0;
 
+<<<<<<< HEAD
 	/*
 	 * all the iommus within the domain will have identical programming,
 	 * so perform the lookup using just the first iommu
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iopgtable_lookup_entry(oiommu, da, &pgd, &pte);
 
 	if (pte) {
@@ -1429,12 +1589,19 @@ static phys_addr_t omap_iommu_iova_to_phys(struct iommu_domain *domain,
 
 static int omap_iommu_add_device(struct device *dev)
 {
+<<<<<<< HEAD
 	struct omap_iommu_arch_data *arch_data, *tmp;
+=======
+	struct omap_iommu_arch_data *arch_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct omap_iommu *oiommu;
 	struct iommu_group *group;
 	struct device_node *np;
 	struct platform_device *pdev;
+<<<<<<< HEAD
 	int num_iommus, i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	/*
@@ -1446,6 +1613,7 @@ static int omap_iommu_add_device(struct device *dev)
 	if (!dev->of_node)
 		return 0;
 
+<<<<<<< HEAD
 	/*
 	 * retrieve the count of IOMMU nodes using phandle size as element size
 	 * since #iommu-cells = 0 for OMAP
@@ -1497,6 +1665,38 @@ static int omap_iommu_add_device(struct device *dev)
 		return ret;
 	}
 
+=======
+	np = of_parse_phandle(dev->of_node, "iommus", 0);
+	if (!np)
+		return 0;
+
+	pdev = of_find_device_by_node(np);
+	if (WARN_ON(!pdev)) {
+		of_node_put(np);
+		return -EINVAL;
+	}
+
+	oiommu = platform_get_drvdata(pdev);
+	if (!oiommu) {
+		of_node_put(np);
+		return -EINVAL;
+	}
+
+	arch_data = kzalloc(sizeof(*arch_data), GFP_KERNEL);
+	if (!arch_data) {
+		of_node_put(np);
+		return -ENOMEM;
+	}
+
+	ret = iommu_device_link(&oiommu->iommu, dev);
+	if (ret) {
+		kfree(arch_data);
+		of_node_put(np);
+		return ret;
+	}
+
+	arch_data->iommu_dev = oiommu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->archdata.iommu = arch_data;
 
 	/*
@@ -1512,6 +1712,11 @@ static int omap_iommu_add_device(struct device *dev)
 	}
 	iommu_group_put(group);
 
+<<<<<<< HEAD
+=======
+	of_node_put(np);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1536,7 +1741,11 @@ static struct iommu_group *omap_iommu_device_group(struct device *dev)
 	struct iommu_group *group = ERR_PTR(-EINVAL);
 
 	if (arch_data->iommu_dev)
+<<<<<<< HEAD
 		group = iommu_group_ref_get(arch_data->iommu_dev->group);
+=======
+		group = arch_data->iommu_dev->group;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return group;
 }
@@ -1548,6 +1757,10 @@ static const struct iommu_ops omap_iommu_ops = {
 	.detach_dev	= omap_iommu_detach_dev,
 	.map		= omap_iommu_map,
 	.unmap		= omap_iommu_unmap,
+<<<<<<< HEAD
+=======
+	.map_sg		= default_iommu_map_sg,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.iova_to_phys	= omap_iommu_iova_to_phys,
 	.add_device	= omap_iommu_add_device,
 	.remove_device	= omap_iommu_remove_device,

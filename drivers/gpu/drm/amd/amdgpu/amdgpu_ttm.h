@@ -24,8 +24,12 @@
 #ifndef __AMDGPU_TTM_H__
 #define __AMDGPU_TTM_H__
 
+<<<<<<< HEAD
 #include "amdgpu.h"
 #include <drm/gpu_scheduler.h>
+=======
+#include "gpu_scheduler.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define AMDGPU_PL_GDS		(TTM_PL_PRIV + 0)
 #define AMDGPU_PL_GWS		(TTM_PL_PRIV + 1)
@@ -44,15 +48,23 @@ struct amdgpu_mman {
 	struct ttm_bo_device		bdev;
 	bool				mem_global_referenced;
 	bool				initialized;
+<<<<<<< HEAD
 	void __iomem			*aper_base_kaddr;
 
 #if defined(CONFIG_DEBUG_FS)
 	struct dentry			*debugfs_entries[8];
+=======
+
+#if defined(CONFIG_DEBUG_FS)
+	struct dentry			*vram;
+	struct dentry			*gtt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/* buffer handling */
 	const struct amdgpu_buffer_funcs	*buffer_funcs;
 	struct amdgpu_ring			*buffer_funcs_ring;
+<<<<<<< HEAD
 	bool					buffer_funcs_enabled;
 
 	struct mutex				gtt_window_lock;
@@ -64,11 +76,18 @@ struct amdgpu_copy_mem {
 	struct ttm_buffer_object	*bo;
 	struct ttm_mem_reg		*mem;
 	unsigned long			offset;
+=======
+
+	struct mutex				gtt_window_lock;
+	/* Scheduler entity for buffer moves */
+	struct amd_sched_entity			entity;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern const struct ttm_mem_type_manager_func amdgpu_gtt_mgr_func;
 extern const struct ttm_mem_type_manager_func amdgpu_vram_mgr_func;
 
+<<<<<<< HEAD
 bool amdgpu_gtt_mgr_has_gart_addr(struct ttm_mem_reg *mem);
 uint64_t amdgpu_gtt_mgr_usage(struct ttm_mem_type_manager *man);
 int amdgpu_gtt_mgr_recover(struct ttm_mem_type_manager *man);
@@ -83,11 +102,21 @@ void amdgpu_ttm_fini(struct amdgpu_device *adev);
 void amdgpu_ttm_set_buffer_funcs_status(struct amdgpu_device *adev,
 					bool enable);
 
+=======
+bool amdgpu_gtt_mgr_is_allocated(struct ttm_mem_reg *mem);
+uint64_t amdgpu_gtt_mgr_usage(struct ttm_mem_type_manager *man);
+
+u64 amdgpu_vram_mgr_bo_invisible_size(struct amdgpu_bo *bo);
+uint64_t amdgpu_vram_mgr_usage(struct ttm_mem_type_manager *man);
+uint64_t amdgpu_vram_mgr_vis_usage(struct ttm_mem_type_manager *man);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_copy_buffer(struct amdgpu_ring *ring, uint64_t src_offset,
 		       uint64_t dst_offset, uint32_t byte_count,
 		       struct reservation_object *resv,
 		       struct dma_fence **fence, bool direct_submit,
 		       bool vm_needs_flush);
+<<<<<<< HEAD
 int amdgpu_ttm_copy_mem_to_mem(struct amdgpu_device *adev,
 			       struct amdgpu_copy_mem *src,
 			       struct amdgpu_copy_mem *dst,
@@ -96,10 +125,15 @@ int amdgpu_ttm_copy_mem_to_mem(struct amdgpu_device *adev,
 			       struct dma_fence **f);
 int amdgpu_fill_buffer(struct amdgpu_bo *bo,
 			uint32_t src_data,
+=======
+int amdgpu_fill_buffer(struct amdgpu_bo *bo,
+			uint64_t src_data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct reservation_object *resv,
 			struct dma_fence **fence);
 
 int amdgpu_mmap(struct file *filp, struct vm_area_struct *vma);
+<<<<<<< HEAD
 int amdgpu_ttm_alloc_gart(struct ttm_buffer_object *bo);
 int amdgpu_ttm_recover_gart(struct ttm_buffer_object *tbo);
 
@@ -118,5 +152,10 @@ bool amdgpu_ttm_tt_userptr_needs_pages(struct ttm_tt *ttm);
 bool amdgpu_ttm_tt_is_readonly(struct ttm_tt *ttm);
 uint64_t amdgpu_ttm_tt_pte_flags(struct amdgpu_device *adev, struct ttm_tt *ttm,
 				 struct ttm_mem_reg *mem);
+=======
+bool amdgpu_ttm_is_bound(struct ttm_tt *ttm);
+int amdgpu_ttm_bind(struct ttm_buffer_object *bo, struct ttm_mem_reg *bo_mem);
+int amdgpu_ttm_recover_gart(struct amdgpu_device *adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0
 
 # This code is taken from the OpenSSL project but the author (Andy Polyakov)
@@ -9,6 +10,9 @@
 # The original headers, including the original license headers, are
 # included below for completeness.
 
+=======
+#
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # ====================================================================
 # Written by Andy Polyakov <appro@openssl.org> for the OpenSSL
 # project. The module is, however, dual licensed under OpenSSL and
@@ -129,9 +133,15 @@ $code=<<___;
 	 le?vperm	$IN,$IN,$IN,$lemask
 	vxor		$zero,$zero,$zero
 
+<<<<<<< HEAD
 	vpmsumd		$Xl,$IN,$Hl		# H.lo路Xi.lo
 	vpmsumd		$Xm,$IN,$H		# H.hi路Xi.lo+H.lo路Xi.hi
 	vpmsumd		$Xh,$IN,$Hh		# H.hi路Xi.hi
+=======
+	vpmsumd		$Xl,$IN,$Hl		# H.lo稾i.lo
+	vpmsumd		$Xm,$IN,$H		# H.hi稾i.lo+H.lo稾i.hi
+	vpmsumd		$Xh,$IN,$Hh		# H.hi稾i.hi
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vpmsumd		$t2,$Xl,$xC2		# 1st phase
 
@@ -187,11 +197,19 @@ $code=<<___;
 .align	5
 Loop:
 	 subic		$len,$len,16
+<<<<<<< HEAD
 	vpmsumd		$Xl,$IN,$Hl		# H.lo路Xi.lo
 	 subfe.		r0,r0,r0		# borrow?-1:0
 	vpmsumd		$Xm,$IN,$H		# H.hi路Xi.lo+H.lo路Xi.hi
 	 and		r0,r0,$len
 	vpmsumd		$Xh,$IN,$Hh		# H.hi路Xi.hi
+=======
+	vpmsumd		$Xl,$IN,$Hl		# H.lo稾i.lo
+	 subfe.		r0,r0,r0		# borrow?-1:0
+	vpmsumd		$Xm,$IN,$H		# H.hi稾i.lo+H.lo稾i.hi
+	 and		r0,r0,$len
+	vpmsumd		$Xh,$IN,$Hh		# H.hi稾i.hi
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 add		$inp,$inp,r0
 
 	vpmsumd		$t2,$Xl,$xC2		# 1st phase

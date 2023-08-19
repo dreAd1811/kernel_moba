@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 
 // This code is taken from the OpenSSL project but the author (Andy Polyakov)
@@ -8,6 +9,8 @@
 // The original headers, including the original license headers, are
 // included below for completeness.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 // Copyright 2014-2016 The OpenSSL Project Authors. All Rights Reserved.
 //
 // Licensed under the OpenSSL license (the "License").  You may not use
@@ -20,6 +23,11 @@
 // project. The module is, however, dual licensed under OpenSSL and
 // CRYPTOGAMS licenses depending on where you obtain it. For further
 // details see http://www.openssl.org/~appro/cryptogams/.
+<<<<<<< HEAD
+=======
+//
+// Permission to use under GPLv2 terms is granted.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 // ====================================================================
 //
 // SHA256/512 for ARMv8.

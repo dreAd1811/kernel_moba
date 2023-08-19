@@ -30,13 +30,21 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+<<<<<<< HEAD
 
+=======
+#include <linux/vmalloc.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "rxe.h"
 #include "rxe_loc.h"
 #include "rxe_queue.h"
 
 int rxe_cq_chk_attr(struct rxe_dev *rxe, struct rxe_cq *cq,
+<<<<<<< HEAD
 		    int cqe, int comp_vector)
+=======
+		    int cqe, int comp_vector, struct ib_udata *udata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int count;
 
@@ -83,7 +91,11 @@ static void rxe_send_complete(unsigned long data)
 
 int rxe_cq_from_init(struct rxe_dev *rxe, struct rxe_cq *cq, int cqe,
 		     int comp_vector, struct ib_ucontext *context,
+<<<<<<< HEAD
 		     struct rxe_create_cq_resp __user *uresp)
+=======
+		     struct ib_udata *udata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 
@@ -94,15 +106,26 @@ int rxe_cq_from_init(struct rxe_dev *rxe, struct rxe_cq *cq, int cqe,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	err = do_mmap_info(rxe, uresp ? &uresp->mi : NULL, context,
 			   cq->queue->buf, cq->queue->buf_size, &cq->queue->ip);
 	if (err) {
 		kvfree(cq->queue->buf);
+=======
+	err = do_mmap_info(rxe, udata, false, context, cq->queue->buf,
+			   cq->queue->buf_size, &cq->queue->ip);
+	if (err) {
+		vfree(cq->queue->buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(cq->queue);
 		return err;
 	}
 
+<<<<<<< HEAD
 	if (uresp)
+=======
+	if (udata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cq->is_user = 1;
 
 	cq->is_dying = false;
@@ -114,15 +137,23 @@ int rxe_cq_from_init(struct rxe_dev *rxe, struct rxe_cq *cq, int cqe,
 	return 0;
 }
 
+<<<<<<< HEAD
 int rxe_cq_resize_queue(struct rxe_cq *cq, int cqe,
 			struct rxe_resize_cq_resp __user *uresp)
+=======
+int rxe_cq_resize_queue(struct rxe_cq *cq, int cqe, struct ib_udata *udata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 
 	err = rxe_queue_resize(cq->queue, (unsigned int *)&cqe,
 			       sizeof(struct rxe_cqe),
 			       cq->queue->ip ? cq->queue->ip->context : NULL,
+<<<<<<< HEAD
 			       uresp ? &uresp->mi : NULL, NULL, &cq->cq_lock);
+=======
+			       udata, NULL, &cq->cq_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!err)
 		cq->ibcq.cqe = cqe;
 

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Driver for STMicroelectronics STM32F7 I2C controller
  *
@@ -8,11 +11,18 @@
  * http://www.st.com/resource/en/reference_manual/dm00124865.pdf
  *
  * Copyright (C) M'boumba Cedric Madianga 2017
+<<<<<<< HEAD
  * Copyright (C) STMicroelectronics 2017
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: M'boumba Cedric Madianga <cedric.madianga@gmail.com>
  *
  * This driver is based on i2c-stm32f4.c
  *
+<<<<<<< HEAD
+=======
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/clk.h>
 #include <linux/delay.h>
@@ -24,6 +34,10 @@
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
+<<<<<<< HEAD
+=======
+#include <linux/of_irq.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_platform.h>
 #include <linux/platform_device.h>
 #include <linux/reset.h>
@@ -34,9 +48,12 @@
 /* STM32F7 I2C registers */
 #define STM32F7_I2C_CR1				0x00
 #define STM32F7_I2C_CR2				0x04
+<<<<<<< HEAD
 #define STM32F7_I2C_OAR1			0x08
 #define STM32F7_I2C_OAR2			0x0C
 #define STM32F7_I2C_PECR			0x20
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STM32F7_I2C_TIMINGR			0x10
 #define STM32F7_I2C_ISR				0x18
 #define STM32F7_I2C_ICR				0x1C
@@ -44,10 +61,13 @@
 #define STM32F7_I2C_TXDR			0x28
 
 /* STM32F7 I2C control 1 */
+<<<<<<< HEAD
 #define STM32F7_I2C_CR1_PECEN			BIT(23)
 #define STM32F7_I2C_CR1_SBC			BIT(16)
 #define STM32F7_I2C_CR1_RXDMAEN			BIT(15)
 #define STM32F7_I2C_CR1_TXDMAEN			BIT(14)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STM32F7_I2C_CR1_ANFOFF			BIT(12)
 #define STM32F7_I2C_CR1_ERRIE			BIT(7)
 #define STM32F7_I2C_CR1_TCIE			BIT(6)
@@ -63,6 +83,7 @@
 						| STM32F7_I2C_CR1_NACKIE \
 						| STM32F7_I2C_CR1_RXIE \
 						| STM32F7_I2C_CR1_TXIE)
+<<<<<<< HEAD
 #define STM32F7_I2C_XFER_IRQ_MASK		(STM32F7_I2C_CR1_TCIE \
 						| STM32F7_I2C_CR1_STOPIE \
 						| STM32F7_I2C_CR1_NACKIE \
@@ -71,12 +92,17 @@
 
 /* STM32F7 I2C control 2 */
 #define STM32F7_I2C_CR2_PECBYTE			BIT(26)
+=======
+
+/* STM32F7 I2C control 2 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STM32F7_I2C_CR2_RELOAD			BIT(24)
 #define STM32F7_I2C_CR2_NBYTES_MASK		GENMASK(23, 16)
 #define STM32F7_I2C_CR2_NBYTES(n)		(((n) & 0xff) << 16)
 #define STM32F7_I2C_CR2_NACK			BIT(15)
 #define STM32F7_I2C_CR2_STOP			BIT(14)
 #define STM32F7_I2C_CR2_START			BIT(13)
+<<<<<<< HEAD
 #define STM32F7_I2C_CR2_HEAD10R			BIT(12)
 #define STM32F7_I2C_CR2_ADD10			BIT(11)
 #define STM32F7_I2C_CR2_RD_WRN			BIT(10)
@@ -116,12 +142,21 @@
 #define STM32F7_I2C_ISR_DIR			BIT(16)
 #define STM32F7_I2C_ISR_BUSY			BIT(15)
 #define STM32F7_I2C_ISR_PECERR			BIT(11)
+=======
+#define STM32F7_I2C_CR2_RD_WRN			BIT(10)
+#define STM32F7_I2C_CR2_SADD7_MASK		GENMASK(7, 1)
+#define STM32F7_I2C_CR2_SADD7(n)		(((n) & 0x7f) << 1)
+
+/* STM32F7 I2C Interrupt Status */
+#define STM32F7_I2C_ISR_BUSY			BIT(15)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STM32F7_I2C_ISR_ARLO			BIT(9)
 #define STM32F7_I2C_ISR_BERR			BIT(8)
 #define STM32F7_I2C_ISR_TCR			BIT(7)
 #define STM32F7_I2C_ISR_TC			BIT(6)
 #define STM32F7_I2C_ISR_STOPF			BIT(5)
 #define STM32F7_I2C_ISR_NACKF			BIT(4)
+<<<<<<< HEAD
 #define STM32F7_I2C_ISR_ADDR			BIT(3)
 #define STM32F7_I2C_ISR_RXNE			BIT(2)
 #define STM32F7_I2C_ISR_TXIS			BIT(1)
@@ -129,11 +164,20 @@
 
 /* STM32F7 I2C Interrupt Clear */
 #define STM32F7_I2C_ICR_PECCF			BIT(11)
+=======
+#define STM32F7_I2C_ISR_RXNE			BIT(2)
+#define STM32F7_I2C_ISR_TXIS			BIT(1)
+
+/* STM32F7 I2C Interrupt Clear */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STM32F7_I2C_ICR_ARLOCF			BIT(9)
 #define STM32F7_I2C_ICR_BERRCF			BIT(8)
 #define STM32F7_I2C_ICR_STOPCF			BIT(5)
 #define STM32F7_I2C_ICR_NACKCF			BIT(4)
+<<<<<<< HEAD
 #define STM32F7_I2C_ICR_ADDRCF			BIT(3)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* STM32F7 I2C Timing */
 #define STM32F7_I2C_TIMINGR_PRESC(n)		(((n) & 0xf) << 28)
@@ -143,8 +187,11 @@
 #define STM32F7_I2C_TIMINGR_SCLL(n)		((n) & 0xff)
 
 #define STM32F7_I2C_MAX_LEN			0xff
+<<<<<<< HEAD
 #define STM32F7_I2C_DMA_LEN_MIN			0x16
 #define STM32F7_I2C_MAX_SLAVE			0x2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define STM32F7_I2C_DNF_DEFAULT			0
 #define STM32F7_I2C_DNF_MAX			16
@@ -210,12 +257,20 @@ struct stm32f7_i2c_setup {
 
 /**
  * struct stm32f7_i2c_timings - private I2C output parameters
+<<<<<<< HEAD
  * @node: List entry
  * @presc: Prescaler value
  * @scldel: Data setup time
  * @sdadel: Data hold time
  * @sclh: SCL high period (master mode)
  * @scll: SCL low period (master mode)
+=======
+ * @prec: Prescaler value
+ * @scldel: Data setup time
+ * @sdadel: Data hold time
+ * @sclh: SCL high period (master mode)
+ * @sclh: SCL low period (master mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct stm32f7_i2c_timings {
 	struct list_head node;
@@ -228,11 +283,16 @@ struct stm32f7_i2c_timings {
 
 /**
  * struct stm32f7_i2c_msg - client specific data
+<<<<<<< HEAD
  * @addr: 8-bit or 10-bit slave addr, including r/w bit
+=======
+ * @addr: 8-bit slave addr, including r/w bit
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @count: number of bytes to be transferred
  * @buf: data buffer
  * @result: result of the transfer
  * @stop: last I2C msg to be sent, i.e. STOP to be generated
+<<<<<<< HEAD
  * @smbus: boolean to know if the I2C IP is used in SMBus mode
  * @size: type of SMBus protocol
  * @read_write: direction of SMBus protocol
@@ -244,14 +304,22 @@ struct stm32f7_i2c_timings {
  */
 struct stm32f7_i2c_msg {
 	u16 addr;
+=======
+ */
+struct stm32f7_i2c_msg {
+	u8 addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 count;
 	u8 *buf;
 	int result;
 	bool stop;
+<<<<<<< HEAD
 	bool smbus;
 	int size;
 	char read_write;
 	u8 smbus_buf[I2C_SMBUS_BLOCK_MAX + 3] __aligned(4);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -268,6 +336,7 @@ struct stm32f7_i2c_msg {
  * @f7_msg: customized i2c msg for driver usage
  * @setup: I2C timing input setup
  * @timing: I2C computed timings
+<<<<<<< HEAD
  * @slave: list of slave devices registered on the I2C bus
  * @slave_running: slave device currently used
  * @slave_dir: transfer direction for the current slave device
@@ -275,6 +344,8 @@ struct stm32f7_i2c_msg {
  * slave)
  * @dma: dma data
  * @use_dma: boolean to know if dma is used in the current transfer
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct stm32f7_i2c_dev {
 	struct i2c_adapter adap;
@@ -289,6 +360,7 @@ struct stm32f7_i2c_dev {
 	struct stm32f7_i2c_msg f7_msg;
 	struct stm32f7_i2c_setup setup;
 	struct stm32f7_i2c_timings timing;
+<<<<<<< HEAD
 	struct i2c_client *slave[STM32F7_I2C_MAX_SLAVE];
 	struct i2c_client *slave_running;
 	u32 slave_dir;
@@ -298,6 +370,11 @@ struct stm32f7_i2c_dev {
 };
 
 /**
+=======
+};
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All these values are coming from I2C Specification, Version 6.0, 4th of
  * April 2014.
  *
@@ -360,11 +437,14 @@ static inline void stm32f7_i2c_clr_bits(void __iomem *reg, u32 mask)
 	writel_relaxed(readl_relaxed(reg) & ~mask, reg);
 }
 
+<<<<<<< HEAD
 static void stm32f7_i2c_disable_irq(struct stm32f7_i2c_dev *i2c_dev, u32 mask)
 {
 	stm32f7_i2c_clr_bits(i2c_dev->base + STM32F7_I2C_CR1, mask);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int stm32f7_i2c_compute_timing(struct stm32f7_i2c_dev *i2c_dev,
 				      struct stm32f7_i2c_setup *setup,
 				      struct stm32f7_i2c_timings *output)
@@ -606,6 +686,7 @@ static int stm32f7_i2c_setup_timing(struct stm32f7_i2c_dev *i2c_dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void stm32f7_i2c_disable_dma_req(struct stm32f7_i2c_dev *i2c_dev)
 {
 	void __iomem *base = i2c_dev->base;
@@ -625,6 +706,8 @@ static void stm32f7_i2c_dma_callback(void *arg)
 	complete(&dma->dma_complete);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void stm32f7_i2c_hw_config(struct stm32f7_i2c_dev *i2c_dev)
 {
 	struct stm32f7_i2c_timings *t = &i2c_dev->timing;
@@ -668,9 +751,12 @@ static void stm32f7_i2c_read_rx_data(struct stm32f7_i2c_dev *i2c_dev)
 	if (f7_msg->count) {
 		*f7_msg->buf++ = readb_relaxed(base + STM32F7_I2C_RXDR);
 		f7_msg->count--;
+<<<<<<< HEAD
 	} else {
 		/* Flush RX buffer has no data is expected */
 		readb_relaxed(base + STM32F7_I2C_RXDR);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -679,9 +765,12 @@ static void stm32f7_i2c_reload(struct stm32f7_i2c_dev *i2c_dev)
 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
 	u32 cr2;
 
+<<<<<<< HEAD
 	if (i2c_dev->use_dma)
 		f7_msg->count -= STM32F7_I2C_MAX_LEN;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cr2 = readl_relaxed(i2c_dev->base + STM32F7_I2C_CR2);
 
 	cr2 &= ~STM32F7_I2C_CR2_NBYTES_MASK;
@@ -695,6 +784,7 @@ static void stm32f7_i2c_reload(struct stm32f7_i2c_dev *i2c_dev)
 	writel_relaxed(cr2, i2c_dev->base + STM32F7_I2C_CR2);
 }
 
+<<<<<<< HEAD
 static void stm32f7_i2c_smbus_reload(struct stm32f7_i2c_dev *i2c_dev)
 {
 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
@@ -732,6 +822,8 @@ static int stm32f7_i2c_release_bus(struct i2c_adapter *i2c_adap)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int stm32f7_i2c_wait_free_bus(struct stm32f7_i2c_dev *i2c_dev)
 {
 	u32 status;
@@ -741,6 +833,7 @@ static int stm32f7_i2c_wait_free_bus(struct stm32f7_i2c_dev *i2c_dev)
 					 status,
 					 !(status & STM32F7_I2C_ISR_BUSY),
 					 10, 1000);
+<<<<<<< HEAD
 	if (!ret)
 		return 0;
 
@@ -753,6 +846,14 @@ static int stm32f7_i2c_wait_free_bus(struct stm32f7_i2c_dev *i2c_dev)
 	}
 
 	return -EBUSY;
+=======
+	if (ret) {
+		dev_dbg(i2c_dev->dev, "bus busy\n");
+		ret = -EBUSY;
+	}
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void stm32f7_i2c_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
@@ -761,7 +862,10 @@ static void stm32f7_i2c_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
 	void __iomem *base = i2c_dev->base;
 	u32 cr1, cr2;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	f7_msg->addr = msg->addr;
 	f7_msg->buf = msg->buf;
@@ -780,6 +884,7 @@ static void stm32f7_i2c_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
 		cr2 |= STM32F7_I2C_CR2_RD_WRN;
 
 	/* Set slave address */
+<<<<<<< HEAD
 	cr2 &= ~(STM32F7_I2C_CR2_HEAD10R | STM32F7_I2C_CR2_ADD10);
 	if (msg->flags & I2C_M_TEN) {
 		cr2 &= ~STM32F7_I2C_CR2_SADD10_MASK;
@@ -789,6 +894,10 @@ static void stm32f7_i2c_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
 		cr2 &= ~STM32F7_I2C_CR2_SADD7_MASK;
 		cr2 |= STM32F7_I2C_CR2_SADD7(f7_msg->addr);
 	}
+=======
+	cr2 &= ~STM32F7_I2C_CR2_SADD7_MASK;
+	cr2 |= STM32F7_I2C_CR2_SADD7(f7_msg->addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set nb bytes to transfer and reload if needed */
 	cr2 &= ~(STM32F7_I2C_CR2_NBYTES_MASK | STM32F7_I2C_CR2_RELOAD);
@@ -803,6 +912,7 @@ static void stm32f7_i2c_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
 	cr1 |= STM32F7_I2C_CR1_ERRIE | STM32F7_I2C_CR1_TCIE |
 		STM32F7_I2C_CR1_STOPIE | STM32F7_I2C_CR1_NACKIE;
 
+<<<<<<< HEAD
 	/* Clear DMA req and TX/RX interrupt */
 	cr1 &= ~(STM32F7_I2C_CR1_RXIE | STM32F7_I2C_CR1_TXIE |
 			STM32F7_I2C_CR1_RXDMAEN | STM32F7_I2C_CR1_TXDMAEN);
@@ -832,17 +942,31 @@ static void stm32f7_i2c_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
 		else
 			cr1 |= STM32F7_I2C_CR1_TXDMAEN;
 	}
+=======
+	/* Clear TX/RX interrupt */
+	cr1 &= ~(STM32F7_I2C_CR1_RXIE | STM32F7_I2C_CR1_TXIE);
+
+	/* Enable RX/TX interrupt according to msg direction */
+	if (msg->flags & I2C_M_RD)
+		cr1 |= STM32F7_I2C_CR1_RXIE;
+	else
+		cr1 |= STM32F7_I2C_CR1_TXIE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Configure Start/Repeated Start */
 	cr2 |= STM32F7_I2C_CR2_START;
 
+<<<<<<< HEAD
 	i2c_dev->master_mode = true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Write configurations registers */
 	writel_relaxed(cr1, base + STM32F7_I2C_CR1);
 	writel_relaxed(cr2, base + STM32F7_I2C_CR2);
 }
 
+<<<<<<< HEAD
 static int stm32f7_i2c_smbus_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
 				      unsigned short flags, u8 command,
 				      union i2c_smbus_data *data)
@@ -1362,6 +1486,11 @@ static irqreturn_t stm32f7_i2c_slave_isr_event(struct stm32f7_i2c_dev *i2c_dev)
 		stm32f7_i2c_slave_addr(i2c_dev);
 
 	return IRQ_HANDLED;
+=======
+static void stm32f7_i2c_disable_irq(struct stm32f7_i2c_dev *i2c_dev, u32 mask)
+{
+	stm32f7_i2c_clr_bits(i2c_dev->base + STM32F7_I2C_CR1, mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t stm32f7_i2c_isr_event(int irq, void *data)
@@ -1370,6 +1499,7 @@ static irqreturn_t stm32f7_i2c_isr_event(int irq, void *data)
 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
 	void __iomem *base = i2c_dev->base;
 	u32 status, mask;
+<<<<<<< HEAD
 	int ret = IRQ_HANDLED;
 
 	/* Check if the interrupt if for a slave device */
@@ -1377,6 +1507,8 @@ static irqreturn_t stm32f7_i2c_isr_event(int irq, void *data)
 		ret = stm32f7_i2c_slave_isr_event(i2c_dev);
 		return ret;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
 
@@ -1398,21 +1530,29 @@ static irqreturn_t stm32f7_i2c_isr_event(int irq, void *data)
 	/* STOP detection flag */
 	if (status & STM32F7_I2C_ISR_STOPF) {
 		/* Disable interrupts */
+<<<<<<< HEAD
 		if (stm32f7_i2c_is_slave_registered(i2c_dev))
 			mask = STM32F7_I2C_XFER_IRQ_MASK;
 		else
 			mask = STM32F7_I2C_ALL_IRQ_MASK;
 		stm32f7_i2c_disable_irq(i2c_dev, mask);
+=======
+		stm32f7_i2c_disable_irq(i2c_dev, STM32F7_I2C_ALL_IRQ_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Clear STOP flag */
 		writel_relaxed(STM32F7_I2C_ICR_STOPCF, base + STM32F7_I2C_ICR);
 
+<<<<<<< HEAD
 		if (i2c_dev->use_dma) {
 			ret = IRQ_WAKE_THREAD;
 		} else {
 			i2c_dev->master_mode = false;
 			complete(&i2c_dev->complete);
 		}
+=======
+		complete(&i2c_dev->complete);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Transfer complete */
@@ -1420,10 +1560,13 @@ static irqreturn_t stm32f7_i2c_isr_event(int irq, void *data)
 		if (f7_msg->stop) {
 			mask = STM32F7_I2C_CR2_STOP;
 			stm32f7_i2c_set_bits(base + STM32F7_I2C_CR2, mask);
+<<<<<<< HEAD
 		} else if (i2c_dev->use_dma) {
 			ret = IRQ_WAKE_THREAD;
 		} else if (f7_msg->smbus) {
 			stm32f7_i2c_smbus_rep_start(i2c_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			i2c_dev->msg_id++;
 			i2c_dev->msg++;
@@ -1431,6 +1574,7 @@ static irqreturn_t stm32f7_i2c_isr_event(int irq, void *data)
 		}
 	}
 
+<<<<<<< HEAD
 	if (status & STM32F7_I2C_ISR_TCR) {
 		if (f7_msg->smbus)
 			stm32f7_i2c_smbus_reload(i2c_dev);
@@ -1475,6 +1619,15 @@ static irqreturn_t stm32f7_i2c_isr_event_thread(int irq, void *data)
 		i2c_dev->master_mode = false;
 		complete(&i2c_dev->complete);
 	}
+=======
+	/*
+	 * Transfer Complete Reload: 255 data bytes have been transferred
+	 * We have to prepare the I2C controller to transfer the remaining
+	 * data.
+	 */
+	if (status & STM32F7_I2C_ISR_TCR)
+		stm32f7_i2c_reload(i2c_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }
@@ -1485,8 +1638,12 @@ static irqreturn_t stm32f7_i2c_isr_error(int irq, void *data)
 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
 	void __iomem *base = i2c_dev->base;
 	struct device *dev = i2c_dev->dev;
+<<<<<<< HEAD
 	struct stm32_i2c_dma *dma = i2c_dev->dma;
 	u32 mask, status;
+=======
+	u32 status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = readl_relaxed(i2c_dev->base + STM32F7_I2C_ISR);
 
@@ -1494,7 +1651,10 @@ static irqreturn_t stm32f7_i2c_isr_error(int irq, void *data)
 	if (status & STM32F7_I2C_ISR_BERR) {
 		dev_err(dev, "<%s>: Bus error\n", __func__);
 		writel_relaxed(STM32F7_I2C_ICR_BERRCF, base + STM32F7_I2C_ICR);
+<<<<<<< HEAD
 		stm32f7_i2c_release_bus(&i2c_dev->adap);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		f7_msg->result = -EIO;
 	}
 
@@ -1505,6 +1665,7 @@ static irqreturn_t stm32f7_i2c_isr_error(int irq, void *data)
 		f7_msg->result = -EAGAIN;
 	}
 
+<<<<<<< HEAD
 	if (status & STM32F7_I2C_ISR_PECERR) {
 		dev_err(dev, "<%s>: PEC error in reception\n", __func__);
 		writel_relaxed(STM32F7_I2C_ICR_PECCF, base + STM32F7_I2C_ICR);
@@ -1525,6 +1686,10 @@ static irqreturn_t stm32f7_i2c_isr_error(int irq, void *data)
 	}
 
 	i2c_dev->master_mode = false;
+=======
+	stm32f7_i2c_disable_irq(i2c_dev, STM32F7_I2C_ALL_IRQ_MASK);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	complete(&i2c_dev->complete);
 
 	return IRQ_HANDLED;
@@ -1535,14 +1700,20 @@ static int stm32f7_i2c_xfer(struct i2c_adapter *i2c_adap,
 {
 	struct stm32f7_i2c_dev *i2c_dev = i2c_get_adapdata(i2c_adap);
 	struct stm32f7_i2c_msg *f7_msg = &i2c_dev->f7_msg;
+<<<<<<< HEAD
 	struct stm32_i2c_dma *dma = i2c_dev->dma;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long time_left;
 	int ret;
 
 	i2c_dev->msg = msgs;
 	i2c_dev->msg_num = num;
 	i2c_dev->msg_id = 0;
+<<<<<<< HEAD
 	f7_msg->smbus = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = clk_enable(i2c_dev->clk);
 	if (ret) {
@@ -1563,8 +1734,11 @@ static int stm32f7_i2c_xfer(struct i2c_adapter *i2c_adap,
 	if (!time_left) {
 		dev_dbg(i2c_dev->dev, "Access to slave 0x%x timed out\n",
 			i2c_dev->msg->addr);
+<<<<<<< HEAD
 		if (i2c_dev->use_dma)
 			dmaengine_terminate_all(dma->chan_using);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ETIMEDOUT;
 	}
 
@@ -1574,6 +1748,7 @@ clk_free:
 	return (ret < 0) ? ret : num;
 }
 
+<<<<<<< HEAD
 static int stm32f7_i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 				  unsigned short flags, char read_write,
 				  u8 command, int size,
@@ -1769,18 +1944,28 @@ static u32 stm32f7_i2c_func(struct i2c_adapter *adap)
 		I2C_FUNC_SMBUS_BYTE_DATA | I2C_FUNC_SMBUS_WORD_DATA |
 		I2C_FUNC_SMBUS_BLOCK_DATA | I2C_FUNC_SMBUS_BLOCK_PROC_CALL |
 		I2C_FUNC_SMBUS_PROC_CALL | I2C_FUNC_SMBUS_PEC;
+=======
+static u32 stm32f7_i2c_func(struct i2c_adapter *adap)
+{
+	return I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct i2c_algorithm stm32f7_i2c_algo = {
 	.master_xfer = stm32f7_i2c_xfer,
+<<<<<<< HEAD
 	.smbus_xfer = stm32f7_i2c_smbus_xfer,
 	.functionality = stm32f7_i2c_func,
 	.reg_slave = stm32f7_i2c_reg_slave,
 	.unreg_slave = stm32f7_i2c_unreg_slave,
+=======
+	.functionality = stm32f7_i2c_func,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int stm32f7_i2c_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct stm32f7_i2c_dev *i2c_dev;
 	const struct stm32f7_i2c_setup *setup;
 	struct resource *res;
@@ -1789,6 +1974,16 @@ static int stm32f7_i2c_probe(struct platform_device *pdev)
 	struct reset_control *rst;
 	dma_addr_t phy_addr;
 	int irq_error, irq_event, ret;
+=======
+	struct device_node *np = pdev->dev.of_node;
+	struct stm32f7_i2c_dev *i2c_dev;
+	const struct stm32f7_i2c_setup *setup;
+	struct resource *res;
+	u32 irq_error, irq_event, clk_rate, rise_time, fall_time;
+	struct i2c_adapter *adap;
+	struct reset_control *rst;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i2c_dev = devm_kzalloc(&pdev->dev, sizeof(*i2c_dev), GFP_KERNEL);
 	if (!i2c_dev)
@@ -1798,6 +1993,7 @@ static int stm32f7_i2c_probe(struct platform_device *pdev)
 	i2c_dev->base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(i2c_dev->base))
 		return PTR_ERR(i2c_dev->base);
+<<<<<<< HEAD
 	phy_addr = (dma_addr_t)res->start;
 
 	irq_event = platform_get_irq(pdev, 0);
@@ -1814,6 +2010,19 @@ static int stm32f7_i2c_probe(struct platform_device *pdev)
 			dev_err(&pdev->dev, "Failed to get IRQ error: %d\n",
 				irq_error);
 		return irq_error ? : -ENOENT;
+=======
+
+	irq_event = irq_of_parse_and_map(np, 0);
+	if (!irq_event) {
+		dev_err(&pdev->dev, "IRQ event missing or invalid\n");
+		return -EINVAL;
+	}
+
+	irq_error = irq_of_parse_and_map(np, 1);
+	if (!irq_error) {
+		dev_err(&pdev->dev, "IRQ error missing or invalid\n");
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	i2c_dev->clk = devm_clk_get(&pdev->dev, NULL);
@@ -1849,11 +2058,16 @@ static int stm32f7_i2c_probe(struct platform_device *pdev)
 
 	i2c_dev->dev = &pdev->dev;
 
+<<<<<<< HEAD
 	ret = devm_request_threaded_irq(&pdev->dev, irq_event,
 					stm32f7_i2c_isr_event,
 					stm32f7_i2c_isr_event_thread,
 					IRQF_ONESHOT,
 					pdev->name, i2c_dev);
+=======
+	ret = devm_request_irq(&pdev->dev, irq_event, stm32f7_i2c_isr_event, 0,
+			       pdev->name, i2c_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(&pdev->dev, "Failed to request irq event %i\n",
 			irq_event);
@@ -1905,11 +2119,14 @@ static int stm32f7_i2c_probe(struct platform_device *pdev)
 
 	init_completion(&i2c_dev->complete);
 
+<<<<<<< HEAD
 	/* Init DMA config if supported */
 	i2c_dev->dma = stm32_i2c_dma_request(i2c_dev->dev, phy_addr,
 					     STM32F7_I2C_TXDR,
 					     STM32F7_I2C_RXDR);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = i2c_add_adapter(adap);
 	if (ret)
 		goto clk_free;
@@ -1932,11 +2149,14 @@ static int stm32f7_i2c_remove(struct platform_device *pdev)
 {
 	struct stm32f7_i2c_dev *i2c_dev = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	if (i2c_dev->dma) {
 		stm32_i2c_dma_free(i2c_dev->dma);
 		i2c_dev->dma = NULL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_del_adapter(&i2c_dev->adap);
 
 	clk_unprepare(i2c_dev->clk);

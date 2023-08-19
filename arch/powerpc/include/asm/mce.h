@@ -204,10 +204,19 @@ struct mce_error_info {
 
 extern void save_mce_event(struct pt_regs *regs, long handled,
 			   struct mce_error_info *mce_err, uint64_t nip,
+<<<<<<< HEAD
 			   uint64_t addr, uint64_t phys_addr);
+=======
+			   uint64_t addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int get_mce_event(struct machine_check_event *mce, bool release);
 extern void release_mce_event(void);
 extern void machine_check_queue_event(void);
 extern void machine_check_print_event_info(struct machine_check_event *evt,
 					   bool user_mode);
+<<<<<<< HEAD
+=======
+extern uint64_t get_mce_fault_addr(struct machine_check_event *evt);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASM_PPC64_MCE_H__ */

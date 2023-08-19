@@ -20,7 +20,10 @@
 #include <linux/err.h>
 #include <linux/gpio/driver.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/platform_data/txx9/ndfmc.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/serial_core.h>
 #include <linux/mtd/physmap.h>
 #include <linux/leds.h>
@@ -33,10 +36,17 @@
 #include <asm/reboot.h>
 #include <asm/r4kcache.h>
 #include <asm/sections.h>
+<<<<<<< HEAD
 #include <asm/setup.h>
 #include <asm/txx9/generic.h>
 #include <asm/txx9/pci.h>
 #include <asm/txx9tmr.h>
+=======
+#include <asm/txx9/generic.h>
+#include <asm/txx9/pci.h>
+#include <asm/txx9tmr.h>
+#include <asm/txx9/ndfmc.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/txx9/dmac.h>
 #ifdef CONFIG_CPU_TX49XX
 #include <asm/txx9/tx4938.h>
@@ -960,6 +970,7 @@ void __init txx9_sramc_init(struct resource *r)
 		goto exit_put;
 	err = sysfs_create_bin_file(&dev->dev.kobj, &dev->bindata_attr);
 	if (err) {
+<<<<<<< HEAD
 		device_unregister(&dev->dev);
 		iounmap(dev->base);
 		kfree(dev);
@@ -968,4 +979,13 @@ void __init txx9_sramc_init(struct resource *r)
 exit_put:
 	put_device(&dev->dev);
 	return;
+=======
+		iounmap(dev->base);
+		device_unregister(&dev->dev);
+	}
+	return;
+exit_put:
+	iounmap(dev->base);
+	put_device(&dev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

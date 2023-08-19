@@ -259,6 +259,7 @@ Contact:	netdev@vger.kernel.org
 Description:
 		Symbolic link to the PHY device this network device is attached
 		to.
+<<<<<<< HEAD
 
 What:		/sys/class/net/<iface>/carrier_changes
 Date:		Mar 2014
@@ -283,3 +284,5 @@ Contact:	netdev@vger.kernel.org
 Description:
 		32-bit unsigned integer counting the number of times the link has
 		been down
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

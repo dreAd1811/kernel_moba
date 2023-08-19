@@ -280,9 +280,15 @@ static int agp_sgi_init(void)
 	else
 		return 0;
 
+<<<<<<< HEAD
 	sgi_tioca_agp_bridges = kmalloc_array(tioca_gart_found,
 					      sizeof(struct agp_bridge_data *),
 					      GFP_KERNEL);
+=======
+	sgi_tioca_agp_bridges = kmalloc(tioca_gart_found *
+					sizeof(struct agp_bridge_data *),
+					GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sgi_tioca_agp_bridges)
 		return -ENOMEM;
 

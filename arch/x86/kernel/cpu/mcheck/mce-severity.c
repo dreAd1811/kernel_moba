@@ -59,7 +59,10 @@ static struct severity {
 #define  MCGMASK(x, y)	.mcgmask = x, .mcgres = y
 #define  MASK(x, y)	.mask = x, .result = y
 #define MCI_UC_S (MCI_STATUS_UC|MCI_STATUS_S)
+<<<<<<< HEAD
 #define MCI_UC_AR (MCI_STATUS_UC|MCI_STATUS_AR)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MCI_UC_SAR (MCI_STATUS_UC|MCI_STATUS_S|MCI_STATUS_AR)
 #define	MCI_ADDR (MCI_STATUS_ADDRV|MCI_STATUS_MISCV)
 
@@ -102,6 +105,7 @@ static struct severity {
 		NOSER, BITCLR(MCI_STATUS_UC)
 		),
 
+<<<<<<< HEAD
 	/*
 	 * known AO MCACODs reported via MCE or CMC:
 	 *
@@ -118,6 +122,8 @@ static struct severity {
 		SER, MASK(MCI_STATUS_OVER|MCI_UC_AR|MCACOD, MCI_STATUS_UC|MCACOD_L3WB)
 		),
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* ignore OVER for UCNA */
 	MCESEV(
 		UCNA, "Uncorrected no action required",
@@ -176,6 +182,18 @@ static struct severity {
 		SER, MASK(MCI_STATUS_OVER|MCI_UC_SAR, MCI_UC_SAR)
 		),
 
+<<<<<<< HEAD
+=======
+	/* known AO MCACODs: */
+	MCESEV(
+		AO, "Action optional: memory scrubbing error",
+		SER, MASK(MCI_STATUS_OVER|MCI_UC_SAR|MCACOD_SCRUBMSK, MCI_UC_S|MCACOD_SCRUB)
+		),
+	MCESEV(
+		AO, "Action optional: last level cache writeback error",
+		SER, MASK(MCI_STATUS_OVER|MCI_UC_SAR|MCACOD, MCI_UC_S|MCACOD_L3WB)
+		),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MCESEV(
 		SOME, "Action optional: unknown MCACOD",
 		SER, MASK(MCI_STATUS_OVER|MCI_UC_SAR, MCI_UC_S)
@@ -222,7 +240,11 @@ static int error_context(struct mce *m)
 	return IN_KERNEL;
 }
 
+<<<<<<< HEAD
 static int mce_severity_amd_smca(struct mce *m, enum context err_ctx)
+=======
+static int mce_severity_amd_smca(struct mce *m, int err_ctx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 addr = MSR_AMD64_SMCA_MCx_CONFIG(m->bank);
 	u32 low, high;

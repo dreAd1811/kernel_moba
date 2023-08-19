@@ -15,12 +15,21 @@
 #include <linux/seq_file.h>
 #include <linux/debugfs.h>
 #include <linux/pm_wakeirq.h>
+<<<<<<< HEAD
 #include <linux/types.h>
+=======
+#include <linux/irq.h>
+#include <linux/interrupt.h>
+#include <linux/wakeup_reason.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <trace/events/power.h>
 #include <linux/irq.h>
 #include <linux/interrupt.h>
 #include <linux/irqdesc.h>
+<<<<<<< HEAD
 #include <linux/wakeup_reason.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "power.h"
 
@@ -62,9 +71,15 @@ static void split_counters(unsigned int *cnt, unsigned int *inpr)
 /* A preserved old value of the events counter. */
 static unsigned int saved_count;
 
+<<<<<<< HEAD
 static DEFINE_RAW_SPINLOCK(events_lock);
 
 static void pm_wakeup_timer_fn(struct timer_list *t);
+=======
+static DEFINE_SPINLOCK(events_lock);
+
+static void pm_wakeup_timer_fn(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static LIST_HEAD(wakeup_sources);
 
@@ -77,6 +92,11 @@ static struct wakeup_source deleted_ws = {
 	.lock =  __SPIN_LOCK_UNLOCKED(deleted_ws.lock),
 };
 
+<<<<<<< HEAD
+=======
+static DEFINE_IDA(wakeup_ida);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * wakeup_source_prepare - Prepare a new wakeup source for initialization.
  * @ws: Wakeup source to prepare.
@@ -100,6 +120,7 @@ EXPORT_SYMBOL_GPL(wakeup_source_prepare);
  */
 struct wakeup_source *wakeup_source_create(const char *name)
 {
+<<<<<<< HEAD
 	struct wakeup_source *ws;
 
 	ws = kmalloc(sizeof(*ws), GFP_KERNEL);
@@ -108,6 +129,34 @@ struct wakeup_source *wakeup_source_create(const char *name)
 
 	wakeup_source_prepare(ws, name ? kstrdup_const(name, GFP_KERNEL) : NULL);
 	return ws;
+=======
+ 	struct wakeup_source *ws;
+	const char *ws_name;
+	int id;
+
+	ws = kzalloc(sizeof(*ws), GFP_KERNEL);
+	if (!ws)
+		goto err_ws;
+
+	ws_name = kstrdup_const(name, GFP_KERNEL);
+	if (!ws_name)
+		goto err_name;
+	ws->name = ws_name;
+
+	id = ida_simple_get(&wakeup_ida, 0, 0, GFP_KERNEL);
+	if (id < 0)
+		goto err_id;
+	ws->id = id;
+
+	return ws;
+
+err_id:
+	kfree_const(ws->name);
+err_name:
+	kfree(ws);
+err_ws:
+	return NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(wakeup_source_create);
 
@@ -155,6 +204,16 @@ static void wakeup_source_record(struct wakeup_source *ws)
 	spin_unlock_irqrestore(&deleted_ws.lock, flags);
 }
 
+<<<<<<< HEAD
+=======
+static void wakeup_source_free(struct wakeup_source *ws)
+{
+	ida_simple_remove(&wakeup_ida, ws->id);
+	kfree_const(ws->name);
+	kfree(ws);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * wakeup_source_destroy - Destroy a struct wakeup_source object.
  * @ws: Wakeup source to destroy.
@@ -168,8 +227,12 @@ void wakeup_source_destroy(struct wakeup_source *ws)
 
 	wakeup_source_drop(ws);
 	wakeup_source_record(ws);
+<<<<<<< HEAD
 	kfree_const(ws->name);
 	kfree(ws);
+=======
+	wakeup_source_free(ws);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(wakeup_source_destroy);
 
@@ -185,12 +248,21 @@ void wakeup_source_add(struct wakeup_source *ws)
 		return;
 
 	spin_lock_init(&ws->lock);
+<<<<<<< HEAD
 	timer_setup(&ws->timer, pm_wakeup_timer_fn, 0);
 	ws->active = false;
 
 	raw_spin_lock_irqsave(&events_lock, flags);
 	list_add_rcu(&ws->entry, &wakeup_sources);
 	raw_spin_unlock_irqrestore(&events_lock, flags);
+=======
+	setup_timer(&ws->timer, pm_wakeup_timer_fn, (unsigned long)ws);
+	ws->active = false;
+
+	spin_lock_irqsave(&events_lock, flags);
+	list_add_rcu(&ws->entry, &wakeup_sources);
+	spin_unlock_irqrestore(&events_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(wakeup_source_add);
 
@@ -205,9 +277,15 @@ void wakeup_source_remove(struct wakeup_source *ws)
 	if (WARN_ON(!ws))
 		return;
 
+<<<<<<< HEAD
 	raw_spin_lock_irqsave(&events_lock, flags);
 	list_del_rcu(&ws->entry);
 	raw_spin_unlock_irqrestore(&events_lock, flags);
+=======
+	spin_lock_irqsave(&events_lock, flags);
+	list_del_rcu(&ws->entry);
+	spin_unlock_irqrestore(&events_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	synchronize_srcu(&wakeup_srcu);
 
 	del_timer_sync(&ws->timer);
@@ -221,6 +299,7 @@ EXPORT_SYMBOL_GPL(wakeup_source_remove);
 
 /**
  * wakeup_source_register - Create wakeup source and add it to the list.
+<<<<<<< HEAD
  * @name: Name of the wakeup source to register.
  */
 struct wakeup_source *wakeup_source_register(const char *name)
@@ -231,6 +310,28 @@ struct wakeup_source *wakeup_source_register(const char *name)
 	if (ws)
 		wakeup_source_add(ws);
 
+=======
+ * @dev: Device this wakeup source is associated with (or NULL if virtual).
+ * @name: Name of the wakeup source to register.
+ */
+struct wakeup_source *wakeup_source_register(struct device *dev,
+					     const char *name)
+{
+	struct wakeup_source *ws;
+	int ret;
+
+	ws = wakeup_source_create(name);
+	if (ws) {
+		if (!dev || device_is_registered(dev)) {
+			ret = wakeup_source_sysfs_add(dev, ws);
+			if (ret) {
+				wakeup_source_free(ws);
+				return NULL;
+			}
+		}
+		wakeup_source_add(ws);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ws;
 }
 EXPORT_SYMBOL_GPL(wakeup_source_register);
@@ -243,6 +344,10 @@ void wakeup_source_unregister(struct wakeup_source *ws)
 {
 	if (ws) {
 		wakeup_source_remove(ws);
+<<<<<<< HEAD
+=======
+		wakeup_source_sysfs_remove(ws);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wakeup_source_destroy(ws);
 	}
 }
@@ -286,7 +391,11 @@ int device_wakeup_enable(struct device *dev)
 	if (pm_suspend_target_state != PM_SUSPEND_ON)
 		dev_dbg(dev, "Suspicious %s() during system transition!\n", __func__);
 
+<<<<<<< HEAD
 	ws = wakeup_source_register(dev_name(dev));
+=======
+	ws = wakeup_source_register(dev, dev_name(dev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ws)
 		return -ENOMEM;
 
@@ -309,12 +418,17 @@ EXPORT_SYMBOL_GPL(device_wakeup_enable);
  *
  * Call under the device's power.lock lock.
  */
+<<<<<<< HEAD
 void device_wakeup_attach_irq(struct device *dev,
+=======
+int device_wakeup_attach_irq(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     struct wake_irq *wakeirq)
 {
 	struct wakeup_source *ws;
 
 	ws = dev->power.wakeup;
+<<<<<<< HEAD
 	if (!ws)
 		return;
 
@@ -322,6 +436,18 @@ void device_wakeup_attach_irq(struct device *dev,
 		dev_err(dev, "Leftover wakeup IRQ found, overriding\n");
 
 	ws->wakeirq = wakeirq;
+=======
+	if (!ws) {
+		dev_err(dev, "forgot to call call device_init_wakeup?\n");
+		return -EINVAL;
+	}
+
+	if (ws->wakeirq)
+		return -EEXIST;
+
+	ws->wakeirq = wakeirq;
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -463,7 +589,13 @@ int device_init_wakeup(struct device *dev, bool enable)
 		device_set_wakeup_capable(dev, true);
 		ret = device_wakeup_enable(dev);
 	} else {
+<<<<<<< HEAD
 		device_wakeup_disable(dev);
+=======
+		if (dev->power.can_wakeup)
+			device_wakeup_disable(dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_set_wakeup_capable(dev, false);
 	}
 
@@ -477,6 +609,12 @@ EXPORT_SYMBOL_GPL(device_init_wakeup);
  */
 int device_set_wakeup_enable(struct device *dev, bool enable)
 {
+<<<<<<< HEAD
+=======
+	if (!dev || !dev->power.can_wakeup)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return enable ? device_wakeup_enable(dev) : device_wakeup_disable(dev);
 }
 EXPORT_SYMBOL_GPL(device_set_wakeup_enable);
@@ -491,7 +629,12 @@ static bool wakeup_source_not_registered(struct wakeup_source *ws)
 	 * Use timer struct to check if the given source is initialized
 	 * by wakeup_source_add.
 	 */
+<<<<<<< HEAD
 	return ws->timer.function != pm_wakeup_timer_fn;
+=======
+	return ws->timer.function != pm_wakeup_timer_fn ||
+		   ws->timer.data != (unsigned long)ws;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -733,9 +876,15 @@ EXPORT_SYMBOL_GPL(pm_relax);
  * in @data if it is currently active and its timer has not been canceled and
  * the expiration time of the timer is not in future.
  */
+<<<<<<< HEAD
 static void pm_wakeup_timer_fn(struct timer_list *t)
 {
 	struct wakeup_source *ws = from_timer(ws, t, timer);
+=======
+static void pm_wakeup_timer_fn(unsigned long data)
+{
+	struct wakeup_source *ws = (struct wakeup_source *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&ws->lock, flags);
@@ -819,8 +968,14 @@ void pm_get_active_wakeup_sources(char *pending_wakeup_source, size_t max)
 	struct wakeup_source *ws, *last_active_ws = NULL;
 	int len = 0;
 	bool active = false;
+<<<<<<< HEAD
 
 	rcu_read_lock();
+=======
+	int srcuidx;
+
+	srcuidx = srcu_read_lock(&wakeup_srcu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry_rcu(ws, &wakeup_sources, entry) {
 		if (ws->active && len < max) {
 			if (!active)
@@ -841,7 +996,11 @@ void pm_get_active_wakeup_sources(char *pending_wakeup_source, size_t max)
 				"Last active Wakeup Source: %s",
 				last_active_ws->name);
 	}
+<<<<<<< HEAD
 	rcu_read_unlock();
+=======
+	srcu_read_unlock(&wakeup_srcu, srcuidx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(pm_get_active_wakeup_sources);
 
@@ -883,8 +1042,14 @@ bool pm_wakeup_pending(void)
 {
 	unsigned long flags;
 	bool ret = false;
+<<<<<<< HEAD
 
 	raw_spin_lock_irqsave(&events_lock, flags);
+=======
+	char suspend_abort[MAX_SUSPEND_ABORT_LEN];
+
+	spin_lock_irqsave(&events_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (events_check_enabled) {
 		unsigned int cnt, inpr;
 
@@ -892,11 +1057,21 @@ bool pm_wakeup_pending(void)
 		ret = (cnt != saved_count || inpr > 0);
 		events_check_enabled = !ret;
 	}
+<<<<<<< HEAD
 	raw_spin_unlock_irqrestore(&events_lock, flags);
 
 	if (ret) {
 		pr_debug("PM: Wakeup pending, aborting suspend\n");
 		pm_print_active_wakeup_sources();
+=======
+	spin_unlock_irqrestore(&events_lock, flags);
+
+	if (ret) {
+		pm_get_active_wakeup_sources(suspend_abort,
+					     MAX_SUSPEND_ABORT_LEN);
+		log_suspend_abort_reason(suspend_abort);
+		pr_info("PM: %s\n", suspend_abort);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret || atomic_read(&pm_abort_suspend) > 0;
@@ -911,7 +1086,11 @@ EXPORT_SYMBOL_GPL(pm_system_wakeup);
 
 void pm_system_cancel_wakeup(void)
 {
+<<<<<<< HEAD
 	atomic_dec(&pm_abort_suspend);
+=======
+	atomic_dec_if_positive(&pm_abort_suspend);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void pm_wakeup_clear(bool reset)
@@ -940,7 +1119,10 @@ void pm_system_irq_wakeup(unsigned int irq_number)
 		}
 		pm_wakeup_irq = irq_number;
 		pm_system_wakeup();
+<<<<<<< HEAD
 		log_wakeup_reason(pm_wakeup_irq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -996,13 +1178,21 @@ bool pm_save_wakeup_count(unsigned int count)
 	unsigned long flags;
 
 	events_check_enabled = false;
+<<<<<<< HEAD
 	raw_spin_lock_irqsave(&events_lock, flags);
+=======
+	spin_lock_irqsave(&events_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	split_counters(&cnt, &inpr);
 	if (cnt == count && inpr == 0) {
 		saved_count = count;
 		events_check_enabled = true;
 	}
+<<<<<<< HEAD
 	raw_spin_unlock_irqrestore(&events_lock, flags);
+=======
+	spin_unlock_irqrestore(&events_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return events_check_enabled;
 }
 
@@ -1073,7 +1263,11 @@ static int print_wakeup_source_stats(struct seq_file *m,
 		active_time = 0;
 	}
 
+<<<<<<< HEAD
 	seq_printf(m, "%-12s\t%lu\t\t%lu\t\t%lu\t\t%lu\t\t%lld\t\t%lld\t\t%lld\t\t%lld\t\t%lld\n",
+=======
+	seq_printf(m, "%-32s\t%lu\t\t%lu\t\t%lu\t\t%lu\t\t%lld\t\t%lld\t\t%lld\t\t%lld\t\t%lld\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   ws->name, active_count, ws->event_count,
 		   ws->wakeup_count, ws->expire_count,
 		   ktime_to_ms(active_time), ktime_to_ms(total_time),
@@ -1085,6 +1279,7 @@ static int print_wakeup_source_stats(struct seq_file *m,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void *wakeup_sources_stats_seq_start(struct seq_file *m,
 					loff_t *pos)
 {
@@ -1140,10 +1335,32 @@ static int wakeup_sources_stats_seq_show(struct seq_file *m, void *v)
 	struct wakeup_source *ws = v;
 
 	print_wakeup_source_stats(m, ws);
+=======
+/**
+ * wakeup_sources_stats_show - Print wakeup sources statistics information.
+ * @m: seq_file to print the statistics into.
+ */
+static int wakeup_sources_stats_show(struct seq_file *m, void *unused)
+{
+	struct wakeup_source *ws;
+	int srcuidx;
+
+	seq_puts(m, "name\t\t\t\t\tactive_count\tevent_count\twakeup_count\t"
+		"expire_count\tactive_since\ttotal_time\tmax_time\t"
+		"last_change\tprevent_suspend_time\n");
+
+	srcuidx = srcu_read_lock(&wakeup_srcu);
+	list_for_each_entry_rcu(ws, &wakeup_sources, entry)
+		print_wakeup_source_stats(m, ws);
+	srcu_read_unlock(&wakeup_srcu, srcuidx);
+
+	print_wakeup_source_stats(m, &deleted_ws);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct seq_operations wakeup_sources_stats_seq_ops = {
 	.start = wakeup_sources_stats_seq_start,
 	.next  = wakeup_sources_stats_seq_next,
@@ -1154,6 +1371,11 @@ static const struct seq_operations wakeup_sources_stats_seq_ops = {
 static int wakeup_sources_stats_open(struct inode *inode, struct file *file)
 {
 	return seq_open_private(file, &wakeup_sources_stats_seq_ops, sizeof(int));
+=======
+static int wakeup_sources_stats_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, wakeup_sources_stats_show, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations wakeup_sources_stats_fops = {
@@ -1161,7 +1383,11 @@ static const struct file_operations wakeup_sources_stats_fops = {
 	.open = wakeup_sources_stats_open,
 	.read = seq_read,
 	.llseek = seq_lseek,
+<<<<<<< HEAD
 	.release = seq_release_private,
+=======
+	.release = single_release,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init wakeup_sources_debugfs_init(void)

@@ -113,7 +113,11 @@ static void __NS8390_init(struct net_device *dev, int startp);
 
 static unsigned version_printed;
 static u32 msg_enable;
+<<<<<<< HEAD
 module_param(msg_enable, uint, 0444);
+=======
+module_param(msg_enable, uint, (S_IRUSR|S_IRGRP|S_IROTH));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(msg_enable, "Debug message level (see linux/netdevice.h for bitmap)");
 
 /*
@@ -975,8 +979,11 @@ static void ethdev_setup(struct net_device *dev)
 	ether_setup(dev);
 
 	spin_lock_init(&ei_local->page_lock);
+<<<<<<< HEAD
 
 	ei_local->msg_enable = msg_enable;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

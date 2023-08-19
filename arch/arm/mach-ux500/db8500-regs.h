@@ -41,6 +41,13 @@
 /* ASIC ID is at 0xbf4 offset within this region */
 #define U8500_ASIC_ID_BASE	0x9001D000
 
+<<<<<<< HEAD
+=======
+#define U9540_BOOT_ROM_BASE	0xFFFE0000
+/* ASIC ID is at 0xbf4 offset within this region */
+#define U9540_ASIC_ID_BASE	0xFFFFD000
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define U8500_PER6_BASE		0xa03c0000
 #define U8500_PER7_BASE		0xa03d0000
 #define U8500_PER5_BASE		0xa03e0000

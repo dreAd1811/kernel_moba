@@ -36,6 +36,7 @@
 #define mmUVD_UDEC_DBW_ADDR_CONFIG                                              0x3bd5
 #define mmUVD_POWER_STATUS_U                                                    0x3bfd
 #define mmUVD_NO_OP                                                             0x3bff
+<<<<<<< HEAD
 #define mmUVD_RB_BASE_LO2                                                       0x3c21
 #define mmUVD_RB_BASE_HI2                                                       0x3c22
 #define mmUVD_RB_SIZE2                                                          0x3c23
@@ -46,6 +47,8 @@
 #define mmUVD_RB_SIZE                                                           0x3c28
 #define mmUVD_RB_RPTR                                                           0x3c29
 #define mmUVD_RB_WPTR                                                           0x3c2a
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define mmUVD_LMI_RBC_RB_64BIT_BAR_LOW                                          0x3c69
 #define mmUVD_LMI_RBC_RB_64BIT_BAR_HIGH                                         0x3c68
 #define mmUVD_LMI_RBC_IB_64BIT_BAR_LOW                                          0x3c67
@@ -53,11 +56,14 @@
 #define mmUVD_LMI_VCPU_CACHE_64BIT_BAR_LOW                                      0x3c5f
 #define mmUVD_LMI_VCPU_CACHE_64BIT_BAR_HIGH                                     0x3c5e
 #define mmUVD_SEMA_CNTL                                                         0x3d00
+<<<<<<< HEAD
 #define mmUVD_RB_WPTR3                                                          0x3d1c
 #define mmUVD_RB_RPTR3                                                          0x3d1b
 #define mmUVD_RB_BASE_LO3                                                       0x3d1d
 #define mmUVD_RB_BASE_HI3                                                       0x3d1e
 #define mmUVD_RB_SIZE3                                                          0x3d1f
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define mmUVD_LMI_EXT40_ADDR                                                    0x3d26
 #define mmUVD_CTX_INDEX                                                         0x3d28
 #define mmUVD_CTX_DATA                                                          0x3d29

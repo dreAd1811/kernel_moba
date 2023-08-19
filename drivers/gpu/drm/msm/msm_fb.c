@@ -15,14 +15,22 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+<<<<<<< HEAD
 #include <drm/drm_crtc.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
+=======
+#include <linux/dma-mapping.h>
+#include <linux/dma-buf.h>
+#include <drm/drm_crtc.h>
+#include <drm/drm_crtc_helper.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "msm_drv.h"
 #include "msm_kms.h"
 #include "msm_gem.h"
 
+<<<<<<< HEAD
 struct msm_framebuffer {
 	struct drm_framebuffer base;
 	const struct msm_format *format;
@@ -36,13 +44,86 @@ static struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
 static const struct drm_framebuffer_funcs msm_framebuffer_funcs = {
 	.create_handle = drm_gem_fb_create_handle,
 	.destroy = drm_gem_fb_destroy,
+=======
+#define MSM_FRAMEBUFFER_FLAG_KMAP	BIT(0)
+
+struct msm_framebuffer {
+	struct drm_framebuffer base;
+	const struct msm_format *format;
+	struct drm_gem_object *planes[MAX_PLANE];
+	void *vaddr[MAX_PLANE];
+	atomic_t kmap_count;
+	u32 flags;
+};
+#define to_msm_framebuffer(x) container_of(x, struct msm_framebuffer, base)
+
+static int msm_framebuffer_create_handle(struct drm_framebuffer *fb,
+		struct drm_file *file_priv,
+		unsigned int *handle)
+{
+	struct msm_framebuffer *msm_fb;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return -EINVAL;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+
+	return drm_gem_handle_create(file_priv,
+			msm_fb->planes[0], handle);
+}
+
+static void msm_framebuffer_destroy(struct drm_framebuffer *fb)
+{
+	struct msm_framebuffer *msm_fb;
+	int i, n;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	n = fb->format->num_planes;
+
+	DBG("destroy: FB ID: %d (%pK)", fb->base.id, fb);
+
+	drm_framebuffer_cleanup(fb);
+
+	for (i = 0; i < n; i++) {
+		struct drm_gem_object *bo = msm_fb->planes[i];
+
+		drm_gem_object_unreference_unlocked(bo);
+	}
+
+	kfree(msm_fb);
+}
+
+static const struct drm_framebuffer_funcs msm_framebuffer_funcs = {
+	.create_handle = msm_framebuffer_create_handle,
+	.destroy = msm_framebuffer_destroy,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #ifdef CONFIG_DEBUG_FS
 void msm_framebuffer_describe(struct drm_framebuffer *fb, struct seq_file *m)
 {
+<<<<<<< HEAD
 	int i, n = fb->format->num_planes;
 
+=======
+	struct msm_framebuffer *msm_fb;
+	int i, n;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	n = fb->format->num_planes;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "fb: %dx%d@%4.4s (%2d, ID:%d)\n",
 			fb->width, fb->height, (char *)&fb->format->format,
 			drm_framebuffer_read_refcount(fb), fb->base.id);
@@ -50,11 +131,125 @@ void msm_framebuffer_describe(struct drm_framebuffer *fb, struct seq_file *m)
 	for (i = 0; i < n; i++) {
 		seq_printf(m, "   %d: offset=%d pitch=%d, obj: ",
 				i, fb->offsets[i], fb->pitches[i]);
+<<<<<<< HEAD
 		msm_gem_describe(fb->obj[i], m);
+=======
+		msm_gem_describe(msm_fb->planes[i], m);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 #endif
 
+<<<<<<< HEAD
+=======
+void msm_framebuffer_set_keepattrs(struct drm_framebuffer *fb, bool enable)
+{
+	struct msm_framebuffer *msm_fb;
+	int i, n;
+	struct drm_gem_object *bo;
+	struct msm_gem_object *msm_obj;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return;
+	}
+
+	if (!fb->format) {
+		DRM_ERROR("from:%pS null fb->format\n",
+				__builtin_return_address(0));
+		return;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	n = fb->format->num_planes;
+	for (i = 0; i < n; i++) {
+		bo = msm_framebuffer_bo(fb, i);
+		if (bo) {
+			msm_obj = to_msm_bo(bo);
+			if (enable)
+				msm_obj->flags |= MSM_BO_KEEPATTRS;
+			else
+				msm_obj->flags &= ~MSM_BO_KEEPATTRS;
+		}
+	}
+}
+
+void msm_framebuffer_set_kmap(struct drm_framebuffer *fb, bool enable)
+{
+	struct msm_framebuffer *msm_fb;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	if (enable)
+		msm_fb->flags |= MSM_FRAMEBUFFER_FLAG_KMAP;
+	else
+		msm_fb->flags &= ~MSM_FRAMEBUFFER_FLAG_KMAP;
+}
+
+static int msm_framebuffer_kmap(struct drm_framebuffer *fb)
+{
+	struct msm_framebuffer *msm_fb;
+	int i, n;
+	struct drm_gem_object *bo;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return -EINVAL;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	n = fb->format->num_planes;
+	if (atomic_inc_return(&msm_fb->kmap_count) > 1)
+		return 0;
+
+	for (i = 0; i < n; i++) {
+		bo = msm_framebuffer_bo(fb, i);
+		if (!bo || !bo->dma_buf) {
+			msm_fb->vaddr[i] = NULL;
+			continue;
+		}
+		dma_buf_begin_cpu_access(bo->dma_buf, DMA_BIDIRECTIONAL);
+		msm_fb->vaddr[i] = dma_buf_kmap(bo->dma_buf, 0);
+		DRM_INFO("FB[%u]: vaddr[%d]:%ux%u\n", fb->base.id, i,
+			fb->width, fb->height);
+	}
+
+	return 0;
+}
+
+static void msm_framebuffer_kunmap(struct drm_framebuffer *fb)
+{
+	struct msm_framebuffer *msm_fb;
+	int i, n;
+	struct drm_gem_object *bo;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	n = fb->format->num_planes;
+	if (atomic_dec_return(&msm_fb->kmap_count) > 0)
+		return;
+
+	for (i = 0; i < n; i++) {
+		bo = msm_framebuffer_bo(fb, i);
+		if (!bo || !msm_fb->vaddr[i])
+			continue;
+		if (bo->dma_buf) {
+			dma_buf_kunmap(bo->dma_buf, 0, msm_fb->vaddr[i]);
+			dma_buf_end_cpu_access(bo->dma_buf, DMA_BIDIRECTIONAL);
+		}
+		msm_fb->vaddr[i] = NULL;
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* prepare/pin all the fb's bo's for scanout.  Note that it is not valid
  * to prepare an fb more multiple different initiator 'id's.  But that
  * should be fine, since only the scanout (mdpN) side of things needs
@@ -63,46 +258,139 @@ void msm_framebuffer_describe(struct drm_framebuffer *fb, struct seq_file *m)
 int msm_framebuffer_prepare(struct drm_framebuffer *fb,
 		struct msm_gem_address_space *aspace)
 {
+<<<<<<< HEAD
 	int ret, i, n = fb->format->num_planes;
 	uint64_t iova;
 
 	for (i = 0; i < n; i++) {
 		ret = msm_gem_get_iova(fb->obj[i], aspace, &iova);
+=======
+	struct msm_framebuffer *msm_fb;
+	int ret, i, n;
+	uint64_t iova;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return -EINVAL;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	n = fb->format->num_planes;
+	for (i = 0; i < n; i++) {
+		ret = msm_gem_get_iova(msm_fb->planes[i], aspace, &iova);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DBG("FB[%u]: iova[%d]: %08llx (%d)", fb->base.id, i, iova, ret);
 		if (ret)
 			return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	if (msm_fb->flags & MSM_FRAMEBUFFER_FLAG_KMAP)
+		msm_framebuffer_kmap(fb);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 void msm_framebuffer_cleanup(struct drm_framebuffer *fb,
 		struct msm_gem_address_space *aspace)
 {
+<<<<<<< HEAD
 	int i, n = fb->format->num_planes;
 
 	for (i = 0; i < n; i++)
 		msm_gem_put_iova(fb->obj[i], aspace);
+=======
+	struct msm_framebuffer *msm_fb;
+	int i, n;
+
+	if (fb == NULL) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	n = fb->format->num_planes;
+
+	if (msm_fb->flags & MSM_FRAMEBUFFER_FLAG_KMAP)
+		msm_framebuffer_kunmap(fb);
+
+	for (i = 0; i < n; i++)
+		msm_gem_put_iova(msm_fb->planes[i], aspace);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 uint32_t msm_framebuffer_iova(struct drm_framebuffer *fb,
 		struct msm_gem_address_space *aspace, int plane)
 {
+<<<<<<< HEAD
 	if (!fb->obj[plane])
 		return 0;
 	return msm_gem_iova(fb->obj[plane], aspace) + fb->offsets[plane];
+=======
+	struct msm_framebuffer *msm_fb;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return -EINVAL;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	if (!msm_fb->planes[plane])
+		return 0;
+	return msm_gem_iova(msm_fb->planes[plane], aspace) + fb->offsets[plane];
+}
+
+uint32_t msm_framebuffer_phys(struct drm_framebuffer *fb,
+		int plane)
+{
+	struct msm_framebuffer *msm_fb;
+	dma_addr_t phys_addr;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return -EINVAL;
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	if (!msm_fb->planes[plane])
+		return 0;
+
+	phys_addr = msm_gem_get_dma_addr(msm_fb->planes[plane]);
+	if (!phys_addr)
+		return 0;
+
+	return phys_addr + fb->offsets[plane];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct drm_gem_object *msm_framebuffer_bo(struct drm_framebuffer *fb, int plane)
 {
+<<<<<<< HEAD
 	return drm_gem_fb_get_obj(fb, plane);
+=======
+	struct msm_framebuffer *msm_fb;
+
+	if (!fb) {
+		DRM_ERROR("from:%pS null fb\n", __builtin_return_address(0));
+		return ERR_PTR(-EINVAL);
+	}
+
+	msm_fb = to_msm_framebuffer(fb);
+	return msm_fb->planes[plane];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct msm_format *msm_framebuffer_format(struct drm_framebuffer *fb)
 {
+<<<<<<< HEAD
 	struct msm_framebuffer *msm_fb = to_msm_framebuffer(fb);
 
 	return msm_fb->format;
+=======
+	return fb ? (to_msm_framebuffer(fb))->format : NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct drm_framebuffer *msm_framebuffer_create(struct drm_device *dev,
@@ -130,6 +418,7 @@ struct drm_framebuffer *msm_framebuffer_create(struct drm_device *dev,
 
 out_unref:
 	for (i = 0; i < n; i++)
+<<<<<<< HEAD
 		drm_gem_object_put_unlocked(bos[i]);
 	return ERR_PTR(ret);
 }
@@ -137,12 +426,21 @@ out_unref:
 static struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
 		const struct drm_mode_fb_cmd2 *mode_cmd,
 		struct drm_gem_object **bos)
+=======
+		drm_gem_object_unreference_unlocked(bos[i]);
+	return ERR_PTR(ret);
+}
+
+struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
+		const struct drm_mode_fb_cmd2 *mode_cmd, struct drm_gem_object **bos)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct msm_drm_private *priv = dev->dev_private;
 	struct msm_kms *kms = priv->kms;
 	struct msm_framebuffer *msm_fb = NULL;
 	struct drm_framebuffer *fb;
 	const struct msm_format *format;
+<<<<<<< HEAD
 	int ret, i, n;
 	unsigned int hsub, vsub;
 
@@ -151,6 +449,17 @@ static struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
 			(char *)&mode_cmd->pixel_format);
 
 	n = drm_format_num_planes(mode_cmd->pixel_format);
+=======
+	int ret, i, num_planes;
+	unsigned int hsub, vsub;
+	bool is_modified = false;
+
+	DBG("create framebuffer: dev=%pK, mode_cmd=%pK (%dx%d@%4.4s)",
+			dev, mode_cmd, mode_cmd->width, mode_cmd->height,
+			(char *)&mode_cmd->pixel_format);
+
+	num_planes = drm_format_num_planes(mode_cmd->pixel_format);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hsub = drm_format_horz_chroma_subsampling(mode_cmd->pixel_format);
 	vsub = drm_format_vert_chroma_subsampling(mode_cmd->pixel_format);
 
@@ -172,12 +481,28 @@ static struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
 	fb = &msm_fb->base;
 
 	msm_fb->format = format;
+<<<<<<< HEAD
 
 	if (n > ARRAY_SIZE(fb->obj)) {
+=======
+	atomic_set(&msm_fb->kmap_count, 0);
+
+	if (mode_cmd->flags & DRM_MODE_FB_MODIFIERS) {
+		for (i = 0; i < ARRAY_SIZE(mode_cmd->modifier); i++) {
+			if (mode_cmd->modifier[i]) {
+				is_modified = true;
+				break;
+			}
+		}
+	}
+
+	if (num_planes > ARRAY_SIZE(msm_fb->planes) - 1) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < n; i++) {
 		unsigned int width = mode_cmd->width / (i ? hsub : 1);
 		unsigned int height = mode_cmd->height / (i ? vsub : 1);
@@ -195,6 +520,42 @@ static struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
 		msm_fb->base.obj[i] = bos[i];
 	}
 
+=======
+	if (is_modified) {
+		if (!kms->funcs->check_modified_format) {
+			dev_err(dev->dev, "can't check modified fb format\n");
+			ret = -EINVAL;
+			goto fail;
+		} else {
+			ret = kms->funcs->check_modified_format(
+				kms, msm_fb->format, mode_cmd, bos);
+			if (ret)
+				goto fail;
+		}
+	} else {
+		for (i = 0; i < num_planes; i++) {
+			unsigned int width = mode_cmd->width / (i ? hsub : 1);
+			unsigned int height = mode_cmd->height / (i ? vsub : 1);
+			unsigned int min_size;
+			unsigned int cpp;
+
+			cpp = drm_format_plane_cpp(mode_cmd->pixel_format, i);
+
+			min_size = (height - 1) * mode_cmd->pitches[i]
+				 + width * cpp
+				 + mode_cmd->offsets[i];
+
+			if (bos[i]->size < min_size) {
+				ret = -EINVAL;
+				goto fail;
+			}
+		}
+	}
+
+	for (i = 0; i < num_planes; i++)
+		msm_fb->planes[i] = bos[i];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_helper_mode_fill_fb_struct(dev, fb, mode_cmd);
 
 	ret = drm_framebuffer_init(dev, fb, &msm_framebuffer_funcs);
@@ -203,7 +564,11 @@ static struct drm_framebuffer *msm_framebuffer_init(struct drm_device *dev,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	DBG("create: FB ID: %d (%p)", fb->base.id, fb);
+=======
+	DBG("create: FB ID: %d (%pK)", fb->base.id, fb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return fb;
 
@@ -214,8 +579,12 @@ fail:
 }
 
 struct drm_framebuffer *
+<<<<<<< HEAD
 msm_alloc_stolen_fb(struct drm_device *dev, int w, int h,
 				int p, uint32_t format)
+=======
+msm_alloc_stolen_fb(struct drm_device *dev, int w, int h, int p, uint32_t format)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_mode_fb_cmd2 mode_cmd = {
 		.pixel_format = format,
@@ -247,7 +616,11 @@ msm_alloc_stolen_fb(struct drm_device *dev, int w, int h,
 		/* note: if fb creation failed, we can't rely on fb destroy
 		 * to unref the bo:
 		 */
+<<<<<<< HEAD
 		drm_gem_object_put_unlocked(bo);
+=======
+		drm_gem_object_unreference_unlocked(bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_CAST(fb);
 	}
 

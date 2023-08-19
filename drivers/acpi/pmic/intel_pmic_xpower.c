@@ -303,4 +303,13 @@ static struct platform_driver intel_xpower_pmic_opregion_driver = {
 		.name = "axp288_pmic_acpi",
 	},
 };
+<<<<<<< HEAD
 builtin_platform_driver(intel_xpower_pmic_opregion_driver);
+=======
+
+static int __init intel_xpower_pmic_opregion_driver_init(void)
+{
+	return platform_driver_register(&intel_xpower_pmic_opregion_driver);
+}
+device_initcall(intel_xpower_pmic_opregion_driver_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

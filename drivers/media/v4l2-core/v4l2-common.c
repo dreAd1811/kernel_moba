@@ -320,6 +320,23 @@ static unsigned int clamp_align(unsigned int x, unsigned int min,
 	return x;
 }
 
+<<<<<<< HEAD
+=======
+/* Bound an image to have a width between wmin and wmax, and height between
+ * hmin and hmax, inclusive.  Additionally, the width will be a multiple of
+ * 2^walign, the height will be a multiple of 2^halign, and the overall size
+ * (width*height) will be a multiple of 2^salign.  The image may be shrunk
+ * or enlarged to fit the alignment constraints.
+ *
+ * The width or height maximum must not be smaller than the corresponding
+ * minimum.  The alignments must not be so high there are no possible image
+ * sizes within the allowed bounds.  wmin and hmin must be at least 1
+ * (don't use 0).  If you don't care about a certain alignment, specify 0,
+ * as 2^0 is 1 and one byte alignment is equivalent to no alignment.  If
+ * you only want to adjust downward, specify a maximum that's the same as
+ * the initial value.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void v4l_bound_align_image(u32 *w, unsigned int wmin, unsigned int wmax,
 			   unsigned int walign,
 			   u32 *h, unsigned int hmin, unsigned int hmax,
@@ -357,6 +374,7 @@ void v4l_bound_align_image(u32 *w, unsigned int wmin, unsigned int wmax,
 }
 EXPORT_SYMBOL_GPL(v4l_bound_align_image);
 
+<<<<<<< HEAD
 const void *
 __v4l2_find_nearest_size(const void *array, size_t array_size,
 			 size_t entry_size, size_t width_offset,
@@ -379,13 +397,36 @@ __v4l2_find_nearest_size(const void *array, size_t array_size,
 
 		min_error = error;
 		best = array;
+=======
+const struct v4l2_frmsize_discrete *v4l2_find_nearest_format(
+		const struct v4l2_discrete_probe *probe,
+		s32 width, s32 height)
+{
+	int i;
+	u32 error, min_error = UINT_MAX;
+	const struct v4l2_frmsize_discrete *size, *best = NULL;
+
+	if (!probe)
+		return best;
+
+	for (i = 0, size = probe->sizes; i < probe->num_sizes; i++, size++) {
+		error = abs(size->width - width) + abs(size->height - height);
+		if (error < min_error) {
+			min_error = error;
+			best = size;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!error)
 			break;
 	}
 
 	return best;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(__v4l2_find_nearest_size);
+=======
+EXPORT_SYMBOL_GPL(v4l2_find_nearest_format);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void v4l2_get_timestamp(struct timeval *tv)
 {
@@ -396,6 +437,7 @@ void v4l2_get_timestamp(struct timeval *tv)
 	tv->tv_usec = ts.tv_nsec / NSEC_PER_USEC;
 }
 EXPORT_SYMBOL_GPL(v4l2_get_timestamp);
+<<<<<<< HEAD
 
 int v4l2_g_parm_cap(struct video_device *vdev,
 		    struct v4l2_subdev *sd, struct v4l2_streamparm *a)
@@ -444,3 +486,5 @@ int v4l2_s_parm_cap(struct video_device *vdev,
 	return ret;
 }
 EXPORT_SYMBOL_GPL(v4l2_s_parm_cap);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

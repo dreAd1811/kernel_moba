@@ -10,7 +10,10 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 #include <linux/clk.h>
+<<<<<<< HEAD
 #include <linux/crc32.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/moduleparam.h>
 #include <linux/kernel.h>
@@ -56,7 +59,12 @@
 /* level of occupied TX descriptors under which we wake up TX process */
 #define MACB_TX_WAKEUP_THRESH(bp)	(3 * (bp)->tx_ring_size / 4)
 
+<<<<<<< HEAD
 #define MACB_RX_INT_FLAGS	(MACB_BIT(RCOMP) | MACB_BIT(ISR_ROVR))
+=======
+#define MACB_RX_INT_FLAGS	(MACB_BIT(RCOMP) | MACB_BIT(RXUBR)	\
+				 | MACB_BIT(ISR_ROVR))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MACB_TX_ERR_FLAGS	(MACB_BIT(ISR_TUND)			\
 					| MACB_BIT(ISR_RLE)		\
 					| MACB_BIT(TXERR))
@@ -66,7 +74,15 @@
 /* Max length of transmit frame must be a multiple of 8 bytes */
 #define MACB_TX_LEN_ALIGN	8
 #define MACB_MAX_TX_LEN		((unsigned int)((1 << MACB_TX_FRMLEN_SIZE) - 1) & ~((unsigned int)(MACB_TX_LEN_ALIGN - 1)))
+<<<<<<< HEAD
 #define GEM_MAX_TX_LEN		((unsigned int)((1 << GEM_TX_FRMLEN_SIZE) - 1) & ~((unsigned int)(MACB_TX_LEN_ALIGN - 1)))
+=======
+/* Limit maximum TX length as per Cadence TSO errata. This is to avoid a
+ * false amba_error in TX path from the DMA assuming there is not enough
+ * space in the SRAM (16KB) even when there is.
+ */
+#define GEM_MAX_TX_LEN		(unsigned int)(0x3FC0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GEM_MTU_MIN_SIZE	ETH_MIN_MTU
 #define MACB_NETIF_LSO		NETIF_F_TSO
@@ -195,6 +211,7 @@ static unsigned int macb_rx_ring_wrap(struct macb *bp, unsigned int index)
 	return index & (bp->rx_ring_size - 1);
 }
 
+<<<<<<< HEAD
 static struct macb_dma_desc *macb_rx_desc(struct macb_queue *queue, unsigned int index)
 {
 	index = macb_rx_ring_wrap(queue->bp, index);
@@ -206,6 +223,19 @@ static void *macb_rx_buffer(struct macb_queue *queue, unsigned int index)
 {
 	return queue->rx_buffers + queue->bp->rx_buffer_size *
 	       macb_rx_ring_wrap(queue->bp, index);
+=======
+static struct macb_dma_desc *macb_rx_desc(struct macb *bp, unsigned int index)
+{
+	index = macb_rx_ring_wrap(bp, index);
+	index = macb_adj_dma_desc_idx(bp, index);
+	return &bp->rx_ring[index];
+}
+
+static void *macb_rx_buffer(struct macb *bp, unsigned int index)
+{
+	return bp->rx_buffers + bp->rx_buffer_size *
+	       macb_rx_ring_wrap(bp, index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* I/O accessors */
@@ -473,6 +503,7 @@ static int macb_mii_probe(struct net_device *dev)
 	struct macb *bp = netdev_priv(dev);
 	struct macb_platform_data *pdata;
 	struct phy_device *phydev;
+<<<<<<< HEAD
 	struct device_node *np;
 	int phy_irq, ret, i;
 
@@ -506,6 +537,10 @@ static int macb_mii_probe(struct net_device *dev)
 			}
 		}
 	}
+=======
+	int phy_irq;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bp->phy_node) {
 		phydev = of_phy_connect(dev, bp->phy_node,
@@ -520,6 +555,10 @@ static int macb_mii_probe(struct net_device *dev)
 			return -ENXIO;
 		}
 
+<<<<<<< HEAD
+=======
+		pdata = dev_get_platdata(&bp->pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pdata) {
 			if (gpio_is_valid(pdata->phy_irq_pin)) {
 				ret = devm_gpio_request(&bp->pdev->dev,
@@ -564,7 +603,11 @@ static int macb_mii_init(struct macb *bp)
 {
 	struct macb_platform_data *pdata;
 	struct device_node *np;
+<<<<<<< HEAD
 	int err = -ENXIO;
+=======
+	int err = -ENXIO, i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable management port */
 	macb_writel(bp, NCR, MACB_BIT(MPE));
@@ -587,6 +630,7 @@ static int macb_mii_init(struct macb *bp)
 	dev_set_drvdata(&bp->dev->dev, bp->mii_bus);
 
 	np = bp->pdev->dev.of_node;
+<<<<<<< HEAD
 	if (np && of_phy_is_fixed_link(np)) {
 		if (of_phy_register_fixed_link(np) < 0) {
 			dev_err(&bp->pdev->dev,
@@ -604,6 +648,53 @@ static int macb_mii_init(struct macb *bp)
 
 	if (err)
 		goto err_out_free_fixed_link;
+=======
+	if (np) {
+		if (of_phy_is_fixed_link(np)) {
+			if (of_phy_register_fixed_link(np) < 0) {
+				dev_err(&bp->pdev->dev,
+					"broken fixed-link specification\n");
+				goto err_out_unregister_bus;
+			}
+			bp->phy_node = of_node_get(np);
+
+			err = mdiobus_register(bp->mii_bus);
+		} else {
+			/* try dt phy registration */
+			err = of_mdiobus_register(bp->mii_bus, np);
+
+			/* fallback to standard phy registration if no phy were
+			 * found during dt phy registration
+			 */
+			if (!err && !phy_find_first(bp->mii_bus)) {
+				for (i = 0; i < PHY_MAX_ADDR; i++) {
+					struct phy_device *phydev;
+
+					phydev = mdiobus_scan(bp->mii_bus, i);
+					if (IS_ERR(phydev) &&
+					    PTR_ERR(phydev) != -ENODEV) {
+						err = PTR_ERR(phydev);
+						break;
+					}
+				}
+
+				if (err)
+					goto err_out_unregister_bus;
+			}
+		}
+	} else {
+		for (i = 0; i < PHY_MAX_ADDR; i++)
+			bp->mii_bus->irq[i] = PHY_POLL;
+
+		if (pdata)
+			bp->mii_bus->phy_mask = pdata->phy_mask;
+
+		err = mdiobus_register(bp->mii_bus);
+	}
+
+	if (err)
+		goto err_out_free_mdiobus;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = macb_mii_probe(bp->dev);
 	if (err)
@@ -613,11 +704,15 @@ static int macb_mii_init(struct macb *bp)
 
 err_out_unregister_bus:
 	mdiobus_unregister(bp->mii_bus);
+<<<<<<< HEAD
 err_out_free_fixed_link:
 	if (np && of_phy_is_fixed_link(np))
 		of_phy_deregister_fixed_link(np);
 err_out_free_mdiobus:
 	of_node_put(bp->phy_node);
+=======
+err_out_free_mdiobus:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdiobus_free(bp->mii_bus);
 err_out:
 	return err;
@@ -768,9 +863,13 @@ static void macb_tx_error_task(struct work_struct *work)
 					    macb_tx_ring_wrap(bp, tail),
 					    skb->data);
 				bp->dev->stats.tx_packets++;
+<<<<<<< HEAD
 				queue->stats.tx_packets++;
 				bp->dev->stats.tx_bytes += skb->len;
 				queue->stats.tx_bytes += skb->len;
+=======
+				bp->dev->stats.tx_bytes += skb->len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		} else {
 			/* "Buffers exhausted mid-frame" errors may only happen
@@ -860,7 +959,13 @@ static void macb_tx_interrupt(struct macb_queue *queue)
 
 			/* First, update TX stats if needed */
 			if (skb) {
+<<<<<<< HEAD
 				if (gem_ptp_do_txstamp(queue, skb, desc) == 0) {
+=======
+				if (unlikely(skb_shinfo(skb)->tx_flags &
+					     SKBTX_HW_TSTAMP) &&
+				    gem_ptp_do_txstamp(queue, skb, desc) == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					/* skb now belongs to timestamp buffer
 					 * and will be removed later
 					 */
@@ -870,9 +975,13 @@ static void macb_tx_interrupt(struct macb_queue *queue)
 					    macb_tx_ring_wrap(bp, tail),
 					    skb->data);
 				bp->dev->stats.tx_packets++;
+<<<<<<< HEAD
 				queue->stats.tx_packets++;
 				bp->dev->stats.tx_bytes += skb->len;
 				queue->stats.tx_bytes += skb->len;
+=======
+				bp->dev->stats.tx_bytes += skb->len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			/* Now we can safely release resources */
@@ -894,25 +1003,44 @@ static void macb_tx_interrupt(struct macb_queue *queue)
 		netif_wake_subqueue(bp->dev, queue_index);
 }
 
+<<<<<<< HEAD
 static void gem_rx_refill(struct macb_queue *queue)
+=======
+static void gem_rx_refill(struct macb *bp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int		entry;
 	struct sk_buff		*skb;
 	dma_addr_t		paddr;
+<<<<<<< HEAD
 	struct macb *bp = queue->bp;
 	struct macb_dma_desc *desc;
 
 	while (CIRC_SPACE(queue->rx_prepared_head, queue->rx_tail,
 			bp->rx_ring_size) > 0) {
 		entry = macb_rx_ring_wrap(bp, queue->rx_prepared_head);
+=======
+	struct macb_dma_desc *desc;
+
+	while (CIRC_SPACE(bp->rx_prepared_head, bp->rx_tail,
+			  bp->rx_ring_size) > 0) {
+		entry = macb_rx_ring_wrap(bp, bp->rx_prepared_head);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Make hw descriptor updates visible to CPU */
 		rmb();
 
+<<<<<<< HEAD
 		queue->rx_prepared_head++;
 		desc = macb_rx_desc(queue, entry);
 
 		if (!queue->rx_skbuff[entry]) {
+=======
+		bp->rx_prepared_head++;
+		desc = macb_rx_desc(bp, entry);
+
+		if (!bp->rx_skbuff[entry]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* allocate sk_buff for this free entry in ring */
 			skb = netdev_alloc_skb(bp->dev, bp->rx_buffer_size);
 			if (unlikely(!skb)) {
@@ -930,7 +1058,11 @@ static void gem_rx_refill(struct macb_queue *queue)
 				break;
 			}
 
+<<<<<<< HEAD
 			queue->rx_skbuff[entry] = skb;
+=======
+			bp->rx_skbuff[entry] = skb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (entry == bp->rx_ring_size - 1)
 				paddr |= MACB_BIT(RX_WRAP);
@@ -953,18 +1085,31 @@ static void gem_rx_refill(struct macb_queue *queue)
 	/* Make descriptor updates visible to hardware */
 	wmb();
 
+<<<<<<< HEAD
 	netdev_vdbg(bp->dev, "rx ring: queue: %p, prepared head %d, tail %d\n",
 			queue, queue->rx_prepared_head, queue->rx_tail);
 }
 
 /* Mark DMA descriptors from begin up to and not including end as unused */
 static void discard_partial_frame(struct macb_queue *queue, unsigned int begin,
+=======
+	netdev_vdbg(bp->dev, "rx ring: prepared head %d, tail %d\n",
+		    bp->rx_prepared_head, bp->rx_tail);
+}
+
+/* Mark DMA descriptors from begin up to and not including end as unused */
+static void discard_partial_frame(struct macb *bp, unsigned int begin,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  unsigned int end)
 {
 	unsigned int frag;
 
 	for (frag = begin; frag != end; frag++) {
+<<<<<<< HEAD
 		struct macb_dma_desc *desc = macb_rx_desc(queue, frag);
+=======
+		struct macb_dma_desc *desc = macb_rx_desc(bp, frag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		desc->addr &= ~MACB_BIT(RX_USED);
 	}
@@ -978,9 +1123,14 @@ static void discard_partial_frame(struct macb_queue *queue, unsigned int begin,
 	 */
 }
 
+<<<<<<< HEAD
 static int gem_rx(struct macb_queue *queue, int budget)
 {
 	struct macb *bp = queue->bp;
+=======
+static int gem_rx(struct macb *bp, int budget)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int		len;
 	unsigned int		entry;
 	struct sk_buff		*skb;
@@ -992,43 +1142,69 @@ static int gem_rx(struct macb_queue *queue, int budget)
 		dma_addr_t addr;
 		bool rxused;
 
+<<<<<<< HEAD
 		entry = macb_rx_ring_wrap(bp, queue->rx_tail);
 		desc = macb_rx_desc(queue, entry);
+=======
+		entry = macb_rx_ring_wrap(bp, bp->rx_tail);
+		desc = macb_rx_desc(bp, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Make hw descriptor updates visible to CPU */
 		rmb();
 
 		rxused = (desc->addr & MACB_BIT(RX_USED)) ? true : false;
 		addr = macb_get_addr(bp, desc);
+<<<<<<< HEAD
+=======
+		ctrl = desc->ctrl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!rxused)
 			break;
 
+<<<<<<< HEAD
 		/* Ensure ctrl is at least as up-to-date as rxused */
 		dma_rmb();
 
 		ctrl = desc->ctrl;
 
 		queue->rx_tail++;
+=======
+		bp->rx_tail++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		count++;
 
 		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
 			netdev_err(bp->dev,
 				   "not whole frame pointed by descriptor\n");
 			bp->dev->stats.rx_dropped++;
+<<<<<<< HEAD
 			queue->stats.rx_dropped++;
 			break;
 		}
 		skb = queue->rx_skbuff[entry];
+=======
+			break;
+		}
+		skb = bp->rx_skbuff[entry];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(!skb)) {
 			netdev_err(bp->dev,
 				   "inconsistent Rx descriptor chain\n");
 			bp->dev->stats.rx_dropped++;
+<<<<<<< HEAD
 			queue->stats.rx_dropped++;
 			break;
 		}
 		/* now everything is ready for receiving packet */
 		queue->rx_skbuff[entry] = NULL;
+=======
+			break;
+		}
+		/* now everything is ready for receiving packet */
+		bp->rx_skbuff[entry] = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		len = ctrl & bp->rx_frm_len_mask;
 
 		netdev_vdbg(bp->dev, "gem_rx %u (len %u)\n", entry, len);
@@ -1045,9 +1221,13 @@ static int gem_rx(struct macb_queue *queue, int budget)
 			skb->ip_summed = CHECKSUM_UNNECESSARY;
 
 		bp->dev->stats.rx_packets++;
+<<<<<<< HEAD
 		queue->stats.rx_packets++;
 		bp->dev->stats.rx_bytes += skb->len;
 		queue->stats.rx_bytes += skb->len;
+=======
+		bp->dev->stats.rx_bytes += skb->len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		gem_ptp_do_rxstamp(bp, skb, desc);
 
@@ -1063,12 +1243,20 @@ static int gem_rx(struct macb_queue *queue, int budget)
 		netif_receive_skb(skb);
 	}
 
+<<<<<<< HEAD
 	gem_rx_refill(queue);
+=======
+	gem_rx_refill(bp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return count;
 }
 
+<<<<<<< HEAD
 static int macb_rx_frame(struct macb_queue *queue, unsigned int first_frag,
+=======
+static int macb_rx_frame(struct macb *bp, unsigned int first_frag,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 unsigned int last_frag)
 {
 	unsigned int len;
@@ -1076,9 +1264,14 @@ static int macb_rx_frame(struct macb_queue *queue, unsigned int first_frag,
 	unsigned int offset;
 	struct sk_buff *skb;
 	struct macb_dma_desc *desc;
+<<<<<<< HEAD
 	struct macb *bp = queue->bp;
 
 	desc = macb_rx_desc(queue, last_frag);
+=======
+
+	desc = macb_rx_desc(bp, last_frag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	len = desc->ctrl & bp->rx_frm_len_mask;
 
 	netdev_vdbg(bp->dev, "macb_rx_frame frags %u - %u (len %u)\n",
@@ -1097,7 +1290,11 @@ static int macb_rx_frame(struct macb_queue *queue, unsigned int first_frag,
 	if (!skb) {
 		bp->dev->stats.rx_dropped++;
 		for (frag = first_frag; ; frag++) {
+<<<<<<< HEAD
 			desc = macb_rx_desc(queue, frag);
+=======
+			desc = macb_rx_desc(bp, frag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			desc->addr &= ~MACB_BIT(RX_USED);
 			if (frag == last_frag)
 				break;
@@ -1125,10 +1322,17 @@ static int macb_rx_frame(struct macb_queue *queue, unsigned int first_frag,
 			frag_len = len - offset;
 		}
 		skb_copy_to_linear_data_offset(skb, offset,
+<<<<<<< HEAD
 					       macb_rx_buffer(queue, frag),
 					       frag_len);
 		offset += bp->rx_buffer_size;
 		desc = macb_rx_desc(queue, frag);
+=======
+					       macb_rx_buffer(bp, frag),
+					       frag_len);
+		offset += bp->rx_buffer_size;
+		desc = macb_rx_desc(bp, frag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc->addr &= ~MACB_BIT(RX_USED);
 
 		if (frag == last_frag)
@@ -1150,39 +1354,64 @@ static int macb_rx_frame(struct macb_queue *queue, unsigned int first_frag,
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void macb_init_rx_ring(struct macb_queue *queue)
 {
 	struct macb *bp = queue->bp;
+=======
+static inline void macb_init_rx_ring(struct macb *bp)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t addr;
 	struct macb_dma_desc *desc = NULL;
 	int i;
 
+<<<<<<< HEAD
 	addr = queue->rx_buffers_dma;
 	for (i = 0; i < bp->rx_ring_size; i++) {
 		desc = macb_rx_desc(queue, i);
+=======
+	addr = bp->rx_buffers_dma;
+	for (i = 0; i < bp->rx_ring_size; i++) {
+		desc = macb_rx_desc(bp, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		macb_set_addr(bp, desc, addr);
 		desc->ctrl = 0;
 		addr += bp->rx_buffer_size;
 	}
 	desc->addr |= MACB_BIT(RX_WRAP);
+<<<<<<< HEAD
 	queue->rx_tail = 0;
 }
 
 static int macb_rx(struct macb_queue *queue, int budget)
 {
 	struct macb *bp = queue->bp;
+=======
+	bp->rx_tail = 0;
+}
+
+static int macb_rx(struct macb *bp, int budget)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool reset_rx_queue = false;
 	int received = 0;
 	unsigned int tail;
 	int first_frag = -1;
 
+<<<<<<< HEAD
 	for (tail = queue->rx_tail; budget > 0; tail++) {
 		struct macb_dma_desc *desc = macb_rx_desc(queue, tail);
+=======
+	for (tail = bp->rx_tail; budget > 0; tail++) {
+		struct macb_dma_desc *desc = macb_rx_desc(bp, tail);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 ctrl;
 
 		/* Make hw descriptor updates visible to CPU */
 		rmb();
 
+<<<<<<< HEAD
 		if (!(desc->addr & MACB_BIT(RX_USED)))
 			break;
 
@@ -1194,6 +1423,16 @@ static int macb_rx(struct macb_queue *queue, int budget)
 		if (ctrl & MACB_BIT(RX_SOF)) {
 			if (first_frag != -1)
 				discard_partial_frame(queue, first_frag, tail);
+=======
+		ctrl = desc->ctrl;
+
+		if (!(desc->addr & MACB_BIT(RX_USED)))
+			break;
+
+		if (ctrl & MACB_BIT(RX_SOF)) {
+			if (first_frag != -1)
+				discard_partial_frame(bp, first_frag, tail);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			first_frag = tail;
 		}
 
@@ -1205,7 +1444,11 @@ static int macb_rx(struct macb_queue *queue, int budget)
 				continue;
 			}
 
+<<<<<<< HEAD
 			dropped = macb_rx_frame(queue, first_frag, tail);
+=======
+			dropped = macb_rx_frame(bp, first_frag, tail);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			first_frag = -1;
 			if (unlikely(dropped < 0)) {
 				reset_rx_queue = true;
@@ -1229,8 +1472,13 @@ static int macb_rx(struct macb_queue *queue, int budget)
 		ctrl = macb_readl(bp, NCR);
 		macb_writel(bp, NCR, ctrl & ~MACB_BIT(RE));
 
+<<<<<<< HEAD
 		macb_init_rx_ring(queue);
 		queue_writel(queue, RBQP, queue->rx_ring_dma);
+=======
+		macb_init_rx_ring(bp);
+		macb_writel(bp, RBQP, bp->rx_ring_dma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		macb_writel(bp, NCR, ctrl | MACB_BIT(RE));
 
@@ -1239,27 +1487,46 @@ static int macb_rx(struct macb_queue *queue, int budget)
 	}
 
 	if (first_frag != -1)
+<<<<<<< HEAD
 		queue->rx_tail = first_frag;
 	else
 		queue->rx_tail = tail;
+=======
+		bp->rx_tail = first_frag;
+	else
+		bp->rx_tail = tail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return received;
 }
 
 static int macb_poll(struct napi_struct *napi, int budget)
 {
+<<<<<<< HEAD
 	struct macb_queue *queue = container_of(napi, struct macb_queue, napi);
 	struct macb *bp = queue->bp;
+=======
+	struct macb *bp = container_of(napi, struct macb, napi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int work_done;
 	u32 status;
 
 	status = macb_readl(bp, RSR);
 	macb_writel(bp, RSR, status);
 
+<<<<<<< HEAD
 	netdev_vdbg(bp->dev, "poll: status = %08lx, budget = %d\n",
 		    (unsigned long)status, budget);
 
 	work_done = bp->macbgem_ops.mog_rx(queue, budget);
+=======
+	work_done = 0;
+
+	netdev_vdbg(bp->dev, "poll: status = %08lx, budget = %d\n",
+		    (unsigned long)status, budget);
+
+	work_done = bp->macbgem_ops.mog_rx(bp, budget);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (work_done < budget) {
 		napi_complete_done(napi, work_done);
 
@@ -1267,10 +1534,17 @@ static int macb_poll(struct napi_struct *napi, int budget)
 		status = macb_readl(bp, RSR);
 		if (status) {
 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+<<<<<<< HEAD
 				queue_writel(queue, ISR, MACB_BIT(RCOMP));
 			napi_reschedule(napi);
 		} else {
 			queue_writel(queue, IER, bp->rx_intr_mask);
+=======
+				macb_writel(bp, ISR, MACB_BIT(RCOMP));
+			napi_reschedule(napi);
+		} else {
+			macb_writel(bp, IER, MACB_RX_INT_FLAGS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1279,6 +1553,7 @@ static int macb_poll(struct napi_struct *napi, int budget)
 	return work_done;
 }
 
+<<<<<<< HEAD
 static void macb_hresp_error_task(unsigned long data)
 {
 	struct macb *bp = (struct macb *)data;
@@ -1330,6 +1605,8 @@ static void macb_hresp_error_task(unsigned long data)
 	netif_tx_start_all_queues(dev);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void macb_tx_restart(struct macb_queue *queue)
 {
 	unsigned int head = queue->tx_head;
@@ -1372,13 +1649,18 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 			    (unsigned int)(queue - bp->queues),
 			    (unsigned long)status);
 
+<<<<<<< HEAD
 		if (status & bp->rx_intr_mask) {
+=======
+		if (status & MACB_RX_INT_FLAGS) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* There's no point taking any more interrupts
 			 * until we have processed the buffers. The
 			 * scheduling call may fail if the poll routine
 			 * is already scheduled, so disable interrupts
 			 * now.
 			 */
+<<<<<<< HEAD
 			queue_writel(queue, IDR, bp->rx_intr_mask);
 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
 				queue_writel(queue, ISR, MACB_BIT(RCOMP));
@@ -1386,6 +1668,15 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 			if (napi_schedule_prep(&queue->napi)) {
 				netdev_vdbg(bp->dev, "scheduling RX softirq\n");
 				__napi_schedule(&queue->napi);
+=======
+			queue_writel(queue, IDR, MACB_RX_INT_FLAGS);
+			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+				queue_writel(queue, ISR, MACB_BIT(RCOMP));
+
+			if (napi_schedule_prep(&bp->napi)) {
+				netdev_vdbg(bp->dev, "scheduling RX softirq\n");
+				__napi_schedule(&bp->napi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 
@@ -1412,9 +1703,14 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 		/* There is a hardware issue under heavy load where DMA can
 		 * stop, this causes endless "used buffer descriptor read"
 		 * interrupts but it can be cleared by re-enabling RX. See
+<<<<<<< HEAD
 		 * the at91rm9200 manual, section 41.3.1 or the Zynq manual
 		 * section 16.7.4 for details. RXUBR is only enabled for
 		 * these two versions.
+=======
+		 * the at91 manual, section 41.3.1 or the Zynq manual
+		 * section 16.7.4 for details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		if (status & MACB_BIT(RXUBR)) {
 			ctrl = macb_readl(bp, NCR);
@@ -1438,7 +1734,14 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
 		}
 
 		if (status & MACB_BIT(HRESP)) {
+<<<<<<< HEAD
 			tasklet_schedule(&bp->hresp_err_tasklet);
+=======
+			/* TODO: Reset the hardware, and maybe move the
+			 * netdev_err to a lower-priority context as well
+			 * (work queue?)
+			 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netdev_err(dev, "DMA bus error: HRESP not OK\n");
 
 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
@@ -1609,9 +1912,12 @@ static unsigned int macb_tx_map(struct macb *bp,
 		if (i == queue->tx_head) {
 			ctrl |= MACB_BF(TX_LSO, lso_ctrl);
 			ctrl |= MACB_BF(TX_TCP_SEQ_SRC, seq_ctrl);
+<<<<<<< HEAD
 			if ((bp->dev->features & NETIF_F_HW_CSUM) &&
 			    skb->ip_summed != CHECKSUM_PARTIAL && !lso_ctrl)
 				ctrl |= MACB_BIT(TX_NOCRC);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else
 			/* Only set MSS/MFS on payload descriptors
 			 * (second or later descriptor)
@@ -1652,16 +1958,26 @@ static netdev_features_t macb_features_check(struct sk_buff *skb,
 
 	/* Validate LSO compatibility */
 
+<<<<<<< HEAD
 	/* there is only one buffer */
 	if (!skb_is_nonlinear(skb))
+=======
+	/* there is only one buffer or protocol is not UDP */
+	if (!skb_is_nonlinear(skb) || (ip_hdr(skb)->protocol != IPPROTO_UDP))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return features;
 
 	/* length of header */
 	hdrlen = skb_transport_offset(skb);
+<<<<<<< HEAD
 	if (ip_hdr(skb)->protocol == IPPROTO_TCP)
 		hdrlen += tcp_hdrlen(skb);
 
 	/* For LSO:
+=======
+
+	/* For UFO only:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * When software supplies two or more payload buffers all payload buffers
 	 * apart from the last must be a multiple of 8 bytes in size.
 	 */
@@ -1698,6 +2014,7 @@ static inline int macb_clear_csum(struct sk_buff *skb)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int macb_pad_and_fcs(struct sk_buff **skb, struct net_device *ndev)
 {
 	bool cloned = skb_cloned(*skb) || skb_header_cloned(*skb);
@@ -1760,6 +2077,9 @@ add_fcs:
 }
 
 static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+=======
+static int macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u16 queue_index = skb_get_queue_mapping(skb);
 	struct macb *bp = netdev_priv(dev);
@@ -1768,6 +2088,7 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
 	unsigned int desc_cnt, nr_frags, frag_size, f;
 	unsigned int hdrlen;
 	bool is_lso, is_udp = 0;
+<<<<<<< HEAD
 	netdev_tx_t ret = NETDEV_TX_OK;
 
 	if (macb_clear_csum(skb)) {
@@ -1779,6 +2100,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
 		dev_kfree_skb_any(skb);
 		return ret;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	is_lso = (skb_shinfo(skb)->gso_size != 0);
 
@@ -1835,6 +2158,14 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
 		return NETDEV_TX_BUSY;
 	}
 
+<<<<<<< HEAD
+=======
+	if (macb_clear_csum(skb)) {
+		dev_kfree_skb_any(skb);
+		goto unlock;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Map socket buffer for DMA transfer */
 	if (!macb_tx_map(bp, queue, skb, hdrlen)) {
 		dev_kfree_skb_any(skb);
@@ -1853,7 +2184,11 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
 unlock:
 	spin_unlock_irqrestore(&bp->lock, flags);
 
+<<<<<<< HEAD
 	return ret;
+=======
+	return NETDEV_TX_OK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void macb_init_rx_buffer_size(struct macb *bp, size_t size)
@@ -1880,6 +2215,7 @@ static void gem_free_rx_buffers(struct macb *bp)
 {
 	struct sk_buff		*skb;
 	struct macb_dma_desc	*desc;
+<<<<<<< HEAD
 	struct macb_queue *queue;
 	dma_addr_t		addr;
 	unsigned int q;
@@ -1907,10 +2243,36 @@ static void gem_free_rx_buffers(struct macb *bp)
 		kfree(queue->rx_skbuff);
 		queue->rx_skbuff = NULL;
 	}
+=======
+	dma_addr_t		addr;
+	int i;
+
+	if (!bp->rx_skbuff)
+		return;
+
+	for (i = 0; i < bp->rx_ring_size; i++) {
+		skb = bp->rx_skbuff[i];
+
+		if (!skb)
+			continue;
+
+		desc = macb_rx_desc(bp, i);
+		addr = macb_get_addr(bp, desc);
+
+		dma_unmap_single(&bp->pdev->dev, addr, bp->rx_buffer_size,
+				 DMA_FROM_DEVICE);
+		dev_kfree_skb_any(skb);
+		skb = NULL;
+	}
+
+	kfree(bp->rx_skbuff);
+	bp->rx_skbuff = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void macb_free_rx_buffers(struct macb *bp)
 {
+<<<<<<< HEAD
 	struct macb_queue *queue = &bp->queues[0];
 
 	if (queue->rx_buffers) {
@@ -1918,6 +2280,13 @@ static void macb_free_rx_buffers(struct macb *bp)
 				  bp->rx_ring_size * bp->rx_buffer_size,
 				  queue->rx_buffers, queue->rx_buffers_dma);
 		queue->rx_buffers = NULL;
+=======
+	if (bp->rx_buffers) {
+		dma_free_coherent(&bp->pdev->dev,
+				  bp->rx_ring_size * bp->rx_buffer_size,
+				  bp->rx_buffers, bp->rx_buffers_dma);
+		bp->rx_buffers = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1925,14 +2294,25 @@ static void macb_free_consistent(struct macb *bp)
 {
 	struct macb_queue *queue;
 	unsigned int q;
+<<<<<<< HEAD
 	int size;
 
 	bp->macbgem_ops.mog_free_rx_buffers(bp);
+=======
+
+	bp->macbgem_ops.mog_free_rx_buffers(bp);
+	if (bp->rx_ring) {
+		dma_free_coherent(&bp->pdev->dev, RX_RING_BYTES(bp),
+				  bp->rx_ring, bp->rx_ring_dma);
+		bp->rx_ring = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
 		kfree(queue->tx_skb);
 		queue->tx_skb = NULL;
 		if (queue->tx_ring) {
+<<<<<<< HEAD
 			size = TX_RING_BYTES(bp) + bp->tx_bd_rd_prefetch;
 			dma_free_coherent(&bp->pdev->dev, size,
 					  queue->tx_ring, queue->tx_ring_dma);
@@ -1944,11 +2324,18 @@ static void macb_free_consistent(struct macb *bp)
 					  queue->rx_ring, queue->rx_ring_dma);
 			queue->rx_ring = NULL;
 		}
+=======
+			dma_free_coherent(&bp->pdev->dev, TX_RING_BYTES(bp),
+					  queue->tx_ring, queue->tx_ring_dma);
+			queue->tx_ring = NULL;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static int gem_alloc_rx_buffers(struct macb *bp)
 {
+<<<<<<< HEAD
 	struct macb_queue *queue;
 	unsigned int q;
 	int size;
@@ -1963,11 +2350,24 @@ static int gem_alloc_rx_buffers(struct macb *bp)
 				   "Allocated %d RX struct sk_buff entries at %p\n",
 				   bp->rx_ring_size, queue->rx_skbuff);
 	}
+=======
+	int size;
+
+	size = bp->rx_ring_size * sizeof(struct sk_buff *);
+	bp->rx_skbuff = kzalloc(size, GFP_KERNEL);
+	if (!bp->rx_skbuff)
+		return -ENOMEM;
+	else
+		netdev_dbg(bp->dev,
+			   "Allocated %d RX struct sk_buff entries at %p\n",
+			   bp->rx_ring_size, bp->rx_skbuff);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int macb_alloc_rx_buffers(struct macb *bp)
 {
+<<<<<<< HEAD
 	struct macb_queue *queue = &bp->queues[0];
 	int size;
 
@@ -1975,11 +2375,23 @@ static int macb_alloc_rx_buffers(struct macb *bp)
 	queue->rx_buffers = dma_alloc_coherent(&bp->pdev->dev, size,
 					    &queue->rx_buffers_dma, GFP_KERNEL);
 	if (!queue->rx_buffers)
+=======
+	int size;
+
+	size = bp->rx_ring_size * bp->rx_buffer_size;
+	bp->rx_buffers = dma_alloc_coherent(&bp->pdev->dev, size,
+					    &bp->rx_buffers_dma, GFP_KERNEL);
+	if (!bp->rx_buffers)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	netdev_dbg(bp->dev,
 		   "Allocated RX buffers of %d bytes at %08lx (mapped %p)\n",
+<<<<<<< HEAD
 		   size, (unsigned long)queue->rx_buffers_dma, queue->rx_buffers);
+=======
+		   size, (unsigned long)bp->rx_buffers_dma, bp->rx_buffers);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1990,7 +2402,11 @@ static int macb_alloc_consistent(struct macb *bp)
 	int size;
 
 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+<<<<<<< HEAD
 		size = TX_RING_BYTES(bp) + bp->tx_bd_rd_prefetch;
+=======
+		size = TX_RING_BYTES(bp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue->tx_ring = dma_alloc_coherent(&bp->pdev->dev, size,
 						    &queue->tx_ring_dma,
 						    GFP_KERNEL);
@@ -2005,6 +2421,7 @@ static int macb_alloc_consistent(struct macb *bp)
 		queue->tx_skb = kmalloc(size, GFP_KERNEL);
 		if (!queue->tx_skb)
 			goto out_err;
+<<<<<<< HEAD
 
 		size = RX_RING_BYTES(bp) + bp->rx_bd_rd_prefetch;
 		queue->rx_ring = dma_alloc_coherent(&bp->pdev->dev, size,
@@ -2015,6 +2432,19 @@ static int macb_alloc_consistent(struct macb *bp)
 			   "Allocated RX ring of %d bytes at %08lx (mapped %p)\n",
 			   size, (unsigned long)queue->rx_ring_dma, queue->rx_ring);
 	}
+=======
+	}
+
+	size = RX_RING_BYTES(bp);
+	bp->rx_ring = dma_alloc_coherent(&bp->pdev->dev, size,
+					 &bp->rx_ring_dma, GFP_KERNEL);
+	if (!bp->rx_ring)
+		goto out_err;
+	netdev_dbg(bp->dev,
+		   "Allocated RX ring of %d bytes at %08lx (mapped %p)\n",
+		   size, (unsigned long)bp->rx_ring_dma, bp->rx_ring);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
 		goto out_err;
 
@@ -2041,6 +2471,7 @@ static void gem_init_rings(struct macb *bp)
 		desc->ctrl |= MACB_BIT(TX_WRAP);
 		queue->tx_head = 0;
 		queue->tx_tail = 0;
+<<<<<<< HEAD
 
 		queue->rx_tail = 0;
 		queue->rx_prepared_head = 0;
@@ -2048,6 +2479,14 @@ static void gem_init_rings(struct macb *bp)
 		gem_rx_refill(queue);
 	}
 
+=======
+	}
+
+	bp->rx_tail = 0;
+	bp->rx_prepared_head = 0;
+
+	gem_rx_refill(bp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void macb_init_rings(struct macb *bp)
@@ -2055,7 +2494,11 @@ static void macb_init_rings(struct macb *bp)
 	int i;
 	struct macb_dma_desc *desc = NULL;
 
+<<<<<<< HEAD
 	macb_init_rx_ring(&bp->queues[0]);
+=======
+	macb_init_rx_ring(bp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < bp->tx_ring_size; i++) {
 		desc = macb_tx_desc(&bp->queues[0], i);
@@ -2167,6 +2610,7 @@ static u32 macb_dbw(struct macb *bp)
  */
 static void macb_configure_dma(struct macb *bp)
 {
+<<<<<<< HEAD
 	struct macb_queue *queue;
 	u32 buffer_size;
 	unsigned int q;
@@ -2181,6 +2625,13 @@ static void macb_configure_dma(struct macb *bp)
 			else
 				dmacfg |= GEM_BF(RXBS, buffer_size);
 		}
+=======
+	u32 dmacfg;
+
+	if (macb_is_gem(bp)) {
+		dmacfg = gem_readl(bp, DMACFG) & ~GEM_BF(RXBS, -1L);
+		dmacfg |= GEM_BF(RXBS, bp->rx_buffer_size / RX_BUFFER_MULTIPLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bp->dma_burst_length)
 			dmacfg = GEM_BFINS(FBLDO, bp->dma_burst_length, dmacfg);
 		dmacfg |= GEM_BIT(TXPBMS) | GEM_BF(RXBMS, -1L);
@@ -2250,12 +2701,21 @@ static void macb_init_hw(struct macb *bp)
 	macb_configure_dma(bp);
 
 	/* Initialize TX and RX buffers */
+<<<<<<< HEAD
 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
 		queue_writel(queue, RBQP, lower_32_bits(queue->rx_ring_dma));
 #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
 		if (bp->hw_dma_cap & HW_DMA_CAP_64B)
 			queue_writel(queue, RBQPH, upper_32_bits(queue->rx_ring_dma));
 #endif
+=======
+	macb_writel(bp, RBQP, lower_32_bits(bp->rx_ring_dma));
+#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+	if (bp->hw_dma_cap & HW_DMA_CAP_64B)
+		macb_writel(bp, RBQPH, upper_32_bits(bp->rx_ring_dma));
+#endif
+	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue_writel(queue, TBQP, lower_32_bits(queue->tx_ring_dma));
 #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
 		if (bp->hw_dma_cap & HW_DMA_CAP_64B)
@@ -2264,7 +2724,11 @@ static void macb_init_hw(struct macb *bp)
 
 		/* Enable interrupts */
 		queue_writel(queue, IER,
+<<<<<<< HEAD
 			     bp->rx_intr_mask |
+=======
+			     MACB_RX_INT_FLAGS |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     MACB_TX_INT_FLAGS |
 			     MACB_BIT(HRESP));
 	}
@@ -2396,8 +2860,11 @@ static int macb_open(struct net_device *dev)
 {
 	struct macb *bp = netdev_priv(dev);
 	size_t bufsz = dev->mtu + ETH_HLEN + ETH_FCS_LEN + NET_IP_ALIGN;
+<<<<<<< HEAD
 	struct macb_queue *queue;
 	unsigned int q;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	netdev_dbg(bp->dev, "open\n");
@@ -2419,8 +2886,12 @@ static int macb_open(struct net_device *dev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
 		napi_enable(&queue->napi);
+=======
+	napi_enable(&bp->napi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bp->macbgem_ops.mog_init_rings(bp);
 	macb_init_hw(bp);
@@ -2439,6 +2910,7 @@ static int macb_open(struct net_device *dev)
 static int macb_close(struct net_device *dev)
 {
 	struct macb *bp = netdev_priv(dev);
+<<<<<<< HEAD
 	struct macb_queue *queue;
 	unsigned long flags;
 	unsigned int q;
@@ -2447,6 +2919,12 @@ static int macb_close(struct net_device *dev)
 
 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
 		napi_disable(&queue->napi);
+=======
+	unsigned long flags;
+
+	netif_tx_stop_all_queues(dev);
+	napi_disable(&bp->napi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->phydev)
 		phy_stop(dev->phydev);
@@ -2476,10 +2954,14 @@ static int macb_change_mtu(struct net_device *dev, int new_mtu)
 
 static void gem_update_stats(struct macb *bp)
 {
+<<<<<<< HEAD
 	struct macb_queue *queue;
 	unsigned int i, q, idx;
 	unsigned long *stat;
 
+=======
+	unsigned int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *p = &bp->hw_stats.gem.tx_octets_31_0;
 
 	for (i = 0; i < GEM_STATS_LEN; ++i, ++p) {
@@ -2496,11 +2978,14 @@ static void gem_update_stats(struct macb *bp)
 			*(++p) += val;
 		}
 	}
+<<<<<<< HEAD
 
 	idx = GEM_STATS_LEN;
 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
 		for (i = 0, stat = &queue->stats.first; i < QUEUE_STATS_LEN; ++i, ++stat)
 			bp->ethtool_stats[idx++] = *stat;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct net_device_stats *gem_get_stats(struct macb *bp)
@@ -2548,17 +3033,27 @@ static void gem_get_ethtool_stats(struct net_device *dev,
 
 	bp = netdev_priv(dev);
 	gem_update_stats(bp);
+<<<<<<< HEAD
 	memcpy(data, &bp->ethtool_stats, sizeof(u64)
 			* (GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES));
+=======
+	memcpy(data, &bp->ethtool_stats, sizeof(u64) * GEM_STATS_LEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gem_get_sset_count(struct net_device *dev, int sset)
 {
+<<<<<<< HEAD
 	struct macb *bp = netdev_priv(dev);
 
 	switch (sset) {
 	case ETH_SS_STATS:
 		return GEM_STATS_LEN + bp->num_queues * QUEUE_STATS_LEN;
+=======
+	switch (sset) {
+	case ETH_SS_STATS:
+		return GEM_STATS_LEN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EOPNOTSUPP;
 	}
@@ -2566,17 +3061,22 @@ static int gem_get_sset_count(struct net_device *dev, int sset)
 
 static void gem_get_ethtool_strings(struct net_device *dev, u32 sset, u8 *p)
 {
+<<<<<<< HEAD
 	char stat_string[ETH_GSTRING_LEN];
 	struct macb *bp = netdev_priv(dev);
 	struct macb_queue *queue;
 	unsigned int i;
 	unsigned int q;
+=======
+	unsigned int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (sset) {
 	case ETH_SS_STATS:
 		for (i = 0; i < GEM_STATS_LEN; i++, p += ETH_GSTRING_LEN)
 			memcpy(p, gem_statistics[i].stat_string,
 			       ETH_GSTRING_LEN);
+<<<<<<< HEAD
 
 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
 			for (i = 0; i < QUEUE_STATS_LEN; i++, p += ETH_GSTRING_LEN) {
@@ -2585,6 +3085,8 @@ static void gem_get_ethtool_strings(struct net_device *dev, u32 sset, u8 *p)
 				memcpy(p, stat_string, ETH_GSTRING_LEN);
 			}
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
@@ -2832,6 +3334,7 @@ static int macb_get_ts_info(struct net_device *netdev,
 	return ethtool_op_get_ts_info(netdev, info);
 }
 
+<<<<<<< HEAD
 static void gem_enable_flow_filters(struct macb *bp, bool enable)
 {
 	struct ethtool_rx_fs_item *item;
@@ -3133,6 +3636,8 @@ static int gem_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops macb_ethtool_ops = {
 	.get_regs_len		= macb_get_regs_len,
 	.get_regs		= macb_get_regs,
@@ -3158,8 +3663,11 @@ static const struct ethtool_ops gem_ethtool_ops = {
 	.set_link_ksettings     = phy_ethtool_set_link_ksettings,
 	.get_ringparam		= macb_get_ringparam,
 	.set_ringparam		= macb_set_ringparam,
+<<<<<<< HEAD
 	.get_rxnfc			= gem_get_rxnfc,
 	.set_rxnfc			= gem_set_rxnfc,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int macb_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
@@ -3217,12 +3725,15 @@ static int macb_set_features(struct net_device *netdev,
 		gem_writel(bp, NCFGR, netcfg);
 	}
 
+<<<<<<< HEAD
 	/* RX Flow Filters */
 	if ((changed & NETIF_F_NTUPLE) && macb_is_gem(bp)) {
 		bool turn_on = features & NETIF_F_NTUPLE;
 
 		gem_enable_flow_filters(bp, turn_on);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3328,7 +3839,11 @@ static int macb_clk_init(struct platform_device *pdev, struct clk **pclk,
 		if (!err)
 			err = -ENODEV;
 
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "failed to get macb_clk (%u)\n", err);
+=======
+		dev_err(&pdev->dev, "failed to get macb_clk (%d)\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 
@@ -3337,7 +3852,11 @@ static int macb_clk_init(struct platform_device *pdev, struct clk **pclk,
 		if (!err)
 			err = -ENODEV;
 
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "failed to get hclk (%u)\n", err);
+=======
+		dev_err(&pdev->dev, "failed to get hclk (%d)\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 
@@ -3351,25 +3870,41 @@ static int macb_clk_init(struct platform_device *pdev, struct clk **pclk,
 
 	err = clk_prepare_enable(*pclk);
 	if (err) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "failed to enable pclk (%u)\n", err);
+=======
+		dev_err(&pdev->dev, "failed to enable pclk (%d)\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 
 	err = clk_prepare_enable(*hclk);
 	if (err) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "failed to enable hclk (%u)\n", err);
+=======
+		dev_err(&pdev->dev, "failed to enable hclk (%d)\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_disable_pclk;
 	}
 
 	err = clk_prepare_enable(*tx_clk);
 	if (err) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "failed to enable tx_clk (%u)\n", err);
+=======
+		dev_err(&pdev->dev, "failed to enable tx_clk (%d)\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_disable_hclk;
 	}
 
 	err = clk_prepare_enable(*rx_clk);
 	if (err) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "failed to enable rx_clk (%u)\n", err);
+=======
+		dev_err(&pdev->dev, "failed to enable rx_clk (%d)\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_disable_txclk;
 	}
 
@@ -3394,7 +3929,11 @@ static int macb_init(struct platform_device *pdev)
 	struct macb *bp = netdev_priv(dev);
 	struct macb_queue *queue;
 	int err;
+<<<<<<< HEAD
 	u32 val, reg;
+=======
+	u32 val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bp->tx_ring_size = DEFAULT_TX_RING_SIZE;
 	bp->rx_ring_size = DEFAULT_RX_RING_SIZE;
@@ -3409,13 +3948,17 @@ static int macb_init(struct platform_device *pdev)
 
 		queue = &bp->queues[q];
 		queue->bp = bp;
+<<<<<<< HEAD
 		netif_napi_add(dev, &queue->napi, macb_poll, 64);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (hw_q) {
 			queue->ISR  = GEM_ISR(hw_q - 1);
 			queue->IER  = GEM_IER(hw_q - 1);
 			queue->IDR  = GEM_IDR(hw_q - 1);
 			queue->IMR  = GEM_IMR(hw_q - 1);
 			queue->TBQP = GEM_TBQP(hw_q - 1);
+<<<<<<< HEAD
 			queue->RBQP = GEM_RBQP(hw_q - 1);
 			queue->RBQS = GEM_RBQS(hw_q - 1);
 #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
@@ -3423,6 +3966,11 @@ static int macb_init(struct platform_device *pdev)
 				queue->TBQPH = GEM_TBQPH(hw_q - 1);
 				queue->RBQPH = GEM_RBQPH(hw_q - 1);
 			}
+=======
+#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+			if (bp->hw_dma_cap & HW_DMA_CAP_64B)
+				queue->TBQPH = GEM_TBQPH(hw_q - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		} else {
 			/* queue0 uses legacy registers */
@@ -3431,12 +3979,18 @@ static int macb_init(struct platform_device *pdev)
 			queue->IDR  = MACB_IDR;
 			queue->IMR  = MACB_IMR;
 			queue->TBQP = MACB_TBQP;
+<<<<<<< HEAD
 			queue->RBQP = MACB_RBQP;
 #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
 			if (bp->hw_dma_cap & HW_DMA_CAP_64B) {
 				queue->TBQPH = MACB_TBQPH;
 				queue->RBQPH = MACB_RBQPH;
 			}
+=======
+#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+			if (bp->hw_dma_cap & HW_DMA_CAP_64B)
+				queue->TBQPH = MACB_TBQPH;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		}
 
@@ -3460,6 +4014,10 @@ static int macb_init(struct platform_device *pdev)
 	}
 
 	dev->netdev_ops = &macb_netdev_ops;
+<<<<<<< HEAD
+=======
+	netif_napi_add(dev, &bp->napi, macb_poll, 64);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* setup appropriated routines according to adapter type */
 	if (macb_is_gem(bp)) {
@@ -3492,6 +4050,7 @@ static int macb_init(struct platform_device *pdev)
 		dev->hw_features &= ~NETIF_F_SG;
 	dev->features = dev->hw_features;
 
+<<<<<<< HEAD
 	/* Check RX Flow Filters support.
 	 * Max Rx flows set by availability of screeners & compare regs:
 	 * each 4-tuple define requires 1 T2 screener reg + 3 compare regs
@@ -3516,6 +4075,8 @@ static int macb_init(struct platform_device *pdev)
 			bp->max_tuples = 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(bp->caps & MACB_CAPS_USRIO_DISABLED)) {
 		val = 0;
 		if (bp->phy_interface == PHY_INTERFACE_MODE_RGMII)
@@ -3552,12 +4113,16 @@ static int macb_init(struct platform_device *pdev)
 static int at91ether_start(struct net_device *dev)
 {
 	struct macb *lp = netdev_priv(dev);
+<<<<<<< HEAD
 	struct macb_queue *q = &lp->queues[0];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct macb_dma_desc *desc;
 	dma_addr_t addr;
 	u32 ctl;
 	int i;
 
+<<<<<<< HEAD
 	q->rx_ring = dma_alloc_coherent(&lp->pdev->dev,
 					 (AT91ETHER_MAX_RX_DESCR *
 					  macb_dma_desc_get_size(lp)),
@@ -3581,6 +4146,31 @@ static int at91ether_start(struct net_device *dev)
 	addr = q->rx_buffers_dma;
 	for (i = 0; i < AT91ETHER_MAX_RX_DESCR; i++) {
 		desc = macb_rx_desc(q, i);
+=======
+	lp->rx_ring = dma_alloc_coherent(&lp->pdev->dev,
+					 (AT91ETHER_MAX_RX_DESCR *
+					  macb_dma_desc_get_size(lp)),
+					 &lp->rx_ring_dma, GFP_KERNEL);
+	if (!lp->rx_ring)
+		return -ENOMEM;
+
+	lp->rx_buffers = dma_alloc_coherent(&lp->pdev->dev,
+					    AT91ETHER_MAX_RX_DESCR *
+					    AT91ETHER_MAX_RBUFF_SZ,
+					    &lp->rx_buffers_dma, GFP_KERNEL);
+	if (!lp->rx_buffers) {
+		dma_free_coherent(&lp->pdev->dev,
+				  AT91ETHER_MAX_RX_DESCR *
+				  macb_dma_desc_get_size(lp),
+				  lp->rx_ring, lp->rx_ring_dma);
+		lp->rx_ring = NULL;
+		return -ENOMEM;
+	}
+
+	addr = lp->rx_buffers_dma;
+	for (i = 0; i < AT91ETHER_MAX_RX_DESCR; i++) {
+		desc = macb_rx_desc(lp, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		macb_set_addr(lp, desc, addr);
 		desc->ctrl = 0;
 		addr += AT91ETHER_MAX_RBUFF_SZ;
@@ -3590,10 +4180,17 @@ static int at91ether_start(struct net_device *dev)
 	desc->addr |= MACB_BIT(RX_WRAP);
 
 	/* Reset buffer index */
+<<<<<<< HEAD
 	q->rx_tail = 0;
 
 	/* Program address of descriptor list in Rx Buffer Queue register */
 	macb_writel(lp, RBQP, q->rx_ring_dma);
+=======
+	lp->rx_tail = 0;
+
+	/* Program address of descriptor list in Rx Buffer Queue register */
+	macb_writel(lp, RBQP, lp->rx_ring_dma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Enable Receive and Transmit */
 	ctl = macb_readl(lp, NCR);
@@ -3640,7 +4237,10 @@ static int at91ether_open(struct net_device *dev)
 static int at91ether_close(struct net_device *dev)
 {
 	struct macb *lp = netdev_priv(dev);
+<<<<<<< HEAD
 	struct macb_queue *q = &lp->queues[0];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 ctl;
 
 	/* Disable Receiver and Transmitter */
@@ -3661,6 +4261,7 @@ static int at91ether_close(struct net_device *dev)
 	dma_free_coherent(&lp->pdev->dev,
 			  AT91ETHER_MAX_RX_DESCR *
 			  macb_dma_desc_get_size(lp),
+<<<<<<< HEAD
 			  q->rx_ring, q->rx_ring_dma);
 	q->rx_ring = NULL;
 
@@ -3668,13 +4269,26 @@ static int at91ether_close(struct net_device *dev)
 			  AT91ETHER_MAX_RX_DESCR * AT91ETHER_MAX_RBUFF_SZ,
 			  q->rx_buffers, q->rx_buffers_dma);
 	q->rx_buffers = NULL;
+=======
+			  lp->rx_ring, lp->rx_ring_dma);
+	lp->rx_ring = NULL;
+
+	dma_free_coherent(&lp->pdev->dev,
+			  AT91ETHER_MAX_RX_DESCR * AT91ETHER_MAX_RBUFF_SZ,
+			  lp->rx_buffers, lp->rx_buffers_dma);
+	lp->rx_buffers = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 /* Transmit packet */
+<<<<<<< HEAD
 static netdev_tx_t at91ether_start_xmit(struct sk_buff *skb,
 					struct net_device *dev)
+=======
+static int at91ether_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct macb *lp = netdev_priv(dev);
 
@@ -3712,15 +4326,24 @@ static netdev_tx_t at91ether_start_xmit(struct sk_buff *skb,
 static void at91ether_rx(struct net_device *dev)
 {
 	struct macb *lp = netdev_priv(dev);
+<<<<<<< HEAD
 	struct macb_queue *q = &lp->queues[0];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct macb_dma_desc *desc;
 	unsigned char *p_recv;
 	struct sk_buff *skb;
 	unsigned int pktlen;
 
+<<<<<<< HEAD
 	desc = macb_rx_desc(q, q->rx_tail);
 	while (desc->addr & MACB_BIT(RX_USED)) {
 		p_recv = q->rx_buffers + q->rx_tail * AT91ETHER_MAX_RBUFF_SZ;
+=======
+	desc = macb_rx_desc(lp, lp->rx_tail);
+	while (desc->addr & MACB_BIT(RX_USED)) {
+		p_recv = lp->rx_buffers + lp->rx_tail * AT91ETHER_MAX_RBUFF_SZ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pktlen = MACB_BF(RX_FRMLEN, desc->ctrl);
 		skb = netdev_alloc_skb(dev, pktlen + 2);
 		if (skb) {
@@ -3742,12 +4365,21 @@ static void at91ether_rx(struct net_device *dev)
 		desc->addr &= ~MACB_BIT(RX_USED);
 
 		/* wrap after last buffer */
+<<<<<<< HEAD
 		if (q->rx_tail == AT91ETHER_MAX_RX_DESCR - 1)
 			q->rx_tail = 0;
 		else
 			q->rx_tail++;
 
 		desc = macb_rx_desc(q, q->rx_tail);
+=======
+		if (lp->rx_tail == AT91ETHER_MAX_RX_DESCR - 1)
+			lp->rx_tail = 0;
+		else
+			lp->rx_tail++;
+
+		desc = macb_rx_desc(lp, lp->rx_tail);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3839,7 +4471,11 @@ static int at91ether_clk_init(struct platform_device *pdev, struct clk **pclk,
 
 	err = clk_prepare_enable(*pclk);
 	if (err) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "failed to enable pclk (%u)\n", err);
+=======
+		dev_err(&pdev->dev, "failed to enable pclk (%d)\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 
@@ -3853,8 +4489,11 @@ static int at91ether_init(struct platform_device *pdev)
 	int err;
 	u32 reg;
 
+<<<<<<< HEAD
 	bp->queues[0].bp = bp;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->netdev_ops = &at91ether_netdev_ops;
 	dev->ethtool_ops = &macb_ethtool_ops;
 
@@ -3918,7 +4557,10 @@ static const struct macb_config sama5d4_config = {
 };
 
 static const struct macb_config emac_config = {
+<<<<<<< HEAD
 	.caps = MACB_CAPS_NEEDS_RSTONUBR,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clk_init = at91ether_clk_init,
 	.init = at91ether_init,
 };
@@ -3932,7 +4574,11 @@ static const struct macb_config np4_config = {
 static const struct macb_config zynqmp_config = {
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE |
 			MACB_CAPS_JUMBO |
+<<<<<<< HEAD
 			MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_BD_RD_PREFETCH,
+=======
+			MACB_CAPS_GEM_HAS_PTP,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.dma_burst_length = 16,
 	.clk_init = macb_clk_init,
 	.init = macb_init,
@@ -3940,8 +4586,12 @@ static const struct macb_config zynqmp_config = {
 };
 
 static const struct macb_config zynq_config = {
+<<<<<<< HEAD
 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_NO_GIGABIT_HALF |
 		MACB_CAPS_NEEDS_RSTONUBR,
+=======
+	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_NO_GIGABIT_HALF,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.dma_burst_length = 16,
 	.clk_init = macb_clk_init,
 	.init = macb_init,
@@ -3985,6 +4635,10 @@ static int macb_probe(struct platform_device *pdev)
 					      = macb_config->clk_init;
 	int (*init)(struct platform_device *) = macb_config->init;
 	struct device_node *np = pdev->dev.of_node;
+<<<<<<< HEAD
+=======
+	struct device_node *phy_node;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk *pclk, *hclk = NULL, *tx_clk = NULL, *rx_clk = NULL;
 	unsigned int queue_mask, num_queues;
 	struct macb_platform_data *pdata;
@@ -3995,7 +4649,11 @@ static int macb_probe(struct platform_device *pdev)
 	void __iomem *mem;
 	const char *mac;
 	struct macb *bp;
+<<<<<<< HEAD
 	int err, val;
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	mem = devm_ioremap_resource(&pdev->dev, regs);
@@ -4056,7 +4714,11 @@ static int macb_probe(struct platform_device *pdev)
 	bp->wol = 0;
 	if (of_get_property(np, "magic-packet", NULL))
 		bp->wol |= MACB_WOL_HAS_MAGIC_PACKET;
+<<<<<<< HEAD
 	device_init_wakeup(&pdev->dev, bp->wol & MACB_WOL_HAS_MAGIC_PACKET);
+=======
+	device_set_wakeup_capable(&pdev->dev, bp->wol & MACB_WOL_HAS_MAGIC_PACKET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&bp->lock);
 
@@ -4084,6 +4746,7 @@ static int macb_probe(struct platform_device *pdev)
 	else
 		dev->max_mtu = ETH_DATA_LEN;
 
+<<<<<<< HEAD
 	if (bp->caps & MACB_CAPS_BD_RD_PREFETCH) {
 		val = GEM_BFEXT(RXBD_RDBUFF, gem_readl(bp, DCFG10));
 		if (val)
@@ -4111,6 +4774,25 @@ static int macb_probe(struct platform_device *pdev)
 			macb_get_hwaddr(bp);
 		}
 	}
+=======
+	mac = of_get_mac_address(np);
+	if (mac)
+		ether_addr_copy(bp->dev->dev_addr, mac);
+	else
+		macb_get_hwaddr(bp);
+
+	/* Power up the PHY if there is a GPIO reset */
+	phy_node =  of_get_next_available_child(np, NULL);
+	if (phy_node) {
+		int gpio = of_get_named_gpio(phy_node, "reset-gpios", 0);
+
+		if (gpio_is_valid(gpio)) {
+			bp->reset_gpio = gpio_to_desc(gpio);
+			gpiod_direction_output(bp->reset_gpio, 1);
+		}
+	}
+	of_node_put(phy_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = of_get_phy_mode(np);
 	if (err < 0) {
@@ -4142,9 +4824,12 @@ static int macb_probe(struct platform_device *pdev)
 		goto err_out_unregister_mdio;
 	}
 
+<<<<<<< HEAD
 	tasklet_init(&bp->hresp_err_tasklet, macb_hresp_error_task,
 		     (unsigned long)bp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy_attached_info(phydev);
 
 	netdev_info(dev, "Cadence %s rev 0x%08x at 0x%08lx irq %d (%pM)\n",
@@ -4156,11 +4841,20 @@ static int macb_probe(struct platform_device *pdev)
 err_out_unregister_mdio:
 	phy_disconnect(dev->phydev);
 	mdiobus_unregister(bp->mii_bus);
+<<<<<<< HEAD
 	of_node_put(bp->phy_node);
 	if (np && of_phy_is_fixed_link(np))
 		of_phy_deregister_fixed_link(np);
 	mdiobus_free(bp->mii_bus);
 
+=======
+	mdiobus_free(bp->mii_bus);
+
+	/* Shutdown the PHY if there is a GPIO reset */
+	if (bp->reset_gpio)
+		gpiod_set_value(bp->reset_gpio, 0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_out_free_netdev:
 	free_netdev(dev);
 
@@ -4177,7 +4871,10 @@ static int macb_remove(struct platform_device *pdev)
 {
 	struct net_device *dev;
 	struct macb *bp;
+<<<<<<< HEAD
 	struct device_node *np = pdev->dev.of_node;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = platform_get_drvdata(pdev);
 
@@ -4186,11 +4883,21 @@ static int macb_remove(struct platform_device *pdev)
 		if (dev->phydev)
 			phy_disconnect(dev->phydev);
 		mdiobus_unregister(bp->mii_bus);
+<<<<<<< HEAD
 		if (np && of_phy_is_fixed_link(np))
 			of_phy_deregister_fixed_link(np);
 		dev->phydev = NULL;
 		mdiobus_free(bp->mii_bus);
 
+=======
+		dev->phydev = NULL;
+		mdiobus_free(bp->mii_bus);
+
+		/* Shutdown the PHY if there is a GPIO reset */
+		if (bp->reset_gpio)
+			gpiod_set_value(bp->reset_gpio, 0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unregister_netdev(dev);
 		clk_disable_unprepare(bp->tx_clk);
 		clk_disable_unprepare(bp->hclk);

@@ -58,6 +58,7 @@ id's until they get an error.
     :stub-columns: 0
     :widths: 1 1 1 1 8
 
+<<<<<<< HEAD
     *  -  __u32
        -  ``id``
        -
@@ -83,35 +84,113 @@ id's until they get an error.
 
     *  -  __u32
        -  ``revision``
+=======
+
+    -  .. row 1
+
+       -  __u32
+
+       -  ``id``
+
+       -
+       -
+       -  Entity id, set by the application. When the id is or'ed with
+	  ``MEDIA_ENT_ID_FLAG_NEXT``, the driver clears the flag and returns
+	  the first entity with a larger id.
+
+    -  .. row 2
+
+       -  char
+
+       -  ``name``\ [32]
+
+       -
+       -
+       -  Entity name as an UTF-8 NULL-terminated string.
+
+    -  .. row 3
+
+       -  __u32
+
+       -  ``type``
+
+       -
+       -
+       -  Entity type, see :ref:`media-entity-type` for details.
+
+    -  .. row 4
+
+       -  __u32
+
+       -  ``revision``
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -
        -
        -  Entity revision. Always zero (obsolete)
 
+<<<<<<< HEAD
     *  -  __u32
        -  ``flags``
+=======
+    -  .. row 5
+
+       -  __u32
+
+       -  ``flags``
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -
        -
        -  Entity flags, see :ref:`media-entity-flag` for details.
 
+<<<<<<< HEAD
     *  -  __u32
        -  ``group_id``
+=======
+    -  .. row 6
+
+       -  __u32
+
+       -  ``group_id``
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -
        -
        -  Entity group ID. Always zero (obsolete)
 
+<<<<<<< HEAD
     *  -  __u16
        -  ``pads``
+=======
+    -  .. row 7
+
+       -  __u16
+
+       -  ``pads``
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -
        -
        -  Number of pads
 
+<<<<<<< HEAD
     *  -  __u16
        -  ``links``
+=======
+    -  .. row 8
+
+       -  __u16
+
+       -  ``links``
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -
        -
        -  Total number of outbound links. Inbound links are not counted in
 	  this field.
 
+<<<<<<< HEAD
     *  -  __u32
        -  ``reserved[4]``
        -
@@ -142,6 +221,49 @@ id's until they get an error.
     *  -
        -  __u8
        -  ``raw``\ [184]
+=======
+    -  .. row 9
+
+       -  union
+
+    -  .. row 10
+
+       -
+       -  struct
+
+       -  ``dev``
+
+       -
+       -  Valid for (sub-)devices that create a single device node.
+
+    -  .. row 11
+
+       -
+       -
+       -  __u32
+
+       -  ``major``
+
+       -  Device node major number.
+
+    -  .. row 12
+
+       -
+       -
+       -  __u32
+
+       -  ``minor``
+
+       -  Device node minor number.
+
+    -  .. row 13
+
+       -
+       -  __u8
+
+       -  ``raw``\ [184]
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -
        -
 

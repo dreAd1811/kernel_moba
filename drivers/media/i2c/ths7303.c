@@ -319,7 +319,11 @@ static const struct v4l2_subdev_core_ops ths7303_core_ops = {
 
 static const struct v4l2_subdev_ops ths7303_ops = {
 	.core	= &ths7303_core_ops,
+<<<<<<< HEAD
 	.video	= &ths7303_video_ops,
+=======
+	.video 	= &ths7303_video_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ths7303_probe(struct i2c_client *client,

@@ -10,6 +10,10 @@
  */
 
 #include <linux/err.h>
+<<<<<<< HEAD
+=======
+#include <linux/module.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 
 #include <linux/mmc/host.h>
@@ -31,6 +35,13 @@
 #include "sdio_ops.h"
 #include "sdio_cis.h"
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MMC_EMBEDDED_SDIO
+#include <linux/mmc/sdio_ids.h>
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sdio_read_fbr(struct sdio_func *func)
 {
 	int ret;
@@ -184,6 +195,26 @@ static int sdio_read_cccr(struct mmc_card *card, u32 ocr)
 				card->sw_caps.sd3_drv_type |= SD_DRIVER_TYPE_C;
 			if (data & SDIO_DRIVE_SDTD)
 				card->sw_caps.sd3_drv_type |= SD_DRIVER_TYPE_D;
+<<<<<<< HEAD
+=======
+
+			ret = mmc_io_rw_direct(card, 0, 0,
+				SDIO_CCCR_INTERRUPT_EXTENSION, 0, &data);
+			if (ret)
+				goto out;
+			if (data & SDIO_SUPPORT_ASYNC_INTR) {
+				if (card->host->caps2 &
+				    MMC_CAP2_ASYNC_SDIO_IRQ_4BIT_MODE) {
+					data |= SDIO_ENABLE_ASYNC_INTR;
+					ret = mmc_io_rw_direct(card, 1, 0,
+						SDIO_CCCR_INTERRUPT_EXTENSION,
+						data, NULL);
+					if (ret)
+						goto out;
+					card->cccr.async_intr_sup = 1;
+				}
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* if no uhs mode ensure we check for high speed */
@@ -202,12 +233,67 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static void sdio_enable_vendor_specific_settings(struct mmc_card *card)
+{
+	int ret;
+	u8 settings;
+
+	if (mmc_enable_qca6574_settings(card) ||
+		mmc_enable_qca9377_settings(card)) {
+		ret = mmc_io_rw_direct(card, 1, 0, 0xF2, 0x0F, NULL);
+		if (ret) {
+			pr_crit("%s: failed to write to fn 0xf2 %d\n",
+					mmc_hostname(card->host), ret);
+			goto out;
+		}
+
+		ret = mmc_io_rw_direct(card, 0, 0, 0xF1, 0, &settings);
+		if (ret) {
+			pr_crit("%s: failed to read fn 0xf1 %d\n",
+					mmc_hostname(card->host), ret);
+			goto out;
+		}
+
+		settings |= 0x80;
+		ret = mmc_io_rw_direct(card, 1, 0, 0xF1, settings, NULL);
+		if (ret) {
+			pr_crit("%s: failed to write to fn 0xf1 %d\n",
+					mmc_hostname(card->host), ret);
+			goto out;
+		}
+
+		ret = mmc_io_rw_direct(card, 0, 0, 0xF0, 0, &settings);
+		if (ret) {
+			pr_crit("%s: failed to read fn 0xf0 %d\n",
+					mmc_hostname(card->host), ret);
+			goto out;
+		}
+
+		settings |= 0x20;
+		ret = mmc_io_rw_direct(card, 1, 0, 0xF0, settings, NULL);
+		if (ret) {
+			pr_crit("%s: failed to write to fn 0xf0 %d\n",
+					mmc_hostname(card->host), ret);
+			goto out;
+		}
+	}
+out:
+	return;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sdio_enable_wide(struct mmc_card *card)
 {
 	int ret;
 	u8 ctrl;
 
+<<<<<<< HEAD
 	if (!(card->host->caps & MMC_CAP_4_BIT_DATA))
+=======
+	if (!(card->host->caps & (MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (card->cccr.low_speed && !card->cccr.wide_bus)
@@ -223,7 +309,14 @@ static int sdio_enable_wide(struct mmc_card *card)
 
 	/* set as 4-bit bus width */
 	ctrl &= ~SDIO_BUS_WIDTH_MASK;
+<<<<<<< HEAD
 	ctrl |= SDIO_BUS_WIDTH_4BIT;
+=======
+	if (card->host->caps & MMC_CAP_8_BIT_DATA)
+		ctrl |= SDIO_BUS_WIDTH_8BIT;
+	else if (card->host->caps & MMC_CAP_4_BIT_DATA)
+		ctrl |= SDIO_BUS_WIDTH_4BIT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mmc_io_rw_direct(card, 1, 0, SDIO_CCCR_IF, ctrl, NULL);
 	if (ret)
@@ -264,7 +357,11 @@ static int sdio_disable_wide(struct mmc_card *card)
 	int ret;
 	u8 ctrl;
 
+<<<<<<< HEAD
 	if (!(card->host->caps & MMC_CAP_4_BIT_DATA))
+=======
+	if (!(card->host->caps & (MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	if (card->cccr.low_speed && !card->cccr.wide_bus)
@@ -274,10 +371,17 @@ static int sdio_disable_wide(struct mmc_card *card)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (!(ctrl & SDIO_BUS_WIDTH_4BIT))
 		return 0;
 
 	ctrl &= ~SDIO_BUS_WIDTH_4BIT;
+=======
+	if (!(ctrl & (SDIO_BUS_WIDTH_4BIT | SDIO_BUS_WIDTH_8BIT)))
+		return 0;
+
+	ctrl &= ~(SDIO_BUS_WIDTH_4BIT | SDIO_BUS_WIDTH_8BIT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctrl |= SDIO_BUS_ASYNC_INT;
 
 	ret = mmc_io_rw_direct(card, 1, 0, SDIO_CCCR_IF, ctrl, NULL);
@@ -444,7 +548,10 @@ static int sdio_set_bus_speed_mode(struct mmc_card *card)
 	unsigned int bus_speed, timing;
 	int err;
 	unsigned char speed;
+<<<<<<< HEAD
 	unsigned int max_rate;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If the host doesn't support any of the UHS-I modes, fallback on
@@ -495,18 +602,30 @@ static int sdio_set_bus_speed_mode(struct mmc_card *card)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
+=======
+	/* Vendor specific settings based on card quirks */
+	sdio_enable_vendor_specific_settings(card);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	speed &= ~SDIO_SPEED_BSS_MASK;
 	speed |= bus_speed;
 	err = mmc_io_rw_direct(card, 1, 0, SDIO_CCCR_SPEED, speed, NULL);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	max_rate = min_not_zero(card->quirk_max_rate,
 				card->sw_caps.uhs_max_dtr);
 
 	if (bus_speed) {
 		mmc_set_timing(card->host, timing);
 		mmc_set_clock(card->host, max_rate);
+=======
+	if (bus_speed) {
+		mmc_set_timing(card->host, timing);
+		mmc_set_clock(card->host, card->sw_caps.uhs_max_dtr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -522,10 +641,18 @@ static int mmc_sdio_init_uhs_card(struct mmc_card *card)
 	if (!card->scr.sda_spec3)
 		return 0;
 
+<<<<<<< HEAD
 	/* Switch to wider bus */
 	err = sdio_enable_4bit_bus(card);
 	if (err)
 		goto out;
+=======
+	/*
+	 * Switch to wider bus (if supported).
+	 */
+	if (card->host->caps & MMC_CAP_4_BIT_DATA)
+		err = sdio_enable_4bit_bus(card);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set the driver strength for the card */
 	sdio_select_driver_type(card);
@@ -616,7 +743,11 @@ try_again:
 
 		if (oldcard && (oldcard->type != MMC_TYPE_SD_COMBO ||
 		    memcmp(card->raw_cid, oldcard->raw_cid,
+<<<<<<< HEAD
 					sizeof(card->raw_cid)) != 0)) {
+=======
+				sizeof(card->raw_cid)) != 0)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mmc_remove_card(card);
 			return -ENOENT;
 		}
@@ -632,8 +763,16 @@ try_again:
 	/*
 	 * Call the optional HC's init_card function to handle quirks.
 	 */
+<<<<<<< HEAD
 	if (host->ops->init_card)
 		host->ops->init_card(host, card);
+=======
+	if (host->ops->init_card) {
+		mmc_host_clk_hold(host);
+		host->ops->init_card(host, card);
+		mmc_host_clk_release(host);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If the host and card support UHS-I mode request the card
@@ -710,6 +849,7 @@ try_again:
 		goto finish;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Read the common registers. Note that we should try to
 	 * validate whether UHS would work or not.
@@ -732,6 +872,47 @@ try_again:
 	err = sdio_read_common_cis(card);
 	if (err)
 		goto remove;
+=======
+#ifdef CONFIG_MMC_EMBEDDED_SDIO
+	if (host->embedded_sdio_data.cccr)
+		memcpy(&card->cccr, host->embedded_sdio_data.cccr,
+				sizeof(struct sdio_cccr));
+	else {
+#endif
+		/*
+		 * Read the common registers. Note that we should try to
+		 * validate whether UHS would work or not.
+		 */
+		err = sdio_read_cccr(card, ocr);
+		if (err) {
+			mmc_sdio_resend_if_cond(host, card);
+			if (ocr & R4_18V_PRESENT) {
+				/* Retry init sequence, but without R4_18V_PRESENT. */
+				retries = 0;
+				goto try_again;
+			}
+			return err;
+		}
+#ifdef CONFIG_MMC_EMBEDDED_SDIO
+	}
+#endif
+
+#ifdef CONFIG_MMC_EMBEDDED_SDIO
+	if (host->embedded_sdio_data.cis)
+		memcpy(&card->cis, host->embedded_sdio_data.cis,
+				sizeof(struct sdio_cis));
+	else {
+#endif
+		/*
+		 * Read the common CIS tuples.
+		 */
+		err = sdio_read_common_cis(card);
+		if (err)
+			goto remove;
+#ifdef CONFIG_MMC_EMBEDDED_SDIO
+	}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (oldcard) {
 		int same = (card->cis.vendor == oldcard->cis.vendor &&
@@ -790,6 +971,7 @@ try_again:
 		 * Switch to wider bus (if supported).
 		 */
 		err = sdio_enable_4bit_bus(card);
+<<<<<<< HEAD
 		if (err)
 			goto remove;
 	}
@@ -801,6 +983,16 @@ try_again:
 		err = -EINVAL;
 		goto remove;
 	}
+=======
+		if (err > 0) {
+			if (card->host->caps & MMC_CAP_8_BIT_DATA)
+				mmc_set_bus_width(card->host, MMC_BUS_WIDTH_8);
+			else if (card->host->caps & MMC_CAP_4_BIT_DATA)
+				mmc_set_bus_width(card->host, MMC_BUS_WIDTH_4);
+		} else if (err)
+			goto remove;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 finish:
 	if (!oldcard)
 		host->card = card;
@@ -814,6 +1006,7 @@ err:
 	return err;
 }
 
+<<<<<<< HEAD
 static int mmc_sdio_reinit_card(struct mmc_host *host, bool powered_resume)
 {
 	int ret;
@@ -830,6 +1023,8 @@ static int mmc_sdio_reinit_card(struct mmc_host *host, bool powered_resume)
 				  powered_resume);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Host is being removed. Free up the current card.
  */
@@ -935,26 +1130,44 @@ static int mmc_sdio_pre_suspend(struct mmc_host *host)
  */
 static int mmc_sdio_suspend(struct mmc_host *host)
 {
+<<<<<<< HEAD
+=======
+	MMC_TRACE(host, "%s: Enter\n", __func__);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Prevent processing of SDIO IRQs in suspended state. */
 	mmc_card_set_suspended(host->card);
 	cancel_delayed_work_sync(&host->sdio_irq_work);
 
 	mmc_claim_host(host);
+<<<<<<< HEAD
 	mmc_log_string(host, "Enter\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mmc_card_keep_power(host) && mmc_card_wake_sdio_irq(host))
 		sdio_disable_wide(host->card);
 
 	if (!mmc_card_keep_power(host)) {
 		mmc_power_off(host);
+<<<<<<< HEAD
+=======
+	} else if (host->ios.clock) {
+		mmc_gate_clock(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (host->retune_period) {
 		mmc_retune_timer_stop(host);
 		mmc_retune_needed(host);
 	}
 
+<<<<<<< HEAD
 	mmc_log_string(host, "Exit\n");
 	mmc_release_host(host);
 
+=======
+	mmc_release_host(host);
+	MMC_TRACE(host, "%s: Exit\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -962,9 +1175,15 @@ static int mmc_sdio_resume(struct mmc_host *host)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	/* Basic card reinitialization. */
 	mmc_claim_host(host);
 	mmc_log_string(host, "Enter\n");
+=======
+	MMC_TRACE(host, "%s: Enter\n", __func__);
+	/* Basic card reinitialization. */
+	mmc_claim_host(host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Restore power if needed */
 	if (!mmc_card_keep_power(host)) {
@@ -984,10 +1203,31 @@ static int mmc_sdio_resume(struct mmc_host *host)
 
 	/* No need to reinitialize powered-resumed nonremovable cards */
 	if (mmc_card_is_removable(host) || !mmc_card_keep_power(host)) {
+<<<<<<< HEAD
 		err = mmc_sdio_reinit_card(host, mmc_card_keep_power(host));
 	} else if (mmc_card_keep_power(host) && mmc_card_wake_sdio_irq(host)) {
 		/* We may have switched to 1-bit mode during suspend */
 		err = sdio_enable_4bit_bus(host->card);
+=======
+		sdio_reset(host);
+		mmc_go_idle(host);
+		mmc_send_if_cond(host, host->card->ocr);
+		err = mmc_send_io_op_cond(host, 0, NULL);
+		if (!err)
+			err = mmc_sdio_init_card(host, host->card->ocr,
+						 host->card,
+						 mmc_card_keep_power(host));
+	} else if (mmc_card_keep_power(host) && mmc_card_wake_sdio_irq(host)) {
+		/* We may have switched to 1-bit mode during suspend */
+		err = sdio_enable_4bit_bus(host->card);
+		if (err > 0) {
+			if (host->caps & MMC_CAP_8_BIT_DATA)
+				mmc_set_bus_width(host, MMC_BUS_WIDTH_8);
+			else if (host->caps & MMC_CAP_4_BIT_DATA)
+				mmc_set_bus_width(host, MMC_BUS_WIDTH_4);
+			err = 0;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (err)
@@ -997,6 +1237,7 @@ static int mmc_sdio_resume(struct mmc_host *host)
 	mmc_card_clr_suspended(host->card);
 
 	if (host->sdio_irqs) {
+<<<<<<< HEAD
 		if (!(host->caps2 & MMC_CAP2_SDIO_IRQ_NOTHREAD))
 			wake_up_process(host->sdio_irq_thread);
 		else if (host->caps & MMC_CAP_SDIO_IRQ)
@@ -1008,6 +1249,23 @@ out:
 	mmc_release_host(host);
 
 	host->pm_flags &= ~MMC_PM_KEEP_POWER;
+=======
+		if (!(host->caps2 & MMC_CAP2_SDIO_IRQ_NOTHREAD)) {
+			wake_up_process(host->sdio_irq_thread);
+		} else if (host->caps & MMC_CAP_SDIO_IRQ) {
+			mmc_host_clk_hold(host);
+			host->ops->enable_sdio_irq(host, 1);
+			mmc_host_clk_release(host);
+		}
+	}
+
+out:
+	mmc_release_host(host);
+
+	host->pm_flags &= ~MMC_PM_KEEP_POWER;
+	host->pm_flags &= ~MMC_PM_WAKE_SDIO_IRQ;
+	MMC_TRACE(host, "%s: Exit err: %d\n", __func__, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -1015,6 +1273,11 @@ static int mmc_sdio_power_restore(struct mmc_host *host)
 {
 	int ret;
 
+<<<<<<< HEAD
+=======
+	mmc_claim_host(host);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Reset the card by performing the same steps that are taken by
 	 * mmc_rescan_try_freq() and mmc_attach_sdio() during a "normal" probe.
@@ -1032,12 +1295,29 @@ static int mmc_sdio_power_restore(struct mmc_host *host)
 	 *
 	 */
 
+<<<<<<< HEAD
 	mmc_claim_host(host);
 
 	ret = mmc_sdio_reinit_card(host, mmc_card_keep_power(host));
 	if (!ret && host->sdio_irqs)
 		mmc_signal_sdio_irq(host);
 
+=======
+	sdio_reset(host);
+	mmc_go_idle(host);
+	mmc_send_if_cond(host, host->card->ocr);
+
+	ret = mmc_send_io_op_cond(host, 0, NULL);
+	if (ret)
+		goto out;
+
+	ret = mmc_sdio_init_card(host, host->card->ocr, host->card,
+				mmc_card_keep_power(host));
+	if (!ret && host->sdio_irqs)
+		mmc_signal_sdio_irq(host);
+
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_release_host(host);
 
 	return ret;
@@ -1066,12 +1346,17 @@ static int mmc_sdio_runtime_resume(struct mmc_host *host)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int mmc_sdio_hw_reset(struct mmc_host *host)
+=======
+static int mmc_sdio_reset(struct mmc_host *host)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	mmc_power_cycle(host, host->card->ocr);
 	return mmc_sdio_power_restore(host);
 }
 
+<<<<<<< HEAD
 static int mmc_sdio_sw_reset(struct mmc_host *host)
 {
 	mmc_set_clock(host, host->f_init);
@@ -1084,6 +1369,8 @@ static int mmc_sdio_sw_reset(struct mmc_host *host)
 	return mmc_sdio_reinit_card(host, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct mmc_bus_ops mmc_sdio_ops = {
 	.remove = mmc_sdio_remove,
 	.detect = mmc_sdio_detect,
@@ -1092,9 +1379,15 @@ static const struct mmc_bus_ops mmc_sdio_ops = {
 	.resume = mmc_sdio_resume,
 	.runtime_suspend = mmc_sdio_runtime_suspend,
 	.runtime_resume = mmc_sdio_runtime_resume,
+<<<<<<< HEAD
 	.alive = mmc_sdio_alive,
 	.hw_reset = mmc_sdio_hw_reset,
 	.sw_reset = mmc_sdio_sw_reset,
+=======
+	.power_restore = mmc_sdio_power_restore,
+	.alive = mmc_sdio_alive,
+	.reset = mmc_sdio_reset,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -1167,14 +1460,47 @@ int mmc_attach_sdio(struct mmc_host *host)
 	funcs = (ocr & 0x70000000) >> 28;
 	card->sdio_funcs = 0;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MMC_EMBEDDED_SDIO
+	if (host->embedded_sdio_data.funcs)
+		card->sdio_funcs = funcs = host->embedded_sdio_data.num_funcs;
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Initialize (but don't add) all present functions.
 	 */
 	for (i = 0; i < funcs; i++, card->sdio_funcs++) {
+<<<<<<< HEAD
 		err = sdio_init_func(host->card, i + 1);
 		if (err)
 			goto remove;
 
+=======
+#ifdef CONFIG_MMC_EMBEDDED_SDIO
+		if (host->embedded_sdio_data.funcs) {
+			struct sdio_func *tmp;
+
+			tmp = sdio_alloc_func(host->card);
+			if (IS_ERR(tmp))
+				goto remove;
+			tmp->num = (i + 1);
+			card->sdio_func[i] = tmp;
+			tmp->class = host->embedded_sdio_data.funcs[i].f_class;
+			tmp->max_blksize =
+				host->embedded_sdio_data.funcs[i].f_maxblksize;
+			tmp->vendor = card->cis.vendor;
+			tmp->device = card->cis.device;
+		} else {
+#endif
+			err = sdio_init_func(host->card, i + 1);
+			if (err)
+				goto remove;
+#ifdef CONFIG_MMC_EMBEDDED_SDIO
+		}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Enable Runtime PM for this func (if supported)
 		 */
@@ -1226,3 +1552,11 @@ err:
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+int sdio_reset_comm(struct mmc_card *card)
+{
+	return mmc_power_restore_host(card->host);
+}
+EXPORT_SYMBOL(sdio_reset_comm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

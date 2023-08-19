@@ -56,6 +56,7 @@
 
 /**
  * struct nfp_resource_entry - Resource table entry
+<<<<<<< HEAD
  * @mutex:	NFP CPP Lock
  * @mutex.owner:	NFP CPP Lock, interface owner
  * @mutex.key:		NFP CPP Lock, posix_crc32(name, 8)
@@ -67,6 +68,18 @@
  * @region.cpp_target:	CPP Target ID
  * @region.page_offset:	256-byte page offset into target's CPP address
  * @region.page_size:	size, in 256-byte pages
+=======
+ * @owner:		NFP CPP Lock, interface owner
+ * @key:		NFP CPP Lock, posix_crc32(name, 8)
+ * @region:		Memory region descriptor
+ * @name:		ASCII, zero padded name
+ * @reserved
+ * @cpp_action:		CPP Action
+ * @cpp_token:		CPP Token
+ * @cpp_target:		CPP Target ID
+ * @page_offset:	256-byte page offset into target's CPP address
+ * @page_size:		size, in 256-byte pages
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct nfp_resource_entry {
 	struct nfp_resource_entry_mutex {
@@ -98,18 +111,33 @@ struct nfp_resource {
 
 static int nfp_cpp_resource_find(struct nfp_cpp *cpp, struct nfp_resource *res)
 {
+<<<<<<< HEAD
+=======
+	char name_pad[NFP_RESOURCE_ENTRY_NAME_SZ] = {};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nfp_resource_entry entry;
 	u32 cpp_id, key;
 	int ret, i;
 
 	cpp_id = NFP_CPP_ID(NFP_RESOURCE_TBL_TARGET, 3, 0);  /* Atomic read */
 
+<<<<<<< HEAD
 	/* Search for a matching entry */
 	if (!strcmp(res->name, NFP_RESOURCE_TBL_NAME)) {
 		nfp_err(cpp, "Grabbing device lock not supported\n");
 		return -EOPNOTSUPP;
 	}
 	key = crc32_posix(res->name, NFP_RESOURCE_ENTRY_NAME_SZ);
+=======
+	strncpy(name_pad, res->name, sizeof(name_pad));
+
+	/* Search for a matching entry */
+	if (!memcmp(name_pad, NFP_RESOURCE_TBL_NAME "\0\0\0\0\0\0\0\0", 8)) {
+		nfp_err(cpp, "Grabbing device lock not supported\n");
+		return -EOPNOTSUPP;
+	}
+	key = crc32_posix(name_pad, sizeof(name_pad));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < NFP_RESOURCE_TBL_ENTRIES; i++) {
 		u64 addr = NFP_RESOURCE_TBL_BASE +
@@ -335,6 +363,7 @@ u64 nfp_resource_size(struct nfp_resource *res)
 {
 	return res->size;
 }
+<<<<<<< HEAD
 
 /**
  * nfp_resource_table_init() - Run initial checks on the resource table
@@ -394,3 +423,5 @@ err_unlock:
 
 	return err;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

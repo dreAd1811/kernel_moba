@@ -87,8 +87,13 @@ void bch_rescale_priorities(struct cache_set *c, int sectors)
 {
 	struct cache *ca;
 	struct bucket *b;
+<<<<<<< HEAD
 	unsigned int next = c->nbuckets * c->sb.bucket_size / 1024;
 	unsigned int i;
+=======
+	unsigned next = c->nbuckets * c->sb.bucket_size / 1024;
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	atomic_sub(sectors, &c->rescale);
@@ -169,7 +174,11 @@ static void bch_invalidate_one_bucket(struct cache *ca, struct bucket *b)
 
 #define bucket_prio(b)							\
 ({									\
+<<<<<<< HEAD
 	unsigned int min_prio = (INITIAL_PRIO - ca->set->min_prio) / 8;	\
+=======
+	unsigned min_prio = (INITIAL_PRIO - ca->set->min_prio) / 8;	\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 									\
 	(b->prio - ca->set->min_prio + min_prio) * GC_SECTORS_USED(b);	\
 })
@@ -244,7 +253,10 @@ static void invalidate_buckets_random(struct cache *ca)
 
 	while (!fifo_full(&ca->free_inc)) {
 		size_t n;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		get_random_bytes(&n, sizeof(n));
 
 		n %= (size_t) (ca->sb.nbuckets - ca->sb.first_bucket);
@@ -288,10 +300,16 @@ do {									\
 			break;						\
 									\
 		mutex_unlock(&(ca)->set->bucket_lock);			\
+<<<<<<< HEAD
 		if (kthread_should_stop() ||				\
 		    test_bit(CACHE_SET_IO_DISABLE, &ca->set->flags)) {	\
 			set_current_state(TASK_RUNNING);		\
 			goto out;					\
+=======
+		if (kthread_should_stop()) {				\
+			set_current_state(TASK_RUNNING);		\
+			return 0;					\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}							\
 									\
 		schedule();						\
@@ -302,7 +320,11 @@ do {									\
 
 static int bch_allocator_push(struct cache *ca, long bucket)
 {
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Prios/gens are actually the most important reserve */
 	if (fifo_push(&ca->free[RESERVE_PRIO], bucket))
@@ -380,24 +402,34 @@ retry_invalidate:
 			bch_prio_write(ca);
 		}
 	}
+<<<<<<< HEAD
 out:
 	wait_for_kthread_stop();
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Allocation */
 
+<<<<<<< HEAD
 long bch_bucket_alloc(struct cache *ca, unsigned int reserve, bool wait)
+=======
+long bch_bucket_alloc(struct cache *ca, unsigned reserve, bool wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	DEFINE_WAIT(w);
 	struct bucket *b;
 	long r;
 
+<<<<<<< HEAD
 
 	/* No allocation if CACHE_SET_IO_DISABLE bit is set */
 	if (unlikely(test_bit(CACHE_SET_IO_DISABLE, &ca->set->flags)))
 		return -1;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* fastpath */
 	if (fifo_pop(&ca->free[RESERVE_NONE], r) ||
 	    fifo_pop(&ca->free[reserve], r))
@@ -428,7 +460,11 @@ out:
 	if (expensive_debug_checks(ca->set)) {
 		size_t iter;
 		long i;
+<<<<<<< HEAD
 		unsigned int j;
+=======
+		unsigned j;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		for (iter = 0; iter < prio_buckets(ca) * 2; iter++)
 			BUG_ON(ca->prio_buckets[iter] == (uint64_t) r);
@@ -456,11 +492,14 @@ out:
 		b->prio = INITIAL_PRIO;
 	}
 
+<<<<<<< HEAD
 	if (ca->set->avail_nbuckets > 0) {
 		ca->set->avail_nbuckets--;
 		bch_update_bucket_in_use(ca->set, &ca->set->gc_stats);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -468,31 +507,45 @@ void __bch_bucket_free(struct cache *ca, struct bucket *b)
 {
 	SET_GC_MARK(b, 0);
 	SET_GC_SECTORS_USED(b, 0);
+<<<<<<< HEAD
 
 	if (ca->set->avail_nbuckets < ca->set->nbuckets) {
 		ca->set->avail_nbuckets++;
 		bch_update_bucket_in_use(ca->set, &ca->set->gc_stats);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void bch_bucket_free(struct cache_set *c, struct bkey *k)
 {
+<<<<<<< HEAD
 	unsigned int i;
+=======
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < KEY_PTRS(k); i++)
 		__bch_bucket_free(PTR_CACHE(c, k, i),
 				  PTR_BUCKET(c, k, i));
 }
 
+<<<<<<< HEAD
 int __bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
+=======
+int __bch_bucket_alloc_set(struct cache_set *c, unsigned reserve,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   struct bkey *k, int n, bool wait)
 {
 	int i;
 
+<<<<<<< HEAD
 	/* No allocation if CACHE_SET_IO_DISABLE bit is set */
 	if (unlikely(test_bit(CACHE_SET_IO_DISABLE, &c->flags)))
 		return -1;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lockdep_assert_held(&c->bucket_lock);
 	BUG_ON(!n || n > c->caches_loaded || n > 8);
 
@@ -521,11 +574,18 @@ err:
 	return -1;
 }
 
+<<<<<<< HEAD
 int bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
 			 struct bkey *k, int n, bool wait)
 {
 	int ret;
 
+=======
+int bch_bucket_alloc_set(struct cache_set *c, unsigned reserve,
+			 struct bkey *k, int n, bool wait)
+{
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&c->bucket_lock);
 	ret = __bch_bucket_alloc_set(c, reserve, k, n, wait);
 	mutex_unlock(&c->bucket_lock);
@@ -536,8 +596,13 @@ int bch_bucket_alloc_set(struct cache_set *c, unsigned int reserve,
 
 struct open_bucket {
 	struct list_head	list;
+<<<<<<< HEAD
 	unsigned int		last_write_point;
 	unsigned int		sectors_free;
+=======
+	unsigned		last_write_point;
+	unsigned		sectors_free;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BKEY_PADDED(key);
 };
 
@@ -568,7 +633,11 @@ struct open_bucket {
  */
 static struct open_bucket *pick_data_bucket(struct cache_set *c,
 					    const struct bkey *search,
+<<<<<<< HEAD
 					    unsigned int write_point,
+=======
+					    unsigned write_point,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct bkey *alloc)
 {
 	struct open_bucket *ret, *ret_task = NULL;
@@ -607,6 +676,7 @@ found:
  *
  * If s->writeback is true, will not fail.
  */
+<<<<<<< HEAD
 bool bch_alloc_sectors(struct cache_set *c,
 		       struct bkey *k,
 		       unsigned int sectors,
@@ -617,6 +687,14 @@ bool bch_alloc_sectors(struct cache_set *c,
 	struct open_bucket *b;
 	BKEY_PADDED(key) alloc;
 	unsigned int i;
+=======
+bool bch_alloc_sectors(struct cache_set *c, struct bkey *k, unsigned sectors,
+		       unsigned write_point, unsigned write_prio, bool wait)
+{
+	struct open_bucket *b;
+	BKEY_PADDED(key) alloc;
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We might have to allocate a new bucket, which we can't do with a
@@ -629,7 +707,11 @@ bool bch_alloc_sectors(struct cache_set *c,
 	spin_lock(&c->data_bucket_lock);
 
 	while (!(b = pick_data_bucket(c, k, write_point, &alloc.key))) {
+<<<<<<< HEAD
 		unsigned int watermark = write_prio
+=======
+		unsigned watermark = write_prio
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			? RESERVE_MOVINGGC
 			: RESERVE_NONE;
 
@@ -643,7 +725,11 @@ bool bch_alloc_sectors(struct cache_set *c,
 
 	/*
 	 * If we had to allocate, we might race and not need to allocate the
+<<<<<<< HEAD
 	 * second time we call pick_data_bucket(). If we allocated a bucket but
+=======
+	 * second time we call find_data_bucket(). If we allocated a bucket but
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * didn't use it, drop the refcount bch_bucket_alloc_set() took:
 	 */
 	if (KEY_PTRS(&alloc.key))
@@ -718,7 +804,10 @@ int bch_open_buckets_alloc(struct cache_set *c)
 
 	for (i = 0; i < MAX_OPEN_BUCKETS; i++) {
 		struct open_bucket *b = kzalloc(sizeof(*b), GFP_KERNEL);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!b)
 			return -ENOMEM;
 

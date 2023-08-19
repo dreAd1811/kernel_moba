@@ -1,5 +1,27 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
+=======
+/* Intel(R) Ethernet Switch Host Interface Driver
+ * Copyright(c) 2013 - 2016 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "fm10k.h"
 #include "fm10k_vf.h"
@@ -18,6 +40,7 @@ static s32 fm10k_iov_msg_error(struct fm10k_hw *hw, u32 **results,
 	return fm10k_tlv_msg_error(hw, results, mbx);
 }
 
+<<<<<<< HEAD
 /**
  *  fm10k_iov_msg_queue_mac_vlan - Message handler for MAC/VLAN request from VF
  *  @hw: Pointer to hardware structure
@@ -145,6 +168,12 @@ static const struct fm10k_msg_data iov_mbx_data[] = {
 	FM10K_TLV_MSG_TEST_HANDLER(fm10k_tlv_msg_test),
 	FM10K_VF_MSG_MSIX_HANDLER(fm10k_iov_msg_msix_pf),
 	FM10K_VF_MSG_MAC_VLAN_HANDLER(fm10k_iov_msg_queue_mac_vlan),
+=======
+static const struct fm10k_msg_data iov_mbx_data[] = {
+	FM10K_TLV_MSG_TEST_HANDLER(fm10k_tlv_msg_test),
+	FM10K_VF_MSG_MSIX_HANDLER(fm10k_iov_msg_msix_pf),
+	FM10K_VF_MSG_MAC_VLAN_HANDLER(fm10k_iov_msg_mac_vlan_pf),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	FM10K_VF_MSG_LPORT_STATE_HANDLER(fm10k_iov_msg_lport_state_pf),
 	FM10K_TLV_MSG_ERROR_HANDLER(fm10k_iov_msg_error),
 };
@@ -172,6 +201,7 @@ s32 fm10k_iov_event(struct fm10k_intfc *interface)
 		goto read_unlock;
 
 	/* read VFLRE to determine if any VFs have been reset */
+<<<<<<< HEAD
 	vflre = fm10k_read_reg(hw, FM10K_PFVFLRE(1));
 	vflre <<= 32;
 	vflre |= fm10k_read_reg(hw, FM10K_PFVFLRE(0));
@@ -187,6 +217,27 @@ s32 fm10k_iov_event(struct fm10k_intfc *interface)
 		hw->iov.ops.reset_resources(hw, vf_info);
 		vf_info->mbx.ops.connect(hw, &vf_info->mbx);
 	}
+=======
+	do {
+		vflre = fm10k_read_reg(hw, FM10K_PFVFLRE(0));
+		vflre <<= 32;
+		vflre |= fm10k_read_reg(hw, FM10K_PFVFLRE(1));
+		vflre = (vflre << 32) | (vflre >> 32);
+		vflre |= fm10k_read_reg(hw, FM10K_PFVFLRE(0));
+
+		i = iov_data->num_vfs;
+
+		for (vflre <<= 64 - i; vflre && i--; vflre += vflre) {
+			struct fm10k_vf_info *vf_info = &iov_data->vf_info[i];
+
+			if (vflre >= 0)
+				continue;
+
+			hw->iov.ops.reset_resources(hw, vf_info);
+			vf_info->mbx.ops.connect(hw, &vf_info->mbx);
+		}
+	} while (i != iov_data->num_vfs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 read_unlock:
 	rcu_read_unlock();
@@ -232,10 +283,15 @@ process_mbx:
 		hw->mbx.ops.process(hw, &hw->mbx);
 
 		/* verify port mapping is valid, if not reset port */
+<<<<<<< HEAD
 		if (vf_info->vf_flags && !fm10k_glort_valid_pf(hw, glort)) {
 			hw->iov.ops.reset_lport(hw, vf_info);
 			fm10k_clear_macvlan_queue(interface, glort, false);
 		}
+=======
+		if (vf_info->vf_flags && !fm10k_glort_valid_pf(hw, glort))
+			hw->iov.ops.reset_lport(hw, vf_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* reset VFs that have mailbox timed out */
 		if (!mbx->timeout) {
@@ -247,10 +303,13 @@ process_mbx:
 		if (!hw->mbx.ops.tx_ready(&hw->mbx, FM10K_VFMBX_MSG_MTU)) {
 			/* keep track of how many times this occurs */
 			interface->hw_sm_mbx_full++;
+<<<<<<< HEAD
 
 			/* make sure we try again momentarily */
 			fm10k_service_event_schedule(interface);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
@@ -298,7 +357,10 @@ void fm10k_iov_suspend(struct pci_dev *pdev)
 
 		hw->iov.ops.reset_resources(hw, vf_info);
 		hw->iov.ops.reset_lport(hw, vf_info);
+<<<<<<< HEAD
 		fm10k_clear_macvlan_queue(interface, vf_info->glort, false);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -336,7 +398,11 @@ int fm10k_iov_resume(struct pci_dev *pdev)
 		struct fm10k_vf_info *vf_info = &iov_data->vf_info[i];
 
 		/* allocate all but the last GLORT to the VFs */
+<<<<<<< HEAD
 		if (i == (~hw->mac.dglort_map >> FM10K_DGLORTMAP_MASK_SHIFT))
+=======
+		if (i == ((~hw->mac.dglort_map) >> FM10K_DGLORTMAP_MASK_SHIFT))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		/* assign GLORT to VF, and restrict it to multicast */
@@ -494,7 +560,11 @@ int fm10k_iov_configure(struct pci_dev *pdev, int num_vfs)
 		return err;
 
 	/* allocate VFs if not already allocated */
+<<<<<<< HEAD
 	if (num_vfs && num_vfs != current_vfs) {
+=======
+	if (num_vfs && (num_vfs != current_vfs)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Disable completer abort error reporting as
 		 * the VFs can trigger this any time they read a queue
 		 * that they don't own.
@@ -523,8 +593,11 @@ static inline void fm10k_reset_vf_info(struct fm10k_intfc *interface,
 	/* disable LPORT for this VF which clears switch rules */
 	hw->iov.ops.reset_lport(hw, vf_info);
 
+<<<<<<< HEAD
 	fm10k_clear_macvlan_queue(interface, vf_info->glort, false);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* assign new MAC+VLAN for this VF */
 	hw->iov.ops.assign_default_mac_vlan(hw, vf_info);
 

@@ -144,6 +144,7 @@
 			};
 		};
 	};
+<<<<<<< HEAD
 
 	mmc_vcard: mmc_vcard {
 		compatible = "regulator-fixed";
@@ -151,6 +152,8 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &adc {
@@ -261,6 +264,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &sdio {
 	status = "okay";
 	vmmc-supply = <&mmc_vcard>;
@@ -273,6 +277,8 @@
 	max-frequency = <12500000>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &timers1 {
 	status = "okay";
 

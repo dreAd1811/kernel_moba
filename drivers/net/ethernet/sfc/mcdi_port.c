@@ -171,6 +171,7 @@ static int efx_mcdi_mdio_write(struct net_device *net_dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void mcdi_to_ethtool_linkset(u32 media, u32 cap, unsigned long *linkset)
 {
 	#define SET_BIT(name)	__set_bit(ETHTOOL_LINK_MODE_ ## name ## _BIT, \
@@ -186,11 +187,27 @@ static void mcdi_to_ethtool_linkset(u32 media, u32 cap, unsigned long *linkset)
 			SET_BIT(10000baseKX4_Full);
 		if (cap & (1 << MC_CMD_PHY_CAP_40000FDX_LBN))
 			SET_BIT(40000baseKR4_Full);
+=======
+static u32 mcdi_to_ethtool_cap(u32 media, u32 cap)
+{
+	u32 result = 0;
+
+	switch (media) {
+	case MC_CMD_MEDIA_KX4:
+		result |= SUPPORTED_Backplane;
+		if (cap & (1 << MC_CMD_PHY_CAP_1000FDX_LBN))
+			result |= SUPPORTED_1000baseKX_Full;
+		if (cap & (1 << MC_CMD_PHY_CAP_10000FDX_LBN))
+			result |= SUPPORTED_10000baseKX4_Full;
+		if (cap & (1 << MC_CMD_PHY_CAP_40000FDX_LBN))
+			result |= SUPPORTED_40000baseKR4_Full;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case MC_CMD_MEDIA_XFP:
 	case MC_CMD_MEDIA_SFP_PLUS:
 	case MC_CMD_MEDIA_QSFP_PLUS:
+<<<<<<< HEAD
 		SET_BIT(FIBRE);
 		if (cap & (1 << MC_CMD_PHY_CAP_1000FDX_LBN))
 			SET_BIT(1000baseT_Full);
@@ -222,10 +239,38 @@ static void mcdi_to_ethtool_linkset(u32 media, u32 cap, unsigned long *linkset)
 			SET_BIT(1000baseT_Full);
 		if (cap & (1 << MC_CMD_PHY_CAP_10000FDX_LBN))
 			SET_BIT(10000baseT_Full);
+=======
+		result |= SUPPORTED_FIBRE;
+		if (cap & (1 << MC_CMD_PHY_CAP_1000FDX_LBN))
+			result |= SUPPORTED_1000baseT_Full;
+		if (cap & (1 << MC_CMD_PHY_CAP_10000FDX_LBN))
+			result |= SUPPORTED_10000baseT_Full;
+		if (cap & (1 << MC_CMD_PHY_CAP_40000FDX_LBN))
+			result |= SUPPORTED_40000baseCR4_Full;
+		break;
+
+	case MC_CMD_MEDIA_BASE_T:
+		result |= SUPPORTED_TP;
+		if (cap & (1 << MC_CMD_PHY_CAP_10HDX_LBN))
+			result |= SUPPORTED_10baseT_Half;
+		if (cap & (1 << MC_CMD_PHY_CAP_10FDX_LBN))
+			result |= SUPPORTED_10baseT_Full;
+		if (cap & (1 << MC_CMD_PHY_CAP_100HDX_LBN))
+			result |= SUPPORTED_100baseT_Half;
+		if (cap & (1 << MC_CMD_PHY_CAP_100FDX_LBN))
+			result |= SUPPORTED_100baseT_Full;
+		if (cap & (1 << MC_CMD_PHY_CAP_1000HDX_LBN))
+			result |= SUPPORTED_1000baseT_Half;
+		if (cap & (1 << MC_CMD_PHY_CAP_1000FDX_LBN))
+			result |= SUPPORTED_1000baseT_Full;
+		if (cap & (1 << MC_CMD_PHY_CAP_10000FDX_LBN))
+			result |= SUPPORTED_10000baseT_Full;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
 	if (cap & (1 << MC_CMD_PHY_CAP_PAUSE_LBN))
+<<<<<<< HEAD
 		SET_BIT(Pause);
 	if (cap & (1 << MC_CMD_PHY_CAP_ASYM_LBN))
 		SET_BIT(Asym_Pause);
@@ -273,6 +318,44 @@ static u32 ethtool_linkset_to_mcdi_cap(const unsigned long *linkset)
 
 	#undef TEST_BIT
 
+=======
+		result |= SUPPORTED_Pause;
+	if (cap & (1 << MC_CMD_PHY_CAP_ASYM_LBN))
+		result |= SUPPORTED_Asym_Pause;
+	if (cap & (1 << MC_CMD_PHY_CAP_AN_LBN))
+		result |= SUPPORTED_Autoneg;
+
+	return result;
+}
+
+static u32 ethtool_to_mcdi_cap(u32 cap)
+{
+	u32 result = 0;
+
+	if (cap & SUPPORTED_10baseT_Half)
+		result |= (1 << MC_CMD_PHY_CAP_10HDX_LBN);
+	if (cap & SUPPORTED_10baseT_Full)
+		result |= (1 << MC_CMD_PHY_CAP_10FDX_LBN);
+	if (cap & SUPPORTED_100baseT_Half)
+		result |= (1 << MC_CMD_PHY_CAP_100HDX_LBN);
+	if (cap & SUPPORTED_100baseT_Full)
+		result |= (1 << MC_CMD_PHY_CAP_100FDX_LBN);
+	if (cap & SUPPORTED_1000baseT_Half)
+		result |= (1 << MC_CMD_PHY_CAP_1000HDX_LBN);
+	if (cap & (SUPPORTED_1000baseT_Full | SUPPORTED_1000baseKX_Full))
+		result |= (1 << MC_CMD_PHY_CAP_1000FDX_LBN);
+	if (cap & (SUPPORTED_10000baseT_Full | SUPPORTED_10000baseKX4_Full))
+		result |= (1 << MC_CMD_PHY_CAP_10000FDX_LBN);
+	if (cap & (SUPPORTED_40000baseCR4_Full | SUPPORTED_40000baseKR4_Full))
+		result |= (1 << MC_CMD_PHY_CAP_40000FDX_LBN);
+	if (cap & SUPPORTED_Pause)
+		result |= (1 << MC_CMD_PHY_CAP_PAUSE_LBN);
+	if (cap & SUPPORTED_Asym_Pause)
+		result |= (1 << MC_CMD_PHY_CAP_ASYM_LBN);
+	if (cap & SUPPORTED_Autoneg)
+		result |= (1 << MC_CMD_PHY_CAP_AN_LBN);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return result;
 }
 
@@ -304,7 +387,11 @@ static u32 efx_get_mcdi_phy_flags(struct efx_nic *efx)
 	return flags;
 }
 
+<<<<<<< HEAD
 static u8 mcdi_to_ethtool_media(u32 media)
+=======
+static u32 mcdi_to_ethtool_media(u32 media)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (media) {
 	case MC_CMD_MEDIA_XAUI:
@@ -352,6 +439,7 @@ static void efx_mcdi_phy_decode_link(struct efx_nic *efx,
 	link_state->speed = speed;
 }
 
+<<<<<<< HEAD
 /* The semantics of the ethtool FEC mode bitmask are not well defined,
  * particularly the meaning of combinations of bits.  Which means we get to
  * define our own semantics, as follows:
@@ -410,6 +498,8 @@ static u32 mcdi_fec_caps_to_ethtool(u32 caps, bool is_25g)
 	       (baser == baser_req && rs == rs_req ? 0 : ETHTOOL_FEC_AUTO);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int efx_mcdi_phy_probe(struct efx_nic *efx)
 {
 	struct efx_mcdi_phy_data *phy_data;
@@ -448,8 +538,13 @@ static int efx_mcdi_phy_probe(struct efx_nic *efx)
 
 	caps = MCDI_DWORD(outbuf, GET_LINK_OUT_CAP);
 	if (caps & (1 << MC_CMD_PHY_CAP_AN_LBN))
+<<<<<<< HEAD
 		mcdi_to_ethtool_linkset(phy_data->media, caps,
 					efx->link_advertising);
+=======
+		efx->link_advertising =
+			mcdi_to_ethtool_cap(phy_data->media, caps);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		phy_data->forced_cap = caps;
 
@@ -496,6 +591,7 @@ static int efx_mcdi_phy_probe(struct efx_nic *efx)
 		MCDI_DWORD(outbuf, GET_LINK_OUT_FLAGS),
 		MCDI_DWORD(outbuf, GET_LINK_OUT_FCNTL));
 
+<<<<<<< HEAD
 	/* Record the initial FEC configuration (or nearest approximation
 	 * representable in the ethtool configuration space)
 	 */
@@ -503,6 +599,8 @@ static int efx_mcdi_phy_probe(struct efx_nic *efx)
 						   efx->link_state.speed == 25000 ||
 						   efx->link_state.speed == 50000);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Default to Autonegotiated flow control if the PHY supports it */
 	efx->wanted_fc = EFX_FC_RX | EFX_FC_TX;
 	if (phy_data->supported_cap & (1 << MC_CMD_PHY_CAP_AN_LBN))
@@ -519,12 +617,19 @@ fail:
 int efx_mcdi_port_reconfigure(struct efx_nic *efx)
 {
 	struct efx_mcdi_phy_data *phy_cfg = efx->phy_data;
+<<<<<<< HEAD
 	u32 caps = (efx->link_advertising[0] ?
 		    ethtool_linkset_to_mcdi_cap(efx->link_advertising) :
 		    phy_cfg->forced_cap);
 
 	caps |= ethtool_fec_caps_to_mcdi(efx->fec_config);
 
+=======
+	u32 caps = (efx->link_advertising ?
+		    ethtool_to_mcdi_cap(efx->link_advertising) :
+		    phy_cfg->forced_cap);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return efx_mcdi_set_link(efx, caps, efx_get_mcdi_phy_flags(efx),
 				 efx->loopback_mode, 0);
 }
@@ -595,11 +700,19 @@ static void efx_mcdi_phy_get_link_ksettings(struct efx_nic *efx,
 	struct efx_mcdi_phy_data *phy_cfg = efx->phy_data;
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_LINK_OUT_LEN);
 	int rc;
+<<<<<<< HEAD
 
+=======
+	u32 supported, advertising, lp_advertising;
+
+	supported = mcdi_to_ethtool_cap(phy_cfg->media, phy_cfg->supported_cap);
+	advertising = efx->link_advertising;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmd->base.speed = efx->link_state.speed;
 	cmd->base.duplex = efx->link_state.fd;
 	cmd->base.port = mcdi_to_ethtool_media(phy_cfg->media);
 	cmd->base.phy_address = phy_cfg->port;
+<<<<<<< HEAD
 	cmd->base.autoneg = !!(efx->link_advertising[0] & ADVERTISED_Autoneg);
 	cmd->base.mdio_support = (efx->mdio.mode_support &
 			      (MDIO_SUPPORTS_C45 | MDIO_SUPPORTS_C22));
@@ -608,15 +721,34 @@ static void efx_mcdi_phy_get_link_ksettings(struct efx_nic *efx,
 				cmd->link_modes.supported);
 	memcpy(cmd->link_modes.advertising, efx->link_advertising,
 	       sizeof(__ETHTOOL_DECLARE_LINK_MODE_MASK()));
+=======
+	cmd->base.autoneg = !!(efx->link_advertising & ADVERTISED_Autoneg);
+	cmd->base.mdio_support = (efx->mdio.mode_support &
+			      (MDIO_SUPPORTS_C45 | MDIO_SUPPORTS_C22));
+
+	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
+						supported);
+	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
+						advertising);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUILD_BUG_ON(MC_CMD_GET_LINK_IN_LEN != 0);
 	rc = efx_mcdi_rpc(efx, MC_CMD_GET_LINK, NULL, 0,
 			  outbuf, sizeof(outbuf), NULL);
 	if (rc)
 		return;
+<<<<<<< HEAD
 	mcdi_to_ethtool_linkset(phy_cfg->media,
 				MCDI_DWORD(outbuf, GET_LINK_OUT_LP_CAP),
 				cmd->link_modes.lp_advertising);
+=======
+	lp_advertising =
+		mcdi_to_ethtool_cap(phy_cfg->media,
+				    MCDI_DWORD(outbuf, GET_LINK_OUT_LP_CAP));
+
+	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.lp_advertising,
+						lp_advertising);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -626,6 +758,7 @@ efx_mcdi_phy_set_link_ksettings(struct efx_nic *efx,
 	struct efx_mcdi_phy_data *phy_cfg = efx->phy_data;
 	u32 caps;
 	int rc;
+<<<<<<< HEAD
 
 	if (cmd->base.autoneg) {
 		caps = (ethtool_linkset_to_mcdi_cap(cmd->link_modes.advertising) |
@@ -653,21 +786,58 @@ efx_mcdi_phy_set_link_ksettings(struct efx_nic *efx,
 
 	caps |= ethtool_fec_caps_to_mcdi(efx->fec_config);
 
+=======
+	u32 advertising;
+
+	ethtool_convert_link_mode_to_legacy_u32(&advertising,
+						cmd->link_modes.advertising);
+
+	if (cmd->base.autoneg) {
+		caps = (ethtool_to_mcdi_cap(advertising) |
+			 1 << MC_CMD_PHY_CAP_AN_LBN);
+	} else if (cmd->base.duplex) {
+		switch (cmd->base.speed) {
+		case 10:    caps = 1 << MC_CMD_PHY_CAP_10FDX_LBN;    break;
+		case 100:   caps = 1 << MC_CMD_PHY_CAP_100FDX_LBN;   break;
+		case 1000:  caps = 1 << MC_CMD_PHY_CAP_1000FDX_LBN;  break;
+		case 10000: caps = 1 << MC_CMD_PHY_CAP_10000FDX_LBN; break;
+		case 40000: caps = 1 << MC_CMD_PHY_CAP_40000FDX_LBN; break;
+		default:    return -EINVAL;
+		}
+	} else {
+		switch (cmd->base.speed) {
+		case 10:    caps = 1 << MC_CMD_PHY_CAP_10HDX_LBN;    break;
+		case 100:   caps = 1 << MC_CMD_PHY_CAP_100HDX_LBN;   break;
+		case 1000:  caps = 1 << MC_CMD_PHY_CAP_1000HDX_LBN;  break;
+		default:    return -EINVAL;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = efx_mcdi_set_link(efx, caps, efx_get_mcdi_phy_flags(efx),
 			       efx->loopback_mode, 0);
 	if (rc)
 		return rc;
 
 	if (cmd->base.autoneg) {
+<<<<<<< HEAD
 		efx_link_set_advertising(efx, cmd->link_modes.advertising);
 		phy_cfg->forced_cap = 0;
 	} else {
 		efx_link_clear_advertising(efx);
+=======
+		efx_link_set_advertising(
+			efx, advertising | ADVERTISED_Autoneg);
+		phy_cfg->forced_cap = 0;
+	} else {
+		efx_link_set_advertising(efx, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		phy_cfg->forced_cap = caps;
 	}
 	return 0;
 }
 
+<<<<<<< HEAD
 static int efx_mcdi_phy_get_fecparam(struct efx_nic *efx,
 				     struct ethtool_fecparam *fec)
 {
@@ -747,6 +917,8 @@ static int efx_mcdi_phy_set_fecparam(struct efx_nic *efx,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int efx_mcdi_phy_test_alive(struct efx_nic *efx)
 {
 	MCDI_DECLARE_BUF(outbuf, MC_CMD_GET_PHY_STATE_OUT_LEN);
@@ -1125,8 +1297,11 @@ static const struct efx_phy_operations efx_mcdi_phy_ops = {
 	.remove		= efx_mcdi_phy_remove,
 	.get_link_ksettings = efx_mcdi_phy_get_link_ksettings,
 	.set_link_ksettings = efx_mcdi_phy_set_link_ksettings,
+<<<<<<< HEAD
 	.get_fecparam	= efx_mcdi_phy_get_fecparam,
 	.set_fecparam	= efx_mcdi_phy_set_fecparam,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.test_alive	= efx_mcdi_phy_test_alive,
 	.run_tests	= efx_mcdi_phy_run_tests,
 	.test_name	= efx_mcdi_phy_test_name,
@@ -1146,9 +1321,12 @@ static unsigned int efx_mcdi_event_link_speed[] = {
 	[MCDI_EVENT_LINKCHANGE_SPEED_1G] = 1000,
 	[MCDI_EVENT_LINKCHANGE_SPEED_10G] = 10000,
 	[MCDI_EVENT_LINKCHANGE_SPEED_40G] = 40000,
+<<<<<<< HEAD
 	[MCDI_EVENT_LINKCHANGE_SPEED_25G] = 25000,
 	[MCDI_EVENT_LINKCHANGE_SPEED_50G] = 50000,
 	[MCDI_EVENT_LINKCHANGE_SPEED_100G] = 100000,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void efx_mcdi_process_link_change(struct efx_nic *efx, efx_qword_t *ev)
@@ -1193,10 +1371,13 @@ int efx_mcdi_set_mac(struct efx_nic *efx)
 	MCDI_POPULATE_DWORD_1(cmdbytes, SET_MAC_IN_REJECT,
 			      SET_MAC_IN_REJECT_UNCST, efx->unicast_filter);
 
+<<<<<<< HEAD
 	MCDI_POPULATE_DWORD_1(cmdbytes, SET_MAC_IN_FLAGS,
 			      SET_MAC_IN_FLAG_INCLUDE_FCS,
 			      !!(efx->net_dev->features & NETIF_F_RXFCS));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (efx->wanted_fc) {
 	case EFX_FC_RX | EFX_FC_TX:
 		fcntl = MC_CMD_FCNTL_BIDIR;
@@ -1251,7 +1432,11 @@ static int efx_mcdi_mac_stats(struct efx_nic *efx,
 	int period = action == EFX_STATS_ENABLE ? 1000 : 0;
 	dma_addr_t dma_addr = efx->stats_buffer.dma_addr;
 	u32 dma_len = action != EFX_STATS_DISABLE ?
+<<<<<<< HEAD
 		efx->num_mac_stats * sizeof(u64) : 0;
+=======
+		MC_CMD_MAC_NSTATS * sizeof(u64) : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUILD_BUG_ON(MC_CMD_MAC_STATS_OUT_DMA_LEN != 0);
 
@@ -1285,7 +1470,11 @@ void efx_mcdi_mac_start_stats(struct efx_nic *efx)
 {
 	__le64 *dma_stats = efx->stats_buffer.addr;
 
+<<<<<<< HEAD
 	dma_stats[efx->num_mac_stats - 1] = EFX_MC_STATS_GENERATION_INVALID;
+=======
+	dma_stats[MC_CMD_MAC_GENERATION_END] = EFX_MC_STATS_GENERATION_INVALID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	efx_mcdi_mac_stats(efx, EFX_STATS_ENABLE, 0);
 }
@@ -1303,10 +1492,17 @@ void efx_mcdi_mac_pull_stats(struct efx_nic *efx)
 	__le64 *dma_stats = efx->stats_buffer.addr;
 	int attempts = EFX_MAC_STATS_WAIT_ATTEMPTS;
 
+<<<<<<< HEAD
 	dma_stats[efx->num_mac_stats - 1] = EFX_MC_STATS_GENERATION_INVALID;
 	efx_mcdi_mac_stats(efx, EFX_STATS_PULL, 0);
 
 	while (dma_stats[efx->num_mac_stats - 1] ==
+=======
+	dma_stats[MC_CMD_MAC_GENERATION_END] = EFX_MC_STATS_GENERATION_INVALID;
+	efx_mcdi_mac_stats(efx, EFX_STATS_PULL, 0);
+
+	while (dma_stats[MC_CMD_MAC_GENERATION_END] ==
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				EFX_MC_STATS_GENERATION_INVALID &&
 			attempts-- != 0)
 		udelay(EFX_MAC_STATS_WAIT_US);
@@ -1331,7 +1527,11 @@ int efx_mcdi_port_probe(struct efx_nic *efx)
 
 	/* Allocate buffer for stats */
 	rc = efx_nic_alloc_buffer(efx, &efx->stats_buffer,
+<<<<<<< HEAD
 				  efx->num_mac_stats * sizeof(u64), GFP_KERNEL);
+=======
+				  MC_CMD_MAC_NSTATS * sizeof(u64), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		return rc;
 	netif_dbg(efx, probe, efx->net_dev,

@@ -78,7 +78,12 @@ static struct ti_32k ti_32k_timer = {
 		.rating		= 250,
 		.read		= ti_32k_read_cycles,
 		.mask		= CLOCKSOURCE_MASK(32),
+<<<<<<< HEAD
 		.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
+=======
+		.flags		= CLOCK_SOURCE_IS_CONTINUOUS |
+				CLOCK_SOURCE_SUSPEND_NONSTOP,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

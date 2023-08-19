@@ -36,6 +36,7 @@ static inline struct cik_mqd *get_mqd(void *mqd)
 	return (struct cik_mqd *)mqd;
 }
 
+<<<<<<< HEAD
 static inline struct cik_sdma_rlc_registers *get_sdma_mqd(void *mqd)
 {
 	return (struct cik_sdma_rlc_registers *)mqd;
@@ -66,6 +67,8 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
 		m->compute_static_thread_mgmt_se3);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int init_mqd(struct mqd_manager *mm, void **mqd,
 		struct kfd_mem_obj **mqd_mem_obj, uint64_t *gart_addr,
 		struct queue_properties *q)
@@ -104,6 +107,13 @@ static int init_mqd(struct mqd_manager *mm, void **mqd,
 	m->cp_mqd_base_addr_lo        = lower_32_bits(addr);
 	m->cp_mqd_base_addr_hi        = upper_32_bits(addr);
 
+<<<<<<< HEAD
+=======
+	m->cp_hqd_ib_control = DEFAULT_MIN_IB_AVAIL_SIZE | IB_ATC_EN;
+	/* Although WinKFD writes this, I suspect it should not be necessary */
+	m->cp_hqd_ib_control = IB_ATC_EN | DEFAULT_MIN_IB_AVAIL_SIZE;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	m->cp_hqd_quantum = QUANTUM_EN | QUANTUM_SCALE_1MS |
 				QUANTUM_DURATION(10);
 
@@ -175,7 +185,11 @@ static int load_mqd(struct mqd_manager *mm, void *mqd, uint32_t pipe_id,
 {
 	/* AQL write pointer counts in 64B packets, PM4/CP counts in dwords. */
 	uint32_t wptr_shift = (p->format == KFD_QUEUE_FORMAT_AQL ? 4 : 0);
+<<<<<<< HEAD
 	uint32_t wptr_mask = (uint32_t)((p->queue_size / 4) - 1);
+=======
+	uint32_t wptr_mask = (uint32_t)((p->queue_size / sizeof(uint32_t)) - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mm->dev->kfd2kgd->hqd_load(mm->dev->kgd, mqd, pipe_id, queue_id,
 					  (uint32_t __user *)p->write_ptr,
@@ -186,6 +200,7 @@ static int load_mqd_sdma(struct mqd_manager *mm, void *mqd,
 			 uint32_t pipe_id, uint32_t queue_id,
 			 struct queue_properties *p, struct mm_struct *mms)
 {
+<<<<<<< HEAD
 	return mm->dev->kfd2kgd->hqd_sdma_load(mm->dev->kgd, mqd,
 					       (uint32_t __user *)p->write_ptr,
 					       mms);
@@ -193,23 +208,39 @@ static int load_mqd_sdma(struct mqd_manager *mm, void *mqd,
 
 static int __update_mqd(struct mqd_manager *mm, void *mqd,
 			struct queue_properties *q, unsigned int atc_bit)
+=======
+	return mm->dev->kfd2kgd->hqd_sdma_load(mm->dev->kgd, mqd);
+}
+
+static int update_mqd(struct mqd_manager *mm, void *mqd,
+			struct queue_properties *q)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cik_mqd *m;
 
 	m = get_mqd(mqd);
 	m->cp_hqd_pq_control = DEFAULT_RPTR_BLOCK_SIZE |
+<<<<<<< HEAD
 				DEFAULT_MIN_AVAIL_SIZE;
 	m->cp_hqd_ib_control = DEFAULT_MIN_IB_AVAIL_SIZE;
 	if (atc_bit) {
 		m->cp_hqd_pq_control |= PQ_ATC_EN;
 		m->cp_hqd_ib_control |= IB_ATC_EN;
 	}
+=======
+				DEFAULT_MIN_AVAIL_SIZE | PQ_ATC_EN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Calculating queue size which is log base 2 of actual queue size -1
 	 * dwords and another -1 for ffs
 	 */
+<<<<<<< HEAD
 	m->cp_hqd_pq_control |= order_base_2(q->queue_size / 4) - 1;
+=======
+	m->cp_hqd_pq_control |= ffs(q->queue_size / sizeof(unsigned int))
+								- 1 - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
 	m->cp_hqd_pq_base_hi = upper_32_bits((uint64_t)q->queue_address >> 8);
 	m->cp_hqd_pq_rptr_report_addr_lo = lower_32_bits((uint64_t)q->read_ptr);
@@ -221,16 +252,26 @@ static int __update_mqd(struct mqd_manager *mm, void *mqd,
 	if (q->format == KFD_QUEUE_FORMAT_AQL)
 		m->cp_hqd_pq_control |= NO_UPDATE_RPTR;
 
+<<<<<<< HEAD
 	update_cu_mask(mm, mqd, q);
 
 	q->is_active = (q->queue_size > 0 &&
 			q->queue_address != 0 &&
 			q->queue_percent > 0 &&
 			!q->is_evicted);
+=======
+	q->is_active = false;
+	if (q->queue_size > 0 &&
+			q->queue_address != 0 &&
+			q->queue_percent > 0) {
+		q->is_active = true;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int update_mqd(struct mqd_manager *mm, void *mqd,
 			struct queue_properties *q)
 {
@@ -243,13 +284,19 @@ static int update_mqd_hawaii(struct mqd_manager *mm, void *mqd,
 	return __update_mqd(mm, mqd, q, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int update_mqd_sdma(struct mqd_manager *mm, void *mqd,
 				struct queue_properties *q)
 {
 	struct cik_sdma_rlc_registers *m;
 
 	m = get_sdma_mqd(mqd);
+<<<<<<< HEAD
 	m->sdma_rlc_rb_cntl = order_base_2(q->queue_size / 4)
+=======
+	m->sdma_rlc_rb_cntl = (ffs(q->queue_size / sizeof(unsigned int)) - 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			<< SDMA0_RLC0_RB_CNTL__RB_SIZE__SHIFT |
 			q->vmid << SDMA0_RLC0_RB_CNTL__RB_VMID__SHIFT |
 			1 << SDMA0_RLC0_RB_CNTL__RPTR_WRITEBACK_ENABLE__SHIFT |
@@ -259,18 +306,36 @@ static int update_mqd_sdma(struct mqd_manager *mm, void *mqd,
 	m->sdma_rlc_rb_base_hi = upper_32_bits(q->queue_address >> 8);
 	m->sdma_rlc_rb_rptr_addr_lo = lower_32_bits((uint64_t)q->read_ptr);
 	m->sdma_rlc_rb_rptr_addr_hi = upper_32_bits((uint64_t)q->read_ptr);
+<<<<<<< HEAD
 	m->sdma_rlc_doorbell =
 		q->doorbell_off << SDMA0_RLC0_DOORBELL__OFFSET__SHIFT;
+=======
+	m->sdma_rlc_doorbell = q->doorbell_off <<
+			SDMA0_RLC0_DOORBELL__OFFSET__SHIFT |
+			1 << SDMA0_RLC0_DOORBELL__ENABLE__SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	m->sdma_rlc_virtual_addr = q->sdma_vm_addr;
 
 	m->sdma_engine_id = q->sdma_engine_id;
 	m->sdma_queue_id = q->sdma_queue_id;
 
+<<<<<<< HEAD
 	q->is_active = (q->queue_size > 0 &&
 			q->queue_address != 0 &&
 			q->queue_percent > 0 &&
 			!q->is_evicted);
+=======
+	q->is_active = false;
+	if (q->queue_size > 0 &&
+			q->queue_address != 0 &&
+			q->queue_percent > 0) {
+		m->sdma_rlc_rb_cntl |=
+				1 << SDMA0_RLC0_RB_CNTL__RB_ENABLE__SHIFT;
+
+		q->is_active = true;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -341,11 +406,17 @@ static int update_mqd_hiq(struct mqd_manager *mm, void *mqd,
 	 * Calculating queue size which is log base 2 of actual queue
 	 * size -1 dwords
 	 */
+<<<<<<< HEAD
 	m->cp_hqd_pq_control |= order_base_2(q->queue_size / 4) - 1;
+=======
+	m->cp_hqd_pq_control |= ffs(q->queue_size / sizeof(unsigned int))
+								- 1 - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
 	m->cp_hqd_pq_base_hi = upper_32_bits((uint64_t)q->queue_address >> 8);
 	m->cp_hqd_pq_rptr_report_addr_lo = lower_32_bits((uint64_t)q->read_ptr);
 	m->cp_hqd_pq_rptr_report_addr_hi = upper_32_bits((uint64_t)q->read_ptr);
+<<<<<<< HEAD
 	m->cp_hqd_pq_doorbell_control = DOORBELL_OFFSET(q->doorbell_off);
 
 	m->cp_hqd_vmid = q->vmid;
@@ -354,10 +425,26 @@ static int update_mqd_hiq(struct mqd_manager *mm, void *mqd,
 			q->queue_address != 0 &&
 			q->queue_percent > 0 &&
 			!q->is_evicted);
+=======
+	m->cp_hqd_pq_doorbell_control = DOORBELL_EN |
+					DOORBELL_OFFSET(q->doorbell_off);
+
+	m->cp_hqd_vmid = q->vmid;
+
+	m->cp_hqd_active = 0;
+	q->is_active = false;
+	if (q->queue_size > 0 &&
+			q->queue_address != 0 &&
+			q->queue_percent > 0) {
+		m->cp_hqd_active = 1;
+		q->is_active = true;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS)
 
 static int debugfs_show_mqd(struct seq_file *m, void *data)
@@ -377,6 +464,17 @@ static int debugfs_show_mqd_sdma(struct seq_file *m, void *data)
 #endif
 
 
+=======
+struct cik_sdma_rlc_registers *get_sdma_mqd(void *mqd)
+{
+	struct cik_sdma_rlc_registers *m;
+
+	m = (struct cik_sdma_rlc_registers *)mqd;
+
+	return m;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mqd_manager *mqd_manager_init_cik(enum KFD_MQD_TYPE type,
 		struct kfd_dev *dev)
 {
@@ -400,9 +498,12 @@ struct mqd_manager *mqd_manager_init_cik(enum KFD_MQD_TYPE type,
 		mqd->update_mqd = update_mqd;
 		mqd->destroy_mqd = destroy_mqd;
 		mqd->is_occupied = is_occupied;
+<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS)
 		mqd->debugfs_show_mqd = debugfs_show_mqd;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case KFD_MQD_TYPE_HIQ:
 		mqd->init_mqd = init_mqd_hiq;
@@ -411,9 +512,12 @@ struct mqd_manager *mqd_manager_init_cik(enum KFD_MQD_TYPE type,
 		mqd->update_mqd = update_mqd_hiq;
 		mqd->destroy_mqd = destroy_mqd;
 		mqd->is_occupied = is_occupied;
+<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS)
 		mqd->debugfs_show_mqd = debugfs_show_mqd;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case KFD_MQD_TYPE_SDMA:
 		mqd->init_mqd = init_mqd_sdma;
@@ -422,9 +526,12 @@ struct mqd_manager *mqd_manager_init_cik(enum KFD_MQD_TYPE type,
 		mqd->update_mqd = update_mqd_sdma;
 		mqd->destroy_mqd = destroy_mqd_sdma;
 		mqd->is_occupied = is_occupied_sdma;
+<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS)
 		mqd->debugfs_show_mqd = debugfs_show_mqd_sdma;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		kfree(mqd);
@@ -434,6 +541,7 @@ struct mqd_manager *mqd_manager_init_cik(enum KFD_MQD_TYPE type,
 	return mqd;
 }
 
+<<<<<<< HEAD
 struct mqd_manager *mqd_manager_init_cik_hawaii(enum KFD_MQD_TYPE type,
 			struct kfd_dev *dev)
 {
@@ -446,3 +554,5 @@ struct mqd_manager *mqd_manager_init_cik_hawaii(enum KFD_MQD_TYPE type,
 		mqd->update_mqd = update_mqd_hawaii;
 	return mqd;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -50,7 +50,11 @@
 #include <linux/linkage.h>
 #include <asm/assembler.h>
 
+<<<<<<< HEAD
 	.section	".rodata", "a"
+=======
+	.text
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.align		6
 	.cpu		generic+crypto+crc
 
@@ -100,10 +104,16 @@
 	dCONSTANT	.req	d0
 	qCONSTANT	.req	q0
 
+<<<<<<< HEAD
 	BUF		.req	x19
 	LEN		.req	x20
 	CRC		.req	x21
 	CONST		.req	x22
+=======
+	BUF		.req	x0
+	LEN		.req	x1
+	CRC		.req	x2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vzr		.req	v9
 
@@ -116,6 +126,7 @@
 	 * uint crc32_pmull_le(unsigned char const *buffer,
 	 *                     size_t len, uint crc32)
 	 */
+<<<<<<< HEAD
 	.text
 ENTRY(crc32_pmull_le)
 	adr_l		x3, .Lcrc32_constants
@@ -132,6 +143,16 @@ ENTRY(crc32c_pmull_le)
 	mov		CONST, x3
 
 	bic		LEN, LEN, #15
+=======
+ENTRY(crc32_pmull_le)
+	adr		x3, .Lcrc32_constants
+	b		0f
+
+ENTRY(crc32c_pmull_le)
+	adr		x3, .Lcrc32c_constants
+
+0:	bic		LEN, LEN, #15
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld1		{v1.16b-v4.16b}, [BUF], #0x40
 	movi		vzr.16b, #0
 	fmov		dCONSTANT, CRC
@@ -140,7 +161,11 @@ ENTRY(crc32c_pmull_le)
 	cmp		LEN, #0x40
 	b.lt		less_64
 
+<<<<<<< HEAD
 	ldr		qCONSTANT, [CONST]
+=======
+	ldr		qCONSTANT, [x3]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 loop_64:		/* 64 bytes Full cache line folding */
 	sub		LEN, LEN, #0x40
@@ -170,6 +195,7 @@ loop_64:		/* 64 bytes Full cache line folding */
 	eor		v4.16b, v4.16b, v8.16b
 
 	cmp		LEN, #0x40
+<<<<<<< HEAD
 	b.lt		less_64
 
 	if_will_cond_yield_neon
@@ -185,6 +211,12 @@ loop_64:		/* 64 bytes Full cache line folding */
 
 less_64:		/* Folding cache line into 128bit */
 	ldr		qCONSTANT, [CONST, #16]
+=======
+	b.ge		loop_64
+
+less_64:		/* Folding cache line into 128bit */
+	ldr		qCONSTANT, [x3, #16]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pmull2		v5.1q, v1.2d, vCONSTANT.2d
 	pmull		v1.1q, v1.1d, vCONSTANT.1d
@@ -223,8 +255,13 @@ fold_64:
 	eor		v1.16b, v1.16b, v2.16b
 
 	/* final 32-bit fold */
+<<<<<<< HEAD
 	ldr		dCONSTANT, [CONST, #32]
 	ldr		d3, [CONST, #40]
+=======
+	ldr		dCONSTANT, [x3, #32]
+	ldr		d3, [x3, #40]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ext		v2.16b, v1.16b, vzr.16b, #4
 	and		v1.16b, v1.16b, v3.16b
@@ -232,7 +269,11 @@ fold_64:
 	eor		v1.16b, v1.16b, v2.16b
 
 	/* Finish up with the bit-reversed barrett reduction 64 ==> 32 bits */
+<<<<<<< HEAD
 	ldr		qCONSTANT, [CONST, #48]
+=======
+	ldr		qCONSTANT, [x3, #48]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	and		v2.16b, v1.16b, v3.16b
 	ext		v2.16b, vzr.16b, v2.16b, #8
@@ -242,7 +283,10 @@ fold_64:
 	eor		v1.16b, v1.16b, v2.16b
 	mov		w0, v1.s[1]
 
+<<<<<<< HEAD
 	frame_pop
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret
 ENDPROC(crc32_pmull_le)
 ENDPROC(crc32c_pmull_le)

@@ -122,7 +122,15 @@ o	Be very careful about comparing pointers obtained from
 		Note that if checks for being within an RCU read-side
 		critical section are not required and the pointer is never
 		dereferenced, rcu_access_pointer() should be used in place
+<<<<<<< HEAD
 		of rcu_dereference().
+=======
+		of rcu_dereference(). The rcu_access_pointer() primitive
+		does not require an enclosing read-side critical section,
+		and also omits the smp_read_barrier_depends() included in
+		rcu_dereference(), which in turn should provide a small
+		performance gain in some CPUs (e.g., the DEC Alpha).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	o	The comparison is against a pointer that references memory
 		that was initialized "a long time ago."  The reason

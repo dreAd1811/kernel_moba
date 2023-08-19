@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 // rc-hauppauge.c - Keytable for Hauppauge Remote Controllers
 //
@@ -10,6 +11,25 @@
 //	- DSR-0112 remote bundled with Haupauge MiniStick.
 //
 // Copyright (c) 2010-2011 by Mauro Carvalho Chehab
+=======
+/* rc-hauppauge.c - Keytable for Hauppauge Remote Controllers
+ *
+ * keymap imported from ir-keymaps.c
+ *
+ * This map currently contains the code for four different RCs:
+ *	- New Hauppauge Gray;
+ *	- Old Hauppauge Gray (with a golden screen for media keys);
+ *	- Hauppauge Black;
+ *	- DSR-0112 remote bundled with Haupauge MiniStick.
+ *
+ * Copyright (c) 2010-2011 by Mauro Carvalho Chehab
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <media/rc-map.h>
 #include <linux/module.h>

@@ -169,6 +169,7 @@ int mpc8xx_set_rtc_time(struct rtc_time *tm)
 {
 	sitk8xx_t __iomem *sys_tmr1;
 	sit8xx_t __iomem *sys_tmr2;
+<<<<<<< HEAD
 	time64_t time;
 
 	sys_tmr1 = immr_map(im_sitk);
@@ -177,6 +178,17 @@ int mpc8xx_set_rtc_time(struct rtc_time *tm)
 
 	out_be32(&sys_tmr1->sitk_rtck, KAPWR_KEY);
 	out_be32(&sys_tmr2->sit_rtc, (u32)time);
+=======
+	int time;
+
+	sys_tmr1 = immr_map(im_sitk);
+	sys_tmr2 = immr_map(im_sit);
+	time = mktime(tm->tm_year+1900, tm->tm_mon+1, tm->tm_mday,
+	              tm->tm_hour, tm->tm_min, tm->tm_sec);
+
+	out_be32(&sys_tmr1->sitk_rtck, KAPWR_KEY);
+	out_be32(&sys_tmr2->sit_rtc, time);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	out_be32(&sys_tmr1->sitk_rtck, ~KAPWR_KEY);
 
 	immr_unmap(sys_tmr2);
@@ -191,7 +203,13 @@ void mpc8xx_get_rtc_time(struct rtc_time *tm)
 
 	/* Get time from the RTC. */
 	data = in_be32(&sys_tmr->sit_rtc);
+<<<<<<< HEAD
 	rtc_time64_to_tm(data, tm);
+=======
+	to_tm(data, tm);
+	tm->tm_year -= 1900;
+	tm->tm_mon -= 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	immr_unmap(sys_tmr);
 	return;
 }
@@ -214,7 +232,17 @@ void __noreturn mpc8xx_restart(char *cmd)
 
 static void cpm_cascade(struct irq_desc *desc)
 {
+<<<<<<< HEAD
 	generic_handle_irq(cpm_get_irq());
+=======
+	struct irq_chip *chip = irq_desc_get_chip(desc);
+	int cascade_irq = cpm_get_irq();
+
+	if (cascade_irq >= 0)
+		generic_handle_irq(cascade_irq);
+
+	chip->irq_eoi(&desc->irq_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Initialize the internal interrupt controllers.  The number of

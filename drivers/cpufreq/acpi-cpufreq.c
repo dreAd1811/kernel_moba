@@ -465,8 +465,13 @@ static int acpi_cpufreq_target(struct cpufreq_policy *policy,
 	return result;
 }
 
+<<<<<<< HEAD
 static unsigned int acpi_cpufreq_fast_switch(struct cpufreq_policy *policy,
 					     unsigned int target_freq)
+=======
+unsigned int acpi_cpufreq_fast_switch(struct cpufreq_policy *policy,
+				      unsigned int target_freq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct acpi_cpufreq_data *data = policy->driver_data;
 	struct acpi_processor_performance *perf;
@@ -759,8 +764,13 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		goto err_unreg;
 	}
 
+<<<<<<< HEAD
 	freq_table = kcalloc(perf->state_count + 1, sizeof(*freq_table),
 			     GFP_KERNEL);
+=======
+	freq_table = kzalloc(sizeof(*freq_table) *
+		    (perf->state_count+1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!freq_table) {
 		result = -ENOMEM;
 		goto err_unreg;
@@ -794,9 +804,21 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		valid_states++;
 	}
 	freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
+<<<<<<< HEAD
 	policy->freq_table = freq_table;
 	perf->state = 0;
 
+=======
+	perf->state = 0;
+
+	result = cpufreq_table_validate_and_show(policy, freq_table);
+	if (result)
+		goto err_freqfree;
+
+	if (perf->states[0].core_frequency * 1000 != policy->cpuinfo.max_freq)
+		pr_warn(FW_WARN "P-state 0 is not max freq\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (perf->control_register.space_id) {
 	case ACPI_ADR_SPACE_SYSTEM_IO:
 		/*
@@ -836,6 +858,11 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 
 	return result;
 
+<<<<<<< HEAD
+=======
+err_freqfree:
+	kfree(freq_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_unreg:
 	acpi_processor_unregister_performance(cpu);
 err_free_mask:
@@ -863,6 +890,7 @@ static int acpi_cpufreq_cpu_exit(struct cpufreq_policy *policy)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void acpi_cpufreq_cpu_ready(struct cpufreq_policy *policy)
 {
 	struct acpi_processor_performance *perf = per_cpu_ptr(acpi_perf_data,
@@ -872,6 +900,8 @@ static void acpi_cpufreq_cpu_ready(struct cpufreq_policy *policy)
 		pr_warn(FW_WARN "P-state 0 is not max freq\n");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_cpufreq_resume(struct cpufreq_policy *policy)
 {
 	struct acpi_cpufreq_data *data = policy->driver_data;
@@ -899,7 +929,10 @@ static struct cpufreq_driver acpi_cpufreq_driver = {
 	.bios_limit	= acpi_processor_get_bios_limit,
 	.init		= acpi_cpufreq_cpu_init,
 	.exit		= acpi_cpufreq_cpu_exit,
+<<<<<<< HEAD
 	.ready		= acpi_cpufreq_cpu_ready,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.resume		= acpi_cpufreq_resume,
 	.name		= "acpi-cpufreq",
 	.attr		= acpi_cpufreq_attr,

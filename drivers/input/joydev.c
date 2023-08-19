@@ -436,14 +436,23 @@ static ssize_t joydev_read(struct file *file, char __user *buf,
 }
 
 /* No kernel lock - fine */
+<<<<<<< HEAD
 static __poll_t joydev_poll(struct file *file, poll_table *wait)
+=======
+static unsigned int joydev_poll(struct file *file, poll_table *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct joydev_client *client = file->private_data;
 	struct joydev *joydev = client->joydev;
 
 	poll_wait(file, &joydev->wait, wait);
+<<<<<<< HEAD
 	return (joydev_data_pending(client) ? (EPOLLIN | EPOLLRDNORM) : 0) |
 		(joydev->exist ?  0 : (EPOLLHUP | EPOLLERR));
+=======
+	return (joydev_data_pending(client) ? (POLLIN | POLLRDNORM) : 0) |
+		(joydev->exist ?  0 : (POLLHUP | POLLERR));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int joydev_handle_JSIOCSAXMAP(struct joydev *joydev,

@@ -85,7 +85,11 @@ struct mt9t112_format {
 
 struct mt9t112_priv {
 	struct v4l2_subdev		 subdev;
+<<<<<<< HEAD
 	struct mt9t112_platform_data	*info;
+=======
+	struct mt9t112_camera_info	*info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_client		*client;
 	struct v4l2_rect		 frame;
 	struct v4l2_clk			*clk;

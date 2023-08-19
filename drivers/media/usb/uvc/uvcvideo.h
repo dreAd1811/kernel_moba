@@ -12,7 +12,10 @@
 #include <linux/usb/video.h>
 #include <linux/uvcvideo.h>
 #include <linux/videodev2.h>
+<<<<<<< HEAD
 #include <linux/workqueue.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/media-device.h>
 #include <media/v4l2-device.h>
 #include <media/v4l2-event.h>
@@ -155,6 +158,7 @@
 	{ 'I',  'N',  'V',  'I', 0xdb, 0x57, 0x49, 0x5e, \
 	 0x8e, 0x3f, 0xf4, 0x79, 0x53, 0x2b, 0x94, 0x6f}
 
+<<<<<<< HEAD
 #define UVC_GUID_FORMAT_D3DFMT_L8 \
 	{0x32, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, \
 	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
@@ -163,6 +167,8 @@
 	 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71}
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ------------------------------------------------------------------------
  * Driver specific constants.
  */
@@ -212,18 +218,28 @@ struct uvc_device;
 struct uvc_control_info {
 	struct list_head mappings;
 
+<<<<<<< HEAD
 	u8 entity[16];
 	u8 index;	/* Bit index in bmControls */
 	u8 selector;
 
 	u16 size;
 	u32 flags;
+=======
+	__u8 entity[16];
+	__u8 index;	/* Bit index in bmControls */
+	__u8 selector;
+
+	__u16 size;
+	__u32 flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct uvc_control_mapping {
 	struct list_head list;
 	struct list_head ev_subs;
 
+<<<<<<< HEAD
 	u32 id;
 	u8 name[32];
 	u8 entity[16];
@@ -245,12 +261,36 @@ struct uvc_control_mapping {
 		   const u8 *data);
 	void (*set)(struct uvc_control_mapping *mapping, s32 value,
 		    u8 *data);
+=======
+	__u32 id;
+	__u8 name[32];
+	__u8 entity[16];
+	__u8 selector;
+
+	__u8 size;
+	__u8 offset;
+	enum v4l2_ctrl_type v4l2_type;
+	__u32 data_type;
+
+	struct uvc_menu_info *menu_info;
+	__u32 menu_count;
+
+	__u32 master_id;
+	__s32 master_manual;
+	__u32 slave_ids[2];
+
+	__s32 (*get) (struct uvc_control_mapping *mapping, __u8 query,
+		      const __u8 *data);
+	void (*set) (struct uvc_control_mapping *mapping, __s32 value,
+		     __u8 *data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct uvc_control {
 	struct uvc_entity *entity;
 	struct uvc_control_info info;
 
+<<<<<<< HEAD
 	u8 index;	/* Used to match the uvc_control entry with a
 			   uvc_control_info. */
 	u8 dirty:1,
@@ -262,12 +302,28 @@ struct uvc_control {
 	u8 *uvc_data;
 
 	struct uvc_fh *handle;	/* File handle that last changed the control. */
+=======
+	__u8 index;	/* Used to match the uvc_control entry with a
+			   uvc_control_info. */
+	__u8 dirty:1,
+	     loaded:1,
+	     modified:1,
+	     cached:1,
+	     initialized:1;
+
+	__u8 *uvc_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct uvc_format_desc {
 	char *name;
+<<<<<<< HEAD
 	u8 guid[16];
 	u32 fcc;
+=======
+	__u8 guid[16];
+	__u32 fcc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* The term 'entity' refers to both UVC units and UVC terminals.
@@ -293,8 +349,13 @@ struct uvc_entity {
 					 * chain. */
 	unsigned int flags;
 
+<<<<<<< HEAD
 	u8 id;
 	u16 type;
+=======
+	__u8 id;
+	__u16 type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char name[64];
 
 	/* Media controller-related fields. */
@@ -306,6 +367,7 @@ struct uvc_entity {
 
 	union {
 		struct {
+<<<<<<< HEAD
 			u16 wObjectiveFocalLengthMin;
 			u16 wObjectiveFocalLengthMax;
 			u16 wOcularFocalLength;
@@ -318,22 +380,44 @@ struct uvc_entity {
 			u8  *bmControls;
 			u8  bTransportModeSize;
 			u8  *bmTransportModes;
+=======
+			__u16 wObjectiveFocalLengthMin;
+			__u16 wObjectiveFocalLengthMax;
+			__u16 wOcularFocalLength;
+			__u8  bControlSize;
+			__u8  *bmControls;
+		} camera;
+
+		struct {
+			__u8  bControlSize;
+			__u8  *bmControls;
+			__u8  bTransportModeSize;
+			__u8  *bmTransportModes;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} media;
 
 		struct {
 		} output;
 
 		struct {
+<<<<<<< HEAD
 			u16 wMaxMultiplier;
 			u8  bControlSize;
 			u8  *bmControls;
 			u8  bmVideoStandards;
+=======
+			__u16 wMaxMultiplier;
+			__u8  bControlSize;
+			__u8  *bmControls;
+			__u8  bmVideoStandards;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} processing;
 
 		struct {
 		} selector;
 
 		struct {
+<<<<<<< HEAD
 			u8  guidExtensionCode[16];
 			u8  bNumControls;
 			u8  bControlSize;
@@ -344,12 +428,25 @@ struct uvc_entity {
 
 	u8 bNrInPins;
 	u8 *baSourceID;
+=======
+			__u8  guidExtensionCode[16];
+			__u8  bNumControls;
+			__u8  bControlSize;
+			__u8  *bmControls;
+			__u8  *bmControlsType;
+		} extension;
+	};
+
+	__u8 bNrInPins;
+	__u8 *baSourceID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int ncontrols;
 	struct uvc_control *controls;
 };
 
 struct uvc_frame {
+<<<<<<< HEAD
 	u8  bFrameIndex;
 	u8  bmCapabilities;
 	u16 wWidth;
@@ -369,6 +466,27 @@ struct uvc_format {
 	u8 colorspace;
 	u32 fcc;
 	u32 flags;
+=======
+	__u8  bFrameIndex;
+	__u8  bmCapabilities;
+	__u16 wWidth;
+	__u16 wHeight;
+	__u32 dwMinBitRate;
+	__u32 dwMaxBitRate;
+	__u32 dwMaxVideoFrameBufferSize;
+	__u8  bFrameIntervalType;
+	__u32 dwDefaultFrameInterval;
+	__u32 *dwFrameInterval;
+};
+
+struct uvc_format {
+	__u8 type;
+	__u8 index;
+	__u8 bpp;
+	__u8 colorspace;
+	__u32 fcc;
+	__u32 flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	char name[32];
 
@@ -377,6 +495,7 @@ struct uvc_format {
 };
 
 struct uvc_streaming_header {
+<<<<<<< HEAD
 	u8 bNumFormats;
 	u8 bEndpointAddress;
 	u8 bTerminalLink;
@@ -387,6 +506,18 @@ struct uvc_streaming_header {
 	u8 bStillCaptureMethod;
 	u8 bTriggerSupport;
 	u8 bTriggerUsage;
+=======
+	__u8 bNumFormats;
+	__u8 bEndpointAddress;
+	__u8 bTerminalLink;
+	__u8 bControlSize;
+	__u8 *bmaControls;
+	/* The following fields are used by input headers only. */
+	__u8 bmInfo;
+	__u8 bStillCaptureMethod;
+	__u8 bTriggerSupport;
+	__u8 bTriggerUsage;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum uvc_buffer_state {
@@ -463,8 +594,13 @@ struct uvc_stats_frame {
 };
 
 struct uvc_stats_stream {
+<<<<<<< HEAD
 	ktime_t start_ts;		/* Stream start timestamp */
 	ktime_t stop_ts;		/* Stream stop timestamp */
+=======
+	struct timespec start_ts;	/* Stream start timestamp */
+	struct timespec stop_ts;	/* Stream stop timestamp */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int nb_frames;		/* Number of frames */
 
@@ -485,8 +621,11 @@ struct uvc_stats_stream {
 	unsigned int max_sof;		/* Maximum STC.SOF value */
 };
 
+<<<<<<< HEAD
 #define UVC_METATADA_BUF_SIZE 1024
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct uvc_streaming {
 	struct list_head list;
 	struct uvc_device *dev;
@@ -496,7 +635,11 @@ struct uvc_streaming {
 
 	struct usb_interface *intf;
 	int intfnum;
+<<<<<<< HEAD
 	u16 maxpsize;
+=======
+	__u16 maxpsize;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct uvc_streaming_header header;
 	enum v4l2_buf_type type;
@@ -518,6 +661,7 @@ struct uvc_streaming {
 	unsigned int frozen : 1;
 	struct uvc_video_queue queue;
 	void (*decode) (struct urb *urb, struct uvc_streaming *video,
+<<<<<<< HEAD
 			struct uvc_buffer *buf, struct uvc_buffer *meta_buf);
 
 	struct {
@@ -533,6 +677,17 @@ struct uvc_streaming {
 		int skip_payload;
 		u32 payload_size;
 		u32 max_payload_size;
+=======
+			struct uvc_buffer *buf);
+
+	/* Context data used by the bulk completion handler. */
+	struct {
+		__u8 header[256];
+		unsigned int header_size;
+		int skip_payload;
+		__u32 payload_size;
+		__u32 max_payload_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} bulk;
 
 	struct urb *urb[UVC_URBS];
@@ -540,8 +695,13 @@ struct uvc_streaming {
 	dma_addr_t urb_dma[UVC_URBS];
 	unsigned int urb_size;
 
+<<<<<<< HEAD
 	u32 sequence;
 	u8 last_fid;
+=======
+	__u32 sequence;
+	__u8 last_fid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* debugfs */
 	struct dentry *debugfs_dir;
@@ -555,8 +715,13 @@ struct uvc_streaming {
 		struct uvc_clock_sample {
 			u32 dev_stc;
 			u16 dev_sof;
+<<<<<<< HEAD
 			u16 host_sof;
 			ktime_t host_time;
+=======
+			struct timespec host_ts;
+			u16 host_sof;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} *samples;
 
 		unsigned int head;
@@ -566,8 +731,11 @@ struct uvc_streaming {
 		u16 last_sof;
 		u16 sof_offset;
 
+<<<<<<< HEAD
 		u8 last_scr[6];
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spinlock_t lock;
 	} clock;
 };
@@ -576,8 +744,12 @@ struct uvc_device {
 	struct usb_device *udev;
 	struct usb_interface *intf;
 	unsigned long warnings;
+<<<<<<< HEAD
 	u32 quirks;
 	u32 meta_format;
+=======
+	__u32 quirks;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int intfnum;
 	char name[32];
 
@@ -590,8 +762,13 @@ struct uvc_device {
 	struct media_device mdev;
 #endif
 	struct v4l2_device vdev;
+<<<<<<< HEAD
 	u16 uvc_version;
 	u32 clock_frequency;
+=======
+	__u16 uvc_version;
+	__u32 clock_frequency;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct list_head entities;
 	struct list_head chains;
@@ -603,6 +780,7 @@ struct uvc_device {
 	/* Status Interrupt Endpoint */
 	struct usb_host_endpoint *int_ep;
 	struct urb *int_urb;
+<<<<<<< HEAD
 	u8 *status;
 	struct input_dev *input;
 	char input_phys[64];
@@ -614,6 +792,11 @@ struct uvc_device {
 		struct uvc_control *ctrl;
 		const void *data;
 	} async_ctrl;
+=======
+	__u8 *status;
+	struct input_dev *input;
+	char input_phys[64];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum uvc_handle_state {
@@ -681,6 +864,7 @@ extern unsigned int uvc_hw_timestamps_param;
 /* Core driver */
 extern struct uvc_driver uvc_driver;
 
+<<<<<<< HEAD
 struct uvc_entity *uvc_entity_by_id(struct uvc_device *dev, int id);
 
 /* Video buffers queue management. */
@@ -713,6 +897,42 @@ unsigned long uvc_queue_get_unmapped_area(struct uvc_video_queue *queue,
 					  unsigned long pgoff);
 #endif
 int uvc_queue_allocated(struct uvc_video_queue *queue);
+=======
+extern struct uvc_entity *uvc_entity_by_id(struct uvc_device *dev, int id);
+
+/* Video buffers queue management. */
+extern int uvc_queue_init(struct uvc_video_queue *queue,
+		enum v4l2_buf_type type, int drop_corrupted);
+extern void uvc_queue_release(struct uvc_video_queue *queue);
+extern int uvc_request_buffers(struct uvc_video_queue *queue,
+		struct v4l2_requestbuffers *rb);
+extern int uvc_query_buffer(struct uvc_video_queue *queue,
+		struct v4l2_buffer *v4l2_buf);
+extern int uvc_create_buffers(struct uvc_video_queue *queue,
+		struct v4l2_create_buffers *v4l2_cb);
+extern int uvc_queue_buffer(struct uvc_video_queue *queue,
+		struct v4l2_buffer *v4l2_buf);
+extern int uvc_export_buffer(struct uvc_video_queue *queue,
+		struct v4l2_exportbuffer *exp);
+extern int uvc_dequeue_buffer(struct uvc_video_queue *queue,
+		struct v4l2_buffer *v4l2_buf, int nonblocking);
+extern int uvc_queue_streamon(struct uvc_video_queue *queue,
+			      enum v4l2_buf_type type);
+extern int uvc_queue_streamoff(struct uvc_video_queue *queue,
+			       enum v4l2_buf_type type);
+extern void uvc_queue_cancel(struct uvc_video_queue *queue, int disconnect);
+extern struct uvc_buffer *uvc_queue_next_buffer(struct uvc_video_queue *queue,
+		struct uvc_buffer *buf);
+extern int uvc_queue_mmap(struct uvc_video_queue *queue,
+		struct vm_area_struct *vma);
+extern unsigned int uvc_queue_poll(struct uvc_video_queue *queue,
+		struct file *file, poll_table *wait);
+#ifndef CONFIG_MMU
+extern unsigned long uvc_queue_get_unmapped_area(struct uvc_video_queue *queue,
+		unsigned long pgoff);
+#endif
+extern int uvc_queue_allocated(struct uvc_video_queue *queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int uvc_queue_streaming(struct uvc_video_queue *queue)
 {
 	return vb2_is_streaming(&queue->queue);
@@ -723,6 +943,7 @@ extern const struct v4l2_ioctl_ops uvc_ioctl_ops;
 extern const struct v4l2_file_operations uvc_fops;
 
 /* Media controller */
+<<<<<<< HEAD
 int uvc_mc_register_entities(struct uvc_video_chain *chain);
 void uvc_mc_cleanup_entity(struct uvc_entity *entity);
 
@@ -754,10 +975,34 @@ void uvc_status_unregister(struct uvc_device *dev);
 void uvc_status_cleanup(struct uvc_device *dev);
 int uvc_status_start(struct uvc_device *dev, gfp_t flags);
 void uvc_status_stop(struct uvc_device *dev);
+=======
+extern int uvc_mc_register_entities(struct uvc_video_chain *chain);
+extern void uvc_mc_cleanup_entity(struct uvc_entity *entity);
+
+/* Video */
+extern int uvc_video_init(struct uvc_streaming *stream);
+extern int uvc_video_suspend(struct uvc_streaming *stream);
+extern int uvc_video_resume(struct uvc_streaming *stream, int reset);
+extern int uvc_video_enable(struct uvc_streaming *stream, int enable);
+extern int uvc_probe_video(struct uvc_streaming *stream,
+		struct uvc_streaming_control *probe);
+extern int uvc_query_ctrl(struct uvc_device *dev, __u8 query, __u8 unit,
+		__u8 intfnum, __u8 cs, void *data, __u16 size);
+void uvc_video_clock_update(struct uvc_streaming *stream,
+			    struct vb2_v4l2_buffer *vbuf,
+			    struct uvc_buffer *buf);
+
+/* Status */
+extern int uvc_status_init(struct uvc_device *dev);
+extern void uvc_status_cleanup(struct uvc_device *dev);
+extern int uvc_status_start(struct uvc_device *dev, gfp_t flags);
+extern void uvc_status_stop(struct uvc_device *dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Controls */
 extern const struct v4l2_subscribed_event_ops uvc_ctrl_sub_ev_ops;
 
+<<<<<<< HEAD
 int uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
 			struct v4l2_queryctrl *v4l2_ctrl);
 int uvc_query_v4l2_menu(struct uvc_video_chain *chain,
@@ -778,6 +1023,26 @@ int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
 static inline int uvc_ctrl_commit(struct uvc_fh *handle,
 				  const struct v4l2_ext_control *xctrls,
 				  unsigned int xctrls_count)
+=======
+extern int uvc_query_v4l2_ctrl(struct uvc_video_chain *chain,
+		struct v4l2_queryctrl *v4l2_ctrl);
+extern int uvc_query_v4l2_menu(struct uvc_video_chain *chain,
+		struct v4l2_querymenu *query_menu);
+
+extern int uvc_ctrl_add_mapping(struct uvc_video_chain *chain,
+		const struct uvc_control_mapping *mapping);
+extern int uvc_ctrl_init_device(struct uvc_device *dev);
+extern void uvc_ctrl_cleanup_device(struct uvc_device *dev);
+extern int uvc_ctrl_restore_values(struct uvc_device *dev);
+
+extern int uvc_ctrl_begin(struct uvc_video_chain *chain);
+extern int __uvc_ctrl_commit(struct uvc_fh *handle, int rollback,
+			const struct v4l2_ext_control *xctrls,
+			unsigned int xctrls_count);
+static inline int uvc_ctrl_commit(struct uvc_fh *handle,
+			const struct v4l2_ext_control *xctrls,
+			unsigned int xctrls_count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return __uvc_ctrl_commit(handle, 0, xctrls, xctrls_count);
 }
@@ -786,6 +1051,7 @@ static inline int uvc_ctrl_rollback(struct uvc_fh *handle)
 	return __uvc_ctrl_commit(handle, 1, NULL, 0);
 }
 
+<<<<<<< HEAD
 int uvc_ctrl_get(struct uvc_video_chain *chain, struct v4l2_ext_control *xctrl);
 int uvc_ctrl_set(struct uvc_fh *handle, struct v4l2_ext_control *xctrl);
 
@@ -803,6 +1069,27 @@ struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
 void uvc_video_decode_isight(struct urb *urb, struct uvc_streaming *stream,
 			     struct uvc_buffer *buf,
 			     struct uvc_buffer *meta_buf);
+=======
+extern int uvc_ctrl_get(struct uvc_video_chain *chain,
+		struct v4l2_ext_control *xctrl);
+extern int uvc_ctrl_set(struct uvc_video_chain *chain,
+		struct v4l2_ext_control *xctrl);
+
+extern int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
+		struct uvc_xu_control_query *xqry);
+
+/* Utility functions */
+extern void uvc_simplify_fraction(uint32_t *numerator, uint32_t *denominator,
+		unsigned int n_terms, unsigned int threshold);
+extern uint32_t uvc_fraction_to_interval(uint32_t numerator,
+		uint32_t denominator);
+extern struct usb_host_endpoint *uvc_find_endpoint(
+		struct usb_host_interface *alts, __u8 epaddr);
+
+/* Quirks support */
+void uvc_video_decode_isight(struct urb *urb, struct uvc_streaming *stream,
+		struct uvc_buffer *buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* debugfs and statistics */
 void uvc_debugfs_init(void);

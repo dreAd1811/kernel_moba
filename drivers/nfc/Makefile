@@ -17,4 +17,9 @@ obj-$(CONFIG_NFC_ST_NCI)	+= st-nci/
 obj-$(CONFIG_NFC_NXP_NCI)	+= nxp-nci/
 obj-$(CONFIG_NFC_S3FWRN5)	+= s3fwrn5/
 obj-$(CONFIG_NFC_ST95HF)	+= st95hf/
+<<<<<<< HEAD
 obj-$(CONFIG_NFC_NQ)            += nq-nci.o
+=======
+obj-$(CONFIG_NFC_NQ)		+= nq-nci.o
+obj-$(CONFIG_NTAG_NQ)		+= nq-ntag.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

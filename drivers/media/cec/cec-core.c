@@ -1,8 +1,27 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * cec-core.c - HDMI Consumer Electronics Control framework - Core
  *
  * Copyright 2016 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you may redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/errno.h>
@@ -100,6 +119,13 @@ static int __must_check cec_devnode_register(struct cec_devnode *devnode,
 	int minor;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	/* Initialization */
+	INIT_LIST_HEAD(&devnode->fhs);
+	mutex_init(&devnode->lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Part 1: Find a free minor number */
 	mutex_lock(&cec_devnode_lock);
 	minor = find_next_zero_bit(cec_devnode_nums, CEC_NUM_DEVICES, 0);
@@ -148,9 +174,14 @@ clr_bit:
  * This function can safely be called if the device node has never been
  * registered or has already been unregistered.
  */
+<<<<<<< HEAD
 static void cec_devnode_unregister(struct cec_adapter *adap)
 {
 	struct cec_devnode *devnode = &adap->devnode;
+=======
+static void cec_devnode_unregister(struct cec_devnode *devnode)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cec_fh *fh;
 
 	mutex_lock(&devnode->lock);
@@ -168,11 +199,14 @@ static void cec_devnode_unregister(struct cec_adapter *adap)
 	devnode->unregistered = true;
 	mutex_unlock(&devnode->lock);
 
+<<<<<<< HEAD
 	mutex_lock(&adap->lock);
 	__cec_s_phys_addr(adap, CEC_PHYS_ADDR_INVALID, false);
 	__cec_s_log_addrs(adap, NULL, false);
 	mutex_unlock(&adap->lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cdev_device_del(&devnode->cdev, &devnode->dev);
 	put_device(&devnode->dev);
 }
@@ -186,7 +220,11 @@ static void cec_cec_notify(struct cec_adapter *adap, u16 pa)
 void cec_register_cec_notifier(struct cec_adapter *adap,
 			       struct cec_notifier *notifier)
 {
+<<<<<<< HEAD
 	if (WARN_ON(!cec_is_registered(adap)))
+=======
+	if (WARN_ON(!adap->devnode.registered))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	adap->notifier = notifier;
@@ -195,6 +233,7 @@ void cec_register_cec_notifier(struct cec_adapter *adap,
 EXPORT_SYMBOL_GPL(cec_register_cec_notifier);
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 static ssize_t cec_error_inj_write(struct file *file,
 	const char __user *ubuf, size_t count, loff_t *ppos)
@@ -244,6 +283,8 @@ static const struct file_operations cec_error_inj_fops = {
 };
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cec_adapter *cec_allocate_adapter(const struct cec_adap_ops *ops,
 					 void *priv, const char *name, u32 caps,
 					 u8 available_las)
@@ -281,10 +322,13 @@ struct cec_adapter *cec_allocate_adapter(const struct cec_adap_ops *ops,
 	INIT_LIST_HEAD(&adap->wait_queue);
 	init_waitqueue_head(&adap->kthread_waitq);
 
+<<<<<<< HEAD
 	/* adap->devnode initialization */
 	INIT_LIST_HEAD(&adap->devnode.fhs);
 	mutex_init(&adap->devnode.lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adap->kthread = kthread_run(cec_thread_func, adap, "cec-%s", name);
 	if (IS_ERR(adap->kthread)) {
 		pr_err("cec-%s: kernel_thread() failed\n", name);
@@ -320,9 +364,17 @@ struct cec_adapter *cec_allocate_adapter(const struct cec_adap_ops *ops,
 	adap->rc->input_id.version = 1;
 	adap->rc->driver_name = CEC_NAME;
 	adap->rc->allowed_protocols = RC_PROTO_BIT_CEC;
+<<<<<<< HEAD
 	adap->rc->priv = adap;
 	adap->rc->map_name = RC_MAP_CEC;
 	adap->rc->timeout = MS_TO_NS(550);
+=======
+	adap->rc->enabled_protocols = RC_PROTO_BIT_CEC;
+	adap->rc->priv = adap;
+	adap->rc->map_name = RC_MAP_CEC;
+	adap->rc->timeout = MS_TO_NS(100);
+	adap->rc_last_scancode = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	return adap;
 }
@@ -354,6 +406,20 @@ int cec_register_adapter(struct cec_adapter *adap,
 			adap->rc = NULL;
 			return res;
 		}
+<<<<<<< HEAD
+=======
+		/*
+		 * The REP_DELAY for CEC is really the time between the initial
+		 * 'User Control Pressed' message and the second. The first
+		 * keypress is always seen as non-repeating, the second
+		 * (provided it has the same UI Command) will start the 'Press
+		 * and Hold' (aka repeat) behavior. By setting REP_DELAY to the
+		 * same value as REP_PERIOD the expected CEC behavior is
+		 * reproduced.
+		 */
+		adap->rc->input_dev->rep[REP_DELAY] =
+			adap->rc->input_dev->rep[REP_PERIOD];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 
@@ -383,6 +449,7 @@ int cec_register_adapter(struct cec_adapter *adap,
 		pr_warn("cec-%s: Failed to create status file\n", adap->name);
 		debugfs_remove_recursive(adap->cec_dir);
 		adap->cec_dir = NULL;
+<<<<<<< HEAD
 		return 0;
 	}
 	if (!adap->ops->error_inj_show || !adap->ops->error_inj_parse_line)
@@ -393,6 +460,9 @@ int cec_register_adapter(struct cec_adapter *adap,
 	if (IS_ERR_OR_NULL(adap->error_inj_file))
 		pr_warn("cec-%s: Failed to create error-inj file\n",
 			adap->name);
+=======
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	return 0;
 }
@@ -413,7 +483,11 @@ void cec_unregister_adapter(struct cec_adapter *adap)
 	if (adap->notifier)
 		cec_notifier_unregister(adap->notifier);
 #endif
+<<<<<<< HEAD
 	cec_devnode_unregister(adap);
+=======
+	cec_devnode_unregister(&adap->devnode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(cec_unregister_adapter);
 
@@ -421,6 +495,12 @@ void cec_delete_adapter(struct cec_adapter *adap)
 {
 	if (IS_ERR_OR_NULL(adap))
 		return;
+<<<<<<< HEAD
+=======
+	mutex_lock(&adap->lock);
+	__cec_s_phys_addr(adap, CEC_PHYS_ADDR_INVALID, false);
+	mutex_unlock(&adap->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kthread_stop(adap->kthread);
 	if (adap->kthread_config)
 		kthread_stop(adap->kthread_config);

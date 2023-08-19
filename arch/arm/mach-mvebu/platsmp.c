@@ -35,8 +35,11 @@
 #define AXP_BOOTROM_BASE 0xfff00000
 #define AXP_BOOTROM_SIZE 0x100000
 
+<<<<<<< HEAD
 static struct clk *boot_cpu_clk;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clk *get_cpu_clk(int cpu)
 {
 	struct clk *cpu_clk;
@@ -50,6 +53,33 @@ static struct clk *get_cpu_clk(int cpu)
 	return cpu_clk;
 }
 
+<<<<<<< HEAD
+=======
+static void set_secondary_cpu_clock(unsigned int cpu)
+{
+	int thiscpu;
+	unsigned long rate;
+	struct clk *cpu_clk;
+
+	thiscpu = get_cpu();
+
+	cpu_clk = get_cpu_clk(thiscpu);
+	if (!cpu_clk)
+		goto out;
+	clk_prepare_enable(cpu_clk);
+	rate = clk_get_rate(cpu_clk);
+
+	cpu_clk = get_cpu_clk(cpu);
+	if (!cpu_clk)
+		goto out;
+	clk_set_rate(cpu_clk, rate);
+	clk_prepare_enable(cpu_clk);
+
+out:
+	put_cpu();
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int armada_xp_boot_secondary(unsigned int cpu, struct task_struct *idle)
 {
 	int ret, hw_cpu;
@@ -57,6 +87,10 @@ static int armada_xp_boot_secondary(unsigned int cpu, struct task_struct *idle)
 	pr_info("Booting CPU %d\n", cpu);
 
 	hw_cpu = cpu_logical_map(cpu);
+<<<<<<< HEAD
+=======
+	set_secondary_cpu_clock(hw_cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mvebu_pmsu_set_cpu_boot_addr(hw_cpu, armada_xp_secondary_startup);
 
 	/*
@@ -99,6 +133,7 @@ static void __init armada_xp_smp_init_cpus(void)
 		panic("Invalid number of CPUs in DT\n");
 }
 
+<<<<<<< HEAD
 static int armada_xp_sync_secondary_clk(unsigned int cpu)
 {
 	struct clk *cpu_clk = get_cpu_clk(cpu);
@@ -112,6 +147,8 @@ static int armada_xp_sync_secondary_clk(unsigned int cpu)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init armada_xp_smp_prepare_cpus(unsigned int max_cpus)
 {
 	struct device_node *node;
@@ -121,6 +158,7 @@ static void __init armada_xp_smp_prepare_cpus(unsigned int max_cpus)
 	flush_cache_all();
 	set_cpu_coherent();
 
+<<<<<<< HEAD
 	boot_cpu_clk = get_cpu_clk(smp_processor_id());
 	if (boot_cpu_clk) {
 		clk_prepare_enable(boot_cpu_clk);
@@ -129,6 +167,8 @@ static void __init armada_xp_smp_prepare_cpus(unsigned int max_cpus)
 					  armada_xp_sync_secondary_clk, NULL);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * In order to boot the secondary CPUs we need to ensure
 	 * the bootROM is mapped at the correct address.
@@ -221,6 +261,10 @@ static int mv98dx3236_boot_secondary(unsigned int cpu, struct task_struct *idle)
 	int ret, hw_cpu;
 
 	hw_cpu = cpu_logical_map(cpu);
+<<<<<<< HEAD
+=======
+	set_secondary_cpu_clock(hw_cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mv98dx3236_resume_set_cpu_boot_addr(hw_cpu,
 					    armada_xp_secondary_startup);
 

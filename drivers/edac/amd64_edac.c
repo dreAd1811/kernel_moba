@@ -261,6 +261,11 @@ static int get_scrub_rate(struct mem_ctl_info *mci)
 
 		if (pvt->model == 0x60)
 			amd64_read_pci_cfg(pvt->F2, F15H_M60H_SCRCTRL, &scrubval);
+<<<<<<< HEAD
+=======
+		else
+			amd64_read_pci_cfg(pvt->F3, SCRCTRL, &scrubval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case 0x17:
@@ -2863,6 +2868,10 @@ static int init_csrows(struct mem_ctl_info *mci)
 			dimm = csrow->channels[j]->dimm;
 			dimm->mtype = pvt->dram_type;
 			dimm->edac_mode = edac_mode;
+<<<<<<< HEAD
+=======
+			dimm->grain = 64;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -3458,6 +3467,7 @@ MODULE_DEVICE_TABLE(x86cpu, amd64_cpuids);
 
 static int __init amd64_edac_init(void)
 {
+<<<<<<< HEAD
 	const char *owner;
 	int err = -ENODEV;
 	int i;
@@ -3466,6 +3476,11 @@ static int __init amd64_edac_init(void)
 	if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
 		return -EBUSY;
 
+=======
+	int err = -ENODEV;
+	int i;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!x86_match_cpu(amd64_cpuids))
 		return -ENODEV;
 
@@ -3475,7 +3490,11 @@ static int __init amd64_edac_init(void)
 	opstate_init();
 
 	err = -ENOMEM;
+<<<<<<< HEAD
 	ecc_stngs = kcalloc(amd_nb_num(), sizeof(ecc_stngs[0]), GFP_KERNEL);
+=======
+	ecc_stngs = kzalloc(amd_nb_num() * sizeof(ecc_stngs[0]), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ecc_stngs)
 		goto err_free;
 

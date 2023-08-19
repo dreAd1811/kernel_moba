@@ -26,6 +26,7 @@
 #define BARRIER_BUCKETS_NR_BITS		(PAGE_SHIFT - ilog2(sizeof(atomic_t)))
 #define BARRIER_BUCKETS_NR		(1<<BARRIER_BUCKETS_NR_BITS)
 
+<<<<<<< HEAD
 /* Note: raid1_info.rdev can be set to NULL asynchronously by raid1_remove_disk.
  * There are three safe ways to access raid1_info.rdev.
  * 1/ when holding mddev->reconfig_mutex
@@ -38,6 +39,8 @@
  * been incremented, the pointer is put back in .rdev.
  */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct raid1_info {
 	struct md_rdev	*rdev;
 	sector_t	head_position;
@@ -118,10 +121,17 @@ struct r1conf {
 	 * mempools - it changes when the array grows or shrinks
 	 */
 	struct pool_info	*poolinfo;
+<<<<<<< HEAD
 	mempool_t		r1bio_pool;
 	mempool_t		r1buf_pool;
 
 	struct bio_set		bio_split;
+=======
+	mempool_t		*r1bio_pool;
+	mempool_t		*r1buf_pool;
+
+	struct bio_set		*bio_split;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* temporary buffer to synchronous IO when attempting to repair
 	 * a read error.

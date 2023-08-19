@@ -173,6 +173,12 @@ static int xlr_i2c_tx(struct xlr_i2c_private *priv,  u16 len,
 	u8 offset;
 	u32 xfer;
 
+<<<<<<< HEAD
+=======
+	if (!len)
+		return -EOPNOTSUPP;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	offset = buf[0];
 	xlr_i2c_wreg(priv->iobase, XLR_I2C_ADDR, offset);
 	xlr_i2c_wreg(priv->iobase, XLR_I2C_DEVADDR, addr);
@@ -238,6 +244,12 @@ static int xlr_i2c_rx(struct xlr_i2c_private *priv, u16 len, u8 *buf, u16 addr)
 	unsigned long timeout, stoptime, checktime;
 	int nbytes, timedout;
 
+<<<<<<< HEAD
+=======
+	if (!len)
+		return -EOPNOTSUPP;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xlr_i2c_wreg(priv->iobase, XLR_I2C_CFG,
 			XLR_I2C_CFG_NOADDR | priv->cfg->cfg_extra);
 	xlr_i2c_wreg(priv->iobase, XLR_I2C_BYTECNT, len - 1);
@@ -334,10 +346,13 @@ static const struct i2c_algorithm xlr_i2c_algo = {
 	.functionality	= xlr_func,
 };
 
+<<<<<<< HEAD
 static const struct i2c_adapter_quirks xlr_i2c_quirks = {
 	.flags = I2C_AQ_NO_ZERO_LEN,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct xlr_i2c_config xlr_i2c_config_default = {
 	.status_busy	= XLR_I2C_BUS_BUSY,
 	.cfg_extra	= 0,
@@ -425,7 +440,10 @@ static int xlr_i2c_probe(struct platform_device *pdev)
 	priv->adap.owner	= THIS_MODULE;
 	priv->adap.algo_data	= priv;
 	priv->adap.algo		= &xlr_i2c_algo;
+<<<<<<< HEAD
 	priv->adap.quirks	= &xlr_i2c_quirks;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->adap.nr		= pdev->id;
 	priv->adap.class	= I2C_CLASS_HWMON;
 	snprintf(priv->adap.name, sizeof(priv->adap.name), "xlr-i2c");

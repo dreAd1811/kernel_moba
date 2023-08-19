@@ -9,5 +9,9 @@ cx18-alsa-objs := cx18-alsa-main.o cx18-alsa-pcm.o
 obj-$(CONFIG_VIDEO_CX18) += cx18.o
 obj-$(CONFIG_VIDEO_CX18_ALSA) += cx18-alsa.o
 
+<<<<<<< HEAD
+=======
+ccflags-y += -Idrivers/media/dvb-core
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ccflags-y += -Idrivers/media/dvb-frontends
 ccflags-y += -Idrivers/media/tuners

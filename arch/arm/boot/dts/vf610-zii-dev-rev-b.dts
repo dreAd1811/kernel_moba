@@ -70,6 +70,11 @@
 				compatible = "marvell,mv88e6085";
 				pinctrl-0 = <&pinctrl_gpio_switch0>;
 				pinctrl-names = "default";
+<<<<<<< HEAD
+=======
+				#address-cells = <1>;
+				#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0>;
 				dsa,member = <0 0>;
 				interrupt-parent = <&gpio0>;
@@ -154,6 +159,11 @@
 				compatible = "marvell,mv88e6085";
 				pinctrl-0 = <&pinctrl_gpio_switch1>;
 				pinctrl-names = "default";
+<<<<<<< HEAD
+=======
+				#address-cells = <1>;
+				#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0>;
 				dsa,member = <0 1>;
 				interrupt-parent = <&gpio0>;
@@ -239,6 +249,11 @@
 
 			switch2: switch@0 {
 				compatible = "marvell,mv88e6085";
+<<<<<<< HEAD
+=======
+				#address-cells = <1>;
+				#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0>;
 				dsa,member = <0 2>;
 
@@ -249,19 +264,28 @@
 					port@0 {
 						reg = <0>;
 						label = "lan6";
+<<<<<<< HEAD
 						phy-handle = <&switch2phy0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 
 					port@1 {
 						reg = <1>;
 						label = "lan7";
+<<<<<<< HEAD
 						phy-handle = <&switch2phy1>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 
 					port@2 {
 						reg = <2>;
 						label = "lan8";
+<<<<<<< HEAD
 						phy-handle = <&switch2phy2>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 
 					port@3 {
@@ -301,6 +325,7 @@
 						};
 					};
 				};
+<<<<<<< HEAD
 				mdio {
 					#address-cells = <1>;
 					#size-cells = <0>;
@@ -315,6 +340,8 @@
 						reg = <2>;
 					};
 				};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
@@ -382,8 +409,12 @@
 		reg = <0x22>;
 		gpio-controller;
 		#gpio-cells = <2>;
+<<<<<<< HEAD
 		interrupt-controller;
 		interrupt-parent = <&gpio3>;
+=======
+		interrupt-parent = <&gpio2>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		interrupts = <2 IRQ_TYPE_LEVEL_LOW>;
 	};
 };

@@ -1,5 +1,30 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2007 - 2018 Intel Corporation. */
+=======
+/* Intel(R) Gigabit Ethernet Linux driver
+ * Copyright(c) 2007-2014 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
@@ -14,14 +39,21 @@
 #include <linux/slab.h>
 #include <net/checksum.h>
 #include <net/ip6_checksum.h>
+<<<<<<< HEAD
 #include <net/pkt_sched.h>
 #include <net/pkt_cls.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/net_tstamp.h>
 #include <linux/mii.h>
 #include <linux/ethtool.h>
 #include <linux/if.h>
 #include <linux/if_vlan.h>
 #include <linux/pci.h>
+<<<<<<< HEAD
+=======
+#include <linux/pci-aspm.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/interrupt.h>
 #include <linux/ip.h>
@@ -43,6 +75,7 @@
 #define BUILD 0
 #define DRV_VERSION __stringify(MAJ) "." __stringify(MIN) "." \
 __stringify(BUILD) "-k"
+<<<<<<< HEAD
 
 enum queue_mode {
 	QUEUE_MODE_STRICT_PRIORITY,
@@ -54,6 +87,8 @@ enum tx_queue_prio {
 	TX_QUEUE_PRIO_LOW,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 char igb_driver_name[] = "igb";
 char igb_driver_version[] = DRV_VERSION;
 static const char igb_driver_string[] =
@@ -125,8 +160,13 @@ static void igb_clean_all_rx_rings(struct igb_adapter *);
 static void igb_clean_tx_ring(struct igb_ring *);
 static void igb_clean_rx_ring(struct igb_ring *);
 static void igb_set_rx_mode(struct net_device *);
+<<<<<<< HEAD
 static void igb_update_phy_info(struct timer_list *);
 static void igb_watchdog(struct timer_list *);
+=======
+static void igb_update_phy_info(unsigned long);
+static void igb_watchdog(unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void igb_watchdog_task(struct work_struct *);
 static netdev_tx_t igb_xmit_frame(struct sk_buff *skb, struct net_device *);
 static void igb_get_stats64(struct net_device *dev,
@@ -170,8 +210,11 @@ static int igb_ndo_set_vf_vlan(struct net_device *netdev,
 static int igb_ndo_set_vf_bw(struct net_device *, int, int, int);
 static int igb_ndo_set_vf_spoofchk(struct net_device *netdev, int vf,
 				   bool setting);
+<<<<<<< HEAD
 static int igb_ndo_set_vf_trust(struct net_device *netdev, int vf,
 				bool setting);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int igb_ndo_get_vf_config(struct net_device *netdev, int vf,
 				 struct ifla_vf_info *ivi);
 static void igb_check_vf_rate_limit(struct igb_adapter *);
@@ -205,6 +248,13 @@ static struct notifier_block dca_notifier = {
 	.priority	= 0
 };
 #endif
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+/* for netdump / net console */
+static void igb_netpoll(struct net_device *);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PCI_IOV
 static unsigned int max_vfs;
 module_param(max_vfs, uint, 0);
@@ -740,7 +790,11 @@ static void igb_cache_ring_register(struct igb_adapter *adapter)
 u32 igb_rd32(struct e1000_hw *hw, u32 reg)
 {
 	struct igb_adapter *igb = container_of(hw, struct igb_adapter, hw);
+<<<<<<< HEAD
 	u8 __iomem *hw_addr = READ_ONCE(hw->hw_addr);
+=======
+	u8 __iomem *hw_addr = ACCESS_ONCE(hw->hw_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 value = 0;
 
 	if (E1000_REMOVED(hw_addr))
@@ -752,7 +806,12 @@ u32 igb_rd32(struct e1000_hw *hw, u32 reg)
 	if (!(~value) && (!reg || !(~readl(hw_addr)))) {
 		struct net_device *netdev = igb->netdev;
 		hw->hw_addr = NULL;
+<<<<<<< HEAD
 		netdev_err(netdev, "PCIe link lost\n");
+=======
+		netif_device_detach(netdev);
+		netdev_err(netdev, "PCIe link lost, device now detached\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return value;
@@ -1260,12 +1319,15 @@ static int igb_alloc_q_vector(struct igb_adapter *adapter,
 		ring->count = adapter->tx_ring_count;
 		ring->queue_index = txr_idx;
 
+<<<<<<< HEAD
 		ring->cbs_enable = false;
 		ring->idleslope = 0;
 		ring->sendslope = 0;
 		ring->hicredit = 0;
 		ring->locredit = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64_stats_init(&ring->tx_syncp);
 		u64_stats_init(&ring->tx_syncp2);
 
@@ -1593,6 +1655,7 @@ static void igb_get_hw_control(struct igb_adapter *adapter)
 			ctrl_ext | E1000_CTRL_EXT_DRV_LOAD);
 }
 
+<<<<<<< HEAD
 static void enable_fqtss(struct igb_adapter *adapter, bool enable)
 {
 	struct net_device *netdev = adapter->netdev;
@@ -1981,6 +2044,8 @@ static void igb_setup_tx_mode(struct igb_adapter *adapter)
 		   "enabled" : "disabled");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *  igb_configure - configure the hardware for RX and TX
  *  @adapter: private board structure
@@ -1992,7 +2057,10 @@ static void igb_configure(struct igb_adapter *adapter)
 
 	igb_get_hw_control(adapter);
 	igb_set_rx_mode(netdev);
+<<<<<<< HEAD
 	igb_setup_tx_mode(adapter);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	igb_restore_vlan(adapter);
 
@@ -2064,7 +2132,12 @@ static void igb_check_swap_media(struct igb_adapter *adapter)
 	if ((hw->phy.media_type == e1000_media_type_copper) &&
 	    (!(connsw & E1000_CONNSW_AUTOSENSE_EN))) {
 		swap_now = true;
+<<<<<<< HEAD
 	} else if (!(connsw & E1000_CONNSW_SERDESD)) {
+=======
+	} else if ((hw->phy.media_type != e1000_media_type_copper) &&
+		   !(connsw & E1000_CONNSW_SERDESD)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* copper signal takes time to appear */
 		if (adapter->copper_tries < 4) {
 			adapter->copper_tries++;
@@ -2134,7 +2207,10 @@ int igb_up(struct igb_adapter *adapter)
 		igb_assign_vector(adapter->q_vector[0], 0);
 
 	/* Clear any pending interrupts. */
+<<<<<<< HEAD
 	rd32(E1000_TSICR);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rd32(E1000_ICR);
 	igb_irq_enable(adapter);
 
@@ -2535,6 +2611,7 @@ igb_features_check(struct sk_buff *skb, struct net_device *dev,
 	return features;
 }
 
+<<<<<<< HEAD
 static void igb_offload_apply(struct igb_adapter *adapter, s32 queue)
 {
 	if (!is_fqtss_enabled(adapter)) {
@@ -2858,6 +2935,8 @@ static int igb_setup_tc(struct net_device *dev, enum tc_setup_type type,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops igb_netdev_ops = {
 	.ndo_open		= igb_open,
 	.ndo_stop		= igb_close,
@@ -2875,13 +2954,23 @@ static const struct net_device_ops igb_netdev_ops = {
 	.ndo_set_vf_vlan	= igb_ndo_set_vf_vlan,
 	.ndo_set_vf_rate	= igb_ndo_set_vf_bw,
 	.ndo_set_vf_spoofchk	= igb_ndo_set_vf_spoofchk,
+<<<<<<< HEAD
 	.ndo_set_vf_trust	= igb_ndo_set_vf_trust,
 	.ndo_get_vf_config	= igb_ndo_get_vf_config,
+=======
+	.ndo_get_vf_config	= igb_ndo_get_vf_config,
+#ifdef CONFIG_NET_POLL_CONTROLLER
+	.ndo_poll_controller	= igb_netpoll,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_fix_features	= igb_fix_features,
 	.ndo_set_features	= igb_set_features,
 	.ndo_fdb_add		= igb_ndo_fdb_add,
 	.ndo_features_check	= igb_features_check,
+<<<<<<< HEAD
 	.ndo_setup_tc		= igb_setup_tc,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -3150,9 +3239,12 @@ static int igb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	if (hw->mac.type >= e1000_82576)
 		netdev->features |= NETIF_F_SCTP_CRC;
 
+<<<<<<< HEAD
 	if (hw->mac.type >= e1000_i350)
 		netdev->features |= NETIF_F_HW_TC;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IGB_GSO_PARTIAL_FEATURES (NETIF_F_GSO_GRE | \
 				  NETIF_F_GSO_GRE_CSUM | \
 				  NETIF_F_GSO_IPXIP4 | \
@@ -3248,8 +3340,15 @@ static int igb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		wr32(E1000_TXPBS, I210_TXPBSIZE_DEFAULT);
 	}
 
+<<<<<<< HEAD
 	timer_setup(&adapter->watchdog_timer, igb_watchdog, 0);
 	timer_setup(&adapter->phy_info_timer, igb_update_phy_info, 0);
+=======
+	setup_timer(&adapter->watchdog_timer, igb_watchdog,
+		    (unsigned long) adapter);
+	setup_timer(&adapter->phy_info_timer, igb_update_phy_info,
+		    (unsigned long) adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&adapter->reset_task, igb_reset_task);
 	INIT_WORK(&adapter->watchdog_task, igb_watchdog_task);
@@ -3468,9 +3567,12 @@ static int igb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 			break;
 		}
 	}
+<<<<<<< HEAD
 
 	dev_pm_set_driver_flags(&pdev->dev, DPM_FLAG_NEVER_SKIP);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put_noidle(&pdev->dev);
 	return 0;
 
@@ -3566,6 +3668,11 @@ static int igb_enable_sriov(struct pci_dev *pdev, int num_vfs)
 	/* if allocation failed then we do not support SR-IOV */
 	if (!adapter->vf_data) {
 		adapter->vfs_allocated_count = 0;
+<<<<<<< HEAD
+=======
+		dev_err(&pdev->dev,
+			"Unable to allocate memory for VF Data Storage\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENOMEM;
 		goto out;
 	}
@@ -3737,10 +3844,17 @@ static void igb_probe_vfs(struct igb_adapter *adapter)
 #endif /* CONFIG_PCI_IOV */
 }
 
+<<<<<<< HEAD
 unsigned int igb_get_max_rss_queues(struct igb_adapter *adapter)
 {
 	struct e1000_hw *hw = &adapter->hw;
 	unsigned int max_rss_queues;
+=======
+static void igb_init_queue_configuration(struct igb_adapter *adapter)
+{
+	struct e1000_hw *hw = &adapter->hw;
+	u32 max_rss_queues;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Determine the maximum number of RSS queues supported. */
 	switch (hw->mac.type) {
@@ -3771,6 +3885,7 @@ unsigned int igb_get_max_rss_queues(struct igb_adapter *adapter)
 		break;
 	}
 
+<<<<<<< HEAD
 	return max_rss_queues;
 }
 
@@ -3779,6 +3894,8 @@ static void igb_init_queue_configuration(struct igb_adapter *adapter)
 	u32 max_rss_queues;
 
 	max_rss_queues = igb_get_max_rss_queues(adapter);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adapter->rss_queues = min_t(u32, max_rss_queues, num_online_cpus());
 
 	igb_set_flag_queue_pairs(adapter, max_rss_queues);
@@ -3867,9 +3984,14 @@ static int igb_sw_init(struct igb_adapter *adapter)
 	/* Assume MSI-X interrupts, will be checked during IRQ allocation */
 	adapter->flags |= IGB_FLAG_HAS_MSIX;
 
+<<<<<<< HEAD
 	adapter->mac_table = kcalloc(hw->mac.rar_entry_count,
 				     sizeof(struct igb_mac_addr),
 				     GFP_KERNEL);
+=======
+	adapter->mac_table = kzalloc(sizeof(struct igb_mac_addr) *
+				     hw->mac.rar_entry_count, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!adapter->mac_table)
 		return -ENOMEM;
 
@@ -3879,7 +4001,11 @@ static int igb_sw_init(struct igb_adapter *adapter)
 
 	/* Setup and initialize a copy of the hw vlan table array */
 	adapter->shadow_vfta = kcalloc(E1000_VLAN_FILTER_TBL_SIZE, sizeof(u32),
+<<<<<<< HEAD
 				       GFP_KERNEL);
+=======
+				       GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!adapter->shadow_vfta)
 		return -ENOMEM;
 
@@ -3971,7 +4097,10 @@ static int __igb_open(struct net_device *netdev, bool resuming)
 		napi_enable(&(adapter->q_vector[i]->napi));
 
 	/* Clear any pending interrupts. */
+<<<<<<< HEAD
 	rd32(E1000_TSICR);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rd32(E1000_ICR);
 
 	igb_irq_enable(adapter);
@@ -4160,6 +4289,14 @@ void igb_configure_tx_ring(struct igb_adapter *adapter,
 	u64 tdba = ring->dma;
 	int reg_idx = ring->reg_idx;
 
+<<<<<<< HEAD
+=======
+	/* disable the queue */
+	wr32(E1000_TXDCTL(reg_idx), 0);
+	wrfl();
+	mdelay(10);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wr32(E1000_TDLEN(reg_idx),
 	     ring->count * sizeof(union e1000_adv_tx_desc));
 	wr32(E1000_TDBAL(reg_idx),
@@ -4190,6 +4327,7 @@ void igb_configure_tx_ring(struct igb_adapter *adapter,
  **/
 static void igb_configure_tx(struct igb_adapter *adapter)
 {
+<<<<<<< HEAD
 	struct e1000_hw *hw = &adapter->hw;
 	int i;
 
@@ -4200,6 +4338,10 @@ static void igb_configure_tx(struct igb_adapter *adapter)
 	wrfl();
 	usleep_range(10000, 20000);
 
+=======
+	int i;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < adapter->num_tx_queues; i++)
 		igb_configure_tx_ring(adapter, adapter->tx_ring[i]);
 }
@@ -4857,7 +4999,11 @@ static int igb_write_mc_addr_list(struct net_device *netdev)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	mta_list = kcalloc(netdev_mc_count(netdev), 6, GFP_ATOMIC);
+=======
+	mta_list = kzalloc(netdev_mc_count(netdev) * 6, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mta_list)
 		return -ENOMEM;
 
@@ -5147,9 +5293,15 @@ static void igb_spoof_check(struct igb_adapter *adapter)
 /* Need to wait a few seconds after link up to get diagnostic information from
  * the phy
  */
+<<<<<<< HEAD
 static void igb_update_phy_info(struct timer_list *t)
 {
 	struct igb_adapter *adapter = from_timer(adapter, t, phy_info_timer);
+=======
+static void igb_update_phy_info(unsigned long data)
+{
+	struct igb_adapter *adapter = (struct igb_adapter *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	igb_get_phy_info(&adapter->hw);
 }
 
@@ -5171,7 +5323,10 @@ bool igb_has_link(struct igb_adapter *adapter)
 	case e1000_media_type_copper:
 		if (!hw->mac.get_link_status)
 			return true;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case e1000_media_type_internal_serdes:
 		hw->mac.ops.check_for_link(hw);
 		link_active = !hw->mac.get_link_status;
@@ -5237,9 +5392,15 @@ static void igb_check_lvmmc(struct igb_adapter *adapter)
  *  igb_watchdog - Timer Call-back
  *  @data: pointer to adapter cast into an unsigned long
  **/
+<<<<<<< HEAD
 static void igb_watchdog(struct timer_list *t)
 {
 	struct igb_adapter *adapter = from_timer(adapter, t, watchdog_timer);
+=======
+static void igb_watchdog(unsigned long data)
+{
+	struct igb_adapter *adapter = (struct igb_adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Do the rest outside of interrupt context */
 	schedule_work(&adapter->watchdog_task);
 }
@@ -5673,6 +5834,7 @@ set_itr_now:
 	}
 }
 
+<<<<<<< HEAD
 static void igb_tx_ctxtdesc(struct igb_ring *tx_ring,
 			    struct igb_tx_buffer *first,
 			    u32 vlan_macip_lens, u32 type_tucmd,
@@ -5681,6 +5843,13 @@ static void igb_tx_ctxtdesc(struct igb_ring *tx_ring,
 	struct e1000_adv_tx_context_desc *context_desc;
 	u16 i = tx_ring->next_to_use;
 	struct timespec64 ts;
+=======
+static void igb_tx_ctxtdesc(struct igb_ring *tx_ring, u32 vlan_macip_lens,
+			    u32 type_tucmd, u32 mss_l4len_idx)
+{
+	struct e1000_adv_tx_context_desc *context_desc;
+	u16 i = tx_ring->next_to_use;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	context_desc = IGB_TX_CTXTDESC(tx_ring, i);
 
@@ -5695,6 +5864,7 @@ static void igb_tx_ctxtdesc(struct igb_ring *tx_ring,
 		mss_l4len_idx |= tx_ring->reg_idx << 4;
 
 	context_desc->vlan_macip_lens	= cpu_to_le32(vlan_macip_lens);
+<<<<<<< HEAD
 	context_desc->type_tucmd_mlhl	= cpu_to_le32(type_tucmd);
 	context_desc->mss_l4len_idx	= cpu_to_le32(mss_l4len_idx);
 
@@ -5708,6 +5878,11 @@ static void igb_tx_ctxtdesc(struct igb_ring *tx_ring,
 	} else {
 		context_desc->seqnum_seed = 0;
 	}
+=======
+	context_desc->seqnum_seed	= 0;
+	context_desc->type_tucmd_mlhl	= cpu_to_le32(type_tucmd);
+	context_desc->mss_l4len_idx	= cpu_to_le32(mss_l4len_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int igb_tso(struct igb_ring *tx_ring,
@@ -5790,8 +5965,12 @@ static int igb_tso(struct igb_ring *tx_ring,
 	vlan_macip_lens |= (ip.hdr - skb->data) << E1000_ADVTXD_MACLEN_SHIFT;
 	vlan_macip_lens |= first->tx_flags & IGB_TX_FLAGS_VLAN_MASK;
 
+<<<<<<< HEAD
 	igb_tx_ctxtdesc(tx_ring, first, vlan_macip_lens,
 			type_tucmd, mss_l4len_idx);
+=======
+	igb_tx_ctxtdesc(tx_ring, vlan_macip_lens, type_tucmd, mss_l4len_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 1;
 }
@@ -5813,8 +5992,12 @@ static void igb_tx_csum(struct igb_ring *tx_ring, struct igb_tx_buffer *first)
 
 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
 csum_failed:
+<<<<<<< HEAD
 		if (!(first->tx_flags & IGB_TX_FLAGS_VLAN) &&
 		    !tx_ring->launchtime_enable)
+=======
+		if (!(first->tx_flags & IGB_TX_FLAGS_VLAN))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		goto no_csum;
 	}
@@ -5834,7 +6017,10 @@ csum_failed:
 			type_tucmd = E1000_ADVTXD_TUCMD_L4T_SCTP;
 			break;
 		}
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		skb_checksum_help(skb);
 		goto csum_failed;
@@ -5848,7 +6034,11 @@ no_csum:
 	vlan_macip_lens |= skb_network_offset(skb) << E1000_ADVTXD_MACLEN_SHIFT;
 	vlan_macip_lens |= first->tx_flags & IGB_TX_FLAGS_VLAN_MASK;
 
+<<<<<<< HEAD
 	igb_tx_ctxtdesc(tx_ring, first, vlan_macip_lens, type_tucmd, 0);
+=======
+	igb_tx_ctxtdesc(tx_ring, vlan_macip_lens, type_tucmd, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define IGB_SET_FLAG(_input, _flag, _result) \
@@ -6030,7 +6220,11 @@ static int igb_tx_map(struct igb_ring *tx_ring,
 	 * We also need this memory barrier to make certain all of the
 	 * status bits have been updated before next_to_watch is written.
 	 */
+<<<<<<< HEAD
 	dma_wmb();
+=======
+	wmb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* set next_to_watch value indicating a packet is present */
 	first->next_to_watch = tx_desc;
@@ -6121,7 +6315,11 @@ netdev_tx_t igb_xmit_frame_ring(struct sk_buff *skb,
 	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)) {
 		struct igb_adapter *adapter = netdev_priv(tx_ring->netdev);
 
+<<<<<<< HEAD
 		if (adapter->tstamp_config.tx_type == HWTSTAMP_TX_ON &&
+=======
+		if (adapter->tstamp_config.tx_type & HWTSTAMP_TX_ON &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    !test_and_set_bit_lock(__IGB_PTP_TX_IN_PROGRESS,
 					   &adapter->state)) {
 			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
@@ -6136,6 +6334,11 @@ netdev_tx_t igb_xmit_frame_ring(struct sk_buff *skb,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	skb_tx_timestamp(skb);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (skb_vlan_tag_present(skb)) {
 		tx_flags |= IGB_TX_FLAGS_VLAN;
 		tx_flags |= (skb_vlan_tag_get(skb) << IGB_TX_FLAGS_VLAN_SHIFT);
@@ -6151,8 +6354,11 @@ netdev_tx_t igb_xmit_frame_ring(struct sk_buff *skb,
 	else if (!tso)
 		igb_tx_csum(tx_ring, first);
 
+<<<<<<< HEAD
 	skb_tx_timestamp(skb);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (igb_tx_map(tx_ring, first, hdr_len))
 		goto cleanup_tx_tstamp;
 
@@ -6757,9 +6963,12 @@ static int igb_vf_configure(struct igb_adapter *adapter, int vf)
 	/* By default spoof check is enabled for all VFs */
 	adapter->vf_data[vf].spoofchk_enabled = true;
 
+<<<<<<< HEAD
 	/* By default VFs are not trusted */
 	adapter->vf_data[vf].trusted = false;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -7212,6 +7421,7 @@ static void igb_set_default_mac_filter(struct igb_adapter *adapter)
 	igb_rar_set_index(adapter, 0);
 }
 
+<<<<<<< HEAD
 /* If the filter to be added and an already existing filter express
  * the same address and address type, it should be possible to only
  * override the other configurations, for example the queue to steer
@@ -7241,6 +7451,10 @@ static bool igb_mac_entry_can_be_used(const struct igb_mac_addr *entry,
 static int igb_add_mac_filter_flags(struct igb_adapter *adapter,
 				    const u8 *addr, const u8 queue,
 				    const u8 flags)
+=======
+static int igb_add_mac_filter(struct igb_adapter *adapter, const u8 *addr,
+			      const u8 queue)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct e1000_hw *hw = &adapter->hw;
 	int rar_entries = hw->mac.rar_entry_count -
@@ -7255,13 +7469,21 @@ static int igb_add_mac_filter_flags(struct igb_adapter *adapter,
 	 * addresses.
 	 */
 	for (i = 0; i < rar_entries; i++) {
+<<<<<<< HEAD
 		if (!igb_mac_entry_can_be_used(&adapter->mac_table[i],
 					       addr, flags))
+=======
+		if (adapter->mac_table[i].state & IGB_MAC_STATE_IN_USE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		ether_addr_copy(adapter->mac_table[i].addr, addr);
 		adapter->mac_table[i].queue = queue;
+<<<<<<< HEAD
 		adapter->mac_table[i].state |= IGB_MAC_STATE_IN_USE | flags;
+=======
+		adapter->mac_table[i].state |= IGB_MAC_STATE_IN_USE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		igb_rar_set_index(adapter, i);
 		return i;
@@ -7270,6 +7492,7 @@ static int igb_add_mac_filter_flags(struct igb_adapter *adapter,
 	return -ENOSPC;
 }
 
+<<<<<<< HEAD
 static int igb_add_mac_filter(struct igb_adapter *adapter, const u8 *addr,
 			      const u8 queue)
 {
@@ -7286,6 +7509,11 @@ static int igb_del_mac_filter_flags(struct igb_adapter *adapter,
 				    const u8 *addr, const u8 queue,
 				    const u8 flags)
 {
+=======
+static int igb_del_mac_filter(struct igb_adapter *adapter, const u8 *addr,
+			      const u8 queue)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct e1000_hw *hw = &adapter->hw;
 	int rar_entries = hw->mac.rar_entry_count -
 			  adapter->vfs_allocated_count;
@@ -7301,13 +7529,17 @@ static int igb_del_mac_filter_flags(struct igb_adapter *adapter,
 	for (i = 0; i < rar_entries; i++) {
 		if (!(adapter->mac_table[i].state & IGB_MAC_STATE_IN_USE))
 			continue;
+<<<<<<< HEAD
 		if ((adapter->mac_table[i].state & flags) != flags)
 			continue;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (adapter->mac_table[i].queue != queue)
 			continue;
 		if (!ether_addr_equal(adapter->mac_table[i].addr, addr))
 			continue;
 
+<<<<<<< HEAD
 		/* When a filter for the default address is "deleted",
 		 * we return it to its initial configuration
 		 */
@@ -7321,6 +7553,11 @@ static int igb_del_mac_filter_flags(struct igb_adapter *adapter,
 			adapter->mac_table[i].queue = 0;
 			memset(adapter->mac_table[i].addr, 0, ETH_ALEN);
 		}
+=======
+		adapter->mac_table[i].state &= ~IGB_MAC_STATE_IN_USE;
+		memset(adapter->mac_table[i].addr, 0, ETH_ALEN);
+		adapter->mac_table[i].queue = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		igb_rar_set_index(adapter, i);
 		return 0;
@@ -7329,6 +7566,7 @@ static int igb_del_mac_filter_flags(struct igb_adapter *adapter,
 	return -ENOENT;
 }
 
+<<<<<<< HEAD
 static int igb_del_mac_filter(struct igb_adapter *adapter, const u8 *addr,
 			      const u8 queue)
 {
@@ -7357,6 +7595,8 @@ int igb_del_mac_steering_filter(struct igb_adapter *adapter,
 					IGB_MAC_STATE_QUEUE_STEERING | flags);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int igb_uc_sync(struct net_device *netdev, const unsigned char *addr)
 {
 	struct igb_adapter *adapter = netdev_priv(netdev);
@@ -7398,13 +7638,21 @@ static int igb_set_vf_mac_filter(struct igb_adapter *adapter, const int vf,
 		}
 		break;
 	case E1000_VF_MAC_FILTER_ADD:
+<<<<<<< HEAD
 		if ((vf_data->flags & IGB_VF_FLAG_PF_SET_MAC) &&
 		    !vf_data->trusted) {
+=======
+		if (vf_data->flags & IGB_VF_FLAG_PF_SET_MAC) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_warn(&pdev->dev,
 				 "VF %d requested MAC filter but is administratively denied\n",
 				 vf);
 			return -EINVAL;
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!is_valid_ether_addr(addr)) {
 			dev_warn(&pdev->dev,
 				 "VF %d attempted to set invalid MAC filter\n",
@@ -7456,8 +7704,12 @@ static int igb_set_vf_mac_addr(struct igb_adapter *adapter, u32 *msg, int vf)
 	int ret = 0;
 
 	if (!info) {
+<<<<<<< HEAD
 		if ((vf_data->flags & IGB_VF_FLAG_PF_SET_MAC) &&
 		    !vf_data->trusted) {
+=======
+		if (vf_data->flags & IGB_VF_FLAG_PF_SET_MAC) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_warn(&pdev->dev,
 				 "VF %d attempted to override administratively set MAC address\nReload the VF driver to resume operations\n",
 				 vf);
@@ -8530,7 +8782,11 @@ void igb_alloc_rx_buffers(struct igb_ring *rx_ring, u16 cleaned_count)
 		 * applicable for weak-ordered memory model archs,
 		 * such as IA-64).
 		 */
+<<<<<<< HEAD
 		dma_wmb();
+=======
+		wmb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		writel(i, rx_ring->tail);
 	}
 }
@@ -9011,6 +9267,32 @@ static int igb_pci_sriov_configure(struct pci_dev *dev, int num_vfs)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+/* Polling 'interrupt' - used by things like netconsole to send skbs
+ * without having to re-enable interrupts. It's not called while
+ * the interrupt routine is executing.
+ */
+static void igb_netpoll(struct net_device *netdev)
+{
+	struct igb_adapter *adapter = netdev_priv(netdev);
+	struct e1000_hw *hw = &adapter->hw;
+	struct igb_q_vector *q_vector;
+	int i;
+
+	for (i = 0; i < adapter->num_q_vectors; i++) {
+		q_vector = adapter->q_vector[i];
+		if (adapter->flags & IGB_FLAG_HAS_MSIX)
+			wr32(E1000_EIMC, q_vector->eims_value);
+		else
+			igb_irq_disable(adapter);
+		napi_schedule(&q_vector->napi);
+	}
+}
+#endif /* CONFIG_NET_POLL_CONTROLLER */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *  igb_io_error_detected - called when PCI error is detected
  *  @pdev: Pointer to PCI device
@@ -9138,6 +9420,7 @@ static void igb_rar_set_index(struct igb_adapter *adapter, u32 index)
 		if (is_valid_ether_addr(addr))
 			rar_high |= E1000_RAH_AV;
 
+<<<<<<< HEAD
 		if (adapter->mac_table[index].state & IGB_MAC_STATE_SRC_ADDR)
 			rar_high |= E1000_RAH_ASEL_SRC_ADDR;
 
@@ -9148,6 +9431,11 @@ static void igb_rar_set_index(struct igb_adapter *adapter, u32 index)
 			    IGB_MAC_STATE_QUEUE_STEERING)
 				rar_high |= E1000_RAH_QSEL_ENABLE;
 
+=======
+		switch (hw->mac.type) {
+		case e1000_82575:
+		case e1000_i210:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rar_high |= E1000_RAH_POOL_1 *
 				    adapter->mac_table[index].queue;
 			break;
@@ -9343,6 +9631,7 @@ static int igb_ndo_set_vf_spoofchk(struct net_device *netdev, int vf,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int igb_ndo_set_vf_trust(struct net_device *netdev, int vf, bool setting)
 {
 	struct igb_adapter *adapter = netdev_priv(netdev);
@@ -9359,6 +9648,8 @@ static int igb_ndo_set_vf_trust(struct net_device *netdev, int vf, bool setting)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int igb_ndo_get_vf_config(struct net_device *netdev,
 				 int vf, struct ifla_vf_info *ivi)
 {
@@ -9372,7 +9663,10 @@ static int igb_ndo_get_vf_config(struct net_device *netdev,
 	ivi->vlan = adapter->vf_data[vf].pf_vlan;
 	ivi->qos = adapter->vf_data[vf].pf_qos;
 	ivi->spoofchk = adapter->vf_data[vf].spoofchk_enabled;
+<<<<<<< HEAD
 	ivi->trusted = adapter->vf_data[vf].trusted;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -9593,9 +9887,12 @@ static void igb_nfc_filter_exit(struct igb_adapter *adapter)
 	hlist_for_each_entry(rule, &adapter->nfc_filter_list, nfc_node)
 		igb_erase_filter(adapter, rule);
 
+<<<<<<< HEAD
 	hlist_for_each_entry(rule, &adapter->cls_flower_list, nfc_node)
 		igb_erase_filter(adapter, rule);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&adapter->nfc_lock);
 }
 

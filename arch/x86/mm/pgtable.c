@@ -8,11 +8,14 @@
 #include <asm/fixmap.h>
 #include <asm/mtrr.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_DYNAMIC_PHYSICAL_MASK
 phys_addr_t physical_mask __ro_after_init = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
 EXPORT_SYMBOL(physical_mask);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PGALLOC_GFP (GFP_KERNEL_ACCOUNT | __GFP_ZERO)
 
 #ifdef CONFIG_HIGHPTE
@@ -63,7 +66,11 @@ void ___pte_free_tlb(struct mmu_gather *tlb, struct page *pte)
 {
 	pgtable_page_dtor(pte);
 	paravirt_release_pte(page_to_pfn(pte));
+<<<<<<< HEAD
 	paravirt_tlb_remove_table(tlb, pte);
+=======
+	tlb_remove_table(tlb, pte);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #if CONFIG_PGTABLE_LEVELS > 2
@@ -79,21 +86,33 @@ void ___pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd)
 	tlb->need_flush_all = 1;
 #endif
 	pgtable_pmd_page_dtor(page);
+<<<<<<< HEAD
 	paravirt_tlb_remove_table(tlb, page);
+=======
+	tlb_remove_table(tlb, page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #if CONFIG_PGTABLE_LEVELS > 3
 void ___pud_free_tlb(struct mmu_gather *tlb, pud_t *pud)
 {
 	paravirt_release_pud(__pa(pud) >> PAGE_SHIFT);
+<<<<<<< HEAD
 	paravirt_tlb_remove_table(tlb, virt_to_page(pud));
+=======
+	tlb_remove_table(tlb, virt_to_page(pud));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #if CONFIG_PGTABLE_LEVELS > 4
 void ___p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d)
 {
 	paravirt_release_p4d(__pa(p4d) >> PAGE_SHIFT);
+<<<<<<< HEAD
 	paravirt_tlb_remove_table(tlb, virt_to_page(p4d));
+=======
+	tlb_remove_table(tlb, virt_to_page(p4d));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif	/* CONFIG_PGTABLE_LEVELS > 4 */
 #endif	/* CONFIG_PGTABLE_LEVELS > 3 */
@@ -115,18 +134,30 @@ static inline void pgd_list_del(pgd_t *pgd)
 
 #define UNSHARED_PTRS_PER_PGD				\
 	(SHARED_KERNEL_PMD ? KERNEL_PGD_BOUNDARY : PTRS_PER_PGD)
+<<<<<<< HEAD
 #define MAX_UNSHARED_PTRS_PER_PGD			\
 	max_t(size_t, KERNEL_PGD_BOUNDARY, PTRS_PER_PGD)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 static void pgd_set_mm(pgd_t *pgd, struct mm_struct *mm)
 {
+<<<<<<< HEAD
 	virt_to_page(pgd)->pt_mm = mm;
+=======
+	BUILD_BUG_ON(sizeof(virt_to_page(pgd)->index) < sizeof(mm));
+	virt_to_page(pgd)->index = (pgoff_t)mm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct mm_struct *pgd_page_get_mm(struct page *page)
 {
+<<<<<<< HEAD
 	return page->pt_mm;
+=======
+	return (struct mm_struct *)page->index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void pgd_ctor(struct mm_struct *mm, pgd_t *pgd)
@@ -183,6 +214,7 @@ static void pgd_dtor(pgd_t *pgd)
  * and initialize the kernel pmds here.
  */
 #define PREALLOCATED_PMDS	UNSHARED_PTRS_PER_PGD
+<<<<<<< HEAD
 #define MAX_PREALLOCATED_PMDS	MAX_UNSHARED_PTRS_PER_PGD
 
 /*
@@ -193,6 +225,8 @@ static void pgd_dtor(pgd_t *pgd)
 #define PREALLOCATED_USER_PMDS	 (static_cpu_has(X86_FEATURE_PTI) ? \
 					KERNEL_PGD_PTRS : 0)
 #define MAX_PREALLOCATED_USER_PMDS KERNEL_PGD_PTRS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmd)
 {
@@ -214,6 +248,7 @@ void pud_populate(struct mm_struct *mm, pud_t *pudp, pmd_t *pmd)
 
 /* No need to prepopulate any pagetable entries in non-PAE modes. */
 #define PREALLOCATED_PMDS	0
+<<<<<<< HEAD
 #define MAX_PREALLOCATED_PMDS	0
 #define PREALLOCATED_USER_PMDS	 0
 #define MAX_PREALLOCATED_USER_PMDS 0
@@ -224,6 +259,16 @@ static void free_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
 	int i;
 
 	for (i = 0; i < count; i++)
+=======
+
+#endif	/* CONFIG_X86_PAE */
+
+static void free_pmds(struct mm_struct *mm, pmd_t *pmds[])
+{
+	int i;
+
+	for(i = 0; i < PREALLOCATED_PMDS; i++)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pmds[i]) {
 			pgtable_pmd_page_dtor(virt_to_page(pmds[i]));
 			free_page((unsigned long)pmds[i]);
@@ -231,7 +276,11 @@ static void free_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
 		}
 }
 
+<<<<<<< HEAD
 static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
+=======
+static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[])
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	bool failed = false;
@@ -240,7 +289,11 @@ static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
 	if (mm == &init_mm)
 		gfp &= ~__GFP_ACCOUNT;
 
+<<<<<<< HEAD
 	for (i = 0; i < count; i++) {
+=======
+	for(i = 0; i < PREALLOCATED_PMDS; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pmd_t *pmd = (pmd_t *)__get_free_page(gfp);
 		if (!pmd)
 			failed = true;
@@ -255,7 +308,11 @@ static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
 	}
 
 	if (failed) {
+<<<<<<< HEAD
 		free_pmds(mm, pmds, count);
+=======
+		free_pmds(mm, pmds);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
@@ -268,6 +325,7 @@ static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
  * preallocate which never got a corresponding vma will need to be
  * freed manually.
  */
+<<<<<<< HEAD
 static void mop_up_one_pmd(struct mm_struct *mm, pgd_t *pgdp)
 {
 	pgd_t pgd = *pgdp;
@@ -283,10 +341,13 @@ static void mop_up_one_pmd(struct mm_struct *mm, pgd_t *pgdp)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void pgd_mop_up_pmds(struct mm_struct *mm, pgd_t *pgdp)
 {
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < PREALLOCATED_PMDS; i++)
 		mop_up_one_pmd(mm, &pgdp[i]);
 
@@ -300,6 +361,21 @@ static void pgd_mop_up_pmds(struct mm_struct *mm, pgd_t *pgdp)
 	for (i = 0; i < PREALLOCATED_USER_PMDS; i++)
 		mop_up_one_pmd(mm, &pgdp[i + KERNEL_PGD_BOUNDARY]);
 #endif
+=======
+	for(i = 0; i < PREALLOCATED_PMDS; i++) {
+		pgd_t pgd = pgdp[i];
+
+		if (pgd_val(pgd) != 0) {
+			pmd_t *pmd = (pmd_t *)pgd_page_vaddr(pgd);
+
+			pgd_clear(&pgdp[i]);
+
+			paravirt_release_pmd(pgd_val(pgd) >> PAGE_SHIFT);
+			pmd_free(mm, pmd);
+			mm_dec_nr_pmds(mm);
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void pgd_prepopulate_pmd(struct mm_struct *mm, pgd_t *pgd, pmd_t *pmds[])
@@ -325,6 +401,7 @@ static void pgd_prepopulate_pmd(struct mm_struct *mm, pgd_t *pgd, pmd_t *pmds[])
 	}
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PAGE_TABLE_ISOLATION
 static void pgd_prepopulate_user_pmd(struct mm_struct *mm,
 				     pgd_t *k_pgd, pmd_t *pmds[])
@@ -357,6 +434,8 @@ static void pgd_prepopulate_user_pmd(struct mm_struct *mm,
 {
 }
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Xen paravirt assumes pgd table should be in one page. 64 bit kernel also
  * assumes that pgd should be in one page.
@@ -390,6 +469,12 @@ static int __init pgd_cache_init(void)
 	 */
 	pgd_cache = kmem_cache_create("pgd_cache", PGD_SIZE, PGD_ALIGN,
 				      SLAB_PANIC, NULL);
+<<<<<<< HEAD
+=======
+	if (!pgd_cache)
+		return -ENOMEM;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 core_initcall(pgd_cache_init);
@@ -401,8 +486,12 @@ static inline pgd_t *_pgd_alloc(void)
 	 * We allocate one page for pgd.
 	 */
 	if (!SHARED_KERNEL_PMD)
+<<<<<<< HEAD
 		return (pgd_t *)__get_free_pages(PGALLOC_GFP,
 						 PGD_ALLOCATION_ORDER);
+=======
+		return (pgd_t *)__get_free_page(PGALLOC_GFP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Now PAE kernel is not running as a Xen domain. We can allocate
@@ -414,7 +503,11 @@ static inline pgd_t *_pgd_alloc(void)
 static inline void _pgd_free(pgd_t *pgd)
 {
 	if (!SHARED_KERNEL_PMD)
+<<<<<<< HEAD
 		free_pages((unsigned long)pgd, PGD_ALLOCATION_ORDER);
+=======
+		free_page((unsigned long)pgd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		kmem_cache_free(pgd_cache, pgd);
 }
@@ -434,8 +527,12 @@ static inline void _pgd_free(pgd_t *pgd)
 pgd_t *pgd_alloc(struct mm_struct *mm)
 {
 	pgd_t *pgd;
+<<<<<<< HEAD
 	pmd_t *u_pmds[MAX_PREALLOCATED_USER_PMDS];
 	pmd_t *pmds[MAX_PREALLOCATED_PMDS];
+=======
+	pmd_t *pmds[PREALLOCATED_PMDS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pgd = _pgd_alloc();
 
@@ -444,6 +541,7 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
 
 	mm->pgd = pgd;
 
+<<<<<<< HEAD
 	if (preallocate_pmds(mm, pmds, PREALLOCATED_PMDS) != 0)
 		goto out_free_pgd;
 
@@ -452,6 +550,13 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
 
 	if (paravirt_pgd_alloc(mm) != 0)
 		goto out_free_user_pmds;
+=======
+	if (preallocate_pmds(mm, pmds) != 0)
+		goto out_free_pgd;
+
+	if (paravirt_pgd_alloc(mm) != 0)
+		goto out_free_pmds;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Make sure that pre-populating the pmds is atomic with
@@ -462,16 +567,24 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
 
 	pgd_ctor(mm, pgd);
 	pgd_prepopulate_pmd(mm, pgd, pmds);
+<<<<<<< HEAD
 	pgd_prepopulate_user_pmd(mm, pgd, u_pmds);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock(&pgd_lock);
 
 	return pgd;
 
+<<<<<<< HEAD
 out_free_user_pmds:
 	free_pmds(mm, u_pmds, PREALLOCATED_USER_PMDS);
 out_free_pmds:
 	free_pmds(mm, pmds, PREALLOCATED_PMDS);
+=======
+out_free_pmds:
+	free_pmds(mm, pmds);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_free_pgd:
 	_pgd_free(pgd);
 out:
@@ -660,12 +773,18 @@ void __native_set_fixmap(enum fixed_addresses idx, pte_t pte)
 	fixmaps_set++;
 }
 
+<<<<<<< HEAD
 void native_set_fixmap(unsigned /* enum fixed_addresses */ idx, phys_addr_t phys,
 		       pgprot_t flags)
 {
 	/* Sanitize 'prot' against any unsupported bits: */
 	pgprot_val(flags) &= __default_kernel_pte_mask;
 
+=======
+void native_set_fixmap(unsigned /* enum fixed_addresses */ idx,
+		       phys_addr_t phys, pgprot_t flags)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__native_set_fixmap(idx, pfn_pte(phys >> PAGE_SHIFT, flags));
 }
 

@@ -54,7 +54,11 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_NONE,
 		.type		= MFC_FMT_RAW,
 		.num_planes	= 2,
+<<<<<<< HEAD
 		.versions	= MFC_V6PLUS_BITS,
+=======
+		.versions	= MFC_V6_BIT | MFC_V7_BIT | MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "4:2:0 2 Planes Y/CrCb",
@@ -62,7 +66,11 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_NONE,
 		.type		= MFC_FMT_RAW,
 		.num_planes	= 2,
+<<<<<<< HEAD
 		.versions	= MFC_V6PLUS_BITS,
+=======
+		.versions	= MFC_V6_BIT | MFC_V7_BIT | MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "H264 Encoded Stream",
@@ -70,7 +78,12 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_H264_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
+=======
+		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
+								MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "H264/MVC Encoded Stream",
@@ -78,7 +91,11 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_H264_MVC_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V6PLUS_BITS,
+=======
+		.versions	= MFC_V6_BIT | MFC_V7_BIT | MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "H263 Encoded Stream",
@@ -86,7 +103,12 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_H263_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
+=======
+		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
+								MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "MPEG1 Encoded Stream",
@@ -94,7 +116,12 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_MPEG2_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
+=======
+		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
+								MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "MPEG2 Encoded Stream",
@@ -102,7 +129,12 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_MPEG2_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
+=======
+		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
+								MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "MPEG4 Encoded Stream",
@@ -110,7 +142,12 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_MPEG4_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
+=======
+		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
+								MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "XviD Encoded Stream",
@@ -118,7 +155,12 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_MPEG4_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
+=======
+		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
+								MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "VC1 Encoded Stream",
@@ -126,7 +168,12 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_VC1_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
+=======
+		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
+								MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "VC1 RCV Encoded Stream",
@@ -134,7 +181,12 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_VC1RCV_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V5PLUS_BITS,
+=======
+		.versions	= MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT |
+								MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name		= "VP8 Encoded Stream",
@@ -142,6 +194,7 @@ static struct s5p_mfc_fmt formats[] = {
 		.codec_mode	= S5P_MFC_CODEC_VP8_DEC,
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
+<<<<<<< HEAD
 		.versions	= MFC_V6PLUS_BITS,
 	},
 	{
@@ -157,6 +210,9 @@ static struct s5p_mfc_fmt formats[] = {
 		.type		= MFC_FMT_DEC,
 		.num_planes	= 1,
 		.versions	= MFC_V10_BIT,
+=======
+		.versions	= MFC_V6_BIT | MFC_V7_BIT | MFC_V8_BIT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -271,8 +327,13 @@ static int vidioc_querycap(struct file *file, void *priv,
 {
 	struct s5p_mfc_dev *dev = video_drvdata(file);
 
+<<<<<<< HEAD
 	strlcpy(cap->driver, S5P_MFC_NAME, sizeof(cap->driver));
 	strlcpy(cap->card, dev->vfd_dec->name, sizeof(cap->card));
+=======
+	strncpy(cap->driver, S5P_MFC_NAME, sizeof(cap->driver) - 1);
+	strncpy(cap->card, dev->vfd_dec->name, sizeof(cap->card) - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	snprintf(cap->bus_info, sizeof(cap->bus_info), "platform:%s",
 		 dev_name(&dev->plat_dev->dev));
 	/*
@@ -1183,7 +1244,11 @@ void s5p_mfc_dec_init(struct s5p_mfc_ctx *ctx)
 	struct v4l2_format f;
 	f.fmt.pix_mp.pixelformat = V4L2_PIX_FMT_H264;
 	ctx->src_fmt = find_format(&f, MFC_FMT_DEC);
+<<<<<<< HEAD
 	if (IS_MFCV8_PLUS(ctx->dev))
+=======
+	if (IS_MFCV8(ctx->dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		f.fmt.pix_mp.pixelformat = V4L2_PIX_FMT_NV12M;
 	else if (IS_MFCV6_PLUS(ctx->dev))
 		f.fmt.pix_mp.pixelformat = V4L2_PIX_FMT_NV12MT_16X16;

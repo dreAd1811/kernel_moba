@@ -4,6 +4,7 @@
  * Copyright (C) 2001, 2002, 2003, 2004 David S. Miller (davem@redhat.com)
  * Copyright (C) 2001, 2002, 2003 Jeff Garzik (jgarzik@pobox.com)
  * Copyright (C) 2004 Sun Microsystems Inc.
+<<<<<<< HEAD
  * Copyright (C) 2005-2016 Broadcom Corporation.
  * Copyright (C) 2016-2017 Broadcom Limited.
  * Copyright (C) 2018 Broadcom. All Rights Reserved. The term "Broadcom"
@@ -15,6 +16,13 @@
  *	Copyright (C) 2016-2017 Broadcom Ltd.
  *	Copyright (C) 2018 Broadcom. All Rights Reserved. The term "Broadcom"
  *	refers to Broadcom Inc. and/or its subsidiaries.
+=======
+ * Copyright (C) 2005-2014 Broadcom Corporation.
+ *
+ * Firmware is:
+ *	Derived from proprietary unpublished source code,
+ *	Copyright (C) 2000-2003 Broadcom Corporation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	Permission is hereby granted for the distribution of this firmware
  *	data in hexadecimal or equivalent format, provided this copyright
@@ -54,7 +62,10 @@
 #include <linux/ssb/ssb_driver_gige.h>
 #include <linux/hwmon.h>
 #include <linux/hwmon-sysfs.h>
+<<<<<<< HEAD
 #include <linux/crc32poly.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <net/checksum.h>
 #include <net/ip.h>
@@ -726,7 +737,10 @@ static int tg3_ape_lock(struct tg3 *tp, int locknum)
 	case TG3_APE_LOCK_GPIO:
 		if (tg3_asic_rev(tp) == ASIC_REV_5761)
 			return 0;
+<<<<<<< HEAD
 		/* else: fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case TG3_APE_LOCK_GRC:
 	case TG3_APE_LOCK_MEM:
 		if (!tp->pci_fn)
@@ -787,7 +801,10 @@ static void tg3_ape_unlock(struct tg3 *tp, int locknum)
 	case TG3_APE_LOCK_GPIO:
 		if (tg3_asic_rev(tp) == ASIC_REV_5761)
 			return;
+<<<<<<< HEAD
 		/* else: fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case TG3_APE_LOCK_GRC:
 	case TG3_APE_LOCK_MEM:
 		if (!tp->pci_fn)
@@ -929,8 +946,13 @@ static int tg3_ape_send_event(struct tg3 *tp, u32 event)
 	if (!(apedata & APE_FW_STATUS_READY))
 		return -EAGAIN;
 
+<<<<<<< HEAD
 	/* Wait for up to 20 millisecond for APE to service previous event. */
 	err = tg3_ape_event_lock(tp, 20000);
+=======
+	/* Wait for up to 1 millisecond for APE to service previous event. */
+	err = tg3_ape_event_lock(tp, 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -953,7 +975,10 @@ static void tg3_ape_driver_state_change(struct tg3 *tp, int kind)
 
 	switch (kind) {
 	case RESET_KIND_INIT:
+<<<<<<< HEAD
 		tg3_ape_write32(tp, TG3_APE_HOST_HEARTBEAT_COUNT, tp->ape_hb++);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tg3_ape_write32(tp, TG3_APE_HOST_SEG_SIG,
 				APE_HOST_SEG_SIG_MAGIC);
 		tg3_ape_write32(tp, TG3_APE_HOST_SEG_LEN,
@@ -970,6 +995,16 @@ static void tg3_ape_driver_state_change(struct tg3 *tp, int kind)
 		event = APE_EVENT_STATUS_STATE_START;
 		break;
 	case RESET_KIND_SHUTDOWN:
+<<<<<<< HEAD
+=======
+		/* With the interface we are currently using,
+		 * APE does not track driver state.  Wiping
+		 * out the HOST SEGMENT SIGNATURE forces
+		 * the APE to assume OS absent status.
+		 */
+		tg3_ape_write32(tp, TG3_APE_HOST_SEG_SIG, 0x0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (device_may_wakeup(&tp->pdev->dev) &&
 		    tg3_flag(tp, WOL_ENABLE)) {
 			tg3_ape_write32(tp, TG3_APE_HOST_WOL_SPEED,
@@ -991,6 +1026,7 @@ static void tg3_ape_driver_state_change(struct tg3 *tp, int kind)
 	tg3_ape_send_event(tp, event);
 }
 
+<<<<<<< HEAD
 static void tg3_send_ape_heartbeat(struct tg3 *tp,
 				   unsigned long interval)
 {
@@ -1003,6 +1039,8 @@ static void tg3_send_ape_heartbeat(struct tg3 *tp,
 	tp->ape_hb_jiffies = jiffies;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void tg3_disable_ints(struct tg3 *tp)
 {
 	int i;
@@ -3240,7 +3278,11 @@ static int tg3_nvram_read_using_eeprom(struct tg3 *tp,
 	return 0;
 }
 
+<<<<<<< HEAD
 #define NVRAM_CMD_TIMEOUT 10000
+=======
+#define NVRAM_CMD_TIMEOUT 5000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int tg3_nvram_exec_cmd(struct tg3 *tp, u32 nvram_cmd)
 {
@@ -7275,7 +7317,10 @@ static int tg3_poll_msix(struct napi_struct *napi, int budget)
 		}
 	}
 
+<<<<<<< HEAD
 	tg3_send_ape_heartbeat(tp, TG3_APE_HB_INTERVAL << 1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return work_done;
 
 tx_recovery:
@@ -7358,7 +7403,10 @@ static int tg3_poll(struct napi_struct *napi, int budget)
 		}
 	}
 
+<<<<<<< HEAD
 	tg3_send_ape_heartbeat(tp, TG3_APE_HB_INTERVAL << 1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return work_done;
 
 tx_recovery:
@@ -8638,9 +8686,14 @@ static int tg3_mem_tx_acquire(struct tg3 *tp)
 		tnapi++;
 
 	for (i = 0; i < tp->txq_cnt; i++, tnapi++) {
+<<<<<<< HEAD
 		tnapi->tx_buffers = kcalloc(TG3_TX_RING_SIZE,
 					    sizeof(struct tg3_tx_ring_info),
 					    GFP_KERNEL);
+=======
+		tnapi->tx_buffers = kzalloc(sizeof(struct tg3_tx_ring_info) *
+					    TG3_TX_RING_SIZE, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!tnapi->tx_buffers)
 			goto err_out;
 
@@ -9723,7 +9776,11 @@ static inline u32 calc_crc(unsigned char *buf, int len)
 			reg >>= 1;
 
 			if (tmp)
+<<<<<<< HEAD
 				reg ^= CRC32_POLY_LE;
+=======
+				reg ^= 0xedb88320;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -10722,6 +10779,7 @@ static int tg3_reset_hw(struct tg3 *tp, bool reset_phy)
 	switch (limit) {
 	case 16:
 		tw32(MAC_RCV_RULE_15,  0); tw32(MAC_RCV_VALUE_15,  0);
+<<<<<<< HEAD
 		/* fall through */
 	case 15:
 		tw32(MAC_RCV_RULE_14,  0); tw32(MAC_RCV_VALUE_14,  0);
@@ -10756,6 +10814,30 @@ static int tg3_reset_hw(struct tg3 *tp, bool reset_phy)
 	case 5:
 		tw32(MAC_RCV_RULE_4,  0); tw32(MAC_RCV_VALUE_4,  0);
 		/* fall through */
+=======
+	case 15:
+		tw32(MAC_RCV_RULE_14,  0); tw32(MAC_RCV_VALUE_14,  0);
+	case 14:
+		tw32(MAC_RCV_RULE_13,  0); tw32(MAC_RCV_VALUE_13,  0);
+	case 13:
+		tw32(MAC_RCV_RULE_12,  0); tw32(MAC_RCV_VALUE_12,  0);
+	case 12:
+		tw32(MAC_RCV_RULE_11,  0); tw32(MAC_RCV_VALUE_11,  0);
+	case 11:
+		tw32(MAC_RCV_RULE_10,  0); tw32(MAC_RCV_VALUE_10,  0);
+	case 10:
+		tw32(MAC_RCV_RULE_9,  0); tw32(MAC_RCV_VALUE_9,  0);
+	case 9:
+		tw32(MAC_RCV_RULE_8,  0); tw32(MAC_RCV_VALUE_8,  0);
+	case 8:
+		tw32(MAC_RCV_RULE_7,  0); tw32(MAC_RCV_VALUE_7,  0);
+	case 7:
+		tw32(MAC_RCV_RULE_6,  0); tw32(MAC_RCV_VALUE_6,  0);
+	case 6:
+		tw32(MAC_RCV_RULE_5,  0); tw32(MAC_RCV_VALUE_5,  0);
+	case 5:
+		tw32(MAC_RCV_RULE_4,  0); tw32(MAC_RCV_VALUE_4,  0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 4:
 		/* tw32(MAC_RCV_RULE_3,  0); tw32(MAC_RCV_VALUE_3,  0); */
 	case 3:
@@ -10770,7 +10852,11 @@ static int tg3_reset_hw(struct tg3 *tp, bool reset_phy)
 	if (tg3_flag(tp, ENABLE_APE))
 		/* Write our heartbeat update interval to APE. */
 		tg3_ape_write32(tp, TG3_APE_HOST_HEARTBEAT_INT_MS,
+<<<<<<< HEAD
 				APE_HOST_HEARTBEAT_INT_5SEC);
+=======
+				APE_HOST_HEARTBEAT_INT_DISABLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tg3_write_sig_post_reset(tp, RESET_KIND_INIT);
 
@@ -10829,11 +10915,19 @@ static ssize_t tg3_show_temp(struct device *dev,
 }
 
 
+<<<<<<< HEAD
 static SENSOR_DEVICE_ATTR(temp1_input, 0444, tg3_show_temp, NULL,
 			  TG3_TEMP_SENSOR_OFFSET);
 static SENSOR_DEVICE_ATTR(temp1_crit, 0444, tg3_show_temp, NULL,
 			  TG3_TEMP_CAUTION_OFFSET);
 static SENSOR_DEVICE_ATTR(temp1_max, 0444, tg3_show_temp, NULL,
+=======
+static SENSOR_DEVICE_ATTR(temp1_input, S_IRUGO, tg3_show_temp, NULL,
+			  TG3_TEMP_SENSOR_OFFSET);
+static SENSOR_DEVICE_ATTR(temp1_crit, S_IRUGO, tg3_show_temp, NULL,
+			  TG3_TEMP_CAUTION_OFFSET);
+static SENSOR_DEVICE_ATTR(temp1_max, S_IRUGO, tg3_show_temp, NULL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  TG3_TEMP_MAX_OFFSET);
 
 static struct attribute *tg3_attrs[] = {
@@ -10981,9 +11075,15 @@ static void tg3_chk_missed_msi(struct tg3 *tp)
 	}
 }
 
+<<<<<<< HEAD
 static void tg3_timer(struct timer_list *t)
 {
 	struct tg3 *tp = from_timer(tp, t, timer);
+=======
+static void tg3_timer(unsigned long __opaque)
+{
+	struct tg3 *tp = (struct tg3 *) __opaque;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&tp->lock);
 
@@ -11115,9 +11215,12 @@ static void tg3_timer(struct timer_list *t)
 		tp->asf_counter = tp->asf_multiplier;
 	}
 
+<<<<<<< HEAD
 	/* Update the APE heartbeat every 5 seconds.*/
 	tg3_send_ape_heartbeat(tp, TG3_APE_HB_INTERVAL);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&tp->lock);
 
 restart_timer:
@@ -11140,7 +11243,13 @@ static void tg3_timer_init(struct tg3 *tp)
 	tp->asf_multiplier = (HZ / tp->timer_offset) *
 			     TG3_FW_UPDATE_FREQ_SEC;
 
+<<<<<<< HEAD
 	timer_setup(&tp->timer, tg3_timer, 0);
+=======
+	init_timer(&tp->timer);
+	tp->timer.data = (unsigned long) tp;
+	tp->timer.function = tg3_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tg3_timer_start(struct tg3 *tp)
@@ -14844,7 +14953,11 @@ static void tg3_get_5717_nvram_info(struct tg3 *tp)
 
 static void tg3_get_5720_nvram_info(struct tg3 *tp)
 {
+<<<<<<< HEAD
 	u32 nvcfg1, nvmpinstrp, nv_status;
+=======
+	u32 nvcfg1, nvmpinstrp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvcfg1 = tr32(NVRAM_CFG1);
 	nvmpinstrp = nvcfg1 & NVRAM_CFG1_5752VENDOR_MASK;
@@ -14856,6 +14969,7 @@ static void tg3_get_5720_nvram_info(struct tg3 *tp)
 		}
 
 		switch (nvmpinstrp) {
+<<<<<<< HEAD
 		case FLASH_5762_MX25L_100:
 		case FLASH_5762_MX25L_200:
 		case FLASH_5762_MX25L_400:
@@ -14873,6 +14987,8 @@ static void tg3_get_5720_nvram_info(struct tg3 *tp)
 					<< AUTOSENSE_SIZE_IN_MB);
 			return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case FLASH_5762_EEPROM_HD:
 			nvmpinstrp = FLASH_5720_EEPROM_HD;
 			break;
@@ -16708,8 +16824,11 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
 				       pci_state_reg);
 
 		tg3_ape_lock_init(tp);
+<<<<<<< HEAD
 		tp->ape_hb_interval =
 			msecs_to_jiffies(APE_HOST_HEARTBEAT_INT_5SEC);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Set up tp->grc_local_ctrl before calling
@@ -18229,8 +18348,13 @@ static pci_ers_result_t tg3_io_error_detected(struct pci_dev *pdev,
 
 	rtnl_lock();
 
+<<<<<<< HEAD
 	/* We probably don't have netdev yet */
 	if (!netdev || !netif_running(netdev))
+=======
+	/* Could be second call or maybe we don't have netdev yet */
+	if (!netdev || tp->pcierr_recovery || !netif_running(netdev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 
 	/* We needn't recover from permanent error */

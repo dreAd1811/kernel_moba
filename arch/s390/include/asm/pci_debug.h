@@ -19,7 +19,15 @@ extern debug_info_t *pci_debug_err_id;
 
 static inline void zpci_err_hex(void *addr, int len)
 {
+<<<<<<< HEAD
 	debug_event(pci_debug_err_id, 0, addr, len);
+=======
+	while (len > 0) {
+		debug_event(pci_debug_err_id, 0, (void *) addr, len);
+		len -= pci_debug_err_id->buf_size;
+		addr += pci_debug_err_id->buf_size;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif

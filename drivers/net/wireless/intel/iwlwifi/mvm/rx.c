@@ -62,6 +62,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************/
+<<<<<<< HEAD
+=======
+#include <asm/unaligned.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/etherdevice.h>
 #include <linux/skbuff.h>
 #include "iwl-trans.h"
@@ -222,9 +226,13 @@ static u32 iwl_mvm_set_mac80211_rx_flag(struct iwl_mvm *mvm,
 
 	case RX_MPDU_RES_STATUS_SEC_TKIP_ENC:
 		/* Don't drop the frame and decrypt it in SW */
+<<<<<<< HEAD
 		if (!fw_has_api(&mvm->fw->ucode_capa,
 				IWL_UCODE_TLV_API_DEPRECATE_TTAK) &&
 		    !(rx_pkt_status & RX_MPDU_RES_STATUS_TTAK_OK))
+=======
+		if (!(rx_pkt_status & RX_MPDU_RES_STATUS_TTAK_OK))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		*crypt_len = IEEE80211_TKIP_IV_LEN;
 		/* fall through if TTAK OK */
@@ -254,6 +262,7 @@ static u32 iwl_mvm_set_mac80211_rx_flag(struct iwl_mvm *mvm,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void iwl_mvm_rx_handle_tcm(struct iwl_mvm *mvm,
 				  struct ieee80211_sta *sta,
 				  struct ieee80211_hdr *hdr, u32 len,
@@ -322,6 +331,8 @@ static void iwl_mvm_rx_handle_tcm(struct iwl_mvm *mvm,
 	ewma_rate_add(&mdata->uapsd_nonagg_detect.rate, thr);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void iwl_mvm_rx_csum(struct ieee80211_sta *sta,
 			    struct sk_buff *skb,
 			    u32 status)
@@ -360,7 +371,11 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
 	rx_res = (struct iwl_rx_mpdu_res_start *)pkt->data;
 	hdr = (struct ieee80211_hdr *)(pkt->data + sizeof(*rx_res));
 	len = le16_to_cpu(rx_res->byte_count);
+<<<<<<< HEAD
 	rx_pkt_status = le32_to_cpup((__le32 *)
+=======
+	rx_pkt_status = get_unaligned_le32((__le32 *)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(pkt->data + sizeof(*rx_res) + len));
 
 	/* Dont use dev_alloc_skb(), we'll have enough headroom once
@@ -453,7 +468,11 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
 								 false);
 		}
 
+<<<<<<< HEAD
 		rs_update_last_rssi(mvm, mvmsta, rx_status);
+=======
+		rs_update_last_rssi(mvm, &mvmsta->lq_sta, rx_status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (iwl_fw_dbg_trigger_enabled(mvm->fw, FW_DBG_TRIGGER_RSSI) &&
 		    ieee80211_is_beacon(hdr->frame_control)) {
@@ -476,12 +495,15 @@ void iwl_mvm_rx_rx_mpdu(struct iwl_mvm *mvm, struct napi_struct *napi,
 							NULL);
 		}
 
+<<<<<<< HEAD
 		if (!mvm->tcm.paused && len >= sizeof(*hdr) &&
 		    !is_multicast_ether_addr(hdr->addr1) &&
 		    ieee80211_is_data(hdr->frame_control))
 			iwl_mvm_rx_handle_tcm(mvm, sta, hdr, len, phy_info,
 					      rate_n_flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ieee80211_is_data(hdr->frame_control))
 			iwl_mvm_rx_csum(sta, skb, rx_pkt_status);
 	}
@@ -728,8 +750,12 @@ void iwl_mvm_handle_rx_statistics(struct iwl_mvm *mvm,
 	int expected_size;
 	int i;
 	u8 *energy;
+<<<<<<< HEAD
 	__le32 *bytes;
 	__le32 *air_time;
+=======
+	__le32 *bytes, *air_time;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 flags;
 
 	if (!iwl_mvm_has_new_rx_stats_api(mvm)) {
@@ -741,10 +767,18 @@ void iwl_mvm_handle_rx_statistics(struct iwl_mvm *mvm,
 		expected_size = sizeof(struct iwl_notif_statistics_cdb);
 	}
 
+<<<<<<< HEAD
 	if (WARN_ONCE(iwl_rx_packet_payload_len(pkt) != expected_size,
 		      "received invalid statistics size (%d)!\n",
 		      iwl_rx_packet_payload_len(pkt)))
 		return;
+=======
+	if (iwl_rx_packet_payload_len(pkt) != expected_size) {
+		IWL_ERR(mvm, "received invalid statistics size (%d)!\n",
+			iwl_rx_packet_payload_len(pkt));
+		return;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!iwl_mvm_has_new_rx_stats_api(mvm)) {
 		struct iwl_notif_statistics_v11 *stats = (void *)&pkt->data;
@@ -827,6 +861,7 @@ void iwl_mvm_handle_rx_statistics(struct iwl_mvm *mvm,
 		sta->avg_energy = energy[i];
 	}
 	rcu_read_unlock();
+<<<<<<< HEAD
 
 	/*
 	 * Don't update in case the statistics are not cleared, since
@@ -853,6 +888,8 @@ void iwl_mvm_handle_rx_statistics(struct iwl_mvm *mvm,
 		mdata->rx.airtime += airtime;
 	}
 	spin_unlock(&mvm->tcm.lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void iwl_mvm_rx_statistics(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb)

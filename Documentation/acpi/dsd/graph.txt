@@ -36,6 +36,7 @@ The port and endpoint concepts are very similar to those in Devicetree
 [3]. A port represents an interface in a device, and an endpoint
 represents a connection to that interface.
 
+<<<<<<< HEAD
 All port nodes are located under the device's "_DSD" node in the hierarchical
 data extension tree. The data extension related to each port node must begin
 with "port" and must be followed by the "@" character and the number of the port
@@ -71,6 +72,31 @@ data extension reference under the port. Individual references thus appear as:
 
 In the above example, "X" is the number of the port and "Y" is the number of the
 endpoint.
+=======
+All port nodes are located under the device's "_DSD" node in the
+hierarchical data extension tree. The property extension related to
+each port node must contain the key "port" and an integer value which
+is the number of the port. The object it refers to should be called "PRTX",
+where "X" is the number of the port.
+
+Further on, endpoints are located under the individual port nodes. The
+first hierarchical data extension package list entry of the endpoint
+nodes must begin with "endpoint" and must be followed by the number
+of the endpoint. The object it refers to should be called "EPXY", where
+"X" is the number of the port and "Y" is the number of the endpoint.
+
+Each port node contains a property extension key "port", the value of
+which is the number of the port node. The each endpoint is similarly numbered
+with a property extension key "endpoint". Port numbers must be unique within a
+device and endpoint numbers must be unique within a port.
+
+The endpoint reference uses property extension with "remote-endpoint" property
+name followed by a reference in the same package. Such references consist of the
+the remote device reference, number of the port in the device and finally the
+number of the endpoint in that port. Individual references thus appear as:
+
+    Package() { device, port_number, endpoint_number }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 The references to endpoints must be always done both ways, to the
 remote endpoint and back from the referred remote endpoint node.
@@ -88,24 +114,41 @@ A simple example of this is show below:
 		},
 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
 		Package () {
+<<<<<<< HEAD
 		    Package () { "port@0", PRT0 },
+=======
+		    Package () { "port0", "PRT0" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	    })
 	    Name (PRT0, Package() {
 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 		Package () {
+<<<<<<< HEAD
 		    Package () { "reg", 0 },
 		},
 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
 		Package () {
 		    Package () { "endpoint@0", EP00 },
+=======
+		    Package () { "port", 0 },
+		},
+		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+		Package () {
+		    Package () { "endpoint0", "EP00" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	    })
 	    Name (EP00, Package() {
 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 		Package () {
+<<<<<<< HEAD
 		    Package () { "reg", 0 },
 		    Package () { "remote-endpoint", Package() { \_SB.PCI0.ISP, "port@4", "endpoint@0" } },
+=======
+		    Package () { "endpoint", 0 },
+		    Package () { "remote-endpoint", Package() { \_SB.PCI0.ISP, 4, 0 } },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	    })
 	}
@@ -118,26 +161,43 @@ A simple example of this is show below:
 	    Name (_DSD, Package () {
 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
 		Package () {
+<<<<<<< HEAD
 		    Package () { "port@4", PRT4 },
+=======
+		    Package () { "port4", "PRT4" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	    })
 
 	    Name (PRT4, Package() {
 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 		Package () {
+<<<<<<< HEAD
 		    Package () { "reg", 4 }, /* CSI-2 port number */
 		},
 		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
 		Package () {
 		    Package () { "endpoint@0", EP40 },
+=======
+		    Package () { "port", 4 }, /* CSI-2 port number */
+		},
+		ToUUID("dbb8e3e6-5886-4ba6-8795-1319f52a966b"),
+		Package () {
+		    Package () { "endpoint0", "EP40" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	    })
 
 	    Name (EP40, Package() {
 		ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 		Package () {
+<<<<<<< HEAD
 		    Package () { "reg", 0 },
 		    Package () { "remote-endpoint", Package () { \_SB.PCI0.I2C2.CAM0, "port@0", "endpoint@0" } },
+=======
+		    Package () { "endpoint", 0 },
+		    Package () { "remote-endpoint", Package () { \_SB.PCI0.I2C2.CAM0, 0, 0 } },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	    })
 	}
@@ -163,7 +223,11 @@ References
     referenced 2016-10-04.
 
 [5] Hierarchical Data Extension UUID For _DSD.
+<<<<<<< HEAD
     <URL:http://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.1.pdf>,
+=======
+    <URL:http://www.uefi.org/sites/default/files/resources/_DSD-hierarchical-data-extension-UUID-v1.pdf>,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     referenced 2016-10-04.
 
 [6] Advanced Configuration and Power Interface Specification.

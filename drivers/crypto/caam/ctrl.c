@@ -322,9 +322,15 @@ static int caam_remove(struct platform_device *pdev)
 
 	/*
 	 * De-initialize RNG state handles initialized by this driver.
+<<<<<<< HEAD
 	 * In case of SoCs with Management Complex, RNG is managed by MC f/w.
 	 */
 	if (!ctrlpriv->mc_en && ctrlpriv->rng4_sh_init)
+=======
+	 * In case of DPAA 2.x, RNG is managed by MC firmware.
+	 */
+	if (!caam_dpaa2 && ctrlpriv->rng4_sh_init)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		deinstantiate_rng(ctrldev, ctrlpriv->rng4_sh_init);
 
 	/* Shut down debug views */
@@ -337,8 +343,12 @@ static int caam_remove(struct platform_device *pdev)
 
 	/* shut clocks off before finalizing shutdown */
 	clk_disable_unprepare(ctrlpriv->caam_ipg);
+<<<<<<< HEAD
 	if (ctrlpriv->caam_mem)
 		clk_disable_unprepare(ctrlpriv->caam_mem);
+=======
+	clk_disable_unprepare(ctrlpriv->caam_mem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(ctrlpriv->caam_aclk);
 	if (ctrlpriv->caam_emi_slow)
 		clk_disable_unprepare(ctrlpriv->caam_emi_slow);
@@ -396,6 +406,7 @@ start_rng:
 	clrsetbits_32(&r4tst->rtmctl, RTMCTL_PRGM, RTMCTL_SAMP_MODE_RAW_ES_SC);
 }
 
+<<<<<<< HEAD
 static int caam_get_era_from_hw(struct caam_ctrl __iomem *ctrl)
 {
 	static const struct {
@@ -446,6 +457,13 @@ static int caam_get_era_from_hw(struct caam_ctrl __iomem *ctrl)
  * era via register reads will be made.
  **/
 static int caam_get_era(struct caam_ctrl __iomem *ctrl)
+=======
+/**
+ * caam_get_era() - Return the ERA of the SEC on SoC, based
+ * on "sec-era" propery in the DTS. This property is updated by u-boot.
+ **/
+int caam_get_era(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *caam_node;
 	int ret;
@@ -455,11 +473,17 @@ static int caam_get_era(struct caam_ctrl __iomem *ctrl)
 	ret = of_property_read_u32(caam_node, "fsl,sec-era", &prop);
 	of_node_put(caam_node);
 
+<<<<<<< HEAD
 	if (!ret)
 		return prop;
 	else
 		return caam_get_era_from_hw(ctrl);
 }
+=======
+	return ret ? -ENOTSUPP : prop;
+}
+EXPORT_SYMBOL(caam_get_era);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct of_device_id caam_match[] = {
 	{
@@ -514,6 +538,7 @@ static int caam_probe(struct platform_device *pdev)
 	}
 	ctrlpriv->caam_ipg = clk;
 
+<<<<<<< HEAD
 	if (!of_machine_is_compatible("fsl,imx7d") &&
 	    !of_machine_is_compatible("fsl,imx7s")) {
 		clk = caam_drv_identify_clk(&pdev->dev, "mem");
@@ -525,6 +550,16 @@ static int caam_probe(struct platform_device *pdev)
 		}
 		ctrlpriv->caam_mem = clk;
 	}
+=======
+	clk = caam_drv_identify_clk(&pdev->dev, "mem");
+	if (IS_ERR(clk)) {
+		ret = PTR_ERR(clk);
+		dev_err(&pdev->dev,
+			"can't identify CAAM mem clk: %d\n", ret);
+		return ret;
+	}
+	ctrlpriv->caam_mem = clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk = caam_drv_identify_clk(&pdev->dev, "aclk");
 	if (IS_ERR(clk)) {
@@ -535,9 +570,13 @@ static int caam_probe(struct platform_device *pdev)
 	}
 	ctrlpriv->caam_aclk = clk;
 
+<<<<<<< HEAD
 	if (!of_machine_is_compatible("fsl,imx6ul") &&
 	    !of_machine_is_compatible("fsl,imx7d") &&
 	    !of_machine_is_compatible("fsl,imx7s")) {
+=======
+	if (!of_machine_is_compatible("fsl,imx6ul")) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clk = caam_drv_identify_clk(&pdev->dev, "emi_slow");
 		if (IS_ERR(clk)) {
 			ret = PTR_ERR(clk);
@@ -554,6 +593,7 @@ static int caam_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (ctrlpriv->caam_mem) {
 		ret = clk_prepare_enable(ctrlpriv->caam_mem);
 		if (ret < 0) {
@@ -561,6 +601,13 @@ static int caam_probe(struct platform_device *pdev)
 				ret);
 			goto disable_caam_ipg;
 		}
+=======
+	ret = clk_prepare_enable(ctrlpriv->caam_mem);
+	if (ret < 0) {
+		dev_err(&pdev->dev, "can't enable CAAM secure mem clock: %d\n",
+			ret);
+		goto disable_caam_ipg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = clk_prepare_enable(ctrlpriv->caam_aclk);
@@ -618,6 +665,7 @@ static int caam_probe(struct platform_device *pdev)
 	/*
 	 * Enable DECO watchdogs and, if this is a PHYS_ADDR_T_64BIT kernel,
 	 * long pointers in master configuration register.
+<<<<<<< HEAD
 	 * In case of SoCs with Management Complex, MC f/w performs
 	 * the configuration.
 	 */
@@ -627,6 +675,13 @@ static int caam_probe(struct platform_device *pdev)
 	of_node_put(np);
 
 	if (!ctrlpriv->mc_en)
+=======
+	 * In case of DPAA 2.x, Management Complex firmware performs
+	 * the configuration.
+	 */
+	caam_dpaa2 = !!(comp_params & CTPR_MS_DPAA2);
+	if (!caam_dpaa2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clrsetbits_32(&ctrl->mcr, MCFGR_AWCACHE_MASK | MCFGR_LONG_PTR,
 			      MCFGR_AWCACHE_CACH | MCFGR_AWCACHE_BUFF |
 			      MCFGR_WDENABLE | MCFGR_LARGE_BURST |
@@ -674,8 +729,11 @@ static int caam_probe(struct platform_device *pdev)
 		goto iounmap_ctrl;
 	}
 
+<<<<<<< HEAD
 	ctrlpriv->era = caam_get_era(ctrl);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = of_platform_populate(nprop, caam_match, NULL, dev);
 	if (ret) {
 		dev_err(dev, "JR platform devices creation error\n");
@@ -737,9 +795,15 @@ static int caam_probe(struct platform_device *pdev)
 	/*
 	 * If SEC has RNG version >= 4 and RNG state handle has not been
 	 * already instantiated, do RNG instantiation
+<<<<<<< HEAD
 	 * In case of SoCs with Management Complex, RNG is managed by MC f/w.
 	 */
 	if (!ctrlpriv->mc_en &&
+=======
+	 * In case of DPAA 2.x, RNG is managed by MC firmware.
+	 */
+	if (!caam_dpaa2 &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (cha_vid_ls & CHA_ID_LS_RNG_MASK) >> CHA_ID_LS_RNG_SHIFT >= 4) {
 		ctrlpriv->rng4_sh_init =
 			rd_reg32(&ctrl->r4tst[0].rdsta);
@@ -807,9 +871,16 @@ static int caam_probe(struct platform_device *pdev)
 
 	/* Report "alive" for developer to see */
 	dev_info(dev, "device ID = 0x%016llx (Era %d)\n", caam_id,
+<<<<<<< HEAD
 		 ctrlpriv->era);
 	dev_info(dev, "job rings = %d, qi = %d\n",
 		 ctrlpriv->total_jobrs, ctrlpriv->qi_present);
+=======
+		 caam_get_era());
+	dev_info(dev, "job rings = %d, qi = %d, dpaa2 = %s\n",
+		 ctrlpriv->total_jobrs, ctrlpriv->qi_present,
+		 caam_dpaa2 ? "yes" : "no");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_DEBUG_FS
 	debugfs_create_file("rq_dequeued", S_IRUSR | S_IRGRP | S_IROTH,
@@ -884,8 +955,12 @@ disable_caam_emi_slow:
 disable_caam_aclk:
 	clk_disable_unprepare(ctrlpriv->caam_aclk);
 disable_caam_mem:
+<<<<<<< HEAD
 	if (ctrlpriv->caam_mem)
 		clk_disable_unprepare(ctrlpriv->caam_mem);
+=======
+	clk_disable_unprepare(ctrlpriv->caam_mem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 disable_caam_ipg:
 	clk_disable_unprepare(ctrlpriv->caam_ipg);
 	return ret;

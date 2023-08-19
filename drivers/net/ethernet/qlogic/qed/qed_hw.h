@@ -245,6 +245,7 @@ void qed_port_unpretend(struct qed_hwfn *p_hwfn,
 			struct qed_ptt *p_ptt);
 
 /**
+<<<<<<< HEAD
  * @brief qed_port_fid_pretend - pretend to another port and another function
  *        when accessing the ptt window
  *
@@ -257,6 +258,8 @@ void qed_port_fid_pretend(struct qed_hwfn *p_hwfn,
 			  struct qed_ptt *p_ptt, u8 port_id, u16 fid);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @brief qed_vfid_to_concrete - build a concrete FID for a
  *        given VF ID
  *
@@ -311,8 +314,11 @@ union qed_qm_pq_params {
 
 int qed_init_fw_data(struct qed_dev *cdev,
 		     const u8 *fw_data);
+<<<<<<< HEAD
 
 int qed_dmae_sanity(struct qed_hwfn *p_hwfn,
 		    struct qed_ptt *p_ptt, const char *phase);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

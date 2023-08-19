@@ -587,6 +587,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		spi0: spi@ffda4000 {
 			compatible = "snps,dw-apb-ssi";
 			#address-cells = <1>;
@@ -599,6 +600,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spi1: spi@ffda5000 {
 			compatible = "snps,dw-apb-ssi";
 			#address-cells = <1>;
@@ -618,7 +621,11 @@
 			reg = <0xffcfb100 0x80>;
 		};
 
+<<<<<<< HEAD
 		L2: l2-cache@fffff000 {
+=======
+		L2: cache-controller@fffff000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,pl310-cache";
 			reg = <0xfffff000 0x1000>;
 			interrupts = <0 18 IRQ_TYPE_LEVEL_HIGH>;

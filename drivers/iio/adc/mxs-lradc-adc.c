@@ -382,6 +382,10 @@ static const struct attribute_group mxs_lradc_adc_attribute_group = {
 };
 
 static const struct iio_info mxs_lradc_adc_iio_info = {
+<<<<<<< HEAD
+=======
+	.driver_module		= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw		= mxs_lradc_adc_read_raw,
 	.write_raw		= mxs_lradc_adc_write_raw,
 	.write_raw_get_fmt	= mxs_lradc_adc_write_raw_get_fmt,
@@ -454,6 +458,10 @@ static int mxs_lradc_adc_configure_trigger(struct iio_trigger *trig, bool state)
 }
 
 static const struct iio_trigger_ops mxs_lradc_adc_trigger_ops = {
+<<<<<<< HEAD
+=======
+	.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = &mxs_lradc_adc_configure_trigger,
 };
 

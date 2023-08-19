@@ -19,11 +19,14 @@
  * ------------
  * 13 bit converter
  * MCP3301
+<<<<<<< HEAD
  * ------------
  * 22 bit converter
  * MCP3550
  * MCP3551
  * MCP3553
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Datasheet can be found here:
  * http://ww1.microchip.com/downloads/en/DeviceDoc/21293C.pdf  mcp3001
@@ -33,7 +36,10 @@
  * http://ww1.microchip.com/downloads/en/DeviceDoc/21034D.pdf  mcp3202
  * http://ww1.microchip.com/downloads/en/DeviceDoc/21298c.pdf  mcp3204/08
  * http://ww1.microchip.com/downloads/en/DeviceDoc/21700E.pdf  mcp3301
+<<<<<<< HEAD
  * http://ww1.microchip.com/downloads/en/DeviceDoc/21950D.pdf  mcp3550/1/3
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -57,16 +63,20 @@ enum {
 	mcp3204,
 	mcp3208,
 	mcp3301,
+<<<<<<< HEAD
 	mcp3550_50,
 	mcp3550_60,
 	mcp3551,
 	mcp3553,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mcp320x_chip_info {
 	const struct iio_chan_spec *channels;
 	unsigned int num_channels;
 	unsigned int resolution;
+<<<<<<< HEAD
 	unsigned int conv_time; /* usec */
 };
 
@@ -83,19 +93,30 @@ struct mcp320x_chip_info {
  * @tx_buf: buffer for @transfer[0] (not used on single-channel converters)
  * @rx_buf: buffer for @transfer[1]
  */
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mcp320x {
 	struct spi_device *spi;
 	struct spi_message msg;
 	struct spi_transfer transfer[2];
+<<<<<<< HEAD
 	struct spi_message start_conv_msg;
 	struct spi_transfer start_conv_transfer;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct regulator *reg;
 	struct mutex lock;
 	const struct mcp320x_chip_info *chip_info;
 
 	u8 tx_buf ____cacheline_aligned;
+<<<<<<< HEAD
 	u8 rx_buf[4];
+=======
+	u8 rx_buf[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int mcp320x_channel_to_tx_data(int device_index,
@@ -104,6 +125,13 @@ static int mcp320x_channel_to_tx_data(int device_index,
 	int start_bit = 1;
 
 	switch (device_index) {
+<<<<<<< HEAD
+=======
+	case mcp3001:
+	case mcp3201:
+	case mcp3301:
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case mcp3002:
 	case mcp3202:
 		return ((start_bit << 4) | (!differential << 3) |
@@ -124,6 +152,7 @@ static int mcp320x_adc_conversion(struct mcp320x *adc, u8 channel,
 {
 	int ret;
 
+<<<<<<< HEAD
 	if (adc->chip_info->conv_time) {
 		ret = spi_sync(adc->spi, &adc->start_conv_msg);
 		if (ret < 0)
@@ -142,6 +171,23 @@ static int mcp320x_adc_conversion(struct mcp320x *adc, u8 channel,
 	if (ret < 0)
 		return ret;
 
+=======
+	adc->rx_buf[0] = 0;
+	adc->rx_buf[1] = 0;
+	adc->tx_buf = mcp320x_channel_to_tx_data(device_index,
+						channel, differential);
+
+	if (device_index != mcp3001 && device_index != mcp3201 && device_index != mcp3301) {
+		ret = spi_sync(adc->spi, &adc->msg);
+		if (ret < 0)
+			return ret;
+	} else {
+		ret = spi_read(adc->spi, &adc->rx_buf, sizeof(adc->rx_buf));
+		if (ret < 0)
+			return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (device_index) {
 	case mcp3001:
 		*val = (adc->rx_buf[0] << 5 | adc->rx_buf[1] >> 3);
@@ -163,6 +209,7 @@ static int mcp320x_adc_conversion(struct mcp320x *adc, u8 channel,
 		*val = sign_extend32((adc->rx_buf[0] & 0x1f) << 8
 				    | adc->rx_buf[1], 12);
 		return 0;
+<<<<<<< HEAD
 	case mcp3550_50:
 	case mcp3550_60:
 	case mcp3551:
@@ -188,6 +235,8 @@ static int mcp320x_adc_conversion(struct mcp320x *adc, u8 channel,
 		*val = (s32)raw;
 		return 0;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -298,6 +347,10 @@ static const struct iio_chan_spec mcp3208_channels[] = {
 
 static const struct iio_info mcp320x_info = {
 	.read_raw = mcp320x_read_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct mcp320x_chip_info mcp320x_chip_infos[] = {
@@ -346,6 +399,7 @@ static const struct mcp320x_chip_info mcp320x_chip_infos[] = {
 		.num_channels = ARRAY_SIZE(mcp3201_channels),
 		.resolution = 13
 	},
+<<<<<<< HEAD
 	[mcp3550_50] = {
 		.channels = mcp3201_channels,
 		.num_channels = ARRAY_SIZE(mcp3201_channels),
@@ -371,6 +425,8 @@ static const struct mcp320x_chip_info mcp320x_chip_infos[] = {
 		.resolution = 21,
 		.conv_time = 16670 * 1.02 + 144000 / 122.88,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int mcp320x_probe(struct spi_device *spi)
@@ -378,7 +434,11 @@ static int mcp320x_probe(struct spi_device *spi)
 	struct iio_dev *indio_dev;
 	struct mcp320x *adc;
 	const struct mcp320x_chip_info *chip_info;
+<<<<<<< HEAD
 	int ret, device_index;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
 	if (!indio_dev)
@@ -394,8 +454,12 @@ static int mcp320x_probe(struct spi_device *spi)
 	indio_dev->info = &mcp320x_info;
 	spi_set_drvdata(spi, indio_dev);
 
+<<<<<<< HEAD
 	device_index = spi_get_device_id(spi)->driver_data;
 	chip_info = &mcp320x_chip_infos[device_index];
+=======
+	chip_info = &mcp320x_chip_infos[spi_get_device_id(spi)->driver_data];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	indio_dev->channels = chip_info->channels;
 	indio_dev->num_channels = chip_info->num_channels;
 
@@ -404,6 +468,7 @@ static int mcp320x_probe(struct spi_device *spi)
 	adc->transfer[0].tx_buf = &adc->tx_buf;
 	adc->transfer[0].len = sizeof(adc->tx_buf);
 	adc->transfer[1].rx_buf = adc->rx_buf;
+<<<<<<< HEAD
 	adc->transfer[1].len = DIV_ROUND_UP(chip_info->resolution, 8);
 
 	if (chip_info->num_channels == 1)
@@ -439,6 +504,12 @@ static int mcp320x_probe(struct spi_device *spi)
 		mcp320x_adc_conversion(adc, 0, 1, device_index, &ret);
 		mcp320x_adc_conversion(adc, 0, 1, device_index, &ret);
 	}
+=======
+	adc->transfer[1].len = sizeof(adc->rx_buf);
+
+	spi_message_init_with_transfers(&adc->msg, adc->transfer,
+					ARRAY_SIZE(adc->transfer));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adc->reg = devm_regulator_get(&spi->dev, "vref");
 	if (IS_ERR(adc->reg))
@@ -476,6 +547,7 @@ static int mcp320x_remove(struct spi_device *spi)
 #if defined(CONFIG_OF)
 static const struct of_device_id mcp320x_dt_ids[] = {
 	/* NOTE: The use of compatibles with no vendor prefix is deprecated. */
+<<<<<<< HEAD
 	{ .compatible = "mcp3001" },
 	{ .compatible = "mcp3002" },
 	{ .compatible = "mcp3004" },
@@ -499,6 +571,64 @@ static const struct of_device_id mcp320x_dt_ids[] = {
 	{ .compatible = "microchip,mcp3551" },
 	{ .compatible = "microchip,mcp3553" },
 	{ }
+=======
+	{
+		.compatible = "mcp3001",
+		.data = &mcp320x_chip_infos[mcp3001],
+	}, {
+		.compatible = "mcp3002",
+		.data = &mcp320x_chip_infos[mcp3002],
+	}, {
+		.compatible = "mcp3004",
+		.data = &mcp320x_chip_infos[mcp3004],
+	}, {
+		.compatible = "mcp3008",
+		.data = &mcp320x_chip_infos[mcp3008],
+	}, {
+		.compatible = "mcp3201",
+		.data = &mcp320x_chip_infos[mcp3201],
+	}, {
+		.compatible = "mcp3202",
+		.data = &mcp320x_chip_infos[mcp3202],
+	}, {
+		.compatible = "mcp3204",
+		.data = &mcp320x_chip_infos[mcp3204],
+	}, {
+		.compatible = "mcp3208",
+		.data = &mcp320x_chip_infos[mcp3208],
+	}, {
+		.compatible = "mcp3301",
+		.data = &mcp320x_chip_infos[mcp3301],
+	}, {
+		.compatible = "microchip,mcp3001",
+		.data = &mcp320x_chip_infos[mcp3001],
+	}, {
+		.compatible = "microchip,mcp3002",
+		.data = &mcp320x_chip_infos[mcp3002],
+	}, {
+		.compatible = "microchip,mcp3004",
+		.data = &mcp320x_chip_infos[mcp3004],
+	}, {
+		.compatible = "microchip,mcp3008",
+		.data = &mcp320x_chip_infos[mcp3008],
+	}, {
+		.compatible = "microchip,mcp3201",
+		.data = &mcp320x_chip_infos[mcp3201],
+	}, {
+		.compatible = "microchip,mcp3202",
+		.data = &mcp320x_chip_infos[mcp3202],
+	}, {
+		.compatible = "microchip,mcp3204",
+		.data = &mcp320x_chip_infos[mcp3204],
+	}, {
+		.compatible = "microchip,mcp3208",
+		.data = &mcp320x_chip_infos[mcp3208],
+	}, {
+		.compatible = "microchip,mcp3301",
+		.data = &mcp320x_chip_infos[mcp3301],
+	}, {
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 MODULE_DEVICE_TABLE(of, mcp320x_dt_ids);
 #endif
@@ -513,10 +643,13 @@ static const struct spi_device_id mcp320x_id[] = {
 	{ "mcp3204", mcp3204 },
 	{ "mcp3208", mcp3208 },
 	{ "mcp3301", mcp3301 },
+<<<<<<< HEAD
 	{ "mcp3550-50", mcp3550_50 },
 	{ "mcp3550-60", mcp3550_60 },
 	{ "mcp3551", mcp3551 },
 	{ "mcp3553", mcp3553 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(spi, mcp320x_id);
@@ -533,5 +666,9 @@ static struct spi_driver mcp320x_driver = {
 module_spi_driver(mcp320x_driver);
 
 MODULE_AUTHOR("Oskar Andero <oskar.andero@gmail.com>");
+<<<<<<< HEAD
 MODULE_DESCRIPTION("Microchip Technology MCP3x01/02/04/08 and MCP3550/1/3");
+=======
+MODULE_DESCRIPTION("Microchip Technology MCP3x01/02/04/08");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

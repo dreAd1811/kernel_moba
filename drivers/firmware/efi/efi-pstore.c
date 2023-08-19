@@ -28,9 +28,16 @@ static int efi_pstore_close(struct pstore_info *psi)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline u64 generic_id(u64 timestamp, unsigned int part, int count)
 {
 	return (timestamp * 100 + part) * 1000 + count;
+=======
+static inline u64 generic_id(unsigned long timestamp,
+			     unsigned int part, int count)
+{
+	return ((u64) timestamp * 100 + part) * 1000 + count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int efi_pstore_read_func(struct efivar_entry *entry,
@@ -41,8 +48,12 @@ static int efi_pstore_read_func(struct efivar_entry *entry,
 	int i;
 	int cnt;
 	unsigned int part;
+<<<<<<< HEAD
 	unsigned long size;
 	u64 time;
+=======
+	unsigned long time, size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (efi_guidcmp(entry->var.VendorGuid, vendor))
 		return 0;
@@ -50,7 +61,11 @@ static int efi_pstore_read_func(struct efivar_entry *entry,
 	for (i = 0; i < DUMP_NAME_LEN; i++)
 		name[i] = entry->var.VariableName[i];
 
+<<<<<<< HEAD
 	if (sscanf(name, "dump-type%u-%u-%d-%llu-%c",
+=======
+	if (sscanf(name, "dump-type%u-%u-%d-%lu-%c",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   &record->type, &part, &cnt, &time, &data_type) == 5) {
 		record->id = generic_id(time, part, cnt);
 		record->part = part;
@@ -62,7 +77,11 @@ static int efi_pstore_read_func(struct efivar_entry *entry,
 		else
 			record->compressed = false;
 		record->ecc_notice_size = 0;
+<<<<<<< HEAD
 	} else if (sscanf(name, "dump-type%u-%u-%d-%llu",
+=======
+	} else if (sscanf(name, "dump-type%u-%u-%d-%lu",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   &record->type, &part, &cnt, &time) == 4) {
 		record->id = generic_id(time, part, cnt);
 		record->part = part;
@@ -71,7 +90,11 @@ static int efi_pstore_read_func(struct efivar_entry *entry,
 		record->time.tv_nsec = 0;
 		record->compressed = false;
 		record->ecc_notice_size = 0;
+<<<<<<< HEAD
 	} else if (sscanf(name, "dump-type%u-%u-%llu",
+=======
+	} else if (sscanf(name, "dump-type%u-%u-%lu",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  &record->type, &part, &time) == 3) {
 		/*
 		 * Check if an old format,
@@ -250,10 +273,16 @@ static int efi_pstore_write(struct pstore_record *record)
 	/* Since we copy the entire length of name, make sure it is wiped. */
 	memset(name, 0, sizeof(name));
 
+<<<<<<< HEAD
 	snprintf(name, sizeof(name), "dump-type%u-%u-%d-%lld-%c",
 		 record->type, record->part, record->count,
 		 (long long)record->time.tv_sec,
 		 record->compressed ? 'C' : 'D');
+=======
+	snprintf(name, sizeof(name), "dump-type%u-%u-%d-%lu-%c",
+		 record->type, record->part, record->count,
+		 record->time.tv_sec, record->compressed ? 'C' : 'D');
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < DUMP_NAME_LEN; i++)
 		efi_name[i] = name[i];
@@ -327,15 +356,26 @@ static int efi_pstore_erase(struct pstore_record *record)
 	char name[DUMP_NAME_LEN];
 	int ret;
 
+<<<<<<< HEAD
 	snprintf(name, sizeof(name), "dump-type%u-%u-%d-%lld",
 		 record->type, record->part, record->count,
 		 (long long)record->time.tv_sec);
+=======
+	snprintf(name, sizeof(name), "dump-type%u-%u-%d-%lu",
+		 record->type, record->part, record->count,
+		 record->time.tv_sec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = efi_pstore_erase_name(name);
 	if (ret != -ENOENT)
 		return ret;
 
+<<<<<<< HEAD
 	snprintf(name, sizeof(name), "dump-type%u-%u-%lld",
 		record->type, record->part, (long long)record->time.tv_sec);
+=======
+	snprintf(name, sizeof(name), "dump-type%u-%u-%lu",
+		record->type, record->part, record->time.tv_sec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = efi_pstore_erase_name(name);
 
 	return ret;

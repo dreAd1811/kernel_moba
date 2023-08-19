@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) STMicroelectronics SA 2015
  * Authors: Yannick Fertre <yannick.fertre@st.com>
  *          Hugues Fruchet <hugues.fruchet@st.com>
+<<<<<<< HEAD
+=======
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "hva.h"
@@ -134,7 +141,11 @@ enum hva_h264_sei_payload_type {
 	SEI_FRAME_PACKING_ARRANGEMENT = 45
 };
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * stereo Video Info struct
  */
 struct hva_h264_stereo_video_sei {
@@ -146,9 +157,13 @@ struct hva_h264_stereo_video_sei {
 	u8 right_view_self_contained_flag;
 };
 
+<<<<<<< HEAD
 /*
  * struct hva_h264_td
  *
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @frame_width: width in pixels of the buffer containing the input frame
  * @frame_height: height in pixels of the buffer containing the input frame
  * @frame_num: the parameter to be written in the slice header
@@ -354,9 +369,13 @@ struct hva_h264_td {
 	u32 addr_brc_in_out_parameter;
 };
 
+<<<<<<< HEAD
 /*
  * struct hva_h264_slice_po
  *
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ slice_size: slice size
  * @ slice_start_time: start time
  * @ slice_stop_time: stop time
@@ -369,9 +388,13 @@ struct hva_h264_slice_po {
 	u32 slice_num;
 };
 
+<<<<<<< HEAD
 /*
  * struct hva_h264_po
  *
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ bitstream_size: bitstream size
  * @ dct_bitstream_size: dtc bitstream size
  * @ stuffing_bits: number of stuffing bits inserted by the encoder
@@ -397,9 +420,13 @@ struct hva_h264_task {
 	struct hva_h264_po po;
 };
 
+<<<<<<< HEAD
 /*
  * struct hva_h264_ctx
  *
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @seq_info:  sequence information buffer
  * @ref_frame: reference frame buffer
  * @rec_frame: reconstructed frame buffer
@@ -1007,6 +1034,10 @@ static int hva_h264_encode(struct hva_ctx *pctx, struct hva_frame *frame,
 {
 	struct hva_h264_ctx *ctx = (struct hva_h264_ctx *)pctx->priv;
 	struct hva_h264_task *task = (struct hva_h264_task *)ctx->task->vaddr;
+<<<<<<< HEAD
+=======
+	struct hva_buffer *tmp_frame;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 stuffing_bytes = 0;
 	int ret = 0;
 
@@ -1030,7 +1061,13 @@ static int hva_h264_encode(struct hva_ctx *pctx, struct hva_frame *frame,
 				       &stream->bytesused);
 
 	/* switch reference & reconstructed frame */
+<<<<<<< HEAD
 	swap(ctx->ref_frame, ctx->rec_frame);
+=======
+	tmp_frame = ctx->ref_frame;
+	ctx->ref_frame = ctx->rec_frame;
+	ctx->rec_frame = tmp_frame;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 err:

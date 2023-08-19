@@ -15,7 +15,10 @@
 #include <linux/mount.h>
 #include <linux/magic.h>
 #include <linux/genhd.h>
+<<<<<<< HEAD
 #include <linux/pfn_t.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/cdev.h>
 #include <linux/hash.h>
 #include <linux/slab.h>
@@ -85,10 +88,17 @@ EXPORT_SYMBOL_GPL(fs_dax_get_by_bdev);
 bool __bdev_dax_supported(struct block_device *bdev, int blocksize)
 {
 	struct dax_device *dax_dev;
+<<<<<<< HEAD
 	bool dax_enabled = false;
 	struct request_queue *q;
 	pgoff_t pgoff;
 	int err, id;
+=======
+	struct request_queue *q;
+	pgoff_t pgoff;
+	int err, id;
+	void *kaddr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pfn_t pfn;
 	long len;
 	char buf[BDEVNAME_SIZE];
@@ -121,7 +131,11 @@ bool __bdev_dax_supported(struct block_device *bdev, int blocksize)
 	}
 
 	id = dax_read_lock();
+<<<<<<< HEAD
 	len = dax_direct_access(dax_dev, pgoff, 1, NULL, &pfn);
+=======
+	len = dax_direct_access(dax_dev, pgoff, 1, &kaddr, &pfn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dax_read_unlock(id);
 
 	put_dax(dax_dev);
@@ -132,6 +146,7 @@ bool __bdev_dax_supported(struct block_device *bdev, int blocksize)
 		return false;
 	}
 
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_FS_DAX_LIMITED) && pfn_t_special(pfn)) {
 		/*
 		 * An arch that has enabled the pmem api should also
@@ -157,6 +172,8 @@ bool __bdev_dax_supported(struct block_device *bdev, int blocksize)
 				bdevname(bdev, buf));
 		return false;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 EXPORT_SYMBOL_GPL(__bdev_dax_supported);
@@ -197,7 +214,12 @@ static ssize_t write_cache_show(struct device *dev,
 	if (!dax_dev)
 		return -ENXIO;
 
+<<<<<<< HEAD
 	rc = sprintf(buf, "%d\n", !!dax_write_cache_enabled(dax_dev));
+=======
+	rc = sprintf(buf, "%d\n", !!test_bit(DAXDEV_WRITE_CACHE,
+				&dax_dev->flags));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	put_dax(dax_dev);
 	return rc;
 }
@@ -215,8 +237,15 @@ static ssize_t write_cache_store(struct device *dev,
 
 	if (rc)
 		len = rc;
+<<<<<<< HEAD
 	else
 		dax_write_cache(dax_dev, write_cache);
+=======
+	else if (write_cache)
+		set_bit(DAXDEV_WRITE_CACHE, &dax_dev->flags);
+	else
+		clear_bit(DAXDEV_WRITE_CACHE, &dax_dev->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	put_dax(dax_dev);
 	return len;
@@ -267,6 +296,15 @@ long dax_direct_access(struct dax_device *dax_dev, pgoff_t pgoff, long nr_pages,
 {
 	long avail;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * The device driver is allowed to sleep, in order to make the
+	 * memory directly accessible.
+	 */
+	might_sleep();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dax_dev)
 		return -EOPNOTSUPP;
 
@@ -294,6 +332,7 @@ size_t dax_copy_from_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
 }
 EXPORT_SYMBOL_GPL(dax_copy_from_iter);
 
+<<<<<<< HEAD
 size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
 		size_t bytes, struct iov_iter *i)
 {
@@ -304,11 +343,20 @@ size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
 }
 EXPORT_SYMBOL_GPL(dax_copy_to_iter);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARCH_HAS_PMEM_API
 void arch_wb_cache_pmem(void *addr, size_t size);
 void dax_flush(struct dax_device *dax_dev, void *addr, size_t size)
 {
+<<<<<<< HEAD
 	if (unlikely(!dax_write_cache_enabled(dax_dev)))
+=======
+	if (unlikely(!dax_alive(dax_dev)))
+		return;
+
+	if (unlikely(!test_bit(DAXDEV_WRITE_CACHE, &dax_dev->flags)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	arch_wb_cache_pmem(addr, size);

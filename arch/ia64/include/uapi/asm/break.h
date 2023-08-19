@@ -14,6 +14,10 @@
  */
 #define __IA64_BREAK_KDB		0x80100
 #define __IA64_BREAK_KPROBE		0x81000 /* .. 0x81fff */
+<<<<<<< HEAD
+=======
+#define __IA64_BREAK_JPROBE		0x82000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * OS-specific break numbers:

@@ -1020,9 +1020,16 @@ static const struct dvb_frontend_ops af9033_ops = {
 	.delsys = {SYS_DVBT},
 	.info = {
 		.name = "Afatech AF9033 (DVB-T)",
+<<<<<<< HEAD
 		.frequency_min_hz = 174 * MHz,
 		.frequency_max_hz = 862 * MHz,
 		.frequency_stepsize_hz = 250 * kHz,
+=======
+		.frequency_min = 174000000,
+		.frequency_max = 862000000,
+		.frequency_stepsize = 250000,
+		.frequency_tolerance = 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps =	FE_CAN_FEC_1_2 |
 			FE_CAN_FEC_2_3 |
 			FE_CAN_FEC_3_4 |

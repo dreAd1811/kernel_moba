@@ -18,6 +18,7 @@
  *      Brian Rogers <brian_rogers@comcast.net>
  * modified for AVerMedia Cardbus by
  *      Oldrich Jedlicka <oldium.pro@seznam.cz>
+<<<<<<< HEAD
  * Zilog Transmitter portions/ideas were derived from GPLv2+ sources:
  *  - drivers/char/pctv_zilogir.[ch] from Hauppauge Broadway product
  *	Copyright 2011 Hauppauge Computer works
@@ -32,6 +33,8 @@
  *	Mark Weaver <mark@npsl.co.uk>
  *	Jarod Wilson <jarod@redhat.com>
  *	Copyright (C) 2011 Andy Walls <awalls@md.metrocast.net>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -60,11 +63,26 @@
 #include <media/rc-core.h>
 #include <media/i2c/ir-kbd-i2c.h>
 
+<<<<<<< HEAD
 #define FLAG_TX		1
 #define FLAG_HDPVR	2
 
 static bool enable_hdpvr;
 module_param(enable_hdpvr, bool, 0644);
+=======
+/* ----------------------------------------------------------------------- */
+/* insmod parameters                                                       */
+
+static int debug;
+module_param(debug, int, 0644);    /* debug level (0,1,2) */
+
+
+#define MODULE_NAME "ir-kbd-i2c"
+#define dprintk(level, fmt, arg...)	if (debug >= level) \
+	printk(KERN_DEBUG MODULE_NAME ": " fmt , ## arg)
+
+/* ----------------------------------------------------------------------- */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int get_key_haup_common(struct IR_i2c *ir, enum rc_proto *protocol,
 			       u32 *scancode, u8 *ptoggle, int size)
@@ -103,8 +121,12 @@ static int get_key_haup_common(struct IR_i2c *ir, enum rc_proto *protocol,
 		if (!range)
 			code += 64;
 
+<<<<<<< HEAD
 		dev_dbg(&ir->rc->dev,
 			"ir hauppauge (rc5): s%d r%d t%d dev=%d code=%d\n",
+=======
+		dprintk(1, "ir hauppauge (rc5): s%d r%d t%d dev=%d code=%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			start, range, toggle, dev, code);
 
 		*protocol = RC_PROTO_RC5;
@@ -121,6 +143,7 @@ static int get_key_haup_common(struct IR_i2c *ir, enum rc_proto *protocol,
 			*ptoggle = (dev & 0x80) != 0;
 			*protocol = RC_PROTO_RC6_MCE;
 			dev &= 0x7f;
+<<<<<<< HEAD
 			dev_dbg(&ir->rc->dev,
 				"ir hauppauge (rc6-mce): t%d vendor=%d dev=%d code=%d\n",
 				*ptoggle, vendor, dev, code);
@@ -130,6 +153,15 @@ static int get_key_haup_common(struct IR_i2c *ir, enum rc_proto *protocol,
 			dev_dbg(&ir->rc->dev,
 				"ir hauppauge (rc6-6a-32): vendor=%d dev=%d code=%d\n",
 				vendor, dev, code);
+=======
+			dprintk(1, "ir hauppauge (rc6-mce): t%d vendor=%d dev=%d code=%d\n",
+						*ptoggle, vendor, dev, code);
+		} else {
+			*ptoggle = 0;
+			*protocol = RC_PROTO_RC6_6A_32;
+			dprintk(1, "ir hauppauge (rc6-6a-32): vendor=%d dev=%d code=%d\n",
+							vendor, dev, code);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		*scancode = RC_SCANCODE_RC6_6A(vendor, dev, code);
@@ -168,6 +200,7 @@ static int get_key_haup_xvr(struct IR_i2c *ir, enum rc_proto *protocol,
 static int get_key_pixelview(struct IR_i2c *ir, enum rc_proto *protocol,
 			     u32 *scancode, u8 *toggle)
 {
+<<<<<<< HEAD
 	int rc;
 	unsigned char b;
 
@@ -177,6 +210,13 @@ static int get_key_pixelview(struct IR_i2c *ir, enum rc_proto *protocol,
 		dev_dbg(&ir->rc->dev, "read error\n");
 		if (rc < 0)
 			return rc;
+=======
+	unsigned char b;
+
+	/* poll IR chip */
+	if (1 != i2c_master_recv(ir->c, &b, 1)) {
+		dprintk(1,"read error\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -189,6 +229,7 @@ static int get_key_pixelview(struct IR_i2c *ir, enum rc_proto *protocol,
 static int get_key_fusionhdtv(struct IR_i2c *ir, enum rc_proto *protocol,
 			      u32 *scancode, u8 *toggle)
 {
+<<<<<<< HEAD
 	int rc;
 	unsigned char buf[4];
 
@@ -203,6 +244,19 @@ static int get_key_fusionhdtv(struct IR_i2c *ir, enum rc_proto *protocol,
 
 	if (buf[0] != 0 || buf[1] != 0 || buf[2] != 0 || buf[3] != 0)
 		dev_dbg(&ir->rc->dev, "%s: %*ph\n", __func__, 4, buf);
+=======
+	unsigned char buf[4];
+
+	/* poll IR chip */
+	if (4 != i2c_master_recv(ir->c, buf, 4)) {
+		dprintk(1,"read error\n");
+		return -EIO;
+	}
+
+	if(buf[0] !=0 || buf[1] !=0 || buf[2] !=0 || buf[3] != 0)
+		dprintk(2, "%s: 0x%2x 0x%2x 0x%2x 0x%2x\n", __func__,
+			buf[0], buf[1], buf[2], buf[3]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* no key pressed or signal from other ir remote */
 	if(buf[0] != 0x1 ||  buf[1] != 0xfe)
@@ -217,6 +271,7 @@ static int get_key_fusionhdtv(struct IR_i2c *ir, enum rc_proto *protocol,
 static int get_key_knc1(struct IR_i2c *ir, enum rc_proto *protocol,
 			u32 *scancode, u8 *toggle)
 {
+<<<<<<< HEAD
 	int rc;
 	unsigned char b;
 
@@ -226,6 +281,13 @@ static int get_key_knc1(struct IR_i2c *ir, enum rc_proto *protocol,
 		dev_dbg(&ir->rc->dev, "read error\n");
 		if (rc < 0)
 			return rc;
+=======
+	unsigned char b;
+
+	/* poll IR chip */
+	if (1 != i2c_master_recv(ir->c, &b, 1)) {
+		dprintk(1,"read error\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -233,7 +295,11 @@ static int get_key_knc1(struct IR_i2c *ir, enum rc_proto *protocol,
 	   down, while 0xff indicates that no button is hold
 	   down. 0xfe sequences are sometimes interrupted by 0xFF */
 
+<<<<<<< HEAD
 	dev_dbg(&ir->rc->dev, "key %02x\n", b);
+=======
+	dprintk(2,"key %02x\n", b);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (b == 0xff)
 		return 0;
@@ -258,7 +324,11 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
 				  .buf = &key, .len = 1} };
 	subaddr = 0x0d;
 	if (2 != i2c_transfer(ir->c->adapter, msg, 2)) {
+<<<<<<< HEAD
 		dev_dbg(&ir->rc->dev, "read error\n");
+=======
+		dprintk(1, "read error\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -268,17 +338,29 @@ static int get_key_avermedia_cardbus(struct IR_i2c *ir, enum rc_proto *protocol,
 	subaddr = 0x0b;
 	msg[1].buf = &keygroup;
 	if (2 != i2c_transfer(ir->c->adapter, msg, 2)) {
+<<<<<<< HEAD
 		dev_dbg(&ir->rc->dev, "read error\n");
+=======
+		dprintk(1, "read error\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
 	if (keygroup == 0xff)
 		return 0;
 
+<<<<<<< HEAD
 	dev_dbg(&ir->rc->dev, "read key 0x%02x/0x%02x\n", key, keygroup);
 	if (keygroup < 2 || keygroup > 4) {
 		dev_warn(&ir->rc->dev, "warning: invalid key group 0x%02x for key 0x%02x\n",
 			 keygroup, key);
+=======
+	dprintk(1, "read key 0x%02x/0x%02x\n", key, keygroup);
+	if (keygroup < 2 || keygroup > 4) {
+		/* Only a warning */
+		dprintk(1, "warning: invalid key group 0x%02x for key 0x%02x\n",
+								keygroup, key);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	key |= (keygroup & 1) << 6;
 
@@ -299,15 +381,26 @@ static int ir_key_poll(struct IR_i2c *ir)
 	u8 toggle;
 	int rc;
 
+<<<<<<< HEAD
 	dev_dbg(&ir->rc->dev, "%s\n", __func__);
 	rc = ir->get_key(ir, &protocol, &scancode, &toggle);
 	if (rc < 0) {
 		dev_warn(&ir->rc->dev, "error %d\n", rc);
+=======
+	dprintk(3, "%s\n", __func__);
+	rc = ir->get_key(ir, &protocol, &scancode, &toggle);
+	if (rc < 0) {
+		dprintk(2,"error\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
 	if (rc) {
+<<<<<<< HEAD
 		dev_dbg(&ir->rc->dev, "%s: proto = 0x%04x, scancode = 0x%08x\n",
+=======
+		dprintk(1, "%s: proto = 0x%04x, scancode = 0x%08x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__, protocol, scancode);
 		rc_keydown(ir->rc, protocol, scancode, toggle);
 	}
@@ -319,6 +412,7 @@ static void ir_work(struct work_struct *work)
 	int rc;
 	struct IR_i2c *ir = container_of(work, struct IR_i2c, work.work);
 
+<<<<<<< HEAD
 	/*
 	 * If the transmit code is holding the lock, skip polling for
 	 * IR, we'll get it to it next time round
@@ -331,11 +425,19 @@ static void ir_work(struct work_struct *work)
 			ir->rc = NULL;
 			return;
 		}
+=======
+	rc = ir_key_poll(ir);
+	if (rc == -ENODEV) {
+		rc_unregister_device(ir->rc);
+		ir->rc = NULL;
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	schedule_delayed_work(&ir->work, msecs_to_jiffies(ir->polling_interval));
 }
 
+<<<<<<< HEAD
 static int ir_open(struct rc_dev *dev)
 {
 	struct IR_i2c *ir = dev->priv;
@@ -729,6 +831,9 @@ static int zilog_tx_duty_cycle(struct rc_dev *dev, u32 duty_cycle)
 
 	return 0;
 }
+=======
+/* ----------------------------------------------------------------------- */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int ir_probe(struct i2c_client *client, const struct i2c_device_id *id)
 {
@@ -739,6 +844,7 @@ static int ir_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	struct rc_dev *rc = NULL;
 	struct i2c_adapter *adap = client->adapter;
 	unsigned short addr = client->addr;
+<<<<<<< HEAD
 	bool probe_tx = (id->driver_data & FLAG_TX) != 0;
 	int err;
 
@@ -747,6 +853,10 @@ static int ir_probe(struct i2c_client *client, const struct i2c_device_id *id)
 		return -ENODEV;
 	}
 
+=======
+	int err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ir = devm_kzalloc(&client->dev, sizeof(*ir), GFP_KERNEL);
 	if (!ir)
 		return -ENOMEM;
@@ -801,7 +911,10 @@ static int ir_probe(struct i2c_client *client, const struct i2c_device_id *id)
 		rc_proto    = RC_PROTO_BIT_RC5 | RC_PROTO_BIT_RC6_MCE |
 							RC_PROTO_BIT_RC6_6A_32;
 		ir_codes    = RC_MAP_HAUPPAUGE;
+<<<<<<< HEAD
 		probe_tx = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -859,15 +972,29 @@ static int ir_probe(struct i2c_client *client, const struct i2c_device_id *id)
 
 	/* Make sure we are all setup before going on */
 	if (!name || !ir->get_key || !rc_proto || !ir_codes) {
+<<<<<<< HEAD
 		dev_warn(&client->dev, "Unsupported device at address 0x%02x\n",
 			 addr);
+=======
+		dprintk(1, ": Unsupported device at address 0x%02x\n",
+			addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -ENODEV;
 		goto err_out_free;
 	}
 
+<<<<<<< HEAD
 	ir->ir_codes = ir_codes;
 
 	snprintf(ir->phys, sizeof(ir->phys), "%s/%s", dev_name(&adap->dev),
+=======
+	/* Sets name */
+	snprintf(ir->name, sizeof(ir->name), "i2c IR (%s)", name);
+	ir->ir_codes = ir_codes;
+
+	snprintf(ir->phys, sizeof(ir->phys), "%s/%s/ir0",
+		 dev_name(&adap->dev),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 dev_name(&client->dev));
 
 	/*
@@ -876,17 +1003,22 @@ static int ir_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	 */
 	rc->input_id.bustype = BUS_I2C;
 	rc->input_phys       = ir->phys;
+<<<<<<< HEAD
 	rc->device_name	     = name;
 	rc->dev.parent       = &client->dev;
 	rc->priv             = ir;
 	rc->open             = ir_open;
 	rc->close            = ir_close;
+=======
+	rc->device_name	     = ir->name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Initialize the other fields of rc_dev
 	 */
 	rc->map_name       = ir->ir_codes;
 	rc->allowed_protocols = rc_proto;
+<<<<<<< HEAD
 	if (!rc->driver_name)
 		rc->driver_name = KBUILD_MODNAME;
 
@@ -906,17 +1038,35 @@ static int ir_probe(struct i2c_client *client, const struct i2c_device_id *id)
 			rc->s_tx_duty_cycle = zilog_tx_duty_cycle;
 		}
 	}
+=======
+	rc->enabled_protocols = rc_proto;
+	if (!rc->driver_name)
+		rc->driver_name = MODULE_NAME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = rc_register_device(rc);
 	if (err)
 		goto err_out_free;
 
+<<<<<<< HEAD
 	return 0;
 
  err_out_free:
 	if (ir->tx_c)
 		i2c_unregister_device(ir->tx_c);
 
+=======
+	printk(MODULE_NAME ": %s detected at %s [%s]\n",
+	       ir->name, ir->phys, adap->name);
+
+	/* start polling via eventd */
+	INIT_DELAYED_WORK(&ir->work, ir_work);
+	schedule_delayed_work(&ir->work, 0);
+
+	return 0;
+
+ err_out_free:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Only frees rc if it were allocated internally */
 	rc_free_device(rc);
 	return err;
@@ -929,9 +1079,12 @@ static int ir_remove(struct i2c_client *client)
 	/* kill outstanding polls */
 	cancel_delayed_work_sync(&ir->work);
 
+<<<<<<< HEAD
 	if (ir->tx_c)
 		i2c_unregister_device(ir->tx_c);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* unregister device */
 	rc_unregister_device(ir->rc);
 
@@ -943,11 +1096,18 @@ static const struct i2c_device_id ir_kbd_id[] = {
 	/* Generic entry for any IR receiver */
 	{ "ir_video", 0 },
 	/* IR device specific entries should be added here */
+<<<<<<< HEAD
 	{ "ir_z8f0811_haup", FLAG_TX },
 	{ "ir_z8f0811_hdpvr", FLAG_TX | FLAG_HDPVR },
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, ir_kbd_id);
+=======
+	{ "ir_rx_z8f0811_haup", 0 },
+	{ "ir_rx_z8f0811_hdpvr", 0 },
+	{ }
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct i2c_driver ir_kbd_driver = {
 	.driver = {

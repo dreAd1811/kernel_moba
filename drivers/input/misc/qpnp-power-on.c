@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/debugfs.h>
@@ -25,7 +38,12 @@
 #include <linux/regulator/driver.h>
 #include <linux/regulator/machine.h>
 #include <linux/regulator/of_regulator.h>
+<<<<<<< HEAD
 #include <linux/time.h>
+=======
+#include <linux/qpnp/qpnp-pbs.h>
+#include <linux/qpnp/qpnp-misc.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PMIC_VER_8941				0x01
 #define PMIC_VERSION_REG			0x0105
@@ -80,9 +98,12 @@
 #define QPNP_PON_PS_HOLD_RST_CTL2(pon)		((pon)->base + 0x5B)
 #define QPNP_PON_WD_RST_S2_CTL(pon)		((pon)->base + 0x56)
 #define QPNP_PON_WD_RST_S2_CTL2(pon)		((pon)->base + 0x57)
+<<<<<<< HEAD
 #define QPNP_PON_SW_RST_S2_CTL(pon)		((pon)->base + 0x62)
 #define QPNP_PON_SW_RST_S2_CTL2(pon)		((pon)->base + 0x63)
 #define QPNP_PON_SW_RST_GO(pon)			((pon)->base + 0x64)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define QPNP_PON_S3_SRC(pon)			((pon)->base + 0x74)
 #define QPNP_PON_S3_DBC_CTL(pon)		((pon)->base + 0x75)
 #define QPNP_PON_SMPL_CTL(pon)			((pon)->base + 0x7F)
@@ -92,7 +113,10 @@
 #define QPNP_PON_SEC_ACCESS(pon)		((pon)->base + 0xD0)
 
 #define QPNP_PON_SEC_UNLOCK			0xA5
+<<<<<<< HEAD
 #define QPNP_PON_SW_RST_GO_VAL			0xA5
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QPNP_PON_WARM_RESET_TFT			BIT(4)
 
@@ -165,6 +189,15 @@ enum pon_type {
 	PON_KPDPWR_RESIN = PON_POWER_ON_TYPE_KPDPWR_RESIN,
 };
 
+<<<<<<< HEAD
+=======
+struct pon_reg {
+	unsigned int val;
+	u16 addr;
+	struct list_head list;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct qpnp_pon_config {
 	u32			pon_type;
 	u32			support_reset;
@@ -197,14 +230,27 @@ struct qpnp_pon {
 	struct input_dev	*pon_input;
 	struct qpnp_pon_config	*pon_cfg;
 	struct pon_regulator	*pon_reg_cfg;
+<<<<<<< HEAD
 	struct list_head	list;
 	struct delayed_work	bark_work;
 	struct dentry		*debugfs;
+=======
+	struct list_head	restore_regs;
+	struct list_head	list;
+	struct mutex		restore_lock;
+	struct delayed_work	bark_work;
+	struct dentry		*debugfs;
+	struct device_node	*pbs_dev_node;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16			base;
 	u8			subtype;
 	u8			pon_ver;
 	u8			warm_reset_reason1;
 	u8			warm_reset_reason2;
+<<<<<<< HEAD
+=======
+	u8			twm_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int			num_pon_config;
 	int			num_pon_reg;
 	int			pon_trigger_reason;
@@ -224,8 +270,16 @@ struct qpnp_pon {
 	bool			ps_hold_hard_reset_disable;
 	bool			ps_hold_shutdown_disable;
 	bool			kpdpwr_dbc_enable;
+<<<<<<< HEAD
 	bool			resin_pon_reset;
 	ktime_t			kpdpwr_last_release_time;
+=======
+	bool			support_twm_config;
+	bool			resin_pon_reset;
+	ktime_t			kpdpwr_last_release_time;
+	struct notifier_block	pon_nb;
+	bool			legacy_hard_reset_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int pon_ship_mode_en;
@@ -234,7 +288,10 @@ module_param_named(
 );
 
 static struct qpnp_pon *sys_reset_dev;
+<<<<<<< HEAD
 static struct qpnp_pon *modem_reset_dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DEFINE_SPINLOCK(spon_list_slock);
 static LIST_HEAD(spon_dev_list);
 
@@ -304,6 +361,45 @@ static const char * const qpnp_poff_reason[] = {
 	[39] = "Triggered from S3_RESET_KPDPWR_ANDOR_RESIN",
 };
 
+<<<<<<< HEAD
+=======
+static int qpnp_pon_store_reg(struct qpnp_pon *pon, u16 addr)
+{
+	int rc;
+	unsigned int val;
+	struct pon_reg *reg, *pos = NULL;
+
+	mutex_lock(&pon->restore_lock);
+	rc = regmap_read(pon->regmap, addr, &val);
+	if (rc < 0) {
+		dev_info(pon->dev, "Register read failed, addr=0x%04X, rc=%d\n",
+			addr, rc);
+	} else {
+		list_for_each_entry(pos, &pon->restore_regs, list) {
+			if (pos->addr == addr) {
+				pos->val = val;
+				goto done;
+			}
+		}
+
+		reg = devm_kzalloc(pon->dev, sizeof(*reg), GFP_KERNEL);
+		if (!reg) {
+			rc = -ENOMEM;
+			goto done;
+		}
+
+		reg->addr = addr;
+		reg->val = val;
+		INIT_LIST_HEAD(&reg->list);
+		list_add_tail(&reg->list, &pon->restore_regs);
+	}
+
+done:
+	mutex_unlock(&pon->restore_lock);
+	return rc;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 qpnp_pon_masked_write(struct qpnp_pon *pon, u16 addr, u8 mask, u8 val)
 {
@@ -316,6 +412,7 @@ qpnp_pon_masked_write(struct qpnp_pon *pon, u16 addr, u8 mask, u8 val)
 	return rc;
 }
 
+<<<<<<< HEAD
 static int qpnp_pon_write(struct qpnp_pon *pon, u16 addr, u8 val)
 {
 	int rc;
@@ -325,6 +422,18 @@ static int qpnp_pon_write(struct qpnp_pon *pon, u16 addr, u8 val)
 		dev_err(pon->dev, "Register write failed, addr=0x%04X, rc=%d\n",
 			addr, rc);
 	return rc;
+=======
+static int
+qpnp_pon_masked_write_backup(struct qpnp_pon *pon, u16 addr, u8 mask, u8 val)
+{
+	int rc;
+
+	rc = qpnp_pon_masked_write(pon, addr, mask, val);
+	if (rc < 0)
+		return rc;
+
+	return qpnp_pon_store_reg(pon, addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qpnp_pon_read(struct qpnp_pon *pon, u16 addr, unsigned int *val)
@@ -371,7 +480,11 @@ int qpnp_pon_set_restart_reason(enum pon_restart_reason reason)
 	if (!pon->store_hard_reset_reason)
 		return 0;
 
+<<<<<<< HEAD
 	if (is_pon_gen2(pon))
+=======
+	if (is_pon_gen2(pon) && !pon->legacy_hard_reset_offset)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = qpnp_pon_masked_write(pon, QPNP_PON_SOFT_RB_SPARE(pon),
 					   GENMASK(7, 1), (reason << 1));
 	else
@@ -426,7 +539,11 @@ static int qpnp_pon_set_dbc(struct qpnp_pon *pon, u32 delay)
 	}
 
 	val = ilog2(val);
+<<<<<<< HEAD
 	rc = qpnp_pon_masked_write(pon, QPNP_PON_DBC_CTL(pon),
+=======
+	rc = qpnp_pon_masked_write_backup(pon, QPNP_PON_DBC_CTL(pon),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   QPNP_PON_DBC_DELAY_MASK(pon), val);
 	if (!rc)
 		pon->dbc_time_us = delay;
@@ -488,12 +605,58 @@ static ssize_t debounce_us_store(struct device *dev,
 }
 static DEVICE_ATTR_RW(debounce_us);
 
+<<<<<<< HEAD
+=======
+static struct qpnp_pon_config *
+qpnp_get_cfg(struct qpnp_pon *pon, u32 pon_type)
+{
+	int i;
+
+	for (i = 0; i < pon->num_pon_config; i++) {
+		if (pon_type == pon->pon_cfg[i].pon_type)
+			return  &pon->pon_cfg[i];
+	}
+
+	return NULL;
+}
+
+#define PON_TWM_ENTRY_PBS_BIT           BIT(0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qpnp_pon_reset_config(struct qpnp_pon *pon,
 				 enum pon_power_off_type type)
 {
 	int rc;
 	bool disable = false;
 	u16 rst_en_reg;
+<<<<<<< HEAD
+=======
+	struct qpnp_pon_config *cfg;
+
+	/* Ignore the PS_HOLD reset config if TWM ENTRY is enabled */
+	if (pon->support_twm_config && pon->twm_state == PMIC_TWM_ENABLE) {
+		rc = qpnp_pbs_trigger_event(pon->pbs_dev_node,
+					PON_TWM_ENTRY_PBS_BIT);
+		if (rc < 0) {
+			pr_err("Unable to trigger PBS trigger for TWM entry rc=%d\n",
+							rc);
+			return rc;
+		}
+
+		cfg = qpnp_get_cfg(pon, PON_KPDPWR);
+		if (cfg) {
+			/* configure KPDPWR_S2 to Hard reset */
+			rc = qpnp_pon_masked_write(pon, cfg->s2_cntl_addr,
+						QPNP_PON_S2_CNTL_TYPE_MASK,
+						PON_POWER_OFF_HARD_RESET);
+			if (rc < 0)
+				pr_err("Unable to config KPDPWR_N S2 for hard-reset rc=%d\n",
+					rc);
+		}
+
+		pr_crit("PMIC configured for TWM entry\n");
+		return 0;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pon->pon_ver == QPNP_PON_GEN1_V1)
 		rst_en_reg = QPNP_PON_PS_HOLD_RST_CTL(pon);
@@ -702,6 +865,7 @@ out:
 }
 EXPORT_SYMBOL(qpnp_pon_system_pwr_off);
 
+<<<<<<< HEAD
 /**
  * qpnp_pon_modem_pwr_off() - shutdown or reset the modem PMIC
  * @type: Determines the type of power off to perform - shutdown, reset, etc
@@ -749,6 +913,8 @@ int qpnp_pon_modem_pwr_off(enum pon_power_off_type type)
 }
 EXPORT_SYMBOL(qpnp_pon_modem_pwr_off);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int _qpnp_pon_is_warm_reset(struct qpnp_pon *pon)
 {
 	if (!pon)
@@ -851,10 +1017,17 @@ int qpnp_pon_trigger_config(enum pon_trigger_source pon_src, bool enable)
 	}
 
 	if (is_pon_gen2(pon) && pon_src == PON_SMPL)
+<<<<<<< HEAD
 		rc = qpnp_pon_masked_write(pon, QPNP_PON_SMPL_CTL(pon),
 			QPNP_PON_SMPL_EN, enable ? QPNP_PON_SMPL_EN : 0);
 	else
 		rc = qpnp_pon_masked_write(pon, QPNP_PON_TRIGGER_EN(pon),
+=======
+		rc = qpnp_pon_masked_write_backup(pon, QPNP_PON_SMPL_CTL(pon),
+			QPNP_PON_SMPL_EN, enable ? QPNP_PON_SMPL_EN : 0);
+	else
+		rc = qpnp_pon_masked_write_backup(pon, QPNP_PON_TRIGGER_EN(pon),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				BIT(pon_src), enable ? BIT(pon_src) : 0);
 
 	return rc;
@@ -891,11 +1064,16 @@ static int qpnp_pon_store_and_clear_warm_reset(struct qpnp_pon *pon)
 				QPNP_PON_WARM_RESET_REASON1(pon), rc);
 			return rc;
 		}
+<<<<<<< HEAD
+=======
+		qpnp_pon_store_reg(pon, QPNP_PON_WARM_RESET_REASON1(pon));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct qpnp_pon_config *qpnp_get_cfg(struct qpnp_pon *pon, u32 pon_type)
 {
 	int i;
@@ -908,6 +1086,8 @@ static struct qpnp_pon_config *qpnp_get_cfg(struct qpnp_pon *pon, u32 pon_type)
 	return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qpnp_pon_input_dispatch(struct qpnp_pon *pon, u32 pon_type)
 {
 	struct qpnp_pon_config *cfg = NULL;
@@ -916,9 +1096,12 @@ static int qpnp_pon_input_dispatch(struct qpnp_pon *pon, u32 pon_type)
 	uint pon_rt_sts;
 	u64 elapsed_us;
 	int rc;
+<<<<<<< HEAD
 	struct timeval timestamp;
 	struct tm tm;
 	char buff[255];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cfg = qpnp_get_cfg(pon, pon_type);
 	if (!cfg)
@@ -945,6 +1128,7 @@ static int qpnp_pon_input_dispatch(struct qpnp_pon *pon, u32 pon_type)
 	switch (cfg->pon_type) {
 	case PON_KPDPWR:
 		pon_rt_bit = QPNP_PON_KPDPWR_N_SET;
+<<<<<<< HEAD
 		/* get the time stamp in readable format to print*/
 		do_gettimeofday(&timestamp);
 		time_to_tm((time_t)(timestamp.tv_sec), 0, &tm);
@@ -955,6 +1139,8 @@ static int qpnp_pon_input_dispatch(struct qpnp_pon *pon, u32 pon_type)
 
 		pr_info("Report pwrkey %s event at: %s\n", pon_rt_bit &
 			pon_rt_sts ? "press" : "release", buff);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case PON_RESIN:
 		pon_rt_bit = QPNP_PON_RESIN_N_SET;
@@ -995,6 +1181,7 @@ static int qpnp_pon_input_dispatch(struct qpnp_pon *pon, u32 pon_type)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qpnp_pon_input_dispatch_vol(struct qpnp_pon *pon, u32 pon_type)
 {
 	struct qpnp_pon_config *cfg = NULL;
@@ -1035,6 +1222,8 @@ static int qpnp_pon_input_dispatch_vol(struct qpnp_pon *pon, u32 pon_type)
 }
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t qpnp_kpdpwr_irq(int irq, void *_pon)
 {
 	int rc;
@@ -1049,7 +1238,10 @@ static irqreturn_t qpnp_kpdpwr_irq(int irq, void *_pon)
 
 static irqreturn_t qpnp_kpdpwr_bark_irq(int irq, void *_pon)
 {
+<<<<<<< HEAD
 	pr_err("kpdpwr bark irq is comming..\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return IRQ_HANDLED;
 }
 
@@ -1067,7 +1259,10 @@ static irqreturn_t qpnp_resin_irq(int irq, void *_pon)
 
 static irqreturn_t qpnp_kpdpwr_resin_bark_irq(int irq, void *_pon)
 {
+<<<<<<< HEAD
 	pr_err("kpdpwr and resin bark irq is comming..\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return IRQ_HANDLED;
 }
 
@@ -1234,8 +1429,13 @@ static int qpnp_config_pull(struct qpnp_pon *pon, struct qpnp_pon_config *cfg)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	return qpnp_pon_masked_write(pon, QPNP_PON_PULL_CTL(pon), pull_bit,
 				     cfg->pull_up ? pull_bit : 0);
+=======
+	return qpnp_pon_masked_write_backup(pon, QPNP_PON_PULL_CTL(pon),
+				pull_bit, cfg->pull_up ? pull_bit : 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qpnp_config_reset(struct qpnp_pon *pon, struct qpnp_pon_config *cfg)
@@ -1262,8 +1462,13 @@ static int qpnp_config_reset(struct qpnp_pon *pon, struct qpnp_pon_config *cfg)
 	}
 
 	/* Disable S2 reset */
+<<<<<<< HEAD
 	rc = qpnp_pon_masked_write(pon, cfg->s2_cntl2_addr, QPNP_PON_S2_CNTL_EN,
 				   0);
+=======
+	rc = qpnp_pon_masked_write_backup(pon, cfg->s2_cntl2_addr,
+				QPNP_PON_S2_CNTL_EN, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		return rc;
 
@@ -1274,7 +1479,11 @@ static int qpnp_config_reset(struct qpnp_pon *pon, struct qpnp_pon_config *cfg)
 		if (cfg->s1_timer <= s1_delay[i])
 			break;
 	}
+<<<<<<< HEAD
 	rc = qpnp_pon_masked_write(pon, s1_timer_addr,
+=======
+	rc = qpnp_pon_masked_write_backup(pon, s1_timer_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				QPNP_PON_S1_TIMER_MASK, i);
 	if (rc)
 		return rc;
@@ -1285,18 +1494,31 @@ static int qpnp_config_reset(struct qpnp_pon *pon, struct qpnp_pon_config *cfg)
 		i = ilog2(i + 1);
 	}
 
+<<<<<<< HEAD
 	rc = qpnp_pon_masked_write(pon, s2_timer_addr, QPNP_PON_S2_TIMER_MASK,
 				   i);
 	if (rc)
 		return rc;
 
 	rc = qpnp_pon_masked_write(pon, cfg->s2_cntl_addr,
+=======
+	rc = qpnp_pon_masked_write_backup(pon, s2_timer_addr,
+				QPNP_PON_S2_TIMER_MASK, i);
+	if (rc)
+		return rc;
+
+	rc = qpnp_pon_masked_write_backup(pon, cfg->s2_cntl_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				QPNP_PON_S2_CNTL_TYPE_MASK, (u8)cfg->s2_type);
 	if (rc)
 		return rc;
 
 	/* Enable S2 reset */
+<<<<<<< HEAD
 	return qpnp_pon_masked_write(pon, cfg->s2_cntl2_addr,
+=======
+	return qpnp_pon_masked_write_backup(pon, cfg->s2_cntl2_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     QPNP_PON_S2_CNTL_EN, QPNP_PON_S2_CNTL_EN);
 }
 
@@ -1390,6 +1612,21 @@ qpnp_pon_request_irqs(struct qpnp_pon *pon, struct qpnp_pon_config *cfg)
 }
 
 static int
+<<<<<<< HEAD
+=======
+qpnp_pon_free_irqs(struct qpnp_pon *pon, struct qpnp_pon_config *cfg)
+{
+	if (cfg->state_irq > 0)
+		devm_free_irq(pon->dev, cfg->state_irq, pon);
+
+	if (cfg->use_bark && cfg->bark_irq > 0)
+		devm_free_irq(pon->dev, cfg->bark_irq, pon);
+
+	return 0;
+}
+
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 qpnp_pon_config_input(struct qpnp_pon *pon, struct qpnp_pon_config *cfg)
 {
 	if (!pon->pon_input) {
@@ -1744,7 +1981,11 @@ static int qpnp_pon_config_init(struct qpnp_pon *pon,
 					return rc;
 			} else if (cfg->pon_type != PON_CBLPWR) {
 				/* Disable S2 reset */
+<<<<<<< HEAD
 				rc = qpnp_pon_masked_write(pon,
+=======
+				rc = qpnp_pon_masked_write_backup(pon,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							cfg->s2_cntl2_addr,
 							QPNP_PON_S2_CNTL_EN, 0);
 				if (rc)
@@ -1959,7 +2200,11 @@ qpnp_pon_uvlo_dload_set(const char *val, const struct kernel_param *kp)
 
 	reg = *(bool *)kp->arg ? QPNP_PON_UVLO_DLOAD_EN : 0;
 
+<<<<<<< HEAD
 	return qpnp_pon_masked_write(pon, QPNP_PON_XVDD_RB_SPARE(pon),
+=======
+	return qpnp_pon_masked_write_backup(pon, QPNP_PON_XVDD_RB_SPARE(pon),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   QPNP_PON_UVLO_DLOAD_EN, reg);
 }
 
@@ -1970,6 +2215,7 @@ static struct kernel_param_ops dload_on_uvlo_ops = {
 
 module_param_cb(dload_on_uvlo, &dload_on_uvlo_ops, &dload_on_uvlo, 0600);
 
+<<<<<<< HEAD
 static bool dload_on_debug;
 
 static int qpnp_pon_dload_on_debug_get(char *buf, const struct kernel_param *kp)
@@ -2019,6 +2265,8 @@ static struct kernel_param_ops dload_on_debug_ops = {
 
 module_param_cb(dload_on_debug, &dload_on_debug_ops, &dload_on_debug, 0644);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_DEBUG_FS)
 
 static int qpnp_pon_debugfs_uvlo_get(void *data, u64 *val)
@@ -2076,8 +2324,12 @@ static void qpnp_pon_debugfs_remove(struct qpnp_pon *pon)
 static int qpnp_pon_read_gen2_pon_off_reason(struct qpnp_pon *pon, u16 *reason,
 					int *reason_index_offset)
 {
+<<<<<<< HEAD
 	unsigned int reg, reg1;
 	u8 buf[2];
+=======
+	unsigned int buf[2], reg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	rc = qpnp_pon_read(pon, QPNP_PON_OFF_REASON(pon), &reg);
@@ -2085,10 +2337,17 @@ static int qpnp_pon_read_gen2_pon_off_reason(struct qpnp_pon *pon, u16 *reason,
 		return rc;
 
 	if (reg & QPNP_GEN2_POFF_SEQ) {
+<<<<<<< HEAD
 		rc = qpnp_pon_read(pon, QPNP_POFF_REASON1(pon), &reg1);
 		if (rc)
 			return rc;
 		*reason = (u8)reg1;
+=======
+		rc = qpnp_pon_read(pon, QPNP_POFF_REASON1(pon), buf);
+		if (rc)
+			return rc;
+		*reason = (u8)buf[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*reason_index_offset = 0;
 	} else if (reg & QPNP_GEN2_FAULT_SEQ) {
 		rc = regmap_bulk_read(pon->regmap, QPNP_FAULT_REASON1(pon), buf,
@@ -2098,6 +2357,7 @@ static int qpnp_pon_read_gen2_pon_off_reason(struct qpnp_pon *pon, u16 *reason,
 				QPNP_FAULT_REASON1(pon), rc);
 			return rc;
 		}
+<<<<<<< HEAD
 		*reason = buf[0] | (u16)(buf[1] << 8);
 		*reason_index_offset = POFF_REASON_FAULT_OFFSET;
 	} else if (reg & QPNP_GEN2_S3_RESET_SEQ) {
@@ -2105,12 +2365,53 @@ static int qpnp_pon_read_gen2_pon_off_reason(struct qpnp_pon *pon, u16 *reason,
 		if (rc)
 			return rc;
 		*reason = (u8)reg1;
+=======
+		*reason = (u8)buf[0] | (u16)(buf[1] << 8);
+		*reason_index_offset = POFF_REASON_FAULT_OFFSET;
+	} else if (reg & QPNP_GEN2_S3_RESET_SEQ) {
+		rc = qpnp_pon_read(pon, QPNP_S3_RESET_REASON(pon), buf);
+		if (rc)
+			return rc;
+		*reason = (u8)buf[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*reason_index_offset = POFF_REASON_S3_RESET_OFFSET;
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int pon_twm_notifier_cb(struct notifier_block *nb,
+				unsigned long action, void *data)
+{
+	struct qpnp_pon *pon = container_of(nb, struct qpnp_pon, pon_nb);
+
+	if (action != PMIC_TWM_CLEAR &&
+			action != PMIC_TWM_ENABLE) {
+		pr_debug("Unsupported option %lu\n", action);
+		return NOTIFY_OK;
+	}
+
+	pon->twm_state = (u8)action;
+	pr_debug("TWM state = %d\n", pon->twm_state);
+
+	return NOTIFY_OK;
+}
+
+static int pon_register_twm_notifier(struct qpnp_pon *pon)
+{
+	int rc;
+
+	pon->pon_nb.notifier_call = pon_twm_notifier_cb;
+	rc = qpnp_misc_twm_notifier_register(&pon->pon_nb);
+	if (rc < 0)
+		pr_err("Failed to register pon_twm_notifier_cb rc=%d\n", rc);
+
+	return rc;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qpnp_pon_configure_s3_reset(struct qpnp_pon *pon)
 {
 	struct device *dev = pon->dev;
@@ -2132,12 +2433,20 @@ static int qpnp_pon_configure_s3_reset(struct qpnp_pon *pon)
 			debounce = ilog2(debounce);
 
 		/* S3 debounce is a SEC_ACCESS register */
+<<<<<<< HEAD
 		rc = qpnp_pon_masked_write(pon, QPNP_PON_SEC_ACCESS(pon),
+=======
+		rc = qpnp_pon_masked_write_backup(pon, QPNP_PON_SEC_ACCESS(pon),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					0xFF, QPNP_PON_SEC_UNLOCK);
 		if (rc)
 			return rc;
 
+<<<<<<< HEAD
 		rc = qpnp_pon_masked_write(pon, QPNP_PON_S3_DBC_CTL(pon),
+=======
+		rc = qpnp_pon_masked_write_backup(pon, QPNP_PON_S3_DBC_CTL(pon),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					QPNP_PON_S3_DBC_DELAY_MASK, debounce);
 		if (rc)
 			return rc;
@@ -2165,7 +2474,11 @@ static int qpnp_pon_configure_s3_reset(struct qpnp_pon *pon)
 		 * been configured by the bootloader then this operation will
 		 * not have an effect.
 		 */
+<<<<<<< HEAD
 		rc = qpnp_pon_masked_write(pon, QPNP_PON_S3_SRC(pon),
+=======
+		rc = qpnp_pon_masked_write_backup(pon, QPNP_PON_S3_SRC(pon),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					QPNP_PON_S3_SRC_MASK, src_val);
 		if (rc)
 			return rc;
@@ -2178,7 +2491,11 @@ static int qpnp_pon_read_hardware_info(struct qpnp_pon *pon, bool sys_reset)
 {
 	struct device *dev = pon->dev;
 	unsigned int reg = 0;
+<<<<<<< HEAD
 	u8 buf[2];
+=======
+	unsigned int buf[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int reason_index_offset = 0;
 	unsigned int pon_sts = 0;
 	u16 poff_sts = 0;
@@ -2254,11 +2571,18 @@ static int qpnp_pon_read_hardware_info(struct qpnp_pon *pon, bool sys_reset)
 				QPNP_POFF_REASON1(pon), rc);
 			return rc;
 		}
+<<<<<<< HEAD
 		poff_sts = buf[0] | (u16)(buf[1] << 8);
 	}
 	index = ffs(poff_sts) - 1 + reason_index_offset;
 	if (index >= ARRAY_SIZE(qpnp_poff_reason) || index < 0 ||
 					index < reason_index_offset) {
+=======
+		poff_sts = buf[0] | (buf[1] << 8);
+	}
+	index = ffs(poff_sts) - 1 + reason_index_offset;
+	if (index >= ARRAY_SIZE(qpnp_poff_reason) || index < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(dev, "PMIC@SID%d: Unknown power-off reason\n",
 			 to_spmi_device(dev->parent)->usid);
 	} else {
@@ -2360,7 +2684,11 @@ static int qpnp_pon_probe(struct platform_device *pdev)
 	struct qpnp_pon *pon;
 	unsigned long flags;
 	u32 base, delay;
+<<<<<<< HEAD
 	bool sys_reset, modem_reset;
+=======
+	bool sys_reset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	pon = devm_kzalloc(dev, sizeof(*pon), GFP_KERNEL);
@@ -2381,12 +2709,32 @@ static int qpnp_pon_probe(struct platform_device *pdev)
 	}
 	pon->base = base;
 
+<<<<<<< HEAD
+=======
+	if (of_property_read_bool(dev->of_node,
+					"qcom,support-twm-config")) {
+		pon->support_twm_config = true;
+		rc = pon_register_twm_notifier(pon);
+		if (rc < 0) {
+			pr_err("Failed to register TWM notifier rc=%d\n", rc);
+			return rc;
+		}
+		pon->pbs_dev_node = of_parse_phandle(dev->of_node,
+						"qcom,pbs-client", 0);
+		if (!pon->pbs_dev_node) {
+			pr_err("Missing qcom,pbs-client property\n");
+			return -EINVAL;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sys_reset = of_property_read_bool(dev->of_node, "qcom,system-reset");
 	if (sys_reset && sys_reset_dev) {
 		dev_err(dev, "qcom,system-reset property must only be specified for one PMIC PON device in the system\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	modem_reset = of_property_read_bool(dev->of_node, "qcom,modem-reset");
 	if (modem_reset && modem_reset_dev) {
 		dev_err(dev, "qcom,modem-reset property must only be specified for one PMIC PON device in the system\n");
@@ -2395,6 +2743,10 @@ static int qpnp_pon_probe(struct platform_device *pdev)
 		dev_err(dev, "qcom,modem-reset and qcom,system-reset properties cannot be supported together for one PMIC PON device\n");
 		return -EINVAL;
 	}
+=======
+	INIT_LIST_HEAD(&pon->restore_regs);
+	mutex_init(&pon->restore_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get the total number of pon configurations and regulators */
 	for_each_available_child_of_node(dev->of_node, node) {
@@ -2451,13 +2803,22 @@ static int qpnp_pon_probe(struct platform_device *pdev)
 	pon->store_hard_reset_reason = of_property_read_bool(dev->of_node,
 					"qcom,store-hard-reset-reason");
 
+<<<<<<< HEAD
+=======
+	pon->legacy_hard_reset_offset = of_property_read_bool(pdev->dev.of_node,
+					"qcom,use-legacy-hard-reset-offset");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (of_property_read_bool(dev->of_node, "qcom,secondary-pon-reset")) {
 		if (sys_reset) {
 			dev_err(dev, "qcom,system-reset property shouldn't be used along with qcom,secondary-pon-reset property\n");
 			return -EINVAL;
+<<<<<<< HEAD
 		} else if (modem_reset) {
 			dev_err(dev, "qcom,modem-reset property shouldn't be used along with qcom,secondary-pon-reset property\n");
 			return -EINVAL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		spin_lock_irqsave(&spon_list_slock, flags);
 		list_add(&pon->list, &spon_dev_list);
@@ -2479,12 +2840,18 @@ static int qpnp_pon_probe(struct platform_device *pdev)
 
 	if (sys_reset)
 		sys_reset_dev = pon;
+<<<<<<< HEAD
 	if (modem_reset)
 		modem_reset_dev = pon;
 
 	qpnp_pon_debugfs_init(pon);
 
 	qpnp_pon_input_dispatch_vol(pon, PON_RESIN);
+=======
+
+	qpnp_pon_debugfs_init(pon);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2503,10 +2870,67 @@ static int qpnp_pon_remove(struct platform_device *pdev)
 		list_del(&pon->list);
 		spin_unlock_irqrestore(&spon_list_slock, flags);
 	}
+<<<<<<< HEAD
+=======
+	mutex_destroy(&pon->restore_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM
+static int qpnp_pon_restore(struct device *dev)
+{
+	int i, rc = 0;
+	struct qpnp_pon_config *cfg;
+	struct qpnp_pon *pon = dev_get_drvdata(dev);
+	struct pon_reg *pos = NULL;
+
+	list_for_each_entry(pos, &pon->restore_regs, list) {
+		rc = regmap_write(pon->regmap, pos->addr, pos->val);
+		if (rc < 0) {
+			dev_err(dev, "Failed to restore reg addr=0x%04X rc=%d\n",
+				pos->addr, rc);
+			return rc;
+		}
+	}
+
+	for (i = 0; i < pon->num_pon_config; i++) {
+		cfg = &pon->pon_cfg[i];
+		rc = qpnp_pon_request_irqs(pon, cfg);
+		if (rc < 0)
+			return rc;
+	}
+
+	return rc;
+}
+
+static int qpnp_pon_freeze(struct device *dev)
+{
+	int i, rc = 0;
+	struct qpnp_pon_config *cfg;
+	struct qpnp_pon *pon = dev_get_drvdata(dev);
+
+	for (i = 0; i < pon->num_pon_config; i++) {
+		cfg = &pon->pon_cfg[i];
+		rc = qpnp_pon_free_irqs(pon, cfg);
+		if (rc < 0)
+			return rc;
+	}
+
+	return rc;
+}
+
+static const struct dev_pm_ops qpnp_pon_pm_ops = {
+	.freeze = qpnp_pon_freeze,
+	.restore = qpnp_pon_restore,
+	.thaw = qpnp_pon_restore,
+};
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id qpnp_pon_match_table[] = {
 	{ .compatible = "qcom,qpnp-power-on" },
 	{}
@@ -2516,6 +2940,12 @@ static struct platform_driver qpnp_pon_driver = {
 	.driver = {
 		.name = "qcom,qpnp-power-on",
 		.of_match_table = qpnp_pon_match_table,
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM
+		.pm = &qpnp_pon_pm_ops,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe = qpnp_pon_probe,
 	.remove = qpnp_pon_remove,

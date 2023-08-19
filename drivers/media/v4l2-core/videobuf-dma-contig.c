@@ -7,7 +7,11 @@
  * Copyright (c) 2008 Magnus Damm
  *
  * Based on videobuf-vmalloc.c,
+<<<<<<< HEAD
  * (c) 2007 Mauro Carvalho Chehab, <mchehab@kernel.org>
+=======
+ * (c) 2007 Mauro Carvalho Chehab, <mchehab@infradead.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -160,6 +164,10 @@ static void videobuf_dma_contig_user_put(struct videobuf_dma_contig_memory *mem)
 static int videobuf_dma_contig_user_get(struct videobuf_dma_contig_memory *mem,
 					struct videobuf_buffer *vb)
 {
+<<<<<<< HEAD
+=======
+	unsigned long untagged_baddr = untagged_addr(vb->baddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mm_struct *mm = current->mm;
 	struct vm_area_struct *vma;
 	unsigned long prev_pfn, this_pfn;
@@ -167,22 +175,38 @@ static int videobuf_dma_contig_user_get(struct videobuf_dma_contig_memory *mem,
 	unsigned int offset;
 	int ret;
 
+<<<<<<< HEAD
 	offset = vb->baddr & ~PAGE_MASK;
+=======
+	offset = untagged_baddr & ~PAGE_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mem->size = PAGE_ALIGN(vb->size + offset);
 	ret = -EINVAL;
 
 	down_read(&mm->mmap_sem);
 
+<<<<<<< HEAD
 	vma = find_vma(mm, vb->baddr);
 	if (!vma)
 		goto out_up;
 
 	if ((vb->baddr + mem->size) > vma->vm_end)
+=======
+	vma = find_vma(mm, untagged_baddr);
+	if (!vma)
+		goto out_up;
+
+	if ((untagged_baddr + mem->size) > vma->vm_end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_up;
 
 	pages_done = 0;
 	prev_pfn = 0; /* kill warning */
+<<<<<<< HEAD
 	user_address = vb->baddr;
+=======
+	user_address = untagged_baddr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (pages_done < (mem->size >> PAGE_SHIFT)) {
 		ret = follow_pfn(vma, user_address, &this_pfn);

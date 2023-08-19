@@ -10,7 +10,10 @@
 #include <linux/kernel.h>
 #include <linux/io.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/pm_opp.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 #include <linux/pm_domain.h>
 #include <linux/pm_qos.h>
@@ -125,7 +128,10 @@ static const struct genpd_lock_ops genpd_spin_ops = {
 #define genpd_status_on(genpd)		(genpd->status == GPD_STATE_ACTIVE)
 #define genpd_is_irq_safe(genpd)	(genpd->flags & GENPD_FLAG_IRQ_SAFE)
 #define genpd_is_always_on(genpd)	(genpd->flags & GENPD_FLAG_ALWAYS_ON)
+<<<<<<< HEAD
 #define genpd_is_active_wakeup(genpd)	(genpd->flags & GENPD_FLAG_ACTIVE_WAKEUP)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool irq_safe_dev_in_no_sleep_domain(struct device *dev,
 		const struct generic_pm_domain *genpd)
@@ -239,6 +245,7 @@ static void genpd_update_accounting(struct generic_pm_domain *genpd)
 static inline void genpd_update_accounting(struct generic_pm_domain *genpd) {}
 #endif
 
+<<<<<<< HEAD
 /**
  * dev_pm_genpd_set_performance_state- Set performance state of device's power
  * domain.
@@ -328,6 +335,8 @@ unlock:
 }
 EXPORT_SYMBOL_GPL(dev_pm_genpd_set_performance_state);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int _genpd_power_on(struct generic_pm_domain *genpd, bool timed)
 {
 	unsigned int state_idx = genpd->state_idx;
@@ -347,6 +356,7 @@ static int _genpd_power_on(struct generic_pm_domain *genpd, bool timed)
 		return ret;
 
 	elapsed_ns = ktime_to_ns(ktime_sub(ktime_get(), time_start));
+<<<<<<< HEAD
 
 	if (unlikely(genpd->set_performance_state)) {
 		ret = genpd->set_performance_state(genpd, genpd->performance_state);
@@ -356,6 +366,8 @@ static int _genpd_power_on(struct generic_pm_domain *genpd, bool timed)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (elapsed_ns <= genpd->states[state_idx].power_on_latency_ns)
 		return ret;
 
@@ -446,7 +458,13 @@ static int genpd_power_off(struct generic_pm_domain *genpd, bool one_dev_on,
 	list_for_each_entry(pdd, &genpd->dev_list, list_node) {
 		enum pm_qos_flags_status stat;
 
+<<<<<<< HEAD
 		stat = dev_pm_qos_flags(pdd->dev, PM_QOS_FLAG_NO_POWER_OFF);
+=======
+		stat = dev_pm_qos_flags(pdd->dev,
+					PM_QOS_FLAG_NO_POWER_OFF
+						| PM_QOS_FLAG_REMOTE_WAKEUP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (stat > PM_QOS_FLAGS_NONE)
 			return -EBUSY;
 
@@ -467,6 +485,13 @@ static int genpd_power_off(struct generic_pm_domain *genpd, bool one_dev_on,
 			return -EAGAIN;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Default to shallowest state. */
+	if (!genpd->gov)
+		genpd->state_idx = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (genpd->power_off) {
 		int ret;
 
@@ -847,7 +872,15 @@ late_initcall(genpd_power_off_unused);
 
 #if defined(CONFIG_PM_SLEEP) || defined(CONFIG_PM_GENERIC_DOMAINS_OF)
 
+<<<<<<< HEAD
 static bool genpd_present(const struct generic_pm_domain *genpd)
+=======
+/**
+ * pm_genpd_present - Check if the given PM domain has been initialized.
+ * @genpd: PM domain to check.
+ */
+static bool pm_genpd_present(const struct generic_pm_domain *genpd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct generic_pm_domain *gpd;
 
@@ -865,6 +898,15 @@ static bool genpd_present(const struct generic_pm_domain *genpd)
 
 #ifdef CONFIG_PM_SLEEP
 
+<<<<<<< HEAD
+=======
+static bool genpd_dev_active_wakeup(const struct generic_pm_domain *genpd,
+				    struct device *dev)
+{
+	return GENPD_DEV_CALLBACK(genpd, bool, active_wakeup, dev);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * genpd_sync_power_off - Synchronously power off a PM domain and its masters.
  * @genpd: PM domain to power off, if possible.
@@ -951,7 +993,11 @@ static void genpd_sync_power_on(struct generic_pm_domain *genpd, bool use_lock,
  * @genpd: PM domain the device belongs to.
  *
  * There are two cases in which a device that can wake up the system from sleep
+<<<<<<< HEAD
  * states should be resumed by genpd_prepare(): (1) if the device is enabled
+=======
+ * states should be resumed by pm_genpd_prepare(): (1) if the device is enabled
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * to wake up the system and it has to remain active for this purpose while the
  * system is in the sleep state and (2) if the device is not enabled to wake up
  * the system from sleep states and it generally doesn't generate wakeup signals
@@ -969,12 +1015,20 @@ static bool resume_needed(struct device *dev,
 	if (!device_can_wakeup(dev))
 		return false;
 
+<<<<<<< HEAD
 	active_wakeup = genpd_is_active_wakeup(genpd);
+=======
+	active_wakeup = genpd_dev_active_wakeup(genpd, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return device_may_wakeup(dev) ? active_wakeup : !active_wakeup;
 }
 
 /**
+<<<<<<< HEAD
  * genpd_prepare - Start power transition of a device in a PM domain.
+=======
+ * pm_genpd_prepare - Start power transition of a device in a PM domain.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to start the transition of.
  *
  * Start a power transition of a device (during a system-wide power transition)
@@ -982,7 +1036,11 @@ static bool resume_needed(struct device *dev,
  * an object of type struct generic_pm_domain representing a PM domain
  * consisting of I/O devices.
  */
+<<<<<<< HEAD
 static int genpd_prepare(struct device *dev)
+=======
+static int pm_genpd_prepare(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct generic_pm_domain *genpd;
 	int ret;
@@ -1033,12 +1091,22 @@ static int genpd_prepare(struct device *dev)
 static int genpd_finish_suspend(struct device *dev, bool poweroff)
 {
 	struct generic_pm_domain *genpd;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	genpd = dev_to_genpd(dev);
 	if (IS_ERR(genpd))
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (dev->power.wakeup_path && genpd_dev_active_wakeup(genpd, dev))
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (poweroff)
 		ret = pm_generic_poweroff_noirq(dev);
 	else
@@ -1046,6 +1114,7 @@ static int genpd_finish_suspend(struct device *dev, bool poweroff)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (dev->power.wakeup_path && genpd_is_active_wakeup(genpd))
 		return 0;
 
@@ -1059,6 +1128,12 @@ static int genpd_finish_suspend(struct device *dev, bool poweroff)
 				pm_generic_resume_noirq(dev);
 			return ret;
 		}
+=======
+	if (genpd->dev_ops.stop && genpd->dev_ops.start) {
+		ret = pm_runtime_force_suspend(dev);
+		if (ret)
+			return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	genpd_lock(genpd);
@@ -1070,13 +1145,21 @@ static int genpd_finish_suspend(struct device *dev, bool poweroff)
 }
 
 /**
+<<<<<<< HEAD
  * genpd_suspend_noirq - Completion of suspend of device in an I/O PM domain.
+=======
+ * pm_genpd_suspend_noirq - Completion of suspend of device in an I/O PM domain.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to suspend.
  *
  * Stop the device and remove power from the domain if all devices in it have
  * been stopped.
  */
+<<<<<<< HEAD
 static int genpd_suspend_noirq(struct device *dev)
+=======
+static int pm_genpd_suspend_noirq(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	dev_dbg(dev, "%s()\n", __func__);
 
@@ -1084,15 +1167,26 @@ static int genpd_suspend_noirq(struct device *dev)
 }
 
 /**
+<<<<<<< HEAD
  * genpd_resume_noirq - Start of resume of device in an I/O PM domain.
+=======
+ * pm_genpd_resume_noirq - Start of resume of device in an I/O PM domain.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to resume.
  *
  * Restore power to the device's PM domain, if necessary, and start the device.
  */
+<<<<<<< HEAD
 static int genpd_resume_noirq(struct device *dev)
 {
 	struct generic_pm_domain *genpd;
 	int ret;
+=======
+static int pm_genpd_resume_noirq(struct device *dev)
+{
+	struct generic_pm_domain *genpd;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(dev, "%s()\n", __func__);
 
@@ -1100,14 +1194,20 @@ static int genpd_resume_noirq(struct device *dev)
 	if (IS_ERR(genpd))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (dev->power.wakeup_path && genpd_is_active_wakeup(genpd))
 		return pm_generic_resume_noirq(dev);
+=======
+	if (dev->power.wakeup_path && genpd_dev_active_wakeup(genpd, dev))
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	genpd_lock(genpd);
 	genpd_sync_power_on(genpd, true, 0);
 	genpd->suspended_count--;
 	genpd_unlock(genpd);
 
+<<<<<<< HEAD
 	if (genpd->dev_ops.stop && genpd->dev_ops.start &&
 	    !pm_runtime_status_suspended(dev)) {
 		ret = genpd_start_dev(genpd, dev);
@@ -1120,6 +1220,20 @@ static int genpd_resume_noirq(struct device *dev)
 
 /**
  * genpd_freeze_noirq - Completion of freezing a device in an I/O PM domain.
+=======
+	if (genpd->dev_ops.stop && genpd->dev_ops.start)
+		ret = pm_runtime_force_resume(dev);
+
+	ret = pm_generic_resume_noirq(dev);
+	if (ret)
+		return ret;
+
+	return ret;
+}
+
+/**
+ * pm_genpd_freeze_noirq - Completion of freezing a device in an I/O PM domain.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to freeze.
  *
  * Carry out a late freeze of a device under the assumption that its
@@ -1127,7 +1241,11 @@ static int genpd_resume_noirq(struct device *dev)
  * struct generic_pm_domain representing a power domain consisting of I/O
  * devices.
  */
+<<<<<<< HEAD
 static int genpd_freeze_noirq(struct device *dev)
+=======
+static int pm_genpd_freeze_noirq(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct generic_pm_domain *genpd;
 	int ret = 0;
@@ -1142,21 +1260,34 @@ static int genpd_freeze_noirq(struct device *dev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (genpd->dev_ops.stop && genpd->dev_ops.start &&
 	    !pm_runtime_status_suspended(dev))
 		ret = genpd_stop_dev(genpd, dev);
+=======
+	if (genpd->dev_ops.stop && genpd->dev_ops.start)
+		ret = pm_runtime_force_suspend(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
 
 /**
+<<<<<<< HEAD
  * genpd_thaw_noirq - Early thaw of device in an I/O PM domain.
+=======
+ * pm_genpd_thaw_noirq - Early thaw of device in an I/O PM domain.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to thaw.
  *
  * Start the device, unless power has been removed from the domain already
  * before the system transition.
  */
+<<<<<<< HEAD
 static int genpd_thaw_noirq(struct device *dev)
+=======
+static int pm_genpd_thaw_noirq(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct generic_pm_domain *genpd;
 	int ret = 0;
@@ -1167,9 +1298,14 @@ static int genpd_thaw_noirq(struct device *dev)
 	if (IS_ERR(genpd))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (genpd->dev_ops.stop && genpd->dev_ops.start &&
 	    !pm_runtime_status_suspended(dev)) {
 		ret = genpd_start_dev(genpd, dev);
+=======
+	if (genpd->dev_ops.stop && genpd->dev_ops.start) {
+		ret = pm_runtime_force_resume(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -1178,14 +1314,22 @@ static int genpd_thaw_noirq(struct device *dev)
 }
 
 /**
+<<<<<<< HEAD
  * genpd_poweroff_noirq - Completion of hibernation of device in an
+=======
+ * pm_genpd_poweroff_noirq - Completion of hibernation of device in an
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *   I/O PM domain.
  * @dev: Device to poweroff.
  *
  * Stop the device and remove power from the domain if all devices in it have
  * been stopped.
  */
+<<<<<<< HEAD
 static int genpd_poweroff_noirq(struct device *dev)
+=======
+static int pm_genpd_poweroff_noirq(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	dev_dbg(dev, "%s()\n", __func__);
 
@@ -1193,13 +1337,21 @@ static int genpd_poweroff_noirq(struct device *dev)
 }
 
 /**
+<<<<<<< HEAD
  * genpd_restore_noirq - Start of restore of device in an I/O PM domain.
+=======
+ * pm_genpd_restore_noirq - Start of restore of device in an I/O PM domain.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to resume.
  *
  * Make sure the domain will be in the same power state as before the
  * hibernation the system is resuming from and start the device if necessary.
  */
+<<<<<<< HEAD
 static int genpd_restore_noirq(struct device *dev)
+=======
+static int pm_genpd_restore_noirq(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct generic_pm_domain *genpd;
 	int ret = 0;
@@ -1226,9 +1378,14 @@ static int genpd_restore_noirq(struct device *dev)
 	genpd_sync_power_on(genpd, true, 0);
 	genpd_unlock(genpd);
 
+<<<<<<< HEAD
 	if (genpd->dev_ops.stop && genpd->dev_ops.start &&
 	    !pm_runtime_status_suspended(dev)) {
 		ret = genpd_start_dev(genpd, dev);
+=======
+	if (genpd->dev_ops.stop && genpd->dev_ops.start) {
+		ret = pm_runtime_force_resume(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -1237,7 +1394,11 @@ static int genpd_restore_noirq(struct device *dev)
 }
 
 /**
+<<<<<<< HEAD
  * genpd_complete - Complete power transition of a device in a power domain.
+=======
+ * pm_genpd_complete - Complete power transition of a device in a power domain.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: Device to complete the transition of.
  *
  * Complete a power transition of a device (during a system-wide power
@@ -1245,7 +1406,11 @@ static int genpd_restore_noirq(struct device *dev)
  * domain member of an object of type struct generic_pm_domain representing
  * a power domain consisting of I/O devices.
  */
+<<<<<<< HEAD
 static void genpd_complete(struct device *dev)
+=======
+static void pm_genpd_complete(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct generic_pm_domain *genpd;
 
@@ -1278,7 +1443,11 @@ static void genpd_syscore_switch(struct device *dev, bool suspend)
 	struct generic_pm_domain *genpd;
 
 	genpd = dev_to_genpd(dev);
+<<<<<<< HEAD
 	if (!genpd_present(genpd))
+=======
+	if (!pm_genpd_present(genpd))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (suspend) {
@@ -1304,6 +1473,7 @@ EXPORT_SYMBOL_GPL(pm_genpd_syscore_poweron);
 
 #else /* !CONFIG_PM_SLEEP */
 
+<<<<<<< HEAD
 #define genpd_prepare		NULL
 #define genpd_suspend_noirq	NULL
 #define genpd_resume_noirq	NULL
@@ -1312,10 +1482,24 @@ EXPORT_SYMBOL_GPL(pm_genpd_syscore_poweron);
 #define genpd_poweroff_noirq	NULL
 #define genpd_restore_noirq	NULL
 #define genpd_complete		NULL
+=======
+#define pm_genpd_prepare		NULL
+#define pm_genpd_suspend_noirq		NULL
+#define pm_genpd_resume_noirq		NULL
+#define pm_genpd_freeze_noirq		NULL
+#define pm_genpd_thaw_noirq		NULL
+#define pm_genpd_poweroff_noirq		NULL
+#define pm_genpd_restore_noirq		NULL
+#define pm_genpd_complete		NULL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* CONFIG_PM_SLEEP */
 
 static struct generic_pm_domain_data *genpd_alloc_dev_data(struct device *dev,
+<<<<<<< HEAD
+=======
+					struct generic_pm_domain *genpd,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct gpd_timing_data *td)
 {
 	struct generic_pm_domain_data *gpd_data;
@@ -1336,7 +1520,11 @@ static struct generic_pm_domain_data *genpd_alloc_dev_data(struct device *dev,
 
 	gpd_data->base.dev = dev;
 	gpd_data->td.constraint_changed = true;
+<<<<<<< HEAD
 	gpd_data->td.effective_constraint_ns = PM_QOS_RESUME_LATENCY_NO_CONSTRAINT_NS;
+=======
+	gpd_data->td.effective_constraint_ns = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpd_data->nb.notifier_call = genpd_dev_pm_qos_notifier;
 
 	spin_lock_irq(&dev->power.lock);
@@ -1377,23 +1565,44 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
 			    struct gpd_timing_data *td)
 {
 	struct generic_pm_domain_data *gpd_data;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(dev, "%s()\n", __func__);
 
 	if (IS_ERR_OR_NULL(genpd) || IS_ERR_OR_NULL(dev))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	gpd_data = genpd_alloc_dev_data(dev, td);
 	if (IS_ERR(gpd_data))
 		return PTR_ERR(gpd_data);
 
+=======
+	gpd_data = genpd_alloc_dev_data(dev, genpd, td);
+	if (IS_ERR(gpd_data))
+		return PTR_ERR(gpd_data);
+
+	genpd_lock(genpd);
+
+	if (genpd->prepared_count > 0) {
+		ret = -EAGAIN;
+		goto out;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = genpd->attach_dev ? genpd->attach_dev(genpd, dev) : 0;
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	genpd_lock(genpd);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_pm_domain_set(dev, &genpd->domain);
 
 	genpd->device_count++;
@@ -1401,8 +1610,14 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
 
 	list_add_tail(&gpd_data->base.list_node, &genpd->dev_list);
 
+<<<<<<< HEAD
 	genpd_unlock(genpd);
  out:
+=======
+ out:
+	genpd_unlock(genpd);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		genpd_free_dev_data(dev, gpd_data);
 	else
@@ -1412,21 +1627,39 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
 }
 
 /**
+<<<<<<< HEAD
  * pm_genpd_add_device - Add a device to an I/O PM domain.
  * @genpd: PM domain to add the device to.
  * @dev: Device to be added.
  */
 int pm_genpd_add_device(struct generic_pm_domain *genpd, struct device *dev)
+=======
+ * __pm_genpd_add_device - Add a device to an I/O PM domain.
+ * @genpd: PM domain to add the device to.
+ * @dev: Device to be added.
+ * @td: Set of PM QoS timing parameters to attach to the device.
+ */
+int __pm_genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
+			  struct gpd_timing_data *td)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
 	mutex_lock(&gpd_list_lock);
+<<<<<<< HEAD
 	ret = genpd_add_device(genpd, dev, NULL);
+=======
+	ret = genpd_add_device(genpd, dev, td);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&gpd_list_lock);
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(pm_genpd_add_device);
+=======
+EXPORT_SYMBOL_GPL(__pm_genpd_add_device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int genpd_remove_device(struct generic_pm_domain *genpd,
 			       struct device *dev)
@@ -1451,15 +1684,24 @@ static int genpd_remove_device(struct generic_pm_domain *genpd,
 	genpd->device_count--;
 	genpd->max_off_time_changed = true;
 
+<<<<<<< HEAD
+=======
+	if (genpd->detach_dev)
+		genpd->detach_dev(genpd, dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_pm_domain_set(dev, NULL);
 
 	list_del_init(&pdd->list_node);
 
 	genpd_unlock(genpd);
 
+<<<<<<< HEAD
 	if (genpd->detach_dev)
 		genpd->detach_dev(genpd, dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	genpd_free_dev_data(dev, gpd_data);
 
 	return 0;
@@ -1473,6 +1715,7 @@ static int genpd_remove_device(struct generic_pm_domain *genpd,
 
 /**
  * pm_genpd_remove_device - Remove a device from an I/O PM domain.
+<<<<<<< HEAD
  * @dev: Device to be removed.
  */
 int pm_genpd_remove_device(struct device *dev)
@@ -1480,6 +1723,15 @@ int pm_genpd_remove_device(struct device *dev)
 	struct generic_pm_domain *genpd = genpd_lookup_dev(dev);
 
 	if (!genpd)
+=======
+ * @genpd: PM domain to remove the device from.
+ * @dev: Device to be removed.
+ */
+int pm_genpd_remove_device(struct generic_pm_domain *genpd,
+			   struct device *dev)
+{
+	if (!genpd || genpd != genpd_lookup_dev(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	return genpd_remove_device(genpd, dev);
@@ -1663,6 +1915,7 @@ int pm_genpd_init(struct generic_pm_domain *genpd,
 	genpd->accounting_time = ktime_get();
 	genpd->domain.ops.runtime_suspend = genpd_runtime_suspend;
 	genpd->domain.ops.runtime_resume = genpd_runtime_resume;
+<<<<<<< HEAD
 	genpd->domain.ops.prepare = genpd_prepare;
 	genpd->domain.ops.suspend_noirq = genpd_suspend_noirq;
 	genpd->domain.ops.resume_noirq = genpd_resume_noirq;
@@ -1671,6 +1924,16 @@ int pm_genpd_init(struct generic_pm_domain *genpd,
 	genpd->domain.ops.poweroff_noirq = genpd_poweroff_noirq;
 	genpd->domain.ops.restore_noirq = genpd_restore_noirq;
 	genpd->domain.ops.complete = genpd_complete;
+=======
+	genpd->domain.ops.prepare = pm_genpd_prepare;
+	genpd->domain.ops.suspend_noirq = pm_genpd_suspend_noirq;
+	genpd->domain.ops.resume_noirq = pm_genpd_resume_noirq;
+	genpd->domain.ops.freeze_noirq = pm_genpd_freeze_noirq;
+	genpd->domain.ops.thaw_noirq = pm_genpd_thaw_noirq;
+	genpd->domain.ops.poweroff_noirq = pm_genpd_poweroff_noirq;
+	genpd->domain.ops.restore_noirq = pm_genpd_restore_noirq;
+	genpd->domain.ops.complete = pm_genpd_complete;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (genpd->flags & GENPD_FLAG_PM_CLK) {
 		genpd->dev_ops.stop = pm_clk_suspend;
@@ -1686,11 +1949,18 @@ int pm_genpd_init(struct generic_pm_domain *genpd,
 		ret = genpd_set_default_power_state(genpd);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 	}
 
 	device_initialize(&genpd->dev);
 	dev_set_name(&genpd->dev, "%s", genpd->name);
 
+=======
+	} else if (!gov) {
+		pr_warn("%s : no governor for states\n", genpd->name);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&gpd_list_lock);
 	list_add(&genpd->gpd_list_node, &gpd_list);
 	mutex_unlock(&gpd_list_lock);
@@ -1887,6 +2157,7 @@ int of_genpd_add_provider_simple(struct device_node *np,
 
 	mutex_lock(&gpd_list_lock);
 
+<<<<<<< HEAD
 	if (!genpd_present(genpd))
 		goto unlock;
 
@@ -1914,6 +2185,16 @@ int of_genpd_add_provider_simple(struct device_node *np,
 	genpd->has_provider = true;
 
 unlock:
+=======
+	if (pm_genpd_present(genpd)) {
+		ret = genpd_add_provider(np, genpd_xlate_simple, genpd);
+		if (!ret) {
+			genpd->provider = &np->fwnode;
+			genpd->has_provider = true;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&gpd_list_lock);
 
 	return ret;
@@ -1928,7 +2209,10 @@ EXPORT_SYMBOL_GPL(of_genpd_add_provider_simple);
 int of_genpd_add_provider_onecell(struct device_node *np,
 				  struct genpd_onecell_data *data)
 {
+<<<<<<< HEAD
 	struct generic_pm_domain *genpd;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 	int ret = -EINVAL;
 
@@ -1941,6 +2225,7 @@ int of_genpd_add_provider_onecell(struct device_node *np,
 		data->xlate = genpd_xlate_onecell;
 
 	for (i = 0; i < data->num_domains; i++) {
+<<<<<<< HEAD
 		genpd = data->domains[i];
 
 		if (!genpd)
@@ -1962,6 +2247,15 @@ int of_genpd_add_provider_onecell(struct device_node *np,
 
 		genpd->provider = &np->fwnode;
 		genpd->has_provider = true;
+=======
+		if (!data->domains[i])
+			continue;
+		if (!pm_genpd_present(data->domains[i]))
+			goto error;
+
+		data->domains[i]->provider = &np->fwnode;
+		data->domains[i]->has_provider = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = genpd_add_provider(np, data->xlate, data);
@@ -1974,6 +2268,7 @@ int of_genpd_add_provider_onecell(struct device_node *np,
 
 error:
 	while (i--) {
+<<<<<<< HEAD
 		genpd = data->domains[i];
 
 		if (!genpd)
@@ -1984,6 +2279,12 @@ error:
 
 		if (genpd->set_performance_state)
 			dev_pm_opp_of_remove_table(&genpd->dev);
+=======
+		if (!data->domains[i])
+			continue;
+		data->domains[i]->provider = NULL;
+		data->domains[i]->has_provider = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_unlock(&gpd_list_lock);
@@ -2010,6 +2311,7 @@ void of_genpd_del_provider(struct device_node *np)
 			 * provider, set the 'has_provider' to false
 			 * so that the PM domain can be safely removed.
 			 */
+<<<<<<< HEAD
 			list_for_each_entry(gpd, &gpd_list, gpd_list_node) {
 				if (gpd->provider == &np->fwnode) {
 					gpd->has_provider = false;
@@ -2021,6 +2323,12 @@ void of_genpd_del_provider(struct device_node *np)
 				}
 			}
 
+=======
+			list_for_each_entry(gpd, &gpd_list, gpd_list_node)
+				if (gpd->provider == &np->fwnode)
+					gpd->has_provider = false;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			list_del(&cp->link);
 			of_node_put(cp->node);
 			kfree(cp);
@@ -2170,6 +2478,7 @@ struct generic_pm_domain *of_genpd_remove_last(struct device_node *np)
 }
 EXPORT_SYMBOL_GPL(of_genpd_remove_last);
 
+<<<<<<< HEAD
 static void genpd_release_dev(struct device *dev)
 {
 	kfree(dev);
@@ -2179,6 +2488,8 @@ static struct bus_type genpd_bus_type = {
 	.name		= "genpd",
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * genpd_dev_pm_detach - Detach a device from its PM domain.
  * @dev: Device to detach.
@@ -2216,10 +2527,13 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
 
 	/* Check if PM domain can be powered off after removing this device. */
 	genpd_queue_power_off_work(pd);
+<<<<<<< HEAD
 
 	/* Unregister the device if it was created by genpd. */
 	if (dev->bus == &genpd_bus_type)
 		device_unregister(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void genpd_dev_pm_sync(struct device *dev)
@@ -2233,6 +2547,7 @@ static void genpd_dev_pm_sync(struct device *dev)
 	genpd_queue_power_off_work(pd);
 }
 
+<<<<<<< HEAD
 static int __genpd_dev_pm_attach(struct device *dev, struct device_node *np,
 				 unsigned int index, bool power_on)
 {
@@ -2244,6 +2559,52 @@ static int __genpd_dev_pm_attach(struct device *dev, struct device_node *np,
 				"#power-domain-cells", index, &pd_args);
 	if (ret < 0)
 		return ret;
+=======
+/**
+ * genpd_dev_pm_attach - Attach a device to its PM domain using DT.
+ * @dev: Device to attach.
+ *
+ * Parse device's OF node to find a PM domain specifier. If such is found,
+ * attaches the device to retrieved pm_domain ops.
+ *
+ * Both generic and legacy Samsung-specific DT bindings are supported to keep
+ * backwards compatibility with existing DTBs.
+ *
+ * Returns 0 on successfully attached PM domain or negative error code. Note
+ * that if a power-domain exists for the device, but it cannot be found or
+ * turned on, then return -EPROBE_DEFER to ensure that the device is not
+ * probed and to re-try again later.
+ */
+int genpd_dev_pm_attach(struct device *dev)
+{
+	struct of_phandle_args pd_args;
+	struct generic_pm_domain *pd;
+	unsigned int i;
+	int ret;
+
+	if (!dev->of_node)
+		return -ENODEV;
+
+	if (dev->pm_domain)
+		return -EEXIST;
+
+	ret = of_parse_phandle_with_args(dev->of_node, "power-domains",
+					"#power-domain-cells", 0, &pd_args);
+	if (ret < 0) {
+		if (ret != -ENOENT)
+			return ret;
+
+		/*
+		 * Try legacy Samsung-specific bindings
+		 * (for backwards compatibility of DT ABI)
+		 */
+		pd_args.args_count = 0;
+		pd_args.np = of_parse_phandle(dev->of_node,
+						"samsung,power-domain", 0);
+		if (!pd_args.np)
+			return -ENOENT;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&gpd_list_lock);
 	pd = genpd_get_from_provider(&pd_args);
@@ -2252,24 +2613,44 @@ static int __genpd_dev_pm_attach(struct device *dev, struct device_node *np,
 		mutex_unlock(&gpd_list_lock);
 		dev_dbg(dev, "%s() failed to find PM domain: %ld\n",
 			__func__, PTR_ERR(pd));
+<<<<<<< HEAD
 		return driver_deferred_probe_check_state(dev);
+=======
+		return -EPROBE_DEFER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dev_dbg(dev, "adding to PM domain %s\n", pd->name);
 
+<<<<<<< HEAD
 	ret = genpd_add_device(pd, dev, NULL);
+=======
+	for (i = 1; i < GENPD_RETRY_MAX_MS; i <<= 1) {
+		ret = genpd_add_device(pd, dev, NULL);
+		if (ret != -EAGAIN)
+			break;
+
+		mdelay(i);
+		cond_resched();
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&gpd_list_lock);
 
 	if (ret < 0) {
 		if (ret != -EPROBE_DEFER)
 			dev_err(dev, "failed to add to PM domain %s: %d",
 				pd->name, ret);
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dev->pm_domain->detach = genpd_dev_pm_detach;
 	dev->pm_domain->sync = genpd_dev_pm_sync;
 
+<<<<<<< HEAD
 	if (power_on) {
 		genpd_lock(pd);
 		ret = genpd_power_on(pd, 0);
@@ -2397,6 +2778,19 @@ struct device *genpd_dev_pm_attach_by_name(struct device *dev, char *name)
 	return genpd_dev_pm_attach_by_id(dev, index);
 }
 
+=======
+	genpd_lock(pd);
+	ret = genpd_power_on(pd, 0);
+	genpd_unlock(pd);
+
+	if (ret)
+		genpd_remove_device(pd, dev);
+out:
+	return ret ? -EPROBE_DEFER : 0;
+}
+EXPORT_SYMBOL_GPL(genpd_dev_pm_attach);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id idle_state_match[] = {
 	{ .compatible = "domain-idle-state", },
 	{ }
@@ -2507,6 +2901,7 @@ int of_genpd_parse_idle_states(struct device_node *dn,
 }
 EXPORT_SYMBOL_GPL(of_genpd_parse_idle_states);
 
+<<<<<<< HEAD
 /**
  * of_genpd_opp_to_performance_state- Gets performance state of device's
  * power domain corresponding to a DT node's "required-opps" property.
@@ -2561,6 +2956,8 @@ static int __init genpd_bus_init(void)
 }
 core_initcall(genpd_bus_init);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PM_GENERIC_DOMAINS_OF */
 
 
@@ -2573,7 +2970,11 @@ core_initcall(genpd_bus_init);
 #include <linux/seq_file.h>
 #include <linux/init.h>
 #include <linux/kobject.h>
+<<<<<<< HEAD
 static struct dentry *genpd_debugfs_dir;
+=======
+static struct dentry *pm_genpd_debugfs_dir;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * TODO: This function is a slightly modified version of rtpm_status_show
@@ -2601,8 +3002,13 @@ static void rtpm_status_str(struct seq_file *s, struct device *dev)
 	seq_puts(s, p);
 }
 
+<<<<<<< HEAD
 static int genpd_summary_one(struct seq_file *s,
 			struct generic_pm_domain *genpd)
+=======
+static int pm_genpd_summary_one(struct seq_file *s,
+				struct generic_pm_domain *genpd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const char * const status_lookup[] = {
 		[GPD_STATE_ACTIVE] = "on",
@@ -2672,7 +3078,11 @@ static int genpd_summary_show(struct seq_file *s, void *data)
 		return -ERESTARTSYS;
 
 	list_for_each_entry(genpd, &gpd_list, gpd_list_node) {
+<<<<<<< HEAD
 		ret = genpd_summary_one(s, genpd);
+=======
+		ret = pm_genpd_summary_one(s, genpd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			break;
 	}
@@ -2828,6 +3238,7 @@ static int genpd_devices_show(struct seq_file *s, void *data)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int genpd_perf_state_show(struct seq_file *s, void *data)
 {
 	struct generic_pm_domain *genpd = s->private;
@@ -2841,6 +3252,8 @@ static int genpd_perf_state_show(struct seq_file *s, void *data)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define define_genpd_open_function(name) \
 static int genpd_##name##_open(struct inode *inode, struct file *file) \
 { \
@@ -2854,7 +3267,10 @@ define_genpd_open_function(idle_states);
 define_genpd_open_function(active_time);
 define_genpd_open_function(total_idle_time);
 define_genpd_open_function(devices);
+<<<<<<< HEAD
 define_genpd_open_function(perf_state);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define define_genpd_debugfs_fops(name) \
 static const struct file_operations genpd_##name##_fops = { \
@@ -2871,13 +3287,19 @@ define_genpd_debugfs_fops(idle_states);
 define_genpd_debugfs_fops(active_time);
 define_genpd_debugfs_fops(total_idle_time);
 define_genpd_debugfs_fops(devices);
+<<<<<<< HEAD
 define_genpd_debugfs_fops(perf_state);
 
 static int __init genpd_debug_init(void)
+=======
+
+static int __init pm_genpd_debug_init(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dentry *d;
 	struct generic_pm_domain *genpd;
 
+<<<<<<< HEAD
 	genpd_debugfs_dir = debugfs_create_dir("pm_genpd", NULL);
 
 	if (!genpd_debugfs_dir)
@@ -2885,11 +3307,24 @@ static int __init genpd_debug_init(void)
 
 	d = debugfs_create_file("pm_genpd_summary", S_IRUGO,
 			genpd_debugfs_dir, NULL, &genpd_summary_fops);
+=======
+	pm_genpd_debugfs_dir = debugfs_create_dir("pm_genpd", NULL);
+
+	if (!pm_genpd_debugfs_dir)
+		return -ENOMEM;
+
+	d = debugfs_create_file("pm_genpd_summary", S_IRUGO,
+			pm_genpd_debugfs_dir, NULL, &genpd_summary_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d)
 		return -ENOMEM;
 
 	list_for_each_entry(genpd, &gpd_list, gpd_list_node) {
+<<<<<<< HEAD
 		d = debugfs_create_dir(genpd->name, genpd_debugfs_dir);
+=======
+		d = debugfs_create_dir(genpd->name, pm_genpd_debugfs_dir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!d)
 			return -ENOMEM;
 
@@ -2905,13 +3340,17 @@ static int __init genpd_debug_init(void)
 				d, genpd, &genpd_total_idle_time_fops);
 		debugfs_create_file("devices", 0444,
 				d, genpd, &genpd_devices_fops);
+<<<<<<< HEAD
 		if (genpd->set_performance_state)
 			debugfs_create_file("perf_state", 0444,
 					    d, genpd, &genpd_perf_state_fops);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
+<<<<<<< HEAD
 late_initcall(genpd_debug_init);
 
 static void __exit genpd_debug_exit(void)
@@ -2919,4 +3358,13 @@ static void __exit genpd_debug_exit(void)
 	debugfs_remove_recursive(genpd_debugfs_dir);
 }
 __exitcall(genpd_debug_exit);
+=======
+late_initcall(pm_genpd_debug_init);
+
+static void __exit pm_genpd_debug_exit(void)
+{
+	debugfs_remove_recursive(pm_genpd_debugfs_dir);
+}
+__exitcall(pm_genpd_debug_exit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_DEBUG_FS */

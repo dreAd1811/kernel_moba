@@ -125,8 +125,11 @@ struct atk_data {
 	int temperature_count;
 	int fan_count;
 	struct list_head sensor_list;
+<<<<<<< HEAD
 	struct attribute_group attr_group;
 	const struct attribute_group *attr_groups[2];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct {
 		struct dentry *root;
@@ -190,6 +193,10 @@ static int atk_add(struct acpi_device *device);
 static int atk_remove(struct acpi_device *device);
 static void atk_print_sensor(struct atk_data *data, union acpi_object *obj);
 static int atk_read_value(struct atk_sensor_data *sensor, u64 *value);
+<<<<<<< HEAD
+=======
+static void atk_free_sensors(struct atk_data *data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct acpi_driver atk_driver = {
 	.name	= ATK_HID,
@@ -263,6 +270,17 @@ static ssize_t atk_limit2_show(struct device *dev,
 	return sprintf(buf, "%lld\n", value);
 }
 
+<<<<<<< HEAD
+=======
+static ssize_t atk_name_show(struct device *dev,
+				struct device_attribute *attr, char *buf)
+{
+	return sprintf(buf, "atk0110\n");
+}
+static struct device_attribute atk_name_attr =
+		__ATTR(name, 0444, atk_name_show, NULL);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void atk_init_attribute(struct device_attribute *attr, char *name,
 		sysfs_show_func show)
 {
@@ -905,6 +923,7 @@ static int atk_add_sensor(struct atk_data *data, union acpi_object *obj)
 	limit1 = atk_get_pack_member(data, obj, HWMON_PACK_LIMIT1);
 	limit2 = atk_get_pack_member(data, obj, HWMON_PACK_LIMIT2);
 
+<<<<<<< HEAD
 	sensor = devm_kzalloc(dev, sizeof(*sensor), GFP_KERNEL);
 	if (!sensor)
 		return -ENOMEM;
@@ -912,6 +931,17 @@ static int atk_add_sensor(struct atk_data *data, union acpi_object *obj)
 	sensor->acpi_name = devm_kstrdup(dev, name->string.pointer, GFP_KERNEL);
 	if (!sensor->acpi_name)
 		return -ENOMEM;
+=======
+	sensor = kzalloc(sizeof(*sensor), GFP_KERNEL);
+	if (!sensor)
+		return -ENOMEM;
+
+	sensor->acpi_name = kstrdup(name->string.pointer, GFP_KERNEL);
+	if (!sensor->acpi_name) {
+		err = -ENOMEM;
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&sensor->list);
 	sensor->type = type;
@@ -952,6 +982,12 @@ static int atk_add_sensor(struct atk_data *data, union acpi_object *obj)
 	(*num)++;
 
 	return 1;
+<<<<<<< HEAD
+=======
+out:
+	kfree(sensor);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int atk_enumerate_old_hwmon(struct atk_data *data)
@@ -992,7 +1028,12 @@ static int atk_enumerate_old_hwmon(struct atk_data *data)
 		dev_warn(dev, METHOD_OLD_ENUM_TMP ": ACPI exception: %s\n",
 				acpi_format_exception(status));
 
+<<<<<<< HEAD
 		return -ENODEV;
+=======
+		ret = -ENODEV;
+		goto cleanup;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pack = buf.pointer;
@@ -1013,7 +1054,12 @@ static int atk_enumerate_old_hwmon(struct atk_data *data)
 		dev_warn(dev, METHOD_OLD_ENUM_FAN ": ACPI exception: %s\n",
 				acpi_format_exception(status));
 
+<<<<<<< HEAD
 		return -ENODEV;
+=======
+		ret = -ENODEV;
+		goto cleanup;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pack = buf.pointer;
@@ -1027,6 +1073,12 @@ static int atk_enumerate_old_hwmon(struct atk_data *data)
 	ACPI_FREE(buf.pointer);
 
 	return count;
+<<<<<<< HEAD
+=======
+cleanup:
+	atk_free_sensors(data);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int atk_ec_present(struct atk_data *data)
@@ -1176,6 +1228,7 @@ static int atk_enumerate_new_hwmon(struct atk_data *data)
 	return err;
 }
 
+<<<<<<< HEAD
 static int atk_init_attribute_groups(struct atk_data *data)
 {
 	struct device *dev = &data->acpi_dev->dev;
@@ -1200,11 +1253,61 @@ static int atk_init_attribute_groups(struct atk_data *data)
 	data->attr_groups[0] = &data->attr_group;
 
 	return 0;
+=======
+static int atk_create_files(struct atk_data *data)
+{
+	struct atk_sensor_data *s;
+	int err;
+
+	list_for_each_entry(s, &data->sensor_list, list) {
+		err = device_create_file(data->hwmon_dev, &s->input_attr);
+		if (err)
+			return err;
+		err = device_create_file(data->hwmon_dev, &s->label_attr);
+		if (err)
+			return err;
+		err = device_create_file(data->hwmon_dev, &s->limit1_attr);
+		if (err)
+			return err;
+		err = device_create_file(data->hwmon_dev, &s->limit2_attr);
+		if (err)
+			return err;
+	}
+
+	err = device_create_file(data->hwmon_dev, &atk_name_attr);
+
+	return err;
+}
+
+static void atk_remove_files(struct atk_data *data)
+{
+	struct atk_sensor_data *s;
+
+	list_for_each_entry(s, &data->sensor_list, list) {
+		device_remove_file(data->hwmon_dev, &s->input_attr);
+		device_remove_file(data->hwmon_dev, &s->label_attr);
+		device_remove_file(data->hwmon_dev, &s->limit1_attr);
+		device_remove_file(data->hwmon_dev, &s->limit2_attr);
+	}
+	device_remove_file(data->hwmon_dev, &atk_name_attr);
+}
+
+static void atk_free_sensors(struct atk_data *data)
+{
+	struct list_head *head = &data->sensor_list;
+	struct atk_sensor_data *s, *tmp;
+
+	list_for_each_entry_safe(s, tmp, head, list) {
+		kfree(s->acpi_name);
+		kfree(s);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int atk_register_hwmon(struct atk_data *data)
 {
 	struct device *dev = &data->acpi_dev->dev;
+<<<<<<< HEAD
 
 	dev_dbg(dev, "registering hwmon device\n");
 	data->hwmon_dev = hwmon_device_register_with_groups(dev, "atk0110",
@@ -1214,6 +1317,26 @@ static int atk_register_hwmon(struct atk_data *data)
 		return PTR_ERR(data->hwmon_dev);
 
 	return 0;
+=======
+	int err;
+
+	dev_dbg(dev, "registering hwmon device\n");
+	data->hwmon_dev = hwmon_device_register(dev);
+	if (IS_ERR(data->hwmon_dev))
+		return PTR_ERR(data->hwmon_dev);
+
+	dev_dbg(dev, "populating sysfs directory\n");
+	err = atk_create_files(data);
+	if (err)
+		goto remove;
+
+	return 0;
+remove:
+	/* Cleanup the registered files */
+	atk_remove_files(data);
+	hwmon_device_unregister(data->hwmon_dev);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int atk_probe_if(struct atk_data *data)
@@ -1301,7 +1424,11 @@ static int atk_add(struct acpi_device *device)
 
 	dev_dbg(&device->dev, "adding...\n");
 
+<<<<<<< HEAD
 	data = devm_kzalloc(&device->dev, sizeof(*data), GFP_KERNEL);
+=======
+	data = kzalloc(sizeof(*data), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data)
 		return -ENOMEM;
 
@@ -1348,20 +1475,35 @@ static int atk_add(struct acpi_device *device)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	err = atk_init_attribute_groups(data);
 	if (err)
 		goto out;
 	err = atk_register_hwmon(data);
 	if (err)
 		goto out;
+=======
+	err = atk_register_hwmon(data);
+	if (err)
+		goto cleanup;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atk_debugfs_init(data);
 
 	device->driver_data = data;
 	return 0;
+<<<<<<< HEAD
 out:
 	if (data->disable_ec)
 		atk_ec_ctl(data, 0);
+=======
+cleanup:
+	atk_free_sensors(data);
+out:
+	if (data->disable_ec)
+		atk_ec_ctl(data, 0);
+	kfree(data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -1374,6 +1516,11 @@ static int atk_remove(struct acpi_device *device)
 
 	atk_debugfs_cleanup(data);
 
+<<<<<<< HEAD
+=======
+	atk_remove_files(data);
+	atk_free_sensors(data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hwmon_device_unregister(data->hwmon_dev);
 
 	if (data->disable_ec) {
@@ -1381,6 +1528,11 @@ static int atk_remove(struct acpi_device *device)
 			dev_err(&device->dev, "Failed to disable EC\n");
 	}
 
+<<<<<<< HEAD
+=======
+	kfree(data);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

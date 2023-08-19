@@ -832,6 +832,7 @@ static void __ath9k_hw_enable_interrupts(struct ath_hw *ah)
 	}
 	ath_dbg(common, INTERRUPT, "AR_IMR 0x%x IER 0x%x\n",
 		REG_READ(ah, AR_IMR), REG_READ(ah, AR_IER));
+<<<<<<< HEAD
 
 	if (ah->msi_enabled) {
 		u32 _msi_reg = 0;
@@ -869,6 +870,8 @@ static void __ath9k_hw_enable_interrupts(struct ath_hw *ah)
 				"%s: _msi_reg = 0x%X\n",
 				__func__, _msi_reg);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void ath9k_hw_resume_interrupts(struct ath_hw *ah)
@@ -915,6 +918,7 @@ void ath9k_hw_set_interrupts(struct ath_hw *ah)
 	if (!(ints & ATH9K_INT_GLOBAL))
 		ath9k_hw_disable_interrupts(ah);
 
+<<<<<<< HEAD
 	if (ah->msi_enabled) {
 		ath_dbg(common, INTERRUPT, "Clearing AR_INTR_PRIO_ASYNC_ENABLE\n");
 
@@ -922,14 +926,20 @@ void ath9k_hw_set_interrupts(struct ath_hw *ah)
 		REG_READ(ah, AR_INTR_PRIO_ASYNC_ENABLE);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ath_dbg(common, INTERRUPT, "New interrupt mask 0x%x\n", ints);
 
 	mask = ints & ATH9K_INT_COMMON;
 	mask2 = 0;
 
+<<<<<<< HEAD
 	ah->msi_mask = 0;
 	if (ints & ATH9K_INT_TX) {
 		ah->msi_mask |= AR_INTR_PRIO_TX;
+=======
+	if (ints & ATH9K_INT_TX) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ah->config.tx_intr_mitigation)
 			mask |= AR_IMR_TXMINTR | AR_IMR_TXINTM;
 		else {
@@ -944,7 +954,10 @@ void ath9k_hw_set_interrupts(struct ath_hw *ah)
 			mask |= AR_IMR_TXEOL;
 	}
 	if (ints & ATH9K_INT_RX) {
+<<<<<<< HEAD
 		ah->msi_mask |= AR_INTR_PRIO_RXLP | AR_INTR_PRIO_RXHP;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (AR_SREV_9300_20_OR_LATER(ah)) {
 			mask |= AR_IMR_RXERR | AR_IMR_RXOK_HP;
 			if (ah->config.rx_intr_mitigation) {

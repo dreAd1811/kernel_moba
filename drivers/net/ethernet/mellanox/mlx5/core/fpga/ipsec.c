@@ -31,6 +31,7 @@
  *
  */
 
+<<<<<<< HEAD
 #include <linux/rhashtable.h>
 #include <linux/mlx5/driver.h>
 #include <linux/mlx5/fs_helpers.h>
@@ -39,10 +40,16 @@
 
 #include "mlx5_core.h"
 #include "fs_cmd.h"
+=======
+#include <linux/mlx5/driver.h>
+
+#include "mlx5_core.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "fpga/ipsec.h"
 #include "fpga/sdk.h"
 #include "fpga/core.h"
 
+<<<<<<< HEAD
 enum mlx5_fpga_ipsec_cmd_status {
 	MLX5_FPGA_IPSEC_CMD_PENDING,
 	MLX5_FPGA_IPSEC_CMD_SEND_FAIL,
@@ -53,10 +60,32 @@ struct mlx5_fpga_ipsec_cmd_context {
 	struct mlx5_fpga_dma_buf buf;
 	enum mlx5_fpga_ipsec_cmd_status status;
 	struct mlx5_ifc_fpga_ipsec_cmd_resp resp;
+=======
+#define SBU_QP_QUEUE_SIZE 8
+
+enum mlx5_ipsec_response_syndrome {
+	MLX5_IPSEC_RESPONSE_SUCCESS = 0,
+	MLX5_IPSEC_RESPONSE_ILLEGAL_REQUEST = 1,
+	MLX5_IPSEC_RESPONSE_SADB_ISSUE = 2,
+	MLX5_IPSEC_RESPONSE_WRITE_RESPONSE_ISSUE = 3,
+};
+
+enum mlx5_fpga_ipsec_sacmd_status {
+	MLX5_FPGA_IPSEC_SACMD_PENDING,
+	MLX5_FPGA_IPSEC_SACMD_SEND_FAIL,
+	MLX5_FPGA_IPSEC_SACMD_COMPLETE,
+};
+
+struct mlx5_ipsec_command_context {
+	struct mlx5_fpga_dma_buf buf;
+	struct mlx5_accel_ipsec_sa sa;
+	enum mlx5_fpga_ipsec_sacmd_status status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status_code;
 	struct completion complete;
 	struct mlx5_fpga_device *dev;
 	struct list_head list; /* Item in pending_cmds */
+<<<<<<< HEAD
 	u8 command[0];
 };
 
@@ -98,10 +127,22 @@ static const struct rhashtable_params rhash_sa = {
 
 struct mlx5_fpga_ipsec {
 	struct mlx5_fpga_device *fdev;
+=======
+};
+
+struct mlx5_ipsec_sadb_resp {
+	__be32 syndrome;
+	__be32 sw_sa_handle;
+	u8 reserved[24];
+} __packed;
+
+struct mlx5_fpga_ipsec {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head pending_cmds;
 	spinlock_t pending_cmds_lock; /* Protects pending_cmds */
 	u32 caps[MLX5_ST_SZ_DW(ipsec_extended_cap)];
 	struct mlx5_fpga_conn *conn;
+<<<<<<< HEAD
 
 	struct notifier_block	fs_notifier_ingress_bypass;
 	struct notifier_block	fs_notifier_egress;
@@ -119,6 +160,8 @@ struct mlx5_fpga_ipsec {
 	 */
 	struct rb_root rules_rb;
 	struct mutex rules_rb_lock; /* rules lock */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static bool mlx5_fpga_is_ipsec_device(struct mlx5_core_dev *mdev)
@@ -142,6 +185,7 @@ static void mlx5_fpga_ipsec_send_complete(struct mlx5_fpga_conn *conn,
 					  struct mlx5_fpga_dma_buf *buf,
 					  u8 status)
 {
+<<<<<<< HEAD
 	struct mlx5_fpga_ipsec_cmd_context *context;
 
 	if (status) {
@@ -150,10 +194,21 @@ static void mlx5_fpga_ipsec_send_complete(struct mlx5_fpga_conn *conn,
 		mlx5_fpga_warn(fdev, "IPSec command send failed with status %u\n",
 			       status);
 		context->status = MLX5_FPGA_IPSEC_CMD_SEND_FAIL;
+=======
+	struct mlx5_ipsec_command_context *context;
+
+	if (status) {
+		context = container_of(buf, struct mlx5_ipsec_command_context,
+				       buf);
+		mlx5_fpga_warn(fdev, "IPSec command send failed with status %u\n",
+			       status);
+		context->status = MLX5_FPGA_IPSEC_SACMD_SEND_FAIL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		complete(&context->complete);
 	}
 }
 
+<<<<<<< HEAD
 static inline
 int syndrome_to_errno(enum mlx5_ifc_fpga_ipsec_response_syndrome syndrome)
 {
@@ -165,6 +220,18 @@ int syndrome_to_errno(enum mlx5_ifc_fpga_ipsec_response_syndrome syndrome)
 	case MLX5_FPGA_IPSEC_RESPONSE_ILLEGAL_REQUEST:
 		return -EINVAL;
 	case MLX5_FPGA_IPSEC_RESPONSE_WRITE_RESPONSE_ISSUE:
+=======
+static inline int syndrome_to_errno(enum mlx5_ipsec_response_syndrome syndrome)
+{
+	switch (syndrome) {
+	case MLX5_IPSEC_RESPONSE_SUCCESS:
+		return 0;
+	case MLX5_IPSEC_RESPONSE_SADB_ISSUE:
+		return -EEXIST;
+	case MLX5_IPSEC_RESPONSE_ILLEGAL_REQUEST:
+		return -EINVAL;
+	case MLX5_IPSEC_RESPONSE_WRITE_RESPONSE_ISSUE:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 	return -EIO;
@@ -172,9 +239,15 @@ int syndrome_to_errno(enum mlx5_ifc_fpga_ipsec_response_syndrome syndrome)
 
 static void mlx5_fpga_ipsec_recv(void *cb_arg, struct mlx5_fpga_dma_buf *buf)
 {
+<<<<<<< HEAD
 	struct mlx5_ifc_fpga_ipsec_cmd_resp *resp = buf->sg[0].data;
 	struct mlx5_fpga_ipsec_cmd_context *context;
 	enum mlx5_ifc_fpga_ipsec_response_syndrome syndrome;
+=======
+	struct mlx5_ipsec_sadb_resp *resp = buf->sg[0].data;
+	struct mlx5_ipsec_command_context *context;
+	enum mlx5_ipsec_response_syndrome syndrome;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_fpga_device *fdev = cb_arg;
 	unsigned long flags;
 
@@ -184,12 +257,21 @@ static void mlx5_fpga_ipsec_recv(void *cb_arg, struct mlx5_fpga_dma_buf *buf)
 		return;
 	}
 
+<<<<<<< HEAD
 	mlx5_fpga_dbg(fdev, "mlx5_ipsec recv_cb syndrome %08x\n",
 		      ntohl(resp->syndrome));
 
 	spin_lock_irqsave(&fdev->ipsec->pending_cmds_lock, flags);
 	context = list_first_entry_or_null(&fdev->ipsec->pending_cmds,
 					   struct mlx5_fpga_ipsec_cmd_context,
+=======
+	mlx5_fpga_dbg(fdev, "mlx5_ipsec recv_cb syndrome %08x sa_id %x\n",
+		      ntohl(resp->syndrome), ntohl(resp->sw_sa_handle));
+
+	spin_lock_irqsave(&fdev->ipsec->pending_cmds_lock, flags);
+	context = list_first_entry_or_null(&fdev->ipsec->pending_cmds,
+					   struct mlx5_ipsec_command_context,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   list);
 	if (context)
 		list_del(&context->list);
@@ -201,6 +283,7 @@ static void mlx5_fpga_ipsec_recv(void *cb_arg, struct mlx5_fpga_dma_buf *buf)
 	}
 	mlx5_fpga_dbg(fdev, "Handling response for %p\n", context);
 
+<<<<<<< HEAD
 	syndrome = ntohl(resp->syndrome);
 	context->status_code = syndrome_to_errno(syndrome);
 	context->status = MLX5_FPGA_IPSEC_CMD_COMPLETE;
@@ -269,10 +352,84 @@ static int mlx5_fpga_ipsec_cmd_wait(void *ctx)
 	}
 
 	if (context->status == MLX5_FPGA_IPSEC_CMD_COMPLETE)
+=======
+	if (context->sa.sw_sa_handle != resp->sw_sa_handle) {
+		mlx5_fpga_err(fdev, "mismatch SA handle. cmd 0x%08x vs resp 0x%08x\n",
+			      ntohl(context->sa.sw_sa_handle),
+			      ntohl(resp->sw_sa_handle));
+		return;
+	}
+
+	syndrome = ntohl(resp->syndrome);
+	context->status_code = syndrome_to_errno(syndrome);
+	context->status = MLX5_FPGA_IPSEC_SACMD_COMPLETE;
+
+	if (context->status_code)
+		mlx5_fpga_warn(fdev, "IPSec SADB command failed with syndrome %08x\n",
+			       syndrome);
+	complete(&context->complete);
+}
+
+void *mlx5_fpga_ipsec_sa_cmd_exec(struct mlx5_core_dev *mdev,
+				  struct mlx5_accel_ipsec_sa *cmd)
+{
+	struct mlx5_ipsec_command_context *context;
+	struct mlx5_fpga_device *fdev = mdev->fpga;
+	unsigned long flags;
+	int res = 0;
+
+	BUILD_BUG_ON((sizeof(struct mlx5_accel_ipsec_sa) & 3) != 0);
+	if (!fdev || !fdev->ipsec)
+		return ERR_PTR(-EOPNOTSUPP);
+
+	context = kzalloc(sizeof(*context), GFP_ATOMIC);
+	if (!context)
+		return ERR_PTR(-ENOMEM);
+
+	memcpy(&context->sa, cmd, sizeof(*cmd));
+	context->buf.complete = mlx5_fpga_ipsec_send_complete;
+	context->buf.sg[0].size = sizeof(context->sa);
+	context->buf.sg[0].data = &context->sa;
+	init_completion(&context->complete);
+	context->dev = fdev;
+	spin_lock_irqsave(&fdev->ipsec->pending_cmds_lock, flags);
+	list_add_tail(&context->list, &fdev->ipsec->pending_cmds);
+	spin_unlock_irqrestore(&fdev->ipsec->pending_cmds_lock, flags);
+
+	context->status = MLX5_FPGA_IPSEC_SACMD_PENDING;
+
+	res = mlx5_fpga_sbu_conn_sendmsg(fdev->ipsec->conn, &context->buf);
+	if (res) {
+		mlx5_fpga_warn(fdev, "Failure sending IPSec command: %d\n",
+			       res);
+		spin_lock_irqsave(&fdev->ipsec->pending_cmds_lock, flags);
+		list_del(&context->list);
+		spin_unlock_irqrestore(&fdev->ipsec->pending_cmds_lock, flags);
+		kfree(context);
+		return ERR_PTR(res);
+	}
+	/* Context will be freed by wait func after completion */
+	return context;
+}
+
+int mlx5_fpga_ipsec_sa_cmd_wait(void *ctx)
+{
+	struct mlx5_ipsec_command_context *context = ctx;
+	int res;
+
+	res = wait_for_completion_killable(&context->complete);
+	if (res) {
+		mlx5_fpga_warn(context->dev, "Failure waiting for IPSec command response\n");
+		return -EINTR;
+	}
+
+	if (context->status == MLX5_FPGA_IPSEC_SACMD_COMPLETE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		res = context->status_code;
 	else
 		res = -EIO;
 
+<<<<<<< HEAD
 	return res;
 }
 
@@ -321,22 +478,36 @@ out:
 	return err;
 }
 
+=======
+	kfree(context);
+	return res;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u32 mlx5_fpga_ipsec_device_caps(struct mlx5_core_dev *mdev)
 {
 	struct mlx5_fpga_device *fdev = mdev->fpga;
 	u32 ret = 0;
 
+<<<<<<< HEAD
 	if (mlx5_fpga_is_ipsec_device(mdev)) {
 		ret |= MLX5_ACCEL_IPSEC_CAP_DEVICE;
 		ret |= MLX5_ACCEL_IPSEC_CAP_REQUIRED_METADATA;
 	} else {
 		return ret;
 	}
+=======
+	if (mlx5_fpga_is_ipsec_device(mdev))
+		ret |= MLX5_ACCEL_IPSEC_DEVICE;
+	else
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!fdev->ipsec)
 		return ret;
 
 	if (MLX5_GET(ipsec_extended_cap, fdev->ipsec->caps, esp))
+<<<<<<< HEAD
 		ret |= MLX5_ACCEL_IPSEC_CAP_ESP;
 
 	if (MLX5_GET(ipsec_extended_cap, fdev->ipsec->caps, ipv6))
@@ -352,6 +523,15 @@ u32 mlx5_fpga_ipsec_device_caps(struct mlx5_core_dev *mdev)
 		ret |= MLX5_ACCEL_IPSEC_CAP_ESN;
 		ret |= MLX5_ACCEL_IPSEC_CAP_TX_IV_IS_ESN;
 	}
+=======
+		ret |= MLX5_ACCEL_IPSEC_ESP;
+
+	if (MLX5_GET(ipsec_extended_cap, fdev->ipsec->caps, ipv6))
+		ret |= MLX5_ACCEL_IPSEC_IPV6;
+
+	if (MLX5_GET(ipsec_extended_cap, fdev->ipsec->caps, lso))
+		ret |= MLX5_ACCEL_IPSEC_LSO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -387,7 +567,11 @@ int mlx5_fpga_ipsec_counters_read(struct mlx5_core_dev *mdev, u64 *counters,
 
 	count = mlx5_fpga_ipsec_counters_count(mdev);
 
+<<<<<<< HEAD
 	data = kzalloc(array3_size(sizeof(*data), count, 2), GFP_KERNEL);
+=======
+	data = kzalloc(sizeof(*data) * count * 2, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data) {
 		ret = -ENOMEM;
 		goto out;
@@ -415,6 +599,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int mlx5_fpga_ipsec_set_caps(struct mlx5_core_dev *mdev, u32 flags)
 {
 	struct mlx5_fpga_ipsec_cmd_context *context;
@@ -1237,6 +1422,8 @@ const struct mlx5_flow_cmds *mlx5_fs_cmd_get_default_ipsec_fpga_cmds(enum fs_flo
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx5_fpga_ipsec_init(struct mlx5_core_dev *mdev)
 {
 	struct mlx5_fpga_conn_attr init_attr = {0};
@@ -1251,8 +1438,11 @@ int mlx5_fpga_ipsec_init(struct mlx5_core_dev *mdev)
 	if (!fdev->ipsec)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	fdev->ipsec->fdev = fdev;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlx5_fpga_get_sbu_caps(fdev, sizeof(fdev->ipsec->caps),
 				     fdev->ipsec->caps);
 	if (err) {
@@ -1276,6 +1466,7 @@ int mlx5_fpga_ipsec_init(struct mlx5_core_dev *mdev)
 		goto error;
 	}
 	fdev->ipsec->conn = conn;
+<<<<<<< HEAD
 
 	err = rhashtable_init(&fdev->ipsec->sa_hash, &rhash_sa);
 	if (err)
@@ -1300,12 +1491,17 @@ err_destroy_hash:
 err_destroy_conn:
 	mlx5_fpga_sbu_conn_destroy(conn);
 
+=======
+	return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 error:
 	kfree(fdev->ipsec);
 	fdev->ipsec = NULL;
 	return err;
 }
 
+<<<<<<< HEAD
 static void destroy_rules_rb(struct rb_root *root)
 {
 	struct mlx5_fpga_ipsec_rule *r, *tmp;
@@ -1317,6 +1513,8 @@ static void destroy_rules_rb(struct rb_root *root)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mlx5_fpga_ipsec_cleanup(struct mlx5_core_dev *mdev)
 {
 	struct mlx5_fpga_device *fdev = mdev->fpga;
@@ -1324,13 +1522,17 @@ void mlx5_fpga_ipsec_cleanup(struct mlx5_core_dev *mdev)
 	if (!mlx5_fpga_is_ipsec_device(mdev))
 		return;
 
+<<<<<<< HEAD
 	destroy_rules_rb(&fdev->ipsec->rules_rb);
 	rhashtable_destroy(&fdev->ipsec->sa_hash);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5_fpga_sbu_conn_destroy(fdev->ipsec->conn);
 	kfree(fdev->ipsec);
 	fdev->ipsec = NULL;
 }
+<<<<<<< HEAD
 
 void mlx5_fpga_ipsec_build_fs_cmds(void)
 {
@@ -1530,3 +1732,5 @@ change_sw_xfrm_attrs:
 	mutex_unlock(&fpga_xfrm->lock);
 	return err;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

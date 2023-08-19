@@ -14,6 +14,7 @@
 static int dev_update_qos_constraint(struct device *dev, void *data)
 {
 	s64 *constraint_ns_p = data;
+<<<<<<< HEAD
 	s64 constraint_ns;
 
 	if (dev->power.subsys_data && dev->power.subsys_data->domain_data) {
@@ -37,6 +38,25 @@ static int dev_update_qos_constraint(struct device *dev, void *data)
 	}
 
 	if (constraint_ns < *constraint_ns_p)
+=======
+	s32 constraint_ns = -1;
+
+	if (dev->power.subsys_data && dev->power.subsys_data->domain_data)
+		constraint_ns = dev_gpd_data(dev)->td.effective_constraint_ns;
+
+	if (constraint_ns < 0) {
+		constraint_ns = dev_pm_qos_read_value(dev);
+		constraint_ns *= NSEC_PER_USEC;
+	}
+	if (constraint_ns == 0)
+		return 0;
+
+	/*
+	 * constraint_ns cannot be negative here, because the device has been
+	 * suspended.
+	 */
+	if (constraint_ns < *constraint_ns_p || *constraint_ns_p == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*constraint_ns_p = constraint_ns;
 
 	return 0;
@@ -64,12 +84,20 @@ static bool default_suspend_ok(struct device *dev)
 	}
 	td->constraint_changed = false;
 	td->cached_suspend_ok = false;
+<<<<<<< HEAD
 	td->effective_constraint_ns = 0;
+=======
+	td->effective_constraint_ns = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	constraint_ns = __dev_pm_qos_read_value(dev);
 
 	spin_unlock_irqrestore(&dev->power.lock, flags);
 
+<<<<<<< HEAD
 	if (constraint_ns == 0)
+=======
+	if (constraint_ns < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	constraint_ns *= NSEC_PER_USEC;
@@ -82,6 +110,7 @@ static bool default_suspend_ok(struct device *dev)
 		device_for_each_child(dev, &constraint_ns,
 				      dev_update_qos_constraint);
 
+<<<<<<< HEAD
 	if (constraint_ns == PM_QOS_RESUME_LATENCY_NO_CONSTRAINT_NS) {
 		/* "No restriction", so the device is allowed to suspend. */
 		td->effective_constraint_ns = PM_QOS_RESUME_LATENCY_NO_CONSTRAINT_NS;
@@ -108,6 +137,16 @@ static bool default_suspend_ok(struct device *dev)
 		td->effective_constraint_ns = constraint_ns;
 		td->cached_suspend_ok = true;
 	}
+=======
+	if (constraint_ns > 0) {
+		constraint_ns -= td->suspend_latency_ns +
+				td->resume_latency_ns;
+		if (constraint_ns == 0)
+			return false;
+	}
+	td->effective_constraint_ns = constraint_ns;
+	td->cached_suspend_ok = constraint_ns >= 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The children have been suspended already, so we don't need to take
@@ -168,6 +207,7 @@ static bool __default_power_down_ok(struct dev_pm_domain *pd,
 		 */
 		td = &to_gpd_data(pdd)->td;
 		constraint_ns = td->effective_constraint_ns;
+<<<<<<< HEAD
 		/*
 		 * Zero means "no suspend at all" and this runs only when all
 		 * devices in the domain are suspended, so it must be positive.
@@ -175,6 +215,20 @@ static bool __default_power_down_ok(struct dev_pm_domain *pd,
 		if (constraint_ns == PM_QOS_RESUME_LATENCY_NO_CONSTRAINT_NS)
 			continue;
 
+=======
+		/* default_suspend_ok() need not be called before us. */
+		if (constraint_ns < 0) {
+			constraint_ns = dev_pm_qos_read_value(pdd->dev);
+			constraint_ns *= NSEC_PER_USEC;
+		}
+		if (constraint_ns == 0)
+			continue;
+
+		/*
+		 * constraint_ns cannot be negative here, because the device has
+		 * been suspended.
+		 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (constraint_ns <= off_on_time_ns)
 			return false;
 

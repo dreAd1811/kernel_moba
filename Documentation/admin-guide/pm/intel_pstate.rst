@@ -145,7 +145,11 @@ feature enabled.]
 
 In this mode ``intel_pstate`` registers utilization update callbacks with the
 CPU scheduler in order to run a P-state selection algorithm, either
+<<<<<<< HEAD
 ``powersave`` or ``performance``, depending on the ``scaling_governor`` policy
+=======
+``powersave`` or ``performance``, depending on the ``scaling_cur_freq`` policy
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 setting in ``sysfs``.  The current CPU frequency information to be made
 available from the ``scaling_cur_freq`` policy attribute in ``sysfs`` is
 periodically updated by those utilization update callbacks too.
@@ -324,7 +328,12 @@ Global Attributes
 
 ``intel_pstate`` exposes several global attributes (files) in ``sysfs`` to
 control its functionality at the system level.  They are located in the
+<<<<<<< HEAD
 ``/sys/devices/system/cpu/intel_pstate/`` directory and affect all CPUs.
+=======
+``/sys/devices/system/cpu/cpufreq/intel_pstate/`` directory and affect all
+CPUs.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Some of them are not present if the ``intel_pstate=per_cpu_perf_limits``
 argument is passed to the kernel in the command line.
@@ -378,6 +387,7 @@ argument is passed to the kernel in the command line.
 	but it affects the maximum possible value of per-policy P-state	limits
 	(see `Interpretation of Policy Attributes`_ below for details).
 
+<<<<<<< HEAD
 ``hwp_dynamic_boost``
 	This attribute is only present if ``intel_pstate`` works in the
 	`active mode with the HWP feature enabled <Active Mode With HWP_>`_ in
@@ -389,6 +399,8 @@ argument is passed to the kernel in the command line.
 	This setting has no effect on logical CPUs whose minimum P-state limit
 	is directly set to the highest non-turbo P-state or above it.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .. _status_attr:
 
 ``status``
@@ -420,7 +432,11 @@ argument is passed to the kernel in the command line.
 	That only is supported in some configurations, though (for example, if
 	the `HWP feature is enabled in the processor <Active Mode With HWP_>`_,
 	the operation mode of the driver cannot be changed), and if it is not
+<<<<<<< HEAD
 	supported in the current configuration, writes to this attribute will
+=======
+	supported in the current configuration, writes to this attribute with
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fail with an appropriate error.
 
 Interpretation of Policy Attributes

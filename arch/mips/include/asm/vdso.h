@@ -99,7 +99,11 @@ static inline u32 vdso_data_read_begin(const union mips_vdso_data *data)
 	u32 seq;
 
 	while (true) {
+<<<<<<< HEAD
 		seq = READ_ONCE(data->seq_count);
+=======
+		seq = ACCESS_ONCE(data->seq_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (likely(!(seq & 1))) {
 			/* Paired with smp_wmb() in vdso_data_write_*(). */
 			smp_rmb();

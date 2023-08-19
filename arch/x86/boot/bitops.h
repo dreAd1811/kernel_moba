@@ -17,7 +17,10 @@
 #define _LINUX_BITOPS_H		/* Inhibit inclusion of <linux/bitops.h> */
 
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <asm/asm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline bool constant_test_bit(int nr, const void *addr)
 {
@@ -29,7 +32,11 @@ static inline bool variable_test_bit(int nr, const void *addr)
 	bool v;
 	const u32 *p = (const u32 *)addr;
 
+<<<<<<< HEAD
 	asm("btl %2,%1" CC_SET(c) : CC_OUT(c) (v) : "m" (*p), "Ir" (nr));
+=======
+	asm("btl %2,%1; setc %0" : "=qm" (v) : "m" (*p), "Ir" (nr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return v;
 }
 

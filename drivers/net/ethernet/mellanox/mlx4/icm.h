@@ -47,21 +47,28 @@ enum {
 	MLX4_ICM_PAGE_SIZE	= 1 << MLX4_ICM_PAGE_SHIFT,
 };
 
+<<<<<<< HEAD
 struct mlx4_icm_buf {
 	void			*addr;
 	size_t			size;
 	dma_addr_t		dma_addr;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mlx4_icm_chunk {
 	struct list_head	list;
 	int			npages;
 	int			nsg;
+<<<<<<< HEAD
 	bool			coherent;
 	union {
 		struct scatterlist	sg[MLX4_ICM_CHUNK_LEN];
 		struct mlx4_icm_buf	buf[MLX4_ICM_CHUNK_LEN];
 	};
+=======
+	struct scatterlist	mem[MLX4_ICM_CHUNK_LEN];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mlx4_icm {
@@ -124,18 +131,26 @@ static inline void mlx4_icm_next(struct mlx4_icm_iter *iter)
 
 static inline dma_addr_t mlx4_icm_addr(struct mlx4_icm_iter *iter)
 {
+<<<<<<< HEAD
 	if (iter->chunk->coherent)
 		return iter->chunk->buf[iter->page_idx].dma_addr;
 	else
 		return sg_dma_address(&iter->chunk->sg[iter->page_idx]);
+=======
+	return sg_dma_address(&iter->chunk->mem[iter->page_idx]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline unsigned long mlx4_icm_size(struct mlx4_icm_iter *iter)
 {
+<<<<<<< HEAD
 	if (iter->chunk->coherent)
 		return iter->chunk->buf[iter->page_idx].size;
 	else
 		return sg_dma_len(&iter->chunk->sg[iter->page_idx]);
+=======
+	return sg_dma_len(&iter->chunk->mem[iter->page_idx]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mlx4_MAP_ICM_AUX(struct mlx4_dev *dev, struct mlx4_icm *icm);

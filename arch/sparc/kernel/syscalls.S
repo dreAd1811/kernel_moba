@@ -27,6 +27,18 @@ sys32_execveat:
 #endif
 
 	.align	32
+<<<<<<< HEAD
+=======
+sys_sparc_pipe:
+	ba,pt	%xcc, sys_sparc_pipe_real
+	 add	%sp, PTREGS_OFF, %o0
+sys_nis_syscall:
+	ba,pt	%xcc, c_sys_nis_syscall
+	 add	%sp, PTREGS_OFF, %o0
+sys_memory_ordering:
+	ba,pt	%xcc, sparc_memory_ordering
+	 add	%sp, PTREGS_OFF, %o1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_COMPAT
 sys32_sigstack:
 	ba,pt	%xcc, do_sys32_sigstack

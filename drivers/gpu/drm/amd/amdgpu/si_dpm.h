@@ -245,7 +245,11 @@ enum si_display_gap
     SI_PM_DISPLAY_GAP_IGNORE       = 3,
 };
 
+<<<<<<< HEAD
 extern const struct amdgpu_ip_block_version si_smu_ip_block;
+=======
+extern const struct amd_ip_funcs si_dpm_ip_funcs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ni_leakage_coeffients
 {

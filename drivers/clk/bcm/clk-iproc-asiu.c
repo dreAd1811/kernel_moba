@@ -197,8 +197,13 @@ void __init iproc_asiu_setup(struct device_node *node,
 	if (WARN_ON(!asiu))
 		return;
 
+<<<<<<< HEAD
 	asiu->clk_data = kzalloc(struct_size(asiu->clk_data, hws, num_clks),
 				 GFP_KERNEL);
+=======
+	asiu->clk_data = kzalloc(sizeof(*asiu->clk_data->hws) * num_clks +
+				 sizeof(*asiu->clk_data), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (WARN_ON(!asiu->clk_data))
 		goto err_clks;
 	asiu->clk_data->num = num_clks;

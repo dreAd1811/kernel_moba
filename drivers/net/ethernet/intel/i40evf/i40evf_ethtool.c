@@ -1,5 +1,33 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
+=======
+/*******************************************************************************
+ *
+ * Intel Ethernet Controller XL710 Family Linux Virtual Function Driver
+ * Copyright(c) 2013 - 2016 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ *
+ ******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ethtool support for i40evf */
 #include "i40evf.h"
@@ -202,7 +230,11 @@ static void i40evf_get_strings(struct net_device *netdev, u32 sset, u8 *data)
 
 /**
  * i40evf_get_priv_flags - report device private flags
+<<<<<<< HEAD
  * @netdev: network interface device structure
+=======
+ * @dev: network interface device structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The get string set count and the string set should be matched for each
  * flag returned.  Add new strings for each flag to the i40e_gstrings_priv_flags
@@ -229,7 +261,11 @@ static u32 i40evf_get_priv_flags(struct net_device *netdev)
 
 /**
  * i40evf_set_priv_flags - set private flags
+<<<<<<< HEAD
  * @netdev: network interface device structure
+=======
+ * @dev: network interface device structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @flags: bit flags to be set
  **/
 static int i40evf_set_priv_flags(struct net_device *netdev, u32 flags)
@@ -434,6 +470,7 @@ static int __i40evf_get_coalesce(struct net_device *netdev,
 	rx_ring = &adapter->rx_rings[queue];
 	tx_ring = &adapter->tx_rings[queue];
 
+<<<<<<< HEAD
 	if (ITR_IS_DYNAMIC(rx_ring->itr_setting))
 		ec->use_adaptive_rx_coalesce = 1;
 
@@ -442,6 +479,16 @@ static int __i40evf_get_coalesce(struct net_device *netdev,
 
 	ec->rx_coalesce_usecs = rx_ring->itr_setting & ~I40E_ITR_DYNAMIC;
 	ec->tx_coalesce_usecs = tx_ring->itr_setting & ~I40E_ITR_DYNAMIC;
+=======
+	if (ITR_IS_DYNAMIC(rx_ring->rx_itr_setting))
+		ec->use_adaptive_rx_coalesce = 1;
+
+	if (ITR_IS_DYNAMIC(tx_ring->tx_itr_setting))
+		ec->use_adaptive_tx_coalesce = 1;
+
+	ec->rx_coalesce_usecs = rx_ring->rx_itr_setting & ~I40E_ITR_DYNAMIC;
+	ec->tx_coalesce_usecs = tx_ring->tx_itr_setting & ~I40E_ITR_DYNAMIC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -479,7 +526,11 @@ static int i40evf_get_per_queue_coalesce(struct net_device *netdev,
 
 /**
  * i40evf_set_itr_per_queue - set ITR values for specific queue
+<<<<<<< HEAD
  * @adapter: the VF adapter struct to set values for
+=======
+ * @vsi: the VSI to set values for
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ec: coalesce settings from ethtool
  * @queue: the queue to modify
  *
@@ -489,6 +540,7 @@ static void i40evf_set_itr_per_queue(struct i40evf_adapter *adapter,
 				     struct ethtool_coalesce *ec,
 				     int queue)
 {
+<<<<<<< HEAD
 	struct i40e_ring *rx_ring = &adapter->rx_rings[queue];
 	struct i40e_ring *tx_ring = &adapter->tx_rings[queue];
 	struct i40e_q_vector *q_vector;
@@ -514,6 +566,37 @@ static void i40evf_set_itr_per_queue(struct i40evf_adapter *adapter,
 	 * the Tx and Rx ITR values based on the values we have entered
 	 * into the q_vector, no need to write the values now.
 	 */
+=======
+	struct i40e_vsi *vsi = &adapter->vsi;
+	struct i40e_hw *hw = &adapter->hw;
+	struct i40e_q_vector *q_vector;
+	u16 vector;
+
+	adapter->rx_rings[queue].rx_itr_setting = ec->rx_coalesce_usecs;
+	adapter->tx_rings[queue].tx_itr_setting = ec->tx_coalesce_usecs;
+
+	if (ec->use_adaptive_rx_coalesce)
+		adapter->rx_rings[queue].rx_itr_setting |= I40E_ITR_DYNAMIC;
+	else
+		adapter->rx_rings[queue].rx_itr_setting &= ~I40E_ITR_DYNAMIC;
+
+	if (ec->use_adaptive_tx_coalesce)
+		adapter->tx_rings[queue].tx_itr_setting |= I40E_ITR_DYNAMIC;
+	else
+		adapter->tx_rings[queue].tx_itr_setting &= ~I40E_ITR_DYNAMIC;
+
+	q_vector = adapter->rx_rings[queue].q_vector;
+	q_vector->rx.itr = ITR_TO_REG(adapter->rx_rings[queue].rx_itr_setting);
+	vector = vsi->base_vector + q_vector->v_idx;
+	wr32(hw, I40E_VFINT_ITRN1(I40E_RX_ITR, vector - 1), q_vector->rx.itr);
+
+	q_vector = adapter->tx_rings[queue].q_vector;
+	q_vector->tx.itr = ITR_TO_REG(adapter->tx_rings[queue].tx_itr_setting);
+	vector = vsi->base_vector + q_vector->v_idx;
+	wr32(hw, I40E_VFINT_ITRN1(I40E_TX_ITR, vector - 1), q_vector->tx.itr);
+
+	i40e_flush(hw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -538,8 +621,13 @@ static int __i40evf_set_coalesce(struct net_device *netdev,
 	if (ec->rx_coalesce_usecs == 0) {
 		if (ec->use_adaptive_rx_coalesce)
 			netif_info(adapter, drv, netdev, "rx-usecs=0, need to disable adaptive-rx for a complete disable\n");
+<<<<<<< HEAD
 	} else if ((ec->rx_coalesce_usecs < I40E_MIN_ITR) ||
 		   (ec->rx_coalesce_usecs > I40E_MAX_ITR)) {
+=======
+	} else if ((ec->rx_coalesce_usecs < (I40E_MIN_ITR << 1)) ||
+		   (ec->rx_coalesce_usecs > (I40E_MAX_ITR << 1))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_info(adapter, drv, netdev, "Invalid value, rx-usecs range is 0-8160\n");
 		return -EINVAL;
 	}
@@ -548,8 +636,13 @@ static int __i40evf_set_coalesce(struct net_device *netdev,
 	if (ec->tx_coalesce_usecs == 0) {
 		if (ec->use_adaptive_tx_coalesce)
 			netif_info(adapter, drv, netdev, "tx-usecs=0, need to disable adaptive-tx for a complete disable\n");
+<<<<<<< HEAD
 	} else if ((ec->tx_coalesce_usecs < I40E_MIN_ITR) ||
 		   (ec->tx_coalesce_usecs > I40E_MAX_ITR)) {
+=======
+	} else if ((ec->tx_coalesce_usecs < (I40E_MIN_ITR << 1)) ||
+		   (ec->tx_coalesce_usecs > (I40E_MAX_ITR << 1))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_info(adapter, drv, netdev, "Invalid value, tx-usecs range is 0-8160\n");
 		return -EINVAL;
 	}
@@ -603,7 +696,10 @@ static int i40evf_set_per_queue_coalesce(struct net_device *netdev,
  * i40evf_get_rxnfc - command to get RX flow classification rules
  * @netdev: network interface device structure
  * @cmd: ethtool rxnfc command
+<<<<<<< HEAD
  * @rule_locs: pointer to store rule locations
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns Success if the command is supported.
  **/
@@ -643,7 +739,11 @@ static void i40evf_get_channels(struct net_device *netdev,
 	struct i40evf_adapter *adapter = netdev_priv(netdev);
 
 	/* Report maximum channels */
+<<<<<<< HEAD
 	ch->max_combined = I40EVF_MAX_REQ_QUEUES;
+=======
+	ch->max_combined = adapter->num_active_queues;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ch->max_other = NONQ_VECS;
 	ch->other_count = NONQ_VECS;
@@ -652,6 +752,7 @@ static void i40evf_get_channels(struct net_device *netdev,
 }
 
 /**
+<<<<<<< HEAD
  * i40evf_set_channels: set the new channel count
  * @netdev: network interface device structure
  * @ch: channel information structure
@@ -693,6 +794,8 @@ static int i40evf_set_channels(struct net_device *netdev,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40evf_get_rxfh_key_size - get the RSS hash key size
  * @netdev: network interface device structure
  *
@@ -723,7 +826,10 @@ static u32 i40evf_get_rxfh_indir_size(struct net_device *netdev)
  * @netdev: network interface device structure
  * @indir: indirection table
  * @key: hash key
+<<<<<<< HEAD
  * @hfunc: hash function in use
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Reads the indirection table directly from the hardware. Always returns 0.
  **/
@@ -752,7 +858,10 @@ static int i40evf_get_rxfh(struct net_device *netdev, u32 *indir, u8 *key,
  * @netdev: network interface device structure
  * @indir: indirection table
  * @key: hash key
+<<<<<<< HEAD
  * @hfunc: hash function to use
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns -EINVAL if the table specifies an inavlid queue id, otherwise
  * returns 0 after programming the table.
@@ -802,7 +911,10 @@ static const struct ethtool_ops i40evf_ethtool_ops = {
 	.get_rxfh		= i40evf_get_rxfh,
 	.set_rxfh		= i40evf_set_rxfh,
 	.get_channels		= i40evf_get_channels,
+<<<<<<< HEAD
 	.set_channels		= i40evf_set_channels,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_rxfh_key_size	= i40evf_get_rxfh_key_size,
 	.get_link_ksettings	= i40evf_get_link_ksettings,
 };

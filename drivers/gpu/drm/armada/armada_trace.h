@@ -34,6 +34,7 @@ TRACE_EVENT(armada_ovl_plane_update,
 		__field(struct drm_plane *, plane)
 		__field(struct drm_crtc *, crtc)
 		__field(struct drm_framebuffer *, fb)
+<<<<<<< HEAD
 		__field(int, crtc_x)
 		__field(int, crtc_y)
 		__field(unsigned int, crtc_w)
@@ -42,11 +43,14 @@ TRACE_EVENT(armada_ovl_plane_update,
 		__field(u32, src_y)
 		__field(u32, src_w)
 		__field(u32, src_h)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	),
 	TP_fast_assign(
 		__entry->plane = plane;
 		__entry->crtc = crtc;
 		__entry->fb = fb;
+<<<<<<< HEAD
 		__entry->crtc_x = crtc_x;
 		__entry->crtc_y = crtc_y;
 		__entry->crtc_w = crtc_w;
@@ -62,6 +66,11 @@ TRACE_EVENT(armada_ovl_plane_update,
 		__entry->crtc_w, __entry->crtc_h,
 		__entry->src_x >> 16, __entry->src_y >> 16,
 		__entry->src_w >> 16, __entry->src_h >> 16)
+=======
+	),
+	TP_printk("plane %p crtc %p fb %p",
+		__entry->plane, __entry->crtc, __entry->fb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 );
 
 TRACE_EVENT(armada_ovl_plane_work,
@@ -83,5 +92,9 @@ TRACE_EVENT(armada_ovl_plane_work,
 
 /* This part must be outside protection */
 #undef TRACE_INCLUDE_PATH
+<<<<<<< HEAD
 #define TRACE_INCLUDE_PATH ../../drivers/gpu/drm/armada
+=======
+#define TRACE_INCLUDE_PATH .
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <trace/define_trace.h>

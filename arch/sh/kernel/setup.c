@@ -11,6 +11,10 @@
 #include <linux/ioport.h>
 #include <linux/init.h>
 #include <linux/initrd.h>
+<<<<<<< HEAD
+=======
+#include <linux/bootmem.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/console.h>
 #include <linux/root_dev.h>
 #include <linux/utsname.h>
@@ -329,6 +333,7 @@ void __init setup_arch(char **cmdline_p)
 	/* Let earlyprintk output early console messages */
 	early_platform_driver_probe("earlyprintk", 1, 1);
 
+<<<<<<< HEAD
 #ifdef CONFIG_OF_FLATTREE
 #ifdef CONFIG_USE_BUILTIN_DTB
 	unflatten_and_copy_device_tree();
@@ -337,6 +342,8 @@ void __init setup_arch(char **cmdline_p)
 #endif
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	paging_init();
 
 #ifdef CONFIG_DUMMY_CONSOLE

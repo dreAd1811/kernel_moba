@@ -97,8 +97,11 @@ enum instruction_type {
 #define SIZE(n)		((n) << 12)
 #define GETSIZE(w)	((w) >> 12)
 
+<<<<<<< HEAD
 #define GETTYPE(t)	((t) & INSTR_TYPE_MASK)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MKOP(t, f, s)	((t) | (f) | SIZE(s))
 
 struct instruction_op {

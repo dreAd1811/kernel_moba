@@ -35,9 +35,21 @@ static ssize_t btmrvl_hscfgcmd_write(struct file *file,
 			const char __user *ubuf, size_t count, loff_t *ppos)
 {
 	struct btmrvl_private *priv = file->private_data;
+<<<<<<< HEAD
 	long result, ret;
 
 	ret = kstrtol_from_user(ubuf, count, 10, &result);
+=======
+	char buf[16];
+	long result, ret;
+
+	memset(buf, 0, sizeof(buf));
+
+	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
+		return -EFAULT;
+
+	ret = kstrtol(buf, 10, &result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -75,9 +87,21 @@ static ssize_t btmrvl_pscmd_write(struct file *file, const char __user *ubuf,
 						size_t count, loff_t *ppos)
 {
 	struct btmrvl_private *priv = file->private_data;
+<<<<<<< HEAD
 	long result, ret;
 
 	ret = kstrtol_from_user(ubuf, count, 10, &result);
+=======
+	char buf[16];
+	long result, ret;
+
+	memset(buf, 0, sizeof(buf));
+
+	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
+		return -EFAULT;
+
+	ret = kstrtol(buf, 10, &result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -115,9 +139,21 @@ static ssize_t btmrvl_hscmd_write(struct file *file, const char __user *ubuf,
 						size_t count, loff_t *ppos)
 {
 	struct btmrvl_private *priv = file->private_data;
+<<<<<<< HEAD
 	long result, ret;
 
 	ret = kstrtol_from_user(ubuf, count, 10, &result);
+=======
+	char buf[16];
+	long result, ret;
+
+	memset(buf, 0, sizeof(buf));
+
+	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
+		return -EFAULT;
+
+	ret = kstrtol(buf, 10, &result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -149,6 +185,38 @@ static const struct file_operations btmrvl_hscmd_fops = {
 	.llseek = default_llseek,
 };
 
+<<<<<<< HEAD
+=======
+static ssize_t btmrvl_fwdump_write(struct file *file, const char __user *ubuf,
+				   size_t count, loff_t *ppos)
+{
+	struct btmrvl_private *priv = file->private_data;
+	char buf[16];
+	bool result;
+
+	memset(buf, 0, sizeof(buf));
+
+	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
+		return -EFAULT;
+
+	if (strtobool(buf, &result))
+		return -EINVAL;
+
+	if (!result)
+		return -EINVAL;
+
+	btmrvl_firmware_dump(priv);
+
+	return count;
+}
+
+static const struct file_operations btmrvl_fwdump_fops = {
+	.write	= btmrvl_fwdump_write,
+	.open	= simple_open,
+	.llseek = default_llseek,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void btmrvl_debugfs_init(struct hci_dev *hdev)
 {
 	struct btmrvl_private *priv = hci_get_drvdata(hdev);
@@ -179,6 +247,11 @@ void btmrvl_debugfs_init(struct hci_dev *hdev)
 			    priv, &btmrvl_hscmd_fops);
 	debugfs_create_file("hscfgcmd", 0644, dbg->config_dir,
 			    priv, &btmrvl_hscfgcmd_fops);
+<<<<<<< HEAD
+=======
+	debugfs_create_file("fw_dump", 0200, dbg->config_dir,
+			    priv, &btmrvl_fwdump_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dbg->status_dir = debugfs_create_dir("status", hdev->debugfs);
 	debugfs_create_u8("curpsmode", 0444, dbg->status_dir,

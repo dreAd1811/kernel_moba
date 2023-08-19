@@ -122,11 +122,19 @@ __setup("hcheck_dump_tasks", hangcheck_parse_dump_tasks);
 /* Last time scheduled */
 static unsigned long long hangcheck_tsc, hangcheck_tsc_margin;
 
+<<<<<<< HEAD
 static void hangcheck_fire(struct timer_list *);
 
 static DEFINE_TIMER(hangcheck_ticktock, hangcheck_fire);
 
 static void hangcheck_fire(struct timer_list *unused)
+=======
+static void hangcheck_fire(unsigned long);
+
+static DEFINE_TIMER(hangcheck_ticktock, hangcheck_fire, 0, 0);
+
+static void hangcheck_fire(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long long cur_tsc, tsc_diff;
 

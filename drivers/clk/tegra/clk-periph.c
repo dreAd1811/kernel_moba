@@ -203,6 +203,7 @@ struct clk *tegra_clk_register_periph_nodiv(const char *name,
 	return _tegra_clk_register_periph(name, parent_names, num_parents,
 			periph, clk_base, offset, CLK_SET_RATE_PARENT);
 }
+<<<<<<< HEAD
 
 struct clk *tegra_clk_register_periph_data(void __iomem *clk_base,
 					   struct tegra_periph_init_data *init)
@@ -211,3 +212,5 @@ struct clk *tegra_clk_register_periph_data(void __iomem *clk_base,
 					  init->num_parents, &init->periph,
 					  clk_base, init->offset, init->flags);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

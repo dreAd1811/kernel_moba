@@ -6,7 +6,11 @@
  */
 extern int maple_set_rtc_time(struct rtc_time *tm);
 extern void maple_get_rtc_time(struct rtc_time *tm);
+<<<<<<< HEAD
 extern time64_t maple_get_boot_time(void);
+=======
+extern unsigned long maple_get_boot_time(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void maple_calibrate_decr(void);
 extern void maple_pci_init(void);
 extern void maple_pci_irq_fixup(struct pci_dev *dev);

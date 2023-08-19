@@ -241,9 +241,15 @@ static int vga_probe(void)
 		vga_modes,
 	};
 	static int mode_count[] = {
+<<<<<<< HEAD
 		ARRAY_SIZE(cga_modes),
 		ARRAY_SIZE(ega_modes),
 		ARRAY_SIZE(vga_modes),
+=======
+		sizeof(cga_modes)/sizeof(struct mode_info),
+		sizeof(ega_modes)/sizeof(struct mode_info),
+		sizeof(vga_modes)/sizeof(struct mode_info),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	struct biosregs ireg, oreg;

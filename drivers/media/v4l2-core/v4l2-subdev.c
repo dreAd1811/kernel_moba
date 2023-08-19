@@ -187,6 +187,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 
 	switch (cmd) {
 	case VIDIOC_QUERYCTRL:
+<<<<<<< HEAD
 		/*
 		 * TODO: this really should be folded into v4l2_queryctrl (this
 		 * currently returns -EINVAL for NULL control handlers).
@@ -232,6 +233,29 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 	case VIDIOC_TRY_EXT_CTRLS:
 		if (!vfh->ctrl_handler)
 			return -ENOTTY;
+=======
+		return v4l2_queryctrl(vfh->ctrl_handler, arg);
+
+	case VIDIOC_QUERY_EXT_CTRL:
+		return v4l2_query_ext_ctrl(vfh->ctrl_handler, arg);
+
+	case VIDIOC_QUERYMENU:
+		return v4l2_querymenu(vfh->ctrl_handler, arg);
+
+	case VIDIOC_G_CTRL:
+		return v4l2_g_ctrl(vfh->ctrl_handler, arg);
+
+	case VIDIOC_S_CTRL:
+		return v4l2_s_ctrl(vfh, vfh->ctrl_handler, arg);
+
+	case VIDIOC_G_EXT_CTRLS:
+		return v4l2_g_ext_ctrls(vfh->ctrl_handler, arg);
+
+	case VIDIOC_S_EXT_CTRLS:
+		return v4l2_s_ext_ctrls(vfh, vfh->ctrl_handler, arg);
+
+	case VIDIOC_TRY_EXT_CTRLS:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_try_ext_ctrls(vfh->ctrl_handler, arg);
 
 	case VIDIOC_DQEVENT:
@@ -263,6 +287,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 			return -EPERM;
 		return v4l2_subdev_call(sd, core, s_register, p);
 	}
+<<<<<<< HEAD
 	case VIDIOC_DBG_G_CHIP_INFO:
 	{
 		struct v4l2_dbg_chip_info *p = arg;
@@ -276,6 +301,8 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		strlcpy(p->name, sd->name, sizeof(p->name));
 		return 0;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	case VIDIOC_LOG_STATUS: {
@@ -297,8 +324,11 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (rval)
 			return rval;
 
+<<<<<<< HEAD
 		memset(format->reserved, 0, sizeof(format->reserved));
 		memset(format->format.reserved, 0, sizeof(format->format.reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(sd, pad, get_fmt, subdev_fh->pad, format);
 	}
 
@@ -309,8 +339,11 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (rval)
 			return rval;
 
+<<<<<<< HEAD
 		memset(format->reserved, 0, sizeof(format->reserved));
 		memset(format->format.reserved, 0, sizeof(format->format.reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(sd, pad, set_fmt, subdev_fh->pad, format);
 	}
 
@@ -322,7 +355,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (rval)
 			return rval;
 
+<<<<<<< HEAD
 		memset(crop->reserved, 0, sizeof(crop->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memset(&sel, 0, sizeof(sel));
 		sel.which = crop->which;
 		sel.pad = crop->pad;
@@ -340,7 +376,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		struct v4l2_subdev_crop *crop = arg;
 		struct v4l2_subdev_selection sel;
 
+<<<<<<< HEAD
 		memset(crop->reserved, 0, sizeof(crop->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rval = check_crop(sd, crop);
 		if (rval)
 			return rval;
@@ -369,7 +408,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (code->pad >= sd->entity.num_pads)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		memset(code->reserved, 0, sizeof(code->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(sd, pad, enum_mbus_code, subdev_fh->pad,
 					code);
 	}
@@ -384,7 +426,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (fse->pad >= sd->entity.num_pads)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		memset(fse->reserved, 0, sizeof(fse->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(sd, pad, enum_frame_size, subdev_fh->pad,
 					fse);
 	}
@@ -395,7 +440,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (fi->pad >= sd->entity.num_pads)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		memset(fi->reserved, 0, sizeof(fi->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(sd, video, g_frame_interval, arg);
 	}
 
@@ -405,7 +453,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (fi->pad >= sd->entity.num_pads)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		memset(fi->reserved, 0, sizeof(fi->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(sd, video, s_frame_interval, arg);
 	}
 
@@ -419,7 +470,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (fie->pad >= sd->entity.num_pads)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		memset(fie->reserved, 0, sizeof(fie->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(sd, pad, enum_frame_interval, subdev_fh->pad,
 					fie);
 	}
@@ -431,7 +485,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (rval)
 			return rval;
 
+<<<<<<< HEAD
 		memset(sel->reserved, 0, sizeof(sel->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(
 			sd, pad, get_selection, subdev_fh->pad, sel);
 	}
@@ -443,7 +500,10 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 		if (rval)
 			return rval;
 
+<<<<<<< HEAD
 		memset(sel->reserved, 0, sizeof(sel->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return v4l2_subdev_call(
 			sd, pad, set_selection, subdev_fh->pad, sel);
 	}
@@ -494,6 +554,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 
 	case VIDIOC_SUBDEV_S_DV_TIMINGS:
 		return v4l2_subdev_call(sd, video, s_dv_timings, arg);
+<<<<<<< HEAD
 
 	case VIDIOC_SUBDEV_G_STD:
 		return v4l2_subdev_call(sd, video, g_std, arg);
@@ -516,6 +577,8 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 
 	case VIDIOC_SUBDEV_QUERYSTD:
 		return v4l2_subdev_call(sd, video, querystd, arg);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	default:
 		return v4l2_subdev_call(sd, core, ioctl, cmd, arg);
@@ -524,6 +587,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
 	return 0;
 }
 
+<<<<<<< HEAD
 static long subdev_do_ioctl_lock(struct file *file, unsigned int cmd, void *arg)
 {
 	struct video_device *vdev = video_devdata(file);
@@ -543,6 +607,12 @@ static long subdev_ioctl(struct file *file, unsigned int cmd,
 	unsigned long arg)
 {
 	return video_usercopy(file, cmd, arg, subdev_do_ioctl_lock);
+=======
+static long subdev_ioctl(struct file *file, unsigned int cmd,
+	unsigned long arg)
+{
+	return video_usercopy(file, cmd, arg, subdev_do_ioctl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_COMPAT
@@ -556,19 +626,31 @@ static long subdev_compat_ioctl32(struct file *file, unsigned int cmd,
 }
 #endif
 
+<<<<<<< HEAD
 static __poll_t subdev_poll(struct file *file, poll_table *wait)
+=======
+static unsigned int subdev_poll(struct file *file, poll_table *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct video_device *vdev = video_devdata(file);
 	struct v4l2_subdev *sd = vdev_to_v4l2_subdev(vdev);
 	struct v4l2_fh *fh = file->private_data;
 
 	if (!(sd->flags & V4L2_SUBDEV_FL_HAS_EVENTS))
+<<<<<<< HEAD
 		return EPOLLERR;
+=======
+		return POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(file, &fh->wait, wait);
 
 	if (v4l2_event_pending(fh))
+<<<<<<< HEAD
 		return EPOLLPRI;
+=======
+		return POLLPRI;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

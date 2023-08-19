@@ -280,7 +280,11 @@ u8 b43legacy_radio_aci_detect(struct b43legacy_wldev *dev, u8 channel)
 u8 b43legacy_radio_aci_scan(struct b43legacy_wldev *dev)
 {
 	struct b43legacy_phy *phy = &dev->phy;
+<<<<<<< HEAD
 	u8 ret[13] = { 0 };
+=======
+	u8 ret[13];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int channel = phy->channel;
 	unsigned int i;
 	unsigned int j;

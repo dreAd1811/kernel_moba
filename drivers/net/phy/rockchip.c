@@ -213,6 +213,10 @@ static struct phy_driver rockchip_phy_driver[] = {
 	.soft_reset		= genphy_soft_reset,
 	.config_init		= rockchip_integrated_phy_config_init,
 	.config_aneg		= rockchip_config_aneg,
+<<<<<<< HEAD
+=======
+	.read_status		= genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend		= genphy_suspend,
 	.resume			= rockchip_phy_resume,
 },

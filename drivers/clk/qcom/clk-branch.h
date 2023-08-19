@@ -1,5 +1,20 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright (c) 2013, 2017, The Linux Foundation. All rights reserved. */
+=======
+/*
+ * Copyright (c) 2013, 2017, The Linux Foundation. All rights reserved.
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __QCOM_CLK_BRANCH_H__
 #define __QCOM_CLK_BRANCH_H__
@@ -41,12 +56,37 @@ struct clk_branch {
 	struct clk_regmap clkr;
 };
 
+<<<<<<< HEAD
 extern const struct clk_ops clk_branch_ops;
 extern const struct clk_ops clk_branch2_ops;
 extern const struct clk_ops clk_branch2_hw_ctl_ops;
+=======
+/**
+ * struct clk_gate2 - gating clock with status bit and dynamic hardware gating
+ * @udelay: halt delay in microseconds on clock branch enable/disable
+ * @clkr: handle between common and hardware-specific interfaces
+ *
+ * Clock which can gate its output.
+ */
+struct clk_gate2 {
+	u32	udelay;
+	struct	clk_regmap clkr;
+};
+
+extern const struct clk_ops clk_branch_ops;
+extern const struct clk_ops clk_branch2_ops;
+extern const struct clk_ops clk_branch2_hw_ctl_ops;
+extern const struct clk_ops clk_gate2_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern const struct clk_ops clk_branch_simple_ops;
 
 #define to_clk_branch(_hw) \
 	container_of(to_clk_regmap(_hw), struct clk_branch, clkr)
 
+<<<<<<< HEAD
+=======
+#define to_clk_gate2(_hw) \
+	container_of(to_clk_regmap(_hw), struct clk_gate2, clkr)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

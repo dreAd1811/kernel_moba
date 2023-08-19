@@ -339,10 +339,13 @@ enum {
 	PVRDMA_CMD_DESTROY_UC,
 	PVRDMA_CMD_CREATE_BIND,
 	PVRDMA_CMD_DESTROY_BIND,
+<<<<<<< HEAD
 	PVRDMA_CMD_CREATE_SRQ,
 	PVRDMA_CMD_MODIFY_SRQ,
 	PVRDMA_CMD_QUERY_SRQ,
 	PVRDMA_CMD_DESTROY_SRQ,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PVRDMA_CMD_MAX,
 };
 
@@ -365,10 +368,13 @@ enum {
 	PVRDMA_CMD_DESTROY_UC_RESP_NOOP,
 	PVRDMA_CMD_CREATE_BIND_RESP_NOOP,
 	PVRDMA_CMD_DESTROY_BIND_RESP_NOOP,
+<<<<<<< HEAD
 	PVRDMA_CMD_CREATE_SRQ_RESP,
 	PVRDMA_CMD_MODIFY_SRQ_RESP,
 	PVRDMA_CMD_QUERY_SRQ_RESP,
 	PVRDMA_CMD_DESTROY_SRQ_RESP,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PVRDMA_CMD_MAX_RESP,
 };
 
@@ -503,6 +509,7 @@ struct pvrdma_cmd_destroy_cq {
 	u8 reserved[4];
 };
 
+<<<<<<< HEAD
 struct pvrdma_cmd_create_srq {
 	struct pvrdma_cmd_hdr hdr;
 	u64 pdir_dma;
@@ -543,6 +550,8 @@ struct pvrdma_cmd_destroy_srq {
 	u8 reserved[4];
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pvrdma_cmd_create_qp {
 	struct pvrdma_cmd_hdr hdr;
 	u64 pdir_dma;
@@ -642,10 +651,13 @@ union pvrdma_cmd_req {
 	struct pvrdma_cmd_destroy_qp destroy_qp;
 	struct pvrdma_cmd_create_bind create_bind;
 	struct pvrdma_cmd_destroy_bind destroy_bind;
+<<<<<<< HEAD
 	struct pvrdma_cmd_create_srq create_srq;
 	struct pvrdma_cmd_modify_srq modify_srq;
 	struct pvrdma_cmd_query_srq query_srq;
 	struct pvrdma_cmd_destroy_srq destroy_srq;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 union pvrdma_cmd_resp {
@@ -660,8 +672,11 @@ union pvrdma_cmd_resp {
 	struct pvrdma_cmd_create_qp_resp create_qp_resp;
 	struct pvrdma_cmd_query_qp_resp query_qp_resp;
 	struct pvrdma_cmd_destroy_qp_resp destroy_qp_resp;
+<<<<<<< HEAD
 	struct pvrdma_cmd_create_srq_resp create_srq_resp;
 	struct pvrdma_cmd_query_srq_resp query_srq_resp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif /* __PVRDMA_DEV_API_H__ */

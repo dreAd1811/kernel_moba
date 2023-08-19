@@ -2594,9 +2594,14 @@ static int bnx2x_run_loopback(struct bnx2x *bp, int loopback_mode)
 	wmb();
 
 	txdata->tx_db.data.prod += 2;
+<<<<<<< HEAD
 	/* make sure descriptor update is observed by the HW */
 	wmb();
 	DOORBELL_RELAXED(bp, txdata->cid, txdata->tx_db.raw);
+=======
+	barrier();
+	DOORBELL(bp, txdata->cid, txdata->tx_db.raw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmiowb();
 	barrier();

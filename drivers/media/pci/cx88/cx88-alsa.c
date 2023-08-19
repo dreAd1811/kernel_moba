@@ -4,7 +4,11 @@
  *
  *    (c) 2007 Trent Piepho <xyzzy@speakeasy.org>
  *    (c) 2005,2006 Ricardo Cerqueira <v4l@cerqueira.org>
+<<<<<<< HEAD
  *    (c) 2005 Mauro Carvalho Chehab <mchehab@kernel.org>
+=======
+ *    (c) 2005 Mauro Carvalho Chehab <mchehab@infradead.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    Based on a dummy cx88 module by Gerd Knorr <kraxel@bytesex.org>
  *    Based on dummy.c by Jaroslav Kysela <perex@perex.cz>
  *
@@ -103,7 +107,11 @@ MODULE_PARM_DESC(index, "Index value for cx88x capture interface(s).");
 
 MODULE_DESCRIPTION("ALSA driver module for cx2388x based TV cards");
 MODULE_AUTHOR("Ricardo Cerqueira");
+<<<<<<< HEAD
 MODULE_AUTHOR("Mauro Carvalho Chehab <mchehab@kernel.org>");
+=======
+MODULE_AUTHOR("Mauro Carvalho Chehab <mchehab@infradead.org>");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 MODULE_VERSION(CX88_VERSION);
 
@@ -292,13 +300,22 @@ static int cx88_alsa_dma_init(struct cx88_audio_dev *chip, int nr_pages)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	dprintk(1, "vmalloc is at addr %p, size=%d\n",
 		buf->vaddr, nr_pages << PAGE_SHIFT);
+=======
+	dprintk(1, "vmalloc is at addr 0x%08lx, size=%d\n",
+		(unsigned long)buf->vaddr, nr_pages << PAGE_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(buf->vaddr, 0, nr_pages << PAGE_SHIFT);
 	buf->nr_pages = nr_pages;
 
+<<<<<<< HEAD
 	buf->sglist = vzalloc(array_size(sizeof(*buf->sglist), buf->nr_pages));
+=======
+	buf->sglist = vzalloc(buf->nr_pages * sizeof(*buf->sglist));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buf->sglist)
 		goto vzalloc_err;
 
@@ -656,8 +673,13 @@ static void snd_cx88_wm8775_volume_put(struct snd_kcontrol *kcontrol,
 {
 	struct cx88_audio_dev *chip = snd_kcontrol_chip(kcontrol);
 	struct cx88_core *core = chip->core;
+<<<<<<< HEAD
 	u16 left = value->value.integer.value[0];
 	u16 right = value->value.integer.value[1];
+=======
+	int left = value->value.integer.value[0];
+	int right = value->value.integer.value[1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int v, b;
 
 	/* Pass volume & balance onto any WM8775 */
@@ -962,11 +984,16 @@ static int cx88_audio_initdev(struct pci_dev *pci,
 		goto error;
 
 	/* If there's a wm8775 then add a Line-In ALC switch */
+<<<<<<< HEAD
 	if (core->sd_wm8775) {
 		err = snd_ctl_add(card, snd_ctl_new1(&snd_cx88_alc_switch, chip));
 		if (err < 0)
 			goto error;
 	}
+=======
+	if (core->sd_wm8775)
+		snd_ctl_add(card, snd_ctl_new1(&snd_cx88_alc_switch, chip));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	strcpy(card->driver, "CX88x");
 	sprintf(card->shortname, "Conexant CX%x", pci->device);

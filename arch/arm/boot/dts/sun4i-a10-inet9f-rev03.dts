@@ -59,7 +59,11 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	gpio-keys {
+=======
+	gpio_keys {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "gpio-keys-polled";
 		pinctrl-names = "default";
 		pinctrl-0 = <&key_pins_inet9f>;
@@ -67,7 +71,11 @@
 		#size-cells = <0>;
 		poll-interval = <20>;
 
+<<<<<<< HEAD
 		left-joystick-left {
+=======
+		button@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Left Joystick Left";
 			linux,code = <ABS_X>;
 			linux,input-type = <EV_ABS>;
@@ -75,7 +83,11 @@
 			gpios = <&pio 0 6 GPIO_ACTIVE_LOW>; /* PA6 */
 		};
 
+<<<<<<< HEAD
 		left-joystick-right {
+=======
+		button@1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Left Joystick Right";
 			linux,code = <ABS_X>;
 			linux,input-type = <EV_ABS>;
@@ -83,7 +95,11 @@
 			gpios = <&pio 0 5 GPIO_ACTIVE_LOW>; /* PA5 */
 		};
 
+<<<<<<< HEAD
 		left-joystick-up {
+=======
+		button@2 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Left Joystick Up";
 			linux,code = <ABS_Y>;
 			linux,input-type = <EV_ABS>;
@@ -91,7 +107,11 @@
 			gpios = <&pio 0 8 GPIO_ACTIVE_LOW>; /* PA8 */
 		};
 
+<<<<<<< HEAD
 		left-joystick-down {
+=======
+		button@3 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Left Joystick Down";
 			linux,code = <ABS_Y>;
 			linux,input-type = <EV_ABS>;
@@ -99,7 +119,11 @@
 			gpios = <&pio 0 9 GPIO_ACTIVE_LOW>; /* PA9 */
 		};
 
+<<<<<<< HEAD
 		right-joystick-left {
+=======
+		button@4 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Right Joystick Left";
 			linux,code = <ABS_Z>;
 			linux,input-type = <EV_ABS>;
@@ -107,7 +131,11 @@
 			gpios = <&pio 0 1 GPIO_ACTIVE_LOW>; /* PA1 */
 		};
 
+<<<<<<< HEAD
 		right-joystick-right {
+=======
+		button@5 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Right Joystick Right";
 			linux,code = <ABS_Z>;
 			linux,input-type = <EV_ABS>;
@@ -115,7 +143,11 @@
 			gpios = <&pio 0 0 GPIO_ACTIVE_LOW>; /* PA0 */
 		};
 
+<<<<<<< HEAD
 		right-joystick-up {
+=======
+		button@6 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Right Joystick Up";
 			linux,code = <ABS_RZ>;
 			linux,input-type = <EV_ABS>;
@@ -123,7 +155,11 @@
 			gpios = <&pio 0 3 GPIO_ACTIVE_LOW>; /* PA3 */
 		};
 
+<<<<<<< HEAD
 		right-joystick-down {
+=======
+		button@7 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Right Joystick Down";
 			linux,code = <ABS_RZ>;
 			linux,input-type = <EV_ABS>;
@@ -131,7 +167,11 @@
 			gpios = <&pio 0 4 GPIO_ACTIVE_LOW>; /* PA4 */
 		};
 
+<<<<<<< HEAD
 		dpad-left {
+=======
+		button@8 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "DPad Left";
 			linux,code = <ABS_HAT0X>;
 			linux,input-type = <EV_ABS>;
@@ -139,7 +179,11 @@
 			gpios = <&pio 7 23 GPIO_ACTIVE_LOW>; /* PH23 */
 		};
 
+<<<<<<< HEAD
 		dpad-right {
+=======
+		button@9 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "DPad Right";
 			linux,code = <ABS_HAT0X>;
 			linux,input-type = <EV_ABS>;
@@ -147,7 +191,11 @@
 			gpios = <&pio 7 24 GPIO_ACTIVE_LOW>; /* PH24 */
 		};
 
+<<<<<<< HEAD
 		dpad-up {
+=======
+		button@10 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "DPad Up";
 			linux,code = <ABS_HAT0Y>;
 			linux,input-type = <EV_ABS>;
@@ -155,7 +203,11 @@
 			gpios = <&pio 7 25 GPIO_ACTIVE_LOW>; /* PH25 */
 		};
 
+<<<<<<< HEAD
 		dpad-down {
+=======
+		button@11 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "DPad Down";
 			linux,code = <ABS_HAT0Y>;
 			linux,input-type = <EV_ABS>;
@@ -163,49 +215,81 @@
 			gpios = <&pio 7 26 GPIO_ACTIVE_LOW>; /* PH26 */
 		};
 
+<<<<<<< HEAD
 		x {
+=======
+		button@12 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Button X";
 			linux,code = <BTN_X>;
 			gpios = <&pio 0 16 GPIO_ACTIVE_LOW>; /* PA16 */
 		};
 
+<<<<<<< HEAD
 		y {
+=======
+		button@13 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Button Y";
 			linux,code = <BTN_Y>;
 			gpios = <&pio 0 14 GPIO_ACTIVE_LOW>; /* PA14 */
 		};
 
+<<<<<<< HEAD
 		a {
+=======
+		button@14 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Button A";
 			linux,code = <BTN_A>;
 			gpios = <&pio 0 17 GPIO_ACTIVE_LOW>; /* PA17 */
 		};
 
+<<<<<<< HEAD
 		b {
+=======
+		button@15 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Button B";
 			linux,code = <BTN_B>;
 			gpios = <&pio 0 15 GPIO_ACTIVE_LOW>; /* PA15 */
 		};
 
+<<<<<<< HEAD
 		select {
+=======
+		button@16 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Select Button";
 			linux,code = <BTN_SELECT>;
 			gpios = <&pio 0 11 GPIO_ACTIVE_LOW>; /* PA11 */
 		};
 
+<<<<<<< HEAD
 		start {
+=======
+		button@17 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Start Button";
 			linux,code = <BTN_START>;
 			gpios = <&pio 0 12 GPIO_ACTIVE_LOW>; /* PA12 */
 		};
 
+<<<<<<< HEAD
 		top-left {
+=======
+		button@18 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Top Left Button";
 			linux,code = <BTN_TL>;
 			gpios = <&pio 7 22 GPIO_ACTIVE_LOW>; /* PH22 */
 		};
 
+<<<<<<< HEAD
 		top-right {
+=======
+		button@19 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "Top Right Button";
 			linux,code = <BTN_TR>;
 			gpios = <&pio 0 13 GPIO_ACTIVE_LOW>; /* PA13 */
@@ -222,6 +306,11 @@
 };
 
 &i2c0 {
+<<<<<<< HEAD
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	axp209: pmic@34 {
@@ -233,6 +322,11 @@
 #include "axp209.dtsi"
 
 &i2c1 {
+<<<<<<< HEAD
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c1_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	/* Accelerometer */
@@ -245,6 +339,11 @@
 };
 
 &i2c2 {
+<<<<<<< HEAD
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c2_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 
 	ft5406ee8: touchscreen@38 {
@@ -261,35 +360,55 @@
 	vref-supply = <&reg_ldo2>;
 	status = "okay";
 
+<<<<<<< HEAD
 	button-200 {
+=======
+	button@200 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		label = "Menu";
 		linux,code = <KEY_MENU>;
 		channel = <0>;
 		voltage = <200000>;
 	};
 
+<<<<<<< HEAD
 	button-600 {
+=======
+	button@600 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		label = "Volume Up";
 		linux,code = <KEY_VOLUMEUP>;
 		channel = <0>;
 		voltage = <600000>;
 	};
 
+<<<<<<< HEAD
 	button-800 {
+=======
+	button@800 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		label = "Volume Down";
 		linux,code = <KEY_VOLUMEDOWN>;
 		channel = <0>;
 		voltage = <800000>;
 	};
 
+<<<<<<< HEAD
 	button-1000 {
+=======
+	button@1000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		label = "Home";
 		linux,code = <KEY_HOMEPAGE>;
 		channel = <0>;
 		voltage = <1000000>;
 	};
 
+<<<<<<< HEAD
 	button-1200 {
+=======
+	button@1200 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		label = "Esc";
 		linux,code = <KEY_ESC>;
 		channel = <0>;
@@ -298,9 +417,18 @@
 };
 
 &mmc0 {
+<<<<<<< HEAD
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
 	cd-gpios = <&pio 7 1 GPIO_ACTIVE_LOW>; /* PH1 */
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc0_pins_a>;
+	vmmc-supply = <&reg_vcc3v3>;
+	bus-width = <4>;
+	cd-gpios = <&pio 7 1 GPIO_ACTIVE_HIGH>; /* PH1 */
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
@@ -309,7 +437,11 @@
 };
 
 &pio {
+<<<<<<< HEAD
 	key_pins_inet9f: key-pins {
+=======
+	key_pins_inet9f: key_pins@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PA0", "PA1", "PA3", "PA4",
 		       "PA5", "PA6", "PA8", "PA9",
 		       "PA11", "PA12", "PA13",
@@ -319,13 +451,21 @@
 		bias-pull-up;
 	};
 
+<<<<<<< HEAD
 	usb0_id_detect_pin: usb0-id-detect-pin {
+=======
+	usb0_id_detect_pin: usb0_id_detect_pin@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PH4";
 		function = "gpio_in";
 		bias-pull-up;
 	};
 
+<<<<<<< HEAD
 	usb0_vbus_detect_pin: usb0-vbus-detect-pin {
+=======
+	usb0_vbus_detect_pin: usb0_vbus_detect_pin@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pins = "PH5";
 		function = "gpio_in";
 		bias-pull-down;
@@ -367,7 +507,11 @@
 
 &uart0 {
 	pinctrl-names = "default";
+<<<<<<< HEAD
 	pinctrl-0 = <&uart0_pb_pins>;
+=======
+	pinctrl-0 = <&uart0_pins_a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

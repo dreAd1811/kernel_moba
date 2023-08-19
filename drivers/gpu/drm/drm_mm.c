@@ -92,7 +92,11 @@
  * some basic allocator dumpers for debugging.
  *
  * Note that this range allocator is not thread-safe, drivers need to protect
+<<<<<<< HEAD
  * modifications with their own locking. The idea behind this is that for a full
+=======
+ * modifications with their on locking. The idea behind this is that for a full
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * memory manager additional data needs to be protected anyway, hence internal
  * locking would be fully redundant.
  */
@@ -180,7 +184,11 @@ static void drm_mm_interval_tree_add_node(struct drm_mm_node *hole_node,
 	struct drm_mm *mm = hole_node->mm;
 	struct rb_node **link, *rb;
 	struct drm_mm_node *parent;
+<<<<<<< HEAD
 	bool leftmost;
+=======
+	bool leftmost = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	node->__subtree_last = LAST(node);
 
@@ -201,7 +209,10 @@ static void drm_mm_interval_tree_add_node(struct drm_mm_node *hole_node,
 	} else {
 		rb = NULL;
 		link = &mm->interval_tree.rb_root.rb_node;
+<<<<<<< HEAD
 		leftmost = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	while (*link) {
@@ -209,11 +220,19 @@ static void drm_mm_interval_tree_add_node(struct drm_mm_node *hole_node,
 		parent = rb_entry(rb, struct drm_mm_node, rb);
 		if (parent->__subtree_last < node->__subtree_last)
 			parent->__subtree_last = node->__subtree_last;
+<<<<<<< HEAD
 		if (node->start < parent->start) {
 			link = &parent->rb.rb_left;
 		} else {
 			link = &parent->rb.rb_right;
 			leftmost = false;
+=======
+		if (node->start < parent->start)
+			link = &parent->rb.rb_left;
+		else {
+			link = &parent->rb.rb_right;
+			leftmost = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -239,6 +258,7 @@ static void drm_mm_interval_tree_add_node(struct drm_mm_node *hole_node,
 #define HOLE_SIZE(NODE) ((NODE)->hole_size)
 #define HOLE_ADDR(NODE) (__drm_mm_hole_node_start(NODE))
 
+<<<<<<< HEAD
 static u64 rb_to_hole_size(struct rb_node *rb)
 {
 	return rb_entry(rb, struct drm_mm_node, rb_hole_size)->hole_size;
@@ -265,6 +285,8 @@ static void insert_hole_size(struct rb_root_cached *root,
 	rb_insert_color_cached(&node->rb_hole_size, root, first);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void add_hole(struct drm_mm_node *node)
 {
 	struct drm_mm *mm = node->mm;
@@ -273,7 +295,11 @@ static void add_hole(struct drm_mm_node *node)
 		__drm_mm_hole_node_end(node) - __drm_mm_hole_node_start(node);
 	DRM_MM_BUG_ON(!drm_mm_hole_follows(node));
 
+<<<<<<< HEAD
 	insert_hole_size(&mm->holes_size, node);
+=======
+	RB_INSERT(mm->holes_size, rb_hole_size, HOLE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RB_INSERT(mm->holes_addr, rb_hole_addr, HOLE_ADDR);
 
 	list_add(&node->hole_stack, &mm->hole_stack);
@@ -284,7 +310,11 @@ static void rm_hole(struct drm_mm_node *node)
 	DRM_MM_BUG_ON(!drm_mm_hole_follows(node));
 
 	list_del(&node->hole_stack);
+<<<<<<< HEAD
 	rb_erase_cached(&node->rb_hole_size, &node->mm->holes_size);
+=======
+	rb_erase(&node->rb_hole_size, &node->mm->holes_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rb_erase(&node->rb_hole_addr, &node->mm->holes_addr);
 	node->hole_size = 0;
 
@@ -308,6 +338,7 @@ static inline u64 rb_hole_size(struct rb_node *rb)
 
 static struct drm_mm_node *best_hole(struct drm_mm *mm, u64 size)
 {
+<<<<<<< HEAD
 	struct rb_node *rb = mm->holes_size.rb_root.rb_node;
 	struct drm_mm_node *best = NULL;
 
@@ -324,10 +355,28 @@ static struct drm_mm_node *best_hole(struct drm_mm *mm, u64 size)
 	} while (rb);
 
 	return best;
+=======
+	struct rb_node *best = NULL;
+	struct rb_node **link = &mm->holes_size.rb_node;
+
+	while (*link) {
+		struct rb_node *rb = *link;
+
+		if (size <= rb_hole_size(rb)) {
+			link = &rb->rb_left;
+			best = rb;
+		} else {
+			link = &rb->rb_right;
+		}
+	}
+
+	return rb_hole_size_to_node(best);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct drm_mm_node *find_hole(struct drm_mm *mm, u64 addr)
 {
+<<<<<<< HEAD
 	struct rb_node *rb = mm->holes_addr.rb_node;
 	struct drm_mm_node *node = NULL;
 
@@ -341,6 +390,21 @@ static struct drm_mm_node *find_hole(struct drm_mm *mm, u64 addr)
 			rb = node->rb_hole_addr.rb_left;
 		else if (addr > hole_start + node->hole_size)
 			rb = node->rb_hole_addr.rb_right;
+=======
+	struct drm_mm_node *node = NULL;
+	struct rb_node **link = &mm->holes_addr.rb_node;
+
+	while (*link) {
+		u64 hole_start;
+
+		node = rb_hole_addr_to_node(*link);
+		hole_start = __drm_mm_hole_node_start(node);
+
+		if (addr < hole_start)
+			link = &node->rb_hole_addr.rb_left;
+		else if (addr > hole_start + node->hole_size)
+			link = &node->rb_hole_addr.rb_right;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else
 			break;
 	}
@@ -353,6 +417,12 @@ first_hole(struct drm_mm *mm,
 	   u64 start, u64 end, u64 size,
 	   enum drm_mm_insert_mode mode)
 {
+<<<<<<< HEAD
+=======
+	if (RB_EMPTY_ROOT(&mm->holes_size))
+		return NULL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (mode) {
 	default:
 	case DRM_MM_INSERT_BEST:
@@ -379,7 +449,11 @@ next_hole(struct drm_mm *mm,
 	switch (mode) {
 	default:
 	case DRM_MM_INSERT_BEST:
+<<<<<<< HEAD
 		return rb_hole_size_to_node(rb_prev(&node->rb_hole_size));
+=======
+		return rb_hole_size_to_node(rb_next(&node->rb_hole_size));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case DRM_MM_INSERT_LOW:
 		return rb_hole_addr_to_node(rb_next(&node->rb_hole_addr));
@@ -450,11 +524,14 @@ int drm_mm_reserve_node(struct drm_mm *mm, struct drm_mm_node *node)
 }
 EXPORT_SYMBOL(drm_mm_reserve_node);
 
+<<<<<<< HEAD
 static u64 rb_to_hole_size_or_zero(struct rb_node *rb)
 {
 	return rb ? rb_to_hole_size(rb) : 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_mm_insert_node_in_range - ranged search for space and insert @node
  * @mm: drm_mm to allocate from
@@ -480,13 +557,17 @@ int drm_mm_insert_node_in_range(struct drm_mm * const mm,
 {
 	struct drm_mm_node *hole;
 	u64 remainder_mask;
+<<<<<<< HEAD
 	bool once;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_MM_BUG_ON(range_start >= range_end);
 
 	if (unlikely(size == 0 || range_end - range_start < size))
 		return -ENOSPC;
 
+<<<<<<< HEAD
 	if (rb_to_hole_size_or_zero(rb_first_cached(&mm->holes_size)) < size)
 		return -ENOSPC;
 
@@ -500,6 +581,14 @@ int drm_mm_insert_node_in_range(struct drm_mm * const mm,
 	for (hole = first_hole(mm, range_start, range_end, size, mode);
 	     hole;
 	     hole = once ? NULL : next_hole(mm, hole, mode)) {
+=======
+	if (alignment <= 1)
+		alignment = 0;
+
+	remainder_mask = is_power_of_2(alignment) ? alignment - 1 : 0;
+	for (hole = first_hole(mm, range_start, range_end, size, mode); hole;
+	     hole = next_hole(mm, hole, mode)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u64 hole_start = __drm_mm_hole_node_start(hole);
 		u64 hole_end = hole_start + hole->hole_size;
 		u64 adj_start, adj_end;
@@ -613,13 +702,17 @@ EXPORT_SYMBOL(drm_mm_remove_node);
  */
 void drm_mm_replace_node(struct drm_mm_node *old, struct drm_mm_node *new)
 {
+<<<<<<< HEAD
 	struct drm_mm *mm = old->mm;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_MM_BUG_ON(!old->allocated);
 
 	*new = *old;
 
 	list_replace(&old->node_list, &new->node_list);
+<<<<<<< HEAD
 	rb_replace_node_cached(&old->rb, &new->rb, &mm->interval_tree);
 
 	if (drm_mm_hole_follows(old)) {
@@ -630,6 +723,18 @@ void drm_mm_replace_node(struct drm_mm_node *old, struct drm_mm_node *new)
 		rb_replace_node(&old->rb_hole_addr,
 				&new->rb_hole_addr,
 				&mm->holes_addr);
+=======
+	rb_replace_node(&old->rb, &new->rb, &old->mm->interval_tree.rb_root);
+
+	if (drm_mm_hole_follows(old)) {
+		list_replace(&old->hole_stack, &new->hole_stack);
+		rb_replace_node(&old->rb_hole_size,
+				&new->rb_hole_size,
+				&old->mm->holes_size);
+		rb_replace_node(&old->rb_hole_addr,
+				&new->rb_hole_addr,
+				&old->mm->holes_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	old->allocated = false;
@@ -922,7 +1027,11 @@ void drm_mm_init(struct drm_mm *mm, u64 start, u64 size)
 
 	INIT_LIST_HEAD(&mm->hole_stack);
 	mm->interval_tree = RB_ROOT_CACHED;
+<<<<<<< HEAD
 	mm->holes_size = RB_ROOT_CACHED;
+=======
+	mm->holes_size = RB_ROOT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mm->holes_addr = RB_ROOT;
 
 	/* Clever trick to avoid a special case in the free hole tracking. */

@@ -727,7 +727,11 @@ static int __init rtas_flash_init(void)
 		const struct rtas_flash_file *f = &rtas_flash_files[i];
 		int token;
 
+<<<<<<< HEAD
 		if (!proc_create(f->filename, 0600, NULL, &f->fops))
+=======
+		if (!proc_create(f->filename, S_IRUSR | S_IWUSR, NULL, &f->fops))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto enomem;
 
 		/*

@@ -1,8 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Keystone 2 Lamarr EVM device tree
  *
  * Copyright (C) 2014-2017 Texas Instruments Incorporated - http://www.ti.com/
+=======
+/*
+ * Copyright 2014 Texas Instruments, Inc.
+ *
+ * Keystone 2 Lamarr EVM device tree
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 /dts-v1/;
 
@@ -25,9 +36,14 @@
 			status = "okay";
 		};
 	};
+<<<<<<< HEAD
 };
 
 &soc0 {
+=======
+
+	soc {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clocks {
 			refclksys: refclksys {
 				#clock-cells = <0>;
@@ -36,6 +52,10 @@
 				clock-output-names = "refclk-sys";
 			};
 		};
+<<<<<<< HEAD
+=======
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb_phy {
@@ -52,7 +72,11 @@
 
 &i2c0 {
 	dtt@50 {
+<<<<<<< HEAD
 		compatible = "atmel,24c1024";
+=======
+		compatible = "at,24c1024";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x50>;
 	};
 };

@@ -323,7 +323,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr	= ADDR_UNSET,
 		.radio_addr	= ADDR_UNSET,
+<<<<<<< HEAD
 		.empress_addr	= 0x20,
+=======
+		.empress_addr 	= 0x20,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		.inputs         = {{
 			.type = SAA7134_INPUT_COMPOSITE1,
@@ -454,7 +458,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr	= ADDR_UNSET,
 		.radio_addr	= ADDR_UNSET,
+<<<<<<< HEAD
 		.empress_addr	= 0x20,
+=======
+		.empress_addr 	= 0x20,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf	= TDA9887_PRESENT,
 		.gpiomask	= 0x820000,
 		.inputs		= {{
@@ -849,7 +857,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr	= ADDR_UNSET,
 		.radio_addr	= ADDR_UNSET,
+<<<<<<< HEAD
 		.empress_addr	= 0x20,
+=======
+		.empress_addr 	= 0x20,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.inputs         = {{
 			.type = SAA7134_INPUT_COMPOSITE1,
 			.vmux = 4,
@@ -1006,7 +1018,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr	= ADDR_UNSET,
 		.radio_addr	= ADDR_UNSET,
+<<<<<<< HEAD
 		.empress_addr	= 0x20,
+=======
+		.empress_addr 	= 0x20,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.inputs         = {{
 			.type = SAA7134_INPUT_COMPOSITE1,
 			.vmux = 1,
@@ -1767,7 +1783,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr	= ADDR_UNSET,
 		.radio_addr	= ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.inputs         = {{
 			.type = SAA7134_INPUT_TV,
@@ -2412,7 +2432,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type	= UNSET,
 		.tuner_addr	= ADDR_UNSET,
 		.radio_addr	= ADDR_UNSET,
+<<<<<<< HEAD
 		.empress_addr	= 0x21,
+=======
+		.empress_addr 	= 0x21,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.inputs		= {{
 			.type = SAA7134_INPUT_COMPOSITE0,
 			.vmux   = 0,
@@ -3978,6 +4002,7 @@ struct saa7134_board saa7134_boards[] = {
 	[SAA7134_BOARD_BEHOLD_407] = {
 		/*       Beholder Intl. Ltd. 2008      */
 		/*Dmitry Belimov <d.belimov@gmail.com> */
+<<<<<<< HEAD
 		.name		= "Beholder BeholdTV 407",
 		.audio_clock	= 0x00187de7,
 		.tuner_type	= TUNER_PHILIPS_FM1216ME_MK3,
@@ -3985,6 +4010,15 @@ struct saa7134_board saa7134_boards[] = {
 		.tuner_addr	= ADDR_UNSET,
 		.radio_addr	= ADDR_UNSET,
 		.tda9887_conf	= TDA9887_PRESENT,
+=======
+		.name 		= "Beholder BeholdTV 407",
+		.audio_clock 	= 0x00187de7,
+		.tuner_type 	= TUNER_PHILIPS_FM1216ME_MK3,
+		.radio_type 	= UNSET,
+		.tuner_addr 	= ADDR_UNSET,
+		.radio_addr 	= ADDR_UNSET,
+		.tda9887_conf 	= TDA9887_PRESENT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.gpiomask       = 0x00008000,
 		.inputs = {{
 			.type = SAA7134_INPUT_SVIDEO,
@@ -4006,6 +4040,7 @@ struct saa7134_board saa7134_boards[] = {
 	[SAA7134_BOARD_BEHOLD_407FM] = {
 		/*       Beholder Intl. Ltd. 2008      */
 		/*Dmitry Belimov <d.belimov@gmail.com> */
+<<<<<<< HEAD
 		.name		= "Beholder BeholdTV 407 FM",
 		.audio_clock	= 0x00187de7,
 		.tuner_type	= TUNER_PHILIPS_FM1216ME_MK3,
@@ -4013,6 +4048,15 @@ struct saa7134_board saa7134_boards[] = {
 		.tuner_addr	= ADDR_UNSET,
 		.radio_addr	= ADDR_UNSET,
 		.tda9887_conf	= TDA9887_PRESENT,
+=======
+		.name 		= "Beholder BeholdTV 407 FM",
+		.audio_clock 	= 0x00187de7,
+		.tuner_type 	= TUNER_PHILIPS_FM1216ME_MK3,
+		.radio_type 	= UNSET,
+		.tuner_addr 	= ADDR_UNSET,
+		.radio_addr 	= ADDR_UNSET,
+		.tda9887_conf 	= TDA9887_PRESENT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.gpiomask       = 0x00008000,
 		.inputs = {{
 			.type = SAA7134_INPUT_SVIDEO,
@@ -4103,7 +4147,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.gpiomask       = 0x00008000,
 		.inputs         = {{
@@ -4166,7 +4214,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.gpiomask       = 0x00008000,
 		.inputs         = {{
@@ -4196,7 +4248,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.gpiomask       = 0x00008000,
 		.inputs         = {{
@@ -4366,7 +4422,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.inputs         = {{
 			.type = SAA7134_INPUT_TV,
@@ -4394,7 +4454,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.inputs         = {{
 			.type = SAA7134_INPUT_TV,
@@ -4422,7 +4486,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.inputs         = {{
 			.type = SAA7134_INPUT_TV,
@@ -4450,7 +4518,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.inputs         = {{
 			.type = SAA7134_INPUT_TV,
@@ -4481,7 +4553,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.empress_addr	= 0x20,
+=======
+		.empress_addr 	= 0x20,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.inputs         = { {
 			.type = SAA7134_INPUT_TV,
@@ -4517,7 +4593,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.empress_addr	= 0x20,
+=======
+		.empress_addr 	= 0x20,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.inputs         = { {
 			.type = SAA7134_INPUT_TV,
@@ -4554,8 +4634,13 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
 		.empress_addr	= 0x20,
+=======
+		.rds_addr 	= 0x10,
+		.empress_addr 	= 0x20,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.inputs         = { {
 			.type = SAA7134_INPUT_TV,
@@ -5297,7 +5382,11 @@ struct saa7134_board saa7134_boards[] = {
 		.radio_type     = UNSET,
 		.tuner_addr     = ADDR_UNSET,
 		.radio_addr     = ADDR_UNSET,
+<<<<<<< HEAD
 		.rds_addr	= 0x10,
+=======
+		.rds_addr 	= 0x10,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.tda9887_conf   = TDA9887_PRESENT,
 		.gpiomask       = 0x00008000,
 		.inputs         = {{

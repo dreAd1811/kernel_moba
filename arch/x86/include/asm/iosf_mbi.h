@@ -147,6 +147,7 @@ int iosf_mbi_register_pmic_bus_access_notifier(struct notifier_block *nb);
 int iosf_mbi_unregister_pmic_bus_access_notifier(struct notifier_block *nb);
 
 /**
+<<<<<<< HEAD
  * iosf_mbi_unregister_pmic_bus_access_notifier_unlocked - Unregister PMIC bus
  *                                                         notifier, unlocked
  *
@@ -159,6 +160,8 @@ int iosf_mbi_unregister_pmic_bus_access_notifier_unlocked(
 	struct notifier_block *nb);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * iosf_mbi_call_pmic_bus_access_notifier_chain - Call PMIC bus notifier chain
  *
  * @val: action to pass into listener's notifier_call function
@@ -166,11 +169,14 @@ int iosf_mbi_unregister_pmic_bus_access_notifier_unlocked(
  */
 int iosf_mbi_call_pmic_bus_access_notifier_chain(unsigned long val, void *v);
 
+<<<<<<< HEAD
 /**
  * iosf_mbi_assert_punit_acquired - Assert that the P-Unit has been acquired.
  */
 void iosf_mbi_assert_punit_acquired(void);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* CONFIG_IOSF_MBI is not enabled */
 static inline
 bool iosf_mbi_available(void)
@@ -214,20 +220,26 @@ int iosf_mbi_unregister_pmic_bus_access_notifier(struct notifier_block *nb)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int
 iosf_mbi_unregister_pmic_bus_access_notifier_unlocked(struct notifier_block *nb)
 {
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline
 int iosf_mbi_call_pmic_bus_access_notifier_chain(unsigned long val, void *v)
 {
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline void iosf_mbi_assert_punit_acquired(void) {}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_IOSF_MBI */
 
 #endif /* IOSF_MBI_SYMS_H */

@@ -97,7 +97,11 @@
 #define CCDC_LATCH_ON_VSYNC_DISABLE		(1 << 15)
 #define CCDC_FPC_ENABLE				(1 << 15)
 #define CCDC_FPC_DISABLE			0
+<<<<<<< HEAD
 #define CCDC_FPC_FPC_NUM_MASK			0x7FFF
+=======
+#define CCDC_FPC_FPC_NUM_MASK 			0x7FFF
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CCDC_DATA_PACK_ENABLE			(1 << 11)
 #define CCDC_FMTCFG_VPIN_MASK			7
 #define CCDC_FMTCFG_VPIN_SHIFT			12
@@ -143,7 +147,11 @@
 #define CCDC_REC656IF_BT656_EN			3
 #define CCDC_SYN_MODE_VD_POL_NEGATIVE		(1 << 2)
 #define CCDC_CCDCFG_Y8POS_SHIFT			11
+<<<<<<< HEAD
 #define CCDC_CCDCFG_BW656_10BIT			(1 << 5)
+=======
+#define CCDC_CCDCFG_BW656_10BIT 		(1 << 5)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CCDC_SDOFST_FIELD_INTERLEAVED		0x249
 #define CCDC_NO_CULLING				0xffff00ff
 #endif

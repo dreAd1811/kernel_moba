@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2012,2017-2018 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012, 2017-2020 The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/types.h>
@@ -50,16 +63,39 @@ static void of_coresight_get_ports(const struct device_node *node,
 {
 	struct device_node *ep = NULL;
 	int in = 0, out = 0;
+<<<<<<< HEAD
+=======
+	struct device_node *ports = NULL, *port = NULL;
+	struct of_endpoint endpoint;
+
+	ports = of_get_child_by_name(node, "ports");
+	port = of_get_child_by_name(node, "port");
+
+	if (!ports && !port)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		ep = of_graph_get_next_endpoint(node, ep);
 		if (!ep)
 			break;
 
+<<<<<<< HEAD
 		if (of_property_read_bool(ep, "slave-mode"))
 			in++;
 		else
 			out++;
+=======
+		if (of_graph_parse_endpoint(ep, &endpoint))
+			continue;
+
+		if (of_property_read_bool(ep, "slave-mode"))
+			in = (endpoint.port + 1 > in) ?
+				endpoint.port + 1 : in;
+		else
+			out = (endpoint.port + 1) > out ?
+				endpoint.port + 1 : out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	} while (ep);
 
@@ -71,30 +107,47 @@ static int of_coresight_alloc_memory(struct device *dev,
 			struct coresight_platform_data *pdata)
 {
 	/* List of output port on this component */
+<<<<<<< HEAD
 	pdata->outports = devm_kcalloc(dev,
 				       pdata->nr_outport,
+=======
+	pdata->outports = devm_kzalloc(dev, pdata->nr_outport *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       sizeof(*pdata->outports),
 				       GFP_KERNEL);
 	if (!pdata->outports)
 		return -ENOMEM;
 
 	pdata->source_names = devm_kzalloc(dev, pdata->nr_outport *
+<<<<<<< HEAD
 					  sizeof(*pdata->source_names),
 					  GFP_KERNEL);
+=======
+					sizeof(*pdata->source_names),
+					GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pdata->source_names)
 		return -ENOMEM;
 
 	/* Children connected to this component via @outports */
+<<<<<<< HEAD
 	pdata->child_names = devm_kcalloc(dev,
 					  pdata->nr_outport,
+=======
+	pdata->child_names = devm_kzalloc(dev, pdata->nr_outport *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  sizeof(*pdata->child_names),
 					  GFP_KERNEL);
 	if (!pdata->child_names)
 		return -ENOMEM;
 
 	/* Port number on the child this component is connected to */
+<<<<<<< HEAD
 	pdata->child_ports = devm_kcalloc(dev,
 					  pdata->nr_outport,
+=======
+	pdata->child_ports = devm_kzalloc(dev, pdata->nr_outport *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  sizeof(*pdata->child_ports),
 					  GFP_KERNEL);
 	if (!pdata->child_ports)
@@ -109,6 +162,7 @@ int of_coresight_get_cpu(const struct device_node *node)
 	struct device_node *dn;
 
 	dn = of_parse_phandle(node, "cpu", 0);
+<<<<<<< HEAD
 
 	/* Affinity defaults to invalid */
 	if (!dn)
@@ -119,6 +173,15 @@ int of_coresight_get_cpu(const struct device_node *node)
 
 	/* Affinity to invalid if no cpu nodes are found */
 	return (cpu < 0) ? -ENODEV : cpu;
+=======
+	/* Affinity defaults to invalid */
+	if (!dn)
+		return -ENODEV;
+	cpu = of_cpu_node_to_id(dn);
+	of_node_put(dn);
+
+	return cpu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(of_coresight_get_cpu);
 
@@ -175,18 +238,102 @@ of_coresight_get_reg_clk(struct device *dev, const struct device_node *node)
 	return reg_clk;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * of_coresight_parse_endpoint : Parse the given output endpoint @ep
+ * and fill the connection information in @pdata[@i].
+ *
+ * Parses the local port, remote device name and the remote port.
+ *
+ * Returns :
+ *	 1	- If the parsing is successful and a connection record
+ *		  was created for an output connection.
+ *	 0	- If the parsing completed without any fatal errors.
+ *	-Errno	- Fatal error, abort the scanning.
+ */
+static int of_coresight_parse_endpoint(struct device *dev,
+				       struct device_node *ep,
+				       struct coresight_platform_data *pdata,
+				       int i)
+{
+	int ret = 0;
+	struct of_endpoint endpoint, rendpoint;
+	struct device_node *rparent = NULL;
+	struct device_node *rep = NULL;
+	struct device *rdev = NULL;
+	struct device_node *sn = NULL;
+
+	do {
+		/* Parse the local port details */
+		if (of_graph_parse_endpoint(ep, &endpoint))
+			break;
+		/*
+		 * Get a handle on the remote endpoint and the device it is
+		 * attached to.
+		 */
+		rep = of_graph_get_remote_endpoint(ep);
+		if (!rep)
+			break;
+		rparent = of_graph_get_port_parent(rep);
+		if (!rparent)
+			break;
+		if (of_graph_parse_endpoint(rep, &rendpoint))
+			break;
+
+		/* If the remote device is not available, defer probing */
+		rdev = of_coresight_get_endpoint_device(rparent);
+		if (!rdev) {
+			ret = -EPROBE_DEFER;
+			break;
+		}
+
+		pdata->outports[i] = endpoint.port;
+		ret = of_property_read_string(rparent, "coresight-name",
+					      &pdata->child_names[i]);
+		if (ret)
+			pdata->child_names[i] = devm_kstrdup(dev,
+							     dev_name(rdev),
+							     GFP_KERNEL);
+		pdata->child_ports[i] = rendpoint.port;
+		pdata->source_names[i] = NULL;
+		sn = of_parse_phandle(ep, "source", 0);
+		if (sn) {
+			ret = of_property_read_string(sn, "coresight-name",
+						&pdata->source_names[i]);
+			of_node_put(sn);
+		}
+		/* Connection record updated */
+		ret = 1;
+	} while (0);
+
+	if (rparent)
+		of_node_put(rparent);
+	if (rep)
+		of_node_put(rep);
+	if (rdev)
+		put_device(rdev);
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct coresight_platform_data *
 of_get_coresight_platform_data(struct device *dev,
 			       const struct device_node *node)
 {
 	int i = 0, ret = 0;
 	struct coresight_platform_data *pdata;
+<<<<<<< HEAD
 	struct of_endpoint endpoint, rendpoint;
 	struct device *rdev;
 	struct device_node *ep = NULL;
 	struct device_node *rparent = NULL;
 	struct device_node *rport = NULL;
 	struct device_node *sn = NULL;
+=======
+	struct device_node *ep = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata = devm_kzalloc(dev, sizeof(*pdata), GFP_KERNEL);
 	if (!pdata)
@@ -197,6 +344,7 @@ of_get_coresight_platform_data(struct device *dev,
 		/* Use device name as sysfs handle */
 		pdata->name = dev_name(dev);
 	}
+<<<<<<< HEAD
 	/* Get the number of input and output port for this component */
 	of_coresight_get_ports(node, &pdata->nr_inport, &pdata->nr_outport);
 
@@ -265,14 +413,53 @@ of_get_coresight_platform_data(struct device *dev,
 
 	pdata->cpu = of_coresight_get_cpu(node);
 
+=======
+	pdata->cpu = of_coresight_get_cpu(node);
+
+	/* Get the number of input and output port for this component */
+	of_coresight_get_ports(node, &pdata->nr_inport, &pdata->nr_outport);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pdata->reg_clk = of_coresight_get_reg_clk(dev, node);
 	if (IS_ERR(pdata->reg_clk))
 		return (void *)(pdata->reg_clk);
 
+<<<<<<< HEAD
+=======
+	/* If there are no output connections, we are done */
+	if (!pdata->nr_outport)
+		return pdata;
+
+	ret = of_coresight_alloc_memory(dev, pdata);
+	if (ret)
+		return ERR_PTR(ret);
+
+	/* Iterate through each port to discover topology */
+	while ((ep = of_graph_get_next_endpoint(node, ep))) {
+		/*
+		 * No need to deal with input ports, as processing the
+		 * output ports connected to them will process the details.
+		 */
+		if (of_find_property(ep, "slave-mode", NULL))
+			continue;
+
+		ret = of_coresight_parse_endpoint(dev, ep, pdata, i);
+		switch (ret) {
+		case 1:
+			i++;		/* Fall through */
+		case 0:
+			break;
+		default:
+			return ERR_PTR(ret);
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pdata;
 }
 EXPORT_SYMBOL_GPL(of_get_coresight_platform_data);
 
+<<<<<<< HEAD
 int of_get_coresight_csr_name(struct device_node *node, const char **csr_name)
 {
 	int  ret;
@@ -291,6 +478,8 @@ int of_get_coresight_csr_name(struct device_node *node, const char **csr_name)
 }
 EXPORT_SYMBOL(of_get_coresight_csr_name);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct coresight_cti_data *of_get_coresight_cti_data(
 				struct device *dev, struct device_node *node)
 {
@@ -332,3 +521,24 @@ struct coresight_cti_data *of_get_coresight_cti_data(
 	return ctidata;
 }
 EXPORT_SYMBOL(of_get_coresight_cti_data);
+<<<<<<< HEAD
+=======
+
+int of_get_coresight_csr_name(struct device_node *node, const char **csr_name)
+{
+	int  ret;
+	struct device_node *csr_node;
+
+	csr_node = of_parse_phandle(node, "coresight-csr", 0);
+	if (!csr_node)
+		return -EINVAL;
+
+	ret = of_property_read_string(csr_node, "coresight-name", csr_name);
+	of_node_put(csr_node);
+	if (ret)
+		return ret;
+
+	return 0;
+}
+EXPORT_SYMBOL(of_get_coresight_csr_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

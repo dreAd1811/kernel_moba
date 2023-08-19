@@ -35,7 +35,10 @@
 
 #define AARCH64_INSN_SF_BIT	BIT(31)
 #define AARCH64_INSN_N_BIT	BIT(22)
+<<<<<<< HEAD
 #define AARCH64_INSN_LSL_12	BIT(22)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int aarch64_insn_encoding_class[] = {
 	AARCH64_INSN_CLS_UNKNOWN,
@@ -149,6 +152,23 @@ int __kprobes aarch64_insn_write(void *addr, u32 insn)
 	return __aarch64_insn_write(addr, cpu_to_le32(insn));
 }
 
+<<<<<<< HEAD
+=======
+static bool __kprobes __aarch64_insn_hotpatch_safe(u32 insn)
+{
+	if (aarch64_get_insn_class(insn) != AARCH64_INSN_CLS_BR_SYS)
+		return false;
+
+	return	aarch64_insn_is_b(insn) ||
+		aarch64_insn_is_bl(insn) ||
+		aarch64_insn_is_svc(insn) ||
+		aarch64_insn_is_hvc(insn) ||
+		aarch64_insn_is_smc(insn) ||
+		aarch64_insn_is_brk(insn) ||
+		aarch64_insn_is_nop(insn);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool __kprobes aarch64_insn_uses_literal(u32 insn)
 {
 	/* ldr/ldrsw (literal), prfm */
@@ -175,6 +195,25 @@ bool __kprobes aarch64_insn_is_branch(u32 insn)
 		aarch64_insn_is_bcond(insn);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * ARM Architecture Reference Manual for ARMv8 Profile-A, Issue A.a
+ * Section B2.6.5 "Concurrent modification and execution of instructions":
+ * Concurrent modification and execution of instructions can lead to the
+ * resulting instruction performing any behavior that can be achieved by
+ * executing any sequence of instructions that can be executed from the
+ * same Exception level, except where the instruction before modification
+ * and the instruction after modification is a B, BL, NOP, BKPT, SVC, HVC,
+ * or SMC instruction.
+ */
+bool __kprobes aarch64_insn_hotpatch_safe(u32 old_insn, u32 new_insn)
+{
+	return __aarch64_insn_hotpatch_safe(old_insn) &&
+	       __aarch64_insn_hotpatch_safe(new_insn);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __kprobes aarch64_insn_patch_text_nosync(void *addr, u32 insn)
 {
 	u32 *tp = addr;
@@ -186,8 +225,13 @@ int __kprobes aarch64_insn_patch_text_nosync(void *addr, u32 insn)
 
 	ret = aarch64_insn_write(tp, insn);
 	if (ret == 0)
+<<<<<<< HEAD
 		__flush_icache_range((uintptr_t)tp,
 				     (uintptr_t)tp + AARCH64_INSN_SIZE);
+=======
+		flush_icache_range((uintptr_t)tp,
+				   (uintptr_t)tp + AARCH64_INSN_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -209,6 +253,14 @@ static int __kprobes aarch64_insn_patch_text_cb(void *arg)
 		for (i = 0; ret == 0 && i < pp->insn_cnt; i++)
 			ret = aarch64_insn_patch_text_nosync(pp->text_addrs[i],
 							     pp->new_insns[i]);
+<<<<<<< HEAD
+=======
+		/*
+		 * aarch64_insn_patch_text_nosync() calls flush_icache_range(),
+		 * which ends with "dsb; isb" pair guaranteeing global
+		 * visibility.
+		 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Notify other processors with an additional increment. */
 		atomic_inc(&pp->cpu_count);
 	} else {
@@ -220,7 +272,12 @@ static int __kprobes aarch64_insn_patch_text_cb(void *arg)
 	return ret;
 }
 
+<<<<<<< HEAD
 int __kprobes aarch64_insn_patch_text(void *addrs[], u32 insns[], int cnt)
+=======
+static
+int __kprobes aarch64_insn_patch_text_sync(void *addrs[], u32 insns[], int cnt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct aarch64_insn_patch patch = {
 		.text_addrs = addrs,
@@ -236,6 +293,37 @@ int __kprobes aarch64_insn_patch_text(void *addrs[], u32 insns[], int cnt)
 				       cpu_online_mask);
 }
 
+<<<<<<< HEAD
+=======
+int __kprobes aarch64_insn_patch_text(void *addrs[], u32 insns[], int cnt)
+{
+	int ret;
+	u32 insn;
+
+	/* Unsafe to patch multiple instructions without synchronizaiton */
+	if (cnt == 1) {
+		ret = aarch64_insn_read(addrs[0], &insn);
+		if (ret)
+			return ret;
+
+		if (aarch64_insn_hotpatch_safe(insn, insns[0])) {
+			/*
+			 * ARMv8 architecture doesn't guarantee all CPUs see
+			 * the new instruction after returning from function
+			 * aarch64_insn_patch_text_nosync(). So send IPIs to
+			 * all other CPUs to achieve instruction
+			 * synchronization.
+			 */
+			ret = aarch64_insn_patch_text_nosync(addrs[0], insns[0]);
+			kick_all_cpus_sync();
+			return ret;
+		}
+	}
+
+	return aarch64_insn_patch_text_sync(addrs, insns, cnt);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __kprobes aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
 						u32 *maskp, int *shiftp)
 {
@@ -280,10 +368,13 @@ static int __kprobes aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
 		mask = BIT(6) - 1;
 		shift = 16;
 		break;
+<<<<<<< HEAD
 	case AARCH64_INSN_IMM_N:
 		mask = 1;
 		shift = 22;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -880,6 +971,7 @@ u32 aarch64_insn_gen_add_sub_imm(enum aarch64_insn_register dst,
 		return AARCH64_BREAK_FAULT;
 	}
 
+<<<<<<< HEAD
 	/* We can't encode more than a 24bit value (12bit + 12bit shift) */
 	if (imm & ~(BIT(24) - 1))
 		goto out;
@@ -892,6 +984,11 @@ u32 aarch64_insn_gen_add_sub_imm(enum aarch64_insn_register dst,
 
 		imm >>= 12;
 		insn |= AARCH64_INSN_LSL_12;
+=======
+	if (imm & ~(SZ_4K - 1)) {
+		pr_err("%s: invalid immediate encoding %d\n", __func__, imm);
+		return AARCH64_BREAK_FAULT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RD, insn, dst);
@@ -899,10 +996,13 @@ u32 aarch64_insn_gen_add_sub_imm(enum aarch64_insn_register dst,
 	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RN, insn, src);
 
 	return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_12, insn, imm);
+<<<<<<< HEAD
 
 out:
 	pr_err("%s: invalid immediate encoding %d\n", __func__, imm);
 	return AARCH64_BREAK_FAULT;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 u32 aarch64_insn_gen_bitfield(enum aarch64_insn_register dst,
@@ -1475,6 +1575,7 @@ pstate_check_t * const aarch32_opcode_cond_checks[16] = {
 	__check_hi, __check_ls, __check_ge, __check_lt,
 	__check_gt, __check_le, __check_al, __check_al
 };
+<<<<<<< HEAD
 
 static bool range_of_ones(u64 val)
 {
@@ -1643,3 +1744,5 @@ u32 aarch64_insn_gen_extr(enum aarch64_insn_variant variant,
 	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RN, insn, Rn);
 	return aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RM, insn, Rm);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

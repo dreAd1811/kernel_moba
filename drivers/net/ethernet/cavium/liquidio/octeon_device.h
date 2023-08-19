@@ -23,7 +23,10 @@
 #define  _OCTEON_DEVICE_H_
 
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <net/devlink.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /** PCI VendorId Device Id */
 #define  OCTEON_CN68XX_PCIID          0x91177d
@@ -43,6 +46,7 @@
 #define  OCTEON_CN23XX_REV_1_1        0x01
 #define  OCTEON_CN23XX_REV_2_0        0x80
 
+<<<<<<< HEAD
 /**SubsystemId for the chips */
 #define	 OCTEON_CN2350_10GB_SUBSYS_ID_1	0X3177d
 #define	 OCTEON_CN2350_10GB_SUBSYS_ID_2	0X4177d
@@ -50,6 +54,8 @@
 #define	 OCTEON_CN2350_25GB_SUBSYS_ID	0X7177d
 #define	 OCTEON_CN2360_25GB_SUBSYS_ID	0X6177d
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /** Endian-swap modes supported by Octeon. */
 enum octeon_pci_swap_mode {
 	OCTEON_PCI_PASSTHROUGH = 0,
@@ -58,6 +64,7 @@ enum octeon_pci_swap_mode {
 	OCTEON_PCI_32BIT_LW_SWAP = 3
 };
 
+<<<<<<< HEAD
 enum lio_fw_state {
 	FW_IS_PRELOADED = 0,
 	FW_NEEDS_TO_BE_LOADED = 1,
@@ -65,6 +72,8 @@ enum lio_fw_state {
 	FW_HAS_BEEN_LOADED = 3,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	OCTEON_CONFIG_TYPE_DEFAULT = 0,
 	NUM_OCTEON_CONFS,
@@ -288,6 +297,7 @@ struct oct_fw_info {
 	 */
 	u32 app_mode;
 	char   liquidio_firmware_version[32];
+<<<<<<< HEAD
 	/* Fields extracted from legacy string 'liquidio_firmware_version' */
 	struct {
 		u8  maj;
@@ -299,6 +309,10 @@ struct oct_fw_info {
 #define OCT_FW_VER(maj, min, rev) \
 	(((u32)(maj) << 16) | ((u32)(min) << 8) | ((u32)(rev)))
 
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* wrappers around work structs */
 struct cavium_wk {
 	struct delayed_work work;
@@ -386,8 +400,11 @@ struct octeon_sriov_info {
 
 	u32	sriov_enabled;
 
+<<<<<<< HEAD
 	struct lio_trusted_vf	trusted_vf;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*lookup table that maps DPI ring number to VF pci_dev struct pointer*/
 	struct pci_dev *dpiring_to_vfpcidev_lut[MAX_POSSIBLE_VFS];
 
@@ -410,6 +427,7 @@ struct octeon_ioq_vector {
 	u32			ioq_num;
 };
 
+<<<<<<< HEAD
 struct lio_vf_rep_list {
 	int num_vfs;
 	struct net_device *ndev[CN23XX_MAX_VFS_PER_PF];
@@ -419,6 +437,8 @@ struct lio_devlink_priv {
 	struct octeon_device *oct;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /** The Octeon device.
  *  Each Octeon device has this structure to represent all its
  *  components.
@@ -446,8 +466,11 @@ struct octeon_device {
 
 	u16 rev_id;
 
+<<<<<<< HEAD
 	u32 subsystem_id;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 pf_num;
 
 	u16 vf_num;
@@ -594,6 +617,7 @@ struct octeon_device {
 	} loc;
 
 	atomic_t *adapter_refcount; /* reference count of adapter */
+<<<<<<< HEAD
 
 	atomic_t *adapter_fw_state; /* per-adapter, lio_fw_state */
 
@@ -607,6 +631,9 @@ struct octeon_device {
 	u8  speed_boot;
 	u8  speed_setting;
 	u8  no_speed_setting;
+=======
+	bool ptp_enable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define  OCT_DRV_ONLINE 1
@@ -890,7 +917,11 @@ void *oct_get_config_info(struct octeon_device *oct, u16 card_type);
 struct octeon_config *octeon_get_conf(struct octeon_device *oct);
 
 void octeon_free_ioq_vector(struct octeon_device *oct);
+<<<<<<< HEAD
 int octeon_allocate_ioq_vector(struct octeon_device  *oct, u32 num_ioqs);
+=======
+int octeon_allocate_ioq_vector(struct octeon_device  *oct);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void lio_enable_irq(struct octeon_droq *droq, struct octeon_instr_queue *iq);
 
 /* LiquidIO driver pivate flags */

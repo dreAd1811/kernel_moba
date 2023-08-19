@@ -289,14 +289,22 @@ static struct resource pic1_io_resource = {
 	.name = "pic1",
 	.start = PIC_MASTER_CMD,
 	.end = PIC_MASTER_IMR,
+<<<<<<< HEAD
 	.flags = IORESOURCE_IO | IORESOURCE_BUSY
+=======
+	.flags = IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct resource pic2_io_resource = {
 	.name = "pic2",
 	.start = PIC_SLAVE_CMD,
 	.end = PIC_SLAVE_IMR,
+<<<<<<< HEAD
 	.flags = IORESOURCE_IO | IORESOURCE_BUSY
+=======
+	.flags = IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int i8259A_irq_domain_map(struct irq_domain *d, unsigned int virq,

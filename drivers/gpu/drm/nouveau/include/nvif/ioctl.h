@@ -2,7 +2,11 @@
 #ifndef __NVIF_IOCTL_H__
 #define __NVIF_IOCTL_H__
 
+<<<<<<< HEAD
 #define NVIF_VERSION_LATEST                               0x0000000000000100ULL
+=======
+#define NVIF_VERSION_LATEST                               0x0000000000000000ULL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nvif_ioctl_v0 {
 	__u8  version;
@@ -84,6 +88,7 @@ struct nvif_ioctl_wr_v0 {
 struct nvif_ioctl_map_v0 {
 	/* nvif_ioctl ... */
 	__u8  version;
+<<<<<<< HEAD
 #define NVIF_IOCTL_MAP_V0_IO                                               0x00
 #define NVIF_IOCTL_MAP_V0_VA                                               0x01
 	__u8  type;
@@ -91,6 +96,11 @@ struct nvif_ioctl_map_v0 {
 	__u64 handle;
 	__u64 length;
 	__u8  data[];
+=======
+	__u8  pad01[3];
+	__u32 length;
+	__u64 handle;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct nvif_ioctl_unmap {

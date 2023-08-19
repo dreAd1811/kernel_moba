@@ -29,4 +29,12 @@ obj-$(CONFIG_MIPS_CPS_CPUIDLE)		+= cpuidle-cps.o
 # POWERPC drivers
 obj-$(CONFIG_PSERIES_CPUIDLE)		+= cpuidle-pseries.o
 obj-$(CONFIG_POWERNV_CPUIDLE)		+= cpuidle-powernv.o
+<<<<<<< HEAD
 obj-$(CONFIG_MSM_PM) 			+= lpm-levels.o lpm-levels-of.o
+=======
+ifeq ($(CONFIG_MSM_PM_LEGACY), y)
+obj-y += lpm-levels-legacy.o lpm-levels-of-legacy.o lpm-workarounds.o
+else
+obj-$(CONFIG_MSM_PM) += lpm-levels.o lpm-levels-of.o
+endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -12,8 +12,11 @@
 
 #ifdef CONFIG_BNXT_FLOWER_OFFLOAD
 
+<<<<<<< HEAD
 #include <net/ip_tunnels.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Structs used for storing the filter/actions of the TC cmd.
  */
 struct bnxt_tc_l2_key {
@@ -52,6 +55,7 @@ struct bnxt_tc_l4_key {
 	};
 };
 
+<<<<<<< HEAD
 struct bnxt_tc_tunnel_key {
 	struct bnxt_tc_l2_key	l2;
 	struct bnxt_tc_l3_key	l3;
@@ -59,6 +63,8 @@ struct bnxt_tc_tunnel_key {
 	__be32			id;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bnxt_tc_actions {
 	u32				flags;
 #define BNXT_TC_ACTION_FLAG_FWD			BIT(0)
@@ -66,16 +72,27 @@ struct bnxt_tc_actions {
 #define BNXT_TC_ACTION_FLAG_PUSH_VLAN		BIT(3)
 #define BNXT_TC_ACTION_FLAG_POP_VLAN		BIT(4)
 #define BNXT_TC_ACTION_FLAG_DROP		BIT(5)
+<<<<<<< HEAD
 #define BNXT_TC_ACTION_FLAG_TUNNEL_ENCAP	BIT(6)
 #define BNXT_TC_ACTION_FLAG_TUNNEL_DECAP	BIT(7)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u16				dst_fid;
 	struct net_device		*dst_dev;
 	__be16				push_vlan_tpid;
 	__be16				push_vlan_tci;
+<<<<<<< HEAD
 
 	/* tunnel encap */
 	struct ip_tunnel_key		tun_encap_key;
+=======
+};
+
+struct bnxt_tc_flow_stats {
+	u64		packets;
+	u64		bytes;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct bnxt_tc_flow {
@@ -85,6 +102,7 @@ struct bnxt_tc_flow {
 #define BNXT_TC_FLOW_FLAGS_IPV6_ADDRS		BIT(3)
 #define BNXT_TC_FLOW_FLAGS_PORTS		BIT(4)
 #define BNXT_TC_FLOW_FLAGS_ICMP			BIT(5)
+<<<<<<< HEAD
 #define BNXT_TC_FLOW_FLAGS_TUNL_ETH_ADDRS	BIT(6)
 #define BNXT_TC_FLOW_FLAGS_TUNL_IPV4_ADDRS	BIT(7)
 #define BNXT_TC_FLOW_FLAGS_TUNL_IPV6_ADDRS	BIT(8)
@@ -95,6 +113,8 @@ struct bnxt_tc_flow {
 					 BNXT_TC_FLOW_FLAGS_TUNL_IPV6_ADDRS |\
 					 BNXT_TC_FLOW_FLAGS_TUNL_PORTS |\
 					 BNXT_TC_FLOW_FLAGS_TUNL_ID)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* flow applicable to pkts ingressing on this fid */
 	u16				src_fid;
@@ -104,8 +124,11 @@ struct bnxt_tc_flow {
 	struct bnxt_tc_l3_key		l3_mask;
 	struct bnxt_tc_l4_key		l4_key;
 	struct bnxt_tc_l4_key		l4_mask;
+<<<<<<< HEAD
 	struct ip_tunnel_key		tun_key;
 	struct ip_tunnel_key		tun_mask;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct bnxt_tc_actions		actions;
 
@@ -114,6 +137,7 @@ struct bnxt_tc_flow {
 	/* previous snap-shot of stats */
 	struct bnxt_tc_flow_stats	prev_stats;
 	unsigned long			lastused; /* jiffies */
+<<<<<<< HEAD
 	/* for calculating delta from prev_stats and
 	 * updating prev_stats atomically.
 	 */
@@ -147,6 +171,15 @@ struct bnxt_tc_tunnel_node {
  * A flow that shares the same L2 key/mask with an
  * already existing flow/tunnel must refer to it's flow handle or
  * decap_filter_id respectively.
+=======
+};
+
+/* L2 hash table
+ * This data-struct is used for L2-flow table.
+ * The L2 part of a flow is stored in a hash table.
+ * A flow that shares the same L2 key/mask with an
+ * already existing flow must refer to it's flow handle.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct bnxt_tc_l2_node {
 	/* hash key: first 16b of key */
@@ -157,7 +190,11 @@ struct bnxt_tc_l2_node {
 	/* a linked list of flows that share the same l2 key */
 	struct list_head	common_l2_flows;
 
+<<<<<<< HEAD
 	/* number of flows/tunnels sharing the l2 key */
+=======
+	/* number of flows sharing the l2 key */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16			refcount;
 
 	struct rcu_head		rcu;
@@ -177,6 +214,7 @@ struct bnxt_tc_flow_node {
 	/* for the shared_flows list maintained in l2_node */
 	struct list_head		l2_list_node;
 
+<<<<<<< HEAD
 	/* tunnel encap related */
 	struct bnxt_tc_tunnel_node	*encap_node;
 
@@ -187,6 +225,8 @@ struct bnxt_tc_flow_node {
 	/* for the shared_flows list maintained in tunnel decap l2_node */
 	struct list_head		decap_l2_list_node;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rcu_head			rcu;
 };
 
@@ -194,12 +234,15 @@ int bnxt_tc_setup_flower(struct bnxt *bp, u16 src_fid,
 			 struct tc_cls_flower_offload *cls_flower);
 int bnxt_init_tc(struct bnxt *bp);
 void bnxt_shutdown_tc(struct bnxt *bp);
+<<<<<<< HEAD
 void bnxt_tc_flow_stats_work(struct bnxt *bp);
 
 static inline bool bnxt_tc_flower_enabled(struct bnxt *bp)
 {
 	return bp->tc_info && bp->tc_info->enabled;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #else /* CONFIG_BNXT_FLOWER_OFFLOAD */
 
@@ -217,6 +260,7 @@ static inline int bnxt_init_tc(struct bnxt *bp)
 static inline void bnxt_shutdown_tc(struct bnxt *bp)
 {
 }
+<<<<<<< HEAD
 
 static inline void bnxt_tc_flow_stats_work(struct bnxt *bp)
 {
@@ -226,5 +270,7 @@ static inline bool bnxt_tc_flower_enabled(struct bnxt *bp)
 {
 	return false;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_BNXT_FLOWER_OFFLOAD */
 #endif /* BNXT_TC_H */

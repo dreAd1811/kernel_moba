@@ -507,6 +507,10 @@ static int ieee_fpe_handler(struct pt_regs *regs)
 	unsigned short insn = *(unsigned short *)regs->pc;
 	unsigned short finsn;
 	unsigned long nextpc;
+<<<<<<< HEAD
+=======
+	siginfo_t info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int nib[4] = {
 		(insn >> 12) & 0xf,
 		(insn >> 8) & 0xf,
@@ -559,8 +563,16 @@ static int ieee_fpe_handler(struct pt_regs *regs)
 				~(FPSCR_CAUSE_MASK | FPSCR_FLAG_MASK);
 			task_thread_info(tsk)->status |= TS_USEDFPU;
 		} else {
+<<<<<<< HEAD
 			force_sig_fault(SIGFPE, FPE_FLTINV,
 					(void __user *)regs->pc, tsk);
+=======
+			info.si_signo = SIGFPE;
+			info.si_errno = 0;
+			info.si_code = FPE_FLTINV;
+			info.si_addr = (void __user *)regs->pc;
+			force_sig_info(SIGFPE, &info, tsk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		regs->pc = nextpc;

@@ -6,8 +6,12 @@ config DRM_PL111
 	select DRM_KMS_HELPER
 	select DRM_KMS_CMA_HELPER
 	select DRM_GEM_CMA_HELPER
+<<<<<<< HEAD
 	select DRM_BRIDGE
 	select DRM_PANEL_BRIDGE
+=======
+	select DRM_PANEL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select VT_HW_CONSOLE_BINDING if FRAMEBUFFER_CONSOLE
 	help
 	  Choose this option for DRM support for the PL111 CLCD controller.

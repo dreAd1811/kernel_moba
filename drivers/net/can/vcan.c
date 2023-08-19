@@ -61,11 +61,19 @@ MODULE_ALIAS_RTNL_LINK(DRV_NAME);
 /*
  * CAN test feature:
  * Enable the echo on driver level for testing the CAN core echo modes.
+<<<<<<< HEAD
  * See Documentation/networking/can.rst for details.
  */
 
 static bool echo; /* echo testing. Default: 0 (Off) */
 module_param(echo, bool, 0444);
+=======
+ * See Documentation/networking/can.txt for details.
+ */
+
+static bool echo; /* echo testing. Default: 0 (Off) */
+module_param(echo, bool, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(echo, "Echo sent frames (for testing). Default: 0 (Off)");
 
 

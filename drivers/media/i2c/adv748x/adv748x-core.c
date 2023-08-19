@@ -35,6 +35,7 @@
  * Register manipulation
  */
 
+<<<<<<< HEAD
 #define ADV748X_REGMAP_CONF(n) \
 { \
 	.name = n, \
@@ -57,6 +58,98 @@ static const struct regmap_config adv748x_regmap_cnf[] = {
 	ADV748X_REGMAP_CONF("sdp"),
 	ADV748X_REGMAP_CONF("txa"),
 	ADV748X_REGMAP_CONF("txb"),
+=======
+static const struct regmap_config adv748x_regmap_cnf[] = {
+	{
+		.name			= "io",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "dpll",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "cp",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "hdmi",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "edid",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "repeater",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "infoframe",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "cec",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "sdp",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+
+	{
+		.name			= "txb",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+	{
+		.name			= "txa",
+		.reg_bits		= 8,
+		.val_bits		= 8,
+
+		.max_register		= 0xff,
+		.cache_type		= REGCACHE_NONE,
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int adv748x_configure_regmap(struct adv748x_state *state, int region)
@@ -80,6 +173,7 @@ static int adv748x_configure_regmap(struct adv748x_state *state, int region)
 
 	return 0;
 }
+<<<<<<< HEAD
 struct adv748x_register_map {
 	const char *name;
 	u8 default_addr;
@@ -98,6 +192,22 @@ static const struct adv748x_register_map adv748x_default_addresses[] = {
 	[ADV748X_PAGE_SDP] = { "sdp", 0x79 },
 	[ADV748X_PAGE_TXB] = { "txb", 0x48 },
 	[ADV748X_PAGE_TXA] = { "txa", 0x4a },
+=======
+
+/* Default addresses for the I2C pages */
+static int adv748x_i2c_addresses[ADV748X_PAGE_MAX] = {
+	ADV748X_I2C_IO,
+	ADV748X_I2C_DPLL,
+	ADV748X_I2C_CP,
+	ADV748X_I2C_HDMI,
+	ADV748X_I2C_EDID,
+	ADV748X_I2C_REPEATER,
+	ADV748X_I2C_INFOFRAME,
+	ADV748X_I2C_CEC,
+	ADV748X_I2C_SDP,
+	ADV748X_I2C_TXB,
+	ADV748X_I2C_TXA,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int adv748x_read_check(struct adv748x_state *state,
@@ -146,6 +256,7 @@ int adv748x_write_block(struct adv748x_state *state, int client_page,
 	return regmap_raw_write(regmap, init_reg, val, val_len);
 }
 
+<<<<<<< HEAD
 static int adv748x_set_slave_addresses(struct adv748x_state *state)
 {
 	struct i2c_client *client;
@@ -160,18 +271,37 @@ static int adv748x_set_slave_addresses(struct adv748x_state *state)
 	}
 
 	return 0;
+=======
+static struct i2c_client *adv748x_dummy_client(struct adv748x_state *state,
+					       u8 addr, u8 io_reg)
+{
+	struct i2c_client *client = state->client;
+
+	if (addr)
+		io_write(state, io_reg, addr << 1);
+
+	return i2c_new_dummy(client->adapter, io_read(state, io_reg) >> 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void adv748x_unregister_clients(struct adv748x_state *state)
 {
 	unsigned int i;
 
+<<<<<<< HEAD
 	for (i = 1; i < ARRAY_SIZE(state->i2c_clients); ++i)
 		i2c_unregister_device(state->i2c_clients[i]);
+=======
+	for (i = 1; i < ARRAY_SIZE(state->i2c_clients); ++i) {
+		if (state->i2c_clients[i])
+			i2c_unregister_device(state->i2c_clients[i]);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int adv748x_initialise_clients(struct adv748x_state *state)
 {
+<<<<<<< HEAD
 	unsigned int i;
 	int ret;
 
@@ -181,6 +311,15 @@ static int adv748x_initialise_clients(struct adv748x_state *state)
 				adv748x_default_addresses[i].name,
 				adv748x_default_addresses[i].default_addr);
 
+=======
+	int i;
+	int ret;
+
+	for (i = ADV748X_PAGE_DPLL; i < ADV748X_PAGE_MAX; ++i) {
+		state->i2c_clients[i] =
+			adv748x_dummy_client(state, adv748x_i2c_addresses[i],
+					     ADV748X_IO_SLAVE_ADDR_BASE + i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (state->i2c_clients[i] == NULL) {
 			adv_err(state, "failed to create i2c client %u\n", i);
 			return -ENOMEM;
@@ -191,7 +330,11 @@ static int adv748x_initialise_clients(struct adv748x_state *state)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	return adv748x_set_slave_addresses(state);
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -357,6 +500,23 @@ static const struct adv748x_reg_value adv748x_sw_reset[] = {
 	{ADV748X_PAGE_EOR, 0xff, 0xff}	/* End of register table */
 };
 
+<<<<<<< HEAD
+=======
+static const struct adv748x_reg_value adv748x_set_slave_address[] = {
+	{ADV748X_PAGE_IO, 0xf3, ADV748X_I2C_DPLL << 1},
+	{ADV748X_PAGE_IO, 0xf4, ADV748X_I2C_CP << 1},
+	{ADV748X_PAGE_IO, 0xf5, ADV748X_I2C_HDMI << 1},
+	{ADV748X_PAGE_IO, 0xf6, ADV748X_I2C_EDID << 1},
+	{ADV748X_PAGE_IO, 0xf7, ADV748X_I2C_REPEATER << 1},
+	{ADV748X_PAGE_IO, 0xf8, ADV748X_I2C_INFOFRAME << 1},
+	{ADV748X_PAGE_IO, 0xfa, ADV748X_I2C_CEC << 1},
+	{ADV748X_PAGE_IO, 0xfb, ADV748X_I2C_SDP << 1},
+	{ADV748X_PAGE_IO, 0xfc, ADV748X_I2C_TXB << 1},
+	{ADV748X_PAGE_IO, 0xfd, ADV748X_I2C_TXA << 1},
+	{ADV748X_PAGE_EOR, 0xff, 0xff}	/* End of register table */
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Supported Formats For Script Below */
 /* - 01-29 HDMI to MIPI TxA CSI 4-Lane - RGB888: */
 static const struct adv748x_reg_value adv748x_init_txa_4lane[] = {
@@ -487,7 +647,11 @@ static int adv748x_reset(struct adv748x_state *state)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = adv748x_set_slave_addresses(state);
+=======
+	ret = adv748x_write_regs(state, adv748x_set_slave_address);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -569,6 +733,7 @@ static int adv748x_parse_dt(struct adv748x_state *state)
 {
 	struct device_node *ep_np = NULL;
 	struct of_endpoint ep;
+<<<<<<< HEAD
 	bool found = false;
 
 	for_each_endpoint_of_node(state->dev->of_node, ep_np) {
@@ -579,6 +744,21 @@ static int adv748x_parse_dt(struct adv748x_state *state)
 		if (ep.port >= ADV748X_PORT_MAX) {
 			adv_err(state, "Invalid endpoint %pOF on port %d",
 				ep.local_node, ep.port);
+=======
+	bool out_found = false;
+	bool in_found = false;
+
+	for_each_endpoint_of_node(state->dev->of_node, ep_np) {
+		of_graph_parse_endpoint(ep_np, &ep);
+		adv_info(state, "Endpoint %s on port %d",
+				of_node_full_name(ep.local_node),
+				ep.port);
+
+		if (ep.port >= ADV748X_PORT_MAX) {
+			adv_err(state, "Invalid endpoint %s on port %d",
+				of_node_full_name(ep.local_node),
+				ep.port);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			continue;
 		}
@@ -592,10 +772,24 @@ static int adv748x_parse_dt(struct adv748x_state *state)
 		of_node_get(ep_np);
 		state->endpoints[ep.port] = ep_np;
 
+<<<<<<< HEAD
 		found = true;
 	}
 
 	return found ? 0 : -ENODEV;
+=======
+		/*
+		 * At least one input endpoint and one output endpoint shall
+		 * be defined.
+		 */
+		if (ep.port < ADV748X_PORT_TXA)
+			in_found = true;
+		else
+			out_found = true;
+	}
+
+	return in_found && out_found ? 0 : -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void adv748x_dt_cleanup(struct adv748x_state *state)
@@ -627,6 +821,20 @@ static int adv748x_probe(struct i2c_client *client,
 	state->i2c_clients[ADV748X_PAGE_IO] = client;
 	i2c_set_clientdata(client, state);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * We can not use container_of to get back to the state with two TXs;
+	 * Initialize the TXs's fields unconditionally on the endpoint
+	 * presence to access them later.
+	 */
+	state->txa.state = state->txb.state = state;
+	state->txa.page = ADV748X_PAGE_TXA;
+	state->txb.page = ADV748X_PAGE_TXB;
+	state->txa.port = ADV748X_PORT_TXA;
+	state->txb.port = ADV748X_PORT_TXB;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Discover and process ports declared by the Device tree endpoints */
 	ret = adv748x_parse_dt(state);
 	if (ret) {
@@ -644,7 +852,11 @@ static int adv748x_probe(struct i2c_client *client,
 	ret = adv748x_identify_chip(state);
 	if (ret) {
 		adv_err(state, "Failed to identify chip");
+<<<<<<< HEAD
 		goto err_cleanup_dt;
+=======
+		goto err_cleanup_clients;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Configure remaining pages as I2C clients with regmap access */

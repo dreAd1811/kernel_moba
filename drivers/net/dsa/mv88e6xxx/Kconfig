@@ -18,6 +18,7 @@ config NET_DSA_MV88E6XXX_GLOBAL2
 
 	  It is required on most chips. If the chip you compile the support for
 	  doesn't have such registers set, say N here. In doubt, say Y.
+<<<<<<< HEAD
 
 config NET_DSA_MV88E6XXX_PTP
 	bool "PTP support for Marvell 88E6xxx"
@@ -28,3 +29,5 @@ config NET_DSA_MV88E6XXX_PTP
 	help
 	  Say Y to enable PTP hardware timestamping on Marvell 88E6xxx switch
 	  chips that support it.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

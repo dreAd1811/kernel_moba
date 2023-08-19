@@ -67,7 +67,12 @@ static struct shash_alg algs[] = { {
 	.descsize		= sizeof(struct sha256_state),
 	.base.cra_name		= "sha256",
 	.base.cra_driver_name	= "sha256-arm64",
+<<<<<<< HEAD
 	.base.cra_priority	= 125,
+=======
+	.base.cra_priority	= 100,
+	.base.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_blocksize	= SHA256_BLOCK_SIZE,
 	.base.cra_module	= THIS_MODULE,
 }, {
@@ -79,7 +84,12 @@ static struct shash_alg algs[] = { {
 	.descsize		= sizeof(struct sha256_state),
 	.base.cra_name		= "sha224",
 	.base.cra_driver_name	= "sha224-arm64",
+<<<<<<< HEAD
 	.base.cra_priority	= 125,
+=======
+	.base.cra_priority	= 100,
+	.base.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_blocksize	= SHA224_BLOCK_SIZE,
 	.base.cra_module	= THIS_MODULE,
 } };
@@ -87,12 +97,22 @@ static struct shash_alg algs[] = { {
 static int sha256_update_neon(struct shash_desc *desc, const u8 *data,
 			      unsigned int len)
 {
+<<<<<<< HEAD
 	struct sha256_state *sctx = shash_desc_ctx(desc);
 
+=======
+	/*
+	 * Stacking and unstacking a substantial slice of the NEON register
+	 * file may significantly affect performance for small updates when
+	 * executing in interrupt context, so fall back to the scalar code
+	 * in that case.
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!may_use_simd())
 		return sha256_base_do_update(desc, data, len,
 				(sha256_block_fn *)sha256_block_data_order);
 
+<<<<<<< HEAD
 	while (len > 0) {
 		unsigned int chunk = len;
 
@@ -113,6 +133,13 @@ static int sha256_update_neon(struct shash_desc *desc, const u8 *data,
 		data += chunk;
 		len -= chunk;
 	}
+=======
+	kernel_neon_begin();
+	sha256_base_do_update(desc, data, len,
+				(sha256_block_fn *)sha256_block_neon);
+	kernel_neon_end();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -126,9 +153,16 @@ static int sha256_finup_neon(struct shash_desc *desc, const u8 *data,
 		sha256_base_do_finalize(desc,
 				(sha256_block_fn *)sha256_block_data_order);
 	} else {
+<<<<<<< HEAD
 		if (len)
 			sha256_update_neon(desc, data, len);
 		kernel_neon_begin();
+=======
+		kernel_neon_begin();
+		if (len)
+			sha256_base_do_update(desc, data, len,
+				(sha256_block_fn *)sha256_block_neon);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sha256_base_do_finalize(desc,
 				(sha256_block_fn *)sha256_block_neon);
 		kernel_neon_end();
@@ -151,6 +185,10 @@ static struct shash_alg neon_algs[] = { {
 	.base.cra_name		= "sha256",
 	.base.cra_driver_name	= "sha256-arm64-neon",
 	.base.cra_priority	= 150,
+<<<<<<< HEAD
+=======
+	.base.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_blocksize	= SHA256_BLOCK_SIZE,
 	.base.cra_module	= THIS_MODULE,
 }, {
@@ -163,6 +201,10 @@ static struct shash_alg neon_algs[] = { {
 	.base.cra_name		= "sha224",
 	.base.cra_driver_name	= "sha224-arm64-neon",
 	.base.cra_priority	= 150,
+<<<<<<< HEAD
+=======
+	.base.cra_flags		= CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base.cra_blocksize	= SHA224_BLOCK_SIZE,
 	.base.cra_module	= THIS_MODULE,
 } };

@@ -355,6 +355,7 @@ static void __init ar934x_clocks_init(void)
 	iounmap(dpll_base);
 }
 
+<<<<<<< HEAD
 static void __init qca953x_clocks_init(void)
 {
 	unsigned long ref_rate;
@@ -440,6 +441,8 @@ static void __init qca953x_clocks_init(void)
 	clk_add_alias("uart", NULL, "ref", NULL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init qca955x_clocks_init(void)
 {
 	unsigned long ref_rate;
@@ -525,6 +528,7 @@ static void __init qca955x_clocks_init(void)
 	clk_add_alias("uart", NULL, "ref", NULL);
 }
 
+<<<<<<< HEAD
 static void __init qca956x_clocks_init(void)
 {
 	unsigned long ref_rate;
@@ -629,6 +633,8 @@ static void __init qca956x_clocks_init(void)
 	clk_add_alias("uart", NULL, "ref", NULL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init ath79_clocks_init(void)
 {
 	if (soc_is_ar71xx())
@@ -639,12 +645,17 @@ void __init ath79_clocks_init(void)
 		ar933x_clocks_init();
 	else if (soc_is_ar934x())
 		ar934x_clocks_init();
+<<<<<<< HEAD
 	else if (soc_is_qca953x())
 		qca953x_clocks_init();
 	else if (soc_is_qca955x())
 		qca955x_clocks_init();
 	else if (soc_is_qca956x() || soc_is_tp9343())
 		qca956x_clocks_init();
+=======
+	else if (soc_is_qca955x())
+		qca955x_clocks_init();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		BUG();
 }

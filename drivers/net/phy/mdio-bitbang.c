@@ -113,7 +113,11 @@ static void mdiobb_cmd(struct mdiobb_ctrl *ctrl, int op, u8 phy, u8 reg)
 	for (i = 0; i < 32; i++)
 		mdiobb_send_bit(ctrl, 1);
 
+<<<<<<< HEAD
 	/* send the start bit (01) and the read opcode (10) or write (01).
+=======
+	/* send the start bit (01) and the read opcode (10) or write (10).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	   Clause 45 operation uses 00 for the start and 11, 10 for
 	   read/write */
 	mdiobb_send_bit(ctrl, 0);
@@ -205,6 +209,17 @@ static int mdiobb_write(struct mii_bus *bus, int phy, int reg, u16 val)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int mdiobb_reset(struct mii_bus *bus)
+{
+	struct mdiobb_ctrl *ctrl = bus->priv;
+	if (ctrl->reset)
+		ctrl->reset(bus);
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mii_bus *alloc_mdio_bitbang(struct mdiobb_ctrl *ctrl)
 {
 	struct mii_bus *bus;
@@ -217,6 +232,10 @@ struct mii_bus *alloc_mdio_bitbang(struct mdiobb_ctrl *ctrl)
 
 	bus->read = mdiobb_read;
 	bus->write = mdiobb_write;
+<<<<<<< HEAD
+=======
+	bus->reset = mdiobb_reset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus->priv = ctrl;
 
 	return bus;

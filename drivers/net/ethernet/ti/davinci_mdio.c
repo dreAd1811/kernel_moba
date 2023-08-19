@@ -34,7 +34,10 @@
 #include <linux/clk.h>
 #include <linux/err.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/iopoll.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 #include <linux/davinci_emac.h>
 #include <linux/of.h>
@@ -228,6 +231,7 @@ static inline int wait_for_user_access(struct davinci_mdio_data *data)
 static inline int wait_for_idle(struct davinci_mdio_data *data)
 {
 	struct davinci_mdio_regs __iomem *regs = data->regs;
+<<<<<<< HEAD
 	u32 val, ret;
 
 	ret = readl_poll_timeout(&regs->control, val, val & CONTROL_IDLE,
@@ -236,6 +240,16 @@ static inline int wait_for_idle(struct davinci_mdio_data *data)
 		dev_err(data->dev, "timed out waiting for idle\n");
 
 	return ret;
+=======
+	unsigned long timeout = jiffies + msecs_to_jiffies(MDIO_TIMEOUT);
+
+	while (time_after(timeout, jiffies)) {
+		if (__raw_readl(&regs->control) & CONTROL_IDLE)
+			return 0;
+	}
+	dev_err(data->dev, "timed out waiting for idle\n");
+	return -ETIMEDOUT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int davinci_mdio_read(struct mii_bus *bus, int phy_id, int phy_reg)
@@ -321,6 +335,10 @@ static int davinci_mdio_write(struct mii_bus *bus, int phy_id,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+#if IS_ENABLED(CONFIG_OF)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int davinci_mdio_probe_dt(struct mdio_platform_data *data,
 			 struct platform_device *pdev)
 {
@@ -338,6 +356,10 @@ static int davinci_mdio_probe_dt(struct mdio_platform_data *data,
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if IS_ENABLED(CONFIG_OF)
 static const struct davinci_mdio_of_param of_cpsw_mdio_data = {
@@ -372,7 +394,11 @@ static int davinci_mdio_probe(struct platform_device *pdev)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_OF) && dev->of_node) {
+=======
+	if (dev->of_node) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		const struct of_device_id	*of_id;
 
 		ret = davinci_mdio_probe_dt(&data->pdata, pdev);
@@ -427,10 +453,19 @@ static int davinci_mdio_probe(struct platform_device *pdev)
 	 * defined to support backward compatibility with DTs which assume that
 	 * Davinci MDIO will always scan the bus for PHYs detection.
 	 */
+<<<<<<< HEAD
 	if (dev->of_node && of_get_child_count(dev->of_node))
 		data->skip_scan = true;
 
 	ret = of_mdiobus_register(data->bus, dev->of_node);
+=======
+	if (dev->of_node && of_get_child_count(dev->of_node)) {
+		data->skip_scan = true;
+		ret = of_mdiobus_register(data->bus, dev->of_node);
+	} else {
+		ret = mdiobus_register(data->bus);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto bail_out;
 

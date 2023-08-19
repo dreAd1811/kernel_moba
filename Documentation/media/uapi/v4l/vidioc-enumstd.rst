@@ -2,14 +2,24 @@
 
 .. _VIDIOC_ENUMSTD:
 
+<<<<<<< HEAD
 *******************************************
 ioctl VIDIOC_ENUMSTD, VIDIOC_SUBDEV_ENUMSTD
 *******************************************
+=======
+********************
+ioctl VIDIOC_ENUMSTD
+********************
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Name
 ====
 
+<<<<<<< HEAD
 VIDIOC_ENUMSTD - VIDIOC_SUBDEV_ENUMSTD - Enumerate supported video standards
+=======
+VIDIOC_ENUMSTD - Enumerate supported video standards
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Synopsis
@@ -18,9 +28,12 @@ Synopsis
 .. c:function:: int ioctl( int fd, VIDIOC_ENUMSTD, struct v4l2_standard *argp )
     :name: VIDIOC_ENUMSTD
 
+<<<<<<< HEAD
 .. c:function:: int ioctl( int fd, VIDIOC_SUBDEV_ENUMSTD, struct v4l2_standard *argp )
     :name: VIDIOC_SUBDEV_ENUMSTD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Arguments
 =========

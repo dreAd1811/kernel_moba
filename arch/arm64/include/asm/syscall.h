@@ -20,6 +20,7 @@
 #include <linux/compat.h>
 #include <linux/err.h>
 
+<<<<<<< HEAD
 typedef long (*syscall_fn_t)(const struct pt_regs *regs);
 
 extern const syscall_fn_t sys_call_table[];
@@ -27,6 +28,9 @@ extern const syscall_fn_t sys_call_table[];
 #ifdef CONFIG_COMPAT
 extern const syscall_fn_t compat_sys_call_table[];
 #endif
+=======
+extern const void *sys_call_table[];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline int syscall_get_nr(struct task_struct *task,
 				 struct pt_regs *regs)

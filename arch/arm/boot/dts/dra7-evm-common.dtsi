@@ -20,11 +20,14 @@
 		id-gpio = <&pcf_gpio_21 1 GPIO_ACTIVE_HIGH>;
 	};
 
+<<<<<<< HEAD
 	extcon_usb2: extcon_usb2 {
 		compatible = "linux,extcon-usb-gpio";
 		id-gpio = <&pcf_gpio_21 2 GPIO_ACTIVE_HIGH>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sound0: sound0 {
 		compatible = "simple-audio-card";
 		simple-audio-card,name = "DRA7xx-EVM";
@@ -203,6 +206,7 @@
 	extcon = <&extcon_usb1>;
 };
 
+<<<<<<< HEAD
 &omap_dwc3_2 {
 	extcon = <&extcon_usb2>;
 };
@@ -210,11 +214,19 @@
 &usb2 {
 	dr_mode = "host";
 	extcon = <&extcon_usb2>;
+=======
+&usb2 {
+	dr_mode = "host";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &atl {
 	assigned-clocks = <&abe_dpll_sys_clk_mux>,
+<<<<<<< HEAD
 			  <&atl_clkctrl DRA7_ATL_CLKCTRL 26>,
+=======
+			  <&atl_gfclk_mux>,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  <&dpll_abe_ck>,
 			  <&dpll_abe_m2x2_ck>,
 			  <&atl_clkin2_ck>;
@@ -232,7 +244,11 @@
 &mcasp3 {
 	#sound-dai-cells = <0>;
 
+<<<<<<< HEAD
 	assigned-clocks = <&l4per_clkctrl DRA7_MCASP3_CLKCTRL 24>;
+=======
+	assigned-clocks = <&mcasp3_ahclkx_mux>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	assigned-clock-parents = <&atl_clkin2_ck>;
 
 	status = "okay";
@@ -266,6 +282,7 @@
 		status = "okay";
 	};
 };
+<<<<<<< HEAD
 
 &pcie1_rc {
 	status = "okay";
@@ -285,3 +302,5 @@
 		interrupts = <7 IRQ_TYPE_EDGE_RISING>;
 	};
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

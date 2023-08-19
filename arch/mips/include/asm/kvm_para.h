@@ -94,11 +94,14 @@ static inline unsigned int kvm_arch_para_features(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline unsigned int kvm_arch_para_hints(void)
 {
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_MIPS_PARAVIRT
 static inline bool kvm_para_available(void)
 {

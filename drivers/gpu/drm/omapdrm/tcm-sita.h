@@ -1,9 +1,19 @@
 /*
+<<<<<<< HEAD
  * SImple Tiler Allocator (SiTA) private structures.
  *
  * Copyright (C) 2009-2011 Texas Instruments Incorporated - http://www.ti.com/
  * Author: Ravi Ramachandra <r.ramachandra@ti.com>
  *
+=======
+ * tcm_sita.h
+ *
+ * SImple Tiler Allocator (SiTA) private structures.
+ *
+ * Author: Ravi Ramachandra <r.ramachandra@ti.com>
+ *
+ * Copyright (C) 2009-2011 Texas Instruments, Inc.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

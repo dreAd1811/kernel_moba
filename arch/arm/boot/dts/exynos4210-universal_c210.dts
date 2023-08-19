@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Samsung's Exynos4210 based Universal C210 board device tree source
  *
@@ -7,7 +10,15 @@
  *
  * Device tree source file for Samsung's Universal C210 board which is based on
  * Samsung's Exynos4210 rev0 SoC.
+<<<<<<< HEAD
  */
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "exynos4210.dtsi"
@@ -28,6 +39,27 @@
 		stdout-path = &serial_2;
 	};
 
+<<<<<<< HEAD
+=======
+	sysram@02020000 {
+		smp-sysram@0 {
+			status = "disabled";
+		};
+
+		smp-sysram@5000 {
+			compatible = "samsung,exynos4210-sysram";
+			reg = <0x5000 0x1000>;
+		};
+
+		smp-sysram@1f000 {
+			status = "disabled";
+		};
+	};
+
+	mct@10050000 {
+		compatible = "none";
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fixed-rate-clocks {
 		xxti {
@@ -155,6 +187,48 @@
 		};
 	};
 
+<<<<<<< HEAD
+=======
+	camera {
+		status = "okay";
+
+		pinctrl-names = "default";
+		pinctrl-0 = <>;
+
+		fimc_0: fimc@11800000 {
+			status = "okay";
+			assigned-clocks = <&clock CLK_MOUT_FIMC0>,
+					<&clock CLK_SCLK_FIMC0>;
+			assigned-clock-parents = <&clock CLK_SCLK_MPLL>;
+			assigned-clock-rates = <0>, <160000000>;
+		};
+
+		fimc_1: fimc@11810000 {
+			status = "okay";
+			assigned-clocks = <&clock CLK_MOUT_FIMC1>,
+					<&clock CLK_SCLK_FIMC1>;
+			assigned-clock-parents = <&clock CLK_SCLK_MPLL>;
+			assigned-clock-rates = <0>, <160000000>;
+		};
+
+		fimc_2: fimc@11820000 {
+			status = "okay";
+			assigned-clocks = <&clock CLK_MOUT_FIMC2>,
+					<&clock CLK_SCLK_FIMC2>;
+			assigned-clock-parents = <&clock CLK_SCLK_MPLL>;
+			assigned-clock-rates = <0>, <160000000>;
+		};
+
+		fimc_3: fimc@11830000 {
+			status = "okay";
+			assigned-clocks = <&clock CLK_MOUT_FIMC3>,
+					<&clock CLK_SCLK_FIMC3>;
+			assigned-clock-parents = <&clock CLK_SCLK_MPLL>;
+			assigned-clock-rates = <0>, <160000000>;
+		};
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hdmi_en: voltage-regulator-hdmi-5v {
 		compatible = "regulator-fixed";
 		regulator-name = "HDMI_5V";
@@ -177,6 +251,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &camera {
 	status = "okay";
 
@@ -184,6 +259,8 @@
 	pinctrl-0 = <>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &cpu0 {
 	cpu0-supply = <&vdd_arm_reg>;
 };
@@ -200,6 +277,7 @@
 	vbus-supply = <&safeout1_reg>;
 };
 
+<<<<<<< HEAD
 &fimc_0 {
 	status = "okay";
 	assigned-clocks = <&clock CLK_MOUT_FIMC0>,
@@ -232,6 +310,8 @@
 	assigned-clock-rates = <0>, <160000000>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &fimd {
 	pinctrl-0 = <&lcd_clk>, <&lcd_data24>;
 	pinctrl-names = "default";
@@ -483,10 +563,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &mct {
 	compatible = "none";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &mdma1 {
 	reg = <0x12840000 0x1000>;
 };
@@ -565,6 +648,7 @@
 	/delete-property/dmas;
 	/delete-property/dma-names;
 };
+<<<<<<< HEAD
 
 &sysram {
 	smp-sysram@0 {
@@ -580,3 +664,5 @@
 		status = "disabled";
 	};
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

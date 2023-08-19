@@ -107,6 +107,7 @@ static int ccm_init_mac(struct aead_request *req, u8 maciv[], u32 msglen)
 }
 
 static void ccm_update_mac(struct crypto_aes_ctx *key, u8 mac[], u8 const in[],
+<<<<<<< HEAD
 			   u32 abytes, u32 *macp)
 {
 	if (may_use_simd()) {
@@ -114,6 +115,13 @@ static void ccm_update_mac(struct crypto_aes_ctx *key, u8 mac[], u8 const in[],
 		ce_aes_ccm_auth_data(mac, in, abytes, macp, key->key_enc,
 				     num_rounds(key));
 		kernel_neon_end();
+=======
+			   u32 abytes, u32 *macp, bool use_neon)
+{
+	if (likely(use_neon)) {
+		ce_aes_ccm_auth_data(mac, in, abytes, macp, key->key_enc,
+				     num_rounds(key));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (*macp > 0 && *macp < AES_BLOCK_SIZE) {
 			int added = min(abytes, AES_BLOCK_SIZE - *macp);
@@ -143,7 +151,12 @@ static void ccm_update_mac(struct crypto_aes_ctx *key, u8 mac[], u8 const in[],
 	}
 }
 
+<<<<<<< HEAD
 static void ccm_calculate_auth_mac(struct aead_request *req, u8 mac[])
+=======
+static void ccm_calculate_auth_mac(struct aead_request *req, u8 mac[],
+				   bool use_neon)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct crypto_aead *aead = crypto_aead_reqtfm(req);
 	struct crypto_aes_ctx *ctx = crypto_aead_ctx(aead);
@@ -162,7 +175,11 @@ static void ccm_calculate_auth_mac(struct aead_request *req, u8 mac[])
 		ltag.len = 6;
 	}
 
+<<<<<<< HEAD
 	ccm_update_mac(ctx, mac, (u8 *)&ltag, ltag.len, &macp);
+=======
+	ccm_update_mac(ctx, mac, (u8 *)&ltag, ltag.len, &macp, use_neon);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	scatterwalk_start(&walk, req->src);
 
 	do {
@@ -174,7 +191,11 @@ static void ccm_calculate_auth_mac(struct aead_request *req, u8 mac[])
 			n = scatterwalk_clamp(&walk, len);
 		}
 		p = scatterwalk_map(&walk);
+<<<<<<< HEAD
 		ccm_update_mac(ctx, mac, p, n, &macp);
+=======
+		ccm_update_mac(ctx, mac, p, n, &macp, use_neon);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		len -= n;
 
 		scatterwalk_unmap(p);
@@ -241,32 +262,52 @@ static int ccm_encrypt(struct aead_request *req)
 	u8 __aligned(8) mac[AES_BLOCK_SIZE];
 	u8 buf[AES_BLOCK_SIZE];
 	u32 len = req->cryptlen;
+<<<<<<< HEAD
+=======
+	bool use_neon = may_use_simd();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = ccm_init_mac(req, mac, len);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	if (req->assoclen)
 		ccm_calculate_auth_mac(req, mac);
+=======
+	if (likely(use_neon))
+		kernel_neon_begin();
+
+	if (req->assoclen)
+		ccm_calculate_auth_mac(req, mac, use_neon);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* preserve the original iv for the final round */
 	memcpy(buf, req->iv, AES_BLOCK_SIZE);
 
 	err = skcipher_walk_aead_encrypt(&walk, req, true);
 
+<<<<<<< HEAD
 	if (may_use_simd()) {
+=======
+	if (likely(use_neon)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		while (walk.nbytes) {
 			u32 tail = walk.nbytes % AES_BLOCK_SIZE;
 
 			if (walk.nbytes == walk.total)
 				tail = 0;
 
+<<<<<<< HEAD
 			kernel_neon_begin();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ce_aes_ccm_encrypt(walk.dst.virt.addr,
 					   walk.src.virt.addr,
 					   walk.nbytes - tail, ctx->key_enc,
 					   num_rounds(ctx), mac, walk.iv);
+<<<<<<< HEAD
 			kernel_neon_end();
 
 			err = skcipher_walk_done(&walk, tail);
@@ -277,6 +318,16 @@ static int ccm_encrypt(struct aead_request *req)
 					 num_rounds(ctx));
 			kernel_neon_end();
 		}
+=======
+
+			err = skcipher_walk_done(&walk, tail);
+		}
+		if (!err)
+			ce_aes_ccm_final(mac, buf, ctx->key_enc,
+					 num_rounds(ctx));
+
+		kernel_neon_end();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		err = ccm_crypt_fallback(&walk, mac, buf, ctx, true);
 	}
@@ -299,32 +350,52 @@ static int ccm_decrypt(struct aead_request *req)
 	u8 __aligned(8) mac[AES_BLOCK_SIZE];
 	u8 buf[AES_BLOCK_SIZE];
 	u32 len = req->cryptlen - authsize;
+<<<<<<< HEAD
+=======
+	bool use_neon = may_use_simd();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = ccm_init_mac(req, mac, len);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	if (req->assoclen)
 		ccm_calculate_auth_mac(req, mac);
+=======
+	if (likely(use_neon))
+		kernel_neon_begin();
+
+	if (req->assoclen)
+		ccm_calculate_auth_mac(req, mac, use_neon);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* preserve the original iv for the final round */
 	memcpy(buf, req->iv, AES_BLOCK_SIZE);
 
 	err = skcipher_walk_aead_decrypt(&walk, req, true);
 
+<<<<<<< HEAD
 	if (may_use_simd()) {
+=======
+	if (likely(use_neon)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		while (walk.nbytes) {
 			u32 tail = walk.nbytes % AES_BLOCK_SIZE;
 
 			if (walk.nbytes == walk.total)
 				tail = 0;
 
+<<<<<<< HEAD
 			kernel_neon_begin();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ce_aes_ccm_decrypt(walk.dst.virt.addr,
 					   walk.src.virt.addr,
 					   walk.nbytes - tail, ctx->key_enc,
 					   num_rounds(ctx), mac, walk.iv);
+<<<<<<< HEAD
 			kernel_neon_end();
 
 			err = skcipher_walk_done(&walk, tail);
@@ -335,6 +406,16 @@ static int ccm_decrypt(struct aead_request *req)
 					 num_rounds(ctx));
 			kernel_neon_end();
 		}
+=======
+
+			err = skcipher_walk_done(&walk, tail);
+		}
+		if (!err)
+			ce_aes_ccm_final(mac, buf, ctx->key_enc,
+					 num_rounds(ctx));
+
+		kernel_neon_end();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		err = ccm_crypt_fallback(&walk, mac, buf, ctx, false);
 	}

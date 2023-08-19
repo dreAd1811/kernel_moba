@@ -100,6 +100,7 @@ static struct ldt_struct *alloc_ldt_struct(unsigned int num_entries)
 	return new_ldt;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PAGE_TABLE_ISOLATION
 
 static void do_sanity_check(struct mm_struct *mm,
@@ -196,6 +197,8 @@ static void sanity_check_ldt_mapping(struct mm_struct *mm)
 
 #endif /* CONFIG_X86_PAE */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * If PTI is enabled, this maps the LDT into the kernelmode and
  * usermode tables for the given mm.
@@ -203,10 +206,19 @@ static void sanity_check_ldt_mapping(struct mm_struct *mm)
 static int
 map_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt, int slot)
 {
+<<<<<<< HEAD
 	unsigned long va;
 	bool is_vmalloc;
 	spinlock_t *ptl;
 	int i, nr_pages;
+=======
+#ifdef CONFIG_PAGE_TABLE_ISOLATION
+	bool is_vmalloc, had_top_level_entry;
+	unsigned long va;
+	spinlock_t *ptl;
+	int i, nr_pages;
+	pgd_t *pgd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!static_cpu_has(X86_FEATURE_PTI))
 		return 0;
@@ -217,8 +229,18 @@ map_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt, int slot)
 	 */
 	WARN_ON(ldt->slot != -1);
 
+<<<<<<< HEAD
 	/* Check if the current mappings are sane */
 	sanity_check_ldt_mapping(mm);
+=======
+	/*
+	 * Did we already have the top level entry allocated?  We can't
+	 * use pgd_none() for this because it doens't do anything on
+	 * 4-level page table kernels.
+	 */
+	pgd = pgd_offset(mm, LDT_BASE_ADDR);
+	had_top_level_entry = (pgd->pgd != 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	is_vmalloc = is_vmalloc_addr(ldt->entries);
 
@@ -228,7 +250,10 @@ map_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt, int slot)
 		unsigned long offset = i << PAGE_SHIFT;
 		const void *src = (char *)ldt->entries + offset;
 		unsigned long pfn;
+<<<<<<< HEAD
 		pgprot_t pte_prot;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pte_t pte, *ptep;
 
 		va = (unsigned long)ldt_slot_va(slot) + offset;
@@ -247,23 +272,57 @@ map_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt, int slot)
 		 * target via some kernel interface which misses a
 		 * permission check.
 		 */
+<<<<<<< HEAD
 		pte_prot = __pgprot(__PAGE_KERNEL_RO & ~_PAGE_GLOBAL);
 		/* Filter out unsuppored __PAGE_KERNEL* bits: */
 		pgprot_val(pte_prot) &= __supported_pte_mask;
 		pte = pfn_pte(pfn, pte_prot);
+=======
+		pte = pfn_pte(pfn, __pgprot(__PAGE_KERNEL_RO & ~_PAGE_GLOBAL));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_pte_at(mm, va, ptep, pte);
 		pte_unmap_unlock(ptep, ptl);
 	}
 
+<<<<<<< HEAD
 	/* Propagate LDT mapping to the user page-table */
 	map_ldt_struct_to_user(mm);
 
 	ldt->slot = slot;
+=======
+	if (mm->context.ldt) {
+		/*
+		 * We already had an LDT.  The top-level entry should already
+		 * have been allocated and synchronized with the usermode
+		 * tables.
+		 */
+		WARN_ON(!had_top_level_entry);
+		if (static_cpu_has(X86_FEATURE_PTI))
+			WARN_ON(!kernel_to_user_pgdp(pgd)->pgd);
+	} else {
+		/*
+		 * This is the first time we're mapping an LDT for this process.
+		 * Sync the pgd to the usermode tables.
+		 */
+		WARN_ON(had_top_level_entry);
+		if (static_cpu_has(X86_FEATURE_PTI)) {
+			WARN_ON(kernel_to_user_pgdp(pgd)->pgd);
+			set_pgd(kernel_to_user_pgdp(pgd), *pgd);
+		}
+	}
+
+	ldt->slot = slot;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void unmap_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt)
 {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PAGE_TABLE_ISOLATION
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long va;
 	int i, nr_pages;
 
@@ -289,6 +348,7 @@ static void unmap_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt)
 
 	va = (unsigned long)ldt_slot_va(ldt->slot);
 	flush_tlb_mm_range(mm, va, va + nr_pages * PAGE_SIZE, 0);
+<<<<<<< HEAD
 }
 
 #else /* !CONFIG_PAGE_TABLE_ISOLATION */
@@ -303,13 +363,21 @@ static void unmap_ldt_struct(struct mm_struct *mm, struct ldt_struct *ldt)
 {
 }
 #endif /* CONFIG_PAGE_TABLE_ISOLATION */
+=======
+#endif /* CONFIG_PAGE_TABLE_ISOLATION */
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void free_ldt_pgtables(struct mm_struct *mm)
 {
 #ifdef CONFIG_PAGE_TABLE_ISOLATION
 	struct mmu_gather tlb;
 	unsigned long start = LDT_BASE_ADDR;
+<<<<<<< HEAD
 	unsigned long end = LDT_END_ADDR;
+=======
+	unsigned long end = start + (1UL << PGDIR_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!static_cpu_has(X86_FEATURE_PTI))
 		return;

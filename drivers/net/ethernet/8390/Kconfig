@@ -3,7 +3,11 @@
 #
 
 config NET_VENDOR_8390
+<<<<<<< HEAD
 	bool "National Semiconductor 8390 devices"
+=======
+	bool "National Semi-conductor 8390 devices"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default y
 	depends on NET_VENDOR_NATSEMI
 	---help---
@@ -29,8 +33,13 @@ config PCMCIA_AXNET
 	  called axnet_cs.  If unsure, say N.
 
 config AX88796
+<<<<<<< HEAD
 	tristate "ASIX AX88796 NE2000 clone support" if !ZORRO
 	depends on (ARM || MIPS || SUPERH || ZORRO || COMPILE_TEST)
+=======
+	tristate "ASIX AX88796 NE2000 clone support"
+	depends on (ARM || MIPS || SUPERH)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRC32
 	select PHYLIB
 	select MDIO_BITBANG
@@ -45,6 +54,7 @@ config AX88796_93CX6
 	---help---
 	  Select this if your platform comes with an external 93CX6 eeprom.
 
+<<<<<<< HEAD
 config XSURF100
 	tristate "Amiga XSurf 100 AX88796/NE2000 clone support"
 	depends on ZORRO
@@ -58,6 +68,8 @@ config XSURF100
 	  To compile this driver as a module, choose M here: the module
 	  will be called xsurf100.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HYDRA
 	tristate "Hydra support"
 	depends on ZORRO
@@ -100,7 +112,12 @@ config MCF8390
 
 config NE2000
 	tristate "NE2000/NE1000 support"
+<<<<<<< HEAD
 	depends on (ISA || (Q40 && m) || MACH_TX49XX || ATARI_ETHERNEC)
+=======
+	depends on (ISA || (Q40 && m) || M32R || MACH_TX49XX || \
+		    ATARI_ETHERNEC)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRC32
 	---help---
 	  If you have a network (Ethernet) card of this type, say Y here.

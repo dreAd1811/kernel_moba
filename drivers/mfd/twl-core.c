@@ -1139,9 +1139,14 @@ twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	}
 
 	num_slaves = twl_get_num_slaves();
+<<<<<<< HEAD
 	twl_priv->twl_modules = devm_kcalloc(&client->dev,
 					 num_slaves,
 					 sizeof(struct twl_client),
+=======
+	twl_priv->twl_modules = devm_kzalloc(&client->dev,
+					 sizeof(struct twl_client) * num_slaves,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 GFP_KERNEL);
 	if (!twl_priv->twl_modules) {
 		status = -ENOMEM;
@@ -1178,7 +1183,11 @@ twl_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	twl_priv->ready = true;
 
 	/* setup clock framework */
+<<<<<<< HEAD
 	clocks_init(&client->dev, pdata ? pdata->clock : NULL);
+=======
+	clocks_init(&pdev->dev, pdata ? pdata->clock : NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* read TWL IDCODE Register */
 	if (twl_class_is_4030()) {
@@ -1245,6 +1254,7 @@ free:
 	return status;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused twl_suspend(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
@@ -1267,6 +1277,8 @@ static int __maybe_unused twl_resume(struct device *dev)
 
 static SIMPLE_DEV_PM_OPS(twl_dev_pm_ops, twl_suspend, twl_resume);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct i2c_device_id twl_ids[] = {
 	{ "twl4030", TWL4030_VAUX2 },	/* "Triton 2" */
 	{ "twl5030", 0 },		/* T2 updated */
@@ -1284,7 +1296,10 @@ static const struct i2c_device_id twl_ids[] = {
 /* One Client Driver , 4 Clients */
 static struct i2c_driver twl_driver = {
 	.driver.name	= DRIVER_NAME,
+<<<<<<< HEAD
 	.driver.pm	= &twl_dev_pm_ops,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id_table	= twl_ids,
 	.probe		= twl_probe,
 	.remove		= twl_remove,

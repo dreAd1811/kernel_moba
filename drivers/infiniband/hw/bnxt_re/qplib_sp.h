@@ -45,8 +45,12 @@
 #define PCI_EXP_DEVCTL2_ATOMIC_REQ      0x0040
 
 struct bnxt_qplib_dev_attr {
+<<<<<<< HEAD
 #define FW_VER_ARR_LEN			4
 	u8				fw_ver[FW_VER_ARR_LEN];
+=======
+	char				fw_ver[32];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16				max_sgid;
 	u16				max_mrw;
 	u32				max_qp;
@@ -128,6 +132,7 @@ struct bnxt_qplib_frpl {
 #define BNXT_QPLIB_ACCESS_ZERO_BASED	BIT(5)
 #define BNXT_QPLIB_ACCESS_ON_DEMAND	BIT(6)
 
+<<<<<<< HEAD
 struct bnxt_qplib_roce_stats {
 	u64 to_retransmits;
 	u64 seq_err_naks_rcvd;
@@ -207,6 +212,8 @@ struct bnxt_qplib_roce_stats {
 	/* res_rx_pci_err is 64 b */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bnxt_qplib_get_sgid(struct bnxt_qplib_res *res,
 			struct bnxt_qplib_sgid_tbl *sgid_tbl, int index,
 			struct bnxt_qplib_gid *gid);
@@ -227,10 +234,14 @@ int bnxt_qplib_add_pkey(struct bnxt_qplib_res *res,
 			struct bnxt_qplib_pkey_tbl *pkey_tbl, u16 *pkey,
 			bool update);
 int bnxt_qplib_get_dev_attr(struct bnxt_qplib_rcfw *rcfw,
+<<<<<<< HEAD
 			    struct bnxt_qplib_dev_attr *attr, bool vf);
 int bnxt_qplib_set_func_resources(struct bnxt_qplib_res *res,
 				  struct bnxt_qplib_rcfw *rcfw,
 				  struct bnxt_qplib_ctx *ctx);
+=======
+			    struct bnxt_qplib_dev_attr *attr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bnxt_qplib_create_ah(struct bnxt_qplib_res *res, struct bnxt_qplib_ah *ah);
 int bnxt_qplib_destroy_ah(struct bnxt_qplib_res *res, struct bnxt_qplib_ah *ah);
 int bnxt_qplib_alloc_mrw(struct bnxt_qplib_res *res,
@@ -238,7 +249,11 @@ int bnxt_qplib_alloc_mrw(struct bnxt_qplib_res *res,
 int bnxt_qplib_dereg_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mrw,
 			 bool block);
 int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
+<<<<<<< HEAD
 		      u64 *pbl_tbl, int num_pbls, bool block, u32 buf_pg_size);
+=======
+		      u64 *pbl_tbl, int num_pbls, bool block);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int bnxt_qplib_free_mrw(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr);
 int bnxt_qplib_alloc_fast_reg_mr(struct bnxt_qplib_res *res,
 				 struct bnxt_qplib_mrw *mr, int max);
@@ -247,6 +262,9 @@ int bnxt_qplib_alloc_fast_reg_page_list(struct bnxt_qplib_res *res,
 int bnxt_qplib_free_fast_reg_page_list(struct bnxt_qplib_res *res,
 				       struct bnxt_qplib_frpl *frpl);
 int bnxt_qplib_map_tc2cos(struct bnxt_qplib_res *res, u16 *cids);
+<<<<<<< HEAD
 int bnxt_qplib_get_roce_stats(struct bnxt_qplib_rcfw *rcfw,
 			      struct bnxt_qplib_roce_stats *stats);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __BNXT_QPLIB_SP_H__*/

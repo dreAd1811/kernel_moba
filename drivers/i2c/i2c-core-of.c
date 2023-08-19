@@ -4,7 +4,11 @@
  * Copyright (C) 2008 Jochen Friedrich <jochen@scram.de>
  * based on a previous patch from Jon Smirl <jonsmirl@gmail.com>
  *
+<<<<<<< HEAD
  * Copyright (C) 2013, 2018 Wolfram Sang <wsa@the-dreams.de>
+=======
+ * Copyright (C) 2013 Wolfram Sang <wsa@the-dreams.de>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
@@ -22,6 +26,7 @@
 
 #include "i2c-core.h"
 
+<<<<<<< HEAD
 int of_i2c_get_board_info(struct device *dev, struct device_node *node,
 			  struct i2c_board_info *info)
 {
@@ -44,10 +49,41 @@ int of_i2c_get_board_info(struct device *dev, struct device_node *node,
 	if (addr & I2C_TEN_BIT_ADDRESS) {
 		addr &= ~I2C_TEN_BIT_ADDRESS;
 		info->flags |= I2C_CLIENT_TEN;
+=======
+static struct i2c_client *of_i2c_register_device(struct i2c_adapter *adap,
+						 struct device_node *node)
+{
+	struct i2c_client *result;
+	struct i2c_board_info info = {};
+	struct dev_archdata dev_ad = {};
+	const __be32 *addr_be;
+	u32 addr;
+	int len;
+
+	dev_dbg(&adap->dev, "of_i2c: register %pOF\n", node);
+
+	if (of_modalias_node(node, info.type, sizeof(info.type)) < 0) {
+		dev_err(&adap->dev, "of_i2c: modalias failure on %pOF\n",
+			node);
+		return ERR_PTR(-EINVAL);
+	}
+
+	addr_be = of_get_property(node, "reg", &len);
+	if (!addr_be || (len < sizeof(*addr_be))) {
+		dev_err(&adap->dev, "of_i2c: invalid reg on %pOF\n", node);
+		return ERR_PTR(-EINVAL);
+	}
+
+	addr = be32_to_cpup(addr_be);
+	if (addr & I2C_TEN_BIT_ADDRESS) {
+		addr &= ~I2C_TEN_BIT_ADDRESS;
+		info.flags |= I2C_CLIENT_TEN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (addr & I2C_OWN_SLAVE_ADDRESS) {
 		addr &= ~I2C_OWN_SLAVE_ADDRESS;
+<<<<<<< HEAD
 		info->flags |= I2C_CLIENT_SLAVE;
 	}
 
@@ -83,6 +119,34 @@ static struct i2c_client *of_i2c_register_device(struct i2c_adapter *adap,
 		return ERR_PTR(-EINVAL);
 	}
 	return client;
+=======
+		info.flags |= I2C_CLIENT_SLAVE;
+	}
+
+	if (i2c_check_addr_validity(addr, info.flags)) {
+		dev_err(&adap->dev, "of_i2c: invalid addr=%x on %pOF\n",
+			addr, node);
+		return ERR_PTR(-EINVAL);
+	}
+
+	info.addr = addr;
+	info.of_node = of_node_get(node);
+	info.archdata = &dev_ad;
+
+	if (of_property_read_bool(node, "host-notify"))
+		info.flags |= I2C_CLIENT_HOST_NOTIFY;
+
+	if (of_get_property(node, "wakeup-source", NULL))
+		info.flags |= I2C_CLIENT_WAKE;
+
+	result = i2c_new_device(adap, &info);
+	if (result == NULL) {
+		dev_err(&adap->dev, "of_i2c: Failure registering %pOF\n", node);
+		of_node_put(node);
+		return ERR_PTR(-EINVAL);
+	}
+	return result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void of_i2c_register_devices(struct i2c_adapter *adap)
@@ -106,7 +170,11 @@ void of_i2c_register_devices(struct i2c_adapter *adap)
 
 		client = of_i2c_register_device(adap, node);
 		if (IS_ERR(client)) {
+<<<<<<< HEAD
 			dev_err(&adap->dev,
+=======
+			dev_warn(&adap->dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 "Failed to create I2C device for %pOF\n",
 				 node);
 			of_node_clear_flag(node, OF_POPULATED);
@@ -121,6 +189,7 @@ static int of_dev_node_match(struct device *dev, void *data)
 	return dev->of_node == data;
 }
 
+<<<<<<< HEAD
 static int of_dev_or_parent_node_match(struct device *dev, void *data)
 {
 	if (dev->of_node == data)
@@ -132,6 +201,8 @@ static int of_dev_or_parent_node_match(struct device *dev, void *data)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* must call put_device() when done with returned i2c_client device */
 struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
 {
@@ -156,8 +227,12 @@ struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
 	struct device *dev;
 	struct i2c_adapter *adapter;
 
+<<<<<<< HEAD
 	dev = bus_find_device(&i2c_bus_type, NULL, node,
 			      of_dev_or_parent_node_match);
+=======
+	dev = bus_find_device(&i2c_bus_type, NULL, node, of_dev_node_match);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev)
 		return NULL;
 
@@ -253,6 +328,7 @@ static int of_i2c_notify(struct notifier_block *nb, unsigned long action,
 		}
 
 		client = of_i2c_register_device(adap, rd->dn);
+<<<<<<< HEAD
 		put_device(&adap->dev);
 
 		if (IS_ERR(client)) {
@@ -261,6 +337,16 @@ static int of_i2c_notify(struct notifier_block *nb, unsigned long action,
 			of_node_clear_flag(rd->dn, OF_POPULATED);
 			return notifier_from_errno(PTR_ERR(client));
 		}
+=======
+		if (IS_ERR(client)) {
+			dev_err(&adap->dev, "failed to create client for '%pOF'\n",
+				 rd->dn);
+			put_device(&adap->dev);
+			of_node_clear_flag(rd->dn, OF_POPULATED);
+			return notifier_from_errno(PTR_ERR(client));
+		}
+		put_device(&adap->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case OF_RECONFIG_CHANGE_REMOVE:
 		/* already depopulated? */

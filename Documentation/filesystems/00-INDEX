@@ -10,8 +10,13 @@ afs.txt
 	- info and examples for the distributed AFS (Andrew File System) fs.
 affs.txt
 	- info and mount options for the Amiga Fast File System.
+<<<<<<< HEAD
 autofs-mount-control.txt
 	- info on device control operations for autofs module.
+=======
+autofs4-mount-control.txt
+	- info on device control operations for autofs4 module.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 automount-support.txt
 	- information about filesystem automount support.
 befs.txt
@@ -89,6 +94,11 @@ locks.txt
 	- info on file locking implementations, flock() vs. fcntl(), etc.
 mandatory-locking.txt
 	- info on the Linux implementation of Sys V mandatory file locking.
+<<<<<<< HEAD
+=======
+ncpfs.txt
+	- info on Novell Netware(tm) filesystem using NCP protocol.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nfs/
 	- nfs-related documentation.
 nilfs2.txt

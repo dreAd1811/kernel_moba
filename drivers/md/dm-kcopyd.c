@@ -45,16 +45,25 @@ struct dm_kcopyd_client {
 	struct dm_io_client *io_client;
 
 	wait_queue_head_t destroyq;
+<<<<<<< HEAD
 
 	mempool_t job_pool;
+=======
+	atomic_t nr_jobs;
+
+	mempool_t *job_pool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct workqueue_struct *kcopyd_wq;
 	struct work_struct kcopyd_work;
 
 	struct dm_kcopyd_throttle *throttle;
 
+<<<<<<< HEAD
 	atomic_t nr_jobs;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We maintain four lists of jobs:
  *
@@ -110,7 +119,11 @@ static void io_job_start(struct dm_kcopyd_throttle *t)
 try_again:
 	spin_lock_irq(&throttle_spinlock);
 
+<<<<<<< HEAD
 	throttle = READ_ONCE(t->throttle);
+=======
+	throttle = ACCESS_ONCE(t->throttle);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (likely(throttle >= 100))
 		goto skip_limit;
@@ -160,7 +173,11 @@ static void io_job_finish(struct dm_kcopyd_throttle *t)
 
 	t->num_io_jobs--;
 
+<<<<<<< HEAD
 	if (likely(READ_ONCE(t->throttle) >= 100))
+=======
+	if (likely(ACCESS_ONCE(t->throttle) >= 100))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto skip_limit;
 
 	if (!t->num_io_jobs) {
@@ -480,10 +497,15 @@ static int run_complete_job(struct kcopyd_job *job)
 	 * If this is the master job, the sub jobs have already
 	 * completed so we can free everything.
 	 */
+<<<<<<< HEAD
 	if (job->master_job == job) {
 		mutex_destroy(&job->lock);
 		mempool_free(job, &kc->job_pool);
 	}
+=======
+	if (job->master_job == job)
+		mempool_free(job, kc->job_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fn(read_err, write_err, context);
 
 	if (atomic_dec_and_test(&kc->nr_jobs))
@@ -753,9 +775,15 @@ static void split_job(struct kcopyd_job *master_job)
 	}
 }
 
+<<<<<<< HEAD
 void dm_kcopyd_copy(struct dm_kcopyd_client *kc, struct dm_io_region *from,
 		    unsigned int num_dests, struct dm_io_region *dests,
 		    unsigned int flags, dm_kcopyd_notify_fn fn, void *context)
+=======
+int dm_kcopyd_copy(struct dm_kcopyd_client *kc, struct dm_io_region *from,
+		   unsigned int num_dests, struct dm_io_region *dests,
+		   unsigned int flags, dm_kcopyd_notify_fn fn, void *context)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kcopyd_job *job;
 	int i;
@@ -764,8 +792,12 @@ void dm_kcopyd_copy(struct dm_kcopyd_client *kc, struct dm_io_region *from,
 	 * Allocate an array of jobs consisting of one master job
 	 * followed by SPLIT_COUNT sub jobs.
 	 */
+<<<<<<< HEAD
 	job = mempool_alloc(&kc->job_pool, GFP_NOIO);
 	mutex_init(&job->lock);
+=======
+	job = mempool_alloc(kc->job_pool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * set up for the read.
@@ -827,6 +859,7 @@ void dm_kcopyd_copy(struct dm_kcopyd_client *kc, struct dm_io_region *from,
 	if (job->source.count <= SUB_JOB_SIZE)
 		dispatch_job(job);
 	else {
+<<<<<<< HEAD
 		job->progress = 0;
 		split_job(job);
 	}
@@ -838,6 +871,22 @@ void dm_kcopyd_zero(struct dm_kcopyd_client *kc,
 		    unsigned flags, dm_kcopyd_notify_fn fn, void *context)
 {
 	dm_kcopyd_copy(kc, NULL, num_dests, dests, flags, fn, context);
+=======
+		mutex_init(&job->lock);
+		job->progress = 0;
+		split_job(job);
+	}
+
+	return 0;
+}
+EXPORT_SYMBOL(dm_kcopyd_copy);
+
+int dm_kcopyd_zero(struct dm_kcopyd_client *kc,
+		   unsigned num_dests, struct dm_io_region *dests,
+		   unsigned flags, dm_kcopyd_notify_fn fn, void *context)
+{
+	return dm_kcopyd_copy(kc, NULL, num_dests, dests, flags, fn, context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(dm_kcopyd_zero);
 
@@ -846,7 +895,11 @@ void *dm_kcopyd_prepare_callback(struct dm_kcopyd_client *kc,
 {
 	struct kcopyd_job *job;
 
+<<<<<<< HEAD
 	job = mempool_alloc(&kc->job_pool, GFP_NOIO);
+=======
+	job = mempool_alloc(kc->job_pool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memset(job, 0, sizeof(struct kcopyd_job));
 	job->kc = kc;
@@ -890,7 +943,11 @@ int kcopyd_cancel(struct kcopyd_job *job, int block)
  *---------------------------------------------------------------*/
 struct dm_kcopyd_client *dm_kcopyd_client_create(struct dm_kcopyd_throttle *throttle)
 {
+<<<<<<< HEAD
 	int r;
+=======
+	int r = -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dm_kcopyd_client *kc;
 
 	kc = kzalloc(sizeof(*kc), GFP_KERNEL);
@@ -904,16 +961,26 @@ struct dm_kcopyd_client *dm_kcopyd_client_create(struct dm_kcopyd_throttle *thro
 	INIT_LIST_HEAD(&kc->pages_jobs);
 	kc->throttle = throttle;
 
+<<<<<<< HEAD
 	r = mempool_init_slab_pool(&kc->job_pool, MIN_JOBS, _job_cache);
 	if (r)
+=======
+	kc->job_pool = mempool_create_slab_pool(MIN_JOBS, _job_cache);
+	if (!kc->job_pool)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bad_slab;
 
 	INIT_WORK(&kc->kcopyd_work, do_work);
 	kc->kcopyd_wq = alloc_workqueue("kcopyd", WQ_MEM_RECLAIM, 0);
+<<<<<<< HEAD
 	if (!kc->kcopyd_wq) {
 		r = -ENOMEM;
 		goto bad_workqueue;
 	}
+=======
+	if (!kc->kcopyd_wq)
+		goto bad_workqueue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kc->pages = NULL;
 	kc->nr_reserved_pages = kc->nr_free_pages = 0;
@@ -937,7 +1004,11 @@ bad_io_client:
 bad_client_pages:
 	destroy_workqueue(kc->kcopyd_wq);
 bad_workqueue:
+<<<<<<< HEAD
 	mempool_exit(&kc->job_pool);
+=======
+	mempool_destroy(kc->job_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bad_slab:
 	kfree(kc);
 
@@ -957,7 +1028,11 @@ void dm_kcopyd_client_destroy(struct dm_kcopyd_client *kc)
 	destroy_workqueue(kc->kcopyd_wq);
 	dm_io_client_destroy(kc->io_client);
 	client_free_pages(kc);
+<<<<<<< HEAD
 	mempool_exit(&kc->job_pool);
+=======
+	mempool_destroy(kc->job_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(kc);
 }
 EXPORT_SYMBOL(dm_kcopyd_client_destroy);

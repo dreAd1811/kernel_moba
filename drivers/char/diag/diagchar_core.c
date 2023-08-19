@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2008-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2008-2021, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/slab.h>
@@ -35,10 +48,18 @@
 #include "diag_ipc_logging.h"
 #include "diagfwd_peripheral.h"
 #include "diagfwd_mhi.h"
+<<<<<<< HEAD
 
 #include <linux/coresight-stm.h>
 #include <linux/kernel.h>
 #include <linux/kmemleak.h>
+=======
+#include "diagfwd_hsic.h"
+#include "diag_pcie.h"
+
+#include <linux/coresight-stm.h>
+#include <linux/kernel.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_COMPAT
 #include <linux/compat.h>
 #endif
@@ -60,18 +81,30 @@ struct diagchar_priv {
 /* Memory pool variables */
 /* Used for copying any incoming packet from user space clients. */
 static unsigned int poolsize = 12;
+<<<<<<< HEAD
+=======
+module_param(poolsize, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Used for HDLC encoding packets coming from the user
  * space.
  */
 static unsigned int poolsize_hdlc = 10;
+<<<<<<< HEAD
+=======
+module_param(poolsize_hdlc, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * This is used for incoming DCI requests from the user space clients.
  * Don't expose itemsize as it is internal.
  */
 static unsigned int poolsize_user = 8;
+<<<<<<< HEAD
+=======
+module_param(poolsize_user, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * USB structures allocated for writing Diag data generated on the Apps to USB.
@@ -79,14 +112,29 @@ static unsigned int poolsize_user = 8;
  */
 static unsigned int itemsize_usb_apps = sizeof(struct diag_request);
 static unsigned int poolsize_usb_apps = 10;
+<<<<<<< HEAD
 
 /* Used for DCI client buffers. Don't expose itemsize as it is constant. */
 static unsigned int poolsize_dci = 10;
+=======
+static unsigned int itemsize_pcie_apps = sizeof(struct mhi_req);
+static unsigned int poolsize_pcie_apps = 10;
+module_param(poolsize_usb_apps, uint, 0000);
+
+/* Used for DCI client buffers. Don't expose itemsize as it is constant. */
+static unsigned int poolsize_dci = 10;
+module_param(poolsize_dci, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_DIAGFWD_BRIDGE_CODE
 /* Used for reading data from the remote device. */
 static unsigned int itemsize_mdm = DIAG_MDM_BUF_SIZE;
 static unsigned int poolsize_mdm = 18;
+<<<<<<< HEAD
+=======
+module_param(itemsize_mdm, uint, 0000);
+module_param(poolsize_mdm, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Used for reading DCI data from the remote device.
@@ -94,6 +142,10 @@ static unsigned int poolsize_mdm = 18;
  */
 static unsigned int itemsize_mdm_dci = DIAG_MDM_BUF_SIZE;
 static unsigned int poolsize_mdm_dci = 1;
+<<<<<<< HEAD
+=======
+module_param(itemsize_mdm_dci, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Used for USB structues associated with a remote device.
@@ -101,6 +153,10 @@ static unsigned int poolsize_mdm_dci = 1;
  */
 static unsigned int itemsize_mdm_usb = sizeof(struct diag_request);
 static unsigned int poolsize_mdm_usb = 18;
+<<<<<<< HEAD
+=======
+module_param(poolsize_mdm_usb, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Used for writing read DCI data to remote peripherals. Don't
@@ -110,6 +166,10 @@ static unsigned int poolsize_mdm_usb = 18;
  */
 static unsigned int itemsize_mdm_dci_write = DIAG_MDM_DCI_BUF_SIZE;
 static unsigned int poolsize_mdm_dci_write = 1;
+<<<<<<< HEAD
+=======
+module_param(itemsize_mdm_dci_write, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Used for USB structures associated with a remote SMUX
@@ -117,10 +177,18 @@ static unsigned int poolsize_mdm_dci_write = 1;
  */
 static unsigned int itemsize_qsc_usb = sizeof(struct diag_request);
 static unsigned int poolsize_qsc_usb = 8;
+<<<<<<< HEAD
+=======
+module_param(poolsize_qsc_usb, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /* This is the max number of user-space clients supported at initialization*/
 static unsigned int max_clients = 15;
+<<<<<<< HEAD
+=======
+module_param(max_clients, uint, 0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Timer variables */
 static struct timer_list drain_timer;
@@ -184,7 +252,11 @@ do {								\
 	ret += length;						\
 } while (0)
 
+<<<<<<< HEAD
 static void drain_timer_func(struct timer_list *tlist)
+=======
+static void drain_timer_func(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	queue_work(driver->diag_wq, &(driver->diag_drain_work));
 }
@@ -351,10 +423,17 @@ static int diagchar_open(struct inode *inode, struct file *file)
 			} else {
 				mutex_unlock(&driver->diagchar_mutex);
 				pr_err_ratelimited("diag: Max client limit for DIAG reached\n");
+<<<<<<< HEAD
 				pr_err_ratelimited("diag: Cannot open handle %s %d\n",
 						current->comm, current->tgid);
 				for (i = 0; i < driver->num_clients; i++)
 					pr_debug("%d) %s PID=%d\n", i,
+=======
+				pr_err_ratelimited("diag: Cannot open handle %s %d",
+						current->comm, current->tgid);
+				for (i = 0; i < driver->num_clients; i++)
+					pr_debug("%d) %s PID=%d", i,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						driver->client_map[i].name,
 						driver->client_map[i].pid);
 				return -ENOMEM;
@@ -414,8 +493,11 @@ static uint32_t diag_translate_kernel_to_user_mask(uint32_t peripheral_mask)
 		ret |= DIAG_CON_UPD_AUDIO;
 	if (peripheral_mask & MD_PERIPHERAL_MASK(UPD_SENSORS))
 		ret |= DIAG_CON_UPD_SENSORS;
+<<<<<<< HEAD
 	if (peripheral_mask & MD_PERIPHERAL_MASK(UPD_CHARGER))
 		ret |= DIAG_CON_UPD_CHARGER;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -468,6 +550,24 @@ static void diag_close_logging_process(const int pid)
 	session_info = diag_md_session_get_pid(pid);
 	if (!session_info) {
 		mutex_unlock(&driver->md_session_lock);
+<<<<<<< HEAD
+=======
+		mutex_lock(&driver->diagchar_mutex);
+		if (driver->pcie_switch_pid == pid) {
+			if (driver->pcie_transport_def ==
+				DIAG_ROUTE_TO_PCIE)
+				params.req_mode = PCIE_MODE;
+			else
+				params.req_mode = USB_MODE;
+			params.mode_param = 0;
+			params.pd_mask = 0;
+			params.device_mask = DIAG_MSM_MASK;
+			params.peripheral_mask = DIAG_CON_ALL;
+			diag_switch_logging(&params);
+			driver->pcie_switch_pid = 0;
+		}
+		mutex_unlock(&driver->diagchar_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	for (i = 0; i < NUM_DIAG_MD_DEV; i++) {
@@ -490,7 +590,15 @@ static void diag_close_logging_process(const int pid)
 		if (MD_PERIPHERAL_MASK(i) & session_mask)
 			diag_mux_close_peripheral(DIAG_LOCAL_PROC, i);
 
+<<<<<<< HEAD
 	params.req_mode = USB_MODE;
+=======
+	if (driver->transport_set == DIAG_ROUTE_TO_PCIE)
+		params.req_mode = PCIE_MODE;
+	else
+		params.req_mode = USB_MODE;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	params.mode_param = 0;
 	params.pd_mask = 0;
 	params.peripheral_mask = p_mask;
@@ -580,7 +688,11 @@ static int diag_remove_client_entry(struct file *file)
 	driver->client_map[i].pid = 0;
 	kfree(diagpriv_data);
 	diagpriv_data = NULL;
+<<<<<<< HEAD
 	file->private_data = 0;
+=======
+	file->private_data = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&driver->diagchar_mutex);
 	mutex_unlock(&driver->diag_file_mutex);
@@ -722,7 +834,11 @@ static void diag_cmd_invalidate_polling(int change_flag)
 	driver->polling_reg_flag = 0;
 	list_for_each_safe(start, temp, &driver->cmd_reg_list) {
 		item = list_entry(start, struct diag_cmd_reg_t, link);
+<<<<<<< HEAD
 		if (!item) {
+=======
+		if (&item->entry == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("diag: In %s, unable to search command\n",
 			       __func__);
 			return;
@@ -788,7 +904,11 @@ struct diag_cmd_reg_entry_t *diag_cmd_search(
 
 	list_for_each_safe(start, temp, &driver->cmd_reg_list) {
 		item = list_entry(start, struct diag_cmd_reg_t, link);
+<<<<<<< HEAD
 		if (!item) {
+=======
+		if (&item->entry == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("diag: In %s, unable to search command\n",
 			       __func__);
 			return NULL;
@@ -866,7 +986,11 @@ void diag_cmd_remove_reg_by_pid(int pid)
 	mutex_lock(&driver->cmd_reg_mutex);
 	list_for_each_safe(start, temp, &driver->cmd_reg_list) {
 		item = list_entry(start, struct diag_cmd_reg_t, link);
+<<<<<<< HEAD
 		if (!item) {
+=======
+		if (&item->entry == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("diag: In %s, unable to search command\n",
 			       __func__);
 			mutex_unlock(&driver->cmd_reg_mutex);
@@ -890,7 +1014,11 @@ void diag_cmd_remove_reg_by_proc(int proc)
 	mutex_lock(&driver->cmd_reg_mutex);
 	list_for_each_safe(start, temp, &driver->cmd_reg_list) {
 		item = list_entry(start, struct diag_cmd_reg_t, link);
+<<<<<<< HEAD
 		if (!item) {
+=======
+		if (&item->entry == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("diag: In %s, unable to search command\n",
 			       __func__);
 			mutex_unlock(&driver->cmd_reg_mutex);
@@ -1040,7 +1168,11 @@ static int diag_send_raw_data_remote(int proc, void *buf, int len,
 		return -EINVAL;
 
 	if (len <= 0) {
+<<<<<<< HEAD
 		pr_err("diag: In %s, invalid len: %d\n", __func__, len);
+=======
+		pr_err("diag: In %s, invalid len: %d", __func__, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EBADMSG;
 	}
 
@@ -1064,7 +1196,11 @@ static int diag_send_raw_data_remote(int proc, void *buf, int len,
 	mutex_unlock(&driver->hdlc_disable_mutex);
 	if (hdlc_disabled) {
 		if (len < 4) {
+<<<<<<< HEAD
 			pr_err("diag: In %s, invalid len: %d of non_hdlc pkt\n",
+=======
+			pr_err("diag: In %s, invalid len: %d of non_hdlc pkt",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__, len);
 			return -EBADMSG;
 		}
@@ -1087,7 +1223,11 @@ static int diag_send_raw_data_remote(int proc, void *buf, int len,
 			memcpy(driver->hdlc_encode_buf, buf + 4, payload);
 			goto send_data;
 		} else {
+<<<<<<< HEAD
 			pr_err("diag: In %s, invalid len: %d of non_hdlc pkt\n",
+=======
+			pr_err("diag: In %s, invalid len: %d of non_hdlc pkt",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__, len);
 			return -EBADMSG;
 		}
@@ -1159,6 +1299,7 @@ static int diag_process_userspace_remote(int proc, void *buf, int len)
 	return diagfwd_bridge_write(bridge_index, buf, len);
 }
 #else
+<<<<<<< HEAD
 int diag_remote_init(void)
 {
 	return 0;
@@ -1177,6 +1318,8 @@ void diagfwd_bridge_exit(void)
 {
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 uint16_t diag_get_remote_device_mask(void)
 {
 	return 0;
@@ -1358,7 +1501,11 @@ int diag_md_session_create(int mode, int peripheral_mask, int proc)
 		new_session->pid = current->tgid;
 		new_session->task = current;
 		new_session->log_mask = kzalloc(sizeof(struct diag_mask_info),
+<<<<<<< HEAD
 						GFP_KERNEL);
+=======
+					GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!new_session->log_mask) {
 			err = -ENOMEM;
 			goto fail_peripheral;
@@ -1383,7 +1530,11 @@ int diag_md_session_create(int mode, int peripheral_mask, int proc)
 			goto fail_peripheral;
 		}
 		err = diag_event_mask_copy(new_session->event_mask,
+<<<<<<< HEAD
 								   &event_mask);
+=======
+						&event_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err) {
 			DIAG_LOG(DIAG_DEBUG_USERSPACE,
 				 "return value of event copy. err %d\n", err);
@@ -1391,10 +1542,17 @@ int diag_md_session_create(int mode, int peripheral_mask, int proc)
 		}
 		new_session->msg_mask_tbl_count = 0;
 		err = diag_msg_mask_copy(new_session, new_session->msg_mask,
+<<<<<<< HEAD
 					&msg_mask);
 		if (err) {
 			DIAG_LOG(DIAG_DEBUG_USERSPACE,
 				 "return value of msg copy. err %d\n", err);
+=======
+			&msg_mask);
+		if (err) {
+			DIAG_LOG(DIAG_DEBUG_USERSPACE,
+			 "return value of msg copy. err %d\n", err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto fail_peripheral;
 		}
 	}
@@ -1411,9 +1569,15 @@ int diag_md_session_create(int mode, int peripheral_mask, int proc)
 		driver->md_session_map[proc][i] = new_session;
 		driver->md_session_mask[proc] |= MD_PERIPHERAL_MASK(i);
 	}
+<<<<<<< HEAD
 	timer_setup(&new_session->hdlc_reset_timer,
 		diag_md_hdlc_reset_timer_func,
 		0);
+=======
+	setup_timer(&new_session->hdlc_reset_timer,
+		diag_md_hdlc_reset_timer_func,
+		new_session->pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	driver->md_session_mode[proc] = DIAG_MD_PERIPHERAL;
 	mutex_unlock(&driver->md_session_lock);
@@ -1475,6 +1639,10 @@ static void diag_md_session_close(int pid)
 			if (driver->md_session_map[proc][i] != NULL)
 				found = 1;
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		driver->md_session_mode[proc] = (found) ? DIAG_MD_PERIPHERAL :
 								DIAG_MD_NONE;
 		found = 0;
@@ -1559,7 +1727,13 @@ static int diag_md_peripheral_switch(int proc, int pid,
 	session_info = diag_md_session_get_pid(pid);
 	if (!session_info)
 		return -EINVAL;
+<<<<<<< HEAD
 	if (req_mode != DIAG_USB_MODE && req_mode != DIAG_MEMORY_DEVICE_MODE)
+=======
+
+	if (req_mode != DIAG_USB_MODE && req_mode != DIAG_MEMORY_DEVICE_MODE &&
+		req_mode != DIAG_PCIE_MODE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	/*
@@ -1570,7 +1744,11 @@ static int diag_md_peripheral_switch(int proc, int pid,
 		bit = MD_PERIPHERAL_MASK(i) & peripheral_mask;
 		if (!bit)
 			continue;
+<<<<<<< HEAD
 		if (req_mode == DIAG_USB_MODE) {
+=======
+		if (req_mode == DIAG_USB_MODE || req_mode == DIAG_PCIE_MODE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (driver->md_session_map[proc][i] != session_info)
 				return -EINVAL;
 			driver->md_session_map[proc][i] = NULL;
@@ -1609,18 +1787,39 @@ static int diag_md_session_check(int proc, int curr_mode, int req_mode,
 	switch (curr_mode) {
 	case DIAG_USB_MODE:
 	case DIAG_MEMORY_DEVICE_MODE:
+<<<<<<< HEAD
+=======
+	case DIAG_PCIE_MODE:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_MULTI_MODE:
 		break;
 	default:
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (req_mode != DIAG_USB_MODE && req_mode != DIAG_MEMORY_DEVICE_MODE)
 		return -EINVAL;
 
 	if (req_mode == DIAG_USB_MODE) {
 		if (curr_mode == DIAG_USB_MODE)
 			return 0;
+=======
+	if (req_mode != DIAG_USB_MODE && req_mode != DIAG_MEMORY_DEVICE_MODE &&
+		req_mode != DIAG_PCIE_MODE)
+		return -EINVAL;
+
+	if (curr_mode == req_mode)
+		return 0;
+
+	if ((req_mode ==  DIAG_USB_MODE && curr_mode == DIAG_PCIE_MODE) ||
+		(req_mode == DIAG_PCIE_MODE && curr_mode == DIAG_USB_MODE)) {
+		*change_mode = 1;
+		return 0;
+	} else if ((req_mode == DIAG_USB_MODE || req_mode == DIAG_PCIE_MODE)
+		&& (curr_mode == DIAG_MEMORY_DEVICE_MODE ||
+			curr_mode == DIAG_MULTI_MODE)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&driver->md_session_lock);
 		if (driver->md_session_mode[proc] == DIAG_MD_NONE
 		    && driver->md_session_mask[proc] == 0 &&
@@ -1697,8 +1896,19 @@ static int diag_md_session_check(int proc, int curr_mode, int req_mode,
 				mutex_unlock(&driver->md_session_lock);
 				return -EINVAL;
 			}
+<<<<<<< HEAD
 			err = diag_md_peripheral_switch(proc, current->tgid,
 					change_mask, DIAG_USB_MODE);
+=======
+			if (driver->pcie_transport_def == DIAG_ROUTE_TO_PCIE)
+				err = diag_md_peripheral_switch(proc,
+					current->tgid, change_mask,
+					DIAG_PCIE_MODE);
+			else
+				err = diag_md_peripheral_switch(proc,
+						current->tgid, change_mask,
+						DIAG_USB_MODE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mutex_unlock(&driver->md_session_lock);
 		} else {
 			mutex_unlock(&driver->md_session_lock);
@@ -1749,8 +1959,11 @@ static uint32_t diag_translate_mask(uint32_t peripheral_mask)
 		ret |= (1 << UPD_AUDIO);
 	if (peripheral_mask & DIAG_CON_UPD_SENSORS)
 		ret |= (1 << UPD_SENSORS);
+<<<<<<< HEAD
 	if (peripheral_mask & DIAG_CON_UPD_CHARGER)
 		ret |= (1 << UPD_CHARGER);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1788,12 +2001,19 @@ static void diag_switch_logging_clear_mask(
 	case USB_MODE:
 		new_mode = DIAG_USB_MODE;
 		break;
+<<<<<<< HEAD
+=======
+	case PCIE_MODE:
+		new_mode = DIAG_PCIE_MODE;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		DIAG_LOG(DIAG_DEBUG_USERSPACE,
 			"Request to switch to invalid mode: %d\n",
 			param->req_mode);
 		return;
 	}
+<<<<<<< HEAD
 	if ((new_mode == DIAG_USB_MODE) && diag_mask_clear_param)
 		diag_clear_masks(pid);
 
@@ -1874,6 +2094,21 @@ static int diag_switch_logging(struct diag_logging_mode_param_t *param)
 	int new_mode, i = 0;
 	int err = 0, peripheral = 0;
 	uint32_t peripheral_mask = 0, pd_mask = 0;
+=======
+	if ((new_mode == DIAG_USB_MODE || new_mode == DIAG_PCIE_MODE) &&
+			diag_mask_clear_param)
+		diag_clear_masks(pid);
+
+}
+
+static int diag_switch_logging(struct diag_logging_mode_param_t *param)
+{
+	int new_mode, i = 0;
+	int curr_mode, err = 0, peripheral = 0;
+	uint8_t do_switch = 1;
+	uint32_t peripheral_mask = 0, pd_mask = 0;
+	int proc = 0, local_proc = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!param)
 		return -EINVAL;
@@ -1963,13 +2198,117 @@ static int diag_switch_logging(struct diag_logging_mode_param_t *param)
 	case USB_MODE:
 		new_mode = DIAG_USB_MODE;
 		break;
+<<<<<<< HEAD
+=======
+	case PCIE_MODE:
+		new_mode = DIAG_PCIE_MODE;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		pr_err("diag: In %s, request to switch to invalid mode: %d\n",
 		       __func__, param->req_mode);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	err = diag_switch_logging_proc(param, new_mode, peripheral_mask);
 
+=======
+
+	for (proc = 0; proc < NUM_DIAG_MD_DEV; proc++) {
+		local_proc = 1 << proc;
+		if (param->device_mask & (local_proc)) {
+			curr_mode = driver->logging_mode[proc];
+			DIAG_LOG(DIAG_DEBUG_USERSPACE,
+				"request to switch logging from %d mask:%0x to new_mode %d mask:%0x\n",
+				curr_mode, driver->md_session_mask[proc],
+				new_mode, peripheral_mask);
+
+			err = diag_md_session_check(proc, curr_mode, new_mode,
+							param, &do_switch);
+			if (err) {
+				DIAG_LOG(DIAG_DEBUG_USERSPACE,
+					"err from diag_md_session_check, err: %d\n",
+					err);
+				return err;
+			}
+
+			if (do_switch == 0) {
+				DIAG_LOG(DIAG_DEBUG_USERSPACE,
+					 "not switching modes c: %d n: %d\n",
+					curr_mode, new_mode);
+				continue;
+			}
+
+			diag_ws_reset(DIAG_WS_MUX);
+			err = diag_mux_switch_logging(proc, &new_mode,
+					&peripheral_mask);
+			if (err) {
+				pr_err("diag: In %s, unable to switch mode from %d to %d, err: %d\n",
+				 __func__, curr_mode, new_mode, err);
+				driver->logging_mode[proc] = curr_mode;
+				goto fail;
+			}
+			driver->logging_mode[proc] = new_mode;
+			driver->logging_mask[proc] = peripheral_mask;
+			if (((curr_mode == DIAG_PCIE_MODE &&
+				new_mode == DIAG_USB_MODE) ||
+				(curr_mode == DIAG_USB_MODE &&
+				new_mode == DIAG_PCIE_MODE)) &&
+				!driver->pcie_switch_pid) {
+				/*
+				 * Store the pid of process affecting switch
+				 * from USB to PCIE or vice versa to help
+				 * close only this process while closing
+				 * logging process.
+				 */
+				driver->pcie_switch_pid = current->tgid;
+			}
+			if (new_mode == DIAG_PCIE_MODE) {
+				driver->transport_set =
+					DIAG_ROUTE_TO_PCIE;
+				diagmem_setsize(POOL_TYPE_MUX_APPS,
+					itemsize_pcie_apps,
+					(poolsize_pcie_apps + 1 +
+						(NUM_PERIPHERALS * 6)));
+			} else if (new_mode == DIAG_USB_MODE) {
+				driver->transport_set =
+					DIAG_ROUTE_TO_USB;
+				diagmem_setsize(POOL_TYPE_MUX_APPS,
+					itemsize_usb_apps,
+					(poolsize_usb_apps + 1 +
+						(NUM_PERIPHERALS * 6)));
+			}
+			DIAG_LOG(DIAG_DEBUG_USERSPACE,
+				"Switch logging to %d mask:%0x\n", new_mode,
+				peripheral_mask);
+
+			/* Update to take peripheral_mask */
+			if (new_mode != DIAG_MEMORY_DEVICE_MODE &&
+				new_mode != DIAG_MULTI_MODE) {
+				diag_update_real_time_vote(
+					DIAG_PROC_MEMORY_DEVICE,
+					MODE_REALTIME, ALL_PROC);
+			} else {
+				diag_update_proc_vote(DIAG_PROC_MEMORY_DEVICE,
+							VOTE_UP,
+						      ALL_PROC);
+			}
+
+			if (!((new_mode == DIAG_MEMORY_DEVICE_MODE ||
+				new_mode == DIAG_MULTI_MODE) &&
+				(curr_mode == DIAG_USB_MODE ||
+				curr_mode == DIAG_PCIE_MODE))) {
+				queue_work(driver->diag_real_time_wq,
+					&driver->diag_real_time_work);
+			}
+		}
+		peripheral_mask =
+			diag_translate_mask(param->peripheral_mask);
+	}
+
+	return 0;
+fail:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -2063,9 +2402,12 @@ static int diag_ioctl_lsm_deinit(void)
 	if (!(driver->data_ready[i] & DEINIT_TYPE)) {
 		driver->data_ready[i] |= DEINIT_TYPE;
 		atomic_inc(&driver->data_ready_notif[i]);
+<<<<<<< HEAD
 		DIAG_LOG(DIAG_DEBUG_USERSPACE,
 			"Setting DEINIT_TYPE for pid: %d\n",
 			current->tgid);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&driver->diagchar_mutex);
 	wake_up_interruptible(&driver->wait_q);
@@ -2277,7 +2619,11 @@ static int diag_ioctl_hdlc_toggle(unsigned long ioarg)
 	peripheral =
 		diag_md_session_match_pid_peripheral(DIAG_LOCAL_PROC,
 							current->tgid,
+<<<<<<< HEAD
 		0);
+=======
+							0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < NUM_MD_SESSIONS; i++) {
 		if (peripheral > 0 && session_info) {
 			if (peripheral & (1 << i))
@@ -2404,8 +2750,11 @@ int diag_query_pd(char *process_name)
 		return UPD_AUDIO;
 	if (diag_query_pd_name(process_name, "sensor_pd"))
 		return UPD_SENSORS;
+<<<<<<< HEAD
 	if (diag_query_pd_name(process_name, "charger_pd"))
 		return UPD_CHARGER;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return -EINVAL;
 }
@@ -2468,6 +2817,7 @@ static int diag_ioctl_query_pd_logging(struct diag_logging_mode_param_t *param)
 	mutex_unlock(&driver->diag_cntl_mutex);
 	return ret;
 }
+<<<<<<< HEAD
 
 void diag_map_index_to_hw_accel(uint8_t index,
 	uint8_t *hw_accel_type, uint8_t *hw_accel_ver)
@@ -2551,6 +2901,8 @@ static int diag_ioctl_passthru_control_func(
 	return diag_send_passthru_ctrl_pkt(req_params);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void diag_query_session_pid(struct diag_query_pid_t *param)
 {
 	int prev_pid = 0, test_pid = 0, i = 0, count = 0;
@@ -2558,7 +2910,11 @@ static void diag_query_session_pid(struct diag_query_pid_t *param)
 	int proc = 0;
 
 	for (proc = 0; proc < NUM_DIAG_MD_DEV; proc++) {
+<<<<<<< HEAD
 		local_proc = 1<<proc;
+=======
+		local_proc = 1 << proc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (param->device_mask & (local_proc)) {
 			for (i = 0; i <= NUM_PERIPHERALS; i++) {
 				if (driver->md_session_map[proc][i]) {
@@ -2569,7 +2925,11 @@ static void diag_query_session_pid(struct diag_query_pid_t *param)
 						prev_pid = test_pid;
 					if (test_pid != prev_pid) {
 						DIAG_LOG(DIAG_DEBUG_USERSPACE,
+<<<<<<< HEAD
 						"diag: One of the peripherals is being logged already\n");
+=======
+							"diag: One of the peripherals is being logged already\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						param->pid = -EINVAL;
 					}
 				}
@@ -2741,6 +3101,7 @@ static int diag_ioctl_cmd_dereg(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static long diagchar_ioctl_init(struct file *filp,
 			   unsigned int iocmd, unsigned long ioarg)
 {
@@ -2761,6 +3122,58 @@ static long diagchar_ioctl_init(struct file *filp,
 		result = diag_switch_logging(&mode_param);
 		mutex_unlock(&driver->diagchar_mutex);
 		break;
+=======
+#ifdef CONFIG_COMPAT
+/*
+ * @sync_obj_name: name of the synchronization object associated with this proc
+ * @count: number of entries in the bind
+ * @params: the actual packet registrations
+ */
+struct diag_cmd_reg_tbl_compat_t {
+	char sync_obj_name[MAX_SYNC_OBJ_NAME_SIZE];
+	uint32_t count;
+	compat_uptr_t entries;
+};
+
+static int diag_ioctl_cmd_reg_compat(unsigned long ioarg)
+{
+	struct diag_cmd_reg_tbl_compat_t reg_tbl_compat;
+	struct diag_cmd_reg_tbl_t reg_tbl;
+
+	if (copy_from_user(&reg_tbl_compat, (void __user *)ioarg,
+			   sizeof(struct diag_cmd_reg_tbl_compat_t))) {
+		return -EFAULT;
+	}
+
+	strlcpy(reg_tbl.sync_obj_name, reg_tbl_compat.sync_obj_name,
+		MAX_SYNC_OBJ_NAME_SIZE);
+	reg_tbl.count = reg_tbl_compat.count;
+	reg_tbl.entries = (struct diag_cmd_reg_entry_t *)
+			  (uintptr_t)reg_tbl_compat.entries;
+
+	return diag_cmd_register_tbl(&reg_tbl);
+}
+
+long diagchar_compat_ioctl(struct file *filp,
+			   unsigned int iocmd, unsigned long ioarg)
+{
+	int result = -EINVAL;
+	int client_id = 0;
+	uint16_t delayed_rsp_id = 0;
+	uint16_t remote_dev;
+	struct diag_dci_client_tbl *dci_client = NULL;
+	struct diag_logging_mode_param_t mode_param;
+	struct diag_con_all_param_t con_param;
+	struct diag_query_pid_t pid_query;
+
+	switch (iocmd) {
+	case DIAG_IOCTL_COMMAND_REG:
+		result = diag_ioctl_cmd_reg_compat(ioarg);
+		break;
+	case DIAG_IOCTL_COMMAND_DEREG:
+		result = diag_ioctl_cmd_dereg();
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_IOCTL_GET_DELAYED_RSP_ID:
 		delayed_rsp_id = diag_get_next_delayed_rsp_id();
 		if (copy_to_user((void __user *)ioarg, &delayed_rsp_id,
@@ -2769,6 +3182,7 @@ static long diagchar_ioctl_init(struct file *filp,
 		else
 			result = 0;
 		break;
+<<<<<<< HEAD
 	case DIAG_IOCTL_LSM_DEINIT:
 		result = diag_ioctl_lsm_deinit();
 		break;
@@ -2783,6 +3197,8 @@ static long diagchar_ioctl_dci(struct file *filp,
 	struct diag_dci_client_tbl *dci_client = NULL;
 
 	switch (iocmd) {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_IOCTL_DCI_REG:
 		result = diag_ioctl_dci_reg(ioarg);
 		break;
@@ -2839,6 +3255,7 @@ static long diagchar_ioctl_dci(struct file *filp,
 		result = diag_dci_clear_event_mask(client_id);
 		mutex_unlock(&driver->dci_mutex);
 		break;
+<<<<<<< HEAD
 	}
 	return result;
 }
@@ -2849,6 +3266,28 @@ static long diagchar_ioctl_buffering(struct file *filp,
 	int result = -EINVAL;
 
 	switch (iocmd) {
+=======
+	case DIAG_IOCTL_LSM_DEINIT:
+		result = diag_ioctl_lsm_deinit();
+		break;
+	case DIAG_IOCTL_SWITCH_LOGGING:
+		if (copy_from_user((void *)&mode_param, (void __user *)ioarg,
+				   sizeof(mode_param)))
+			return -EFAULT;
+		diag_switch_logging_clear_mask(&mode_param, current->tgid);
+		mutex_lock(&driver->diagchar_mutex);
+		result = diag_switch_logging(&mode_param);
+		mutex_unlock(&driver->diagchar_mutex);
+		break;
+	case DIAG_IOCTL_REMOTE_DEV:
+		remote_dev = diag_get_remote_device_mask();
+		if (copy_to_user((void __user *)ioarg, &remote_dev,
+			sizeof(uint16_t)))
+			result = -EFAULT;
+		else
+			result = 1;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_IOCTL_VOTE_REAL_TIME:
 		mutex_lock(&driver->dci_mutex);
 		result = diag_ioctl_vote_real_time(ioarg);
@@ -2863,6 +3302,7 @@ static long diagchar_ioctl_buffering(struct file *filp,
 	case DIAG_IOCTL_PERIPHERAL_BUF_DRAIN:
 		result = diag_ioctl_peripheral_drain_immediate(ioarg);
 		break;
+<<<<<<< HEAD
 	}
 	return result;
 }
@@ -2889,12 +3329,15 @@ static long diagchar_ioctl_misc(struct file *filp,
 	int result = -EINVAL;
 
 	switch (iocmd) {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_IOCTL_REGISTER_CALLBACK:
 		result = diag_ioctl_register_callback(ioarg);
 		break;
 	case DIAG_IOCTL_HDLC_TOGGLE:
 		result = diag_ioctl_hdlc_toggle(ioarg);
 		break;
+<<<<<<< HEAD
 	}
 	return result;
 }
@@ -2908,6 +3351,8 @@ static long diagchar_ioctl_mdlog(struct file *filp,
 	struct diag_query_pid_t pid_query;
 
 	switch (iocmd) {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case DIAG_IOCTL_QUERY_PD_LOGGING:
 		if (copy_from_user((void *)&mode_param, (void __user *)ioarg,
 				   sizeof(mode_param)))
@@ -2943,6 +3388,7 @@ static long diagchar_ioctl_mdlog(struct file *filp,
 	}
 	return result;
 }
+<<<<<<< HEAD
 
 static long diagchar_ioctl_hw_accel(struct file *filp,
 			   unsigned int iocmd, unsigned long ioarg)
@@ -3054,12 +3500,15 @@ long diagchar_compat_ioctl(struct file *filp,
 	}
 	return result;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 long diagchar_ioctl(struct file *filp,
 			   unsigned int iocmd, unsigned long ioarg)
 {
 	int result = -EINVAL;
+<<<<<<< HEAD
 
 	if (iocmd == DIAG_IOCTL_COMMAND_REG) {
 		result = diag_ioctl_cmd_reg(ioarg);
@@ -3085,6 +3534,160 @@ long diagchar_ioctl(struct file *filp,
 		result = diagchar_ioctl_hw_accel(filp, iocmd, ioarg);
 	} else {
 		result = -EINVAL;
+=======
+	int client_id = 0;
+	uint16_t delayed_rsp_id;
+	uint16_t remote_dev;
+	struct diag_dci_client_tbl *dci_client = NULL;
+	struct diag_logging_mode_param_t mode_param;
+	struct diag_con_all_param_t con_param;
+	struct diag_query_pid_t pid_query;
+
+	switch (iocmd) {
+	case DIAG_IOCTL_COMMAND_REG:
+		result = diag_ioctl_cmd_reg(ioarg);
+		break;
+	case DIAG_IOCTL_COMMAND_DEREG:
+		result = diag_ioctl_cmd_dereg();
+		break;
+	case DIAG_IOCTL_GET_DELAYED_RSP_ID:
+		delayed_rsp_id = diag_get_next_delayed_rsp_id();
+		if (copy_to_user((void __user *)ioarg, &delayed_rsp_id,
+				 sizeof(uint16_t)))
+			result = -EFAULT;
+		else
+			result = 0;
+		break;
+	case DIAG_IOCTL_DCI_REG:
+		result = diag_ioctl_dci_reg(ioarg);
+		break;
+	case DIAG_IOCTL_DCI_DEINIT:
+		mutex_lock(&driver->dci_mutex);
+		if (copy_from_user((void *)&client_id, (void __user *)ioarg,
+			sizeof(int))) {
+			mutex_unlock(&driver->dci_mutex);
+			return -EFAULT;
+		}
+		dci_client = diag_dci_get_client_entry(client_id);
+		if (!dci_client) {
+			mutex_unlock(&driver->dci_mutex);
+			return DIAG_DCI_NOT_SUPPORTED;
+		}
+		result = diag_dci_deinit_client(dci_client);
+		mutex_unlock(&driver->dci_mutex);
+		break;
+	case DIAG_IOCTL_DCI_SUPPORT:
+		result = diag_ioctl_dci_support(ioarg);
+		break;
+	case DIAG_IOCTL_DCI_HEALTH_STATS:
+		mutex_lock(&driver->dci_mutex);
+		result = diag_ioctl_dci_health_stats(ioarg);
+		mutex_unlock(&driver->dci_mutex);
+		break;
+	case DIAG_IOCTL_DCI_LOG_STATUS:
+		mutex_lock(&driver->dci_mutex);
+		result = diag_ioctl_dci_log_status(ioarg);
+		mutex_unlock(&driver->dci_mutex);
+		break;
+	case DIAG_IOCTL_DCI_EVENT_STATUS:
+		mutex_lock(&driver->dci_mutex);
+		result = diag_ioctl_dci_event_status(ioarg);
+		mutex_unlock(&driver->dci_mutex);
+		break;
+	case DIAG_IOCTL_DCI_CLEAR_LOGS:
+		mutex_lock(&driver->dci_mutex);
+		if (copy_from_user((void *)&client_id, (void __user *)ioarg,
+			sizeof(int))) {
+			mutex_unlock(&driver->dci_mutex);
+			return -EFAULT;
+		}
+		result = diag_dci_clear_log_mask(client_id);
+		mutex_unlock(&driver->dci_mutex);
+		break;
+	case DIAG_IOCTL_DCI_CLEAR_EVENTS:
+		mutex_lock(&driver->dci_mutex);
+		if (copy_from_user(&client_id, (void __user *)ioarg,
+			sizeof(int))) {
+			mutex_unlock(&driver->dci_mutex);
+			return -EFAULT;
+		}
+		result = diag_dci_clear_event_mask(client_id);
+		mutex_unlock(&driver->dci_mutex);
+		break;
+	case DIAG_IOCTL_LSM_DEINIT:
+		result = diag_ioctl_lsm_deinit();
+		break;
+	case DIAG_IOCTL_SWITCH_LOGGING:
+		if (copy_from_user((void *)&mode_param, (void __user *)ioarg,
+				   sizeof(mode_param)))
+			return -EFAULT;
+		diag_switch_logging_clear_mask(&mode_param, current->tgid);
+		mutex_lock(&driver->diagchar_mutex);
+		result = diag_switch_logging(&mode_param);
+		mutex_unlock(&driver->diagchar_mutex);
+		break;
+	case DIAG_IOCTL_REMOTE_DEV:
+		remote_dev = diag_get_remote_device_mask();
+		if (copy_to_user((void __user *)ioarg, &remote_dev,
+			sizeof(uint16_t)))
+			result = -EFAULT;
+		else
+			result = 1;
+		break;
+	case DIAG_IOCTL_VOTE_REAL_TIME:
+		mutex_lock(&driver->dci_mutex);
+		result = diag_ioctl_vote_real_time(ioarg);
+		mutex_unlock(&driver->dci_mutex);
+		break;
+	case DIAG_IOCTL_GET_REAL_TIME:
+		result = diag_ioctl_get_real_time(ioarg);
+		break;
+	case DIAG_IOCTL_PERIPHERAL_BUF_CONFIG:
+		result = diag_ioctl_set_buffering_mode(ioarg);
+		break;
+	case DIAG_IOCTL_PERIPHERAL_BUF_DRAIN:
+		result = diag_ioctl_peripheral_drain_immediate(ioarg);
+		break;
+	case DIAG_IOCTL_REGISTER_CALLBACK:
+		result = diag_ioctl_register_callback(ioarg);
+		break;
+	case DIAG_IOCTL_HDLC_TOGGLE:
+		result = diag_ioctl_hdlc_toggle(ioarg);
+		break;
+	case DIAG_IOCTL_QUERY_PD_LOGGING:
+		if (copy_from_user((void *)&mode_param, (void __user *)ioarg,
+				   sizeof(mode_param)))
+			return -EFAULT;
+		result = diag_ioctl_query_pd_logging(&mode_param);
+		break;
+	case DIAG_IOCTL_QUERY_CON_ALL:
+		con_param.diag_con_all = DIAG_CON_ALL;
+		con_param.num_peripherals = NUM_PERIPHERALS;
+		con_param.upd_map_supported = 1;
+		if (copy_to_user((void __user *)ioarg, &con_param,
+				sizeof(struct diag_con_all_param_t)))
+			result = -EFAULT;
+		else
+			result = 0;
+		break;
+	case DIAG_IOCTL_QUERY_MD_PID:
+		if (copy_from_user((void *)&pid_query, (void __user *)ioarg,
+				   sizeof(pid_query))) {
+			result = -EFAULT;
+			break;
+		}
+
+		mutex_lock(&driver->md_session_lock);
+		diag_ioctl_query_session_pid(&pid_query);
+		mutex_unlock(&driver->md_session_lock);
+
+		if (copy_to_user((void __user *)ioarg, &pid_query,
+				sizeof(pid_query)))
+			result = -EFAULT;
+		else
+			result = 0;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return result;
 }
@@ -3519,7 +4122,11 @@ static int diag_user_process_userspace_data(const char __user *buf, int len)
 	remote_proc = diag_get_remote(*(int *)driver->user_space_data_buf);
 	if (remote_proc) {
 		if (len <= MIN_SIZ_ALLOW) {
+<<<<<<< HEAD
 			pr_err("diag: Integer underflow in %s, payload size: %d\n",
+=======
+			pr_err("diag: Integer underflow in %s, payload size: %d",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       __func__, len);
 			return -EBADMSG;
 		}
@@ -3541,7 +4148,11 @@ static int diag_user_process_userspace_data(const char __user *buf, int len)
 		mutex_lock(&driver->md_session_lock);
 		session_info = diag_md_session_get_pid(current->tgid);
 		if (!session_info) {
+<<<<<<< HEAD
 			pr_err("diag:In %s request came from invalid md session pid:%d\n",
+=======
+			pr_err("diag:In %s request came from invalid md session pid:%d",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				__func__, current->tgid);
 			mutex_unlock(&driver->md_session_lock);
 			return -EINVAL;
@@ -3684,7 +4295,11 @@ static ssize_t diagchar_read(struct file *file, char __user *buf, size_t count,
 	mutex_unlock(&driver->diagchar_mutex);
 
 	if (index == -1) {
+<<<<<<< HEAD
 		pr_err("diag: Client PID not found in table\n");
+=======
+		pr_err("diag: Client PID not found in table");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	if (!buf) {
@@ -3718,8 +4333,13 @@ static ssize_t diagchar_read(struct file *file, char __user *buf, size_t count,
 				session_info =
 					diag_md_session_get_pid(current->tgid);
 				exit_stat = diag_md_copy_to_user(buf, &ret,
+<<<<<<< HEAD
 							count,
 						 session_info);
+=======
+								count,
+								session_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				mutex_unlock(&driver->md_session_lock);
 				goto exit;
 			}
@@ -3760,9 +4380,12 @@ static ssize_t diagchar_read(struct file *file, char __user *buf, size_t count,
 		COPY_USER_SPACE_OR_ERR(buf, data_type, 4);
 		if (ret == -EFAULT)
 			goto exit;
+<<<<<<< HEAD
 		DIAG_LOG(DIAG_DEBUG_USERSPACE,
 			"Copied DEINIT_TYPE pkt current->tgid: %d\n",
 			current->tgid);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		driver->data_ready[index] ^= DEINIT_TYPE;
 		atomic_dec(&driver->data_ready_notif[index]);
 		mutex_unlock(&driver->diagchar_mutex);
@@ -4048,7 +4671,11 @@ static ssize_t diagchar_write(struct file *file, const char __user *buf,
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	err = copy_from_user(&token, buf+4, sizeof(int));
+=======
+	err = copy_from_user(&token, buf + 4, sizeof(int));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("diag: copy failed for user space data\n");
 		return -EIO;
@@ -4057,9 +4684,16 @@ static ssize_t diagchar_write(struct file *file, const char __user *buf,
 		token = diag_get_remote(token);
 	else
 		token = 0;
+<<<<<<< HEAD
 
 	if (driver->logging_mode[token] == DIAG_USB_MODE &&
 		!driver->usb_connected) {
+=======
+	if ((driver->logging_mode[token] == DIAG_USB_MODE &&
+		!driver->usb_connected) ||
+		(driver->logging_mode[token] == DIAG_PCIE_MODE &&
+		!driver->pcie_connected)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!((pkt_type == DCI_DATA_TYPE) ||
 		    (pkt_type == DCI_PKT_TYPE) ||
 		    (pkt_type & DATA_TYPE_DCI_LOG) ||
@@ -4097,9 +4731,18 @@ static ssize_t diagchar_write(struct file *file, const char __user *buf,
 		 * stream. If USB is not connected and we are not in memory
 		 * device mode, we should not process these logs/events.
 		 */
+<<<<<<< HEAD
 		if (pkt_type && driver->logging_mode[DIAG_LOCAL_PROC] ==
 			DIAG_USB_MODE &&
 		    !driver->usb_connected)
+=======
+		if (pkt_type && ((driver->logging_mode[DIAG_LOCAL_PROC] ==
+			DIAG_USB_MODE &&
+			!driver->usb_connected)  ||
+			(driver->logging_mode[DIAG_LOCAL_PROC] ==
+			DIAG_PCIE_MODE &&
+			!driver->pcie_connected)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return err;
 	}
 
@@ -4379,7 +5022,12 @@ static int diagchar_setup_cdev(dev_t devno)
 	if (!driver->diag_dev)
 		return -EIO;
 
+<<<<<<< HEAD
 	driver->diag_dev->power.wakeup = wakeup_source_register("DIAG_WS");
+=======
+	driver->diag_dev->power.wakeup = wakeup_source_register(driver->diag_dev,
+								"DIAG_WS");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 }
@@ -4401,11 +5049,56 @@ static int diagchar_cleanup(void)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DIAG_OVER_PCIE
+static void diag_init_transport(void)
+{
+	int proc;
+
+	driver->transport_set = DIAG_ROUTE_TO_PCIE;
+	driver->pcie_transport_def = DIAG_ROUTE_TO_PCIE;
+	for (proc = 0; proc < NUM_DIAG_MD_DEV; proc++)
+		driver->logging_mode[proc] = DIAG_PCIE_MODE;
+	/*
+	 * POOL_TYPE_MUX_APPS is for the buffers in the Diag MUX layer.
+	 * The number of buffers encompasses Diag data generated on
+	 * the Apss processor + 1 for the responses generated
+	 * exclusively on the Apps processor + data from data channels
+	 *(4 channels per peripheral) + data from command channels (2)
+	 */
+	diagmem_setsize(POOL_TYPE_MUX_APPS, itemsize_pcie_apps,
+		poolsize_pcie_apps + 1 + (NUM_PERIPHERALS * 6));
+}
+#else
+static void diag_init_transport(void)
+{
+	int proc;
+
+	driver->transport_set = DIAG_ROUTE_TO_USB;
+	driver->pcie_transport_def = DIAG_ROUTE_TO_USB;
+	for (proc = 0; proc < NUM_DIAG_MD_DEV; proc++)
+		driver->logging_mode[proc] = DIAG_USB_MODE;
+	/*
+	 * POOL_TYPE_MUX_APPS is for the buffers in the Diag MUX layer.
+	 * The number of buffers encompasses Diag data generated on
+	 * the Apss processor + 1 for the responses generated
+	 * exclusively on the Apps processor + data from data channels
+	 *(4 channels per peripheral) + data from command channels (2)
+	 */
+	diagmem_setsize(POOL_TYPE_MUX_APPS, itemsize_usb_apps,
+		poolsize_usb_apps + 1 + (NUM_PERIPHERALS * 6));
+}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init diagchar_init(void)
 {
 	dev_t dev;
 	int ret, i;
+<<<<<<< HEAD
 	int proc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("diagfwd initializing ..\n");
 	ret = 0;
@@ -4415,10 +5108,20 @@ static int __init diagchar_init(void)
 	kmemleak_not_leak(driver);
 
 	timer_in_progress = 0;
+<<<<<<< HEAD
 	driver->delayed_rsp_id = 0;
 	driver->hdlc_disabled = 0;
 	driver->dci_state = DIAG_DCI_NO_ERROR;
 	timer_setup(&drain_timer, drain_timer_func, 0);
+=======
+	diag_init_transport();
+	DIAG_LOG(DIAG_DEBUG_MUX, "Transport type set to %d\n",
+		driver->transport_set);
+	driver->delayed_rsp_id = 0;
+	driver->hdlc_disabled = 0;
+	driver->dci_state = DIAG_DCI_NO_ERROR;
+	setup_timer(&drain_timer, drain_timer_func, 1234);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	driver->supports_sockets = 1;
 	driver->time_sync_enabled = 0;
 	driver->uses_time_api = 0;
@@ -4426,6 +5129,7 @@ static int __init diagchar_init(void)
 	driver->poolsize_hdlc = poolsize_hdlc;
 	driver->poolsize_dci = poolsize_dci;
 	driver->poolsize_user = poolsize_user;
+<<<<<<< HEAD
 	/*
 	 * POOL_TYPE_MUX_APPS is for the buffers in the Diag MUX layer.
 	 * The number of buffers encompasses Diag data generated on
@@ -4438,6 +5142,9 @@ static int __init diagchar_init(void)
 	driver->num_clients = max_clients;
 	for (proc = 0; proc < NUM_DIAG_MD_DEV; proc++)
 		driver->logging_mode[proc] = DIAG_USB_MODE;
+=======
+	driver->num_clients = max_clients;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < NUM_UPD; i++) {
 		driver->pd_logging_mode[i] = 0;
 		driver->pd_session_clear[i] = 0;
@@ -4446,6 +5153,10 @@ static int __init diagchar_init(void)
 	driver->mask_check = 0;
 	driver->in_busy_pktdata = 0;
 	driver->in_busy_dcipktdata = 0;
+<<<<<<< HEAD
+=======
+	driver->pcie_switch_pid = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	driver->rsp_buf_ctxt = SET_BUF_CTXT(APPS_DATA, TYPE_CMD, TYPE_CMD);
 	hdlc_data.ctxt = SET_BUF_CTXT(APPS_DATA, TYPE_DATA, 1);
 	hdlc_data.ctxt |= SET_HDLC_CTXT(HDLC_CTXT);
@@ -4460,7 +5171,10 @@ static int __init diagchar_init(void)
 	mutex_init(&driver->hdlc_disable_mutex);
 	mutex_init(&driver->diagchar_mutex);
 	mutex_init(&driver->diag_notifier_mutex);
+<<<<<<< HEAD
 	mutex_init(&driver->diagid_v2_mutex);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&driver->diag_file_mutex);
 	mutex_init(&driver->delayed_rsp_mutex);
 	mutex_init(&apps_data_mutex);
@@ -4540,10 +5254,16 @@ static int __init diagchar_init(void)
 	mutex_init(&driver->diag_id_mutex);
 	INIT_LIST_HEAD(&driver->diag_id_list);
 	diag_add_diag_id_to_list(DIAG_ID_APPS, "APPS", APPS_DATA, APPS_DATA);
+<<<<<<< HEAD
 	pr_debug("diagchar initialized now\n");
 	#ifdef CONFIG_DIAGFWD_BRIDGE_CODE
 	diag_register_with_mhi();
 	#endif
+=======
+	pr_debug("diagchar initialized now");
+	if (IS_ENABLED(CONFIG_DIAGFWD_BRIDGE_CODE))
+		diag_register_with_bridge();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 fail:
@@ -4552,12 +5272,18 @@ fail:
 	diagchar_cleanup();
 	diag_mux_exit();
 	diagfwd_peripheral_exit();
+<<<<<<< HEAD
 	diagfwd_bridge_exit();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	diagfwd_exit();
 	diagfwd_cntl_exit();
 	diag_dci_exit();
 	diag_masks_exit();
+<<<<<<< HEAD
 	diag_remote_exit();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 
 }
@@ -4573,7 +5299,12 @@ static void diagchar_exit(void)
 	diag_dci_exit();
 	diag_masks_exit();
 	diag_md_session_exit();
+<<<<<<< HEAD
 	diag_remote_exit();
+=======
+	if (IS_ENABLED(CONFIG_DIAGFWD_BRIDGE_CODE))
+		diag_unregister_bridge();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	diag_debugfs_cleanup();
 	diagchar_cleanup();
 	pr_info("done diagchar exit\n");

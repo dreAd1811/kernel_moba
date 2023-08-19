@@ -430,6 +430,7 @@ void update_vsyscall_tz(void)
 {
 }
 
+<<<<<<< HEAD
 void update_vsyscall(struct timekeeper *tk)
 {
 	write_seqcount_begin(&fsyscall_gtod_data.seq);
@@ -456,6 +457,32 @@ void update_vsyscall(struct timekeeper *tk)
 		fsyscall_gtod_data.monotonic_time.snsec -=
 					((u64)NSEC_PER_SEC) << tk->tkr_mono.shift;
 		fsyscall_gtod_data.monotonic_time.sec++;
+=======
+void update_vsyscall_old(struct timespec *wall, struct timespec *wtm,
+			 struct clocksource *c, u32 mult, u64 cycle_last)
+{
+	write_seqcount_begin(&fsyscall_gtod_data.seq);
+
+        /* copy fsyscall clock data */
+        fsyscall_gtod_data.clk_mask = c->mask;
+        fsyscall_gtod_data.clk_mult = mult;
+        fsyscall_gtod_data.clk_shift = c->shift;
+        fsyscall_gtod_data.clk_fsys_mmio = c->archdata.fsys_mmio;
+        fsyscall_gtod_data.clk_cycle_last = cycle_last;
+
+	/* copy kernel time structures */
+        fsyscall_gtod_data.wall_time.tv_sec = wall->tv_sec;
+        fsyscall_gtod_data.wall_time.tv_nsec = wall->tv_nsec;
+	fsyscall_gtod_data.monotonic_time.tv_sec = wtm->tv_sec
+							+ wall->tv_sec;
+	fsyscall_gtod_data.monotonic_time.tv_nsec = wtm->tv_nsec
+							+ wall->tv_nsec;
+
+	/* normalize */
+	while (fsyscall_gtod_data.monotonic_time.tv_nsec >= NSEC_PER_SEC) {
+		fsyscall_gtod_data.monotonic_time.tv_nsec -= NSEC_PER_SEC;
+		fsyscall_gtod_data.monotonic_time.tv_sec++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	write_seqcount_end(&fsyscall_gtod_data.seq);

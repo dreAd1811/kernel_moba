@@ -54,7 +54,11 @@ error:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void uvc_input_unregister(struct uvc_device *dev)
+=======
+static void uvc_input_cleanup(struct uvc_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (dev->input)
 		input_unregister_device(dev->input);
@@ -71,13 +75,18 @@ static void uvc_input_report_key(struct uvc_device *dev, unsigned int code,
 
 #else
 #define uvc_input_init(dev)
+<<<<<<< HEAD
 #define uvc_input_unregister(dev)
+=======
+#define uvc_input_cleanup(dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define uvc_input_report_key(dev, code, value)
 #endif /* CONFIG_USB_VIDEO_CLASS_INPUT_EVDEV */
 
 /* --------------------------------------------------------------------------
  * Status interrupt endpoint
  */
+<<<<<<< HEAD
 struct uvc_streaming_status {
 	u8	bStatusType;
 	u8	bOriginator;
@@ -96,6 +105,9 @@ struct uvc_control_status {
 
 static void uvc_event_streaming(struct uvc_device *dev,
 				struct uvc_streaming_status *status, int len)
+=======
+static void uvc_event_streaming(struct uvc_device *dev, __u8 *data, int len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (len < 3) {
 		uvc_trace(UVC_TRACE_STATUS, "Invalid streaming status event "
@@ -103,6 +115,7 @@ static void uvc_event_streaming(struct uvc_device *dev,
 		return;
 	}
 
+<<<<<<< HEAD
 	if (status->bEvent == 0) {
 		if (len < 4)
 			return;
@@ -194,6 +207,32 @@ static bool uvc_event_control(struct urb *urb,
 	}
 
 	return false;
+=======
+	if (data[2] == 0) {
+		if (len < 4)
+			return;
+		uvc_trace(UVC_TRACE_STATUS, "Button (intf %u) %s len %d\n",
+			data[1], data[3] ? "pressed" : "released", len);
+		uvc_input_report_key(dev, KEY_CAMERA, data[3]);
+	} else {
+		uvc_trace(UVC_TRACE_STATUS, "Stream %u error event %02x %02x "
+			"len %d.\n", data[1], data[2], data[3], len);
+	}
+}
+
+static void uvc_event_control(struct uvc_device *dev, __u8 *data, int len)
+{
+	char *attrs[3] = { "value", "info", "failure" };
+
+	if (len < 6 || data[2] != 0 || data[4] > 2) {
+		uvc_trace(UVC_TRACE_STATUS, "Invalid control status event "
+				"received.\n");
+		return;
+	}
+
+	uvc_trace(UVC_TRACE_STATUS, "Control %u/%u %s change len %d.\n",
+		data[1], data[3], attrs[data[4]], len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void uvc_status_complete(struct urb *urb)
@@ -221,6 +260,7 @@ static void uvc_status_complete(struct urb *urb)
 	len = urb->actual_length;
 	if (len > 0) {
 		switch (dev->status[0] & 0x0f) {
+<<<<<<< HEAD
 		case UVC_STATUS_TYPE_CONTROL: {
 			struct uvc_control_status *status =
 				(struct uvc_control_status *)dev->status;
@@ -238,6 +278,15 @@ static void uvc_status_complete(struct urb *urb)
 			uvc_event_streaming(dev, status, len);
 			break;
 		}
+=======
+		case UVC_STATUS_TYPE_CONTROL:
+			uvc_event_control(dev, dev->status, len);
+			break;
+
+		case UVC_STATUS_TYPE_STREAMING:
+			uvc_event_streaming(dev, dev->status, len);
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		default:
 			uvc_trace(UVC_TRACE_STATUS, "Unknown status event "
@@ -292,6 +341,7 @@ int uvc_status_init(struct uvc_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 void uvc_status_unregister(struct uvc_device *dev)
 {
 	usb_kill_urb(dev->int_urb);
@@ -302,6 +352,14 @@ void uvc_status_cleanup(struct uvc_device *dev)
 {
 	usb_free_urb(dev->int_urb);
 	kfree(dev->status);
+=======
+void uvc_status_cleanup(struct uvc_device *dev)
+{
+	usb_kill_urb(dev->int_urb);
+	usb_free_urb(dev->int_urb);
+	kfree(dev->status);
+	uvc_input_cleanup(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int uvc_status_start(struct uvc_device *dev, gfp_t flags)

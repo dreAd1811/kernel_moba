@@ -22,7 +22,11 @@
 #include <asm/glue-df.h>
 #include <asm/glue-pf.h>
 #include <asm/vfpmacros.h>
+<<<<<<< HEAD
 #ifndef CONFIG_GENERIC_IRQ_MULTI_HANDLER
+=======
+#ifndef CONFIG_MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <mach/entry-macro.S>
 #endif
 #include <asm/thread_notify.h>
@@ -30,6 +34,10 @@
 #include <asm/unistd.h>
 #include <asm/tls.h>
 #include <asm/system_info.h>
+<<<<<<< HEAD
+=======
+#include <asm/uaccess-asm.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "entry-header.S"
 #include <asm/entry-macro-multi.S>
@@ -39,7 +47,11 @@
  * Interrupt handling.
  */
 	.macro	irq_handler
+<<<<<<< HEAD
 #ifdef CONFIG_GENERIC_IRQ_MULTI_HANDLER
+=======
+#ifdef CONFIG_MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ldr	r1, =handle_arch_irq
 	mov	r0, sp
 	badr	lr, 9997f
@@ -82,7 +94,15 @@
 #endif
 	.endm
 
+<<<<<<< HEAD
 	.section	.entry.text,"ax",%progbits
+=======
+#ifdef CONFIG_KPROBES
+	.section	.kprobes.text,"ax",%progbits
+#else
+	.text
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Invalid mode handlers
@@ -182,6 +202,7 @@ ENDPROC(__und_invalid)
 	stmia	r7, {r2 - r6}
 
 	get_thread_info tsk
+<<<<<<< HEAD
 	ldr	r0, [tsk, #TI_ADDR_LIMIT]
 	mov	r1, #TASK_SIZE
 	str	r1, [tsk, #TI_ADDR_LIMIT]
@@ -191,6 +212,9 @@ ENDPROC(__und_invalid)
 	.if \uaccess
 	uaccess_disable r0
 	.endif
+=======
+	uaccess_entry tsk, r0, r1, r2, \uaccess
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.if \trace
 #ifdef CONFIG_TRACE_IRQFLAGS
@@ -791,7 +815,11 @@ ENTRY(__switch_to)
 	ldr	r6, [r2, #TI_CPU_DOMAIN]
 #endif
 	switch_tls r1, r4, r5, r3, r7
+<<<<<<< HEAD
 #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_SMP)
+=======
+#if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ldr	r7, [r2, #TI_TASK]
 	ldr	r8, =__stack_chk_guard
 	.if (TSK_STACK_CANARY > IMM12_MASK)
@@ -807,7 +835,11 @@ ENTRY(__switch_to)
 	ldr	r0, =thread_notify_head
 	mov	r1, #THREAD_NOTIFY_SWITCH
 	bl	atomic_notifier_call_chain
+<<<<<<< HEAD
 #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_SMP)
+=======
+#if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	str	r7, [r8]
 #endif
  THUMB(	mov	ip, r4			   )
@@ -1226,3 +1258,12 @@ vector_addrexcptn:
 	.globl	cr_alignment
 cr_alignment:
 	.space	4
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_MULTI_IRQ_HANDLER
+	.globl	handle_arch_irq
+handle_arch_irq:
+	.space	4
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

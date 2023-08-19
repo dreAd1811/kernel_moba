@@ -32,7 +32,10 @@
 #include <drm/drm_encoder_slave.h>
 #include <drm/drm_dp_mst_helper.h>
 #include "dispnv04/disp.h"
+<<<<<<< HEAD
 struct nv50_head_atom;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NV_DPMS_CLEARED 0x80
 
@@ -69,7 +72,11 @@ struct nouveau_encoder {
 	void (*enc_save)(struct drm_encoder *encoder);
 	void (*enc_restore)(struct drm_encoder *encoder);
 	void (*update)(struct nouveau_encoder *, u8 head,
+<<<<<<< HEAD
 		       struct nv50_head_atom *, u8 proto, u8 depth);
+=======
+		       struct drm_display_mode *, u8 proto, u8 depth);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct nouveau_encoder *

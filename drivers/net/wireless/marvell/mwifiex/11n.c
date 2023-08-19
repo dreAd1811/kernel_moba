@@ -341,6 +341,7 @@ mwifiex_cmd_append_11n_tlv(struct mwifiex_private *priv,
 		       le16_to_cpu(ht_cap->header.len));
 
 		mwifiex_fill_cap_info(priv, radio_type, &ht_cap->ht_cap);
+<<<<<<< HEAD
 		/* Update HT40 capability from current channel information */
 		if (bss_desc->bcn_ht_oper) {
 			u8 ht_param = bss_desc->bcn_ht_oper->ht_param;
@@ -373,6 +374,8 @@ mwifiex_cmd_append_11n_tlv(struct mwifiex_private *priv,
 				break;
 			}
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		*buffer += sizeof(struct mwifiex_ie_types_htcap);
 		ret_len += sizeof(struct mwifiex_ie_types_htcap);
@@ -690,6 +693,15 @@ void mwifiex_11n_delba(struct mwifiex_private *priv, int tid)
 	unsigned long flags;
 
 	spin_lock_irqsave(&priv->rx_reorder_tbl_lock, flags);
+<<<<<<< HEAD
+=======
+	if (list_empty(&priv->rx_reorder_tbl_ptr)) {
+		dev_dbg(priv->adapter->dev,
+			"mwifiex_11n_delba: rx_reorder_tbl_ptr empty\n");
+		goto exit;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(rx_reor_tbl_ptr, &priv->rx_reorder_tbl_ptr, list) {
 		if (rx_reor_tbl_ptr->tid == tid) {
 			dev_dbg(priv->adapter->dev,
@@ -880,6 +892,12 @@ mwifiex_send_delba_txbastream_tbl(struct mwifiex_private *priv, u8 tid)
 	struct mwifiex_adapter *adapter = priv->adapter;
 	struct mwifiex_tx_ba_stream_tbl *tx_ba_stream_tbl_ptr;
 
+<<<<<<< HEAD
+=======
+	if (list_empty(&priv->tx_ba_stream_tbl_ptr))
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(tx_ba_stream_tbl_ptr,
 			    &priv->tx_ba_stream_tbl_ptr, list) {
 		if (tx_ba_stream_tbl_ptr->ba_status == BA_SETUP_COMPLETE) {

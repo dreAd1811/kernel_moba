@@ -137,7 +137,11 @@ static struct crypto_alg *crypto_larval_add(const char *name, u32 type,
 	if (IS_ERR(larval))
 		return ERR_CAST(larval);
 
+<<<<<<< HEAD
 	refcount_set(&larval->alg.cra_refcnt, 2);
+=======
+	atomic_set(&larval->alg.cra_refcnt, 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	down_write(&crypto_alg_sem);
 	alg = __crypto_alg_lookup(name, type, mask);
@@ -193,6 +197,7 @@ static struct crypto_alg *crypto_larval_wait(struct crypto_alg *alg)
 	return alg;
 }
 
+<<<<<<< HEAD
 static struct crypto_alg *crypto_alg_lookup(const char *name, u32 type,
 					    u32 mask)
 {
@@ -212,13 +217,27 @@ static struct crypto_alg *crypto_alg_lookup(const char *name, u32 type,
 			alg = ERR_PTR(-ELIBBAD);
 		}
 	}
+=======
+struct crypto_alg *crypto_alg_lookup(const char *name, u32 type, u32 mask)
+{
+	struct crypto_alg *alg;
+
+	down_read(&crypto_alg_sem);
+	alg = __crypto_alg_lookup(name, type, mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	up_read(&crypto_alg_sem);
 
 	return alg;
 }
+<<<<<<< HEAD
 
 static struct crypto_alg *crypto_larval_lookup(const char *name, u32 type,
 					       u32 mask)
+=======
+EXPORT_SYMBOL_GPL(crypto_alg_lookup);
+
+struct crypto_alg *crypto_larval_lookup(const char *name, u32 type, u32 mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct crypto_alg *alg;
 
@@ -239,6 +258,7 @@ static struct crypto_alg *crypto_larval_lookup(const char *name, u32 type,
 		alg = crypto_alg_lookup(name, type, mask);
 	}
 
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(alg) && crypto_is_larval(alg))
 		alg = crypto_larval_wait(alg);
 	else if (!alg)
@@ -246,6 +266,14 @@ static struct crypto_alg *crypto_larval_lookup(const char *name, u32 type,
 
 	return alg;
 }
+=======
+	if (alg)
+		return crypto_is_larval(alg) ? crypto_larval_wait(alg) : alg;
+
+	return crypto_larval_add(name, type, mask);
+}
+EXPORT_SYMBOL_GPL(crypto_larval_lookup);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int crypto_probing_notify(unsigned long val, void *v)
 {
@@ -267,6 +295,14 @@ struct crypto_alg *crypto_alg_mod_lookup(const char *name, u32 type, u32 mask)
 	struct crypto_alg *larval;
 	int ok;
 
+<<<<<<< HEAD
+=======
+	if (!((type | mask) & CRYPTO_ALG_TESTED)) {
+		type |= CRYPTO_ALG_TESTED;
+		mask |= CRYPTO_ALG_TESTED;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If the internal flag is set for a cipher, require a caller to
 	 * to invoke the cipher with the internal flag to use that cipher.
@@ -349,13 +385,20 @@ static unsigned int crypto_ctxsize(struct crypto_alg *alg, u32 type, u32 mask)
 	return len;
 }
 
+<<<<<<< HEAD
 void crypto_shoot_alg(struct crypto_alg *alg)
+=======
+static void crypto_shoot_alg(struct crypto_alg *alg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	down_write(&crypto_alg_sem);
 	alg->cra_flags |= CRYPTO_ALG_DYING;
 	up_write(&crypto_alg_sem);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(crypto_shoot_alg);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct crypto_tfm *__crypto_alloc_tfm(struct crypto_alg *alg, u32 type,
 				      u32 mask)
@@ -494,14 +537,29 @@ struct crypto_alg *crypto_find_alg(const char *alg_name,
 				   const struct crypto_type *frontend,
 				   u32 type, u32 mask)
 {
+<<<<<<< HEAD
+=======
+	struct crypto_alg *(*lookup)(const char *name, u32 type, u32 mask) =
+		crypto_alg_mod_lookup;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (frontend) {
 		type &= frontend->maskclear;
 		mask &= frontend->maskclear;
 		type |= frontend->type;
 		mask |= frontend->maskset;
+<<<<<<< HEAD
 	}
 
 	return crypto_alg_mod_lookup(alg_name, type, mask);
+=======
+
+		if (frontend->lookup)
+			lookup = frontend->lookup;
+	}
+
+	return lookup(alg_name, type, mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(crypto_find_alg);
 

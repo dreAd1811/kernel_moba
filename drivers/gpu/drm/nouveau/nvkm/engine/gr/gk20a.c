@@ -143,23 +143,40 @@ gk20a_gr_av_to_method(struct gf100_gr *gr, const char *fw_name,
 
 	nent = (fuc.size / sizeof(struct gk20a_fw_av));
 
+<<<<<<< HEAD
 	pack = vzalloc((sizeof(*pack) * max_classes) +
 		       (sizeof(*init) * (nent + 1)));
+=======
+	pack = vzalloc((sizeof(*pack) * (max_classes + 1)) +
+		       (sizeof(*init) * (nent + max_classes + 1)));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pack) {
 		ret = -ENOMEM;
 		goto end;
 	}
 
+<<<<<<< HEAD
 	init = (void *)(pack + max_classes);
 
 	for (i = 0; i < nent; i++) {
 		struct gf100_gr_init *ent = &init[i];
+=======
+	init = (void *)(pack + max_classes + 1);
+
+	for (i = 0; i < nent; i++, init++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct gk20a_fw_av *av = &((struct gk20a_fw_av *)fuc.data)[i];
 		u32 class = av->addr & 0xffff;
 		u32 addr = (av->addr & 0xffff0000) >> 14;
 
 		if (prevclass != class) {
+<<<<<<< HEAD
 			pack[classidx].init = ent;
+=======
+			if (prevclass) /* Add terminator to the method list. */
+				init++;
+			pack[classidx].init = init;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pack[classidx].type = class;
 			prevclass = class;
 			if (++classidx >= max_classes) {
@@ -169,10 +186,17 @@ gk20a_gr_av_to_method(struct gf100_gr *gr, const char *fw_name,
 			}
 		}
 
+<<<<<<< HEAD
 		ent->addr = addr;
 		ent->data = av->data;
 		ent->count = 1;
 		ent->pitch = 1;
+=======
+		init->addr = addr;
+		init->data = av->data;
+		init->count = 1;
+		init->pitch = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	*ppack = pack;
@@ -219,7 +243,15 @@ int
 gk20a_gr_init(struct gf100_gr *gr)
 {
 	struct nvkm_device *device = gr->base.engine.subdev.device;
+<<<<<<< HEAD
 	int ret;
+=======
+	const u32 magicgpc918 = DIV_ROUND_UP(0x00800000, gr->tpc_total);
+	u32 data[TPC_MAX / 8] = {};
+	u8  tpcnr[GPC_MAX];
+	int gpc, tpc;
+	int ret, i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clear SCC RAM */
 	nvkm_wr32(device, 0x40802c, 0x1);
@@ -242,7 +274,35 @@ gk20a_gr_init(struct gf100_gr *gr)
 	nvkm_mask(device, 0x503018, 0x1, 0x1);
 
 	/* Zcull init */
+<<<<<<< HEAD
 	gr->func->init_zcull(gr);
+=======
+	memset(data, 0x00, sizeof(data));
+	memcpy(tpcnr, gr->tpc_nr, sizeof(gr->tpc_nr));
+	for (i = 0, gpc = -1; i < gr->tpc_total; i++) {
+		do {
+			gpc = (gpc + 1) % gr->gpc_nr;
+		} while (!tpcnr[gpc]);
+		tpc = gr->tpc_nr[gpc] - tpcnr[gpc]--;
+
+		data[i / 8] |= tpc << ((i % 8) * 4);
+	}
+
+	nvkm_wr32(device, GPC_BCAST(0x0980), data[0]);
+	nvkm_wr32(device, GPC_BCAST(0x0984), data[1]);
+	nvkm_wr32(device, GPC_BCAST(0x0988), data[2]);
+	nvkm_wr32(device, GPC_BCAST(0x098c), data[3]);
+
+	for (gpc = 0; gpc < gr->gpc_nr; gpc++) {
+		nvkm_wr32(device, GPC_UNIT(gpc, 0x0914),
+			  gr->screen_tile_row_offset << 8 | gr->tpc_nr[gpc]);
+		nvkm_wr32(device, GPC_UNIT(gpc, 0x0910), 0x00040000 |
+			  gr->tpc_total);
+		nvkm_wr32(device, GPC_UNIT(gpc, 0x0918), magicgpc918);
+	}
+
+	nvkm_wr32(device, GPC_BCAST(0x3fd4), magicgpc918);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gr->func->init_rop_active_fbps(gr);
 
@@ -282,17 +342,25 @@ gk20a_gr_init(struct gf100_gr *gr)
 
 static const struct gf100_gr_func
 gk20a_gr = {
+<<<<<<< HEAD
 	.oneinit_tiles = gf100_gr_oneinit_tiles,
 	.oneinit_sm_id = gf100_gr_oneinit_sm_id,
 	.init = gk20a_gr_init,
 	.init_zcull = gf117_gr_init_zcull,
 	.init_rop_active_fbps = gk104_gr_init_rop_active_fbps,
 	.trap_mp = gf100_gr_trap_mp,
+=======
+	.init = gk20a_gr_init,
+	.init_rop_active_fbps = gk104_gr_init_rop_active_fbps,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_hww_esr_report_mask = gk20a_gr_set_hww_esr_report_mask,
 	.rops = gf100_gr_rops,
 	.ppc_nr = 1,
 	.grctx = &gk20a_grctx,
+<<<<<<< HEAD
 	.zbc = &gf100_gr_zbc,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sclass = {
 		{ -1, -1, FERMI_TWOD_A },
 		{ -1, -1, KEPLER_INLINE_TO_MEMORY_A },

@@ -219,7 +219,11 @@ fan_set_cur_state(struct thermal_cooling_device *cdev, unsigned long state)
 		return fan_set_state_acpi4(device, state);
 	else
 		return fan_set_state(device, state);
+<<<<<<< HEAD
 }
+=======
+ }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct thermal_cooling_device_ops fan_cooling_ops = {
 	.get_max_state = fan_get_max_state,
@@ -298,8 +302,13 @@ static int acpi_fan_get_fps(struct acpi_device *device)
 	}
 
 	fan->fps_count = obj->package.count - 1; /* minus revision field */
+<<<<<<< HEAD
 	fan->fps = devm_kcalloc(&device->dev,
 				fan->fps_count, sizeof(struct acpi_fan_fps),
+=======
+	fan->fps = devm_kzalloc(&device->dev,
+				fan->fps_count * sizeof(struct acpi_fan_fps),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!fan->fps) {
 		dev_err(&device->dev, "Not enough memory\n");

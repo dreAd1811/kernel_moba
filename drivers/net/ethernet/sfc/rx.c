@@ -163,7 +163,11 @@ static int efx_init_rx_buffers(struct efx_rx_queue *rx_queue, bool atomic)
 	do {
 		page = efx_reuse_page(rx_queue);
 		if (page == NULL) {
+<<<<<<< HEAD
 			page = alloc_pages(__GFP_COMP |
+=======
+			page = alloc_pages(__GFP_COLD | __GFP_COMP |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   (atomic ? GFP_ATOMIC : GFP_KERNEL),
 					   efx->rx_buffer_order);
 			if (unlikely(page == NULL))
@@ -376,9 +380,15 @@ void efx_fast_push_rx_descriptors(struct efx_rx_queue *rx_queue, bool atomic)
 		efx_nic_notify_rx_desc(rx_queue);
 }
 
+<<<<<<< HEAD
 void efx_rx_slow_fill(struct timer_list *t)
 {
 	struct efx_rx_queue *rx_queue = from_timer(rx_queue, t, slow_fill);
+=======
+void efx_rx_slow_fill(unsigned long context)
+{
+	struct efx_rx_queue *rx_queue = (struct efx_rx_queue *)context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Post an event to cause NAPI to run and refill the queue */
 	efx_nic_generate_fill_event(rx_queue);
@@ -634,12 +644,16 @@ static void efx_rx_deliver(struct efx_channel *channel, u8 *eh,
 			return;
 
 	/* Pass the packet up */
+<<<<<<< HEAD
 	if (channel->rx_list != NULL)
 		/* Add to list, will pass up later */
 		list_add_tail(&skb->list, channel->rx_list);
 	else
 		/* No list, so pass it up now */
 		netif_receive_skb(skb);
+=======
+	netif_receive_skb(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Handle a received packet.  Second half: Touches packet payload. */
@@ -832,6 +846,7 @@ MODULE_PARM_DESC(rx_refill_threshold,
 
 #ifdef CONFIG_RFS_ACCEL
 
+<<<<<<< HEAD
 static void efx_filter_rfs_work(struct work_struct *data)
 {
 	struct efx_async_filter_insertion *req = container_of(data, struct efx_async_filter_insertion,
@@ -894,10 +909,13 @@ static void efx_filter_rfs_work(struct work_struct *data)
 	dev_put(req->net_dev);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int efx_filter_rfs(struct net_device *net_dev, const struct sk_buff *skb,
 		   u16 rxq_index, u32 flow_id)
 {
 	struct efx_nic *efx = netdev_priv(net_dev);
+<<<<<<< HEAD
 	struct efx_async_filter_insertion *req;
 	struct efx_arfs_rule *rule;
 	struct flow_keys fk;
@@ -993,6 +1011,67 @@ out_unlock:
 	spin_unlock(&efx->rps_hash_lock);
 out_clear:
 	clear_bit(slot_idx, &efx->rps_slot_map);
+=======
+	struct efx_channel *channel;
+	struct efx_filter_spec spec;
+	struct flow_keys fk;
+	int rc;
+
+	if (flow_id == RPS_FLOW_ID_INVALID)
+		return -EINVAL;
+
+	if (!skb_flow_dissect_flow_keys(skb, &fk, 0))
+		return -EPROTONOSUPPORT;
+
+	if (fk.basic.n_proto != htons(ETH_P_IP) && fk.basic.n_proto != htons(ETH_P_IPV6))
+		return -EPROTONOSUPPORT;
+	if (fk.control.flags & FLOW_DIS_IS_FRAGMENT)
+		return -EPROTONOSUPPORT;
+
+	efx_filter_init_rx(&spec, EFX_FILTER_PRI_HINT,
+			   efx->rx_scatter ? EFX_FILTER_FLAG_RX_SCATTER : 0,
+			   rxq_index);
+	spec.match_flags =
+		EFX_FILTER_MATCH_ETHER_TYPE | EFX_FILTER_MATCH_IP_PROTO |
+		EFX_FILTER_MATCH_LOC_HOST | EFX_FILTER_MATCH_LOC_PORT |
+		EFX_FILTER_MATCH_REM_HOST | EFX_FILTER_MATCH_REM_PORT;
+	spec.ether_type = fk.basic.n_proto;
+	spec.ip_proto = fk.basic.ip_proto;
+
+	if (fk.basic.n_proto == htons(ETH_P_IP)) {
+		spec.rem_host[0] = fk.addrs.v4addrs.src;
+		spec.loc_host[0] = fk.addrs.v4addrs.dst;
+	} else {
+		memcpy(spec.rem_host, &fk.addrs.v6addrs.src, sizeof(struct in6_addr));
+		memcpy(spec.loc_host, &fk.addrs.v6addrs.dst, sizeof(struct in6_addr));
+	}
+
+	spec.rem_port = fk.ports.src;
+	spec.loc_port = fk.ports.dst;
+
+	rc = efx->type->filter_rfs_insert(efx, &spec);
+	if (rc < 0)
+		return rc;
+
+	/* Remember this so we can check whether to expire the filter later */
+	channel = efx_get_channel(efx, rxq_index);
+	channel->rps_flow_id[rc] = flow_id;
+	++channel->rfs_filters_added;
+
+	if (spec.ether_type == htons(ETH_P_IP))
+		netif_info(efx, rx_status, efx->net_dev,
+			   "steering %s %pI4:%u:%pI4:%u to queue %u [flow %u filter %d]\n",
+			   (spec.ip_proto == IPPROTO_TCP) ? "TCP" : "UDP",
+			   spec.rem_host, ntohs(spec.rem_port), spec.loc_host,
+			   ntohs(spec.loc_port), rxq_index, flow_id, rc);
+	else
+		netif_info(efx, rx_status, efx->net_dev,
+			   "steering %s [%pI6]:%u:[%pI6]:%u to queue %u [flow %u filter %d]\n",
+			   (spec.ip_proto == IPPROTO_TCP) ? "TCP" : "UDP",
+			   spec.rem_host, ntohs(spec.rem_port), spec.loc_host,
+			   ntohs(spec.loc_port), rxq_index, flow_id, rc);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -1002,8 +1081,14 @@ bool __efx_filter_rfs_expire(struct efx_nic *efx, unsigned int quota)
 	unsigned int channel_idx, index, size;
 	u32 flow_id;
 
+<<<<<<< HEAD
 	if (!mutex_trylock(&efx->rps_mutex))
 		return false;
+=======
+	if (!spin_trylock_bh(&efx->filter_lock))
+		return false;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	expire_one = efx->type->filter_rfs_expire_one;
 	channel_idx = efx->rps_expire_channel;
 	index = efx->rps_expire_index;
@@ -1028,7 +1113,11 @@ bool __efx_filter_rfs_expire(struct efx_nic *efx, unsigned int quota)
 	efx->rps_expire_channel = channel_idx;
 	efx->rps_expire_index = index;
 
+<<<<<<< HEAD
 	mutex_unlock(&efx->rps_mutex);
+=======
+	spin_unlock_bh(&efx->filter_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 

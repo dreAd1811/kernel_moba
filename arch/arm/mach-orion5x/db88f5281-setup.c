@@ -172,7 +172,11 @@ static struct platform_device db88f5281_nand_flash = {
 static void __iomem *db88f5281_7seg;
 static struct timer_list db88f5281_timer;
 
+<<<<<<< HEAD
 static void db88f5281_7seg_event(struct timer_list *unused)
+=======
+static void db88f5281_7seg_event(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static int count = 0;
 	writel(0, db88f5281_7seg + (count << 4));
@@ -189,7 +193,11 @@ static int __init db88f5281_7seg_init(void)
 			printk(KERN_ERR "Failed to ioremap db88f5281_7seg\n");
 			return -EIO;
 		}
+<<<<<<< HEAD
 		timer_setup(&db88f5281_timer, db88f5281_7seg_event, 0);
+=======
+		setup_timer(&db88f5281_timer, db88f5281_7seg_event, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mod_timer(&db88f5281_timer, jiffies + 2 * HZ);
 	}
 

@@ -123,6 +123,14 @@ struct oct_droq_stats {
 
 };
 
+<<<<<<< HEAD
+=======
+#define POLL_EVENT_INTR_ARRIVED  1
+#define POLL_EVENT_PROCESS_PKTS  2
+#define POLL_EVENT_PENDING_PKTS  3
+#define POLL_EVENT_ENABLE_INTR   4
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The maximum number of buffers that can be dispatched from the
  * output/dma queue. Set to 64 assuming 1K buffers in DROQ and the fact that
  * max packet size from DROQ is 64K.
@@ -395,9 +403,12 @@ int octeon_register_dispatch_fn(struct octeon_device *oct,
 				u16 subcode,
 				octeon_dispatch_fn_t fn, void *fn_arg);
 
+<<<<<<< HEAD
 void *octeon_get_dispatch_arg(struct octeon_device *oct,
 			      u16 opcode, u16 subcode);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void octeon_droq_print_stats(void);
 
 u32 octeon_droq_check_hw_for_pkts(struct octeon_droq *droq);
@@ -409,10 +420,15 @@ int octeon_droq_process_packets(struct octeon_device *oct,
 				struct octeon_droq *droq,
 				u32 budget);
 
+<<<<<<< HEAD
 int octeon_droq_process_poll_pkts(struct octeon_device *oct,
 				  struct octeon_droq *droq, u32 budget);
 
 int octeon_enable_irq(struct octeon_device *oct, u32 q_no);
+=======
+int octeon_process_droq_poll_cmd(struct octeon_device *oct, u32 q_no,
+				 int cmd, u32 arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void octeon_droq_check_oom(struct octeon_droq *droq);
 

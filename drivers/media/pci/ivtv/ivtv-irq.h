@@ -48,6 +48,10 @@ irqreturn_t ivtv_irq_handler(int irq, void *dev_id);
 
 void ivtv_irq_work_handler(struct kthread_work *work);
 void ivtv_dma_stream_dec_prepare(struct ivtv_stream *s, u32 offset, int lock);
+<<<<<<< HEAD
 void ivtv_unfinished_dma(struct timer_list *t);
+=======
+void ivtv_unfinished_dma(unsigned long arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

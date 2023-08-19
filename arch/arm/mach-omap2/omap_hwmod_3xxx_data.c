@@ -15,13 +15,25 @@
  * XXX these should be marked initdata for multi-OMAP kernels
  */
 
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-omap.h>
 #include <linux/power/smartreflex.h>
+=======
+#include <linux/i2c-omap.h>
+#include <linux/power/smartreflex.h>
+#include <linux/platform_data/gpio-omap.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_data/hsmmc-omap.h>
 
 #include <linux/omap-dma.h>
 #include "l3_3xxx.h"
 #include "l4_3xxx.h"
+<<<<<<< HEAD
+=======
+#include <linux/platform_data/asoc-ti-mcbsp.h>
+#include <linux/platform_data/spi-omap2-mcspi.h>
+#include <plat/dmtimer.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "soc.h"
 #include "omap_hwmod.h"
@@ -109,6 +121,11 @@ static struct omap_hwmod omap3xxx_iva_hwmod = {
 	.prcm = {
 		.omap2 = {
 			.module_offs = OMAP3430_IVA2_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_CM_FCLKEN_IVA2_EN_IVA2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_IVA2_SHIFT,
 		},
@@ -151,17 +168,54 @@ static struct omap_hwmod_class omap3xxx_timer_hwmod_class = {
 	.sysc = &omap3xxx_timer_sysc,
 };
 
+<<<<<<< HEAD
+=======
+/* secure timers dev attribute */
+static struct omap_timer_capability_dev_attr capability_secure_dev_attr = {
+	.timer_capability	= OMAP_TIMER_ALWON | OMAP_TIMER_SECURE,
+};
+
+/* always-on timers dev attribute */
+static struct omap_timer_capability_dev_attr capability_alwon_dev_attr = {
+	.timer_capability	= OMAP_TIMER_ALWON,
+};
+
+/* pwm timers dev attribute */
+static struct omap_timer_capability_dev_attr capability_pwm_dev_attr = {
+	.timer_capability	= OMAP_TIMER_HAS_PWM,
+};
+
+/* timers with DSP interrupt dev attribute */
+static struct omap_timer_capability_dev_attr capability_dsp_dev_attr = {
+	.timer_capability       = OMAP_TIMER_HAS_DSP_IRQ,
+};
+
+/* pwm timers with DSP interrupt dev attribute */
+static struct omap_timer_capability_dev_attr capability_dsp_pwm_dev_attr = {
+	.timer_capability       = OMAP_TIMER_HAS_DSP_IRQ | OMAP_TIMER_HAS_PWM,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* timer1 */
 static struct omap_hwmod omap3xxx_timer1_hwmod = {
 	.name		= "timer1",
 	.main_clk	= "gpt1_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = WKUP_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT1_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_alwon_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
@@ -172,6 +226,11 @@ static struct omap_hwmod omap3xxx_timer2_hwmod = {
 	.main_clk	= "gpt2_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT2_SHIFT,
@@ -187,6 +246,11 @@ static struct omap_hwmod omap3xxx_timer3_hwmod = {
 	.main_clk	= "gpt3_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT3_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT3_SHIFT,
@@ -202,6 +266,11 @@ static struct omap_hwmod omap3xxx_timer4_hwmod = {
 	.main_clk	= "gpt4_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT4_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT4_SHIFT,
@@ -217,11 +286,20 @@ static struct omap_hwmod omap3xxx_timer5_hwmod = {
 	.main_clk	= "gpt5_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT5_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT5_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_dsp_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
@@ -232,11 +310,20 @@ static struct omap_hwmod omap3xxx_timer6_hwmod = {
 	.main_clk	= "gpt6_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT6_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT6_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_dsp_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
@@ -247,11 +334,20 @@ static struct omap_hwmod omap3xxx_timer7_hwmod = {
 	.main_clk	= "gpt7_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT7_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT7_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_dsp_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
@@ -262,11 +358,20 @@ static struct omap_hwmod omap3xxx_timer8_hwmod = {
 	.main_clk	= "gpt8_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT8_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT8_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_dsp_pwm_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
@@ -277,11 +382,20 @@ static struct omap_hwmod omap3xxx_timer9_hwmod = {
 	.main_clk	= "gpt9_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT9_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT9_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_pwm_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
@@ -292,11 +406,20 @@ static struct omap_hwmod omap3xxx_timer10_hwmod = {
 	.main_clk	= "gpt10_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT10_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = CORE_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT10_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_pwm_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
@@ -307,26 +430,48 @@ static struct omap_hwmod omap3xxx_timer11_hwmod = {
 	.main_clk	= "gpt11_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT11_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = CORE_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT11_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_pwm_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
 
 /* timer12 */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_timer12_hwmod = {
 	.name		= "timer12",
 	.main_clk	= "gpt12_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPT12_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = WKUP_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPT12_SHIFT,
 		},
 	},
+<<<<<<< HEAD
+=======
+	.dev_attr	= &capability_secure_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.class		= &omap3xxx_timer_hwmod_class,
 	.flags		= HWMOD_SET_DEFAULT_CLOCKACT,
 };
@@ -374,6 +519,11 @@ static struct omap_hwmod omap3xxx_wd_timer2_hwmod = {
 	.main_clk	= "wdt2_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_WDT2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = WKUP_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_WDT2_SHIFT,
@@ -394,6 +544,11 @@ static struct omap_hwmod omap3xxx_uart1_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_UART1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_EN_UART1_SHIFT,
 		},
@@ -409,6 +564,11 @@ static struct omap_hwmod omap3xxx_uart2_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_UART2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_EN_UART2_SHIFT,
 		},
@@ -425,6 +585,11 @@ static struct omap_hwmod omap3xxx_uart3_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = OMAP3430_PER_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_UART3_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_EN_UART3_SHIFT,
 		},
@@ -442,6 +607,11 @@ static struct omap_hwmod omap36xx_uart4_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = OMAP3430_PER_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3630_EN_UART4_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3630_EN_UART4_SHIFT,
 		},
@@ -471,6 +641,11 @@ static struct omap_hwmod am35xx_uart4_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = AM35XX_EN_UART4_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = AM35XX_ST_UART4_SHIFT,
 		},
@@ -488,6 +663,15 @@ static struct omap_hwmod_class i2c_class = {
 	.reset	= &omap_i2c_reset,
 };
 
+<<<<<<< HEAD
+=======
+static struct omap_hwmod_dma_info omap3xxx_dss_sdma_chs[] = {
+	{ .name = "dispc", .dma_req = 5 },
+	{ .name = "dsi1", .dma_req = 74 },
+	{ .dma_req = -1, },
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* dss */
 static struct omap_hwmod_opt_clk dss_opt_clks[] = {
 	/*
@@ -504,10 +688,21 @@ static struct omap_hwmod omap3430es1_dss_core_hwmod = {
 	.name		= "dss_core",
 	.class		= &omap2_dss_hwmod_class,
 	.main_clk	= "dss1_alwon_fck", /* instead of dss_fck */
+<<<<<<< HEAD
 	.prcm		= {
 		.omap2 = {
 			.module_offs = OMAP3430_DSS_MOD,
 			.idlest_reg_id = 1,
+=======
+	.sdma_reqs	= omap3xxx_dss_sdma_chs,
+	.prcm		= {
+		.omap2 = {
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_DSS1_SHIFT,
+			.module_offs = OMAP3430_DSS_MOD,
+			.idlest_reg_id = 1,
+			.idlest_stdby_bit = OMAP3430ES1_ST_DSS_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 	},
 	.opt_clks	= dss_opt_clks,
@@ -520,11 +715,23 @@ static struct omap_hwmod omap3xxx_dss_core_hwmod = {
 	.flags		= HWMOD_CONTROL_OPT_CLKS_IN_RESET,
 	.class		= &omap2_dss_hwmod_class,
 	.main_clk	= "dss1_alwon_fck", /* instead of dss_fck */
+<<<<<<< HEAD
 	.prcm		= {
 		.omap2 = {
 			.module_offs = OMAP3430_DSS_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430ES2_ST_DSS_IDLE_SHIFT,
+=======
+	.sdma_reqs	= omap3xxx_dss_sdma_chs,
+	.prcm		= {
+		.omap2 = {
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_DSS1_SHIFT,
+			.module_offs = OMAP3430_DSS_MOD,
+			.idlest_reg_id = 1,
+			.idlest_idle_bit = OMAP3430ES2_ST_DSS_IDLE_SHIFT,
+			.idlest_stdby_bit = OMAP3430ES2_ST_DSS_STDBY_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 	},
 	.opt_clks	= dss_opt_clks,
@@ -556,9 +763,18 @@ static struct omap_hwmod_class omap3_dispc_hwmod_class = {
 static struct omap_hwmod omap3xxx_dss_dispc_hwmod = {
 	.name		= "dss_dispc",
 	.class		= &omap3_dispc_hwmod_class,
+<<<<<<< HEAD
 	.main_clk	= "dss1_alwon_fck",
 	.prcm		= {
 		.omap2 = {
+=======
+	.mpu_irqs	= omap2_dispc_irqs,
+	.main_clk	= "dss1_alwon_fck",
+	.prcm		= {
+		.omap2 = {
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_DSS1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_DSS_MOD,
 		},
 	},
@@ -598,6 +814,11 @@ static struct omap_hwmod omap3xxx_dss_dsi1_hwmod = {
 	.main_clk	= "dss1_alwon_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_DSS1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_DSS_MOD,
 		},
 	},
@@ -616,6 +837,11 @@ static struct omap_hwmod omap3xxx_dss_rfbi_hwmod = {
 	.main_clk	= "dss1_alwon_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_DSS1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_DSS_MOD,
 		},
 	},
@@ -635,6 +861,11 @@ static struct omap_hwmod omap3xxx_dss_venc_hwmod = {
 	.main_clk	= "dss_tv_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_DSS1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_DSS_MOD,
 		},
 	},
@@ -644,6 +875,14 @@ static struct omap_hwmod omap3xxx_dss_venc_hwmod = {
 };
 
 /* I2C1 */
+<<<<<<< HEAD
+=======
+static struct omap_i2c_dev_attr i2c1_dev_attr = {
+	.fifo_depth	= 8, /* bytes */
+	.flags		= OMAP_I2C_FLAG_BUS_SHIFT_2,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_i2c1_hwmod = {
 	.name		= "i2c1",
 	.flags		= HWMOD_16BIT_REG | HWMOD_SET_DEFAULT_CLOCKACT,
@@ -651,14 +890,31 @@ static struct omap_hwmod omap3xxx_i2c1_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_I2C1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_I2C1_SHIFT,
 		},
 	},
 	.class		= &i2c_class,
+<<<<<<< HEAD
 };
 
 /* I2C2 */
+=======
+	.dev_attr	= &i2c1_dev_attr,
+};
+
+/* I2C2 */
+static struct omap_i2c_dev_attr i2c2_dev_attr = {
+	.fifo_depth	= 8, /* bytes */
+	.flags = OMAP_I2C_FLAG_BUS_SHIFT_2,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_i2c2_hwmod = {
 	.name		= "i2c2",
 	.flags		= HWMOD_16BIT_REG | HWMOD_SET_DEFAULT_CLOCKACT,
@@ -666,14 +922,33 @@ static struct omap_hwmod omap3xxx_i2c2_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_I2C2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_I2C2_SHIFT,
 		},
 	},
 	.class		= &i2c_class,
+<<<<<<< HEAD
 };
 
 /* I2C3 */
+=======
+	.dev_attr	= &i2c2_dev_attr,
+};
+
+/* I2C3 */
+static struct omap_i2c_dev_attr i2c3_dev_attr = {
+	.fifo_depth	= 64, /* bytes */
+	.flags = OMAP_I2C_FLAG_BUS_SHIFT_2,
+};
+
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_i2c3_hwmod = {
 	.name		= "i2c3",
 	.flags		= HWMOD_16BIT_REG | HWMOD_SET_DEFAULT_CLOCKACT,
@@ -681,11 +956,20 @@ static struct omap_hwmod omap3xxx_i2c3_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_I2C3_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_I2C3_SHIFT,
 		},
 	},
 	.class		= &i2c_class,
+<<<<<<< HEAD
+=======
+	.dev_attr	= &i2c3_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -710,6 +994,15 @@ static struct omap_hwmod_class omap3xxx_gpio_hwmod_class = {
 	.rev = 1,
 };
 
+<<<<<<< HEAD
+=======
+/* gpio_dev_attr */
+static struct omap_gpio_dev_attr gpio_dev_attr = {
+	.bank_width = 32,
+	.dbck_flag = true,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* gpio1 */
 static struct omap_hwmod_opt_clk gpio1_opt_clks[] = {
 	{ .role = "dbclk", .clk = "gpio1_dbck", },
@@ -723,12 +1016,21 @@ static struct omap_hwmod omap3xxx_gpio1_hwmod = {
 	.opt_clks_cnt	= ARRAY_SIZE(gpio1_opt_clks),
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPIO1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = WKUP_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPIO1_SHIFT,
 		},
 	},
 	.class		= &omap3xxx_gpio_hwmod_class,
+<<<<<<< HEAD
+=======
+	.dev_attr	= &gpio_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* gpio2 */
@@ -744,12 +1046,21 @@ static struct omap_hwmod omap3xxx_gpio2_hwmod = {
 	.opt_clks_cnt	= ARRAY_SIZE(gpio2_opt_clks),
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPIO2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPIO2_SHIFT,
 		},
 	},
 	.class		= &omap3xxx_gpio_hwmod_class,
+<<<<<<< HEAD
+=======
+	.dev_attr	= &gpio_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* gpio3 */
@@ -765,12 +1076,21 @@ static struct omap_hwmod omap3xxx_gpio3_hwmod = {
 	.opt_clks_cnt	= ARRAY_SIZE(gpio3_opt_clks),
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPIO3_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPIO3_SHIFT,
 		},
 	},
 	.class		= &omap3xxx_gpio_hwmod_class,
+<<<<<<< HEAD
+=======
+	.dev_attr	= &gpio_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* gpio4 */
@@ -786,12 +1106,21 @@ static struct omap_hwmod omap3xxx_gpio4_hwmod = {
 	.opt_clks_cnt	= ARRAY_SIZE(gpio4_opt_clks),
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPIO4_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPIO4_SHIFT,
 		},
 	},
 	.class		= &omap3xxx_gpio_hwmod_class,
+<<<<<<< HEAD
+=======
+	.dev_attr	= &gpio_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* gpio5 */
@@ -808,12 +1137,21 @@ static struct omap_hwmod omap3xxx_gpio5_hwmod = {
 	.opt_clks_cnt	= ARRAY_SIZE(gpio5_opt_clks),
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPIO5_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPIO5_SHIFT,
 		},
 	},
 	.class		= &omap3xxx_gpio_hwmod_class,
+<<<<<<< HEAD
+=======
+	.dev_attr	= &gpio_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* gpio6 */
@@ -830,12 +1168,21 @@ static struct omap_hwmod omap3xxx_gpio6_hwmod = {
 	.opt_clks_cnt	= ARRAY_SIZE(gpio6_opt_clks),
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_GPIO6_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_GPIO6_SHIFT,
 		},
 	},
 	.class		= &omap3xxx_gpio_hwmod_class,
+<<<<<<< HEAD
+=======
+	.dev_attr	= &gpio_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* dma attributes */
@@ -867,10 +1214,19 @@ static struct omap_hwmod_class omap3xxx_dma_hwmod_class = {
 static struct omap_hwmod omap3xxx_dma_system_hwmod = {
 	.name		= "dma",
 	.class		= &omap3xxx_dma_hwmod_class,
+<<<<<<< HEAD
+=======
+	.mpu_irqs	= omap2_dma_system_irqs,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.main_clk	= "core_l3_ick",
 	.prcm = {
 		.omap2 = {
 			.module_offs		= CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id		= 1,
+			.module_bit		= OMAP3430_ST_SDMA_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id		= 1,
 			.idlest_idle_bit	= OMAP3430_ST_SDMA_SHIFT,
 		},
@@ -885,7 +1241,10 @@ static struct omap_hwmod omap3xxx_dma_system_hwmod = {
  */
 
 static struct omap_hwmod_class_sysconfig omap3xxx_mcbsp_sysc = {
+<<<<<<< HEAD
 	.rev_offs	= -ENODEV,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sysc_offs	= 0x008c,
 	.sysc_flags	= (SYSC_HAS_CLOCKACTIVITY | SYSC_HAS_ENAWAKEUP |
 			   SYSC_HAS_SIDLEMODE | SYSC_HAS_SOFTRESET),
@@ -896,6 +1255,10 @@ static struct omap_hwmod_class_sysconfig omap3xxx_mcbsp_sysc = {
 static struct omap_hwmod_class omap3xxx_mcbsp_hwmod_class = {
 	.name = "mcbsp",
 	.sysc = &omap3xxx_mcbsp_sysc,
+<<<<<<< HEAD
+=======
+	.rev  = MCBSP_CONFIG_TYPE3,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* McBSP functional clock mapping */
@@ -910,12 +1273,21 @@ static struct omap_hwmod_opt_clk mcbsp234_opt_clks[] = {
 };
 
 /* mcbsp1 */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_mcbsp1_hwmod = {
 	.name		= "mcbsp1",
 	.class		= &omap3xxx_mcbsp_hwmod_class,
 	.main_clk	= "mcbsp1_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCBSP1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = CORE_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCBSP1_SHIFT,
@@ -926,12 +1298,25 @@ static struct omap_hwmod omap3xxx_mcbsp1_hwmod = {
 };
 
 /* mcbsp2 */
+<<<<<<< HEAD
+=======
+
+static struct omap_mcbsp_dev_attr omap34xx_mcbsp2_dev_attr = {
+	.sidetone	= "mcbsp2_sidetone",
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_mcbsp2_hwmod = {
 	.name		= "mcbsp2",
 	.class		= &omap3xxx_mcbsp_hwmod_class,
 	.main_clk	= "mcbsp2_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCBSP2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCBSP2_SHIFT,
@@ -939,15 +1324,32 @@ static struct omap_hwmod omap3xxx_mcbsp2_hwmod = {
 	},
 	.opt_clks	= mcbsp234_opt_clks,
 	.opt_clks_cnt	= ARRAY_SIZE(mcbsp234_opt_clks),
+<<<<<<< HEAD
 };
 
 /* mcbsp3 */
+=======
+	.dev_attr	= &omap34xx_mcbsp2_dev_attr,
+};
+
+/* mcbsp3 */
+
+static struct omap_mcbsp_dev_attr omap34xx_mcbsp3_dev_attr = {
+	.sidetone	= "mcbsp3_sidetone",
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_mcbsp3_hwmod = {
 	.name		= "mcbsp3",
 	.class		= &omap3xxx_mcbsp_hwmod_class,
 	.main_clk	= "mcbsp3_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCBSP3_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCBSP3_SHIFT,
@@ -955,15 +1357,29 @@ static struct omap_hwmod omap3xxx_mcbsp3_hwmod = {
 	},
 	.opt_clks	= mcbsp234_opt_clks,
 	.opt_clks_cnt	= ARRAY_SIZE(mcbsp234_opt_clks),
+<<<<<<< HEAD
 };
 
 /* mcbsp4 */
+=======
+	.dev_attr	= &omap34xx_mcbsp3_dev_attr,
+};
+
+/* mcbsp4 */
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_mcbsp4_hwmod = {
 	.name		= "mcbsp4",
 	.class		= &omap3xxx_mcbsp_hwmod_class,
 	.main_clk	= "mcbsp4_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCBSP4_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = OMAP3430_PER_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCBSP4_SHIFT,
@@ -974,12 +1390,22 @@ static struct omap_hwmod omap3xxx_mcbsp4_hwmod = {
 };
 
 /* mcbsp5 */
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_mcbsp5_hwmod = {
 	.name		= "mcbsp5",
 	.class		= &omap3xxx_mcbsp_hwmod_class,
 	.main_clk	= "mcbsp5_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCBSP5_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = CORE_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCBSP5_SHIFT,
@@ -991,7 +1417,10 @@ static struct omap_hwmod omap3xxx_mcbsp5_hwmod = {
 
 /* 'mcbsp sidetone' class */
 static struct omap_hwmod_class_sysconfig omap3xxx_mcbsp_sidetone_sysc = {
+<<<<<<< HEAD
 	.rev_offs	= -ENODEV,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sysc_offs	= 0x0010,
 	.sysc_flags	= SYSC_HAS_AUTOIDLE,
 	.sysc_fields	= &omap_hwmod_sysc_type1,
@@ -1003,6 +1432,10 @@ static struct omap_hwmod_class omap3xxx_mcbsp_sidetone_hwmod_class = {
 };
 
 /* mcbsp2_sidetone */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_mcbsp2_sidetone_hwmod = {
 	.name		= "mcbsp2_sidetone",
 	.class		= &omap3xxx_mcbsp_sidetone_hwmod_class,
@@ -1011,6 +1444,10 @@ static struct omap_hwmod omap3xxx_mcbsp2_sidetone_hwmod = {
 };
 
 /* mcbsp3_sidetone */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap3xxx_mcbsp3_sidetone_hwmod = {
 	.name		= "mcbsp3_sidetone",
 	.class		= &omap3xxx_mcbsp_sidetone_hwmod_class,
@@ -1019,8 +1456,16 @@ static struct omap_hwmod omap3xxx_mcbsp3_sidetone_hwmod = {
 };
 
 /* SR common */
+<<<<<<< HEAD
 static struct omap_hwmod_class_sysconfig omap34xx_sr_sysc = {
 	.rev_offs	= -ENODEV,
+=======
+static struct omap_hwmod_sysc_fields omap34xx_sr_sysc_fields = {
+	.clkact_shift	= 20,
+};
+
+static struct omap_hwmod_class_sysconfig omap34xx_sr_sysc = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sysc_offs	= 0x24,
 	.sysc_flags	= (SYSC_HAS_CLOCKACTIVITY | SYSC_NO_CACHE),
 	.sysc_fields	= &omap34xx_sr_sysc_fields,
@@ -1032,8 +1477,17 @@ static struct omap_hwmod_class omap34xx_smartreflex_hwmod_class = {
 	.rev  = 1,
 };
 
+<<<<<<< HEAD
 static struct omap_hwmod_class_sysconfig omap36xx_sr_sysc = {
 	.rev_offs	= -ENODEV,
+=======
+static struct omap_hwmod_sysc_fields omap36xx_sr_sysc_fields = {
+	.sidle_shift	= 24,
+	.enwkup_shift	= 26,
+};
+
+static struct omap_hwmod_class_sysconfig omap36xx_sr_sysc = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sysc_offs	= 0x38,
 	.idlemodes	= (SIDLE_FORCE | SIDLE_NO | SIDLE_SMART),
 	.sysc_flags	= (SYSC_HAS_SIDLEMODE | SYSC_HAS_ENAWAKEUP |
@@ -1059,6 +1513,11 @@ static struct omap_hwmod omap34xx_sr1_hwmod = {
 	.main_clk	= "sr1_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_SR1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = WKUP_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_EN_SR1_SHIFT,
@@ -1074,6 +1533,11 @@ static struct omap_hwmod omap36xx_sr1_hwmod = {
 	.main_clk	= "sr1_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_SR1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = WKUP_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_EN_SR1_SHIFT,
@@ -1094,6 +1558,11 @@ static struct omap_hwmod omap34xx_sr2_hwmod = {
 	.main_clk	= "sr2_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_SR2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = WKUP_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_EN_SR2_SHIFT,
@@ -1109,6 +1578,11 @@ static struct omap_hwmod omap36xx_sr2_hwmod = {
 	.main_clk	= "sr2_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_SR2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = WKUP_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_EN_SR2_SHIFT,
@@ -1144,6 +1618,11 @@ static struct omap_hwmod omap3xxx_mailbox_hwmod = {
 	.main_clk	= "mailboxes_ick",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MAILBOXES_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs = CORE_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MAILBOXES_SHIFT,
@@ -1171,62 +1650,134 @@ static struct omap_hwmod_class_sysconfig omap34xx_mcspi_sysc = {
 static struct omap_hwmod_class omap34xx_mcspi_class = {
 	.name = "mcspi",
 	.sysc = &omap34xx_mcspi_sysc,
+<<<<<<< HEAD
 };
 
 /* mcspi1 */
+=======
+	.rev = OMAP3_MCSPI_REV,
+};
+
+/* mcspi1 */
+static struct omap2_mcspi_dev_attr omap_mcspi1_dev_attr = {
+	.num_chipselect = 4,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap34xx_mcspi1 = {
 	.name		= "mcspi1",
 	.main_clk	= "mcspi1_fck",
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCSPI1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCSPI1_SHIFT,
 		},
 	},
 	.class		= &omap34xx_mcspi_class,
+<<<<<<< HEAD
 };
 
 /* mcspi2 */
+=======
+	.dev_attr       = &omap_mcspi1_dev_attr,
+};
+
+/* mcspi2 */
+static struct omap2_mcspi_dev_attr omap_mcspi2_dev_attr = {
+	.num_chipselect = 2,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap34xx_mcspi2 = {
 	.name		= "mcspi2",
 	.main_clk	= "mcspi2_fck",
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCSPI2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCSPI2_SHIFT,
 		},
 	},
 	.class		= &omap34xx_mcspi_class,
+<<<<<<< HEAD
 };
 
 /* mcspi3 */
+=======
+	.dev_attr       = &omap_mcspi2_dev_attr,
+};
+
+/* mcspi3 */
+
+
+static struct omap2_mcspi_dev_attr omap_mcspi3_dev_attr = {
+	.num_chipselect = 2,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap34xx_mcspi3 = {
 	.name		= "mcspi3",
 	.main_clk	= "mcspi3_fck",
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCSPI3_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCSPI3_SHIFT,
 		},
 	},
 	.class		= &omap34xx_mcspi_class,
+<<<<<<< HEAD
 };
 
 /* mcspi4 */
+=======
+	.dev_attr       = &omap_mcspi3_dev_attr,
+};
+
+/* mcspi4 */
+
+
+static struct omap2_mcspi_dev_attr omap_mcspi4_dev_attr = {
+	.num_chipselect = 1,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod omap34xx_mcspi4 = {
 	.name		= "mcspi4",
 	.main_clk	= "mcspi4_fck",
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MCSPI4_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MCSPI4_SHIFT,
 		},
 	},
 	.class		= &omap34xx_mcspi_class,
+<<<<<<< HEAD
+=======
+	.dev_attr       = &omap_mcspi4_dev_attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* usbhsotg */
@@ -1254,9 +1805,18 @@ static struct omap_hwmod omap3xxx_usbhsotg_hwmod = {
 	.main_clk	= "hsotgusb_ick",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
 			.module_offs = CORE_MOD,
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430ES2_ST_HSOTGUSB_IDLE_SHIFT,
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_HSOTGUSB_SHIFT,
+			.module_offs = CORE_MOD,
+			.idlest_reg_id = 1,
+			.idlest_idle_bit = OMAP3430ES2_ST_HSOTGUSB_IDLE_SHIFT,
+			.idlest_stdby_bit = OMAP3430ES2_ST_HSOTGUSB_STDBY_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 	},
 	.class		= &usbotg_class,
@@ -1331,6 +1891,11 @@ static struct omap_hwmod omap3xxx_pre_es3_mmc1_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MMC1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MMC1_SHIFT,
 		},
@@ -1347,6 +1912,11 @@ static struct omap_hwmod omap3xxx_es3plus_mmc1_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MMC1_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MMC1_SHIFT,
 		},
@@ -1376,6 +1946,11 @@ static struct omap_hwmod omap3xxx_pre_es3_mmc2_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MMC2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MMC2_SHIFT,
 		},
@@ -1392,6 +1967,11 @@ static struct omap_hwmod omap3xxx_es3plus_mmc2_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MMC2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MMC2_SHIFT,
 		},
@@ -1415,6 +1995,11 @@ static struct omap_hwmod omap3xxx_mmc3_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_MMC3_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_MMC3_SHIFT,
 		},
@@ -1454,8 +2039,16 @@ static struct omap_hwmod omap3xxx_usb_host_hs_hwmod = {
 	.prcm = {
 		.omap2 = {
 			.module_offs = OMAP3430ES2_USBHOST_MOD,
+<<<<<<< HEAD
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430ES2_ST_USBHOST_IDLE_SHIFT,
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430ES2_EN_USBHOST1_SHIFT,
+			.idlest_reg_id = 1,
+			.idlest_idle_bit = OMAP3430ES2_ST_USBHOST_IDLE_SHIFT,
+			.idlest_stdby_bit = OMAP3430ES2_ST_USBHOST_STDBY_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		},
 	},
 
@@ -1529,6 +2122,11 @@ static struct omap_hwmod omap3xxx_usb_tll_hs_hwmod = {
 	.prcm = {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 3,
+			.module_bit = OMAP3430ES2_EN_USBTLL_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 3,
 			.idlest_idle_bit = OMAP3430ES2_ST_USBTLL_SHIFT,
 		},
@@ -1541,6 +2139,11 @@ static struct omap_hwmod omap3xxx_hdq1w_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_HDQ_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_HDQ_SHIFT,
 		},
@@ -1566,6 +2169,11 @@ static struct omap_hwmod omap3xxx_sad2d_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_SAD2D_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_SAD2D_SHIFT,
 		},
@@ -1599,6 +2207,11 @@ static struct omap_hwmod omap3xxx_counter_32k_hwmod = {
 	.prcm		= {
 		.omap2	= {
 			.module_offs = WKUP_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_ST_32KSYNC_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_32KSYNC_SHIFT,
 		},
@@ -1854,10 +2467,26 @@ static struct omap_hwmod_ocp_if omap3_l4_core__i2c3 = {
 };
 
 /* L4 CORE -> SR1 interface */
+<<<<<<< HEAD
+=======
+static struct omap_hwmod_addr_space omap3_sr1_addr_space[] = {
+	{
+		.pa_start	= OMAP34XX_SR1_BASE,
+		.pa_end		= OMAP34XX_SR1_BASE + SZ_1K - 1,
+		.flags		= ADDR_TYPE_RT,
+	},
+	{ },
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod_ocp_if omap34xx_l4_core__sr1 = {
 	.master		= &omap3xxx_l4_core_hwmod,
 	.slave		= &omap34xx_sr1_hwmod,
 	.clk		= "sr_l4_ick",
+<<<<<<< HEAD
+=======
+	.addr		= omap3_sr1_addr_space,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.user		= OCP_USER_MPU,
 };
 
@@ -1865,15 +2494,35 @@ static struct omap_hwmod_ocp_if omap36xx_l4_core__sr1 = {
 	.master		= &omap3xxx_l4_core_hwmod,
 	.slave		= &omap36xx_sr1_hwmod,
 	.clk		= "sr_l4_ick",
+<<<<<<< HEAD
 	.user		= OCP_USER_MPU,
 };
 
 /* L4 CORE -> SR2 interface */
+=======
+	.addr		= omap3_sr1_addr_space,
+	.user		= OCP_USER_MPU,
+};
+
+/* L4 CORE -> SR1 interface */
+static struct omap_hwmod_addr_space omap3_sr2_addr_space[] = {
+	{
+		.pa_start	= OMAP34XX_SR2_BASE,
+		.pa_end		= OMAP34XX_SR2_BASE + SZ_1K - 1,
+		.flags		= ADDR_TYPE_RT,
+	},
+	{ },
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct omap_hwmod_ocp_if omap34xx_l4_core__sr2 = {
 	.master		= &omap3xxx_l4_core_hwmod,
 	.slave		= &omap34xx_sr2_hwmod,
 	.clk		= "sr_l4_ick",
+<<<<<<< HEAD
+=======
+	.addr		= omap3_sr2_addr_space,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.user		= OCP_USER_MPU,
 };
 
@@ -1881,6 +2530,10 @@ static struct omap_hwmod_ocp_if omap36xx_l4_core__sr2 = {
 	.master		= &omap3xxx_l4_core_hwmod,
 	.slave		= &omap36xx_sr2_hwmod,
 	.clk		= "sr_l4_ick",
+<<<<<<< HEAD
+=======
+	.addr		= omap3_sr2_addr_space,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.user		= OCP_USER_MPU,
 };
 
@@ -2209,6 +2862,10 @@ static struct omap_hwmod omap3xxx_mmu_iva_hwmod = {
 	.prcm = {
 		.omap2 = {
 			.module_offs = OMAP3430_IVA2_MOD,
+<<<<<<< HEAD
+=======
+			.module_bit = OMAP3430_CM_FCLKEN_IVA2_EN_IVA2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_IVA2_SHIFT,
 		},
@@ -2248,11 +2905,27 @@ static struct omap_hwmod_ocp_if omap3xxx_dma_system__l3 = {
 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 };
 
+<<<<<<< HEAD
+=======
+static struct omap_hwmod_addr_space omap3xxx_dma_system_addrs[] = {
+	{
+		.pa_start	= 0x48056000,
+		.pa_end		= 0x48056fff,
+		.flags		= ADDR_TYPE_RT,
+	},
+	{ },
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* l4_cfg -> dma_system */
 static struct omap_hwmod_ocp_if omap3xxx_l4_core__dma_system = {
 	.master		= &omap3xxx_l4_core_hwmod,
 	.slave		= &omap3xxx_dma_system_hwmod,
 	.clk		= "core_l4_ick",
+<<<<<<< HEAD
+=======
+	.addr		= omap3xxx_dma_system_addrs,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.user		= OCP_USER_MPU | OCP_USER_SDMA,
 };
 
@@ -2486,6 +3159,15 @@ static struct omap_hwmod_ocp_if omap3xxx_l3_main__gpmc = {
 };
 
 /* l4_core -> SHAM2 (SHA1/MD5) (similar to omap24xx) */
+<<<<<<< HEAD
+=======
+static struct omap_hwmod_sysc_fields omap3_sham_sysc_fields = {
+	.sidle_shift	= 4,
+	.srst_shift	= 1,
+	.autoidle_shift	= 0,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod_class_sysconfig omap3_sham_sysc = {
 	.rev_offs	= 0x5c,
 	.sysc_offs	= 0x60,
@@ -2508,6 +3190,11 @@ static struct omap_hwmod omap3xxx_sham_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_SHA12_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_SHA12_SHIFT,
 		},
@@ -2524,6 +3211,15 @@ static struct omap_hwmod_ocp_if omap3xxx_l4_core__sham = {
 };
 
 /* l4_core -> AES */
+<<<<<<< HEAD
+=======
+static struct omap_hwmod_sysc_fields omap3xxx_aes_sysc_fields = {
+	.sidle_shift	= 6,
+	.srst_shift	= 1,
+	.autoidle_shift	= 0,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_hwmod_class_sysconfig omap3_aes_sysc = {
 	.rev_offs	= 0x44,
 	.sysc_offs	= 0x48,
@@ -2546,6 +3242,11 @@ static struct omap_hwmod omap3xxx_aes_hwmod = {
 	.prcm		= {
 		.omap2 = {
 			.module_offs = CORE_MOD,
+<<<<<<< HEAD
+=======
+			.prcm_reg_id = 1,
+			.module_bit = OMAP3430_EN_AES2_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.idlest_reg_id = 1,
 			.idlest_idle_bit = OMAP3430_ST_AES2_SHIFT,
 		},
@@ -2588,6 +3289,11 @@ static struct omap_hwmod omap3xxx_ssi_hwmod = {
 	.main_clk	= "ssi_ssr_fck",
 	.prcm		= {
 		.omap2 = {
+<<<<<<< HEAD
+=======
+			.prcm_reg_id		= 1,
+			.module_bit		= OMAP3430_EN_SSI_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			.module_offs		= CORE_MOD,
 			.idlest_reg_id		= 1,
 			.idlest_idle_bit	= OMAP3430ES2_ST_SSI_IDLE_SHIFT,
@@ -2844,7 +3550,11 @@ int __init omap3xxx_hwmod_init(void)
 	int r;
 	struct omap_hwmod_ocp_if **h = NULL, **h_gp = NULL, **h_sham = NULL;
 	struct omap_hwmod_ocp_if **h_aes = NULL;
+<<<<<<< HEAD
 	struct device_node *bus;
+=======
+	struct device_node *bus = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int rev;
 
 	omap_hwmod_init();
@@ -2904,14 +3614,28 @@ int __init omap3xxx_hwmod_init(void)
 
 	if (h_sham && omap3xxx_hwmod_is_hs_ip_block_usable(bus, "sham")) {
 		r = omap_hwmod_register_links(h_sham);
+<<<<<<< HEAD
 		if (r < 0)
 			goto put_node;
+=======
+		if (r < 0) {
+			of_node_put(bus);
+			return r;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (h_aes && omap3xxx_hwmod_is_hs_ip_block_usable(bus, "aes")) {
 		r = omap_hwmod_register_links(h_aes);
+<<<<<<< HEAD
 		if (r < 0)
 			goto put_node;
+=======
+		if (r < 0) {
+			of_node_put(bus);
+			return r;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	of_node_put(bus);
 
@@ -2962,8 +3686,11 @@ int __init omap3xxx_hwmod_init(void)
 	r = omap_hwmod_register_links(omap3xxx_dss_hwmod_ocp_ifs);
 
 	return r;
+<<<<<<< HEAD
 
 put_node:
 	of_node_put(bus);
 	return r;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

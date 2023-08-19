@@ -9,7 +9,10 @@
  * published by the Free Software Foundation.
  */
 
+<<<<<<< HEAD
 #include <linux/export.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/irqflags.h>
@@ -175,7 +178,10 @@ bool mcpm_is_available(void)
 {
 	return (platform_ops) ? true : false;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mcpm_is_available);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * We can't use regular spinlocks. In the switcher case, it is possible
@@ -381,7 +387,11 @@ static int __init nocache_trampoline(unsigned long _arg)
 	unsigned int cluster = MPIDR_AFFINITY_LEVEL(mpidr, 1);
 	phys_reset_t phys_reset;
 
+<<<<<<< HEAD
 	mcpm_set_entry_vector(cpu, cluster, cpu_resume);
+=======
+	mcpm_set_entry_vector(cpu, cluster, cpu_resume_no_hyp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	setup_mm_for_reboot();
 
 	__mcpm_cpu_going_down(cpu, cluster);

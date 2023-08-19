@@ -13,9 +13,12 @@
 # Cygnus
 obj-$(CONFIG_ARCH_BCM_CYGNUS) +=  bcm_cygnus.o
 
+<<<<<<< HEAD
 # Hurricane 2
 obj-$(CONFIG_ARCH_BCM_HR2)	+= bcm_hr2.o
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # Northstar Plus
 obj-$(CONFIG_ARCH_BCM_NSP)	+= bcm_nsp.o
 
@@ -46,11 +49,14 @@ endif
 
 # BCM2835
 obj-$(CONFIG_ARCH_BCM2835)	+= board_bcm2835.o
+<<<<<<< HEAD
 ifeq ($(CONFIG_ARCH_BCM2835),y)
 ifeq ($(CONFIG_ARM),y)
 obj-$(CONFIG_SMP)		+= platsmp.o
 endif
 endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # BCM5301X
 obj-$(CONFIG_ARCH_BCM_5301X)	+= bcm_5301x.o

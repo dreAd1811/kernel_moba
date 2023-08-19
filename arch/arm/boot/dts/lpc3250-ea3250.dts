@@ -231,24 +231,40 @@
 		#address-cells = <1>;
 		#size-cells = <1>;
 
+<<<<<<< HEAD
 		mtd0@0 {
+=======
+		mtd0@00000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "ea3250-boot";
 			reg = <0x00000000 0x00080000>;
 			read-only;
 		};
 
+<<<<<<< HEAD
 		mtd1@80000 {
+=======
+		mtd1@00080000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "ea3250-uboot";
 			reg = <0x00080000 0x000c0000>;
 			read-only;
 		};
 
+<<<<<<< HEAD
 		mtd2@140000 {
+=======
+		mtd2@00140000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "ea3250-kernel";
 			reg = <0x00140000 0x00400000>;
 		};
 
+<<<<<<< HEAD
 		mtd3@540000 {
+=======
+		mtd3@00540000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "ea3250-rootfs";
 			reg = <0x00540000 0x07ac0000>;
 		};

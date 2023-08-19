@@ -102,7 +102,11 @@ static void ifb_ri_tasklet(unsigned long _txp)
 		if (!skb->tc_from_ingress) {
 			dev_queue_xmit(skb);
 		} else {
+<<<<<<< HEAD
 			skb_pull_rcsum(skb, skb->mac_len);
+=======
+			skb_pull(skb, skb->mac_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netif_receive_skb(skb);
 		}
 	}
@@ -231,9 +235,12 @@ static void ifb_setup(struct net_device *dev)
 	eth_hw_addr_random(dev);
 	dev->needs_free_netdev = true;
 	dev->priv_destructor = ifb_dev_free;
+<<<<<<< HEAD
 
 	dev->min_mtu = 0;
 	dev->max_mtu = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static netdev_tx_t ifb_xmit(struct sk_buff *skb, struct net_device *dev)
@@ -330,7 +337,10 @@ static int __init ifb_init_module(void)
 {
 	int i, err;
 
+<<<<<<< HEAD
 	down_write(&pernet_ops_rwsem);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtnl_lock();
 	err = __rtnl_link_register(&ifb_link_ops);
 	if (err < 0)
@@ -345,7 +355,10 @@ static int __init ifb_init_module(void)
 
 out:
 	rtnl_unlock();
+<<<<<<< HEAD
 	up_write(&pernet_ops_rwsem);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }

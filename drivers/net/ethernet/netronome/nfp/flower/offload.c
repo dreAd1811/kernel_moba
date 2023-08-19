@@ -44,6 +44,7 @@
 #include "../nfp_net.h"
 #include "../nfp_port.h"
 
+<<<<<<< HEAD
 #define NFP_FLOWER_SUPPORTED_TCPFLAGS \
 	(TCPHDR_FIN | TCPHDR_SYN | TCPHDR_RST | \
 	 TCPHDR_PSH | TCPHDR_URG)
@@ -52,11 +53,14 @@
 	(FLOW_DIS_IS_FRAGMENT | \
 	 FLOW_DIS_FIRST_FRAG)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NFP_FLOWER_WHITELIST_DISSECTOR \
 	(BIT(FLOW_DISSECTOR_KEY_CONTROL) | \
 	 BIT(FLOW_DISSECTOR_KEY_BASIC) | \
 	 BIT(FLOW_DISSECTOR_KEY_IPV4_ADDRS) | \
 	 BIT(FLOW_DISSECTOR_KEY_IPV6_ADDRS) | \
+<<<<<<< HEAD
 	 BIT(FLOW_DISSECTOR_KEY_TCP) | \
 	 BIT(FLOW_DISSECTOR_KEY_PORTS) | \
 	 BIT(FLOW_DISSECTOR_KEY_ETH_ADDRS) | \
@@ -85,6 +89,13 @@
 	 BIT(FLOW_DISSECTOR_KEY_ENC_IPV4_ADDRS) | \
 	 BIT(FLOW_DISSECTOR_KEY_ENC_PORTS))
 
+=======
+	 BIT(FLOW_DISSECTOR_KEY_PORTS) | \
+	 BIT(FLOW_DISSECTOR_KEY_ETH_ADDRS) | \
+	 BIT(FLOW_DISSECTOR_KEY_VLAN) | \
+	 BIT(FLOW_DISSECTOR_KEY_IP))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 nfp_flower_xmit_flow(struct net_device *netdev,
 		     struct nfp_fl_payload *nfp_flow, u8 mtype)
@@ -108,7 +119,11 @@ nfp_flower_xmit_flow(struct net_device *netdev,
 	nfp_flow->meta.mask_len >>= NFP_FL_LW_SIZ;
 	nfp_flow->meta.act_len >>= NFP_FL_LW_SIZ;
 
+<<<<<<< HEAD
 	skb = nfp_flower_cmsg_alloc(priv->app, tot_len, mtype, GFP_KERNEL);
+=======
+	skb = nfp_flower_cmsg_alloc(priv->app, tot_len, mtype);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb)
 		return -ENOMEM;
 
@@ -143,6 +158,7 @@ static bool nfp_flower_check_higher_than_mac(struct tc_cls_flower_offload *f)
 }
 
 static int
+<<<<<<< HEAD
 nfp_flower_calc_opt_layer(struct flow_dissector_key_enc_opts *enc_opts,
 			  u32 *key_layer_two, int *key_size)
 {
@@ -171,10 +187,22 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 	u8 key_layer;
 	int key_size;
 	int err;
+=======
+nfp_flower_calculate_key_layers(struct nfp_fl_key_ls *ret_key_ls,
+				struct tc_cls_flower_offload *flow)
+{
+	struct flow_dissector_key_basic *mask_basic = NULL;
+	struct flow_dissector_key_basic *key_basic = NULL;
+	struct flow_dissector_key_ip *mask_ip = NULL;
+	u32 key_layer_two;
+	u8 key_layer;
+	int key_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (flow->dissector->used_keys & ~NFP_FLOWER_WHITELIST_DISSECTOR)
 		return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 	/* If any tun dissector is used then the required set must be used. */
 	if (flow->dissector->used_keys & NFP_FLOWER_WHITELIST_TUN_DISSECTOR &&
 	    (flow->dissector->used_keys & NFP_FLOWER_WHITELIST_TUN_DISSECTOR_R)
@@ -209,10 +237,15 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 		struct flow_dissector_key_ports *mask_enc_ports = NULL;
 		struct flow_dissector_key_enc_opts *enc_op = NULL;
 		struct flow_dissector_key_ports *enc_ports = NULL;
+=======
+	if (dissector_uses_key(flow->dissector,
+			       FLOW_DISSECTOR_KEY_ENC_CONTROL)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct flow_dissector_key_control *mask_enc_ctl =
 			skb_flow_dissector_target(flow->dissector,
 						  FLOW_DISSECTOR_KEY_ENC_CONTROL,
 						  flow->mask);
+<<<<<<< HEAD
 		struct flow_dissector_key_control *enc_ctl =
 			skb_flow_dissector_target(flow->dissector,
 						  FLOW_DISSECTOR_KEY_ENC_CONTROL,
@@ -284,6 +317,11 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 	} else if (egress) {
 		/* Reject non tunnel matches offloaded to egress repr. */
 		return -EOPNOTSUPP;
+=======
+		/* We are expecting a tunnel. For now we ignore offloading. */
+		if (mask_enc_ctl->addr_type)
+			return -EOPNOTSUPP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (dissector_uses_key(flow->dissector, FLOW_DISSECTOR_KEY_BASIC)) {
@@ -296,15 +334,43 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 						      flow->key);
 	}
 
+<<<<<<< HEAD
+=======
+	if (dissector_uses_key(flow->dissector, FLOW_DISSECTOR_KEY_IP))
+		mask_ip = skb_flow_dissector_target(flow->dissector,
+						    FLOW_DISSECTOR_KEY_IP,
+						    flow->mask);
+
+	key_layer_two = 0;
+	key_layer = NFP_FLOWER_LAYER_PORT | NFP_FLOWER_LAYER_MAC;
+	key_size = sizeof(struct nfp_flower_meta_one) +
+		   sizeof(struct nfp_flower_in_port) +
+		   sizeof(struct nfp_flower_mac_mpls);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mask_basic && mask_basic->n_proto) {
 		/* Ethernet type is present in the key. */
 		switch (key_basic->n_proto) {
 		case cpu_to_be16(ETH_P_IP):
+<<<<<<< HEAD
+=======
+			if (mask_ip && mask_ip->tos)
+				return -EOPNOTSUPP;
+			if (mask_ip && mask_ip->ttl)
+				return -EOPNOTSUPP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			key_layer |= NFP_FLOWER_LAYER_IPV4;
 			key_size += sizeof(struct nfp_flower_ipv4);
 			break;
 
 		case cpu_to_be16(ETH_P_IPV6):
+<<<<<<< HEAD
+=======
+			if (mask_ip && mask_ip->tos)
+				return -EOPNOTSUPP;
+			if (mask_ip && mask_ip->ttl)
+				return -EOPNOTSUPP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			key_layer |= NFP_FLOWER_LAYER_IPV6;
 			key_size += sizeof(struct nfp_flower_ipv6);
 			break;
@@ -315,6 +381,7 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 		case cpu_to_be16(ETH_P_ARP):
 			return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 		case cpu_to_be16(ETH_P_MPLS_UC):
 		case cpu_to_be16(ETH_P_MPLS_MC):
 			if (!(key_layer & NFP_FLOWER_LAYER_MAC)) {
@@ -322,6 +389,12 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 				key_size += sizeof(struct nfp_flower_mac_mpls);
 			}
 			break;
+=======
+		/* Currently we do not offload MPLS. */
+		case cpu_to_be16(ETH_P_MPLS_UC):
+		case cpu_to_be16(ETH_P_MPLS_MC):
+			return -EOPNOTSUPP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Will be included in layer 2. */
 		case cpu_to_be16(ETH_P_8021Q):
@@ -356,6 +429,7 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 		}
 	}
 
+<<<<<<< HEAD
 	if (dissector_uses_key(flow->dissector, FLOW_DISSECTOR_KEY_TCP)) {
 		struct flow_dissector_key_tcp *tcp;
 		u32 tcp_flags;
@@ -412,6 +486,8 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 			return -EOPNOTSUPP;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret_key_ls->key_layer = key_layer;
 	ret_key_ls->key_layer_two = key_layer_two;
 	ret_key_ls->key_size = key_size;
@@ -420,7 +496,11 @@ nfp_flower_calculate_key_layers(struct nfp_app *app,
 }
 
 static struct nfp_fl_payload *
+<<<<<<< HEAD
 nfp_flower_allocate_new(struct nfp_fl_key_ls *key_layer, bool egress)
+=======
+nfp_flower_allocate_new(struct nfp_fl_key_ls *key_layer)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nfp_fl_payload *flow_pay;
 
@@ -442,12 +522,18 @@ nfp_flower_allocate_new(struct nfp_fl_key_ls *key_layer, bool egress)
 	if (!flow_pay->action_data)
 		goto err_free_mask;
 
+<<<<<<< HEAD
 	flow_pay->nfp_tun_ipv4_addr = 0;
 	flow_pay->meta.flags = 0;
 	spin_lock_init(&flow_pay->lock);
 
 	flow_pay->ingress_offload = !egress;
 
+=======
+	flow_pay->meta.flags = 0;
+	spin_lock_init(&flow_pay->lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return flow_pay;
 
 err_free_mask:
@@ -464,7 +550,10 @@ err_free_flow:
  * @app:	Pointer to the APP handle
  * @netdev:	netdev structure.
  * @flow:	TC flower classifier offload structure.
+<<<<<<< HEAD
  * @egress:	NFP netdev is the egress.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Adds a new flow to the repeated hash structure and action payload.
  *
@@ -472,6 +561,7 @@ err_free_flow:
  */
 static int
 nfp_flower_add_offload(struct nfp_app *app, struct net_device *netdev,
+<<<<<<< HEAD
 		       struct tc_cls_flower_offload *flow, bool egress)
 {
 	enum nfp_flower_tun_type tun_type = NFP_FL_TUNNEL_NONE;
@@ -493,21 +583,39 @@ nfp_flower_add_offload(struct nfp_app *app, struct net_device *netdev,
 			return -EOPNOTSUPP;
 	}
 
+=======
+		       struct tc_cls_flower_offload *flow)
+{
+	struct nfp_flower_priv *priv = app->priv;
+	struct nfp_fl_payload *flow_pay;
+	struct nfp_fl_key_ls *key_layer;
+	int err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	key_layer = kmalloc(sizeof(*key_layer), GFP_KERNEL);
 	if (!key_layer)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	err = nfp_flower_calculate_key_layers(app, key_layer, flow, egress,
 					      &tun_type);
 	if (err)
 		goto err_free_key_ls;
 
 	flow_pay = nfp_flower_allocate_new(key_layer, egress);
+=======
+	err = nfp_flower_calculate_key_layers(key_layer, flow);
+	if (err)
+		goto err_free_key_ls;
+
+	flow_pay = nfp_flower_allocate_new(key_layer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!flow_pay) {
 		err = -ENOMEM;
 		goto err_free_key_ls;
 	}
 
+<<<<<<< HEAD
 	flow_pay->ingress_dev = egress ? NULL : netdev;
 
 	err = nfp_flower_compile_flow_match(flow, key_layer, netdev, flow_pay,
@@ -521,6 +629,17 @@ nfp_flower_add_offload(struct nfp_app *app, struct net_device *netdev,
 
 	err = nfp_compile_flow_metadata(app, flow, flow_pay,
 					flow_pay->ingress_dev);
+=======
+	err = nfp_flower_compile_flow_match(flow, key_layer, netdev, flow_pay);
+	if (err)
+		goto err_destroy_flow;
+
+	err = nfp_flower_compile_action(flow, netdev, flow_pay);
+	if (err)
+		goto err_destroy_flow;
+
+	err = nfp_compile_flow_metadata(app, flow, flow_pay);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_destroy_flow;
 
@@ -532,7 +651,10 @@ nfp_flower_add_offload(struct nfp_app *app, struct net_device *netdev,
 	INIT_HLIST_NODE(&flow_pay->link);
 	flow_pay->tc_flower_cookie = flow->cookie;
 	hash_add_rcu(priv->flow_table, &flow_pay->link, flow->cookie);
+<<<<<<< HEAD
 	port->tc_offload_cnt++;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Deallocate flow payload when flower rule has been destroyed. */
 	kfree(key_layer);
@@ -554,7 +676,10 @@ err_free_key_ls:
  * @app:	Pointer to the APP handle
  * @netdev:	netdev structure.
  * @flow:	TC flower classifier offload structure
+<<<<<<< HEAD
  * @egress:	Netdev is the egress dev.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Removes a flow from the repeated hash structure and clears the
  * action payload.
@@ -563,6 +688,7 @@ err_free_key_ls:
  */
 static int
 nfp_flower_del_offload(struct nfp_app *app, struct net_device *netdev,
+<<<<<<< HEAD
 		       struct tc_cls_flower_offload *flow, bool egress)
 {
 	struct nfp_port *port = nfp_port_from_netdev(netdev);
@@ -575,14 +701,27 @@ nfp_flower_del_offload(struct nfp_app *app, struct net_device *netdev,
 					      NFP_FL_STATS_CTX_DONT_CARE);
 	if (!nfp_flow)
 		return egress ? 0 : -ENOENT;
+=======
+		       struct tc_cls_flower_offload *flow)
+{
+	struct nfp_fl_payload *nfp_flow;
+	int err;
+
+	nfp_flow = nfp_flower_search_fl_table(app, flow->cookie);
+	if (!nfp_flow)
+		return -ENOENT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = nfp_modify_flow_metadata(app, nfp_flow);
 	if (err)
 		goto err_free_flow;
 
+<<<<<<< HEAD
 	if (nfp_flow->nfp_tun_ipv4_addr)
 		nfp_tunnel_del_ipv4_off(app, nfp_flow->nfp_tun_ipv4_addr);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = nfp_flower_xmit_flow(netdev, nfp_flow,
 				   NFP_FLOWER_CMSG_TYPE_FLOW_DEL);
 	if (err)
@@ -590,7 +729,10 @@ nfp_flower_del_offload(struct nfp_app *app, struct net_device *netdev,
 
 err_free_flow:
 	hash_del_rcu(&nfp_flow->link);
+<<<<<<< HEAD
 	port->tc_offload_cnt--;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(nfp_flow->action_data);
 	kfree(nfp_flow->mask_data);
 	kfree(nfp_flow->unmasked_data);
@@ -601,9 +743,13 @@ err_free_flow:
 /**
  * nfp_flower_get_stats() - Populates flow stats obtained from hardware.
  * @app:	Pointer to the APP handle
+<<<<<<< HEAD
  * @netdev:	Netdev structure.
  * @flow:	TC flower classifier offload structure
  * @egress:	Netdev is the egress dev.
+=======
+ * @flow:	TC flower classifier offload structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Populates a flow statistics structure which which corresponds to a
  * specific flow.
@@ -611,6 +757,7 @@ err_free_flow:
  * Return: negative value on error, 0 if stats populated successfully.
  */
 static int
+<<<<<<< HEAD
 nfp_flower_get_stats(struct nfp_app *app, struct net_device *netdev,
 		     struct tc_cls_flower_offload *flow, bool egress)
 {
@@ -626,6 +773,16 @@ nfp_flower_get_stats(struct nfp_app *app, struct net_device *netdev,
 	if (nfp_flow->ingress_offload && egress)
 		return 0;
 
+=======
+nfp_flower_get_stats(struct nfp_app *app, struct tc_cls_flower_offload *flow)
+{
+	struct nfp_fl_payload *nfp_flow;
+
+	nfp_flow = nfp_flower_search_fl_table(app, flow->cookie);
+	if (!nfp_flow)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_bh(&nfp_flow->lock);
 	tcf_exts_stats_update(flow->exts, nfp_flow->stats.bytes,
 			      nfp_flow->stats.pkts, nfp_flow->stats.used);
@@ -639,6 +796,7 @@ nfp_flower_get_stats(struct nfp_app *app, struct net_device *netdev,
 
 static int
 nfp_flower_repr_offload(struct nfp_app *app, struct net_device *netdev,
+<<<<<<< HEAD
 			struct tc_cls_flower_offload *flower, bool egress)
 {
 	if (!eth_proto_is_802_3(flower->common.protocol))
@@ -711,15 +869,41 @@ static int nfp_flower_setup_tc_block(struct net_device *netdev,
 	default:
 		return -EOPNOTSUPP;
 	}
+=======
+			struct tc_cls_flower_offload *flower)
+{
+	switch (flower->command) {
+	case TC_CLSFLOWER_REPLACE:
+		return nfp_flower_add_offload(app, netdev, flower);
+	case TC_CLSFLOWER_DESTROY:
+		return nfp_flower_del_offload(app, netdev, flower);
+	case TC_CLSFLOWER_STATS:
+		return nfp_flower_get_stats(app, flower);
+	}
+
+	return -EOPNOTSUPP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int nfp_flower_setup_tc(struct nfp_app *app, struct net_device *netdev,
 			enum tc_setup_type type, void *type_data)
 {
+<<<<<<< HEAD
 	switch (type) {
 	case TC_SETUP_BLOCK:
 		return nfp_flower_setup_tc_block(netdev, type_data);
 	default:
 		return -EOPNOTSUPP;
 	}
+=======
+	struct tc_cls_flower_offload *cls_flower = type_data;
+
+	if (type != TC_SETUP_CLSFLOWER ||
+	    !is_classid_clsact_ingress(cls_flower->common.classid) ||
+	    !eth_proto_is_802_3(cls_flower->common.protocol) ||
+	    cls_flower->common.chain_index)
+		return -EOPNOTSUPP;
+
+	return nfp_flower_repr_offload(app, netdev, cls_flower);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

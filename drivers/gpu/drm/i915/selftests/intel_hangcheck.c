@@ -25,20 +25,29 @@
 #include <linux/kthread.h>
 
 #include "../i915_selftest.h"
+<<<<<<< HEAD
 #include "i915_random.h"
 #include "igt_flush_test.h"
 #include "igt_wedge_me.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "mock_context.h"
 #include "mock_drm.h"
 
+<<<<<<< HEAD
 #define IGT_IDLE_TIMEOUT 50 /* ms; time to wait after flushing between tests */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct hang {
 	struct drm_i915_private *i915;
 	struct drm_i915_gem_object *hws;
 	struct drm_i915_gem_object *obj;
+<<<<<<< HEAD
 	struct i915_gem_context *ctx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *seqno;
 	u32 *batch;
 };
@@ -51,6 +60,7 @@ static int hang_init(struct hang *h, struct drm_i915_private *i915)
 	memset(h, 0, sizeof(*h));
 	h->i915 = i915;
 
+<<<<<<< HEAD
 	h->ctx = kernel_context(i915);
 	if (IS_ERR(h->ctx))
 		return PTR_ERR(h->ctx);
@@ -60,6 +70,11 @@ static int hang_init(struct hang *h, struct drm_i915_private *i915)
 		err = PTR_ERR(h->hws);
 		goto err_ctx;
 	}
+=======
+	h->hws = i915_gem_object_create_internal(i915, PAGE_SIZE);
+	if (IS_ERR(h->hws))
+		return PTR_ERR(h->hws);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	h->obj = i915_gem_object_create_internal(i915, PAGE_SIZE);
 	if (IS_ERR(h->obj)) {
@@ -91,18 +106,26 @@ err_obj:
 	i915_gem_object_put(h->obj);
 err_hws:
 	i915_gem_object_put(h->hws);
+<<<<<<< HEAD
 err_ctx:
 	kernel_context_close(h->ctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
 static u64 hws_address(const struct i915_vma *hws,
+<<<<<<< HEAD
 		       const struct i915_request *rq)
+=======
+		       const struct drm_i915_gem_request *rq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return hws->node.start + offset_in_page(sizeof(u32)*rq->fence.context);
 }
 
 static int emit_recurse_batch(struct hang *h,
+<<<<<<< HEAD
 			      struct i915_request *rq)
 {
 	struct drm_i915_private *i915 = h->i915;
@@ -110,6 +133,12 @@ static int emit_recurse_batch(struct hang *h,
 		rq->gem_context->ppgtt ?
 		&rq->gem_context->ppgtt->vm :
 		&i915->ggtt.vm;
+=======
+			      struct drm_i915_gem_request *rq)
+{
+	struct drm_i915_private *i915 = h->i915;
+	struct i915_address_space *vm = rq->ctx->ppgtt ? &rq->ctx->ppgtt->base : &i915->ggtt.base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_vma *hws, *vma;
 	unsigned int flags;
 	u32 *batch;
@@ -131,19 +160,35 @@ static int emit_recurse_batch(struct hang *h,
 	if (err)
 		goto unpin_vma;
 
+<<<<<<< HEAD
 	err = i915_vma_move_to_active(vma, rq, 0);
 	if (err)
 		goto unpin_hws;
 
+=======
+	err = rq->engine->emit_flush(rq, EMIT_INVALIDATE);
+	if (err)
+		goto unpin_hws;
+
+	err = i915_switch_context(rq);
+	if (err)
+		goto unpin_hws;
+
+	i915_vma_move_to_active(vma, rq, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!i915_gem_object_has_active_reference(vma->obj)) {
 		i915_gem_object_get(vma->obj);
 		i915_gem_object_set_active_reference(vma->obj);
 	}
 
+<<<<<<< HEAD
 	err = i915_vma_move_to_active(hws, rq, 0);
 	if (err)
 		goto unpin_hws;
 
+=======
+	i915_vma_move_to_active(hws, rq, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!i915_gem_object_has_active_reference(hws->obj)) {
 		i915_gem_object_get(hws->obj);
 		i915_gem_object_set_active_reference(hws->obj);
@@ -155,12 +200,15 @@ static int emit_recurse_batch(struct hang *h,
 		*batch++ = lower_32_bits(hws_address(hws, rq));
 		*batch++ = upper_32_bits(hws_address(hws, rq));
 		*batch++ = rq->fence.seqno;
+<<<<<<< HEAD
 		*batch++ = MI_ARB_CHECK;
 
 		memset(batch, 0, 1024);
 		batch += 1024 / sizeof(*batch);
 
 		*batch++ = MI_ARB_CHECK;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*batch++ = MI_BATCH_BUFFER_START | 1 << 8 | 1;
 		*batch++ = lower_32_bits(vma->node.start);
 		*batch++ = upper_32_bits(vma->node.start);
@@ -169,6 +217,7 @@ static int emit_recurse_batch(struct hang *h,
 		*batch++ = 0;
 		*batch++ = lower_32_bits(hws_address(hws, rq));
 		*batch++ = rq->fence.seqno;
+<<<<<<< HEAD
 		*batch++ = MI_ARB_CHECK;
 
 		memset(batch, 0, 1024);
@@ -205,6 +254,25 @@ static int emit_recurse_batch(struct hang *h,
 	}
 	*batch++ = MI_BATCH_BUFFER_END; /* not reached */
 	i915_gem_chipset_flush(h->i915);
+=======
+		*batch++ = MI_BATCH_BUFFER_START | 1 << 8;
+		*batch++ = lower_32_bits(vma->node.start);
+	} else if (INTEL_GEN(i915) >= 4) {
+		*batch++ = MI_STORE_DWORD_IMM_GEN4 | 1 << 22;
+		*batch++ = 0;
+		*batch++ = lower_32_bits(hws_address(hws, rq));
+		*batch++ = rq->fence.seqno;
+		*batch++ = MI_BATCH_BUFFER_START | 2 << 6;
+		*batch++ = lower_32_bits(vma->node.start);
+	} else {
+		*batch++ = MI_STORE_DWORD_IMM;
+		*batch++ = lower_32_bits(hws_address(hws, rq));
+		*batch++ = rq->fence.seqno;
+		*batch++ = MI_BATCH_BUFFER_START | 2 << 6 | 1;
+		*batch++ = lower_32_bits(vma->node.start);
+	}
+	*batch++ = MI_BATCH_BUFFER_END; /* not reached */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flags = 0;
 	if (INTEL_GEN(vm->i915) <= 5)
@@ -219,10 +287,19 @@ unpin_vma:
 	return err;
 }
 
+<<<<<<< HEAD
 static struct i915_request *
 hang_create_request(struct hang *h, struct intel_engine_cs *engine)
 {
 	struct i915_request *rq;
+=======
+static struct drm_i915_gem_request *
+hang_create_request(struct hang *h,
+		    struct intel_engine_cs *engine,
+		    struct i915_gem_context *ctx)
+{
+	struct drm_i915_gem_request *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (i915_gem_object_is_active(h->obj)) {
@@ -247,20 +324,33 @@ hang_create_request(struct hang *h, struct intel_engine_cs *engine)
 		h->batch = vaddr;
 	}
 
+<<<<<<< HEAD
 	rq = i915_request_alloc(engine, h->ctx);
+=======
+	rq = i915_gem_request_alloc(engine, ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq))
 		return rq;
 
 	err = emit_recurse_batch(h, rq);
 	if (err) {
+<<<<<<< HEAD
 		i915_request_add(rq);
+=======
+		__i915_add_request(rq, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(err);
 	}
 
 	return rq;
 }
 
+<<<<<<< HEAD
 static u32 hws_seqno(const struct hang *h, const struct i915_request *rq)
+=======
+static u32 hws_seqno(const struct hang *h,
+		     const struct drm_i915_gem_request *rq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return READ_ONCE(h->seqno[rq->fence.context % (PAGE_SIZE/sizeof(u32))]);
 }
@@ -268,7 +358,11 @@ static u32 hws_seqno(const struct hang *h, const struct i915_request *rq)
 static void hang_fini(struct hang *h)
 {
 	*h->batch = MI_BATCH_BUFFER_END;
+<<<<<<< HEAD
 	i915_gem_chipset_flush(h->i915);
+=======
+	wmb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i915_gem_object_unpin_map(h->obj);
 	i915_gem_object_put(h->obj);
@@ -276,6 +370,7 @@ static void hang_fini(struct hang *h)
 	i915_gem_object_unpin_map(h->hws);
 	i915_gem_object_put(h->hws);
 
+<<<<<<< HEAD
 	kernel_context_close(h->ctx);
 
 	igt_flush_test(h->i915, I915_WAIT_LOCKED);
@@ -289,12 +384,19 @@ static bool wait_until_running(struct hang *h, struct i915_request *rq)
 		 wait_for(i915_seqno_passed(hws_seqno(h, rq),
 					    rq->fence.seqno),
 			  1000));
+=======
+	i915_gem_wait_for_idle(h->i915, I915_WAIT_LOCKED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int igt_hang_sanitycheck(void *arg)
 {
 	struct drm_i915_private *i915 = arg;
+<<<<<<< HEAD
 	struct i915_request *rq;
+=======
+	struct drm_i915_gem_request *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
 	struct hang h;
@@ -313,7 +415,11 @@ static int igt_hang_sanitycheck(void *arg)
 		if (!intel_engine_can_store_dword(engine))
 			continue;
 
+<<<<<<< HEAD
 		rq = hang_create_request(&h, engine);
+=======
+		rq = hang_create_request(&h, engine, i915->kernel_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(rq)) {
 			err = PTR_ERR(rq);
 			pr_err("Failed to create request for %s, err=%d\n",
@@ -321,6 +427,7 @@ static int igt_hang_sanitycheck(void *arg)
 			goto fini;
 		}
 
+<<<<<<< HEAD
 		i915_request_get(rq);
 
 		*h.batch = MI_BATCH_BUFFER_END;
@@ -332,6 +439,17 @@ static int igt_hang_sanitycheck(void *arg)
 					    I915_WAIT_LOCKED,
 					    MAX_SCHEDULE_TIMEOUT);
 		i915_request_put(rq);
+=======
+		i915_gem_request_get(rq);
+
+		*h.batch = MI_BATCH_BUFFER_END;
+		__i915_add_request(rq, true);
+
+		timeout = i915_wait_request(rq,
+					    I915_WAIT_LOCKED,
+					    MAX_SCHEDULE_TIMEOUT);
+		i915_gem_request_put(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (timeout < 0) {
 			err = timeout;
@@ -353,9 +471,12 @@ static void global_reset_lock(struct drm_i915_private *i915)
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
 
+<<<<<<< HEAD
 	pr_debug("%s: current gpu_error=%08lx\n",
 		 __func__, i915->gpu_error.flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (test_and_set_bit(I915_RESET_BACKOFF, &i915->gpu_error.flags))
 		wait_event(i915->gpu_error.reset_queue,
 			   !test_bit(I915_RESET_BACKOFF,
@@ -396,7 +517,11 @@ static int igt_global_reset(void *arg)
 	mutex_lock(&i915->drm.struct_mutex);
 	reset_count = i915_reset_count(&i915->gpu_error);
 
+<<<<<<< HEAD
 	i915_reset(i915, ALL_ENGINES, NULL);
+=======
+	i915_reset(i915, I915_RESET_QUIET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (i915_reset_count(&i915->gpu_error) == reset_count) {
 		pr_err("No GPU reset recorded!\n");
@@ -413,6 +538,7 @@ static int igt_global_reset(void *arg)
 	return err;
 }
 
+<<<<<<< HEAD
 static bool wait_for_idle(struct intel_engine_cs *engine)
 {
 	return wait_for(intel_engine_is_idle(engine), IGT_IDLE_TIMEOUT) == 0;
@@ -426,10 +552,22 @@ static int __igt_reset_engine(struct drm_i915_private *i915, bool active)
 	int err = 0;
 
 	/* Check that we can issue an engine reset on an idle engine (no-op) */
+=======
+static int igt_reset_engine(void *arg)
+{
+	struct drm_i915_private *i915 = arg;
+	struct intel_engine_cs *engine;
+	enum intel_engine_id id;
+	unsigned int reset_count, reset_engine_count;
+	int err = 0;
+
+	/* Check that we can issue a global GPU and engine reset */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_has_reset_engine(i915))
 		return 0;
 
+<<<<<<< HEAD
 	if (active) {
 		mutex_lock(&i915->drm.struct_mutex);
 		err = hang_init(&h, i915);
@@ -452,10 +590,15 @@ static int __igt_reset_engine(struct drm_i915_private *i915, bool active)
 			break;
 		}
 
+=======
+	for_each_engine(engine, i915, id) {
+		set_bit(I915_RESET_ENGINE + engine->id, &i915->gpu_error.flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reset_count = i915_reset_count(&i915->gpu_error);
 		reset_engine_count = i915_reset_engine_count(&i915->gpu_error,
 							     engine);
 
+<<<<<<< HEAD
 		set_bit(I915_RESET_ENGINE + id, &i915->gpu_error.flags);
 		do {
 			u32 seqno = intel_engine_get_seqno(engine);
@@ -535,11 +678,35 @@ static int __igt_reset_engine(struct drm_i915_private *i915, bool active)
 		err = igt_flush_test(i915, 0);
 		if (err)
 			break;
+=======
+		err = i915_reset_engine(engine, I915_RESET_QUIET);
+		if (err) {
+			pr_err("i915_reset_engine failed\n");
+			break;
+		}
+
+		if (i915_reset_count(&i915->gpu_error) != reset_count) {
+			pr_err("Full GPU reset recorded! (engine reset expected)\n");
+			err = -EINVAL;
+			break;
+		}
+
+		if (i915_reset_engine_count(&i915->gpu_error, engine) ==
+		    reset_engine_count) {
+			pr_err("No %s engine reset recorded!\n", engine->name);
+			err = -EINVAL;
+			break;
+		}
+
+		clear_bit(I915_RESET_ENGINE + engine->id,
+			  &i915->gpu_error.flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (i915_terminally_wedged(&i915->gpu_error))
 		err = -EIO;
 
+<<<<<<< HEAD
 	if (active) {
 		mutex_lock(&i915->drm.struct_mutex);
 		hang_fini(&h);
@@ -592,16 +759,24 @@ static int active_request_put(struct i915_request *rq)
 
 	i915_request_put(rq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
 static int active_engine(void *data)
 {
+<<<<<<< HEAD
 	I915_RND_STATE(prng);
 	struct active_engine *arg = data;
 	struct intel_engine_cs *engine = arg->engine;
 	struct i915_request *rq[8] = {};
 	struct i915_gem_context *ctx[ARRAY_SIZE(rq)];
+=======
+	struct intel_engine_cs *engine = data;
+	struct drm_i915_gem_request *rq[2] = {};
+	struct i915_gem_context *ctx[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_file *file;
 	unsigned long count = 0;
 	int err = 0;
@@ -610,6 +785,7 @@ static int active_engine(void *data)
 	if (IS_ERR(file))
 		return PTR_ERR(file);
 
+<<<<<<< HEAD
 	for (count = 0; count < ARRAY_SIZE(ctx); count++) {
 		mutex_lock(&engine->i915->drm.struct_mutex);
 		ctx[count] = live_context(engine->i915, file);
@@ -629,12 +805,39 @@ static int active_engine(void *data)
 
 		mutex_lock(&engine->i915->drm.struct_mutex);
 		new = i915_request_alloc(engine, ctx[idx]);
+=======
+	mutex_lock(&engine->i915->drm.struct_mutex);
+	ctx[0] = live_context(engine->i915, file);
+	mutex_unlock(&engine->i915->drm.struct_mutex);
+	if (IS_ERR(ctx[0])) {
+		err = PTR_ERR(ctx[0]);
+		goto err_file;
+	}
+
+	mutex_lock(&engine->i915->drm.struct_mutex);
+	ctx[1] = live_context(engine->i915, file);
+	mutex_unlock(&engine->i915->drm.struct_mutex);
+	if (IS_ERR(ctx[1])) {
+		err = PTR_ERR(ctx[1]);
+		i915_gem_context_put(ctx[0]);
+		goto err_file;
+	}
+
+	while (!kthread_should_stop()) {
+		unsigned int idx = count++ & 1;
+		struct drm_i915_gem_request *old = rq[idx];
+		struct drm_i915_gem_request *new;
+
+		mutex_lock(&engine->i915->drm.struct_mutex);
+		new = i915_gem_request_alloc(engine, ctx[idx]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(new)) {
 			mutex_unlock(&engine->i915->drm.struct_mutex);
 			err = PTR_ERR(new);
 			break;
 		}
 
+<<<<<<< HEAD
 		if (arg->flags & TEST_PRIORITY)
 			ctx[idx]->sched.priority =
 				i915_prandom_u32_max_state(512, &prng);
@@ -657,12 +860,27 @@ static int active_engine(void *data)
 		if (!err)
 			err = err__;
 	}
+=======
+		rq[idx] = i915_gem_request_get(new);
+		i915_add_request(new);
+		mutex_unlock(&engine->i915->drm.struct_mutex);
+
+		if (old) {
+			i915_wait_request(old, 0, MAX_SCHEDULE_TIMEOUT);
+			i915_gem_request_put(old);
+		}
+	}
+
+	for (count = 0; count < ARRAY_SIZE(rq); count++)
+		i915_gem_request_put(rq[count]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_file:
 	mock_file_free(engine->i915, file);
 	return err;
 }
 
+<<<<<<< HEAD
 static int __igt_reset_engines(struct drm_i915_private *i915,
 			       const char *test_name,
 			       unsigned int flags)
@@ -670,6 +888,13 @@ static int __igt_reset_engines(struct drm_i915_private *i915,
 	struct intel_engine_cs *engine, *other;
 	enum intel_engine_id id, tmp;
 	struct hang h;
+=======
+static int igt_reset_active_engines(void *arg)
+{
+	struct drm_i915_private *i915 = arg;
+	struct intel_engine_cs *engine, *active;
+	enum intel_engine_id id, tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err = 0;
 
 	/* Check that issuing a reset on one engine does not interfere
@@ -679,6 +904,7 @@ static int __igt_reset_engines(struct drm_i915_private *i915,
 	if (!intel_has_reset_engine(i915))
 		return 0;
 
+<<<<<<< HEAD
 	if (flags & TEST_ACTIVE) {
 		mutex_lock(&i915->drm.struct_mutex);
 		err = hang_init(&h, i915);
@@ -726,11 +952,32 @@ static int __igt_reset_engines(struct drm_i915_private *i915,
 
 			tsk = kthread_run(active_engine, &threads[tmp],
 					  "igt/%s", other->name);
+=======
+	for_each_engine(engine, i915, id) {
+		struct task_struct *threads[I915_NUM_ENGINES];
+		unsigned long resets[I915_NUM_ENGINES];
+		unsigned long global = i915_reset_count(&i915->gpu_error);
+		IGT_TIMEOUT(end_time);
+
+		memset(threads, 0, sizeof(threads));
+		for_each_engine(active, i915, tmp) {
+			struct task_struct *tsk;
+
+			if (active == engine)
+				continue;
+
+			resets[tmp] = i915_reset_engine_count(&i915->gpu_error,
+							      active);
+
+			tsk = kthread_run(active_engine, active,
+					  "igt/%s", active->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (IS_ERR(tsk)) {
 				err = PTR_ERR(tsk);
 				goto unwind;
 			}
 
+<<<<<<< HEAD
 			threads[tmp].task = tsk;
 			get_task_struct(tsk);
 		}
@@ -838,27 +1085,77 @@ unwind:
 				       threads[tmp].resets);
 				if (!err)
 					err = -EINVAL;
+=======
+			threads[tmp] = tsk;
+			get_task_struct(tsk);
+		}
+
+		set_bit(I915_RESET_ENGINE + engine->id, &i915->gpu_error.flags);
+		do {
+			err = i915_reset_engine(engine, I915_RESET_QUIET);
+			if (err) {
+				pr_err("i915_reset_engine(%s) failed, err=%d\n",
+				       engine->name, err);
+				break;
+			}
+		} while (time_before(jiffies, end_time));
+		clear_bit(I915_RESET_ENGINE + engine->id,
+			  &i915->gpu_error.flags);
+
+unwind:
+		for_each_engine(active, i915, tmp) {
+			int ret;
+
+			if (!threads[tmp])
+				continue;
+
+			ret = kthread_stop(threads[tmp]);
+			if (ret) {
+				pr_err("kthread for active engine %s failed, err=%d\n",
+				       active->name, ret);
+				if (!err)
+					err = ret;
+			}
+			put_task_struct(threads[tmp]);
+
+			if (resets[tmp] != i915_reset_engine_count(&i915->gpu_error,
+								   active)) {
+				pr_err("Innocent engine %s was reset (count=%ld)\n",
+				       active->name,
+				       i915_reset_engine_count(&i915->gpu_error,
+							       active) - resets[tmp]);
+				err = -EIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 
 		if (global != i915_reset_count(&i915->gpu_error)) {
 			pr_err("Global reset (count=%ld)!\n",
 			       i915_reset_count(&i915->gpu_error) - global);
+<<<<<<< HEAD
 			if (!err)
 				err = -EINVAL;
+=======
+			err = -EIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (err)
 			break;
 
+<<<<<<< HEAD
 		err = igt_flush_test(i915, 0);
 		if (err)
 			break;
+=======
+		cond_resched();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (i915_terminally_wedged(&i915->gpu_error))
 		err = -EIO;
 
+<<<<<<< HEAD
 	if (flags & TEST_ACTIVE) {
 		mutex_lock(&i915->drm.struct_mutex);
 		hang_fini(&h);
@@ -918,14 +1215,47 @@ static u32 fake_hangcheck(struct i915_request *rq, u32 mask)
 	set_bit(I915_RESET_HANDOFF, &error->flags);
 
 	wake_up_all(&error->wait_queue);
+=======
+	return err;
+}
+
+static u32 fake_hangcheck(struct drm_i915_gem_request *rq)
+{
+	u32 reset_count;
+
+	rq->engine->hangcheck.stalled = true;
+	rq->engine->hangcheck.seqno = intel_engine_get_seqno(rq->engine);
+
+	reset_count = i915_reset_count(&rq->i915->gpu_error);
+
+	set_bit(I915_RESET_HANDOFF, &rq->i915->gpu_error.flags);
+	wake_up_all(&rq->i915->gpu_error.wait_queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return reset_count;
 }
 
+<<<<<<< HEAD
 static int igt_reset_wait(void *arg)
 {
 	struct drm_i915_private *i915 = arg;
 	struct i915_request *rq;
+=======
+static bool wait_for_hang(struct hang *h, struct drm_i915_gem_request *rq)
+{
+	return !(wait_for_us(i915_seqno_passed(hws_seqno(h, rq),
+					       rq->fence.seqno),
+			     10) &&
+		 wait_for(i915_seqno_passed(hws_seqno(h, rq),
+					    rq->fence.seqno),
+			  1000));
+}
+
+static int igt_wait_reset(void *arg)
+{
+	struct drm_i915_private *i915 = arg;
+	struct drm_i915_gem_request *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int reset_count;
 	struct hang h;
 	long timeout;
@@ -943,12 +1273,17 @@ static int igt_reset_wait(void *arg)
 	if (err)
 		goto unlock;
 
+<<<<<<< HEAD
 	rq = hang_create_request(&h, i915->engine[RCS]);
+=======
+	rq = hang_create_request(&h, i915->engine[RCS], i915->kernel_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq)) {
 		err = PTR_ERR(rq);
 		goto fini;
 	}
 
+<<<<<<< HEAD
 	i915_request_get(rq);
 	i915_request_add(rq);
 
@@ -961,15 +1296,30 @@ static int igt_reset_wait(void *arg)
 
 		i915_gem_set_wedged(i915);
 
+=======
+	i915_gem_request_get(rq);
+	__i915_add_request(rq, true);
+
+	if (!wait_for_hang(&h, rq)) {
+		pr_err("Failed to start request %x\n", rq->fence.seqno);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EIO;
 		goto out_rq;
 	}
 
+<<<<<<< HEAD
 	reset_count = fake_hangcheck(rq, ALL_ENGINES);
 
 	timeout = i915_request_wait(rq, I915_WAIT_LOCKED, 10);
 	if (timeout < 0) {
 		pr_err("i915_request_wait failed on a stuck request: err=%ld\n",
+=======
+	reset_count = fake_hangcheck(rq);
+
+	timeout = i915_wait_request(rq, I915_WAIT_LOCKED, 10);
+	if (timeout < 0) {
+		pr_err("i915_wait_request failed on a stuck request: err=%ld\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       timeout);
 		err = timeout;
 		goto out_rq;
@@ -983,7 +1333,11 @@ static int igt_reset_wait(void *arg)
 	}
 
 out_rq:
+<<<<<<< HEAD
 	i915_request_put(rq);
+=======
+	i915_gem_request_put(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fini:
 	hang_fini(&h);
 unlock:
@@ -996,6 +1350,7 @@ unlock:
 	return err;
 }
 
+<<<<<<< HEAD
 struct evict_vma {
 	struct completion completion;
 	struct i915_vma *vma;
@@ -1177,6 +1532,8 @@ static int wait_for_others(struct drm_i915_private *i915,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int igt_reset_queue(void *arg)
 {
 	struct drm_i915_private *i915 = arg;
@@ -1195,19 +1552,28 @@ static int igt_reset_queue(void *arg)
 		goto unlock;
 
 	for_each_engine(engine, i915, id) {
+<<<<<<< HEAD
 		struct i915_request *prev;
+=======
+		struct drm_i915_gem_request *prev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		IGT_TIMEOUT(end_time);
 		unsigned int count;
 
 		if (!intel_engine_can_store_dword(engine))
 			continue;
 
+<<<<<<< HEAD
 		prev = hang_create_request(&h, engine);
+=======
+		prev = hang_create_request(&h, engine, i915->kernel_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(prev)) {
 			err = PTR_ERR(prev);
 			goto fini;
 		}
 
+<<<<<<< HEAD
 		i915_request_get(prev);
 		i915_request_add(prev);
 
@@ -1217,11 +1583,25 @@ static int igt_reset_queue(void *arg)
 			unsigned int reset_count;
 
 			rq = hang_create_request(&h, engine);
+=======
+		i915_gem_request_get(prev);
+		__i915_add_request(prev, true);
+
+		count = 0;
+		do {
+			struct drm_i915_gem_request *rq;
+			unsigned int reset_count;
+
+			rq = hang_create_request(&h,
+						 engine,
+						 i915->kernel_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (IS_ERR(rq)) {
 				err = PTR_ERR(rq);
 				goto fini;
 			}
 
+<<<<<<< HEAD
 			i915_request_get(rq);
 			i915_request_add(rq);
 
@@ -1261,13 +1641,29 @@ static int igt_reset_queue(void *arg)
 
 				i915_gem_set_wedged(i915);
 
+=======
+			i915_gem_request_get(rq);
+			__i915_add_request(rq, true);
+
+			if (!wait_for_hang(&h, prev)) {
+				pr_err("Failed to start request %x\n",
+				       prev->fence.seqno);
+				i915_gem_request_put(rq);
+				i915_gem_request_put(prev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				err = -EIO;
 				goto fini;
 			}
 
+<<<<<<< HEAD
 			reset_count = fake_hangcheck(prev, ENGINE_MASK(id));
 
 			i915_reset(i915, ENGINE_MASK(id), NULL);
+=======
+			reset_count = fake_hangcheck(prev);
+
+			i915_reset(i915, I915_RESET_QUIET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			GEM_BUG_ON(test_bit(I915_RESET_HANDOFF,
 					    &i915->gpu_error.flags));
@@ -1275,8 +1671,13 @@ static int igt_reset_queue(void *arg)
 			if (prev->fence.error != -EIO) {
 				pr_err("GPU reset not recorded on hanging request [fence.error=%d]!\n",
 				       prev->fence.error);
+<<<<<<< HEAD
 				i915_request_put(rq);
 				i915_request_put(prev);
+=======
+				i915_gem_request_put(rq);
+				i915_gem_request_put(prev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				err = -EINVAL;
 				goto fini;
 			}
@@ -1284,27 +1685,42 @@ static int igt_reset_queue(void *arg)
 			if (rq->fence.error) {
 				pr_err("Fence error status not zero [%d] after unrelated reset\n",
 				       rq->fence.error);
+<<<<<<< HEAD
 				i915_request_put(rq);
 				i915_request_put(prev);
+=======
+				i915_gem_request_put(rq);
+				i915_gem_request_put(prev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				err = -EINVAL;
 				goto fini;
 			}
 
 			if (i915_reset_count(&i915->gpu_error) == reset_count) {
 				pr_err("No GPU reset recorded!\n");
+<<<<<<< HEAD
 				i915_request_put(rq);
 				i915_request_put(prev);
+=======
+				i915_gem_request_put(rq);
+				i915_gem_request_put(prev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				err = -EINVAL;
 				goto fini;
 			}
 
+<<<<<<< HEAD
 			i915_request_put(prev);
+=======
+			i915_gem_request_put(prev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			prev = rq;
 			count++;
 		} while (time_before(jiffies, end_time));
 		pr_info("%s: Completed %d resets\n", engine->name, count);
 
 		*h.batch = MI_BATCH_BUFFER_END;
+<<<<<<< HEAD
 		i915_gem_chipset_flush(i915);
 
 		i915_request_put(prev);
@@ -1312,6 +1728,11 @@ static int igt_reset_queue(void *arg)
 		err = igt_flush_test(i915, I915_WAIT_LOCKED);
 		if (err)
 			break;
+=======
+		wmb();
+
+		i915_gem_request_put(prev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 fini:
@@ -1331,7 +1752,11 @@ static int igt_handle_error(void *arg)
 	struct drm_i915_private *i915 = arg;
 	struct intel_engine_cs *engine = i915->engine[RCS];
 	struct hang h;
+<<<<<<< HEAD
 	struct i915_request *rq;
+=======
+	struct drm_i915_gem_request *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_gpu_state *error;
 	int err;
 
@@ -1340,7 +1765,11 @@ static int igt_handle_error(void *arg)
 	if (!intel_has_reset_engine(i915))
 		return 0;
 
+<<<<<<< HEAD
 	if (!engine || !intel_engine_can_store_dword(engine))
+=======
+	if (!intel_engine_can_store_dword(i915->engine[RCS]))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	mutex_lock(&i915->drm.struct_mutex);
@@ -1349,12 +1778,17 @@ static int igt_handle_error(void *arg)
 	if (err)
 		goto err_unlock;
 
+<<<<<<< HEAD
 	rq = hang_create_request(&h, engine);
+=======
+	rq = hang_create_request(&h, engine, i915->kernel_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq)) {
 		err = PTR_ERR(rq);
 		goto err_fini;
 	}
 
+<<<<<<< HEAD
 	i915_request_get(rq);
 	i915_request_add(rq);
 
@@ -1367,6 +1801,13 @@ static int igt_handle_error(void *arg)
 
 		i915_gem_set_wedged(i915);
 
+=======
+	i915_gem_request_get(rq);
+	__i915_add_request(rq, true);
+
+	if (!wait_for_hang(&h, rq)) {
+		pr_err("Failed to start request %x\n", rq->fence.seqno);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EIO;
 		goto err_request;
 	}
@@ -1376,7 +1817,14 @@ static int igt_handle_error(void *arg)
 	/* Temporarily disable error capture */
 	error = xchg(&i915->gpu_error.first_error, (void *)-1);
 
+<<<<<<< HEAD
 	i915_handle_error(i915, ENGINE_MASK(engine->id), 0, NULL);
+=======
+	engine->hangcheck.stalled = true;
+	engine->hangcheck.seqno = intel_engine_get_seqno(engine);
+
+	i915_handle_error(i915, intel_engine_flag(engine), "%s", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	xchg(&i915->gpu_error.first_error, error);
 
@@ -1389,7 +1837,11 @@ static int igt_handle_error(void *arg)
 	}
 
 err_request:
+<<<<<<< HEAD
 	i915_request_put(rq);
+=======
+	i915_gem_request_put(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_fini:
 	hang_fini(&h);
 err_unlock:
@@ -1400,6 +1852,7 @@ err_unlock:
 int intel_hangcheck_live_selftests(struct drm_i915_private *i915)
 {
 	static const struct i915_subtest tests[] = {
+<<<<<<< HEAD
 		SUBTEST(igt_global_reset), /* attempt to recover GPU first */
 		SUBTEST(igt_hang_sanitycheck),
 		SUBTEST(igt_reset_idle_engine),
@@ -1413,10 +1866,21 @@ int intel_hangcheck_live_selftests(struct drm_i915_private *i915)
 	};
 	bool saved_hangcheck;
 	int err;
+=======
+		SUBTEST(igt_hang_sanitycheck),
+		SUBTEST(igt_global_reset),
+		SUBTEST(igt_reset_engine),
+		SUBTEST(igt_reset_active_engines),
+		SUBTEST(igt_wait_reset),
+		SUBTEST(igt_reset_queue),
+		SUBTEST(igt_handle_error),
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_has_gpu_reset(i915))
 		return 0;
 
+<<<<<<< HEAD
 	if (i915_terminally_wedged(&i915->gpu_error))
 		return -EIO; /* we're long past hope of a successful reset */
 
@@ -1433,4 +1897,7 @@ int intel_hangcheck_live_selftests(struct drm_i915_private *i915)
 	intel_runtime_pm_put(i915);
 
 	return err;
+=======
+	return i915_subtests(tests, i915);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

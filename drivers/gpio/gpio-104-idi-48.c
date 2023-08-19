@@ -14,7 +14,10 @@
  * This driver supports the following ACCES devices: 104-IDI-48A,
  * 104-IDI-48AC, 104-IDI-48B, and 104-IDI-48BC.
  */
+<<<<<<< HEAD
 #include <linux/bitmap.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bitops.h>
 #include <linux/device.h>
 #include <linux/errno.h>
@@ -89,6 +92,7 @@ static int idi_48_gpio_get(struct gpio_chip *chip, unsigned offset)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int idi_48_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
 	unsigned long *bits)
 {
@@ -134,6 +138,8 @@ static int idi_48_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void idi_48_irq_ack(struct irq_data *data)
 {
 }
@@ -255,7 +261,11 @@ static irqreturn_t idi_48_irq_handler(int irq, void *dev_id)
 		for_each_set_bit(bit_num, &irq_mask, 8) {
 			gpio = bit_num + boundary * 8;
 
+<<<<<<< HEAD
 			generic_handle_irq(irq_find_mapping(chip->irq.domain,
+=======
+			generic_handle_irq(irq_find_mapping(chip->irqdomain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				gpio));
 		}
 	}
@@ -302,7 +312,10 @@ static int idi_48_probe(struct device *dev, unsigned int id)
 	idi48gpio->chip.get_direction = idi_48_gpio_get_direction;
 	idi48gpio->chip.direction_input = idi_48_gpio_direction_input;
 	idi48gpio->chip.get = idi_48_gpio_get;
+<<<<<<< HEAD
 	idi48gpio->chip.get_multiple = idi_48_gpio_get_multiple;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idi48gpio->base = base[id];
 
 	raw_spin_lock_init(&idi48gpio->lock);

@@ -24,6 +24,41 @@
 
 /* Additional internal-use only BO flags: */
 #define MSM_BO_STOLEN        0x10000000    /* try to use stolen/splash memory */
+<<<<<<< HEAD
+=======
+#define MSM_BO_KEEPATTRS     0x20000000    /* keep h/w bus attributes */
+#define MSM_BO_SKIPSYNC      0x40000000    /* skip dmabuf cpu sync */
+#define MSM_BO_EXTBUF        0x80000000    /* indicate BO is an import buffer */
+
+struct msm_gem_object;
+
+struct msm_gem_aspace_ops {
+	int (*map)(struct msm_gem_address_space *, struct msm_gem_vma *,
+		struct sg_table *sgt, int npages, unsigned int flags);
+
+	void (*unmap)(struct msm_gem_address_space *, struct msm_gem_vma *,
+		struct sg_table *sgt, unsigned int flags);
+
+	void (*destroy)(struct msm_gem_address_space *);
+	void (*add_to_active)(struct msm_gem_address_space *,
+		struct msm_gem_object *);
+	void (*remove_from_active)(struct msm_gem_address_space *,
+		struct msm_gem_object *);
+	int (*register_cb)(struct msm_gem_address_space *,
+			void (*cb)(void *, bool),
+			void *);
+	int (*unregister_cb)(struct msm_gem_address_space *,
+			void (*cb)(void *, bool),
+			void *);
+};
+
+struct aspace_client {
+	void (*cb)(void *, bool);
+	void *cb_data;
+	struct list_head list;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct msm_gem_address_space {
 	const char *name;
@@ -34,6 +69,17 @@ struct msm_gem_address_space {
 	spinlock_t lock; /* Protects drm_mm node allocation/removal */
 	struct msm_mmu *mmu;
 	struct kref kref;
+<<<<<<< HEAD
+=======
+	bool domain_attached;
+	const struct msm_gem_aspace_ops *ops;
+	struct drm_device *dev;
+	/* list of mapped objects */
+	struct list_head active_list;
+	/* list of clients */
+	struct list_head clients;
+	struct mutex list_lock; /* Protects active_list & clients */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct msm_gem_vma {
@@ -91,6 +137,13 @@ struct msm_gem_object {
 	 */
 	struct drm_mm_node *vram_node;
 	struct mutex lock; /* Protects resources associated with bo */
+<<<<<<< HEAD
+=======
+	struct list_head iova_list;
+
+	struct msm_gem_address_space *aspace;
+	bool in_active_list;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #define to_msm_bo(x) container_of(x, struct msm_gem_object, base)
 
@@ -138,6 +191,7 @@ void msm_gem_vunmap(struct drm_gem_object *obj, enum msm_gem_lock subclass);
 struct msm_gem_submit {
 	struct drm_device *dev;
 	struct msm_gpu *gpu;
+<<<<<<< HEAD
 	struct list_head node;   /* node in ring submit list */
 	struct list_head bo_list;
 	struct ww_acquire_ctx ticket;
@@ -148,6 +202,14 @@ struct msm_gem_submit {
 	bool valid;         /* true if no cmdstream patching needed */
 	bool in_rb;         /* "sudo" mode, copy cmds into RB */
 	struct msm_ringbuffer *ring;
+=======
+	struct list_head node;   /* node in gpu submit_list */
+	struct list_head bo_list;
+	struct ww_acquire_ctx ticket;
+	struct dma_fence *fence;
+	struct pid *pid;    /* submitting process */
+	bool valid;         /* true if no cmdstream patching needed */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int nr_cmds;
 	unsigned int nr_bos;
 	struct {

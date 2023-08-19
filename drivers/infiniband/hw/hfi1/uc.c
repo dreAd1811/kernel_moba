@@ -79,7 +79,12 @@ int hfi1_make_uc_req(struct rvt_qp *qp, struct hfi1_pkt_state *ps)
 		if (!(ib_rvt_state_ops[qp->state] & RVT_FLUSH_SEND))
 			goto bail;
 		/* We are in the error state, flush the work request. */
+<<<<<<< HEAD
 		if (qp->s_last == READ_ONCE(qp->s_head))
+=======
+		smp_read_barrier_depends(); /* see post_one_send() */
+		if (qp->s_last == ACCESS_ONCE(qp->s_head))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto bail;
 		/* If DMAs are in progress, we can't flush immediately. */
 		if (iowait_sdma_pending(&priv->s_iowait)) {
@@ -92,6 +97,10 @@ int hfi1_make_uc_req(struct rvt_qp *qp, struct hfi1_pkt_state *ps)
 		goto done_free_tx;
 	}
 
+<<<<<<< HEAD
+=======
+	ps->s_txreq->phdr.hdr.hdr_type = priv->hdr_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (priv->hdr_type == HFI1_PKT_TYPE_9B) {
 		/* header size in 32-bit words LRH+BTH = (8+12)/4. */
 		hwords = 5;
@@ -118,7 +127,12 @@ int hfi1_make_uc_req(struct rvt_qp *qp, struct hfi1_pkt_state *ps)
 		    RVT_PROCESS_NEXT_SEND_OK))
 			goto bail;
 		/* Check if send work queue is empty. */
+<<<<<<< HEAD
 		if (qp->s_cur == READ_ONCE(qp->s_head)) {
+=======
+		smp_read_barrier_depends(); /* see post_one_send() */
+		if (qp->s_cur == ACCESS_ONCE(qp->s_head)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clear_ahg(qp);
 			goto bail;
 		}
@@ -144,6 +158,10 @@ int hfi1_make_uc_req(struct rvt_qp *qp, struct hfi1_pkt_state *ps)
 							: IB_WC_SUCCESS);
 			if (local_ops)
 				atomic_dec(&qp->local_ops_pending);
+<<<<<<< HEAD
+=======
+			qp->s_hdrwords = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto done_free_tx;
 		}
 		/*
@@ -266,12 +284,21 @@ int hfi1_make_uc_req(struct rvt_qp *qp, struct hfi1_pkt_state *ps)
 		break;
 	}
 	qp->s_len -= len;
+<<<<<<< HEAD
 	ps->s_txreq->hdr_dwords = hwords;
+=======
+	qp->s_hdrwords = hwords;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ps->s_txreq->sde = priv->s_sde;
 	ps->s_txreq->ss = &qp->s_sge;
 	ps->s_txreq->s_cur_size = len;
 	hfi1_make_ruc_header(qp, ohdr, bth0 | (qp->s_state << 24),
 			     mask_psn(qp->s_psn++), middle, ps);
+<<<<<<< HEAD
+=======
+	/* pbc */
+	ps->s_txreq->hdr_dwords = qp->s_hdrwords + 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 1;
 
 done_free_tx:
@@ -285,6 +312,10 @@ bail:
 bail_no_tx:
 	ps->s_txreq = NULL;
 	qp->s_flags &= ~RVT_S_BUSY;
+<<<<<<< HEAD
+=======
+	qp->s_hdrwords = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -397,7 +428,11 @@ send_first:
 		if (test_and_clear_bit(RVT_R_REWIND_SGE, &qp->r_aflags)) {
 			qp->r_sge = qp->s_rdma_read_sge;
 		} else {
+<<<<<<< HEAD
 			ret = rvt_get_rwqe(qp, false);
+=======
+			ret = hfi1_rvt_get_rwqe(qp, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0)
 				goto op_err;
 			if (!ret)
@@ -456,7 +491,11 @@ last_imm:
 		wc.status = IB_WC_SUCCESS;
 		wc.qp = &qp->ibqp;
 		wc.src_qp = qp->remote_qpn;
+<<<<<<< HEAD
 		wc.slid = rdma_ah_get_dlid(&qp->remote_ah_attr) & U16_MAX;
+=======
+		wc.slid = rdma_ah_get_dlid(&qp->remote_ah_attr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * It seems that IB mandates the presence of an SL in a
 		 * work completion only for the UD transport (see section
@@ -476,7 +515,12 @@ last_imm:
 		wc.port_num = 0;
 		/* Signal completion event if the solicited bit is set. */
 		rvt_cq_enter(ibcq_to_rvtcq(qp->ibqp.recv_cq), &wc,
+<<<<<<< HEAD
 			     ib_bth_is_solicited(ohdr));
+=======
+			     (ohdr->bth[0] &
+			      cpu_to_be32(IB_BTH_SOLICITED)) != 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case OP(RDMA_WRITE_FIRST):
@@ -542,7 +586,11 @@ rdma_last_imm:
 		if (test_and_clear_bit(RVT_R_REWIND_SGE, &qp->r_aflags)) {
 			rvt_put_ss(&qp->s_rdma_read_sge);
 		} else {
+<<<<<<< HEAD
 			ret = rvt_get_rwqe(qp, true);
+=======
+			ret = hfi1_rvt_get_rwqe(qp, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0)
 				goto op_err;
 			if (!ret)

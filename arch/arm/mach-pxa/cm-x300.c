@@ -23,7 +23,10 @@
 #include <linux/clk.h>
 
 #include <linux/gpio.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dm9000.h>
 #include <linux/leds.h>
 #include <linux/platform_data/rtc-v3020.h>
@@ -32,7 +35,11 @@
 
 #include <linux/i2c.h>
 #include <linux/platform_data/pca953x.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-pxa.h>
+=======
+#include <linux/i2c/pxa-i2c.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/mfd/da903x.h>
 #include <linux/regulator/machine.h>
@@ -344,6 +351,12 @@ static inline void cm_x300_init_bl(void) {}
 #define LCD_SPI_BUS_NUM	(1)
 
 static struct spi_gpio_platform_data cm_x300_spi_gpio_pdata = {
+<<<<<<< HEAD
+=======
+	.sck		= GPIO_LCD_SCL,
+	.mosi		= GPIO_LCD_DIN,
+	.miso		= GPIO_LCD_DOUT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.num_chipselect	= 1,
 };
 
@@ -355,6 +368,7 @@ static struct platform_device cm_x300_spi_gpio = {
 	},
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table cm_x300_spi_gpiod_table = {
 	.dev_id         = "spi_gpio",
 	.table          = {
@@ -370,6 +384,8 @@ static struct gpiod_lookup_table cm_x300_spi_gpiod_table = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct tdo24m_platform_data cm_x300_tdo24m_pdata = {
 	.model = TDO35S,
 };
@@ -380,6 +396,10 @@ static struct spi_board_info cm_x300_spi_devices[] __initdata = {
 		.max_speed_hz		= 1000000,
 		.bus_num		= LCD_SPI_BUS_NUM,
 		.chip_select		= 0,
+<<<<<<< HEAD
+=======
+		.controller_data	= (void *) GPIO_LCD_CS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.platform_data		= &cm_x300_tdo24m_pdata,
 	},
 };
@@ -388,7 +408,10 @@ static void __init cm_x300_init_spi(void)
 {
 	spi_register_board_info(cm_x300_spi_devices,
 				ARRAY_SIZE(cm_x300_spi_devices));
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&cm_x300_spi_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_device_register(&cm_x300_spi_gpio);
 }
 #else
@@ -404,7 +427,11 @@ static void __init cm_x300_init_ac97(void)
 static inline void cm_x300_init_ac97(void) {}
 #endif
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_MTD_NAND_MARVELL)
+=======
+#if defined(CONFIG_MTD_NAND_PXA3xx) || defined(CONFIG_MTD_NAND_PXA3xx_MODULE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mtd_partition cm_x300_nand_partitions[] = {
 	[0] = {
 		.name        = "OBM",
@@ -442,9 +469,17 @@ static struct mtd_partition cm_x300_nand_partitions[] = {
 };
 
 static struct pxa3xx_nand_platform_data cm_x300_nand_info = {
+<<<<<<< HEAD
 	.keep_config	= 1,
 	.parts		= cm_x300_nand_partitions,
 	.nr_parts	= ARRAY_SIZE(cm_x300_nand_partitions),
+=======
+	.enable_arbiter	= 1,
+	.keep_config	= 1,
+	.num_cs		= 1,
+	.parts[0]	= cm_x300_nand_partitions,
+	.nr_parts[0]	= ARRAY_SIZE(cm_x300_nand_partitions),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void __init cm_x300_init_nand(void)
@@ -520,7 +555,11 @@ static int cm_x300_ulpi_phy_reset(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int cm_x300_u2d_init(struct device *dev)
+=======
+static inline int cm_x300_u2d_init(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 
@@ -532,7 +571,11 @@ static int cm_x300_u2d_init(struct device *dev)
 			pr_err("failed to get CLK_POUT: %d\n", err);
 			return err;
 		}
+<<<<<<< HEAD
 		clk_prepare_enable(pout_clk);
+=======
+		clk_enable(pout_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		err = cm_x300_ulpi_phy_reset();
 		if (err) {
@@ -547,7 +590,11 @@ static int cm_x300_u2d_init(struct device *dev)
 static void cm_x300_u2d_exit(struct device *dev)
 {
 	if (cpu_is_pxa310()) {
+<<<<<<< HEAD
 		clk_disable_unprepare(pout_clk);
+=======
+		clk_disable(pout_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clk_put(pout_clk);
 	}
 }

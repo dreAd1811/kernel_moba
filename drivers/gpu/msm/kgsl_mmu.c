@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2002,2007-2019, The Linux Foundation. All rights reserved.
@@ -7,6 +8,32 @@
 
 #include "kgsl_device.h"
 #include "kgsl_mmu.h"
+=======
+/* Copyright (c) 2002,2007-2017,2020-2021, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+#include <linux/export.h>
+#include <linux/types.h>
+#include <linux/device.h>
+#include <linux/spinlock.h>
+#include <linux/genalloc.h>
+#include <linux/slab.h>
+#include <linux/sched.h>
+#include <linux/types.h>
+
+#include "kgsl.h"
+#include "kgsl_mmu.h"
+#include "kgsl_device.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "kgsl_sharedmem.h"
 
 static void pagetable_remove_sysfs_objects(struct kgsl_pagetable *pagetable);
@@ -83,7 +110,11 @@ sysfs_show_entries(struct kobject *kobj,
 	if (pt) {
 		unsigned int val = atomic_read(&pt->stats.entries);
 
+<<<<<<< HEAD
 		ret += scnprintf(buf, PAGE_SIZE, "%d\n", val);
+=======
+		ret += snprintf(buf, PAGE_SIZE, "%d\n", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kgsl_put_pagetable(pt);
@@ -103,7 +134,11 @@ sysfs_show_mapped(struct kobject *kobj,
 	if (pt) {
 		uint64_t val = atomic_long_read(&pt->stats.mapped);
 
+<<<<<<< HEAD
 		ret += scnprintf(buf, PAGE_SIZE, "%llu\n", val);
+=======
+		ret += snprintf(buf, PAGE_SIZE, "%llu\n", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kgsl_put_pagetable(pt);
@@ -123,7 +158,11 @@ sysfs_show_max_mapped(struct kobject *kobj,
 	if (pt) {
 		uint64_t val = atomic_long_read(&pt->stats.max_mapped);
 
+<<<<<<< HEAD
 		ret += scnprintf(buf, PAGE_SIZE, "%llu\n", val);
+=======
+		ret += snprintf(buf, PAGE_SIZE, "%llu\n", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kgsl_put_pagetable(pt);
@@ -424,7 +463,12 @@ void kgsl_mmu_put_gpuaddr(struct kgsl_memdesc *memdesc)
 	if (memdesc->size == 0 || memdesc->gpuaddr == 0)
 		return;
 
+<<<<<<< HEAD
 	if (!kgsl_memdesc_is_global(memdesc))
+=======
+	if (!kgsl_memdesc_is_global(memdesc) &&
+		(KGSL_MEMDESC_MAPPED & memdesc->priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unmap_fail = kgsl_mmu_unmap(pagetable, memdesc);
 
 	/*
@@ -435,10 +479,23 @@ void kgsl_mmu_put_gpuaddr(struct kgsl_memdesc *memdesc)
 	if (PT_OP_VALID(pagetable, put_gpuaddr) && (unmap_fail == 0))
 		pagetable->pt_ops->put_gpuaddr(memdesc);
 
+<<<<<<< HEAD
 	if (!kgsl_memdesc_is_global(memdesc))
 		memdesc->gpuaddr = 0;
 
 	memdesc->pagetable = NULL;
+=======
+	memdesc->pagetable = NULL;
+
+	/*
+	 * If SVM tries to take a GPU address it will lose the race until the
+	 * gpuaddr returns to zero so we shouldn't need to worry about taking a
+	 * lock here
+	 */
+	if (!kgsl_memdesc_is_global(memdesc))
+		memdesc->gpuaddr = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(kgsl_mmu_put_gpuaddr);
 
@@ -638,9 +695,17 @@ static bool nommu_gpuaddr_in_range(struct kgsl_pagetable *pagetable,
 static int nommu_get_gpuaddr(struct kgsl_pagetable *pagetable,
 		struct kgsl_memdesc *memdesc)
 {
+<<<<<<< HEAD
 	if (WARN_ONCE(memdesc->sgt->nents > 1,
 		"Attempt to map non-contiguous memory with NOMMU\n"))
 		return -EINVAL;
+=======
+	if (memdesc->sgt->nents > 1) {
+		WARN_ONCE(1,
+			"Attempt to map non-contiguous memory with NOMMU\n");
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memdesc->gpuaddr = (uint64_t) sg_phys(memdesc->sgt->sgl);
 
@@ -725,11 +790,39 @@ static struct {
 	{ "nommu", KGSL_MMU_TYPE_NONE, &kgsl_nommu_ops },
 };
 
+<<<<<<< HEAD
 int kgsl_mmu_probe(struct kgsl_device *device)
+=======
+int kgsl_mmu_probe(struct kgsl_device *device, char *mmutype)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kgsl_mmu *mmu = &device->mmu;
 	int ret, i;
 
+<<<<<<< HEAD
+=======
+	if (mmutype != NULL) {
+		for (i = 0; i < ARRAY_SIZE(kgsl_mmu_subtypes); i++) {
+			if (strcmp(kgsl_mmu_subtypes[i].name, mmutype))
+				continue;
+
+			ret = kgsl_mmu_subtypes[i].ops->probe(device);
+
+			if (ret == 0) {
+				mmu->type = kgsl_mmu_subtypes[i].type;
+				mmu->mmu_ops = kgsl_mmu_subtypes[i].ops;
+
+				if (MMU_OP_VALID(mmu, mmu_init))
+					return mmu->mmu_ops->mmu_init(mmu);
+			}
+
+			return ret;
+		}
+
+		KGSL_CORE_ERR("mmu: MMU type '%s' unknown\n", mmutype);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(kgsl_mmu_subtypes); i++) {
 		ret = kgsl_mmu_subtypes[i].ops->probe(device);
 
@@ -744,7 +837,11 @@ int kgsl_mmu_probe(struct kgsl_device *device)
 		}
 	}
 
+<<<<<<< HEAD
 	dev_err(device->dev, "mmu: couldn't detect any known MMU types\n");
+=======
+	KGSL_CORE_ERR("mmu: couldn't detect any known MMU types\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENODEV;
 }
 EXPORT_SYMBOL(kgsl_mmu_probe);

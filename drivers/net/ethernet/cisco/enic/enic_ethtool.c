@@ -18,7 +18,10 @@
 
 #include <linux/netdevice.h>
 #include <linux/ethtool.h>
+<<<<<<< HEAD
 #include <linux/net_tstamp.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "enic_res.h"
 #include "enic.h"
@@ -177,6 +180,7 @@ static void enic_get_strings(struct net_device *netdev, u32 stringset,
 	}
 }
 
+<<<<<<< HEAD
 static void enic_get_ringparam(struct net_device *netdev,
 			       struct ethtool_ringparam *ring)
 {
@@ -252,6 +256,8 @@ err_out:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int enic_get_sset_count(struct net_device *netdev, int sset)
 {
 	switch (sset) {
@@ -474,6 +480,7 @@ static int enic_grxclsrule(struct enic *enic, struct ethtool_rxnfc *cmd)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int enic_get_rx_flow_hash(struct enic *enic, struct ethtool_rxnfc *cmd)
 {
 	u8 rss_hash_type = 0;
@@ -517,6 +524,8 @@ static int enic_get_rx_flow_hash(struct enic *enic, struct ethtool_rxnfc *cmd)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int enic_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
 			  u32 *rule_locs)
 {
@@ -543,9 +552,12 @@ static int enic_get_rxnfc(struct net_device *dev, struct ethtool_rxnfc *cmd,
 		ret = enic_grxclsrule(enic, cmd);
 		spin_unlock_bh(&enic->rfs_h.lock);
 		break;
+<<<<<<< HEAD
 	case ETHTOOL_GRXFH:
 		ret = enic_get_rx_flow_hash(enic, cmd);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		ret = -EOPNOTSUPP;
 		break;
@@ -625,6 +637,7 @@ static int enic_set_rxfh(struct net_device *netdev, const u32 *indir,
 	return __enic_set_rsskey(enic);
 }
 
+<<<<<<< HEAD
 static int enic_get_ts_info(struct net_device *netdev,
 			    struct ethtool_ts_info *info)
 {
@@ -635,14 +648,19 @@ static int enic_get_ts_info(struct net_device *netdev,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops enic_ethtool_ops = {
 	.get_drvinfo = enic_get_drvinfo,
 	.get_msglevel = enic_get_msglevel,
 	.set_msglevel = enic_set_msglevel,
 	.get_link = ethtool_op_get_link,
 	.get_strings = enic_get_strings,
+<<<<<<< HEAD
 	.get_ringparam = enic_get_ringparam,
 	.set_ringparam = enic_set_ringparam,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_sset_count = enic_get_sset_count,
 	.get_ethtool_stats = enic_get_ethtool_stats,
 	.get_coalesce = enic_get_coalesce,
@@ -654,7 +672,10 @@ static const struct ethtool_ops enic_ethtool_ops = {
 	.get_rxfh = enic_get_rxfh,
 	.set_rxfh = enic_set_rxfh,
 	.get_link_ksettings = enic_get_ksettings,
+<<<<<<< HEAD
 	.get_ts_info = enic_get_ts_info,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void enic_set_ethtool_ops(struct net_device *netdev)

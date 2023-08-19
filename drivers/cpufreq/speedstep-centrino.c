@@ -394,9 +394,15 @@ static int centrino_cpu_init(struct cpufreq_policy *policy)
 
 	policy->cpuinfo.transition_latency = 10000;
 						/* 10uS transition latency */
+<<<<<<< HEAD
 	policy->freq_table = per_cpu(centrino_model, policy->cpu)->op_points;
 
 	return 0;
+=======
+
+	return cpufreq_table_validate_and_show(policy,
+		per_cpu(centrino_model, policy->cpu)->op_points);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int centrino_cpu_exit(struct cpufreq_policy *policy)

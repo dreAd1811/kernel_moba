@@ -30,7 +30,11 @@
 #include <linux/slab.h>
 #include <linux/delay.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ves1x93.h"
 
 
@@ -516,10 +520,17 @@ static const struct dvb_frontend_ops ves1x93_ops = {
 	.delsys = { SYS_DVBS },
 	.info = {
 		.name			= "VLSI VES1x93 DVB-S",
+<<<<<<< HEAD
 		.frequency_min_hz	=   950 * MHz,
 		.frequency_max_hz	=  2150 * MHz,
 		.frequency_stepsize_hz	=   125 * kHz,
 		.frequency_tolerance_hz	= 29500 * kHz,
+=======
+		.frequency_min		= 950000,
+		.frequency_max		= 2150000,
+		.frequency_stepsize	= 125,		 /* kHz for QPSK frontends */
+		.frequency_tolerance	= 29500,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min	= 1000000,
 		.symbol_rate_max	= 45000000,
 	/*	.symbol_rate_tolerance	=	???,*/

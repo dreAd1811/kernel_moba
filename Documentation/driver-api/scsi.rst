@@ -28,7 +28,11 @@ SCSI commands can be transported over just about any kind of bus, and
 are the default protocol for storage devices attached to USB, SATA, SAS,
 Fibre Channel, FireWire, and ATAPI devices. SCSI packets are also
 commonly exchanged over Infiniband,
+<<<<<<< HEAD
 `I2O <http://i2o.shadowconnect.com/faq.php>`__, TCP/IP
+=======
+`I20 <http://i2o.shadowconnect.com/faq.php>`__, TCP/IP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 (`iSCSI <https://en.wikipedia.org/wiki/ISCSI>`__), even `Parallel
 ports <http://cyberelk.net/tim/parport/parscsi.html>`__.
 
@@ -154,6 +158,15 @@ lists).
 .. kernel-doc:: drivers/scsi/scsi_lib_dma.c
    :export:
 
+<<<<<<< HEAD
+=======
+drivers/scsi/scsi_module.c
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The file drivers/scsi/scsi_module.c contains legacy support for
+old-style host templates. It should never be used by any new driver.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 drivers/scsi/scsi_proc.c
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -218,6 +231,7 @@ mid to lowlevel SCSI driver interface
 .. kernel-doc:: drivers/scsi/hosts.c
    :export:
 
+<<<<<<< HEAD
 drivers/scsi/scsi_common.c
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -226,6 +240,8 @@ general support functions
 .. kernel-doc:: drivers/scsi/scsi_common.c
    :export:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Transport classes
 -----------------
 
@@ -334,5 +350,9 @@ todo
 ~~~~
 
 Parallel (fast/wide/ultra) SCSI, USB, SATA, SAS, Fibre Channel,
+<<<<<<< HEAD
 FireWire, ATAPI devices, Infiniband, I2O, Parallel ports,
+=======
+FireWire, ATAPI devices, Infiniband, I20, iSCSI, Parallel ports,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 netlink...

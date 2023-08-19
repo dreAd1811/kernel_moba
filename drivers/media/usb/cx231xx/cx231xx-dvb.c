@@ -23,12 +23,17 @@
 #include <linux/kernel.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include <media/dvbdev.h>
 #include <media/dmxdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_net.h>
 #include <media/dvb_frontend.h>
 #include <media/v4l2-common.h>
+=======
+#include <media/v4l2-common.h>
+#include <media/videobuf-vmalloc.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/tuner.h>
 
 #include "xc5000.h"
@@ -57,10 +62,16 @@ DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
 #define CX231XX_DVB_NUM_BUFS 5
 #define CX231XX_DVB_MAX_PACKETSIZE 564
 #define CX231XX_DVB_MAX_PACKETS 64
+<<<<<<< HEAD
 #define CX231XX_DVB_MAX_FRONTENDS 2
 
 struct cx231xx_dvb {
 	struct dvb_frontend *frontend[CX231XX_DVB_MAX_FRONTENDS];
+=======
+
+struct cx231xx_dvb {
+	struct dvb_frontend *frontend;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* feed count management */
 	struct mutex lock;
@@ -73,7 +84,11 @@ struct cx231xx_dvb {
 	struct dmx_frontend fe_hw;
 	struct dmx_frontend fe_mem;
 	struct dvb_net net;
+<<<<<<< HEAD
 	struct i2c_client *i2c_client_demod[2];
+=======
+	struct i2c_client *i2c_client_demod;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_client *i2c_client_tuner;
 };
 
@@ -84,7 +99,11 @@ static struct s5h1432_config dvico_s5h1432_config = {
 	.vsb_if        = S5H1432_IF_4000,
 	.inversion     = S5H1432_INVERSION_OFF,
 	.status_mode   = S5H1432_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1432_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1432_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct tda18271_std_map cnxt_rde253s_tda18271_std_map = {
@@ -113,7 +132,11 @@ static struct s5h1411_config tda18271_s5h1411_config = {
 	.qam_if        = S5H1411_IF_4000,
 	.inversion     = S5H1411_INVERSION_ON,
 	.status_mode   = S5H1411_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 static struct s5h1411_config xc5000_s5h1411_config = {
 	.output_mode   = S5H1411_SERIAL_OUTPUT,
@@ -122,7 +145,11 @@ static struct s5h1411_config xc5000_s5h1411_config = {
 	.qam_if        = S5H1411_IF_3250,
 	.inversion     = S5H1411_INVERSION_OFF,
 	.status_mode   = S5H1411_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct lgdt3305_config hcw_lgdt3305_config = {
@@ -160,8 +187,15 @@ static struct tda18271_config pv_tda18271_config = {
 };
 
 static struct lgdt3306a_config hauppauge_955q_lgdt3306a_config = {
+<<<<<<< HEAD
 	.qam_if_khz         = 4000,
 	.vsb_if_khz         = 3250,
+=======
+	.i2c_addr           = 0x59,
+	.qam_if_khz         = 4000,
+	.vsb_if_khz         = 3250,
+	.deny_i2c_rptr      = 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.spectral_inversion = 1,
 	.mpeg_mode          = LGDT3306A_MPEG_SERIAL,
 	.tpclk_edge         = LGDT3306A_TPCLK_RISING_EDGE,
@@ -182,10 +216,17 @@ static inline void print_err_status(struct cx231xx *dev, int packet, int status)
 
 	switch (status) {
 	case -ENOENT:
+<<<<<<< HEAD
 		errmsg = "unlinked synchronously";
 		break;
 	case -ECONNRESET:
 		errmsg = "unlinked asynchronously";
+=======
+		errmsg = "unlinked synchronuously";
+		break;
+	case -ECONNRESET:
+		errmsg = "unlinked asynchronuously";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case -ENOSR:
 		errmsg = "Buffer error (overrun)";
@@ -278,7 +319,11 @@ static int start_streaming(struct cx231xx_dvb *dvb)
 
 	if (dev->USE_ISO) {
 		dev_dbg(dev->dev, "DVB transfer mode is ISO.\n");
+<<<<<<< HEAD
 		cx231xx_set_alt_setting(dev, INDEX_TS1, 5);
+=======
+		cx231xx_set_alt_setting(dev, INDEX_TS1, 4);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = cx231xx_set_mode(dev, CX231XX_DIGITAL_MODE);
 		if (rc < 0)
 			return rc;
@@ -389,17 +434,29 @@ static int attach_xc5000(u8 addr, struct cx231xx *dev)
 	cfg.i2c_adap = cx231xx_get_i2c_adap(dev, dev->board.tuner_i2c_master);
 	cfg.i2c_addr = addr;
 
+<<<<<<< HEAD
 	if (!dev->dvb->frontend[0]) {
+=======
+	if (!dev->dvb->frontend) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev->dev, "%s/2: dvb frontend not attached. Can't attach xc5000\n",
 			dev->name);
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	fe = dvb_attach(xc5000_attach, dev->dvb->frontend[0], &cfg);
 	if (!fe) {
 		dev_err(dev->dev, "%s/2: xc5000 attach failed\n", dev->name);
 		dvb_frontend_detach(dev->dvb->frontend[0]);
 		dev->dvb->frontend[0] = NULL;
+=======
+	fe = dvb_attach(xc5000_attach, dev->dvb->frontend, &cfg);
+	if (!fe) {
+		dev_err(dev->dev, "%s/2: xc5000 attach failed\n", dev->name);
+		dvb_frontend_detach(dev->dvb->frontend);
+		dev->dvb->frontend = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -411,9 +468,15 @@ static int attach_xc5000(u8 addr, struct cx231xx *dev)
 
 int cx231xx_set_analog_freq(struct cx231xx *dev, u32 freq)
 {
+<<<<<<< HEAD
 	if (dev->dvb && dev->dvb->frontend[0]) {
 
 		struct dvb_tuner_ops *dops = &dev->dvb->frontend[0]->ops.tuner_ops;
+=======
+	if ((dev->dvb != NULL) && (dev->dvb->frontend != NULL)) {
+
+		struct dvb_tuner_ops *dops = &dev->dvb->frontend->ops.tuner_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (dops->set_analog_params != NULL) {
 			struct analog_parameters params;
@@ -424,7 +487,11 @@ int cx231xx_set_analog_freq(struct cx231xx *dev, u32 freq)
 			/*params.audmode = ;       */
 
 			/* Set the analog parameters to set the frequency */
+<<<<<<< HEAD
 			dops->set_analog_params(dev->dvb->frontend[0], &params);
+=======
+			dops->set_analog_params(dev->dvb->frontend, &params);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 	}
@@ -436,15 +503,25 @@ int cx231xx_reset_analog_tuner(struct cx231xx *dev)
 {
 	int status = 0;
 
+<<<<<<< HEAD
 	if (dev->dvb && dev->dvb->frontend[0]) {
 
 		struct dvb_tuner_ops *dops = &dev->dvb->frontend[0]->ops.tuner_ops;
+=======
+	if ((dev->dvb != NULL) && (dev->dvb->frontend != NULL)) {
+
+		struct dvb_tuner_ops *dops = &dev->dvb->frontend->ops.tuner_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (dops->init != NULL && !dev->xc_fw_load_done) {
 
 			dev_dbg(dev->dev,
 				"Reloading firmware for XC5000\n");
+<<<<<<< HEAD
 			status = dops->init(dev->dvb->frontend[0]);
+=======
+			status = dops->init(dev->dvb->frontend);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (status == 0) {
 				dev->xc_fw_load_done = 1;
 				dev_dbg(dev->dev,
@@ -484,18 +561,27 @@ static int register_dvb(struct cx231xx_dvb *dvb,
 	dvb_register_media_controller(&dvb->adapter, dev->media_dev);
 
 	/* Ensure all frontends negotiate bus access */
+<<<<<<< HEAD
 	dvb->frontend[0]->ops.ts_bus_ctrl = cx231xx_dvb_bus_ctrl;
 	if (dvb->frontend[1])
 		dvb->frontend[1]->ops.ts_bus_ctrl = cx231xx_dvb_bus_ctrl;
+=======
+	dvb->frontend->ops.ts_bus_ctrl = cx231xx_dvb_bus_ctrl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dvb->adapter.priv = dev;
 
 	/* register frontend */
+<<<<<<< HEAD
 	result = dvb_register_frontend(&dvb->adapter, dvb->frontend[0]);
+=======
+	result = dvb_register_frontend(&dvb->adapter, dvb->frontend);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (result < 0) {
 		dev_warn(dev->dev,
 		       "%s: dvb_register_frontend failed (errno = %d)\n",
 		       dev->name, result);
+<<<<<<< HEAD
 		goto fail_frontend0;
 	}
 
@@ -510,6 +596,9 @@ static int register_dvb(struct cx231xx_dvb *dvb,
 
 		/* MFE lock */
 		dvb->adapter.mfe_shared = 1;
+=======
+		goto fail_frontend;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* register demux stuff */
@@ -587,6 +676,7 @@ fail_fe_hw:
 fail_dmxdev:
 	dvb_dmx_release(&dvb->demux);
 fail_dmx:
+<<<<<<< HEAD
 	if (dvb->frontend[1])
 		dvb_unregister_frontend(dvb->frontend[1]);
 	dvb_unregister_frontend(dvb->frontend[0]);
@@ -595,6 +685,11 @@ fail_frontend1:
 		dvb_frontend_detach(dvb->frontend[1]);
 fail_frontend0:
 	dvb_frontend_detach(dvb->frontend[0]);
+=======
+	dvb_unregister_frontend(dvb->frontend);
+fail_frontend:
+	dvb_frontend_detach(dvb->frontend);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dvb_unregister_adapter(&dvb->adapter);
 fail_adapter:
 	return result;
@@ -602,11 +697,16 @@ fail_adapter:
 
 static void unregister_dvb(struct cx231xx_dvb *dvb)
 {
+<<<<<<< HEAD
+=======
+	struct i2c_client *client;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dvb_net_release(&dvb->net);
 	dvb->demux.dmx.remove_frontend(&dvb->demux.dmx, &dvb->fe_mem);
 	dvb->demux.dmx.remove_frontend(&dvb->demux.dmx, &dvb->fe_hw);
 	dvb_dmxdev_release(&dvb->dmxdev);
 	dvb_dmx_release(&dvb->demux);
+<<<<<<< HEAD
 	if (dvb->frontend[1])
 		dvb_unregister_frontend(dvb->frontend[1]);
 	dvb_unregister_frontend(dvb->frontend[0]);
@@ -623,16 +723,40 @@ static void unregister_dvb(struct cx231xx_dvb *dvb)
 	dvb->i2c_client_demod[1] = NULL;
 	dvb_module_release(dvb->i2c_client_demod[0]);
 	dvb->i2c_client_demod[0] = NULL;
+=======
+	dvb_unregister_frontend(dvb->frontend);
+	dvb_frontend_detach(dvb->frontend);
+	dvb_unregister_adapter(&dvb->adapter);
+	/* remove I2C tuner */
+	client = dvb->i2c_client_tuner;
+	if (client) {
+		module_put(client->dev.driver->owner);
+		i2c_unregister_device(client);
+	}
+	/* remove I2C demod */
+	client = dvb->i2c_client_demod;
+	if (client) {
+		module_put(client->dev.driver->owner);
+		i2c_unregister_device(client);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dvb_init(struct cx231xx *dev)
 {
+<<<<<<< HEAD
 	int result;
 	struct cx231xx_dvb *dvb;
 	struct i2c_adapter *tuner_i2c;
 	struct i2c_adapter *demod_i2c;
 	struct i2c_client *client;
 	struct i2c_adapter *adapter;
+=======
+	int result = 0;
+	struct cx231xx_dvb *dvb;
+	struct i2c_adapter *tuner_i2c;
+	struct i2c_adapter *demod_i2c;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dev->board.has_dvb) {
 		/* This device does not support the extension */
@@ -660,11 +784,19 @@ static int dvb_init(struct cx231xx *dev)
 	case CX231XX_BOARD_CNXT_CARRAERA:
 	case CX231XX_BOARD_CNXT_RDE_250:
 
+<<<<<<< HEAD
 		dev->dvb->frontend[0] = dvb_attach(s5h1432_attach,
 					&dvico_s5h1432_config,
 					demod_i2c);
 
 		if (!dev->dvb->frontend[0]) {
+=======
+		dev->dvb->frontend = dvb_attach(s5h1432_attach,
+					&dvico_s5h1432_config,
+					demod_i2c);
+
+		if (dev->dvb->frontend == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev->dev,
 				"Failed to attach s5h1432 front end\n");
 			result = -EINVAL;
@@ -672,9 +804,15 @@ static int dvb_init(struct cx231xx *dev)
 		}
 
 		/* define general-purpose callback pointer */
+<<<<<<< HEAD
 		dvb->frontend[0]->callback = cx231xx_tuner_callback;
 
 		if (!dvb_attach(xc5000_attach, dev->dvb->frontend[0],
+=======
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		if (!dvb_attach(xc5000_attach, dev->dvb->frontend,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       tuner_i2c,
 			       &cnxt_rde250_tunerconfig)) {
 			result = -EINVAL;
@@ -685,11 +823,19 @@ static int dvb_init(struct cx231xx *dev)
 	case CX231XX_BOARD_CNXT_SHELBY:
 	case CX231XX_BOARD_CNXT_RDU_250:
 
+<<<<<<< HEAD
 		dev->dvb->frontend[0] = dvb_attach(s5h1411_attach,
 					       &xc5000_s5h1411_config,
 					       demod_i2c);
 
 		if (!dev->dvb->frontend[0]) {
+=======
+		dev->dvb->frontend = dvb_attach(s5h1411_attach,
+					       &xc5000_s5h1411_config,
+					       demod_i2c);
+
+		if (dev->dvb->frontend == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev->dev,
 				"Failed to attach s5h1411 front end\n");
 			result = -EINVAL;
@@ -697,9 +843,15 @@ static int dvb_init(struct cx231xx *dev)
 		}
 
 		/* define general-purpose callback pointer */
+<<<<<<< HEAD
 		dvb->frontend[0]->callback = cx231xx_tuner_callback;
 
 		if (!dvb_attach(xc5000_attach, dev->dvb->frontend[0],
+=======
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		if (!dvb_attach(xc5000_attach, dev->dvb->frontend,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       tuner_i2c,
 			       &cnxt_rdu250_tunerconfig)) {
 			result = -EINVAL;
@@ -708,11 +860,19 @@ static int dvb_init(struct cx231xx *dev)
 		break;
 	case CX231XX_BOARD_CNXT_RDE_253S:
 
+<<<<<<< HEAD
 		dev->dvb->frontend[0] = dvb_attach(s5h1432_attach,
 					&dvico_s5h1432_config,
 					demod_i2c);
 
 		if (!dev->dvb->frontend[0]) {
+=======
+		dev->dvb->frontend = dvb_attach(s5h1432_attach,
+					&dvico_s5h1432_config,
+					demod_i2c);
+
+		if (dev->dvb->frontend == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev->dev,
 				"Failed to attach s5h1432 front end\n");
 			result = -EINVAL;
@@ -720,10 +880,17 @@ static int dvb_init(struct cx231xx *dev)
 		}
 
 		/* define general-purpose callback pointer */
+<<<<<<< HEAD
 		dvb->frontend[0]->callback = cx231xx_tuner_callback;
 
 		if (!dvb_attach(tda18271_attach, dev->dvb->frontend[0],
 			       dev->board.tuner_addr, tuner_i2c,
+=======
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		if (!dvb_attach(tda18271_attach, dev->dvb->frontend,
+			       0x60, tuner_i2c,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       &cnxt_rde253s_tunerconfig)) {
 			result = -EINVAL;
 			goto out_free;
@@ -732,11 +899,19 @@ static int dvb_init(struct cx231xx *dev)
 	case CX231XX_BOARD_CNXT_RDU_253S:
 	case CX231XX_BOARD_KWORLD_UB445_USB_HYBRID:
 
+<<<<<<< HEAD
 		dev->dvb->frontend[0] = dvb_attach(s5h1411_attach,
 					       &tda18271_s5h1411_config,
 					       demod_i2c);
 
 		if (!dev->dvb->frontend[0]) {
+=======
+		dev->dvb->frontend = dvb_attach(s5h1411_attach,
+					       &tda18271_s5h1411_config,
+					       demod_i2c);
+
+		if (dev->dvb->frontend == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev->dev,
 				"Failed to attach s5h1411 front end\n");
 			result = -EINVAL;
@@ -744,10 +919,17 @@ static int dvb_init(struct cx231xx *dev)
 		}
 
 		/* define general-purpose callback pointer */
+<<<<<<< HEAD
 		dvb->frontend[0]->callback = cx231xx_tuner_callback;
 
 		if (!dvb_attach(tda18271_attach, dev->dvb->frontend[0],
 			       dev->board.tuner_addr, tuner_i2c,
+=======
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		if (!dvb_attach(tda18271_attach, dev->dvb->frontend,
+			       0x60, tuner_i2c,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       &cnxt_rde253s_tunerconfig)) {
 			result = -EINVAL;
 			goto out_free;
@@ -759,11 +941,19 @@ static int dvb_init(struct cx231xx *dev)
 			 "%s: looking for tuner / demod on i2c bus: %d\n",
 		       __func__, i2c_adapter_id(tuner_i2c));
 
+<<<<<<< HEAD
 		dev->dvb->frontend[0] = dvb_attach(lgdt3305_attach,
 						&hcw_lgdt3305_config,
 						demod_i2c);
 
 		if (!dev->dvb->frontend[0]) {
+=======
+		dev->dvb->frontend = dvb_attach(lgdt3305_attach,
+						&hcw_lgdt3305_config,
+						demod_i2c);
+
+		if (dev->dvb->frontend == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev->dev,
 				"Failed to attach LG3305 front end\n");
 			result = -EINVAL;
@@ -771,15 +961,23 @@ static int dvb_init(struct cx231xx *dev)
 		}
 
 		/* define general-purpose callback pointer */
+<<<<<<< HEAD
 		dvb->frontend[0]->callback = cx231xx_tuner_callback;
 
 		dvb_attach(tda18271_attach, dev->dvb->frontend[0],
 			   dev->board.tuner_addr, tuner_i2c,
+=======
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		dvb_attach(tda18271_attach, dev->dvb->frontend,
+			   0x60, tuner_i2c,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   &hcw_tda18271_config);
 		break;
 
 	case CX231XX_BOARD_HAUPPAUGE_930C_HD_1113xx:
 	{
+<<<<<<< HEAD
 		struct si2165_platform_data si2165_pdata = {};
 
 		/* attach demod */
@@ -804,6 +1002,47 @@ static int dvb_init(struct cx231xx *dev)
 
 		dvb_attach(tda18271_attach, dev->dvb->frontend[0],
 			dev->board.tuner_addr, tuner_i2c,
+=======
+		struct i2c_client *client;
+		struct i2c_board_info info;
+		struct si2165_platform_data si2165_pdata;
+
+		/* attach demod */
+		memset(&si2165_pdata, 0, sizeof(si2165_pdata));
+		si2165_pdata.fe = &dev->dvb->frontend;
+		si2165_pdata.chip_mode = SI2165_MODE_PLL_XTAL,
+		si2165_pdata.ref_freq_Hz = 16000000,
+
+		memset(&info, 0, sizeof(struct i2c_board_info));
+		strlcpy(info.type, "si2165", I2C_NAME_SIZE);
+		info.addr = 0x64;
+		info.platform_data = &si2165_pdata;
+		request_module(info.type);
+		client = i2c_new_device(demod_i2c, &info);
+		if (client == NULL || client->dev.driver == NULL || dev->dvb->frontend == NULL) {
+			dev_err(dev->dev,
+				"Failed to attach SI2165 front end\n");
+			result = -EINVAL;
+			goto out_free;
+		}
+
+		if (!try_module_get(client->dev.driver->owner)) {
+			i2c_unregister_device(client);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		dvb->i2c_client_demod = client;
+
+		dev->dvb->frontend->ops.i2c_gate_ctrl = NULL;
+
+		/* define general-purpose callback pointer */
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		dvb_attach(tda18271_attach, dev->dvb->frontend,
+			0x60,
+			tuner_i2c,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			&hcw_tda18271_config);
 
 		dev->cx231xx_reset_analog_tuner = NULL;
@@ -811,6 +1050,7 @@ static int dvb_init(struct cx231xx *dev)
 	}
 	case CX231XX_BOARD_HAUPPAUGE_930C_HD_1114xx:
 	{
+<<<<<<< HEAD
 		struct si2165_platform_data si2165_pdata = {};
 		struct si2157_config si2157_config = {};
 
@@ -836,11 +1076,56 @@ static int dvb_init(struct cx231xx *dev)
 
 		/* attach tuner */
 		si2157_config.fe = dev->dvb->frontend[0];
+=======
+		struct i2c_client *client;
+		struct i2c_board_info info;
+		struct si2165_platform_data si2165_pdata;
+		struct si2157_config si2157_config;
+
+		/* attach demod */
+		memset(&si2165_pdata, 0, sizeof(si2165_pdata));
+		si2165_pdata.fe = &dev->dvb->frontend;
+		si2165_pdata.chip_mode = SI2165_MODE_PLL_EXT,
+		si2165_pdata.ref_freq_Hz = 24000000,
+
+		memset(&info, 0, sizeof(struct i2c_board_info));
+		strlcpy(info.type, "si2165", I2C_NAME_SIZE);
+		info.addr = 0x64;
+		info.platform_data = &si2165_pdata;
+		request_module(info.type);
+		client = i2c_new_device(demod_i2c, &info);
+		if (client == NULL || client->dev.driver == NULL || dev->dvb->frontend == NULL) {
+			dev_err(dev->dev,
+				"Failed to attach SI2165 front end\n");
+			result = -EINVAL;
+			goto out_free;
+		}
+
+		if (!try_module_get(client->dev.driver->owner)) {
+			i2c_unregister_device(client);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		dvb->i2c_client_demod = client;
+
+		memset(&info, 0, sizeof(struct i2c_board_info));
+
+		dev->dvb->frontend->ops.i2c_gate_ctrl = NULL;
+
+		/* define general-purpose callback pointer */
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		/* attach tuner */
+		memset(&si2157_config, 0, sizeof(si2157_config));
+		si2157_config.fe = dev->dvb->frontend;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_MEDIA_CONTROLLER_DVB
 		si2157_config.mdev = dev->media_dev;
 #endif
 		si2157_config.if_port = 1;
 		si2157_config.inversion = true;
+<<<<<<< HEAD
 
 		/* perform probe/init/attach */
 		client = dvb_module_probe("si2157", NULL, tuner_i2c,
@@ -850,6 +1135,29 @@ static int dvb_init(struct cx231xx *dev)
 			result = -ENODEV;
 			goto out_free;
 		}
+=======
+		strlcpy(info.type, "si2157", I2C_NAME_SIZE);
+		info.addr = 0x60;
+		info.platform_data = &si2157_config;
+		request_module("si2157");
+
+		client = i2c_new_device(
+			tuner_i2c,
+			&info);
+		if (client == NULL || client->dev.driver == NULL) {
+			dvb_frontend_detach(dev->dvb->frontend);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		if (!try_module_get(client->dev.driver->owner)) {
+			i2c_unregister_device(client);
+			dvb_frontend_detach(dev->dvb->frontend);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->cx231xx_reset_analog_tuner = NULL;
 
 		dev->dvb->i2c_client_tuner = client;
@@ -857,6 +1165,7 @@ static int dvb_init(struct cx231xx *dev)
 	}
 	case CX231XX_BOARD_HAUPPAUGE_955Q:
 	{
+<<<<<<< HEAD
 		struct si2157_config si2157_config = {};
 		struct lgdt3306a_config lgdt3306a_config = {};
 
@@ -881,11 +1190,40 @@ static int dvb_init(struct cx231xx *dev)
 
 		/* attach tuner */
 		si2157_config.fe = dev->dvb->frontend[0];
+=======
+		struct i2c_client *client;
+		struct i2c_board_info info;
+		struct si2157_config si2157_config;
+
+		memset(&info, 0, sizeof(struct i2c_board_info));
+
+		dev->dvb->frontend = dvb_attach(lgdt3306a_attach,
+			&hauppauge_955q_lgdt3306a_config,
+			demod_i2c
+			);
+
+		if (dev->dvb->frontend == NULL) {
+			dev_err(dev->dev,
+				"Failed to attach LGDT3306A frontend.\n");
+			result = -EINVAL;
+			goto out_free;
+		}
+
+		dev->dvb->frontend->ops.i2c_gate_ctrl = NULL;
+
+		/* define general-purpose callback pointer */
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		/* attach tuner */
+		memset(&si2157_config, 0, sizeof(si2157_config));
+		si2157_config.fe = dev->dvb->frontend;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_MEDIA_CONTROLLER_DVB
 		si2157_config.mdev = dev->media_dev;
 #endif
 		si2157_config.if_port = 1;
 		si2157_config.inversion = true;
+<<<<<<< HEAD
 
 		/* perform probe/init/attach */
 		client = dvb_module_probe("si2157", NULL, tuner_i2c,
@@ -895,6 +1233,29 @@ static int dvb_init(struct cx231xx *dev)
 			result = -ENODEV;
 			goto out_free;
 		}
+=======
+		strlcpy(info.type, "si2157", I2C_NAME_SIZE);
+		info.addr = 0x60;
+		info.platform_data = &si2157_config;
+		request_module("si2157");
+
+		client = i2c_new_device(
+			tuner_i2c,
+			&info);
+		if (client == NULL || client->dev.driver == NULL) {
+			dvb_frontend_detach(dev->dvb->frontend);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		if (!try_module_get(client->dev.driver->owner)) {
+			i2c_unregister_device(client);
+			dvb_frontend_detach(dev->dvb->frontend);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->cx231xx_reset_analog_tuner = NULL;
 
 		dev->dvb->i2c_client_tuner = client;
@@ -907,11 +1268,19 @@ static int dvb_init(struct cx231xx *dev)
 			 "%s: looking for demod on i2c bus: %d\n",
 			 __func__, i2c_adapter_id(tuner_i2c));
 
+<<<<<<< HEAD
 		dev->dvb->frontend[0] = dvb_attach(mb86a20s_attach,
 						&pv_mb86a20s_config,
 						demod_i2c);
 
 		if (!dev->dvb->frontend[0]) {
+=======
+		dev->dvb->frontend = dvb_attach(mb86a20s_attach,
+						&pv_mb86a20s_config,
+						demod_i2c);
+
+		if (dev->dvb->frontend == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_err(dev->dev,
 				"Failed to attach mb86a20s demod\n");
 			result = -EINVAL;
@@ -919,10 +1288,17 @@ static int dvb_init(struct cx231xx *dev)
 		}
 
 		/* define general-purpose callback pointer */
+<<<<<<< HEAD
 		dvb->frontend[0]->callback = cx231xx_tuner_callback;
 
 		dvb_attach(tda18271_attach, dev->dvb->frontend[0],
 			   dev->board.tuner_addr, tuner_i2c,
+=======
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		dvb_attach(tda18271_attach, dev->dvb->frontend,
+			   0x60, tuner_i2c,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   &pv_tda18271_config);
 		break;
 
@@ -930,6 +1306,7 @@ static int dvb_init(struct cx231xx *dev)
 	{
 		struct si2157_config si2157_config = {};
 		struct si2168_config si2168_config = {};
+<<<<<<< HEAD
 
 		/* attach demodulator chip */
 		si2168_config.ts_mode = SI2168_TS_SERIAL; /* from *.inf file */
@@ -949,12 +1326,47 @@ static int dvb_init(struct cx231xx *dev)
 
 		/* attach tuner chip */
 		si2157_config.fe = dev->dvb->frontend[0];
+=======
+		struct i2c_board_info info = {};
+		struct i2c_client *client;
+		struct i2c_adapter *adapter;
+
+		/* attach demodulator chip */
+		si2168_config.ts_mode = SI2168_TS_SERIAL; /* from *.inf file */
+		si2168_config.fe = &dev->dvb->frontend;
+		si2168_config.i2c_adapter = &adapter;
+		si2168_config.ts_clock_inv = true;
+
+		strlcpy(info.type, "si2168", sizeof(info.type));
+		info.addr = dev->board.demod_addr;
+		info.platform_data = &si2168_config;
+
+		request_module(info.type);
+		client = i2c_new_device(demod_i2c, &info);
+
+		if (client == NULL || client->dev.driver == NULL) {
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		if (!try_module_get(client->dev.driver->owner)) {
+			i2c_unregister_device(client);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		dvb->i2c_client_demod = client;
+
+		/* attach tuner chip */
+		si2157_config.fe = dev->dvb->frontend;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_MEDIA_CONTROLLER_DVB
 		si2157_config.mdev = dev->media_dev;
 #endif
 		si2157_config.if_port = 1;
 		si2157_config.inversion = false;
 
+<<<<<<< HEAD
 		/* perform probe/init/attach */
 		client = dvb_module_probe("si2157", NULL, tuner_i2c,
 						dev->board.tuner_addr,
@@ -963,17 +1375,48 @@ static int dvb_init(struct cx231xx *dev)
 			result = -ENODEV;
 			goto out_free;
 		}
+=======
+		memset(&info, 0, sizeof(info));
+		strlcpy(info.type, "si2157", sizeof(info.type));
+		info.addr = dev->board.tuner_addr;
+		info.platform_data = &si2157_config;
+
+		request_module(info.type);
+		client = i2c_new_device(tuner_i2c, &info);
+
+		if (client == NULL || client->dev.driver == NULL) {
+			module_put(dvb->i2c_client_demod->dev.driver->owner);
+			i2c_unregister_device(dvb->i2c_client_demod);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		if (!try_module_get(client->dev.driver->owner)) {
+			i2c_unregister_device(client);
+			module_put(dvb->i2c_client_demod->dev.driver->owner);
+			i2c_unregister_device(dvb->i2c_client_demod);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->cx231xx_reset_analog_tuner = NULL;
 		dev->dvb->i2c_client_tuner = client;
 		break;
 	}
 	case CX231XX_BOARD_ASTROMETA_T2HYBRID:
 	{
+<<<<<<< HEAD
+=======
+		struct i2c_client *client;
+		struct i2c_board_info info = {};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct mn88473_config mn88473_config = {};
 
 		/* attach demodulator chip */
 		mn88473_config.i2c_wr_max = 16;
 		mn88473_config.xtal = 25000000;
+<<<<<<< HEAD
 		mn88473_config.fe = &dev->dvb->frontend[0];
 
 		/* perform probe/init/attach */
@@ -991,10 +1434,40 @@ static int dvb_init(struct cx231xx *dev)
 
 		/* attach tuner chip */
 		dvb_attach(r820t_attach, dev->dvb->frontend[0],
+=======
+		mn88473_config.fe = &dev->dvb->frontend;
+
+		strlcpy(info.type, "mn88473", sizeof(info.type));
+		info.addr = dev->board.demod_addr;
+		info.platform_data = &mn88473_config;
+
+		request_module(info.type);
+		client = i2c_new_device(demod_i2c, &info);
+
+		if (client == NULL || client->dev.driver == NULL) {
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		if (!try_module_get(client->dev.driver->owner)) {
+			i2c_unregister_device(client);
+			result = -ENODEV;
+			goto out_free;
+		}
+
+		dvb->i2c_client_demod = client;
+
+		/* define general-purpose callback pointer */
+		dvb->frontend->callback = cx231xx_tuner_callback;
+
+		/* attach tuner chip */
+		dvb_attach(r820t_attach, dev->dvb->frontend,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   tuner_i2c,
 			   &astrometa_t2hybrid_r820t_config);
 		break;
 	}
+<<<<<<< HEAD
 	case CX231XX_BOARD_HAUPPAUGE_935C:
 	{
 		struct si2157_config si2157_config = {};
@@ -1109,13 +1582,19 @@ static int dvb_init(struct cx231xx *dev)
 			sizeof(struct dvb_tuner_ops));
 		break;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		dev_err(dev->dev,
 			"%s/2: The frontend of your DVB/ATSC card isn't supported yet\n",
 			dev->name);
 		break;
 	}
+<<<<<<< HEAD
 	if (!dvb->frontend[0]) {
+=======
+	if (NULL == dvb->frontend) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev->dev,
 		       "%s/2: frontend initialization failed\n", dev->name);
 		result = -EINVAL;
@@ -1137,6 +1616,7 @@ ret:
 	return result;
 
 out_free:
+<<<<<<< HEAD
 	/* remove I2C tuner */
 	dvb_module_release(dvb->i2c_client_tuner);
 	dvb->i2c_client_tuner = NULL;
@@ -1145,6 +1625,8 @@ out_free:
 	dvb->i2c_client_demod[1] = NULL;
 	dvb_module_release(dvb->i2c_client_demod[0]);
 	dvb->i2c_client_demod[0] = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dvb);
 	dev->dvb = NULL;
 	goto ret;

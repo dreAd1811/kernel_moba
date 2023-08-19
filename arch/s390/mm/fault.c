@@ -50,6 +50,7 @@
 #define VM_FAULT_SIGNAL		0x080000
 #define VM_FAULT_PFAULT		0x100000
 
+<<<<<<< HEAD
 enum fault_type {
 	KERNEL_FAULT,
 	USER_FAULT,
@@ -57,6 +58,8 @@ enum fault_type {
 	GMAP_FAULT,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned long store_indication __read_mostly;
 
 static int __init fault_init(void)
@@ -106,6 +109,7 @@ void bust_spinlocks(int yes)
 }
 
 /*
+<<<<<<< HEAD
  * Find out which address space caused the exception.
  */
 static inline enum fault_type get_fault_type(struct pt_regs *regs)
@@ -137,6 +141,29 @@ static inline enum fault_type get_fault_type(struct pt_regs *regs)
 	}
 	/* home space exception -> access via kernel ASCE */
 	return KERNEL_FAULT;
+=======
+ * Returns the address space associated with the fault.
+ * Returns 0 for kernel space and 1 for user space.
+ */
+static inline int user_space_fault(struct pt_regs *regs)
+{
+	unsigned long trans_exc_code;
+
+	/*
+	 * The lowest two bits of the translation exception
+	 * identification indicate which paging table was used.
+	 */
+	trans_exc_code = regs->int_parm_long & 3;
+	if (trans_exc_code == 3) /* home space -> kernel */
+		return 0;
+	if (user_mode(regs))
+		return 1;
+	if (trans_exc_code == 2) /* secondary space -> set_fs */
+		return current->thread.mm_segment.ar4;
+	if (current->flags & PF_VCPU)
+		return 1;
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bad_address(void *p)
@@ -221,6 +248,7 @@ static void dump_fault_info(struct pt_regs *regs)
 		break;
 	}
 	pr_cont("mode while using ");
+<<<<<<< HEAD
 	switch (get_fault_type(regs)) {
 	case USER_FAULT:
 		asce = S390_lowcore.user_asce;
@@ -238,6 +266,22 @@ static void dump_fault_info(struct pt_regs *regs)
 		asce = S390_lowcore.kernel_asce;
 		pr_cont("kernel ");
 		break;
+=======
+	if (!user_space_fault(regs)) {
+		asce = S390_lowcore.kernel_asce;
+		pr_cont("kernel ");
+	}
+#ifdef CONFIG_PGSTE
+	else if ((current->flags & PF_VCPU) && S390_lowcore.gmap) {
+		struct gmap *gmap = (struct gmap *)S390_lowcore.gmap;
+		asce = gmap->asce;
+		pr_cont("gmap ");
+	}
+#endif
+	else {
+		asce = S390_lowcore.user_asce;
+		pr_cont("user ");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	pr_cont("ASCE.\n");
 	dump_pagetable(asce, regs->int_parm_long & __FAIL_ADDR_MASK);
@@ -268,10 +312,21 @@ void report_user_fault(struct pt_regs *regs, long signr, int is_mm_fault)
  */
 static noinline void do_sigsegv(struct pt_regs *regs, int si_code)
 {
+<<<<<<< HEAD
 	report_user_fault(regs, SIGSEGV, 1);
 	force_sig_fault(SIGSEGV, si_code,
 			(void __user *)(regs->int_parm_long & __FAIL_ADDR_MASK),
 			current);
+=======
+	struct siginfo si;
+
+	report_user_fault(regs, SIGSEGV, 1);
+	si.si_signo = SIGSEGV;
+	si.si_errno = 0;
+	si.si_code = si_code;
+	si.si_addr = (void __user *)(regs->int_parm_long & __FAIL_ADDR_MASK);
+	force_sig_info(SIGSEGV, &si, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static noinline void do_no_context(struct pt_regs *regs)
@@ -289,7 +344,11 @@ static noinline void do_no_context(struct pt_regs *regs)
 	 * Oops. The kernel tried to access some bad page. We'll have to
 	 * terminate things with extreme prejudice.
 	 */
+<<<<<<< HEAD
 	if (get_fault_type(regs) == KERNEL_FAULT)
+=======
+	if (!user_space_fault(regs))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_ALERT "Unable to handle kernel pointer dereference"
 		       " in virtual kernel address space\n");
 	else
@@ -315,13 +374,27 @@ static noinline void do_low_address(struct pt_regs *regs)
 
 static noinline void do_sigbus(struct pt_regs *regs)
 {
+<<<<<<< HEAD
+=======
+	struct task_struct *tsk = current;
+	struct siginfo si;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Send a sigbus, regardless of whether we were in kernel
 	 * or user mode.
 	 */
+<<<<<<< HEAD
 	force_sig_fault(SIGBUS, BUS_ADRERR,
 			(void __user *)(regs->int_parm_long & __FAIL_ADDR_MASK),
 			current);
+=======
+	si.si_signo = SIGBUS;
+	si.si_errno = 0;
+	si.si_code = BUS_ADRERR;
+	si.si_addr = (void __user *)(regs->int_parm_long & __FAIL_ADDR_MASK);
+	force_sig_info(SIGBUS, &si, tsk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static noinline int signal_return(struct pt_regs *regs)
@@ -344,8 +417,12 @@ static noinline int signal_return(struct pt_regs *regs)
 	return -EACCES;
 }
 
+<<<<<<< HEAD
 static noinline void do_fault_error(struct pt_regs *regs, int access,
 					vm_fault_t fault)
+=======
+static noinline void do_fault_error(struct pt_regs *regs, int access, int fault)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int si_code;
 
@@ -405,6 +482,7 @@ static noinline void do_fault_error(struct pt_regs *regs, int access,
  *   11       Page translation     ->  Not present       (nullification)
  *   3b       Region third trans.  ->  Not present       (nullification)
  */
+<<<<<<< HEAD
 static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
 {
 	struct gmap *gmap;
@@ -416,6 +494,20 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
 	unsigned long address;
 	unsigned int flags;
 	vm_fault_t fault;
+=======
+static inline int do_exception(struct pt_regs *regs, int access)
+{
+#ifdef CONFIG_PGSTE
+	struct gmap *gmap;
+#endif
+	struct task_struct *tsk;
+	struct mm_struct *mm;
+	struct vm_area_struct *vma;
+	unsigned long trans_exc_code;
+	unsigned long address;
+	unsigned int flags;
+	int fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tsk = current;
 	/*
@@ -436,6 +528,7 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
 	 * user context.
 	 */
 	fault = VM_FAULT_BADCONTEXT;
+<<<<<<< HEAD
 	type = get_fault_type(regs);
 	switch (type) {
 	case KERNEL_FAULT:
@@ -449,6 +542,10 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
 			goto out;
 		break;
 	}
+=======
+	if (unlikely(!user_space_fault(regs) || faulthandler_disabled() || !mm))
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	address = trans_exc_code & __FAIL_ADDR_MASK;
 	perf_sw_event(PERF_COUNT_SW_PAGE_FAULTS, 1, regs, address);
@@ -459,9 +556,16 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
 		flags |= FAULT_FLAG_WRITE;
 	down_read(&mm->mmap_sem);
 
+<<<<<<< HEAD
 	gmap = NULL;
 	if (IS_ENABLED(CONFIG_PGSTE) && type == GMAP_FAULT) {
 		gmap = (struct gmap *) S390_lowcore.gmap;
+=======
+#ifdef CONFIG_PGSTE
+	gmap = (current->flags & PF_VCPU) ?
+		(struct gmap *) S390_lowcore.gmap : NULL;
+	if (gmap) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		current->thread.gmap_addr = address;
 		current->thread.gmap_write_flag = !!(flags & FAULT_FLAG_WRITE);
 		current->thread.gmap_int_code = regs->int_code & 0xffff;
@@ -473,6 +577,10 @@ static inline vm_fault_t do_exception(struct pt_regs *regs, int access)
 		if (gmap->pfault_enabled)
 			flags |= FAULT_FLAG_RETRY_NOWAIT;
 	}
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 retry:
 	fault = VM_FAULT_BADMAP;
@@ -529,14 +637,23 @@ retry:
 				      regs, address);
 		}
 		if (fault & VM_FAULT_RETRY) {
+<<<<<<< HEAD
 			if (IS_ENABLED(CONFIG_PGSTE) && gmap &&
 			    (flags & FAULT_FLAG_RETRY_NOWAIT)) {
+=======
+#ifdef CONFIG_PGSTE
+			if (gmap && (flags & FAULT_FLAG_RETRY_NOWAIT)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* FAULT_FLAG_RETRY_NOWAIT has been set,
 				 * mmap_sem has not been released */
 				current->thread.gmap_pfault = 1;
 				fault = VM_FAULT_PFAULT;
 				goto out_up;
 			}
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Clear FAULT_FLAG_ALLOW_RETRY to avoid any risk
 			 * of starvation. */
 			flags &= ~(FAULT_FLAG_ALLOW_RETRY |
@@ -546,7 +663,12 @@ retry:
 			goto retry;
 		}
 	}
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_PGSTE) && gmap) {
+=======
+#ifdef CONFIG_PGSTE
+	if (gmap) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		address =  __gmap_link(gmap, current->thread.gmap_addr,
 				       address);
 		if (address == -EFAULT) {
@@ -558,6 +680,10 @@ retry:
 			goto out_up;
 		}
 	}
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fault = 0;
 out_up:
 	up_read(&mm->mmap_sem);
@@ -568,8 +694,12 @@ out:
 void do_protection_exception(struct pt_regs *regs)
 {
 	unsigned long trans_exc_code;
+<<<<<<< HEAD
 	int access;
 	vm_fault_t fault;
+=======
+	int access, fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	trans_exc_code = regs->int_parm_long;
 	/*
@@ -604,8 +734,12 @@ NOKPROBE_SYMBOL(do_protection_exception);
 
 void do_dat_exception(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	int access;
 	vm_fault_t fault;
+=======
+	int access, fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	access = VM_READ | VM_EXEC | VM_WRITE;
 	fault = do_exception(regs, access);
@@ -727,7 +861,11 @@ static void pfault_interrupt(struct ext_code ext_code,
 		return;
 	inc_irq_stat(IRQEXT_PFL);
 	/* Get the token (= pid of the affected task). */
+<<<<<<< HEAD
 	pid = param64 & LPP_PID_MASK;
+=======
+	pid = param64 & LPP_PFAULT_PID_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rcu_read_lock();
 	tsk = find_task_by_pid_ns(pid, &init_pid_ns);
 	if (tsk)

@@ -182,7 +182,12 @@ static struct regmap *vexpress_syscfg_regmap_init(struct device *dev,
 		val = energy_quirk;
 	}
 
+<<<<<<< HEAD
 	func = kzalloc(struct_size(func, template, num), GFP_KERNEL);
+=======
+	func = kzalloc(sizeof(*func) + sizeof(*func->template) * num,
+			GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!func)
 		return ERR_PTR(-ENOMEM);
 
@@ -258,15 +263,32 @@ static int vexpress_syscfg_probe(struct platform_device *pdev)
 	INIT_LIST_HEAD(&syscfg->funcs);
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+<<<<<<< HEAD
 	syscfg->base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(syscfg->base))
 		return PTR_ERR(syscfg->base);
+=======
+	if (!devm_request_mem_region(&pdev->dev, res->start,
+			resource_size(res), pdev->name))
+		return -EBUSY;
+
+	syscfg->base = devm_ioremap(&pdev->dev, res->start, resource_size(res));
+	if (!syscfg->base)
+		return -EFAULT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Must use dev.parent (MFD), as that's where DT phandle points at... */
 	bridge = vexpress_config_bridge_register(pdev->dev.parent,
 			&vexpress_syscfg_bridge_ops, syscfg);
+<<<<<<< HEAD
 
 	return PTR_ERR_OR_ZERO(bridge);
+=======
+	if (IS_ERR(bridge))
+		return PTR_ERR(bridge);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct platform_device_id vexpress_syscfg_id_table[] = {

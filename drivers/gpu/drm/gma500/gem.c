@@ -93,7 +93,11 @@ int psb_gem_create(struct drm_file *file, struct drm_device *dev, u64 size,
 		return ret;
 	}
 	/* We have the initial and handle reference but need only one now */
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(&r->gem);
+=======
+	drm_gem_object_unreference_unlocked(&r->gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*handlep = handle;
 	return 0;
 }
@@ -134,13 +138,21 @@ int psb_gem_dumb_create(struct drm_file *file, struct drm_device *dev,
  *	vma->vm_private_data points to the GEM object that is backing this
  *	mapping.
  */
+<<<<<<< HEAD
 vm_fault_t psb_gem_fault(struct vm_fault *vmf)
+=======
+int psb_gem_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_gem_object *obj;
 	struct gtt_range *r;
+<<<<<<< HEAD
 	int err;
 	vm_fault_t ret;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long pfn;
 	pgoff_t page_offset;
 	struct drm_device *dev;
@@ -159,10 +171,16 @@ vm_fault_t psb_gem_fault(struct vm_fault *vmf)
 	/* For now the mmap pins the object and it stays pinned. As things
 	   stand that will do us no harm */
 	if (r->mmapping == 0) {
+<<<<<<< HEAD
 		err = psb_gtt_pin(r);
 		if (err < 0) {
 			dev_err(dev->dev, "gma500: pin failed: %d\n", err);
 			ret = vmf_error(err);
+=======
+		ret = psb_gtt_pin(r);
+		if (ret < 0) {
+			dev_err(dev->dev, "gma500: pin failed: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto fail;
 		}
 		r->mmapping = 1;
@@ -177,9 +195,26 @@ vm_fault_t psb_gem_fault(struct vm_fault *vmf)
 		pfn = (dev_priv->stolen_base + r->offset) >> PAGE_SHIFT;
 	else
 		pfn = page_to_pfn(r->pages[page_offset]);
+<<<<<<< HEAD
 	ret = vmf_insert_pfn(vma, vmf->address, pfn);
 fail:
 	mutex_unlock(&dev_priv->mmap_mutex);
 
 	return ret;
+=======
+	ret = vm_insert_pfn(vma, vmf->address, pfn);
+
+fail:
+	mutex_unlock(&dev_priv->mmap_mutex);
+	switch (ret) {
+	case 0:
+	case -ERESTARTSYS:
+	case -EINTR:
+		return VM_FAULT_NOPAGE;
+	case -ENOMEM:
+		return VM_FAULT_OOM;
+	default:
+		return VM_FAULT_SIGBUS;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

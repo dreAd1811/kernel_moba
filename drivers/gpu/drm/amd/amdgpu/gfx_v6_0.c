@@ -38,12 +38,16 @@
 #include "dce/dce_6_0_sh_mask.h"
 #include "gca/gfx_7_2_enum.h"
 #include "si_enums.h"
+<<<<<<< HEAD
 #include "si.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void gfx_v6_0_set_ring_funcs(struct amdgpu_device *adev);
 static void gfx_v6_0_set_irq_funcs(struct amdgpu_device *adev);
 static void gfx_v6_0_get_cu_info(struct amdgpu_device *adev);
 
+<<<<<<< HEAD
 MODULE_FIRMWARE("amdgpu/tahiti_pfp.bin");
 MODULE_FIRMWARE("amdgpu/tahiti_me.bin");
 MODULE_FIRMWARE("amdgpu/tahiti_ce.bin");
@@ -68,6 +72,32 @@ MODULE_FIRMWARE("amdgpu/hainan_pfp.bin");
 MODULE_FIRMWARE("amdgpu/hainan_me.bin");
 MODULE_FIRMWARE("amdgpu/hainan_ce.bin");
 MODULE_FIRMWARE("amdgpu/hainan_rlc.bin");
+=======
+MODULE_FIRMWARE("radeon/tahiti_pfp.bin");
+MODULE_FIRMWARE("radeon/tahiti_me.bin");
+MODULE_FIRMWARE("radeon/tahiti_ce.bin");
+MODULE_FIRMWARE("radeon/tahiti_rlc.bin");
+
+MODULE_FIRMWARE("radeon/pitcairn_pfp.bin");
+MODULE_FIRMWARE("radeon/pitcairn_me.bin");
+MODULE_FIRMWARE("radeon/pitcairn_ce.bin");
+MODULE_FIRMWARE("radeon/pitcairn_rlc.bin");
+
+MODULE_FIRMWARE("radeon/verde_pfp.bin");
+MODULE_FIRMWARE("radeon/verde_me.bin");
+MODULE_FIRMWARE("radeon/verde_ce.bin");
+MODULE_FIRMWARE("radeon/verde_rlc.bin");
+
+MODULE_FIRMWARE("radeon/oland_pfp.bin");
+MODULE_FIRMWARE("radeon/oland_me.bin");
+MODULE_FIRMWARE("radeon/oland_ce.bin");
+MODULE_FIRMWARE("radeon/oland_rlc.bin");
+
+MODULE_FIRMWARE("radeon/hainan_pfp.bin");
+MODULE_FIRMWARE("radeon/hainan_me.bin");
+MODULE_FIRMWARE("radeon/hainan_ce.bin");
+MODULE_FIRMWARE("radeon/hainan_rlc.bin");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static u32 gfx_v6_0_get_csb_size(struct amdgpu_device *adev);
 static void gfx_v6_0_get_csb_buffer(struct amdgpu_device *adev, volatile u32 *buffer);
@@ -335,7 +365,11 @@ static int gfx_v6_0_init_microcode(struct amdgpu_device *adev)
 	default: BUG();
 	}
 
+<<<<<<< HEAD
 	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_pfp.bin", chip_name);
+=======
+	snprintf(fw_name, sizeof(fw_name), "radeon/%s_pfp.bin", chip_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = request_firmware(&adev->gfx.pfp_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
@@ -346,7 +380,11 @@ static int gfx_v6_0_init_microcode(struct amdgpu_device *adev)
 	adev->gfx.pfp_fw_version = le32_to_cpu(cp_hdr->header.ucode_version);
 	adev->gfx.pfp_feature_version = le32_to_cpu(cp_hdr->ucode_feature_version);
 
+<<<<<<< HEAD
 	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_me.bin", chip_name);
+=======
+	snprintf(fw_name, sizeof(fw_name), "radeon/%s_me.bin", chip_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = request_firmware(&adev->gfx.me_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
@@ -357,7 +395,11 @@ static int gfx_v6_0_init_microcode(struct amdgpu_device *adev)
 	adev->gfx.me_fw_version = le32_to_cpu(cp_hdr->header.ucode_version);
 	adev->gfx.me_feature_version = le32_to_cpu(cp_hdr->ucode_feature_version);
 
+<<<<<<< HEAD
 	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_ce.bin", chip_name);
+=======
+	snprintf(fw_name, sizeof(fw_name), "radeon/%s_ce.bin", chip_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = request_firmware(&adev->gfx.ce_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
@@ -368,7 +410,11 @@ static int gfx_v6_0_init_microcode(struct amdgpu_device *adev)
 	adev->gfx.ce_fw_version = le32_to_cpu(cp_hdr->header.ucode_version);
 	adev->gfx.ce_feature_version = le32_to_cpu(cp_hdr->ucode_feature_version);
 
+<<<<<<< HEAD
 	snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", chip_name);
+=======
+	snprintf(fw_name, sizeof(fw_name), "radeon/%s_rlc.bin", chip_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = request_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
 	if (err)
 		goto out;
@@ -1799,7 +1845,11 @@ static int gfx_v6_0_ring_test_ring(struct amdgpu_ring *ring)
 		DRM_UDELAY(1);
 	}
 	if (i < adev->usec_timeout) {
+<<<<<<< HEAD
 		DRM_DEBUG("ring test on %d succeeded in %d usecs\n", ring->idx, i);
+=======
+		DRM_INFO("ring test on %d succeeded in %d usecs\n", ring->idx, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		DRM_ERROR("amdgpu: ring %d test failed (scratch(0x%04X)=0x%08X)\n",
 			  ring->idx, scratch, tmp);
@@ -1809,6 +1859,20 @@ static int gfx_v6_0_ring_test_ring(struct amdgpu_ring *ring)
 	return r;
 }
 
+<<<<<<< HEAD
+=======
+static void gfx_v6_0_ring_emit_hdp_flush(struct amdgpu_ring *ring)
+{
+	/* flush hdp cache */
+	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+	amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(1) |
+				 WRITE_DATA_DST_SEL(0)));
+	amdgpu_ring_write(ring, mmHDP_MEM_COHERENCY_FLUSH_CNTL);
+	amdgpu_ring_write(ring, 0);
+	amdgpu_ring_write(ring, 0x1);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gfx_v6_0_ring_emit_vgt_flush(struct amdgpu_ring *ring)
 {
 	amdgpu_ring_write(ring, PACKET3(PACKET3_EVENT_WRITE, 0));
@@ -1816,6 +1880,27 @@ static void gfx_v6_0_ring_emit_vgt_flush(struct amdgpu_ring *ring)
 		EVENT_INDEX(0));
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * gfx_v6_0_ring_emit_hdp_invalidate - emit an hdp invalidate on the cp
+ *
+ * @adev: amdgpu_device pointer
+ * @ridx: amdgpu ring index
+ *
+ * Emits an hdp invalidate on the cp.
+ */
+static void gfx_v6_0_ring_emit_hdp_invalidate(struct amdgpu_ring *ring)
+{
+	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+	amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(1) |
+				 WRITE_DATA_DST_SEL(0)));
+	amdgpu_ring_write(ring, mmHDP_DEBUG0);
+	amdgpu_ring_write(ring, 0);
+	amdgpu_ring_write(ring, 0x1);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gfx_v6_0_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
 				     u64 seq, unsigned flags)
 {
@@ -1846,7 +1931,11 @@ static void gfx_v6_0_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
 
 static void gfx_v6_0_ring_emit_ib(struct amdgpu_ring *ring,
 				  struct amdgpu_ib *ib,
+<<<<<<< HEAD
 				  unsigned vmid, bool ctx_switch)
+=======
+				  unsigned vm_id, bool ctx_switch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 header, control = 0;
 
@@ -1861,7 +1950,11 @@ static void gfx_v6_0_ring_emit_ib(struct amdgpu_ring *ring,
 	else
 		header = PACKET3(PACKET3_INDIRECT_BUFFER, 2);
 
+<<<<<<< HEAD
 	control |= ib->length_dw | (vmid << 24);
+=======
+	control |= ib->length_dw | (vm_id << 24);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	amdgpu_ring_write(ring, header);
 	amdgpu_ring_write(ring,
@@ -1923,7 +2016,11 @@ static int gfx_v6_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
 	}
 	tmp = RREG32(scratch);
 	if (tmp == 0xDEADBEEF) {
+<<<<<<< HEAD
 		DRM_DEBUG("ib test on ring %d succeeded\n", ring->idx);
+=======
+		DRM_INFO("ib test on ring %d succeeded\n", ring->idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = 0;
 	} else {
 		DRM_ERROR("amdgpu: ib test failed (scratch(0x%04X)=0x%08X)\n",
@@ -2326,11 +2423,37 @@ static void gfx_v6_0_ring_emit_pipeline_sync(struct amdgpu_ring *ring)
 }
 
 static void gfx_v6_0_ring_emit_vm_flush(struct amdgpu_ring *ring,
+<<<<<<< HEAD
 					unsigned vmid, uint64_t pd_addr)
 {
 	int usepfp = (ring->funcs->type == AMDGPU_RING_TYPE_GFX);
 
 	amdgpu_gmc_emit_flush_gpu_tlb(ring, vmid, pd_addr);
+=======
+					unsigned vm_id, uint64_t pd_addr)
+{
+	int usepfp = (ring->funcs->type == AMDGPU_RING_TYPE_GFX);
+
+	/* write new base address */
+	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+	amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(1) |
+				 WRITE_DATA_DST_SEL(0)));
+	if (vm_id < 8) {
+		amdgpu_ring_write(ring, (mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR + vm_id ));
+	} else {
+		amdgpu_ring_write(ring, (mmVM_CONTEXT8_PAGE_TABLE_BASE_ADDR + (vm_id - 8)));
+	}
+	amdgpu_ring_write(ring, 0);
+	amdgpu_ring_write(ring, pd_addr >> 12);
+
+	/* bits 0-15 are the VM contexts0-15 */
+	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+	amdgpu_ring_write(ring, (WRITE_DATA_ENGINE_SEL(1) |
+				 WRITE_DATA_DST_SEL(0)));
+	amdgpu_ring_write(ring, mmVM_INVALIDATE_REQUEST);
+	amdgpu_ring_write(ring, 0);
+	amdgpu_ring_write(ring, 1 << vm_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* wait for the invalidate to complete */
 	amdgpu_ring_write(ring, PACKET3(PACKET3_WAIT_REG_MEM, 5));
@@ -2355,6 +2478,7 @@ static void gfx_v6_0_ring_emit_vm_flush(struct amdgpu_ring *ring,
 	}
 }
 
+<<<<<<< HEAD
 static void gfx_v6_0_ring_emit_wreg(struct amdgpu_ring *ring,
 				    uint32_t reg, uint32_t val)
 {
@@ -2367,6 +2491,8 @@ static void gfx_v6_0_ring_emit_wreg(struct amdgpu_ring *ring,
 	amdgpu_ring_write(ring, 0);
 	amdgpu_ring_write(ring, val);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void gfx_v6_0_rlc_fini(struct amdgpu_device *adev)
 {
@@ -2928,7 +3054,29 @@ static void gfx_v6_0_get_csb_buffer(struct amdgpu_device *adev,
 
 	buffer[count++] = cpu_to_le32(PACKET3(PACKET3_SET_CONTEXT_REG, 1));
 	buffer[count++] = cpu_to_le32(mmPA_SC_RASTER_CONFIG - PACKET3_SET_CONTEXT_REG_START);
+<<<<<<< HEAD
 	buffer[count++] = cpu_to_le32(adev->gfx.config.rb_config[0][0].raster_config);
+=======
+
+	switch (adev->asic_type) {
+	case CHIP_TAHITI:
+	case CHIP_PITCAIRN:
+		buffer[count++] = cpu_to_le32(0x2a00126a);
+		break;
+	case CHIP_VERDE:
+		buffer[count++] = cpu_to_le32(0x0000124a);
+		break;
+	case CHIP_OLAND:
+		buffer[count++] = cpu_to_le32(0x00000082);
+		break;
+	case CHIP_HAINAN:
+		buffer[count++] = cpu_to_le32(0x00000000);
+		break;
+	default:
+		buffer[count++] = cpu_to_le32(0x00000000);
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	buffer[count++] = cpu_to_le32(PACKET3(PACKET3_PREAMBLE_CNTL, 0));
 	buffer[count++] = cpu_to_le32(PACKET3_PREAMBLE_END_CLEAR_STATE);
@@ -3061,18 +3209,24 @@ static void gfx_v6_0_read_wave_sgprs(struct amdgpu_device *adev, uint32_t simd,
 		start + SQIND_WAVE_SGPRS_OFFSET, size, dst);
 }
 
+<<<<<<< HEAD
 static void gfx_v6_0_select_me_pipe_q(struct amdgpu_device *adev,
 				  u32 me, u32 pipe, u32 q)
 {
 	DRM_INFO("Not implemented\n");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct amdgpu_gfx_funcs gfx_v6_0_gfx_funcs = {
 	.get_gpu_clock_counter = &gfx_v6_0_get_gpu_clock_counter,
 	.select_se_sh = &gfx_v6_0_select_se_sh,
 	.read_wave_data = &gfx_v6_0_read_wave_data,
 	.read_wave_sgprs = &gfx_v6_0_read_wave_sgprs,
+<<<<<<< HEAD
 	.select_me_pipe_q = &gfx_v6_0_select_me_pipe_q
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int gfx_v6_0_early_init(void *handle)
@@ -3484,21 +3638,37 @@ static const struct amdgpu_ring_funcs gfx_v6_0_ring_funcs_gfx = {
 	.get_wptr = gfx_v6_0_ring_get_wptr,
 	.set_wptr = gfx_v6_0_ring_set_wptr_gfx,
 	.emit_frame_size =
+<<<<<<< HEAD
 		5 + 5 + /* hdp flush / invalidate */
 		14 + 14 + 14 + /* gfx_v6_0_ring_emit_fence x3 for user fence, vm fence */
 		7 + 4 + /* gfx_v6_0_ring_emit_pipeline_sync */
 		SI_FLUSH_GPU_TLB_NUM_WREG * 5 + 7 + 6 + /* gfx_v6_0_ring_emit_vm_flush */
+=======
+		5 + /* gfx_v6_0_ring_emit_hdp_flush */
+		5 + /* gfx_v6_0_ring_emit_hdp_invalidate */
+		14 + 14 + 14 + /* gfx_v6_0_ring_emit_fence x3 for user fence, vm fence */
+		7 + 4 + /* gfx_v6_0_ring_emit_pipeline_sync */
+		17 + 6 + /* gfx_v6_0_ring_emit_vm_flush */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		3 + 2, /* gfx_v6_ring_emit_cntxcntl including vgt flush */
 	.emit_ib_size = 6, /* gfx_v6_0_ring_emit_ib */
 	.emit_ib = gfx_v6_0_ring_emit_ib,
 	.emit_fence = gfx_v6_0_ring_emit_fence,
 	.emit_pipeline_sync = gfx_v6_0_ring_emit_pipeline_sync,
 	.emit_vm_flush = gfx_v6_0_ring_emit_vm_flush,
+<<<<<<< HEAD
+=======
+	.emit_hdp_flush = gfx_v6_0_ring_emit_hdp_flush,
+	.emit_hdp_invalidate = gfx_v6_0_ring_emit_hdp_invalidate,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.test_ring = gfx_v6_0_ring_test_ring,
 	.test_ib = gfx_v6_0_ring_test_ib,
 	.insert_nop = amdgpu_ring_insert_nop,
 	.emit_cntxcntl = gfx_v6_ring_emit_cntxcntl,
+<<<<<<< HEAD
 	.emit_wreg = gfx_v6_0_ring_emit_wreg,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct amdgpu_ring_funcs gfx_v6_0_ring_funcs_compute = {
@@ -3509,19 +3679,34 @@ static const struct amdgpu_ring_funcs gfx_v6_0_ring_funcs_compute = {
 	.get_wptr = gfx_v6_0_ring_get_wptr,
 	.set_wptr = gfx_v6_0_ring_set_wptr_compute,
 	.emit_frame_size =
+<<<<<<< HEAD
 		5 + 5 + /* hdp flush / invalidate */
 		7 + /* gfx_v6_0_ring_emit_pipeline_sync */
 		SI_FLUSH_GPU_TLB_NUM_WREG * 5 + 7 + /* gfx_v6_0_ring_emit_vm_flush */
+=======
+		5 + /* gfx_v6_0_ring_emit_hdp_flush */
+		5 + /* gfx_v6_0_ring_emit_hdp_invalidate */
+		7 + /* gfx_v6_0_ring_emit_pipeline_sync */
+		17 + /* gfx_v6_0_ring_emit_vm_flush */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		14 + 14 + 14, /* gfx_v6_0_ring_emit_fence x3 for user fence, vm fence */
 	.emit_ib_size = 6, /* gfx_v6_0_ring_emit_ib */
 	.emit_ib = gfx_v6_0_ring_emit_ib,
 	.emit_fence = gfx_v6_0_ring_emit_fence,
 	.emit_pipeline_sync = gfx_v6_0_ring_emit_pipeline_sync,
 	.emit_vm_flush = gfx_v6_0_ring_emit_vm_flush,
+<<<<<<< HEAD
 	.test_ring = gfx_v6_0_ring_test_ring,
 	.test_ib = gfx_v6_0_ring_test_ib,
 	.insert_nop = amdgpu_ring_insert_nop,
 	.emit_wreg = gfx_v6_0_ring_emit_wreg,
+=======
+	.emit_hdp_flush = gfx_v6_0_ring_emit_hdp_flush,
+	.emit_hdp_invalidate = gfx_v6_0_ring_emit_hdp_invalidate,
+	.test_ring = gfx_v6_0_ring_test_ring,
+	.test_ib = gfx_v6_0_ring_test_ib,
+	.insert_nop = amdgpu_ring_insert_nop,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void gfx_v6_0_set_ring_funcs(struct amdgpu_device *adev)

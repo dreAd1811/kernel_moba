@@ -3,7 +3,10 @@
 #include <linux/linkage.h>
 #include <asm/errno.h>
 #include <asm/cpufeatures.h>
+<<<<<<< HEAD
 #include <asm/mcsafe_test.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/alternative-asm.h>
 #include <asm/export.h>
 
@@ -184,6 +187,7 @@ ENTRY(memcpy_orig)
 ENDPROC(memcpy_orig)
 
 #ifndef CONFIG_UML
+<<<<<<< HEAD
 
 MCSAFE_TEST_CTL
 
@@ -193,6 +197,14 @@ MCSAFE_TEST_CTL
  * Writes to target are posted and don't generate machine checks.
  */
 ENTRY(__memcpy_mcsafe)
+=======
+/*
+ * memcpy_mcsafe_unrolled - memory copy with machine check exception handling
+ * Note that we only catch machine checks when reading the source addresses.
+ * Writes to target are posted and don't generate machine checks.
+ */
+ENTRY(memcpy_mcsafe_unrolled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmpl $8, %edx
 	/* Less than 8 bytes? Go to byte copy loop */
 	jb .L_no_whole_words
@@ -208,23 +220,65 @@ ENTRY(__memcpy_mcsafe)
 	subl $8, %ecx
 	negl %ecx
 	subl %ecx, %edx
+<<<<<<< HEAD
 .L_read_leading_bytes:
 	movb (%rsi), %al
 	MCSAFE_TEST_SRC %rsi 1 .E_leading_bytes
 	MCSAFE_TEST_DST %rdi 1 .E_leading_bytes
 .L_write_leading_bytes:
+=======
+.L_copy_leading_bytes:
+	movb (%rsi), %al
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movb %al, (%rdi)
 	incq %rsi
 	incq %rdi
 	decl %ecx
+<<<<<<< HEAD
 	jnz .L_read_leading_bytes
 
 .L_8byte_aligned:
+=======
+	jnz .L_copy_leading_bytes
+
+.L_8byte_aligned:
+	/* Figure out how many whole cache lines (64-bytes) to copy */
+	movl %edx, %ecx
+	andl $63, %edx
+	shrl $6, %ecx
+	jz .L_no_whole_cache_lines
+
+	/* Loop copying whole cache lines */
+.L_cache_w0: movq (%rsi), %r8
+.L_cache_w1: movq 1*8(%rsi), %r9
+.L_cache_w2: movq 2*8(%rsi), %r10
+.L_cache_w3: movq 3*8(%rsi), %r11
+	movq %r8, (%rdi)
+	movq %r9, 1*8(%rdi)
+	movq %r10, 2*8(%rdi)
+	movq %r11, 3*8(%rdi)
+.L_cache_w4: movq 4*8(%rsi), %r8
+.L_cache_w5: movq 5*8(%rsi), %r9
+.L_cache_w6: movq 6*8(%rsi), %r10
+.L_cache_w7: movq 7*8(%rsi), %r11
+	movq %r8, 4*8(%rdi)
+	movq %r9, 5*8(%rdi)
+	movq %r10, 6*8(%rdi)
+	movq %r11, 7*8(%rdi)
+	leaq 64(%rsi), %rsi
+	leaq 64(%rdi), %rdi
+	decl %ecx
+	jnz .L_cache_w0
+
+	/* Are there any trailing 8-byte words? */
+.L_no_whole_cache_lines:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movl %edx, %ecx
 	andl $7, %edx
 	shrl $3, %ecx
 	jz .L_no_whole_words
 
+<<<<<<< HEAD
 .L_read_words:
 	movq (%rsi), %r8
 	MCSAFE_TEST_SRC %rsi 8 .E_read_words
@@ -235,6 +289,16 @@ ENTRY(__memcpy_mcsafe)
 	addq $8, %rdi
 	decl %ecx
 	jnz .L_read_words
+=======
+	/* Copy trailing words */
+.L_copy_trailing_words:
+	movq (%rsi), %r8
+	mov %r8, (%rdi)
+	leaq 8(%rsi), %rsi
+	leaq 8(%rdi), %rdi
+	decl %ecx
+	jnz .L_copy_trailing_words
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Any trailing bytes? */
 .L_no_whole_words:
@@ -243,15 +307,21 @@ ENTRY(__memcpy_mcsafe)
 
 	/* Copy trailing bytes */
 	movl %edx, %ecx
+<<<<<<< HEAD
 .L_read_trailing_bytes:
 	movb (%rsi), %al
 	MCSAFE_TEST_SRC %rsi 1 .E_trailing_bytes
 	MCSAFE_TEST_DST %rdi 1 .E_trailing_bytes
 .L_write_trailing_bytes:
+=======
+.L_copy_trailing_bytes:
+	movb (%rsi), %al
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movb %al, (%rdi)
 	incq %rsi
 	incq %rdi
 	decl %ecx
+<<<<<<< HEAD
 	jnz .L_read_trailing_bytes
 
 	/* Copy successful. Return zero */
@@ -295,4 +365,34 @@ EXPORT_SYMBOL_GPL(__memcpy_mcsafe)
 	_ASM_EXTABLE(.L_write_leading_bytes, .E_leading_bytes)
 	_ASM_EXTABLE(.L_write_words, .E_write_words)
 	_ASM_EXTABLE(.L_write_trailing_bytes, .E_trailing_bytes)
+=======
+	jnz .L_copy_trailing_bytes
+
+	/* Copy successful. Return zero */
+.L_done_memcpy_trap:
+	xorq %rax, %rax
+	ret
+ENDPROC(memcpy_mcsafe_unrolled)
+EXPORT_SYMBOL_GPL(memcpy_mcsafe_unrolled)
+
+	.section .fixup, "ax"
+	/* Return -EFAULT for any failure */
+.L_memcpy_mcsafe_fail:
+	mov	$-EFAULT, %rax
+	ret
+
+	.previous
+
+	_ASM_EXTABLE_FAULT(.L_copy_leading_bytes, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_cache_w0, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_cache_w1, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_cache_w2, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_cache_w3, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_cache_w4, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_cache_w5, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_cache_w6, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_cache_w7, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_copy_trailing_words, .L_memcpy_mcsafe_fail)
+	_ASM_EXTABLE_FAULT(.L_copy_trailing_bytes, .L_memcpy_mcsafe_fail)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

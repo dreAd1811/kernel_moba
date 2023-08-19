@@ -12,8 +12,11 @@
 #include <linux/mm.h>
 #include <linux/hugetlb.h>
 #include <linux/memblock.h>
+<<<<<<< HEAD
 #include <linux/mmu_context.h>
 #include <linux/sched/mm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/ppc-opcode.h>
 #include <asm/tlb.h>
@@ -25,6 +28,7 @@
 #define RIC_FLUSH_PWC 1
 #define RIC_FLUSH_ALL 2
 
+<<<<<<< HEAD
 /*
  * tlbiel instruction for radix, set invalidation
  * i.e., r=1 and is=01 or is=10 or is=11
@@ -88,6 +92,37 @@ void radix__tlbiel_all(unsigned int action)
 		WARN(1, "%s called on pre-POWER9 CPU\n", __func__);
 
 	asm volatile(PPC_INVALIDATE_ERAT "; isync" : : :"memory");
+=======
+static inline void __tlbie_va(unsigned long va, unsigned long pid,
+			      unsigned long ap, unsigned long ric)
+{
+	unsigned long rb,rs,prs,r;
+
+	rb = va & ~(PPC_BITMASK(52, 63));
+	rb |= ap << PPC_BITLSHIFT(58);
+	rs = pid << PPC_BITLSHIFT(31);
+	prs = 1; /* process scoped */
+	r = 1;   /* raidx format */
+
+	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+}
+
+
+static inline void fixup_tlbie_va(unsigned long va, unsigned long pid,
+				  unsigned long ap)
+{
+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
+		asm volatile("ptesync": : :"memory");
+		__tlbie_va(va, 0, ap, RIC_FLUSH_TLB);
+	}
+
+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+		asm volatile("ptesync": : :"memory");
+		__tlbie_va(va, pid, ap, RIC_FLUSH_TLB);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void __tlbiel_pid(unsigned long pid, int set,
@@ -99,13 +134,18 @@ static inline void __tlbiel_pid(unsigned long pid, int set,
 	rb |= set << PPC_BITLSHIFT(51);
 	rs = ((unsigned long)pid) << PPC_BITLSHIFT(31);
 	prs = 1; /* process scoped */
+<<<<<<< HEAD
 	r = 1;   /* radix format */
+=======
+	r = 1;   /* raidx format */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
 		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
 	trace_tlbie(0, 1, rb, rs, ric, prs, r);
 }
 
+<<<<<<< HEAD
 static inline void __tlbie_pid(unsigned long pid, unsigned long ric)
 {
 	unsigned long rb,rs,prs,r;
@@ -236,6 +276,8 @@ static inline void fixup_tlbie_lpid(unsigned long lpid)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We use 128 set in radix mode and 256 set in hpt mode.
  */
@@ -265,6 +307,42 @@ static inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
 	asm volatile(PPC_INVALIDATE_ERAT "; isync" : : :"memory");
 }
 
+<<<<<<< HEAD
+=======
+static inline void __tlbie_pid(unsigned long pid, unsigned long ric)
+{
+	unsigned long rb,rs,prs,r;
+
+	rb = PPC_BIT(53); /* IS = 1 */
+	rs = pid << PPC_BITLSHIFT(31);
+	prs = 1; /* process scoped */
+	r = 1;   /* radix format */
+
+	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+}
+
+static inline void fixup_tlbie_pid(unsigned long pid)
+{
+	/*
+	 * We can use any address for the invalidation, pick one which is
+	 * probably unused as an optimisation.
+	 */
+	unsigned long va = ((1UL << 52) - 1);
+
+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
+		asm volatile("ptesync": : :"memory");
+		__tlbie_pid(0, RIC_FLUSH_TLB);
+	}
+
+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+		asm volatile("ptesync": : :"memory");
+		__tlbie_va(va, pid, mmu_get_ap(MMU_PAGE_64K), RIC_FLUSH_TLB);
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
 {
 	asm volatile("ptesync": : :"memory");
@@ -277,6 +355,10 @@ static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
 	switch (ric) {
 	case RIC_FLUSH_TLB:
 		__tlbie_pid(pid, RIC_FLUSH_TLB);
+<<<<<<< HEAD
+=======
+		fixup_tlbie_pid(pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case RIC_FLUSH_PWC:
 		__tlbie_pid(pid, RIC_FLUSH_PWC);
@@ -284,6 +366,7 @@ static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
 	case RIC_FLUSH_ALL:
 	default:
 		__tlbie_pid(pid, RIC_FLUSH_ALL);
+<<<<<<< HEAD
 	}
 	fixup_tlbie();
 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
@@ -443,6 +526,37 @@ static inline void _tlbie_va_range(unsigned long start, unsigned long end,
 		__tlbie_pid(pid, RIC_FLUSH_PWC);
 	__tlbie_va_range(start, end, pid, page_size, psize);
 	fixup_tlbie();
+=======
+		fixup_tlbie_pid(pid);
+	}
+	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+}
+
+static inline void _tlbiel_va(unsigned long va, unsigned long pid,
+			      unsigned long ap, unsigned long ric)
+{
+	unsigned long rb,rs,prs,r;
+
+	rb = va & ~(PPC_BITMASK(52, 63));
+	rb |= ap << PPC_BITLSHIFT(58);
+	rs = pid << PPC_BITLSHIFT(31);
+	prs = 1; /* process scoped */
+	r = 1;   /* raidx format */
+
+	asm volatile("ptesync": : :"memory");
+	asm volatile(PPC_TLBIEL(%0, %4, %3, %2, %1)
+		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+	asm volatile("ptesync": : :"memory");
+	trace_tlbie(0, 1, rb, rs, ric, prs, r);
+}
+
+static inline void _tlbie_va(unsigned long va, unsigned long pid,
+			     unsigned long ap, unsigned long ric)
+{
+	asm volatile("ptesync": : :"memory");
+	__tlbie_va(va, pid, ap, ric);
+	fixup_tlbie_va(va, pid, ap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
 }
 
@@ -470,7 +584,11 @@ void radix__local_flush_tlb_mm(struct mm_struct *mm)
 EXPORT_SYMBOL(radix__local_flush_tlb_mm);
 
 #ifndef CONFIG_SMP
+<<<<<<< HEAD
 void radix__local_flush_all_mm(struct mm_struct *mm)
+=======
+static void radix__local_flush_all_mm(struct mm_struct *mm)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long pid;
 
@@ -480,18 +598,30 @@ void radix__local_flush_all_mm(struct mm_struct *mm)
 		_tlbiel_pid(pid, RIC_FLUSH_ALL);
 	preempt_enable();
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(radix__local_flush_all_mm);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_SMP */
 
 void radix__local_flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr,
 				       int psize)
 {
 	unsigned long pid;
+<<<<<<< HEAD
 
 	preempt_disable();
 	pid = mm->context.id;
 	if (pid != MMU_NO_CONTEXT)
 		_tlbiel_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
+=======
+	unsigned long ap = mmu_get_ap(psize);
+
+	preempt_disable();
+	pid = mm ? mm->context.id : 0;
+	if (pid != MMU_NO_CONTEXT)
+		_tlbiel_va(vmaddr, pid, ap, RIC_FLUSH_TLB);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	preempt_enable();
 }
 
@@ -499,6 +629,7 @@ void radix__local_flush_tlb_page(struct vm_area_struct *vma, unsigned long vmadd
 {
 #ifdef CONFIG_HUGETLB_PAGE
 	/* need the return fix for nohash.c */
+<<<<<<< HEAD
 	if (is_vm_hugetlb_page(vma))
 		return radix__local_flush_hugetlb_page(vma, vmaddr);
 #endif
@@ -563,10 +694,22 @@ static void exit_flush_lazy_tlbs(struct mm_struct *mm)
 	mm_reset_thread_local(mm);
 }
 
+=======
+	if (vma && is_vm_hugetlb_page(vma))
+		return __local_flush_hugetlb_page(vma, vmaddr);
+#endif
+	radix__local_flush_tlb_page_psize(vma ? vma->vm_mm : NULL, vmaddr,
+					  mmu_virtual_psize);
+}
+EXPORT_SYMBOL(radix__local_flush_tlb_page);
+
+#ifdef CONFIG_SMP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void radix__flush_tlb_mm(struct mm_struct *mm)
 {
 	unsigned long pid;
 
+<<<<<<< HEAD
 	pid = mm->context.id;
 	if (unlikely(pid == MMU_NO_CONTEXT))
 		return;
@@ -591,10 +734,23 @@ void radix__flush_tlb_mm(struct mm_struct *mm)
 local:
 		_tlbiel_pid(pid, RIC_FLUSH_TLB);
 	}
+=======
+	preempt_disable();
+	pid = mm->context.id;
+	if (unlikely(pid == MMU_NO_CONTEXT))
+		goto no_context;
+
+	if (!mm_is_thread_local(mm))
+		_tlbie_pid(pid, RIC_FLUSH_TLB);
+	else
+		_tlbiel_pid(pid, RIC_FLUSH_TLB);
+no_context:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	preempt_enable();
 }
 EXPORT_SYMBOL(radix__flush_tlb_mm);
 
+<<<<<<< HEAD
 static void __flush_all_mm(struct mm_struct *mm, bool fullmm)
 {
 	unsigned long pid;
@@ -624,6 +780,24 @@ void radix__flush_all_mm(struct mm_struct *mm)
 	__flush_all_mm(mm, false);
 }
 EXPORT_SYMBOL(radix__flush_all_mm);
+=======
+static void radix__flush_all_mm(struct mm_struct *mm)
+{
+	unsigned long pid;
+
+	preempt_disable();
+	pid = mm->context.id;
+	if (unlikely(pid == MMU_NO_CONTEXT))
+		goto no_context;
+
+	if (!mm_is_thread_local(mm))
+		_tlbie_pid(pid, RIC_FLUSH_ALL);
+	else
+		_tlbiel_pid(pid, RIC_FLUSH_ALL);
+no_context:
+	preempt_enable();
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void radix__flush_tlb_pwc(struct mmu_gather *tlb, unsigned long addr)
 {
@@ -635,6 +809,7 @@ void radix__flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr,
 				 int psize)
 {
 	unsigned long pid;
+<<<<<<< HEAD
 
 	pid = mm->context.id;
 	if (unlikely(pid == MMU_NO_CONTEXT))
@@ -652,16 +827,37 @@ void radix__flush_tlb_page_psize(struct mm_struct *mm, unsigned long vmaddr,
 local:
 		_tlbiel_va(vmaddr, pid, psize, RIC_FLUSH_TLB);
 	}
+=======
+	unsigned long ap = mmu_get_ap(psize);
+
+	preempt_disable();
+	pid = mm ? mm->context.id : 0;
+	if (unlikely(pid == MMU_NO_CONTEXT))
+		goto bail;
+	if (!mm_is_thread_local(mm))
+		_tlbie_va(vmaddr, pid, ap, RIC_FLUSH_TLB);
+	else
+		_tlbiel_va(vmaddr, pid, ap, RIC_FLUSH_TLB);
+bail:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	preempt_enable();
 }
 
 void radix__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
 {
 #ifdef CONFIG_HUGETLB_PAGE
+<<<<<<< HEAD
 	if (is_vm_hugetlb_page(vma))
 		return radix__flush_hugetlb_page(vma, vmaddr);
 #endif
 	radix__flush_tlb_page_psize(vma->vm_mm, vmaddr, mmu_virtual_psize);
+=======
+	if (vma && is_vm_hugetlb_page(vma))
+		return flush_hugetlb_page(vma, vmaddr);
+#endif
+	radix__flush_tlb_page_psize(vma ? vma->vm_mm : NULL, vmaddr,
+				    mmu_virtual_psize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(radix__flush_tlb_page);
 
@@ -675,6 +871,7 @@ void radix__flush_tlb_kernel_range(unsigned long start, unsigned long end)
 }
 EXPORT_SYMBOL(radix__flush_tlb_kernel_range);
 
+<<<<<<< HEAD
 #define TLB_FLUSH_ALL -1UL
 
 /*
@@ -780,16 +977,28 @@ is_local:
 	preempt_enable();
 }
 
+=======
+/*
+ * Currently, for range flushing, we just do a full mm flush. Because
+ * we use this in code path where we don' track the page size.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void radix__flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
 		     unsigned long end)
 
 {
+<<<<<<< HEAD
 #ifdef CONFIG_HUGETLB_PAGE
 	if (is_vm_hugetlb_page(vma))
 		return radix__flush_hugetlb_tlb_range(vma, start, end);
 #endif
 
 	__radix__flush_tlb_range(vma->vm_mm, start, end, false);
+=======
+	struct mm_struct *mm = vma->vm_mm;
+
+	radix__flush_tlb_mm(mm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(radix__flush_tlb_range);
 
@@ -808,6 +1017,7 @@ static int radix_get_mmu_psize(int page_size)
 	return psize;
 }
 
+<<<<<<< HEAD
 /*
  * Flush partition scoped LPID address translation for all CPUs.
  */
@@ -854,11 +1064,14 @@ EXPORT_SYMBOL_GPL(radix__local_flush_tlb_lpid_guest);
 static void radix__flush_tlb_pwc_range_psize(struct mm_struct *mm, unsigned long start,
 				  unsigned long end, int psize);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void radix__tlb_flush(struct mmu_gather *tlb)
 {
 	int psize = 0;
 	struct mm_struct *mm = tlb->mm;
 	int page_size = tlb->page_size;
+<<<<<<< HEAD
 	unsigned long start = tlb->start;
 	unsigned long end = tlb->end;
 
@@ -968,10 +1181,33 @@ is_local:
 	}
 	preempt_enable();
 }
+=======
+
+	psize = radix_get_mmu_psize(page_size);
+	/*
+	 * if page size is not something we understand, do a full mm flush
+	 */
+	if (psize != -1 && !tlb->fullmm && !tlb->need_flush_all)
+		radix__flush_tlb_range_psize(mm, tlb->start, tlb->end, psize);
+	else if (tlb->need_flush_all) {
+		tlb->need_flush_all = 0;
+		radix__flush_all_mm(mm);
+	} else
+		radix__flush_tlb_mm(mm);
+}
+
+#define TLB_FLUSH_ALL -1UL
+/*
+ * Number of pages above which we will do a bcast tlbie. Just a
+ * number at this point copied from x86
+ */
+static unsigned long tlb_single_page_flush_ceiling __read_mostly = 33;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void radix__flush_tlb_range_psize(struct mm_struct *mm, unsigned long start,
 				  unsigned long end, int psize)
 {
+<<<<<<< HEAD
 	return __radix__flush_tlb_range_psize(mm, start, end, psize, false);
 }
 
@@ -979,20 +1215,64 @@ static void radix__flush_tlb_pwc_range_psize(struct mm_struct *mm, unsigned long
 				  unsigned long end, int psize)
 {
 	__radix__flush_tlb_range_psize(mm, start, end, psize, true);
+=======
+	unsigned long pid;
+	unsigned long addr;
+	int local = mm_is_thread_local(mm);
+	unsigned long ap = mmu_get_ap(psize);
+	unsigned long page_size = 1UL << mmu_psize_defs[psize].shift;
+
+
+	preempt_disable();
+	pid = mm ? mm->context.id : 0;
+	if (unlikely(pid == MMU_NO_CONTEXT))
+		goto err_out;
+
+	if (end == TLB_FLUSH_ALL ||
+	    (end - start) > tlb_single_page_flush_ceiling * page_size) {
+		if (local)
+			_tlbiel_pid(pid, RIC_FLUSH_TLB);
+		else
+			_tlbie_pid(pid, RIC_FLUSH_TLB);
+		goto err_out;
+	}
+	for (addr = start; addr < end; addr += page_size) {
+
+		if (local)
+			_tlbiel_va(addr, pid, ap, RIC_FLUSH_TLB);
+		else
+			_tlbie_va(addr, pid, ap, RIC_FLUSH_TLB);
+	}
+err_out:
+	preempt_enable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_TRANSPARENT_HUGEPAGE
 void radix__flush_tlb_collapsed_pmd(struct mm_struct *mm, unsigned long addr)
 {
+<<<<<<< HEAD
 	unsigned long pid, end;
 
 	pid = mm->context.id;
 	if (unlikely(pid == MMU_NO_CONTEXT))
 		return;
+=======
+	int local = mm_is_thread_local(mm);
+	unsigned long ap = mmu_get_ap(mmu_virtual_psize);
+	unsigned long pid, end;
+
+
+	pid = mm ? mm->context.id : 0;
+	preempt_disable();
+	if (unlikely(pid == MMU_NO_CONTEXT))
+		goto no_context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* 4k page size, just blow the world */
 	if (PAGE_SIZE == 0x1000) {
 		radix__flush_all_mm(mm);
+<<<<<<< HEAD
 		return;
 	}
 
@@ -1013,10 +1293,74 @@ local:
 		_tlbiel_va_range(addr, end, pid, PAGE_SIZE, mmu_virtual_psize, true);
 	}
 
+=======
+		preempt_enable();
+		return;
+	}
+
+	/* Otherwise first do the PWC */
+	if (local)
+		_tlbiel_pid(pid, RIC_FLUSH_PWC);
+	else
+		_tlbie_pid(pid, RIC_FLUSH_PWC);
+
+	/* Then iterate the pages */
+	end = addr + HPAGE_PMD_SIZE;
+	for (; addr < end; addr += PAGE_SIZE) {
+		if (local)
+			_tlbiel_va(addr, pid, ap, RIC_FLUSH_TLB);
+		else
+			_tlbie_va(addr, pid, ap, RIC_FLUSH_TLB);
+	}
+no_context:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	preempt_enable();
 }
 #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
 
+<<<<<<< HEAD
+=======
+void radix__flush_tlb_lpid_va(unsigned long lpid, unsigned long gpa,
+			      unsigned long page_size)
+{
+	unsigned long rb,rs,prs,r;
+	unsigned long ap;
+	unsigned long ric = RIC_FLUSH_TLB;
+
+	ap = mmu_get_ap(radix_get_mmu_psize(page_size));
+	rb = gpa & ~(PPC_BITMASK(52, 63));
+	rb |= ap << PPC_BITLSHIFT(58);
+	rs = lpid & ((1UL << 32) - 1);
+	prs = 0; /* process scoped */
+	r = 1;   /* raidx format */
+
+	asm volatile("ptesync": : :"memory");
+	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+	trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
+}
+EXPORT_SYMBOL(radix__flush_tlb_lpid_va);
+
+void radix__flush_tlb_lpid(unsigned long lpid)
+{
+	unsigned long rb,rs,prs,r;
+	unsigned long ric = RIC_FLUSH_ALL;
+
+	rb = 0x2 << PPC_BITLSHIFT(53); /* IS = 2 */
+	rs = lpid & ((1UL << 32) - 1);
+	prs = 0; /* partition scoped */
+	r = 1;   /* raidx format */
+
+	asm volatile("ptesync": : :"memory");
+	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+	trace_tlbie(lpid, 0, rb, rs, ric, prs, r);
+}
+EXPORT_SYMBOL(radix__flush_tlb_lpid);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void radix__flush_pmd_tlb_range(struct vm_area_struct *vma,
 				unsigned long start, unsigned long end)
 {
@@ -1031,7 +1375,11 @@ void radix__flush_tlb_all(void)
 
 	rb = 0x3 << PPC_BITLSHIFT(53); /* IS = 3 */
 	prs = 0; /* partition scoped */
+<<<<<<< HEAD
 	r = 1;   /* radix format */
+=======
+	r = 1;   /* raidx format */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rs = 1 & ((1UL << 32) - 1); /* any LPID value to flush guest mappings */
 
 	asm volatile("ptesync": : :"memory");
@@ -1048,10 +1396,35 @@ void radix__flush_tlb_all(void)
 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 extern void radix_kvm_prefetch_workaround(struct mm_struct *mm)
 {
 	unsigned long pid = mm->context.id;
+=======
+void radix__flush_tlb_pte_p9_dd1(unsigned long old_pte, struct mm_struct *mm,
+				 unsigned long address)
+{
+	/*
+	 * We track page size in pte only for DD1, So we can
+	 * call this only on DD1.
+	 */
+	if (!cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+		VM_WARN_ON(1);
+		return;
+	}
+
+	if (old_pte & R_PAGE_LARGE)
+		radix__flush_tlb_page_psize(mm, address, MMU_PAGE_2M);
+	else
+		radix__flush_tlb_page_psize(mm, address, mmu_virtual_psize);
+}
+
+#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+extern void radix_kvm_prefetch_workaround(struct mm_struct *mm)
+{
+	unsigned int pid = mm->context.id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(pid == MMU_NO_CONTEXT))
 		return;
@@ -1079,9 +1452,13 @@ extern void radix_kvm_prefetch_workaround(struct mm_struct *mm)
 		for (; sib <= cpu_last_thread_sibling(cpu) && !flush; sib++) {
 			if (sib == cpu)
 				continue;
+<<<<<<< HEAD
 			if (!cpu_possible(sib))
 				continue;
 			if (paca_ptrs[sib]->kvm_hstate.kvm_vcpu)
+=======
+			if (paca[sib].kvm_hstate.kvm_vcpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				flush = true;
 		}
 		if (flush)

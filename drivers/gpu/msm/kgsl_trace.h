@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2011-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2011-2021, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #if !defined(_KGSL_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
@@ -9,16 +23,27 @@
 #undef TRACE_SYSTEM
 #define TRACE_SYSTEM kgsl
 #undef TRACE_INCLUDE_PATH
+<<<<<<< HEAD
 #define TRACE_INCLUDE_PATH .
+=======
+#define TRACE_INCLUDE_PATH ../../drivers/gpu/msm/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef TRACE_INCLUDE_FILE
 #define TRACE_INCLUDE_FILE kgsl_trace
 
 #include <linux/tracepoint.h>
+<<<<<<< HEAD
 
 #include "kgsl.h"
 #include "kgsl_drawobj.h"
 #include "kgsl_sharedmem.h"
 
+=======
+#include "kgsl_device.h"
+#include "adreno_drawctxt.h"
+
+struct kgsl_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kgsl_ringbuffer_issueibcmds;
 struct kgsl_device_waittimestamp;
 
@@ -409,7 +434,11 @@ TRACE_EVENT(kgsl_mem_alloc,
 	TP_fast_assign(
 		__entry->gpuaddr = mem_entry->memdesc.gpuaddr;
 		__entry->size = mem_entry->memdesc.size;
+<<<<<<< HEAD
 		__entry->tgid = mem_entry->priv->pid;
+=======
+		__entry->tgid = pid_nr(mem_entry->priv->pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kgsl_get_memory_usage(__entry->usage, sizeof(__entry->usage),
 				     mem_entry->memdesc.flags);
 		__entry->id = mem_entry->id;
@@ -425,9 +454,15 @@ TRACE_EVENT(kgsl_mem_alloc,
 
 TRACE_EVENT(kgsl_mem_mmap,
 
+<<<<<<< HEAD
 	TP_PROTO(struct kgsl_mem_entry *mem_entry),
 
 	TP_ARGS(mem_entry),
+=======
+	TP_PROTO(struct kgsl_mem_entry *mem_entry, unsigned long useraddr),
+
+	TP_ARGS(mem_entry, useraddr),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	TP_STRUCT__entry(
 		__field(unsigned long, useraddr)
@@ -439,7 +474,11 @@ TRACE_EVENT(kgsl_mem_mmap,
 	),
 
 	TP_fast_assign(
+<<<<<<< HEAD
 		__entry->useraddr = mem_entry->memdesc.useraddr;
+=======
+		__entry->useraddr = useraddr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__entry->gpuaddr = mem_entry->memdesc.gpuaddr;
 		__entry->size = mem_entry->memdesc.size;
 		kgsl_get_memory_usage(__entry->usage, sizeof(__entry->usage),
@@ -502,7 +541,11 @@ TRACE_EVENT(kgsl_mem_map,
 		__entry->size = mem_entry->memdesc.size;
 		__entry->fd = fd;
 		__entry->type = kgsl_memdesc_usermem_type(&mem_entry->memdesc);
+<<<<<<< HEAD
 		__entry->tgid = mem_entry->priv->pid;
+=======
+		__entry->tgid = pid_nr(mem_entry->priv->pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kgsl_get_memory_usage(__entry->usage, sizeof(__entry->usage),
 				     mem_entry->memdesc.flags);
 		__entry->id = mem_entry->id;
@@ -537,7 +580,11 @@ TRACE_EVENT(kgsl_mem_free,
 		__entry->gpuaddr = mem_entry->memdesc.gpuaddr;
 		__entry->size = mem_entry->memdesc.size;
 		__entry->type = kgsl_memdesc_usermem_type(&mem_entry->memdesc);
+<<<<<<< HEAD
 		__entry->tgid = mem_entry->priv->pid;
+=======
+		__entry->tgid = pid_nr(mem_entry->priv->pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kgsl_get_memory_usage(__entry->usage, sizeof(__entry->usage),
 				     mem_entry->memdesc.flags);
 		__entry->id = mem_entry->id;
@@ -572,7 +619,11 @@ TRACE_EVENT(kgsl_mem_sync_cache,
 		__entry->gpuaddr = mem_entry->memdesc.gpuaddr;
 		kgsl_get_memory_usage(__entry->usage, sizeof(__entry->usage),
 				     mem_entry->memdesc.flags);
+<<<<<<< HEAD
 		__entry->tgid = mem_entry->priv->pid;
+=======
+		__entry->tgid = pid_nr(mem_entry->priv->pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__entry->id = mem_entry->id;
 		__entry->op = op;
 		__entry->offset = offset;
@@ -952,7 +1003,11 @@ TRACE_EVENT(kgsl_register_event,
 			__entry->func = func;
 		),
 		TP_printk(
+<<<<<<< HEAD
 			"ctx=%u ts=%u cb=%pS",
+=======
+			"ctx=%u ts=%u cb=%pF",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__entry->id, __entry->timestamp, __entry->func)
 );
 
@@ -975,7 +1030,11 @@ TRACE_EVENT(kgsl_fire_event,
 			__entry->func = func;
 		),
 		TP_printk(
+<<<<<<< HEAD
 			"ctx=%u ts=%u type=%s age=%u cb=%pS",
+=======
+			"ctx=%u ts=%u type=%s age=%u cb=%pF",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__entry->id, __entry->ts,
 			__print_symbolic(__entry->type, KGSL_EVENT_TYPES),
 			__entry->age, __entry->func)
@@ -1000,7 +1059,11 @@ TRACE_EVENT(kgsl_active_count,
 	),
 
 	TP_printk(
+<<<<<<< HEAD
 		"d_name=%s active_cnt=%u func=%ps",
+=======
+		"d_name=%s active_cnt=%u func=%pf",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__get_str(device_name), __entry->count, (void *) __entry->ip
 	)
 );
@@ -1271,6 +1334,7 @@ DEFINE_EVENT(hfi_msg_template, kgsl_hfi_receive,
 	TP_ARGS(id, size, seqnum)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(kgsl_opp_notify,
 	TP_PROTO(
 		unsigned long min_freq,
@@ -1292,6 +1356,8 @@ TRACE_EVENT(kgsl_opp_notify,
 		__entry->min_freq, __entry->max_freq
 	)
 );
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _KGSL_TRACE_H */
 
 /* This part must be outside protection */

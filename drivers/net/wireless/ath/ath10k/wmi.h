@@ -1,7 +1,10 @@
 /*
  * Copyright (c) 2005-2011 Atheros Communications Inc.
  * Copyright (c) 2011-2017 Qualcomm Atheros, Inc.
+<<<<<<< HEAD
  * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -203,6 +206,10 @@ enum wmi_service {
 	WMI_SERVICE_TPC_STATS_FINAL,
 	WMI_SERVICE_RESET_CHIP,
 	WMI_SERVICE_SPOOF_MAC_SUPPORT,
+<<<<<<< HEAD
+=======
+	WMI_SERVICE_SYNC_DELETE_CMDS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* keep last */
 	WMI_SERVICE_MAX,
@@ -240,8 +247,11 @@ enum wmi_10x_service {
 	WMI_10X_SERVICE_MESH,
 	WMI_10X_SERVICE_EXT_RES_CFG_SUPPORT,
 	WMI_10X_SERVICE_PEER_STATS,
+<<<<<<< HEAD
 	WMI_10X_SERVICE_RESET_CHIP,
 	WMI_10X_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum wmi_main_service {
@@ -347,9 +357,12 @@ enum wmi_10_4_service {
 	WMI_10_4_SERVICE_TDLS_CONN_TRACKER_IN_HOST_MODE,
 	WMI_10_4_SERVICE_TDLS_EXPLICIT_MODE_ONLY,
 	WMI_10_4_SERVICE_TDLS_WIDER_BANDWIDTH,
+<<<<<<< HEAD
 	WMI_10_4_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS,
 	WMI_10_4_SERVICE_HOST_DFS_CHECK_SUPPORT,
 	WMI_10_4_SERVICE_TPC_STATS_FINAL,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline char *wmi_service_name(int service_id)
@@ -459,10 +472,14 @@ static inline char *wmi_service_name(int service_id)
 	SVCSTR(WMI_SERVICE_TDLS_CONN_TRACKER_IN_HOST_MODE);
 	SVCSTR(WMI_SERVICE_TDLS_EXPLICIT_MODE_ONLY);
 	SVCSTR(WMI_SERVICE_TDLS_WIDER_BANDWIDTH);
+<<<<<<< HEAD
 	SVCSTR(WMI_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS);
 	SVCSTR(WMI_SERVICE_HOST_DFS_CHECK_SUPPORT);
 	SVCSTR(WMI_SERVICE_TPC_STATS_FINAL);
 	SVCSTR(WMI_SERVICE_RESET_CHIP);
+=======
+	SVCSTR(WMI_SERVICE_SYNC_DELETE_CMDS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return NULL;
 	}
@@ -553,10 +570,13 @@ static inline void wmi_10x_svc_map(const __le32 *in, unsigned long *out,
 	       WMI_SERVICE_EXT_RES_CFG_SUPPORT, len);
 	SVCMAP(WMI_10X_SERVICE_PEER_STATS,
 	       WMI_SERVICE_PEER_STATS, len);
+<<<<<<< HEAD
 	SVCMAP(WMI_10X_SERVICE_RESET_CHIP,
 	       WMI_SERVICE_RESET_CHIP, len);
 	SVCMAP(WMI_10X_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS,
 	       WMI_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS, len);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void wmi_main_svc_map(const __le32 *in, unsigned long *out,
@@ -765,12 +785,15 @@ static inline void wmi_10_4_svc_map(const __le32 *in, unsigned long *out,
 	       WMI_SERVICE_TDLS_EXPLICIT_MODE_ONLY, len);
 	SVCMAP(WMI_10_4_SERVICE_TDLS_WIDER_BANDWIDTH,
 	       WMI_SERVICE_TDLS_WIDER_BANDWIDTH, len);
+<<<<<<< HEAD
 	SVCMAP(WMI_10_4_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS,
 	       WMI_SERVICE_HTT_MGMT_TX_COMP_VALID_FLAGS, len);
 	SVCMAP(WMI_10_4_SERVICE_HOST_DFS_CHECK_SUPPORT,
 	       WMI_SERVICE_HOST_DFS_CHECK_SUPPORT, len);
 	SVCMAP(WMI_10_4_SERVICE_TPC_STATS_FINAL,
 	       WMI_SERVICE_TPC_STATS_FINAL, len);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #undef SVCMAP
@@ -970,7 +993,10 @@ struct wmi_cmd_map {
 	u32 vdev_sifs_trigger_time_cmdid;
 	u32 pdev_wds_entry_list_cmdid;
 	u32 tdls_set_offchan_mode_cmdid;
+<<<<<<< HEAD
 	u32 radar_found_cmdid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -1805,11 +1831,14 @@ enum wmi_10_4_cmd_id {
 	WMI_10_4_TDLS_SET_STATE_CMDID,
 	WMI_10_4_TDLS_PEER_UPDATE_CMDID,
 	WMI_10_4_TDLS_SET_OFFCHAN_MODE_CMDID,
+<<<<<<< HEAD
 	WMI_10_4_PDEV_SEND_FD_CMDID,
 	WMI_10_4_ENABLE_FILS_CMDID,
 	WMI_10_4_PDEV_SET_BRIDGE_MACADDR_CMDID,
 	WMI_10_4_ATF_GROUP_WMM_AC_CONFIG_REQUEST_CMDID,
 	WMI_10_4_RADAR_FOUND_CMDID,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WMI_10_4_PDEV_UTF_CMDID = WMI_10_4_END_CMDID - 1,
 };
 
@@ -1885,9 +1914,12 @@ enum wmi_10_4_event_id {
 	WMI_10_4_PDEV_TPC_TABLE_EVENTID,
 	WMI_10_4_PDEV_WDS_ENTRY_LIST_EVENTID,
 	WMI_10_4_TDLS_PEER_EVENTID,
+<<<<<<< HEAD
 	WMI_10_4_HOST_SWFDA_EVENTID,
 	WMI_10_4_ESP_ESTIMATE_EVENTID,
 	WMI_10_4_DFS_STATUS_CHECK_EVENTID,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WMI_10_4_PDEV_UTF_EVENTID = WMI_10_4_END_EVENTID - 1,
 };
 
@@ -2965,7 +2997,11 @@ struct wmi_ext_resource_config_10_4_cmd {
 	__le32 max_tdls_concurrent_buffer_sta;
 };
 
+<<<<<<< HEAD
 /* structure describing host memory chunk. */
+=======
+/* strucutre describing host memory chunk. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct host_memory_chunk {
 	/* id of the request that is passed up in service ready */
 	__le32 req_id;
@@ -3408,6 +3444,7 @@ struct wmi_10_4_phyerr_event {
 	u8 buf[0];
 } __packed;
 
+<<<<<<< HEAD
 struct wmi_radar_found_info {
 	__le32 pri_min;
 	__le32 pri_max;
@@ -3427,6 +3464,8 @@ enum wmi_radar_confirmation_status {
 	WMI_HW_RADAR_DETECTED    = 2,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PHYERR_TLV_SIG				0xBB
 #define PHYERR_TLV_TAG_SEARCH_FFT_REPORT	0xFB
 #define PHYERR_TLV_TAG_RADAR_PULSE_SUMMARY	0xF8
@@ -3935,11 +3974,15 @@ enum wmi_10x_pdev_param {
 	WMI_10X_PDEV_PARAM_REMOVE_MCAST2UCAST_BUFFER,
 	WMI_10X_PDEV_PARAM_PEER_STA_PS_STATECHG_ENABLE,
 	WMI_10X_PDEV_PARAM_RTS_FIXED_RATE,
+<<<<<<< HEAD
 	WMI_10X_PDEV_PARAM_CAL_PERIOD,
 	WMI_10X_PDEV_PARAM_ATF_STRICT_SCH,
 	WMI_10X_PDEV_PARAM_ATF_SCHED_DURATION,
 	WMI_10X_PDEV_PARAM_SET_PROMISC_MODE_CMDID,
 	WMI_10X_PDEV_PARAM_PDEV_RESET
+=======
+	WMI_10X_PDEV_PARAM_CAL_PERIOD
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum wmi_10_4_pdev_param {
@@ -4059,6 +4102,7 @@ struct wmi_pdev_get_tpc_config_cmd {
 } __packed;
 
 #define WMI_TPC_CONFIG_PARAM		1
+<<<<<<< HEAD
 #define WMI_TPC_FINAL_RATE_MAX		240
 #define WMI_TPC_TX_N_CHAIN		4
 #define WMI_TPC_RATE_MAX               (WMI_TPC_TX_N_CHAIN * 65)
@@ -4066,6 +4110,13 @@ struct wmi_pdev_get_tpc_config_cmd {
 #define WMI_TPC_FLAG			3
 #define WMI_TPC_BUF_SIZE		10
 #define WMI_TPC_BEAMFORMING		2
+=======
+#define WMI_TPC_RATE_MAX		160
+#define WMI_TPC_TX_N_CHAIN		4
+#define WMI_TPC_PREAM_TABLE_MAX		10
+#define WMI_TPC_FLAG			3
+#define WMI_TPC_BUF_SIZE		10
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum wmi_tpc_table_type {
 	WMI_TPC_TABLE_TYPE_CDD = 0,
@@ -4108,6 +4159,7 @@ enum wmi_tp_scale {
 	WMI_TP_SCALE_SIZE   = 5,	/* max num of enum     */
 };
 
+<<<<<<< HEAD
 struct wmi_pdev_tpc_final_table_event {
 	__le32 reg_domain;
 	__le32 chan_freq;
@@ -4153,6 +4205,8 @@ enum wmi_tpc_pream_5ghz {
 	WMI_TPC_PREAM_5GHZ_HTCUP,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct wmi_pdev_chanlist_update_event {
 	/* number of channels */
 	__le32 num_chan;
@@ -4464,7 +4518,10 @@ enum wmi_10_4_stats_id {
 	WMI_10_4_STAT_AP		= BIT(1),
 	WMI_10_4_STAT_INST		= BIT(2),
 	WMI_10_4_STAT_PEER_EXTD		= BIT(3),
+<<<<<<< HEAD
 	WMI_10_4_STAT_VDEV_EXTD		= BIT(4),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct wlan_inst_rssi_args {
@@ -4604,16 +4661,22 @@ struct wmi_10_4_pdev_stats {
 
 /*
  * VDEV statistics
+<<<<<<< HEAD
  */
 
 #define WMI_VDEV_STATS_FTM_COUNT_VALID	BIT(31)
 #define WMI_VDEV_STATS_FTM_COUNT_LSB	0
 #define WMI_VDEV_STATS_FTM_COUNT_MASK	0x7fffffff
 
+=======
+ * TODO: add all VDEV stats here
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct wmi_vdev_stats {
 	__le32 vdev_id;
 } __packed;
 
+<<<<<<< HEAD
 struct wmi_vdev_stats_extd {
 	__le32 vdev_id;
 	__le32 ppdu_aggr_cnt;
@@ -4634,6 +4697,8 @@ struct wmi_vdev_stats_extd {
 	__le32 reserved[6];
 } __packed;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * peer statistics.
  * TODO: add more stats
@@ -4889,6 +4954,7 @@ struct wmi_key_seq_counter {
 	__le32 key_seq_counter_h;
 } __packed;
 
+<<<<<<< HEAD
 #define WMI_CIPHER_NONE     0x0 /* clear key */
 #define WMI_CIPHER_WEP      0x1
 #define WMI_CIPHER_TKIP     0x2
@@ -4898,6 +4964,32 @@ struct wmi_key_seq_counter {
 #define WMI_CIPHER_CKIP     0x6
 #define WMI_CIPHER_AES_CMAC 0x7
 #define WMI_CIPHER_AES_GCM  0x8
+=======
+enum wmi_cipher_suites {
+	WMI_CIPHER_NONE,
+	WMI_CIPHER_WEP,
+	WMI_CIPHER_TKIP,
+	WMI_CIPHER_AES_OCB,
+	WMI_CIPHER_AES_CCM,
+	WMI_CIPHER_WAPI,
+	WMI_CIPHER_CKIP,
+	WMI_CIPHER_AES_CMAC,
+	WMI_CIPHER_AES_GCM,
+};
+
+enum wmi_tlv_cipher_suites {
+	WMI_TLV_CIPHER_NONE,
+	WMI_TLV_CIPHER_WEP,
+	WMI_TLV_CIPHER_TKIP,
+	WMI_TLV_CIPHER_AES_OCB,
+	WMI_TLV_CIPHER_AES_CCM,
+	WMI_TLV_CIPHER_WAPI,
+	WMI_TLV_CIPHER_CKIP,
+	WMI_TLV_CIPHER_AES_CMAC,
+	WMI_TLV_CIPHER_ANY,
+	WMI_TLV_CIPHER_AES_GCM,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct wmi_vdev_install_key_cmd {
 	__le32 vdev_id;
@@ -6506,6 +6598,7 @@ struct wmi_force_fw_hang_cmd {
 	__le32 delay_ms;
 } __packed;
 
+<<<<<<< HEAD
 enum wmi_pdev_reset_mode_type {
 	WMI_RST_MODE_TX_FLUSH = 1,
 	WMI_RST_MODE_WARM_RESET,
@@ -6515,6 +6608,8 @@ enum wmi_pdev_reset_mode_type {
 	WMI_RST_MODE_MAX,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum ath10k_dbglog_level {
 	ATH10K_DBGLOG_LEVEL_VERBOSE = 0,
 	ATH10K_DBGLOG_LEVEL_INFO = 1,
@@ -6614,10 +6709,16 @@ struct wmi_scan_ev_arg {
 	__le32 vdev_id;
 };
 
+<<<<<<< HEAD
 struct wmi_tlv_mgmt_tx_compl_ev_arg {
 	__le32 desc_id;
 	__le32 status;
 	__le32 pdev_id;
+=======
+struct wmi_peer_delete_resp_ev_arg {
+	__le32 vdev_id;
+	struct wmi_mac_addr peer_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct wmi_mgmt_rx_ev_arg {
@@ -6642,11 +6743,24 @@ struct wmi_ch_info_ev_arg {
 	__le32 rx_frame_count;
 };
 
+<<<<<<< HEAD
+=======
+/* From 10.4 firmware, not sure all have the same values. */
+enum wmi_vdev_start_status {
+	WMI_VDEV_START_OK = 0,
+	WMI_VDEV_START_CHAN_INVALID,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct wmi_vdev_start_ev_arg {
 	__le32 vdev_id;
 	__le32 req_id;
 	__le32 resp_type; /* %WMI_VDEV_RESP_ */
+<<<<<<< HEAD
 	__le32 status;
+=======
+	__le32 status; /* See wmi_vdev_start_status enum above */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct wmi_peer_kick_ev_arg {
@@ -6680,10 +6794,13 @@ struct wmi_phyerr_hdr_arg {
 	const void *phyerrs;
 };
 
+<<<<<<< HEAD
 struct wmi_dfs_status_ev_arg {
 	u32 status;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct wmi_svc_rdy_ev_arg {
 	__le32 min_tx_power;
 	__le32 max_tx_power;
@@ -6888,16 +7005,22 @@ struct wmi_wow_ev_arg {
 #define WOW_MIN_PATTERN_SIZE	1
 #define WOW_MAX_PATTERN_SIZE	148
 #define WOW_MAX_PKT_OFFSET	128
+<<<<<<< HEAD
 #define WOW_HDR_LEN	(sizeof(struct ieee80211_hdr_3addr) + \
 	sizeof(struct rfc1042_hdr))
 #define WOW_MAX_REDUCE	(WOW_HDR_LEN - sizeof(struct ethhdr) - \
 	offsetof(struct ieee80211_hdr_3addr, addr1))
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum wmi_tdls_state {
 	WMI_TDLS_DISABLE,
 	WMI_TDLS_ENABLE_PASSIVE,
 	WMI_TDLS_ENABLE_ACTIVE,
+<<<<<<< HEAD
 	WMI_TDLS_ENABLE_ACTIVE_EXTERNAL_CONTROL,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum wmi_tdls_peer_state {
@@ -7091,7 +7214,10 @@ int ath10k_wmi_start_scan_verify(const struct wmi_start_scan_arg *arg);
 
 int ath10k_wmi_event_scan(struct ath10k *ar, struct sk_buff *skb);
 int ath10k_wmi_event_mgmt_rx(struct ath10k *ar, struct sk_buff *skb);
+<<<<<<< HEAD
 int ath10k_wmi_event_mgmt_tx_compl(struct ath10k *ar, struct sk_buff *skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ath10k_wmi_event_chan_info(struct ath10k *ar, struct sk_buff *skb);
 void ath10k_wmi_event_echo(struct ath10k *ar, struct sk_buff *skb);
 int ath10k_wmi_event_debug_mesg(struct ath10k *ar, struct sk_buff *skb);
@@ -7150,8 +7276,11 @@ void ath10k_wmi_10_4_op_fw_stats_fill(struct ath10k *ar,
 int ath10k_wmi_op_get_vdev_subtype(struct ath10k *ar,
 				   enum wmi_vdev_subtype subtype);
 int ath10k_wmi_barrier(struct ath10k *ar);
+<<<<<<< HEAD
 void ath10k_wmi_tpc_config_get_rate_code(u8 *rate_code, u16 *pream_table,
 					 u32 num_tx_chain);
 void ath10k_wmi_event_tpc_final_table(struct ath10k *ar, struct sk_buff *skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _WMI_H_ */

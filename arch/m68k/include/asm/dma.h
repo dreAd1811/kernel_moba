@@ -390,7 +390,11 @@ static __inline__ void set_dma_mode(unsigned int dmanr, char mode)
 
 #ifdef DEBUG_DMA
   printk("%s(%d): dmanr=%d DMR[%x]=%x DIR[%x]=%x\n", __FILE__, __LINE__,
+<<<<<<< HEAD
 	 dmanr, (int) &dmalp[MCFDMA_DMR], dmalp[MCFDMA_DMR],
+=======
+         dmanr, (int) &dmalp[MCFDMA_DMR], dmabp[MCFDMA_DMR],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 (int) &dmawp[MCFDMA_DIR], dmawp[MCFDMA_DIR]);
 #endif
 }
@@ -421,7 +425,11 @@ static __inline__ void set_dma_addr(unsigned int dmanr, unsigned int a)
 
 #ifdef DEBUG_DMA
   printk("%s(%d): dmanr=%d DMR[%x]=%x SAR[%x]=%08x DAR[%x]=%08x\n",
+<<<<<<< HEAD
 	__FILE__, __LINE__, dmanr, (int) &dmalp[MCFDMA_DMR], dmalp[MCFDMA_DMR],
+=======
+	__FILE__, __LINE__, dmanr, (int) &dmawp[MCFDMA_DMR], dmawp[MCFDMA_DMR],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	(int) &dmalp[MCFDMA_DSAR], dmalp[MCFDMA_DSAR],
 	(int) &dmalp[MCFDMA_DDAR], dmalp[MCFDMA_DDAR]);
 #endif

@@ -312,6 +312,10 @@ static void ptrace_hbptriggered(struct perf_event *bp,
 				struct pt_regs *regs)
 {
 	int i;
+<<<<<<< HEAD
+=======
+	siginfo_t info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct arch_hw_breakpoint *bkpt = counter_arch_bp(bp);
 
 	if (bp->attr.bp_type & HW_BREAKPOINT_X) {
@@ -326,7 +330,16 @@ static void ptrace_hbptriggered(struct perf_event *bp,
 		i = (i << 1) | 1;
 	}
 
+<<<<<<< HEAD
 	force_sig_ptrace_errno_trap(i, (void __user *)bkpt->address);
+=======
+	info.si_signo = SIGTRAP;
+	info.si_errno = i;
+	info.si_code = TRAP_HWBKPT;
+	info.si_addr = (void __user *)bkpt->address;
+
+	force_sig_info(SIGTRAP, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct perf_event *ptrace_hbp_create(struct task_struct *tsk, int type)

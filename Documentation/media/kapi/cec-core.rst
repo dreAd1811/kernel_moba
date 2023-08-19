@@ -103,21 +103,31 @@ your driver:
 		/* Low-level callbacks */
 		int (*adap_enable)(struct cec_adapter *adap, bool enable);
 		int (*adap_monitor_all_enable)(struct cec_adapter *adap, bool enable);
+<<<<<<< HEAD
 		int (*adap_monitor_pin_enable)(struct cec_adapter *adap, bool enable);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int (*adap_log_addr)(struct cec_adapter *adap, u8 logical_addr);
 		int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
 				      u32 signal_free_time, struct cec_msg *msg);
 		void (*adap_status)(struct cec_adapter *adap, struct seq_file *file);
 		void (*adap_free)(struct cec_adapter *adap);
 
+<<<<<<< HEAD
 		/* Error injection callbacks */
 		...
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* High-level callbacks */
 		...
 	};
 
+<<<<<<< HEAD
 The seven low-level ops deal with various aspects of controlling the CEC adapter
+=======
+The five low-level ops deal with various aspects of controlling the CEC adapter
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 hardware:
 
 
@@ -148,6 +158,7 @@ called if the CEC_CAP_MONITOR_ALL capability is set. This callback is optional
 Note that adap_monitor_all_enable must return 0 if enable is false.
 
 
+<<<<<<< HEAD
 To enable/disable the 'monitor pin' mode:
 
 .. c:function::
@@ -161,6 +172,8 @@ the CEC_CAP_MONITOR_PIN capability is set. This callback is optional
 Note that adap_monitor_pin_enable must return 0 if enable is false.
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 To program a new logical address:
 
 .. c:function::
@@ -244,12 +257,18 @@ CEC_TX_STATUS_LOW_DRIVE:
 	retransmission.
 
 CEC_TX_STATUS_ERROR:
+<<<<<<< HEAD
 	some unspecified error occurred: this can be one of ARB_LOST
 	or LOW_DRIVE if the hardware cannot differentiate or something
 	else entirely. Some hardware only supports OK and FAIL as the
 	result of a transmit, i.e. there is no way to differentiate
 	between the different possible errors. In that case map FAIL
 	to CEC_TX_STATUS_NACK and not to CEC_TX_STATUS_ERROR.
+=======
+	some unspecified error occurred: this can be one of
+	the previous two if the hardware cannot differentiate or something
+	else entirely.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CEC_TX_STATUS_MAX_RETRIES:
 	could not transmit the message after trying multiple times.
@@ -258,9 +277,12 @@ CEC_TX_STATUS_MAX_RETRIES:
 	doesn't have to make another attempt to transmit the message
 	since the hardware did that already.
 
+<<<<<<< HEAD
 The hardware must be able to differentiate between OK, NACK and 'something
 else'.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 The \*_cnt arguments are the number of error conditions that were seen.
 This may be 0 if no information is available. Drivers that do not support
 hardware retry can just set the counter corresponding to the transmit error
@@ -292,6 +314,7 @@ handling the receive interrupt. The framework expects to see the cec_transmit_do
 call before the cec_received_msg call, otherwise it can get confused if the
 received message was in reply to the transmitted message.
 
+<<<<<<< HEAD
 Optional: Implementing Error Injection Support
 ----------------------------------------------
 
@@ -356,6 +379,8 @@ command, so this callback is never called for empty lines or comment lines.
 
 Return true if the command was valid or false if there were syntax errors.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Implementing the High-Level CEC Adapter
 ---------------------------------------
 
@@ -368,9 +393,12 @@ CEC protocol driven. The following high-level callbacks are available:
 		/* Low-level callbacks */
 		...
 
+<<<<<<< HEAD
 		/* Error injection callbacks */
 		...
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* High-level CEC message callback */
 		int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
 	};

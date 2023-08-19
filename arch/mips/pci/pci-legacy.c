@@ -267,8 +267,14 @@ static int pcibios_enable_resources(struct pci_dev *dev, int mask)
 				(!(r->flags & IORESOURCE_ROM_ENABLE)))
 			continue;
 		if (!r->start && r->end) {
+<<<<<<< HEAD
 			pci_err(dev,
 				"can't enable device: resource collisions\n");
+=======
+			printk(KERN_ERR "PCI: Device %s not available "
+			       "because of resource collisions\n",
+			       pci_name(dev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 		if (r->flags & IORESOURCE_IO)
@@ -277,7 +283,12 @@ static int pcibios_enable_resources(struct pci_dev *dev, int mask)
 			cmd |= PCI_COMMAND_MEMORY;
 	}
 	if (cmd != old_cmd) {
+<<<<<<< HEAD
 		pci_info(dev, "enabling device (%04x -> %04x)\n", old_cmd, cmd);
+=======
+		printk("PCI: Enabling device %s (%04x -> %04x)\n",
+		       pci_name(dev), old_cmd, cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pci_write_config_word(dev, PCI_COMMAND, cmd);
 	}
 	return 0;

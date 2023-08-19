@@ -164,7 +164,15 @@ int stk_camera_read_reg(struct stk_camera *dev, u16 index, u8 *value)
 		*value = *buf;
 
 	kfree(buf);
+<<<<<<< HEAD
 	return ret;
+=======
+
+	if (ret < 0)
+		return ret;
+	else
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int stk_start_stream(struct stk_camera *dev)
@@ -567,9 +575,14 @@ static int stk_prepare_sio_buffers(struct stk_camera *dev, unsigned n_sbufs)
 	if (dev->sio_bufs != NULL)
 		pr_err("sio_bufs already allocated\n");
 	else {
+<<<<<<< HEAD
 		dev->sio_bufs = kcalloc(n_sbufs,
 					sizeof(struct stk_sio_buffer),
 					GFP_KERNEL);
+=======
+		dev->sio_bufs = kzalloc(n_sbufs * sizeof(struct stk_sio_buffer),
+				GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (dev->sio_bufs == NULL)
 			return -ENOMEM;
 		for (i = 0; i < n_sbufs; i++) {
@@ -721,18 +734,32 @@ static ssize_t v4l_stk_read(struct file *fp, char __user *buf,
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t v4l_stk_poll(struct file *fp, poll_table *wait)
 {
 	struct stk_camera *dev = video_drvdata(fp);
 	__poll_t res = v4l2_ctrl_poll(fp, wait);
+=======
+static unsigned int v4l_stk_poll(struct file *fp, poll_table *wait)
+{
+	struct stk_camera *dev = video_drvdata(fp);
+	unsigned res = v4l2_ctrl_poll(fp, wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(fp, &dev->wait_frame, wait);
 
 	if (!is_present(dev))
+<<<<<<< HEAD
 		return EPOLLERR;
 
 	if (!list_empty(&dev->sio_full))
 		return res | EPOLLIN | EPOLLRDNORM;
+=======
+		return POLLERR;
+
+	if (!list_empty(&dev->sio_full))
+		return res | POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return res;
 }
@@ -1241,6 +1268,10 @@ static void stk_v4l_dev_release(struct video_device *vd)
 	if (dev->sio_bufs != NULL || dev->isobufs != NULL)
 		pr_err("We are leaking memory\n");
 	usb_put_intf(dev->interface);
+<<<<<<< HEAD
+=======
+	kfree(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct video_device stk_v4l_data = {
@@ -1390,7 +1421,10 @@ static void stk_camera_disconnect(struct usb_interface *interface)
 	video_unregister_device(&dev->vdev);
 	v4l2_ctrl_handler_free(&dev->hdl);
 	v4l2_device_unregister(&dev->v4l2_dev);
+<<<<<<< HEAD
 	kfree(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_PM

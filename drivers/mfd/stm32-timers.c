@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) STMicroelectronics 2016
@@ -5,11 +6,22 @@
  */
 
 #include <linux/bitfield.h>
+=======
+/*
+ * Copyright (C) STMicroelectronics 2016
+ *
+ * Author: Benjamin Gaignard <benjamin.gaignard@st.com>
+ *
+ * License terms:  GNU General Public License (GPL), version 2
+ */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mfd/stm32-timers.h>
 #include <linux/module.h>
 #include <linux/of_platform.h>
 #include <linux/reset.h>
 
+<<<<<<< HEAD
 #define STM32_TIMERS_MAX_REGISTERS	0x3fc
 
 /* DIER register DMA enable bits */
@@ -149,11 +161,17 @@ unlock:
 }
 EXPORT_SYMBOL_GPL(stm32_timers_dma_burst_read);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct regmap_config stm32_timers_regmap_cfg = {
 	.reg_bits = 32,
 	.val_bits = 32,
 	.reg_stride = sizeof(u32),
+<<<<<<< HEAD
 	.max_register = STM32_TIMERS_MAX_REGISTERS,
+=======
+	.max_register = 0x3fc,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void stm32_timers_get_arr_size(struct stm32_timers *ddata)
@@ -167,6 +185,7 @@ static void stm32_timers_get_arr_size(struct stm32_timers *ddata)
 	regmap_write(ddata->regmap, TIM_ARR, 0x0);
 }
 
+<<<<<<< HEAD
 static void stm32_timers_dma_probe(struct device *dev,
 				   struct stm32_timers *ddata)
 {
@@ -199,13 +218,18 @@ static void stm32_timers_dma_remove(struct device *dev,
 			dma_release_channel(ddata->dma.chans[i]);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int stm32_timers_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct stm32_timers *ddata;
 	struct resource *res;
 	void __iomem *mmio;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ddata = devm_kzalloc(dev, sizeof(*ddata), GFP_KERNEL);
 	if (!ddata)
@@ -216,9 +240,12 @@ static int stm32_timers_probe(struct platform_device *pdev)
 	if (IS_ERR(mmio))
 		return PTR_ERR(mmio);
 
+<<<<<<< HEAD
 	/* Timer physical addr for DMA */
 	ddata->dma.phys_base = res->start;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ddata->regmap = devm_regmap_init_mmio_clk(dev, "int", mmio,
 						  &stm32_timers_regmap_cfg);
 	if (IS_ERR(ddata->regmap))
@@ -230,6 +257,7 @@ static int stm32_timers_probe(struct platform_device *pdev)
 
 	stm32_timers_get_arr_size(ddata);
 
+<<<<<<< HEAD
 	stm32_timers_dma_probe(dev, ddata);
 
 	platform_set_drvdata(pdev, ddata);
@@ -253,6 +281,11 @@ static int stm32_timers_remove(struct platform_device *pdev)
 	stm32_timers_dma_remove(&pdev->dev, ddata);
 
 	return 0;
+=======
+	platform_set_drvdata(pdev, ddata);
+
+	return devm_of_platform_populate(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id stm32_timers_of_match[] = {
@@ -263,7 +296,10 @@ MODULE_DEVICE_TABLE(of, stm32_timers_of_match);
 
 static struct platform_driver stm32_timers_driver = {
 	.probe = stm32_timers_probe,
+<<<<<<< HEAD
 	.remove = stm32_timers_remove,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.driver	= {
 		.name = "stm32-timers",
 		.of_match_table = stm32_timers_of_match,

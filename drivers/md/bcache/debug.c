@@ -17,7 +17,11 @@
 #include <linux/random.h>
 #include <linux/seq_file.h>
 
+<<<<<<< HEAD
 struct dentry *bcache_debug;
+=======
+static struct dentry *debug;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_BCACHE_DEBUG
 
@@ -67,6 +71,7 @@ void bch_btree_verify(struct btree *b)
 	if (inmemory->keys != sorted->keys ||
 	    memcmp(inmemory->start,
 		   sorted->start,
+<<<<<<< HEAD
 		   (void *) bset_bkey_last(inmemory) -
 		   (void *) inmemory->start)) {
 		struct bset *i;
@@ -89,13 +94,40 @@ void bch_btree_verify(struct btree *b)
 		}
 
 		pr_err("*** block %zu not written\n",
+=======
+		   (void *) bset_bkey_last(inmemory) - (void *) inmemory->start)) {
+		struct bset *i;
+		unsigned j;
+
+		console_lock();
+
+		printk(KERN_ERR "*** in memory:\n");
+		bch_dump_bset(&b->keys, inmemory, 0);
+
+		printk(KERN_ERR "*** read back in:\n");
+		bch_dump_bset(&v->keys, sorted, 0);
+
+		for_each_written_bset(b, ondisk, i) {
+			unsigned block = ((void *) i - (void *) ondisk) /
+				block_bytes(b->c);
+
+			printk(KERN_ERR "*** on disk block %u:\n", block);
+			bch_dump_bset(&b->keys, i, block);
+		}
+
+		printk(KERN_ERR "*** block %zu not written\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       ((void *) i - (void *) ondisk) / block_bytes(b->c));
 
 		for (j = 0; j < inmemory->keys; j++)
 			if (inmemory->d[j] != sorted->d[j])
 				break;
 
+<<<<<<< HEAD
 		pr_err("b->written %u\n", b->written);
+=======
+		printk(KERN_ERR "b->written %u\n", b->written);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		console_unlock();
 		panic("verify failed at %u\n", j);
@@ -107,10 +139,15 @@ void bch_btree_verify(struct btree *b)
 
 void bch_data_verify(struct cached_dev *dc, struct bio *bio)
 {
+<<<<<<< HEAD
+=======
+	char name[BDEVNAME_SIZE];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bio *check;
 	struct bio_vec bv, cbv;
 	struct bvec_iter iter, citer = { 0 };
 
+<<<<<<< HEAD
 	check = bio_kmalloc(GFP_NOIO, bio_segments(bio));
 	if (!check)
 		return;
@@ -121,6 +158,14 @@ void bch_data_verify(struct cached_dev *dc, struct bio *bio)
 
 	bch_bio_map(check, NULL);
 	if (bch_bio_alloc_pages(check, GFP_NOIO))
+=======
+	check = bio_clone_kmalloc(bio, GFP_NOIO);
+	if (!check)
+		return;
+	check->bi_opf = REQ_OP_READ;
+
+	if (bio_alloc_pages(check, GFP_NOIO))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_put;
 
 	submit_bio_wait(check);
@@ -138,7 +183,11 @@ void bch_data_verify(struct cached_dev *dc, struct bio *bio)
 					bv.bv_len),
 				 dc->disk.c,
 				 "verify failed at dev %s sector %llu",
+<<<<<<< HEAD
 				 dc->backing_dev_name,
+=======
+				 bdevname(dc->bdev, name),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 (uint64_t) bio->bi_iter.bi_sector);
 
 		kunmap_atomic(p1);
@@ -177,9 +226,15 @@ static ssize_t bch_dump_read(struct file *file, char __user *buf,
 
 	while (size) {
 		struct keybuf_key *w;
+<<<<<<< HEAD
 		unsigned int bytes = min(i->bytes, size);
 		int err = copy_to_user(buf, i->buf, bytes);
 
+=======
+		unsigned bytes = min(i->bytes, size);
+
+		int err = copy_to_user(buf, i->buf, bytes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			return err;
 
@@ -236,11 +291,19 @@ static const struct file_operations cache_set_debug_ops = {
 
 void bch_debug_init_cache_set(struct cache_set *c)
 {
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(bcache_debug)) {
 		char name[50];
 
 		snprintf(name, 50, "bcache-%pU", c->sb.set_uuid);
 		c->debug = debugfs_create_file(name, 0400, bcache_debug, c,
+=======
+	if (!IS_ERR_OR_NULL(debug)) {
+		char name[50];
+		snprintf(name, 50, "bcache-%pU", c->sb.set_uuid);
+
+		c->debug = debugfs_create_file(name, 0400, debug, c,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       &cache_set_debug_ops);
 	}
 }
@@ -249,6 +312,7 @@ void bch_debug_init_cache_set(struct cache_set *c)
 
 void bch_debug_exit(void)
 {
+<<<<<<< HEAD
 	if (!IS_ERR_OR_NULL(bcache_debug))
 		debugfs_remove_recursive(bcache_debug);
 }
@@ -261,4 +325,16 @@ void __init bch_debug_init(struct kobject *kobj)
 	 * about this.
 	 */
 	bcache_debug = debugfs_create_dir("bcache", NULL);
+=======
+	if (!IS_ERR_OR_NULL(debug))
+		debugfs_remove_recursive(debug);
+}
+
+int __init bch_debug_init(struct kobject *kobj)
+{
+	int ret = 0;
+
+	debug = debugfs_create_dir("bcache", NULL);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

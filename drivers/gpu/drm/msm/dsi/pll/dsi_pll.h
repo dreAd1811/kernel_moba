@@ -115,6 +115,7 @@ msm_dsi_pll_14nm_init(struct platform_device *pdev, int id)
 	return ERR_PTR(-ENODEV);
 }
 #endif
+<<<<<<< HEAD
 #ifdef CONFIG_DRM_MSM_DSI_10NM_PHY
 struct msm_dsi_pll *msm_dsi_pll_10nm_init(struct platform_device *pdev, int id);
 #else
@@ -124,5 +125,7 @@ msm_dsi_pll_10nm_init(struct platform_device *pdev, int id)
 	return ERR_PTR(-ENODEV);
 }
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __DSI_PLL_H__ */
 

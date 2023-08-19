@@ -38,13 +38,21 @@ static bool access_actlr(struct kvm_vcpu *vcpu,
 	if (p->is_write)
 		return ignore_write(vcpu, p);
 
+<<<<<<< HEAD
 	p->regval = vcpu_read_sys_reg(vcpu, ACTLR_EL1);
+=======
+	p->regval = vcpu_sys_reg(vcpu, ACTLR_EL1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
 static void reset_actlr(struct kvm_vcpu *vcpu, const struct sys_reg_desc *r)
 {
+<<<<<<< HEAD
 	__vcpu_sys_reg(vcpu, ACTLR_EL1) = read_sysreg(actlr_el1);
+=======
+	vcpu_sys_reg(vcpu, ACTLR_EL1) = read_sysreg(actlr_el1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

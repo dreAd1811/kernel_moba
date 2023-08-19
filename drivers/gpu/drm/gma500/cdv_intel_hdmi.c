@@ -216,14 +216,22 @@ static int cdv_hdmi_get_modes(struct drm_connector *connector)
 
 	edid = drm_get_edid(connector, &gma_encoder->i2c_bus->adapter);
 	if (edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, edid);
+=======
+		drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_add_edid_modes(connector, edid);
 		kfree(edid);
 	}
 	return ret;
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status cdv_hdmi_mode_valid(struct drm_connector *connector,
+=======
+static int cdv_hdmi_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct drm_display_mode *mode)
 {
 	if (mode->clock > 165000)

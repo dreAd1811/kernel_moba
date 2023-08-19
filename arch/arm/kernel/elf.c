@@ -4,7 +4,10 @@
 #include <linux/personality.h>
 #include <linux/binfmts.h>
 #include <linux/elf.h>
+<<<<<<< HEAD
 #include <linux/elf-fdpic.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/system_info.h>
 
 int elf_check_arch(const struct elf32_hdr *x)
@@ -82,7 +85,11 @@ EXPORT_SYMBOL(elf_set_personality);
  *  - the binary requires an executable stack
  *  - we're running on a CPU which doesn't support NX.
  */
+<<<<<<< HEAD
 int arm_elf_read_implies_exec(int executable_stack)
+=======
+int arm_elf_read_implies_exec(const struct elf32_hdr *x, int executable_stack)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (executable_stack != EXSTACK_DISABLE_X)
 		return 1;
@@ -91,6 +98,7 @@ int arm_elf_read_implies_exec(int executable_stack)
 	return 0;
 }
 EXPORT_SYMBOL(arm_elf_read_implies_exec);
+<<<<<<< HEAD
 
 #if defined(CONFIG_MMU) && defined(CONFIG_BINFMT_ELF_FDPIC)
 
@@ -112,3 +120,5 @@ void elf_fdpic_arch_lay_out_mm(struct elf_fdpic_params *exec_params,
 }
 
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

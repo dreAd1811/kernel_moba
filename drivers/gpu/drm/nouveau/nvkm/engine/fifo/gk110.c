@@ -22,6 +22,7 @@
  * Authors: Ben Skeggs
  */
 #include "gk104.h"
+<<<<<<< HEAD
 #include "cgrp.h"
 #include "changk104.h"
 
@@ -48,12 +49,25 @@ gk110_fifo_runlist = {
 static const struct gk104_fifo_func
 gk110_fifo = {
 	.fault.access = gk104_fifo_fault_access,
+=======
+#include "changk104.h"
+
+static const struct gk104_fifo_func
+gk110_fifo = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fault.engine = gk104_fifo_fault_engine,
 	.fault.reason = gk104_fifo_fault_reason,
 	.fault.hubclient = gk104_fifo_fault_hubclient,
 	.fault.gpcclient = gk104_fifo_fault_gpcclient,
+<<<<<<< HEAD
 	.runlist = &gk110_fifo_runlist,
 	.chan = {{0,0,KEPLER_CHANNEL_GPFIFO_B}, gk104_fifo_gpfifo_new },
+=======
+	.chan = {
+		&gk110_fifo_gpfifo_oclass,
+		NULL
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

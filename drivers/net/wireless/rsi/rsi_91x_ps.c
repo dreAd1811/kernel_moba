@@ -36,6 +36,10 @@ char *str_psstate(enum ps_state state)
 	default:
 		return "INVALID_STATE";
 	}
+<<<<<<< HEAD
+=======
+	return "INVALID_STATE";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void rsi_modify_ps_state(struct rsi_hw *adapter,
@@ -66,7 +70,11 @@ void rsi_default_ps_params(struct rsi_hw *adapter)
 	ps_info->deep_sleep_wakeup_period = RSI_DEF_DS_WAKEUP_PERIOD;
 }
 
+<<<<<<< HEAD
 void rsi_enable_ps(struct rsi_hw *adapter, struct ieee80211_vif *vif)
+=======
+void rsi_enable_ps(struct rsi_hw *adapter)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (adapter->ps_state != PS_NONE) {
 		rsi_dbg(ERR_ZONE,
@@ -75,7 +83,11 @@ void rsi_enable_ps(struct rsi_hw *adapter, struct ieee80211_vif *vif)
 		return;
 	}
 
+<<<<<<< HEAD
 	if (rsi_send_ps_request(adapter, true, vif)) {
+=======
+	if (rsi_send_ps_request(adapter, true)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rsi_dbg(ERR_ZONE,
 			"%s: Failed to send PS request to device\n",
 			__func__);
@@ -85,8 +97,12 @@ void rsi_enable_ps(struct rsi_hw *adapter, struct ieee80211_vif *vif)
 	rsi_modify_ps_state(adapter, PS_ENABLE_REQ_SENT);
 }
 
+<<<<<<< HEAD
 /* This function is used to disable power save */
 void rsi_disable_ps(struct rsi_hw *adapter, struct ieee80211_vif *vif)
+=======
+void rsi_disable_ps(struct rsi_hw *adapter)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (adapter->ps_state != PS_ENABLED) {
 		rsi_dbg(ERR_ZONE,
@@ -95,7 +111,11 @@ void rsi_disable_ps(struct rsi_hw *adapter, struct ieee80211_vif *vif)
 		return;
 	}
 
+<<<<<<< HEAD
 	if (rsi_send_ps_request(adapter, false, vif)) {
+=======
+	if (rsi_send_ps_request(adapter, false)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rsi_dbg(ERR_ZONE,
 			"%s: Failed to send PS request to device\n",
 			__func__);
@@ -105,16 +125,26 @@ void rsi_disable_ps(struct rsi_hw *adapter, struct ieee80211_vif *vif)
 	rsi_modify_ps_state(adapter, PS_DISABLE_REQ_SENT);
 }
 
+<<<<<<< HEAD
 void rsi_conf_uapsd(struct rsi_hw *adapter, struct ieee80211_vif *vif)
+=======
+void rsi_conf_uapsd(struct rsi_hw *adapter)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
 	if (adapter->ps_state != PS_ENABLED)
 		return;
 
+<<<<<<< HEAD
 	ret = rsi_send_ps_request(adapter, false, vif);
 	if (!ret)
 		ret = rsi_send_ps_request(adapter, true, vif);
+=======
+	ret = rsi_send_ps_request(adapter, false);
+	if (!ret)
+		ret = rsi_send_ps_request(adapter, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		rsi_dbg(ERR_ZONE,
 			"%s: Failed to send PS request to device\n",

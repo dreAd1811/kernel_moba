@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /*
  * Copyright (c) 2017 Martin Blumenstingl <martin.blumenstingl@googlemail.com>.
+=======
+/*
+ * Copyright (c) 2017 Martin Blumenstingl <martin.blumenstingl@googlemail.com>.
+ *
+ * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -28,16 +35,25 @@
 
 	aliases {
 		serial2 = &uart_AO_B;
+<<<<<<< HEAD
 		ethernet0 = &ethmac;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	gpio-keys-polled {
 		compatible = "gpio-keys-polled";
+<<<<<<< HEAD
 		#address-cells = <1>;
 		#size-cells = <0>;
 		poll-interval = <100>;
 
 		button@0 {
+=======
+		poll-interval = <100>;
+
+		power-button {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			label = "power";
 			linux,code = <KEY_POWER>;
 			gpios = <&gpio_ao GPIOAO_2 GPIO_ACTIVE_LOW>;
@@ -112,7 +128,11 @@
 	linux,rc-map-name = "rc-geekbox";
 };
 
+<<<<<<< HEAD
 &pinctrl_aobus {
+=======
+&gpio_ao {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio-line-names = "UART TX",
 			  "UART RX",
 			  "Power Key In",
@@ -122,12 +142,19 @@
 			  "J9 Header Pin33",
 			  "IR In",
 			  "HDMI CEC",
+<<<<<<< HEAD
 			  "SYS LED",
 			  /* GPIO_TEST_N */
 			  "";
 };
 
 &pinctrl_periphs {
+=======
+			  "SYS LED";
+};
+
+&gpio {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio-line-names = /* Bank GPIOZ */
 			  "", "", "", "", "", "", "",
 			  "", "", "", "", "", "", "",
@@ -165,7 +192,13 @@
 			  "WIFI 32K", "Bluetooth Enable",
 			  "Bluetooth WAKE HOST",
 			  /* Bank GPIOCLK */
+<<<<<<< HEAD
 			  "", "J9 Header Pin39";
+=======
+			  "", "J9 Header Pin39",
+			  /* GPIO_TEST_N */
+			  "";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &pwm_AO_ab {

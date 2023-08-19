@@ -26,7 +26,10 @@
 #include <linux/delay.h>
 #include <linux/crash_dump.h>
 #include <linux/reboot.h>
+<<<<<<< HEAD
 #include <linux/memory.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/uv/uv_mmrs.h>
 #include <asm/uv/uv_hub.h>
@@ -138,8 +141,11 @@ static int __init early_get_pnodeid(void)
 	case UV3_HUB_PART_NUMBER_X:
 		uv_min_hub_revision_id += UV3_HUB_REVISION_BASE;
 		break;
+<<<<<<< HEAD
 
 	/* Update: UV4A has only a modified revision to indicate HUB fixes */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case UV4_HUB_PART_NUMBER:
 		uv_min_hub_revision_id += UV4_HUB_REVISION_BASE - 1;
 		uv_cpuid.gnode_shift = 2; /* min partition is 4 sockets */
@@ -157,6 +163,7 @@ static int __init early_get_pnodeid(void)
 	return pnode;
 }
 
+<<<<<<< HEAD
 static void __init uv_tsc_check_sync(void)
 {
 	u64 mmr;
@@ -199,6 +206,8 @@ static void __init uv_tsc_check_sync(void)
 		mark_tsc_unstable("UV BIOS");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* [Copied from arch/x86/kernel/cpu/topology.c:detect_extended_topology()] */
 
 #define SMT_LEVEL			0	/* Leaf 0xb SMT level */
@@ -319,7 +328,10 @@ static int __init uv_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
 	} else if (!strcmp(oem_table_id, "UVH")) {
 		/* Only UV1 systems: */
 		uv_system_type = UV_NON_UNIQUE_APIC;
+<<<<<<< HEAD
 		x86_platform.legacy.warm_reset = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__this_cpu_write(x2apic_extra_bits, pnodeid << uvh_apicid.s.pnode_shift);
 		uv_set_apicid_hibit();
 		uv_apic = 1;
@@ -334,7 +346,10 @@ static int __init uv_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
 	}
 
 	pr_info("UV: OEM IDs %s/%s, System/HUB Types %d/%d, uv_apic %d\n", oem_id, oem_table_id, uv_system_type, uv_min_hub_revision_id, uv_apic);
+<<<<<<< HEAD
 	uv_tsc_check_sync();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return uv_apic;
 
@@ -393,6 +408,7 @@ extern int uv_hub_info_version(void)
 }
 EXPORT_SYMBOL(uv_hub_info_version);
 
+<<<<<<< HEAD
 /* Default UV memory block size is 2GB */
 static unsigned long mem_block_size __initdata = (2UL << 30);
 
@@ -438,6 +454,8 @@ static __init void set_block_size(void)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Build GAM range lookup table: */
 static __init void build_uv_gr_table(void)
 {
@@ -603,7 +621,11 @@ static void uv_send_IPI_all(int vector)
 	uv_send_IPI_mask(cpu_online_mask, vector);
 }
 
+<<<<<<< HEAD
 static int uv_apic_id_valid(u32 apicid)
+=======
+static int uv_apic_id_valid(int apicid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return 1;
 }
@@ -617,9 +639,22 @@ static void uv_init_apic_ldr(void)
 {
 }
 
+<<<<<<< HEAD
 static u32 apic_uv_calc_apicid(unsigned int cpu)
 {
 	return apic_default_calc_apicid(cpu) | uv_apicid_hibits;
+=======
+static int
+uv_cpu_mask_to_apicid(const struct cpumask *mask, struct irq_data *irqdata,
+		      unsigned int *apicid)
+{
+	int ret = default_cpu_mask_to_apicid(mask, irqdata, apicid);
+
+	if (!ret)
+		*apicid |= uv_apicid_hibits;
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int x2apic_get_apic_id(unsigned long x)
@@ -632,7 +667,11 @@ static unsigned int x2apic_get_apic_id(unsigned long x)
 	return id;
 }
 
+<<<<<<< HEAD
 static u32 set_apic_id(unsigned int id)
+=======
+static unsigned long set_apic_id(unsigned int id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* CHECKME: Do we need to mask out the xapic extra bits? */
 	return id;
@@ -669,10 +708,18 @@ static struct apic apic_x2apic_uv_x __ro_after_init = {
 	.irq_delivery_mode		= dest_Fixed,
 	.irq_dest_mode			= 0, /* Physical */
 
+<<<<<<< HEAD
+=======
+	.target_cpus			= online_target_cpus,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.disable_esr			= 0,
 	.dest_logical			= APIC_DEST_LOGICAL,
 	.check_apicid_used		= NULL,
 
+<<<<<<< HEAD
+=======
+	.vector_allocation_domain	= default_vector_allocation_domain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init_apic_ldr			= uv_init_apic_ldr,
 
 	.ioapic_phys_id_map		= NULL,
@@ -685,7 +732,11 @@ static struct apic apic_x2apic_uv_x __ro_after_init = {
 	.get_apic_id			= x2apic_get_apic_id,
 	.set_apic_id			= set_apic_id,
 
+<<<<<<< HEAD
 	.calc_dest_apicid		= apic_uv_calc_apicid,
+=======
+	.cpu_mask_to_apicid		= uv_cpu_mask_to_apicid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.send_IPI			= uv_send_IPI_one,
 	.send_IPI_mask			= uv_send_IPI_mask,
@@ -816,7 +867,10 @@ static __init void map_gru_high(int max_pnode)
 		return;
 	}
 
+<<<<<<< HEAD
 	/* Only UV3 has distributed GRU mode */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (is_uv3_hub() && gru.s3.mode) {
 		map_gru_distributed(gru.v);
 		return;
@@ -840,6 +894,7 @@ static __init void map_mmr_high(int max_pnode)
 		pr_info("UV: MMR disabled\n");
 }
 
+<<<<<<< HEAD
 /* UV3/4 have identical MMIOH overlay configs, UV4A is slightly different */
 static __init void map_mmioh_high_uv34(int index, int min_pnode, int max_pnode)
 {
@@ -848,10 +903,42 @@ static __init void map_mmioh_high_uv34(int index, int min_pnode, int max_pnode)
 	unsigned long base;
 	unsigned long nasid_mask;
 	unsigned long m_overlay;
+=======
+/*
+ * This commonality works because both 0 & 1 versions of the MMIOH OVERLAY
+ * and REDIRECT MMR regs are exactly the same on UV3.
+ */
+struct mmioh_config {
+	unsigned long overlay;
+	unsigned long redirect;
+	char *id;
+};
+
+static __initdata struct mmioh_config mmiohs[] = {
+	{
+		UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR,
+		UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR,
+		"MMIOH0"
+	},
+	{
+		UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG1_MMR,
+		UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG1_MMR,
+		"MMIOH1"
+	},
+};
+
+/* UV3 & UV4 have identical MMIOH overlay configs */
+static __init void map_mmioh_high_uv3(int index, int min_pnode, int max_pnode)
+{
+	union uv3h_rh_gam_mmioh_overlay_config0_mmr_u overlay;
+	unsigned long mmr;
+	unsigned long base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, n, shift, m_io, max_io;
 	int nasid, lnasid, fi, li;
 	char *id;
 
+<<<<<<< HEAD
 	if (index == 0) {
 		id = "MMIOH0";
 		m_overlay = UVH_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR;
@@ -877,16 +964,32 @@ static __init void map_mmioh_high_uv34(int index, int min_pnode, int max_pnode)
 	}
 	pr_info("UV: %s overlay 0x%lx base:0x%lx m_io:%d\n", id, overlay, base, m_io);
 	if (!(overlay & UVH_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR_ENABLE_MASK)) {
+=======
+	id = mmiohs[index].id;
+	overlay.v = uv_read_local_mmr(mmiohs[index].overlay);
+
+	pr_info("UV: %s overlay 0x%lx base:0x%x m_io:%d\n", id, overlay.v, overlay.s3.base, overlay.s3.m_io);
+	if (!overlay.s3.enable) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_info("UV: %s disabled\n", id);
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	shift = UV3H_RH_GAM_MMIOH_OVERLAY_CONFIG0_MMR_BASE_SHFT;
+	base = (unsigned long)overlay.s3.base;
+	m_io = overlay.s3.m_io;
+	mmr = mmiohs[index].redirect;
+	n = UV3H_RH_GAM_MMIOH_REDIRECT_CONFIG0_MMR_DEPTH;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Convert to NASID: */
 	min_pnode *= 2;
 	max_pnode *= 2;
 	max_io = lnasid = fi = li = -1;
 
 	for (i = 0; i < n; i++) {
+<<<<<<< HEAD
 		unsigned long m_redirect = mmr + i * 8;
 		unsigned long redirect = uv_read_local_mmr(m_redirect);
 
@@ -895,6 +998,12 @@ static __init void map_mmioh_high_uv34(int index, int min_pnode, int max_pnode)
 			pr_info("UV: %s redirect base 0x%lx(@0x%lx) 0x%04x\n",
 				id, redirect, m_redirect, nasid);
 
+=======
+		union uv3h_rh_gam_mmioh_redirect_config0_mmr_u redirect;
+
+		redirect.v = uv_read_local_mmr(mmr + i * 8);
+		nasid = redirect.s3.nasid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Invalid NASID: */
 		if (nasid < min_pnode || max_pnode < nasid)
 			nasid = -1;
@@ -942,8 +1051,13 @@ static __init void map_mmioh_high(int min_pnode, int max_pnode)
 
 	if (is_uv3_hub() || is_uv4_hub()) {
 		/* Map both MMIOH regions: */
+<<<<<<< HEAD
 		map_mmioh_high_uv34(0, min_pnode, max_pnode);
 		map_mmioh_high_uv34(1, min_pnode, max_pnode);
+=======
+		map_mmioh_high_uv3(0, min_pnode, max_pnode);
+		map_mmioh_high_uv3(1, min_pnode, max_pnode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1226,13 +1340,17 @@ static void __init decode_gam_rng_tbl(unsigned long ptr)
 					<< UV_GAM_RANGE_SHFT);
 		int order = 0;
 		char suffix[] = " KMGTPE";
+<<<<<<< HEAD
 		int flag = ' ';
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		while (size > 9999 && order < sizeof(suffix)) {
 			size /= 1024;
 			order++;
 		}
 
+<<<<<<< HEAD
 		/* adjust max block size to current range start */
 		if (gre->type == 1 || gre->type == 2)
 			if (adj_blksize(lgre))
@@ -1250,6 +1368,19 @@ static void __init decode_gam_rng_tbl(unsigned long ptr)
 			gre->type, gre->nasid, gre->sockid, gre->pnode);
 
 		/* update to next range start */
+=======
+		if (!index) {
+			pr_info("UV: GAM Range Table...\n");
+			pr_info("UV:  # %20s %14s %5s %4s %5s %3s %2s\n", "Range", "", "Size", "Type", "NASID", "SID", "PN");
+		}
+		pr_info("UV: %2d: 0x%014lx-0x%014lx %5lu%c %3d   %04x  %02x %02x\n",
+			index++,
+			(unsigned long)lgre << UV_GAM_RANGE_SHFT,
+			(unsigned long)gre->limit << UV_GAM_RANGE_SHFT,
+			size, suffix[order],
+			gre->type, gre->nasid, gre->sockid, gre->pnode);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		lgre = gre->limit;
 		if (sock_min > gre->sockid)
 			sock_min = gre->sockid;
@@ -1480,7 +1611,10 @@ static void __init uv_system_init_hub(void)
 
 	build_socket_tables();
 	build_uv_gr_table();
+<<<<<<< HEAD
 	set_block_size();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uv_init_hub_info(&hub_info);
 	uv_possible_blades = num_possible_nodes();
 	if (!_node_to_pnode)

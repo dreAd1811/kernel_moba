@@ -128,7 +128,11 @@ void tlb_batch_add(struct mm_struct *mm, unsigned long vaddr,
 			goto no_cache_flush;
 
 		/* A real file page? */
+<<<<<<< HEAD
 		mapping = page_mapping_file(page);
+=======
+		mapping = page_mapping(page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!mapping)
 			goto no_cache_flush;
 

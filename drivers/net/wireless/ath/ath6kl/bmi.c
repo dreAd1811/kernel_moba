@@ -534,7 +534,11 @@ int ath6kl_bmi_init(struct ath6kl *ar)
 	/* cmd + addr + len + data_size */
 	ar->bmi.max_cmd_size = ar->bmi.max_data_size + (sizeof(u32) * 3);
 
+<<<<<<< HEAD
 	ar->bmi.cmd_buf = kzalloc(ar->bmi.max_cmd_size, GFP_KERNEL);
+=======
+	ar->bmi.cmd_buf = kzalloc(ar->bmi.max_cmd_size, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ar->bmi.cmd_buf)
 		return -ENOMEM;
 

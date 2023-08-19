@@ -25,7 +25,10 @@
  *
  *****************************************************************************/
 
+<<<<<<< HEAD
 #include <linux/kernel.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "table.h"
 
 u32 RTL8723BEPHY_REG_1TARRAY[] = {
@@ -225,7 +228,12 @@ u32 RTL8723BEPHY_REG_1TARRAY[] = {
 
 };
 
+<<<<<<< HEAD
 u32 RTL8723BEPHY_REG_1TARRAYLEN = ARRAY_SIZE(RTL8723BEPHY_REG_1TARRAY);
+=======
+u32 RTL8723BEPHY_REG_1TARRAYLEN =
+	sizeof(RTL8723BEPHY_REG_1TARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8723BEPHY_REG_ARRAY_PG[] = {
 	0, 0, 0, 0x00000e08, 0x0000ff00, 0x00003800,
@@ -236,7 +244,12 @@ u32 RTL8723BEPHY_REG_ARRAY_PG[] = {
 	0, 0, 0, 0x00000e14, 0xffffffff, 0x26303436
 };
 
+<<<<<<< HEAD
 u32 RTL8723BEPHY_REG_ARRAY_PGLEN = ARRAY_SIZE(RTL8723BEPHY_REG_ARRAY_PG);
+=======
+u32 RTL8723BEPHY_REG_ARRAY_PGLEN =
+		sizeof(RTL8723BEPHY_REG_ARRAY_PG) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8723BE_RADIOA_1TARRAY[] = {
 		0x000, 0x00010000,
@@ -372,7 +385,12 @@ u32 RTL8723BE_RADIOA_1TARRAY[] = {
 
 };
 
+<<<<<<< HEAD
 u32 RTL8723BE_RADIOA_1TARRAYLEN = ARRAY_SIZE(RTL8723BE_RADIOA_1TARRAY);
+=======
+u32 RTL8723BE_RADIOA_1TARRAYLEN =
+	sizeof(RTL8723BE_RADIOA_1TARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8723BEMAC_1T_ARRAY[] = {
 		0x02F, 0x00000030,
@@ -481,7 +499,11 @@ u32 RTL8723BEMAC_1T_ARRAY[] = {
 
 };
 
+<<<<<<< HEAD
 u32 RTL8723BEMAC_1T_ARRAYLEN = ARRAY_SIZE(RTL8723BEMAC_1T_ARRAY);
+=======
+u32 RTL8723BEMAC_1T_ARRAYLEN = sizeof(RTL8723BEMAC_1T_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8723BEAGCTAB_1TARRAY[] = {
 		0xC78, 0xFD000001,
@@ -618,4 +640,8 @@ u32 RTL8723BEAGCTAB_1TARRAY[] = {
 
 };
 
+<<<<<<< HEAD
 u32 RTL8723BEAGCTAB_1TARRAYLEN = ARRAY_SIZE(RTL8723BEAGCTAB_1TARRAY);
+=======
+u32 RTL8723BEAGCTAB_1TARRAYLEN = sizeof(RTL8723BEAGCTAB_1TARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -88,8 +88,12 @@ update_mmu_cache(struct vm_area_struct *vma, unsigned long address, pte_t *ptep)
 		return;
 
 	page = pfn_to_page(pfn);
+<<<<<<< HEAD
 	if (page_mapping_file(page) &&
 	    test_bit(PG_dcache_dirty, &page->flags)) {
+=======
+	if (page_mapping(page) && test_bit(PG_dcache_dirty, &page->flags)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		flush_kernel_dcache_page_addr(pfn_va(pfn));
 		clear_bit(PG_dcache_dirty, &page->flags);
 	} else if (parisc_requires_coherency())
@@ -254,7 +258,11 @@ parisc_cache_init(void)
 	}
 }
 
+<<<<<<< HEAD
 void __init disable_sr_hashing(void)
+=======
+void disable_sr_hashing(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int srhash_type, retval;
 	unsigned long space_bits;
@@ -305,7 +313,11 @@ __flush_cache_page(struct vm_area_struct *vma, unsigned long vmaddr,
 
 void flush_dcache_page(struct page *page)
 {
+<<<<<<< HEAD
 	struct address_space *mapping = page_mapping_file(page);
+=======
+	struct address_space *mapping = page_mapping(page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vm_area_struct *mpnt;
 	unsigned long offset;
 	unsigned long addr, old_addr = 0;

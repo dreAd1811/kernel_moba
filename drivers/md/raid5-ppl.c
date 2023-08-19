@@ -85,9 +85,12 @@
  * (for a single member disk). New io_units are added to the end of the list
  * and the first io_unit is submitted, if it is not submitted already.
  * The current io_unit accepting new stripes is always at the end of the list.
+<<<<<<< HEAD
  *
  * If write-back cache is enabled for any of the disks in the array, its data
  * must be flushed before next io_unit is submitted.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define PPL_SPACE_SIZE (128 * 1024)
@@ -105,9 +108,14 @@ struct ppl_conf {
 	atomic64_t seq;		/* current log write sequence number */
 
 	struct kmem_cache *io_kc;
+<<<<<<< HEAD
 	mempool_t io_pool;
 	struct bio_set bs;
 	struct bio_set flush_bs;
+=======
+	mempool_t *io_pool;
+	struct bio_set *bs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* used only for recovery */
 	int recovered_entries;
@@ -132,8 +140,11 @@ struct ppl_log {
 	sector_t next_io_sector;
 	unsigned int entry_space;
 	bool use_multippl;
+<<<<<<< HEAD
 	bool wb_cache_on;
 	unsigned long disk_flush_bitmap;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define PPL_IO_INLINE_BVECS 32
@@ -151,7 +162,10 @@ struct ppl_io_unit {
 
 	struct list_head stripe_list;	/* stripes added to the io_unit */
 	atomic_t pending_stripes;	/* how many stripes not written to raid */
+<<<<<<< HEAD
 	atomic_t pending_flushes;	/* how many disk flushes are in progress */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bool submitted;			/* true if write to log started */
 
@@ -244,7 +258,11 @@ static struct ppl_io_unit *ppl_new_iounit(struct ppl_log *log,
 	struct ppl_header *pplhdr;
 	struct page *header_page;
 
+<<<<<<< HEAD
 	io = mempool_alloc(&ppl_conf->io_pool, GFP_NOWAIT);
+=======
+	io = mempool_alloc(ppl_conf->io_pool, GFP_NOWAIT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!io)
 		return NULL;
 
@@ -256,7 +274,10 @@ static struct ppl_io_unit *ppl_new_iounit(struct ppl_log *log,
 	INIT_LIST_HEAD(&io->log_sibling);
 	INIT_LIST_HEAD(&io->stripe_list);
 	atomic_set(&io->pending_stripes, 0);
+<<<<<<< HEAD
 	atomic_set(&io->pending_flushes, 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bio_init(&io->bio, io->biovec, PPL_IO_INLINE_BVECS);
 
 	pplhdr = page_address(io->header_page);
@@ -483,6 +504,7 @@ static void ppl_submit_iounit(struct ppl_io_unit *io)
 	if (log->use_multippl)
 		log->next_io_sector += (PPL_HEADER_SIZE + io->pp_size) >> 9;
 
+<<<<<<< HEAD
 	WARN_ON(log->disk_flush_bitmap != 0);
 
 	list_for_each_entry(sh, &io->stripe_list, log_list) {
@@ -495,6 +517,9 @@ static void ppl_submit_iounit(struct ppl_io_unit *io)
 			}
 		}
 
+=======
+	list_for_each_entry(sh, &io->stripe_list, log_list) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* entries for full stripe writes have no partial parity */
 		if (test_bit(STRIPE_FULL_WRITE, &sh->state))
 			continue;
@@ -503,7 +528,11 @@ static void ppl_submit_iounit(struct ppl_io_unit *io)
 			struct bio *prev = bio;
 
 			bio = bio_alloc_bioset(GFP_NOIO, BIO_MAX_PAGES,
+<<<<<<< HEAD
 					       &ppl_conf->bs);
+=======
+					       ppl_conf->bs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bio->bi_opf = prev->bi_opf;
 			bio_copy_dev(bio, prev);
 			bio->bi_iter.bi_sector = bio_end_sector(prev);
@@ -559,7 +588,10 @@ static void ppl_io_unit_finished(struct ppl_io_unit *io)
 {
 	struct ppl_log *log = io->log;
 	struct ppl_conf *ppl_conf = log->ppl_conf;
+<<<<<<< HEAD
 	struct r5conf *conf = ppl_conf->mddev->private;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	pr_debug("%s: seq: %llu\n", __func__, io->seq);
@@ -570,7 +602,11 @@ static void ppl_io_unit_finished(struct ppl_io_unit *io)
 	list_del(&io->log_sibling);
 	spin_unlock(&log->io_list_lock);
 
+<<<<<<< HEAD
 	mempool_free(io, &ppl_conf->io_pool);
+=======
+	mempool_free(io, ppl_conf->io_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&ppl_conf->no_mem_stripes_lock);
 	if (!list_empty(&ppl_conf->no_mem_stripes)) {
@@ -585,6 +621,7 @@ static void ppl_io_unit_finished(struct ppl_io_unit *io)
 	spin_unlock(&ppl_conf->no_mem_stripes_lock);
 
 	local_irq_restore(flags);
+<<<<<<< HEAD
 
 	wake_up(&conf->wait_for_quiescent);
 }
@@ -701,6 +738,8 @@ int ppl_handle_flush_request(struct r5l_log *log, struct bio *bio)
 	}
 	bio->bi_opf &= ~REQ_PREFLUSH;
 	return -EAGAIN;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void ppl_stripe_write_finished(struct stripe_head *sh)
@@ -710,12 +749,17 @@ void ppl_stripe_write_finished(struct stripe_head *sh)
 	io = sh->ppl_io;
 	sh->ppl_io = NULL;
 
+<<<<<<< HEAD
 	if (io && atomic_dec_and_test(&io->pending_stripes)) {
 		if (io->log->disk_flush_bitmap)
 			ppl_do_flush(io);
 		else
 			ppl_io_unit_finished(io);
 	}
+=======
+	if (io && atomic_dec_and_test(&io->pending_stripes))
+		ppl_io_unit_finished(io);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ppl_xor(int size, struct page *page1, struct page *page2)
@@ -1246,9 +1290,15 @@ static void __ppl_exit_log(struct ppl_conf *ppl_conf)
 
 	kfree(ppl_conf->child_logs);
 
+<<<<<<< HEAD
 	bioset_exit(&ppl_conf->bs);
 	bioset_exit(&ppl_conf->flush_bs);
 	mempool_exit(&ppl_conf->io_pool);
+=======
+	if (ppl_conf->bs)
+		bioset_free(ppl_conf->bs);
+	mempool_destroy(ppl_conf->io_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kmem_cache_destroy(ppl_conf->io_kc);
 
 	kfree(ppl_conf);
@@ -1313,8 +1363,11 @@ static int ppl_validate_rdev(struct md_rdev *rdev)
 
 static void ppl_init_child_log(struct ppl_log *log, struct md_rdev *rdev)
 {
+<<<<<<< HEAD
 	struct request_queue *q;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((rdev->ppl.size << 9) >= (PPL_SPACE_SIZE +
 				      PPL_HEADER_SIZE) * 2) {
 		log->use_multippl = true;
@@ -1327,10 +1380,13 @@ static void ppl_init_child_log(struct ppl_log *log, struct md_rdev *rdev)
 				   PPL_HEADER_SIZE;
 	}
 	log->next_io_sector = rdev->ppl.sector;
+<<<<<<< HEAD
 
 	q = bdev_get_queue(rdev->bdev);
 	if (test_bit(QUEUE_FLAG_WC, &q->queue_flags))
 		log->wb_cache_on = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int ppl_init_log(struct r5conf *conf)
@@ -1338,8 +1394,13 @@ int ppl_init_log(struct r5conf *conf)
 	struct ppl_conf *ppl_conf;
 	struct mddev *mddev = conf->mddev;
 	int ret = 0;
+<<<<<<< HEAD
 	int max_disks;
 	int i;
+=======
+	int i;
+	bool need_cache_flush = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("md/raid:%s: enabling distributed Partial Parity Log\n",
 		 mdname(conf->mddev));
@@ -1365,6 +1426,7 @@ int ppl_init_log(struct r5conf *conf)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	max_disks = FIELD_SIZEOF(struct ppl_log, disk_flush_bitmap) *
 		BITS_PER_BYTE;
 	if (conf->raid_disks > max_disks) {
@@ -1373,6 +1435,8 @@ int ppl_init_log(struct r5conf *conf)
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ppl_conf = kzalloc(sizeof(struct ppl_conf), GFP_KERNEL);
 	if (!ppl_conf)
 		return -ENOMEM;
@@ -1385,6 +1449,7 @@ int ppl_init_log(struct r5conf *conf)
 		goto err;
 	}
 
+<<<<<<< HEAD
 	ret = mempool_init(&ppl_conf->io_pool, conf->raid_disks, ppl_io_pool_alloc,
 			   ppl_io_pool_free, ppl_conf->io_kc);
 	if (ret)
@@ -1397,6 +1462,20 @@ int ppl_init_log(struct r5conf *conf)
 	ret = bioset_init(&ppl_conf->flush_bs, conf->raid_disks, 0, 0);
 	if (ret)
 		goto err;
+=======
+	ppl_conf->io_pool = mempool_create(conf->raid_disks, ppl_io_pool_alloc,
+					   ppl_io_pool_free, ppl_conf->io_kc);
+	if (!ppl_conf->io_pool) {
+		ret = -ENOMEM;
+		goto err;
+	}
+
+	ppl_conf->bs = bioset_create(conf->raid_disks, 0, BIOSET_NEED_BVECS);
+	if (!ppl_conf->bs) {
+		ret = -ENOMEM;
+		goto err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ppl_conf->count = conf->raid_disks;
 	ppl_conf->child_logs = kcalloc(ppl_conf->count, sizeof(struct ppl_log),
@@ -1429,20 +1508,43 @@ int ppl_init_log(struct r5conf *conf)
 		log->rdev = rdev;
 
 		if (rdev) {
+<<<<<<< HEAD
+=======
+			struct request_queue *q;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = ppl_validate_rdev(rdev);
 			if (ret)
 				goto err;
 
+<<<<<<< HEAD
+=======
+			q = bdev_get_queue(rdev->bdev);
+			if (test_bit(QUEUE_FLAG_WC, &q->queue_flags))
+				need_cache_flush = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ppl_init_child_log(log, rdev);
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	if (need_cache_flush)
+		pr_warn("md/raid:%s: Volatile write-back cache should be disabled on all member drives when using PPL!\n",
+			mdname(mddev));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* load and possibly recover the logs from the member disks */
 	ret = ppl_load(ppl_conf);
 
 	if (ret) {
 		goto err;
+<<<<<<< HEAD
 	} else if (!mddev->pers && mddev->recovery_cp == 0 &&
+=======
+	} else if (!mddev->pers &&
+		   mddev->recovery_cp == 0 && !mddev->degraded &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   ppl_conf->recovered_entries > 0 &&
 		   ppl_conf->mismatch_count == 0) {
 		/*

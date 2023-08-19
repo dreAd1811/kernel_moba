@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2014-2016, 2018 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2015, 2017-2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _CORESIGHT_CORESIGHT_ETM_H
@@ -175,6 +188,10 @@
 					 ETM_MODE_EXCL_USER)
 
 #define TRCSTATR_IDLE_BIT		0
+<<<<<<< HEAD
+=======
+#define TRCSTATR_PMSTABLE_BIT		1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ETM_DEFAULT_ADDR_COMP		0
 
 /* PowerDown Control Register bits */
@@ -230,6 +247,11 @@
  * @addr_type:	Current status of the comparator register.
  * @ctxid_idx:	Context ID index selector.
  * @ctxid_pid:	Value of the context ID comparator.
+<<<<<<< HEAD
+=======
+ * @ctxid_vpid:	Virtual PID seen by users if PID namespace is enabled, otherwise
+ *		the same value of ctxid_pid.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ctxid_mask0:Context ID comparator mask for comparator 0-3.
  * @ctxid_mask1:Context ID comparator mask for comparator 4-7.
  * @vmid_idx:	VM ID index selector.
@@ -272,6 +294,10 @@ struct etmv4_config {
 	u8				addr_type[ETM_MAX_SINGLE_ADDR_CMP];
 	u8				ctxid_idx;
 	u64				ctxid_pid[ETMv4_MAX_CTXID_CMP];
+<<<<<<< HEAD
+=======
+	u64				ctxid_vpid[ETMv4_MAX_CTXID_CMP];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32				ctxid_mask0;
 	u32				ctxid_mask1;
 	u8				vmid_idx;
@@ -282,6 +308,68 @@ struct etmv4_config {
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * struct etm4_save_state - state to be preserved when ETM is without power
+ */
+struct etmv4_save_state {
+	u32	trcprgctlr;
+	u32	trcprocselr;
+	u32	trcconfigr;
+	u32	trcauxctlr;
+	u32	trceventctl0r;
+	u32	trceventctl1r;
+	u32	trcstallctlr;
+	u32	trctsctlr;
+	u32	trcsyncpr;
+	u32	trcccctlr;
+	u32	trcbbctlr;
+	u32	trctraceidr;
+	u32	trcqctlr;
+
+	u32	trcvictlr;
+	u32	trcviiectlr;
+	u32	trcvissctlr;
+	u32	trcvipcssctlr;
+	u32	trcvdctlr;
+	u32	trcvdsacctlr;
+	u32	trcvdarcctlr;
+
+	u32	trcseqevr[ETM_MAX_SEQ_STATES];
+	u32	trcseqrstevr;
+	u32	trcseqstr;
+	u32	trcextinselr;
+	u32	trccntrldvr[ETMv4_MAX_CNTR];
+	u32	trccntctlr[ETMv4_MAX_CNTR];
+	u32	trccntvr[ETMv4_MAX_CNTR];
+
+	u32	trcrsctlr[ETM_MAX_RES_SEL * 2];
+
+	u32	trcssccr[ETM_MAX_SS_CMP];
+	u32	trcsscsr[ETM_MAX_SS_CMP];
+	u32	trcsspcicr[ETM_MAX_SS_CMP];
+
+	u64	trcacvr[ETM_MAX_SINGLE_ADDR_CMP];
+	u64	trcacatr[ETM_MAX_SINGLE_ADDR_CMP];
+	u64	trccidcvr[ETMv4_MAX_CTXID_CMP];
+	u32	trcvmidcvr[ETM_MAX_VMID_CMP];
+	u32	trccidcctlr0;
+	u32	trccidcctlr1;
+	u32	trcvmidcctlr0;
+	u32	trcvmidcctlr1;
+
+	u32	trcclaimset;
+
+	u32	cntr_val[ETMv4_MAX_CNTR];
+	u32	seq_state;
+	u32	vinst_ctrl;
+	u32	ss_status[ETM_MAX_SS_CMP];
+
+	u32	trcpdcr;
+};
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct etm4_drvdata - specifics associated to an ETM component
  * @base:       Memory mapped base address for this component.
  * @dev:        The device entity associated to this component.
@@ -338,6 +426,11 @@ struct etmv4_config {
  * @lpoverride:	If the implementation can support low-power state over.
  * @tupwr_disable:	If disable the support of keeping trace unit powered.
  * @config:	structure holding configuration parameters.
+<<<<<<< HEAD
+=======
+ * @save_state:	State to be preserved across power loss
+ * @state_needs_restore: True when there is context to restore after PM exit
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct etmv4_drvdata {
 	void __iomem			*base;
@@ -385,6 +478,11 @@ struct etmv4_drvdata {
 	bool				lpoverride;
 	bool				tupwr_disable;
 	struct etmv4_config		config;
+<<<<<<< HEAD
+=======
+	struct etmv4_save_state		*save_state;
+	bool				state_needs_restore;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Address comparator access types */

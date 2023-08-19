@@ -95,7 +95,11 @@ static inline unsigned long perf_ip_adjust(struct pt_regs *regs)
 {
 	return 0;
 }
+<<<<<<< HEAD
 static inline void perf_get_data_addr(struct pt_regs *regs, u64 *addrp) { }
+=======
+static inline void perf_get_data_addr(struct perf_event *event, struct pt_regs *regs, u64 *addrp) { }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 perf_get_misc_flags(struct pt_regs *regs)
 {
 	return 0;
@@ -126,8 +130,17 @@ static unsigned long ebb_switch_in(bool ebb, struct cpu_hw_events *cpuhw)
 static inline void power_pmu_bhrb_enable(struct perf_event *event) {}
 static inline void power_pmu_bhrb_disable(struct perf_event *event) {}
 static void power_pmu_sched_task(struct perf_event_context *ctx, bool sched_in) {}
+<<<<<<< HEAD
 static inline void power_pmu_bhrb_read(struct cpu_hw_events *cpuhw) {}
 static void pmao_restore_workaround(bool ebb) { }
+=======
+static inline void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *cpuhw) {}
+static void pmao_restore_workaround(bool ebb) { }
+static bool use_ic(u64 event)
+{
+	return false;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PPC32 */
 
 static bool regs_use_siar(struct pt_regs *regs)
@@ -170,7 +183,11 @@ static inline unsigned long perf_ip_adjust(struct pt_regs *regs)
  * pointed to by SIAR; this is indicated by the [POWER6_]MMCRA_SDSYNC, the
  * [POWER7P_]MMCRA_SDAR_VALID bit in MMCRA, or the SDAR_VALID bit in SIER.
  */
+<<<<<<< HEAD
 static inline void perf_get_data_addr(struct pt_regs *regs, u64 *addrp)
+=======
+static inline void perf_get_data_addr(struct perf_event *event, struct pt_regs *regs, u64 *addrp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long mmcra = regs->dsisr;
 	bool sdar_valid;
@@ -194,10 +211,13 @@ static inline void perf_get_data_addr(struct pt_regs *regs, u64 *addrp)
 
 	if (!(mmcra & MMCRA_SAMPLE_ENABLE) || sdar_valid)
 		*addrp = mfspr(SPRN_SDAR);
+<<<<<<< HEAD
 
 	if (perf_paranoid_kernel() && !capable(CAP_SYS_ADMIN) &&
 		is_kernel_addr(mfspr(SPRN_SDAR)))
 		*addrp = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool regs_sihv(struct pt_regs *regs)
@@ -322,7 +342,11 @@ static inline void perf_read_regs(struct pt_regs *regs)
  */
 static inline int perf_intr_is_nmi(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	return (regs->softe & IRQS_DISABLED);
+=======
+	return !regs->softe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -435,7 +459,11 @@ static __u64 power_pmu_bhrb_to(u64 addr)
 }
 
 /* Processing BHRB entries */
+<<<<<<< HEAD
 static void power_pmu_bhrb_read(struct cpu_hw_events *cpuhw)
+=======
+static void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *cpuhw)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 val;
 	u64 addr;
@@ -463,8 +491,12 @@ static void power_pmu_bhrb_read(struct cpu_hw_events *cpuhw)
 			 * exporting it to userspace (avoid exposure of regions
 			 * where we could have speculative execution)
 			 */
+<<<<<<< HEAD
 			if (perf_paranoid_kernel() && !capable(CAP_SYS_ADMIN) &&
 				is_kernel_addr(addr))
+=======
+			if (is_kernel_addr(addr) && perf_allow_kernel(&event->attr) != 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 
 			/* Branches are read most recent first (ie. mfbhrb 0 is
@@ -710,6 +742,17 @@ static void pmao_restore_workaround(bool ebb)
 	mtspr(SPRN_PMC6, pmcs[5]);
 }
 
+<<<<<<< HEAD
+=======
+static bool use_ic(u64 event)
+{
+	if (cpu_has_feature(CPU_FTR_POWER9_DD1) &&
+			(event == 0x200f2 || event == 0x300f2))
+		return true;
+
+	return false;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_PPC64 */
 
 static void perf_event_interrupt(struct pt_regs *regs);
@@ -1034,6 +1077,10 @@ static u64 check_and_compute_delta(u64 prev, u64 val)
 static void power_pmu_read(struct perf_event *event)
 {
 	s64 val, delta, prev;
+<<<<<<< HEAD
+=======
+	struct cpu_hw_events *cpuhw = this_cpu_ptr(&cpu_hw_events);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (event->hw.state & PERF_HES_STOPPED)
 		return;
@@ -1043,6 +1090,16 @@ static void power_pmu_read(struct perf_event *event)
 
 	if (is_ebb_event(event)) {
 		val = read_pmc(event->hw.idx);
+<<<<<<< HEAD
+=======
+		if (use_ic(event->attr.config)) {
+			val = mfspr(SPRN_IC);
+			if (val > cpuhw->ic_init)
+				val = val - cpuhw->ic_init;
+			else
+				val = val + (0 - cpuhw->ic_init);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		local64_set(&event->hw.prev_count, val);
 		return;
 	}
@@ -1056,6 +1113,16 @@ static void power_pmu_read(struct perf_event *event)
 		prev = local64_read(&event->hw.prev_count);
 		barrier();
 		val = read_pmc(event->hw.idx);
+<<<<<<< HEAD
+=======
+		if (use_ic(event->attr.config)) {
+			val = mfspr(SPRN_IC);
+			if (val > cpuhw->ic_init)
+				val = val - cpuhw->ic_init;
+			else
+				val = val + (0 - cpuhw->ic_init);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		delta = check_and_compute_delta(prev, val);
 		if (!delta)
 			return;
@@ -1428,7 +1495,11 @@ static int collect_events(struct perf_event *group, int max_count,
 		flags[n] = group->hw.event_base;
 		events[n++] = group->hw.config;
 	}
+<<<<<<< HEAD
 	for_each_sibling_event(event, group) {
+=======
+	list_for_each_entry(event, &group->sibling_list, group_entry) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (event->pmu->task_ctx_nr == perf_hw_context &&
 		    event->state != PERF_EVENT_STATE_OFF) {
 			if (n >= max_count)
@@ -1442,7 +1513,11 @@ static int collect_events(struct perf_event *group, int max_count,
 }
 
 /*
+<<<<<<< HEAD
  * Add an event to the PMU.
+=======
+ * Add a event to the PMU.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * If all events are not already frozen, then we disable and
  * re-enable the PMU in order to get hw_perf_enable to do the
  * actual work of reconfiguring the PMU.
@@ -1508,13 +1583,27 @@ nocheck:
 					event->attr.branch_sample_type);
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Workaround for POWER9 DD1 to use the Instruction Counter
+	 * register value for instruction counting
+	 */
+	if (use_ic(event->attr.config))
+		cpuhw->ic_init = mfspr(SPRN_IC);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	perf_pmu_enable(event->pmu);
 	local_irq_restore(flags);
 	return ret;
 }
 
 /*
+<<<<<<< HEAD
  * Remove an event from the PMU.
+=======
+ * Remove a event from the PMU.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void power_pmu_del(struct perf_event *event, int ef_flags)
 {
@@ -1708,7 +1797,11 @@ static int power_pmu_commit_txn(struct pmu *pmu)
 /*
  * Return 1 if we might be able to put event on a limited PMC,
  * or 0 if not.
+<<<<<<< HEAD
  * An event can only go on a limited PMC if it counts something
+=======
+ * A event can only go on a limited PMC if it counts something
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * that a limited PMC can count, doesn't require interrupts, and
  * doesn't exclude any processor mode.
  */
@@ -1805,6 +1898,7 @@ static int hw_perf_cache_event(u64 config, u64 *eventp)
 	return 0;
 }
 
+<<<<<<< HEAD
 static bool is_event_blacklisted(u64 ev)
 {
 	int i;
@@ -1817,6 +1911,8 @@ static bool is_event_blacklisted(u64 ev)
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int power_pmu_event_init(struct perf_event *event)
 {
 	u64 ev;
@@ -1843,15 +1939,19 @@ static int power_pmu_event_init(struct perf_event *event)
 		ev = event->attr.config;
 		if (ev >= ppmu->n_generic || ppmu->generic_events[ev] == 0)
 			return -EOPNOTSUPP;
+<<<<<<< HEAD
 
 		if (ppmu->blacklist_ev && is_event_blacklisted(ev))
 			return -EINVAL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ev = ppmu->generic_events[ev];
 		break;
 	case PERF_TYPE_HW_CACHE:
 		err = hw_perf_cache_event(event->attr.config, &ev);
 		if (err)
 			return err;
+<<<<<<< HEAD
 
 		if (ppmu->blacklist_ev && is_event_blacklisted(ev))
 			return -EINVAL;
@@ -1861,6 +1961,11 @@ static int power_pmu_event_init(struct perf_event *event)
 
 		if (ppmu->blacklist_ev && is_event_blacklisted(ev))
 			return -EINVAL;
+=======
+		break;
+	case PERF_TYPE_RAW:
+		ev = event->attr.config;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		return -ENOENT;
@@ -2068,12 +2173,20 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
 
 		if (event->attr.sample_type &
 		    (PERF_SAMPLE_ADDR | PERF_SAMPLE_PHYS_ADDR))
+<<<<<<< HEAD
 			perf_get_data_addr(regs, &data.addr);
+=======
+			perf_get_data_addr(event, regs, &data.addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (event->attr.sample_type & PERF_SAMPLE_BRANCH_STACK) {
 			struct cpu_hw_events *cpuhw;
 			cpuhw = this_cpu_ptr(&cpu_hw_events);
+<<<<<<< HEAD
 			power_pmu_bhrb_read(cpuhw);
+=======
+			power_pmu_bhrb_read(event, cpuhw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data.br_stack = &cpuhw->bhrb_stack;
 		}
 

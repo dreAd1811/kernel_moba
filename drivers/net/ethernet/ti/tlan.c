@@ -172,8 +172,12 @@ static u32	tlan_handle_tx_eoc(struct net_device *, u16);
 static u32	tlan_handle_status_check(struct net_device *, u16);
 static u32	tlan_handle_rx_eoc(struct net_device *, u16);
 
+<<<<<<< HEAD
 static void	tlan_timer(struct timer_list *t);
 static void	tlan_phy_monitor(struct timer_list *t);
+=======
+static void	tlan_timer(unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void	tlan_reset_lists(struct net_device *);
 static void	tlan_free_lists(struct net_device *);
@@ -191,6 +195,10 @@ static void	tlan_phy_power_up(struct net_device *);
 static void	tlan_phy_reset(struct net_device *);
 static void	tlan_phy_start_link(struct net_device *);
 static void	tlan_phy_finish_auto_neg(struct net_device *);
+<<<<<<< HEAD
+=======
+static void     tlan_phy_monitor(unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
   static int	tlan_phy_nop(struct net_device *);
@@ -258,6 +266,10 @@ tlan_set_timer(struct net_device *dev, u32 ticks, u32 type)
 	if (!in_irq())
 		spin_unlock_irqrestore(&priv->lock, flags);
 
+<<<<<<< HEAD
+=======
+	priv->timer.data = (unsigned long) dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->timer_set_at = jiffies;
 	priv->timer_type = type;
 	mod_timer(&priv->timer, jiffies + ticks);
@@ -925,8 +937,13 @@ static int tlan_open(struct net_device *dev)
 		return err;
 	}
 
+<<<<<<< HEAD
 	timer_setup(&priv->timer, NULL, 0);
 	timer_setup(&priv->media_timer, tlan_phy_monitor, 0);
+=======
+	init_timer(&priv->timer);
+	init_timer(&priv->media_timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tlan_start(dev);
 
@@ -966,7 +983,10 @@ static int tlan_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 	switch (cmd) {
 	case SIOCGMIIPHY:		/* get address of MII PHY in use. */
 		data->phy_id = phy;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	case SIOCGMIIREG:		/* read MII PHY register. */
@@ -1427,6 +1447,10 @@ static u32 tlan_handle_tx_eof(struct net_device *dev, u16 host_int)
 				TLAN_LED_REG, TLAN_LED_LINK | TLAN_LED_ACT);
 		if (priv->timer.function == NULL) {
 			priv->timer.function = tlan_timer;
+<<<<<<< HEAD
+=======
+			priv->timer.data = (unsigned long) dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			priv->timer.expires = jiffies + TLAN_TIMER_ACT_DELAY;
 			priv->timer_set_at = jiffies;
 			priv->timer_type = TLAN_TIMER_ACTIVITY;
@@ -1578,6 +1602,10 @@ drop_and_reuse:
 				TLAN_LED_REG, TLAN_LED_LINK | TLAN_LED_ACT);
 		if (priv->timer.function == NULL)  {
 			priv->timer.function = tlan_timer;
+<<<<<<< HEAD
+=======
+			priv->timer.data = (unsigned long) dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			priv->timer.expires = jiffies + TLAN_TIMER_ACT_DELAY;
 			priv->timer_set_at = jiffies;
 			priv->timer_type = TLAN_TIMER_ACTIVITY;
@@ -1834,10 +1862,17 @@ ThunderLAN driver timer function
  *
  **************************************************************/
 
+<<<<<<< HEAD
 static void tlan_timer(struct timer_list *t)
 {
 	struct tlan_priv	*priv = from_timer(priv, t, timer);
 	struct net_device	*dev = priv->dev;
+=======
+static void tlan_timer(unsigned long data)
+{
+	struct net_device	*dev = (struct net_device *) data;
+	struct tlan_priv	*priv = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32		elapsed;
 	unsigned long	flags = 0;
 
@@ -1870,6 +1905,10 @@ static void tlan_timer(struct timer_list *t)
 				tlan_dio_write8(dev->base_addr,
 						TLAN_LED_REG, TLAN_LED_LINK);
 			} else  {
+<<<<<<< HEAD
+=======
+				priv->timer.function = tlan_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				priv->timer.expires = priv->timer_set_at
 					+ TLAN_TIMER_ACT_DELAY;
 				spin_unlock_irqrestore(&priv->lock, flags);
@@ -1902,7 +1941,11 @@ ThunderLAN driver adapter related routines
  *		Nothing
  *	Parms:
  *		dev	The device structure with the list
+<<<<<<< HEAD
  *			structures to be reset.
+=======
+ *			stuctures to be reset.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  *	This routine sets the variables associated with managing
  *	the TLAN lists to their initial values.
@@ -2314,6 +2357,11 @@ tlan_finish_reset(struct net_device *dev)
 			} else
 				netdev_info(dev, "Link active\n");
 			/* Enabling link beat monitoring */
+<<<<<<< HEAD
+=======
+			priv->media_timer.function = tlan_phy_monitor;
+			priv->media_timer.data = (unsigned long) dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			priv->media_timer.expires = jiffies + HZ;
 			add_timer(&priv->media_timer);
 		}
@@ -2758,10 +2806,17 @@ static void tlan_phy_finish_auto_neg(struct net_device *dev)
  *
  *******************************************************************/
 
+<<<<<<< HEAD
 static void tlan_phy_monitor(struct timer_list *t)
 {
 	struct tlan_priv *priv = from_timer(priv, t, media_timer);
 	struct net_device *dev = priv->dev;
+=======
+static void tlan_phy_monitor(unsigned long data)
+{
+	struct net_device *dev = (struct net_device *) data;
+	struct tlan_priv *priv = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16     phy;
 	u16     phy_status;
 

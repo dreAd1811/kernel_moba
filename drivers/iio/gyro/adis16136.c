@@ -124,7 +124,11 @@ static int adis16136_show_product_id(void *arg, u64 *val)
 
 	return 0;
 }
+<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(adis16136_product_id_fops,
+=======
+DEFINE_SIMPLE_ATTRIBUTE(adis16136_product_id_fops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adis16136_show_product_id, NULL, "%llu\n");
 
 static int adis16136_show_flash_count(void *arg, u64 *val)
@@ -142,13 +146,18 @@ static int adis16136_show_flash_count(void *arg, u64 *val)
 
 	return 0;
 }
+<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(adis16136_flash_count_fops,
+=======
+DEFINE_SIMPLE_ATTRIBUTE(adis16136_flash_count_fops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adis16136_show_flash_count, NULL, "%lld\n");
 
 static int adis16136_debugfs_init(struct iio_dev *indio_dev)
 {
 	struct adis16136 *adis16136 = iio_priv(indio_dev);
 
+<<<<<<< HEAD
 	debugfs_create_file_unsafe("serial_number", 0400,
 		indio_dev->debugfs_dentry, adis16136,
 		&adis16136_serial_fops);
@@ -157,6 +166,13 @@ static int adis16136_debugfs_init(struct iio_dev *indio_dev)
 		adis16136, &adis16136_product_id_fops);
 	debugfs_create_file_unsafe("flash_count", 0400,
 		indio_dev->debugfs_dentry,
+=======
+	debugfs_create_file("serial_number", 0400, indio_dev->debugfs_dentry,
+		adis16136, &adis16136_serial_fops);
+	debugfs_create_file("product_id", 0400, indio_dev->debugfs_dentry,
+		adis16136, &adis16136_product_id_fops);
+	debugfs_create_file("flash_count", 0400, indio_dev->debugfs_dentry,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adis16136, &adis16136_flash_count_fops);
 
 	return 0;
@@ -401,6 +417,10 @@ static const struct attribute_group adis16136_attribute_group = {
 };
 
 static const struct iio_info adis16136_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &adis16136_attribute_group,
 	.read_raw = &adis16136_read_raw,
 	.write_raw = &adis16136_write_raw,

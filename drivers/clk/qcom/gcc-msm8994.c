@@ -57,6 +57,11 @@ static const char * const gcc_xo_gpll0_gpll4[] = {
 	"gpll4",
 };
 
+<<<<<<< HEAD
+=======
+#define F(f, s, h, m, n) { (f), (s), (2 * (h) - 1), (m), (n) }
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clk_fixed_factor xo = {
 	.mult = 1,
 	.div = 1,
@@ -71,7 +76,10 @@ static struct clk_fixed_factor xo = {
 
 static struct clk_alpha_pll gpll0_early = {
 	.offset = 0x00000,
+<<<<<<< HEAD
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clkr = {
 		.enable_reg = 0x1480,
 		.enable_mask = BIT(0),
@@ -87,7 +95,10 @@ static struct clk_alpha_pll gpll0_early = {
 
 static struct clk_alpha_pll_postdiv gpll0 = {
 	.offset = 0x00000,
+<<<<<<< HEAD
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clkr.hw.init = &(struct clk_init_data)
 	{
 		.name = "gpll0",
@@ -99,7 +110,10 @@ static struct clk_alpha_pll_postdiv gpll0 = {
 
 static struct clk_alpha_pll gpll4_early = {
 	.offset = 0x1dc0,
+<<<<<<< HEAD
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clkr = {
 		.enable_reg = 0x1480,
 		.enable_mask = BIT(4),
@@ -115,7 +129,10 @@ static struct clk_alpha_pll gpll4_early = {
 
 static struct clk_alpha_pll_postdiv gpll4 = {
 	.offset = 0x1dc0,
+<<<<<<< HEAD
 	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.clkr.hw.init = &(struct clk_init_data)
 	{
 		.name = "gpll4",

@@ -282,7 +282,12 @@ static void taos_disconnect(struct serio *serio)
 {
 	struct taos_data *taos = serio_get_drvdata(serio);
 
+<<<<<<< HEAD
 	i2c_unregister_device(taos->client);
+=======
+	if (taos->client)
+		i2c_unregister_device(taos->client);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_del_adapter(&taos->adapter);
 	serio_close(serio);
 	kfree(taos);

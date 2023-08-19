@@ -3,5 +3,8 @@ nvkm-y += nvkm/subdev/bar/nv50.o
 nvkm-y += nvkm/subdev/bar/g84.o
 nvkm-y += nvkm/subdev/bar/gf100.o
 nvkm-y += nvkm/subdev/bar/gk20a.o
+<<<<<<< HEAD
 nvkm-y += nvkm/subdev/bar/gm107.o
 nvkm-y += nvkm/subdev/bar/gm20b.o
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

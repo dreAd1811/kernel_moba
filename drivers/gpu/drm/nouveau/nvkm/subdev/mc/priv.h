@@ -57,6 +57,9 @@ int gp100_mc_new_(const struct nvkm_mc_func *, struct nvkm_device *, int,
 
 extern const struct nvkm_mc_map gk104_mc_intr[];
 extern const struct nvkm_mc_map gk104_mc_reset[];
+<<<<<<< HEAD
 
 extern const struct nvkm_mc_map gp100_mc_intr[];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

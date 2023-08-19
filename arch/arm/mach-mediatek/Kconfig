@@ -1,5 +1,9 @@
 menuconfig ARCH_MEDIATEK
+<<<<<<< HEAD
 	bool "MediaTek SoC Support"
+=======
+	bool "Mediatek MT65xx & MT81xx SoC"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARCH_MULTI_V7
 	select ARM_GIC
 	select PINCTRL

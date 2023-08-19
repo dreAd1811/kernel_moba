@@ -45,11 +45,17 @@
 	};
 
 	lcd0: display {
+<<<<<<< HEAD
 		compatible = "osddisplays,osd057T0559-34ts", "panel-dpi";
 		label = "lcd";
 
 		backlight = <&lcd_bl>;
 
+=======
+		compatible = "osddisplays,osd070t1718-19ts", "panel-dpi";
+		label = "lcd";
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		panel-timing {
 			clock-frequency = <33000000>;
 			hactive = <800>;
@@ -77,9 +83,12 @@
 		compatible = "gpio-matrix-keypad";
 		debounce-delay-ms = <5>;
 		col-scan-delay-us = <2>;
+<<<<<<< HEAD
 		pinctrl-names = "default", "sleep";
 		pinctrl-0 = <&matrix_keypad_default>;
 		pinctrl-1 = <&matrix_keypad_sleep>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		row-gpios = <&gpio0 12 GPIO_ACTIVE_HIGH		/* Bank0, pin12 */
 			     &gpio0 13 GPIO_ACTIVE_HIGH		/* Bank0, pin13 */
@@ -109,7 +118,11 @@
 			0x03030069>;	/* LEFT */
 	};
 
+<<<<<<< HEAD
 	lcd_bl: backlight {
+=======
+	backlight {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "pwm-backlight";
 		pwms = <&ecap0 0 50000 PWM_POLARITY_INVERTED>;
 		brightness-levels = <0 51 53 56 62 75 101 152 255>;
@@ -150,6 +163,7 @@
 };
 
 &am43xx_pinmux {
+<<<<<<< HEAD
 		pinctrl-names = "default";
 		pinctrl-0 = <&unused_pins>;
 
@@ -187,6 +201,8 @@
 			>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpsw_default: cpsw_default {
 			pinctrl-single,pins = <
 				/* Slave 1 */
@@ -240,7 +256,11 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		nand_flash_x8_default: nand_flash_x8_default {
+=======
+		nand_flash_x8: nand_flash_x8 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x840, PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* gpmc_a0.SELQSPIorNAND/GPIO */
 				AM4372_IOPAD(0x800, PIN_INPUT_PULLDOWN | MUX_MODE0)	/* gpmc_ad0.gpmc_ad0 */
@@ -261,6 +281,7 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		nand_flash_x8_sleep: nand_flash_x8_sleep {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x840, DS0_PIN_OUTPUT_PULLDOWN | MUX_MODE7)
@@ -283,17 +304,23 @@
 		};
 
 		ecap0_pins_default: backlight_pins_default {
+=======
+		ecap0_pins: backlight_pins {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x964, MUX_MODE0)         /* eCAP0_in_PWM0_out.eCAP0_in_PWM0_out MODE0 */
 			>;
 		};
 
+<<<<<<< HEAD
 		ecap0_pins_sleep: backlight_pins_sleep {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x964, DS0_PIN_OUTPUT_PULLUP | MUX_MODE7)
 			>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i2c2_pins: pinmux_i2c2_pins {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x9c0, PIN_INPUT_PULLUP | SLEWCTRL_FAST | MUX_MODE8)    /* i2c2_sda.i2c2_sda */
@@ -301,7 +328,11 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		spi0_pins_default: pinmux_spi0_pins_default {
+=======
+		spi0_pins: pinmux_spi0_pins {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x950, PIN_INPUT | MUX_MODE0)           /* spi0_clk.spi0_clk */
 				AM4372_IOPAD(0x954, PIN_OUTPUT | MUX_MODE0)           /* spi0_d0.spi0_d0 */
@@ -310,6 +341,7 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		spi0_pins_sleep: pinmux_spi0_pins_sleep {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x950, DS0_PIN_OUTPUT_PULLUP | PIN_OUTPUT_PULLUP | MUX_MODE7)
@@ -320,6 +352,9 @@
 		};
 
 		spi1_pins_default: pinmux_spi1_pins_default {
+=======
+		spi1_pins: pinmux_spi1_pins {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x990, PIN_INPUT | MUX_MODE3)           /* mcasp0_aclkx.spi1_clk */
 				AM4372_IOPAD(0x994, PIN_OUTPUT | MUX_MODE3)           /* mcasp0_fsx.spi1_d0 */
@@ -328,6 +363,7 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		spi1_pins_sleep: pinmux_spi1_pins_sleep {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x990, DS0_PIN_OUTPUT_PULLDOWN | PIN_OUTPUT_PULLDOWN | MUX_MODE7)
@@ -338,11 +374,15 @@
 		};
 
 		mmc1_pins_default: pinmux_mmc1_pins_default {
+=======
+		mmc1_pins: pinmux_mmc1_pins {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x960, PIN_INPUT | MUX_MODE7) /* spi0_cs1.gpio0_6 */
 			>;
 		};
 
+<<<<<<< HEAD
 		mmc1_pins_sleep: pinmux_mmc1_pins_sleep {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x960, DS0_PIN_OUTPUT_PULLUP | PIN_INPUT | MUX_MODE7)
@@ -376,6 +416,9 @@
 		};
 
 		qspi1_pins_default: qspi1_pins_default {
+=======
+		qspi1_default: qspi1_default {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x87c, PIN_INPUT_PULLUP | MUX_MODE3)
 				AM4372_IOPAD(0x888, PIN_INPUT_PULLUP | MUX_MODE2)
@@ -386,6 +429,7 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		qspi1_pins_sleep: qspi1_pins_sleep {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x87c, DS0_PIN_OUTPUT_PULLUP | MUX_MODE7)
@@ -398,17 +442,23 @@
 		};
 
 		pixcir_ts_pins_default: pixcir_ts_pins_default {
+=======
+		pixcir_ts_pins: pixcir_ts_pins {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x844, PIN_INPUT_PULLUP | MUX_MODE7)	/* gpmc_a1.gpio1_17 */
 			>;
 		};
 
+<<<<<<< HEAD
 		pixcir_ts_pins_sleep: pixcir_ts_pins_sleep {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x844, DS0_PIN_OUTPUT_PULLUP | PIN_OUTPUT_PULLUP | MUX_MODE7)	/* gpmc_a1.gpio1_17 */
 			>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hdq_pins: pinmux_hdq_pins {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0xa34, PIN_INPUT_PULLUP | MUX_MODE1)    /* cam1_wen.hdq_gpio */
@@ -491,6 +541,7 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		uart0_pins_default: uart0_pins_default {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x968, DS0_PULL_UP_DOWN_EN | INPUT_EN | MUX_MODE0) /* uart0_ctsn.uart0_ctsn */
@@ -533,6 +584,8 @@
 			>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mcasp1_pins: mcasp1_pins {
 			pinctrl-single,pins = <
 				AM4372_IOPAD(0x9a0, PIN_INPUT_PULLDOWN | MUX_MODE3) /* MCASP0_ACLKR/MCASP1_ACLKX */
@@ -556,9 +609,14 @@
 	status = "okay";
 	vmmc-supply = <&vmmcsd_fixed>;
 	bus-width = <4>;
+<<<<<<< HEAD
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&mmc1_pins_default>;
 	pinctrl-1 = <&mmc1_pins_sleep>;
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc1_pins>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cd-gpios = <&gpio0 6 GPIO_ACTIVE_LOW>;
 };
 
@@ -595,7 +653,11 @@
 	tps65218: tps65218@24 {
 		reg = <0x24>;
 		compatible = "ti,tps65218";
+<<<<<<< HEAD
 		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>; /* NMIn */
+=======
+		interrupts = <GIC_SPI 7 IRQ_TYPE_NONE>; /* NMIn */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		interrupt-controller;
 		#interrupt-cells = <2>;
 
@@ -657,10 +719,15 @@
 
 	pixcir_ts@5c {
 		compatible = "pixcir,pixcir_tangoc";
+<<<<<<< HEAD
 		pinctrl-names = "default", "sleep";
 		pinctrl-0 = <&pixcir_ts_pins_default>;
 		pinctrl-1 = <&pixcir_ts_pins_sleep>;
 
+=======
+		pinctrl-names = "default";
+		pinctrl-0 = <&pixcir_ts_pins>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x5c>;
 		interrupt-parent = <&gpio1>;
 		interrupts = <17 IRQ_TYPE_EDGE_FALLING>;
@@ -731,9 +798,14 @@
 
 &gpmc {
 	status = "okay";	/* Disable QSPI when enabling GPMC (NAND) */
+<<<<<<< HEAD
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&nand_flash_x8_default>;
 	pinctrl-1 = <&nand_flash_x8_sleep>;
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&nand_flash_x8>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ranges = <0 0 0x08000000 0x01000000>;	/* CS0 space. Min partition = 16MB */
 	nand@0,0 {
 		compatible = "ti,omap2-nand";
@@ -829,6 +901,7 @@
 
 &ecap0 {
 		status = "okay";
+<<<<<<< HEAD
 		pinctrl-names = "default", "sleep";
 		pinctrl-0 = <&ecap0_pins_default>;
 		pinctrl-1 = <&ecap0_pins_sleep>;
@@ -846,10 +919,27 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&spi1_pins_default>;
 	pinctrl-1 = <&spi1_pins_sleep>;
+=======
+		pinctrl-names = "default";
+		pinctrl-0 = <&ecap0_pins>;
+};
+
+&spi0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi0_pins>;
+	status = "okay";
+};
+
+&spi1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_pins>;
+	status = "okay";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb2_phy1 {
 	status = "okay";
+<<<<<<< HEAD
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&usb2_phy1_default>;
 	pinctrl-1 = <&usb2_phy1_sleep>;
@@ -857,14 +947,23 @@
 
 &usb1 {
 	dr_mode = "otg";
+=======
+};
+
+&usb1 {
+	dr_mode = "peripheral";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &usb2_phy2 {
 	status = "okay";
+<<<<<<< HEAD
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&usb2_phy2_default>;
 	pinctrl-1 = <&usb2_phy2_sleep>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &usb2 {
@@ -874,9 +973,14 @@
 
 &qspi {
 	status = "disabled";	/* Disable GPMC (NAND) when enabling QSPI */
+<<<<<<< HEAD
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&qspi1_pins_default>;
 	pinctrl-1 = <&qspi1_pins_sleep>;
+=======
+	pinctrl-names = "default";
+	pinctrl-0 = <&qspi1_default>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spi-max-frequency = <48000000>;
 	m25p80@0 {
@@ -962,6 +1066,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &uart0 {
 	status = "okay";
 	pinctrl-names = "default", "sleep";
@@ -969,6 +1074,8 @@
 	pinctrl-1 = <&uart0_pins_sleep>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &mcasp1 {
 	#sound-dai-cells = <0>;
 	pinctrl-names = "default", "sleep";
@@ -987,6 +1094,7 @@
 	rx-num-evt = <32>;
 };
 
+<<<<<<< HEAD
 &mux_synctimer32k_ck {
 	assigned-clocks = <&mux_synctimer32k_ck>;
 	assigned-clock-parents = <&clkdiv32k_ick>;
@@ -995,3 +1103,9 @@
 &cpu {
 	cpu0-supply = <&dcdc2>;
 };
+=======
+&synctimer_32kclk {
+	assigned-clocks = <&mux_synctimer32k_ck>;
+	assigned-clock-parents = <&clkdiv32k_ick>;
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

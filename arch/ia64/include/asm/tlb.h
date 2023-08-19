@@ -115,11 +115,20 @@ ia64_tlb_flush_mmu_tlbonly(struct mmu_gather *tlb, unsigned long start, unsigned
 		flush_tlb_all();
 	} else {
 		/*
+<<<<<<< HEAD
 		 * flush_tlb_range() takes a vma instead of a mm pointer because
 		 * some architectures want the vm_flags for ITLB/DTLB flush.
 		 */
 		struct vm_area_struct vma = TLB_FLUSH_VMA(tlb->mm, 0);
 
+=======
+		 * XXX fix me: flush_tlb_range() should take an mm pointer instead of a
+		 * vma pointer.
+		 */
+		struct vm_area_struct vma;
+
+		vma.vm_mm = tlb->mm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* flush the address range from the tlb: */
 		flush_tlb_range(&vma, start, end);
 		/* now flush the virt. page-table area mapping the address range: */

@@ -24,13 +24,19 @@
 #include <linux/platform_device.h>
 #include <linux/hdmi.h>
 #include <sound/omap-hdmi-audio.h>
+<<<<<<< HEAD
 #include <media/cec.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "omapdss.h"
 #include "dss.h"
 
+<<<<<<< HEAD
 struct dss_device;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* HDMI Wrapper */
 
 #define HDMI_WP_REVISION			0x0
@@ -267,10 +273,13 @@ struct hdmi_core_data {
 	void __iomem *base;
 	bool cts_swmode;
 	bool audio_use_mclk;
+<<<<<<< HEAD
 
 	struct hdmi_wp_data *wp;
 	unsigned int core_pwr_cnt;
 	struct cec_adapter *adap;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline void hdmi_write_reg(void __iomem *base_addr, const u32 idx,
@@ -326,8 +335,13 @@ phys_addr_t hdmi_wp_get_audio_dma_addr(struct hdmi_wp_data *wp);
 
 /* HDMI PLL funcs */
 void hdmi_pll_dump(struct hdmi_pll_data *pll, struct seq_file *s);
+<<<<<<< HEAD
 int hdmi_pll_init(struct dss_device *dss, struct platform_device *pdev,
 		  struct hdmi_pll_data *pll, struct hdmi_wp_data *wp);
+=======
+int hdmi_pll_init(struct platform_device *pdev, struct hdmi_pll_data *pll,
+	struct hdmi_wp_data *wp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void hdmi_pll_uninit(struct hdmi_pll_data *hpll);
 
 /* HDMI PHY funcs */
@@ -359,9 +373,12 @@ static inline bool hdmi_mode_has_audio(struct hdmi_config *cfg)
 struct omap_hdmi {
 	struct mutex lock;
 	struct platform_device *pdev;
+<<<<<<< HEAD
 	struct dss_device *dss;
 
 	struct dss_debugfs_entry *debugfs;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct hdmi_wp_data	wp;
 	struct hdmi_pll_data	pll;
@@ -383,12 +400,19 @@ struct omap_hdmi {
 	bool audio_configured;
 	struct omap_dss_audio audio_config;
 
+<<<<<<< HEAD
 	/* This lock should be taken when booleans below are touched. */
+=======
+	/* This lock should be taken when booleans bellow are touched. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t audio_playing_lock;
 	bool audio_playing;
 	bool display_enabled;
 };
 
+<<<<<<< HEAD
 #define dssdev_to_hdmi(dssdev) container_of(dssdev, struct omap_hdmi, output)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

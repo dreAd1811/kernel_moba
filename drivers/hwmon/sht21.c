@@ -16,7 +16,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA
  *
+<<<<<<< HEAD
  * Data sheet available at http://www.sensirion.com/file/datasheet_sht21
+=======
+ * Data sheet available (5/2010) at
+ * http://www.sensirion.com/en/pdf/product_information/Datasheet-humidity-sensor-SHT21.pdf
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -40,7 +45,11 @@
 
 /**
  * struct sht21 - SHT21 device specific data
+<<<<<<< HEAD
  * @client: I2C client device
+=======
+ * @hwmon_dev: device registered with hwmon
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @lock: mutex to protect measurement values
  * @last_update: time of last update (jiffies)
  * @temperature: cached temperature measurement value

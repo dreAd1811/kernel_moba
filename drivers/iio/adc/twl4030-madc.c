@@ -212,6 +212,10 @@ static int twl4030_madc_read(struct iio_dev *iio_dev,
 
 static const struct iio_info twl4030_madc_iio_info = {
 	.read_raw = &twl4030_madc_read,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define TWL4030_ADC_CHANNEL(_channel, _type, _name) {	\

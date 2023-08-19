@@ -53,6 +53,7 @@ static void __init jz4740_detect_mem(void)
 	add_memory_region(0, size, BOOT_MEM_RAM);
 }
 
+<<<<<<< HEAD
 static unsigned long __init get_board_mach_type(const void *fdt)
 {
 	if (!fdt_node_check_compatible(fdt, 0, "ingenic,jz4780"))
@@ -63,6 +64,8 @@ static unsigned long __init get_board_mach_type(const void *fdt)
 	return MACH_INGENIC_JZ4740;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init plat_mem_setup(void)
 {
 	int offset;
@@ -73,8 +76,11 @@ void __init plat_mem_setup(void)
 	offset = fdt_path_offset(__dtb_start, "/memory");
 	if (offset < 0)
 		jz4740_detect_mem();
+<<<<<<< HEAD
 
 	mips_machtype = get_board_mach_type(__dtb_start);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init device_tree_init(void)
@@ -87,6 +93,7 @@ void __init device_tree_init(void)
 
 const char *get_system_type(void)
 {
+<<<<<<< HEAD
 	switch (mips_machtype) {
 	case MACH_INGENIC_JZ4780:
 		return "JZ4780";
@@ -95,6 +102,12 @@ const char *get_system_type(void)
 	default:
 		return "JZ4740";
 	}
+=======
+	if (IS_ENABLED(CONFIG_MACH_JZ4780))
+		return "JZ4780";
+
+	return "JZ4740";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init arch_init_irq(void)

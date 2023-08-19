@@ -277,7 +277,11 @@ static int powermate_input_event(struct input_dev *dev, unsigned int type, unsig
 static int powermate_alloc_buffers(struct usb_device *udev, struct powermate_device *pm)
 {
 	pm->data = usb_alloc_coherent(udev, POWERMATE_PAYLOAD_SIZE_MAX,
+<<<<<<< HEAD
 				      GFP_KERNEL, &pm->data_dma);
+=======
+				      GFP_ATOMIC, &pm->data_dma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pm->data)
 		return -1;
 

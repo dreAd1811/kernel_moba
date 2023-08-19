@@ -1,5 +1,11 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * drivers/gpu/drm/omapdrm/omap_debugfs.c
+ *
+ * Copyright (C) 2011 Texas Instruments
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Rob Clark <rob.clark@linaro.org>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -30,11 +36,24 @@ static int gem_show(struct seq_file *m, void *arg)
 	struct drm_info_node *node = (struct drm_info_node *) m->private;
 	struct drm_device *dev = node->minor->dev;
 	struct omap_drm_private *priv = dev->dev_private;
+<<<<<<< HEAD
 
 	seq_printf(m, "All Objects:\n");
 	mutex_lock(&priv->list_lock);
 	omap_gem_describe_objects(&priv->obj_list, m);
 	mutex_unlock(&priv->list_lock);
+=======
+	int ret;
+
+	ret = mutex_lock_interruptible(&dev->struct_mutex);
+	if (ret)
+		return ret;
+
+	seq_printf(m, "All Objects:\n");
+	omap_gem_describe_objects(&priv->obj_list, m);
+
+	mutex_unlock(&dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

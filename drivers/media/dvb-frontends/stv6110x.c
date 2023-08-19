@@ -26,7 +26,11 @@
 #include <linux/slab.h>
 #include <linux/string.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "stv6110x_reg.h"
 #include "stv6110x.h"
@@ -46,7 +50,11 @@ static int stv6110x_read_reg(struct stv6110x_state *stv6110x, u8 reg, u8 *data)
 	u8 b0[] = { reg };
 	u8 b1[] = { 0 };
 	struct i2c_msg msg[] = {
+<<<<<<< HEAD
 		{ .addr = config->addr, .flags = 0,	   .buf = b0, .len = 1 },
+=======
+		{ .addr = config->addr, .flags = 0, 	   .buf = b0, .len = 1 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ .addr = config->addr, .flags = I2C_M_RD, .buf = b1, .len = 1 }
 	};
 
@@ -347,9 +355,16 @@ static void stv6110x_release(struct dvb_frontend *fe)
 
 static const struct dvb_tuner_ops stv6110x_ops = {
 	.info = {
+<<<<<<< HEAD
 		.name		  = "STV6110(A) Silicon Tuner",
 		.frequency_min_hz =  950 * MHz,
 		.frequency_max_hz = 2150 * MHz,
+=======
+		.name		= "STV6110(A) Silicon Tuner",
+		.frequency_min	=  950000,
+		.frequency_max	= 2150000,
+		.frequency_step	= 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.release		= stv6110x_release
 };

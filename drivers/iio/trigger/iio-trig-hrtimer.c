@@ -30,7 +30,11 @@ struct iio_hrtimer_info {
 	ktime_t period;
 };
 
+<<<<<<< HEAD
 static const struct config_item_type iio_hrtimer_type = {
+=======
+static struct config_item_type iio_hrtimer_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_owner = THIS_MODULE,
 };
 
@@ -114,6 +118,10 @@ static int iio_trig_hrtimer_set_state(struct iio_trigger *trig, bool state)
 }
 
 static const struct iio_trigger_ops iio_hrtimer_trigger_ops = {
+<<<<<<< HEAD
+=======
+	.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_trigger_state = iio_trig_hrtimer_set_state,
 };
 

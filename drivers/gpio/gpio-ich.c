@@ -23,10 +23,16 @@
 #include <linux/ioport.h>
 #include <linux/module.h>
 #include <linux/pci.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
 #include <linux/platform_device.h>
 #include <linux/mfd/lpc_ich.h>
 #include <linux/bitops.h>
+=======
+#include <linux/gpio.h>
+#include <linux/platform_device.h>
+#include <linux/mfd/lpc_ich.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRV_NAME "gpio_ich"
 
@@ -132,9 +138,15 @@ static int ichx_write_bit(int reg, unsigned nr, int val, int verify)
 				 ichx_priv.gpio_base);
 
 	if (val)
+<<<<<<< HEAD
 		data |= BIT(bit);
 	else
 		data &= ~BIT(bit);
+=======
+		data |= 1 << bit;
+	else
+		data &= ~(1 << bit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ICHX_WRITE(data, ichx_priv.desc->regs[reg][reg_nr],
 			 ichx_priv.gpio_base);
 	if (reg == GPIO_LVL && ichx_priv.desc->use_outlvl_cache)
@@ -167,17 +179,29 @@ static int ichx_read_bit(int reg, unsigned nr)
 
 	spin_unlock_irqrestore(&ichx_priv.lock, flags);
 
+<<<<<<< HEAD
 	return !!(data & BIT(bit));
+=======
+	return data & (1 << bit) ? 1 : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool ichx_gpio_check_available(struct gpio_chip *gpio, unsigned nr)
 {
+<<<<<<< HEAD
 	return !!(ichx_priv.use_gpio & BIT(nr / 32));
+=======
+	return !!(ichx_priv.use_gpio & (1 << (nr / 32)));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ichx_gpio_get_direction(struct gpio_chip *gpio, unsigned nr)
 {
+<<<<<<< HEAD
 	return ichx_read_bit(GPIO_IO_SEL, nr);
+=======
+	return ichx_read_bit(GPIO_IO_SEL, nr) ? GPIOF_DIR_IN : GPIOF_DIR_OUT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ichx_gpio_direction_input(struct gpio_chip *gpio, unsigned nr)
@@ -233,12 +257,20 @@ static int ich6_gpio_get(struct gpio_chip *chip, unsigned nr)
 		spin_lock_irqsave(&ichx_priv.lock, flags);
 
 		/* GPI 0 - 15 are latched, write 1 to clear*/
+<<<<<<< HEAD
 		ICHX_WRITE(BIT(16 + nr), 0, ichx_priv.pm_base);
+=======
+		ICHX_WRITE(1 << (16 + nr), 0, ichx_priv.pm_base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data = ICHX_READ(0, ichx_priv.pm_base);
 
 		spin_unlock_irqrestore(&ichx_priv.lock, flags);
 
+<<<<<<< HEAD
 		return !!((data >> 16) & BIT(nr));
+=======
+		return (data >> 16) & (1 << nr) ? 1 : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		return ichx_gpio_get(chip, nr);
 	}
@@ -255,7 +287,11 @@ static int ichx_gpio_request(struct gpio_chip *chip, unsigned nr)
 	 * the chipset's USE value can be trusted for this specific bit.
 	 * If it can't be trusted, assume that the pin can be used as a GPIO.
 	 */
+<<<<<<< HEAD
 	if (ichx_priv.desc->use_sel_ignore[nr / 32] & BIT(nr & 0x1f))
+=======
+	if (ichx_priv.desc->use_sel_ignore[nr / 32] & (1 << (nr & 0x1f)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return ichx_read_bit(GPIO_USE_SEL, nr) ? 0 : -ENODEV;
@@ -395,7 +431,11 @@ static int ichx_gpio_request_regions(struct device *dev,
 		return -ENODEV;
 
 	for (i = 0; i < ARRAY_SIZE(ichx_priv.desc->regs[0]); i++) {
+<<<<<<< HEAD
 		if (!(use_gpio & BIT(i)))
+=======
+		if (!(use_gpio & (1 << i)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		if (!devm_request_region(dev,
 				res_base->start + ichx_priv.desc->regs[0][i],

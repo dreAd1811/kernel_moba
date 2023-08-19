@@ -1413,6 +1413,7 @@ static void h_24x7_event_read(struct perf_event *event)
 			h24x7hw = &get_cpu_var(hv_24x7_hw);
 			h24x7hw->events[i] = event;
 			put_cpu_var(h24x7hw);
+<<<<<<< HEAD
 			/*
 			 * Clear the event count so we can compute the _change_
 			 * in the 24x7 raw counter value at the end of the txn.
@@ -1423,6 +1424,8 @@ static void h_24x7_event_read(struct perf_event *event)
 			 * defeat the purpose of using the txn interface.
 			 */
 			local64_set(&event->count, 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		put_cpu_var(hv_24x7_reqb);

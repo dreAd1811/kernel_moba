@@ -277,9 +277,18 @@ static int ssp_handle_big_data(struct ssp_data *data, char *dataframe, int *idx)
 static int ssp_parse_dataframe(struct ssp_data *data, char *dataframe, int len)
 {
 	int idx, sd;
+<<<<<<< HEAD
 	struct ssp_sensor_data *spd;
 	struct iio_dev **indio_devs = data->sensor_devs;
 
+=======
+	struct timespec ts;
+	struct ssp_sensor_data *spd;
+	struct iio_dev **indio_devs = data->sensor_devs;
+
+	getnstimeofday(&ts);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (idx = 0; idx < len;) {
 		switch (dataframe[idx++]) {
 		case SSP_MSG2AP_INST_BYPASS_DATA:
@@ -326,7 +335,11 @@ static int ssp_parse_dataframe(struct ssp_data *data, char *dataframe, int len)
 	}
 
 	if (data->time_syncing)
+<<<<<<< HEAD
 		data->timestamp = ktime_get_real_ns();
+=======
+		data->timestamp = ts.tv_sec * 1000000000ULL + ts.tv_nsec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

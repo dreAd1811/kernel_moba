@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
 /**********************************************************
  * Copyright 2012-2015 VMware, Inc.
+=======
+/**********************************************************
+ * Copyright 2012-2015 VMware, Inc.  All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -57,6 +62,7 @@ typedef uint32 SVGA3dInputClassification;
 #define SVGA3D_RESOURCE_TYPE_MAX      7
 typedef uint32 SVGA3dResourceType;
 
+<<<<<<< HEAD
 #define SVGA3D_COLOR_WRITE_ENABLE_RED     (1 << 0)
 #define SVGA3D_COLOR_WRITE_ENABLE_GREEN   (1 << 1)
 #define SVGA3D_COLOR_WRITE_ENABLE_BLUE    (1 << 2)
@@ -67,6 +73,8 @@ typedef uint32 SVGA3dResourceType;
                                            SVGA3D_COLOR_WRITE_ENABLE_ALPHA)
 typedef uint8 SVGA3dColorWriteEnable;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SVGA3D_DEPTH_WRITE_MASK_ZERO   0
 #define SVGA3D_DEPTH_WRITE_MASK_ALL    1
 typedef uint8 SVGA3dDepthWriteMask;
@@ -99,6 +107,7 @@ typedef uint8 SVGA3dCullMode;
 #define SVGA3D_COMPARISON_MAX             9
 typedef uint8 SVGA3dComparisonFunc;
 
+<<<<<<< HEAD
 /*
  * SVGA3D_MULTISAMPLE_RAST_DISABLE disables MSAA for all primitives.
  * SVGA3D_MULTISAMPLE_RAST_DISABLE_LINE, which is supported in SM41,
@@ -114,13 +123,24 @@ typedef uint8 SVGA3dMultisampleRastEnable;
 #define SVGA3D_DX_MAX_VERTEXBUFFERS 32
 #define SVGA3D_DX_MAX_VERTEXINPUTREGISTERS 16
 #define SVGA3D_DX_SM41_MAX_VERTEXINPUTREGISTERS 32
+=======
+#define SVGA3D_DX_MAX_VERTEXBUFFERS 32
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SVGA3D_DX_MAX_SOTARGETS 4
 #define SVGA3D_DX_MAX_SRVIEWS 128
 #define SVGA3D_DX_MAX_CONSTBUFFERS 16
 #define SVGA3D_DX_MAX_SAMPLERS 16
 
+<<<<<<< HEAD
 #define SVGA3D_DX_MAX_CONSTBUF_BINDING_SIZE (4096 * 4 * (uint32)sizeof(uint32))
 
+=======
+/* Id limits */
+static const uint32 SVGA3dBlendObjectCountPerContext = 4096;
+static const uint32 SVGA3dDepthStencilObjectCountPerContext = 4096;
+
+typedef uint32 SVGA3dSurfaceId;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef uint32 SVGA3dShaderResourceViewId;
 typedef uint32 SVGA3dRenderTargetViewId;
 typedef uint32 SVGA3dDepthStencilViewId;
@@ -216,6 +236,23 @@ SVGA3dCmdDXInvalidateContext;   /* SVGA_3D_CMD_DX_INVALIDATE_CONTEXT */
 
 typedef
 #include "vmware_pack_begin.h"
+<<<<<<< HEAD
+=======
+struct SVGA3dReplyFormatData {
+   uint32 formatSupport;
+   uint32 msaa2xQualityLevels:5;
+   uint32 msaa4xQualityLevels:5;
+   uint32 msaa8xQualityLevels:5;
+   uint32 msaa16xQualityLevels:5;
+   uint32 msaa32xQualityLevels:5;
+   uint32 pad:7;
+}
+#include "vmware_pack_end.h"
+SVGA3dReplyFormatData;
+
+typedef
+#include "vmware_pack_begin.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct SVGA3dCmdDXSetSingleConstantBuffer {
    uint32 slot;
    SVGA3dShaderType type;
@@ -632,6 +669,7 @@ SVGA3dCmdDXPredCopy; /* SVGA_3D_CMD_DX_PRED_COPY */
 
 typedef
 #include "vmware_pack_begin.h"
+<<<<<<< HEAD
 struct SVGA3dCmdDXPredConvertRegion {
    SVGA3dSurfaceId dstSid;
    uint32 dstSubResource;
@@ -654,6 +692,8 @@ SVGA3dCmdDXPredConvert; /* SVGA_3D_CMD_DX_PRED_CONVERT */
 
 typedef
 #include "vmware_pack_begin.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct SVGA3dCmdDXBufferCopy {
    SVGA3dSurfaceId dest;
    SVGA3dSurfaceId src;
@@ -665,6 +705,7 @@ struct SVGA3dCmdDXBufferCopy {
 SVGA3dCmdDXBufferCopy;
 /* SVGA_3D_CMD_DX_BUFFER_COPY */
 
+<<<<<<< HEAD
 /*
  * Perform a surface copy between a multisample, and a non-multisampled
  * surface.
@@ -706,16 +747,32 @@ typedef uint32 SVGA3dDXPresentBltMode;
 typedef
 #include "vmware_pack_begin.h"
 struct SVGA3dCmdDXPresentBlt {
+=======
+typedef uint32 SVGA3dDXStretchBltMode;
+#define SVGADX_STRETCHBLT_LINEAR         (1 << 0)
+#define SVGADX_STRETCHBLT_FORCE_SRC_SRGB (1 << 1)
+
+typedef
+#include "vmware_pack_begin.h"
+struct SVGA3dCmdDXStretchBlt {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA3dSurfaceId srcSid;
    uint32 srcSubResource;
    SVGA3dSurfaceId dstSid;
    uint32 destSubResource;
    SVGA3dBox boxSrc;
    SVGA3dBox boxDest;
+<<<<<<< HEAD
    SVGA3dDXPresentBltMode mode;
 }
 #include "vmware_pack_end.h"
 SVGA3dCmdDXPresentBlt; /* SVGA_3D_CMD_DX_PRESENTBLT*/
+=======
+   SVGA3dDXStretchBltMode mode;
+}
+#include "vmware_pack_end.h"
+SVGA3dCmdDXStretchBlt; /* SVGA_3D_CMD_DX_STRETCHBLT */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 typedef
 #include "vmware_pack_begin.h"
@@ -726,6 +783,29 @@ struct SVGA3dCmdDXGenMips {
 SVGA3dCmdDXGenMips; /* SVGA_3D_CMD_DX_GENMIPS */
 
 /*
+<<<<<<< HEAD
+=======
+ * Defines a resource/DX surface.  Resources share the surfaceId namespace.
+ *
+ */
+typedef
+#include "vmware_pack_begin.h"
+struct SVGA3dCmdDefineGBSurface_v2 {
+   uint32 sid;
+   SVGA3dSurfaceFlags surfaceFlags;
+   SVGA3dSurfaceFormat format;
+   uint32 numMipLevels;
+   uint32 multisampleCount;
+   SVGA3dTextureFilter autogenFilter;
+   SVGA3dSize size;
+   uint32 arraySize;
+   uint32 pad;
+}
+#include "vmware_pack_end.h"
+SVGA3dCmdDefineGBSurface_v2;   /* SVGA_3D_CMD_DEFINE_GB_SURFACE_V2 */
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Update a sub-resource in a guest-backed resource.
  * (Inform the device that the guest-contents have been updated.)
  */
@@ -768,8 +848,12 @@ SVGA3dCmdDXInvalidateSubResource;   /* SVGA_3D_CMD_DX_INVALIDATE_SUBRESOURCE */
 
 /*
  * Raw byte wise transfer from a buffer surface into another surface
+<<<<<<< HEAD
  * of the requested box.  Supported if 3d is enabled and SVGA_CAP_DX
  * is set.  This command does not take a context.
+=======
+ * of the requested box.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 typedef
 #include "vmware_pack_begin.h"
@@ -818,6 +902,7 @@ struct SVGA3dCmdDXSurfaceCopyAndReadback {
 SVGA3dCmdDXSurfaceCopyAndReadback;
 /* SVGA_3D_CMD_DX_SURFACE_COPY_AND_READBACK */
 
+<<<<<<< HEAD
 /*
  * SVGA_DX_HINT_NONE: Does nothing.
  *
@@ -905,6 +990,8 @@ typedef SVGA3dCmdDXSetConstantBufferOffset SVGA3dCmdDXSetPSConstantBufferOffset;
 typedef SVGA3dCmdDXSetConstantBufferOffset SVGA3dCmdDXSetGSConstantBufferOffset;
 /* SVGA_3D_CMD_DX_SET_GS_CONSTANT_BUFFER_OFFSET */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 typedef
 #include "vmware_pack_begin.h"
@@ -921,7 +1008,11 @@ struct {
          uint32 firstArraySlice;
          uint32 mipLevels;
          uint32 arraySize;
+<<<<<<< HEAD
       } tex; /* 1d, 2d, 3d, cube */
+=======
+      } tex;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       struct {
          uint32 firstElement;
          uint32 numElements;
@@ -976,7 +1067,10 @@ struct SVGA3dRenderTargetViewDesc {
       struct {
          uint32 firstElement;
          uint32 numElements;
+<<<<<<< HEAD
          uint32 padding0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       } buffer;
       struct {
          uint32 mipSlice;
@@ -1097,6 +1191,12 @@ SVGA3dInputElementDesc;
 typedef
 #include "vmware_pack_begin.h"
 struct {
+<<<<<<< HEAD
+=======
+   /*
+    * XXX: How many of these can there be?
+    */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    uint32 elid;
    uint32 numDescs;
    SVGA3dInputElementDesc desc[32];
@@ -1137,7 +1237,11 @@ struct SVGA3dDXBlendStatePerRT {
       uint8 srcBlendAlpha;
       uint8 destBlendAlpha;
       uint8 blendOpAlpha;
+<<<<<<< HEAD
       SVGA3dColorWriteEnable renderTargetWriteMask;
+=======
+      uint8 renderTargetWriteMask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       uint8 logicOpEnable;
       uint8 logicOp;
       uint16 pad0;
@@ -1255,7 +1359,11 @@ struct {
    float slopeScaledDepthBias;
    uint8 depthClipEnable;
    uint8 scissorEnable;
+<<<<<<< HEAD
    SVGA3dMultisampleRastEnable multisampleEnable;
+=======
+   uint8 multisampleEnable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    uint8 antialiasedLineEnable;
    float lineWidth;
    uint8 lineStippleEnable;
@@ -1282,7 +1390,11 @@ struct SVGA3dCmdDXDefineRasterizerState {
    float slopeScaledDepthBias;
    uint8 depthClipEnable;
    uint8 scissorEnable;
+<<<<<<< HEAD
    SVGA3dMultisampleRastEnable multisampleEnable;
+=======
+   uint8 multisampleEnable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    uint8 antialiasedLineEnable;
    float lineWidth;
    uint8 lineStippleEnable;
@@ -1352,6 +1464,24 @@ struct SVGA3dCmdDXDestroySamplerState {
 #include "vmware_pack_end.h"
 SVGA3dCmdDXDestroySamplerState; /* SVGA_3D_CMD_DX_DESTROY_SAMPLER_STATE */
 
+<<<<<<< HEAD
+=======
+/*
+ */
+typedef
+#include "vmware_pack_begin.h"
+struct SVGA3dSignatureEntry {
+   uint8 systemValue;
+   uint8 reg;                 /* register is a reserved word */
+   uint16 mask;
+   uint8 registerComponentType;
+   uint8 minPrecision;
+   uint16 pad0;
+}
+#include "vmware_pack_end.h"
+SVGA3dSignatureEntry;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef
 #include "vmware_pack_begin.h"
 struct SVGA3dCmdDXDefineShader {
@@ -1369,7 +1499,16 @@ struct SVGACOTableDXShaderEntry {
    uint32 sizeInBytes;
    uint32 offsetInBytes;
    SVGAMobId mobid;
+<<<<<<< HEAD
    uint32 pad[4];
+=======
+   uint32 numInputSignatureEntries;
+   uint32 numOutputSignatureEntries;
+
+   uint32 numPatchConstantSignatureEntries;
+
+   uint32 pad;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #include "vmware_pack_end.h"
 SVGACOTableDXShaderEntry;
@@ -1393,6 +1532,7 @@ struct SVGA3dCmdDXBindShader {
 #include "vmware_pack_end.h"
 SVGA3dCmdDXBindShader;   /* SVGA_3D_CMD_DX_BIND_SHADER */
 
+<<<<<<< HEAD
 typedef
 #include "vmware_pack_begin.h"
 struct SVGA3dCmdDXBindAllShader {
@@ -1412,6 +1552,8 @@ struct SVGA3dCmdDXCondBindAllShader {
 #include "vmware_pack_end.h"
 SVGA3dCmdDXCondBindAllShader;   /* SVGA_3D_CMD_DX_COND_BIND_ALL_SHADER */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * The maximum number of streamout decl's in each streamout entry.
  */
@@ -1485,6 +1627,10 @@ SVGA3dCmdDXMobFence64;  /* SVGA_3D_CMD_DX_MOB_FENCE_64 */
  *
  * This command allows the guest to bind a mob to a context-object table.
  */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef
 #include "vmware_pack_begin.h"
 struct SVGA3dCmdDXSetCOTable {
@@ -1496,6 +1642,7 @@ struct SVGA3dCmdDXSetCOTable {
 #include "vmware_pack_end.h"
 SVGA3dCmdDXSetCOTable; /* SVGA_3D_CMD_DX_SET_COTABLE */
 
+<<<<<<< HEAD
 /*
  * Guests using SVGA_3D_CMD_DX_GROW_COTABLE are promising that
  * the new COTable contains the same contents as the old one, except possibly
@@ -1516,6 +1663,8 @@ struct SVGA3dCmdDXGrowCOTable {
 #include "vmware_pack_end.h"
 SVGA3dCmdDXGrowCOTable; /* SVGA_3D_CMD_DX_GROW_COTABLE */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef
 #include "vmware_pack_begin.h"
 struct SVGA3dCmdDXReadbackCOTable {
@@ -1619,7 +1768,11 @@ struct SVGADXContextMobFormat {
    SVGA3dQueryId queryID[SVGA3D_MAX_QUERY];
 
    SVGA3dCOTableData cotables[SVGA_COTABLE_MAX];
+<<<<<<< HEAD
    uint32 pad7[380];
+=======
+   uint32 pad7[381];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #include "vmware_pack_end.h"
 SVGADXContextMobFormat;

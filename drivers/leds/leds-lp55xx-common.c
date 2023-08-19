@@ -560,7 +560,11 @@ struct lp55xx_platform_data *lp55xx_of_populate_pdata(struct device *dev,
 		return ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	cfg = devm_kcalloc(dev, num_channels, sizeof(*cfg), GFP_KERNEL);
+=======
+	cfg = devm_kzalloc(dev, sizeof(*cfg) * num_channels, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cfg)
 		return ERR_PTR(-ENOMEM);
 

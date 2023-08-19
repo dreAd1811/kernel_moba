@@ -35,6 +35,10 @@ static inline void disable_kernel_fp(void)
 	msr_check_and_clear(MSR_FP);
 }
 #else
+<<<<<<< HEAD
+=======
+static inline void __giveup_fpu(struct task_struct *t) { }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void save_fpu(struct task_struct *t) { }
 static inline void flush_fp_to_thread(struct task_struct *t) { }
 #endif
@@ -91,8 +95,11 @@ static inline void clear_task_ebb(struct task_struct *t)
 #endif
 }
 
+<<<<<<< HEAD
 extern int set_thread_uses_vas(void);
 
 extern int set_thread_tidr(struct task_struct *t);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_POWERPC_SWITCH_TO_H */

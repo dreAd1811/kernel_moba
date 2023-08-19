@@ -48,6 +48,12 @@
 #else /* !__ASSEMBLY__ */
 extern void _mcount(void);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DYNAMIC_FTRACE
+# define FTRACE_ADDR ((unsigned long)ftrace_caller)
+# define FTRACE_REGS_ADDR FTRACE_ADDR
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned long ftrace_call_adjust(unsigned long addr)
 {
        /* reloction of mcount call site is the same as the address */
@@ -57,11 +63,16 @@ static inline unsigned long ftrace_call_adjust(unsigned long addr)
 struct dyn_arch_ftrace {
 	struct module *mod;
 };
+<<<<<<< HEAD
+=======
+#endif /*  CONFIG_DYNAMIC_FTRACE */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __ASSEMBLY__ */
 
 #ifdef CONFIG_DYNAMIC_FTRACE_WITH_REGS
 #define ARCH_SUPPORTS_FTRACE_OPS 1
 #endif
+<<<<<<< HEAD
 #endif /* CONFIG_FUNCTION_TRACER */
 
 #ifndef __ASSEMBLY__
@@ -111,5 +122,24 @@ static inline void this_cpu_disable_ftrace(void) { }
 static inline void this_cpu_enable_ftrace(void) { }
 #endif /* CONFIG_PPC64 */
 #endif /* !__ASSEMBLY__ */
+=======
+#endif
+
+#if defined(CONFIG_FTRACE_SYSCALLS) && !defined(__ASSEMBLY__)
+#ifdef PPC64_ELF_ABI_v1
+#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
+static inline bool arch_syscall_match_sym_name(const char *sym, const char *name)
+{
+	/*
+	 * Compare the symbol name with the system call name. Skip the .sys or .SyS
+	 * prefix from the symbol name and the sys prefix from the system call name and
+	 * just match the rest. This is only needed on ppc64 since symbol names on
+	 * 32bit do not start with a period so the generic function will work.
+	 */
+	return !strcmp(sym + 4, name + 3);
+}
+#endif
+#endif /* CONFIG_FTRACE_SYSCALLS && !__ASSEMBLY__ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _ASM_POWERPC_FTRACE */

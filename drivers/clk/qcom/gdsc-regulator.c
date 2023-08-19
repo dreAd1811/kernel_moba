@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+=======
+/*
+ * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -9,6 +23,10 @@
 #include <linux/delay.h>
 #include <linux/err.h>
 #include <linux/of.h>
+<<<<<<< HEAD
+=======
+#include <linux/mailbox_client.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/msm-bus.h>
 #include <linux/platform_device.h>
 #include <linux/regulator/driver.h>
@@ -20,14 +38,23 @@
 #include <linux/reset.h>
 #include <linux/mfd/syscon.h>
 #include <linux/clk/qcom.h>
+<<<<<<< HEAD
 
 #include <dt-bindings/regulator/qcom,rpmh-regulator-levels.h>
+=======
+#include <linux/mailbox/qmp.h>
+
+#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* GDSCR */
 #define PWR_ON_MASK		BIT(31)
 #define CLK_DIS_WAIT_MASK	(0xF << 12)
 #define CLK_DIS_WAIT_SHIFT	(12)
+<<<<<<< HEAD
 #define RETAIN_FF_ENABLE_MASK	BIT(11)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SW_OVERRIDE_MASK	BIT(2)
 #define HW_CONTROL_MASK		BIT(1)
 #define SW_COLLAPSE_MASK	BIT(0)
@@ -45,6 +72,11 @@
 /* Timeout Delay */
 #define TIMEOUT_US		100
 
+<<<<<<< HEAD
+=======
+#define MBOX_TOUT_MS		100
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gdsc {
 	struct regulator_dev	*rdev;
 	struct regulator_desc	rdesc;
@@ -57,15 +89,28 @@ struct gdsc {
 	struct regulator	*parent_regulator;
 	struct reset_control	**reset_clocks;
 	struct msm_bus_scale_pdata *bus_pdata;
+<<<<<<< HEAD
+=======
+	struct mbox_client	mbox_client;
+	struct mbox_chan	*mbox;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32			bus_handle;
 	bool			toggle_mem;
 	bool			toggle_periph;
 	bool			toggle_logic;
+<<<<<<< HEAD
 	bool			retain_ff_enable;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool			resets_asserted;
 	bool			root_en;
 	bool			force_root_en;
 	bool			no_status_check_on_disable;
+<<<<<<< HEAD
+=======
+	bool			skip_disable;
+	bool			bypass_skip_disable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool			is_gdsc_enabled;
 	bool			allow_clear;
 	bool			reset_aon;
@@ -143,9 +188,25 @@ static int gdsc_is_enabled(struct regulator_dev *rdev)
 	int ret;
 	bool is_enabled = false;
 
+<<<<<<< HEAD
 	if (!sc->toggle_logic)
 		return !sc->resets_asserted;
 
+=======
+	/*
+	 * Return the logical GDSC enable state given that it will only be
+	 * physically disabled by AOP during system sleep.
+	 */
+	if (sc->skip_disable)
+		return sc->is_gdsc_enabled;
+
+	if (!sc->toggle_logic)
+		return !sc->resets_asserted;
+
+	if (sc->skip_disable_before_enable)
+		return false;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sc->parent_regulator) {
 		/*
 		 * The parent regulator for the GDSC is required to be on to
@@ -203,12 +264,50 @@ end:
 	return is_enabled;
 }
 
+<<<<<<< HEAD
+=======
+#define MAX_LEN 96
+
+static int gdsc_qmp_enable(struct gdsc *sc)
+{
+	char buf[MAX_LEN] = "{class: clock, res: gpu_noc_wa}";
+	struct qmp_pkt pkt;
+	uint32_t regval;
+	int ret;
+
+	regmap_read(sc->regmap, REG_OFFSET, &regval);
+	if (!(regval & SW_COLLAPSE_MASK)) {
+		/*
+		 * Do not enable via a QMP request if the GDSC is already
+		 * enabled by software.
+		 */
+		return 0;
+	}
+
+	pkt.size = MAX_LEN;
+	pkt.data = buf;
+
+	ret = mbox_send_message(sc->mbox, &pkt);
+	if (ret < 0)
+		dev_err(&sc->rdev->dev, "qmp message send failed, ret=%d\n",
+			ret);
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gdsc_enable(struct regulator_dev *rdev)
 {
 	struct gdsc *sc = rdev_get_drvdata(rdev);
 	uint32_t regval, hw_ctrl_regval = 0x0;
 	int i, ret = 0;
 
+<<<<<<< HEAD
+=======
+	if (sc->skip_disable_before_enable)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sc->parent_regulator) {
 		ret = regulator_set_voltage(sc->parent_regulator,
 				RPMH_REGULATOR_LEVEL_LOW_SVS, INT_MAX);
@@ -289,9 +388,21 @@ static int gdsc_enable(struct regulator_dev *rdev)
 			gdsc_mb(sc);
 		}
 
+<<<<<<< HEAD
 		regmap_read(sc->regmap, REG_OFFSET, &regval);
 		regval &= ~SW_COLLAPSE_MASK;
 		regmap_write(sc->regmap, REG_OFFSET, regval);
+=======
+		if (sc->mbox) {
+			ret = gdsc_qmp_enable(sc);
+			if (ret < 0)
+				goto end;
+		} else {
+			regmap_read(sc->regmap, REG_OFFSET, &regval);
+			regval &= ~SW_COLLAPSE_MASK;
+			regmap_write(sc->regmap, REG_OFFSET, regval);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Wait for 8 XO cycles before polling the status bit. */
 		gdsc_mb(sc);
@@ -332,11 +443,14 @@ static int gdsc_enable(struct regulator_dev *rdev)
 				goto end;
 			}
 		}
+<<<<<<< HEAD
 
 		if (sc->retain_ff_enable && !(regval & RETAIN_FF_ENABLE_MASK)) {
 			regval |= RETAIN_FF_ENABLE_MASK;
 			regmap_write(sc->regmap, REG_OFFSET, regval);
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		for (i = 0; i < sc->reset_count; i++)
 			reset_control_deassert(sc->reset_clocks[i]);
@@ -367,13 +481,21 @@ static int gdsc_enable(struct regulator_dev *rdev)
 		clk_disable_unprepare(sc->clocks[sc->root_clk_idx]);
 
 	sc->is_gdsc_enabled = true;
+<<<<<<< HEAD
 	sc->skip_disable_before_enable = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 end:
 	if (ret && sc->bus_handle) {
 		msm_bus_scale_client_update_request(sc->bus_handle, 0);
 		sc->is_bus_enabled = false;
 	}
 
+<<<<<<< HEAD
+=======
+	sc->skip_disable_before_enable = false;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret && sc->parent_regulator)
 		regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 
@@ -386,6 +508,7 @@ static int gdsc_disable(struct regulator_dev *rdev)
 	uint32_t regval;
 	int i, ret = 0;
 
+<<<<<<< HEAD
 	/*
 	 * Protect GDSC against late_init disabling when the GDSC is enabled
 	 * by an entity outside external to HLOS.
@@ -396,6 +519,8 @@ static int gdsc_disable(struct regulator_dev *rdev)
 		return 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sc->force_root_en)
 		clk_prepare_enable(sc->clocks[sc->root_clk_idx]);
 
@@ -411,7 +536,16 @@ static int gdsc_disable(struct regulator_dev *rdev)
 	/* Delay to account for staggered memory powerdown. */
 	udelay(1);
 
+<<<<<<< HEAD
 	if (sc->toggle_logic) {
+=======
+	if (sc->skip_disable && !sc->bypass_skip_disable) {
+		/*
+		 * Don't change the GDSCR register state on disable.  AOP will
+		 * handle this during system sleep.
+		 */
+	} else if (sc->toggle_logic) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		regmap_read(sc->regmap, REG_OFFSET, &regval);
 		regval |= SW_COLLAPSE_MASK;
 		regmap_write(sc->regmap, REG_OFFSET, regval);
@@ -475,6 +609,15 @@ static unsigned int gdsc_get_mode(struct regulator_dev *rdev)
 	uint32_t regval;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	if (sc->skip_disable) {
+		if (sc->bypass_skip_disable)
+			return REGULATOR_MODE_IDLE;
+		return REGULATOR_MODE_NORMAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sc->parent_regulator) {
 		ret = regulator_set_voltage(sc->parent_regulator,
 					RPMH_REGULATOR_LEVEL_LOW_SVS, INT_MAX);
@@ -524,6 +667,25 @@ static int gdsc_set_mode(struct regulator_dev *rdev, unsigned int mode)
 	uint32_t regval;
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	if (sc->skip_disable) {
+		switch (mode) {
+		case REGULATOR_MODE_IDLE:
+			sc->bypass_skip_disable = true;
+			break;
+		case REGULATOR_MODE_NORMAL:
+			sc->bypass_skip_disable = false;
+			break;
+		default:
+			ret = -EINVAL;
+			break;
+		}
+
+		return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sc->parent_regulator) {
 		ret = regulator_set_voltage(sc->parent_regulator,
 				RPMH_REGULATOR_LEVEL_LOW_SVS, INT_MAX);
@@ -614,6 +776,7 @@ static const struct regmap_config gdsc_regmap_config = {
 	.fast_io    = true,
 };
 
+<<<<<<< HEAD
 static int gdsc_parse_dt_data(struct gdsc *sc, struct device *dev,
 				struct regulator_init_data **init_data)
 {
@@ -736,11 +899,118 @@ static int gdsc_get_resources(struct gdsc *sc, struct platform_device *pdev)
 			ret = PTR_ERR(sc->parent_regulator);
 			if (ret != -EPROBE_DEFER)
 				dev_err(dev, "Unable to get vdd_parent regulator, ret=%d\n",
+=======
+static int gdsc_probe(struct platform_device *pdev)
+{
+	static atomic_t gdsc_count = ATOMIC_INIT(-1);
+	struct regulator_config reg_config = {};
+	struct regulator_init_data *init_data;
+	struct resource *res;
+	struct gdsc *sc;
+	uint32_t regval, clk_dis_wait_val = 0;
+	bool retain_mem, retain_periph, support_hw_trigger;
+	int i, ret;
+	u32 timeout;
+
+	sc = devm_kzalloc(&pdev->dev, sizeof(struct gdsc), GFP_KERNEL);
+	if (sc == NULL)
+		return -ENOMEM;
+
+	init_data = of_get_regulator_init_data(&pdev->dev, pdev->dev.of_node,
+								&sc->rdesc);
+	if (init_data == NULL)
+		return -ENOMEM;
+
+	if (of_get_property(pdev->dev.of_node, "parent-supply", NULL))
+		init_data->supply_regulator = "parent";
+
+	ret = of_property_read_string(pdev->dev.of_node, "regulator-name",
+							&sc->rdesc.name);
+	if (ret)
+		return ret;
+
+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+	if (res == NULL) {
+		dev_err(&pdev->dev, "Failed to get resources\n");
+		return -EINVAL;
+	}
+
+	sc->gdscr = devm_ioremap(&pdev->dev, res->start, resource_size(res));
+	if (sc->gdscr == NULL)
+		return -ENOMEM;
+
+	sc->regmap = devm_regmap_init_mmio(&pdev->dev, sc->gdscr,
+							&gdsc_regmap_config);
+	if (!sc->regmap) {
+		dev_err(&pdev->dev, "Couldn't get regmap\n");
+		return -EINVAL;
+	}
+
+	if (of_find_property(pdev->dev.of_node, "domain-addr", NULL)) {
+		sc->domain_addr = syscon_regmap_lookup_by_phandle
+					(pdev->dev.of_node, "domain-addr");
+		if (IS_ERR(sc->domain_addr))
+			return -ENODEV;
+	}
+
+	if (of_find_property(pdev->dev.of_node, "sw-reset", NULL)) {
+		sc->sw_reset = syscon_regmap_lookup_by_phandle
+						(pdev->dev.of_node, "sw-reset");
+		if (IS_ERR(sc->sw_reset))
+			return -ENODEV;
+	}
+
+	if (of_find_property(pdev->dev.of_node, "hw-ctrl-addr", NULL)) {
+		sc->hw_ctrl = syscon_regmap_lookup_by_phandle(
+					pdev->dev.of_node, "hw-ctrl-addr");
+		if (IS_ERR(sc->hw_ctrl))
+			return -ENODEV;
+	}
+
+	sc->gds_timeout = TIMEOUT_US;
+
+	ret = of_property_read_u32(pdev->dev.of_node, "qcom,gds-timeout",
+							&timeout);
+	if (!ret)
+		sc->gds_timeout = timeout;
+
+	sc->clock_count = of_property_count_strings(pdev->dev.of_node,
+					    "clock-names");
+	if (sc->clock_count == -EINVAL) {
+		sc->clock_count = 0;
+	} else if (sc->clock_count < 0) {
+		dev_err(&pdev->dev, "Failed to get clock names\n");
+		return -EINVAL;
+	}
+
+	sc->clocks = devm_kzalloc(&pdev->dev,
+			sizeof(struct clk *) * sc->clock_count, GFP_KERNEL);
+	if (!sc->clocks)
+		return -ENOMEM;
+
+	sc->root_clk_idx = -1;
+
+	sc->root_en = of_property_read_bool(pdev->dev.of_node,
+						"qcom,enable-root-clk");
+
+	sc->force_root_en = of_property_read_bool(pdev->dev.of_node,
+						"qcom,force-enable-root-clk");
+
+	if (of_find_property(pdev->dev.of_node, "vdd_parent-supply", NULL)) {
+		sc->parent_regulator = devm_regulator_get(&pdev->dev,
+							"vdd_parent");
+		if (IS_ERR(sc->parent_regulator)) {
+			ret = PTR_ERR(sc->parent_regulator);
+			if (ret != -EPROBE_DEFER)
+				dev_err(&pdev->dev,
+				"Unable to get vdd_parent regulator, err: %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					ret);
 			return ret;
 		}
 	}
 
+<<<<<<< HEAD
 	sc->clocks = devm_kcalloc(dev, sc->clock_count, sizeof(*sc->clocks),
 				  GFP_KERNEL);
 	if (sc->clock_count && !sc->clocks)
@@ -760,6 +1030,22 @@ static int gdsc_get_resources(struct gdsc *sc, struct platform_device *pdev)
 				dev_err(dev, "Failed to get %s, ret=%d\n",
 					clock_name, ret);
 			return ret;
+=======
+	for (i = 0; i < sc->clock_count; i++) {
+		const char *clock_name;
+
+		of_property_read_string_index(pdev->dev.of_node, "clock-names",
+				i, &clock_name);
+
+		sc->clocks[i] = devm_clk_get(&pdev->dev, clock_name);
+		if (IS_ERR(sc->clocks[i])) {
+			int rc = PTR_ERR(sc->clocks[i]);
+
+			if (rc != -EPROBE_DEFER)
+				dev_err(&pdev->dev, "Failed to get %s\n",
+					clock_name);
+			return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (!strcmp(clock_name, "core_root_clk"))
@@ -767,6 +1053,7 @@ static int gdsc_get_resources(struct gdsc *sc, struct platform_device *pdev)
 	}
 
 	if ((sc->root_en || sc->force_root_en) && (sc->root_clk_idx == -1)) {
+<<<<<<< HEAD
 		dev_err(dev, "Failed to get root clock name\n");
 		return -EINVAL;
 	}
@@ -794,6 +1081,14 @@ static int gdsc_get_resources(struct gdsc *sc, struct platform_device *pdev)
 			}
 		}
 	}
+=======
+		dev_err(&pdev->dev, "Failed to get root clock name\n");
+		return -EINVAL;
+	}
+
+	sc->reset_aon = of_property_read_bool(pdev->dev.of_node,
+							"qcom,reset-aon-logic");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_find_property(pdev->dev.of_node, "qcom,msm-bus,name", NULL)) {
 		sc->bus_pdata = msm_bus_cl_get_pdata(pdev);
@@ -813,6 +1108,7 @@ static int gdsc_get_resources(struct gdsc *sc, struct platform_device *pdev)
 			 */
 			return -EPROBE_DEFER;
 		}
+<<<<<<< HEAD
 	}
 
 	return 0;
@@ -845,6 +1141,9 @@ static int gdsc_probe(struct platform_device *pdev)
 		 * hardware block containing the GDSC is not disconnected from
 		 * the bus.  This allows register IO for the GDSC to succeed.
 		 */
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = msm_bus_scale_client_update_request(sc->bus_handle, 1);
 		if (ret) {
 			dev_err(&pdev->dev, "bus scaling failed, ret=%d\n",
@@ -854,6 +1153,34 @@ static int gdsc_probe(struct platform_device *pdev)
 		sc->is_bus_enabled = true;
 	}
 
+<<<<<<< HEAD
+=======
+	if (of_find_property(pdev->dev.of_node, "mboxes", NULL)) {
+		sc->mbox_client.dev = &pdev->dev;
+		sc->mbox_client.tx_block = true;
+		sc->mbox_client.tx_tout = MBOX_TOUT_MS;
+		sc->mbox_client.knows_txdone = false;
+
+		sc->mbox = mbox_request_channel(&sc->mbox_client, 0);
+		if (IS_ERR(sc->mbox)) {
+			ret = PTR_ERR(sc->mbox);
+			if (ret == -EAGAIN)
+				ret = -EPROBE_DEFER;
+			if (ret != -EPROBE_DEFER)
+				dev_err(&pdev->dev, "mailbox channel request failed, ret=%d\n",
+					ret);
+			sc->mbox = NULL;
+			goto err;
+		}
+	}
+
+	sc->rdesc.id = atomic_inc_return(&gdsc_count);
+	sc->rdesc.ops = &gdsc_ops;
+	sc->rdesc.type = REGULATOR_VOLTAGE;
+	sc->rdesc.owner = THIS_MODULE;
+	platform_set_drvdata(pdev, sc);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Disable HW trigger: collapse/restore occur based on registers writes.
 	 * Disable SW override: Use hardware state-machine for sequencing.
@@ -872,7 +1199,79 @@ static int gdsc_probe(struct platform_device *pdev)
 
 	regmap_write(sc->regmap, REG_OFFSET, regval);
 
+<<<<<<< HEAD
 	if (!sc->toggle_logic) {
+=======
+	sc->no_status_check_on_disable =
+			of_property_read_bool(pdev->dev.of_node,
+					"qcom,no-status-check-on-disable");
+	sc->skip_disable = of_property_read_bool(pdev->dev.of_node,
+					"qcom,skip-disable");
+	retain_mem = of_property_read_bool(pdev->dev.of_node,
+					    "qcom,retain-mem");
+	sc->toggle_mem = !retain_mem;
+	retain_periph = of_property_read_bool(pdev->dev.of_node,
+					    "qcom,retain-periph");
+	sc->toggle_periph = !retain_periph;
+	sc->toggle_logic = !of_property_read_bool(pdev->dev.of_node,
+						"qcom,skip-logic-collapse");
+	support_hw_trigger = of_property_read_bool(pdev->dev.of_node,
+						    "qcom,support-hw-trigger");
+	if (support_hw_trigger) {
+		init_data->constraints.valid_ops_mask |= REGULATOR_CHANGE_MODE;
+		init_data->constraints.valid_modes_mask |=
+				REGULATOR_MODE_NORMAL | REGULATOR_MODE_FAST;
+	}
+
+	if (sc->skip_disable) {
+		/*
+		 * If the disable skipping feature is allowed, then use mode
+		 * control to enable and disable the feature at runtime instead
+		 * of using it to enable and disable hardware triggering.
+		 */
+		init_data->constraints.valid_ops_mask |= REGULATOR_CHANGE_MODE;
+		init_data->constraints.valid_modes_mask =
+				REGULATOR_MODE_NORMAL | REGULATOR_MODE_IDLE;
+	}
+
+	if (!sc->toggle_logic) {
+		sc->reset_count = of_property_count_strings(pdev->dev.of_node,
+					    "reset-names");
+		if (sc->reset_count == -EINVAL) {
+			sc->reset_count = 0;
+		} else if (sc->reset_count < 0) {
+			dev_err(&pdev->dev, "Failed to get reset clock names\n");
+			ret = -EINVAL;
+			goto err;
+		}
+
+		sc->reset_clocks = devm_kzalloc(&pdev->dev,
+			sizeof(struct reset_control *) * sc->reset_count,
+							GFP_KERNEL);
+		if (!sc->reset_clocks) {
+			ret = -ENOMEM;
+			goto err;
+		}
+
+		for (i = 0; i < sc->reset_count; i++) {
+			const char *reset_name;
+
+			of_property_read_string_index(pdev->dev.of_node,
+					"reset-names", i, &reset_name);
+			sc->reset_clocks[i] = devm_reset_control_get(&pdev->dev,
+								reset_name);
+			if (IS_ERR(sc->reset_clocks[i])) {
+				int rc = PTR_ERR(sc->reset_clocks[i]);
+
+				if (rc != -EPROBE_DEFER)
+					dev_err(&pdev->dev, "Failed to get %s\n",
+							reset_name);
+				ret = rc;
+				goto err;
+			}
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		regval &= ~SW_COLLAPSE_MASK;
 		regmap_write(sc->regmap, REG_OFFSET, regval);
 
@@ -896,24 +1295,42 @@ static int gdsc_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < sc->clock_count; i++) {
 		if (!sc->toggle_mem || (regval & PWR_ON_MASK) ||
 		    !sc->allow_clear)
+=======
+	sc->allow_clear = of_property_read_bool(pdev->dev.of_node,
+							"qcom,disallow-clear");
+	sc->allow_clear = !sc->allow_clear;
+
+	for (i = 0; i < sc->clock_count; i++) {
+		if (retain_mem || (regval & PWR_ON_MASK) || !sc->allow_clear)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clk_set_flags(sc->clocks[i], CLKFLAG_RETAIN_MEM);
 		else
 			clk_set_flags(sc->clocks[i], CLKFLAG_NORETAIN_MEM);
 
+<<<<<<< HEAD
 		if (!sc->toggle_periph || (regval & PWR_ON_MASK) ||
 		    !sc->allow_clear)
+=======
+		if (retain_periph || (regval & PWR_ON_MASK) || !sc->allow_clear)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clk_set_flags(sc->clocks[i], CLKFLAG_RETAIN_PERIPH);
 		else
 			clk_set_flags(sc->clocks[i], CLKFLAG_NORETAIN_PERIPH);
 	}
 
+<<<<<<< HEAD
 	sc->rdesc.id = atomic_inc_return(&gdsc_count);
 	sc->rdesc.ops = &gdsc_ops;
 	sc->rdesc.type = REGULATOR_VOLTAGE;
 	sc->rdesc.owner = THIS_MODULE;
+=======
+	sc->skip_disable_before_enable = of_property_read_bool(
+		pdev->dev.of_node, "qcom,skip-disable-before-sw-enable");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg_config.dev = &pdev->dev;
 	reg_config.init_data = init_data;
@@ -921,6 +1338,7 @@ static int gdsc_probe(struct platform_device *pdev)
 	reg_config.of_node = pdev->dev.of_node;
 	reg_config.regmap = sc->regmap;
 
+<<<<<<< HEAD
 	sc->rdev = devm_regulator_register(&pdev->dev, &sc->rdesc, &reg_config);
 	if (IS_ERR(sc->rdev)) {
 		ret = PTR_ERR(sc->rdev);
@@ -934,6 +1352,22 @@ static int gdsc_probe(struct platform_device *pdev)
 	return 0;
 
 err:
+=======
+	sc->rdev = regulator_register(&sc->rdesc, &reg_config);
+	if (IS_ERR(sc->rdev)) {
+		dev_err(&pdev->dev, "regulator_register(\"%s\") failed.\n",
+			sc->rdesc.name);
+		ret = PTR_ERR(sc->rdev);
+		goto err;
+	}
+
+	return 0;
+
+err:
+	if (sc->mbox)
+		mbox_free_channel(sc->mbox);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sc->bus_handle) {
 		if (sc->is_bus_enabled)
 			msm_bus_scale_client_update_request(sc->bus_handle, 0);
@@ -947,6 +1381,14 @@ static int gdsc_remove(struct platform_device *pdev)
 {
 	struct gdsc *sc = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
+=======
+	regulator_unregister(sc->rdev);
+
+	if (sc->mbox)
+		mbox_free_channel(sc->mbox);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sc->bus_handle) {
 		if (sc->is_bus_enabled)
 			msm_bus_scale_client_update_request(sc->bus_handle, 0);
@@ -967,6 +1409,10 @@ static struct platform_driver gdsc_driver = {
 	.driver = {
 		.name = "gdsc",
 		.of_match_table = gdsc_match_table,
+<<<<<<< HEAD
+=======
+		.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

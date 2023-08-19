@@ -17,7 +17,10 @@
 #include <linux/of_address.h>
 #include <linux/regmap.h>
 #include <linux/mfd/syscon.h>
+<<<<<<< HEAD
 #include <linux/cpu_pm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "soc.h"
 #include "iomap.h"
@@ -622,6 +625,7 @@ void __init omap3_ctrl_init(void)
 }
 #endif /* CONFIG_ARCH_OMAP3 && CONFIG_PM */
 
+<<<<<<< HEAD
 static unsigned long am43xx_control_reg_offsets[] = {
 	AM33XX_CONTROL_SYSCONFIG_OFFSET,
 	AM33XX_CONTROL_STATUS_OFFSET,
@@ -729,6 +733,10 @@ static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
 struct control_init_data {
 	int index;
 	void __iomem *mem;
+=======
+struct control_init_data {
+	int index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s16 offset;
 };
 
@@ -741,10 +749,13 @@ static const struct control_init_data omap2_ctrl_data = {
 	.offset = -OMAP2_CONTROL_GENERAL,
 };
 
+<<<<<<< HEAD
 static const struct control_init_data ctrl_aux_data = {
 	.index = TI_CLKM_CTRL_AUX,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id omap_scrm_dt_match_table[] = {
 	{ .compatible = "ti,am3-scm", .data = &ctrl_data },
 	{ .compatible = "ti,am4-scm", .data = &ctrl_data },
@@ -754,7 +765,10 @@ static const struct of_device_id omap_scrm_dt_match_table[] = {
 	{ .compatible = "ti,dm816-scrm", .data = &ctrl_data },
 	{ .compatible = "ti,omap4-scm-core", .data = &ctrl_data },
 	{ .compatible = "ti,omap5-scm-core", .data = &ctrl_data },
+<<<<<<< HEAD
 	{ .compatible = "ti,omap5-scm-wkup-pad-conf", .data = &ctrl_aux_data },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "ti,dra7-scm-core", .data = &ctrl_data },
 	{ }
 };
@@ -771,11 +785,15 @@ int __init omap2_control_base_init(void)
 	struct device_node *np;
 	const struct of_device_id *match;
 	struct control_init_data *data;
+<<<<<<< HEAD
 	void __iomem *mem;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_matching_node_and_match(np, omap_scrm_dt_match_table, &match) {
 		data = (struct control_init_data *)match->data;
 
+<<<<<<< HEAD
 		mem = of_iomap(np, 0);
 		if (!mem)
 			return -ENOMEM;
@@ -786,6 +804,13 @@ int __init omap2_control_base_init(void)
 		}
 
 		data->mem = mem;
+=======
+		omap2_ctrl_base = of_iomap(np, 0);
+		if (!omap2_ctrl_base)
+			return -ENOMEM;
+
+		omap2_ctrl_offset = data->offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -804,7 +829,10 @@ int __init omap_control_init(void)
 	const struct omap_prcm_init_data *data;
 	int ret;
 	struct regmap *syscon;
+<<<<<<< HEAD
 	static struct notifier_block nb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_matching_node_and_match(np, omap_scrm_dt_match_table, &match) {
 		data = match->data;
@@ -831,18 +859,25 @@ int __init omap_control_init(void)
 		} else {
 			/* No scm_conf found, direct access */
 			ret = omap2_clk_provider_init(np, data->index, NULL,
+<<<<<<< HEAD
 						      data->mem);
+=======
+						      omap2_ctrl_base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				return ret;
 		}
 	}
 
+<<<<<<< HEAD
 	/* Only AM43XX can lose ctrl registers context during rtc-ddr suspend */
 	if (soc_is_am43xx()) {
 		nb.notifier_call = cpu_notifier;
 		cpu_pm_register_notifier(&nb);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

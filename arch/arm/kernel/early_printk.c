@@ -11,6 +11,7 @@
 #include <linux/kernel.h>
 #include <linux/console.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/string.h>
 
 extern void printascii(const char *);
@@ -25,6 +26,18 @@ static void early_write(const char *s, unsigned n)
 		s += l;
 		n -= l;
 		printascii(buf);
+=======
+
+extern void printch(int);
+
+static void early_write(const char *s, unsigned n)
+{
+	while (n-- > 0) {
+		if (*s == '\n')
+			printch('\r');
+		printch(*s);
+		s++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

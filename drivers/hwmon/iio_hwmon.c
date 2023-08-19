@@ -22,13 +22,22 @@
  * struct iio_hwmon_state - device instance state
  * @channels:		filled with array of channels from iio
  * @num_channels:	number of channels in channels (saves counting twice)
+<<<<<<< HEAD
  * @attr_group:		the group of attributes
  * @groups:		null terminated array of attribute groups
+=======
+ * @hwmon_dev:		associated hwmon device
+ * @attr_group:	the group of attributes
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @attrs:		null terminated array of attribute pointers.
  */
 struct iio_hwmon_state {
 	struct iio_channel *channels;
 	int num_channels;
+<<<<<<< HEAD
+=======
+	struct device *hwmon_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct attribute_group attr_group;
 	const struct attribute_group *groups[2];
 	struct attribute **attrs;
@@ -66,13 +75,20 @@ static int iio_hwmon_probe(struct platform_device *pdev)
 	enum iio_chan_type type;
 	struct iio_channel *channels;
 	const char *name = "iio_hwmon";
+<<<<<<< HEAD
 	struct device *hwmon_dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *sname;
 
 	if (dev->of_node && dev->of_node->name)
 		name = dev->of_node->name;
 
+<<<<<<< HEAD
 	channels = devm_iio_channel_get_all(dev);
+=======
+	channels = iio_channel_get_all(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(channels)) {
 		if (PTR_ERR(channels) == -ENODEV)
 			return -EPROBE_DEFER;
@@ -80,8 +96,15 @@ static int iio_hwmon_probe(struct platform_device *pdev)
 	}
 
 	st = devm_kzalloc(dev, sizeof(*st), GFP_KERNEL);
+<<<<<<< HEAD
 	if (st == NULL)
 		return -ENOMEM;
+=======
+	if (st == NULL) {
+		ret = -ENOMEM;
+		goto error_release_channels;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	st->channels = channels;
 
@@ -89,6 +112,7 @@ static int iio_hwmon_probe(struct platform_device *pdev)
 	while (st->channels[st->num_channels].indio_dev)
 		st->num_channels++;
 
+<<<<<<< HEAD
 	st->attrs = devm_kcalloc(dev,
 				 st->num_channels + 1, sizeof(*st->attrs),
 				 GFP_KERNEL);
@@ -99,11 +123,31 @@ static int iio_hwmon_probe(struct platform_device *pdev)
 		a = devm_kzalloc(dev, sizeof(*a), GFP_KERNEL);
 		if (a == NULL)
 			return -ENOMEM;
+=======
+	st->attrs = devm_kzalloc(dev,
+				 sizeof(*st->attrs) * (st->num_channels + 1),
+				 GFP_KERNEL);
+	if (st->attrs == NULL) {
+		ret = -ENOMEM;
+		goto error_release_channels;
+	}
+
+	for (i = 0; i < st->num_channels; i++) {
+		a = devm_kzalloc(dev, sizeof(*a), GFP_KERNEL);
+		if (a == NULL) {
+			ret = -ENOMEM;
+			goto error_release_channels;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		sysfs_attr_init(&a->dev_attr.attr);
 		ret = iio_get_channel_type(&st->channels[i], &type);
 		if (ret < 0)
+<<<<<<< HEAD
 			return ret;
+=======
+			goto error_release_channels;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (type) {
 		case IIO_VOLTAGE:
@@ -127,11 +171,21 @@ static int iio_hwmon_probe(struct platform_device *pdev)
 							       humidity_i++);
 			break;
 		default:
+<<<<<<< HEAD
 			return -EINVAL;
 		}
 		if (a->dev_attr.attr.name == NULL)
 			return -ENOMEM;
 
+=======
+			ret = -EINVAL;
+			goto error_release_channels;
+		}
+		if (a->dev_attr.attr.name == NULL) {
+			ret = -ENOMEM;
+			goto error_release_channels;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		a->dev_attr.show = iio_hwmon_read_val;
 		a->dev_attr.attr.mode = S_IRUGO;
 		a->index = i;
@@ -142,6 +196,7 @@ static int iio_hwmon_probe(struct platform_device *pdev)
 	st->groups[0] = &st->attr_group;
 
 	sname = devm_kstrdup(dev, name, GFP_KERNEL);
+<<<<<<< HEAD
 	if (!sname)
 		return -ENOMEM;
 
@@ -149,6 +204,36 @@ static int iio_hwmon_probe(struct platform_device *pdev)
 	hwmon_dev = devm_hwmon_device_register_with_groups(dev, sname, st,
 							   st->groups);
 	return PTR_ERR_OR_ZERO(hwmon_dev);
+=======
+	if (!sname) {
+		ret = -ENOMEM;
+		goto error_release_channels;
+	}
+
+	strreplace(sname, '-', '_');
+	st->hwmon_dev = hwmon_device_register_with_groups(dev, sname, st,
+							  st->groups);
+	if (IS_ERR(st->hwmon_dev)) {
+		ret = PTR_ERR(st->hwmon_dev);
+		goto error_release_channels;
+	}
+	platform_set_drvdata(pdev, st);
+	return 0;
+
+error_release_channels:
+	iio_channel_release_all(channels);
+	return ret;
+}
+
+static int iio_hwmon_remove(struct platform_device *pdev)
+{
+	struct iio_hwmon_state *st = platform_get_drvdata(pdev);
+
+	hwmon_device_unregister(st->hwmon_dev);
+	iio_channel_release_all(st->channels);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id iio_hwmon_of_match[] = {
@@ -163,6 +248,10 @@ static struct platform_driver __refdata iio_hwmon_driver = {
 		.of_match_table = iio_hwmon_of_match,
 	},
 	.probe = iio_hwmon_probe,
+<<<<<<< HEAD
+=======
+	.remove = iio_hwmon_remove,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 module_platform_driver(iio_hwmon_driver);

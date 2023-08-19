@@ -28,6 +28,10 @@
 #include <linux/init.h>
 #include <linux/platform_device.h>
 #include <linux/i2c.h>
+<<<<<<< HEAD
+=======
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spi/spi.h>
 
 #include <sound/cs4271.h>
@@ -60,6 +64,17 @@ static struct ep93xx_eth_data __initdata edb93xx_eth_data = {
 /*************************************************************************
  * EDB93xx i2c peripheral handling
  *************************************************************************/
+<<<<<<< HEAD
+=======
+static struct i2c_gpio_platform_data __initdata edb93xx_i2c_gpio_data = {
+	.sda_pin		= EP93XX_GPIO_LINE_EEDAT,
+	.sda_is_open_drain	= 0,
+	.scl_pin		= EP93XX_GPIO_LINE_EECLK,
+	.scl_is_open_drain	= 0,
+	.udelay			= 0,	/* default to 100 kHz */
+	.timeout		= 0,	/* default to 100 ms */
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct i2c_board_info __initdata edb93xxa_i2c_board_info[] = {
 	{
@@ -77,11 +92,21 @@ static void __init edb93xx_register_i2c(void)
 {
 	if (machine_is_edb9302a() || machine_is_edb9307a() ||
 	    machine_is_edb9315a()) {
+<<<<<<< HEAD
 		ep93xx_register_i2c(edb93xxa_i2c_board_info,
 				    ARRAY_SIZE(edb93xxa_i2c_board_info));
 	} else if (machine_is_edb9302() || machine_is_edb9307()
 		|| machine_is_edb9312() || machine_is_edb9315()) {
 		ep93xx_register_i2c(edb93xx_i2c_board_info,
+=======
+		ep93xx_register_i2c(&edb93xx_i2c_gpio_data,
+				    edb93xxa_i2c_board_info,
+				    ARRAY_SIZE(edb93xxa_i2c_board_info));
+	} else if (machine_is_edb9302() || machine_is_edb9307()
+		|| machine_is_edb9312() || machine_is_edb9315()) {
+		ep93xx_register_i2c(&edb93xx_i2c_gpio_data,
+				    edb93xx_i2c_board_info,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    ARRAY_SIZE(edb93xx_i2c_board_info));
 	}
 }

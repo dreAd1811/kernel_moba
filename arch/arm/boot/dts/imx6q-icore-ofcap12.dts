@@ -48,6 +48,7 @@
 / {
 	model = "Engicam i.CoreM6 Quad/Dual OpenFrame Capacitive touch 12 Kit";
 	compatible = "engicam,imx6-icore", "fsl,imx6q";
+<<<<<<< HEAD
 
 	panel {
 		compatible = "koe,tx31d200vm0baa";
@@ -59,12 +60,15 @@
 			};
 		};
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &ldb {
 	status = "okay";
 
 	lvds-channel@0 {
+<<<<<<< HEAD
 		reg = <0>;
 		status = "okay";
 
@@ -73,6 +77,24 @@
 
 			lvds0_out: endpoint {
 				remote-endpoint = <&panel_in>;
+=======
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <18>;
+		status = "okay";
+
+		display-timings {
+			native-mode = <&timing0>;
+			timing0: timing0 {
+				clock-frequency = <46800000>;
+				hactive = <1280>;
+				vactive = <480>;
+				hback-porch = <353>;
+				hfront-porch = <47>;
+				vback-porch = <39>;
+				vfront-porch = <4>;
+				hsync-len = <8>;
+				vsync-len = <2>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 	};

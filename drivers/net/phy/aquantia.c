@@ -38,6 +38,17 @@ static int aquantia_config_aneg(struct phy_device *phydev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int aquantia_aneg_done(struct phy_device *phydev)
+{
+	int reg;
+
+	reg = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_STAT1);
+	return (reg < 0) ? reg : (reg & BMSR_ANEGCOMPLETE);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int aquantia_config_intr(struct phy_device *phydev)
 {
 	int err;
@@ -117,7 +128,11 @@ static struct phy_driver aquantia_driver[] = {
 	.name		= "Aquantia AQ1202",
 	.features	= PHY_AQUANTIA_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
+<<<<<<< HEAD
 	.aneg_done	= genphy_c45_aneg_done,
+=======
+	.aneg_done	= aquantia_aneg_done,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_aneg    = aquantia_config_aneg,
 	.config_intr	= aquantia_config_intr,
 	.ack_interrupt	= aquantia_ack_interrupt,
@@ -129,7 +144,11 @@ static struct phy_driver aquantia_driver[] = {
 	.name		= "Aquantia AQ2104",
 	.features	= PHY_AQUANTIA_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
+<<<<<<< HEAD
 	.aneg_done	= genphy_c45_aneg_done,
+=======
+	.aneg_done	= aquantia_aneg_done,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_aneg    = aquantia_config_aneg,
 	.config_intr	= aquantia_config_intr,
 	.ack_interrupt	= aquantia_ack_interrupt,
@@ -141,7 +160,11 @@ static struct phy_driver aquantia_driver[] = {
 	.name		= "Aquantia AQR105",
 	.features	= PHY_AQUANTIA_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
+<<<<<<< HEAD
 	.aneg_done	= genphy_c45_aneg_done,
+=======
+	.aneg_done	= aquantia_aneg_done,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_aneg    = aquantia_config_aneg,
 	.config_intr	= aquantia_config_intr,
 	.ack_interrupt	= aquantia_ack_interrupt,
@@ -153,7 +176,11 @@ static struct phy_driver aquantia_driver[] = {
 	.name		= "Aquantia AQR106",
 	.features	= PHY_AQUANTIA_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
+<<<<<<< HEAD
 	.aneg_done	= genphy_c45_aneg_done,
+=======
+	.aneg_done	= aquantia_aneg_done,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_aneg    = aquantia_config_aneg,
 	.config_intr	= aquantia_config_intr,
 	.ack_interrupt	= aquantia_ack_interrupt,
@@ -165,7 +192,11 @@ static struct phy_driver aquantia_driver[] = {
 	.name		= "Aquantia AQR107",
 	.features	= PHY_AQUANTIA_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
+<<<<<<< HEAD
 	.aneg_done	= genphy_c45_aneg_done,
+=======
+	.aneg_done	= aquantia_aneg_done,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_aneg    = aquantia_config_aneg,
 	.config_intr	= aquantia_config_intr,
 	.ack_interrupt	= aquantia_ack_interrupt,
@@ -177,7 +208,11 @@ static struct phy_driver aquantia_driver[] = {
 	.name		= "Aquantia AQR405",
 	.features	= PHY_AQUANTIA_FEATURES,
 	.flags		= PHY_HAS_INTERRUPT,
+<<<<<<< HEAD
 	.aneg_done	= genphy_c45_aneg_done,
+=======
+	.aneg_done	= aquantia_aneg_done,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.config_aneg    = aquantia_config_aneg,
 	.config_intr	= aquantia_config_intr,
 	.ack_interrupt	= aquantia_ack_interrupt,

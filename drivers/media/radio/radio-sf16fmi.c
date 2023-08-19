@@ -13,11 +13,19 @@
  *  No volume control - only mute/unmute - you have to use line volume
  *  control on SB-part of SF16-FMI/SF16-FMP/SF16-FMD
  *
+<<<<<<< HEAD
  * Converted to V4L2 API by Mauro Carvalho Chehab <mchehab@kernel.org>
  */
 
 #include <linux/kernel.h>	/* __setup			*/
 #include <linux/module.h>	/* Modules			*/
+=======
+ * Converted to V4L2 API by Mauro Carvalho Chehab <mchehab@infradead.org>
+ */
+
+#include <linux/kernel.h>	/* __setup			*/
+#include <linux/module.h>	/* Modules 			*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>		/* Initdata			*/
 #include <linux/ioport.h>	/* request_region		*/
 #include <linux/delay.h>	/* udelay			*/
@@ -110,7 +118,11 @@ static inline int fmi_getsigstr(struct fmi *fmi)
 	val = fmi->mute ? 0x00 : 0x08;	/* mute/unmute */
 	outb(val, fmi->io);
 	outb(val | 0x10, fmi->io);
+<<<<<<< HEAD
 	msleep(143);		/* was schedule_timeout(HZ/7) */
+=======
+	msleep(143); 		/* was schedule_timeout(HZ/7) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	res = (int)inb(fmi->io + 1);
 	outb(val, fmi->io);
 

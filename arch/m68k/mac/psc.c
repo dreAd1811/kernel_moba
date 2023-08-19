@@ -42,7 +42,11 @@ static void psc_debug_dump(void)
 		return;
 
 	for (i = 0x30 ; i < 0x70 ; i += 0x10) {
+<<<<<<< HEAD
 		printk(KERN_DEBUG "PSC #%d:  IFR = 0x%02X IER = 0x%02X\n",
+=======
+		printk("PSC #%d:  IFR = 0x%02X IER = 0x%02X\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i >> 4,
 			(int) psc_read_byte(pIFRbase + i),
 			(int) psc_read_byte(pIERbase + i));
@@ -59,12 +63,20 @@ static __init void psc_dma_die_die_die(void)
 {
 	int i;
 
+<<<<<<< HEAD
+=======
+	printk("Killing all PSC DMA channels...");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0 ; i < 9 ; i++) {
 		psc_write_word(PSC_CTL_BASE + (i << 4), 0x8800);
 		psc_write_word(PSC_CTL_BASE + (i << 4), 0x1000);
 		psc_write_word(PSC_CMD_BASE + (i << 5), 0x1100);
 		psc_write_word(PSC_CMD_BASE + (i << 5) + 0x10, 0x1100);
 	}
+<<<<<<< HEAD
+=======
+	printk("done!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -90,7 +102,11 @@ void __init psc_init(void)
 
 	psc = (void *) PSC_BASE;
 
+<<<<<<< HEAD
 	pr_debug("PSC detected at %p\n", psc);
+=======
+	printk("PSC detected at %p\n", psc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	psc_dma_die_die_die();
 

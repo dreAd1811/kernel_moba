@@ -1561,11 +1561,17 @@ static int ite_probe(struct pnp_dev *pdev, const struct pnp_device_id
 	rdev->close = ite_close;
 	rdev->s_idle = ite_s_idle;
 	rdev->s_rx_carrier_range = ite_set_rx_carrier_range;
+<<<<<<< HEAD
 	/* FIFO threshold is 17 bytes, so 17 * 8 samples minimum */
 	rdev->min_timeout = 17 * 8 * ITE_BAUDRATE_DIVISOR *
 			    itdev->params.sample_period;
 	rdev->timeout = IR_DEFAULT_TIMEOUT;
 	rdev->max_timeout = 10 * IR_DEFAULT_TIMEOUT;
+=======
+	rdev->min_timeout = ITE_MIN_IDLE_TIMEOUT;
+	rdev->max_timeout = ITE_MAX_IDLE_TIMEOUT;
+	rdev->timeout = ITE_IDLE_TIMEOUT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdev->rx_resolution = ITE_BAUDRATE_DIVISOR *
 				itdev->params.sample_period;
 	rdev->tx_resolution = ITE_BAUDRATE_DIVISOR *

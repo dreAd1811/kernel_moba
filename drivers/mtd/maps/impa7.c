@@ -47,7 +47,11 @@ static struct map_info impa7_map[NUM_FLASHBANKS] = {
 /*
  * MTD partitioning stuff
  */
+<<<<<<< HEAD
 static const struct mtd_partition partitions[] =
+=======
+static struct mtd_partition partitions[] =
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	{
 		.name = "FileSystem",
@@ -88,8 +92,14 @@ static int __init init_impa7(void)
 		if (impa7_mtd[i]) {
 			impa7_mtd[i]->owner = THIS_MODULE;
 			devicesfound++;
+<<<<<<< HEAD
 			mtd_device_register(impa7_mtd[i], partitions,
 					    ARRAY_SIZE(partitions));
+=======
+			mtd_device_parse_register(impa7_mtd[i], NULL, NULL,
+						  partitions,
+						  ARRAY_SIZE(partitions));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			iounmap((void __iomem *)impa7_map[i].virt);
 		}

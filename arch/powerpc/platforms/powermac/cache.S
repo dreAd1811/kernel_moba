@@ -17,7 +17,10 @@
 #include <asm/processor.h>
 #include <asm/ppc_asm.h>
 #include <asm/cputable.h>
+<<<<<<< HEAD
 #include <asm/feature-fixups.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Flush and disable all data caches (dL1, L2, L3). This is used

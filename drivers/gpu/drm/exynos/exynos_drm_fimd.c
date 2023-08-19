@@ -121,12 +121,15 @@ static struct fimd_driver_data s3c64xx_fimd_driver_data = {
 	.has_limited_fmt = 1,
 };
 
+<<<<<<< HEAD
 static struct fimd_driver_data s5pv210_fimd_driver_data = {
 	.timing_base = 0x0,
 	.has_shadowcon = 1,
 	.has_clksel = 1,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct fimd_driver_data exynos3_fimd_driver_data = {
 	.timing_base = 0x20000,
 	.lcdblk_offset = 0x210,
@@ -199,8 +202,11 @@ struct fimd_context {
 static const struct of_device_id fimd_driver_dt_match[] = {
 	{ .compatible = "samsung,s3c6400-fimd",
 	  .data = &s3c64xx_fimd_driver_data },
+<<<<<<< HEAD
 	{ .compatible = "samsung,s5pv210-fimd",
 	  .data = &s5pv210_fimd_driver_data },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "samsung,exynos3250-fimd",
 	  .data = &exynos3_fimd_driver_data },
 	{ .compatible = "samsung,exynos4210-fimd",
@@ -1192,8 +1198,11 @@ static int exynos_fimd_resume(struct device *dev)
 
 static const struct dev_pm_ops exynos_fimd_pm_ops = {
 	SET_RUNTIME_PM_OPS(exynos_fimd_suspend, exynos_fimd_resume, NULL)
+<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct platform_driver fimd_driver = {

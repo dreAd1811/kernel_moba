@@ -15,6 +15,10 @@
 #include <linux/string.h>
 #include "aoe.h"
 
+<<<<<<< HEAD
+=======
+static void dummy_timer(ulong);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void freetgt(struct aoedev *d, struct aoetgt *t);
 static void skbpoolfree(struct aoedev *d);
 
@@ -145,11 +149,19 @@ aoedev_put(struct aoedev *d)
 }
 
 static void
+<<<<<<< HEAD
 dummy_timer(struct timer_list *t)
 {
 	struct aoedev *d;
 
 	d = from_timer(d, t, timer);
+=======
+dummy_timer(ulong vp)
+{
+	struct aoedev *d;
+
+	d = (struct aoedev *)vp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (d->flags & DEVFL_TKILL)
 		return;
 	d->timer.expires = jiffies + HZ;
@@ -284,8 +296,13 @@ freedev(struct aoedev *d)
 	e = t + d->ntargets;
 	for (; t < e && *t; t++)
 		freetgt(d, *t);
+<<<<<<< HEAD
 
 	mempool_destroy(d->bufpool);
+=======
+	if (d->bufpool)
+		mempool_destroy(d->bufpool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skbpoolfree(d);
 	minor_free(d->sysminor);
 
@@ -465,7 +482,13 @@ aoedev_by_aoeaddr(ulong maj, int min, int do_alloc)
 	INIT_WORK(&d->work, aoecmd_sleepwork);
 	spin_lock_init(&d->lock);
 	skb_queue_head_init(&d->skbpool);
+<<<<<<< HEAD
 	timer_setup(&d->timer, dummy_timer, 0);
+=======
+	init_timer(&d->timer);
+	d->timer.data = (ulong) d;
+	d->timer.function = dummy_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	d->timer.expires = jiffies + HZ;
 	add_timer(&d->timer);
 	d->bufpool = NULL;	/* defer to aoeblk_gdalloc */

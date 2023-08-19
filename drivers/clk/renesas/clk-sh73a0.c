@@ -85,7 +85,11 @@ sh73a0_cpg_register_clock(struct device_node *np, struct sh73a0_cpg *cpg,
 
 	if (!strcmp(name, "main")) {
 		/* extal1, extal1_div2, extal2, extal2_div2 */
+<<<<<<< HEAD
 		u32 parent_idx = (readl(cpg->reg + CPG_CKSCR) >> 28) & 3;
+=======
+		u32 parent_idx = (clk_readl(cpg->reg + CPG_CKSCR) >> 28) & 3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		parent_name = of_clk_get_parent_name(np, parent_idx >> 1);
 		div = (parent_idx & 1) + 1;
@@ -110,11 +114,19 @@ sh73a0_cpg_register_clock(struct device_node *np, struct sh73a0_cpg *cpg,
 		default:
 			return ERR_PTR(-EINVAL);
 		}
+<<<<<<< HEAD
 		if (readl(cpg->reg + CPG_PLLECR) & BIT(enable_bit)) {
 			mult = ((readl(enable_reg) >> 24) & 0x3f) + 1;
 			/* handle CFG bit for PLL1 and PLL2 */
 			if (enable_bit == 1 || enable_bit == 2)
 				if (readl(enable_reg) & BIT(20))
+=======
+		if (clk_readl(cpg->reg + CPG_PLLECR) & BIT(enable_bit)) {
+			mult = ((clk_readl(enable_reg) >> 24) & 0x3f) + 1;
+			/* handle CFG bit for PLL1 and PLL2 */
+			if (enable_bit == 1 || enable_bit == 2)
+				if (clk_readl(enable_reg) & BIT(20))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					mult *= 2;
 		}
 	} else if (!strcmp(name, "dsi0phy") || !strcmp(name, "dsi1phy")) {
@@ -193,9 +205,15 @@ static void __init sh73a0_cpg_clocks_init(struct device_node *np)
 		return;
 
 	/* Set SDHI clocks to a known state */
+<<<<<<< HEAD
 	writel(0x108, cpg->reg + CPG_SD0CKCR);
 	writel(0x108, cpg->reg + CPG_SD1CKCR);
 	writel(0x108, cpg->reg + CPG_SD2CKCR);
+=======
+	clk_writel(0x108, cpg->reg + CPG_SD0CKCR);
+	clk_writel(0x108, cpg->reg + CPG_SD1CKCR);
+	clk_writel(0x108, cpg->reg + CPG_SD2CKCR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < num_clks; ++i) {
 		const char *name;

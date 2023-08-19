@@ -27,7 +27,11 @@
 
 #include <media/v4l2-common.h>
 
+<<<<<<< HEAD
 #include <media/dvb_ca_en50221.h>
+=======
+#include "dvb_ca_en50221.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "s5h1409.h"
 #include "s5h1411.h"
 #include "mt2131.h"
@@ -193,7 +197,11 @@ static struct s5h1409_config hauppauge_generic_config = {
 	.qam_if        = 44000,
 	.inversion     = S5H1409_INVERSION_OFF,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct tda10048_config hauppauge_hvr1200_config = {
@@ -225,7 +233,11 @@ static struct s5h1409_config hauppauge_ezqam_config = {
 	.qam_if        = 4000,
 	.inversion     = S5H1409_INVERSION_ON,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct s5h1409_config hauppauge_hvr1800lp_config = {
@@ -235,7 +247,11 @@ static struct s5h1409_config hauppauge_hvr1800lp_config = {
 	.qam_if        = 44000,
 	.inversion     = S5H1409_INVERSION_OFF,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct s5h1409_config hauppauge_hvr1500_config = {
@@ -244,7 +260,11 @@ static struct s5h1409_config hauppauge_hvr1500_config = {
 	.gpio          = S5H1409_GPIO_OFF,
 	.inversion     = S5H1409_INVERSION_OFF,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct mt2131_config hauppauge_generic_tunerconfig = {
@@ -252,6 +272,10 @@ static struct mt2131_config hauppauge_generic_tunerconfig = {
 };
 
 static struct lgdt330x_config fusionhdtv_5_express = {
+<<<<<<< HEAD
+=======
+	.demod_address = 0x0e,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.demod_chip = LGDT3303,
 	.serial_mpeg = 0x40,
 };
@@ -263,7 +287,11 @@ static struct s5h1409_config hauppauge_hvr1500q_config = {
 	.qam_if        = 44000,
 	.inversion     = S5H1409_INVERSION_OFF,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct s5h1409_config dvico_s5h1409_config = {
@@ -273,7 +301,11 @@ static struct s5h1409_config dvico_s5h1409_config = {
 	.qam_if        = 44000,
 	.inversion     = S5H1409_INVERSION_OFF,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct s5h1411_config dvico_s5h1411_config = {
@@ -283,7 +315,11 @@ static struct s5h1411_config dvico_s5h1411_config = {
 	.vsb_if        = S5H1411_IF_44000,
 	.inversion     = S5H1411_INVERSION_OFF,
 	.status_mode   = S5H1411_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct s5h1411_config hcw_s5h1411_config = {
@@ -293,7 +329,11 @@ static struct s5h1411_config hcw_s5h1411_config = {
 	.qam_if        = S5H1411_IF_4000,
 	.inversion     = S5H1411_INVERSION_ON,
 	.status_mode   = S5H1411_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct xc5000_config hauppauge_hvr1500q_tunerconfig = {
@@ -929,6 +969,7 @@ static const struct m88ds3103_config hauppauge_hvr5525_m88ds3103_config = {
 	.agc = 0x99,
 };
 
+<<<<<<< HEAD
 static struct lgdt3306a_config hauppauge_hvr1265k4_config = {
 	.i2c_addr               = 0x59,
 	.qam_if_khz             = 4000,
@@ -941,6 +982,8 @@ static struct lgdt3306a_config hauppauge_hvr1265k4_config = {
 	.xtalMHz                = 25, /* 24 or 25 */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int netup_altera_fpga_rw(void *device, int flag, int data, int read)
 {
 	struct cx23885_dev *dev = (struct cx23885_dev *)device;
@@ -1205,8 +1248,11 @@ static int dvb_register(struct cx23885_tsport *port)
 	struct si2157_config si2157_config;
 	struct ts2020_config ts2020_config;
 	struct m88ds3103_platform_data m88ds3103_pdata;
+<<<<<<< HEAD
 	struct m88rs6000t_config m88rs6000t_config = {};
 	struct a8293_platform_data a8293_pdata = {};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_board_info info;
 	struct i2c_adapter *adapter;
 	struct i2c_client *client_demod = NULL, *client_tuner = NULL;
@@ -1320,9 +1366,14 @@ static int dvb_register(struct cx23885_tsport *port)
 	case CX23885_BOARD_DVICO_FUSIONHDTV_5_EXP:
 		i2c_bus = &dev->i2c_bus[0];
 		fe0->dvb.frontend = dvb_attach(lgdt330x_attach,
+<<<<<<< HEAD
 					       &fusionhdtv_5_express,
 					       0x0e,
 					       &i2c_bus->i2c_adap);
+=======
+						&fusionhdtv_5_express,
+						&i2c_bus->i2c_adap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fe0->dvb.frontend == NULL)
 			break;
 		dvb_attach(simple_tuner_attach, fe0->dvb.frontend,
@@ -1474,8 +1525,14 @@ static int dvb_register(struct cx23885_tsport *port)
 		if (fe0->dvb.frontend != NULL) {
 			struct i2c_adapter *tun_i2c;
 
+<<<<<<< HEAD
 			fe0->dvb.frontend->sec_priv = kmalloc(sizeof(dib7000p_ops), GFP_KERNEL);
 			memcpy(fe0->dvb.frontend->sec_priv, &dib7000p_ops, sizeof(dib7000p_ops));
+=======
+			fe0->dvb.frontend->sec_priv = kmemdup(&dib7000p_ops, sizeof(dib7000p_ops), GFP_KERNEL);
+			if (!fe0->dvb.frontend->sec_priv)
+				return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tun_i2c = dib7000p_ops.get_i2c_master(fe0->dvb.frontend, DIBX000_I2C_INTERFACE_TUNER, 1);
 			if (!dvb_attach(dib0070_attach, fe0->dvb.frontend, tun_i2c, &dib7070p_dib0070_config))
 				return -ENODEV;
@@ -1866,8 +1923,13 @@ static int dvb_register(struct cx23885_tsport *port)
 			/* attach frontend */
 			memset(&si2165_pdata, 0, sizeof(si2165_pdata));
 			si2165_pdata.fe = &fe0->dvb.frontend;
+<<<<<<< HEAD
 			si2165_pdata.chip_mode = SI2165_MODE_PLL_XTAL;
 			si2165_pdata.ref_freq_hz = 16000000;
+=======
+			si2165_pdata.chip_mode = SI2165_MODE_PLL_XTAL,
+			si2165_pdata.ref_freq_Hz = 16000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			memset(&info, 0, sizeof(struct i2c_board_info));
 			strlcpy(info.type, "si2165", I2C_NAME_SIZE);
 			info.addr = 0x64;
@@ -2231,10 +2293,16 @@ static int dvb_register(struct cx23885_tsport *port)
 		}
 		port->i2c_client_tuner = client_tuner;
 		break;
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_STARBURST2:
 	case CX23885_BOARD_HAUPPAUGE_HVR5525:
 		i2c_bus = &dev->i2c_bus[0];
 		i2c_bus2 = &dev->i2c_bus[1];
+=======
+	case CX23885_BOARD_HAUPPAUGE_HVR5525: {
+		struct m88rs6000t_config m88rs6000t_config;
+		struct a8293_platform_data a8293_pdata = {};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		switch (port->nr) {
 
@@ -2243,7 +2311,11 @@ static int dvb_register(struct cx23885_tsport *port)
 			/* attach frontend */
 			fe0->dvb.frontend = dvb_attach(m88ds3103_attach,
 					&hauppauge_hvr5525_m88ds3103_config,
+<<<<<<< HEAD
 					&i2c_bus->i2c_adap, &adapter);
+=======
+					&dev->i2c_bus[0].i2c_adap, &adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (fe0->dvb.frontend == NULL)
 				break;
 
@@ -2254,7 +2326,11 @@ static int dvb_register(struct cx23885_tsport *port)
 			info.addr = 0x0b;
 			info.platform_data = &a8293_pdata;
 			request_module("a8293");
+<<<<<<< HEAD
 			client_sec = i2c_new_device(&i2c_bus->i2c_adap, &info);
+=======
+			client_sec = i2c_new_device(&dev->i2c_bus[0].i2c_adap, &info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!client_sec || !client_sec->dev.driver)
 				goto frontend_detach;
 			if (!try_module_get(client_sec->dev.driver->owner)) {
@@ -2296,7 +2372,11 @@ static int dvb_register(struct cx23885_tsport *port)
 			info.addr = 0x64;
 			info.platform_data = &si2168_config;
 			request_module("%s", info.type);
+<<<<<<< HEAD
 			client_demod = i2c_new_device(&i2c_bus->i2c_adap, &info);
+=======
+			client_demod = i2c_new_device(&dev->i2c_bus[0].i2c_adap, &info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!client_demod || !client_demod->dev.driver)
 				goto frontend_detach;
 			if (!try_module_get(client_demod->dev.driver->owner)) {
@@ -2314,7 +2394,11 @@ static int dvb_register(struct cx23885_tsport *port)
 			info.addr = 0x60;
 			info.platform_data = &si2157_config;
 			request_module("%s", info.type);
+<<<<<<< HEAD
 			client_tuner = i2c_new_device(&i2c_bus2->i2c_adap, &info);
+=======
+			client_tuner = i2c_new_device(&dev->i2c_bus[1].i2c_adap, &info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!client_tuner || !client_tuner->dev.driver) {
 				module_put(client_demod->dev.driver->owner);
 				i2c_unregister_device(client_demod);
@@ -2332,10 +2416,15 @@ static int dvb_register(struct cx23885_tsport *port)
 			break;
 		}
 		break;
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB_885:
 		pr_info("%s(): board=%d port=%d\n", __func__,
 			dev->board, port->nr);
+=======
+	}
+	case CX23885_BOARD_HAUPPAUGE_QUADHD_DVB:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (port->nr) {
 		/* port b - Terrestrial/cable */
 		case 1:
@@ -2433,9 +2522,12 @@ static int dvb_register(struct cx23885_tsport *port)
 		}
 		break;
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC:
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC_885:
 		pr_info("%s(): board=%d port=%d\n", __func__,
 			dev->board, port->nr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (port->nr) {
 		/* port b - Terrestrial/cable */
 		case 1:
@@ -2510,6 +2602,7 @@ static int dvb_register(struct cx23885_tsport *port)
 			break;
 		}
 		break;
+<<<<<<< HEAD
 	case CX23885_BOARD_HAUPPAUGE_HVR1265_K4:
 		switch (port->nr) {
 		/* port c - Terrestrial/cable */
@@ -2545,6 +2638,9 @@ static int dvb_register(struct cx23885_tsport *port)
 			break;
 		}
 		break;
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		pr_info("%s: The frontend of your DVB/ATSC card  isn't supported yet\n",
 			dev->name);
@@ -2568,8 +2664,13 @@ static int dvb_register(struct cx23885_tsport *port)
 		fe1->dvb.frontend->ops.ts_bus_ctrl = cx23885_dvb_bus_ctrl;
 #endif
 
+<<<<<<< HEAD
 	/* Put the tuner in standby to keep it quiet */
 	call_all(dev, tuner, standby);
+=======
+	/* Put the analog decoder in standby to keep it quiet */
+	call_all(dev, core, s_power, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fe0->dvb.frontend->ops.analog_ops.standby)
 		fe0->dvb.frontend->ops.analog_ops.standby(fe0->dvb.frontend);

@@ -513,7 +513,11 @@ void kvmppc_mmu_itlb_miss(struct kvm_vcpu *vcpu)
 {
 	unsigned int as = !!(vcpu->arch.shared->msr & MSR_IS);
 
+<<<<<<< HEAD
 	kvmppc_e500_deliver_tlb_miss(vcpu, vcpu->arch.regs.nip, as);
+=======
+	kvmppc_e500_deliver_tlb_miss(vcpu, vcpu->arch.pc, as);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void kvmppc_mmu_dtlb_miss(struct kvm_vcpu *vcpu)

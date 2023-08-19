@@ -31,6 +31,10 @@
 #include "efuse.h"
 #include <linux/interrupt.h>
 #include <linux/export.h>
+<<<<<<< HEAD
+=======
+#include <linux/kmemleak.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 
 MODULE_AUTHOR("lizhaoming	<chaoming_li@realsil.com.cn>");
@@ -53,12 +57,20 @@ static const u8 ac_to_hwq[] = {
 	BK_QUEUE
 };
 
+<<<<<<< HEAD
 static u8 _rtl_mac_to_hwqueue(struct ieee80211_hw *hw, struct sk_buff *skb)
+=======
+static u8 _rtl_mac_to_hwqueue(struct ieee80211_hw *hw,
+		       struct sk_buff *skb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
 	__le16 fc = rtl_get_fc(skb);
 	u8 queue_index = skb_get_queue_mapping(skb);
+<<<<<<< HEAD
 	struct ieee80211_hdr *hdr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(ieee80211_is_beacon(fc)))
 		return BEACON_QUEUE;
@@ -67,6 +79,7 @@ static u8 _rtl_mac_to_hwqueue(struct ieee80211_hw *hw, struct sk_buff *skb)
 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
 		if (ieee80211_is_nullfunc(fc))
 			return HIGH_QUEUE;
+<<<<<<< HEAD
 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8822BE) {
 		hdr = rtl_get_hdr(skb);
 
@@ -74,6 +87,8 @@ static u8 _rtl_mac_to_hwqueue(struct ieee80211_hw *hw, struct sk_buff *skb)
 		    is_broadcast_ether_addr(hdr->addr1))
 			return HIGH_QUEUE;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ac_to_hwq[queue_index];
 }
@@ -110,18 +125,32 @@ static void _rtl_pci_update_default_setting(struct ieee80211_hw *hw)
 		break;
 
 	case 3:
+<<<<<<< HEAD
 		/* Always enable ASPM and Clock Req
 		 * from initialization to halt.
 		 */
+=======
+		/*
+		 * Always enable ASPM and Clock Req
+		 * from initialization to halt.
+		 * */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ppsc->reg_rfps_level &= ~(RT_RF_LPS_LEVEL_ASPM);
 		ppsc->reg_rfps_level |= (RT_RF_PS_LEVEL_ALWAYS_ASPM |
 					 RT_RF_OFF_LEVL_CLK_REQ);
 		break;
 
 	case 4:
+<<<<<<< HEAD
 		/* Always enable ASPM without Clock Req
 		 * from initialization to halt.
 		 */
+=======
+		/*
+		 * Always enable ASPM without Clock Req
+		 * from initialization to halt.
+		 * */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ppsc->reg_rfps_level &= ~(RT_RF_LPS_LEVEL_ASPM |
 					  RT_RF_OFF_LEVL_CLK_REQ);
 		ppsc->reg_rfps_level |= RT_RF_PS_LEVEL_ALWAYS_ASPM;
@@ -150,6 +179,7 @@ static void _rtl_pci_update_default_setting(struct ieee80211_hw *hw)
 
 	/*Set HW definition to determine if it supports ASPM. */
 	switch (rtlpci->const_support_pciaspm) {
+<<<<<<< HEAD
 	case 0:
 		/*Not support ASPM. */
 		ppsc->support_aspm = false;
@@ -163,6 +193,34 @@ static void _rtl_pci_update_default_setting(struct ieee80211_hw *hw)
 		/*ASPM value set by chipset. */
 		if (pcibridge_vendor == PCI_BRIDGE_VENDOR_INTEL)
 			ppsc->support_aspm = true;
+=======
+	case 0:{
+			/*Not support ASPM. */
+			bool support_aspm = false;
+			ppsc->support_aspm = support_aspm;
+			break;
+		}
+	case 1:{
+			/*Support ASPM. */
+			bool support_aspm = true;
+			bool support_backdoor = true;
+			ppsc->support_aspm = support_aspm;
+
+			/*if (priv->oem_id == RT_CID_TOSHIBA &&
+			   !priv->ndis_adapter.amd_l1_patch)
+			   support_backdoor = false; */
+
+			ppsc->support_backdoor = support_backdoor;
+
+			break;
+		}
+	case 2:
+		/*ASPM value set by chipset. */
+		if (pcibridge_vendor == PCI_BRIDGE_VENDOR_INTEL) {
+			bool support_aspm = true;
+			ppsc->support_aspm = support_aspm;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		pr_err("switch case %#x not processed\n",
@@ -171,11 +229,18 @@ static void _rtl_pci_update_default_setting(struct ieee80211_hw *hw)
 	}
 
 	/* toshiba aspm issue, toshiba will set aspm selfly
+<<<<<<< HEAD
 	 * so we should not set aspm in driver
 	 */
 	pci_read_config_byte(rtlpci->pdev, 0x80, &init_aspm);
 	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8192SE &&
 	    init_aspm == 0x43)
+=======
+	 * so we should not set aspm in driver */
+	pci_read_config_byte(rtlpci->pdev, 0x80, &init_aspm);
+	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8192SE &&
+		init_aspm == 0x43)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ppsc->support_aspm = false;
 }
 
@@ -255,7 +320,12 @@ static void rtl_pci_disable_aspm(struct ieee80211_hw *hw)
 	udelay(50);
 }
 
+<<<<<<< HEAD
 /*Enable RTL8192SE ASPM & Enable Pci Bridge ASPM for
+=======
+/*
+ *Enable RTL8192SE ASPM & Enable Pci Bridge ASPM for
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *power saving We should follow the sequence to enable
  *RTL8192SE first then enable Pci Bridge ASPM
  *or the system will show bluescreen.
@@ -325,7 +395,11 @@ static bool rtl_pci_get_amd_l1_patch(struct ieee80211_hw *hw)
 
 	bool status = false;
 	u8 offset_e0;
+<<<<<<< HEAD
 	unsigned int offset_e4;
+=======
+	unsigned offset_e4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_write_config_byte(rtlpci->pdev, 0xe0, 0xa0);
 
@@ -360,12 +434,21 @@ static bool rtl_pci_check_buddy_priv(struct ieee80211_hw *hw,
 				 "tpcipriv->ndis_adapter.funcnumber %x\n",
 				tpcipriv->ndis_adapter.funcnumber);
 
+<<<<<<< HEAD
 			if (pcipriv->ndis_adapter.busnumber ==
 			    tpcipriv->ndis_adapter.busnumber &&
 			    pcipriv->ndis_adapter.devnumber ==
 			    tpcipriv->ndis_adapter.devnumber &&
 			    pcipriv->ndis_adapter.funcnumber !=
 			    tpcipriv->ndis_adapter.funcnumber) {
+=======
+			if ((pcipriv->ndis_adapter.busnumber ==
+			     tpcipriv->ndis_adapter.busnumber) &&
+			    (pcipriv->ndis_adapter.devnumber ==
+			    tpcipriv->ndis_adapter.devnumber) &&
+			    (pcipriv->ndis_adapter.funcnumber !=
+			    tpcipriv->ndis_adapter.funcnumber)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				find_buddy_priv = true;
 				break;
 			}
@@ -398,7 +481,11 @@ static void rtl_pci_get_linkcontrol_field(struct ieee80211_hw *hw)
 }
 
 static void rtl_pci_parse_configuration(struct pci_dev *pdev,
+<<<<<<< HEAD
 					struct ieee80211_hw *hw)
+=======
+		struct ieee80211_hw *hw)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
@@ -432,6 +519,10 @@ static void rtl_pci_init_aspm(struct ieee80211_hw *hw)
 		rtl_pci_enable_aspm(hw);
 		RT_SET_PS_LEVEL(ppsc, RT_RF_PS_LEVEL_ALWAYS_ASPM);
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void _rtl_pci_io_handler_init(struct device *dev,
@@ -448,11 +539,19 @@ static void _rtl_pci_io_handler_init(struct device *dev,
 	rtlpriv->io.read8_sync = pci_read8_sync;
 	rtlpriv->io.read16_sync = pci_read16_sync;
 	rtlpriv->io.read32_sync = pci_read32_sync;
+<<<<<<< HEAD
 }
 
 static bool _rtl_update_earlymode_info(struct ieee80211_hw *hw,
 				       struct sk_buff *skb,
 				       struct rtl_tcb_desc *tcb_desc, u8 tid)
+=======
+
+}
+
+static bool _rtl_update_earlymode_info(struct ieee80211_hw *hw,
+		struct sk_buff *skb, struct rtl_tcb_desc *tcb_desc, u8 tid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
@@ -510,6 +609,7 @@ static void _rtl_pci_tx_chk_waitq(struct ieee80211_hw *hw)
 	    (rtlpriv->buddy_priv &&
 	    rtlpriv->buddy_priv->easy_concurrent_ctl.switch_in_process)))
 		return;
+<<<<<<< HEAD
 	/* we just use em for BE/BK/VI/VO */
 	for (tid = 7; tid >= 0; tid--) {
 		u8 hw_queue = ac_to_hwq[rtl_tid_to_ac(tid)];
@@ -519,6 +619,15 @@ static void _rtl_pci_tx_chk_waitq(struct ieee80211_hw *hw)
 		       rtlpriv->psc.rfpwr_state == ERFON) {
 			struct rtl_tcb_desc tcb_desc;
 
+=======
+	/* we juse use em for BE/BK/VI/VO */
+	for (tid = 7; tid >= 0; tid--) {
+		u8 hw_queue = ac_to_hwq[rtl_tid_to_ac(tid)];
+		struct rtl8192_tx_ring *ring = &rtlpci->tx_ring[hw_queue];
+		while (!mac->act_scanning &&
+		       rtlpriv->psc.rfpwr_state == ERFON) {
+			struct rtl_tcb_desc tcb_desc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			memset(&tcb_desc, 0, sizeof(struct rtl_tcb_desc));
 
 			spin_lock_bh(&rtlpriv->locks.waitq_lock);
@@ -533,8 +642,12 @@ static void _rtl_pci_tx_chk_waitq(struct ieee80211_hw *hw)
 			spin_unlock_bh(&rtlpriv->locks.waitq_lock);
 
 			/* Some macaddr can't do early mode. like
+<<<<<<< HEAD
 			 * multicast/broadcast/no_qos data
 			 */
+=======
+			 * multicast/broadcast/no_qos data */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			info = IEEE80211_SKB_CB(skb);
 			if (info->flags & IEEE80211_TX_CTL_AMPDU)
 				_rtl_update_earlymode_info(hw, skb,
@@ -545,6 +658,10 @@ static void _rtl_pci_tx_chk_waitq(struct ieee80211_hw *hw)
 	}
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void _rtl_pci_tx_isr(struct ieee80211_hw *hw, int prio)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
@@ -564,6 +681,16 @@ static void _rtl_pci_tx_isr(struct ieee80211_hw *hw, int prio)
 		else
 			entry = (u8 *)(&ring->desc[ring->idx]);
 
+<<<<<<< HEAD
+=======
+		if (rtlpriv->cfg->ops->get_available_desc &&
+		    rtlpriv->cfg->ops->get_available_desc(hw, prio) <= 1) {
+			RT_TRACE(rtlpriv, (COMP_INTR | COMP_SEND), DBG_DMESG,
+				 "no available desc!\n");
+			return;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rtlpriv->cfg->ops->is_tx_desc_closed(hw, prio, ring->idx))
 			return;
 		ring->idx = (ring->idx + 1) % ring->entries;
@@ -571,7 +698,11 @@ static void _rtl_pci_tx_isr(struct ieee80211_hw *hw, int prio)
 		skb = __skb_dequeue(&ring->queue);
 		pci_unmap_single(rtlpci->pdev,
 				 rtlpriv->cfg->ops->
+<<<<<<< HEAD
 					     get_desc(hw, (u8 *)entry, true,
+=======
+					     get_desc((u8 *)entry, true,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						      HW_DESC_TXBUFF_ADDR),
 				 skb->len, PCI_DMA_TODEVICE);
 
@@ -588,6 +719,10 @@ static void _rtl_pci_tx_isr(struct ieee80211_hw *hw, int prio)
 		if (prio == TXCMD_QUEUE) {
 			dev_kfree_skb(skb);
 			goto tx_status_ok;
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* for sw LPS, just after NULL skb send out, we can
@@ -619,6 +754,7 @@ static void _rtl_pci_tx_isr(struct ieee80211_hw *hw, int prio)
 			rtlpriv->link_info.tidtx_inperiod[tid]++;
 
 		info = IEEE80211_SKB_CB(skb);
+<<<<<<< HEAD
 
 		if (likely(!ieee80211_is_nullfunc(fc))) {
 			ieee80211_tx_info_clear_status(info);
@@ -630,12 +766,29 @@ static void _rtl_pci_tx_isr(struct ieee80211_hw *hw, int prio)
 		}
 
 		if ((ring->entries - skb_queue_len(&ring->queue)) <= 4) {
+=======
+		ieee80211_tx_info_clear_status(info);
+
+		info->flags |= IEEE80211_TX_STAT_ACK;
+		/*info->status.rates[0].count = 1; */
+
+		ieee80211_tx_status_irqsafe(hw, skb);
+
+		if ((ring->entries - skb_queue_len(&ring->queue)) <= 4) {
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			RT_TRACE(rtlpriv, COMP_ERR, DBG_DMESG,
 				 "more desc left, wake skb_queue@%d, ring->idx = %d, skb_queue_len = 0x%x\n",
 				 prio, ring->idx,
 				 skb_queue_len(&ring->queue));
 
+<<<<<<< HEAD
 			ieee80211_wake_queue(hw, skb_get_queue_mapping(skb));
+=======
+			ieee80211_wake_queue(hw,
+					skb_get_queue_mapping
+					(skb));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 tx_status_ok:
 		skb = NULL;
@@ -643,7 +796,11 @@ tx_status_ok:
 
 	if (((rtlpriv->link_info.num_rx_inperiod +
 	      rtlpriv->link_info.num_tx_inperiod) > 8) ||
+<<<<<<< HEAD
 	      rtlpriv->link_info.num_rx_inperiod > 2)
+=======
+	      (rtlpriv->link_info.num_rx_inperiod > 2))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtl_lps_leave(hw);
 }
 
@@ -675,10 +832,16 @@ remap:
 		return 0;
 	rtlpci->rx_ring[rxring_idx].rx_buf[desc_idx] = skb;
 	if (rtlpriv->use_new_trx_flow) {
+<<<<<<< HEAD
 		/* skb->cb may be 64 bit address */
 		rtlpriv->cfg->ops->set_desc(hw, (u8 *)entry, false,
 					    HW_DESC_RX_PREPARE,
 					    (u8 *)(dma_addr_t *)skb->cb);
+=======
+		rtlpriv->cfg->ops->set_desc(hw, (u8 *)entry, false,
+					    HW_DESC_RX_PREPARE,
+					    (u8 *)&bufferaddress);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		rtlpriv->cfg->ops->set_desc(hw, (u8 *)entry, false,
 					    HW_DESC_RXBUFF_ADDR,
@@ -750,7 +913,11 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
 	u8 tmp_one;
 	bool unicast = false;
 	u8 hw_queue = 0;
+<<<<<<< HEAD
 	unsigned int rx_remained_cnt = 0;
+=======
+	unsigned int rx_remained_cnt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rtl_stats stats = {
 		.signal = 0,
 		.rate = 0,
@@ -771,8 +938,12 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
 		struct sk_buff *new_skb;
 
 		if (rtlpriv->use_new_trx_flow) {
+<<<<<<< HEAD
 			if (rx_remained_cnt == 0)
 				rx_remained_cnt =
+=======
+			rx_remained_cnt =
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rtlpriv->cfg->ops->rx_desc_buff_remained_cnt(hw,
 								      hw_queue);
 			if (rx_remained_cnt == 0)
@@ -784,7 +955,11 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
 			pdesc = &rtlpci->rx_ring[rxring_idx].desc[
 				rtlpci->rx_ring[rxring_idx].idx];
 
+<<<<<<< HEAD
 			own = (u8)rtlpriv->cfg->ops->get_desc(hw, (u8 *)pdesc,
+=======
+			own = (u8)rtlpriv->cfg->ops->get_desc((u8 *)pdesc,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							      false,
 							      HW_DESC_OWN);
 			if (own) /* wait data to be filled by hardware */
@@ -802,7 +977,11 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
 		new_skb = dev_alloc_skb(rtlpci->rxbuffersize);
 		if (unlikely(!new_skb))
 			goto no_new;
+<<<<<<< HEAD
 		memset(&rx_status, 0, sizeof(rx_status));
+=======
+		memset(&rx_status , 0 , sizeof(rx_status));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtlpriv->cfg->ops->query_rx_desc(hw, &stats,
 						 &rx_status, (u8 *)pdesc, skb);
 
@@ -811,7 +990,11 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
 							   (u8 *)buffer_desc,
 							   hw_queue);
 
+<<<<<<< HEAD
 		len = rtlpriv->cfg->ops->get_desc(hw, (u8 *)pdesc, false,
+=======
+		len = rtlpriv->cfg->ops->get_desc((u8 *)pdesc, false,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  HW_DESC_RXPKT_LEN);
 
 		if (skb->end - skb->tail > len) {
@@ -830,12 +1013,23 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
 			goto new_trx_end;
 		}
 		/* handle command packet here */
+<<<<<<< HEAD
 		if (stats.packet_report_type == C2H_PACKET) {
 			rtl_c2hcmd_enqueue(hw, skb);
 			goto new_trx_end;
 		}
 
 		/* NOTICE This can not be use for mac80211,
+=======
+		if (rtlpriv->cfg->ops->rx_command_packet &&
+		    rtlpriv->cfg->ops->rx_command_packet(hw, &stats, skb)) {
+				dev_kfree_skb_any(skb);
+				goto new_trx_end;
+		}
+
+		/*
+		 * NOTICE This can not be use for mac80211,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * this is done in mac80211 code,
 		 * if done here sec DHCP will fail
 		 * skb_trim(skb, skb->len - 4);
@@ -872,8 +1066,14 @@ static void _rtl_pci_rx_interrupt(struct ieee80211_hw *hw)
 			/* for sw lps */
 			rtl_swlps_beacon(hw, (void *)skb->data, skb->len);
 			rtl_recognize_peer(hw, (void *)skb->data, skb->len);
+<<<<<<< HEAD
 			if (rtlpriv->mac80211.opmode == NL80211_IFTYPE_AP &&
 			    rtlpriv->rtlhal.current_bandtype == BAND_ON_2_4G &&
+=======
+			if ((rtlpriv->mac80211.opmode == NL80211_IFTYPE_AP) &&
+			    (rtlpriv->rtlhal.current_bandtype ==
+			     BAND_ON_2_4G) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    (ieee80211_is_beacon(fc) ||
 			     ieee80211_is_probe_resp(fc))) {
 				dev_kfree_skb_any(skb);
@@ -895,7 +1095,11 @@ new_trx_end:
 		}
 		if (((rtlpriv->link_info.num_rx_inperiod +
 		      rtlpriv->link_info.num_tx_inperiod) > 8) ||
+<<<<<<< HEAD
 		      rtlpriv->link_info.num_rx_inperiod > 2)
+=======
+		      (rtlpriv->link_info.num_rx_inperiod > 2))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rtl_lps_leave(hw);
 		skb = new_skb;
 no_new:
@@ -927,13 +1131,19 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
 	unsigned long flags;
+<<<<<<< HEAD
 	struct rtl_int intvec = {0};
 
+=======
+	u32 inta = 0;
+	u32 intb = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	irqreturn_t ret = IRQ_HANDLED;
 
 	if (rtlpci->irq_enabled == 0)
 		return ret;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&rtlpriv->locks.irq_th_lock, flags);
 	rtlpriv->cfg->ops->disable_interrupt(hw);
 
@@ -957,28 +1167,71 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE, "beacon interrupt!\n");
 
 	if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_BCNINT]) {
+=======
+	spin_lock_irqsave(&rtlpriv->locks.irq_th_lock , flags);
+	rtlpriv->cfg->ops->disable_interrupt(hw);
+
+	/*read ISR: 4/8bytes */
+	rtlpriv->cfg->ops->interrupt_recognized(hw, &inta, &intb);
+
+	/*Shared IRQ or HW disappared */
+	if (!inta || inta == 0xffff)
+		goto done;
+
+	/*<1> beacon related */
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_TBDOK]) {
+		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
+			 "beacon ok interrupt!\n");
+	}
+
+	if (unlikely(inta & rtlpriv->cfg->maps[RTL_IMR_TBDER])) {
+		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
+			 "beacon err interrupt!\n");
+	}
+
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_BDOK]) {
+		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE, "beacon interrupt!\n");
+	}
+
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_BCNINT]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
 			 "prepare beacon for interrupt!\n");
 		tasklet_schedule(&rtlpriv->works.irq_prepare_bcn_tasklet);
 	}
 
 	/*<2> Tx related */
+<<<<<<< HEAD
 	if (unlikely(intvec.intb & rtlpriv->cfg->maps[RTL_IMR_TXFOVW]))
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING, "IMR_TXFOVW!\n");
 
 	if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_MGNTDOK]) {
+=======
+	if (unlikely(intb & rtlpriv->cfg->maps[RTL_IMR_TXFOVW]))
+		RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING, "IMR_TXFOVW!\n");
+
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_MGNTDOK]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
 			 "Manage ok interrupt!\n");
 		_rtl_pci_tx_isr(hw, MGNT_QUEUE);
 	}
 
+<<<<<<< HEAD
 	if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_HIGHDOK]) {
+=======
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_HIGHDOK]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
 			 "HIGH_QUEUE ok interrupt!\n");
 		_rtl_pci_tx_isr(hw, HIGH_QUEUE);
 	}
 
+<<<<<<< HEAD
 	if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_BKDOK]) {
+=======
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_BKDOK]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtlpriv->link_info.num_tx_inperiod++;
 
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
@@ -986,7 +1239,11 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 		_rtl_pci_tx_isr(hw, BK_QUEUE);
 	}
 
+<<<<<<< HEAD
 	if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_BEDOK]) {
+=======
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_BEDOK]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtlpriv->link_info.num_tx_inperiod++;
 
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
@@ -994,7 +1251,11 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 		_rtl_pci_tx_isr(hw, BE_QUEUE);
 	}
 
+<<<<<<< HEAD
 	if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_VIDOK]) {
+=======
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_VIDOK]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtlpriv->link_info.num_tx_inperiod++;
 
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
@@ -1002,7 +1263,11 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 		_rtl_pci_tx_isr(hw, VI_QUEUE);
 	}
 
+<<<<<<< HEAD
 	if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_VODOK]) {
+=======
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_VODOK]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtlpriv->link_info.num_tx_inperiod++;
 
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
@@ -1010,6 +1275,7 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 		_rtl_pci_tx_isr(hw, VO_QUEUE);
 	}
 
+<<<<<<< HEAD
 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8822BE) {
 		if (intvec.intd & rtlpriv->cfg->maps[RTL_IMR_H2CDOK]) {
 			rtlpriv->link_info.num_tx_inperiod++;
@@ -1022,6 +1288,10 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 
 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE) {
 		if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_COMDOK]) {
+=======
+	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE) {
+		if (inta & rtlpriv->cfg->maps[RTL_IMR_COMDOK]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rtlpriv->link_info.num_tx_inperiod++;
 
 			RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
@@ -1031,25 +1301,41 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 	}
 
 	/*<3> Rx related */
+<<<<<<< HEAD
 	if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_ROK]) {
+=======
+	if (inta & rtlpriv->cfg->maps[RTL_IMR_ROK]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE, "Rx ok interrupt!\n");
 		_rtl_pci_rx_interrupt(hw);
 	}
 
+<<<<<<< HEAD
 	if (unlikely(intvec.inta & rtlpriv->cfg->maps[RTL_IMR_RDU])) {
+=======
+	if (unlikely(inta & rtlpriv->cfg->maps[RTL_IMR_RDU])) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING,
 			 "rx descriptor unavailable!\n");
 		_rtl_pci_rx_interrupt(hw);
 	}
 
+<<<<<<< HEAD
 	if (unlikely(intvec.intb & rtlpriv->cfg->maps[RTL_IMR_RXFOVW])) {
+=======
+	if (unlikely(intb & rtlpriv->cfg->maps[RTL_IMR_RXFOVW])) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING, "rx overflow !\n");
 		_rtl_pci_rx_interrupt(hw);
 	}
 
 	/*<4> fw related*/
 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8723AE) {
+<<<<<<< HEAD
 		if (intvec.inta & rtlpriv->cfg->maps[RTL_IMR_C2HCMD]) {
+=======
+		if (inta & rtlpriv->cfg->maps[RTL_IMR_C2HCMD]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
 				 "firmware interrupt!\n");
 			queue_delayed_work(rtlpriv->works.rtl_wq,
@@ -1065,8 +1351,12 @@ static irqreturn_t _rtl_pci_interrupt(int irq, void *dev_id)
 	 */
 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8188EE ||
 	    rtlhal->hw_type == HARDWARE_TYPE_RTL8723BE) {
+<<<<<<< HEAD
 		if (unlikely(intvec.inta &
 		    rtlpriv->cfg->maps[RTL_IMR_HSISR_IND])) {
+=======
+		if (unlikely(inta & rtlpriv->cfg->maps[RTL_IMR_HSISR_IND])) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			RT_TRACE(rtlpriv, COMP_INTR, DBG_TRACE,
 				 "hsisr interrupt!\n");
 			_rtl_pci_hs_interrupt(hw);
@@ -1082,6 +1372,7 @@ done:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void _rtl_pci_irq_tasklet(struct ieee80211_hw *hw)
 {
 	_rtl_pci_tx_chk_waitq(hw);
@@ -1089,6 +1380,17 @@ static void _rtl_pci_irq_tasklet(struct ieee80211_hw *hw)
 
 static void _rtl_pci_prepare_bcn_tasklet(struct ieee80211_hw *hw)
 {
+=======
+static void _rtl_pci_irq_tasklet(unsigned long data)
+{
+	struct ieee80211_hw *hw = (struct ieee80211_hw *)data;
+	_rtl_pci_tx_chk_waitq(hw);
+}
+
+static void _rtl_pci_prepare_bcn_tasklet(unsigned long data)
+{
+	struct ieee80211_hw *hw = (struct ieee80211_hw *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
@@ -1113,14 +1415,22 @@ static void _rtl_pci_prepare_bcn_tasklet(struct ieee80211_hw *hw)
 	if (pskb) {
 		pci_unmap_single(rtlpci->pdev,
 				 rtlpriv->cfg->ops->get_desc(
+<<<<<<< HEAD
 				 hw, (u8 *)entry, true, HW_DESC_TXBUFF_ADDR),
+=======
+				 (u8 *)entry, true, HW_DESC_TXBUFF_ADDR),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 pskb->len, PCI_DMA_TODEVICE);
 		kfree_skb(pskb);
 	}
 
 	/*NB: the beacon data buffer must be 32-bit aligned. */
 	pskb = ieee80211_beacon_get(hw, mac->vif);
+<<<<<<< HEAD
 	if (!pskb)
+=======
+	if (pskb == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	hdr = rtl_get_hdr(pskb);
 	info = IEEE80211_SKB_CB(pskb);
@@ -1142,6 +1452,10 @@ static void _rtl_pci_prepare_bcn_tasklet(struct ieee80211_hw *hw)
 		rtlpriv->cfg->ops->set_desc(hw, (u8 *)pdesc, true, HW_DESC_OWN,
 					    &temp_one);
 	}
+<<<<<<< HEAD
+=======
+	return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void _rtl_pci_init_trx_var(struct ieee80211_hw *hw)
@@ -1154,15 +1468,23 @@ static void _rtl_pci_init_trx_var(struct ieee80211_hw *hw)
 
 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192EE)
 		desc_num = TX_DESC_NUM_92E;
+<<<<<<< HEAD
 	else if (rtlhal->hw_type == HARDWARE_TYPE_RTL8822BE)
 		desc_num = TX_DESC_NUM_8822B;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		desc_num = RT_TXDESC_NUM;
 
 	for (i = 0; i < RTL_PCI_MAX_TX_QUEUE_COUNT; i++)
 		rtlpci->txringcount[i] = desc_num;
 
+<<<<<<< HEAD
 	/*we just alloc 2 desc for beacon queue,
+=======
+	/*
+	 *we just alloc 2 desc for beacon queue,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *because we just need first desc in hw beacon.
 	 */
 	rtlpci->txringcount[BEACON_QUEUE] = 2;
@@ -1179,7 +1501,11 @@ static void _rtl_pci_init_trx_var(struct ieee80211_hw *hw)
 }
 
 static void _rtl_pci_init_struct(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 				 struct pci_dev *pdev)
+=======
+		struct pci_dev *pdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
@@ -1214,10 +1540,17 @@ static void _rtl_pci_init_struct(struct ieee80211_hw *hw,
 
 	/*task */
 	tasklet_init(&rtlpriv->works.irq_tasklet,
+<<<<<<< HEAD
 		     (void (*)(unsigned long))_rtl_pci_irq_tasklet,
 		     (unsigned long)hw);
 	tasklet_init(&rtlpriv->works.irq_prepare_bcn_tasklet,
 		     (void (*)(unsigned long))_rtl_pci_prepare_bcn_tasklet,
+=======
+		     _rtl_pci_irq_tasklet,
+		     (unsigned long)hw);
+	tasklet_init(&rtlpriv->works.irq_prepare_bcn_tasklet,
+		     _rtl_pci_prepare_bcn_tasklet,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     (unsigned long)hw);
 	INIT_WORK(&rtlpriv->works.lps_change_work,
 		  rtl_lps_change_work_callback);
@@ -1252,6 +1585,10 @@ static int _rtl_pci_init_tx_ring(struct ieee80211_hw *hw,
 
 		rtlpci->tx_ring[prio].cur_tx_rp = 0;
 		rtlpci->tx_ring[prio].cur_tx_wp = 0;
+<<<<<<< HEAD
+=======
+		rtlpci->tx_ring[prio].avl_desc = entries;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* alloc dma for this ring */
@@ -1350,7 +1687,11 @@ static int _rtl_pci_init_rx_ring(struct ieee80211_hw *hw, int rxring_idx)
 }
 
 static void _rtl_pci_free_tx_ring(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 				  unsigned int prio)
+=======
+		unsigned int prio)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
@@ -1367,8 +1708,13 @@ static void _rtl_pci_free_tx_ring(struct ieee80211_hw *hw,
 			entry = (u8 *)(&ring->desc[ring->idx]);
 
 		pci_unmap_single(rtlpci->pdev,
+<<<<<<< HEAD
 				 rtlpriv->cfg->ops->get_desc(hw, (u8 *)entry,
 						   true,
+=======
+				 rtlpriv->cfg->
+					     ops->get_desc((u8 *)entry, true,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   HW_DESC_TXBUFF_ADDR),
 				 skb->len, PCI_DMA_TODEVICE);
 		kfree_skb(skb);
@@ -1439,7 +1785,12 @@ static int _rtl_pci_init_trx_ring(struct ieee80211_hw *hw)
 	}
 
 	for (i = 0; i < RTL_PCI_MAX_TX_QUEUE_COUNT; i++) {
+<<<<<<< HEAD
 		ret = _rtl_pci_init_tx_ring(hw, i, rtlpci->txringcount[i]);
+=======
+		ret = _rtl_pci_init_tx_ring(hw, i,
+				 rtlpci->txringcount[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto err_free_rings;
 	}
@@ -1487,7 +1838,11 @@ int rtl_pci_reset_trx_ring(struct ieee80211_hw *hw)
 		/* force the rx_ring[RX_MPDU_QUEUE/
 		 * RX_CMD_QUEUE].idx to the first one
 		 *new trx flow, do nothing
+<<<<<<< HEAD
 		 */
+=======
+		*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rtlpriv->use_new_trx_flow &&
 		    rtlpci->rx_ring[rxring_idx].desc) {
 			struct rtl_rx_desc *entry = NULL;
@@ -1496,9 +1851,15 @@ int rtl_pci_reset_trx_ring(struct ieee80211_hw *hw)
 			for (i = 0; i < rtlpci->rxringcount; i++) {
 				entry = &rtlpci->rx_ring[rxring_idx].desc[i];
 				bufferaddress =
+<<<<<<< HEAD
 				  rtlpriv->cfg->ops->get_desc(hw, (u8 *)entry,
 				  false, HW_DESC_RXBUFF_ADDR);
 				memset((u8 *)entry, 0,
+=======
+				  rtlpriv->cfg->ops->get_desc((u8 *)entry,
+				  false , HW_DESC_RXBUFF_ADDR);
+				memset((u8 *)entry , 0 ,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       sizeof(*rtlpci->rx_ring
 				       [rxring_idx].desc));/*clear one entry*/
 				if (rtlpriv->use_new_trx_flow) {
@@ -1527,7 +1888,12 @@ int rtl_pci_reset_trx_ring(struct ieee80211_hw *hw)
 		rtlpci->rx_ring[rxring_idx].idx = 0;
 	}
 
+<<<<<<< HEAD
 	/*after reset, release previous pending packet,
+=======
+	/*
+	 *after reset, release previous pending packet,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *and force the  tx idx to the first one
 	 */
 	spin_lock_irqsave(&rtlpriv->locks.irq_th_lock, flags);
@@ -1548,7 +1914,11 @@ int rtl_pci_reset_trx_ring(struct ieee80211_hw *hw)
 
 				pci_unmap_single(rtlpci->pdev,
 						 rtlpriv->cfg->ops->
+<<<<<<< HEAD
 							 get_desc(hw, (u8 *)
+=======
+							 get_desc((u8 *)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							 entry,
 							 true,
 							 HW_DESC_TXBUFF_ADDR),
@@ -1616,6 +1986,10 @@ static int rtl_pci_tx(struct ieee80211_hw *hw,
 		      struct rtl_tcb_desc *ptcb_desc)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+<<<<<<< HEAD
+=======
+	struct rtl_sta_info *sta_entry = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
 	struct rtl8192_tx_ring *ring;
 	struct rtl_tx_desc *pdesc;
@@ -1627,6 +2001,12 @@ static int rtl_pci_tx(struct ieee80211_hw *hw,
 	__le16 fc = rtl_get_fc(skb);
 	u8 *pda_addr = hdr->addr1;
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+<<<<<<< HEAD
+=======
+	/*ssn */
+	u8 tid = 0;
+	u16 seq_number = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 own;
 	u8 temp_one = 1;
 
@@ -1635,7 +2015,11 @@ static int rtl_pci_tx(struct ieee80211_hw *hw,
 
 	if (rtlpriv->psc.sw_ps_enabled) {
 		if (ieee80211_is_data(fc) && !ieee80211_is_nullfunc(fc) &&
+<<<<<<< HEAD
 		    !ieee80211_has_pm(fc))
+=======
+			!ieee80211_has_pm(fc))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			hdr->frame_control |= cpu_to_le16(IEEE80211_FCTL_PM);
 	}
 
@@ -1664,10 +2048,17 @@ static int rtl_pci_tx(struct ieee80211_hw *hw,
 	if (rtlpriv->use_new_trx_flow) {
 		ptx_bd_desc = &ring->buffer_desc[idx];
 	} else {
+<<<<<<< HEAD
 		own = (u8)rtlpriv->cfg->ops->get_desc(hw, (u8 *)pdesc,
 				true, HW_DESC_OWN);
 
 		if (own == 1 && hw_queue != BEACON_QUEUE) {
+=======
+		own = (u8) rtlpriv->cfg->ops->get_desc((u8 *)pdesc,
+				true, HW_DESC_OWN);
+
+		if ((own == 1) && (hw_queue != BEACON_QUEUE)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING,
 				 "No more TX desc@%d, ring->idx = %d, idx = %d, skb_queue_len = 0x%x\n",
 				 hw_queue, ring->idx, idx,
@@ -1681,10 +2072,31 @@ static int rtl_pci_tx(struct ieee80211_hw *hw,
 
 	if (rtlpriv->cfg->ops->get_available_desc &&
 	    rtlpriv->cfg->ops->get_available_desc(hw, hw_queue) == 0) {
+<<<<<<< HEAD
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING,
 			 "get_available_desc fail\n");
 		spin_unlock_irqrestore(&rtlpriv->locks.irq_th_lock, flags);
 		return skb->len;
+=======
+			RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING,
+				 "get_available_desc fail\n");
+			spin_unlock_irqrestore(&rtlpriv->locks.irq_th_lock,
+					       flags);
+			return skb->len;
+	}
+
+	if (ieee80211_is_data_qos(fc)) {
+		tid = rtl_get_tid(skb);
+		if (sta) {
+			sta_entry = (struct rtl_sta_info *)sta->drv_priv;
+			seq_number = (le16_to_cpu(hdr->seq_ctrl) &
+				      IEEE80211_SCTL_SEQ) >> 4;
+			seq_number += 1;
+
+			if (!ieee80211_has_morefrags(hdr->frame_control))
+				sta_entry->tids[tid].seq_number = seq_number;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (ieee80211_is_data(fc))
@@ -1743,7 +2155,11 @@ static void rtl_pci_flush(struct ieee80211_hw *hw, u32 queues, bool drop)
 		ring = &pcipriv->dev.tx_ring[queue_id];
 		queue_len = skb_queue_len(&ring->queue);
 		if (queue_len == 0 || queue_id == BEACON_QUEUE ||
+<<<<<<< HEAD
 		    queue_id == TXCMD_QUEUE) {
+=======
+			queue_id == TXCMD_QUEUE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			queue_id--;
 			continue;
 		} else {
@@ -1753,7 +2169,11 @@ static void rtl_pci_flush(struct ieee80211_hw *hw, u32 queues, bool drop)
 
 		/* we just wait 1s for all queues */
 		if (rtlpriv->psc.rfpwr_state == ERFOFF ||
+<<<<<<< HEAD
 		    is_hal_stop(rtlhal) || i >= 200)
+=======
+			is_hal_stop(rtlhal) || i >= 200)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 	}
 }
@@ -1771,6 +2191,10 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
 
 	flush_workqueue(rtlpriv->works.rtl_wq);
 	destroy_workqueue(rtlpriv->works.rtl_wq);
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rtl_pci_init(struct ieee80211_hw *hw, struct pci_dev *pdev)
@@ -1795,7 +2219,10 @@ static int rtl_pci_start(struct ieee80211_hw *hw)
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
 	struct rtl_mac *rtlmac = rtl_mac(rtl_priv(hw));
+<<<<<<< HEAD
 	struct rtl_btc_ops *btc_ops = rtlpriv->btcoexist.btc_ops;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int err;
 
@@ -1805,12 +2232,18 @@ static int rtl_pci_start(struct ieee80211_hw *hw)
 	if (rtlpriv->cfg->ops->get_btc_status &&
 	    rtlpriv->cfg->ops->get_btc_status()) {
 		rtlpriv->btcoexist.btc_info.ap_num = 36;
+<<<<<<< HEAD
 		btc_ops->btc_init_variables(rtlpriv);
 		btc_ops->btc_init_hal_vars(rtlpriv);
 	} else if (btc_ops) {
 		btc_ops->btc_init_variables_wifi_only(rtlpriv);
 	}
 
+=======
+		rtlpriv->btcoexist.btc_ops->btc_init_variables(rtlpriv);
+		rtlpriv->btcoexist.btc_ops->btc_init_hal_vars(rtlpriv);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = rtlpriv->cfg->ops->hw_init(hw);
 	if (err) {
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
@@ -1832,7 +2265,11 @@ static int rtl_pci_start(struct ieee80211_hw *hw)
 
 	rtlpci->up_first_time = false;
 
+<<<<<<< HEAD
 	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "%s OK\n", __func__);
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "rtl_pci_start OK\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1843,6 +2280,7 @@ static void rtl_pci_stop(struct ieee80211_hw *hw)
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
 	unsigned long flags;
+<<<<<<< HEAD
 	u8 rf_timeout = 0;
 
 	if (rtlpriv->cfg->ops->get_btc_status())
@@ -1852,6 +2290,15 @@ static void rtl_pci_stop(struct ieee80211_hw *hw)
 		rtlpriv->btcoexist.btc_ops->btc_deinit_variables(rtlpriv);
 
 	/*should be before disable interrupt&adapter
+=======
+	u8 RFInProgressTimeOut = 0;
+
+	if (rtlpriv->cfg->ops->get_btc_status())
+		rtlpriv->btcoexist.btc_ops->btc_halt_notify();
+
+	/*
+	 *should be before disable interrupt&adapter
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *and will do it immediately.
 	 */
 	set_hal_stop(rtlhal);
@@ -1863,12 +2310,20 @@ static void rtl_pci_stop(struct ieee80211_hw *hw)
 	spin_lock_irqsave(&rtlpriv->locks.rf_ps_lock, flags);
 	while (ppsc->rfchange_inprogress) {
 		spin_unlock_irqrestore(&rtlpriv->locks.rf_ps_lock, flags);
+<<<<<<< HEAD
 		if (rf_timeout > 100) {
+=======
+		if (RFInProgressTimeOut > 100) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_lock_irqsave(&rtlpriv->locks.rf_ps_lock, flags);
 			break;
 		}
 		mdelay(1);
+<<<<<<< HEAD
 		rf_timeout++;
+=======
+		RFInProgressTimeOut++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&rtlpriv->locks.rf_ps_lock, flags);
 	}
 	ppsc->rfchange_inprogress = true;
@@ -1888,7 +2343,11 @@ static void rtl_pci_stop(struct ieee80211_hw *hw)
 }
 
 static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
+<<<<<<< HEAD
 				  struct ieee80211_hw *hw)
+=======
+		struct ieee80211_hw *hw)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
@@ -1943,12 +2402,21 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
 				 venderid, deviceid);
 			rtlhal->hw_type = HARDWARE_TYPE_RTL8192SE;
 			break;
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else if (deviceid == RTL_PCI_8723AE_DID) {
 		rtlhal->hw_type = HARDWARE_TYPE_RTL8723AE;
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+<<<<<<< HEAD
 			 "8723AE PCI-E is found - vid/did=%x/%x\n",
 			 venderid, deviceid);
+=======
+			 "8723AE PCI-E is found - "
+			 "vid/did=%x/%x\n", venderid, deviceid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (deviceid == RTL_PCI_8192CET_DID ||
 		   deviceid == RTL_PCI_8192CE_DID ||
 		   deviceid == RTL_PCI_8191CE_DID ||
@@ -1968,6 +2436,7 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 			 "Find adapter, Hardware type is 8188EE\n");
 	} else if (deviceid == RTL_PCI_8723BE_DID) {
+<<<<<<< HEAD
 		rtlhal->hw_type = HARDWARE_TYPE_RTL8723BE;
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 			 "Find adapter, Hardware type is 8723BE\n");
@@ -1988,6 +2457,23 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
 		rtlhal->bandset = BAND_ON_BOTH;
 		RT_TRACE(rtlpriv, COMP_INIT, DBG_LOUD,
 			 "Find adapter, Hardware type is 8822BE\n");
+=======
+			rtlhal->hw_type = HARDWARE_TYPE_RTL8723BE;
+			RT_TRACE(rtlpriv, COMP_INIT , DBG_LOUD,
+				 "Find adapter, Hardware type is 8723BE\n");
+	} else if (deviceid == RTL_PCI_8192EE_DID) {
+			rtlhal->hw_type = HARDWARE_TYPE_RTL8192EE;
+			RT_TRACE(rtlpriv, COMP_INIT , DBG_LOUD,
+				 "Find adapter, Hardware type is 8192EE\n");
+	} else if (deviceid == RTL_PCI_8821AE_DID) {
+			rtlhal->hw_type = HARDWARE_TYPE_RTL8821AE;
+			RT_TRACE(rtlpriv, COMP_INIT , DBG_LOUD,
+				 "Find adapter, Hardware type is 8821AE\n");
+	} else if (deviceid == RTL_PCI_8812AE_DID) {
+			rtlhal->hw_type = HARDWARE_TYPE_RTL8812AE;
+			RT_TRACE(rtlpriv, COMP_INIT , DBG_LOUD,
+				 "Find adapter, Hardware type is 8812AE\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		RT_TRACE(rtlpriv, COMP_ERR, DBG_WARNING,
 			 "Err: Unknown device - vid/did=%x/%x\n",
@@ -2015,6 +2501,7 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
 		}
 	}
 
+<<<<<<< HEAD
 	switch (rtlhal->hw_type) {
 	case HARDWARE_TYPE_RTL8192EE:
 	case HARDWARE_TYPE_RTL8822BE:
@@ -2026,6 +2513,13 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
 		rtlpriv->use_new_trx_flow = false;
 		break;
 	}
+=======
+	/* 92ee use new trx flow */
+	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192EE)
+		rtlpriv->use_new_trx_flow = true;
+	else
+		rtlpriv->use_new_trx_flow = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*find bus info */
 	pcipriv->ndis_adapter.busnumber = pdev->bus->number;
@@ -2116,7 +2610,11 @@ static int rtl_pci_intr_mode_msi(struct ieee80211_hw *hw)
 
 	rtlpci->using_msi = true;
 
+<<<<<<< HEAD
 	RT_TRACE(rtlpriv, COMP_INIT | COMP_INTR, DBG_DMESG,
+=======
+	RT_TRACE(rtlpriv, COMP_INIT|COMP_INTR, DBG_DMESG,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 "MSI Interrupt Mode!\n");
 	return 0;
 }
@@ -2134,7 +2632,11 @@ static int rtl_pci_intr_mode_legacy(struct ieee80211_hw *hw)
 		return ret;
 
 	rtlpci->using_msi = false;
+<<<<<<< HEAD
 	RT_TRACE(rtlpriv, COMP_INIT | COMP_INTR, DBG_DMESG,
+=======
+	RT_TRACE(rtlpriv, COMP_INIT|COMP_INTR, DBG_DMESG,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 "Pin-based Interrupt Mode!\n");
 	return 0;
 }
@@ -2155,6 +2657,7 @@ static int rtl_pci_intr_mode_decide(struct ieee80211_hw *hw)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void platform_enable_dma64(struct pci_dev *pdev, bool dma64)
 {
 	u8	value;
@@ -2172,6 +2675,10 @@ static void platform_enable_dma64(struct pci_dev *pdev, bool dma64)
 
 int rtl_pci_probe(struct pci_dev *pdev,
 		  const struct pci_device_id *id)
+=======
+int rtl_pci_probe(struct pci_dev *pdev,
+			    const struct pci_device_id *id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ieee80211_hw *hw = NULL;
 
@@ -2188,6 +2695,7 @@ int rtl_pci_probe(struct pci_dev *pdev,
 		return err;
 	}
 
+<<<<<<< HEAD
 	if (((struct rtl_hal_cfg *)id->driver_data)->mod_params->dma64 &&
 	    !pci_set_dma_mask(pdev, DMA_BIT_MASK(64))) {
 		if (pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(64))) {
@@ -2199,14 +2707,20 @@ int rtl_pci_probe(struct pci_dev *pdev,
 
 		platform_enable_dma64(pdev, true);
 	} else if (!pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) {
+=======
+	if (!pci_set_dma_mask(pdev, DMA_BIT_MASK(32))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (pci_set_consistent_dma_mask(pdev, DMA_BIT_MASK(32))) {
 			WARN_ONCE(true,
 				  "rtlwifi: Unable to obtain 32bit DMA for consistent allocations\n");
 			err = -ENOMEM;
 			goto fail1;
 		}
+<<<<<<< HEAD
 
 		platform_enable_dma64(pdev, false);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pci_set_master(pdev);
@@ -2239,7 +2753,10 @@ int rtl_pci_probe(struct pci_dev *pdev,
 	rtlpriv->cfg = (struct rtl_hal_cfg *)(id->driver_data);
 	rtlpriv->intf_ops = &rtl_pci_ops;
 	rtlpriv->glb_var = &rtl_global_var;
+<<<<<<< HEAD
 	rtl_efuse_ops_init(hw);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* MEM map */
 	err = pci_request_regions(pdev, KBUILD_MODNAME);
@@ -2318,9 +2835,12 @@ int rtl_pci_probe(struct pci_dev *pdev,
 	}
 	rtlpriv->mac80211.mac80211_registered = 1;
 
+<<<<<<< HEAD
 	/* add for debug */
 	rtl_debug_add_one(hw);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*init rfkill */
 	rtl_init_rfkill(hw);	/* Init PCI sw */
 
@@ -2354,6 +2874,10 @@ fail1:
 	pci_disable_device(pdev);
 
 	return err;
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(rtl_pci_probe);
 
@@ -2369,9 +2893,12 @@ void rtl_pci_disconnect(struct pci_dev *pdev)
 	wait_for_completion(&rtlpriv->firmware_loading_complete);
 	clear_bit(RTL_STATUS_INTERFACE_START, &rtlpriv->status);
 
+<<<<<<< HEAD
 	/* remove form debug */
 	rtl_debug_remove_one(hw);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*ieee80211_unregister_hw will call ops_stop */
 	if (rtlmac->mac80211_registered == 1) {
 		ieee80211_unregister_hw(hw);
@@ -2415,6 +2942,7 @@ EXPORT_SYMBOL(rtl_pci_disconnect);
 
 #ifdef CONFIG_PM_SLEEP
 /***************************************
+<<<<<<< HEAD
  * kernel pci power state define:
  * PCI_D0         ((pci_power_t __force) 0)
  * PCI_D1         ((pci_power_t __force) 1)
@@ -2429,6 +2957,22 @@ EXPORT_SYMBOL(rtl_pci_disconnect);
  * suspend function first, So there is
  * no need to call hw_disable here.
  ****************************************/
+=======
+kernel pci power state define:
+PCI_D0         ((pci_power_t __force) 0)
+PCI_D1         ((pci_power_t __force) 1)
+PCI_D2         ((pci_power_t __force) 2)
+PCI_D3hot      ((pci_power_t __force) 3)
+PCI_D3cold     ((pci_power_t __force) 4)
+PCI_UNKNOWN    ((pci_power_t __force) 5)
+
+This function is called when system
+goes into suspend state mac80211 will
+call rtl_mac_stop() from the mac80211
+suspend function first, So there is
+no need to call hw_disable here.
+****************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int rtl_pci_suspend(struct device *dev)
 {
 	struct pci_dev *pdev = to_pci_dev(dev);

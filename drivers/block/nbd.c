@@ -203,7 +203,11 @@ static ssize_t pid_show(struct device *dev,
 }
 
 static const struct device_attribute pid_attr = {
+<<<<<<< HEAD
 	.attr = { .name = "pid", .mode = 0444},
+=======
+	.attr = { .name = "pid", .mode = S_IRUGO},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = pid_show,
 };
 
@@ -228,8 +232,13 @@ static void nbd_put(struct nbd_device *nbd)
 	if (refcount_dec_and_mutex_lock(&nbd->refs,
 					&nbd_index_mutex)) {
 		idr_remove(&nbd_index_idr, nbd->index);
+<<<<<<< HEAD
 		mutex_unlock(&nbd_index_mutex);
 		nbd_dev_remove(nbd);
+=======
+		nbd_dev_remove(nbd);
+		mutex_unlock(&nbd_index_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -253,6 +262,7 @@ static void nbd_mark_nsock_dead(struct nbd_device *nbd, struct nbd_sock *nsock,
 	}
 	if (!nsock->dead) {
 		kernel_sock_shutdown(nsock->sock, SHUT_RDWR);
+<<<<<<< HEAD
 		if (atomic_dec_return(&nbd->config->live_connections) == 0) {
 			if (test_and_clear_bit(NBD_DISCONNECT_REQUESTED,
 					       &nbd->config->runtime_flags)) {
@@ -262,6 +272,9 @@ static void nbd_mark_nsock_dead(struct nbd_device *nbd, struct nbd_sock *nsock,
 					"Disconnected due to user request.\n");
 			}
 		}
+=======
+		atomic_dec(&nbd->config->live_connections);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	nsock->dead = true;
 	nsock->pending = NULL;
@@ -281,11 +294,14 @@ static void nbd_size_update(struct nbd_device *nbd)
 	struct nbd_config *config = nbd->config;
 	struct block_device *bdev = bdget_disk(nbd->disk, 0);
 
+<<<<<<< HEAD
 	if (config->flags & NBD_FLAG_SEND_TRIM) {
 		nbd->disk->queue->limits.discard_granularity = config->blksize;
 		nbd->disk->queue->limits.discard_alignment = config->blksize;
 		blk_queue_max_discard_sectors(nbd->disk->queue, UINT_MAX);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_queue_logical_block_size(nbd->disk->queue, config->blksize);
 	blk_queue_physical_block_size(nbd->disk->queue, config->blksize);
 	set_capacity(nbd->disk, config->bytesize >> 9);
@@ -314,7 +330,11 @@ static void nbd_complete_rq(struct request *req)
 {
 	struct nbd_cmd *cmd = blk_mq_rq_to_pdu(req);
 
+<<<<<<< HEAD
 	dev_dbg(nbd_to_dev(cmd->nbd), "request %p: %s\n", req,
+=======
+	dev_dbg(nbd_to_dev(cmd->nbd), "request %p: %s\n", cmd,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmd->status ? "failed" : "done");
 
 	blk_mq_end_request(req, cmd->status);
@@ -351,7 +371,11 @@ static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req,
 
 	if (!refcount_inc_not_zero(&nbd->config_refs)) {
 		cmd->status = BLK_STS_TIMEOUT;
+<<<<<<< HEAD
 		goto done;
+=======
+		return BLK_EH_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	config = nbd->config;
 
@@ -362,9 +386,13 @@ static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req,
 
 	if (config->num_connections > 1) {
 		dev_err_ratelimited(nbd_to_dev(nbd),
+<<<<<<< HEAD
 				    "Connection timed out, retrying (%d/%d alive)\n",
 				    atomic_read(&config->live_connections),
 				    config->num_connections);
+=======
+				    "Connection timed out, retrying\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Hooray we have more connections, requeue this IO, the submit
 		 * path will put it on a real connection.
@@ -387,7 +415,11 @@ static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req,
 			mutex_unlock(&cmd->lock);
 			nbd_requeue_cmd(cmd);
 			nbd_config_put(nbd);
+<<<<<<< HEAD
 			return BLK_EH_DONE;
+=======
+			return BLK_EH_NOT_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		dev_err_ratelimited(nbd_to_dev(nbd),
@@ -398,9 +430,14 @@ static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req,
 	mutex_unlock(&cmd->lock);
 	sock_shutdown(nbd);
 	nbd_config_put(nbd);
+<<<<<<< HEAD
 done:
 	blk_mq_complete_request(req);
 	return BLK_EH_DONE;
+=======
+
+	return BLK_EH_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -531,7 +568,11 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
 	memcpy(request.handle, &handle, sizeof(handle));
 
 	dev_dbg(nbd_to_dev(nbd), "request %p: sending control (%s@%llu,%uB)\n",
+<<<<<<< HEAD
 		req, nbdcmd_to_ascii(type),
+=======
+		cmd, nbdcmd_to_ascii(type),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(unsigned long long)blk_rq_pos(req) << 9, blk_rq_bytes(req));
 	result = sock_xmit(nbd, index, 1, &from,
 			(type == NBD_CMD_WRITE) ? MSG_MORE : 0, &sent);
@@ -568,7 +609,11 @@ send_pages:
 			int flags = is_last ? 0 : MSG_MORE;
 
 			dev_dbg(nbd_to_dev(nbd), "request %p: sending %d bytes data\n",
+<<<<<<< HEAD
 				req, bvec.bv_len);
+=======
+				cmd, bvec.bv_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iov_iter_bvec(&from, ITER_BVEC | WRITE,
 				      &bvec, 1, bvec.bv_len);
 			if (skip) {
@@ -664,6 +709,15 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
 		ret = -ENOENT;
 		goto out;
 	}
+<<<<<<< HEAD
+=======
+	if (cmd->status != BLK_STS_OK) {
+		dev_err(disk_to_dev(nbd->disk), "Command already handled %p\n",
+			req);
+		ret = -ENOENT;
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (test_bit(NBD_CMD_REQUEUED, &cmd->flags)) {
 		dev_err(disk_to_dev(nbd->disk), "Raced with timeout on req %p\n",
 			req);
@@ -677,7 +731,11 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(nbd_to_dev(nbd), "request %p: got reply\n", req);
+=======
+	dev_dbg(nbd_to_dev(nbd), "request %p: got reply\n", cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rq_data_dir(req) != WRITE) {
 		struct req_iterator iter;
 		struct bio_vec bvec;
@@ -705,7 +763,11 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
 				goto out;
 			}
 			dev_dbg(nbd_to_dev(nbd), "request %p: got %d bytes data\n",
+<<<<<<< HEAD
 				req, bvec.bv_len);
+=======
+				cmd, bvec.bv_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 out:
@@ -743,8 +805,16 @@ static void recv_work(struct work_struct *work)
 
 static void nbd_clear_req(struct request *req, void *data, bool reserved)
 {
+<<<<<<< HEAD
 	struct nbd_cmd *cmd = blk_mq_rq_to_pdu(req);
 
+=======
+	struct nbd_cmd *cmd;
+
+	if (!blk_mq_request_started(req))
+		return;
+	cmd = blk_mq_rq_to_pdu(req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmd->status = BLK_STS_IOERR;
 	blk_mq_complete_request(req);
 }
@@ -807,9 +877,16 @@ static int wait_for_reconnect(struct nbd_device *nbd)
 		return 0;
 	if (test_bit(NBD_DISCONNECTED, &config->runtime_flags))
 		return 0;
+<<<<<<< HEAD
 	return wait_event_timeout(config->conn_wait,
 				  atomic_read(&config->live_connections) > 0,
 				  config->dead_conn_timeout) > 0;
+=======
+	wait_event_timeout(config->conn_wait,
+			   atomic_read(&config->live_connections),
+			   config->dead_conn_timeout);
+	return atomic_read(&config->live_connections);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
@@ -924,6 +1001,29 @@ static blk_status_t nbd_queue_rq(struct blk_mq_hw_ctx *hctx,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static struct socket *nbd_get_socket(struct nbd_device *nbd, unsigned long fd,
+				     int *err)
+{
+	struct socket *sock;
+
+	*err = 0;
+	sock = sockfd_lookup(fd, err);
+	if (!sock)
+		return NULL;
+
+	if (sock->ops->shutdown == sock_no_shutdown) {
+		dev_err(disk_to_dev(nbd->disk), "Unsupported socket: shutdown callout must be supported.\n");
+		*err = -EINVAL;
+		sockfd_put(sock);
+		return NULL;
+	}
+
+	return sock;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int nbd_add_socket(struct nbd_device *nbd, unsigned long arg,
 			  bool netlink)
 {
@@ -933,7 +1033,11 @@ static int nbd_add_socket(struct nbd_device *nbd, unsigned long arg,
 	struct nbd_sock *nsock;
 	int err;
 
+<<<<<<< HEAD
 	sock = sockfd_lookup(arg, &err);
+=======
+	sock = nbd_get_socket(nbd, arg, &err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sock)
 		return err;
 
@@ -946,13 +1050,25 @@ static int nbd_add_socket(struct nbd_device *nbd, unsigned long arg,
 	     test_bit(NBD_BOUND, &config->runtime_flags))) {
 		dev_err(disk_to_dev(nbd->disk),
 			"Device being setup by another task");
+<<<<<<< HEAD
 		sockfd_put(sock);
 		return -EBUSY;
+=======
+		err = -EBUSY;
+		goto put_socket;
+	}
+
+	nsock = kzalloc(sizeof(*nsock), GFP_KERNEL);
+	if (!nsock) {
+		err = -ENOMEM;
+		goto put_socket;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	socks = krealloc(config->socks, (config->num_connections + 1) *
 			 sizeof(struct nbd_sock *), GFP_KERNEL);
 	if (!socks) {
+<<<<<<< HEAD
 		sockfd_put(sock);
 		return -ENOMEM;
 	}
@@ -960,6 +1076,11 @@ static int nbd_add_socket(struct nbd_device *nbd, unsigned long arg,
 	if (!nsock) {
 		sockfd_put(sock);
 		return -ENOMEM;
+=======
+		kfree(nsock);
+		err = -ENOMEM;
+		goto put_socket;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	config->socks = socks;
@@ -975,6 +1096,13 @@ static int nbd_add_socket(struct nbd_device *nbd, unsigned long arg,
 	atomic_inc(&config->live_connections);
 
 	return 0;
+<<<<<<< HEAD
+=======
+
+put_socket:
+	sockfd_put(sock);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nbd_reconnect_socket(struct nbd_device *nbd, unsigned long arg)
@@ -985,7 +1113,11 @@ static int nbd_reconnect_socket(struct nbd_device *nbd, unsigned long arg)
 	int i;
 	int err;
 
+<<<<<<< HEAD
 	sock = sockfd_lookup(arg, &err);
+=======
+	sock = nbd_get_socket(nbd, arg, &err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sock)
 		return err;
 
@@ -1043,6 +1175,13 @@ static void nbd_bdev_reset(struct block_device *bdev)
 	if (bdev->bd_openers > 1)
 		return;
 	bd_set_size(bdev, 0);
+<<<<<<< HEAD
+=======
+	if (max_part > 0) {
+		blkdev_reread_part(bdev);
+		bdev->bd_invalidated = 1;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void nbd_parse_flags(struct nbd_device *nbd)
@@ -1053,7 +1192,11 @@ static void nbd_parse_flags(struct nbd_device *nbd)
 	else
 		set_disk_ro(nbd->disk, false);
 	if (config->flags & NBD_FLAG_SEND_TRIM)
+<<<<<<< HEAD
 		blk_queue_flag_set(QUEUE_FLAG_DISCARD, nbd->disk->queue);
+=======
+		queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, nbd->disk->queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (config->flags & NBD_FLAG_SEND_FLUSH) {
 		if (config->flags & NBD_FLAG_SEND_FUA)
 			blk_queue_write_cache(nbd->disk->queue, true, true);
@@ -1133,10 +1276,14 @@ static void nbd_config_put(struct nbd_device *nbd)
 		nbd->recv_workq = NULL;
 
 		nbd->tag_set.timeout = 0;
+<<<<<<< HEAD
 		nbd->disk->queue->limits.discard_granularity = 0;
 		nbd->disk->queue->limits.discard_alignment = 0;
 		blk_queue_max_discard_sectors(nbd->disk->queue, UINT_MAX);
 		blk_queue_flag_clear(QUEUE_FLAG_DISCARD, nbd->disk->queue);
+=======
+		queue_flag_clear_unlocked(QUEUE_FLAG_DISCARD, nbd->disk->queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mutex_unlock(&nbd->config_lock);
 		nbd_put(nbd);
@@ -1187,6 +1334,19 @@ static int nbd_start_device(struct nbd_device *nbd)
 		args = kzalloc(sizeof(*args), GFP_KERNEL);
 		if (!args) {
 			sock_shutdown(nbd);
+<<<<<<< HEAD
+=======
+			/*
+			 * If num_connections is m (2 < m),
+			 * and NO.1 ~ NO.n(1 < n < m) kzallocs are successful.
+			 * But NO.(n + 1) failed. We still have n recv threads.
+			 * So, add flush_workqueue here to prevent recv threads
+			 * dropping the last config_refs and trying to destroy
+			 * the workqueue from inside the workqueue.
+			 */
+			if (i)
+				flush_workqueue(nbd->recv_workq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ENOMEM;
 		}
 		sk_set_memalloc(config->socks[i]->sock->sk);
@@ -1218,12 +1378,21 @@ static int nbd_start_device_ioctl(struct nbd_device *nbd, struct block_device *b
 	mutex_unlock(&nbd->config_lock);
 	ret = wait_event_interruptible(config->recv_wq,
 					 atomic_read(&config->recv_threads) == 0);
+<<<<<<< HEAD
 	if (ret) {
 		sock_shutdown(nbd);
 		flush_workqueue(nbd->recv_workq);
 	}
 	mutex_lock(&nbd->config_lock);
 	nbd_bdev_reset(bdev);
+=======
+	if (ret)
+		sock_shutdown(nbd);
+	flush_workqueue(nbd->recv_workq);
+
+	mutex_lock(&nbd->config_lock);
+	bd_set_size(bdev, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* user requested, ignore socket errors */
 	if (test_bit(NBD_DISCONNECT_REQUESTED, &config->runtime_flags))
 		ret = 0;
@@ -1386,9 +1555,12 @@ static int nbd_open(struct block_device *bdev, fmode_t mode)
 		refcount_set(&nbd->config_refs, 1);
 		refcount_inc(&nbd->refs);
 		mutex_unlock(&nbd->config_lock);
+<<<<<<< HEAD
 		bdev->bd_invalidated = 1;
 	} else if (nbd_disconnected(nbd->config)) {
 		bdev->bd_invalidated = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 out:
 	mutex_unlock(&nbd_index_mutex);
@@ -1616,11 +1788,18 @@ static int nbd_dev_add(int index)
 	/*
 	 * Tell the block layer that we are not a rotational device
 	 */
+<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_NONROT, disk->queue);
 	blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, disk->queue);
 	disk->queue->limits.discard_granularity = 0;
 	disk->queue->limits.discard_alignment = 0;
 	blk_queue_max_discard_sectors(disk->queue, 0);
+=======
+	queue_flag_set_unlocked(QUEUE_FLAG_NONROT, disk->queue);
+	queue_flag_clear_unlocked(QUEUE_FLAG_ADD_RANDOM, disk->queue);
+	disk->queue->limits.discard_granularity = 512;
+	blk_queue_max_discard_sectors(disk->queue, UINT_MAX);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_queue_max_segment_size(disk->queue, UINT_MAX);
 	blk_queue_max_segments(disk->queue, USHRT_MAX);
 	blk_queue_max_hw_sectors(disk->queue, 65536);
@@ -1664,7 +1843,11 @@ static int find_free_cb(int id, void *ptr, void *data)
 }
 
 /* Netlink interface. */
+<<<<<<< HEAD
 static const struct nla_policy nbd_attr_policy[NBD_ATTR_MAX + 1] = {
+=======
+static struct nla_policy nbd_attr_policy[NBD_ATTR_MAX + 1] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[NBD_ATTR_INDEX]		=	{ .type = NLA_U32 },
 	[NBD_ATTR_SIZE_BYTES]		=	{ .type = NLA_U64 },
 	[NBD_ATTR_BLOCK_SIZE_BYTES]	=	{ .type = NLA_U64 },
@@ -1676,14 +1859,22 @@ static const struct nla_policy nbd_attr_policy[NBD_ATTR_MAX + 1] = {
 	[NBD_ATTR_DEVICE_LIST]		=	{ .type = NLA_NESTED},
 };
 
+<<<<<<< HEAD
 static const struct nla_policy nbd_sock_policy[NBD_SOCK_MAX + 1] = {
+=======
+static struct nla_policy nbd_sock_policy[NBD_SOCK_MAX + 1] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[NBD_SOCK_FD]			=	{ .type = NLA_U32 },
 };
 
 /* We don't use this right now since we don't parse the incoming list, but we
  * still want it here so userspace knows what to expect.
  */
+<<<<<<< HEAD
 static const struct nla_policy __attribute__((unused))
+=======
+static struct nla_policy __attribute__((unused))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nbd_device_policy[NBD_DEVICE_ATTR_MAX + 1] = {
 	[NBD_DEVICE_INDEX]		=	{ .type = NLA_U32 },
 	[NBD_DEVICE_CONNECTED]		=	{ .type = NLA_U8 },
@@ -1864,7 +2055,10 @@ static void nbd_disconnect_and_put(struct nbd_device *nbd)
 {
 	mutex_lock(&nbd->config_lock);
 	nbd_disconnect(nbd);
+<<<<<<< HEAD
 	nbd_clear_sock(nbd);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&nbd->config_lock);
 	/*
 	 * Make sure recv thread has finished, so it does not drop the last

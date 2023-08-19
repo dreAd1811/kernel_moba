@@ -111,8 +111,13 @@ struct vsc8531_private {
 
 #ifdef CONFIG_OF_MDIO
 struct vsc8531_edge_rate_table {
+<<<<<<< HEAD
 	u16 vddmac;
 	u8 slowdown[8];
+=======
+	u32 vddmac;
+	u32 slowdown[8];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct vsc8531_edge_rate_table edge_table[] = {
@@ -123,7 +128,11 @@ static const struct vsc8531_edge_rate_table edge_table[] = {
 };
 #endif /* CONFIG_OF_MDIO */
 
+<<<<<<< HEAD
 static int vsc85xx_phy_page_set(struct phy_device *phydev, u16 page)
+=======
+static int vsc85xx_phy_page_set(struct phy_device *phydev, u8 page)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rc;
 
@@ -375,8 +384,12 @@ out_unlock:
 #ifdef CONFIG_OF_MDIO
 static int vsc85xx_edge_rate_magic_get(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	u8 sd;
 	u16 vdd;
+=======
+	u32 vdd, sd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc, i, j;
 	struct device *dev = &phydev->mdio.dev;
 	struct device_node *of_node = dev->of_node;
@@ -385,11 +398,19 @@ static int vsc85xx_edge_rate_magic_get(struct phy_device *phydev)
 	if (!of_node)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	rc = of_property_read_u16(of_node, "vsc8531,vddmac", &vdd);
 	if (rc != 0)
 		vdd = MSCC_VDDMAC_3300;
 
 	rc = of_property_read_u8(of_node, "vsc8531,edge-slowdown", &sd);
+=======
+	rc = of_property_read_u32(of_node, "vsc8531,vddmac", &vdd);
+	if (rc != 0)
+		vdd = MSCC_VDDMAC_3300;
+
+	rc = of_property_read_u32(of_node, "vsc8531,edge-slowdown", &sd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc != 0)
 		sd = 0;
 

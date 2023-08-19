@@ -562,7 +562,11 @@
 #define	PRIVATE_BASE(x)	((x) << 0) /* scratch */
 #define	SHARED_BASE(x)	((x) << 16) /* LDS */
 
+<<<<<<< HEAD
 #define KFD_CIK_SDMA_QUEUE_OFFSET (mmSDMA0_RLC1_RB_CNTL - mmSDMA0_RLC0_RB_CNTL)
+=======
+#define KFD_CIK_SDMA_QUEUE_OFFSET	0x200
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* valid for both DEFAULT_MTYPE and APE1_MTYPE */
 enum {

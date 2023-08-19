@@ -25,7 +25,11 @@
 #include <linux/kernel.h>
 #include <asm/div64.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "s921.h"
 
 static int debug = 1;
@@ -464,7 +468,11 @@ static int s921_tune(struct dvb_frontend *fe,
 	return rc;
 }
 
+<<<<<<< HEAD
 static enum dvbfe_algo s921_get_algo(struct dvb_frontend *fe)
+=======
+static int s921_get_algo(struct dvb_frontend *fe)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return DVBFE_ALGO_HW;
 }
@@ -510,14 +518,24 @@ static const struct dvb_frontend_ops s921_ops = {
 	/* Use dib8000 values per default */
 	.info = {
 		.name = "Sharp S921",
+<<<<<<< HEAD
 		.frequency_min_hz = 470 * MHz,
+=======
+		.frequency_min = 470000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Max should be 770MHz instead, according with Sharp docs,
 		 * but Leadership doc says it works up to 806 MHz. This is
 		 * required to get channel 69, used in Brazil
 		 */
+<<<<<<< HEAD
 		.frequency_max_hz = 806 * MHz,
 		.caps =  FE_CAN_INVERSION_AUTO |
+=======
+		.frequency_max = 806000000,
+		.frequency_tolerance = 0,
+		 .caps = FE_CAN_INVERSION_AUTO |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 FE_CAN_FEC_1_2  | FE_CAN_FEC_2_3 | FE_CAN_FEC_3_4 |
 			 FE_CAN_FEC_5_6  | FE_CAN_FEC_7_8 | FE_CAN_FEC_AUTO |
 			 FE_CAN_QPSK     | FE_CAN_QAM_16 | FE_CAN_QAM_64 |

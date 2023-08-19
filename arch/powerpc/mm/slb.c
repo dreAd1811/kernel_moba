@@ -22,7 +22,10 @@
 #include <asm/cacheflush.h>
 #include <asm/smp.h>
 #include <linux/compiler.h>
+<<<<<<< HEAD
 #include <linux/context_tracking.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mm_types.h>
 
 #include <asm/udbg.h>
@@ -70,7 +73,11 @@ static inline void slb_shadow_update(unsigned long ea, int ssize,
 
 static inline void slb_shadow_clear(enum slb_index index)
 {
+<<<<<<< HEAD
 	WRITE_ONCE(get_slb_shadow()->save_area[index].esid, cpu_to_be64(index));
+=======
+	WRITE_ONCE(get_slb_shadow()->save_area[index].esid, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void create_shadowed_slbe(unsigned long ea, int ssize,
@@ -90,6 +97,7 @@ static inline void create_shadowed_slbe(unsigned long ea, int ssize,
 		     : "memory" );
 }
 
+<<<<<<< HEAD
 /*
  * Insert bolted entries into SLB (which may not be empty, so don't clear
  * slb_cache_ptr).
@@ -129,6 +137,8 @@ void slb_flush_all_realmode(void)
 	asm volatile("slbmte %0,%0; slbia" : : "r" (0));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __slb_flush_and_rebolt(void)
 {
 	/* If you change this make sure you change SLB_NUM_BOLTED
@@ -355,7 +365,11 @@ void slb_initialize(void)
 #endif
 	}
 
+<<<<<<< HEAD
 	get_paca()->stab_rr = SLB_NUM_BOLTED;
+=======
+	get_paca()->stab_rr = SLB_NUM_BOLTED - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lflags = SLB_VSID_KERNEL | linear_llp;
 	vflags = SLB_VSID_KERNEL | vmalloc_llp;
@@ -380,6 +394,7 @@ void slb_initialize(void)
 
 	asm volatile("isync":::"memory");
 }
+<<<<<<< HEAD
 
 static void insert_slb_entry(unsigned long vsid, unsigned long ea,
 			     int bpsize, int ssize)
@@ -500,3 +515,5 @@ slb_bad_addr:
 		bad_page_fault(regs, ea, SIGSEGV);
 	exception_exit(prev_state);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

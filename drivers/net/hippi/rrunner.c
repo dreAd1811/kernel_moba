@@ -867,7 +867,11 @@ static u32 rr_handle_event(struct net_device *dev, u32 prodidx, u32 eidx)
 			       dev->name);
 			goto drop;
 		case E_FRM_ERR:
+<<<<<<< HEAD
 			printk(KERN_WARNING "%s: Framing Error\n",
+=======
+			printk(KERN_WARNING "%s: Framming Error\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       dev->name);
 			goto drop;
 		case E_FLG_SYN_ERR:
@@ -1146,10 +1150,17 @@ static inline void rr_raz_rx(struct rr_private *rrpriv,
 	}
 }
 
+<<<<<<< HEAD
 static void rr_timer(struct timer_list *t)
 {
 	struct rr_private *rrpriv = from_timer(rrpriv, t, timer);
 	struct net_device *dev = pci_get_drvdata(rrpriv->pci_dev);
+=======
+static void rr_timer(unsigned long data)
+{
+	struct net_device *dev = (struct net_device *)data;
+	struct rr_private *rrpriv = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rr_regs __iomem *regs = rrpriv->regs;
 	unsigned long flags;
 
@@ -1229,8 +1240,15 @@ static int rr_open(struct net_device *dev)
 
 	/* Set the timer to switch to check for link beat and perhaps switch
 	   to an alternate media type. */
+<<<<<<< HEAD
 	timer_setup(&rrpriv->timer, rr_timer, 0);
 	rrpriv->timer.expires = RUN_AT(5*HZ);           /* 5 sec. watchdog */
+=======
+	init_timer(&rrpriv->timer);
+	rrpriv->timer.expires = RUN_AT(5*HZ);           /* 5 sec. watchdog */
+	rrpriv->timer.data = (unsigned long)dev;
+	rrpriv->timer.function = rr_timer;               /* timer handler */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&rrpriv->timer);
 
 	netif_start_queue(dev);
@@ -1248,7 +1266,11 @@ static int rr_open(struct net_device *dev)
 		rrpriv->info = NULL;
 	}
 	if (rrpriv->rx_ctrl) {
+<<<<<<< HEAD
 		pci_free_consistent(pdev, sizeof(struct ring_ctrl),
+=======
+		pci_free_consistent(pdev, 256 * sizeof(struct ring_ctrl),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    rrpriv->rx_ctrl, rrpriv->rx_ctrl_dma);
 		rrpriv->rx_ctrl = NULL;
 	}
@@ -1583,7 +1605,11 @@ static int rr_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 			return -EPERM;
 		}
 
+<<<<<<< HEAD
 		image = kmalloc_array(EEPROM_WORDS, sizeof(u32), GFP_KERNEL);
+=======
+		image = kmalloc(EEPROM_WORDS * sizeof(u32), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!image)
 			return -ENOMEM;
 

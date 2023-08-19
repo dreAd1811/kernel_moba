@@ -52,7 +52,10 @@ DECLARE_PER_CPU(unsigned long, asid_cache);
 #define ASID_INSERT(x)	(0x03020001 | (((x) & ASID_MASK) << 8))
 
 void init_mmu(void);
+<<<<<<< HEAD
 void init_kio(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void set_rasid_register (unsigned long val)
 {

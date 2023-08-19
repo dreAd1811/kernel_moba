@@ -1,6 +1,9 @@
 /*
  * Copyright (c) 2012-2015 Qualcomm Atheros, Inc.
+<<<<<<< HEAD
  * Copyright (c) 2019, The Linux Foundation. All rights reserved.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -26,4 +29,7 @@ void wil_pmc_free(struct wil6210_priv *wil, int send_pmc_cmd);
 int wil_pmc_last_cmd_status(struct wil6210_priv *wil);
 ssize_t wil_pmc_read(struct file *, char __user *, size_t, loff_t *);
 loff_t wil_pmc_llseek(struct file *filp, loff_t off, int whence);
+<<<<<<< HEAD
 int wil_pmcring_read(struct seq_file *s, void *data);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

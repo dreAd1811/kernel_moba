@@ -407,9 +407,14 @@ static int ps3vram_cache_init(struct ps3_system_bus_device *dev)
 
 	priv->cache.page_count = CACHE_PAGE_COUNT;
 	priv->cache.page_size = CACHE_PAGE_SIZE;
+<<<<<<< HEAD
 	priv->cache.tags = kcalloc(CACHE_PAGE_COUNT,
 				   sizeof(struct ps3vram_tag),
 				   GFP_KERNEL);
+=======
+	priv->cache.tags = kzalloc(sizeof(struct ps3vram_tag) *
+				   CACHE_PAGE_COUNT, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->cache.tags)
 		return -ENOMEM;
 
@@ -522,13 +527,34 @@ static int ps3vram_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int ps3vram_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, ps3vram_proc_show, PDE_DATA(inode));
+}
+
+static const struct file_operations ps3vram_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= ps3vram_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ps3vram_proc_init(struct ps3_system_bus_device *dev)
 {
 	struct ps3vram_priv *priv = ps3_system_bus_get_drvdata(dev);
 	struct proc_dir_entry *pde;
 
+<<<<<<< HEAD
 	pde = proc_create_single_data(DEVICE_NAME, 0444, NULL,
 			ps3vram_proc_show, priv);
+=======
+	pde = proc_create_data(DEVICE_NAME, 0444, NULL, &ps3vram_proc_fops,
+			       priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pde)
 		dev_warn(&dev->core, "failed to create /proc entry\n");
 }

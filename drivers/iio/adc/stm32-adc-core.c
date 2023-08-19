@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This file is part of STM32 ADC driver
  *
@@ -7,6 +10,22 @@
  *
  * Inspired from: fsl-imx25-tsadc
  *
+<<<<<<< HEAD
+=======
+ * License type: GPLv2
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -21,6 +40,15 @@
 
 #include "stm32-adc-core.h"
 
+<<<<<<< HEAD
+=======
+/* STM32 F4 maximum analog clock rate (from datasheet) */
+#define STM32F4_ADC_MAX_CLK_RATE	36000000
+
+/* STM32 H7 maximum analog clock rate (from datasheet) */
+#define STM32H7_ADC_MAX_CLK_RATE	36000000
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * stm32_adc_common_regs - stm32 common registers, compatible dependent data
  * @csr:	common status register offset
@@ -45,17 +73,27 @@ struct stm32_adc_priv;
  * stm32_adc_priv_cfg - stm32 core compatible configuration data
  * @regs:	common registers for all instances
  * @clk_sel:	clock selection routine
+<<<<<<< HEAD
  * @max_clk_rate_hz: maximum analog clock rate (Hz, from datasheet)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct stm32_adc_priv_cfg {
 	const struct stm32_adc_common_regs *regs;
 	int (*clk_sel)(struct platform_device *, struct stm32_adc_priv *);
+<<<<<<< HEAD
 	u32 max_clk_rate_hz;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
  * struct stm32_adc_priv - stm32 ADC core private data
+<<<<<<< HEAD
  * @irq:		irq(s) for ADC block
+=======
+ * @irq:		irq for ADC block
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @domain:		irq domain reference
  * @aclk:		clock reference for the analog circuitry
  * @bclk:		bus clock common for all ADCs, depends on part used
@@ -64,7 +102,11 @@ struct stm32_adc_priv_cfg {
  * @common:		common data for all ADC instances
  */
 struct stm32_adc_priv {
+<<<<<<< HEAD
 	int				irq[STM32_ADC_MAX_ADCS];
+=======
+	int				irq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct irq_domain		*domain;
 	struct clk			*aclk;
 	struct clk			*bclk;
@@ -100,6 +142,7 @@ static int stm32f4_adc_clk_sel(struct platform_device *pdev,
 	}
 
 	rate = clk_get_rate(priv->aclk);
+<<<<<<< HEAD
 	if (!rate) {
 		dev_err(&pdev->dev, "Invalid clock rate: 0\n");
 		return -EINVAL;
@@ -107,6 +150,10 @@ static int stm32f4_adc_clk_sel(struct platform_device *pdev,
 
 	for (i = 0; i < ARRAY_SIZE(stm32f4_pclk_div); i++) {
 		if ((rate / stm32f4_pclk_div[i]) <= priv->cfg->max_clk_rate_hz)
+=======
+	for (i = 0; i < ARRAY_SIZE(stm32f4_pclk_div); i++) {
+		if ((rate / stm32f4_pclk_div[i]) <= STM32F4_ADC_MAX_CLK_RATE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 	}
 	if (i >= ARRAY_SIZE(stm32f4_pclk_div)) {
@@ -182,10 +229,13 @@ static int stm32h7_adc_clk_sel(struct platform_device *pdev,
 		 * From spec: PLL output musn't exceed max rate
 		 */
 		rate = clk_get_rate(priv->aclk);
+<<<<<<< HEAD
 		if (!rate) {
 			dev_err(&pdev->dev, "Invalid adc clock rate: 0\n");
 			return -EINVAL;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		for (i = 0; i < ARRAY_SIZE(stm32h7_adc_ckmodes_spec); i++) {
 			ckmode = stm32h7_adc_ckmodes_spec[i].ckmode;
@@ -195,17 +245,24 @@ static int stm32h7_adc_clk_sel(struct platform_device *pdev,
 			if (ckmode)
 				continue;
 
+<<<<<<< HEAD
 			if ((rate / div) <= priv->cfg->max_clk_rate_hz)
+=======
+			if ((rate / div) <= STM32H7_ADC_MAX_CLK_RATE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				goto out;
 		}
 	}
 
 	/* Synchronous clock modes (e.g. ckmode is 1, 2 or 3) */
 	rate = clk_get_rate(priv->bclk);
+<<<<<<< HEAD
 	if (!rate) {
 		dev_err(&pdev->dev, "Invalid bus clock rate: 0\n");
 		return -EINVAL;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(stm32h7_adc_ckmodes_spec); i++) {
 		ckmode = stm32h7_adc_ckmodes_spec[i].ckmode;
@@ -215,7 +272,11 @@ static int stm32h7_adc_clk_sel(struct platform_device *pdev,
 		if (!ckmode)
 			continue;
 
+<<<<<<< HEAD
 		if ((rate / div) <= priv->cfg->max_clk_rate_hz)
+=======
+		if ((rate / div) <= STM32H7_ADC_MAX_CLK_RATE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto out;
 	}
 
@@ -334,6 +395,7 @@ static int stm32_adc_irq_probe(struct platform_device *pdev,
 			       struct stm32_adc_priv *priv)
 {
 	struct device_node *np = pdev->dev.of_node;
+<<<<<<< HEAD
 	unsigned int i;
 
 	for (i = 0; i < STM32_ADC_MAX_ADCS; i++) {
@@ -352,6 +414,13 @@ static int stm32_adc_irq_probe(struct platform_device *pdev,
 
 			return priv->irq[i];
 		}
+=======
+
+	priv->irq = platform_get_irq(pdev, 0);
+	if (priv->irq < 0) {
+		dev_err(&pdev->dev, "failed to get irq\n");
+		return priv->irq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	priv->domain = irq_domain_add_simple(np, STM32_ADC_MAX_ADCS, 0,
@@ -362,12 +431,17 @@ static int stm32_adc_irq_probe(struct platform_device *pdev,
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < STM32_ADC_MAX_ADCS; i++) {
 		if (priv->irq[i] < 0)
 			continue;
 		irq_set_chained_handler(priv->irq[i], stm32_adc_irq_handler);
 		irq_set_handler_data(priv->irq[i], priv);
 	}
+=======
+	irq_set_chained_handler(priv->irq, stm32_adc_irq_handler);
+	irq_set_handler_data(priv->irq, priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -376,17 +450,24 @@ static void stm32_adc_irq_remove(struct platform_device *pdev,
 				 struct stm32_adc_priv *priv)
 {
 	int hwirq;
+<<<<<<< HEAD
 	unsigned int i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (hwirq = 0; hwirq < STM32_ADC_MAX_ADCS; hwirq++)
 		irq_dispose_mapping(irq_find_mapping(priv->domain, hwirq));
 	irq_domain_remove(priv->domain);
+<<<<<<< HEAD
 
 	for (i = 0; i < STM32_ADC_MAX_ADCS; i++) {
 		if (priv->irq[i] < 0)
 			continue;
 		irq_set_chained_handler(priv->irq[i], NULL);
 	}
+=======
+	irq_set_chained_handler(priv->irq, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int stm32_adc_probe(struct platform_device *pdev)
@@ -526,12 +607,16 @@ static int stm32_adc_remove(struct platform_device *pdev)
 static const struct stm32_adc_priv_cfg stm32f4_adc_priv_cfg = {
 	.regs = &stm32f4_adc_common_regs,
 	.clk_sel = stm32f4_adc_clk_sel,
+<<<<<<< HEAD
 	.max_clk_rate_hz = 36000000,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct stm32_adc_priv_cfg stm32h7_adc_priv_cfg = {
 	.regs = &stm32h7_adc_common_regs,
 	.clk_sel = stm32h7_adc_clk_sel,
+<<<<<<< HEAD
 	.max_clk_rate_hz = 36000000,
 };
 
@@ -539,6 +624,8 @@ static const struct stm32_adc_priv_cfg stm32mp1_adc_priv_cfg = {
 	.regs = &stm32h7_adc_common_regs,
 	.clk_sel = stm32h7_adc_clk_sel,
 	.max_clk_rate_hz = 40000000,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id stm32_adc_of_match[] = {
@@ -549,9 +636,12 @@ static const struct of_device_id stm32_adc_of_match[] = {
 		.compatible = "st,stm32h7-adc-core",
 		.data = (void *)&stm32h7_adc_priv_cfg
 	}, {
+<<<<<<< HEAD
 		.compatible = "st,stm32mp1-adc-core",
 		.data = (void *)&stm32mp1_adc_priv_cfg
 	}, {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 MODULE_DEVICE_TABLE(of, stm32_adc_of_match);

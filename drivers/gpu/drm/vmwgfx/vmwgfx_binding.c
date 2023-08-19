@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /**************************************************************************
  *
  * Copyright 2015 VMware, Inc., Palo Alto, CA., USA
+=======
+/**************************************************************************
+ *
+ * Copyright © 2015 VMware, Inc., Palo Alto, CA., USA
+ * All Rights Reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -1202,6 +1209,7 @@ struct vmw_ctx_binding_state *
 vmw_binding_state_alloc(struct vmw_private *dev_priv)
 {
 	struct vmw_ctx_binding_state *cbs;
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = {
 		.interruptible = false,
 		.no_wait_gpu = false
@@ -1210,6 +1218,12 @@ vmw_binding_state_alloc(struct vmw_private *dev_priv)
 
 	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv), sizeof(*cbs),
 				&ctx);
+=======
+	int ret;
+
+	ret = ttm_mem_global_alloc(vmw_mem_glob(dev_priv), sizeof(*cbs),
+				   false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ERR_PTR(ret);
 

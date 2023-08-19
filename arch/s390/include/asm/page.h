@@ -33,6 +33,11 @@
 #define ARCH_HAS_PREPARE_HUGEPAGE
 #define ARCH_HAS_HUGEPAGE_CLEAR_FLUSH
 
+<<<<<<< HEAD
+=======
+#define HAVE_ARCH_HUGETLB_UNMAPPED_AREA
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/setup.h>
 #ifndef __ASSEMBLY__
 
@@ -40,7 +45,11 @@ void __storage_key_init_range(unsigned long start, unsigned long end);
 
 static inline void storage_key_init_range(unsigned long start, unsigned long end)
 {
+<<<<<<< HEAD
 	if (PAGE_DEFAULT_KEY)
+=======
+	if (PAGE_DEFAULT_KEY != 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__storage_key_init_range(start, end);
 }
 
@@ -176,8 +185,11 @@ static inline int devmem_is_allowed(unsigned long pfn)
 #define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | \
 				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
 
+<<<<<<< HEAD
 #define ARCH_ZONE_DMA_BITS	31
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm-generic/memory_model.h>
 #include <asm-generic/getorder.h>
 

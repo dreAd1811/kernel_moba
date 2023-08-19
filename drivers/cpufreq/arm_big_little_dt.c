@@ -61,7 +61,11 @@ static int dt_get_transition_latency(struct device *cpu_dev)
 	return transition_latency;
 }
 
+<<<<<<< HEAD
 static const struct cpufreq_arm_bL_ops dt_bL_ops = {
+=======
+static struct cpufreq_arm_bL_ops dt_bL_ops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name	= "dt-bl",
 	.get_transition_latency = dt_get_transition_latency,
 	.init_opp_table = dev_pm_opp_of_cpumask_add_table,

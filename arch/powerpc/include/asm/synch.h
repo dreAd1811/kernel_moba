@@ -3,8 +3,13 @@
 #define _ASM_POWERPC_SYNCH_H 
 #ifdef __KERNEL__
 
+<<<<<<< HEAD
 #include <asm/feature-fixups.h>
 #include <asm/asm-const.h>
+=======
+#include <linux/stringify.h>
+#include <asm/feature-fixups.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __ASSEMBLY__
 extern unsigned int __start___lwsync_fixup, __stop___lwsync_fixup;

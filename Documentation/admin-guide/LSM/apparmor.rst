@@ -44,8 +44,16 @@ Links
 
 Mailing List - apparmor@lists.ubuntu.com
 
+<<<<<<< HEAD
 Wiki - http://wiki.apparmor.net
 
 User space tools - https://gitlab.com/apparmor
 
 Kernel module - git://git.kernel.org/pub/scm/linux/kernel/git/jj/linux-apparmor
+=======
+Wiki - http://apparmor.wiki.kernel.org/
+
+User space tools - https://launchpad.net/apparmor
+
+Kernel module - git://git.kernel.org/pub/scm/linux/kernel/git/jj/apparmor-dev.git
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

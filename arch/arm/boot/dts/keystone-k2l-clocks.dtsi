@@ -1,8 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Keystone 2 lamarr SoC clock nodes
  *
  * Copyright (C) 2013-2017 Texas Instruments Incorporated - http://www.ti.com/
+=======
+/*
+ * Copyright 2013-2014 Texas Instruments, Inc.
+ *
+ * Keystone 2 lamarr SoC clock nodes
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 clocks {
@@ -41,7 +52,11 @@ clocks {
 		reg-names = "control";
 	};
 
+<<<<<<< HEAD
 	clkdfeiqnsys: clkdfeiqnsys@2350004 {
+=======
+	clkdfeiqnsys: clkdfeiqnsys {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk12>;
@@ -51,7 +66,11 @@ clocks {
 		domain-id = <0>;
 	};
 
+<<<<<<< HEAD
 	clkpcie1: clkpcie1@235002c {
+=======
+	clkpcie1: clkpcie1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk12>;
@@ -61,7 +80,11 @@ clocks {
 		domain-id = <4>;
 	};
 
+<<<<<<< HEAD
 	clkgem1: clkgem1@2350040 {
+=======
+	clkgem1: clkgem1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk1>;
@@ -71,7 +94,11 @@ clocks {
 		domain-id = <9>;
 	};
 
+<<<<<<< HEAD
 	clkgem2: clkgem2@2350044 {
+=======
+	clkgem2: clkgem2 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk1>;
@@ -81,7 +108,11 @@ clocks {
 		domain-id = <10>;
 	};
 
+<<<<<<< HEAD
 	clkgem3: clkgem3@2350048 {
+=======
+	clkgem3: clkgem3 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk1>;
@@ -91,7 +122,11 @@ clocks {
 		domain-id = <11>;
 	};
 
+<<<<<<< HEAD
 	clktac: clktac@2350064 {
+=======
+	clktac: clktac {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -101,7 +136,11 @@ clocks {
 		domain-id = <17>;
 	};
 
+<<<<<<< HEAD
 	clkrac: clkrac@2350068 {
+=======
+	clkrac: clkrac {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -111,7 +150,11 @@ clocks {
 		domain-id = <17>;
 	};
 
+<<<<<<< HEAD
 	clkdfepd0: clkdfepd0@235006c {
+=======
+	clkdfepd0: clkdfepd0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -121,7 +164,11 @@ clocks {
 		domain-id = <18>;
 	};
 
+<<<<<<< HEAD
 	clkfftc0: clkfftc0@2350070 {
+=======
+	clkfftc0: clkfftc0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -131,7 +178,11 @@ clocks {
 		domain-id = <19>;
 	};
 
+<<<<<<< HEAD
 	clkosr: clkosr@2350088 {
+=======
+	clkosr: clkosr {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -141,7 +192,11 @@ clocks {
 		domain-id = <21>;
 	};
 
+<<<<<<< HEAD
 	clktcp3d0: clktcp3d0@235008c {
+=======
+	clktcp3d0: clktcp3d0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -151,7 +206,11 @@ clocks {
 		domain-id = <22>;
 	};
 
+<<<<<<< HEAD
 	clktcp3d1: clktcp3d1@2350094 {
+=======
+	clktcp3d1: clktcp3d1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -161,7 +220,11 @@ clocks {
 		domain-id = <23>;
 	};
 
+<<<<<<< HEAD
 	clkvcp0: clkvcp0@235009c {
+=======
+	clkvcp0: clkvcp0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -171,7 +234,11 @@ clocks {
 		domain-id = <24>;
 	};
 
+<<<<<<< HEAD
 	clkvcp1: clkvcp1@23500a0 {
+=======
+	clkvcp1: clkvcp1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -181,7 +248,11 @@ clocks {
 		domain-id = <24>;
 	};
 
+<<<<<<< HEAD
 	clkvcp2: clkvcp2@23500a4 {
+=======
+	clkvcp2: clkvcp2 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -191,7 +262,11 @@ clocks {
 		domain-id = <24>;
 	};
 
+<<<<<<< HEAD
 	clkvcp3: clkvcp3@23500a8 {
+=======
+	clkvcp3: clkvcp3 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -201,7 +276,11 @@ clocks {
 		domain-id = <24>;
 	};
 
+<<<<<<< HEAD
 	clkbcp: clkbcp@23500bc {
+=======
+	clkbcp: clkbcp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -211,7 +290,11 @@ clocks {
 		domain-id = <26>;
 	};
 
+<<<<<<< HEAD
 	clkdfepd1: clkdfepd1@23500c0 {
+=======
+	clkdfepd1: clkdfepd1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -221,7 +304,11 @@ clocks {
 		domain-id = <27>;
 	};
 
+<<<<<<< HEAD
 	clkfftc1: clkfftc1@23500c4 {
+=======
+	clkfftc1: clkfftc1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -231,7 +318,11 @@ clocks {
 		domain-id = <28>;
 	};
 
+<<<<<<< HEAD
 	clkiqnail: clkiqnail@23500c8 {
+=======
+	clkiqnail: clkiqnail {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&chipclk13>;
@@ -241,7 +332,11 @@ clocks {
 		domain-id = <29>;
 	};
 
+<<<<<<< HEAD
 	clkuart2: clkuart2@2350000 {
+=======
+	clkuart2: clkuart2 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&clkmodrst0>;
@@ -251,7 +346,11 @@ clocks {
 		domain-id = <0>;
 	};
 
+<<<<<<< HEAD
 	clkuart3: clkuart3@2350000 {
+=======
+	clkuart3: clkuart3 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <0>;
 		compatible = "ti,keystone,psc-clock";
 		clocks = <&clkmodrst0>;

@@ -1,19 +1,37 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 /dts-v1/;
 
 #include "aspeed-g4.dtsi"
 #include <dt-bindings/gpio/aspeed-gpio.h>
+=======
+// SPDX-License-Identifier: GPL-2.0
+/dts-v1/;
+
+#include "aspeed-g4.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "Palmetto BMC";
 	compatible = "tyan,palmetto-bmc", "aspeed,ast2400";
 
+<<<<<<< HEAD
+=======
+	aliases {
+		serial4 = &uart5;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chosen {
 		stdout-path = &uart5;
 		bootargs = "console=ttyS4,115200 earlyprintk";
 	};
 
+<<<<<<< HEAD
 	memory@40000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x40000000 0x20000000>;
 	};
 
@@ -27,6 +45,7 @@
 			reg = <0x5f000000 0x01000000>; /* 16M */
 		};
 	};
+<<<<<<< HEAD
 
 	leds {
 		compatible = "gpio-leds";
@@ -53,6 +72,8 @@
 			linux,code = <ASPEED_GPIO(P, 5)>;
 		};
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &fmc {
@@ -61,15 +82,21 @@
 		status = "okay";
 		m25p,fast-read;
 		label = "bmc";
+<<<<<<< HEAD
 #include "openbmc-flash-layout.dtsi"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
 &spi {
 	status = "okay";
+<<<<<<< HEAD
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_spi1debug_default>;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flash@0 {
 		status = "okay";
 		m25p,fast-read;
@@ -77,6 +104,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &pinctrl {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flbusy_default &pinctrl_flwp_default
@@ -100,6 +128,8 @@
 			&pinctrl_nri1_default>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart5 {
 	status = "okay";
 };
@@ -112,6 +142,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_rmii1_default>;
 };
+<<<<<<< HEAD
 
 &i2c0 {
 	status = "okay";
@@ -317,3 +348,5 @@
 		line-name = "BMC_TPM_INT_N";
 	};
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

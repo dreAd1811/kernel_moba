@@ -14,7 +14,11 @@
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/physmap.h>
 #include <linux/mtd/nand-gpio.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/spi/spi.h>
 #include <linux/spi/pxa2xx_spi.h>
 
@@ -176,6 +180,7 @@ static inline void cmx255_init_nor(void) {}
 #endif
 
 #if defined(CONFIG_MTD_NAND_GPIO) || defined(CONFIG_MTD_NAND_GPIO_MODULE)
+<<<<<<< HEAD
 
 static struct gpiod_lookup_table cmx255_nand_gpiod_table = {
 	.dev_id         = "gpio-nand",
@@ -187,6 +192,8 @@ static struct gpiod_lookup_table cmx255_nand_gpiod_table = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct resource cmx255_nand_resource[] = {
 	[0] = {
 		.start = PXA_CS1_PHYS,
@@ -209,6 +216,14 @@ static struct mtd_partition cmx255_nand_parts[] = {
 };
 
 static struct gpio_nand_platdata cmx255_nand_platdata = {
+<<<<<<< HEAD
+=======
+	.gpio_nce = GPIO_NAND_CS,
+	.gpio_cle = GPIO_NAND_CLE,
+	.gpio_ale = GPIO_NAND_ALE,
+	.gpio_rdy = GPIO_NAND_RB,
+	.gpio_nwp = -1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.parts = cmx255_nand_parts,
 	.num_parts = ARRAY_SIZE(cmx255_nand_parts),
 	.chip_delay = 25,
@@ -226,7 +241,10 @@ static struct platform_device cmx255_nand = {
 
 static void __init cmx255_init_nand(void)
 {
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&cmx255_nand_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_device_register(&cmx255_nand);
 }
 #else

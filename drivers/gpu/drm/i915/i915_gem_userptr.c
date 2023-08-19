@@ -82,11 +82,19 @@ static void cancel_userptr(struct work_struct *work)
 	/* We are inside a kthread context and can't be interrupted */
 	if (i915_gem_object_unbind(obj) == 0)
 		__i915_gem_object_put_pages(obj, I915_MM_NORMAL);
+<<<<<<< HEAD
 	WARN_ONCE(i915_gem_object_has_pages(obj),
 		  "Failed to release pages: bind_count=%d, pages_pin_count=%d, pin_global=%d\n",
 		  obj->bind_count,
 		  atomic_read(&obj->mm.pages_pin_count),
 		  obj->pin_global);
+=======
+	WARN_ONCE(obj->mm.pages,
+		  "Failed to release pages: bind_count=%d, pages_pin_count=%d, pin_display=%d\n",
+		  obj->bind_count,
+		  atomic_read(&obj->mm.pages_pin_count),
+		  obj->pin_display);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&obj->base.dev->struct_mutex);
 
@@ -112,11 +120,18 @@ static void del_object(struct i915_mmu_object *mo)
 	mo->attached = false;
 }
 
+<<<<<<< HEAD
 static int i915_gem_userptr_mn_invalidate_range_start(struct mmu_notifier *_mn,
 						       struct mm_struct *mm,
 						       unsigned long start,
 						       unsigned long end,
 						       bool blockable)
+=======
+static void i915_gem_userptr_mn_invalidate_range_start(struct mmu_notifier *_mn,
+						       struct mm_struct *mm,
+						       unsigned long start,
+						       unsigned long end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct i915_mmu_notifier *mn =
 		container_of(_mn, struct i915_mmu_notifier, mn);
@@ -125,7 +140,11 @@ static int i915_gem_userptr_mn_invalidate_range_start(struct mmu_notifier *_mn,
 	LIST_HEAD(cancelled);
 
 	if (RB_EMPTY_ROOT(&mn->objects.rb_root))
+<<<<<<< HEAD
 		return 0;
+=======
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* interval ranges are inclusive, but invalidate range is exclusive */
 	end--;
@@ -133,10 +152,13 @@ static int i915_gem_userptr_mn_invalidate_range_start(struct mmu_notifier *_mn,
 	spin_lock(&mn->lock);
 	it = interval_tree_iter_first(&mn->objects, start, end);
 	while (it) {
+<<<<<<< HEAD
 		if (!blockable) {
 			spin_unlock(&mn->lock);
 			return -EAGAIN;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* The mmu_object is released late when destroying the
 		 * GEM object so it is entirely possible to gain a
 		 * reference on an object in the process of being freed
@@ -159,8 +181,11 @@ static int i915_gem_userptr_mn_invalidate_range_start(struct mmu_notifier *_mn,
 
 	if (!list_empty(&cancelled))
 		flush_workqueue(mn->wq);
+<<<<<<< HEAD
 
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct mmu_notifier_ops i915_gem_userptr_notifier = {
@@ -171,6 +196,10 @@ static struct i915_mmu_notifier *
 i915_mmu_notifier_create(struct mm_struct *mm)
 {
 	struct i915_mmu_notifier *mn;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mn = kmalloc(sizeof(*mn), GFP_KERNEL);
 	if (mn == NULL)
@@ -179,14 +208,29 @@ i915_mmu_notifier_create(struct mm_struct *mm)
 	spin_lock_init(&mn->lock);
 	mn->mn.ops = &i915_gem_userptr_notifier;
 	mn->objects = RB_ROOT_CACHED;
+<<<<<<< HEAD
 	mn->wq = alloc_workqueue("i915-userptr-release",
 				 WQ_UNBOUND | WQ_MEM_RECLAIM,
 				 0);
+=======
+	mn->wq = alloc_workqueue("i915-userptr-release", WQ_UNBOUND, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mn->wq == NULL) {
 		kfree(mn);
 		return ERR_PTR(-ENOMEM);
 	}
 
+<<<<<<< HEAD
+=======
+	 /* Protected by mmap_sem (write-lock) */
+	ret = __mmu_notifier_register(&mn->mn, mm);
+	if (ret) {
+		destroy_workqueue(mn->wq);
+		kfree(mn);
+		return ERR_PTR(ret);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mn;
 }
 
@@ -210,13 +254,18 @@ i915_gem_userptr_release__mmu_notifier(struct drm_i915_gem_object *obj)
 static struct i915_mmu_notifier *
 i915_mmu_notifier_find(struct i915_mm_struct *mm)
 {
+<<<<<<< HEAD
 	struct i915_mmu_notifier *mn;
 	int err = 0;
+=======
+	struct i915_mmu_notifier *mn = mm->mn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mn = mm->mn;
 	if (mn)
 		return mn;
 
+<<<<<<< HEAD
 	mn = i915_mmu_notifier_create(mm->mm);
 	if (IS_ERR(mn))
 		err = PTR_ERR(mn);
@@ -236,16 +285,28 @@ i915_mmu_notifier_find(struct i915_mm_struct *mm)
 		 * notifier, we can cancel our own errors.
 		 */
 		err = 0;
+=======
+	down_write(&mm->mm->mmap_sem);
+	mutex_lock(&mm->i915->mm_lock);
+	if ((mn = mm->mn) == NULL) {
+		mn = i915_mmu_notifier_create(mm->mm);
+		if (!IS_ERR(mn))
+			mm->mn = mn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&mm->i915->mm_lock);
 	up_write(&mm->mm->mmap_sem);
 
+<<<<<<< HEAD
 	if (mn && !IS_ERR(mn)) {
 		destroy_workqueue(mn->wq);
 		kfree(mn);
 	}
 
 	return err ? ERR_PTR(err) : mm->mn;
+=======
+	return mn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -418,6 +479,7 @@ struct get_pages_work {
 	struct task_struct *task;
 };
 
+<<<<<<< HEAD
 static struct sg_table *
 __i915_gem_userptr_alloc_pages(struct drm_i915_gem_object *obj,
 			       struct page **pvec, int num_pages)
@@ -459,6 +521,66 @@ alloc_table:
 	__i915_gem_object_set_pages(obj, st, sg_page_sizes);
 
 	return st;
+=======
+#if IS_ENABLED(CONFIG_SWIOTLB)
+#define swiotlb_active() swiotlb_nr_tbl()
+#else
+#define swiotlb_active() 0
+#endif
+
+static int
+st_set_pages(struct sg_table **st, struct page **pvec, int num_pages)
+{
+	struct scatterlist *sg;
+	int ret, n;
+
+	*st = kmalloc(sizeof(**st), GFP_KERNEL);
+	if (*st == NULL)
+		return -ENOMEM;
+
+	if (swiotlb_active()) {
+		ret = sg_alloc_table(*st, num_pages, GFP_KERNEL);
+		if (ret)
+			goto err;
+
+		for_each_sg((*st)->sgl, sg, num_pages, n)
+			sg_set_page(sg, pvec[n], PAGE_SIZE, 0);
+	} else {
+		ret = sg_alloc_table_from_pages(*st, pvec, num_pages,
+						0, num_pages << PAGE_SHIFT,
+						GFP_KERNEL);
+		if (ret)
+			goto err;
+	}
+
+	return 0;
+
+err:
+	kfree(*st);
+	*st = NULL;
+	return ret;
+}
+
+static struct sg_table *
+__i915_gem_userptr_set_pages(struct drm_i915_gem_object *obj,
+			     struct page **pvec, int num_pages)
+{
+	struct sg_table *pages;
+	int ret;
+
+	ret = st_set_pages(&pages, pvec, num_pages);
+	if (ret)
+		return ERR_PTR(ret);
+
+	ret = i915_gem_gtt_prepare_pages(obj, pages);
+	if (ret) {
+		sg_free_table(pages);
+		kfree(pages);
+		return ERR_PTR(ret);
+	}
+
+	return pages;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -514,7 +636,11 @@ __i915_gem_userptr_get_pages_worker(struct work_struct *_work)
 		struct mm_struct *mm = obj->userptr.mm->mm;
 		unsigned int flags = 0;
 
+<<<<<<< HEAD
 		if (!i915_gem_object_is_readonly(obj))
+=======
+		if (!obj->userptr.read_only)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			flags |= FOLL_WRITE;
 
 		ret = -EFAULT;
@@ -542,9 +668,15 @@ __i915_gem_userptr_get_pages_worker(struct work_struct *_work)
 		struct sg_table *pages = ERR_PTR(ret);
 
 		if (pinned == npages) {
+<<<<<<< HEAD
 			pages = __i915_gem_userptr_alloc_pages(obj, pvec,
 							       npages);
 			if (!IS_ERR(pages)) {
+=======
+			pages = __i915_gem_userptr_set_pages(obj, pvec, npages);
+			if (!IS_ERR(pages)) {
+				__i915_gem_object_set_pages(obj, pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pinned = 0;
 				pages = NULL;
 			}
@@ -556,7 +688,11 @@ __i915_gem_userptr_get_pages_worker(struct work_struct *_work)
 	}
 	mutex_unlock(&obj->mm.lock);
 
+<<<<<<< HEAD
 	release_pages(pvec, pinned);
+=======
+	release_pages(pvec, pinned, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvfree(pvec);
 
 	i915_gem_object_put(obj);
@@ -605,7 +741,12 @@ __i915_gem_userptr_get_pages_schedule(struct drm_i915_gem_object *obj)
 	return ERR_PTR(-EAGAIN);
 }
 
+<<<<<<< HEAD
 static int i915_gem_userptr_get_pages(struct drm_i915_gem_object *obj)
+=======
+static struct sg_table *
+i915_gem_userptr_get_pages(struct drm_i915_gem_object *obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const int num_pages = obj->base.size >> PAGE_SHIFT;
 	struct mm_struct *mm = obj->userptr.mm->mm;
@@ -634,9 +775,15 @@ static int i915_gem_userptr_get_pages(struct drm_i915_gem_object *obj)
 	if (obj->userptr.work) {
 		/* active flag should still be held for the pending work */
 		if (IS_ERR(obj->userptr.work))
+<<<<<<< HEAD
 			return PTR_ERR(obj->userptr.work);
 		else
 			return -EAGAIN;
+=======
+			return ERR_CAST(obj->userptr.work);
+		else
+			return ERR_PTR(-EAGAIN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pvec = NULL;
@@ -650,7 +797,11 @@ static int i915_gem_userptr_get_pages(struct drm_i915_gem_object *obj)
 		if (pvec) /* defer to worker if malloc fails */
 			pinned = __get_user_pages_fast(obj->userptr.ptr,
 						       num_pages,
+<<<<<<< HEAD
 						       !i915_gem_object_is_readonly(obj),
+=======
+						       !obj->userptr.read_only,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						       pvec);
 	}
 
@@ -662,17 +813,28 @@ static int i915_gem_userptr_get_pages(struct drm_i915_gem_object *obj)
 		pages = __i915_gem_userptr_get_pages_schedule(obj);
 		active = pages == ERR_PTR(-EAGAIN);
 	} else {
+<<<<<<< HEAD
 		pages = __i915_gem_userptr_alloc_pages(obj, pvec, num_pages);
+=======
+		pages = __i915_gem_userptr_set_pages(obj, pvec, num_pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		active = !IS_ERR(pages);
 	}
 	if (active)
 		__i915_gem_userptr_set_active(obj, true);
 
 	if (IS_ERR(pages))
+<<<<<<< HEAD
 		release_pages(pvec, pinned);
 	kvfree(pvec);
 
 	return PTR_ERR_OR_ZERO(pages);
+=======
+		release_pages(pvec, pinned, 0);
+	kvfree(pvec);
+
+	return pages;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -691,8 +853,33 @@ i915_gem_userptr_put_pages(struct drm_i915_gem_object *obj,
 	i915_gem_gtt_finish_pages(obj, pages);
 
 	for_each_sgt_page(page, sgt_iter, pages) {
+<<<<<<< HEAD
 		if (obj->mm.dirty)
 			set_page_dirty(page);
+=======
+		if (obj->mm.dirty && trylock_page(page)) {
+			/*
+			 * As this may not be anonymous memory (e.g. shmem)
+			 * but exist on a real mapping, we have to lock
+			 * the page in order to dirty it -- holding
+			 * the page reference is not sufficient to
+			 * prevent the inode from being truncated.
+			 * Play safe and take the lock.
+			 *
+			 * However...!
+			 *
+			 * The mmu-notifier can be invalidated for a
+			 * migrate_page, that is alreadying holding the lock
+			 * on the page. Such a try_to_unmap() will result
+			 * in us calling put_pages() and so recursively try
+			 * to lock the page. We avoid that deadlock with
+			 * a trylock_page() and in exchange we risk missing
+			 * some page dirtying.
+			 */
+			set_page_dirty(page);
+			unlock_page(page);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		mark_page_accessed(page);
 		put_page(page);
@@ -728,7 +915,11 @@ static const struct drm_i915_gem_object_ops i915_gem_userptr_ops = {
 	.release = i915_gem_userptr_release,
 };
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Creates a new mm object that wraps some normal memory from the process
  * context - user memory.
  *
@@ -764,9 +955,13 @@ static const struct drm_i915_gem_object_ops i915_gem_userptr_ops = {
  * dma-buf instead.
  */
 int
+<<<<<<< HEAD
 i915_gem_userptr_ioctl(struct drm_device *dev,
 		       void *data,
 		       struct drm_file *file)
+=======
+i915_gem_userptr_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *dev_priv = to_i915(dev);
 	struct drm_i915_gem_userptr *args = data;
@@ -796,6 +991,7 @@ i915_gem_userptr_ioctl(struct drm_device *dev,
 		return -EFAULT;
 
 	if (args->flags & I915_USERPTR_READ_ONLY) {
+<<<<<<< HEAD
 		struct i915_hw_ppgtt *ppgtt;
 
 		/*
@@ -805,6 +1001,12 @@ i915_gem_userptr_ioctl(struct drm_device *dev,
 		ppgtt = dev_priv->kernel_context->ppgtt;
 		if (!ppgtt || !ppgtt->vm.has_read_only)
 			return -ENODEV;
+=======
+		/* On almost all of the current hw, we cannot tell the GPU that a
+		 * page is readonly, so this is just a placeholder in the uAPI.
+		 */
+		return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	obj = i915_gem_object_alloc(dev_priv);
@@ -813,6 +1015,7 @@ i915_gem_userptr_ioctl(struct drm_device *dev,
 
 	drm_gem_private_object_init(dev, &obj->base, args->user_size);
 	i915_gem_object_init(obj, &i915_gem_userptr_ops);
+<<<<<<< HEAD
 	obj->read_domains = I915_GEM_DOMAIN_CPU;
 	obj->write_domain = I915_GEM_DOMAIN_CPU;
 	i915_gem_object_set_cache_coherency(obj, I915_CACHE_LLC);
@@ -820,6 +1023,14 @@ i915_gem_userptr_ioctl(struct drm_device *dev,
 	obj->userptr.ptr = args->user_ptr;
 	if (args->flags & I915_USERPTR_READ_ONLY)
 		i915_gem_object_set_readonly(obj);
+=======
+	obj->base.read_domains = I915_GEM_DOMAIN_CPU;
+	obj->base.write_domain = I915_GEM_DOMAIN_CPU;
+	i915_gem_object_set_cache_coherency(obj, I915_CACHE_LLC);
+
+	obj->userptr.ptr = args->user_ptr;
+	obj->userptr.read_only = !!(args->flags & I915_USERPTR_READ_ONLY);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* And keep a pointer to the current->mm for resolving the user pages
 	 * at binding. This means that we need to hook into the mmu_notifier
@@ -846,9 +1057,13 @@ int i915_gem_init_userptr(struct drm_i915_private *dev_priv)
 	hash_init(dev_priv->mm_structs);
 
 	dev_priv->mm.userptr_wq =
+<<<<<<< HEAD
 		alloc_workqueue("i915-userptr-acquire",
 				WQ_HIGHPRI | WQ_UNBOUND,
 				0);
+=======
+		alloc_workqueue("i915-userptr-acquire", WQ_HIGHPRI, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev_priv->mm.userptr_wq)
 		return -ENOMEM;
 

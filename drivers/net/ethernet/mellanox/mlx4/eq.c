@@ -1212,9 +1212,14 @@ int mlx4_init_eq_table(struct mlx4_dev *dev)
 	}
 
 	priv->eq_table.irq_names =
+<<<<<<< HEAD
 		kmalloc_array(MLX4_IRQNAME_SIZE,
 			      (dev->caps.num_comp_vectors + 1),
 			      GFP_KERNEL);
+=======
+		kmalloc(MLX4_IRQNAME_SIZE * (dev->caps.num_comp_vectors + 1),
+			GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->eq_table.irq_names) {
 		err = -ENOMEM;
 		goto err_out_clr_int;

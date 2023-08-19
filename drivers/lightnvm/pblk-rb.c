@@ -38,7 +38,11 @@ void pblk_rb_data_free(struct pblk_rb *rb)
 /*
  * Initialize ring buffer. The data and metadata buffers must be previously
  * allocated and their size must be a power of two
+<<<<<<< HEAD
  * (Documentation/core-api/circular-buffers.rst)
+=======
+ * (Documentation/circular-buffers.txt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int pblk_rb_init(struct pblk_rb *rb, struct pblk_rb_entry *rb_entry_base,
 		 unsigned int power_size, unsigned int power_seg_sz)
@@ -54,7 +58,11 @@ int pblk_rb_init(struct pblk_rb *rb, struct pblk_rb_entry *rb_entry_base,
 	rb->seg_size = (1 << power_seg_sz);
 	rb->nr_entries = (1 << power_size);
 	rb->mem = rb->subm = rb->sync = rb->l2p_update = 0;
+<<<<<<< HEAD
 	rb->flush_point = EMPTY_ENTRY;
+=======
+	rb->sync_point = EMPTY_ENTRY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&rb->w_lock);
 	spin_lock_init(&rb->s_lock);
@@ -111,8 +119,13 @@ int pblk_rb_init(struct pblk_rb *rb, struct pblk_rb_entry *rb_entry_base,
 	} while (iter > 0);
 	up_write(&pblk_rb_lock);
 
+<<<<<<< HEAD
 #ifdef CONFIG_NVM_PBLK_DEBUG
 	atomic_set(&rb->inflight_flush_point, 0);
+=======
+#ifdef CONFIG_NVM_DEBUG
+	atomic_set(&rb->inflight_sync_point, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/*
@@ -200,7 +213,12 @@ unsigned int pblk_rb_read_commit(struct pblk_rb *rb, unsigned int nr_entries)
 	return subm;
 }
 
+<<<<<<< HEAD
 static int __pblk_rb_update_l2p(struct pblk_rb *rb, unsigned int to_update)
+=======
+static int __pblk_rb_update_l2p(struct pblk_rb *rb, unsigned int *l2p_upd,
+				unsigned int to_update)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pblk *pblk = container_of(rb, struct pblk, rwb);
 	struct pblk_line *line;
@@ -211,7 +229,11 @@ static int __pblk_rb_update_l2p(struct pblk_rb *rb, unsigned int to_update)
 	int flags;
 
 	for (i = 0; i < to_update; i++) {
+<<<<<<< HEAD
 		entry = &rb->entries[rb->l2p_update];
+=======
+		entry = &rb->entries[*l2p_upd];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		w_ctx = &entry->w_ctx;
 
 		flags = READ_ONCE(entry->w_ctx.flags);
@@ -225,10 +247,17 @@ static int __pblk_rb_update_l2p(struct pblk_rb *rb, unsigned int to_update)
 		pblk_update_map_dev(pblk, w_ctx->lba, w_ctx->ppa,
 							entry->cacheline);
 
+<<<<<<< HEAD
 		line = &pblk->lines[pblk_ppa_to_line(w_ctx->ppa)];
 		kref_put(&line->ref, pblk_line_put);
 		clean_wctx(w_ctx);
 		rb->l2p_update = (rb->l2p_update + 1) & (rb->nr_entries - 1);
+=======
+		line = &pblk->lines[pblk_tgt_ppa_to_line(w_ctx->ppa)];
+		kref_put(&line->ref, pblk_line_put);
+		clean_wctx(w_ctx);
+		*l2p_upd = (*l2p_upd + 1) & (rb->nr_entries - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pblk_rl_out(&pblk->rl, user_io, gc_io);
@@ -256,7 +285,11 @@ static int pblk_rb_update_l2p(struct pblk_rb *rb, unsigned int nr_entries,
 
 	count = nr_entries - space;
 	/* l2p_update used exclusively under rb->w_lock */
+<<<<<<< HEAD
 	ret = __pblk_rb_update_l2p(rb, count);
+=======
+	ret = __pblk_rb_update_l2p(rb, &rb->l2p_update, count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	return ret;
@@ -278,7 +311,11 @@ void pblk_rb_sync_l2p(struct pblk_rb *rb)
 	sync = smp_load_acquire(&rb->sync);
 
 	to_update = pblk_rb_ring_count(sync, rb->l2p_update, rb->nr_entries);
+<<<<<<< HEAD
 	__pblk_rb_update_l2p(rb, to_update);
+=======
+	__pblk_rb_update_l2p(rb, &rb->l2p_update, to_update);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock(&rb->w_lock);
 }
@@ -308,7 +345,11 @@ void pblk_rb_write_entry_user(struct pblk_rb *rb, void *data,
 
 	entry = &rb->entries[ring_pos];
 	flags = READ_ONCE(entry->w_ctx.flags);
+<<<<<<< HEAD
 #ifdef CONFIG_NVM_PBLK_DEBUG
+=======
+#ifdef CONFIG_NVM_DEBUG
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Caller must guarantee that the entry is free */
 	BUG_ON(!(flags & PBLK_WRITABLE_ENTRY));
 #endif
@@ -323,8 +364,13 @@ void pblk_rb_write_entry_user(struct pblk_rb *rb, void *data,
 }
 
 void pblk_rb_write_entry_gc(struct pblk_rb *rb, void *data,
+<<<<<<< HEAD
 			    struct pblk_w_ctx w_ctx, struct pblk_line *line,
 			    u64 paddr, unsigned int ring_pos)
+=======
+			    struct pblk_w_ctx w_ctx, struct pblk_line *gc_line,
+			    unsigned int ring_pos)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pblk *pblk = container_of(rb, struct pblk, rwb);
 	struct pblk_rb_entry *entry;
@@ -332,14 +378,22 @@ void pblk_rb_write_entry_gc(struct pblk_rb *rb, void *data,
 
 	entry = &rb->entries[ring_pos];
 	flags = READ_ONCE(entry->w_ctx.flags);
+<<<<<<< HEAD
 #ifdef CONFIG_NVM_PBLK_DEBUG
+=======
+#ifdef CONFIG_NVM_DEBUG
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Caller must guarantee that the entry is free */
 	BUG_ON(!(flags & PBLK_WRITABLE_ENTRY));
 #endif
 
 	__pblk_rb_write_entry(rb, data, w_ctx, entry);
 
+<<<<<<< HEAD
 	if (!pblk_update_map_gc(pblk, w_ctx.lba, entry->cacheline, line, paddr))
+=======
+	if (!pblk_update_map_gc(pblk, w_ctx.lba, entry->cacheline, gc_line))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		entry->w_ctx.lba = ADDR_EMPTY;
 
 	flags = w_ctx.flags | PBLK_WRITTEN_DATA;
@@ -348,6 +402,7 @@ void pblk_rb_write_entry_gc(struct pblk_rb *rb, void *data,
 	smp_store_release(&entry->w_ctx.flags, flags);
 }
 
+<<<<<<< HEAD
 static int pblk_rb_flush_point_set(struct pblk_rb *rb, struct bio *bio,
 				   unsigned int pos)
 {
@@ -378,6 +433,44 @@ static int pblk_rb_flush_point_set(struct pblk_rb *rb, struct bio *bio,
 	pblk_rb_sync_end(rb, NULL);
 
 	return bio ? 1 : 0;
+=======
+static int pblk_rb_sync_point_set(struct pblk_rb *rb, struct bio *bio,
+				  unsigned int pos)
+{
+	struct pblk_rb_entry *entry;
+	unsigned int subm, sync_point;
+	int flags;
+
+	subm = READ_ONCE(rb->subm);
+
+#ifdef CONFIG_NVM_DEBUG
+	atomic_inc(&rb->inflight_sync_point);
+#endif
+
+	if (pos == subm)
+		return 0;
+
+	sync_point = (pos == 0) ? (rb->nr_entries - 1) : (pos - 1);
+	entry = &rb->entries[sync_point];
+
+	flags = READ_ONCE(entry->w_ctx.flags);
+	flags |= PBLK_FLUSH_ENTRY;
+
+	/* Release flags on context. Protect from writes */
+	smp_store_release(&entry->w_ctx.flags, flags);
+
+	/* Protect syncs */
+	smp_store_release(&rb->sync_point, sync_point);
+
+	if (!bio)
+		return 0;
+
+	spin_lock_irq(&rb->s_lock);
+	bio_list_add(&entry->w_ctx.bios, bio);
+	spin_unlock_irq(&rb->s_lock);
+
+	return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __pblk_rb_may_write(struct pblk_rb *rb, unsigned int nr_entries,
@@ -416,10 +509,17 @@ void pblk_rb_flush(struct pblk_rb *rb)
 	struct pblk *pblk = container_of(rb, struct pblk, rwb);
 	unsigned int mem = READ_ONCE(rb->mem);
 
+<<<<<<< HEAD
 	if (pblk_rb_flush_point_set(rb, NULL, mem))
 		return;
 
 	pblk_write_kick(pblk);
+=======
+	if (pblk_rb_sync_point_set(rb, NULL, mem))
+		return;
+
+	pblk_write_should_kick(pblk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pblk_rb_may_write_flush(struct pblk_rb *rb, unsigned int nr_entries,
@@ -437,14 +537,24 @@ static int pblk_rb_may_write_flush(struct pblk_rb *rb, unsigned int nr_entries,
 	if (bio->bi_opf & REQ_PREFLUSH) {
 		struct pblk *pblk = container_of(rb, struct pblk, rwb);
 
+<<<<<<< HEAD
 		atomic64_inc(&pblk->nr_flush);
 		if (pblk_rb_flush_point_set(&pblk->rwb, bio, mem))
+=======
+#ifdef CONFIG_NVM_DEBUG
+		atomic_long_inc(&pblk->nr_flush);
+#endif
+		if (pblk_rb_sync_point_set(&pblk->rwb, bio, mem))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*io_ret = NVM_IO_OK;
 	}
 
 	/* Protect from read count */
 	smp_store_release(&rb->mem, mem);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 1;
 }
 
@@ -503,6 +613,48 @@ int pblk_rb_may_write_gc(struct pblk_rb *rb, unsigned int nr_entries,
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * The caller of this function must ensure that the backpointer will not
+ * overwrite the entries passed on the list.
+ */
+unsigned int pblk_rb_read_to_bio_list(struct pblk_rb *rb, struct bio *bio,
+				      struct list_head *list,
+				      unsigned int max)
+{
+	struct pblk_rb_entry *entry, *tentry;
+	struct page *page;
+	unsigned int read = 0;
+	int ret;
+
+	list_for_each_entry_safe(entry, tentry, list, index) {
+		if (read > max) {
+			pr_err("pblk: too many entries on list\n");
+			goto out;
+		}
+
+		page = virt_to_page(entry->data);
+		if (!page) {
+			pr_err("pblk: could not allocate write bio page\n");
+			goto out;
+		}
+
+		ret = bio_add_page(bio, page, rb->seg_size, 0);
+		if (ret != rb->seg_size) {
+			pr_err("pblk: could not add page to write bio\n");
+			goto out;
+		}
+
+		list_del(&entry->index);
+		read++;
+	}
+
+out:
+	return read;
+}
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Read available entries on rb and add them to the given bio. To avoid a memory
  * copy, a page reference to the write buffer is used to be added to the bio.
  *
@@ -510,13 +662,21 @@ int pblk_rb_may_write_gc(struct pblk_rb *rb, unsigned int nr_entries,
  * persist data on the write buffer to the media.
  */
 unsigned int pblk_rb_read_to_bio(struct pblk_rb *rb, struct nvm_rq *rqd,
+<<<<<<< HEAD
 				 unsigned int pos, unsigned int nr_entries,
 				 unsigned int count)
+=======
+				 struct bio *bio, unsigned int pos,
+				 unsigned int nr_entries, unsigned int count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pblk *pblk = container_of(rb, struct pblk, rwb);
 	struct request_queue *q = pblk->dev->q;
 	struct pblk_c_ctx *c_ctx = nvm_rq_to_pdu(rqd);
+<<<<<<< HEAD
 	struct bio *bio = rqd->bio;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pblk_rb_entry *entry;
 	struct page *page;
 	unsigned int pad = 0, to_read = nr_entries;
@@ -547,7 +707,11 @@ try:
 
 		page = virt_to_page(entry->data);
 		if (!page) {
+<<<<<<< HEAD
 			pblk_err(pblk, "could not allocate write bio page\n");
+=======
+			pr_err("pblk: could not allocate write bio page\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			flags &= ~PBLK_WRITTEN_DATA;
 			flags |= PBLK_SUBMITTED_ENTRY;
 			/* Release flags on context. Protect from writes */
@@ -557,7 +721,11 @@ try:
 
 		if (bio_add_pc_page(q, bio, page, rb->seg_size, 0) !=
 								rb->seg_size) {
+<<<<<<< HEAD
 			pblk_err(pblk, "could not add page to write bio\n");
+=======
+			pr_err("pblk: could not add page to write bio\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			flags &= ~PBLK_WRITTEN_DATA;
 			flags |= PBLK_SUBMITTED_ENTRY;
 			/* Release flags on context. Protect from writes */
@@ -565,6 +733,24 @@ try:
 			return NVM_IO_ERR;
 		}
 
+<<<<<<< HEAD
+=======
+		if (flags & PBLK_FLUSH_ENTRY) {
+			unsigned int sync_point;
+
+			sync_point = READ_ONCE(rb->sync_point);
+			if (sync_point == pos) {
+				/* Protect syncs */
+				smp_store_release(&rb->sync_point, EMPTY_ENTRY);
+			}
+
+			flags &= ~PBLK_FLUSH_ENTRY;
+#ifdef CONFIG_NVM_DEBUG
+			atomic_dec(&rb->inflight_sync_point);
+#endif
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		flags &= ~PBLK_WRITTEN_DATA;
 		flags |= PBLK_SUBMITTED_ENTRY;
 
@@ -576,6 +762,7 @@ try:
 
 	if (pad) {
 		if (pblk_bio_add_pages(pblk, bio, GFP_KERNEL, pad)) {
+<<<<<<< HEAD
 			pblk_err(pblk, "could not pad page in write bio\n");
 			return NVM_IO_ERR;
 		}
@@ -590,6 +777,16 @@ try:
 
 #ifdef CONFIG_NVM_PBLK_DEBUG
 	atomic_long_add(pad, &pblk->padded_writes);
+=======
+			pr_err("pblk: could not pad page in write bio\n");
+			return NVM_IO_ERR;
+		}
+	}
+
+#ifdef CONFIG_NVM_DEBUG
+	atomic_long_add(pad, &((struct pblk *)
+			(container_of(rb, struct pblk, rwb)))->padded_writes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	return NVM_IO_OK;
@@ -613,7 +810,11 @@ int pblk_rb_copy_to_bio(struct pblk_rb *rb, struct bio *bio, sector_t lba,
 	int ret = 1;
 
 
+<<<<<<< HEAD
 #ifdef CONFIG_NVM_PBLK_DEBUG
+=======
+#ifdef CONFIG_NVM_DEBUG
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Caller must ensure that the access will not cause an overflow */
 	BUG_ON(pos >= rb->nr_entries);
 #endif
@@ -680,6 +881,7 @@ void pblk_rb_sync_end(struct pblk_rb *rb, unsigned long *flags)
 
 unsigned int pblk_rb_sync_advance(struct pblk_rb *rb, unsigned int nr_entries)
 {
+<<<<<<< HEAD
 	unsigned int sync, flush_point;
 	lockdep_assert_held(&rb->s_lock);
 
@@ -698,6 +900,17 @@ unsigned int pblk_rb_sync_advance(struct pblk_rb *rb, unsigned int nr_entries)
 	}
 
 	sync = (sync + nr_entries) & (rb->nr_entries - 1);
+=======
+	unsigned int sync;
+	unsigned int i;
+
+	lockdep_assert_held(&rb->s_lock);
+
+	sync = READ_ONCE(rb->sync);
+
+	for (i = 0; i < nr_entries; i++)
+		sync = (sync + 1) & (rb->nr_entries - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Protect from counts */
 	smp_store_release(&rb->sync, sync);
@@ -705,6 +918,7 @@ unsigned int pblk_rb_sync_advance(struct pblk_rb *rb, unsigned int nr_entries)
 	return sync;
 }
 
+<<<<<<< HEAD
 /* Calculate how many sectors to submit up to the current flush point. */
 unsigned int pblk_rb_flush_point_count(struct pblk_rb *rb)
 {
@@ -726,6 +940,24 @@ unsigned int pblk_rb_flush_point_count(struct pblk_rb *rb)
 	to_flush = pblk_rb_ring_count(flush_point, sync, rb->nr_entries) + 1;
 
 	return (submitted < to_flush) ? (to_flush - submitted) : 0;
+=======
+unsigned int pblk_rb_sync_point_count(struct pblk_rb *rb)
+{
+	unsigned int subm, sync_point;
+	unsigned int count;
+
+	/* Protect syncs */
+	sync_point = smp_load_acquire(&rb->sync_point);
+	if (sync_point == EMPTY_ENTRY)
+		return 0;
+
+	subm = READ_ONCE(rb->subm);
+
+	/* The sync point itself counts as a sector to sync */
+	count = pblk_rb_ring_count(sync_point, subm, rb->nr_entries) + 1;
+
+	return count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -765,7 +997,11 @@ int pblk_rb_tear_down_check(struct pblk_rb *rb)
 
 	if ((rb->mem == rb->subm) && (rb->subm == rb->sync) &&
 				(rb->sync == rb->l2p_update) &&
+<<<<<<< HEAD
 				(rb->flush_point == EMPTY_ENTRY)) {
+=======
+				(rb->sync_point == EMPTY_ENTRY)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -784,8 +1020,13 @@ int pblk_rb_tear_down_check(struct pblk_rb *rb)
 	}
 
 out:
+<<<<<<< HEAD
 	spin_unlock(&rb->w_lock);
 	spin_unlock_irq(&rb->s_lock);
+=======
+	spin_unlock_irq(&rb->s_lock);
+	spin_unlock(&rb->w_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -812,7 +1053,11 @@ ssize_t pblk_rb_sysfs(struct pblk_rb *rb, char *buf)
 		queued_entries++;
 	spin_unlock_irq(&rb->s_lock);
 
+<<<<<<< HEAD
 	if (rb->flush_point != EMPTY_ENTRY)
+=======
+	if (rb->sync_point != EMPTY_ENTRY)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		offset = scnprintf(buf, PAGE_SIZE,
 			"%u\t%u\t%u\t%u\t%u\t%u\t%u - %u/%u/%u - %d\n",
 			rb->nr_entries,
@@ -820,6 +1065,7 @@ ssize_t pblk_rb_sysfs(struct pblk_rb *rb, char *buf)
 			rb->subm,
 			rb->sync,
 			rb->l2p_update,
+<<<<<<< HEAD
 #ifdef CONFIG_NVM_PBLK_DEBUG
 			atomic_read(&rb->inflight_flush_point),
 #else
@@ -829,6 +1075,17 @@ ssize_t pblk_rb_sysfs(struct pblk_rb *rb, char *buf)
 			pblk_rb_read_count(rb),
 			pblk_rb_space(rb),
 			pblk_rb_flush_point_count(rb),
+=======
+#ifdef CONFIG_NVM_DEBUG
+			atomic_read(&rb->inflight_sync_point),
+#else
+			0,
+#endif
+			rb->sync_point,
+			pblk_rb_read_count(rb),
+			pblk_rb_space(rb),
+			pblk_rb_sync_point_count(rb),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			queued_entries);
 	else
 		offset = scnprintf(buf, PAGE_SIZE,
@@ -838,14 +1095,23 @@ ssize_t pblk_rb_sysfs(struct pblk_rb *rb, char *buf)
 			rb->subm,
 			rb->sync,
 			rb->l2p_update,
+<<<<<<< HEAD
 #ifdef CONFIG_NVM_PBLK_DEBUG
 			atomic_read(&rb->inflight_flush_point),
+=======
+#ifdef CONFIG_NVM_DEBUG
+			atomic_read(&rb->inflight_sync_point),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 			0,
 #endif
 			pblk_rb_read_count(rb),
 			pblk_rb_space(rb),
+<<<<<<< HEAD
 			pblk_rb_flush_point_count(rb),
+=======
+			pblk_rb_sync_point_count(rb),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			queued_entries);
 
 	return offset;

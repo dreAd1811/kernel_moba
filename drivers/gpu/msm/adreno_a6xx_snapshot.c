@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
@@ -6,6 +7,29 @@
 #include "adreno.h"
 #include "adreno_a6xx.h"
 #include "adreno_snapshot.h"
+=======
+/* Copyright (c) 2017-2021, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+
+#include <linux/io.h>
+#include "kgsl.h"
+#include "adreno.h"
+#include "kgsl_snapshot.h"
+#include "adreno_snapshot.h"
+#include "a6xx_reg.h"
+#include "adreno_a6xx.h"
+#include "kgsl_gmu_core.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define A6XX_NUM_CTXTS 2
 #define A6XX_NUM_AXI_ARB_BLOCKS 2
@@ -33,7 +57,11 @@ static const unsigned int a6xx_ps_cluster_rbp[] = {
 	0x8C02, 0x8C07, 0x8C11, 0x8C16, 0x8C20, 0x8C25,
 };
 
+<<<<<<< HEAD
 static const unsigned int a6xx_vpc_ps_cluster[] = {
+=======
+static const unsigned int a6xx_ps_cluster[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	0x9200, 0x9216, 0x9218, 0x9236, 0x9300, 0x9306,
 };
 
@@ -64,6 +92,7 @@ static const unsigned int a6xx_rscc_snapshot_registers[] = {
 	0x2389C, 0x238D7, 0x2393C, 0x2393F, 0x23944, 0x2397F,
 };
 
+<<<<<<< HEAD
 static const unsigned int a650_rscc_registers[] = {
 	0x38000, 0x38034, 0x38036, 0x38036, 0x38040, 0x38042, 0x38080, 0x38084,
 	0x38089, 0x3808C, 0x38091, 0x38094, 0x38099, 0x3809C, 0x380A1, 0x380A4,
@@ -125,6 +154,8 @@ static const unsigned int a650_isense_registers[] = {
 	0x23165, 0x23165, 0x2316D, 0x2316D, 0x23180, 0x23191,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct sel_reg {
 	unsigned int host_reg;
 	unsigned int cd_reg;
@@ -154,7 +185,11 @@ static struct a6xx_cluster_registers {
 		&_a6xx_rb_rac_aperture },
 	{ CP_CLUSTER_PS, a6xx_ps_cluster_rbp, ARRAY_SIZE(a6xx_ps_cluster_rbp)/2,
 		&_a6xx_rb_rbp_aperture },
+<<<<<<< HEAD
 	{ CP_CLUSTER_PS, a6xx_vpc_ps_cluster, ARRAY_SIZE(a6xx_vpc_ps_cluster)/2,
+=======
+	{ CP_CLUSTER_PS, a6xx_ps_cluster, ARRAY_SIZE(a6xx_ps_cluster)/2,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		NULL },
 	{ CP_CLUSTER_FE, a6xx_fe_cluster, ARRAY_SIZE(a6xx_fe_cluster)/2,
 		NULL },
@@ -203,7 +238,11 @@ static const unsigned int a6xx_sp_ps_hlsq_2d_cluster[] = {
 
 static const unsigned int a6xx_sp_ps_sp_cluster[] = {
 	0xA980, 0xA9A8, 0xA9B0, 0xA9BC, 0xA9D0, 0xA9D3, 0xA9E0, 0xA9F3,
+<<<<<<< HEAD
 	0xAA00, 0xAA00, 0xAA30, 0xAA31, 0xAAF2, 0xAAF2,
+=======
+	0xAA00, 0xAA00, 0xAA30, 0xAA31,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const unsigned int a6xx_sp_ps_sp_2d_cluster[] = {
@@ -384,9 +423,15 @@ static const unsigned int a6xx_pre_crashdumper_registers[] = {
 
 static const unsigned int a6xx_gmu_wrapper_registers[] = {
 	/* GMU CX */
+<<<<<<< HEAD
 	0x1f840, 0x1f840, 0x1f844, 0x1f845, 0x1f887, 0x1f889,
 	/* GMU AO*/
 	0x23b0C, 0x23b0E, 0x23b15, 0x23b15,
+=======
+	0x1F840, 0x1F840, 0x1F844, 0x1F845, 0x1F887, 0x1F889,
+	/* GMU AO*/
+	0x23B0C, 0x23B0E, 0x23B15, 0x23B15,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum a6xx_debugbus_id {
@@ -420,24 +465,36 @@ enum a6xx_debugbus_id {
 	A6XX_DBGBUS_HLSQ_SPTP    = 0x1f,
 	A6XX_DBGBUS_RB_0         = 0x20,
 	A6XX_DBGBUS_RB_1         = 0x21,
+<<<<<<< HEAD
 	A6XX_DBGBUS_RB_2         = 0x22,
 	A6XX_DBGBUS_UCHE_WRAPPER = 0x24,
 	A6XX_DBGBUS_CCU_0        = 0x28,
 	A6XX_DBGBUS_CCU_1        = 0x29,
 	A6XX_DBGBUS_CCU_2        = 0x2a,
+=======
+	A6XX_DBGBUS_UCHE_WRAPPER = 0x24,
+	A6XX_DBGBUS_CCU_0        = 0x28,
+	A6XX_DBGBUS_CCU_1        = 0x29,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	A6XX_DBGBUS_VFD_0        = 0x38,
 	A6XX_DBGBUS_VFD_1        = 0x39,
 	A6XX_DBGBUS_VFD_2        = 0x3a,
 	A6XX_DBGBUS_VFD_3        = 0x3b,
+<<<<<<< HEAD
 	A6XX_DBGBUS_VFD_4        = 0x3c,
 	A6XX_DBGBUS_VFD_5        = 0x3d,
 	A6XX_DBGBUS_SP_0         = 0x40,
 	A6XX_DBGBUS_SP_1         = 0x41,
 	A6XX_DBGBUS_SP_2         = 0x42,
+=======
+	A6XX_DBGBUS_SP_0         = 0x40,
+	A6XX_DBGBUS_SP_1         = 0x41,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	A6XX_DBGBUS_TPL1_0       = 0x48,
 	A6XX_DBGBUS_TPL1_1       = 0x49,
 	A6XX_DBGBUS_TPL1_2       = 0x4a,
 	A6XX_DBGBUS_TPL1_3       = 0x4b,
+<<<<<<< HEAD
 	A6XX_DBGBUS_TPL1_4       = 0x4c,
 	A6XX_DBGBUS_TPL1_5       = 0x4d,
 	A6XX_DBGBUS_SPTP_0       = 0x58,
@@ -446,6 +503,8 @@ enum a6xx_debugbus_id {
 	A6XX_DBGBUS_SPTP_3       = 0x5b,
 	A6XX_DBGBUS_SPTP_4       = 0x5c,
 	A6XX_DBGBUS_SPTP_5       = 0x5d,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct adreno_debugbus_block a6xx_dbgc_debugbus_blocks[] = {
@@ -499,6 +558,7 @@ static const struct adreno_debugbus_block a6xx_cx_dbgc_debugbus_blocks[] = {
 	{ A6XX_DBGBUS_CX, 0x100, },
 };
 
+<<<<<<< HEAD
 static const struct adreno_debugbus_block a650_dbgc_debugbus_blocks[] = {
 	{ A6XX_DBGBUS_RB_2, 0x100, },
 	{ A6XX_DBGBUS_CCU_2, 0x100, },
@@ -515,6 +575,8 @@ static const struct adreno_debugbus_block a650_dbgc_debugbus_blocks[] = {
 	{ A6XX_DBGBUS_SPTP_5, 0x100, },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A6XX_NUM_SHADER_BANKS 3
 #define A6XX_SHADER_STATETYPE_SHIFT 8
 
@@ -590,7 +652,11 @@ static struct a6xx_shader_block a6xx_shader_blocks[] = {
 	{A6XX_SP_LB_3_DATA,               0x800},
 	{A6XX_SP_LB_4_DATA,               0x800},
 	{A6XX_SP_LB_5_DATA,               0x200},
+<<<<<<< HEAD
 	{A6XX_SP_CB_BINDLESS_DATA,        0x800},
+=======
+	{A6XX_SP_CB_BINDLESS_DATA,        0x2000},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{A6XX_SP_CB_LEGACY_DATA,          0x280,},
 	{A6XX_SP_UAV_DATA,                0x80,},
 	{A6XX_SP_INST_TAG,                0x80,},
@@ -624,6 +690,10 @@ static struct a6xx_shader_block a6xx_shader_blocks[] = {
 static struct kgsl_memdesc a6xx_capturescript;
 static struct kgsl_memdesc a6xx_crashdump_registers;
 static bool crash_dump_valid;
+<<<<<<< HEAD
+=======
+static u32 *a6xx_cd_reg_end;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct reg_list {
 	const unsigned int *regs;
@@ -666,7 +736,11 @@ static size_t a6xx_snapshot_registers(struct kgsl_device *device, u8 *buf,
 	unsigned int j, k;
 	unsigned int count = 0;
 
+<<<<<<< HEAD
 	if (!crash_dump_valid)
+=======
+	if (crash_dump_valid == false)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return a6xx_legacy_snapshot_registers(device, buf, remain,
 			regs);
 
@@ -713,6 +787,7 @@ static size_t a6xx_snapshot_pre_crashdump_regs(struct kgsl_device *device,
 	return kgsl_snapshot_dump_registers(device, buf, remain, &pre_cdregs);
 }
 
+<<<<<<< HEAD
 static size_t a6xx_legacy_snapshot_shader(struct kgsl_device *device,
 				u8 *buf, size_t remain, void *priv)
 {
@@ -756,6 +831,8 @@ static size_t a6xx_legacy_snapshot_shader(struct kgsl_device *device,
 	return SHADER_SECTION_SZ(block->sz);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static size_t a6xx_snapshot_shader_memory(struct kgsl_device *device,
 		u8 *buf, size_t remain, void *priv)
 {
@@ -766,9 +843,12 @@ static size_t a6xx_snapshot_shader_memory(struct kgsl_device *device,
 	struct a6xx_shader_block *block = info->block;
 	unsigned int *data = (unsigned int *) (buf + sizeof(*header));
 
+<<<<<<< HEAD
 	if (!crash_dump_valid)
 		return a6xx_legacy_snapshot_shader(device, buf, remain, priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (remain < SHADER_SECTION_SZ(block->sz)) {
 		SNAPSHOT_ERR_NOMEM(device, "SHADER MEMORY");
 		return 0;
@@ -790,6 +870,13 @@ static void a6xx_snapshot_shader(struct kgsl_device *device,
 	unsigned int i, j;
 	struct a6xx_shader_block_info info;
 
+<<<<<<< HEAD
+=======
+	/* Shader blocks can only be read by the crash dumper */
+	if (crash_dump_valid == false)
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(a6xx_shader_blocks); i++) {
 		for (j = 0; j < A6XX_NUM_SHADER_BANKS; j++) {
 			info.block = &a6xx_shader_blocks[i];
@@ -921,7 +1008,11 @@ static size_t a6xx_snapshot_cluster_dbgahb(struct kgsl_device *device, u8 *buf,
 	unsigned int *src;
 
 
+<<<<<<< HEAD
 	if (!crash_dump_valid)
+=======
+	if (crash_dump_valid == false)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return a6xx_legacy_snapshot_cluster_dbgahb(device, buf, remain,
 				info);
 
@@ -1023,7 +1114,11 @@ static size_t a6xx_snapshot_non_ctx_dbgahb(struct kgsl_device *device, u8 *buf,
 	unsigned int i, k;
 	unsigned int *src;
 
+<<<<<<< HEAD
 	if (!crash_dump_valid)
+=======
+	if (crash_dump_valid == false)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return a6xx_legacy_snapshot_non_ctx_dbgahb(device, buf, remain,
 				regs);
 
@@ -1162,7 +1257,11 @@ static size_t a6xx_snapshot_mvc(struct kgsl_device *device, u8 *buf,
 	unsigned int start, end;
 	size_t data_size = 0;
 
+<<<<<<< HEAD
 	if (!crash_dump_valid)
+=======
+	if (crash_dump_valid == false)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return a6xx_legacy_snapshot_mvc(device, buf, remain, info);
 
 	if (remain < sizeof(*header)) {
@@ -1518,6 +1617,7 @@ static void a6xx_snapshot_debugbus(struct adreno_device *adreno_dev,
 			snapshot, a6xx_snapshot_dbgc_debugbus_block,
 			(void *) &a6xx_dbgc_debugbus_blocks[i]);
 	}
+<<<<<<< HEAD
 
 	if (adreno_is_a650_family(adreno_dev)) {
 		for (i = 0; i < ARRAY_SIZE(a650_dbgc_debugbus_blocks); i++) {
@@ -1528,6 +1628,8 @@ static void a6xx_snapshot_debugbus(struct adreno_device *adreno_dev,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * GBIF has same debugbus as of other GPU blocks hence fall back to
 	 * default path if GPU uses GBIF.
@@ -1592,9 +1694,15 @@ static size_t a6xx_snapshot_sqe(struct kgsl_device *device, u8 *buf,
 
 static void _a6xx_do_crashdump(struct kgsl_device *device)
 {
+<<<<<<< HEAD
 	unsigned long wait_time;
 	unsigned int reg = 0;
 	unsigned int val;
+=======
+	unsigned int reg = 0;
+	unsigned int val;
+	ktime_t timeout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	crash_dump_valid = false;
 
@@ -1611,9 +1719,14 @@ static void _a6xx_do_crashdump(struct kgsl_device *device)
 	if (val & BIT(24))
 		return;
 
+<<<<<<< HEAD
 	/* Turn on APRIV for legacy targets so we can access the buffers */
 	if (!ADRENO_FEATURE(ADRENO_DEVICE(device), ADRENO_APRIV))
 		kgsl_regwrite(device, A6XX_CP_MISC_CNTL, 1);
+=======
+	/* Turn on APRIV so we can access the buffers */
+	kgsl_regwrite(device, A6XX_CP_MISC_CNTL, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kgsl_regwrite(device, A6XX_CP_CRASH_SCRIPT_BASE_LO,
 			lower_32_bits(a6xx_capturescript.gpuaddr));
@@ -1621,6 +1734,7 @@ static void _a6xx_do_crashdump(struct kgsl_device *device)
 			upper_32_bits(a6xx_capturescript.gpuaddr));
 	kgsl_regwrite(device, A6XX_CP_CRASH_DUMP_CNTL, 1);
 
+<<<<<<< HEAD
 	wait_time = jiffies + msecs_to_jiffies(CP_CRASH_DUMPER_TIMEOUT);
 	while (!time_after(jiffies, wait_time)) {
 		kgsl_regread(device, A6XX_CP_CRASH_DUMP_STATUS, &reg);
@@ -1634,12 +1748,38 @@ static void _a6xx_do_crashdump(struct kgsl_device *device)
 
 	if (!(reg & 0x2)) {
 		dev_err(device->dev, "Crash dump timed out: 0x%X\n", reg);
+=======
+	timeout = ktime_add_ms(ktime_get(), CP_CRASH_DUMPER_TIMEOUT);
+
+	might_sleep();
+
+	for (;;) {
+		/* make sure we're reading the latest value */
+		rmb();
+		if ((*a6xx_cd_reg_end) != 0xaaaaaaaa)
+			break;
+
+		if (ktime_compare(ktime_get(), timeout) > 0)
+			break;
+
+		/* Wait 1msec to avoid unnecessary looping */
+		usleep_range(100, 1000);
+	}
+
+	kgsl_regread(device, A6XX_CP_CRASH_DUMP_STATUS, &reg);
+
+	kgsl_regwrite(device, A6XX_CP_MISC_CNTL, 0);
+
+	if (!(reg & 0x2)) {
+		KGSL_CORE_ERR("Crash dump timed out: 0x%X\n", reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	crash_dump_valid = true;
 }
 
+<<<<<<< HEAD
 size_t a6xx_snapshot_rscc_registers(struct kgsl_device *device, u8 *buf,
 	size_t remain, void *priv)
 {
@@ -1727,6 +1867,10 @@ size_t a6xx_snapshot_isense_registers(struct kgsl_device *device, u8 *buf,
 
 /* Snapshot the preemption related buffers */
 static size_t snapshot_preemption_record(struct kgsl_device *device,
+=======
+/* Snapshot the preemption related buffers */
+size_t a6xx_snapshot_preemption(struct kgsl_device *device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 *buf, size_t remain, void *priv)
 {
 	struct kgsl_memdesc *memdesc = priv;
@@ -1764,12 +1908,22 @@ void a6xx_snapshot(struct adreno_device *adreno_dev,
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
+<<<<<<< HEAD
 	struct adreno_ringbuffer *rb;
 	bool sptprac_on;
 	unsigned int i, roq_size, ucode_dbg_size;
 
 	/* GMU TCM data dumped through AHB */
 	gmu_core_dev_snapshot(device, snapshot);
+=======
+	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
+	bool sptprac_on, gx_on = true;
+	unsigned int i, roq_size, val;
+
+	/* GMU TCM data dumped through AHB */
+	if (GMU_DEV_OP_VALID(gmu_dev_ops, snapshot))
+		gmu_dev_ops->snapshot(adreno_dev, snapshot);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Dump debugbus data here to capture it for both
@@ -1780,6 +1934,7 @@ void a6xx_snapshot(struct adreno_device *adreno_dev,
 	 */
 	a6xx_snapshot_debugbus(adreno_dev, snapshot);
 
+<<<<<<< HEAD
 	/* RSCC registers are on cx */
 	if (adreno_is_a650_family(adreno_dev)) {
 		struct kgsl_snapshot_registers r;
@@ -1814,6 +1969,21 @@ void a6xx_snapshot(struct adreno_device *adreno_dev,
 
 	if (!gmu_core_dev_gx_is_on(device))
 		return;
+=======
+	sptprac_on = gpudev->sptprac_is_on(adreno_dev);
+
+	if (GMU_DEV_OP_VALID(gmu_dev_ops, gx_is_on))
+		gx_on = gmu_dev_ops->gx_is_on(adreno_dev);
+
+	/* Return if the GX is off */
+	if (!gx_on)
+		return;
+
+	if (adreno_is_a610(adreno_dev))
+		adreno_snapshot_registers(device, snapshot,
+			a6xx_gmu_wrapper_registers,
+			ARRAY_SIZE(a6xx_gmu_wrapper_registers) / 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Dump the registers which get affected by crash dumper trigger */
 	kgsl_snapshot_add_section(device, KGSL_SNAPSHOT_SECTION_REGS,
@@ -1838,6 +2008,18 @@ void a6xx_snapshot(struct adreno_device *adreno_dev,
 			snapshot, a6xx_snapshot_registers, &a6xx_reg_list[i]);
 	}
 
+<<<<<<< HEAD
+=======
+	if (adreno_is_a615_family(adreno_dev) || adreno_is_a630(adreno_dev))
+		adreno_snapshot_registers(device, snapshot,
+			a630_rscc_snapshot_registers,
+			ARRAY_SIZE(a630_rscc_snapshot_registers) / 2);
+	else if (adreno_is_a640(adreno_dev) || adreno_is_a680(adreno_dev))
+		adreno_snapshot_registers(device, snapshot,
+			a6xx_rscc_snapshot_registers,
+			ARRAY_SIZE(a6xx_rscc_snapshot_registers) / 2);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* CP_SQE indexed registers */
 	kgsl_snapshot_indexed_registers(device, snapshot,
 		A6XX_CP_SQE_STAT_ADDR, A6XX_CP_SQE_STAT_DATA, 0, 0x33);
@@ -1847,6 +2029,7 @@ void a6xx_snapshot(struct adreno_device *adreno_dev,
 		A6XX_CP_DRAW_STATE_ADDR, A6XX_CP_DRAW_STATE_DATA,
 		0, 0x100);
 
+<<<<<<< HEAD
 	ucode_dbg_size = adreno_is_a650_family(adreno_dev)
 			? 0x7000 : 0x6000;
 
@@ -1854,6 +2037,12 @@ void a6xx_snapshot(struct adreno_device *adreno_dev,
 	kgsl_snapshot_indexed_registers(device, snapshot,
 		A6XX_CP_SQE_UCODE_DBG_ADDR, A6XX_CP_SQE_UCODE_DBG_DATA,
 		0, ucode_dbg_size);
+=======
+	 /* SQE_UCODE Cache */
+	kgsl_snapshot_indexed_registers(device, snapshot,
+		A6XX_CP_SQE_UCODE_DBG_ADDR, A6XX_CP_SQE_UCODE_DBG_DATA,
+		0, 0x6000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * CP ROQ dump units is 4dwords. The number of units is stored
@@ -1881,6 +2070,7 @@ void a6xx_snapshot(struct adreno_device *adreno_dev,
 
 		/* registers dumped through DBG AHB */
 		a6xx_snapshot_dbgahb_regs(device, snapshot);
+<<<<<<< HEAD
 	}
 
 	/* Preemption record */
@@ -1896,6 +2086,19 @@ void a6xx_snapshot(struct adreno_device *adreno_dev,
 
 static int _a6xx_crashdump_init_mvc(struct adreno_device *adreno_dev,
 	uint64_t *ptr, uint64_t *offset)
+=======
+
+		/* if SMMU is stalled we don't run crash dump */
+		kgsl_regread(device, A6XX_RBBM_STATUS3, &val);
+		if (!(val & BIT(24)))
+			memset(a6xx_crashdump_registers.hostptr, 0xaa,
+					a6xx_crashdump_registers.size);
+	}
+
+}
+
+static int _a6xx_crashdump_init_mvc(uint64_t *ptr, uint64_t *offset)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int qwords = 0;
 	unsigned int i, j, k;
@@ -1904,11 +2107,14 @@ static int _a6xx_crashdump_init_mvc(struct adreno_device *adreno_dev,
 	for (i = 0; i < ARRAY_SIZE(a6xx_clusters); i++) {
 		struct a6xx_cluster_registers *cluster = &a6xx_clusters[i];
 
+<<<<<<< HEAD
 		/* The VPC registers are driven by VPC_PS cluster on a650 */
 		if (adreno_is_a650_family(adreno_dev) &&
 				(cluster->regs == a6xx_vpc_ps_cluster))
 			cluster->id = CP_CLUSTER_VPC_PS;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (cluster->sel) {
 			ptr[qwords++] = cluster->sel->val;
 			ptr[qwords++] = ((uint64_t)cluster->sel->cd_reg << 44) |
@@ -2162,6 +2368,14 @@ void a6xx_crashdump_init(struct adreno_device *adreno_dev)
 				sizeof(unsigned int);
 	}
 
+<<<<<<< HEAD
+=======
+	/* 16 bytes (2 qwords) for last entry in CD script */
+	script_size += 16;
+	/* Increment data size to store last entry in CD */
+	data_size += sizeof(unsigned int);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Now allocate the script and data buffers */
 
 	/* The script buffers needs 2 extra qwords on the end */
@@ -2208,12 +2422,29 @@ void a6xx_crashdump_init(struct adreno_device *adreno_dev)
 	}
 
 	/* Program the capturescript for the MVC regsiters */
+<<<<<<< HEAD
 	ptr += _a6xx_crashdump_init_mvc(adreno_dev, ptr, &offset);
+=======
+	ptr += _a6xx_crashdump_init_mvc(ptr, &offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ptr += _a6xx_crashdump_init_ctx_dbgahb(ptr, &offset);
 
 	ptr += _a6xx_crashdump_init_non_ctx_dbgahb(ptr, &offset);
 
+<<<<<<< HEAD
+=======
+	/* Save CD register end pointer to check CD status completion */
+	a6xx_cd_reg_end = a6xx_crashdump_registers.hostptr + offset;
+
+	memset(a6xx_crashdump_registers.hostptr, 0xaa,
+			a6xx_crashdump_registers.size);
+
+	/* Program the capturescript to read the last register entry */
+	*ptr++ = a6xx_crashdump_registers.gpuaddr + offset;
+	*ptr++ = (((uint64_t) A6XX_CP_CRASH_DUMP_STATUS) << 44) | (uint64_t) 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*ptr++ = 0;
 	*ptr++ = 0;
 }

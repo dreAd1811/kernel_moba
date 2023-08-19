@@ -3,6 +3,10 @@
  *
  * Copyright (C) 2012-2016 Synaptics Incorporated. All rights reserved.
  *
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
  * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
  *
@@ -119,7 +123,11 @@ struct rmidev_data {
 static struct bin_attribute attr_data = {
 	.attr = {
 		.name = "data",
+<<<<<<< HEAD
 		.mode = (S_IRUGO | S_IWUSR | S_IWGRP),
+=======
+		.mode = 0664,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.size = 0,
 	.read = rmidev_sysfs_data_show,
@@ -127,6 +135,7 @@ static struct bin_attribute attr_data = {
 };
 
 static struct device_attribute attrs[] = {
+<<<<<<< HEAD
 	__ATTR(open, (S_IWUSR | S_IWGRP),
 			synaptics_rmi4_show_error,
 			rmidev_sysfs_open_store),
@@ -146,6 +155,27 @@ static struct device_attribute attrs[] = {
 			rmidev_sysfs_intr_mask_show,
 			rmidev_sysfs_intr_mask_store),
 	__ATTR(concurrent, (S_IRUGO | S_IWUSR | S_IWGRP),
+=======
+	__ATTR(open, 0220,
+			synaptics_rmi4_show_error,
+			rmidev_sysfs_open_store),
+	__ATTR(release, 0220,
+			synaptics_rmi4_show_error,
+			rmidev_sysfs_release_store),
+	__ATTR(attn_state, 0444,
+			rmidev_sysfs_attn_state_show,
+			synaptics_rmi4_store_error),
+	__ATTR(pid, 0664,
+			rmidev_sysfs_pid_show,
+			rmidev_sysfs_pid_store),
+	__ATTR(term, 0220,
+			synaptics_rmi4_show_error,
+			rmidev_sysfs_term_store),
+	__ATTR(intr_mask, 0664,
+			rmidev_sysfs_intr_mask_show,
+			rmidev_sysfs_intr_mask_store),
+	__ATTR(concurrent, 0664,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rmidev_sysfs_concurrent_show,
 			rmidev_sysfs_concurrent_store),
 };
@@ -321,7 +351,11 @@ static ssize_t rmidev_sysfs_open_store(struct device *dev,
 	unsigned int input;
 	struct synaptics_rmi4_data *rmi4_data = rmidev->rmi4_data;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input != 1)
@@ -352,7 +386,11 @@ static ssize_t rmidev_sysfs_release_store(struct device *dev,
 	unsigned int input;
 	struct synaptics_rmi4_data *rmi4_data = rmidev->rmi4_data;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input != 1)
@@ -392,7 +430,11 @@ static ssize_t rmidev_sysfs_pid_store(struct device *dev,
 	unsigned int input;
 	struct synaptics_rmi4_data *rmi4_data = rmidev->rmi4_data;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	rmidev->pid = input;
@@ -415,7 +457,11 @@ static ssize_t rmidev_sysfs_term_store(struct device *dev,
 {
 	unsigned int input;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (input != 1)
@@ -438,7 +484,11 @@ static ssize_t rmidev_sysfs_intr_mask_store(struct device *dev,
 {
 	unsigned int input;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	rmidev->intr_mask = (unsigned char)input;
@@ -457,7 +507,11 @@ static ssize_t rmidev_sysfs_concurrent_store(struct device *dev,
 {
 	unsigned int input;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%u", &input) != 1)
+=======
+	if (kstrtouint(buf, 10, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	rmidev->concurrent = input > 0 ? true : false;
@@ -567,16 +621,34 @@ static ssize_t rmidev_read(struct file *filp, char __user *buf,
 		return -EBADF;
 	}
 
+<<<<<<< HEAD
 	if (count == 0)
 		return 0;
+=======
+	mutex_lock(&(dev_data->file_mutex));
+
+	if (*f_pos > REG_ADDR_LIMIT) {
+		retval = -EFAULT;
+		goto clean_up;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (count > (REG_ADDR_LIMIT - *f_pos))
 		count = REG_ADDR_LIMIT - *f_pos;
 
+<<<<<<< HEAD
 	address = (unsigned short)(*f_pos);
 
 	mutex_lock(&(dev_data->file_mutex));
 
+=======
+	if (count == 0) {
+		retval = 0;
+		goto clean_up;
+	}
+	address = (unsigned short)(*f_pos);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rmidev_allocate_buffer(count);
 
 	retval = synaptics_rmi4_reg_read(rmidev->rmi4_data,
@@ -638,18 +710,40 @@ static ssize_t rmidev_write(struct file *filp, const char __user *buf,
 		return -EBADF;
 	}
 
+<<<<<<< HEAD
 	if (count == 0)
 		return 0;
+=======
+	mutex_lock(&(dev_data->file_mutex));
+
+	if (*f_pos > REG_ADDR_LIMIT) {
+		retval = -EFAULT;
+		goto unlock;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (count > (REG_ADDR_LIMIT - *f_pos))
 		count = REG_ADDR_LIMIT - *f_pos;
 
+<<<<<<< HEAD
 	mutex_lock(&(dev_data->file_mutex));
 
 	rmidev_allocate_buffer(count);
 
 	if (copy_from_user(rmidev->tmpbuf, buf, count))
 		return -EFAULT;
+=======
+	if (count == 0) {
+		retval = 0;
+		goto unlock;
+	}
+	rmidev_allocate_buffer(count);
+
+	if (copy_from_user(rmidev->tmpbuf, buf, count)) {
+		retval = -EFAULT;
+		goto unlock;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	retval = synaptics_rmi4_reg_write(rmidev->rmi4_data,
 			*f_pos,
@@ -658,6 +752,10 @@ static ssize_t rmidev_write(struct file *filp, const char __user *buf,
 	if (retval >= 0)
 		*f_pos += retval;
 
+<<<<<<< HEAD
+=======
+unlock:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&(dev_data->file_mutex));
 
 	return retval;

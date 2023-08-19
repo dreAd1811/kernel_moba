@@ -42,7 +42,10 @@ struct ccwgroup_device {
  * @thaw: undo work done in @freeze
  * @restore: callback for restoring after hibernation
  * @driver: embedded driver structure
+<<<<<<< HEAD
  * @ccw_driver: supported ccw_driver (optional)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct ccwgroup_driver {
 	int (*setup) (struct ccwgroup_device *);
@@ -57,7 +60,10 @@ struct ccwgroup_driver {
 	int (*restore)(struct ccwgroup_device *);
 
 	struct device_driver driver;
+<<<<<<< HEAD
 	struct ccw_driver *ccw_driver;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern int  ccwgroup_driver_register   (struct ccwgroup_driver *cdriver);
@@ -73,6 +79,7 @@ extern void ccwgroup_remove_ccwdev(struct ccw_device *cdev);
 
 #define to_ccwgroupdev(x) container_of((x), struct ccwgroup_device, dev)
 #define to_ccwgroupdrv(x) container_of((x), struct ccwgroup_driver, driver)
+<<<<<<< HEAD
 
 #if IS_ENABLED(CONFIG_CCWGROUP)
 bool dev_is_ccwgroup(struct device *dev);
@@ -83,4 +90,6 @@ static inline bool dev_is_ccwgroup(struct device *dev)
 }
 #endif /* CONFIG_CCWGROUP */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

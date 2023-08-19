@@ -202,6 +202,16 @@ void __init device_tree_init(void)
 	of_node_put(np);
 }
 
+<<<<<<< HEAD
+=======
+int __init plat_of_setup(void)
+{
+	return __dt_register_buses("simple-bus", NULL);
+}
+
+arch_initcall(plat_of_setup);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init plat_dev_init(void)
 {
 	of_clk_init(NULL);

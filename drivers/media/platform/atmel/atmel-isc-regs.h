@@ -43,7 +43,10 @@
 
 /* ISC Clock Status Register */
 #define ISC_CLKSR               0x00000020
+<<<<<<< HEAD
 #define ISC_CLKSR_SIP		BIT(31)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ISC_CLK(n)		BIT(n)
 

@@ -7,14 +7,22 @@
 #include <linux/dmar.h>
 
 #include <asm/smp.h>
+<<<<<<< HEAD
 #include <asm/ipi.h>
 #include "x2apic.h"
+=======
+#include <asm/x2apic.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int x2apic_phys;
 
 static struct apic apic_x2apic_phys;
 
+<<<<<<< HEAD
 static int __init set_x2apic_phys_mode(char *arg)
+=======
+static int set_x2apic_phys_mode(char *arg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	x2apic_phys = 1;
 	return 0;
@@ -100,6 +108,7 @@ static int x2apic_phys_probe(void)
 	return apic == &apic_x2apic_phys;
 }
 
+<<<<<<< HEAD
 /* Common x2apic functions, also used by x2apic_cluster */
 int x2apic_apic_id_valid(u32 apicid)
 {
@@ -137,6 +146,8 @@ void x2apic_send_IPI_self(int vector)
 	apic_write(APIC_SELF_IPI, vector);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct apic apic_x2apic_phys __ro_after_init = {
 
 	.name				= "physical x2apic",
@@ -148,10 +159,18 @@ static struct apic apic_x2apic_phys __ro_after_init = {
 	.irq_delivery_mode		= dest_Fixed,
 	.irq_dest_mode			= 0, /* physical */
 
+<<<<<<< HEAD
+=======
+	.target_cpus			= online_target_cpus,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.disable_esr			= 0,
 	.dest_logical			= 0,
 	.check_apicid_used		= NULL,
 
+<<<<<<< HEAD
+=======
+	.vector_allocation_domain	= default_vector_allocation_domain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init_apic_ldr			= init_x2apic_ldr,
 
 	.ioapic_phys_id_map		= NULL,
@@ -164,7 +183,11 @@ static struct apic apic_x2apic_phys __ro_after_init = {
 	.get_apic_id			= x2apic_get_apic_id,
 	.set_apic_id			= x2apic_set_apic_id,
 
+<<<<<<< HEAD
 	.calc_dest_apicid		= apic_default_calc_apicid,
+=======
+	.cpu_mask_to_apicid		= default_cpu_mask_to_apicid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.send_IPI			= x2apic_send_IPI,
 	.send_IPI_mask			= x2apic_send_IPI_mask,

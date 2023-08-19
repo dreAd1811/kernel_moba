@@ -446,9 +446,15 @@ void __init ltq_soc_init(void)
 
 	/* add our generic xway clocks */
 	clkdev_add_pmu("10000000.fpi", NULL, 0, 0, PMU_FPI);
+<<<<<<< HEAD
 	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
 	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
 	clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
+=======
+	clkdev_add_pmu("1e100400.serial", NULL, 0, 0, PMU_ASC0);
+	clkdev_add_pmu("1e100a00.gptu", NULL, 1, 0, PMU_GPT);
+	clkdev_add_pmu("1e100bb0.stp", NULL, 1, 0, PMU_STP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clkdev_add_pmu("1e104100.dma", NULL, 1, 0, PMU_DMA);
 	clkdev_add_pmu("1e100800.spi", NULL, 1, 0, PMU_SPI);
 	clkdev_add_pmu("1e105300.ebu", NULL, 0, 0, PMU_EBU);
@@ -462,8 +468,15 @@ void __init ltq_soc_init(void)
 		clkdev_add_pmu("1e180000.etop", NULL, 1, 0, PMU_PPE);
 	}
 
+<<<<<<< HEAD
 	if (!of_machine_is_compatible("lantiq,ase"))
 		clkdev_add_pci();
+=======
+	if (!of_machine_is_compatible("lantiq,ase")) {
+		clkdev_add_pmu("1e100c00.serial", NULL, 0, 0, PMU_ASC1);
+		clkdev_add_pci();
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_machine_is_compatible("lantiq,grx390") ||
 	    of_machine_is_compatible("lantiq,ar10")) {

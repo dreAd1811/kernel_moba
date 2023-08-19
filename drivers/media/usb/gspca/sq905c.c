@@ -138,7 +138,11 @@ static void sq905c_dostream(struct work_struct *work)
 	int ret;
 	u8 *buffer;
 
+<<<<<<< HEAD
 	buffer = kmalloc(SQ905C_MAX_TRANSFER, GFP_KERNEL);
+=======
+	buffer = kmalloc(SQ905C_MAX_TRANSFER, GFP_KERNEL | GFP_DMA);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buffer) {
 		pr_err("Couldn't allocate USB buffer\n");
 		goto quit_stream;
@@ -154,16 +158,26 @@ static void sq905c_dostream(struct work_struct *work)
 				usb_rcvbulkpipe(gspca_dev->dev, 0x81),
 				buffer, FRAME_HEADER_LEN, &act_len,
 				SQ905C_DATA_TIMEOUT);
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM,
 			  "Got %d bytes out of %d for header\n",
 			  act_len, FRAME_HEADER_LEN);
+=======
+		PDEBUG(D_STREAM,
+			"Got %d bytes out of %d for header",
+			act_len, FRAME_HEADER_LEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0 || act_len < FRAME_HEADER_LEN)
 			goto quit_stream;
 		/* size is read from 4 bytes starting 0x40, little endian */
 		bytes_left = buffer[0x40]|(buffer[0x41]<<8)|(buffer[0x42]<<16)
 					|(buffer[0x43]<<24);
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "bytes_left = 0x%x\n",
 			  bytes_left);
+=======
+		PDEBUG(D_STREAM, "bytes_left = 0x%x", bytes_left);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* We keep the header. It has other information, too. */
 		packet_type = FIRST_PACKET;
 		gspca_frame_add(gspca_dev, packet_type,
@@ -177,9 +191,15 @@ static void sq905c_dostream(struct work_struct *work)
 				SQ905C_DATA_TIMEOUT);
 			if (ret < 0 || act_len < data_len)
 				goto quit_stream;
+<<<<<<< HEAD
 			gspca_dbg(gspca_dev, D_STREAM,
 				  "Got %d bytes out of %d for frame\n",
 				  data_len, bytes_left);
+=======
+			PDEBUG(D_STREAM,
+				"Got %d bytes out of %d for frame",
+				data_len, bytes_left);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bytes_left -= data_len;
 			if (bytes_left == 0)
 				packet_type = LAST_PACKET;
@@ -206,6 +226,7 @@ static int sd_config(struct gspca_dev *gspca_dev,
 	struct sd *dev = (struct sd *) gspca_dev;
 	int ret;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE,
 		  "SQ9050 camera detected (vid/pid 0x%04X:0x%04X)\n",
 		  id->idVendor, id->idProduct);
@@ -213,11 +234,21 @@ static int sd_config(struct gspca_dev *gspca_dev,
 	ret = sq905c_command(gspca_dev, SQ905C_GET_ID, 0);
 	if (ret < 0) {
 		gspca_err(gspca_dev, "Get version command failed\n");
+=======
+	PDEBUG(D_PROBE,
+	       "SQ9050 camera detected (vid/pid 0x%04X:0x%04X)",
+	       id->idVendor, id->idProduct);
+
+	ret = sq905c_command(gspca_dev, SQ905C_GET_ID, 0);
+	if (ret < 0) {
+		PERR("Get version command failed");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = sq905c_read(gspca_dev, 0xf5, 0, 20);
 	if (ret < 0) {
+<<<<<<< HEAD
 		gspca_err(gspca_dev, "Reading version command failed\n");
 		return ret;
 	}
@@ -225,6 +256,15 @@ static int sd_config(struct gspca_dev *gspca_dev,
 	gspca_dbg(gspca_dev, D_PROBE,
 		  "SQ9050 ID string: %02x - %*ph\n",
 		  gspca_dev->usb_buf[3], 6, gspca_dev->usb_buf + 14);
+=======
+		PERR("Reading version command failed");
+		return ret;
+	}
+	/* Note we leave out the usb id and the manufacturing date */
+	PDEBUG(D_PROBE,
+	       "SQ9050 ID string: %02x - %*ph",
+		gspca_dev->usb_buf[3], 6, gspca_dev->usb_buf + 14);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cam->cam_mode = sq905c_mode;
 	cam->nmodes = 2;
@@ -268,19 +308,31 @@ static int sd_start(struct gspca_dev *gspca_dev)
 	/* "Open the shutter" and set size, to start capture */
 	switch (gspca_dev->pixfmt.width) {
 	case 640:
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Start streaming at high resolution\n");
+=======
+		PDEBUG(D_STREAM, "Start streaming at high resolution");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->cap_mode++;
 		ret = sq905c_command(gspca_dev, SQ905C_CAPTURE_HI,
 						SQ905C_CAPTURE_INDEX);
 		break;
 	default: /* 320 */
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_STREAM, "Start streaming at medium resolution\n");
+=======
+	PDEBUG(D_STREAM, "Start streaming at medium resolution");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = sq905c_command(gspca_dev, SQ905C_CAPTURE_MED,
 						SQ905C_CAPTURE_INDEX);
 	}
 
 	if (ret < 0) {
+<<<<<<< HEAD
 		gspca_err(gspca_dev, "Start streaming command failed\n");
+=======
+		PERR("Start streaming command failed");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 	/* Start the workqueue function to do the streaming */

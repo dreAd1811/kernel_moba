@@ -19,16 +19,27 @@
 #include <linux/shmem_fs.h>
 #include <linux/dma-buf.h>
 #include <linux/pfn_t.h>
+<<<<<<< HEAD
+=======
+#include <linux/ion.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "msm_drv.h"
 #include "msm_fence.h"
 #include "msm_gem.h"
 #include "msm_gpu.h"
 #include "msm_mmu.h"
+<<<<<<< HEAD
 
 static void msm_gem_vunmap_locked(struct drm_gem_object *obj);
 
 
+=======
+#include "sde_dbg.h"
+
+static void msm_gem_vunmap_locked(struct drm_gem_object *obj);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static dma_addr_t physaddr(struct drm_gem_object *obj)
 {
 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
@@ -43,6 +54,49 @@ static bool use_pages(struct drm_gem_object *obj)
 	return !msm_obj->vram_node;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Cache sync.. this is a bit over-complicated, to fit dma-mapping
+ * API.  Really GPU cache is out of scope here (handled on cmdstream)
+ * and all we need to do is invalidate newly allocated pages before
+ * mapping to CPU as uncached/writecombine.
+ *
+ * On top of this, we have the added headache, that depending on
+ * display generation, the display's iommu may be wired up to either
+ * the toplevel drm device (mdss), or to the mdp sub-node, meaning
+ * that here we either have dma-direct or iommu ops.
+ *
+ * Let this be a cautionary tail of abstraction gone wrong.
+ */
+
+static void sync_for_device(struct msm_gem_object *msm_obj)
+{
+	struct device *dev = msm_obj->base.dev->dev;
+
+	if (get_dma_ops(dev) && IS_ENABLED(CONFIG_ARM64)) {
+		dma_sync_sg_for_device(dev, msm_obj->sgt->sgl,
+			msm_obj->sgt->nents, DMA_BIDIRECTIONAL);
+	} else {
+		dma_map_sg(dev, msm_obj->sgt->sgl,
+			msm_obj->sgt->nents, DMA_BIDIRECTIONAL);
+	}
+}
+
+static void sync_for_cpu(struct msm_gem_object *msm_obj)
+{
+	struct device *dev = msm_obj->base.dev->dev;
+
+	if (get_dma_ops(dev) && IS_ENABLED(CONFIG_ARM64)) {
+		dma_sync_sg_for_cpu(dev, msm_obj->sgt->sgl,
+			msm_obj->sgt->nents, DMA_BIDIRECTIONAL);
+	} else {
+		dma_unmap_sg(dev, msm_obj->sgt->sgl,
+			msm_obj->sgt->nents, DMA_BIDIRECTIONAL);
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* allocate pages from VRAM carveout, used when no IOMMU: */
 static struct page **get_pages_vram(struct drm_gem_object *obj, int npages)
 {
@@ -77,6 +131,12 @@ static struct page **get_pages(struct drm_gem_object *obj)
 {
 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
 
+<<<<<<< HEAD
+=======
+	if (obj->import_attach)
+		return msm_obj->pages;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!msm_obj->pages) {
 		struct drm_device *dev = obj->dev;
 		struct page **p;
@@ -99,17 +159,29 @@ static struct page **get_pages(struct drm_gem_object *obj)
 		if (IS_ERR(msm_obj->sgt)) {
 			void *ptr = ERR_CAST(msm_obj->sgt);
 
+<<<<<<< HEAD
 			dev_err(dev->dev, "failed to allocate sgt\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			msm_obj->sgt = NULL;
 			return ptr;
 		}
 
+<<<<<<< HEAD
 		/* For non-cached buffers, ensure the new pages are clean
 		 * because display controller, GPU, etc. are not coherent:
 		 */
 		if (msm_obj->flags & (MSM_BO_WC|MSM_BO_UNCACHED))
 			dma_map_sg(dev->dev, msm_obj->sgt->sgl,
 					msm_obj->sgt->nents, DMA_BIDIRECTIONAL);
+=======
+		/*
+		 * Make sure to flush the CPU cache for newly allocated memory
+		 * so we don't get ourselves into trouble with a dirty cache
+		 */
+		if (msm_obj->flags & (MSM_BO_WC|MSM_BO_UNCACHED))
+			sync_for_device(msm_obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return msm_obj->pages;
@@ -138,9 +210,13 @@ static void put_pages(struct drm_gem_object *obj)
 			 * GPU, etc. are not coherent:
 			 */
 			if (msm_obj->flags & (MSM_BO_WC|MSM_BO_UNCACHED))
+<<<<<<< HEAD
 				dma_unmap_sg(obj->dev->dev, msm_obj->sgt->sgl,
 					     msm_obj->sgt->nents,
 					     DMA_BIDIRECTIONAL);
+=======
+				sync_for_cpu(msm_obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			sg_free_table(msm_obj->sgt);
 			kfree(msm_obj->sgt);
@@ -177,6 +253,27 @@ void msm_gem_put_pages(struct drm_gem_object *obj)
 	/* when we start tracking the pin count, then do something here */
 }
 
+<<<<<<< HEAD
+=======
+void msm_gem_sync(struct drm_gem_object *obj)
+{
+	struct msm_gem_object *msm_obj;
+
+	if (!obj)
+		return;
+
+	msm_obj = to_msm_bo(obj);
+
+	/*
+	 * dma_sync_sg_for_device synchronises a single contiguous or
+	 * scatter/gather mapping for the CPU and device.
+	 */
+	dma_sync_sg_for_device(obj->dev->dev, msm_obj->sgt->sgl,
+		       msm_obj->sgt->nents, DMA_BIDIRECTIONAL);
+}
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int msm_gem_mmap_obj(struct drm_gem_object *obj,
 		struct vm_area_struct *vma)
 {
@@ -219,7 +316,11 @@ int msm_gem_mmap(struct file *filp, struct vm_area_struct *vma)
 	return msm_gem_mmap_obj(vma->vm_private_data, vma);
 }
 
+<<<<<<< HEAD
 vm_fault_t msm_gem_fault(struct vm_fault *vmf)
+=======
+int msm_gem_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vm_area_struct *vma = vmf->vma;
 	struct drm_gem_object *obj = vma->vm_private_data;
@@ -227,18 +328,28 @@ vm_fault_t msm_gem_fault(struct vm_fault *vmf)
 	struct page **pages;
 	unsigned long pfn;
 	pgoff_t pgoff;
+<<<<<<< HEAD
 	int err;
 	vm_fault_t ret;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * vm_ops.open/drm_gem_mmap_obj and close get and put
 	 * a reference on obj. So, we dont need to hold one here.
 	 */
+<<<<<<< HEAD
 	err = mutex_lock_interruptible(&msm_obj->lock);
 	if (err) {
 		ret = VM_FAULT_NOPAGE;
 		goto out;
 	}
+=======
+	ret = mutex_lock_interruptible(&msm_obj->lock);
+	if (ret)
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(msm_obj->madv != MSM_MADV_WILLNEED)) {
 		mutex_unlock(&msm_obj->lock);
@@ -248,7 +359,11 @@ vm_fault_t msm_gem_fault(struct vm_fault *vmf)
 	/* make sure we have pages attached now */
 	pages = get_pages(obj);
 	if (IS_ERR(pages)) {
+<<<<<<< HEAD
 		ret = vmf_error(PTR_ERR(pages));
+=======
+		ret = PTR_ERR(pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_unlock;
 	}
 
@@ -257,6 +372,7 @@ vm_fault_t msm_gem_fault(struct vm_fault *vmf)
 
 	pfn = page_to_pfn(pages[pgoff]);
 
+<<<<<<< HEAD
 	VERB("Inserting %p pfn %lx, pa %lx", (void *)vmf->address,
 			pfn, pfn << PAGE_SHIFT);
 
@@ -265,6 +381,32 @@ out_unlock:
 	mutex_unlock(&msm_obj->lock);
 out:
 	return ret;
+=======
+	VERB("Inserting %pK pfn %lx, pa %lx", (void *)vmf->address,
+			pfn, pfn << PAGE_SHIFT);
+
+	ret = vm_insert_mixed(vma, vmf->address, __pfn_to_pfn_t(pfn, PFN_DEV));
+
+out_unlock:
+	mutex_unlock(&msm_obj->lock);
+out:
+	switch (ret) {
+	case -EAGAIN:
+	case 0:
+	case -ERESTARTSYS:
+	case -EINTR:
+	case -EBUSY:
+		/*
+		 * EBUSY is ok: this just means that another thread
+		 * already did the job.
+		 */
+		return VM_FAULT_NOPAGE;
+	case -ENOMEM:
+		return VM_FAULT_OOM;
+	default:
+		return VM_FAULT_SIGBUS;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /** get mmap offset */
@@ -298,6 +440,28 @@ uint64_t msm_gem_mmap_offset(struct drm_gem_object *obj)
 	return offset;
 }
 
+<<<<<<< HEAD
+=======
+dma_addr_t msm_gem_get_dma_addr(struct drm_gem_object *obj)
+{
+	struct msm_gem_object *msm_obj = to_msm_bo(obj);
+	struct sg_table *sgt;
+
+	if (!msm_obj->sgt) {
+		sgt = dma_buf_map_attachment(obj->import_attach,
+						DMA_BIDIRECTIONAL);
+		if (IS_ERR_OR_NULL(sgt)) {
+			DRM_ERROR("dma_buf_map_attachment failure, err=%ld\n",
+					PTR_ERR(sgt));
+			return 0;
+		}
+		msm_obj->sgt = sgt;
+	}
+
+	return sg_phys(msm_obj->sgt->sgl);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct msm_gem_vma *add_vma(struct drm_gem_object *obj,
 		struct msm_gem_address_space *aspace)
 {
@@ -343,8 +507,12 @@ static void del_vma(struct msm_gem_vma *vma)
 }
 
 /* Called with msm_obj->lock locked */
+<<<<<<< HEAD
 static void
 put_iova(struct drm_gem_object *obj)
+=======
+static void put_iova(struct drm_gem_object *obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
 	struct msm_gem_vma *vma, *tmp;
@@ -352,7 +520,18 @@ put_iova(struct drm_gem_object *obj)
 	WARN_ON(!mutex_is_locked(&msm_obj->lock));
 
 	list_for_each_entry_safe(vma, tmp, &msm_obj->vmas, list) {
+<<<<<<< HEAD
 		msm_gem_unmap_vma(vma->aspace, vma, msm_obj->sgt);
+=======
+		msm_gem_unmap_vma(vma->aspace, vma, msm_obj->sgt,
+				msm_obj->flags);
+		/*
+		 * put_iova removes the domain connected to the obj which makes
+		 * the aspace inaccessible. Store the aspace, as it is used to
+		 * update the active_list during gem_free_obj and gem_purge.
+		 */
+		msm_obj->aspace = vma->aspace;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		del_vma(vma);
 	}
 }
@@ -376,6 +555,54 @@ int msm_gem_get_iova(struct drm_gem_object *obj,
 
 	if (!vma) {
 		struct page **pages;
+<<<<<<< HEAD
+=======
+		struct device *dev;
+		struct dma_buf *dmabuf;
+		bool reattach = false;
+
+		/*
+		 * both secure/non-secure domains are attached with the default
+		 * devive (non-sec) with dma_buf_attach during
+		 * msm_gem_prime_import. detach and attach the correct device
+		 * to the dma_buf based on the aspace domain.
+		 */
+		dev = msm_gem_get_aspace_device(aspace);
+		if (dev && obj->import_attach &&
+				(dev != obj->import_attach->dev)) {
+			dmabuf = obj->import_attach->dmabuf;
+
+			DRM_DEBUG("detach nsec-dev:%pK attach sec-dev:%pK\n",
+					 obj->import_attach->dev, dev);
+			SDE_EVT32(obj->import_attach->dev, dev, msm_obj->sgt);
+
+
+			if (msm_obj->sgt)
+				dma_buf_unmap_attachment(obj->import_attach,
+							msm_obj->sgt,
+							DMA_BIDIRECTIONAL);
+			dma_buf_detach(dmabuf, obj->import_attach);
+
+			obj->import_attach = dma_buf_attach(dmabuf, dev);
+			if (IS_ERR(obj->import_attach)) {
+				DRM_ERROR("dma_buf_attach failure, err=%ld\n",
+						PTR_ERR(obj->import_attach));
+				goto unlock;
+			}
+			reattach = true;
+		}
+
+		/* perform delayed import for buffers without existing sgt */
+		if (((msm_obj->flags & MSM_BO_EXTBUF) && !(msm_obj->sgt))
+				|| reattach) {
+			ret = msm_gem_delayed_import(obj);
+			if (ret) {
+				DRM_ERROR("delayed dma-buf import failed %d\n",
+						ret);
+				goto unlock;
+			}
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		vma = add_vma(obj, aspace);
 		if (IS_ERR(vma)) {
@@ -390,13 +617,27 @@ int msm_gem_get_iova(struct drm_gem_object *obj,
 		}
 
 		ret = msm_gem_map_vma(aspace, vma, msm_obj->sgt,
+<<<<<<< HEAD
 				obj->size >> PAGE_SHIFT);
+=======
+				obj->size >> PAGE_SHIFT,
+				msm_obj->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto fail;
 	}
 
 	*iova = vma->iova;
 
+<<<<<<< HEAD
+=======
+	if (aspace &&  !msm_obj->in_active_list) {
+		mutex_lock(&aspace->list_lock);
+		msm_gem_add_obj_to_aspace_active_list(aspace, obj);
+		mutex_unlock(&aspace->list_lock);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&msm_obj->lock);
 	return 0;
 
@@ -435,6 +676,63 @@ void msm_gem_put_iova(struct drm_gem_object *obj,
 	// things that are no longer needed..
 }
 
+<<<<<<< HEAD
+=======
+void msm_gem_aspace_domain_attach_detach_update(
+		struct msm_gem_address_space *aspace,
+		bool is_detach)
+{
+	struct msm_gem_object *msm_obj;
+	struct drm_gem_object *obj;
+	struct aspace_client *aclient;
+	int ret;
+	uint64_t iova;
+
+	if (!aspace)
+		return;
+
+	mutex_lock(&aspace->list_lock);
+	if (is_detach) {
+		/* Indicate to clients domain is getting detached */
+		list_for_each_entry(aclient, &aspace->clients, list) {
+			if (aclient->cb)
+				aclient->cb(aclient->cb_data,
+						is_detach);
+		}
+
+		/**
+		 * Unmap active buffers,
+		 * typically clients should do this when the callback is called,
+		 * but this needs to be done for the buffers which are not
+		 * attached to any planes.
+		 */
+		list_for_each_entry(msm_obj, &aspace->active_list, iova_list) {
+			obj = &msm_obj->base;
+			if (obj->import_attach)
+				put_iova(obj);
+		}
+	} else {
+		/* map active buffers */
+		list_for_each_entry(msm_obj, &aspace->active_list, iova_list) {
+			obj = &msm_obj->base;
+			ret = msm_gem_get_iova(obj, aspace, &iova);
+			if (ret) {
+				mutex_unlock(&aspace->list_lock);
+				return;
+			}
+		}
+
+		/* Indicate to clients domain is attached */
+		list_for_each_entry(aclient, &aspace->clients, list) {
+			if (aclient->cb)
+				aclient->cb(aclient->cb_data,
+						is_detach);
+		}
+	}
+	mutex_unlock(&aspace->list_lock);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int msm_gem_dumb_create(struct drm_file *file, struct drm_device *dev,
 		struct drm_mode_create_dumb *args)
 {
@@ -459,22 +757,34 @@ int msm_gem_dumb_map_offset(struct drm_file *file, struct drm_device *dev,
 
 	*offset = msm_gem_mmap_offset(obj);
 
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(obj);
+=======
+	drm_gem_object_unreference_unlocked(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 fail:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void *get_vaddr(struct drm_gem_object *obj, unsigned madv)
+=======
+void *msm_gem_get_vaddr(struct drm_gem_object *obj)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
 	int ret = 0;
 
 	mutex_lock(&msm_obj->lock);
 
+<<<<<<< HEAD
 	if (WARN_ON(msm_obj->madv > madv)) {
 		dev_err(obj->dev->dev, "Invalid madv state: %u vs %u\n",
 			msm_obj->madv, madv);
+=======
+	if (WARN_ON(msm_obj->madv != MSM_MADV_WILLNEED)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&msm_obj->lock);
 		return ERR_PTR(-EBUSY);
 	}
@@ -493,8 +803,25 @@ static void *get_vaddr(struct drm_gem_object *obj, unsigned madv)
 			ret = PTR_ERR(pages);
 			goto fail;
 		}
+<<<<<<< HEAD
 		msm_obj->vaddr = vmap(pages, obj->size >> PAGE_SHIFT,
 				VM_MAP, pgprot_writecombine(PAGE_KERNEL));
+=======
+
+		if (obj->import_attach) {
+			ret = dma_buf_begin_cpu_access(
+				obj->import_attach->dmabuf, DMA_BIDIRECTIONAL);
+			if (ret)
+				goto fail;
+
+			msm_obj->vaddr =
+				dma_buf_vmap(obj->import_attach->dmabuf);
+		} else {
+			msm_obj->vaddr = vmap(pages, obj->size >> PAGE_SHIFT,
+				VM_MAP, pgprot_writecombine(PAGE_KERNEL));
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (msm_obj->vaddr == NULL) {
 			ret = -ENOMEM;
 			goto fail;
@@ -510,6 +837,7 @@ fail:
 	return ERR_PTR(ret);
 }
 
+<<<<<<< HEAD
 void *msm_gem_get_vaddr(struct drm_gem_object *obj)
 {
 	return get_vaddr(obj, MSM_MADV_WILLNEED);
@@ -526,6 +854,8 @@ void *msm_gem_get_vaddr_active(struct drm_gem_object *obj)
 	return get_vaddr(obj, __MSM_MADV_PURGED);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void msm_gem_put_vaddr(struct drm_gem_object *obj)
 {
 	struct msm_gem_object *msm_obj = to_msm_bo(obj);
@@ -569,6 +899,15 @@ void msm_gem_purge(struct drm_gem_object *obj, enum msm_gem_lock subclass)
 	mutex_lock_nested(&msm_obj->lock, subclass);
 
 	put_iova(obj);
+<<<<<<< HEAD
+=======
+	if (msm_obj->aspace) {
+		mutex_lock(&msm_obj->aspace->list_lock);
+		msm_gem_remove_obj_from_aspace_active_list(msm_obj->aspace,
+				obj);
+		mutex_unlock(&msm_obj->aspace->list_lock);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msm_gem_vunmap_locked(obj);
 
@@ -601,7 +940,18 @@ static void msm_gem_vunmap_locked(struct drm_gem_object *obj)
 	if (!msm_obj->vaddr || WARN_ON(!is_vunmapable(msm_obj)))
 		return;
 
+<<<<<<< HEAD
 	vunmap(msm_obj->vaddr);
+=======
+	if (obj->import_attach) {
+		dma_buf_vunmap(obj->import_attach->dmabuf, msm_obj->vaddr);
+		dma_buf_end_cpu_access(obj->import_attach->dmabuf,
+						DMA_BIDIRECTIONAL);
+	} else {
+		vunmap(msm_obj->vaddr);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msm_obj->vaddr = NULL;
 }
 
@@ -739,7 +1089,11 @@ void msm_gem_describe(struct drm_gem_object *obj, struct seq_file *m)
 		break;
 	}
 
+<<<<<<< HEAD
 	seq_printf(m, "%08x: %c %2d (%2d) %08llx %p\t",
+=======
+	seq_printf(m, "%08x: %c %2d (%2d) %08llx %pK\t",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			msm_obj->flags, is_active(msm_obj) ? 'A' : 'I',
 			obj->name, kref_read(&obj->refcount),
 			off, msm_obj->vaddr);
@@ -787,7 +1141,10 @@ void msm_gem_describe_objects(struct list_head *list, struct seq_file *m)
 }
 #endif
 
+<<<<<<< HEAD
 /* don't call directly!  Use drm_gem_object_put() and friends */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void msm_gem_free_object(struct drm_gem_object *obj)
 {
 	struct drm_device *dev = obj->dev;
@@ -803,6 +1160,15 @@ void msm_gem_free_object(struct drm_gem_object *obj)
 	mutex_lock(&msm_obj->lock);
 
 	put_iova(obj);
+<<<<<<< HEAD
+=======
+	if (msm_obj->aspace) {
+		mutex_lock(&msm_obj->aspace->list_lock);
+		msm_gem_remove_obj_from_aspace_active_list(msm_obj->aspace,
+				obj);
+		mutex_unlock(&msm_obj->aspace->list_lock);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (obj->import_attach) {
 		if (msm_obj->vaddr)
@@ -844,7 +1210,11 @@ int msm_gem_new_handle(struct drm_device *dev, struct drm_file *file,
 	ret = drm_gem_handle_create(file, obj, handle);
 
 	/* drop reference from allocate - handle holds it now */
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(obj);
+=======
+	drm_gem_object_unreference_unlocked(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -887,6 +1257,12 @@ static int msm_gem_new_impl(struct drm_device *dev,
 
 	INIT_LIST_HEAD(&msm_obj->submit_entry);
 	INIT_LIST_HEAD(&msm_obj->vmas);
+<<<<<<< HEAD
+=======
+	INIT_LIST_HEAD(&msm_obj->iova_list);
+	msm_obj->aspace = NULL;
+	msm_obj->in_active_list = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (struct_mutex_locked) {
 		WARN_ON(!mutex_is_locked(&dev->struct_mutex));
@@ -964,7 +1340,11 @@ static struct drm_gem_object *_msm_gem_new(struct drm_device *dev,
 	return obj;
 
 fail:
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(obj);
+=======
+	drm_gem_object_unreference_unlocked(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ERR_PTR(ret);
 }
 
@@ -980,13 +1360,70 @@ struct drm_gem_object *msm_gem_new(struct drm_device *dev,
 	return _msm_gem_new(dev, size, flags, false);
 }
 
+<<<<<<< HEAD
+=======
+int msm_gem_delayed_import(struct drm_gem_object *obj)
+{
+	struct dma_buf_attachment *attach;
+	struct sg_table *sgt;
+	struct msm_gem_object *msm_obj;
+	int ret = 0;
+
+	if (!obj) {
+		DRM_ERROR("NULL drm gem object\n");
+		return -EINVAL;
+	}
+
+	msm_obj = to_msm_bo(obj);
+
+	if (!obj->import_attach) {
+		DRM_ERROR("NULL dma_buf_attachment in drm gem object\n");
+		return -EINVAL;
+	}
+
+	attach = obj->import_attach;
+	attach->dma_map_attrs |= DMA_ATTR_DELAYED_UNMAP;
+
+	if (msm_obj->flags & MSM_BO_SKIPSYNC)
+		attach->dma_map_attrs |= DMA_ATTR_SKIP_CPU_SYNC;
+
+	if (msm_obj->flags & MSM_BO_KEEPATTRS)
+		attach->dma_map_attrs |=
+				DMA_ATTR_IOMMU_USE_UPSTREAM_HINT;
+
+	/*
+	 * dma_buf_map_attachment will call dma_map_sg for ion buffer
+	 * mapping, and iova will get mapped when the function returns.
+	 */
+	sgt = dma_buf_map_attachment(attach, DMA_BIDIRECTIONAL);
+	if (IS_ERR(sgt)) {
+		ret = PTR_ERR(sgt);
+		DRM_ERROR("dma_buf_map_attachment failure, err=%d\n",
+				ret);
+		goto fail_import;
+	}
+	msm_obj->sgt = sgt;
+	msm_obj->pages = NULL;
+
+fail_import:
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct drm_gem_object *msm_gem_import(struct drm_device *dev,
 		struct dma_buf *dmabuf, struct sg_table *sgt)
 {
 	struct msm_gem_object *msm_obj;
+<<<<<<< HEAD
 	struct drm_gem_object *obj;
 	uint32_t size;
 	int ret, npages;
+=======
+	struct drm_gem_object *obj = NULL;
+	uint32_t size;
+	int ret;
+	unsigned long flags = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* if we don't have IOMMU, don't bother pretending we can import: */
 	if (!iommu_present(&platform_bus_type)) {
@@ -996,12 +1433,18 @@ struct drm_gem_object *msm_gem_import(struct drm_device *dev,
 
 	size = PAGE_ALIGN(dmabuf->size);
 
+<<<<<<< HEAD
 	ret = msm_gem_new_impl(dev, size, MSM_BO_WC, dmabuf->resv, &obj, false);
+=======
+	ret = msm_gem_new_impl(dev, size, MSM_BO_WC, dmabuf->resv, &obj,
+			false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto fail;
 
 	drm_gem_private_object_init(dev, obj, size);
 
+<<<<<<< HEAD
 	npages = size / PAGE_SIZE;
 
 	msm_obj = to_msm_bo(obj);
@@ -1020,13 +1463,45 @@ struct drm_gem_object *msm_gem_import(struct drm_device *dev,
 	if (ret) {
 		mutex_unlock(&msm_obj->lock);
 		goto fail;
+=======
+	msm_obj = to_msm_bo(obj);
+	mutex_lock(&msm_obj->lock);
+	msm_obj->sgt = sgt;
+	msm_obj->pages = NULL;
+	/*
+	 * 1) If sg table is NULL, user should call msm_gem_delayed_import
+	 * to add back the sg table to the drm gem object.
+	 *
+	 * 2) Add buffer flag unconditionally for all import cases.
+	 *    # Cached buffer will be attached immediately hence sgt will
+	 *      be available upon gem obj creation.
+	 *    # Un-cached buffer will follow delayed attach hence sgt
+	 *      will be NULL upon gem obj creation.
+	 */
+	msm_obj->flags |= MSM_BO_EXTBUF;
+
+	/*
+	 * For all uncached buffers, there is no need to perform cache
+	 * maintenance on dma map/unmap time.
+	 */
+	ret = dma_buf_get_flags(dmabuf, &flags);
+	if (ret) {
+		DRM_ERROR("dma_buf_get_flags failure, err=%d\n", ret);
+	} else if ((flags & ION_FLAG_CACHED) == 0) {
+		DRM_DEBUG("Buffer is uncached type\n");
+		msm_obj->flags |= MSM_BO_SKIPSYNC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mutex_unlock(&msm_obj->lock);
 	return obj;
 
 fail:
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(obj);
+=======
+	drm_gem_object_unreference_unlocked(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ERR_PTR(ret);
 }
 
@@ -1044,7 +1519,11 @@ static void *_msm_gem_kernel_new(struct drm_device *dev, uint32_t size,
 	if (iova) {
 		ret = msm_gem_get_iova(obj, aspace, iova);
 		if (ret) {
+<<<<<<< HEAD
 			drm_gem_object_put(obj);
+=======
+			drm_gem_object_unreference(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ERR_PTR(ret);
 		}
 	}
@@ -1052,7 +1531,11 @@ static void *_msm_gem_kernel_new(struct drm_device *dev, uint32_t size,
 	vaddr = msm_gem_get_vaddr(obj);
 	if (IS_ERR(vaddr)) {
 		msm_gem_put_iova(obj, aspace);
+<<<<<<< HEAD
 		drm_gem_object_put(obj);
+=======
+		drm_gem_object_unreference(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_CAST(vaddr);
 	}
 

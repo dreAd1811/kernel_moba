@@ -36,7 +36,10 @@
 #include <asm/system_info.h>
 #include <asm/tlb.h>
 #include <asm/fixmap.h>
+<<<<<<< HEAD
 #include <asm/ptdump.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach/arch.h>
 #include <asm/mach/map.h>
@@ -357,7 +360,11 @@ static inline void poison_init_mem(void *s, size_t count)
 		*p++ = 0xe7fddef0;
 }
 
+<<<<<<< HEAD
 static inline void
+=======
+static inline void __init
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 free_memmap(unsigned long start_pfn, unsigned long end_pfn)
 {
 	struct page *start_pg, *end_pg;
@@ -582,7 +589,12 @@ void __init mem_init(void)
 			"    ITCM    : 0x%08lx - 0x%08lx   (%4ld kB)\n"
 #endif
 			"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n",
+<<<<<<< HEAD
 			MLK(VECTORS_BASE, VECTORS_BASE + PAGE_SIZE),
+=======
+			MLK(UL(CONFIG_VECTORS_BASE), UL(CONFIG_VECTORS_BASE) +
+				(PAGE_SIZE)),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_HAVE_TCM
 			MLK(DTCM_OFFSET, (unsigned long) dtcm_end),
 			MLK(ITCM_OFFSET, (unsigned long) itcm_end),
@@ -597,6 +609,7 @@ void __init mem_init(void)
 			MLM(VMALLOC_START, VMALLOC_END),
 			MLM(PAGE_OFFSET, (unsigned long)high_memory));
 #endif
+<<<<<<< HEAD
 	pr_notice(
 #ifdef CONFIG_HIGHMEM
 		   "    pkmap   : 0x%08lx - 0x%08lx   (%4ld MB)\n"
@@ -616,6 +629,24 @@ void __init mem_init(void)
 			MLM(MODULES_VADDR, MODULES_END),
 #endif
 
+=======
+#if IS_ENABLED(CONFIG_HIGHMEM)
+	pr_notice(
+		   "    pkmap   : 0x%08lx - 0x%08lx   (%4ld MB)\n",
+		   MLM(PKMAP_BASE, (PKMAP_BASE) + (LAST_PKMAP) *
+							(PAGE_SIZE)));
+#endif
+#if IS_ENABLED(CONFIG_MODULES)
+	pr_notice(
+		   "    modules : 0x%08lx - 0x%08lx   (%4ld MB)\n",
+		   MLM(MODULES_VADDR, MODULES_END));
+#endif
+	pr_notice(
+		   "      .text : 0x%pK - 0x%pK    (%4d kB)\n"
+		   "      .init : 0x%pK - 0x%pK    (%4d kB)\n"
+		   "      .data : 0x%pK - 0x%pK    (%4d kB)\n"
+		   "       .bss : 0x%pK - 0x%pK    (%4d kB)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			MLK_ROUNDUP(_text, _etext),
 			MLK_ROUNDUP(__init_begin, __init_end),
 			MLK_ROUNDUP(_sdata, _edata),
@@ -626,7 +657,13 @@ void __init mem_init(void)
 	 * be detected at build time already.
 	 */
 #ifdef CONFIG_MMU
+<<<<<<< HEAD
 	BUILD_BUG_ON(TASK_SIZE				> MODULES_VADDR);
+=======
+#ifndef CONFIG_MODULES_USE_VMALLOC
+	BUILD_BUG_ON(TASK_SIZE				> MODULES_VADDR);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(TASK_SIZE 				> MODULES_VADDR);
 #endif
 
@@ -634,13 +671,32 @@ void __init mem_init(void)
 	BUILD_BUG_ON(PKMAP_BASE + LAST_PKMAP * PAGE_SIZE > PAGE_OFFSET);
 	BUG_ON(PKMAP_BASE + LAST_PKMAP * PAGE_SIZE	> PAGE_OFFSET);
 #endif
+<<<<<<< HEAD
 }
 
+=======
+
+	if (PAGE_SIZE >= 16384 && get_num_physpages() <= 128) {
+		extern int sysctl_overcommit_memory;
+		/*
+		 * On a machine this small we won't get
+		 * anywhere without overcommit, so turn
+		 * it on by default.
+		 */
+		sysctl_overcommit_memory = OVERCOMMIT_ALWAYS;
+	}
+}
+
+#ifdef CONFIG_STRICT_KERNEL_RWX
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef MLK
 #undef MLM
 #undef MLK_ROUNDUP
 
+<<<<<<< HEAD
 #ifdef CONFIG_STRICT_KERNEL_RWX
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct section_perm {
 	const char *name;
 	unsigned long start;
@@ -734,11 +790,21 @@ static inline void pte_update(unsigned long addr, pteval_t mask,
 				  pteval_t prot, struct mm_struct *mm)
 {
 	struct pte_data data;
+<<<<<<< HEAD
+=======
+	struct mm_struct *apply_mm = mm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data.mask = mask;
 	data.val = prot;
 
+<<<<<<< HEAD
 	apply_to_page_range(mm, addr, SECTION_SIZE, __pte_update, &data);
+=======
+	if (addr >= PAGE_OFFSET)
+		apply_mm = &init_mm;
+	apply_to_page_range(apply_mm, addr, SECTION_SIZE, __pte_update, &data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flush_tlb_kernel_range(addr, addr + SECTION_SIZE);
 }
 
@@ -850,7 +916,10 @@ void mark_rodata_ro(void)
 {
 	kernel_set_to_readonly = 1;
 	stop_machine(__mark_rodata_ro, NULL, NULL);
+<<<<<<< HEAD
 	debug_checkwx();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void set_kernel_text_rw(void)
@@ -875,9 +944,26 @@ void set_kernel_text_ro(void)
 static inline void fix_kernmem_perms(void) { }
 #endif /* CONFIG_STRICT_KERNEL_RWX */
 
+<<<<<<< HEAD
 void free_initmem(void)
 {
 	fix_kernmem_perms();
+=======
+void free_tcmmem(void)
+{
+#ifdef CONFIG_HAVE_TCM
+	extern char __tcm_start, __tcm_end;
+
+	poison_init_mem(&__tcm_start, &__tcm_end - &__tcm_start);
+	free_reserved_area(&__tcm_start, &__tcm_end, -1, "TCM link");
+#endif
+}
+
+void free_initmem(void)
+{
+	fix_kernmem_perms();
+	free_tcmmem();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poison_init_mem(__init_begin, __init_end - __init_begin);
 	if (!machine_is_integrator() && !machine_is_cintegrator())

@@ -207,6 +207,7 @@ config HID_CORSAIR
 	- Vengeance K90
 	- Scimitar PRO RGB
 
+<<<<<<< HEAD
 config HID_COUGAR
 	tristate "Cougar devices"
 	depends on HID
@@ -217,6 +218,8 @@ config HID_COUGAR
 	Supported devices:
 	- Cougar 500k Gaming Keyboard
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HID_PRODIKEYS
 	tristate "Prodikeys PC-MIDI Keyboard support"
 	depends on HID && SND
@@ -284,6 +287,7 @@ config HID_EMS_FF
 	Currently the following devices are known to be supported:
 	 - Trio Linker Plus II
 
+<<<<<<< HEAD
 config HID_ELAN
 	tristate "ELAN USB Touchpad Support"
 	depends on LEDS_CLASS && USB_HID
@@ -292,15 +296,22 @@ config HID_ELAN
 	Currently the following devices are known to be supported:
 	 - HP Pavilion X2 10-p0XX.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HID_ELECOM
 	tristate "ELECOM HID devices"
 	depends on HID
 	---help---
 	Support for ELECOM devices:
 	  - BM084 Bluetooth Mouse
+<<<<<<< HEAD
 	  - EX-G Trackballs (M-XT3DRBK, M-XT3URBK)
 	  - DEFT Trackballs (M-DT1DRBK, M-DT1URBK, M-DT2DRBK, M-DT2URBK)
 	  - HUGE Trackballs (M-HT1DRBK, M-HT1URBK)
+=======
+	  - DEFT Trackball (Wired and wireless)
+	  - HUGE Trackball (Wired and wireless)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config HID_ELO
 	tristate "ELO USB 4000/4500 touchscreen"
@@ -349,12 +360,15 @@ config HOLTEK_FF
 	  Say Y here if you have a Holtek On Line Grip based game controller
 	  and want to have force feedback support for it.
 
+<<<<<<< HEAD
 config HID_GOOGLE_HAMMER
 	tristate "Google Hammer Keyboard"
 	depends on USB_HID && LEDS_CLASS
 	---help---
 	Say Y here if you have a Google Hammer device.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HID_GT683R
 	tristate "MSI GT68xR LED support"
 	depends on LEDS_CLASS && USB_HID
@@ -421,6 +435,7 @@ config HID_ITE
 	---help---
 	Support for ITE devices not fully compliant with HID standard.
 
+<<<<<<< HEAD
 config HID_JABRA
 	tristate "Jabra USB HID Driver"
 	depends on HID
@@ -432,6 +447,8 @@ config HID_JABRA
 	mouse button events.
 	Say M here if you may ever plug in a Jabra USB device.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HID_TWINHAN
 	tristate "Twinhan IR remote control"
 	depends on HID
@@ -585,6 +602,7 @@ config HID_MAYFLASH
 	Say Y here if you have HJZ Mayflash PS3 game controller adapters
 	and want to enable force feedback support.
 
+<<<<<<< HEAD
 config HID_REDRAGON
 	tristate "Redragon keyboards"
 	depends on HID
@@ -592,6 +610,8 @@ config HID_REDRAGON
 	---help---
     Support for Redragon keyboards that need fix-ups to work properly.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HID_MICROSOFT
 	tristate "Microsoft non-fully HID-compliant devices"
 	depends on HID
@@ -652,6 +672,20 @@ config HID_MULTITOUCH
 	  To compile this driver as a module, choose M here: the
 	  module will be called hid-multitouch.
 
+<<<<<<< HEAD
+=======
+config HID_NINTENDO
+	tristate "Nintendo Joy-Con and Pro Controller support"
+	depends on HID
+	help
+	Adds support for the Nintendo Switch Joy-Cons and Pro Controller.
+	All controllers support bluetooth, and the Pro Controller also supports
+	its USB mode.
+
+	To compile this driver as a module, choose M here: the
+	module will be called hid-nintendo.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HID_NTI
 	tristate "NTI keyboard adapters"
 	---help---
@@ -794,10 +828,18 @@ config HID_PRIMAX
 	HID standard.
 
 config HID_RETRODE
+<<<<<<< HEAD
 	tristate "Retrode 2 USB adapter for vintage video games"
 	depends on USB_HID
 	---help---
 	Support for
+=======
+	tristate "Retrode"
+	depends on USB_HID
+	---help---
+	Support for
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  * Retrode 2 cartridge and controller adapter
 
 config HID_ROCCAT
@@ -858,7 +900,10 @@ config HID_SPEEDLINK
 config HID_STEAM
 	tristate "Steam Controller support"
 	depends on HID
+<<<<<<< HEAD
 	select POWER_SUPPLY
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	---help---
 	Say Y here if you have a Steam Controller if you want to use it
 	without running the Steam Client. It supports both the wired and
@@ -1082,9 +1127,13 @@ config HID_ALPS
 config HID_QVR
 	tristate "QVR support"
 	depends on HID
+<<<<<<< HEAD
 	help
 	Support for streaming sensor data from an external device and to
 	retrieve the calibration data of the associated device.
+=======
+	---help---
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	Say 'Y' or 'M' if you want to connect an external device to
 	stream sensor data for QVR support.
 

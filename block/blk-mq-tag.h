@@ -45,8 +45,18 @@ static inline struct sbq_wait_state *bt_wait_ptr(struct sbitmap_queue *bt,
 }
 
 enum {
+<<<<<<< HEAD
 	BLK_MQ_TAG_FAIL		= -1U,
 	BLK_MQ_TAG_MIN		= 1,
+=======
+	BLK_MQ_TAG_CACHE_MIN	= 1,
+	BLK_MQ_TAG_CACHE_MAX	= 64,
+};
+
+enum {
+	BLK_MQ_TAG_FAIL		= -1U,
+	BLK_MQ_TAG_MIN		= BLK_MQ_TAG_CACHE_MIN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BLK_MQ_TAG_MAX		= BLK_MQ_TAG_FAIL - 1,
 };
 

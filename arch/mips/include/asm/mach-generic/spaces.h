@@ -17,6 +17,7 @@
 /*
  * This gives the physical RAM offset.
  */
+<<<<<<< HEAD
 #ifndef __ASSEMBLY__
 # if defined(CONFIG_MIPS_AUTO_PFN_OFFSET)
 #  define PHYS_OFFSET		((unsigned long)PFN_PHYS(ARCH_PFN_OFFSET))
@@ -24,6 +25,11 @@
 #  define PHYS_OFFSET		_AC(0, UL)
 # endif
 #endif /* __ASSEMBLY__ */
+=======
+#ifndef PHYS_OFFSET
+#define PHYS_OFFSET		_AC(0, UL)
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_32BIT
 #ifdef CONFIG_KVM_GUEST

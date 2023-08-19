@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Driver for Renesas R-Car VIN
  *
@@ -8,6 +11,14 @@
  * Copyright (C) 2008 Magnus Damm
  *
  * Based on the soc-camera rcar_vin driver
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute  it and/or modify it
+ * under  the terms of  the GNU General  Public License as published by the
+ * Free Software Foundation;  either version 2 of the  License, or (at your
+ * option) any later version.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -16,6 +27,7 @@
 #include <linux/of_graph.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/slab.h>
 #include <linux/sys_soc.h>
 
@@ -390,10 +402,22 @@ out:
 	kref_put(&group->refcount, rvin_group_release);
 }
 
+=======
+
+#include <media/v4l2-fwnode.h>
+
+#include "rcar-vin.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Async notifier
  */
 
+<<<<<<< HEAD
+=======
+#define notifier_to_vin(n) container_of(n, struct rvin_dev, notifier)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rvin_find_pad(struct v4l2_subdev *sd, int direction)
 {
 	unsigned int pad;
@@ -408,6 +432,7 @@ static int rvin_find_pad(struct v4l2_subdev *sd, int direction)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 /* -----------------------------------------------------------------------------
  * Parallel async notifier
  */
@@ -452,11 +477,32 @@ static int rvin_parallel_subdevice_attach(struct rvin_dev *vin,
 			vin_dbg(vin, "Found media bus format for %s: %d\n",
 				subdev->name, vin->mbus_code);
 			break;
+=======
+static bool rvin_mbus_supported(struct rvin_graph_entity *entity)
+{
+	struct v4l2_subdev *sd = entity->subdev;
+	struct v4l2_subdev_mbus_code_enum code = {
+		.which = V4L2_SUBDEV_FORMAT_ACTIVE,
+	};
+
+	code.index = 0;
+	code.pad = entity->source_pad;
+	while (!v4l2_subdev_call(sd, pad, enum_mbus_code, NULL, &code)) {
+		code.index++;
+		switch (code.code) {
+		case MEDIA_BUS_FMT_YUYV8_1X16:
+		case MEDIA_BUS_FMT_UYVY8_2X8:
+		case MEDIA_BUS_FMT_UYVY10_2X10:
+		case MEDIA_BUS_FMT_RGB888_1X24:
+			entity->code = code.code;
+			return true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			break;
 		}
 	}
 
+<<<<<<< HEAD
 	if (!vin->mbus_code) {
 		vin_err(vin, "Unsupported media bus format for %s\n",
 			subdev->name);
@@ -510,6 +556,25 @@ static int rvin_parallel_notify_complete(struct v4l2_async_notifier *notifier)
 	struct media_entity *source;
 	struct media_entity *sink;
 	int ret;
+=======
+	return false;
+}
+
+static int rvin_digital_notify_complete(struct v4l2_async_notifier *notifier)
+{
+	struct rvin_dev *vin = notifier_to_vin(notifier);
+	int ret;
+
+	/* Verify subdevices mbus format */
+	if (!rvin_mbus_supported(&vin->digital)) {
+		vin_err(vin, "Unsupported media bus format for %s\n",
+			vin->digital.subdev->name);
+		return -EINVAL;
+	}
+
+	vin_dbg(vin, "Found media bus format for %s: %d\n",
+		vin->digital.subdev->name, vin->digital.code);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_device_register_subdev_nodes(&vin->v4l2_dev);
 	if (ret < 0) {
@@ -517,6 +582,7 @@ static int rvin_parallel_notify_complete(struct v4l2_async_notifier *notifier)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (!video_is_registered(&vin->vdev)) {
 		ret = rvin_v4l2_register(vin);
 		if (ret < 0)
@@ -570,10 +636,51 @@ static int rvin_parallel_notify_bound(struct v4l2_async_notifier *notifier,
 	vin_dbg(vin, "bound subdev %s source pad: %u sink pad: %u\n",
 		subdev->name, vin->parallel->source_pad,
 		vin->parallel->sink_pad);
+=======
+	return rvin_v4l2_probe(vin);
+}
+
+static void rvin_digital_notify_unbind(struct v4l2_async_notifier *notifier,
+				       struct v4l2_subdev *subdev,
+				       struct v4l2_async_subdev *asd)
+{
+	struct rvin_dev *vin = notifier_to_vin(notifier);
+
+	vin_dbg(vin, "unbind digital subdev %s\n", subdev->name);
+	rvin_v4l2_remove(vin);
+	vin->digital.subdev = NULL;
+}
+
+static int rvin_digital_notify_bound(struct v4l2_async_notifier *notifier,
+				     struct v4l2_subdev *subdev,
+				     struct v4l2_async_subdev *asd)
+{
+	struct rvin_dev *vin = notifier_to_vin(notifier);
+	int ret;
+
+	v4l2_set_subdev_hostdata(subdev, vin);
+
+	/* Find source and sink pad of remote subdevice */
+
+	ret = rvin_find_pad(subdev, MEDIA_PAD_FL_SOURCE);
+	if (ret < 0)
+		return ret;
+	vin->digital.source_pad = ret;
+
+	ret = rvin_find_pad(subdev, MEDIA_PAD_FL_SINK);
+	vin->digital.sink_pad = ret < 0 ? 0 : ret;
+
+	vin->digital.subdev = subdev;
+
+	vin_dbg(vin, "bound subdev %s source pad: %u sink pad: %u\n",
+		subdev->name, vin->digital.source_pad,
+		vin->digital.sink_pad);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations rvin_parallel_notify_ops = {
 	.bound = rvin_parallel_notify_bound,
 	.unbind = rvin_parallel_notify_unbind,
@@ -602,6 +709,31 @@ static int rvin_parallel_parse_v4l2(struct device *dev,
 	case V4L2_MBUS_BT656:
 		vin_dbg(vin, "Found BT656 media bus\n");
 		vin->parallel->mbus_flags = 0;
+=======
+static int rvin_digitial_parse_v4l2(struct rvin_dev *vin,
+				    struct device_node *ep,
+				    struct v4l2_mbus_config *mbus_cfg)
+{
+	struct v4l2_fwnode_endpoint v4l2_ep;
+	int ret;
+
+	ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(ep), &v4l2_ep);
+	if (ret) {
+		vin_err(vin, "Could not parse v4l2 endpoint\n");
+		return -EINVAL;
+	}
+
+	mbus_cfg->type = v4l2_ep.bus_type;
+
+	switch (mbus_cfg->type) {
+	case V4L2_MBUS_PARALLEL:
+		vin_dbg(vin, "Found PARALLEL media bus\n");
+		mbus_cfg->flags = v4l2_ep.bus.parallel.flags;
+		break;
+	case V4L2_MBUS_BT656:
+		vin_dbg(vin, "Found BT656 media bus\n");
+		mbus_cfg->flags = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		vin_err(vin, "Unknown media bus type\n");
@@ -611,6 +743,7 @@ static int rvin_parallel_parse_v4l2(struct device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rvin_parallel_init(struct rvin_dev *vin)
 {
 	int ret;
@@ -633,6 +766,76 @@ static int rvin_parallel_init(struct rvin_dev *vin)
 	if (ret < 0) {
 		vin_err(vin, "Notifier registration failed\n");
 		v4l2_async_notifier_cleanup(&vin->group->notifier);
+=======
+static int rvin_digital_graph_parse(struct rvin_dev *vin)
+{
+	struct device_node *ep, *np;
+	int ret;
+
+	vin->digital.asd.match.fwnode.fwnode = NULL;
+	vin->digital.subdev = NULL;
+
+	/*
+	 * Port 0 id 0 is local digital input, try to get it.
+	 * Not all instances can or will have this, that is OK
+	 */
+	ep = of_graph_get_endpoint_by_regs(vin->dev->of_node, 0, 0);
+	if (!ep)
+		return 0;
+
+	np = of_graph_get_remote_port_parent(ep);
+	if (!np) {
+		vin_err(vin, "No remote parent for digital input\n");
+		of_node_put(ep);
+		return -EINVAL;
+	}
+	of_node_put(np);
+
+	ret = rvin_digitial_parse_v4l2(vin, ep, &vin->digital.mbus_cfg);
+	of_node_put(ep);
+	if (ret)
+		return ret;
+
+	vin->digital.asd.match.fwnode.fwnode = of_fwnode_handle(np);
+	vin->digital.asd.match_type = V4L2_ASYNC_MATCH_FWNODE;
+
+	return 0;
+}
+
+static int rvin_digital_graph_init(struct rvin_dev *vin)
+{
+	struct v4l2_async_subdev **subdevs = NULL;
+	int ret;
+
+	ret = rvin_digital_graph_parse(vin);
+	if (ret)
+		return ret;
+
+	if (!vin->digital.asd.match.fwnode.fwnode) {
+		vin_dbg(vin, "No digital subdevice found\n");
+		return -ENODEV;
+	}
+
+	/* Register the subdevices notifier. */
+	subdevs = devm_kzalloc(vin->dev, sizeof(*subdevs), GFP_KERNEL);
+	if (subdevs == NULL)
+		return -ENOMEM;
+
+	subdevs[0] = &vin->digital.asd;
+
+	vin_dbg(vin, "Found digital subdevice %pOF\n",
+		to_of_node(subdevs[0]->match.fwnode.fwnode));
+
+	vin->notifier.num_subdevs = 1;
+	vin->notifier.subdevs = subdevs;
+	vin->notifier.bound = rvin_digital_notify_bound;
+	vin->notifier.unbind = rvin_digital_notify_unbind;
+	vin->notifier.complete = rvin_digital_notify_complete;
+
+	ret = v4l2_async_notifier_register(&vin->v4l2_dev, &vin->notifier);
+	if (ret < 0) {
+		vin_err(vin, "Notifier registration failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -640,6 +843,7 @@ static int rvin_parallel_init(struct rvin_dev *vin)
 }
 
 /* -----------------------------------------------------------------------------
+<<<<<<< HEAD
  * Group async notifier
  */
 
@@ -1165,6 +1369,26 @@ static const struct soc_device_attribute r8a7795es1[] = {
 static int rcar_vin_probe(struct platform_device *pdev)
 {
 	const struct soc_device_attribute *attr;
+=======
+ * Platform Device Driver
+ */
+
+static const struct of_device_id rvin_of_id_table[] = {
+	{ .compatible = "renesas,vin-r8a7794", .data = (void *)RCAR_GEN2 },
+	{ .compatible = "renesas,vin-r8a7793", .data = (void *)RCAR_GEN2 },
+	{ .compatible = "renesas,vin-r8a7791", .data = (void *)RCAR_GEN2 },
+	{ .compatible = "renesas,vin-r8a7790", .data = (void *)RCAR_GEN2 },
+	{ .compatible = "renesas,vin-r8a7779", .data = (void *)RCAR_H1 },
+	{ .compatible = "renesas,vin-r8a7778", .data = (void *)RCAR_M1 },
+	{ .compatible = "renesas,rcar-gen2-vin", .data = (void *)RCAR_GEN2 },
+	{ },
+};
+MODULE_DEVICE_TABLE(of, rvin_of_id_table);
+
+static int rcar_vin_probe(struct platform_device *pdev)
+{
+	const struct of_device_id *match;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rvin_dev *vin;
 	struct resource *mem;
 	int irq, ret;
@@ -1173,6 +1397,7 @@ static int rcar_vin_probe(struct platform_device *pdev)
 	if (!vin)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	vin->dev = &pdev->dev;
 	vin->info = of_device_get_match_data(&pdev->dev);
 
@@ -1183,6 +1408,14 @@ static int rcar_vin_probe(struct platform_device *pdev)
 	attr = soc_device_match(r8a7795es1);
 	if (attr)
 		vin->info = attr->data;
+=======
+	match = of_match_device(of_match_ptr(rvin_of_id_table), &pdev->dev);
+	if (!match)
+		return -ENODEV;
+
+	vin->dev = &pdev->dev;
+	vin->chip = (enum chip_id)match->data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (mem == NULL)
@@ -1196,6 +1429,7 @@ static int rcar_vin_probe(struct platform_device *pdev)
 	if (irq < 0)
 		return irq;
 
+<<<<<<< HEAD
 	ret = rvin_dma_register(vin, irq);
 	if (ret)
 		return ret;
@@ -1211,10 +1445,20 @@ static int rcar_vin_probe(struct platform_device *pdev)
 	ret = rvin_parallel_init(vin);
 	if (ret)
 		goto error_group_unregister;
+=======
+	ret = rvin_dma_probe(vin, irq);
+	if (ret)
+		return ret;
+
+	ret = rvin_digital_graph_init(vin);
+	if (ret < 0)
+		goto error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_suspend_ignore_children(&pdev->dev, true);
 	pm_runtime_enable(&pdev->dev);
 
+<<<<<<< HEAD
 	return 0;
 
 error_group_unregister:
@@ -1230,6 +1474,13 @@ error_group_unregister:
 
 error_dma_unregister:
 	rvin_dma_unregister(vin);
+=======
+	platform_set_drvdata(pdev, vin);
+
+	return 0;
+error:
+	rvin_dma_remove(vin);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1240,6 +1491,7 @@ static int rcar_vin_remove(struct platform_device *pdev)
 
 	pm_runtime_disable(&pdev->dev);
 
+<<<<<<< HEAD
 	rvin_v4l2_unregister(vin);
 
 	v4l2_async_notifier_unregister(&vin->notifier);
@@ -1258,6 +1510,11 @@ static int rcar_vin_remove(struct platform_device *pdev)
 	}
 
 	rvin_dma_unregister(vin);
+=======
+	v4l2_async_notifier_unregister(&vin->notifier);
+
+	rvin_dma_remove(vin);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1275,4 +1532,8 @@ module_platform_driver(rcar_vin_driver);
 
 MODULE_AUTHOR("Niklas Söderlund <niklas.soderlund@ragnatech.se>");
 MODULE_DESCRIPTION("Renesas R-Car VIN camera host driver");
+<<<<<<< HEAD
 MODULE_LICENSE("GPL");
+=======
+MODULE_LICENSE("GPL v2");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

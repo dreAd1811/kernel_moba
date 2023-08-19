@@ -21,6 +21,10 @@ Video Function Calls
     video-get-status
     video-get-frame-count
     video-get-pts
+<<<<<<< HEAD
+=======
+    video-get-frame-rate
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     video-get-event
     video-command
     video-try-command
@@ -30,6 +34,19 @@ Video Function Calls
     video-fast-forward
     video-slowmotion
     video-get-capabilities
+<<<<<<< HEAD
     video-clear-buffer
     video-set-streamtype
     video-set-format
+=======
+    video-set-id
+    video-clear-buffer
+    video-set-streamtype
+    video-set-format
+    video-set-system
+    video-set-highlight
+    video-set-spu
+    video-set-spu-palette
+    video-get-navi
+    video-set-attributes
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

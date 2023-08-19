@@ -1684,7 +1684,11 @@ static int ican3_stop(struct net_device *ndev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static netdev_tx_t ican3_xmit(struct sk_buff *skb, struct net_device *ndev)
+=======
+static int ican3_xmit(struct sk_buff *skb, struct net_device *ndev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ican3_dev *mod = netdev_priv(ndev);
 	struct can_frame *cf = (struct can_frame *)skb->data;
@@ -1865,9 +1869,15 @@ static ssize_t ican3_sysfs_show_fwinfo(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%s\n", mod->fwinfo);
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(termination, 0644, ican3_sysfs_show_term,
 		   ican3_sysfs_set_term);
 static DEVICE_ATTR(fwinfo, 0444, ican3_sysfs_show_fwinfo, NULL);
+=======
+static DEVICE_ATTR(termination, S_IWUSR | S_IRUGO, ican3_sysfs_show_term,
+						   ican3_sysfs_set_term);
+static DEVICE_ATTR(fwinfo, S_IRUSR | S_IRUGO, ican3_sysfs_show_fwinfo, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *ican3_sysfs_attrs[] = {
 	&dev_attr_termination.attr,

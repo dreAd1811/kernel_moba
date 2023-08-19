@@ -41,6 +41,14 @@ u64 i915_prandom_u64_state(struct rnd_state *rnd)
 	return x;
 }
 
+<<<<<<< HEAD
+=======
+static inline u32 i915_prandom_u32_max_state(u32 ep_ro, struct rnd_state *state)
+{
+	return upper_32_bits((u64)prandom_u32_state(state) * ep_ro);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void i915_random_reorder(unsigned int *order, unsigned int count,
 			 struct rnd_state *state)
 {
@@ -57,8 +65,12 @@ unsigned int *i915_random_order(unsigned int count, struct rnd_state *state)
 {
 	unsigned int *order, i;
 
+<<<<<<< HEAD
 	order = kmalloc_array(count, sizeof(*order),
 			      GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_NOWARN);
+=======
+	order = kmalloc_array(count, sizeof(*order), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!order)
 		return order;
 

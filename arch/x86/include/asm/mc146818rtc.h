@@ -95,8 +95,13 @@ static inline unsigned char current_lock_cmos_reg(void)
 unsigned char rtc_cmos_read(unsigned char addr);
 void rtc_cmos_write(unsigned char val, unsigned char addr);
 
+<<<<<<< HEAD
 extern int mach_set_rtc_mmss(const struct timespec64 *now);
 extern void mach_get_cmos_time(struct timespec64 *now);
+=======
+extern int mach_set_rtc_mmss(const struct timespec *now);
+extern void mach_get_cmos_time(struct timespec *now);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RTC_IRQ 8
 

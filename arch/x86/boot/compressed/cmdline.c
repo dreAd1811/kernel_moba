@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "misc.h"
 
+<<<<<<< HEAD
 #if CONFIG_EARLY_PRINTK || CONFIG_RANDOMIZE_BASE || CONFIG_X86_5LEVEL
+=======
+#if CONFIG_EARLY_PRINTK || CONFIG_RANDOMIZE_BASE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned long fs;
 static inline void set_fs(unsigned long seg)

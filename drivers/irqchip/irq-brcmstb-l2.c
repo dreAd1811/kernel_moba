@@ -1,7 +1,11 @@
 /*
  * Generic Broadcom Set Top Box Level 2 Interrupt controller driver
  *
+<<<<<<< HEAD
  * Copyright (C) 2014-2017 Broadcom
+=======
+ * Copyright (C) 2014 Broadcom Corporation
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -31,6 +35,7 @@
 #include <linux/irqchip.h>
 #include <linux/irqchip/chained_irq.h>
 
+<<<<<<< HEAD
 struct brcmstb_intc_init_params {
 	irq_flow_handler_t handler;
 	int cpu_status;
@@ -66,10 +71,26 @@ struct brcmstb_l2_intc_data {
 	struct irq_chip_generic *gc;
 	int status_offset;
 	int mask_offset;
+=======
+/* Register offsets in the L2 interrupt controller */
+#define CPU_STATUS	0x00
+#define CPU_SET		0x04
+#define CPU_CLEAR	0x08
+#define CPU_MASK_STATUS	0x0c
+#define CPU_MASK_SET	0x10
+#define CPU_MASK_CLEAR	0x14
+
+/* L2 intc private data structure */
+struct brcmstb_l2_intc_data {
+	int parent_irq;
+	void __iomem *base;
+	struct irq_domain *domain;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool can_wake;
 	u32 saved_mask; /* for suspend/resume */
 };
 
+<<<<<<< HEAD
 /**
  * brcmstb_l2_mask_and_ack - Mask and ack pending interrupt
  * @d: irq_data
@@ -99,14 +120,25 @@ static void brcmstb_l2_mask_and_ack(struct irq_data *d)
 static void brcmstb_l2_intc_irq_handle(struct irq_desc *desc)
 {
 	struct brcmstb_l2_intc_data *b = irq_desc_get_handler_data(desc);
+=======
+static void brcmstb_l2_intc_irq_handle(struct irq_desc *desc)
+{
+	struct brcmstb_l2_intc_data *b = irq_desc_get_handler_data(desc);
+	struct irq_chip_generic *gc = irq_get_domain_generic_chip(b->domain, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct irq_chip *chip = irq_desc_get_chip(desc);
 	unsigned int irq;
 	u32 status;
 
 	chained_irq_enter(chip, desc);
 
+<<<<<<< HEAD
 	status = irq_reg_readl(b->gc, b->status_offset) &
 		~(irq_reg_readl(b->gc, b->mask_offset));
+=======
+	status = irq_reg_readl(gc, CPU_STATUS) &
+		~(irq_reg_readl(gc, CPU_MASK_STATUS));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (status == 0) {
 		raw_spin_lock(&desc->lock);
@@ -117,8 +149,15 @@ static void brcmstb_l2_intc_irq_handle(struct irq_desc *desc)
 
 	do {
 		irq = ffs(status) - 1;
+<<<<<<< HEAD
 		status &= ~(1 << irq);
 		generic_handle_irq(irq_linear_revmap(b->domain, irq));
+=======
+		/* ack at our level */
+		irq_reg_writel(gc, 1 << irq, CPU_CLEAR);
+		status &= ~(1 << irq);
+		generic_handle_irq(irq_find_mapping(b->domain, irq));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (status);
 out:
 	chained_irq_exit(chip, desc);
@@ -127,6 +166,7 @@ out:
 static void brcmstb_l2_intc_suspend(struct irq_data *d)
 {
 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
+<<<<<<< HEAD
 	struct irq_chip_type *ct = irq_data_get_chip_type(d);
 	struct brcmstb_l2_intc_data *b = gc->private;
 	unsigned long flags;
@@ -141,11 +181,26 @@ static void brcmstb_l2_intc_suspend(struct irq_data *d)
 		irq_reg_writel(gc, gc->wake_active, ct->regs.enable);
 	}
 	irq_gc_unlock_irqrestore(gc, flags);
+=======
+	struct brcmstb_l2_intc_data *b = gc->private;
+
+	irq_gc_lock(gc);
+	/* Save the current mask */
+	b->saved_mask = irq_reg_readl(gc, CPU_MASK_STATUS);
+
+	if (b->can_wake) {
+		/* Program the wakeup mask */
+		irq_reg_writel(gc, ~gc->wake_active, CPU_MASK_SET);
+		irq_reg_writel(gc, gc->wake_active, CPU_MASK_CLEAR);
+	}
+	irq_gc_unlock(gc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void brcmstb_l2_intc_resume(struct irq_data *d)
 {
 	struct irq_chip_generic *gc = irq_data_get_irq_chip_data(d);
+<<<<<<< HEAD
 	struct irq_chip_type *ct = irq_data_get_chip_type(d);
 	struct brcmstb_l2_intc_data *b = gc->private;
 	unsigned long flags;
@@ -175,19 +230,48 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
 	unsigned int flags;
 	int parent_irq;
 	void __iomem *base;
+=======
+	struct brcmstb_l2_intc_data *b = gc->private;
+
+	irq_gc_lock(gc);
+	/* Clear unmasked non-wakeup interrupts */
+	irq_reg_writel(gc, ~b->saved_mask & ~gc->wake_active, CPU_CLEAR);
+
+	/* Restore the saved mask */
+	irq_reg_writel(gc, b->saved_mask, CPU_MASK_SET);
+	irq_reg_writel(gc, ~b->saved_mask, CPU_MASK_CLEAR);
+	irq_gc_unlock(gc);
+}
+
+static int __init brcmstb_l2_intc_of_init(struct device_node *np,
+					  struct device_node *parent)
+{
+	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
+	struct brcmstb_l2_intc_data *data;
+	struct irq_chip_generic *gc;
+	struct irq_chip_type *ct;
+	int ret;
+	unsigned int flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = kzalloc(sizeof(*data), GFP_KERNEL);
 	if (!data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	base = of_iomap(np, 0);
 	if (!base) {
+=======
+	data->base = of_iomap(np, 0);
+	if (!data->base) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("failed to remap intc L2 registers\n");
 		ret = -ENOMEM;
 		goto out_free;
 	}
 
 	/* Disable all interrupts by default */
+<<<<<<< HEAD
 	writel(0xffffffff, base + init_params->cpu_mask_set);
 
 	/* Wakeup interrupts may be retained from S5 (cold boot) */
@@ -197,6 +281,17 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
 
 	parent_irq = irq_of_parse_and_map(np, 0);
 	if (!parent_irq) {
+=======
+	writel(0xffffffff, data->base + CPU_MASK_SET);
+
+	/* Wakeup interrupts may be retained from S5 (cold boot) */
+	data->can_wake = of_property_read_bool(np, "brcm,irq-can-wake");
+	if (!data->can_wake)
+		writel(0xffffffff, data->base + CPU_CLEAR);
+
+	data->parent_irq = irq_of_parse_and_map(np, 0);
+	if (!data->parent_irq) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("failed to find parent interrupt\n");
 		ret = -EINVAL;
 		goto out_unmap;
@@ -218,13 +313,18 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
 
 	/* Allocate a single Generic IRQ chip for this node */
 	ret = irq_alloc_domain_generic_chips(data->domain, 32, 1,
+<<<<<<< HEAD
 			np->full_name, init_params->handler, clr, 0, flags);
+=======
+				np->full_name, handle_edge_irq, clr, 0, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("failed to allocate generic irq chip\n");
 		goto out_free_domain;
 	}
 
 	/* Set the IRQ chaining logic */
+<<<<<<< HEAD
 	irq_set_chained_handler_and_data(parent_irq,
 					 brcmstb_l2_intc_irq_handle, data);
 
@@ -251,6 +351,24 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
 
 	ct->chip.irq_unmask = irq_gc_unmask_enable_reg;
 	ct->regs.enable = init_params->cpu_mask_clear;
+=======
+	irq_set_chained_handler_and_data(data->parent_irq,
+					 brcmstb_l2_intc_irq_handle, data);
+
+	gc = irq_get_domain_generic_chip(data->domain, 0);
+	gc->reg_base = data->base;
+	gc->private = data;
+	ct = gc->chip_types;
+
+	ct->chip.irq_ack = irq_gc_ack_set_bit;
+	ct->regs.ack = CPU_CLEAR;
+
+	ct->chip.irq_mask = irq_gc_mask_disable_reg;
+	ct->regs.disable = CPU_MASK_SET;
+
+	ct->chip.irq_unmask = irq_gc_unmask_enable_reg;
+	ct->regs.enable = CPU_MASK_CLEAR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ct->chip.irq_suspend = brcmstb_l2_intc_suspend;
 	ct->chip.irq_resume = brcmstb_l2_intc_resume;
@@ -260,20 +378,35 @@ static int __init brcmstb_l2_intc_of_init(struct device_node *np,
 		/* This IRQ chip can wake the system, set all child interrupts
 		 * in wake_enabled mask
 		 */
+<<<<<<< HEAD
 		data->gc->wake_enabled = 0xffffffff;
 		ct->chip.irq_set_wake = irq_gc_set_wake;
 	}
 
+=======
+		gc->wake_enabled = 0xffffffff;
+		ct->chip.irq_set_wake = irq_gc_set_wake;
+	}
+
+	pr_info("registered L2 intc (mem: 0x%p, parent irq: %d)\n",
+			data->base, data->parent_irq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out_free_domain:
 	irq_domain_remove(data->domain);
 out_unmap:
+<<<<<<< HEAD
 	iounmap(base);
+=======
+	iounmap(data->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_free:
 	kfree(data);
 	return ret;
 }
+<<<<<<< HEAD
 
 int __init brcmstb_l2_edge_intc_of_init(struct device_node *np,
 	struct device_node *parent)
@@ -289,3 +422,6 @@ int __init brcmstb_l2_lvl_intc_of_init(struct device_node *np,
 }
 IRQCHIP_DECLARE(bcm7271_l2_intc, "brcm,bcm7271-l2-intc",
 	brcmstb_l2_lvl_intc_of_init);
+=======
+IRQCHIP_DECLARE(brcmstb_l2_intc, "brcm,l2-intc", brcmstb_l2_intc_of_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

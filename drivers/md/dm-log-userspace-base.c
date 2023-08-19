@@ -76,7 +76,11 @@ struct log_c {
 	 */
 	uint32_t integrated_flush;
 
+<<<<<<< HEAD
 	mempool_t flush_entry_pool;
+=======
+	mempool_t *flush_entry_pool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct kmem_cache *_flush_entry_cache;
@@ -249,10 +253,18 @@ static int userspace_ctr(struct dm_dirty_log *log, struct dm_target *ti,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	r = mempool_init_slab_pool(&lc->flush_entry_pool, FLUSH_ENTRY_POOL_SIZE,
 				   _flush_entry_cache);
 	if (r) {
 		DMERR("Failed to create flush_entry_pool");
+=======
+	lc->flush_entry_pool = mempool_create_slab_pool(FLUSH_ENTRY_POOL_SIZE,
+							_flush_entry_cache);
+	if (!lc->flush_entry_pool) {
+		DMERR("Failed to create flush_entry_pool");
+		r = -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -312,7 +324,11 @@ static int userspace_ctr(struct dm_dirty_log *log, struct dm_target *ti,
 out:
 	kfree(devices_rdata);
 	if (r) {
+<<<<<<< HEAD
 		mempool_exit(&lc->flush_entry_pool);
+=======
+		mempool_destroy(lc->flush_entry_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(lc);
 		kfree(ctr_str);
 	} else {
@@ -341,7 +357,11 @@ static void userspace_dtr(struct dm_dirty_log *log)
 	if (lc->log_dev)
 		dm_put_device(lc->ti, lc->log_dev);
 
+<<<<<<< HEAD
 	mempool_exit(&lc->flush_entry_pool);
+=======
+	mempool_destroy(lc->flush_entry_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(lc->usr_argv_str);
 	kfree(lc);
@@ -569,7 +589,11 @@ static int userspace_flush(struct dm_dirty_log *log)
 	int mark_list_is_empty;
 	int clear_list_is_empty;
 	struct dm_dirty_log_flush_entry *fe, *tmp_fe;
+<<<<<<< HEAD
 	mempool_t *flush_entry_pool = &lc->flush_entry_pool;
+=======
+	mempool_t *flush_entry_pool = lc->flush_entry_pool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&lc->flush_lock, flags);
 	list_splice_init(&lc->mark_list, &mark_list);
@@ -652,7 +676,11 @@ static void userspace_mark_region(struct dm_dirty_log *log, region_t region)
 	struct dm_dirty_log_flush_entry *fe;
 
 	/* Wait for an allocation, but _never_ fail */
+<<<<<<< HEAD
 	fe = mempool_alloc(&lc->flush_entry_pool, GFP_NOIO);
+=======
+	fe = mempool_alloc(lc->flush_entry_pool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BUG_ON(!fe);
 
 	spin_lock_irqsave(&lc->flush_lock, flags);
@@ -686,7 +714,11 @@ static void userspace_clear_region(struct dm_dirty_log *log, region_t region)
 	 * to cause the region to be resync'ed when the
 	 * device is activated next time.
 	 */
+<<<<<<< HEAD
 	fe = mempool_alloc(&lc->flush_entry_pool, GFP_ATOMIC);
+=======
+	fe = mempool_alloc(lc->flush_entry_pool, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!fe) {
 		DMERR("Failed to allocate memory to clear region.");
 		return;

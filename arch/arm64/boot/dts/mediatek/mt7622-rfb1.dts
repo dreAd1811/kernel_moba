@@ -7,16 +7,21 @@
  */
 
 /dts-v1/;
+<<<<<<< HEAD
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/gpio/gpio.h>
 
 #include "mt7622.dtsi"
 #include "mt6380.dtsi"
+=======
+#include "mt7622.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "MediaTek MT7622 RFB1 board";
 	compatible = "mediatek,mt7622-rfb1", "mediatek,mt7622";
 
+<<<<<<< HEAD
 	aliases {
 		serial0 = &uart0;
 	};
@@ -53,11 +58,16 @@
 			linux,code = <KEY_WPS_BUTTON>;
 			gpios = <&pio 102 0>;
 		};
+=======
+	chosen {
+		bootargs = "console=ttyS0,115200n1";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	memory {
 		reg = <0 0x40000000 0 0x3F000000>;
 	};
+<<<<<<< HEAD
 
 	reg_1p8v: regulator-1p8v {
 		compatible = "regulator-fixed";
@@ -504,5 +514,10 @@
 &watchdog {
 	pinctrl-names = "default";
 	pinctrl-0 = <&watchdog_pins>;
+=======
+};
+
+&uart0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };

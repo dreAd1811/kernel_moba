@@ -226,8 +226,12 @@ ex_btc8821a2ant_periodical(
 	);
 void
 ex_btc8821a2ant_display_coex_info(
+<<<<<<< HEAD
 	struct btc_coexist *btcoexist,
 	struct seq_file *m
+=======
+	struct btc_coexist *btcoexist
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	);
 void ex_btc8821a2ant_pnp_notify(struct btc_coexist *btcoexist, u8 pnp_state);
 void ex_btc8821a2ant_pre_load_firmware(struct btc_coexist *btcoexist);

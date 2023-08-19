@@ -48,6 +48,11 @@ gf108_ram = {
 	.probe_fbp_amount = gf108_ram_probe_fbp_amount,
 	.probe_fbpa_amount = gf100_ram_probe_fbpa_amount,
 	.init = gf100_ram_init,
+<<<<<<< HEAD
+=======
+	.get = gf100_ram_get,
+	.put = gf100_ram_put,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.calc = gf100_ram_calc,
 	.prog = gf100_ram_prog,
 	.tidy = gf100_ram_tidy,

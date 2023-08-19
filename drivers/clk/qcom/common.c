@@ -1,7 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2013-2014, 2017-2019, The Linux Foundation.
  * All rights reserved.
+=======
+/*
+ * Copyright (c) 2013-2014, 2017-2019, The Linux Foundation. All rights reserved.
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/export.h>
@@ -32,6 +46,12 @@ struct freq_tbl *qcom_find_freq(const struct freq_tbl *f, unsigned long rate)
 	if (!f)
 		return NULL;
 
+<<<<<<< HEAD
+=======
+	if (!f->freq)
+		return f;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (; f->freq; f++)
 		if (rate <= f->freq)
 			return f;
@@ -194,6 +214,25 @@ int qcom_cc_register_sleep_clk(struct device *dev)
 }
 EXPORT_SYMBOL_GPL(qcom_cc_register_sleep_clk);
 
+<<<<<<< HEAD
+=======
+/* Drop 'protected-clocks' from the list of clocks to register */
+static void qcom_cc_drop_protected(struct device *dev, struct qcom_cc *cc)
+{
+	struct device_node *np = dev->of_node;
+	struct property *prop;
+	const __be32 *p;
+	u32 i;
+
+	of_property_for_each_u32(np, "protected-clocks", prop, p, i) {
+		if (i >= cc->num_rclks)
+			continue;
+
+		cc->rclks[i] = NULL;
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clk_hw *qcom_cc_clk_hw_get(struct of_phandle_args *clkspec,
 					 void *data)
 {
@@ -228,6 +267,38 @@ int qcom_cc_really_probe(struct platform_device *pdev,
 	if (!cc)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	cc->rclks = rclks;
+	cc->num_rclks = num_clks;
+	cc->hwclks = hwclks;
+	cc->num_hwclks = num_hwclks;
+
+	for (i = 0; i < num_hwclks; i++) {
+		if (!hwclks[i])
+			continue;
+
+		ret = devm_clk_hw_register(dev, hwclks[i]);
+		if (ret)
+			return ret;
+	}
+
+	qcom_cc_drop_protected(dev, cc);
+
+	for (i = 0; i < num_clks; i++) {
+		if (!rclks[i])
+			continue;
+
+		ret = devm_clk_register_regmap(dev, rclks[i]);
+		if (ret)
+			return ret;
+	}
+
+	ret = devm_of_clk_add_hw_provider(dev, qcom_cc_clk_hw_get, cc);
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reset = &cc->reset;
 	reset->rcdev.of_node = dev->of_node;
 	reset->rcdev.ops = &qcom_reset_ops;
@@ -236,11 +307,17 @@ int qcom_cc_really_probe(struct platform_device *pdev,
 	reset->regmap = regmap;
 	reset->reset_map = desc->resets;
 
+<<<<<<< HEAD
 	if (desc->num_resets) {
 		ret = devm_reset_controller_register(dev, &reset->rcdev);
 		if (ret)
 			return ret;
 	}
+=======
+	ret = devm_reset_controller_register(dev, &reset->rcdev);
+	if (ret)
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (desc->gdscs && desc->num_gdscs) {
 		scd = devm_kzalloc(dev, sizeof(*scd), GFP_KERNEL);
@@ -258,6 +335,7 @@ int qcom_cc_really_probe(struct platform_device *pdev,
 			return ret;
 	}
 
+<<<<<<< HEAD
 	cc->rclks = rclks;
 	cc->num_rclks = num_clks;
 	cc->hwclks = hwclks;
@@ -285,6 +363,8 @@ int qcom_cc_really_probe(struct platform_device *pdev,
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL_GPL(qcom_cc_really_probe);
@@ -301,4 +381,48 @@ int qcom_cc_probe(struct platform_device *pdev, const struct qcom_cc_desc *desc)
 }
 EXPORT_SYMBOL_GPL(qcom_cc_probe);
 
+<<<<<<< HEAD
+=======
+int qcom_cc_register_rcg_dfs(struct platform_device *pdev,
+			 const struct qcom_cc_dfs_desc *desc)
+{
+	struct clk_dfs *clks = desc->clks;
+	size_t num_clks = desc->num_clks;
+	int i, ret = 0;
+
+	for (i = 0; i < num_clks; i++) {
+		ret = clk_rcg2_get_dfs_clock_rate(clks[i].rcg, &pdev->dev,
+						clks[i].rcg_flags);
+		if (ret) {
+			dev_err(&pdev->dev,
+				"Failed calculating DFS frequencies for %s\n",
+				clk_hw_get_name(&(clks[i].rcg)->clkr.hw));
+			break;
+		}
+	}
+
+	return ret;
+}
+EXPORT_SYMBOL(qcom_cc_register_rcg_dfs);
+
+int qcom_cc_enable_critical_clks(const struct qcom_cc_critical_desc *desc)
+{
+	struct clk_regmap **clkr = desc->clks;
+	size_t num_clks = desc->num_clks;
+	int i, ret = 0;
+
+	for (i = 0; i < num_clks; i++) {
+		ret = clk_enable_regmap(&(clkr[i]->hw));
+		if (ret) {
+			pr_err("Failed to enable %s\n",
+					clk_hw_get_name(&(clkr[i]->hw)));
+			break;
+		}
+	}
+
+	return ret;
+}
+EXPORT_SYMBOL(qcom_cc_enable_critical_clks);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");

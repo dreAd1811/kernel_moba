@@ -21,6 +21,7 @@
  *
  * Authors: Ben Skeggs <bskeggs@redhat.com>
  */
+<<<<<<< HEAD
 #define nvkm_vram(p) container_of((p), struct nvkm_vram, memory)
 #include "ram.h"
 
@@ -147,6 +148,10 @@ nvkm_ram_get(struct nvkm_device *device, u8 heap, u8 type, u8 rpage, u64 size,
 	return 0;
 }
 
+=======
+#include "ram.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int
 nvkm_ram_init(struct nvkm_ram *ram)
 {
@@ -162,6 +167,10 @@ nvkm_ram_del(struct nvkm_ram **pram)
 	if (ram && !WARN_ON(!ram->func)) {
 		if (ram->func->dtor)
 			*pram = ram->func->dtor(ram);
+<<<<<<< HEAD
+=======
+		nvkm_mm_fini(&ram->tags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvkm_mm_fini(&ram->vram);
 		kfree(*pram);
 		*pram = NULL;
@@ -170,7 +179,12 @@ nvkm_ram_del(struct nvkm_ram **pram)
 
 int
 nvkm_ram_ctor(const struct nvkm_ram_func *func, struct nvkm_fb *fb,
+<<<<<<< HEAD
 	      enum nvkm_ram_type type, u64 size, struct nvkm_ram *ram)
+=======
+	      enum nvkm_ram_type type, u64 size, u32 tags,
+	      struct nvkm_ram *ram)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const char *name[] = {
 		[NVKM_RAM_TYPE_UNKNOWN] = "of unknown memory type",
@@ -195,20 +209,44 @@ nvkm_ram_ctor(const struct nvkm_ram_func *func, struct nvkm_fb *fb,
 	ram->size = size;
 
 	if (!nvkm_mm_initialised(&ram->vram)) {
+<<<<<<< HEAD
 		ret = nvkm_mm_init(&ram->vram, NVKM_RAM_MM_NORMAL, 0,
 				   size >> NVKM_RAM_MM_SHIFT, 1);
+=======
+		ret = nvkm_mm_init(&ram->vram, 0, size >> NVKM_RAM_MM_SHIFT, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!nvkm_mm_initialised(&ram->tags)) {
+		ret = nvkm_mm_init(&ram->tags, 0, tags ? ++tags : 0, 1);
+		if (ret)
+			return ret;
+
+		nvkm_debug(subdev, "%d compression tags\n", tags);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 int
 nvkm_ram_new_(const struct nvkm_ram_func *func, struct nvkm_fb *fb,
+<<<<<<< HEAD
 	      enum nvkm_ram_type type, u64 size, struct nvkm_ram **pram)
 {
 	if (!(*pram = kzalloc(sizeof(**pram), GFP_KERNEL)))
 		return -ENOMEM;
 	return nvkm_ram_ctor(func, fb, type, size, *pram);
+=======
+	      enum nvkm_ram_type type, u64 size, u32 tags,
+	      struct nvkm_ram **pram)
+{
+	if (!(*pram = kzalloc(sizeof(**pram), GFP_KERNEL)))
+		return -ENOMEM;
+	return nvkm_ram_ctor(func, fb, type, size, tags, *pram);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

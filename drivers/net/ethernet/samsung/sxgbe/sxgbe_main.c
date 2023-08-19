@@ -57,9 +57,15 @@
 static int debug = -1;
 static int eee_timer = SXGBE_DEFAULT_LPI_TIMER;
 
+<<<<<<< HEAD
 module_param(eee_timer, int, 0644);
 
 module_param(debug, int, 0644);
+=======
+module_param(eee_timer, int, S_IRUGO | S_IWUSR);
+
+module_param(debug, int, S_IRUGO | S_IWUSR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const u32 default_msg_level = (NETIF_MSG_DRV | NETIF_MSG_PROBE |
 				      NETIF_MSG_LINK | NETIF_MSG_IFUP |
 				      NETIF_MSG_IFDOWN | NETIF_MSG_TIMER);
@@ -105,9 +111,15 @@ void sxgbe_disable_eee_mode(struct sxgbe_priv_data * const priv)
  *  If there is no data transfer and if we are not in LPI state,
  *  then MAC Transmitter can be moved to LPI state.
  */
+<<<<<<< HEAD
 static void sxgbe_eee_ctrl_timer(struct timer_list *t)
 {
 	struct sxgbe_priv_data *priv = from_timer(priv, t, eee_ctrl_timer);
+=======
+static void sxgbe_eee_ctrl_timer(unsigned long arg)
+{
+	struct sxgbe_priv_data *priv = (struct sxgbe_priv_data *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sxgbe_enable_eee_mode(priv);
 	mod_timer(&priv->eee_ctrl_timer, SXGBE_LPI_TIMER(eee_timer));
@@ -134,7 +146,12 @@ bool sxgbe_eee_init(struct sxgbe_priv_data * const priv)
 			return false;
 
 		priv->eee_active = 1;
+<<<<<<< HEAD
 		timer_setup(&priv->eee_ctrl_timer, sxgbe_eee_ctrl_timer, 0);
+=======
+		setup_timer(&priv->eee_ctrl_timer, sxgbe_eee_ctrl_timer,
+			    (unsigned long)priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		priv->eee_ctrl_timer.expires = SXGBE_LPI_TIMER(eee_timer);
 		add_timer(&priv->eee_ctrl_timer);
 
@@ -1001,6 +1018,7 @@ static void sxgbe_disable_mtl_engine(struct sxgbe_priv_data *priv)
 
 /**
  * sxgbe_tx_timer: mitigation sw timer for tx.
+<<<<<<< HEAD
  * @t: timer pointer
  * Description:
  * This is the timer handler to directly invoke the sxgbe_tx_clean.
@@ -1008,6 +1026,15 @@ static void sxgbe_disable_mtl_engine(struct sxgbe_priv_data *priv)
 static void sxgbe_tx_timer(struct timer_list *t)
 {
 	struct sxgbe_tx_queue *p = from_timer(p, t, txtimer);
+=======
+ * @data: data pointer
+ * Description:
+ * This is the timer handler to directly invoke the sxgbe_tx_clean.
+ */
+static void sxgbe_tx_timer(unsigned long data)
+{
+	struct sxgbe_tx_queue *p = (struct sxgbe_tx_queue *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sxgbe_tx_queue_clean(p);
 }
 
@@ -1027,7 +1054,12 @@ static void sxgbe_tx_init_coalesce(struct sxgbe_priv_data *priv)
 		struct sxgbe_tx_queue *p = priv->txq[queue_num];
 		p->tx_coal_frames =  SXGBE_TX_FRAMES;
 		p->tx_coal_timer = SXGBE_COAL_TX_TIMER;
+<<<<<<< HEAD
 		timer_setup(&p->txtimer, sxgbe_tx_timer, 0);
+=======
+		setup_timer(&p->txtimer, sxgbe_tx_timer,
+			    (unsigned long)&priv->txq[queue_num]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p->txtimer.expires = SXGBE_COAL_TIMER(p->tx_coal_timer);
 		add_timer(&p->txtimer);
 	}
@@ -2282,7 +2314,11 @@ static int __init sxgbe_cmdline_opt(char *str)
 	if (!str || !*str)
 		return -EINVAL;
 	while ((opt = strsep(&str, ",")) != NULL) {
+<<<<<<< HEAD
 		if (!strncmp(opt, "eee_timer:", 6)) {
+=======
+		if (!strncmp(opt, "eee_timer:", 10)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (kstrtoint(opt + 10, 0, &eee_timer))
 				goto err;
 		}

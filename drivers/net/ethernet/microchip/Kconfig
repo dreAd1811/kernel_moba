@@ -42,6 +42,7 @@ config ENCX24J600
       To compile this driver as a module, choose M here. The module will be
       called encx24j600.
 
+<<<<<<< HEAD
 config LAN743X
 	tristate "LAN743x support"
 	depends on PCI
@@ -53,4 +54,6 @@ config LAN743X
 	  To compile this driver as a module, choose M here. The module will be
 	  called lan743x.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif # NET_VENDOR_MICROCHIP

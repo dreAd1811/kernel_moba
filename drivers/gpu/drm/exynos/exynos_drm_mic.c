@@ -267,8 +267,15 @@ static void mic_pre_enable(struct drm_bridge *bridge)
 		goto unlock;
 
 	ret = pm_runtime_get_sync(mic->dev);
+<<<<<<< HEAD
 	if (ret < 0)
 		goto unlock;
+=======
+	if (ret < 0) {
+		pm_runtime_put_noidle(mic->dev);
+		goto unlock;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mic_set_path(mic, 1);
 
@@ -367,8 +374,11 @@ static int exynos_mic_resume(struct device *dev)
 
 static const struct dev_pm_ops exynos_mic_pm_ops = {
 	SET_RUNTIME_PM_OPS(exynos_mic_suspend, exynos_mic_resume, NULL)
+<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int exynos_mic_probe(struct platform_device *pdev)
@@ -422,7 +432,15 @@ static int exynos_mic_probe(struct platform_device *pdev)
 	mic->bridge.funcs = &mic_bridge_funcs;
 	mic->bridge.of_node = dev->of_node;
 
+<<<<<<< HEAD
 	drm_bridge_add(&mic->bridge);
+=======
+	ret = drm_bridge_add(&mic->bridge);
+	if (ret) {
+		DRM_ERROR("mic: Failed to add MIC to the global bridge list\n");
+		return ret;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_enable(dev);
 

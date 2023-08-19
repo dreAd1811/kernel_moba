@@ -88,7 +88,11 @@ static inline void __invalidate_icache_page_alias(unsigned long virt,
  *
  * Pages can get remapped. Because this might change the 'color' of that page,
  * we have to flush the cache before the PTE is changed.
+<<<<<<< HEAD
  * (see also Documentation/core-api/cachetlb.rst)
+=======
+ * (see also Documentation/cachetlb.txt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #if defined(CONFIG_MMU) && \
@@ -152,7 +156,11 @@ void local_flush_cache_page(struct vm_area_struct *vma,
 		__invalidate_icache_range(start,(end) - (start));	\
 	} while (0)
 
+<<<<<<< HEAD
 /* This is not required, see Documentation/core-api/cachetlb.rst */
+=======
+/* This is not required, see Documentation/cachetlb.txt */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define	flush_icache_page(vma,page)			do { } while (0)
 
 #define flush_dcache_mmap_lock(mapping)			do { } while (0)

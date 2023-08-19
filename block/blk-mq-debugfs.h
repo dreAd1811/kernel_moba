@@ -80,6 +80,7 @@ static inline void blk_mq_debugfs_unregister_sched_hctx(struct blk_mq_hw_ctx *hc
 }
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_BLK_DEBUG_FS_ZONED
 int queue_zone_wlock_show(void *data, struct seq_file *m);
 #else
@@ -89,4 +90,6 @@ static inline int queue_zone_wlock_show(void *data, struct seq_file *m)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

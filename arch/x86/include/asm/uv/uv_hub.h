@@ -241,7 +241,10 @@ static inline int uv_hub_info_check(int version)
 #define UV2_HUB_REVISION_BASE		3
 #define UV3_HUB_REVISION_BASE		5
 #define UV4_HUB_REVISION_BASE		7
+<<<<<<< HEAD
 #define UV4A_HUB_REVISION_BASE		8	/* UV4 (fixed) rev 2 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef	UV1_HUB_IS_SUPPORTED
 static inline int is_uv1_hub(void)
@@ -281,6 +284,7 @@ static inline int is_uv3_hub(void)
 }
 #endif
 
+<<<<<<< HEAD
 /* First test "is UV4A", then "is UV4" */
 #ifdef	UV4A_HUB_IS_SUPPORTED
 static inline int is_uv4a_hub(void)
@@ -294,6 +298,8 @@ static inline int is_uv4a_hub(void)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef	UV4_HUB_IS_SUPPORTED
 static inline int is_uv4_hub(void)
 {
@@ -790,6 +796,7 @@ static inline int uv_num_possible_blades(void)
 extern void uv_nmi_setup(void);
 extern void uv_nmi_setup_hubless(void);
 
+<<<<<<< HEAD
 /* BIOS/Kernel flags exchange MMR */
 #define UVH_BIOS_KERNEL_MMR		UVH_SCRATCH5
 #define UVH_BIOS_KERNEL_MMR_ALIAS	UVH_SCRATCH5_ALIAS
@@ -808,18 +815,33 @@ extern void uv_nmi_setup_hubless(void);
 #define UVH_NMI_MMR_CLEAR	UVH_BIOS_KERNEL_MMR_ALIAS
 #define UVH_NMI_MMR_SHIFT	63
 #define UVH_NMI_MMR_TYPE	"SCRATCH5"
+=======
+/* BMC sets a bit this MMR non-zero before sending an NMI */
+#define UVH_NMI_MMR		UVH_SCRATCH5
+#define UVH_NMI_MMR_CLEAR	UVH_SCRATCH5_ALIAS
+#define UVH_NMI_MMR_SHIFT	63
+#define	UVH_NMI_MMR_TYPE	"SCRATCH5"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Newer SMM NMI handler, not present in all systems */
 #define UVH_NMI_MMRX		UVH_EVENT_OCCURRED0
 #define UVH_NMI_MMRX_CLEAR	UVH_EVENT_OCCURRED0_ALIAS
 #define UVH_NMI_MMRX_SHIFT	UVH_EVENT_OCCURRED0_EXTIO_INT0_SHFT
+<<<<<<< HEAD
 #define UVH_NMI_MMRX_TYPE	"EXTIO_INT0"
+=======
+#define	UVH_NMI_MMRX_TYPE	"EXTIO_INT0"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Non-zero indicates newer SMM NMI handler present */
 #define UVH_NMI_MMRX_SUPPORTED	UVH_EXTIO_INT0_BROADCAST
 
 /* Indicates to BIOS that we want to use the newer SMM NMI handler */
+<<<<<<< HEAD
 #define UVH_NMI_MMRX_REQ	UVH_BIOS_KERNEL_MMR_ALIAS_2
+=======
+#define UVH_NMI_MMRX_REQ	UVH_SCRATCH5_ALIAS_2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define UVH_NMI_MMRX_REQ_SHIFT	62
 
 struct uv_hub_nmi_s {

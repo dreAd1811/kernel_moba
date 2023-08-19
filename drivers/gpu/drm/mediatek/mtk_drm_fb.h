@@ -14,6 +14,10 @@
 #ifndef MTK_DRM_FB_H
 #define MTK_DRM_FB_H
 
+<<<<<<< HEAD
+=======
+struct drm_gem_object *mtk_fb_get_gem_obj(struct drm_framebuffer *fb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mtk_fb_wait(struct drm_framebuffer *fb);
 struct drm_framebuffer *mtk_drm_mode_fb_create(struct drm_device *dev,
 					       struct drm_file *file,

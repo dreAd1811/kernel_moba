@@ -388,6 +388,7 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
 	{},
 };
 
+<<<<<<< HEAD
 static bool ignore_blacklist;
 
 void __init acpi_sleep_no_blacklist(void)
@@ -401,6 +402,13 @@ static void __init acpi_sleep_dmi_check(void)
 		return;
 
 	if (dmi_get_bios_year() >= 2012)
+=======
+static void __init acpi_sleep_dmi_check(void)
+{
+	int year;
+
+	if (dmi_get_date(DMI_BIOS_DATE, &year, NULL, NULL) && year >= 2012)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		acpi_nvs_nosave_s3();
 
 	dmi_check_system(acpisleep_dmi_table);
@@ -726,6 +734,11 @@ static const struct acpi_device_id lps0_device_ids[] = {
 #define ACPI_LPS0_ENTRY		5
 #define ACPI_LPS0_EXIT		6
 
+<<<<<<< HEAD
+=======
+#define ACPI_S2IDLE_FUNC_MASK	((1 << ACPI_LPS0_ENTRY) | (1 << ACPI_LPS0_EXIT))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static acpi_handle lps0_device_handle;
 static guid_t lps0_dsm_guid;
 static char lps0_dsm_func_mask;
@@ -867,6 +880,7 @@ static void lpi_check_constraints(void)
 	int i;
 
 	for (i = 0; i < lpi_constraints_table_size; ++i) {
+<<<<<<< HEAD
 		acpi_handle handle = lpi_constraints_table[i].handle;
 		struct acpi_device *adev;
 
@@ -874,18 +888,34 @@ static void lpi_check_constraints(void)
 			continue;
 
 		acpi_handle_debug(handle,
+=======
+		struct acpi_device *adev;
+
+		if (acpi_bus_get_device(lpi_constraints_table[i].handle, &adev))
+			continue;
+
+		acpi_handle_debug(adev->handle,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"LPI: required min power state:%s current power state:%s\n",
 			acpi_power_state_string(lpi_constraints_table[i].min_dstate),
 			acpi_power_state_string(adev->power.state));
 
 		if (!adev->flags.power_manageable) {
+<<<<<<< HEAD
 			acpi_handle_info(handle, "LPI: Device not power manageable\n");
 			lpi_constraints_table[i].handle = NULL;
+=======
+			acpi_handle_info(adev->handle, "LPI: Device not power manageble\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 
 		if (adev->power.state < lpi_constraints_table[i].min_dstate)
+<<<<<<< HEAD
 			acpi_handle_info(handle,
+=======
+			acpi_handle_info(adev->handle,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"LPI: Constraint not met; min power state:%s current power state:%s\n",
 				acpi_power_state_string(lpi_constraints_table[i].min_dstate),
 				acpi_power_state_string(adev->power.state));
@@ -929,6 +959,7 @@ static int lps0_device_attach(struct acpi_device *adev,
 	if (out_obj && out_obj->type == ACPI_TYPE_BUFFER) {
 		char bitmask = *(char *)out_obj->buffer.pointer;
 
+<<<<<<< HEAD
 		lps0_dsm_func_mask = bitmask;
 		lps0_device_handle = adev->handle;
 		/*
@@ -942,6 +973,21 @@ static int lps0_device_attach(struct acpi_device *adev,
 				  bitmask);
 
 		acpi_ec_mark_gpe_for_wake();
+=======
+		if ((bitmask & ACPI_S2IDLE_FUNC_MASK) == ACPI_S2IDLE_FUNC_MASK) {
+			lps0_dsm_func_mask = bitmask;
+			lps0_device_handle = adev->handle;
+			/*
+			 * Use suspend-to-idle by default if the default
+			 * suspend mode was not set from the command line.
+			 */
+			if (mem_sleep_default > PM_SUSPEND_MEM)
+				mem_sleep_current = PM_SUSPEND_TO_IDLE;
+		}
+
+		acpi_handle_debug(adev->handle, "_DSM function mask: 0x%x\n",
+				  bitmask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		acpi_handle_debug(adev->handle,
 				  "_DSM function 0 evaluation failed\n");
@@ -970,6 +1016,7 @@ static int acpi_s2idle_prepare(void)
 	if (lps0_device_handle) {
 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_OFF);
 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_ENTRY);
+<<<<<<< HEAD
 
 		acpi_ec_set_gpe_wake_mask(ACPI_GPE_ENABLE);
 	}
@@ -982,6 +1029,20 @@ static int acpi_s2idle_prepare(void)
 	/* Change the configuration of GPEs to avoid spurious wakeup. */
 	acpi_enable_all_wakeup_gpes();
 	acpi_os_wait_events_complete();
+=======
+	} else {
+		/*
+		 * The configuration of GPEs is changed here to avoid spurious
+		 * wakeups, but that should not be necessary if this is a
+		 * "low-power S0" platform and the low-power S0 _DSM is present.
+		 */
+		acpi_enable_all_wakeup_gpes();
+		acpi_os_wait_events_complete();
+	}
+	if (acpi_sci_irq_valid())
+		enable_irq_wake(acpi_sci_irq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1000,6 +1061,7 @@ static void acpi_s2idle_wake(void)
 	    !irqd_is_wakeup_armed(irq_get_irq_data(acpi_sci_irq))) {
 		pm_system_cancel_wakeup();
 		s2idle_wakeup = true;
+<<<<<<< HEAD
 		/*
 		 * On some platforms with the LPS0 _DSM device noirq resume
 		 * takes too much time for EC wakeup events to survive, so look
@@ -1007,6 +1069,8 @@ static void acpi_s2idle_wake(void)
 		 */
 		if (lps0_device_handle)
 			acpi_ec_dispatch_gpe();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1018,26 +1082,41 @@ static void acpi_s2idle_sync(void)
 	 * The EC driver uses the system workqueue and an additional special
 	 * one, so those need to be flushed too.
 	 */
+<<<<<<< HEAD
 	acpi_os_wait_events_complete();	/* synchronize SCI IRQ handling */
 	acpi_ec_flush_work();
 	acpi_os_wait_events_complete();	/* synchronize Notify handling */
+=======
+	acpi_ec_flush_work();
+	acpi_os_wait_events_complete();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s2idle_wakeup = false;
 }
 
 static void acpi_s2idle_restore(void)
 {
+<<<<<<< HEAD
 	acpi_enable_all_runtime_gpes();
 
 	acpi_disable_wakeup_devices(ACPI_STATE_S0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (acpi_sci_irq_valid())
 		disable_irq_wake(acpi_sci_irq);
 
 	if (lps0_device_handle) {
+<<<<<<< HEAD
 		acpi_ec_set_gpe_wake_mask(ACPI_GPE_DISABLE);
 
 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
 		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
+=======
+		acpi_sleep_run_lps0_dsm(ACPI_LPS0_EXIT);
+		acpi_sleep_run_lps0_dsm(ACPI_LPS0_SCREEN_ON);
+	} else {
+		acpi_enable_all_runtime_gpes();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

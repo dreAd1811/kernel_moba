@@ -266,11 +266,19 @@
 			reg = <0x0 0x54580000 0x0 0x00040000>;
 			interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>;
 			clocks = <&tegra_car TEGRA210_CLK_SOR1>,
+<<<<<<< HEAD
 				 <&tegra_car TEGRA210_CLK_SOR1_OUT>,
 				 <&tegra_car TEGRA210_CLK_PLL_D2_OUT0>,
 				 <&tegra_car TEGRA210_CLK_PLL_DP>,
 				 <&tegra_car TEGRA210_CLK_SOR_SAFE>;
 			clock-names = "sor", "out", "parent", "dp", "safe";
+=======
+				 <&tegra_car TEGRA210_CLK_SOR1_SRC>,
+				 <&tegra_car TEGRA210_CLK_PLL_D2_OUT0>,
+				 <&tegra_car TEGRA210_CLK_PLL_DP>,
+				 <&tegra_car TEGRA210_CLK_SOR_SAFE>;
+			clock-names = "sor", "source", "parent", "dp", "safe";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			resets = <&tegra_car 183>;
 			reset-names = "sor";
 			pinctrl-0 = <&state_dpaux1_aux>;
@@ -798,6 +806,7 @@
 		#iommu-cells = <1>;
 	};
 
+<<<<<<< HEAD
 	sata@70020000 {
 		compatible = "nvidia,tegra210-ahci";
 		reg = <0x0 0x70027000 0x0 0x2000>, /* AHCI */
@@ -814,6 +823,8 @@
 		status = "disabled";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hda@70030000 {
 		compatible = "nvidia,tegra210-hda", "nvidia,tegra30-hda";
 		reg = <0x0 0x70030000 0x0 0x10000>;

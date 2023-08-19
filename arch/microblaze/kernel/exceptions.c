@@ -60,10 +60,23 @@ asmlinkage void sw_exception(struct pt_regs *regs)
 
 void _exception(int signr, struct pt_regs *regs, int code, unsigned long addr)
 {
+<<<<<<< HEAD
 	if (kernel_mode(regs))
 		die("Exception in kernel mode", regs, signr);
 
 	force_sig_fault(signr, code, (void __user *)addr, current);
+=======
+	siginfo_t info;
+
+	if (kernel_mode(regs))
+		die("Exception in kernel mode", regs, signr);
+
+	info.si_signo = signr;
+	info.si_errno = 0;
+	info.si_code = code;
+	info.si_addr = (void __user *) addr;
+	force_sig_info(signr, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 asmlinkage void full_exception(struct pt_regs *regs, unsigned int type,

@@ -199,7 +199,11 @@ static int lm3533_als_read_raw(struct iio_dev *indio_dev,
 	int ret;
 
 	switch (mask) {
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_RAW:
+=======
+	case 0:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (chan->type) {
 		case IIO_LIGHT:
 			ret = lm3533_als_get_adc(indio_dev, false, val);
@@ -827,6 +831,10 @@ static int lm3533_als_disable(struct lm3533_als *als)
 static const struct iio_info lm3533_als_info = {
 	.attrs		= &lm3533_als_attribute_group,
 	.event_attrs	= &lm3533_als_event_attribute_group,
+<<<<<<< HEAD
+=======
+	.driver_module	= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw	= &lm3533_als_read_raw,
 };
 

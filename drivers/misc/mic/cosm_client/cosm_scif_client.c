@@ -63,11 +63,15 @@ static struct notifier_block cosm_reboot = {
 /* Set system time from timespec value received from the host */
 static void cosm_set_time(struct cosm_msg *msg)
 {
+<<<<<<< HEAD
 	struct timespec64 ts = {
 		.tv_sec = msg->timespec.tv_sec,
 		.tv_nsec = msg->timespec.tv_nsec,
 	};
 	int rc = do_settimeofday64(&ts);
+=======
+	int rc = do_settimeofday64(&msg->timespec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rc)
 		dev_err(&client_spdev->dev, "%s: %d settimeofday rc %d\n",
@@ -164,7 +168,11 @@ static int cosm_scif_client(void *unused)
 
 	while (!kthread_should_stop()) {
 		pollepd.epd = client_epd;
+<<<<<<< HEAD
 		pollepd.events = EPOLLIN;
+=======
+		pollepd.events = POLLIN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rc = scif_poll(&pollepd, 1, COSM_HEARTBEAT_SEND_MSEC);
 		if (rc < 0) {
@@ -175,7 +183,11 @@ static int cosm_scif_client(void *unused)
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (pollepd.revents & EPOLLIN)
+=======
+		if (pollepd.revents & POLLIN)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cosm_client_recv();
 
 		msg.id = COSM_MSG_HEARTBEAT;

@@ -18,7 +18,11 @@
 	model = "CompuLab CL-SOM-iMX7";
 	compatible = "compulab,cl-som-imx7", "fsl,imx7d";
 
+<<<<<<< HEAD
 	memory@80000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x80000000 0x10000000>; /* 256 MB - minimal configuration */
 	};
 
@@ -33,7 +37,11 @@
 };
 
 &cpu0 {
+<<<<<<< HEAD
 	cpu-supply = <&sw1a_reg>;
+=======
+	arm-supply = <&sw1a_reg>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &fec1 {

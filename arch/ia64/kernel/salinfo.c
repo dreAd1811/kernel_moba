@@ -54,6 +54,11 @@ MODULE_AUTHOR("Jesse Barnes <jbarnes@sgi.com>");
 MODULE_DESCRIPTION("/proc interface to IA-64 SAL features");
 MODULE_LICENSE("GPL");
 
+<<<<<<< HEAD
+=======
+static const struct file_operations proc_salinfo_fops;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef struct {
 	const char		*name;		/* name of the proc entry */
 	unsigned long           feature;        /* feature bit */
@@ -261,7 +266,11 @@ salinfo_timeout_check(struct salinfo_data *data)
 }
 
 static void
+<<<<<<< HEAD
 salinfo_timeout(struct timer_list *unused)
+=======
+salinfo_timeout (unsigned long arg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ia64_mlogbuf_dump();
 	salinfo_timeout_check(salinfo_data + SAL_INFO_TYPE_MCA);
@@ -576,6 +585,7 @@ static int salinfo_cpu_pre_down(unsigned int cpu)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * 'data' contains an integer that corresponds to the feature we're
  * testing
@@ -587,6 +597,8 @@ static int proc_salinfo_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init
 salinfo_init(void)
 {
@@ -602,9 +614,15 @@ salinfo_init(void)
 
 	for (i=0; i < NR_SALINFO_ENTRIES; i++) {
 		/* pass the feature bit in question as misc data */
+<<<<<<< HEAD
 		*sdir++ = proc_create_single_data(salinfo_entries[i].name, 0,
 				salinfo_dir, proc_salinfo_show,
 				(void *)salinfo_entries[i].feature);
+=======
+		*sdir++ = proc_create_data(salinfo_entries[i].name, 0, salinfo_dir,
+					   &proc_salinfo_fops,
+					   (void *)salinfo_entries[i].feature);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < ARRAY_SIZE(salinfo_log_name); i++) {
@@ -632,8 +650,14 @@ salinfo_init(void)
 
 	*sdir++ = salinfo_dir;
 
+<<<<<<< HEAD
 	timer_setup(&salinfo_timer, salinfo_timeout, 0);
 	salinfo_timer.expires = jiffies + SALINFO_TIMER_DELAY;
+=======
+	init_timer(&salinfo_timer);
+	salinfo_timer.expires = jiffies + SALINFO_TIMER_DELAY;
+	salinfo_timer.function = &salinfo_timeout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&salinfo_timer);
 
 	i = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "ia64/salinfo:online",
@@ -642,4 +666,30 @@ salinfo_init(void)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * 'data' contains an integer that corresponds to the feature we're
+ * testing
+ */
+static int proc_salinfo_show(struct seq_file *m, void *v)
+{
+	unsigned long data = (unsigned long)v;
+	seq_puts(m, (sal_platform_features & data) ? "1\n" : "0\n");
+	return 0;
+}
+
+static int proc_salinfo_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, proc_salinfo_show, PDE_DATA(inode));
+}
+
+static const struct file_operations proc_salinfo_fops = {
+	.open		= proc_salinfo_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_init(salinfo_init);

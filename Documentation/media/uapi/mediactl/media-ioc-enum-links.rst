@@ -62,6 +62,7 @@ returned during the enumeration process.
     :stub-columns: 0
     :widths:       1 1 2
 
+<<<<<<< HEAD
     *  -  __u32
        -  ``entity``
        -  Entity id, set by the application.
@@ -73,10 +74,40 @@ returned during the enumeration process.
 
     *  -  struct :c:type:`media_link_desc`
        -  \*\ ``links``
+=======
+
+    -  .. row 1
+
+       -  __u32
+
+       -  ``entity``
+
+       -  Entity id, set by the application.
+
+    -  .. row 2
+
+       -  struct :c:type:`media_pad_desc`
+
+       -  \*\ ``pads``
+
+       -  Pointer to a pads array allocated by the application. Ignored if
+	  NULL.
+
+    -  .. row 3
+
+       -  struct :c:type:`media_link_desc`
+
+       -  \*\ ``links``
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
        -  Pointer to a links array allocated by the application. Ignored if
 	  NULL.
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .. c:type:: media_pad_desc
 
 .. tabularcolumns:: |p{4.4cm}|p{4.4cm}|p{8.7cm}|
@@ -86,6 +117,7 @@ returned during the enumeration process.
     :stub-columns: 0
     :widths:       1 1 2
 
+<<<<<<< HEAD
     *  -  __u32
        -  ``entity``
        -  ID of the entity this pad belongs to.
@@ -102,6 +134,32 @@ returned during the enumeration process.
        -  ``reserved[2]``
        -  Reserved for future extensions. Drivers and applications must set
           the array to zero.
+=======
+
+    -  .. row 1
+
+       -  __u32
+
+       -  ``entity``
+
+       -  ID of the entity this pad belongs to.
+
+    -  .. row 2
+
+       -  __u16
+
+       -  ``index``
+
+       -  0-based pad index.
+
+    -  .. row 3
+
+       -  __u32
+
+       -  ``flags``
+
+       -  Pad flags, see :ref:`media-pad-flag` for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 
@@ -114,6 +172,7 @@ returned during the enumeration process.
     :stub-columns: 0
     :widths:       1 1 2
 
+<<<<<<< HEAD
     *  -  struct :c:type:`media_pad_desc`
        -  ``source``
        -  Pad at the origin of this link.
@@ -130,6 +189,32 @@ returned during the enumeration process.
        -  ``reserved[4]``
        -  Reserved for future extensions. Drivers and applications must set
           the array to zero.
+=======
+
+    -  .. row 1
+
+       -  struct :c:type:`media_pad_desc`
+
+       -  ``source``
+
+       -  Pad at the origin of this link.
+
+    -  .. row 2
+
+       -  struct :c:type:`media_pad_desc`
+
+       -  ``sink``
+
+       -  Pad at the target of this link.
+
+    -  .. row 3
+
+       -  __u32
+
+       -  ``flags``
+
+       -  Link flags, see :ref:`media-link-flag` for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Return Value

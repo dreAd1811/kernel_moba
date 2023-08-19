@@ -24,7 +24,11 @@
  * Larry Finger <Larry.Finger@lwfinger.net>
  *
  *****************************************************************************/
+<<<<<<< HEAD
 #include <linux/kernel.h>
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "table.h"
 u32 RTL8812AE_PHY_REG_ARRAY[] = {
 		0x800, 0x8020D010,
@@ -258,7 +262,12 @@ u32 RTL8812AE_PHY_REG_ARRAY[] = {
 		0xEB8, 0x00508242,
 };
 
+<<<<<<< HEAD
 u32 RTL8812AE_PHY_REG_1TARRAYLEN = ARRAY_SIZE(RTL8812AE_PHY_REG_ARRAY);
+=======
+u32 RTL8812AE_PHY_REG_1TARRAYLEN =
+	sizeof(RTL8812AE_PHY_REG_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8821AE_PHY_REG_ARRAY[] = {
 	0x800, 0x0020D090,
@@ -435,7 +444,12 @@ u32 RTL8821AE_PHY_REG_ARRAY[] = {
 	0xCB8, 0x00508240,
 };
 
+<<<<<<< HEAD
 u32 RTL8821AE_PHY_REG_1TARRAYLEN = ARRAY_SIZE(RTL8821AE_PHY_REG_ARRAY);
+=======
+u32 RTL8821AE_PHY_REG_1TARRAYLEN =
+	sizeof(RTL8821AE_PHY_REG_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8812AE_PHY_REG_ARRAY_PG[] = {
 	0, 0, 0, 0x00000c20, 0xffffffff, 0x34363840,
@@ -486,7 +500,12 @@ u32 RTL8812AE_PHY_REG_ARRAY_PG[] = {
 	1, 1, 1, 0x00000e4c, 0xffffffff, 0x22242628
 };
 
+<<<<<<< HEAD
 u32 RTL8812AE_PHY_REG_ARRAY_PGLEN = ARRAY_SIZE(RTL8812AE_PHY_REG_ARRAY_PG);
+=======
+u32 RTL8812AE_PHY_REG_ARRAY_PGLEN =
+		sizeof(RTL8812AE_PHY_REG_ARRAY_PG) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8821AE_PHY_REG_ARRAY_PG[] = {
 	0, 0, 0, 0x00000c20, 0xffffffff, 0x32343638,
@@ -506,7 +525,12 @@ u32 RTL8821AE_PHY_REG_ARRAY_PG[] = {
 	1, 0, 0, 0x00000c44, 0x0000ffff, 0x00002022
 };
 
+<<<<<<< HEAD
 u32 RTL8821AE_PHY_REG_ARRAY_PGLEN = ARRAY_SIZE(RTL8821AE_PHY_REG_ARRAY_PG);
+=======
+u32 RTL8821AE_PHY_REG_ARRAY_PGLEN =
+		sizeof(RTL8821AE_PHY_REG_ARRAY_PG) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8812AE_RADIOA_ARRAY[] = {
 		0x000, 0x00010000,
@@ -923,7 +947,11 @@ u32 RTL8812AE_RADIOA_ARRAY[] = {
 		0x018, 0x0001712A,
 };
 
+<<<<<<< HEAD
 u32 RTL8812AE_RADIOA_1TARRAYLEN = ARRAY_SIZE(RTL8812AE_RADIOA_ARRAY);
+=======
+u32 RTL8812AE_RADIOA_1TARRAYLEN = sizeof(RTL8812AE_RADIOA_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8812AE_RADIOB_ARRAY[] = {
 		0x056, 0x00051CF2,
@@ -1331,7 +1359,11 @@ u32 RTL8812AE_RADIOB_ARRAY[] = {
 		0x008, 0x00008400,
 };
 
+<<<<<<< HEAD
 u32 RTL8812AE_RADIOB_1TARRAYLEN = ARRAY_SIZE(RTL8812AE_RADIOB_ARRAY);
+=======
+u32 RTL8812AE_RADIOB_1TARRAYLEN = sizeof(RTL8812AE_RADIOB_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8821AE_RADIOA_ARRAY[] = {
 		0x018, 0x0001712A,
@@ -1925,7 +1957,11 @@ u32 RTL8821AE_RADIOA_ARRAY[] = {
 
 };
 
+<<<<<<< HEAD
 u32 RTL8821AE_RADIOA_1TARRAYLEN = ARRAY_SIZE(RTL8821AE_RADIOA_ARRAY);
+=======
+u32 RTL8821AE_RADIOA_1TARRAYLEN = sizeof(RTL8821AE_RADIOA_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8812AE_MAC_REG_ARRAY[] = {
 		0x010, 0x0000000C,
@@ -2037,7 +2073,11 @@ u32 RTL8812AE_MAC_REG_ARRAY[] = {
 		0x718, 0x00000040,
 };
 
+<<<<<<< HEAD
 u32 RTL8812AE_MAC_1T_ARRAYLEN = ARRAY_SIZE(RTL8812AE_MAC_REG_ARRAY);
+=======
+u32 RTL8812AE_MAC_1T_ARRAYLEN = sizeof(RTL8812AE_MAC_REG_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8821AE_MAC_REG_ARRAY[] = {
 		0x428, 0x0000000A,
@@ -2139,7 +2179,11 @@ u32 RTL8821AE_MAC_REG_ARRAY[] = {
 		0x718, 0x00000040,
 };
 
+<<<<<<< HEAD
 u32 RTL8821AE_MAC_1T_ARRAYLEN = ARRAY_SIZE(RTL8821AE_MAC_REG_ARRAY);
+=======
+u32 RTL8821AE_MAC_1T_ARRAYLEN = sizeof(RTL8821AE_MAC_REG_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8812AE_AGC_TAB_ARRAY[] = {
 	0x80000001, 0x00000000, 0x40000000, 0x00000000,
@@ -2475,7 +2519,12 @@ u32 RTL8812AE_AGC_TAB_ARRAY[] = {
 		0xE50, 0x00000020,
 };
 
+<<<<<<< HEAD
 u32 RTL8812AE_AGC_TAB_1TARRAYLEN = ARRAY_SIZE(RTL8812AE_AGC_TAB_ARRAY);
+=======
+u32 RTL8812AE_AGC_TAB_1TARRAYLEN =
+	sizeof(RTL8812AE_AGC_TAB_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 RTL8821AE_AGC_TAB_ARRAY[] = {
 		0x81C, 0xBF000001,
@@ -2671,7 +2720,12 @@ u32 RTL8821AE_AGC_TAB_ARRAY[] = {
 		0xC50, 0x00000020,
 };
 
+<<<<<<< HEAD
 u32 RTL8821AE_AGC_TAB_1TARRAYLEN = ARRAY_SIZE(RTL8821AE_AGC_TAB_ARRAY);
+=======
+u32 RTL8821AE_AGC_TAB_1TARRAYLEN =
+	sizeof(RTL8821AE_AGC_TAB_ARRAY) / sizeof(u32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /******************************************************************************
 *                           TXPWR_LMT.TXT
@@ -3244,7 +3298,11 @@ u8 *RTL8812AE_TXPWR_LMT[] = {
 	"MKK", "5G", "80M", "VHT", "2T", "155", "63"
 };
 
+<<<<<<< HEAD
 u32 RTL8812AE_TXPWR_LMT_ARRAY_LEN = ARRAY_SIZE(RTL8812AE_TXPWR_LMT);
+=======
+u32 RTL8812AE_TXPWR_LMT_ARRAY_LEN = sizeof(RTL8812AE_TXPWR_LMT) / sizeof(u8 *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u8 *RTL8821AE_TXPWR_LMT[] = {
 	"FCC", "2.4G", "20M", "CCK", "1T", "01", "32",
@@ -3813,4 +3871,8 @@ u8 *RTL8821AE_TXPWR_LMT[] = {
 	"MKK", "5G", "80M", "VHT", "2T", "155", "63"
 };
 
+<<<<<<< HEAD
 u32 RTL8821AE_TXPWR_LMT_ARRAY_LEN = ARRAY_SIZE(RTL8821AE_TXPWR_LMT);
+=======
+u32 RTL8821AE_TXPWR_LMT_ARRAY_LEN = sizeof(RTL8821AE_TXPWR_LMT) / sizeof(u8 *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

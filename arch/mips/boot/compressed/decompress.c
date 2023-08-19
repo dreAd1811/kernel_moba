@@ -76,7 +76,16 @@ void error(char *x)
 #include "../../../../lib/decompress_unxz.c"
 #endif
 
+<<<<<<< HEAD
 const unsigned long __stack_chk_guard = 0x000a0dff;
+=======
+unsigned long __stack_chk_guard;
+
+void __stack_chk_guard_setup(void)
+{
+	__stack_chk_guard = 0x000a0dff;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void __stack_chk_fail(void)
 {
@@ -87,6 +96,11 @@ void decompress_kernel(unsigned long boot_heap_start)
 {
 	unsigned long zimage_start, zimage_size;
 
+<<<<<<< HEAD
+=======
+	__stack_chk_guard_setup();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	zimage_start = (unsigned long)(&__image_begin);
 	zimage_size = (unsigned long)(&__image_end) -
 	    (unsigned long)(&__image_begin);

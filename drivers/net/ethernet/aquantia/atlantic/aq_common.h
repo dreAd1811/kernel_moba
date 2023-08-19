@@ -16,6 +16,7 @@
 #include <linux/pci.h>
 
 #include "ver.h"
+<<<<<<< HEAD
 #include "aq_cfg.h"
 #include "aq_utils.h"
 
@@ -57,4 +58,10 @@
 #define AQ_NIC_RATE_1G         BIT(4)
 #define AQ_NIC_RATE_100M       BIT(5)
 
+=======
+#include "aq_nic.h"
+#include "aq_cfg.h"
+#include "aq_utils.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* AQ_COMMON_H */

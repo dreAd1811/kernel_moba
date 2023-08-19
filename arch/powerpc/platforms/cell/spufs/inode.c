@@ -455,7 +455,11 @@ spufs_create_context(struct inode *inode, struct dentry *dentry,
 		}
 	}
 
+<<<<<<< HEAD
 	ret = spufs_mkdir(inode, dentry, flags, mode & 0777);
+=======
+	ret = spufs_mkdir(inode, dentry, flags, mode & S_IRWXUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out_aff_unlock;
 
@@ -546,7 +550,11 @@ static int spufs_create_gang(struct inode *inode,
 	struct path path = {.mnt = mnt, .dentry = dentry};
 	int ret;
 
+<<<<<<< HEAD
 	ret = spufs_mkgang(inode, dentry, mode & 0777);
+=======
+	ret = spufs_mkgang(inode, dentry, mode & S_IRWXUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret) {
 		ret = spufs_gang_open(&path);
 		if (ret < 0) {

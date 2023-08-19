@@ -411,18 +411,30 @@ static int lgdt330x_set_ts_param(struct dvb_frontend *fe, int is_punctured)
 }
 
 static struct lgdt330x_config fusionhdtv_3_gold = {
+<<<<<<< HEAD
+=======
+	.demod_address = 0x0e,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.demod_chip    = LGDT3302,
 	.serial_mpeg   = 0x04, /* TPSERIAL for 3302 in TOP_CONTROL */
 	.set_ts_params = lgdt330x_set_ts_param,
 };
 
 static const struct lgdt330x_config fusionhdtv_5_gold = {
+<<<<<<< HEAD
+=======
+	.demod_address = 0x0e,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.demod_chip    = LGDT3303,
 	.serial_mpeg   = 0x40, /* TPSERIAL for 3303 in TOP_CONTROL */
 	.set_ts_params = lgdt330x_set_ts_param,
 };
 
 static const struct lgdt330x_config pchdtv_hd5500 = {
+<<<<<<< HEAD
+=======
+	.demod_address = 0x59,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.demod_chip    = LGDT3303,
 	.serial_mpeg   = 0x40, /* TPSERIAL for 3303 in TOP_CONTROL */
 	.set_ts_params = lgdt330x_set_ts_param,
@@ -555,7 +567,11 @@ static const struct s5h1409_config pinnacle_pctv_hd_800i_config = {
 	.qam_if	       = 44000,
 	.inversion     = S5H1409_INVERSION_OFF,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_NONCONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_NONCONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct s5h1409_config dvico_hdtv5_pci_nano_config = {
@@ -564,7 +580,11 @@ static const struct s5h1409_config dvico_hdtv5_pci_nano_config = {
 	.gpio          = S5H1409_GPIO_OFF,
 	.inversion     = S5H1409_INVERSION_OFF,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct s5h1409_config kworld_atsc_120_config = {
@@ -573,7 +593,11 @@ static const struct s5h1409_config kworld_atsc_120_config = {
 	.gpio	       = S5H1409_GPIO_OFF,
 	.inversion     = S5H1409_INVERSION_OFF,
 	.status_mode   = S5H1409_DEMODLOCKING,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1409_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct xc5000_config pinnacle_pctv_hd_800i_tuner_config = {
@@ -596,7 +620,11 @@ static const struct zl10353_config cx88_geniatech_x8000_mt = {
 static const struct s5h1411_config dvico_fusionhdtv7_config = {
 	.output_mode   = S5H1411_SERIAL_OUTPUT,
 	.gpio          = S5H1411_GPIO_ON,
+<<<<<<< HEAD
 	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINUOUS_NONINVERTING_CLOCK,
+=======
+	.mpeg_timing   = S5H1411_MPEGTIMING_CONTINOUS_NONINVERTING_CLOCK,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.qam_if        = S5H1411_IF_44000,
 	.vsb_if        = S5H1411_IF_44000,
 	.inversion     = S5H1411_INVERSION_OFF,
@@ -1226,15 +1254,24 @@ static int dvb_register(struct cx8802_dev *dev)
 
 		/* Do a hardware reset of chip before using it. */
 		cx_clear(MO_GP0_IO, 1);
+<<<<<<< HEAD
 		msleep(100);
 		cx_set(MO_GP0_IO, 1);
 		msleep(200);
+=======
+		mdelay(100);
+		cx_set(MO_GP0_IO, 1);
+		mdelay(200);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Select RF connector callback */
 		fusionhdtv_3_gold.pll_rf_set = lgdt330x_pll_rf_set;
 		fe0->dvb.frontend = dvb_attach(lgdt330x_attach,
 					       &fusionhdtv_3_gold,
+<<<<<<< HEAD
 					       0x0e,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       &core->i2c_adap);
 		if (fe0->dvb.frontend) {
 			if (!dvb_attach(simple_tuner_attach, fe0->dvb.frontend,
@@ -1248,12 +1285,20 @@ static int dvb_register(struct cx8802_dev *dev)
 
 		/* Do a hardware reset of chip before using it. */
 		cx_clear(MO_GP0_IO, 1);
+<<<<<<< HEAD
 		msleep(100);
 		cx_set(MO_GP0_IO, 9);
 		msleep(200);
 		fe0->dvb.frontend = dvb_attach(lgdt330x_attach,
 					       &fusionhdtv_3_gold,
 					       0x0e,
+=======
+		mdelay(100);
+		cx_set(MO_GP0_IO, 9);
+		mdelay(200);
+		fe0->dvb.frontend = dvb_attach(lgdt330x_attach,
+					       &fusionhdtv_3_gold,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       &core->i2c_adap);
 		if (fe0->dvb.frontend) {
 			if (!dvb_attach(simple_tuner_attach, fe0->dvb.frontend,
@@ -1267,12 +1312,20 @@ static int dvb_register(struct cx8802_dev *dev)
 
 		/* Do a hardware reset of chip before using it. */
 		cx_clear(MO_GP0_IO, 1);
+<<<<<<< HEAD
 		msleep(100);
 		cx_set(MO_GP0_IO, 1);
 		msleep(200);
 		fe0->dvb.frontend = dvb_attach(lgdt330x_attach,
 					       &fusionhdtv_5_gold,
 					       0x0e,
+=======
+		mdelay(100);
+		cx_set(MO_GP0_IO, 1);
+		mdelay(200);
+		fe0->dvb.frontend = dvb_attach(lgdt330x_attach,
+					       &fusionhdtv_5_gold,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       &core->i2c_adap);
 		if (fe0->dvb.frontend) {
 			if (!dvb_attach(simple_tuner_attach, fe0->dvb.frontend,
@@ -1289,12 +1342,20 @@ static int dvb_register(struct cx8802_dev *dev)
 
 		/* Do a hardware reset of chip before using it. */
 		cx_clear(MO_GP0_IO, 1);
+<<<<<<< HEAD
 		msleep(100);
 		cx_set(MO_GP0_IO, 1);
 		msleep(200);
 		fe0->dvb.frontend = dvb_attach(lgdt330x_attach,
 					       &pchdtv_hd5500,
 					       0x59,
+=======
+		mdelay(100);
+		cx_set(MO_GP0_IO, 1);
+		mdelay(200);
+		fe0->dvb.frontend = dvb_attach(lgdt330x_attach,
+					       &pchdtv_hd5500,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       &core->i2c_adap);
 		if (fe0->dvb.frontend) {
 			if (!dvb_attach(simple_tuner_attach, fe0->dvb.frontend,
@@ -1583,9 +1644,15 @@ static int dvb_register(struct cx8802_dev *dev)
 		cx_set(MO_GP0_IO, 0x0101);
 
 		cx_clear(MO_GP0_IO, 0x01);
+<<<<<<< HEAD
 		msleep(100);
 		cx_set(MO_GP0_IO, 0x01);
 		msleep(200);
+=======
+		mdelay(100);
+		cx_set(MO_GP0_IO, 0x01);
+		mdelay(200);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		fe0->dvb.frontend = dvb_attach(stv0299_attach,
 					       &samsung_stv0299_config,
@@ -1632,8 +1699,13 @@ static int dvb_register(struct cx8802_dev *dev)
 	if (fe1)
 		fe1->dvb.frontend->ops.ts_bus_ctrl = cx88_dvb_bus_ctrl;
 
+<<<<<<< HEAD
 	/* Put the tuner in standby to keep it quiet */
 	call_all(core, tuner, standby);
+=======
+	/* Put the analog decoder in standby to keep it quiet */
+	call_all(core, core, s_power, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* register everything */
 	res = vb2_dvb_register_bus(&dev->frontends, THIS_MODULE, dev,

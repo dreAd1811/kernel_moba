@@ -22,6 +22,14 @@
 #define BITS_SHIFT_NEXT_LEVEL(eax)	((eax) & 0x1f)
 #define LEVEL_MAX_SIBLINGS(ebx)		((ebx) & 0xffff)
 
+<<<<<<< HEAD
+=======
+/*
+ * Check for extended topology enumeration cpuid leaf 0xb and if it
+ * exists, use it for populating initial_apicid and cpu topology
+ * detection.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int detect_extended_topology_early(struct cpuinfo_x86 *c)
 {
 #ifdef CONFIG_SMP
@@ -54,7 +62,11 @@ int detect_extended_topology_early(struct cpuinfo_x86 *c)
  * exists, use it for populating initial_apicid and cpu topology
  * detection.
  */
+<<<<<<< HEAD
 int detect_extended_topology(struct cpuinfo_x86 *c)
+=======
+void detect_extended_topology(struct cpuinfo_x86 *c)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifdef CONFIG_SMP
 	unsigned int eax, ebx, ecx, edx, sub_index;
@@ -62,7 +74,11 @@ int detect_extended_topology(struct cpuinfo_x86 *c)
 	unsigned int core_select_mask, core_level_siblings;
 
 	if (detect_extended_topology_early(c) < 0)
+<<<<<<< HEAD
 		return -1;
+=======
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Populate HT related information from sub-leaf level 0.
@@ -99,5 +115,8 @@ int detect_extended_topology(struct cpuinfo_x86 *c)
 
 	c->x86_max_cores = (core_level_siblings / smp_num_siblings);
 #endif
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

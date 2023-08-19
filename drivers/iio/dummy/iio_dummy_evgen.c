@@ -24,12 +24,17 @@
 #include "iio_dummy_evgen.h"
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
+<<<<<<< HEAD
 #include <linux/irq_sim.h>
+=======
+#include <linux/irq_work.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Fiddly bit of faking and irq without hardware */
 #define IIO_EVENTGEN_NO 10
 
 /**
+<<<<<<< HEAD
  * @regs: irq regs we are faking
  * @lock: protect the evgen state
  * @inuse: mask of which irqs are connected
@@ -42,19 +47,83 @@ struct iio_dummy_eventgen {
 	bool inuse[IIO_EVENTGEN_NO];
 	struct irq_sim irq_sim;
 	int base;
+=======
+ * struct iio_dummy_handle_irq - helper struct to simulate interrupt generation
+ * @work: irq_work used to run handlers from hardirq context
+ * @irq: fake irq line number to trigger an interrupt
+ */
+struct iio_dummy_handle_irq {
+	struct irq_work work;
+	int irq;
+};
+
+/**
+ * struct iio_dummy_evgen - evgen state
+ * @chip: irq chip we are faking
+ * @base: base of irq range
+ * @enabled: mask of which irqs are enabled
+ * @inuse: mask of which irqs are connected
+ * @regs: irq regs we are faking
+ * @lock: protect the evgen state
+ * @handler: helper for a 'hardware-like' interrupt simulation
+ */
+struct iio_dummy_eventgen {
+	struct irq_chip chip;
+	int base;
+	bool enabled[IIO_EVENTGEN_NO];
+	bool inuse[IIO_EVENTGEN_NO];
+	struct iio_dummy_regs regs[IIO_EVENTGEN_NO];
+	struct mutex lock;
+	struct iio_dummy_handle_irq handler;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* We can only ever have one instance of this 'device' */
 static struct iio_dummy_eventgen *iio_evgen;
+<<<<<<< HEAD
 
 static int iio_dummy_evgen_create(void)
 {
 	int ret;
+=======
+static const char *iio_evgen_name = "iio_dummy_evgen";
+
+static void iio_dummy_event_irqmask(struct irq_data *d)
+{
+	struct irq_chip *chip = irq_data_get_irq_chip(d);
+	struct iio_dummy_eventgen *evgen =
+		container_of(chip, struct iio_dummy_eventgen, chip);
+
+	evgen->enabled[d->irq - evgen->base] = false;
+}
+
+static void iio_dummy_event_irqunmask(struct irq_data *d)
+{
+	struct irq_chip *chip = irq_data_get_irq_chip(d);
+	struct iio_dummy_eventgen *evgen =
+		container_of(chip, struct iio_dummy_eventgen, chip);
+
+	evgen->enabled[d->irq - evgen->base] = true;
+}
+
+static void iio_dummy_work_handler(struct irq_work *work)
+{
+	struct iio_dummy_handle_irq *irq_handler;
+
+	irq_handler = container_of(work, struct iio_dummy_handle_irq, work);
+	handle_simple_irq(irq_to_desc(irq_handler->irq));
+}
+
+static int iio_dummy_evgen_create(void)
+{
+	int ret, i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iio_evgen = kzalloc(sizeof(*iio_evgen), GFP_KERNEL);
 	if (!iio_evgen)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = irq_sim_init(&iio_evgen->irq_sim, IIO_EVENTGEN_NO);
 	if (ret < 0) {
 		kfree(iio_evgen);
@@ -64,6 +133,26 @@ static int iio_dummy_evgen_create(void)
 	iio_evgen->base = irq_sim_irqnum(&iio_evgen->irq_sim, 0);
 	mutex_init(&iio_evgen->lock);
 
+=======
+	iio_evgen->base = irq_alloc_descs(-1, 0, IIO_EVENTGEN_NO, 0);
+	if (iio_evgen->base < 0) {
+		ret = iio_evgen->base;
+		kfree(iio_evgen);
+		return ret;
+	}
+	iio_evgen->chip.name = iio_evgen_name;
+	iio_evgen->chip.irq_mask = &iio_dummy_event_irqmask;
+	iio_evgen->chip.irq_unmask = &iio_dummy_event_irqunmask;
+	for (i = 0; i < IIO_EVENTGEN_NO; i++) {
+		irq_set_chip(iio_evgen->base + i, &iio_evgen->chip);
+		irq_set_handler(iio_evgen->base + i, &handle_simple_irq);
+		irq_modify_status(iio_evgen->base + i,
+				  IRQ_NOREQUEST | IRQ_NOAUTOEN,
+				  IRQ_NOPROBE);
+	}
+	init_irq_work(&iio_evgen->handler.work, iio_dummy_work_handler);
+	mutex_init(&iio_evgen->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -81,6 +170,7 @@ int iio_dummy_evgen_get_irq(void)
 		return -ENODEV;
 
 	mutex_lock(&iio_evgen->lock);
+<<<<<<< HEAD
 	for (i = 0; i < IIO_EVENTGEN_NO; i++) {
 		if (!iio_evgen->inuse[i]) {
 			ret = irq_sim_irqnum(&iio_evgen->irq_sim, i);
@@ -92,6 +182,17 @@ int iio_dummy_evgen_get_irq(void)
 	if (i == IIO_EVENTGEN_NO)
 		return -ENOMEM;
 
+=======
+	for (i = 0; i < IIO_EVENTGEN_NO; i++)
+		if (!iio_evgen->inuse[i]) {
+			ret = iio_evgen->base + i;
+			iio_evgen->inuse[i] = true;
+			break;
+		}
+	mutex_unlock(&iio_evgen->lock);
+	if (i == IIO_EVENTGEN_NO)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 EXPORT_SYMBOL_GPL(iio_dummy_evgen_get_irq);
@@ -118,7 +219,11 @@ EXPORT_SYMBOL_GPL(iio_dummy_evgen_get_regs);
 
 static void iio_dummy_evgen_free(void)
 {
+<<<<<<< HEAD
 	irq_sim_fini(&iio_evgen->irq_sim);
+=======
+	irq_free_descs(iio_evgen->base, IIO_EVENTGEN_NO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(iio_evgen);
 }
 
@@ -143,7 +248,13 @@ static ssize_t iio_evgen_poke(struct device *dev,
 	iio_evgen->regs[this_attr->address].reg_id   = this_attr->address;
 	iio_evgen->regs[this_attr->address].reg_data = event;
 
+<<<<<<< HEAD
 	irq_sim_fire(&iio_evgen->irq_sim, this_attr->address);
+=======
+	iio_evgen->handler.irq = iio_evgen->base + this_attr->address;
+	if (iio_evgen->enabled[this_attr->address])
+		irq_work_queue(&iio_evgen->handler.work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return len;
 }

@@ -3,6 +3,7 @@
 # Makefile for the linux s390-specific parts of the memory manager.
 #
 
+<<<<<<< HEAD
 KCOV_INSTRUMENT := n
 GCOV_PROFILE := n
 UBSAN_SANITIZE := n
@@ -32,10 +33,25 @@ targets	:= bzImage startup.a $(obj-y)
 subdir-	:= compressed
 
 OBJECTS := $(addprefix $(obj)/,$(obj-y))
+=======
+COMPILE_VERSION := __linux_compile_version_id__`hostname |  \
+			tr -c '[0-9A-Za-z]' '_'`__`date | \
+			tr -c '[0-9A-Za-z]' '_'`_t
+
+ccflags-y  := -DCOMPILE_VERSION=$(COMPILE_VERSION) -gstabs -I.
+
+targets := image
+targets += bzImage
+subdir- := compressed
+
+$(obj)/image: vmlinux FORCE
+	$(call if_changed,objcopy)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 $(obj)/bzImage: $(obj)/compressed/vmlinux FORCE
 	$(call if_changed,objcopy)
 
+<<<<<<< HEAD
 $(obj)/compressed/vmlinux: $(obj)/startup.a FORCE
 	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
 
@@ -52,3 +68,11 @@ install: $(CONFIGURE) $(obj)/bzImage
 chkbss := $(OBJECTS)
 chkbss-target := $(obj)/startup.a
 include $(srctree)/arch/s390/scripts/Makefile.chkbss
+=======
+$(obj)/compressed/vmlinux: FORCE
+	$(Q)$(MAKE) $(build)=$(obj)/compressed $@
+
+install: $(CONFIGURE) $(obj)/bzImage
+	sh -x  $(srctree)/$(obj)/install.sh $(KERNELRELEASE) $(obj)/bzImage \
+	      System.map "$(INSTALL_PATH)"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

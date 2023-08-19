@@ -19,6 +19,7 @@
  *
  */
 
+<<<<<<< HEAD
 #include <asm/unaligned.h>
 #include <crypto/internal/skcipher.h>
 #include <linux/module.h>
@@ -33,13 +34,57 @@ struct salsa20_ctx {
 };
 
 static void salsa20_block(u32 *state, __le32 *stream)
+=======
+#include <linux/init.h>
+#include <linux/module.h>
+#include <linux/errno.h>
+#include <linux/crypto.h>
+#include <linux/types.h>
+#include <linux/bitops.h>
+#include <crypto/algapi.h>
+#include <asm/byteorder.h>
+
+#define SALSA20_IV_SIZE        8U
+#define SALSA20_MIN_KEY_SIZE  16U
+#define SALSA20_MAX_KEY_SIZE  32U
+
+/*
+ * Start of code taken from D. J. Bernstein's reference implementation.
+ * With some modifications and optimizations made to suit our needs.
+ */
+
+/*
+salsa20-ref.c version 20051118
+D. J. Bernstein
+Public domain.
+*/
+
+#define U32TO8_LITTLE(p, v) \
+	{ (p)[0] = (v >>  0) & 0xff; (p)[1] = (v >>  8) & 0xff; \
+	  (p)[2] = (v >> 16) & 0xff; (p)[3] = (v >> 24) & 0xff; }
+#define U8TO32_LITTLE(p)   \
+	(((u32)((p)[0])      ) | ((u32)((p)[1]) <<  8) | \
+	 ((u32)((p)[2]) << 16) | ((u32)((p)[3]) << 24)   )
+
+struct salsa20_ctx
+{
+	u32 input[16];
+};
+
+static void salsa20_wordtobyte(u8 output[64], const u32 input[16])
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 x[16];
 	int i;
 
+<<<<<<< HEAD
 	memcpy(x, state, sizeof(x));
 
 	for (i = 0; i < 20; i += 2) {
+=======
+	memcpy(x, input, sizeof(x));
+	for (i = 20; i > 0; i -= 2) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		x[ 4] ^= rol32((x[ 0] + x[12]),  7);
 		x[ 8] ^= rol32((x[ 4] + x[ 0]),  9);
 		x[12] ^= rol32((x[ 8] + x[ 4]), 13);
@@ -73,6 +118,7 @@ static void salsa20_block(u32 *state, __le32 *stream)
 		x[14] ^= rol32((x[13] + x[12]), 13);
 		x[15] ^= rol32((x[14] + x[13]), 18);
 	}
+<<<<<<< HEAD
 
 	for (i = 0; i < 16; i++)
 		stream[i] = cpu_to_le32(x[i] + state[i]);
@@ -85,10 +131,58 @@ static void salsa20_docrypt(u32 *state, u8 *dst, const u8 *src,
 			    unsigned int bytes)
 {
 	__le32 stream[SALSA20_BLOCK_SIZE / sizeof(__le32)];
+=======
+	for (i = 0; i < 16; ++i)
+		x[i] += input[i];
+	for (i = 0; i < 16; ++i)
+		U32TO8_LITTLE(output + 4 * i,x[i]);
+}
+
+static const char sigma[16] = "expand 32-byte k";
+static const char tau[16] = "expand 16-byte k";
+
+static void salsa20_keysetup(struct salsa20_ctx *ctx, const u8 *k, u32 kbytes)
+{
+	const char *constants;
+
+	ctx->input[1] = U8TO32_LITTLE(k + 0);
+	ctx->input[2] = U8TO32_LITTLE(k + 4);
+	ctx->input[3] = U8TO32_LITTLE(k + 8);
+	ctx->input[4] = U8TO32_LITTLE(k + 12);
+	if (kbytes == 32) { /* recommended */
+		k += 16;
+		constants = sigma;
+	} else { /* kbytes == 16 */
+		constants = tau;
+	}
+	ctx->input[11] = U8TO32_LITTLE(k + 0);
+	ctx->input[12] = U8TO32_LITTLE(k + 4);
+	ctx->input[13] = U8TO32_LITTLE(k + 8);
+	ctx->input[14] = U8TO32_LITTLE(k + 12);
+	ctx->input[0] = U8TO32_LITTLE(constants + 0);
+	ctx->input[5] = U8TO32_LITTLE(constants + 4);
+	ctx->input[10] = U8TO32_LITTLE(constants + 8);
+	ctx->input[15] = U8TO32_LITTLE(constants + 12);
+}
+
+static void salsa20_ivsetup(struct salsa20_ctx *ctx, const u8 *iv)
+{
+	ctx->input[6] = U8TO32_LITTLE(iv + 0);
+	ctx->input[7] = U8TO32_LITTLE(iv + 4);
+	ctx->input[8] = 0;
+	ctx->input[9] = 0;
+}
+
+static void salsa20_encrypt_bytes(struct salsa20_ctx *ctx, u8 *dst,
+				  const u8 *src, unsigned int bytes)
+{
+	u8 buf[64];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dst != src)
 		memcpy(dst, src, bytes);
 
+<<<<<<< HEAD
 	while (bytes >= SALSA20_BLOCK_SIZE) {
 		salsa20_block(state, stream);
 		crypto_xor(dst, (const u8 *)stream, SALSA20_BLOCK_SIZE);
@@ -172,11 +266,69 @@ static int salsa20_crypt(struct skcipher_request *req)
 		salsa20_docrypt(state, walk.dst.virt.addr, walk.src.virt.addr,
 				nbytes);
 		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
+=======
+	while (bytes) {
+		salsa20_wordtobyte(buf, ctx->input);
+
+		ctx->input[8]++;
+		if (!ctx->input[8])
+			ctx->input[9]++;
+
+		if (bytes <= 64) {
+			crypto_xor(dst, buf, bytes);
+			return;
+		}
+
+		crypto_xor(dst, buf, 64);
+		bytes -= 64;
+		dst += 64;
+	}
+}
+
+/*
+ * End of code taken from D. J. Bernstein's reference implementation.
+ */
+
+static int setkey(struct crypto_tfm *tfm, const u8 *key,
+		  unsigned int keysize)
+{
+	struct salsa20_ctx *ctx = crypto_tfm_ctx(tfm);
+	salsa20_keysetup(ctx, key, keysize);
+	return 0;
+}
+
+static int encrypt(struct blkcipher_desc *desc,
+		   struct scatterlist *dst, struct scatterlist *src,
+		   unsigned int nbytes)
+{
+	struct blkcipher_walk walk;
+	struct crypto_blkcipher *tfm = desc->tfm;
+	struct salsa20_ctx *ctx = crypto_blkcipher_ctx(tfm);
+	int err;
+
+	blkcipher_walk_init(&walk, dst, src, nbytes);
+	err = blkcipher_walk_virt_block(desc, &walk, 64);
+
+	salsa20_ivsetup(ctx, desc->info);
+
+	while (walk.nbytes >= 64) {
+		salsa20_encrypt_bytes(ctx, walk.dst.virt.addr,
+				      walk.src.virt.addr,
+				      walk.nbytes - (walk.nbytes % 64));
+		err = blkcipher_walk_done(desc, &walk, walk.nbytes % 64);
+	}
+
+	if (walk.nbytes) {
+		salsa20_encrypt_bytes(ctx, walk.dst.virt.addr,
+				      walk.src.virt.addr, walk.nbytes);
+		err = blkcipher_walk_done(desc, &walk, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;
 }
 
+<<<<<<< HEAD
 static struct skcipher_alg alg = {
 	.base.cra_name		= "salsa20",
 	.base.cra_driver_name	= "salsa20-generic",
@@ -192,16 +344,46 @@ static struct skcipher_alg alg = {
 	.setkey			= salsa20_setkey,
 	.encrypt		= salsa20_crypt,
 	.decrypt		= salsa20_crypt,
+=======
+static struct crypto_alg alg = {
+	.cra_name           =   "salsa20",
+	.cra_driver_name    =   "salsa20-generic",
+	.cra_priority       =   100,
+	.cra_flags          =   CRYPTO_ALG_TYPE_BLKCIPHER,
+	.cra_type           =   &crypto_blkcipher_type,
+	.cra_blocksize      =   1,
+	.cra_ctxsize        =   sizeof(struct salsa20_ctx),
+	.cra_alignmask      =	3,
+	.cra_module         =   THIS_MODULE,
+	.cra_u              =   {
+		.blkcipher = {
+			.setkey         =   setkey,
+			.encrypt        =   encrypt,
+			.decrypt        =   encrypt,
+			.min_keysize    =   SALSA20_MIN_KEY_SIZE,
+			.max_keysize    =   SALSA20_MAX_KEY_SIZE,
+			.ivsize         =   SALSA20_IV_SIZE,
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init salsa20_generic_mod_init(void)
 {
+<<<<<<< HEAD
 	return crypto_register_skcipher(&alg);
+=======
+	return crypto_register_alg(&alg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit salsa20_generic_mod_fini(void)
 {
+<<<<<<< HEAD
 	crypto_unregister_skcipher(&alg);
+=======
+	crypto_unregister_alg(&alg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(salsa20_generic_mod_init);

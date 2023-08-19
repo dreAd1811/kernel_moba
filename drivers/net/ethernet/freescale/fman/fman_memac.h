@@ -57,7 +57,10 @@ int memac_set_exception(struct fman_mac *memac,
 			enum fman_mac_exceptions exception, bool enable);
 int memac_add_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr);
 int memac_del_hash_mac_address(struct fman_mac *memac, enet_addr_t *eth_addr);
+<<<<<<< HEAD
 int memac_set_allmulti(struct fman_mac *memac, bool enable);
 int memac_set_tstamp(struct fman_mac *memac, bool enable);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __MEMAC_H */

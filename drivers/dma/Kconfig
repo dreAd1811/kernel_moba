@@ -115,7 +115,11 @@ config BCM_SBA_RAID
 	select DMA_ENGINE_RAID
 	select ASYNC_TX_DISABLE_XOR_VAL_DMA
 	select ASYNC_TX_DISABLE_PQ_VAL_DMA
+<<<<<<< HEAD
 	default m if ARCH_BCM_IPROC
+=======
+	default ARCH_BCM_IPROC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Enable support for Broadcom SBA RAID Engine. The SBA RAID
 	  engine is available on most of the Broadcom iProc SoCs. It
@@ -143,7 +147,11 @@ config DMA_JZ4740
 
 config DMA_JZ4780
 	tristate "JZ4780 DMA support"
+<<<<<<< HEAD
 	depends on MACH_JZ4780 || COMPILE_TEST
+=======
+	depends on MIPS || COMPILE_TEST
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select DMA_ENGINE
 	select DMA_VIRTUAL_CHANNELS
 	help
@@ -151,6 +159,16 @@ config DMA_JZ4780
 	  If you have a board based on such a SoC and wish to use DMA for
 	  devices which can use the DMA controller, say Y or M here.
 
+<<<<<<< HEAD
+=======
+config DMA_OMAP
+	tristate "OMAP DMA support"
+	depends on ARCH_OMAP || COMPILE_TEST
+	select DMA_ENGINE
+	select DMA_VIRTUAL_CHANNELS
+	select TI_DMA_CROSSBAR if (SOC_DRA7XX || COMPILE_TEST)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DMA_SA11X0
 	tristate "SA-11x0 DMA support"
 	depends on ARCH_SA1100 || COMPILE_TEST
@@ -180,6 +198,7 @@ config DMA_SUN6I
 	help
 	  Support for the DMA engine first found in Allwinner A31 SoCs.
 
+<<<<<<< HEAD
 config DW_AXI_DMAC
 	tristate "Synopsys DesignWare AXI DMA support"
 	depends on OF || COMPILE_TEST
@@ -190,6 +209,8 @@ config DW_AXI_DMAC
 	  NOTE: This driver wasn't tested on 64 bit platform because
 	  of lack 64 bit platform with Synopsys DW AXI DMAC.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config EP93XX_DMA
 	bool "Cirrus Logic EP93xx DMA support"
 	depends on ARCH_EP93XX || COMPILE_TEST
@@ -250,7 +271,10 @@ config IMX_SDMA
 	tristate "i.MX SDMA support"
 	depends on ARCH_MXC
 	select DMA_ENGINE
+<<<<<<< HEAD
 	select DMA_VIRTUAL_CHANNELS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Support the i.MX SDMA engine. This engine is integrated into
 	  Freescale i.MX25/31/35/51/53/6 chips.
@@ -414,6 +438,7 @@ config NBPFAXI_DMA
 	help
 	  Support for "Type-AXI" NBPF DMA IPs from Renesas
 
+<<<<<<< HEAD
 config OWL_DMA
 	tristate "Actions Semi Owl SoCs DMA support"
 	depends on ARCH_ACTIONS
@@ -422,6 +447,8 @@ config OWL_DMA
 	help
 	  Enable support for the Actions Semi Owl SoCs DMA controller.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config PCH_DMA
 	tristate "Intel EG20T PCH / LAPIS Semicon IOH(ML7213/ML7223/ML7831) DMA"
 	depends on PCI && (X86_32 || COMPILE_TEST)
@@ -456,6 +483,19 @@ config PXA_DMA
 	  16 to 32 channels for peripheral to memory or memory to memory
 	  transfers.
 
+<<<<<<< HEAD
+=======
+config QCOM_SPS_DMA
+	tristate "Qualcomm technologies inc DMA driver for sps-BAM"
+	depends on ARCH_QCOM
+	select DMA_ENGINE
+	help
+	  Enable support for Qualcomm technologies inc, BAM DMA engine.
+	  This DMA-engine-driver is a wrapper of the sps-BAM library. DMA
+	  engine callbacks are implemented using the sps-BAM functionality
+	  to access HW.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SIRF_DMA
 	tristate "CSR SiRFprimaII/SiRFmarco DMA support"
 	depends on ARCH_SIRF
@@ -495,6 +535,7 @@ config STM32_DMA
 	  If you have a board based on such a MCU and wish to use DMA say Y
 	  here.
 
+<<<<<<< HEAD
 config STM32_DMAMUX
 	bool "STMicroelectronics STM32 dma multiplexer support"
 	depends on STM32_DMA || COMPILE_TEST
@@ -524,6 +565,8 @@ config SPRD_DMA
 	help
 	  Enable support for the on-chip DMA controller on Spreadtrum platform.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config S3C24XX_DMAC
 	bool "Samsung S3C24XX DMA support"
 	depends on ARCH_S3C24XX || COMPILE_TEST
@@ -576,6 +619,31 @@ config TIMB_DMA
 	help
 	  Enable support for the Timberdale FPGA DMA engine.
 
+<<<<<<< HEAD
+=======
+config TI_CPPI41
+	tristate "CPPI 4.1 DMA support"
+	depends on (ARCH_OMAP || ARCH_DAVINCI_DA8XX)
+	select DMA_ENGINE
+	help
+	  The Communications Port Programming Interface (CPPI) 4.1 DMA engine
+	  is currently used by the USB driver on AM335x and DA8xx platforms.
+
+config TI_DMA_CROSSBAR
+	bool
+
+config TI_EDMA
+	bool "TI EDMA support"
+	depends on ARCH_DAVINCI || ARCH_OMAP || ARCH_KEYSTONE || COMPILE_TEST
+	select DMA_ENGINE
+	select DMA_VIRTUAL_CHANNELS
+	select TI_DMA_CROSSBAR if (ARCH_OMAP || COMPILE_TEST)
+	default n
+	help
+	  Enable support for the TI EDMA controller. This DMA
+	  engine is found on TI DaVinci and AM33xx parts.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config XGENE_DMA
 	tristate "APM X-Gene DMA support"
 	depends on ARCH_XGENE || COMPILE_TEST
@@ -623,8 +691,11 @@ config ZX_DMA
 # driver files
 source "drivers/dma/bestcomm/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/dma/mediatek/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "drivers/dma/qcom/Kconfig"
 
 source "drivers/dma/dw/Kconfig"
@@ -633,8 +704,11 @@ source "drivers/dma/hsu/Kconfig"
 
 source "drivers/dma/sh/Kconfig"
 
+<<<<<<< HEAD
 source "drivers/dma/ti/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # clients
 comment "DMA Clients"
 	depends on DMA_ENGINE

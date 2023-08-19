@@ -224,7 +224,12 @@ int v4l2_event_subscribe(struct v4l2_fh *fh,
 	if (elems < 1)
 		elems = 1;
 
+<<<<<<< HEAD
 	sev = kvzalloc(struct_size(sev, events, elems), GFP_KERNEL);
+=======
+	sev = kvzalloc(sizeof(*sev) + sizeof(struct v4l2_kevent) * elems,
+		       GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sev)
 		return -ENOMEM;
 	for (i = 0; i < elems; i++)

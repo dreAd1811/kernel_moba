@@ -16,10 +16,14 @@
 #ifndef __ASM_PERCPU_H
 #define __ASM_PERCPU_H
 
+<<<<<<< HEAD
 #include <linux/preempt.h>
 
 #include <asm/alternative.h>
 #include <asm/cmpxchg.h>
+=======
+#include <asm/alternative.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/stack_pointer.h>
 
 static inline void set_my_cpu_offset(unsigned long off)
@@ -52,7 +56,11 @@ static inline unsigned long __my_cpu_offset(void)
 static inline unsigned long __percpu_##op(void *ptr,			\
 			unsigned long val, int size)			\
 {									\
+<<<<<<< HEAD
 	unsigned long loop, ret;					\
+=======
+	unsigned long loop, ret = 0;					\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 									\
 	switch (size) {							\
 	case 1:								\
@@ -110,7 +118,11 @@ PERCPU_OP(or, orr)
 
 static inline unsigned long __percpu_read(void *ptr, int size)
 {
+<<<<<<< HEAD
 	unsigned long ret;
+=======
+	unsigned long ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (size) {
 	case 1:
@@ -156,7 +168,11 @@ static inline void __percpu_write(void *ptr, unsigned long val, int size)
 static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
 						int size)
 {
+<<<<<<< HEAD
 	unsigned long ret, loop;
+=======
+	unsigned long ret = 0, loop;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (size) {
 	case 1:
@@ -203,6 +219,7 @@ static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
 	return ret;
 }
 
+<<<<<<< HEAD
 /* this_cpu_cmpxchg */
 #define _protect_cmpxchg_local(pcp, o, n)			\
 ({								\
@@ -229,6 +246,8 @@ static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
 	__ret;								\
 })
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define _percpu_read(pcp)						\
 ({									\
 	typeof(pcp) __retval;						\

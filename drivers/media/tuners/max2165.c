@@ -23,7 +23,11 @@
 #include <linux/i2c.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "max2165.h"
 #include "max2165_priv.h"
@@ -377,10 +381,17 @@ static void max2165_release(struct dvb_frontend *fe)
 
 static const struct dvb_tuner_ops max2165_tuner_ops = {
 	.info = {
+<<<<<<< HEAD
 		.name              = "Maxim MAX2165",
 		.frequency_min_hz  = 470 * MHz,
 		.frequency_max_hz  = 862 * MHz,
 		.frequency_step_hz =  50 * kHz,
+=======
+		.name           = "Maxim MAX2165",
+		.frequency_min  = 470000000,
+		.frequency_max  = 862000000,
+		.frequency_step =     50000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.release	   = max2165_release,

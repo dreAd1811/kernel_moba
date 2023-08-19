@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: GPL-2.0
 
 
+<<<<<<< HEAD
 generic-y += compat.h
+=======
+generic-y += clkdev.h
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 generic-y += exec.h
 generic-y += export.h
 generic-y += fb.h

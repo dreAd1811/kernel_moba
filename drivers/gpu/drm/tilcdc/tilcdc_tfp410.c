@@ -111,8 +111,15 @@ static struct drm_encoder *tfp410_encoder_create(struct drm_device *dev,
 
 	tfp410_encoder = devm_kzalloc(dev->dev, sizeof(*tfp410_encoder),
 				      GFP_KERNEL);
+<<<<<<< HEAD
 	if (!tfp410_encoder)
 		return NULL;
+=======
+	if (!tfp410_encoder) {
+		dev_err(dev->dev, "allocation failed\n");
+		return NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tfp410_encoder->dpms = DRM_MODE_DPMS_OFF;
 	tfp410_encoder->mod = mod;
@@ -173,7 +180,11 @@ static int tfp410_connector_get_modes(struct drm_connector *connector)
 
 	edid = drm_get_edid(connector, tfp410_connector->mod->i2c);
 
+<<<<<<< HEAD
 	drm_connector_update_edid_property(connector, edid);
+=======
+	drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (edid) {
 		ret = drm_add_edid_modes(connector, edid);
@@ -222,8 +233,15 @@ static struct drm_connector *tfp410_connector_create(struct drm_device *dev,
 
 	tfp410_connector = devm_kzalloc(dev->dev, sizeof(*tfp410_connector),
 					GFP_KERNEL);
+<<<<<<< HEAD
 	if (!tfp410_connector)
 		return NULL;
+=======
+	if (!tfp410_connector) {
+		dev_err(dev->dev, "allocation failed\n");
+		return NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tfp410_connector->encoder = encoder;
 	tfp410_connector->mod = mod;
@@ -240,7 +258,11 @@ static struct drm_connector *tfp410_connector_create(struct drm_device *dev,
 	connector->interlace_allowed = 0;
 	connector->doublescan_allowed = 0;
 
+<<<<<<< HEAD
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto fail;
 
@@ -285,6 +307,11 @@ static const struct tilcdc_module_ops tfp410_module_ops = {
  * Device:
  */
 
+<<<<<<< HEAD
+=======
+static struct of_device_id tfp410_of_match[];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tfp410_probe(struct platform_device *pdev)
 {
 	struct device_node *node = pdev->dev.of_node;
@@ -369,7 +396,11 @@ static int tfp410_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct of_device_id tfp410_of_match[] = {
+=======
+static struct of_device_id tfp410_of_match[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ .compatible = "ti,tilcdc,tfp410", },
 		{ },
 };

@@ -148,11 +148,19 @@ NOKPROBE_SYMBOL(optprobe_template_call);
 NOKPROBE_SYMBOL(optprobe_template_end);
 
 #define TMPL_MOVE_IDX \
+<<<<<<< HEAD
 	((long)optprobe_template_val - (long)optprobe_template_entry)
 #define TMPL_CALL_IDX \
 	((long)optprobe_template_call - (long)optprobe_template_entry)
 #define TMPL_END_IDX \
 	((long)optprobe_template_end - (long)optprobe_template_entry)
+=======
+	((long)&optprobe_template_val - (long)&optprobe_template_entry)
+#define TMPL_CALL_IDX \
+	((long)&optprobe_template_call - (long)&optprobe_template_entry)
+#define TMPL_END_IDX \
+	((long)&optprobe_template_end - (long)&optprobe_template_entry)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define INT3_SIZE sizeof(kprobe_opcode_t)
 
@@ -160,15 +168,28 @@ NOKPROBE_SYMBOL(optprobe_template_end);
 static void
 optimized_callback(struct optimized_kprobe *op, struct pt_regs *regs)
 {
+<<<<<<< HEAD
+=======
+	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+	unsigned long flags;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This is possible if op is under delayed unoptimizing */
 	if (kprobe_disabled(&op->kp))
 		return;
 
+<<<<<<< HEAD
 	preempt_disable();
 	if (kprobe_running()) {
 		kprobes_inc_nmissed_count(&op->kp);
 	} else {
 		struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+=======
+	local_irq_save(flags);
+	if (kprobe_running()) {
+		kprobes_inc_nmissed_count(&op->kp);
+	} else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Save skipped registers */
 #ifdef CONFIG_X86_64
 		regs->cs = __KERNEL_CS;
@@ -184,17 +205,29 @@ optimized_callback(struct optimized_kprobe *op, struct pt_regs *regs)
 		opt_pre_handler(&op->kp, regs);
 		__this_cpu_write(current_kprobe, NULL);
 	}
+<<<<<<< HEAD
 	preempt_enable();
 }
 NOKPROBE_SYMBOL(optimized_callback);
 
 static int copy_optimized_instructions(u8 *dest, u8 *src, u8 *real)
+=======
+	local_irq_restore(flags);
+}
+NOKPROBE_SYMBOL(optimized_callback);
+
+static int copy_optimized_instructions(u8 *dest, u8 *src)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct insn insn;
 	int len = 0, ret;
 
 	while (len < RELATIVEJUMP_SIZE) {
+<<<<<<< HEAD
 		ret = __copy_instruction(dest + len, src + len, real + len, &insn);
+=======
+		ret = __copy_instruction(dest + len, src + len, &insn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ret || !can_boost(&insn, src + len))
 			return -EINVAL;
 		len += ret;
@@ -367,13 +400,19 @@ void arch_remove_optimized_kprobe(struct optimized_kprobe *op)
 int arch_prepare_optimized_kprobe(struct optimized_kprobe *op,
 				  struct kprobe *__unused)
 {
+<<<<<<< HEAD
 	u8 *buf = NULL, *slot;
 	int ret, len;
+=======
+	u8 *buf;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	long rel;
 
 	if (!can_optimize((unsigned long)op->kp.addr))
 		return -EILSEQ;
 
+<<<<<<< HEAD
 	buf = kzalloc(MAX_OPTINSN_SIZE, GFP_KERNEL);
 	if (!buf)
 		return -ENOMEM;
@@ -384,10 +423,17 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op,
 		goto out;
 	}
 
+=======
+	op->optinsn.insn = get_optinsn_slot();
+	if (!op->optinsn.insn)
+		return -ENOMEM;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Verify if the address gap is in 2GB range, because this uses
 	 * a relative jump.
 	 */
+<<<<<<< HEAD
 	rel = (long)slot - (long)op->kp.addr + RELATIVEJUMP_SIZE;
 	if (abs(rel) > 0x7fffffff) {
 		ret = -ERANGE;
@@ -404,11 +450,33 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op,
 		goto err;
 	op->optinsn.size = ret;
 	len = TMPL_END_IDX + op->optinsn.size;
+=======
+	rel = (long)op->optinsn.insn - (long)op->kp.addr + RELATIVEJUMP_SIZE;
+	if (abs(rel) > 0x7fffffff) {
+		__arch_remove_optimized_kprobe(op, 0);
+		return -ERANGE;
+	}
+
+	buf = (u8 *)op->optinsn.insn;
+	set_memory_rw((unsigned long)buf & PAGE_MASK, 1);
+
+	/* Copy instructions into the out-of-line buffer */
+	ret = copy_optimized_instructions(buf + TMPL_END_IDX, op->kp.addr);
+	if (ret < 0) {
+		__arch_remove_optimized_kprobe(op, 0);
+		return ret;
+	}
+	op->optinsn.size = ret;
+
+	/* Copy arch-dep-instance from template */
+	memcpy(buf, &optprobe_template_entry, TMPL_END_IDX);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set probe information */
 	synthesize_set_arg1(buf + TMPL_MOVE_IDX, (unsigned long)op);
 
 	/* Set probe function call */
+<<<<<<< HEAD
 	synthesize_relcall(buf + TMPL_CALL_IDX,
 			   slot + TMPL_CALL_IDX, optimized_callback);
 
@@ -427,6 +495,20 @@ out:
 err:
 	__arch_remove_optimized_kprobe(op, 0);
 	goto out;
+=======
+	synthesize_relcall(buf + TMPL_CALL_IDX, optimized_callback);
+
+	/* Set returning jmp instruction at the tail of out-of-line buffer */
+	synthesize_reljump(buf + TMPL_END_IDX + op->optinsn.size,
+			   (u8 *)op->kp.addr + op->optinsn.size);
+
+	set_memory_ro((unsigned long)buf & PAGE_MASK, 1);
+
+	flush_icache_range((unsigned long) buf,
+			   (unsigned long) buf + TMPL_END_IDX +
+			   op->optinsn.size + RELATIVEJUMP_SIZE);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -496,6 +578,10 @@ int setup_detour_execution(struct kprobe *p, struct pt_regs *regs, int reenter)
 		regs->ip = (unsigned long)op->optinsn.insn + TMPL_END_IDX;
 		if (!reenter)
 			reset_current_kprobe();
+<<<<<<< HEAD
+=======
+		preempt_enable_no_resched();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 	return 0;

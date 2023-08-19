@@ -32,8 +32,11 @@ u32 __hyp_text __init_stage2_translation(void)
 	 * PS is only 3. Fortunately, bit 19 is RES0 in VTCR_EL2...
 	 */
 	parange = read_sysreg(id_aa64mmfr0_el1) & 7;
+<<<<<<< HEAD
 	if (parange > ID_AA64MMFR0_PARANGE_MAX)
 		parange = ID_AA64MMFR0_PARANGE_MAX;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val |= parange << 16;
 
 	/* Compute the actual PARange... */

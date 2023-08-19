@@ -65,7 +65,10 @@
 #include <net/addrconf.h>
 #include <linux/uaccess.h>
 #include <linux/crash_dump.h>
+<<<<<<< HEAD
 #include <net/udp_tunnel.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "cxgb4.h"
 #include "cxgb4_filter.h"
@@ -75,6 +78,7 @@
 #include "t4fw_api.h"
 #include "t4fw_version.h"
 #include "cxgb4_dcb.h"
+<<<<<<< HEAD
 #include "srq.h"
 #include "cxgb4_debugfs.h"
 #include "clip_tbl.h"
@@ -85,6 +89,14 @@
 #include "cxgb4_tc_flower.h"
 #include "cxgb4_ptp.h"
 #include "cxgb4_cudbg.h"
+=======
+#include "cxgb4_debugfs.h"
+#include "clip_tbl.h"
+#include "l2t.h"
+#include "sched.h"
+#include "cxgb4_tc_u32.h"
+#include "cxgb4_ptp.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 char cxgb4_driver_name[] = KBUILD_MODNAME;
 
@@ -103,9 +115,13 @@ const char cxgb4_driver_version[] = DRV_VERSION;
  */
 #define CH_PCI_DEVICE_ID_TABLE_DEFINE_BEGIN \
 	static const struct pci_device_id cxgb4_pci_tbl[] = {
+<<<<<<< HEAD
 #define CXGB4_UNIFIED_PF 0x4
 
 #define CH_PCI_DEVICE_ID_FUNCTION CXGB4_UNIFIED_PF
+=======
+#define CH_PCI_DEVICE_ID_FUNCTION 0x4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Include PCI Device IDs for both PF4 and PF0-3 so our PCI probe() routine is
  * called for both.
@@ -113,7 +129,11 @@ const char cxgb4_driver_version[] = DRV_VERSION;
 #define CH_PCI_DEVICE_ID_FUNCTION2 0x0
 
 #define CH_PCI_ID_TABLE_ENTRY(devid) \
+<<<<<<< HEAD
 		{PCI_VDEVICE(CHELSIO, (devid)), CXGB4_UNIFIED_PF}
+=======
+		{PCI_VDEVICE(CHELSIO, (devid)), 4}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CH_PCI_DEVICE_ID_TABLE_DEFINE_END \
 		{ 0, } \
@@ -211,9 +231,12 @@ static void link_report(struct net_device *dev)
 		case 40000:
 			s = "40Gbps";
 			break;
+<<<<<<< HEAD
 		case 50000:
 			s = "50Gbps";
 			break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 100000:
 			s = "100Gbps";
 			break;
@@ -267,7 +290,11 @@ static void dcb_tx_queue_prio_enable(struct net_device *dev, int enable)
 	}
 }
 
+<<<<<<< HEAD
 int cxgb4_dcb_enabled(const struct net_device *dev)
+=======
+static int cxgb4_dcb_enabled(const struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct port_info *pi = netdev_priv(dev);
 
@@ -290,7 +317,11 @@ void t4_os_link_changed(struct adapter *adapter, int port_id, int link_stat)
 		else {
 #ifdef CONFIG_CHELSIO_T4_DCB
 			if (cxgb4_dcb_enabled(dev)) {
+<<<<<<< HEAD
 				cxgb4_dcb_reset(dev);
+=======
+				cxgb4_dcb_state_init(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dcb_tx_queue_prio_enable(dev, false);
 			}
 #endif /* CONFIG_CHELSIO_T4_DCB */
@@ -301,14 +332,23 @@ void t4_os_link_changed(struct adapter *adapter, int port_id, int link_stat)
 	}
 }
 
+<<<<<<< HEAD
 void t4_os_portmod_changed(struct adapter *adap, int port_id)
+=======
+void t4_os_portmod_changed(const struct adapter *adap, int port_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const char *mod_str[] = {
 		NULL, "LR", "SR", "ER", "passive DA", "active DA", "LRM"
 	};
 
+<<<<<<< HEAD
 	struct net_device *dev = adap->port[port_id];
 	struct port_info *pi = netdev_priv(dev);
+=======
+	const struct net_device *dev = adap->port[port_id];
+	const struct port_info *pi = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pi->mod_type == FW_PORT_MOD_TYPE_NONE)
 		netdev_info(dev, "port module unplugged\n");
@@ -325,11 +365,14 @@ void t4_os_portmod_changed(struct adapter *adap, int port_id)
 	else
 		netdev_info(dev, "%s: unknown module type %d inserted\n",
 			    dev->name, pi->mod_type);
+<<<<<<< HEAD
 
 	/* If the interface is running, then we'll need any "sticky" Link
 	 * Parameters redone with a new Transceiver Module.
 	 */
 	pi->link_cfg.redo_l1cfg = netif_running(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int dbfifo_int_thresh = 10; /* 10 == 640 entry threshold */
@@ -465,7 +508,11 @@ static int link_start(struct net_device *dev)
 				    &pi->link_cfg);
 	if (ret == 0) {
 		local_bh_disable();
+<<<<<<< HEAD
 		ret = t4_enable_pi_params(pi->adapter, mb, pi, true,
+=======
+		ret = t4_enable_vi_params(pi->adapter, mb, pi->viid, true,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  true, CXGB4_DCB_ENABLED);
 		local_bh_enable();
 	}
@@ -554,9 +601,16 @@ static int fwevtq_handler(struct sge_rspq *q, const __be64 *rsp,
 
 			dev = q->adap->port[q->adap->chan_map[port]];
 			dcbxdis = (action == FW_PORT_ACTION_GET_PORT_INFO
+<<<<<<< HEAD
 			  ? !!(pcmd->u.info.dcbxdis_pkd & FW_PORT_CMD_DCBXDIS_F)
 			  : !!(be32_to_cpu(pcmd->u.info32.lstatus32_to_cbllen32)
 			       & FW_PORT_CMD_DCBXDIS32_F));
+=======
+				   ? !!(pcmd->u.info.dcbxdis_pkd &
+					FW_PORT_CMD_DCBXDIS_F)
+				   : !!(pcmd->u.info32.lstatus32_to_cbllen32 &
+					FW_PORT_CMD_DCBXDIS32_F));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			state_input = (dcbxdis
 				       ? CXGB4_DCB_INPUT_FW_DISABLED
 				       : CXGB4_DCB_INPUT_FW_ENABLED);
@@ -575,14 +629,18 @@ static int fwevtq_handler(struct sge_rspq *q, const __be64 *rsp,
 		const struct cpl_l2t_write_rpl *p = (void *)rsp;
 
 		do_l2t_write_rpl(q->adap, p);
+<<<<<<< HEAD
 	} else if (opcode == CPL_SMT_WRITE_RPL) {
 		const struct cpl_smt_write_rpl *p = (void *)rsp;
 
 		do_smt_write_rpl(q->adap, p);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (opcode == CPL_SET_TCB_RPL) {
 		const struct cpl_set_tcb_rpl *p = (void *)rsp;
 
 		filter_rpl(q->adap, p);
+<<<<<<< HEAD
 	} else if (opcode == CPL_ACT_OPEN_RPL) {
 		const struct cpl_act_open_rpl *p = (void *)rsp;
 
@@ -595,6 +653,8 @@ static int fwevtq_handler(struct sge_rspq *q, const __be64 *rsp,
 		const struct cpl_srq_table_rpl *p = (void *)rsp;
 
 		do_srq_table_rpl(q->adap, p);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 		dev_err(q->adap->pdev_dev,
 			"unexpected CPL %#x on FW event queue\n", opcode);
@@ -712,7 +772,11 @@ int cxgb4_write_rss(const struct port_info *pi, const u16 *queues)
 	const struct sge_eth_rxq *rxq;
 
 	rxq = &adapter->sge.ethrxq[pi->first_qset];
+<<<<<<< HEAD
 	rss = kmalloc_array(pi->rss_size, sizeof(u16), GFP_KERNEL);
+=======
+	rss = kmalloc(pi->rss_size * sizeof(u16), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rss)
 		return -ENOMEM;
 
@@ -923,14 +987,21 @@ static int setup_sge_queues(struct adapter *adap)
 		     QUEUENUMBER_V(s->ethrxq[0].rspq.abs_id));
 	return 0;
 freeout:
+<<<<<<< HEAD
 	dev_err(adap->pdev_dev, "Can't allocate queues, err=%d\n", -err);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	t4_free_sge_resources(adap);
 	return err;
 }
 
 static u16 cxgb_select_queue(struct net_device *dev, struct sk_buff *skb,
+<<<<<<< HEAD
 			     struct net_device *sb_dev,
 			     select_queue_fallback_t fallback)
+=======
+			     void *accel_priv, select_queue_fallback_t fallback)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int txq;
 
@@ -972,7 +1043,11 @@ static u16 cxgb_select_queue(struct net_device *dev, struct sk_buff *skb,
 		return txq;
 	}
 
+<<<<<<< HEAD
 	return fallback(dev, skb, NULL) % dev->real_num_tx_queues;
+=======
+	return fallback(dev, skb) % dev->real_num_tx_queues;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int closest_timer(const struct sge *s, int time)
@@ -1667,7 +1742,11 @@ void cxgb4_get_tcp_stats(struct pci_dev *pdev, struct tp_tcp_stats *v4,
 	struct adapter *adap = pci_get_drvdata(pdev);
 
 	spin_lock(&adap->stats_lock);
+<<<<<<< HEAD
 	t4_tp_get_tcp_stats(adap, v4, v6, false);
+=======
+	t4_tp_get_tcp_stats(adap, v4, v6);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&adap->stats_lock);
 }
 EXPORT_SYMBOL(cxgb4_get_tcp_stats);
@@ -1688,7 +1767,11 @@ int cxgb4_flush_eq_cache(struct net_device *dev)
 {
 	struct adapter *adap = netdev2adap(dev);
 
+<<<<<<< HEAD
 	return t4_sge_ctxt_flush(adap, adap->mbox, CTXT_EGRESS);
+=======
+	return t4_sge_ctxt_flush(adap, adap->mbox);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(cxgb4_flush_eq_cache);
 
@@ -1745,11 +1828,18 @@ EXPORT_SYMBOL(cxgb4_sync_txq_pidx);
 
 int cxgb4_read_tpte(struct net_device *dev, u32 stag, __be32 *tpte)
 {
+<<<<<<< HEAD
 	u32 edc0_size, edc1_size, mc0_size, mc1_size, size;
 	u32 edc0_end, edc1_end, mc0_end, mc1_end;
 	u32 offset, memtype, memaddr;
 	struct adapter *adap;
 	u32 hma_size = 0;
+=======
+	struct adapter *adap;
+	u32 offset, memtype, memaddr;
+	u32 edc0_size, edc1_size, mc0_size, mc1_size, size;
+	u32 edc0_end, edc1_end, mc0_end, mc1_end;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	adap = netdev2adap(dev);
@@ -1769,10 +1859,13 @@ int cxgb4_read_tpte(struct net_device *dev, u32 stag, __be32 *tpte)
 	size = t4_read_reg(adap, MA_EXT_MEMORY0_BAR_A);
 	mc0_size = EXT_MEM0_SIZE_G(size) << 20;
 
+<<<<<<< HEAD
 	if (t4_read_reg(adap, MA_TARGET_MEM_ENABLE_A) & HMA_MUX_F) {
 		size = t4_read_reg(adap, MA_EXT_MEMORY1_BAR_A);
 		hma_size = EXT_MEM1_SIZE_G(size) << 20;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edc0_end = edc0_size;
 	edc1_end = edc0_end + edc1_size;
 	mc0_end = edc1_end + mc0_size;
@@ -1784,10 +1877,14 @@ int cxgb4_read_tpte(struct net_device *dev, u32 stag, __be32 *tpte)
 		memtype = MEM_EDC1;
 		memaddr = offset - edc0_end;
 	} else {
+<<<<<<< HEAD
 		if (hma_size && (offset < (edc1_end + hma_size))) {
 			memtype = MEM_HMA;
 			memaddr = offset - edc1_end;
 		} else if (offset < mc0_end) {
+=======
+		if (offset < mc0_end) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			memtype = MEM_MC0;
 			memaddr = offset - edc1_end;
 		} else if (is_t5(adap->params.chip)) {
@@ -2281,8 +2378,11 @@ static int cxgb_up(struct adapter *adap)
 #if IS_ENABLED(CONFIG_IPV6)
 	update_clip(adap);
 #endif
+<<<<<<< HEAD
 	/* Initialize hash mac addr list*/
 	INIT_LIST_HEAD(&adap->mac_hlist);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 
  irq_err:
@@ -2304,6 +2404,10 @@ static void cxgb_down(struct adapter *adapter)
 
 	t4_sge_stop(adapter);
 	t4_free_sge_resources(adapter);
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adapter->flags &= ~FULL_INIT_DONE;
 }
 
@@ -2341,6 +2445,7 @@ static int cxgb_close(struct net_device *dev)
 {
 	struct port_info *pi = netdev_priv(dev);
 	struct adapter *adapter = pi->adapter;
+<<<<<<< HEAD
 	int ret;
 
 	netif_tx_stop_all_queues(dev);
@@ -2352,6 +2457,12 @@ static int cxgb_close(struct net_device *dev)
 	dcb_tx_queue_prio_enable(dev, false);
 #endif
 	return ret;
+=======
+
+	netif_tx_stop_all_queues(dev);
+	netif_carrier_off(dev);
+	return t4_enable_vi(adapter, adapter->pf, pi->viid, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int cxgb4_create_server_filter(const struct net_device *dev, unsigned int stid,
@@ -2628,7 +2739,11 @@ static int cxgb_change_mtu(struct net_device *dev, int new_mtu)
 }
 
 #ifdef CONFIG_PCI_IOV
+<<<<<<< HEAD
 static int cxgb4_mgmt_open(struct net_device *dev)
+=======
+static int dummy_open(struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Turn carrier off since we don't have to transmit anything on this
 	 * interface.
@@ -2638,6 +2753,7 @@ static int cxgb4_mgmt_open(struct net_device *dev)
 }
 
 /* Fill MAC address that will be assigned by the FW */
+<<<<<<< HEAD
 static void cxgb4_mgmt_fill_vf_station_mac_addr(struct adapter *adap)
 {
 	u8 hw_addr[ETH_ALEN], macaddr[ETH_ALEN];
@@ -2676,6 +2792,41 @@ static void cxgb4_mgmt_fill_vf_station_mac_addr(struct adapter *adap)
 }
 
 static int cxgb4_mgmt_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
+=======
+static void fill_vf_station_mac_addr(struct adapter *adap)
+{
+	unsigned int i;
+	u8 hw_addr[ETH_ALEN], macaddr[ETH_ALEN];
+	int err;
+	u8 *na;
+	u16 a, b;
+
+	err = t4_get_raw_vpd_params(adap, &adap->params.vpd);
+	if (!err) {
+		na = adap->params.vpd.na;
+		for (i = 0; i < ETH_ALEN; i++)
+			hw_addr[i] = (hex2val(na[2 * i + 0]) * 16 +
+				      hex2val(na[2 * i + 1]));
+		a = (hw_addr[0] << 8) | hw_addr[1];
+		b = (hw_addr[1] << 8) | hw_addr[2];
+		a ^= b;
+		a |= 0x0200;    /* locally assigned Ethernet MAC address */
+		a &= ~0x0100;   /* not a multicast Ethernet MAC address */
+		macaddr[0] = a >> 8;
+		macaddr[1] = a & 0xff;
+
+		for (i = 2; i < 5; i++)
+			macaddr[i] = hw_addr[i + 1];
+
+		for (i = 0; i < adap->num_vfs; i++) {
+			macaddr[5] = adap->pf * 16 + i;
+			ether_addr_copy(adap->vfinfo[i].vf_mac_addr, macaddr);
+		}
+	}
+}
+
+static int cxgb_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct port_info *pi = netdev_priv(dev);
 	struct adapter *adap = pi->adapter;
@@ -2697,6 +2848,7 @@ static int cxgb4_mgmt_set_vf_mac(struct net_device *dev, int vf, u8 *mac)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int cxgb4_mgmt_get_vf_config(struct net_device *dev,
 				    int vf, struct ifla_vf_info *ivi)
 {
@@ -2718,6 +2870,25 @@ static int cxgb4_mgmt_get_vf_config(struct net_device *dev,
 
 static int cxgb4_mgmt_get_phys_port_id(struct net_device *dev,
 				       struct netdev_phys_item_id *ppid)
+=======
+static int cxgb_get_vf_config(struct net_device *dev,
+			      int vf, struct ifla_vf_info *ivi)
+{
+	struct port_info *pi = netdev_priv(dev);
+	struct adapter *adap = pi->adapter;
+
+	if (vf >= adap->num_vfs)
+		return -EINVAL;
+	ivi->vf = vf;
+	ivi->max_tx_rate = adap->vfinfo[vf].tx_rate;
+	ivi->min_tx_rate = 0;
+	ether_addr_copy(ivi->mac, adap->vfinfo[vf].vf_mac_addr);
+	return 0;
+}
+
+static int cxgb_get_phys_port_id(struct net_device *dev,
+				 struct netdev_phys_item_id *ppid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct port_info *pi = netdev_priv(dev);
 	unsigned int phy_port_id;
@@ -2728,8 +2899,13 @@ static int cxgb4_mgmt_get_phys_port_id(struct net_device *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int cxgb4_mgmt_set_vf_rate(struct net_device *dev, int vf,
 				  int min_tx_rate, int max_tx_rate)
+=======
+static int cxgb_set_vf_rate(struct net_device *dev, int vf, int min_tx_rate,
+			    int max_tx_rate)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct port_info *pi = netdev_priv(dev);
 	struct adapter *adap = pi->adapter;
@@ -2808,6 +2984,7 @@ static int cxgb4_mgmt_set_vf_rate(struct net_device *dev, int vf,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int cxgb4_mgmt_set_vf_vlan(struct net_device *dev, int vf,
 				  u16 vlan, u8 qos, __be16 vlan_proto)
 {
@@ -2832,6 +3009,9 @@ static int cxgb4_mgmt_set_vf_vlan(struct net_device *dev, int vf,
 	return ret;
 }
 #endif /* CONFIG_PCI_IOV */
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int cxgb_set_mac_addr(struct net_device *dev, void *p)
 {
@@ -2893,6 +3073,7 @@ static int cxgb_set_tx_maxrate(struct net_device *dev, int index, u32 rate)
 	}
 
 	/* Convert from Mbps to Kbps */
+<<<<<<< HEAD
 	req_rate = rate * 1000;
 
 	/* Max rate is 100 Gbps */
@@ -2900,6 +3081,15 @@ static int cxgb_set_tx_maxrate(struct net_device *dev, int index, u32 rate)
 		dev_err(adap->pdev_dev,
 			"Invalid rate %u Mbps, Max rate is %u Mbps\n",
 			rate, SCHED_MAX_RATE_KBPS / 1000);
+=======
+	req_rate = rate << 10;
+
+	/* Max rate is 10 Gbps */
+	if (req_rate >= SCHED_MAX_RATE_KBPS) {
+		dev_err(adap->pdev_dev,
+			"Invalid rate %u Mbps, Max rate is %u Gbps\n",
+			rate, SCHED_MAX_RATE_KBPS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ERANGE;
 	}
 
@@ -2950,6 +3140,7 @@ static int cxgb_set_tx_maxrate(struct net_device *dev, int index, u32 rate)
 	return err;
 }
 
+<<<<<<< HEAD
 static int cxgb_setup_tc_flower(struct net_device *dev,
 				struct tc_cls_flower_offload *cls_flower)
 {
@@ -2968,6 +3159,15 @@ static int cxgb_setup_tc_flower(struct net_device *dev,
 static int cxgb_setup_tc_cls_u32(struct net_device *dev,
 				 struct tc_cls_u32_offload *cls_u32)
 {
+=======
+static int cxgb_setup_tc_cls_u32(struct net_device *dev,
+				 struct tc_cls_u32_offload *cls_u32)
+{
+	if (!is_classid_clsact_ingress(cls_u32->common.classid) ||
+	    cls_u32->common.chain_index)
+		return -EOPNOTSUPP;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (cls_u32->command) {
 	case TC_CLSU32_NEW_KNODE:
 	case TC_CLSU32_REPLACE_KNODE:
@@ -2979,10 +3179,16 @@ static int cxgb_setup_tc_cls_u32(struct net_device *dev,
 	}
 }
 
+<<<<<<< HEAD
 static int cxgb_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
 				  void *cb_priv)
 {
 	struct net_device *dev = cb_priv;
+=======
+static int cxgb_setup_tc(struct net_device *dev, enum tc_setup_type type,
+			 void *type_data)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct port_info *pi = netdev2pinfo(dev);
 	struct adapter *adap = netdev2adap(dev);
 
@@ -2993,6 +3199,7 @@ static int cxgb_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (!tc_cls_can_offload_and_chain0(dev, type_data))
 		return -EOPNOTSUPP;
 
@@ -3001,11 +3208,17 @@ static int cxgb_setup_tc_block_cb(enum tc_setup_type type, void *type_data,
 		return cxgb_setup_tc_cls_u32(dev, type_data);
 	case TC_SETUP_CLSFLOWER:
 		return cxgb_setup_tc_flower(dev, type_data);
+=======
+	switch (type) {
+	case TC_SETUP_CLSU32:
+		return cxgb_setup_tc_cls_u32(dev, type_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EOPNOTSUPP;
 	}
 }
 
+<<<<<<< HEAD
 static int cxgb_setup_tc_block(struct net_device *dev,
 			       struct tc_block_offload *f)
 {
@@ -3207,6 +3420,8 @@ static netdev_features_t cxgb_features_check(struct sk_buff *skb,
 	return features & ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static netdev_features_t cxgb_fix_features(struct net_device *dev,
 					   netdev_features_t features)
 {
@@ -3220,7 +3435,11 @@ static netdev_features_t cxgb_fix_features(struct net_device *dev,
 static const struct net_device_ops cxgb4_netdev_ops = {
 	.ndo_open             = cxgb_open,
 	.ndo_stop             = cxgb_close,
+<<<<<<< HEAD
 	.ndo_start_xmit       = t4_start_xmit,
+=======
+	.ndo_start_xmit       = t4_eth_xmit,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_select_queue     =	cxgb_select_queue,
 	.ndo_get_stats64      = cxgb_get_stats,
 	.ndo_set_rx_mode      = cxgb_set_rxmode,
@@ -3238,14 +3457,18 @@ static const struct net_device_ops cxgb4_netdev_ops = {
 #endif /* CONFIG_CHELSIO_T4_FCOE */
 	.ndo_set_tx_maxrate   = cxgb_set_tx_maxrate,
 	.ndo_setup_tc         = cxgb_setup_tc,
+<<<<<<< HEAD
 	.ndo_udp_tunnel_add   = cxgb_add_udp_tunnel,
 	.ndo_udp_tunnel_del   = cxgb_del_udp_tunnel,
 	.ndo_features_check   = cxgb_features_check,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_fix_features     = cxgb_fix_features,
 };
 
 #ifdef CONFIG_PCI_IOV
 static const struct net_device_ops cxgb4_mgmt_netdev_ops = {
+<<<<<<< HEAD
 	.ndo_open             = cxgb4_mgmt_open,
 	.ndo_set_vf_mac       = cxgb4_mgmt_set_vf_mac,
 	.ndo_get_vf_config    = cxgb4_mgmt_get_vf_config,
@@ -3257,6 +3480,17 @@ static const struct net_device_ops cxgb4_mgmt_netdev_ops = {
 
 static void cxgb4_mgmt_get_drvinfo(struct net_device *dev,
 				   struct ethtool_drvinfo *info)
+=======
+	.ndo_open             = dummy_open,
+	.ndo_set_vf_mac       = cxgb_set_vf_mac,
+	.ndo_get_vf_config    = cxgb_get_vf_config,
+	.ndo_set_vf_rate      = cxgb_set_vf_rate,
+	.ndo_get_phys_port_id = cxgb_get_phys_port_id,
+};
+#endif
+
+static void get_drvinfo(struct net_device *dev, struct ethtool_drvinfo *info)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adapter *adapter = netdev2adap(dev);
 
@@ -3268,6 +3502,7 @@ static void cxgb4_mgmt_get_drvinfo(struct net_device *dev,
 }
 
 static const struct ethtool_ops cxgb4_mgmt_ethtool_ops = {
+<<<<<<< HEAD
 	.get_drvinfo       = cxgb4_mgmt_get_drvinfo,
 };
 
@@ -3279,6 +3514,11 @@ static void notify_fatal_err(struct work_struct *work)
 	notify_ulds(adap, CXGB4_STATE_FATAL_ERROR);
 }
 
+=======
+	.get_drvinfo       = get_drvinfo,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void t4_fatal_err(struct adapter *adap)
 {
 	int port;
@@ -3303,7 +3543,10 @@ void t4_fatal_err(struct adapter *adap)
 		netif_carrier_off(dev);
 	}
 	dev_alert(adap->pdev_dev, "encountered fatal error, adapter stopped\n");
+<<<<<<< HEAD
 	queue_work(adap->workq, &adap->fatal_err_notify_task);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void setup_memwin(struct adapter *adap)
@@ -3334,6 +3577,7 @@ static void setup_memwin_rdma(struct adapter *adap)
 	}
 }
 
+<<<<<<< HEAD
 /* HMA Definitions */
 
 /* The maximum number of address that can be send in a single FW cmd */
@@ -3534,11 +3778,14 @@ free_hma:
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int adap_init1(struct adapter *adap, struct fw_caps_config_cmd *c)
 {
 	u32 v;
 	int ret;
 
+<<<<<<< HEAD
 	/* Now that we've successfully configured and initialized the adapter
 	 * can ask the Firmware what resources it has provisioned for us.
 	 */
@@ -3549,6 +3796,8 @@ static int adap_init1(struct adapter *adap, struct fw_caps_config_cmd *c)
 		return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* get device capabilities */
 	memset(c, 0, sizeof(*c));
 	c->op_to_write = htonl(FW_CMD_OP_V(FW_CAPS_CONFIG_CMD) |
@@ -3997,12 +4246,15 @@ static int adap_init0_config(struct adapter *adapter, int reset)
 	if (ret < 0)
 		goto bye;
 
+<<<<<<< HEAD
 	/* We will proceed even if HMA init fails. */
 	ret = adap_config_hma(adapter);
 	if (ret)
 		dev_err(adapter->pdev_dev,
 			"HMA configuration failed with error %d\n", ret);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * And finally tell the firmware to initialize itself using the
 	 * parameters from the Configuration File.
@@ -4154,10 +4406,13 @@ static int adap_init0(struct adapter *adap)
 		 * card
 		 */
 		card_fw = kvzalloc(sizeof(*card_fw), GFP_KERNEL);
+<<<<<<< HEAD
 		if (!card_fw) {
 			ret = -ENOMEM;
 			goto bye;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Get FW from from /lib/firmware/ */
 		ret = request_firmware(&fw, fw_info->fw_mod_name,
@@ -4183,15 +4438,47 @@ static int adap_init0(struct adapter *adap)
 			goto bye;
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Grab VPD parameters.  This should be done after we establish a
+	 * connection to the firmware since some of the VPD parameters
+	 * (notably the Core Clock frequency) are retrieved via requests to
+	 * the firmware.  On the other hand, we need these fairly early on
+	 * so we do this right after getting ahold of the firmware.
+	 */
+	ret = t4_get_vpd_params(adap, &adap->params.vpd);
+	if (ret < 0)
+		goto bye;
+
+	/*
+	 * Find out what ports are available to us.  Note that we need to do
+	 * this before calling adap_init0_no_config() since it needs nports
+	 * and portvec ...
+	 */
+	v =
+	    FW_PARAMS_MNEM_V(FW_PARAMS_MNEM_DEV) |
+	    FW_PARAMS_PARAM_X_V(FW_PARAMS_PARAM_DEV_PORTVEC);
+	ret = t4_query_params(adap, adap->mbox, adap->pf, 0, 1, &v, &port_vec);
+	if (ret < 0)
+		goto bye;
+
+	adap->params.nports = hweight32(port_vec);
+	adap->params.portvec = port_vec;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If the firmware is initialized already, emit a simply note to that
 	 * effect. Otherwise, it's time to try initializing the adapter.
 	 */
 	if (state == DEV_STATE_INIT) {
+<<<<<<< HEAD
 		ret = adap_config_hma(adap);
 		if (ret)
 			dev_err(adap->pdev_dev,
 				"HMA configuration failed with error %d\n",
 				ret);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(adap->pdev_dev, "Coming up as %s: "\
 			 "Adapter already initialized\n",
 			 adap->flags & MASTER_PF ? "MASTER" : "SLAVE");
@@ -4233,6 +4520,7 @@ static int adap_init0(struct adapter *adap)
 		}
 	}
 
+<<<<<<< HEAD
 	/* Now that we've successfully configured and initialized the adapter
 	 * (or found it already initialized), we can ask the Firmware what
 	 * resources it has provisioned for us.
@@ -4272,6 +4560,8 @@ static int adap_init0(struct adapter *adap)
 	adap->params.nports = hweight32(port_vec);
 	adap->params.portvec = port_vec;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Give the SGE code a chance to pull in anything that it needs ...
 	 * Note that this must be called after we retrieve our VPD parameters
 	 * in order to know how to convert core ticks to seconds, etc.
@@ -4312,6 +4602,7 @@ static int adap_init0(struct adapter *adap)
 	adap->tids.nftids = val[4] - val[3] + 1;
 	adap->sge.ingr_start = val[5];
 
+<<<<<<< HEAD
 	if (CHELSIO_CHIP_VERSION(adap->params.chip) > CHELSIO_T5) {
 		/* Read the raw mps entries. In T6, the last 2 tcam entries
 		 * are reserved for raw mac addresses (rawf = 2, one per port).
@@ -4326,6 +4617,8 @@ static int adap_init0(struct adapter *adap)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* qids (ingress/egress) returned from firmware can be anywhere
 	 * in the range from EQ(IQFLINT)_START to EQ(IQFLINT)_END.
 	 * Hence driver needs to allocate memory for this range to
@@ -4437,6 +4730,7 @@ static int adap_init0(struct adapter *adap)
 			      1, params, val);
 	adap->params.fr_nsmr_tpte_wr_support = (ret == 0 && val[0] != 0);
 
+<<<<<<< HEAD
 	/* See if FW supports FW_FILTER2 work request */
 	if (is_t4(adap->params.chip)) {
 		adap->params.filter2_wr_support = 0;
@@ -4447,6 +4741,8 @@ static int adap_init0(struct adapter *adap)
 		adap->params.filter2_wr_support = (ret == 0 && val[0] != 0);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Get device capabilities so we can determine what resources we need
 	 * to manage.
@@ -4460,8 +4756,12 @@ static int adap_init0(struct adapter *adap)
 	if (ret < 0)
 		goto bye;
 
+<<<<<<< HEAD
 	if (caps_cmd.ofldcaps ||
 	    (caps_cmd.niccaps & htons(FW_CAPS_CONFIG_NIC_HASHFILTER))) {
+=======
+	if (caps_cmd.ofldcaps) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* query offload-related parameters */
 		params[0] = FW_PARAM_DEV(NTID);
 		params[1] = FW_PARAM_PFVF(SERVER_START);
@@ -4498,6 +4798,7 @@ static int adap_init0(struct adapter *adap)
 		adap->vres.ddp.size = val[4] - val[3] + 1;
 		adap->params.ofldq_wr_cred = val[5];
 
+<<<<<<< HEAD
 		if (caps_cmd.niccaps & htons(FW_CAPS_CONFIG_NIC_HASHFILTER)) {
 			ret = init_hash_filter(adap);
 			if (ret < 0)
@@ -4506,6 +4807,10 @@ static int adap_init0(struct adapter *adap)
 			adap->params.offload = 1;
 			adap->num_ofld_uld += 1;
 		}
+=======
+		adap->params.offload = 1;
+		adap->num_ofld_uld += 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (caps_cmd.rdmacaps) {
 		params[0] = FW_PARAM_PFVF(STAG_START);
@@ -4525,6 +4830,7 @@ static int adap_init0(struct adapter *adap)
 		adap->vres.pbl.start = val[4];
 		adap->vres.pbl.size = val[5] - val[4] + 1;
 
+<<<<<<< HEAD
 		params[0] = FW_PARAM_PFVF(SRQ_START);
 		params[1] = FW_PARAM_PFVF(SRQ_END);
 		ret = t4_query_params(adap, adap->mbox, adap->pf, 0, 2,
@@ -4539,6 +4845,8 @@ static int adap_init0(struct adapter *adap)
 				dev_warn(&adap->pdev->dev, "could not allocate SRQ, continuing\n");
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		params[0] = FW_PARAM_PFVF(SQRQ_START);
 		params[1] = FW_PARAM_PFVF(SQRQ_END);
 		params[2] = FW_PARAM_PFVF(CQ_START);
@@ -4572,6 +4880,7 @@ static int adap_init0(struct adapter *adap)
 			 "max_ordird_qp %d max_ird_adapter %d\n",
 			 adap->params.max_ordird_qp,
 			 adap->params.max_ird_adapter);
+<<<<<<< HEAD
 
 		/* Enable write_with_immediate if FW supports it */
 		params[0] = FW_PARAM_DEV(RDMA_WRITE_WITH_IMM);
@@ -4584,6 +4893,8 @@ static int adap_init0(struct adapter *adap)
 		ret = t4_query_params(adap, adap->mbox, adap->pf, 0, 1, params,
 				      val);
 		adap->params.write_cmpl_support = (ret == 0 && val[0] != 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adap->num_ofld_uld += 2;
 	}
 	if (caps_cmd.iscsicaps) {
@@ -4599,6 +4910,7 @@ static int adap_init0(struct adapter *adap)
 		adap->num_ofld_uld += 2;
 	}
 	if (caps_cmd.cryptocaps) {
+<<<<<<< HEAD
 		if (ntohs(caps_cmd.cryptocaps) &
 		    FW_CAPS_CONFIG_CRYPTO_LOOKASIDE) {
 			params[0] = FW_PARAM_PFVF(NCRYPTO_LOOKASIDE);
@@ -4625,6 +4937,20 @@ static int adap_init0(struct adapter *adap)
 			adap->num_uld += 1;
 		}
 		adap->params.crypto = ntohs(caps_cmd.cryptocaps);
+=======
+		/* Should query params here...TODO */
+		params[0] = FW_PARAM_PFVF(NCRYPTO_LOOKASIDE);
+		ret = t4_query_params(adap, adap->mbox, adap->pf, 0, 2,
+				      params, val);
+		if (ret < 0) {
+			if (ret != -EINVAL)
+				goto bye;
+		} else {
+			adap->vres.ncrypto_fc = val[0];
+		}
+		adap->params.crypto |= ULP_CRYPTO_LOOKASIDE;
+		adap->num_uld += 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #undef FW_PARAM_PFVF
 #undef FW_PARAM_DEV
@@ -4666,7 +4992,11 @@ static int adap_init0(struct adapter *adap)
 	}
 	t4_init_sge_params(adap);
 	adap->flags |= FW_OK;
+<<<<<<< HEAD
 	t4_init_tp_params(adap, true);
+=======
+	t4_init_tp_params(adap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 	/*
@@ -4675,7 +5005,10 @@ static int adap_init0(struct adapter *adap)
 	 * happened to HW/FW, stop issuing commands.
 	 */
 bye:
+<<<<<<< HEAD
 	adap_free_hma_mem(adap);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(adap->sge.egr_map);
 	kfree(adap->sge.ingr_map);
 	kfree(adap->sge.starving_fl);
@@ -4823,12 +5156,19 @@ static inline bool is_x_10g_port(const struct link_config *lc)
  * of ports we found and the number of available CPUs.  Most settings can be
  * modified by the admin prior to actual use.
  */
+<<<<<<< HEAD
 static int cfg_queues(struct adapter *adap)
 {
 	struct sge *s = &adap->sge;
 	int i, n10g = 0, qidx = 0;
 	int niqflint, neq, avail_eth_qsets;
 	int max_eth_qsets = 32;
+=======
+static void cfg_queues(struct adapter *adap)
+{
+	struct sge *s = &adap->sge;
+	int i = 0, n10g = 0, qidx = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef CONFIG_CHELSIO_T4_DCB
 	int q10g = 0;
 #endif
@@ -4840,6 +5180,7 @@ static int cfg_queues(struct adapter *adap)
 		adap->params.crypto = 0;
 	}
 
+<<<<<<< HEAD
 	/* Calculate the number of Ethernet Queue Sets available based on
 	 * resources provisioned for us.  We always have an Asynchronous
 	 * Firmware Event Ingress Queue.  If we're operating in MSI or Legacy
@@ -4871,15 +5212,25 @@ static int cfg_queues(struct adapter *adap)
 	for_each_port(adap, i)
 		n10g += is_x_10g_port(&adap2pinfo(adap, i)->link_cfg);
 
+=======
+	n10g += is_x_10g_port(&adap2pinfo(adap, i)->link_cfg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_CHELSIO_T4_DCB
 	/* For Data Center Bridging support we need to be able to support up
 	 * to 8 Traffic Priorities; each of which will be assigned to its
 	 * own TX Queue in order to prevent Head-Of-Line Blocking.
 	 */
+<<<<<<< HEAD
 	if (adap->params.nports * 8 > avail_eth_qsets) {
 		dev_err(adap->pdev_dev, "DCB avail_eth_qsets=%d < %d!\n",
 			avail_eth_qsets, adap->params.nports * 8);
 		return -ENOMEM;
+=======
+	if (adap->params.nports * 8 > MAX_ETH_QSETS) {
+		dev_err(adap->pdev_dev, "MAX_ETH_QSETS=%d < %d!\n",
+			MAX_ETH_QSETS, adap->params.nports * 8);
+		BUG_ON(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for_each_port(adap, i) {
@@ -4895,7 +5246,11 @@ static int cfg_queues(struct adapter *adap)
 	 * per 10G port.
 	 */
 	if (n10g)
+<<<<<<< HEAD
 		q10g = (avail_eth_qsets - (adap->params.nports - n10g)) / n10g;
+=======
+		q10g = (MAX_ETH_QSETS - (adap->params.nports - n10g)) / n10g;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (q10g > netif_get_num_default_rss_queues())
 		q10g = netif_get_num_default_rss_queues();
 
@@ -4946,8 +5301,11 @@ static int cfg_queues(struct adapter *adap)
 
 	init_rspq(adap, &s->fw_evtq, 0, 1, 1024, 64);
 	init_rspq(adap, &s->intrq, 0, 1, 512, 64);
+<<<<<<< HEAD
 
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -5032,8 +5390,13 @@ static int enable_msix(struct adapter *adap)
 		max_ingq += (MAX_OFLD_QSETS * adap->num_uld);
 	if (is_offload(adap))
 		max_ingq += (MAX_OFLD_QSETS * adap->num_ofld_uld);
+<<<<<<< HEAD
 	entries = kmalloc_array(max_ingq + 1, sizeof(*entries),
 				GFP_KERNEL);
+=======
+	entries = kmalloc(sizeof(*entries) * (max_ingq + 1),
+			  GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!entries)
 		return -ENOMEM;
 
@@ -5126,6 +5489,82 @@ static int init_rss(struct adapter *adap)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int cxgb4_get_pcie_dev_link_caps(struct adapter *adap,
+					enum pci_bus_speed *speed,
+					enum pcie_link_width *width)
+{
+	u32 lnkcap1, lnkcap2;
+	int err1, err2;
+
+#define  PCIE_MLW_CAP_SHIFT 4   /* start of MLW mask in link capabilities */
+
+	*speed = PCI_SPEED_UNKNOWN;
+	*width = PCIE_LNK_WIDTH_UNKNOWN;
+
+	err1 = pcie_capability_read_dword(adap->pdev, PCI_EXP_LNKCAP,
+					  &lnkcap1);
+	err2 = pcie_capability_read_dword(adap->pdev, PCI_EXP_LNKCAP2,
+					  &lnkcap2);
+	if (!err2 && lnkcap2) { /* PCIe r3.0-compliant */
+		if (lnkcap2 & PCI_EXP_LNKCAP2_SLS_8_0GB)
+			*speed = PCIE_SPEED_8_0GT;
+		else if (lnkcap2 & PCI_EXP_LNKCAP2_SLS_5_0GB)
+			*speed = PCIE_SPEED_5_0GT;
+		else if (lnkcap2 & PCI_EXP_LNKCAP2_SLS_2_5GB)
+			*speed = PCIE_SPEED_2_5GT;
+	}
+	if (!err1) {
+		*width = (lnkcap1 & PCI_EXP_LNKCAP_MLW) >> PCIE_MLW_CAP_SHIFT;
+		if (!lnkcap2) { /* pre-r3.0 */
+			if (lnkcap1 & PCI_EXP_LNKCAP_SLS_5_0GB)
+				*speed = PCIE_SPEED_5_0GT;
+			else if (lnkcap1 & PCI_EXP_LNKCAP_SLS_2_5GB)
+				*speed = PCIE_SPEED_2_5GT;
+		}
+	}
+
+	if (*speed == PCI_SPEED_UNKNOWN || *width == PCIE_LNK_WIDTH_UNKNOWN)
+		return err1 ? err1 : err2 ? err2 : -EINVAL;
+	return 0;
+}
+
+static void cxgb4_check_pcie_caps(struct adapter *adap)
+{
+	enum pcie_link_width width, width_cap;
+	enum pci_bus_speed speed, speed_cap;
+
+#define PCIE_SPEED_STR(speed) \
+	(speed == PCIE_SPEED_8_0GT ? "8.0GT/s" : \
+	 speed == PCIE_SPEED_5_0GT ? "5.0GT/s" : \
+	 speed == PCIE_SPEED_2_5GT ? "2.5GT/s" : \
+	 "Unknown")
+
+	if (cxgb4_get_pcie_dev_link_caps(adap, &speed_cap, &width_cap)) {
+		dev_warn(adap->pdev_dev,
+			 "Unable to determine PCIe device BW capabilities\n");
+		return;
+	}
+
+	if (pcie_get_minimum_link(adap->pdev, &speed, &width) ||
+	    speed == PCI_SPEED_UNKNOWN || width == PCIE_LNK_WIDTH_UNKNOWN) {
+		dev_warn(adap->pdev_dev,
+			 "Unable to determine PCI Express bandwidth.\n");
+		return;
+	}
+
+	dev_info(adap->pdev_dev, "PCIe link speed is %s, device supports %s\n",
+		 PCIE_SPEED_STR(speed), PCIE_SPEED_STR(speed_cap));
+	dev_info(adap->pdev_dev, "PCIe link width is x%d, device supports x%d\n",
+		 width, width_cap);
+	if (speed < speed_cap || width < width_cap)
+		dev_info(adap->pdev_dev,
+			 "A slot with more lanes and/or higher speed is "
+			 "suggested for optimal performance.\n");
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Dump basic information about the adapter */
 static void print_adapter_info(struct adapter *adapter)
 {
@@ -5144,9 +5583,23 @@ static void print_port_info(const struct net_device *dev)
 {
 	char buf[80];
 	char *bufp = buf;
+<<<<<<< HEAD
 	const struct port_info *pi = netdev_priv(dev);
 	const struct adapter *adap = pi->adapter;
 
+=======
+	const char *spd = "";
+	const struct port_info *pi = netdev_priv(dev);
+	const struct adapter *adap = pi->adapter;
+
+	if (adap->params.pci.speed == PCI_EXP_LNKSTA_CLS_2_5GB)
+		spd = " 2.5 GT/s";
+	else if (adap->params.pci.speed == PCI_EXP_LNKSTA_CLS_5_0GB)
+		spd = " 5 GT/s";
+	else if (adap->params.pci.speed == PCI_EXP_LNKSTA_CLS_8_0GB)
+		spd = " 8 GT/s";
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pi->link_cfg.pcaps & FW_PORT_CAP32_SPEED_100M)
 		bufp += sprintf(bufp, "100M/");
 	if (pi->link_cfg.pcaps & FW_PORT_CAP32_SPEED_1G)
@@ -5184,6 +5637,7 @@ static void free_some_resources(struct adapter *adapter)
 {
 	unsigned int i;
 
+<<<<<<< HEAD
 	kvfree(adapter->mps_encap);
 	kvfree(adapter->smt);
 	kvfree(adapter->l2t);
@@ -5191,6 +5645,11 @@ static void free_some_resources(struct adapter *adapter)
 	t4_cleanup_sched(adapter);
 	kvfree(adapter->tids.tid_tab);
 	cxgb4_cleanup_tc_flower(adapter);
+=======
+	kvfree(adapter->l2t);
+	t4_cleanup_sched(adapter);
+	kvfree(adapter->tids.tid_tab);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cxgb4_cleanup_tc_u32(adapter);
 	kfree(adapter->sge.egr_map);
 	kfree(adapter->sge.ingr_map);
@@ -5220,11 +5679,22 @@ static void free_some_resources(struct adapter *adapter)
 		   NETIF_F_IPV6_CSUM | NETIF_F_HIGHDMA)
 #define SEGMENT_SIZE 128
 
+<<<<<<< HEAD
 static int t4_get_chip_type(struct adapter *adap, int ver)
 {
 	u32 pl_rev = REV_G(t4_read_reg(adap, PL_REV_A));
 
 	switch (ver) {
+=======
+static int get_chip_type(struct pci_dev *pdev, u32 pl_rev)
+{
+	u16 device_id;
+
+	/* Retrieve adapter's device ID */
+	pci_read_config_word(pdev, PCI_DEVICE_ID, &device_id);
+
+	switch (device_id >> 12) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CHELSIO_T4:
 		return CHELSIO_CHIP_CODE(CHELSIO_T4, pl_rev);
 	case CHELSIO_T5:
@@ -5232,13 +5702,22 @@ static int t4_get_chip_type(struct adapter *adap, int ver)
 	case CHELSIO_T6:
 		return CHELSIO_CHIP_CODE(CHELSIO_T6, pl_rev);
 	default:
+<<<<<<< HEAD
 		break;
+=======
+		dev_err(&pdev->dev, "Device %d is not supported\n",
+			device_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return -EINVAL;
 }
 
 #ifdef CONFIG_PCI_IOV
+<<<<<<< HEAD
 static void cxgb4_mgmt_setup(struct net_device *dev)
+=======
+static void dummy_setup(struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	dev->type = ARPHRD_NONE;
 	dev->mtu = 0;
@@ -5253,6 +5732,41 @@ static void cxgb4_mgmt_setup(struct net_device *dev)
 	dev->ethtool_ops = &cxgb4_mgmt_ethtool_ops;
 }
 
+<<<<<<< HEAD
+=======
+static int config_mgmt_dev(struct pci_dev *pdev)
+{
+	struct adapter *adap = pci_get_drvdata(pdev);
+	struct net_device *netdev;
+	struct port_info *pi;
+	char name[IFNAMSIZ];
+	int err;
+
+	snprintf(name, IFNAMSIZ, "mgmtpf%d%d", adap->adap_idx, adap->pf);
+	netdev = alloc_netdev(sizeof(struct port_info), name, NET_NAME_UNKNOWN,
+			      dummy_setup);
+	if (!netdev)
+		return -ENOMEM;
+
+	pi = netdev_priv(netdev);
+	pi->adapter = adap;
+	pi->tx_chan = adap->pf % adap->params.nports;
+	SET_NETDEV_DEV(netdev, &pdev->dev);
+
+	adap->port[0] = netdev;
+	pi->port_id = 0;
+
+	err = register_netdev(adap->port[0]);
+	if (err) {
+		pr_info("Unable to register VF mgmt netdev %s\n", name);
+		free_netdev(adap->port[0]);
+		adap->port[0] = NULL;
+		return err;
+	}
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cxgb4_iov_configure(struct pci_dev *pdev, int num_vfs)
 {
 	struct adapter *adap = pci_get_drvdata(pdev);
@@ -5261,9 +5775,18 @@ static int cxgb4_iov_configure(struct pci_dev *pdev, int num_vfs)
 	u32 pcie_fw;
 
 	pcie_fw = readl(adap->regs + PCIE_FW_A);
+<<<<<<< HEAD
 	/* Check if fw is initialized */
 	if (!(pcie_fw & PCIE_FW_INIT_F)) {
 		dev_warn(&pdev->dev, "Device not initialized\n");
+=======
+	/* Check if cxgb4 is the MASTER and fw is initialized */
+	if (!(pcie_fw & PCIE_FW_INIT_F) ||
+	    !(pcie_fw & PCIE_FW_MASTER_VLD_F) ||
+	    PCIE_FW_MASTER_G(pcie_fw) != 4) {
+		dev_warn(&pdev->dev,
+			 "cxgb4 driver needs to be MASTER to support SRIOV\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 	}
 
@@ -5273,6 +5796,7 @@ static int cxgb4_iov_configure(struct pci_dev *pdev, int num_vfs)
 	if (current_vfs && pci_vfs_assigned(pdev)) {
 		dev_err(&pdev->dev,
 			"Cannot modify SR-IOV while VFs are assigned\n");
+<<<<<<< HEAD
 		return current_vfs;
 	}
 	/* Note that the upper-level code ensures that we're never called with
@@ -5414,6 +5938,63 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	u16 device_id;
 	int i, err;
 	u32 whoami;
+=======
+		num_vfs = current_vfs;
+		return num_vfs;
+	}
+
+	/* Disable SRIOV when zero is passed.
+	 * One needs to disable SRIOV before modifying it, else
+	 * stack throws the below warning:
+	 * " 'n' VFs already enabled. Disable before enabling 'm' VFs."
+	 */
+	if (!num_vfs) {
+		pci_disable_sriov(pdev);
+		if (adap->port[0]) {
+			unregister_netdev(adap->port[0]);
+			adap->port[0] = NULL;
+		}
+		/* free VF resources */
+		kfree(adap->vfinfo);
+		adap->vfinfo = NULL;
+		adap->num_vfs = 0;
+		return num_vfs;
+	}
+
+	if (num_vfs != current_vfs) {
+		err = pci_enable_sriov(pdev, num_vfs);
+		if (err)
+			return err;
+
+		adap->num_vfs = num_vfs;
+		err = config_mgmt_dev(pdev);
+		if (err)
+			return err;
+	}
+
+	adap->vfinfo = kcalloc(adap->num_vfs,
+			       sizeof(struct vf_info), GFP_KERNEL);
+	if (adap->vfinfo)
+		fill_vf_station_mac_addr(adap);
+	return num_vfs;
+}
+#endif
+
+static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+{
+	int func, i, err, s_qpp, qpp, num_seg;
+	struct port_info *pi;
+	bool highdma = false;
+	struct adapter *adapter = NULL;
+	struct net_device *netdev;
+	void __iomem *regs;
+	u32 whoami, pl_rev;
+	enum chip_type chip;
+	static int adap_idx = 1;
+#ifdef CONFIG_PCI_IOV
+	u32 v, port_vec;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk_once(KERN_INFO "%s - version %s\n", DRV_DESC, DRV_VERSION);
 
@@ -5437,6 +6018,7 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		goto out_disable_device;
 	}
 
+<<<<<<< HEAD
 	adapter = kzalloc(sizeof(*adapter), GFP_KERNEL);
 	if (!adapter) {
 		err = -ENOMEM;
@@ -5486,6 +6068,25 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		pci_disable_device(pdev);
 		pci_save_state(pdev);        /* to restore SR-IOV later */
 		return 0;
+=======
+	err = t4_wait_dev_ready(regs);
+	if (err < 0)
+		goto out_unmap_bar0;
+
+	/* We control everything through one PF */
+	whoami = readl(regs + PL_WHOAMI_A);
+	pl_rev = REV_G(readl(regs + PL_REV_A));
+	chip = get_chip_type(pdev, pl_rev);
+	func = CHELSIO_CHIP_VERSION(chip) <= CHELSIO_T5 ?
+		SOURCEPF_G(whoami) : T6_SOURCEPF_G(whoami);
+	if (func != ent->driver_data) {
+#ifndef CONFIG_PCI_IOV
+		iounmap(regs);
+#endif
+		pci_disable_device(pdev);
+		pci_save_state(pdev);        /* to restore SR-IOV later */
+		goto sriov;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!pci_set_dma_mask(pdev, DMA_BIT_MASK(64))) {
@@ -5494,28 +6095,70 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		if (err) {
 			dev_err(&pdev->dev, "unable to obtain 64-bit DMA for "
 				"coherent allocations\n");
+<<<<<<< HEAD
 			goto out_free_adapter;
+=======
+			goto out_unmap_bar0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		err = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
 		if (err) {
 			dev_err(&pdev->dev, "no usable DMA configuration\n");
+<<<<<<< HEAD
 			goto out_free_adapter;
+=======
+			goto out_unmap_bar0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	pci_enable_pcie_error_reporting(pdev);
 	pci_set_master(pdev);
 	pci_save_state(pdev);
+<<<<<<< HEAD
 	adap_idx++;
+=======
+
+	adapter = kzalloc(sizeof(*adapter), GFP_KERNEL);
+	if (!adapter) {
+		err = -ENOMEM;
+		goto out_unmap_bar0;
+	}
+	adap_idx++;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adapter->workq = create_singlethread_workqueue("cxgb4");
 	if (!adapter->workq) {
 		err = -ENOMEM;
 		goto out_free_adapter;
 	}
 
+<<<<<<< HEAD
 	/* PCI device has been enabled */
 	adapter->flags |= DEV_ENABLED;
+=======
+	adapter->mbox_log = kzalloc(sizeof(*adapter->mbox_log) +
+				    (sizeof(struct mbox_cmd) *
+				     T4_OS_LOG_MBOX_CMDS),
+				    GFP_KERNEL);
+	if (!adapter->mbox_log) {
+		err = -ENOMEM;
+		goto out_free_adapter;
+	}
+	adapter->mbox_log->size = T4_OS_LOG_MBOX_CMDS;
+
+	/* PCI device has been enabled */
+	adapter->flags |= DEV_ENABLED;
+
+	adapter->regs = regs;
+	adapter->pdev = pdev;
+	adapter->pdev_dev = &pdev->dev;
+	adapter->name = pci_name(pdev);
+	adapter->mbox = func;
+	adapter->pf = func;
+	adapter->msg_enable = DFLT_MSG_ENABLE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(adapter->chan_map, 0xff, sizeof(adapter->chan_map));
 
 	/* If possible, we use PCIe Relaxed Ordering Attribute to deliver
@@ -5538,16 +6181,26 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	spin_lock_init(&adapter->stats_lock);
 	spin_lock_init(&adapter->tid_release_lock);
 	spin_lock_init(&adapter->win0_lock);
+<<<<<<< HEAD
+=======
+	spin_lock_init(&adapter->mbox_lock);
+
+	INIT_LIST_HEAD(&adapter->mlist.list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&adapter->tid_release_task, process_tid_release_list);
 	INIT_WORK(&adapter->db_full_task, process_db_full);
 	INIT_WORK(&adapter->db_drop_task, process_db_drop);
+<<<<<<< HEAD
 	INIT_WORK(&adapter->fatal_err_notify_task, notify_fatal_err);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = t4_prep_adapter(adapter);
 	if (err)
 		goto out_free_adapter;
 
+<<<<<<< HEAD
 	if (is_kdump_kernel()) {
 		/* Collect hardware state and append to /proc/vmcore */
 		err = cxgb4_cudbg_vmcore_add_dump(adapter);
@@ -5558,6 +6211,8 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 			err = 0;
 		}
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!is_t4(adapter->params.chip)) {
 		s_qpp = (QUEUESPERPAGEPF0_S +
@@ -5602,6 +6257,12 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 			     (is_t5(adapter->params.chip) ? STATMODE_V(0) :
 			      T6_STATMODE_V(0)));
 
+<<<<<<< HEAD
+=======
+	/* Initialize hash mac addr list */
+	INIT_LIST_HEAD(&adapter->mac_hlist);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_port(adapter, i) {
 		netdev = alloc_etherdev_mq(sizeof(struct port_info),
 					   MAX_ETH_QSETS);
@@ -5624,6 +6285,7 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 			NETIF_F_RXCSUM | NETIF_F_RXHASH |
 			NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_CTAG_RX |
 			NETIF_F_HW_TC;
+<<<<<<< HEAD
 
 		if (chip_ver > CHELSIO_T5) {
 			netdev->hw_enc_features |= NETIF_F_IP_CSUM |
@@ -5635,6 +6297,8 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 			netdev->hw_features |= NETIF_F_GSO_UDP_TUNNEL;
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (highdma)
 			netdev->hw_features |= NETIF_F_HIGHDMA;
 		netdev->features |= netdev->hw_features;
@@ -5643,20 +6307,30 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		netdev->priv_flags |= IFF_UNICAST_FLT;
 
 		/* MTU range: 81 - 9600 */
+<<<<<<< HEAD
 		netdev->min_mtu = 81;              /* accommodate SACK */
+=======
+		netdev->min_mtu = 81;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev->max_mtu = MAX_MTU;
 
 		netdev->netdev_ops = &cxgb4_netdev_ops;
 #ifdef CONFIG_CHELSIO_T4_DCB
 		netdev->dcbnl_ops = &cxgb4_dcb_ops;
 		cxgb4_dcb_state_init(netdev);
+<<<<<<< HEAD
 		cxgb4_dcb_version_init(netdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		cxgb4_set_ethtool_ops(netdev);
 	}
 
+<<<<<<< HEAD
 	cxgb4_init_ethtool_dump(adapter);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_set_drvdata(pdev, adapter);
 
 	if (adapter->flags & FW_OK) {
@@ -5681,6 +6355,7 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		}
 	}
 
+<<<<<<< HEAD
 	if (!(adapter->flags & FW_OK))
 		goto fw_attach_fail;
 
@@ -5696,6 +6371,12 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		/* We tolerate a lack of SMT, giving up some functionality */
 		dev_warn(&pdev->dev, "could not allocate SMT, continuing\n");
 	}
+=======
+	/* Configure queues and allocate tables now, they can be needed as
+	 * soon as the first register_netdev completes.
+	 */
+	cfg_queues(adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adapter->l2t = t4_init_l2t(adapter->l2t_start, adapter->l2t_end);
 	if (!adapter->l2t) {
@@ -5704,6 +6385,7 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		adapter->params.offload = 0;
 	}
 
+<<<<<<< HEAD
 	adapter->mps_encap = kvcalloc(adapter->params.arch.mps_tcam_size,
 				      sizeof(struct mps_encap_entry),
 				      GFP_KERNEL);
@@ -5712,6 +6394,10 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 #if IS_ENABLED(CONFIG_IPV6)
 	if (chip_ver <= CHELSIO_T5 &&
+=======
+#if IS_ENABLED(CONFIG_IPV6)
+	if ((CHELSIO_CHIP_VERSION(adapter->params.chip) <= CHELSIO_T5) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (!(t4_read_reg(adapter, LE_DB_CONFIG_A) & ASLIPCOMPEN_F))) {
 		/* CLIP functionality is not present in hardware,
 		 * hence disable all offload features
@@ -5751,6 +6437,7 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		if (!adapter->tc_u32)
 			dev_warn(&pdev->dev,
 				 "could not offload tc u32, continuing\n");
+<<<<<<< HEAD
 
 		if (cxgb4_init_tc_flower(adapter))
 			dev_warn(&pdev->dev,
@@ -5762,6 +6449,15 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 			u32 hash_base, hash_reg;
 
 			if (chip_ver <= CHELSIO_T5) {
+=======
+	}
+
+	if (is_offload(adapter)) {
+		if (t4_read_reg(adapter, LE_DB_CONFIG_A) & HASHEN_F) {
+			u32 hash_base, hash_reg;
+
+			if (chip <= CHELSIO_T5) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				hash_reg = LE_DB_TID_HASHBASE_A;
 				hash_base = t4_read_reg(adapter, hash_reg);
 				adapter->tids.hash_base = hash_base / 4;
@@ -5783,7 +6479,11 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	}
 
 	/* check for PCI Express bandwidth capabiltites */
+<<<<<<< HEAD
 	pcie_print_link_status(pdev);
+=======
+	cxgb4_check_pcie_caps(adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = init_rss(adapter);
 	if (err)
@@ -5796,7 +6496,10 @@ static int init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		goto out_free_dev;
 	}
 
+<<<<<<< HEAD
 fw_attach_fail:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The card is now ready to go.  If any errors occur during device
 	 * registration we do not fail the whole card but rather proceed only
@@ -5847,6 +6550,61 @@ fw_attach_fail:
 	print_adapter_info(adapter);
 	return 0;
 
+<<<<<<< HEAD
+=======
+sriov:
+#ifdef CONFIG_PCI_IOV
+	adapter = kzalloc(sizeof(*adapter), GFP_KERNEL);
+	if (!adapter) {
+		err = -ENOMEM;
+		goto free_pci_region;
+	}
+
+	adapter->pdev = pdev;
+	adapter->pdev_dev = &pdev->dev;
+	adapter->name = pci_name(pdev);
+	adapter->mbox = func;
+	adapter->pf = func;
+	adapter->regs = regs;
+	adapter->adap_idx = adap_idx;
+	adapter->mbox_log = kzalloc(sizeof(*adapter->mbox_log) +
+				    (sizeof(struct mbox_cmd) *
+				     T4_OS_LOG_MBOX_CMDS),
+				    GFP_KERNEL);
+	if (!adapter->mbox_log) {
+		err = -ENOMEM;
+		goto free_adapter;
+	}
+	spin_lock_init(&adapter->mbox_lock);
+	INIT_LIST_HEAD(&adapter->mlist.list);
+
+	v = FW_PARAMS_MNEM_V(FW_PARAMS_MNEM_DEV) |
+	    FW_PARAMS_PARAM_X_V(FW_PARAMS_PARAM_DEV_PORTVEC);
+	err = t4_query_params(adapter, adapter->mbox, adapter->pf, 0, 1,
+			      &v, &port_vec);
+	if (err < 0) {
+		dev_err(adapter->pdev_dev, "Could not fetch port params\n");
+		goto free_mbox_log;
+	}
+
+	adapter->params.nports = hweight32(port_vec);
+	pci_set_drvdata(pdev, adapter);
+	return 0;
+
+free_mbox_log:
+	kfree(adapter->mbox_log);
+ free_adapter:
+	kfree(adapter);
+ free_pci_region:
+	iounmap(regs);
+	pci_disable_sriov(pdev);
+	pci_release_regions(pdev);
+	return err;
+#else
+	return 0;
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  out_free_dev:
 	t4_free_sge_resources(adapter);
 	free_some_resources(adapter);
@@ -5876,14 +6634,21 @@ fw_attach_fail:
 static void remove_one(struct pci_dev *pdev)
 {
 	struct adapter *adapter = pci_get_drvdata(pdev);
+<<<<<<< HEAD
+=======
+	struct hash_mac_addr *entry, *tmp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!adapter) {
 		pci_release_regions(pdev);
 		return;
 	}
 
+<<<<<<< HEAD
 	adapter->flags |= SHUTTING_DOWN;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (adapter->pf == 4) {
 		int i;
 
@@ -5897,8 +6662,11 @@ static void remove_one(struct pci_dev *pdev)
 			t4_uld_clean_up(adapter);
 		}
 
+<<<<<<< HEAD
 		adap_free_hma_mem(adapter);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		disable_interrupts(adapter);
 
 		for_each_port(adapter, i)
@@ -5923,6 +6691,7 @@ static void remove_one(struct pci_dev *pdev)
 		if (adapter->num_uld || adapter->num_ofld_uld)
 			t4_uld_mem_free(adapter);
 		free_some_resources(adapter);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 		t4_cleanup_clip_tbl(adapter);
 #endif
@@ -5944,6 +6713,42 @@ static void remove_one(struct pci_dev *pdev)
 	kfree(adapter->mbox_log);
 	synchronize_rcu();
 	kfree(adapter);
+=======
+		list_for_each_entry_safe(entry, tmp, &adapter->mac_hlist,
+					 list) {
+			list_del(&entry->list);
+			kfree(entry);
+		}
+
+#if IS_ENABLED(CONFIG_IPV6)
+		t4_cleanup_clip_tbl(adapter);
+#endif
+		iounmap(adapter->regs);
+		if (!is_t4(adapter->params.chip))
+			iounmap(adapter->bar2);
+		pci_disable_pcie_error_reporting(pdev);
+		if ((adapter->flags & DEV_ENABLED)) {
+			pci_disable_device(pdev);
+			adapter->flags &= ~DEV_ENABLED;
+		}
+		pci_release_regions(pdev);
+		kfree(adapter->mbox_log);
+		synchronize_rcu();
+		kfree(adapter);
+	}
+#ifdef CONFIG_PCI_IOV
+	else {
+		if (adapter->port[0])
+			unregister_netdev(adapter->port[0]);
+		iounmap(adapter->regs);
+		kfree(adapter->vfinfo);
+		kfree(adapter->mbox_log);
+		kfree(adapter);
+		pci_disable_sriov(pdev);
+		pci_release_regions(pdev);
+	}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* "Shutdown" quiesces the device, stopping Ingress Packet and Interrupt
@@ -5964,8 +6769,11 @@ static void shutdown_one(struct pci_dev *pdev)
 		return;
 	}
 
+<<<<<<< HEAD
 	adapter->flags |= SHUTTING_DOWN;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (adapter->pf == 4) {
 		int i;
 
@@ -5985,6 +6793,21 @@ static void shutdown_one(struct pci_dev *pdev)
 		if (adapter->flags & FW_OK)
 			t4_fw_bye(adapter, adapter->mbox);
 	}
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PCI_IOV
+	else {
+		if (adapter->port[0])
+			unregister_netdev(adapter->port[0]);
+		iounmap(adapter->regs);
+		kfree(adapter->vfinfo);
+		kfree(adapter->mbox_log);
+		kfree(adapter);
+		pci_disable_sriov(pdev);
+		pci_release_regions(pdev);
+	}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct pci_driver cxgb4_driver = {

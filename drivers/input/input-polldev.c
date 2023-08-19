@@ -20,6 +20,10 @@
 MODULE_AUTHOR("Dmitry Torokhov <dtor@mail.ru>");
 MODULE_DESCRIPTION("Generic implementation of a polled input device");
 MODULE_LICENSE("GPL v2");
+<<<<<<< HEAD
+=======
+MODULE_VERSION("0.1");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void input_polldev_queue_work(struct input_polled_dev *dev)
 {

@@ -20,6 +20,7 @@
 
 	leds {
 		act {
+<<<<<<< HEAD
 			gpios = <&expgpio 2 GPIO_ACTIVE_HIGH>;
 		};
 	};
@@ -55,6 +56,11 @@
 
 &hdmi {
 	hpd-gpios = <&expgpio 4 GPIO_ACTIVE_LOW>;
+=======
+			gpios = <&gpio 47 0>;
+		};
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* uart0 communicates with the BT module */
@@ -62,12 +68,15 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_gpio32 &gpclk2_gpio43>;
 	status = "okay";
+<<<<<<< HEAD
 
 	bluetooth {
 		compatible = "brcm,bcm43438-bt";
 		max-speed = <2000000>;
 		shutdown-gpios = <&expgpio 0 GPIO_ACTIVE_HIGH>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* uart1 is mapped to the pin header */
@@ -79,19 +88,25 @@
 
 /* SDHCI is used to control the SDIO for wireless */
 &sdhci {
+<<<<<<< HEAD
 	#address-cells = <1>;
 	#size-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pinctrl-names = "default";
 	pinctrl-0 = <&emmc_gpio34>;
 	status = "okay";
 	bus-width = <4>;
 	non-removable;
+<<<<<<< HEAD
 	mmc-pwrseq = <&wifi_pwrseq>;
 
 	brcmf: wifi@1 {
 		reg = <1>;
 		compatible = "brcm,bcm4329-fmac";
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* SDHOST is used to drive the SD card */

@@ -3,13 +3,20 @@ generic-y += barrier.h
 generic-y += bugs.h
 generic-y += cacheflush.h
 generic-y += checksum.h
+<<<<<<< HEAD
 generic-y += compat.h
+=======
+generic-y += clkdev.h
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 generic-y += current.h
 generic-y += delay.h
 generic-y += device.h
 generic-y += div64.h
 generic-y += dma.h
+<<<<<<< HEAD
 generic-y += dma-mapping.h
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 generic-y += emergency-restart.h
 generic-y += exec.h
 generic-y += extable.h

@@ -22,8 +22,11 @@
 #include <asm/asm-offsets.h>	/*  Most of the kernel defines are here  */
 #include <asm/mem-layout.h>	/*  except for page_offset  */
 #include <asm/cache.h>		/*  and now we're pulling cache line size  */
+<<<<<<< HEAD
 #include <asm/thread_info.h>	/*  and we need THREAD_SIZE too */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 OUTPUT_ARCH(hexagon)
 ENTRY(stext)
 

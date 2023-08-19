@@ -13,13 +13,20 @@
 #include <linux/errno.h>
 #include <linux/serial_reg.h>
 #include <asm/addrspace.h>
+<<<<<<< HEAD
 #include <asm/setup.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach-ath79/ath79.h>
 #include <asm/mach-ath79/ar71xx_regs.h>
 #include <asm/mach-ath79/ar933x_uart.h>
 
+<<<<<<< HEAD
 static void (*_prom_putchar)(char);
+=======
+static void (*_prom_putchar) (unsigned char);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void prom_putchar_wait(void __iomem *reg, u32 mask, u32 val)
 {
@@ -34,32 +41,53 @@ static inline void prom_putchar_wait(void __iomem *reg, u32 mask, u32 val)
 
 #define BOTH_EMPTY (UART_LSR_TEMT | UART_LSR_THRE)
 
+<<<<<<< HEAD
 static void prom_putchar_ar71xx(char ch)
+=======
+static void prom_putchar_ar71xx(unsigned char ch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void __iomem *base = (void __iomem *)(KSEG1ADDR(AR71XX_UART_BASE));
 
 	prom_putchar_wait(base + UART_LSR * 4, BOTH_EMPTY, BOTH_EMPTY);
+<<<<<<< HEAD
 	__raw_writel((unsigned char)ch, base + UART_TX * 4);
 	prom_putchar_wait(base + UART_LSR * 4, BOTH_EMPTY, BOTH_EMPTY);
 }
 
 static void prom_putchar_ar933x(char ch)
+=======
+	__raw_writel(ch, base + UART_TX * 4);
+	prom_putchar_wait(base + UART_LSR * 4, BOTH_EMPTY, BOTH_EMPTY);
+}
+
+static void prom_putchar_ar933x(unsigned char ch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void __iomem *base = (void __iomem *)(KSEG1ADDR(AR933X_UART_BASE));
 
 	prom_putchar_wait(base + AR933X_UART_DATA_REG, AR933X_UART_DATA_TX_CSR,
 			  AR933X_UART_DATA_TX_CSR);
+<<<<<<< HEAD
 	__raw_writel(AR933X_UART_DATA_TX_CSR | (unsigned char)ch,
 		     base + AR933X_UART_DATA_REG);
+=======
+	__raw_writel(AR933X_UART_DATA_TX_CSR | ch, base + AR933X_UART_DATA_REG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	prom_putchar_wait(base + AR933X_UART_DATA_REG, AR933X_UART_DATA_TX_CSR,
 			  AR933X_UART_DATA_TX_CSR);
 }
 
+<<<<<<< HEAD
 static void prom_putchar_dummy(char ch)
+=======
+static void prom_putchar_dummy(unsigned char ch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* nothing to do */
 }
 
+<<<<<<< HEAD
 static void prom_enable_uart(u32 id)
 {
 	void __iomem *gpio_base;
@@ -100,6 +128,8 @@ static void prom_enable_uart(u32 id)
 	__raw_writel(t, gpio_base + AR71XX_GPIO_REG_FUNC);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void prom_putchar_init(void)
 {
 	void __iomem *base;
@@ -118,12 +148,17 @@ static void prom_putchar_init(void)
 	case REV_ID_MAJOR_AR9341:
 	case REV_ID_MAJOR_AR9342:
 	case REV_ID_MAJOR_AR9344:
+<<<<<<< HEAD
 	case REV_ID_MAJOR_QCA9533:
 	case REV_ID_MAJOR_QCA9533_V2:
 	case REV_ID_MAJOR_QCA9556:
 	case REV_ID_MAJOR_QCA9558:
 	case REV_ID_MAJOR_TP9343:
 	case REV_ID_MAJOR_QCA956X:
+=======
+	case REV_ID_MAJOR_QCA9556:
+	case REV_ID_MAJOR_QCA9558:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		_prom_putchar = prom_putchar_ar71xx;
 		break;
 
@@ -134,6 +169,7 @@ static void prom_putchar_init(void)
 
 	default:
 		_prom_putchar = prom_putchar_dummy;
+<<<<<<< HEAD
 		return;
 	}
 
@@ -141,6 +177,13 @@ static void prom_putchar_init(void)
 }
 
 void prom_putchar(char ch)
+=======
+		break;
+	}
+}
+
+void prom_putchar(unsigned char ch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!_prom_putchar)
 		prom_putchar_init();

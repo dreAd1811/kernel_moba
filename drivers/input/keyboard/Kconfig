@@ -157,6 +157,18 @@ config KEYBOARD_QT2160
 	  This driver can also be built as a module. If so, the module
 	  will be called qt2160.
 
+<<<<<<< HEAD
+=======
+config KEYBOARD_BFIN
+	tristate "Blackfin BF54x keypad support"
+	depends on (BF54x && !BF544)
+	help
+	  Say Y here if you want to use the BF54x keypad.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called bf54x-keys.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config KEYBOARD_CLPS711X
 	tristate "CLPS711X Keypad support"
 	depends on OF_GPIO && (ARCH_CLPS711X || COMPILE_TEST)
@@ -721,7 +733,11 @@ config KEYBOARD_CROS_EC
 	help
 	  Say Y here to enable the matrix keyboard used by ChromeOS devices
 	  and implemented on the ChromeOS EC. You must enable one bus option
+<<<<<<< HEAD
 	  (CROS_EC_I2C or CROS_EC_SPI) to use this.
+=======
+	  (MFD_CROS_EC_I2C or MFD_CROS_EC_SPI) to use this.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called cros_ec_keyb.
@@ -747,6 +763,7 @@ config KEYBOARD_BCM
 	  To compile this driver as a module, choose M here: the
 	  module will be called bcm-keypad.
 
+<<<<<<< HEAD
 config KEYBOARD_MTK_PMIC
 	tristate "MediaTek PMIC keys support"
 	depends on MFD_MT6397
@@ -756,4 +773,6 @@ config KEYBOARD_MTK_PMIC
 	  To compile this driver as a module, choose M here: the
 	  module will be called pmic-keys.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif

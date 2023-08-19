@@ -17,6 +17,7 @@
 #include <linux/mutex.h>
 #include <media/rc-core.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_net.h>
@@ -25,6 +26,16 @@
 #include "dvb-pll.h"
 
 #include <media/dvb-usb-ids.h>
+=======
+#include "dvb_frontend.h"
+#include "dvb_demux.h"
+#include "dvb_net.h"
+#include "dmxdev.h"
+
+#include "dvb-pll.h"
+
+#include "dvb-usb-ids.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* debug */
 #ifdef CONFIG_DVB_USB_DEBUG
@@ -208,7 +219,10 @@ struct dvb_rc {
 	int (*rc_query) (struct dvb_usb_device *d);
 	int rc_interval;
 	bool bulk_mode;				/* uses bulk mode */
+<<<<<<< HEAD
 	u32 scancode_mask;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**

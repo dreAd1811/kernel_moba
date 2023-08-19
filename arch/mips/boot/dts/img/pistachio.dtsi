@@ -805,6 +805,10 @@
 		pinctrl-0 = <&sdhost_pins>;
 		pinctrl-names = "default";
 		fifo-depth = <0x20>;
+<<<<<<< HEAD
+=======
+		num-slots = <1>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clock-frequency = <50000000>;
 		bus-width = <8>;
 		cap-mmc-highspeed;

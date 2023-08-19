@@ -41,7 +41,11 @@ struct clockgen_pll_div {
 };
 
 struct clockgen_pll {
+<<<<<<< HEAD
 	struct clockgen_pll_div div[8];
+=======
+	struct clockgen_pll_div div[4];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define CLKSEL_VALID	1
@@ -1127,6 +1131,7 @@ static void __init create_one_pll(struct clockgen *cg, int idx)
 		struct clk *clk;
 		int ret;
 
+<<<<<<< HEAD
 		/*
 		 * For platform PLL, there are 8 divider clocks.
 		 * For core PLL, there are 4 divider clocks at most.
@@ -1134,6 +1139,8 @@ static void __init create_one_pll(struct clockgen *cg, int idx)
 		if (idx != PLATFORM_PLL && i >= 4)
 			break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		snprintf(pll->div[i].name, sizeof(pll->div[i].name),
 			 "cg-pll%d-div%d", idx, i + 1);
 
@@ -1389,6 +1396,10 @@ static void __init clockgen_init(struct device_node *np)
 				pr_err("%s: Couldn't map %pOF regs\n", __func__,
 				       guts);
 			}
+<<<<<<< HEAD
+=======
+			of_node_put(guts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 	}

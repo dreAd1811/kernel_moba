@@ -33,7 +33,10 @@
 #define __QEDR_H__
 
 #include <linux/pci.h>
+<<<<<<< HEAD
 #include <linux/idr.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <rdma/ib_addr.h>
 #include <linux/qed/qed_if.h>
 #include <linux/qed/qed_chain.h>
@@ -44,8 +47,11 @@
 
 #define QEDR_NODE_DESC "QLogic 579xx RoCE HCA"
 #define DP_NAME(dev) ((dev)->ibdev.name)
+<<<<<<< HEAD
 #define IS_IWARP(_dev) ((_dev)->rdma_type == QED_RDMA_TYPE_IWARP)
 #define IS_ROCE(_dev) ((_dev)->rdma_type == QED_RDMA_TYPE_ROCE)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DP_DEBUG(dev, module, fmt, ...)					\
 	pr_debug("(%s) " module ": " fmt,				\
@@ -58,9 +64,13 @@
 #define QEDR_MSG_RQ   "  RQ"
 #define QEDR_MSG_SQ   "  SQ"
 #define QEDR_MSG_QP   "  QP"
+<<<<<<< HEAD
 #define QEDR_MSG_SRQ  " SRQ"
 #define QEDR_MSG_GSI  " GSI"
 #define QEDR_MSG_IWARP  " IW"
+=======
+#define QEDR_MSG_GSI  " GSI"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QEDR_CQ_MAGIC_NUMBER	(0x11223344)
 
@@ -123,11 +133,14 @@ struct qedr_device_attr {
 
 #define QEDR_ENET_STATE_BIT	(0)
 
+<<<<<<< HEAD
 struct qedr_idr {
 	spinlock_t idr_lock; /* Protect idr data-structure */
 	struct idr idr;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct qedr_dev {
 	struct ib_device	ibdev;
 	struct qed_dev		*cdev;
@@ -170,11 +183,14 @@ struct qedr_dev {
 	struct qedr_cq		*gsi_sqcq;
 	struct qedr_cq		*gsi_rqcq;
 	struct qedr_qp		*gsi_qp;
+<<<<<<< HEAD
 	enum qed_rdma_type	rdma_type;
 	struct qedr_idr		qpidr;
 	struct qedr_idr		srqidr;
 	struct workqueue_struct *iwarp_wq;
 	u16			iwarp_max_mtu;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned long enet_state;
 
@@ -332,9 +348,12 @@ struct qedr_qp_hwq_info {
 	/* DB */
 	void __iomem *db;
 	union db_prod32 db_data;
+<<<<<<< HEAD
 
 	void __iomem *iwarp_db2;
 	union db_prod32 iwarp_db2_data;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define QEDR_INC_SW_IDX(p_info, index)					\
@@ -343,6 +362,7 @@ struct qedr_qp_hwq_info {
 				qed_chain_get_capacity(p_info->pbl)	\
 	} while (0)
 
+<<<<<<< HEAD
 struct qedr_srq_hwq_info {
 	u32 max_sges;
 	u32 max_wr;
@@ -371,6 +391,8 @@ struct qedr_srq {
 	spinlock_t lock;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum qedr_qp_err_bitmap {
 	QEDR_QP_ERR_SQ_FULL = 1,
 	QEDR_QP_ERR_RQ_FULL = 2,
@@ -383,7 +405,11 @@ enum qedr_qp_err_bitmap {
 struct qedr_qp {
 	struct ib_qp ibqp;	/* must be first */
 	struct qedr_dev *dev;
+<<<<<<< HEAD
 	struct qedr_iw_ep *ep;
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qedr_qp_hwq_info sq;
 	struct qedr_qp_hwq_info rq;
 
@@ -440,8 +466,11 @@ struct qedr_qp {
 	/* Relevant to qps created from user space only (applications) */
 	struct qedr_userq usq;
 	struct qedr_userq urq;
+<<<<<<< HEAD
 	atomic_t refcnt;
 	bool destroyed;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qedr_ah {
@@ -522,6 +551,7 @@ static inline int qedr_get_dmac(struct qedr_dev *dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 struct qedr_iw_listener {
 	struct qedr_dev *dev;
 	struct iw_cm_id *cm_id;
@@ -537,6 +567,8 @@ struct qedr_iw_ep {
 	u8		during_connect;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline
 struct qedr_ucontext *get_qedr_ucontext(struct ib_ucontext *ibucontext)
 {
@@ -572,9 +604,12 @@ static inline struct qedr_mr *get_qedr_mr(struct ib_mr *ibmr)
 {
 	return container_of(ibmr, struct qedr_mr, ibmr);
 }
+<<<<<<< HEAD
 
 static inline struct qedr_srq *get_qedr_srq(struct ib_srq *ibsrq)
 {
 	return container_of(ibsrq, struct qedr_srq, ibsrq);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

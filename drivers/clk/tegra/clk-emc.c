@@ -132,7 +132,11 @@ static int emc_determine_rate(struct clk_hw *hw, struct clk_rate_request *req)
 		timing = tegra->timings + i;
 
 		if (timing->rate > req->max_rate) {
+<<<<<<< HEAD
 			i = max(i, 1);
+=======
+			i = min(i, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			req->rate = tegra->timings[i - 1].rate;
 			return 0;
 		}
@@ -515,7 +519,11 @@ struct clk *tegra_clk_register_emc(void __iomem *base, struct device_node *np,
 
 	init.name = "emc";
 	init.ops = &tegra_clk_emc_ops;
+<<<<<<< HEAD
 	init.flags = CLK_IS_CRITICAL;
+=======
+	init.flags = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init.parent_names = emc_parent_clk_names;
 	init.num_parents = ARRAY_SIZE(emc_parent_clk_names);
 

@@ -280,7 +280,11 @@ void update_subcore_sibling_mask(void)
 		int offset = (tid / threads_per_subcore) * threads_per_subcore;
 		int mask = sibling_mask_first_cpu << offset;
 
+<<<<<<< HEAD
 		paca_ptrs[cpu]->subcore_sibling_mask = mask;
+=======
+		paca[cpu].subcore_sibling_mask = mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	}
 }

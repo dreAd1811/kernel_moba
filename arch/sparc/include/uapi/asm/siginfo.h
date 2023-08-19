@@ -18,6 +18,16 @@
 #define SI_NOINFO	32767		/* no information in siginfo_t */
 
 /*
+<<<<<<< HEAD
+=======
+ * SIGFPE si_codes
+ */
+#ifdef __KERNEL__
+#define FPE_FIXME	0	/* Broken dup of SI_USER */
+#endif /* __KERNEL__ */
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * SIGEMT si_codes
  */
 #define EMT_TAGOVF	1	/* tag overflow */

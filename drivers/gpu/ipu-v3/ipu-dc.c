@@ -249,8 +249,16 @@ EXPORT_SYMBOL_GPL(ipu_dc_enable);
 
 void ipu_dc_enable_channel(struct ipu_dc *dc)
 {
+<<<<<<< HEAD
 	u32 reg;
 
+=======
+	int di;
+	u32 reg;
+
+	di = dc->di;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reg = readl(dc->base + DC_WR_CH_CONF);
 	reg |= DC_WR_CH_CONF_PROG_TYPE_NORMAL;
 	writel(reg, dc->base + DC_WR_CH_CONF);

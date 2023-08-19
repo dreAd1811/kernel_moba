@@ -13,15 +13,23 @@ The following technologies are described:
  * Generic Segmentation Offload - GSO
  * Generic Receive Offload - GRO
  * Partial Generic Segmentation Offload - GSO_PARTIAL
+<<<<<<< HEAD
  * SCTP accelleration with GSO - GSO_BY_FRAGS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 TCP Segmentation Offload
 ========================
 
 TCP segmentation allows a device to segment a single frame into multiple
 frames with a data payload size specified in skb_shinfo()->gso_size.
+<<<<<<< HEAD
 When TCP segmentation requested the bit for either SKB_GSO_TCPV4 or
 SKB_GSO_TCPV6 should be set in skb_shinfo()->gso_type and
+=======
+When TCP segmentation requested the bit for either SKB_GSO_TCP or
+SKB_GSO_TCP6 should be set in skb_shinfo()->gso_type and
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 skb_shinfo()->gso_size should be set to a non-zero value.
 
 TCP segmentation is dependent on support for the use of partial checksum
@@ -50,10 +58,13 @@ datagram into multiple IPv4 fragments.  Many of the requirements for UDP
 fragmentation offload are the same as TSO.  However the IPv4 ID for
 fragments should not increment as a single IPv4 datagram is fragmented.
 
+<<<<<<< HEAD
 UFO is deprecated: modern kernels will no longer generate UFO skbs, but can
 still receive them from tuntap and similar devices. Offload of UDP-based
 tunnel protocols is still supported.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 IPIP, SIT, GRE, UDP Tunnel, and Remote Checksum Offloads
 ========================================================
 
@@ -88,10 +99,17 @@ SKB_GSO_UDP_TUNNEL_CSUM.  These two additional tunnel types reflect the
 fact that the outer header also requests to have a non-zero checksum
 included in the outer header.
 
+<<<<<<< HEAD
 Finally there is SKB_GSO_TUNNEL_REMCSUM which indicates that a given tunnel
 header has requested a remote checksum offload.  In this case the inner
 headers will be left with a partial checksum and only the outer header
 checksum will be computed.
+=======
+Finally there is SKB_GSO_REMCSUM which indicates that a given tunnel header
+has requested a remote checksum offload.  In this case the inner headers
+will be left with a partial checksum and only the outer header checksum
+will be computed.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Generic Segmentation Offload
 ============================
@@ -133,6 +151,7 @@ values for if the header was simply duplicated.  The one exception to this
 is the outer IPv4 ID field.  It is up to the device drivers to guarantee
 that the IPv4 ID field is incremented in the case that a given header does
 not have the DF bit set.
+<<<<<<< HEAD
 
 SCTP accelleration with GSO
 ===========================
@@ -168,3 +187,5 @@ There are some helpers to make this easier:
 
 This also affects drivers with the NETIF_F_FRAGLIST & NETIF_F_GSO_SCTP bits
 set. Note also that NETIF_F_GSO_SCTP is included in NETIF_F_GSO_SOFTWARE.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

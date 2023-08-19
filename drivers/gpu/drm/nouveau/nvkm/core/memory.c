@@ -22,6 +22,7 @@
  * Authors: Ben Skeggs <bskeggs@redhat.com>
  */
 #include <core/memory.h>
+<<<<<<< HEAD
 #include <core/mm.h>
 #include <subdev/fb.h>
 #include <subdev/instmem.h>
@@ -97,10 +98,16 @@ nvkm_memory_tags_get(struct nvkm_memory *memory, struct nvkm_device *device,
 }
 
 void
+=======
+#include <subdev/instmem.h>
+
+void
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm_memory_ctor(const struct nvkm_memory_func *func,
 		 struct nvkm_memory *memory)
 {
 	memory->func = func;
+<<<<<<< HEAD
 	kref_init(&memory->kref);
 }
 
@@ -121,10 +128,23 @@ nvkm_memory_unref(struct nvkm_memory **pmemory)
 	struct nvkm_memory *memory = *pmemory;
 	if (memory) {
 		kref_put(&memory->kref, nvkm_memory_del);
+=======
+}
+
+void
+nvkm_memory_del(struct nvkm_memory **pmemory)
+{
+	struct nvkm_memory *memory = *pmemory;
+	if (memory && !WARN_ON(!memory->func)) {
+		if (memory->func->dtor)
+			*pmemory = memory->func->dtor(memory);
+		kfree(*pmemory);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*pmemory = NULL;
 	}
 }
 
+<<<<<<< HEAD
 struct nvkm_memory *
 nvkm_memory_ref(struct nvkm_memory *memory)
 {
@@ -133,6 +153,8 @@ nvkm_memory_ref(struct nvkm_memory *memory)
 	return memory;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int
 nvkm_memory_new(struct nvkm_device *device, enum nvkm_memory_target target,
 		u64 size, u32 align, bool zero,

@@ -14,6 +14,10 @@
 
 extern void kvmppc_core_flush_memslot_hv(struct kvm *kvm,
 					 struct kvm_memory_slot *memslot);
+<<<<<<< HEAD
+=======
+extern int kvm_unmap_hva_hv(struct kvm *kvm, unsigned long hva);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int kvm_unmap_hva_range_hv(struct kvm *kvm, unsigned long start,
 				  unsigned long end);
 extern int kvm_age_hva_hv(struct kvm *kvm, unsigned long start,
@@ -31,10 +35,13 @@ extern int kvmppc_core_emulate_mfspr_pr(struct kvm_vcpu *vcpu,
 extern int kvmppc_book3s_init_pr(void);
 extern void kvmppc_book3s_exit_pr(void);
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 extern void kvmppc_emulate_tabort(struct kvm_vcpu *vcpu, int ra_val);
 #else
 static inline void kvmppc_emulate_tabort(struct kvm_vcpu *vcpu, int ra_val) {}
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

@@ -28,7 +28,10 @@
 #include <asm/ptrace.h>
 #include <asm/mmu.h>
 #include <asm/export.h>
+<<<<<<< HEAD
 #include <asm/feature-fixups.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.text
 
@@ -87,7 +90,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
 	subf	r8,r6,r4		/* compute length */
 	add	r8,r8,r5		/* ensure we get enough */
 	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of cache block size */
+<<<<<<< HEAD
 	srw.	r8,r8,r9		/* compute line count */
+=======
+	srd.	r8,r8,r9		/* compute line count */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	beqlr				/* nothing to do? */
 	mtctr	r8
 1:	dcbst	0,r6
@@ -103,7 +110,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_COHERENT_ICACHE)
 	subf	r8,r6,r4		/* compute length */
 	add	r8,r8,r5
 	lwz	r9,ICACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of Icache block size */
+<<<<<<< HEAD
 	srw.	r8,r8,r9		/* compute line count */
+=======
+	srd.	r8,r8,r9		/* compute line count */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	beqlr				/* nothing to do? */
 	mtctr	r8
 2:	icbi	0,r6
@@ -145,6 +156,47 @@ _GLOBAL_TOC(flush_dcache_range)
 	blr
 EXPORT_SYMBOL(flush_dcache_range)
 
+<<<<<<< HEAD
+=======
+/*
+ * Like above, but works on non-mapped physical addresses.
+ * Use only for non-LPAR setups ! It also assumes real mode
+ * is cacheable. Used for flushing out the DART before using
+ * it as uncacheable memory 
+ *
+ * flush_dcache_phys_range(unsigned long start, unsigned long stop)
+ *
+ *    flush all bytes from start to stop-1 inclusive
+ */
+_GLOBAL(flush_dcache_phys_range)
+ 	ld	r10,PPC64_CACHES@toc(r2)
+	lwz	r7,DCACHEL1BLOCKSIZE(r10)	/* Get dcache block size */
+	addi	r5,r7,-1
+	andc	r6,r3,r5		/* round low to line bdy */
+	subf	r8,r6,r4		/* compute length */
+	add	r8,r8,r5		/* ensure we get enough */
+	lwz	r9,DCACHEL1LOGBLOCKSIZE(r10)	/* Get log-2 of dcache block size */
+	srw.	r8,r8,r9		/* compute line count */
+	beqlr				/* nothing to do? */
+	mfmsr	r5			/* Disable MMU Data Relocation */
+	ori	r0,r5,MSR_DR
+	xori	r0,r0,MSR_DR
+	sync
+	mtmsr	r0
+	sync
+	isync
+	mtctr	r8
+0:	dcbst	0,r6
+	add	r6,r6,r7
+	bdnz	0b
+	sync
+	isync
+	mtmsr	r5			/* Re-enable MMU Data Relocation */
+	sync
+	isync
+	blr
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 _GLOBAL(flush_inval_dcache_range)
  	ld	r10,PPC64_CACHES@toc(r2)
 	lwz	r7,DCACHEL1BLOCKSIZE(r10)	/* Get dcache block size */

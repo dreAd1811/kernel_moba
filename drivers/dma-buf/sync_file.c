@@ -230,7 +230,11 @@ static struct sync_file *sync_file_merge(const char *name, struct sync_file *a,
 	a_fences = get_fences(a, &a_num_fences);
 	b_fences = get_fences(b, &b_num_fences);
 	if (a_num_fences > INT_MAX - b_num_fences)
+<<<<<<< HEAD
 		return NULL;
+=======
+		goto err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	num_fences = a_num_fences + b_num_fences;
 
@@ -312,7 +316,11 @@ static int sync_file_release(struct inode *inode, struct file *file)
 	return 0;
 }
 
+<<<<<<< HEAD
 static __poll_t sync_file_poll(struct file *file, poll_table *wait)
+=======
+static unsigned int sync_file_poll(struct file *file, poll_table *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sync_file *sync_file = file->private_data;
 
@@ -325,7 +333,11 @@ static __poll_t sync_file_poll(struct file *file, poll_table *wait)
 			wake_up_all(&sync_file->wq);
 	}
 
+<<<<<<< HEAD
 	return dma_fence_is_signaled(sync_file->fence) ? EPOLLIN : 0;
+=======
+	return dma_fence_is_signaled(sync_file->fence) ? POLLIN : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static long sync_file_ioctl_merge(struct sync_file *sync_file,

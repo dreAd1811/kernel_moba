@@ -651,14 +651,22 @@ out:
 	return retval;
 }
 
+<<<<<<< HEAD
 static __poll_t lis3lv02d_misc_poll(struct file *file, poll_table *wait)
+=======
+static unsigned int lis3lv02d_misc_poll(struct file *file, poll_table *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct lis3lv02d *lis3 = container_of(file->private_data,
 					      struct lis3lv02d, miscdev);
 
 	poll_wait(file, &lis3->misc_wait, wait);
 	if (atomic_read(&lis3->count))
+<<<<<<< HEAD
 		return EPOLLIN | EPOLLRDNORM;
+=======
+		return POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

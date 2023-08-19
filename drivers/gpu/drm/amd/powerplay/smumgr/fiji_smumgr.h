@@ -28,6 +28,7 @@
 #include "smu7_smumgr.h"
 
 
+<<<<<<< HEAD
 struct fiji_pt_defaults {
 	uint8_t   SviLoadLineEn;
 	uint8_t   SviLoadLineVddC;
@@ -37,12 +38,19 @@ struct fiji_pt_defaults {
 	uint8_t   DTEAmbientTempBase;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fiji_smumgr {
 	struct smu7_smumgr                   smu7_data;
 	struct SMU73_Discrete_DpmTable       smc_state_table;
 	struct SMU73_Discrete_Ulv            ulv_setting;
 	struct SMU73_Discrete_PmFuses  power_tune_table;
 	const struct fiji_pt_defaults  *power_tune_defaults;
+<<<<<<< HEAD
+=======
+	uint32_t        activity_target[SMU73_MAX_LEVELS_GRAPHICS];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif

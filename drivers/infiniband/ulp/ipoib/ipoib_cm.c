@@ -78,7 +78,11 @@ static struct ib_send_wr ipoib_cm_rx_drain_wr = {
 };
 
 static int ipoib_cm_tx_handler(struct ib_cm_id *cm_id,
+<<<<<<< HEAD
 			       const struct ib_cm_event *event);
+=======
+			       struct ib_cm_event *event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void ipoib_cm_dma_unmap_rx(struct ipoib_dev_priv *priv, int frags,
 				  u64 mapping[IPOIB_CM_RX_SG])
@@ -94,6 +98,10 @@ static void ipoib_cm_dma_unmap_rx(struct ipoib_dev_priv *priv, int frags,
 static int ipoib_cm_post_receive_srq(struct net_device *dev, int id)
 {
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
+<<<<<<< HEAD
+=======
+	struct ib_recv_wr *bad_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	priv->cm.rx_wr.wr_id = id | IPOIB_OP_CM | IPOIB_OP_RECV;
@@ -101,7 +109,11 @@ static int ipoib_cm_post_receive_srq(struct net_device *dev, int id)
 	for (i = 0; i < priv->cm.num_frags; ++i)
 		priv->cm.rx_sge[i].addr = priv->cm.srq_ring[id].mapping[i];
 
+<<<<<<< HEAD
 	ret = ib_post_srq_recv(priv->cm.srq, &priv->cm.rx_wr, NULL);
+=======
+	ret = ib_post_srq_recv(priv->cm.srq, &priv->cm.rx_wr, &bad_wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret)) {
 		ipoib_warn(priv, "post srq failed for buf %d (%d)\n", id, ret);
 		ipoib_cm_dma_unmap_rx(priv, priv->cm.num_frags - 1,
@@ -119,6 +131,10 @@ static int ipoib_cm_post_receive_nonsrq(struct net_device *dev,
 					struct ib_sge *sge, int id)
 {
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
+<<<<<<< HEAD
+=======
+	struct ib_recv_wr *bad_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	wr->wr_id = id | IPOIB_OP_CM | IPOIB_OP_RECV;
@@ -126,7 +142,11 @@ static int ipoib_cm_post_receive_nonsrq(struct net_device *dev,
 	for (i = 0; i < IPOIB_CM_RX_SG; ++i)
 		sge[i].addr = rx->rx_ring[id].mapping[i];
 
+<<<<<<< HEAD
 	ret = ib_post_recv(rx->qp, wr, NULL);
+=======
+	ret = ib_post_recv(rx->qp, wr, &bad_wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret)) {
 		ipoib_warn(priv, "post recv failed for buf %d (%d)\n", id, ret);
 		ipoib_cm_dma_unmap_rx(priv, IPOIB_CM_RX_SG - 1,
@@ -210,6 +230,10 @@ static void ipoib_cm_free_rx_ring(struct net_device *dev,
 
 static void ipoib_cm_start_rx_drain(struct ipoib_dev_priv *priv)
 {
+<<<<<<< HEAD
+=======
+	struct ib_send_wr *bad_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ipoib_cm_rx *p;
 
 	/* We only reserved 1 extra slot in CQ for drain WRs, so
@@ -224,7 +248,11 @@ static void ipoib_cm_start_rx_drain(struct ipoib_dev_priv *priv)
 	 */
 	p = list_entry(priv->cm.rx_flush_list.next, typeof(*p), list);
 	ipoib_cm_rx_drain_wr.wr_id = IPOIB_CM_RX_DRAIN_WRID;
+<<<<<<< HEAD
 	if (ib_post_send(p->qp, &ipoib_cm_rx_drain_wr, NULL))
+=======
+	if (ib_post_send(p->qp, &ipoib_cm_rx_drain_wr, &bad_wr))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ipoib_warn(priv, "failed to post drain wr\n");
 
 	list_splice_init(&priv->cm.rx_flush_list, &priv->cm.rx_drain_list);
@@ -272,7 +300,11 @@ static struct ib_qp *ipoib_cm_create_rx_qp(struct net_device *dev,
 
 static int ipoib_cm_modify_rx_qp(struct net_device *dev,
 				 struct ib_cm_id *cm_id, struct ib_qp *qp,
+<<<<<<< HEAD
 				 unsigned int psn)
+=======
+				 unsigned psn)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
 	struct ib_qp_attr qp_attr;
@@ -355,12 +387,20 @@ static int ipoib_cm_nonsrq_init_rx(struct net_device *dev, struct ib_cm_id *cm_i
 	int ret;
 	int i;
 
+<<<<<<< HEAD
 	rx->rx_ring = vzalloc(array_size(ipoib_recvq_size,
 					 sizeof(*rx->rx_ring)));
 	if (!rx->rx_ring)
 		return -ENOMEM;
 
 	t = kmalloc(sizeof(*t), GFP_KERNEL);
+=======
+	rx->rx_ring = vzalloc(ipoib_recvq_size * sizeof *rx->rx_ring);
+	if (!rx->rx_ring)
+		return -ENOMEM;
+
+	t = kmalloc(sizeof *t, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!t) {
 		ret = -ENOMEM;
 		goto err_free_1;
@@ -418,9 +458,14 @@ err_free_1:
 }
 
 static int ipoib_cm_send_rep(struct net_device *dev, struct ib_cm_id *cm_id,
+<<<<<<< HEAD
 			     struct ib_qp *qp,
 			     const struct ib_cm_req_event_param *req,
 			     unsigned int psn)
+=======
+			     struct ib_qp *qp, struct ib_cm_req_event_param *req,
+			     unsigned psn)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
 	struct ipoib_cm_data data = {};
@@ -430,7 +475,11 @@ static int ipoib_cm_send_rep(struct net_device *dev, struct ib_cm_id *cm_id,
 	data.mtu = cpu_to_be32(IPOIB_CM_BUF_SIZE);
 
 	rep.private_data = &data;
+<<<<<<< HEAD
 	rep.private_data_len = sizeof(data);
+=======
+	rep.private_data_len = sizeof data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rep.flow_control = 0;
 	rep.rnr_retry_count = req->rnr_retry_count;
 	rep.srq = ipoib_cm_has_srq(dev);
@@ -439,17 +488,29 @@ static int ipoib_cm_send_rep(struct net_device *dev, struct ib_cm_id *cm_id,
 	return ib_send_cm_rep(cm_id, &rep);
 }
 
+<<<<<<< HEAD
 static int ipoib_cm_req_handler(struct ib_cm_id *cm_id,
 				const struct ib_cm_event *event)
+=======
+static int ipoib_cm_req_handler(struct ib_cm_id *cm_id, struct ib_cm_event *event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *dev = cm_id->context;
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
 	struct ipoib_cm_rx *p;
+<<<<<<< HEAD
 	unsigned int psn;
 	int ret;
 
 	ipoib_dbg(priv, "REQ arrived\n");
 	p = kzalloc(sizeof(*p), GFP_KERNEL);
+=======
+	unsigned psn;
+	int ret;
+
+	ipoib_dbg(priv, "REQ arrived\n");
+	p = kzalloc(sizeof *p, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!p)
 		return -ENOMEM;
 	p->dev = dev;
@@ -502,7 +563,11 @@ err_qp:
 }
 
 static int ipoib_cm_rx_handler(struct ib_cm_id *cm_id,
+<<<<<<< HEAD
 			       const struct ib_cm_event *event)
+=======
+			       struct ib_cm_event *event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipoib_cm_rx *p;
 	struct ipoib_dev_priv *priv;
@@ -546,7 +611,11 @@ static void skb_put_frags(struct sk_buff *skb, unsigned int hdr_space,
 					   0, PAGE_SIZE);
 			--skb_shinfo(skb)->nr_frags;
 		} else {
+<<<<<<< HEAD
 			size = min_t(unsigned int, length, PAGE_SIZE);
+=======
+			size = min(length, (unsigned) PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			skb_frag_size_set(frag, size);
 			skb->data_len += size;
@@ -594,9 +663,15 @@ void ipoib_cm_handle_rx_wc(struct net_device *dev, struct ib_wc *wc)
 	skb = rx_ring[wr_id].skb;
 
 	if (unlikely(wc->status != IB_WC_SUCCESS)) {
+<<<<<<< HEAD
 		ipoib_dbg(priv,
 			  "cm recv error (status=%d, wrid=%d vend_err %#x)\n",
 			  wc->status, wr_id, wc->vendor_err);
+=======
+		ipoib_dbg(priv, "cm recv error "
+			   "(status=%d, wrid=%d vend_err %x)\n",
+			   wc->status, wr_id, wc->vendor_err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		++dev->stats.rx_dropped;
 		if (has_srq)
 			goto repost;
@@ -640,9 +715,14 @@ void ipoib_cm_handle_rx_wc(struct net_device *dev, struct ib_wc *wc)
 		}
 	}
 
+<<<<<<< HEAD
 	frags = PAGE_ALIGN(wc->byte_len -
 			   min_t(u32, wc->byte_len, IPOIB_CM_HEAD_SIZE)) /
 		PAGE_SIZE;
+=======
+	frags = PAGE_ALIGN(wc->byte_len - min(wc->byte_len,
+					      (unsigned)IPOIB_CM_HEAD_SIZE)) / PAGE_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	newskb = ipoib_cm_alloc_rx_skb(dev, rx_ring, wr_id, frags,
 				       mapping, GFP_ATOMIC);
@@ -657,7 +737,11 @@ void ipoib_cm_handle_rx_wc(struct net_device *dev, struct ib_wc *wc)
 	}
 
 	ipoib_cm_dma_unmap_rx(priv, frags, rx_ring[wr_id].mapping);
+<<<<<<< HEAD
 	memcpy(rx_ring[wr_id].mapping, mapping, (frags + 1) * sizeof(*mapping));
+=======
+	memcpy(rx_ring[wr_id].mapping, mapping, (frags + 1) * sizeof *mapping);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ipoib_dbg_data(priv, "received %d bytes, SLID 0x%04x\n",
 		       wc->byte_len, wc->slid);
@@ -698,11 +782,20 @@ static inline int post_send(struct ipoib_dev_priv *priv,
 			    unsigned int wr_id,
 			    struct ipoib_tx_buf *tx_req)
 {
+<<<<<<< HEAD
+=======
+	struct ib_send_wr *bad_wr;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ipoib_build_sge(priv, tx_req);
 
 	priv->tx_wr.wr.wr_id	= wr_id | IPOIB_OP_CM;
 
+<<<<<<< HEAD
 	return ib_post_send(tx->qp, &priv->tx_wr.wr, NULL);
+=======
+	return ib_post_send(tx->qp, &priv->tx_wr.wr, &bad_wr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void ipoib_cm_send(struct net_device *dev, struct sk_buff *skb, struct ipoib_cm_tx *tx)
@@ -710,7 +803,11 @@ void ipoib_cm_send(struct net_device *dev, struct sk_buff *skb, struct ipoib_cm_
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
 	struct ipoib_tx_buf *tx_req;
 	int rc;
+<<<<<<< HEAD
 	unsigned int usable_sge = tx->max_send_sge - !!skb_headlen(skb);
+=======
+	unsigned usable_sge = tx->max_send_sge - !!skb_headlen(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(skb->len > tx->mtu)) {
 		ipoib_warn(priv, "packet len %d (> %d) too long to send, dropping\n",
@@ -756,6 +853,7 @@ void ipoib_cm_send(struct net_device *dev, struct sk_buff *skb, struct ipoib_cm_
 		return;
 	}
 
+<<<<<<< HEAD
 	if ((priv->tx_head - priv->tx_tail) == ipoib_sendq_size - 1) {
 		ipoib_dbg(priv, "TX ring 0x%x full, stopping kernel net queue\n",
 			  tx->qp->qp_num);
@@ -787,6 +885,32 @@ void ipoib_cm_send(struct net_device *dev, struct sk_buff *skb, struct ipoib_cm_
 		netif_trans_update(dev);
 		++tx->tx_head;
 		++priv->tx_head;
+=======
+	skb_orphan(skb);
+	skb_dst_drop(skb);
+
+	rc = post_send(priv, tx, tx->tx_head & (ipoib_sendq_size - 1), tx_req);
+	if (unlikely(rc)) {
+		ipoib_warn(priv, "post_send failed, error %d\n", rc);
+		++dev->stats.tx_errors;
+		ipoib_dma_unmap_tx(priv, tx_req);
+		dev_kfree_skb_any(skb);
+	} else {
+		netif_trans_update(dev);
+		++tx->tx_head;
+
+		if (++priv->tx_outstanding == ipoib_sendq_size) {
+			ipoib_dbg(priv, "TX ring 0x%x full, stopping kernel net queue\n",
+				  tx->qp->qp_num);
+			netif_stop_queue(dev);
+			rc = ib_req_notify_cq(priv->send_cq,
+				IB_CQ_NEXT_COMP | IB_CQ_REPORT_MISSED_EVENTS);
+			if (rc < 0)
+				ipoib_warn(priv, "request notify on send CQ failed\n");
+			else if (rc)
+				ipoib_send_comp_handler(priv->send_cq, dev);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -820,11 +944,17 @@ void ipoib_cm_handle_tx_wc(struct net_device *dev, struct ib_wc *wc)
 	netif_tx_lock(dev);
 
 	++tx->tx_tail;
+<<<<<<< HEAD
 	++priv->tx_tail;
 
 	if (unlikely(netif_queue_stopped(dev) &&
 		     (priv->tx_head - priv->tx_tail) <= ipoib_sendq_size >> 1 &&
 		     test_bit(IPOIB_FLAG_ADMIN_UP, &priv->flags)))
+=======
+	if (unlikely(--priv->tx_outstanding == ipoib_sendq_size >> 1) &&
+	    netif_queue_stopped(dev) &&
+	    test_bit(IPOIB_FLAG_ADMIN_UP, &priv->flags))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_wake_queue(dev);
 
 	if (wc->status != IB_WC_SUCCESS &&
@@ -837,11 +967,19 @@ void ipoib_cm_handle_tx_wc(struct net_device *dev, struct ib_wc *wc)
 		if (wc->status == IB_WC_RNR_RETRY_EXC_ERR ||
 		    wc->status == IB_WC_RETRY_EXC_ERR)
 			ipoib_dbg(priv,
+<<<<<<< HEAD
 				  "%s: failed cm send event (status=%d, wrid=%d vend_err %#x)\n",
 				   __func__, wc->status, wr_id, wc->vendor_err);
 		else
 			ipoib_warn(priv,
 				    "%s: failed cm send event (status=%d, wrid=%d vend_err %#x)\n",
+=======
+				  "%s: failed cm send event (status=%d, wrid=%d vend_err 0x%x)\n",
+				   __func__, wc->status, wr_id, wc->vendor_err);
+		else
+			ipoib_warn(priv,
+				    "%s: failed cm send event (status=%d, wrid=%d vend_err 0x%x)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   __func__, wc->status, wr_id, wc->vendor_err);
 
 		spin_lock_irqsave(&priv->lock, flags);
@@ -877,7 +1015,11 @@ int ipoib_cm_dev_open(struct net_device *dev)
 
 	priv->cm.id = ib_create_cm_id(priv->ca, ipoib_cm_rx_handler, dev);
 	if (IS_ERR(priv->cm.id)) {
+<<<<<<< HEAD
 		pr_warn("%s: failed to create CM ID\n", priv->ca->name);
+=======
+		printk(KERN_WARNING "%s: failed to create CM ID\n", priv->ca->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = PTR_ERR(priv->cm.id);
 		goto err_cm;
 	}
@@ -885,8 +1027,13 @@ int ipoib_cm_dev_open(struct net_device *dev)
 	ret = ib_cm_listen(priv->cm.id, cpu_to_be64(IPOIB_CM_IETF_ID | priv->qp->qp_num),
 			   0);
 	if (ret) {
+<<<<<<< HEAD
 		pr_warn("%s: failed to listen on ID 0x%llx\n", priv->ca->name,
 			IPOIB_CM_IETF_ID | priv->qp->qp_num);
+=======
+		printk(KERN_WARNING "%s: failed to listen on ID 0x%llx\n", priv->ca->name,
+		       IPOIB_CM_IETF_ID | priv->qp->qp_num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_listen;
 	}
 
@@ -980,8 +1127,12 @@ void ipoib_cm_dev_stop(struct net_device *dev)
 	cancel_delayed_work(&priv->cm.stale_task);
 }
 
+<<<<<<< HEAD
 static int ipoib_cm_rep_handler(struct ib_cm_id *cm_id,
 				const struct ib_cm_event *event)
+=======
+static int ipoib_cm_rep_handler(struct ib_cm_id *cm_id, struct ib_cm_event *event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipoib_cm_tx *p = cm_id->context;
 	struct ipoib_dev_priv *priv = ipoib_priv(p->dev);
@@ -1056,7 +1207,11 @@ static struct ib_qp *ipoib_cm_create_tx_qp(struct net_device *dev, struct ipoib_
 {
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
 	struct ib_qp_init_attr attr = {
+<<<<<<< HEAD
 		.send_cq		= priv->send_cq,
+=======
+		.send_cq		= priv->recv_cq,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.recv_cq		= priv->recv_cq,
 		.srq			= priv->cm.srq,
 		.cap.max_send_wr	= ipoib_sendq_size,
@@ -1069,8 +1224,13 @@ static struct ib_qp *ipoib_cm_create_tx_qp(struct net_device *dev, struct ipoib_
 	struct ib_qp *tx_qp;
 
 	if (dev->features & NETIF_F_SG)
+<<<<<<< HEAD
 		attr.cap.max_send_sge = min_t(u32, priv->ca->attrs.max_send_sge,
 					      MAX_SKB_FRAGS + 1);
+=======
+		attr.cap.max_send_sge =
+			min_t(u32, priv->ca->attrs.max_sge, MAX_SKB_FRAGS + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tx_qp = ib_create_qp(priv->pd, &attr);
 	tx->max_send_sge = attr.cap.max_send_sge;
@@ -1095,7 +1255,11 @@ static int ipoib_cm_send_req(struct net_device *dev,
 	req.qp_num			= qp->qp_num;
 	req.qp_type			= qp->qp_type;
 	req.private_data		= &data;
+<<<<<<< HEAD
 	req.private_data_len		= sizeof(data);
+=======
+	req.private_data_len		= sizeof data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.flow_control		= 0;
 
 	req.starting_psn		= 0; /* FIXME */
@@ -1147,6 +1311,7 @@ static int ipoib_cm_tx_init(struct ipoib_cm_tx *p, u32 qpn,
 	int ret;
 
 	noio_flag = memalloc_noio_save();
+<<<<<<< HEAD
 	p->tx_ring = vzalloc(array_size(ipoib_sendq_size, sizeof(*p->tx_ring)));
 	if (!p->tx_ring) {
 		memalloc_noio_restore(noio_flag);
@@ -1154,6 +1319,14 @@ static int ipoib_cm_tx_init(struct ipoib_cm_tx *p, u32 qpn,
 		goto err_tx;
 	}
 	memset(p->tx_ring, 0, ipoib_sendq_size * sizeof(*p->tx_ring));
+=======
+	p->tx_ring = vzalloc(ipoib_sendq_size * sizeof(*p->tx_ring));
+	if (!p->tx_ring) {
+		ret = -ENOMEM;
+		goto err_tx;
+	}
+	memset(p->tx_ring, 0, ipoib_sendq_size * sizeof *p->tx_ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p->qp = ipoib_cm_create_tx_qp(p->dev, p);
 	memalloc_noio_restore(noio_flag);
@@ -1231,10 +1404,16 @@ timeout:
 		tx_req = &p->tx_ring[p->tx_tail & (ipoib_sendq_size - 1)];
 		ipoib_dma_unmap_tx(priv, tx_req);
 		dev_kfree_skb_any(tx_req->skb);
+<<<<<<< HEAD
 		netif_tx_lock_bh(p->dev);
 		++p->tx_tail;
 		++priv->tx_tail;
 		if (unlikely(priv->tx_head - priv->tx_tail == ipoib_sendq_size >> 1) &&
+=======
+		++p->tx_tail;
+		netif_tx_lock_bh(p->dev);
+		if (unlikely(--priv->tx_outstanding == ipoib_sendq_size >> 1) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    netif_queue_stopped(p->dev) &&
 		    test_bit(IPOIB_FLAG_ADMIN_UP, &priv->flags))
 			netif_wake_queue(p->dev);
@@ -1249,7 +1428,11 @@ timeout:
 }
 
 static int ipoib_cm_tx_handler(struct ib_cm_id *cm_id,
+<<<<<<< HEAD
 			       const struct ib_cm_event *event)
+=======
+			       struct ib_cm_event *event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ipoib_cm_tx *tx = cm_id->context;
 	struct ipoib_dev_priv *priv = ipoib_priv(tx->dev);
@@ -1306,12 +1489,20 @@ struct ipoib_cm_tx *ipoib_cm_create_tx(struct net_device *dev, struct ipoib_path
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
 	struct ipoib_cm_tx *tx;
 
+<<<<<<< HEAD
 	tx = kzalloc(sizeof(*tx), GFP_ATOMIC);
+=======
+	tx = kzalloc(sizeof *tx, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!tx)
 		return NULL;
 
 	neigh->cm = tx;
 	tx->neigh = neigh;
+<<<<<<< HEAD
+=======
+	tx->path = path;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx->dev = dev;
 	list_add(&tx->list, &priv->cm.start_list);
 	set_bit(IPOIB_FLAG_INITIALIZED, &tx->flags);
@@ -1370,7 +1561,11 @@ static void ipoib_cm_tx_start(struct work_struct *work)
 				neigh->daddr + QPN_AND_OPTIONS_OFFSET);
 			goto free_neigh;
 		}
+<<<<<<< HEAD
 		memcpy(&pathrec, &path->pathrec, sizeof(pathrec));
+=======
+		memcpy(&pathrec, &p->path->pathrec, sizeof pathrec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_unlock_irqrestore(&priv->lock, flags);
 		netif_tx_unlock_bh(dev);
@@ -1428,7 +1623,11 @@ static void ipoib_cm_skb_reap(struct work_struct *work)
 	struct net_device *dev = priv->dev;
 	struct sk_buff *skb;
 	unsigned long flags;
+<<<<<<< HEAD
 	unsigned int mtu = priv->mcast_mtu;
+=======
+	unsigned mtu = priv->mcast_mtu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_tx_lock_bh(dev);
 	spin_lock_irqsave(&priv->lock, flags);
@@ -1522,6 +1721,7 @@ static ssize_t set_mode(struct device *d, struct device_attribute *attr,
 {
 	struct net_device *dev = to_net_dev(d);
 	int ret;
+<<<<<<< HEAD
 
 	if (!rtnl_trylock()) {
 		return restart_syscall();
@@ -1532,6 +1732,21 @@ static ssize_t set_mode(struct device *d, struct device_attribute *attr,
 		return -EPERM;
 	}
 
+=======
+	struct ipoib_dev_priv *priv = ipoib_priv(dev);
+
+	if (test_bit(IPOIB_FLAG_GOING_DOWN, &priv->flags))
+		return -EPERM;
+
+	if (!mutex_trylock(&priv->sysfs_mutex))
+		return restart_syscall();
+
+	if (!rtnl_trylock()) {
+		mutex_unlock(&priv->sysfs_mutex);
+		return restart_syscall();
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ipoib_set_mode(dev, buf);
 
 	/* The assumption is that the function ipoib_set_mode returned
@@ -1540,6 +1755,10 @@ static ssize_t set_mode(struct device *d, struct device_attribute *attr,
 	 */
 	if (ret != -EBUSY)
 		rtnl_unlock();
+<<<<<<< HEAD
+=======
+	mutex_unlock(&priv->sysfs_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (!ret || ret == -EBUSY) ? count : ret;
 }
@@ -1564,15 +1783,24 @@ static void ipoib_cm_create_srq(struct net_device *dev, int max_sge)
 
 	priv->cm.srq = ib_create_srq(priv->pd, &srq_init_attr);
 	if (IS_ERR(priv->cm.srq)) {
+<<<<<<< HEAD
 		if (PTR_ERR(priv->cm.srq) != -EOPNOTSUPP)
 			pr_warn("%s: failed to allocate SRQ, error %ld\n",
+=======
+		if (PTR_ERR(priv->cm.srq) != -ENOSYS)
+			printk(KERN_WARNING "%s: failed to allocate SRQ, error %ld\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       priv->ca->name, PTR_ERR(priv->cm.srq));
 		priv->cm.srq = NULL;
 		return;
 	}
 
+<<<<<<< HEAD
 	priv->cm.srq_ring = vzalloc(array_size(ipoib_recvq_size,
 					       sizeof(*priv->cm.srq_ring)));
+=======
+	priv->cm.srq_ring = vzalloc(ipoib_recvq_size * sizeof *priv->cm.srq_ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->cm.srq_ring) {
 		ib_destroy_srq(priv->cm.srq);
 		priv->cm.srq = NULL;

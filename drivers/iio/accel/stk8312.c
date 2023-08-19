@@ -237,6 +237,10 @@ static int stk8312_data_rdy_trigger_set_state(struct iio_trigger *trig,
 
 static const struct iio_trigger_ops stk8312_trigger_ops = {
 	.set_trigger_state = stk8312_data_rdy_trigger_set_state,
+<<<<<<< HEAD
+=======
+	.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int stk8312_set_sample_rate(struct stk8312_data *data, u8 rate)
@@ -420,6 +424,10 @@ static int stk8312_write_raw(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info stk8312_info = {
+<<<<<<< HEAD
+=======
+	.driver_module		= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw		= stk8312_read_raw,
 	.write_raw		= stk8312_write_raw,
 	.attrs			= &stk8312_attribute_group,

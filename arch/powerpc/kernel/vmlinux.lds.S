@@ -89,7 +89,11 @@ SECTIONS
 	 */
 	.text BLOCK(0) : AT(ADDR(.text) - LOAD_OFFSET) {
 #ifdef CONFIG_LD_HEAD_STUB_CATCH
+<<<<<<< HEAD
 		KEEP(*(.linker_stub_catch));
+=======
+		*(.linker_stub_catch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		. = . ;
 #endif
 
@@ -98,7 +102,11 @@ SECTIONS
 		ALIGN_FUNCTION();
 #endif
 		/* careful! __ftr_alt_* sections need to be close to .text */
+<<<<<<< HEAD
 		*(.text.hot TEXT_MAIN .text.fixup .text.unlikely .fixup __ftr_alt_* .ref.text);
+=======
+		*(.text.hot .text .text.fixup .text.unlikely .fixup __ftr_alt_* .ref.text);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		SCHED_TEXT
 		CPUIDLE_TEXT
 		LOCK_TEXT
@@ -201,10 +209,17 @@ SECTIONS
 	.init.data : AT(ADDR(.init.data) - LOAD_OFFSET) {
 		INIT_DATA
 		__vtop_table_begin = .;
+<<<<<<< HEAD
 		KEEP(*(.vtop_fixup));
 		__vtop_table_end = .;
 		__ptov_table_begin = .;
 		KEEP(*(.ptov_fixup));
+=======
+		*(.vtop_fixup);
+		__vtop_table_end = .;
+		__ptov_table_begin = .;
+		*(.ptov_fixup);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__ptov_table_end = .;
 	}
 
@@ -225,26 +240,42 @@ SECTIONS
 	. = ALIGN(8);
 	__ftr_fixup : AT(ADDR(__ftr_fixup) - LOAD_OFFSET) {
 		__start___ftr_fixup = .;
+<<<<<<< HEAD
 		KEEP(*(__ftr_fixup))
+=======
+		*(__ftr_fixup)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__stop___ftr_fixup = .;
 	}
 	. = ALIGN(8);
 	__mmu_ftr_fixup : AT(ADDR(__mmu_ftr_fixup) - LOAD_OFFSET) {
 		__start___mmu_ftr_fixup = .;
+<<<<<<< HEAD
 		KEEP(*(__mmu_ftr_fixup))
+=======
+		*(__mmu_ftr_fixup)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__stop___mmu_ftr_fixup = .;
 	}
 	. = ALIGN(8);
 	__lwsync_fixup : AT(ADDR(__lwsync_fixup) - LOAD_OFFSET) {
 		__start___lwsync_fixup = .;
+<<<<<<< HEAD
 		KEEP(*(__lwsync_fixup))
+=======
+		*(__lwsync_fixup)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__stop___lwsync_fixup = .;
 	}
 #ifdef CONFIG_PPC64
 	. = ALIGN(8);
 	__fw_ftr_fixup : AT(ADDR(__fw_ftr_fixup) - LOAD_OFFSET) {
 		__start___fw_ftr_fixup = .;
+<<<<<<< HEAD
 		KEEP(*(__fw_ftr_fixup))
+=======
+		*(__fw_ftr_fixup)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__stop___fw_ftr_fixup = .;
 	}
 #endif
@@ -257,7 +288,11 @@ SECTIONS
 	. = ALIGN(8);
 	.machine.desc : AT(ADDR(.machine.desc) - LOAD_OFFSET) {
 		__machine_desc_start = . ;
+<<<<<<< HEAD
 		KEEP(*(.machine.desc))
+=======
+		*(.machine.desc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__machine_desc_end = . ;
 	}
 #ifdef CONFIG_RELOCATABLE
@@ -304,12 +339,16 @@ SECTIONS
 #ifdef CONFIG_PPC32
 	.data : AT(ADDR(.data) - LOAD_OFFSET) {
 		DATA_DATA
+<<<<<<< HEAD
 #ifdef CONFIG_UBSAN
 		*(.data..Lubsan_data*)
 		*(.data..Lubsan_type*)
 #endif
 		*(.data.rel*)
 		*(SDATA_MAIN)
+=======
+		*(.sdata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*(.sdata2)
 		*(.got.plt) *(.got)
 		*(.plt)
@@ -322,10 +361,21 @@ SECTIONS
 		*(.branch_lt)
 	}
 
+<<<<<<< HEAD
 	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
 		__start_opd = .;
 		KEEP(*(.opd))
 		__end_opd = .;
+=======
+#ifdef CONFIG_DEBUG_INFO_BTF
+	.BTF : AT(ADDR(.BTF) - LOAD_OFFSET) {
+		*(.BTF)
+	}
+#endif
+
+	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
+		*(.opd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	. = ALIGN(256);

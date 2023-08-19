@@ -75,10 +75,15 @@
 #include <asm/uv/uv.h>
 #include <linux/mc146818rtc.h>
 #include <asm/i8259.h>
+<<<<<<< HEAD
 #include <asm/misc.h>
 #include <asm/qspinlock.h>
 #include <asm/intel-family.h>
 #include <asm/cpu_device_id.h>
+=======
+#include <asm/realmode.h>
+#include <asm/misc.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/spec-ctrl.h>
 #include <asm/hw_irq.h>
 
@@ -97,12 +102,22 @@ DEFINE_PER_CPU_READ_MOSTLY(struct cpuinfo_x86, cpu_info);
 EXPORT_PER_CPU_SYMBOL(cpu_info);
 
 /* Logical package management. We might want to allocate that dynamically */
+<<<<<<< HEAD
+=======
+static int *physical_to_logical_pkg __read_mostly;
+static unsigned long *physical_package_map __read_mostly;;
+static unsigned int max_physical_pkg_id __read_mostly;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unsigned int __max_logical_packages __read_mostly;
 EXPORT_SYMBOL(__max_logical_packages);
 static unsigned int logical_packages __read_mostly;
 
 /* Maximum number of SMT threads on any online core */
+<<<<<<< HEAD
 int __read_mostly __max_smt_threads = 1;
+=======
+int __max_smt_threads __read_mostly;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Flag to indicate if a complete sched domain rebuild is required */
 bool x86_topology_update;
@@ -240,13 +255,18 @@ static void notrace start_secondary(void *unused)
 	/* otherwise gcc will move up smp_processor_id before the cpu_init */
 	barrier();
 	/*
+<<<<<<< HEAD
 	 * Check TSC synchronization with the boot CPU:
+=======
+	 * Check TSC synchronization with the BP:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	check_tsc_sync_target();
 
 	speculative_store_bypass_ht_init();
 
 	/*
+<<<<<<< HEAD
 	 * Lock vector_lock, set CPU online and bring the vector
 	 * allocator online. Online must be set with vector_lock held
 	 * to prevent a concurrent irq setup/teardown from seeing a
@@ -255,6 +275,16 @@ static void notrace start_secondary(void *unused)
 	lock_vector_lock();
 	set_cpu_online(smp_processor_id(), true);
 	lapic_online();
+=======
+	 * Lock vector_lock and initialize the vectors on this cpu
+	 * before setting the cpu online. We must set it online with
+	 * vector_lock held to prevent a concurrent setup/teardown
+	 * from seeing a half valid vector space.
+	 */
+	lock_vector_lock();
+	setup_vector_irq(smp_processor_id());
+	set_cpu_online(smp_processor_id(), true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unlock_vector_lock();
 	cpu_set_state_online(smp_processor_id());
 	x86_platform.nmi_init();
@@ -269,6 +299,55 @@ static void notrace start_secondary(void *unused)
 
 	wmb();
 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
+<<<<<<< HEAD
+=======
+
+	/*
+	 * Prevent tail call to cpu_startup_entry() because the stack protector
+	 * guard has been changed a couple of function calls up, in
+	 * boot_init_stack_canary() and must not be checked before tail calling
+	 * another function.
+	 */
+	prevent_tail_call_optimization();
+}
+
+/**
+ * topology_update_package_map - Update the physical to logical package map
+ * @pkg:	The physical package id as retrieved via CPUID
+ * @cpu:	The cpu for which this is updated
+ */
+int topology_update_package_map(unsigned int pkg, unsigned int cpu)
+{
+	unsigned int new;
+
+	/* Called from early boot ? */
+	if (!physical_package_map)
+		return 0;
+
+	if (pkg >= max_physical_pkg_id)
+		return -EINVAL;
+
+	/* Set the logical package id */
+	if (test_and_set_bit(pkg, physical_package_map))
+		goto found;
+
+	if (logical_packages >= __max_logical_packages) {
+		pr_warn("Package %u of CPU %u exceeds BIOS package data %u.\n",
+			logical_packages, cpu, __max_logical_packages);
+		return -ENOSPC;
+	}
+
+	new = logical_packages++;
+	if (new != pkg) {
+		pr_info("CPU %u Converting physical %u to logical package %u\n",
+			cpu, pkg, new);
+	}
+	physical_to_logical_pkg[pkg] = new;
+
+found:
+	cpu_data(cpu).logical_proc_id = physical_to_logical_pkg[pkg];
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -295,6 +374,7 @@ bool topology_smt_supported(void)
  */
 int topology_phys_to_logical_pkg(unsigned int phys_pkg)
 {
+<<<<<<< HEAD
 	int cpu;
 
 	for_each_possible_cpu(cpu) {
@@ -329,6 +409,64 @@ int topology_update_package_map(unsigned int pkg, unsigned int cpu)
 found:
 	cpu_data(cpu).logical_proc_id = new;
 	return 0;
+=======
+	if (phys_pkg >= max_physical_pkg_id)
+		return -1;
+	return physical_to_logical_pkg[phys_pkg];
+}
+EXPORT_SYMBOL(topology_phys_to_logical_pkg);
+
+static void __init smp_init_package_map(struct cpuinfo_x86 *c, unsigned int cpu)
+{
+	unsigned int ncpus;
+	size_t size;
+
+	/*
+	 * Today neither Intel nor AMD support heterogenous systems. That
+	 * might change in the future....
+	 *
+	 * While ideally we'd want '* smp_num_siblings' in the below @ncpus
+	 * computation, this won't actually work since some Intel BIOSes
+	 * report inconsistent HT data when they disable HT.
+	 *
+	 * In particular, they reduce the APIC-IDs to only include the cores,
+	 * but leave the CPUID topology to say there are (2) siblings.
+	 * This means we don't know how many threads there will be until
+	 * after the APIC enumeration.
+	 *
+	 * By not including this we'll sometimes over-estimate the number of
+	 * logical packages by the amount of !present siblings, but this is
+	 * still better than MAX_LOCAL_APIC.
+	 *
+	 * We use total_cpus not nr_cpu_ids because nr_cpu_ids can be limited
+	 * on the command line leading to a similar issue as the HT disable
+	 * problem because the hyperthreads are usually enumerated after the
+	 * primary cores.
+	 */
+	ncpus = boot_cpu_data.x86_max_cores;
+	if (!ncpus) {
+		pr_warn("x86_max_cores == zero !?!?");
+		ncpus = 1;
+	}
+
+	__max_logical_packages = DIV_ROUND_UP(total_cpus, ncpus);
+	logical_packages = 0;
+
+	/*
+	 * Possibly larger than what we need as the number of apic ids per
+	 * package can be smaller than the actual used apic ids.
+	 */
+	max_physical_pkg_id = DIV_ROUND_UP(MAX_LOCAL_APIC, ncpus);
+	size = max_physical_pkg_id * sizeof(unsigned int);
+	physical_to_logical_pkg = kmalloc(size, GFP_KERNEL);
+	memset(physical_to_logical_pkg, 0xff, size);
+	size = BITS_TO_LONGS(max_physical_pkg_id) * sizeof(unsigned long);
+	physical_package_map = kzalloc(size, GFP_KERNEL);
+
+	pr_info("Max logical packages: %u\n", __max_logical_packages);
+
+	topology_update_package_map(c->phys_proc_id, cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init smp_store_boot_cpu_info(void)
@@ -338,8 +476,12 @@ void __init smp_store_boot_cpu_info(void)
 
 	*c = boot_cpu_data;
 	c->cpu_index = id;
+<<<<<<< HEAD
 	topology_update_package_map(c->phys_proc_id, id);
 	c->initialized = true;
+=======
+	smp_init_package_map(c, id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -350,16 +492,23 @@ void smp_store_cpu_info(int id)
 {
 	struct cpuinfo_x86 *c = &cpu_data(id);
 
+<<<<<<< HEAD
 	/* Copy boot_cpu_data only on the first bringup */
 	if (!c->initialized)
 		*c = boot_cpu_data;
+=======
+	*c = boot_cpu_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c->cpu_index = id;
 	/*
 	 * During boot time, CPU0 has this setup already. Save the info when
 	 * bringing up AP or offlined CPU0.
 	 */
 	identify_secondary_cpu(c);
+<<<<<<< HEAD
 	c->initialized = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool
@@ -411,6 +560,7 @@ static bool match_smt(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
 	return false;
 }
 
+<<<<<<< HEAD
 /*
  * Define snc_cpu[] for SNC (Sub-NUMA Cluster) CPUs.
  *
@@ -431,10 +581,13 @@ static const struct x86_cpu_id snc_cpu[] = {
 	{}
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
 {
 	int cpu1 = c->cpu_index, cpu2 = o->cpu_index;
 
+<<<<<<< HEAD
 	/* Do not match if we do not have a valid APICID for cpu: */
 	if (per_cpu(cpu_llc_id, cpu1) == BAD_APICID)
 		return false;
@@ -452,6 +605,13 @@ static bool match_llc(struct cpuinfo_x86 *c, struct cpuinfo_x86 *o)
 		return false;
 
 	return topology_sane(c, o, "llc");
+=======
+	if (per_cpu(cpu_llc_id, cpu1) != BAD_APICID &&
+	    per_cpu(cpu_llc_id, cpu1) == per_cpu(cpu_llc_id, cpu2))
+		return topology_sane(c, o, "llc");
+
+	return false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -509,8 +669,12 @@ static struct sched_domain_topology_level x86_topology[] = {
 
 /*
  * Set if a package/die has multiple NUMA nodes inside.
+<<<<<<< HEAD
  * AMD Magny-Cours, Intel Cluster-on-Die, and Intel
  * Sub-NUMA Clustering have this.
+=======
+ * AMD Magny-Cours and Intel Cluster-on-Die have this.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static bool x86_has_numa_in_package;
 
@@ -987,7 +1151,11 @@ static int do_boot_cpu(int apicid, int cpu, struct task_struct *idle,
 	 * the targeted processor.
 	 */
 
+<<<<<<< HEAD
 	if (x86_platform.legacy.warm_reset) {
+=======
+	if (get_uv_system_type() != UV_NON_UNIQUE_APIC) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pr_debug("Setting warm reset code and vector.\n");
 
@@ -1059,7 +1227,11 @@ static int do_boot_cpu(int apicid, int cpu, struct task_struct *idle,
 	/* mark "stuck" area as not stuck */
 	*trampoline_status = 0;
 
+<<<<<<< HEAD
 	if (x86_platform.legacy.warm_reset) {
+=======
+	if (get_uv_system_type() != UV_NON_UNIQUE_APIC) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Cleanup possible dangling ends...
 		 */
@@ -1076,7 +1248,11 @@ int native_cpu_up(unsigned int cpu, struct task_struct *tidle)
 	unsigned long flags;
 	int err, ret = 0;
 
+<<<<<<< HEAD
 	lockdep_assert_irqs_enabled();
+=======
+	WARN_ON(irqs_disabled());
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("++++++++++++++++++++=_---CPU UP  %u\n", cpu);
 
@@ -1172,10 +1348,24 @@ static __init void disable_smp(void)
 	cpumask_set_cpu(0, topology_core_cpumask(0));
 }
 
+<<<<<<< HEAD
 /*
  * Various sanity checks.
  */
 static void __init smp_sanity_check(void)
+=======
+enum {
+	SMP_OK,
+	SMP_NO_CONFIG,
+	SMP_NO_APIC,
+	SMP_FORCE_UP,
+};
+
+/*
+ * Various sanity checks.
+ */
+static int __init smp_sanity_check(unsigned max_cpus)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	preempt_disable();
 
@@ -1213,6 +1403,19 @@ static void __init smp_sanity_check(void)
 	}
 
 	/*
+<<<<<<< HEAD
+=======
+	 * If we couldn't find an SMP configuration at boot time,
+	 * get out of here now!
+	 */
+	if (!smp_found_config && !acpi_lapic) {
+		preempt_enable();
+		pr_notice("SMP motherboard not detected\n");
+		return SMP_NO_CONFIG;
+	}
+
+	/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * Should not be necessary because the MP table should list the boot
 	 * CPU too, but we do it for the sake of robustness anyway.
 	 */
@@ -1222,6 +1425,32 @@ static void __init smp_sanity_check(void)
 		physid_set(hard_smp_processor_id(), phys_cpu_present_map);
 	}
 	preempt_enable();
+<<<<<<< HEAD
+=======
+
+	/*
+	 * If we couldn't find a local APIC, then get out of here now!
+	 */
+	if (APIC_INTEGRATED(boot_cpu_apic_version) &&
+	    !boot_cpu_has(X86_FEATURE_APIC)) {
+		if (!disable_apic) {
+			pr_err("BIOS bug, local APIC #%d not detected!...\n",
+				boot_cpu_physical_apicid);
+			pr_err("... forcing use of dummy APIC emulation (tell your hw vendor)\n");
+		}
+		return SMP_NO_APIC;
+	}
+
+	/*
+	 * If SMP should be disabled, then really disable it!
+	 */
+	if (!max_cpus) {
+		pr_info("SMP mode deactivated\n");
+		return SMP_FORCE_UP;
+	}
+
+	return SMP_OK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init smp_cpu_index_default(void)
@@ -1236,6 +1465,7 @@ static void __init smp_cpu_index_default(void)
 	}
 }
 
+<<<<<<< HEAD
 static void __init smp_get_logical_apicid(void)
 {
 	if (x2apic_mode)
@@ -1248,6 +1478,11 @@ static void __init smp_get_logical_apicid(void)
  * Prepare for SMP bootup.
  * @max_cpus: configured maximum number of CPUs, It is a legacy parameter
  *            for common interface support.
+=======
+/*
+ * Prepare for SMP bootup.  The MP table or ACPI has been read
+ * earlier.  Just do some sanity checking here and enable APIC mode.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void __init native_smp_prepare_cpus(unsigned int max_cpus)
 {
@@ -1279,6 +1514,7 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
 
 	set_cpu_sibling_map(0);
 
+<<<<<<< HEAD
 	smp_sanity_check();
 
 	switch (apic_intr_mode) {
@@ -1300,12 +1536,42 @@ void __init native_smp_prepare_cpus(unsigned int max_cpus)
 	x86_init.timers.setup_percpu_clockev();
 
 	smp_get_logical_apicid();
+=======
+	switch (smp_sanity_check(max_cpus)) {
+	case SMP_NO_CONFIG:
+		disable_smp();
+		if (APIC_init_uniprocessor())
+			pr_notice("Local APIC not detected. Using dummy APIC emulation.\n");
+		return;
+	case SMP_NO_APIC:
+		disable_smp();
+		return;
+	case SMP_FORCE_UP:
+		disable_smp();
+		apic_bsp_setup(false);
+		return;
+	case SMP_OK:
+		break;
+	}
+
+	if (read_apic_id() != boot_cpu_physical_apicid) {
+		panic("Boot APIC ID in local APIC unexpected (%d vs %d)",
+		     read_apic_id(), boot_cpu_physical_apicid);
+		/* Or can we switch back to PIC here? */
+	}
+
+	default_setup_apic_routing();
+	cpu0_logical_apicid = apic_bsp_setup(false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_info("CPU0: ");
 	print_cpu_info(&cpu_data(0));
 
+<<<<<<< HEAD
 	native_pv_lock_init();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uv_system_init();
 
 	set_mtrr_aps_delayed_init();
@@ -1337,6 +1603,7 @@ void __init native_smp_prepare_boot_cpu(void)
 	cpu_set_state_online(me);
 }
 
+<<<<<<< HEAD
 void __init calculate_max_logical_packages(void)
 {
 	int ncpus;
@@ -1350,17 +1617,26 @@ void __init calculate_max_logical_packages(void)
 	pr_info("Max logical packages: %u\n", __max_logical_packages);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init native_smp_cpus_done(unsigned int max_cpus)
 {
 	pr_debug("Boot done\n");
 
+<<<<<<< HEAD
 	calculate_max_logical_packages();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (x86_has_numa_in_package)
 		set_sched_topology(x86_numa_in_package_topology);
 
 	nmi_selftest();
 	impress_friends();
+<<<<<<< HEAD
+=======
+	setup_ioapic_dest();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtrr_aps_init();
 }
 
@@ -1492,6 +1768,10 @@ static void remove_siblinginfo(int cpu)
 	cpumask_clear(cpu_llc_shared_mask(cpu));
 	cpumask_clear(topology_sibling_cpumask(cpu));
 	cpumask_clear(topology_core_cpumask(cpu));
+<<<<<<< HEAD
+=======
+	c->phys_proc_id = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c->cpu_core_id = 0;
 	c->booted_cores = 0;
 	cpumask_clear_cpu(cpu, cpu_sibling_setup_mask);
@@ -1519,14 +1799,21 @@ void cpu_disable_common(void)
 	remove_cpu_from_maps(cpu);
 	unlock_vector_lock();
 	fixup_irqs();
+<<<<<<< HEAD
 	lapic_offline();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int native_cpu_disable(void)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = lapic_can_unplug_cpu();
+=======
+	ret = check_irq_vectors_for_cpu_disable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 

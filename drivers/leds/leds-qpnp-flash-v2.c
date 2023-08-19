@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt)	"flashv2: %s: " fmt, __func__
@@ -421,9 +434,16 @@ led_brightness qpnp_flash_led_brightness_get(struct led_classdev *led_cdev)
 	return led_cdev->brightness;
 }
 
+<<<<<<< HEAD
 static int qpnp_flash_led_headroom_config(struct qpnp_flash_led *led)
 {
 	int rc, i, addr_offset;
+=======
+static int qpnp_flash_led_init_settings(struct qpnp_flash_led *led)
+{
+	int rc, i, addr_offset;
+	u8 val = 0, mask, strobe_mask = 0, strobe_ctrl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < led->num_fnodes; i++) {
 		addr_offset = led->fnode[i].id;
@@ -432,6 +452,7 @@ static int qpnp_flash_led_headroom_config(struct qpnp_flash_led *led)
 			led->fnode[i].hdrm_val);
 		if (rc < 0)
 			return rc;
+<<<<<<< HEAD
 	}
 
 	return rc;
@@ -443,11 +464,17 @@ static int qpnp_flash_led_safety_tmr_config(struct qpnp_flash_led *led)
 
 	for (i = 0; i < led->num_fnodes; i++) {
 		addr_offset = led->fnode[i].id;
+=======
+
+		val |= 0x1 << led->fnode[i].id;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = qpnp_flash_led_write(led,
 			FLASH_LED_REG_SAFETY_TMR(led->base + addr_offset),
 			FLASH_LED_SAFETY_TMR_DISABLED);
 		if (rc < 0)
 			return rc;
+<<<<<<< HEAD
 	}
 
 	return rc;
@@ -460,6 +487,8 @@ static int qpnp_flash_led_strobe_config(struct qpnp_flash_led *led)
 
 	for (i = 0; i < led->num_fnodes; i++) {
 		val |= 0x1 << led->fnode[i].id;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (led->fnode[i].strobe_sel == HW_STROBE) {
 			if (led->fnode[i].id == LED3)
@@ -507,6 +536,7 @@ static int qpnp_flash_led_strobe_config(struct qpnp_flash_led *led)
 			return rc;
 	}
 
+<<<<<<< HEAD
 	return rc;
 }
 
@@ -514,6 +544,34 @@ static int qpnp_flash_led_thermal_config(struct qpnp_flash_led *led)
 {
 	int rc;
 	u8 val, mask;
+=======
+	rc = qpnp_flash_led_write(led,
+				FLASH_LED_REG_HDRM_AUTO_MODE_CTRL(led->base),
+				val);
+	if (rc < 0)
+		return rc;
+
+	rc = qpnp_flash_led_masked_write(led,
+			FLASH_LED_REG_ISC_DELAY(led->base),
+			FLASH_LED_ISC_WARMUP_DELAY_MASK,
+			led->pdata->isc_delay);
+	if (rc < 0)
+		return rc;
+
+	rc = qpnp_flash_led_masked_write(led,
+			FLASH_LED_REG_WARMUP_DELAY(led->base),
+			FLASH_LED_ISC_WARMUP_DELAY_MASK,
+			led->pdata->warmup_delay);
+	if (rc < 0)
+		return rc;
+
+	rc = qpnp_flash_led_masked_write(led,
+			FLASH_LED_REG_CURRENT_DERATE_EN(led->base),
+			FLASH_LED_CURRENT_DERATE_EN_MASK,
+			led->pdata->current_derate_en_cfg);
+	if (rc < 0)
+		return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val = (led->pdata->otst_ramp_bkup_en << THERMAL_OTST1_RAMP_CTRL_SHIFT);
 	mask = THERMAL_OTST1_RAMP_CTRL_MASK;
@@ -579,6 +637,7 @@ static int qpnp_flash_led_thermal_config(struct qpnp_flash_led *led)
 			return rc;
 	}
 
+<<<<<<< HEAD
 	return rc;
 }
 
@@ -630,6 +689,8 @@ static int qpnp_flash_led_init_settings(struct qpnp_flash_led *led)
 	if (rc < 0)
 		return rc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = qpnp_flash_led_masked_write(led,
 			FLASH_LED_REG_VPH_DROOP_DEBOUNCE(led->base),
 			FLASH_LED_VPH_DROOP_DEBOUNCE_MASK,
@@ -800,8 +861,16 @@ static int get_property_from_fg(struct qpnp_flash_led *led,
 	union power_supply_propval pval = {0, };
 
 	if (!led->bms_psy) {
+<<<<<<< HEAD
 		pr_err("no bms psy found\n");
 		return -EINVAL;
+=======
+		led->bms_psy = power_supply_get_by_name("bms");
+		if (!led->bms_psy) {
+			pr_err_ratelimited("Couldn't get bms_psy\n");
+			return -ENODEV;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rc = power_supply_get_property(led->bms_psy, prop, &pval);
@@ -1521,6 +1590,7 @@ static int qpnp_flash_poll_vreg_ok(struct qpnp_flash_led *led)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qpnp_flash_led_module_enable(struct flash_switch_data *snode)
 {
 	struct qpnp_flash_led *led = dev_get_drvdata(&snode->pdev->dev);
@@ -1555,6 +1625,12 @@ static int qpnp_flash_led_module_enable(struct flash_switch_data *snode)
 static int qpnp_flash_led_switch_set(struct flash_switch_data *snode, bool on)
 {
 	struct qpnp_flash_led *led = dev_get_drvdata(&snode->pdev->dev);
+=======
+static int qpnp_flash_led_switch_set(struct flash_switch_data *snode, bool on)
+{
+	struct qpnp_flash_led *led = dev_get_drvdata(&snode->pdev->dev);
+	u8 pmic_subtype = led->pdata->pmic_rev_id->pmic_subtype;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc, i, addr_offset;
 	u8 val, mask;
 
@@ -1643,9 +1719,33 @@ static int qpnp_flash_led_switch_set(struct flash_switch_data *snode, bool on)
 		}
 	}
 
+<<<<<<< HEAD
 	rc = qpnp_flash_led_module_enable(snode);
 	if (rc < 0)
 		return rc;
+=======
+	if (led->enable == 0) {
+		rc = qpnp_flash_led_masked_write(led,
+				FLASH_LED_REG_MOD_CTRL(led->base),
+				FLASH_LED_MOD_CTRL_MASK, FLASH_LED_MOD_ENABLE);
+		if (rc < 0)
+			return rc;
+
+		if (pmic_subtype == PMI632_SUBTYPE) {
+			rc = qpnp_flash_poll_vreg_ok(led);
+			if (rc < 0) {
+				/* Disable the module */
+				qpnp_flash_led_masked_write(led,
+					FLASH_LED_REG_MOD_CTRL(led->base),
+					FLASH_LED_MOD_CTRL_MASK,
+					FLASH_LED_DISABLE);
+
+				return rc;
+			}
+		}
+	}
+	led->enable++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (led->trigger_lmh) {
 		rc = qpnp_flash_led_masked_write(led,
@@ -1871,6 +1971,7 @@ static struct device_attribute qpnp_flash_led_attrs[] = {
 	__ATTR(enable, 0664, NULL, qpnp_flash_led_prepare_store),
 };
 
+<<<<<<< HEAD
 static int flash_led_psy_notifier_call(struct notifier_block *nb,
 		unsigned long ev, void *v)
 {
@@ -1906,6 +2007,8 @@ static int flash_led_psy_register_notifier(struct qpnp_flash_led *led)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* irq handler */
 static irqreturn_t qpnp_flash_led_irq_handler(int irq, void *_led)
 {
@@ -1990,6 +2093,7 @@ static inline u8 get_vph_droop_thresh_code(u32 val_mv)
 	return (val_mv / 100) - 25;
 }
 
+<<<<<<< HEAD
 static int qpnp_flash_led_parse_hw_strobe_dt(struct flash_node_data *fnode)
 {
 	struct device_node *node = fnode->cdev.dev->of_node;
@@ -2091,6 +2195,26 @@ static int qpnp_flash_led_parse_label_dt(struct flash_node_data *fnode,
 {
 	const char *temp_string;
 	int rc;
+=======
+static int qpnp_flash_led_parse_each_led_dt(struct qpnp_flash_led *led,
+			struct flash_node_data *fnode, struct device_node *node)
+{
+	const char *temp_string;
+	int rc, min_ma;
+	u32 val;
+	bool hw_strobe = 0, edge_trigger = 0, active_high = 0;
+	u8 pmic_subtype = led->pdata->pmic_rev_id->pmic_subtype;
+
+	fnode->pdev = led->pdev;
+	fnode->cdev.brightness_set = qpnp_flash_led_brightness_set;
+	fnode->cdev.brightness_get = qpnp_flash_led_brightness_get;
+
+	rc = of_property_read_string(node, "qcom,led-name", &fnode->cdev.name);
+	if (rc < 0) {
+		pr_err("Unable to read flash LED names\n");
+		return rc;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = of_property_read_string(node, "label", &temp_string);
 	if (!rc) {
@@ -2107,6 +2231,7 @@ static int qpnp_flash_led_parse_label_dt(struct flash_node_data *fnode,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	return rc;
 }
 
@@ -2131,6 +2256,8 @@ static int qpnp_flash_led_parse_each_led_dt(struct qpnp_flash_led *led,
 	if (rc < 0)
 		return rc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = of_property_read_u32(node, "qcom,id", &val);
 	if (!rc) {
 		fnode->id = (u8)val;
@@ -2230,9 +2357,58 @@ static int qpnp_flash_led_parse_each_led_dt(struct qpnp_flash_led *led,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	rc = qpnp_flash_led_parse_strobe_sel_dt(led, fnode, node);
 	if (rc < 0)
 		return rc;
+=======
+	fnode->strobe_sel = SW_STROBE;
+	rc = of_property_read_u32(node, "qcom,strobe-sel", &val);
+	if (rc < 0) {
+		if (rc != -EINVAL) {
+			pr_err("Unable to read qcom,strobe-sel property\n");
+			return rc;
+		}
+	} else {
+		if (val < SW_STROBE || val > LPG_STROBE) {
+			pr_err("Incorrect strobe selection specified %d\n",
+				val);
+			return -EINVAL;
+		}
+		fnode->strobe_sel = (u8)val;
+	}
+
+	/*
+	 * LPG strobe is allowed only for LED3 and HW strobe option should be
+	 * option 2 or 3.
+	 */
+	if (fnode->strobe_sel == LPG_STROBE) {
+		if (led->pdata->hw_strobe_option ==
+				FLASH_LED_HW_STROBE_OPTION_1) {
+			pr_err("Incorrect strobe option for LPG strobe\n");
+			return -EINVAL;
+		}
+		if (fnode->id != LED3) {
+			pr_err("Incorrect LED chosen for LPG strobe\n");
+			return -EINVAL;
+		}
+	}
+
+	if (fnode->strobe_sel == HW_STROBE) {
+		edge_trigger = of_property_read_bool(node,
+						"qcom,hw-strobe-edge-trigger");
+		active_high = !of_property_read_bool(node,
+						"qcom,hw-strobe-active-low");
+		hw_strobe = 1;
+	} else if (fnode->strobe_sel == LPG_STROBE) {
+		/* LPG strobe requires level trigger and active high */
+		edge_trigger = 0;
+		active_high =  1;
+		hw_strobe = 1;
+	}
+	fnode->strobe_ctrl = (hw_strobe << 2) | (edge_trigger << 1) |
+				active_high;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = led_classdev_register(&led->pdev->dev, &fnode->cdev);
 	if (rc < 0) {
@@ -2248,8 +2424,42 @@ static int qpnp_flash_led_parse_each_led_dt(struct qpnp_flash_led *led,
 		fnode->strobe_pinctrl = NULL;
 	}
 
+<<<<<<< HEAD
 	if (fnode->strobe_sel == HW_STROBE)
 		return qpnp_flash_led_parse_hw_strobe_dt(fnode);
+=======
+	if (fnode->strobe_sel == HW_STROBE) {
+		if (of_find_property(node, "qcom,hw-strobe-gpio", NULL)) {
+			fnode->hw_strobe_gpio = of_get_named_gpio(node,
+						"qcom,hw-strobe-gpio", 0);
+			if (fnode->hw_strobe_gpio < 0) {
+				pr_err("Invalid gpio specified\n");
+				return fnode->hw_strobe_gpio;
+			}
+			gpio_direction_output(fnode->hw_strobe_gpio, 0);
+		} else if (fnode->strobe_pinctrl) {
+			fnode->hw_strobe_gpio = -1;
+			fnode->hw_strobe_state_active =
+				pinctrl_lookup_state(fnode->strobe_pinctrl,
+							"strobe_enable");
+			if (IS_ERR_OR_NULL(fnode->hw_strobe_state_active)) {
+				pr_err("No active pin for hardware strobe, rc=%ld\n",
+					PTR_ERR(fnode->hw_strobe_state_active));
+				fnode->hw_strobe_state_active = NULL;
+			}
+
+			fnode->hw_strobe_state_suspend =
+				pinctrl_lookup_state(fnode->strobe_pinctrl,
+							"strobe_disable");
+			if (IS_ERR_OR_NULL(fnode->hw_strobe_state_suspend)) {
+				pr_err("No suspend pin for hardware strobe, rc=%ld\n",
+					PTR_ERR(fnode->hw_strobe_state_suspend)
+					);
+				fnode->hw_strobe_state_suspend = NULL;
+			}
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2367,12 +2577,79 @@ static int get_code_from_table(int *table, int len, int value)
 	return i;
 }
 
+<<<<<<< HEAD
 static int qpnp_flash_led_parse_thermal_config_dt(struct qpnp_flash_led *led,
 						struct device_node *node)
 {
 	int rc;
 	u32 val;
 	u8 pmic_subtype = led->pdata->pmic_rev_id->pmic_subtype;
+=======
+static int qpnp_flash_led_parse_common_dt(struct qpnp_flash_led *led,
+						struct device_node *node)
+{
+	struct device_node *revid_node;
+	int rc;
+	u32 val;
+	u8 pmic_subtype;
+	bool short_circuit_det, open_circuit_det, vph_droop_det;
+
+	revid_node = of_parse_phandle(node, "qcom,pmic-revid", 0);
+	if (!revid_node) {
+		pr_err("Missing qcom,pmic-revid property - driver failed\n");
+		return -EINVAL;
+	}
+
+	led->pdata->pmic_rev_id = get_revid_data(revid_node);
+	if (IS_ERR_OR_NULL(led->pdata->pmic_rev_id)) {
+		pr_err("Unable to get pmic_revid rc=%ld\n",
+			PTR_ERR(led->pdata->pmic_rev_id));
+		/*
+		 * the revid peripheral must be registered, any failure
+		 * here only indicates that the rev-id module has not
+		 * probed yet.
+		 */
+		return -EPROBE_DEFER;
+	}
+
+	pmic_subtype = led->pdata->pmic_rev_id->pmic_subtype;
+	pr_debug("PMIC subtype %d Digital major %d\n",
+		led->pdata->pmic_rev_id->pmic_subtype,
+		led->pdata->pmic_rev_id->rev4);
+
+	if (led->pdata->pmic_rev_id->pmic_subtype == PM8150L_SUBTYPE)
+		led->wa_flags |= PM8150L_IRES_WA;
+
+	led->pdata->hdrm_auto_mode_en = of_property_read_bool(node,
+							"qcom,hdrm-auto-mode");
+
+	led->pdata->isc_delay = FLASH_LED_ISC_DELAY_DEFAULT;
+	rc = of_property_read_u32(node, "qcom,isc-delay-us", &val);
+	if (!rc) {
+		led->pdata->isc_delay =
+				val >> FLASH_LED_ISC_WARMUP_DELAY_SHIFT;
+	} else if (rc != -EINVAL) {
+		pr_err("Unable to read ISC delay, rc=%d\n", rc);
+		return rc;
+	}
+
+	led->pdata->warmup_delay = FLASH_LED_WARMUP_DELAY_DEFAULT;
+	rc = of_property_read_u32(node, "qcom,warmup-delay-us", &val);
+	if (!rc) {
+		led->pdata->warmup_delay =
+				val >> FLASH_LED_ISC_WARMUP_DELAY_SHIFT;
+	} else if (rc != -EINVAL) {
+		pr_err("Unable to read WARMUP delay, rc=%d\n", rc);
+		return rc;
+	}
+
+	short_circuit_det =
+		of_property_read_bool(node, "qcom,short-circuit-det");
+	open_circuit_det = of_property_read_bool(node, "qcom,open-circuit-det");
+	vph_droop_det = of_property_read_bool(node, "qcom,vph-droop-det");
+	led->pdata->current_derate_en_cfg = (vph_droop_det << 2) |
+				(open_circuit_det << 1) | short_circuit_det;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	led->pdata->thermal_derate_en =
 		of_property_read_bool(node, "qcom,thermal-derate-en");
@@ -2500,6 +2777,7 @@ static int qpnp_flash_led_parse_thermal_config_dt(struct qpnp_flash_led *led,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -2510,6 +2788,8 @@ static int qpnp_flash_led_parse_vph_droop_config_dt(struct qpnp_flash_led *led,
 	u32 val;
 	u8 pmic_subtype = led->pdata->pmic_rev_id->pmic_subtype;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	led->pdata->vph_droop_debounce = FLASH_LED_VPH_DROOP_DEBOUNCE_DEFAULT;
 	rc = of_property_read_u32(node, "qcom,vph-droop-debounce-us", &val);
 	if (!rc) {
@@ -2563,6 +2843,7 @@ static int qpnp_flash_led_parse_vph_droop_config_dt(struct qpnp_flash_led *led,
 	}
 
 	led->pdata->vph_droop_hysteresis <<= FLASH_LED_VPH_DROOP_HYST_SHIFT;
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -2571,6 +2852,17 @@ static int qpnp_flash_led_parse_iclamp_config_dt(struct qpnp_flash_led *led,
 {
 	int rc;
 	u32 val;
+=======
+
+	led->pdata->hw_strobe_option = -EINVAL;
+	rc = of_property_read_u32(node, "qcom,hw-strobe-option", &val);
+	if (!rc) {
+		led->pdata->hw_strobe_option = val;
+	} else if (rc != -EINVAL) {
+		pr_err("Unable to parse hw strobe option, rc=%d\n", rc);
+		return rc;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = of_property_read_u32(node, "qcom,led1n2-iclamp-low-ma", &val);
 	if (!rc) {
@@ -2604,6 +2896,7 @@ static int qpnp_flash_led_parse_iclamp_config_dt(struct qpnp_flash_led *led,
 		return rc;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -2612,6 +2905,35 @@ static int qpnp_flash_led_parse_lmh_config_dt(struct qpnp_flash_led *led,
 {
 	int rc;
 	u32 val;
+=======
+	led->pdata->vled_max_uv = FLASH_LED_VLED_MAX_DEFAULT_UV;
+	rc = of_property_read_u32(node, "qcom,vled-max-uv", &val);
+	if (!rc) {
+		led->pdata->vled_max_uv = val;
+	} else if (rc != -EINVAL) {
+		pr_err("Unable to parse vled_max voltage, rc=%d\n", rc);
+		return rc;
+	}
+
+	led->pdata->ibatt_ocp_threshold_ua =
+		FLASH_LED_IBATT_OCP_THRESH_DEFAULT_UA;
+	rc = of_property_read_u32(node, "qcom,ibatt-ocp-threshold-ua", &val);
+	if (!rc) {
+		led->pdata->ibatt_ocp_threshold_ua = val;
+	} else if (rc != -EINVAL) {
+		pr_err("Unable to parse ibatt_ocp threshold, rc=%d\n", rc);
+		return rc;
+	}
+
+	led->pdata->rpara_uohm = FLASH_LED_RPARA_DEFAULT_UOHM;
+	rc = of_property_read_u32(node, "qcom,rparasitic-uohm", &val);
+	if (!rc) {
+		led->pdata->rpara_uohm = val;
+	} else if (rc != -EINVAL) {
+		pr_err("Unable to parse rparasitic, rc=%d\n", rc);
+		return rc;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	led->pdata->lmh_ocv_threshold_uv =
 		FLASH_LED_LMH_OCV_THRESH_DEFAULT_UV;
@@ -2656,6 +2978,7 @@ static int qpnp_flash_led_parse_lmh_config_dt(struct qpnp_flash_led *led,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -2689,6 +3012,8 @@ static int qpnp_flash_led_parse_chgr_mitigation_dt(struct qpnp_flash_led *led,
 	int rc;
 	u32 val;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmic_subtype == PMI632_SUBTYPE)
 		led->pdata->chgr_mitigation_sel =
 					FLASH_DISABLE_CHARGER_MITIGATION;
@@ -2708,6 +3033,7 @@ static int qpnp_flash_led_parse_chgr_mitigation_dt(struct qpnp_flash_led *led,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -2775,6 +3101,30 @@ static void qpnp_flash_led_parse_irqs_dt(struct qpnp_flash_led *led,
 					 struct device_node *node)
 
 {
+=======
+	led->pdata->iled_thrsh_val = FLASH_LED_CHGR_MITIGATION_THRSH_DEFAULT;
+	rc = of_property_read_u32(node, "qcom,iled-thrsh-ma", &val);
+	if (!rc) {
+		led->pdata->iled_thrsh_val = MITIGATION_THRSH_MA_TO_VAL(val);
+	} else if (rc != -EINVAL) {
+		pr_err("Unable to parse iled_thrsh_val, rc=%d\n", rc);
+		return rc;
+	}
+
+	if (led->pdata->iled_thrsh_val > FLASH_LED_CHGR_MITIGATION_THRSH_MAX) {
+		pr_err("Invalid iled_thrsh_val specified\n");
+		return -EINVAL;
+	}
+
+	led->pdata->bst_pwm_ovrhd_uv = FLASH_BST_PWM_OVRHD_MIN_UV;
+	rc = of_property_read_u32(node, "qcom,bst-pwm-ovrhd-uv", &val);
+	if (!rc) {
+		if (val >= FLASH_BST_PWM_OVRHD_MIN_UV &&
+					val <= FLASH_BST_PWM_OVRHD_MAX_UV)
+			led->pdata->bst_pwm_ovrhd_uv = val;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	led->pdata->all_ramp_up_done_irq =
 		of_irq_get_byname(node, "all-ramp-up-done-irq");
 	if (led->pdata->all_ramp_up_done_irq < 0)
@@ -2789,6 +3139,7 @@ static void qpnp_flash_led_parse_irqs_dt(struct qpnp_flash_led *led,
 		of_irq_get_byname(node, "led-fault-irq");
 	if (led->pdata->led_fault_irq < 0)
 		pr_debug("led-fault-irq not used\n");
+<<<<<<< HEAD
 }
 
 static int qpnp_flash_led_isc_delay_dt(struct qpnp_flash_led *led,
@@ -2976,6 +3327,8 @@ static int qpnp_flash_led_register_interrupts(struct qpnp_flash_led *led)
 			return rc;
 		}
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2985,6 +3338,10 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 	struct qpnp_flash_led *led;
 	struct device_node *node, *temp;
 	const char *temp_string;
+<<<<<<< HEAD
+=======
+	unsigned int base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc, i = 0, j = 0;
 
 	node = pdev->dev.of_node;
@@ -2993,6 +3350,16 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
+=======
+	rc = of_property_read_u32(node, "reg", &base);
+	if (rc < 0) {
+		pr_err("Couldn't find reg in node %s, rc = %d\n",
+			node->full_name, rc);
+		return rc;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	led = devm_kzalloc(&pdev->dev, sizeof(struct qpnp_flash_led),
 								GFP_KERNEL);
 	if (!led)
@@ -3004,18 +3371,28 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	led->base = base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	led->pdev = pdev;
 	led->pdata = devm_kzalloc(&pdev->dev,
 			sizeof(struct flash_led_platform_data), GFP_KERNEL);
 	if (!led->pdata)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	spin_lock_init(&led->lock);
 
 	rc = qpnp_flash_led_parse_common_dt(led, node);
 	if (rc < 0) {
 		pr_err("Failed to parse common flash LED device tree rc=%d\n",
 			rc);
+=======
+	rc = qpnp_flash_led_parse_common_dt(led, node);
+	if (rc < 0) {
+		pr_err("Failed to parse common flash LED device tree\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
@@ -3043,12 +3420,22 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 	}
 
 	led->fnode = devm_kcalloc(&pdev->dev, led->num_fnodes,
+<<<<<<< HEAD
 				sizeof(*led->fnode), GFP_KERNEL);
+=======
+				sizeof(*led->fnode),
+				GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!led->fnode)
 		return -ENOMEM;
 
 	led->snode = devm_kcalloc(&pdev->dev, led->num_snodes,
+<<<<<<< HEAD
 				sizeof(*led->snode), GFP_KERNEL);
+=======
+				sizeof(*led->snode),
+				GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!led->snode)
 		return -ENOMEM;
 
@@ -3086,6 +3473,7 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
 	rc = qpnp_flash_led_register_interrupts(led);
 	if (rc < 0)
 		goto error_switch_register;
@@ -3095,6 +3483,44 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 		rc = flash_led_psy_register_notifier(led);
 		if (rc < 0) {
 			pr_err("Couldn't register psy notifier, rc = %d\n", rc);
+=======
+	/* setup irqs */
+	if (led->pdata->all_ramp_up_done_irq >= 0) {
+		rc = devm_request_threaded_irq(&led->pdev->dev,
+			led->pdata->all_ramp_up_done_irq,
+			NULL, qpnp_flash_led_irq_handler,
+			IRQF_ONESHOT,
+			"qpnp_flash_led_all_ramp_up_done_irq", led);
+		if (rc < 0) {
+			pr_err("Unable to request all_ramp_up_done(%d) IRQ(err:%d)\n",
+				led->pdata->all_ramp_up_done_irq, rc);
+			goto error_switch_register;
+		}
+	}
+
+	if (led->pdata->all_ramp_down_done_irq >= 0) {
+		rc = devm_request_threaded_irq(&led->pdev->dev,
+			led->pdata->all_ramp_down_done_irq,
+			NULL, qpnp_flash_led_irq_handler,
+			IRQF_ONESHOT,
+			"qpnp_flash_led_all_ramp_down_done_irq", led);
+		if (rc < 0) {
+			pr_err("Unable to request all_ramp_down_done(%d) IRQ(err:%d)\n",
+				led->pdata->all_ramp_down_done_irq, rc);
+			goto error_switch_register;
+		}
+	}
+
+	if (led->pdata->led_fault_irq >= 0) {
+		rc = devm_request_threaded_irq(&led->pdev->dev,
+			led->pdata->led_fault_irq,
+			NULL, qpnp_flash_led_irq_handler,
+			IRQF_ONESHOT,
+			"qpnp_flash_led_fault_irq", led);
+		if (rc < 0) {
+			pr_err("Unable to request led_fault(%d) IRQ(err:%d)\n",
+				led->pdata->led_fault_irq, rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto error_switch_register;
 		}
 	}
@@ -3116,6 +3542,11 @@ static int qpnp_flash_led_probe(struct platform_device *pdev)
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	spin_lock_init(&led->lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_set_drvdata(&pdev->dev, led);
 
 	return 0;

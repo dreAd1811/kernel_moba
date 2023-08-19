@@ -135,7 +135,11 @@ static int parisc_driver_probe(struct device *dev)
 	return rc;
 }
 
+<<<<<<< HEAD
 static int __exit parisc_driver_remove(struct device *dev)
+=======
+static int parisc_driver_remove(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct parisc_device *pa_dev = to_parisc_device(dev);
 	struct parisc_driver *pa_drv = to_parisc_driver(dev->driver);
@@ -154,14 +158,27 @@ int register_parisc_driver(struct parisc_driver *driver)
 {
 	/* FIXME: we need this because apparently the sti
 	 * driver can be registered twice */
+<<<<<<< HEAD
 	if (driver->drv.name) {
 		pr_warn("BUG: skipping previously registered driver %s\n",
 			driver->name);
+=======
+	if(driver->drv.name) {
+		printk(KERN_WARNING 
+		       "BUG: skipping previously registered driver %s\n",
+		       driver->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 
 	if (!driver->probe) {
+<<<<<<< HEAD
 		pr_warn("BUG: driver %s has no probe routine\n", driver->name);
+=======
+		printk(KERN_WARNING 
+		       "BUG: driver %s has no probe routine\n",
+		       driver->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 
@@ -202,7 +219,11 @@ static int match_and_count(struct device * dev, void * data)
  * Use by IOMMU support to "guess" the right size IOPdir.
  * Formula is something like memsize/(num_iommu * entry_size).
  */
+<<<<<<< HEAD
 int __init count_parisc_driver(struct parisc_driver *driver)
+=======
+int count_parisc_driver(struct parisc_driver *driver)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct match_count m = {
 		.driver	= driver,
@@ -394,7 +415,11 @@ static void setup_bus_id(struct parisc_device *padev)
 	dev_set_name(&padev->dev, name);
 }
 
+<<<<<<< HEAD
 struct parisc_device * __init create_tree_node(char id, struct device *parent)
+=======
+struct parisc_device * create_tree_node(char id, struct device *parent)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct parisc_device *dev = kzalloc(sizeof(*dev), GFP_KERNEL);
 	if (!dev)
@@ -469,7 +494,11 @@ static struct parisc_device *create_parisc_device(struct hardware_path *modpath)
 	return alloc_tree_node(parent, modpath->mod);
 }
 
+<<<<<<< HEAD
 struct parisc_device * __init
+=======
+struct parisc_device *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 alloc_pa_dev(unsigned long hpa, struct hardware_path *mod_path)
 {
 	int status;
@@ -488,9 +517,18 @@ alloc_pa_dev(unsigned long hpa, struct hardware_path *mod_path)
 
 	dev = create_parisc_device(mod_path);
 	if (dev->id.hw_type != HPHW_FAULTY) {
+<<<<<<< HEAD
 		pr_err("Two devices have hardware path [%s].  IODC data for second device: %7phN\n"
 		       "Rearranging GSC cards sometimes helps\n",
 			parisc_pathname(dev), iodc_data);
+=======
+		printk(KERN_ERR "Two devices have hardware path [%s].  "
+				"IODC data for second device: "
+				"%02x%02x%02x%02x%02x%02x\n"
+				"Rearranging GSC cards sometimes helps\n",
+			parisc_pathname(dev), iodc_data[0], iodc_data[1],
+			iodc_data[3], iodc_data[4], iodc_data[5], iodc_data[6]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 
@@ -522,7 +560,12 @@ alloc_pa_dev(unsigned long hpa, struct hardware_path *mod_path)
 	 * the keyboard controller
 	 */
 	if ((hpa & 0xfff) == 0 && insert_resource(&iomem_resource, &dev->hpa))
+<<<<<<< HEAD
 		pr_warn("Unable to claim HPA %lx for device %s\n", hpa, name);
+=======
+		printk("Unable to claim HPA %lx for device %s\n",
+				hpa, name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return dev;
 }
@@ -603,7 +646,11 @@ struct bus_type parisc_bus_type = {
 	.uevent = parisc_uevent,
 	.dev_groups = parisc_device_groups,
 	.probe = parisc_driver_probe,
+<<<<<<< HEAD
 	.remove = __exit_p(parisc_driver_remove),
+=======
+	.remove = parisc_driver_remove,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -613,7 +660,11 @@ struct bus_type parisc_bus_type = {
  * Search the driver list for a driver that is willing to manage
  * this device.
  */
+<<<<<<< HEAD
 int __init register_parisc_device(struct parisc_device *dev)
+=======
+int register_parisc_device(struct parisc_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!dev)
 		return 0;
@@ -789,7 +840,11 @@ EXPORT_SYMBOL(device_to_hwpath);
 static void walk_native_bus(unsigned long io_io_low, unsigned long io_io_high,
                             struct device *parent);
 
+<<<<<<< HEAD
 static void walk_lower_bus(struct parisc_device *dev)
+=======
+void walk_lower_bus(struct parisc_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long io_io_low, io_io_high;
 
@@ -855,7 +910,11 @@ static void __init walk_native_bus(unsigned long io_io_low,
  * PDC doesn't tell us about all devices in the system.  This routine
  * finds devices connected to the central bus.
  */
+<<<<<<< HEAD
 void __init walk_central_bus(void)
+=======
+void walk_central_bus(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	walk_native_bus(CENTRAL_BUS_ADDR,
 			CENTRAL_BUS_ADDR + (MAX_NATIVE_DEVICES * NATIVE_DEVICE_OFFSET),
@@ -868,7 +927,11 @@ static void print_parisc_device(struct parisc_device *dev)
 	static int count;
 
 	print_pa_hwpath(dev, hw_path);
+<<<<<<< HEAD
 	pr_info("%d. %s at 0x%px [%s] { %d, 0x%x, 0x%.3x, 0x%.5x }",
+=======
+	printk(KERN_INFO "%d. %s at 0x%p [%s] { %d, 0x%x, 0x%.3x, 0x%.5x }",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		++count, dev->name, (void*) dev->hpa.start, hw_path, dev->id.hw_type,
 		dev->id.hversion_rev, dev->id.hversion, dev->id.sversion);
 
@@ -884,7 +947,11 @@ static void print_parisc_device(struct parisc_device *dev)
 /**
  * init_parisc_bus - Some preparation to be done before inventory
  */
+<<<<<<< HEAD
 void __init init_parisc_bus(void)
+=======
+void init_parisc_bus(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (bus_register(&parisc_bus_type))
 		panic("Could not register PA-RISC bus type\n");
@@ -893,6 +960,7 @@ void __init init_parisc_bus(void)
 	get_device(&root);
 }
 
+<<<<<<< HEAD
 static __init void qemu_header(void)
 {
 	int num;
@@ -1058,6 +1126,8 @@ static __init int qemu_print_iodc_data(struct device *lin_dev, void *data)
 }
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int print_one_device(struct device * dev, void * data)
 {
@@ -1071,6 +1141,7 @@ static int print_one_device(struct device * dev, void * data)
 /**
  * print_parisc_devices - Print out a list of devices found in this system
  */
+<<<<<<< HEAD
 void __init print_parisc_devices(void)
 {
 	for_each_padev(print_one_device, NULL);
@@ -1080,4 +1151,9 @@ void __init print_parisc_devices(void)
 		for_each_padev(qemu_print_iodc_data, NULL);
 		qemu_footer();
 	}
+=======
+void print_parisc_devices(void)
+{
+	for_each_padev(print_one_device, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

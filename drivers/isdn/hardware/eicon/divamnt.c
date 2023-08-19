@@ -98,6 +98,7 @@ void diva_os_get_time(dword *sec, dword *usec)
 /*
  * device node operations
  */
+<<<<<<< HEAD
 static __poll_t maint_poll(struct file *file, poll_table *wait)
 {
 	__poll_t mask = 0;
@@ -106,6 +107,16 @@ static __poll_t maint_poll(struct file *file, poll_table *wait)
 	mask = EPOLLOUT | EPOLLWRNORM;
 	if (file->private_data || diva_dbg_q_length()) {
 		mask |= EPOLLIN | EPOLLRDNORM;
+=======
+static unsigned int maint_poll(struct file *file, poll_table *wait)
+{
+	unsigned int mask = 0;
+
+	poll_wait(file, &msgwaitq, wait);
+	mask = POLLOUT | POLLWRNORM;
+	if (file->private_data || diva_dbg_q_length()) {
+		mask |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return (mask);
 }

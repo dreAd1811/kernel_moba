@@ -154,7 +154,11 @@ void *crypto_alloc_context(struct nitrox_device *ndev)
 	if (!chdr)
 		return NULL;
 
+<<<<<<< HEAD
 	vaddr = dma_pool_alloc(ndev->ctx_pool, (GFP_KERNEL | __GFP_ZERO), &dma);
+=======
+	vaddr = dma_pool_alloc(ndev->ctx_pool, (GFP_ATOMIC | __GFP_ZERO), &dma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vaddr) {
 		kfree(chdr);
 		return NULL;

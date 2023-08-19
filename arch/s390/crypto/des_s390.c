@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Cryptographic API.
  *
@@ -7,6 +10,15 @@
  * Copyright IBM Corp. 2003, 2011
  * Author(s): Thomas Spatzier
  *	      Jan Glauber (jan.glauber@de.ibm.com)
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/init.h>
@@ -14,7 +26,10 @@
 #include <linux/cpufeature.h>
 #include <linux/crypto.h>
 #include <linux/fips.h>
+<<<<<<< HEAD
 #include <linux/mutex.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <crypto/algapi.h>
 #include <crypto/des.h>
 #include <asm/cpacf.h>
@@ -22,7 +37,11 @@
 #define DES3_KEY_SIZE	(3 * DES_KEY_SIZE)
 
 static u8 *ctrblk;
+<<<<<<< HEAD
 static DEFINE_MUTEX(ctrblk_lock);
+=======
+static DEFINE_SPINLOCK(ctrblk_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static cpacf_mask_t km_functions, kmc_functions, kmctr_functions;
 
@@ -388,7 +407,11 @@ static int ctr_desall_crypt(struct blkcipher_desc *desc, unsigned long fc,
 	unsigned int n, nbytes;
 	int ret, locked;
 
+<<<<<<< HEAD
 	locked = mutex_trylock(&ctrblk_lock);
+=======
+	locked = spin_trylock(&ctrblk_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = blkcipher_walk_virt_block(desc, walk, DES_BLOCK_SIZE);
 	while ((nbytes = walk->nbytes) >= DES_BLOCK_SIZE) {
@@ -405,7 +428,11 @@ static int ctr_desall_crypt(struct blkcipher_desc *desc, unsigned long fc,
 		ret = blkcipher_walk_done(desc, walk, nbytes - n);
 	}
 	if (locked)
+<<<<<<< HEAD
 		mutex_unlock(&ctrblk_lock);
+=======
+		spin_unlock(&ctrblk_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* final block may be < DES_BLOCK_SIZE, copy only nbytes */
 	if (nbytes) {
 		cpacf_kmctr(fc, ctx->key, buf, walk->src.virt.addr,

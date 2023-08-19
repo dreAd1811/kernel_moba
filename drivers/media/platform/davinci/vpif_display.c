@@ -102,7 +102,11 @@ static int vpif_buffer_prepare(struct vb2_buffer *vb)
  * @vq: vb2_queue ptr
  * @nbuffers: ptr to number of buffers requested by application
  * @nplanes:: contains number of distinct video planes needed to hold a frame
+<<<<<<< HEAD
  * @sizes: contains the size (in bytes) of each plane.
+=======
+ * @sizes[]: contains the size (in bytes) of each plane.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @alloc_devs: ptr to allocation context
  *
  * This callback function is called when reqbuf() is called to adjust
@@ -158,7 +162,11 @@ static void vpif_buffer_queue(struct vb2_buffer *vb)
 
 /**
  * vpif_start_streaming : Starts the DMA engine for streaming
+<<<<<<< HEAD
  * @vq: ptr to vb2_buffer
+=======
+ * @vb: ptr to vb2_buffer
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @count: number of buffers
  */
 static int vpif_start_streaming(struct vb2_queue *vq, unsigned int count)
@@ -766,9 +774,15 @@ static int vpif_enum_output(struct file *file, void *fh,
 
 /**
  * vpif_output_to_subdev() - Maps output to sub device
+<<<<<<< HEAD
  * @vpif_cfg: global config ptr
  * @chan_cfg: channel config ptr
  * @index: Given output index from application
+=======
+ * @vpif_cfg - global config ptr
+ * @chan_cfg - channel config ptr
+ * @index - Given output index from application
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * lookup the sub device information for a given output index.
  * we report all the output to application. output table also
@@ -802,9 +816,15 @@ vpif_output_to_subdev(struct vpif_display_config *vpif_cfg,
 
 /**
  * vpif_set_output() - Select an output
+<<<<<<< HEAD
  * @vpif_cfg: global config ptr
  * @ch: channel
  * @index: Given output index from application
+=======
+ * @vpif_cfg - global config ptr
+ * @ch - channel
+ * @index - Given output index from application
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Select the given output.
  */
@@ -1240,11 +1260,14 @@ static int vpif_async_complete(struct v4l2_async_notifier *notifier)
 	return vpif_probe_complete();
 }
 
+<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations vpif_async_ops = {
 	.bound = vpif_async_bound,
 	.complete = vpif_async_complete,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vpif_probe: This function creates device entries by register itself to the
  * V4L2 driver and initializes fields of each channel objects
@@ -1324,7 +1347,12 @@ static __init int vpif_probe(struct platform_device *pdev)
 	} else {
 		vpif_obj.notifier.subdevs = vpif_obj.config->asd;
 		vpif_obj.notifier.num_subdevs = vpif_obj.config->asd_sizes[0];
+<<<<<<< HEAD
 		vpif_obj.notifier.ops = &vpif_async_ops;
+=======
+		vpif_obj.notifier.bound = vpif_async_bound;
+		vpif_obj.notifier.complete = vpif_async_complete;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = v4l2_async_notifier_register(&vpif_obj.v4l2_dev,
 						   &vpif_obj.notifier);
 		if (err) {

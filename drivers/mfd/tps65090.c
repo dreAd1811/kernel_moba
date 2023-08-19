@@ -192,8 +192,15 @@ static int tps65090_i2c_probe(struct i2c_client *client,
 		irq_base = pdata->irq_base;
 
 	tps65090 = devm_kzalloc(&client->dev, sizeof(*tps65090), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!tps65090)
 		return -ENOMEM;
+=======
+	if (!tps65090) {
+		dev_err(&client->dev, "mem alloc for tps65090 failed\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tps65090->dev = &client->dev;
 	i2c_set_clientdata(client, tps65090);

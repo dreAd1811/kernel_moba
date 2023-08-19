@@ -26,7 +26,11 @@
 #include <linux/iio/sw_device.h>
 #include "iio_simple_dummy.h"
 
+<<<<<<< HEAD
 static const struct config_item_type iio_dummy_type = {
+=======
+static struct config_item_type iio_dummy_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_owner = THIS_MODULE,
 };
 
@@ -519,6 +523,10 @@ static int iio_dummy_write_raw(struct iio_dev *indio_dev,
  * Device type specific information.
  */
 static const struct iio_info iio_dummy_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &iio_dummy_read_raw,
 	.write_raw = &iio_dummy_write_raw,
 #ifdef CONFIG_IIO_SIMPLE_DUMMY_EVENTS

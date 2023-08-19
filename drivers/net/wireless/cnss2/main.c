@@ -1,5 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2016-2020, The Linux Foundation. All rights reserved. */
+=======
+/* Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/delay.h>
 #include <linux/jiffies.h>
@@ -7,11 +21,17 @@
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/pm_wakeup.h>
+<<<<<<< HEAD
 #include <linux/reboot.h>
 #include <linux/rwsem.h>
 #include <linux/suspend.h>
 #include <linux/timer.h>
 #include <soc/qcom/minidump.h>
+=======
+#include <linux/rwsem.h>
+#include <linux/suspend.h>
+#include <linux/timer.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <soc/qcom/ramdump.h>
 #include <soc/qcom/subsystem_notif.h>
 
@@ -31,20 +51,44 @@
 #define FW_READY_TIMEOUT		20000
 #define FW_ASSERT_TIMEOUT		5000
 #define CNSS_EVENT_PENDING		2989
+<<<<<<< HEAD
 #define COLD_BOOT_CAL_SHUTDOWN_DELAY_MS	50
 
 #define CNSS_QUIRKS_DEFAULT		0
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_CNSS_EMULATION
 #define CNSS_MHI_TIMEOUT_DEFAULT	90000
 #else
 #define CNSS_MHI_TIMEOUT_DEFAULT	0
 #endif
+<<<<<<< HEAD
 #define CNSS_MHI_M2_TIMEOUT_DEFAULT	25
 #define CNSS_QMI_TIMEOUT_DEFAULT	10000
 #define CNSS_BDF_TYPE_DEFAULT		CNSS_BDF_ELF
 #define CNSS_TIME_SYNC_PERIOD_DEFAULT	900000
 
 static struct cnss_plat_data *plat_env;
+=======
+#define CNSS_QMI_TIMEOUT_DEFAULT	10000
+#define CNSS_BDF_TYPE_DEFAULT		CNSS_BDF_ELF
+
+#ifdef CONFIG_CNSS_SUPPORT_DUAL_DEV
+#define CNSS_DUAL_WLAN		1
+#else
+#define CNSS_DUAL_WLAN		0
+#endif
+
+#ifdef CONFIG_CNSS_SUPPORT_DUAL_DEV
+static struct cnss_plat_data *plat_env[CNSS_MAX_DEV_NUM];
+static int plat_env_count;
+#else
+static struct cnss_plat_data *plat_env;
+#endif
+
+static bool pm_notify_registered;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static DECLARE_RWSEM(cnss_pm_sem);
 
@@ -67,6 +111,83 @@ struct cnss_driver_event {
 	void *data;
 };
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_CNSS_SUPPORT_DUAL_DEV
+static void cnss_set_plat_priv(struct platform_device *plat_dev,
+			       struct cnss_plat_data *plat_priv)
+{
+	cnss_pr_dbg("Set plat_priv at %d", plat_env_count);
+	if (plat_priv) {
+		plat_priv->idx = plat_env_count;
+		plat_env[plat_priv->idx] = plat_priv;
+		plat_env_count++;
+	}
+}
+
+struct cnss_plat_data *cnss_get_plat_priv(struct platform_device
+						 *plat_dev)
+{
+	int i;
+
+	if (!plat_dev)
+		return NULL;
+
+	for (i = 0; i < plat_env_count; i++) {
+		if (plat_env[i]->plat_dev == plat_dev)
+			return plat_env[i];
+	}
+	return NULL;
+}
+
+static void cnss_clear_plat_priv(struct cnss_plat_data *plat_priv)
+{
+	cnss_pr_dbg("Clear plat_priv at %d", plat_priv->idx);
+	plat_env[plat_priv->idx] = NULL;
+	plat_env_count--;
+}
+
+static int cnss_set_device_name(struct cnss_plat_data *plat_priv)
+{
+	snprintf(plat_priv->device_name, sizeof(plat_priv->device_name),
+		 "wlan_%d", plat_priv->idx);
+
+	return 0;
+}
+
+static int cnss_plat_env_available(void)
+{
+	int ret = 0;
+
+	if (plat_env_count >= CNSS_MAX_DEV_NUM) {
+		cnss_pr_err("ERROR: No space to store plat_priv\n");
+		ret = -ENOMEM;
+	}
+	return ret;
+}
+
+int cnss_get_plat_env_count(void)
+{
+	return plat_env_count;
+}
+
+struct cnss_plat_data *cnss_get_plat_env(int index)
+{
+	return plat_env[index];
+}
+
+struct cnss_plat_data *cnss_get_plat_priv_by_rc_num(int rc_num)
+{
+	int i;
+
+	for (i = 0; i < plat_env_count; i++) {
+		if (plat_env[i]->rc_num == rc_num)
+			return plat_env[i];
+	}
+	return NULL;
+}
+#else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cnss_set_plat_priv(struct platform_device *plat_dev,
 			       struct cnss_plat_data *plat_priv)
 {
@@ -78,6 +199,38 @@ struct cnss_plat_data *cnss_get_plat_priv(struct platform_device *plat_dev)
 	return plat_env;
 }
 
+<<<<<<< HEAD
+=======
+static void cnss_clear_plat_priv(struct cnss_plat_data *plat_priv)
+{
+	plat_env = NULL;
+}
+
+static int cnss_set_device_name(struct cnss_plat_data *plat_priv)
+{
+	snprintf(plat_priv->device_name, sizeof(plat_priv->device_name),
+		 "wlan");
+	return 0;
+}
+
+static int cnss_plat_env_available(void)
+{
+	return 0;
+}
+
+struct cnss_plat_data *cnss_get_plat_priv_by_rc_num(int rc_num)
+{
+	return cnss_bus_dev_to_plat_priv(NULL);
+}
+
+#endif
+
+bool cnss_get_dual_wlan(void)
+{
+	return CNSS_DUAL_WLAN;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cnss_pm_notify(struct notifier_block *b,
 			  unsigned long event, void *p)
 {
@@ -178,8 +331,13 @@ int cnss_request_bus_bandwidth(struct device *dev, int bandwidth)
 	case CNSS_BUS_WIDTH_MEDIUM:
 	case CNSS_BUS_WIDTH_HIGH:
 	case CNSS_BUS_WIDTH_VERY_HIGH:
+<<<<<<< HEAD
 		ret = msm_bus_scale_client_update_request
 			(bus_bw_info->bus_client, bandwidth);
+=======
+		ret = msm_bus_scale_client_update_request(
+			bus_bw_info->bus_client, bandwidth);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ret)
 			bus_bw_info->current_bw_vote = bandwidth;
 		else
@@ -240,6 +398,12 @@ int cnss_wlan_enable(struct device *dev,
 	struct cnss_plat_data *plat_priv = cnss_bus_dev_to_plat_priv(dev);
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	if (!plat_priv)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (plat_priv->device_id == QCA6174_DEVICE_ID)
 		return 0;
 
@@ -257,6 +421,12 @@ int cnss_wlan_enable(struct device *dev,
 	if (mode == CNSS_WALTEST || mode == CNSS_CCPM)
 		goto skip_cfg;
 
+<<<<<<< HEAD
+=======
+	if (plat_priv->device_id == QCN7605_DEVICE_ID)
+		config->send_msi_ce = true;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = cnss_wlfw_wlan_cfg_send_sync(plat_priv, config, host_version);
 	if (ret)
 		goto out;
@@ -271,7 +441,13 @@ EXPORT_SYMBOL(cnss_wlan_enable);
 int cnss_wlan_disable(struct device *dev, enum cnss_driver_mode mode)
 {
 	struct cnss_plat_data *plat_priv = cnss_bus_dev_to_plat_priv(dev);
+<<<<<<< HEAD
 	int ret = 0;
+=======
+
+	if (!plat_priv)
+		return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (plat_priv->device_id == QCA6174_DEVICE_ID)
 		return 0;
@@ -279,10 +455,14 @@ int cnss_wlan_disable(struct device *dev, enum cnss_driver_mode mode)
 	if (test_bit(QMI_BYPASS, &plat_priv->ctrl_params.quirks))
 		return 0;
 
+<<<<<<< HEAD
 	ret = cnss_wlfw_wlan_mode_send_sync(plat_priv, CNSS_OFF);
 	cnss_bus_free_qdss_mem(plat_priv);
 
 	return ret;
+=======
+	return cnss_wlfw_wlan_mode_send_sync(plat_priv, CNSS_OFF);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(cnss_wlan_disable);
 
@@ -348,6 +528,12 @@ int cnss_set_fw_log_mode(struct device *dev, u8 fw_log_mode)
 {
 	struct cnss_plat_data *plat_priv = cnss_bus_dev_to_plat_priv(dev);
 
+<<<<<<< HEAD
+=======
+	if (!plat_priv)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (plat_priv->device_id == QCA6174_DEVICE_ID)
 		return 0;
 
@@ -355,6 +541,27 @@ int cnss_set_fw_log_mode(struct device *dev, u8 fw_log_mode)
 }
 EXPORT_SYMBOL(cnss_set_fw_log_mode);
 
+<<<<<<< HEAD
+=======
+int cnss_set_pcie_gen_speed(struct device *dev, u8 pcie_gen_speed)
+{
+	struct cnss_plat_data *plat_priv = cnss_bus_dev_to_plat_priv(dev);
+
+	if (plat_priv->device_id != QCA6490_DEVICE_ID ||
+	    !plat_priv->fw_pcie_gen_switch)
+		return -ENOTSUPP;
+
+	if (pcie_gen_speed < QMI_PCIE_GEN_SPEED_1_V01 ||
+	    pcie_gen_speed > QMI_PCIE_GEN_SPEED_3_V01)
+		return -EINVAL;
+
+	cnss_pr_dbg("WLAN provided PCIE gen speed: %d\n", pcie_gen_speed);
+	plat_priv->pcie_gen_speed = pcie_gen_speed;
+	return 0;
+}
+EXPORT_SYMBOL(cnss_set_pcie_gen_speed);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cnss_fw_mem_ready_hdlr(struct cnss_plat_data *plat_priv)
 {
 	int ret = 0;
@@ -370,11 +577,23 @@ static int cnss_fw_mem_ready_hdlr(struct cnss_plat_data *plat_priv)
 
 	cnss_wlfw_bdf_dnld_send_sync(plat_priv, CNSS_BDF_REGDB);
 
+<<<<<<< HEAD
+=======
+	if (plat_priv->device_id == QCN7605_DEVICE_ID)
+		plat_priv->ctrl_params.bdf_type = CNSS_BDF_BIN;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = cnss_wlfw_bdf_dnld_send_sync(plat_priv,
 					   plat_priv->ctrl_params.bdf_type);
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
+=======
+	if (plat_priv->device_id == QCN7605_DEVICE_ID)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = cnss_bus_load_m3(plat_priv);
 	if (ret)
 		goto out;
@@ -388,6 +607,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int cnss_request_antenna_sharing(struct cnss_plat_data *plat_priv)
 {
 	int ret = 0;
@@ -420,6 +640,8 @@ static void cnss_release_antenna_sharing(struct cnss_plat_data *plat_priv)
 		coex_antenna_switch_to_mdm_send_sync_msg(plat_priv);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cnss_fw_ready_hdlr(struct cnss_plat_data *plat_priv)
 {
 	int ret = 0;
@@ -431,6 +653,11 @@ static int cnss_fw_ready_hdlr(struct cnss_plat_data *plat_priv)
 	set_bit(CNSS_FW_READY, &plat_priv->driver_state);
 	clear_bit(CNSS_DEV_ERR_NOTIFY, &plat_priv->driver_state);
 
+<<<<<<< HEAD
+=======
+	cnss_wlfw_send_pcie_gen_speed_sync(plat_priv);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (test_bit(CNSS_FW_BOOT_RECOVERY, &plat_priv->driver_state)) {
 		clear_bit(CNSS_FW_BOOT_RECOVERY, &plat_priv->driver_state);
 		clear_bit(CNSS_DRIVER_RECOVERY, &plat_priv->driver_state);
@@ -440,7 +667,10 @@ static int cnss_fw_ready_hdlr(struct cnss_plat_data *plat_priv)
 		ret = cnss_wlfw_wlan_mode_send_sync(plat_priv,
 						    CNSS_WALTEST);
 	} else if (test_bit(CNSS_COLD_BOOT_CAL, &plat_priv->driver_state)) {
+<<<<<<< HEAD
 		cnss_request_antenna_sharing(plat_priv);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = cnss_wlfw_wlan_mode_send_sync(plat_priv,
 						    CNSS_CALIBRATION);
 	} else {
@@ -452,8 +682,11 @@ static int cnss_fw_ready_hdlr(struct cnss_plat_data *plat_priv)
 	else if (ret)
 		goto shutdown;
 
+<<<<<<< HEAD
 	cnss_vreg_unvote_type(plat_priv, CNSS_VREG_PRIM);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 shutdown:
@@ -466,6 +699,18 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int cnss_cal_update_hdlr(struct cnss_plat_data *plat_priv)
+{
+	/* QCN7605 store the cal data sent by FW to calDB memory area
+	 * get out of this after complete data is uploaded. FW is expected
+	 * to send cal done
+	 */
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static char *cnss_driver_event_to_str(enum cnss_driver_event_type type)
 {
 	switch (type) {
@@ -483,6 +728,13 @@ static char *cnss_driver_event_to_str(enum cnss_driver_event_type type)
 		return "COLD_BOOT_CAL_START";
 	case CNSS_DRIVER_EVENT_COLD_BOOT_CAL_DONE:
 		return "COLD_BOOT_CAL_DONE";
+<<<<<<< HEAD
+=======
+	case CNSS_DRIVER_EVENT_CAL_UPDATE:
+		return "COLD_BOOT_CAL_DATA_UPDATE";
+	case CNSS_DRIVER_EVENT_CAL_DOWNLOAD:
+		return "COLD_BOOT_CAL_DATA_DOWNLOAD";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case CNSS_DRIVER_EVENT_REGISTER_DRIVER:
 		return "REGISTER_DRIVER";
 	case CNSS_DRIVER_EVENT_UNREGISTER_DRIVER:
@@ -557,10 +809,15 @@ int cnss_driver_event_post(struct cnss_plat_data *plat_priv,
 	if (!(flags & CNSS_EVENT_SYNC))
 		goto out;
 
+<<<<<<< HEAD
 	if (flags & CNSS_EVENT_UNKILLABLE)
 		wait_for_completion(&event->complete);
 	else if (flags & CNSS_EVENT_UNINTERRUPTIBLE)
 		ret = wait_for_completion_killable(&event->complete);
+=======
+	if (flags & CNSS_EVENT_UNINTERRUPTIBLE)
+		wait_for_completion(&event->complete);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		ret = wait_for_completion_interruptible(&event->complete);
 
@@ -667,6 +924,7 @@ int cnss_idle_restart(struct device *dev)
 
 	cnss_pr_dbg("Doing idle restart\n");
 
+<<<<<<< HEAD
 	reinit_completion(&plat_priv->power_up_complete);
 
 	if (test_bit(CNSS_IN_REBOOT, &plat_priv->driver_state)) {
@@ -675,6 +933,8 @@ int cnss_idle_restart(struct device *dev)
 		goto out;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = cnss_driver_event_post(plat_priv,
 				     CNSS_DRIVER_EVENT_IDLE_RESTART,
 				     CNSS_EVENT_SYNC_UNINTERRUPTIBLE, NULL);
@@ -687,10 +947,16 @@ int cnss_idle_restart(struct device *dev)
 	}
 
 	timeout = cnss_get_boot_timeout(dev);
+<<<<<<< HEAD
+=======
+
+	reinit_completion(&plat_priv->power_up_complete);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = wait_for_completion_timeout(&plat_priv->power_up_complete,
 					  msecs_to_jiffies(timeout) << 2);
 	if (!ret) {
 		cnss_pr_err("Timeout waiting for idle restart to complete\n");
+<<<<<<< HEAD
 		ret = -ETIMEDOUT;
 		goto out;
 	}
@@ -699,6 +965,9 @@ int cnss_idle_restart(struct device *dev)
 		cnss_pr_dbg("Reboot or shutdown is in progress, ignore idle restart\n");
 		del_timer(&plat_priv->fw_boot_timer);
 		ret = -EINVAL;
+=======
+		ret = -EAGAIN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -749,12 +1018,17 @@ static int cnss_get_resources(struct cnss_plat_data *plat_priv)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	ret = cnss_get_vreg_type(plat_priv, CNSS_VREG_PRIM);
+=======
+	ret = cnss_get_vreg(plat_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		cnss_pr_err("Failed to get vreg, err = %d\n", ret);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	ret = cnss_get_clk(plat_priv);
 	if (ret) {
 		cnss_pr_err("Failed to get clocks, err = %d\n", ret);
@@ -773,14 +1047,28 @@ put_clk:
 	cnss_put_clk(plat_priv);
 put_vreg:
 	cnss_put_vreg_type(plat_priv, CNSS_VREG_PRIM);
+=======
+	ret = cnss_get_pinctrl(plat_priv);
+	if (ret) {
+		cnss_pr_err("Failed to get pinctrl, err = %d\n", ret);
+		goto out;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return ret;
 }
 
 static void cnss_put_resources(struct cnss_plat_data *plat_priv)
 {
+<<<<<<< HEAD
 	cnss_put_clk(plat_priv);
 	cnss_put_vreg_type(plat_priv, CNSS_VREG_PRIM);
+=======
+	cnss_put_pinctrl(plat_priv);
+	cnss_put_vreg(plat_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cnss_modem_notifier_nb(struct notifier_block *nb,
@@ -875,9 +1163,15 @@ static void cnss_unregister_esoc(struct cnss_plat_data *plat_priv)
 	esoc_info = &plat_priv->esoc_info;
 
 	if (esoc_info->notify_modem_status)
+<<<<<<< HEAD
 		subsys_notif_unregister_notifier
 		(esoc_info->modem_notify_handler,
 		 &plat_priv->modem_nb);
+=======
+		subsys_notif_unregister_notifier(
+			esoc_info->modem_notify_handler,
+			&plat_priv->modem_nb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (esoc_info->esoc_desc)
 		devm_unregister_esoc_client(dev, esoc_info->esoc_desc);
 }
@@ -898,7 +1192,11 @@ static int cnss_subsys_powerup(const struct subsys_desc *subsys_desc)
 	}
 
 	if (!plat_priv->driver_state) {
+<<<<<<< HEAD
 		cnss_pr_dbg("Powerup is ignored\n");
+=======
+		cnss_pr_dbg("subsys powerup is ignored\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -922,7 +1220,11 @@ static int cnss_subsys_shutdown(const struct subsys_desc *subsys_desc,
 	}
 
 	if (!plat_priv->driver_state) {
+<<<<<<< HEAD
 		cnss_pr_dbg("shutdown is ignored\n");
+=======
+		cnss_pr_dbg("subsys shutdown is ignored\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1023,10 +1325,13 @@ static int cnss_do_recovery(struct cnss_plat_data *plat_priv,
 
 	switch (reason) {
 	case CNSS_REASON_LINK_DOWN:
+<<<<<<< HEAD
 		if (!cnss_bus_check_link_status(plat_priv)) {
 			cnss_pr_dbg("Skip link down recovery as link is already up\n");
 			return 0;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (test_bit(LINK_DOWN_SELF_RECOVERY,
 			     &plat_priv->ctrl_params.quirks))
 			goto self_recovery;
@@ -1074,12 +1379,15 @@ static int cnss_driver_recovery_hdlr(struct cnss_plat_data *plat_priv,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if (test_bit(CNSS_IN_REBOOT, &plat_priv->driver_state)) {
 		cnss_pr_err("Reboot is in progress, ignore recovery\n");
 		ret = -EINVAL;
 		goto out;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (test_bit(CNSS_DRIVER_RECOVERY, &plat_priv->driver_state)) {
 		cnss_pr_err("Recovery is already in progress\n");
 		ret = -EINVAL;
@@ -1170,7 +1478,11 @@ int cnss_force_fw_assert(struct device *dev)
 		return -EOPNOTSUPP;
 	}
 
+<<<<<<< HEAD
 	if (cnss_bus_is_device_down(plat_priv)) {
+=======
+	if (cnss_pci_is_device_down(dev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cnss_pr_info("Device is already in bad state, ignore force assert\n");
 		return 0;
 	}
@@ -1191,6 +1503,30 @@ int cnss_force_fw_assert(struct device *dev)
 }
 EXPORT_SYMBOL(cnss_force_fw_assert);
 
+<<<<<<< HEAD
+=======
+static int cnss_wlfw_server_arrive_hdlr(struct cnss_plat_data *plat_priv,
+					void *data)
+{
+	int ret;
+	unsigned int bdf_type;
+
+	ret = cnss_wlfw_server_arrive(plat_priv, data);
+	if (ret)
+		goto out;
+
+	if (!cnss_bus_req_mem_ind_valid(plat_priv)) {
+		ret = cnss_wlfw_tgt_cap_send_sync(plat_priv);
+		if (ret)
+			goto out;
+		bdf_type = plat_priv->ctrl_params.bdf_type;
+		ret = cnss_wlfw_bdf_dnld_send_sync(plat_priv, bdf_type);
+	}
+out:
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cnss_force_collect_rddm(struct device *dev)
 {
 	struct cnss_plat_data *plat_priv = cnss_bus_dev_to_plat_priv(dev);
@@ -1206,7 +1542,11 @@ int cnss_force_collect_rddm(struct device *dev)
 		return -EOPNOTSUPP;
 	}
 
+<<<<<<< HEAD
 	if (cnss_bus_is_device_down(plat_priv)) {
+=======
+	if (cnss_pci_is_device_down(dev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cnss_pr_info("Device is already in bad state, ignore force collect rddm\n");
 		return 0;
 	}
@@ -1241,23 +1581,31 @@ EXPORT_SYMBOL(cnss_force_collect_rddm);
 
 int cnss_qmi_send_get(struct device *dev)
 {
+<<<<<<< HEAD
 	struct cnss_plat_data *plat_priv = cnss_bus_dev_to_plat_priv(dev);
 
 	if (!test_bit(CNSS_QMI_WLFW_CONNECTED, &plat_priv->driver_state))
 		return 0;
 
 	return cnss_bus_qmi_send_get(plat_priv);
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(cnss_qmi_send_get);
 
 int cnss_qmi_send_put(struct device *dev)
 {
+<<<<<<< HEAD
 	struct cnss_plat_data *plat_priv = cnss_bus_dev_to_plat_priv(dev);
 
 	if (!test_bit(CNSS_QMI_WLFW_CONNECTED, &plat_priv->driver_state))
 		return 0;
 
 	return cnss_bus_qmi_send_put(plat_priv);
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(cnss_qmi_send_put);
 
@@ -1265,6 +1613,7 @@ int cnss_qmi_send(struct device *dev, int type, void *cmd,
 		  int cmd_len, void *cb_ctx,
 		  int (*cb)(void *ctx, void *event, int event_len))
 {
+<<<<<<< HEAD
 	struct cnss_plat_data *plat_priv = cnss_bus_dev_to_plat_priv(dev);
 	int ret;
 
@@ -1284,6 +1633,9 @@ int cnss_qmi_send(struct device *dev, int type, void *cmd,
 	}
 
 	return ret;
+=======
+	return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(cnss_qmi_send);
 
@@ -1310,6 +1662,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int cnss_cold_boot_cal_done_hdlr(struct cnss_plat_data *plat_priv,
 					void *data)
 {
@@ -1342,6 +1695,25 @@ static int cnss_cold_boot_cal_done_hdlr(struct cnss_plat_data *plat_priv,
 
 out:
 	kfree(data);
+=======
+static int cnss_cold_boot_cal_done_hdlr(struct cnss_plat_data *plat_priv)
+{
+	if (!test_bit(CNSS_COLD_BOOT_CAL, &plat_priv->driver_state))
+		return 0;
+
+	plat_priv->cal_done = true;
+	cnss_wlfw_wlan_mode_send_sync(plat_priv, CNSS_OFF);
+	if (plat_priv->device_id == QCN7605_DEVICE_ID ||
+	    plat_priv->device_id == QCN7605_STANDALONE_DEVICE_ID ||
+	    plat_priv->device_id == QCN7605_COMPOSITE_DEVICE_ID)
+		goto skip_shutdown;
+	cnss_bus_dev_shutdown(plat_priv);
+
+skip_shutdown:
+	complete(&plat_priv->cal_complete);
+	clear_bit(CNSS_COLD_BOOT_CAL, &plat_priv->driver_state);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1440,8 +1812,13 @@ static int cnss_qdss_trace_save_hdlr(struct cnss_plat_data *plat_priv,
 			va = cnss_qdss_trace_pa_to_va(plat_priv, pa,
 						      size, &seg_id);
 			if (!va) {
+<<<<<<< HEAD
 				cnss_pr_err("Fail to find matching va for pa %pa\n",
 					    &pa);
+=======
+				cnss_pr_err("Fail to find matching va for pa 0x%llx\n",
+					    pa);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = -EINVAL;
 				break;
 			}
@@ -1496,7 +1873,12 @@ static void cnss_driver_event_work(struct work_struct *work)
 
 		switch (event->type) {
 		case CNSS_DRIVER_EVENT_SERVER_ARRIVE:
+<<<<<<< HEAD
 			ret = cnss_wlfw_server_arrive(plat_priv, event->data);
+=======
+			ret = cnss_wlfw_server_arrive_hdlr(plat_priv,
+							   event->data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case CNSS_DRIVER_EVENT_SERVER_EXIT:
 			ret = cnss_wlfw_server_exit(plat_priv);
@@ -1516,9 +1898,17 @@ static void cnss_driver_event_work(struct work_struct *work)
 		case CNSS_DRIVER_EVENT_COLD_BOOT_CAL_START:
 			ret = cnss_cold_boot_cal_start_hdlr(plat_priv);
 			break;
+<<<<<<< HEAD
 		case CNSS_DRIVER_EVENT_COLD_BOOT_CAL_DONE:
 			ret = cnss_cold_boot_cal_done_hdlr(plat_priv,
 							   event->data);
+=======
+		case CNSS_DRIVER_EVENT_CAL_UPDATE:
+			ret = cnss_cal_update_hdlr(plat_priv);
+			break;
+		case CNSS_DRIVER_EVENT_COLD_BOOT_CAL_DONE:
+			ret = cnss_cold_boot_cal_done_hdlr(plat_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case CNSS_DRIVER_EVENT_REGISTER_DRIVER:
 			ret = cnss_bus_register_driver_hdlr(plat_priv,
@@ -1583,6 +1973,7 @@ static void cnss_driver_event_work(struct work_struct *work)
 	cnss_pm_relax(plat_priv);
 }
 
+<<<<<<< HEAD
 int cnss_va_to_pa(struct device *dev, size_t size, void *va, dma_addr_t dma,
 		  phys_addr_t *pa, unsigned long attrs)
 {
@@ -1602,6 +1993,8 @@ int cnss_va_to_pa(struct device *dev, size_t size, void *va, dma_addr_t dma,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int cnss_register_subsys(struct cnss_plat_data *plat_priv)
 {
 	int ret = 0;
@@ -1609,7 +2002,11 @@ int cnss_register_subsys(struct cnss_plat_data *plat_priv)
 
 	subsys_info = &plat_priv->subsys_info;
 
+<<<<<<< HEAD
 	subsys_info->subsys_desc.name = "wlan";
+=======
+	subsys_info->subsys_desc.name = plat_priv->device_name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	subsys_info->subsys_desc.owner = THIS_MODULE;
 	subsys_info->subsys_desc.powerup = cnss_subsys_powerup;
 	subsys_info->subsys_desc.shutdown = cnss_subsys_shutdown;
@@ -1668,8 +2065,12 @@ static int cnss_init_dump_entry(struct cnss_plat_data *plat_priv)
 	dump_entry.id = MSM_DUMP_DATA_CNSS_WLAN;
 	dump_entry.addr = virt_to_phys(&ramdump_info->dump_data);
 
+<<<<<<< HEAD
 	return msm_dump_data_register_nominidump(MSM_DUMP_TABLE_APPS,
 						&dump_entry);
+=======
+	return msm_dump_data_register(MSM_DUMP_TABLE_APPS, &dump_entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cnss_register_ramdump_v1(struct cnss_plat_data *plat_priv)
@@ -1684,7 +2085,12 @@ static int cnss_register_ramdump_v1(struct cnss_plat_data *plat_priv)
 	subsys_info = &plat_priv->subsys_info;
 	ramdump_info = &plat_priv->ramdump_info;
 
+<<<<<<< HEAD
 	if (of_property_read_u32(dev->of_node, "qcom,wlan-ramdump-dynamic",
+=======
+	if (of_property_read_u32(plat_priv->dev_node,
+				 "qcom,wlan-ramdump-dynamic",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 &ramdump_size) == 0) {
 		ramdump_info->ramdump_va =
 			dma_alloc_coherent(dev, ramdump_size,
@@ -1709,9 +2115,14 @@ static int cnss_register_ramdump_v1(struct cnss_plat_data *plat_priv)
 		goto free_ramdump;
 	}
 
+<<<<<<< HEAD
 	ramdump_info->ramdump_dev =
 		create_ramdump_device(subsys_info->subsys_desc.name,
 				      subsys_info->subsys_desc.dev);
+=======
+	ramdump_info->ramdump_dev = create_ramdump_device(
+		subsys_info->subsys_desc.name, subsys_info->subsys_desc.dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ramdump_info->ramdump_dev) {
 		cnss_pr_err("Failed to create ramdump device!");
 		ret = -ENOMEM;
@@ -1750,14 +2161,22 @@ static int cnss_register_ramdump_v2(struct cnss_plat_data *plat_priv)
 	struct cnss_ramdump_info_v2 *info_v2;
 	struct cnss_dump_data *dump_data;
 	struct msm_dump_entry dump_entry;
+<<<<<<< HEAD
 	struct device *dev = &plat_priv->plat_dev->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 ramdump_size = 0;
 
 	subsys_info = &plat_priv->subsys_info;
 	info_v2 = &plat_priv->ramdump_info_v2;
 	dump_data = &info_v2->dump_data;
 
+<<<<<<< HEAD
 	if (of_property_read_u32(dev->of_node, "qcom,wlan-ramdump-dynamic",
+=======
+	if (of_property_read_u32(plat_priv->dev_node,
+				 "qcom,wlan-ramdump-dynamic",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 &ramdump_size) == 0)
 		info_v2->ramdump_size = ramdump_size;
 
@@ -1776,8 +2195,12 @@ static int cnss_register_ramdump_v2(struct cnss_plat_data *plat_priv)
 	dump_entry.id = MSM_DUMP_DATA_CNSS_WLAN;
 	dump_entry.addr = virt_to_phys(dump_data);
 
+<<<<<<< HEAD
 	ret = msm_dump_data_register_nominidump(MSM_DUMP_TABLE_APPS,
 						&dump_entry);
+=======
+	ret = msm_dump_data_register(MSM_DUMP_TABLE_APPS, &dump_entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		cnss_pr_err("Failed to setup dump table, err = %d\n", ret);
 		goto free_ramdump;
@@ -1824,9 +2247,18 @@ int cnss_register_ramdump(struct cnss_plat_data *plat_priv)
 		break;
 	case QCA6290_DEVICE_ID:
 	case QCA6390_DEVICE_ID:
+<<<<<<< HEAD
 	case QCA6490_DEVICE_ID:
 		ret = cnss_register_ramdump_v2(plat_priv);
 		break;
+=======
+	case QCN7605_DEVICE_ID:
+		ret = cnss_register_ramdump_v2(plat_priv);
+		break;
+	case QCN7605_COMPOSITE_DEVICE_ID:
+	case QCN7605_STANDALONE_DEVICE_ID:
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unknown device ID: 0x%lx\n", plat_priv->device_id);
 		ret = -ENODEV;
@@ -1843,15 +2275,25 @@ void cnss_unregister_ramdump(struct cnss_plat_data *plat_priv)
 		break;
 	case QCA6290_DEVICE_ID:
 	case QCA6390_DEVICE_ID:
+<<<<<<< HEAD
 	case QCA6490_DEVICE_ID:
 		cnss_unregister_ramdump_v2(plat_priv);
 		break;
+=======
+	case QCN7605_DEVICE_ID:
+		cnss_unregister_ramdump_v2(plat_priv);
+		break;
+	case QCN7605_COMPOSITE_DEVICE_ID:
+	case QCN7605_STANDALONE_DEVICE_ID:
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		cnss_pr_err("Unknown device ID: 0x%lx\n", plat_priv->device_id);
 		break;
 	}
 }
 
+<<<<<<< HEAD
 int cnss_minidump_add_region(struct cnss_plat_data *plat_priv,
 			     enum cnss_fw_dump_type type, int seg_no,
 			     void *va, phys_addr_t pa, size_t size)
@@ -1933,6 +2375,8 @@ int cnss_minidump_remove_region(struct cnss_plat_data *plat_priv,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cnss_register_bus_scale(struct cnss_plat_data *plat_priv)
 {
 	int ret = 0;
@@ -1944,8 +2388,13 @@ static int cnss_register_bus_scale(struct cnss_plat_data *plat_priv)
 		msm_bus_cl_get_pdata(plat_priv->plat_dev);
 	if (bus_bw_info->bus_scale_table)  {
 		bus_bw_info->bus_client =
+<<<<<<< HEAD
 			msm_bus_scale_register_client
 			(bus_bw_info->bus_scale_table);
+=======
+			msm_bus_scale_register_client(
+				bus_bw_info->bus_scale_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!bus_bw_info->bus_client) {
 			cnss_pr_err("Failed to register bus scale client!\n");
 			ret = -EINVAL;
@@ -1968,6 +2417,7 @@ static void cnss_unregister_bus_scale(struct cnss_plat_data *plat_priv)
 		msm_bus_scale_unregister_client(bus_bw_info->bus_client);
 }
 
+<<<<<<< HEAD
 static ssize_t shutdown_store(struct kobject *kobj,
 			      struct kobj_attribute *attr,
 			      const char *buf, size_t count)
@@ -1989,6 +2439,12 @@ static ssize_t shutdown_store(struct kobject *kobj,
 static ssize_t fs_ready_store(struct device *dev,
 			      struct device_attribute *attr,
 			      const char *buf, size_t count)
+=======
+static ssize_t cnss_fs_ready_store(struct device *dev,
+				   struct device_attribute *attr,
+				   const char *buf,
+				   size_t count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int fs_ready = 0;
 	struct cnss_plat_data *plat_priv = dev_get_drvdata(dev);
@@ -2012,7 +2468,11 @@ static ssize_t fs_ready_store(struct device *dev,
 	switch (plat_priv->device_id) {
 	case QCA6290_DEVICE_ID:
 	case QCA6390_DEVICE_ID:
+<<<<<<< HEAD
 	case QCA6490_DEVICE_ID:
+=======
+	case QCN7605_DEVICE_ID:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		cnss_pr_err("Not supported for device ID 0x%lx\n",
@@ -2023,12 +2483,17 @@ static ssize_t fs_ready_store(struct device *dev,
 	if (fs_ready == FILE_SYSTEM_READY) {
 		cnss_driver_event_post(plat_priv,
 				       CNSS_DRIVER_EVENT_COLD_BOOT_CAL_START,
+<<<<<<< HEAD
 				       0, NULL);
+=======
+				       CNSS_EVENT_SYNC, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return count;
 }
 
+<<<<<<< HEAD
 static struct kobj_attribute shutdown_attribute = __ATTR_WO(shutdown);
 static DEVICE_ATTR_WO(fs_ready);
 
@@ -2064,6 +2529,9 @@ static void cnss_remove_shutdown_sysfs(struct cnss_plat_data *plat_priv)
 		plat_priv->shutdown_kobj = NULL;
 	}
 }
+=======
+static DEVICE_ATTR(fs_ready, 0220, NULL, cnss_fs_ready_store);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int cnss_create_sysfs(struct cnss_plat_data *plat_priv)
 {
@@ -2071,6 +2539,7 @@ static int cnss_create_sysfs(struct cnss_plat_data *plat_priv)
 
 	ret = device_create_file(&plat_priv->plat_dev->dev, &dev_attr_fs_ready);
 	if (ret) {
+<<<<<<< HEAD
 		cnss_pr_err("Failed to create device fs_ready file, err = %d\n",
 			    ret);
 		goto out;
@@ -2078,6 +2547,12 @@ static int cnss_create_sysfs(struct cnss_plat_data *plat_priv)
 
 	cnss_create_shutdown_sysfs(plat_priv);
 
+=======
+		cnss_pr_err("Failed to create device file, err = %d\n", ret);
+		goto out;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 out:
 	return ret;
@@ -2085,7 +2560,10 @@ out:
 
 static void cnss_remove_sysfs(struct cnss_plat_data *plat_priv)
 {
+<<<<<<< HEAD
 	cnss_remove_shutdown_sysfs(plat_priv);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_remove_file(&plat_priv->plat_dev->dev, &dev_attr_fs_ready);
 }
 
@@ -2110,6 +2588,7 @@ static void cnss_event_work_deinit(struct cnss_plat_data *plat_priv)
 	destroy_workqueue(plat_priv->event_wq);
 }
 
+<<<<<<< HEAD
 static int cnss_reboot_notifier(struct notifier_block *nb,
 				unsigned long action,
 				void *data)
@@ -2126,10 +2605,13 @@ static int cnss_reboot_notifier(struct notifier_block *nb,
 	return NOTIFY_DONE;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cnss_misc_init(struct cnss_plat_data *plat_priv)
 {
 	int ret;
 
+<<<<<<< HEAD
 	timer_setup(&plat_priv->fw_boot_timer,
 		    cnss_bus_fw_boot_timeout_hdlr, 0);
 
@@ -2142,6 +2624,15 @@ static int cnss_misc_init(struct cnss_plat_data *plat_priv)
 	if (ret)
 		cnss_pr_err("Failed to register reboot notifier, err = %d\n",
 			    ret);
+=======
+	setup_timer(&plat_priv->fw_boot_timer, cnss_bus_fw_boot_timeout_hdlr,
+		    (unsigned long)plat_priv);
+
+	if (!pm_notify_registered) {
+		register_pm_notifier(&cnss_pm_notifier);
+		pm_notify_registered = true;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = device_init_wakeup(&plat_priv->plat_dev->dev, true);
 	if (ret)
@@ -2164,23 +2655,38 @@ static void cnss_misc_deinit(struct cnss_plat_data *plat_priv)
 	complete_all(&plat_priv->cal_complete);
 	complete_all(&plat_priv->power_up_complete);
 	device_init_wakeup(&plat_priv->plat_dev->dev, false);
+<<<<<<< HEAD
 	unregister_reboot_notifier(&plat_priv->reboot_nb);
 	unregister_pm_notifier(&cnss_pm_notifier);
+=======
+	if (pm_notify_registered) {
+		unregister_pm_notifier(&cnss_pm_notifier);
+		pm_notify_registered = false;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	del_timer(&plat_priv->fw_boot_timer);
 }
 
 static void cnss_init_control_params(struct cnss_plat_data *plat_priv)
 {
+<<<<<<< HEAD
 	plat_priv->ctrl_params.quirks = CNSS_QUIRKS_DEFAULT;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (of_property_read_bool(plat_priv->plat_dev->dev.of_node,
 				  "cnss-daemon-support"))
 		plat_priv->ctrl_params.quirks |= BIT(ENABLE_DAEMON_SUPPORT);
 
 	plat_priv->ctrl_params.mhi_timeout = CNSS_MHI_TIMEOUT_DEFAULT;
+<<<<<<< HEAD
 	plat_priv->ctrl_params.mhi_m2_timeout = CNSS_MHI_M2_TIMEOUT_DEFAULT;
 	plat_priv->ctrl_params.qmi_timeout = CNSS_QMI_TIMEOUT_DEFAULT;
 	plat_priv->ctrl_params.bdf_type = CNSS_BDF_TYPE_DEFAULT;
 	plat_priv->ctrl_params.time_sync_period = CNSS_TIME_SYNC_PERIOD_DEFAULT;
+=======
+	plat_priv->ctrl_params.qmi_timeout = CNSS_QMI_TIMEOUT_DEFAULT;
+	plat_priv->ctrl_params.bdf_type = CNSS_BDF_TYPE_DEFAULT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cnss_get_wlaon_pwr_ctrl_info(struct cnss_plat_data *plat_priv)
@@ -2198,8 +2704,12 @@ static const struct platform_device_id cnss_platform_id_table[] = {
 	{ .name = "qca6174", .driver_data = QCA6174_DEVICE_ID, },
 	{ .name = "qca6290", .driver_data = QCA6290_DEVICE_ID, },
 	{ .name = "qca6390", .driver_data = QCA6390_DEVICE_ID, },
+<<<<<<< HEAD
 	{ .name = "qca6490", .driver_data = QCA6490_DEVICE_ID, },
 	{ },
+=======
+	{ .name = "qcaconv", .driver_data = 0},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id cnss_of_match_table[] = {
@@ -2213,17 +2723,79 @@ static const struct of_device_id cnss_of_match_table[] = {
 		.compatible = "qcom,cnss-qca6390",
 		.data = (void *)&cnss_platform_id_table[2]},
 	{
+<<<<<<< HEAD
 		.compatible = "qcom,cnss-qca6490",
+=======
+		.compatible = "qcom,cnss-qca-converged",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.data = (void *)&cnss_platform_id_table[3]},
 	{ },
 };
 MODULE_DEVICE_TABLE(of, cnss_of_match_table);
 
+<<<<<<< HEAD
 static inline bool
 cnss_use_nv_mac(struct cnss_plat_data *plat_priv)
 {
 	return of_property_read_bool(plat_priv->plat_dev->dev.of_node,
 				     "use-nv-mac");
+=======
+struct cnss_fw_path {
+	unsigned long device_id;
+	const char path[CNSS_FW_PATH_MAX_LEN];
+};
+
+static const struct cnss_fw_path cnss_fw_path_table[] = {
+	{ QCA6174_DEVICE_ID, "qca6174/" },
+	{ QCA6290_DEVICE_ID, "qca6290/" },
+	{ QCA6390_DEVICE_ID, "qca6390/" },
+	{ QCN7605_DEVICE_ID, "qcn7605/" },
+	{ 0, "" }
+};
+
+const char *cnss_get_fw_path(struct cnss_plat_data *plat_priv)
+{
+	const struct cnss_fw_path *fw_path;
+	const char *path;
+	int size = ARRAY_SIZE(cnss_fw_path_table);
+
+	if (!plat_priv->is_converged_dt) {
+		path = cnss_fw_path_table[size - 1].path;
+	} else {
+		fw_path = cnss_fw_path_table;
+		while (fw_path->device_id &&
+		       fw_path->device_id != plat_priv->device_id) {
+			fw_path++;
+		}
+
+		path = fw_path->path;
+	}
+
+	cnss_pr_dbg("get firmware path[%s] for device[0x%lx]\n",
+		    path, plat_priv->device_id);
+	return path;
+}
+
+static inline bool
+cnss_is_converged_dt(struct cnss_plat_data *plat_priv)
+{
+	return of_property_read_bool(plat_priv->plat_dev->dev.of_node,
+		"qcom,converged-dt");
+}
+
+static inline int
+cnss_get_rc_num(struct cnss_plat_data *plat_priv)
+{
+	return of_property_read_u32(plat_priv->plat_dev->dev.of_node,
+		"qcom,wlan-rc-num", &plat_priv->rc_num);
+}
+
+static inline int
+cnss_get_qrtr_node_id(struct cnss_plat_data *plat_priv)
+{
+	return of_property_read_u32(plat_priv->plat_dev->dev.of_node,
+		"qcom,qrtr_node_id", &plat_priv->qrtr_node_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cnss_probe(struct platform_device *plat_dev)
@@ -2238,6 +2810,12 @@ static int cnss_probe(struct platform_device *plat_dev)
 		ret = -EEXIST;
 		goto out;
 	}
+<<<<<<< HEAD
+=======
+	ret = cnss_plat_env_available();
+	if (ret != 0)
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	of_id = of_match_device(cnss_of_match_table, &plat_dev->dev);
 	if (!of_id || !of_id->data) {
@@ -2256,6 +2834,7 @@ static int cnss_probe(struct platform_device *plat_dev)
 	}
 
 	plat_priv->plat_dev = plat_dev;
+<<<<<<< HEAD
 	plat_priv->device_id = device_id->driver_data;
 	plat_priv->bus_type = cnss_get_bus_type(plat_priv->device_id);
 	plat_priv->use_nv_mac = cnss_use_nv_mac(plat_priv);
@@ -2266,6 +2845,39 @@ static int cnss_probe(struct platform_device *plat_dev)
 
 	cnss_get_wlaon_pwr_ctrl_info(plat_priv);
 	cnss_get_cpr_info(plat_priv);
+=======
+	plat_priv->dev_node = NULL;
+	plat_priv->device_id = device_id->driver_data;
+
+	ret = cnss_get_rc_num(plat_priv);
+	if (ret)
+		cnss_pr_err("Failed to find PCIe RC number, err = %d\n", ret);
+	cnss_pr_dbg("%s: rc_num=%d\n", __func__, plat_priv->rc_num);
+
+	ret = cnss_get_qrtr_node_id(plat_priv);
+	if (ret) {
+		cnss_pr_dbg("Failed to find qrtr_node_id err=%d\n", ret);
+		plat_priv->qrtr_node_id = 0;
+		plat_priv->wlfw_service_instance_id = 0;
+	} else {
+		plat_priv->wlfw_service_instance_id = plat_priv->qrtr_node_id +
+						      FW_ID_BASE;
+		cnss_pr_dbg("service_instance_id=0x%x\n",
+			    plat_priv->wlfw_service_instance_id);
+	}
+
+	plat_priv->is_converged_dt = cnss_is_converged_dt(plat_priv);
+	cnss_pr_dbg("Probing platform driver from %s DT\n",
+		    plat_priv->is_converged_dt ? "converged" : "single");
+
+	plat_priv->bus_type = cnss_get_bus_type(plat_priv);
+	cnss_set_plat_priv(plat_dev, plat_priv);
+	cnss_set_device_name(plat_priv);
+	platform_set_drvdata(plat_dev, plat_priv);
+	INIT_LIST_HEAD(&plat_priv->vreg_list);
+
+	cnss_get_wlaon_pwr_ctrl_info(plat_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cnss_init_control_params(plat_priv);
 
 	ret = cnss_get_resources(plat_priv);
@@ -2310,6 +2922,7 @@ static int cnss_probe(struct platform_device *plat_dev)
 	if (ret)
 		goto destroy_debugfs;
 
+<<<<<<< HEAD
 	cnss_register_coex_service(plat_priv);
 	cnss_register_ims_service(plat_priv);
 
@@ -2317,6 +2930,8 @@ static int cnss_probe(struct platform_device *plat_dev)
 	if (ret < 0)
 		cnss_pr_err("CNSS genl init failed %d\n", ret);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cnss_pr_info("Platform driver probed successfully.\n");
 
 	return 0;
@@ -2343,7 +2958,11 @@ free_res:
 	cnss_put_resources(plat_priv);
 reset_ctx:
 	platform_set_drvdata(plat_dev, NULL);
+<<<<<<< HEAD
 	cnss_set_plat_priv(plat_dev, NULL);
+=======
+	cnss_clear_plat_priv(plat_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return ret;
 }
@@ -2352,9 +2971,12 @@ static int cnss_remove(struct platform_device *plat_dev)
 {
 	struct cnss_plat_data *plat_priv = platform_get_drvdata(plat_dev);
 
+<<<<<<< HEAD
 	cnss_genl_exit();
 	cnss_unregister_ims_service(plat_priv);
 	cnss_unregister_coex_service(plat_priv);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cnss_misc_deinit(plat_priv);
 	cnss_debugfs_destroy(plat_priv);
 	cnss_qmi_deinit(plat_priv);
@@ -2365,7 +2987,11 @@ static int cnss_remove(struct platform_device *plat_dev)
 	cnss_bus_deinit(plat_priv);
 	cnss_put_resources(plat_priv);
 	platform_set_drvdata(plat_dev, NULL);
+<<<<<<< HEAD
 	plat_env = NULL;
+=======
+	cnss_clear_plat_priv(plat_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2375,6 +3001,10 @@ static struct platform_driver cnss_platform_driver = {
 	.remove = cnss_remove,
 	.driver = {
 		.name = "cnss2",
+<<<<<<< HEAD
+=======
+		.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = cnss_of_match_table,
 #ifdef CONFIG_CNSS_ASYNC
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
@@ -2390,6 +3020,12 @@ static int __init cnss_initialize(void)
 	ret = platform_driver_register(&cnss_platform_driver);
 	if (ret)
 		cnss_debug_deinit();
+<<<<<<< HEAD
+=======
+	ret = cnss_genl_init();
+	if (ret < 0)
+		cnss_pr_err("CNSS genl init failed %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -2398,6 +3034,10 @@ static void __exit cnss_exit(void)
 {
 	platform_driver_unregister(&cnss_platform_driver);
 	cnss_debug_deinit();
+<<<<<<< HEAD
+=======
+	cnss_genl_exit();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(cnss_initialize);

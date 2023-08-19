@@ -20,22 +20,38 @@
 #include "global1.h" /* for MV88E6XXX_G1_STS_IRQ_DEVICE */
 #include "global2.h"
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_read(struct mv88e6xxx_chip *chip, int reg, u16 *val)
+=======
+static int mv88e6xxx_g2_read(struct mv88e6xxx_chip *chip, int reg, u16 *val)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return mv88e6xxx_read(chip, chip->info->global2_addr, reg, val);
 }
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_write(struct mv88e6xxx_chip *chip, int reg, u16 val)
+=======
+static int mv88e6xxx_g2_write(struct mv88e6xxx_chip *chip, int reg, u16 val)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return mv88e6xxx_write(chip, chip->info->global2_addr, reg, val);
 }
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_update(struct mv88e6xxx_chip *chip, int reg, u16 update)
+=======
+static int mv88e6xxx_g2_update(struct mv88e6xxx_chip *chip, int reg, u16 update)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return mv88e6xxx_update(chip, chip->info->global2_addr, reg, update);
 }
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_wait(struct mv88e6xxx_chip *chip, int reg, u16 mask)
+=======
+static int mv88e6xxx_g2_wait(struct mv88e6xxx_chip *chip, int reg, u16 mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return mv88e6xxx_wait(chip, chip->info->global2_addr, reg, mask);
 }
@@ -119,6 +135,7 @@ int mv88e6352_g2_mgmt_rsvd2cpu(struct mv88e6xxx_chip *chip)
 
 /* Offset 0x06: Device Mapping Table register */
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_device_mapping_write(struct mv88e6xxx_chip *chip, int target,
 				      int port)
 {
@@ -126,10 +143,42 @@ int mv88e6xxx_g2_device_mapping_write(struct mv88e6xxx_chip *chip, int target,
 	/* Modern chips use 5 bits to define a device mapping port,
 	 * but bit 4 is reserved on older chips, so it is safe to use.
 	 */
+=======
+static int mv88e6xxx_g2_device_mapping_write(struct mv88e6xxx_chip *chip,
+					     int target, int port)
+{
+	u16 val = (target << 8) | (port & 0xf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mv88e6xxx_g2_update(chip, MV88E6XXX_G2_DEVICE_MAPPING, val);
 }
 
+<<<<<<< HEAD
+=======
+static int mv88e6xxx_g2_set_device_mapping(struct mv88e6xxx_chip *chip)
+{
+	int target, port;
+	int err;
+
+	/* Initialize the routing port to the 32 possible target devices */
+	for (target = 0; target < 32; ++target) {
+		port = 0xf;
+
+		if (target < DSA_MAX_SWITCHES) {
+			port = chip->ds->rtable[target];
+			if (port == DSA_RTABLE_NONE)
+				port = 0xf;
+		}
+
+		err = mv88e6xxx_g2_device_mapping_write(chip, target, port);
+		if (err)
+			break;
+	}
+
+	return err;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Offset 0x07: Trunk Mask Table register */
 
 static int mv88e6xxx_g2_trunk_mask_write(struct mv88e6xxx_chip *chip, int num,
@@ -154,7 +203,11 @@ static int mv88e6xxx_g2_trunk_mapping_write(struct mv88e6xxx_chip *chip, int id,
 	return mv88e6xxx_g2_update(chip, MV88E6XXX_G2_TRUNK_MAPPING, val);
 }
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_trunk_clear(struct mv88e6xxx_chip *chip)
+=======
+static int mv88e6xxx_g2_clear_trunk(struct mv88e6xxx_chip *chip)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const u16 port_mask = BIT(mv88e6xxx_num_ports(chip)) - 1;
 	int i, err;
@@ -778,7 +831,10 @@ int mv88e6xxx_g2_smi_phy_write(struct mv88e6xxx_chip *chip, struct mii_bus *bus,
 						   val);
 }
 
+<<<<<<< HEAD
 /* Offset 0x1B: Watchdog Control */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mv88e6097_watchdog_action(struct mv88e6xxx_chip *chip, int irq)
 {
 	u16 reg;
@@ -1047,6 +1103,12 @@ int mv88e6xxx_g2_irq_setup(struct mv88e6xxx_chip *chip)
 {
 	int err, irq, virq;
 
+<<<<<<< HEAD
+=======
+	if (!chip->dev->of_node)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chip->g2_irq.domain = irq_domain_add_simple(
 		chip->dev->of_node, 16, 0, &mv88e6xxx_g2_irq_domain_ops, chip);
 	if (!chip->g2_irq.domain)
@@ -1067,7 +1129,11 @@ int mv88e6xxx_g2_irq_setup(struct mv88e6xxx_chip *chip)
 
 	err = request_threaded_irq(chip->device_irq, NULL,
 				   mv88e6xxx_g2_irq_thread_fn,
+<<<<<<< HEAD
 				   IRQF_ONESHOT, "mv88e6xxx-g2", chip);
+=======
+				   IRQF_ONESHOT, "mv88e6xxx-g1", chip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto out;
 
@@ -1084,6 +1150,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_irq_mdio_setup(struct mv88e6xxx_chip *chip,
 				struct mii_bus *bus)
 {
@@ -1114,4 +1181,32 @@ void mv88e6xxx_g2_irq_mdio_free(struct mv88e6xxx_chip *chip,
 
 	for (phy = 0; phy < chip->info->num_internal_phys; phy++)
 		irq_dispose_mapping(bus->irq[phy]);
+=======
+int mv88e6xxx_g2_setup(struct mv88e6xxx_chip *chip)
+{
+	u16 reg;
+	int err;
+
+	/* Ignore removed tag data on doubly tagged packets, disable
+	 * flow control messages, force flow control priority to the
+	 * highest, and send all special multicast frames to the CPU
+	 * port at the highest priority.
+	 */
+	reg = MV88E6XXX_G2_SWITCH_MGMT_FORCE_FLOW_CTL_PRI | (0x7 << 4);
+	err = mv88e6xxx_g2_write(chip, MV88E6XXX_G2_SWITCH_MGMT, reg);
+	if (err)
+		return err;
+
+	/* Program the DSA routing table. */
+	err = mv88e6xxx_g2_set_device_mapping(chip);
+	if (err)
+		return err;
+
+	/* Clear all trunk masks and mapping. */
+	err = mv88e6xxx_g2_clear_trunk(chip);
+	if (err)
+		return err;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

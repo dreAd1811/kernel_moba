@@ -25,7 +25,10 @@
 #define MSM_DSI_6G_VER_MINOR_V1_3	0x10030000
 #define MSM_DSI_6G_VER_MINOR_V1_3_1	0x10030001
 #define MSM_DSI_6G_VER_MINOR_V1_4_1	0x10040001
+<<<<<<< HEAD
 #define MSM_DSI_6G_VER_MINOR_V2_2_1	0x20020001
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MSM_DSI_V2_VER_MINOR_8064	0x0
 
@@ -40,6 +43,7 @@ struct msm_dsi_config {
 	const int num_dsi;
 };
 
+<<<<<<< HEAD
 struct msm_dsi_host_cfg_ops {
 	int (*link_clk_enable)(struct msm_dsi_host *msm_host);
 	void (*link_clk_disable)(struct msm_dsi_host *msm_host);
@@ -51,11 +55,16 @@ struct msm_dsi_host_cfg_ops {
 	int (*calc_clk_rate)(struct msm_dsi_host *msm_host, bool is_dual_dsi);
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct msm_dsi_cfg_handler {
 	u32 major;
 	u32 minor;
 	const struct msm_dsi_config *cfg;
+<<<<<<< HEAD
 	const struct msm_dsi_host_cfg_ops *ops;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct msm_dsi_cfg_handler *msm_dsi_cfg_get(u32 major, u32 minor);

@@ -26,6 +26,7 @@
 
 #include <nvif/class.h>
 
+<<<<<<< HEAD
 static void
 gp102_gr_zbc_clear_stencil(struct gf100_gr *gr, int zbc)
 {
@@ -82,6 +83,8 @@ gp102_gr_zbc = {
 	.clear_stencil = gp102_gr_zbc_clear_stencil,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void
 gp102_gr_init_swdx_pes_mask(struct gf100_gr *gr)
 {
@@ -98,6 +101,7 @@ gp102_gr_init_swdx_pes_mask(struct gf100_gr *gr)
 
 static const struct gf100_gr_func
 gp102_gr = {
+<<<<<<< HEAD
 	.oneinit_tiles = gm200_gr_oneinit_tiles,
 	.oneinit_sm_id = gm200_gr_oneinit_sm_id,
 	.init = gf100_gr_init,
@@ -122,6 +126,17 @@ gp102_gr = {
 	.ppc_nr = 3,
 	.grctx = &gp102_grctx,
 	.zbc = &gp102_gr_zbc,
+=======
+	.init = gp100_gr_init,
+	.init_gpc_mmu = gm200_gr_init_gpc_mmu,
+	.init_rop_active_fbps = gp100_gr_init_rop_active_fbps,
+	.init_ppc_exceptions = gk104_gr_init_ppc_exceptions,
+	.init_swdx_pes_mask = gp102_gr_init_swdx_pes_mask,
+	.init_num_active_ltcs = gp100_gr_init_num_active_ltcs,
+	.rops = gm200_gr_rops,
+	.ppc_nr = 3,
+	.grctx = &gp102_grctx,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sclass = {
 		{ -1, -1, FERMI_TWOD_A },
 		{ -1, -1, KEPLER_INLINE_TO_MEMORY_B },

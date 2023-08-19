@@ -379,7 +379,11 @@ static void hns_gmac_init(void *mac_drv)
 			   GMAC_TX_WATER_LINE_SHIFT, 8);
 }
 
+<<<<<<< HEAD
 static void hns_gmac_update_stats(void *mac_drv)
+=======
+void hns_gmac_update_stats(void *mac_drv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mac_hw_stats *hw_stats = NULL;
 	struct mac_driver *drv = (struct mac_driver *)mac_drv;

@@ -61,11 +61,14 @@ static struct bus_type gpio_bus_type = {
 	.name = "gpio",
 };
 
+<<<<<<< HEAD
 /*
  * Number of GPIOs to use for the fast path in set array
  */
 #define FASTPATH_NGPIO CONFIG_GPIOLIB_FASTPATH_LIMIT
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* gpio_lock prevents conflicts during gpio_desc[] table updates.
  * While any GPIO is requested, its gpio_chip is not removable;
  * each GPIO's "requested" flag serves as a lock and refcount.
@@ -76,6 +79,7 @@ static DEFINE_MUTEX(gpio_lookup_lock);
 static LIST_HEAD(gpio_lookup_list);
 LIST_HEAD(gpio_devices);
 
+<<<<<<< HEAD
 static DEFINE_MUTEX(gpio_machine_hogs_mutex);
 static LIST_HEAD(gpio_machine_hogs);
 
@@ -83,6 +87,9 @@ static void gpiochip_free_hogs(struct gpio_chip *chip);
 static int gpiochip_add_irqchip(struct gpio_chip *gpiochip,
 				struct lock_class_key *lock_key,
 				struct lock_class_key *request_key);
+=======
+static void gpiochip_free_hogs(struct gpio_chip *chip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gpiochip_irqchip_remove(struct gpio_chip *gpiochip);
 static int gpiochip_irqchip_init_valid_mask(struct gpio_chip *gpiochip);
 static void gpiochip_irqchip_free_valid_mask(struct gpio_chip *gpiochip);
@@ -170,7 +177,11 @@ EXPORT_SYMBOL_GPL(desc_to_gpio);
  */
 struct gpio_chip *gpiod_to_chip(const struct gpio_desc *desc)
 {
+<<<<<<< HEAD
 	if (!desc || !desc->gdev)
+=======
+	if (!desc || !desc->gdev || !desc->gdev->chip)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	return desc->gdev->chip;
 }
@@ -204,7 +215,11 @@ static int gpiochip_find_base(int ngpio)
  * gpiod_get_direction - return the current direction of a GPIO
  * @desc:	GPIO to get the direction of
  *
+<<<<<<< HEAD
  * Returns 0 for output, 1 for input, or an error code in case of error.
+=======
+ * Return GPIOF_DIR_IN or GPIOF_DIR_OUT, or an error code in case of error.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function may sleep if gpiod_cansleep() is true.
  */
@@ -217,6 +232,17 @@ int gpiod_get_direction(struct gpio_desc *desc)
 	chip = gpiod_to_chip(desc);
 	offset = gpio_chip_hwgpio(desc);
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Open drain emulation using input mode may incorrectly report
+	 * input here, fix that up.
+	 */
+	if (test_bit(FLAG_OPEN_DRAIN, &desc->flags) &&
+	    test_bit(FLAG_IS_OUT, &desc->flags))
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!chip->get_direction)
 		return status;
 
@@ -345,6 +371,7 @@ static int gpiochip_set_desc_names(struct gpio_chip *gc)
 	return 0;
 }
 
+<<<<<<< HEAD
 static unsigned long *gpiochip_allocate_mask(struct gpio_chip *chip)
 {
 	unsigned long *p;
@@ -396,6 +423,8 @@ bool gpiochip_line_is_valid(const struct gpio_chip *gpiochip,
 }
 EXPORT_SYMBOL_GPL(gpiochip_line_is_valid);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * GPIO line handle management
  */
@@ -427,6 +456,7 @@ static long linehandle_ioctl(struct file *filep, unsigned int cmd,
 	struct linehandle_state *lh = filep->private_data;
 	void __user *ip = (void __user *)arg;
 	struct gpiohandle_data ghd;
+<<<<<<< HEAD
 	int vals[GPIOHANDLES_MAX];
 	int i;
 
@@ -443,12 +473,29 @@ static long linehandle_ioctl(struct file *filep, unsigned int cmd,
 		memset(&ghd, 0, sizeof(ghd));
 		for (i = 0; i < lh->numdescs; i++)
 			ghd.values[i] = vals[i];
+=======
+	int i;
+
+	if (cmd == GPIOHANDLE_GET_LINE_VALUES_IOCTL) {
+		int val;
+
+		memset(&ghd, 0, sizeof(ghd));
+
+		/* TODO: check if descriptors are really input */
+		for (i = 0; i < lh->numdescs; i++) {
+			val = gpiod_get_value_cansleep(lh->descs[i]);
+			if (val < 0)
+				return val;
+			ghd.values[i] = val;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (copy_to_user(ip, &ghd, sizeof(ghd)))
 			return -EFAULT;
 
 		return 0;
 	} else if (cmd == GPIOHANDLE_SET_LINE_VALUES_IOCTL) {
+<<<<<<< HEAD
 		/*
 		 * All line descriptors were created at once with the same
 		 * flags so just check if the first one is really output.
@@ -456,6 +503,11 @@ static long linehandle_ioctl(struct file *filep, unsigned int cmd,
 		if (!test_bit(FLAG_IS_OUT, &lh->descs[0]->flags))
 			return -EPERM;
 
+=======
+		int vals[GPIOHANDLES_MAX];
+
+		/* TODO: check if descriptors are really output */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (copy_from_user(&ghd, ip, sizeof(ghd)))
 			return -EFAULT;
 
@@ -464,11 +516,19 @@ static long linehandle_ioctl(struct file *filep, unsigned int cmd,
 			vals[i] = !!ghd.values[i];
 
 		/* Reuse the array setting function */
+<<<<<<< HEAD
 		return gpiod_set_array_value_complex(false,
+=======
+		gpiod_set_array_value_complex(false,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      true,
 					      lh->numdescs,
 					      lh->descs,
 					      vals);
+<<<<<<< HEAD
+=======
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return -EINVAL;
 }
@@ -520,10 +580,13 @@ static int linehandle_create(struct gpio_device *gdev, void __user *ip)
 
 	lflags = handlereq.flags;
 
+<<<<<<< HEAD
 	/* Return an error if an unknown flag is set */
 	if (lflags & ~GPIOHANDLE_REQUEST_VALID_FLAGS)
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Do not allow both INPUT & OUTPUT flags to be set as they are
 	 * contradictory.
@@ -532,6 +595,7 @@ static int linehandle_create(struct gpio_device *gdev, void __user *ip)
 	    (lflags & GPIOHANDLE_REQUEST_OUTPUT))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/*
 	 * Do not allow OPEN_SOURCE & OPEN_DRAIN flags in a single request. If
 	 * the hardware actually supports enabling both at the same time the
@@ -547,6 +611,8 @@ static int linehandle_create(struct gpio_device *gdev, void __user *ip)
 	     (lflags & GPIOHANDLE_REQUEST_OPEN_SOURCE)))
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lh = kzalloc(sizeof(*lh), GFP_KERNEL);
 	if (!lh)
 		return -ENOMEM;
@@ -574,6 +640,15 @@ static int linehandle_create(struct gpio_device *gdev, void __user *ip)
 			goto out_free_descs;
 		}
 
+<<<<<<< HEAD
+=======
+		/* Return an error if a unknown flag is set */
+		if (lflags & ~GPIOHANDLE_REQUEST_VALID_FLAGS) {
+			ret = -EINVAL;
+			goto out_free_descs;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc = &gdev->descs[offset];
 		ret = gpiod_request(desc, lh->label);
 		if (ret)
@@ -588,10 +663,13 @@ static int linehandle_create(struct gpio_device *gdev, void __user *ip)
 		if (lflags & GPIOHANDLE_REQUEST_OPEN_SOURCE)
 			set_bit(FLAG_OPEN_SOURCE, &desc->flags);
 
+<<<<<<< HEAD
 		ret = gpiod_set_transitory(desc, false);
 		if (ret < 0)
 			goto out_free_descs;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Lines have to be requested explicitly for input
 		 * or output, else the line will be treated "as is".
@@ -674,9 +752,12 @@ out_free_lh:
  * @events: KFIFO for the GPIO events
  * @read_lock: mutex lock to protect reads from colliding with adding
  * new events to the FIFO
+<<<<<<< HEAD
  * @timestamp: cache for the timestamp storing it between hardirq
  * and IRQ thread, used to bring the timestamp close to the actual
  * event
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct lineevent_state {
 	struct gpio_device *gdev;
@@ -687,23 +768,38 @@ struct lineevent_state {
 	wait_queue_head_t wait;
 	DECLARE_KFIFO(events, struct gpioevent_data, 16);
 	struct mutex read_lock;
+<<<<<<< HEAD
 	u64 timestamp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define GPIOEVENT_REQUEST_VALID_FLAGS \
 	(GPIOEVENT_REQUEST_RISING_EDGE | \
 	GPIOEVENT_REQUEST_FALLING_EDGE)
 
+<<<<<<< HEAD
 static __poll_t lineevent_poll(struct file *filep,
 				   struct poll_table_struct *wait)
 {
 	struct lineevent_state *le = filep->private_data;
 	__poll_t events = 0;
+=======
+static unsigned int lineevent_poll(struct file *filep,
+				   struct poll_table_struct *wait)
+{
+	struct lineevent_state *le = filep->private_data;
+	unsigned int events = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(filep, &le->wait, wait);
 
 	if (!kfifo_is_empty(&le->events))
+<<<<<<< HEAD
 		events = EPOLLIN | EPOLLRDNORM;
+=======
+		events = POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return events;
 }
@@ -825,6 +921,7 @@ static irqreturn_t lineevent_irq_thread(int irq, void *p)
 	/* Do not leak kernel stack to userspace */
 	memset(&ge, 0, sizeof(ge));
 
+<<<<<<< HEAD
 	/*
 	 * We may be running from a nested threaded interrupt in which case
 	 * we didn't get the timestamp from lineevent_irq_handler().
@@ -834,6 +931,9 @@ static irqreturn_t lineevent_irq_thread(int irq, void *p)
 	else
 		ge.timestamp = le->timestamp;
 
+=======
+	ge.timestamp = ktime_get_real_ns();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	level = gpiod_get_value_cansleep(le->desc);
 
 	if (le->eflags & GPIOEVENT_REQUEST_RISING_EDGE
@@ -856,11 +956,16 @@ static irqreturn_t lineevent_irq_thread(int irq, void *p)
 
 	ret = kfifo_put(&le->events, ge);
 	if (ret != 0)
+<<<<<<< HEAD
 		wake_up_poll(&le->wait, EPOLLIN);
+=======
+		wake_up_poll(&le->wait, POLLIN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static irqreturn_t lineevent_irq_handler(int irq, void *p)
 {
 	struct lineevent_state *le = p;
@@ -874,6 +979,8 @@ static irqreturn_t lineevent_irq_handler(int irq, void *p)
 	return IRQ_WAKE_THREAD;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lineevent_create(struct gpio_device *gdev, void __user *ip)
 {
 	struct gpioevent_request eventreq;
@@ -966,7 +1073,11 @@ static int lineevent_create(struct gpio_device *gdev, void __user *ip)
 
 	/* Request a thread to read the events */
 	ret = request_threaded_irq(le->irq,
+<<<<<<< HEAD
 			lineevent_irq_handler,
+=======
+			NULL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			lineevent_irq_thread,
 			irqflags,
 			le->label,
@@ -1166,7 +1277,11 @@ static void gpiodevice_release(struct device *dev)
 
 	list_del(&gdev->list);
 	ida_simple_remove(&gpio_ida, gdev->id);
+<<<<<<< HEAD
 	kfree_const(gdev->label);
+=======
+	kfree(gdev->label);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(gdev->descs);
 	kfree(gdev);
 }
@@ -1203,6 +1318,7 @@ err_remove_device:
 	return status;
 }
 
+<<<<<<< HEAD
 static void gpiochip_machine_hog(struct gpio_chip *chip, struct gpiod_hog *hog)
 {
 	struct gpio_desc *desc;
@@ -1238,6 +1354,8 @@ static void machine_gpiochip_add(struct gpio_chip *chip)
 	mutex_unlock(&gpio_machine_hogs_mutex);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gpiochip_setup_devs(void)
 {
 	struct gpio_device *gdev;
@@ -1251,9 +1369,36 @@ static void gpiochip_setup_devs(void)
 	}
 }
 
+<<<<<<< HEAD
 int gpiochip_add_data_with_key(struct gpio_chip *chip, void *data,
 			       struct lock_class_key *lock_key,
 			       struct lock_class_key *request_key)
+=======
+/**
+ * gpiochip_add_data() - register a gpio_chip
+ * @chip: the chip to register, with chip->base initialized
+ * @data: driver-private data associated with this chip
+ *
+ * Context: potentially before irqs will work
+ *
+ * When gpiochip_add_data() is called very early during boot, so that GPIOs
+ * can be freely used, the chip->parent device must be registered before
+ * the gpio framework's arch_initcall().  Otherwise sysfs initialization
+ * for GPIOs will fail rudely.
+ *
+ * gpiochip_add_data() must only be called after gpiolib initialization,
+ * ie after core_initcall().
+ *
+ * If chip->base is negative, this requests dynamic assignment of
+ * a range of valid GPIOs.
+ *
+ * Returns:
+ * A negative errno if the chip can't be registered, such as because the
+ * chip->base is invalid or already associated with a different chip.
+ * Otherwise it returns zero as a success code.
+ */
+int gpiochip_add_data(struct gpio_chip *chip, void *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long	flags;
 	int		status = 0;
@@ -1280,8 +1425,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *chip, void *data,
 	/* If the gpiochip has an assigned OF node this takes precedence */
 	if (chip->of_node)
 		gdev->dev.of_node = chip->of_node;
+<<<<<<< HEAD
 	else
 		chip->of_node = gdev->dev.of_node;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	gdev->id = ida_simple_get(&gpio_ida, 0, 0, GFP_KERNEL);
@@ -1312,11 +1460,18 @@ int gpiochip_add_data_with_key(struct gpio_chip *chip, void *data,
 		goto err_free_descs;
 	}
 
+<<<<<<< HEAD
 	if (chip->ngpio > FASTPATH_NGPIO)
 		chip_warn(chip, "line cnt %u is greater than fast path cnt %u\n",
 		chip->ngpio, FASTPATH_NGPIO);
 
 	gdev->label = kstrdup_const(chip->label ?: "unknown", GFP_KERNEL);
+=======
+	if (chip->label)
+		gdev->label = kstrdup(chip->label, GFP_KERNEL);
+	else
+		gdev->label = kstrdup("unknown", GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gdev->label) {
 		status = -ENOMEM;
 		goto err_free_descs;
@@ -1385,6 +1540,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *chip, void *data,
 	if (status)
 		goto err_remove_from_list;
 
+<<<<<<< HEAD
 	status = gpiochip_init_valid_mask(chip);
 	if (status)
 		goto err_remove_irqchip_mask;
@@ -1393,14 +1549,19 @@ int gpiochip_add_data_with_key(struct gpio_chip *chip, void *data,
 	if (status)
 		goto err_remove_chip;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = of_gpiochip_add(chip);
 	if (status)
 		goto err_remove_chip;
 
 	acpi_gpiochip_add(chip);
 
+<<<<<<< HEAD
 	machine_gpiochip_add(chip);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * By first adding the chardev, and then adding the device,
 	 * we get a device node entry in sysfs under
@@ -1420,21 +1581,29 @@ err_remove_chip:
 	acpi_gpiochip_remove(chip);
 	gpiochip_free_hogs(chip);
 	of_gpiochip_remove(chip);
+<<<<<<< HEAD
 	gpiochip_free_valid_mask(chip);
 err_remove_irqchip_mask:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpiochip_irqchip_free_valid_mask(chip);
 err_remove_from_list:
 	spin_lock_irqsave(&gpio_lock, flags);
 	list_del(&gdev->list);
 	spin_unlock_irqrestore(&gpio_lock, flags);
 err_free_label:
+<<<<<<< HEAD
 	kfree_const(gdev->label);
+=======
+	kfree(gdev->label);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_free_descs:
 	kfree(gdev->descs);
 err_free_ida:
 	ida_simple_remove(&gpio_ida, gdev->id);
 err_free_gdev:
 	/* failures here can mean systems won't boot... */
+<<<<<<< HEAD
 	pr_err("%s: GPIOs %d..%d (%s) failed to register, %d\n", __func__,
 	       gdev->base, gdev->base + gdev->ngpio - 1,
 	       chip->label ? : "generic", status);
@@ -1442,6 +1611,15 @@ err_free_gdev:
 	return status;
 }
 EXPORT_SYMBOL_GPL(gpiochip_add_data_with_key);
+=======
+	pr_err("%s: GPIOs %d..%d (%s) failed to register\n", __func__,
+	       gdev->base, gdev->base + gdev->ngpio - 1,
+	       chip->label ? : "generic");
+	kfree(gdev);
+	return status;
+}
+EXPORT_SYMBOL_GPL(gpiochip_add_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * gpiochip_get_data() - get per-subdriver data for the chip
@@ -1479,7 +1657,10 @@ void gpiochip_remove(struct gpio_chip *chip)
 	acpi_gpiochip_remove(chip);
 	gpiochip_remove_pin_ranges(chip);
 	of_gpiochip_remove(chip);
+<<<<<<< HEAD
 	gpiochip_free_valid_mask(chip);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We accept no more calls into the driver from this point, so
 	 * NULL the driver data pointer
@@ -1530,7 +1711,11 @@ static int devm_gpio_chip_match(struct device *dev, void *res, void *data)
 }
 
 /**
+<<<<<<< HEAD
  * devm_gpiochip_add_data() - Resource manager gpiochip_add_data()
+=======
+ * devm_gpiochip_add_data() - Resource manager piochip_add_data()
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dev: the device pointer on which irq_chip belongs to.
  * @chip: the chip to register, with chip->base initialized
  * @data: driver-private data associated with this chip
@@ -1637,6 +1822,7 @@ static struct gpio_chip *find_chip_by_name(const char *name)
 
 static int gpiochip_irqchip_init_valid_mask(struct gpio_chip *gpiochip)
 {
+<<<<<<< HEAD
 	if (!gpiochip->irq.need_valid_mask)
 		return 0;
 
@@ -1644,11 +1830,25 @@ static int gpiochip_irqchip_init_valid_mask(struct gpio_chip *gpiochip)
 	if (!gpiochip->irq.valid_mask)
 		return -ENOMEM;
 
+=======
+	if (!gpiochip->irq_need_valid_mask)
+		return 0;
+
+	gpiochip->irq_valid_mask = kcalloc(BITS_TO_LONGS(gpiochip->ngpio),
+					   sizeof(long), GFP_KERNEL);
+	if (!gpiochip->irq_valid_mask)
+		return -ENOMEM;
+
+	/* Assume by default all GPIOs are valid */
+	bitmap_fill(gpiochip->irq_valid_mask, gpiochip->ngpio);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void gpiochip_irqchip_free_valid_mask(struct gpio_chip *gpiochip)
 {
+<<<<<<< HEAD
 	kfree(gpiochip->irq.valid_mask);
 	gpiochip->irq.valid_mask = NULL;
 }
@@ -1664,6 +1864,20 @@ bool gpiochip_irqchip_irq_valid(const struct gpio_chip *gpiochip,
 	return test_bit(offset, gpiochip->irq.valid_mask);
 }
 EXPORT_SYMBOL_GPL(gpiochip_irqchip_irq_valid);
+=======
+	kfree(gpiochip->irq_valid_mask);
+	gpiochip->irq_valid_mask = NULL;
+}
+
+static bool gpiochip_irqchip_irq_valid(const struct gpio_chip *gpiochip,
+				       unsigned int offset)
+{
+	/* No mask means all valid */
+	if (likely(!gpiochip->irq_valid_mask))
+		return true;
+	return test_bit(offset, gpiochip->irq_valid_mask);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * gpiochip_set_cascaded_irqchip() - connects a cascaded irqchip to a gpiochip
@@ -1682,7 +1896,11 @@ static void gpiochip_set_cascaded_irqchip(struct gpio_chip *gpiochip,
 {
 	unsigned int offset;
 
+<<<<<<< HEAD
 	if (!gpiochip->irq.domain) {
+=======
+	if (!gpiochip->irqdomain) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chip_err(gpiochip, "called %s before setting up irqchip\n",
 			 __func__);
 		return;
@@ -1691,7 +1909,12 @@ static void gpiochip_set_cascaded_irqchip(struct gpio_chip *gpiochip,
 	if (parent_handler) {
 		if (gpiochip->can_sleep) {
 			chip_err(gpiochip,
+<<<<<<< HEAD
 				 "you cannot have chained interrupts on a chip that may sleep\n");
+=======
+				 "you cannot have chained interrupts on a "
+				 "chip that may sleep\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 		/*
@@ -1701,16 +1924,24 @@ static void gpiochip_set_cascaded_irqchip(struct gpio_chip *gpiochip,
 		irq_set_chained_handler_and_data(parent_irq, parent_handler,
 						 gpiochip);
 
+<<<<<<< HEAD
 		gpiochip->irq.parent_irq = parent_irq;
 		gpiochip->irq.parents = &gpiochip->irq.parent_irq;
 		gpiochip->irq.num_parents = 1;
+=======
+		gpiochip->irq_chained_parent = parent_irq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Set the parent IRQ for all affected IRQs */
 	for (offset = 0; offset < gpiochip->ngpio; offset++) {
 		if (!gpiochip_irqchip_irq_valid(gpiochip, offset))
 			continue;
+<<<<<<< HEAD
 		irq_set_parent(irq_find_mapping(gpiochip->irq.domain, offset),
+=======
+		irq_set_parent(irq_find_mapping(gpiochip->irqdomain, offset),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       parent_irq);
 	}
 }
@@ -1730,11 +1961,14 @@ void gpiochip_set_chained_irqchip(struct gpio_chip *gpiochip,
 				  unsigned int parent_irq,
 				  irq_flow_handler_t parent_handler)
 {
+<<<<<<< HEAD
 	if (gpiochip->irq.threaded) {
 		chip_err(gpiochip, "tried to chain a threaded gpiochip\n");
 		return;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpiochip_set_cascaded_irqchip(gpiochip, irqchip, parent_irq,
 				      parent_handler);
 }
@@ -1751,6 +1985,13 @@ void gpiochip_set_nested_irqchip(struct gpio_chip *gpiochip,
 				 struct irq_chip *irqchip,
 				 unsigned int parent_irq)
 {
+<<<<<<< HEAD
+=======
+	if (!gpiochip->irq_nested) {
+		chip_err(gpiochip, "tried to nest a chained gpiochip\n");
+		return;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpiochip_set_cascaded_irqchip(gpiochip, irqchip, parent_irq,
 				      NULL);
 }
@@ -1766,11 +2007,18 @@ EXPORT_SYMBOL_GPL(gpiochip_set_nested_irqchip);
  * gpiochip by assigning the gpiochip as chip data, and using the irqchip
  * stored inside the gpiochip.
  */
+<<<<<<< HEAD
 int gpiochip_irq_map(struct irq_domain *d, unsigned int irq,
 		     irq_hw_number_t hwirq)
 {
 	struct gpio_chip *chip = d->host_data;
 	int err = 0;
+=======
+static int gpiochip_irq_map(struct irq_domain *d, unsigned int irq,
+			    irq_hw_number_t hwirq)
+{
+	struct gpio_chip *chip = d->host_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!gpiochip_irqchip_irq_valid(chip, hwirq))
 		return -ENXIO;
@@ -1780,6 +2028,7 @@ int gpiochip_irq_map(struct irq_domain *d, unsigned int irq,
 	 * This lock class tells lockdep that GPIO irqs are in a different
 	 * category than their parents, so it won't report false recursion.
 	 */
+<<<<<<< HEAD
 	irq_set_lockdep_class(irq, chip->irq.lock_key, chip->irq.request_key);
 	irq_set_chip_and_handler(irq, chip->irq.chip, chip->irq.handler);
 	/* Chips that use nested thread handlers have them marked */
@@ -1795,10 +2044,20 @@ int gpiochip_irq_map(struct irq_domain *d, unsigned int irq,
 	if (err < 0)
 		return err;
 
+=======
+	irq_set_lockdep_class(irq, chip->lock_key);
+	irq_set_chip_and_handler(irq, chip->irqchip, chip->irq_handler);
+	/* Chips that use nested thread handlers have them marked */
+	if (chip->irq_nested)
+		irq_set_nested_thread(irq, 1);
+	irq_set_noprobe(irq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * No set-up of the hardware will happen if IRQ_TYPE_NONE
 	 * is passed as default type.
 	 */
+<<<<<<< HEAD
 	if (chip->irq.default_type != IRQ_TYPE_NONE)
 		irq_set_irq_type(irq, chip->irq.default_type);
 
@@ -1811,11 +2070,27 @@ void gpiochip_irq_unmap(struct irq_domain *d, unsigned int irq)
 	struct gpio_chip *chip = d->host_data;
 
 	if (chip->irq.threaded)
+=======
+	if (chip->irq_default_type != IRQ_TYPE_NONE)
+		irq_set_irq_type(irq, chip->irq_default_type);
+
+	return 0;
+}
+
+static void gpiochip_irq_unmap(struct irq_domain *d, unsigned int irq)
+{
+	struct gpio_chip *chip = d->host_data;
+
+	if (chip->irq_nested)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irq_set_nested_thread(irq, 0);
 	irq_set_chip_and_handler(irq, NULL, NULL);
 	irq_set_chip_data(irq, NULL);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(gpiochip_irq_unmap);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct irq_domain_ops gpiochip_domain_ops = {
 	.map	= gpiochip_irq_map,
@@ -1827,18 +2102,29 @@ static const struct irq_domain_ops gpiochip_domain_ops = {
 static int gpiochip_irq_reqres(struct irq_data *d)
 {
 	struct gpio_chip *chip = irq_data_get_irq_chip_data(d);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!try_module_get(chip->gpiodev->owner))
 		return -ENODEV;
 
+<<<<<<< HEAD
 	ret = gpiochip_lock_as_irq(chip, d->hwirq);
 	if (ret) {
+=======
+	if (gpiochip_lock_as_irq(chip, d->hwirq)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chip_err(chip,
 			"unable to lock HW IRQ %lu for IRQ\n",
 			d->hwirq);
 		module_put(chip->gpiodev->owner);
+<<<<<<< HEAD
 		return ret;
+=======
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -1855,6 +2141,7 @@ static int gpiochip_to_irq(struct gpio_chip *chip, unsigned offset)
 {
 	if (!gpiochip_irqchip_irq_valid(chip, offset))
 		return -ENXIO;
+<<<<<<< HEAD
 
 	return irq_create_mapping(chip->irq.domain, offset);
 }
@@ -1952,6 +2239,9 @@ static int gpiochip_add_irqchip(struct gpio_chip *gpiochip,
 	acpi_gpiochip_request_interrupts(gpiochip);
 
 	return 0;
+=======
+	return irq_create_mapping(chip->irqdomain, offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1966,6 +2256,7 @@ static void gpiochip_irqchip_remove(struct gpio_chip *gpiochip)
 
 	acpi_gpiochip_free_interrupts(gpiochip);
 
+<<<<<<< HEAD
 	if (gpiochip->irq.chip && gpiochip->irq.parent_handler) {
 		struct gpio_irq_chip *irq = &gpiochip->irq;
 		unsigned int i;
@@ -1994,6 +2285,28 @@ static void gpiochip_irqchip_remove(struct gpio_chip *gpiochip)
 		gpiochip->irq.chip->irq_request_resources = NULL;
 		gpiochip->irq.chip->irq_release_resources = NULL;
 		gpiochip->irq.chip = NULL;
+=======
+	if (gpiochip->irq_chained_parent) {
+		irq_set_chained_handler(gpiochip->irq_chained_parent, NULL);
+		irq_set_handler_data(gpiochip->irq_chained_parent, NULL);
+	}
+
+	/* Remove all IRQ mappings and delete the domain */
+	if (gpiochip->irqdomain) {
+		for (offset = 0; offset < gpiochip->ngpio; offset++) {
+			if (!gpiochip_irqchip_irq_valid(gpiochip, offset))
+				continue;
+			irq_dispose_mapping(
+				irq_find_mapping(gpiochip->irqdomain, offset));
+		}
+		irq_domain_remove(gpiochip->irqdomain);
+	}
+
+	if (gpiochip->irqchip) {
+		gpiochip->irqchip->irq_request_resources = NULL;
+		gpiochip->irqchip->irq_release_resources = NULL;
+		gpiochip->irqchip = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	gpiochip_irqchip_free_valid_mask(gpiochip);
@@ -2008,9 +2321,15 @@ static void gpiochip_irqchip_remove(struct gpio_chip *gpiochip)
  * @handler: the irq handler to use (often a predefined irq core function)
  * @type: the default type for IRQs on this irqchip, pass IRQ_TYPE_NONE
  * to have the core avoid setting up any default type in the hardware.
+<<<<<<< HEAD
  * @threaded: whether this irqchip uses a nested thread handler
  * @lock_key: lockdep class for IRQ lock
  * @request_key: lockdep class for IRQ request
+=======
+ * @nested: whether this is a nested irqchip calling handle_nested_irq()
+ * in its IRQ handler
+ * @lock_key: lockdep class
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function closely associates a certain irqchip with a certain
  * gpiochip, providing an irq domain to translate the local IRQs to
@@ -2031,9 +2350,14 @@ int gpiochip_irqchip_add_key(struct gpio_chip *gpiochip,
 			     unsigned int first_irq,
 			     irq_flow_handler_t handler,
 			     unsigned int type,
+<<<<<<< HEAD
 			     bool threaded,
 			     struct lock_class_key *lock_key,
 			     struct lock_class_key *request_key)
+=======
+			     bool nested,
+			     struct lock_class_key *lock_key)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *of_node;
 
@@ -2044,7 +2368,11 @@ int gpiochip_irqchip_add_key(struct gpio_chip *gpiochip,
 		pr_err("missing gpiochip .dev parent pointer\n");
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	gpiochip->irq.threaded = threaded;
+=======
+	gpiochip->irq_nested = nested;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	of_node = gpiochip->parent->of_node;
 #ifdef CONFIG_OF_GPIO
 	/*
@@ -2069,6 +2397,7 @@ int gpiochip_irqchip_add_key(struct gpio_chip *gpiochip,
 		type = IRQ_TYPE_NONE;
 	}
 
+<<<<<<< HEAD
 	gpiochip->irq.chip = irqchip;
 	gpiochip->irq.handler = handler;
 	gpiochip->irq.default_type = type;
@@ -2080,6 +2409,18 @@ int gpiochip_irqchip_add_key(struct gpio_chip *gpiochip,
 					&gpiochip_domain_ops, gpiochip);
 	if (!gpiochip->irq.domain) {
 		gpiochip->irq.chip = NULL;
+=======
+	gpiochip->irqchip = irqchip;
+	gpiochip->irq_handler = handler;
+	gpiochip->irq_default_type = type;
+	gpiochip->to_irq = gpiochip_to_irq;
+	gpiochip->lock_key = lock_key;
+	gpiochip->irqdomain = irq_domain_add_simple(of_node,
+					gpiochip->ngpio, first_irq,
+					&gpiochip_domain_ops, gpiochip);
+	if (!gpiochip->irqdomain) {
+		gpiochip->irqchip = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -2101,6 +2442,7 @@ EXPORT_SYMBOL_GPL(gpiochip_irqchip_add_key);
 
 #else /* CONFIG_GPIOLIB_IRQCHIP */
 
+<<<<<<< HEAD
 static inline int gpiochip_add_irqchip(struct gpio_chip *gpiochip,
 				       struct lock_class_key *lock_key,
 				       struct lock_class_key *request_key)
@@ -2108,6 +2450,8 @@ static inline int gpiochip_add_irqchip(struct gpio_chip *gpiochip,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gpiochip_irqchip_remove(struct gpio_chip *gpiochip) {}
 static inline int gpiochip_irqchip_init_valid_mask(struct gpio_chip *gpiochip)
 {
@@ -2125,7 +2469,11 @@ static inline void gpiochip_irqchip_free_valid_mask(struct gpio_chip *gpiochip)
  */
 int gpiochip_generic_request(struct gpio_chip *chip, unsigned offset)
 {
+<<<<<<< HEAD
 	return pinctrl_gpio_request(chip->gpiodev->base + offset);
+=======
+	return pinctrl_request_gpio(chip->gpiodev->base + offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiochip_generic_request);
 
@@ -2136,7 +2484,11 @@ EXPORT_SYMBOL_GPL(gpiochip_generic_request);
  */
 void gpiochip_generic_free(struct gpio_chip *chip, unsigned offset)
 {
+<<<<<<< HEAD
 	pinctrl_gpio_free(chip->gpiodev->base + offset);
+=======
+	pinctrl_free_gpio(chip->gpiodev->base + offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiochip_generic_free);
 
@@ -2161,11 +2513,14 @@ EXPORT_SYMBOL_GPL(gpiochip_generic_config);
  * @pctldev: the pin controller to map to
  * @gpio_offset: the start offset in the current gpio_chip number space
  * @pin_group: name of the pin group inside the pin controller
+<<<<<<< HEAD
  *
  * Calling this function directly from a DeviceTree-supported
  * pinctrl driver is DEPRECATED. Please see Section 2.1 of
  * Documentation/devicetree/bindings/gpio/gpio.txt on how to
  * bind pinctrl and gpio drivers via the "gpio-ranges" property.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int gpiochip_add_pingroup_range(struct gpio_chip *chip,
 			struct pinctrl_dev *pctldev,
@@ -2219,11 +2574,14 @@ EXPORT_SYMBOL_GPL(gpiochip_add_pingroup_range);
  *
  * Returns:
  * 0 on success, or a negative error-code on failure.
+<<<<<<< HEAD
  *
  * Calling this function directly from a DeviceTree-supported
  * pinctrl driver is DEPRECATED. Please see Section 2.1 of
  * Documentation/devicetree/bindings/gpio/gpio.txt on how to
  * bind pinctrl and gpio drivers via the "gpio-ranges" property.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int gpiochip_add_pin_range(struct gpio_chip *chip, const char *pinctl_name,
 			   unsigned int gpio_offset, unsigned int pin_offset,
@@ -2289,11 +2647,16 @@ EXPORT_SYMBOL_GPL(gpiochip_remove_pin_ranges);
  * on each other, and help provide better diagnostics in debugfs.
  * They're called even less than the "set direction" calls.
  */
+<<<<<<< HEAD
 static int gpiod_request_commit(struct gpio_desc *desc, const char *label)
+=======
+static int __gpiod_request(struct gpio_desc *desc, const char *label)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gpio_chip	*chip = desc->gdev->chip;
 	int			status;
 	unsigned long		flags;
+<<<<<<< HEAD
 	unsigned		offset;
 
 	if (label) {
@@ -2301,6 +2664,8 @@ static int gpiod_request_commit(struct gpio_desc *desc, const char *label)
 		if (!label)
 			return -ENOMEM;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_irqsave(&gpio_lock, flags);
 
@@ -2312,7 +2677,10 @@ static int gpiod_request_commit(struct gpio_desc *desc, const char *label)
 		desc_set_label(desc, label ? : "?");
 		status = 0;
 	} else {
+<<<<<<< HEAD
 		kfree_const(label);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = -EBUSY;
 		goto done;
 	}
@@ -2320,16 +2688,23 @@ static int gpiod_request_commit(struct gpio_desc *desc, const char *label)
 	if (chip->request) {
 		/* chip->request may sleep */
 		spin_unlock_irqrestore(&gpio_lock, flags);
+<<<<<<< HEAD
 		offset = gpio_chip_hwgpio(desc);
 		if (gpiochip_line_is_valid(chip, offset))
 			status = chip->request(chip, offset);
 		else
 			status = -EINVAL;
+=======
+		status = chip->request(chip, gpio_chip_hwgpio(desc));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irqsave(&gpio_lock, flags);
 
 		if (status < 0) {
 			desc_set_label(desc, NULL);
+<<<<<<< HEAD
 			kfree_const(label);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clear_bit(FLAG_REQUESTED, &desc->flags);
 			goto done;
 		}
@@ -2351,6 +2726,7 @@ done:
  * macro to avoid endless duplication. If the desc is NULL it is an
  * optional GPIO and calls should just bail out.
  */
+<<<<<<< HEAD
 static int validate_desc(const struct gpio_desc *desc, const char *func)
 {
 	if (!desc)
@@ -2382,6 +2758,42 @@ static int validate_desc(const struct gpio_desc *desc, const char *func)
 	if (__valid <= 0) \
 		return; \
 	} while (0)
+=======
+#define VALIDATE_DESC(desc) do { \
+	if (!desc) \
+		return 0; \
+	if (IS_ERR(desc)) {						\
+		pr_warn("%s: invalid GPIO (errorpointer)\n", __func__); \
+		return PTR_ERR(desc); \
+	} \
+	if (!desc->gdev) { \
+		pr_warn("%s: invalid GPIO (no device)\n", __func__); \
+		return -EINVAL; \
+	} \
+	if ( !desc->gdev->chip ) { \
+		dev_warn(&desc->gdev->dev, \
+			 "%s: backing chip is gone\n", __func__); \
+		return 0; \
+	} } while (0)
+
+#define VALIDATE_DESC_VOID(desc) do { \
+	if (!desc) \
+		return; \
+	if (IS_ERR(desc)) {						\
+		pr_warn("%s: invalid GPIO (errorpointer)\n", __func__); \
+		return; \
+	} \
+	if (!desc->gdev) { \
+		pr_warn("%s: invalid GPIO (no device)\n", __func__); \
+		return; \
+	} \
+	if (!desc->gdev->chip) { \
+		dev_warn(&desc->gdev->dev, \
+			 "%s: backing chip is gone\n", __func__); \
+		return; \
+	} } while (0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int gpiod_request(struct gpio_desc *desc, const char *label)
 {
@@ -2392,7 +2804,11 @@ int gpiod_request(struct gpio_desc *desc, const char *label)
 	gdev = desc->gdev;
 
 	if (try_module_get(gdev->owner)) {
+<<<<<<< HEAD
 		status = gpiod_request_commit(desc, label);
+=======
+		status = __gpiod_request(desc, label);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (status < 0)
 			module_put(gdev->owner);
 		else
@@ -2405,7 +2821,11 @@ int gpiod_request(struct gpio_desc *desc, const char *label)
 	return status;
 }
 
+<<<<<<< HEAD
 static bool gpiod_free_commit(struct gpio_desc *desc)
+=======
+static bool __gpiod_free(struct gpio_desc *desc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	bool			ret = false;
 	unsigned long		flags;
@@ -2425,7 +2845,10 @@ static bool gpiod_free_commit(struct gpio_desc *desc)
 			chip->free(chip, gpio_chip_hwgpio(desc));
 			spin_lock_irqsave(&gpio_lock, flags);
 		}
+<<<<<<< HEAD
 		kfree_const(desc->label);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc_set_label(desc, NULL);
 		clear_bit(FLAG_ACTIVE_LOW, &desc->flags);
 		clear_bit(FLAG_REQUESTED, &desc->flags);
@@ -2441,7 +2864,11 @@ static bool gpiod_free_commit(struct gpio_desc *desc)
 
 void gpiod_free(struct gpio_desc *desc)
 {
+<<<<<<< HEAD
 	if (desc && desc->gdev && gpiod_free_commit(desc)) {
+=======
+	if (desc && desc->gdev && __gpiod_free(desc)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		module_put(desc->gdev->owner);
 		put_device(&desc->gdev->dev);
 	} else {
@@ -2504,7 +2931,11 @@ struct gpio_desc *gpiochip_request_own_desc(struct gpio_chip *chip, u16 hwnum,
 		return desc;
 	}
 
+<<<<<<< HEAD
 	err = gpiod_request_commit(desc, label);
+=======
+	err = __gpiod_request(desc, label);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return ERR_PTR(err);
 
@@ -2522,7 +2953,11 @@ EXPORT_SYMBOL_GPL(gpiochip_request_own_desc);
 void gpiochip_free_own_desc(struct gpio_desc *desc)
 {
 	if (desc)
+<<<<<<< HEAD
 		gpiod_free_commit(desc);
+=======
+		__gpiod_free(desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiochip_free_own_desc);
 
@@ -2578,12 +3013,55 @@ static int gpio_set_drive_single_ended(struct gpio_chip *gc, unsigned offset,
 	return gc->set_config ? gc->set_config(gc, offset, config) : -ENOTSUPP;
 }
 
+<<<<<<< HEAD
 static int gpiod_direction_output_raw_commit(struct gpio_desc *desc, int value)
+=======
+static int _gpiod_direction_output_raw(struct gpio_desc *desc, int value)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gpio_chip *gc = desc->gdev->chip;
 	int val = !!value;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	/* GPIOs used for IRQs shall not be set as output */
+	if (test_bit(FLAG_USED_AS_IRQ, &desc->flags)) {
+		gpiod_err(desc,
+			  "%s: tried to set a GPIO tied to an IRQ as output\n",
+			  __func__);
+		return -EIO;
+	}
+
+	if (test_bit(FLAG_OPEN_DRAIN, &desc->flags)) {
+		/* First see if we can enable open drain in hardware */
+		ret = gpio_set_drive_single_ended(gc, gpio_chip_hwgpio(desc),
+						  PIN_CONFIG_DRIVE_OPEN_DRAIN);
+		if (!ret)
+			goto set_output_value;
+		/* Emulate open drain by not actively driving the line high */
+		if (val) {
+			ret = gpiod_direction_input(desc);
+			goto set_output_flag;
+		}
+	}
+	else if (test_bit(FLAG_OPEN_SOURCE, &desc->flags)) {
+		ret = gpio_set_drive_single_ended(gc, gpio_chip_hwgpio(desc),
+						  PIN_CONFIG_DRIVE_OPEN_SOURCE);
+		if (!ret)
+			goto set_output_value;
+		/* Emulate open source by not actively driving the line low */
+		if (!val) {
+			ret = gpiod_direction_input(desc);
+			goto set_output_flag;
+		}
+	} else {
+		gpio_set_drive_single_ended(gc, gpio_chip_hwgpio(desc),
+					    PIN_CONFIG_DRIVE_PUSH_PULL);
+	}
+
+set_output_value:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gc->set || !gc->direction_output) {
 		gpiod_warn(desc,
 		       "%s: missing set() or direction_output() operations\n",
@@ -2597,6 +3075,20 @@ static int gpiod_direction_output_raw_commit(struct gpio_desc *desc, int value)
 	trace_gpio_value(desc_to_gpio(desc), 0, val);
 	trace_gpio_direction(desc_to_gpio(desc), 0, ret);
 	return ret;
+<<<<<<< HEAD
+=======
+
+set_output_flag:
+	/*
+	 * When emulating open-source or open-drain functionalities by not
+	 * actively driving the line (setting mode to input) we still need to
+	 * set the IS_OUT flag or otherwise we won't be able to set the line
+	 * value anymore.
+	 */
+	if (ret == 0)
+		set_bit(FLAG_IS_OUT, &desc->flags);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2613,7 +3105,11 @@ static int gpiod_direction_output_raw_commit(struct gpio_desc *desc, int value)
 int gpiod_direction_output_raw(struct gpio_desc *desc, int value)
 {
 	VALIDATE_DESC(desc);
+<<<<<<< HEAD
 	return gpiod_direction_output_raw_commit(desc, value);
+=======
+	return _gpiod_direction_output_raw(desc, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_direction_output_raw);
 
@@ -2631,14 +3127,18 @@ EXPORT_SYMBOL_GPL(gpiod_direction_output_raw);
  */
 int gpiod_direction_output(struct gpio_desc *desc, int value)
 {
+<<<<<<< HEAD
 	struct gpio_chip *gc;
 	int ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VALIDATE_DESC(desc);
 	if (test_bit(FLAG_ACTIVE_LOW, &desc->flags))
 		value = !value;
 	else
 		value = !!value;
+<<<<<<< HEAD
 
 	/* GPIOs used for IRQs shall not be set as output */
 	if (test_bit(FLAG_USED_AS_IRQ, &desc->flags)) {
@@ -2689,6 +3189,9 @@ set_output_flag:
 	if (ret == 0)
 		set_bit(FLAG_IS_OUT, &desc->flags);
 	return ret;
+=======
+	return _gpiod_direction_output_raw(desc, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_direction_output);
 
@@ -2721,6 +3224,7 @@ int gpiod_set_debounce(struct gpio_desc *desc, unsigned debounce)
 EXPORT_SYMBOL_GPL(gpiod_set_debounce);
 
 /**
+<<<<<<< HEAD
  * gpiod_set_transitory - Lose or retain GPIO state on suspend or reset
  * @desc: descriptor of the GPIO for which to configure persistence
  * @transitory: True to lose state on suspend or reset, false for persistence
@@ -2765,6 +3269,8 @@ int gpiod_set_transitory(struct gpio_desc *desc, bool transitory)
 EXPORT_SYMBOL_GPL(gpiod_set_transitory);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * gpiod_is_active_low - test whether a GPIO is active-low or not
  * @desc: the gpio descriptor to test
  *
@@ -2799,7 +3305,11 @@ EXPORT_SYMBOL_GPL(gpiod_is_active_low);
  * that the GPIO was actually requested.
  */
 
+<<<<<<< HEAD
 static int gpiod_get_raw_value_commit(const struct gpio_desc *desc)
+=======
+static int _gpiod_get_raw_value(const struct gpio_desc *desc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gpio_chip	*chip;
 	int offset;
@@ -2813,6 +3323,7 @@ static int gpiod_get_raw_value_commit(const struct gpio_desc *desc)
 	return value;
 }
 
+<<<<<<< HEAD
 static int gpio_chip_get_multiple(struct gpio_chip *chip,
 				  unsigned long *mask, unsigned long *bits)
 {
@@ -2896,6 +3407,8 @@ int gpiod_get_array_value_complex(bool raw, bool can_sleep,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * gpiod_get_raw_value() - return a gpio's raw value
  * @desc: gpio whose value will be returned
@@ -2911,7 +3424,11 @@ int gpiod_get_raw_value(const struct gpio_desc *desc)
 	VALIDATE_DESC(desc);
 	/* Should be using gpiod_get_raw_value_cansleep() */
 	WARN_ON(desc->gdev->chip->can_sleep);
+<<<<<<< HEAD
 	return gpiod_get_raw_value_commit(desc);
+=======
+	return _gpiod_get_raw_value(desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_get_raw_value);
 
@@ -2933,7 +3450,11 @@ int gpiod_get_value(const struct gpio_desc *desc)
 	/* Should be using gpiod_get_value_cansleep() */
 	WARN_ON(desc->gdev->chip->can_sleep);
 
+<<<<<<< HEAD
 	value = gpiod_get_raw_value_commit(desc);
+=======
+	value = _gpiod_get_raw_value(desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (value < 0)
 		return value;
 
@@ -2944,6 +3465,7 @@ int gpiod_get_value(const struct gpio_desc *desc)
 }
 EXPORT_SYMBOL_GPL(gpiod_get_value);
 
+<<<<<<< HEAD
 /**
  * gpiod_get_raw_array_value() - read raw values from an array of GPIOs
  * @array_size: number of elements in the descriptor / value arrays
@@ -2995,6 +3517,14 @@ EXPORT_SYMBOL_GPL(gpiod_get_array_value);
  * @value: Non-zero for setting it HIGH otherwise it will set to LOW.
  */
 static void gpio_set_open_drain_value_commit(struct gpio_desc *desc, bool value)
+=======
+/*
+ *  _gpio_set_open_drain_value() - Set the open drain gpio's value.
+ * @desc: gpio descriptor whose state need to be set.
+ * @value: Non-zero for setting it HIGH otherwise it will set to LOW.
+ */
+static void _gpio_set_open_drain_value(struct gpio_desc *desc, bool value)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 	struct gpio_chip *chip = desc->gdev->chip;
@@ -3019,7 +3549,11 @@ static void gpio_set_open_drain_value_commit(struct gpio_desc *desc, bool value)
  * @desc: gpio descriptor whose state need to be set.
  * @value: Non-zero for setting it HIGH otherwise it will set to LOW.
  */
+<<<<<<< HEAD
 static void gpio_set_open_source_value_commit(struct gpio_desc *desc, bool value)
+=======
+static void _gpio_set_open_source_value(struct gpio_desc *desc, bool value)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 	struct gpio_chip *chip = desc->gdev->chip;
@@ -3039,13 +3573,26 @@ static void gpio_set_open_source_value_commit(struct gpio_desc *desc, bool value
 			  __func__, err);
 }
 
+<<<<<<< HEAD
 static void gpiod_set_raw_value_commit(struct gpio_desc *desc, bool value)
+=======
+static void _gpiod_set_raw_value(struct gpio_desc *desc, bool value)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gpio_chip	*chip;
 
 	chip = desc->gdev->chip;
 	trace_gpio_value(desc_to_gpio(desc), 0, value);
+<<<<<<< HEAD
 	chip->set(chip, gpio_chip_hwgpio(desc), value);
+=======
+	if (test_bit(FLAG_OPEN_DRAIN, &desc->flags))
+		_gpio_set_open_drain_value(desc, value);
+	else if (test_bit(FLAG_OPEN_SOURCE, &desc->flags))
+		_gpio_set_open_source_value(desc, value);
+	else
+		chip->set(chip, gpio_chip_hwgpio(desc), value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -3071,7 +3618,11 @@ static void gpio_chip_set_multiple(struct gpio_chip *chip,
 	}
 }
 
+<<<<<<< HEAD
 int gpiod_set_array_value_complex(bool raw, bool can_sleep,
+=======
+void gpiod_set_array_value_complex(bool raw, bool can_sleep,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   unsigned int array_size,
 				   struct gpio_desc **desc_array,
 				   int *value_array)
@@ -3080,6 +3631,7 @@ int gpiod_set_array_value_complex(bool raw, bool can_sleep,
 
 	while (i < array_size) {
 		struct gpio_chip *chip = desc_array[i]->gdev->chip;
+<<<<<<< HEAD
 		unsigned long fastpath[2 * BITS_TO_LONGS(FASTPATH_NGPIO)];
 		unsigned long *mask, *bits;
 		int count = 0;
@@ -3100,6 +3652,16 @@ int gpiod_set_array_value_complex(bool raw, bool can_sleep,
 		if (!can_sleep)
 			WARN_ON(chip->can_sleep);
 
+=======
+		unsigned long mask[BITS_TO_LONGS(chip->ngpio)];
+		unsigned long bits[BITS_TO_LONGS(chip->ngpio)];
+		int count = 0;
+
+		if (!can_sleep)
+			WARN_ON(chip->can_sleep);
+
+		memset(mask, 0, sizeof(mask));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		do {
 			struct gpio_desc *desc = desc_array[i];
 			int hwgpio = gpio_chip_hwgpio(desc);
@@ -3112,10 +3674,17 @@ int gpiod_set_array_value_complex(bool raw, bool can_sleep,
 			 * collect all normal outputs belonging to the same chip
 			 * open drain and open source outputs are set individually
 			 */
+<<<<<<< HEAD
 			if (test_bit(FLAG_OPEN_DRAIN, &desc->flags) && !raw) {
 				gpio_set_open_drain_value_commit(desc, value);
 			} else if (test_bit(FLAG_OPEN_SOURCE, &desc->flags) && !raw) {
 				gpio_set_open_source_value_commit(desc, value);
+=======
+			if (test_bit(FLAG_OPEN_DRAIN, &desc->flags)) {
+				_gpio_set_open_drain_value(desc, value);
+			} else if (test_bit(FLAG_OPEN_SOURCE, &desc->flags)) {
+				_gpio_set_open_source_value(desc, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} else {
 				__set_bit(hwgpio, mask);
 				if (value)
@@ -3130,11 +3699,15 @@ int gpiod_set_array_value_complex(bool raw, bool can_sleep,
 		/* push collected bits to outputs */
 		if (count != 0)
 			gpio_chip_set_multiple(chip, mask, bits);
+<<<<<<< HEAD
 
 		if (mask != fastpath)
 			kfree(mask);
 	}
 	return 0;
+=======
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3153,11 +3726,16 @@ void gpiod_set_raw_value(struct gpio_desc *desc, int value)
 	VALIDATE_DESC_VOID(desc);
 	/* Should be using gpiod_set_raw_value_cansleep() */
 	WARN_ON(desc->gdev->chip->can_sleep);
+<<<<<<< HEAD
 	gpiod_set_raw_value_commit(desc, value);
+=======
+	_gpiod_set_raw_value(desc, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_set_raw_value);
 
 /**
+<<<<<<< HEAD
  * gpiod_set_value_nocheck() - set a GPIO line value without checking
  * @desc: the descriptor to set the value on
  * @value: value to set
@@ -3179,12 +3757,19 @@ static void gpiod_set_value_nocheck(struct gpio_desc *desc, int value)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * gpiod_set_value() - assign a gpio's value
  * @desc: gpio whose value will be assigned
  * @value: value to assign
  *
+<<<<<<< HEAD
  * Set the logical value of the GPIO, i.e. taking its ACTIVE_LOW,
  * OPEN_DRAIN and OPEN_SOURCE flags into account.
+=======
+ * Set the logical value of the GPIO, i.e. taking its ACTIVE_LOW status into
+ * account
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function should be called from contexts where we cannot sleep, and will
  * complain if the GPIO chip functions potentially sleep.
@@ -3194,7 +3779,13 @@ void gpiod_set_value(struct gpio_desc *desc, int value)
 	VALIDATE_DESC_VOID(desc);
 	/* Should be using gpiod_set_value_cansleep() */
 	WARN_ON(desc->gdev->chip->can_sleep);
+<<<<<<< HEAD
 	gpiod_set_value_nocheck(desc, value);
+=======
+	if (test_bit(FLAG_ACTIVE_LOW, &desc->flags))
+		value = !value;
+	_gpiod_set_raw_value(desc, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_set_value);
 
@@ -3210,6 +3801,7 @@ EXPORT_SYMBOL_GPL(gpiod_set_value);
  * This function should be called from contexts where we cannot sleep, and will
  * complain if the GPIO chip functions potentially sleep.
  */
+<<<<<<< HEAD
 int gpiod_set_raw_array_value(unsigned int array_size,
 			 struct gpio_desc **desc_array, int *value_array)
 {
@@ -3217,6 +3809,15 @@ int gpiod_set_raw_array_value(unsigned int array_size,
 		return -EINVAL;
 	return gpiod_set_array_value_complex(true, false, array_size,
 					desc_array, value_array);
+=======
+void gpiod_set_raw_array_value(unsigned int array_size,
+			 struct gpio_desc **desc_array, int *value_array)
+{
+	if (!desc_array)
+		return;
+	gpiod_set_array_value_complex(true, false, array_size, desc_array,
+				      value_array);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_set_raw_array_value);
 
@@ -3255,6 +3856,7 @@ int gpiod_cansleep(const struct gpio_desc *desc)
 EXPORT_SYMBOL_GPL(gpiod_cansleep);
 
 /**
+<<<<<<< HEAD
  * gpiod_set_consumer_name() - set the consumer name for the descriptor
  * @desc: gpio to set the consumer name on
  * @name: the new consumer name
@@ -3276,6 +3878,8 @@ int gpiod_set_consumer_name(struct gpio_desc *desc, const char *name)
 EXPORT_SYMBOL_GPL(gpiod_set_consumer_name);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * gpiod_to_irq() - return the IRQ corresponding to a GPIO
  * @desc: gpio whose IRQ will be returned (already requested)
  *
@@ -3331,6 +3935,7 @@ int gpiochip_lock_as_irq(struct gpio_chip *chip, unsigned int offset)
 	 * behind our back
 	 */
 	if (!chip->can_sleep && chip->get_direction) {
+<<<<<<< HEAD
 		int dir = gpiod_get_direction(desc);
 
 		if (dir < 0) {
@@ -3338,12 +3943,25 @@ int gpiochip_lock_as_irq(struct gpio_chip *chip, unsigned int offset)
 				 __func__);
 			return dir;
 		}
+=======
+		int dir = chip->get_direction(chip, offset);
+
+		if (dir)
+			clear_bit(FLAG_IS_OUT, &desc->flags);
+		else
+			set_bit(FLAG_IS_OUT, &desc->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (test_bit(FLAG_IS_OUT, &desc->flags)) {
 		chip_err(chip,
+<<<<<<< HEAD
 			 "%s: tried to flag a GPIO set as output for IRQ\n",
 			 __func__);
+=======
+			  "%s: tried to flag a GPIO set as output for IRQ\n",
+			  __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 
@@ -3417,7 +4035,12 @@ bool gpiochip_line_is_persistent(struct gpio_chip *chip, unsigned int offset)
 	if (offset >= chip->ngpio)
 		return false;
 
+<<<<<<< HEAD
 	return !test_bit(FLAG_TRANSITORY, &chip->gpiodev->descs[offset].flags);
+=======
+	return !test_bit(FLAG_SLEEP_MAY_LOOSE_VALUE,
+			 &chip->gpiodev->descs[offset].flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiochip_line_is_persistent);
 
@@ -3434,7 +4057,11 @@ int gpiod_get_raw_value_cansleep(const struct gpio_desc *desc)
 {
 	might_sleep_if(extra_checks);
 	VALIDATE_DESC(desc);
+<<<<<<< HEAD
 	return gpiod_get_raw_value_commit(desc);
+=======
+	return _gpiod_get_raw_value(desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_get_raw_value_cansleep);
 
@@ -3453,7 +4080,11 @@ int gpiod_get_value_cansleep(const struct gpio_desc *desc)
 
 	might_sleep_if(extra_checks);
 	VALIDATE_DESC(desc);
+<<<<<<< HEAD
 	value = gpiod_get_raw_value_commit(desc);
+=======
+	value = _gpiod_get_raw_value(desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (value < 0)
 		return value;
 
@@ -3465,6 +4096,7 @@ int gpiod_get_value_cansleep(const struct gpio_desc *desc)
 EXPORT_SYMBOL_GPL(gpiod_get_value_cansleep);
 
 /**
+<<<<<<< HEAD
  * gpiod_get_raw_array_value_cansleep() - read raw values from an array of GPIOs
  * @array_size: number of elements in the descriptor / value arrays
  * @desc_array: array of GPIO descriptors whose values will be read
@@ -3512,6 +4144,8 @@ int gpiod_get_array_value_cansleep(unsigned int array_size,
 EXPORT_SYMBOL_GPL(gpiod_get_array_value_cansleep);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * gpiod_set_raw_value_cansleep() - assign a gpio's raw value
  * @desc: gpio whose value will be assigned
  * @value: value to assign
@@ -3525,7 +4159,11 @@ void gpiod_set_raw_value_cansleep(struct gpio_desc *desc, int value)
 {
 	might_sleep_if(extra_checks);
 	VALIDATE_DESC_VOID(desc);
+<<<<<<< HEAD
 	gpiod_set_raw_value_commit(desc, value);
+=======
+	_gpiod_set_raw_value(desc, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_set_raw_value_cansleep);
 
@@ -3543,7 +4181,13 @@ void gpiod_set_value_cansleep(struct gpio_desc *desc, int value)
 {
 	might_sleep_if(extra_checks);
 	VALIDATE_DESC_VOID(desc);
+<<<<<<< HEAD
 	gpiod_set_value_nocheck(desc, value);
+=======
+	if (test_bit(FLAG_ACTIVE_LOW, &desc->flags))
+		value = !value;
+	_gpiod_set_raw_value(desc, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(gpiod_set_value_cansleep);
 
@@ -3558,14 +4202,23 @@ EXPORT_SYMBOL_GPL(gpiod_set_value_cansleep);
  *
  * This function is to be called from contexts that can sleep.
  */
+<<<<<<< HEAD
 int gpiod_set_raw_array_value_cansleep(unsigned int array_size,
+=======
+void gpiod_set_raw_array_value_cansleep(unsigned int array_size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct gpio_desc **desc_array,
 					int *value_array)
 {
 	might_sleep_if(extra_checks);
 	if (!desc_array)
+<<<<<<< HEAD
 		return -EINVAL;
 	return gpiod_set_array_value_complex(true, true, array_size, desc_array,
+=======
+		return;
+	gpiod_set_array_value_complex(true, true, array_size, desc_array,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      value_array);
 }
 EXPORT_SYMBOL_GPL(gpiod_set_raw_array_value_cansleep);
@@ -3638,6 +4291,7 @@ void gpiod_remove_lookup_table(struct gpiod_lookup_table *table)
 }
 EXPORT_SYMBOL_GPL(gpiod_remove_lookup_table);
 
+<<<<<<< HEAD
 /**
  * gpiod_add_hogs() - register a set of GPIO hogs from machine code
  * @hogs: table of gpio hog entries with a zeroed sentinel at the end
@@ -3665,6 +4319,8 @@ void gpiod_add_hogs(struct gpiod_hog *hogs)
 }
 EXPORT_SYMBOL_GPL(gpiod_add_hogs);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct gpiod_lookup_table *gpiod_find_lookup_table(struct device *dev)
 {
 	const char *dev_id = dev ? dev_name(dev) : NULL;
@@ -3722,6 +4378,7 @@ static struct gpio_desc *gpiod_find(struct device *dev, const char *con_id,
 		chip = find_chip_by_name(p->chip_label);
 
 		if (!chip) {
+<<<<<<< HEAD
 			/*
 			 * As the lookup table indicates a chip with
 			 * p->chip_label should exist, assume it may
@@ -3732,12 +4389,23 @@ static struct gpio_desc *gpiod_find(struct device *dev, const char *con_id,
 			dev_warn(dev, "cannot find GPIO chip %s, deferring\n",
 				 p->chip_label);
 			return ERR_PTR(-EPROBE_DEFER);
+=======
+			dev_err(dev, "cannot find GPIO chip %s\n",
+				p->chip_label);
+			return ERR_PTR(-ENODEV);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (chip->ngpio <= p->chip_hwnum) {
 			dev_err(dev,
+<<<<<<< HEAD
 				"requested GPIO %d is out of range [0..%d] for chip %s\n",
 				idx, chip->ngpio, chip->label);
+=======
+				"requested GPIO %u (%u) is out of range [0..%u] for chip %s\n",
+				idx, p->chip_hwnum, chip->ngpio - 1,
+				chip->label);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ERR_PTR(-EINVAL);
 		}
 
@@ -3869,6 +4537,7 @@ int gpiod_configure_flags(struct gpio_desc *desc, const char *con_id,
 
 	if (lflags & GPIO_ACTIVE_LOW)
 		set_bit(FLAG_ACTIVE_LOW, &desc->flags);
+<<<<<<< HEAD
 
 	if (lflags & GPIO_OPEN_DRAIN)
 		set_bit(FLAG_OPEN_DRAIN, &desc->flags);
@@ -3890,6 +4559,14 @@ int gpiod_configure_flags(struct gpio_desc *desc, const char *con_id,
 	status = gpiod_set_transitory(desc, (lflags & GPIO_TRANSITORY));
 	if (status < 0)
 		return status;
+=======
+	if (lflags & GPIO_OPEN_DRAIN)
+		set_bit(FLAG_OPEN_DRAIN, &desc->flags);
+	if (lflags & GPIO_OPEN_SOURCE)
+		set_bit(FLAG_OPEN_SOURCE, &desc->flags);
+	if (lflags & GPIO_SLEEP_MAY_LOOSE_VALUE)
+		set_bit(FLAG_SLEEP_MAY_LOOSE_VALUE, &desc->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* No particular flag request, return here... */
 	if (!(dflags & GPIOD_FLAGS_BIT_DIR_SET)) {
@@ -3955,7 +4632,11 @@ struct gpio_desc *__must_check gpiod_get_index(struct device *dev,
 	}
 
 	if (IS_ERR(desc)) {
+<<<<<<< HEAD
 		dev_dbg(dev, "No GPIO consumer %s found\n", con_id);
+=======
+		dev_dbg(dev, "lookup for GPIO %s failed\n", con_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return desc;
 	}
 
@@ -3979,6 +4660,7 @@ struct gpio_desc *__must_check gpiod_get_index(struct device *dev,
 EXPORT_SYMBOL_GPL(gpiod_get_index);
 
 /**
+<<<<<<< HEAD
  * gpiod_get_from_of_node() - obtain a GPIO from an OF node
  * @node:	handle of the OF node
  * @propname:	name of the DT property representing the GPIO
@@ -4054,13 +4736,25 @@ EXPORT_SYMBOL(gpiod_get_from_of_node);
  * @fwnode:	handle of the firmware node
  * @propname:	name of the firmware property representing the GPIO
  * @index:	index of the GPIO to obtain for the consumer
+=======
+ * fwnode_get_named_gpiod - obtain a GPIO from firmware node
+ * @fwnode:	handle of the firmware node
+ * @propname:	name of the firmware property representing the GPIO
+ * @index:	index of the GPIO to obtain in the consumer
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dflags:	GPIO initialization flags
  * @label:	label to attach to the requested GPIO
  *
  * This function can be used for drivers that get their configuration
+<<<<<<< HEAD
  * from opaque firmware.
  *
  * The function properly finds the corresponding GPIO using whatever is the
+=======
+ * from firmware.
+ *
+ * Function properly finds the corresponding GPIO using whatever is the
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * underlying firmware interface and then makes sure that the GPIO
  * descriptor is requested before it is returned to the caller.
  *
@@ -4077,21 +4771,40 @@ struct gpio_desc *fwnode_get_named_gpiod(struct fwnode_handle *fwnode,
 {
 	struct gpio_desc *desc = ERR_PTR(-ENODEV);
 	unsigned long lflags = 0;
+<<<<<<< HEAD
+=======
+	bool active_low = false;
+	bool single_ended = false;
+	bool open_drain = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!fwnode)
 		return ERR_PTR(-EINVAL);
 
 	if (is_of_node(fwnode)) {
+<<<<<<< HEAD
 		desc = gpiod_get_from_of_node(to_of_node(fwnode),
 					      propname, index,
 					      dflags,
 					      label);
 		return desc;
+=======
+		enum of_gpio_flags flags;
+
+		desc = of_get_named_gpiod_flags(to_of_node(fwnode), propname,
+						index, &flags);
+		if (!IS_ERR(desc)) {
+			active_low = flags & OF_GPIO_ACTIVE_LOW;
+			single_ended = flags & OF_GPIO_SINGLE_ENDED;
+			open_drain = flags & OF_GPIO_OPEN_DRAIN;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (is_acpi_node(fwnode)) {
 		struct acpi_gpio_info info;
 
 		desc = acpi_node_get_gpiod(fwnode, propname, index, &info);
+<<<<<<< HEAD
 		if (IS_ERR(desc))
 			return desc;
 
@@ -4102,10 +4815,36 @@ struct gpio_desc *fwnode_get_named_gpiod(struct fwnode_handle *fwnode,
 	}
 
 	/* Currently only ACPI takes this path */
+=======
+		if (!IS_ERR(desc)) {
+			active_low = info.polarity == GPIO_ACTIVE_LOW;
+			ret = acpi_gpio_update_gpiod_flags(&dflags, info.flags);
+			if (ret)
+				pr_debug("Override GPIO initialization flags\n");
+		}
+	}
+
+	if (IS_ERR(desc))
+		return desc;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = gpiod_request(desc, label);
 	if (ret)
 		return ERR_PTR(ret);
 
+<<<<<<< HEAD
+=======
+	if (active_low)
+		lflags |= GPIO_ACTIVE_LOW;
+
+	if (single_ended) {
+		if (open_drain)
+			lflags |= GPIO_OPEN_DRAIN;
+		else
+			lflags |= GPIO_OPEN_SOURCE;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = gpiod_configure_flags(desc, propname, lflags, dflags);
 	if (ret < 0) {
 		gpiod_put(desc);
@@ -4232,7 +4971,12 @@ struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
 	if (count < 0)
 		return ERR_PTR(count);
 
+<<<<<<< HEAD
 	descs = kzalloc(struct_size(descs, desc, count), GFP_KERNEL);
+=======
+	descs = kzalloc(sizeof(*descs) + sizeof(descs->desc[0]) * count,
+			GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!descs)
 		return ERR_PTR(-ENOMEM);
 
@@ -4305,7 +5049,11 @@ static int __init gpiolib_dev_init(void)
 	int ret;
 
 	/* Register GPIO sysfs bus */
+<<<<<<< HEAD
 	ret = bus_register(&gpio_bus_type);
+=======
+	ret  = bus_register(&gpio_bus_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("gpiolib: could not register GPIO bus type\n");
 		return ret;
@@ -4349,7 +5097,13 @@ static void gpiolib_dbg_show(struct seq_file *s, struct gpio_device *gdev)
 		seq_printf(s, " gpio-%-3d (%-20.20s|%-20.20s) %s %s %s",
 			gpio, gdesc->name ? gdesc->name : "", gdesc->label,
 			is_out ? "out" : "in ",
+<<<<<<< HEAD
 			chip->get ? (chip->get(chip, i) ? "hi" : "lo") : "?  ",
+=======
+			chip->get
+				? (chip->get(chip, i) ? "hi" : "lo")
+				: "?  ",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			is_irq ? "IRQ" : "   ");
 		seq_printf(s, "\n");
 	}

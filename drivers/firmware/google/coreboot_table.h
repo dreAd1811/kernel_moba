@@ -3,9 +3,13 @@
  *
  * Internal header for coreboot table access.
  *
+<<<<<<< HEAD
  * Copyright 2014 Gerd Hoffmann <kraxel@redhat.com>
  * Copyright 2017 Google Inc.
  * Copyright 2017 Samuel Holland <samuel@sholland.org>
+=======
+ * Copyright 2017 Google Inc.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License v2.0 as published by
@@ -22,6 +26,17 @@
 
 #include <linux/io.h>
 
+<<<<<<< HEAD
+=======
+/* List of coreboot entry structures that is used */
+struct lb_cbmem_ref {
+	uint32_t tag;
+	uint32_t size;
+
+	uint64_t cbmem_addr;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Coreboot table header structure */
 struct coreboot_table_header {
 	char signature[4];
@@ -32,6 +47,7 @@ struct coreboot_table_header {
 	u32 table_entries;
 };
 
+<<<<<<< HEAD
 /* List of coreboot entry structures that is used */
 /* Generic */
 struct coreboot_table_entry {
@@ -93,6 +109,13 @@ void coreboot_driver_unregister(struct coreboot_driver *driver);
 
 /* Initialize coreboot table module given a pointer to iomem */
 int coreboot_table_init(struct device *dev, void __iomem *ptr);
+=======
+/* Retrieve coreboot table entry with tag *tag* and copy it to data */
+int coreboot_table_find(int tag, void *data, size_t data_size);
+
+/* Initialize coreboot table module given a pointer to iomem */
+int coreboot_table_init(void __iomem *ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Cleanup coreboot table module */
 int coreboot_table_exit(void);

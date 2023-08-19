@@ -52,6 +52,7 @@
  * Track sum of all purrs across all processors. This is used to further
  * calculate usage values by different applications
  */
+<<<<<<< HEAD
 static void cpu_get_purr(void *arg)
 {
 	atomic64_t *sum = arg;
@@ -66,6 +67,20 @@ static unsigned long get_purr(void)
 	on_each_cpu(cpu_get_purr, &purr, 1);
 
 	return atomic64_read(&purr);
+=======
+static unsigned long get_purr(void)
+{
+	unsigned long sum_purr = 0;
+	int cpu;
+
+	for_each_possible_cpu(cpu) {
+		struct cpu_usage *cu;
+
+		cu = &per_cpu(cpu_usage_array, cpu);
+		sum_purr += cu->current_tb;
+	}
+	return sum_purr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -372,10 +387,17 @@ static void parse_system_parameter_string(struct seq_file *m)
  */
 static int lparcfg_count_active_processors(void)
 {
+<<<<<<< HEAD
 	struct device_node *cpus_dn;
 	int count = 0;
 
 	for_each_node_by_type(cpus_dn, "cpu") {
+=======
+	struct device_node *cpus_dn = NULL;
+	int count = 0;
+
+	while ((cpus_dn = of_find_node_by_type(cpus_dn, "cpu"))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef LPARCFG_DEBUG
 		printk(KERN_ERR "cpus_dn %p\n", cpus_dn);
 #endif
@@ -487,7 +509,11 @@ static int pseries_lparcfg_data(struct seq_file *m, void *v)
 	seq_printf(m, "shared_processor_mode=%d\n",
 		   lppaca_shared_proc(get_lppaca()));
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(m, "slb_size=%d\n", mmu_slb_size);
 #endif
 	parse_em_data(m);
@@ -699,11 +725,19 @@ static const struct file_operations lparcfg_fops = {
 
 static int __init lparcfg_init(void)
 {
+<<<<<<< HEAD
 	umode_t mode = 0444;
 
 	/* Allow writing if we have FW_FEATURE_SPLPAR */
 	if (firmware_has_feature(FW_FEATURE_SPLPAR))
 		mode |= 0200;
+=======
+	umode_t mode = S_IRUSR | S_IRGRP | S_IROTH;
+
+	/* Allow writing if we have FW_FEATURE_SPLPAR */
+	if (firmware_has_feature(FW_FEATURE_SPLPAR))
+		mode |= S_IWUSR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!proc_create("powerpc/lparcfg", mode, NULL, &lparcfg_fops)) {
 		printk(KERN_ERR "Failed to create powerpc/lparcfg\n");

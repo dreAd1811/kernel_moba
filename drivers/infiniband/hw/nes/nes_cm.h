@@ -279,6 +279,10 @@ struct nes_cm_tcp_context {
 	u8  rcv_wscale;
 
 	struct nes_cm_tsa_context tsa_cntxt;
+<<<<<<< HEAD
+=======
+	struct timeval            sent_ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -340,7 +344,11 @@ struct nes_cm_node {
 	u16                       mpa_frame_size;
 	struct iw_cm_id           *cm_id;
 	struct list_head          list;
+<<<<<<< HEAD
 	bool                      accelerated;
+=======
+	int                       accelerated;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nes_cm_listener    *listener;
 	enum nes_cm_conn_type     conn_type;
 	struct nes_vnic           *nesvnic;

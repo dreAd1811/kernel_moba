@@ -58,6 +58,14 @@ struct proc_dir_entry * proc_runway_root __read_mostly = NULL;
 struct proc_dir_entry * proc_gsc_root __read_mostly = NULL;
 struct proc_dir_entry * proc_mckinley_root __read_mostly = NULL;
 
+<<<<<<< HEAD
+=======
+#if !defined(CONFIG_PA20) && (defined(CONFIG_IOMMU_CCIO) || defined(CONFIG_IOMMU_SBA))
+int parisc_bus_is_phys __read_mostly = 1;	/* Assume no IOMMU is present */
+EXPORT_SYMBOL(parisc_bus_is_phys);
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init setup_cmdline(char **cmdline_p)
 {
 	extern unsigned int boot_args[];
@@ -97,12 +105,23 @@ void __init dma_ops_init(void)
 		panic(	"PA-RISC Linux currently only supports machines that conform to\n"
 			"the PA-RISC 1.1 or 2.0 architecture specification.\n");
 
+<<<<<<< HEAD
 	case pcxl2:
 		pa7300lc_init();
 	case pcxl: /* falls through */
 	case pcxs:
 	case pcxt:
 		hppa_dma_ops = &dma_noncoherent_ops;
+=======
+	case pcxs:
+	case pcxt:
+		hppa_dma_ops = &pcx_dma_ops;
+		break;
+	case pcxl2:
+		pa7300lc_init();
+	case pcxl: /* falls through */
+		hppa_dma_ops = &pcxl_dma_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
@@ -404,8 +423,11 @@ void __init start_parisc(void)
 
 	cpunum = smp_processor_id();
 
+<<<<<<< HEAD
 	init_cpu_topology();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_firmware_width_unlocked();
 
 	ret = pdc_coproc_cfg_unlocked(&coproc_cfg);

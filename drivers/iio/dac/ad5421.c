@@ -465,6 +465,10 @@ static const struct iio_info ad5421_info = {
 	.read_event_config =	ad5421_read_event_config,
 	.write_event_config =	ad5421_write_event_config,
 	.read_event_value =	ad5421_read_event_value,
+<<<<<<< HEAD
+=======
+	.driver_module =	THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int ad5421_probe(struct spi_device *spi)

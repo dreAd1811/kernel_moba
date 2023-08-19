@@ -48,7 +48,11 @@
 #include <asm/setup.h>
 #include <asm/maar.h>
 
+<<<<<<< HEAD
 int __cpu_number_map[CONFIG_MIPS_NR_CPU_NR_MAP];   /* Map physical to logical */
+=======
+int __cpu_number_map[NR_CPUS];		/* Map physical to logical */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(__cpu_number_map);
 
 int __cpu_logical_map[NR_CPUS];		/* Map logical to physical */

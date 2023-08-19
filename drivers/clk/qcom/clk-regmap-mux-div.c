@@ -1,11 +1,30 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2017, Linaro Limited
  * Author: Georgi Djakov <georgi.djakov@linaro.org>
+=======
+/*
+ * Copyright (c) 2015, Linaro Limited
+ * Copyright (c) 2014, 2017, The Linux Foundation. All rights reserved.
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/bitops.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
+=======
+#include <linux/export.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/regmap.h>
 
@@ -20,7 +39,11 @@
 #define to_clk_regmap_mux_div(_hw) \
 	container_of(to_clk_regmap(_hw), struct clk_regmap_mux_div, clkr)
 
+<<<<<<< HEAD
 int mux_div_set_src_div(struct clk_regmap_mux_div *md, u32 src, u32 div)
+=======
+int __mux_div_set_src_div(struct clk_regmap_mux_div *md, u32 src, u32 div)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret, count;
 	u32 val, mask;
@@ -54,6 +77,7 @@ int mux_div_set_src_div(struct clk_regmap_mux_div *md, u32 src, u32 div)
 	pr_err("%s: RCG did not update its configuration", name);
 	return -EBUSY;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mux_div_set_src_div);
 
 static void mux_div_get_src_div(struct clk_regmap_mux_div *md, u32 *src,
@@ -77,6 +101,45 @@ static void mux_div_get_src_div(struct clk_regmap_mux_div *md, u32 *src,
 	d = (val >> md->hid_shift);
 	d &= BIT(md->hid_width) - 1;
 	*div = d;
+=======
+
+int mux_div_get_src_div(struct clk_regmap_mux_div *md, u32 *src,
+				  u32 *div)
+{
+	int ret = 0;
+	u32 val, __div, __src;
+	const char *name = clk_hw_get_name(&md->clkr.hw);
+
+	ret = regmap_read(md->clkr.regmap, CMD_RCGR + md->reg_offset, &val);
+	if (ret)
+		return ret;
+
+	if (val & CMD_RCGR_DIRTY_CFG) {
+		pr_err("%s: RCG configuration is pending\n", name);
+		return -EBUSY;
+	}
+
+	ret = regmap_read(md->clkr.regmap, CFG_RCGR + md->reg_offset, &val);
+	if (ret)
+		return ret;
+
+	__src = (val >> md->src_shift);
+	__src &= BIT(md->src_width) - 1;
+	*src = __src;
+
+	__div = (val >> md->hid_shift);
+	__div &= BIT(md->hid_width) - 1;
+	*div = __div;
+
+	return ret;
+}
+
+static int mux_div_enable(struct clk_hw *hw)
+{
+	struct clk_regmap_mux_div *md = to_clk_regmap_mux_div(hw);
+
+	return __mux_div_set_src_div(md, md->src, md->div);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool is_better_rate(unsigned long req, unsigned long best,
@@ -142,7 +205,11 @@ static int __mux_div_set_rate_and_parent(struct clk_hw *hw, unsigned long rate,
 
 			if (is_better_rate(rate, best_rate, actual_rate)) {
 				best_rate = actual_rate;
+<<<<<<< HEAD
 				best_src = md->parent_map[i];
+=======
+				best_src = md->parent_map[i].cfg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				best_div = div - 1;
 			}
 
@@ -151,7 +218,11 @@ static int __mux_div_set_rate_and_parent(struct clk_hw *hw, unsigned long rate,
 		}
 	}
 
+<<<<<<< HEAD
 	ret = mux_div_set_src_div(md, best_src, best_div);
+=======
+	ret = __mux_div_set_src_div(md, best_src, best_div);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret) {
 		md->div = best_div;
 		md->src = best_src;
@@ -169,7 +240,11 @@ static u8 mux_div_get_parent(struct clk_hw *hw)
 	mux_div_get_src_div(md, &src, &div);
 
 	for (i = 0; i < clk_hw_get_num_parents(hw); i++)
+<<<<<<< HEAD
 		if (src == md->parent_map[i])
+=======
+		if (src == md->parent_map[i].cfg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return i;
 
 	pr_err("%s: Can't find parent with src %d\n", name, src);
@@ -180,7 +255,11 @@ static int mux_div_set_parent(struct clk_hw *hw, u8 index)
 {
 	struct clk_regmap_mux_div *md = to_clk_regmap_mux_div(hw);
 
+<<<<<<< HEAD
 	return mux_div_set_src_div(md, md->parent_map[index], md->div);
+=======
+	return __mux_div_set_src_div(md, md->parent_map[index].cfg, md->div);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mux_div_set_rate(struct clk_hw *hw,
@@ -197,7 +276,11 @@ static int mux_div_set_rate_and_parent(struct clk_hw *hw,  unsigned long rate,
 	struct clk_regmap_mux_div *md = to_clk_regmap_mux_div(hw);
 
 	return __mux_div_set_rate_and_parent(hw, rate, prate,
+<<<<<<< HEAD
 					     md->parent_map[index]);
+=======
+					     md->parent_map[index].cfg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned long mux_div_recalc_rate(struct clk_hw *hw, unsigned long prate)
@@ -209,7 +292,11 @@ static unsigned long mux_div_recalc_rate(struct clk_hw *hw, unsigned long prate)
 
 	mux_div_get_src_div(md, &src, &div);
 	for (i = 0; i < num_parents; i++)
+<<<<<<< HEAD
 		if (src == md->parent_map[i]) {
+=======
+		if (src == md->parent_map[i].cfg) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct clk_hw *p = clk_hw_get_parent_by_index(hw, i);
 			unsigned long parent_rate = clk_hw_get_rate(p);
 
@@ -220,7 +307,20 @@ static unsigned long mux_div_recalc_rate(struct clk_hw *hw, unsigned long prate)
 	return 0;
 }
 
+<<<<<<< HEAD
 const struct clk_ops clk_regmap_mux_div_ops = {
+=======
+static void mux_div_disable(struct clk_hw *hw)
+{
+	struct clk_regmap_mux_div *md = to_clk_regmap_mux_div(hw);
+
+	__mux_div_set_src_div(md, md->safe_src, md->safe_div);
+}
+
+const struct clk_ops clk_regmap_mux_div_ops = {
+	.enable = mux_div_enable,
+	.disable = mux_div_disable,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_parent = mux_div_get_parent,
 	.set_parent = mux_div_set_parent,
 	.set_rate = mux_div_set_rate,

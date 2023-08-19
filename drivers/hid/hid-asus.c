@@ -26,7 +26,10 @@
  * any later version.
  */
 
+<<<<<<< HEAD
 #include <linux/dmi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/hid.h>
 #include <linux/module.h>
 #include <linux/input/mt.h>
@@ -68,7 +71,10 @@ MODULE_DESCRIPTION("Asus HID Keyboard and TouchPad");
 #define QUIRK_USE_KBD_BACKLIGHT		BIT(5)
 #define QUIRK_T100_KEYBOARD		BIT(6)
 #define QUIRK_T100CHI			BIT(7)
+<<<<<<< HEAD
 #define QUIRK_G752_KEYBOARD		BIT(8)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define I2C_KEYBOARD_QUIRKS			(QUIRK_FIX_NOTEBOOK_REPORT | \
 						 QUIRK_NO_INIT_REPORTS | \
@@ -120,6 +126,7 @@ static const struct asus_touchpad_info asus_t100ta_tp = {
 	.max_contacts = 5,
 };
 
+<<<<<<< HEAD
 static const struct asus_touchpad_info asus_t100ha_tp = {
 	.max_x = 2640,
 	.max_y = 1320,
@@ -138,6 +145,8 @@ static const struct asus_touchpad_info asus_t200ta_tp = {
 	.max_contacts = 5,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct asus_touchpad_info asus_t100chi_tp = {
 	.max_x = 2640,
 	.max_y = 1320,
@@ -570,9 +579,13 @@ static int asus_input_mapping(struct hid_device *hdev,
 static int asus_start_multitouch(struct hid_device *hdev)
 {
 	int ret;
+<<<<<<< HEAD
 	static const unsigned char buf[] = {
 		FEATURE_REPORT_ID, 0x00, 0x03, 0x01, 0x00
 	};
+=======
+	const unsigned char buf[] = { FEATURE_REPORT_ID, 0x00, 0x03, 0x01, 0x00 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char *dmabuf = kmemdup(buf, sizeof(buf), GFP_KERNEL);
 
 	if (!dmabuf) {
@@ -627,6 +640,7 @@ static int asus_probe(struct hid_device *hdev, const struct hid_device_id *id)
 
 		if (intf->altsetting->desc.bInterfaceNumber == T100_TPAD_INTF) {
 			drvdata->quirks = QUIRK_SKIP_INPUT_MAPPING;
+<<<<<<< HEAD
 			/*
 			 * The T100HA uses the same USB-ids as the T100TAF and
 			 * the T200TA uses the same USB-ids as the T100TA, while
@@ -638,6 +652,9 @@ static int asus_probe(struct hid_device *hdev, const struct hid_device_id *id)
 				drvdata->tp = &asus_t200ta_tp;
 			else
 				drvdata->tp = &asus_t100ta_tp;
+=======
+			drvdata->tp = &asus_t100ta_tp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -646,7 +663,12 @@ static int asus_probe(struct hid_device *hdev, const struct hid_device_id *id)
 		 * All functionality is on a single HID interface and for
 		 * userspace the touchpad must be a separate input_dev.
 		 */
+<<<<<<< HEAD
 		hdev->quirks |= HID_QUIRK_MULTI_INPUT;
+=======
+		hdev->quirks |= HID_QUIRK_MULTI_INPUT |
+				HID_QUIRK_NO_EMPTY_INPUT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drvdata->tp = &asus_t100chi_tp;
 	}
 
@@ -701,11 +723,14 @@ static void asus_remove(struct hid_device *hdev)
 	hid_hw_stop(hdev);
 }
 
+<<<<<<< HEAD
 static const __u8 asus_g752_fixed_rdesc[] = {
         0x19, 0x00,			/*   Usage Minimum (0x00)       */
         0x2A, 0xFF, 0x00,		/*   Usage Maximum (0xFF)       */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 		unsigned int *rsize)
 {
@@ -716,10 +741,16 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 		hid_info(hdev, "Fixing up Asus notebook report descriptor\n");
 		rdesc[55] = 0xdd;
 	}
+<<<<<<< HEAD
 	/* For the T100TA/T200TA keyboard dock */
 	if (drvdata->quirks & QUIRK_T100_KEYBOARD &&
 		 (*rsize == 76 || *rsize == 101) &&
 		 rdesc[73] == 0x81 && rdesc[74] == 0x01) {
+=======
+	/* For the T100TA keyboard dock */
+	if (drvdata->quirks & QUIRK_T100_KEYBOARD &&
+		 *rsize == 76 && rdesc[73] == 0x81 && rdesc[74] == 0x01) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hid_info(hdev, "Fixing up Asus T100 keyb report descriptor\n");
 		rdesc[74] &= ~HID_MAIN_ITEM_CONSTANT;
 	}
@@ -745,6 +776,7 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 		rdesc[391] = 0xff;
 		rdesc[402] = 0x00;
 	}
+<<<<<<< HEAD
 	if (drvdata->quirks & QUIRK_G752_KEYBOARD &&
 		 *rsize == 75 && rdesc[61] == 0x15 && rdesc[62] == 0x00) {
 		/* report is missing usage mninum and maximum */
@@ -766,6 +798,8 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
 		*rsize = new_size;
 		rdesc = new_rdesc;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rdesc;
 }
@@ -776,6 +810,7 @@ static const struct hid_device_id asus_devices[] = {
 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ASUSTEK,
 		USB_DEVICE_ID_ASUSTEK_I2C_TOUCHPAD), I2C_TOUCHPAD_QUIRKS },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
+<<<<<<< HEAD
 		USB_DEVICE_ID_ASUSTEK_ROG_KEYBOARD1), QUIRK_USE_KBD_BACKLIGHT },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
 		USB_DEVICE_ID_ASUSTEK_ROG_KEYBOARD2), QUIRK_USE_KBD_BACKLIGHT },
@@ -786,6 +821,13 @@ static const struct hid_device_id asus_devices[] = {
 	  QUIRK_T100_KEYBOARD | QUIRK_NO_CONSUMER_USAGES },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
 		USB_DEVICE_ID_ASUSTEK_T100TAF_KEYBOARD),
+=======
+		USB_DEVICE_ID_ASUSTEK_ROG_KEYBOARD1) },
+	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
+		USB_DEVICE_ID_ASUSTEK_ROG_KEYBOARD2), QUIRK_USE_KBD_BACKLIGHT },
+	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
+		USB_DEVICE_ID_ASUSTEK_T100_KEYBOARD),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  QUIRK_T100_KEYBOARD | QUIRK_NO_CONSUMER_USAGES },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_ASUS_AK1D) },
 	{ HID_USB_DEVICE(USB_VENDOR_ID_TURBOX, USB_DEVICE_ID_ASUS_MD_5110) },

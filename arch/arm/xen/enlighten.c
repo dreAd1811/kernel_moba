@@ -59,9 +59,12 @@ struct xen_memory_region xen_extra_mem[XEN_EXTRA_MEM_MAX_REGIONS] __initdata;
 
 static __read_mostly unsigned int xen_events_irq;
 
+<<<<<<< HEAD
 uint32_t xen_start_flags;
 EXPORT_SYMBOL(xen_start_flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int xen_remap_domain_gfn_array(struct vm_area_struct *vma,
 			       unsigned long addr,
 			       xen_pfn_t *gfn, int nr,
@@ -92,6 +95,7 @@ int xen_unmap_domain_gfn_range(struct vm_area_struct *vma,
 }
 EXPORT_SYMBOL_GPL(xen_unmap_domain_gfn_range);
 
+<<<<<<< HEAD
 /* Not used by XENFEAT_auto_translated guests. */
 int xen_remap_domain_mfn_array(struct vm_area_struct *vma,
 			       unsigned long addr,
@@ -103,6 +107,8 @@ int xen_remap_domain_mfn_array(struct vm_area_struct *vma,
 }
 EXPORT_SYMBOL_GPL(xen_remap_domain_mfn_array);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void xen_read_wallclock(struct timespec64 *ts)
 {
 	u32 version;
@@ -296,7 +302,13 @@ void __init xen_early_init(void)
 	xen_setup_features();
 
 	if (xen_feature(XENFEAT_dom0))
+<<<<<<< HEAD
 		xen_start_flags |= SIF_INITDOMAIN|SIF_PRIVILEGED;
+=======
+		xen_start_info->flags |= SIF_INITDOMAIN|SIF_PRIVILEGED;
+	else
+		xen_start_info->flags &= ~(SIF_INITDOMAIN|SIF_PRIVILEGED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!console_set_on_cmdline && !xen_initial_domain())
 		add_preferred_console("hvc", 0, NULL);

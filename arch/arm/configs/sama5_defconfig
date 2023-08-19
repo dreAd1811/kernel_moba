@@ -2,6 +2,10 @@
 # CONFIG_SWAP is not set
 CONFIG_SYSVIPC=y
 CONFIG_FHANDLE=y
+<<<<<<< HEAD
+=======
+CONFIG_IRQ_DOMAIN_DEBUG=y
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_NO_HZ_IDLE=y
 CONFIG_HIGH_RES_TIMERS=y
 CONFIG_LOG_BUF_SHIFT=14

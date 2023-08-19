@@ -170,7 +170,11 @@ static void ndesc_set_tx_owner(struct dma_desc *p)
 	p->des0 |= cpu_to_le32(TDES0_OWN);
 }
 
+<<<<<<< HEAD
 static void ndesc_set_rx_owner(struct dma_desc *p, int disable_rx_ic)
+=======
+static void ndesc_set_rx_owner(struct dma_desc *p)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	p->des0 |= cpu_to_le32(RDES0_OWN);
 }
@@ -255,7 +259,11 @@ static int ndesc_get_tx_timestamp_status(struct dma_desc *p)
 	return (le32_to_cpu(p->des0) & TDES0_TIME_STAMP_STATUS) >> 17;
 }
 
+<<<<<<< HEAD
 static void ndesc_get_timestamp(void *desc, u32 ats, u64 *ts)
+=======
+static u64 ndesc_get_timestamp(void *desc, u32 ats)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dma_desc *p = (struct dma_desc *)desc;
 	u64 ns;
@@ -264,7 +272,11 @@ static void ndesc_get_timestamp(void *desc, u32 ats, u64 *ts)
 	/* convert high/sec time stamp value to nanosecond */
 	ns += le32_to_cpu(p->des3) * 1000000000ULL;
 
+<<<<<<< HEAD
 	*ts = ns;
+=======
+	return ns;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ndesc_get_rx_timestamp_status(void *desc, void *next_desc, u32 ats)
@@ -290,7 +302,11 @@ static void ndesc_display_ring(void *head, unsigned int size, bool rx)
 		u64 x;
 
 		x = *(u64 *)p;
+<<<<<<< HEAD
 		pr_info("%03d [0x%x]: 0x%x 0x%x 0x%x 0x%x",
+=======
+		pr_info("%d [0x%x]: 0x%x 0x%x 0x%x 0x%x",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i, (unsigned int)virt_to_phys(p),
 			(unsigned int)x, (unsigned int)(x >> 32),
 			p->des2, p->des3);
@@ -299,6 +315,7 @@ static void ndesc_display_ring(void *head, unsigned int size, bool rx)
 	pr_info("\n");
 }
 
+<<<<<<< HEAD
 static void ndesc_get_addr(struct dma_desc *p, unsigned int *addr)
 {
 	*addr = le32_to_cpu(p->des2);
@@ -314,6 +331,8 @@ static void ndesc_clear(struct dma_desc *p)
 	p->des2 = 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct stmmac_desc_ops ndesc_ops = {
 	.tx_status = ndesc_get_tx_status,
 	.rx_status = ndesc_get_rx_status,
@@ -333,7 +352,10 @@ const struct stmmac_desc_ops ndesc_ops = {
 	.get_timestamp = ndesc_get_timestamp,
 	.get_rx_timestamp_status = ndesc_get_rx_timestamp_status,
 	.display_ring = ndesc_display_ring,
+<<<<<<< HEAD
 	.get_addr = ndesc_get_addr,
 	.set_addr = ndesc_set_addr,
 	.clear = ndesc_clear,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

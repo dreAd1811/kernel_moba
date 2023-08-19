@@ -242,7 +242,11 @@ static void ingenic_gpio_irq_handler(struct irq_desc *desc)
 		flag = gpio_ingenic_read_reg(jzgc, JZ4740_GPIO_FLAG);
 
 	for_each_set_bit(i, &flag, 32)
+<<<<<<< HEAD
 		generic_handle_irq(irq_linear_revmap(gc->irq.domain, i));
+=======
+		generic_handle_irq(irq_linear_revmap(gc->irqdomain, i));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chained_irq_exit(irq_chip, desc);
 }
 
@@ -285,6 +289,11 @@ MODULE_DEVICE_TABLE(of, ingenic_gpio_of_match);
 static int ingenic_gpio_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
+=======
+	const struct of_device_id *of_id = of_match_device(
+			ingenic_gpio_of_match, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ingenic_gpio_chip *jzgc;
 	u32 bank;
 	int err;
@@ -321,7 +330,11 @@ static int ingenic_gpio_probe(struct platform_device *pdev)
 	jzgc->gc.parent = dev;
 	jzgc->gc.of_node = dev->of_node;
 	jzgc->gc.owner = THIS_MODULE;
+<<<<<<< HEAD
 	jzgc->version = (enum jz_version)of_device_get_match_data(dev);
+=======
+	jzgc->version = (enum jz_version)of_id->data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	jzgc->gc.set = ingenic_gpio_set;
 	jzgc->gc.get = ingenic_gpio_get;

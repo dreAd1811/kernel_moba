@@ -81,6 +81,25 @@ MODULE_DESCRIPTION("Intel IB driver");
 
 struct qlogic_ib_stats qib_stats;
 
+<<<<<<< HEAD
+=======
+const char *qib_get_unit_name(int unit)
+{
+	static char iname[16];
+
+	snprintf(iname, sizeof(iname), "infinipath%u", unit);
+	return iname;
+}
+
+const char *qib_get_card_name(struct rvt_dev_info *rdi)
+{
+	struct qib_ibdev *ibdev = container_of(rdi, struct qib_ibdev, rdi);
+	struct qib_devdata *dd = container_of(ibdev,
+					      struct qib_devdata, verbs_dev);
+	return qib_get_unit_name(dd->unit);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pci_dev *qib_get_pci_dev(struct rvt_dev_info *rdi)
 {
 	struct qib_ibdev *ibdev = container_of(rdi, struct qib_ibdev, rdi);
@@ -666,10 +685,16 @@ int qib_set_lid(struct qib_pportdata *ppd, u32 lid, u8 lmc)
 /* Below is "non-zero" to force override, but both actual LEDs are off */
 #define LED_OVER_BOTH_OFF (8)
 
+<<<<<<< HEAD
 static void qib_run_led_override(struct timer_list *t)
 {
 	struct qib_pportdata *ppd = from_timer(ppd, t,
 						    led_override_timer);
+=======
+static void qib_run_led_override(unsigned long opaque)
+{
+	struct qib_pportdata *ppd = (struct qib_pportdata *)opaque;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qib_devdata *dd = ppd->dd;
 	int timeoff;
 	int ph_idx;
@@ -720,7 +745,13 @@ void qib_set_led_override(struct qib_pportdata *ppd, unsigned int val)
 	 */
 	if (atomic_inc_return(&ppd->led_override_timer_active) == 1) {
 		/* Need to start timer */
+<<<<<<< HEAD
 		timer_setup(&ppd->led_override_timer, qib_run_led_override, 0);
+=======
+		init_timer(&ppd->led_override_timer);
+		ppd->led_override_timer.function = qib_run_led_override;
+		ppd->led_override_timer.data = (unsigned long) ppd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ppd->led_override_timer.expires = jiffies + 1;
 		add_timer(&ppd->led_override_timer);
 	} else {

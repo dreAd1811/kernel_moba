@@ -422,7 +422,11 @@ static int td_alloc_chan_resources(struct dma_chan *chan)
 				break;
 			else {
 				dev_err(chan2dev(chan),
+<<<<<<< HEAD
 					"Couldn't allocate any descriptors\n");
+=======
+					"Couldnt allocate any descriptors\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return -ENOMEM;
 			}
 		}
@@ -545,7 +549,11 @@ static struct dma_async_tx_descriptor *td_prep_slave_sg(struct dma_chan *chan,
 	}
 
 	dma_sync_single_for_device(chan2dmadev(chan), td_desc->txd.phys,
+<<<<<<< HEAD
 		td_desc->desc_list_len, DMA_MEM_TO_DEV);
+=======
+		td_desc->desc_list_len, DMA_TO_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &td_desc->txd;
 }

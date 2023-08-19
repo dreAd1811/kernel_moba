@@ -434,7 +434,12 @@ okl4_pipe_close(struct inode *inode, struct file *filp)
 		okl4_pipe_control(pipe->pipe_tx_kcap,
 				OKL4_PIPE_CONTROL_OP_RESET);
 
+<<<<<<< HEAD
 		kfree(pipe->rx_buf);
+=======
+		if (pipe->rx_buf)
+			kfree(pipe->rx_buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pipe->rx_buf = NULL;
 		pipe->rx_buf_count = 0;
 	}
@@ -517,8 +522,12 @@ okl4_pipe_probe(struct platform_device *pdev)
 	}
 	pipe->rx_irq = irq->start;
 
+<<<<<<< HEAD
 	pipe->write_buf = kmalloc(sizeof(struct okl4_pipe_data_buffer *),
                                                         GFP_KERNEL);
+=======
+	pipe->write_buf = kmalloc(sizeof(pipe->write_buf), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pipe->write_buf) {
 		dev_err(&pdev->dev, "cannot allocate write buffer\n");
 		err = -ENOMEM;
@@ -621,6 +630,10 @@ static struct platform_driver okl4_pipe_driver = {
 	.remove		= __devexit_p(okl4_pipe_remove),
 	.driver = {
 		.name = DRIVER_NAME,
+<<<<<<< HEAD
+=======
+		.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = okl4_pipe_match,
 	},
 };

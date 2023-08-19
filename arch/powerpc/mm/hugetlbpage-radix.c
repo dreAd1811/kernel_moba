@@ -62,10 +62,23 @@ radix__hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
 		return -EINVAL;
 	if (len > high_limit)
 		return -ENOMEM;
+<<<<<<< HEAD
 
 	if (fixed) {
 		if (addr > high_limit - len)
 			return -ENOMEM;
+=======
+	if (fixed) {
+		if (addr > high_limit - len)
+			return -ENOMEM;
+	}
+
+	if (unlikely(addr > mm->context.addr_limit &&
+		     mm->context.addr_limit != TASK_SIZE))
+		mm->context.addr_limit = TASK_SIZE;
+
+	if (fixed) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (prepare_hugepage_range(file, addr, len))
 			return -EINVAL;
 		return addr;

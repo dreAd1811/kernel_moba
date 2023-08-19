@@ -214,7 +214,11 @@ brcms_debugfs_add_entry(struct brcms_pub *drvr, const char *fn,
 	entry->read = read_fn;
 	entry->drvr = drvr;
 
+<<<<<<< HEAD
 	dentry = debugfs_create_file(fn, 0444, dentry, entry,
+=======
+	dentry = debugfs_create_file(fn, S_IRUGO, dentry, entry,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     &brcms_debugfs_def_ops);
 
 	return PTR_ERR_OR_ZERO(dentry);

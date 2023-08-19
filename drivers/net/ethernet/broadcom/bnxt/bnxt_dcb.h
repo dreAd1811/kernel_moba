@@ -1,7 +1,11 @@
 /* Broadcom NetXtreme-C/E network driver.
  *
  * Copyright (c) 2014-2016 Broadcom Corporation
+<<<<<<< HEAD
  * Copyright (c) 2016-2018 Broadcom Limited
+=======
+ * Copyright (c) 2016-2017 Broadcom Limited
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +37,7 @@ struct bnxt_cos2bw_cfg {
 	u8			unused;
 };
 
+<<<<<<< HEAD
 struct bnxt_dscp2pri_entry {
 	u8	dscp;
 	u8	mask;
@@ -46,6 +51,10 @@ struct bnxt_dscp2pri_entry {
 #define BNXT_CNPQ(q_profile)	\
 	((q_profile) ==		\
 	 QUEUE_QPORTCFG_RESP_QUEUE_ID0_SERVICE_PROFILE_LOSSY_ROCE_CNP)
+=======
+#define BNXT_LLQ(q_profile)	\
+	((q_profile) == QUEUE_QPORTCFG_RESP_QUEUE_ID0_SERVICE_PROFILE_LOSSLESS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define HWRM_STRUCT_DATA_SUBTYPE_HOST_OPERATIONAL	0x0300
 

@@ -119,6 +119,7 @@ isdn_divert_write(struct file *file, const char __user *buf, size_t count, loff_
 /***************************************/
 /* select routines for various kernels */
 /***************************************/
+<<<<<<< HEAD
 static __poll_t
 isdn_divert_poll(struct file *file, poll_table *wait)
 {
@@ -128,6 +129,17 @@ isdn_divert_poll(struct file *file, poll_table *wait)
 	/* mask = EPOLLOUT | EPOLLWRNORM; */
 	if (*((struct divert_info **) file->private_data)) {
 		mask |= EPOLLIN | EPOLLRDNORM;
+=======
+static unsigned int
+isdn_divert_poll(struct file *file, poll_table *wait)
+{
+	unsigned int mask = 0;
+
+	poll_wait(file, &(rd_queue), wait);
+	/* mask = POLLOUT | POLLWRNORM; */
+	if (*((struct divert_info **) file->private_data)) {
+		mask |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return mask;
 }				/* isdn_divert_poll */

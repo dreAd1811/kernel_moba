@@ -20,7 +20,11 @@
 #include "mm.h"
 
 #ifdef CONFIG_ARM_LPAE
+<<<<<<< HEAD
 #define __pgd_alloc()	kmalloc_array(PTRS_PER_PGD, sizeof(pgd_t), GFP_KERNEL)
+=======
+#define __pgd_alloc()	kmalloc(PTRS_PER_PGD * sizeof(pgd_t), GFP_KERNEL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __pgd_free(pgd)	kfree(pgd)
 #else
 #define __pgd_alloc()	(pgd_t *)__get_free_pages(GFP_KERNEL, 2)
@@ -53,11 +57,19 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
 	clean_dcache_area(new_pgd, PTRS_PER_PGD * sizeof(pgd_t));
 
 #ifdef CONFIG_ARM_LPAE
+<<<<<<< HEAD
 	/*
 	 * Allocate PMD table for modules and pkmap mappings.
 	 */
 	new_pud = pud_alloc(mm, new_pgd + pgd_index(MODULES_VADDR),
 			    MODULES_VADDR);
+=======
+#if defined(CONFIG_HIGHMEM) || !defined(CONFIG_MODULES_USE_VMALLOC)
+	/*
+	 * Allocate PMD table for modules and pkmap mappings.
+	 */
+	new_pud = pud_alloc(mm, new_pgd + pgd_index(PKMAP_BASE), PKMAP_BASE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!new_pud)
 		goto no_pud;
 
@@ -65,6 +77,10 @@ pgd_t *pgd_alloc(struct mm_struct *mm)
 	if (!new_pmd)
 		goto no_pmd;
 #endif
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!vectors_high()) {
 		/*
@@ -141,7 +157,11 @@ void pgd_free(struct mm_struct *mm, pgd_t *pgd_base)
 	pte = pmd_pgtable(*pmd);
 	pmd_clear(pmd);
 	pte_free(mm, pte);
+<<<<<<< HEAD
 	mm_dec_nr_ptes(mm);
+=======
+	atomic_long_dec(&mm->nr_ptes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 no_pmd:
 	pud_clear(pud);
 	pmd_free(mm, pmd);

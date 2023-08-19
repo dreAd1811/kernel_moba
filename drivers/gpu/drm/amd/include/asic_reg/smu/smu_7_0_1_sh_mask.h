@@ -5454,7 +5454,10 @@
 #define ROM_SW_DATA_64__ROM_SW_DATA__SHIFT 0x0
 #define CURRENT_PG_STATUS__VCE_PG_STATUS_MASK 0x00000002
 #define CURRENT_PG_STATUS__UVD_PG_STATUS_MASK 0x00000004
+<<<<<<< HEAD
 #define SMC_SYSCON_MISC_CNTL__pre_fetcher_en_MASK  0x1
 #define SMC_SYSCON_MISC_CNTL__pre_fetcher_en__SHIFT 0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* SMU_7_0_1_SH_MASK_H */

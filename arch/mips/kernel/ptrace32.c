@@ -33,7 +33,10 @@
 #include <asm/pgtable.h>
 #include <asm/page.h>
 #include <asm/reg.h>
+<<<<<<< HEAD
 #include <asm/syscall.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/uaccess.h>
 #include <asm/bootinfo.h>
 
@@ -103,7 +106,11 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
 				/*
 				 * The odd registers are actually the high
 				 * order bits of the values stored in the even
+<<<<<<< HEAD
 				 * registers.
+=======
+				 * registers - unless we're using r2k_switch.S.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 */
 				tmp = get_fpr32(&fregs[(addr & ~1) - FPR_BASE],
 						addr & 1);
@@ -196,12 +203,15 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
 		switch (addr) {
 		case 0 ... 31:
 			regs->regs[addr] = data;
+<<<<<<< HEAD
 			/* System call number may have been changed */
 			if (addr == 2)
 				mips_syscall_update_nr(child, regs);
 			else if (addr == 4 &&
 				 mips_syscall_is_indirect(child, regs))
 				mips_syscall_update_nr(child, regs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case FPR_BASE ... FPR_BASE + 31: {
 			union fpureg *fregs = get_fpu_regs(child);
@@ -216,7 +226,11 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
 				/*
 				 * The odd registers are actually the high
 				 * order bits of the values stored in the even
+<<<<<<< HEAD
 				 * registers.
+=======
+				 * registers - unless we're using r2k_switch.S.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 */
 				set_fpr32(&fregs[(addr & ~1) - FPR_BASE],
 					  addr & 1, data);

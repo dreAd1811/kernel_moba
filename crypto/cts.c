@@ -40,7 +40,10 @@
  * rfc3962 includes errata information in its Appendix A.
  */
 
+<<<<<<< HEAD
 #include <crypto/algapi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <crypto/internal/skcipher.h>
 #include <linux/err.h>
 #include <linux/init.h>
@@ -105,7 +108,11 @@ static int cts_cbc_encrypt(struct skcipher_request *req)
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct skcipher_request *subreq = &rctx->subreq;
 	int bsize = crypto_skcipher_blocksize(tfm);
+<<<<<<< HEAD
 	u8 d[MAX_CIPHER_BLOCKSIZE * 2] __aligned(__alignof__(u32));
+=======
+	u8 d[bsize * 2] __aligned(__alignof__(u32));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scatterlist *sg;
 	unsigned int offset;
 	int lastn;
@@ -137,7 +144,12 @@ static void crypto_cts_encrypt_done(struct crypto_async_request *areq, int err)
 		goto out;
 
 	err = cts_cbc_encrypt(req);
+<<<<<<< HEAD
 	if (err == -EINPROGRESS || err == -EBUSY)
+=======
+	if (err == -EINPROGRESS ||
+	    (err == -EBUSY && req->base.flags & CRYPTO_TFM_REQ_MAY_BACKLOG))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 out:
@@ -184,7 +196,11 @@ static int cts_cbc_decrypt(struct skcipher_request *req)
 	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
 	struct skcipher_request *subreq = &rctx->subreq;
 	int bsize = crypto_skcipher_blocksize(tfm);
+<<<<<<< HEAD
 	u8 d[MAX_CIPHER_BLOCKSIZE * 2] __aligned(__alignof__(u32));
+=======
+	u8 d[bsize * 2] __aligned(__alignof__(u32));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scatterlist *sg;
 	unsigned int offset;
 	u8 *space;
@@ -229,7 +245,12 @@ static void crypto_cts_decrypt_done(struct crypto_async_request *areq, int err)
 		goto out;
 
 	err = cts_cbc_decrypt(req);
+<<<<<<< HEAD
 	if (err == -EINPROGRESS || err == -EBUSY)
+=======
+	if (err == -EINPROGRESS ||
+	    (err == -EBUSY && req->base.flags & CRYPTO_TFM_REQ_MAY_BACKLOG))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 out:

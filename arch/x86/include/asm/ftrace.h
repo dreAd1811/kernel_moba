@@ -46,6 +46,7 @@ int ftrace_int3_handler(struct pt_regs *regs);
 #endif /* CONFIG_FUNCTION_TRACER */
 
 
+<<<<<<< HEAD
 #ifndef __ASSEMBLY__
 
 #define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
@@ -64,6 +65,12 @@ static inline bool arch_syscall_match_sym_name(const char *sym, const char *name
 
 #if defined(CONFIG_FTRACE_SYSCALLS) && defined(CONFIG_IA32_EMULATION)
 #include <linux/compat.h>
+=======
+#if !defined(__ASSEMBLY__) && !defined(COMPILE_OFFSETS)
+
+#if defined(CONFIG_FTRACE_SYSCALLS) && defined(CONFIG_IA32_EMULATION)
+#include <asm/compat.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Because ia32 syscalls do not map to x86_64 syscall numbers
@@ -81,7 +88,11 @@ static inline bool arch_trace_is_compat_syscall(struct pt_regs *regs)
 	return false;
 }
 #endif /* CONFIG_FTRACE_SYSCALLS && CONFIG_IA32_EMULATION */
+<<<<<<< HEAD
 #endif /* !COMPILE_OFFSETS */
 #endif /* !__ASSEMBLY__ */
+=======
+#endif /* !__ASSEMBLY__  && !COMPILE_OFFSETS */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _ASM_X86_FTRACE_H */

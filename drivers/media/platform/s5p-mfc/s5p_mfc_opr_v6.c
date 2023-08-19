@@ -64,7 +64,10 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 {
 	struct s5p_mfc_dev *dev = ctx->dev;
 	unsigned int mb_width, mb_height;
+<<<<<<< HEAD
 	unsigned int lcu_width = 0, lcu_height = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	mb_width = MB_WIDTH(ctx->img_width);
@@ -75,9 +78,13 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 			  ctx->luma_size, ctx->chroma_size, ctx->mv_size);
 		mfc_debug(2, "Totals bufs: %d\n", ctx->total_dpb_count);
 	} else if (ctx->type == MFCINST_ENCODER) {
+<<<<<<< HEAD
 		if (IS_MFCV10(dev)) {
 			ctx->tmv_buffer_size = 0;
 		} else if (IS_MFCV8_PLUS(dev))
+=======
+		if (IS_MFCV8(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx->tmv_buffer_size = S5P_FIMV_NUM_TMV_BUFFERS_V6 *
 			ALIGN(S5P_FIMV_TMV_BUFFER_SIZE_V8(mb_width, mb_height),
 			S5P_FIMV_TMV_BUFFER_ALIGN_V6);
@@ -85,6 +92,7 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 			ctx->tmv_buffer_size = S5P_FIMV_NUM_TMV_BUFFERS_V6 *
 			ALIGN(S5P_FIMV_TMV_BUFFER_SIZE_V6(mb_width, mb_height),
 			S5P_FIMV_TMV_BUFFER_ALIGN_V6);
+<<<<<<< HEAD
 		if (IS_MFCV10(dev)) {
 			lcu_width = S5P_MFC_LCU_WIDTH(ctx->img_width);
 			lcu_height = S5P_MFC_LCU_HEIGHT(ctx->img_height);
@@ -116,6 +124,16 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 					S5P_FIMV_CHROMA_DPB_BUFFER_ALIGN_V6);
 		}
 		if (IS_MFCV8_PLUS(dev))
+=======
+
+		ctx->luma_dpb_size = ALIGN((mb_width * mb_height) *
+				S5P_FIMV_LUMA_MB_TO_PIXEL_V6,
+				S5P_FIMV_LUMA_DPB_BUFFER_ALIGN_V6);
+		ctx->chroma_dpb_size = ALIGN((mb_width * mb_height) *
+				S5P_FIMV_CHROMA_MB_TO_PIXEL_V6,
+				S5P_FIMV_CHROMA_DPB_BUFFER_ALIGN_V6);
+		if (IS_MFCV8(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx->me_buffer_size = ALIGN(S5P_FIMV_ME_BUFFER_SIZE_V8(
 						ctx->img_width, ctx->img_height,
 						mb_width, mb_height),
@@ -136,9 +154,13 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 	switch (ctx->codec_mode) {
 	case S5P_MFC_CODEC_H264_DEC:
 	case S5P_MFC_CODEC_H264_MVC_DEC:
+<<<<<<< HEAD
 		if (IS_MFCV10(dev))
 			mfc_debug(2, "Use min scratch buffer size\n");
 		else if (IS_MFCV8_PLUS(dev))
+=======
+		if (IS_MFCV8(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx->scratch_buf_size =
 				S5P_FIMV_SCRATCH_BUF_SIZE_H264_DEC_V8(
 					mb_width,
@@ -155,9 +177,13 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 			(ctx->mv_count * ctx->mv_size);
 		break;
 	case S5P_MFC_CODEC_MPEG4_DEC:
+<<<<<<< HEAD
 		if (IS_MFCV10(dev))
 			mfc_debug(2, "Use min scratch buffer size\n");
 		else if (IS_MFCV7_PLUS(dev)) {
+=======
+		if (IS_MFCV7_PLUS(dev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx->scratch_buf_size =
 				S5P_FIMV_SCRATCH_BUF_SIZE_MPEG4_DEC_V7(
 						mb_width,
@@ -175,6 +201,7 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 		break;
 	case S5P_MFC_CODEC_VC1RCV_DEC:
 	case S5P_MFC_CODEC_VC1_DEC:
+<<<<<<< HEAD
 		if (IS_MFCV10(dev))
 			mfc_debug(2, "Use min scratch buffer size\n");
 		else
@@ -183,6 +210,12 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 						mb_width,
 						mb_height);
 
+=======
+		ctx->scratch_buf_size =
+			S5P_FIMV_SCRATCH_BUF_SIZE_VC1_DEC_V6(
+					mb_width,
+					mb_height);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->scratch_buf_size = ALIGN(ctx->scratch_buf_size,
 				S5P_FIMV_SCRATCH_BUFFER_ALIGN_V6);
 		ctx->bank1.size = ctx->scratch_buf_size;
@@ -192,6 +225,7 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 		ctx->bank2.size = 0;
 		break;
 	case S5P_MFC_CODEC_H263_DEC:
+<<<<<<< HEAD
 		if (IS_MFCV10(dev))
 			mfc_debug(2, "Use min scratch buffer size\n");
 		else
@@ -199,14 +233,24 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 				S5P_FIMV_SCRATCH_BUF_SIZE_H263_DEC_V6(
 						mb_width,
 						mb_height);
+=======
+		ctx->scratch_buf_size =
+			S5P_FIMV_SCRATCH_BUF_SIZE_H263_DEC_V6(
+					mb_width,
+					mb_height);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->scratch_buf_size = ALIGN(ctx->scratch_buf_size,
 				S5P_FIMV_SCRATCH_BUFFER_ALIGN_V6);
 		ctx->bank1.size = ctx->scratch_buf_size;
 		break;
 	case S5P_MFC_CODEC_VP8_DEC:
+<<<<<<< HEAD
 		if (IS_MFCV10(dev))
 			mfc_debug(2, "Use min scratch buffer size\n");
 		else if (IS_MFCV8_PLUS(dev))
+=======
+		if (IS_MFCV8(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx->scratch_buf_size =
 				S5P_FIMV_SCRATCH_BUF_SIZE_VP8_DEC_V8(
 						mb_width,
@@ -220,6 +264,7 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 				S5P_FIMV_SCRATCH_BUFFER_ALIGN_V6);
 		ctx->bank1.size = ctx->scratch_buf_size;
 		break;
+<<<<<<< HEAD
 	case S5P_MFC_CODEC_HEVC_DEC:
 		mfc_debug(2, "Use min scratch buffer size\n");
 		ctx->bank1.size =
@@ -238,6 +283,10 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 			ctx->me_buffer_size =
 			ALIGN(ENC_V100_H264_ME_SIZE(mb_width, mb_height), 16);
 		} else if (IS_MFCV8_PLUS(dev))
+=======
+	case S5P_MFC_CODEC_H264_ENC:
+		if (IS_MFCV8(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx->scratch_buf_size =
 				S5P_FIMV_SCRATCH_BUF_SIZE_H264_ENC_V8(
 					mb_width,
@@ -257,6 +306,7 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 		break;
 	case S5P_MFC_CODEC_MPEG4_ENC:
 	case S5P_MFC_CODEC_H263_ENC:
+<<<<<<< HEAD
 		if (IS_MFCV10(dev)) {
 			mfc_debug(2, "Use min scratch buffer size\n");
 			ctx->me_buffer_size =
@@ -267,6 +317,12 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 				S5P_FIMV_SCRATCH_BUF_SIZE_MPEG4_ENC_V6(
 						mb_width,
 						mb_height);
+=======
+		ctx->scratch_buf_size =
+			S5P_FIMV_SCRATCH_BUF_SIZE_MPEG4_ENC_V6(
+					mb_width,
+					mb_height);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->scratch_buf_size = ALIGN(ctx->scratch_buf_size,
 				S5P_FIMV_SCRATCH_BUFFER_ALIGN_V6);
 		ctx->bank1.size =
@@ -276,12 +332,16 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 		ctx->bank2.size = 0;
 		break;
 	case S5P_MFC_CODEC_VP8_ENC:
+<<<<<<< HEAD
 		if (IS_MFCV10(dev)) {
 			mfc_debug(2, "Use min scratch buffer size\n");
 			ctx->me_buffer_size =
 				ALIGN(ENC_V100_VP8_ME_SIZE(mb_width, mb_height),
 						16);
 		} else if (IS_MFCV8_PLUS(dev))
+=======
+		if (IS_MFCV8(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx->scratch_buf_size =
 				S5P_FIMV_SCRATCH_BUF_SIZE_VP8_ENC_V8(
 					mb_width,
@@ -299,6 +359,7 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 			ctx->chroma_dpb_size + ctx->me_buffer_size));
 		ctx->bank2.size = 0;
 		break;
+<<<<<<< HEAD
 	case S5P_MFC_CODEC_HEVC_ENC:
 		mfc_debug(2, "Use min scratch buffer size\n");
 		ctx->me_buffer_size =
@@ -310,6 +371,8 @@ static int s5p_mfc_alloc_codec_buffers_v6(struct s5p_mfc_ctx *ctx)
 			ctx->chroma_dpb_size + ctx->me_buffer_size));
 		ctx->bank2.size = 0;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		break;
 	}
@@ -344,7 +407,10 @@ static int s5p_mfc_alloc_instance_buffer_v6(struct s5p_mfc_ctx *ctx)
 	switch (ctx->codec_mode) {
 	case S5P_MFC_CODEC_H264_DEC:
 	case S5P_MFC_CODEC_H264_MVC_DEC:
+<<<<<<< HEAD
 	case S5P_MFC_CODEC_HEVC_DEC:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->ctx.size = buf_size->h264_dec_ctx;
 		break;
 	case S5P_MFC_CODEC_MPEG4_DEC:
@@ -353,15 +419,21 @@ static int s5p_mfc_alloc_instance_buffer_v6(struct s5p_mfc_ctx *ctx)
 	case S5P_MFC_CODEC_VC1_DEC:
 	case S5P_MFC_CODEC_MPEG2_DEC:
 	case S5P_MFC_CODEC_VP8_DEC:
+<<<<<<< HEAD
 	case S5P_MFC_CODEC_VP9_DEC:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->ctx.size = buf_size->other_dec_ctx;
 		break;
 	case S5P_MFC_CODEC_H264_ENC:
 		ctx->ctx.size = buf_size->h264_enc_ctx;
 		break;
+<<<<<<< HEAD
 	case S5P_MFC_CODEC_HEVC_ENC:
 		ctx->ctx.size = buf_size->hevc_enc_ctx;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case S5P_MFC_CODEC_MPEG4_ENC:
 	case S5P_MFC_CODEC_H263_ENC:
 	case S5P_MFC_CODEC_VP8_ENC:
@@ -438,7 +510,10 @@ static int calc_plane(int width, int height)
 
 static void s5p_mfc_dec_calc_dpb_size_v6(struct s5p_mfc_ctx *ctx)
 {
+<<<<<<< HEAD
 	struct s5p_mfc_dev *dev = ctx->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->buf_width = ALIGN(ctx->img_width, S5P_FIMV_NV12MT_HALIGN_V6);
 	ctx->buf_height = ALIGN(ctx->img_height, S5P_FIMV_NV12MT_VALIGN_V6);
 	mfc_debug(2, "SEQ Done: Movie dimensions %dx%d,\n"
@@ -447,7 +522,11 @@ static void s5p_mfc_dec_calc_dpb_size_v6(struct s5p_mfc_ctx *ctx)
 
 	ctx->luma_size = calc_plane(ctx->img_width, ctx->img_height);
 	ctx->chroma_size = calc_plane(ctx->img_width, (ctx->img_height >> 1));
+<<<<<<< HEAD
 	if (IS_MFCV8_PLUS(ctx->dev)) {
+=======
+	if (IS_MFCV8(ctx->dev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* MFCv8 needs additional 64 bytes for luma,chroma dpb*/
 		ctx->luma_size += S5P_FIMV_D_ALIGN_PLANE_SIZE_V8;
 		ctx->chroma_size += S5P_FIMV_D_ALIGN_PLANE_SIZE_V8;
@@ -455,6 +534,7 @@ static void s5p_mfc_dec_calc_dpb_size_v6(struct s5p_mfc_ctx *ctx)
 
 	if (ctx->codec_mode == S5P_MFC_CODEC_H264_DEC ||
 			ctx->codec_mode == S5P_MFC_CODEC_H264_MVC_DEC) {
+<<<<<<< HEAD
 		if (IS_MFCV10(dev)) {
 			ctx->mv_size = S5P_MFC_DEC_MV_SIZE_V10(ctx->img_width,
 					ctx->img_height);
@@ -466,6 +546,11 @@ static void s5p_mfc_dec_calc_dpb_size_v6(struct s5p_mfc_ctx *ctx)
 		ctx->mv_size = s5p_mfc_dec_hevc_mv_size(ctx->img_width,
 				ctx->img_height);
 		ctx->mv_size = ALIGN(ctx->mv_size, 32);
+=======
+		ctx->mv_size = S5P_MFC_DEC_MV_SIZE_V6(ctx->img_width,
+				ctx->img_height);
+		ctx->mv_size = ALIGN(ctx->mv_size, 16);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ctx->mv_size = 0;
 	}
@@ -536,7 +621,11 @@ static int s5p_mfc_set_dec_frame_buffer_v6(struct s5p_mfc_ctx *ctx)
 	writel(buf_addr1, mfc_regs->d_scratch_buffer_addr);
 	writel(ctx->scratch_buf_size, mfc_regs->d_scratch_buffer_size);
 
+<<<<<<< HEAD
 	if (IS_MFCV8_PLUS(dev)) {
+=======
+	if (IS_MFCV8(dev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		writel(ctx->img_width,
 			mfc_regs->d_first_plane_dpb_stride_size);
 		writel(ctx->img_width,
@@ -547,8 +636,12 @@ static int s5p_mfc_set_dec_frame_buffer_v6(struct s5p_mfc_ctx *ctx)
 	buf_size1 -= ctx->scratch_buf_size;
 
 	if (ctx->codec_mode == S5P_FIMV_CODEC_H264_DEC ||
+<<<<<<< HEAD
 			ctx->codec_mode == S5P_FIMV_CODEC_H264_MVC_DEC ||
 			ctx->codec_mode == S5P_FIMV_CODEC_HEVC_DEC) {
+=======
+			ctx->codec_mode == S5P_FIMV_CODEC_H264_MVC_DEC){
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		writel(ctx->mv_size, mfc_regs->d_mv_buffer_size);
 		writel(ctx->mv_count, mfc_regs->d_num_mv);
 	}
@@ -571,8 +664,12 @@ static int s5p_mfc_set_dec_frame_buffer_v6(struct s5p_mfc_ctx *ctx)
 				mfc_regs->d_second_plane_dpb + i * 4);
 	}
 	if (ctx->codec_mode == S5P_MFC_CODEC_H264_DEC ||
+<<<<<<< HEAD
 			ctx->codec_mode == S5P_MFC_CODEC_H264_MVC_DEC ||
 			ctx->codec_mode == S5P_MFC_CODEC_HEVC_DEC) {
+=======
+			ctx->codec_mode == S5P_MFC_CODEC_H264_MVC_DEC) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < ctx->mv_count; i++) {
 			/* To test alignment */
 			align_gap = buf_addr1;
@@ -587,6 +684,7 @@ static int s5p_mfc_set_dec_frame_buffer_v6(struct s5p_mfc_ctx *ctx)
 			buf_size1 -= frame_size_mv;
 		}
 	}
+<<<<<<< HEAD
 	if (ctx->codec_mode == S5P_FIMV_CODEC_VP9_DEC) {
 		writel(buf_addr1, mfc_regs->d_static_buffer_addr);
 		writel(DEC_VP9_STATIC_BUFFER_SIZE,
@@ -594,6 +692,8 @@ static int s5p_mfc_set_dec_frame_buffer_v6(struct s5p_mfc_ctx *ctx)
 		buf_addr1 += DEC_VP9_STATIC_BUFFER_SIZE;
 		buf_size1 -= DEC_VP9_STATIC_BUFFER_SIZE;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mfc_debug(2, "Buf1: %zx, buf_size1: %d (frames %d)\n",
 			buf_addr1, buf_size1, ctx->total_dpb_count);
@@ -671,6 +771,7 @@ static int s5p_mfc_set_enc_ref_buffer_v6(struct s5p_mfc_ctx *ctx)
 
 	mfc_debug(2, "Buf1: %p (%d)\n", (void *)buf_addr1, buf_size1);
 
+<<<<<<< HEAD
 	if (IS_MFCV10(dev)) {
 		/* start address of per buffer is aligned */
 		for (i = 0; i < ctx->pb_count; i++) {
@@ -699,6 +800,17 @@ static int s5p_mfc_set_enc_ref_buffer_v6(struct s5p_mfc_ctx *ctx)
 			buf_size1 -= (ctx->luma_dpb_size + ctx->chroma_dpb_size
 					+ ctx->me_buffer_size);
 		}
+=======
+	for (i = 0; i < ctx->pb_count; i++) {
+		writel(buf_addr1, mfc_regs->e_luma_dpb + (4 * i));
+		buf_addr1 += ctx->luma_dpb_size;
+		writel(buf_addr1, mfc_regs->e_chroma_dpb + (4 * i));
+		buf_addr1 += ctx->chroma_dpb_size;
+		writel(buf_addr1, mfc_regs->e_me_buffer + (4 * i));
+		buf_addr1 += ctx->me_buffer_size;
+		buf_size1 -= (ctx->luma_dpb_size + ctx->chroma_dpb_size +
+			ctx->me_buffer_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	writel(buf_addr1, mfc_regs->e_scratch_buffer_addr);
@@ -1440,6 +1552,7 @@ static int s5p_mfc_set_enc_params_vp8(struct s5p_mfc_ctx *ctx)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int s5p_mfc_set_enc_params_hevc(struct s5p_mfc_ctx *ctx)
 {
 	struct s5p_mfc_dev *dev = ctx->dev;
@@ -1596,6 +1709,8 @@ static int s5p_mfc_set_enc_params_hevc(struct s5p_mfc_ctx *ctx)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Initialize decoding */
 static int s5p_mfc_init_decode_v6(struct s5p_mfc_ctx *ctx)
 {
@@ -1715,8 +1830,11 @@ static int s5p_mfc_init_encode_v6(struct s5p_mfc_ctx *ctx)
 		s5p_mfc_set_enc_params_h263(ctx);
 	else if (ctx->codec_mode == S5P_MFC_CODEC_VP8_ENC)
 		s5p_mfc_set_enc_params_vp8(ctx);
+<<<<<<< HEAD
 	else if (ctx->codec_mode == S5P_FIMV_CODEC_HEVC_ENC)
 		s5p_mfc_set_enc_params_hevc(ctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else {
 		mfc_err("Unknown codec for encoding (%x).\n",
 			ctx->codec_mode);
@@ -2172,6 +2290,7 @@ static int s5p_mfc_get_mv_count_v6(struct s5p_mfc_dev *dev)
 	return readl(dev->mfc_regs->d_min_num_mv);
 }
 
+<<<<<<< HEAD
 static int s5p_mfc_get_min_scratch_buf_size(struct s5p_mfc_dev *dev)
 {
 	return readl(dev->mfc_regs->d_min_scratch_buffer_size);
@@ -2182,6 +2301,8 @@ static int s5p_mfc_get_e_min_scratch_buf_size(struct s5p_mfc_dev *dev)
 	return readl(dev->mfc_regs->e_min_scratch_buffer_size);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int s5p_mfc_get_inst_no_v6(struct s5p_mfc_dev *dev)
 {
 	return readl(dev->mfc_regs->ret_instance_id);
@@ -2396,7 +2517,11 @@ const struct s5p_mfc_regs *s5p_mfc_init_regs_v6_plus(struct s5p_mfc_dev *dev)
 			S5P_FIMV_E_ENCODED_SOURCE_SECOND_ADDR_V7);
 	R(e_vp8_options, S5P_FIMV_E_VP8_OPTIONS_V7);
 
+<<<<<<< HEAD
 	if (!IS_MFCV8_PLUS(dev))
+=======
+	if (!IS_MFCV8(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 
 	/* Initialize registers used in MFC v8 only.
@@ -2440,7 +2565,10 @@ const struct s5p_mfc_regs *s5p_mfc_init_regs_v6_plus(struct s5p_mfc_dev *dev)
 	R(d_ret_picture_tag_bot, S5P_FIMV_D_RET_PICTURE_TAG_BOT_V8);
 	R(d_display_crop_info1, S5P_FIMV_D_DISPLAY_CROP_INFO1_V8);
 	R(d_display_crop_info2, S5P_FIMV_D_DISPLAY_CROP_INFO2_V8);
+<<<<<<< HEAD
 	R(d_min_scratch_buffer_size, S5P_FIMV_D_MIN_SCRATCH_BUFFER_SIZE_V8);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* encoder registers */
 	R(e_padding_ctrl, S5P_FIMV_E_PADDING_CTRL_V8);
@@ -2456,6 +2584,7 @@ const struct s5p_mfc_regs *s5p_mfc_init_regs_v6_plus(struct s5p_mfc_dev *dev)
 	R(e_aspect_ratio, S5P_FIMV_E_ASPECT_RATIO_V8);
 	R(e_extended_sar, S5P_FIMV_E_EXTENDED_SAR_V8);
 	R(e_h264_options, S5P_FIMV_E_H264_OPTIONS_V8);
+<<<<<<< HEAD
 	R(e_min_scratch_buffer_size, S5P_FIMV_E_MIN_SCRATCH_BUFFER_SIZE_V8);
 
 	if (!IS_MFCV10(dev))
@@ -2479,6 +2608,8 @@ const struct s5p_mfc_regs *s5p_mfc_init_regs_v6_plus(struct s5p_mfc_dev *dev)
 	R(e_hevc_lf_beta_offset_div2, S5P_FIMV_E_HEVC_LF_BETA_OFFSET_DIV2_V10);
 	R(e_hevc_lf_tc_offset_div2, S5P_FIMV_E_HEVC_LF_TC_OFFSET_DIV2_V10);
 	R(e_hevc_nal_control, S5P_FIMV_E_HEVC_NAL_CONTROL_V10);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	return &mfc_regs;
@@ -2527,8 +2658,11 @@ static struct s5p_mfc_hw_ops s5p_mfc_ops_v6 = {
 	.get_pic_type_bot = s5p_mfc_get_pic_type_bot_v6,
 	.get_crop_info_h = s5p_mfc_get_crop_info_h_v6,
 	.get_crop_info_v = s5p_mfc_get_crop_info_v_v6,
+<<<<<<< HEAD
 	.get_min_scratch_buf_size = s5p_mfc_get_min_scratch_buf_size,
 	.get_e_min_scratch_buf_size = s5p_mfc_get_e_min_scratch_buf_size,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct s5p_mfc_hw_ops *s5p_mfc_init_hw_ops_v6(void)

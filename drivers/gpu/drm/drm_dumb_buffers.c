@@ -53,10 +53,17 @@
  * a hardware-specific ioctl to allocate suitable buffer objects.
  */
 
+<<<<<<< HEAD
 int drm_mode_create_dumb(struct drm_device *dev,
 			 struct drm_mode_create_dumb *args,
 			 struct drm_file *file_priv)
 {
+=======
+int drm_mode_create_dumb_ioctl(struct drm_device *dev,
+			       void *data, struct drm_file *file_priv)
+{
+	struct drm_mode_create_dumb *args = data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 cpp, stride, size;
 
 	if (!dev->driver->dumb_create)
@@ -92,12 +99,15 @@ int drm_mode_create_dumb(struct drm_device *dev,
 	return dev->driver->dumb_create(file_priv, dev, args);
 }
 
+<<<<<<< HEAD
 int drm_mode_create_dumb_ioctl(struct drm_device *dev,
 			       void *data, struct drm_file *file_priv)
 {
 	return drm_mode_create_dumb(dev, data, file_priv);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_mode_mmap_dumb_ioctl - create an mmap offset for a dumb backing storage buffer
  * @dev: DRM device
@@ -129,6 +139,7 @@ int drm_mode_mmap_dumb_ioctl(struct drm_device *dev,
 					       &args->offset);
 }
 
+<<<<<<< HEAD
 int drm_mode_destroy_dumb(struct drm_device *dev, u32 handle,
 			  struct drm_file *file_priv)
 {
@@ -141,10 +152,24 @@ int drm_mode_destroy_dumb(struct drm_device *dev, u32 handle,
 		return drm_gem_dumb_destroy(file_priv, dev, handle);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int drm_mode_destroy_dumb_ioctl(struct drm_device *dev,
 				void *data, struct drm_file *file_priv)
 {
 	struct drm_mode_destroy_dumb *args = data;
 
+<<<<<<< HEAD
 	return drm_mode_destroy_dumb(dev, args->handle, file_priv);
 }
+=======
+	if (!dev->driver->dumb_create)
+		return -ENOSYS;
+
+	if (dev->driver->dumb_destroy)
+		return dev->driver->dumb_destroy(file_priv, dev, args->handle);
+	else
+		return drm_gem_dumb_destroy(file_priv, dev, args->handle);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

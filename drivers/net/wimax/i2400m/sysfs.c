@@ -65,7 +65,12 @@ error_bad_value:
 }
 
 static
+<<<<<<< HEAD
 DEVICE_ATTR_WO(i2400m_idle_timeout);
+=======
+DEVICE_ATTR(i2400m_idle_timeout, S_IWUSR,
+	    NULL, i2400m_idle_timeout_store);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static
 struct attribute *i2400m_dev_attrs[] = {

@@ -87,7 +87,12 @@ static long kvmppc_realmode_mc_power7(struct kvm_vcpu *vcpu)
 				   DSISR_MC_SLB_PARITY | DSISR_MC_DERAT_MULTI);
 		}
 		if (dsisr & DSISR_MC_TLB_MULTI) {
+<<<<<<< HEAD
 			tlbiel_all_lpid(vcpu->kvm->arch.radix);
+=======
+			if (cur_cpu_spec && cur_cpu_spec->flush_tlb)
+				cur_cpu_spec->flush_tlb(TLB_INVAL_SCOPE_LPID);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dsisr &= ~DSISR_MC_TLB_MULTI;
 		}
 		/* Any other errors we don't understand? */
@@ -104,7 +109,12 @@ static long kvmppc_realmode_mc_power7(struct kvm_vcpu *vcpu)
 		reload_slb(vcpu);
 		break;
 	case SRR1_MC_IFETCH_TLBMULTI:
+<<<<<<< HEAD
 		tlbiel_all_lpid(vcpu->kvm->arch.radix);
+=======
+		if (cur_cpu_spec && cur_cpu_spec->flush_tlb)
+			cur_cpu_spec->flush_tlb(TLB_INVAL_SCOPE_LPID);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		handled = 0;
@@ -266,12 +276,16 @@ static void kvmppc_tb_resync_done(void)
  *   secondary threads to proceed.
  * - All secondary threads will eventually call opal hmi handler on
  *   their exit path.
+<<<<<<< HEAD
  *
  * Returns 1 if the timebase offset should be applied, 0 if not.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 long kvmppc_realmode_hmi_handler(void)
 {
+<<<<<<< HEAD
 	bool resync_req;
 
 	__this_cpu_inc(irq_stat.hmi_exceptions);
@@ -279,6 +293,15 @@ long kvmppc_realmode_hmi_handler(void)
 	if (hmi_handle_debugtrig(NULL) >= 0)
 		return 1;
 
+=======
+	int ptid = local_paca->kvm_hstate.ptid;
+	bool resync_req;
+
+	/* This is only called on primary thread. */
+	BUG_ON(ptid != 0);
+	__this_cpu_inc(irq_stat.hmi_exceptions);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * By now primary thread has already completed guest->host
 	 * partition switch but haven't signaled secondaries yet.

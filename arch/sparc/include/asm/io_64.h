@@ -243,35 +243,60 @@ void insb(unsigned long, void *, unsigned long);
 void insw(unsigned long, void *, unsigned long);
 void insl(unsigned long, void *, unsigned long);
 
+<<<<<<< HEAD
 static inline void readsb(void __iomem *port, void *buf, unsigned long count)
 {
 	insb((unsigned long __force)port, buf, count);
 }
 static inline void readsw(void __iomem *port, void *buf, unsigned long count)
+=======
+static inline void ioread8_rep(void __iomem *port, void *buf, unsigned long count)
+{
+	insb((unsigned long __force)port, buf, count);
+}
+static inline void ioread16_rep(void __iomem *port, void *buf, unsigned long count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	insw((unsigned long __force)port, buf, count);
 }
 
+<<<<<<< HEAD
 static inline void readsl(void __iomem *port, void *buf, unsigned long count)
+=======
+static inline void ioread32_rep(void __iomem *port, void *buf, unsigned long count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	insl((unsigned long __force)port, buf, count);
 }
 
+<<<<<<< HEAD
 static inline void writesb(void __iomem *port, const void *buf, unsigned long count)
+=======
+static inline void iowrite8_rep(void __iomem *port, const void *buf, unsigned long count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	outsb((unsigned long __force)port, buf, count);
 }
 
+<<<<<<< HEAD
 static inline void writesw(void __iomem *port, const void *buf, unsigned long count)
+=======
+static inline void iowrite16_rep(void __iomem *port, const void *buf, unsigned long count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	outsw((unsigned long __force)port, buf, count);
 }
 
+<<<<<<< HEAD
 static inline void writesl(void __iomem *port, const void *buf, unsigned long count)
+=======
+static inline void iowrite32_rep(void __iomem *port, const void *buf, unsigned long count)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	outsl((unsigned long __force)port, buf, count);
 }
 
+<<<<<<< HEAD
 #define ioread8_rep(p,d,l)	readsb(p,d,l)
 #define ioread16_rep(p,d,l)	readsw(p,d,l)
 #define ioread32_rep(p,d,l)	readsl(p,d,l)
@@ -279,6 +304,8 @@ static inline void writesl(void __iomem *port, const void *buf, unsigned long co
 #define iowrite16_rep(p,d,l)	writesw(p,d,l)
 #define iowrite32_rep(p,d,l)	writesl(p,d,l)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Valid I/O Space regions are anywhere, because each PCI bus supported
  * can live in an arbitrary area of the physical address range.
  */

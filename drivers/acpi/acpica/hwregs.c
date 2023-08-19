@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*******************************************************************************
  *
  * Module Name: hwregs - Read/write access functions for the various ACPI
@@ -6,6 +9,46 @@
  *
  ******************************************************************************/
 
+<<<<<<< HEAD
+=======
+/*
+ * Copyright (C) 2000 - 2017, Intel Corp.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions, and the following disclaimer,
+ *    without modification.
+ * 2. Redistributions in binary form must reproduce at minimum a disclaimer
+ *    substantially similar to the "NO WARRANTY" disclaimer below
+ *    ("Disclaimer") and any redistribution must be conditioned upon
+ *    including a substantially similar Disclaimer requirement for further
+ *    binary redistribution.
+ * 3. Neither the names of the above-listed copyright holders nor the names
+ *    of any contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * Alternatively, this software may be distributed under the terms of the
+ * GNU General Public License ("GPL") version 2 as published by the Free
+ * Software Foundation.
+ *
+ * NO WARRANTY
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDERS OR CONTRIBUTORS BE LIABLE FOR SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGES.
+ */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <acpi/acpi.h>
 #include "accommon.h"
 #include "acevents.h"
@@ -184,15 +227,25 @@ acpi_hw_validate_register(struct acpi_generic_address *reg,
  *
  * RETURN:      Status
  *
+<<<<<<< HEAD
  * DESCRIPTION: Read from either memory or IO space. This is a 64-bit max
  *              version of acpi_read.
+=======
+ * DESCRIPTION: Read from either memory or IO space. This is a 32-bit max
+ *              version of acpi_read, used internally since the overhead of
+ *              64-bit values is not needed.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * LIMITATIONS: <These limitations also apply to acpi_hw_write>
  *      space_ID must be system_memory or system_IO.
  *
  ******************************************************************************/
 
+<<<<<<< HEAD
 acpi_status acpi_hw_read(u64 *value, struct acpi_generic_address *reg)
+=======
+acpi_status acpi_hw_read(u32 *value, struct acpi_generic_address *reg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 address;
 	u8 access_width;
@@ -207,17 +260,29 @@ acpi_status acpi_hw_read(u64 *value, struct acpi_generic_address *reg)
 
 	/* Validate contents of the GAS register */
 
+<<<<<<< HEAD
 	status = acpi_hw_validate_register(reg, 64, &address);
+=======
+	status = acpi_hw_validate_register(reg, 32, &address);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ACPI_FAILURE(status)) {
 		return (status);
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Initialize entire 64-bit return value to zero, convert access_width
 	 * into number of bits based
 	 */
 	*value = 0;
 	access_width = acpi_hw_get_access_bit_width(address, reg, 64);
+=======
+	 * Initialize entire 32-bit return value to zero, convert access_width
+	 * into number of bits based
+	 */
+	*value = 0;
+	access_width = acpi_hw_get_access_bit_width(address, reg, 32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bit_width = reg->bit_offset + reg->bit_width;
 	bit_offset = reg->bit_offset;
 
@@ -228,7 +293,11 @@ acpi_status acpi_hw_read(u64 *value, struct acpi_generic_address *reg)
 	index = 0;
 	while (bit_width) {
 		if (bit_offset >= access_width) {
+<<<<<<< HEAD
 			value64 = 0;
+=======
+			value32 = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bit_offset -= access_width;
 		} else {
 			if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
@@ -239,6 +308,10 @@ acpi_status acpi_hw_read(u64 *value, struct acpi_generic_address *reg)
 							ACPI_DIV_8
 							(access_width),
 							&value64, access_width);
+<<<<<<< HEAD
+=======
+				value32 = (u32)value64;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			} else {	/* ACPI_ADR_SPACE_SYSTEM_IO, validated earlier */
 
 				status = acpi_hw_read_port((acpi_io_address)
@@ -248,16 +321,26 @@ acpi_status acpi_hw_read(u64 *value, struct acpi_generic_address *reg)
 							   (access_width),
 							   &value32,
 							   access_width);
+<<<<<<< HEAD
 				value64 = (u64)value32;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 
 		/*
 		 * Use offset style bit writes because "Index * AccessWidth" is
+<<<<<<< HEAD
 		 * ensured to be less than 64-bits by acpi_hw_validate_register().
 		 */
 		ACPI_SET_BITS(value, index * access_width,
 			      ACPI_MASK_BITS_ABOVE_64(access_width), value64);
+=======
+		 * ensured to be less than 32-bits by acpi_hw_validate_register().
+		 */
+		ACPI_SET_BITS(value, index * access_width,
+			      ACPI_MASK_BITS_ABOVE_32(access_width), value32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		bit_width -=
 		    bit_width > access_width ? access_width : bit_width;
@@ -265,9 +348,14 @@ acpi_status acpi_hw_read(u64 *value, struct acpi_generic_address *reg)
 	}
 
 	ACPI_DEBUG_PRINT((ACPI_DB_IO,
+<<<<<<< HEAD
 			  "Read:  %8.8X%8.8X width %2d from %8.8X%8.8X (%s)\n",
 			  ACPI_FORMAT_UINT64(*value), access_width,
 			  ACPI_FORMAT_UINT64(address),
+=======
+			  "Read:  %8.8X width %2d from %8.8X%8.8X (%s)\n",
+			  *value, access_width, ACPI_FORMAT_UINT64(address),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  acpi_ut_get_region_name(reg->space_id)));
 
 	return (status);
@@ -282,18 +370,32 @@ acpi_status acpi_hw_read(u64 *value, struct acpi_generic_address *reg)
  *
  * RETURN:      Status
  *
+<<<<<<< HEAD
  * DESCRIPTION: Write to either memory or IO space. This is a 64-bit max
  *              version of acpi_write.
  *
  ******************************************************************************/
 
 acpi_status acpi_hw_write(u64 value, struct acpi_generic_address *reg)
+=======
+ * DESCRIPTION: Write to either memory or IO space. This is a 32-bit max
+ *              version of acpi_write, used internally since the overhead of
+ *              64-bit values is not needed.
+ *
+ ******************************************************************************/
+
+acpi_status acpi_hw_write(u32 value, struct acpi_generic_address *reg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 address;
 	u8 access_width;
 	u32 bit_width;
 	u8 bit_offset;
 	u64 value64;
+<<<<<<< HEAD
+=======
+	u32 value32;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 index;
 	acpi_status status;
 
@@ -301,14 +403,22 @@ acpi_status acpi_hw_write(u64 value, struct acpi_generic_address *reg)
 
 	/* Validate contents of the GAS register */
 
+<<<<<<< HEAD
 	status = acpi_hw_validate_register(reg, 64, &address);
+=======
+	status = acpi_hw_validate_register(reg, 32, &address);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ACPI_FAILURE(status)) {
 		return (status);
 	}
 
 	/* Convert access_width into number of bits based */
 
+<<<<<<< HEAD
 	access_width = acpi_hw_get_access_bit_width(address, reg, 64);
+=======
+	access_width = acpi_hw_get_access_bit_width(address, reg, 32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bit_width = reg->bit_offset + reg->bit_width;
 	bit_offset = reg->bit_offset;
 
@@ -320,15 +430,26 @@ acpi_status acpi_hw_write(u64 value, struct acpi_generic_address *reg)
 	while (bit_width) {
 		/*
 		 * Use offset style bit reads because "Index * AccessWidth" is
+<<<<<<< HEAD
 		 * ensured to be less than 64-bits by acpi_hw_validate_register().
 		 */
 		value64 = ACPI_GET_BITS(&value, index * access_width,
 					ACPI_MASK_BITS_ABOVE_64(access_width));
+=======
+		 * ensured to be less than 32-bits by acpi_hw_validate_register().
+		 */
+		value32 = ACPI_GET_BITS(&value, index * access_width,
+					ACPI_MASK_BITS_ABOVE_32(access_width));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (bit_offset >= access_width) {
 			bit_offset -= access_width;
 		} else {
 			if (reg->space_id == ACPI_ADR_SPACE_SYSTEM_MEMORY) {
+<<<<<<< HEAD
+=======
+				value64 = (u64)value32;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				status =
 				    acpi_os_write_memory((acpi_physical_address)
 							 address +
@@ -343,7 +464,11 @@ acpi_status acpi_hw_write(u64 value, struct acpi_generic_address *reg)
 							    index *
 							    ACPI_DIV_8
 							    (access_width),
+<<<<<<< HEAD
 							    (u32)value64,
+=======
+							    value32,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							    access_width);
 			}
 		}
@@ -358,9 +483,14 @@ acpi_status acpi_hw_write(u64 value, struct acpi_generic_address *reg)
 	}
 
 	ACPI_DEBUG_PRINT((ACPI_DB_IO,
+<<<<<<< HEAD
 			  "Wrote: %8.8X%8.8X width %2d   to %8.8X%8.8X (%s)\n",
 			  ACPI_FORMAT_UINT64(value), access_width,
 			  ACPI_FORMAT_UINT64(address),
+=======
+			  "Wrote: %8.8X width %2d   to %8.8X%8.8X (%s)\n",
+			  value, access_width, ACPI_FORMAT_UINT64(address),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  acpi_ut_get_region_name(reg->space_id)));
 
 	return (status);
@@ -390,14 +520,22 @@ acpi_status acpi_hw_clear_acpi_status(void)
 			  ACPI_BITMASK_ALL_FIXED_STATUS,
 			  ACPI_FORMAT_UINT64(acpi_gbl_xpm1a_status.address)));
 
+<<<<<<< HEAD
 	lock_flags = acpi_os_acquire_raw_lock(acpi_gbl_hardware_lock);
+=======
+	lock_flags = acpi_os_acquire_lock(acpi_gbl_hardware_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Clear the fixed events in PM1 A/B */
 
 	status = acpi_hw_register_write(ACPI_REGISTER_PM1_STATUS,
 					ACPI_BITMASK_ALL_FIXED_STATUS);
 
+<<<<<<< HEAD
 	acpi_os_release_raw_lock(acpi_gbl_hardware_lock, lock_flags);
+=======
+	acpi_os_release_lock(acpi_gbl_hardware_lock, lock_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ACPI_FAILURE(status)) {
 		goto exit;
@@ -488,7 +626,10 @@ acpi_status acpi_hw_write_pm1_control(u32 pm1a_control, u32 pm1b_control)
 acpi_status acpi_hw_register_read(u32 register_id, u32 *return_value)
 {
 	u32 value = 0;
+<<<<<<< HEAD
 	u64 value64;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_status status;
 
 	ACPI_FUNCTION_TRACE(hw_register_read);
@@ -527,19 +668,27 @@ acpi_status acpi_hw_register_read(u32 register_id, u32 *return_value)
 	case ACPI_REGISTER_PM2_CONTROL:	/* 8-bit access */
 
 		status =
+<<<<<<< HEAD
 		    acpi_hw_read(&value64, &acpi_gbl_FADT.xpm2_control_block);
 		if (ACPI_SUCCESS(status)) {
 			value = (u32)value64;
 		}
+=======
+		    acpi_hw_read(&value, &acpi_gbl_FADT.xpm2_control_block);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case ACPI_REGISTER_PM_TIMER:	/* 32-bit access */
 
+<<<<<<< HEAD
 		status = acpi_hw_read(&value64, &acpi_gbl_FADT.xpm_timer_block);
 		if (ACPI_SUCCESS(status)) {
 			value = (u32)value64;
 		}
 
+=======
+		status = acpi_hw_read(&value, &acpi_gbl_FADT.xpm_timer_block);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case ACPI_REGISTER_SMI_COMMAND_BLOCK:	/* 8-bit access */
@@ -556,7 +705,11 @@ acpi_status acpi_hw_register_read(u32 register_id, u32 *return_value)
 	}
 
 	if (ACPI_SUCCESS(status)) {
+<<<<<<< HEAD
 		*return_value = (u32)value;
+=======
+		*return_value = value;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return_ACPI_STATUS(status);
@@ -592,7 +745,10 @@ acpi_status acpi_hw_register_write(u32 register_id, u32 value)
 {
 	acpi_status status;
 	u32 read_value;
+<<<<<<< HEAD
 	u64 read_value64;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ACPI_FUNCTION_TRACE(hw_register_write);
 
@@ -656,12 +812,19 @@ acpi_status acpi_hw_register_write(u32 register_id, u32 value)
 		 * as per the ACPI spec.
 		 */
 		status =
+<<<<<<< HEAD
 		    acpi_hw_read(&read_value64,
+=======
+		    acpi_hw_read(&read_value,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 &acpi_gbl_FADT.xpm2_control_block);
 		if (ACPI_FAILURE(status)) {
 			goto exit;
 		}
+<<<<<<< HEAD
 		read_value = (u32)read_value64;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Insert the bits to be preserved */
 
@@ -717,25 +880,42 @@ acpi_hw_read_multiple(u32 *value,
 {
 	u32 value_a = 0;
 	u32 value_b = 0;
+<<<<<<< HEAD
 	u64 value64;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	acpi_status status;
 
 	/* The first register is always required */
 
+<<<<<<< HEAD
 	status = acpi_hw_read(&value64, register_a);
 	if (ACPI_FAILURE(status)) {
 		return (status);
 	}
 	value_a = (u32)value64;
+=======
+	status = acpi_hw_read(&value_a, register_a);
+	if (ACPI_FAILURE(status)) {
+		return (status);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Second register is optional */
 
 	if (register_b->address) {
+<<<<<<< HEAD
 		status = acpi_hw_read(&value64, register_b);
 		if (ACPI_FAILURE(status)) {
 			return (status);
 		}
 		value_b = (u32)value64;
+=======
+		status = acpi_hw_read(&value_b, register_b);
+		if (ACPI_FAILURE(status)) {
+			return (status);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*

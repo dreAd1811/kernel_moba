@@ -181,8 +181,14 @@ static int cbc_init(struct crypto_tfm *tfm)
 	struct aesbs_cbc_ctx *ctx = crypto_tfm_ctx(tfm);
 
 	ctx->enc_tfm = crypto_alloc_cipher("aes", 0, 0);
+<<<<<<< HEAD
 
 	return PTR_ERR_OR_ZERO(ctx->enc_tfm);
+=======
+	if (IS_ERR(ctx->enc_tfm))
+		return PTR_ERR(ctx->enc_tfm);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cbc_exit(struct crypto_tfm *tfm)
@@ -257,8 +263,14 @@ static int xts_init(struct crypto_tfm *tfm)
 	struct aesbs_xts_ctx *ctx = crypto_tfm_ctx(tfm);
 
 	ctx->tweak_tfm = crypto_alloc_cipher("aes", 0, 0);
+<<<<<<< HEAD
 
 	return PTR_ERR_OR_ZERO(ctx->tweak_tfm);
+=======
+	if (IS_ERR(ctx->tweak_tfm))
+		return PTR_ERR(ctx->tweak_tfm);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void xts_exit(struct crypto_tfm *tfm)

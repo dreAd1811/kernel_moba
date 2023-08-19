@@ -18,7 +18,10 @@
 #include <linux/syscore_ops.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/clock/exynos-audss-clk.h>
 
@@ -37,13 +40,21 @@ static struct clk *epll;
 #define ASS_CLK_DIV 0x4
 #define ASS_CLK_GATE 0x8
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM_SLEEP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned long reg_save[][2] = {
 	{ ASS_CLK_SRC,  0 },
 	{ ASS_CLK_DIV,  0 },
 	{ ASS_CLK_GATE, 0 },
 };
 
+<<<<<<< HEAD
 static int __maybe_unused exynos_audss_clk_suspend(struct device *dev)
+=======
+static int exynos_audss_clk_suspend(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -53,7 +64,11 @@ static int __maybe_unused exynos_audss_clk_suspend(struct device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused exynos_audss_clk_resume(struct device *dev)
+=======
+static int exynos_audss_clk_resume(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -62,6 +77,10 @@ static int __maybe_unused exynos_audss_clk_resume(struct device *dev)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_PM_SLEEP */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct exynos_audss_clk_drvdata {
 	unsigned int has_adma_clk:1;
@@ -134,7 +153,10 @@ static int exynos_audss_clk_probe(struct platform_device *pdev)
 	const struct exynos_audss_clk_drvdata *variant;
 	struct clk_hw **clk_table;
 	struct resource *res;
+<<<<<<< HEAD
 	struct device *dev = &pdev->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret = 0;
 
 	variant = of_device_get_match_data(&pdev->dev);
@@ -142,6 +164,7 @@ static int exynos_audss_clk_probe(struct platform_device *pdev)
 		return -EINVAL;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+<<<<<<< HEAD
 	reg_base = devm_ioremap_resource(dev, res);
 	if (IS_ERR(reg_base))
 		return PTR_ERR(reg_base);
@@ -151,6 +174,19 @@ static int exynos_audss_clk_probe(struct platform_device *pdev)
 	clk_data = devm_kzalloc(dev,
 				struct_size(clk_data, hws,
 					    EXYNOS_AUDSS_MAX_CLKS),
+=======
+	reg_base = devm_ioremap_resource(&pdev->dev, res);
+	if (IS_ERR(reg_base)) {
+		dev_err(&pdev->dev, "failed to map audss registers\n");
+		return PTR_ERR(reg_base);
+	}
+
+	epll = ERR_PTR(-ENODEV);
+
+	clk_data = devm_kzalloc(&pdev->dev,
+				sizeof(*clk_data) +
+				sizeof(*clk_data->hws) * EXYNOS_AUDSS_MAX_CLKS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 	if (!clk_data)
 		return -ENOMEM;
@@ -158,8 +194,13 @@ static int exynos_audss_clk_probe(struct platform_device *pdev)
 	clk_data->num = variant->num_clks;
 	clk_table = clk_data->hws;
 
+<<<<<<< HEAD
 	pll_ref = devm_clk_get(dev, "pll_ref");
 	pll_in = devm_clk_get(dev, "pll_in");
+=======
+	pll_ref = devm_clk_get(&pdev->dev, "pll_ref");
+	pll_in = devm_clk_get(&pdev->dev, "pll_in");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR(pll_ref))
 		mout_audss_p[0] = __clk_get_name(pll_ref);
 	if (!IS_ERR(pll_in)) {
@@ -170,12 +211,17 @@ static int exynos_audss_clk_probe(struct platform_device *pdev)
 
 			ret = clk_prepare_enable(epll);
 			if (ret) {
+<<<<<<< HEAD
 				dev_err(dev,
+=======
+				dev_err(&pdev->dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"failed to prepare the epll clock\n");
 				return ret;
 			}
 		}
 	}
+<<<<<<< HEAD
 
 	/*
 	 * Enable runtime PM here to allow the clock core using runtime PM
@@ -188,21 +234,34 @@ static int exynos_audss_clk_probe(struct platform_device *pdev)
 	pm_runtime_enable(dev);
 
 	clk_table[EXYNOS_MOUT_AUDSS] = clk_hw_register_mux(dev, "mout_audss",
+=======
+	clk_table[EXYNOS_MOUT_AUDSS] = clk_hw_register_mux(NULL, "mout_audss",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				mout_audss_p, ARRAY_SIZE(mout_audss_p),
 				CLK_SET_RATE_NO_REPARENT | CLK_SET_RATE_PARENT,
 				reg_base + ASS_CLK_SRC, 0, 1, 0, &lock);
 
+<<<<<<< HEAD
 	cdclk = devm_clk_get(dev, "cdclk");
 	sclk_audio = devm_clk_get(dev, "sclk_audio");
+=======
+	cdclk = devm_clk_get(&pdev->dev, "cdclk");
+	sclk_audio = devm_clk_get(&pdev->dev, "sclk_audio");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ERR(cdclk))
 		mout_i2s_p[1] = __clk_get_name(cdclk);
 	if (!IS_ERR(sclk_audio))
 		mout_i2s_p[2] = __clk_get_name(sclk_audio);
+<<<<<<< HEAD
 	clk_table[EXYNOS_MOUT_I2S] = clk_hw_register_mux(dev, "mout_i2s",
+=======
+	clk_table[EXYNOS_MOUT_I2S] = clk_hw_register_mux(NULL, "mout_i2s",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				mout_i2s_p, ARRAY_SIZE(mout_i2s_p),
 				CLK_SET_RATE_NO_REPARENT,
 				reg_base + ASS_CLK_SRC, 2, 2, 0, &lock);
 
+<<<<<<< HEAD
 	clk_table[EXYNOS_DOUT_SRP] = clk_hw_register_divider(dev, "dout_srp",
 				"mout_audss", CLK_SET_RATE_PARENT,
 				reg_base + ASS_CLK_DIV, 0, 4, 0, &lock);
@@ -235,23 +294,66 @@ static int exynos_audss_clk_probe(struct platform_device *pdev)
 	if (!IS_ERR(sclk_pcm_in))
 		sclk_pcm_p = __clk_get_name(sclk_pcm_in);
 	clk_table[EXYNOS_SCLK_PCM] = clk_hw_register_gate(dev, "sclk_pcm",
+=======
+	clk_table[EXYNOS_DOUT_SRP] = clk_hw_register_divider(NULL, "dout_srp",
+				"mout_audss", CLK_SET_RATE_PARENT,
+				reg_base + ASS_CLK_DIV, 0, 4, 0, &lock);
+
+	clk_table[EXYNOS_DOUT_AUD_BUS] = clk_hw_register_divider(NULL,
+				"dout_aud_bus", "dout_srp", CLK_SET_RATE_PARENT,
+				reg_base + ASS_CLK_DIV, 4, 4, 0, &lock);
+
+	clk_table[EXYNOS_DOUT_I2S] = clk_hw_register_divider(NULL, "dout_i2s",
+				"mout_i2s", 0, reg_base + ASS_CLK_DIV, 8, 4, 0,
+				&lock);
+
+	clk_table[EXYNOS_SRP_CLK] = clk_hw_register_gate(NULL, "srp_clk",
+				"dout_srp", CLK_SET_RATE_PARENT,
+				reg_base + ASS_CLK_GATE, 0, 0, &lock);
+
+	clk_table[EXYNOS_I2S_BUS] = clk_hw_register_gate(NULL, "i2s_bus",
+				"dout_aud_bus", CLK_SET_RATE_PARENT,
+				reg_base + ASS_CLK_GATE, 2, 0, &lock);
+
+	clk_table[EXYNOS_SCLK_I2S] = clk_hw_register_gate(NULL, "sclk_i2s",
+				"dout_i2s", CLK_SET_RATE_PARENT,
+				reg_base + ASS_CLK_GATE, 3, 0, &lock);
+
+	clk_table[EXYNOS_PCM_BUS] = clk_hw_register_gate(NULL, "pcm_bus",
+				 "sclk_pcm", CLK_SET_RATE_PARENT,
+				reg_base + ASS_CLK_GATE, 4, 0, &lock);
+
+	sclk_pcm_in = devm_clk_get(&pdev->dev, "sclk_pcm_in");
+	if (!IS_ERR(sclk_pcm_in))
+		sclk_pcm_p = __clk_get_name(sclk_pcm_in);
+	clk_table[EXYNOS_SCLK_PCM] = clk_hw_register_gate(NULL, "sclk_pcm",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				sclk_pcm_p, CLK_SET_RATE_PARENT,
 				reg_base + ASS_CLK_GATE, 5, 0, &lock);
 
 	if (variant->has_adma_clk) {
+<<<<<<< HEAD
 		clk_table[EXYNOS_ADMA] = clk_hw_register_gate(dev, "adma",
+=======
+		clk_table[EXYNOS_ADMA] = clk_hw_register_gate(NULL, "adma",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"dout_srp", CLK_SET_RATE_PARENT,
 				reg_base + ASS_CLK_GATE, 9, 0, &lock);
 	}
 
 	for (i = 0; i < clk_data->num; i++) {
 		if (IS_ERR(clk_table[i])) {
+<<<<<<< HEAD
 			dev_err(dev, "failed to register clock %d\n", i);
+=======
+			dev_err(&pdev->dev, "failed to register clock %d\n", i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = PTR_ERR(clk_table[i]);
 			goto unregister;
 		}
 	}
 
+<<<<<<< HEAD
 	ret = of_clk_add_hw_provider(dev->of_node, of_clk_hw_onecell_get,
 				     clk_data);
 	if (ret) {
@@ -261,12 +363,24 @@ static int exynos_audss_clk_probe(struct platform_device *pdev)
 
 	pm_runtime_put_sync(dev);
 
+=======
+	ret = of_clk_add_hw_provider(pdev->dev.of_node, of_clk_hw_onecell_get,
+				     clk_data);
+	if (ret) {
+		dev_err(&pdev->dev, "failed to add clock provider\n");
+		goto unregister;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 unregister:
 	exynos_audss_clk_teardown();
+<<<<<<< HEAD
 	pm_runtime_put_sync(dev);
 	pm_runtime_disable(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!IS_ERR(epll))
 		clk_disable_unprepare(epll);
@@ -279,7 +393,10 @@ static int exynos_audss_clk_remove(struct platform_device *pdev)
 	of_clk_del_provider(pdev->dev.of_node);
 
 	exynos_audss_clk_teardown();
+<<<<<<< HEAD
 	pm_runtime_disable(&pdev->dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!IS_ERR(epll))
 		clk_disable_unprepare(epll);
@@ -288,10 +405,15 @@ static int exynos_audss_clk_remove(struct platform_device *pdev)
 }
 
 static const struct dev_pm_ops exynos_audss_clk_pm_ops = {
+<<<<<<< HEAD
 	SET_RUNTIME_PM_OPS(exynos_audss_clk_suspend, exynos_audss_clk_resume,
 			   NULL)
 	SET_LATE_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				     pm_runtime_force_resume)
+=======
+	SET_LATE_SYSTEM_SLEEP_PM_OPS(exynos_audss_clk_suspend,
+				     exynos_audss_clk_resume)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_driver exynos_audss_clk_driver = {

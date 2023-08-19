@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /* Copyright (c) 2008-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2008-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef DIAGCHAR_H
@@ -54,11 +67,14 @@
 #define DIAG_CTRL_MSG_LOG_MASK	9
 #define DIAG_CTRL_MSG_EVENT_MASK	10
 #define DIAG_CTRL_MSG_F3_MASK	11
+<<<<<<< HEAD
 
 #define DIAG_CTRL_MSG_F3_MS_MASK	36
 #define DIAG_CTRL_MSG_LOG_MS_MASK	37
 #define DIAG_CTRL_MSG_EVENT_MS_MASK	38
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CONTROL_CHAR	0x7E
 
 #define DIAG_ID_ROOT_STRING "root"
@@ -75,7 +91,11 @@
 #define DIAG_CON_UPD_WLAN		(0x1000) /*Bit mask for WLAN PD*/
 #define DIAG_CON_UPD_AUDIO		(0x2000) /*Bit mask for AUDIO PD*/
 #define DIAG_CON_UPD_SENSORS	(0x4000) /*Bit mask for SENSORS PD*/
+<<<<<<< HEAD
 #define DIAG_CON_UPD_CHARGER	(0x8000) /* Bit mask for CHARGER PD */
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DIAG_CON_NONE		(0x0000)	/* Bit mask for No SS*/
 #define DIAG_CON_ALL		(DIAG_CON_APSS | DIAG_CON_MPSS \
 				| DIAG_CON_LPASS | DIAG_CON_WCNSS \
@@ -83,8 +103,12 @@
 				| DIAG_CON_CDSP | DIAG_CON_NPU)
 #define DIAG_CON_UPD_ALL	(DIAG_CON_UPD_WLAN \
 				| DIAG_CON_UPD_AUDIO \
+<<<<<<< HEAD
 				| DIAG_CON_UPD_SENSORS \
 				| DIAG_CON_UPD_CHARGER)
+=======
+				| DIAG_CON_UPD_SENSORS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DIAG_STM_MODEM	0x01
 #define DIAG_STM_LPASS	0x02
@@ -102,7 +126,10 @@
 #define DIAG_CMD_ADD		1
 #define DIAG_CMD_REMOVE		0
 
+<<<<<<< HEAD
 #define DIAG_SS_CMD_OFFSET	2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DIAG_CMD_VERSION	0
 #define DIAG_CMD_ERROR		0x13
 #define DIAG_CMD_DOWNLOAD	0x3A
@@ -141,8 +168,12 @@
 #define DIAG_GET_TIME_API	0x21B
 #define DIAG_SET_TIME_API	0x21C
 #define DIAG_GET_DIAG_ID	0x222
+<<<<<<< HEAD
 #define DIAG_HW_ACCEL_CMD	0x224
 #define DIAG_FEATURE_QUERY	0x225
+=======
+#define DIAG_QUERY_TRANSPORT	0x223
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DIAG_SWITCH_COMMAND	0x081B
 #define DIAG_BUFFERING_MODE	0x080C
 
@@ -157,10 +188,13 @@
 #define DIAG_CMD_OP_SET_MSG_MASK	4
 #define DIAG_CMD_OP_SET_ALL_MSG_MASK	5
 
+<<<<<<< HEAD
 #define DIAG_CMD_OP_GET_EVENT_MSK	1
 #define DIAG_CMD_OP_SET_EVENT_MSK	2
 #define DIAG_CMD_OP_EVENT_TOGGLE	3
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DIAG_CMD_OP_GET_MSG_ALLOC       0x33
 #define DIAG_CMD_OP_GET_MSG_DROP	0x30
 #define DIAG_CMD_OP_RESET_MSG_STATS	0x2F
@@ -173,10 +207,13 @@
 
 #define DIAG_CMD_OP_HDLC_DISABLE	0x218
 
+<<<<<<< HEAD
 #define DIAG_SUB_SYS_CMD_MSG	0x6D
 #define DIAG_SUB_SYS_CMD_LOG	0x6E
 #define DIAG_SUB_SYS_CMD_EVENT	0x6F
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define BAD_PARAM_RESPONSE_MESSAGE 20
 
 #define PERSIST_TIME_SUCCESS 0
@@ -192,10 +229,13 @@
 
 #define FEATURE_MASK_LEN	4
 
+<<<<<<< HEAD
 #define F_DIAG_EVENT_REPORT	0
 #define F_DIAG_HW_ACCELERATION	1
 #define F_DIAG_MULTI_SIM_MASK	2
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DIAG_MD_NONE			0
 #define DIAG_MD_PERIPHERAL		1
 
@@ -247,10 +287,16 @@
 #define UPD_WLAN		8
 #define UPD_AUDIO		9
 #define UPD_SENSORS		10
+<<<<<<< HEAD
 #define UPD_CHARGER		11
 #define NUM_UPD			4
 
 #define MAX_PERIPHERAL_UPD			3
+=======
+#define NUM_UPD			3
+
+#define MAX_PERIPHERAL_UPD			2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Number of sessions possible in Memory Device Mode. +1 for Apps data */
 #define NUM_MD_SESSIONS		(NUM_PERIPHERALS \
 					+ NUM_UPD + 1)
@@ -264,6 +310,7 @@ do {						\
 		pd_mask |= (1 << fwd_info->upd_diag_id[i].pd);\
 } while (0)
 
+<<<<<<< HEAD
 #define DIAGIDV2_FEATURE(f_index)	\
 	driver->diagid_v2_feature[f_index]
 
@@ -273,6 +320,8 @@ do {						\
 #define P_FMASK_DIAGID_V2(peripheral)	\
 	driver->feature[peripheral].diagid_v2_feature_mask
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Number of stm processors includes all the peripherals and
  * apps.Added 1 below to indicate apps
@@ -320,6 +369,13 @@ do {						\
 #define DIAG_NUM_PROC	(1 + NUM_REMOTE_DEV)
 #endif
 
+<<<<<<< HEAD
+=======
+#define DIAG_MSM_MASK (0x0001)   /* Bit mask for MSM */
+#define DIAG_MDM_MASK (0x0002)   /* Bit mask for first mdm device */
+#define DIAG_MDM2_MASK (0x0004) /* Bit mask for second mdm device */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DIAG_WS_DCI		0
 #define DIAG_WS_MUX		1
 
@@ -336,6 +392,7 @@ do {						\
 #define DIAG_ID_UNKNOWN		0
 #define DIAG_ID_APPS		1
 
+<<<<<<< HEAD
 #define DIAGID_V2_FEATURE_COUNT 3
 
 /*
@@ -371,6 +428,11 @@ do {						\
 #define DIAG_TRANSPORT_UART    1
 #define DIAG_TRANSPORT_USB     2
 #define DIAG_TRANSPORT_PCIE    3
+=======
+#define DIAG_ROUTE_TO_UART	1
+#define DIAG_ROUTE_TO_USB	2
+#define DIAG_ROUTE_TO_PCIE	3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* List of remote processor supported */
 enum remote_procs {
@@ -383,8 +445,12 @@ enum remote_procs {
 #define DIAG_MD_BRIDGE_BASE	DIAG_MD_LOCAL_LAST
 #define DIAG_MD_MDM		(DIAG_MD_BRIDGE_BASE)
 #define DIAG_MD_MDM2		(DIAG_MD_BRIDGE_BASE + 1)
+<<<<<<< HEAD
 #define DIAG_MD_SMUX		(DIAG_MD_BRIDGE_BASE + 2)
 #define DIAG_MD_BRIDGE_LAST	(DIAG_MD_BRIDGE_BASE + 3)
+=======
+#define DIAG_MD_BRIDGE_LAST	(DIAG_MD_BRIDGE_BASE + 2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef CONFIG_DIAGFWD_BRIDGE_CODE
 #define NUM_DIAG_MD_DEV		DIAG_MD_LOCAL_LAST
@@ -406,6 +472,7 @@ struct diag_cmd_ext_mobile_rsp_t {
 	uint32_t chip_id;
 } __packed;
 
+<<<<<<< HEAD
 /*
  * hw acceleration command request payload structure
  */
@@ -486,6 +553,8 @@ struct diag_hw_accel_cmd_query_resp_t {
 	struct diag_hw_accel_query_rsp_payload_t query_rsp;
 } __packed;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct diag_cmd_diag_id_query_req_t {
 	struct diag_pkt_header_t header;
 	uint8_t version;
@@ -496,10 +565,15 @@ struct diag_id_tbl_t {
 	uint8_t diag_id;
 	uint8_t pd_val;
 	uint8_t peripheral;
+<<<<<<< HEAD
 	uint8_t pd_feature_mask;
 	char *process_name;
 } __packed;
 
+=======
+	char *process_name;
+} __packed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct diag_id_t {
 	uint8_t diag_id;
 	uint8_t len;
@@ -539,6 +613,18 @@ struct diag_cmd_time_sync_switch_rsp_t {
 	uint8_t persist_time_status;
 };
 
+<<<<<<< HEAD
+=======
+struct diag_query_transport_req_t {
+	struct diag_pkt_header_t header;
+};
+
+struct diag_query_transport_rsp_t {
+	struct diag_pkt_header_t header;
+	uint8_t transport;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct diag_cmd_reg_entry_t {
 	uint16_t cmd_code;
 	uint16_t subsys_id;
@@ -624,12 +710,15 @@ struct diag_cmd_hdlc_disable_rsp_t {
 	uint8_t result;
 };
 
+<<<<<<< HEAD
 struct diag_cmd_feature_query_rsp_t {
 	struct diag_pkt_header_t header;
 	uint8_t version;
 	uint8_t feature_len;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct diag_pkt_frame_t {
 	uint8_t start;
 	uint8_t version;
@@ -686,13 +775,17 @@ struct diag_md_session_t {
  * High level structure for storing Diag masks.
  *
  * @ptr: Pointer to the buffer that stores the masks
+<<<<<<< HEAD
  * @ms_ptr: Pointer to the list having mask based upon subscription
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @mask_len: Length of the buffer pointed by ptr
  * @update_buf: Buffer for performing mask updates to peripherals
  * @update_buf_len: Length of the buffer pointed by buf
  * @status: status of the mask - all enable, disabled, valid
  * @lock: To protect access to the mask variables
  */
+<<<<<<< HEAD
 
 struct diag_multisim_masks {
 	uint8_t *sub_ptr;
@@ -703,6 +796,10 @@ struct diag_multisim_masks {
 struct diag_mask_info {
 	uint8_t *ptr;
 	struct diag_multisim_masks *ms_ptr;
+=======
+struct diag_mask_info {
+	uint8_t *ptr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int mask_len;
 	uint8_t *update_buf;
 	int update_buf_len;
@@ -733,8 +830,11 @@ struct diag_feature_t {
 	uint8_t sockets_enabled;
 	uint8_t sent_feature_mask;
 	uint8_t diag_id_support;
+<<<<<<< HEAD
 	uint8_t diagid_v2_feature_mask;
 	uint8_t multi_sim_support;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct diagchar_dev {
@@ -762,7 +862,10 @@ struct diagchar_dev {
 	int supports_apps_hdlc_encoding;
 	int supports_apps_header_untagging;
 	int supports_pd_buffering;
+<<<<<<< HEAD
 	int supports_diagid_v2_feature_mask;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int peripheral_untag[NUM_PERIPHERALS];
 	int supports_sockets;
 	/* The state requested in the STM command */
@@ -795,11 +898,19 @@ struct diagchar_dev {
 	struct list_head cmd_reg_list;
 	struct list_head diag_id_list;
 	struct mutex diag_id_mutex;
+<<<<<<< HEAD
 	struct mutex diagid_v2_mutex;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex cmd_reg_mutex;
 	spinlock_t dci_mempool_lock;
 	uint32_t cmd_reg_count;
 	struct mutex diagfwd_channel_mutex[NUM_PERIPHERALS];
+<<<<<<< HEAD
+=======
+	int transport_set;
+	int pcie_transport_def;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Sizes that reflect memory pool sizes */
 	unsigned int poolsize;
 	unsigned int poolsize_hdlc;
@@ -821,7 +932,10 @@ struct diagchar_dev {
 	struct diagfwd_info *diagfwd_cmd[NUM_PERIPHERALS];
 	struct diagfwd_info *diagfwd_dci_cmd[NUM_PERIPHERALS];
 	struct diag_feature_t feature[NUM_PERIPHERALS];
+<<<<<<< HEAD
 	uint32_t apps_feature;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct diag_buffering_mode_t buffering_mode[NUM_MD_SESSIONS];
 	uint8_t buffering_flag[NUM_MD_SESSIONS];
 	struct mutex mode_lock;
@@ -854,6 +968,11 @@ struct diagchar_dev {
 #ifdef CONFIG_DIAG_OVER_USB
 	int usb_connected;
 #endif
+<<<<<<< HEAD
+=======
+	int pcie_connected;
+	int pcie_switch_pid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct workqueue_struct *diag_wq;
 	struct work_struct diag_drain_work;
 	struct work_struct update_user_clients;
@@ -886,7 +1005,10 @@ struct diagchar_dev {
 	struct diag_mask_info *log_mask;
 	struct diag_mask_info *event_mask;
 	struct diag_mask_info *build_time_mask;
+<<<<<<< HEAD
 	uint8_t multisim_feature_rcvd;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint8_t set_mask_cmd;
 	uint8_t msg_mask_tbl_count;
 	uint8_t bt_msg_mask_tbl_count;
@@ -904,9 +1026,12 @@ struct diagchar_dev {
 #endif
 	int time_sync_enabled;
 	uint8_t uses_time_api;
+<<<<<<< HEAD
 	uint32_t diagid_v2_feature[DIAGID_V2_FEATURE_COUNT];
 	uint32_t diagid_v2_status[DIAGID_V2_FEATURE_COUNT];
 	uint32_t diag_hw_accel[DIAGID_V2_FEATURE_COUNT];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern struct diagchar_dev *driver;
@@ -959,10 +1084,14 @@ void diag_record_stats(int type, int flag);
 struct diag_md_session_t *diag_md_session_get_pid(int pid);
 struct diag_md_session_t *diag_md_session_get_peripheral(int dev_id,
 							uint8_t peripheral);
+<<<<<<< HEAD
 int diag_md_session_match_pid_peripheral(int proc, int pid,
 					uint8_t peripheral);
 int diag_map_hw_accel_type_ver(uint8_t hw_accel_type, uint8_t hw_accel_ver);
 void diag_map_index_to_hw_accel(uint8_t index, uint8_t *hw_accel_type,
 			uint8_t *hw_accel_ver);
+=======
+int diag_md_session_match_pid_peripheral(int proc, int pid, uint8_t peripheral);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

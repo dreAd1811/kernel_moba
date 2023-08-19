@@ -578,8 +578,12 @@ static inline int sgiseeq_reset(struct net_device *dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static netdev_tx_t
 sgiseeq_start_xmit(struct sk_buff *skb, struct net_device *dev)
+=======
+static int sgiseeq_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct sgiseeq_private *sp = netdev_priv(dev);
 	struct hpc3_ethregs *hregs = sp->hregs;

@@ -19,6 +19,7 @@
 #include "lapic.h"
 #include "pmu.h"
 
+<<<<<<< HEAD
 enum pmu_type {
 	PMU_TYPE_COUNTER = 0,
 	PMU_TYPE_EVNTSEL,
@@ -34,6 +35,8 @@ enum index {
 	INDEX_ERROR,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* duplicated from amd_perfmon_event_map, K7 and above should work. */
 static struct kvm_event_hw_type_mapping amd_event_mapping[] = {
 	[0] = { 0x76, 0x00, PERF_COUNT_HW_CPU_CYCLES },
@@ -46,6 +49,7 @@ static struct kvm_event_hw_type_mapping amd_event_mapping[] = {
 	[7] = { 0xd1, 0x00, PERF_COUNT_HW_STALLED_CYCLES_BACKEND },
 };
 
+<<<<<<< HEAD
 static unsigned int get_msr_base(struct kvm_pmu *pmu, enum pmu_type type)
 {
 	struct kvm_vcpu *vcpu = pmu_to_vcpu(pmu);
@@ -128,6 +132,8 @@ static inline struct kvm_pmc *get_gp_pmc_amd(struct kvm_pmu *pmu, u32 msr,
 	return &pmu->gp_counters[msr_to_index(msr)];
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned amd_find_arch_event(struct kvm_pmu *pmu,
 				    u8 event_select,
 				    u8 unit_mask)
@@ -161,6 +167,7 @@ static bool amd_pmc_is_enabled(struct kvm_pmc *pmc)
 
 static struct kvm_pmc *amd_pmc_idx_to_pmc(struct kvm_pmu *pmu, int pmc_idx)
 {
+<<<<<<< HEAD
 	unsigned int base = get_msr_base(pmu, PMU_TYPE_COUNTER);
 	struct kvm_vcpu *vcpu = pmu_to_vcpu(pmu);
 
@@ -173,6 +180,9 @@ static struct kvm_pmc *amd_pmc_idx_to_pmc(struct kvm_pmu *pmu, int pmc_idx)
 	}
 
 	return get_gp_pmc_amd(pmu, base + pmc_idx, PMU_TYPE_COUNTER);
+=======
+	return get_gp_pmc(pmu, MSR_K7_EVNTSEL0 + pmc_idx, MSR_K7_EVNTSEL0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* returns 0 if idx's corresponding MSR exists; otherwise returns 1. */
@@ -186,7 +196,11 @@ static int amd_is_valid_msr_idx(struct kvm_vcpu *vcpu, unsigned idx)
 }
 
 /* idx is the ECX register of RDPMC instruction */
+<<<<<<< HEAD
 static struct kvm_pmc *amd_msr_idx_to_pmc(struct kvm_vcpu *vcpu, unsigned idx, u64 *mask)
+=======
+static struct kvm_pmc *amd_msr_idx_to_pmc(struct kvm_vcpu *vcpu, unsigned idx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
 	struct kvm_pmc *counters;
@@ -204,8 +218,13 @@ static bool amd_is_valid_msr(struct kvm_vcpu *vcpu, u32 msr)
 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
 	int ret = false;
 
+<<<<<<< HEAD
 	ret = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER) ||
 		get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
+=======
+	ret = get_gp_pmc(pmu, msr, MSR_K7_PERFCTR0) ||
+		get_gp_pmc(pmu, msr, MSR_K7_EVNTSEL0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -215,14 +234,24 @@ static int amd_pmu_get_msr(struct kvm_vcpu *vcpu, u32 msr, u64 *data)
 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
 	struct kvm_pmc *pmc;
 
+<<<<<<< HEAD
 	/* MSR_PERFCTRn */
 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
+=======
+	/* MSR_K7_PERFCTRn */
+	pmc = get_gp_pmc(pmu, msr, MSR_K7_PERFCTR0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmc) {
 		*data = pmc_read_counter(pmc);
 		return 0;
 	}
+<<<<<<< HEAD
 	/* MSR_EVNTSELn */
 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
+=======
+	/* MSR_K7_EVNTSELn */
+	pmc = get_gp_pmc(pmu, msr, MSR_K7_EVNTSEL0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmc) {
 		*data = pmc->eventsel;
 		return 0;
@@ -238,14 +267,24 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 	u32 msr = msr_info->index;
 	u64 data = msr_info->data;
 
+<<<<<<< HEAD
 	/* MSR_PERFCTRn */
 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
+=======
+	/* MSR_K7_PERFCTRn */
+	pmc = get_gp_pmc(pmu, msr, MSR_K7_PERFCTR0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmc) {
 		pmc->counter += data - pmc_read_counter(pmc);
 		return 0;
 	}
+<<<<<<< HEAD
 	/* MSR_EVNTSELn */
 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_EVNTSEL);
+=======
+	/* MSR_K7_EVNTSELn */
+	pmc = get_gp_pmc(pmu, msr, MSR_K7_EVNTSEL0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pmc) {
 		if (data == pmc->eventsel)
 			return 0;
@@ -262,11 +301,15 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
 {
 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
 
+<<<<<<< HEAD
 	if (guest_cpuid_has(vcpu, X86_FEATURE_PERFCTR_CORE))
 		pmu->nr_arch_gp_counters = AMD64_NUM_COUNTERS_CORE;
 	else
 		pmu->nr_arch_gp_counters = AMD64_NUM_COUNTERS;
 
+=======
+	pmu->nr_arch_gp_counters = AMD64_NUM_COUNTERS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pmu->counter_bitmask[KVM_PMC_GP] = ((u64)1 << 48) - 1;
 	pmu->reserved_bits = 0xffffffff00200000ull;
 	/* not applicable to AMD; but clean them to prevent any fall out */
@@ -281,9 +324,13 @@ static void amd_pmu_init(struct kvm_vcpu *vcpu)
 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
 	int i;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(AMD64_NUM_COUNTERS_CORE > INTEL_PMC_MAX_GENERIC);
 
 	for (i = 0; i < AMD64_NUM_COUNTERS_CORE ; i++) {
+=======
+	for (i = 0; i < AMD64_NUM_COUNTERS ; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pmu->gp_counters[i].type = KVM_PMC_GP;
 		pmu->gp_counters[i].vcpu = vcpu;
 		pmu->gp_counters[i].idx = i;
@@ -295,7 +342,11 @@ static void amd_pmu_reset(struct kvm_vcpu *vcpu)
 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < AMD64_NUM_COUNTERS_CORE; i++) {
+=======
+	for (i = 0; i < AMD64_NUM_COUNTERS; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct kvm_pmc *pmc = &pmu->gp_counters[i];
 
 		pmc_stop_counter(pmc);

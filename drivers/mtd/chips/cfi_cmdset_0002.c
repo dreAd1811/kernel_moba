@@ -44,8 +44,13 @@
 
 #define MAX_RETRIES 3
 
+<<<<<<< HEAD
 #define SST49LF004B		0x0060
 #define SST49LF040B		0x0050
+=======
+#define SST49LF004B	        0x0060
+#define SST49LF040B	        0x0050
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SST49LF008A		0x005a
 #define AT49BV6416		0x00d6
 
@@ -207,7 +212,11 @@ static void fixup_use_write_buffers(struct mtd_info *mtd)
 	struct map_info *map = mtd->priv;
 	struct cfi_private *cfi = map->fldrv_priv;
 	if (cfi->cfiq->BufWriteTimeoutTyp) {
+<<<<<<< HEAD
 		pr_debug("Using buffer write method\n");
+=======
+		pr_debug("Using buffer write method\n" );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mtd->_write = cfi_amdstd_write_buffers;
 	}
 }
@@ -692,9 +701,14 @@ static struct mtd_info *cfi_amdstd_setup(struct mtd_info *mtd)
 	mtd->size = devsize * cfi->numchips;
 
 	mtd->numeraseregions = cfi->cfiq->NumEraseRegions * cfi->numchips;
+<<<<<<< HEAD
 	mtd->eraseregions = kmalloc_array(mtd->numeraseregions,
 					  sizeof(struct mtd_erase_region_info),
 					  GFP_KERNEL);
+=======
+	mtd->eraseregions = kmalloc(sizeof(struct mtd_erase_region_info)
+				    * mtd->numeraseregions, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mtd->eraseregions)
 		goto setup_err;
 
@@ -1216,6 +1230,10 @@ static inline int do_read_secsi_onechip(struct map_info *map,
 					size_t grouplen)
 {
 	DECLARE_WAITQUEUE(wait, current);
+<<<<<<< HEAD
+=======
+	unsigned long timeo = jiffies + HZ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  retry:
 	mutex_lock(&chip->mutex);
@@ -1228,6 +1246,10 @@ static inline int do_read_secsi_onechip(struct map_info *map,
 
 		schedule();
 		remove_wait_queue(&chip->wq, &wait);
+<<<<<<< HEAD
+=======
+		timeo = jiffies + HZ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		goto retry;
 	}
@@ -1562,7 +1584,11 @@ static int __xipram do_write_oneword(struct map_info *map, struct flchip *chip,
 	 * depending of the conditions.	 The ' + 1' is to avoid having a
 	 * timeout of 0 jiffies if HZ is smaller than 1000.
 	 */
+<<<<<<< HEAD
 	unsigned long uWriteTimeout = (HZ / 1000) + 1;
+=======
+	unsigned long uWriteTimeout = ( HZ / 1000 ) + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	map_word oldd;
 	int retry_cnt = 0;
@@ -1577,7 +1603,11 @@ static int __xipram do_write_oneword(struct map_info *map, struct flchip *chip,
 	}
 
 	pr_debug("MTD %s(): WRITE 0x%.8lx(0x%.8lx)\n",
+<<<<<<< HEAD
 		 __func__, adr, datum.x[0]);
+=======
+	       __func__, adr, datum.x[0] );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mode == FL_OTP_WRITE)
 		otp_enter(map, chip, adr, map_bankwidth(map));
@@ -1649,7 +1679,11 @@ static int __xipram do_write_oneword(struct map_info *map, struct flchip *chip,
 	/* Did we succeed? */
 	if (ret) {
 		/* reset on all failures. */
+<<<<<<< HEAD
 		map_write(map, CMD(0xF0), chip->start);
+=======
+		map_write( map, CMD(0xF0), chip->start );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* FIXME - should have reset delay before continuing */
 
 		if (++retry_cnt <= MAX_RETRIES) {
@@ -1827,7 +1861,11 @@ static int __xipram do_write_buffer(struct map_info *map, struct flchip *chip,
 	datum = map_word_load(map, buf);
 
 	pr_debug("MTD %s(): WRITE 0x%.8lx(0x%.8lx)\n",
+<<<<<<< HEAD
 		 __func__, adr, datum.x[0]);
+=======
+	       __func__, adr, datum.x[0] );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	XIP_INVAL_CACHED_RANGE(map, adr, len);
 	ENABLE_VPP(map);
@@ -1882,7 +1920,15 @@ static int __xipram do_write_buffer(struct map_info *map, struct flchip *chip,
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (time_after(jiffies, timeo) && !chip_ready(map, adr))
+=======
+		/*
+		 * We check "time_after" and "!chip_good" before checking "chip_good" to avoid
+		 * the failure due to scheduling.
+		 */
+		if (time_after(jiffies, timeo) && !chip_good(map, adr, datum))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 
 		if (chip_good(map, adr, datum)) {
@@ -2258,7 +2304,11 @@ static int __xipram do_erase_chip(struct map_info *map, struct flchip *chip)
 	}
 
 	pr_debug("MTD %s(): ERASE 0x%.8lx\n",
+<<<<<<< HEAD
 	       __func__, chip->start);
+=======
+	       __func__, chip->start );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	XIP_INVAL_CACHED_RANGE(map, adr, map->size);
 	ENABLE_VPP(map);
@@ -2306,7 +2356,11 @@ static int __xipram do_erase_chip(struct map_info *map, struct flchip *chip)
 
 		if (time_after(jiffies, timeo)) {
 			printk(KERN_WARNING "MTD %s(): software timeout\n",
+<<<<<<< HEAD
 			       __func__);
+=======
+				__func__ );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EIO;
 			break;
 		}
@@ -2317,7 +2371,11 @@ static int __xipram do_erase_chip(struct map_info *map, struct flchip *chip)
 	/* Did we succeed? */
 	if (ret) {
 		/* reset on all failures. */
+<<<<<<< HEAD
 		map_write(map, CMD(0xF0), chip->start);
+=======
+		map_write( map, CMD(0xF0), chip->start );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* FIXME - should have reset delay before continuing */
 
 		if (++retry_cnt <= MAX_RETRIES) {
@@ -2354,7 +2412,11 @@ static int __xipram do_erase_oneblock(struct map_info *map, struct flchip *chip,
 	}
 
 	pr_debug("MTD %s(): ERASE 0x%.8lx\n",
+<<<<<<< HEAD
 		 __func__, adr);
+=======
+	       __func__, adr );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	XIP_INVAL_CACHED_RANGE(map, adr, len);
 	ENABLE_VPP(map);
@@ -2397,12 +2459,24 @@ static int __xipram do_erase_oneblock(struct map_info *map, struct flchip *chip,
 			chip->erase_suspended = 0;
 		}
 
+<<<<<<< HEAD
 		if (chip_good(map, adr, map_word_ff(map)))
 			break;
 
 		if (time_after(jiffies, timeo)) {
 			printk(KERN_WARNING "MTD %s(): software timeout\n",
 			       __func__);
+=======
+		if (chip_good(map, adr, map_word_ff(map))) {
+			xip_enable(map, chip, adr);
+			break;
+		}
+
+		if (time_after(jiffies, timeo)) {
+			xip_enable(map, chip, adr);
+			printk(KERN_WARNING "MTD %s(): software timeout\n",
+				__func__ );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EIO;
 			break;
 		}
@@ -2413,7 +2487,11 @@ static int __xipram do_erase_oneblock(struct map_info *map, struct flchip *chip,
 	/* Did we succeed? */
 	if (ret) {
 		/* reset on all failures. */
+<<<<<<< HEAD
 		map_write(map, CMD(0xF0), chip->start);
+=======
+		map_write( map, CMD(0xF0), chip->start );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* FIXME - should have reset delay before continuing */
 
 		if (++retry_cnt <= MAX_RETRIES) {
@@ -2423,7 +2501,10 @@ static int __xipram do_erase_oneblock(struct map_info *map, struct flchip *chip,
 	}
 
 	chip->state = FL_READY;
+<<<<<<< HEAD
 	xip_enable(map, chip, adr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DISABLE_VPP(map);
 	put_chip(map, chip, adr);
 	mutex_unlock(&chip->mutex);
@@ -2433,8 +2514,25 @@ static int __xipram do_erase_oneblock(struct map_info *map, struct flchip *chip,
 
 static int cfi_amdstd_erase_varsize(struct mtd_info *mtd, struct erase_info *instr)
 {
+<<<<<<< HEAD
 	return cfi_varsize_frob(mtd, do_erase_oneblock, instr->addr,
 				instr->len, NULL);
+=======
+	unsigned long ofs, len;
+	int ret;
+
+	ofs = instr->addr;
+	len = instr->len;
+
+	ret = cfi_varsize_frob(mtd, do_erase_oneblock, ofs, len, NULL);
+	if (ret)
+		return ret;
+
+	instr->state = MTD_ERASE_DONE;
+	mtd_erase_callback(instr);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -2442,6 +2540,10 @@ static int cfi_amdstd_erase_chip(struct mtd_info *mtd, struct erase_info *instr)
 {
 	struct map_info *map = mtd->priv;
 	struct cfi_private *cfi = map->fldrv_priv;
+<<<<<<< HEAD
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (instr->addr != 0)
 		return -EINVAL;
@@ -2449,7 +2551,18 @@ static int cfi_amdstd_erase_chip(struct mtd_info *mtd, struct erase_info *instr)
 	if (instr->len != mtd->size)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	return do_erase_chip(map, &cfi->chips[0]);
+=======
+	ret = do_erase_chip(map, &cfi->chips[0]);
+	if (ret)
+		return ret;
+
+	instr->state = MTD_ERASE_DONE;
+	mtd_erase_callback(instr);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int do_atmel_lock(struct map_info *map, struct flchip *chip,
@@ -2641,7 +2754,11 @@ static int __maybe_unused cfi_ppb_unlock(struct mtd_info *mtd, loff_t ofs,
 	 * first check the locking status of all sectors and save
 	 * it for future use.
 	 */
+<<<<<<< HEAD
 	sect = kcalloc(MAX_SECTORS, sizeof(struct ppb_lock), GFP_KERNEL);
+=======
+	sect = kzalloc(MAX_SECTORS * sizeof(struct ppb_lock), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sect)
 		return -ENOMEM;
 

@@ -48,7 +48,11 @@
 	compatible = "karo,imx6ul-tx6ul", "fsl,imx6ul";
 
 	aliases {
+<<<<<<< HEAD
 		lcdif-24bit-pins-a = &pinctrl_disp0_3;
+=======
+		lcdif_24bit_pins_a = &pinctrl_disp0_3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mmc0 = &usdhc1;
 		/delete-property/ mmc1;
 		serial2 = &uart3;
@@ -116,7 +120,11 @@
 };
 
 &i2c2 {
+<<<<<<< HEAD
 	/delete-node/ codec@a;
+=======
+	/delete-node/ codec@0a;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/delete-node/ touchscreen@48;
 
 	rtc: mcp7940x@6f {

@@ -100,7 +100,11 @@ ENTRY(arm_copy_from_user)
 
 ENDPROC(arm_copy_from_user)
 
+<<<<<<< HEAD
 	.pushsection .fixup,"ax"
+=======
+	.pushsection .text.fixup,"ax"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.align 0
 	copy_abort_preamble
 	ldmfd	sp!, {r1, r2, r3}

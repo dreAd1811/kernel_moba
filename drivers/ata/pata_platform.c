@@ -49,7 +49,11 @@ static struct scsi_host_template pata_platform_sht = {
 
 static struct ata_port_operations pata_platform_port_ops = {
 	.inherits		= &ata_sff_port_ops,
+<<<<<<< HEAD
 	.sff_data_xfer		= ata_sff_data_xfer32,
+=======
+	.sff_data_xfer		= ata_sff_data_xfer_noirq,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cable_detect		= ata_cable_unknown,
 	.set_mode		= pata_platform_set_mode,
 };

@@ -298,6 +298,10 @@ int ishtp_hbm_cl_flow_control_req(struct ishtp_device *dev,
 	struct ishtp_msg_hdr *ishtp_hdr = &hdr;
 	const size_t len = sizeof(struct hbm_flow_control);
 	int	rv;
+<<<<<<< HEAD
+=======
+	unsigned int	num_frags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long	flags;
 
 	spin_lock_irqsave(&cl->fc_spinlock, flags);
@@ -313,6 +317,10 @@ int ishtp_hbm_cl_flow_control_req(struct ishtp_device *dev,
 		return	0;
 	}
 
+<<<<<<< HEAD
+=======
+	num_frags = cl->recv_msg_num_frags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cl->recv_msg_num_frags = 0;
 
 	rv = ishtp_write_message(dev, ishtp_hdr, data);

@@ -31,6 +31,7 @@
 #include <linux/errno.h>
 #include <linux/ioport.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/gpio/driver.h>
 
 /* Chip Id numbers */
@@ -39,11 +40,22 @@
 #define IT8620_ID	0x8620
 #define IT8628_ID	0x8628
 #define IT8718_ID       0x8718
+=======
+#include <linux/gpio.h>
+
+/* Chip Id numbers */
+#define NO_DEV_ID	0xffff
+#define IT8620_ID	0x8620
+#define IT8628_ID	0x8628
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IT8728_ID	0x8728
 #define IT8732_ID	0x8732
 #define IT8761_ID	0x8761
 #define IT8772_ID	0x8772
+<<<<<<< HEAD
 #define IT8786_ID	0x8786
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* IO Ports */
 #define REG		0x2e
@@ -309,6 +321,7 @@ static int __init it87_gpio_init(void)
 	it87_gpio->chip = it87_template_chip;
 
 	switch (chip_type) {
+<<<<<<< HEAD
 	case IT8613_ID:
 		gpio_ba_reg = 0x62;
 		it87_gpio->io_size = 8;  /* it8613 only needs 6, use 8 for alignment */
@@ -317,6 +330,8 @@ static int __init it87_gpio_init(void)
 		it87_gpio->simple_size = 6;
 		it87_gpio->chip.ngpio = 64;  /* has 48, use 64 for convenient calc */
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IT8620_ID:
 	case IT8628_ID:
 		gpio_ba_reg = 0x62;
@@ -325,11 +340,17 @@ static int __init it87_gpio_init(void)
 		it87_gpio->simple_size = 0;
 		it87_gpio->chip.ngpio = 64;
 		break;
+<<<<<<< HEAD
 	case IT8718_ID:
 	case IT8728_ID:
 	case IT8732_ID:
 	case IT8772_ID:
 	case IT8786_ID:
+=======
+	case IT8728_ID:
+	case IT8732_ID:
+	case IT8772_ID:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gpio_ba_reg = 0x62;
 		it87_gpio->io_size = 8;
 		it87_gpio->output_base = 0xc8;
@@ -427,6 +448,10 @@ static void __exit it87_gpio_exit(void)
 module_init(it87_gpio_init);
 module_exit(it87_gpio_exit);
 
+<<<<<<< HEAD
 MODULE_AUTHOR("Diego Elio Pettenò <flameeyes@flameeyes.eu>");
+=======
+MODULE_AUTHOR("Diego Elio PettenÃ² <flameeyes@flameeyes.eu>");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DESCRIPTION("GPIO interface for IT87xx Super I/O chips");
 MODULE_LICENSE("GPL");

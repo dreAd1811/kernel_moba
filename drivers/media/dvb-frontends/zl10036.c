@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Driver for Zarlink zl10036 DVB-S silicon tuner
  *
  * Copyright (C) 2006 Tino Reichardt
@@ -157,7 +161,11 @@ static int zl10036_sleep(struct dvb_frontend *fe)
 	return ret;
 }
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * register map of the ZL10036/ZL10038
  *
  * reg[default] content
@@ -219,7 +227,11 @@ static int zl10036_set_bandwidth(struct zl10036_state *state, u32 fbw)
 	if (fbw <= 28820) {
 		br = _BR_MAXIMUM;
 	} else {
+<<<<<<< HEAD
 		/*
+=======
+		/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 *  f(bw)=34,6MHz f(xtal)=10.111MHz
 		 *  br = (10111/34600) * 63 * 1/K = 14;
 		 */
@@ -311,11 +323,19 @@ static int zl10036_set_params(struct dvb_frontend *fe)
 
 	/* ensure correct values
 	 * maybe redundant as core already checks this */
+<<<<<<< HEAD
 	if ((frequency < fe->ops.info.frequency_min_hz / kHz)
 	||  (frequency > fe->ops.info.frequency_max_hz / kHz))
 		return -EINVAL;
 
 	/*
+=======
+	if ((frequency < fe->ops.info.frequency_min)
+	||  (frequency > fe->ops.info.frequency_max))
+		return -EINVAL;
+
+	/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * alpha = 1.35 for dvb-s
 	 * fBW = (alpha*symbolrate)/(2*0.8)
 	 * 1.35 / (2*0.8) = 27 / 32
@@ -443,8 +463,13 @@ static int zl10036_init(struct dvb_frontend *fe)
 static const struct dvb_tuner_ops zl10036_tuner_ops = {
 	.info = {
 		.name = "Zarlink ZL10036",
+<<<<<<< HEAD
 		.frequency_min_hz =  950 * MHz,
 		.frequency_max_hz = 2175 * MHz
+=======
+		.frequency_min = 950000,
+		.frequency_max = 2175000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.init = zl10036_init,
 	.release = zl10036_release,

@@ -13,7 +13,10 @@
 
 #include "aq_hw_utils.h"
 #include "aq_hw.h"
+<<<<<<< HEAD
 #include "aq_nic.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void aq_hw_write_reg_bit(struct aq_hw_s *aq_hw, u32 addr, u32 msk,
 			 u32 shift, u32 val)
@@ -40,10 +43,15 @@ u32 aq_hw_read_reg(struct aq_hw_s *hw, u32 reg)
 {
 	u32 value = readl(hw->mmio + reg);
 
+<<<<<<< HEAD
 	if ((~0U) == value &&
 	    (~0U) == readl(hw->mmio +
 			   hw->aq_nic_cfg->aq_hw_caps->hw_alive_check_addr))
 		aq_utils_obj_set(&hw->flags, AQ_HW_FLAG_ERR_UNPLUG);
+=======
+	if ((~0U) == value && (~0U) == readl(hw->mmio + hw->not_ff_addr))
+		aq_utils_obj_set(&hw->header.flags, AQ_HW_FLAG_ERR_UNPLUG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return value;
 }
@@ -57,11 +65,19 @@ int aq_hw_err_from_flags(struct aq_hw_s *hw)
 {
 	int err = 0;
 
+<<<<<<< HEAD
 	if (aq_utils_obj_test(&hw->flags, AQ_HW_FLAG_ERR_UNPLUG)) {
 		err = -ENXIO;
 		goto err_exit;
 	}
 	if (aq_utils_obj_test(&hw->flags, AQ_HW_FLAG_ERR_HW)) {
+=======
+	if (aq_utils_obj_test(&hw->header.flags, AQ_HW_FLAG_ERR_UNPLUG)) {
+		err = -ENXIO;
+		goto err_exit;
+	}
+	if (aq_utils_obj_test(&hw->header.flags, AQ_HW_FLAG_ERR_HW)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EIO;
 		goto err_exit;
 	}

@@ -27,8 +27,11 @@
 #include <asm/asm-offsets.h>
 #include <asm/exception-64s.h>
 #include <asm/ppc-opcode.h>
+<<<<<<< HEAD
 #include <asm/asm-compat.h>
 #include <asm/feature-fixups.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*****************************************************************************
  *                                                                           *
@@ -81,7 +84,12 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	li	r5, 0
 	mtspr	SPRN_MMCRA, r5
 	isync
+<<<<<<< HEAD
 	lbz	r5, PACA_PMCINUSE(r13)	/* is the host using the PMU? */
+=======
+	ld	r3, PACALPPACAPTR(r13)	/* is the host using the PMU? */
+	lbz	r5, LPPACA_PMCINUSE(r3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmpwi	r5, 0
 	beq	31f			/* skip if not */
 	mfspr	r5, SPRN_MMCR1
@@ -139,7 +147,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 /*
  * We return here in virtual mode after the guest exits
  * with something that we can't handle in real mode.
+<<<<<<< HEAD
  * Interrupts are still hard-disabled.
+=======
+ * Interrupts are enabled again at this point.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 	/*

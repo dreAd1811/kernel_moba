@@ -296,6 +296,34 @@ enum interface_select_pci {
 	INTF_SEL3_RSV = 3,
 };
 
+<<<<<<< HEAD
+=======
+enum hal_fw_c2h_cmd_id {
+	HAL_FW_C2H_CMD_READ_MACREG = 0,
+	HAL_FW_C2H_CMD_READ_BBREG = 1,
+	HAL_FW_C2H_CMD_READ_RFREG = 2,
+	HAL_FW_C2H_CMD_READ_EEPROM = 3,
+	HAL_FW_C2H_CMD_READ_EFUSE = 4,
+	HAL_FW_C2H_CMD_READ_CAM = 5,
+	HAL_FW_C2H_CMD_GET_BASICRATE = 6,
+	HAL_FW_C2H_CMD_GET_DATARATE = 7,
+	HAL_FW_C2H_CMD_SURVEY = 8,
+	HAL_FW_C2H_CMD_SURVEYDONE = 9,
+	HAL_FW_C2H_CMD_JOINBSS = 10,
+	HAL_FW_C2H_CMD_ADDSTA = 11,
+	HAL_FW_C2H_CMD_DELSTA = 12,
+	HAL_FW_C2H_CMD_ATIMDONE = 13,
+	HAL_FW_C2H_CMD_TX_REPORT = 14,
+	HAL_FW_C2H_CMD_CCX_REPORT = 15,
+	HAL_FW_C2H_CMD_DTM_REPORT = 16,
+	HAL_FW_C2H_CMD_TX_RATE_STATISTICS = 17,
+	HAL_FW_C2H_CMD_C2HLBK = 18,
+	HAL_FW_C2H_CMD_C2HDBG = 19,
+	HAL_FW_C2H_CMD_C2HFEEDBACK = 20,
+	HAL_FW_C2H_CMD_MAX
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rtl_desc_qsel {
 	QSLT_BK = 0x2,
 	QSLT_BE = 0x0,
@@ -307,6 +335,17 @@ enum rtl_desc_qsel {
 	QSLT_CMD = 0x13,
 };
 
+<<<<<<< HEAD
+=======
+enum rx_packet_type {
+	NORMAL_RX,
+	TX_REPORT1,
+	TX_REPORT2,
+	HIS_REPORT,
+	C2H_PACKET,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct phy_sts_cck_8821ae_t {
 	u8 adc_pwdb_X[4];
 	u8 sq_rpt;

@@ -1221,7 +1221,11 @@ static int amdgpu_atom_execute_table_locked(struct atom_context *ctx, int index,
 	ectx.abort = false;
 	ectx.last_jump = 0;
 	if (ws)
+<<<<<<< HEAD
 		ectx.ws = kcalloc(4, ws, GFP_KERNEL);
+=======
+		ectx.ws = kzalloc(4 * ws, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		ectx.ws = NULL;
 
@@ -1343,11 +1347,16 @@ struct atom_context *amdgpu_atom_parse(struct card_info *card, void *bios)
 		idx = 0x80;
 
 	str = CSTR(idx);
+<<<<<<< HEAD
 	if (*str != '\0') {
 		pr_info("ATOM BIOS: %s\n", str);
 		strlcpy(ctx->vbios_version, str, sizeof(ctx->vbios_version));
 	}
 
+=======
+	if (*str != '\0')
+		pr_info("ATOM BIOS: %s\n", str);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ctx;
 }

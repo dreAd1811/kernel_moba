@@ -178,6 +178,7 @@ static int nes_inetaddr_event(struct notifier_block *notifier,
 					/* fall through */
 				case NETDEV_CHANGEADDR:
 					/* Add the address to the IP table */
+<<<<<<< HEAD
 					if (upper_dev) {
 						struct in_device *in;
 
@@ -188,6 +189,13 @@ static int nes_inetaddr_event(struct notifier_block *notifier,
 					} else {
 						nesvnic->local_ipaddr = ifa->ifa_address;
 					}
+=======
+					if (upper_dev)
+						nesvnic->local_ipaddr =
+							((struct in_device *)upper_dev->ip_ptr)->ifa_list->ifa_address;
+					else
+						nesvnic->local_ipaddr = ifa->ifa_address;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 					nes_write_indexed(nesdev,
 							NES_IDX_DST_IP_ADDR+(0x10*PCI_FUNC(nesdev->pcidev->devfn)),
@@ -762,6 +770,7 @@ static void nes_remove(struct pci_dev *pcidev)
 	int netdev_index = 0;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	if (nesdev->netdev_count) {
 		netdev = nesdev->netdev[netdev_index];
 		if (netdev) {
@@ -774,6 +783,20 @@ static void nes_remove(struct pci_dev *pcidev)
 			nesdev->nesadapter->netdev_count--;
 		}
 	}
+=======
+		if (nesdev->netdev_count) {
+			netdev = nesdev->netdev[netdev_index];
+			if (netdev) {
+				netif_stop_queue(netdev);
+				unregister_netdev(netdev);
+				nes_netdev_destroy(netdev);
+
+				nesdev->netdev[netdev_index] = NULL;
+				nesdev->netdev_count--;
+				nesdev->nesadapter->netdev_count--;
+			}
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nes_notifiers_registered--;
 	if (nes_notifiers_registered == 0) {

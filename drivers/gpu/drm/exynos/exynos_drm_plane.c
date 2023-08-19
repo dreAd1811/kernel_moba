@@ -132,7 +132,11 @@ static void exynos_drm_plane_reset(struct drm_plane *plane)
 	if (plane->state) {
 		exynos_state = to_exynos_plane_state(plane->state);
 		if (exynos_state->base.fb)
+<<<<<<< HEAD
 			drm_framebuffer_put(exynos_state->base.fb);
+=======
+			drm_framebuffer_unreference(exynos_state->base.fb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(exynos_state);
 		plane->state = NULL;
 	}
@@ -263,6 +267,11 @@ static void exynos_plane_atomic_update(struct drm_plane *plane,
 	if (!state->crtc)
 		return;
 
+<<<<<<< HEAD
+=======
+	plane->crtc = state->crtc;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (exynos_crtc->ops->update_plane)
 		exynos_crtc->ops->update_plane(exynos_crtc, exynos_plane);
 }
@@ -287,12 +296,22 @@ static const struct drm_plane_helper_funcs plane_helper_funcs = {
 };
 
 static void exynos_plane_attach_zpos_property(struct drm_plane *plane,
+<<<<<<< HEAD
 					      int zpos, bool immutable)
 {
 	if (immutable)
 		drm_plane_create_zpos_immutable_property(plane, zpos);
 	else
 		drm_plane_create_zpos_property(plane, zpos, 0, MAX_PLANE - 1);
+=======
+					      bool immutable)
+{
+	/* FIXME */
+	if (immutable)
+		drm_plane_create_zpos_immutable_property(plane, 0);
+	else
+		drm_plane_create_zpos_property(plane, 0, 0, MAX_PLANE - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int exynos_plane_init(struct drm_device *dev,
@@ -317,7 +336,11 @@ int exynos_plane_init(struct drm_device *dev,
 	exynos_plane->index = index;
 	exynos_plane->config = config;
 
+<<<<<<< HEAD
 	exynos_plane_attach_zpos_property(&exynos_plane->base, config->zpos,
+=======
+	exynos_plane_attach_zpos_property(&exynos_plane->base,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   !(config->capabilities & EXYNOS_DRM_PLANE_CAP_ZPOS));
 
 	return 0;

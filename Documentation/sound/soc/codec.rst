@@ -139,7 +139,11 @@ DAPM description
 ----------------
 The Dynamic Audio Power Management description describes the codec power
 components and their relationships and registers to the ASoC core.
+<<<<<<< HEAD
 Please read dapm.rst for details of building the description.
+=======
+Please read dapm.txt for details of building the description.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Please also see the examples in other codec drivers.
 
@@ -179,6 +183,7 @@ i.e.
 
   static int wm8974_mute(struct snd_soc_dai *dai, int mute)
   {
+<<<<<<< HEAD
 	struct snd_soc_component *component = dai->component;
 	u16 mute_reg = snd_soc_component_read32(component, WM8974_DAC) & 0xffbf;
 
@@ -186,5 +191,14 @@ i.e.
 		snd_soc_component_write(component, WM8974_DAC, mute_reg | 0x40);
 	else
 		snd_soc_component_write(component, WM8974_DAC, mute_reg);
+=======
+	struct snd_soc_codec *codec = dai->codec;
+	u16 mute_reg = snd_soc_read(codec, WM8974_DAC) & 0xffbf;
+
+	if (mute)
+		snd_soc_write(codec, WM8974_DAC, mute_reg | 0x40);
+	else
+		snd_soc_write(codec, WM8974_DAC, mute_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
   }

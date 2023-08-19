@@ -20,6 +20,10 @@
 #include <asm/pgtable.h>
 #include <asm/pgalloc.h>
 #include <asm/smp.h>
+<<<<<<< HEAD
+=======
+#include <asm/reset.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/ipl.h>
 #include <asm/diag.h>
 #include <asm/elf.h>
@@ -105,7 +109,11 @@ static void __do_machine_kdump(void *image)
 static noinline void __machine_kdump(void *image)
 {
 	struct mcesa *mcesa;
+<<<<<<< HEAD
 	union ctlreg2 cr2_old, cr2_new;
+=======
+	unsigned long cr2_old, cr2_new;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int this_cpu, cpu;
 
 	lgr_info_log();
@@ -122,12 +130,20 @@ static noinline void __machine_kdump(void *image)
 	if (MACHINE_HAS_VX)
 		save_vx_regs((__vector128 *) mcesa->vector_save_area);
 	if (MACHINE_HAS_GS) {
+<<<<<<< HEAD
 		__ctl_store(cr2_old.val, 2, 2);
 		cr2_new = cr2_old;
 		cr2_new.gse = 1;
 		__ctl_load(cr2_new.val, 2, 2);
 		save_gs_cb((struct gs_cb *) mcesa->guarded_storage_save_area);
 		__ctl_load(cr2_old.val, 2, 2);
+=======
+		__ctl_store(cr2_old, 2, 2);
+		cr2_new = cr2_old | (1UL << 4);
+		__ctl_load(cr2_new, 2, 2);
+		save_gs_cb((struct gs_cb *) mcesa->guarded_storage_save_area);
+		__ctl_load(cr2_old, 2, 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/*
 	 * To create a good backchain for this CPU in the dump store_status
@@ -145,7 +161,11 @@ static noinline void __machine_kdump(void *image)
 /*
  * Check if kdump checksums are valid: We call purgatory with parameter "0"
  */
+<<<<<<< HEAD
 static bool kdump_csum_valid(struct kimage *image)
+=======
+static int kdump_csum_valid(struct kimage *image)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifdef CONFIG_CRASH_DUMP
 	int (*start_kdump)(int) = (void *)image->start;
@@ -154,9 +174,15 @@ static bool kdump_csum_valid(struct kimage *image)
 	__arch_local_irq_stnsm(0xfb); /* disable DAT */
 	rc = start_kdump(0);
 	__arch_local_irq_stosm(0x04); /* enable DAT */
+<<<<<<< HEAD
 	return rc == 0;
 #else
 	return false;
+=======
+	return rc ? 0 : -EINVAL;
+#else
+	return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 
@@ -219,6 +245,13 @@ int machine_kexec_prepare(struct kimage *image)
 {
 	void *reboot_code_buffer;
 
+<<<<<<< HEAD
+=======
+	/* Can't replace kernel image since it is read-only. */
+	if (ipl_flags & IPL_NSS_VALID)
+		return -EOPNOTSUPP;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (image->type == KEXEC_TYPE_CRASH)
 		return machine_kexec_prepare_kdump();
 
@@ -252,7 +285,10 @@ void machine_shutdown(void)
 
 void machine_crash_shutdown(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	set_os_info_reipl_block();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

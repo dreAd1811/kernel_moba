@@ -108,6 +108,11 @@ int i915_restore_state(struct drm_i915_private *dev_priv)
 
 	mutex_lock(&dev_priv->drm.struct_mutex);
 
+<<<<<<< HEAD
+=======
+	i915_gem_restore_fences(dev_priv);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_GEN4(dev_priv))
 		pci_write_config_word(pdev, GCDGMBUS,
 				      dev_priv->regfile.saveGCDGMBUS);

@@ -69,7 +69,11 @@ static int pkcs7_validate_trust_one(struct pkcs7_message *pkcs7,
 		 /* Self-signed certificates form roots of their own, and if we
 		  * don't know them, then we can't accept them.
 		  */
+<<<<<<< HEAD
 		if (x509->signer == x509) {
+=======
+		if (x509->next == x509) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kleave(" = -ENOKEY [unknown self-signed]");
 			return -ENOKEY;
 		}

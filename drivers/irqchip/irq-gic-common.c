@@ -42,9 +42,14 @@ void gic_enable_quirks(u32 iidr, const struct gic_quirk *quirks,
 	for (; quirks->desc; quirks++) {
 		if (quirks->iidr != (quirks->mask & iidr))
 			continue;
+<<<<<<< HEAD
 		if (quirks->init(data))
 			pr_info("GIC: enabling workaround for %s\n",
 				quirks->desc);
+=======
+		quirks->init(data);
+		pr_info("GIC: enabling workaround for %s\n", quirks->desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

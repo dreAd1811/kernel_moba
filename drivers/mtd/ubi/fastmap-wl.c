@@ -66,7 +66,11 @@ static void return_unused_pool_pebs(struct ubi_device *ubi,
 	}
 }
 
+<<<<<<< HEAD
 static int anchor_pebs_available(struct rb_root *root)
+=======
+static int anchor_pebs_avalible(struct rb_root *root)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rb_node *p;
 	struct ubi_wl_entry *e;

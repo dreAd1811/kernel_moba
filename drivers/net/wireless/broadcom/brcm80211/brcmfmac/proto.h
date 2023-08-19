@@ -30,9 +30,15 @@ struct brcmf_proto {
 	int (*hdrpull)(struct brcmf_pub *drvr, bool do_fws,
 		       struct sk_buff *skb, struct brcmf_if **ifp);
 	int (*query_dcmd)(struct brcmf_pub *drvr, int ifidx, uint cmd,
+<<<<<<< HEAD
 			  void *buf, uint len, int *fwerr);
 	int (*set_dcmd)(struct brcmf_pub *drvr, int ifidx, uint cmd, void *buf,
 			uint len, int *fwerr);
+=======
+			  void *buf, uint len);
+	int (*set_dcmd)(struct brcmf_pub *drvr, int ifidx, uint cmd, void *buf,
+			uint len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*tx_queue_data)(struct brcmf_pub *drvr, int ifidx,
 			     struct sk_buff *skb);
 	int (*txdata)(struct brcmf_pub *drvr, int ifidx, u8 offset,
@@ -48,14 +54,21 @@ struct brcmf_proto {
 	void (*del_if)(struct brcmf_if *ifp);
 	void (*reset_if)(struct brcmf_if *ifp);
 	int (*init_done)(struct brcmf_pub *drvr);
+<<<<<<< HEAD
 	void (*debugfs_create)(struct brcmf_pub *drvr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *pd;
 };
 
 
 int brcmf_proto_attach(struct brcmf_pub *drvr);
+<<<<<<< HEAD
 void brcmf_proto_detach_pre_delif(struct brcmf_pub *drvr);
 void brcmf_proto_detach_post_delif(struct brcmf_pub *drvr);
+=======
+void brcmf_proto_detach(struct brcmf_pub *drvr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline int brcmf_proto_hdrpull(struct brcmf_pub *drvr, bool do_fws,
 				      struct sk_buff *skb,
@@ -73,6 +86,7 @@ static inline int brcmf_proto_hdrpull(struct brcmf_pub *drvr, bool do_fws,
 	return drvr->proto->hdrpull(drvr, do_fws, skb, ifp);
 }
 static inline int brcmf_proto_query_dcmd(struct brcmf_pub *drvr, int ifidx,
+<<<<<<< HEAD
 					 uint cmd, void *buf, uint len,
 					 int *fwerr)
 {
@@ -83,6 +97,16 @@ static inline int brcmf_proto_set_dcmd(struct brcmf_pub *drvr, int ifidx,
 				       int *fwerr)
 {
 	return drvr->proto->set_dcmd(drvr, ifidx, cmd, buf, len, fwerr);
+=======
+					 uint cmd, void *buf, uint len)
+{
+	return drvr->proto->query_dcmd(drvr, ifidx, cmd, buf, len);
+}
+static inline int brcmf_proto_set_dcmd(struct brcmf_pub *drvr, int ifidx,
+				       uint cmd, void *buf, uint len)
+{
+	return drvr->proto->set_dcmd(drvr, ifidx, cmd, buf, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int brcmf_proto_tx_queue_data(struct brcmf_pub *drvr, int ifidx,
@@ -158,10 +182,13 @@ brcmf_proto_init_done(struct brcmf_pub *drvr)
 	return drvr->proto->init_done(drvr);
 }
 
+<<<<<<< HEAD
 static inline void
 brcmf_proto_debugfs_create(struct brcmf_pub *drvr)
 {
 	drvr->proto->debugfs_create(drvr);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* BRCMFMAC_PROTO_H */

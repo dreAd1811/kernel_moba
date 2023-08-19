@@ -257,18 +257,30 @@ int ath10k_htt_setup(struct ath10k_htt *htt)
 		return status;
 	}
 
+<<<<<<< HEAD
 	status = ath10k_htt_send_frag_desc_bank_cfg(htt);
 	if (status)
 		return status;
 
 	status = ath10k_htt_send_rx_ring_cfg(htt);
+=======
+	status = htt->tx_ops->htt_send_frag_desc_bank_cfg(htt);
+	if (status)
+		return status;
+
+	status = htt->tx_ops->htt_send_rx_ring_cfg(htt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (status) {
 		ath10k_warn(ar, "failed to setup rx ring: %d\n",
 			    status);
 		return status;
 	}
 
+<<<<<<< HEAD
 	status = ath10k_htt_h2t_aggr_cfg_msg(htt,
+=======
+	status = htt->tx_ops->htt_h2t_aggr_cfg_msg(htt,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     htt->max_num_ampdu,
 					     htt->max_num_amsdu);
 	if (status) {

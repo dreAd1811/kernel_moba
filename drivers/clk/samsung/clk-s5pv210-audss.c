@@ -81,7 +81,12 @@ static int s5pv210_audss_clk_probe(struct platform_device *pdev)
 	}
 
 	clk_data = devm_kzalloc(&pdev->dev,
+<<<<<<< HEAD
 				struct_size(clk_data, hws, AUDSS_MAX_CLKS),
+=======
+				sizeof(*clk_data) +
+				sizeof(*clk_data->hws) * AUDSS_MAX_CLKS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GFP_KERNEL);
 
 	if (!clk_data)

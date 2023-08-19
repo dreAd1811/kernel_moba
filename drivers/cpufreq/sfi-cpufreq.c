@@ -72,9 +72,14 @@ static int sfi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 {
 	policy->shared_type = CPUFREQ_SHARED_TYPE_HW;
 	policy->cpuinfo.transition_latency = 100000;	/* 100us */
+<<<<<<< HEAD
 	policy->freq_table = freq_table;
 
 	return 0;
+=======
+
+	return cpufreq_table_validate_and_show(policy, freq_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct cpufreq_driver sfi_cpufreq_driver = {
@@ -95,8 +100,13 @@ static int __init sfi_cpufreq_init(void)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	freq_table = kcalloc(num_freq_table_entries + 1, sizeof(*freq_table),
 			     GFP_KERNEL);
+=======
+	freq_table = kzalloc(sizeof(*freq_table) *
+			(num_freq_table_entries + 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!freq_table) {
 		ret = -ENOMEM;
 		goto err_free_array;

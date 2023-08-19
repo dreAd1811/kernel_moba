@@ -325,7 +325,11 @@ static int pdc_intc_probe(struct platform_device *pdev)
 
 	/* Ioremap the registers */
 	priv->pdc_base = devm_ioremap(&pdev->dev, res_regs->start,
+<<<<<<< HEAD
 				      resource_size(res_regs));
+=======
+				      res_regs->end - res_regs->start);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!priv->pdc_base)
 		return -EIO;
 
@@ -354,7 +358,11 @@ static int pdc_intc_probe(struct platform_device *pdev)
 	priv->nr_syswakes = val;
 
 	/* Get peripheral IRQ numbers */
+<<<<<<< HEAD
 	priv->perip_irqs = devm_kcalloc(&pdev->dev, 4, priv->nr_perips,
+=======
+	priv->perip_irqs = devm_kzalloc(&pdev->dev, 4 * priv->nr_perips,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GFP_KERNEL);
 	if (!priv->perip_irqs) {
 		dev_err(&pdev->dev, "cannot allocate perip IRQ list\n");

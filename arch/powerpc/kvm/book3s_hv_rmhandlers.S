@@ -18,6 +18,10 @@
  */
 
 #include <asm/ppc_asm.h>
+<<<<<<< HEAD
+=======
+#include <asm/code-patching-asm.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kvm_asm.h>
 #include <asm/reg.h>
 #include <asm/mmu.h>
@@ -31,9 +35,12 @@
 #include <asm/tm.h>
 #include <asm/opal.h>
 #include <asm/xive-regs.h>
+<<<<<<< HEAD
 #include <asm/thread_info.h>
 #include <asm/asm-compat.h>
 #include <asm/feature-fixups.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Sign-extend HDEC if not on POWER9 */
 #define EXTEND_HDEC(reg)			\
@@ -41,6 +48,11 @@ BEGIN_FTR_SECTION;				\
 	extsw	reg, reg;			\
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
 
+<<<<<<< HEAD
+=======
+#define VCPU_GPRS_TM(reg) (((reg) * ULONG_SIZE) + VCPU_GPR_TM)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Values in HSTATE_NAPPING(r13) */
 #define NAPPING_CEDE	1
 #define NAPPING_NOVCPU	2
@@ -56,8 +68,11 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
 #define STACK_SLOT_DAWR		(SFS-56)
 #define STACK_SLOT_DAWRX	(SFS-64)
 #define STACK_SLOT_HFSCR	(SFS-72)
+<<<<<<< HEAD
 #define STACK_SLOT_AMR		(SFS-80)
 #define STACK_SLOT_UAMOR	(SFS-88)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Call kvmppc_hv_entry in real mode.
@@ -84,6 +99,7 @@ _GLOBAL_TOC(kvmppc_hv_entry_trampoline)
 	RFI_TO_KERNEL
 
 kvmppc_call_hv_entry:
+<<<<<<< HEAD
 BEGIN_FTR_SECTION
 	/* On P9, do LPCR setting, if necessary */
 	ld	r3, HSTATE_SPLIT_MODE(r13)
@@ -97,6 +113,8 @@ BEGIN_FTR_SECTION
 46:
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r4, HSTATE_KVM_VCPU(r13)
 	bl	kvmppc_hv_entry
 
@@ -115,7 +133,12 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
 	mtspr	SPRN_SPRG_VDSO_WRITE,r3
 
 	/* Reload the host's PMU registers */
+<<<<<<< HEAD
 	lbz	r4, PACA_PMCINUSE(r13) /* is the host using the PMU? */
+=======
+	ld	r3, PACALPPACAPTR(r13)	/* is the host using the PMU? */
+	lbz	r4, LPPACA_PMCINUSE(r3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmpwi	r4, 0
 	beq	23f			/* skip if not */
 BEGIN_FTR_SECTION
@@ -164,9 +187,17 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	subf	r4, r4, r3
 	mtspr	SPRN_DEC, r4
 
+<<<<<<< HEAD
 	/* hwthread_req may have got set by cede or no vcpu, so clear it */
 	li	r0, 0
 	stb	r0, HSTATE_HWTHREAD_REQ(r13)
+=======
+BEGIN_FTR_SECTION
+	/* hwthread_req may have got set by cede or no vcpu, so clear it */
+	li	r0, 0
+	stb	r0, HSTATE_HWTHREAD_REQ(r13)
+END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * For external interrupts we need to call the Linux
@@ -328,6 +359,10 @@ kvm_novcpu_exit:
  * Relocation is off and most register values are lost.
  * r13 points to the PACA.
  * r3 contains the SRR1 wakeup value, SRR1 is trashed.
+<<<<<<< HEAD
+=======
+ * This is not used by ISAv3.0B processors.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 	.globl	kvm_start_guest
 kvm_start_guest:
@@ -344,9 +379,12 @@ kvm_start_guest:
 
 	ld	r2,PACATOC(r13)
 
+<<<<<<< HEAD
 	li	r0,0
 	stb	r0,PACA_FTRACE_ENABLED(r13)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	li	r0,KVM_HWTHREAD_IN_KVM
 	stb	r0,HSTATE_HWTHREAD_STATE(r13)
 
@@ -404,7 +442,10 @@ kvm_secondary_got_guest:
 	ld	r6, HSTATE_SPLIT_MODE(r13)
 	cmpdi	r6, 0
 	beq	63f
+<<<<<<< HEAD
 BEGIN_FTR_SECTION
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r0, KVM_SPLIT_RPR(r6)
 	mtspr	SPRN_RPR, r0
 	ld	r0, KVM_SPLIT_PMMAR(r6)
@@ -412,6 +453,7 @@ BEGIN_FTR_SECTION
 	ld	r0, KVM_SPLIT_LDBAR(r6)
 	mtspr	SPRN_LDBAR, r0
 	isync
+<<<<<<< HEAD
 FTR_SECTION_ELSE
 	/* On P9 we use the split_info for coordinating LPCR changes */
 	lwz	r4, KVM_SPLIT_DO_SET(r6)
@@ -422,6 +464,8 @@ FTR_SECTION_ELSE
 	nop
 1:
 ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 63:
 	/* Order load of vcpu after load of vcore */
 	lwsync
@@ -460,6 +504,12 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
  * While waiting we also need to check if we get given a vcpu to run.
  */
 kvm_no_guest:
+<<<<<<< HEAD
+=======
+BEGIN_FTR_SECTION
+	twi	31,0,0
+END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lbz	r3, HSTATE_HWTHREAD_REQ(r13)
 	cmpwi	r3, 0
 	bne	53f
@@ -492,12 +542,15 @@ kvm_no_guest:
 	ld	r3, HSTATE_SPLIT_MODE(r13)
 	cmpdi	r3, 0
 	beq	kvm_no_guest
+<<<<<<< HEAD
 	lwz	r0, KVM_SPLIT_DO_SET(r3)
 	cmpwi	r0, 0
 	bne	kvmhv_do_set
 	lwz	r0, KVM_SPLIT_DO_RESTORE(r3)
 	cmpwi	r0, 0
 	bne	kvmhv_do_restore
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lbz	r0, KVM_SPLIT_DO_NAP(r3)
 	cmpwi	r0, 0
 	beq	kvm_no_guest
@@ -510,6 +563,7 @@ kvm_no_guest:
 	stb	r0, HSTATE_HWTHREAD_STATE(r13)
 	b	kvm_no_guest
 
+<<<<<<< HEAD
 kvmhv_do_set:
 	/* Set LPCR, LPIDR etc. on P9 */
 	HMT_MEDIUM
@@ -523,6 +577,8 @@ kvmhv_do_restore:
 	nop
 	b	kvm_no_guest
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Here the primary thread is trying to return the core to
  * whole-core mode, so we need to nap.
@@ -560,7 +616,12 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	/* Set kvm_split_mode.napped[tid] = 1 */
 	ld	r3, HSTATE_SPLIT_MODE(r13)
 	li	r0, 1
+<<<<<<< HEAD
 	lbz	r4, HSTATE_TID(r13)
+=======
+	lhz	r4, PACAPACAINDEX(r13)
+	clrldi	r4, r4, 61	/* micro-threading => P8 => 8 threads/core */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addi	r4, r4, KVM_SPLIT_NAPPED
 	stbx	r0, r3, r4
 	/* Check the do_nap flag again after setting napped[] */
@@ -621,6 +682,16 @@ kvmppc_hv_entry:
 	lbz	r0, KVM_RADIX(r9)
 	cmpwi	cr7, r0, 0
 
+<<<<<<< HEAD
+=======
+	/* Clear out SLB if hash */
+	bne	cr7, 2f
+	li	r6,0
+	slbmte	r6,r6
+	slbia
+	ptesync
+2:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * POWER7/POWER8 host -> guest partition switch code.
 	 * We don't have to lock against concurrent tlbies,
@@ -641,10 +712,13 @@ kvmppc_hv_entry:
 	/* Primary thread switches to guest partition. */
 	cmpwi	r6,0
 	bne	10f
+<<<<<<< HEAD
 
 	/* Radix has already switched LPID and flushed core TLB */
 	bne	cr7, 22f
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lwz	r7,KVM_LPID(r9)
 BEGIN_FTR_SECTION
 	ld	r6,KVM_SDR1(r9)
@@ -656,7 +730,11 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
 	mtspr	SPRN_LPID,r7
 	isync
 
+<<<<<<< HEAD
 	/* See if we need to flush the TLB. Hash has to be done in RM */
+=======
+	/* See if we need to flush the TLB */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lhz	r6,PACAPACAINDEX(r13)	/* test_bit(cpu, need_tlb_flush) */
 BEGIN_FTR_SECTION
 	/*
@@ -683,10 +761,22 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	li	r7,0x800		/* IS field = 0b10 */
 	ptesync
 	li	r0,0			/* RS for P9 version of tlbiel */
+<<<<<<< HEAD
 28:	tlbiel	r7			/* On P9, rs=0, RIC=0, PRS=0, R=0 */
 	addi	r7,r7,0x1000
 	bdnz	28b
 	ptesync
+=======
+	bne	cr7, 29f
+28:	tlbiel	r7			/* On P9, rs=0, RIC=0, PRS=0, R=0 */
+	addi	r7,r7,0x1000
+	bdnz	28b
+	b	30f
+29:	PPC_TLBIEL(7,0,2,1,1)		/* for radix, RIC=2, PRS=1, R=1 */
+	addi	r7,r7,0x1000
+	bdnz	29b
+30:	ptesync
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 23:	ldarx	r7,0,r6			/* clear the bit after TLB flushed */
 	andc	r7,r7,r8
 	stdcx.	r7,0,r6
@@ -696,7 +786,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 22:	ld	r8,VCORE_TB_OFFSET(r5)
 	cmpdi	r8,0
 	beq	37f
+<<<<<<< HEAD
 	std	r8, VCORE_TB_OFFSET_APPL(r5)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mftb	r6		/* current host timebase */
 	add	r8,r8,r6
 	mtspr	SPRN_TBU40,r8	/* update upper 40 bits */
@@ -735,6 +828,22 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 10:	cmpdi	r4, 0
 	beq	kvmppc_primary_no_guest
 kvmppc_got_guest:
+<<<<<<< HEAD
+=======
+
+	/* Load up guest SLB entries (N.B. slb_max will be 0 for radix) */
+	lwz	r5,VCPU_SLB_MAX(r4)
+	cmpwi	r5,0
+	beq	9f
+	mtctr	r5
+	addi	r6,r4,VCPU_SLB
+1:	ld	r8,VCPU_SLB_E(r6)
+	ld	r9,VCPU_SLB_V(r6)
+	slbmte	r9,r8
+	addi	r6,r6,VCPU_SLB_SIZE
+	bdnz	1b
+9:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Increment yield count if they have a VPA */
 	ld	r3, VCPU_VPA(r4)
 	cmpdi	r3, 0
@@ -762,9 +871,17 @@ BEGIN_FTR_SECTION
 	mfspr	r5, SPRN_TIDR
 	mfspr	r6, SPRN_PSSCR
 	mfspr	r7, SPRN_PID
+<<<<<<< HEAD
 	std	r5, STACK_SLOT_TID(r1)
 	std	r6, STACK_SLOT_PSSCR(r1)
 	std	r7, STACK_SLOT_PID(r1)
+=======
+	mfspr	r8, SPRN_IAMR
+	std	r5, STACK_SLOT_TID(r1)
+	std	r6, STACK_SLOT_PSSCR(r1)
+	std	r7, STACK_SLOT_PID(r1)
+	std	r8, STACK_SLOT_IAMR(r1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfspr	r5, SPRN_HFSCR
 	std	r5, STACK_SLOT_HFSCR(r1)
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
@@ -772,6 +889,7 @@ BEGIN_FTR_SECTION
 	mfspr	r5, SPRN_CIABR
 	mfspr	r6, SPRN_DAWR
 	mfspr	r7, SPRN_DAWRX
+<<<<<<< HEAD
 	mfspr	r8, SPRN_IAMR
 	std	r5, STACK_SLOT_CIABR(r1)
 	std	r6, STACK_SLOT_DAWR(r1)
@@ -784,6 +902,13 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	mfspr	r6, SPRN_UAMOR
 	std	r6, STACK_SLOT_UAMOR(r1)
 
+=======
+	std	r5, STACK_SLOT_CIABR(r1)
+	std	r6, STACK_SLOT_DAWR(r1)
+	std	r7, STACK_SLOT_DAWRX(r1)
+END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 BEGIN_FTR_SECTION
 	/* Set partition DABR */
 	/* Do this before re-enabling PMU to avoid P7 DABR corruption bug */
@@ -795,6 +920,7 @@ BEGIN_FTR_SECTION
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
 
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+<<<<<<< HEAD
 /*
  * Branch around the call if both CPU_FTR_TM and
  * CPU_FTR_P9_TM_HV_ASSIST are off.
@@ -810,6 +936,14 @@ END_FTR_SECTION(CPU_FTR_TM | CPU_FTR_P9_TM_HV_ASSIST, 0)
 	bl	kvmppc_restore_tm_hv
 	ld	r4, HSTATE_KVM_VCPU(r13)
 91:
+=======
+BEGIN_FTR_SECTION
+	/*
+	 * NOTE THAT THIS TRASHES ALL NON-VOLATILE REGISTERS INCLUDING CR
+	 */
+	bl	kvmppc_restore_tm
+END_FTR_SECTION_IFSET(CPU_FTR_TM)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/* Load guest PMU registers */
@@ -903,6 +1037,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
 	ld	r6, VCPU_DAWRX(r4)
 	ld	r7, VCPU_CIABR(r4)
 	ld	r8, VCPU_TAR(r4)
+<<<<<<< HEAD
 	/*
 	 * Handle broken DAWR case by not writing it. This means we
 	 * can still store the DAWR register for migration.
@@ -911,6 +1046,10 @@ BEGIN_FTR_SECTION
 	mtspr	SPRN_DAWR, r5
 	mtspr	SPRN_DAWRX, r6
 END_FTR_SECTION_IFSET(CPU_FTR_DAWR)
+=======
+	mtspr	SPRN_DAWR, r5
+	mtspr	SPRN_DAWRX, r6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_CIABR, r7
 	mtspr	SPRN_TAR, r8
 	ld	r5, VCPU_IC(r4)
@@ -926,6 +1065,12 @@ END_FTR_SECTION_IFSET(CPU_FTR_DAWR)
 	mtspr	SPRN_PID, r7
 	mtspr	SPRN_WORT, r8
 BEGIN_FTR_SECTION
+<<<<<<< HEAD
+=======
+	PPC_INVALIDATE_ERAT
+END_FTR_SECTION_IFSET(CPU_FTR_POWER9_DD1)
+BEGIN_FTR_SECTION
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* POWER8-only registers */
 	ld	r5, VCPU_TCSCR(r4)
 	ld	r6, VCPU_ACOP(r4)
@@ -935,14 +1080,21 @@ BEGIN_FTR_SECTION
 	mtspr	SPRN_ACOP, r6
 	mtspr	SPRN_CSIGR, r7
 	mtspr	SPRN_TACR, r8
+<<<<<<< HEAD
 	nop
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 FTR_SECTION_ELSE
 	/* POWER9-only registers */
 	ld	r5, VCPU_TID(r4)
 	ld	r6, VCPU_PSSCR(r4)
+<<<<<<< HEAD
 	lbz	r8, HSTATE_FAKE_SUSPEND(r13)
 	oris	r6, r6, PSSCR_EC@h	/* This makes stop trap to HV */
 	rldimi	r6, r8, PSSCR_FAKE_SUSPEND_LG, 63 - PSSCR_FAKE_SUSPEND_LG
+=======
+	oris	r6, r6, PSSCR_EC@h	/* This makes stop trap to HV */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r7, VCPU_HFSCR(r4)
 	mtspr	SPRN_TIDR, r5
 	mtspr	SPRN_PSSCR, r6
@@ -950,6 +1102,22 @@ FTR_SECTION_ELSE
 ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
 8:
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Set the decrementer to the guest decrementer.
+	 */
+	ld	r8,VCPU_DEC_EXPIRES(r4)
+	/* r8 is a host timebase value here, convert to guest TB */
+	ld	r5,HSTATE_KVM_VCORE(r13)
+	ld	r6,VCORE_TB_OFFSET(r5)
+	add	r8,r8,r6
+	mftb	r7
+	subf	r3,r7,r8
+	mtspr	SPRN_DEC,r3
+	std	r3,VCPU_DEC(r4)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r5, VCPU_SPRG0(r4)
 	ld	r6, VCPU_SPRG1(r4)
 	ld	r7, VCPU_SPRG2(r4)
@@ -1003,6 +1171,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
 	mtspr	SPRN_LPCR,r8
 	isync
 
+<<<<<<< HEAD
 	/*
 	 * Set the decrementer to the guest decrementer.
 	 */
@@ -1015,12 +1184,15 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
 	subf	r3,r7,r8
 	mtspr	SPRN_DEC,r3
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check if HDEC expires soon */
 	mfspr	r3, SPRN_HDEC
 	EXTEND_HDEC(r3)
 	cmpdi	r3, 512		/* 1 microsecond */
 	blt	hdec_soon
 
+<<<<<<< HEAD
 	/* For hash guest, clear out and reload the SLB */
 	ld	r6, VCPU_KVM(r4)
 	lbz	r0, KVM_RADIX(r6)
@@ -1044,6 +1216,8 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
 	bdnz	1b
 9:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_KVM_XICS
 	/* We are entering the guest on that thread, push VCPU to XIVE */
 	ld	r10, HSTATE_XIVE_TIMA_PHYS(r13)
@@ -1057,6 +1231,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
 	li	r9, TM_QW1_OS + TM_WORD2
 	stwcix	r11,r9,r10
 	li	r9, 1
+<<<<<<< HEAD
 	stb	r9, VCPU_XIVE_PUSHED(r4)
 	eieio
 
@@ -1104,6 +1279,10 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
 	li	r0, 0
 	stb	r0, VCPU_XIVE_ESC_ON(r4)
 1:
+=======
+	stw	r9, VCPU_XIVE_PUSHED(r4)
+	eieio
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 no_xive:
 #endif /* CONFIG_KVM_XICS */
 
@@ -1209,7 +1388,11 @@ BEGIN_FTR_SECTION
 END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
 
 	ld	r5, VCPU_LR(r4)
+<<<<<<< HEAD
 	ld	r6, VCPU_CR(r4)
+=======
+	lwz	r6, VCPU_CR(r4)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtlr	r5
 	mtcr	r6
 
@@ -1265,7 +1448,11 @@ hdec_soon:
 	addi	r3, r4, VCPU_TB_RMEXIT
 	bl	kvmhv_accumulate_time
 #endif
+<<<<<<< HEAD
 	b	guest_bypass
+=======
+	b	guest_exit_cont
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /******************************************************************************
  *                                                                            *
@@ -1320,7 +1507,11 @@ kvmppc_interrupt_hv:
 	std	r3, VCPU_GPR(R12)(r9)
 	/* CR is in the high half of r12 */
 	srdi	r4, r12, 32
+<<<<<<< HEAD
 	std	r4, VCPU_CR(r9)
+=======
+	stw	r4, VCPU_CR(r9)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 BEGIN_FTR_SECTION
 	ld	r3, HSTATE_CFAR(r13)
 	std	r3, VCPU_CFAR(r9)
@@ -1394,12 +1585,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
 	std	r3, VCPU_CTR(r9)
 	std	r4, VCPU_XER(r9)
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	/* For softpatch interrupt, go off and do TM instruction emulation */
 	cmpwi	r12, BOOK3S_INTERRUPT_HV_SOFTPATCH
 	beq	kvmppc_tm_emul
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If this is a page table miss then see if it's theirs or ours */
 	cmpwi	r12, BOOK3S_INTERRUPT_H_DATA_STORAGE
 	beq	kvmppc_hdsi
@@ -1523,13 +1717,21 @@ mc_cont:
 #endif
 #ifdef CONFIG_KVM_XICS
 	/* We are exiting, pull the VP from the XIVE */
+<<<<<<< HEAD
 	lbz	r0, VCPU_XIVE_PUSHED(r9)
+=======
+	lwz	r0, VCPU_XIVE_PUSHED(r9)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmpwi	cr0, r0, 0
 	beq	1f
 	li	r7, TM_SPC_PULL_OS_CTX
 	li	r6, TM_QW1_OS
 	mfmsr	r0
+<<<<<<< HEAD
 	andi.	r0, r0, MSR_DR		/* in real mode? */
+=======
+	andi.	r0, r0, MSR_IR		/* in real mode? */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	beq	2f
 	ld	r10, HSTATE_XIVE_TIMA_VIRT(r13)
 	cmpldi	cr0, r10, 0
@@ -1552,13 +1754,18 @@ mc_cont:
 	/* Fixup some of the state for the next load */
 	li	r10, 0
 	li	r0, 0xff
+<<<<<<< HEAD
 	stb	r10, VCPU_XIVE_PUSHED(r9)
+=======
+	stw	r10, VCPU_XIVE_PUSHED(r9)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stb	r10, (VCPU_XIVE_SAVED_STATE+3)(r9)
 	stb	r0, (VCPU_XIVE_SAVED_STATE+4)(r9)
 	eieio
 1:
 #endif /* CONFIG_KVM_XICS */
 
+<<<<<<< HEAD
 	/* For hash guest, read the guest SLB and save it away */
 	ld	r5, VCPU_KVM(r9)
 	lbz	r0, KVM_RADIX(r5)
@@ -1628,6 +1835,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 
 	/* Increment exit count, poke other threads to exit */
 	mr 	r3, r12
+=======
+	/* Possibly flush the link stack here. */
+1:	nop
+	patch_site 1b patch__call_kvm_flush_link_stack
+
+	stw	r12, STACK_SLOT_TRAP(r1)
+	mr 	r3, r12
+	/* Increment exit count, poke other threads to exit */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bl	kvmhv_commence_exit
 	nop
 	ld	r9, HSTATE_KVM_VCPU(r13)
@@ -1645,6 +1861,34 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	ori	r6,r6,1
 	mtspr	SPRN_CTRLT,r6
 4:
+<<<<<<< HEAD
+=======
+	/* Check if we are running hash or radix and store it in cr2 */
+	ld	r5, VCPU_KVM(r9)
+	lbz	r0, KVM_RADIX(r5)
+	cmpwi	cr2,r0,0
+
+	/* Read the guest SLB and save it away */
+	li	r5, 0
+	bne	cr2, 3f			/* for radix, save 0 entries */
+	lwz	r0,VCPU_SLB_NR(r9)	/* number of entries in SLB */
+	mtctr	r0
+	li	r6,0
+	addi	r7,r9,VCPU_SLB
+1:	slbmfee	r8,r6
+	andis.	r0,r8,SLB_ESID_V@h
+	beq	2f
+	add	r8,r8,r6		/* put index in */
+	slbmfev	r3,r6
+	std	r8,VCPU_SLB_E(r7)
+	std	r3,VCPU_SLB_V(r7)
+	addi	r7,r7,VCPU_SLB_SIZE
+	addi	r5,r5,1
+2:	addi	r6,r6,1
+	bdnz	1b
+3:	stw	r5,VCPU_SLB_MAX(r9)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Save the guest PURR/SPURR
 	 */
@@ -1668,6 +1912,26 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	mtspr	SPRN_PURR,r3
 	mtspr	SPRN_SPURR,r4
 
+<<<<<<< HEAD
+=======
+	/* Save DEC */
+	ld	r3, HSTATE_KVM_VCORE(r13)
+	mfspr	r5,SPRN_DEC
+	mftb	r6
+	/* On P9, if the guest has large decr enabled, don't sign extend */
+BEGIN_FTR_SECTION
+	ld	r4, VCORE_LPCR(r3)
+	andis.	r4, r4, LPCR_LD@h
+	bne	16f
+END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+	extsw	r5,r5
+16:	add	r5,r5,r6
+	/* r5 is a guest timebase value here, convert to host TB */
+	ld	r4,VCORE_TB_OFFSET(r3)
+	subf	r5,r4,r5
+	std	r5,VCPU_DEC_EXPIRES(r9)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 BEGIN_FTR_SECTION
 	b	8f
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
@@ -1720,25 +1984,40 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
 	mtspr	SPRN_PSPB, r0
 	mtspr	SPRN_WORT, r0
 BEGIN_FTR_SECTION
+<<<<<<< HEAD
+=======
+	mtspr	SPRN_IAMR, r0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_TCSCR, r0
 	/* Set MMCRS to 1<<31 to freeze and disable the SPMC counters */
 	li	r0, 1
 	sldi	r0, r0, 31
 	mtspr	SPRN_MMCRS, r0
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+<<<<<<< HEAD
 
 	/* Save and restore AMR, IAMR and UAMOR before turning on the MMU */
 	ld	r8, STACK_SLOT_IAMR(r1)
 	mtspr	SPRN_IAMR, r8
 
 8:	/* Power7 jumps back in here */
+=======
+8:
+
+	/* Save and reset AMR and UAMOR before turning on the MMU */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfspr	r5,SPRN_AMR
 	mfspr	r6,SPRN_UAMOR
 	std	r5,VCPU_AMR(r9)
 	std	r6,VCPU_UAMOR(r9)
+<<<<<<< HEAD
 	ld	r5,STACK_SLOT_AMR(r1)
 	ld	r6,STACK_SLOT_UAMOR(r1)
 	mtspr	SPRN_AMR, r5
+=======
+	li	r6,0
+	mtspr	SPRN_AMR,r6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_UAMOR, r6
 
 	/* Switch DSCR back to host value */
@@ -1782,6 +2061,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
 	bl	kvmppc_save_fp
 
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+<<<<<<< HEAD
 /*
  * Branch around the call if both CPU_FTR_TM and
  * CPU_FTR_P9_TM_HV_ASSIST are off.
@@ -1797,6 +2077,14 @@ END_FTR_SECTION(CPU_FTR_TM | CPU_FTR_P9_TM_HV_ASSIST, 0)
 	bl	kvmppc_save_tm_hv
 	ld	r9, HSTATE_KVM_VCPU(r13)
 91:
+=======
+BEGIN_FTR_SECTION
+	/*
+	 * NOTE THAT THIS TRASHES ALL NON-VOLATILE REGISTERS INCLUDING CR
+	 */
+	bl	kvmppc_save_tm
+END_FTR_SECTION_IFSET(CPU_FTR_TM)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/* Increment yield count if they have a VPA */
@@ -1896,10 +2184,13 @@ BEGIN_FTR_SECTION
 	ld	r6, STACK_SLOT_DAWR(r1)
 	ld	r7, STACK_SLOT_DAWRX(r1)
 	mtspr	SPRN_CIABR, r5
+<<<<<<< HEAD
 	/*
 	 * If the DAWR doesn't work, it's ok to write these here as
 	 * this value should always be zero
 	*/
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_DAWR, r6
 	mtspr	SPRN_DAWRX, r7
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
@@ -1907,9 +2198,17 @@ BEGIN_FTR_SECTION
 	ld	r5, STACK_SLOT_TID(r1)
 	ld	r6, STACK_SLOT_PSSCR(r1)
 	ld	r7, STACK_SLOT_PID(r1)
+<<<<<<< HEAD
 	mtspr	SPRN_TIDR, r5
 	mtspr	SPRN_PSSCR, r6
 	mtspr	SPRN_PID, r7
+=======
+	ld	r8, STACK_SLOT_IAMR(r1)
+	mtspr	SPRN_TIDR, r5
+	mtspr	SPRN_PSSCR, r6
+	mtspr	SPRN_PID, r7
+	mtspr	SPRN_IAMR, r8
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 
 #ifdef CONFIG_PPC_RADIX_MMU
@@ -1919,6 +2218,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	ld	r5, VCPU_KVM(r9)
 	lbz	r0, KVM_RADIX(r5)
 	cmpwi	cr2, r0, 0
+<<<<<<< HEAD
 	beq	cr2, 2f
 
 	/*
@@ -1928,6 +2228,9 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	eieio
 	tlbsync
 	ptesync
+=======
+	beq	cr2, 3f
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Radix: Handle the case where the guest used an illegal PID */
 	LOAD_REG_ADDR(r4, mmu_base_pid)
@@ -1959,9 +2262,25 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	bdnz	1b
 	ptesync
 
+<<<<<<< HEAD
 2:
 #endif /* CONFIG_PPC_RADIX_MMU */
 
+=======
+2:	/* Flush the ERAT on radix P9 DD1 guest exit */
+BEGIN_FTR_SECTION
+	PPC_INVALIDATE_ERAT
+END_FTR_SECTION_IFSET(CPU_FTR_POWER9_DD1)
+	b	4f
+#endif /* CONFIG_PPC_RADIX_MMU */
+
+	/* Hash: clear out SLB */
+3:	li	r5,0
+	slbmte	r5,r5
+	slbia
+	ptesync
+4:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * POWER7/POWER8 guest -> host partition switch code.
 	 * We don't have to lock against tlbies but we do
@@ -2024,15 +2343,23 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	bne	27f
 	bl	kvmppc_realmode_hmi_handler
 	nop
+<<<<<<< HEAD
 	cmpdi	r3, 0
 	/*
 	 * At this point kvmppc_realmode_hmi_handler may have resync-ed
 	 * the TB, and if it has, we must not subtract the guest timebase
 	 * offset from the timebase. So, skip it.
+=======
+	/*
+	 * At this point kvmppc_realmode_hmi_handler would have resync-ed
+	 * the TB. Hence it is not required to subtract guest timebase
+	 * offset from timebase. So, skip it.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 *
 	 * Also, do not call kvmppc_subcore_exit_guest() because it has
 	 * been invoked as part of kvmppc_realmode_hmi_handler().
 	 */
+<<<<<<< HEAD
 	beq	30f
 
 27:
@@ -2042,6 +2369,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	beq	17f
 	li	r0, 0
 	std	r0, VCORE_TB_OFFSET_APPL(r5)
+=======
+	b	30f
+
+27:
+	/* Subtract timebase offset from timebase */
+	ld	r8,VCORE_TB_OFFSET(r5)
+	cmpdi	r8,0
+	beq	17f
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mftb	r6			/* current guest timebase */
 	subf	r8,r8,r6
 	mtspr	SPRN_TBU40,r8		/* update upper 40 bits */
@@ -2070,6 +2406,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 19:	lis	r8,0x7fff		/* MAX_INT@h */
 	mtspr	SPRN_HDEC,r8
 
+<<<<<<< HEAD
 16:
 BEGIN_FTR_SECTION
 	/* On POWER9 with HPT-on-radix we need to wait for all other threads */
@@ -2088,6 +2425,29 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	mtspr	SPRN_LPCR,r8
 	isync
 48:
+=======
+16:	ld	r8,KVM_HOST_LPCR(r4)
+	mtspr	SPRN_LPCR,r8
+	isync
+
+	/* load host SLB entries */
+BEGIN_MMU_FTR_SECTION
+	b	0f
+END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
+	ld	r8,PACA_SLBSHADOWPTR(r13)
+
+	.rept	SLB_NUM_BOLTED
+	li	r3, SLBSHADOW_SAVEAREA
+	LDX_BE	r5, r8, r3
+	addi	r3, r3, 8
+	LDX_BE	r6, r8, r3
+	andis.	r7,r5,SLB_ESID_V@h
+	beq	1f
+	slbmte	r6,r5
+1:	addi	r8,r8,16
+	.endr
+0:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_KVM_BOOK3S_HV_EXIT_TIMING
 	/* Finish timing, if we have a vcpu */
 	ld	r4, HSTATE_KVM_VCPU(r13)
@@ -2107,6 +2467,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	mtlr	r0
 	blr
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 /*
  * Softpatch interrupt for transactional memory emulation cases
@@ -2142,6 +2503,29 @@ kvmppc_tm_emul:
 	ld	r11, VCPU_MSR(r9)
 	b	fast_interrupt_c_return	/* go back to guest if handled */
 #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+=======
+.balign 32
+.global kvm_flush_link_stack
+kvm_flush_link_stack:
+	/* Save LR into r0 */
+	mflr	r0
+
+	/* Flush the link stack. On Power8 it's up to 32 entries in size. */
+	.rept 32
+	bl	.+4
+	.endr
+
+	/* And on Power9 it's up to 64. */
+BEGIN_FTR_SECTION
+	.rept 32
+	bl	.+4
+	.endr
+END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
+
+	/* Restore LR */
+	mtlr	r0
+	blr
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Check whether an HDSI is an HPTE not found fault or something else.
@@ -2595,6 +2979,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	li	r3,0
 	blr
 
+<<<<<<< HEAD
 2:
 BEGIN_FTR_SECTION
 	/* POWER9 with disabled DAWR */
@@ -2603,6 +2988,10 @@ BEGIN_FTR_SECTION
 END_FTR_SECTION_IFCLR(CPU_FTR_DAWR)
 	/* Emulate H_SET_DABR/X on P8 for the sake of compat mode guests */
 	rlwimi	r5, r4, 5, DAWRX_DR | DAWRX_DW
+=======
+	/* Emulate H_SET_DABR/X on P8 for the sake of compat mode guests */
+2:	rlwimi	r5, r4, 5, DAWRX_DR | DAWRX_DW
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rlwimi	r5, r4, 2, DAWRX_WT
 	clrrdi	r4, r4, 3
 	std	r4, VCPU_DAWR(r3)
@@ -2682,6 +3071,7 @@ _GLOBAL(kvmppc_h_cede)		/* r3 = vcpu pointer, r11 = msr, r13 = paca */
 	bl	kvmppc_save_fp
 
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+<<<<<<< HEAD
 /*
  * Branch around the call if both CPU_FTR_TM and
  * CPU_FTR_P9_TM_HV_ASSIST are off.
@@ -2696,6 +3086,15 @@ END_FTR_SECTION(CPU_FTR_TM | CPU_FTR_P9_TM_HV_ASSIST, 0)
 	ld      r4, VCPU_MSR(r3)
 	bl	kvmppc_save_tm_hv
 91:
+=======
+BEGIN_FTR_SECTION
+	/*
+	 * NOTE THAT THIS TRASHES ALL NON-VOLATILE REGISTERS INCLUDING CR
+	 */
+	ld	r9, HSTATE_KVM_VCPU(r13)
+	bl	kvmppc_save_tm
+END_FTR_SECTION_IFSET(CPU_FTR_TM)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/*
@@ -2723,7 +3122,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	add	r3, r3, r5
 	ld	r4, HSTATE_KVM_VCPU(r13)
 	ld	r5, HSTATE_KVM_VCORE(r13)
+<<<<<<< HEAD
 	ld	r6, VCORE_TB_OFFSET_APPL(r5)
+=======
+	ld	r6, VCORE_TB_OFFSET(r5)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	subf	r3, r6, r3	/* convert to host TB value */
 	std	r3, VCPU_DEC_EXPIRES(r4)
 
@@ -2746,8 +3149,15 @@ kvm_do_nap:
 	clrrdi	r0, r0, 1
 	mtspr	SPRN_CTRLT, r0
 
+<<<<<<< HEAD
 	li	r0,1
 	stb	r0,HSTATE_HWTHREAD_REQ(r13)
+=======
+BEGIN_FTR_SECTION
+	li	r0,1
+	stb	r0,HSTATE_HWTHREAD_REQ(r13)
+END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfspr	r5,SPRN_LPCR
 	ori	r5,r5,LPCR_PECE0 | LPCR_PECE1
 BEGIN_FTR_SECTION
@@ -2802,6 +3212,7 @@ kvm_end_cede:
 #endif
 
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+<<<<<<< HEAD
 /*
  * Branch around the call if both CPU_FTR_TM and
  * CPU_FTR_P9_TM_HV_ASSIST are off.
@@ -2817,6 +3228,14 @@ END_FTR_SECTION(CPU_FTR_TM | CPU_FTR_P9_TM_HV_ASSIST, 0)
 	bl	kvmppc_restore_tm_hv
 	ld	r4, HSTATE_KVM_VCPU(r13)
 91:
+=======
+BEGIN_FTR_SECTION
+	/*
+	 * NOTE THAT THIS TRASHES ALL NON-VOLATILE REGISTERS INCLUDING CR
+	 */
+	bl	kvmppc_restore_tm
+END_FTR_SECTION_IFSET(CPU_FTR_TM)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/* load up FP state */
@@ -2825,7 +3244,11 @@ END_FTR_SECTION(CPU_FTR_TM | CPU_FTR_P9_TM_HV_ASSIST, 0)
 	/* Restore guest decrementer */
 	ld	r3, VCPU_DEC_EXPIRES(r4)
 	ld	r5, HSTATE_KVM_VCORE(r13)
+<<<<<<< HEAD
 	ld	r6, VCORE_TB_OFFSET_APPL(r5)
+=======
+	ld	r6, VCORE_TB_OFFSET(r5)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add	r3, r3, r6	/* convert host TB to guest TB value */
 	mftb	r7
 	subf	r3, r7, r3
@@ -2902,6 +3325,7 @@ kvm_cede_prodded:
 	/* we've ceded but we want to give control to the host */
 kvm_cede_exit:
 	ld	r9, HSTATE_KVM_VCPU(r13)
+<<<<<<< HEAD
 #ifdef CONFIG_KVM_XICS
 	/* are we using XIVE with single escalation? */
 	ld	r10, VCPU_XIVE_ESC_VADDR(r9)
@@ -2938,6 +3362,9 @@ kvm_cede_exit:
 2:	sync
 #endif /* CONFIG_KVM_XICS */
 3:	b	guest_exit_cont
+=======
+	b	guest_exit_cont
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Try to handle a machine check in real mode */
 machine_check_realmode:
@@ -3146,6 +3573,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 /*
  * Save transactional state and TM-related registers.
+<<<<<<< HEAD
  * Called with r3 pointing to the vcpu struct and r4 containing
  * the guest MSR value.
  * This can modify all checkpointed registers, but
@@ -3165,6 +3593,15 @@ END_FTR_SECTION_IFCLR(CPU_FTR_P9_TM_HV_ASSIST)
 	mflr	r0
 	std	r0, PPC_LR_STKOFF(r1)
 	stdu	r1, -PPC_MIN_STKFRM(r1)
+=======
+ * Called with r9 pointing to the vcpu struct.
+ * This can modify all checkpointed registers, but
+ * restores r1, r2 and r9 (vcpu pointer) before exit.
+ */
+kvmppc_save_tm:
+	mflr	r0
+	std	r0, PPC_LR_STKOFF(r1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Turn on TM. */
 	mfmsr	r8
@@ -3172,6 +3609,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_P9_TM_HV_ASSIST)
 	rldimi	r8, r0, MSR_TM_LG, 63-MSR_TM_LG
 	mtmsrd	r8
 
+<<<<<<< HEAD
 	rldicl. r8, r8, 64 - MSR_TS_S_LG, 62 /* Did we actually hrfid? */
 	beq	4f
 BEGIN_FTR_SECTION
@@ -3196,6 +3634,56 @@ END_FTR_SECTION_IFSET(CPU_FTR_P9_TM_XER_SO_BUG)
 	 */
 	/* Reload PACA pointer, stack pointer and TOC. */
 	GET_PACA(r13)
+=======
+	ld	r5, VCPU_MSR(r9)
+	rldicl. r5, r5, 64 - MSR_TS_S_LG, 62
+	beq	1f	/* TM not active in guest. */
+
+	std	r1, HSTATE_HOST_R1(r13)
+	li	r3, TM_CAUSE_KVM_RESCHED
+
+	/* Clear the MSR RI since r1, r13 are all going to be foobar. */
+	li	r5, 0
+	mtmsrd	r5, 1
+
+	/* All GPRs are volatile at this point. */
+	TRECLAIM(R3)
+
+	/* Temporarily store r13 and r9 so we have some regs to play with */
+	SET_SCRATCH0(r13)
+	GET_PACA(r13)
+	std	r9, PACATMSCRATCH(r13)
+	ld	r9, HSTATE_KVM_VCPU(r13)
+
+	/* Get a few more GPRs free. */
+	std	r29, VCPU_GPRS_TM(29)(r9)
+	std	r30, VCPU_GPRS_TM(30)(r9)
+	std	r31, VCPU_GPRS_TM(31)(r9)
+
+	/* Save away PPR and DSCR soon so don't run with user values. */
+	mfspr	r31, SPRN_PPR
+	HMT_MEDIUM
+	mfspr	r30, SPRN_DSCR
+	ld	r29, HSTATE_DSCR(r13)
+	mtspr	SPRN_DSCR, r29
+
+	/* Save all but r9, r13 & r29-r31 */
+	reg = 0
+	.rept	29
+	.if (reg != 9) && (reg != 13)
+	std	reg, VCPU_GPRS_TM(reg)(r9)
+	.endif
+	reg = reg + 1
+	.endr
+	/* ... now save r13 */
+	GET_SCRATCH0(r4)
+	std	r4, VCPU_GPRS_TM(13)(r9)
+	/* ... and save r9 */
+	ld	r4, PACATMSCRATCH(r13)
+	std	r4, VCPU_GPRS_TM(9)(r9)
+
+	/* Reload stack pointer and TOC. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r1, HSTATE_HOST_R1(r13)
 	ld	r2, PACATOC(r13)
 
@@ -3203,6 +3691,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_P9_TM_XER_SO_BUG)
 	li	r5, MSR_RI
 	mtmsrd	r5, 1
 
+<<<<<<< HEAD
 	HMT_MEDIUM
 	ld	r6, HSTATE_DSCR(r13)
 	mtspr	SPRN_DSCR, r6
@@ -3226,12 +3715,55 @@ END_FTR_SECTION_NESTED(CPU_FTR_P9_TM_XER_SO_BUG, CPU_FTR_P9_TM_XER_SO_BUG, 96)
 	std	r6, VCPU_TFIAR(r9)
 
 	addi	r1, r1, PPC_MIN_STKFRM
+=======
+	/* Save away checkpinted SPRs. */
+	std	r31, VCPU_PPR_TM(r9)
+	std	r30, VCPU_DSCR_TM(r9)
+	mflr	r5
+	mfcr	r6
+	mfctr	r7
+	mfspr	r8, SPRN_AMR
+	mfspr	r10, SPRN_TAR
+	mfxer	r11
+	std	r5, VCPU_LR_TM(r9)
+	stw	r6, VCPU_CR_TM(r9)
+	std	r7, VCPU_CTR_TM(r9)
+	std	r8, VCPU_AMR_TM(r9)
+	std	r10, VCPU_TAR_TM(r9)
+	std	r11, VCPU_XER_TM(r9)
+
+	/* Restore r12 as trap number. */
+	lwz	r12, VCPU_TRAP(r9)
+
+	/* Save FP/VSX. */
+	addi	r3, r9, VCPU_FPRS_TM
+	bl	store_fp_state
+	addi	r3, r9, VCPU_VRS_TM
+	bl	store_vr_state
+	mfspr	r6, SPRN_VRSAVE
+	stw	r6, VCPU_VRSAVE_TM(r9)
+1:
+	/*
+	 * We need to save these SPRs after the treclaim so that the software
+	 * error code is recorded correctly in the TEXASR.  Also the user may
+	 * change these outside of a transaction, so they must always be
+	 * context switched.
+	 */
+	mfspr	r5, SPRN_TFHAR
+	mfspr	r6, SPRN_TFIAR
+	mfspr	r7, SPRN_TEXASR
+	std	r5, VCPU_TFHAR(r9)
+	std	r6, VCPU_TFIAR(r9)
+	std	r7, VCPU_TEXASR(r9)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ld	r0, PPC_LR_STKOFF(r1)
 	mtlr	r0
 	blr
 
 /*
  * Restore transactional state and TM-related registers.
+<<<<<<< HEAD
  * Called with r3 pointing to the vcpu struct
  * and r4 containing the guest MSR value.
  * This potentially modifies all checkpointed registers.
@@ -3256,19 +3788,43 @@ END_FTR_SECTION_IFCLR(CPU_FTR_P9_TM_HV_ASSIST)
 	mfmsr	r5
 	li	r0, 1
 	rldimi	r5, r0, MSR_TM_LG, 63-MSR_TM_LG
+=======
+ * Called with r4 pointing to the vcpu struct.
+ * This potentially modifies all checkpointed registers.
+ * It restores r1, r2, r4 from the PACA.
+ */
+kvmppc_restore_tm:
+	mflr	r0
+	std	r0, PPC_LR_STKOFF(r1)
+
+	/* Turn on TM/FP/VSX/VMX so we can restore them. */
+	mfmsr	r5
+	li	r6, MSR_TM >> 32
+	sldi	r6, r6, 32
+	or	r5, r5, r6
+	ori	r5, r5, MSR_FP
+	oris	r5, r5, (MSR_VEC | MSR_VSX)@h
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtmsrd	r5
 
 	/*
 	 * The user may change these outside of a transaction, so they must
 	 * always be context switched.
 	 */
+<<<<<<< HEAD
 	ld	r5, VCPU_TFHAR(r3)
 	ld	r6, VCPU_TFIAR(r3)
 	ld	r7, VCPU_TEXASR(r3)
+=======
+	ld	r5, VCPU_TFHAR(r4)
+	ld	r6, VCPU_TFIAR(r4)
+	ld	r7, VCPU_TEXASR(r4)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mtspr	SPRN_TFHAR, r5
 	mtspr	SPRN_TFIAR, r6
 	mtspr	SPRN_TEXASR, r7
 
+<<<<<<< HEAD
 	rldicl. r5, r4, 64 - MSR_TS_S_LG, 62
 	beqlr		/* TM not active in guest */
 
@@ -3289,10 +3845,103 @@ END_FTR_SECTION_IFCLR(CPU_FTR_P9_TM_HV_ASSIST)
 	mtlr	r0
 	blr
 #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
+=======
+	ld	r5, VCPU_MSR(r4)
+	rldicl. r5, r5, 64 - MSR_TS_S_LG, 62
+	beqlr		/* TM not active in guest */
+	std	r1, HSTATE_HOST_R1(r13)
+
+	/* Make sure the failure summary is set, otherwise we'll program check
+	 * when we trechkpt.  It's possible that this might have been not set
+	 * on a kvmppc_set_one_reg() call but we shouldn't let this crash the
+	 * host.
+	 */
+	oris	r7, r7, (TEXASR_FS)@h
+	mtspr	SPRN_TEXASR, r7
+
+	/*
+	 * We need to load up the checkpointed state for the guest.
+	 * We need to do this early as it will blow away any GPRs, VSRs and
+	 * some SPRs.
+	 */
+
+	mr	r31, r4
+	addi	r3, r31, VCPU_FPRS_TM
+	bl	load_fp_state
+	addi	r3, r31, VCPU_VRS_TM
+	bl	load_vr_state
+	mr	r4, r31
+	lwz	r7, VCPU_VRSAVE_TM(r4)
+	mtspr	SPRN_VRSAVE, r7
+
+	ld	r5, VCPU_LR_TM(r4)
+	lwz	r6, VCPU_CR_TM(r4)
+	ld	r7, VCPU_CTR_TM(r4)
+	ld	r8, VCPU_AMR_TM(r4)
+	ld	r9, VCPU_TAR_TM(r4)
+	ld	r10, VCPU_XER_TM(r4)
+	mtlr	r5
+	mtcr	r6
+	mtctr	r7
+	mtspr	SPRN_AMR, r8
+	mtspr	SPRN_TAR, r9
+	mtxer	r10
+
+	/*
+	 * Load up PPR and DSCR values but don't put them in the actual SPRs
+	 * till the last moment to avoid running with userspace PPR and DSCR for
+	 * too long.
+	 */
+	ld	r29, VCPU_DSCR_TM(r4)
+	ld	r30, VCPU_PPR_TM(r4)
+
+	std	r2, PACATMSCRATCH(r13) /* Save TOC */
+
+	/* Clear the MSR RI since r1, r13 are all going to be foobar. */
+	li	r5, 0
+	mtmsrd	r5, 1
+
+	/* Load GPRs r0-r28 */
+	reg = 0
+	.rept	29
+	ld	reg, VCPU_GPRS_TM(reg)(r31)
+	reg = reg + 1
+	.endr
+
+	mtspr	SPRN_DSCR, r29
+	mtspr	SPRN_PPR, r30
+
+	/* Load final GPRs */
+	ld	29, VCPU_GPRS_TM(29)(r31)
+	ld	30, VCPU_GPRS_TM(30)(r31)
+	ld	31, VCPU_GPRS_TM(31)(r31)
+
+	/* TM checkpointed state is now setup.  All GPRs are now volatile. */
+	TRECHKPT
+
+	/* Now let's get back the state we need. */
+	HMT_MEDIUM
+	GET_PACA(r13)
+	ld	r29, HSTATE_DSCR(r13)
+	mtspr	SPRN_DSCR, r29
+	ld	r4, HSTATE_KVM_VCPU(r13)
+	ld	r1, HSTATE_HOST_R1(r13)
+	ld	r2, PACATMSCRATCH(r13)
+
+	/* Set the MSR RI since we have our registers back. */
+	li	r5, MSR_RI
+	mtmsrd	r5, 1
+
+	ld	r0, PPC_LR_STKOFF(r1)
+	mtlr	r0
+	blr
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * We come here if we get any exception or interrupt while we are
  * executing host real mode code while in guest MMU context.
+<<<<<<< HEAD
  * r12 is (CR << 32) | vector
  * r13 points to our PACA
  * r12 is saved in HSTATE_SCRATCH0(r13)
@@ -3423,6 +4072,12 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_TYPE_RADIX)
 9:	addi	r3, r1, STACK_FRAME_OVERHEAD
 	bl	kvmppc_bad_interrupt
 	b	9b
+=======
+ * For now just spin, but we should do something better.
+ */
+kvmppc_bad_host_intr:
+	b	.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * This mimics the MSR transition on IRQ delivery.  The new guest MSR is taken
@@ -3466,9 +4121,18 @@ kvmppc_fix_pmao:
  */
 kvmhv_start_timing:
 	ld	r5, HSTATE_KVM_VCORE(r13)
+<<<<<<< HEAD
 	ld	r6, VCORE_TB_OFFSET_APPL(r5)
 	mftb	r5
 	subf	r5, r6, r5	/* subtract current timebase offset */
+=======
+	lbz	r6, VCORE_IN_GUEST(r5)
+	cmpwi	r6, 0
+	beq	5f				/* if in guest, need to */
+	ld	r6, VCORE_TB_OFFSET(r5)		/* subtract timebase offset */
+5:	mftb	r5
+	subf	r5, r6, r5
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	std	r3, VCPU_CUR_ACTIVITY(r4)
 	std	r5, VCPU_ACTIVITY_START(r4)
 	blr
@@ -3479,12 +4143,24 @@ kvmhv_start_timing:
  */
 kvmhv_accumulate_time:
 	ld	r5, HSTATE_KVM_VCORE(r13)
+<<<<<<< HEAD
 	ld	r8, VCORE_TB_OFFSET_APPL(r5)
 	ld	r5, VCPU_CUR_ACTIVITY(r4)
 	ld	r6, VCPU_ACTIVITY_START(r4)
 	std	r3, VCPU_CUR_ACTIVITY(r4)
 	mftb	r7
 	subf	r7, r8, r7	/* subtract current timebase offset */
+=======
+	lbz	r8, VCORE_IN_GUEST(r5)
+	cmpwi	r8, 0
+	beq	4f				/* if in guest, need to */
+	ld	r8, VCORE_TB_OFFSET(r5)		/* subtract timebase offset */
+4:	ld	r5, VCPU_CUR_ACTIVITY(r4)
+	ld	r6, VCPU_ACTIVITY_START(r4)
+	std	r3, VCPU_CUR_ACTIVITY(r4)
+	mftb	r7
+	subf	r7, r8, r7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	std	r7, VCPU_ACTIVITY_START(r4)
 	cmpdi	r5, 0
 	beqlr

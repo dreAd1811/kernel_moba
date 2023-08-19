@@ -639,7 +639,11 @@ static void __exit dcdbas_exit(void)
 	platform_driver_unregister(&dcdbas_driver);
 }
 
+<<<<<<< HEAD
 subsys_initcall_sync(dcdbas_init);
+=======
+module_init(dcdbas_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_exit(dcdbas_exit);
 
 MODULE_DESCRIPTION(DRIVER_DESCRIPTION " (version " DRIVER_VERSION ")");

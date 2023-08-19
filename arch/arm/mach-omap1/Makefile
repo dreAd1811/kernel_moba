@@ -25,7 +25,11 @@ obj-y					+= $(i2c-omap-m) $(i2c-omap-y)
 
 led-y := leds.o
 
+<<<<<<< HEAD
 usb-fs-$(CONFIG_USB)			:= usb.o
+=======
+usb-fs-$(CONFIG_USB_SUPPORT)		:= usb.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-y					+= $(usb-fs-m) $(usb-fs-y)
 
 # Specific board support

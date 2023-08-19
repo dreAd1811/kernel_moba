@@ -219,7 +219,11 @@ retry_bteop:
 				BTE_LNSTAT_LOAD(bte), *bte->most_rcnt_na) );
 			bte->bte_error_count++;
 			bte->bh_error = IBLS_ERROR;
+<<<<<<< HEAD
 			bte_error_handler(NODEPDA(bte->bte_cnode));
+=======
+			bte_error_handler((unsigned long)NODEPDA(bte->bte_cnode));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*bte->most_rcnt_na = BTE_WORD_AVAILABLE;
 			goto retry_bteop;
 		}
@@ -414,12 +418,15 @@ EXPORT_SYMBOL(bte_unaligned_copy);
  * Block Transfer Engine initialization functions.
  *
  ***********************************************************************/
+<<<<<<< HEAD
 static void bte_recovery_timeout(struct timer_list *t)
 {
 	struct nodepda_s *nodepda = from_timer(nodepda, t, bte_recovery_timer);
 
 	bte_error_handler(nodepda);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * bte_init_node(nodepda, cnode)
@@ -442,7 +449,13 @@ void bte_init_node(nodepda_t * mynodepda, cnodeid_t cnode)
 	 * will point at this one bte_recover structure to get the lock.
 	 */
 	spin_lock_init(&mynodepda->bte_recovery_lock);
+<<<<<<< HEAD
 	timer_setup(&mynodepda->bte_recovery_timer, bte_recovery_timeout, 0);
+=======
+	init_timer(&mynodepda->bte_recovery_timer);
+	mynodepda->bte_recovery_timer.function = bte_error_handler;
+	mynodepda->bte_recovery_timer.data = (unsigned long)mynodepda;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < BTES_PER_NODE; i++) {
 		u64 *base_addr;

@@ -62,7 +62,11 @@ static void ath_tx_rc_status(struct ath_softc *sc, struct ath_buf *bf,
 			     struct ath_tx_status *ts, int nframes, int nbad,
 			     int txok);
 static void ath_tx_update_baw(struct ath_softc *sc, struct ath_atx_tid *tid,
+<<<<<<< HEAD
 			      struct ath_buf *bf);
+=======
+			      int seqno);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct ath_buf *ath_tx_setup_buffer(struct ath_softc *sc,
 					   struct ath_txq *txq,
 					   struct ath_atx_tid *tid,
@@ -253,7 +257,11 @@ ath_tid_pull(struct ath_atx_tid *tid)
 	}
 
 	return skb;
+<<<<<<< HEAD
 }
+=======
+ }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 static bool ath_tid_has_buffered(struct ath_atx_tid *tid)
@@ -296,7 +304,11 @@ static void ath_tx_flush_tid(struct ath_softc *sc, struct ath_atx_tid *tid)
 		}
 
 		if (fi->baw_tracked) {
+<<<<<<< HEAD
 			ath_tx_update_baw(sc, tid, bf);
+=======
+			ath_tx_update_baw(sc, tid, bf->bf_state.seqno);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sendbar = true;
 		}
 
@@ -312,6 +324,7 @@ static void ath_tx_flush_tid(struct ath_softc *sc, struct ath_atx_tid *tid)
 }
 
 static void ath_tx_update_baw(struct ath_softc *sc, struct ath_atx_tid *tid,
+<<<<<<< HEAD
 			      struct ath_buf *bf)
 {
 	struct ath_frame_info *fi = get_frame_info(bf->bf_mpdu);
@@ -321,6 +334,12 @@ static void ath_tx_update_baw(struct ath_softc *sc, struct ath_atx_tid *tid,
 	if (!fi->baw_tracked)
 		return;
 
+=======
+			      int seqno)
+{
+	int index, cindex;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	index  = ATH_BA_INDEX(tid->seq_start, seqno);
 	cindex = (tid->baw_head + index) & (ATH_TID_MAX_BUFS - 1);
 
@@ -341,9 +360,12 @@ static void ath_tx_addto_baw(struct ath_softc *sc, struct ath_atx_tid *tid,
 	u16 seqno = bf->bf_state.seqno;
 	int index, cindex;
 
+<<<<<<< HEAD
 	if (fi->baw_tracked)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	index  = ATH_BA_INDEX(tid->seq_start, seqno);
 	cindex = (tid->baw_head + index) & (ATH_TID_MAX_BUFS - 1);
 	__set_bit(cindex, tid->tx_buf);
@@ -620,7 +642,11 @@ static void ath_tx_complete_aggr(struct ath_softc *sc, struct ath_txq *txq,
 			 * complete the acked-ones/xretried ones; update
 			 * block-ack window
 			 */
+<<<<<<< HEAD
 			ath_tx_update_baw(sc, tid, bf);
+=======
+			ath_tx_update_baw(sc, tid, seqno);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (rc_update && (acked_cnt == 1 || txfail_cnt == 1)) {
 				memcpy(tx_info->control.rates, rates, sizeof(rates));
@@ -650,7 +676,11 @@ static void ath_tx_complete_aggr(struct ath_softc *sc, struct ath_txq *txq,
 				 * run out of tx buf.
 				 */
 				if (!tbf) {
+<<<<<<< HEAD
 					ath_tx_update_baw(sc, tid, bf);
+=======
+					ath_tx_update_baw(sc, tid, seqno);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 					ath_tx_complete_buf(sc, bf, txq,
 							    &bf_head, NULL, ts,
@@ -979,8 +1009,12 @@ ath_tx_get_tid_subframe(struct ath_softc *sc, struct ath_txq *txq,
 		bf->bf_lastbf = bf;
 
 		tx_info = IEEE80211_SKB_CB(skb);
+<<<<<<< HEAD
 		tx_info->flags &= ~(IEEE80211_TX_CTL_CLEAR_PS_FILT |
 				    IEEE80211_TX_STATUS_EOSP);
+=======
+		tx_info->flags &= ~IEEE80211_TX_CTL_CLEAR_PS_FILT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * No aggregation session is running, but there may be frames
@@ -1020,14 +1054,21 @@ ath_tx_get_tid_subframe(struct ath_softc *sc, struct ath_txq *txq,
 
 			INIT_LIST_HEAD(&bf_head);
 			list_add(&bf->list, &bf_head);
+<<<<<<< HEAD
 			ath_tx_update_baw(sc, tid, bf);
+=======
+			ath_tx_update_baw(sc, tid, seqno);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ath_tx_complete_buf(sc, bf, txq, &bf_head, NULL, &ts, 0);
 			continue;
 		}
 
+<<<<<<< HEAD
 		if (bf_isampdu(bf))
 			ath_tx_addto_baw(sc, tid, bf);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return bf;
 	}
 
@@ -1085,6 +1126,11 @@ ath_tx_form_aggr(struct ath_softc *sc, struct ath_txq *txq,
 		bf->bf_next = NULL;
 
 		/* link buffers of this frame to the aggregate */
+<<<<<<< HEAD
+=======
+		if (!fi->baw_tracked)
+			ath_tx_addto_baw(sc, tid, bf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bf->bf_state.ndelim = ndelim;
 
 		list_add_tail(&bf->list, bf_q);
@@ -1671,6 +1717,7 @@ void ath_tx_aggr_wakeup(struct ath_softc *sc, struct ath_node *an)
 	}
 }
 
+<<<<<<< HEAD
 
 static void
 ath9k_set_moredata(struct ath_softc *sc, struct ath_buf *bf, bool val)
@@ -1687,6 +1734,8 @@ ath9k_set_moredata(struct ath_softc *sc, struct ath_buf *bf, bool val)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ath9k_release_buffered_frames(struct ieee80211_hw *hw,
 				   struct ieee80211_sta *sta,
 				   u16 tids, int nframes,
@@ -1717,11 +1766,20 @@ void ath9k_release_buffered_frames(struct ieee80211_hw *hw,
 			if (!bf)
 				break;
 
+<<<<<<< HEAD
 			ath9k_set_moredata(sc, bf, true);
 			list_add_tail(&bf->list, &bf_q);
 			ath_set_rates(tid->an->vif, tid->an->sta, bf);
 			if (bf_isampdu(bf))
 				bf->bf_state.bf_type &= ~BUF_AGGR;
+=======
+			list_add_tail(&bf->list, &bf_q);
+			ath_set_rates(tid->an->vif, tid->an->sta, bf);
+			if (bf_isampdu(bf)) {
+				ath_tx_addto_baw(sc, tid, bf);
+				bf->bf_state.bf_type &= ~BUF_AGGR;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (bf_tail)
 				bf_tail->bf_next = bf;
 
@@ -1739,9 +1797,12 @@ void ath9k_release_buffered_frames(struct ieee80211_hw *hw,
 	if (list_empty(&bf_q))
 		return;
 
+<<<<<<< HEAD
 	if (!more_data)
 		ath9k_set_moredata(sc, bf_tail, false);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info = IEEE80211_SKB_CB(bf_tail->bf_mpdu);
 	info->flags |= IEEE80211_TX_STATUS_EOSP;
 
@@ -2437,6 +2498,10 @@ void ath_tx_cabq(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 		.txq = sc->beacon.cabq
 	};
 	struct ath_tx_info info = {};
+<<<<<<< HEAD
+=======
+	struct ieee80211_hdr *hdr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ath_buf *bf_tail = NULL;
 	struct ath_buf *bf;
 	LIST_HEAD(bf_q);
@@ -2480,10 +2545,22 @@ void ath_tx_cabq(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 	if (list_empty(&bf_q))
 		return;
 
+<<<<<<< HEAD
 	bf = list_last_entry(&bf_q, struct ath_buf, list);
 	ath9k_set_moredata(sc, bf, false);
 
 	bf = list_first_entry(&bf_q, struct ath_buf, list);
+=======
+	bf = list_first_entry(&bf_q, struct ath_buf, list);
+	hdr = (struct ieee80211_hdr *) bf->bf_mpdu->data;
+
+	if (hdr->frame_control & cpu_to_le16(IEEE80211_FCTL_MOREDATA)) {
+		hdr->frame_control &= ~cpu_to_le16(IEEE80211_FCTL_MOREDATA);
+		dma_sync_single_for_device(sc->dev, bf->bf_buf_addr,
+			sizeof(*hdr), DMA_TO_DEVICE);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ath_txq_lock(sc, txctl.txq);
 	ath_tx_fill_desc(sc, bf, txctl.txq, 0);
 	ath_tx_txqaddbuf(sc, txctl.txq, &bf_q, false);

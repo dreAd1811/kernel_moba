@@ -192,6 +192,15 @@ void machine_halt(void)
 	machine_hang();
 }
 
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_TAU
+extern u32 cpu_temp(unsigned long cpu);
+extern u32 cpu_temp_both(unsigned long cpu);
+#endif /* CONFIG_TAU */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_SMP
 DEFINE_PER_CPU(unsigned int, cpu_pvr);
 #endif
@@ -340,8 +349,15 @@ static int show_cpuinfo(struct seq_file *m, void *v)
 		   loops_per_jiffy / (500000/HZ),
 		   (loops_per_jiffy / (5000/HZ)) % 100);
 #endif
+<<<<<<< HEAD
 	seq_printf(m, "\n");
 
+=======
+
+#ifdef CONFIG_SMP
+	seq_printf(m, "\n");
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If this is the last cpu, print the summary */
 	if (cpumask_next(cpu_id, cpu_online_mask) >= nr_cpu_ids)
 		show_cpuinfo_summary(m);
@@ -371,10 +387,17 @@ static void c_stop(struct seq_file *m, void *v)
 }
 
 const struct seq_operations cpuinfo_op = {
+<<<<<<< HEAD
 	.start	= c_start,
 	.next	= c_next,
 	.stop	= c_stop,
 	.show	= show_cpuinfo,
+=======
+	.start =c_start,
+	.next =	c_next,
+	.stop =	c_stop,
+	.show =	show_cpuinfo,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 void __init check_for_initrd(void)
@@ -431,8 +454,11 @@ static void __init cpu_init_thread_core_maps(int tpc)
 }
 
 
+<<<<<<< HEAD
 u32 *cpu_to_phys_id = NULL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * setup_cpu_maps - initialize the following cpu maps:
  *                  cpu_possible_mask
@@ -453,17 +479,25 @@ u32 *cpu_to_phys_id = NULL;
  */
 void __init smp_setup_cpu_maps(void)
 {
+<<<<<<< HEAD
 	struct device_node *dn;
+=======
+	struct device_node *dn = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int cpu = 0;
 	int nthreads = 1;
 
 	DBG("smp_setup_cpu_maps()\n");
 
+<<<<<<< HEAD
 	cpu_to_phys_id = __va(memblock_alloc(nr_cpu_ids * sizeof(u32),
 							__alignof__(u32)));
 	memset(cpu_to_phys_id, 0, nr_cpu_ids * sizeof(u32));
 
 	for_each_node_by_type(dn, "cpu") {
+=======
+	while ((dn = of_find_node_by_type(dn, "cpu")) && cpu < nr_cpu_ids) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		const __be32 *intserv;
 		__be32 cpu_be;
 		int j, len;
@@ -480,7 +514,10 @@ void __init smp_setup_cpu_maps(void)
 			intserv = of_get_property(dn, "reg", &len);
 			if (!intserv) {
 				cpu_be = cpu_to_be32(cpu);
+<<<<<<< HEAD
 				/* XXX: what is this? uninitialized?? */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				intserv = &cpu_be;	/* assume logical == phys */
 				len = 4;
 			}
@@ -500,6 +537,7 @@ void __init smp_setup_cpu_maps(void)
 						"enable-method", "spin-table");
 
 			set_cpu_present(cpu, avail);
+<<<<<<< HEAD
 			set_cpu_possible(cpu, true);
 			cpu_to_phys_id[cpu] = be32_to_cpu(intserv[j]);
 			cpu++;
@@ -509,6 +547,12 @@ void __init smp_setup_cpu_maps(void)
 			of_node_put(dn);
 			break;
 		}
+=======
+			set_hard_smp_processor_id(cpu, be32_to_cpu(intserv[j]));
+			set_cpu_possible(cpu, true);
+			cpu++;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* If no SMT supported, nthreads is forced to 1 */
@@ -701,18 +745,25 @@ static int ppc_panic_event(struct notifier_block *this,
                              unsigned long event, void *ptr)
 {
 	/*
+<<<<<<< HEAD
 	 * panic does a local_irq_disable, but we really
 	 * want interrupts to be hard disabled.
 	 */
 	hard_irq_disable();
 
 	/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * If firmware-assisted dump has been registered then trigger
 	 * firmware-assisted dump and let firmware handle everything else.
 	 */
 	crash_fadump(NULL, ptr);
+<<<<<<< HEAD
 	if (ppc_md.panic)
 		ppc_md.panic(ptr);  /* May not return */
+=======
+	ppc_md.panic(ptr);  /* May not return */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NOTIFY_DONE;
 }
 
@@ -723,8 +774,12 @@ static struct notifier_block ppc_panic_block = {
 
 void __init setup_panic(void)
 {
+<<<<<<< HEAD
 	/* PPC64 always does a hard irq disable in its panic handler */
 	if (!IS_ENABLED(CONFIG_PPC64) && !ppc_md.panic)
+=======
+	if (!ppc_md.panic)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	atomic_notifier_chain_register(&panic_notifier_list, &ppc_panic_block);
 }
@@ -792,13 +847,21 @@ void arch_setup_pdev_archdata(struct platform_device *pdev)
 {
 	pdev->archdata.dma_mask = DMA_BIT_MASK(32);
 	pdev->dev.dma_mask = &pdev->archdata.dma_mask;
+<<<<<<< HEAD
  	set_dma_ops(&pdev->dev, &dma_nommu_ops);
+=======
+ 	set_dma_ops(&pdev->dev, &dma_direct_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static __init void print_system_info(void)
 {
 	pr_info("-----------------------------------------------------\n");
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_info("ppc64_pft_size    = 0x%llx\n", ppc64_pft_size);
 #endif
 #ifdef CONFIG_PPC_STD_MMU_32
@@ -825,7 +888,11 @@ static __init void print_system_info(void)
 	pr_info("firmware_features = 0x%016lx\n", powerpc_firmware_features);
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (htab_address)
 		pr_info("htab_address      = 0x%p\n", htab_address);
 	if (htab_hash_mask)
@@ -844,6 +911,7 @@ static __init void print_system_info(void)
 	pr_info("-----------------------------------------------------\n");
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
 static void smp_setup_pacas(void)
 {
@@ -861,6 +929,8 @@ static void smp_setup_pacas(void)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Called into from start_kernel this initializes memblock, which is used
  * to manage page allocation until mem_init is called.
@@ -914,8 +984,13 @@ void __init setup_arch(char **cmdline_p)
 	/* Check the SMT related command line arguments (ppc64). */
 	check_smt_enabled();
 
+<<<<<<< HEAD
 	/* Parse memory topology */
 	mem_topology_setup();
+=======
+	/* On BookE, setup per-core TLB data structures. */
+	setup_tlb_core_data();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Release secondary cpus out of their spinloops at 0x60 now that
@@ -925,11 +1000,14 @@ void __init setup_arch(char **cmdline_p)
 	 * so smp_release_cpus() does nothing for them.
 	 */
 #ifdef CONFIG_SMP
+<<<<<<< HEAD
 	smp_setup_pacas();
 
 	/* On BookE, setup per-core TLB data structures. */
 	setup_tlb_core_data();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smp_release_cpus();
 #endif
 
@@ -948,10 +1026,16 @@ void __init setup_arch(char **cmdline_p)
 
 #ifdef CONFIG_PPC_MM_SLICES
 #ifdef CONFIG_PPC64
+<<<<<<< HEAD
 	if (!radix_enabled())
 		init_mm.context.slb_addr_limit = DEFAULT_MAP_WINDOW_USER64;
 #elif defined(CONFIG_PPC_8xx)
 	init_mm.context.slb_addr_limit = DEFAULT_MAP_WINDOW;
+=======
+	init_mm.context.addr_limit = DEFAULT_MAP_WINDOW_USER64;
+#elif defined(CONFIG_PPC_8xx)
+	init_mm.context.addr_limit = DEFAULT_MAP_WINDOW;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #error	"context.addr_limit not initialized."
 #endif

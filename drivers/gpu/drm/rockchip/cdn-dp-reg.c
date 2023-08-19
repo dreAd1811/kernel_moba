@@ -323,7 +323,11 @@ int cdn_dp_load_firmware(struct cdn_dp_device *dp, const u32 *i_mem,
 	reg = readl(dp->regs + VER_LIB_H_ADDR) & 0xff;
 	dp->fw_version |= reg << 24;
 
+<<<<<<< HEAD
 	DRM_DEV_DEBUG(dp->dev, "firmware version: %x\n", dp->fw_version);
+=======
+	dev_dbg(dp->dev, "firmware version: %x\n", dp->fw_version);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -792,6 +796,10 @@ err_config_video:
 
 int cdn_dp_audio_stop(struct cdn_dp_device *dp, struct audio_info *audio)
 {
+<<<<<<< HEAD
+=======
+	u32 val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = cdn_dp_reg_write(dp, AUDIO_PACK_CONTROL, 0);
@@ -800,7 +808,15 @@ int cdn_dp_audio_stop(struct cdn_dp_device *dp, struct audio_info *audio)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	writel(0, dp->regs + SPDIF_CTRL_ADDR);
+=======
+	val = SPDIF_AVG_SEL | SPDIF_JITTER_BYPASS;
+	val |= SPDIF_FIFO_MID_RANGE(0xe0);
+	val |= SPDIF_JITTER_THRSH(0xe0);
+	val |= SPDIF_JITTER_AVG_WIN(7);
+	writel(val, dp->regs + SPDIF_CTRL_ADDR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* clearn the audio config and reset */
 	writel(0, dp->regs + AUDIO_SRC_CNTL);
@@ -924,6 +940,15 @@ static void cdn_dp_audio_config_spdif(struct cdn_dp_device *dp)
 {
 	u32 val;
 
+<<<<<<< HEAD
+=======
+	val = SPDIF_AVG_SEL | SPDIF_JITTER_BYPASS;
+	val |= SPDIF_FIFO_MID_RANGE(0xe0);
+	val |= SPDIF_JITTER_THRSH(0xe0);
+	val |= SPDIF_JITTER_AVG_WIN(7);
+	writel(val, dp->regs + SPDIF_CTRL_ADDR);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(SYNC_WR_TO_CH_ZERO, dp->regs + FIFO_CNTL);
 
 	val = MAX_NUM_CH(2) | AUDIO_TYPE_LPCM | CFG_SUB_PCKT_NUM(4);
@@ -931,6 +956,12 @@ static void cdn_dp_audio_config_spdif(struct cdn_dp_device *dp)
 	writel(SMPL2PKT_EN, dp->regs + SMPL2PKT_CNTL);
 
 	val = SPDIF_ENABLE | SPDIF_AVG_SEL | SPDIF_JITTER_BYPASS;
+<<<<<<< HEAD
+=======
+	val |= SPDIF_FIFO_MID_RANGE(0xe0);
+	val |= SPDIF_JITTER_THRSH(0xe0);
+	val |= SPDIF_JITTER_AVG_WIN(7);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(val, dp->regs + SPDIF_CTRL_ADDR);
 
 	clk_prepare_enable(dp->spdif_clk);

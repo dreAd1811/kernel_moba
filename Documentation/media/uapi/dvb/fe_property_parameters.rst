@@ -987,6 +987,7 @@ Possible values: 0, 1, LNA_AUTO
 1, LNA on
 
 use the special macro LNA_AUTO to set LNA auto
+<<<<<<< HEAD
 
 
 .. _DTV-SCRAMBLING-SEQUENCE-INDEX:
@@ -1005,3 +1006,5 @@ it can be used to read the scrambling sequence index (EN 300 468 table 41).
 By default, gold scrambling sequence index 0 is used.
 
 The valid scrambling sequence index range is from 0 to 262142.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

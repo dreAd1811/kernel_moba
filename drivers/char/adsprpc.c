@@ -1,6 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+=======
+/*
+ * Copyright (c) 2012-2021, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/dma-buf.h>
 #include <linux/dma-mapping.h>
@@ -17,7 +32,10 @@
 #include <linux/msm_ion.h>
 #include <soc/qcom/secure_buffer.h>
 #include <linux/rpmsg.h>
+<<<<<<< HEAD
 #include <linux/ipc_logging.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <soc/qcom/subsystem_notif.h>
 #include <soc/qcom/subsystem_restart.h>
 #include <soc/qcom/service-notifier.h>
@@ -35,6 +53,7 @@
 #include <linux/sort.h>
 #include <linux/msm_dma_iommu_mapping.h>
 #include <asm/dma-iommu.h>
+<<<<<<< HEAD
 #include "adsprpc_compat.h"
 #include "adsprpc_shared.h"
 #include <soc/qcom/ramdump.h>
@@ -46,6 +65,14 @@
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/fastrpc.h>
+=======
+#include <soc/qcom/scm.h>
+#include "adsprpc_compat.h"
+#include "adsprpc_shared.h"
+#include <soc/qcom/ramdump.h>
+#include <linux/debugfs.h>
+#include <linux/pm_qos.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TZ_PIL_PROTECT_MEM_SUBSYS_ID 0x0C
 #define TZ_PIL_CLEAR_PROTECT_MEM_SUBSYS_ID 0x0D
@@ -53,7 +80,10 @@
 #define ADSP_MMAP_HEAP_ADDR 4
 #define ADSP_MMAP_REMOTE_HEAP_ADDR 8
 #define ADSP_MMAP_ADD_PAGES 0x1000
+<<<<<<< HEAD
 #define ADSP_MMAP_ADD_PAGES_LLC  0x3000
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FASTRPC_DMAHANDLE_NOMAP (16)
 
 #define FASTRPC_ENOSUCH 39
@@ -65,6 +95,7 @@
 
 #define AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME   "audio_pdr_adsprpc"
 #define AUDIO_PDR_ADSP_SERVICE_NAME              "avs/audio"
+<<<<<<< HEAD
 #define ADSP_AUDIOPD_NAME                        "msm/adsp/audio_pd"
 
 #define SENSORS_PDR_ADSP_SERVICE_LOCATION_CLIENT_NAME   "sensors_pdr_adsprpc"
@@ -74,6 +105,11 @@
 #define SENSORS_PDR_SLPI_SERVICE_LOCATION_CLIENT_NAME "sensors_pdr_sdsprpc"
 #define SENSORS_PDR_SLPI_SERVICE_NAME            SENSORS_PDR_ADSP_SERVICE_NAME
 #define SLPI_SENSORPD_NAME                       "msm/slpi/sensor_pd"
+=======
+
+#define SENSORS_PDR_SERVICE_LOCATION_CLIENT_NAME   "sensors_pdr_adsprpc"
+#define SENSORS_PDR_ADSP_SERVICE_NAME              "tms/servreg"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RPC_TIMEOUT	(5 * HZ)
 #define BALIGN		128
@@ -101,6 +137,7 @@
 #define SDSP_DOMAIN_ID (2)
 #define CDSP_DOMAIN_ID (3)
 
+<<<<<<< HEAD
 /* ctxid of every message is OR-ed with fl->pd (0/1/2) before */
 /* it is sent to DSP. So mask 2 LSBs to retrieve actual context */
 #define CONTEXT_PD_CHECK (3)
@@ -111,10 +148,16 @@
 	"count:flush:map:copy:rpmsg:getargs:putargs:invalidate:invoke"
 #define FASTRPC_STATIC_HANDLE_PROCESS_GROUP (1)
 #define FASTRPC_STATIC_HANDLE_DSP_UTILITIES (2)
+=======
+#define PERF_KEYS \
+	"count:flush:map:copy:rpmsg:getargs:putargs:invalidate:invoke:tid:ptr"
+#define FASTRPC_STATIC_HANDLE_KERNEL (1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FASTRPC_STATIC_HANDLE_LISTENER (3)
 #define FASTRPC_STATIC_HANDLE_MAX (20)
 #define FASTRPC_LATENCY_CTRL_ENB  (1)
 
+<<<<<<< HEAD
 /* Maximum PM timeout that can be voted through fastrpc*/
 #define MAX_PM_TIMEOUT_MS 50
 
@@ -140,6 +183,9 @@
 #define FASTRPC_CPUINFO_DEFAULT (0)
 #define FASTRPC_CPUINFO_EARLY_WAKEUP (1)
 
+=======
+#define MAX_SIZE_LIMIT (0x78000000)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_FILELEN_MAX (2*1024*1024)
 #define INIT_MEMLEN_MAX  (8*1024*1024)
 #define MAX_CACHE_BUF_SIZE (8*1024*1024)
@@ -148,10 +194,17 @@
 
 #define PERF(enb, cnt, ff) \
 	{\
+<<<<<<< HEAD
 		struct timespec startT = {0};\
 		int64_t *counter = cnt;\
 		if (enb && counter) {\
 			getnstimeofday(&startT);\
+=======
+		struct timespec64 startT = {0};\
+		int64_t *counter = cnt;\
+		if (enb && counter) {\
+			ktime_get_real_ts64(&startT);\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} \
 		ff ;\
 		if (enb && counter) {\
@@ -165,6 +218,7 @@
 			(int64_t *)(perf_ptr + offset)\
 				: (int64_t *)NULL) : (int64_t *)NULL)
 
+<<<<<<< HEAD
 #define FASTRPC_GLINK_LOG_PAGES 8
 #define LOG_FASTRPC_GLINK_MSG(ctx, x, ...)	\
 	do {				\
@@ -174,17 +228,22 @@
 				##__VA_ARGS__); \
 	} while (0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fastrpc_pdr_notifier_cb(struct notifier_block *nb,
 					unsigned long code,
 					void *data);
 static struct dentry *debugfs_root;
 static struct dentry *debugfs_global_file;
 
+<<<<<<< HEAD
 static inline void mem_barrier(void)
 {
 	__asm__ __volatile__("dmb sy":::"memory");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline uint64_t buf_page_start(uint64_t buf)
 {
 	uint64_t start = (uint64_t) buf & PAGE_MASK;
@@ -232,11 +291,14 @@ struct secure_vm {
 	int vmcount;
 };
 
+<<<<<<< HEAD
 struct qos_cores {
 	int *coreno;
 	int corecount;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fastrpc_file;
 
 struct fastrpc_buf {
@@ -276,6 +338,10 @@ struct smq_invoke_ctx {
 	unsigned int *attrs;
 	struct fastrpc_mmap **maps;
 	struct fastrpc_buf *buf;
+<<<<<<< HEAD
+=======
+	struct fastrpc_buf *lbuf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t used;
 	struct fastrpc_file *fl;
 	uint32_t handle;
@@ -286,12 +352,16 @@ struct smq_invoke_ctx {
 	uint32_t *crc;
 	unsigned int magic;
 	uint64_t ctxid;
+<<<<<<< HEAD
 	/* response flags from remote processor */
 	enum fastrpc_response_flags rspFlags;
 	/* user hint of completion time in us */
 	uint32_t earlyWakeTime;
 	/* work done status flag */
 	bool isWorkDone;
+=======
+	bool pm_awake_voted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct fastrpc_ctx_lst {
@@ -301,6 +371,10 @@ struct fastrpc_ctx_lst {
 
 struct fastrpc_smmu {
 	struct device *dev;
+<<<<<<< HEAD
+=======
+	struct dma_iommu_mapping *mapping;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const char *dev_name;
 	int cb;
 	int enabled;
@@ -316,7 +390,10 @@ struct fastrpc_session_ctx {
 };
 
 struct fastrpc_static_pd {
+<<<<<<< HEAD
 	char *servloc_name;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char *spdname;
 	struct notifier_block pdrnb;
 	struct notifier_block get_service_nb;
@@ -327,11 +404,14 @@ struct fastrpc_static_pd {
 	int cid;
 };
 
+<<<<<<< HEAD
 struct fastrpc_dsp_capabilities {
 	uint32_t is_cached;	//! Flag if dsp attributes are cached
 	uint32_t dsp_attributes[FASTRPC_MAX_DSP_ATTRIBUTES];
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fastrpc_channel_ctx {
 	char *name;
 	char *subsys;
@@ -346,12 +426,17 @@ struct fastrpc_channel_ctx {
 	struct mutex rpmsg_mutex;
 	uint64_t sesscount;
 	uint64_t ssrcount;
+<<<<<<< HEAD
+=======
+	int in_hib;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *handle;
 	uint64_t prevssrcount;
 	int issubsystemup;
 	int vmid;
 	struct secure_vm rhvm;
 	int ramdumpenabled;
+<<<<<<< HEAD
 	void *rh_dump_dev;
 	/* Indicates, if channel is restricted to secure node only */
 	int secure;
@@ -362,6 +447,11 @@ struct fastrpc_channel_ctx {
 	bool cpuinfo_status;
 	struct smq_invoke_ctx *ctxtable[FASTRPC_CTX_MAX];
 	spinlock_t ctxlock;
+=======
+	void *remoteheap_ramdump_dev;
+	/* Indicates, if channel is restricted to secure node only */
+	int secure;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct fastrpc_apps {
@@ -378,12 +468,22 @@ struct fastrpc_apps {
 	struct device *dev;
 	unsigned int latency;
 	int rpmsg_register;
+<<<<<<< HEAD
 	bool legacy_remote_heap;
 	/* Unique job id for each message */
 	uint64_t jobid[NUM_CHANNELS];
 	struct wakeup_source *wake_source;
 	struct qos_cores silvercores;
 	uint32_t max_size_limit;
+=======
+	spinlock_t ctxlock;
+	struct smq_invoke_ctx *ctxtable[FASTRPC_CTX_MAX];
+	bool legacy_remote_heap;
+	/* Secure subsystems like ADSP/SLPI will use secure client */
+	struct wakeup_source *wake_source_secure;
+	/* Non-secure subsystem like CDSP will use regular client */
+	struct wakeup_source *wake_source;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct fastrpc_mmap {
@@ -405,6 +505,10 @@ struct fastrpc_mmap {
 	int uncached;
 	int secure;
 	uintptr_t attr;
+<<<<<<< HEAD
+=======
+	bool is_filemap; /*flag to indicate map used in process init*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum fastrpc_perfkeys {
@@ -451,7 +555,11 @@ struct fastrpc_file {
 	int cid;
 	uint64_t ssrcount;
 	int pd;
+<<<<<<< HEAD
 	char *servloc_name;
+=======
+	char *spdname;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int file_close;
 	int dsp_proc_init;
 	struct fastrpc_apps *apps;
@@ -460,6 +568,10 @@ struct fastrpc_file {
 	struct mutex perf_mutex;
 	struct pm_qos_request pm_qos_req;
 	int qos_request;
+<<<<<<< HEAD
+=======
+	struct mutex pm_qos_mutex;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex map_mutex;
 	struct mutex internal_map_mutex;
 	/* Identifies the device (MINOR_NUM_DEV / MINOR_NUM_SECURE_DEV) */
@@ -467,8 +579,13 @@ struct fastrpc_file {
 	char *debug_buf;
 	/* Flag to enable PM wake/relax voting for every remote invoke */
 	int wake_enable;
+<<<<<<< HEAD
 	struct wakeup_source *wake_source;
 	uint32_t ws_timeout;
+=======
+	/* To indicate attempt has been made to allocate memory for debug_buf */
+	int debug_buf_alloced_attempted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct fastrpc_apps gfa;
@@ -479,24 +596,37 @@ static struct fastrpc_channel_ctx gcinfo[NUM_CHANNELS] = {
 		.subsys = "adsp",
 		.spd = {
 			{
+<<<<<<< HEAD
 				.servloc_name =
 					AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME,
 				.spdname = ADSP_AUDIOPD_NAME,
+=======
+				.spdname =
+					AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				.pdrnb.notifier_call =
 						fastrpc_pdr_notifier_cb,
 				.cid = ADSP_DOMAIN_ID,
 			},
 			{
+<<<<<<< HEAD
 				.servloc_name =
 				SENSORS_PDR_ADSP_SERVICE_LOCATION_CLIENT_NAME,
 				.spdname = ADSP_SENSORPD_NAME,
+=======
+				.spdname =
+				SENSORS_PDR_SERVICE_LOCATION_CLIENT_NAME,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				.pdrnb.notifier_call =
 						fastrpc_pdr_notifier_cb,
 				.cid = ADSP_DOMAIN_ID,
 			}
 		},
+<<<<<<< HEAD
 		.cpuinfo_todsp = FASTRPC_CPUINFO_DEFAULT,
 		.cpuinfo_status = false,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name = "mdsprpc-smd",
@@ -506,14 +636,18 @@ static struct fastrpc_channel_ctx gcinfo[NUM_CHANNELS] = {
 				.cid = MDSP_DOMAIN_ID,
 			}
 		},
+<<<<<<< HEAD
 		.cpuinfo_todsp = FASTRPC_CPUINFO_DEFAULT,
 		.cpuinfo_status = false,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name = "sdsprpc-smd",
 		.subsys = "slpi",
 		.spd = {
 			{
+<<<<<<< HEAD
 				.servloc_name =
 				SENSORS_PDR_SLPI_SERVICE_LOCATION_CLIENT_NAME,
 				.spdname = SLPI_SENSORPD_NAME,
@@ -524,6 +658,11 @@ static struct fastrpc_channel_ctx gcinfo[NUM_CHANNELS] = {
 		},
 		.cpuinfo_todsp = FASTRPC_CPUINFO_DEFAULT,
 		.cpuinfo_status = false,
+=======
+				.cid = SDSP_DOMAIN_ID,
+			}
+		},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name = "cdsprpc-smd",
@@ -533,14 +672,18 @@ static struct fastrpc_channel_ctx gcinfo[NUM_CHANNELS] = {
 				.cid = CDSP_DOMAIN_ID,
 			}
 		},
+<<<<<<< HEAD
 		.cpuinfo_todsp = FASTRPC_CPUINFO_EARLY_WAKEUP,
 		.cpuinfo_status = false,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
 static int hlosvm[1] = {VMID_HLOS};
 static int hlosvmperm[1] = {PERM_READ | PERM_WRITE | PERM_EXEC};
 
+<<<<<<< HEAD
 static void fastrpc_pm_awake(struct fastrpc_file *fl);
 
 static inline int64_t getnstimediff(struct timespec *start)
@@ -551,6 +694,20 @@ static inline int64_t getnstimediff(struct timespec *start)
 	getnstimeofday(&ts);
 	b = timespec_sub(ts, *start);
 	ns = timespec_to_ns(&b);
+=======
+static void fastrpc_pm_awake(int fl_wake_enable, bool *pm_awake_voted,
+			int channel_type);
+static void fastrpc_pm_relax(bool *pm_awake_voted, int channel_type);
+
+static inline int64_t getnstimediff(struct timespec64 *start)
+{
+	int64_t ns;
+	struct timespec64 ts, b;
+
+	ktime_get_real_ts64(&ts);
+	b = timespec64_sub(ts, *start);
+	ns = timespec64_to_ns(&b);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ns;
 }
 
@@ -593,6 +750,7 @@ bail:
 	return val;
 }
 
+<<<<<<< HEAD
 static inline int poll_on_early_response(struct smq_invoke_ctx *ctx)
 {
 	int ii, jj, err = -EIO;
@@ -635,11 +793,18 @@ static inline int poll_on_early_response(struct smq_invoke_ctx *ctx)
 	preempt_enable_no_resched();
 	return err;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void fastrpc_buf_free(struct fastrpc_buf *buf, int cache)
 {
 	struct fastrpc_file *fl = buf == NULL ? NULL : buf->fl;
+<<<<<<< HEAD
 	int vmid;
+=======
+	int vmid, err = 0;
+	struct fastrpc_apps *me = &gfa;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!fl)
 		return;
@@ -660,19 +825,36 @@ static void fastrpc_buf_free(struct fastrpc_buf *buf, int cache)
 		int destVM[1] = {VMID_HLOS};
 		int destVMperm[1] = {PERM_READ | PERM_WRITE | PERM_EXEC};
 
+<<<<<<< HEAD
 		if (fl->sctx->smmu.cb)
 			buf->phys &= ~((uint64_t)fl->sctx->smmu.cb << 32);
 		vmid = fl->apps->channel[fl->cid].vmid;
 		if (vmid) {
+=======
+		VERIFY(err, fl->sctx != NULL);
+		if (err)
+			goto bail;
+		if (fl->sctx->smmu.cb && fl->cid != SDSP_DOMAIN_ID)
+			buf->phys &= ~((uint64_t)fl->sctx->smmu.cb << 32);
+		vmid = fl->apps->channel[fl->cid].vmid;
+		if ((vmid) && (me->channel[fl->cid].in_hib == 0)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			int srcVM[2] = {VMID_HLOS, vmid};
 
 			hyp_assign_phys(buf->phys, buf_page_size(buf->size),
 				srcVM, 2, destVM, destVMperm, 1);
 		}
+<<<<<<< HEAD
 		trace_fastrpc_dma_free(fl->cid, buf->phys, buf->size);
 		dma_free_attrs(fl->sctx->smmu.dev, buf->size, buf->virt,
 					buf->phys, buf->dma_attr);
 	}
+=======
+		dma_free_attrs(fl->sctx->smmu.dev, buf->size, buf->virt,
+					buf->phys, buf->dma_attr);
+	}
+bail:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(buf);
 }
 
@@ -785,17 +967,36 @@ static int fastrpc_mmap_find(struct fastrpc_file *fl, int fd,
 static int dma_alloc_memory(dma_addr_t *region_phys, void **vaddr, size_t size,
 					unsigned long dma_attr)
 {
+<<<<<<< HEAD
+=======
+	int err = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct fastrpc_apps *me = &gfa;
 
 	if (me->dev == NULL) {
 		pr_err("device adsprpc-mem is not initialized\n");
 		return -ENODEV;
 	}
+<<<<<<< HEAD
 	*vaddr = dma_alloc_attrs(me->dev, size, region_phys,
 					GFP_KERNEL, dma_attr);
 	if (IS_ERR_OR_NULL(*vaddr)) {
 		pr_err("adsprpc: %s: %s: dma_alloc_attrs failed for size 0x%zx, returned %pK\n",
 				current->comm, __func__, size, (*vaddr));
+=======
+	VERIFY(err, size > 0 && size < MAX_SIZE_LIMIT);
+	if (err) {
+		err = -EFAULT;
+		pr_err("adsprpc: %s: invalid allocation size 0x%zx\n",
+			__func__, size);
+		return err;
+	}
+	*vaddr = dma_alloc_attrs(me->dev, size, region_phys,
+					GFP_KERNEL, dma_attr);
+	if (IS_ERR_OR_NULL(*vaddr)) {
+		pr_err("adsprpc: %s: %s: dma_alloc_attrs failed for size 0x%zx, returned %ld\n",
+				current->comm, __func__, size, PTR_ERR(*vaddr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 	return 0;
@@ -810,9 +1011,16 @@ static int fastrpc_mmap_remove(struct fastrpc_file *fl, uintptr_t va,
 
 	spin_lock(&me->hlock);
 	hlist_for_each_entry_safe(map, n, &me->maps, hn) {
+<<<<<<< HEAD
 		if (map->raddr == va &&
 			map->raddr + map->len == va + len &&
 			map->refs == 1) {
+=======
+		if (map->refs == 1 && map->raddr == va &&
+			map->raddr + map->len == va + len &&
+			/*Remove map if not used in process initialization*/
+			!map->is_filemap) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			match = map;
 			hlist_del_init(&map->hn);
 			break;
@@ -824,9 +1032,16 @@ static int fastrpc_mmap_remove(struct fastrpc_file *fl, uintptr_t va,
 		return 0;
 	}
 	hlist_for_each_entry_safe(map, n, &fl->maps, hn) {
+<<<<<<< HEAD
 		if (map->raddr == va &&
 			map->raddr + map->len == va + len &&
 			map->refs == 1) {
+=======
+		if (map->refs == 1 && map->raddr == va &&
+			map->raddr + map->len == va + len &&
+			/*Remove map if not used in process initialization*/
+			!map->is_filemap) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			match = map;
 			hlist_del_init(&map->hn);
 			break;
@@ -843,17 +1058,42 @@ static void fastrpc_mmap_free(struct fastrpc_mmap *map, uint32_t flags)
 {
 	struct fastrpc_apps *me = &gfa;
 	struct fastrpc_file *fl;
+<<<<<<< HEAD
 	int vmid;
+=======
+	int vmid, cid = -1, err = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct fastrpc_session_ctx *sess;
 
 	if (!map)
 		return;
 	fl = map->fl;
+<<<<<<< HEAD
 	if (map->flags == ADSP_MMAP_HEAP_ADDR ||
 				map->flags == ADSP_MMAP_REMOTE_HEAP_ADDR) {
 		map->refs--;
 		if (!map->refs)
 			hlist_del_init(&map->hn);
+=======
+	if (fl && !(map->flags == ADSP_MMAP_HEAP_ADDR ||
+				map->flags == ADSP_MMAP_REMOTE_HEAP_ADDR)) {
+		cid = fl->cid;
+		VERIFY(err, cid >= ADSP_DOMAIN_ID && cid < NUM_CHANNELS);
+		if (err) {
+			err = -ECHRNG;
+			pr_err("adsprpc: ERROR:%s, Invalid channel id: %d, err:%d",
+				__func__, cid, err);
+			return;
+		}
+	}
+	if (map->flags == ADSP_MMAP_HEAP_ADDR ||
+				map->flags == ADSP_MMAP_REMOTE_HEAP_ADDR) {
+		spin_lock(&me->hlock);
+		map->refs--;
+		if (!map->refs)
+			hlist_del_init(&map->hn);
+		spin_unlock(&me->hlock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (map->refs > 0)
 			return;
 	} else {
@@ -867,17 +1107,26 @@ static void fastrpc_mmap_free(struct fastrpc_mmap *map, uint32_t flags)
 				map->flags == ADSP_MMAP_REMOTE_HEAP_ADDR) {
 
 		if (me->dev == NULL) {
+<<<<<<< HEAD
 			pr_err("adsprpc: %s: %s: failed to free remote heap allocation\n",
 				current->comm, __func__);
 			return;
 		}
 		trace_fastrpc_dma_free(-1, map->phys, map->size);
+=======
+			pr_err("failed to free remote heap allocation\n");
+			return;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (map->phys) {
 			dma_free_attrs(me->dev, map->size, (void *)map->va,
 			(dma_addr_t)map->phys, (unsigned long)map->attr);
 		}
 	} else if (map->flags == FASTRPC_DMAHANDLE_NOMAP) {
+<<<<<<< HEAD
 		trace_fastrpc_dma_unmap(fl->cid, map->phys, map->size);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!IS_ERR_OR_NULL(map->table))
 			dma_buf_unmap_attachment(map->attach, map->table,
 					DMA_BIDIRECTIONAL);
@@ -895,13 +1144,21 @@ static void fastrpc_mmap_free(struct fastrpc_mmap *map, uint32_t flags)
 			sess = fl->sctx;
 
 		vmid = fl->apps->channel[fl->cid].vmid;
+<<<<<<< HEAD
 		if (vmid && map->phys) {
+=======
+		if (vmid && map->phys && (me->channel[fl->cid].in_hib == 0)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			int srcVM[2] = {VMID_HLOS, vmid};
 
 			hyp_assign_phys(map->phys, buf_page_size(map->size),
 				srcVM, 2, destVM, destVMperm, 1);
 		}
+<<<<<<< HEAD
 		trace_fastrpc_dma_unmap(fl->cid, map->phys, map->size);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!IS_ERR_OR_NULL(map->table))
 			dma_buf_unmap_attachment(map->attach, map->table,
 					DMA_BIDIRECTIONAL);
@@ -923,12 +1180,16 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 	struct fastrpc_apps *me = &gfa;
 	struct fastrpc_session_ctx *sess;
 	struct fastrpc_apps *apps = fl->apps;
+<<<<<<< HEAD
 	int cid = fl->cid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct fastrpc_channel_ctx *chan = NULL;
 	struct fastrpc_mmap *map = NULL;
 	dma_addr_t region_phys = 0;
 	void *region_vaddr = NULL;
 	unsigned long flags;
+<<<<<<< HEAD
 	int err = 0, vmid, sgl_index = 0;
 	struct scatterlist *sgl = NULL;
 
@@ -937,6 +1198,18 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 		goto bail;
 	chan = &apps->channel[cid];
 
+=======
+	int err = 0, vmid, sgl_index = 0, cid = -1;
+	struct scatterlist *sgl = NULL;
+
+	cid = fl->cid;
+	VERIFY(err, cid >= ADSP_DOMAIN_ID && cid < NUM_CHANNELS);
+	if (err) {
+		err = -ECHRNG;
+		goto bail;
+	}
+	chan = &apps->channel[cid];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!fastrpc_mmap_find(fl, fd, va, len, mflags, 1, ppmap))
 		return 0;
 	map = kzalloc(sizeof(*map), GFP_KERNEL);
@@ -949,6 +1222,10 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 	map->fl = fl;
 	map->fd = fd;
 	map->attr = attr;
+<<<<<<< HEAD
+=======
+	map->is_filemap = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mflags == ADSP_MMAP_HEAP_ADDR ||
 				mflags == ADSP_MMAP_REMOTE_HEAP_ADDR) {
 		map->apps = me;
@@ -958,8 +1235,11 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 					len, (unsigned long) map->attr));
 		if (err)
 			goto bail;
+<<<<<<< HEAD
 		trace_fastrpc_dma_alloc(fl->cid, (uint64_t)region_phys, len,
 			(unsigned long)map->attr, mflags);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		map->phys = (uintptr_t)region_phys;
 		map->size = len;
 		map->va = (uintptr_t)region_vaddr;
@@ -990,6 +1270,7 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 		if (err)
 			goto bail;
 		map->phys = sg_dma_address(map->table->sgl);
+<<<<<<< HEAD
 		map->size = len;
 		trace_fastrpc_dma_map(fl->cid, fd, map->phys, map->size,
 			len, mflags, map->attach->dma_map_attrs);
@@ -997,6 +1278,12 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 		if (map->attr && (map->attr & FASTRPC_ATTR_KEEP_MAP)) {
 			pr_info("adsprpc: %s: buffer mapped with persist attr 0x%x\n",
 				__func__, (unsigned int)map->attr);
+=======
+	} else {
+		if (map->attr && (map->attr & FASTRPC_ATTR_KEEP_MAP)) {
+			pr_info("adsprpc: buffer mapped with persist attr %x\n",
+				(unsigned int)map->attr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			map->refs = 2;
 		}
 		VERIFY(err, !IS_ERR_OR_NULL(map->buf = dma_buf_get(fd)));
@@ -1061,13 +1348,19 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 		map->phys = sg_dma_address(map->table->sgl);
 
 		if (sess->smmu.cb) {
+<<<<<<< HEAD
 			map->phys += ((uint64_t)sess->smmu.cb << 32);
+=======
+			if (fl->cid != SDSP_DOMAIN_ID)
+				map->phys += ((uint64_t)sess->smmu.cb << 32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			for_each_sg(map->table->sgl, sgl, map->table->nents,
 				sgl_index)
 				map->size += sg_dma_len(sgl);
 		} else {
 			map->size = buf_page_size(len);
 		}
+<<<<<<< HEAD
 		trace_fastrpc_dma_map(fl->cid, fd, map->phys, map->size,
 			len, mflags, map->attach->dma_map_attrs);
 
@@ -1076,6 +1369,12 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 			err = -EFAULT;
 			pr_err("adsprpc: %s: invalid map size 0x%zx len 0x%zx\n",
 				__func__, map->size, len);
+=======
+
+		VERIFY(err, map->size >= len && map->size < MAX_SIZE_LIMIT);
+		if (err) {
+			err = -EFAULT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto bail;
 		}
 
@@ -1096,9 +1395,15 @@ static int fastrpc_mmap_create(struct fastrpc_file *fl, int fd,
 			int destVMperm[2] = {PERM_READ | PERM_WRITE,
 					PERM_READ | PERM_WRITE | PERM_EXEC};
 
+<<<<<<< HEAD
 			err = hyp_assign_phys(map->phys,
 					buf_page_size(map->size),
 					srcVM, 1, destVM, destVMperm, 2);
+=======
+			VERIFY(err, !hyp_assign_phys(map->phys,
+					buf_page_size(map->size),
+					srcVM, 1, destVM, destVMperm, 2));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (err)
 				goto bail;
 		}
@@ -1120,6 +1425,7 @@ static int fastrpc_buf_alloc(struct fastrpc_file *fl, size_t size,
 			int remote, struct fastrpc_buf **obuf)
 {
 	int err = 0, vmid;
+<<<<<<< HEAD
 	struct fastrpc_apps *me = &gfa;
 	struct fastrpc_buf *buf = NULL, *fr = NULL;
 	struct hlist_node *n;
@@ -1129,6 +1435,14 @@ static int fastrpc_buf_alloc(struct fastrpc_file *fl, size_t size,
 		err = -EFAULT;
 		pr_err("adsprpc: %s: invalid allocation size 0x%zx\n",
 			__func__, size);
+=======
+	struct fastrpc_buf *buf = NULL, *fr = NULL;
+	struct hlist_node *n;
+
+	VERIFY(err, size > 0 && size < MAX_SIZE_LIMIT);
+	if (err) {
+		err = -EFAULT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bail;
 	}
 
@@ -1161,6 +1475,15 @@ static int fastrpc_buf_alloc(struct fastrpc_file *fl, size_t size,
 	buf->flags = rflags;
 	buf->raddr = 0;
 	buf->remote = 0;
+<<<<<<< HEAD
+=======
+
+	VERIFY(err, fl && fl->sctx != NULL);
+	if (err) {
+		err = -EBADR;
+		goto bail;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf->virt = dma_alloc_attrs(fl->sctx->smmu.dev, buf->size,
 						(dma_addr_t *)&buf->phys,
 						GFP_KERNEL, buf->dma_attr);
@@ -1173,6 +1496,7 @@ static int fastrpc_buf_alloc(struct fastrpc_file *fl, size_t size,
 		VERIFY(err, !IS_ERR_OR_NULL(buf->virt));
 	}
 	if (err) {
+<<<<<<< HEAD
 		err = ENOMEM;
 		pr_err("adsprpc: %s: %s: dma_alloc_attrs failed for size 0x%zx, returned %pK\n",
 			current->comm, __func__, size, buf->virt);
@@ -1183,6 +1507,15 @@ static int fastrpc_buf_alloc(struct fastrpc_file *fl, size_t size,
 	trace_fastrpc_dma_alloc(fl->cid, buf->phys, size,
 		dma_attr, (int)rflags);
 
+=======
+		err = -ENOMEM;
+		pr_err("adsprpc: %s: %s: dma_alloc_attrs failed for size 0x%zx, returned %ld\n",
+			current->comm, __func__, size, PTR_ERR(buf->virt));
+		goto bail;
+	}
+	if (fl->sctx->smmu.cb && fl->cid != SDSP_DOMAIN_ID)
+		buf->phys += ((uint64_t)fl->sctx->smmu.cb << 32);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vmid = fl->apps->channel[fl->cid].vmid;
 	if (vmid) {
 		int srcVM[1] = {VMID_HLOS};
@@ -1190,8 +1523,13 @@ static int fastrpc_buf_alloc(struct fastrpc_file *fl, size_t size,
 		int destVMperm[2] = {PERM_READ | PERM_WRITE,
 					PERM_READ | PERM_WRITE | PERM_EXEC};
 
+<<<<<<< HEAD
 		err = hyp_assign_phys(buf->phys, buf_page_size(size),
 			srcVM, 1, destVM, destVMperm, 2);
+=======
+		VERIFY(err, !hyp_assign_phys(buf->phys, buf_page_size(size),
+			srcVM, 1, destVM, destVMperm, 2));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto bail;
 	}
@@ -1324,12 +1662,19 @@ static int context_alloc(struct fastrpc_file *fl, uint32_t kernel,
 			 struct smq_invoke_ctx **po)
 {
 	struct fastrpc_apps *me = &gfa;
+<<<<<<< HEAD
 	int err = 0, bufs, ii, size = 0, cid = -1;
 	struct smq_invoke_ctx *ctx = NULL;
 	struct fastrpc_ctx_lst *clst = &fl->clst;
 	struct fastrpc_ioctl_invoke *invoke = &invokefd->inv;
 	struct fastrpc_channel_ctx *chan = 0;
 	unsigned long irq_flags = 0;
+=======
+	int err = 0, bufs, ii, size = 0;
+	struct smq_invoke_ctx *ctx = NULL;
+	struct fastrpc_ctx_lst *clst = &fl->clst;
+	struct fastrpc_ioctl_invoke *invoke = &invokefd->inv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bufs = REMOTE_SCALARS_LENGTH(invoke->sc);
 	size = bufs * sizeof(*ctx->lpra) + bufs * sizeof(*ctx->maps) +
@@ -1379,11 +1724,16 @@ static int context_alloc(struct fastrpc_file *fl, uint32_t kernel,
 		if (err)
 			goto bail;
 	}
+<<<<<<< HEAD
 	ctx->retval = 0xDECAF;
+=======
+	ctx->retval = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->pid = current->pid;
 	ctx->tgid = fl->tgid;
 	init_completion(&ctx->work);
 	ctx->magic = FASTRPC_CTX_MAGIC;
+<<<<<<< HEAD
 	ctx->rspFlags = NORMAL_RESPONSE;
 	ctx->isWorkDone = false;
 
@@ -1404,13 +1754,34 @@ static int context_alloc(struct fastrpc_file *fl, uint32_t kernel,
 		}
 	}
 	spin_unlock_irqrestore(&chan->ctxlock, irq_flags);
+=======
+	ctx->pm_awake_voted = false;
+
+	spin_lock(&fl->hlock);
+	hlist_add_head(&ctx->hn, &clst->pending);
+	spin_unlock(&fl->hlock);
+
+	spin_lock(&me->ctxlock);
+	for (ii = 0; ii < FASTRPC_CTX_MAX; ii++) {
+		if (!me->ctxtable[ii]) {
+			me->ctxtable[ii] = ctx;
+			ctx->ctxid = (ptr_to_uint64(ctx) & ~0xFFF)|(ii << 4);
+			break;
+		}
+	}
+	spin_unlock(&me->ctxlock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VERIFY(err, ii < FASTRPC_CTX_MAX);
 	if (err) {
 		pr_err("adsprpc: out of context memory\n");
 		goto bail;
 	}
+<<<<<<< HEAD
 	trace_fastrpc_context_alloc((uint64_t)ctx,
 		ctx->ctxid | fl->pd, ctx->handle, ctx->sc);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*po = ctx;
 bail:
 	if (ctx && err)
@@ -1434,6 +1805,7 @@ static void context_free(struct smq_invoke_ctx *ctx)
 	struct fastrpc_apps *me = &gfa;
 	int nbufs = REMOTE_SCALARS_INBUFS(ctx->sc) +
 		    REMOTE_SCALARS_OUTBUFS(ctx->sc);
+<<<<<<< HEAD
 	int cid = ctx->fl->cid;
 	struct fastrpc_channel_ctx *chan = &me->channel[cid];
 	unsigned long irq_flags = 0;
@@ -1451,10 +1823,16 @@ static void context_free(struct smq_invoke_ctx *ctx)
 	hlist_del_init(&ctx->hn);
 	spin_unlock(&ctx->fl->hlock);
 
+=======
+	spin_lock(&ctx->fl->hlock);
+	hlist_del_init(&ctx->hn);
+	spin_unlock(&ctx->fl->hlock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&ctx->fl->map_mutex);
 	for (i = 0; i < nbufs; ++i)
 		fastrpc_mmap_free(ctx->maps[i], 0);
 	mutex_unlock(&ctx->fl->map_mutex);
+<<<<<<< HEAD
 
 	fastrpc_buf_free(ctx->buf, 1);
 	kfree(ctx->lrpra);
@@ -1499,6 +1877,34 @@ static void context_notify_user(struct smq_invoke_ctx *ctx,
 	complete(&ctx->work);
 }
 
+=======
+	fastrpc_buf_free(ctx->buf, 1);
+	fastrpc_buf_free(ctx->lbuf, 1);
+	ctx->magic = 0;
+	ctx->ctxid = 0;
+
+	spin_lock(&me->ctxlock);
+	for (i = 0; i < FASTRPC_CTX_MAX; i++) {
+		if (me->ctxtable[i] == ctx) {
+			me->ctxtable[i] = NULL;
+			break;
+		}
+	}
+	spin_unlock(&me->ctxlock);
+
+	kfree(ctx);
+}
+
+static void context_notify_user(struct smq_invoke_ctx *ctx, int retval)
+{
+	ctx->retval = retval;
+	fastrpc_pm_awake(ctx->fl->wake_enable, &ctx->pm_awake_voted,
+		gcinfo[ctx->fl->cid].secure);
+	complete(&ctx->work);
+}
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void fastrpc_notify_users(struct fastrpc_file *me)
 {
 	struct smq_invoke_ctx *ictx;
@@ -1506,6 +1912,7 @@ static void fastrpc_notify_users(struct fastrpc_file *me)
 
 	spin_lock(&me->hlock);
 	hlist_for_each_entry_safe(ictx, n, &me->clst.pending, hn) {
+<<<<<<< HEAD
 		ictx->isWorkDone = true;
 		trace_fastrpc_context_complete(me->cid, (uint64_t)ictx,
 			ictx->retval, ictx->msg.invoke.header.ctx,
@@ -1520,6 +1927,15 @@ static void fastrpc_notify_users(struct fastrpc_file *me)
 		complete(&ictx->work);
 	}
 	spin_unlock(&me->hlock);
+=======
+		complete(&ictx->work);
+	}
+	hlist_for_each_entry_safe(ictx, n, &me->clst.interrupted, hn) {
+		complete(&ictx->work);
+	}
+	spin_unlock(&me->hlock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -1530,6 +1946,7 @@ static void fastrpc_notify_users_staticpd_pdr(struct fastrpc_file *me)
 
 	spin_lock(&me->hlock);
 	hlist_for_each_entry_safe(ictx, n, &me->clst.pending, hn) {
+<<<<<<< HEAD
 		if (ictx->msg.pid) {
 			ictx->isWorkDone = true;
 			trace_fastrpc_context_complete(me->cid, (uint64_t)ictx,
@@ -1546,6 +1963,14 @@ static void fastrpc_notify_users_staticpd_pdr(struct fastrpc_file *me)
 				ictx->handle, ictx->sc);
 			complete(&ictx->work);
 		}
+=======
+		if (ictx->msg.pid)
+			complete(&ictx->work);
+	}
+	hlist_for_each_entry_safe(ictx, n, &me->clst.interrupted, hn) {
+		if (ictx->msg.pid)
+			complete(&ictx->work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	spin_unlock(&me->hlock);
 }
@@ -1562,20 +1987,35 @@ static void fastrpc_notify_drivers(struct fastrpc_apps *me, int cid)
 			fastrpc_notify_users(fl);
 	}
 	spin_unlock(&me->hlock);
+<<<<<<< HEAD
 }
 
 static void fastrpc_notify_pdr_drivers(struct fastrpc_apps *me,
 		char *servloc_name)
+=======
+
+}
+
+static void fastrpc_notify_pdr_drivers(struct fastrpc_apps *me, char *spdname)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct fastrpc_file *fl;
 	struct hlist_node *n;
 
 	spin_lock(&me->hlock);
 	hlist_for_each_entry_safe(fl, n, &me->drivers, hn) {
+<<<<<<< HEAD
 		if (fl->servloc_name && !strcmp(servloc_name, fl->servloc_name))
 			fastrpc_notify_users_staticpd_pdr(fl);
 	}
 	spin_unlock(&me->hlock);
+=======
+		if (fl->spdname && !strcmp(spdname, fl->spdname))
+			fastrpc_notify_users_staticpd_pdr(fl);
+	}
+	spin_unlock(&me->hlock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void context_list_ctor(struct fastrpc_ctx_lst *me)
@@ -1653,6 +2093,7 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 	int mflags = 0;
 	uint64_t *fdlist;
 	uint32_t *crclist;
+<<<<<<< HEAD
 	uint32_t earlyHint;
 	int64_t *perf_counter = NULL;
 
@@ -1662,6 +2103,12 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 	/* calculate size of the metadata */
 	rpra = NULL;
 	lrpra = NULL;
+=======
+	int64_t *perf_counter = getperfcounter(ctx->fl, PERF_COUNT);
+
+	/* calculate size of the metadata */
+	rpra = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list = smq_invoke_buf_start(rpra, sc);
 	pages = smq_phy_page_start(sc, list);
 	ipage = pages;
@@ -1700,19 +2147,35 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 		ipage += 1;
 	}
 	mutex_unlock(&ctx->fl->map_mutex);
+<<<<<<< HEAD
 
 	/* metalen includes meta data, fds, crc and early wakeup hint */
 	metalen = copylen = (size_t)&ipage[0] + (sizeof(uint64_t) * M_FDLIST) +
 			(sizeof(uint32_t) * M_CRCLIST) + sizeof(earlyHint);
+=======
+	metalen = copylen = (size_t)&ipage[0] + (sizeof(uint64_t) * M_FDLIST) +
+				 (sizeof(uint32_t) * M_CRCLIST);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* allocate new local rpra buffer */
 	lrpralen = (size_t)&list[0];
 	if (lrpralen) {
+<<<<<<< HEAD
 		lrpra = kzalloc(lrpralen, GFP_KERNEL);
 		VERIFY(err, !IS_ERR_OR_NULL(lrpra));
 		if (err)
 			goto bail;
 	}
+=======
+		err = fastrpc_buf_alloc(ctx->fl, lrpralen, 0, 0, 0, &ctx->lbuf);
+		if (err)
+			goto bail;
+	}
+	if (ctx->lbuf->virt)
+		memset(ctx->lbuf->virt, 0, lrpralen);
+
+	lrpra = ctx->lbuf->virt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->lrpra = lrpra;
 
 	/* calculate len required for copying */
@@ -1733,6 +2196,12 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 		if (err)
 			goto bail;
 		copylen += mend - mstart;
+<<<<<<< HEAD
+=======
+		VERIFY(err, copylen >= 0);
+		if (err)
+			goto bail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	ctx->used = copylen;
 
@@ -1763,13 +2232,22 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 
 	/* map ion buffers */
 	PERF(ctx->fl->profile, GET_COUNTER(perf_counter, PERF_MAP),
+<<<<<<< HEAD
 	for (i = 0; rpra && i < inbufs + outbufs; ++i) {
+=======
+	for (i = 0; rpra && lrpra && i < inbufs + outbufs; ++i) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct fastrpc_mmap *map = ctx->maps[i];
 		uint64_t buf = ptr_to_uint64(lpra[i].buf.pv);
 		size_t len = lpra[i].buf.len;
 
+<<<<<<< HEAD
 		rpra[i].buf.pv = 0;
 		rpra[i].buf.len = len;
+=======
+		rpra[i].buf.pv = lrpra[i].buf.pv = 0;
+		rpra[i].buf.len = lrpra[i].buf.len = len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!len)
 			continue;
 		if (map) {
@@ -1797,11 +2275,16 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 			pages[idx].addr = map->phys + offset;
 			pages[idx].size = num << PAGE_SHIFT;
 		}
+<<<<<<< HEAD
 		rpra[i].buf.pv = buf;
+=======
+		rpra[i].buf.pv = lrpra[i].buf.pv = buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	PERF_END);
 	for (i = bufs; i < bufs + handles; ++i) {
 		struct fastrpc_mmap *map = ctx->maps[i];
+<<<<<<< HEAD
 
 		pages[i].addr = map->phys;
 		pages[i].size = map->size;
@@ -1812,11 +2295,27 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 	/* remote process updates these values before responding */
 	memset(fdlist, 0, sizeof(uint64_t)*M_FDLIST +
 			sizeof(uint32_t)*M_CRCLIST + sizeof(earlyHint));
+=======
+		if (map) {
+			pages[i].addr = map->phys;
+			pages[i].size = map->size;
+		}
+	}
+	fdlist = (uint64_t *)&pages[bufs + handles];
+	for (i = 0; i < M_FDLIST; i++)
+		fdlist[i] = 0;
+	crclist = (uint32_t *)&fdlist[M_FDLIST];
+	memset(crclist, 0, sizeof(uint32_t)*M_CRCLIST);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* copy non ion buffers */
 	PERF(ctx->fl->profile, GET_COUNTER(perf_counter, PERF_COPY),
 	rlen = copylen - metalen;
+<<<<<<< HEAD
 	for (oix = 0; rpra && oix < inbufs + outbufs; ++oix) {
+=======
+	for (oix = 0; rpra && lrpra && oix < inbufs + outbufs; ++oix) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int i = ctx->overps[oix]->raix;
 		struct fastrpc_mmap *map = ctx->maps[i];
 		size_t mlen;
@@ -1835,7 +2334,11 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 		VERIFY(err, rlen >= mlen);
 		if (err)
 			goto bail;
+<<<<<<< HEAD
 		rpra[i].buf.pv =
+=======
+		rpra[i].buf.pv = lrpra[i].buf.pv =
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 (args - ctx->overps[oix]->offset);
 		pages[list[i].pgidx].addr = ctx->buf->phys -
 					    ctx->overps[oix]->offset +
@@ -1862,21 +2365,31 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 
 		if (map && map->uncached)
 			continue;
+<<<<<<< HEAD
 		if (ctx->fl->sctx->smmu.coherent &&
+=======
+		if (ctx->fl->sctx && ctx->fl->sctx->smmu.coherent &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			!(map && (map->attr & FASTRPC_ATTR_NON_COHERENT)))
 			continue;
 		if (map && (map->attr & FASTRPC_ATTR_COHERENT))
 			continue;
+<<<<<<< HEAD
 		if (map && (map->attr & FASTRPC_ATTR_FORCE_NOFLUSH))
 			continue;
 
 		if (rpra && rpra[i].buf.len &&
+=======
+
+		if (rpra && lrpra && rpra[i].buf.len &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ctx->overps[oix]->mstart) {
 			if (map && map->buf) {
 				dma_buf_begin_cpu_access(map->buf,
 					DMA_TO_DEVICE);
 				dma_buf_end_cpu_access(map->buf,
 					DMA_TO_DEVICE);
+<<<<<<< HEAD
 			} else
 				dmac_flush_range(uint64_to_ptr(rpra[i].buf.pv),
 					uint64_to_ptr(rpra[i].buf.pv
@@ -1894,6 +2407,20 @@ static int get_args(uint32_t kernel, struct smq_invoke_ctx *ctx)
 	/* Copy rpra to local buffer */
 	if (ctx->lrpra && rpra && lrpralen > 0)
 		memcpy(ctx->lrpra, rpra, lrpralen);
+=======
+			}
+		}
+	}
+	PERF_END);
+	for (i = bufs; rpra && lrpra && i < bufs + handles; i++) {
+		if (ctx->fds)
+			rpra[i].dma.fd = lrpra[i].dma.fd = ctx->fds[i];
+		rpra[i].dma.len = lrpra[i].dma.len = (uint32_t)lpra[i].buf.len;
+		rpra[i].dma.offset = lrpra[i].dma.offset =
+			 (uint32_t)(uintptr_t)lpra[i].buf.pv;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  bail:
 	return err;
 }
@@ -1970,13 +2497,20 @@ static void inv_args_pre(struct smq_invoke_ctx *ctx)
 			continue;
 		if (!rpra[i].buf.len)
 			continue;
+<<<<<<< HEAD
 		if (ctx->fl->sctx->smmu.coherent &&
+=======
+		if (ctx->fl && ctx->fl->sctx && ctx->fl->sctx->smmu.coherent &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			!(map && (map->attr & FASTRPC_ATTR_NON_COHERENT)))
 			continue;
 		if (map && (map->attr & FASTRPC_ATTR_COHERENT))
 			continue;
+<<<<<<< HEAD
 		if (map && (map->attr & FASTRPC_ATTR_FORCE_NOINVALIDATE))
 			continue;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (buf_page_start(ptr_to_uint64((void *)rpra)) ==
 				buf_page_start(rpra[i].buf.pv))
@@ -1988,10 +2522,13 @@ static void inv_args_pre(struct smq_invoke_ctx *ctx)
 					DMA_BIDIRECTIONAL);
 				dma_buf_end_cpu_access(map->buf,
 					DMA_BIDIRECTIONAL);
+<<<<<<< HEAD
 			} else {
 				dmac_flush_range(
 					uint64_to_ptr(rpra[i].buf.pv), (char *)
 					uint64_to_ptr(rpra[i].buf.pv + 1));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 
@@ -2003,9 +2540,12 @@ static void inv_args_pre(struct smq_invoke_ctx *ctx)
 					DMA_BIDIRECTIONAL);
 				dma_buf_end_cpu_access(map->buf,
 					DMA_BIDIRECTIONAL);
+<<<<<<< HEAD
 			} else {
 				dmac_flush_range((char *)end,
 					(char *)end + 1);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
@@ -2026,13 +2566,20 @@ static void inv_args(struct smq_invoke_ctx *ctx)
 			continue;
 		if (!rpra[i].buf.len)
 			continue;
+<<<<<<< HEAD
 		if (ctx->fl->sctx->smmu.coherent &&
+=======
+		if (ctx->fl && ctx->fl->sctx && ctx->fl->sctx->smmu.coherent &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			!(map && (map->attr & FASTRPC_ATTR_NON_COHERENT)))
 			continue;
 		if (map && (map->attr & FASTRPC_ATTR_COHERENT))
 			continue;
+<<<<<<< HEAD
 		if (map && (map->attr & FASTRPC_ATTR_FORCE_NOINVALIDATE))
 			continue;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (buf_page_start(ptr_to_uint64((void *)rpra)) ==
 				buf_page_start(rpra[i].buf.pv)) {
@@ -2043,10 +2590,14 @@ static void inv_args(struct smq_invoke_ctx *ctx)
 				DMA_FROM_DEVICE);
 			dma_buf_end_cpu_access(map->buf,
 				DMA_FROM_DEVICE);
+<<<<<<< HEAD
 		} else
 			dmac_inv_range((char *)uint64_to_ptr(rpra[i].buf.pv),
 				(char *)uint64_to_ptr(rpra[i].buf.pv
 						 + rpra[i].buf.len));
+=======
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 }
@@ -2056,8 +2607,21 @@ static int fastrpc_invoke_send(struct smq_invoke_ctx *ctx,
 {
 	struct smq_msg *msg = &ctx->msg;
 	struct fastrpc_file *fl = ctx->fl;
+<<<<<<< HEAD
 	struct fastrpc_channel_ctx *channel_ctx = &fl->apps->channel[fl->cid];
 	int err = 0;
+=======
+	struct fastrpc_channel_ctx *channel_ctx = NULL;
+	int err = 0, cid = -1;
+
+	channel_ctx = &fl->apps->channel[fl->cid];
+	cid = fl->cid;
+	VERIFY(err, cid >= ADSP_DOMAIN_ID && cid < NUM_CHANNELS);
+	if (err) {
+		err = -ECHRNG;
+		goto bail;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&channel_ctx->smd_mutex);
 	msg->pid = fl->tgid;
@@ -2087,12 +2651,15 @@ static int fastrpc_invoke_send(struct smq_invoke_ctx *ctx,
 		goto bail;
 	}
 	err = rpmsg_send(channel_ctx->rpdev->ept, (void *)msg, sizeof(*msg));
+<<<<<<< HEAD
 	trace_fastrpc_rpmsg_send(fl->cid, (uint64_t)ctx, msg->invoke.header.ctx,
 		handle, ctx->sc, msg->invoke.page.addr, msg->invoke.page.size);
 	LOG_FASTRPC_GLINK_MSG(channel_ctx->ipc_log_ctx,
 		"sent pkt %pK (sz %d): ctx 0x%llx, handle 0x%x, sc 0x%x (rpmsg err %d)",
 		(void *)msg, sizeof(*msg),
 		msg->invoke.header.ctx, handle, ctx->sc, err);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&channel_ctx->rpmsg_mutex);
  bail:
 	return err;
@@ -2105,6 +2672,10 @@ static void fastrpc_init(struct fastrpc_apps *me)
 	INIT_HLIST_HEAD(&me->drivers);
 	INIT_HLIST_HEAD(&me->maps);
 	spin_lock_init(&me->hlock);
+<<<<<<< HEAD
+=======
+	spin_lock_init(&me->ctxlock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	me->channel = &gcinfo[0];
 	for (i = 0; i < NUM_CHANNELS; i++) {
 		init_completion(&me->channel[i].work);
@@ -2114,12 +2685,16 @@ static void fastrpc_init(struct fastrpc_apps *me)
 		me->channel[i].secure = SECURE_CHANNEL;
 		mutex_init(&me->channel[i].smd_mutex);
 		mutex_init(&me->channel[i].rpmsg_mutex);
+<<<<<<< HEAD
 		spin_lock_init(&me->channel[i].ctxlock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/* Set CDSP channel to non secure */
 	me->channel[CDSP_DOMAIN_ID].secure = NON_SECURE_CHANNEL;
 }
 
+<<<<<<< HEAD
 static inline void fastrpc_pm_awake(struct fastrpc_file *fl)
 {
 	if (!fl->wake_enable || !fl->wake_source)
@@ -2239,6 +2814,33 @@ static void fastrpc_update_invoke_count(uint32_t handle, int64_t *perf_counter,
 		if (count)
 			*count += 1;
 	}
+=======
+static inline void fastrpc_pm_awake(int fl_wake_enable, bool *pm_awake_voted,
+				int channel_type)
+{
+	struct fastrpc_apps *me = &gfa;
+
+	if (!fl_wake_enable || *pm_awake_voted)
+		return;
+	if (channel_type == SECURE_CHANNEL)
+		__pm_stay_awake(me->wake_source_secure);
+	else if (channel_type == NON_SECURE_CHANNEL)
+		__pm_stay_awake(me->wake_source);
+	*pm_awake_voted = true;
+}
+
+static inline void fastrpc_pm_relax(bool *pm_awake_voted, int channel_type)
+{
+	struct fastrpc_apps *me = &gfa;
+
+	if (!(*pm_awake_voted))
+		return;
+	if (channel_type == SECURE_CHANNEL)
+		__pm_relax(me->wake_source_secure);
+	else if (channel_type == NON_SECURE_CHANNEL)
+		__pm_relax(me->wake_source);
+	*pm_awake_voted = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
@@ -2247,6 +2849,7 @@ static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
 {
 	struct smq_invoke_ctx *ctx = NULL;
 	struct fastrpc_ioctl_invoke *invoke = &inv->inv;
+<<<<<<< HEAD
 	int err = 0, interrupted = 0, cid = fl->cid;
 	struct timespec invoket = {0};
 	int64_t *perf_counter = NULL;
@@ -2264,10 +2867,42 @@ static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
 		if (err) {
 			pr_err("adsprpc: ERROR: %s: user application %s trying to send a kernel RPC message to channel %d, handle 0x%x\n",
 				__func__, current->comm, cid, invoke->handle);
+=======
+	int err = 0, cid = -1, interrupted = 0;
+	struct timespec64 invoket = {0};
+	int64_t *perf_counter = NULL;
+	bool pm_awake_voted;
+
+	cid = fl->cid;
+	VERIFY(err, cid >= ADSP_DOMAIN_ID && cid < NUM_CHANNELS);
+	if (err) {
+		err = -ECHRNG;
+		goto bail;
+	}
+	VERIFY(err, fl->sctx != NULL);
+	if (err) {
+		err = -EBADR;
+		goto bail;
+	}
+	perf_counter = getperfcounter(fl, PERF_COUNT);
+	pm_awake_voted = false;
+	if (interrupted != -ERESTARTSYS)
+		fastrpc_pm_awake(fl->wake_enable, &pm_awake_voted,
+			gcinfo[cid].secure);
+	if (fl->profile)
+		ktime_get_real_ts64(&invoket);
+
+	if (!kernel) {
+		VERIFY(err, invoke->handle != FASTRPC_STATIC_HANDLE_KERNEL);
+		if (err) {
+			pr_err("adsprpc: ERROR: %s: user application %s trying to send a kernel RPC message to channel %d",
+				__func__, current->comm, cid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto bail;
 		}
 	}
 
+<<<<<<< HEAD
 	VERIFY(err, cid >= ADSP_DOMAIN_ID && cid < NUM_CHANNELS &&
 		fl->sctx != NULL);
 	if (err) {
@@ -2277,6 +2912,8 @@ static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
 		goto bail;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!kernel) {
 		err = context_restore_interrupted(fl, inv, &ctx);
 		if (err)
@@ -2285,12 +2922,17 @@ static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
 			err = FASTRPC_ENOSUCH;
 		if (err)
 			goto bail;
+<<<<<<< HEAD
 		if (ctx) {
 			trace_fastrpc_context_restore(cid, (uint64_t)ctx,
 				ctx->msg.invoke.header.ctx,
 				ctx->handle, ctx->sc);
 			goto wait;
 		}
+=======
+		if (ctx)
+			goto wait;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	VERIFY(err, 0 == context_alloc(fl, kernel, inv, &ctx));
@@ -2305,6 +2947,7 @@ static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
 			goto bail;
 	}
 
+<<<<<<< HEAD
 	PERF(fl->profile, GET_COUNTER(perf_counter, PERF_INVARGS),
 	inv_args_pre(ctx);
 	PERF_END);
@@ -2312,6 +2955,13 @@ static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
 	PERF(fl->profile, GET_COUNTER(perf_counter, PERF_INVARGS),
 	inv_args(ctx);
 	PERF_END);
+=======
+	if (!fl->sctx->smmu.coherent) {
+		PERF(fl->profile, GET_COUNTER(perf_counter, PERF_INVARGS),
+		inv_args_pre(ctx);
+		PERF_END);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	PERF(fl->profile, GET_COUNTER(perf_counter, PERF_LINK),
 	VERIFY(err, 0 == fastrpc_invoke_send(ctx, kernel, invoke->handle));
@@ -2320,11 +2970,22 @@ static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
 	if (err)
 		goto bail;
  wait:
+<<<<<<< HEAD
 	fastrpc_wait_for_completion(ctx, &interrupted, kernel);
+=======
+	fastrpc_pm_relax(&pm_awake_voted, gcinfo[cid].secure);
+	if (kernel)
+		wait_for_completion(&ctx->work);
+	else
+		interrupted = wait_for_completion_interruptible(&ctx->work);
+
+	pm_awake_voted = ctx->pm_awake_voted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VERIFY(err, 0 == (err = interrupted));
 	if (err)
 		goto bail;
 
+<<<<<<< HEAD
 	if (!ctx->isWorkDone) {
 		err = EPROTO;
 		pr_err("Error: adsprpc: %s: %s: WorkDone state is invalid for handle 0x%x, sc 0x%x\n",
@@ -2340,22 +3001,41 @@ static int fastrpc_internal_invoke(struct fastrpc_file *fl, uint32_t mode,
 	if (err)
 		goto bail;
 
+=======
+	PERF(fl->profile, GET_COUNTER(perf_counter, PERF_INVARGS),
+	if (!fl->sctx->smmu.coherent)
+		inv_args(ctx);
+	PERF_END);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PERF(fl->profile, GET_COUNTER(perf_counter, PERF_PUTARGS),
 	VERIFY(err, 0 == put_args(kernel, ctx, invoke->pra));
 	PERF_END);
 	if (err)
 		goto bail;
+<<<<<<< HEAD
  bail:
 	if (ctx && interrupted == -ERESTARTSYS) {
 		trace_fastrpc_context_interrupt(cid, (uint64_t)ctx,
 			ctx->msg.invoke.header.ctx, ctx->handle, ctx->sc);
 		context_save_interrupted(ctx);
 	}
+=======
+
+	VERIFY(err, 0 == (err = ctx->retval));
+	if (err)
+		goto bail;
+
+bail:
+	if (ctx && interrupted == -ERESTARTSYS)
+		context_save_interrupted(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else if (ctx)
 		context_free(ctx);
 	if (fl->ssrcount != fl->apps->channel[cid].ssrcount)
 		err = ECONNRESET;
 
+<<<<<<< HEAD
 	if (fl->profile && !interrupted)
 		fastrpc_update_invoke_count(invoke->handle, perf_counter,
 						&invoket);
@@ -2384,6 +3064,41 @@ static int fastrpc_get_spd_session(char *name, int *session, int *cid)
 		goto bail;
 	*cid = i;
 	*session = j;
+=======
+	if (fl->profile && !interrupted) {
+		if (invoke->handle != FASTRPC_STATIC_HANDLE_LISTENER) {
+			int64_t *count = GET_COUNTER(perf_counter, PERF_INVOKE);
+
+			if (count)
+				*count += getnstimediff(&invoket);
+		}
+		if (invoke->handle > FASTRPC_STATIC_HANDLE_MAX) {
+			int64_t *count = GET_COUNTER(perf_counter, PERF_COUNT);
+
+			if (count)
+				*count = *count+1;
+		}
+	}
+	fastrpc_pm_relax(&pm_awake_voted, gcinfo[cid].secure);
+	return err;
+}
+
+static int fastrpc_get_adsp_session(char *name, int *session)
+{
+	struct fastrpc_apps *me = &gfa;
+	int err = 0, i;
+
+	for (i = 0; i < NUM_SESSIONS; i++) {
+		if (!me->channel[0].spd[i].spdname)
+			continue;
+		if (!strcmp(name, me->channel[0].spd[i].spdname))
+			break;
+	}
+	VERIFY(err, i < NUM_SESSIONS);
+	if (err)
+		goto bail;
+	*session = i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bail:
 	return err;
 }
@@ -2394,7 +3109,11 @@ static int fastrpc_mmap_remove_ssr(struct fastrpc_file *fl);
 static int fastrpc_init_process(struct fastrpc_file *fl,
 				struct fastrpc_ioctl_init_attrs *uproc)
 {
+<<<<<<< HEAD
 	int err = 0, rh_hyp_done = 0;
+=======
+	int err = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct fastrpc_apps *me = &gfa;
 	struct fastrpc_ioctl_invoke_crc ioctl;
 	struct fastrpc_ioctl_init *init = &uproc->init;
@@ -2414,7 +3133,11 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 
 		ra[0].buf.pv = (void *)&tgid;
 		ra[0].buf.len = sizeof(tgid);
+<<<<<<< HEAD
 		ioctl.inv.handle = FASTRPC_STATIC_HANDLE_PROCESS_GROUP;
+=======
+		ioctl.inv.handle = FASTRPC_STATIC_HANDLE_KERNEL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ioctl.inv.sc = REMOTE_SCALARS_MAKE(0, 1, 0);
 		ioctl.inv.pra = ra;
 		ioctl.fds = NULL;
@@ -2423,12 +3146,16 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 		if (init->flags == FASTRPC_INIT_ATTACH)
 			fl->pd = 0;
 		else if (init->flags == FASTRPC_INIT_ATTACH_SENSORS) {
+<<<<<<< HEAD
 			if (fl->cid == ADSP_DOMAIN_ID)
 				fl->servloc_name =
 				SENSORS_PDR_ADSP_SERVICE_LOCATION_CLIENT_NAME;
 			else if (fl->cid == SDSP_DOMAIN_ID)
 				fl->servloc_name =
 				SENSORS_PDR_SLPI_SERVICE_LOCATION_CLIENT_NAME;
+=======
+			fl->spdname = SENSORS_PDR_SERVICE_LOCATION_CLIENT_NAME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fl->pd = 2;
 		}
 		VERIFY(err, !(err = fastrpc_internal_invoke(fl,
@@ -2463,6 +3190,11 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 			mutex_lock(&fl->map_mutex);
 			VERIFY(err, !fastrpc_mmap_create(fl, init->filefd, 0,
 				init->file, init->filelen, mflags, &file));
+<<<<<<< HEAD
+=======
+			if (file)
+				file->is_filemap = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mutex_unlock(&fl->map_mutex);
 			if (err)
 				goto bail;
@@ -2485,10 +3217,15 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 		err = fastrpc_buf_alloc(fl, memlen, imem_dma_attr, 0, 0, &imem);
 		if (err)
 			goto bail;
+<<<<<<< HEAD
 		if (fl->init_mem)
 			fastrpc_buf_free(fl->init_mem, 0);
 
 		fl->init_mem = imem;
+=======
+		fl->init_mem = imem;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		inbuf.pageslen = 1;
 		ra[0].buf.pv = (void *)&inbuf;
 		ra[0].buf.len = sizeof(inbuf);
@@ -2518,7 +3255,11 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 		ra[5].buf.len = sizeof(inbuf.siglen);
 		fds[5] = -1;
 
+<<<<<<< HEAD
 		ioctl.inv.handle = FASTRPC_STATIC_HANDLE_PROCESS_GROUP;
+=======
+		ioctl.inv.handle = FASTRPC_STATIC_HANDLE_KERNEL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ioctl.inv.sc = REMOTE_SCALARS_MAKE(6, 4, 0);
 		if (uproc->attrs)
 			ioctl.inv.sc = REMOTE_SCALARS_MAKE(7, 6, 0);
@@ -2559,8 +3300,12 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 		inbuf.pageslen = 0;
 
 		if (!strcmp(proc_name, "audiopd")) {
+<<<<<<< HEAD
 			fl->servloc_name =
 				AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME;
+=======
+			fl->spdname = AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			VERIFY(err, !fastrpc_mmap_remove_pdr(fl));
 			if (err)
 				goto bail;
@@ -2569,15 +3314,22 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 		if (!me->staticpd_flags && !(me->legacy_remote_heap)) {
 			inbuf.pageslen = 1;
 			mutex_lock(&fl->map_mutex);
+<<<<<<< HEAD
 			err = fastrpc_mmap_create(fl, -1, 0, init->mem,
 				 init->memlen, ADSP_MMAP_REMOTE_HEAP_ADDR,
 				 &mem);
+=======
+			VERIFY(err, !fastrpc_mmap_create(fl, -1, 0, init->mem,
+				 init->memlen, ADSP_MMAP_REMOTE_HEAP_ADDR,
+				 &mem));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mutex_unlock(&fl->map_mutex);
 			if (err)
 				goto bail;
 			phys = mem->phys;
 			size = mem->size;
 			if (me->channel[fl->cid].rhvm.vmid) {
+<<<<<<< HEAD
 				err = hyp_assign_phys(phys,
 					(uint64_t)size, hlosvm, 1,
 					me->channel[fl->cid].rhvm.vmid,
@@ -2589,6 +3341,20 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 					goto bail;
 				}
 				rh_hyp_done = 1;
+=======
+				VERIFY(err, !hyp_assign_phys(phys,
+					(uint64_t)size, hlosvm, 1,
+					me->channel[fl->cid].rhvm.vmid,
+					me->channel[fl->cid].rhvm.vmperm,
+					me->channel[fl->cid].rhvm.vmcount));
+				if (err) {
+					pr_err("ADSPRPC: hyp_assign_phys fail err %d",
+								 err);
+					pr_err("map->phys 0x%llx, map->size %d\n",
+							 phys, (int)size);
+					goto bail;
+				}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			me->staticpd_flags = 1;
 		}
@@ -2607,7 +3373,11 @@ static int fastrpc_init_process(struct fastrpc_file *fl,
 		ra[2].buf.pv = (void *)pages;
 		ra[2].buf.len = sizeof(*pages);
 		fds[2] = -1;
+<<<<<<< HEAD
 		ioctl.inv.handle = FASTRPC_STATIC_HANDLE_PROCESS_GROUP;
+=======
+		ioctl.inv.handle = FASTRPC_STATIC_HANDLE_KERNEL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ioctl.inv.sc = REMOTE_SCALARS_MAKE(8, 3, 0);
 		ioctl.inv.pra = ra;
@@ -2629,6 +3399,7 @@ bail:
 		me->staticpd_flags = 0;
 	if (mem && err) {
 		if (mem->flags == ADSP_MMAP_REMOTE_HEAP_ADDR
+<<<<<<< HEAD
 			&& me->channel[fl->cid].rhvm.vmid && rh_hyp_done) {
 			int hyp_err = 0;
 
@@ -2642,16 +3413,27 @@ bail:
 						__func__, current->comm,
 						hyp_err, mem->phys, mem->size);
 		}
+=======
+			&& me->channel[fl->cid].rhvm.vmid
+			&& me->channel[fl->cid].in_hib == 0)
+			hyp_assign_phys(mem->phys, (uint64_t)mem->size,
+					me->channel[fl->cid].rhvm.vmid,
+					me->channel[fl->cid].rhvm.vmcount,
+					hlosvm, hlosvmperm, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&fl->map_mutex);
 		fastrpc_mmap_free(mem, 0);
 		mutex_unlock(&fl->map_mutex);
 	}
+<<<<<<< HEAD
 	if (err) {
 		if (!IS_ERR_OR_NULL(fl->init_mem)) {
 			fastrpc_buf_free(fl->init_mem, 0);
 			fl->init_mem = NULL;
 		}
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (file) {
 		mutex_lock(&fl->map_mutex);
 		fastrpc_mmap_free(file, 0);
@@ -2660,6 +3442,7 @@ bail:
 	return err;
 }
 
+<<<<<<< HEAD
 static int fastrpc_kstat(const char *filename, struct kstat *stat)
 {
 	int result;
@@ -2824,6 +3607,8 @@ bail:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fastrpc_release_current_dsp_process(struct fastrpc_file *fl)
 {
 	int err = 0;
@@ -2831,7 +3616,11 @@ static int fastrpc_release_current_dsp_process(struct fastrpc_file *fl)
 	remote_arg_t ra[1];
 	int tgid = 0;
 
+<<<<<<< HEAD
 	VERIFY(err, fl->cid >= ADSP_DOMAIN_ID && fl->cid < NUM_CHANNELS);
+=======
+	VERIFY(err, fl->cid >= 0 && fl->cid < NUM_CHANNELS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto bail;
 	VERIFY(err, fl->sctx != NULL);
@@ -2846,7 +3635,11 @@ static int fastrpc_release_current_dsp_process(struct fastrpc_file *fl)
 	tgid = fl->tgid;
 	ra[0].buf.pv = (void *)&tgid;
 	ra[0].buf.len = sizeof(tgid);
+<<<<<<< HEAD
 	ioctl.inv.handle = FASTRPC_STATIC_HANDLE_PROCESS_GROUP;
+=======
+	ioctl.inv.handle = FASTRPC_STATIC_HANDLE_KERNEL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ioctl.inv.sc = REMOTE_SCALARS_MAKE(1, 1, 0);
 	ioctl.inv.pra = ra;
 	ioctl.fds = NULL;
@@ -2855,8 +3648,13 @@ static int fastrpc_release_current_dsp_process(struct fastrpc_file *fl)
 	VERIFY(err, 0 == (err = fastrpc_internal_invoke(fl,
 		FASTRPC_MODE_PARALLEL, 1, &ioctl)));
 	if (err && fl->dsp_proc_init)
+<<<<<<< HEAD
 		pr_err("adsprpc: %s: releasing DSP process failed with %d (0x%x) for %s\n",
 				__func__, err, err, current->comm);
+=======
+		pr_err("adsprpc: %s: releasing DSP process failed for %s, returned 0x%x",
+					__func__, current->comm, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bail:
 	return err;
 }
@@ -2895,7 +3693,11 @@ static int fastrpc_mmap_on_dsp(struct fastrpc_file *fl, uint32_t flags,
 	ra[2].buf.pv = (void *)&routargs;
 	ra[2].buf.len = sizeof(routargs);
 
+<<<<<<< HEAD
 	ioctl.inv.handle = FASTRPC_STATIC_HANDLE_PROCESS_GROUP;
+=======
+	ioctl.inv.handle = FASTRPC_STATIC_HANDLE_KERNEL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fl->apps->compat)
 		ioctl.inv.sc = REMOTE_SCALARS_MAKE(4, 2, 1);
 	else
@@ -2909,6 +3711,7 @@ static int fastrpc_mmap_on_dsp(struct fastrpc_file *fl, uint32_t flags,
 	*raddr = (uintptr_t)routargs.vaddrout;
 	if (err)
 		goto bail;
+<<<<<<< HEAD
 	if (flags == ADSP_MMAP_REMOTE_HEAP_ADDR
 				&& me->channel[fl->cid].rhvm.vmid) {
 		err = hyp_assign_phys(phys, (uint64_t)size,
@@ -2921,6 +3724,25 @@ static int fastrpc_mmap_on_dsp(struct fastrpc_file *fl, uint32_t flags,
 					err, phys, size);
 			goto bail;
 		}
+=======
+	if (flags == ADSP_MMAP_HEAP_ADDR) {
+		struct scm_desc desc = {0};
+
+		desc.args[0] = TZ_PIL_AUTH_QDSP6_PROC;
+		desc.args[1] = phys;
+		desc.args[2] = size;
+		desc.arginfo = SCM_ARGS(3);
+		err = scm_call2(SCM_SIP_FNID(SCM_SVC_PIL,
+			TZ_PIL_PROTECT_MEM_SUBSYS_ID), &desc);
+	} else if (flags == ADSP_MMAP_REMOTE_HEAP_ADDR
+				&& me->channel[fl->cid].rhvm.vmid) {
+		VERIFY(err, !hyp_assign_phys(phys, (uint64_t)size,
+				hlosvm, 1, me->channel[fl->cid].rhvm.vmid,
+				me->channel[fl->cid].rhvm.vmperm,
+				me->channel[fl->cid].rhvm.vmcount));
+		if (err)
+			goto bail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 bail:
 	return err;
@@ -2937,8 +3759,13 @@ static int fastrpc_munmap_on_dsp_rh(struct fastrpc_file *fl, uint64_t phys,
 
 	if (flags == ADSP_MMAP_HEAP_ADDR) {
 		struct fastrpc_ioctl_invoke_crc ioctl;
+<<<<<<< HEAD
 		remote_arg_t ra[2];
 		int err = 0;
+=======
+		struct scm_desc desc = {0};
+		remote_arg_t ra[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct {
 			uint8_t skey;
 		} routargs;
@@ -2952,7 +3779,11 @@ static int fastrpc_munmap_on_dsp_rh(struct fastrpc_file *fl, uint64_t phys,
 		ra[1].buf.pv = (void *)&routargs;
 		ra[1].buf.len = sizeof(routargs);
 
+<<<<<<< HEAD
 		ioctl.inv.handle = FASTRPC_STATIC_HANDLE_PROCESS_GROUP;
+=======
+		ioctl.inv.handle = FASTRPC_STATIC_HANDLE_KERNEL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ioctl.inv.sc = REMOTE_SCALARS_MAKE(9, 1, 1);
 		ioctl.inv.pra = ra;
 		ioctl.fds = NULL;
@@ -2963,6 +3794,7 @@ static int fastrpc_munmap_on_dsp_rh(struct fastrpc_file *fl, uint64_t phys,
 				FASTRPC_MODE_PARALLEL, 1, &ioctl)));
 		if (err)
 			goto bail;
+<<<<<<< HEAD
 	} else if (flags == ADSP_MMAP_REMOTE_HEAP_ADDR) {
 		if (me->channel[fl->cid].rhvm.vmid) {
 			err = hyp_assign_phys(phys,
@@ -2976,6 +3808,25 @@ static int fastrpc_munmap_on_dsp_rh(struct fastrpc_file *fl, uint64_t phys,
 					err, phys, size);
 				goto bail;
 			}
+=======
+		desc.args[0] = TZ_PIL_AUTH_QDSP6_PROC;
+		desc.args[1] = phys;
+		desc.args[2] = size;
+		desc.args[3] = routargs.skey;
+		desc.arginfo = SCM_ARGS(4);
+		err = scm_call2(SCM_SIP_FNID(SCM_SVC_PIL,
+			TZ_PIL_CLEAR_PROTECT_MEM_SUBSYS_ID), &desc);
+	} else if (flags == ADSP_MMAP_REMOTE_HEAP_ADDR) {
+		if ((me->channel[fl->cid].rhvm.vmid)
+				&& (me->channel[fl->cid].in_hib == 0)) {
+			VERIFY(err, !hyp_assign_phys(phys,
+					(uint64_t)size,
+					me->channel[fl->cid].rhvm.vmid,
+					me->channel[fl->cid].rhvm.vmcount,
+					destVM, destVMperm, 1));
+			if (err)
+				goto bail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -3001,7 +3852,11 @@ static int fastrpc_munmap_on_dsp(struct fastrpc_file *fl, uintptr_t raddr,
 	ra[0].buf.pv = (void *)&inargs;
 	ra[0].buf.len = sizeof(inargs);
 
+<<<<<<< HEAD
 	ioctl.inv.handle = FASTRPC_STATIC_HANDLE_PROCESS_GROUP;
+=======
+	ioctl.inv.handle = FASTRPC_STATIC_HANDLE_KERNEL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fl->apps->compat)
 		ioctl.inv.sc = REMOTE_SCALARS_MAKE(5, 1, 0);
 	else
@@ -3032,9 +3887,12 @@ static int fastrpc_mmap_remove_ssr(struct fastrpc_file *fl)
 	struct fastrpc_apps *me = &gfa;
 	struct ramdump_segment *ramdump_segments_rh = NULL;
 
+<<<<<<< HEAD
 	VERIFY(err, fl->cid == RH_CID);
 	if (err)
 		goto bail;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	do {
 		match = NULL;
 		spin_lock(&me->hlock);
@@ -3046,11 +3904,19 @@ static int fastrpc_mmap_remove_ssr(struct fastrpc_file *fl)
 		spin_unlock(&me->hlock);
 
 		if (match) {
+<<<<<<< HEAD
 			err = fastrpc_munmap_on_dsp_rh(fl, match->phys,
 						match->size, match->flags);
 			if (err)
 				goto bail;
 			if (me->channel[RH_CID].ramdumpenabled) {
+=======
+			VERIFY(err, !fastrpc_munmap_on_dsp_rh(fl, match->phys,
+						match->size, match->flags));
+			if (err)
+				goto bail;
+			if (me->channel[0].ramdumpenabled) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ramdump_segments_rh = kcalloc(1,
 				sizeof(struct ramdump_segment), GFP_KERNEL);
 				if (ramdump_segments_rh) {
@@ -3058,11 +3924,18 @@ static int fastrpc_mmap_remove_ssr(struct fastrpc_file *fl)
 					match->phys;
 					ramdump_segments_rh->size = match->size;
 					ret = do_elf_ramdump(
+<<<<<<< HEAD
 					 me->channel[RH_CID].rh_dump_dev,
 					 ramdump_segments_rh, 1);
 					if (ret < 0)
 						pr_err("adsprpc: %s: unable to dump heap (err %d)\n",
 							__func__, ret);
+=======
+					 me->channel[0].remoteheap_ramdump_dev,
+					 ramdump_segments_rh, 1);
+					if (ret < 0)
+						pr_err("ADSPRPC: unable to dump heap");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					kfree(ramdump_segments_rh);
 				}
 			}
@@ -3078,6 +3951,7 @@ bail:
 static int fastrpc_mmap_remove_pdr(struct fastrpc_file *fl)
 {
 	struct fastrpc_apps *me = &gfa;
+<<<<<<< HEAD
 	int session = 0, err = 0, cid = -1;
 
 	err = fastrpc_get_spd_session(fl->servloc_name,
@@ -3098,6 +3972,25 @@ static int fastrpc_mmap_remove_pdr(struct fastrpc_file *fl)
 		if (err)
 			pr_warn("adsprpc: %s: %s: failed to unmap remote heap (err %d)\n",
 					__func__, current->comm, err);
+=======
+	int session = 0, err = 0;
+
+	VERIFY(err, !fastrpc_get_adsp_session(
+			AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME, &session));
+	if (err)
+		goto bail;
+	if (!me->channel[fl->cid].spd[session].ispdup) {
+		VERIFY(err, 0);
+		if (err) {
+			err = -ENOTCONN;
+			goto bail;
+		}
+	}
+	if (me->channel[fl->cid].spd[session].pdrcount !=
+		me->channel[fl->cid].spd[session].prevpdrcount) {
+		if (fastrpc_mmap_remove_ssr(fl))
+			pr_err("ADSPRPC: SSR: Failed to unmap remote heap\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		me->channel[fl->cid].spd[session].prevpdrcount =
 				me->channel[fl->cid].spd[session].pdrcount;
 	}
@@ -3105,6 +3998,14 @@ bail:
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+static int fastrpc_mmap_remove(struct fastrpc_file *fl, uintptr_t va,
+			     size_t len, struct fastrpc_mmap **ppmap);
+
+static void fastrpc_mmap_add(struct fastrpc_mmap *map);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void get_fastrpc_ioctl_mmap_64(
 			struct fastrpc_ioctl_mmap_64 *mmap64,
 			struct fastrpc_ioctl_mmap *immap)
@@ -3142,15 +4043,24 @@ static int fastrpc_internal_munmap(struct fastrpc_file *fl,
 	if (err) {
 		pr_err("adsprpc: ERROR: %s: user application %s trying to unmap without initialization\n",
 			 __func__, current->comm);
+<<<<<<< HEAD
 		err = EBADR;
 		goto bail;
+=======
+		err = -EBADR;
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_lock(&fl->internal_map_mutex);
 
 	spin_lock(&fl->hlock);
 	hlist_for_each_entry_safe(rbuf, n, &fl->remote_bufs, hn_rem) {
+<<<<<<< HEAD
 		if (rbuf->raddr && ((rbuf->flags == ADSP_MMAP_ADD_PAGES) ||
 				    (rbuf->flags == ADSP_MMAP_ADD_PAGES_LLC))) {
+=======
+		if (rbuf->raddr && (rbuf->flags == ADSP_MMAP_ADD_PAGES)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if ((rbuf->raddr == ud->vaddrout) &&
 				(rbuf->size == ud->size)) {
 				free = rbuf;
@@ -3175,8 +4085,18 @@ static int fastrpc_internal_munmap(struct fastrpc_file *fl,
 	mutex_unlock(&fl->map_mutex);
 	if (err)
 		goto bail;
+<<<<<<< HEAD
 	VERIFY(err, !fastrpc_munmap_on_dsp(fl, map->raddr,
 				map->phys, map->size, map->flags));
+=======
+	VERIFY(err, map != NULL);
+	if (err) {
+		err = -EINVAL;
+		goto bail;
+	}
+	VERIFY(err, !fastrpc_munmap_on_dsp(fl, map->raddr,
+			map->phys, map->size, map->flags));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto bail;
 	mutex_lock(&fl->map_mutex);
@@ -3192,6 +4112,14 @@ bail:
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ *	fastrpc_internal_munmap_fd can only be used for buffers
+ *	mapped with persist attributes. This can only be called
+ *	once for any persist buffer
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fastrpc_internal_munmap_fd(struct fastrpc_file *fl,
 				struct fastrpc_ioctl_munmap_fd *ud)
 {
@@ -3200,14 +4128,25 @@ static int fastrpc_internal_munmap_fd(struct fastrpc_file *fl,
 
 	VERIFY(err, (fl && ud));
 	if (err)
+<<<<<<< HEAD
 		goto bail;
+=======
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VERIFY(err, fl->dsp_proc_init == 1);
 	if (err) {
 		pr_err("adsprpc: ERROR: %s: user application %s trying to unmap without initialization\n",
 			__func__, current->comm);
+<<<<<<< HEAD
 		err = EBADR;
 		goto bail;
 	}
+=======
+		err = -EBADR;
+		return err;
+	}
+	mutex_lock(&fl->internal_map_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&fl->map_mutex);
 	if (fastrpc_mmap_find(fl, ud->fd, ud->va, ud->len, 0, 0, &map)) {
 		pr_err("adsprpc: mapping not found to unmap fd 0x%x, va 0x%llx, len 0x%x\n",
@@ -3217,10 +4156,20 @@ static int fastrpc_internal_munmap_fd(struct fastrpc_file *fl,
 		mutex_unlock(&fl->map_mutex);
 		goto bail;
 	}
+<<<<<<< HEAD
 	if (map)
 		fastrpc_mmap_free(map, 0);
 	mutex_unlock(&fl->map_mutex);
 bail:
+=======
+	if (map && (map->attr & FASTRPC_ATTR_KEEP_MAP)) {
+		map->attr = map->attr & (~FASTRPC_ATTR_KEEP_MAP);
+		fastrpc_mmap_free(map, 0);
+	}
+	mutex_unlock(&fl->map_mutex);
+bail:
+	mutex_unlock(&fl->internal_map_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -3238,6 +4187,7 @@ static int fastrpc_internal_mmap(struct fastrpc_file *fl,
 	if (err) {
 		pr_err("adsprpc: ERROR: %s: user application %s trying to map without initialization\n",
 			__func__, current->comm);
+<<<<<<< HEAD
 		err = EBADR;
 		goto bail;
 	}
@@ -3246,6 +4196,15 @@ static int fastrpc_internal_mmap(struct fastrpc_file *fl,
 	    (ud->flags == ADSP_MMAP_ADD_PAGES_LLC)) {
 		if (ud->vaddrin) {
 			err = EINVAL;
+=======
+		err = -EBADR;
+		return err;
+	}
+	mutex_lock(&fl->internal_map_mutex);
+	if (ud->flags == ADSP_MMAP_ADD_PAGES) {
+		if (ud->vaddrin) {
+			err = -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("adsprpc: %s: %s: ERROR: adding user allocated pages is not supported\n",
 					current->comm, __func__);
 			goto bail;
@@ -3254,8 +4213,11 @@ static int fastrpc_internal_mmap(struct fastrpc_file *fl,
 					DMA_ATTR_DELAYED_UNMAP |
 					DMA_ATTR_NO_KERNEL_MAPPING |
 					DMA_ATTR_FORCE_NON_COHERENT;
+<<<<<<< HEAD
 		if (ud->flags == ADSP_MMAP_ADD_PAGES_LLC)
 			dma_attr |= DMA_ATTR_IOMMU_USE_UPSTREAM_HINT;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = fastrpc_buf_alloc(fl, ud->size, dma_attr, ud->flags,
 								1, &rbuf);
 		if (err)
@@ -3320,7 +4282,11 @@ static int fastrpc_session_alloc_locked(struct fastrpc_channel_ctx *chan,
 			}
 		}
 		if (idx >= chan->sesscount) {
+<<<<<<< HEAD
 			err = EUSERS;
+=======
+			err = -EUSERS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("adsprpc: ERROR %d: %s: max concurrent sessions limit (%d) already reached on %s\n",
 				err, __func__, chan->sesscount, chan->subsys);
 			goto bail;
@@ -3328,10 +4294,15 @@ static int fastrpc_session_alloc_locked(struct fastrpc_channel_ctx *chan,
 		chan->session[idx].smmu.faults = 0;
 	} else {
 		VERIFY(err, me->dev != NULL);
+<<<<<<< HEAD
 		if (err) {
 			err = -ECONNREFUSED;
 			goto bail;
 		}
+=======
+		if (err)
+			goto bail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		chan->session[0].dev = me->dev;
 		chan->session[0].smmu.dev = me->dev;
 	}
@@ -3341,9 +4312,16 @@ static int fastrpc_session_alloc_locked(struct fastrpc_channel_ctx *chan,
 	return err;
 }
 
+<<<<<<< HEAD
 static inline int get_cid_from_rpdev(struct rpmsg_device *rpdev)
 {
 	int err = 0, cid = -1;
+=======
+static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+{
+	int err = 0;
+	int cid = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	VERIFY(err, !IS_ERR_OR_NULL(rpdev));
 	if (err)
@@ -3358,6 +4336,7 @@ static inline int get_cid_from_rpdev(struct rpmsg_device *rpdev)
 	else if (!strcmp(rpdev->dev.parent->of_node->name, "mdsp"))
 		cid = MDSP_DOMAIN_ID;
 
+<<<<<<< HEAD
 	return cid;
 }
 
@@ -3372,6 +4351,9 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
 
 	cid = get_cid_from_rpdev(rpdev);
 	VERIFY(err, cid >= ADSP_DOMAIN_ID && cid < NUM_CHANNELS);
+=======
+	VERIFY(err, cid >= 0 && cid < NUM_CHANNELS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto bail;
 	mutex_lock(&gcinfo[cid].rpmsg_mutex);
@@ -3379,6 +4361,7 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
 	mutex_unlock(&gcinfo[cid].rpmsg_mutex);
 	pr_info("adsprpc: %s: opened rpmsg channel for %s\n",
 		__func__, gcinfo[cid].subsys);
+<<<<<<< HEAD
 
 #if IS_ENABLED(CONFIG_ADSPRPC_DEBUG)
 	if (!gcinfo[cid].ipc_log_ctx)
@@ -3392,6 +4375,8 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
 		pr_info("adsprpc: %s: enabled IPC logging for %s\n",
 			__func__, gcinfo[cid].subsys);
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bail:
 	if (err)
 		pr_err("adsprpc: rpmsg probe of %s cid %d failed\n",
@@ -3409,8 +4394,21 @@ static void fastrpc_rpmsg_remove(struct rpmsg_device *rpdev)
 	if (err)
 		return;
 
+<<<<<<< HEAD
 	cid = get_cid_from_rpdev(rpdev);
 	VERIFY(err, cid >= ADSP_DOMAIN_ID && cid < NUM_CHANNELS);
+=======
+	if (!strcmp(rpdev->dev.parent->of_node->name, "cdsp"))
+		cid = CDSP_DOMAIN_ID;
+	else if (!strcmp(rpdev->dev.parent->of_node->name, "adsp"))
+		cid = ADSP_DOMAIN_ID;
+	else if (!strcmp(rpdev->dev.parent->of_node->name, "dsps"))
+		cid = SDSP_DOMAIN_ID;
+	else if (!strcmp(rpdev->dev.parent->of_node->name, "mdsp"))
+		cid = MDSP_DOMAIN_ID;
+
+	VERIFY(err, cid >= 0 && cid < NUM_CHANNELS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto bail;
 	mutex_lock(&gcinfo[cid].rpmsg_mutex);
@@ -3423,12 +4421,17 @@ bail:
 	if (err)
 		pr_err("adsprpc: rpmsg remove of %s cid %d failed\n",
 			rpdev->dev.parent->of_node->name, cid);
+<<<<<<< HEAD
+=======
+	return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int fastrpc_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
 	int len, void *priv, u32 addr)
 {
 	struct smq_invoke_rsp *rsp = (struct smq_invoke_rsp *)data;
+<<<<<<< HEAD
 	struct smq_invoke_rspv2 *rspv2 = NULL;
 	struct fastrpc_apps *me = &gfa;
 	uint32_t index, rspFlags = 0, earlyWakeTime = 0;
@@ -3442,10 +4445,17 @@ static int fastrpc_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
 		goto bail;
 
 	chan = &me->channel[cid];
+=======
+	struct fastrpc_apps *me = &gfa;
+	uint32_t index;
+	int err = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	VERIFY(err, (rsp && len >= sizeof(*rsp)));
 	if (err)
 		goto bail;
 
+<<<<<<< HEAD
 	if (len >= sizeof(struct smq_invoke_rspv2))
 		rspv2 = (struct smq_invoke_rspv2 *)data;
 
@@ -3463,11 +4473,14 @@ static int fastrpc_rpmsg_callback(struct rpmsg_device *rpdev, void *data,
 	}
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	index = (uint32_t)((rsp->ctx & FASTRPC_CTXID_MASK) >> 4);
 	VERIFY(err, index < FASTRPC_CTX_MAX);
 	if (err)
 		goto bail;
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&chan->ctxlock, irq_flags);
 	VERIFY(err, !IS_ERR_OR_NULL(chan->ctxtable[index]));
 	if (err)
@@ -3494,6 +4507,21 @@ bail:
 		pr_err("adsprpc: ERROR: %s: invalid response (data %pK, len %d) from remote subsystem (err %d)\n",
 				__func__, data, len, err);
 
+=======
+	VERIFY(err, !IS_ERR_OR_NULL(me->ctxtable[index]));
+	if (err)
+		goto bail;
+
+	VERIFY(err, ((me->ctxtable[index]->ctxid == (rsp->ctx & ~3)) &&
+		me->ctxtable[index]->magic == FASTRPC_CTX_MAGIC));
+	if (err)
+		goto bail;
+
+	context_notify_user(me->ctxtable[index], rsp->retval);
+bail:
+	if (err)
+		pr_debug("adsprpc: invalid response or context\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -3533,8 +4561,11 @@ static int fastrpc_file_free(struct fastrpc_file *fl)
 	spin_lock(&fl->apps->hlock);
 	hlist_del_init(&fl->hn);
 	spin_unlock(&fl->apps->hlock);
+<<<<<<< HEAD
 	if (fl->wake_source)
 		wakeup_source_unregister(fl->wake_source);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(fl->debug_buf);
 
 	if (!fl->sctx) {
@@ -3582,6 +4613,10 @@ static int fastrpc_file_free(struct fastrpc_file *fl)
 	mutex_destroy(&fl->perf_mutex);
 	mutex_destroy(&fl->map_mutex);
 	mutex_destroy(&fl->internal_map_mutex);
+<<<<<<< HEAD
+=======
+	mutex_destroy(&fl->pm_qos_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(fl);
 	return 0;
 }
@@ -3708,7 +4743,11 @@ static ssize_t fastrpc_debugfs_read(struct file *filp, char __user *buffer,
 		len += scnprintf(fileinfo + len, DEBUGFS_SIZE - len,
 			"%s %14s %d\n", "pd", ":", fl->pd);
 		len += scnprintf(fileinfo + len, DEBUGFS_SIZE - len,
+<<<<<<< HEAD
 			"%s %9s %s\n", "servloc_name", ":", fl->servloc_name);
+=======
+			"%s %9s %s\n", "spdname", ":", fl->spdname);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		len += scnprintf(fileinfo + len, DEBUGFS_SIZE - len,
 			"%s %6s %d\n", "file_close", ":", fl->file_close);
 		len += scnprintf(fileinfo + len, DEBUGFS_SIZE - len,
@@ -3831,21 +4870,35 @@ static const struct file_operations debugfs_fops = {
 	.open = fastrpc_debugfs_open,
 	.read = fastrpc_debugfs_read,
 };
+<<<<<<< HEAD
 
 static int fastrpc_channel_open(struct fastrpc_file *fl)
 {
 	struct fastrpc_apps *me = &gfa;
 	int cid, err = 0;
+=======
+static int fastrpc_channel_open(struct fastrpc_file *fl)
+{
+	struct fastrpc_apps *me = &gfa;
+	int cid = -1, err = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	VERIFY(err, fl && fl->sctx && fl->cid >= 0 && fl->cid < NUM_CHANNELS);
 	if (err) {
 		pr_err("adsprpc: ERROR: %s: kernel session not initialized yet for %s\n",
 			__func__, current->comm);
+<<<<<<< HEAD
 		err = EBADR;
 		return err;
 	}
 	cid = fl->cid;
 
+=======
+		err = -EBADR;
+		return err;
+	}
+	cid = fl->cid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&me->channel[cid].rpmsg_mutex);
 	VERIFY(err, NULL != me->channel[cid].rpdev);
 	if (err) {
@@ -3859,9 +4912,18 @@ static int fastrpc_channel_open(struct fastrpc_file *fl)
 	if (me->channel[cid].ssrcount !=
 				 me->channel[cid].prevssrcount) {
 		if (!me->channel[cid].issubsystemup) {
+<<<<<<< HEAD
 			err = -ENOTCONN;
 			mutex_unlock(&me->channel[cid].smd_mutex);
 			goto bail;
+=======
+			VERIFY(err, 0);
+			if (err) {
+				err = -ENOTCONN;
+				mutex_unlock(&me->channel[cid].smd_mutex);
+				goto bail;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	fl->ssrcount = me->channel[cid].ssrcount;
@@ -3869,15 +4931,25 @@ static int fastrpc_channel_open(struct fastrpc_file *fl)
 	if (cid == ADSP_DOMAIN_ID && me->channel[cid].ssrcount !=
 			 me->channel[cid].prevssrcount) {
 		mutex_lock(&fl->map_mutex);
+<<<<<<< HEAD
 		err = fastrpc_mmap_remove_ssr(fl);
 		if (err)
 			pr_warn("adsprpc: %s: %s: failed to unmap remote heap for %s (err %d)\n",
 					__func__, current->comm,
 					me->channel[cid].subsys, err);
+=======
+		if (fastrpc_mmap_remove_ssr(fl))
+			pr_err("adsprpc: %s: SSR: Failed to unmap remote heap for %s\n",
+				__func__, me->channel[cid].name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&fl->map_mutex);
 		me->channel[cid].prevssrcount =
 					me->channel[cid].ssrcount;
 	}
+<<<<<<< HEAD
+=======
+	me->channel[cid].in_hib = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&me->channel[cid].smd_mutex);
 
 bail:
@@ -3887,11 +4959,16 @@ bail:
 static int fastrpc_device_open(struct inode *inode, struct file *filp)
 {
 	int err = 0;
+<<<<<<< HEAD
 	struct dentry *debugfs_file;
 	struct fastrpc_file *fl = NULL;
 	struct fastrpc_apps *me = &gfa;
 	char strpid[PID_SIZE];
 	int buf_size = 0;
+=======
+	struct fastrpc_file *fl = NULL;
+	struct fastrpc_apps *me = &gfa;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Indicates the device node opened
@@ -3910,6 +4987,7 @@ static int fastrpc_device_open(struct inode *inode, struct file *filp)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	snprintf(strpid, PID_SIZE, "%d", current->pid);
 	buf_size = strlen(current->comm) + strlen("_") + strlen(strpid) + 1;
 	VERIFY(err, NULL != (fl->debug_buf = kzalloc(buf_size, GFP_KERNEL)));
@@ -3927,6 +5005,8 @@ static int fastrpc_device_open(struct inode *inode, struct file *filp)
 		pr_err("adsprpc: Error: %s: %s: wakeup_source_register failed with err %ld\n",
 			current->comm, __func__, PTR_ERR(fl->wake_source));
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	context_list_ctor(&fl->clst);
 	spin_lock_init(&fl->hlock);
 	INIT_HLIST_HEAD(&fl->maps);
@@ -3935,14 +5015,20 @@ static int fastrpc_device_open(struct inode *inode, struct file *filp)
 	INIT_HLIST_HEAD(&fl->remote_bufs);
 	INIT_HLIST_NODE(&fl->hn);
 	fl->sessionid = 0;
+<<<<<<< HEAD
 	fl->tgid = current->tgid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fl->apps = me;
 	fl->mode = FASTRPC_MODE_SERIAL;
 	fl->cid = -1;
 	fl->dev_minor = dev_minor;
 	fl->init_mem = NULL;
+<<<<<<< HEAD
 	if (debugfs_file != NULL)
 		fl->debugfs_file = debugfs_file;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&fl->perf, 0, sizeof(fl->perf));
 	fl->qos_request = 0;
 	fl->dsp_proc_init = 0;
@@ -3953,9 +5039,57 @@ static int fastrpc_device_open(struct inode *inode, struct file *filp)
 	hlist_add_head(&fl->hn, &me->drivers);
 	spin_unlock(&me->hlock);
 	mutex_init(&fl->perf_mutex);
+<<<<<<< HEAD
 	return 0;
 }
 
+=======
+	mutex_init(&fl->pm_qos_mutex);
+	return 0;
+}
+
+static int fastrpc_set_process_info(struct fastrpc_file *fl)
+{
+	int err = 0, buf_size = 0;
+	char strpid[PID_SIZE];
+	char cur_comm[TASK_COMM_LEN];
+
+	memcpy(cur_comm, current->comm, TASK_COMM_LEN);
+	cur_comm[TASK_COMM_LEN-1] = '\0';
+
+	fl->tgid = current->tgid;
+	snprintf(strpid, PID_SIZE, "%d", current->pid);
+	if (debugfs_root) {
+		buf_size = strlen(cur_comm) + strlen("_")
+			+ strlen(strpid) + 1;
+		spin_lock(&fl->hlock);
+		if (fl->debug_buf_alloced_attempted) {
+			spin_unlock(&fl->hlock);
+			return err;
+		}
+		fl->debug_buf_alloced_attempted = 1;
+		spin_unlock(&fl->hlock);
+		fl->debug_buf = kzalloc(buf_size, GFP_KERNEL);
+		if (!fl->debug_buf) {
+			err = -ENOMEM;
+			return err;
+		}
+		snprintf(fl->debug_buf, buf_size, "%.10s%s%d",
+			cur_comm, "_", current->pid);
+		fl->debugfs_file = debugfs_create_file(fl->debug_buf, 0644,
+			debugfs_root, fl, &debugfs_fops);
+		if (IS_ERR_OR_NULL(fl->debugfs_file)) {
+			pr_warn("Error: %s: %s: failed to create debugfs file %s\n",
+				cur_comm, __func__, fl->debug_buf);
+			fl->debugfs_file = NULL;
+			kfree(fl->debug_buf);
+			fl->debug_buf = NULL;
+		}
+	}
+	return err;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fastrpc_get_info(struct fastrpc_file *fl, uint32_t *info)
 {
 	int err = 0;
@@ -3964,6 +5098,12 @@ static int fastrpc_get_info(struct fastrpc_file *fl, uint32_t *info)
 	VERIFY(err, fl != NULL);
 	if (err)
 		goto bail;
+<<<<<<< HEAD
+=======
+	err = fastrpc_set_process_info(fl);
+	if (err)
+		goto bail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fl->cid == -1) {
 		cid = *info;
 		VERIFY(err, cid < NUM_CHANNELS);
@@ -3993,8 +5133,15 @@ static int fastrpc_get_info(struct fastrpc_file *fl, uint32_t *info)
 			goto bail;
 	}
 	VERIFY(err, fl->sctx != NULL);
+<<<<<<< HEAD
 	if (err)
 		goto bail;
+=======
+	if (err) {
+		err = -EBADR;
+		goto bail;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*info = (fl->sctx->smmu.enabled ? 1 : 0);
 bail:
 	return err;
@@ -4004,10 +5151,14 @@ static int fastrpc_internal_control(struct fastrpc_file *fl,
 					struct fastrpc_ioctl_control *cp)
 {
 	int err = 0;
+<<<<<<< HEAD
 	unsigned int latency;
 	cpumask_t mask;
 	struct fastrpc_apps *me = &gfa;
 	u32 len = me->silvercores.corecount, i = 0;
+=======
+	int latency;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	VERIFY(err, !IS_ERR_OR_NULL(fl) && !IS_ERR_OR_NULL(fl->apps));
 	if (err)
@@ -4023,26 +5174,35 @@ static int fastrpc_internal_control(struct fastrpc_file *fl,
 		VERIFY(err, latency != 0);
 		if (err)
 			goto bail;
+<<<<<<< HEAD
 		cpumask_clear(&mask);
 		for (i = 0; i < len; i++)
 			cpumask_set_cpu(me->silvercores.coreno[i], &mask);
 		fl->pm_qos_req.type = PM_QOS_REQ_AFFINE_CORES;
 		cpumask_copy(&fl->pm_qos_req.cpus_affine, &mask);
 
+=======
+		mutex_lock(&fl->pm_qos_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!fl->qos_request) {
 			pm_qos_add_request(&fl->pm_qos_req,
 				PM_QOS_CPU_DMA_LATENCY, latency);
 			fl->qos_request = 1;
 		} else
 			pm_qos_update_request(&fl->pm_qos_req, latency);
+<<<<<<< HEAD
 
 		/* Ensure CPU feature map updated to DSP for early WakeUp */
 		fastrpc_send_cpuinfo_to_dsp(fl);
+=======
+		mutex_unlock(&fl->pm_qos_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case FASTRPC_CONTROL_KALLOC:
 		cp->kalloc.kalloc_support = 1;
 		break;
 	case FASTRPC_CONTROL_WAKELOCK:
+<<<<<<< HEAD
 		if (fl->dev_minor != MINOR_NUM_SECURE_DEV) {
 			pr_err("adsprpc: %s: %s: PM voting not allowed for non-secure device node %d\n",
 				current->comm, __func__, fl->dev_minor);
@@ -4063,6 +5223,10 @@ static int fastrpc_internal_control(struct fastrpc_file *fl,
 			fl->ws_timeout = cp->pm.timeout;
 		fastrpc_pm_awake(fl);
 		break;
+=======
+		fl->wake_enable = cp->wp.enable;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		err = -EBADRQC;
 		break;
@@ -4071,6 +5235,7 @@ bail:
 	return err;
 }
 
+<<<<<<< HEAD
 static int fastrpc_check_pd_status(struct fastrpc_file *fl, char *sloc_name)
 {
 	int err = 0, session = -1, cid = -1;
@@ -4200,6 +5365,8 @@ bail:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static long fastrpc_device_ioctl(struct file *file, unsigned int ioctl_num,
 				 unsigned long ioctl_param)
 {
@@ -4213,7 +5380,10 @@ static long fastrpc_device_ioctl(struct file *file, unsigned int ioctl_num,
 		struct fastrpc_ioctl_init_attrs init;
 		struct fastrpc_ioctl_perf perf;
 		struct fastrpc_ioctl_control cp;
+<<<<<<< HEAD
 		struct fastrpc_ioctl_dsp_capabilities dsp_cap;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} p;
 	union {
 		struct fastrpc_ioctl_mmap mmap;
@@ -4221,12 +5391,18 @@ static long fastrpc_device_ioctl(struct file *file, unsigned int ioctl_num,
 	} i;
 	void *param = (char *)ioctl_param;
 	struct fastrpc_file *fl = (struct fastrpc_file *)file->private_data;
+<<<<<<< HEAD
 	int size = 0, err = 0;
+=======
+	struct fastrpc_apps *me = &gfa;
+	int size = 0, err = 0, session = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t info;
 
 	p.inv.fds = NULL;
 	p.inv.attrs = NULL;
 	p.inv.crc = NULL;
+<<<<<<< HEAD
 
 	err = fastrpc_check_pd_status(fl,
 			AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME);
@@ -4237,6 +5413,23 @@ static long fastrpc_device_ioctl(struct file *file, unsigned int ioctl_num,
 	if (fl->file_close == 1) {
 		err = EBADF;
 		pr_warn("adsprpc: fastrpc_device_release is happening, So not sending any new requests to DSP\n");
+=======
+	if (fl->spdname &&
+		!strcmp(fl->spdname, AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME)) {
+		VERIFY(err, !fastrpc_get_adsp_session(
+			AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME, &session));
+		if (err)
+			goto bail;
+		if (!me->channel[fl->cid].spd[session].ispdup) {
+			err = -ENOTCONN;
+			goto bail;
+		}
+	}
+	spin_lock(&fl->hlock);
+	if (fl->file_close == 1) {
+		err = EBADF;
+		pr_warn("ADSPRPC: fastrpc_device_release is happening, So not sending any new requests to DSP");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock(&fl->hlock);
 		goto bail;
 	}
@@ -4323,6 +5516,7 @@ static long fastrpc_device_ioctl(struct file *file, unsigned int ioctl_num,
 			goto bail;
 		break;
 	case FASTRPC_IOCTL_SETMODE:
+<<<<<<< HEAD
 		err = fastrpc_setmode(ioctl_param, fl);
 		break;
 	case FASTRPC_IOCTL_GETPERF:
@@ -4330,6 +5524,77 @@ static long fastrpc_device_ioctl(struct file *file, unsigned int ioctl_num,
 		break;
 	case FASTRPC_IOCTL_CONTROL:
 		err = fastrpc_control(&p.cp, param, fl);
+=======
+		switch ((uint32_t)ioctl_param) {
+		case FASTRPC_MODE_PARALLEL:
+		case FASTRPC_MODE_SERIAL:
+			fl->mode = (uint32_t)ioctl_param;
+			break;
+		case FASTRPC_MODE_PROFILE:
+			fl->profile = (uint32_t)ioctl_param;
+			break;
+		case FASTRPC_MODE_SESSION:
+			fl->sessionid = 1;
+			fl->tgid |= (1 << SESSION_ID_INDEX);
+			break;
+		default:
+			err = -ENOTTY;
+			break;
+		}
+		break;
+	case FASTRPC_IOCTL_GETPERF:
+		K_COPY_FROM_USER(err, 0, &p.perf,
+					param, sizeof(p.perf));
+		if (err)
+			goto bail;
+		p.perf.numkeys = sizeof(struct fastrpc_perf)/sizeof(int64_t);
+		if (p.perf.keys) {
+			char *keys = PERF_KEYS;
+
+			K_COPY_TO_USER(err, 0, (void *)p.perf.keys,
+						 keys, strlen(keys)+1);
+			if (err)
+				goto bail;
+		}
+		if (p.perf.data) {
+			struct fastrpc_perf *perf = NULL, *fperf = NULL;
+			struct hlist_node *n = NULL;
+
+			mutex_lock(&fl->perf_mutex);
+			hlist_for_each_entry_safe(perf, n, &fl->perf, hn) {
+				if (perf->tid == current->pid) {
+					fperf = perf;
+					break;
+				}
+			}
+
+			mutex_unlock(&fl->perf_mutex);
+
+			if (fperf) {
+				K_COPY_TO_USER(err, 0,
+					(void *)p.perf.data, fperf,
+					sizeof(*fperf) -
+					sizeof(struct hlist_node));
+			}
+		}
+		K_COPY_TO_USER(err, 0, param, &p.perf, sizeof(p.perf));
+		if (err)
+			goto bail;
+		break;
+	case FASTRPC_IOCTL_CONTROL:
+		K_COPY_FROM_USER(err, 0, &p.cp, param,
+				sizeof(p.cp));
+		if (err)
+			goto bail;
+		VERIFY(err, 0 == (err = fastrpc_internal_control(fl, &p.cp)));
+		if (err)
+			goto bail;
+		if (p.cp.req == FASTRPC_CONTROL_KALLOC) {
+			K_COPY_TO_USER(err, 0, param, &p.cp, sizeof(p.cp));
+			if (err)
+				goto bail;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case FASTRPC_IOCTL_GETINFO:
 	    K_COPY_FROM_USER(err, 0, &info, param, sizeof(info));
@@ -4365,9 +5630,13 @@ static long fastrpc_device_ioctl(struct file *file, unsigned int ioctl_num,
 		if (err)
 			goto bail;
 		break;
+<<<<<<< HEAD
 	case FASTRPC_IOCTL_GET_DSP_INFO:
 		err = fastrpc_get_dsp_info(&p.dsp_cap, param, fl);
 		break;
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		err = -ENOTTY;
 		pr_info("bad ioctl: %d\n", ioctl_num);
@@ -4383,18 +5652,27 @@ static int fastrpc_restart_notifier_cb(struct notifier_block *nb,
 {
 	struct fastrpc_apps *me = &gfa;
 	struct fastrpc_channel_ctx *ctx;
+<<<<<<< HEAD
 	struct notif_data *notifdata = (struct notif_data *)data;
 	int cid = -1;
+=======
+	struct notif_data *notifdata = data;
+	int cid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx = container_of(nb, struct fastrpc_channel_ctx, nb);
 	cid = ctx - &me->channel[0];
 	if (code == SUBSYS_BEFORE_SHUTDOWN) {
+<<<<<<< HEAD
 		pr_info("adsprpc: %s: %s subsystem is restarting\n",
 			__func__, gcinfo[cid].subsys);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&me->channel[cid].smd_mutex);
 		ctx->ssrcount++;
 		ctx->issubsystemup = 0;
 		mutex_unlock(&me->channel[cid].smd_mutex);
+<<<<<<< HEAD
 		if (cid == RH_CID)
 			me->staticpd_flags = 0;
 	} else if (code == SUBSYS_RAMDUMP_NOTIFICATION) {
@@ -4411,6 +5689,17 @@ static int fastrpc_restart_notifier_cb(struct notifier_block *nb,
 			__func__, gcinfo[cid].subsys);
 		ctx->issubsystemup = 1;
 	}
+=======
+	} else if (code == SUBSYS_RAMDUMP_NOTIFICATION) {
+		if (me->channel[0].remoteheap_ramdump_dev &&
+				notifdata->enable_ramdump) {
+			me->channel[0].ramdumpenabled = 1;
+		}
+	} else if (code == SUBSYS_AFTER_POWERUP) {
+		ctx->issubsystemup = 1;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NOTIFY_DONE;
 }
 
@@ -4420,6 +5709,7 @@ static int fastrpc_pdr_notifier_cb(struct notifier_block *pdrnb,
 {
 	struct fastrpc_apps *me = &gfa;
 	struct fastrpc_static_pd *spd;
+<<<<<<< HEAD
 	struct notif_data *notifdata = (struct notif_data *)data;
 
 	spd = container_of(pdrnb, struct fastrpc_static_pd, pdrnb);
@@ -4427,10 +5717,17 @@ static int fastrpc_pdr_notifier_cb(struct notifier_block *pdrnb,
 		pr_info("adsprpc: %s: %s (%s) is down for PDR on %s\n",
 			__func__, spd->spdname, spd->servloc_name,
 			gcinfo[spd->cid].subsys);
+=======
+	struct notif_data *notifdata = data;
+
+	spd = container_of(pdrnb, struct fastrpc_static_pd, pdrnb);
+	if (code == SERVREG_NOTIF_SERVICE_STATE_DOWN_V01) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&me->channel[spd->cid].smd_mutex);
 		spd->pdrcount++;
 		spd->ispdup = 0;
 		mutex_unlock(&me->channel[spd->cid].smd_mutex);
+<<<<<<< HEAD
 		if (!strcmp(spd->servloc_name,
 				AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME))
 			me->staticpd_flags = 0;
@@ -4449,6 +5746,20 @@ static int fastrpc_pdr_notifier_cb(struct notifier_block *pdrnb,
 		pr_info("adsprpc: %s: %s (%s) is up on %s\n",
 			__func__, spd->spdname, spd->servloc_name,
 			gcinfo[spd->cid].subsys);
+=======
+		pr_info("ADSPRPC: Audio PDR notifier %d %s\n",
+					MAJOR(me->dev_no), spd->spdname);
+		if (!strcmp(spd->spdname,
+				AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME))
+			me->staticpd_flags = 0;
+		fastrpc_notify_pdr_drivers(me, spd->spdname);
+	} else if (code == SUBSYS_RAMDUMP_NOTIFICATION) {
+		if (me->channel[0].remoteheap_ramdump_dev &&
+				notifdata->enable_ramdump) {
+			me->channel[0].ramdumpenabled = 1;
+		}
+	} else if (code == SERVREG_NOTIF_SERVICE_STATE_UP_V01) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spd->ispdup = 1;
 	}
 
@@ -4464,6 +5775,7 @@ static int fastrpc_get_service_location_notify(struct notifier_block *nb,
 
 	spd = container_of(nb, struct fastrpc_static_pd, get_service_nb);
 	if (opcode == LOCATOR_DOWN) {
+<<<<<<< HEAD
 		pr_warn("adsprpc: %s: PDR notifier locator for %s is down for %s\n",
 				__func__, gcinfo[spd->cid].subsys,
 				spd->servloc_name);
@@ -4484,6 +5796,19 @@ static int fastrpc_get_service_location_notify(struct notifier_block *nb,
 				SENSORS_PDR_SLPI_SERVICE_LOCATION_CLIENT_NAME))
 				&& (!strcmp(pdr->domain_list[i].name,
 				SLPI_SENSORPD_NAME))) {
+=======
+		pr_err("ADSPRPC: Audio PD restart notifier locator down\n");
+		return NOTIFY_DONE;
+	}
+	for (i = 0; i < pdr->total_domains; i++) {
+		if ((!strcmp(spd->spdname, "audio_pdr_adsprpc"))
+					&& (!strcmp(pdr->domain_list[i].name,
+						"msm/adsp/audio_pd"))) {
+			goto pdr_register;
+		} else if ((!strcmp(spd->spdname, "sensors_pdr_adsprpc"))
+					&& (!strcmp(pdr->domain_list[i].name,
+						"msm/adsp/sensor_pd"))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto pdr_register;
 		}
 	}
@@ -4496,6 +5821,7 @@ pdr_register:
 			pdr->domain_list[i].name,
 			pdr->domain_list[i].instance_id,
 			&spd->pdrnb, &curr_state);
+<<<<<<< HEAD
 		if (IS_ERR_OR_NULL(spd->pdrhandle))
 			pr_warn("adsprpc: %s: PDR notifier for %s register failed for %s (%s) with err %ld\n",
 				__func__, gcinfo[spd->cid].subsys,
@@ -4520,6 +5846,20 @@ pdr_register:
 		pr_info("adsprpc: %s: %s (%s) PDR service for %s is uninitialized\n",
 			__func__, spd->servloc_name, pdr->domain_list[i].name,
 			gcinfo[spd->cid].subsys);
+=======
+	} else {
+		pr_err("ADSPRPC: %s is already registered\n", spd->spdname);
+	}
+
+	if (IS_ERR(spd->pdrhandle))
+		pr_err("ADSPRPC: Unable to register notifier\n");
+
+	if (curr_state == SERVREG_NOTIF_SERVICE_STATE_UP_V01) {
+		pr_info("ADSPRPC: %s is up\n", spd->spdname);
+		spd->ispdup = 1;
+	} else if (curr_state == SERVREG_NOTIF_SERVICE_STATE_UNINIT_V01) {
+		pr_info("ADSPRPC: %s is uninitialzed\n", spd->spdname);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return NOTIFY_DONE;
 }
@@ -4544,11 +5884,20 @@ static int fastrpc_cb_probe(struct device *dev)
 	struct fastrpc_channel_ctx *chan;
 	struct fastrpc_session_ctx *sess;
 	struct of_phandle_args iommuspec;
+<<<<<<< HEAD
 	struct fastrpc_apps *me = &gfa;
 	const char *name;
 	int err = 0, cid = -1, i = 0;
 	u32 sharedcb_count = 0, j = 0;
 	uint32_t dma_addr_pool[2] = {0, 0};
+=======
+	const char *name;
+	dma_addr_t start = 0x80000000;
+	int err = 0, cid = -1, i = 0;
+	u32 sharedcb_count = 0, j = 0;
+	unsigned int index, num_indices = 0;
+	int secure_vmid = VMID_CP_PIXEL, cache_flush = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	VERIFY(err, NULL != (name = of_get_property(dev->of_node,
 					 "label", NULL)));
@@ -4573,7 +5922,11 @@ static int fastrpc_cb_probe(struct device *dev)
 	err = of_parse_phandle_with_args(dev->of_node, "iommus",
 						"#iommu-cells", 0, &iommuspec);
 	if (err) {
+<<<<<<< HEAD
 		pr_err("adsprpc: %s: parsing iommu arguments failed for %s with err %d\n",
+=======
+		pr_err("adsprpc: %s: parsing iommu arguments failed for %s with err %d",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					__func__, dev_name(dev), err);
 		goto bail;
 	}
@@ -4583,6 +5936,7 @@ static int fastrpc_cb_probe(struct device *dev)
 						"dma-coherent");
 	sess->smmu.secure = of_property_read_bool(dev->of_node,
 						"qcom,secure-context-bank");
+<<<<<<< HEAD
 	sess->smmu.cb = iommuspec.args[0] & 0xf;
 	sess->smmu.dev = dev;
 	sess->smmu.dev_name = dev_name(dev);
@@ -4599,6 +5953,90 @@ static int fastrpc_cb_probe(struct device *dev)
 			dma_addr_pool, 2);
 	me->max_size_limit = (dma_addr_pool[1] == 0 ? 0x78000000 :
 			dma_addr_pool[1]);
+=======
+
+	/* Software workaround for SMMU interconnect HW bug */
+	if (cid == SDSP_DOMAIN_ID) {
+		sess->smmu.cb = iommuspec.args[0] & 0x3;
+		VERIFY(err, sess->smmu.cb);
+		if (err)
+			goto bail;
+		start += ((uint64_t)sess->smmu.cb << 32);
+		dma_set_mask(dev, DMA_BIT_MASK(34));
+	} else {
+		sess->smmu.cb = iommuspec.args[0] & 0xf;
+	}
+
+	if (sess->smmu.secure)
+		start = 0x60000000;
+	VERIFY(err, !IS_ERR_OR_NULL(sess->smmu.mapping =
+				arm_iommu_create_mapping(&platform_bus_type,
+						start, MAX_SIZE_LIMIT)));
+	if (err) {
+		pr_err("adsprpc: %s: creating iommu mapping failed for %s, ret %pK",
+				__func__, dev_name(dev), sess->smmu.mapping);
+		goto bail;
+	}
+
+	err = iommu_domain_set_attr(sess->smmu.mapping->domain,
+			DOMAIN_ATTR_CB_STALL_DISABLE, &cache_flush);
+	if (err) {
+		pr_err("adsprpc: %s: setting CB stall iommu attribute failed for %s with err %d",
+			__func__, dev_name(dev), err);
+		goto bail;
+	}
+	if (sess->smmu.secure) {
+		err = iommu_domain_set_attr(sess->smmu.mapping->domain,
+				DOMAIN_ATTR_SECURE_VMID, &secure_vmid);
+		if (err) {
+			pr_err("adsprpc: %s: setting secure iommu attribute failed for %s with err %d",
+				__func__, dev_name(dev), err);
+			goto bail;
+		}
+	}
+
+	err = arm_iommu_attach_device(dev, sess->smmu.mapping);
+	if (err) {
+		pr_err("adsprpc: %s: attaching iommu device failed for %s with err %d",
+			__func__, dev_name(dev), err);
+		goto bail;
+	}
+
+	sess->smmu.dev = dev;
+	sess->smmu.dev_name = dev_name(dev);
+	sess->smmu.enabled = 1;
+	if (!sess->smmu.dev->dma_parms)
+		sess->smmu.dev->dma_parms = devm_kzalloc(sess->smmu.dev,
+			sizeof(*sess->smmu.dev->dma_parms), GFP_KERNEL);
+	dma_set_max_seg_size(sess->smmu.dev, DMA_BIT_MASK(32));
+	dma_set_seg_boundary(sess->smmu.dev, (unsigned long)DMA_BIT_MASK(64));
+
+	if (of_get_property(dev->of_node, "shared-sid", NULL) != NULL) {
+		struct fastrpc_session_ctx *new_sess;
+
+		err = of_property_read_u32(dev->of_node, "shared-sid",
+				&num_indices);
+		if (err)
+			goto bail;
+
+		for (index = 1; index < num_indices &&
+				chan->sesscount < NUM_SESSIONS; index++) {
+			err = of_parse_phandle_with_args(dev->of_node, "iommus",
+					"#iommu-cells", index, &iommuspec);
+			if (err) {
+				pr_err("adsprpc: %s: parsing iommu arguments failed for %s with err %d",
+						__func__, dev_name(dev), err);
+				goto bail;
+			}
+			chan->sesscount++;
+			new_sess = &chan->session[chan->sesscount];
+			memcpy(new_sess, sess,
+				sizeof(struct fastrpc_session_ctx));
+			new_sess->smmu.cb = iommuspec.args[0] & 0xf;
+			sess = new_sess;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_get_property(dev->of_node, "shared-cb", NULL) != NULL) {
 		err = of_property_read_u32(dev->of_node, "shared-cb",
@@ -4619,12 +6057,113 @@ static int fastrpc_cb_probe(struct device *dev)
 	}
 
 	chan->sesscount++;
+<<<<<<< HEAD
 	debugfs_global_file = debugfs_create_file("global", 0644, debugfs_root,
 							NULL, &debugfs_fops);
+=======
+	if (debugfs_root) {
+		debugfs_global_file = debugfs_create_file("global", 0644,
+			debugfs_root, NULL, &debugfs_fops);
+		if (IS_ERR_OR_NULL(debugfs_global_file)) {
+			pr_warn("Error: %s: %s: failed to create debugfs global file\n",
+				current->comm, __func__);
+			debugfs_global_file = NULL;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bail:
 	return err;
 }
 
+<<<<<<< HEAD
+=======
+
+static int fastrpc_cb_legacy_probe(struct device *dev)
+{
+	struct fastrpc_channel_ctx *chan;
+	struct fastrpc_session_ctx *first_sess = NULL, *sess = NULL;
+	const char *name;
+	unsigned int *sids = NULL, sids_size = 0;
+	int err = 0, ret = 0, i;
+
+	unsigned int start = 0x80000000;
+
+	VERIFY(err, NULL != (name = of_get_property(dev->of_node,
+					 "label", NULL)));
+	if (err)
+		goto bail;
+
+	for (i = 0; i < NUM_CHANNELS; i++) {
+		if (!gcinfo[i].name)
+			continue;
+		if (!strcmp(name, gcinfo[i].name))
+			break;
+	}
+	VERIFY(err, i < NUM_CHANNELS);
+	if (err)
+		goto bail;
+
+	chan = &gcinfo[i];
+	VERIFY(err, chan->sesscount < NUM_SESSIONS);
+	if (err)
+		goto bail;
+
+	first_sess  = &chan->session[chan->sesscount];
+
+	VERIFY(err, NULL != of_get_property(dev->of_node,
+				"sids", &sids_size));
+	if (err)
+		goto bail;
+
+	VERIFY(err, NULL != (sids = kzalloc(sids_size, GFP_KERNEL)));
+	if (err)
+		goto bail;
+	ret = of_property_read_u32_array(dev->of_node, "sids", sids,
+					sids_size/sizeof(unsigned int));
+	if (ret)
+		goto bail;
+
+	VERIFY(err, !IS_ERR_OR_NULL(first_sess->smmu.mapping =
+				arm_iommu_create_mapping(&platform_bus_type,
+						start, 0x78000000)));
+	if (err)
+		goto bail;
+
+	VERIFY(err, !arm_iommu_attach_device(dev, first_sess->smmu.mapping));
+	if (err) {
+		pr_err("adsprpc: %s: attaching iommu device failed for %s with err %d",
+			__func__, dev_name(dev), err);
+		goto bail;
+	}
+
+
+	for (i = 0; i < sids_size/sizeof(unsigned int); i++) {
+		VERIFY(err, chan->sesscount < NUM_SESSIONS);
+		if (err)
+			goto bail;
+		sess = &chan->session[chan->sesscount];
+		sess->smmu.cb = sids[i];
+		sess->smmu.dev = dev;
+		sess->smmu.dev_name = dev_name(dev);
+		sess->smmu.mapping = first_sess->smmu.mapping;
+		sess->smmu.enabled = 1;
+		sess->used = 0;
+		sess->smmu.coherent = false;
+		sess->smmu.secure = false;
+		chan->sesscount++;
+		if (!sess->smmu.dev->dma_parms)
+			sess->smmu.dev->dma_parms = devm_kzalloc(sess->smmu.dev,
+				sizeof(*sess->smmu.dev->dma_parms), GFP_KERNEL);
+		dma_set_max_seg_size(sess->smmu.dev, DMA_BIT_MASK(32));
+		dma_set_seg_boundary(sess->smmu.dev,
+					(unsigned long)DMA_BIT_MASK(64));
+	}
+bail:
+	kfree(sids);
+	return err;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void init_secure_vmid_list(struct device *dev, char *prop_name,
 						struct secure_vm *destvm)
 {
@@ -4649,10 +6188,16 @@ static void init_secure_vmid_list(struct device *dev, char *prop_name,
 		err = of_property_read_u32_index(dev->of_node, prop_name, i,
 								&rhvmlist[i]);
 		rhvmpermlist[i] = PERM_READ | PERM_WRITE | PERM_EXEC;
+<<<<<<< HEAD
 		pr_info("adsprpc: %s: secure VMID = %d\n",
 			__func__, rhvmlist[i]);
 		if (err) {
 			pr_err("adsprpc: %s: failed to read VMID\n", __func__);
+=======
+		pr_info("ADSPRPC: Secure VMID = %d", rhvmlist[i]);
+		if (err) {
+			pr_err("ADSPRPC: Failed to read VMID\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto bail;
 		}
 	}
@@ -4666,6 +6211,7 @@ bail:
 	}
 }
 
+<<<<<<< HEAD
 static void init_qos_cores_list(struct device *dev, char *prop_name,
 						struct qos_cores *silvercores)
 {
@@ -4699,6 +6245,8 @@ bail:
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void configure_secure_channels(uint32_t secure_domains)
 {
 	struct fastrpc_apps *me = &gfa;
@@ -4730,14 +6278,21 @@ static int fastrpc_probe(struct platform_device *pdev)
 	uint32_t val;
 	int ret = 0;
 	uint32_t secure_domains;
+<<<<<<< HEAD
 	int session = -1, cid = -1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (of_device_is_compatible(dev->of_node,
 					"qcom,msm-fastrpc-compute")) {
 		init_secure_vmid_list(dev, "qcom,adsp-remoteheap-vmid",
 							&gcinfo[0].rhvm);
+<<<<<<< HEAD
 		init_qos_cores_list(dev, "qcom,qos-cores",
 							&me->silvercores);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		of_property_read_u32(dev->of_node, "qcom,rpc-latency-us",
 			&me->latency);
@@ -4757,6 +6312,142 @@ static int fastrpc_probe(struct platform_device *pdev)
 		return fastrpc_cb_probe(dev);
 
 	if (of_device_is_compatible(dev->of_node,
+<<<<<<< HEAD
+=======
+					"qcom,msm-fastrpc-legacy-compute-cb"))
+		return fastrpc_cb_legacy_probe(dev);
+
+	if (of_device_is_compatible(dev->of_node,
+					"qcom,msm-adsprpc-mem-region")) {
+		me->dev = dev;
+		range.addr = 0;
+		ion_node = of_find_compatible_node(NULL, NULL, "qcom,msm-ion");
+		if (ion_node) {
+			for_each_available_child_of_node(ion_node, node) {
+				if (of_property_read_u32(node, "reg", &val))
+					continue;
+				if (val != ION_ADSP_HEAP_ID)
+					continue;
+				ion_pdev = of_find_device_by_node(node);
+				if (!ion_pdev)
+					break;
+				cma = dev_get_cma_area(&ion_pdev->dev);
+				if (cma) {
+					range.addr = cma_get_base(cma);
+					range.size = (size_t)cma_get_size(cma);
+				}
+				break;
+			}
+		}
+		if (range.addr && !of_property_read_bool(dev->of_node,
+							 "restrict-access")) {
+			int srcVM[1] = {VMID_HLOS};
+			int destVM[3] = {VMID_HLOS, VMID_SSC_Q6,
+						VMID_ADSP_Q6};
+			int destVMperm[3] = {PERM_READ | PERM_WRITE | PERM_EXEC,
+				PERM_READ | PERM_WRITE | PERM_EXEC,
+				PERM_READ | PERM_WRITE | PERM_EXEC,
+				};
+
+			VERIFY(err, !hyp_assign_phys(range.addr, range.size,
+					srcVM, 1, destVM, destVMperm, 3));
+			if (err)
+				goto bail;
+			me->range.addr = range.addr;
+			me->range.size = range.size;
+		}
+		return 0;
+	}
+	me->legacy_remote_heap = of_property_read_bool(dev->of_node,
+					"qcom,fastrpc-legacy-remote-heap");
+	if (of_property_read_bool(dev->of_node,
+					"qcom,fastrpc-adsp-audio-pdr")) {
+		int session;
+
+		VERIFY(err, !fastrpc_get_adsp_session(
+			AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME, &session));
+		if (err)
+			goto spdbail;
+		me->channel[0].spd[session].get_service_nb.notifier_call =
+					fastrpc_get_service_location_notify;
+		ret = get_service_location(
+				AUDIO_PDR_SERVICE_LOCATION_CLIENT_NAME,
+				AUDIO_PDR_ADSP_SERVICE_NAME,
+				&me->channel[0].spd[session].get_service_nb);
+		if (ret)
+			pr_err("ADSPRPC: Get service location failed: %d\n",
+								ret);
+	}
+	if (of_property_read_bool(dev->of_node,
+					"qcom,fastrpc-adsp-sensors-pdr")) {
+		int session;
+
+		VERIFY(err, !fastrpc_get_adsp_session(
+			SENSORS_PDR_SERVICE_LOCATION_CLIENT_NAME, &session));
+		if (err)
+			goto spdbail;
+		me->channel[0].spd[session].get_service_nb.notifier_call =
+					fastrpc_get_service_location_notify;
+		ret = get_service_location(
+				SENSORS_PDR_SERVICE_LOCATION_CLIENT_NAME,
+				SENSORS_PDR_ADSP_SERVICE_NAME,
+				&me->channel[0].spd[session].get_service_nb);
+		if (ret)
+			pr_err("ADSPRPC: Get service location failed: %d\n",
+								ret);
+	}
+spdbail:
+	err = 0;
+	VERIFY(err, !of_platform_populate(pdev->dev.of_node,
+					  fastrpc_match_table,
+					  NULL, &pdev->dev));
+	if (err)
+		goto bail;
+bail:
+	return err;
+}
+
+static void fastrpc_deinit(void)
+{
+	struct fastrpc_channel_ctx *chan = gcinfo;
+	int i, j;
+
+	for (i = 0; i < NUM_CHANNELS; i++, chan++) {
+		for (j = 0; j < NUM_SESSIONS; j++) {
+			struct fastrpc_session_ctx *sess = &chan->session[j];
+
+			if (sess->smmu.dev) {
+				arm_iommu_detach_device(sess->smmu.dev);
+				sess->smmu.dev = NULL;
+			}
+			if (sess->smmu.mapping) {
+				arm_iommu_release_mapping(sess->smmu.mapping);
+				sess->smmu.mapping = NULL;
+			}
+		}
+		kfree(chan->rhvm.vmid);
+		kfree(chan->rhvm.vmperm);
+	}
+}
+
+#ifdef CONFIG_PM_SLEEP
+static int fastrpc_restore(struct device *dev)
+{
+	int err = 0;
+	struct fastrpc_apps *me = &gfa;
+	struct smq_phy_page range;
+	struct device_node *ion_node, *node;
+	struct platform_device *ion_pdev;
+	struct cma *cma;
+	uint32_t val;
+	int cid;
+
+	pr_info("adsprpc: restore enter\n");
+	for (cid = 0; cid < NUM_CHANNELS; cid++)
+		me->channel[cid].in_hib = 1;
+
+	if (of_device_is_compatible(dev->of_node,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"qcom,msm-adsprpc-mem-region")) {
 		me->dev = dev;
 		range.addr = 0;
@@ -4789,6 +6480,7 @@ static int fastrpc_probe(struct platform_device *pdev)
 				PERM_READ | PERM_WRITE | PERM_EXEC,
 				};
 
+<<<<<<< HEAD
 			err = hyp_assign_phys(range.addr, range.size,
 					srcVM, 1, destVM, destVMperm, 4);
 			if (err)
@@ -4889,19 +6581,50 @@ static void fastrpc_deinit(void)
 		kfree(chan->rhvm.vmperm);
 	}
 }
+=======
+			VERIFY(err, !hyp_assign_phys(range.addr, range.size,
+					srcVM, 1, destVM, destVMperm, 4));
+			if (err)
+				return err;
+			me->range.addr = range.addr;
+			me->range.size = range.size;
+		}
+	}
+	pr_info("adsprpc: restore exit\n");
+	return 0;
+}
+
+static const struct dev_pm_ops fastrpc_pm = {
+	.restore = fastrpc_restore,
+};
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct platform_driver fastrpc_driver = {
 	.probe = fastrpc_probe,
 	.driver = {
 		.name = "fastrpc",
+<<<<<<< HEAD
 		.of_match_table = fastrpc_match_table,
 		.suppress_bind_attrs = true,
+=======
+		.owner = THIS_MODULE,
+		.of_match_table = fastrpc_match_table,
+		.suppress_bind_attrs = true,
+#ifdef CONFIG_PM_SLEEP
+		.pm = &fastrpc_pm,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
 static const struct rpmsg_device_id fastrpc_rpmsg_match[] = {
 	{ FASTRPC_GLINK_GUID },
+<<<<<<< HEAD
 	{ },
+=======
+	{ FASTRPC_SMD_GUID },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id fastrpc_rpmsg_of_match[] = {
@@ -4929,6 +6652,15 @@ static int __init fastrpc_device_init(void)
 	int err = 0, i;
 
 	debugfs_root = debugfs_create_dir("adsprpc", NULL);
+<<<<<<< HEAD
+=======
+	if (IS_ERR_OR_NULL(debugfs_root)) {
+		pr_warn("Error: %s: %s: failed to create debugfs root dir\n",
+			current->comm, __func__);
+		debugfs_remove_recursive(debugfs_root);
+		debugfs_root = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(me, 0, sizeof(*me));
 	fastrpc_init(me);
 	me->dev = NULL;
@@ -4937,7 +6669,11 @@ static int __init fastrpc_device_init(void)
 	if (err)
 		goto register_bail;
 	VERIFY(err, 0 == alloc_chrdev_region(&me->dev_no, 0, NUM_CHANNELS,
+<<<<<<< HEAD
 					DEVICE_NAME));
+=======
+		DEVICE_NAME));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto alloc_chrdev_bail;
 	cdev_init(&me->cdev, &fops);
@@ -4972,19 +6708,31 @@ static int __init fastrpc_device_init(void)
 		goto device_create_bail;
 
 	for (i = 0; i < NUM_CHANNELS; i++) {
+<<<<<<< HEAD
 		me->jobid[i] = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		me->channel[i].dev = secure_dev;
 		if (i == CDSP_DOMAIN_ID)
 			me->channel[i].dev = dev;
 		me->channel[i].ssrcount = 0;
+<<<<<<< HEAD
 		me->channel[i].prevssrcount = 0;
 		me->channel[i].issubsystemup = 1;
 		me->channel[i].ramdumpenabled = 0;
 		me->channel[i].rh_dump_dev = NULL;
+=======
+		me->channel[i].in_hib = 0;
+		me->channel[i].prevssrcount = 0;
+		me->channel[i].issubsystemup = 1;
+		me->channel[i].ramdumpenabled = 0;
+		me->channel[i].remoteheap_ramdump_dev = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		me->channel[i].nb.notifier_call = fastrpc_restart_notifier_cb;
 		me->channel[i].handle = subsys_notif_register_notifier(
 							gcinfo[i].subsys,
 							&me->channel[i].nb);
+<<<<<<< HEAD
 		if (IS_ERR_OR_NULL(me->channel[i].handle))
 			pr_warn("adsprpc: %s: SSR notifier register failed for %s with err %d\n",
 				__func__, gcinfo[i].subsys,
@@ -4992,6 +6740,8 @@ static int __init fastrpc_device_init(void)
 		else
 			pr_info("adsprpc: %s: SSR notifier registered for %s\n",
 				__func__, gcinfo[i].subsys);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = register_rpmsg_driver(&fastrpc_rpmsg_client);
@@ -5002,11 +6752,29 @@ static int __init fastrpc_device_init(void)
 	}
 	me->rpmsg_register = 1;
 
+<<<<<<< HEAD
 	me->wake_source = wakeup_source_register("adsprpc");
 	VERIFY(err, !IS_ERR_OR_NULL(me->wake_source));
 	if (err) {
 		pr_err("adsprpc: Error: %s: wakeup_source_register failed with err %d\n",
 					__func__, PTR_ERR(me->wake_source));
+=======
+	me->wake_source = wakeup_source_register(dev, "adsprpc-non_secure");
+	VERIFY(err, !IS_ERR_OR_NULL(me->wake_source));
+	if (err) {
+		pr_err("adsprpc: Error: %s: wakeup_source_register failed for %s with err %ld\n",
+			__func__, dev_name(dev), PTR_ERR(me->wake_source));
+		goto device_create_bail;
+	}
+
+	me->wake_source_secure = wakeup_source_register(secure_dev,
+							"adsprpc-secure");
+	VERIFY(err, !IS_ERR_OR_NULL(me->wake_source_secure));
+	if (err) {
+		pr_err("adsprpc: Error: %s: wakeup_source_register failed for %s with err %ld\n",
+			__func__, dev_name(secure_dev),
+			PTR_ERR(me->wake_source_secure));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto device_create_bail;
 	}
 	return 0;
@@ -5043,8 +6811,11 @@ static void __exit fastrpc_device_exit(void)
 	for (i = 0; i < NUM_CHANNELS; i++) {
 		if (!gcinfo[i].name)
 			continue;
+<<<<<<< HEAD
 		if (me->channel[i].ipc_log_ctx)
 			ipc_log_context_destroy(me->channel[i].ipc_log_ctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		subsys_notif_unregister_notifier(me->channel[i].handle,
 						&me->channel[i].nb);
 	}
@@ -5061,6 +6832,11 @@ static void __exit fastrpc_device_exit(void)
 		unregister_rpmsg_driver(&fastrpc_rpmsg_client);
 	if (me->wake_source)
 		wakeup_source_unregister(me->wake_source);
+<<<<<<< HEAD
+=======
+	if (me->wake_source_secure)
+		wakeup_source_unregister(me->wake_source_secure);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	debugfs_remove_recursive(debugfs_root);
 }
 

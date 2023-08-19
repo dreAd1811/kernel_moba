@@ -121,7 +121,12 @@ static int omap3_rom_rng_remove(struct platform_device *pdev)
 {
 	cancel_delayed_work_sync(&idle_work);
 	hwrng_unregister(&omap3_rom_rng_ops);
+<<<<<<< HEAD
 	clk_disable_unprepare(rng_clk);
+=======
+	if (!rng_idle)
+		clk_disable_unprepare(rng_clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

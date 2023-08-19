@@ -498,7 +498,11 @@ static const struct v4l2_ioctl_ops tea575x_ioctl_ops = {
 };
 
 static const struct video_device tea575x_radio = {
+<<<<<<< HEAD
 	.ioctl_ops	= &tea575x_ioctl_ops,
+=======
+	.ioctl_ops 	= &tea575x_ioctl_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.release        = video_device_release_empty,
 };
 

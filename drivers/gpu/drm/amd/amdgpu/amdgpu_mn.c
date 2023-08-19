@@ -28,6 +28,7 @@
  *    Christian König <christian.koenig@amd.com>
  */
 
+<<<<<<< HEAD
 /**
  * DOC: MMU Notifier
  *
@@ -43,6 +44,8 @@
  * address space.
  */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/firmware.h>
 #include <linux/module.h>
 #include <linux/mmu_notifier.h>
@@ -51,6 +54,7 @@
 #include <drm/drm.h>
 
 #include "amdgpu.h"
+<<<<<<< HEAD
 #include "amdgpu_amdkfd.h"
 
 /**
@@ -69,12 +73,18 @@
  *
  * Data for each amdgpu device and process address space.
  */
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct amdgpu_mn {
 	/* constant after initialisation */
 	struct amdgpu_device	*adev;
 	struct mm_struct	*mm;
 	struct mmu_notifier	mn;
+<<<<<<< HEAD
 	enum amdgpu_mn_type	type;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* only used on destruction */
 	struct work_struct	work;
@@ -83,6 +93,7 @@ struct amdgpu_mn {
 	struct hlist_node	node;
 
 	/* objects protected by lock */
+<<<<<<< HEAD
 	struct rw_semaphore	lock;
 	struct rb_root_cached	objects;
 	struct mutex		read_lock;
@@ -97,13 +108,23 @@ struct amdgpu_mn {
  *
  * Manages all BOs which are affected of a certain range of address space.
  */
+=======
+	struct mutex		lock;
+	struct rb_root_cached	objects;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct amdgpu_mn_node {
 	struct interval_tree_node	it;
 	struct list_head		bos;
 };
 
 /**
+<<<<<<< HEAD
  * amdgpu_mn_destroy - destroy the MMU notifier
+=======
+ * amdgpu_mn_destroy - destroy the rmn
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @work: previously sheduled work item
  *
@@ -111,39 +132,63 @@ struct amdgpu_mn_node {
  */
 static void amdgpu_mn_destroy(struct work_struct *work)
 {
+<<<<<<< HEAD
 	struct amdgpu_mn *amn = container_of(work, struct amdgpu_mn, work);
 	struct amdgpu_device *adev = amn->adev;
+=======
+	struct amdgpu_mn *rmn = container_of(work, struct amdgpu_mn, work);
+	struct amdgpu_device *adev = rmn->adev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct amdgpu_mn_node *node, *next_node;
 	struct amdgpu_bo *bo, *next_bo;
 
 	mutex_lock(&adev->mn_lock);
+<<<<<<< HEAD
 	down_write(&amn->lock);
 	hash_del(&amn->node);
 	rbtree_postorder_for_each_entry_safe(node, next_node,
 					     &amn->objects.rb_root, it.rb) {
+=======
+	mutex_lock(&rmn->lock);
+	hash_del(&rmn->node);
+	rbtree_postorder_for_each_entry_safe(node, next_node,
+					     &rmn->objects.rb_root, it.rb) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_for_each_entry_safe(bo, next_bo, &node->bos, mn_list) {
 			bo->mn = NULL;
 			list_del_init(&bo->mn_list);
 		}
 		kfree(node);
 	}
+<<<<<<< HEAD
 	up_write(&amn->lock);
 	mutex_unlock(&adev->mn_lock);
 	mmu_notifier_unregister_no_release(&amn->mn, amn->mm);
 	kfree(amn);
+=======
+	mutex_unlock(&rmn->lock);
+	mutex_unlock(&adev->mn_lock);
+	mmu_notifier_unregister_no_release(&rmn->mn, rmn->mm);
+	kfree(rmn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  * amdgpu_mn_release - callback to notify about mm destruction
  *
  * @mn: our notifier
+<<<<<<< HEAD
  * @mm: the mm this callback is about
+=======
+ * @mn: the mm this callback is about
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Shedule a work item to lazy destroy our notifier.
  */
 static void amdgpu_mn_release(struct mmu_notifier *mn,
 			      struct mm_struct *mm)
 {
+<<<<<<< HEAD
 	struct amdgpu_mn *amn = container_of(mn, struct amdgpu_mn, mn);
 
 	INIT_WORK(&amn->work, amdgpu_mn_destroy);
@@ -201,17 +246,28 @@ static void amdgpu_mn_read_unlock(struct amdgpu_mn *amn)
 {
 	if (atomic_dec_return(&amn->recursion) == 0)
 		up_read_non_owner(&amn->lock);
+=======
+	struct amdgpu_mn *rmn = container_of(mn, struct amdgpu_mn, mn);
+	INIT_WORK(&rmn->work, amdgpu_mn_destroy);
+	schedule_work(&rmn->work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
  * amdgpu_mn_invalidate_node - unmap all BOs of a node
  *
  * @node: the node with the BOs to unmap
+<<<<<<< HEAD
  * @start: start of address range affected
  * @end: end of address range affected
  *
  * Block for operations on BOs to finish and mark pages as accessed and
  * potentially dirty.
+=======
+ *
+ * We block for all BOs and unmap them by move them
+ * into system domain again.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void amdgpu_mn_invalidate_node(struct amdgpu_mn_node *node,
 				      unsigned long start,
@@ -225,16 +281,35 @@ static void amdgpu_mn_invalidate_node(struct amdgpu_mn_node *node,
 		if (!amdgpu_ttm_tt_affect_userptr(bo->tbo.ttm, start, end))
 			continue;
 
+<<<<<<< HEAD
+=======
+		r = amdgpu_bo_reserve(bo, true);
+		if (r) {
+			DRM_ERROR("(%ld) failed to reserve user bo\n", r);
+			continue;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		r = reservation_object_wait_timeout_rcu(bo->tbo.resv,
 			true, false, MAX_SCHEDULE_TIMEOUT);
 		if (r <= 0)
 			DRM_ERROR("(%ld) failed to wait for user bo\n", r);
 
+<<<<<<< HEAD
 		amdgpu_ttm_tt_mark_user_pages(bo->tbo.ttm);
+=======
+		amdgpu_ttm_placement_from_domain(bo, AMDGPU_GEM_DOMAIN_CPU);
+		r = ttm_bo_validate(&bo->tbo, &bo->placement, false, false);
+		if (r)
+			DRM_ERROR("(%ld) failed to validate user bo\n", r);
+
+		amdgpu_bo_unreserve(bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 /**
+<<<<<<< HEAD
  * amdgpu_mn_invalidate_range_start_gfx - callback to notify about mm change
  *
  * @mn: our notifier
@@ -252,11 +327,30 @@ static int amdgpu_mn_invalidate_range_start_gfx(struct mmu_notifier *mn,
 						 bool blockable)
 {
 	struct amdgpu_mn *amn = container_of(mn, struct amdgpu_mn, mn);
+=======
+ * amdgpu_mn_invalidate_range_start - callback to notify about mm change
+ *
+ * @mn: our notifier
+ * @mn: the mm this callback is about
+ * @start: start of updated range
+ * @end: end of updated range
+ *
+ * We block for all BOs between start and end to be idle and
+ * unmap them by move them into system domain again.
+ */
+static void amdgpu_mn_invalidate_range_start(struct mmu_notifier *mn,
+					     struct mm_struct *mm,
+					     unsigned long start,
+					     unsigned long end)
+{
+	struct amdgpu_mn *rmn = container_of(mn, struct amdgpu_mn, mn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct interval_tree_node *it;
 
 	/* notification is exclusive, but interval is inclusive */
 	end -= 1;
 
+<<<<<<< HEAD
 	/* TODO we should be able to split locking for interval tree and
 	 * amdgpu_mn_invalidate_node
 	 */
@@ -272,12 +366,21 @@ static int amdgpu_mn_invalidate_range_start_gfx(struct mmu_notifier *mn,
 			return -EAGAIN;
 		}
 
+=======
+	mutex_lock(&rmn->lock);
+
+	it = interval_tree_iter_first(&rmn->objects, start, end);
+	while (it) {
+		struct amdgpu_mn_node *node;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		node = container_of(it, struct amdgpu_mn_node, it);
 		it = interval_tree_iter_next(it, start, end);
 
 		amdgpu_mn_invalidate_node(node, start, end);
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -372,10 +475,21 @@ static const struct mmu_notifier_ops amdgpu_mn_ops[] = {
  */
 #define AMDGPU_MN_KEY(mm, type) ((unsigned long)(mm) + (type))
 
+=======
+	mutex_unlock(&rmn->lock);
+}
+
+static const struct mmu_notifier_ops amdgpu_mn_ops = {
+	.release = amdgpu_mn_release,
+	.invalidate_range_start = amdgpu_mn_invalidate_range_start,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * amdgpu_mn_get - create notifier context
  *
  * @adev: amdgpu device pointer
+<<<<<<< HEAD
  * @type: type of MMU notifier context
  *
  * Creates a notifier context for current->mm.
@@ -386,6 +500,15 @@ struct amdgpu_mn *amdgpu_mn_get(struct amdgpu_device *adev,
 	struct mm_struct *mm = current->mm;
 	struct amdgpu_mn *amn;
 	unsigned long key = AMDGPU_MN_KEY(mm, type);
+=======
+ *
+ * Creates a notifier context for current->mm.
+ */
+static struct amdgpu_mn *amdgpu_mn_get(struct amdgpu_device *adev)
+{
+	struct mm_struct *mm = current->mm;
+	struct amdgpu_mn *rmn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	mutex_lock(&adev->mn_lock);
@@ -394,6 +517,7 @@ struct amdgpu_mn *amdgpu_mn_get(struct amdgpu_device *adev,
 		return ERR_PTR(-EINTR);
 	}
 
+<<<<<<< HEAD
 	hash_for_each_possible(adev->mn_hash, amn, node, key)
 		if (AMDGPU_MN_KEY(amn->mm, amn->type) == key)
 			goto release_locks;
@@ -418,17 +542,49 @@ struct amdgpu_mn *amdgpu_mn_get(struct amdgpu_device *adev,
 		goto free_amn;
 
 	hash_add(adev->mn_hash, &amn->node, AMDGPU_MN_KEY(mm, type));
+=======
+	hash_for_each_possible(adev->mn_hash, rmn, node, (unsigned long)mm)
+		if (rmn->mm == mm)
+			goto release_locks;
+
+	rmn = kzalloc(sizeof(*rmn), GFP_KERNEL);
+	if (!rmn) {
+		rmn = ERR_PTR(-ENOMEM);
+		goto release_locks;
+	}
+
+	rmn->adev = adev;
+	rmn->mm = mm;
+	rmn->mn.ops = &amdgpu_mn_ops;
+	mutex_init(&rmn->lock);
+	rmn->objects = RB_ROOT_CACHED;
+
+	r = __mmu_notifier_register(&rmn->mn, mm);
+	if (r)
+		goto free_rmn;
+
+	hash_add(adev->mn_hash, &rmn->node, (unsigned long)mm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 release_locks:
 	up_write(&mm->mmap_sem);
 	mutex_unlock(&adev->mn_lock);
 
+<<<<<<< HEAD
 	return amn;
 
 free_amn:
 	up_write(&mm->mmap_sem);
 	mutex_unlock(&adev->mn_lock);
 	kfree(amn);
+=======
+	return rmn;
+
+free_rmn:
+	up_write(&mm->mmap_sem);
+	mutex_unlock(&adev->mn_lock);
+	kfree(rmn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ERR_PTR(r);
 }
@@ -446,6 +602,7 @@ int amdgpu_mn_register(struct amdgpu_bo *bo, unsigned long addr)
 {
 	unsigned long end = addr + amdgpu_bo_size(bo) - 1;
 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+<<<<<<< HEAD
 	enum amdgpu_mn_type type =
 		bo->kfd_bo ? AMDGPU_MN_TYPE_HSA : AMDGPU_MN_TYPE_GFX;
 	struct amdgpu_mn *amn;
@@ -469,17 +626,48 @@ int amdgpu_mn_register(struct amdgpu_bo *bo, unsigned long addr)
 		kfree(node);
 		node = container_of(it, struct amdgpu_mn_node, it);
 		interval_tree_remove(&node->it, &amn->objects);
+=======
+	struct amdgpu_mn *rmn;
+	struct amdgpu_mn_node *node = NULL;
+	struct list_head bos;
+	struct interval_tree_node *it;
+
+	rmn = amdgpu_mn_get(adev);
+	if (IS_ERR(rmn))
+		return PTR_ERR(rmn);
+
+	INIT_LIST_HEAD(&bos);
+
+	mutex_lock(&rmn->lock);
+
+	while ((it = interval_tree_iter_first(&rmn->objects, addr, end))) {
+		kfree(node);
+		node = container_of(it, struct amdgpu_mn_node, it);
+		interval_tree_remove(&node->it, &rmn->objects);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		addr = min(it->start, addr);
 		end = max(it->last, end);
 		list_splice(&node->bos, &bos);
 	}
 
+<<<<<<< HEAD
 	if (!node)
 		node = new_node;
 	else
 		kfree(new_node);
 
 	bo->mn = amn;
+=======
+	if (!node) {
+		node = kmalloc(sizeof(struct amdgpu_mn_node), GFP_KERNEL);
+		if (!node) {
+			mutex_unlock(&rmn->lock);
+			return -ENOMEM;
+		}
+	}
+
+	bo->mn = rmn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	node->it.start = addr;
 	node->it.last = end;
@@ -487,9 +675,15 @@ int amdgpu_mn_register(struct amdgpu_bo *bo, unsigned long addr)
 	list_splice(&bos, &node->bos);
 	list_add(&bo->mn_list, &node->bos);
 
+<<<<<<< HEAD
 	interval_tree_insert(&node->it, &amn->objects);
 
 	up_write(&amn->lock);
+=======
+	interval_tree_insert(&node->it, &rmn->objects);
+
+	mutex_unlock(&rmn->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -504,18 +698,31 @@ int amdgpu_mn_register(struct amdgpu_bo *bo, unsigned long addr)
 void amdgpu_mn_unregister(struct amdgpu_bo *bo)
 {
 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+<<<<<<< HEAD
 	struct amdgpu_mn *amn;
+=======
+	struct amdgpu_mn *rmn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head *head;
 
 	mutex_lock(&adev->mn_lock);
 
+<<<<<<< HEAD
 	amn = bo->mn;
 	if (amn == NULL) {
+=======
+	rmn = bo->mn;
+	if (rmn == NULL) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&adev->mn_lock);
 		return;
 	}
 
+<<<<<<< HEAD
 	down_write(&amn->lock);
+=======
+	mutex_lock(&rmn->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* save the next list entry for later */
 	head = bo->mn_list.next;
@@ -525,6 +732,7 @@ void amdgpu_mn_unregister(struct amdgpu_bo *bo)
 
 	if (list_empty(head)) {
 		struct amdgpu_mn_node *node;
+<<<<<<< HEAD
 
 		node = container_of(head, struct amdgpu_mn_node, bos);
 		interval_tree_remove(&node->it, &amn->objects);
@@ -535,3 +743,13 @@ void amdgpu_mn_unregister(struct amdgpu_bo *bo)
 	mutex_unlock(&adev->mn_lock);
 }
 
+=======
+		node = container_of(head, struct amdgpu_mn_node, bos);
+		interval_tree_remove(&node->it, &rmn->objects);
+		kfree(node);
+	}
+
+	mutex_unlock(&rmn->lock);
+	mutex_unlock(&adev->mn_lock);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

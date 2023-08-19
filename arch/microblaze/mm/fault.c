@@ -88,9 +88,16 @@ void do_page_fault(struct pt_regs *regs, unsigned long address,
 {
 	struct vm_area_struct *vma;
 	struct mm_struct *mm = current->mm;
+<<<<<<< HEAD
 	int code = SEGV_MAPERR;
 	int is_write = error_code & ESR_S;
 	vm_fault_t fault;
+=======
+	siginfo_t info;
+	int code = SEGV_MAPERR;
+	int is_write = error_code & ESR_S;
+	int fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 
 	regs->ear = address;
@@ -268,6 +275,14 @@ bad_area_nosemaphore:
 	/* User mode accesses cause a SIGSEGV */
 	if (user_mode(regs)) {
 		_exception(SIGSEGV, regs, code, address);
+<<<<<<< HEAD
+=======
+/*		info.si_signo = SIGSEGV;
+		info.si_errno = 0;
+		info.si_code = code;
+		info.si_addr = (void *) address;
+		force_sig_info(SIGSEGV, &info, current);*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -289,7 +304,15 @@ out_of_memory:
 do_sigbus:
 	up_read(&mm->mmap_sem);
 	if (user_mode(regs)) {
+<<<<<<< HEAD
 		force_sig_fault(SIGBUS, BUS_ADRERR, (void __user *)address, current);
+=======
+		info.si_signo = SIGBUS;
+		info.si_errno = 0;
+		info.si_code = BUS_ADRERR;
+		info.si_addr = (void __user *)address;
+		force_sig_info(SIGBUS, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 	bad_page_fault(regs, address, SIGBUS);

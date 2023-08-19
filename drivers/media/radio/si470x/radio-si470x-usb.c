@@ -250,7 +250,11 @@ static int si470x_set_report(struct si470x_device *radio, void *buf, int size)
 /*
  * si470x_get_register - read register
  */
+<<<<<<< HEAD
 static int si470x_get_register(struct si470x_device *radio, int regnr)
+=======
+int si470x_get_register(struct si470x_device *radio, int regnr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int retval;
 
@@ -268,7 +272,11 @@ static int si470x_get_register(struct si470x_device *radio, int regnr)
 /*
  * si470x_set_register - write register
  */
+<<<<<<< HEAD
 static int si470x_set_register(struct si470x_device *radio, int regnr)
+=======
+int si470x_set_register(struct si470x_device *radio, int regnr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int retval;
 
@@ -482,12 +490,20 @@ resubmit:
 }
 
 
+<<<<<<< HEAD
 static int si470x_fops_open(struct file *file)
+=======
+int si470x_fops_open(struct file *file)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return v4l2_fh_open(file);
 }
 
+<<<<<<< HEAD
 static int si470x_fops_release(struct file *file)
+=======
+int si470x_fops_release(struct file *file)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return v4l2_fh_release(file);
 }
@@ -514,8 +530,13 @@ static void si470x_usb_release(struct v4l2_device *v4l2_dev)
 /*
  * si470x_vidioc_querycap - query device capabilities
  */
+<<<<<<< HEAD
 static int si470x_vidioc_querycap(struct file *file, void *priv,
 				  struct v4l2_capability *capability)
+=======
+int si470x_vidioc_querycap(struct file *file, void *priv,
+		struct v4l2_capability *capability)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct si470x_device *radio = video_drvdata(file);
 
@@ -578,7 +599,11 @@ static int si470x_usb_driver_probe(struct usb_interface *intf,
 	struct si470x_device *radio;
 	struct usb_host_interface *iface_desc;
 	struct usb_endpoint_descriptor *endpoint;
+<<<<<<< HEAD
 	int i, int_end_size, retval;
+=======
+	int i, int_end_size, retval = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char version_warning = 0;
 
 	/* private data allocation and initialization */
@@ -598,12 +623,15 @@ static int si470x_usb_driver_probe(struct usb_interface *intf,
 	mutex_init(&radio->lock);
 	init_completion(&radio->completion);
 
+<<<<<<< HEAD
 	radio->get_register = si470x_get_register;
 	radio->set_register = si470x_set_register;
 	radio->fops_open = si470x_fops_open;
 	radio->fops_release = si470x_fops_release;
 	radio->vidioc_querycap = si470x_vidioc_querycap;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	iface_desc = intf->cur_altsetting;
 
 	/* Set up interrupt endpoint information. */

@@ -388,10 +388,14 @@ void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
 		     unsigned long end)
 
 {
+<<<<<<< HEAD
 	if (end - start == PAGE_SIZE && !(start & ~PAGE_MASK))
 		flush_tlb_page(vma, start);
 	else
 		flush_tlb_mm(vma->vm_mm);
+=======
+	flush_tlb_mm(vma->vm_mm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(flush_tlb_range);
 

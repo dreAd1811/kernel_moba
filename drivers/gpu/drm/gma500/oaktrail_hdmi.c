@@ -509,7 +509,11 @@ static void oaktrail_hdmi_dpms(struct drm_encoder *encoder, int mode)
 	HDMI_WRITE(HDMI_VIDEO_REG, temp);
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status oaktrail_hdmi_mode_valid(struct drm_connector *connector,
+=======
+static int oaktrail_hdmi_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct drm_display_mode *mode)
 {
 	if (mode->clock > 165000)
@@ -578,7 +582,11 @@ static int oaktrail_hdmi_get_modes(struct drm_connector *connector)
 	}
 
 	if (edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, edid);
+=======
+		drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_add_edid_modes(connector, edid);
 	}
 	return ret;

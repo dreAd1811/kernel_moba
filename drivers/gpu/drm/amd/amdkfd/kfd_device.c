@@ -20,12 +20,17 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/amd-iommu.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bsearch.h>
 #include <linux/pci.h>
 #include <linux/slab.h>
 #include "kfd_priv.h"
 #include "kfd_device_queue_manager.h"
 #include "kfd_pm4_headers_vi.h"
+<<<<<<< HEAD
 #include "cwsr_trap_handler.h"
 #include "kfd_iommu.h"
 
@@ -39,11 +44,17 @@
 static atomic_t kfd_locked = ATOMIC_INIT(0);
 
 #ifdef KFD_SUPPORT_IOMMU_V2
+=======
+
+#define MQD_SIZE_ALIGNED 768
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct kfd_device_info kaveri_device_info = {
 	.asic_family = CHIP_KAVERI,
 	.max_pasid_bits = 16,
 	/* max num of queues for KV.TODO should be a dynamic value */
 	.max_no_of_hqd	= 24,
+<<<<<<< HEAD
 	.doorbell_size  = 4,
 	.ih_ring_entry_size = 4 * sizeof(uint32_t),
 	.event_interrupt_class = &event_interrupt_class_cik,
@@ -53,6 +64,12 @@ static const struct kfd_device_info kaveri_device_info = {
 	.needs_iommu_device = true,
 	.needs_pci_atomics = false,
 	.num_sdma_engines = 2,
+=======
+	.ih_ring_entry_size = 4 * sizeof(uint32_t),
+	.event_interrupt_class = &event_interrupt_class_cik,
+	.num_of_watch_points = 4,
+	.mqd_size_aligned = MQD_SIZE_ALIGNED
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct kfd_device_info carrizo_device_info = {
@@ -60,6 +77,7 @@ static const struct kfd_device_info carrizo_device_info = {
 	.max_pasid_bits = 16,
 	/* max num of queues for CZ.TODO should be a dynamic value */
 	.max_no_of_hqd	= 24,
+<<<<<<< HEAD
 	.doorbell_size  = 4,
 	.ih_ring_entry_size = 4 * sizeof(uint32_t),
 	.event_interrupt_class = &event_interrupt_class_cik,
@@ -240,13 +258,26 @@ static const struct kfd_device_info vega10_vf_device_info = {
 };
 
 
+=======
+	.ih_ring_entry_size = 4 * sizeof(uint32_t),
+	.event_interrupt_class = &event_interrupt_class_cik,
+	.num_of_watch_points = 4,
+	.mqd_size_aligned = MQD_SIZE_ALIGNED
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kfd_deviceid {
 	unsigned short did;
 	const struct kfd_device_info *device_info;
 };
 
+<<<<<<< HEAD
 static const struct kfd_deviceid supported_devices[] = {
 #ifdef KFD_SUPPORT_IOMMU_V2
+=======
+/* Please keep this sorted by increasing device id. */
+static const struct kfd_deviceid supported_devices[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ 0x1304, &kaveri_device_info },	/* Kaveri */
 	{ 0x1305, &kaveri_device_info },	/* Kaveri */
 	{ 0x1306, &kaveri_device_info },	/* Kaveri */
@@ -273,6 +304,7 @@ static const struct kfd_deviceid supported_devices[] = {
 	{ 0x9874, &carrizo_device_info },	/* Carrizo */
 	{ 0x9875, &carrizo_device_info },	/* Carrizo */
 	{ 0x9876, &carrizo_device_info },	/* Carrizo */
+<<<<<<< HEAD
 	{ 0x9877, &carrizo_device_info },	/* Carrizo */
 	{ 0x15DD, &raven_device_info },		/* Raven */
 #endif
@@ -335,14 +367,20 @@ static const struct kfd_deviceid supported_devices[] = {
 	{ 0x686E, &vega10_device_info },	/* Vega10 */
 	{ 0x686F, &vega10_device_info },	/* Vega10 */
 	{ 0x687F, &vega10_device_info },	/* Vega10 */
+=======
+	{ 0x9877, &carrizo_device_info }	/* Carrizo */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int kfd_gtt_sa_init(struct kfd_dev *kfd, unsigned int buf_size,
 				unsigned int chunk_size);
 static void kfd_gtt_sa_fini(struct kfd_dev *kfd);
 
+<<<<<<< HEAD
 static int kfd_resume(struct kfd_dev *kfd);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct kfd_device_info *lookup_device_info(unsigned short did)
 {
 	size_t i;
@@ -364,7 +402,11 @@ struct kfd_dev *kgd2kfd_probe(struct kgd_dev *kgd,
 	struct pci_dev *pdev, const struct kfd2kgd_calls *f2g)
 {
 	struct kfd_dev *kfd;
+<<<<<<< HEAD
 	int ret;
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct kfd_device_info *device_info =
 					lookup_device_info(pdev->device);
 
@@ -373,6 +415,7 @@ struct kfd_dev *kgd2kfd_probe(struct kgd_dev *kgd,
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	/* Allow BIF to recode atomics to PCIe 3.0 AtomicOps.
 	 * 32 and 64-bit requests are possible and must be
 	 * supported.
@@ -387,6 +430,8 @@ struct kfd_dev *kgd2kfd_probe(struct kgd_dev *kgd,
 		return NULL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfd = kzalloc(sizeof(*kfd), GFP_KERNEL);
 	if (!kfd)
 		return NULL;
@@ -404,6 +449,7 @@ struct kfd_dev *kgd2kfd_probe(struct kgd_dev *kgd,
 	return kfd;
 }
 
+<<<<<<< HEAD
 static void kfd_cwsr_init(struct kfd_dev *kfd)
 {
 	if (cwsr_enable && kfd->device_info->supports_cwsr) {
@@ -419,6 +465,91 @@ static void kfd_cwsr_init(struct kfd_dev *kfd)
 
 		kfd->cwsr_enabled = true;
 	}
+=======
+static bool device_iommu_pasid_init(struct kfd_dev *kfd)
+{
+	const u32 required_iommu_flags = AMD_IOMMU_DEVICE_FLAG_ATS_SUP |
+					AMD_IOMMU_DEVICE_FLAG_PRI_SUP |
+					AMD_IOMMU_DEVICE_FLAG_PASID_SUP;
+
+	struct amd_iommu_device_info iommu_info;
+	unsigned int pasid_limit;
+	int err;
+
+	err = amd_iommu_device_info(kfd->pdev, &iommu_info);
+	if (err < 0) {
+		dev_err(kfd_device,
+			"error getting iommu info. is the iommu enabled?\n");
+		return false;
+	}
+
+	if ((iommu_info.flags & required_iommu_flags) != required_iommu_flags) {
+		dev_err(kfd_device, "error required iommu flags ats %i, pri %i, pasid %i\n",
+		       (iommu_info.flags & AMD_IOMMU_DEVICE_FLAG_ATS_SUP) != 0,
+		       (iommu_info.flags & AMD_IOMMU_DEVICE_FLAG_PRI_SUP) != 0,
+		       (iommu_info.flags & AMD_IOMMU_DEVICE_FLAG_PASID_SUP)
+									!= 0);
+		return false;
+	}
+
+	pasid_limit = min_t(unsigned int,
+			(unsigned int)(1 << kfd->device_info->max_pasid_bits),
+			iommu_info.max_pasids);
+	/*
+	 * last pasid is used for kernel queues doorbells
+	 * in the future the last pasid might be used for a kernel thread.
+	 */
+	pasid_limit = min_t(unsigned int,
+				pasid_limit,
+				kfd->doorbell_process_limit - 1);
+
+	err = amd_iommu_init_device(kfd->pdev, pasid_limit);
+	if (err < 0) {
+		dev_err(kfd_device, "error initializing iommu device\n");
+		return false;
+	}
+
+	if (!kfd_set_pasid_limit(pasid_limit)) {
+		dev_err(kfd_device, "error setting pasid limit\n");
+		amd_iommu_free_device(kfd->pdev);
+		return false;
+	}
+
+	return true;
+}
+
+static void iommu_pasid_shutdown_callback(struct pci_dev *pdev, int pasid)
+{
+	struct kfd_dev *dev = kfd_device_by_pci_dev(pdev);
+
+	if (dev)
+		kfd_unbind_process_from_device(dev, pasid);
+}
+
+/*
+ * This function called by IOMMU driver on PPR failure
+ */
+static int iommu_invalid_ppr_cb(struct pci_dev *pdev, int pasid,
+		unsigned long address, u16 flags)
+{
+	struct kfd_dev *dev;
+
+	dev_warn(kfd_device,
+			"Invalid PPR device %x:%x.%x pasid %d address 0x%lX flags 0x%X",
+			PCI_BUS_NUM(pdev->devfn),
+			PCI_SLOT(pdev->devfn),
+			PCI_FUNC(pdev->devfn),
+			pasid,
+			address,
+			flags);
+
+	dev = kfd_device_by_pci_dev(pdev);
+	if (!WARN_ON(!dev))
+		kfd_signal_iommu_event(dev, pasid, address,
+			flags & PPR_FAULT_WRITE, flags & PPR_FAULT_EXEC);
+
+	return AMD_IOMMU_INV_PRI_RSP_INVALID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 bool kgd2kfd_device_init(struct kfd_dev *kfd,
@@ -428,6 +559,7 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
 
 	kfd->shared_resources = *gpu_resources;
 
+<<<<<<< HEAD
 	kfd->vm_info.first_vmid_kfd = ffs(gpu_resources->compute_vmid_bitmap)-1;
 	kfd->vm_info.last_vmid_kfd = fls(gpu_resources->compute_vmid_bitmap)-1;
 	kfd->vm_info.vmid_num_kfd = kfd->vm_info.last_vmid_kfd
@@ -444,6 +576,8 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
 	} else
 		kfd->max_proc_per_quantum = hws_max_conc_proc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* calculate max size of mqds needed for queues */
 	size = max_num_of_queues_per_device *
 			kfd->device_info->mqd_size_aligned;
@@ -464,8 +598,12 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
 
 	if (kfd->kfd2kgd->init_gtt_mem_allocation(
 			kfd->kgd, size, &kfd->gtt_mem,
+<<<<<<< HEAD
 			&kfd->gtt_start_gpu_addr, &kfd->gtt_start_cpu_ptr,
 			false)) {
+=======
+			&kfd->gtt_start_gpu_addr, &kfd->gtt_start_cpu_ptr)){
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(kfd_device, "Could not allocate %d bytes\n", size);
 		goto out;
 	}
@@ -494,12 +632,26 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
 		goto kfd_interrupt_error;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!device_iommu_pasid_init(kfd)) {
+		dev_err(kfd_device,
+			"Error initializing iommuv2 for device %x:%x\n",
+			kfd->pdev->vendor, kfd->pdev->device);
+		goto device_iommu_pasid_error;
+	}
+	amd_iommu_set_invalidate_ctx_cb(kfd->pdev,
+						iommu_pasid_shutdown_callback);
+	amd_iommu_set_invalid_ppr_cb(kfd->pdev, iommu_invalid_ppr_cb);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfd->dqm = device_queue_manager_init(kfd);
 	if (!kfd->dqm) {
 		dev_err(kfd_device, "Error initializing queue manager\n");
 		goto device_queue_manager_error;
 	}
 
+<<<<<<< HEAD
 	if (kfd_iommu_device_init(kfd)) {
 		dev_err(kfd_device, "Error initializing iommuv2\n");
 		goto device_iommu_error;
@@ -510,6 +662,15 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
 	if (kfd_resume(kfd))
 		goto kfd_resume_error;
 
+=======
+	if (kfd->dqm->ops.start(kfd->dqm)) {
+		dev_err(kfd_device,
+			"Error starting queue manager for device %x:%x\n",
+			kfd->pdev->vendor, kfd->pdev->device);
+		goto dqm_start_error;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfd->dbgmgr = NULL;
 
 	kfd->init_complete = true;
@@ -517,6 +678,7 @@ bool kgd2kfd_device_init(struct kfd_dev *kfd,
 		 kfd->pdev->device);
 
 	pr_debug("Starting kfd with the following scheduling policy %d\n",
+<<<<<<< HEAD
 		kfd->dqm->sched_policy);
 
 	goto out;
@@ -525,6 +687,17 @@ kfd_resume_error:
 device_iommu_error:
 	device_queue_manager_uninit(kfd->dqm);
 device_queue_manager_error:
+=======
+		sched_policy);
+
+	goto out;
+
+dqm_start_error:
+	device_queue_manager_uninit(kfd->dqm);
+device_queue_manager_error:
+	amd_iommu_free_device(kfd->pdev);
+device_iommu_pasid_error:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfd_interrupt_exit(kfd);
 kfd_interrupt_error:
 	kfd_topology_remove_device(kfd);
@@ -544,8 +717,13 @@ out:
 void kgd2kfd_device_exit(struct kfd_dev *kfd)
 {
 	if (kfd->init_complete) {
+<<<<<<< HEAD
 		kgd2kfd_suspend(kfd);
 		device_queue_manager_uninit(kfd->dqm);
+=======
+		device_queue_manager_uninit(kfd->dqm);
+		amd_iommu_free_device(kfd->pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfd_interrupt_exit(kfd);
 		kfd_topology_remove_device(kfd);
 		kfd_doorbell_fini(kfd);
@@ -556,6 +734,7 @@ void kgd2kfd_device_exit(struct kfd_dev *kfd)
 	kfree(kfd);
 }
 
+<<<<<<< HEAD
 int kgd2kfd_pre_reset(struct kfd_dev *kfd)
 {
 	if (!kfd->init_complete)
@@ -609,10 +788,21 @@ void kgd2kfd_suspend(struct kfd_dev *kfd)
 	kfd->dqm->ops.stop(kfd->dqm);
 
 	kfd_iommu_suspend(kfd);
+=======
+void kgd2kfd_suspend(struct kfd_dev *kfd)
+{
+	if (kfd->init_complete) {
+		kfd->dqm->ops.stop(kfd->dqm);
+		amd_iommu_set_invalidate_ctx_cb(kfd->pdev, NULL);
+		amd_iommu_set_invalid_ppr_cb(kfd->pdev, NULL);
+		amd_iommu_free_device(kfd->pdev);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int kgd2kfd_resume(struct kfd_dev *kfd)
 {
+<<<<<<< HEAD
 	int ret, count;
 
 	if (!kfd->init_complete)
@@ -655,11 +845,33 @@ static int kfd_resume(struct kfd_dev *kfd)
 dqm_start_error:
 	kfd_iommu_suspend(kfd);
 	return err;
+=======
+	unsigned int pasid_limit;
+	int err;
+
+	pasid_limit = kfd_get_pasid_limit();
+
+	if (kfd->init_complete) {
+		err = amd_iommu_init_device(kfd->pdev, pasid_limit);
+		if (err < 0) {
+			dev_err(kfd_device, "failed to initialize iommu\n");
+			return -ENXIO;
+		}
+
+		amd_iommu_set_invalidate_ctx_cb(kfd->pdev,
+						iommu_pasid_shutdown_callback);
+		amd_iommu_set_invalid_ppr_cb(kfd->pdev, iommu_invalid_ppr_cb);
+		kfd->dqm->ops.start(kfd->dqm);
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* This is called directly from KGD at ISR. */
 void kgd2kfd_interrupt(struct kfd_dev *kfd, const void *ih_ring_entry)
 {
+<<<<<<< HEAD
 	uint32_t patched_ihre[KFD_MAX_RING_ENTRY_SIZE];
 	bool is_patched = false;
 	unsigned long flags;
@@ -768,6 +980,19 @@ int kgd2kfd_schedule_evict_and_restore_process(struct mm_struct *mm,
 out:
 	kfd_unref_process(p);
 	return 0;
+=======
+	if (!kfd->init_complete)
+		return;
+
+	spin_lock(&kfd->interrupt_lock);
+
+	if (kfd->interrupts_active
+	    && interrupt_is_wanted(kfd, ih_ring_entry)
+	    && enqueue_ih_ring_entry(kfd, ih_ring_entry))
+		schedule_work(&kfd->interrupt_work);
+
+	spin_unlock(&kfd->interrupt_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int kfd_gtt_sa_init(struct kfd_dev *kfd, unsigned int buf_size,
@@ -833,8 +1058,13 @@ int kfd_gtt_sa_allocate(struct kfd_dev *kfd, unsigned int size,
 	if (size > kfd->gtt_sa_num_of_chunks * kfd->gtt_sa_chunk_size)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	*mem_obj = kzalloc(sizeof(struct kfd_mem_obj), GFP_KERNEL);
 	if (!(*mem_obj))
+=======
+	*mem_obj = kmalloc(sizeof(struct kfd_mem_obj), GFP_KERNEL);
+	if ((*mem_obj) == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	pr_debug("Allocated mem_obj = %p for size = %d\n", *mem_obj, size);
@@ -921,9 +1151,15 @@ kfd_gtt_out:
 	return 0;
 
 kfd_gtt_no_free_chunk:
+<<<<<<< HEAD
 	pr_debug("Allocation failed with mem_obj = %p\n", mem_obj);
 	mutex_unlock(&kfd->gtt_sa_lock);
 	kfree(mem_obj);
+=======
+	pr_debug("Allocation failed with mem_obj = %p\n", *mem_obj);
+	mutex_unlock(&kfd->gtt_sa_lock);
+	kfree(*mem_obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ENOMEM;
 }
 
@@ -951,6 +1187,7 @@ int kfd_gtt_sa_free(struct kfd_dev *kfd, struct kfd_mem_obj *mem_obj)
 	kfree(mem_obj);
 	return 0;
 }
+<<<<<<< HEAD
 
 #if defined(CONFIG_DEBUG_FS)
 
@@ -974,3 +1211,5 @@ int kfd_debugfs_hang_hws(struct kfd_dev *dev)
 }
 
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

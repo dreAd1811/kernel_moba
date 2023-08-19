@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**************************************************************************
  *
  * Copyright (c) 2006-2009 VMware, Inc., Palo Alto, CA., USA
@@ -43,6 +46,14 @@
 #include <linux/atomic.h>
 #include <linux/reservation.h>
 
+<<<<<<< HEAD
+=======
+#define TTM_ASSERT_LOCKED(param)
+#define TTM_DEBUG(fmt, arg...)
+#define TTM_BO_HASH_ORDER 13
+
+static int ttm_bo_swapout(struct ttm_mem_shrink *shrink);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ttm_bo_global_kobj_release(struct kobject *kobj);
 
 static struct attribute ttm_bo_count = {
@@ -50,12 +61,15 @@ static struct attribute ttm_bo_count = {
 	.mode = S_IRUGO
 };
 
+<<<<<<< HEAD
 /* default destructor */
 static void ttm_bo_default_destroy(struct ttm_buffer_object *bo)
 {
 	kfree(bo);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int ttm_mem_type_from_place(const struct ttm_place *place,
 					  uint32_t *mem_type)
 {
@@ -150,11 +164,23 @@ static void ttm_bo_release_list(struct kref *list_kref)
 	BUG_ON(!list_empty(&bo->lru));
 	BUG_ON(!list_empty(&bo->ddestroy));
 	ttm_tt_destroy(bo->ttm);
+<<<<<<< HEAD
 	atomic_dec(&bo->bdev->glob->bo_count);
 	dma_fence_put(bo->moving);
 	reservation_object_fini(&bo->ttm_resv);
 	mutex_destroy(&bo->wu_mutex);
 	bo->destroy(bo);
+=======
+	atomic_dec(&bo->glob->bo_count);
+	dma_fence_put(bo->moving);
+	reservation_object_fini(&bo->ttm_resv);
+	mutex_destroy(&bo->wu_mutex);
+	if (bo->destroy)
+		bo->destroy(bo);
+	else {
+		kfree(bo);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ttm_mem_global_free(bdev->glob->mem_glob, acc_size);
 }
 
@@ -163,9 +189,16 @@ void ttm_bo_add_to_lru(struct ttm_buffer_object *bo)
 	struct ttm_bo_device *bdev = bo->bdev;
 	struct ttm_mem_type_manager *man;
 
+<<<<<<< HEAD
 	reservation_object_assert_held(bo->resv);
 
 	if (!(bo->mem.placement & TTM_PL_FLAG_NO_EVICT)) {
+=======
+	lockdep_assert_held(&bo->resv->lock.base);
+
+	if (!(bo->mem.placement & TTM_PL_FLAG_NO_EVICT)) {
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		BUG_ON(!list_empty(&bo->lru));
 
 		man = &bdev->man[bo->mem.mem_type];
@@ -175,7 +208,11 @@ void ttm_bo_add_to_lru(struct ttm_buffer_object *bo)
 		if (bo->ttm && !(bo->ttm->page_flags &
 				 (TTM_PAGE_FLAG_SG | TTM_PAGE_FLAG_SWAPPED))) {
 			list_add_tail(&bo->swap,
+<<<<<<< HEAD
 				      &bdev->glob->swap_lru[bo->priority]);
+=======
+				      &bo->glob->swap_lru[bo->priority]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kref_get(&bo->list_kref);
 		}
 	}
@@ -206,26 +243,96 @@ void ttm_bo_del_from_lru(struct ttm_buffer_object *bo)
 
 void ttm_bo_del_sub_from_lru(struct ttm_buffer_object *bo)
 {
+<<<<<<< HEAD
 	struct ttm_bo_global *glob = bo->bdev->glob;
 
 	spin_lock(&glob->lru_lock);
 	ttm_bo_del_from_lru(bo);
 	spin_unlock(&glob->lru_lock);
+=======
+	spin_lock(&bo->glob->lru_lock);
+	ttm_bo_del_from_lru(bo);
+	spin_unlock(&bo->glob->lru_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ttm_bo_del_sub_from_lru);
 
 void ttm_bo_move_to_lru_tail(struct ttm_buffer_object *bo)
 {
+<<<<<<< HEAD
 	reservation_object_assert_held(bo->resv);
+=======
+	lockdep_assert_held(&bo->resv->lock.base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ttm_bo_del_from_lru(bo);
 	ttm_bo_add_to_lru(bo);
 }
 EXPORT_SYMBOL(ttm_bo_move_to_lru_tail);
 
+<<<<<<< HEAD
 static int ttm_bo_handle_move_mem(struct ttm_buffer_object *bo,
 				  struct ttm_mem_reg *mem, bool evict,
 				  struct ttm_operation_ctx *ctx)
+=======
+/*
+ * Call bo->mutex locked.
+ */
+static int ttm_bo_add_ttm(struct ttm_buffer_object *bo, bool zero_alloc)
+{
+	struct ttm_bo_device *bdev = bo->bdev;
+	struct ttm_bo_global *glob = bo->glob;
+	int ret = 0;
+	uint32_t page_flags = 0;
+
+	TTM_ASSERT_LOCKED(&bo->mutex);
+	bo->ttm = NULL;
+
+	if (bdev->need_dma32)
+		page_flags |= TTM_PAGE_FLAG_DMA32;
+
+	switch (bo->type) {
+	case ttm_bo_type_device:
+		if (zero_alloc)
+			page_flags |= TTM_PAGE_FLAG_ZERO_ALLOC;
+	case ttm_bo_type_kernel:
+		if (bdev->driver->ttm_tt_create2)
+			bo->ttm = bdev->driver->ttm_tt_create2(bo, page_flags,
+							       glob->dummy_read_page);
+		else
+			bo->ttm = bdev->driver->ttm_tt_create(bdev, bo->num_pages << PAGE_SHIFT,
+							      page_flags, glob->dummy_read_page);
+		if (unlikely(bo->ttm == NULL))
+			ret = -ENOMEM;
+		break;
+	case ttm_bo_type_sg:
+		if (bdev->driver->ttm_tt_create2)
+			bo->ttm = bdev->driver->ttm_tt_create2(bo, page_flags | TTM_PAGE_FLAG_SG,
+							       glob->dummy_read_page);
+		else
+			bo->ttm = bdev->driver->ttm_tt_create(bdev, bo->num_pages << PAGE_SHIFT,
+							      page_flags | TTM_PAGE_FLAG_SG,
+							      glob->dummy_read_page);
+		if (unlikely(bo->ttm == NULL)) {
+			ret = -ENOMEM;
+			break;
+		}
+		bo->ttm->sg = bo->sg;
+		break;
+	default:
+		pr_err("Illegal buffer object type\n");
+		ret = -EINVAL;
+		break;
+	}
+
+	return ret;
+}
+
+static int ttm_bo_handle_move_mem(struct ttm_buffer_object *bo,
+				  struct ttm_mem_reg *mem,
+				  bool evict, bool interruptible,
+				  bool no_wait_gpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ttm_bo_device *bdev = bo->bdev;
 	bool old_is_pci = ttm_mem_reg_is_pci(bdev, &bo->mem);
@@ -250,7 +357,11 @@ static int ttm_bo_handle_move_mem(struct ttm_buffer_object *bo,
 	if (!(new_man->flags & TTM_MEMTYPE_FLAG_FIXED)) {
 		if (bo->ttm == NULL) {
 			bool zero = !(old_man->flags & TTM_MEMTYPE_FLAG_FIXED);
+<<<<<<< HEAD
 			ret = ttm_tt_create(bo, zero);
+=======
+			ret = ttm_bo_add_ttm(bo, zero);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				goto out_err;
 		}
@@ -260,7 +371,11 @@ static int ttm_bo_handle_move_mem(struct ttm_buffer_object *bo,
 			goto out_err;
 
 		if (mem->mem_type != TTM_PL_SYSTEM) {
+<<<<<<< HEAD
 			ret = ttm_tt_bind(bo->ttm, mem, ctx);
+=======
+			ret = ttm_tt_bind(bo->ttm, mem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				goto out_err;
 		}
@@ -279,6 +394,7 @@ static int ttm_bo_handle_move_mem(struct ttm_buffer_object *bo,
 
 	if (!(old_man->flags & TTM_MEMTYPE_FLAG_FIXED) &&
 	    !(new_man->flags & TTM_MEMTYPE_FLAG_FIXED))
+<<<<<<< HEAD
 		ret = ttm_bo_move_ttm(bo, ctx, mem);
 	else if (bdev->driver->move)
 		ret = bdev->driver->move(bo, evict, ctx, mem);
@@ -290,6 +406,23 @@ static int ttm_bo_handle_move_mem(struct ttm_buffer_object *bo,
 			swap(*mem, bo->mem);
 			bdev->driver->move_notify(bo, false, mem);
 			swap(*mem, bo->mem);
+=======
+		ret = ttm_bo_move_ttm(bo, interruptible, no_wait_gpu, mem);
+	else if (bdev->driver->move)
+		ret = bdev->driver->move(bo, evict, interruptible,
+					 no_wait_gpu, mem);
+	else
+		ret = ttm_bo_move_memcpy(bo, interruptible, no_wait_gpu, mem);
+
+	if (ret) {
+		if (bdev->driver->move_notify) {
+			struct ttm_mem_reg tmp_mem = *mem;
+			*mem = bo->mem;
+			bo->mem = tmp_mem;
+			bdev->driver->move_notify(bo, false, mem);
+			bo->mem = *mem;
+			*mem = tmp_mem;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		goto out_err;
@@ -305,6 +438,7 @@ moved:
 		bo->evicted = false;
 	}
 
+<<<<<<< HEAD
 	if (bo->mem.mm_node)
 		bo->offset = (bo->mem.start << PAGE_SHIFT) +
 		    bdev->man[bo->mem.mem_type].gpu_offset;
@@ -312,6 +446,15 @@ moved:
 		bo->offset = 0;
 
 	ctx->bytes_moved += bo->num_pages << PAGE_SHIFT;
+=======
+	if (bo->mem.mm_node) {
+		bo->offset = (bo->mem.start << PAGE_SHIFT) +
+		    bdev->man[bo->mem.mem_type].gpu_offset;
+		bo->cur_placement = bo->mem.placement;
+	} else
+		bo->offset = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 out_err:
@@ -340,6 +483,11 @@ static void ttm_bo_cleanup_memtype_use(struct ttm_buffer_object *bo)
 	ttm_tt_destroy(bo->ttm);
 	bo->ttm = NULL;
 	ttm_bo_mem_put(bo, &bo->mem);
+<<<<<<< HEAD
+=======
+
+	ww_mutex_unlock (&bo->resv->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ttm_bo_individualize_resv(struct ttm_buffer_object *bo)
@@ -381,7 +529,11 @@ static void ttm_bo_flush_all_fences(struct ttm_buffer_object *bo)
 static void ttm_bo_cleanup_refs_or_queue(struct ttm_buffer_object *bo)
 {
 	struct ttm_bo_device *bdev = bo->bdev;
+<<<<<<< HEAD
 	struct ttm_bo_global *glob = bdev->glob;
+=======
+	struct ttm_bo_global *glob = bo->glob;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = ttm_bo_individualize_resv(bo);
@@ -396,7 +548,11 @@ static void ttm_bo_cleanup_refs_or_queue(struct ttm_buffer_object *bo)
 	}
 
 	spin_lock(&glob->lru_lock);
+<<<<<<< HEAD
 	ret = reservation_object_trylock(bo->resv) ? 0 : -EBUSY;
+=======
+	ret = __ttm_bo_reserve(bo, false, true, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ret) {
 		if (reservation_object_test_signaled_rcu(&bo->ttm_resv, true)) {
 			ttm_bo_del_from_lru(bo);
@@ -405,7 +561,10 @@ static void ttm_bo_cleanup_refs_or_queue(struct ttm_buffer_object *bo)
 				reservation_object_unlock(&bo->ttm_resv);
 
 			ttm_bo_cleanup_memtype_use(bo);
+<<<<<<< HEAD
 			reservation_object_unlock(bo->resv);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 
@@ -421,7 +580,11 @@ static void ttm_bo_cleanup_refs_or_queue(struct ttm_buffer_object *bo)
 			ttm_bo_add_to_lru(bo);
 		}
 
+<<<<<<< HEAD
 		reservation_object_unlock(bo->resv);
+=======
+		__ttm_bo_unreserve(bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (bo->resv != &bo->ttm_resv)
 		reservation_object_unlock(&bo->ttm_resv);
@@ -436,11 +599,16 @@ error:
 }
 
 /**
+<<<<<<< HEAD
  * function ttm_bo_cleanup_refs
+=======
+ * function ttm_bo_cleanup_refs_and_unlock
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * If bo idle, remove from delayed- and lru lists, and unref.
  * If not idle, do nothing.
  *
  * Must be called with lru_lock and reservation held, this function
+<<<<<<< HEAD
  * will drop the lru lock and optionally the reservation lock before returning.
  *
  * @interruptible         Any sleeps should occur interruptibly.
@@ -453,6 +621,19 @@ static int ttm_bo_cleanup_refs(struct ttm_buffer_object *bo,
 			       bool unlock_resv)
 {
 	struct ttm_bo_global *glob = bo->bdev->glob;
+=======
+ * will drop both before returning.
+ *
+ * @interruptible         Any sleeps should occur interruptibly.
+ * @no_wait_gpu           Never wait for gpu. Return -EBUSY instead.
+ */
+
+static int ttm_bo_cleanup_refs_and_unlock(struct ttm_buffer_object *bo,
+					  bool interruptible,
+					  bool no_wait_gpu)
+{
+	struct ttm_bo_global *glob = bo->glob;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct reservation_object *resv;
 	int ret;
 
@@ -468,9 +649,13 @@ static int ttm_bo_cleanup_refs(struct ttm_buffer_object *bo,
 
 	if (ret && !no_wait_gpu) {
 		long lret;
+<<<<<<< HEAD
 
 		if (unlock_resv)
 			reservation_object_unlock(bo->resv);
+=======
+		ww_mutex_unlock(&bo->resv->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock(&glob->lru_lock);
 
 		lret = reservation_object_wait_timeout_rcu(resv, true,
@@ -483,6 +668,7 @@ static int ttm_bo_cleanup_refs(struct ttm_buffer_object *bo,
 			return -EBUSY;
 
 		spin_lock(&glob->lru_lock);
+<<<<<<< HEAD
 		if (unlock_resv && !reservation_object_trylock(bo->resv)) {
 			/*
 			 * We raced, and lost, someone else holds the reservation now,
@@ -501,6 +687,26 @@ static int ttm_bo_cleanup_refs(struct ttm_buffer_object *bo,
 	if (ret || unlikely(list_empty(&bo->ddestroy))) {
 		if (unlock_resv)
 			reservation_object_unlock(bo->resv);
+=======
+		ret = __ttm_bo_reserve(bo, false, true, NULL);
+
+		/*
+		 * We raced, and lost, someone else holds the reservation now,
+		 * and is probably busy in ttm_bo_cleanup_memtype_use.
+		 *
+		 * Even if it's not the case, because we finished waiting any
+		 * delayed destruction would succeed, so just return success
+		 * here.
+		 */
+		if (ret) {
+			spin_unlock(&glob->lru_lock);
+			return 0;
+		}
+	}
+
+	if (ret || unlikely(list_empty(&bo->ddestroy))) {
+		__ttm_bo_unreserve(bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock(&glob->lru_lock);
 		return ret;
 	}
@@ -512,9 +718,12 @@ static int ttm_bo_cleanup_refs(struct ttm_buffer_object *bo,
 	spin_unlock(&glob->lru_lock);
 	ttm_bo_cleanup_memtype_use(bo);
 
+<<<<<<< HEAD
 	if (unlock_resv)
 		reservation_object_unlock(bo->resv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -522,6 +731,7 @@ static int ttm_bo_cleanup_refs(struct ttm_buffer_object *bo,
  * Traverse the delayed list, and call ttm_bo_cleanup_refs on all
  * encountered buffers.
  */
+<<<<<<< HEAD
 static bool ttm_bo_delayed_delete(struct ttm_bo_device *bdev, bool remove_all)
 {
 	struct ttm_bo_global *glob = bdev->glob;
@@ -560,6 +770,62 @@ static bool ttm_bo_delayed_delete(struct ttm_bo_device *bdev, bool remove_all)
 	spin_unlock(&glob->lru_lock);
 
 	return empty;
+=======
+
+static int ttm_bo_delayed_delete(struct ttm_bo_device *bdev, bool remove_all)
+{
+	struct ttm_bo_global *glob = bdev->glob;
+	struct ttm_buffer_object *entry = NULL;
+	int ret = 0;
+
+	spin_lock(&glob->lru_lock);
+	if (list_empty(&bdev->ddestroy))
+		goto out_unlock;
+
+	entry = list_first_entry(&bdev->ddestroy,
+		struct ttm_buffer_object, ddestroy);
+	kref_get(&entry->list_kref);
+
+	for (;;) {
+		struct ttm_buffer_object *nentry = NULL;
+
+		if (entry->ddestroy.next != &bdev->ddestroy) {
+			nentry = list_first_entry(&entry->ddestroy,
+				struct ttm_buffer_object, ddestroy);
+			kref_get(&nentry->list_kref);
+		}
+
+		ret = __ttm_bo_reserve(entry, false, true, NULL);
+		if (remove_all && ret) {
+			spin_unlock(&glob->lru_lock);
+			ret = __ttm_bo_reserve(entry, false, false, NULL);
+			spin_lock(&glob->lru_lock);
+		}
+
+		if (!ret)
+			ret = ttm_bo_cleanup_refs_and_unlock(entry, false,
+							     !remove_all);
+		else
+			spin_unlock(&glob->lru_lock);
+
+		kref_put(&entry->list_kref, ttm_bo_release_list);
+		entry = nentry;
+
+		if (ret || !entry)
+			goto out;
+
+		spin_lock(&glob->lru_lock);
+		if (list_empty(&entry->ddestroy))
+			break;
+	}
+
+out_unlock:
+	spin_unlock(&glob->lru_lock);
+out:
+	if (entry)
+		kref_put(&entry->list_kref, ttm_bo_release_list);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ttm_bo_delayed_workqueue(struct work_struct *work)
@@ -567,9 +833,16 @@ static void ttm_bo_delayed_workqueue(struct work_struct *work)
 	struct ttm_bo_device *bdev =
 	    container_of(work, struct ttm_bo_device, wq.work);
 
+<<<<<<< HEAD
 	if (!ttm_bo_delayed_delete(bdev, false))
 		schedule_delayed_work(&bdev->wq,
 				      ((HZ / 100) < 1) ? 1 : HZ / 100);
+=======
+	if (ttm_bo_delayed_delete(bdev, false)) {
+		schedule_delayed_work(&bdev->wq,
+				      ((HZ / 100) < 1) ? 1 : HZ / 100);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ttm_bo_release(struct kref *kref)
@@ -587,18 +860,25 @@ static void ttm_bo_release(struct kref *kref)
 	kref_put(&bo->list_kref, ttm_bo_release_list);
 }
 
+<<<<<<< HEAD
 void ttm_bo_put(struct ttm_buffer_object *bo)
 {
 	kref_put(&bo->kref, ttm_bo_release);
 }
 EXPORT_SYMBOL(ttm_bo_put);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ttm_bo_unref(struct ttm_buffer_object **p_bo)
 {
 	struct ttm_buffer_object *bo = *p_bo;
 
 	*p_bo = NULL;
+<<<<<<< HEAD
 	ttm_bo_put(bo);
+=======
+	kref_put(&bo->kref, ttm_bo_release);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ttm_bo_unref);
 
@@ -616,14 +896,20 @@ void ttm_bo_unlock_delayed_workqueue(struct ttm_bo_device *bdev, int resched)
 }
 EXPORT_SYMBOL(ttm_bo_unlock_delayed_workqueue);
 
+<<<<<<< HEAD
 static int ttm_bo_evict(struct ttm_buffer_object *bo,
 			struct ttm_operation_ctx *ctx)
+=======
+static int ttm_bo_evict(struct ttm_buffer_object *bo, bool interruptible,
+			bool no_wait_gpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ttm_bo_device *bdev = bo->bdev;
 	struct ttm_mem_reg evict_mem;
 	struct ttm_placement placement;
 	int ret = 0;
 
+<<<<<<< HEAD
 	reservation_object_assert_held(bo->resv);
 
 	placement.num_placement = 0;
@@ -637,13 +923,24 @@ static int ttm_bo_evict(struct ttm_buffer_object *bo,
 
 		return ttm_tt_create(bo, false);
 	}
+=======
+	lockdep_assert_held(&bo->resv->lock.base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	evict_mem = bo->mem;
 	evict_mem.mm_node = NULL;
 	evict_mem.bus.io_reserved_vm = false;
 	evict_mem.bus.io_reserved_count = 0;
 
+<<<<<<< HEAD
 	ret = ttm_bo_mem_space(bo, &placement, &evict_mem, ctx);
+=======
+	placement.num_placement = 0;
+	placement.num_busy_placement = 0;
+	bdev->driver->evict_flags(bo, &placement);
+	ret = ttm_bo_mem_space(bo, &placement, &evict_mem, interruptible,
+				no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		if (ret != -ERESTARTSYS) {
 			pr_err("Failed to find memory space for buffer 0x%p eviction\n",
@@ -653,7 +950,12 @@ static int ttm_bo_evict(struct ttm_buffer_object *bo,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	ret = ttm_bo_handle_move_mem(bo, &evict_mem, true, ctx);
+=======
+	ret = ttm_bo_handle_move_mem(bo, &evict_mem, true, interruptible,
+				     no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(ret)) {
 		if (ret != -ERESTARTSYS)
 			pr_err("Buffer eviction failed\n");
@@ -679,6 +981,7 @@ bool ttm_bo_eviction_valuable(struct ttm_buffer_object *bo,
 }
 EXPORT_SYMBOL(ttm_bo_eviction_valuable);
 
+<<<<<<< HEAD
 /**
  * Check the target bo is allowable to be evicted or swapout, including cases:
  *
@@ -719,15 +1022,34 @@ static int ttm_mem_evict_first(struct ttm_bo_device *bdev,
 	bool locked = false;
 	unsigned i;
 	int ret;
+=======
+static int ttm_mem_evict_first(struct ttm_bo_device *bdev,
+				uint32_t mem_type,
+				const struct ttm_place *place,
+				bool interruptible,
+				bool no_wait_gpu)
+{
+	struct ttm_bo_global *glob = bdev->glob;
+	struct ttm_mem_type_manager *man = &bdev->man[mem_type];
+	struct ttm_buffer_object *bo;
+	int ret = -EBUSY;
+	unsigned i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&glob->lru_lock);
 	for (i = 0; i < TTM_MAX_BO_PRIORITY; ++i) {
 		list_for_each_entry(bo, &man->lru[i], lru) {
+<<<<<<< HEAD
 			if (!ttm_bo_evict_swapout_allowable(bo, ctx, &locked))
+=======
+			ret = __ttm_bo_reserve(bo, false, true, NULL);
+			if (ret)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 
 			if (place && !bdev->driver->eviction_valuable(bo,
 								      place)) {
+<<<<<<< HEAD
 				if (locked)
 					reservation_object_unlock(bo->resv);
 				continue;
@@ -745,13 +1067,35 @@ static int ttm_mem_evict_first(struct ttm_bo_device *bdev,
 	if (!bo) {
 		spin_unlock(&glob->lru_lock);
 		return -EBUSY;
+=======
+				__ttm_bo_unreserve(bo);
+				ret = -EBUSY;
+				continue;
+			}
+
+			break;
+		}
+
+		if (!ret)
+			break;
+	}
+
+	if (ret) {
+		spin_unlock(&glob->lru_lock);
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kref_get(&bo->list_kref);
 
 	if (!list_empty(&bo->ddestroy)) {
+<<<<<<< HEAD
 		ret = ttm_bo_cleanup_refs(bo, ctx->interruptible,
 					  ctx->no_wait_gpu, locked);
+=======
+		ret = ttm_bo_cleanup_refs_and_unlock(bo, interruptible,
+						     no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kref_put(&bo->list_kref, ttm_bo_release_list);
 		return ret;
 	}
@@ -759,6 +1103,7 @@ static int ttm_mem_evict_first(struct ttm_bo_device *bdev,
 	ttm_bo_del_from_lru(bo);
 	spin_unlock(&glob->lru_lock);
 
+<<<<<<< HEAD
 	ret = ttm_bo_evict(bo, ctx);
 	if (locked) {
 		ttm_bo_unreserve(bo);
@@ -767,6 +1112,12 @@ static int ttm_mem_evict_first(struct ttm_bo_device *bdev,
 		ttm_bo_add_to_lru(bo);
 		spin_unlock(&glob->lru_lock);
 	}
+=======
+	BUG_ON(ret != 0);
+
+	ret = ttm_bo_evict(bo, interruptible, no_wait_gpu);
+	ttm_bo_unreserve(bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kref_put(&bo->list_kref, ttm_bo_release_list);
 	return ret;
@@ -817,7 +1168,12 @@ static int ttm_bo_mem_force_space(struct ttm_buffer_object *bo,
 					uint32_t mem_type,
 					const struct ttm_place *place,
 					struct ttm_mem_reg *mem,
+<<<<<<< HEAD
 					struct ttm_operation_ctx *ctx)
+=======
+					bool interruptible,
+					bool no_wait_gpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ttm_bo_device *bdev = bo->bdev;
 	struct ttm_mem_type_manager *man = &bdev->man[mem_type];
@@ -829,7 +1185,12 @@ static int ttm_bo_mem_force_space(struct ttm_buffer_object *bo,
 			return ret;
 		if (mem->mm_node)
 			break;
+<<<<<<< HEAD
 		ret = ttm_mem_evict_first(bdev, mem_type, place, ctx);
+=======
+		ret = ttm_mem_evict_first(bdev, mem_type, place,
+					  interruptible, no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(ret != 0))
 			return ret;
 	} while (1);
@@ -892,7 +1253,12 @@ static bool ttm_bo_mt_compatible(struct ttm_mem_type_manager *man,
 int ttm_bo_mem_space(struct ttm_buffer_object *bo,
 			struct ttm_placement *placement,
 			struct ttm_mem_reg *mem,
+<<<<<<< HEAD
 			struct ttm_operation_ctx *ctx)
+=======
+			bool interruptible,
+			bool no_wait_gpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ttm_bo_device *bdev = bo->bdev;
 	struct ttm_mem_type_manager *man;
@@ -986,7 +1352,12 @@ int ttm_bo_mem_space(struct ttm_buffer_object *bo,
 			return 0;
 		}
 
+<<<<<<< HEAD
 		ret = ttm_bo_mem_force_space(bo, mem_type, place, mem, ctx);
+=======
+		ret = ttm_bo_mem_force_space(bo, mem_type, place, mem,
+						interruptible, no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret == 0 && mem->mm_node) {
 			mem->placement = cur_flags;
 			return 0;
@@ -1005,13 +1376,23 @@ int ttm_bo_mem_space(struct ttm_buffer_object *bo,
 EXPORT_SYMBOL(ttm_bo_mem_space);
 
 static int ttm_bo_move_buffer(struct ttm_buffer_object *bo,
+<<<<<<< HEAD
 			      struct ttm_placement *placement,
 			      struct ttm_operation_ctx *ctx)
+=======
+			struct ttm_placement *placement,
+			bool interruptible,
+			bool no_wait_gpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	struct ttm_mem_reg mem;
 
+<<<<<<< HEAD
 	reservation_object_assert_held(bo->resv);
+=======
+	lockdep_assert_held(&bo->resv->lock.base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mem.num_pages = bo->num_pages;
 	mem.size = mem.num_pages << PAGE_SHIFT;
@@ -1021,10 +1402,19 @@ static int ttm_bo_move_buffer(struct ttm_buffer_object *bo,
 	/*
 	 * Determine where to move the buffer.
 	 */
+<<<<<<< HEAD
 	ret = ttm_bo_mem_space(bo, placement, &mem, ctx);
 	if (ret)
 		goto out_unlock;
 	ret = ttm_bo_handle_move_mem(bo, &mem, false, ctx);
+=======
+	ret = ttm_bo_mem_space(bo, placement, &mem,
+			       interruptible, no_wait_gpu);
+	if (ret)
+		goto out_unlock;
+	ret = ttm_bo_handle_move_mem(bo, &mem, false,
+				     interruptible, no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_unlock:
 	if (ret && mem.mm_node)
 		ttm_bo_mem_put(bo, &mem);
@@ -1075,18 +1465,33 @@ bool ttm_bo_mem_compat(struct ttm_placement *placement,
 EXPORT_SYMBOL(ttm_bo_mem_compat);
 
 int ttm_bo_validate(struct ttm_buffer_object *bo,
+<<<<<<< HEAD
 		    struct ttm_placement *placement,
 		    struct ttm_operation_ctx *ctx)
+=======
+			struct ttm_placement *placement,
+			bool interruptible,
+			bool no_wait_gpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	uint32_t new_flags;
 
+<<<<<<< HEAD
 	reservation_object_assert_held(bo->resv);
+=======
+	lockdep_assert_held(&bo->resv->lock.base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Check whether we need to move buffer.
 	 */
 	if (!ttm_bo_mem_compat(placement, &bo->mem, &new_flags)) {
+<<<<<<< HEAD
 		ret = ttm_bo_move_buffer(bo, placement, ctx);
+=======
+		ret = ttm_bo_move_buffer(bo, placement, interruptible,
+					 no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	} else {
@@ -1101,7 +1506,11 @@ int ttm_bo_validate(struct ttm_buffer_object *bo,
 	 * We might need to add a TTM.
 	 */
 	if (bo->mem.mem_type == TTM_PL_SYSTEM && bo->ttm == NULL) {
+<<<<<<< HEAD
 		ret = ttm_tt_create(bo, true);
+=======
+		ret = ttm_bo_add_ttm(bo, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -1115,7 +1524,12 @@ int ttm_bo_init_reserved(struct ttm_bo_device *bdev,
 			 enum ttm_bo_type type,
 			 struct ttm_placement *placement,
 			 uint32_t page_alignment,
+<<<<<<< HEAD
 			 struct ttm_operation_ctx *ctx,
+=======
+			 bool interruptible,
+			 struct file *persistent_swap_storage,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 size_t acc_size,
 			 struct sg_table *sg,
 			 struct reservation_object *resv,
@@ -1126,7 +1540,11 @@ int ttm_bo_init_reserved(struct ttm_bo_device *bdev,
 	struct ttm_mem_global *mem_glob = bdev->glob->mem_glob;
 	bool locked;
 
+<<<<<<< HEAD
 	ret = ttm_mem_global_alloc(mem_glob, acc_size, ctx);
+=======
+	ret = ttm_mem_global_alloc(mem_glob, acc_size, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		pr_err("Out of kernel memory\n");
 		if (destroy)
@@ -1146,7 +1564,11 @@ int ttm_bo_init_reserved(struct ttm_bo_device *bdev,
 		ttm_mem_global_free(mem_glob, acc_size);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	bo->destroy = destroy ? destroy : ttm_bo_default_destroy;
+=======
+	bo->destroy = destroy;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kref_init(&bo->kref);
 	kref_init(&bo->list_kref);
@@ -1157,6 +1579,10 @@ int ttm_bo_init_reserved(struct ttm_bo_device *bdev,
 	INIT_LIST_HEAD(&bo->io_reserve_lru);
 	mutex_init(&bo->wu_mutex);
 	bo->bdev = bdev;
+<<<<<<< HEAD
+=======
+	bo->glob = bdev->glob;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bo->type = type;
 	bo->num_pages = num_pages;
 	bo->mem.size = num_pages << PAGE_SHIFT;
@@ -1168,17 +1594,31 @@ int ttm_bo_init_reserved(struct ttm_bo_device *bdev,
 	bo->mem.bus.io_reserved_count = 0;
 	bo->moving = NULL;
 	bo->mem.placement = (TTM_PL_FLAG_SYSTEM | TTM_PL_FLAG_CACHED);
+<<<<<<< HEAD
+=======
+	bo->persistent_swap_storage = persistent_swap_storage;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bo->acc_size = acc_size;
 	bo->sg = sg;
 	if (resv) {
 		bo->resv = resv;
+<<<<<<< HEAD
 		reservation_object_assert_held(bo->resv);
+=======
+		lockdep_assert_held(&bo->resv->lock.base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		bo->resv = &bo->ttm_resv;
 	}
 	reservation_object_init(&bo->ttm_resv);
+<<<<<<< HEAD
 	atomic_inc(&bo->bdev->glob->bo_count);
 	drm_vma_node_reset(&bo->vma_node);
+=======
+	atomic_inc(&bo->glob->bo_count);
+	drm_vma_node_reset(&bo->vma_node);
+	bo->priority = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * For ttm_bo_type_device buffers, allocate
@@ -1193,25 +1633,43 @@ int ttm_bo_init_reserved(struct ttm_bo_device *bdev,
 	 * since otherwise lockdep will be angered in radeon.
 	 */
 	if (!resv) {
+<<<<<<< HEAD
 		locked = reservation_object_trylock(bo->resv);
+=======
+		locked = ww_mutex_trylock(&bo->resv->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		WARN_ON(!locked);
 	}
 
 	if (likely(!ret))
+<<<<<<< HEAD
 		ret = ttm_bo_validate(bo, placement, ctx);
+=======
+		ret = ttm_bo_validate(bo, placement, interruptible, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(ret)) {
 		if (!resv)
 			ttm_bo_unreserve(bo);
 
+<<<<<<< HEAD
 		ttm_bo_put(bo);
+=======
+		ttm_bo_unref(&bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	if (resv && !(bo->mem.placement & TTM_PL_FLAG_NO_EVICT)) {
+<<<<<<< HEAD
 		spin_lock(&bdev->glob->lru_lock);
 		ttm_bo_add_to_lru(bo);
 		spin_unlock(&bdev->glob->lru_lock);
+=======
+		spin_lock(&bo->glob->lru_lock);
+		ttm_bo_add_to_lru(bo);
+		spin_unlock(&bo->glob->lru_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -1225,16 +1683,28 @@ int ttm_bo_init(struct ttm_bo_device *bdev,
 		struct ttm_placement *placement,
 		uint32_t page_alignment,
 		bool interruptible,
+<<<<<<< HEAD
+=======
+		struct file *persistent_swap_storage,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		size_t acc_size,
 		struct sg_table *sg,
 		struct reservation_object *resv,
 		void (*destroy) (struct ttm_buffer_object *))
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { interruptible, false };
 	int ret;
 
 	ret = ttm_bo_init_reserved(bdev, bo, size, type, placement,
 				   page_alignment, &ctx, acc_size,
+=======
+	int ret;
+
+	ret = ttm_bo_init_reserved(bdev, bo, size, type, placement,
+				   page_alignment, interruptible,
+				   persistent_swap_storage, acc_size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   sg, resv, destroy);
 	if (ret)
 		return ret;
@@ -1280,6 +1750,10 @@ int ttm_bo_create(struct ttm_bo_device *bdev,
 			struct ttm_placement *placement,
 			uint32_t page_alignment,
 			bool interruptible,
+<<<<<<< HEAD
+=======
+			struct file *persistent_swap_storage,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct ttm_buffer_object **p_bo)
 {
 	struct ttm_buffer_object *bo;
@@ -1292,7 +1766,11 @@ int ttm_bo_create(struct ttm_bo_device *bdev,
 
 	acc_size = ttm_bo_acc_size(bdev, size, sizeof(struct ttm_buffer_object));
 	ret = ttm_bo_init(bdev, bo, size, type, placement, page_alignment,
+<<<<<<< HEAD
 			  interruptible, acc_size,
+=======
+			  interruptible, persistent_swap_storage, acc_size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  NULL, NULL, NULL);
 	if (likely(ret == 0))
 		*p_bo = bo;
@@ -1304,11 +1782,14 @@ EXPORT_SYMBOL(ttm_bo_create);
 static int ttm_bo_force_list_clean(struct ttm_bo_device *bdev,
 				   unsigned mem_type)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = {
 		.interruptible = false,
 		.no_wait_gpu = false,
 		.flags = TTM_OPT_FLAG_FORCE_ALLOC
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_mem_type_manager *man = &bdev->man[mem_type];
 	struct ttm_bo_global *glob = bdev->glob;
 	struct dma_fence *fence;
@@ -1323,7 +1804,11 @@ static int ttm_bo_force_list_clean(struct ttm_bo_device *bdev,
 	for (i = 0; i < TTM_MAX_BO_PRIORITY; ++i) {
 		while (!list_empty(&man->lru[i])) {
 			spin_unlock(&glob->lru_lock);
+<<<<<<< HEAD
 			ret = ttm_mem_evict_first(bdev, mem_type, NULL, &ctx);
+=======
+			ret = ttm_mem_evict_first(bdev, mem_type, NULL, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				return ret;
 			spin_lock(&glob->lru_lock);
@@ -1444,7 +1929,13 @@ static void ttm_bo_global_kobj_release(struct kobject *kobj)
 	struct ttm_bo_global *glob =
 		container_of(kobj, struct ttm_bo_global, kobj);
 
+<<<<<<< HEAD
 	__free_page(glob->dummy_read_page);
+=======
+	ttm_mem_unregister_shrink(glob->mem_glob, &glob->shrink);
+	__free_page(glob->dummy_read_page);
+	kfree(glob);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void ttm_bo_global_release(struct drm_global_reference *ref)
@@ -1467,7 +1958,10 @@ int ttm_bo_global_init(struct drm_global_reference *ref)
 	mutex_init(&glob->device_list_mutex);
 	spin_lock_init(&glob->lru_lock);
 	glob->mem_glob = bo_ref->mem_glob;
+<<<<<<< HEAD
 	glob->mem_glob->bo_glob = glob;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	glob->dummy_read_page = alloc_page(__GFP_ZERO | GFP_DMA32);
 
 	if (unlikely(glob->dummy_read_page == NULL)) {
@@ -1478,6 +1972,17 @@ int ttm_bo_global_init(struct drm_global_reference *ref)
 	for (i = 0; i < TTM_MAX_BO_PRIORITY; ++i)
 		INIT_LIST_HEAD(&glob->swap_lru[i]);
 	INIT_LIST_HEAD(&glob->device_list);
+<<<<<<< HEAD
+=======
+
+	ttm_mem_init_shrink(&glob->shrink, ttm_bo_swapout);
+	ret = ttm_mem_register_shrink(glob->mem_glob, &glob->shrink);
+	if (unlikely(ret != 0)) {
+		pr_err("Could not register buffer object swapout\n");
+		goto out_no_shrink;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_set(&glob->bo_count, 0);
 
 	ret = kobject_init_and_add(
@@ -1485,6 +1990,11 @@ int ttm_bo_global_init(struct drm_global_reference *ref)
 	if (unlikely(ret != 0))
 		kobject_put(&glob->kobj);
 	return ret;
+<<<<<<< HEAD
+=======
+out_no_shrink:
+	__free_page(glob->dummy_read_page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_no_drp:
 	kfree(glob);
 	return ret;
@@ -1518,6 +2028,7 @@ int ttm_bo_device_release(struct ttm_bo_device *bdev)
 
 	cancel_delayed_work_sync(&bdev->wq);
 
+<<<<<<< HEAD
 	if (ttm_bo_delayed_delete(bdev, true))
 		pr_debug("Delayed destroy list was clean\n");
 
@@ -1525,6 +2036,18 @@ int ttm_bo_device_release(struct ttm_bo_device *bdev)
 	for (i = 0; i < TTM_MAX_BO_PRIORITY; ++i)
 		if (list_empty(&bdev->man[0].lru[0]))
 			pr_debug("Swap list %d was clean\n", i);
+=======
+	while (ttm_bo_delayed_delete(bdev, true))
+		;
+
+	spin_lock(&glob->lru_lock);
+	if (list_empty(&bdev->ddestroy))
+		TTM_DEBUG("Delayed destroy list was clean\n");
+
+	for (i = 0; i < TTM_MAX_BO_PRIORITY; ++i)
+		if (list_empty(&bdev->man[0].lru[0]))
+			TTM_DEBUG("Swap list %d was clean\n", i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&glob->lru_lock);
 
 	drm_vma_offset_manager_destroy(&bdev->vma_manager);
@@ -1667,20 +2190,36 @@ EXPORT_SYMBOL(ttm_bo_synccpu_write_release);
  * A buffer object shrink method that tries to swap out the first
  * buffer object on the bo_global::swap_lru list.
  */
+<<<<<<< HEAD
 int ttm_bo_swapout(struct ttm_bo_global *glob, struct ttm_operation_ctx *ctx)
 {
 	struct ttm_buffer_object *bo;
 	int ret = -EBUSY;
 	bool locked;
+=======
+
+static int ttm_bo_swapout(struct ttm_mem_shrink *shrink)
+{
+	struct ttm_bo_global *glob =
+	    container_of(shrink, struct ttm_bo_global, shrink);
+	struct ttm_buffer_object *bo;
+	int ret = -EBUSY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i;
 
 	spin_lock(&glob->lru_lock);
 	for (i = 0; i < TTM_MAX_BO_PRIORITY; ++i) {
 		list_for_each_entry(bo, &glob->swap_lru[i], swap) {
+<<<<<<< HEAD
 			if (ttm_bo_evict_swapout_allowable(bo, ctx, &locked)) {
 				ret = 0;
 				break;
 			}
+=======
+			ret = __ttm_bo_reserve(bo, false, true, NULL);
+			if (!ret)
+				break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (!ret)
 			break;
@@ -1694,7 +2233,11 @@ int ttm_bo_swapout(struct ttm_bo_global *glob, struct ttm_operation_ctx *ctx)
 	kref_get(&bo->list_kref);
 
 	if (!list_empty(&bo->ddestroy)) {
+<<<<<<< HEAD
 		ret = ttm_bo_cleanup_refs(bo, false, false, locked);
+=======
+		ret = ttm_bo_cleanup_refs_and_unlock(bo, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kref_put(&bo->list_kref, ttm_bo_release_list);
 		return ret;
 	}
@@ -1708,7 +2251,10 @@ int ttm_bo_swapout(struct ttm_bo_global *glob, struct ttm_operation_ctx *ctx)
 
 	if (bo->mem.mem_type != TTM_PL_SYSTEM ||
 	    bo->ttm->caching_state != tt_cached) {
+<<<<<<< HEAD
 		struct ttm_operation_ctx ctx = { false, false };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct ttm_mem_reg evict_mem;
 
 		evict_mem = bo->mem;
@@ -1716,7 +2262,12 @@ int ttm_bo_swapout(struct ttm_bo_global *glob, struct ttm_operation_ctx *ctx)
 		evict_mem.placement = TTM_PL_FLAG_SYSTEM | TTM_PL_FLAG_CACHED;
 		evict_mem.mem_type = TTM_PL_SYSTEM;
 
+<<<<<<< HEAD
 		ret = ttm_bo_handle_move_mem(bo, &evict_mem, true, &ctx);
+=======
+		ret = ttm_bo_handle_move_mem(bo, &evict_mem, true,
+					     false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(ret != 0))
 			goto out;
 	}
@@ -1747,6 +2298,7 @@ out:
 	 * Unreserve without putting on LRU to avoid swapping out an
 	 * already swapped buffer.
 	 */
+<<<<<<< HEAD
 	if (locked)
 		reservation_object_unlock(bo->resv);
 	kref_put(&bo->list_kref, ttm_bo_release_list);
@@ -1762,6 +2314,17 @@ void ttm_bo_swapout_all(struct ttm_bo_device *bdev)
 	};
 
 	while (ttm_bo_swapout(bdev->glob, &ctx) == 0)
+=======
+
+	__ttm_bo_unreserve(bo);
+	kref_put(&bo->list_kref, ttm_bo_release_list);
+	return ret;
+}
+
+void ttm_bo_swapout_all(struct ttm_bo_device *bdev)
+{
+	while (ttm_bo_swapout(&bdev->glob->shrink) == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		;
 }
 EXPORT_SYMBOL(ttm_bo_swapout_all);
@@ -1788,12 +2351,19 @@ int ttm_bo_wait_unreserved(struct ttm_buffer_object *bo)
 		return -ERESTARTSYS;
 	if (!ww_mutex_is_locked(&bo->resv->lock))
 		goto out_unlock;
+<<<<<<< HEAD
 	ret = reservation_object_lock_interruptible(bo->resv, NULL);
 	if (ret == -EINTR)
 		ret = -ERESTARTSYS;
 	if (unlikely(ret != 0))
 		goto out_unlock;
 	reservation_object_unlock(bo->resv);
+=======
+	ret = __ttm_bo_reserve(bo, true, false, NULL);
+	if (unlikely(ret != 0))
+		goto out_unlock;
+	__ttm_bo_unreserve(bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out_unlock:
 	mutex_unlock(&bo->wu_mutex);

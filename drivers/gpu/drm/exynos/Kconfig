@@ -1,9 +1,15 @@
 config DRM_EXYNOS
 	tristate "DRM Support for Samsung SoC EXYNOS Series"
+<<<<<<< HEAD
 	depends on OF && DRM && (ARCH_S3C64XX || ARCH_S5PV210 || ARCH_EXYNOS || ARCH_MULTIPLATFORM)
 	select DRM_KMS_HELPER
 	select VIDEOMODE_HELPERS
 	select SND_SOC_HDMI_CODEC if SND_SOC
+=======
+	depends on OF && DRM && (ARCH_S3C64XX || ARCH_EXYNOS || ARCH_MULTIPLATFORM)
+	select DRM_KMS_HELPER
+	select VIDEOMODE_HELPERS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Choose this option if you have a Samsung SoC EXYNOS chipset.
 	  If M is selected the module will be called exynosdrm.
@@ -96,16 +102,27 @@ config DRM_EXYNOS_G2D
 	  Choose this option if you want to use Exynos G2D for DRM.
 
 config DRM_EXYNOS_IPP
+<<<<<<< HEAD
 	bool
 
 config DRM_EXYNOS_FIMC
 	bool "FIMC"
 	select DRM_EXYNOS_IPP
+=======
+	bool "Image Post Processor"
+	help
+	  Choose this option if you want to use IPP feature for DRM.
+
+config DRM_EXYNOS_FIMC
+	bool "FIMC"
+	depends on DRM_EXYNOS_IPP && MFD_SYSCON
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Choose this option if you want to use Exynos FIMC for DRM.
 
 config DRM_EXYNOS_ROTATOR
 	bool "Rotator"
+<<<<<<< HEAD
 	select DRM_EXYNOS_IPP
 	help
 	  Choose this option if you want to use Exynos Rotator for DRM.
@@ -120,6 +137,15 @@ config DRM_EXYNOS_GSC
 	bool "GScaler"
 	depends on VIDEO_SAMSUNG_EXYNOS_GSC=n
 	select DRM_EXYNOS_IPP
+=======
+	depends on DRM_EXYNOS_IPP
+	help
+	  Choose this option if you want to use Exynos Rotator for DRM.
+
+config DRM_EXYNOS_GSC
+	bool "GScaler"
+	depends on DRM_EXYNOS_IPP && ARCH_EXYNOS5 && VIDEO_SAMSUNG_EXYNOS_GSC=n
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Choose this option if you want to use Exynos GSC for DRM.
 

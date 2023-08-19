@@ -268,7 +268,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		PCIE0: pciex@a0000000 {
+=======
+		PCIE0: pciex@0a0000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "pci";
 			#interrupt-cells = <1>;
 			#size-cells = <2>;
@@ -309,7 +313,11 @@
 				0x0 0x0 0x0 0x4 &UIC2 0x3 0x4 /* swizzled int D */>;
 		};
 
+<<<<<<< HEAD
 		PCIE1: pciex@c0000000 {
+=======
+		PCIE1: pciex@0c0000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "pci";
 			#interrupt-cells = <1>;
 			#size-cells = <2>;

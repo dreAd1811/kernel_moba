@@ -387,7 +387,11 @@ static __init int _init_events_attrs(void)
 	while (amd_iommu_v2_event_descs[i].attr.attr.name)
 		i++;
 
+<<<<<<< HEAD
 	attrs = kcalloc(i + 1, sizeof(struct attribute **), GFP_KERNEL);
+=======
+	attrs = kzalloc(sizeof(struct attribute **) * (i + 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!attrs)
 		return -ENOMEM;
 
@@ -405,7 +409,11 @@ const struct attribute_group *amd_iommu_attr_groups[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static const struct pmu iommu_pmu __initconst = {
+=======
+static struct pmu iommu_pmu = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.event_init	= perf_iommu_event_init,
 	.add		= perf_iommu_add,
 	.del		= perf_iommu_del,

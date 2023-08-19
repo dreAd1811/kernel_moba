@@ -99,6 +99,10 @@ __printf(2, 3)
 bool __igt_timeout(unsigned long timeout, const char *fmt, ...);
 
 #define igt_timeout(t, fmt, ...) \
+<<<<<<< HEAD
 	__igt_timeout((t), KERN_DEBUG pr_fmt(fmt), ##__VA_ARGS__)
+=======
+	__igt_timeout((t), KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* !__I915_SELFTEST_H__ */

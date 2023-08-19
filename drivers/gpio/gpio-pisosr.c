@@ -12,8 +12,11 @@
  * GNU General Public License version 2 for more details.
  */
 
+<<<<<<< HEAD
 #include <linux/bitmap.h>
 #include <linux/bitops.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/delay.h>
 #include <linux/gpio/consumer.h>
 #include <linux/gpio/driver.h>
@@ -92,6 +95,7 @@ static int pisosr_gpio_get(struct gpio_chip *chip, unsigned offset)
 	return (gpio->buffer[offset / 8] >> (offset % 8)) & 0x1;
 }
 
+<<<<<<< HEAD
 static int pisosr_gpio_get_multiple(struct gpio_chip *chip,
 				    unsigned long *mask, unsigned long *bits)
 {
@@ -111,6 +115,8 @@ static int pisosr_gpio_get_multiple(struct gpio_chip *chip,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct gpio_chip template_chip = {
 	.label			= "pisosr-gpio",
 	.owner			= THIS_MODULE,
@@ -118,7 +124,10 @@ static const struct gpio_chip template_chip = {
 	.direction_input	= pisosr_gpio_direction_input,
 	.direction_output	= pisosr_gpio_direction_output,
 	.get			= pisosr_gpio_get,
+<<<<<<< HEAD
 	.get_multiple		= pisosr_gpio_get_multiple,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.base			= -1,
 	.ngpio			= DEFAULT_NGPIO,
 	.can_sleep		= true,

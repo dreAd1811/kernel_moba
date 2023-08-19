@@ -106,8 +106,13 @@ static int slip_esc6(unsigned char *p, unsigned char *d, int len);
 static void slip_unesc6(struct slip *sl, unsigned char c);
 #endif
 #ifdef CONFIG_SLIP_SMART
+<<<<<<< HEAD
 static void sl_keepalive(struct timer_list *t);
 static void sl_outfill(struct timer_list *t);
+=======
+static void sl_keepalive(unsigned long sls);
+static void sl_outfill(unsigned long sls);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sl_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
 #endif
 
@@ -452,9 +457,22 @@ static void slip_transmit(struct work_struct *work)
  */
 static void slip_write_wakeup(struct tty_struct *tty)
 {
+<<<<<<< HEAD
 	struct slip *sl = tty->disc_data;
 
 	schedule_work(&sl->tx_work);
+=======
+	struct slip *sl;
+
+	rcu_read_lock();
+	sl = rcu_dereference(tty->disc_data);
+	if (!sl)
+		goto out;
+
+	schedule_work(&sl->tx_work);
+out:
+	rcu_read_unlock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sl_tx_timeout(struct net_device *dev)
@@ -731,7 +749,11 @@ static void sl_sync(void)
 
 
 /* Find a free SLIP channel, and link in this `tty' line. */
+<<<<<<< HEAD
 static struct slip *sl_alloc(void)
+=======
+static struct slip *sl_alloc(dev_t line)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	char name[IFNAMSIZ];
@@ -763,8 +785,17 @@ static struct slip *sl_alloc(void)
 	sl->mode        = SL_MODE_DEFAULT;
 #ifdef CONFIG_SLIP_SMART
 	/* initialize timer_list struct */
+<<<<<<< HEAD
 	timer_setup(&sl->keepalive_timer, sl_keepalive, 0);
 	timer_setup(&sl->outfill_timer, sl_outfill, 0);
+=======
+	init_timer(&sl->keepalive_timer);
+	sl->keepalive_timer.data = (unsigned long)sl;
+	sl->keepalive_timer.function = sl_keepalive;
+	init_timer(&sl->outfill_timer);
+	sl->outfill_timer.data = (unsigned long)sl;
+	sl->outfill_timer.function = sl_outfill;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	slip_devs[i] = dev;
 	return sl;
@@ -809,7 +840,11 @@ static int slip_open(struct tty_struct *tty)
 
 	/* OK.  Find a free SLIP channel to use. */
 	err = -ENFILE;
+<<<<<<< HEAD
 	sl = sl_alloc();
+=======
+	sl = sl_alloc(tty_devnum(tty));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sl == NULL)
 		goto err_exit;
 
@@ -855,6 +890,14 @@ err_free_chan:
 	sl->tty = NULL;
 	tty->disc_data = NULL;
 	clear_bit(SLF_INUSE, &sl->flags);
+<<<<<<< HEAD
+=======
+	sl_free_netdev(sl->dev);
+	/* do not call free_netdev before rtnl_unlock */
+	rtnl_unlock();
+	free_netdev(sl->dev);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_exit:
 	rtnl_unlock();
@@ -880,10 +923,18 @@ static void slip_close(struct tty_struct *tty)
 		return;
 
 	spin_lock_bh(&sl->lock);
+<<<<<<< HEAD
 	tty->disc_data = NULL;
 	sl->tty = NULL;
 	spin_unlock_bh(&sl->lock);
 
+=======
+	rcu_assign_pointer(tty->disc_data, NULL);
+	sl->tty = NULL;
+	spin_unlock_bh(&sl->lock);
+
+	synchronize_rcu();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flush_work(&sl->tx_work);
 
 	/* VSV = very important to remove timers */
@@ -1307,7 +1358,11 @@ static int __init slip_init(void)
 	printk(KERN_INFO "SLIP linefill/keepalive option.\n");
 #endif
 
+<<<<<<< HEAD
 	slip_devs = kcalloc(slip_maxdev, sizeof(struct net_device *),
+=======
+	slip_devs = kzalloc(sizeof(struct net_device *)*slip_maxdev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 								GFP_KERNEL);
 	if (!slip_devs)
 		return -ENOMEM;
@@ -1388,9 +1443,15 @@ module_exit(slip_exit);
  * added by Stanislav Voronyi. All changes before marked VSV
  */
 
+<<<<<<< HEAD
 static void sl_outfill(struct timer_list *t)
 {
 	struct slip *sl = from_timer(sl, t, outfill_timer);
+=======
+static void sl_outfill(unsigned long sls)
+{
+	struct slip *sl = (struct slip *)sls;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&sl->lock);
 
@@ -1419,9 +1480,15 @@ out:
 	spin_unlock(&sl->lock);
 }
 
+<<<<<<< HEAD
 static void sl_keepalive(struct timer_list *t)
 {
 	struct slip *sl = from_timer(sl, t, keepalive_timer);
+=======
+static void sl_keepalive(unsigned long sls)
+{
+	struct slip *sl = (struct slip *)sls;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&sl->lock);
 

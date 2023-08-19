@@ -188,9 +188,12 @@ int acpi_ec_ecdt_probe(void);
 int acpi_ec_dsdt_probe(void);
 void acpi_ec_block_transactions(void);
 void acpi_ec_unblock_transactions(void);
+<<<<<<< HEAD
 void acpi_ec_mark_gpe_for_wake(void);
 void acpi_ec_set_gpe_wake_mask(u8 action);
 void acpi_ec_dispatch_gpe(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int acpi_ec_add_query_handler(struct acpi_ec *ec, u8 query_bit,
 			      acpi_handle handle, acpi_ec_query_func func,
 			      void *data);
@@ -252,10 +255,13 @@ void acpi_watchdog_init(void);
 static inline void acpi_watchdog_init(void) {}
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_ACPI_LPIT
 void acpi_init_lpit(void);
 #else
 static inline void acpi_init_lpit(void) { }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ACPI_INTERNAL_H_ */

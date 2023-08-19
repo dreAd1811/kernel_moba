@@ -94,17 +94,33 @@ static int mcp4922_write_raw(struct iio_dev *indio_dev,
 		long mask)
 {
 	struct mcp4922_state *state = iio_priv(indio_dev);
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (val2 != 0)
 		return -EINVAL;
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
+<<<<<<< HEAD
 		if (val > GENMASK(chan->scan_type.realbits-1, 0))
 			return -EINVAL;
 		val <<= chan->scan_type.shift;
 		state->value[chan->channel] = val;
 		return mcp4922_spi_write(state, chan->channel, val);
+=======
+		if (val < 0 || val > GENMASK(chan->scan_type.realbits - 1, 0))
+			return -EINVAL;
+		val <<= chan->scan_type.shift;
+
+		ret = mcp4922_spi_write(state, chan->channel, val);
+		if (!ret)
+			state->value[chan->channel] = val;
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -119,6 +135,10 @@ static const struct iio_chan_spec mcp4922_channels[3][MCP4922_NUM_CHANNELS] = {
 static const struct iio_info mcp4922_info = {
 	.read_raw = &mcp4922_read_raw,
 	.write_raw = &mcp4922_write_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int mcp4922_probe(struct spi_device *spi)

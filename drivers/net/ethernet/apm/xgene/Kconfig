@@ -1,5 +1,9 @@
 config NET_XGENE
 	tristate "APM X-Gene SoC Ethernet Driver"
+<<<<<<< HEAD
+=======
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARCH_XGENE || COMPILE_TEST
 	select PHYLIB
 	select MDIO_XGENE

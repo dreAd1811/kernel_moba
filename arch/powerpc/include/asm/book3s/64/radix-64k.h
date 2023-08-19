@@ -10,6 +10,7 @@
 #define RADIX_PUD_INDEX_SIZE	 9
 #define RADIX_PGD_INDEX_SIZE  13
 
+<<<<<<< HEAD
 /*
  * We use a 256 byte PTE page fragment in radix
  * 8 bytes per each PTE entry.
@@ -20,4 +21,6 @@
 #define RADIX_PMD_FRAG_SIZE_SHIFT  (RADIX_PMD_INDEX_SIZE + 3)
 #define RADIX_PMD_FRAG_NR	(PAGE_SIZE >> RADIX_PMD_FRAG_SIZE_SHIFT)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_POWERPC_PGTABLE_RADIX_64K_H */

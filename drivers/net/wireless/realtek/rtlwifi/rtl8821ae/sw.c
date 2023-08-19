@@ -43,7 +43,10 @@
 
 static void rtl8821ae_init_aspm_vars(struct ieee80211_hw *hw)
 {
+<<<<<<< HEAD
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
 
 	/*close ASPM for AMD defaultly */
@@ -83,7 +86,11 @@ static void rtl8821ae_init_aspm_vars(struct ieee80211_hw *hw)
 	 * 1 - Support ASPM,
 	 * 2 - According to chipset.
 	 */
+<<<<<<< HEAD
 	rtlpci->const_support_pciaspm = rtlpriv->cfg->mod_params->aspm_support;
+=======
+	rtlpci->const_support_pciaspm = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*InitializeVariables8812E*/
@@ -303,7 +310,12 @@ static struct rtl_hal_ops rtl8821ae_hal_ops = {
 	.set_rfreg = rtl8821ae_phy_set_rf_reg,
 	.fill_h2c_cmd = rtl8821ae_fill_h2c_cmd,
 	.get_btc_status = rtl8821ae_get_btc_status,
+<<<<<<< HEAD
 	.c2h_ra_report_handler = rtl8821ae_c2h_ra_report_handler,
+=======
+	.rx_command_packet = rtl8821ae_rx_command_packet,
+	.c2h_content_parsing = rtl8821ae_c2h_content_parsing,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.add_wowlan_pattern = rtl8821ae_add_wowlan_pattern,
 };
 
@@ -313,7 +325,10 @@ static struct rtl_mod_params rtl8821ae_mod_params = {
 	.swctrl_lps = false,
 	.fwctrl_lps = true,
 	.msi_support = true,
+<<<<<<< HEAD
 	.aspm_support = 1,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.int_clear = true,
 	.debug_level = 0,
 	.debug_mask = 0,
@@ -327,7 +342,10 @@ static const struct rtl_hal_cfg rtl8821ae_hal_cfg = {
 	.alt_fw_name = "rtlwifi/rtl8821aefw.bin",
 	.ops = &rtl8821ae_hal_ops,
 	.mod_params = &rtl8821ae_mod_params,
+<<<<<<< HEAD
 	.spec_ver = RTL_SPEC_SUPPORT_VHT,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.maps[SYS_ISO_CTRL] = REG_SYS_ISO_CTRL,
 	.maps[SYS_FUNC_EN] = REG_SYS_FUNC_EN,
 	.maps[SYS_CLK] = REG_SYS_CLKR,
@@ -446,7 +464,10 @@ module_param_named(ips, rtl8821ae_mod_params.inactiveps, bool, 0444);
 module_param_named(swlps, rtl8821ae_mod_params.swctrl_lps, bool, 0444);
 module_param_named(fwlps, rtl8821ae_mod_params.fwctrl_lps, bool, 0444);
 module_param_named(msi, rtl8821ae_mod_params.msi_support, bool, 0444);
+<<<<<<< HEAD
 module_param_named(aspm, rtl8821ae_mod_params.aspm_support, int, 0444);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 module_param_named(disable_watchdog, rtl8821ae_mod_params.disable_watchdog,
 		   bool, 0444);
 module_param_named(int_clear, rtl8821ae_mod_params.int_clear, bool, 0444);
@@ -455,7 +476,10 @@ MODULE_PARM_DESC(ips, "Set to 0 to not use link power save (default 1)\n");
 MODULE_PARM_DESC(swlps, "Set to 1 to use SW control power save (default 0)\n");
 MODULE_PARM_DESC(fwlps, "Set to 1 to use FW control power save (default 1)\n");
 MODULE_PARM_DESC(msi, "Set to 1 to use MSI interrupts mode (default 1)\n");
+<<<<<<< HEAD
 MODULE_PARM_DESC(aspm, "Set to 1 to enable ASPM (default 1)\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(debug_level, "Set debug level (0-5) (default 0)");
 MODULE_PARM_DESC(debug_mask, "Set debug mask (default 0)");
 MODULE_PARM_DESC(disable_watchdog, "Set to 1 to disable the watchdog (default 0)\n");

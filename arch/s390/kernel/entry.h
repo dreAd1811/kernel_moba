@@ -58,7 +58,10 @@ void do_notify_resume(struct pt_regs *regs);
 void __init init_IRQ(void);
 void do_IRQ(struct pt_regs *regs, int irq);
 void do_restart(void);
+<<<<<<< HEAD
 void __init startup_init_nobss(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init startup_init(void);
 void die(struct pt_regs *regs, const char *str);
 int setup_profiling_timer(unsigned int multiplier);
@@ -79,10 +82,17 @@ long sys_s390_runtime_instr(int command, int signum);
 long sys_s390_guarded_storage(int command, struct gs_cb __user *);
 long sys_s390_pci_mmio_write(unsigned long, const void __user *, size_t);
 long sys_s390_pci_mmio_read(unsigned long, void __user *, size_t);
+<<<<<<< HEAD
 long sys_s390_sthyi(unsigned long function_code, void __user *buffer, u64 __user *return_code, unsigned long flags);
 
 DECLARE_PER_CPU(u64, mt_cycles[8]);
 
+=======
+
+DECLARE_PER_CPU(u64, mt_cycles[8]);
+
+void verify_facilities(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void gs_load_bc_cb(struct pt_regs *regs);
 void set_fs_fixup(void);
 

@@ -5,6 +5,7 @@
 /* HWCAP flags */
 #define HWCAP_MIPS_R6		(1 << 0)
 #define HWCAP_MIPS_MSA		(1 << 1)
+<<<<<<< HEAD
 #define HWCAP_MIPS_CRC32	(1 << 2)
 #define HWCAP_MIPS_MIPS16	(1 << 3)
 #define HWCAP_MIPS_MDMX     (1 << 4)
@@ -17,5 +18,7 @@
 #define HWCAP_LOONGSON_MMI  (1 << 11)
 #define HWCAP_LOONGSON_EXT  (1 << 12)
 #define HWCAP_LOONGSON_EXT2 (1 << 13)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _UAPI_ASM_HWCAP_H */

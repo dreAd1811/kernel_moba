@@ -130,15 +130,26 @@ struct vnet {
 	((__port)->vsw ? (__port)->dev : (__port)->vp->dev)
 
 /* Common funcs */
+<<<<<<< HEAD
 void sunvnet_clean_timer_expire_common(struct timer_list *t);
+=======
+void sunvnet_clean_timer_expire_common(unsigned long port0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int sunvnet_open_common(struct net_device *dev);
 int sunvnet_close_common(struct net_device *dev);
 void sunvnet_set_rx_mode_common(struct net_device *dev, struct vnet *vp);
 int sunvnet_set_mac_addr_common(struct net_device *dev, void *p);
 void sunvnet_tx_timeout_common(struct net_device *dev);
+<<<<<<< HEAD
 int sunvnet_start_xmit_common(struct sk_buff *skb, struct net_device *dev,
 			   struct vnet_port *(*vnet_tx_port)
 			   (struct sk_buff *, struct net_device *));
+=======
+netdev_tx_t
+sunvnet_start_xmit_common(struct sk_buff *skb, struct net_device *dev,
+			  struct vnet_port *(*vnet_tx_port)
+			  (struct sk_buff *, struct net_device *));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_NET_POLL_CONTROLLER
 void sunvnet_poll_controller_common(struct net_device *dev, struct vnet *vp);
 #endif

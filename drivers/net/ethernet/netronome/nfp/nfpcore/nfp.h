@@ -49,8 +49,11 @@
 struct nfp_hwinfo;
 struct nfp_hwinfo *nfp_hwinfo_read(struct nfp_cpp *cpp);
 const char *nfp_hwinfo_lookup(struct nfp_hwinfo *hwinfo, const char *lookup);
+<<<<<<< HEAD
 char *nfp_hwinfo_get_packed_strings(struct nfp_hwinfo *hwinfo);
 u32 nfp_hwinfo_get_packed_str_size(struct nfp_hwinfo *hwinfo);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Implemented in nfp_nsp.c, low level functions */
 
@@ -94,8 +97,11 @@ int nfp_nsp_read_sensors(struct nfp_nsp *state, unsigned int sensor_mask,
 /* MAC Statistics Accumulator */
 #define NFP_RESOURCE_MAC_STATISTICS	"mac.stat"
 
+<<<<<<< HEAD
 int nfp_resource_table_init(struct nfp_cpp *cpp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nfp_resource *
 nfp_resource_acquire(struct nfp_cpp *cpp, const char *name);
 

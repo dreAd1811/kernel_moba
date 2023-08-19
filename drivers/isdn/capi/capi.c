@@ -9,7 +9,10 @@
  *
  */
 
+<<<<<<< HEAD
 #include <linux/compiler.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/errno.h>
 #include <linux/kernel.h>
@@ -733,6 +736,7 @@ capi_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos
 	return count;
 }
 
+<<<<<<< HEAD
 static __poll_t
 capi_poll(struct file *file, poll_table *wait)
 {
@@ -746,6 +750,21 @@ capi_poll(struct file *file, poll_table *wait)
 	mask = EPOLLOUT | EPOLLWRNORM;
 	if (!skb_queue_empty(&cdev->recvqueue))
 		mask |= EPOLLIN | EPOLLRDNORM;
+=======
+static unsigned int
+capi_poll(struct file *file, poll_table *wait)
+{
+	struct capidev *cdev = file->private_data;
+	unsigned int mask = 0;
+
+	if (!cdev->ap.applid)
+		return POLLERR;
+
+	poll_wait(file, &(cdev->recvwait), wait);
+	mask = POLLOUT | POLLWRNORM;
+	if (!skb_queue_empty_lockless(&cdev->recvqueue))
+		mask |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mask;
 }
 
@@ -1269,7 +1288,11 @@ static int __init capinc_tty_init(void)
 	if (capi_ttyminors <= 0)
 		capi_ttyminors = CAPINC_NR_PORTS;
 
+<<<<<<< HEAD
 	capiminors = kcalloc(capi_ttyminors, sizeof(struct capiminor *),
+=======
+	capiminors = kzalloc(sizeof(struct capiminor *) * capi_ttyminors,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     GFP_KERNEL);
 	if (!capiminors)
 		return -ENOMEM;
@@ -1330,7 +1353,11 @@ static inline void capinc_tty_exit(void) { }
  * /proc/capi/capi20:
  *  minor applid nrecvctlpkt nrecvdatapkt nsendctlpkt nsenddatapkt
  */
+<<<<<<< HEAD
 static int __maybe_unused capi20_proc_show(struct seq_file *m, void *v)
+=======
+static int capi20_proc_show(struct seq_file *m, void *v)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct capidev *cdev;
 	struct list_head *l;
@@ -1349,11 +1376,31 @@ static int __maybe_unused capi20_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int capi20_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, capi20_proc_show, NULL);
+}
+
+static const struct file_operations capi20_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= capi20_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * /proc/capi/capi20ncci:
  *  applid ncci
  */
+<<<<<<< HEAD
 static int __maybe_unused capi20ncci_proc_show(struct seq_file *m, void *v)
+=======
+static int capi20ncci_proc_show(struct seq_file *m, void *v)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct capidev *cdev;
 	struct capincci *np;
@@ -1369,10 +1416,30 @@ static int __maybe_unused capi20ncci_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void __init proc_init(void)
 {
 	proc_create_single("capi/capi20", 0, NULL, capi20_proc_show);
 	proc_create_single("capi/capi20ncci", 0, NULL, capi20ncci_proc_show);
+=======
+static int capi20ncci_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, capi20ncci_proc_show, NULL);
+}
+
+static const struct file_operations capi20ncci_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= capi20ncci_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+static void __init proc_init(void)
+{
+	proc_create("capi/capi20", 0, NULL, &capi20_proc_fops);
+	proc_create("capi/capi20ncci", 0, NULL, &capi20ncci_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit proc_exit(void)

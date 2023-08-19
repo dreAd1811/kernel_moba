@@ -21,6 +21,10 @@
 #include <linux/bpf.h>
 #include <linux/filter.h>
 #include <linux/printk.h>
+<<<<<<< HEAD
+=======
+#include <linux/skbuff.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 #include <asm/byteorder.h>
@@ -79,6 +83,26 @@ static inline void emit(const u32 insn, struct jit_ctx *ctx)
 	ctx->idx++;
 }
 
+<<<<<<< HEAD
+=======
+static inline void emit_a64_mov_i64(const int reg, const u64 val,
+				    struct jit_ctx *ctx)
+{
+	u64 tmp = val;
+	int shift = 0;
+
+	emit(A64_MOVZ(1, reg, tmp & 0xffff, shift), ctx);
+	tmp >>= 16;
+	shift += 16;
+	while (tmp) {
+		if (tmp & 0xffff)
+			emit(A64_MOVK(1, reg, tmp & 0xffff, shift), ctx);
+		tmp >>= 16;
+		shift += 16;
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void emit_a64_mov_i(const int is64, const int reg,
 				  const s32 val, struct jit_ctx *ctx)
 {
@@ -90,8 +114,12 @@ static inline void emit_a64_mov_i(const int is64, const int reg,
 			emit(A64_MOVN(is64, reg, (u16)~lo, 0), ctx);
 		} else {
 			emit(A64_MOVN(is64, reg, (u16)~hi, 16), ctx);
+<<<<<<< HEAD
 			if (lo != 0xffff)
 				emit(A64_MOVK(is64, reg, lo, 0), ctx);
+=======
+			emit(A64_MOVK(is64, reg, lo, 0), ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		emit(A64_MOVZ(is64, reg, lo, 0), ctx);
@@ -100,6 +128,7 @@ static inline void emit_a64_mov_i(const int is64, const int reg,
 	}
 }
 
+<<<<<<< HEAD
 static int i64_i16_blocks(const u64 val, bool inverse)
 {
 	return (((val >>  0) & 0xffff) != (inverse ? 0xffff : 0x0000)) +
@@ -153,6 +182,8 @@ static inline void emit_addr_mov_i64(const int reg, const u64 val,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int bpf2a64_offset(int bpf_to, int bpf_from,
 				 const struct jit_ctx *ctx)
 {
@@ -185,7 +216,11 @@ static inline int epilogue_offset(const struct jit_ctx *ctx)
 /* Tail call offset to jump into */
 #define PROLOGUE_OFFSET 7
 
+<<<<<<< HEAD
 static int build_prologue(struct jit_ctx *ctx, bool ebpf_from_cbpf)
+=======
+static int build_prologue(struct jit_ctx *ctx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct bpf_prog *prog = ctx->prog;
 	const u8 r6 = bpf2a64[BPF_REG_6];
@@ -210,7 +245,11 @@ static int build_prologue(struct jit_ctx *ctx, bool ebpf_from_cbpf)
 	 *                        | ... | BPF prog stack
 	 *                        |     |
 	 *                        +-----+ <= (BPF_FP - prog->aux->stack_depth)
+<<<<<<< HEAD
 	 *                        |RSVD | padding
+=======
+	 *                        |RSVD | JIT scratchpad
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * current A64_SP =>      +-----+ <= (BPF_FP - ctx->stack_size)
 	 *                        |     |
 	 *                        | ... | Function call stack
@@ -232,6 +271,7 @@ static int build_prologue(struct jit_ctx *ctx, bool ebpf_from_cbpf)
 	/* Set up BPF prog stack base register */
 	emit(A64_MOV(1, fp, A64_SP), ctx);
 
+<<<<<<< HEAD
 	if (!ebpf_from_cbpf) {
 		/* Initialize tail_call_cnt */
 		emit(A64_MOVZ(1, tcc, 0, 0), ctx);
@@ -245,6 +285,21 @@ static int build_prologue(struct jit_ctx *ctx, bool ebpf_from_cbpf)
 	}
 
 	ctx->stack_size = STACK_ALIGN(prog->aux->stack_depth);
+=======
+	/* Initialize tail_call_cnt */
+	emit(A64_MOVZ(1, tcc, 0, 0), ctx);
+
+	cur_offset = ctx->idx - idx0;
+	if (cur_offset != PROLOGUE_OFFSET) {
+		pr_err_once("PROLOGUE_OFFSET = %d, expected %d!\n",
+			    cur_offset, PROLOGUE_OFFSET);
+		return -1;
+	}
+
+	/* 4 byte extra for skb_copy_bits buffer */
+	ctx->stack_size = prog->aux->stack_depth + 4;
+	ctx->stack_size = STACK_ALIGN(ctx->stack_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set up function call stack */
 	emit(A64_SUB_I(1, A64_SP, A64_SP, ctx->stack_size), ctx);
@@ -413,6 +468,21 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
 	case BPF_ALU64 | BPF_DIV | BPF_X:
 	case BPF_ALU | BPF_MOD | BPF_X:
 	case BPF_ALU64 | BPF_MOD | BPF_X:
+<<<<<<< HEAD
+=======
+	{
+		const u8 r0 = bpf2a64[BPF_REG_0];
+
+		/* if (src == 0) return 0 */
+		jmp_offset = 3; /* skip ahead to else path */
+		check_imm19(jmp_offset);
+		emit(A64_CBNZ(is64, src, jmp_offset), ctx);
+		emit(A64_MOVZ(1, r0, 0, 0), ctx);
+		jmp_offset = epilogue_offset(ctx);
+		check_imm26(jmp_offset);
+		emit(A64_B(jmp_offset), ctx);
+		/* else */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (BPF_OP(code)) {
 		case BPF_DIV:
 			emit(A64_UDIV(is64, dst, dst, src), ctx);
@@ -424,6 +494,10 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx)
 			break;
 		}
 		break;
+<<<<<<< HEAD
+=======
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BPF_ALU | BPF_LSH | BPF_X:
 	case BPF_ALU64 | BPF_LSH | BPF_X:
 		emit(A64_LSLV(is64, dst, dst, src), ctx);
@@ -627,10 +701,14 @@ emit_cond_jmp:
 		const u8 r0 = bpf2a64[BPF_REG_0];
 		const u64 func = (u64)__bpf_call_base + imm;
 
+<<<<<<< HEAD
 		if (ctx->prog->is_func)
 			emit_addr_mov_i64(tmp, func, ctx);
 		else
 			emit_a64_mov_i64(tmp, func, ctx);
+=======
+		emit_a64_mov_i64(tmp, func, ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		emit(A64_BLR(tmp), ctx);
 		emit(A64_MOV(1, r0, A64_R(0)), ctx);
 		break;
@@ -754,6 +832,74 @@ emit_cond_jmp:
 		}
 		break;
 
+<<<<<<< HEAD
+=======
+	/* R0 = ntohx(*(size *)(((struct sk_buff *)R6)->data + imm)) */
+	case BPF_LD | BPF_ABS | BPF_W:
+	case BPF_LD | BPF_ABS | BPF_H:
+	case BPF_LD | BPF_ABS | BPF_B:
+	/* R0 = ntohx(*(size *)(((struct sk_buff *)R6)->data + src + imm)) */
+	case BPF_LD | BPF_IND | BPF_W:
+	case BPF_LD | BPF_IND | BPF_H:
+	case BPF_LD | BPF_IND | BPF_B:
+	{
+		const u8 r0 = bpf2a64[BPF_REG_0]; /* r0 = return value */
+		const u8 r6 = bpf2a64[BPF_REG_6]; /* r6 = pointer to sk_buff */
+		const u8 fp = bpf2a64[BPF_REG_FP];
+		const u8 r1 = bpf2a64[BPF_REG_1]; /* r1: struct sk_buff *skb */
+		const u8 r2 = bpf2a64[BPF_REG_2]; /* r2: int k */
+		const u8 r3 = bpf2a64[BPF_REG_3]; /* r3: unsigned int size */
+		const u8 r4 = bpf2a64[BPF_REG_4]; /* r4: void *buffer */
+		const u8 r5 = bpf2a64[BPF_REG_5]; /* r5: void *(*func)(...) */
+		int size;
+
+		emit(A64_MOV(1, r1, r6), ctx);
+		emit_a64_mov_i(0, r2, imm, ctx);
+		if (BPF_MODE(code) == BPF_IND)
+			emit(A64_ADD(0, r2, r2, src), ctx);
+		switch (BPF_SIZE(code)) {
+		case BPF_W:
+			size = 4;
+			break;
+		case BPF_H:
+			size = 2;
+			break;
+		case BPF_B:
+			size = 1;
+			break;
+		default:
+			return -EINVAL;
+		}
+		emit_a64_mov_i64(r3, size, ctx);
+		emit(A64_SUB_I(1, r4, fp, ctx->stack_size), ctx);
+		emit_a64_mov_i64(r5, (unsigned long)bpf_load_pointer, ctx);
+		emit(A64_BLR(r5), ctx);
+		emit(A64_MOV(1, r0, A64_R(0)), ctx);
+
+		jmp_offset = epilogue_offset(ctx);
+		check_imm19(jmp_offset);
+		emit(A64_CBZ(1, r0, jmp_offset), ctx);
+		emit(A64_MOV(1, r5, r0), ctx);
+		switch (BPF_SIZE(code)) {
+		case BPF_W:
+			emit(A64_LDR32(r0, r5, A64_ZR), ctx);
+#ifndef CONFIG_CPU_BIG_ENDIAN
+			emit(A64_REV32(0, r0, r0), ctx);
+#endif
+			break;
+		case BPF_H:
+			emit(A64_LDRH(r0, r5, A64_ZR), ctx);
+#ifndef CONFIG_CPU_BIG_ENDIAN
+			emit(A64_REV16(0, r0, r0), ctx);
+#endif
+			break;
+		case BPF_B:
+			emit(A64_LDRB(r0, r5, A64_ZR), ctx);
+			break;
+		}
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		pr_err_once("unknown opcode %02x\n", code);
 		return -EINVAL;
@@ -806,25 +952,36 @@ static inline void bpf_flush_icache(void *start, void *end)
 	flush_icache_range((unsigned long)start, (unsigned long)end);
 }
 
+<<<<<<< HEAD
 struct arm64_jit_data {
 	struct bpf_binary_header *header;
 	u8 *image;
 	struct jit_ctx ctx;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
 {
 	struct bpf_prog *tmp, *orig_prog = prog;
 	struct bpf_binary_header *header;
+<<<<<<< HEAD
 	struct arm64_jit_data *jit_data;
 	bool was_classic = bpf_prog_was_classic(prog);
 	bool tmp_blinded = false;
 	bool extra_pass = false;
+=======
+	bool tmp_blinded = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct jit_ctx ctx;
 	int image_size;
 	u8 *image_ptr;
 
+<<<<<<< HEAD
 	if (!prog->jit_requested)
+=======
+	if (!bpf_jit_enable)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return orig_prog;
 
 	tmp = bpf_jit_blind_constants(prog);
@@ -838,6 +995,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
 		prog = tmp;
 	}
 
+<<<<<<< HEAD
 	jit_data = prog->aux->jit_data;
 	if (!jit_data) {
 		jit_data = kzalloc(sizeof(*jit_data), GFP_KERNEL);
@@ -855,13 +1013,19 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
 		image_size = sizeof(u32) * ctx.idx;
 		goto skip_init_ctx;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&ctx, 0, sizeof(ctx));
 	ctx.prog = prog;
 
 	ctx.offset = kcalloc(prog->len, sizeof(int), GFP_KERNEL);
 	if (ctx.offset == NULL) {
 		prog = orig_prog;
+<<<<<<< HEAD
 		goto out_off;
+=======
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* 1. Initial fake pass to compute ctx->idx. */
@@ -872,7 +1036,11 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
 		goto out_off;
 	}
 
+<<<<<<< HEAD
 	if (build_prologue(&ctx, was_classic)) {
+=======
+	if (build_prologue(&ctx)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		prog = orig_prog;
 		goto out_off;
 	}
@@ -892,10 +1060,16 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *prog)
 	/* 2. Now, the actual pass. */
 
 	ctx.image = (__le32 *)image_ptr;
+<<<<<<< HEAD
 skip_init_ctx:
 	ctx.idx = 0;
 
 	build_prologue(&ctx, was_classic);
+=======
+	ctx.idx = 0;
+
+	build_prologue(&ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (build_body(&ctx)) {
 		bpf_jit_binary_free(header);
@@ -918,6 +1092,7 @@ skip_init_ctx:
 
 	bpf_flush_icache(header, ctx.image + ctx.idx);
 
+<<<<<<< HEAD
 	if (!prog->is_func || extra_pass) {
 		if (extra_pass && ctx.idx != jit_data->ctx.idx) {
 			pr_err_once("multi-func JIT bug %d != %d\n",
@@ -933,16 +1108,24 @@ skip_init_ctx:
 		jit_data->image = image_ptr;
 		jit_data->header = header;
 	}
+=======
+	bpf_jit_binary_lock_ro(header);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	prog->bpf_func = (void *)ctx.image;
 	prog->jited = 1;
 	prog->jited_len = image_size;
 
+<<<<<<< HEAD
 	if (!prog->is_func || extra_pass) {
 out_off:
 		kfree(ctx.offset);
 		kfree(jit_data);
 		prog->aux->jit_data = NULL;
 	}
+=======
+out_off:
+	kfree(ctx.offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	if (tmp_blinded)
 		bpf_jit_prog_release_other(prog, prog == orig_prog ?

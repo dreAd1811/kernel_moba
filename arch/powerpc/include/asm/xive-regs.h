@@ -10,6 +10,7 @@
 #define _ASM_POWERPC_XIVE_REGS_H
 
 /*
+<<<<<<< HEAD
  * "magic" Event State Buffer (ESB) MMIO offsets.
  *
  * Each interrupt source has a 2-bit state machine called ESB
@@ -45,6 +46,8 @@
 #define XIVE_ESB_VAL_Q		0x1
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Thread Management (aka "TM") registers
  */
 
@@ -123,4 +126,13 @@
 #define TM_QW3_NSR_I		PPC_BIT8(2)
 #define TM_QW3_NSR_GRP_LVL	PPC_BIT8(3,7)
 
+<<<<<<< HEAD
+=======
+/* Utilities to manipulate these (originaly from OPAL) */
+#define MASK_TO_LSH(m)		(__builtin_ffsl(m) - 1)
+#define GETFIELD(m, v)		(((v) & (m)) >> MASK_TO_LSH(m))
+#define SETFIELD(m, v, val)				\
+	(((v) & ~(m)) |	((((typeof(v))(val)) << MASK_TO_LSH(m)) & (m)))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ASM_POWERPC_XIVE_REGS_H */

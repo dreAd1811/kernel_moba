@@ -42,12 +42,20 @@ struct thread_info {
 	.flags		= 0,			\
 }
 
+<<<<<<< HEAD
 void arch_release_task_struct(struct task_struct *tsk);
 int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src);
 
 void arch_setup_new_exec(void);
 #define arch_setup_new_exec arch_setup_new_exec
 
+=======
+#define init_stack		(init_thread_union.stack)
+
+void arch_release_task_struct(struct task_struct *tsk);
+int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 /*

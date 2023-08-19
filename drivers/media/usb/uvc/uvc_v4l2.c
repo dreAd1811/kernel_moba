@@ -40,13 +40,22 @@ static int uvc_ioctl_ctrl_map(struct uvc_video_chain *chain,
 	unsigned int size;
 	int ret;
 
+<<<<<<< HEAD
 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+=======
+	map = kzalloc(sizeof *map, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (map == NULL)
 		return -ENOMEM;
 
 	map->id = xmap->id;
+<<<<<<< HEAD
 	memcpy(map->name, xmap->name, sizeof(map->name));
 	memcpy(map->entity, xmap->entity, sizeof(map->entity));
+=======
+	memcpy(map->name, xmap->name, sizeof map->name);
+	memcpy(map->entity, xmap->entity, sizeof map->entity);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	map->selector = xmap->selector;
 	map->size = xmap->size;
 	map->offset = xmap->offset;
@@ -105,12 +114,20 @@ free_map:
  * the Video Probe and Commit negotiation, but some hardware don't implement
  * that feature.
  */
+<<<<<<< HEAD
 static u32 uvc_try_frame_interval(struct uvc_frame *frame, u32 interval)
+=======
+static __u32 uvc_try_frame_interval(struct uvc_frame *frame, __u32 interval)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int i;
 
 	if (frame->bFrameIntervalType) {
+<<<<<<< HEAD
 		u32 best = -1, dist;
+=======
+		__u32 best = -1, dist;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		for (i = 0; i < frame->bFrameIntervalType; ++i) {
 			dist = interval > frame->dwFrameInterval[i]
@@ -125,9 +142,15 @@ static u32 uvc_try_frame_interval(struct uvc_frame *frame, u32 interval)
 
 		interval = frame->dwFrameInterval[i-1];
 	} else {
+<<<<<<< HEAD
 		const u32 min = frame->dwFrameInterval[0];
 		const u32 max = frame->dwFrameInterval[1];
 		const u32 step = frame->dwFrameInterval[2];
+=======
+		const __u32 min = frame->dwFrameInterval[0];
+		const __u32 max = frame->dwFrameInterval[1];
+		const __u32 step = frame->dwFrameInterval[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		interval = min + (interval - min + step/2) / step * step;
 		if (interval > max)
@@ -137,7 +160,11 @@ static u32 uvc_try_frame_interval(struct uvc_frame *frame, u32 interval)
 	return interval;
 }
 
+<<<<<<< HEAD
 static u32 uvc_v4l2_get_bytesperline(const struct uvc_format *format,
+=======
+static __u32 uvc_v4l2_get_bytesperline(const struct uvc_format *format,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct uvc_frame *frame)
 {
 	switch (format->fcc) {
@@ -158,17 +185,30 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 {
 	struct uvc_format *format = NULL;
 	struct uvc_frame *frame = NULL;
+<<<<<<< HEAD
 	u16 rw, rh;
 	unsigned int d, maxd;
 	unsigned int i;
 	u32 interval;
 	int ret = 0;
 	u8 *fcc;
+=======
+	__u16 rw, rh;
+	unsigned int d, maxd;
+	unsigned int i;
+	__u32 interval;
+	int ret = 0;
+	__u8 *fcc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fmt->type != stream->type)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	fcc = (u8 *)&fmt->fmt.pix.pixelformat;
+=======
+	fcc = (__u8 *)&fmt->fmt.pix.pixelformat;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uvc_trace(UVC_TRACE_FORMAT, "Trying format 0x%08x (%c%c%c%c): %ux%u.\n",
 			fmt->fmt.pix.pixelformat,
 			fcc[0], fcc[1], fcc[2], fcc[3],
@@ -197,8 +237,13 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 	maxd = (unsigned int)-1;
 
 	for (i = 0; i < format->nframes; ++i) {
+<<<<<<< HEAD
 		u16 w = format->frame[i].wWidth;
 		u16 h = format->frame[i].wHeight;
+=======
+		__u16 w = format->frame[i].wWidth;
+		__u16 h = format->frame[i].wHeight;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		d = min(w, rw) * min(h, rh);
 		d = w*h + rw*rh - 2*d;
@@ -224,7 +269,11 @@ static int uvc_v4l2_try_format(struct uvc_streaming *stream,
 		(100000000/interval)%10);
 
 	/* Set the format index, frame index and frame interval. */
+<<<<<<< HEAD
 	memset(probe, 0, sizeof(*probe));
+=======
+	memset(probe, 0, sizeof *probe);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	probe->bmHint = 1;	/* dwFrameInterval */
 	probe->bFormatIndex = format->index;
 	probe->bFrameIndex = frame->bFrameIndex;
@@ -336,7 +385,11 @@ done:
 static int uvc_v4l2_get_streamparm(struct uvc_streaming *stream,
 		struct v4l2_streamparm *parm)
 {
+<<<<<<< HEAD
 	u32 numerator, denominator;
+=======
+	uint32_t numerator, denominator;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (parm->type != stream->type)
 		return -EINVAL;
@@ -348,7 +401,11 @@ static int uvc_v4l2_get_streamparm(struct uvc_streaming *stream,
 	denominator = 10000000;
 	uvc_simplify_fraction(&numerator, &denominator, 8, 333);
 
+<<<<<<< HEAD
 	memset(parm, 0, sizeof(*parm));
+=======
+	memset(parm, 0, sizeof *parm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	parm->type = stream->type;
 
 	if (stream->type == V4L2_BUF_TYPE_VIDEO_CAPTURE) {
@@ -373,10 +430,14 @@ static int uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
 {
 	struct uvc_streaming_control probe;
 	struct v4l2_fract timeperframe;
+<<<<<<< HEAD
 	struct uvc_format *format;
 	struct uvc_frame *frame;
 	u32 interval, maxd;
 	unsigned int i;
+=======
+	uint32_t interval;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (parm->type != stream->type)
@@ -399,6 +460,7 @@ static int uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
 	format = stream->cur_format;
 	frame = stream->cur_frame;
 	probe = stream->ctrl;
@@ -426,6 +488,11 @@ static int uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
 		probe.dwFrameInterval = ival;
 		maxd = d;
 	}
+=======
+	probe = stream->ctrl;
+	probe.dwFrameInterval =
+		uvc_try_frame_interval(stream->cur_frame, interval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Probe the device with the new settings. */
 	ret = uvc_probe_video(stream, &probe);
@@ -435,7 +502,10 @@ static int uvc_v4l2_set_streamparm(struct uvc_streaming *stream,
 	}
 
 	stream->ctrl = probe;
+<<<<<<< HEAD
 	stream->cur_frame = frame;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&stream->mutex);
 
 	/* Return the actual frame period. */
@@ -526,7 +596,11 @@ static int uvc_v4l2_open(struct file *file)
 		return ret;
 
 	/* Create the device handle. */
+<<<<<<< HEAD
 	handle = kzalloc(sizeof(*handle), GFP_KERNEL);
+=======
+	handle = kzalloc(sizeof *handle, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (handle == NULL) {
 		usb_autopm_put_interface(stream->dev->intf);
 		return -ENOMEM;
@@ -596,6 +670,13 @@ static int uvc_ioctl_querycap(struct file *file, void *fh,
 	usb_make_path(stream->dev->udev, cap->bus_info, sizeof(cap->bus_info));
 	cap->capabilities = V4L2_CAP_DEVICE_CAPS | V4L2_CAP_STREAMING
 			  | chain->caps;
+<<<<<<< HEAD
+=======
+	if (stream->type == V4L2_BUF_TYPE_VIDEO_CAPTURE)
+		cap->device_caps = V4L2_CAP_VIDEO_CAPTURE | V4L2_CAP_STREAMING;
+	else
+		cap->device_caps = V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_STREAMING;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -605,7 +686,11 @@ static int uvc_ioctl_enum_fmt(struct uvc_streaming *stream,
 {
 	struct uvc_format *format;
 	enum v4l2_buf_type type = fmt->type;
+<<<<<<< HEAD
 	u32 index = fmt->index;
+=======
+	__u32 index = fmt->index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fmt->type != stream->type || fmt->index >= stream->nformats)
 		return -EINVAL;
@@ -994,7 +1079,11 @@ static int uvc_ioctl_s_ctrl(struct file *file, void *fh,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	ret = uvc_ctrl_set(handle, &xctrl);
+=======
+	ret = uvc_ctrl_set(chain, &xctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		uvc_ctrl_rollback(handle);
 		return ret;
@@ -1069,7 +1158,11 @@ static int uvc_ioctl_s_try_ext_ctrls(struct uvc_fh *handle,
 		return ret;
 
 	for (i = 0; i < ctrls->count; ++ctrl, ++i) {
+<<<<<<< HEAD
 		ret = uvc_ctrl_set(handle, ctrl);
+=======
+		ret = uvc_ctrl_set(chain, ctrl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0) {
 			uvc_ctrl_rollback(handle);
 			ctrls->error_idx = commit ? ctrls->count : i;
@@ -1173,9 +1266,14 @@ static int uvc_ioctl_enum_framesizes(struct file *file, void *fh,
 	struct uvc_fh *handle = fh;
 	struct uvc_streaming *stream = handle->stream;
 	struct uvc_format *format = NULL;
+<<<<<<< HEAD
 	struct uvc_frame *frame = NULL;
 	unsigned int index;
 	unsigned int i;
+=======
+	struct uvc_frame *frame;
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Look for the given pixel format */
 	for (i = 0; i < stream->nformats; i++) {
@@ -1187,6 +1285,7 @@ static int uvc_ioctl_enum_framesizes(struct file *file, void *fh,
 	if (format == NULL)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	/* Skip duplicate frame sizes */
 	for (i = 0, index = 0; i < format->nframes; i++) {
 		if (frame && frame->wWidth == format->frame[i].wWidth &&
@@ -1201,6 +1300,12 @@ static int uvc_ioctl_enum_framesizes(struct file *file, void *fh,
 	if (i == format->nframes)
 		return -EINVAL;
 
+=======
+	if (fsize->index >= format->nframes)
+		return -EINVAL;
+
+	frame = &format->frame[fsize->index];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fsize->type = V4L2_FRMSIZE_TYPE_DISCRETE;
 	fsize->discrete.width = frame->wWidth;
 	fsize->discrete.height = frame->wHeight;
@@ -1214,9 +1319,13 @@ static int uvc_ioctl_enum_frameintervals(struct file *file, void *fh,
 	struct uvc_streaming *stream = handle->stream;
 	struct uvc_format *format = NULL;
 	struct uvc_frame *frame = NULL;
+<<<<<<< HEAD
 	unsigned int nintervals;
 	unsigned int index;
 	unsigned int i;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Look for the given pixel format and frame size */
 	for (i = 0; i < stream->nformats; i++) {
@@ -1228,11 +1337,15 @@ static int uvc_ioctl_enum_frameintervals(struct file *file, void *fh,
 	if (format == NULL)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	index = fival->index;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < format->nframes; i++) {
 		if (format->frame[i].wWidth == fival->width &&
 		    format->frame[i].wHeight == fival->height) {
 			frame = &format->frame[i];
+<<<<<<< HEAD
 			nintervals = frame->bFrameIntervalType ?: 1;
 			if (index < nintervals)
 				break;
@@ -1246,10 +1359,31 @@ static int uvc_ioctl_enum_frameintervals(struct file *file, void *fh,
 		fival->type = V4L2_FRMIVAL_TYPE_DISCRETE;
 		fival->discrete.numerator =
 			frame->dwFrameInterval[index];
+=======
+			break;
+		}
+	}
+	if (frame == NULL)
+		return -EINVAL;
+
+	if (frame->bFrameIntervalType) {
+		if (fival->index >= frame->bFrameIntervalType)
+			return -EINVAL;
+
+		fival->type = V4L2_FRMIVAL_TYPE_DISCRETE;
+		fival->discrete.numerator =
+			frame->dwFrameInterval[fival->index];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fival->discrete.denominator = 10000000;
 		uvc_simplify_fraction(&fival->discrete.numerator,
 			&fival->discrete.denominator, 8, 333);
 	} else {
+<<<<<<< HEAD
+=======
+		if (fival->index)
+			return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fival->type = V4L2_FRMIVAL_TYPE_STEPWISE;
 		fival->stepwise.min.numerator = frame->dwFrameInterval[0];
 		fival->stepwise.min.denominator = 10000000;
@@ -1300,6 +1434,7 @@ static long uvc_ioctl_default(struct file *file, void *fh, bool valid_prio,
 
 #ifdef CONFIG_COMPAT
 struct uvc_xu_control_mapping32 {
+<<<<<<< HEAD
 	u32 id;
 	u8 name[32];
 	u8 entity[16];
@@ -1314,11 +1449,28 @@ struct uvc_xu_control_mapping32 {
 	u32 menu_count;
 
 	u32 reserved[4];
+=======
+	__u32 id;
+	__u8 name[32];
+	__u8 entity[16];
+	__u8 selector;
+
+	__u8 size;
+	__u8 offset;
+	__u32 v4l2_type;
+	__u32 data_type;
+
+	compat_caddr_t menu_info;
+	__u32 menu_count;
+
+	__u32 reserved[4];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int uvc_v4l2_get_xu_mapping(struct uvc_xu_control_mapping *kp,
 			const struct uvc_xu_control_mapping32 __user *up)
 {
+<<<<<<< HEAD
 	struct uvc_xu_control_mapping32 *p = (void *)kp;
 	compat_caddr_t info;
 	u32 count;
@@ -1332,33 +1484,70 @@ static int uvc_v4l2_get_xu_mapping(struct uvc_xu_control_mapping *kp,
 	memset(kp->reserved, 0, sizeof(kp->reserved));
 	kp->menu_info = count ? compat_ptr(info) : NULL;
 	kp->menu_count = count;
+=======
+	compat_caddr_t p;
+
+	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
+	    __copy_from_user(kp, up, offsetof(typeof(*up), menu_info)) ||
+	    __get_user(kp->menu_count, &up->menu_count))
+		return -EFAULT;
+
+	memset(kp->reserved, 0, sizeof(kp->reserved));
+
+	if (kp->menu_count == 0) {
+		kp->menu_info = NULL;
+		return 0;
+	}
+
+	if (__get_user(p, &up->menu_info))
+		return -EFAULT;
+	kp->menu_info = compat_ptr(p);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int uvc_v4l2_put_xu_mapping(const struct uvc_xu_control_mapping *kp,
 			struct uvc_xu_control_mapping32 __user *up)
 {
+<<<<<<< HEAD
 	if (copy_to_user(up, kp, offsetof(typeof(*up), menu_info)) ||
 	    put_user(kp->menu_count, &up->menu_count))
 		return -EFAULT;
 
 	if (clear_user(up->reserved, sizeof(up->reserved)))
+=======
+	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
+	    __copy_to_user(up, kp, offsetof(typeof(*up), menu_info)) ||
+	    __put_user(kp->menu_count, &up->menu_count))
+		return -EFAULT;
+
+	if (__clear_user(up->reserved, sizeof(up->reserved)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EFAULT;
 
 	return 0;
 }
 
 struct uvc_xu_control_query32 {
+<<<<<<< HEAD
 	u8 unit;
 	u8 selector;
 	u8 query;
 	u16 size;
+=======
+	__u8 unit;
+	__u8 selector;
+	__u8 query;
+	__u16 size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	compat_caddr_t data;
 };
 
 static int uvc_v4l2_get_xu_query(struct uvc_xu_control_query *kp,
 			const struct uvc_xu_control_query32 __user *up)
 {
+<<<<<<< HEAD
 	struct uvc_xu_control_query32 v;
 
 	if (copy_from_user(&v, up, sizeof(v)))
@@ -1371,14 +1560,38 @@ static int uvc_v4l2_get_xu_query(struct uvc_xu_control_query *kp,
 		.size = v.size,
 		.data = v.size ? compat_ptr(v.data) : NULL
 	};
+=======
+	compat_caddr_t p;
+
+	if (!access_ok(VERIFY_READ, up, sizeof(*up)) ||
+	    __copy_from_user(kp, up, offsetof(typeof(*up), data)))
+		return -EFAULT;
+
+	if (kp->size == 0) {
+		kp->data = NULL;
+		return 0;
+	}
+
+	if (__get_user(p, &up->data))
+		return -EFAULT;
+	kp->data = compat_ptr(p);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static int uvc_v4l2_put_xu_query(const struct uvc_xu_control_query *kp,
 			struct uvc_xu_control_query32 __user *up)
 {
+<<<<<<< HEAD
 	if (copy_to_user(up, kp, offsetof(typeof(*up), data)))
 		return -EFAULT;
+=======
+	if (!access_ok(VERIFY_WRITE, up, sizeof(*up)) ||
+	    __copy_to_user(up, kp, offsetof(typeof(*up), data)))
+		return -EFAULT;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1447,7 +1660,11 @@ static int uvc_v4l2_mmap(struct file *file, struct vm_area_struct *vma)
 	return uvc_queue_mmap(&stream->queue, vma);
 }
 
+<<<<<<< HEAD
 static __poll_t uvc_v4l2_poll(struct file *file, poll_table *wait)
+=======
+static unsigned int uvc_v4l2_poll(struct file *file, poll_table *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct uvc_fh *handle = file->private_data;
 	struct uvc_streaming *stream = handle->stream;

@@ -91,11 +91,14 @@
 #define to_xgene_hwmon_dev(cl)		\
 	container_of(cl, struct xgene_hwmon_dev, mbox_client)
 
+<<<<<<< HEAD
 enum xgene_hwmon_version {
 	XGENE_HWMON_V1 = 0,
 	XGENE_HWMON_V2 = 1,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct slimpro_resp_msg {
 	u32 msg;
 	u32 param1;
@@ -614,6 +617,7 @@ static void xgene_hwmon_tx_done(struct mbox_client *cl, void *msg, int ret)
 	}
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ACPI
 static const struct acpi_device_id xgene_hwmon_acpi_match[] = {
 	{"APMC0D29", XGENE_HWMON_V1},
@@ -623,6 +627,8 @@ static const struct acpi_device_id xgene_hwmon_acpi_match[] = {
 MODULE_DEVICE_TABLE(acpi, xgene_hwmon_acpi_match);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int xgene_hwmon_probe(struct platform_device *pdev)
 {
 	struct xgene_hwmon_dev *ctx;
@@ -665,6 +671,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
 		}
 	} else {
 		struct acpi_pcct_hw_reduced *cppc_ss;
+<<<<<<< HEAD
 		const struct acpi_device_id *acpi_id;
 		int version;
 
@@ -674,6 +681,8 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
 			return -EINVAL;
 
 		version = (int)acpi_id->driver_data;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (device_property_read_u32(&pdev->dev, "pcc-channel",
 					     &ctx->mbox_idx)) {
@@ -716,6 +725,7 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
 		 */
 		ctx->comm_base_addr = cppc_ss->base_address;
 		if (ctx->comm_base_addr) {
+<<<<<<< HEAD
 			if (version == XGENE_HWMON_V2)
 				ctx->pcc_comm_addr = (void __force *)ioremap(
 							ctx->comm_base_addr,
@@ -723,6 +733,9 @@ static int xgene_hwmon_probe(struct platform_device *pdev)
 			else
 				ctx->pcc_comm_addr = memremap(
 							ctx->comm_base_addr,
+=======
+			ctx->pcc_comm_addr = memremap(ctx->comm_base_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							cppc_ss->length,
 							MEMREMAP_WB);
 		} else {
@@ -790,6 +803,17 @@ static int xgene_hwmon_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_ACPI
+static const struct acpi_device_id xgene_hwmon_acpi_match[] = {
+	{"APMC0D29", 0},
+	{},
+};
+MODULE_DEVICE_TABLE(acpi, xgene_hwmon_acpi_match);
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id xgene_hwmon_of_match[] = {
 	{.compatible = "apm,xgene-slimpro-hwmon"},
 	{}

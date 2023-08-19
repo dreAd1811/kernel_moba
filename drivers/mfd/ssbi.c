@@ -314,7 +314,11 @@ static int ssbi_probe(struct platform_device *pdev)
 
 	spin_lock_init(&ssbi->lock);
 
+<<<<<<< HEAD
 	return devm_of_platform_populate(&pdev->dev);
+=======
+	return of_platform_populate(np, NULL, NULL, &pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id ssbi_match_table[] = {

@@ -30,7 +30,10 @@
 #include <drm/drm_plane_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_atomic_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_writeback.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/dma-fence.h>
 
 #include "drm_crtc_helper_internal.h"
@@ -121,7 +124,11 @@ static int handle_conflicting_encoders(struct drm_atomic_state *state,
 			new_encoder = drm_atomic_helper_best_encoder(connector);
 
 		if (new_encoder) {
+<<<<<<< HEAD
 			if (encoder_mask & drm_encoder_mask(new_encoder)) {
+=======
+			if (encoder_mask & (1 << drm_encoder_index(new_encoder))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				DRM_DEBUG_ATOMIC("[ENCODER:%d:%s] on [CONNECTOR:%d:%s] already assigned\n",
 					new_encoder->base.id, new_encoder->name,
 					connector->base.id, connector->name);
@@ -129,7 +136,11 @@ static int handle_conflicting_encoders(struct drm_atomic_state *state,
 				return -EINVAL;
 			}
 
+<<<<<<< HEAD
 			encoder_mask |= drm_encoder_mask(new_encoder);
+=======
+			encoder_mask |= 1 << drm_encoder_index(new_encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -155,7 +166,11 @@ static int handle_conflicting_encoders(struct drm_atomic_state *state,
 			continue;
 
 		encoder = connector->state->best_encoder;
+<<<<<<< HEAD
 		if (!encoder || !(encoder_mask & drm_encoder_mask(encoder)))
+=======
+		if (!encoder || !(encoder_mask & (1 << drm_encoder_index(encoder))))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		if (!disable_conflicting_encoders) {
@@ -223,7 +238,11 @@ set_best_encoder(struct drm_atomic_state *state,
 			crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
 
 			crtc_state->encoder_mask &=
+<<<<<<< HEAD
 				~drm_encoder_mask(conn_state->best_encoder);
+=======
+				~(1 << drm_encoder_index(conn_state->best_encoder));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -234,7 +253,11 @@ set_best_encoder(struct drm_atomic_state *state,
 			crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
 
 			crtc_state->encoder_mask |=
+<<<<<<< HEAD
 				drm_encoder_mask(encoder);
+=======
+				1 << drm_encoder_index(encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -645,7 +668,11 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
 		if (ret)
 			return ret;
 
+<<<<<<< HEAD
 		connectors_mask |= BIT(i);
+=======
+		connectors_mask += BIT(i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -697,6 +724,7 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
 EXPORT_SYMBOL(drm_atomic_helper_check_modeset);
 
 /**
+<<<<<<< HEAD
  * drm_atomic_helper_check_plane_state() - Check plane state for validity
  * @plane_state: plane state to check
  * @crtc_state: crtc state to check
@@ -793,6 +821,8 @@ int drm_atomic_helper_check_plane_state(struct drm_plane_state *plane_state,
 EXPORT_SYMBOL(drm_atomic_helper_check_plane_state);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_atomic_helper_check_planes - validate state object for planes changes
  * @dev: DRM device
  * @state: the driver state object
@@ -876,11 +906,14 @@ EXPORT_SYMBOL(drm_atomic_helper_check_planes);
  * functions depend upon an updated adjusted_mode.clock to e.g. properly compute
  * watermarks.
  *
+<<<<<<< HEAD
  * Note that zpos normalization will add all enable planes to the state which
  * might not desired for some drivers.
  * For example enable/disable of a cursor plane which have fixed zpos value
  * would trigger all other enabled planes to be forced to the state change.
  *
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * RETURNS:
  * Zero for success or -errno
  */
@@ -893,12 +926,15 @@ int drm_atomic_helper_check(struct drm_device *dev,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (dev->mode_config.normalize_zpos) {
 		ret = drm_atomic_normalize_zpos(dev, state);
 		if (ret)
 			return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_atomic_helper_check_planes(dev, state);
 	if (ret)
 		return ret;
@@ -968,7 +1004,10 @@ disable_outputs(struct drm_device *dev, struct drm_atomic_state *old_state)
 
 	for_each_oldnew_crtc_in_state(old_state, crtc, old_crtc_state, new_crtc_state, i) {
 		const struct drm_crtc_helper_funcs *funcs;
+<<<<<<< HEAD
 		int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Shut down everything that needs a full modeset. */
 		if (!drm_atomic_crtc_needs_modeset(new_crtc_state))
@@ -992,6 +1031,7 @@ disable_outputs(struct drm_device *dev, struct drm_atomic_state *old_state)
 			funcs->disable(crtc);
 		else
 			funcs->dpms(crtc, DRM_MODE_DPMS_OFF);
+<<<<<<< HEAD
 
 		if (!(dev->irq_enabled && dev->num_crtcs))
 			continue;
@@ -1000,6 +1040,8 @@ disable_outputs(struct drm_device *dev, struct drm_atomic_state *old_state)
 		WARN_ONCE(ret != -EINVAL, "driver forgot to call drm_crtc_vblank_off()\n");
 		if (ret == 0)
 			drm_crtc_vblank_put(crtc);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1015,12 +1057,15 @@ disable_outputs(struct drm_device *dev, struct drm_atomic_state *old_state)
  *
  * Drivers can use this for building their own atomic commit if they don't have
  * a pure helper-based modeset implementation.
+<<<<<<< HEAD
  *
  * Since these updates are not synchronized with lockings, only code paths
  * called from &drm_mode_config_helper_funcs.atomic_commit_tail can look at the
  * legacy state filled out by this helper. Defacto this means this helper and
  * the legacy state pointers are only really useful for transitioning an
  * existing driver to the atomic world.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void
 drm_atomic_helper_update_legacy_modeset_state(struct drm_device *dev,
@@ -1173,6 +1218,7 @@ void drm_atomic_helper_commit_modeset_disables(struct drm_device *dev,
 }
 EXPORT_SYMBOL(drm_atomic_helper_commit_modeset_disables);
 
+<<<<<<< HEAD
 static void drm_atomic_helper_commit_writebacks(struct drm_device *dev,
 						struct drm_atomic_state *old_state)
 {
@@ -1194,6 +1240,8 @@ static void drm_atomic_helper_commit_writebacks(struct drm_device *dev,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_atomic_helper_commit_modeset_enables - modeset commit to enable outputs
  * @dev: DRM device
@@ -1273,8 +1321,11 @@ void drm_atomic_helper_commit_modeset_enables(struct drm_device *dev,
 
 		drm_bridge_enable(encoder->bridge);
 	}
+<<<<<<< HEAD
 
 	drm_atomic_helper_commit_writebacks(dev, old_state);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_atomic_helper_commit_modeset_enables);
 
@@ -1362,7 +1413,11 @@ drm_atomic_helper_wait_for_vblanks(struct drm_device *dev,
 		return;
 
 	for_each_oldnew_crtc_in_state(old_state, crtc, old_crtc_state, new_crtc_state, i) {
+<<<<<<< HEAD
 		if (!new_crtc_state->active)
+=======
+		if (!new_crtc_state->active || !new_crtc_state->planes_changed)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		ret = drm_crtc_vblank_get(crtc);
@@ -1408,6 +1463,7 @@ EXPORT_SYMBOL(drm_atomic_helper_wait_for_vblanks);
 void drm_atomic_helper_wait_for_flip_done(struct drm_device *dev,
 					  struct drm_atomic_state *old_state)
 {
+<<<<<<< HEAD
 	struct drm_crtc *crtc;
 	int i;
 
@@ -1418,6 +1474,17 @@ void drm_atomic_helper_wait_for_flip_done(struct drm_device *dev,
 		crtc = old_state->crtcs[i].ptr;
 
 		if (!crtc || !commit)
+=======
+	struct drm_crtc_state *unused;
+	struct drm_crtc *crtc;
+	int i;
+
+	for_each_new_crtc_in_state(old_state, crtc, unused, i) {
+		struct drm_crtc_commit *commit = old_state->crtcs[i].commit;
+		int ret;
+
+		if (!commit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		ret = wait_for_completion_timeout(&commit->flip_done, 10 * HZ);
@@ -1425,9 +1492,12 @@ void drm_atomic_helper_wait_for_flip_done(struct drm_device *dev,
 			DRM_ERROR("[CRTC:%d:%s] flip_done timed out\n",
 				  crtc->base.id, crtc->name);
 	}
+<<<<<<< HEAD
 
 	if (old_state->fake_commit)
 		complete_all(&old_state->fake_commit->flip_done);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_atomic_helper_wait_for_flip_done);
 
@@ -1454,8 +1524,11 @@ void drm_atomic_helper_commit_tail(struct drm_atomic_state *old_state)
 
 	drm_atomic_helper_commit_modeset_enables(dev, old_state);
 
+<<<<<<< HEAD
 	drm_atomic_helper_fake_vblank(old_state);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_atomic_helper_commit_hw_done(old_state);
 
 	drm_atomic_helper_wait_for_vblanks(dev, old_state);
@@ -1485,8 +1558,11 @@ void drm_atomic_helper_commit_tail_rpm(struct drm_atomic_state *old_state)
 	drm_atomic_helper_commit_planes(dev, old_state,
 					DRM_PLANE_COMMIT_ACTIVE_ONLY);
 
+<<<<<<< HEAD
 	drm_atomic_helper_fake_vblank(old_state);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_atomic_helper_commit_hw_done(old_state);
 
 	drm_atomic_helper_wait_for_vblanks(dev, old_state);
@@ -1542,17 +1618,26 @@ int drm_atomic_helper_async_check(struct drm_device *dev,
 {
 	struct drm_crtc *crtc;
 	struct drm_crtc_state *crtc_state;
+<<<<<<< HEAD
 	struct drm_plane *plane = NULL;
 	struct drm_plane_state *old_plane_state = NULL;
 	struct drm_plane_state *new_plane_state = NULL;
 	const struct drm_plane_helper_funcs *funcs;
 	int i, n_planes = 0;
+=======
+	struct drm_crtc_commit *commit;
+	struct drm_plane *__plane, *plane = NULL;
+	struct drm_plane_state *__plane_state, *plane_state = NULL;
+	const struct drm_plane_helper_funcs *funcs;
+	int i, j, n_planes = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_new_crtc_in_state(state, crtc, crtc_state, i) {
 		if (drm_atomic_crtc_needs_modeset(crtc_state))
 			return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	for_each_oldnew_plane_in_state(state, plane, old_plane_state, new_plane_state, i)
 		n_planes++;
 
@@ -1571,13 +1656,30 @@ int drm_atomic_helper_async_check(struct drm_device *dev,
 	 * double cleanups from occuring.
 	 */
 	if (old_plane_state->fb != new_plane_state->fb)
+=======
+	for_each_new_plane_in_state(state, __plane, __plane_state, i) {
+		n_planes++;
+		plane = __plane;
+		plane_state = __plane_state;
+	}
+
+	/* FIXME: we support only single plane updates for now */
+	if (!plane || n_planes != 1)
+		return -EINVAL;
+
+	if (!plane_state->crtc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	funcs = plane->helper_private;
 	if (!funcs->atomic_async_update)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (new_plane_state->fence)
+=======
+	if (plane_state->fence)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	/*
@@ -1585,11 +1687,39 @@ int drm_atomic_helper_async_check(struct drm_device *dev,
 	 * the plane.  This prevents our async update's changes from getting
 	 * overridden by a previous synchronous update's state.
 	 */
+<<<<<<< HEAD
 	if (old_plane_state->commit &&
 	    !try_wait_for_completion(&old_plane_state->commit->hw_done))
 		return -EBUSY;
 
 	return funcs->atomic_async_check(plane, new_plane_state);
+=======
+	for_each_new_crtc_in_state(state, crtc, crtc_state, i) {
+		if (plane->crtc != crtc)
+			continue;
+
+		spin_lock(&crtc->commit_lock);
+		commit = list_first_entry_or_null(&crtc->commit_list,
+						  struct drm_crtc_commit,
+						  commit_entry);
+		if (!commit) {
+			spin_unlock(&crtc->commit_lock);
+			continue;
+		}
+		spin_unlock(&crtc->commit_lock);
+
+		if (!crtc->state->state)
+			continue;
+
+		for_each_plane_in_state(crtc->state->state, __plane,
+					__plane_state, j) {
+			if (__plane == plane)
+				return -EINVAL;
+		}
+	}
+
+	return funcs->atomic_async_check(plane, plane_state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_atomic_helper_async_check);
 
@@ -1615,13 +1745,17 @@ void drm_atomic_helper_async_commit(struct drm_device *dev,
 	int i;
 
 	for_each_new_plane_in_state(state, plane, plane_state, i) {
+<<<<<<< HEAD
 		struct drm_framebuffer *new_fb = plane_state->fb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct drm_framebuffer *old_fb = plane->state->fb;
 
 		funcs = plane->helper_private;
 		funcs->atomic_async_update(plane, plane_state);
 
 		/*
+<<<<<<< HEAD
 		 * ->atomic_async_update() is supposed to update the
 		 * plane->state in-place, make sure at least common
 		 * properties have been properly updated.
@@ -1633,6 +1767,8 @@ void drm_atomic_helper_async_commit(struct drm_device *dev,
 		WARN_ON_ONCE(plane->state->src_y != plane_state->src_y);
 
 		/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * Make sure the FBs have been swapped so that cleanups in the
 		 * new_state performs a cleanup in the old FB.
 		 */
@@ -1796,7 +1932,12 @@ static int stall_checks(struct drm_crtc *crtc, bool nonblock)
 				return -EBUSY;
 			}
 		} else if (i == 1) {
+<<<<<<< HEAD
 			stall_commit = drm_crtc_commit_get(commit);
+=======
+			stall_commit = commit;
+			drm_crtc_commit_get(stall_commit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
@@ -1830,6 +1971,7 @@ static void release_crtc_commit(struct completion *completion)
 	drm_crtc_commit_put(commit);
 }
 
+<<<<<<< HEAD
 static void init_commit(struct drm_crtc_commit *commit, struct drm_crtc *crtc)
 {
 	init_completion(&commit->flip_done);
@@ -1862,6 +2004,8 @@ crtc_or_fake_commit(struct drm_atomic_state *state, struct drm_crtc *crtc)
 	return state->fake_commit;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_atomic_helper_setup_commit - setup possibly nonblocking commit
  * @state: new modeset state to be committed
@@ -1891,7 +2035,11 @@ crtc_or_fake_commit(struct drm_atomic_state *state, struct drm_crtc *crtc)
  * drm_atomic_helper_commit_cleanup_done().
  *
  * This is all implemented by in drm_atomic_helper_commit(), giving drivers a
+<<<<<<< HEAD
  * complete and easy-to-use default implementation of the atomic_commit() hook.
+=======
+ * complete and esay-to-use default implementation of the atomic_commit() hook.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The tracking of asynchronously executed and still pending commits is done
  * using the core structure &drm_crtc_commit.
@@ -1910,10 +2058,13 @@ int drm_atomic_helper_setup_commit(struct drm_atomic_state *state,
 {
 	struct drm_crtc *crtc;
 	struct drm_crtc_state *old_crtc_state, *new_crtc_state;
+<<<<<<< HEAD
 	struct drm_connector *conn;
 	struct drm_connector_state *old_conn_state, *new_conn_state;
 	struct drm_plane *plane;
 	struct drm_plane_state *old_plane_state, *new_plane_state;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_crtc_commit *commit;
 	int i, ret;
 
@@ -1922,9 +2073,20 @@ int drm_atomic_helper_setup_commit(struct drm_atomic_state *state,
 		if (!commit)
 			return -ENOMEM;
 
+<<<<<<< HEAD
 		init_commit(commit, crtc);
 
 		new_crtc_state->commit = commit;
+=======
+		init_completion(&commit->flip_done);
+		init_completion(&commit->hw_done);
+		init_completion(&commit->cleanup_done);
+		INIT_LIST_HEAD(&commit->commit_entry);
+		kref_init(&commit->ref);
+		commit->crtc = crtc;
+
+		state->crtcs[i].commit = commit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = stall_checks(crtc, nonblock);
 		if (ret)
@@ -1956,6 +2118,7 @@ int drm_atomic_helper_setup_commit(struct drm_atomic_state *state,
 		new_crtc_state->event->base.completion = &commit->flip_done;
 		new_crtc_state->event->base.completion_release = release_crtc_commit;
 		drm_crtc_commit_get(commit);
+<<<<<<< HEAD
 
 		commit->abort_completion = true;
 
@@ -1991,12 +2154,33 @@ int drm_atomic_helper_setup_commit(struct drm_atomic_state *state,
 			return -ENOMEM;
 
 		new_plane_state->commit = drm_crtc_commit_get(commit);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
 }
 EXPORT_SYMBOL(drm_atomic_helper_setup_commit);
 
+<<<<<<< HEAD
+=======
+
+static struct drm_crtc_commit *preceeding_commit(struct drm_crtc *crtc)
+{
+	struct drm_crtc_commit *commit;
+	int i = 0;
+
+	list_for_each_entry(commit, &crtc->commit_list, commit_entry) {
+		/* skip the first entry, that's the current commit */
+		if (i == 1)
+			return commit;
+		i++;
+	}
+
+	return NULL;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_atomic_helper_wait_for_dependencies - wait for required preceeding commits
  * @old_state: atomic state object with old state structures
@@ -2004,7 +2188,11 @@ EXPORT_SYMBOL(drm_atomic_helper_setup_commit);
  * This function waits for all preceeding commits that touch the same CRTC as
  * @old_state to both be committed to the hardware (as signalled by
  * drm_atomic_helper_commit_hw_done) and executed by the hardware (as signalled
+<<<<<<< HEAD
  * by calling drm_crtc_send_vblank_event() on the &drm_crtc_state.event).
+=======
+ * by calling drm_crtc_vblank_send_event() on the &drm_crtc_state.event).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This is part of the atomic helper support for nonblocking commits, see
  * drm_atomic_helper_setup_commit() for an overview.
@@ -2012,17 +2200,30 @@ EXPORT_SYMBOL(drm_atomic_helper_setup_commit);
 void drm_atomic_helper_wait_for_dependencies(struct drm_atomic_state *old_state)
 {
 	struct drm_crtc *crtc;
+<<<<<<< HEAD
 	struct drm_crtc_state *old_crtc_state;
 	struct drm_plane *plane;
 	struct drm_plane_state *old_plane_state;
 	struct drm_connector *conn;
 	struct drm_connector_state *old_conn_state;
+=======
+	struct drm_crtc_state *new_crtc_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_crtc_commit *commit;
 	int i;
 	long ret;
 
+<<<<<<< HEAD
 	for_each_old_crtc_in_state(old_state, crtc, old_crtc_state, i) {
 		commit = old_crtc_state->commit;
+=======
+	for_each_new_crtc_in_state(old_state, crtc, new_crtc_state, i) {
+		spin_lock(&crtc->commit_lock);
+		commit = preceeding_commit(crtc);
+		if (commit)
+			drm_crtc_commit_get(commit);
+		spin_unlock(&crtc->commit_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!commit)
 			continue;
@@ -2040,6 +2241,7 @@ void drm_atomic_helper_wait_for_dependencies(struct drm_atomic_state *old_state)
 		if (ret == 0)
 			DRM_ERROR("[CRTC:%d:%s] flip_done timed out\n",
 				  crtc->base.id, crtc->name);
+<<<<<<< HEAD
 	}
 
 	for_each_old_connector_in_state(old_state, conn, old_conn_state, i) {
@@ -2082,11 +2284,16 @@ void drm_atomic_helper_wait_for_dependencies(struct drm_atomic_state *old_state)
 		if (ret == 0)
 			DRM_ERROR("[PLANE:%d:%s] flip_done timed out\n",
 				  plane->base.id, plane->name);
+=======
+
+		drm_crtc_commit_put(commit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 EXPORT_SYMBOL(drm_atomic_helper_wait_for_dependencies);
 
 /**
+<<<<<<< HEAD
  * drm_atomic_helper_fake_vblank - fake VBLANK events if needed
  * @old_state: atomic state object with old state structures
  *
@@ -2126,6 +2333,8 @@ void drm_atomic_helper_fake_vblank(struct drm_atomic_state *old_state)
 EXPORT_SYMBOL(drm_atomic_helper_fake_vblank);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_atomic_helper_commit_hw_done - setup possible nonblocking commit
  * @old_state: atomic state object with old state structures
  *
@@ -2143,6 +2352,7 @@ EXPORT_SYMBOL(drm_atomic_helper_fake_vblank);
 void drm_atomic_helper_commit_hw_done(struct drm_atomic_state *old_state)
 {
 	struct drm_crtc *crtc;
+<<<<<<< HEAD
 	struct drm_crtc_state *old_crtc_state, *new_crtc_state;
 	struct drm_crtc_commit *commit;
 	int i;
@@ -2162,15 +2372,29 @@ void drm_atomic_helper_commit_hw_done(struct drm_atomic_state *old_state)
 
 		old_crtc_state->commit = drm_crtc_commit_get(commit);
 
+=======
+	struct drm_crtc_state *new_crtc_state;
+	struct drm_crtc_commit *commit;
+	int i;
+
+	for_each_new_crtc_in_state(old_state, crtc, new_crtc_state, i) {
+		commit = old_state->crtcs[i].commit;
+		if (!commit)
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* backend must have consumed any event by now */
 		WARN_ON(new_crtc_state->event);
 		complete_all(&commit->hw_done);
 	}
+<<<<<<< HEAD
 
 	if (old_state->fake_commit) {
 		complete_all(&old_state->fake_commit->hw_done);
 		complete_all(&old_state->fake_commit->flip_done);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_atomic_helper_commit_hw_done);
 
@@ -2188,25 +2412,57 @@ EXPORT_SYMBOL(drm_atomic_helper_commit_hw_done);
 void drm_atomic_helper_commit_cleanup_done(struct drm_atomic_state *old_state)
 {
 	struct drm_crtc *crtc;
+<<<<<<< HEAD
 	struct drm_crtc_state *old_crtc_state;
 	struct drm_crtc_commit *commit;
 	int i;
 
 	for_each_old_crtc_in_state(old_state, crtc, old_crtc_state, i) {
 		commit = old_crtc_state->commit;
+=======
+	struct drm_crtc_state *new_crtc_state;
+	struct drm_crtc_commit *commit;
+	int i;
+	long ret;
+
+	for_each_new_crtc_in_state(old_state, crtc, new_crtc_state, i) {
+		commit = old_state->crtcs[i].commit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (WARN_ON(!commit))
 			continue;
 
 		complete_all(&commit->cleanup_done);
 		WARN_ON(!try_wait_for_completion(&commit->hw_done));
 
+<<<<<<< HEAD
+=======
+		/* commit_list borrows our reference, need to remove before we
+		 * clean up our drm_atomic_state. But only after it actually
+		 * completed, otherwise subsequent commits won't stall properly. */
+		if (try_wait_for_completion(&commit->flip_done))
+			goto del_commit;
+
+		/* We must wait for the vblank event to signal our completion
+		 * before releasing our reference, since the vblank work does
+		 * not hold a reference of its own. */
+		ret = wait_for_completion_timeout(&commit->flip_done,
+						  10*HZ);
+		if (ret == 0)
+			DRM_ERROR("[CRTC:%d:%s] flip_done timed out\n",
+				  crtc->base.id, crtc->name);
+
+del_commit:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock(&crtc->commit_lock);
 		list_del(&commit->commit_entry);
 		spin_unlock(&crtc->commit_lock);
 	}
+<<<<<<< HEAD
 
 	if (old_state->fake_commit)
 		complete_all(&old_state->fake_commit->cleanup_done);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_atomic_helper_commit_cleanup_done);
 
@@ -2416,13 +2672,20 @@ drm_atomic_helper_commit_planes_on_crtc(struct drm_crtc_state *old_crtc_state)
 	const struct drm_crtc_helper_funcs *crtc_funcs;
 	struct drm_crtc *crtc = old_crtc_state->crtc;
 	struct drm_atomic_state *old_state = old_crtc_state->state;
+<<<<<<< HEAD
 	struct drm_crtc_state *new_crtc_state =
 		drm_atomic_get_new_crtc_state(old_state, crtc);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_plane *plane;
 	unsigned plane_mask;
 
 	plane_mask = old_crtc_state->plane_mask;
+<<<<<<< HEAD
 	plane_mask |= new_crtc_state->plane_mask;
+=======
+	plane_mask |= crtc->state->plane_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	crtc_funcs = crtc->helper_private;
 	if (crtc_funcs && crtc_funcs->atomic_begin)
@@ -2431,8 +2694,11 @@ drm_atomic_helper_commit_planes_on_crtc(struct drm_crtc_state *old_crtc_state)
 	drm_for_each_plane_mask(plane, crtc->dev, plane_mask) {
 		struct drm_plane_state *old_plane_state =
 			drm_atomic_get_old_plane_state(old_state, plane);
+<<<<<<< HEAD
 		struct drm_plane_state *new_plane_state =
 			drm_atomic_get_new_plane_state(old_state, plane);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		const struct drm_plane_helper_funcs *plane_funcs;
 
 		plane_funcs = plane->helper_private;
@@ -2440,6 +2706,7 @@ drm_atomic_helper_commit_planes_on_crtc(struct drm_crtc_state *old_crtc_state)
 		if (!old_plane_state || !plane_funcs)
 			continue;
 
+<<<<<<< HEAD
 		WARN_ON(new_plane_state->crtc &&
 			new_plane_state->crtc != crtc);
 
@@ -2448,6 +2715,15 @@ drm_atomic_helper_commit_planes_on_crtc(struct drm_crtc_state *old_crtc_state)
 			plane_funcs->atomic_disable(plane, old_plane_state);
 		else if (new_plane_state->crtc ||
 			 drm_atomic_plane_disabling(old_plane_state, new_plane_state))
+=======
+		WARN_ON(plane->state->crtc && plane->state->crtc != crtc);
+
+		if (drm_atomic_plane_disabling(old_plane_state, plane->state) &&
+		    plane_funcs->atomic_disable)
+			plane_funcs->atomic_disable(plane, old_plane_state);
+		else if (plane->state->crtc ||
+			 drm_atomic_plane_disabling(old_plane_state, plane->state))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			plane_funcs->atomic_update(plane, old_plane_state);
 	}
 
@@ -2591,6 +2867,7 @@ int drm_atomic_helper_swap_state(struct drm_atomic_state *state,
 	struct drm_private_state *old_obj_state, *new_obj_state;
 
 	if (stall) {
+<<<<<<< HEAD
 		/*
 		 * We have to stall for hw_done here before
 		 * drm_atomic_helper_wait_for_dependencies() because flip
@@ -2602,11 +2879,21 @@ int drm_atomic_helper_swap_state(struct drm_atomic_state *state,
 
 		for_each_old_crtc_in_state(state, crtc, old_crtc_state, i) {
 			commit = old_crtc_state->commit;
+=======
+		for_each_new_crtc_in_state(state, crtc, new_crtc_state, i) {
+			spin_lock(&crtc->commit_lock);
+			commit = list_first_entry_or_null(&crtc->commit_list,
+					struct drm_crtc_commit, commit_entry);
+			if (commit)
+				drm_crtc_commit_get(commit);
+			spin_unlock(&crtc->commit_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (!commit)
 				continue;
 
 			ret = wait_for_completion_interruptible(&commit->hw_done);
+<<<<<<< HEAD
 			if (ret)
 				return ret;
 		}
@@ -2629,6 +2916,10 @@ int drm_atomic_helper_swap_state(struct drm_atomic_state *state,
 				continue;
 
 			ret = wait_for_completion_interruptible(&commit->hw_done);
+=======
+			drm_crtc_commit_put(commit);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				return ret;
 		}
@@ -2653,6 +2944,7 @@ int drm_atomic_helper_swap_state(struct drm_atomic_state *state,
 		state->crtcs[i].state = old_crtc_state;
 		crtc->state = new_crtc_state;
 
+<<<<<<< HEAD
 		if (new_crtc_state->commit) {
 			spin_lock(&crtc->commit_lock);
 			list_add(&new_crtc_state->commit->commit_entry,
@@ -2660,6 +2952,15 @@ int drm_atomic_helper_swap_state(struct drm_atomic_state *state,
 			spin_unlock(&crtc->commit_lock);
 
 			new_crtc_state->commit->event = NULL;
+=======
+		if (state->crtcs[i].commit) {
+			spin_lock(&crtc->commit_lock);
+			list_add(&state->crtcs[i].commit->commit_entry,
+				 &crtc->commit_list);
+			spin_unlock(&crtc->commit_lock);
+
+			state->crtcs[i].commit->event = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -2782,7 +3083,11 @@ int drm_atomic_helper_disable_plane(struct drm_plane *plane,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	if (plane_state->crtc && plane_state->crtc->cursor == plane)
+=======
+	if (plane_state->crtc && (plane == plane->crtc->cursor))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		plane_state->state->legacy_cursor_update = true;
 
 	ret = __drm_atomic_helper_disable_plane(plane, plane_state);
@@ -2896,7 +3201,11 @@ static int update_output_state(struct drm_atomic_state *state,
  * resets the "link-status" property to GOOD, to force any link
  * re-training. The SETCRTC ioctl does not define whether an update does
  * need a full modeset or just a plane update, hence we're allowed to do
+<<<<<<< HEAD
  * that. See also drm_connector_set_link_status_property().
+=======
+ * that. See also drm_mode_connector_set_link_status_property().
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns:
  * Returns 0 on success, negative errno numbers on failure.
@@ -3015,6 +3324,10 @@ static int __drm_atomic_helper_disable_all(struct drm_device *dev,
 	struct drm_plane *plane;
 	struct drm_crtc_state *crtc_state;
 	struct drm_crtc *crtc;
+<<<<<<< HEAD
+=======
+	unsigned plane_mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret, i;
 
 	state = drm_atomic_state_alloc(dev);
@@ -3057,10 +3370,23 @@ static int __drm_atomic_helper_disable_all(struct drm_device *dev,
 			goto free;
 
 		drm_atomic_set_fb_for_plane(plane_state, NULL);
+<<<<<<< HEAD
+=======
+
+		if (clean_old_fbs) {
+			plane->old_fb = plane->fb;
+			plane_mask |= BIT(drm_plane_index(plane));
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = drm_atomic_commit(state);
 free:
+<<<<<<< HEAD
+=======
+	if (plane_mask)
+		drm_atomic_clean_old_fb(dev, plane_mask, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_atomic_state_put(state);
 	return ret;
 }
@@ -3504,7 +3830,10 @@ void __drm_atomic_helper_crtc_duplicate_state(struct drm_crtc *crtc,
 	state->connectors_changed = false;
 	state->color_mgmt_changed = false;
 	state->zpos_changed = false;
+<<<<<<< HEAD
 	state->commit = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state->event = NULL;
 	state->pageflip_flags = 0;
 }
@@ -3543,6 +3872,7 @@ EXPORT_SYMBOL(drm_atomic_helper_crtc_duplicate_state);
  */
 void __drm_atomic_helper_crtc_destroy_state(struct drm_crtc_state *state)
 {
+<<<<<<< HEAD
 	if (state->commit) {
 		/*
 		 * In the event that a non-blocking commit returns
@@ -3562,6 +3892,8 @@ void __drm_atomic_helper_crtc_destroy_state(struct drm_crtc_state *state)
 		drm_crtc_commit_put(state->commit);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_property_blob_put(state->mode_blob);
 	drm_property_blob_put(state->degamma_lut);
 	drm_property_blob_put(state->ctm);
@@ -3603,10 +3935,13 @@ void drm_atomic_helper_plane_reset(struct drm_plane *plane)
 	if (plane->state) {
 		plane->state->plane = plane;
 		plane->state->rotation = DRM_MODE_ROTATE_0;
+<<<<<<< HEAD
 
 		/* Reset the alpha value to fully opaque if it matters */
 		if (plane->alpha_property)
 			plane->state->alpha = plane->alpha_property->values[1];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 EXPORT_SYMBOL(drm_atomic_helper_plane_reset);
@@ -3628,7 +3963,10 @@ void __drm_atomic_helper_plane_duplicate_state(struct drm_plane *plane,
 		drm_framebuffer_get(state->fb);
 
 	state->fence = NULL;
+<<<<<<< HEAD
 	state->commit = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(__drm_atomic_helper_plane_duplicate_state);
 
@@ -3670,9 +4008,12 @@ void __drm_atomic_helper_plane_destroy_state(struct drm_plane_state *state)
 
 	if (state->fence)
 		dma_fence_put(state->fence);
+<<<<<<< HEAD
 
 	if (state->commit)
 		drm_crtc_commit_put(state->commit);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(__drm_atomic_helper_plane_destroy_state);
 
@@ -3751,10 +4092,13 @@ __drm_atomic_helper_connector_duplicate_state(struct drm_connector *connector,
 	memcpy(state, connector->state, sizeof(*state));
 	if (state->crtc)
 		drm_connector_get(connector);
+<<<<<<< HEAD
 	state->commit = NULL;
 
 	/* Don't copy over a writeback job, they are used only once */
 	state->writeback_job = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(__drm_atomic_helper_connector_duplicate_state);
 
@@ -3881,9 +4225,12 @@ __drm_atomic_helper_connector_destroy_state(struct drm_connector_state *state)
 {
 	if (state->crtc)
 		drm_connector_put(state->connector);
+<<<<<<< HEAD
 
 	if (state->commit)
 		drm_crtc_commit_put(state->commit);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(__drm_atomic_helper_connector_destroy_state);
 
@@ -3944,7 +4291,11 @@ int drm_atomic_helper_legacy_gamma_set(struct drm_crtc *crtc,
 	}
 
 	/* Prepare GAMMA_LUT with the legacy values. */
+<<<<<<< HEAD
 	blob_data = blob->data;
+=======
+	blob_data = (struct drm_color_lut *) blob->data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < size; i++) {
 		blob_data[i].red = red[i];
 		blob_data[i].green = green[i];

@@ -11,9 +11,13 @@ enum perf_msr_id {
 	PERF_MSR_SMI			= 4,
 	PERF_MSR_PTSC			= 5,
 	PERF_MSR_IRPERF			= 6,
+<<<<<<< HEAD
 	PERF_MSR_THERM			= 7,
 	PERF_MSR_THERM_SNAP		= 8,
 	PERF_MSR_THERM_UNIT		= 9,
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PERF_MSR_EVENT_MAX,
 };
 
@@ -32,11 +36,14 @@ static bool test_irperf(int idx)
 	return boot_cpu_has(X86_FEATURE_IRPERF);
 }
 
+<<<<<<< HEAD
 static bool test_therm_status(int idx)
 {
 	return boot_cpu_has(X86_FEATURE_DTHERM);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool test_intel(int idx)
 {
 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL ||
@@ -89,7 +96,10 @@ static bool test_intel(int idx)
 	case INTEL_FAM6_SKYLAKE_X:
 	case INTEL_FAM6_KABYLAKE_MOBILE:
 	case INTEL_FAM6_KABYLAKE_DESKTOP:
+<<<<<<< HEAD
 	case INTEL_FAM6_ICELAKE_MOBILE:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (idx == PERF_MSR_SMI || idx == PERF_MSR_PPERF)
 			return true;
 		break;
@@ -104,6 +114,7 @@ struct perf_msr {
 	bool	(*test)(int idx);
 };
 
+<<<<<<< HEAD
 PMU_EVENT_ATTR_STRING(tsc,				evattr_tsc,		"event=0x00"	);
 PMU_EVENT_ATTR_STRING(aperf,				evattr_aperf,		"event=0x01"	);
 PMU_EVENT_ATTR_STRING(mperf,				evattr_mperf,		"event=0x02"	);
@@ -126,6 +137,24 @@ static struct perf_msr msr[] = {
 	[PERF_MSR_THERM]	= { MSR_IA32_THERM_STATUS,	&evattr_therm,		test_therm_status,	},
 	[PERF_MSR_THERM_SNAP]	= { MSR_IA32_THERM_STATUS,	&evattr_therm_snap,	test_therm_status,	},
 	[PERF_MSR_THERM_UNIT]	= { MSR_IA32_THERM_STATUS,	&evattr_therm_unit,	test_therm_status,	},
+=======
+PMU_EVENT_ATTR_STRING(tsc,    evattr_tsc,    "event=0x00");
+PMU_EVENT_ATTR_STRING(aperf,  evattr_aperf,  "event=0x01");
+PMU_EVENT_ATTR_STRING(mperf,  evattr_mperf,  "event=0x02");
+PMU_EVENT_ATTR_STRING(pperf,  evattr_pperf,  "event=0x03");
+PMU_EVENT_ATTR_STRING(smi,    evattr_smi,    "event=0x04");
+PMU_EVENT_ATTR_STRING(ptsc,   evattr_ptsc,   "event=0x05");
+PMU_EVENT_ATTR_STRING(irperf, evattr_irperf, "event=0x06");
+
+static struct perf_msr msr[] = {
+	[PERF_MSR_TSC]    = { 0,		&evattr_tsc,	NULL,		 },
+	[PERF_MSR_APERF]  = { MSR_IA32_APERF,	&evattr_aperf,	test_aperfmperf, },
+	[PERF_MSR_MPERF]  = { MSR_IA32_MPERF,	&evattr_mperf,	test_aperfmperf, },
+	[PERF_MSR_PPERF]  = { MSR_PPERF,	&evattr_pperf,	test_intel,	 },
+	[PERF_MSR_SMI]    = { MSR_SMI_COUNT,	&evattr_smi,	test_intel,	 },
+	[PERF_MSR_PTSC]   = { MSR_F15H_PTSC,	&evattr_ptsc,	test_ptsc,	 },
+	[PERF_MSR_IRPERF] = { MSR_F17H_IRPERF,	&evattr_irperf,	test_irperf,	 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct attribute *events_attrs[PERF_MSR_EVENT_MAX + 1] = {
@@ -178,9 +207,15 @@ static int msr_event_init(struct perf_event *event)
 	if (!msr[cfg].attr)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	event->hw.idx		= -1;
 	event->hw.event_base	= msr[cfg].msr;
 	event->hw.config	= cfg;
+=======
+	event->hw.idx = -1;
+	event->hw.event_base = msr[cfg].msr;
+	event->hw.config = cfg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -192,17 +227,28 @@ static inline u64 msr_read_counter(struct perf_event *event)
 	if (event->hw.event_base)
 		rdmsrl(event->hw.event_base, now);
 	else
+<<<<<<< HEAD
 		now = rdtsc_ordered();
 
 	return now;
 }
 
+=======
+		rdtscll(now);
+
+	return now;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void msr_event_update(struct perf_event *event)
 {
 	u64 prev, now;
 	s64 delta;
 
+<<<<<<< HEAD
 	/* Careful, an NMI might modify the previous event value: */
+=======
+	/* Careful, an NMI might modify the previous event value. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 again:
 	prev = local64_read(&event->hw.prev_count);
 	now = msr_read_counter(event);
@@ -211,6 +257,7 @@ again:
 		goto again;
 
 	delta = now - prev;
+<<<<<<< HEAD
 	if (unlikely(event->hw.event_base == MSR_SMI_COUNT)) {
 		delta = sign_extend64(delta, 31);
 		local64_add(delta, &event->count);
@@ -221,12 +268,24 @@ again:
 	} else {
 		local64_add(delta, &event->count);
 	}
+=======
+	if (unlikely(event->hw.event_base == MSR_SMI_COUNT))
+		delta = sign_extend64(delta, 31);
+
+	local64_add(delta, &event->count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void msr_event_start(struct perf_event *event, int flags)
 {
+<<<<<<< HEAD
 	u64 now = msr_read_counter(event);
 
+=======
+	u64 now;
+
+	now = msr_read_counter(event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local64_set(&event->hw.prev_count, now);
 }
 
@@ -273,7 +332,13 @@ static int __init msr_init(void)
 	for (i = PERF_MSR_TSC + 1; i < PERF_MSR_EVENT_MAX; i++) {
 		u64 val;
 
+<<<<<<< HEAD
 		/* Virt sucks; you cannot tell if a R/O MSR is present :/ */
+=======
+		/*
+		 * Virt sucks arse; you cannot tell if a R/O MSR is present :/
+		 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!msr[i].test(i) || rdmsrl_safe(msr[i].msr, &val))
 			msr[i].attr = NULL;
 	}

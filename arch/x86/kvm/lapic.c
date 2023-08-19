@@ -378,6 +378,7 @@ static u8 count_vectors(void *bitmap)
 	return count;
 }
 
+<<<<<<< HEAD
 bool __kvm_apic_update_irr(u32 *pir, void *regs, int *max_irr)
 {
 	u32 i, vec;
@@ -386,11 +387,19 @@ bool __kvm_apic_update_irr(u32 *pir, void *regs, int *max_irr)
 
 	max_updated_irr = -1;
 	*max_irr = -1;
+=======
+int __kvm_apic_update_irr(u32 *pir, void *regs)
+{
+	u32 i, vec;
+	u32 pir_val, irr_val;
+	int max_irr = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = vec = 0; i <= 7; i++, vec += 32) {
 		pir_val = READ_ONCE(pir[i]);
 		irr_val = *((u32 *)(regs + APIC_IRR + i * 0x10));
 		if (pir_val) {
+<<<<<<< HEAD
 			prev_irr_val = irr_val;
 			irr_val |= xchg(&pir[i], 0);
 			*((u32 *)(regs + APIC_IRR + i * 0x10)) = irr_val;
@@ -413,6 +422,24 @@ bool kvm_apic_update_irr(struct kvm_vcpu *vcpu, u32 *pir, int *max_irr)
 	struct kvm_lapic *apic = vcpu->arch.apic;
 
 	return __kvm_apic_update_irr(pir, apic->regs, max_irr);
+=======
+			irr_val |= xchg(&pir[i], 0);
+			*((u32 *)(regs + APIC_IRR + i * 0x10)) = irr_val;
+		}
+		if (irr_val)
+			max_irr = __fls(irr_val) + vec;
+	}
+
+	return max_irr;
+}
+EXPORT_SYMBOL_GPL(__kvm_apic_update_irr);
+
+int kvm_apic_update_irr(struct kvm_vcpu *vcpu, u32 *pir)
+{
+	struct kvm_lapic *apic = vcpu->arch.apic;
+
+	return __kvm_apic_update_irr(pir, apic->regs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(kvm_apic_update_irr);
 
@@ -553,6 +580,7 @@ int kvm_apic_set_irq(struct kvm_vcpu *vcpu, struct kvm_lapic_irq *irq,
 			irq->level, irq->trig_mode, dest_map);
 }
 
+<<<<<<< HEAD
 int kvm_pv_send_ipi(struct kvm *kvm, unsigned long ipi_bitmap_low,
 		    unsigned long ipi_bitmap_high, u32 min,
 		    unsigned long icr, int op_64_bit)
@@ -611,6 +639,8 @@ out:
 	return count;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pv_eoi_put_user(struct kvm_vcpu *vcpu, u8 val)
 {
 
@@ -633,9 +663,17 @@ static inline bool pv_eoi_enabled(struct kvm_vcpu *vcpu)
 static bool pv_eoi_get_pending(struct kvm_vcpu *vcpu)
 {
 	u8 val;
+<<<<<<< HEAD
 	if (pv_eoi_get_user(vcpu, &val) < 0)
 		apic_debug("Can't read EOI MSR value: 0x%llx\n",
 			   (unsigned long long)vcpu->arch.pv_eoi.msr_val);
+=======
+	if (pv_eoi_get_user(vcpu, &val) < 0) {
+		apic_debug("Can't read EOI MSR value: 0x%llx\n",
+			   (unsigned long long)vcpu->arch.pv_eoi.msr_val);
+		return false;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return val & 0x1;
 }
 
@@ -662,7 +700,11 @@ static void pv_eoi_clr_pending(struct kvm_vcpu *vcpu)
 static int apic_has_interrupt_for_ppr(struct kvm_lapic *apic, u32 ppr)
 {
 	int highest_irr;
+<<<<<<< HEAD
 	if (apic->vcpu->arch.apicv_active)
+=======
+	if (kvm_x86_ops->sync_pir_to_irr && apic->vcpu->arch.apicv_active)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		highest_irr = kvm_x86_ops->sync_pir_to_irr(apic->vcpu);
 	else
 		highest_irr = apic_find_highest_irr(apic);
@@ -1060,11 +1102,16 @@ static int __apic_accept_irq(struct kvm_lapic *apic, int delivery_mode,
 				apic_clear_vector(vector, apic->regs + APIC_TMR);
 		}
 
+<<<<<<< HEAD
 		if (vcpu->arch.apicv_active)
 			kvm_x86_ops->deliver_posted_interrupt(vcpu, vector);
 		else {
 			kvm_lapic_set_irr(vector, apic);
 
+=======
+		if (kvm_x86_ops->deliver_posted_interrupt(vcpu, vector)) {
+			kvm_lapic_set_irr(vector, apic);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kvm_make_request(KVM_REQ_EVENT, vcpu);
 			kvm_vcpu_kick(vcpu);
 		}
@@ -1396,6 +1443,7 @@ static void update_divide_count(struct kvm_lapic *apic)
 				   apic->divide_count);
 }
 
+<<<<<<< HEAD
 static void limit_periodic_timer_frequency(struct kvm_lapic *apic)
 {
 	/*
@@ -1417,12 +1465,15 @@ static void limit_periodic_timer_frequency(struct kvm_lapic *apic)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void apic_update_lvtt(struct kvm_lapic *apic)
 {
 	u32 timer_mode = kvm_lapic_get_reg(apic, APIC_LVTT) &
 			apic->lapic_timer.timer_mode_mask;
 
 	if (apic->lapic_timer.timer_mode != timer_mode) {
+<<<<<<< HEAD
 		if (apic_lvtt_tscdeadline(apic) != (timer_mode ==
 				APIC_LVT_TIMER_TSCDEADLINE)) {
 			hrtimer_cancel(&apic->lapic_timer.timer);
@@ -1432,6 +1483,10 @@ static void apic_update_lvtt(struct kvm_lapic *apic)
 		}
 		apic->lapic_timer.timer_mode = timer_mode;
 		limit_periodic_timer_frequency(apic);
+=======
+		apic->lapic_timer.timer_mode = timer_mode;
+		hrtimer_cancel(&apic->lapic_timer.timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1452,9 +1507,15 @@ static void apic_timer_expired(struct kvm_lapic *apic)
 	 * using swait_active() is safe.
 	 */
 	if (swait_active(q))
+<<<<<<< HEAD
 		swake_up_one(q);
 
 	if (apic_lvtt_tscdeadline(apic) || ktimer->hv_timer_in_use)
+=======
+		swake_up(q);
+
+	if (apic_lvtt_tscdeadline(apic))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ktimer->expired_tscdeadline = ktimer->tscdeadline;
 }
 
@@ -1536,6 +1597,7 @@ static void start_sw_tscdeadline(struct kvm_lapic *apic)
 	local_irq_restore(flags);
 }
 
+<<<<<<< HEAD
 static void update_target_expiration(struct kvm_lapic *apic, uint32_t old_divisor)
 {
 	ktime_t now, remaining;
@@ -1560,6 +1622,8 @@ static void update_target_expiration(struct kvm_lapic *apic, uint32_t old_diviso
 	apic->lapic_timer.target_expiration = ktime_add_ns(now, ns_remaining_new);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool set_target_expiration(struct kvm_lapic *apic)
 {
 	ktime_t now;
@@ -1569,12 +1633,35 @@ static bool set_target_expiration(struct kvm_lapic *apic)
 	apic->lapic_timer.period = (u64)kvm_lapic_get_reg(apic, APIC_TMICT)
 		* APIC_BUS_CYCLE_NS * apic->divide_count;
 
+<<<<<<< HEAD
 	if (!apic->lapic_timer.period) {
 		apic->lapic_timer.tscdeadline = 0;
 		return false;
 	}
 
 	limit_periodic_timer_frequency(apic);
+=======
+	if (!apic->lapic_timer.period)
+		return false;
+
+	/*
+	 * Do not allow the guest to program periodic timers with small
+	 * interval, since the hrtimers are not throttled by the host
+	 * scheduler.
+	 */
+	if (apic_lvtt_period(apic)) {
+		s64 min_period = min_timer_period_us * 1000LL;
+
+		if (apic->lapic_timer.period < min_period) {
+			pr_info_ratelimited(
+			    "kvm: vcpu %i: requested %lld ns "
+			    "lapic timer period limited to %lld ns\n",
+			    apic->vcpu->vcpu_id,
+			    apic->lapic_timer.period, min_period);
+			apic->lapic_timer.period = min_period;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	apic_debug("%s: bus cycle is %" PRId64 "ns, now 0x%016"
 		   PRIx64 ", "
@@ -1663,9 +1750,12 @@ static bool start_hv_timer(struct kvm_lapic *apic)
 	if (!apic_lvtt_period(apic) && atomic_read(&ktimer->pending))
 		return false;
 
+<<<<<<< HEAD
 	if (!ktimer->tscdeadline)
 		return false;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = kvm_x86_ops->set_hv_timer(apic->vcpu, ktimer->tscdeadline);
 	if (r < 0)
 		return false;
@@ -1862,6 +1952,7 @@ int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
 	case APIC_LVTTHMR:
 	case APIC_LVTPC:
 	case APIC_LVT1:
+<<<<<<< HEAD
 	case APIC_LVTERR:
 		/* TODO: Check vector */
 		if (!kvm_apic_sw_enabled(apic))
@@ -1871,6 +1962,22 @@ int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
 		kvm_lapic_set_reg(apic, reg, val);
 
 		break;
+=======
+	case APIC_LVTERR: {
+		/* TODO: Check vector */
+		size_t size;
+		u32 index;
+
+		if (!kvm_apic_sw_enabled(apic))
+			val |= APIC_LVT_MASKED;
+		size = ARRAY_SIZE(apic_lvt_mask);
+		index = array_index_nospec(
+				(reg - APIC_LVTT) >> 4, size);
+		val &= apic_lvt_mask[index];
+		kvm_lapic_set_reg(apic, reg, val);
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case APIC_LVTT:
 		if (!kvm_apic_sw_enabled(apic))
@@ -1889,13 +1996,18 @@ int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
 		start_apic_timer(apic);
 		break;
 
+<<<<<<< HEAD
 	case APIC_TDCR: {
 		uint32_t old_divisor = apic->divide_count;
 
+=======
+	case APIC_TDCR:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (val & 4)
 			apic_debug("KVM_WRITE:TDCR %x\n", val);
 		kvm_lapic_set_reg(apic, APIC_TDCR, val);
 		update_divide_count(apic);
+<<<<<<< HEAD
 		if (apic->divide_count != old_divisor &&
 				apic->lapic_timer.period) {
 			hrtimer_cancel(&apic->lapic_timer.timer);
@@ -1904,6 +2016,10 @@ int kvm_lapic_reg_write(struct kvm_lapic *apic, u32 reg, u32 val)
 		}
 		break;
 	}
+=======
+		break;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case APIC_ESR:
 		if (apic_x2apic_mode(apic) && val != 0) {
 			apic_debug("KVM_WRITE:ESR not zero %x\n", val);
@@ -2633,18 +2749,25 @@ int kvm_hv_vapic_msr_read(struct kvm_vcpu *vcpu, u32 reg, u64 *data)
 	return 0;
 }
 
+<<<<<<< HEAD
 int kvm_lapic_enable_pv_eoi(struct kvm_vcpu *vcpu, u64 data, unsigned long len)
 {
 	u64 addr = data & ~KVM_MSR_ENABLED;
 	struct gfn_to_hva_cache *ghc = &vcpu->arch.pv_eoi.data;
 	unsigned long new_len;
 
+=======
+int kvm_lapic_enable_pv_eoi(struct kvm_vcpu *vcpu, u64 data)
+{
+	u64 addr = data & ~KVM_MSR_ENABLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!IS_ALIGNED(addr, 4))
 		return 1;
 
 	vcpu->arch.pv_eoi.msr_val = data;
 	if (!pv_eoi_enabled(vcpu))
 		return 0;
+<<<<<<< HEAD
 
 	if (addr == ghc->gpa && len <= ghc->len)
 		new_len = ghc->len;
@@ -2652,6 +2775,10 @@ int kvm_lapic_enable_pv_eoi(struct kvm_vcpu *vcpu, u64 data, unsigned long len)
 		new_len = len;
 
 	return kvm_gfn_to_hva_cache_init(vcpu->kvm, ghc, addr, new_len);
+=======
+	return kvm_gfn_to_hva_cache_init(vcpu->kvm, &vcpu->arch.pv_eoi.data,
+					 addr, sizeof(u8));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void kvm_apic_accept_events(struct kvm_vcpu *vcpu)

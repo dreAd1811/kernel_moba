@@ -43,7 +43,11 @@
  */
 struct radeon_fbdev {
 	struct drm_fb_helper helper;
+<<<<<<< HEAD
 	struct drm_framebuffer fb;
+=======
+	struct radeon_framebuffer rfb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct radeon_device *rdev;
 };
 
@@ -246,13 +250,21 @@ static int radeonfb_create(struct drm_fb_helper *helper,
 
 	info->par = rfbdev;
 
+<<<<<<< HEAD
 	ret = radeon_framebuffer_init(rdev->ddev, &rfbdev->fb, &mode_cmd, gobj);
+=======
+	ret = radeon_framebuffer_init(rdev->ddev, &rfbdev->rfb, &mode_cmd, gobj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("failed to initialize framebuffer %d\n", ret);
 		goto out;
 	}
 
+<<<<<<< HEAD
 	fb = &rfbdev->fb;
+=======
+	fb = &rfbdev->rfb.base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* setup helper */
 	rfbdev->helper.fb = fb;
@@ -306,6 +318,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int radeon_fbdev_destroy(struct drm_device *dev, struct radeon_fbdev *rfbdev)
 {
 	struct drm_framebuffer *fb = &rfbdev->fb;
@@ -319,6 +332,27 @@ static int radeon_fbdev_destroy(struct drm_device *dev, struct radeon_fbdev *rfb
 		drm_framebuffer_cleanup(fb);
 	}
 	drm_fb_helper_fini(&rfbdev->helper);
+=======
+void radeon_fb_output_poll_changed(struct radeon_device *rdev)
+{
+	if (rdev->mode_info.rfbdev)
+		drm_fb_helper_hotplug_event(&rdev->mode_info.rfbdev->helper);
+}
+
+static int radeon_fbdev_destroy(struct drm_device *dev, struct radeon_fbdev *rfbdev)
+{
+	struct radeon_framebuffer *rfb = &rfbdev->rfb;
+
+	drm_fb_helper_unregister_fbi(&rfbdev->helper);
+
+	if (rfb->obj) {
+		radeonfb_destroy_pinned_object(rfb->obj);
+		rfb->obj = NULL;
+	}
+	drm_fb_helper_fini(&rfbdev->helper);
+	drm_framebuffer_unregister_private(&rfb->base);
+	drm_framebuffer_cleanup(&rfb->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -400,7 +434,11 @@ bool radeon_fbdev_robj_is_fb(struct radeon_device *rdev, struct radeon_bo *robj)
 	if (!rdev->mode_info.rfbdev)
 		return false;
 
+<<<<<<< HEAD
 	if (robj == gem_to_radeon_bo(rdev->mode_info.rfbdev->fb.obj[0]))
+=======
+	if (robj == gem_to_radeon_bo(rdev->mode_info.rfbdev->rfb.obj))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 	return false;
 }
@@ -416,3 +454,22 @@ void radeon_fb_remove_connector(struct radeon_device *rdev, struct drm_connector
 	if (rdev->mode_info.rfbdev)
 		drm_fb_helper_remove_one_connector(&rdev->mode_info.rfbdev->helper, connector);
 }
+<<<<<<< HEAD
+=======
+
+void radeon_fbdev_restore_mode(struct radeon_device *rdev)
+{
+	struct radeon_fbdev *rfbdev = rdev->mode_info.rfbdev;
+	struct drm_fb_helper *fb_helper;
+	int ret;
+
+	if (!rfbdev)
+		return;
+
+	fb_helper = &rfbdev->helper;
+
+	ret = drm_fb_helper_restore_fbdev_mode_unlocked(fb_helper);
+	if (ret)
+		DRM_DEBUG("failed to restore crtc mode\n");
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -61,10 +61,22 @@ int set_task_ioprio(struct task_struct *task, int ioprio)
 }
 EXPORT_SYMBOL_GPL(set_task_ioprio);
 
+<<<<<<< HEAD
 int ioprio_check_cap(int ioprio)
 {
 	int class = IOPRIO_PRIO_CLASS(ioprio);
 	int data = IOPRIO_PRIO_DATA(ioprio);
+=======
+SYSCALL_DEFINE3(ioprio_set, int, which, int, who, int, ioprio)
+{
+	int class = IOPRIO_PRIO_CLASS(ioprio);
+	int data = IOPRIO_PRIO_DATA(ioprio);
+	struct task_struct *p, *g;
+	struct user_struct *user;
+	struct pid *pgrp;
+	kuid_t uid;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (class) {
 		case IOPRIO_CLASS_RT:
@@ -87,6 +99,7 @@ int ioprio_check_cap(int ioprio)
 			return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -102,6 +115,8 @@ SYSCALL_DEFINE3(ioprio_set, int, which, int, who, int, ioprio)
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = -ESRCH;
 	rcu_read_lock();
 	switch (which) {

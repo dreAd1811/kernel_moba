@@ -75,10 +75,13 @@ static netdev_tx_t loopback_xmit(struct sk_buff *skb,
 	int len;
 
 	skb_tx_timestamp(skb);
+<<<<<<< HEAD
 
 	/* do not fool net_timestamp_check() with various clock bases */
 	skb->tstamp = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb_orphan(skb);
 
 	/* Before queueing this packet to netif_rx(),

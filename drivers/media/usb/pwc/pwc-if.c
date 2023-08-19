@@ -262,8 +262,12 @@ static void pwc_isoc_handler(struct urb *urb)
 
 	if (urb->status == -ENOENT || urb->status == -ECONNRESET ||
 	    urb->status == -ESHUTDOWN) {
+<<<<<<< HEAD
 		PWC_DEBUG_OPEN("URB (%p) unlinked %ssynchronously.\n",
 			       urb, urb->status == -ENOENT ? "" : "a");
+=======
+		PWC_DEBUG_OPEN("URB (%p) unlinked %ssynchronuously.\n", urb, urb->status == -ENOENT ? "" : "a");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 

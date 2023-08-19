@@ -190,9 +190,14 @@ static int cpm2_gpio32_dir_in(struct gpio_chip *gc, unsigned int gpio)
 	return 0;
 }
 
+<<<<<<< HEAD
 int cpm2_gpiochip_add32(struct device *dev)
 {
 	struct device_node *np = dev->of_node;
+=======
+int cpm2_gpiochip_add32(struct device_node *np)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cpm2_gpio32_chip *cpm2_gc;
 	struct of_mm_gpio_chip *mm_gc;
 	struct gpio_chip *gc;
@@ -212,8 +217,11 @@ int cpm2_gpiochip_add32(struct device *dev)
 	gc->direction_output = cpm2_gpio32_dir_out;
 	gc->get = cpm2_gpio32_get;
 	gc->set = cpm2_gpio32_set;
+<<<<<<< HEAD
 	gc->parent = dev;
 	gc->owner = THIS_MODULE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return of_mm_gpiochip_add_data(np, mm_gc, cpm2_gc);
 }

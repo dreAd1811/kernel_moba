@@ -12,7 +12,11 @@ void pvclock_set_flags(u8 flags);
 unsigned long pvclock_tsc_khz(struct pvclock_vcpu_time_info *src);
 void pvclock_read_wallclock(struct pvclock_wall_clock *wall,
 			    struct pvclock_vcpu_time_info *vcpu,
+<<<<<<< HEAD
 			    struct timespec64 *ts);
+=======
+			    struct timespec *ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pvclock_resume(void);
 
 void pvclock_touch_watchdogs(void);

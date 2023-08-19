@@ -288,7 +288,11 @@ static struct tegra_dma_desc *tegra_dma_desc_get(
 
 	/* Do not allocate if desc are waiting for ack */
 	list_for_each_entry(dma_desc, &tdc->free_dma_desc, node) {
+<<<<<<< HEAD
 		if (async_tx_test_ack(&dma_desc->txd)) {
+=======
+		if (async_tx_test_ack(&dma_desc->txd) && !dma_desc->cb_count) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			list_del(&dma_desc->node);
 			spin_unlock_irqrestore(&tdc->lock, flags);
 			dma_desc->txd.flags = 0;
@@ -353,8 +357,12 @@ static int tegra_dma_slave_config(struct dma_chan *dc,
 	}
 
 	memcpy(&tdc->dma_sconfig, sconfig, sizeof(*sconfig));
+<<<<<<< HEAD
 	if (tdc->slave_id == TEGRA_APBDMA_SLAVE_ID_INVALID &&
 	    sconfig->device_fc) {
+=======
+	if (tdc->slave_id == TEGRA_APBDMA_SLAVE_ID_INVALID) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (sconfig->slave_id > TEGRA_APBDMA_CSR_REQ_SEL_MASK)
 			return -EINVAL;
 		tdc->slave_id = sconfig->slave_id;
@@ -756,10 +764,13 @@ static int tegra_dma_terminate_all(struct dma_chan *dc)
 	bool was_busy;
 
 	spin_lock_irqsave(&tdc->lock, flags);
+<<<<<<< HEAD
 	if (list_empty(&tdc->pending_sg_req)) {
 		spin_unlock_irqrestore(&tdc->lock, flags);
 		return 0;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tdc->busy)
 		goto skip_dma_stop;
@@ -974,6 +985,7 @@ static struct dma_async_tx_descriptor *tegra_dma_prep_slave_sg(
 					TEGRA_APBDMA_AHBSEQ_WRAP_SHIFT;
 	ahb_seq |= TEGRA_APBDMA_AHBSEQ_BUS_WIDTH_32;
 
+<<<<<<< HEAD
 	csr |= TEGRA_APBDMA_CSR_ONCE;
 
 	if (tdc->slave_id != TEGRA_APBDMA_SLAVE_ID_INVALID) {
@@ -987,6 +999,12 @@ static struct dma_async_tx_descriptor *tegra_dma_prep_slave_sg(
 		WARN_ON_ONCE(1);
 		return NULL;
 	}
+=======
+	csr |= TEGRA_APBDMA_CSR_ONCE | TEGRA_APBDMA_CSR_FLOW;
+	csr |= tdc->slave_id << TEGRA_APBDMA_CSR_REQ_SEL_SHIFT;
+	if (flags & DMA_PREP_INTERRUPT)
+		csr |= TEGRA_APBDMA_CSR_IE_EOC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	apb_seq |= TEGRA_APBDMA_APBSEQ_WRAP_WORD_1;
 
@@ -1123,6 +1141,7 @@ static struct dma_async_tx_descriptor *tegra_dma_prep_dma_cyclic(
 					TEGRA_APBDMA_AHBSEQ_WRAP_SHIFT;
 	ahb_seq |= TEGRA_APBDMA_AHBSEQ_BUS_WIDTH_32;
 
+<<<<<<< HEAD
 	if (tdc->slave_id != TEGRA_APBDMA_SLAVE_ID_INVALID) {
 		csr |= TEGRA_APBDMA_CSR_FLOW;
 		csr |= tdc->slave_id << TEGRA_APBDMA_CSR_REQ_SEL_SHIFT;
@@ -1134,6 +1153,12 @@ static struct dma_async_tx_descriptor *tegra_dma_prep_dma_cyclic(
 		WARN_ON_ONCE(1);
 		return NULL;
 	}
+=======
+	csr |= TEGRA_APBDMA_CSR_FLOW;
+	if (flags & DMA_PREP_INTERRUPT)
+		csr |= TEGRA_APBDMA_CSR_IE_EOC;
+	csr |= tdc->slave_id << TEGRA_APBDMA_CSR_REQ_SEL_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	apb_seq |= TEGRA_APBDMA_APBSEQ_WRAP_WORD_1;
 

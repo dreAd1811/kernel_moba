@@ -28,6 +28,7 @@
 
 #define SUN4I_TCON_GINT0_REG			0x4
 #define SUN4I_TCON_GINT0_VBLANK_ENABLE(pipe)		BIT(31 - (pipe))
+<<<<<<< HEAD
 #define SUN4I_TCON_GINT0_TCON0_TRI_FINISH_ENABLE	BIT(27)
 #define SUN4I_TCON_GINT0_TCON0_TRI_COUNTER_ENABLE	BIT(26)
 #define SUN4I_TCON_GINT0_VBLANK_INT(pipe)		BIT(15 - (pipe))
@@ -57,6 +58,17 @@
 #define SUN4I_TCON0_CTL_CLK_DELAY_MASK			GENMASK(8, 4)
 #define SUN4I_TCON0_CTL_CLK_DELAY(delay)		((delay << 4) & SUN4I_TCON0_CTL_CLK_DELAY_MASK)
 #define SUN4I_TCON0_CTL_SRC_SEL_MASK			GENMASK(2, 0)
+=======
+#define SUN4I_TCON_GINT0_VBLANK_INT(pipe)		BIT(15 - (pipe))
+
+#define SUN4I_TCON_GINT1_REG			0x8
+#define SUN4I_TCON_FRM_CTL_REG			0x10
+
+#define SUN4I_TCON0_CTL_REG			0x40
+#define SUN4I_TCON0_CTL_TCON_ENABLE			BIT(31)
+#define SUN4I_TCON0_CTL_CLK_DELAY_MASK			GENMASK(8, 4)
+#define SUN4I_TCON0_CTL_CLK_DELAY(delay)		((delay << 4) & SUN4I_TCON0_CTL_CLK_DELAY_MASK)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SUN4I_TCON0_DCLK_REG			0x44
 #define SUN4I_TCON0_DCLK_GATE_BIT			(31)
@@ -80,6 +92,7 @@
 #define SUN4I_TCON0_BASIC3_V_SYNC(height)		(((height) - 1) & 0x7ff)
 
 #define SUN4I_TCON0_HV_IF_REG			0x58
+<<<<<<< HEAD
 
 #define SUN4I_TCON0_CPU_IF_REG			0x60
 #define SUN4I_TCON0_CPU_IF_MODE_MASK			GENMASK(31, 28)
@@ -88,6 +101,9 @@
 #define SUN4I_TCON0_CPU_IF_TRI_FIFO_EN			BIT(2)
 #define SUN4I_TCON0_CPU_IF_TRI_EN			BIT(0)
 
+=======
+#define SUN4I_TCON0_CPU_IF_REG			0x60
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUN4I_TCON0_CPU_WR_REG			0x64
 #define SUN4I_TCON0_CPU_RD0_REG			0x68
 #define SUN4I_TCON0_CPU_RDA_REG			0x6c
@@ -96,6 +112,7 @@
 #define SUN4I_TCON0_TTL2_REG			0x78
 #define SUN4I_TCON0_TTL3_REG			0x7c
 #define SUN4I_TCON0_TTL4_REG			0x80
+<<<<<<< HEAD
 
 #define SUN4I_TCON0_LVDS_IF_REG			0x84
 #define SUN4I_TCON0_LVDS_IF_EN				BIT(31)
@@ -111,6 +128,9 @@
 #define SUN4I_TCON0_LVDS_IF_DATA_POL_NORMAL		(0xf)
 #define SUN4I_TCON0_LVDS_IF_DATA_POL_INV		(0)
 
+=======
+#define SUN4I_TCON0_LVDS_IF_REG			0x84
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUN4I_TCON0_IO_POL_REG			0x88
 #define SUN4I_TCON0_IO_POL_DCLK_PHASE(phase)		((phase & 3) << 28)
 #define SUN4I_TCON0_IO_POL_HSYNC_POSITIVE		BIT(25)
@@ -126,7 +146,10 @@
 #define SUN4I_TCON1_CTL_INTERLACE_ENABLE		BIT(20)
 #define SUN4I_TCON1_CTL_CLK_DELAY_MASK			GENMASK(8, 4)
 #define SUN4I_TCON1_CTL_CLK_DELAY(delay)		((delay << 4) & SUN4I_TCON1_CTL_CLK_DELAY_MASK)
+<<<<<<< HEAD
 #define SUN4I_TCON1_CTL_SRC_SEL_MASK			GENMASK(1, 0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SUN4I_TCON1_BASIC0_REG			0x94
 #define SUN4I_TCON1_BASIC0_X(width)			((((width) - 1) & 0xfff) << 16)
@@ -154,10 +177,13 @@
 
 #define SUN4I_TCON1_IO_POL_REG			0xf0
 #define SUN4I_TCON1_IO_TRI_REG			0xf4
+<<<<<<< HEAD
 
 #define SUN4I_TCON_ECC_FIFO_REG			0xf8
 #define SUN4I_TCON_ECC_FIFO_EN				BIT(3)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUN4I_TCON_CEU_CTL_REG			0x100
 #define SUN4I_TCON_CEU_MUL_RR_REG		0x110
 #define SUN4I_TCON_CEU_MUL_RG_REG		0x114
@@ -174,6 +200,7 @@
 #define SUN4I_TCON_CEU_RANGE_R_REG		0x140
 #define SUN4I_TCON_CEU_RANGE_G_REG		0x144
 #define SUN4I_TCON_CEU_RANGE_B_REG		0x148
+<<<<<<< HEAD
 
 #define SUN4I_TCON0_CPU_TRI0_REG		0x160
 #define SUN4I_TCON0_CPU_TRI0_BLOCK_SPACE(space)		((((space) - 1) & 0xfff) << 16)
@@ -201,6 +228,9 @@
 #define SUN6I_TCON0_LVDS_ANA0_V(x)			(((x) & 3) << 8)
 #define SUN6I_TCON0_LVDS_ANA0_PD(x)			(((x) & 3) << 4)
 
+=======
+#define SUN4I_TCON_MUX_CTRL_REG			0x200
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUN4I_TCON1_FILL_CTL_REG		0x300
 #define SUN4I_TCON1_FILL_BEG0_REG		0x304
 #define SUN4I_TCON1_FILL_END0_REG		0x308
@@ -215,6 +245,7 @@
 
 #define SUN4I_TCON_MAX_CHANNELS		2
 
+<<<<<<< HEAD
 struct sun4i_tcon;
 
 struct sun4i_tcon_quirks {
@@ -227,6 +258,11 @@ struct sun4i_tcon_quirks {
 
 	/* callback to handle tcon muxing options */
 	int	(*set_mux)(struct sun4i_tcon *, const struct drm_encoder *);
+=======
+struct sun4i_tcon_quirks {
+	bool	has_unknown_mux; /* sun5i has undocumented mux */
+	bool	has_channel_1;	/* a33 does not have channel 1 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct sun4i_tcon {
@@ -241,6 +277,7 @@ struct sun4i_tcon {
 	struct clk			*sclk0;
 	struct clk			*sclk1;
 
+<<<<<<< HEAD
 	/* Possible mux for the LVDS clock */
 	struct clk			*lvds_pll;
 
@@ -252,6 +289,13 @@ struct sun4i_tcon {
 	/* Reset control */
 	struct reset_control		*lcd_rst;
 	struct reset_control		*lvds_rst;
+=======
+	/* Pixel clock */
+	struct clk			*dclk;
+
+	/* Reset control */
+	struct reset_control		*lcd_rst;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct drm_panel		*panel;
 
@@ -270,6 +314,7 @@ struct sun4i_tcon {
 struct drm_bridge *sun4i_tcon_find_bridge(struct device_node *node);
 struct drm_panel *sun4i_tcon_find_panel(struct device_node *node);
 
+<<<<<<< HEAD
 void sun4i_tcon_enable_vblank(struct sun4i_tcon *tcon, bool enable);
 void sun4i_tcon_mode_set(struct sun4i_tcon *tcon,
 			 const struct drm_encoder *encoder,
@@ -278,5 +323,24 @@ void sun4i_tcon_set_status(struct sun4i_tcon *crtc,
 			   const struct drm_encoder *encoder, bool enable);
 
 extern const struct of_device_id sun4i_tcon_of_table[];
+=======
+/* Global Control */
+void sun4i_tcon_disable(struct sun4i_tcon *tcon);
+void sun4i_tcon_enable(struct sun4i_tcon *tcon);
+
+/* Channel Control */
+void sun4i_tcon_channel_disable(struct sun4i_tcon *tcon, int channel);
+void sun4i_tcon_channel_enable(struct sun4i_tcon *tcon, int channel);
+
+void sun4i_tcon_enable_vblank(struct sun4i_tcon *tcon, bool enable);
+
+/* Mode Related Controls */
+void sun4i_tcon_set_mux(struct sun4i_tcon *tcon, int channel,
+			struct drm_encoder *encoder);
+void sun4i_tcon0_mode_set(struct sun4i_tcon *tcon,
+			  struct drm_display_mode *mode);
+void sun4i_tcon1_mode_set(struct sun4i_tcon *tcon,
+			  struct drm_display_mode *mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __SUN4I_TCON_H__ */

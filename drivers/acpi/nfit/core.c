@@ -23,7 +23,10 @@
 #include <linux/io.h>
 #include <linux/nd.h>
 #include <asm/cacheflush.h>
+<<<<<<< HEAD
 #include <acpi/nfit.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "nfit.h"
 
 /*
@@ -36,6 +39,19 @@ static bool force_enable_dimms;
 module_param(force_enable_dimms, bool, S_IRUGO|S_IWUSR);
 MODULE_PARM_DESC(force_enable_dimms, "Ignore _STA (ACPI DIMM device) status");
 
+<<<<<<< HEAD
+=======
+static unsigned int scrub_timeout = NFIT_ARS_TIMEOUT;
+module_param(scrub_timeout, uint, S_IRUGO|S_IWUSR);
+MODULE_PARM_DESC(scrub_timeout, "Initial scrub timeout in seconds");
+
+/* after three payloads of overflow, it's dead jim */
+static unsigned int scrub_overflow_abort = 3;
+module_param(scrub_overflow_abort, uint, S_IRUGO|S_IWUSR);
+MODULE_PARM_DESC(scrub_overflow_abort,
+		"Number of times we overflow ARS results before abort");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool disable_vendor_specific;
 module_param(disable_vendor_specific, bool, S_IRUGO);
 MODULE_PARM_DESC(disable_vendor_specific,
@@ -50,10 +66,13 @@ module_param(default_dsm_family, int, S_IRUGO);
 MODULE_PARM_DESC(default_dsm_family,
 		"Try this DSM type first when identifying NVDIMM family");
 
+<<<<<<< HEAD
 static bool no_init_ars;
 module_param(no_init_ars, bool, 0644);
 MODULE_PARM_DESC(no_init_ars, "Skip ARS run at nfit init time");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 LIST_HEAD(acpi_descs);
 DEFINE_MUTEX(acpi_desc_lock);
 
@@ -178,6 +197,7 @@ static int xlat_bus_status(void *buf, unsigned int cmd, u32 status)
 	return 0;
 }
 
+<<<<<<< HEAD
 #define ACPI_LABELS_LOCKED 3
 
 static int xlat_nvdimm_status(struct nvdimm *nvdimm, void *buf, unsigned int cmd,
@@ -205,6 +225,15 @@ static int xlat_nvdimm_status(struct nvdimm *nvdimm, void *buf, unsigned int cmd
 		if (nfit_mem->has_lsw && status == ACPI_LABELS_LOCKED)
 			return -EACCES;
 		break;
+=======
+static int xlat_nvdimm_status(void *buf, unsigned int cmd, u32 status)
+{
+	switch (cmd) {
+	case ND_CMD_GET_CONFIG_SIZE:
+		if (status >> 16 & ND_CONFIG_LOCKED)
+			return -EACCES;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		break;
 	}
@@ -220,6 +249,7 @@ static int xlat_status(struct nvdimm *nvdimm, void *buf, unsigned int cmd,
 {
 	if (!nvdimm)
 		return xlat_bus_status(buf, cmd, status);
+<<<<<<< HEAD
 	return xlat_nvdimm_status(nvdimm, buf, cmd, status);
 }
 
@@ -389,6 +419,9 @@ static u8 nfit_dsm_revid(unsigned family, unsigned func)
 	if (id == 0)
 		return 1; /* default */
 	return id;
+=======
+	return xlat_nvdimm_status(buf, cmd, status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cmd_to_func(struct nfit_mem *nfit_mem, unsigned int cmd,
@@ -501,12 +534,18 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
 		in_buf.buffer.length = call_pkg->nd_size_in;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(dev, "%s cmd: %d: func: %d input length: %d\n",
 		dimm_name, cmd, func, in_buf.buffer.length);
+=======
+	dev_dbg(dev, "%s:%s cmd: %d: func: %d input length: %d\n",
+			__func__, dimm_name, cmd, func, in_buf.buffer.length);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	print_hex_dump_debug("nvdimm in  ", DUMP_PREFIX_OFFSET, 4, 4,
 			in_buf.buffer.pointer,
 			min_t(u32, 256, in_buf.buffer.length), true);
 
+<<<<<<< HEAD
 	/* call the BIOS, prefer the named methods over _DSM if available */
 	if (nvdimm && cmd == ND_CMD_GET_CONFIG_SIZE && nfit_mem->has_lsr)
 		out_obj = acpi_label_info(handle);
@@ -532,6 +571,12 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
 
 	if (!out_obj) {
 		dev_dbg(dev, "%s _DSM failed cmd: %s\n", dimm_name, cmd_name);
+=======
+	out_obj = acpi_evaluate_dsm(handle, guid, 1, func, &in_obj);
+	if (!out_obj) {
+		dev_dbg(dev, "%s:%s _DSM failed cmd: %s\n", __func__, dimm_name,
+				cmd_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -542,12 +587,15 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(dev, "%s cmd: %s output length: %d\n", dimm_name,
 			cmd_name, out_obj->buffer.length);
 	print_hex_dump_debug(cmd_name, DUMP_PREFIX_OFFSET, 4, 4,
 			out_obj->buffer.pointer,
 			min_t(u32, 128, out_obj->buffer.length), true);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (call_pkg) {
 		call_pkg->nd_fw_size = out_obj->buffer.length;
 		memcpy(call_pkg->nd_payload + call_pkg->nd_size_in,
@@ -566,20 +614,39 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
 		return 0;
 	}
 
+<<<<<<< HEAD
+=======
+	dev_dbg(dev, "%s:%s cmd: %s output length: %d\n", __func__, dimm_name,
+			cmd_name, out_obj->buffer.length);
+	print_hex_dump_debug(cmd_name, DUMP_PREFIX_OFFSET, 4, 4,
+			out_obj->buffer.pointer,
+			min_t(u32, 128, out_obj->buffer.length), true);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0, offset = 0; i < desc->out_num; i++) {
 		u32 out_size = nd_cmd_out_size(nvdimm, cmd, desc, i, buf,
 				(u32 *) out_obj->buffer.pointer,
 				out_obj->buffer.length - offset);
 
 		if (offset + out_size > out_obj->buffer.length) {
+<<<<<<< HEAD
 			dev_dbg(dev, "%s output object underflow cmd: %s field: %d\n",
 					dimm_name, cmd_name, i);
+=======
+			dev_dbg(dev, "%s:%s output object underflow cmd: %s field: %d\n",
+					__func__, dimm_name, cmd_name, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
 		if (in_buf.buffer.length + offset + out_size > buf_len) {
+<<<<<<< HEAD
 			dev_dbg(dev, "%s output overrun cmd: %s field: %d\n",
 					dimm_name, cmd_name, i);
+=======
+			dev_dbg(dev, "%s:%s output overrun cmd: %s field: %d\n",
+					__func__, dimm_name, cmd_name, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rc = -ENXIO;
 			goto out;
 		}
@@ -592,10 +659,15 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
 	 * Set fw_status for all the commands with a known format to be
 	 * later interpreted by xlat_status().
 	 */
+<<<<<<< HEAD
 	if (i >= 1 && ((!nvdimm && cmd >= ND_CMD_ARS_CAP
 					&& cmd <= ND_CMD_CLEAR_ERROR)
 				|| (nvdimm && cmd >= ND_CMD_SMART
 					&& cmd <= ND_CMD_VENDOR)))
+=======
+	if (i >= 1 && ((cmd >= ND_CMD_ARS_CAP && cmd <= ND_CMD_CLEAR_ERROR)
+			|| (cmd >= ND_CMD_SMART && cmd <= ND_CMD_VENDOR)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fw_status = *(u32 *) out_obj->buffer.pointer;
 
 	if (offset + in_buf.buffer.length < buf_len) {
@@ -681,7 +753,11 @@ static bool add_spa(struct acpi_nfit_desc *acpi_desc,
 	INIT_LIST_HEAD(&nfit_spa->list);
 	memcpy(nfit_spa->spa, spa, sizeof(*spa));
 	list_add_tail(&nfit_spa->list, &acpi_desc->spas);
+<<<<<<< HEAD
 	dev_dbg(dev, "spa index: %d type: %s\n",
+=======
+	dev_dbg(dev, "%s: spa index: %d type: %s\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spa->range_index,
 			spa_type_name(nfit_spa_type(spa)));
 	return true;
@@ -710,12 +786,18 @@ static bool add_memdev(struct acpi_nfit_desc *acpi_desc,
 	INIT_LIST_HEAD(&nfit_memdev->list);
 	memcpy(nfit_memdev->memdev, memdev, sizeof(*memdev));
 	list_add_tail(&nfit_memdev->list, &acpi_desc->memdevs);
+<<<<<<< HEAD
 	dev_dbg(dev, "memdev handle: %#x spa: %d dcr: %d flags: %#x\n",
 			memdev->device_handle, memdev->range_index,
+=======
+	dev_dbg(dev, "%s: memdev handle: %#x spa: %d dcr: %d flags: %#x\n",
+			__func__, memdev->device_handle, memdev->range_index,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			memdev->region_index, memdev->flags);
 	return true;
 }
 
+<<<<<<< HEAD
 int nfit_get_smbios_id(u32 device_handle, u16 *flags)
 {
 	struct acpi_nfit_memory_map *memdev;
@@ -744,6 +826,8 @@ int nfit_get_smbios_id(u32 device_handle, u16 *flags)
 }
 EXPORT_SYMBOL_GPL(nfit_get_smbios_id);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * An implementation may provide a truncated control region if no block windows
  * are defined.
@@ -781,7 +865,11 @@ static bool add_dcr(struct acpi_nfit_desc *acpi_desc,
 	INIT_LIST_HEAD(&nfit_dcr->list);
 	memcpy(nfit_dcr->dcr, dcr, sizeof_dcr(dcr));
 	list_add_tail(&nfit_dcr->list, &acpi_desc->dcrs);
+<<<<<<< HEAD
 	dev_dbg(dev, "dcr index: %d windows: %d\n",
+=======
+	dev_dbg(dev, "%s: dcr index: %d windows: %d\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dcr->region_index, dcr->windows);
 	return true;
 }
@@ -808,7 +896,11 @@ static bool add_bdw(struct acpi_nfit_desc *acpi_desc,
 	INIT_LIST_HEAD(&nfit_bdw->list);
 	memcpy(nfit_bdw->bdw, bdw, sizeof(*bdw));
 	list_add_tail(&nfit_bdw->list, &acpi_desc->bdws);
+<<<<<<< HEAD
 	dev_dbg(dev, "bdw dcr: %d windows: %d\n",
+=======
+	dev_dbg(dev, "%s: bdw dcr: %d windows: %d\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bdw->region_index, bdw->windows);
 	return true;
 }
@@ -847,7 +939,11 @@ static bool add_idt(struct acpi_nfit_desc *acpi_desc,
 	INIT_LIST_HEAD(&nfit_idt->list);
 	memcpy(nfit_idt->idt, idt, sizeof_idt(idt));
 	list_add_tail(&nfit_idt->list, &acpi_desc->idts);
+<<<<<<< HEAD
 	dev_dbg(dev, "idt index: %d num_lines: %d\n",
+=======
+	dev_dbg(dev, "%s: idt index: %d num_lines: %d\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			idt->interleave_index, idt->line_count);
 	return true;
 }
@@ -887,11 +983,16 @@ static bool add_flush(struct acpi_nfit_desc *acpi_desc,
 	INIT_LIST_HEAD(&nfit_flush->list);
 	memcpy(nfit_flush->flush, flush, sizeof_flush(flush));
 	list_add_tail(&nfit_flush->list, &acpi_desc->flushes);
+<<<<<<< HEAD
 	dev_dbg(dev, "nfit_flush handle: %d hint_count: %d\n",
+=======
+	dev_dbg(dev, "%s: nfit_flush handle: %d hint_count: %d\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			flush->device_handle, flush->hint_count);
 	return true;
 }
 
+<<<<<<< HEAD
 static bool add_platform_cap(struct acpi_nfit_desc *acpi_desc,
 		struct acpi_nfit_capabilities *pcap)
 {
@@ -904,6 +1005,8 @@ static bool add_platform_cap(struct acpi_nfit_desc *acpi_desc,
 	return true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void *add_table(struct acpi_nfit_desc *acpi_desc,
 		struct nfit_table_prev *prev, void *table, const void *end)
 {
@@ -947,11 +1050,15 @@ static void *add_table(struct acpi_nfit_desc *acpi_desc,
 			return err;
 		break;
 	case ACPI_NFIT_TYPE_SMBIOS:
+<<<<<<< HEAD
 		dev_dbg(dev, "smbios\n");
 		break;
 	case ACPI_NFIT_TYPE_CAPABILITIES:
 		if (!add_platform_cap(acpi_desc, table))
 			return err;
+=======
+		dev_dbg(dev, "%s: smbios\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		dev_err(dev, "unknown table '%d' parsing nfit\n", hdr->type);
@@ -1116,10 +1223,16 @@ static int __nfit_mem_init(struct acpi_nfit_desc *acpi_desc,
 				continue;
 			nfit_mem->nfit_flush = nfit_flush;
 			flush = nfit_flush->flush;
+<<<<<<< HEAD
 			nfit_mem->flush_wpq = devm_kcalloc(acpi_desc->dev,
 					flush->hint_count,
 					sizeof(struct resource),
 					GFP_KERNEL);
+=======
+			nfit_mem->flush_wpq = devm_kzalloc(acpi_desc->dev,
+					flush->hint_count
+					* sizeof(struct resource), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!nfit_mem->flush_wpq)
 				return -ENOMEM;
 			for (i = 0; i < flush->hint_count; i++) {
@@ -1298,6 +1411,7 @@ static ssize_t scrub_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
 	struct nvdimm_bus_descriptor *nd_desc;
+<<<<<<< HEAD
 	struct acpi_nfit_desc *acpi_desc;
 	ssize_t rc = -ENXIO;
 	bool busy;
@@ -1322,6 +1436,21 @@ static ssize_t scrub_show(struct device *dev,
 	}
 
 	mutex_unlock(&acpi_desc->init_mutex);
+=======
+	ssize_t rc = -ENXIO;
+
+	device_lock(dev);
+	nd_desc = dev_get_drvdata(dev);
+	if (nd_desc) {
+		struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
+
+		mutex_lock(&acpi_desc->init_mutex);
+		rc = sprintf(buf, "%d%s", acpi_desc->scrub_count,
+				work_busy(&acpi_desc->work)
+				&& !acpi_desc->cancel ? "+\n" : "\n");
+		mutex_unlock(&acpi_desc->init_mutex);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	device_unlock(dev);
 	return rc;
 }
@@ -1344,7 +1473,11 @@ static ssize_t scrub_store(struct device *dev,
 	if (nd_desc) {
 		struct acpi_nfit_desc *acpi_desc = to_acpi_desc(nd_desc);
 
+<<<<<<< HEAD
 		rc = acpi_nfit_ars_rescan(acpi_desc, ARS_REQ_LONG);
+=======
+		rc = acpi_nfit_ars_rescan(acpi_desc, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	device_unlock(dev);
 	if (rc)
@@ -1690,7 +1823,11 @@ void __acpi_nvdimm_notify(struct device *dev, u32 event)
 	struct nfit_mem *nfit_mem;
 	struct acpi_nfit_desc *acpi_desc;
 
+<<<<<<< HEAD
 	dev_dbg(dev->parent, "%s: event: %d\n", dev_name(dev),
+=======
+	dev_dbg(dev->parent, "%s: %s: event: %d\n", dev_name(dev), __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			event);
 
 	if (event != NFIT_NOTIFY_DIMM_HEALTH) {
@@ -1723,6 +1860,7 @@ static void acpi_nvdimm_notify(acpi_handle handle, u32 event, void *data)
 	device_unlock(dev->parent);
 }
 
+<<<<<<< HEAD
 static bool acpi_nvdimm_has_method(struct acpi_device *adev, char *method)
 {
 	acpi_handle handle;
@@ -1735,12 +1873,18 @@ static bool acpi_nvdimm_has_method(struct acpi_device *adev, char *method)
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_nfit_add_dimm(struct acpi_nfit_desc *acpi_desc,
 		struct nfit_mem *nfit_mem, u32 device_handle)
 {
 	struct acpi_device *adev, *adev_dimm;
 	struct device *dev = acpi_desc->dev;
+<<<<<<< HEAD
 	unsigned long dsm_mask, label_mask;
+=======
+	unsigned long dsm_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const guid_t *guid;
 	int i;
 	int family = -1;
@@ -1777,7 +1921,11 @@ static int acpi_nfit_add_dimm(struct acpi_nfit_desc *acpi_desc,
 	 * different command sets.  Note, that checking for function0 (bit0)
 	 * tells us if any commands are reachable through this GUID.
 	 */
+<<<<<<< HEAD
 	for (i = 0; i <= NVDIMM_FAMILY_MAX; i++)
+=======
+	for (i = NVDIMM_FAMILY_INTEL; i <= NVDIMM_FAMILY_MSFT; i++)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (acpi_check_dsm(adev_dimm->handle, to_nfit_uuid(i), 1, 1))
 			if (family < 0 || i == default_dsm_family)
 				family = i;
@@ -1787,7 +1935,11 @@ static int acpi_nfit_add_dimm(struct acpi_nfit_desc *acpi_desc,
 	if (override_dsm_mask && !disable_vendor_specific)
 		dsm_mask = override_dsm_mask;
 	else if (nfit_mem->family == NVDIMM_FAMILY_INTEL) {
+<<<<<<< HEAD
 		dsm_mask = NVDIMM_INTEL_CMDMASK;
+=======
+		dsm_mask = 0x3fe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (disable_vendor_specific)
 			dsm_mask &= ~(1 << ND_CMD_VENDOR);
 	} else if (nfit_mem->family == NVDIMM_FAMILY_HPE1) {
@@ -1814,6 +1966,7 @@ static int acpi_nfit_add_dimm(struct acpi_nfit_desc *acpi_desc,
 
 	guid = to_nfit_uuid(nfit_mem->family);
 	for_each_set_bit(i, &dsm_mask, BITS_PER_LONG)
+<<<<<<< HEAD
 		if (acpi_check_dsm(adev_dimm->handle, guid,
 					nfit_dsm_revid(nfit_mem->family, i),
 					1ULL << i))
@@ -1840,6 +1993,11 @@ static int acpi_nfit_add_dimm(struct acpi_nfit_desc *acpi_desc,
 		nfit_mem->has_lsw = true;
 	}
 
+=======
+		if (acpi_check_dsm(adev_dimm->handle, guid, 1, 1ULL << i))
+			set_bit(i, &nfit_mem->dsm_mask);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1917,6 +2075,7 @@ static int acpi_nfit_register_dimms(struct acpi_nfit_desc *acpi_desc)
 		 * userspace interface.
 		 */
 		cmd_mask = 1UL << ND_CMD_CALL;
+<<<<<<< HEAD
 		if (nfit_mem->family == NVDIMM_FAMILY_INTEL) {
 			/*
 			 * These commands have a 1:1 correspondence
@@ -1932,6 +2091,10 @@ static int acpi_nfit_register_dimms(struct acpi_nfit_desc *acpi_desc)
 		}
 		if (nfit_mem->has_lsw)
 			set_bit(ND_CMD_SET_CONFIG_DATA, &cmd_mask);
+=======
+		if (nfit_mem->family == NVDIMM_FAMILY_INTEL)
+			cmd_mask |= nfit_mem->dsm_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		flush = nfit_mem->nfit_flush ? nfit_mem->nfit_flush->flush
 			: NULL;
@@ -2007,7 +2170,10 @@ static void acpi_nfit_init_dsms(struct acpi_nfit_desc *acpi_desc)
 	int i;
 
 	nd_desc->cmd_mask = acpi_desc->bus_cmd_force_en;
+<<<<<<< HEAD
 	nd_desc->bus_dsm_mask = acpi_desc->bus_nfit_cmd_force_en;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adev = to_acpi_dev(acpi_desc);
 	if (!adev)
 		return;
@@ -2041,8 +2207,24 @@ static ssize_t range_index_show(struct device *dev,
 }
 static DEVICE_ATTR_RO(range_index);
 
+<<<<<<< HEAD
 static struct attribute *acpi_nfit_region_attributes[] = {
 	&dev_attr_range_index.attr,
+=======
+static ssize_t ecc_unit_size_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct nd_region *nd_region = to_nd_region(dev);
+	struct nfit_spa *nfit_spa = nd_region_provider_data(nd_region);
+
+	return sprintf(buf, "%d\n", nfit_spa->clear_err_unit);
+}
+static DEVICE_ATTR_RO(ecc_unit_size);
+
+static struct attribute *acpi_nfit_region_attributes[] = {
+	&dev_attr_range_index.attr,
+	&dev_attr_ecc_unit_size.attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 
@@ -2282,7 +2464,11 @@ static void write_blk_ctl(struct nfit_blk *nfit_blk, unsigned int bw,
 		offset = to_interleave_offset(offset, mmio);
 
 	writeq(cmd, mmio->addr.base + offset);
+<<<<<<< HEAD
 	nvdimm_flush(nfit_blk->nd_region);
+=======
+	nvdimm_flush(nfit_blk->nd_region, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (nfit_blk->dimm_flags & NFIT_BLK_DCR_LATCH)
 		readq(mmio->addr.base + offset);
@@ -2331,7 +2517,11 @@ static int acpi_nfit_blk_single_io(struct nfit_blk *nfit_blk,
 	}
 
 	if (rw)
+<<<<<<< HEAD
 		nvdimm_flush(nfit_blk->nd_region);
+=======
+		nvdimm_flush(nfit_blk->nd_region, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = read_blk_stat(nfit_blk, lane) ? -EIO : 0;
 	return rc;
@@ -2414,7 +2604,11 @@ static int acpi_nfit_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
 	nvdimm = nd_blk_region_to_dimm(ndbr);
 	nfit_mem = nvdimm_provider_data(nvdimm);
 	if (!nfit_mem || !nfit_mem->dcr || !nfit_mem->bdw) {
+<<<<<<< HEAD
 		dev_dbg(dev, "missing%s%s%s\n",
+=======
+		dev_dbg(dev, "%s: missing%s%s%s\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nfit_mem ? "" : " nfit_mem",
 				(nfit_mem && nfit_mem->dcr) ? "" : " dcr",
 				(nfit_mem && nfit_mem->bdw) ? "" : " bdw");
@@ -2433,7 +2627,11 @@ static int acpi_nfit_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
 	mmio->addr.base = devm_nvdimm_memremap(dev, nfit_mem->spa_bdw->address,
                         nfit_mem->spa_bdw->length, nd_blk_memremap_flags(ndbr));
 	if (!mmio->addr.base) {
+<<<<<<< HEAD
 		dev_dbg(dev, "%s failed to map bdw\n",
+=======
+		dev_dbg(dev, "%s: %s failed to map bdw\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvdimm_name(nvdimm));
 		return -ENOMEM;
 	}
@@ -2444,8 +2642,13 @@ static int acpi_nfit_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
 	rc = nfit_blk_init_interleave(mmio, nfit_mem->idt_bdw,
 			nfit_mem->memdev_bdw->interleave_ways);
 	if (rc) {
+<<<<<<< HEAD
 		dev_dbg(dev, "%s failed to init bdw interleave\n",
 				nvdimm_name(nvdimm));
+=======
+		dev_dbg(dev, "%s: %s failed to init bdw interleave\n",
+				__func__, nvdimm_name(nvdimm));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
@@ -2456,7 +2659,11 @@ static int acpi_nfit_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
 	mmio->addr.base = devm_nvdimm_ioremap(dev, nfit_mem->spa_dcr->address,
 			nfit_mem->spa_dcr->length);
 	if (!mmio->addr.base) {
+<<<<<<< HEAD
 		dev_dbg(dev, "%s failed to map dcr\n",
+=======
+		dev_dbg(dev, "%s: %s failed to map dcr\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				nvdimm_name(nvdimm));
 		return -ENOMEM;
 	}
@@ -2467,15 +2674,25 @@ static int acpi_nfit_blk_region_enable(struct nvdimm_bus *nvdimm_bus,
 	rc = nfit_blk_init_interleave(mmio, nfit_mem->idt_dcr,
 			nfit_mem->memdev_dcr->interleave_ways);
 	if (rc) {
+<<<<<<< HEAD
 		dev_dbg(dev, "%s failed to init dcr interleave\n",
 				nvdimm_name(nvdimm));
+=======
+		dev_dbg(dev, "%s: %s failed to init dcr interleave\n",
+				__func__, nvdimm_name(nvdimm));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
 	rc = acpi_nfit_blk_get_flags(nd_desc, nvdimm, nfit_blk);
 	if (rc < 0) {
+<<<<<<< HEAD
 		dev_dbg(dev, "%s failed get DIMM flags\n",
 				nvdimm_name(nvdimm));
+=======
+		dev_dbg(dev, "%s: %s failed get DIMM flags\n",
+				__func__, nvdimm_name(nvdimm));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return rc;
 	}
 
@@ -2514,8 +2731,12 @@ static int ars_get_cap(struct acpi_nfit_desc *acpi_desc,
 	return cmd_rc;
 }
 
+<<<<<<< HEAD
 static int ars_start(struct acpi_nfit_desc *acpi_desc,
 		struct nfit_spa *nfit_spa, enum nfit_ars_state req_type)
+=======
+static int ars_start(struct acpi_nfit_desc *acpi_desc, struct nfit_spa *nfit_spa)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rc;
 	int cmd_rc;
@@ -2526,8 +2747,12 @@ static int ars_start(struct acpi_nfit_desc *acpi_desc,
 	memset(&ars_start, 0, sizeof(ars_start));
 	ars_start.address = spa->address;
 	ars_start.length = spa->length;
+<<<<<<< HEAD
 	if (req_type == ARS_REQ_SHORT)
 		ars_start.flags = ND_ARS_RETURN_PREV_DATA;
+=======
+	ars_start.flags = acpi_desc->ars_start_flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nfit_spa_type(spa) == NFIT_SPA_PM)
 		ars_start.type = ND_ARS_PERSISTENT;
 	else if (nfit_spa_type(spa) == NFIT_SPA_VOLATILE)
@@ -2540,10 +2765,14 @@ static int ars_start(struct acpi_nfit_desc *acpi_desc,
 
 	if (rc < 0)
 		return rc;
+<<<<<<< HEAD
 	if (cmd_rc < 0)
 		return cmd_rc;
 	set_bit(ARS_VALID, &acpi_desc->scrub_flags);
 	return 0;
+=======
+	return cmd_rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ars_continue(struct acpi_nfit_desc *acpi_desc)
@@ -2553,11 +2782,19 @@ static int ars_continue(struct acpi_nfit_desc *acpi_desc)
 	struct nvdimm_bus_descriptor *nd_desc = &acpi_desc->nd_desc;
 	struct nd_cmd_ars_status *ars_status = acpi_desc->ars_status;
 
+<<<<<<< HEAD
 	ars_start = (struct nd_cmd_ars_start) {
 		.address = ars_status->restart_address,
 		.length = ars_status->restart_length,
 		.type = ars_status->type,
 	};
+=======
+	memset(&ars_start, 0, sizeof(ars_start));
+	ars_start.address = ars_status->restart_address;
+	ars_start.length = ars_status->restart_length;
+	ars_start.type = ars_status->type;
+	ars_start.flags = acpi_desc->ars_start_flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = nd_desc->ndctl(nd_desc, NULL, ND_CMD_ARS_START, &ars_start,
 			sizeof(ars_start), &cmd_rc);
 	if (rc < 0)
@@ -2572,12 +2809,17 @@ static int ars_get_status(struct acpi_nfit_desc *acpi_desc)
 	int rc, cmd_rc;
 
 	rc = nd_desc->ndctl(nd_desc, NULL, ND_CMD_ARS_STATUS, ars_status,
+<<<<<<< HEAD
 			acpi_desc->max_ars, &cmd_rc);
+=======
+			acpi_desc->ars_status_size, &cmd_rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc < 0)
 		return rc;
 	return cmd_rc;
 }
 
+<<<<<<< HEAD
 static void ars_complete(struct acpi_nfit_desc *acpi_desc,
 		struct nfit_spa *nfit_spa)
 {
@@ -2627,6 +2869,12 @@ static int ars_status_process_records(struct acpi_nfit_desc *acpi_desc)
 {
 	struct nvdimm_bus *nvdimm_bus = acpi_desc->nvdimm_bus;
 	struct nd_cmd_ars_status *ars_status = acpi_desc->ars_status;
+=======
+static int ars_status_process_records(struct acpi_nfit_desc *acpi_desc,
+		struct nd_cmd_ars_status *ars_status)
+{
+	struct nvdimm_bus *nvdimm_bus = acpi_desc->nvdimm_bus;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 	u32 i;
 
@@ -2636,6 +2884,7 @@ static int ars_status_process_records(struct acpi_nfit_desc *acpi_desc)
 	 */
 	if (ars_status->out_length < 44)
 		return 0;
+<<<<<<< HEAD
 
 	/*
 	 * Ignore potentially stale results that are only refreshed
@@ -2647,12 +2896,18 @@ static int ars_status_process_records(struct acpi_nfit_desc *acpi_desc)
 		return 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ars_status->num_records; i++) {
 		/* only process full records */
 		if (ars_status->out_length
 				< 44 + sizeof(struct nd_ars_record) * (i + 1))
 			break;
+<<<<<<< HEAD
 		rc = nvdimm_bus_add_badrange(nvdimm_bus,
+=======
+		rc = nvdimm_bus_add_poison(nvdimm_bus,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ars_status->records[i].err_address,
 				ars_status->records[i].length);
 		if (rc)
@@ -2791,7 +3046,12 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
 		return 0;
 
 	if (spa->range_index == 0 && !nfit_spa_is_virtual(spa)) {
+<<<<<<< HEAD
 		dev_dbg(acpi_desc->dev, "detected invalid spa index\n");
+=======
+		dev_dbg(acpi_desc->dev, "%s: detected invalid spa index\n",
+				__func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -2810,6 +3070,7 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
 	else
 		ndr_desc->numa_node = NUMA_NO_NODE;
 
+<<<<<<< HEAD
 	/*
 	 * Persistence domain bits are hierarchical, if
 	 * ACPI_NFIT_CAPABILITY_CACHE_FLUSH is set then
@@ -2820,6 +3081,8 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
 	else if (acpi_desc->platform_cap & ACPI_NFIT_CAPABILITY_MEM_FLUSH)
 		set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc->flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(nfit_memdev, &acpi_desc->memdevs, list) {
 		struct acpi_nfit_memory_map *memdev = nfit_memdev->memdev;
 		struct nd_mapping_desc *mapping;
@@ -2877,11 +3140,17 @@ static int acpi_nfit_register_region(struct acpi_nfit_desc *acpi_desc,
 	return rc;
 }
 
+<<<<<<< HEAD
 static int ars_status_alloc(struct acpi_nfit_desc *acpi_desc)
+=======
+static int ars_status_alloc(struct acpi_nfit_desc *acpi_desc,
+		u32 max_ars)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device *dev = acpi_desc->dev;
 	struct nd_cmd_ars_status *ars_status;
 
+<<<<<<< HEAD
 	if (acpi_desc->ars_status) {
 		memset(acpi_desc->ars_status, 0, acpi_desc->max_ars);
 		return 0;
@@ -3079,10 +3348,144 @@ static void notify_ars_done(struct acpi_nfit_desc *acpi_desc)
 	acpi_desc->scrub_count++;
 	if (acpi_desc->scrub_count_state)
 		sysfs_notify_dirent(acpi_desc->scrub_count_state);
+=======
+	if (acpi_desc->ars_status && acpi_desc->ars_status_size >= max_ars) {
+		memset(acpi_desc->ars_status, 0, acpi_desc->ars_status_size);
+		return 0;
+	}
+
+	if (acpi_desc->ars_status)
+		devm_kfree(dev, acpi_desc->ars_status);
+	acpi_desc->ars_status = NULL;
+	ars_status = devm_kzalloc(dev, max_ars, GFP_KERNEL);
+	if (!ars_status)
+		return -ENOMEM;
+	acpi_desc->ars_status = ars_status;
+	acpi_desc->ars_status_size = max_ars;
+	return 0;
+}
+
+static int acpi_nfit_query_poison(struct acpi_nfit_desc *acpi_desc,
+		struct nfit_spa *nfit_spa)
+{
+	struct acpi_nfit_system_address *spa = nfit_spa->spa;
+	int rc;
+
+	if (!nfit_spa->max_ars) {
+		struct nd_cmd_ars_cap ars_cap;
+
+		memset(&ars_cap, 0, sizeof(ars_cap));
+		rc = ars_get_cap(acpi_desc, &ars_cap, nfit_spa);
+		if (rc < 0)
+			return rc;
+		nfit_spa->max_ars = ars_cap.max_ars_out;
+		nfit_spa->clear_err_unit = ars_cap.clear_err_unit;
+		/* check that the supported scrub types match the spa type */
+		if (nfit_spa_type(spa) == NFIT_SPA_VOLATILE &&
+				((ars_cap.status >> 16) & ND_ARS_VOLATILE) == 0)
+			return -ENOTTY;
+		else if (nfit_spa_type(spa) == NFIT_SPA_PM &&
+				((ars_cap.status >> 16) & ND_ARS_PERSISTENT) == 0)
+			return -ENOTTY;
+	}
+
+	if (ars_status_alloc(acpi_desc, nfit_spa->max_ars))
+		return -ENOMEM;
+
+	rc = ars_get_status(acpi_desc);
+	if (rc < 0 && rc != -ENOSPC)
+		return rc;
+
+	if (ars_status_process_records(acpi_desc, acpi_desc->ars_status))
+		return -ENOMEM;
+
+	return 0;
+}
+
+static void acpi_nfit_async_scrub(struct acpi_nfit_desc *acpi_desc,
+		struct nfit_spa *nfit_spa)
+{
+	struct acpi_nfit_system_address *spa = nfit_spa->spa;
+	unsigned int overflow_retry = scrub_overflow_abort;
+	u64 init_ars_start = 0, init_ars_len = 0;
+	struct device *dev = acpi_desc->dev;
+	unsigned int tmo = scrub_timeout;
+	int rc;
+
+	if (!nfit_spa->ars_required || !nfit_spa->nd_region)
+		return;
+
+	rc = ars_start(acpi_desc, nfit_spa);
+	/*
+	 * If we timed out the initial scan we'll still be busy here,
+	 * and will wait another timeout before giving up permanently.
+	 */
+	if (rc < 0 && rc != -EBUSY)
+		return;
+
+	do {
+		u64 ars_start, ars_len;
+
+		if (acpi_desc->cancel)
+			break;
+		rc = acpi_nfit_query_poison(acpi_desc, nfit_spa);
+		if (rc == -ENOTTY)
+			break;
+		if (rc == -EBUSY && !tmo) {
+			dev_warn(dev, "range %d ars timeout, aborting\n",
+					spa->range_index);
+			break;
+		}
+
+		if (rc == -EBUSY) {
+			/*
+			 * Note, entries may be appended to the list
+			 * while the lock is dropped, but the workqueue
+			 * being active prevents entries being deleted /
+			 * freed.
+			 */
+			mutex_unlock(&acpi_desc->init_mutex);
+			ssleep(1);
+			tmo--;
+			mutex_lock(&acpi_desc->init_mutex);
+			continue;
+		}
+
+		/* we got some results, but there are more pending... */
+		if (rc == -ENOSPC && overflow_retry--) {
+			if (!init_ars_len) {
+				init_ars_len = acpi_desc->ars_status->length;
+				init_ars_start = acpi_desc->ars_status->address;
+			}
+			rc = ars_continue(acpi_desc);
+		}
+
+		if (rc < 0) {
+			dev_warn(dev, "range %d ars continuation failed\n",
+					spa->range_index);
+			break;
+		}
+
+		if (init_ars_len) {
+			ars_start = init_ars_start;
+			ars_len = init_ars_len;
+		} else {
+			ars_start = acpi_desc->ars_status->address;
+			ars_len = acpi_desc->ars_status->length;
+		}
+		dev_dbg(dev, "spa range: %d ars from %#llx + %#llx complete\n",
+				spa->range_index, ars_start, ars_len);
+		/* notify the region about new poison entries */
+		nvdimm_region_notify(nfit_spa->nd_region,
+				NVDIMM_REVALIDATE_POISON);
+		break;
+	} while (1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void acpi_nfit_scrub(struct work_struct *work)
 {
+<<<<<<< HEAD
 	struct acpi_nfit_desc *acpi_desc;
 	unsigned int tmo;
 	int query_rc;
@@ -3169,6 +3572,168 @@ static int acpi_nfit_register_regions(struct acpi_nfit_desc *acpi_desc)
 		}
 
 	sched_ars(acpi_desc);
+=======
+	struct device *dev;
+	u64 init_scrub_length = 0;
+	struct nfit_spa *nfit_spa;
+	u64 init_scrub_address = 0;
+	bool init_ars_done = false;
+	struct acpi_nfit_desc *acpi_desc;
+	unsigned int tmo = scrub_timeout;
+	unsigned int overflow_retry = scrub_overflow_abort;
+
+	acpi_desc = container_of(work, typeof(*acpi_desc), work);
+	dev = acpi_desc->dev;
+
+	/*
+	 * We scrub in 2 phases.  The first phase waits for any platform
+	 * firmware initiated scrubs to complete and then we go search for the
+	 * affected spa regions to mark them scanned.  In the second phase we
+	 * initiate a directed scrub for every range that was not scrubbed in
+	 * phase 1. If we're called for a 'rescan', we harmlessly pass through
+	 * the first phase, but really only care about running phase 2, where
+	 * regions can be notified of new poison.
+	 */
+
+	/* process platform firmware initiated scrubs */
+ retry:
+	mutex_lock(&acpi_desc->init_mutex);
+	list_for_each_entry(nfit_spa, &acpi_desc->spas, list) {
+		struct nd_cmd_ars_status *ars_status;
+		struct acpi_nfit_system_address *spa;
+		u64 ars_start, ars_len;
+		int rc;
+
+		if (acpi_desc->cancel)
+			break;
+
+		if (nfit_spa->nd_region)
+			continue;
+
+		if (init_ars_done) {
+			/*
+			 * No need to re-query, we're now just
+			 * reconciling all the ranges covered by the
+			 * initial scrub
+			 */
+			rc = 0;
+		} else
+			rc = acpi_nfit_query_poison(acpi_desc, nfit_spa);
+
+		if (rc == -ENOTTY) {
+			/* no ars capability, just register spa and move on */
+			acpi_nfit_register_region(acpi_desc, nfit_spa);
+			continue;
+		}
+
+		if (rc == -EBUSY && !tmo) {
+			/* fallthrough to directed scrub in phase 2 */
+			dev_warn(dev, "timeout awaiting ars results, continuing...\n");
+			break;
+		} else if (rc == -EBUSY) {
+			mutex_unlock(&acpi_desc->init_mutex);
+			ssleep(1);
+			tmo--;
+			goto retry;
+		}
+
+		/* we got some results, but there are more pending... */
+		if (rc == -ENOSPC && overflow_retry--) {
+			ars_status = acpi_desc->ars_status;
+			/*
+			 * Record the original scrub range, so that we
+			 * can recall all the ranges impacted by the
+			 * initial scrub.
+			 */
+			if (!init_scrub_length) {
+				init_scrub_length = ars_status->length;
+				init_scrub_address = ars_status->address;
+			}
+			rc = ars_continue(acpi_desc);
+			if (rc == 0) {
+				mutex_unlock(&acpi_desc->init_mutex);
+				goto retry;
+			}
+		}
+
+		if (rc < 0) {
+			/*
+			 * Initial scrub failed, we'll give it one more
+			 * try below...
+			 */
+			break;
+		}
+
+		/* We got some final results, record completed ranges */
+		ars_status = acpi_desc->ars_status;
+		if (init_scrub_length) {
+			ars_start = init_scrub_address;
+			ars_len = ars_start + init_scrub_length;
+		} else {
+			ars_start = ars_status->address;
+			ars_len = ars_status->length;
+		}
+		spa = nfit_spa->spa;
+
+		if (!init_ars_done) {
+			init_ars_done = true;
+			dev_dbg(dev, "init scrub %#llx + %#llx complete\n",
+					ars_start, ars_len);
+		}
+		if (ars_start <= spa->address && ars_start + ars_len
+				>= spa->address + spa->length)
+			acpi_nfit_register_region(acpi_desc, nfit_spa);
+	}
+
+	/*
+	 * For all the ranges not covered by an initial scrub we still
+	 * want to see if there are errors, but it's ok to discover them
+	 * asynchronously.
+	 */
+	list_for_each_entry(nfit_spa, &acpi_desc->spas, list) {
+		/*
+		 * Flag all the ranges that still need scrubbing, but
+		 * register them now to make data available.
+		 */
+		if (!nfit_spa->nd_region) {
+			nfit_spa->ars_required = 1;
+			acpi_nfit_register_region(acpi_desc, nfit_spa);
+		}
+	}
+	acpi_desc->init_complete = 1;
+
+	list_for_each_entry(nfit_spa, &acpi_desc->spas, list)
+		acpi_nfit_async_scrub(acpi_desc, nfit_spa);
+	acpi_desc->scrub_count++;
+	acpi_desc->ars_start_flags = 0;
+	if (acpi_desc->scrub_count_state)
+		sysfs_notify_dirent(acpi_desc->scrub_count_state);
+	mutex_unlock(&acpi_desc->init_mutex);
+}
+
+static int acpi_nfit_register_regions(struct acpi_nfit_desc *acpi_desc)
+{
+	struct nfit_spa *nfit_spa;
+
+	list_for_each_entry(nfit_spa, &acpi_desc->spas, list) {
+		int rc, type = nfit_spa_type(nfit_spa->spa);
+
+		/* PMEM and VMEM will be registered by the ARS workqueue */
+		if (type == NFIT_SPA_PM || type == NFIT_SPA_VOLATILE)
+			continue;
+		/* BLK apertures belong to BLK region registration below */
+		if (type == NFIT_SPA_BDW)
+			continue;
+		/* BLK regions don't need to wait for ARS results */
+		rc = acpi_nfit_register_region(acpi_desc, nfit_spa);
+		if (rc)
+			return rc;
+	}
+
+	acpi_desc->ars_start_flags = 0;
+	if (!acpi_desc->cancel)
+		queue_work(nfit_wq, &acpi_desc->work);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -3278,7 +3843,12 @@ int acpi_nfit_init(struct acpi_nfit_desc *acpi_desc, void *data, acpi_size sz)
 		data = add_table(acpi_desc, &prev, data, end);
 
 	if (IS_ERR(data)) {
+<<<<<<< HEAD
 		dev_dbg(dev, "nfit table parsing error: %ld\n",	PTR_ERR(data));
+=======
+		dev_dbg(dev, "%s: nfit table parsing error: %ld\n", __func__,
+				PTR_ERR(data));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = PTR_ERR(data);
 		goto out_unlock;
 	}
@@ -3303,10 +3873,27 @@ int acpi_nfit_init(struct acpi_nfit_desc *acpi_desc, void *data, acpi_size sz)
 }
 EXPORT_SYMBOL_GPL(acpi_nfit_init);
 
+<<<<<<< HEAD
+=======
+struct acpi_nfit_flush_work {
+	struct work_struct work;
+	struct completion cmp;
+};
+
+static void flush_probe(struct work_struct *work)
+{
+	struct acpi_nfit_flush_work *flush;
+
+	flush = container_of(work, typeof(*flush), work);
+	complete(&flush->cmp);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int acpi_nfit_flush_probe(struct nvdimm_bus_descriptor *nd_desc)
 {
 	struct acpi_nfit_desc *acpi_desc = to_acpi_nfit_desc(nd_desc);
 	struct device *dev = acpi_desc->dev;
+<<<<<<< HEAD
 
 	/* Bounce the device lock to flush acpi_nfit_add / acpi_nfit_notify */
 	device_lock(dev);
@@ -3317,6 +3904,34 @@ static int acpi_nfit_flush_probe(struct nvdimm_bus_descriptor *nd_desc)
 	mutex_unlock(&acpi_desc->init_mutex);
 
 	return 0;
+=======
+	struct acpi_nfit_flush_work flush;
+	int rc;
+
+	/* bounce the device lock to flush acpi_nfit_add / acpi_nfit_notify */
+	device_lock(dev);
+	device_unlock(dev);
+
+	/* bounce the init_mutex to make init_complete valid */
+	mutex_lock(&acpi_desc->init_mutex);
+	if (acpi_desc->cancel || acpi_desc->init_complete) {
+		mutex_unlock(&acpi_desc->init_mutex);
+		return 0;
+	}
+
+	/*
+	 * Scrub work could take 10s of seconds, userspace may give up so we
+	 * need to be interruptible while waiting.
+	 */
+	INIT_WORK_ONSTACK(&flush.work, flush_probe);
+	init_completion(&flush.cmp);
+	queue_work(nfit_wq, &flush.work);
+	mutex_unlock(&acpi_desc->init_mutex);
+
+	rc = wait_for_completion_interruptible(&flush.cmp);
+	cancel_work_sync(&flush.work);
+	return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int acpi_nfit_clear_to_send(struct nvdimm_bus_descriptor *nd_desc,
@@ -3335,12 +3950,17 @@ static int acpi_nfit_clear_to_send(struct nvdimm_bus_descriptor *nd_desc,
 	 * just needs guarantees that any ars it initiates are not
 	 * interrupted by any intervening start reqeusts from userspace.
 	 */
+<<<<<<< HEAD
 	if (work_busy(&acpi_desc->dwork.work))
+=======
+	if (work_busy(&acpi_desc->work))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EBUSY;
 
 	return 0;
 }
 
+<<<<<<< HEAD
 int acpi_nfit_ars_rescan(struct acpi_nfit_desc *acpi_desc,
 		enum nfit_ars_state req_type)
 {
@@ -3350,11 +3970,24 @@ int acpi_nfit_ars_rescan(struct acpi_nfit_desc *acpi_desc,
 
 	mutex_lock(&acpi_desc->init_mutex);
 	if (test_bit(ARS_CANCEL, &acpi_desc->scrub_flags)) {
+=======
+int acpi_nfit_ars_rescan(struct acpi_nfit_desc *acpi_desc, u8 flags)
+{
+	struct device *dev = acpi_desc->dev;
+	struct nfit_spa *nfit_spa;
+
+	if (work_busy(&acpi_desc->work))
+		return -EBUSY;
+
+	mutex_lock(&acpi_desc->init_mutex);
+	if (acpi_desc->cancel) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&acpi_desc->init_mutex);
 		return 0;
 	}
 
 	list_for_each_entry(nfit_spa, &acpi_desc->spas, list) {
+<<<<<<< HEAD
 		int type = nfit_spa_type(nfit_spa->spa);
 
 		if (type != NFIT_SPA_PM && type != NFIT_SPA_VOLATILE)
@@ -3378,6 +4011,21 @@ int acpi_nfit_ars_rescan(struct acpi_nfit_desc *acpi_desc,
 	if (busy)
 		return -EBUSY;
 	return -ENOTTY;
+=======
+		struct acpi_nfit_system_address *spa = nfit_spa->spa;
+
+		if (nfit_spa_type(spa) != NFIT_SPA_PM)
+			continue;
+
+		nfit_spa->ars_required = 1;
+	}
+	acpi_desc->ars_start_flags = flags;
+	queue_work(nfit_wq, &acpi_desc->work);
+	dev_dbg(dev, "%s: ars_scan triggered\n", __func__);
+	mutex_unlock(&acpi_desc->init_mutex);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void acpi_nfit_desc_init(struct acpi_nfit_desc *acpi_desc, struct device *dev)
@@ -3404,8 +4052,12 @@ void acpi_nfit_desc_init(struct acpi_nfit_desc *acpi_desc, struct device *dev)
 	INIT_LIST_HEAD(&acpi_desc->dimms);
 	INIT_LIST_HEAD(&acpi_desc->list);
 	mutex_init(&acpi_desc->init_mutex);
+<<<<<<< HEAD
 	acpi_desc->scrub_tmo = 1;
 	INIT_DELAYED_WORK(&acpi_desc->dwork, acpi_nfit_scrub);
+=======
+	INIT_WORK(&acpi_desc->work, acpi_nfit_scrub);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(acpi_nfit_desc_init);
 
@@ -3428,8 +4080,12 @@ void acpi_nfit_shutdown(void *data)
 	mutex_unlock(&acpi_desc_lock);
 
 	mutex_lock(&acpi_desc->init_mutex);
+<<<<<<< HEAD
 	set_bit(ARS_CANCEL, &acpi_desc->scrub_flags);
 	cancel_delayed_work_sync(&acpi_desc->dwork);
+=======
+	acpi_desc->cancel = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&acpi_desc->init_mutex);
 
 	/*
@@ -3483,8 +4139,13 @@ static int acpi_nfit_add(struct acpi_device *adev)
 			rc = acpi_nfit_init(acpi_desc, obj->buffer.pointer,
 					obj->buffer.length);
 		else
+<<<<<<< HEAD
 			dev_dbg(dev, "invalid type %d, ignoring _FIT\n",
 				(int) obj->type);
+=======
+			dev_dbg(dev, "%s invalid type %d, ignoring _FIT\n",
+				 __func__, (int) obj->type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(buf.pointer);
 	} else
 		/* skip over the lead-in header table */
@@ -3513,7 +4174,11 @@ static void acpi_nfit_update_notify(struct device *dev, acpi_handle handle)
 
 	if (!dev->driver) {
 		/* dev->driver may be null if we're being removed */
+<<<<<<< HEAD
 		dev_dbg(dev, "no driver found for dev\n");
+=======
+		dev_dbg(dev, "%s: no driver found for dev\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -3551,16 +4216,27 @@ static void acpi_nfit_update_notify(struct device *dev, acpi_handle handle)
 static void acpi_nfit_uc_error_notify(struct device *dev, acpi_handle handle)
 {
 	struct acpi_nfit_desc *acpi_desc = dev_get_drvdata(dev);
+<<<<<<< HEAD
 
 	if (acpi_desc->scrub_mode == HW_ERROR_SCRUB_ON)
 		acpi_nfit_ars_rescan(acpi_desc, ARS_REQ_LONG);
 	else
 		acpi_nfit_ars_rescan(acpi_desc, ARS_REQ_SHORT);
+=======
+	u8 flags = (acpi_desc->scrub_mode == HW_ERROR_SCRUB_ON) ?
+			0 : ND_ARS_RETURN_PREV_DATA;
+
+	acpi_nfit_ars_rescan(acpi_desc, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __acpi_nfit_notify(struct device *dev, acpi_handle handle, u32 event)
 {
+<<<<<<< HEAD
 	dev_dbg(dev, "event: 0x%x\n", event);
+=======
+	dev_dbg(dev, "%s: event: 0x%x\n", __func__, event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (event) {
 	case NFIT_NOTIFY_UPDATE:
@@ -3607,7 +4283,10 @@ static __init int nfit_init(void)
 	BUILD_BUG_ON(sizeof(struct acpi_nfit_smbios) != 9);
 	BUILD_BUG_ON(sizeof(struct acpi_nfit_control_region) != 80);
 	BUILD_BUG_ON(sizeof(struct acpi_nfit_data_region) != 40);
+<<<<<<< HEAD
 	BUILD_BUG_ON(sizeof(struct acpi_nfit_capabilities) != 16);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	guid_parse(UUID_VOLATILE_MEMORY, &nfit_uuid[NFIT_SPA_VOLATILE]);
 	guid_parse(UUID_PERSISTENT_MEMORY, &nfit_uuid[NFIT_SPA_PM]);

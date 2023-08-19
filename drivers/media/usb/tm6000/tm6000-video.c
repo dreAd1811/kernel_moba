@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // tm6000-video.c - driver for TM5600/TM6000/TM6010 USB video capture devices
 //
@@ -5,6 +6,25 @@
 //
 // Copyright (c) 2007 Michel Ludwig <michel.ludwig@gmail.com>
 //	- Fixed module load/unload
+=======
+/*
+ *   tm6000-video.c - driver for TM5600/TM6000/TM6010 USB video capture devices
+ *
+ *  Copyright (C) 2006-2007 Mauro Carvalho Chehab <mchehab@infradead.org>
+ *
+ *  Copyright (C) 2007 Michel Ludwig <michel.ludwig@gmail.com>
+ *	- Fixed module load/unload
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation version 2
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/module.h>
 #include <linux/delay.h>
@@ -332,10 +352,17 @@ static inline void print_err_status(struct tm6000_core *dev,
 
 	switch (status) {
 	case -ENOENT:
+<<<<<<< HEAD
 		errmsg = "unlinked synchronously";
 		break;
 	case -ECONNRESET:
 		errmsg = "unlinked asynchronously";
+=======
+		errmsg = "unlinked synchronuously";
+		break;
+	case -ECONNRESET:
+		errmsg = "unlinked asynchronuously";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case -ENOSR:
 		errmsg = "Buffer error (overrun)";
@@ -460,6 +487,7 @@ static int tm6000_alloc_urb_buffers(struct tm6000_core *dev)
 	int num_bufs = TM6000_NUM_URB_BUF;
 	int i;
 
+<<<<<<< HEAD
 	if (dev->urb_buffer)
 		return 0;
 
@@ -471,6 +499,22 @@ static int tm6000_alloc_urb_buffers(struct tm6000_core *dev)
 				     GFP_KERNEL);
 	if (!dev->urb_dma)
 		return -ENOMEM;
+=======
+	if (dev->urb_buffer != NULL)
+		return 0;
+
+	dev->urb_buffer = kmalloc(sizeof(void *)*num_bufs, GFP_KERNEL);
+	if (!dev->urb_buffer) {
+		tm6000_err("cannot allocate memory for urb buffers\n");
+		return -ENOMEM;
+	}
+
+	dev->urb_dma = kmalloc(sizeof(dma_addr_t *)*num_bufs, GFP_KERNEL);
+	if (!dev->urb_dma) {
+		tm6000_err("cannot allocate memory for urb dma pointers\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < num_bufs; i++) {
 		dev->urb_buffer[i] = usb_alloc_coherent(
@@ -494,7 +538,11 @@ static int tm6000_free_urb_buffers(struct tm6000_core *dev)
 {
 	int i;
 
+<<<<<<< HEAD
 	if (!dev->urb_buffer)
+=======
+	if (dev->urb_buffer == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	for (i = 0; i < TM6000_NUM_URB_BUF; i++) {
@@ -584,6 +632,7 @@ static int tm6000_prepare_isoc(struct tm6000_core *dev)
 
 	dev->isoc_ctl.num_bufs = num_bufs;
 
+<<<<<<< HEAD
 	dev->isoc_ctl.urb = kmalloc_array(num_bufs, sizeof(void *),
 					  GFP_KERNEL);
 	if (!dev->isoc_ctl.urb)
@@ -593,6 +642,18 @@ static int tm6000_prepare_isoc(struct tm6000_core *dev)
 						      sizeof(void *),
 						      GFP_KERNEL);
 	if (!dev->isoc_ctl.transfer_buffer) {
+=======
+	dev->isoc_ctl.urb = kmalloc(sizeof(void *)*num_bufs, GFP_KERNEL);
+	if (!dev->isoc_ctl.urb) {
+		tm6000_err("cannot alloc memory for usb buffers\n");
+		return -ENOMEM;
+	}
+
+	dev->isoc_ctl.transfer_buffer = kmalloc(sizeof(void *)*num_bufs,
+				   GFP_KERNEL);
+	if (!dev->isoc_ctl.transfer_buffer) {
+		tm6000_err("cannot allocate memory for usbtransfer\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(dev->isoc_ctl.urb);
 		return -ENOMEM;
 	}
@@ -1316,8 +1377,11 @@ static int __tm6000_open(struct file *file)
 	case VFL_TYPE_RADIO:
 		radio = 1;
 		break;
+<<<<<<< HEAD
 	default:
 		return -EINVAL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* If more than one user, mutex should be added */
@@ -1349,8 +1413,14 @@ static int __tm6000_open(struct file *file)
 	fh->width = dev->width;
 	fh->height = dev->height;
 
+<<<<<<< HEAD
 	dprintk(dev, V4L2_DEBUG_OPEN, "Open: fh=%p, dev=%p, dev->vidq=%p\n",
 		fh, dev, &dev->vidq);
+=======
+	dprintk(dev, V4L2_DEBUG_OPEN, "Open: fh=0x%08lx, dev=0x%08lx, dev->vidq=0x%08lx\n",
+			(unsigned long)fh, (unsigned long)dev,
+			(unsigned long)&dev->vidq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dprintk(dev, V4L2_DEBUG_OPEN, "Open: list_empty queued=%d\n",
 		list_empty(&dev->vidq.queued));
 	dprintk(dev, V4L2_DEBUG_OPEN, "Open: list_empty active=%d\n",
@@ -1417,6 +1487,7 @@ tm6000_read(struct file *file, char __user *data, size_t count, loff_t *pos)
 	return 0;
 }
 
+<<<<<<< HEAD
 static __poll_t
 __tm6000_poll(struct file *file, struct poll_table_struct *wait)
 {
@@ -1434,28 +1505,64 @@ __tm6000_poll(struct file *file, struct poll_table_struct *wait)
 
 	if (!!is_res_streaming(fh->dev, fh))
 		return res | EPOLLERR;
+=======
+static unsigned int
+__tm6000_poll(struct file *file, struct poll_table_struct *wait)
+{
+	unsigned long req_events = poll_requested_events(wait);
+	struct tm6000_fh        *fh = file->private_data;
+	struct tm6000_buffer    *buf;
+	int res = 0;
+
+	if (v4l2_event_pending(&fh->fh))
+		res = POLLPRI;
+	else if (req_events & POLLPRI)
+		poll_wait(file, &fh->fh.wait, wait);
+	if (V4L2_BUF_TYPE_VIDEO_CAPTURE != fh->type)
+		return res | POLLERR;
+
+	if (!!is_res_streaming(fh->dev, fh))
+		return res | POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!is_res_read(fh->dev, fh)) {
 		/* streaming capture */
 		if (list_empty(&fh->vb_vidq.stream))
+<<<<<<< HEAD
 			return res | EPOLLERR;
+=======
+			return res | POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		buf = list_entry(fh->vb_vidq.stream.next, struct tm6000_buffer, vb.stream);
 		poll_wait(file, &buf->vb.done, wait);
 		if (buf->vb.state == VIDEOBUF_DONE ||
 		    buf->vb.state == VIDEOBUF_ERROR)
+<<<<<<< HEAD
 			return res | EPOLLIN | EPOLLRDNORM;
 	} else if (req_events & (EPOLLIN | EPOLLRDNORM)) {
+=======
+			return res | POLLIN | POLLRDNORM;
+	} else if (req_events & (POLLIN | POLLRDNORM)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* read() capture */
 		return res | videobuf_poll_stream(file, &fh->vb_vidq, wait);
 	}
 	return res;
 }
 
+<<<<<<< HEAD
 static __poll_t tm6000_poll(struct file *file, struct poll_table_struct *wait)
 {
 	struct tm6000_fh *fh = file->private_data;
 	struct tm6000_core *dev = fh->dev;
 	__poll_t res;
+=======
+static unsigned int tm6000_poll(struct file *file, struct poll_table_struct *wait)
+{
+	struct tm6000_fh *fh = file->private_data;
+	struct tm6000_core *dev = fh->dev;
+	unsigned int res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev->lock);
 	res = __tm6000_poll(file, wait);

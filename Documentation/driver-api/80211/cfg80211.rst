@@ -300,6 +300,12 @@ Data path helpers
    :functions: ieee80211_data_to_8023
 
 .. kernel-doc:: include/net/cfg80211.h
+<<<<<<< HEAD
+=======
+   :functions: ieee80211_data_from_8023
+
+.. kernel-doc:: include/net/cfg80211.h
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :functions: ieee80211_amsdu_to_8023s
 
 .. kernel-doc:: include/net/cfg80211.h

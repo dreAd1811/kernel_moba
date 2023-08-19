@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *  Collaborative memory management interface.
  *
@@ -57,10 +60,17 @@ static DEFINE_SPINLOCK(cmm_lock);
 
 static struct task_struct *cmm_thread_ptr;
 static DECLARE_WAIT_QUEUE_HEAD(cmm_thread_wait);
+<<<<<<< HEAD
 
 static void cmm_timer_fn(struct timer_list *);
 static void cmm_set_timer(void);
 static DEFINE_TIMER(cmm_timer, cmm_timer_fn);
+=======
+static DEFINE_TIMER(cmm_timer, NULL, 0, 0);
+
+static void cmm_timer_fn(unsigned long);
+static void cmm_set_timer(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static long cmm_alloc_pages(long nr, long *counter,
 			    struct cmm_page_array **list)
@@ -191,10 +201,24 @@ static void cmm_set_timer(void)
 			del_timer(&cmm_timer);
 		return;
 	}
+<<<<<<< HEAD
 	mod_timer(&cmm_timer, jiffies + cmm_timeout_seconds * HZ);
 }
 
 static void cmm_timer_fn(struct timer_list *unused)
+=======
+	if (timer_pending(&cmm_timer)) {
+		if (mod_timer(&cmm_timer, jiffies + cmm_timeout_seconds*HZ))
+			return;
+	}
+	cmm_timer.function = cmm_timer_fn;
+	cmm_timer.data = 0;
+	cmm_timer.expires = jiffies + cmm_timeout_seconds*HZ;
+	add_timer(&cmm_timer);
+}
+
+static void cmm_timer_fn(unsigned long ignored)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	long nr;
 
@@ -246,6 +270,7 @@ static int cmm_skip_blanks(char *cp, char **endp)
 	return str != cp;
 }
 
+<<<<<<< HEAD
 static int cmm_pages_handler(struct ctl_table *ctl, int write,
 			     void __user *buffer, size_t *lenp, loff_t *ppos)
 {
@@ -282,6 +307,47 @@ static int cmm_timed_pages_handler(struct ctl_table *ctl, int write,
 		return rc;
 
 	cmm_add_timed_pages(nr);
+=======
+static struct ctl_table cmm_table[];
+
+static int cmm_pages_handler(struct ctl_table *ctl, int write,
+			     void __user *buffer, size_t *lenp, loff_t *ppos)
+{
+	char buf[16], *p;
+	unsigned int len;
+	long nr;
+
+	if (!*lenp || (*ppos && !write)) {
+		*lenp = 0;
+		return 0;
+	}
+
+	if (write) {
+		len = *lenp;
+		if (copy_from_user(buf, buffer,
+				   len > sizeof(buf) ? sizeof(buf) : len))
+			return -EFAULT;
+		buf[sizeof(buf) - 1] = '\0';
+		cmm_skip_blanks(buf, &p);
+		nr = simple_strtoul(p, &p, 0);
+		if (ctl == &cmm_table[0])
+			cmm_set_pages(nr);
+		else
+			cmm_add_timed_pages(nr);
+	} else {
+		if (ctl == &cmm_table[0])
+			nr = cmm_get_pages();
+		else
+			nr = cmm_get_timed_pages();
+		len = sprintf(buf, "%ld\n", nr);
+		if (len > *lenp)
+			len = *lenp;
+		if (copy_to_user(buffer, buf, len))
+			return -EFAULT;
+	}
+	*lenp = len;
+	*ppos += len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -298,16 +364,27 @@ static int cmm_timeout_handler(struct ctl_table *ctl, int write,
 	}
 
 	if (write) {
+<<<<<<< HEAD
 		len = *lenp;
 		if (copy_from_user(buf, buffer,
 				   len > sizeof(buf) ? sizeof(buf) : len))
 			return -EFAULT;
 		buf[sizeof(buf) - 1] = '\0';
+=======
+		len = min(*lenp, sizeof(buf));
+		if (copy_from_user(buf, buffer, len))
+			return -EFAULT;
+		buf[len - 1] = '\0';
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cmm_skip_blanks(buf, &p);
 		nr = simple_strtoul(p, &p, 0);
 		cmm_skip_blanks(p, &p);
 		seconds = simple_strtoul(p, &p, 0);
 		cmm_set_timeout(nr, seconds);
+<<<<<<< HEAD
+=======
+		*ppos += *lenp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		len = sprintf(buf, "%ld %ld\n",
 			      cmm_timeout_pages, cmm_timeout_seconds);
@@ -315,9 +392,15 @@ static int cmm_timeout_handler(struct ctl_table *ctl, int write,
 			len = *lenp;
 		if (copy_to_user(buffer, buf, len))
 			return -EFAULT;
+<<<<<<< HEAD
 	}
 	*lenp = len;
 	*ppos += len;
+=======
+		*lenp = len;
+		*ppos += len;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -330,7 +413,11 @@ static struct ctl_table cmm_table[] = {
 	{
 		.procname	= "cmm_timed_pages",
 		.mode		= 0644,
+<<<<<<< HEAD
 		.proc_handler	= cmm_timed_pages_handler,
+=======
+		.proc_handler	= cmm_pages_handler,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.procname	= "cmm_timeout",

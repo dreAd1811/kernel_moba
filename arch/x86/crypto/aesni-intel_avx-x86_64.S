@@ -463,7 +463,11 @@ _get_AAD_rest_final\@:
 
 _get_AAD_done\@:
 	# initialize the data pointer offset as zero
+<<<<<<< HEAD
 	xor     %r11d, %r11d
+=======
+	xor     %r11, %r11
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	# start AES for num_initial_blocks blocks
 	mov     arg5, %rax                     # rax = *Y0
@@ -1770,7 +1774,11 @@ _get_AAD_rest_final\@:
 
 _get_AAD_done\@:
 	# initialize the data pointer offset as zero
+<<<<<<< HEAD
 	xor     %r11d, %r11d
+=======
+	xor     %r11, %r11
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	# start AES for num_initial_blocks blocks
 	mov     arg5, %rax                     # rax = *Y0

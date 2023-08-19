@@ -46,10 +46,15 @@
  */
 
 /dts-v1/;
+<<<<<<< HEAD
 #include "stm32f469.dtsi"
 #include "stm32f469-pinctrl.dtsi"
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
+=======
+#include "stm32f429.dtsi"
+#include "stm32f469-pinctrl.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "STMicroelectronics STM32F469i-DISCO board";
@@ -68,6 +73,7 @@
 		serial0 = &usart3;
 	};
 
+<<<<<<< HEAD
 	mmc_vcard: mmc_vcard {
 		compatible = "regulator-fixed";
 		regulator-name = "mmc_vcard";
@@ -75,10 +81,13 @@
 		regulator-max-microvolt = <3300000>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		dma-ranges = <0xc0000000 0x0 0x10000000>;
 	};
 
+<<<<<<< HEAD
 	leds {
 		compatible = "gpio-leds";
 		green {
@@ -108,11 +117,17 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This turns on vbus for otg for host mode (dwc2) */
 	vcc5v_otg: vcc5v-otg-regulator {
 		compatible = "regulator-fixed";
 		enable-active-high;
+<<<<<<< HEAD
 		gpio = <&gpiob 2 GPIO_ACTIVE_HIGH>;
+=======
+		gpio = <&gpiob 2 0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		regulator-name = "vcc5_host1";
 		regulator-always-on;
 	};
@@ -126,6 +141,7 @@
 	clock-frequency = <8000000>;
 };
 
+<<<<<<< HEAD
 &dsi {
 	#address-cells = <1>;
 	#size-cells = <0>;
@@ -175,6 +191,8 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &rtc {
 	status = "okay";
 };
@@ -207,6 +225,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &sdio {
 	status = "okay";
 	vmmc-supply = <&mmc_vcard>;
@@ -219,6 +238,8 @@
 	bus-width = <4>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usart3 {
 	pinctrl-0 = <&usart3_pins_a>;
 	pinctrl-names = "default";

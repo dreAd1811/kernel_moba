@@ -66,9 +66,12 @@ static inline int overlaps_kvm_tmp(unsigned long start, unsigned long end)
 }
 
 #ifdef PPC64_ELF_ABI_v1
+<<<<<<< HEAD
 
 #define HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR 1
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #undef dereference_function_descriptor
 static inline void *dereference_function_descriptor(void *ptr)
 {
@@ -79,6 +82,7 @@ static inline void *dereference_function_descriptor(void *ptr)
 		ptr = p;
 	return ptr;
 }
+<<<<<<< HEAD
 
 #undef dereference_kernel_function_descriptor
 static inline void *dereference_kernel_function_descriptor(void *ptr)
@@ -88,6 +92,8 @@ static inline void *dereference_kernel_function_descriptor(void *ptr)
 
 	return dereference_function_descriptor(ptr);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* PPC64_ELF_ABI_v1 */
 
 #endif

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2011-2019, The Linux Foundation. All rights reserved.
@@ -19,6 +20,44 @@
 #include "kgsl_pwrctrl.h"
 #include "kgsl_sharedmem.h"
 #include "kgsl_trace.h"
+=======
+/* Copyright (c) 2011-2021, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+#include <linux/types.h>
+#include <linux/delay.h>
+#include <linux/device.h>
+#include <linux/spinlock.h>
+#include <linux/genalloc.h>
+#include <linux/slab.h>
+#include <linux/iommu.h>
+#include <linux/msm_kgsl.h>
+#include <linux/ratelimit.h>
+#include <linux/of_platform.h>
+#include <linux/random.h>
+#include <soc/qcom/scm.h>
+#include <soc/qcom/secure_buffer.h>
+#include <linux/compat.h>
+
+#include "kgsl.h"
+#include "kgsl_device.h"
+#include "kgsl_mmu.h"
+#include "kgsl_sharedmem.h"
+#include "kgsl_iommu.h"
+#include "adreno_pm4types.h"
+#include "adreno.h"
+#include "kgsl_trace.h"
+#include "kgsl_pwrctrl.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define _IOMMU_PRIV(_mmu) (&((_mmu)->priv.iommu))
 
@@ -96,6 +135,10 @@ static int secure_global_size;
 static int global_pt_count;
 static struct kgsl_memdesc gpu_qdss_desc;
 static struct kgsl_memdesc gpu_qtimer_desc;
+<<<<<<< HEAD
+=======
+static unsigned int context_bank_number;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void kgsl_print_global_pt_entries(struct seq_file *s)
 {
@@ -135,8 +178,15 @@ static int kgsl_iommu_map_globals(struct kgsl_pagetable *pagetable)
 			int ret = kgsl_mmu_map(pagetable,
 					global_pt_entries[i].memdesc);
 
+<<<<<<< HEAD
 			if (ret)
 				return ret;
+=======
+			if (ret) {
+				kgsl_iommu_unmap_globals(pagetable);
+				return ret;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -171,7 +221,11 @@ int kgsl_iommu_map_global_secure_pt_entry(struct kgsl_device *device,
 		struct kgsl_pagetable *pagetable = device->mmu.securepagetable;
 
 		entry->pagetable = pagetable;
+<<<<<<< HEAD
 		entry->gpuaddr = KGSL_IOMMU_SECURE_BASE(&device->mmu) +
+=======
+		entry->gpuaddr = device->mmu.secure_base +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			secure_global_size;
 
 		ret = kgsl_mmu_map(pagetable, entry);
@@ -268,7 +322,11 @@ static void kgsl_setup_qdss_desc(struct kgsl_device *device)
 
 	if (of_property_read_u32_array(device->pdev->dev.of_node,
 				"qcom,gpu-qdss-stm", gpu_qdss_entry, 2)) {
+<<<<<<< HEAD
 		dev_err(device->dev, "Failed to read gpu qdss dts entry\n");
+=======
+		KGSL_CORE_ERR("Failed to read gpu qdss dts entry\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -280,10 +338,17 @@ static void kgsl_setup_qdss_desc(struct kgsl_device *device)
 	gpu_qdss_desc.ops = NULL;
 	gpu_qdss_desc.hostptr = NULL;
 
+<<<<<<< HEAD
 	result = kgsl_memdesc_sg_dma(&gpu_qdss_desc, gpu_qdss_desc.physaddr,
 			gpu_qdss_desc.size);
 	if (result) {
 		dev_err(device->dev, "memdesc_sg_dma failed: %d\n", result);
+=======
+	result = memdesc_sg_dma(&gpu_qdss_desc, gpu_qdss_desc.physaddr,
+			gpu_qdss_desc.size);
+	if (result) {
+		KGSL_CORE_ERR("memdesc_sg_dma failed: %d\n", result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -312,7 +377,11 @@ static void kgsl_setup_qtimer_desc(struct kgsl_device *device)
 
 	if (of_property_read_u32_array(device->pdev->dev.of_node,
 				"qcom,gpu-qtimer", gpu_qtimer_entry, 2)) {
+<<<<<<< HEAD
 		dev_err(device->dev, "Failed to read gpu qtimer dts entry\n");
+=======
+		KGSL_CORE_ERR("Failed to read gpu qtimer dts entry\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -324,10 +393,17 @@ static void kgsl_setup_qtimer_desc(struct kgsl_device *device)
 	gpu_qtimer_desc.ops = NULL;
 	gpu_qtimer_desc.hostptr = NULL;
 
+<<<<<<< HEAD
 	result = kgsl_memdesc_sg_dma(&gpu_qtimer_desc, gpu_qtimer_desc.physaddr,
 			gpu_qtimer_desc.size);
 	if (result) {
 		dev_err(device->dev, "memdesc_sg_dma failed: %d\n", result);
+=======
+	result = memdesc_sg_dma(&gpu_qtimer_desc, gpu_qtimer_desc.physaddr,
+			gpu_qtimer_desc.size);
+	if (result) {
+		KGSL_CORE_ERR("memdesc_sg_dma failed: %d\n", result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -342,7 +418,11 @@ static inline void kgsl_cleanup_qtimer_desc(struct kgsl_mmu *mmu)
 
 static inline void _iommu_sync_mmu_pc(bool lock)
 {
+<<<<<<< HEAD
 	if (!need_iommu_sync)
+=======
+	if (need_iommu_sync == false)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (lock)
@@ -384,7 +464,10 @@ static int _iommu_map_single_page_sync_pc(struct kgsl_pagetable *pt,
 		uint64_t gpuaddr, phys_addr_t physaddr, int times,
 		unsigned int flags)
 {
+<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_MMU_DEVICE(pt->mmu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_iommu_pt *iommu_pt = pt->priv;
 	size_t mapped = 0;
 	int i;
@@ -406,7 +489,11 @@ static int _iommu_map_single_page_sync_pc(struct kgsl_pagetable *pt,
 	_iommu_sync_mmu_pc(false);
 
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "map err: 0x%016llX, 0x%lx, 0x%x, %d\n",
+=======
+		KGSL_CORE_ERR("map err: 0x%016llX, 0x%lx, 0x%x, %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			gpuaddr, PAGE_SIZE * times, flags, ret);
 		return -ENODEV;
 	}
@@ -417,18 +504,38 @@ static int _iommu_map_single_page_sync_pc(struct kgsl_pagetable *pt,
 static int _iommu_unmap_sync_pc(struct kgsl_pagetable *pt,
 		uint64_t addr, uint64_t size)
 {
+<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_MMU_DEVICE(pt->mmu);
 	struct kgsl_iommu_pt *iommu_pt = pt->priv;
+=======
+	struct kgsl_iommu_pt *iommu_pt = pt->priv;
+	struct kgsl_iommu *iommu = _IOMMU_PRIV(pt->mmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t unmapped = 0;
 
 	_iommu_sync_mmu_pc(true);
 
+<<<<<<< HEAD
 	unmapped = iommu_unmap(iommu_pt->domain, addr, size);
+=======
+	/*
+	 * Take iommu unmap fast path if CX GDSC is in OFF state.
+	 */
+	if (iommu->vddcx_regulator &&
+			(!regulator_is_enabled(iommu->vddcx_regulator)))
+		unmapped = iommu_unmap_fast(iommu_pt->domain, addr, size);
+	else
+		unmapped = iommu_unmap(iommu_pt->domain, addr, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	_iommu_sync_mmu_pc(false);
 
 	if (unmapped != size) {
+<<<<<<< HEAD
 		dev_err(device->dev, "unmap err: 0x%016llx, 0x%llx, %zd\n",
+=======
+		KGSL_CORE_ERR("unmap err: 0x%016llx, 0x%llx, %zd\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			addr, size, unmapped);
 		return -ENODEV;
 	}
@@ -440,7 +547,10 @@ static int _iommu_map_sg_offset_sync_pc(struct kgsl_pagetable *pt,
 		uint64_t addr, struct scatterlist *sg, int nents,
 		uint64_t offset, uint64_t size, unsigned int flags)
 {
+<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_MMU_DEVICE(pt->mmu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_iommu_pt *iommu_pt = pt->priv;
 	uint64_t offset_tmp = offset;
 	uint64_t size_tmp = size;
@@ -492,7 +602,11 @@ static int _iommu_map_sg_offset_sync_pc(struct kgsl_pagetable *pt,
 	if (size != 0) {
 		/* Cleanup on error */
 		_iommu_unmap_sync_pc(pt, addr, mapped);
+<<<<<<< HEAD
 		dev_err(device->dev,
+=======
+		KGSL_CORE_ERR(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"map sg offset err: 0x%016llX, %d, %x, %zd\n",
 			addr, nents, flags, mapped);
 		return  -ENODEV;
@@ -505,7 +619,10 @@ static int _iommu_map_sg_sync_pc(struct kgsl_pagetable *pt,
 		uint64_t addr, struct scatterlist *sg, int nents,
 		unsigned int flags)
 {
+<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_MMU_DEVICE(pt->mmu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_iommu_pt *iommu_pt = pt->priv;
 	size_t mapped;
 
@@ -516,7 +633,11 @@ static int _iommu_map_sg_sync_pc(struct kgsl_pagetable *pt,
 	_iommu_sync_mmu_pc(false);
 
 	if (mapped == 0) {
+<<<<<<< HEAD
 		dev_err(device->dev, "map sg err: 0x%016llX, %d, %x, %zd\n",
+=======
+		KGSL_CORE_ERR("map sg err: 0x%016llX, %d, %x, %zd\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			addr, nents, flags, mapped);
 		return  -ENODEV;
 	}
@@ -646,7 +767,11 @@ static void _get_entries(struct kgsl_process_private *private,
 		prev->flags = p->memdesc.flags;
 		prev->priv = p->memdesc.priv;
 		prev->pending_free = p->pending_free;
+<<<<<<< HEAD
 		prev->pid = private->pid;
+=======
+		prev->pid = pid_nr(private->pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__kgsl_get_memory_usage(prev);
 	}
 
@@ -656,7 +781,11 @@ static void _get_entries(struct kgsl_process_private *private,
 		next->flags = n->memdesc.flags;
 		next->priv = n->memdesc.priv;
 		next->pending_free = n->pending_free;
+<<<<<<< HEAD
 		next->pid = private->pid;
+=======
+		next->pid = pid_nr(private->pid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__kgsl_get_memory_usage(next);
 	}
 }
@@ -682,6 +811,7 @@ static void _find_mem_entries(struct kgsl_mmu *mmu, uint64_t faultaddr,
 
 static void _print_entry(struct kgsl_device *device, struct _mem_entry *entry)
 {
+<<<<<<< HEAD
 	dev_err(device->dev,
 		      "[%016llX - %016llX] %s %s (pid = %d) (%s)\n",
 		      entry->gpuaddr,
@@ -689,6 +819,15 @@ static void _print_entry(struct kgsl_device *device, struct _mem_entry *entry)
 		      entry->priv & KGSL_MEMDESC_GUARD_PAGE ? "(+guard)" : "",
 		      entry->pending_free ? "(pending free)" : "",
 		      entry->pid, entry->name);
+=======
+	KGSL_LOG_DUMP(device,
+		"[%016llX - %016llX] %s %s (pid = %d) (%s)\n",
+		entry->gpuaddr,
+		entry->gpuaddr + entry->size,
+		entry->priv & KGSL_MEMDESC_GUARD_PAGE ? "(+guard)" : "",
+		entry->pending_free ? "(pending free)" : "",
+		entry->pid, entry->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void _check_if_freed(struct kgsl_iommu_context *ctx,
@@ -705,6 +844,7 @@ static void _check_if_freed(struct kgsl_iommu_context *ctx,
 
 	if (kgsl_memfree_find_entry(ptname, &gpuaddr, &size, &flags, &pid)) {
 		kgsl_get_memory_usage(name, sizeof(name) - 1, flags);
+<<<<<<< HEAD
 		dev_err(ctx->kgsldev->dev, "---- premature free ----\n");
 		dev_err(ctx->kgsldev->dev,
 			      "[%8.8llX-%8.8llX] (%s) was already freed by pid %d\n",
@@ -726,13 +866,79 @@ static struct kgsl_process_private *kgsl_iommu_get_process(u64 ptbase)
 				p = NULL;
 
 			spin_unlock(&kgsl_driver.proclist_lock);
+=======
+		KGSL_LOG_DUMP(ctx->kgsldev, "---- premature free ----\n");
+		KGSL_LOG_DUMP(ctx->kgsldev,
+			"[%8.8llX-%8.8llX] (%s) was already freed by pid %d\n",
+			gpuaddr, gpuaddr + size, name, pid);
+	}
+}
+
+static bool
+kgsl_iommu_uche_overfetch(struct kgsl_process_private *private,
+		uint64_t faultaddr)
+{
+	int id;
+	struct kgsl_mem_entry *entry = NULL;
+
+	spin_lock(&private->mem_lock);
+	idr_for_each_entry(&private->mem_idr, entry, id) {
+		struct kgsl_memdesc *m = &entry->memdesc;
+
+		if ((faultaddr >= (m->gpuaddr + m->size))
+				&& (faultaddr < (m->gpuaddr + m->size + 64))) {
+			spin_unlock(&private->mem_lock);
+			return true;
+		}
+	}
+	spin_unlock(&private->mem_lock);
+	return false;
+}
+
+/*
+ * Read pagefaults where the faulting address lies within the first 64 bytes
+ * of a page (UCHE line size is 64 bytes) and the fault page is preceded by a
+ * valid allocation are considered likely due to UCHE overfetch and suppressed.
+ */
+
+static bool kgsl_iommu_suppress_pagefault(uint64_t faultaddr, int write,
+					struct kgsl_process_private *private)
+{
+	/*
+	 * If there is no context associated with the pagefault then this
+	 * could be a fault on a global buffer. We do not suppress faults
+	 * on global buffers as they are mainly accessed by the CP bypassing
+	 * the UCHE. Also, write pagefaults are never suppressed.
+	 */
+	if (!private || write)
+		return false;
+
+	return kgsl_iommu_uche_overfetch(private, faultaddr);
+}
+
+static struct kgsl_process_private *kgsl_iommu_identify_process(u64 ptbase)
+{
+	struct kgsl_process_private *p = NULL;
+	struct kgsl_iommu_pt *iommu_pt;
+
+	mutex_lock(&kgsl_driver.process_mutex);
+	list_for_each_entry(p, &kgsl_driver.process_list, list) {
+		iommu_pt = p->pagetable->priv;
+		if (iommu_pt->ttbr0 == ptbase) {
+			mutex_unlock(&kgsl_driver.process_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return p;
 		}
 	}
 
+<<<<<<< HEAD
 	spin_unlock(&kgsl_driver.proclist_lock);
 
 	return NULL;
+=======
+	mutex_unlock(&kgsl_driver.process_mutex);
+	return p;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int kgsl_iommu_fault_handler(struct iommu_domain *domain,
@@ -754,7 +960,10 @@ static int kgsl_iommu_fault_handler(struct iommu_domain *domain,
 	struct adreno_gpudev *gpudev;
 	unsigned int no_page_fault_log = 0;
 	char *fault_type = "unknown";
+<<<<<<< HEAD
 	char *comm = "unknown";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_process_private *private;
 
 	static DEFINE_RATELIMIT_STATE(_rs,
@@ -781,11 +990,24 @@ static int kgsl_iommu_fault_handler(struct iommu_domain *domain,
 		fault_type = "transaction stalled";
 
 	ptbase = KGSL_IOMMU_GET_CTX_REG_Q(ctx, TTBR0);
+<<<<<<< HEAD
 	private = kgsl_iommu_get_process(ptbase);
 
 	if (private) {
 		pid = private->pid;
 		comm = private->comm;
+=======
+	private = kgsl_iommu_identify_process(ptbase);
+
+	if (!kgsl_process_private_get(private))
+		private = NULL;
+	else
+		pid = pid_nr(private->pid);
+
+	if (kgsl_iommu_suppress_pagefault(addr, write, private)) {
+		iommu->pagefault_suppression_count++;
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (pt->name == KGSL_MMU_SECURE_PT)
@@ -812,17 +1034,31 @@ static int kgsl_iommu_fault_handler(struct iommu_domain *domain,
 	 * search and delays the trace unnecessarily.
 	 */
 	trace_kgsl_mmu_pagefault(ctx->kgsldev, addr,
+<<<<<<< HEAD
 			ptname, comm, write ? "write" : "read");
+=======
+			ptname,
+			private != NULL ? private->comm : "unknown",
+			write ? "write" : "read");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (test_bit(KGSL_FT_PAGEFAULT_LOG_ONE_PER_PAGE,
 		&adreno_dev->ft_pf_policy))
 		no_page_fault_log = kgsl_mmu_log_fault_addr(mmu, ptbase, addr);
 
 	if (!no_page_fault_log && __ratelimit(&_rs)) {
+<<<<<<< HEAD
 		dev_crit(ctx->kgsldev->dev,
 			"GPU PAGE FAULT: addr = %lX pid= %d name=%s\n", addr,
 			ptname, comm);
 		dev_crit(ctx->kgsldev->dev,
+=======
+		KGSL_MEM_CRIT(ctx->kgsldev,
+			"GPU PAGE FAULT: addr = %lX pid= %d name=%s\n", addr,
+			ptname,
+			private != NULL ? private->comm : "unknown");
+		KGSL_MEM_CRIT(ctx->kgsldev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"context=%s TTBR0=0x%llx CIDR=0x%x (%s %s fault)\n",
 			ctx->name, ptbase, contextidr,
 			write ? "write" : "read", fault_type);
@@ -831,7 +1067,11 @@ static int kgsl_iommu_fault_handler(struct iommu_domain *domain,
 			unsigned int fsynr1;
 
 			fsynr1 = KGSL_IOMMU_GET_CTX_REG(ctx, FSYNR1);
+<<<<<<< HEAD
 			dev_crit(ctx->kgsldev->dev,
+=======
+			KGSL_MEM_CRIT(ctx->kgsldev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"FAULTING BLOCK: %s\n",
 				gpudev->iommu_fault_block(device, fsynr1));
 		}
@@ -840,23 +1080,39 @@ static int kgsl_iommu_fault_handler(struct iommu_domain *domain,
 		if (!(flags & IOMMU_FAULT_PERMISSION)) {
 			_check_if_freed(ctx, addr, ptname);
 
+<<<<<<< HEAD
 			dev_err(ctx->kgsldev->dev,
 				      "---- nearby memory ----\n");
+=======
+			KGSL_LOG_DUMP(ctx->kgsldev,
+				"---- nearby memory ----\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			_find_mem_entries(mmu, addr, &prev, &next, private);
 			if (prev.gpuaddr)
 				_print_entry(ctx->kgsldev, &prev);
 			else
+<<<<<<< HEAD
 				dev_err(ctx->kgsldev->dev, "*EMPTY*\n");
 
 			dev_err(ctx->kgsldev->dev,
 				      " <- fault @ %8.8lX\n",
 				      addr);
+=======
+				KGSL_LOG_DUMP(ctx->kgsldev, "*EMPTY*\n");
+
+			KGSL_LOG_DUMP(ctx->kgsldev, " <- fault @ %8.8lX\n",
+				addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (next.gpuaddr != (uint64_t) -1)
 				_print_entry(ctx->kgsldev, &next);
 			else
+<<<<<<< HEAD
 				dev_err(ctx->kgsldev->dev, "*EMPTY*\n");
+=======
+				KGSL_LOG_DUMP(ctx->kgsldev, "*EMPTY*\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -881,7 +1137,11 @@ static int kgsl_iommu_fault_handler(struct iommu_domain *domain,
 		sctlr_val &= ~(0x1 << KGSL_IOMMU_SCTLR_CFIE_SHIFT);
 		KGSL_IOMMU_SET_CTX_REG(ctx, SCTLR, sctlr_val);
 
+<<<<<<< HEAD
 		/* This is used by reset/recovery path */
+=======
+		 /* This is used by reset/recovery path */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ctx->stalled_on_fault = true;
 
 		adreno_set_gpu_fault(adreno_dev, ADRENO_IOMMU_PAGE_FAULT);
@@ -929,6 +1189,11 @@ static void kgsl_iommu_clk_prepare_enable(struct clk *clk)
 			return;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Failure is fatal so BUG() to facilitate debug */
+	KGSL_CORE_ERR("IOMMU clock enable failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WARN(1, "IOMMU clock enable failed\n");
 }
 
@@ -967,7 +1232,11 @@ static bool kgsl_iommu_pt_equal(struct kgsl_mmu *mmu,
 	u64 domain_ttbr0;
 
 	if (iommu_pt == NULL)
+<<<<<<< HEAD
 		return false;
+=======
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	domain_ttbr0 = kgsl_iommu_get_ttbr0(pt);
 
@@ -1011,6 +1280,11 @@ static void kgsl_iommu_destroy_pagetable(struct kgsl_pagetable *pt)
 	} else {
 		ctx = &iommu->ctx[KGSL_IOMMU_CONTEXT_USER];
 		kgsl_iommu_unmap_globals(pt);
+<<<<<<< HEAD
+=======
+		if (pt->name == KGSL_MMU_GLOBAL_PT)
+			mmu->globalpt_mapped = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (iommu_pt->domain) {
@@ -1029,6 +1303,7 @@ static void setup_64bit_pagetable(struct kgsl_mmu *mmu,
 		struct kgsl_iommu_pt *pt)
 {
 	if (mmu->secured && pagetable->name == KGSL_MMU_SECURE_PT) {
+<<<<<<< HEAD
 		pt->compat_va_start = KGSL_IOMMU_SECURE_BASE(mmu);
 		pt->compat_va_end = KGSL_IOMMU_SECURE_END(mmu);
 		pt->va_start = KGSL_IOMMU_SECURE_BASE(mmu);
@@ -1036,6 +1311,15 @@ static void setup_64bit_pagetable(struct kgsl_mmu *mmu,
 	} else {
 		pt->compat_va_start = KGSL_IOMMU_SVM_BASE32;
 		pt->compat_va_end = KGSL_IOMMU_SECURE_BASE(mmu);
+=======
+		pt->compat_va_start = mmu->secure_base;
+		pt->compat_va_end = KGSL_IOMMU_SECURE_END(mmu);
+		pt->va_start = mmu->secure_base;
+		pt->va_end = KGSL_IOMMU_SECURE_END(mmu);
+	} else {
+		pt->compat_va_start = mmu->svm_base32;
+		pt->compat_va_end = mmu->secure_base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pt->va_start = KGSL_IOMMU_VA_BASE64;
 		pt->va_end = KGSL_IOMMU_VA_END64;
 	}
@@ -1043,8 +1327,13 @@ static void setup_64bit_pagetable(struct kgsl_mmu *mmu,
 	if (pagetable->name != KGSL_MMU_GLOBAL_PT &&
 		pagetable->name != KGSL_MMU_SECURE_PT) {
 		if (kgsl_is_compat_task()) {
+<<<<<<< HEAD
 			pt->svm_start = KGSL_IOMMU_SVM_BASE32;
 			pt->svm_end = KGSL_IOMMU_SECURE_BASE(mmu);
+=======
+			pt->svm_start = mmu->svm_base32;
+			pt->svm_end = mmu->secure_base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			pt->svm_start = KGSL_IOMMU_SVM_BASE64;
 			pt->svm_end = KGSL_IOMMU_SVM_END64;
@@ -1058,6 +1347,7 @@ static void setup_32bit_pagetable(struct kgsl_mmu *mmu,
 {
 	if (mmu->secured) {
 		if (pagetable->name == KGSL_MMU_SECURE_PT) {
+<<<<<<< HEAD
 			pt->compat_va_start = KGSL_IOMMU_SECURE_BASE(mmu);
 			pt->compat_va_end = KGSL_IOMMU_SECURE_END(mmu);
 			pt->va_start = KGSL_IOMMU_SECURE_BASE(mmu);
@@ -1065,11 +1355,24 @@ static void setup_32bit_pagetable(struct kgsl_mmu *mmu,
 		} else {
 			pt->va_start = KGSL_IOMMU_SVM_BASE32;
 			pt->va_end = KGSL_IOMMU_SECURE_BASE(mmu);
+=======
+			pt->compat_va_start = mmu->secure_base;
+			pt->compat_va_end = KGSL_IOMMU_SECURE_END(mmu);
+			pt->va_start = mmu->secure_base;
+			pt->va_end = KGSL_IOMMU_SECURE_END(mmu);
+		} else {
+			pt->va_start = mmu->svm_base32;
+			pt->va_end = mmu->secure_base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pt->compat_va_start = pt->va_start;
 			pt->compat_va_end = pt->va_end;
 		}
 	} else {
+<<<<<<< HEAD
 		pt->va_start = KGSL_IOMMU_SVM_BASE32;
+=======
+		pt->va_start = mmu->svm_base32;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pt->va_end = KGSL_IOMMU_GLOBAL_MEM_BASE(mmu);
 		pt->compat_va_start = pt->va_start;
 		pt->compat_va_end = pt->va_end;
@@ -1077,7 +1380,11 @@ static void setup_32bit_pagetable(struct kgsl_mmu *mmu,
 
 	if (pagetable->name != KGSL_MMU_GLOBAL_PT &&
 		pagetable->name != KGSL_MMU_SECURE_PT) {
+<<<<<<< HEAD
 		pt->svm_start = KGSL_IOMMU_SVM_BASE32;
+=======
+		pt->svm_start = mmu->svm_base32;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pt->svm_end = KGSL_IOMMU_SVM_END32;
 	}
 }
@@ -1145,7 +1452,12 @@ void _enable_gpuhtw_llc(struct kgsl_mmu *mmu, struct kgsl_iommu_pt *iommu_pt)
 		return;
 
 	/* Domain attribute to enable system cache for GPU pagetable walks */
+<<<<<<< HEAD
 	if (mmu->subtype == KGSL_IOMMU_SMMU_V500)
+=======
+	if (adreno_is_a640(adreno_dev) || adreno_is_a612(adreno_dev) ||
+			adreno_is_a680(adreno_dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = iommu_domain_set_attr(iommu_pt->domain,
 			DOMAIN_ATTR_USE_LLC_NWA, &gpuhtw_llc_enable);
 	else
@@ -1160,9 +1472,28 @@ void _enable_gpuhtw_llc(struct kgsl_mmu *mmu, struct kgsl_iommu_pt *iommu_pt)
 		"System cache not enabled for GPU pagetable walks: %d\n", ret);
 }
 
+<<<<<<< HEAD
 static int _init_global_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 {
 	struct kgsl_device *device = KGSL_MMU_DEVICE(mmu);
+=======
+int kgsl_program_smmu_aperture(void)
+{
+	struct scm_desc desc = {0};
+
+	desc.args[0] = 0xFFFF0000 | ((CP_APERTURE_REG & 0xff) << 8) |
+			(context_bank_number & 0xff);
+	desc.args[1] = 0xFFFFFFFF;
+	desc.args[2] = 0xFFFFFFFF;
+	desc.args[3] = 0xFFFFFFFF;
+	desc.arginfo = SCM_ARGS(4);
+
+	return scm_call2(SCM_SIP_FNID(SCM_SVC_MP, CP_SMMU_APERTURE_ID), &desc);
+}
+
+static int _init_global_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	struct kgsl_iommu_pt *iommu_pt = NULL;
 	unsigned int cb_num;
@@ -1178,9 +1509,14 @@ static int _init_global_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 		ret = iommu_domain_set_attr(iommu_pt->domain,
 				DOMAIN_ATTR_PROCID, &pt->name);
 		if (ret) {
+<<<<<<< HEAD
 			dev_err(device->dev,
 				"set DOMAIN_ATTR_PROCID failed: %d\n",
 				ret);
+=======
+			KGSL_CORE_ERR("set DOMAIN_ATTR_PROCID failed: %d\n",
+					ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto done;
 		}
 	}
@@ -1197,6 +1533,7 @@ static int _init_global_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 	ret = iommu_domain_get_attr(iommu_pt->domain,
 				DOMAIN_ATTR_CONTEXT_BANK, &cb_num);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"get DOMAIN_ATTR_CONTEXT_BANK failed: %d\n",
 			ret);
@@ -1222,6 +1559,19 @@ static int _init_global_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 			dev_err(device->dev,
 				"SMMU aperture programming call failed with error %d\n",
 				ret);
+=======
+		KGSL_CORE_ERR("get DOMAIN_ATTR_CONTEXT_BANK failed: %d\n",
+				ret);
+		goto done;
+	}
+	context_bank_number = cb_num;
+	if (!MMU_FEATURE(mmu, KGSL_MMU_GLOBAL_PAGETABLE) &&
+		scm_is_call_available(SCM_SVC_MP, CP_SMMU_APERTURE_ID)) {
+		ret = kgsl_program_smmu_aperture();
+		if (ret) {
+			pr_err("SMMU aperture programming call failed with error %d\n",
+									ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto done;
 		}
 	}
@@ -1233,18 +1583,31 @@ static int _init_global_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 	ret = iommu_domain_get_attr(iommu_pt->domain,
 			DOMAIN_ATTR_TTBR0, &iommu_pt->ttbr0);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "get DOMAIN_ATTR_TTBR0 failed: %d\n", ret);
+=======
+		KGSL_CORE_ERR("get DOMAIN_ATTR_TTBR0 failed: %d\n",
+				ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 	ret = iommu_domain_get_attr(iommu_pt->domain,
 			DOMAIN_ATTR_CONTEXTIDR, &iommu_pt->contextidr);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "get DOMAIN_ATTR_CONTEXTIDR failed: %d\n",
 			ret);
 		goto done;
 	}
 
 	ret = kgsl_iommu_map_globals(pt);
+=======
+		KGSL_CORE_ERR("get DOMAIN_ATTR_CONTEXTIDR failed: %d\n",
+				ret);
+		goto done;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	if (ret)
@@ -1255,7 +1618,10 @@ done:
 
 static int _init_secure_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 {
+<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_MMU_DEVICE(mmu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	struct kgsl_iommu_pt *iommu_pt = NULL;
 	struct kgsl_iommu *iommu = _IOMMU_PRIV(mmu);
@@ -1279,16 +1645,23 @@ static int _init_secure_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 	ret = iommu_domain_set_attr(iommu_pt->domain,
 				    DOMAIN_ATTR_SECURE_VMID, &secure_vmid);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "set DOMAIN_ATTR_SECURE_VMID failed: %d\n",
 			ret);
+=======
+		KGSL_CORE_ERR("set DOMAIN_ATTR_SECURE_VMID failed: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 
 	_enable_gpuhtw_llc(mmu, iommu_pt);
 
 	ret = _attach_pt(iommu_pt, ctx);
+<<<<<<< HEAD
 	if (ret)
 		goto done;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (MMU_FEATURE(mmu, KGSL_MMU_HYP_SECURE_ALLOC))
 		iommu_set_fault_handler(iommu_pt->domain,
@@ -1297,8 +1670,13 @@ static int _init_secure_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 	ret = iommu_domain_get_attr(iommu_pt->domain,
 				DOMAIN_ATTR_CONTEXT_BANK, &cb_num);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "get DOMAIN_ATTR_CONTEXT_BANK failed: %d\n",
 			ret);
+=======
+		KGSL_CORE_ERR("get DOMAIN_ATTR_PROCID failed: %d\n",
+				ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 
@@ -1314,7 +1692,10 @@ done:
 
 static int _init_per_process_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 {
+<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_MMU_DEVICE(mmu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	struct kgsl_iommu_pt *iommu_pt = NULL;
 	struct kgsl_iommu *iommu = _IOMMU_PRIV(mmu);
@@ -1330,23 +1711,35 @@ static int _init_per_process_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 	ret = iommu_domain_set_attr(iommu_pt->domain,
 				DOMAIN_ATTR_DYNAMIC, &dynamic);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"set DOMAIN_ATTR_DYNAMIC failed: %d\n", ret);
+=======
+		KGSL_CORE_ERR("set DOMAIN_ATTR_DYNAMIC failed: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 	ret = iommu_domain_set_attr(iommu_pt->domain,
 				DOMAIN_ATTR_CONTEXT_BANK, &cb_num);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"set DOMAIN_ATTR_CONTEXT_BANK failed: %d\n", ret);
+=======
+		KGSL_CORE_ERR("set DOMAIN_ATTR_CONTEXT_BANK failed: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 
 	ret = iommu_domain_set_attr(iommu_pt->domain,
 				DOMAIN_ATTR_PROCID, &pt->name);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"set DOMAIN_ATTR_PROCID failed: %d\n", ret);
+=======
+		KGSL_CORE_ERR("set DOMAIN_ATTR_PROCID failed: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 
@@ -1360,15 +1753,23 @@ static int _init_per_process_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 	ret = iommu_domain_get_attr(iommu_pt->domain,
 				DOMAIN_ATTR_TTBR0, &iommu_pt->ttbr0);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "get DOMAIN_ATTR_TTBR0 failed: %d\n", ret);
+=======
+		KGSL_CORE_ERR("get DOMAIN_ATTR_TTBR0 failed: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 
 	ret = iommu_domain_get_attr(iommu_pt->domain,
 				DOMAIN_ATTR_CONTEXTIDR, &iommu_pt->contextidr);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"get DOMAIN_ATTR_CONTEXTIDR failed: %d\n", ret);
+=======
+		KGSL_CORE_ERR("get DOMAIN_ATTR_CONTEXTIDR failed: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 
@@ -1417,6 +1818,26 @@ static struct kgsl_pagetable *kgsl_iommu_getpagetable(struct kgsl_mmu *mmu,
 	return pt;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * kgsl_iommu_get_reg_ahbaddr - Returns the ahb address of the register
+ * @mmu - Pointer to mmu structure
+ * @id - The context ID of the IOMMU ctx
+ * @reg - The register for which address is required
+ *
+ * Return - The address of register which can be used in type0 packet
+ */
+static unsigned int kgsl_iommu_get_reg_ahbaddr(struct kgsl_mmu *mmu,
+		int id, unsigned int reg)
+{
+	struct kgsl_iommu *iommu = _IOMMU_PRIV(mmu);
+	struct kgsl_iommu_context *ctx = &iommu->ctx[id];
+
+	return ctx->gpu_offset + kgsl_iommu_reg_list[reg];
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void _detach_context(struct kgsl_iommu_context *ctx)
 {
 	struct kgsl_iommu_pt *iommu_pt;
@@ -1495,8 +1916,12 @@ static int kgsl_iommu_init(struct kgsl_mmu *mmu)
 	mmu->features |= KGSL_MMU_PAGED;
 
 	if (ctx->name == NULL) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"dt: gfx3d0_user context bank not found\n");
+=======
+		KGSL_CORE_ERR("dt: gfx3d0_user context bank not found\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1504,14 +1929,33 @@ static int kgsl_iommu_init(struct kgsl_mmu *mmu)
 	if (status)
 		return status;
 
+<<<<<<< HEAD
+=======
+	/* check requirements for per process pagetables */
+	if (ctx->gpu_offset == UINT_MAX) {
+		KGSL_CORE_ERR("missing qcom,gpu-offset forces global pt\n");
+		mmu->features |= KGSL_MMU_GLOBAL_PAGETABLE;
+	}
+
+	if (iommu->version == 1 && iommu->micro_mmu_ctrl == UINT_MAX) {
+		KGSL_CORE_ERR(
+			"missing qcom,micro-mmu-control forces global pt\n");
+		mmu->features |= KGSL_MMU_GLOBAL_PAGETABLE;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check to see if we need to do the IOMMU sync dance */
 	need_iommu_sync = of_property_read_bool(device->pdev->dev.of_node,
 		"qcom,gpu-quirk-iommu-sync");
 
 	iommu->regbase = ioremap(iommu->regstart, iommu->regsize);
 	if (iommu->regbase == NULL) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"Could not map IOMMU registers 0x%lx:0x%x\n",
+=======
+		KGSL_CORE_ERR("Could not map IOMMU registers 0x%lx:0x%x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iommu->regstart, iommu->regsize);
 		status = -ENOMEM;
 		goto done;
@@ -1529,6 +1973,21 @@ static int kgsl_iommu_init(struct kgsl_mmu *mmu)
 	kgsl_setup_qdss_desc(device);
 	kgsl_setup_qtimer_desc(device);
 
+<<<<<<< HEAD
+=======
+	mmu->defaultpagetable = kgsl_mmu_getpagetable(mmu,
+				KGSL_MMU_GLOBAL_PT);
+	/* if we don't have a default pagetable, nothing will work */
+	if (IS_ERR(mmu->defaultpagetable)) {
+		status = PTR_ERR(mmu->defaultpagetable);
+		mmu->defaultpagetable = NULL;
+		goto done;
+	} else if (mmu->defaultpagetable == NULL) {
+		status = -ENOMEM;
+		goto done;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mmu->secured)
 		goto done;
 
@@ -1558,6 +2017,7 @@ static int _setup_user_context(struct kgsl_mmu *mmu)
 	struct kgsl_iommu_pt *iommu_pt = NULL;
 	unsigned int  sctlr_val;
 
+<<<<<<< HEAD
 	if (mmu->defaultpagetable == NULL) {
 		mmu->defaultpagetable = kgsl_mmu_getpagetable(mmu,
 				KGSL_MMU_GLOBAL_PT);
@@ -1570,6 +2030,10 @@ static int _setup_user_context(struct kgsl_mmu *mmu)
 			return -ENOMEM;
 		}
 	}
+=======
+	if (mmu->defaultpagetable == NULL)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iommu_pt = mmu->defaultpagetable->priv;
 	if (iommu_pt == NULL)
@@ -1581,6 +2045,11 @@ static int _setup_user_context(struct kgsl_mmu *mmu)
 
 	ctx->default_pt = mmu->defaultpagetable;
 
+<<<<<<< HEAD
+=======
+	kgsl_iommu_enable_clk(mmu);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sctlr_val = KGSL_IOMMU_GET_CTX_REG(ctx, SCTLR);
 
 	/*
@@ -1603,6 +2072,10 @@ static int _setup_user_context(struct kgsl_mmu *mmu)
 		sctlr_val |= (0x1 << KGSL_IOMMU_SCTLR_HUPCF_SHIFT);
 	}
 	KGSL_IOMMU_SET_CTX_REG(ctx, SCTLR, sctlr_val);
+<<<<<<< HEAD
+=======
+	kgsl_iommu_disable_clk(mmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1633,8 +2106,12 @@ static int _setup_secure_context(struct kgsl_mmu *mmu)
 	ret = iommu_domain_get_attr(iommu_pt->domain, DOMAIN_ATTR_CONTEXT_BANK,
 					&cb_num);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(KGSL_MMU_DEVICE(mmu)->dev,
 			"get CONTEXT_BANK attr, err %d\n", ret);
+=======
+		KGSL_CORE_ERR("get CONTEXT_BANK attr, err %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 	ctx->cb_num = cb_num;
@@ -1651,6 +2128,7 @@ static int kgsl_iommu_start(struct kgsl_mmu *mmu)
 	int status;
 	struct kgsl_iommu *iommu = _IOMMU_PRIV(mmu);
 
+<<<<<<< HEAD
 	kgsl_iommu_enable_clk(mmu);
 
 	status = _setup_user_context(mmu);
@@ -1658,10 +2136,16 @@ static int kgsl_iommu_start(struct kgsl_mmu *mmu)
 		kgsl_iommu_disable_clk(mmu);
 		return status;
 	}
+=======
+	status = _setup_user_context(mmu);
+	if (status)
+		return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	status = _setup_secure_context(mmu);
 	if (status) {
 		_detach_context(&iommu->ctx[KGSL_IOMMU_CONTEXT_USER]);
+<<<<<<< HEAD
 		kgsl_iommu_disable_clk(mmu);
 		return status;
 	}
@@ -1676,11 +2160,25 @@ static int kgsl_iommu_start(struct kgsl_mmu *mmu)
 
 		/* make sure register write committed */
 		wmb();
+=======
+		return status;
+	}
+
+	if (mmu->defaultpagetable != NULL && !mmu->globalpt_mapped) {
+		status = kgsl_iommu_map_globals(mmu->defaultpagetable);
+		if (status)
+			return status;
+
+		mmu->globalpt_mapped = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Make sure the hardware is programmed to the default pagetable */
 	kgsl_iommu_set_pt(mmu, mmu->defaultpagetable);
+<<<<<<< HEAD
 	kgsl_iommu_disable_clk(mmu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_bit(KGSL_MMU_STARTED, &mmu->flags);
 	return 0;
 }
@@ -1746,7 +2244,11 @@ static int _iommu_map_guard_page(struct kgsl_pagetable *pt,
 		if (!kgsl_secure_guard_page) {
 			kgsl_secure_guard_page = kgsl_alloc_secure_page();
 			if (!kgsl_secure_guard_page) {
+<<<<<<< HEAD
 				dev_err(KGSL_MMU_DEVICE(pt->mmu)->dev,
+=======
+				KGSL_CORE_ERR(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"Secure guard page alloc failed\n");
 				return -ENOMEM;
 			}
@@ -1764,7 +2266,12 @@ static int _iommu_map_guard_page(struct kgsl_pagetable *pt,
 		physaddr = page_to_phys(kgsl_guard_page);
 	}
 
+<<<<<<< HEAD
 	protflags &= ~IOMMU_WRITE;
+=======
+	if (!MMU_FEATURE(pt->mmu, KGSL_MMU_PAD_VA))
+		protflags &= ~IOMMU_WRITE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return _iommu_map_single_page_sync_pc(pt, gpuaddr, physaddr,
 			pad_size >> PAGE_SHIFT, protflags);
@@ -1863,7 +2370,13 @@ static int kgsl_iommu_sparse_dummy_map(struct kgsl_pagetable *pt,
 			return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	map_flags = IOMMU_READ | IOMMU_NOEXEC;
+=======
+	map_flags = MMU_FEATURE(pt->mmu, KGSL_MMU_PAD_VA) ?
+				_get_protection_flags(pt, memdesc) :
+				IOMMU_READ | IOMMU_NOEXEC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pages = kcalloc(count, sizeof(struct page *), GFP_KERNEL);
 	if (pages == NULL)
@@ -2043,6 +2556,10 @@ static void kgsl_iommu_pagefault_resume(struct kgsl_mmu *mmu)
 		 * the barrier as we use writel_relaxed to write them.
 		 */
 		wmb();
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2134,8 +2651,13 @@ static int kgsl_iommu_set_pt(struct kgsl_mmu *mmu, struct kgsl_pagetable *pt)
 	while (KGSL_IOMMU_GET_CTX_REG(ctx, TLBSTATUS) &
 		(KGSL_IOMMU_CTX_TLBSTATUS_SACTIVE)) {
 		if (time_after(jiffies, wait_for_flush)) {
+<<<<<<< HEAD
 			dev_warn(KGSL_MMU_DEVICE(mmu)->dev,
 				      "Wait limit reached for IOMMU tlb flush\n");
+=======
+			KGSL_DRV_WARN(KGSL_MMU_DEVICE(mmu),
+			"Wait limit reached for IOMMU tlb flush\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		cpu_relax();
@@ -2190,6 +2712,17 @@ static int kgsl_iommu_set_pf_policy(struct kgsl_mmu *mmu,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static struct kgsl_protected_registers *
+kgsl_iommu_get_prot_regs(struct kgsl_mmu *mmu)
+{
+	struct kgsl_iommu *iommu = _IOMMU_PRIV(mmu);
+
+	return &iommu->protect;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct kgsl_iommu_addr_entry *_find_gpuaddr(
 		struct kgsl_pagetable *pagetable, uint64_t gpuaddr)
 {
@@ -2219,12 +2752,23 @@ static int _remove_gpuaddr(struct kgsl_pagetable *pagetable,
 
 	entry = _find_gpuaddr(pagetable, gpuaddr);
 
+<<<<<<< HEAD
 	if (WARN(!entry, "GPU address %llx doesn't exist\n", gpuaddr))
 		return -ENOMEM;
 
 	rb_erase(&entry->node, &pt->rbtree);
 	kmem_cache_free(addr_entry_cache, entry);
 	return 0;
+=======
+	if (entry != NULL) {
+		rb_erase(&entry->node, &pt->rbtree);
+		kmem_cache_free(addr_entry_cache, entry);
+		return 0;
+	}
+
+	WARN(1, "Couldn't remove gpuaddr: 0x%llx\n", gpuaddr);
+	return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int _insert_gpuaddr(struct kgsl_pagetable *pagetable,
@@ -2409,6 +2953,25 @@ static uint64_t kgsl_iommu_find_svm_region(struct kgsl_pagetable *pagetable,
 	return addr;
 }
 
+<<<<<<< HEAD
+=======
+static bool iommu_addr_in_svm_ranges(struct kgsl_iommu_pt *pt,
+	u64 gpuaddr, u64 size)
+{
+	if ((gpuaddr >= pt->compat_va_start && gpuaddr < pt->compat_va_end) &&
+		((gpuaddr + size) > pt->compat_va_start &&
+			(gpuaddr + size) <= pt->compat_va_end))
+		return true;
+
+	if ((gpuaddr >= pt->svm_start && gpuaddr < pt->svm_end) &&
+		((gpuaddr + size) > pt->svm_start &&
+			(gpuaddr + size) <= pt->svm_end))
+		return true;
+
+	return false;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int kgsl_iommu_set_svm_region(struct kgsl_pagetable *pagetable,
 		uint64_t gpuaddr, uint64_t size)
 {
@@ -2416,9 +2979,14 @@ static int kgsl_iommu_set_svm_region(struct kgsl_pagetable *pagetable,
 	struct kgsl_iommu_pt *pt = pagetable->priv;
 	struct rb_node *node;
 
+<<<<<<< HEAD
 	/* Make sure the requested address doesn't fall in the global range */
 	if (ADDR_IN_GLOBAL(pagetable->mmu, gpuaddr) ||
 			ADDR_IN_GLOBAL(pagetable->mmu, gpuaddr + size))
+=======
+	/* Make sure the requested address doesn't fall out of SVM range */
+	if (!iommu_addr_in_svm_ranges(pt, gpuaddr, size))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	spin_lock(&pagetable->lock);
@@ -2446,6 +3014,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int get_gpuaddr(struct kgsl_pagetable *pagetable,
 		struct kgsl_memdesc *memdesc, u64 start, u64 end,
 		u64 size, unsigned int align)
@@ -2470,13 +3039,19 @@ static int get_gpuaddr(struct kgsl_pagetable *pagetable,
 
 	return ret;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int kgsl_iommu_get_gpuaddr(struct kgsl_pagetable *pagetable,
 		struct kgsl_memdesc *memdesc)
 {
 	struct kgsl_iommu_pt *pt = pagetable->priv;
 	int ret = 0;
+<<<<<<< HEAD
 	u64 start, end, size;
+=======
+	uint64_t addr, start, end, size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int align;
 
 	if (WARN_ON(kgsl_memdesc_use_cpu_map(memdesc)))
@@ -2489,7 +3064,11 @@ static int kgsl_iommu_get_gpuaddr(struct kgsl_pagetable *pagetable,
 	size = kgsl_memdesc_footprint(memdesc);
 
 	align = max_t(uint64_t, 1 << kgsl_memdesc_get_align(memdesc),
+<<<<<<< HEAD
 			PAGE_SIZE);
+=======
+			memdesc->pad_to);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (memdesc->flags & KGSL_MEMFLAGS_FORCE_32BIT) {
 		start = pt->compat_va_start;
@@ -2506,6 +3085,7 @@ static int kgsl_iommu_get_gpuaddr(struct kgsl_pagetable *pagetable,
 	if (kgsl_memdesc_is_secured(memdesc))
 		start += secure_global_size;
 
+<<<<<<< HEAD
 	ret = get_gpuaddr(pagetable, memdesc, start, end, size, align);
 	/* if OoM, retry once after flushing mem_wq */
 	if (ret == -ENOMEM) {
@@ -2513,6 +3093,30 @@ static int kgsl_iommu_get_gpuaddr(struct kgsl_pagetable *pagetable,
 		ret = get_gpuaddr(pagetable, memdesc, start, end, size, align);
 	}
 
+=======
+	spin_lock(&pagetable->lock);
+
+	addr = _get_unmapped_area(pagetable, start, end, size, align);
+
+	if (addr == (uint64_t) -ENOMEM) {
+		ret = -ENOMEM;
+		goto out;
+	}
+
+	/*
+	 * This path is only called in a non-SVM path with locks so we can be
+	 * sure we aren't racing with anybody so we don't need to worry about
+	 * taking the lock
+	 */
+	ret = _insert_gpuaddr(pagetable, addr, size);
+	if (ret == 0) {
+		memdesc->gpuaddr = addr;
+		memdesc->pagetable = pagetable;
+	}
+
+out:
+	spin_unlock(&pagetable->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2600,14 +3204,26 @@ static int _kgsl_iommu_cb_probe(struct kgsl_device *device,
 	}
 
 	if (ctx == NULL) {
+<<<<<<< HEAD
 		dev_info(device->dev,
 			"dt: Unused context label %s\n", node->name);
+=======
+		KGSL_DRV_INFO(device, "dt: Unused context label %s\n",
+			node->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
 	if (ctx->id == KGSL_IOMMU_CONTEXT_SECURE)
 		device->mmu.secured = true;
 
+<<<<<<< HEAD
+=======
+	/* this property won't be found for all context banks */
+	if (of_property_read_u32(node, "qcom,gpu-offset", &ctx->gpu_offset))
+		ctx->gpu_offset = UINT_MAX;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->kgsldev = device;
 
 	/* arm-smmu driver we'll have the right device pointer here. */
@@ -2620,7 +3236,11 @@ static int _kgsl_iommu_cb_probe(struct kgsl_device *device,
 			return PTR_ERR(ctx->dev);
 	}
 
+<<<<<<< HEAD
 	of_dma_configure(ctx->dev, node, true);
+=======
+	of_dma_configure(ctx->dev, node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2642,29 +3262,64 @@ static int _kgsl_iommu_probe(struct kgsl_device *device,
 	u32 reg_val[2];
 	int i = 0;
 	struct kgsl_iommu *iommu = KGSL_IOMMU_PRIV(device);
+<<<<<<< HEAD
 	struct device_node *child, *iommu_node = NULL;
+=======
+	struct kgsl_mmu *mmu = &device->mmu;
+	struct kgsl_pwrctrl *pwr = &device->pwrctrl;
+	struct device_node *child;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct platform_device *pdev = of_find_device_by_node(node);
 
 	memset(iommu, 0, sizeof(*iommu));
 
+<<<<<<< HEAD
 	if (of_property_read_u32_array(node, "reg", reg_val, 2)) {
 		dev_err(device->dev,
 			"dt: Unable to read KGSL IOMMU register range\n");
+=======
+	if (of_device_is_compatible(node, "qcom,kgsl-smmu-v1"))
+		iommu->version = 1;
+	else
+		iommu->version = 2;
+
+	if (of_property_read_u32_array(node, "reg", reg_val, 2)) {
+		KGSL_CORE_ERR("dt: Unable to read KGSL IOMMU register range\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 	iommu->regstart = reg_val[0];
 	iommu->regsize = reg_val[1];
 
+<<<<<<< HEAD
+=======
+	/* Protecting the SMMU registers is mandatory */
+	if (of_property_read_u32_array(node, "qcom,protect", reg_val, 2)) {
+		KGSL_CORE_ERR("dt: no iommu protection range specified\n");
+		return -EINVAL;
+	}
+	iommu->protect.base = reg_val[0] / sizeof(u32);
+	iommu->protect.range = reg_val[1] / sizeof(u32);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	of_property_for_each_string(node, "clock-names", prop, cname) {
 		struct clk *c = devm_clk_get(&pdev->dev, cname);
 
 		if (IS_ERR(c)) {
+<<<<<<< HEAD
 			dev_err(device->dev,
 				"dt: Couldn't get clock: %s\n", cname);
 			return -ENODEV;
 		}
 		if (i >= KGSL_IOMMU_MAX_CLKS) {
 			dev_err(device->dev, "dt: too many clocks defined.\n");
+=======
+			KGSL_CORE_ERR("dt: Couldn't get clock: %s\n", cname);
+			return -ENODEV;
+		}
+		if (i >= KGSL_IOMMU_MAX_CLKS) {
+			KGSL_CORE_ERR("dt: too many clocks defined.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 
@@ -2674,12 +3329,46 @@ static int _kgsl_iommu_probe(struct kgsl_device *device,
 
 	for (i = 0; i < ARRAY_SIZE(kgsl_iommu_features); i++) {
 		if (of_property_read_bool(node, kgsl_iommu_features[i].feature))
+<<<<<<< HEAD
 			device->mmu.features |= kgsl_iommu_features[i].bit;
 	}
 
 	if (of_property_read_u32(node, "qcom,secure_align_mask",
 		&device->mmu.secure_align_mask))
 		device->mmu.secure_align_mask = 0xfff;
+=======
+			mmu->features |= kgsl_iommu_features[i].bit;
+	}
+
+	/*
+	 * Try to preserve the SMMU regulator if HW can support
+	 * unmap fast path.
+	 */
+	if (of_property_read_bool(node, "qcom,unmap_fast")) {
+		for (i = 0; i < KGSL_MAX_REGULATORS; i++) {
+			if (!strcmp(pwr->regulators[i].name, "vddcx")) {
+				iommu->vddcx_regulator =
+					pwr->regulators[i].reg;
+			}
+		}
+	}
+
+	if (of_property_read_u32(node, "qcom,micro-mmu-control",
+		&iommu->micro_mmu_ctrl))
+		iommu->micro_mmu_ctrl = UINT_MAX;
+
+	if (of_property_read_u32(node, "qcom,secure_align_mask",
+		&mmu->secure_align_mask))
+		mmu->secure_align_mask = 0xfff;
+
+	if (of_property_read_u32(node, "qcom,secure-size", &mmu->secure_size))
+		mmu->secure_size = KGSL_IOMMU_SECURE_SIZE;
+	else if (mmu->secure_size >
+			(KGSL_IOMMU_SECURE_END(mmu) - mmu->svm_base32))
+		mmu->secure_size = KGSL_IOMMU_SECURE_SIZE;
+
+	mmu->secure_base = KGSL_IOMMU_SECURE_END(mmu) - mmu->secure_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Fill out the rest of the devices in the node */
 	of_platform_populate(node, NULL, NULL, &pdev->dev);
@@ -2693,6 +3382,7 @@ static int _kgsl_iommu_probe(struct kgsl_device *device,
 		ret = _kgsl_iommu_cb_probe(device, iommu, child);
 		if (ret)
 			return ret;
+<<<<<<< HEAD
 
 		if (!iommu_node)
 			iommu_node = of_parse_phandle(child, "iommus", 0);
@@ -2702,6 +3392,10 @@ static int _kgsl_iommu_probe(struct kgsl_device *device,
 		of_device_is_compatible(iommu_node, "qcom,qsmmu-v500"))
 		device->mmu.subtype = KGSL_IOMMU_SMMU_V500;
 
+=======
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2709,6 +3403,10 @@ static const struct {
 	char *compat;
 	int (*probe)(struct kgsl_device *device, struct device_node *node);
 } kgsl_dt_devices[] = {
+<<<<<<< HEAD
+=======
+	{ "qcom,kgsl-smmu-v1", _kgsl_iommu_probe },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "qcom,kgsl-smmu-v2", _kgsl_iommu_probe },
 };
 
@@ -2739,9 +3437,17 @@ struct kgsl_mmu_ops kgsl_iommu_ops = {
 	.mmu_get_current_ttbr0 = kgsl_iommu_get_current_ttbr0,
 	.mmu_enable_clk = kgsl_iommu_enable_clk,
 	.mmu_disable_clk = kgsl_iommu_disable_clk,
+<<<<<<< HEAD
 	.mmu_pt_equal = kgsl_iommu_pt_equal,
 	.mmu_set_pf_policy = kgsl_iommu_set_pf_policy,
 	.mmu_pagefault_resume = kgsl_iommu_pagefault_resume,
+=======
+	.mmu_get_reg_ahbaddr = kgsl_iommu_get_reg_ahbaddr,
+	.mmu_pt_equal = kgsl_iommu_pt_equal,
+	.mmu_set_pf_policy = kgsl_iommu_set_pf_policy,
+	.mmu_pagefault_resume = kgsl_iommu_pagefault_resume,
+	.mmu_get_prot_regs = kgsl_iommu_get_prot_regs,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mmu_init_pt = kgsl_iommu_init_pt,
 	.mmu_add_global = kgsl_iommu_add_global,
 	.mmu_remove_global = kgsl_iommu_remove_global,

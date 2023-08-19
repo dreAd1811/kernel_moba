@@ -84,9 +84,15 @@ show_test_oa_id(struct device *kdev, struct device_attribute *attr, char *buf)
 void
 i915_perf_load_test_config_kblgt2(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	strlcpy(dev_priv->perf.oa.test_config.uuid,
 		"baa3c7e4-52b6-4b85-801e-465a94b746dd",
 		sizeof(dev_priv->perf.oa.test_config.uuid));
+=======
+	strncpy(dev_priv->perf.oa.test_config.uuid,
+		"baa3c7e4-52b6-4b85-801e-465a94b746dd",
+		UUID_STRING_LEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_priv->perf.oa.test_config.id = 1;
 
 	dev_priv->perf.oa.test_config.mux_regs = mux_config_test_oa;

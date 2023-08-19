@@ -25,11 +25,15 @@
 #include <linux/swap.h>
 
 #include "blk-wbt.h"
+<<<<<<< HEAD
 #include "blk-rq-qos.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/wbt.h>
 
+<<<<<<< HEAD
 static inline void wbt_clear_state(struct request *rq)
 {
 	rq->wbt_flags = 0;
@@ -50,6 +54,8 @@ static inline bool wbt_is_read(struct request *rq)
 	return rq->wbt_flags & WBT_READ;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	/*
 	 * Default setting, we'll scale up (to 75% of QD max) or down (min 1)
@@ -79,6 +85,31 @@ static inline bool rwb_enabled(struct rq_wb *rwb)
 	return rwb && rwb->wb_normal != 0;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Increment 'v', if 'v' is below 'below'. Returns true if we succeeded,
+ * false if 'v' + 1 would be bigger than 'below'.
+ */
+static bool atomic_inc_below(atomic_t *v, int below)
+{
+	int cur = atomic_read(v);
+
+	for (;;) {
+		int old;
+
+		if (cur >= below)
+			return false;
+		old = atomic_cmpxchg(v, cur, cur + 1);
+		if (old == cur)
+			break;
+		cur = old;
+	}
+
+	return true;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void wb_timestamp(struct rq_wb *rwb, unsigned long *var)
 {
 	if (rwb_enabled(rwb)) {
@@ -95,11 +126,16 @@ static void wb_timestamp(struct rq_wb *rwb, unsigned long *var)
  */
 static bool wb_recent_wait(struct rq_wb *rwb)
 {
+<<<<<<< HEAD
 	struct bdi_writeback *wb = &rwb->rqos.q->backing_dev_info->wb;
+=======
+	struct bdi_writeback *wb = &rwb->queue->backing_dev_info->wb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return time_before(jiffies, wb->dirty_sleep + HZ);
 }
 
+<<<<<<< HEAD
 static inline struct rq_wait *get_rq_wait(struct rq_wb *rwb,
 					  enum wbt_flags wb_acct)
 {
@@ -109,6 +145,11 @@ static inline struct rq_wait *get_rq_wait(struct rq_wb *rwb,
 		return &rwb->rq_wait[WBT_RWQ_DISCARD];
 
 	return &rwb->rq_wait[WBT_RWQ_BG];
+=======
+static inline struct rq_wait *get_rq_wait(struct rq_wb *rwb, bool is_kswapd)
+{
+	return &rwb->rq_wait[is_kswapd];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rwb_wake_all(struct rq_wb *rwb)
@@ -118,16 +159,32 @@ static void rwb_wake_all(struct rq_wb *rwb)
 	for (i = 0; i < WBT_NUM_RWQ; i++) {
 		struct rq_wait *rqw = &rwb->rq_wait[i];
 
+<<<<<<< HEAD
 		if (wq_has_sleeper(&rqw->wait))
+=======
+		if (waitqueue_active(&rqw->wait))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wake_up_all(&rqw->wait);
 	}
 }
 
+<<<<<<< HEAD
 static void wbt_rqw_done(struct rq_wb *rwb, struct rq_wait *rqw,
 			 enum wbt_flags wb_acct)
 {
 	int inflight, limit;
 
+=======
+void __wbt_done(struct rq_wb *rwb, enum wbt_flags wb_acct)
+{
+	struct rq_wait *rqw;
+	int inflight, limit;
+
+	if (!(wb_acct & WBT_TRACKED))
+		return;
+
+	rqw = get_rq_wait(rwb, wb_acct & WBT_KSWAPD);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inflight = atomic_dec_return(&rqw->inflight);
 
 	/*
@@ -140,6 +197,7 @@ static void wbt_rqw_done(struct rq_wb *rwb, struct rq_wait *rqw,
 	}
 
 	/*
+<<<<<<< HEAD
 	 * For discards, our limit is always the background. For writes, if
 	 * the device does write back caching, drop further down before we
 	 * wake people up.
@@ -147,6 +205,12 @@ static void wbt_rqw_done(struct rq_wb *rwb, struct rq_wait *rqw,
 	if (wb_acct & WBT_DISCARD)
 		limit = rwb->wb_background;
 	else if (rwb->wc && !wb_recent_wait(rwb))
+=======
+	 * If the device does write back caching, drop further down
+	 * before we wake people up.
+	 */
+	if (rwb->wc && !wb_recent_wait(rwb))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		limit = 0;
 	else
 		limit = rwb->wb_normal;
@@ -157,7 +221,11 @@ static void wbt_rqw_done(struct rq_wb *rwb, struct rq_wait *rqw,
 	if (inflight && inflight >= limit)
 		return;
 
+<<<<<<< HEAD
 	if (wq_has_sleeper(&rqw->wait)) {
+=======
+	if (waitqueue_active(&rqw->wait)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int diff = limit - inflight;
 
 		if (!inflight || diff >= rwb->wb_background / 2)
@@ -165,6 +233,7 @@ static void wbt_rqw_done(struct rq_wb *rwb, struct rq_wait *rqw,
 	}
 }
 
+<<<<<<< HEAD
 static void __wbt_done(struct rq_qos *rqos, enum wbt_flags wb_acct)
 {
 	struct rq_wb *rwb = RQWB(rqos);
@@ -177,20 +246,33 @@ static void __wbt_done(struct rq_qos *rqos, enum wbt_flags wb_acct)
 	wbt_rqw_done(rwb, rqw, wb_acct);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Called on completion of a request. Note that it's also called when
  * a request is merged, when the request gets freed.
  */
+<<<<<<< HEAD
 static void wbt_done(struct rq_qos *rqos, struct request *rq)
 {
 	struct rq_wb *rwb = RQWB(rqos);
 
 	if (!wbt_is_tracked(rq)) {
 		if (rwb->sync_cookie == rq) {
+=======
+void wbt_done(struct rq_wb *rwb, struct blk_issue_stat *stat)
+{
+	if (!rwb)
+		return;
+
+	if (!wbt_is_tracked(stat)) {
+		if (rwb->sync_cookie == stat) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rwb->sync_issue = 0;
 			rwb->sync_cookie = NULL;
 		}
 
+<<<<<<< HEAD
 		if (wbt_is_read(rq))
 			wb_timestamp(rwb, &rwb->last_comp);
 	} else {
@@ -198,6 +280,77 @@ static void wbt_done(struct rq_qos *rqos, struct request *rq)
 		__wbt_done(rqos, wbt_flags(rq));
 	}
 	wbt_clear_state(rq);
+=======
+		if (wbt_is_read(stat))
+			wb_timestamp(rwb, &rwb->last_comp);
+		wbt_clear_state(stat);
+	} else {
+		WARN_ON_ONCE(stat == rwb->sync_cookie);
+		__wbt_done(rwb, wbt_stat_to_mask(stat));
+		wbt_clear_state(stat);
+	}
+}
+
+/*
+ * Return true, if we can't increase the depth further by scaling
+ */
+static bool calc_wb_limits(struct rq_wb *rwb)
+{
+	unsigned int depth;
+	bool ret = false;
+
+	if (!rwb->min_lat_nsec) {
+		rwb->wb_max = rwb->wb_normal = rwb->wb_background = 0;
+		return false;
+	}
+
+	/*
+	 * For QD=1 devices, this is a special case. It's important for those
+	 * to have one request ready when one completes, so force a depth of
+	 * 2 for those devices. On the backend, it'll be a depth of 1 anyway,
+	 * since the device can't have more than that in flight. If we're
+	 * scaling down, then keep a setting of 1/1/1.
+	 */
+	if (rwb->queue_depth == 1) {
+		if (rwb->scale_step > 0)
+			rwb->wb_max = rwb->wb_normal = 1;
+		else {
+			rwb->wb_max = rwb->wb_normal = 2;
+			ret = true;
+		}
+		rwb->wb_background = 1;
+	} else {
+		/*
+		 * scale_step == 0 is our default state. If we have suffered
+		 * latency spikes, step will be > 0, and we shrink the
+		 * allowed write depths. If step is < 0, we're only doing
+		 * writes, and we allow a temporarily higher depth to
+		 * increase performance.
+		 */
+		depth = min_t(unsigned int, RWB_DEF_DEPTH, rwb->queue_depth);
+		if (rwb->scale_step > 0)
+			depth = 1 + ((depth - 1) >> min(31, rwb->scale_step));
+		else if (rwb->scale_step < 0) {
+			unsigned int maxd = 3 * rwb->queue_depth / 4;
+
+			depth = 1 + ((depth - 1) << -rwb->scale_step);
+			if (depth > maxd) {
+				depth = maxd;
+				ret = true;
+			}
+		}
+
+		/*
+		 * Set our max/normal/bg queue depths based on how far
+		 * we have scaled down (->scale_step).
+		 */
+		rwb->wb_max = depth;
+		rwb->wb_normal = (rwb->wb_max + 1) / 2;
+		rwb->wb_background = (rwb->wb_max + 3) / 4;
+	}
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool stat_sample_valid(struct blk_rq_stat *stat)
@@ -214,7 +367,11 @@ static inline bool stat_sample_valid(struct blk_rq_stat *stat)
 
 static u64 rwb_sync_issue_lat(struct rq_wb *rwb)
 {
+<<<<<<< HEAD
 	u64 now, issue = READ_ONCE(rwb->sync_issue);
+=======
+	u64 now, issue = ACCESS_ONCE(rwb->sync_issue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!issue || !rwb->sync_cookie)
 		return 0;
@@ -232,8 +389,12 @@ enum {
 
 static int latency_exceeded(struct rq_wb *rwb, struct blk_rq_stat *stat)
 {
+<<<<<<< HEAD
 	struct backing_dev_info *bdi = rwb->rqos.q->backing_dev_info;
 	struct rq_depth *rqd = &rwb->rq_depth;
+=======
+	struct backing_dev_info *bdi = rwb->queue->backing_dev_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 thislat;
 
 	/*
@@ -277,7 +438,11 @@ static int latency_exceeded(struct rq_wb *rwb, struct blk_rq_stat *stat)
 		return LAT_EXCEEDED;
 	}
 
+<<<<<<< HEAD
 	if (rqd->scale_step)
+=======
+	if (rwb->scale_step)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		trace_wbt_stat(bdi, stat);
 
 	return LAT_OK;
@@ -285,6 +450,7 @@ static int latency_exceeded(struct rq_wb *rwb, struct blk_rq_stat *stat)
 
 static void rwb_trace_step(struct rq_wb *rwb, const char *msg)
 {
+<<<<<<< HEAD
 	struct backing_dev_info *bdi = rwb->rqos.q->backing_dev_info;
 	struct rq_depth *rqd = &rwb->rq_depth;
 
@@ -303,10 +469,17 @@ static void calc_wb_limits(struct rq_wb *rwb)
 		rwb->wb_normal = (rwb->rq_depth.max_depth + 1) / 2;
 		rwb->wb_background = (rwb->rq_depth.max_depth + 3) / 4;
 	}
+=======
+	struct backing_dev_info *bdi = rwb->queue->backing_dev_info;
+
+	trace_wbt_step(bdi, msg, rwb->scale_step, rwb->cur_win_nsec,
+			rwb->wb_background, rwb->wb_normal, rwb->wb_max);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void scale_up(struct rq_wb *rwb)
 {
+<<<<<<< HEAD
 	if (!rq_depth_scale_up(&rwb->rq_depth))
 		return;
 	calc_wb_limits(rwb);
@@ -322,13 +495,58 @@ static void scale_down(struct rq_wb *rwb, bool hard_throttle)
 	calc_wb_limits(rwb);
 	rwb->unknown_cnt = 0;
 	rwb_trace_step(rwb, "scale down");
+=======
+	/*
+	 * Hit max in previous round, stop here
+	 */
+	if (rwb->scaled_max)
+		return;
+
+	rwb->scale_step--;
+	rwb->unknown_cnt = 0;
+
+	rwb->scaled_max = calc_wb_limits(rwb);
+
+	rwb_wake_all(rwb);
+
+	rwb_trace_step(rwb, "step up");
+}
+
+/*
+ * Scale rwb down. If 'hard_throttle' is set, do it quicker, since we
+ * had a latency violation.
+ */
+static void scale_down(struct rq_wb *rwb, bool hard_throttle)
+{
+	/*
+	 * Stop scaling down when we've hit the limit. This also prevents
+	 * ->scale_step from going to crazy values, if the device can't
+	 * keep up.
+	 */
+	if (rwb->wb_max == 1)
+		return;
+
+	if (rwb->scale_step < 0 && hard_throttle)
+		rwb->scale_step = 0;
+	else
+		rwb->scale_step++;
+
+	rwb->scaled_max = false;
+	rwb->unknown_cnt = 0;
+	calc_wb_limits(rwb);
+	rwb_trace_step(rwb, "step down");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rwb_arm_timer(struct rq_wb *rwb)
 {
+<<<<<<< HEAD
 	struct rq_depth *rqd = &rwb->rq_depth;
 
 	if (rqd->scale_step > 0) {
+=======
+	if (rwb->scale_step > 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We should speed this up, using some variant of a fast
 		 * integer inverse square root calculation. Since we only do
@@ -336,7 +554,11 @@ static void rwb_arm_timer(struct rq_wb *rwb)
 		 * though.
 		 */
 		rwb->cur_win_nsec = div_u64(rwb->win_nsec << 4,
+<<<<<<< HEAD
 					int_sqrt((rqd->scale_step + 1) << 8));
+=======
+					int_sqrt((rwb->scale_step + 1) << 8));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * For step < 0, we don't want to increase/decrease the
@@ -351,13 +573,20 @@ static void rwb_arm_timer(struct rq_wb *rwb)
 static void wb_timer_fn(struct blk_stat_callback *cb)
 {
 	struct rq_wb *rwb = cb->data;
+<<<<<<< HEAD
 	struct rq_depth *rqd = &rwb->rq_depth;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int inflight = wbt_inflight(rwb);
 	int status;
 
 	status = latency_exceeded(rwb, cb->stat);
 
+<<<<<<< HEAD
 	trace_wbt_timer(rwb->rqos.q->backing_dev_info, status, rqd->scale_step,
+=======
+	trace_wbt_timer(rwb->queue->backing_dev_info, status, rwb->scale_step,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			inflight);
 
 	/*
@@ -388,9 +617,15 @@ static void wb_timer_fn(struct blk_stat_callback *cb)
 		 * currently don't have a valid read/write sample. For that
 		 * case, slowly return to center state (step == 0).
 		 */
+<<<<<<< HEAD
 		if (rqd->scale_step > 0)
 			scale_up(rwb);
 		else if (rqd->scale_step < 0)
+=======
+		if (rwb->scale_step > 0)
+			scale_up(rwb);
+		else if (rwb->scale_step < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			scale_down(rwb, false);
 		break;
 	default:
@@ -400,6 +635,7 @@ static void wb_timer_fn(struct blk_stat_callback *cb)
 	/*
 	 * Re-arm timer, if we have IO in flight
 	 */
+<<<<<<< HEAD
 	if (rqd->scale_step || inflight)
 		rwb_arm_timer(rwb);
 }
@@ -412,11 +648,22 @@ static void __wbt_update_limits(struct rq_wb *rwb)
 	rqd->scaled_max = false;
 
 	rq_depth_calc_max_depth(rqd);
+=======
+	if (rwb->scale_step || inflight)
+		rwb_arm_timer(rwb);
+}
+
+void wbt_update_limits(struct rq_wb *rwb)
+{
+	rwb->scale_step = 0;
+	rwb->scaled_max = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	calc_wb_limits(rwb);
 
 	rwb_wake_all(rwb);
 }
 
+<<<<<<< HEAD
 void wbt_update_limits(struct request_queue *q)
 {
 	struct rq_qos *rqos = wbt_rq_qos(q);
@@ -444,6 +691,8 @@ void wbt_set_min_lat(struct request_queue *q, u64 val)
 }
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool close_io(struct rq_wb *rwb)
 {
 	const unsigned long now = jiffies;
@@ -459,6 +708,7 @@ static inline unsigned int get_limit(struct rq_wb *rwb, unsigned long rw)
 	unsigned int limit;
 
 	/*
+<<<<<<< HEAD
 	 * If we got disabled, just return UINT_MAX. This ensures that
 	 * we'll properly inc a new IO, and dec+wakeup at the end.
 	 */
@@ -471,13 +721,21 @@ static inline unsigned int get_limit(struct rq_wb *rwb, unsigned long rw)
 	/*
 	 * At this point we know it's a buffered write. If this is
 	 * kswapd trying to free memory, or REQ_SYNC is set, then
+=======
+	 * At this point we know it's a buffered write. If this is
+	 * kswapd trying to free memory, or REQ_SYNC is set, set, then
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * it's WB_SYNC_ALL writeback, and we'll use the max limit for
 	 * that. If the write is marked as a background write, then use
 	 * the idle limit, or go to normal if we haven't had competing
 	 * IO for a bit.
 	 */
 	if ((rw & REQ_HIPRIO) || wb_recent_wait(rwb) || current_is_kswapd())
+<<<<<<< HEAD
 		limit = rwb->rq_depth.max_depth;
+=======
+		limit = rwb->wb_max;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else if ((rw & REQ_BACKGROUND) || close_io(rwb)) {
 		/*
 		 * If less than 100ms since we completed unrelated IO,
@@ -490,6 +748,7 @@ static inline unsigned int get_limit(struct rq_wb *rwb, unsigned long rw)
 	return limit;
 }
 
+<<<<<<< HEAD
 struct wbt_wait_data {
 	struct wait_queue_entry wq;
 	struct task_struct *task;
@@ -516,12 +775,37 @@ static int wbt_wake_function(struct wait_queue_entry *curr, unsigned int mode,
 	list_del_init(&curr->entry);
 	wake_up_process(data->task);
 	return 1;
+=======
+static inline bool may_queue(struct rq_wb *rwb, struct rq_wait *rqw,
+			     wait_queue_entry_t *wait, unsigned long rw)
+{
+	/*
+	 * inc it here even if disabled, since we'll dec it at completion.
+	 * this only happens if the task was sleeping in __wbt_wait(),
+	 * and someone turned it off at the same time.
+	 */
+	if (!rwb_enabled(rwb)) {
+		atomic_inc(&rqw->inflight);
+		return true;
+	}
+
+	/*
+	 * If the waitqueue is already active and we are not the next
+	 * in line to be woken up, wait for our turn.
+	 */
+	if (waitqueue_active(&rqw->wait) &&
+	    rqw->wait.head.next != &wait->entry)
+		return false;
+
+	return atomic_inc_below(&rqw->inflight, get_limit(rwb, rw));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
  * Block if we will exceed our limit, or if we are currently waiting for
  * the timer to kick off queuing again.
  */
+<<<<<<< HEAD
 static void __wbt_wait(struct rq_wb *rwb, enum wbt_flags wb_acct,
 		       unsigned long rw, spinlock_t *lock)
 	__releases(lock)
@@ -562,6 +846,24 @@ static void __wbt_wait(struct rq_wb *rwb, enum wbt_flags wb_acct,
 				wbt_rqw_done(rwb, rqw, wb_acct);
 			break;
 		}
+=======
+static void __wbt_wait(struct rq_wb *rwb, unsigned long rw, spinlock_t *lock)
+	__releases(lock)
+	__acquires(lock)
+{
+	struct rq_wait *rqw = get_rq_wait(rwb, current_is_kswapd());
+	DEFINE_WAIT(wait);
+
+	if (may_queue(rwb, rqw, &wait, rw))
+		return;
+
+	do {
+		prepare_to_wait_exclusive(&rqw->wait, &wait,
+						TASK_UNINTERRUPTIBLE);
+
+		if (may_queue(rwb, rqw, &wait, rw))
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (lock) {
 			spin_unlock_irq(lock);
@@ -569,15 +871,22 @@ static void __wbt_wait(struct rq_wb *rwb, enum wbt_flags wb_acct,
 			spin_lock_irq(lock);
 		} else
 			io_schedule();
+<<<<<<< HEAD
 
 		has_sleeper = false;
 	} while (1);
 
 	finish_wait(&rqw->wait, &data.wq);
+=======
+	} while (1);
+
+	finish_wait(&rqw->wait, &wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline bool wbt_should_throttle(struct rq_wb *rwb, struct bio *bio)
 {
+<<<<<<< HEAD
 	switch (bio_op(bio)) {
 	case REQ_OP_WRITE:
 		/*
@@ -618,6 +927,23 @@ static void wbt_cleanup(struct rq_qos *rqos, struct bio *bio)
 	struct rq_wb *rwb = RQWB(rqos);
 	enum wbt_flags flags = bio_to_wbt_flags(rwb, bio);
 	__wbt_done(rqos, flags);
+=======
+	const int op = bio_op(bio);
+
+	/*
+	 * If not a WRITE, do nothing
+	 */
+	if (op != REQ_OP_WRITE)
+		return false;
+
+	/*
+	 * Don't throttle WRITE_ODIRECT
+	 */
+	if ((bio->bi_opf & (REQ_SYNC | REQ_IDLE)) == (REQ_SYNC | REQ_IDLE))
+		return false;
+
+	return true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -626,6 +952,7 @@ static void wbt_cleanup(struct rq_qos *rqos, struct bio *bio)
  * in an irq held spinlock, if it holds one when calling this function.
  * If we do sleep, we'll release and re-grab it.
  */
+<<<<<<< HEAD
 static void wbt_wait(struct rq_qos *rqos, struct bio *bio, spinlock_t *lock)
 {
 	struct rq_wb *rwb = RQWB(rqos);
@@ -654,10 +981,42 @@ void wbt_issue(struct rq_qos *rqos, struct request *rq)
 {
 	struct rq_wb *rwb = RQWB(rqos);
 
+=======
+enum wbt_flags wbt_wait(struct rq_wb *rwb, struct bio *bio, spinlock_t *lock)
+{
+	unsigned int ret = 0;
+
+	if (!rwb_enabled(rwb))
+		return 0;
+
+	if (bio_op(bio) == REQ_OP_READ)
+		ret = WBT_READ;
+
+	if (!wbt_should_throttle(rwb, bio)) {
+		if (ret & WBT_READ)
+			wb_timestamp(rwb, &rwb->last_issue);
+		return ret;
+	}
+
+	__wbt_wait(rwb, bio->bi_opf, lock);
+
+	if (!blk_stat_is_active(rwb->cb))
+		rwb_arm_timer(rwb);
+
+	if (current_is_kswapd())
+		ret |= WBT_KSWAPD;
+
+	return ret | WBT_TRACKED;
+}
+
+void wbt_issue(struct rq_wb *rwb, struct blk_issue_stat *stat)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rwb_enabled(rwb))
 		return;
 
 	/*
+<<<<<<< HEAD
 	 * Track sync issue, in case it takes a long time to complete. Allows us
 	 * to react quicker, if a sync IO takes a long time to complete. Note
 	 * that this is just a hint. The request can go away when it completes,
@@ -676,11 +1035,32 @@ void wbt_requeue(struct rq_qos *rqos, struct request *rq)
 	if (!rwb_enabled(rwb))
 		return;
 	if (rq == rwb->sync_cookie) {
+=======
+	 * Track sync issue, in case it takes a long time to complete. Allows
+	 * us to react quicker, if a sync IO takes a long time to complete.
+	 * Note that this is just a hint. 'stat' can go away when the
+	 * request completes, so it's important we never dereference it. We
+	 * only use the address to compare with, which is why we store the
+	 * sync_issue time locally.
+	 */
+	if (wbt_is_read(stat) && !rwb->sync_issue) {
+		rwb->sync_cookie = stat;
+		rwb->sync_issue = blk_stat_time(stat);
+	}
+}
+
+void wbt_requeue(struct rq_wb *rwb, struct blk_issue_stat *stat)
+{
+	if (!rwb_enabled(rwb))
+		return;
+	if (stat == rwb->sync_cookie) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rwb->sync_issue = 0;
 		rwb->sync_cookie = NULL;
 	}
 }
 
+<<<<<<< HEAD
 void wbt_set_queue_depth(struct request_queue *q, unsigned int depth)
 {
 	struct rq_qos *rqos = wbt_rq_qos(q);
@@ -698,13 +1078,47 @@ void wbt_set_write_cache(struct request_queue *q, bool write_cache_on)
 }
 
 /*
+=======
+void wbt_set_queue_depth(struct rq_wb *rwb, unsigned int depth)
+{
+	if (rwb) {
+		rwb->queue_depth = depth;
+		wbt_update_limits(rwb);
+	}
+}
+
+void wbt_set_write_cache(struct rq_wb *rwb, bool write_cache_on)
+{
+	if (rwb)
+		rwb->wc = write_cache_on;
+}
+
+/*
+ * Disable wbt, if enabled by default.
+ */
+void wbt_disable_default(struct request_queue *q)
+{
+	struct rq_wb *rwb = q->rq_wb;
+
+	if (rwb && rwb->enable_state == WBT_STATE_ON_DEFAULT)
+		wbt_exit(q);
+}
+EXPORT_SYMBOL_GPL(wbt_disable_default);
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Enable wbt if defaults are configured that way
  */
 void wbt_enable_default(struct request_queue *q)
 {
+<<<<<<< HEAD
 	struct rq_qos *rqos = wbt_rq_qos(q);
 	/* Throttling already enabled? */
 	if (rqos)
+=======
+	/* Throttling already enabled? */
+	if (q->rq_wb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* Queue not registered? Maybe shutting down... */
@@ -735,13 +1149,18 @@ static int wbt_data_dir(const struct request *rq)
 
 	if (op == REQ_OP_READ)
 		return READ;
+<<<<<<< HEAD
 	else if (op_is_write(op))
+=======
+	else if (op == REQ_OP_WRITE || op == REQ_OP_FLUSH)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return WRITE;
 
 	/* don't account */
 	return -1;
 }
 
+<<<<<<< HEAD
 static void wbt_exit(struct rq_qos *rqos)
 {
 	struct rq_wb *rwb = RQWB(rqos);
@@ -780,11 +1199,18 @@ static struct rq_qos_ops wbt_rqos_ops = {
 	.exit = wbt_exit,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int wbt_init(struct request_queue *q)
 {
 	struct rq_wb *rwb;
 	int i;
 
+<<<<<<< HEAD
+=======
+	BUILD_BUG_ON(WBT_NR_BITS > BLK_STAT_RES_BITS);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rwb = kzalloc(sizeof(*rwb), GFP_KERNEL);
 	if (!rwb)
 		return -ENOMEM;
@@ -795,6 +1221,7 @@ int wbt_init(struct request_queue *q)
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < WBT_NUM_RWQ; i++)
 		rq_wait_init(&rwb->rq_wait[i]);
 
@@ -807,17 +1234,55 @@ int wbt_init(struct request_queue *q)
 	rwb->wc = 1;
 	rwb->rq_depth.default_depth = RWB_DEF_DEPTH;
 	__wbt_update_limits(rwb);
+=======
+	for (i = 0; i < WBT_NUM_RWQ; i++) {
+		atomic_set(&rwb->rq_wait[i].inflight, 0);
+		init_waitqueue_head(&rwb->rq_wait[i].wait);
+	}
+
+	rwb->wc = 1;
+	rwb->queue_depth = RWB_DEF_DEPTH;
+	rwb->last_comp = rwb->last_issue = jiffies;
+	rwb->queue = q;
+	rwb->win_nsec = RWB_WINDOW_NSEC;
+	rwb->enable_state = WBT_STATE_ON_DEFAULT;
+	wbt_update_limits(rwb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Assign rwb and add the stats callback.
 	 */
+<<<<<<< HEAD
 	rq_qos_add(q, &rwb->rqos);
+=======
+	q->rq_wb = rwb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_stat_add_callback(q, rwb->cb);
 
 	rwb->min_lat_nsec = wbt_default_latency_nsec(q);
 
+<<<<<<< HEAD
 	wbt_set_queue_depth(q, blk_queue_depth(q));
 	wbt_set_write_cache(q, test_bit(QUEUE_FLAG_WC, &q->queue_flags));
 
 	return 0;
 }
+=======
+	wbt_set_queue_depth(rwb, blk_queue_depth(q));
+	wbt_set_write_cache(rwb, test_bit(QUEUE_FLAG_WC, &q->queue_flags));
+
+	return 0;
+}
+
+void wbt_exit(struct request_queue *q)
+{
+	struct rq_wb *rwb = q->rq_wb;
+
+	if (rwb) {
+		blk_stat_remove_callback(q, rwb->cb);
+		blk_stat_free_callback(rwb->cb);
+		q->rq_wb = NULL;
+		kfree(rwb);
+	}
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

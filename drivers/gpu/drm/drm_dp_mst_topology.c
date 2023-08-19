@@ -29,6 +29,10 @@
 #include <linux/i2c.h>
 #include <drm/drm_dp_mst_helper.h>
 #include <drm/drmP.h>
+<<<<<<< HEAD
+=======
+#include <linux/iopoll.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <drm/drm_fixed.h>
 #include <drm/drm_atomic.h>
@@ -270,7 +274,11 @@ static void drm_dp_encode_sideband_req(struct drm_dp_sideband_msg_req_body *req,
 			memcpy(&buf[idx], req->u.i2c_read.transactions[i].bytes, req->u.i2c_read.transactions[i].num_bytes);
 			idx += req->u.i2c_read.transactions[i].num_bytes;
 
+<<<<<<< HEAD
 			buf[idx] = (req->u.i2c_read.transactions[i].no_stop_bit & 0x1) << 5;
+=======
+			buf[idx] = (req->u.i2c_read.transactions[i].no_stop_bit & 0x1) << 4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			buf[idx] |= (req->u.i2c_read.transactions[i].i2c_transaction_delay & 0xf);
 			idx++;
 		}
@@ -484,7 +492,10 @@ static bool drm_dp_sideband_parse_enum_path_resources_ack(struct drm_dp_sideband
 {
 	int idx = 1;
 	repmsg->u.path_resources.port_number = (raw->msg[idx] >> 4) & 0xf;
+<<<<<<< HEAD
 	repmsg->u.path_resources.fec_capability = (raw->msg[idx]) & 0x1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idx++;
 	if (idx > raw->curlen)
 		goto fail_len;
@@ -823,9 +834,14 @@ static int drm_dp_mst_wait_tx_reply(struct drm_dp_mst_branch *mstb,
 			list_del(&txmsg->next);
 		}
 
+<<<<<<< HEAD
 		if ((txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
 			txmsg->state == DRM_DP_SIDEBAND_TX_SENT) &&
 			txmsg->seqno != -1) {
+=======
+		if (txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
+		    txmsg->state == DRM_DP_SIDEBAND_TX_SENT) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mstb->tx_slots[txmsg->seqno] = NULL;
 		}
 	}
@@ -938,8 +954,11 @@ static void drm_dp_destroy_port(struct kref *kref)
 	struct drm_dp_mst_topology_mgr *mgr = port->mgr;
 
 	if (!port->input) {
+<<<<<<< HEAD
 		port->vcpi.num_slots = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(port->cached_edid);
 
 		/*
@@ -1164,6 +1183,7 @@ static void drm_dp_add_port(struct drm_dp_mst_branch *mstb,
 		port->aux.dev = dev->dev;
 		created = true;
 	} else {
+<<<<<<< HEAD
 		if (port->pdt == DP_PEER_DEVICE_DP_LEGACY_CONV ||
 				port->pdt == DP_PEER_DEVICE_SST_SINK) {
 			if (!port->cached_edid)
@@ -1172,6 +1192,8 @@ static void drm_dp_add_port(struct drm_dp_mst_branch *mstb,
 						&port->aux.ddc);
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		old_pdt = port->pdt;
 		old_ddps = port->ddps;
 	}
@@ -1228,7 +1250,11 @@ static void drm_dp_add_port(struct drm_dp_mst_branch *mstb,
 		if (port->pdt == DP_PEER_DEVICE_DP_LEGACY_CONV ||
 		     port->pdt == DP_PEER_DEVICE_SST_SINK) {
 			port->cached_edid = drm_get_edid(port->connector, &port->aux.ddc);
+<<<<<<< HEAD
 			drm_connector_set_tile_property(port->connector);
+=======
+			drm_mode_connector_set_tile_property(port->connector);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		(*mstb->mgr->cbs->register_connector)(port->connector);
 	}
@@ -1245,7 +1271,10 @@ static void drm_dp_update_port(struct drm_dp_mst_branch *mstb,
 	int old_pdt;
 	int old_ddps;
 	bool dowork = false;
+<<<<<<< HEAD
 	bool dohotplug = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	port = drm_dp_get_port(mstb, conn_stat->port_number);
 	if (!port)
 		return;
@@ -1270,7 +1299,10 @@ static void drm_dp_update_port(struct drm_dp_mst_branch *mstb,
 		    port->port_num < DP_MST_LOGICAL_PORT_0) {
 			kfree(port->cached_edid);
 			port->cached_edid = NULL;
+<<<<<<< HEAD
 			dohotplug = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		drm_dp_port_teardown_pdt(port, old_pdt);
@@ -1283,8 +1315,11 @@ static void drm_dp_update_port(struct drm_dp_mst_branch *mstb,
 	if (dowork)
 		queue_work(system_long_wq, &mstb->mgr->work);
 
+<<<<<<< HEAD
 	if (dohotplug)
 		(*mstb->mgr->cbs->hotplug)(mstb->mgr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct drm_dp_mst_branch *drm_dp_get_mst_branch_device(struct drm_dp_mst_topology_mgr *mgr,
@@ -1365,6 +1400,7 @@ static struct drm_dp_mst_branch *drm_dp_get_mst_branch_device_by_guid(
 	return mstb;
 }
 
+<<<<<<< HEAD
 static void drm_dp_reset_sink_mstb_link_address_sent(
 		struct drm_dp_mst_topology_mgr *mgr,
 		struct drm_dp_mst_branch *mstb)
@@ -1399,6 +1435,8 @@ static void drm_dp_reset_sink_mstb_link_address_sent(
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void drm_dp_check_and_send_link_address(struct drm_dp_mst_topology_mgr *mgr,
 					       struct drm_dp_mst_branch *mstb)
 {
@@ -1439,7 +1477,10 @@ static void drm_dp_mst_link_probe_work(struct work_struct *work)
 	}
 	mutex_unlock(&mgr->lock);
 	if (mstb) {
+<<<<<<< HEAD
 		drm_dp_reset_sink_mstb_link_address_sent(mgr, mstb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		drm_dp_check_and_send_link_address(mgr, mstb);
 		drm_dp_put_mst_branch_device(mstb);
 	}
@@ -1639,8 +1680,16 @@ static void process_single_up_tx_qlock(struct drm_dp_mst_topology_mgr *mgr,
 	if (ret != 1)
 		DRM_DEBUG_KMS("failed to send msg in q %d\n", ret);
 
+<<<<<<< HEAD
 	if (txmsg->seqno != -1)
 		txmsg->dst->tx_slots[txmsg->seqno] = NULL;
+=======
+	if (txmsg->seqno != -1) {
+		WARN_ON((unsigned int)txmsg->seqno >
+			ARRAY_SIZE(txmsg->dst->tx_slots));
+		txmsg->dst->tx_slots[txmsg->seqno] = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void drm_dp_queue_down_tx(struct drm_dp_mst_topology_mgr *mgr,
@@ -1730,6 +1779,7 @@ static int drm_dp_send_enum_path_resources(struct drm_dp_mst_topology_mgr *mgr,
 		else {
 			if (port->port_num != txmsg->reply.u.path_resources.port_number)
 				DRM_ERROR("got incorrect port in response\n");
+<<<<<<< HEAD
 			DRM_DEBUG_KMS("enum path resources %d: %d %d %d\n",
 			txmsg->reply.u.path_resources.port_number,
 			txmsg->reply.u.path_resources.fec_capability,
@@ -1738,6 +1788,11 @@ static int drm_dp_send_enum_path_resources(struct drm_dp_mst_topology_mgr *mgr,
 			port->available_pbn = txmsg->reply.u.path_resources.avail_payload_bw_number;
 			port->fec_capability =
 				txmsg->reply.u.path_resources.fec_capability;
+=======
+			DRM_DEBUG_KMS("enum path resources %d: %d %d\n", txmsg->reply.u.path_resources.port_number, txmsg->reply.u.path_resources.full_payload_bw_number,
+			       txmsg->reply.u.path_resources.avail_payload_bw_number);
+			port->available_pbn = txmsg->reply.u.path_resources.avail_payload_bw_number;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1866,6 +1921,7 @@ int drm_dp_send_power_updown_phy(struct drm_dp_mst_topology_mgr *mgr,
 }
 EXPORT_SYMBOL(drm_dp_send_power_updown_phy);
 
+<<<<<<< HEAD
 int drm_dp_mst_get_dsc_info(struct drm_dp_mst_topology_mgr *mgr,
 		struct drm_dp_mst_port *port,
 		struct drm_dp_mst_dsc_info *dsc_info)
@@ -1902,6 +1958,8 @@ int drm_dp_mst_update_dsc_info(struct drm_dp_mst_topology_mgr *mgr,
 }
 EXPORT_SYMBOL(drm_dp_mst_update_dsc_info);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int drm_dp_create_payload_step1(struct drm_dp_mst_topology_mgr *mgr,
 				       int id,
 				       struct drm_dp_payload *payload)
@@ -2174,6 +2232,7 @@ fail_put:
 }
 EXPORT_SYMBOL(drm_dp_send_dpcd_write);
 
+<<<<<<< HEAD
 int drm_dp_mst_get_max_sdp_streams_supported(
 		struct drm_dp_mst_topology_mgr *mgr,
 		struct drm_dp_mst_port *port)
@@ -2189,6 +2248,8 @@ int drm_dp_mst_get_max_sdp_streams_supported(
 }
 EXPORT_SYMBOL(drm_dp_mst_get_max_sdp_streams_supported);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int drm_dp_encode_up_ack_reply(struct drm_dp_sideband_msg_tx *msg, u8 req_type)
 {
 	struct drm_dp_sideband_msg_reply_body reply;
@@ -2264,6 +2325,10 @@ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool ms
 	u8 buf;
 	u32 offset = DP_DPCD_REV;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&mgr->payload_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&mgr->lock);
 	if (mst_state == mgr->mst_state)
 		goto out_unlock;
@@ -2283,7 +2348,11 @@ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool ms
 
 		/* check for EXTENDED_RECEIVER_CAPABILITY_FIELD_PRESENT */
 		if (buf & BIT(7))
+<<<<<<< HEAD
 			offset = DP_DP13_DPCD_REV;
+=======
+			offset = 0x2200;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* get dpcd info */
 		ret = drm_dp_dpcd_read(mgr->aux, offset, mgr->dpcd,
@@ -2335,7 +2404,14 @@ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool ms
 		/* this can fail if the device is gone */
 		drm_dp_dpcd_writeb(mgr->aux, DP_MSTM_CTRL, 0);
 		ret = 0;
+<<<<<<< HEAD
 		memset(mgr->payloads, 0, mgr->max_payloads * sizeof(struct drm_dp_payload));
+=======
+		memset(mgr->payloads, 0,
+		       mgr->max_payloads * sizeof(mgr->payloads[0]));
+		memset(mgr->proposed_vcpis, 0,
+		       mgr->max_payloads * sizeof(mgr->proposed_vcpis[0]));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mgr->payload_mask = 0;
 		set_bit(0, &mgr->payload_mask);
 		mgr->vcpi_mask = 0;
@@ -2343,6 +2419,10 @@ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool ms
 
 out_unlock:
 	mutex_unlock(&mgr->lock);
+<<<<<<< HEAD
+=======
+	mutex_unlock(&mgr->payload_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mstb)
 		drm_dp_put_mst_branch_device(mstb);
 	return ret;
@@ -2576,6 +2656,11 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
 			drm_dp_update_port(mstb, &msg.u.conn_stat);
 
 			DRM_DEBUG_KMS("Got CSN: pn: %d ldps:%d ddps: %d mcs: %d ip: %d pdt: %d\n", msg.u.conn_stat.port_number, msg.u.conn_stat.legacy_device_plug_status, msg.u.conn_stat.displayport_device_plug_status, msg.u.conn_stat.message_capability_status, msg.u.conn_stat.input_port, msg.u.conn_stat.peer_device_type);
+<<<<<<< HEAD
+=======
+			(*mgr->cbs->hotplug)(mgr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
 			drm_dp_send_up_ack_reply(mgr, mgr->mst_primary, msg.req_type, seqno, false);
 			if (!mstb)
@@ -2702,6 +2787,7 @@ bool drm_dp_mst_port_has_audio(struct drm_dp_mst_topology_mgr *mgr,
 }
 EXPORT_SYMBOL(drm_dp_mst_port_has_audio);
 
+<<<<<<< HEAD
 bool drm_dp_mst_has_fec(struct drm_dp_mst_topology_mgr *mgr,
 		struct drm_dp_mst_port *port)
 {
@@ -2716,6 +2802,8 @@ bool drm_dp_mst_has_fec(struct drm_dp_mst_topology_mgr *mgr,
 }
 EXPORT_SYMBOL(drm_dp_mst_has_fec);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * drm_dp_mst_get_edid() - get EDID for an MST port
  * @connector: toplevel connector to get EDID for
@@ -2739,7 +2827,11 @@ struct edid *drm_dp_mst_get_edid(struct drm_connector *connector, struct drm_dp_
 		edid = drm_edid_duplicate(port->cached_edid);
 	else {
 		edid = drm_get_edid(connector, &port->aux.ddc);
+<<<<<<< HEAD
 		drm_connector_set_tile_property(connector);
+=======
+		drm_mode_connector_set_tile_property(connector);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	port->has_audio = drm_detect_monitor_audio(edid);
 	drm_dp_put_port(port);
@@ -2995,6 +3087,20 @@ fail:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int do_get_act_status(struct drm_dp_aux *aux)
+{
+	int ret;
+	u8 status;
+
+	ret = drm_dp_dpcd_readb(aux, DP_PAYLOAD_TABLE_UPDATE_STATUS, &status);
+	if (ret < 0)
+		return ret;
+
+	return status;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * drm_dp_check_act_status() - Check ACT handled status.
@@ -3004,6 +3110,7 @@ fail:
  */
 int drm_dp_check_act_status(struct drm_dp_mst_topology_mgr *mgr)
 {
+<<<<<<< HEAD
 	u8 status;
 	int ret;
 	int count = 0;
@@ -3031,6 +3138,31 @@ int drm_dp_check_act_status(struct drm_dp_mst_topology_mgr *mgr)
 	return 0;
 fail:
 	return ret;
+=======
+	/*
+	 * There doesn't seem to be any recommended retry count or timeout in
+	 * the MST specification. Since some hubs have been observed to take
+	 * over 1 second to update their payload allocations under certain
+	 * conditions, we use a rather large timeout value.
+	 */
+	const int timeout_ms = 3000;
+	int ret, status;
+
+	ret = readx_poll_timeout(do_get_act_status, mgr->aux, status,
+				 status & DP_PAYLOAD_ACT_HANDLED || status < 0,
+				 200, timeout_ms * USEC_PER_MSEC);
+	if (ret < 0 && status >= 0) {
+		DRM_DEBUG_KMS("Failed to get ACT after %dms, last status: %02x\n",
+			      timeout_ms, status);
+		return -EINVAL;
+	} else if (status < 0) {
+		DRM_DEBUG_KMS("Failed to read payload table status: %d\n",
+			      status);
+		return status;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_dp_check_act_status);
 
@@ -3268,12 +3400,15 @@ static void drm_dp_destroy_connector_work(struct work_struct *work)
 		drm_dp_port_teardown_pdt(port, port->pdt);
 		port->pdt = DP_PEER_DEVICE_NONE;
 
+<<<<<<< HEAD
 		if (!port->input && port->vcpi.vcpi > 0) {
 			drm_dp_mst_reset_vcpi_slots(mgr, port);
 			drm_dp_update_payload_part1(mgr);
 			drm_dp_mst_put_payload_id(mgr, port->vcpi.vcpi);
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kref_put(&port->kref, drm_dp_free_mst_port);
 		send_hotplug = true;
 	}
@@ -3512,8 +3647,11 @@ static const struct i2c_algorithm drm_dp_mst_i2c_algo = {
  */
 static int drm_dp_mst_register_i2c_bus(struct drm_dp_aux *aux)
 {
+<<<<<<< HEAD
 	int rc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	aux->ddc.algo = &drm_dp_mst_i2c_algo;
 	aux->ddc.algo_data = aux;
 	aux->ddc.retries = 3;
@@ -3521,15 +3659,23 @@ static int drm_dp_mst_register_i2c_bus(struct drm_dp_aux *aux)
 	aux->ddc.class = I2C_CLASS_DDC;
 	aux->ddc.owner = THIS_MODULE;
 	aux->ddc.dev.parent = aux->dev;
+<<<<<<< HEAD
+=======
+	aux->ddc.dev.of_node = aux->dev->of_node;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	strlcpy(aux->ddc.name, aux->name ? aux->name : dev_name(aux->dev),
 		sizeof(aux->ddc.name));
 
+<<<<<<< HEAD
 	mutex_lock(&aux->i2c_mutex);
 	rc = i2c_add_adapter(&aux->ddc);
 	mutex_unlock(&aux->i2c_mutex);
 
 	return rc;
+=======
+	return i2c_add_adapter(&aux->ddc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3538,7 +3684,11 @@ static int drm_dp_mst_register_i2c_bus(struct drm_dp_aux *aux)
  */
 static void drm_dp_mst_unregister_i2c_bus(struct drm_dp_aux *aux)
 {
+<<<<<<< HEAD
 	mutex_lock(&aux->i2c_mutex);
 	i2c_del_adapter(&aux->ddc);
 	mutex_unlock(&aux->i2c_mutex);
+=======
+	i2c_del_adapter(&aux->ddc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

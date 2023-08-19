@@ -427,7 +427,11 @@ void kvm_scan_ioapic_routes(struct kvm_vcpu *vcpu,
 
 			kvm_set_msi_irq(vcpu->kvm, entry, &irq);
 
+<<<<<<< HEAD
 			if (irq.level && kvm_apic_match_dest(vcpu, NULL, 0,
+=======
+			if (irq.trig_mode && kvm_apic_match_dest(vcpu, NULL, 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						irq.dest_id, irq.dest_mode))
 				__set_bit(irq.vector, ioapic_handled_vectors);
 		}

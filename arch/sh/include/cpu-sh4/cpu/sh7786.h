@@ -14,8 +14,11 @@
 #ifndef __CPU_SH7786_H__
 #define __CPU_SH7786_H__
 
+<<<<<<< HEAD
 #include <linux/io.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	/* PA */
 	GPIO_PA7, GPIO_PA6, GPIO_PA5, GPIO_PA4,
@@ -133,9 +136,12 @@ enum {
 	GPIO_FN_IRL7, GPIO_FN_IRL6, GPIO_FN_IRL5, GPIO_FN_IRL4,
 };
 
+<<<<<<< HEAD
 static inline u32 sh7786_mm_sel(void)
 {
 	return __raw_readl((const volatile void __iomem *)0xFC400020) & 0x7;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __CPU_SH7786_H__ */

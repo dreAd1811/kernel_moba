@@ -45,6 +45,7 @@ you can just change the #define in mkcramfs.c, so long as you don't
 mind the filesystem becoming unreadable to future kernels.
 
 
+<<<<<<< HEAD
 Memory Mapped cramfs image
 --------------------------
 
@@ -87,6 +88,8 @@ described above can be found here:
 https://github.com/npitre/cramfs-tools
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 For /usr/share/magic
 --------------------
 

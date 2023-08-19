@@ -172,7 +172,11 @@ static int crypto_report_one(struct crypto_alg *alg,
 	ualg->cru_type = 0;
 	ualg->cru_mask = 0;
 	ualg->cru_flags = alg->cra_flags;
+<<<<<<< HEAD
 	ualg->cru_refcnt = refcount_read(&alg->cra_refcnt);
+=======
+	ualg->cru_refcnt = atomic_read(&alg->cra_refcnt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (nla_put_u32(skb, CRYPTOCFGA_PRIORITY_VAL, alg->cra_priority))
 		goto nla_put_failure;
@@ -274,7 +278,11 @@ static int crypto_report(struct sk_buff *in_skb, struct nlmsghdr *in_nlh,
 		return -ENOENT;
 
 	err = -ENOMEM;
+<<<<<<< HEAD
 	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+=======
+	skb = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb)
 		goto drop_alg;
 
@@ -288,14 +296,22 @@ static int crypto_report(struct sk_buff *in_skb, struct nlmsghdr *in_nlh,
 drop_alg:
 	crypto_mod_put(alg);
 
+<<<<<<< HEAD
 	if (err)
 		return err;
+=======
+	if (err) {
+		kfree_skb(skb);
+		return err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return nlmsg_unicast(crypto_nlsk, skb, NETLINK_CB(in_skb).portid);
 }
 
 static int crypto_dump_report(struct sk_buff *skb, struct netlink_callback *cb)
 {
+<<<<<<< HEAD
 	struct crypto_alg *alg;
 	struct crypto_dump_info info;
 	int err;
@@ -304,12 +320,20 @@ static int crypto_dump_report(struct sk_buff *skb, struct netlink_callback *cb)
 		goto out;
 
 	cb->args[0] = 1;
+=======
+	const size_t start_pos = cb->args[0];
+	size_t pos = 0;
+	struct crypto_dump_info info;
+	struct crypto_alg *alg;
+	int res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	info.in_skb = cb->skb;
 	info.out_skb = skb;
 	info.nlmsg_seq = cb->nlh->nlmsg_seq;
 	info.nlmsg_flags = NLM_F_MULTI;
 
+<<<<<<< HEAD
 	list_for_each_entry(alg, &crypto_alg_list, cra_list) {
 		err = crypto_report_alg(alg, &info);
 		if (err)
@@ -320,6 +344,24 @@ out:
 	return skb->len;
 out_err:
 	return err;
+=======
+	down_read(&crypto_alg_sem);
+	list_for_each_entry(alg, &crypto_alg_list, cra_list) {
+		if (pos >= start_pos) {
+			res = crypto_report_alg(alg, &info);
+			if (res == -EMSGSIZE)
+				break;
+			if (res)
+				goto out;
+		}
+		pos++;
+	}
+	cb->args[0] = pos;
+	res = skb->len;
+out:
+	up_read(&crypto_alg_sem);
+	return res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int crypto_dump_report_done(struct netlink_callback *cb)
@@ -390,7 +432,11 @@ static int crypto_del_alg(struct sk_buff *skb, struct nlmsghdr *nlh,
 		goto drop_alg;
 
 	err = -EBUSY;
+<<<<<<< HEAD
 	if (refcount_read(&alg->cra_refcnt) > 2)
+=======
+	if (atomic_read(&alg->cra_refcnt) > 2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto drop_alg;
 
 	err = crypto_unregister_instance((struct crypto_instance *)alg);
@@ -503,7 +549,11 @@ static int crypto_user_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
 	if ((type == (CRYPTO_MSG_GETALG - CRYPTO_MSG_BASE) &&
 	    (nlh->nlmsg_flags & NLM_F_DUMP))) {
 		struct crypto_alg *alg;
+<<<<<<< HEAD
 		u16 dump_alloc = 0;
+=======
+		unsigned long dump_alloc = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (link->dump == NULL)
 			return -EINVAL;
@@ -511,16 +561,27 @@ static int crypto_user_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
 		down_read(&crypto_alg_sem);
 		list_for_each_entry(alg, &crypto_alg_list, cra_list)
 			dump_alloc += CRYPTO_REPORT_MAXSIZE;
+<<<<<<< HEAD
+=======
+		up_read(&crypto_alg_sem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		{
 			struct netlink_dump_control c = {
 				.dump = link->dump,
 				.done = link->done,
+<<<<<<< HEAD
 				.min_dump_alloc = dump_alloc,
 			};
 			err = netlink_dump_start(crypto_nlsk, skb, nlh, &c);
 		}
 		up_read(&crypto_alg_sem);
+=======
+				.min_dump_alloc = min(dump_alloc, 65535UL),
+			};
+			err = netlink_dump_start(crypto_nlsk, skb, nlh, &c);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return err;
 	}

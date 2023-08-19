@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Copyright 2012 Freescale Semiconductor, Inc.
+=======
+/*
+ * Copyright 2012 Freescale Semiconductor, Inc.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "imx23-pinfunc.h"
 
@@ -16,7 +29,11 @@
 	 * Also for U-Boot there must be a pre-existing /memory node.
 	 */
 	chosen {};
+<<<<<<< HEAD
 	memory { device_type = "memory"; };
+=======
+	memory { device_type = "memory"; reg = <0 0>; };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	aliases {
 		gpio0 = &gpio0;
@@ -215,8 +232,12 @@
 					fsl,pull-up = <MXS_PULL_DISABLE>;
 				};
 
+<<<<<<< HEAD
 				gpmi_pins_fixup: gpmi-pins-fixup@0 {
 					reg = <0>;
+=======
+				gpmi_pins_fixup: gpmi-pins-fixup {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					fsl,pinmux-ids = <
 						MX23_PAD_GPMI_WPN__GPMI_WPN
 						MX23_PAD_GPMI_WRN__GPMI_WRN
@@ -260,8 +281,12 @@
 					fsl,pull-up = <MXS_PULL_ENABLE>;
 				};
 
+<<<<<<< HEAD
 				mmc0_pins_fixup: mmc0-pins-fixup@0 {
 					reg = <0>;
+=======
+				mmc0_pins_fixup: mmc0-pins-fixup {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					fsl,pinmux-ids = <
 						MX23_PAD_SSP1_DETECT__SSP1_DETECT
 						MX23_PAD_SSP1_SCK__SSP1_SCK

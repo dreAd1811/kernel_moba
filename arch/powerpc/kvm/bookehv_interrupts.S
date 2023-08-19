@@ -186,7 +186,11 @@ END_BTB_FLUSH_SECTION
 	 */
 	PPC_LL	r4, PACACURRENT(r13)
 	PPC_LL	r4, (THREAD + THREAD_KVM_VCPU)(r4)
+<<<<<<< HEAD
 	PPC_STL	r10, VCPU_CR(r4)
+=======
+	stw	r10, VCPU_CR(r4)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PPC_STL r11, VCPU_GPR(R4)(r4)
 	PPC_STL	r5, VCPU_GPR(R5)(r4)
 	PPC_STL	r6, VCPU_GPR(R6)(r4)
@@ -296,7 +300,11 @@ _GLOBAL(kvmppc_handler_\intno\()_\srr1)
 	PPC_STL	r4, VCPU_GPR(R4)(r11)
 	PPC_LL	r4, THREAD_NORMSAVE(0)(r10)
 	PPC_STL	r5, VCPU_GPR(R5)(r11)
+<<<<<<< HEAD
 	PPC_STL	r13, VCPU_CR(r11)
+=======
+	stw	r13, VCPU_CR(r11)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfspr	r5, \srr0
 	PPC_STL	r3, VCPU_GPR(R10)(r11)
 	PPC_LL	r3, THREAD_NORMSAVE(2)(r10)
@@ -323,7 +331,11 @@ _GLOBAL(kvmppc_handler_\intno\()_\srr1)
 	PPC_STL	r4, VCPU_GPR(R4)(r11)
 	PPC_LL	r4, GPR9(r8)
 	PPC_STL	r5, VCPU_GPR(R5)(r11)
+<<<<<<< HEAD
 	PPC_STL	r9, VCPU_CR(r11)
+=======
+	stw	r9, VCPU_CR(r11)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfspr	r5, \srr0
 	PPC_STL	r3, VCPU_GPR(R8)(r11)
 	PPC_LL	r3, GPR10(r8)
@@ -647,7 +659,11 @@ lightweight_exit:
 	PPC_LL	r3, VCPU_LR(r4)
 	PPC_LL	r5, VCPU_XER(r4)
 	PPC_LL	r6, VCPU_CTR(r4)
+<<<<<<< HEAD
 	PPC_LL	r7, VCPU_CR(r4)
+=======
+	lwz	r7, VCPU_CR(r4)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PPC_LL	r8, VCPU_PC(r4)
 	PPC_LD(r9, VCPU_SHARED_MSR, r11)
 	PPC_LL	r0, VCPU_GPR(R0)(r4)

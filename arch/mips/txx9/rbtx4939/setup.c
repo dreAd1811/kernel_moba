@@ -219,7 +219,11 @@ static int __init rbtx4939_led_probe(struct platform_device *pdev)
 		"nand-disk",
 	};
 
+<<<<<<< HEAD
 	leds_data = kcalloc(RBTX4939_MAX_7SEGLEDS, sizeof(*leds_data),
+=======
+	leds_data = kzalloc(sizeof(*leds_data) * RBTX4939_MAX_7SEGLEDS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    GFP_KERNEL);
 	if (!leds_data)
 		return -ENOMEM;

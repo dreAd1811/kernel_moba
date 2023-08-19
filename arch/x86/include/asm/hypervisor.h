@@ -28,7 +28,10 @@ enum x86_hypervisor_type {
 	X86_HYPER_XEN_PV,
 	X86_HYPER_XEN_HVM,
 	X86_HYPER_KVM,
+<<<<<<< HEAD
 	X86_HYPER_JAILHOUSE,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #ifdef CONFIG_HYPERVISOR_GUEST

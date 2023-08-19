@@ -13,10 +13,17 @@ struct nvkm_outp {
 	struct dcb_output info;
 
 	struct nvkm_i2c_bus *i2c;
+<<<<<<< HEAD
 
 	struct list_head head;
 	struct nvkm_conn *conn;
 	bool identity;
+=======
+	int or;
+
+	struct list_head head;
+	struct nvkm_conn *conn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Assembly state. */
 #define NVKM_OUTP_PRIV 1

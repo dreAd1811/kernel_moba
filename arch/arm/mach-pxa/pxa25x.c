@@ -16,8 +16,11 @@
  * initialization stuff for PXA machines which can be overridden later if
  * need be.
  */
+<<<<<<< HEAD
 #include <linux/dmaengine.h>
 #include <linux/dma/pxa-dma.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio.h>
 #include <linux/gpio-pxa.h>
 #include <linux/module.h>
@@ -28,7 +31,10 @@
 #include <linux/syscore_ops.h>
 #include <linux/irq.h>
 #include <linux/irqchip.h>
+<<<<<<< HEAD
 #include <linux/platform_data/mmp_dma.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mach/map.h>
 #include <asm/suspend.h>
@@ -204,6 +210,7 @@ static struct platform_device *pxa25x_devices[] __initdata = {
 	&pxa_device_asoc_platform,
 };
 
+<<<<<<< HEAD
 static const struct dma_slave_map pxa25x_slave_map[] = {
 	/* PXA25x, PXA27x and PXA3xx common entries */
 	{ "pxa2xx-ac97", "pcm_pcm_mic_mono", PDMA_FILTER_PARAM(LOWEST, 8) },
@@ -237,6 +244,8 @@ static struct mmp_dma_platdata pxa25x_dma_pdata = {
 	.slave_map_cnt	= ARRAY_SIZE(pxa25x_slave_map),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init pxa25x_init(void)
 {
 	int ret = 0;
@@ -251,7 +260,11 @@ static int __init pxa25x_init(void)
 		register_syscore_ops(&pxa2xx_mfp_syscore_ops);
 
 		if (!of_have_populated_dt()) {
+<<<<<<< HEAD
 			pxa2xx_set_dmac_info(&pxa25x_dma_pdata);
+=======
+			pxa2xx_set_dmac_info(16, 40);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pxa_register_device(&pxa25x_device_gpio, &pxa25x_gpio_info);
 			ret = platform_add_devices(pxa25x_devices,
 						   ARRAY_SIZE(pxa25x_devices));

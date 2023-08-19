@@ -1,9 +1,23 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright 2008 Simtec Electronics
 // Copyright 2008 Simtec Electronics
 //	Ben Dooks <ben@simtec.co.uk>
 //	http://armlinux.simtec.co.uk/
+=======
+/* linux/arch/arm/mach-s3c64xx/s3c6410.c
+ *
+ * Copyright 2008 Simtec Electronics
+ * Copyright 2008 Simtec Electronics
+ *	Ben Dooks <ben@simtec.co.uk>
+ *	http://armlinux.simtec.co.uk/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * NOTE: Code in this file is not used when booting with Device Tree support.

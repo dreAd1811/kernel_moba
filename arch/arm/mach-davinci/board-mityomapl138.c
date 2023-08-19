@@ -30,7 +30,10 @@
 #include <mach/da8xx.h>
 #include <linux/platform_data/mtd-davinci.h>
 #include <linux/platform_data/mtd-davinci-aemif.h>
+<<<<<<< HEAD
 #include <linux/platform_data/ti-aemif.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <mach/mux.h>
 #include <linux/platform_data/spi-davinci.h>
 
@@ -401,7 +404,10 @@ static struct mtd_partition mityomapl138_nandflash_partition[] = {
 };
 
 static struct davinci_nand_pdata mityomapl138_nandflash_data = {
+<<<<<<< HEAD
 	.core_chipsel	= 1,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.parts		= mityomapl138_nandflash_partition,
 	.nr_parts	= ARRAY_SIZE(mityomapl138_nandflash_partition),
 	.ecc_mode	= NAND_ECC_HW,
@@ -423,6 +429,7 @@ static struct resource mityomapl138_nandflash_resource[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct platform_device mityomapl138_aemif_devices[] = {
 	{
 		.name		= "davinci_nand",
@@ -464,12 +471,34 @@ static struct platform_device mityomapl138_aemif_device = {
 	},
 	.resource	= mityomapl138_aemif_resources,
 	.num_resources	= ARRAY_SIZE(mityomapl138_aemif_resources),
+=======
+static struct platform_device mityomapl138_nandflash_device = {
+	.name		= "davinci_nand",
+	.id		= 1,
+	.dev		= {
+		.platform_data	= &mityomapl138_nandflash_data,
+	},
+	.num_resources	= ARRAY_SIZE(mityomapl138_nandflash_resource),
+	.resource	= mityomapl138_nandflash_resource,
+};
+
+static struct platform_device *mityomapl138_devices[] __initdata = {
+	&mityomapl138_nandflash_device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void __init mityomapl138_setup_nand(void)
 {
+<<<<<<< HEAD
 	if (platform_device_register(&mityomapl138_aemif_device))
 		pr_warn("%s: Cannot register AEMIF device\n", __func__);
+=======
+	platform_add_devices(mityomapl138_devices,
+				 ARRAY_SIZE(mityomapl138_devices));
+
+	if (davinci_aemif_setup(&mityomapl138_nandflash_device))
+		pr_warn("%s: Cannot configure AEMIF\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const short mityomap_mii_pins[] = {
@@ -530,7 +559,13 @@ static void __init mityomapl138_init(void)
 {
 	int ret;
 
+<<<<<<< HEAD
 	da850_register_clocks();
+=======
+	ret = da8xx_register_cfgchip();
+	if (ret)
+		pr_warn("%s: CFGCHIP registration failed: %d\n", __func__, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* for now, no special EDMA channels are reserved */
 	ret = da850_register_edma(NULL);
@@ -596,8 +631,16 @@ MACHINE_START(MITYOMAPL138, "MityDSP-L138/MityARM-1808")
 	.atag_offset	= 0x100,
 	.map_io		= mityomapl138_map_io,
 	.init_irq	= cp_intc_init,
+<<<<<<< HEAD
 	.init_time	= da850_init_time,
 	.init_machine	= mityomapl138_init,
 	.init_late	= davinci_init_late,
 	.dma_zone_size	= SZ_128M,
+=======
+	.init_time	= davinci_timer_init,
+	.init_machine	= mityomapl138_init,
+	.init_late	= davinci_init_late,
+	.dma_zone_size	= SZ_128M,
+	.restart	= da8xx_restart,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MACHINE_END

@@ -11,14 +11,21 @@
  */
 
 /dts-v1/;
+<<<<<<< HEAD
 #include <dt-bindings/input/input.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "imx53.dtsi"
 
 / {
 	model = "Freescale i.MX53 Automotive Reference Design Board";
 	compatible = "fsl,imx53-ard", "fsl,imx53";
 
+<<<<<<< HEAD
 	memory@70000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x70000000 0x40000000>;
 	};
 
@@ -69,34 +76,54 @@
 		home {
 			label = "Home";
 			gpios = <&gpio5 10 0>;
+<<<<<<< HEAD
 			linux,code = <KEY_HOME>;
+=======
+			linux,code = <102>; /* KEY_HOME */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 		};
 
 		back {
 			label = "Back";
 			gpios = <&gpio5 11 0>;
+<<<<<<< HEAD
 			linux,code = <KEY_BACK>;
+=======
+			linux,code = <158>; /* KEY_BACK */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 		};
 
 		program {
 			label = "Program";
 			gpios = <&gpio5 12 0>;
+<<<<<<< HEAD
 			linux,code = <KEY_PROGRAM >;
+=======
+			linux,code = <362>; /* KEY_PROGRAM */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			wakeup-source;
 		};
 
 		volume-up {
 			label = "Volume Up";
 			gpios = <&gpio5 13 0>;
+<<<<<<< HEAD
 			linux,code = <KEY_VOLUMEUP>;
+=======
+			linux,code = <115>; /* KEY_VOLUMEUP */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		volume-down {
 			label = "Volume Down";
 			gpios = <&gpio4 0 0>;
+<<<<<<< HEAD
 			linux,code = <KEY_VOLUMEDOWN>;
+=======
+			linux,code = <114>; /* KEY_VOLUMEDOWN */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };

@@ -170,7 +170,15 @@ static void do_fault_siginfo(int code, int sig, struct pt_regs *regs,
 			     int fault_code)
 {
 	unsigned long addr;
+<<<<<<< HEAD
 
+=======
+	siginfo_t info;
+
+	info.si_code = code;
+	info.si_signo = sig;
+	info.si_errno = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fault_code & FAULT_CODE_ITLB) {
 		addr = regs->tpc;
 	} else {
@@ -183,11 +191,20 @@ static void do_fault_siginfo(int code, int sig, struct pt_regs *regs,
 		else
 			addr = fault_addr;
 	}
+<<<<<<< HEAD
+=======
+	info.si_addr = (void __user *) addr;
+	info.si_trapno = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(show_unhandled_signals))
 		show_signal_msg(regs, sig, code, addr, current);
 
+<<<<<<< HEAD
 	force_sig_fault(sig, code, (void __user *) addr, 0, current);
+=======
+	force_sig_info(sig, &info, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int get_fault_insn(struct pt_regs *regs, unsigned int insn)
@@ -278,8 +295,12 @@ asmlinkage void __kprobes do_sparc64_fault(struct pt_regs *regs)
 	struct mm_struct *mm = current->mm;
 	struct vm_area_struct *vma;
 	unsigned int insn = 0;
+<<<<<<< HEAD
 	int si_code, fault_code;
 	vm_fault_t fault;
+=======
+	int si_code, fault_code, fault;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long address, mm_rss;
 	unsigned int flags = FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
 

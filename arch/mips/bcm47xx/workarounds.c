@@ -5,9 +5,14 @@
 #include <bcm47xx_board.h>
 #include <bcm47xx.h>
 
+<<<<<<< HEAD
 static void __init bcm47xx_workarounds_netgear_wnr3500l(void)
 {
 	const int usb_power = 12;
+=======
+static void __init bcm47xx_workarounds_enable_usb_power(int usb_power)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = gpio_request_one(usb_power, GPIOF_OUT_INIT_HIGH, "usb_power");
@@ -23,7 +28,14 @@ void __init bcm47xx_workarounds(void)
 
 	switch (board) {
 	case BCM47XX_BOARD_NETGEAR_WNR3500L:
+<<<<<<< HEAD
 		bcm47xx_workarounds_netgear_wnr3500l();
+=======
+		bcm47xx_workarounds_enable_usb_power(12);
+		break;
+	case BCM47XX_BOARD_NETGEAR_WNDR3400_V3:
+		bcm47xx_workarounds_enable_usb_power(21);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		/* No workaround(s) needed */

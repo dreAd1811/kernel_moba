@@ -260,10 +260,18 @@ static int intel_cht_wc_pmic_opregion_probe(struct platform_device *pdev)
 			&intel_cht_wc_pmic_opregion_data);
 }
 
+<<<<<<< HEAD
 static const struct platform_device_id cht_wc_opregion_id_table[] = {
 	{ .name = "cht_wcove_region" },
 	{},
 };
+=======
+static struct platform_device_id cht_wc_opregion_id_table[] = {
+	{ .name = "cht_wcove_region" },
+	{},
+};
+MODULE_DEVICE_TABLE(platform, cht_wc_opregion_id_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct platform_driver intel_cht_wc_pmic_opregion_driver = {
 	.probe = intel_cht_wc_pmic_opregion_probe,
@@ -272,4 +280,12 @@ static struct platform_driver intel_cht_wc_pmic_opregion_driver = {
 	},
 	.id_table = cht_wc_opregion_id_table,
 };
+<<<<<<< HEAD
 builtin_platform_driver(intel_cht_wc_pmic_opregion_driver);
+=======
+module_platform_driver(intel_cht_wc_pmic_opregion_driver);
+
+MODULE_DESCRIPTION("Intel CHT Whiskey Cove PMIC operation region driver");
+MODULE_AUTHOR("Hans de Goede <hdegoede@redhat.com>");
+MODULE_LICENSE("GPL");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

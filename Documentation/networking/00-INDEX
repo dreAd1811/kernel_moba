@@ -18,6 +18,11 @@ README.ipw2200
 	- README for the Intel PRO/Wireless 2915ABG and 2200BG driver.
 README.sb1000
 	- info on General Instrument/NextLevel SURFboard1000 cable modem.
+<<<<<<< HEAD
+=======
+alias.txt
+	- info on using alias network devices.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 altera_tse.txt
 	- Altera Triple-Speed Ethernet controller.
 arcnet-hardware.txt
@@ -34,6 +39,11 @@ bonding.txt
 	- Linux Ethernet Bonding Driver HOWTO: link aggregation in Linux.
 bridge.txt
 	- where to get user space programs for ethernet bridging with Linux.
+<<<<<<< HEAD
+=======
+can.txt
+	- documentation on CAN protocol family.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cdc_mbim.txt
 	- 3G/LTE USB modem (Mobile Broadband Interface Model)
 checksum-offloads.txt
@@ -138,6 +148,11 @@ multiqueue.txt
 	- HOWTO for multiqueue network device support.
 netconsole.txt
 	- The network console module netconsole.ko: configuration and notes.
+<<<<<<< HEAD
+=======
+netdev-FAQ.txt
+	- FAQ describing how to submit net changes to netdev mailing list.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 netdev-features.txt
 	- Network interface features API description.
 netdevices.txt
@@ -222,8 +237,11 @@ x25.txt
 	- general info on X.25 development.
 x25-iface.txt
 	- description of the X.25 Packet Layer to LAPB device interface.
+<<<<<<< HEAD
 xfrm_device.txt
 	- description of XFRM offload API
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 xfrm_proc.txt
 	- description of the statistics package for XFRM.
 xfrm_sync.txt

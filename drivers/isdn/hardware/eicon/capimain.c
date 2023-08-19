@@ -90,6 +90,22 @@ static int diva_ctl_proc_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int diva_ctl_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, diva_ctl_proc_show, NULL);
+}
+
+static const struct file_operations diva_ctl_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= diva_ctl_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * set additional os settings in capi_ctr struct
  */
@@ -98,7 +114,11 @@ void diva_os_set_controller_struct(struct capi_ctr *ctrl)
 	ctrl->driver_name = DRIVERLNAME;
 	ctrl->load_firmware = NULL;
 	ctrl->reset_ctr = NULL;
+<<<<<<< HEAD
 	ctrl->proc_show = diva_ctl_proc_show;
+=======
+	ctrl->proc_fops = &diva_ctl_proc_fops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctrl->owner = THIS_MODULE;
 }
 

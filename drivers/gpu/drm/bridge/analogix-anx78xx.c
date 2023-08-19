@@ -725,7 +725,13 @@ static int anx78xx_init_pdata(struct anx78xx *anx78xx)
 	/* 1.0V digital core power regulator  */
 	pdata->dvdd10 = devm_regulator_get(dev, "dvdd10");
 	if (IS_ERR(pdata->dvdd10)) {
+<<<<<<< HEAD
 		DRM_ERROR("DVDD10 regulator not found\n");
+=======
+		if (PTR_ERR(pdata->dvdd10) != -EPROBE_DEFER)
+			DRM_ERROR("DVDD10 regulator not found\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(pdata->dvdd10);
 	}
 
@@ -969,14 +975,24 @@ static int anx78xx_get_modes(struct drm_connector *connector)
 		goto unlock;
 	}
 
+<<<<<<< HEAD
 	err = drm_connector_update_edid_property(connector,
 						 anx78xx->edid);
+=======
+	err = drm_mode_connector_update_edid_property(connector,
+						      anx78xx->edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		DRM_ERROR("Failed to update EDID property: %d\n", err);
 		goto unlock;
 	}
 
 	num_modes = drm_add_edid_modes(connector, anx78xx->edid);
+<<<<<<< HEAD
+=======
+	/* Store the ELD */
+	drm_edid_to_eld(connector, anx78xx->edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unlock:
 	mutex_unlock(&anx78xx->lock);
@@ -1048,8 +1064,13 @@ static int anx78xx_bridge_attach(struct drm_bridge *bridge)
 
 	anx78xx->connector.polled = DRM_CONNECTOR_POLL_HPD;
 
+<<<<<<< HEAD
 	err = drm_connector_attach_encoder(&anx78xx->connector,
 					   bridge->encoder);
+=======
+	err = drm_mode_connector_attach_encoder(&anx78xx->connector,
+						bridge->encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		DRM_ERROR("Failed to link up connector to encoder: %d\n", err);
 		return err;
@@ -1301,7 +1322,12 @@ static void unregister_i2c_dummy_clients(struct anx78xx *anx78xx)
 	unsigned int i;
 
 	for (i = 0; i < ARRAY_SIZE(anx78xx->i2c_dummy); i++)
+<<<<<<< HEAD
 		i2c_unregister_device(anx78xx->i2c_dummy[i]);
+=======
+		if (anx78xx->i2c_dummy[i])
+			i2c_unregister_device(anx78xx->i2c_dummy[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct regmap_config anx78xx_regmap_config = {
@@ -1341,7 +1367,13 @@ static int anx78xx_i2c_probe(struct i2c_client *client,
 
 	err = anx78xx_init_pdata(anx78xx);
 	if (err) {
+<<<<<<< HEAD
 		DRM_ERROR("Failed to initialize pdata: %d\n", err);
+=======
+		if (err != -EPROBE_DEFER)
+			DRM_ERROR("Failed to initialize pdata: %d\n", err);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 	}
 

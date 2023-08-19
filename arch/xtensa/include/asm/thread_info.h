@@ -11,9 +11,13 @@
 #ifndef _XTENSA_THREAD_INFO_H
 #define _XTENSA_THREAD_INFO_H
 
+<<<<<<< HEAD
 #include <asm/kmem_layout.h>
 
 #define CURRENT_SHIFT KERNEL_STACK_SHIFT
+=======
+#ifdef __KERNEL__
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __ASSEMBLY__
 # include <asm/processor.h>
@@ -79,11 +83,21 @@ struct thread_info {
 	.addr_limit	= KERNEL_DS,		\
 }
 
+<<<<<<< HEAD
+=======
+#define init_thread_info	(init_thread_union.thread_info)
+#define init_stack		(init_thread_union.stack)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* how to get the thread information struct from C */
 static inline struct thread_info *current_thread_info(void)
 {
 	struct thread_info *ti;
+<<<<<<< HEAD
 	 __asm__("extui %0, a1, 0, "__stringify(CURRENT_SHIFT)"\n\t"
+=======
+	 __asm__("extui %0,a1,0,13\n\t"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	         "xor %0, a1, %0" : "=&r" (ti) : );
 	return ti;
 }
@@ -92,7 +106,11 @@ static inline struct thread_info *current_thread_info(void)
 
 /* how to get the thread information struct from ASM */
 #define GET_THREAD_INFO(reg,sp) \
+<<<<<<< HEAD
 	extui reg, sp, 0, CURRENT_SHIFT; \
+=======
+	extui reg, sp, 0, 13; \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	xor   reg, sp, reg
 #endif
 
@@ -129,7 +147,14 @@ static inline struct thread_info *current_thread_info(void)
  */
 #define TS_USEDFPU		0x0001	/* FPU was used by this task this quantum (SMP) */
 
+<<<<<<< HEAD
 #define THREAD_SIZE KERNEL_STACK_SIZE
 #define THREAD_SIZE_ORDER (KERNEL_STACK_SHIFT - PAGE_SHIFT)
 
+=======
+#define THREAD_SIZE 8192	//(2*PAGE_SIZE)
+#define THREAD_SIZE_ORDER 1
+
+#endif	/* __KERNEL__ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _XTENSA_THREAD_INFO */

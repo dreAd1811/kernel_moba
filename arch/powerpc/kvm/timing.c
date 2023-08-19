@@ -143,7 +143,12 @@ static int kvmppc_exit_timing_show(struct seq_file *m, void *private)
 	int i;
 	u64 min, max, sum, sum_quad;
 
+<<<<<<< HEAD
 	seq_puts(m, "type	count	min	max	sum	sum_squared\n");
+=======
+	seq_printf(m, "%s", "type	count	min	max	sum	sum_squared\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < __NUMBER_OF_KVM_EXIT_TYPES; i++) {
 

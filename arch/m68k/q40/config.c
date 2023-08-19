@@ -43,6 +43,10 @@ extern void q40_sched_init(irq_handler_t handler);
 static u32 q40_gettimeoffset(void);
 static int q40_hwclk(int, struct rtc_time *);
 static unsigned int q40_get_ss(void);
+<<<<<<< HEAD
+=======
+static int q40_set_clock_mmss(unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int q40_get_rtc_pll(struct rtc_pll_info *pll);
 static int q40_set_rtc_pll(struct rtc_pll_info *pll);
 
@@ -174,6 +178,10 @@ void __init config_q40(void)
 	mach_get_ss = q40_get_ss;
 	mach_get_rtc_pll = q40_get_rtc_pll;
 	mach_set_rtc_pll = q40_set_rtc_pll;
+<<<<<<< HEAD
+=======
+	mach_set_clock_mmss = q40_set_clock_mmss;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mach_reset = q40_reset;
 	mach_get_model = q40_get_model;
@@ -265,6 +273,37 @@ static unsigned int q40_get_ss(void)
 	return bcd2bin(Q40_RTC_SECS);
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * Set the minutes and seconds from seconds value 'nowtime'.  Fail if
+ * clock is out by > 30 minutes.  Logic lifted from atari code.
+ */
+
+static int q40_set_clock_mmss(unsigned long nowtime)
+{
+	int retval = 0;
+	short real_seconds = nowtime % 60, real_minutes = (nowtime / 60) % 60;
+
+	int rtc_minutes;
+
+	rtc_minutes = bcd2bin(Q40_RTC_MINS);
+
+	if ((rtc_minutes < real_minutes ?
+	     real_minutes - rtc_minutes :
+	     rtc_minutes - real_minutes) < 30) {
+		Q40_RTC_CTRL |= Q40_RTC_WRITE;
+		Q40_RTC_MINS = bin2bcd(real_minutes);
+		Q40_RTC_SECS = bin2bcd(real_seconds);
+		Q40_RTC_CTRL &= ~(Q40_RTC_WRITE);
+	} else
+		retval = -1;
+
+	return retval;
+}
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* get and set PLL calibration of RTC clock */
 #define Q40_RTC_PLL_MASK ((1<<5)-1)
 #define Q40_RTC_PLL_SIGN (1<<5)

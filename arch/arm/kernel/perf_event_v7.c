@@ -743,7 +743,11 @@ static inline void armv7_pmnc_select_counter(int idx)
 	isb();
 }
 
+<<<<<<< HEAD
 static inline u64 armv7pmu_read_counter(struct perf_event *event)
+=======
+static inline u32 armv7pmu_read_counter(struct perf_event *event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct arm_pmu *cpu_pmu = to_arm_pmu(event->pmu);
 	struct hw_perf_event *hwc = &event->hw;
@@ -763,7 +767,11 @@ static inline u64 armv7pmu_read_counter(struct perf_event *event)
 	return value;
 }
 
+<<<<<<< HEAD
 static inline void armv7pmu_write_counter(struct perf_event *event, u64 value)
+=======
+static inline void armv7pmu_write_counter(struct perf_event *event, u32 value)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct arm_pmu *cpu_pmu = to_arm_pmu(event->pmu);
 	struct hw_perf_event *hwc = &event->hw;
@@ -946,10 +954,18 @@ static void armv7pmu_disable_event(struct perf_event *event)
 	raw_spin_unlock_irqrestore(&events->pmu_lock, flags);
 }
 
+<<<<<<< HEAD
 static irqreturn_t armv7pmu_handle_irq(struct arm_pmu *cpu_pmu)
 {
 	u32 pmnc;
 	struct perf_sample_data data;
+=======
+static irqreturn_t armv7pmu_handle_irq(int irq_num, void *dev)
+{
+	u32 pmnc;
+	struct perf_sample_data data;
+	struct arm_pmu *cpu_pmu = (struct arm_pmu *)dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
 	struct pt_regs *regs;
 	int idx;
@@ -1058,12 +1074,15 @@ static int armv7pmu_get_event_idx(struct pmu_hw_events *cpuc,
 	return -EAGAIN;
 }
 
+<<<<<<< HEAD
 static void armv7pmu_clear_event_idx(struct pmu_hw_events *cpuc,
 				     struct perf_event *event)
 {
 	clear_bit(event->hw.idx, cpuc->used_mask);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Add an event filter to a given event. This will only work for PMUv2 PMUs.
  */
@@ -1072,8 +1091,11 @@ static int armv7pmu_set_event_filter(struct hw_perf_event *event,
 {
 	unsigned long config_base = 0;
 
+<<<<<<< HEAD
 	if (attr->exclude_idle)
 		return -EPERM;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (attr->exclude_user)
 		config_base |= ARMV7_EXCLUDE_USER;
 	if (attr->exclude_kernel)
@@ -1108,7 +1130,11 @@ static void armv7pmu_reset(void *info)
 	}
 
 	/* Initialize & Reset PMNC: C and P bits */
+<<<<<<< HEAD
 	armv7_pmnc_write(ARMV7_PMNC_P | ARMV7_PMNC_C);
+=======
+	armv7_pmnc_write(armv7_pmnc_read() | ARMV7_PMNC_P | ARMV7_PMNC_C);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv7_a8_map_event(struct perf_event *event)
@@ -1173,10 +1199,17 @@ static void armv7pmu_init(struct arm_pmu *cpu_pmu)
 	cpu_pmu->read_counter	= armv7pmu_read_counter;
 	cpu_pmu->write_counter	= armv7pmu_write_counter;
 	cpu_pmu->get_event_idx	= armv7pmu_get_event_idx;
+<<<<<<< HEAD
 	cpu_pmu->clear_event_idx = armv7pmu_clear_event_idx;
 	cpu_pmu->start		= armv7pmu_start;
 	cpu_pmu->stop		= armv7pmu_stop;
 	cpu_pmu->reset		= armv7pmu_reset;
+=======
+	cpu_pmu->start		= armv7pmu_start;
+	cpu_pmu->stop		= armv7pmu_stop;
+	cpu_pmu->reset		= armv7pmu_reset;
+	cpu_pmu->max_period	= (1LLU << 32) - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void armv7_read_num_pmnc_events(void *info)
@@ -1190,11 +1223,76 @@ static void armv7_read_num_pmnc_events(void *info)
 	*nb_cnt += 1;
 }
 
+<<<<<<< HEAD
 static int armv7_probe_num_events(struct arm_pmu *arm_pmu)
 {
 	return smp_call_function_any(&arm_pmu->supported_cpus,
 				     armv7_read_num_pmnc_events,
 				     &arm_pmu->num_events, 1);
+=======
+static void armv7_pmu_idle_update(struct arm_pmu *cpu_pmu)
+{
+	struct pmu_hw_events *hw_events;
+	struct perf_event *event;
+	int idx;
+
+	if (!cpu_pmu)
+		return;
+
+	hw_events = this_cpu_ptr(cpu_pmu->hw_events);
+	if (!hw_events)
+		return;
+
+	for (idx = 0; idx < cpu_pmu->num_events; ++idx) {
+		event = hw_events->events[idx];
+
+		if (!event || !event->attr.exclude_idle ||
+			event->state != PERF_EVENT_STATE_ACTIVE)
+			continue;
+
+		cpu_pmu->pmu.read(event);
+	}
+}
+
+struct armv7_pmu_idle_nb {
+	struct arm_pmu *cpu_pmu;
+	struct notifier_block perf_cpu_idle_nb;
+};
+
+static int armv7_pmu_idle_notifier(struct notifier_block *nb,
+				unsigned long action, void *data)
+{
+	struct armv7_pmu_idle_nb *pmu_idle_nb = container_of(nb,
+				struct armv7_pmu_idle_nb, perf_cpu_idle_nb);
+
+	if (action == IDLE_START)
+		armv7_pmu_idle_update(pmu_idle_nb->cpu_pmu);
+
+	return NOTIFY_OK;
+}
+
+static int armv7_probe_pmu(struct arm_pmu *arm_pmu)
+{
+	int ret;
+	struct armv7_pmu_idle_nb *pmu_idle_nb;
+
+	pmu_idle_nb = devm_kzalloc(&arm_pmu->plat_device->dev,
+				sizeof(*pmu_idle_nb), GFP_KERNEL);
+	if (!pmu_idle_nb)
+		return -ENOMEM;
+
+	ret = smp_call_function_any(&arm_pmu->supported_cpus,
+				     armv7_read_num_pmnc_events,
+				     &arm_pmu->num_events, 1);
+	if (ret)
+		return ret;
+
+	pmu_idle_nb->cpu_pmu = arm_pmu;
+	pmu_idle_nb->perf_cpu_idle_nb.notifier_call = armv7_pmu_idle_notifier;
+	idle_notifier_register(&pmu_idle_nb->perf_cpu_idle_nb);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv7_a8_pmu_init(struct arm_pmu *cpu_pmu)
@@ -1206,7 +1304,11 @@ static int armv7_a8_pmu_init(struct arm_pmu *cpu_pmu)
 		&armv7_pmuv1_events_attr_group;
 	cpu_pmu->attr_groups[ARMPMU_ATTR_GROUP_FORMATS] =
 		&armv7_pmu_format_attr_group;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv7_a9_pmu_init(struct arm_pmu *cpu_pmu)
@@ -1218,7 +1320,11 @@ static int armv7_a9_pmu_init(struct arm_pmu *cpu_pmu)
 		&armv7_pmuv1_events_attr_group;
 	cpu_pmu->attr_groups[ARMPMU_ATTR_GROUP_FORMATS] =
 		&armv7_pmu_format_attr_group;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv7_a5_pmu_init(struct arm_pmu *cpu_pmu)
@@ -1230,7 +1336,11 @@ static int armv7_a5_pmu_init(struct arm_pmu *cpu_pmu)
 		&armv7_pmuv1_events_attr_group;
 	cpu_pmu->attr_groups[ARMPMU_ATTR_GROUP_FORMATS] =
 		&armv7_pmu_format_attr_group;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv7_a15_pmu_init(struct arm_pmu *cpu_pmu)
@@ -1243,7 +1353,21 @@ static int armv7_a15_pmu_init(struct arm_pmu *cpu_pmu)
 		&armv7_pmuv2_events_attr_group;
 	cpu_pmu->attr_groups[ARMPMU_ATTR_GROUP_FORMATS] =
 		&armv7_pmu_format_attr_group;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+}
+
+static int armv8_pmuv3_pmu_init(struct arm_pmu *cpu_pmu)
+{
+	armv7pmu_init(cpu_pmu);
+	cpu_pmu->name		= "ARMv8 Cortex-A53";
+	cpu_pmu->map_event	= armv7_a7_map_event;
+	armv7_read_num_pmnc_events(&cpu_pmu->num_events);
+	cpu_pmu->set_event_filter = armv7pmu_set_event_filter;
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv7_a7_pmu_init(struct arm_pmu *cpu_pmu)
@@ -1256,7 +1380,11 @@ static int armv7_a7_pmu_init(struct arm_pmu *cpu_pmu)
 		&armv7_pmuv2_events_attr_group;
 	cpu_pmu->attr_groups[ARMPMU_ATTR_GROUP_FORMATS] =
 		&armv7_pmu_format_attr_group;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv7_a12_pmu_init(struct arm_pmu *cpu_pmu)
@@ -1269,7 +1397,11 @@ static int armv7_a12_pmu_init(struct arm_pmu *cpu_pmu)
 		&armv7_pmuv2_events_attr_group;
 	cpu_pmu->attr_groups[ARMPMU_ATTR_GROUP_FORMATS] =
 		&armv7_pmu_format_attr_group;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armv7_a17_pmu_init(struct arm_pmu *cpu_pmu)
@@ -1644,7 +1776,10 @@ static void krait_pmu_clear_event_idx(struct pmu_hw_events *cpuc,
 	bool venum_event = EVENT_VENUM(hwc->config_base);
 	bool krait_event = EVENT_CPU(hwc->config_base);
 
+<<<<<<< HEAD
 	armv7pmu_clear_event_idx(cpuc, event);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (venum_event || krait_event) {
 		bit = krait_event_to_bit(event, region, group);
 		clear_bit(bit, cpuc->used_mask);
@@ -1667,7 +1802,11 @@ static int krait_pmu_init(struct arm_pmu *cpu_pmu)
 	cpu_pmu->disable	= krait_pmu_disable_event;
 	cpu_pmu->get_event_idx	= krait_pmu_get_event_idx;
 	cpu_pmu->clear_event_idx = krait_pmu_clear_event_idx;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1974,7 +2113,10 @@ static void scorpion_pmu_clear_event_idx(struct pmu_hw_events *cpuc,
 	bool venum_event = EVENT_VENUM(hwc->config_base);
 	bool scorpion_event = EVENT_CPU(hwc->config_base);
 
+<<<<<<< HEAD
 	armv7pmu_clear_event_idx(cpuc, event);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (venum_event || scorpion_event) {
 		bit = scorpion_event_to_bit(event, region, group);
 		clear_bit(bit, cpuc->used_mask);
@@ -1991,7 +2133,11 @@ static int scorpion_pmu_init(struct arm_pmu *cpu_pmu)
 	cpu_pmu->disable	= scorpion_pmu_disable_event;
 	cpu_pmu->get_event_idx	= scorpion_pmu_get_event_idx;
 	cpu_pmu->clear_event_idx = scorpion_pmu_clear_event_idx;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int scorpion_mp_pmu_init(struct arm_pmu *cpu_pmu)
@@ -2004,7 +2150,11 @@ static int scorpion_mp_pmu_init(struct arm_pmu *cpu_pmu)
 	cpu_pmu->disable	= scorpion_pmu_disable_event;
 	cpu_pmu->get_event_idx	= scorpion_pmu_get_event_idx;
 	cpu_pmu->clear_event_idx = scorpion_pmu_clear_event_idx;
+<<<<<<< HEAD
 	return armv7_probe_num_events(cpu_pmu);
+=======
+	return armv7_probe_pmu(cpu_pmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id armv7_pmu_of_device_ids[] = {
@@ -2018,6 +2168,10 @@ static const struct of_device_id armv7_pmu_of_device_ids[] = {
 	{.compatible = "qcom,krait-pmu",	.data = krait_pmu_init},
 	{.compatible = "qcom,scorpion-pmu",	.data = scorpion_pmu_init},
 	{.compatible = "qcom,scorpion-mp-pmu",	.data = scorpion_mp_pmu_init},
+<<<<<<< HEAD
+=======
+	{.compatible = "arm,armv8-pmuv3",      .data = armv8_pmuv3_pmu_init},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 
@@ -2038,7 +2192,10 @@ static struct platform_driver armv7_pmu_driver = {
 	.driver		= {
 		.name	= "armv7-pmu",
 		.of_match_table = armv7_pmu_of_device_ids,
+<<<<<<< HEAD
 		.suppress_bind_attrs = true,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe		= armv7_pmu_device_probe,
 };

@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * RMNET Packet Descriptor Framework
  *
@@ -95,6 +108,10 @@ EXPORT_SYMBOL(rmnet_descriptor_add_frag);
 int rmnet_frag_ipv6_skip_exthdr(struct rmnet_frag_descriptor *frag_desc,
 				int start, u8 *nexthdrp, __be16 *fragp)
 {
+<<<<<<< HEAD
+=======
+	u32 frag_size = skb_frag_size(&frag_desc->frag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 nexthdr = *nexthdrp;
 
 	*fragp = 0;
@@ -106,11 +123,25 @@ int rmnet_frag_ipv6_skip_exthdr(struct rmnet_frag_descriptor *frag_desc,
 		if (nexthdr == NEXTHDR_NONE)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		hp = rmnet_frag_data_ptr(frag_desc) + start;
 
 		if (nexthdr == NEXTHDR_FRAGMENT) {
 			__be16 *fp;
 
+=======
+		if (start >= frag_size)
+			return -EINVAL;
+
+		hp = rmnet_frag_data_ptr(frag_desc) + start;
+		if (nexthdr == NEXTHDR_FRAGMENT) {
+			__be16 *fp;
+
+			if (start + offsetof(struct frag_hdr, frag_off) >=
+			    frag_size)
+				return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fp = rmnet_frag_data_ptr(frag_desc) + start +
 			     offsetof(struct frag_hdr, frag_off);
 			*fragp = *fp;
@@ -768,21 +799,32 @@ rmnet_frag_segment_coal_data(struct rmnet_frag_descriptor *coal_desc,
 			gro = false;
 	} else if (iph->version == 6) {
 		struct ipv6hdr *ip6h = (struct ipv6hdr *)iph;
+<<<<<<< HEAD
 		int ip_len;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__be16 frag_off;
 		u8 protocol = ip6h->nexthdr;
 
 		coal_desc->ip_proto = 6;
+<<<<<<< HEAD
 		ip_len = rmnet_frag_ipv6_skip_exthdr(coal_desc,
 						     sizeof(*ip6h),
 						     &protocol,
 						     &frag_off);
+=======
+		coal_desc->ip_len = rmnet_frag_ipv6_skip_exthdr(coal_desc,
+								sizeof(*ip6h),
+								&protocol,
+								&frag_off);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		coal_desc->trans_proto = protocol;
 
 		/* If we run into a problem, or this has a fragment header
 		 * (which should technically not be possible, if the HW
 		 * works as intended...), bail.
 		 */
+<<<<<<< HEAD
 		if (ip_len < 0 || frag_off) {
 			priv->stats.coal.coal_ip_invalid++;
 			return;
@@ -790,6 +832,12 @@ rmnet_frag_segment_coal_data(struct rmnet_frag_descriptor *coal_desc,
 
 		coal_desc->ip_len = (u16)ip_len;
 		if (coal_desc->ip_len > sizeof(*ip6h)) {
+=======
+		if (coal_desc->ip_len < 0 || frag_off) {
+			priv->stats.coal.coal_ip_invalid++;
+			return;
+		} else if (coal_desc->ip_len > sizeof(*ip6h)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* Don't allow coalescing of any packets with IPv6
 			 * extension headers.
 			 */

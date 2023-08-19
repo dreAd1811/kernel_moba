@@ -389,6 +389,10 @@ static int hns_mac_port_config_bc_en(struct hns_mac_cb *mac_cb,
 {
 	int ret;
 	struct dsaf_device *dsaf_dev = mac_cb->dsaf_dev;
+<<<<<<< HEAD
+=======
+	u8 addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dsaf_drv_mac_single_dest_entry mac_entry;
 
 	/* directy return ok in debug network mode */
@@ -396,7 +400,11 @@ static int hns_mac_port_config_bc_en(struct hns_mac_cb *mac_cb,
 		return 0;
 
 	if (!HNS_DSAF_IS_DEBUG(dsaf_dev)) {
+<<<<<<< HEAD
 		eth_broadcast_addr(mac_entry.addr);
+=======
+		memcpy(mac_entry.addr, addr, sizeof(mac_entry.addr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mac_entry.in_vlan_id = vlan_id;
 		mac_entry.in_port_num = mac_cb->mac_id;
 		mac_entry.port_num = port_num;
@@ -423,6 +431,10 @@ int hns_mac_vm_config_bc_en(struct hns_mac_cb *mac_cb, u32 vmid, bool enable)
 	int ret;
 	struct dsaf_device *dsaf_dev = mac_cb->dsaf_dev;
 	u8 port_num;
+<<<<<<< HEAD
+=======
+	u8 addr[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mac_entry_idx *uc_mac_entry;
 	struct dsaf_drv_mac_single_dest_entry mac_entry;
 
@@ -432,7 +444,11 @@ int hns_mac_vm_config_bc_en(struct hns_mac_cb *mac_cb, u32 vmid, bool enable)
 	uc_mac_entry = &mac_cb->addr_entry_idx[vmid];
 
 	if (!HNS_DSAF_IS_DEBUG(dsaf_dev))  {
+<<<<<<< HEAD
 		eth_broadcast_addr(mac_entry.addr);
+=======
+		memcpy(mac_entry.addr, addr, sizeof(mac_entry.addr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mac_entry.in_vlan_id = uc_mac_entry->vlan_id;
 		mac_entry.in_port_num = mac_cb->mac_id;
 		ret = hns_mac_get_inner_port_num(mac_cb, vmid, &port_num);
@@ -488,6 +504,14 @@ int hns_mac_set_mtu(struct hns_mac_cb *mac_cb, u32 new_mtu, u32 buf_size)
 {
 	struct mac_driver *drv = hns_mac_get_drv(mac_cb);
 	u32 new_frm = new_mtu + ETH_HLEN + ETH_FCS_LEN + VLAN_HLEN;
+<<<<<<< HEAD
+=======
+	u32 max_frm = AE_IS_VER1(mac_cb->dsaf_dev->dsaf_ver) ?
+			MAC_MAX_MTU : MAC_MAX_MTU_V2;
+
+	if (mac_cb->mac_type == HNAE_PORT_DEBUG)
+		max_frm = MAC_MAX_MTU_DBG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (new_frm > HNS_RCB_RING_MAX_BD_PER_PKT * buf_size)
 		return -EINVAL;
@@ -733,7 +757,11 @@ hns_mac_register_phydev(struct mii_bus *mdio, struct hns_mac_cb *mac_cb,
 
 static int hns_mac_register_phy(struct hns_mac_cb *mac_cb)
 {
+<<<<<<< HEAD
 	struct fwnode_reference_args args;
+=======
+	struct acpi_reference_args args;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct platform_device *pdev;
 	struct mii_bus *mii_bus;
 	int rc;
@@ -747,15 +775,22 @@ static int hns_mac_register_phy(struct hns_mac_cb *mac_cb)
 			mac_cb->fw_port, "mdio-node", 0, &args);
 	if (rc)
 		return rc;
+<<<<<<< HEAD
 	if (!is_acpi_device_node(args.fwnode))
 		return -EINVAL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	addr = hns_mac_phy_parse_addr(mac_cb->dev, mac_cb->fw_port);
 	if (addr < 0)
 		return addr;
 
 	/* dev address in adev */
+<<<<<<< HEAD
 	pdev = hns_dsaf_find_platform_device(args.fwnode);
+=======
+	pdev = hns_dsaf_find_platform_device(acpi_fwnode_handle(args.adev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pdev) {
 		dev_err(mac_cb->dev, "mac%d mdio pdev is NULL\n",
 			mac_cb->mac_id);
@@ -969,9 +1004,14 @@ static int hns_mac_get_mode(phy_interface_t phy_if)
 	}
 }
 
+<<<<<<< HEAD
 static u8 __iomem *
 hns_mac_get_vaddr(struct dsaf_device *dsaf_dev,
 		  struct hns_mac_cb *mac_cb, u32 mac_mode_idx)
+=======
+u8 __iomem *hns_mac_get_vaddr(struct dsaf_device *dsaf_dev,
+			      struct hns_mac_cb *mac_cb, u32 mac_mode_idx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 __iomem *base = dsaf_dev->io_base;
 	int mac_id = mac_cb->mac_id;
@@ -989,8 +1029,12 @@ hns_mac_get_vaddr(struct dsaf_device *dsaf_dev,
  * @mac_cb: mac control block
  * return 0 - success , negative --fail
  */
+<<<<<<< HEAD
 static int
 hns_mac_get_cfg(struct dsaf_device *dsaf_dev, struct hns_mac_cb *mac_cb)
+=======
+int hns_mac_get_cfg(struct dsaf_device *dsaf_dev, struct hns_mac_cb *mac_cb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	u32 mac_mode_idx;
@@ -1224,7 +1268,11 @@ void hns_set_led_opt(struct hns_mac_cb *mac_cb)
 int hns_cpld_led_set_id(struct hns_mac_cb *mac_cb,
 			enum hnae_led_state status)
 {
+<<<<<<< HEAD
 	if (!mac_cb)
+=======
+	if (!mac_cb || !mac_cb->cpld_ctrl)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return mac_cb->dsaf_dev->misc_op->cpld_set_led_id(mac_cb, status);

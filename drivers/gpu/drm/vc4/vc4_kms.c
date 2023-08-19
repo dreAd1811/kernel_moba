@@ -19,6 +19,7 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_plane_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
@@ -133,6 +134,17 @@ vc4_ctm_commit(struct vc4_dev *vc4, struct drm_atomic_state *state)
 
 	HVS_WRITE(SCALER_OLEDOFFS,
 		  VC4_SET_FIELD(ctm_state->fifo, SCALER_OLEDOFFS_DISPFIFO));
+=======
+#include <drm/drm_fb_cma_helper.h>
+#include <drm/drm_gem_framebuffer_helper.h>
+#include "vc4_drv.h"
+
+static void vc4_output_poll_changed(struct drm_device *dev)
+{
+	struct vc4_dev *vc4 = to_vc4_dev(dev);
+
+	drm_fbdev_cma_hotplug_event(vc4->fbdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -147,17 +159,35 @@ vc4_atomic_complete_commit(struct drm_atomic_state *state)
 
 	drm_atomic_helper_commit_modeset_disables(dev, state);
 
+<<<<<<< HEAD
 	vc4_ctm_commit(vc4, state);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_atomic_helper_commit_planes(dev, state, 0);
 
 	drm_atomic_helper_commit_modeset_enables(dev, state);
 
+<<<<<<< HEAD
 	drm_atomic_helper_fake_vblank(state);
 
 	drm_atomic_helper_commit_hw_done(state);
 
 	drm_atomic_helper_wait_for_flip_done(dev, state);
+=======
+	/* Make sure that drm_atomic_helper_wait_for_vblanks()
+	 * actually waits for vblank.  If we're doing a full atomic
+	 * modeset (as opposed to a vc4_update_plane() short circuit),
+	 * then we need to wait for scanout to be done with our
+	 * display lists before we free it and potentially reallocate
+	 * and overwrite the dlist memory with a new modeset.
+	 */
+	state->legacy_cursor_update = false;
+
+	drm_atomic_helper_commit_hw_done(state);
+
+	drm_atomic_helper_wait_for_vblanks(dev, state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_atomic_helper_cleanup_planes(dev, state);
 
@@ -196,6 +226,7 @@ static int vc4_atomic_commit(struct drm_device *dev,
 	struct vc4_dev *vc4 = to_vc4_dev(dev);
 	int ret;
 
+<<<<<<< HEAD
 	if (state->async_update) {
 		ret = down_interruptible(&vc4->async_modeset);
 		if (ret)
@@ -222,6 +253,8 @@ static int vc4_atomic_commit(struct drm_device *dev,
 	 * commit->flip_done.
 	 */
 	state->legacy_cursor_update = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_atomic_helper_setup_commit(state, nonblock);
 	if (ret)
 		return ret;
@@ -319,6 +352,7 @@ static struct drm_framebuffer *vc4_fb_create(struct drm_device *dev,
 	return drm_gem_fb_create(dev, file_priv, mode_cmd);
 }
 
+<<<<<<< HEAD
 /* Our CTM has some peculiar limitations: we can only enable it for one CRTC
  * at a time and the HW only supports S0.9 scalars. To account for the latter,
  * we don't allow userland to set a CTM that we have no hope of approximating.
@@ -402,6 +436,11 @@ vc4_atomic_check(struct drm_device *dev, struct drm_atomic_state *state)
 static const struct drm_mode_config_funcs vc4_mode_funcs = {
 	.output_poll_changed = drm_fb_helper_output_poll_changed,
 	.atomic_check = vc4_atomic_check,
+=======
+static const struct drm_mode_config_funcs vc4_mode_funcs = {
+	.output_poll_changed = vc4_output_poll_changed,
+	.atomic_check = drm_atomic_helper_check,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_commit = vc4_atomic_commit,
 	.fb_create = vc4_fb_create,
 };
@@ -409,7 +448,10 @@ static const struct drm_mode_config_funcs vc4_mode_funcs = {
 int vc4_kms_load(struct drm_device *dev)
 {
 	struct vc4_dev *vc4 = to_vc4_dev(dev);
+<<<<<<< HEAD
 	struct vc4_ctm_state *ctm_state;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	sema_init(&vc4->async_modeset, 1);
@@ -428,6 +470,7 @@ int vc4_kms_load(struct drm_device *dev)
 	dev->mode_config.funcs = &vc4_mode_funcs;
 	dev->mode_config.preferred_depth = 24;
 	dev->mode_config.async_page_flip = true;
+<<<<<<< HEAD
 	dev->mode_config.allow_fb_modifiers = true;
 
 	drm_modeset_lock_init(&vc4->ctm_state_lock);
@@ -442,6 +485,17 @@ int vc4_kms_load(struct drm_device *dev)
 
 	if (dev->mode_config.num_connector)
 		drm_fb_cma_fbdev_init(dev, 32, 0);
+=======
+
+	drm_mode_config_reset(dev);
+
+	if (dev->mode_config.num_connector) {
+		vc4->fbdev = drm_fbdev_cma_init(dev, 32,
+						dev->mode_config.num_connector);
+		if (IS_ERR(vc4->fbdev))
+			vc4->fbdev = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_kms_helper_poll_init(dev);
 

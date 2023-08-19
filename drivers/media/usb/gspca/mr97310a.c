@@ -221,11 +221,18 @@ static int cam_get_response16(struct gspca_dev *gspca_dev, u8 reg, int verbose)
 		return err_code;
 
 	if (verbose)
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "Register: %02x reads %02x%02x%02x\n",
 			  reg,
 			  gspca_dev->usb_buf[0],
 			  gspca_dev->usb_buf[1],
 			  gspca_dev->usb_buf[2]);
+=======
+		PDEBUG(D_PROBE, "Register: %02x reads %02x%02x%02x", reg,
+		       gspca_dev->usb_buf[0],
+		       gspca_dev->usb_buf[1],
+		       gspca_dev->usb_buf[2]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -285,7 +292,11 @@ static int zero_the_pointer(struct gspca_dev *gspca_dev)
 			return err_code;
 	}
 	if (status != 0x0a)
+<<<<<<< HEAD
 		gspca_err(gspca_dev, "status is %02x\n", status);
+=======
+		PERR("status is %02x", status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tries = 0;
 	while (tries < 4) {
@@ -326,7 +337,11 @@ static void stream_stop(struct gspca_dev *gspca_dev)
 	gspca_dev->usb_buf[0] = 0x01;
 	gspca_dev->usb_buf[1] = 0x00;
 	if (mr_write(gspca_dev, 2) < 0)
+<<<<<<< HEAD
 		gspca_err(gspca_dev, "Stream Stop failed\n");
+=======
+		PERR("Stream Stop failed");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void lcd_stop(struct gspca_dev *gspca_dev)
@@ -334,7 +349,11 @@ static void lcd_stop(struct gspca_dev *gspca_dev)
 	gspca_dev->usb_buf[0] = 0x19;
 	gspca_dev->usb_buf[1] = 0x54;
 	if (mr_write(gspca_dev, 2) < 0)
+<<<<<<< HEAD
 		gspca_err(gspca_dev, "LCD Stop failed\n");
+=======
+		PERR("LCD Stop failed");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int isoc_enable(struct gspca_dev *gspca_dev)
@@ -414,8 +433,13 @@ static int sd_config(struct gspca_dev *gspca_dev,
 			       gspca_dev->usb_buf[1]);
 			return -ENODEV;
 		}
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "MR97310A CIF camera detected, sensor: %d\n",
 			  sd->sensor_type);
+=======
+		PDEBUG(D_PROBE, "MR97310A CIF camera detected, sensor: %d",
+		       sd->sensor_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		sd->cam_type = CAM_TYPE_VGA;
 
@@ -459,7 +483,11 @@ static int sd_config(struct gspca_dev *gspca_dev,
 			switch (gspca_dev->usb_buf[1]) {
 			case 0x50:
 				sd->sensor_type = 0;
+<<<<<<< HEAD
 				gspca_dbg(gspca_dev, D_PROBE, "sensor_type corrected to 0\n");
+=======
+				PDEBUG(D_PROBE, "sensor_type corrected to 0");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			case 0x20:
 				/* Nothing to do here. */
@@ -471,16 +499,26 @@ static int sd_config(struct gspca_dev *gspca_dev,
 				pr_err("Please report this\n");
 			}
 		}
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "MR97310A VGA camera detected, sensor: %d\n",
 			  sd->sensor_type);
+=======
+		PDEBUG(D_PROBE, "MR97310A VGA camera detected, sensor: %d",
+		       sd->sensor_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/* Stop streaming as we've started it only to probe the sensor type. */
 	sd_stopN(gspca_dev);
 
 	if (force_sensor_type != -1) {
 		sd->sensor_type = !!force_sensor_type;
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "Forcing sensor type to: %d\n",
 			  sd->sensor_type);
+=======
+		PDEBUG(D_PROBE, "Forcing sensor type to: %d",
+		       sd->sensor_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;

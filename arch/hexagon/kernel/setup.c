@@ -66,7 +66,11 @@ void __init setup_arch(char **cmdline_p)
 	 */
 	__vmsetvec(_K_VM_event_vector);
 
+<<<<<<< HEAD
 	printk(KERN_INFO "PHYS_OFFSET=0x%08lx\n", PHYS_OFFSET);
+=======
+	printk(KERN_INFO "PHYS_OFFSET=0x%08x\n", PHYS_OFFSET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Simulator has a few differences from the hardware.

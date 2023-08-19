@@ -1,10 +1,21 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0+ */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vsp1.h  --  R-Car VSP1 Driver
  *
  * Copyright (C) 2013-2014 Renesas Electronics Corporation
  *
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __VSP1_H__
 #define __VSP1_H__
@@ -26,7 +37,11 @@ struct rcar_fcp_device;
 struct vsp1_drm;
 struct vsp1_entity;
 struct vsp1_platform_data;
+<<<<<<< HEAD
 struct vsp1_brx;
+=======
+struct vsp1_bru;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct vsp1_clu;
 struct vsp1_hgo;
 struct vsp1_hgt;
@@ -36,12 +51,18 @@ struct vsp1_lut;
 struct vsp1_rwpf;
 struct vsp1_sru;
 struct vsp1_uds;
+<<<<<<< HEAD
 struct vsp1_uif;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define VSP1_MAX_LIF		2
 #define VSP1_MAX_RPF		5
 #define VSP1_MAX_UDS		3
+<<<<<<< HEAD
 #define VSP1_MAX_UIF		2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VSP1_MAX_WPF		4
 
 #define VSP1_HAS_LUT		(1 << 1)
@@ -53,7 +74,10 @@ struct vsp1_uif;
 #define VSP1_HAS_HGO		(1 << 7)
 #define VSP1_HAS_HGT		(1 << 8)
 #define VSP1_HAS_BRS		(1 << 9)
+<<<<<<< HEAD
 #define VSP1_HAS_EXT_DL		(1 << 10)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct vsp1_device_info {
 	u32 version;
@@ -63,14 +87,20 @@ struct vsp1_device_info {
 	unsigned int lif_count;
 	unsigned int rpf_count;
 	unsigned int uds_count;
+<<<<<<< HEAD
 	unsigned int uif_count;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int wpf_count;
 	unsigned int num_bru_inputs;
 	bool uapi;
 };
 
+<<<<<<< HEAD
 #define vsp1_feature(vsp1, f) ((vsp1)->info->features & (f))
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct vsp1_device {
 	struct device *dev;
 	const struct vsp1_device_info *info;
@@ -80,8 +110,13 @@ struct vsp1_device {
 	struct rcar_fcp_device *fcp;
 	struct device *bus_master;
 
+<<<<<<< HEAD
 	struct vsp1_brx *brs;
 	struct vsp1_brx *bru;
+=======
+	struct vsp1_bru *brs;
+	struct vsp1_bru *bru;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vsp1_clu *clu;
 	struct vsp1_hgo *hgo;
 	struct vsp1_hgt *hgt;
@@ -92,7 +127,10 @@ struct vsp1_device {
 	struct vsp1_rwpf *rpf[VSP1_MAX_RPF];
 	struct vsp1_sru *sru;
 	struct vsp1_uds *uds[VSP1_MAX_UDS];
+<<<<<<< HEAD
 	struct vsp1_uif *uif[VSP1_MAX_UIF];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vsp1_rwpf *wpf[VSP1_MAX_WPF];
 
 	struct list_head entities;

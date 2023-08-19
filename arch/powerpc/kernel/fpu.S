@@ -25,8 +25,11 @@
 #include <asm/asm-offsets.h>
 #include <asm/ptrace.h>
 #include <asm/export.h>
+<<<<<<< HEAD
 #include <asm/asm-compat.h>
 #include <asm/feature-fixups.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_VSX
 #define __REST_32FPVSRS(n,c,base)					\

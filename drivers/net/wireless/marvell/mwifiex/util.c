@@ -197,11 +197,17 @@ int mwifiex_get_debug_info(struct mwifiex_private *priv,
 		info->is_deep_sleep = adapter->is_deep_sleep;
 		info->pm_wakeup_card_req = adapter->pm_wakeup_card_req;
 		info->pm_wakeup_fw_try = adapter->pm_wakeup_fw_try;
+<<<<<<< HEAD
 		info->is_hs_configured = test_bit(MWIFIEX_IS_HS_CONFIGURED,
 						  &adapter->work_flags);
 		info->hs_activated = adapter->hs_activated;
 		info->is_cmd_timedout = test_bit(MWIFIEX_IS_CMD_TIMEDOUT,
 						 &adapter->work_flags);
+=======
+		info->is_hs_configured = adapter->is_hs_configured;
+		info->hs_activated = adapter->hs_activated;
+		info->is_cmd_timedout = adapter->is_cmd_timedout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info->num_cmd_host_to_card_failure
 				= adapter->dbg.num_cmd_host_to_card_failure;
 		info->num_cmd_sleep_cfm_host_to_card_failure
@@ -759,6 +765,7 @@ void *mwifiex_alloc_dma_align_buf(int rx_len, gfp_t flags)
 	return skb;
 }
 EXPORT_SYMBOL_GPL(mwifiex_alloc_dma_align_buf);
+<<<<<<< HEAD
 
 void mwifiex_fw_dump_event(struct mwifiex_private *priv)
 {
@@ -766,3 +773,5 @@ void mwifiex_fw_dump_event(struct mwifiex_private *priv)
 			 0, NULL, true);
 }
 EXPORT_SYMBOL_GPL(mwifiex_fw_dump_event);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

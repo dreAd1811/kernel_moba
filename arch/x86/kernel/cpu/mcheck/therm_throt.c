@@ -185,7 +185,11 @@ static void therm_throt_process(bool new_event, int event, int level)
 	/* if we just entered the thermal event */
 	if (new_event) {
 		if (event == THERMAL_THROTTLING_EVENT)
+<<<<<<< HEAD
 			pr_crit("CPU%d: %s temperature above threshold, cpu clock throttled (total events = %lu)\n",
+=======
+			pr_warn("CPU%d: %s temperature above threshold, cpu clock throttled (total events = %lu)\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				this_cpu,
 				level == CORE_LEVEL ? "Core" : "Package",
 				state->count);

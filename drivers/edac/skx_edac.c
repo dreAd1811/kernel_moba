@@ -14,8 +14,11 @@
 
 #include <linux/module.h>
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/acpi.h>
 #include <linux/dmi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pci.h>
 #include <linux/pci_ids.h>
 #include <linux/slab.h>
@@ -26,7 +29,10 @@
 #include <linux/bitmap.h>
 #include <linux/math64.h>
 #include <linux/mod_devicetable.h>
+<<<<<<< HEAD
 #include <acpi/nfit.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/cpu_device_id.h>
 #include <asm/intel-family.h>
 #include <asm/processor.h>
@@ -34,8 +40,11 @@
 
 #include "edac_module.h"
 
+<<<<<<< HEAD
 #define EDAC_MOD_STR    "skx_edac"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Debug macros
  */
@@ -70,7 +79,10 @@ static u64 skx_tolm, skx_tohm;
 struct skx_dev {
 	struct list_head	list;
 	u8			bus[4];
+<<<<<<< HEAD
 	int			seg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev	*sad_all;
 	struct pci_dev	*util_all;
 	u32	mcroute;
@@ -116,12 +128,20 @@ struct decoded_addr {
 	int	bank_group;
 };
 
+<<<<<<< HEAD
 static struct skx_dev *get_skx_dev(struct pci_bus *bus, u8 idx)
+=======
+static struct skx_dev *get_skx_dev(u8 bus, u8 idx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct skx_dev *d;
 
 	list_for_each_entry(d, &skx_edac_list, list) {
+<<<<<<< HEAD
 		if (d->seg == pci_domain_nr(bus) && d->bus[idx] == bus->number)
+=======
+		if (d->bus[idx] == bus)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return d;
 	}
 
@@ -178,7 +198,10 @@ static int get_all_bus_mappings(void)
 			pci_dev_put(pdev);
 			return -ENOMEM;
 		}
+<<<<<<< HEAD
 		d->seg = pci_domain_nr(pdev->bus);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pci_read_config_dword(pdev, 0xCC, &reg);
 		d->bus[0] =  GET_BITFIELD(reg, 0, 7);
 		d->bus[1] =  GET_BITFIELD(reg, 8, 15);
@@ -214,7 +237,11 @@ static int get_all_munits(const struct munit *m)
 			if (i == NUM_IMC)
 				goto fail;
 		}
+<<<<<<< HEAD
 		d = get_skx_dev(pdev->bus, m->busidx);
+=======
+		d = get_skx_dev(pdev->bus->number, m->busidx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!d)
 			goto fail;
 
@@ -305,9 +332,14 @@ static int get_dimm_attr(u32 reg, int lobit, int hibit, int add, int minval,
 }
 
 #define IS_DIMM_PRESENT(mtr)		GET_BITFIELD((mtr), 15, 15)
+<<<<<<< HEAD
 #define IS_NVDIMM_PRESENT(mcddrtcfg, i)	GET_BITFIELD((mcddrtcfg), (i), (i))
 
 #define numrank(reg) get_dimm_attr((reg), 12, 13, 0, 0, 2, "ranks")
+=======
+
+#define numrank(reg) get_dimm_attr((reg), 12, 13, 0, 1, 2, "ranks")
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define numrow(reg) get_dimm_attr((reg), 2, 4, 12, 1, 6, "rows")
 #define numcol(reg) get_dimm_attr((reg), 0, 1, 10, 0, 2, "cols")
 
@@ -354,6 +386,11 @@ static int get_dimm_info(u32 mtr, u32 amap, struct dimm_info *dimm,
 	int  banks = 16, ranks, rows, cols, npages;
 	u64 size;
 
+<<<<<<< HEAD
+=======
+	if (!IS_DIMM_PRESENT(mtr))
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ranks = numrank(mtr);
 	rows = numrow(mtr);
 	cols = numcol(mtr);
@@ -366,7 +403,11 @@ static int get_dimm_info(u32 mtr, u32 amap, struct dimm_info *dimm,
 
 	edac_dbg(0, "mc#%d: channel %d, dimm %d, %lld Mb (%d pages) bank: %d, rank: %d, row: %#x, col: %#x\n",
 		 imc->mc, chan, dimmno, size, npages,
+<<<<<<< HEAD
 		 banks, 1 << ranks, rows, cols);
+=======
+		 banks, ranks, rows, cols);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	imc->chan[chan].dimms[dimmno].close_pg = GET_BITFIELD(mtr, 0, 0);
 	imc->chan[chan].dimms[dimmno].bank_xor_enable = GET_BITFIELD(mtr, 9, 9);
@@ -385,6 +426,7 @@ static int get_dimm_info(u32 mtr, u32 amap, struct dimm_info *dimm,
 	return 1;
 }
 
+<<<<<<< HEAD
 static int get_nvdimm_info(struct dimm_info *dimm, struct skx_imc *imc,
 			   int chan, int dimmno)
 {
@@ -433,6 +475,8 @@ unknown_size:
 	return (size == 0 || size == ~0ull) ? 0 : 1;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SKX_GET_MTMTR(dev, reg) \
 	pci_read_config_dword((dev), 0x87c, &reg)
 
@@ -449,24 +493,37 @@ static int skx_get_dimm_config(struct mem_ctl_info *mci)
 {
 	struct skx_pvt *pvt = mci->pvt_info;
 	struct skx_imc *imc = pvt->imc;
+<<<<<<< HEAD
 	u32 mtr, amap, mcddrtcfg;
 	struct dimm_info *dimm;
 	int i, j;
+=======
+	struct dimm_info *dimm;
+	int i, j;
+	u32 mtr, amap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ndimms;
 
 	for (i = 0; i < NUM_CHANNELS; i++) {
 		ndimms = 0;
 		pci_read_config_dword(imc->chan[i].cdev, 0x8C, &amap);
+<<<<<<< HEAD
 		pci_read_config_dword(imc->chan[i].cdev, 0x400, &mcddrtcfg);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (j = 0; j < NUM_DIMMS; j++) {
 			dimm = EDAC_DIMM_PTR(mci->layers, mci->dimms,
 					     mci->n_layers, i, j, 0);
 			pci_read_config_dword(imc->chan[i].cdev,
 					0x80 + 4*j, &mtr);
+<<<<<<< HEAD
 			if (IS_DIMM_PRESENT(mtr))
 				ndimms += get_dimm_info(mtr, amap, dimm, imc, i, j);
 			else if (IS_NVDIMM_PRESENT(mcddrtcfg, j))
 				ndimms += get_nvdimm_info(dimm, imc, i, j);
+=======
+			ndimms += get_dimm_info(mtr, amap, dimm, imc, i, j);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		if (ndimms && !skx_check_ecc(imc->chan[0].cdev)) {
 			skx_printk(KERN_ERR, "ECC is disabled on imc %d\n", imc->mc);
@@ -524,6 +581,7 @@ static int skx_register_mci(struct skx_imc *imc)
 
 	mci->ctl_name = kasprintf(GFP_KERNEL, "Skylake Socket#%d IMC#%d",
 				  imc->node_id, imc->lmc);
+<<<<<<< HEAD
 	if (!mci->ctl_name) {
 		rc = -ENOMEM;
 		goto fail0;
@@ -533,6 +591,12 @@ static int skx_register_mci(struct skx_imc *imc)
 	mci->edac_ctl_cap = EDAC_FLAG_NONE;
 	mci->edac_cap = EDAC_FLAG_NONE;
 	mci->mod_name = EDAC_MOD_STR;
+=======
+	mci->mtype_cap = MEM_FLAG_DDR4;
+	mci->edac_ctl_cap = EDAC_FLAG_NONE;
+	mci->edac_cap = EDAC_FLAG_NONE;
+	mci->mod_name = "skx_edac.c";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mci->dev_name = pci_name(imc->chan[0].cdev);
 	mci->ctl_page_to_phys = NULL;
 
@@ -554,7 +618,10 @@ static int skx_register_mci(struct skx_imc *imc)
 
 fail:
 	kfree(mci->ctl_name);
+<<<<<<< HEAD
 fail0:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edac_mc_free(mci);
 	imc->mci = NULL;
 	return rc;
@@ -1104,17 +1171,23 @@ static int __init skx_init(void)
 {
 	const struct x86_cpu_id *id;
 	const struct munit *m;
+<<<<<<< HEAD
 	const char *owner;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 0, i;
 	u8 mc = 0, src_id, node_id;
 	struct skx_dev *d;
 
 	edac_dbg(2, "\n");
 
+<<<<<<< HEAD
 	owner = edac_get_owner();
 	if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
 		return -EBUSY;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	id = x86_match_cpu(skx_cpuids);
 	if (!id)
 		return -ENODEV;

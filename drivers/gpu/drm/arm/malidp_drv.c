@@ -13,17 +13,25 @@
 #include <linux/module.h>
 #include <linux/clk.h>
 #include <linux/component.h>
+<<<<<<< HEAD
+=======
+#include <linux/console.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_device.h>
 #include <linux/of_graph.h>
 #include <linux/of_reserved_mem.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/debugfs.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <drm/drmP.h>
 #include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc.h>
 #include <drm/drm_crtc_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
@@ -33,6 +41,13 @@
 
 #include "malidp_drv.h"
 #include "malidp_mw.h"
+=======
+#include <drm/drm_fb_cma_helper.h>
+#include <drm/drm_gem_cma_helper.h>
+#include <drm/drm_of.h>
+
+#include "malidp_drv.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "malidp_regs.h"
 #include "malidp_hw.h"
 
@@ -50,10 +65,17 @@ static void malidp_write_gamma_table(struct malidp_hw_device *hwdev,
 	 * directly.
 	 */
 	malidp_hw_write(hwdev, gamma_write_mask,
+<<<<<<< HEAD
 			hwdev->hw->map.coeffs_base + MALIDP_COEF_TABLE_ADDR);
 	for (i = 0; i < MALIDP_COEFFTAB_NUM_COEFFS; ++i)
 		malidp_hw_write(hwdev, data[i],
 				hwdev->hw->map.coeffs_base +
+=======
+			hwdev->map.coeffs_base + MALIDP_COEF_TABLE_ADDR);
+	for (i = 0; i < MALIDP_COEFFTAB_NUM_COEFFS; ++i)
+		malidp_hw_write(hwdev, data[i],
+				hwdev->map.coeffs_base +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				MALIDP_COEF_TABLE_DATA);
 }
 
@@ -106,7 +128,11 @@ void malidp_atomic_commit_update_coloradj(struct drm_crtc *crtc,
 			for (i = 0; i < MALIDP_COLORADJ_NUM_COEFFS; ++i)
 				malidp_hw_write(hwdev,
 						mc->coloradj_coeffs[i],
+<<<<<<< HEAD
 						hwdev->hw->map.coeffs_base +
+=======
+						hwdev->map.coeffs_base +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						MALIDP_COLOR_ADJ_COEF + 4 * i);
 
 		malidp_hw_setbits(hwdev, MALIDP_DISP_FUNC_CADJ,
@@ -123,8 +149,13 @@ static void malidp_atomic_commit_se_config(struct drm_crtc *crtc,
 	struct malidp_hw_device *hwdev = malidp->dev;
 	struct malidp_se_config *s = &cs->scaler_config;
 	struct malidp_se_config *old_s = &old_cs->scaler_config;
+<<<<<<< HEAD
 	u32 se_control = hwdev->hw->map.se_base +
 			 ((hwdev->hw->map.features & MALIDP_REGMAP_HAS_CLEARIRQ) ?
+=======
+	u32 se_control = hwdev->map.se_base +
+			 ((hwdev->map.features & MALIDP_REGMAP_HAS_CLEARIRQ) ?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 0x10 : 0xC);
 	u32 layer_control = se_control + MALIDP_SE_LAYER_CONTROL;
 	u32 scr = se_control + MALIDP_SE_SCALING_CONTROL;
@@ -138,7 +169,11 @@ static void malidp_atomic_commit_se_config(struct drm_crtc *crtc,
 		return;
 	}
 
+<<<<<<< HEAD
 	hwdev->hw->se_set_scaling_coeffs(hwdev, s, old_s);
+=======
+	hwdev->se_set_scaling_coeffs(hwdev, s, old_s);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = malidp_hw_read(hwdev, se_control);
 	val |= MALIDP_SE_SCALING_EN | MALIDP_SE_ALPHA_EN;
 
@@ -172,6 +207,7 @@ static int malidp_set_and_wait_config_valid(struct drm_device *drm)
 	struct malidp_hw_device *hwdev = malidp->dev;
 	int ret;
 
+<<<<<<< HEAD
 	hwdev->hw->set_config_valid(hwdev, 1);
 	/* don't wait for config_valid flag if we are in config mode */
 	if (hwdev->hw->in_config_mode(hwdev)) {
@@ -181,11 +217,22 @@ static int malidp_set_and_wait_config_valid(struct drm_device *drm)
 
 	ret = wait_event_interruptible_timeout(malidp->wq,
 			atomic_read(&malidp->config_valid) == MALIDP_CONFIG_VALID_DONE,
+=======
+	atomic_set(&malidp->config_valid, 0);
+	hwdev->set_config_valid(hwdev);
+	/* don't wait for config_valid flag if we are in config mode */
+	if (hwdev->in_config_mode(hwdev))
+		return 0;
+
+	ret = wait_event_interruptible_timeout(malidp->wq,
+			atomic_read(&malidp->config_valid) == 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			msecs_to_jiffies(MALIDP_CONF_VALID_TIMEOUT));
 
 	return (ret > 0) ? 0 : -ETIMEDOUT;
 }
 
+<<<<<<< HEAD
 static void malidp_atomic_commit_hw_done(struct drm_atomic_state *state)
 {
 	struct drm_device *drm = state->dev;
@@ -222,6 +269,36 @@ static void malidp_atomic_commit_hw_done(struct drm_atomic_state *state)
 		spin_lock_irq(&drm->event_lock);
 		drm_crtc_send_vblank_event(&malidp->crtc, malidp->event);
 		malidp->event = NULL;
+=======
+static void malidp_output_poll_changed(struct drm_device *drm)
+{
+	struct malidp_drm *malidp = drm->dev_private;
+
+	drm_fbdev_cma_hotplug_event(malidp->fbdev);
+}
+
+static void malidp_atomic_commit_hw_done(struct drm_atomic_state *state)
+{
+	struct drm_pending_vblank_event *event;
+	struct drm_device *drm = state->dev;
+	struct malidp_drm *malidp = drm->dev_private;
+
+	if (malidp->crtc.enabled) {
+		/* only set config_valid if the CRTC is enabled */
+		if (malidp_set_and_wait_config_valid(drm))
+			DRM_DEBUG_DRIVER("timed out waiting for updated configuration\n");
+	}
+
+	event = malidp->crtc.state->event;
+	if (event) {
+		malidp->crtc.state->event = NULL;
+
+		spin_lock_irq(&drm->event_lock);
+		if (drm_crtc_vblank_get(&malidp->crtc) == 0)
+			drm_crtc_arm_vblank_event(&malidp->crtc, event);
+		else
+			drm_crtc_send_vblank_event(&malidp->crtc, event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irq(&drm->event_lock);
 	}
 	drm_atomic_helper_commit_hw_done(state);
@@ -230,13 +307,17 @@ static void malidp_atomic_commit_hw_done(struct drm_atomic_state *state)
 static void malidp_atomic_commit_tail(struct drm_atomic_state *state)
 {
 	struct drm_device *drm = state->dev;
+<<<<<<< HEAD
 	struct malidp_drm *malidp = drm->dev_private;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_crtc *crtc;
 	struct drm_crtc_state *old_crtc_state;
 	int i;
 
 	pm_runtime_get_sync(drm->dev);
 
+<<<<<<< HEAD
 	/*
 	 * set config_valid to a special value to let IRQ handlers
 	 * know that we are updating registers
@@ -244,6 +325,8 @@ static void malidp_atomic_commit_tail(struct drm_atomic_state *state)
 	atomic_set(&malidp->config_valid, MALIDP_CONFIG_START);
 	malidp->dev->hw->set_config_valid(malidp->dev, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_atomic_helper_commit_modeset_disables(drm, state);
 
 	for_each_old_crtc_in_state(state, crtc, old_crtc_state, i) {
@@ -252,14 +335,23 @@ static void malidp_atomic_commit_tail(struct drm_atomic_state *state)
 		malidp_atomic_commit_se_config(crtc, old_crtc_state);
 	}
 
+<<<<<<< HEAD
 	drm_atomic_helper_commit_planes(drm, state, DRM_PLANE_COMMIT_ACTIVE_ONLY);
 
 	malidp_mw_atomic_commit(drm, state);
+=======
+	drm_atomic_helper_commit_planes(drm, state, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_atomic_helper_commit_modeset_enables(drm, state);
 
 	malidp_atomic_commit_hw_done(state);
 
+<<<<<<< HEAD
+=======
+	drm_atomic_helper_wait_for_vblanks(drm, state);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put(drm->dev);
 
 	drm_atomic_helper_cleanup_planes(drm, state);
@@ -270,8 +362,13 @@ static const struct drm_mode_config_helper_funcs malidp_mode_config_helpers = {
 };
 
 static const struct drm_mode_config_funcs malidp_mode_config_funcs = {
+<<<<<<< HEAD
 	.fb_create = drm_gem_fb_create,
 	.output_poll_changed = drm_fb_helper_output_poll_changed,
+=======
+	.fb_create = drm_fb_cma_create,
+	.output_poll_changed = malidp_output_poll_changed,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_check = drm_atomic_helper_check,
 	.atomic_commit = drm_atomic_helper_commit,
 };
@@ -292,6 +389,7 @@ static int malidp_init(struct drm_device *drm)
 	drm->mode_config.helper_private = &malidp_mode_config_helpers;
 
 	ret = malidp_crtc_init(drm);
+<<<<<<< HEAD
 	if (ret)
 		goto crtc_fail;
 
@@ -304,10 +402,22 @@ static int malidp_init(struct drm_device *drm)
 crtc_fail:
 	drm_mode_config_cleanup(drm);
 	return ret;
+=======
+	if (ret) {
+		drm_mode_config_cleanup(drm);
+		return ret;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void malidp_fini(struct drm_device *drm)
 {
+<<<<<<< HEAD
+=======
+	malidp_de_planes_destroy(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_mode_config_cleanup(drm);
 }
 
@@ -315,8 +425,11 @@ static int malidp_irq_init(struct platform_device *pdev)
 {
 	int irq_de, irq_se, ret = 0;
 	struct drm_device *drm = dev_get_drvdata(&pdev->dev);
+<<<<<<< HEAD
 	struct malidp_drm *malidp = drm->dev_private;
 	struct malidp_hw_device *hwdev = malidp->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* fetch the interrupts from DT */
 	irq_de = platform_get_irq_byname(pdev, "DE");
@@ -336,13 +449,18 @@ static int malidp_irq_init(struct platform_device *pdev)
 
 	ret = malidp_se_irq_init(drm, irq_se);
 	if (ret) {
+<<<<<<< HEAD
 		malidp_de_irq_fini(hwdev);
+=======
+		malidp_de_irq_fini(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 DEFINE_DRM_GEM_CMA_FOPS(fops);
 
 static int malidp_dumb_create(struct drm_file *file_priv,
@@ -465,6 +583,24 @@ static struct drm_driver malidp_driver = {
 	.gem_free_object_unlocked = drm_gem_cma_free_object,
 	.gem_vm_ops = &drm_gem_cma_vm_ops,
 	.dumb_create = malidp_dumb_create,
+=======
+static void malidp_lastclose(struct drm_device *drm)
+{
+	struct malidp_drm *malidp = drm->dev_private;
+
+	drm_fbdev_cma_restore_mode(malidp->fbdev);
+}
+
+DEFINE_DRM_GEM_CMA_FOPS(fops);
+
+static struct drm_driver malidp_driver = {
+	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC |
+			   DRIVER_PRIME,
+	.lastclose = malidp_lastclose,
+	.gem_free_object_unlocked = drm_gem_cma_free_object,
+	.gem_vm_ops = &drm_gem_cma_vm_ops,
+	.dumb_create = drm_gem_cma_dumb_create,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
 	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
 	.gem_prime_export = drm_gem_prime_export,
@@ -474,9 +610,12 @@ static struct drm_driver malidp_driver = {
 	.gem_prime_vmap = drm_gem_cma_prime_vmap,
 	.gem_prime_vunmap = drm_gem_cma_prime_vunmap,
 	.gem_prime_mmap = drm_gem_cma_prime_mmap,
+<<<<<<< HEAD
 #ifdef CONFIG_DEBUG_FS
 	.debugfs_init = malidp_debugfs_init,
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fops = &fops,
 	.name = "mali-dp",
 	.desc = "ARM Mali Display Processor driver",
@@ -591,10 +730,15 @@ static int malidp_runtime_pm_suspend(struct device *dev)
 	struct malidp_hw_device *hwdev = malidp->dev;
 
 	/* we can only suspend if the hardware is in config mode */
+<<<<<<< HEAD
 	WARN_ON(!hwdev->hw->in_config_mode(hwdev));
 
 	malidp_se_irq_fini(hwdev);
 	malidp_de_irq_fini(hwdev);
+=======
+	WARN_ON(!hwdev->in_config_mode(hwdev));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hwdev->pm_suspended = true;
 	clk_disable_unprepare(hwdev->mclk);
 	clk_disable_unprepare(hwdev->aclk);
@@ -613,8 +757,11 @@ static int malidp_runtime_pm_resume(struct device *dev)
 	clk_prepare_enable(hwdev->aclk);
 	clk_prepare_enable(hwdev->mclk);
 	hwdev->pm_suspended = false;
+<<<<<<< HEAD
 	malidp_de_irq_hw_init(hwdev);
 	malidp_se_irq_hw_init(hwdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -627,7 +774,10 @@ static int malidp_bind(struct device *dev)
 	struct malidp_hw_device *hwdev;
 	struct platform_device *pdev = to_platform_device(dev);
 	struct of_device_id const *dev_id;
+<<<<<<< HEAD
 	struct drm_encoder *encoder;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* number of lines for the R, G and B output */
 	u8 output_width[MAX_OUTPUT_CHANNELS];
 	int ret = 0, i;
@@ -641,7 +791,15 @@ static int malidp_bind(struct device *dev)
 	if (!hwdev)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	hwdev->hw = (struct malidp_hw *)of_device_get_match_data(dev);
+=======
+	/*
+	 * copy the associated data from malidp_drm_of_match to avoid
+	 * having to keep a reference to the OF node after binding
+	 */
+	memcpy(hwdev, of_device_get_match_data(dev), sizeof(*hwdev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	malidp->dev = hwdev;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
@@ -705,13 +863,21 @@ static int malidp_bind(struct device *dev)
 		goto query_hw_fail;
 	}
 
+<<<<<<< HEAD
 	ret = hwdev->hw->query_hw(hwdev);
+=======
+	ret = hwdev->query_hw(hwdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("Invalid HW configuration\n");
 		goto query_hw_fail;
 	}
 
+<<<<<<< HEAD
 	version = malidp_hw_read(hwdev, hwdev->hw->map.dc_base + MALIDP_DE_CORE_ID);
+=======
+	version = malidp_hw_read(hwdev, hwdev->map.dc_base + MALIDP_DE_CORE_ID);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DRM_INFO("found ARM Mali-DP%3x version r%dp%d\n", version >> 16,
 		 (version >> 12) & 0xf, (version >> 8) & 0xf);
 
@@ -726,10 +892,16 @@ static int malidp_bind(struct device *dev)
 
 	for (i = 0; i < MAX_OUTPUT_CHANNELS; i++)
 		out_depth = (out_depth << 8) | (output_width[i] & 0xf);
+<<<<<<< HEAD
 	malidp_hw_write(hwdev, out_depth, hwdev->hw->map.out_depth_base);
 	hwdev->output_color_depth = out_depth;
 
 	atomic_set(&malidp->config_valid, MALIDP_CONFIG_VALID_INIT);
+=======
+	malidp_hw_write(hwdev, out_depth, hwdev->map.out_depth_base);
+
+	atomic_set(&malidp->config_valid, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_waitqueue_head(&malidp->wq);
 
 	ret = malidp_init(drm);
@@ -749,6 +921,7 @@ static int malidp_bind(struct device *dev)
 		goto bind_fail;
 	}
 
+<<<<<<< HEAD
 	/* We expect to have a maximum of two encoders one for the actual
 	 * display and a virtual one for the writeback connector
 	 */
@@ -758,6 +931,8 @@ static int malidp_bind(struct device *dev)
 				(1 << drm->mode_config.num_encoder) -  1;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = malidp_irq_init(pdev);
 	if (ret < 0)
 		goto irq_init_fail;
@@ -774,9 +949,20 @@ static int malidp_bind(struct device *dev)
 
 	drm_mode_config_reset(drm);
 
+<<<<<<< HEAD
 	ret = drm_fb_cma_fbdev_init(drm, 32, 0);
 	if (ret)
 		goto fbdev_fail;
+=======
+	malidp->fbdev = drm_fbdev_cma_init(drm, 32,
+					   drm->mode_config.num_connector);
+
+	if (IS_ERR(malidp->fbdev)) {
+		ret = PTR_ERR(malidp->fbdev);
+		malidp->fbdev = NULL;
+		goto fbdev_fail;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_kms_helper_poll_init(drm);
 
@@ -787,16 +973,30 @@ static int malidp_bind(struct device *dev)
 	return 0;
 
 register_fail:
+<<<<<<< HEAD
 	drm_fb_cma_fbdev_fini(drm);
+=======
+	if (malidp->fbdev) {
+		drm_fbdev_cma_fini(malidp->fbdev);
+		malidp->fbdev = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_kms_helper_poll_fini(drm);
 fbdev_fail:
 	pm_runtime_get_sync(dev);
 vblank_fail:
+<<<<<<< HEAD
 	malidp_se_irq_fini(hwdev);
 	malidp_de_irq_fini(hwdev);
 	drm->irq_enabled = false;
 irq_init_fail:
 	drm_atomic_helper_shutdown(drm);
+=======
+	malidp_se_irq_fini(drm);
+	malidp_de_irq_fini(drm);
+	drm->irq_enabled = false;
+irq_init_fail:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	component_unbind_all(dev, drm);
 bind_fail:
 	of_node_put(malidp->crtc.port);
@@ -812,7 +1012,11 @@ query_hw_fail:
 		malidp_runtime_pm_suspend(dev);
 	drm->dev_private = NULL;
 	dev_set_drvdata(dev, NULL);
+<<<<<<< HEAD
 	drm_dev_put(drm);
+=======
+	drm_dev_unref(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 alloc_fail:
 	of_reserved_mem_device_release(dev);
 
@@ -823,6 +1027,7 @@ static void malidp_unbind(struct device *dev)
 {
 	struct drm_device *drm = dev_get_drvdata(dev);
 	struct malidp_drm *malidp = drm->dev_private;
+<<<<<<< HEAD
 	struct malidp_hw_device *hwdev = malidp->dev;
 
 	drm_dev_unregister(drm);
@@ -834,6 +1039,18 @@ static void malidp_unbind(struct device *dev)
 	malidp_de_irq_fini(hwdev);
 	drm->irq_enabled = false;
 	drm_atomic_helper_shutdown(drm);
+=======
+
+	drm_dev_unregister(drm);
+	if (malidp->fbdev) {
+		drm_fbdev_cma_fini(malidp->fbdev);
+		malidp->fbdev = NULL;
+	}
+	drm_kms_helper_poll_fini(drm);
+	pm_runtime_get_sync(dev);
+	malidp_se_irq_fini(drm);
+	malidp_de_irq_fini(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	component_unbind_all(dev, drm);
 	of_node_put(malidp->crtc.port);
 	malidp->crtc.port = NULL;
@@ -846,7 +1063,11 @@ static void malidp_unbind(struct device *dev)
 		malidp_runtime_pm_suspend(dev);
 	drm->dev_private = NULL;
 	dev_set_drvdata(dev, NULL);
+<<<<<<< HEAD
 	drm_dev_put(drm);
+=======
+	drm_dev_unref(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	of_reserved_mem_device_release(dev);
 }
 
@@ -891,19 +1112,49 @@ static int malidp_platform_remove(struct platform_device *pdev)
 static int __maybe_unused malidp_pm_suspend(struct device *dev)
 {
 	struct drm_device *drm = dev_get_drvdata(dev);
+<<<<<<< HEAD
 
 	return drm_mode_config_helper_suspend(drm);
+=======
+	struct malidp_drm *malidp = drm->dev_private;
+
+	drm_kms_helper_poll_disable(drm);
+	console_lock();
+	drm_fbdev_cma_set_suspend(malidp->fbdev, 1);
+	console_unlock();
+	malidp->pm_state = drm_atomic_helper_suspend(drm);
+	if (IS_ERR(malidp->pm_state)) {
+		console_lock();
+		drm_fbdev_cma_set_suspend(malidp->fbdev, 0);
+		console_unlock();
+		drm_kms_helper_poll_enable(drm);
+		return PTR_ERR(malidp->pm_state);
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __maybe_unused malidp_pm_resume(struct device *dev)
 {
 	struct drm_device *drm = dev_get_drvdata(dev);
+<<<<<<< HEAD
 
 	drm_mode_config_helper_resume(drm);
+=======
+	struct malidp_drm *malidp = drm->dev_private;
+
+	drm_atomic_helper_resume(drm, malidp->pm_state);
+	console_lock();
+	drm_fbdev_cma_set_suspend(malidp->fbdev, 0);
+	console_unlock();
+	drm_kms_helper_poll_enable(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused malidp_pm_suspend_late(struct device *dev)
 {
 	if (!pm_runtime_status_suspended(dev)) {
@@ -923,6 +1174,10 @@ static int __maybe_unused malidp_pm_resume_early(struct device *dev)
 static const struct dev_pm_ops malidp_pm_ops = {
 	SET_SYSTEM_SLEEP_PM_OPS(malidp_pm_suspend, malidp_pm_resume) \
 	SET_LATE_SYSTEM_SLEEP_PM_OPS(malidp_pm_suspend_late, malidp_pm_resume_early) \
+=======
+static const struct dev_pm_ops malidp_pm_ops = {
+	SET_SYSTEM_SLEEP_PM_OPS(malidp_pm_suspend, malidp_pm_resume) \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SET_RUNTIME_PM_OPS(malidp_runtime_pm_suspend, malidp_runtime_pm_resume, NULL)
 };
 

@@ -198,21 +198,33 @@ void __init opal_sys_param_init(void)
 		goto out_param_buf;
 	}
 
+<<<<<<< HEAD
 	id = kcalloc(count, sizeof(*id), GFP_KERNEL);
+=======
+	id = kzalloc(sizeof(*id) * count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!id) {
 		pr_err("SYSPARAM: Failed to allocate memory to read parameter "
 				"id\n");
 		goto out_param_buf;
 	}
 
+<<<<<<< HEAD
 	size = kcalloc(count, sizeof(*size), GFP_KERNEL);
+=======
+	size = kzalloc(sizeof(*size) * count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!size) {
 		pr_err("SYSPARAM: Failed to allocate memory to read parameter "
 				"size\n");
 		goto out_free_id;
 	}
 
+<<<<<<< HEAD
 	perm = kcalloc(count, sizeof(*perm), GFP_KERNEL);
+=======
+	perm = kzalloc(sizeof(*perm) * count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!perm) {
 		pr_err("SYSPARAM: Failed to allocate memory to read supported "
 				"action on the parameter");
@@ -235,7 +247,11 @@ void __init opal_sys_param_init(void)
 		goto out_free_perm;
 	}
 
+<<<<<<< HEAD
 	attr = kcalloc(count, sizeof(*attr), GFP_KERNEL);
+=======
+	attr = kzalloc(sizeof(*attr) * count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!attr) {
 		pr_err("SYSPARAM: Failed to allocate memory for parameter "
 				"attributes\n");
@@ -260,6 +276,7 @@ void __init opal_sys_param_init(void)
 		/* If the parameter is read-only or read-write */
 		switch (perm[i] & 3) {
 		case OPAL_SYSPARAM_READ:
+<<<<<<< HEAD
 			attr[i].kobj_attr.attr.mode = 0444;
 			break;
 		case OPAL_SYSPARAM_WRITE:
@@ -267,6 +284,15 @@ void __init opal_sys_param_init(void)
 			break;
 		case OPAL_SYSPARAM_RW:
 			attr[i].kobj_attr.attr.mode = 0644;
+=======
+			attr[i].kobj_attr.attr.mode = S_IRUGO;
+			break;
+		case OPAL_SYSPARAM_WRITE:
+			attr[i].kobj_attr.attr.mode = S_IWUSR;
+			break;
+		case OPAL_SYSPARAM_RW:
+			attr[i].kobj_attr.attr.mode = S_IRUGO | S_IWUSR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		default:
 			break;

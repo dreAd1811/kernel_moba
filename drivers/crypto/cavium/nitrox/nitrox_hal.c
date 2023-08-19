@@ -127,7 +127,11 @@ void nitrox_config_pkt_input_rings(struct nitrox_device *ndev)
 		 * size and interrupt threshold.
 		 */
 		offset = NPS_PKT_IN_INSTR_BADDRX(i);
+<<<<<<< HEAD
 		nitrox_write_csr(ndev, offset, cmdq->dma);
+=======
+		nitrox_write_csr(ndev, NPS_PKT_IN_INSTR_BADDRX(i), cmdq->dma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* configure ring size */
 		offset = NPS_PKT_IN_INSTR_RSIZEX(i);

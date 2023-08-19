@@ -37,12 +37,15 @@
 #include "nouveau_bo.h"
 #include "nouveau_ttm.h"
 #include "nouveau_gem.h"
+<<<<<<< HEAD
 #include "nouveau_mem.h"
 #include "nouveau_vmm.h"
 
 #include <nvif/class.h>
 #include <nvif/if500b.h>
 #include <nvif/if900b.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * NV10-NV40 tiling helpers
@@ -54,7 +57,12 @@ nv10_bo_update_tile_region(struct drm_device *dev, struct nouveau_drm_tile *reg,
 {
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	int i = reg - drm->tile.reg;
+<<<<<<< HEAD
 	struct nvkm_fb *fb = nvxx_fb(&drm->client.device);
+=======
+	struct nvkm_device *device = nvxx_device(&drm->client.device);
+	struct nvkm_fb *fb = device->fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nvkm_fb_tile *tile = &fb->tile.region[i];
 
 	nouveau_fence_unref(&reg->fence);
@@ -102,7 +110,11 @@ nv10_bo_put_tile_region(struct drm_device *dev, struct nouveau_drm_tile *tile,
 
 static struct nouveau_drm_tile *
 nv10_bo_set_tiling(struct drm_device *dev, u32 addr,
+<<<<<<< HEAD
 		   u32 size, u32 pitch, u32 zeta)
+=======
+		   u32 size, u32 pitch, u32 flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nouveau_drm *drm = nouveau_drm(dev);
 	struct nvkm_fb *fb = nvxx_fb(&drm->client.device);
@@ -125,7 +137,12 @@ nv10_bo_set_tiling(struct drm_device *dev, u32 addr,
 	}
 
 	if (found)
+<<<<<<< HEAD
 		nv10_bo_update_tile_region(dev, found, addr, size, pitch, zeta);
+=======
+		nv10_bo_update_tile_region(dev, found, addr, size,
+					    pitch, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return found;
 }
 
@@ -159,6 +176,7 @@ nouveau_bo_fixup_align(struct nouveau_bo *nvbo, u32 flags,
 	struct nvif_device *device = &drm->client.device;
 
 	if (device->info.family < NV_DEVICE_INFO_V0_TESLA) {
+<<<<<<< HEAD
 		if (nvbo->mode) {
 			if (device->info.chipset >= 0x40) {
 				*align = 65536;
@@ -180,6 +198,29 @@ nouveau_bo_fixup_align(struct nouveau_bo *nvbo, u32 flags,
 	} else {
 		*size = roundup_64(*size, (1 << nvbo->page));
 		*align = max((1 <<  nvbo->page), *align);
+=======
+		if (nvbo->tile_mode) {
+			if (device->info.chipset >= 0x40) {
+				*align = 65536;
+				*size = roundup_64(*size, 64 * nvbo->tile_mode);
+
+			} else if (device->info.chipset >= 0x30) {
+				*align = 32768;
+				*size = roundup_64(*size, 64 * nvbo->tile_mode);
+
+			} else if (device->info.chipset >= 0x20) {
+				*align = 16384;
+				*size = roundup_64(*size, 64 * nvbo->tile_mode);
+
+			} else if (device->info.chipset >= 0x10) {
+				*align = 16384;
+				*size = roundup_64(*size, 32 * nvbo->tile_mode);
+			}
+		}
+	} else {
+		*size = roundup_64(*size, (1 << nvbo->page_shift));
+		*align = max((1 <<  nvbo->page_shift), *align);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	*size = roundup_64(*size, PAGE_SIZE);
@@ -191,6 +232,7 @@ nouveau_bo_new(struct nouveau_cli *cli, u64 size, int align,
 	       struct sg_table *sg, struct reservation_object *robj,
 	       struct nouveau_bo **pnvbo)
 {
+<<<<<<< HEAD
 	struct nouveau_drm *drm = cli->drm;
 	struct nouveau_bo *nvbo;
 	struct nvif_mmu *mmu = &cli->mmu;
@@ -198,6 +240,13 @@ nouveau_bo_new(struct nouveau_cli *cli, u64 size, int align,
 	size_t acc_size;
 	int type = ttm_bo_type_device;
 	int ret, i, pi = -1;
+=======
+	struct nouveau_drm *drm = nouveau_drm(cli->dev);
+	struct nouveau_bo *nvbo;
+	size_t acc_size;
+	int ret;
+	int type = ttm_bo_type_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!size) {
 		NV_WARN(drm, "skipped size %016llx\n", size);
@@ -213,6 +262,7 @@ nouveau_bo_new(struct nouveau_cli *cli, u64 size, int align,
 	INIT_LIST_HEAD(&nvbo->head);
 	INIT_LIST_HEAD(&nvbo->entry);
 	INIT_LIST_HEAD(&nvbo->vma_list);
+<<<<<<< HEAD
 	nvbo->bo.bdev = &drm->ttm.bdev;
 
 	/* This is confusing, and doesn't actually mean we want an uncached
@@ -288,6 +338,22 @@ nouveau_bo_new(struct nouveau_cli *cli, u64 size, int align,
 	}
 	nvbo->page = vmm->page[pi].shift;
 
+=======
+	nvbo->tile_mode = tile_mode;
+	nvbo->tile_flags = tile_flags;
+	nvbo->bo.bdev = &drm->ttm.bdev;
+	nvbo->cli = cli;
+
+	if (!nvxx_device(&drm->client.device)->func->cpu_coherent)
+		nvbo->force_coherent = flags & TTM_PL_FLAG_UNCACHED;
+
+	nvbo->page_shift = 12;
+	if (drm->client.vm) {
+		if (!(flags & TTM_PL_FLAG_TT) && size > 256 * 1024)
+			nvbo->page_shift = drm->client.vm->mmu->lpg_shift;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nouveau_bo_fixup_align(nvbo, flags, &align, &size);
 	nvbo->bo.mem.num_pages = size >> PAGE_SHIFT;
 	nouveau_bo_placement_set(nvbo, flags, 0);
@@ -297,7 +363,11 @@ nouveau_bo_new(struct nouveau_cli *cli, u64 size, int align,
 
 	ret = ttm_bo_init(&drm->ttm.bdev, &nvbo->bo, size,
 			  type, &nvbo->placement,
+<<<<<<< HEAD
 			  align >> PAGE_SHIFT, false, acc_size, sg,
+=======
+			  align >> PAGE_SHIFT, false, NULL, acc_size, sg,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  robj, nouveau_bo_del_ttm);
 	if (ret) {
 		/* ttm will call nouveau_bo_del_ttm if it fails.. */
@@ -329,7 +399,11 @@ set_placement_range(struct nouveau_bo *nvbo, uint32_t type)
 	unsigned i, fpfn, lpfn;
 
 	if (drm->client.device.info.family == NV_DEVICE_INFO_V0_CELSIUS &&
+<<<<<<< HEAD
 	    nvbo->mode && (type & TTM_PL_FLAG_VRAM) &&
+=======
+	    nvbo->tile_mode && (type & TTM_PL_FLAG_VRAM) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    nvbo->bo.mem.num_pages < vram_pages / 4) {
 		/*
 		 * Make sure that the color and depth buffers are handled
@@ -337,7 +411,11 @@ set_placement_range(struct nouveau_bo *nvbo, uint32_t type)
 		 * speed up when alpha-blending and depth-test are enabled
 		 * at the same time.
 		 */
+<<<<<<< HEAD
 		if (nvbo->zeta) {
+=======
+		if (nvbo->tile_flags & NOUVEAU_GEM_TILE_ZETA) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fpfn = vram_pages / 2;
 			lpfn = ~0;
 		} else {
@@ -388,10 +466,21 @@ nouveau_bo_pin(struct nouveau_bo *nvbo, uint32_t memtype, bool contig)
 
 	if (drm->client.device.info.family >= NV_DEVICE_INFO_V0_TESLA &&
 	    memtype == TTM_PL_FLAG_VRAM && contig) {
+<<<<<<< HEAD
 		if (!nvbo->contig) {
 			nvbo->contig = true;
 			force = true;
 			evict = true;
+=======
+		if (nvbo->tile_flags & NOUVEAU_GEM_TILE_NONCONTIG) {
+			if (bo->mem.mem_type == TTM_PL_VRAM) {
+				struct nvkm_mem *mem = bo->mem.mm_node;
+				if (!nvkm_mm_contiguous(mem->mem))
+					evict = true;
+			}
+			nvbo->tile_flags &= ~NOUVEAU_GEM_TILE_NONCONTIG;
+			force = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -439,7 +528,11 @@ nouveau_bo_pin(struct nouveau_bo *nvbo, uint32_t memtype, bool contig)
 
 out:
 	if (force && ret)
+<<<<<<< HEAD
 		nvbo->contig = false;
+=======
+		nvbo->tile_flags |= NOUVEAU_GEM_TILE_NONCONTIG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ttm_bo_unreserve(bo);
 	return ret;
 }
@@ -509,6 +602,10 @@ void
 nouveau_bo_sync_for_device(struct nouveau_bo *nvbo)
 {
 	struct nouveau_drm *drm = nouveau_bdev(nvbo->bo.bdev);
+<<<<<<< HEAD
+=======
+	struct nvkm_device *device = nvxx_device(&drm->client.device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_dma_tt *ttm_dma = (struct ttm_dma_tt *)nvbo->bo.ttm;
 	int i;
 
@@ -520,8 +617,12 @@ nouveau_bo_sync_for_device(struct nouveau_bo *nvbo)
 		return;
 
 	for (i = 0; i < ttm_dma->ttm.num_pages; i++)
+<<<<<<< HEAD
 		dma_sync_single_for_device(drm->dev->dev,
 					   ttm_dma->dma_address[i],
+=======
+		dma_sync_single_for_device(device->dev, ttm_dma->dma_address[i],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   PAGE_SIZE, DMA_TO_DEVICE);
 }
 
@@ -529,6 +630,10 @@ void
 nouveau_bo_sync_for_cpu(struct nouveau_bo *nvbo)
 {
 	struct nouveau_drm *drm = nouveau_bdev(nvbo->bo.bdev);
+<<<<<<< HEAD
+=======
+	struct nvkm_device *device = nvxx_device(&drm->client.device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_dma_tt *ttm_dma = (struct ttm_dma_tt *)nvbo->bo.ttm;
 	int i;
 
@@ -540,7 +645,11 @@ nouveau_bo_sync_for_cpu(struct nouveau_bo *nvbo)
 		return;
 
 	for (i = 0; i < ttm_dma->ttm.num_pages; i++)
+<<<<<<< HEAD
 		dma_sync_single_for_cpu(drm->dev->dev, ttm_dma->dma_address[i],
+=======
+		dma_sync_single_for_cpu(device->dev, ttm_dma->dma_address[i],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					PAGE_SIZE, DMA_FROM_DEVICE);
 }
 
@@ -548,10 +657,17 @@ int
 nouveau_bo_validate(struct nouveau_bo *nvbo, bool interruptible,
 		    bool no_wait_gpu)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { interruptible, no_wait_gpu };
 	int ret;
 
 	ret = ttm_bo_validate(&nvbo->bo, &nvbo->placement, &ctx);
+=======
+	int ret;
+
+	ret = ttm_bo_validate(&nvbo->bo, &nvbo->placement,
+			      interruptible, no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -603,6 +719,7 @@ nouveau_bo_wr32(struct nouveau_bo *nvbo, unsigned index, u32 val)
 }
 
 static struct ttm_tt *
+<<<<<<< HEAD
 nouveau_ttm_tt_create(struct ttm_buffer_object *bo, uint32_t page_flags)
 {
 #if IS_ENABLED(CONFIG_AGP)
@@ -614,6 +731,21 @@ nouveau_ttm_tt_create(struct ttm_buffer_object *bo, uint32_t page_flags)
 #endif
 
 	return nouveau_sgdma_create_ttm(bo, page_flags);
+=======
+nouveau_ttm_tt_create(struct ttm_bo_device *bdev, unsigned long size,
+		      uint32_t page_flags, struct page *dummy_read)
+{
+#if IS_ENABLED(CONFIG_AGP)
+	struct nouveau_drm *drm = nouveau_bdev(bdev);
+
+	if (drm->agp.bridge) {
+		return ttm_agp_tt_create(bdev, drm->agp.bridge, size,
+					 page_flags, dummy_read);
+	}
+#endif
+
+	return nouveau_sgdma_create_ttm(bdev, size, page_flags, dummy_read);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -628,7 +760,10 @@ nouveau_bo_init_mem_type(struct ttm_bo_device *bdev, uint32_t type,
 			 struct ttm_mem_type_manager *man)
 {
 	struct nouveau_drm *drm = nouveau_bdev(bdev);
+<<<<<<< HEAD
 	struct nvif_mmu *mmu = &drm->client.mmu;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (type) {
 	case TTM_PL_SYSTEM:
@@ -645,8 +780,12 @@ nouveau_bo_init_mem_type(struct ttm_bo_device *bdev, uint32_t type,
 
 		if (drm->client.device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
 			/* Some BARs do not support being ioremapped WC */
+<<<<<<< HEAD
 			const u8 type = mmu->type[drm->ttm.type_vram].type;
 			if (type & NVIF_MEM_UNCACHED) {
+=======
+			if (nvxx_bar(&drm->client.device)->iomap_uncached) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				man->available_caching = TTM_PL_FLAG_UNCACHED;
 				man->default_caching = TTM_PL_FLAG_UNCACHED;
 			}
@@ -721,6 +860,7 @@ static int
 nve0_bo_move_copy(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		  struct ttm_mem_reg *old_reg, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *mem = nouveau_mem(old_reg);
 	int ret = RING_SPACE(chan, 10);
 	if (ret == 0) {
@@ -729,6 +869,16 @@ nve0_bo_move_copy(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		OUT_RING  (chan, lower_32_bits(mem->vma[0].addr));
 		OUT_RING  (chan, upper_32_bits(mem->vma[1].addr));
 		OUT_RING  (chan, lower_32_bits(mem->vma[1].addr));
+=======
+	struct nvkm_mem *mem = old_reg->mm_node;
+	int ret = RING_SPACE(chan, 10);
+	if (ret == 0) {
+		BEGIN_NVC0(chan, NvSubCopy, 0x0400, 8);
+		OUT_RING  (chan, upper_32_bits(mem->vma[0].offset));
+		OUT_RING  (chan, lower_32_bits(mem->vma[0].offset));
+		OUT_RING  (chan, upper_32_bits(mem->vma[1].offset));
+		OUT_RING  (chan, lower_32_bits(mem->vma[1].offset));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		OUT_RING  (chan, PAGE_SIZE);
 		OUT_RING  (chan, PAGE_SIZE);
 		OUT_RING  (chan, PAGE_SIZE);
@@ -753,9 +903,15 @@ static int
 nvc0_bo_move_copy(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		  struct ttm_mem_reg *old_reg, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *mem = nouveau_mem(old_reg);
 	u64 src_offset = mem->vma[0].addr;
 	u64 dst_offset = mem->vma[1].addr;
+=======
+	struct nvkm_mem *mem = old_reg->mm_node;
+	u64 src_offset = mem->vma[0].offset;
+	u64 dst_offset = mem->vma[1].offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 page_count = new_reg->num_pages;
 	int ret;
 
@@ -791,9 +947,15 @@ static int
 nvc0_bo_move_m2mf(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		  struct ttm_mem_reg *old_reg, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *mem = nouveau_mem(old_reg);
 	u64 src_offset = mem->vma[0].addr;
 	u64 dst_offset = mem->vma[1].addr;
+=======
+	struct nvkm_mem *mem = old_reg->mm_node;
+	u64 src_offset = mem->vma[0].offset;
+	u64 dst_offset = mem->vma[1].offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 page_count = new_reg->num_pages;
 	int ret;
 
@@ -830,9 +992,15 @@ static int
 nva3_bo_move_copy(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		  struct ttm_mem_reg *old_reg, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *mem = nouveau_mem(old_reg);
 	u64 src_offset = mem->vma[0].addr;
 	u64 dst_offset = mem->vma[1].addr;
+=======
+	struct nvkm_mem *mem = old_reg->mm_node;
+	u64 src_offset = mem->vma[0].offset;
+	u64 dst_offset = mem->vma[1].offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 page_count = new_reg->num_pages;
 	int ret;
 
@@ -868,6 +1036,7 @@ static int
 nv98_bo_move_exec(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		  struct ttm_mem_reg *old_reg, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *mem = nouveau_mem(old_reg);
 	int ret = RING_SPACE(chan, 7);
 	if (ret == 0) {
@@ -876,6 +1045,16 @@ nv98_bo_move_exec(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		OUT_RING  (chan, lower_32_bits(mem->vma[0].addr));
 		OUT_RING  (chan, upper_32_bits(mem->vma[1].addr));
 		OUT_RING  (chan, lower_32_bits(mem->vma[1].addr));
+=======
+	struct nvkm_mem *mem = old_reg->mm_node;
+	int ret = RING_SPACE(chan, 7);
+	if (ret == 0) {
+		BEGIN_NV04(chan, NvSubCopy, 0x0320, 6);
+		OUT_RING  (chan, upper_32_bits(mem->vma[0].offset));
+		OUT_RING  (chan, lower_32_bits(mem->vma[0].offset));
+		OUT_RING  (chan, upper_32_bits(mem->vma[1].offset));
+		OUT_RING  (chan, lower_32_bits(mem->vma[1].offset));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		OUT_RING  (chan, 0x00000000 /* COPY */);
 		OUT_RING  (chan, new_reg->num_pages << PAGE_SHIFT);
 	}
@@ -886,15 +1065,26 @@ static int
 nv84_bo_move_exec(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		  struct ttm_mem_reg *old_reg, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *mem = nouveau_mem(old_reg);
+=======
+	struct nvkm_mem *mem = old_reg->mm_node;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = RING_SPACE(chan, 7);
 	if (ret == 0) {
 		BEGIN_NV04(chan, NvSubCopy, 0x0304, 6);
 		OUT_RING  (chan, new_reg->num_pages << PAGE_SHIFT);
+<<<<<<< HEAD
 		OUT_RING  (chan, upper_32_bits(mem->vma[0].addr));
 		OUT_RING  (chan, lower_32_bits(mem->vma[0].addr));
 		OUT_RING  (chan, upper_32_bits(mem->vma[1].addr));
 		OUT_RING  (chan, lower_32_bits(mem->vma[1].addr));
+=======
+		OUT_RING  (chan, upper_32_bits(mem->vma[0].offset));
+		OUT_RING  (chan, lower_32_bits(mem->vma[0].offset));
+		OUT_RING  (chan, upper_32_bits(mem->vma[1].offset));
+		OUT_RING  (chan, lower_32_bits(mem->vma[1].offset));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		OUT_RING  (chan, 0x00000000 /* MODE_COPY, QUERY_NONE */);
 	}
 	return ret;
@@ -920,12 +1110,21 @@ static int
 nv50_bo_move_m2mf(struct nouveau_channel *chan, struct ttm_buffer_object *bo,
 		  struct ttm_mem_reg *old_reg, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *mem = nouveau_mem(old_reg);
 	u64 length = (new_reg->num_pages << PAGE_SHIFT);
 	u64 src_offset = mem->vma[0].addr;
 	u64 dst_offset = mem->vma[1].addr;
 	int src_tiled = !!mem->kind;
 	int dst_tiled = !!nouveau_mem(new_reg)->kind;
+=======
+	struct nvkm_mem *mem = old_reg->mm_node;
+	u64 length = (new_reg->num_pages << PAGE_SHIFT);
+	u64 src_offset = mem->vma[0].offset;
+	u64 dst_offset = mem->vma[1].offset;
+	int src_tiled = !!mem->memtype;
+	int dst_tiled = !!((struct nvkm_mem *)new_reg->mm_node)->memtype;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	while (length) {
@@ -1062,6 +1261,7 @@ static int
 nouveau_bo_move_prep(struct nouveau_drm *drm, struct ttm_buffer_object *bo,
 		     struct ttm_mem_reg *reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *old_mem = nouveau_mem(&bo->mem);
 	struct nouveau_mem *new_mem = nouveau_mem(reg);
 	struct nvif_vmm *vmm = &drm->client.vmm.vmm;
@@ -1087,6 +1287,27 @@ done:
 		nvif_vmm_put(vmm, &old_mem->vma[1]);
 		nvif_vmm_put(vmm, &old_mem->vma[0]);
 	}
+=======
+	struct nvkm_mem *old_mem = bo->mem.mm_node;
+	struct nvkm_mem *new_mem = reg->mm_node;
+	u64 size = (u64)reg->num_pages << PAGE_SHIFT;
+	int ret;
+
+	ret = nvkm_vm_get(drm->client.vm, size, old_mem->page_shift,
+			  NV_MEM_ACCESS_RW, &old_mem->vma[0]);
+	if (ret)
+		return ret;
+
+	ret = nvkm_vm_get(drm->client.vm, size, new_mem->page_shift,
+			  NV_MEM_ACCESS_RW, &old_mem->vma[1]);
+	if (ret) {
+		nvkm_vm_put(&old_mem->vma[0]);
+		return ret;
+	}
+
+	nvkm_vm_map(&old_mem->vma[0], old_mem);
+	nvkm_vm_map(&old_mem->vma[1], new_mem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1141,8 +1362,11 @@ nouveau_bo_move_init(struct nouveau_drm *drm)
 			    struct ttm_mem_reg *, struct ttm_mem_reg *);
 		int (*init)(struct nouveau_channel *, u32 handle);
 	} _methods[] = {
+<<<<<<< HEAD
 		{  "COPY", 4, 0xc3b5, nve0_bo_move_copy, nve0_bo_move_init },
 		{  "GRCE", 0, 0xc3b5, nve0_bo_move_copy, nvc0_bo_move_init },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{  "COPY", 4, 0xc1b5, nve0_bo_move_copy, nve0_bo_move_init },
 		{  "GRCE", 0, 0xc1b5, nve0_bo_move_copy, nvc0_bo_move_init },
 		{  "COPY", 4, 0xc0b5, nve0_bo_move_copy, nve0_bo_move_init },
@@ -1199,7 +1423,10 @@ static int
 nouveau_bo_move_flipd(struct ttm_buffer_object *bo, bool evict, bool intr,
 		      bool no_wait_gpu, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { intr, no_wait_gpu };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_place placement_memtype = {
 		.fpfn = 0,
 		.lpfn = 0,
@@ -1214,11 +1441,19 @@ nouveau_bo_move_flipd(struct ttm_buffer_object *bo, bool evict, bool intr,
 
 	tmp_reg = *new_reg;
 	tmp_reg.mm_node = NULL;
+<<<<<<< HEAD
 	ret = ttm_bo_mem_space(bo, &placement, &tmp_reg, &ctx);
 	if (ret)
 		return ret;
 
 	ret = ttm_tt_bind(bo->ttm, &tmp_reg, &ctx);
+=======
+	ret = ttm_bo_mem_space(bo, &placement, &tmp_reg, intr, no_wait_gpu);
+	if (ret)
+		return ret;
+
+	ret = ttm_tt_bind(bo->ttm, &tmp_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -1226,7 +1461,11 @@ nouveau_bo_move_flipd(struct ttm_buffer_object *bo, bool evict, bool intr,
 	if (ret)
 		goto out;
 
+<<<<<<< HEAD
 	ret = ttm_bo_move_ttm(bo, &ctx, new_reg);
+=======
+	ret = ttm_bo_move_ttm(bo, intr, no_wait_gpu, new_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	ttm_bo_mem_put(bo, &tmp_reg);
 	return ret;
@@ -1236,7 +1475,10 @@ static int
 nouveau_bo_move_flips(struct ttm_buffer_object *bo, bool evict, bool intr,
 		      bool no_wait_gpu, struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { intr, no_wait_gpu };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ttm_place placement_memtype = {
 		.fpfn = 0,
 		.lpfn = 0,
@@ -1251,11 +1493,19 @@ nouveau_bo_move_flips(struct ttm_buffer_object *bo, bool evict, bool intr,
 
 	tmp_reg = *new_reg;
 	tmp_reg.mm_node = NULL;
+<<<<<<< HEAD
 	ret = ttm_bo_mem_space(bo, &placement, &tmp_reg, &ctx);
 	if (ret)
 		return ret;
 
 	ret = ttm_bo_move_ttm(bo, &ctx, &tmp_reg);
+=======
+	ret = ttm_bo_mem_space(bo, &placement, &tmp_reg, intr, no_wait_gpu);
+	if (ret)
+		return ret;
+
+	ret = ttm_bo_move_ttm(bo, intr, no_wait_gpu, &tmp_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -1272,14 +1522,20 @@ static void
 nouveau_bo_move_ntfy(struct ttm_buffer_object *bo, bool evict,
 		     struct ttm_mem_reg *new_reg)
 {
+<<<<<<< HEAD
 	struct nouveau_mem *mem = new_reg ? nouveau_mem(new_reg) : NULL;
 	struct nouveau_bo *nvbo = nouveau_bo(bo);
 	struct nouveau_vma *vma;
+=======
+	struct nouveau_bo *nvbo = nouveau_bo(bo);
+	struct nvkm_vma *vma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* ttm can now (stupidly) pass the driver bos it didn't create... */
 	if (bo->destroy != nouveau_bo_del_ttm)
 		return;
 
+<<<<<<< HEAD
 	if (mem && new_reg->mem_type != TTM_PL_SYSTEM &&
 	    mem->mem.page == nvbo->page) {
 		list_for_each_entry(vma, &nvbo->vma_list, head) {
@@ -1289,6 +1545,16 @@ nouveau_bo_move_ntfy(struct ttm_buffer_object *bo, bool evict,
 		list_for_each_entry(vma, &nvbo->vma_list, head) {
 			WARN_ON(ttm_bo_wait(bo, false, false));
 			nouveau_vma_unmap(vma);
+=======
+	list_for_each_entry(vma, &nvbo->vma_list, head) {
+		if (new_reg && new_reg->mem_type != TTM_PL_SYSTEM &&
+			      (new_reg->mem_type == TTM_PL_VRAM ||
+			       nvbo->page_shift != vma->vm->mmu->lpg_shift)) {
+			nvkm_vm_map(vma, new_reg->mm_node);
+		} else {
+			WARN_ON(ttm_bo_wait(bo, false, false));
+			nvkm_vm_unmap(vma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -1308,7 +1574,12 @@ nouveau_bo_vm_bind(struct ttm_buffer_object *bo, struct ttm_mem_reg *new_reg,
 
 	if (drm->client.device.info.family >= NV_DEVICE_INFO_V0_CELSIUS) {
 		*new_tile = nv10_bo_set_tiling(dev, offset, new_reg->size,
+<<<<<<< HEAD
 					       nvbo->mode, nvbo->zeta);
+=======
+						nvbo->tile_mode,
+						nvbo->tile_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -1328,9 +1599,14 @@ nouveau_bo_vm_cleanup(struct ttm_buffer_object *bo,
 }
 
 static int
+<<<<<<< HEAD
 nouveau_bo_move(struct ttm_buffer_object *bo, bool evict,
 		struct ttm_operation_ctx *ctx,
 		struct ttm_mem_reg *new_reg)
+=======
+nouveau_bo_move(struct ttm_buffer_object *bo, bool evict, bool intr,
+		bool no_wait_gpu, struct ttm_mem_reg *new_reg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct nouveau_drm *drm = nouveau_bdev(bo->bdev);
 	struct nouveau_bo *nvbo = nouveau_bo(bo);
@@ -1338,7 +1614,11 @@ nouveau_bo_move(struct ttm_buffer_object *bo, bool evict,
 	struct nouveau_drm_tile *new_tile = NULL;
 	int ret = 0;
 
+<<<<<<< HEAD
 	ret = ttm_bo_wait(bo, ctx->interruptible, ctx->no_wait_gpu);
+=======
+	ret = ttm_bo_wait(bo, intr, no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -1362,6 +1642,7 @@ nouveau_bo_move(struct ttm_buffer_object *bo, bool evict,
 	/* Hardware assisted copy. */
 	if (drm->ttm.move) {
 		if (new_reg->mem_type == TTM_PL_SYSTEM)
+<<<<<<< HEAD
 			ret = nouveau_bo_move_flipd(bo, evict,
 						    ctx->interruptible,
 						    ctx->no_wait_gpu, new_reg);
@@ -1373,14 +1654,30 @@ nouveau_bo_move(struct ttm_buffer_object *bo, bool evict,
 			ret = nouveau_bo_move_m2mf(bo, evict,
 						   ctx->interruptible,
 						   ctx->no_wait_gpu, new_reg);
+=======
+			ret = nouveau_bo_move_flipd(bo, evict, intr,
+						    no_wait_gpu, new_reg);
+		else if (old_reg->mem_type == TTM_PL_SYSTEM)
+			ret = nouveau_bo_move_flips(bo, evict, intr,
+						    no_wait_gpu, new_reg);
+		else
+			ret = nouveau_bo_move_m2mf(bo, evict, intr,
+						   no_wait_gpu, new_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ret)
 			goto out;
 	}
 
 	/* Fallback to software copy. */
+<<<<<<< HEAD
 	ret = ttm_bo_wait(bo, ctx->interruptible, ctx->no_wait_gpu);
 	if (ret == 0)
 		ret = ttm_bo_move_memcpy(bo, ctx, new_reg);
+=======
+	ret = ttm_bo_wait(bo, intr, no_wait_gpu);
+	if (ret == 0)
+		ret = ttm_bo_move_memcpy(bo, intr, no_wait_gpu, new_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	if (drm->client.device.info.family < NV_DEVICE_INFO_V0_TESLA) {
@@ -1408,7 +1705,12 @@ nouveau_ttm_io_mem_reserve(struct ttm_bo_device *bdev, struct ttm_mem_reg *reg)
 	struct ttm_mem_type_manager *man = &bdev->man[reg->mem_type];
 	struct nouveau_drm *drm = nouveau_bdev(bdev);
 	struct nvkm_device *device = nvxx_device(&drm->client.device);
+<<<<<<< HEAD
 	struct nouveau_mem *mem = nouveau_mem(reg);
+=======
+	struct nvkm_mem *mem = reg->mm_node;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	reg->bus.addr = NULL;
 	reg->bus.offset = 0;
@@ -1429,7 +1731,11 @@ nouveau_ttm_io_mem_reserve(struct ttm_bo_device *bdev, struct ttm_mem_reg *reg)
 			reg->bus.is_iomem = !drm->agp.cma;
 		}
 #endif
+<<<<<<< HEAD
 		if (drm->client.mem->oclass < NVIF_CLASS_MEM_NV50 || !mem->kind)
+=======
+		if (drm->client.device.info.family < NV_DEVICE_INFO_V0_TESLA || !mem->memtype)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* untiled */
 			break;
 		/* fallthrough, tiled memory */
@@ -1437,6 +1743,7 @@ nouveau_ttm_io_mem_reserve(struct ttm_bo_device *bdev, struct ttm_mem_reg *reg)
 		reg->bus.offset = reg->start << PAGE_SHIFT;
 		reg->bus.base = device->func->resource_addr(device, 1);
 		reg->bus.is_iomem = true;
+<<<<<<< HEAD
 		if (drm->client.mem->oclass >= NVIF_CLASS_MEM_NV50) {
 			union {
 				struct nv50_mem_map_v0 nv50;
@@ -1473,6 +1780,21 @@ nouveau_ttm_io_mem_reserve(struct ttm_bo_device *bdev, struct ttm_mem_reg *reg)
 
 			reg->bus.base = 0;
 			reg->bus.offset = handle;
+=======
+		if (drm->client.device.info.family >= NV_DEVICE_INFO_V0_TESLA) {
+			struct nvkm_bar *bar = nvxx_bar(&drm->client.device);
+			int page_shift = 12;
+			if (drm->client.device.info.family >= NV_DEVICE_INFO_V0_FERMI)
+				page_shift = mem->page_shift;
+
+			ret = nvkm_bar_umap(bar, mem->size << 12, page_shift,
+					    &mem->bar_vma);
+			if (ret)
+				return ret;
+
+			nvkm_vm_map(&mem->bar_vma, mem);
+			reg->bus.offset = mem->bar_vma.offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	default:
@@ -1484,6 +1806,7 @@ nouveau_ttm_io_mem_reserve(struct ttm_bo_device *bdev, struct ttm_mem_reg *reg)
 static void
 nouveau_ttm_io_mem_free(struct ttm_bo_device *bdev, struct ttm_mem_reg *reg)
 {
+<<<<<<< HEAD
 	struct nouveau_drm *drm = nouveau_bdev(bdev);
 	struct nouveau_mem *mem = nouveau_mem(reg);
 
@@ -1500,6 +1823,15 @@ nouveau_ttm_io_mem_free(struct ttm_bo_device *bdev, struct ttm_mem_reg *reg)
 			break;
 		}
 	}
+=======
+	struct nvkm_mem *mem = reg->mm_node;
+
+	if (!mem->bar_vma.node)
+		return;
+
+	nvkm_vm_unmap(&mem->bar_vma);
+	nvkm_vm_put(&mem->bar_vma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -1516,7 +1848,11 @@ nouveau_ttm_fault_reserve_notify(struct ttm_buffer_object *bo)
 	 */
 	if (bo->mem.mem_type != TTM_PL_VRAM) {
 		if (drm->client.device.info.family < NV_DEVICE_INFO_V0_TESLA ||
+<<<<<<< HEAD
 		    !nvbo->kind)
+=======
+		    !nouveau_bo_tile_layout(nvbo))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 
 		if (bo->mem.mem_type == TTM_PL_SYSTEM) {
@@ -1549,11 +1885,21 @@ nouveau_ttm_fault_reserve_notify(struct ttm_buffer_object *bo)
 }
 
 static int
+<<<<<<< HEAD
 nouveau_ttm_tt_populate(struct ttm_tt *ttm, struct ttm_operation_ctx *ctx)
 {
 	struct ttm_dma_tt *ttm_dma = (void *)ttm;
 	struct nouveau_drm *drm;
 	struct device *dev;
+=======
+nouveau_ttm_tt_populate(struct ttm_tt *ttm)
+{
+	struct ttm_dma_tt *ttm_dma = (void *)ttm;
+	struct nouveau_drm *drm;
+	struct nvkm_device *device;
+	struct drm_device *dev;
+	struct device *pdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i;
 	int r;
 	bool slave = !!(ttm->page_flags & TTM_PAGE_FLAG_SG);
@@ -1570,21 +1916,39 @@ nouveau_ttm_tt_populate(struct ttm_tt *ttm, struct ttm_operation_ctx *ctx)
 	}
 
 	drm = nouveau_bdev(ttm->bdev);
+<<<<<<< HEAD
 	dev = drm->dev->dev;
 
 #if IS_ENABLED(CONFIG_AGP)
 	if (drm->agp.bridge) {
 		return ttm_agp_tt_populate(ttm, ctx);
+=======
+	device = nvxx_device(&drm->client.device);
+	dev = drm->dev;
+	pdev = device->dev;
+
+#if IS_ENABLED(CONFIG_AGP)
+	if (drm->agp.bridge) {
+		return ttm_agp_tt_populate(ttm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 
 #if IS_ENABLED(CONFIG_SWIOTLB) && IS_ENABLED(CONFIG_X86)
 	if (swiotlb_nr_tbl()) {
+<<<<<<< HEAD
 		return ttm_dma_populate((void *)ttm, dev, ctx);
 	}
 #endif
 
 	r = ttm_pool_populate(ttm, ctx);
+=======
+		return ttm_dma_populate((void *)ttm, dev->dev);
+	}
+#endif
+
+	r = ttm_pool_populate(ttm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r) {
 		return r;
 	}
@@ -1592,12 +1956,21 @@ nouveau_ttm_tt_populate(struct ttm_tt *ttm, struct ttm_operation_ctx *ctx)
 	for (i = 0; i < ttm->num_pages; i++) {
 		dma_addr_t addr;
 
+<<<<<<< HEAD
 		addr = dma_map_page(dev, ttm->pages[i], 0, PAGE_SIZE,
 				    DMA_BIDIRECTIONAL);
 
 		if (dma_mapping_error(dev, addr)) {
 			while (i--) {
 				dma_unmap_page(dev, ttm_dma->dma_address[i],
+=======
+		addr = dma_map_page(pdev, ttm->pages[i], 0, PAGE_SIZE,
+				    DMA_BIDIRECTIONAL);
+
+		if (dma_mapping_error(pdev, addr)) {
+			while (i--) {
+				dma_unmap_page(pdev, ttm_dma->dma_address[i],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       PAGE_SIZE, DMA_BIDIRECTIONAL);
 				ttm_dma->dma_address[i] = 0;
 			}
@@ -1615,7 +1988,13 @@ nouveau_ttm_tt_unpopulate(struct ttm_tt *ttm)
 {
 	struct ttm_dma_tt *ttm_dma = (void *)ttm;
 	struct nouveau_drm *drm;
+<<<<<<< HEAD
 	struct device *dev;
+=======
+	struct nvkm_device *device;
+	struct drm_device *dev;
+	struct device *pdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i;
 	bool slave = !!(ttm->page_flags & TTM_PAGE_FLAG_SG);
 
@@ -1623,7 +2002,13 @@ nouveau_ttm_tt_unpopulate(struct ttm_tt *ttm)
 		return;
 
 	drm = nouveau_bdev(ttm->bdev);
+<<<<<<< HEAD
 	dev = drm->dev->dev;
+=======
+	device = nvxx_device(&drm->client.device);
+	dev = drm->dev;
+	pdev = device->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if IS_ENABLED(CONFIG_AGP)
 	if (drm->agp.bridge) {
@@ -1634,14 +2019,22 @@ nouveau_ttm_tt_unpopulate(struct ttm_tt *ttm)
 
 #if IS_ENABLED(CONFIG_SWIOTLB) && IS_ENABLED(CONFIG_X86)
 	if (swiotlb_nr_tbl()) {
+<<<<<<< HEAD
 		ttm_dma_unpopulate((void *)ttm, dev);
+=======
+		ttm_dma_unpopulate((void *)ttm, dev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 #endif
 
 	for (i = 0; i < ttm->num_pages; i++) {
 		if (ttm_dma->dma_address[i]) {
+<<<<<<< HEAD
 			dma_unmap_page(dev, ttm_dma->dma_address[i], PAGE_SIZE,
+=======
+			dma_unmap_page(pdev, ttm_dma->dma_address[i], PAGE_SIZE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       DMA_BIDIRECTIONAL);
 		}
 	}
@@ -1674,4 +2067,54 @@ struct ttm_bo_driver nouveau_bo_driver = {
 	.fault_reserve_notify = &nouveau_ttm_fault_reserve_notify,
 	.io_mem_reserve = &nouveau_ttm_io_mem_reserve,
 	.io_mem_free = &nouveau_ttm_io_mem_free,
+<<<<<<< HEAD
 };
+=======
+	.io_mem_pfn = ttm_bo_default_io_mem_pfn,
+};
+
+struct nvkm_vma *
+nouveau_bo_vma_find(struct nouveau_bo *nvbo, struct nvkm_vm *vm)
+{
+	struct nvkm_vma *vma;
+	list_for_each_entry(vma, &nvbo->vma_list, head) {
+		if (vma->vm == vm)
+			return vma;
+	}
+
+	return NULL;
+}
+
+int
+nouveau_bo_vma_add(struct nouveau_bo *nvbo, struct nvkm_vm *vm,
+		   struct nvkm_vma *vma)
+{
+	const u32 size = nvbo->bo.mem.num_pages << PAGE_SHIFT;
+	int ret;
+
+	ret = nvkm_vm_get(vm, size, nvbo->page_shift,
+			     NV_MEM_ACCESS_RW, vma);
+	if (ret)
+		return ret;
+
+	if ( nvbo->bo.mem.mem_type != TTM_PL_SYSTEM &&
+	    (nvbo->bo.mem.mem_type == TTM_PL_VRAM ||
+	     nvbo->page_shift != vma->vm->mmu->lpg_shift))
+		nvkm_vm_map(vma, nvbo->bo.mem.mm_node);
+
+	list_add_tail(&vma->head, &nvbo->vma_list);
+	vma->refcount = 1;
+	return 0;
+}
+
+void
+nouveau_bo_vma_del(struct nouveau_bo *nvbo, struct nvkm_vma *vma)
+{
+	if (vma->node) {
+		if (nvbo->bo.mem.mem_type != TTM_PL_SYSTEM)
+			nvkm_vm_unmap(vma);
+		nvkm_vm_put(vma);
+		list_del(&vma->head);
+	}
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

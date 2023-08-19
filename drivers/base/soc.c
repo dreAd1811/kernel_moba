@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) ST-Ericsson SA 2011
  *
  * Author: Lee Jones <lee.jones@linaro.org> for ST-Ericsson.
+<<<<<<< HEAD
+=======
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/sysfs.h>
@@ -150,8 +157,11 @@ struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr
 
 out3:
 	ida_simple_remove(&soc_ida, soc_dev->soc_dev_num);
+<<<<<<< HEAD
 	put_device(&soc_dev->dev);
 	soc_dev = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out2:
 	kfree(soc_dev);
 out1:

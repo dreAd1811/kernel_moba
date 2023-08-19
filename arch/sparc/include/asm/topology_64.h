@@ -11,6 +11,11 @@ static inline int cpu_to_node(int cpu)
 	return numa_cpu_lookup_table[cpu];
 }
 
+<<<<<<< HEAD
+=======
+#define parent_node(node)	(node)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define cpumask_of_node(node) ((node) == -1 ?				\
 			       cpu_all_mask :				\
 			       &numa_cpumask_lookup_table[node])

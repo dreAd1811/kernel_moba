@@ -26,7 +26,12 @@
 #include <linux/wait.h>
 #include "tpm.h"
 
+<<<<<<< HEAD
 #define TPM_I2C_INFINEON_BUFSIZE 1260
+=======
+/* max. buffer size supported by our TPM */
+#define TPM_BUFSIZE 1260
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* max. number of iterations after I2C NAK */
 #define MAX_COUNT 3
@@ -62,6 +67,7 @@ enum i2c_chip_type {
 	UNKNOWN,
 };
 
+<<<<<<< HEAD
 struct tpm_inf_dev {
 	struct i2c_client *client;
 	int locality;
@@ -69,6 +75,13 @@ struct tpm_inf_dev {
 	 * address and the direction bit.
 	 */
 	u8 buf[TPM_I2C_INFINEON_BUFSIZE + 1];
+=======
+/* Structure to store I2C TPM specific stuff */
+struct tpm_inf_dev {
+	struct i2c_client *client;
+	int locality;
+	u8 buf[TPM_BUFSIZE + sizeof(u8)]; /* max. buffer size + addr */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tpm_chip *chip;
 	enum i2c_chip_type chip_type;
 	unsigned int adapterlimit;
@@ -220,7 +233,11 @@ static int iic_tpm_write_generic(u8 addr, u8 *buffer, size_t len,
 		.buf = tpm_dev.buf
 	};
 
+<<<<<<< HEAD
 	if (len > TPM_I2C_INFINEON_BUFSIZE)
+=======
+	if (len > TPM_BUFSIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (!tpm_dev.client->adapter->algo->master_xfer)
@@ -528,8 +545,13 @@ static int tpm_tis_i2c_send(struct tpm_chip *chip, u8 *buf, size_t len)
 	u8 retries = 0;
 	u8 sts = TPM_STS_GO;
 
+<<<<<<< HEAD
 	if (len > TPM_I2C_INFINEON_BUFSIZE)
 		return -E2BIG;
+=======
+	if (len > TPM_BUFSIZE)
+		return -E2BIG;	/* command is too long for our tpm, sorry */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (request_locality(chip, 0) < 0)
 		return -EBUSY;
@@ -667,9 +689,15 @@ out_err:
 }
 
 static const struct i2c_device_id tpm_tis_i2c_table[] = {
+<<<<<<< HEAD
 	{"tpm_i2c_infineon"},
 	{"slb9635tt"},
 	{"slb9645tt"},
+=======
+	{"tpm_i2c_infineon", 0},
+	{"slb9635tt", 0},
+	{"slb9645tt", 1},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 
@@ -677,9 +705,30 @@ MODULE_DEVICE_TABLE(i2c, tpm_tis_i2c_table);
 
 #ifdef CONFIG_OF
 static const struct of_device_id tpm_tis_i2c_of_match[] = {
+<<<<<<< HEAD
 	{.compatible = "infineon,tpm_i2c_infineon"},
 	{.compatible = "infineon,slb9635tt"},
 	{.compatible = "infineon,slb9645tt"},
+=======
+	{
+		.name = "tpm_i2c_infineon",
+		.type = "tpm",
+		.compatible = "infineon,tpm_i2c_infineon",
+		.data = (void *)0
+	},
+	{
+		.name = "slb9635tt",
+		.type = "tpm",
+		.compatible = "infineon,slb9635tt",
+		.data = (void *)0
+	},
+	{
+		.name = "slb9645tt",
+		.type = "tpm",
+		.compatible = "infineon,slb9645tt",
+		.data = (void *)1
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, tpm_tis_i2c_of_match);

@@ -33,14 +33,21 @@ struct gmii2rgmii {
 	struct phy_device *phy_dev;
 	struct phy_driver *phy_drv;
 	struct phy_driver conv_phy_drv;
+<<<<<<< HEAD
 	struct mdio_device *mdio;
+=======
+	int addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int xgmiitorgmii_read_status(struct phy_device *phydev)
 {
 	struct gmii2rgmii *priv = phydev->priv;
+<<<<<<< HEAD
 	struct mii_bus *bus = priv->mdio->bus;
 	int addr = priv->mdio->addr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 val = 0;
 	int err;
 
@@ -51,7 +58,11 @@ static int xgmiitorgmii_read_status(struct phy_device *phydev)
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	val = mdiobus_read(bus, addr, XILINX_GMII2RGMII_REG);
+=======
+	val = mdiobus_read(phydev->mdio.bus, priv->addr, XILINX_GMII2RGMII_REG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val &= ~XILINX_GMII2RGMII_SPEED_MASK;
 
 	if (phydev->speed == SPEED_1000)
@@ -61,7 +72,11 @@ static int xgmiitorgmii_read_status(struct phy_device *phydev)
 	else
 		val |= BMCR_SPEED10;
 
+<<<<<<< HEAD
 	mdiobus_write(bus, addr, XILINX_GMII2RGMII_REG, val);
+=======
+	mdiobus_write(phydev->mdio.bus, priv->addr, XILINX_GMII2RGMII_REG, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -94,7 +109,11 @@ static int xgmiitorgmii_probe(struct mdio_device *mdiodev)
 		return -EPROBE_DEFER;
 	}
 
+<<<<<<< HEAD
 	priv->mdio = mdiodev;
+=======
+	priv->addr = mdiodev->addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->phy_drv = priv->phy_dev->drv;
 	memcpy(&priv->conv_phy_drv, priv->phy_dev->drv,
 	       sizeof(struct phy_driver));

@@ -28,6 +28,7 @@ nv1a_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 {
 	struct pci_dev *bridge;
 	u32 mem, mib;
+<<<<<<< HEAD
 	int domain = 0;
 	struct pci_dev *pdev = NULL;
 
@@ -38,6 +39,10 @@ nv1a_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 		domain = pci_domain_nr(pdev->bus);
 
 	bridge = pci_get_domain_bus_and_slot(domain, 0, PCI_DEVFN(0, 1));
+=======
+
+	bridge = pci_get_bus_and_slot(0, PCI_DEVFN(0, 1));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bridge) {
 		nvkm_error(&fb->subdev, "no bridge device\n");
 		return -ENODEV;
@@ -52,5 +57,9 @@ nv1a_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	}
 
 	return nvkm_ram_new_(&nv04_ram_func, fb, NVKM_RAM_TYPE_STOLEN,
+<<<<<<< HEAD
 			     mib * 1024 * 1024, pram);
+=======
+			     mib * 1024 * 1024, 0, pram);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

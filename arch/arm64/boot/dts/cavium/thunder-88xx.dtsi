@@ -62,97 +62,161 @@
 		#address-cells = <2>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		cpu@0 {
+=======
+		cpu@000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x000>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@1 {
+=======
+		cpu@001 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x001>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@2 {
+=======
+		cpu@002 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x002>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@3 {
+=======
+		cpu@003 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x003>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@4 {
+=======
+		cpu@004 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x004>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@5 {
+=======
+		cpu@005 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x005>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@6 {
+=======
+		cpu@006 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x006>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@7 {
+=======
+		cpu@007 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x007>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@8 {
+=======
+		cpu@008 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x008>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@9 {
+=======
+		cpu@009 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x009>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@a {
+=======
+		cpu@00a {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x00a>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@b {
+=======
+		cpu@00b {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x00b>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@c {
+=======
+		cpu@00c {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x00c>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@d {
+=======
+		cpu@00d {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x00d>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@e {
+=======
+		cpu@00e {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x00e>;
 			enable-method = "psci";
 		};
+<<<<<<< HEAD
 		cpu@f {
+=======
+		cpu@00f {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			device_type = "cpu";
 			compatible = "cavium,thunder", "arm,armv8";
 			reg = <0x0 0x00f>;

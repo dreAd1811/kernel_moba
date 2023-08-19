@@ -7,7 +7,11 @@
  */
 
 #include "compat.h"
+<<<<<<< HEAD
 #include "ctrl.h"
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "regs.h"
 #include "intern.h"
 #include "desc_constr.h"
@@ -53,7 +57,10 @@ struct caam_ctx {
 	u32 sh_desc_givenc[DESC_MAX_USED_LEN];
 	u8 key[CAAM_MAX_KEY_SIZE];
 	dma_addr_t key_dma;
+<<<<<<< HEAD
 	enum dma_data_direction dir;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct alginfo adata;
 	struct alginfo cdata;
 	unsigned int authsize;
@@ -75,7 +82,10 @@ static int aead_set_sh_desc(struct crypto_aead *aead)
 	const bool ctr_mode = ((ctx->cdata.algtype & OP_ALG_AAI_MASK) ==
 			       OP_ALG_AAI_CTR_MOD128);
 	const bool is_rfc3686 = alg->caam.rfc3686;
+<<<<<<< HEAD
 	struct caam_drv_private *ctrlpriv = dev_get_drvdata(ctx->jrdev->parent);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ctx->cdata.keylen || !ctx->authsize)
 		return 0;
@@ -126,7 +136,11 @@ static int aead_set_sh_desc(struct crypto_aead *aead)
 
 	cnstr_shdsc_aead_encap(ctx->sh_desc_enc, &ctx->cdata, &ctx->adata,
 			       ivsize, ctx->authsize, is_rfc3686, nonce,
+<<<<<<< HEAD
 			       ctx1_iv_off, true, ctrlpriv->era);
+=======
+			       ctx1_iv_off, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 skip_enc:
 	/* aead_decrypt shared descriptor */
@@ -151,8 +165,12 @@ skip_enc:
 
 	cnstr_shdsc_aead_decap(ctx->sh_desc_dec, &ctx->cdata, &ctx->adata,
 			       ivsize, ctx->authsize, alg->caam.geniv,
+<<<<<<< HEAD
 			       is_rfc3686, nonce, ctx1_iv_off, true,
 			       ctrlpriv->era);
+=======
+			       is_rfc3686, nonce, ctx1_iv_off, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!alg->caam.geniv)
 		goto skip_givenc;
@@ -179,7 +197,11 @@ skip_enc:
 
 	cnstr_shdsc_aead_givencap(ctx->sh_desc_enc, &ctx->cdata, &ctx->adata,
 				  ivsize, ctx->authsize, is_rfc3686, nonce,
+<<<<<<< HEAD
 				  ctx1_iv_off, true, ctrlpriv->era);
+=======
+				  ctx1_iv_off, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 skip_givenc:
 	return 0;
@@ -200,7 +222,10 @@ static int aead_setkey(struct crypto_aead *aead, const u8 *key,
 {
 	struct caam_ctx *ctx = crypto_aead_ctx(aead);
 	struct device *jrdev = ctx->jrdev;
+<<<<<<< HEAD
 	struct caam_drv_private *ctrlpriv = dev_get_drvdata(jrdev->parent);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct crypto_authenc_keys keys;
 	int ret = 0;
 
@@ -215,6 +240,7 @@ static int aead_setkey(struct crypto_aead *aead, const u8 *key,
 		       DUMP_PREFIX_ADDRESS, 16, 4, key, keylen, 1);
 #endif
 
+<<<<<<< HEAD
 	/*
 	 * If DKP is supported, use it in the shared descriptor to generate
 	 * the split key.
@@ -236,6 +262,8 @@ static int aead_setkey(struct crypto_aead *aead, const u8 *key,
 		goto skip_split_key;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = gen_split_key(jrdev, ctx->key, &ctx->adata, keys.authkey,
 			    keys.authkeylen, CAAM_MAX_KEY_SIZE -
 			    keys.enckeylen);
@@ -245,14 +273,21 @@ static int aead_setkey(struct crypto_aead *aead, const u8 *key,
 	/* postpend encryption key to auth split key */
 	memcpy(ctx->key + ctx->adata.keylen_pad, keys.enckey, keys.enckeylen);
 	dma_sync_single_for_device(jrdev, ctx->key_dma, ctx->adata.keylen_pad +
+<<<<<<< HEAD
 				   keys.enckeylen, ctx->dir);
+=======
+				   keys.enckeylen, DMA_TO_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef DEBUG
 	print_hex_dump(KERN_ERR, "ctx.key@" __stringify(__LINE__)": ",
 		       DUMP_PREFIX_ADDRESS, 16, 4, ctx->key,
 		       ctx->adata.keylen_pad + keys.enckeylen, 1);
 #endif
 
+<<<<<<< HEAD
 skip_split_key:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->cdata.keylen = keys.enckeylen;
 
 	ret = aead_set_sh_desc(aead);
@@ -278,6 +313,7 @@ skip_split_key:
 		}
 	}
 
+<<<<<<< HEAD
 	memzero_explicit(&keys, sizeof(keys));
 	return ret;
 badkey:
@@ -589,6 +625,14 @@ static int rfc4543_setkey(struct crypto_aead *aead,
 	return 0;
 }
 
+=======
+	return ret;
+badkey:
+	crypto_aead_set_flags(aead, CRYPTO_TFM_RES_BAD_KEY_LEN);
+	return -EINVAL;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ablkcipher_setkey(struct crypto_ablkcipher *ablkcipher,
 			     const u8 *key, unsigned int keylen)
 {
@@ -603,6 +647,10 @@ static int ablkcipher_setkey(struct crypto_ablkcipher *ablkcipher,
 	const bool is_rfc3686 = (ctr_mode && strstr(alg_name, "rfc3686"));
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	memcpy(ctx->key, key, keylen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef DEBUG
 	print_hex_dump(KERN_ERR, "key in @" __stringify(__LINE__)": ",
 		       DUMP_PREFIX_ADDRESS, 16, 4, key, keylen, 1);
@@ -625,8 +673,14 @@ static int ablkcipher_setkey(struct crypto_ablkcipher *ablkcipher,
 		keylen -= CTR_RFC3686_NONCE_SIZE;
 	}
 
+<<<<<<< HEAD
 	ctx->cdata.keylen = keylen;
 	ctx->cdata.key_virt = key;
+=======
+	dma_sync_single_for_device(jrdev, ctx->key_dma, keylen, DMA_TO_DEVICE);
+	ctx->cdata.keylen = keylen;
+	ctx->cdata.key_virt = ctx->key;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->cdata.key_inline = true;
 
 	/* ablkcipher encrypt, decrypt, givencrypt shared descriptors */
@@ -683,8 +737,15 @@ static int xts_ablkcipher_setkey(struct crypto_ablkcipher *ablkcipher,
 		goto badkey;
 	}
 
+<<<<<<< HEAD
 	ctx->cdata.keylen = keylen;
 	ctx->cdata.key_virt = key;
+=======
+	memcpy(ctx->key, key, keylen);
+	dma_sync_single_for_device(jrdev, ctx->key_dma, keylen, DMA_TO_DEVICE);
+	ctx->cdata.keylen = keylen;
+	ctx->cdata.key_virt = ctx->key;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->cdata.key_inline = true;
 
 	/* xts ablkcipher encrypt, decrypt shared descriptors */
@@ -859,6 +920,7 @@ static void aead_done(struct caam_drv_req *drv_req, u32 status)
 	qidev = caam_ctx->qidev;
 
 	if (unlikely(status)) {
+<<<<<<< HEAD
 		u32 ssrc = status & JRSTA_SSRC_MASK;
 		u8 err_id = status & JRSTA_CCBERR_ERRID_MASK;
 
@@ -871,6 +933,10 @@ static void aead_done(struct caam_drv_req *drv_req, u32 status)
 			ecode = -EBADMSG;
 		else
 			ecode = -EIO;
+=======
+		caam_jr_strstatus(qidev, status);
+		ecode = -EIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	edesc = container_of(drv_req, typeof(*edesc), drv_req);
@@ -1122,6 +1188,7 @@ static int aead_decrypt(struct aead_request *req)
 	return aead_crypt(req, false);
 }
 
+<<<<<<< HEAD
 static int ipsec_gcm_encrypt(struct aead_request *req)
 {
 	if (req->assoclen < 8)
@@ -1138,6 +1205,8 @@ static int ipsec_gcm_decrypt(struct aead_request *req)
 	return aead_crypt(req, false);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void ablkcipher_done(struct caam_drv_req *drv_req, u32 status)
 {
 	struct ablkcipher_edesc *edesc;
@@ -1661,6 +1730,7 @@ static struct caam_alg_template driver_algs[] = {
 };
 
 static struct caam_aead_alg driver_aeads[] = {
+<<<<<<< HEAD
 	{
 		.aead = {
 			.base = {
@@ -1716,6 +1786,8 @@ static struct caam_aead_alg driver_aeads[] = {
 			.class1_alg_type = OP_ALG_ALGSEL_AES | OP_ALG_AAI_GCM,
 		}
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* single-pass ipsec_esp descriptor */
 	{
 		.aead = {
@@ -2534,8 +2606,12 @@ struct caam_crypto_alg {
 	struct caam_alg_entry caam;
 };
 
+<<<<<<< HEAD
 static int caam_init_common(struct caam_ctx *ctx, struct caam_alg_entry *caam,
 			    bool uses_dkp)
+=======
+static int caam_init_common(struct caam_ctx *ctx, struct caam_alg_entry *caam)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct caam_drv_private *priv;
 
@@ -2549,6 +2625,7 @@ static int caam_init_common(struct caam_ctx *ctx, struct caam_alg_entry *caam,
 		return PTR_ERR(ctx->jrdev);
 	}
 
+<<<<<<< HEAD
 	priv = dev_get_drvdata(ctx->jrdev->parent);
 	if (priv->era >= 6 && uses_dkp)
 		ctx->dir = DMA_BIDIRECTIONAL;
@@ -2557,6 +2634,10 @@ static int caam_init_common(struct caam_ctx *ctx, struct caam_alg_entry *caam,
 
 	ctx->key_dma = dma_map_single(ctx->jrdev, ctx->key, sizeof(ctx->key),
 				      ctx->dir);
+=======
+	ctx->key_dma = dma_map_single(ctx->jrdev, ctx->key, sizeof(ctx->key),
+				      DMA_TO_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dma_mapping_error(ctx->jrdev, ctx->key_dma)) {
 		dev_err(ctx->jrdev, "unable to map key\n");
 		caam_jr_free(ctx->jrdev);
@@ -2567,6 +2648,10 @@ static int caam_init_common(struct caam_ctx *ctx, struct caam_alg_entry *caam,
 	ctx->cdata.algtype = OP_TYPE_CLASS1_ALG | caam->class1_alg_type;
 	ctx->adata.algtype = OP_TYPE_CLASS2_ALG | caam->class2_alg_type;
 
+<<<<<<< HEAD
+=======
+	priv = dev_get_drvdata(ctx->jrdev->parent);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->qidev = priv->qidev;
 
 	spin_lock_init(&ctx->lock);
@@ -2584,7 +2669,11 @@ static int caam_cra_init(struct crypto_tfm *tfm)
 							crypto_alg);
 	struct caam_ctx *ctx = crypto_tfm_ctx(tfm);
 
+<<<<<<< HEAD
 	return caam_init_common(ctx, &caam_alg->caam, false);
+=======
+	return caam_init_common(ctx, &caam_alg->caam);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int caam_aead_init(struct crypto_aead *tfm)
@@ -2594,8 +2683,12 @@ static int caam_aead_init(struct crypto_aead *tfm)
 						      aead);
 	struct caam_ctx *ctx = crypto_aead_ctx(tfm);
 
+<<<<<<< HEAD
 	return caam_init_common(ctx, &caam_alg->caam,
 				alg->setkey == aead_setkey);
+=======
+	return caam_init_common(ctx, &caam_alg->caam);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void caam_exit_common(struct caam_ctx *ctx)
@@ -2604,7 +2697,12 @@ static void caam_exit_common(struct caam_ctx *ctx)
 	caam_drv_ctx_rel(ctx->drv_ctx[DECRYPT]);
 	caam_drv_ctx_rel(ctx->drv_ctx[GIVENCRYPT]);
 
+<<<<<<< HEAD
 	dma_unmap_single(ctx->jrdev, ctx->key_dma, sizeof(ctx->key), ctx->dir);
+=======
+	dma_unmap_single(ctx->jrdev, ctx->key_dma, sizeof(ctx->key),
+			 DMA_TO_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	caam_jr_free(ctx->jrdev);
 }
@@ -2729,11 +2827,14 @@ static int __init caam_qi_algapi_init(void)
 	if (!priv || !priv->qi_present)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (caam_dpaa2) {
 		dev_info(ctrldev, "caam/qi frontend driver not suitable for DPAA 2.x, aborting...\n");
 		return -ENODEV;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&alg_list);
 
 	/*

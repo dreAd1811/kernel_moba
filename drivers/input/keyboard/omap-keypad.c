@@ -41,7 +41,11 @@
 #undef NEW_BOARD_LEARNING_MODE
 
 static void omap_kp_tasklet(unsigned long);
+<<<<<<< HEAD
 static void omap_kp_timer(struct timer_list *);
+=======
+static void omap_kp_timer(unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned char keypad_state[8];
 static DEFINE_MUTEX(kp_enable_mutex);
@@ -74,7 +78,11 @@ static irqreturn_t omap_kp_interrupt(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static void omap_kp_timer(struct timer_list *unused)
+=======
+static void omap_kp_timer(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	tasklet_schedule(&kp_tasklet);
 }
@@ -233,7 +241,11 @@ static int omap_kp_probe(struct platform_device *pdev)
 	col_idx = 0;
 	row_idx = 0;
 
+<<<<<<< HEAD
 	timer_setup(&omap_kp->timer, omap_kp_timer, 0);
+=======
+	setup_timer(&omap_kp->timer, omap_kp_timer, (unsigned long)omap_kp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* get the irq and init timer*/
 	kp_tasklet.data = (unsigned long) omap_kp;

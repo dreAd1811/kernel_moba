@@ -31,6 +31,7 @@ module_param_string(edid_firmware, edid_firmware, sizeof(edid_firmware), 0644);
 MODULE_PARM_DESC(edid_firmware, "Do not probe monitor, use specified EDID blob "
 	"from built-in data or /lib/firmware instead. ");
 
+<<<<<<< HEAD
 /* Use only for backward compatibility with drm_kms_helper.edid_firmware */
 int __drm_set_edid_firmware_path(const char *path)
 {
@@ -47,6 +48,8 @@ int __drm_get_edid_firmware_path(char *buf, size_t bufsize)
 }
 EXPORT_SYMBOL(__drm_get_edid_firmware_path);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GENERIC_EDIDS 6
 static const char * const generic_edid_name[GENERIC_EDIDS] = {
 	"edid/800x600.bin",

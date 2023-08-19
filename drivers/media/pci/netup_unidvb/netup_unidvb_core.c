@@ -82,11 +82,19 @@ DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
  * @start_addr_lo:	DMA ring buffer start address, lower part
  * @start_addr_hi:	DMA ring buffer start address, higher part
  * @size:		DMA ring buffer size register
+<<<<<<< HEAD
  *			* Bits [0-7]:	DMA packet size, 188 bytes
  *			* Bits [16-23]:	packets count in block, 128 packets
  *			* Bits [24-31]:	blocks count, 8 blocks
  * @timeout:		DMA timeout in units of 8ns
  *			For example, value of 375000000 equals to 3 sec
+=======
+			Bits [0-7]:	DMA packet size, 188 bytes
+			Bits [16-23]:	packets count in block, 128 packets
+			Bits [24-31]:	blocks count, 8 blocks
+ * @timeout:		DMA timeout in units of 8ns
+			For example, value of 375000000 equals to 3 sec
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @curr_addr_lo:	Current ring buffer head address, lower part
  * @curr_addr_hi:	Current ring buffer head address, higher part
  * @stat_pkt_received:	Statistic register, not tested
@@ -638,9 +646,15 @@ static void netup_unidvb_queue_cleanup(struct netup_dma *dma)
 	spin_unlock_irqrestore(&dma->lock, flags);
 }
 
+<<<<<<< HEAD
 static void netup_unidvb_dma_timeout(struct timer_list *t)
 {
 	struct netup_dma *dma = from_timer(dma, t, timeout);
+=======
+static void netup_unidvb_dma_timeout(unsigned long data)
+{
+	struct netup_dma *dma = (struct netup_dma *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct netup_unidvb_dev *ndev = dma->ndev;
 
 	dev_dbg(&ndev->pci_dev->dev, "%s()\n", __func__);
@@ -664,7 +678,12 @@ static int netup_unidvb_dma_init(struct netup_unidvb_dev *ndev, int num)
 	spin_lock_init(&dma->lock);
 	INIT_WORK(&dma->work, netup_unidvb_dma_worker);
 	INIT_LIST_HEAD(&dma->free_buffers);
+<<<<<<< HEAD
 	timer_setup(&dma->timeout, netup_unidvb_dma_timeout, 0);
+=======
+	setup_timer(&dma->timeout, netup_unidvb_dma_timeout,
+		    (unsigned long)dma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma->ring_buffer_size = ndev->dma_size / 2;
 	dma->addr_virt = ndev->dma_virt + dma->ring_buffer_size * num;
 	dma->addr_phys = (dma_addr_t)((u64)ndev->dma_phys +
@@ -862,7 +881,11 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
 		PCI_EXP_DEVCTL_NOSNOOP_EN, 0);
 	/* Adjust PCIe completion timeout. */
 	pcie_capability_clear_and_set_word(pci_dev,
+<<<<<<< HEAD
 		PCI_EXP_DEVCTL2, PCI_EXP_DEVCTL2_COMP_TIMEOUT, 0x2);
+=======
+		PCI_EXP_DEVCTL2, 0xf, 0x2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (netup_unidvb_request_mmio(pci_dev)) {
 		dev_err(&pci_dev->dev,

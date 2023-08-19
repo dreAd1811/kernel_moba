@@ -346,7 +346,11 @@ static int mdfld_dsi_connector_get_modes(struct drm_connector *connector)
 	return 0;
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status mdfld_dsi_connector_mode_valid(struct drm_connector *connector,
+=======
+static int mdfld_dsi_connector_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						struct drm_display_mode *mode)
 {
 	struct mdfld_dsi_connector *dsi_connector =

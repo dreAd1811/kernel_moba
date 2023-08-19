@@ -486,11 +486,19 @@ struct bnad_debugfs_entry {
 };
 
 static const struct bnad_debugfs_entry bnad_debugfs_files[] = {
+<<<<<<< HEAD
 	{ "fwtrc",  S_IFREG | 0444, &bnad_debugfs_op_fwtrc, },
 	{ "fwsave", S_IFREG | 0444, &bnad_debugfs_op_fwsave, },
 	{ "regrd",  S_IFREG | 0644, &bnad_debugfs_op_regrd, },
 	{ "regwr",  S_IFREG | 0200, &bnad_debugfs_op_regwr, },
 	{ "drvinfo", S_IFREG | 0444, &bnad_debugfs_op_drvinfo, },
+=======
+	{ "fwtrc",  S_IFREG|S_IRUGO, &bnad_debugfs_op_fwtrc, },
+	{ "fwsave", S_IFREG|S_IRUGO, &bnad_debugfs_op_fwsave, },
+	{ "regrd",  S_IFREG|S_IRUGO|S_IWUSR, &bnad_debugfs_op_regrd, },
+	{ "regwr",  S_IFREG|S_IWUSR, &bnad_debugfs_op_regwr, },
+	{ "drvinfo", S_IFREG|S_IRUGO, &bnad_debugfs_op_drvinfo, },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct dentry *bna_debugfs_root;

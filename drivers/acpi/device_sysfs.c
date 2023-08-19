@@ -361,7 +361,11 @@ static ssize_t real_power_state_show(struct device *dev,
 	return sprintf(buf, "%s\n", acpi_power_state_string(state));
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR_RO(real_power_state);
+=======
+static DEVICE_ATTR(real_power_state, 0444, real_power_state_show, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t power_state_show(struct device *dev,
 				struct device_attribute *attr, char *buf)
@@ -371,7 +375,11 @@ static ssize_t power_state_show(struct device *dev,
 	return sprintf(buf, "%s\n", acpi_power_state_string(adev->power.state));
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR_RO(power_state);
+=======
+static DEVICE_ATTR(power_state, 0444, power_state_show, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t
 acpi_eject_store(struct device *d, struct device_attribute *attr,
@@ -466,7 +474,11 @@ static ssize_t description_show(struct device *dev,
 
 	return result;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RO(description);
+=======
+static DEVICE_ATTR(description, 0444, description_show, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static ssize_t
 acpi_device_sun_show(struct device *dev, struct device_attribute *attr,

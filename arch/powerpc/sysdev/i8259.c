@@ -145,21 +145,33 @@ static struct resource pic1_iores = {
 	.name = "8259 (master)",
 	.start = 0x20,
 	.end = 0x21,
+<<<<<<< HEAD
 	.flags = IORESOURCE_IO | IORESOURCE_BUSY,
+=======
+	.flags = IORESOURCE_BUSY,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct resource pic2_iores = {
 	.name = "8259 (slave)",
 	.start = 0xa0,
 	.end = 0xa1,
+<<<<<<< HEAD
 	.flags = IORESOURCE_IO | IORESOURCE_BUSY,
+=======
+	.flags = IORESOURCE_BUSY,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct resource pic_edgectrl_iores = {
 	.name = "8259 edge control",
 	.start = 0x4d0,
 	.end = 0x4d1,
+<<<<<<< HEAD
 	.flags = IORESOURCE_IO | IORESOURCE_BUSY,
+=======
+	.flags = IORESOURCE_BUSY,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int i8259_host_match(struct irq_domain *h, struct device_node *node,

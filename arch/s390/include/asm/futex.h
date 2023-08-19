@@ -26,9 +26,15 @@ static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
 		u32 __user *uaddr)
 {
 	int oldval = 0, newval, ret;
+<<<<<<< HEAD
 	mm_segment_t old_fs;
 
 	old_fs = enable_sacf_uaccess();
+=======
+
+	load_kernel_asce();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pagefault_disable();
 	switch (op) {
 	case FUTEX_OP_SET:
@@ -55,7 +61,10 @@ static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
 		ret = -ENOSYS;
 	}
 	pagefault_enable();
+<<<<<<< HEAD
 	disable_sacf_uaccess(old_fs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ret)
 		*oval = oldval;
@@ -66,10 +75,16 @@ static inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
 static inline int futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
 						u32 oldval, u32 newval)
 {
+<<<<<<< HEAD
 	mm_segment_t old_fs;
 	int ret;
 
 	old_fs = enable_sacf_uaccess();
+=======
+	int ret;
+
+	load_kernel_asce();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	asm volatile(
 		"   sacf 256\n"
 		"0: cs   %1,%4,0(%5)\n"
@@ -79,7 +94,10 @@ static inline int futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
 		: "=d" (ret), "+d" (oldval), "=m" (*uaddr)
 		: "0" (-EFAULT), "d" (newval), "a" (uaddr), "m" (*uaddr)
 		: "cc", "memory");
+<<<<<<< HEAD
 	disable_sacf_uaccess(old_fs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*uval = oldval;
 	return ret;
 }

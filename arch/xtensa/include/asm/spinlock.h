@@ -33,6 +33,11 @@
 
 #define arch_spin_is_locked(x) ((x)->slock != 0)
 
+<<<<<<< HEAD
+=======
+#define arch_spin_lock_flags(lock, flags) arch_spin_lock(lock)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void arch_spin_lock(arch_spinlock_t *lock)
 {
 	unsigned long tmp;
@@ -95,6 +100,11 @@ static inline void arch_spin_unlock(arch_spinlock_t *lock)
  *  0x80000000  one writer owns the rwlock, no other writers, no readers
  */
 
+<<<<<<< HEAD
+=======
+#define arch_write_can_lock(x)  ((x)->lock == 0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void arch_write_lock(arch_rwlock_t *rw)
 {
 	unsigned long tmp;
@@ -196,4 +206,10 @@ static inline void arch_read_unlock(arch_rwlock_t *rw)
 			: "memory");
 }
 
+<<<<<<< HEAD
+=======
+#define arch_read_lock_flags(lock, flags)	arch_read_lock(lock)
+#define arch_write_lock_flags(lock, flags)	arch_write_lock(lock)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _XTENSA_SPINLOCK_H */

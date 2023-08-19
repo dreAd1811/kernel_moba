@@ -19,7 +19,10 @@
 #include <linux/dax.h>
 #include <linux/fs.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/mman.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "dax-private.h"
 #include "dax.h"
 
@@ -134,7 +137,11 @@ struct dax_region *alloc_dax_region(struct device *parent, int region_id,
 	dax_region->base = addr;
 	if (sysfs_create_groups(&parent->kobj, dax_region_attribute_groups)) {
 		kfree(dax_region);
+<<<<<<< HEAD
 		return NULL;
+=======
+		return NULL;;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	kref_get(&dax_region->kref);
@@ -248,12 +255,22 @@ __weak phys_addr_t dax_pgoff_to_phys(struct dev_dax *dev_dax, pgoff_t pgoff,
 	return -1;
 }
 
+<<<<<<< HEAD
 static vm_fault_t __dev_dax_pte_fault(struct dev_dax *dev_dax,
 				struct vm_fault *vmf, pfn_t *pfn)
 {
 	struct device *dev = &dev_dax->dev;
 	struct dax_region *dax_region;
 	phys_addr_t phys;
+=======
+static int __dev_dax_pte_fault(struct dev_dax *dev_dax, struct vm_fault *vmf)
+{
+	struct device *dev = &dev_dax->dev;
+	struct dax_region *dax_region;
+	int rc = VM_FAULT_SIGBUS;
+	phys_addr_t phys;
+	pfn_t pfn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int fault_size = PAGE_SIZE;
 
 	if (check_vma(dev_dax, vmf->vma, __func__))
@@ -261,8 +278,13 @@ static vm_fault_t __dev_dax_pte_fault(struct dev_dax *dev_dax,
 
 	dax_region = dev_dax->region;
 	if (dax_region->align > PAGE_SIZE) {
+<<<<<<< HEAD
 		dev_dbg(dev, "alignment (%#x) > fault size (%#x)\n",
 			dax_region->align, fault_size);
+=======
+		dev_dbg(dev, "%s: alignment (%#x) > fault size (%#x)\n",
+			__func__, dax_region->align, fault_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return VM_FAULT_SIGBUS;
 	}
 
@@ -271,6 +293,7 @@ static vm_fault_t __dev_dax_pte_fault(struct dev_dax *dev_dax,
 
 	phys = dax_pgoff_to_phys(dev_dax, vmf->pgoff, PAGE_SIZE);
 	if (phys == -1) {
+<<<<<<< HEAD
 		dev_dbg(dev, "pgoff_to_phys(%#lx) failed\n", vmf->pgoff);
 		return VM_FAULT_SIGBUS;
 	}
@@ -282,12 +305,36 @@ static vm_fault_t __dev_dax_pte_fault(struct dev_dax *dev_dax,
 
 static vm_fault_t __dev_dax_pmd_fault(struct dev_dax *dev_dax,
 				struct vm_fault *vmf, pfn_t *pfn)
+=======
+		dev_dbg(dev, "%s: pgoff_to_phys(%#lx) failed\n", __func__,
+				vmf->pgoff);
+		return VM_FAULT_SIGBUS;
+	}
+
+	pfn = phys_to_pfn_t(phys, dax_region->pfn_flags);
+
+	rc = vm_insert_mixed(vmf->vma, vmf->address, pfn);
+
+	if (rc == -ENOMEM)
+		return VM_FAULT_OOM;
+	if (rc < 0 && rc != -EBUSY)
+		return VM_FAULT_SIGBUS;
+
+	return VM_FAULT_NOPAGE;
+}
+
+static int __dev_dax_pmd_fault(struct dev_dax *dev_dax, struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long pmd_addr = vmf->address & PMD_MASK;
 	struct device *dev = &dev_dax->dev;
 	struct dax_region *dax_region;
 	phys_addr_t phys;
 	pgoff_t pgoff;
+<<<<<<< HEAD
+=======
+	pfn_t pfn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int fault_size = PMD_SIZE;
 
 	if (check_vma(dev_dax, vmf->vma, __func__))
@@ -295,14 +342,23 @@ static vm_fault_t __dev_dax_pmd_fault(struct dev_dax *dev_dax,
 
 	dax_region = dev_dax->region;
 	if (dax_region->align > PMD_SIZE) {
+<<<<<<< HEAD
 		dev_dbg(dev, "alignment (%#x) > fault size (%#x)\n",
 			dax_region->align, fault_size);
+=======
+		dev_dbg(dev, "%s: alignment (%#x) > fault size (%#x)\n",
+			__func__, dax_region->align, fault_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return VM_FAULT_SIGBUS;
 	}
 
 	/* dax pmd mappings require pfn_t_devmap() */
 	if ((dax_region->pfn_flags & (PFN_DEV|PFN_MAP)) != (PFN_DEV|PFN_MAP)) {
+<<<<<<< HEAD
 		dev_dbg(dev, "region lacks devmap flags\n");
+=======
+		dev_dbg(dev, "%s: region lacks devmap flags\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return VM_FAULT_SIGBUS;
 	}
 
@@ -319,6 +375,7 @@ static vm_fault_t __dev_dax_pmd_fault(struct dev_dax *dev_dax,
 	pgoff = linear_page_index(vmf->vma, pmd_addr);
 	phys = dax_pgoff_to_phys(dev_dax, pgoff, PMD_SIZE);
 	if (phys == -1) {
+<<<<<<< HEAD
 		dev_dbg(dev, "pgoff_to_phys(%#lx) failed\n", pgoff);
 		return VM_FAULT_SIGBUS;
 	}
@@ -331,12 +388,31 @@ static vm_fault_t __dev_dax_pmd_fault(struct dev_dax *dev_dax,
 #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
 static vm_fault_t __dev_dax_pud_fault(struct dev_dax *dev_dax,
 				struct vm_fault *vmf, pfn_t *pfn)
+=======
+		dev_dbg(dev, "%s: pgoff_to_phys(%#lx) failed\n", __func__,
+				pgoff);
+		return VM_FAULT_SIGBUS;
+	}
+
+	pfn = phys_to_pfn_t(phys, dax_region->pfn_flags);
+
+	return vmf_insert_pfn_pmd(vmf->vma, vmf->address, vmf->pmd, pfn,
+			vmf->flags & FAULT_FLAG_WRITE);
+}
+
+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+static int __dev_dax_pud_fault(struct dev_dax *dev_dax, struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long pud_addr = vmf->address & PUD_MASK;
 	struct device *dev = &dev_dax->dev;
 	struct dax_region *dax_region;
 	phys_addr_t phys;
 	pgoff_t pgoff;
+<<<<<<< HEAD
+=======
+	pfn_t pfn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int fault_size = PUD_SIZE;
 
 
@@ -345,14 +421,23 @@ static vm_fault_t __dev_dax_pud_fault(struct dev_dax *dev_dax,
 
 	dax_region = dev_dax->region;
 	if (dax_region->align > PUD_SIZE) {
+<<<<<<< HEAD
 		dev_dbg(dev, "alignment (%#x) > fault size (%#x)\n",
 			dax_region->align, fault_size);
+=======
+		dev_dbg(dev, "%s: alignment (%#x) > fault size (%#x)\n",
+			__func__, dax_region->align, fault_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return VM_FAULT_SIGBUS;
 	}
 
 	/* dax pud mappings require pfn_t_devmap() */
 	if ((dax_region->pfn_flags & (PFN_DEV|PFN_MAP)) != (PFN_DEV|PFN_MAP)) {
+<<<<<<< HEAD
 		dev_dbg(dev, "region lacks devmap flags\n");
+=======
+		dev_dbg(dev, "%s: region lacks devmap flags\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return VM_FAULT_SIGBUS;
 	}
 
@@ -369,6 +454,7 @@ static vm_fault_t __dev_dax_pud_fault(struct dev_dax *dev_dax,
 	pgoff = linear_page_index(vmf->vma, pud_addr);
 	phys = dax_pgoff_to_phys(dev_dax, pgoff, PUD_SIZE);
 	if (phys == -1) {
+<<<<<<< HEAD
 		dev_dbg(dev, "pgoff_to_phys(%#lx) failed\n", pgoff);
 		return VM_FAULT_SIGBUS;
 	}
@@ -380,11 +466,26 @@ static vm_fault_t __dev_dax_pud_fault(struct dev_dax *dev_dax,
 #else
 static vm_fault_t __dev_dax_pud_fault(struct dev_dax *dev_dax,
 				struct vm_fault *vmf, pfn_t *pfn)
+=======
+		dev_dbg(dev, "%s: pgoff_to_phys(%#lx) failed\n", __func__,
+				pgoff);
+		return VM_FAULT_SIGBUS;
+	}
+
+	pfn = phys_to_pfn_t(phys, dax_region->pfn_flags);
+
+	return vmf_insert_pfn_pud(vmf->vma, vmf->address, vmf->pud, pfn,
+			vmf->flags & FAULT_FLAG_WRITE);
+}
+#else
+static int __dev_dax_pud_fault(struct dev_dax *dev_dax, struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return VM_FAULT_FALLBACK;
 }
 #endif /* !CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
 
+<<<<<<< HEAD
 static vm_fault_t dev_dax_huge_fault(struct vm_fault *vmf,
 		enum page_entry_size pe_size)
 {
@@ -397,11 +498,24 @@ static vm_fault_t dev_dax_huge_fault(struct vm_fault *vmf,
 
 	dev_dbg(&dev_dax->dev, "%s: %s (%#lx - %#lx) size = %d\n", current->comm,
 			(vmf->flags & FAULT_FLAG_WRITE) ? "write" : "read",
+=======
+static int dev_dax_huge_fault(struct vm_fault *vmf,
+		enum page_entry_size pe_size)
+{
+	int rc, id;
+	struct file *filp = vmf->vma->vm_file;
+	struct dev_dax *dev_dax = filp->private_data;
+
+	dev_dbg(&dev_dax->dev, "%s: %s: %s (%#lx - %#lx) size = %d\n", __func__,
+			current->comm, (vmf->flags & FAULT_FLAG_WRITE)
+			? "write" : "read",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vmf->vma->vm_start, vmf->vma->vm_end, pe_size);
 
 	id = dax_read_lock();
 	switch (pe_size) {
 	case PE_SIZE_PTE:
+<<<<<<< HEAD
 		fault_size = PAGE_SIZE;
 		rc = __dev_dax_pte_fault(dev_dax, vmf, &pfn);
 		break;
@@ -412,10 +526,20 @@ static vm_fault_t dev_dax_huge_fault(struct vm_fault *vmf,
 	case PE_SIZE_PUD:
 		fault_size = PUD_SIZE;
 		rc = __dev_dax_pud_fault(dev_dax, vmf, &pfn);
+=======
+		rc = __dev_dax_pte_fault(dev_dax, vmf);
+		break;
+	case PE_SIZE_PMD:
+		rc = __dev_dax_pmd_fault(dev_dax, vmf);
+		break;
+	case PE_SIZE_PUD:
+		rc = __dev_dax_pud_fault(dev_dax, vmf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		rc = VM_FAULT_SIGBUS;
 	}
+<<<<<<< HEAD
 
 	if (rc == VM_FAULT_NOPAGE) {
 		unsigned long i;
@@ -439,12 +563,18 @@ static vm_fault_t dev_dax_huge_fault(struct vm_fault *vmf,
 			page->index = pgoff + i;
 		}
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dax_read_unlock(id);
 
 	return rc;
 }
 
+<<<<<<< HEAD
 static vm_fault_t dev_dax_fault(struct vm_fault *vmf)
+=======
+static int dev_dax_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return dev_dax_huge_fault(vmf, PE_SIZE_PTE);
 }
@@ -460,6 +590,7 @@ static int dev_dax_split(struct vm_area_struct *vma, unsigned long addr)
 	return 0;
 }
 
+<<<<<<< HEAD
 static unsigned long dev_dax_pagesize(struct vm_area_struct *vma)
 {
 	struct file *filp = vma->vm_file;
@@ -469,11 +600,16 @@ static unsigned long dev_dax_pagesize(struct vm_area_struct *vma)
 	return dax_region->align;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct vm_operations_struct dax_vm_ops = {
 	.fault = dev_dax_fault,
 	.huge_fault = dev_dax_huge_fault,
 	.split = dev_dax_split,
+<<<<<<< HEAD
 	.pagesize = dev_dax_pagesize,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int dax_mmap(struct file *filp, struct vm_area_struct *vma)
@@ -481,7 +617,11 @@ static int dax_mmap(struct file *filp, struct vm_area_struct *vma)
 	struct dev_dax *dev_dax = filp->private_data;
 	int rc, id;
 
+<<<<<<< HEAD
 	dev_dbg(&dev_dax->dev, "trace\n");
+=======
+	dev_dbg(&dev_dax->dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We lock to check dax_dev liveness and will re-check at
@@ -494,7 +634,11 @@ static int dax_mmap(struct file *filp, struct vm_area_struct *vma)
 		return rc;
 
 	vma->vm_ops = &dax_vm_ops;
+<<<<<<< HEAD
 	vma->vm_flags |= VM_HUGEPAGE;
+=======
+	vma->vm_flags |= VM_MIXEDMAP | VM_HUGEPAGE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -533,21 +677,30 @@ static unsigned long dax_get_unmapped_area(struct file *filp,
 	return current->mm->get_unmapped_area(filp, addr, len, pgoff, flags);
 }
 
+<<<<<<< HEAD
 static const struct address_space_operations dev_dax_aops = {
 	.set_page_dirty		= noop_set_page_dirty,
 	.invalidatepage		= noop_invalidatepage,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dax_open(struct inode *inode, struct file *filp)
 {
 	struct dax_device *dax_dev = inode_dax(inode);
 	struct inode *__dax_inode = dax_inode(dax_dev);
 	struct dev_dax *dev_dax = dax_get_private(dax_dev);
 
+<<<<<<< HEAD
 	dev_dbg(&dev_dax->dev, "trace\n");
 	inode->i_mapping = __dax_inode->i_mapping;
 	inode->i_mapping->host = __dax_inode;
 	inode->i_mapping->a_ops = &dev_dax_aops;
+=======
+	dev_dbg(&dev_dax->dev, "%s\n", __func__);
+	inode->i_mapping = __dax_inode->i_mapping;
+	inode->i_mapping->host = __dax_inode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	filp->f_mapping = inode->i_mapping;
 	filp->f_wb_err = filemap_sample_wb_err(filp->f_mapping);
 	filp->private_data = dev_dax;
@@ -560,7 +713,11 @@ static int dax_release(struct inode *inode, struct file *filp)
 {
 	struct dev_dax *dev_dax = filp->private_data;
 
+<<<<<<< HEAD
 	dev_dbg(&dev_dax->dev, "trace\n");
+=======
+	dev_dbg(&dev_dax->dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -571,7 +728,10 @@ static const struct file_operations dax_fops = {
 	.release = dax_release,
 	.get_unmapped_area = dax_get_unmapped_area,
 	.mmap = dax_mmap,
+<<<<<<< HEAD
 	.mmap_supported_flags = MAP_SYNC,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void dev_dax_release(struct device *dev)
@@ -603,7 +763,11 @@ static void unregister_dev_dax(void *dev)
 	struct inode *inode = dax_inode(dax_dev);
 	struct cdev *cdev = inode->i_cdev;
 
+<<<<<<< HEAD
 	dev_dbg(dev, "trace\n");
+=======
+	dev_dbg(dev, "%s\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kill_dev_dax(dev_dax);
 	cdev_device_del(cdev, dev);
@@ -624,7 +788,11 @@ struct dev_dax *devm_create_dev_dax(struct dax_region *dax_region,
 	if (!count)
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	dev_dax = kzalloc(struct_size(dev_dax, res, count), GFP_KERNEL);
+=======
+	dev_dax = kzalloc(sizeof(*dev_dax) + sizeof(*res) * count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev_dax)
 		return ERR_PTR(-ENOMEM);
 

@@ -21,6 +21,7 @@
  *
  * Authors: Ben Skeggs <bskeggs@redhat.com>
  */
+<<<<<<< HEAD
 #include "channv50.h"
 
 int
@@ -30,3 +31,20 @@ gp102_disp_base_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 	return nv50_disp_base_new_(&gp102_disp_dmac_func, &gf119_disp_base_mthd,
 				   disp, 1, oclass, argv, argc, pobject);
 }
+=======
+#include "dmacnv50.h"
+#include "rootnv50.h"
+
+#include <nvif/class.h>
+
+const struct nv50_disp_dmac_oclass
+gp102_disp_base_oclass = {
+	.base.oclass = GK110_DISP_BASE_CHANNEL_DMA,
+	.base.minver = 0,
+	.base.maxver = 0,
+	.ctor = nv50_disp_base_new,
+	.func = &gp102_disp_dmac_func,
+	.mthd = &gf119_disp_base_chan_mthd,
+	.chid = 1,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -63,7 +63,11 @@ struct octnet_buf_free_info {
 };
 
 /* BQL-related functions */
+<<<<<<< HEAD
 int octeon_report_sent_bytes_to_bql(void *buf, int reqtype);
+=======
+void octeon_report_sent_bytes_to_bql(void *buf, int reqtype);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void octeon_update_tx_completion_counters(void *buf, int reqtype,
 					  unsigned int *pkts_compl,
 					  unsigned int *bytes_compl);

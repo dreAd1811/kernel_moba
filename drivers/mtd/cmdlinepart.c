@@ -190,10 +190,14 @@ static struct mtd_partition * newpart(char *s,
 		extra_mem = (unsigned char *)(parts + *num_parts);
 	}
 
+<<<<<<< HEAD
 	/*
 	 * enter this partition (offset will be calculated later if it is
 	 * OFFSET_CONTINUOUS at this point)
 	 */
+=======
+	/* enter this partition (offset will be calculated later if it is zero at this point) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	parts[this_part].size = size;
 	parts[this_part].offset = offset;
 	parts[this_part].mask_flags = mask_flags;

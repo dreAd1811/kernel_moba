@@ -121,12 +121,21 @@ static void __init um_timer_setup(void)
 	clockevents_register_device(&timer_clockevent);
 }
 
+<<<<<<< HEAD
 void read_persistent_clock64(struct timespec64 *ts)
 {
 	long long nsecs = os_persistent_clock_emulation();
 
 	set_normalized_timespec64(ts, nsecs / NSEC_PER_SEC,
 				  nsecs % NSEC_PER_SEC);
+=======
+void read_persistent_clock(struct timespec *ts)
+{
+	long long nsecs = os_persistent_clock_emulation();
+
+	set_normalized_timespec(ts, nsecs / NSEC_PER_SEC,
+				nsecs % NSEC_PER_SEC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init time_init(void)

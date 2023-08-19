@@ -1,9 +1,23 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright 2008 Simtec Electronics
 //	Ben Dooks <ben@simtec.co.uk>
 //
 // S3C24XX Base setup for i2c device
+=======
+/* linux/arch/arm/plat-s3c24xx/setup-i2c.c
+ *
+ * Copyright 2008 Simtec Electronics
+ *	Ben Dooks <ben@simtec.co.uk>
+ *
+ * S3C24XX Base setup for i2c device
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/gpio.h>

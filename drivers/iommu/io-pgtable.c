@@ -44,6 +44,12 @@ io_pgtable_init_table[IO_PGTABLE_NUM_FMTS] = {
 #ifdef CONFIG_IOMMU_IO_PGTABLE_FAST
 	[ARM_V8L_FAST] = &io_pgtable_av8l_fast_init_fns,
 #endif
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MSM_TZ_SMMU
+	[ARM_MSM_SECURE] = &io_pgtable_arm_msm_secure_init_fns,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct dentry *io_pgtable_top;

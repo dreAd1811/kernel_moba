@@ -65,7 +65,11 @@ char *arc_cache_mumbojumbo(int c, char *buf, int len)
 
 	n += scnprintf(buf + n, len - n, "Peripherals\t: %#lx%s%s\n",
 		       perip_base,
+<<<<<<< HEAD
 		       IS_AVAIL3(ioc_exists, ioc_enable, ", IO-Coherency (per-device) "));
+=======
+		       IS_AVAIL3(ioc_exists, ioc_enable, ", IO-Coherency "));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return buf;
 }
@@ -780,10 +784,14 @@ noinline static void slc_entire_op(const int op)
 
 	write_aux_reg(r, ctrl);
 
+<<<<<<< HEAD
 	if (op & OP_INV)	/* Inv or flush-n-inv use same cmd reg */
 		write_aux_reg(ARC_REG_SLC_INVALIDATE, 0x1);
 	else
 		write_aux_reg(ARC_REG_SLC_FLUSH, 0x1);
+=======
+	write_aux_reg(ARC_REG_SLC_INVALIDATE, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Make sure "busy" bit reports correct stataus, see STAR 9001165532 */
 	read_aux_reg(r);
@@ -833,7 +841,11 @@ void flush_dcache_page(struct page *page)
 	}
 
 	/* don't handle anon pages here */
+<<<<<<< HEAD
 	mapping = page_mapping_file(page);
+=======
+	mapping = page_mapping(page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mapping)
 		return;
 
@@ -897,6 +909,18 @@ static void __dma_cache_wback_slc(phys_addr_t start, unsigned long sz)
 }
 
 /*
+<<<<<<< HEAD
+=======
+ * DMA ops for systems with IOC
+ * IOC hardware snoops all DMA traffic keeping the caches consistent with
+ * memory - eliding need for any explicit cache maintenance of DMA buffers
+ */
+static void __dma_cache_wback_inv_ioc(phys_addr_t start, unsigned long sz) {}
+static void __dma_cache_inv_ioc(phys_addr_t start, unsigned long sz) {}
+static void __dma_cache_wback_ioc(phys_addr_t start, unsigned long sz) {}
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Exported DMA API
  */
 void dma_cache_wback_inv(phys_addr_t start, unsigned long sz)
@@ -1144,6 +1168,7 @@ noinline void __init arc_ioc_setup(void)
 {
 	unsigned int ioc_base, mem_sz;
 
+<<<<<<< HEAD
 	/*
 	 * As for today we don't support both IOC and ZONE_HIGHMEM enabled
 	 * simultaneously. This happens because as of today IOC aperture covers
@@ -1157,6 +1182,8 @@ noinline void __init arc_ioc_setup(void)
 	if (IS_ENABLED(CONFIG_HIGHMEM))
 		panic("IOC and HIGHMEM can't be used simultaneously");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Flush + invalidate + disable L1 dcache */
 	__dc_disable();
 
@@ -1251,6 +1278,7 @@ void __init arc_cache_init_master(void)
 		}
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Check that SMP_CACHE_BYTES (and hence ARCH_DMA_MINALIGN) is larger
 	 * or equal to any cache line length.
@@ -1261,6 +1289,8 @@ void __init arc_cache_init_master(void)
 		panic("L2 Cache line [%d] > kernel Config [%d]\n",
 		      l2_line_sz, SMP_CACHE_BYTES);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Note that SLC disable not formally supported till HS 3.0 */
 	if (is_isa_arcv2() && l2_line_sz && !slc_enable)
 		arc_slc_disable();
@@ -1268,7 +1298,15 @@ void __init arc_cache_init_master(void)
 	if (is_isa_arcv2() && ioc_enable)
 		arc_ioc_setup();
 
+<<<<<<< HEAD
 	if (is_isa_arcv2() && l2_line_sz && slc_enable) {
+=======
+	if (is_isa_arcv2() && ioc_enable) {
+		__dma_cache_wback_inv = __dma_cache_wback_inv_ioc;
+		__dma_cache_inv = __dma_cache_inv_ioc;
+		__dma_cache_wback = __dma_cache_wback_ioc;
+	} else if (is_isa_arcv2() && l2_line_sz && slc_enable) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__dma_cache_wback_inv = __dma_cache_wback_inv_slc;
 		__dma_cache_inv = __dma_cache_inv_slc;
 		__dma_cache_wback = __dma_cache_wback_slc;
@@ -1277,12 +1315,15 @@ void __init arc_cache_init_master(void)
 		__dma_cache_inv = __dma_cache_inv_l1;
 		__dma_cache_wback = __dma_cache_wback_l1;
 	}
+<<<<<<< HEAD
 	/*
 	 * In case of IOC (say IOC+SLC case), pointers above could still be set
 	 * but end up not being relevant as the first function in chain is not
 	 * called at all for @dma_direct_ops
 	 *     arch_sync_dma_for_cpu() -> dma_cache_*() -> __dma_cache_*()
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __ref arc_cache_init(void)

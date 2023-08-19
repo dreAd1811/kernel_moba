@@ -17,11 +17,17 @@
 #include <linux/sched.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #include <media/media-device.h>
 #include <media/videobuf2-v4l2.h>
 #include <media/v4l2-mem2mem.h>
 #include <media/v4l2-dev.h>
 #include <media/v4l2-device.h>
+=======
+#include <media/videobuf2-v4l2.h>
+#include <media/v4l2-mem2mem.h>
+#include <media/v4l2-dev.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/v4l2-fh.h>
 #include <media/v4l2-event.h>
 
@@ -52,6 +58,7 @@ module_param(debug, bool, 0644);
  * offsets but for different queues */
 #define DST_QUEUE_OFF_BASE	(1 << 30)
 
+<<<<<<< HEAD
 enum v4l2_m2m_entity_type {
 	MEM2MEM_ENT_TYPE_SOURCE,
 	MEM2MEM_ENT_TYPE_SINK,
@@ -84,6 +91,11 @@ static const char * const m2m_entity_name[] = {
  *			v4l2_m2m_unregister_media_controller().
  * @intf_devnode:	&struct media_intf devnode pointer with the interface
  *			with controls the M2M device.
+=======
+
+/**
+ * struct v4l2_m2m_dev - per-device context
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @curr_ctx:		currently running instance
  * @job_queue:		instances queued to run
  * @job_spinlock:	protects job_queue
@@ -91,6 +103,7 @@ static const char * const m2m_entity_name[] = {
  */
 struct v4l2_m2m_dev {
 	struct v4l2_m2m_ctx	*curr_ctx;
+<<<<<<< HEAD
 #ifdef CONFIG_MEDIA_CONTROLLER
 	struct media_entity	*source;
 	struct media_pad	source_pad;
@@ -100,6 +113,8 @@ struct v4l2_m2m_dev {
 	struct media_pad	proc_pads[2];
 	struct media_intf_devnode *intf_devnode;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct list_head	job_queue;
 	spinlock_t		job_spinlock;
@@ -147,6 +162,7 @@ void *v4l2_m2m_next_buf(struct v4l2_m2m_queue_ctx *q_ctx)
 }
 EXPORT_SYMBOL_GPL(v4l2_m2m_next_buf);
 
+<<<<<<< HEAD
 void *v4l2_m2m_last_buf(struct v4l2_m2m_queue_ctx *q_ctx)
 {
 	struct v4l2_m2m_buffer *b;
@@ -165,6 +181,8 @@ void *v4l2_m2m_last_buf(struct v4l2_m2m_queue_ctx *q_ctx)
 }
 EXPORT_SYMBOL_GPL(v4l2_m2m_last_buf);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void *v4l2_m2m_buf_remove(struct v4l2_m2m_queue_ctx *q_ctx)
 {
 	struct v4l2_m2m_buffer *b;
@@ -241,7 +259,10 @@ EXPORT_SYMBOL(v4l2_m2m_get_curr_priv);
 
 /**
  * v4l2_m2m_try_run() - select next job to perform and run it if possible
+<<<<<<< HEAD
  * @m2m_dev: per-device context
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Get next transaction (if present) from the waiting jobs list and run it.
  */
@@ -267,6 +288,7 @@ static void v4l2_m2m_try_run(struct v4l2_m2m_dev *m2m_dev)
 	m2m_dev->curr_ctx->job_flags |= TRANS_RUNNING;
 	spin_unlock_irqrestore(&m2m_dev->job_spinlock, flags);
 
+<<<<<<< HEAD
 	dprintk("Running job on m2m_ctx: %p\n", m2m_dev->curr_ctx);
 	m2m_dev->m2m_ops->device_run(m2m_dev->curr_ctx->priv);
 }
@@ -285,6 +307,17 @@ static void __v4l2_m2m_try_queue(struct v4l2_m2m_dev *m2m_dev,
 {
 	unsigned long flags_job, flags_out, flags_cap;
 
+=======
+	m2m_dev->m2m_ops->device_run(m2m_dev->curr_ctx->priv);
+}
+
+void v4l2_m2m_try_schedule(struct v4l2_m2m_ctx *m2m_ctx)
+{
+	struct v4l2_m2m_dev *m2m_dev;
+	unsigned long flags_job, flags_out, flags_cap;
+
+	m2m_dev = m2m_ctx->m2m_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dprintk("Trying to schedule a job for m2m_ctx: %p\n", m2m_ctx);
 
 	if (!m2m_ctx->out_q_ctx.q.streaming
@@ -342,6 +375,7 @@ static void __v4l2_m2m_try_queue(struct v4l2_m2m_dev *m2m_dev,
 	m2m_ctx->job_flags |= TRANS_QUEUED;
 
 	spin_unlock_irqrestore(&m2m_dev->job_spinlock, flags_job);
+<<<<<<< HEAD
 }
 
 /**
@@ -361,13 +395,19 @@ void v4l2_m2m_try_schedule(struct v4l2_m2m_ctx *m2m_ctx)
 	struct v4l2_m2m_dev *m2m_dev = m2m_ctx->m2m_dev;
 
 	__v4l2_m2m_try_queue(m2m_dev, m2m_ctx);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v4l2_m2m_try_run(m2m_dev);
 }
 EXPORT_SYMBOL_GPL(v4l2_m2m_try_schedule);
 
 /**
  * v4l2_m2m_cancel_job() - cancel pending jobs for the context
+<<<<<<< HEAD
  * @m2m_ctx: m2m context with jobs to be canceled
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * In case of streamoff or release called on any context,
  * 1] If the context is currently running, then abort job will be called
@@ -385,8 +425,12 @@ static void v4l2_m2m_cancel_job(struct v4l2_m2m_ctx *m2m_ctx)
 	m2m_ctx->job_flags |= TRANS_ABORT;
 	if (m2m_ctx->job_flags & TRANS_RUNNING) {
 		spin_unlock_irqrestore(&m2m_dev->job_spinlock, flags);
+<<<<<<< HEAD
 		if (m2m_dev->m2m_ops->job_abort)
 			m2m_dev->m2m_ops->job_abort(m2m_ctx->priv);
+=======
+		m2m_dev->m2m_ops->job_abort(m2m_ctx->priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dprintk("m2m_ctx %p running, will wait to complete", m2m_ctx);
 		wait_event(m2m_ctx->finished,
 				!(m2m_ctx->job_flags & TRANS_RUNNING));
@@ -425,6 +469,10 @@ void v4l2_m2m_job_finish(struct v4l2_m2m_dev *m2m_dev,
 	 * allow more than one job on the job_queue per instance, each has
 	 * to be scheduled separately after the previous one finishes. */
 	v4l2_m2m_try_schedule(m2m_ctx);
+<<<<<<< HEAD
+=======
+	v4l2_m2m_try_run(m2m_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(v4l2_m2m_job_finish);
 
@@ -585,6 +633,7 @@ int v4l2_m2m_streamoff(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 }
 EXPORT_SYMBOL_GPL(v4l2_m2m_streamoff);
 
+<<<<<<< HEAD
 __poll_t v4l2_m2m_poll(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 			   struct poll_table_struct *wait)
 {
@@ -593,16 +642,33 @@ __poll_t v4l2_m2m_poll(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 	struct vb2_queue *src_q, *dst_q;
 	struct vb2_buffer *src_vb = NULL, *dst_vb = NULL;
 	__poll_t rc = 0;
+=======
+unsigned int v4l2_m2m_poll(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
+			   struct poll_table_struct *wait)
+{
+	struct video_device *vfd = video_devdata(file);
+	unsigned long req_events = poll_requested_events(wait);
+	struct vb2_queue *src_q, *dst_q;
+	struct vb2_buffer *src_vb = NULL, *dst_vb = NULL;
+	unsigned int rc = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	if (test_bit(V4L2_FL_USES_V4L2_FH, &vfd->flags)) {
 		struct v4l2_fh *fh = file->private_data;
 
 		if (v4l2_event_pending(fh))
+<<<<<<< HEAD
 			rc = EPOLLPRI;
 		else if (req_events & EPOLLPRI)
 			poll_wait(file, &fh->wait, wait);
 		if (!(req_events & (EPOLLOUT | EPOLLWRNORM | EPOLLIN | EPOLLRDNORM)))
+=======
+			rc = POLLPRI;
+		else if (req_events & POLLPRI)
+			poll_wait(file, &fh->wait, wait);
+		if (!(req_events & (POLLOUT | POLLWRNORM | POLLIN | POLLRDNORM)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return rc;
 	}
 
@@ -616,7 +682,11 @@ __poll_t v4l2_m2m_poll(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 	 */
 	if ((!src_q->streaming || list_empty(&src_q->queued_list))
 		&& (!dst_q->streaming || list_empty(&dst_q->queued_list))) {
+<<<<<<< HEAD
 		rc |= EPOLLERR;
+=======
+		rc |= POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto end;
 	}
 
@@ -633,7 +703,11 @@ __poll_t v4l2_m2m_poll(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 		 */
 		if (dst_q->last_buffer_dequeued) {
 			spin_unlock_irqrestore(&dst_q->done_lock, flags);
+<<<<<<< HEAD
 			return rc | EPOLLIN | EPOLLRDNORM;
+=======
+			return rc | POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		poll_wait(file, &dst_q->done_wq, wait);
@@ -646,7 +720,11 @@ __poll_t v4l2_m2m_poll(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 						done_entry);
 	if (src_vb && (src_vb->state == VB2_BUF_STATE_DONE
 			|| src_vb->state == VB2_BUF_STATE_ERROR))
+<<<<<<< HEAD
 		rc |= EPOLLOUT | EPOLLWRNORM;
+=======
+		rc |= POLLOUT | POLLWRNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&src_q->done_lock, flags);
 
 	spin_lock_irqsave(&dst_q->done_lock, flags);
@@ -655,7 +733,11 @@ __poll_t v4l2_m2m_poll(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 						done_entry);
 	if (dst_vb && (dst_vb->state == VB2_BUF_STATE_DONE
 			|| dst_vb->state == VB2_BUF_STATE_ERROR))
+<<<<<<< HEAD
 		rc |= EPOLLIN | EPOLLRDNORM;
+=======
+		rc |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&dst_q->done_lock, flags);
 
 end:
@@ -680,6 +762,7 @@ int v4l2_m2m_mmap(struct file *file, struct v4l2_m2m_ctx *m2m_ctx,
 }
 EXPORT_SYMBOL(v4l2_m2m_mmap);
 
+<<<<<<< HEAD
 #if defined(CONFIG_MEDIA_CONTROLLER)
 void v4l2_m2m_unregister_media_controller(struct v4l2_m2m_dev *m2m_dev)
 {
@@ -848,11 +931,18 @@ err_rel_entity0:
 EXPORT_SYMBOL_GPL(v4l2_m2m_register_media_controller);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct v4l2_m2m_dev *v4l2_m2m_init(const struct v4l2_m2m_ops *m2m_ops)
 {
 	struct v4l2_m2m_dev *m2m_dev;
 
+<<<<<<< HEAD
 	if (!m2m_ops || WARN_ON(!m2m_ops->device_run))
+=======
+	if (!m2m_ops || WARN_ON(!m2m_ops->device_run) ||
+			WARN_ON(!m2m_ops->job_abort))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-EINVAL);
 
 	m2m_dev = kzalloc(sizeof *m2m_dev, GFP_KERNEL);
@@ -1046,11 +1136,19 @@ int v4l2_m2m_fop_mmap(struct file *file, struct vm_area_struct *vma)
 }
 EXPORT_SYMBOL_GPL(v4l2_m2m_fop_mmap);
 
+<<<<<<< HEAD
 __poll_t v4l2_m2m_fop_poll(struct file *file, poll_table *wait)
 {
 	struct v4l2_fh *fh = file->private_data;
 	struct v4l2_m2m_ctx *m2m_ctx = fh->m2m_ctx;
 	__poll_t ret;
+=======
+unsigned int v4l2_m2m_fop_poll(struct file *file, poll_table *wait)
+{
+	struct v4l2_fh *fh = file->private_data;
+	struct v4l2_m2m_ctx *m2m_ctx = fh->m2m_ctx;
+	unsigned int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (m2m_ctx->q_lock)
 		mutex_lock(m2m_ctx->q_lock);

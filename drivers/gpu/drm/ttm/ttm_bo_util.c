@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**************************************************************************
  *
  * Copyright (c) 2007-2009 VMware, Inc., Palo Alto, CA., USA
@@ -40,18 +43,25 @@
 #include <linux/module.h>
 #include <linux/reservation.h>
 
+<<<<<<< HEAD
 struct ttm_transfer_obj {
 	struct ttm_buffer_object base;
 	struct ttm_buffer_object *bo;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ttm_bo_free_old_node(struct ttm_buffer_object *bo)
 {
 	ttm_bo_mem_put(bo, &bo->mem);
 }
 
 int ttm_bo_move_ttm(struct ttm_buffer_object *bo,
+<<<<<<< HEAD
 		   struct ttm_operation_ctx *ctx,
+=======
+		    bool interruptible, bool no_wait_gpu,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    struct ttm_mem_reg *new_mem)
 {
 	struct ttm_tt *ttm = bo->ttm;
@@ -59,7 +69,11 @@ int ttm_bo_move_ttm(struct ttm_buffer_object *bo,
 	int ret;
 
 	if (old_mem->mem_type != TTM_PL_SYSTEM) {
+<<<<<<< HEAD
 		ret = ttm_bo_wait(bo, ctx->interruptible, ctx->no_wait_gpu);
+=======
+		ret = ttm_bo_wait(bo, interruptible, no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (unlikely(ret != 0)) {
 			if (ret != -ERESTARTSYS)
@@ -79,7 +93,11 @@ int ttm_bo_move_ttm(struct ttm_buffer_object *bo,
 		return ret;
 
 	if (new_mem->mem_type != TTM_PL_SYSTEM) {
+<<<<<<< HEAD
 		ret = ttm_tt_bind(ttm, new_mem, ctx);
+=======
+		ret = ttm_tt_bind(ttm, new_mem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(ret != 0))
 			return ret;
 	}
@@ -261,6 +279,7 @@ static int ttm_copy_io_page(void *dst, void *src, unsigned long page)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86
 #define __ttm_kmap_atomic_prot(__page, __prot) kmap_atomic_prot(__page, __prot)
 #define __ttm_kunmap_atomic(__addr) kunmap_atomic(__addr)
@@ -309,6 +328,8 @@ void ttm_kunmap_atomic_prot(void *addr, pgprot_t prot)
 }
 EXPORT_SYMBOL(ttm_kunmap_atomic_prot);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ttm_copy_io_ttm_page(struct ttm_tt *ttm, void *src,
 				unsigned long page,
 				pgprot_t prot)
@@ -320,13 +341,36 @@ static int ttm_copy_io_ttm_page(struct ttm_tt *ttm, void *src,
 		return -ENOMEM;
 
 	src = (void *)((unsigned long)src + (page << PAGE_SHIFT));
+<<<<<<< HEAD
 	dst = ttm_kmap_atomic_prot(d, prot);
+=======
+
+#ifdef CONFIG_X86
+	dst = kmap_atomic_prot(d, prot);
+#else
+	if (pgprot_val(prot) != pgprot_val(PAGE_KERNEL))
+		dst = vmap(&d, 1, 0, prot);
+	else
+		dst = kmap(d);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dst)
 		return -ENOMEM;
 
 	memcpy_fromio(dst, src, PAGE_SIZE);
 
+<<<<<<< HEAD
 	ttm_kunmap_atomic_prot(dst, prot);
+=======
+#ifdef CONFIG_X86
+	kunmap_atomic(dst);
+#else
+	if (pgprot_val(prot) != pgprot_val(PAGE_KERNEL))
+		vunmap(dst);
+	else
+		kunmap(d);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -342,19 +386,45 @@ static int ttm_copy_ttm_io_page(struct ttm_tt *ttm, void *dst,
 		return -ENOMEM;
 
 	dst = (void *)((unsigned long)dst + (page << PAGE_SHIFT));
+<<<<<<< HEAD
 	src = ttm_kmap_atomic_prot(s, prot);
+=======
+#ifdef CONFIG_X86
+	src = kmap_atomic_prot(s, prot);
+#else
+	if (pgprot_val(prot) != pgprot_val(PAGE_KERNEL))
+		src = vmap(&s, 1, 0, prot);
+	else
+		src = kmap(s);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!src)
 		return -ENOMEM;
 
 	memcpy_toio(dst, src, PAGE_SIZE);
 
+<<<<<<< HEAD
 	ttm_kunmap_atomic_prot(src, prot);
+=======
+#ifdef CONFIG_X86
+	kunmap_atomic(src);
+#else
+	if (pgprot_val(prot) != pgprot_val(PAGE_KERNEL))
+		vunmap(src);
+	else
+		kunmap(s);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 int ttm_bo_move_memcpy(struct ttm_buffer_object *bo,
+<<<<<<< HEAD
 		       struct ttm_operation_ctx *ctx,
+=======
+		       bool interruptible, bool no_wait_gpu,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       struct ttm_mem_reg *new_mem)
 {
 	struct ttm_bo_device *bdev = bo->bdev;
@@ -370,7 +440,11 @@ int ttm_bo_move_memcpy(struct ttm_buffer_object *bo,
 	unsigned long add = 0;
 	int dir;
 
+<<<<<<< HEAD
 	ret = ttm_bo_wait(bo, ctx->interruptible, ctx->no_wait_gpu);
+=======
+	ret = ttm_bo_wait(bo, interruptible, no_wait_gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -400,8 +474,13 @@ int ttm_bo_move_memcpy(struct ttm_buffer_object *bo,
 	/*
 	 * TTM might be null for moves within the same region.
 	 */
+<<<<<<< HEAD
 	if (ttm) {
 		ret = ttm_tt_populate(ttm, ctx);
+=======
+	if (ttm && ttm->state == tt_unpopulated) {
+		ret = ttm->bdev->driver->ttm_tt_populate(ttm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto out1;
 	}
@@ -427,9 +506,14 @@ int ttm_bo_move_memcpy(struct ttm_buffer_object *bo,
 						    PAGE_KERNEL);
 			ret = ttm_copy_io_ttm_page(ttm, old_iomap, page,
 						   prot);
+<<<<<<< HEAD
 		} else {
 			ret = ttm_copy_io_page(new_iomap, old_iomap, page);
 		}
+=======
+		} else
+			ret = ttm_copy_io_page(new_iomap, old_iomap, page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto out1;
 	}
@@ -460,11 +544,15 @@ EXPORT_SYMBOL(ttm_bo_move_memcpy);
 
 static void ttm_transfered_destroy(struct ttm_buffer_object *bo)
 {
+<<<<<<< HEAD
 	struct ttm_transfer_obj *fbo;
 
 	fbo = container_of(bo, struct ttm_transfer_obj, base);
 	ttm_bo_put(fbo->bo);
 	kfree(fbo);
+=======
+	kfree(bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -485,24 +573,33 @@ static void ttm_transfered_destroy(struct ttm_buffer_object *bo)
 static int ttm_buffer_object_transfer(struct ttm_buffer_object *bo,
 				      struct ttm_buffer_object **new_obj)
 {
+<<<<<<< HEAD
 	struct ttm_transfer_obj *fbo;
+=======
+	struct ttm_buffer_object *fbo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	fbo = kmalloc(sizeof(*fbo), GFP_KERNEL);
 	if (!fbo)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	fbo->base = *bo;
 	fbo->base.mem.placement |= TTM_PL_FLAG_NO_EVICT;
 
 	ttm_bo_get(bo);
 	fbo->bo = bo;
+=======
+	*fbo = *bo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/**
 	 * Fix up members that we shouldn't copy directly:
 	 * TODO: Explicit member copy would probably be better here.
 	 */
 
+<<<<<<< HEAD
 	atomic_inc(&bo->bdev->glob->bo_count);
 	INIT_LIST_HEAD(&fbo->base.ddestroy);
 	INIT_LIST_HEAD(&fbo->base.lru);
@@ -523,6 +620,28 @@ static int ttm_buffer_object_transfer(struct ttm_buffer_object *bo,
 	WARN_ON(!ret);
 
 	*new_obj = &fbo->base;
+=======
+	atomic_inc(&bo->glob->bo_count);
+	INIT_LIST_HEAD(&fbo->ddestroy);
+	INIT_LIST_HEAD(&fbo->lru);
+	INIT_LIST_HEAD(&fbo->swap);
+	INIT_LIST_HEAD(&fbo->io_reserve_lru);
+	mutex_init(&fbo->wu_mutex);
+	fbo->moving = NULL;
+	drm_vma_node_reset(&fbo->vma_node);
+	atomic_set(&fbo->cpu_writers, 0);
+
+	kref_init(&fbo->list_kref);
+	kref_init(&fbo->kref);
+	fbo->destroy = &ttm_transfered_destroy;
+	fbo->acc_size = 0;
+	fbo->resv = &fbo->ttm_resv;
+	reservation_object_init(fbo->resv);
+	ret = ww_mutex_trylock(&fbo->resv->lock);
+	WARN_ON(!ret);
+
+	*new_obj = fbo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -579,6 +698,7 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
 			   unsigned long num_pages,
 			   struct ttm_bo_kmap_obj *map)
 {
+<<<<<<< HEAD
 	struct ttm_mem_reg *mem = &bo->mem;
 	struct ttm_operation_ctx ctx = {
 		.interruptible = false,
@@ -586,13 +706,25 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
 	};
 	struct ttm_tt *ttm = bo->ttm;
 	pgprot_t prot;
+=======
+	struct ttm_mem_reg *mem = &bo->mem; pgprot_t prot;
+	struct ttm_tt *ttm = bo->ttm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	BUG_ON(!ttm);
 
+<<<<<<< HEAD
 	ret = ttm_tt_populate(ttm, &ctx);
 	if (ret)
 		return ret;
+=======
+	if (ttm->state == tt_unpopulated) {
+		ret = ttm->bdev->driver->ttm_tt_populate(ttm);
+		if (ret)
+			return ret;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (num_pages == 1 && (mem->placement & TTM_PL_FLAG_CACHED)) {
 		/*
@@ -625,6 +757,10 @@ int ttm_bo_kmap(struct ttm_buffer_object *bo,
 	unsigned long offset, size;
 	int ret;
 
+<<<<<<< HEAD
+=======
+	BUG_ON(!list_empty(&bo->swap));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	map->virtual = NULL;
 	map->bo = bo;
 	if (num_pages > bo->num_pages)
@@ -733,7 +869,11 @@ int ttm_bo_move_accel_cleanup(struct ttm_buffer_object *bo,
 			bo->ttm = NULL;
 
 		ttm_bo_unreserve(ghost_obj);
+<<<<<<< HEAD
 		ttm_bo_put(ghost_obj);
+=======
+		ttm_bo_unref(&ghost_obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	*old_mem = *new_mem;
@@ -789,7 +929,11 @@ int ttm_bo_pipeline_move(struct ttm_buffer_object *bo,
 			bo->ttm = NULL;
 
 		ttm_bo_unreserve(ghost_obj);
+<<<<<<< HEAD
 		ttm_bo_put(ghost_obj);
+=======
+		ttm_bo_unref(&ghost_obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	} else if (from->flags & TTM_MEMTYPE_FLAG_FIXED) {
 
@@ -834,6 +978,7 @@ int ttm_bo_pipeline_move(struct ttm_buffer_object *bo,
 	return 0;
 }
 EXPORT_SYMBOL(ttm_bo_pipeline_move);
+<<<<<<< HEAD
 
 int ttm_bo_pipeline_gutting(struct ttm_buffer_object *bo)
 {
@@ -858,3 +1003,5 @@ int ttm_bo_pipeline_gutting(struct ttm_buffer_object *bo)
 
 	return 0;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -354,7 +354,10 @@ static int fsl_of_msi_remove(struct platform_device *ofdev)
 }
 
 static struct lock_class_key fsl_msi_irq_class;
+<<<<<<< HEAD
 static struct lock_class_key fsl_msi_irq_request_class;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int fsl_msi_setup_hwirq(struct fsl_msi *msi, struct platform_device *dev,
 			       int offset, int irq_index)
@@ -374,8 +377,12 @@ static int fsl_msi_setup_hwirq(struct fsl_msi *msi, struct platform_device *dev,
 		dev_err(&dev->dev, "No memory for MSI cascade data\n");
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 	irq_set_lockdep_class(virt_msir, &fsl_msi_irq_class,
 			      &fsl_msi_irq_request_class);
+=======
+	irq_set_lockdep_class(virt_msir, &fsl_msi_irq_class);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cascade_data->index = offset;
 	cascade_data->msi_data = msi;
 	cascade_data->virq = virt_msir;

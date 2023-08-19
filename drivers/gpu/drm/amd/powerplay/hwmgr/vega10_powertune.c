@@ -24,10 +24,18 @@
 #include "hwmgr.h"
 #include "vega10_hwmgr.h"
 #include "vega10_powertune.h"
+<<<<<<< HEAD
 #include "vega10_ppsmc.h"
 #include "vega10_inc.h"
 #include "pp_debug.h"
 #include "soc15_common.h"
+=======
+#include "vega10_smumgr.h"
+#include "vega10_ppsmc.h"
+#include "vega10_inc.h"
+#include "pp_debug.h"
+#include "pp_soc15.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct vega10_didt_config_reg SEDiDtTuningCtrlConfig_Vega10[] =
 {
@@ -849,37 +857,74 @@ static int vega10_program_gc_didt_config_registers(struct pp_hwmgr *hwmgr, const
 static void vega10_didt_set_mask(struct pp_hwmgr *hwmgr, const bool enable)
 {
 	uint32_t data;
+<<<<<<< HEAD
 	uint32_t en = (enable ? 1 : 0);
 	uint32_t didt_block_info = SQ_IR_MASK | TCP_IR_MASK | TD_PCC_MASK;
 
 	if (PP_CAP(PHM_PlatformCaps_SQRamping)) {
 		CGS_WREG32_FIELD_IND(hwmgr->device, CGS_IND_REG__DIDT,
 				     DIDT_SQ_CTRL0, DIDT_CTRL_EN, en);
+=======
+	int result;
+	uint32_t en = (enable ? 1 : 0);
+	uint32_t didt_block_info = SQ_IR_MASK | TCP_IR_MASK | TD_PCC_MASK;
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_SQRamping)) {
+		data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_SQ_CTRL0);
+		data &= ~DIDT_SQ_CTRL0__DIDT_CTRL_EN_MASK;
+		data |= ((en << DIDT_SQ_CTRL0__DIDT_CTRL_EN__SHIFT) & DIDT_SQ_CTRL0__DIDT_CTRL_EN_MASK);
+		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_SQ_CTRL0, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		didt_block_info &= ~SQ_Enable_MASK;
 		didt_block_info |= en << SQ_Enable_SHIFT;
 	}
 
+<<<<<<< HEAD
 	if (PP_CAP(PHM_PlatformCaps_DBRamping)) {
 		CGS_WREG32_FIELD_IND(hwmgr->device, CGS_IND_REG__DIDT,
 				     DIDT_DB_CTRL0, DIDT_CTRL_EN, en);
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_DBRamping)) {
+		data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DB_CTRL0);
+		data &= ~DIDT_DB_CTRL0__DIDT_CTRL_EN_MASK;
+		data |= ((en << DIDT_DB_CTRL0__DIDT_CTRL_EN__SHIFT) & DIDT_DB_CTRL0__DIDT_CTRL_EN_MASK);
+		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DB_CTRL0, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		didt_block_info &= ~DB_Enable_MASK;
 		didt_block_info |= en << DB_Enable_SHIFT;
 	}
 
+<<<<<<< HEAD
 	if (PP_CAP(PHM_PlatformCaps_TDRamping)) {
 		CGS_WREG32_FIELD_IND(hwmgr->device, CGS_IND_REG__DIDT,
 				     DIDT_TD_CTRL0, DIDT_CTRL_EN, en);
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_TDRamping)) {
+		data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_TD_CTRL0);
+		data &= ~DIDT_TD_CTRL0__DIDT_CTRL_EN_MASK;
+		data |= ((en << DIDT_TD_CTRL0__DIDT_CTRL_EN__SHIFT) & DIDT_TD_CTRL0__DIDT_CTRL_EN_MASK);
+		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_TD_CTRL0, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		didt_block_info &= ~TD_Enable_MASK;
 		didt_block_info |= en << TD_Enable_SHIFT;
 	}
 
+<<<<<<< HEAD
 	if (PP_CAP(PHM_PlatformCaps_TCPRamping)) {
 		CGS_WREG32_FIELD_IND(hwmgr->device, CGS_IND_REG__DIDT,
 				     DIDT_TCP_CTRL0, DIDT_CTRL_EN, en);
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_TCPRamping)) {
+		data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_TCP_CTRL0);
+		data &= ~DIDT_TCP_CTRL0__DIDT_CTRL_EN_MASK;
+		data |= ((en << DIDT_TCP_CTRL0__DIDT_CTRL_EN__SHIFT) & DIDT_TCP_CTRL0__DIDT_CTRL_EN_MASK);
+		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_TCP_CTRL0, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		didt_block_info &= ~TCP_Enable_MASK;
 		didt_block_info |= en << TCP_Enable_SHIFT;
 	}
 
+<<<<<<< HEAD
 	if (PP_CAP(PHM_PlatformCaps_DBRRamping)) {
 		CGS_WREG32_FIELD_IND(hwmgr->device, CGS_IND_REG__DIDT,
 				     DIDT_DBR_CTRL0, DIDT_CTRL_EN, en);
@@ -918,18 +963,79 @@ static void vega10_didt_set_mask(struct pp_hwmgr *hwmgr, const bool enable)
 			data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DBR_EDC_CTRL);
 			data = REG_SET_FIELD(data, DIDT_DBR_EDC_CTRL, EDC_EN, en);
 			data = REG_SET_FIELD(data, DIDT_DBR_EDC_CTRL, EDC_SW_RST, ~en);
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_DBRRamping)) {
+		data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DBR_CTRL0);
+		data &= ~DIDT_DBR_CTRL0__DIDT_CTRL_EN_MASK;
+		data |= ((en << DIDT_DBR_CTRL0__DIDT_CTRL_EN__SHIFT) & DIDT_DBR_CTRL0__DIDT_CTRL_EN_MASK);
+		cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DBR_CTRL0, data);
+	}
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_DiDtEDCEnable)) {
+		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_SQRamping)) {
+			data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_SQ_EDC_CTRL);
+			data &= ~DIDT_SQ_EDC_CTRL__EDC_EN_MASK;
+			data |= ((en << DIDT_SQ_EDC_CTRL__EDC_EN__SHIFT) & DIDT_SQ_EDC_CTRL__EDC_EN_MASK);
+			data &= ~DIDT_SQ_EDC_CTRL__EDC_SW_RST_MASK;
+			data |= ((~en << DIDT_SQ_EDC_CTRL__EDC_SW_RST__SHIFT) & DIDT_SQ_EDC_CTRL__EDC_SW_RST_MASK);
+			cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_SQ_EDC_CTRL, data);
+		}
+
+		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_DBRamping)) {
+			data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DB_EDC_CTRL);
+			data &= ~DIDT_DB_EDC_CTRL__EDC_EN_MASK;
+			data |= ((en << DIDT_DB_EDC_CTRL__EDC_EN__SHIFT) & DIDT_DB_EDC_CTRL__EDC_EN_MASK);
+			data &= ~DIDT_DB_EDC_CTRL__EDC_SW_RST_MASK;
+			data |= ((~en << DIDT_DB_EDC_CTRL__EDC_SW_RST__SHIFT) & DIDT_DB_EDC_CTRL__EDC_SW_RST_MASK);
+			cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DB_EDC_CTRL, data);
+		}
+
+		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_TDRamping)) {
+			data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_TD_EDC_CTRL);
+			data &= ~DIDT_TD_EDC_CTRL__EDC_EN_MASK;
+			data |= ((en << DIDT_TD_EDC_CTRL__EDC_EN__SHIFT) & DIDT_TD_EDC_CTRL__EDC_EN_MASK);
+			data &= ~DIDT_TD_EDC_CTRL__EDC_SW_RST_MASK;
+			data |= ((~en << DIDT_TD_EDC_CTRL__EDC_SW_RST__SHIFT) & DIDT_TD_EDC_CTRL__EDC_SW_RST_MASK);
+			cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_TD_EDC_CTRL, data);
+		}
+
+		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_TCPRamping)) {
+			data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_TCP_EDC_CTRL);
+			data &= ~DIDT_TCP_EDC_CTRL__EDC_EN_MASK;
+			data |= ((en << DIDT_TCP_EDC_CTRL__EDC_EN__SHIFT) & DIDT_TCP_EDC_CTRL__EDC_EN_MASK);
+			data &= ~DIDT_TCP_EDC_CTRL__EDC_SW_RST_MASK;
+			data |= ((~en << DIDT_TCP_EDC_CTRL__EDC_SW_RST__SHIFT) & DIDT_TCP_EDC_CTRL__EDC_SW_RST_MASK);
+			cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_TCP_EDC_CTRL, data);
+		}
+
+		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_DBRRamping)) {
+			data = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DBR_EDC_CTRL);
+			data &= ~DIDT_DBR_EDC_CTRL__EDC_EN_MASK;
+			data |= ((en << DIDT_DBR_EDC_CTRL__EDC_EN__SHIFT) & DIDT_DBR_EDC_CTRL__EDC_EN_MASK);
+			data &= ~DIDT_DBR_EDC_CTRL__EDC_SW_RST_MASK;
+			data |= ((~en << DIDT_DBR_EDC_CTRL__EDC_SW_RST__SHIFT) & DIDT_DBR_EDC_CTRL__EDC_SW_RST_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cgs_write_ind_register(hwmgr->device, CGS_IND_REG__DIDT, ixDIDT_DBR_EDC_CTRL, data);
 		}
 	}
 
+<<<<<<< HEAD
 	/* For Vega10, SMC does not support any mask yet. */
 	if (enable)
 		smum_send_msg_to_smc_with_parameter(hwmgr, PPSMC_MSG_ConfigureGfxDidt, didt_block_info);
 
+=======
+	if (enable) {
+		/* For Vega10, SMC does not support any mask yet. */
+		result = smum_send_msg_to_smc_with_parameter(hwmgr->smumgr, PPSMC_MSG_ConfigureGfxDidt, didt_block_info);
+		PP_ASSERT((0 == result), "[EnableDiDtConfig] SMC Configure Gfx Didt Failed!");
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vega10_enable_cac_driving_se_didt_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	int result;
 	uint32_t num_se = 0, count, data;
@@ -942,6 +1048,25 @@ static int vega10_enable_cac_driving_se_didt_config(struct pp_hwmgr *hwmgr)
 	for (count = 0; count < num_se; count++) {
 		data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK | GRBM_GFX_INDEX__SH_BROADCAST_WRITES_MASK | ( count << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
 		WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, data);
+=======
+	int result;
+	uint32_t num_se = 0, count, data;
+	struct cgs_system_info sys_info = {0};
+	uint32_t reg;
+
+	sys_info.size = sizeof(struct cgs_system_info);
+	sys_info.info_id = CGS_SYSTEM_INFO_GFX_SE_INFO;
+	if (cgs_query_system_info(hwmgr->device, &sys_info) == 0)
+		num_se = sys_info.value;
+
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	cgs_lock_grbm_idx(hwmgr->device, true);
+	reg = soc15_get_register_offset(GC_HWID, 0, mmGRBM_GFX_INDEX_BASE_IDX, mmGRBM_GFX_INDEX);
+	for (count = 0; count < num_se; count++) {
+		data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK | GRBM_GFX_INDEX__SH_BROADCAST_WRITES_MASK | ( count << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
+		cgs_write_register(hwmgr->device, reg, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		result =  vega10_program_didt_config_registers(hwmgr, SEDiDtStallCtrlConfig_vega10, VEGA10_CONFIGREG_DIDT);
 		result |= vega10_program_didt_config_registers(hwmgr, SEDiDtStallPatternConfig_vega10, VEGA10_CONFIGREG_DIDT);
@@ -956,18 +1081,28 @@ static int vega10_enable_cac_driving_se_didt_config(struct pp_hwmgr *hwmgr)
 		if (0 != result)
 			break;
 	}
+<<<<<<< HEAD
 	WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, 0xE0000000);
 	mutex_unlock(&adev->grbm_idx_mutex);
 
 	vega10_didt_set_mask(hwmgr, true);
 
 	adev->gfx.rlc.funcs->exit_safe_mode(adev);
+=======
+	cgs_write_register(hwmgr->device, reg, 0xE0000000);
+	cgs_lock_grbm_idx(hwmgr->device, false);
+
+	vega10_didt_set_mask(hwmgr, true);
+
+	cgs_enter_safe_mode(hwmgr->device, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int vega10_disable_cac_driving_se_didt_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 
 	adev->gfx.rlc.funcs->enter_safe_mode(adev);
@@ -975,12 +1110,20 @@ static int vega10_disable_cac_driving_se_didt_config(struct pp_hwmgr *hwmgr)
 	vega10_didt_set_mask(hwmgr, false);
 
 	adev->gfx.rlc.funcs->exit_safe_mode(adev);
+=======
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	vega10_didt_set_mask(hwmgr, false);
+
+	cgs_enter_safe_mode(hwmgr->device, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int vega10_enable_psm_gc_didt_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	int result;
 	uint32_t num_se = 0, count, data;
@@ -993,6 +1136,25 @@ static int vega10_enable_psm_gc_didt_config(struct pp_hwmgr *hwmgr)
 	for (count = 0; count < num_se; count++) {
 		data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK | GRBM_GFX_INDEX__SH_BROADCAST_WRITES_MASK | ( count << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
 		WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, data);
+=======
+	int result;
+	uint32_t num_se = 0, count, data;
+	struct cgs_system_info sys_info = {0};
+	uint32_t reg;
+
+	sys_info.size = sizeof(struct cgs_system_info);
+	sys_info.info_id = CGS_SYSTEM_INFO_GFX_SE_INFO;
+	if (cgs_query_system_info(hwmgr->device, &sys_info) == 0)
+		num_se = sys_info.value;
+
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	cgs_lock_grbm_idx(hwmgr->device, true);
+	reg = soc15_get_register_offset(GC_HWID, 0, mmGRBM_GFX_INDEX_BASE_IDX, mmGRBM_GFX_INDEX);
+	for (count = 0; count < num_se; count++) {
+		data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK | GRBM_GFX_INDEX__SH_BROADCAST_WRITES_MASK | ( count << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
+		cgs_write_register(hwmgr->device, reg, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		result = vega10_program_didt_config_registers(hwmgr, SEDiDtStallCtrlConfig_vega10, VEGA10_CONFIGREG_DIDT);
 		result |= vega10_program_didt_config_registers(hwmgr, SEDiDtStallPatternConfig_vega10, VEGA10_CONFIGREG_DIDT);
@@ -1001,6 +1163,7 @@ static int vega10_enable_psm_gc_didt_config(struct pp_hwmgr *hwmgr)
 		if (0 != result)
 			break;
 	}
+<<<<<<< HEAD
 	WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, 0xE0000000);
 	mutex_unlock(&adev->grbm_idx_mutex);
 
@@ -1013,6 +1176,20 @@ static int vega10_enable_psm_gc_didt_config(struct pp_hwmgr *hwmgr)
 		vega10_program_gc_didt_config_registers(hwmgr, GCDiDtCtrl0Config_vega10);
 
 	if (PP_CAP(PHM_PlatformCaps_PSM))
+=======
+	cgs_write_register(hwmgr->device, reg, 0xE0000000);
+	cgs_lock_grbm_idx(hwmgr->device, false);
+
+	vega10_didt_set_mask(hwmgr, true);
+
+	cgs_enter_safe_mode(hwmgr->device, false);
+
+	vega10_program_gc_didt_config_registers(hwmgr, GCDiDtDroopCtrlConfig_vega10);
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_GCEDC))
+		vega10_program_gc_didt_config_registers(hwmgr, GCDiDtCtrl0Config_vega10);
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_PSM))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vega10_program_gc_didt_config_registers(hwmgr,  AvfsPSMInitConfig_vega10);
 
 	return 0;
@@ -1020,6 +1197,7 @@ static int vega10_enable_psm_gc_didt_config(struct pp_hwmgr *hwmgr)
 
 static int vega10_disable_psm_gc_didt_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	uint32_t data;
 
@@ -1030,11 +1208,26 @@ static int vega10_disable_psm_gc_didt_config(struct pp_hwmgr *hwmgr)
 	adev->gfx.rlc.funcs->exit_safe_mode(adev);
 
 	if (PP_CAP(PHM_PlatformCaps_GCEDC)) {
+=======
+	uint32_t data;
+
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	vega10_didt_set_mask(hwmgr, false);
+
+	cgs_enter_safe_mode(hwmgr->device, false);
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_GCEDC)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data = 0x00000000;
 		cgs_write_register(hwmgr->device, mmGC_DIDT_CTRL0, data);
 	}
 
+<<<<<<< HEAD
 	if (PP_CAP(PHM_PlatformCaps_PSM))
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_PSM))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vega10_program_gc_didt_config_registers(hwmgr,  AvfsPSMResetConfig_vega10);
 
 	return 0;
@@ -1042,6 +1235,7 @@ static int vega10_disable_psm_gc_didt_config(struct pp_hwmgr *hwmgr)
 
 static int vega10_enable_se_edc_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	int result;
 	uint32_t num_se = 0, count, data;
@@ -1054,6 +1248,25 @@ static int vega10_enable_se_edc_config(struct pp_hwmgr *hwmgr)
 	for (count = 0; count < num_se; count++) {
 		data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK | GRBM_GFX_INDEX__SH_BROADCAST_WRITES_MASK | ( count << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
 		WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, data);
+=======
+	int result;
+	uint32_t num_se = 0, count, data;
+	struct cgs_system_info sys_info = {0};
+	uint32_t reg;
+
+	sys_info.size = sizeof(struct cgs_system_info);
+	sys_info.info_id = CGS_SYSTEM_INFO_GFX_SE_INFO;
+	if (cgs_query_system_info(hwmgr->device, &sys_info) == 0)
+		num_se = sys_info.value;
+
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	cgs_lock_grbm_idx(hwmgr->device, true);
+	reg = soc15_get_register_offset(GC_HWID, 0, mmGRBM_GFX_INDEX_BASE_IDX, mmGRBM_GFX_INDEX);
+	for (count = 0; count < num_se; count++) {
+		data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK | GRBM_GFX_INDEX__SH_BROADCAST_WRITES_MASK | ( count << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
+		cgs_write_register(hwmgr->device, reg, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = vega10_program_didt_config_registers(hwmgr, SEDiDtWeightConfig_Vega10, VEGA10_CONFIGREG_DIDT);
 		result |= vega10_program_didt_config_registers(hwmgr, SEEDCStallPatternConfig_Vega10, VEGA10_CONFIGREG_DIDT);
 		result |= vega10_program_didt_config_registers(hwmgr, SEEDCStallDelayConfig_Vega10, VEGA10_CONFIGREG_DIDT);
@@ -1064,18 +1277,28 @@ static int vega10_enable_se_edc_config(struct pp_hwmgr *hwmgr)
 		if (0 != result)
 			break;
 	}
+<<<<<<< HEAD
 	WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, 0xE0000000);
 	mutex_unlock(&adev->grbm_idx_mutex);
 
 	vega10_didt_set_mask(hwmgr, true);
 
 	adev->gfx.rlc.funcs->exit_safe_mode(adev);
+=======
+	cgs_write_register(hwmgr->device, reg, 0xE0000000);
+	cgs_lock_grbm_idx(hwmgr->device, false);
+
+	vega10_didt_set_mask(hwmgr, true);
+
+	cgs_enter_safe_mode(hwmgr->device, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int vega10_disable_se_edc_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 
 	adev->gfx.rlc.funcs->enter_safe_mode(adev);
@@ -1083,12 +1306,20 @@ static int vega10_disable_se_edc_config(struct pp_hwmgr *hwmgr)
 	vega10_didt_set_mask(hwmgr, false);
 
 	adev->gfx.rlc.funcs->exit_safe_mode(adev);
+=======
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	vega10_didt_set_mask(hwmgr, false);
+
+	cgs_enter_safe_mode(hwmgr->device, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int vega10_enable_psm_gc_edc_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	int result = 0;
 	uint32_t num_se = 0;
@@ -1104,6 +1335,28 @@ static int vega10_enable_psm_gc_edc_config(struct pp_hwmgr *hwmgr)
 	for (count = 0; count < num_se; count++) {
 		data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK | GRBM_GFX_INDEX__SH_BROADCAST_WRITES_MASK | ( count << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
 		WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, data);
+=======
+	int result;
+	uint32_t num_se = 0;
+	uint32_t count, data;
+	struct cgs_system_info sys_info = {0};
+	uint32_t reg;
+
+	sys_info.size = sizeof(struct cgs_system_info);
+	sys_info.info_id = CGS_SYSTEM_INFO_GFX_SE_INFO;
+	if (cgs_query_system_info(hwmgr->device, &sys_info) == 0)
+		num_se = sys_info.value;
+
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	vega10_program_gc_didt_config_registers(hwmgr, AvfsPSMResetConfig_vega10);
+
+	cgs_lock_grbm_idx(hwmgr->device, true);
+	reg = soc15_get_register_offset(GC_HWID, 0, mmGRBM_GFX_INDEX_BASE_IDX, mmGRBM_GFX_INDEX);
+	for (count = 0; count < num_se; count++) {
+		data = GRBM_GFX_INDEX__INSTANCE_BROADCAST_WRITES_MASK | GRBM_GFX_INDEX__SH_BROADCAST_WRITES_MASK | ( count << GRBM_GFX_INDEX__SE_INDEX__SHIFT);
+		cgs_write_register(hwmgr->device, reg, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		result = vega10_program_didt_config_registers(hwmgr, PSMSEEDCStallPatternConfig_Vega10, VEGA10_CONFIGREG_DIDT);
 		result |= vega10_program_didt_config_registers(hwmgr, PSMSEEDCStallDelayConfig_Vega10, VEGA10_CONFIGREG_DIDT);
 		result |= vega10_program_didt_config_registers(hwmgr, PSMSEEDCCtrlResetConfig_Vega10, VEGA10_CONFIGREG_DIDT);
@@ -1112,6 +1365,7 @@ static int vega10_enable_psm_gc_edc_config(struct pp_hwmgr *hwmgr)
 		if (0 != result)
 			break;
 	}
+<<<<<<< HEAD
 	WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, 0xE0000000);
 	mutex_unlock(&adev->grbm_idx_mutex);
 
@@ -1122,11 +1376,27 @@ static int vega10_enable_psm_gc_edc_config(struct pp_hwmgr *hwmgr)
 	vega10_program_gc_didt_config_registers(hwmgr, PSMGCEDCDroopCtrlConfig_vega10);
 
 	if (PP_CAP(PHM_PlatformCaps_GCEDC)) {
+=======
+	cgs_write_register(hwmgr->device, reg, 0xE0000000);
+	cgs_lock_grbm_idx(hwmgr->device, false);
+
+	vega10_didt_set_mask(hwmgr, true);
+
+	cgs_enter_safe_mode(hwmgr->device, false);
+
+	vega10_program_gc_didt_config_registers(hwmgr, PSMGCEDCDroopCtrlConfig_vega10);
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_GCEDC)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vega10_program_gc_didt_config_registers(hwmgr, PSMGCEDCCtrlResetConfig_vega10);
 		vega10_program_gc_didt_config_registers(hwmgr, PSMGCEDCCtrlConfig_vega10);
 	}
 
+<<<<<<< HEAD
 	if (PP_CAP(PHM_PlatformCaps_PSM))
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_PSM))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vega10_program_gc_didt_config_registers(hwmgr,  AvfsPSMInitConfig_vega10);
 
 	return 0;
@@ -1134,6 +1404,7 @@ static int vega10_enable_psm_gc_edc_config(struct pp_hwmgr *hwmgr)
 
 static int vega10_disable_psm_gc_edc_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	uint32_t data;
 
@@ -1144,11 +1415,26 @@ static int vega10_disable_psm_gc_edc_config(struct pp_hwmgr *hwmgr)
 	adev->gfx.rlc.funcs->exit_safe_mode(adev);
 
 	if (PP_CAP(PHM_PlatformCaps_GCEDC)) {
+=======
+	uint32_t data;
+
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	vega10_didt_set_mask(hwmgr, false);
+
+	cgs_enter_safe_mode(hwmgr->device, false);
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_GCEDC)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data = 0x00000000;
 		cgs_write_register(hwmgr->device, mmGC_EDC_CTRL, data);
 	}
 
+<<<<<<< HEAD
 	if (PP_CAP(PHM_PlatformCaps_PSM))
+=======
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps, PHM_PlatformCaps_PSM))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vega10_program_gc_didt_config_registers(hwmgr,  AvfsPSMResetConfig_vega10);
 
 	return 0;
@@ -1156,6 +1442,7 @@ static int vega10_disable_psm_gc_edc_config(struct pp_hwmgr *hwmgr)
 
 static int vega10_enable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct amdgpu_device *adev = hwmgr->adev;
 	int result;
 
@@ -1164,6 +1451,17 @@ static int vega10_enable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
 	mutex_lock(&adev->grbm_idx_mutex);
 	WREG32_SOC15(GC, 0, mmGRBM_GFX_INDEX, 0xE0000000);
 	mutex_unlock(&adev->grbm_idx_mutex);
+=======
+	uint32_t reg;
+	int result;
+
+	cgs_enter_safe_mode(hwmgr->device, true);
+
+	cgs_lock_grbm_idx(hwmgr->device, true);
+	reg = soc15_get_register_offset(GC_HWID, 0, mmGRBM_GFX_INDEX_BASE_IDX, mmGRBM_GFX_INDEX);
+	cgs_write_register(hwmgr->device, reg, 0xE0000000);
+	cgs_lock_grbm_idx(hwmgr->device, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	result = vega10_program_didt_config_registers(hwmgr, SEEDCForceStallPatternConfig_Vega10, VEGA10_CONFIGREG_DIDT);
 	result |= vega10_program_didt_config_registers(hwmgr, SEEDCCtrlForceStallConfig_Vega10, VEGA10_CONFIGREG_DIDT);
@@ -1172,7 +1470,11 @@ static int vega10_enable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
 
 	vega10_didt_set_mask(hwmgr, false);
 
+<<<<<<< HEAD
 	adev->gfx.rlc.funcs->exit_safe_mode(adev);
+=======
+	cgs_enter_safe_mode(hwmgr->device, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1190,7 +1492,11 @@ static int vega10_disable_se_edc_force_stall_config(struct pp_hwmgr *hwmgr)
 int vega10_enable_didt_config(struct pp_hwmgr *hwmgr)
 {
 	int result = 0;
+<<<<<<< HEAD
 	struct vega10_hwmgr *data = hwmgr->backend;
+=======
+	struct vega10_hwmgr *data = (struct vega10_hwmgr *)(hwmgr->backend);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (data->smu_features[GNLD_DIDT].supported) {
 		if (data->smu_features[GNLD_DIDT].enabled)
@@ -1225,8 +1531,13 @@ int vega10_enable_didt_config(struct pp_hwmgr *hwmgr)
 		}
 
 		if (0 == result) {
+<<<<<<< HEAD
 			result = vega10_enable_smc_features(hwmgr, true, data->smu_features[GNLD_DIDT].smu_feature_bitmap);
 			PP_ASSERT_WITH_CODE((0 == result), "[EnableDiDtConfig] Attempt to Enable DiDt feature Failed!", return result);
+=======
+			PP_ASSERT_WITH_CODE((!vega10_enable_smc_features(hwmgr->smumgr, true, data->smu_features[GNLD_DIDT].smu_feature_bitmap)),
+				"[EnableDiDtConfig] Attempt to Enable DiDt feature Failed!", return result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->smu_features[GNLD_DIDT].enabled = true;
 		}
 	}
@@ -1237,7 +1548,11 @@ int vega10_enable_didt_config(struct pp_hwmgr *hwmgr)
 int vega10_disable_didt_config(struct pp_hwmgr *hwmgr)
 {
 	int result = 0;
+<<<<<<< HEAD
 	struct vega10_hwmgr *data = hwmgr->backend;
+=======
+	struct vega10_hwmgr *data = (struct vega10_hwmgr *)(hwmgr->backend);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (data->smu_features[GNLD_DIDT].supported) {
 		if (!data->smu_features[GNLD_DIDT].enabled)
@@ -1272,8 +1587,13 @@ int vega10_disable_didt_config(struct pp_hwmgr *hwmgr)
 		}
 
 		if (0 == result) {
+<<<<<<< HEAD
 			result = vega10_enable_smc_features(hwmgr, false, data->smu_features[GNLD_DIDT].smu_feature_bitmap);
 			PP_ASSERT_WITH_CODE((0 == result), "[DisableDiDtConfig] Attempt to Disable DiDt feature Failed!", return result);
+=======
+			PP_ASSERT_WITH_CODE((0 != vega10_enable_smc_features(hwmgr->smumgr, false, data->smu_features[GNLD_DIDT].smu_feature_bitmap)),
+					"[DisableDiDtConfig] Attempt to Disable DiDt feature Failed!", return result);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->smu_features[GNLD_DIDT].enabled = false;
 		}
 	}
@@ -1283,7 +1603,11 @@ int vega10_disable_didt_config(struct pp_hwmgr *hwmgr)
 
 void vega10_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct vega10_hwmgr *data = hwmgr->backend;
+=======
+	struct vega10_hwmgr *data = (struct vega10_hwmgr *)(hwmgr->backend);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct phm_ppt_v2_information *table_info =
 			(struct phm_ppt_v2_information *)(hwmgr->pptable);
 	struct phm_tdp_table *tdp_table = table_info->tdp_table;
@@ -1322,10 +1646,18 @@ void vega10_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
 
 int vega10_set_power_limit(struct pp_hwmgr *hwmgr, uint32_t n)
 {
+<<<<<<< HEAD
 	struct vega10_hwmgr *data = hwmgr->backend;
 
 	if (data->registry_data.enable_pkg_pwr_tracking_feature)
 		smum_send_msg_to_smc_with_parameter(hwmgr,
+=======
+	struct vega10_hwmgr *data =
+			(struct vega10_hwmgr *)(hwmgr->backend);
+
+	if (data->registry_data.enable_pkg_pwr_tracking_feature)
+		return smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				PPSMC_MSG_SetPptLimit, n);
 
 	return 0;
@@ -1333,6 +1665,7 @@ int vega10_set_power_limit(struct pp_hwmgr *hwmgr, uint32_t n)
 
 int vega10_enable_power_containment(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct vega10_hwmgr *data = hwmgr->backend;
 	struct phm_ppt_v2_information *table_info =
 			(struct phm_ppt_v2_information *)(hwmgr->pptable);
@@ -1345,17 +1678,40 @@ int vega10_enable_power_containment(struct pp_hwmgr *hwmgr)
 	if (PP_CAP(PHM_PlatformCaps_PowerContainment)) {
 		if (data->smu_features[GNLD_PPT].supported)
 			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr,
+=======
+	struct vega10_hwmgr *data =
+			(struct vega10_hwmgr *)(hwmgr->backend);
+	struct phm_ppt_v2_information *table_info =
+			(struct phm_ppt_v2_information *)(hwmgr->pptable);
+	struct phm_tdp_table *tdp_table = table_info->tdp_table;
+	uint32_t default_pwr_limit =
+			(uint32_t)(tdp_table->usMaximumPowerDeliveryLimit);
+	int result = 0;
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+			PHM_PlatformCaps_PowerContainment)) {
+		if (data->smu_features[GNLD_PPT].supported)
+			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr->smumgr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					true, data->smu_features[GNLD_PPT].smu_feature_bitmap),
 					"Attempt to enable PPT feature Failed!",
 					data->smu_features[GNLD_PPT].supported = false);
 
 		if (data->smu_features[GNLD_TDC].supported)
+<<<<<<< HEAD
 			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr,
+=======
+			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr->smumgr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					true, data->smu_features[GNLD_TDC].smu_feature_bitmap),
 					"Attempt to enable PPT feature Failed!",
 					data->smu_features[GNLD_TDC].supported = false);
 
+<<<<<<< HEAD
 		result = vega10_set_power_limit(hwmgr, hwmgr->power_limit);
+=======
+		result = vega10_set_power_limit(hwmgr, default_pwr_limit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		PP_ASSERT_WITH_CODE(!result,
 				"Failed to set Default Power Limit in SMC!",
 				return result);
@@ -1366,17 +1722,31 @@ int vega10_enable_power_containment(struct pp_hwmgr *hwmgr)
 
 int vega10_disable_power_containment(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	struct vega10_hwmgr *data = hwmgr->backend;
 
 	if (PP_CAP(PHM_PlatformCaps_PowerContainment)) {
 		if (data->smu_features[GNLD_PPT].supported)
 			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr,
+=======
+	struct vega10_hwmgr *data =
+			(struct vega10_hwmgr *)(hwmgr->backend);
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+			PHM_PlatformCaps_PowerContainment)) {
+		if (data->smu_features[GNLD_PPT].supported)
+			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr->smumgr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					false, data->smu_features[GNLD_PPT].smu_feature_bitmap),
 					"Attempt to disable PPT feature Failed!",
 					data->smu_features[GNLD_PPT].supported = false);
 
 		if (data->smu_features[GNLD_TDC].supported)
+<<<<<<< HEAD
 			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr,
+=======
+			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr->smumgr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					false, data->smu_features[GNLD_TDC].smu_feature_bitmap),
 					"Attempt to disable PPT feature Failed!",
 					data->smu_features[GNLD_TDC].supported = false);
@@ -1385,24 +1755,45 @@ int vega10_disable_power_containment(struct pp_hwmgr *hwmgr)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void vega10_set_overdrive_target_percentage(struct pp_hwmgr *hwmgr,
 		uint32_t adjust_percent)
 {
 	smum_send_msg_to_smc_with_parameter(hwmgr,
+=======
+static int vega10_set_overdrive_target_percentage(struct pp_hwmgr *hwmgr,
+		uint32_t adjust_percent)
+{
+	return smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			PPSMC_MSG_OverDriveSetPercentage, adjust_percent);
 }
 
 int vega10_power_control_set_level(struct pp_hwmgr *hwmgr)
 {
+<<<<<<< HEAD
 	int adjust_percent;
 
 	if (PP_CAP(PHM_PlatformCaps_PowerContainment)) {
+=======
+	int adjust_percent, result = 0;
+
+	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+			PHM_PlatformCaps_PowerContainment)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adjust_percent =
 				hwmgr->platform_descriptor.TDPAdjustmentPolarity ?
 				hwmgr->platform_descriptor.TDPAdjustment :
 				(-1 * hwmgr->platform_descriptor.TDPAdjustment);
+<<<<<<< HEAD
 		vega10_set_overdrive_target_percentage(hwmgr,
 				(uint32_t)adjust_percent);
 	}
 	return 0;
+=======
+		result = vega10_set_overdrive_target_percentage(hwmgr,
+				(uint32_t)adjust_percent);
+	}
+	return result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

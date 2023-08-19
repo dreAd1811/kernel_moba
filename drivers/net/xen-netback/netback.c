@@ -183,9 +183,15 @@ static void tx_add_credit(struct xenvif_queue *queue)
 	queue->rate_limited = false;
 }
 
+<<<<<<< HEAD
 void xenvif_tx_credit_callback(struct timer_list *t)
 {
 	struct xenvif_queue *queue = from_timer(queue, t, credit_timeout);
+=======
+void xenvif_tx_credit_callback(unsigned long data)
+{
+	struct xenvif_queue *queue = (struct xenvif_queue *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tx_add_credit(queue);
 	xenvif_napi_schedule_or_enable_events(queue);
 }
@@ -700,6 +706,11 @@ static bool tx_credit_exceeded(struct xenvif_queue *queue, unsigned size)
 
 	/* Still too big to send right now? Set a callback. */
 	if (size > queue->remaining_credit) {
+<<<<<<< HEAD
+=======
+		queue->credit_timeout.data     =
+			(unsigned long)queue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mod_timer(&queue->credit_timeout,
 			  next_credit);
 		queue->credit_window_start = next_credit;
@@ -1605,9 +1616,15 @@ static void xenvif_ctrl_action(struct xenvif *vif)
 static bool xenvif_ctrl_work_todo(struct xenvif *vif)
 {
 	if (likely(RING_HAS_UNCONSUMED_REQUESTS(&vif->ctrl)))
+<<<<<<< HEAD
 		return true;
 
 	return false;
+=======
+		return 1;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 irqreturn_t xenvif_ctrl_irq_fn(int irq, void *data)

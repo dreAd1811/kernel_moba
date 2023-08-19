@@ -736,7 +736,11 @@ static int hix5hd2_fill_sg_desc(struct hix5hd2_priv *priv,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hix5hd2_net_xmit(struct sk_buff *skb, struct net_device *dev)
+=======
+static netdev_tx_t hix5hd2_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hix5hd2_priv *priv = netdev_priv(dev);
 	struct hix5hd2_desc *desc;
@@ -1006,11 +1010,20 @@ static int hix5hd2_init_hw_desc_queue(struct hix5hd2_priv *priv)
 
 	for (i = 0; i < QUEUE_NUMS; i++) {
 		size = priv->pool[i].count * sizeof(struct hix5hd2_desc);
+<<<<<<< HEAD
 		virt_addr = dma_zalloc_coherent(dev, size, &phys_addr,
 						GFP_KERNEL);
 		if (virt_addr == NULL)
 			goto error_free_pool;
 
+=======
+		virt_addr = dma_alloc_coherent(dev, size, &phys_addr,
+					       GFP_KERNEL);
+		if (virt_addr == NULL)
+			goto error_free_pool;
+
+		memset(virt_addr, 0, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		priv->pool[i].size = size;
 		priv->pool[i].desc = virt_addr;
 		priv->pool[i].phys_addr = phys_addr;
@@ -1201,7 +1214,11 @@ static int hix5hd2_dev_probe(struct platform_device *pdev)
 		goto err_free_mdio;
 
 	priv->phy_mode = of_get_phy_mode(node);
+<<<<<<< HEAD
 	if (priv->phy_mode < 0) {
+=======
+	if ((int)priv->phy_mode < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_err(ndev, "not find phy-mode\n");
 		ret = -EINVAL;
 		goto err_mdiobus;

@@ -63,7 +63,11 @@
 		};
 
 		idle-states {
+<<<<<<< HEAD
 			entry-method = "psci";
+=======
+			entry-method = "arm,psci";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			CPU_SLEEP_0: cpu-sleep-0 {
 				compatible = "arm,idle-state";
@@ -98,8 +102,13 @@
 			next-level-cache = <&A72_L2>;
 			clocks = <&scpi_dvfs 0>;
 			cpu-idle-states = <&CPU_SLEEP_0 &CLUSTER_SLEEP_0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <450>;
+=======
+			sched-energy-costs = <&CPU_COST_A72 &CLUSTER_COST_A72>;
+			capacity-dmips-mhz = <1024>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		A72_1: cpu@1 {
@@ -116,8 +125,13 @@
 			next-level-cache = <&A72_L2>;
 			clocks = <&scpi_dvfs 0>;
 			cpu-idle-states = <&CPU_SLEEP_0 &CLUSTER_SLEEP_0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <1024>;
 			dynamic-power-coefficient = <450>;
+=======
+			sched-energy-costs = <&CPU_COST_A72 &CLUSTER_COST_A72>;
+			capacity-dmips-mhz = <1024>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		A53_0: cpu@100 {
@@ -134,8 +148,13 @@
 			next-level-cache = <&A53_L2>;
 			clocks = <&scpi_dvfs 1>;
 			cpu-idle-states = <&CPU_SLEEP_0 &CLUSTER_SLEEP_0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <485>;
 			dynamic-power-coefficient = <140>;
+=======
+			sched-energy-costs = <&CPU_COST_A53R2 &CLUSTER_COST_A53R2>;
+			capacity-dmips-mhz = <485>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		A53_1: cpu@101 {
@@ -152,8 +171,13 @@
 			next-level-cache = <&A53_L2>;
 			clocks = <&scpi_dvfs 1>;
 			cpu-idle-states = <&CPU_SLEEP_0 &CLUSTER_SLEEP_0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <485>;
 			dynamic-power-coefficient = <140>;
+=======
+			sched-energy-costs = <&CPU_COST_A53R2 &CLUSTER_COST_A53R2>;
+			capacity-dmips-mhz = <485>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		A53_2: cpu@102 {
@@ -170,8 +194,13 @@
 			next-level-cache = <&A53_L2>;
 			clocks = <&scpi_dvfs 1>;
 			cpu-idle-states = <&CPU_SLEEP_0 &CLUSTER_SLEEP_0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <485>;
 			dynamic-power-coefficient = <140>;
+=======
+			sched-energy-costs = <&CPU_COST_A53R2 &CLUSTER_COST_A53R2>;
+			capacity-dmips-mhz = <485>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		A53_3: cpu@103 {
@@ -188,8 +217,13 @@
 			next-level-cache = <&A53_L2>;
 			clocks = <&scpi_dvfs 1>;
 			cpu-idle-states = <&CPU_SLEEP_0 &CLUSTER_SLEEP_0>;
+<<<<<<< HEAD
 			capacity-dmips-mhz = <485>;
 			dynamic-power-coefficient = <140>;
+=======
+			sched-energy-costs = <&CPU_COST_A53R2 &CLUSTER_COST_A53R2>;
+			capacity-dmips-mhz = <485>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		A72_L2: l2-cache0 {
@@ -205,9 +239,16 @@
 			cache-line-size = <64>;
 			cache-sets = <1024>;
 		};
+<<<<<<< HEAD
 	};
 
 	pmu-a72 {
+=======
+		/include/ "juno-sched-energy.dtsi"
+	};
+
+	pmu_a72 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "arm,cortex-a72-pmu";
 		interrupts = <GIC_SPI 02 IRQ_TYPE_LEVEL_HIGH>,
 			     <GIC_SPI 06 IRQ_TYPE_LEVEL_HIGH>;
@@ -215,7 +256,11 @@
 				     <&A72_1>;
 	};
 
+<<<<<<< HEAD
 	pmu-a53 {
+=======
+	pmu_a53 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "arm,cortex-a53-pmu";
 		interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH>,
 			     <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>,
@@ -284,10 +329,13 @@
 	remote-endpoint = <&csys2_funnel_out_port>;
 };
 
+<<<<<<< HEAD
 &csys1_funnel_in_port0 {
 	remote-endpoint = <&stm_out_port>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &stm_out_port {
 	remote-endpoint = <&csys1_funnel_in_port0>;
 };

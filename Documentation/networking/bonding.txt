@@ -140,7 +140,11 @@ bonding module at load time, or are specified via sysfs.
 
 	Module options may be given as command line arguments to the
 insmod or modprobe command, but are usually specified in either the
+<<<<<<< HEAD
 /etc/modprobe.d/*.conf configuration files, or in a distro-specific
+=======
+/etc/modrobe.d/*.conf configuration files, or in a distro-specific
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 configuration file (some of which are detailed in the next section).
 
 	Details on bonding support for sysfs is provided in the
@@ -1490,7 +1494,11 @@ To remove an ARP target:
 
 To configure the interval between learning packet transmits:
 # echo 12 > /sys/class/net/bond0/bonding/lp_interval
+<<<<<<< HEAD
 	NOTE: the lp_interval is the number of seconds between instances where
+=======
+	NOTE: the lp_inteval is the number of seconds between instances where
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 the bonding driver sends learning packets to each slaves peer switch.  The
 default interval is 1 second.
 

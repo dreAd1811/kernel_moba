@@ -16,15 +16,23 @@
 
 #include <linux/bitops.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/fs.h>
 #include <linux/kfifo.h>
 #include <linux/mfd/syscon.h>
 #include <linux/miscdevice.h>
+=======
+#include <linux/kfifo.h>
+#include <linux/mfd/syscon.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/poll.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regmap.h>
 
 #define DEVICE_NAME	"aspeed-lpc-snoop"
@@ -62,6 +70,7 @@ struct aspeed_lpc_snoop_model_data {
 	unsigned int has_hicrb_ensnp;
 };
 
+<<<<<<< HEAD
 struct aspeed_lpc_snoop_channel {
 	struct kfifo		fifo;
 	wait_queue_head_t	wq;
@@ -126,6 +135,22 @@ static void put_fifo_with_discard(struct aspeed_lpc_snoop_channel *chan, u8 val)
 		kfifo_skip(&chan->fifo);
 	kfifo_put(&chan->fifo, val);
 	wake_up_interruptible(&chan->wq);
+=======
+struct aspeed_lpc_snoop {
+	struct regmap		*regmap;
+	int			irq;
+	struct kfifo		snoop_fifo[NUM_SNOOP_CHANNELS];
+};
+
+/* Save a byte to a FIFO and discard the oldest byte if FIFO is full */
+static void put_fifo_with_discard(struct kfifo *fifo, u8 val)
+{
+	if (!kfifo_initialized(fifo))
+		return;
+	if (kfifo_is_full(fifo))
+		kfifo_skip(fifo);
+	kfifo_put(fifo, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t aspeed_lpc_snoop_irq(int irq, void *arg)
@@ -150,12 +175,20 @@ static irqreturn_t aspeed_lpc_snoop_irq(int irq, void *arg)
 	if (reg & HICR6_STR_SNP0W) {
 		u8 val = (data & SNPWDR_CH0_MASK) >> SNPWDR_CH0_SHIFT;
 
+<<<<<<< HEAD
 		put_fifo_with_discard(&lpc_snoop->chan[0], val);
+=======
+		put_fifo_with_discard(&lpc_snoop->snoop_fifo[0], val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (reg & HICR6_STR_SNP1W) {
 		u8 val = (data & SNPWDR_CH1_MASK) >> SNPWDR_CH1_SHIFT;
 
+<<<<<<< HEAD
 		put_fifo_with_discard(&lpc_snoop->chan[1], val);
+=======
+		put_fifo_with_discard(&lpc_snoop->snoop_fifo[1], val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return IRQ_HANDLED;
@@ -192,13 +225,19 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
 	const struct aspeed_lpc_snoop_model_data *model_data =
 		of_device_get_match_data(dev);
 
+<<<<<<< HEAD
 	init_waitqueue_head(&lpc_snoop->chan[channel].wq);
 	/* Create FIFO datastructure */
 	rc = kfifo_alloc(&lpc_snoop->chan[channel].fifo,
+=======
+	/* Create FIFO datastructure */
+	rc = kfifo_alloc(&lpc_snoop->snoop_fifo[channel],
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 SNOOP_FIFO_SIZE, GFP_KERNEL);
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	lpc_snoop->chan[channel].miscdev.minor = MISC_DYNAMIC_MINOR;
 	lpc_snoop->chan[channel].miscdev.name =
 		devm_kasprintf(dev, GFP_KERNEL, "%s%d", DEVICE_NAME, channel);
@@ -208,6 +247,8 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
 	if (rc)
 		return rc;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable LPC snoop channel at requested port */
 	switch (channel) {
 	case 0:
@@ -254,8 +295,12 @@ static void aspeed_lpc_disable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
 		return;
 	}
 
+<<<<<<< HEAD
 	kfifo_free(&lpc_snoop->chan[channel].fifo);
 	misc_deregister(&lpc_snoop->chan[channel].miscdev);
+=======
+	kfifo_free(&lpc_snoop->snoop_fifo[channel]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int aspeed_lpc_snoop_probe(struct platform_device *pdev)

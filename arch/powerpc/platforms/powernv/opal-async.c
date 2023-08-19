@@ -1,7 +1,11 @@
 /*
  * PowerNV OPAL asynchronous completion interfaces
  *
+<<<<<<< HEAD
  * Copyright 2013-2017 IBM Corp.
+=======
+ * Copyright 2013 IBM Corp.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,6 +27,7 @@
 #include <asm/machdep.h>
 #include <asm/opal.h>
 
+<<<<<<< HEAD
 enum opal_async_token_state {
 	ASYNC_TOKEN_UNALLOCATED = 0,
 	ASYNC_TOKEN_ALLOCATED,
@@ -57,16 +62,51 @@ static int __opal_async_get_token(void)
 		}
 	}
 
+=======
+#define N_ASYNC_COMPLETIONS	64
+
+static DECLARE_BITMAP(opal_async_complete_map, N_ASYNC_COMPLETIONS) = {~0UL};
+static DECLARE_BITMAP(opal_async_token_map, N_ASYNC_COMPLETIONS);
+static DECLARE_WAIT_QUEUE_HEAD(opal_async_wait);
+static DEFINE_SPINLOCK(opal_async_comp_lock);
+static struct semaphore opal_async_sem;
+static struct opal_msg *opal_async_responses;
+static unsigned int opal_max_async_tokens;
+
+int __opal_async_get_token(void)
+{
+	unsigned long flags;
+	int token;
+
+	spin_lock_irqsave(&opal_async_comp_lock, flags);
+	token = find_first_zero_bit(opal_async_token_map, opal_max_async_tokens);
+	if (token >= opal_max_async_tokens) {
+		token = -EBUSY;
+		goto out;
+	}
+
+	if (!__test_and_clear_bit(token, opal_async_complete_map)) {
+		token = -EBUSY;
+		goto out;
+	}
+
+	__set_bit(token, opal_async_token_map);
+
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&opal_async_comp_lock, flags);
 	return token;
 }
 
+<<<<<<< HEAD
 /*
  * Note: If the returned token is used in an opal call and opal returns
  * OPAL_ASYNC_COMPLETION you MUST call one of opal_async_wait_response() or
  * opal_async_wait_response_interruptible() at least once before calling another
  * opal_async_* function
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int opal_async_get_token_interruptible(void)
 {
 	int token;
@@ -83,10 +123,16 @@ int opal_async_get_token_interruptible(void)
 }
 EXPORT_SYMBOL_GPL(opal_async_get_token_interruptible);
 
+<<<<<<< HEAD
 static int __opal_async_release_token(int token)
 {
 	unsigned long flags;
 	int rc;
+=======
+int __opal_async_release_token(int token)
+{
+	unsigned long flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (token < 0 || token >= opal_max_async_tokens) {
 		pr_err("%s: Passed token is out of range, token %d\n",
@@ -95,6 +141,7 @@ static int __opal_async_release_token(int token)
 	}
 
 	spin_lock_irqsave(&opal_async_comp_lock, flags);
+<<<<<<< HEAD
 	switch (opal_async_tokens[token].state) {
 	case ASYNC_TOKEN_COMPLETED:
 	case ASYNC_TOKEN_ALLOCATED:
@@ -115,6 +162,13 @@ static int __opal_async_release_token(int token)
 	spin_unlock_irqrestore(&opal_async_comp_lock, flags);
 
 	return rc;
+=======
+	__set_bit(token, opal_async_complete_map);
+	__clear_bit(token, opal_async_token_map);
+	spin_unlock_irqrestore(&opal_async_comp_lock, flags);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int opal_async_release_token(int token)
@@ -122,10 +176,19 @@ int opal_async_release_token(int token)
 	int ret;
 
 	ret = __opal_async_release_token(token);
+<<<<<<< HEAD
 	if (!ret)
 		up(&opal_async_sem);
 
 	return ret;
+=======
+	if (ret)
+		return ret;
+
+	up(&opal_async_sem);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(opal_async_release_token);
 
@@ -141,23 +204,33 @@ int opal_async_wait_response(uint64_t token, struct opal_msg *msg)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * There is no need to mark the token as dispatched, wait_event()
 	 * will block until the token completes.
 	 *
 	 * Wakeup the poller before we wait for events to speed things
+=======
+	/* Wakeup the poller before we wait for events to speed things
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * up on platforms or simulators where the interrupts aren't
 	 * functional.
 	 */
 	opal_wake_poller();
+<<<<<<< HEAD
 	wait_event(opal_async_wait, opal_async_tokens[token].state
 			== ASYNC_TOKEN_COMPLETED);
 	memcpy(msg, &opal_async_tokens[token].response, sizeof(*msg));
+=======
+	wait_event(opal_async_wait, test_bit(token, opal_async_complete_map));
+	memcpy(msg, &opal_async_responses[token], sizeof(*msg));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 EXPORT_SYMBOL_GPL(opal_async_wait_response);
 
+<<<<<<< HEAD
 int opal_async_wait_response_interruptible(uint64_t token, struct opal_msg *msg)
 {
 	unsigned long flags;
@@ -213,11 +286,16 @@ int opal_async_wait_response_interruptible(uint64_t token, struct opal_msg *msg)
 EXPORT_SYMBOL_GPL(opal_async_wait_response_interruptible);
 
 /* Called from interrupt context */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int opal_async_comp_event(struct notifier_block *nb,
 		unsigned long msg_type, void *msg)
 {
 	struct opal_msg *comp_msg = msg;
+<<<<<<< HEAD
 	enum opal_async_token_state state;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	uint64_t token;
 
@@ -225,6 +303,7 @@ static int opal_async_comp_event(struct notifier_block *nb,
 		return 0;
 
 	token = be64_to_cpu(comp_msg->params[0]);
+<<<<<<< HEAD
 	spin_lock_irqsave(&opal_async_comp_lock, flags);
 	state = opal_async_tokens[token].state;
 	opal_async_tokens[token].state = ASYNC_TOKEN_COMPLETED;
@@ -236,6 +315,13 @@ static int opal_async_comp_event(struct notifier_block *nb,
 		return 0;
 	}
 	memcpy(&opal_async_tokens[token].response, comp_msg, sizeof(*comp_msg));
+=======
+	memcpy(&opal_async_responses[token], comp_msg, sizeof(*comp_msg));
+	spin_lock_irqsave(&opal_async_comp_lock, flags);
+	__set_bit(token, opal_async_complete_map);
+	spin_unlock_irqrestore(&opal_async_comp_lock, flags);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wake_up(&opal_async_wait);
 
 	return 0;
@@ -269,23 +355,49 @@ int __init opal_async_comp_init(void)
 	}
 
 	opal_max_async_tokens = be32_to_cpup(async);
+<<<<<<< HEAD
 	opal_async_tokens = kcalloc(opal_max_async_tokens,
 			sizeof(*opal_async_tokens), GFP_KERNEL);
 	if (!opal_async_tokens) {
 		err = -ENOMEM;
 		goto out_opal_node;
 	}
+=======
+	if (opal_max_async_tokens > N_ASYNC_COMPLETIONS)
+		opal_max_async_tokens = N_ASYNC_COMPLETIONS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = opal_message_notifier_register(OPAL_MSG_ASYNC_COMP,
 			&opal_async_comp_nb);
 	if (err) {
 		pr_err("%s: Can't register OPAL event notifier (%d)\n",
 				__func__, err);
+<<<<<<< HEAD
 		kfree(opal_async_tokens);
 		goto out_opal_node;
 	}
 
 	sema_init(&opal_async_sem, opal_max_async_tokens);
+=======
+		goto out_opal_node;
+	}
+
+	opal_async_responses = kzalloc(
+			sizeof(*opal_async_responses) * opal_max_async_tokens,
+			GFP_KERNEL);
+	if (!opal_async_responses) {
+		pr_err("%s: Out of memory, failed to do asynchronous "
+				"completion init\n", __func__);
+		err = -ENOMEM;
+		goto out_opal_node;
+	}
+
+	/* Initialize to 1 less than the maximum tokens available, as we may
+	 * require to pop one during emergency through synchronous call to
+	 * __opal_async_get_token()
+	 */
+	sema_init(&opal_async_sem, opal_max_async_tokens - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out_opal_node:
 	of_node_put(opal_node);

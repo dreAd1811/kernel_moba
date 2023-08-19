@@ -92,7 +92,11 @@ static const struct iw_handler_def ray_handler_def;
 /***** Prototypes for raylink functions **************************************/
 static void authenticate(ray_dev_t *local);
 static int build_auth_frame(ray_dev_t *local, UCHAR *dest, int auth_type);
+<<<<<<< HEAD
 static void authenticate_timeout(struct timer_list *t);
+=======
+static void authenticate_timeout(u_long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int get_free_ccs(ray_dev_t *local);
 static int get_free_tx_ccs(ray_dev_t *local);
 static void init_startup_params(ray_dev_t *local);
@@ -102,7 +106,11 @@ static int ray_init(struct net_device *dev);
 static int interrupt_ecf(ray_dev_t *local, int ccs);
 static void ray_reset(struct net_device *dev);
 static void ray_update_parm(struct net_device *dev, UCHAR objid, UCHAR *value, int len);
+<<<<<<< HEAD
 static void verify_dl_startup(struct timer_list *t);
+=======
+static void verify_dl_startup(u_long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Prototypes for interrpt time functions **********************************/
 static irqreturn_t ray_interrupt(int reg, void *dev_id);
@@ -120,8 +128,14 @@ static void associate(ray_dev_t *local);
 
 /* Card command functions */
 static int dl_startup_params(struct net_device *dev);
+<<<<<<< HEAD
 static void join_net(struct timer_list *t);
 static void start_net(struct timer_list *t);
+=======
+static void join_net(u_long local);
+static void start_net(u_long local);
+/* void start_net(ray_dev_t *local); */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*===========================================================================*/
 /* Parameters that can be set with 'insmod' */
@@ -322,7 +336,11 @@ static int ray_probe(struct pcmcia_device *p_dev)
 	dev_dbg(&p_dev->dev, "ray_cs ray_attach calling ether_setup.)\n");
 	netif_stop_queue(dev);
 
+<<<<<<< HEAD
 	timer_setup(&local->timer, NULL, 0);
+=======
+	init_timer(&local->timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	this_device = p_dev;
 	return ray_config(p_dev);
@@ -470,6 +488,10 @@ static inline struct rcs __iomem *rcs_base(ray_dev_t *dev)
 static int ray_init(struct net_device *dev)
 {
 	int i;
+<<<<<<< HEAD
+=======
+	UCHAR *p;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ccs __iomem *pccs;
 	ray_dev_t *local = netdev_priv(dev);
 	struct pcmcia_device *link = local->finder;
@@ -512,9 +534,18 @@ static int ray_init(struct net_device *dev)
 	init_startup_params(local);
 
 	/* copy mac address to startup parameters */
+<<<<<<< HEAD
 	if (!parse_addr(phy_addr, local->sparm.b4.a_mac_addr)) {
 		memcpy(&local->sparm.b4.a_mac_addr,
 		       &local->startup_res.station_addr, ADDRLEN);
+=======
+	if (parse_addr(phy_addr, local->sparm.b4.a_mac_addr)) {
+		p = local->sparm.b4.a_mac_addr;
+	} else {
+		memcpy(&local->sparm.b4.a_mac_addr,
+		       &local->startup_res.station_addr, ADDRLEN);
+		p = local->sparm.b4.a_mac_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	clear_interrupt(local);	/* Clear any interrupt from the card */
@@ -565,6 +596,10 @@ static int dl_startup_params(struct net_device *dev)
 	local->card_status = CARD_DL_PARAM;
 	/* Start kernel timer to wait for dl startup to complete. */
 	local->timer.expires = jiffies + HZ / 2;
+<<<<<<< HEAD
+=======
+	local->timer.data = (long)local;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local->timer.function = verify_dl_startup;
 	add_timer(&local->timer);
 	dev_dbg(&link->dev,
@@ -635,9 +670,15 @@ static void init_startup_params(ray_dev_t *local)
 } /* init_startup_params */
 
 /*===========================================================================*/
+<<<<<<< HEAD
 static void verify_dl_startup(struct timer_list *t)
 {
 	ray_dev_t *local = from_timer(local, t, timer);
+=======
+static void verify_dl_startup(u_long data)
+{
+	ray_dev_t *local = (ray_dev_t *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ccs __iomem *pccs = ccs_base(local) + local->dl_param_ccs;
 	UCHAR status;
 	struct pcmcia_device *link = local->finder;
@@ -670,16 +711,28 @@ static void verify_dl_startup(struct timer_list *t)
 		return;
 	}
 	if (local->sparm.b4.a_network_type == ADHOC)
+<<<<<<< HEAD
 		start_net(&local->timer);
 	else
 		join_net(&local->timer);
+=======
+		start_net((u_long) local);
+	else
+		join_net((u_long) local);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } /* end verify_dl_startup */
 
 /*===========================================================================*/
 /* Command card to start a network */
+<<<<<<< HEAD
 static void start_net(struct timer_list *t)
 {
 	ray_dev_t *local = from_timer(local, t, timer);
+=======
+static void start_net(u_long data)
+{
+	ray_dev_t *local = (ray_dev_t *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ccs __iomem *pccs;
 	int ccsindex;
 	struct pcmcia_device *link = local->finder;
@@ -704,9 +757,15 @@ static void start_net(struct timer_list *t)
 
 /*===========================================================================*/
 /* Command card to join a network */
+<<<<<<< HEAD
 static void join_net(struct timer_list *t)
 {
 	ray_dev_t *local = from_timer(local, t, timer);
+=======
+static void join_net(u_long data)
+{
+	ray_dev_t *local = (ray_dev_t *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct ccs __iomem *pccs;
 	int ccsindex;
@@ -1633,6 +1692,7 @@ static int get_free_ccs(ray_dev_t *local)
 } /* get_free_ccs */
 
 /*===========================================================================*/
+<<<<<<< HEAD
 static void authenticate_timeout(struct timer_list *t)
 {
 	ray_dev_t *local = from_timer(local, t, timer);
@@ -1640,6 +1700,15 @@ static void authenticate_timeout(struct timer_list *t)
 	printk(KERN_INFO "ray_cs Authentication with access point failed"
 	       " - timeout\n");
 	join_net(&local->timer);
+=======
+static void authenticate_timeout(u_long data)
+{
+	ray_dev_t *local = (ray_dev_t *) data;
+	del_timer(&local->timer);
+	printk(KERN_INFO "ray_cs Authentication with access point failed"
+	       " - timeout\n");
+	join_net((u_long) local);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*===========================================================================*/
@@ -1939,6 +2008,10 @@ static irqreturn_t ray_interrupt(int irq, void *dev_id)
 
 				del_timer(&local->timer);
 				local->timer.expires = jiffies + HZ * 5;
+<<<<<<< HEAD
+=======
+				local->timer.data = (long)local;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (status == CCS_START_NETWORK) {
 					dev_dbg(&link->dev,
 					      "ray_cs interrupt network \"%s\" start failed\n",
@@ -1960,7 +2033,11 @@ static irqreturn_t ray_interrupt(int irq, void *dev_id)
 			} else {
 				dev_dbg(&link->dev, "ray_cs association failed,\n");
 				local->card_status = CARD_ASSOC_FAILED;
+<<<<<<< HEAD
 				join_net(&local->timer);
+=======
+				join_net((u_long) local);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			break;
 		case CCS_TX_REQUEST:
@@ -2418,6 +2495,10 @@ static void authenticate(ray_dev_t *local)
 		local->timer.function = authenticate_timeout;
 	}
 	local->timer.expires = jiffies + HZ * 2;
+<<<<<<< HEAD
+=======
+	local->timer.data = (long)local;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&local->timer);
 	local->authentication_state = AWAITING_RESPONSE;
 } /* end authenticate */
@@ -2460,7 +2541,11 @@ static void rx_authenticate(ray_dev_t *local, struct rcs __iomem *prcs,
 				} else {
 					pr_debug("Authentication refused\n");
 					local->card_status = CARD_AUTH_REFUSED;
+<<<<<<< HEAD
 					join_net(&local->timer);
+=======
+					join_net((u_long) local);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					local->authentication_state =
 					    UNAUTHENTICATED;
 				}
@@ -2498,6 +2583,10 @@ static void associate(ray_dev_t *local)
 
 		del_timer(&local->timer);
 		local->timer.expires = jiffies + HZ * 2;
+<<<<<<< HEAD
+=======
+		local->timer.data = (long)local;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		local->timer.function = join_net;
 		add_timer(&local->timer);
 		local->card_status = CARD_ASSOC_FAILED;
@@ -2659,6 +2748,22 @@ static int ray_cs_proc_show(struct seq_file *m, void *v)
 	}
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static int ray_cs_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, ray_cs_proc_show, NULL);
+}
+
+static const struct file_operations ray_cs_proc_fops = {
+	.owner = THIS_MODULE,
+	.open = ray_cs_proc_open,
+	.read = seq_read,
+	.llseek = seq_lseek,
+	.release = single_release,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 /*===========================================================================*/
 static int build_auth_frame(ray_dev_t *local, UCHAR *dest, int auth_type)
@@ -2797,12 +2902,19 @@ static int __init init_ray_cs(void)
 #ifdef CONFIG_PROC_FS
 	proc_mkdir("driver/ray_cs", NULL);
 
+<<<<<<< HEAD
 	proc_create_single("driver/ray_cs/ray_cs", 0, NULL, ray_cs_proc_show);
 	proc_create("driver/ray_cs/essid", 0200, NULL, &ray_cs_essid_proc_fops);
 	proc_create_data("driver/ray_cs/net_type", 0200, NULL, &int_proc_fops,
 			 &net_type);
 	proc_create_data("driver/ray_cs/translate", 0200, NULL, &int_proc_fops,
 			 &translate);
+=======
+	proc_create("driver/ray_cs/ray_cs", 0, NULL, &ray_cs_proc_fops);
+	proc_create("driver/ray_cs/essid", S_IWUSR, NULL, &ray_cs_essid_proc_fops);
+	proc_create_data("driver/ray_cs/net_type", S_IWUSR, NULL, &int_proc_fops, &net_type);
+	proc_create_data("driver/ray_cs/translate", S_IWUSR, NULL, &int_proc_fops, &translate);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	if (translate != 0)
 		translate = 1;

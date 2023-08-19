@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Marvell Armada 37xx SoC Peripheral clocks
  *
@@ -6,6 +9,13 @@
  *
  * Gregory CLEMENT <gregory.clement@free-electrons.com>
  *
+<<<<<<< HEAD
+=======
+ * This file is licensed under the terms of the GNU General Public
+ * License version 2 or later. This program is licensed "as is"
+ * without any warranty of any kind, whether express or implied.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Most of the peripheral clocks can be modelled like this:
  *             _____    _______    _______
  * TBG-A-P  --|     |  |       |  |       |   ______
@@ -18,11 +28,17 @@
  */
 
 #include <linux/clk-provider.h>
+<<<<<<< HEAD
 #include <linux/mfd/syscon.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
 #include <linux/regmap.h>
+=======
+#include <linux/of.h>
+#include <linux/of_device.h>
+#include <linux/platform_device.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 #define TBG_SEL		0x0
@@ -32,6 +48,7 @@
 #define CLK_SEL		0x10
 #define CLK_DIS		0x14
 
+<<<<<<< HEAD
 #define  ARMADA_37XX_DVFS_LOAD_1 1
 #define LOAD_LEVEL_NR	4
 
@@ -53,6 +70,8 @@
 #define		ARMADA_37XX_DVFS_LOAD_2		2
 #define		ARMADA_37XX_DVFS_LOAD_3		3
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct clk_periph_driver_data {
 	struct clk_hw_onecell_data *hw_data;
 	spinlock_t lock;
@@ -66,6 +85,7 @@ struct clk_double_div {
 	u8 shift2;
 };
 
+<<<<<<< HEAD
 struct clk_pm_cpu {
 	struct clk_hw hw;
 	void __iomem *reg_mux;
@@ -78,6 +98,9 @@ struct clk_pm_cpu {
 
 #define to_clk_double_div(_hw) container_of(_hw, struct clk_double_div, hw)
 #define to_clk_pm_cpu(_hw) container_of(_hw, struct clk_pm_cpu, hw)
+=======
+#define to_clk_double_div(_hw) container_of(_hw, struct clk_double_div, hw)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct clk_periph_data {
 	const char *name;
@@ -86,7 +109,10 @@ struct clk_periph_data {
 	struct clk_hw *mux_hw;
 	struct clk_hw *rate_hw;
 	struct clk_hw *gate_hw;
+<<<<<<< HEAD
 	struct clk_hw *muxrate_hw;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool is_double_div;
 };
 
@@ -111,9 +137,13 @@ static const struct clk_div_table clk_table2[] = {
 	{ .val = 1, .div = 4, },
 	{ .val = 0, .div = 0, }, /* last entry */
 };
+<<<<<<< HEAD
 
 static const struct clk_ops clk_double_div_ops;
 static const struct clk_ops clk_pm_cpu_ops;
+=======
+static const struct clk_ops clk_double_div_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define PERIPH_GATE(_name, _bit)		\
 struct clk_gate gate_##_name = {		\
@@ -155,6 +185,7 @@ struct clk_divider rate_##_name = {		\
 	}					\
 };
 
+<<<<<<< HEAD
 #define PERIPH_PM_CPU(_name, _shift1, _reg, _shift2)	\
 struct clk_pm_cpu muxrate_##_name = {		\
 	.reg_mux = (void *)TBG_SEL,		\
@@ -167,6 +198,8 @@ struct clk_pm_cpu muxrate_##_name = {		\
 	}					\
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PERIPH_CLK_FULL_DD(_name, _bit, _shift, _reg1, _reg2, _shift1, _shift2)\
 static PERIPH_GATE(_name, _bit);			    \
 static PERIPH_MUX(_name, _shift);			    \
@@ -181,6 +214,13 @@ static PERIPH_DIV(_name, _reg, _shift1, _table);
 static PERIPH_GATE(_name, _bit);			\
 static PERIPH_DIV(_name, _reg, _shift, _table);
 
+<<<<<<< HEAD
+=======
+#define PERIPH_CLK_MUX_DIV(_name, _shift,  _reg, _shift_div, _table)	\
+static PERIPH_MUX(_name, _shift);			    \
+static PERIPH_DIV(_name, _reg, _shift_div, _table);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PERIPH_CLK_MUX_DD(_name, _shift, _reg1, _reg2, _shift1, _shift2)\
 static PERIPH_MUX(_name, _shift);			    \
 static PERIPH_DOUBLEDIV(_name, _reg1, _reg2, _shift1, _shift2);
@@ -221,12 +261,21 @@ static PERIPH_DOUBLEDIV(_name, _reg1, _reg2, _shift1, _shift2);
 	  .rate_hw = &rate_##_name.hw,				\
 	}
 
+<<<<<<< HEAD
 #define REF_CLK_PM_CPU(_name)				\
+=======
+#define REF_CLK_MUX_DIV(_name)				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .name = #_name,				\
 	  .parent_names = (const char *[]){ "TBG-A-P",	\
 	      "TBG-B-P", "TBG-A-S", "TBG-B-S"},		\
 	  .num_parents = 4,				\
+<<<<<<< HEAD
 	  .muxrate_hw = &muxrate_##_name.hw,		\
+=======
+	  .mux_hw = &mux_##_name.hw,			\
+	  .rate_hw = &rate_##_name.hw,			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 #define REF_CLK_MUX_DD(_name)				\
@@ -256,9 +305,15 @@ PERIPH_CLK_FULL_DD(ddr_fclk, 21, 16, DIV_SEL0, DIV_SEL0, 15, 12);
 PERIPH_CLK_FULL(trace, 22, 18, DIV_SEL0, 20, clk_table6);
 PERIPH_CLK_FULL(counter, 23, 20, DIV_SEL0, 23, clk_table6);
 PERIPH_CLK_FULL_DD(eip97, 24, 24, DIV_SEL2, DIV_SEL2, 22, 19);
+<<<<<<< HEAD
 static PERIPH_PM_CPU(cpu, 22, DIV_SEL0, 28);
 
 static struct clk_periph_data data_nb[] = {
+=======
+PERIPH_CLK_MUX_DIV(cpu, 22, DIV_SEL0, 28, clk_table6);
+
+static struct clk_periph_data data_nb[] ={
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	REF_CLK_FULL_DD(mmc),
 	REF_CLK_FULL_DD(sata_host),
 	REF_CLK_FULL_DD(sec_at),
@@ -275,7 +330,11 @@ static struct clk_periph_data data_nb[] = {
 	REF_CLK_FULL(trace),
 	REF_CLK_FULL(counter),
 	REF_CLK_FULL_DD(eip97),
+<<<<<<< HEAD
 	REF_CLK_PM_CPU(cpu),
+=======
+	REF_CLK_MUX_DIV(cpu),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 
@@ -322,7 +381,11 @@ static unsigned int get_div(void __iomem *reg, int shift)
 }
 
 static unsigned long clk_double_div_recalc_rate(struct clk_hw *hw,
+<<<<<<< HEAD
 						unsigned long parent_rate)
+=======
+		unsigned long parent_rate)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct clk_double_div *double_div = to_clk_double_div(hw);
 	unsigned int div;
@@ -337,6 +400,7 @@ static const struct clk_ops clk_double_div_ops = {
 	.recalc_rate = clk_double_div_recalc_rate,
 };
 
+<<<<<<< HEAD
 static void armada_3700_pm_dvfs_update_regs(unsigned int load_level,
 					    unsigned int *reg,
 					    unsigned int *offset)
@@ -586,6 +650,8 @@ static const struct clk_ops clk_pm_cpu_ops = {
 	.recalc_rate = clk_pm_cpu_recalc_rate,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id armada_3700_periph_clock_of_match[] = {
 	{ .compatible = "marvell,armada-3700-periph-clock-nb",
 	  .data = data_nb, },
@@ -593,7 +659,10 @@ static const struct of_device_id armada_3700_periph_clock_of_match[] = {
 	.data = data_sb, },
 	{ }
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int armada_3700_add_composite_clk(const struct clk_periph_data *data,
 					 void __iomem *reg, spinlock_t *lock,
 					 struct device *dev, struct clk_hw **hw)
@@ -645,6 +714,7 @@ static int armada_3700_add_composite_clk(const struct clk_periph_data *data,
 		}
 	}
 
+<<<<<<< HEAD
 	if (data->muxrate_hw) {
 		struct clk_pm_cpu *pmcpu_clk;
 		struct clk_hw *muxrate_hw = data->muxrate_hw;
@@ -670,6 +740,17 @@ static int armada_3700_add_composite_clk(const struct clk_periph_data *data,
 					gate_hw, gate_ops, CLK_IGNORE_UNUSED);
 
 	return PTR_ERR_OR_ZERO(*hw);
+=======
+	*hw = clk_hw_register_composite(dev, data->name, data->parent_names,
+				       data->num_parents, mux_hw,
+				       mux_ops, rate_hw, rate_ops,
+				       gate_hw, gate_ops, CLK_IGNORE_UNUSED);
+
+	if (IS_ERR(*hw))
+		return PTR_ERR(*hw);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int armada_3700_periph_clock_probe(struct platform_device *pdev)
@@ -698,10 +779,16 @@ static int armada_3700_periph_clock_probe(struct platform_device *pdev)
 	if (!driver_data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	driver_data->hw_data = devm_kzalloc(dev,
 					    struct_size(driver_data->hw_data,
 							hws, num_periph),
 					    GFP_KERNEL);
+=======
+	driver_data->hw_data = devm_kzalloc(dev, sizeof(*driver_data->hw_data) +
+			    sizeof(*driver_data->hw_data->hws) * num_periph,
+			    GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!driver_data->hw_data)
 		return -ENOMEM;
 	driver_data->hw_data->num = num_periph;
@@ -714,11 +801,20 @@ static int armada_3700_periph_clock_probe(struct platform_device *pdev)
 		if (armada_3700_add_composite_clk(&data[i], reg,
 						  &driver_data->lock, dev, hw))
 			dev_err(dev, "Can't register periph clock %s\n",
+<<<<<<< HEAD
 				data[i].name);
 	}
 
 	ret = of_clk_add_hw_provider(np, of_clk_hw_onecell_get,
 				     driver_data->hw_data);
+=======
+			       data[i].name);
+
+	}
+
+	ret = of_clk_add_hw_provider(np, of_clk_hw_onecell_get,
+				  driver_data->hw_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		for (i = 0; i < num_periph; i++)
 			clk_hw_unregister(driver_data->hw_data->hws[i]);

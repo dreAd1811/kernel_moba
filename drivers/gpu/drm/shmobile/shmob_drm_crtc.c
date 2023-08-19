@@ -21,6 +21,11 @@
 #include <drm/drm_gem_cma_helper.h>
 #include <drm/drm_plane_helper.h>
 
+<<<<<<< HEAD
+=======
+#include <video/sh_mobile_meram.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "shmob_drm_backlight.h"
 #include "shmob_drm_crtc.h"
 #include "shmob_drm_drv.h"
@@ -45,12 +50,26 @@ static int shmob_drm_clk_on(struct shmob_drm_device *sdev)
 		if (ret < 0)
 			return ret;
 	}
+<<<<<<< HEAD
+=======
+#if 0
+	if (sdev->meram_dev && sdev->meram_dev->pdev)
+		pm_runtime_get_sync(&sdev->meram_dev->pdev->dev);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static void shmob_drm_clk_off(struct shmob_drm_device *sdev)
 {
+<<<<<<< HEAD
+=======
+#if 0
+	if (sdev->meram_dev && sdev->meram_dev->pdev)
+		pm_runtime_put_sync(&sdev->meram_dev->pdev->dev);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (sdev->clock)
 		clk_disable_unprepare(sdev->clock);
 }
@@ -259,6 +278,15 @@ static void shmob_drm_crtc_stop(struct shmob_drm_crtc *scrtc)
 	if (!scrtc->started)
 		return;
 
+<<<<<<< HEAD
+=======
+	/* Disable the MERAM cache. */
+	if (scrtc->cache) {
+		sh_mobile_meram_cache_free(sdev->meram, scrtc->cache);
+		scrtc->cache = NULL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Stop the LCDC. */
 	shmob_drm_crtc_start_stop(scrtc, false);
 
@@ -289,6 +317,10 @@ static void shmob_drm_crtc_compute_base(struct shmob_drm_crtc *scrtc,
 {
 	struct drm_crtc *crtc = &scrtc->crtc;
 	struct drm_framebuffer *fb = crtc->primary->fb;
+<<<<<<< HEAD
+=======
+	struct shmob_drm_device *sdev = crtc->dev->dev_private;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_gem_cma_object *gem;
 	unsigned int bpp;
 
@@ -304,6 +336,14 @@ static void shmob_drm_crtc_compute_base(struct shmob_drm_crtc *scrtc,
 			      + y / (bpp == 4 ? 2 : 1) * fb->pitches[1]
 			      + x * (bpp == 16 ? 2 : 1);
 	}
+<<<<<<< HEAD
+=======
+
+	if (scrtc->cache)
+		sh_mobile_meram_cache_update(sdev->meram, scrtc->cache,
+					     scrtc->dma[0], scrtc->dma[1],
+					     &scrtc->dma[0], &scrtc->dma[1]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void shmob_drm_crtc_update_base(struct shmob_drm_crtc *scrtc)
@@ -350,7 +390,13 @@ static int shmob_drm_crtc_mode_set(struct drm_crtc *crtc,
 {
 	struct shmob_drm_crtc *scrtc = to_shmob_crtc(crtc);
 	struct shmob_drm_device *sdev = crtc->dev->dev_private;
+<<<<<<< HEAD
 	const struct shmob_drm_format_info *format;
+=======
+	const struct sh_mobile_meram_cfg *mdata = sdev->pdata->meram;
+	const struct shmob_drm_format_info *format;
+	void *cache;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	format = shmob_drm_format_info(crtc->primary->fb->format->format);
 	if (format == NULL) {
@@ -362,6 +408,27 @@ static int shmob_drm_crtc_mode_set(struct drm_crtc *crtc,
 	scrtc->format = format;
 	scrtc->line_size = crtc->primary->fb->pitches[0];
 
+<<<<<<< HEAD
+=======
+	if (sdev->meram) {
+		/* Enable MERAM cache if configured. We need to de-init
+		 * configured ICBs before we can re-initialize them.
+		 */
+		if (scrtc->cache) {
+			sh_mobile_meram_cache_free(sdev->meram, scrtc->cache);
+			scrtc->cache = NULL;
+		}
+
+		cache = sh_mobile_meram_cache_alloc(sdev->meram, mdata,
+						    crtc->primary->fb->pitches[0],
+						    adjusted_mode->vdisplay,
+						    format->meram,
+						    &scrtc->line_size);
+		if (!IS_ERR(cache))
+			scrtc->cache = cache;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	shmob_drm_crtc_compute_base(scrtc, x, y);
 
 	return 0;
@@ -675,7 +742,11 @@ int shmob_drm_connector_create(struct shmob_drm_device *sdev,
 	if (ret < 0)
 		goto err_cleanup;
 
+<<<<<<< HEAD
 	ret = drm_connector_attach_encoder(connector, encoder);
+=======
+	ret = drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto err_backlight;
 

@@ -82,7 +82,11 @@ struct rxe_dev *get_rxe_by_name(const char *name)
 }
 
 
+<<<<<<< HEAD
 static struct rxe_recv_sockets recv_sockets;
+=======
+struct rxe_recv_sockets recv_sockets;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct device *rxe_dma_device(struct rxe_dev *rxe)
 {
@@ -154,10 +158,19 @@ static struct dst_entry *rxe_find_route6(struct net_device *ndev,
 	memcpy(&fl6.daddr, daddr, sizeof(*daddr));
 	fl6.flowi6_proto = IPPROTO_UDP;
 
+<<<<<<< HEAD
 	if (unlikely(ipv6_stub->ipv6_dst_lookup(sock_net(recv_sockets.sk6->sk),
 						recv_sockets.sk6->sk, &ndst, &fl6))) {
 		pr_err_ratelimited("no route to %pI6\n", daddr);
 		goto put;
+=======
+	ndst = ipv6_stub->ipv6_dst_lookup_flow(sock_net(recv_sockets.sk6->sk),
+					       recv_sockets.sk6->sk, &fl6,
+					       NULL);
+	if (unlikely(IS_ERR(ndst))) {
+		pr_err_ratelimited("no route to %pI6\n", daddr);
+		return NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (unlikely(ndst->error)) {
@@ -186,6 +199,7 @@ static struct dst_entry *rxe_find_route(struct rxe_dev *rxe,
 					struct rxe_qp *qp,
 					struct rxe_av *av)
 {
+<<<<<<< HEAD
 	const struct ib_gid_attr *attr;
 	struct dst_entry *dst = NULL;
 	struct net_device *ndev;
@@ -195,6 +209,9 @@ static struct dst_entry *rxe_find_route(struct rxe_dev *rxe,
 	if (IS_ERR(attr))
 		return NULL;
 	ndev = attr->ndev;
+=======
+	struct dst_entry *dst = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (qp_type(qp) == IB_QPT_RC)
 		dst = sk_dst_get(qp->sk->sk);
@@ -209,20 +226,29 @@ static struct dst_entry *rxe_find_route(struct rxe_dev *rxe,
 
 			saddr = &av->sgid_addr._sockaddr_in.sin_addr;
 			daddr = &av->dgid_addr._sockaddr_in.sin_addr;
+<<<<<<< HEAD
 			dst = rxe_find_route4(ndev, saddr, daddr);
+=======
+			dst = rxe_find_route4(rxe->ndev, saddr, daddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (av->network_type == RDMA_NETWORK_IPV6) {
 			struct in6_addr *saddr6;
 			struct in6_addr *daddr6;
 
 			saddr6 = &av->sgid_addr._sockaddr_in6.sin6_addr;
 			daddr6 = &av->dgid_addr._sockaddr_in6.sin6_addr;
+<<<<<<< HEAD
 			dst = rxe_find_route6(ndev, saddr6, daddr6);
+=======
+			dst = rxe_find_route6(rxe->ndev, saddr6, daddr6);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if IS_ENABLED(CONFIG_IPV6)
 			if (dst)
 				qp->dst_cookie =
 					rt6_get_cookie((struct rt6_info *)dst);
 #endif
 		}
+<<<<<<< HEAD
 
 		if (dst && (qp_type(qp) == IB_QPT_RC)) {
 			dst_hold(dst);
@@ -230,6 +256,10 @@ static struct dst_entry *rxe_find_route(struct rxe_dev *rxe,
 		}
 	}
 	rdma_put_gid_attr(attr);
+=======
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return dst;
 }
 
@@ -237,6 +267,7 @@ static int rxe_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
 {
 	struct udphdr *udph;
 	struct net_device *ndev = skb->dev;
+<<<<<<< HEAD
 	struct net_device *rdev = ndev;
 	struct rxe_dev *rxe = net_to_rxe(ndev);
 	struct rxe_pkt_info *pkt = SKB_TO_PKT(skb);
@@ -245,6 +276,11 @@ static int rxe_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
 		rdev = vlan_dev_real_dev(ndev);
 		rxe = net_to_rxe(rdev);
 	}
+=======
+	struct rxe_dev *rxe = net_to_rxe(ndev);
+	struct rxe_pkt_info *pkt = SKB_TO_PKT(skb);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rxe)
 		goto drop;
 
@@ -260,12 +296,18 @@ static int rxe_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
 	pkt->mask = RXE_GRH_MASK;
 	pkt->paylen = be16_to_cpu(udph->len) - sizeof(*udph);
 
+<<<<<<< HEAD
 	rxe_rcv(skb);
 
 	return 0;
 drop:
 	kfree_skb(skb);
 
+=======
+	return rxe_rcv(skb);
+drop:
+	kfree_skb(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -302,7 +344,11 @@ static struct socket *rxe_setup_udp_tunnel(struct net *net, __be16 port,
 	return sock;
 }
 
+<<<<<<< HEAD
 static void rxe_release_udp_tunnel(struct socket *sk)
+=======
+void rxe_release_udp_tunnel(struct socket *sk)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (sk)
 		udp_tunnel_sock_release(sk);
@@ -402,7 +448,15 @@ static int prepare4(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
 	prepare_ipv4_hdr(dst, skb, saddr->s_addr, daddr->s_addr, IPPROTO_UDP,
 			 av->grh.traffic_class, av->grh.hop_limit, df, xnet);
 
+<<<<<<< HEAD
 	dst_release(dst);
+=======
+	if (qp_type(qp) == IB_QPT_RC)
+		sk_dst_set(qp->sk->sk, dst);
+	else
+		dst_release(dst);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -430,7 +484,15 @@ static int prepare6(struct rxe_dev *rxe, struct rxe_pkt_info *pkt,
 			 av->grh.traffic_class,
 			 av->grh.hop_limit);
 
+<<<<<<< HEAD
 	dst_release(dst);
+=======
+	if (qp_type(qp) == IB_QPT_RC)
+		sk_dst_set(qp->sk->sk, dst);
+	else
+		dst_release(dst);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -463,28 +525,53 @@ static void rxe_skb_tx_dtor(struct sk_buff *skb)
 	rxe_drop_ref(qp);
 }
 
+<<<<<<< HEAD
 int rxe_send(struct rxe_pkt_info *pkt, struct sk_buff *skb)
 {
+=======
+int rxe_send(struct rxe_dev *rxe, struct rxe_pkt_info *pkt, struct sk_buff *skb)
+{
+	struct sk_buff *nskb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rxe_av *av;
 	int err;
 
 	av = rxe_get_av(pkt);
 
+<<<<<<< HEAD
 	skb->destructor = rxe_skb_tx_dtor;
 	skb->sk = pkt->qp->sk->sk;
+=======
+	nskb = skb_clone(skb, GFP_ATOMIC);
+	if (!nskb)
+		return -ENOMEM;
+
+	nskb->destructor = rxe_skb_tx_dtor;
+	nskb->sk = pkt->qp->sk->sk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rxe_add_ref(pkt->qp);
 	atomic_inc(&pkt->qp->skb_out);
 
 	if (av->network_type == RDMA_NETWORK_IPV4) {
+<<<<<<< HEAD
 		err = ip_local_out(dev_net(skb_dst(skb)->dev), skb->sk, skb);
 	} else if (av->network_type == RDMA_NETWORK_IPV6) {
 		err = ip6_local_out(dev_net(skb_dst(skb)->dev), skb->sk, skb);
+=======
+		err = ip_local_out(dev_net(skb_dst(skb)->dev), nskb->sk, nskb);
+	} else if (av->network_type == RDMA_NETWORK_IPV6) {
+		err = ip6_local_out(dev_net(skb_dst(skb)->dev), nskb->sk, nskb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		pr_err("Unknown layer 3 protocol: %d\n", av->network_type);
 		atomic_dec(&pkt->qp->skb_out);
 		rxe_drop_ref(pkt->qp);
+<<<<<<< HEAD
 		kfree_skb(skb);
+=======
+		kfree_skb(nskb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -493,12 +580,22 @@ int rxe_send(struct rxe_pkt_info *pkt, struct sk_buff *skb)
 		return -EAGAIN;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
 void rxe_loopback(struct sk_buff *skb)
 {
 	rxe_rcv(skb);
+=======
+	kfree_skb(skb);
+	return 0;
+}
+
+int rxe_loopback(struct sk_buff *skb)
+{
+	return rxe_rcv(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int addr_same(struct rxe_dev *rxe, struct rxe_av *av)
@@ -511,6 +608,7 @@ struct sk_buff *rxe_init_packet(struct rxe_dev *rxe, struct rxe_av *av,
 {
 	unsigned int hdr_len;
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	struct net_device *ndev;
 	const struct ib_gid_attr *attr;
 	const int port_num = 1;
@@ -519,6 +617,8 @@ struct sk_buff *rxe_init_packet(struct rxe_dev *rxe, struct rxe_av *av,
 	if (IS_ERR(attr))
 		return NULL;
 	ndev = attr->ndev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (av->network_type == RDMA_NETWORK_IPV4)
 		hdr_len = ETH_HLEN + sizeof(struct udphdr) +
@@ -527,6 +627,7 @@ struct sk_buff *rxe_init_packet(struct rxe_dev *rxe, struct rxe_av *av,
 		hdr_len = ETH_HLEN + sizeof(struct udphdr) +
 			sizeof(struct ipv6hdr);
 
+<<<<<<< HEAD
 	skb = alloc_skb(paylen + hdr_len + LL_RESERVED_SPACE(ndev),
 			GFP_ATOMIC);
 
@@ -536,18 +637,37 @@ struct sk_buff *rxe_init_packet(struct rxe_dev *rxe, struct rxe_av *av,
 	skb_reserve(skb, hdr_len + LL_RESERVED_SPACE(rxe->ndev));
 
 	skb->dev	= ndev;
+=======
+	skb = alloc_skb(paylen + hdr_len + LL_RESERVED_SPACE(rxe->ndev),
+			GFP_ATOMIC);
+	if (unlikely(!skb))
+		return NULL;
+
+	skb_reserve(skb, hdr_len + LL_RESERVED_SPACE(rxe->ndev));
+
+	skb->dev	= rxe->ndev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (av->network_type == RDMA_NETWORK_IPV4)
 		skb->protocol = htons(ETH_P_IP);
 	else
 		skb->protocol = htons(ETH_P_IPV6);
 
 	pkt->rxe	= rxe;
+<<<<<<< HEAD
 	pkt->port_num	= port_num;
 	pkt->hdr	= skb_put_zero(skb, paylen);
 	pkt->mask	|= RXE_GRH_MASK;
 
 out:
 	rdma_put_gid_attr(attr);
+=======
+	pkt->port_num	= 1;
+	pkt->hdr	= skb_put(skb, paylen);
+	pkt->mask	|= RXE_GRH_MASK;
+
+	memset(pkt->hdr, 0, paylen);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return skb;
 }
 
@@ -602,6 +722,10 @@ void rxe_remove_all(void)
 	}
 	spin_unlock_bh(&dev_list_lock);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(rxe_remove_all);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void rxe_port_event(struct rxe_dev *rxe,
 			   enum ib_event_type event)
@@ -686,7 +810,11 @@ out:
 	return NOTIFY_OK;
 }
 
+<<<<<<< HEAD
 static struct notifier_block rxe_net_notifier = {
+=======
+struct notifier_block rxe_net_notifier = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.notifier_call = rxe_notify,
 };
 

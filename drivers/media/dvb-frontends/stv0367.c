@@ -25,7 +25,11 @@
 #include <linux/slab.h>
 #include <linux/i2c.h>
 
+<<<<<<< HEAD
 #include <media/dvb_math.h>
+=======
+#include "dvb_math.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "stv0367.h"
 #include "stv0367_defs.h"
@@ -1549,6 +1553,10 @@ static int stv0367ter_read_ber(struct dvb_frontend *fe, u32 *ber)
 	} else if (abc == 0x7) {
 		if (Errors <= 4) {
 			temporary = (Errors * 1000000000) / (8 * (1 << 14));
+<<<<<<< HEAD
+=======
+			temporary =  temporary;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (Errors <= 42) {
 			temporary = (Errors * 100000000) / (8 * (1 << 14));
 			temporary = temporary * 10;
@@ -1626,6 +1634,10 @@ static u32 stv0367ter_get_per(struct stv0367_state *state)
 	else if (abc == 0x9) {
 		if (Errors <= 4) {
 			temporary = (Errors * 1000000000) / (8 * (1 << 8));
+<<<<<<< HEAD
+=======
+			temporary =  temporary;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else if (Errors <= 42) {
 			temporary = (Errors * 100000000) / (8 * (1 << 8));
 			temporary = temporary * 10;
@@ -1693,9 +1705,16 @@ static const struct dvb_frontend_ops stv0367ter_ops = {
 	.delsys = { SYS_DVBT },
 	.info = {
 		.name			= "ST STV0367 DVB-T",
+<<<<<<< HEAD
 		.frequency_min_hz	=  47 * MHz,
 		.frequency_max_hz	= 862 * MHz,
 		.frequency_stepsize_hz	= 15625,
+=======
+		.frequency_min		= 47000000,
+		.frequency_max		= 862000000,
+		.frequency_stepsize	= 15625,
+		.frequency_tolerance	= 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps = FE_CAN_FEC_1_2 | FE_CAN_FEC_2_3 |
 			FE_CAN_FEC_3_4 | FE_CAN_FEC_5_6 | FE_CAN_FEC_7_8 |
 			FE_CAN_FEC_AUTO |
@@ -2866,9 +2885,15 @@ static const struct dvb_frontend_ops stv0367cab_ops = {
 	.delsys = { SYS_DVBC_ANNEX_A },
 	.info = {
 		.name = "ST STV0367 DVB-C",
+<<<<<<< HEAD
 		.frequency_min_hz =  47 * MHz,
 		.frequency_max_hz = 862 * MHz,
 		.frequency_stepsize_hz = 62500,
+=======
+		.frequency_min = 47000000,
+		.frequency_max = 862000000,
+		.frequency_stepsize = 62500,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min = 870000,
 		.symbol_rate_max = 11700000,
 		.caps = 0x400 |/* FE_CAN_QAM_4 */
@@ -3272,9 +3297,16 @@ static const struct dvb_frontend_ops stv0367ddb_ops = {
 	.delsys = { SYS_DVBC_ANNEX_A, SYS_DVBT },
 	.info = {
 		.name			= "ST STV0367 DDB DVB-C/T",
+<<<<<<< HEAD
 		.frequency_min_hz	=  47 * MHz,
 		.frequency_max_hz	= 865 * MHz,
 		.frequency_stepsize_hz	= 166667,
+=======
+		.frequency_min		= 47000000,
+		.frequency_max		= 865000000,
+		.frequency_stepsize	= 166667,
+		.frequency_tolerance	= 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min	= 870000,
 		.symbol_rate_max	= 11700000,
 		.caps = /* DVB-C */

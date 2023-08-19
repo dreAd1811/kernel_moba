@@ -4,7 +4,10 @@
 #include <linux/init.h>
 #include <linux/export.h>
 #include <linux/pci.h>
+<<<<<<< HEAD
 #include <asm/jailhouse_para.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/pci_x86.h>
 
 /*
@@ -35,14 +38,21 @@ int __init pci_legacy_init(void)
 
 void pcibios_scan_specific_bus(int busn)
 {
+<<<<<<< HEAD
 	int stride = jailhouse_paravirt() ? 1 : 8;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int devfn;
 	u32 l;
 
 	if (pci_find_bus(0, busn))
 		return;
 
+<<<<<<< HEAD
 	for (devfn = 0; devfn < 256; devfn += stride) {
+=======
+	for (devfn = 0; devfn < 256; devfn += 8) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!raw_pci_read(0, busn, devfn, PCI_VENDOR_ID, 2, &l) &&
 		    l != 0x0000 && l != 0xffff) {
 			DBG("Found device at %02x:%02x [%04x]\n", busn, devfn, l);

@@ -408,10 +408,22 @@ fill_isoc_urb(struct urb *urb, struct usb_device *dev,
 {
 	int k;
 
+<<<<<<< HEAD
 	usb_fill_int_urb(urb, dev, pipe, buf, num_packets * packet_size,
 			 complete, context, 1);
 
 	urb->number_of_packets = num_packets;
+=======
+	urb->dev = dev;
+	urb->pipe = pipe;
+	urb->interval = 1;
+	urb->transfer_buffer = buf;
+	urb->number_of_packets = num_packets;
+	urb->transfer_buffer_length = num_packets * packet_size;
+	urb->actual_length = 0;
+	urb->complete = complete;
+	urb->context = context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	urb->transfer_flags = URB_ISO_ASAP;
 	for (k = 0; k < num_packets; k++) {
 		urb->iso_frame_desc[k].offset = packet_size * k;

@@ -94,7 +94,11 @@
 		gpio-controller;
 		#gpio-cells = <2>;
 		interrupt-parent = <&gpio0>;
+<<<<<<< HEAD
 		interrupts = <20 IRQ_TYPE_EDGE_RISING>;
+=======
+		interrupts = <20 GPIO_ACTIVE_LOW>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pinctrl-names = "default";
 		pinctrl-0 = <&tca6416_pins>;
 	};

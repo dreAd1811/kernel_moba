@@ -20,7 +20,11 @@
 #include <linux/efi-bgrt.h>
 
 struct acpi_table_bgrt bgrt_tab;
+<<<<<<< HEAD
 size_t bgrt_image_size;
+=======
+size_t __initdata bgrt_image_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bmp_header {
 	u16 id;

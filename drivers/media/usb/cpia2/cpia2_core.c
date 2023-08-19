@@ -2370,12 +2370,21 @@ long cpia2_read(struct camera_data *cam,
  *  cpia2_poll
  *
  *****************************************************************************/
+<<<<<<< HEAD
 __poll_t cpia2_poll(struct camera_data *cam, struct file *filp,
 			poll_table *wait)
 {
 	__poll_t status = v4l2_ctrl_poll(filp, wait);
 
 	if ((poll_requested_events(wait) & (EPOLLIN | EPOLLRDNORM)) &&
+=======
+unsigned int cpia2_poll(struct camera_data *cam, struct file *filp,
+			poll_table *wait)
+{
+	unsigned int status = v4l2_ctrl_poll(filp, wait);
+
+	if ((poll_requested_events(wait) & (POLLIN | POLLRDNORM)) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			!cam->streaming) {
 		/* Start streaming */
 		cpia2_usb_stream_start(cam,
@@ -2385,7 +2394,11 @@ __poll_t cpia2_poll(struct camera_data *cam, struct file *filp,
 	poll_wait(filp, &cam->wq_stream, wait);
 
 	if (cam->curbuff->status == FRAME_READY)
+<<<<<<< HEAD
 		status |= EPOLLIN | EPOLLRDNORM;
+=======
+		status |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return status;
 }

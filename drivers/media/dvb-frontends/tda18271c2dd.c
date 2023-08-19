@@ -27,7 +27,11 @@
 #include <linux/i2c.h>
 #include <asm/div64.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "tda18271c2dd.h"
 
 /* Max transfer size done by I2C transfer functions */
@@ -674,6 +678,10 @@ static int PowerScan(struct tda_state *state,
 			Count = 200000;
 			wait = true;
 		}
+<<<<<<< HEAD
+=======
+		status = status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (status < 0)
 			break;
 		if (CID_Gain >= CID_Target) {
@@ -1154,7 +1162,10 @@ static int set_params(struct dvb_frontend *fe)
 		default:
 			return -EINVAL;
 		}
+<<<<<<< HEAD
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case SYS_DVBC_ANNEX_A:
 	case SYS_DVBC_ANNEX_C:
 		if (bw <= 6000000)
@@ -1215,9 +1226,15 @@ static int get_bandwidth(struct dvb_frontend *fe, u32 *bandwidth)
 static const struct dvb_tuner_ops tuner_ops = {
 	.info = {
 		.name = "NXP TDA18271C2D",
+<<<<<<< HEAD
 		.frequency_min_hz  =  47125 * kHz,
 		.frequency_max_hz  =    865 * MHz,
 		.frequency_step_hz =  62500
+=======
+		.frequency_min  =  47125000,
+		.frequency_max  = 865000000,
+		.frequency_step =     62500
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.init              = init,
 	.sleep             = sleep,

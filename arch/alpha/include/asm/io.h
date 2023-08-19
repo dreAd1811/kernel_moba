@@ -341,14 +341,24 @@ extern inline unsigned int ioread16(void __iomem *addr)
 
 extern inline void iowrite8(u8 b, void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	IO_CONCAT(__IO_PREFIX, iowrite8)(b, addr);
+=======
+	IO_CONCAT(__IO_PREFIX,iowrite8)(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern inline void iowrite16(u16 b, void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	IO_CONCAT(__IO_PREFIX, iowrite16)(b, addr);
+=======
+	IO_CONCAT(__IO_PREFIX,iowrite16)(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern inline u8 inb(unsigned long port)
@@ -382,8 +392,13 @@ extern inline unsigned int ioread32(void __iomem *addr)
 
 extern inline void iowrite32(u32 b, void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	IO_CONCAT(__IO_PREFIX, iowrite32)(b, addr);
+=======
+	IO_CONCAT(__IO_PREFIX,iowrite32)(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern inline u32 inl(unsigned long port)
@@ -434,14 +449,24 @@ extern inline u16 readw(const volatile void __iomem *addr)
 
 extern inline void writeb(u8 b, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	__raw_writeb(b, addr);
+=======
+	__raw_writeb(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern inline void writew(u16 b, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	__raw_writew(b, addr);
+=======
+	__raw_writew(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
@@ -482,14 +507,24 @@ extern inline u64 readq(const volatile void __iomem *addr)
 
 extern inline void writel(u32 b, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	__raw_writel(b, addr);
+=======
+	__raw_writel(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 extern inline void writeq(u64 b, volatile void __iomem *addr)
 {
+<<<<<<< HEAD
 	mb();
 	__raw_writeq(b, addr);
+=======
+	__raw_writeq(b, addr);
+	mb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 

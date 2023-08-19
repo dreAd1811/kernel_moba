@@ -280,7 +280,11 @@ static void intel_mid_pci_irq_disable(struct pci_dev *dev)
 	}
 }
 
+<<<<<<< HEAD
 static const struct pci_ops intel_mid_pci_ops __initconst = {
+=======
+static struct pci_ops intel_mid_pci_ops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read = pci_read,
 	.write = pci_write,
 };
@@ -300,7 +304,10 @@ int __init intel_mid_pci_init(void)
 	pci_root_ops = intel_mid_pci_ops;
 	pci_soc_mode = 1;
 	/* Continue with standard init */
+<<<<<<< HEAD
 	acpi_noirq_set();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 1;
 }
 

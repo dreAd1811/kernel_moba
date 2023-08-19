@@ -81,7 +81,11 @@ u32 vlv_punit_read(struct drm_i915_private *dev_priv, u32 addr)
 {
 	u32 val = 0;
 
+<<<<<<< HEAD
 	WARN_ON(!mutex_is_locked(&dev_priv->pcu_lock));
+=======
+	WARN_ON(!mutex_is_locked(&dev_priv->rps.hw_lock));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev_priv->sb_lock);
 	vlv_sideband_rw(dev_priv, PCI_DEVFN(0, 0), IOSF_PORT_PUNIT,
@@ -95,7 +99,11 @@ int vlv_punit_write(struct drm_i915_private *dev_priv, u32 addr, u32 val)
 {
 	int err;
 
+<<<<<<< HEAD
 	WARN_ON(!mutex_is_locked(&dev_priv->pcu_lock));
+=======
+	WARN_ON(!mutex_is_locked(&dev_priv->rps.hw_lock));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev_priv->sb_lock);
 	err = vlv_sideband_rw(dev_priv, PCI_DEVFN(0, 0), IOSF_PORT_PUNIT,
@@ -125,7 +133,11 @@ u32 vlv_nc_read(struct drm_i915_private *dev_priv, u8 addr)
 {
 	u32 val = 0;
 
+<<<<<<< HEAD
 	WARN_ON(!mutex_is_locked(&dev_priv->pcu_lock));
+=======
+	WARN_ON(!mutex_is_locked(&dev_priv->rps.hw_lock));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev_priv->sb_lock);
 	vlv_sideband_rw(dev_priv, PCI_DEVFN(0, 0), IOSF_PORT_NC,

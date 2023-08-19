@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2013-2014, 2017, 2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2013-2014, 2017, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __ADRENO_IB_PARSER__
@@ -130,9 +143,18 @@ static inline int adreno_cp_parser_getreg(struct adreno_device *adreno_dev,
 	if (reg_enum == ADRENO_CP_ADDR_MAX)
 		return -EEXIST;
 
+<<<<<<< HEAD
 	if (!adreno_is_a3xx(adreno_dev))
 		return -EEXIST;
 	return a3xx_cp_addr_regs[reg_enum];
+=======
+	if (adreno_is_a3xx(adreno_dev))
+		return a3xx_cp_addr_regs[reg_enum];
+	else if (adreno_is_a4xx(adreno_dev))
+		return a4xx_cp_addr_regs[reg_enum];
+	else
+		return -EEXIST;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -153,11 +175,21 @@ static inline int adreno_cp_parser_regindex(struct adreno_device *adreno_dev,
 	int i;
 	const unsigned int *regs;
 
+<<<<<<< HEAD
 	if (!adreno_is_a3xx(adreno_dev))
 		return -EEXIST;
 
 	regs = a3xx_cp_addr_regs;
 
+=======
+	if (adreno_is_a4xx(adreno_dev))
+		regs = a4xx_cp_addr_regs;
+	else if (adreno_is_a3xx(adreno_dev))
+		regs = a3xx_cp_addr_regs;
+	else
+		return -EEXIST;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = start; i <= end && i < ADRENO_CP_ADDR_MAX; i++)
 		if (regs[i] == offset)
 			return i;

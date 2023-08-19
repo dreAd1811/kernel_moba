@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 menu "Diag Support"
 
 config DIAG_CHAR
@@ -26,6 +29,7 @@ config DIAG_OVER_USB
 	  Diag traffic from the USB endpoint.
 
 config DIAGFWD_BRIDGE_CODE
+<<<<<<< HEAD
 	bool "Enable QSC/9K DIAG traffic over SMUX/HSIC"
 	depends on DIAG_CHAR
 	depends on USB_QCOM_DIAG_BRIDGE || MHI_BUS
@@ -35,5 +39,26 @@ config DIAGFWD_BRIDGE_CODE
 	  endpoints become available, this bridge driver enables DIAG
 	  over MHI or SMUX to communicate with the remote processors and
 	  receive/send diag traffic to remote processors.
+=======
+	bool "Enable remote DIAG traffic over MHI/HSIC"
+	depends on DIAG_CHAR
+	depends on USB_QTI_DIAG_BRIDGE || MHI_BUS
+	default y
+	help
+	  MHI/HSIC Transport Layer for DIAG Router. When the MHI/HSIC endpoints
+	  become available, this bridge driver enables DIAG traffic over MHI
+	  and HSIC.
+
+config DIAG_OVER_PCIE
+	bool "Enable Diag traffic to go over PCIE"
+	depends on DIAG_CHAR
+	depends on MSM_MHI_DEV
+	help
+	  Diag over PCIE enables sending diag traffic over PCIE endpoint when
+	  pcie is available. Diag PCIE channels should be configured
+	  and connected to use the transport. If PCIE is not configured
+	  diag will switch to usb mode and diag traffic will be routed
+	  over USB.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endmenu

@@ -20,7 +20,10 @@
 #include "ccu_div.h"
 #include "ccu_frac.h"
 #include "ccu_mult.h"
+<<<<<<< HEAD
 #include "ccu_sdm.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * struct ccu_nm - Definition of an N-M clock
@@ -34,14 +37,18 @@ struct ccu_nm {
 	struct ccu_mult_internal	n;
 	struct ccu_div_internal		m;
 	struct ccu_frac_internal	frac;
+<<<<<<< HEAD
 	struct ccu_sdm_internal		sdm;
 
 	unsigned int		fixed_post_div;
 	unsigned int		min_rate;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct ccu_common	common;
 };
 
+<<<<<<< HEAD
 #define SUNXI_CCU_NM_WITH_SDM_GATE_LOCK(_struct, _name, _parent, _reg,	\
 					_nshift, _nwidth,		\
 					_mshift, _mwidth,		\
@@ -65,6 +72,8 @@ struct ccu_nm {
 		},							\
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK(_struct, _name, _parent, _reg,	\
 					 _nshift, _nwidth,		\
 					 _mshift, _mwidth,		\
@@ -89,6 +98,7 @@ struct ccu_nm {
 		},							\
 	}
 
+<<<<<<< HEAD
 #define SUNXI_CCU_NM_WITH_FRAC_GATE_LOCK_MIN(_struct, _name, _parent,	\
 					     _reg, _min_rate,		\
 					     _nshift, _nwidth,		\
@@ -115,6 +125,8 @@ struct ccu_nm {
 		},							\
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SUNXI_CCU_NM_WITH_GATE_LOCK(_struct, _name, _parent, _reg,	\
 				    _nshift, _nwidth,			\
 				    _mshift, _mwidth,			\

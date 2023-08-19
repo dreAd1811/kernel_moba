@@ -874,7 +874,11 @@ static void __init st_of_create_quadfs_fsynths(
 		return;
 
 	clk_data->clk_num = QUADFS_MAX_CHAN;
+<<<<<<< HEAD
 	clk_data->clks = kcalloc(QUADFS_MAX_CHAN, sizeof(struct clk *),
+=======
+	clk_data->clks = kzalloc(QUADFS_MAX_CHAN * sizeof(struct clk *),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 
 	if (!clk_data->clks) {

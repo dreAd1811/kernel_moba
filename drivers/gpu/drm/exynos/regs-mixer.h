@@ -47,7 +47,10 @@
 #define MXR_MO				0x0304
 #define MXR_RESOLUTION			0x0310
 
+<<<<<<< HEAD
 #define MXR_CFG_S			0x2004
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MXR_GRAPHIC0_BASE_S		0x2024
 #define MXR_GRAPHIC1_BASE_S		0x2044
 

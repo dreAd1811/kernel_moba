@@ -157,7 +157,11 @@ static struct net_device *yam_devs[NR_PORTS];
 
 static struct yam_mcs *yam_data;
 
+<<<<<<< HEAD
 static DEFINE_TIMER(yam_timer, NULL);
+=======
+static DEFINE_TIMER(yam_timer, NULL, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* --------------------------------------------------------------------- */
 
@@ -647,7 +651,11 @@ static void yam_arbitrate(struct net_device *dev)
 	yam_start_tx(dev, yp);
 }
 
+<<<<<<< HEAD
 static void yam_dotimer(struct timer_list *unused)
+=======
+static void yam_dotimer(unsigned long dummy)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -841,6 +849,23 @@ static const struct seq_operations yam_seqops = {
 	.stop = yam_seq_stop,
 	.show = yam_seq_show,
 };
+<<<<<<< HEAD
+=======
+
+static int yam_info_open(struct inode *inode, struct file *file)
+{
+	return seq_open(file, &yam_seqops);
+}
+
+static const struct file_operations yam_info_fops = {
+	.owner = THIS_MODULE,
+	.open = yam_info_open,
+	.read = seq_read,
+	.llseek = seq_lseek,
+	.release = seq_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 
@@ -1148,17 +1173,29 @@ static int __init yam_init_driver(void)
 		err = register_netdev(dev);
 		if (err) {
 			printk(KERN_WARNING "yam: cannot register net device %s\n", dev->name);
+<<<<<<< HEAD
+=======
+			free_netdev(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto error;
 		}
 		yam_devs[i] = dev;
 
 	}
 
+<<<<<<< HEAD
 	timer_setup(&yam_timer, yam_dotimer, 0);
 	yam_timer.expires = jiffies + HZ / 100;
 	add_timer(&yam_timer);
 
 	proc_create_seq("yam", 0444, init_net.proc_net, &yam_seqops);
+=======
+	yam_timer.function = yam_dotimer;
+	yam_timer.expires = jiffies + HZ / 100;
+	add_timer(&yam_timer);
+
+	proc_create("yam", S_IRUGO, init_net.proc_net, &yam_info_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
  error:
 	while (--i >= 0) {

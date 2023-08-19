@@ -261,11 +261,14 @@ static inline void clear_bit_inv(unsigned long nr, volatile unsigned long *ptr)
 	return clear_bit(nr ^ (BITS_PER_LONG - 1), ptr);
 }
 
+<<<<<<< HEAD
 static inline int test_and_clear_bit_inv(unsigned long nr, volatile unsigned long *ptr)
 {
 	return test_and_clear_bit(nr ^ (BITS_PER_LONG - 1), ptr);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void __set_bit_inv(unsigned long nr, volatile unsigned long *ptr)
 {
 	return __set_bit(nr ^ (BITS_PER_LONG - 1), ptr);

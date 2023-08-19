@@ -97,7 +97,11 @@ static struct img_ascii_lcd_config boston_config = {
 static void malta_update(struct img_ascii_lcd_ctx *ctx)
 {
 	unsigned int i;
+<<<<<<< HEAD
 	int err = 0;
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ctx->cfg->num_chars; i++) {
 		err = regmap_write(ctx->regmap,
@@ -180,7 +184,11 @@ static int sead3_wait_lcd_idle(struct img_ascii_lcd_ctx *ctx)
 static void sead3_update(struct img_ascii_lcd_ctx *ctx)
 {
 	unsigned int i;
+<<<<<<< HEAD
 	int err = 0;
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ctx->cfg->num_chars; i++) {
 		err = sead3_wait_lcd_idle(ctx);
@@ -224,14 +232,24 @@ MODULE_DEVICE_TABLE(of, img_ascii_lcd_matches);
 
 /**
  * img_ascii_lcd_scroll() - scroll the display by a character
+<<<<<<< HEAD
  * @t: really a pointer to the private data structure
+=======
+ * @arg: really a pointer to the private data structure
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Scroll the current message along the LCD by one character, rearming the
  * timer if required.
  */
+<<<<<<< HEAD
 static void img_ascii_lcd_scroll(struct timer_list *t)
 {
 	struct img_ascii_lcd_ctx *ctx = from_timer(ctx, t, timer);
+=======
+static void img_ascii_lcd_scroll(unsigned long arg)
+{
+	struct img_ascii_lcd_ctx *ctx = (struct img_ascii_lcd_ctx *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i, ch = ctx->scroll_pos;
 	unsigned int num_chars = ctx->cfg->num_chars;
 
@@ -299,7 +317,11 @@ static int img_ascii_lcd_display(struct img_ascii_lcd_ctx *ctx,
 	ctx->scroll_pos = 0;
 
 	/* update the LCD */
+<<<<<<< HEAD
 	img_ascii_lcd_scroll(&ctx->timer);
+=======
+	img_ascii_lcd_scroll((unsigned long)ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -395,7 +417,13 @@ static int img_ascii_lcd_probe(struct platform_device *pdev)
 	ctx->scroll_rate = HZ / 2;
 
 	/* initialise a timer for scrolling the message */
+<<<<<<< HEAD
 	timer_setup(&ctx->timer, img_ascii_lcd_scroll, 0);
+=======
+	init_timer(&ctx->timer);
+	ctx->timer.function = img_ascii_lcd_scroll;
+	ctx->timer.data = (unsigned long)ctx;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	platform_set_drvdata(pdev, ctx);
 

@@ -632,7 +632,11 @@ static int au0828_usb_probe(struct usb_interface *interface,
 	/* Analog TV */
 	retval = au0828_analog_register(dev, interface);
 	if (retval) {
+<<<<<<< HEAD
 		pr_err("%s() au0282_dev_register failed to register on V4L2\n",
+=======
+		pr_err("%s() au0828_analog_register failed to register on V4L2\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__);
 		mutex_unlock(&dev->lock);
 		goto done;
@@ -641,7 +645,11 @@ static int au0828_usb_probe(struct usb_interface *interface,
 	/* Digital TV */
 	retval = au0828_dvb_register(dev);
 	if (retval)
+<<<<<<< HEAD
 		pr_err("%s() au0282_dev_register failed\n",
+=======
+		pr_err("%s() au0828_dvb_register failed\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       __func__);
 
 	/* Remote controller */

@@ -77,7 +77,10 @@ struct sclp_info {
 	unsigned char has_ibs : 1;
 	unsigned char has_skey : 1;
 	unsigned char has_kss : 1;
+<<<<<<< HEAD
 	unsigned char has_gisaf : 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int ibc;
 	unsigned int mtid;
 	unsigned int mtid_cp;
@@ -108,8 +111,12 @@ int sclp_early_get_core_info(struct sclp_core_info *info);
 void sclp_early_get_ipl_info(struct sclp_ipl_info *info);
 void sclp_early_detect(void);
 void sclp_early_printk(const char *s);
+<<<<<<< HEAD
 void sclp_early_printk_force(const char *s);
 void __sclp_early_printk(const char *s, unsigned int len, unsigned int force);
+=======
+void __sclp_early_printk(const char *s, unsigned int len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int _sclp_get_core_info(struct sclp_core_info *info);
 int sclp_core_configure(u8 core);

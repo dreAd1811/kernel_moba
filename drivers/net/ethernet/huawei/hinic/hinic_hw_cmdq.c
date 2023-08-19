@@ -143,7 +143,11 @@ int hinic_alloc_cmdq_buf(struct hinic_cmdqs *cmdqs,
 	struct hinic_hwif *hwif = cmdqs->hwif;
 	struct pci_dev *pdev = hwif->pdev;
 
+<<<<<<< HEAD
 	cmdq_buf->buf = dma_pool_alloc(cmdqs->cmdq_buf_pool, GFP_KERNEL,
+=======
+	cmdq_buf->buf = pci_pool_alloc(cmdqs->cmdq_buf_pool, GFP_KERNEL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       &cmdq_buf->dma_addr);
 	if (!cmdq_buf->buf) {
 		dev_err(&pdev->dev, "Failed to allocate cmd from the pool\n");
@@ -161,7 +165,11 @@ int hinic_alloc_cmdq_buf(struct hinic_cmdqs *cmdqs,
 void hinic_free_cmdq_buf(struct hinic_cmdqs *cmdqs,
 			 struct hinic_cmdq_buf *cmdq_buf)
 {
+<<<<<<< HEAD
 	dma_pool_free(cmdqs->cmdq_buf_pool, cmdq_buf->buf, cmdq_buf->dma_addr);
+=======
+	pci_pool_free(cmdqs->cmdq_buf_pool, cmdq_buf->buf, cmdq_buf->dma_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned int cmdq_wqe_size_from_bdlen(enum bufdesc_len len)
@@ -398,7 +406,12 @@ static int cmdq_sync_cmd_direct_resp(struct hinic_cmdq *cmdq,
 
 	spin_unlock_bh(&cmdq->cmdq_lock);
 
+<<<<<<< HEAD
 	if (!wait_for_completion_timeout(&done, CMDQ_TIMEOUT)) {
+=======
+	if (!wait_for_completion_timeout(&done,
+					 msecs_to_jiffies(CMDQ_TIMEOUT))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_bh(&cmdq->cmdq_lock);
 
 		if (cmdq->errcode[curr_prod_idx] == &errcode)
@@ -753,12 +766,20 @@ static int init_cmdq(struct hinic_cmdq *cmdq, struct hinic_wq *wq,
 
 	spin_lock_init(&cmdq->cmdq_lock);
 
+<<<<<<< HEAD
 	cmdq->done = vzalloc(array_size(sizeof(*cmdq->done), wq->q_depth));
 	if (!cmdq->done)
 		return -ENOMEM;
 
 	cmdq->errcode = vzalloc(array_size(sizeof(*cmdq->errcode),
 					   wq->q_depth));
+=======
+	cmdq->done = vzalloc(wq->q_depth * sizeof(*cmdq->done));
+	if (!cmdq->done)
+		return -ENOMEM;
+
+	cmdq->errcode = vzalloc(wq->q_depth * sizeof(*cmdq->errcode));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!cmdq->errcode) {
 		err = -ENOMEM;
 		goto err_errcode;
@@ -876,7 +897,11 @@ int hinic_init_cmdqs(struct hinic_cmdqs *cmdqs, struct hinic_hwif *hwif,
 	int err;
 
 	cmdqs->hwif = hwif;
+<<<<<<< HEAD
 	cmdqs->cmdq_buf_pool = dma_pool_create("hinic_cmdq", &pdev->dev,
+=======
+	cmdqs->cmdq_buf_pool = pci_pool_create("hinic_cmdq", pdev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					       HINIC_CMDQ_BUF_SIZE,
 					       HINIC_CMDQ_BUF_SIZE, 0);
 	if (!cmdqs->cmdq_buf_pool)
@@ -917,7 +942,11 @@ err_cmdq_wqs:
 	devm_kfree(&pdev->dev, cmdqs->saved_wqs);
 
 err_saved_wqs:
+<<<<<<< HEAD
 	dma_pool_destroy(cmdqs->cmdq_buf_pool);
+=======
+	pci_pool_destroy(cmdqs->cmdq_buf_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -943,5 +972,9 @@ void hinic_free_cmdqs(struct hinic_cmdqs *cmdqs)
 
 	devm_kfree(&pdev->dev, cmdqs->saved_wqs);
 
+<<<<<<< HEAD
 	dma_pool_destroy(cmdqs->cmdq_buf_pool);
+=======
+	pci_pool_destroy(cmdqs->cmdq_buf_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -186,7 +186,11 @@ static struct configfs_attribute *cma_configfs_attributes[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static const struct config_item_type cma_port_group_type = {
+=======
+static struct config_item_type cma_port_group_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_attrs	= cma_configfs_attributes,
 	.ct_owner	= THIS_MODULE
 };
@@ -263,7 +267,11 @@ static struct configfs_item_operations cma_ports_item_ops = {
 	.release = release_cma_ports_group
 };
 
+<<<<<<< HEAD
 static const struct config_item_type cma_ports_group_type = {
+=======
+static struct config_item_type cma_ports_group_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_item_ops	= &cma_ports_item_ops,
 	.ct_owner	= THIS_MODULE
 };
@@ -272,7 +280,11 @@ static struct configfs_item_operations cma_device_item_ops = {
 	.release = release_cma_dev
 };
 
+<<<<<<< HEAD
 static const struct config_item_type cma_device_group_type = {
+=======
+static struct config_item_type cma_device_group_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_item_ops	= &cma_device_item_ops,
 	.ct_owner	= THIS_MODULE
 };
@@ -295,7 +307,11 @@ static struct config_group *make_cma_dev(struct config_group *group,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	strlcpy(cma_dev_group->name, name, sizeof(cma_dev_group->name));
+=======
+	strncpy(cma_dev_group->name, name, sizeof(cma_dev_group->name));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	config_group_init_type_name(&cma_dev_group->ports_group, "ports",
 				    &cma_ports_group_type);
@@ -319,11 +335,32 @@ fail:
 	return ERR_PTR(err);
 }
 
+<<<<<<< HEAD
 static struct configfs_group_operations cma_subsys_group_ops = {
 	.make_group	= make_cma_dev,
 };
 
 static const struct config_item_type cma_subsys_type = {
+=======
+static void drop_cma_dev(struct config_group *cgroup, struct config_item *item)
+{
+	struct config_group *group =
+		container_of(item, struct config_group, cg_item);
+	struct cma_dev_group *cma_dev_group =
+		container_of(group, struct cma_dev_group, device_group);
+
+	configfs_remove_default_groups(&cma_dev_group->ports_group);
+	configfs_remove_default_groups(&cma_dev_group->device_group);
+	config_item_put(item);
+}
+
+static struct configfs_group_operations cma_subsys_group_ops = {
+	.make_group	= make_cma_dev,
+	.drop_item	= drop_cma_dev,
+};
+
+static struct config_item_type cma_subsys_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_group_ops	= &cma_subsys_group_ops,
 	.ct_owner	= THIS_MODULE,
 };

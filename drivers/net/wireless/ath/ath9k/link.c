@@ -301,11 +301,19 @@ fail_paprd:
  *  When the task is complete, it reschedules itself depending on the
  *  appropriate interval that was calculated.
  */
+<<<<<<< HEAD
 void ath_ani_calibrate(struct timer_list *t)
 {
 	struct ath_common *common = from_timer(common, t, ani.timer);
 	struct ath_softc *sc = (struct ath_softc *)common->priv;
 	struct ath_hw *ah = sc->sc_ah;
+=======
+void ath_ani_calibrate(unsigned long data)
+{
+	struct ath_softc *sc = (struct ath_softc *)data;
+	struct ath_hw *ah = sc->sc_ah;
+	struct ath_common *common = ath9k_hw_common(ah);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool longcal = false;
 	bool shortcal = false;
 	bool aniflag = false;
@@ -367,10 +375,17 @@ void ath_ani_calibrate(struct timer_list *t)
 
 	/* Call ANI routine if necessary */
 	if (aniflag) {
+<<<<<<< HEAD
 		spin_lock_irqsave(&common->cc_lock, flags);
 		ath9k_hw_ani_monitor(ah, ah->curchan);
 		ath_update_survey_stats(sc);
 		spin_unlock_irqrestore(&common->cc_lock, flags);
+=======
+		spin_lock(&common->cc_lock);
+		ath9k_hw_ani_monitor(ah, ah->curchan);
+		ath_update_survey_stats(sc);
+		spin_unlock(&common->cc_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Perform calibration if necessary */

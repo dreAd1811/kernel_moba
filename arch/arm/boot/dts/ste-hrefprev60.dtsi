@@ -57,7 +57,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		ssp@80002000 {
+=======
+		spi@80002000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * On the first generation boards, this SSP/SPI port was connected
 			 * to the AB8500.

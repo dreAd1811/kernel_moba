@@ -23,6 +23,7 @@
 #ifndef _DM_PP_INTERFACE_
 #define _DM_PP_INTERFACE_
 
+<<<<<<< HEAD
 #include "dm_services_types.h"
 
 #define PP_MAX_CLOCK_LEVELS 16
@@ -165,6 +166,9 @@ struct amd_pp_clocks {
 	uint32_t clock[MAX_NUM_CLOCKS];
 	uint32_t latency[MAX_NUM_CLOCKS];
 };
+=======
+#define PP_MAX_CLOCK_LEVELS 8
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct pp_clock_with_latency {
 	uint32_t clocks_in_khz;
@@ -186,9 +190,45 @@ struct pp_clock_levels_with_voltage {
 	struct pp_clock_with_voltage data[PP_MAX_CLOCK_LEVELS];
 };
 
+<<<<<<< HEAD
 struct pp_display_clock_request {
 	enum amd_pp_clock_type clock_type;
 	uint32_t clock_freq_in_khz;
+=======
+#define PP_MAX_WM_SETS 4
+
+enum pp_wm_set_id {
+	DC_WM_SET_A = 0,
+	DC_WM_SET_B,
+	DC_WM_SET_C,
+	DC_WM_SET_D,
+	DC_WM_SET_INVALID = 0xffff,
+};
+
+struct pp_wm_set_with_dmif_clock_range_soc15 {
+	enum pp_wm_set_id wm_set_id;
+	uint32_t wm_min_dcefclk_in_khz;
+	uint32_t wm_max_dcefclk_in_khz;
+	uint32_t wm_min_memclk_in_khz;
+	uint32_t wm_max_memclk_in_khz;
+};
+
+struct pp_wm_set_with_mcif_clock_range_soc15 {
+	enum pp_wm_set_id wm_set_id;
+	uint32_t wm_min_socclk_in_khz;
+	uint32_t wm_max_socclk_in_khz;
+	uint32_t wm_min_memclk_in_khz;
+	uint32_t wm_max_memclk_in_khz;
+};
+
+struct pp_wm_sets_with_clock_ranges_soc15 {
+	uint32_t num_wm_sets_dmif;
+	uint32_t num_wm_sets_mcif;
+	struct pp_wm_set_with_dmif_clock_range_soc15
+		wm_sets_dmif[PP_MAX_WM_SETS];
+	struct pp_wm_set_with_mcif_clock_range_soc15
+		wm_sets_mcif[PP_MAX_WM_SETS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif /* _DM_PP_INTERFACE_ */

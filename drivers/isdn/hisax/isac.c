@@ -171,6 +171,10 @@ isac_fill_fifo(struct IsdnCardState *cs)
 		debugl1(cs, "isac_fill_fifo dbusytimer running");
 		del_timer(&cs->dbusytimer);
 	}
+<<<<<<< HEAD
+=======
+	init_timer(&cs->dbusytimer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cs->dbusytimer.expires = jiffies + ((DBUSY_TIMER_VALUE * HZ)/1000);
 	add_timer(&cs->dbusytimer);
 	if (cs->debug & L1_DEB_ISAC_FIFO) {
@@ -583,9 +587,14 @@ DC_Close_isac(struct IsdnCardState *cs)
 }
 
 static void
+<<<<<<< HEAD
 dbusy_timer_handler(struct timer_list *t)
 {
 	struct IsdnCardState *cs = from_timer(cs, t, dbusytimer);
+=======
+dbusy_timer_handler(struct IsdnCardState *cs)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct PStack *stptr;
 	int	rbch, star;
 
@@ -677,5 +686,9 @@ void clear_pending_isac_ints(struct IsdnCardState *cs)
 void setup_isac(struct IsdnCardState *cs)
 {
 	INIT_WORK(&cs->tqueue, isac_bh);
+<<<<<<< HEAD
 	timer_setup(&cs->dbusytimer, dbusy_timer_handler, 0);
+=======
+	setup_timer(&cs->dbusytimer, (void *)dbusy_timer_handler, (long)cs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

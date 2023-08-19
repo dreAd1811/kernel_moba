@@ -1,4 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
+=======
+menu "Kernel hacking"
+
+source "lib/Kconfig.debug"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config DEBUG_TLB_SANITY
 	bool "Debug TLB sanity"
@@ -31,3 +37,8 @@ config S32C1I_SELFTEST
 	  It is easy to make wrong hardware configuration, this test should catch it early.
 
 	  Say 'N' on stable hardware.
+<<<<<<< HEAD
+=======
+
+endmenu
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

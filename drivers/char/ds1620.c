@@ -345,6 +345,21 @@ static int ds1620_proc_therm_show(struct seq_file *m, void *v)
 		   fan_state[netwinder_get_fan()]);
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static int ds1620_proc_therm_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, ds1620_proc_therm_show, NULL);
+}
+
+static const struct file_operations ds1620_proc_therm_fops = {
+	.open		= ds1620_proc_therm_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static const struct file_operations ds1620_fops = {
@@ -392,7 +407,11 @@ static int __init ds1620_init(void)
 		return ret;
 
 #ifdef THERM_USE_PROC
+<<<<<<< HEAD
 	if (!proc_create_single("therm", 0, NULL, ds1620_proc_therm_show))
+=======
+	if (!proc_create("therm", 0, NULL, &ds1620_proc_therm_fops))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		printk(KERN_ERR "therm: unable to register /proc/therm\n");
 #endif
 

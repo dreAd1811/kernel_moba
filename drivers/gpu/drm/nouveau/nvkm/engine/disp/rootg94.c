@@ -22,12 +22,17 @@
  * Authors: Ben Skeggs
  */
 #include "rootnv50.h"
+<<<<<<< HEAD
 #include "channv50.h"
+=======
+#include "dmacnv50.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <nvif/class.h>
 
 static const struct nv50_disp_root_func
 g94_disp_root = {
+<<<<<<< HEAD
 	.user = {
 		{{0,0,  G82_DISP_CURSOR             },  nv50_disp_curs_new },
 		{{0,0,  G82_DISP_OVERLAY            },  nv50_disp_oimm_new },
@@ -35,6 +40,18 @@ g94_disp_root = {
 		{{0,0,GT206_DISP_CORE_CHANNEL_DMA   },   g94_disp_core_new },
 		{{0,0,GT200_DISP_OVERLAY_CHANNEL_DMA}, gt200_disp_ovly_new },
 		{}
+=======
+	.init = nv50_disp_root_init,
+	.fini = nv50_disp_root_fini,
+	.dmac = {
+		&g94_disp_core_oclass,
+		&gt200_disp_base_oclass,
+		&gt200_disp_ovly_oclass,
+	},
+	.pioc = {
+		&g84_disp_oimm_oclass,
+		&g84_disp_curs_oclass,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

@@ -275,10 +275,13 @@ static int set_next_request(void);
 #define fd_dma_mem_alloc(size) __get_dma_pages(GFP_KERNEL, get_order(size))
 #endif
 
+<<<<<<< HEAD
 #ifndef fd_cacheflush
 #define fd_cacheflush(addr, size) /* nothing... */
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void fallback_on_nodma_alloc(char **addr, size_t l)
 {
 #ifdef FLOPPY_CAN_FALLBACK_ON_NODMA
@@ -852,6 +855,7 @@ static void reset_fdc_info(int mode)
 /* selects the fdc and drive, and enables the fdc's input/dma. */
 static void set_fdc(int drive)
 {
+<<<<<<< HEAD
 	if (drive >= 0 && drive < N_DRIVE) {
 		fdc = FDC(drive);
 		current_drive = drive;
@@ -860,6 +864,19 @@ static void set_fdc(int drive)
 		pr_info("bad fdc value\n");
 		return;
 	}
+=======
+	unsigned int new_fdc = fdc;
+
+	if (drive >= 0 && drive < N_DRIVE) {
+		new_fdc = FDC(drive);
+		current_drive = drive;
+	}
+	if (new_fdc >= N_FDC) {
+		pr_info("bad fdc value\n");
+		return;
+	}
+	fdc = new_fdc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_dor(fdc, ~0, 8);
 #if N_FDC > 1
 	set_dor(1 - fdc, ~8, 0);
@@ -903,6 +920,7 @@ static void unlock_fdc(void)
 }
 
 /* switches the motor off after a given timeout */
+<<<<<<< HEAD
 static void motor_off_callback(struct timer_list *t)
 {
 	unsigned long nr = t - motor_off_timer;
@@ -911,6 +929,12 @@ static void motor_off_callback(struct timer_list *t)
 	if (WARN_ON_ONCE(nr >= N_DRIVE))
 		return;
 
+=======
+static void motor_off_callback(unsigned long nr)
+{
+	unsigned char mask = ~(0x10 << UNIT(nr));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_dor(FDC(nr), mask, 0);
 }
 
@@ -1461,6 +1485,10 @@ static void setup_rw_floppy(void)
 	int i;
 	int r;
 	int flags;
+<<<<<<< HEAD
+=======
+	int dflags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long ready_date;
 	void (*function)(void);
 
@@ -1484,6 +1512,11 @@ static void setup_rw_floppy(void)
 		if (fd_wait_for_completion(ready_date, function))
 			return;
 	}
+<<<<<<< HEAD
+=======
+	dflags = DRS->flags;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((flags & FD_RAW_READ) || (flags & FD_RAW_WRITE))
 		setup_DMA();
 
@@ -3051,7 +3084,11 @@ static void raw_cmd_done(int flag)
 		else
 			raw_cmd->flags &= ~FD_RAW_DISK_CHANGE;
 		if (raw_cmd->flags & FD_RAW_NO_MOTOR_AFTER)
+<<<<<<< HEAD
 			motor_off_callback(&motor_off_timer[current_drive]);
+=======
+			motor_off_callback(current_drive);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (raw_cmd->next &&
 		    (!(raw_cmd->flags & FD_RAW_FAILURE) ||
@@ -4481,7 +4518,11 @@ static ssize_t floppy_cmos_show(struct device *dev,
 	return sprintf(buf, "%X\n", UDP->cmos);
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR(cmos, 0444, floppy_cmos_show, NULL);
+=======
+static DEVICE_ATTR(cmos, S_IRUGO, floppy_cmos_show, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *floppy_dev_attrs[] = {
 	&dev_attr_cmos.attr,
@@ -4536,7 +4577,11 @@ static struct kobject *floppy_find(dev_t dev, int *part, void *data)
 	if (((*part >> 2) & 0x1f) >= ARRAY_SIZE(floppy_type))
 		return NULL;
 	*part = 0;
+<<<<<<< HEAD
 	return get_disk_and_module(disks[drive]);
+=======
+	return get_disk(disks[drive]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __init do_floppy_init(void)
@@ -4577,7 +4622,11 @@ static int __init do_floppy_init(void)
 		disks[drive]->fops = &floppy_fops;
 		sprintf(disks[drive]->disk_name, "fd%d", drive);
 
+<<<<<<< HEAD
 		timer_setup(&motor_off_timer[drive], motor_off_callback, 0);
+=======
+		setup_timer(&motor_off_timer[drive], motor_off_callback, drive);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = register_blkdev(FLOPPY_MAJOR, "fd");

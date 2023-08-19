@@ -18,6 +18,7 @@
 #include <linux/of_platform.h>
 #include <linux/of_address.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <asm/prom.h>
 
 #include "vas.h"
@@ -30,6 +31,17 @@ static DEFINE_PER_CPU(int, cpu_vas_id);
 static int init_vas_instance(struct platform_device *pdev)
 {
 	int rc, cpu, vasid;
+=======
+
+#include "vas.h"
+
+static DEFINE_MUTEX(vas_mutex);
+static LIST_HEAD(vas_instances);
+
+static int init_vas_instance(struct platform_device *pdev)
+{
+	int rc, vasid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *res;
 	struct vas_instance *vinst;
 	struct device_node *dn = pdev->dev.of_node;
@@ -77,17 +89,23 @@ static int init_vas_instance(struct platform_device *pdev)
 			"paste_win_id_shift 0x%llx\n", pdev->name, vasid,
 			vinst->paste_base_addr, vinst->paste_win_id_shift);
 
+<<<<<<< HEAD
 	for_each_possible_cpu(cpu) {
 		if (cpu_to_chip_id(cpu) == of_get_ibm_chip_id(dn))
 			per_cpu(cpu_vas_id, cpu) = vasid;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&vas_mutex);
 	list_add(&vinst->node, &vas_instances);
 	mutex_unlock(&vas_mutex);
 
+<<<<<<< HEAD
 	vas_instance_init_dbgdir(vinst);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_set_drvdata(&pdev->dev, vinst);
 
 	return 0;
@@ -108,10 +126,13 @@ struct vas_instance *find_vas_instance(int vasid)
 	struct vas_instance *vinst;
 
 	mutex_lock(&vas_mutex);
+<<<<<<< HEAD
 
 	if (vasid == -1)
 		vasid = per_cpu(cpu_vas_id, smp_processor_id());
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each(ent, &vas_instances) {
 		vinst = list_entry(ent, struct vas_instance, node);
 		if (vinst->vas_id == vasid) {
@@ -125,6 +146,7 @@ struct vas_instance *find_vas_instance(int vasid)
 	return NULL;
 }
 
+<<<<<<< HEAD
 int chip_to_vas_id(int chipid)
 {
 	int cpu;
@@ -137,6 +159,8 @@ int chip_to_vas_id(int chipid)
 }
 EXPORT_SYMBOL(chip_to_vas_id);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int vas_probe(struct platform_device *pdev)
 {
 	return init_vas_instance(pdev);
@@ -167,10 +191,15 @@ static int __init vas_init(void)
 		found++;
 	}
 
+<<<<<<< HEAD
 	if (!found) {
 		platform_driver_unregister(&vas_driver);
 		return -ENODEV;
 	}
+=======
+	if (!found)
+		return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_devel("Found %d instances\n", found);
 

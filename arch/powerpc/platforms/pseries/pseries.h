@@ -27,6 +27,7 @@ extern int pSeries_machine_check_exception(struct pt_regs *regs);
 
 #ifdef CONFIG_SMP
 extern void smp_init_pseries(void);
+<<<<<<< HEAD
 
 /* Get state of physical CPU from query_cpu_stopped */
 int smp_query_cpu_stopped(unsigned int pcpu);
@@ -35,6 +36,8 @@ int smp_query_cpu_stopped(unsigned int pcpu);
 #define QCSS_NOT_STOPPED 2
 #define QCSS_HARDWARE_ERROR -1
 #define QCSS_HARDWARE_BUSY -2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static inline void smp_init_pseries(void) { };
 #endif

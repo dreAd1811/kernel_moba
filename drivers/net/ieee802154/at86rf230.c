@@ -1656,7 +1656,11 @@ static int at86rf230_debugfs_init(struct at86rf230_local *lp)
 	if (!at86rf230_debugfs_root)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	stats = debugfs_create_file("trac_stats", 0444,
+=======
+	stats = debugfs_create_file("trac_stats", S_IRUGO,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    at86rf230_debugfs_root, lp,
 				    &at86rf230_stats_fops);
 	if (!stats)

@@ -29,25 +29,37 @@
 #include <linux/workqueue.h>
 #include <linux/delay.h>
 #include <linux/pm_runtime.h>
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
+=======
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of.h>
 #include <linux/of_mdio.h>
 #include <linux/of_net.h>
 #include <linux/of_device.h>
 #include <linux/if_vlan.h>
+<<<<<<< HEAD
 #include <linux/kmemleak.h>
 #include <linux/sys_soc.h>
 
 #include <linux/pinctrl/consumer.h>
 #include <net/pkt_cls.h>
+=======
+
+#include <linux/pinctrl/consumer.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "cpsw.h"
 #include "cpsw_ale.h"
 #include "cpts.h"
 #include "davinci_cpdma.h"
 
+<<<<<<< HEAD
 #include <net/pkt_sched.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CPSW_DEBUG	(NETIF_MSG_HW		| NETIF_MSG_WOL		| \
 			 NETIF_MSG_DRV		| NETIF_MSG_LINK	| \
 			 NETIF_MSG_IFUP		| NETIF_MSG_INTR	| \
@@ -93,7 +105,10 @@ do {								\
 #define CPSW_VERSION_4		0x190112
 
 #define HOST_PORT_NUM		0
+<<<<<<< HEAD
 #define CPSW_ALE_PORTS_NUM	3
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SLIVER_SIZE		0x40
 
 #define CPSW1_HOST_PORT_OFFSET	0x028
@@ -125,18 +140,26 @@ do {								\
 #define CPDMA_RXCP		0x60
 
 #define CPSW_POLL_WEIGHT	64
+<<<<<<< HEAD
 #define CPSW_RX_VLAN_ENCAP_HDR_SIZE		4
 #define CPSW_MIN_PACKET_SIZE	(VLAN_ETH_ZLEN)
 #define CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN +\
 				 ETH_FCS_LEN +\
 				 CPSW_RX_VLAN_ENCAP_HDR_SIZE)
+=======
+#define CPSW_MIN_PACKET_SIZE	60
+#define CPSW_MAX_PACKET_SIZE	(1500 + 14 + 4 + 4)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RX_PRIORITY_MAPPING	0x76543210
 #define TX_PRIORITY_MAPPING	0x33221100
 #define CPDMA_TX_PRIORITY_MAP	0x76543210
 
 #define CPSW_VLAN_AWARE		BIT(1)
+<<<<<<< HEAD
 #define CPSW_RX_VLAN_ENCAP	BIT(2)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CPSW_ALE_VLAN_AWARE	1
 
 #define CPSW_FIFO_NORMAL_MODE		(0 << 16)
@@ -156,6 +179,7 @@ do {								\
 #define IRQ_NUM			2
 #define CPSW_MAX_QUEUES		8
 #define CPSW_CPDMA_DESCS_POOL_SIZE_DEFAULT 256
+<<<<<<< HEAD
 #define CPSW_FIFO_QUEUE_TYPE_SHIFT	16
 #define CPSW_FIFO_SHAPE_EN_SHIFT	16
 #define CPSW_FIFO_RATE_EN_SHIFT		20
@@ -174,6 +198,8 @@ enum {
 	CPSW_RX_VLAN_ENCAP_HDR_PKT_PRIO_TAG,
 	CPSW_RX_VLAN_ENCAP_HDR_PKT_UNTAG,
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int debug_level;
 module_param(debug_level, int, 0);
@@ -262,6 +288,7 @@ struct cpsw_ss_regs {
 #define RX_DSCP_PRI_MAP7    0x4c /* Rx DSCP Priority to Rx Packet Mapping */
 
 /* Bit definitions for the CPSW2_CONTROL register */
+<<<<<<< HEAD
 #define PASS_PRI_TAGGED     BIT(24) /* Pass Priority Tagged */
 #define VLAN_LTYPE2_EN      BIT(21) /* VLAN LTYPE 2 enable */
 #define VLAN_LTYPE1_EN      BIT(20) /* VLAN LTYPE 1 enable */
@@ -280,6 +307,25 @@ struct cpsw_ss_regs {
 #define TS_LTYPE1_EN        BIT(2)  /* Time Sync LTYPE 1 enable */
 #define TS_TX_EN            BIT(1)  /* Time Sync Transmit Enable */
 #define TS_RX_EN            BIT(0)  /* Time Sync Receive Enable */
+=======
+#define PASS_PRI_TAGGED     (1<<24) /* Pass Priority Tagged */
+#define VLAN_LTYPE2_EN      (1<<21) /* VLAN LTYPE 2 enable */
+#define VLAN_LTYPE1_EN      (1<<20) /* VLAN LTYPE 1 enable */
+#define DSCP_PRI_EN         (1<<16) /* DSCP Priority Enable */
+#define TS_320              (1<<14) /* Time Sync Dest Port 320 enable */
+#define TS_319              (1<<13) /* Time Sync Dest Port 319 enable */
+#define TS_132              (1<<12) /* Time Sync Dest IP Addr 132 enable */
+#define TS_131              (1<<11) /* Time Sync Dest IP Addr 131 enable */
+#define TS_130              (1<<10) /* Time Sync Dest IP Addr 130 enable */
+#define TS_129              (1<<9)  /* Time Sync Dest IP Addr 129 enable */
+#define TS_TTL_NONZERO      (1<<8)  /* Time Sync Time To Live Non-zero enable */
+#define TS_ANNEX_F_EN       (1<<6)  /* Time Sync Annex F enable */
+#define TS_ANNEX_D_EN       (1<<4)  /* Time Sync Annex D enable */
+#define TS_LTYPE2_EN        (1<<3)  /* Time Sync LTYPE 2 enable */
+#define TS_LTYPE1_EN        (1<<2)  /* Time Sync LTYPE 1 enable */
+#define TS_TX_EN            (1<<1)  /* Time Sync Transmit Enable */
+#define TS_RX_EN            (1<<0)  /* Time Sync Receive Enable */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CTRL_V2_TS_BITS \
 	(TS_320 | TS_319 | TS_132 | TS_131 | TS_130 | TS_129 |\
@@ -291,7 +337,11 @@ struct cpsw_ss_regs {
 
 
 #define CTRL_V3_TS_BITS \
+<<<<<<< HEAD
 	(TS_107 | TS_320 | TS_319 | TS_132 | TS_131 | TS_130 | TS_129 |\
+=======
+	(TS_320 | TS_319 | TS_132 | TS_131 | TS_130 | TS_129 |\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 TS_TTL_NONZERO | TS_ANNEX_F_EN | TS_ANNEX_D_EN |\
 	 TS_LTYPE1_EN)
 
@@ -381,6 +431,7 @@ struct cpsw_hw_stats {
 	u32	rxdmaoverruns;
 };
 
+<<<<<<< HEAD
 struct cpsw_slave_data {
 	struct device_node *phy_node;
 	char		phy_id[MII_BUS_ID_SIZE];
@@ -402,6 +453,8 @@ struct cpsw_platform_data {
 	bool	dual_emac;	/* Enable Dual EMAC mode */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cpsw_slave {
 	void __iomem			*regs;
 	struct cpsw_sliver_regs __iomem	*sliver;
@@ -415,12 +468,20 @@ struct cpsw_slave {
 
 static inline u32 slave_read(struct cpsw_slave *slave, u32 offset)
 {
+<<<<<<< HEAD
 	return readl_relaxed(slave->regs + offset);
+=======
+	return __raw_readl(slave->regs + offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void slave_write(struct cpsw_slave *slave, u32 val, u32 offset)
 {
+<<<<<<< HEAD
 	writel_relaxed(val, slave->regs + offset);
+=======
+	__raw_writel(val, slave->regs + offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct cpsw_vector {
@@ -463,9 +524,12 @@ struct cpsw_priv {
 	u8				mac_addr[ETH_ALEN];
 	bool				rx_pause;
 	bool				tx_pause;
+<<<<<<< HEAD
 	bool				mqprio_hw;
 	int				fifo_bw[CPSW_TC_NUM];
 	int				shp_cfg_speed;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 emac_port;
 	struct cpsw_common *cpsw;
 };
@@ -565,11 +629,44 @@ static const struct cpsw_stats cpsw_gstrings_ch_stats[] = {
 				(func)(slave++, ##arg);			\
 	} while (0)
 
+<<<<<<< HEAD
+=======
+#define cpsw_dual_emac_src_port_detect(cpsw, status, ndev, skb)		\
+	do {								\
+		if (!cpsw->data.dual_emac)				\
+			break;						\
+		if (CPDMA_RX_SOURCE_PORT(status) == 1) {		\
+			ndev = cpsw->slaves[0].ndev;			\
+			skb->dev = ndev;				\
+		} else if (CPDMA_RX_SOURCE_PORT(status) == 2) {		\
+			ndev = cpsw->slaves[1].ndev;			\
+			skb->dev = ndev;				\
+		}							\
+	} while (0)
+#define cpsw_add_mcast(cpsw, priv, addr)				\
+	do {								\
+		if (cpsw->data.dual_emac) {				\
+			struct cpsw_slave *slave = cpsw->slaves +	\
+						priv->emac_port;	\
+			int slave_port = cpsw_get_slave_port(		\
+						slave->slave_num);	\
+			cpsw_ale_add_mcast(cpsw->ale, addr,		\
+				1 << slave_port | ALE_PORT_HOST,	\
+				ALE_VLAN, slave->port_vlan, 0);		\
+		} else {						\
+			cpsw_ale_add_mcast(cpsw->ale, addr,		\
+				ALE_ALL_PORTS,				\
+				0, 0, 0);				\
+		}							\
+	} while (0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int cpsw_get_slave_port(u32 slave_num)
 {
 	return slave_num + 1;
 }
 
+<<<<<<< HEAD
 static void cpsw_add_mcast(struct cpsw_priv *priv, u8 *addr)
 {
 	struct cpsw_common *cpsw = priv->cpsw;
@@ -587,6 +684,8 @@ static void cpsw_add_mcast(struct cpsw_priv *priv, u8 *addr)
 	cpsw_ale_add_mcast(cpsw->ale, addr, ALE_ALL_PORTS, 0, 0, 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cpsw_set_promiscious(struct net_device *ndev, bool enable)
 {
 	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
@@ -642,6 +741,10 @@ static void cpsw_set_promiscious(struct net_device *ndev, bool enable)
 
 			/* Clear all mcast from ALE */
 			cpsw_ale_flush_multicast(ale, ALE_ALL_PORTS, -1);
+<<<<<<< HEAD
+=======
+			__dev_mc_unsync(ndev, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* Flood All Unicast Packets to Host port */
 			cpsw_ale_control_set(ale, 0, ALE_P0_UNI_FLOOD, 1);
@@ -694,15 +797,24 @@ static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
 
 		/* program multicast address list into ALE register */
 		netdev_for_each_mc_addr(ha, ndev) {
+<<<<<<< HEAD
 			cpsw_add_mcast(priv, ha->addr);
+=======
+			cpsw_add_mcast(cpsw, priv, (u8 *)ha->addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
 
 static void cpsw_intr_enable(struct cpsw_common *cpsw)
 {
+<<<<<<< HEAD
 	writel_relaxed(0xFF, &cpsw->wr_regs->tx_en);
 	writel_relaxed(0xFF, &cpsw->wr_regs->rx_en);
+=======
+	__raw_writel(0xFF, &cpsw->wr_regs->tx_en);
+	__raw_writel(0xFF, &cpsw->wr_regs->rx_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpdma_ctlr_int_ctrl(cpsw->dma, true);
 	return;
@@ -710,8 +822,13 @@ static void cpsw_intr_enable(struct cpsw_common *cpsw)
 
 static void cpsw_intr_disable(struct cpsw_common *cpsw)
 {
+<<<<<<< HEAD
 	writel_relaxed(0, &cpsw->wr_regs->tx_en);
 	writel_relaxed(0, &cpsw->wr_regs->rx_en);
+=======
+	__raw_writel(0, &cpsw->wr_regs->tx_en);
+	__raw_writel(0, &cpsw->wr_regs->rx_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpdma_ctlr_int_ctrl(cpsw->dma, false);
 	return;
@@ -737,6 +854,7 @@ static void cpsw_tx_handler(void *token, int len, int status)
 	dev_kfree_skb_any(skb);
 }
 
+<<<<<<< HEAD
 static void cpsw_rx_vlan_encap(struct sk_buff *skb)
 {
 	struct cpsw_priv *priv = netdev_priv(skb->dev);
@@ -780,12 +898,15 @@ static void cpsw_rx_vlan_encap(struct sk_buff *skb)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cpsw_rx_handler(void *token, int len, int status)
 {
 	struct cpdma_chan	*ch;
 	struct sk_buff		*skb = token;
 	struct sk_buff		*new_skb;
 	struct net_device	*ndev = skb->dev;
+<<<<<<< HEAD
 	int			ret = 0, port;
 	struct cpsw_common	*cpsw = ndev_to_cpsw(ndev);
 
@@ -796,6 +917,12 @@ static void cpsw_rx_handler(void *token, int len, int status)
 			skb->dev = ndev;
 		}
 	}
+=======
+	int			ret = 0;
+	struct cpsw_common	*cpsw = ndev_to_cpsw(ndev);
+
+	cpsw_dual_emac_src_port_detect(cpsw, status, ndev, skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(status < 0) || unlikely(!netif_running(ndev))) {
 		/* In dual emac mode check for all interfaces */
@@ -820,8 +947,11 @@ static void cpsw_rx_handler(void *token, int len, int status)
 	if (new_skb) {
 		skb_copy_queue_mapping(new_skb, skb);
 		skb_put(skb, len);
+<<<<<<< HEAD
 		if (status & CPDMA_RX_VLAN_ENCAP)
 			cpsw_rx_vlan_encap(skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cpts_rx_timestamp(cpsw->cpts, skb);
 		skb->protocol = eth_type_trans(skb, ndev);
 		netif_receive_skb(skb);
@@ -953,8 +1083,13 @@ static irqreturn_t cpsw_rx_interrupt(int irq, void *dev_id)
 {
 	struct cpsw_common *cpsw = dev_id;
 
+<<<<<<< HEAD
 	cpdma_ctlr_eoi(cpsw->dma, CPDMA_EOI_RX);
 	writel(0, &cpsw->wr_regs->rx_en);
+=======
+	writel(0, &cpsw->wr_regs->rx_en);
+	cpdma_ctlr_eoi(cpsw->dma, CPDMA_EOI_RX);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cpsw->quirk_irq) {
 		disable_irq_nosync(cpsw->irqs_table[0]);
@@ -965,7 +1100,11 @@ static irqreturn_t cpsw_rx_interrupt(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static int cpsw_tx_mq_poll(struct napi_struct *napi_tx, int budget)
+=======
+static int cpsw_tx_poll(struct napi_struct *napi_tx, int budget)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32			ch_map;
 	int			num_tx, cur_budget, ch;
@@ -974,8 +1113,13 @@ static int cpsw_tx_mq_poll(struct napi_struct *napi_tx, int budget)
 
 	/* process every unprocessed channel */
 	ch_map = cpdma_ctrl_txchs_state(cpsw->dma);
+<<<<<<< HEAD
 	for (ch = 0, num_tx = 0; ch_map & 0xff; ch_map <<= 1, ch++) {
 		if (!(ch_map & 0x80))
+=======
+	for (ch = 0, num_tx = 0; ch_map; ch_map >>= 1, ch++) {
+		if (!(ch_map & 0x01))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		txv = &cpsw->txv[ch];
@@ -992,6 +1136,7 @@ static int cpsw_tx_mq_poll(struct napi_struct *napi_tx, int budget)
 	if (num_tx < budget) {
 		napi_complete(napi_tx);
 		writel(0xff, &cpsw->wr_regs->tx_en);
+<<<<<<< HEAD
 	}
 
 	return num_tx;
@@ -1007,6 +1152,9 @@ static int cpsw_tx_poll(struct napi_struct *napi_tx, int budget)
 		napi_complete(napi_tx);
 		writel(0xff, &cpsw->wr_regs->tx_en);
 		if (cpsw->tx_irq_disabled) {
+=======
+		if (cpsw->quirk_irq && cpsw->tx_irq_disabled) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cpsw->tx_irq_disabled = false;
 			enable_irq(cpsw->irqs_table[1]);
 		}
@@ -1015,7 +1163,11 @@ static int cpsw_tx_poll(struct napi_struct *napi_tx, int budget)
 	return num_tx;
 }
 
+<<<<<<< HEAD
 static int cpsw_rx_mq_poll(struct napi_struct *napi_rx, int budget)
+=======
+static int cpsw_rx_poll(struct napi_struct *napi_rx, int budget)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32			ch_map;
 	int			num_rx, cur_budget, ch;
@@ -1042,6 +1194,7 @@ static int cpsw_rx_mq_poll(struct napi_struct *napi_rx, int budget)
 	if (num_rx < budget) {
 		napi_complete_done(napi_rx, num_rx);
 		writel(0xff, &cpsw->wr_regs->rx_en);
+<<<<<<< HEAD
 	}
 
 	return num_rx;
@@ -1057,6 +1210,9 @@ static int cpsw_rx_poll(struct napi_struct *napi_rx, int budget)
 		napi_complete_done(napi_rx, num_rx);
 		writel(0xff, &cpsw->wr_regs->rx_en);
 		if (cpsw->rx_irq_disabled) {
+=======
+		if (cpsw->quirk_irq && cpsw->rx_irq_disabled) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cpsw->rx_irq_disabled = false;
 			enable_irq(cpsw->irqs_table[0]);
 		}
@@ -1069,6 +1225,7 @@ static inline void soft_reset(const char *module, void __iomem *reg)
 {
 	unsigned long timeout = jiffies + HZ;
 
+<<<<<<< HEAD
 	writel_relaxed(1, reg);
 	do {
 		cpu_relax();
@@ -1077,6 +1234,20 @@ static inline void soft_reset(const char *module, void __iomem *reg)
 	WARN(readl_relaxed(reg) & 1, "failed to soft-reset %s\n", module);
 }
 
+=======
+	__raw_writel(1, reg);
+	do {
+		cpu_relax();
+	} while ((__raw_readl(reg) & 1) && time_after(timeout, jiffies));
+
+	WARN(__raw_readl(reg) & 1, "failed to soft-reset %s\n", module);
+}
+
+#define mac_hi(mac)	(((mac)[0] << 0) | ((mac)[1] << 8) |	\
+			 ((mac)[2] << 16) | ((mac)[3] << 24))
+#define mac_lo(mac)	(((mac)[4] << 0) | ((mac)[5] << 8))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cpsw_set_slave_mac(struct cpsw_slave *slave,
 			       struct cpsw_priv *priv)
 {
@@ -1084,6 +1255,7 @@ static void cpsw_set_slave_mac(struct cpsw_slave *slave,
 	slave_write(slave, mac_lo(priv->mac_addr), SA_LO);
 }
 
+<<<<<<< HEAD
 static bool cpsw_shp_is_off(struct cpsw_priv *priv)
 {
 	struct cpsw_common *cpsw = priv->cpsw;
@@ -1116,6 +1288,8 @@ static void cpsw_fifo_shp_on(struct cpsw_priv *priv, int fifo, int on)
 	writel_relaxed(val, &cpsw->regs->ptype);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void _cpsw_adjust_link(struct cpsw_slave *slave,
 			      struct cpsw_priv *priv, bool *link)
 {
@@ -1155,12 +1329,15 @@ static void _cpsw_adjust_link(struct cpsw_slave *slave,
 			mac_control |= BIT(4);
 
 		*link = true;
+<<<<<<< HEAD
 
 		if (priv->shp_cfg_speed &&
 		    priv->shp_cfg_speed != slave->phy->speed &&
 		    !cpsw_shp_is_off(priv))
 			dev_warn(priv->dev,
 				 "Speed was changed, CBS shaper speeds are changed!");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mac_control = 0;
 		/* disable forwarding */
@@ -1170,7 +1347,11 @@ static void _cpsw_adjust_link(struct cpsw_slave *slave,
 
 	if (mac_control != slave->mac_control) {
 		phy_print_status(phy);
+<<<<<<< HEAD
 		writel_relaxed(mac_control, &slave->sliver->mac_control);
+=======
+		__raw_writel(mac_control, &slave->sliver->mac_control);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	slave->mac_control = mac_control;
@@ -1326,8 +1507,13 @@ static void cpsw_add_ch_strings(u8 **p, int ch_num, int rx_dir)
 	for (i = 0; i < ch_stats_len; i++) {
 		line = i % CPSW_STATS_CH_LEN;
 		snprintf(*p, ETH_GSTRING_LEN,
+<<<<<<< HEAD
 			 "%s DMA chan %ld: %s", rx_dir ? "Rx" : "Tx",
 			 (long)(i / CPSW_STATS_CH_LEN),
+=======
+			 "%s DMA chan %d: %s", rx_dir ? "Rx" : "Tx",
+			 i / CPSW_STATS_CH_LEN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 cpsw_gstrings_ch_stats[line].stat_string);
 		*p += ETH_GSTRING_LEN;
 	}
@@ -1435,7 +1621,11 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
 	soft_reset_slave(slave);
 
 	/* setup priority mapping */
+<<<<<<< HEAD
 	writel_relaxed(RX_PRIORITY_MAPPING, &slave->sliver->rx_pri_map);
+=======
+	__raw_writel(RX_PRIORITY_MAPPING, &slave->sliver->rx_pri_map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (cpsw->version) {
 	case CPSW_VERSION_1:
@@ -1461,7 +1651,11 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
 	}
 
 	/* setup max packet size, and mac address */
+<<<<<<< HEAD
 	writel_relaxed(cpsw->rx_packet_max, &slave->sliver->rx_maxlen);
+=======
+	__raw_writel(cpsw->rx_packet_max, &slave->sliver->rx_maxlen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpsw_set_slave_mac(slave, priv);
 
 	slave->mac_control = 0;	/* no link yet */
@@ -1545,16 +1739,26 @@ static void cpsw_init_host_port(struct cpsw_priv *priv)
 	cpsw_ale_control_set(cpsw->ale, HOST_PORT_NUM, ALE_VLAN_AWARE,
 			     CPSW_ALE_VLAN_AWARE);
 	control_reg = readl(&cpsw->regs->control);
+<<<<<<< HEAD
 	control_reg |= CPSW_VLAN_AWARE | CPSW_RX_VLAN_ENCAP;
+=======
+	control_reg |= CPSW_VLAN_AWARE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(control_reg, &cpsw->regs->control);
 	fifo_mode = (cpsw->data.dual_emac) ? CPSW_FIFO_DUAL_MAC_MODE :
 		     CPSW_FIFO_NORMAL_MODE;
 	writel(fifo_mode, &cpsw->host_port_regs->tx_in_ctl);
 
 	/* setup host port priority mapping */
+<<<<<<< HEAD
 	writel_relaxed(CPDMA_TX_PRIORITY_MAP,
 		       &cpsw->host_port_regs->cpdma_tx_pri_map);
 	writel_relaxed(0, &cpsw->host_port_regs->cpdma_rx_chan_map);
+=======
+	__raw_writel(CPDMA_TX_PRIORITY_MAP,
+		     &cpsw->host_port_regs->cpdma_tx_pri_map);
+	__raw_writel(0, &cpsw->host_port_regs->cpdma_rx_chan_map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpsw_ale_control_set(cpsw->ale, HOST_PORT_NUM,
 			     ALE_PORT_STATE, ALE_PORT_STATE_FORWARD);
@@ -1622,6 +1826,7 @@ static void cpsw_slave_stop(struct cpsw_slave *slave, struct cpsw_common *cpsw)
 	soft_reset_slave(slave);
 }
 
+<<<<<<< HEAD
 static int cpsw_tc_to_fifo(int tc, int num_tc)
 {
 	if (tc == num_tc - 1)
@@ -1847,6 +2052,8 @@ static void cpsw_restore(struct cpsw_priv *priv)
 	for_each_slave(priv, cpsw_cbs_resume, priv);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cpsw_ndo_open(struct net_device *ndev)
 {
 	struct cpsw_priv *priv = netdev_priv(ndev);
@@ -1896,10 +2103,17 @@ static int cpsw_ndo_open(struct net_device *ndev)
 	/* initialize shared resources for every ndev */
 	if (!cpsw->usage_count) {
 		/* disable priority elevation */
+<<<<<<< HEAD
 		writel_relaxed(0, &cpsw->regs->ptype);
 
 		/* enable statistics collection only on all ports */
 		writel_relaxed(0x7, &cpsw->regs->stat_port_en);
+=======
+		__raw_writel(0, &cpsw->regs->ptype);
+
+		/* enable statistics collection only on all ports */
+		__raw_writel(0x7, &cpsw->regs->stat_port_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Enable internal fifo flow control */
 		writel(0x7, &cpsw->regs->flow_control);
@@ -1926,8 +2140,11 @@ static int cpsw_ndo_open(struct net_device *ndev)
 
 	}
 
+<<<<<<< HEAD
 	cpsw_restore(priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable Interrupt pacing if configured */
 	if (cpsw->coal_intvl != 0) {
 		struct ethtool_coalesce coal;
@@ -2097,7 +2314,11 @@ static void cpsw_hwtstamp_v2(struct cpsw_priv *priv)
 
 	slave_write(slave, mtype, CPSW2_TS_SEQ_MTYPE);
 	slave_write(slave, ctrl, CPSW2_CONTROL);
+<<<<<<< HEAD
 	writel_relaxed(ETH_P_1588, &cpsw->regs->ts_ltype);
+=======
+	__raw_writel(ETH_P_1588, &cpsw->regs->ts_ltype);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cpsw_hwtstamp_set(struct net_device *dev, struct ifreq *ifr)
@@ -2358,16 +2579,25 @@ static int cpsw_ndo_vlan_rx_add_vid(struct net_device *ndev,
 		int i;
 
 		for (i = 0; i < cpsw->data.slaves; i++) {
+<<<<<<< HEAD
 			if (vid == cpsw->slaves[i].port_vlan) {
 				ret = -EINVAL;
 				goto err;
 			}
+=======
+			if (vid == cpsw->slaves[i].port_vlan)
+				return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	dev_info(priv->dev, "Adding vlanid %d to vlan filter\n", vid);
 	ret = cpsw_add_vlan_ale_entry(priv, vid);
+<<<<<<< HEAD
 err:
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put(cpsw->dev);
 	return ret;
 }
@@ -2393,17 +2623,34 @@ static int cpsw_ndo_vlan_rx_kill_vid(struct net_device *ndev,
 
 		for (i = 0; i < cpsw->data.slaves; i++) {
 			if (vid == cpsw->slaves[i].port_vlan)
+<<<<<<< HEAD
 				goto err;
+=======
+				return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	dev_info(priv->dev, "removing vlanid %d from vlan filter\n", vid);
 	ret = cpsw_ale_del_vlan(cpsw->ale, vid, 0);
+<<<<<<< HEAD
 	ret |= cpsw_ale_del_ucast(cpsw->ale, priv->mac_addr,
 				  HOST_PORT_NUM, ALE_VLAN, vid);
 	ret |= cpsw_ale_del_mcast(cpsw->ale, priv->ndev->broadcast,
 				  0, ALE_VLAN, vid);
 err:
+=======
+	if (ret != 0)
+		return ret;
+
+	ret = cpsw_ale_del_ucast(cpsw->ale, priv->mac_addr,
+				 HOST_PORT_NUM, ALE_VLAN, vid);
+	if (ret != 0)
+		return ret;
+
+	ret = cpsw_ale_del_mcast(cpsw->ale, priv->ndev->broadcast,
+				 0, ALE_VLAN, vid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put(cpsw->dev);
 	return ret;
 }
@@ -2459,6 +2706,7 @@ static int cpsw_ndo_set_tx_maxrate(struct net_device *ndev, int queue, u32 rate)
 	return ret;
 }
 
+<<<<<<< HEAD
 static int cpsw_set_mqprio(struct net_device *ndev, void *type_data)
 {
 	struct tc_mqprio_qopt_offload *mqprio = type_data;
@@ -2531,6 +2779,8 @@ static int cpsw_ndo_setup_tc(struct net_device *ndev, enum tc_setup_type type,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops cpsw_netdev_ops = {
 	.ndo_open		= cpsw_ndo_open,
 	.ndo_stop		= cpsw_ndo_stop,
@@ -2546,7 +2796,10 @@ static const struct net_device_ops cpsw_netdev_ops = {
 #endif
 	.ndo_vlan_rx_add_vid	= cpsw_ndo_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid	= cpsw_ndo_vlan_rx_kill_vid,
+<<<<<<< HEAD
 	.ndo_setup_tc           = cpsw_ndo_setup_tc,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int cpsw_get_regs_len(struct net_device *ndev)
@@ -2735,9 +2988,15 @@ static void cpsw_get_channels(struct net_device *ndev,
 {
 	struct cpsw_common *cpsw = ndev_to_cpsw(ndev);
 
+<<<<<<< HEAD
 	ch->max_rx = cpsw->quirk_irq ? 1 : CPSW_MAX_QUEUES;
 	ch->max_tx = cpsw->quirk_irq ? 1 : CPSW_MAX_QUEUES;
 	ch->max_combined = 0;
+=======
+	ch->max_combined = 0;
+	ch->max_rx = CPSW_MAX_QUEUES;
+	ch->max_tx = CPSW_MAX_QUEUES;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ch->max_other = 0;
 	ch->other_count = 0;
 	ch->rx_count = cpsw->rx_ch_num;
@@ -2748,11 +3007,14 @@ static void cpsw_get_channels(struct net_device *ndev,
 static int cpsw_check_ch_settings(struct cpsw_common *cpsw,
 				  struct ethtool_channels *ch)
 {
+<<<<<<< HEAD
 	if (cpsw->quirk_irq) {
 		dev_err(cpsw->dev, "Maximum one tx/rx queue is allowed");
 		return -EOPNOTSUPP;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ch->combined_count)
 		return -EINVAL;
 
@@ -2769,25 +3031,45 @@ static int cpsw_check_ch_settings(struct cpsw_common *cpsw,
 
 static int cpsw_update_channels_res(struct cpsw_priv *priv, int ch_num, int rx)
 {
+<<<<<<< HEAD
+=======
+	int (*poll)(struct napi_struct *, int);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cpsw_common *cpsw = priv->cpsw;
 	void (*handler)(void *, int, int);
 	struct netdev_queue *queue;
 	struct cpsw_vector *vec;
+<<<<<<< HEAD
 	int ret, *ch, vch;
+=======
+	int ret, *ch;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rx) {
 		ch = &cpsw->rx_ch_num;
 		vec = cpsw->rxv;
 		handler = cpsw_rx_handler;
+<<<<<<< HEAD
+=======
+		poll = cpsw_rx_poll;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ch = &cpsw->tx_ch_num;
 		vec = cpsw->txv;
 		handler = cpsw_tx_handler;
+<<<<<<< HEAD
 	}
 
 	while (*ch < ch_num) {
 		vch = rx ? *ch : 7 - *ch;
 		vec[*ch].ch = cpdma_chan_create(cpsw->dma, vch, handler, rx);
+=======
+		poll = cpsw_tx_poll;
+	}
+
+	while (*ch < ch_num) {
+		vec[*ch].ch = cpdma_chan_create(cpsw->dma, *ch, handler, rx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue = netdev_get_tx_queue(priv->ndev, *ch);
 		queue->tx_maxrate = 0;
 
@@ -2978,7 +3260,11 @@ static void cpsw_get_ringparam(struct net_device *ndev,
 	struct cpsw_common *cpsw = priv->cpsw;
 
 	/* not supported */
+<<<<<<< HEAD
 	ering->tx_max_pending = descs_pool_size - CPSW_MAX_QUEUES;
+=======
+	ering->tx_max_pending = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ering->tx_pending = cpdma_get_num_tx_descs(cpsw->dma);
 	ering->rx_max_pending = descs_pool_size - CPSW_MAX_QUEUES;
 	ering->rx_pending = cpdma_get_num_rx_descs(cpsw->dma);
@@ -3083,9 +3369,14 @@ static int cpsw_probe_dt(struct cpsw_platform_data *data,
 	}
 	data->active_slave = prop;
 
+<<<<<<< HEAD
 	data->slave_data = devm_kcalloc(&pdev->dev,
 					data->slaves,
 					sizeof(struct cpsw_slave_data),
+=======
+	data->slave_data = devm_kzalloc(&pdev->dev, data->slaves
+					* sizeof(struct cpsw_slave_data),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					GFP_KERNEL);
 	if (!data->slave_data)
 		return -ENOMEM;
@@ -3270,7 +3561,11 @@ static int cpsw_probe_dual_emac(struct cpsw_priv *priv)
 		dev_info(cpsw->dev, "cpsw: Detected MACID = %pM\n",
 			 priv_sl2->mac_addr);
 	} else {
+<<<<<<< HEAD
 		eth_random_addr(priv_sl2->mac_addr);
+=======
+		random_ether_addr(priv_sl2->mac_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_info(cpsw->dev, "cpsw: Random MACID = %pM\n",
 			 priv_sl2->mac_addr);
 	}
@@ -3278,7 +3573,11 @@ static int cpsw_probe_dual_emac(struct cpsw_priv *priv)
 
 	priv_sl2->emac_port = 1;
 	cpsw->slaves[1].ndev = ndev;
+<<<<<<< HEAD
 	ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER | NETIF_F_HW_VLAN_CTAG_RX;
+=======
+	ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ndev->netdev_ops = &cpsw_netdev_ops;
 	ndev->ethtool_ops = &cpsw_ethtool_ops;
@@ -3295,20 +3594,60 @@ static int cpsw_probe_dual_emac(struct cpsw_priv *priv)
 	return ret;
 }
 
+<<<<<<< HEAD
 static const struct of_device_id cpsw_of_mtable[] = {
 	{ .compatible = "ti,cpsw"},
 	{ .compatible = "ti,am335x-cpsw"},
 	{ .compatible = "ti,am4372-cpsw"},
 	{ .compatible = "ti,dra7-cpsw"},
+=======
+#define CPSW_QUIRK_IRQ		BIT(0)
+
+static const struct platform_device_id cpsw_devtype[] = {
+	{
+		/* keep it for existing comaptibles */
+		.name = "cpsw",
+		.driver_data = CPSW_QUIRK_IRQ,
+	}, {
+		.name = "am335x-cpsw",
+		.driver_data = CPSW_QUIRK_IRQ,
+	}, {
+		.name = "am4372-cpsw",
+		.driver_data = 0,
+	}, {
+		.name = "dra7-cpsw",
+		.driver_data = 0,
+	}, {
+		/* sentinel */
+	}
+};
+MODULE_DEVICE_TABLE(platform, cpsw_devtype);
+
+enum ti_cpsw_type {
+	CPSW = 0,
+	AM335X_CPSW,
+	AM4372_CPSW,
+	DRA7_CPSW,
+};
+
+static const struct of_device_id cpsw_of_mtable[] = {
+	{ .compatible = "ti,cpsw", .data = &cpsw_devtype[CPSW], },
+	{ .compatible = "ti,am335x-cpsw", .data = &cpsw_devtype[AM335X_CPSW], },
+	{ .compatible = "ti,am4372-cpsw", .data = &cpsw_devtype[AM4372_CPSW], },
+	{ .compatible = "ti,dra7-cpsw", .data = &cpsw_devtype[DRA7_CPSW], },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, cpsw_of_mtable);
 
+<<<<<<< HEAD
 static const struct soc_device_attribute cpsw_soc_devices[] = {
 	{ .family = "AM33xx", .revision = "ES1.0"},
 	{ /* sentinel */ }
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cpsw_probe(struct platform_device *pdev)
 {
 	struct clk			*clk;
@@ -3320,11 +3659,19 @@ static int cpsw_probe(struct platform_device *pdev)
 	void __iomem			*ss_regs;
 	void __iomem			*cpts_regs;
 	struct resource			*res, *ss_res;
+<<<<<<< HEAD
 	struct gpio_descs		*mode;
 	u32 slave_offset, sliver_offset, slave_size;
 	const struct soc_device_attribute *soc;
 	struct cpsw_common		*cpsw;
 	int ret = 0, i, ch;
+=======
+	const struct of_device_id	*of_id;
+	struct gpio_descs		*mode;
+	u32 slave_offset, sliver_offset, slave_size;
+	struct cpsw_common		*cpsw;
+	int ret = 0, i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int irq;
 
 	cpsw = devm_kzalloc(&pdev->dev, sizeof(struct cpsw_common), GFP_KERNEL);
@@ -3389,8 +3736,13 @@ static int cpsw_probe(struct platform_device *pdev)
 
 	memcpy(ndev->dev_addr, priv->mac_addr, ETH_ALEN);
 
+<<<<<<< HEAD
 	cpsw->slaves = devm_kcalloc(&pdev->dev,
 				    data->slaves, sizeof(struct cpsw_slave),
+=======
+	cpsw->slaves = devm_kzalloc(&pdev->dev,
+				    sizeof(struct cpsw_slave) * data->slaves,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    GFP_KERNEL);
 	if (!cpsw->slaves) {
 		ret = -ENOMEM;
@@ -3495,6 +3847,7 @@ static int cpsw_probe(struct platform_device *pdev)
 		goto clean_dt_ret;
 	}
 
+<<<<<<< HEAD
 	soc = soc_device_match(cpsw_soc_devices);
 	if (soc)
 		cpsw->quirk_irq = 1;
@@ -3511,13 +3864,24 @@ static int cpsw_probe(struct platform_device *pdev)
 	if (IS_ERR(cpsw->rxv[0].ch)) {
 		dev_err(priv->dev, "error initializing rx dma channel\n");
 		ret = PTR_ERR(cpsw->rxv[0].ch);
+=======
+	cpsw->txv[0].ch = cpdma_chan_create(cpsw->dma, 0, cpsw_tx_handler, 0);
+	cpsw->rxv[0].ch = cpdma_chan_create(cpsw->dma, 0, cpsw_rx_handler, 1);
+	if (WARN_ON(!cpsw->rxv[0].ch || !cpsw->txv[0].ch)) {
+		dev_err(priv->dev, "error initializing dma channels\n");
+		ret = -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto clean_dma_ret;
 	}
 
 	ale_params.dev			= &pdev->dev;
 	ale_params.ale_ageout		= ale_ageout;
 	ale_params.ale_entries		= data->ale_entries;
+<<<<<<< HEAD
 	ale_params.ale_ports		= CPSW_ALE_PORTS_NUM;
+=======
+	ale_params.ale_ports		= data->slaves;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cpsw->ale = cpsw_ale_create(&ale_params);
 	if (!cpsw->ale) {
@@ -3529,13 +3893,18 @@ static int cpsw_probe(struct platform_device *pdev)
 	cpsw->cpts = cpts_create(cpsw->dev, cpts_regs, cpsw->dev->of_node);
 	if (IS_ERR(cpsw->cpts)) {
 		ret = PTR_ERR(cpsw->cpts);
+<<<<<<< HEAD
 		goto clean_dma_ret;
+=======
+		goto clean_ale_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ndev->irq = platform_get_irq(pdev, 1);
 	if (ndev->irq < 0) {
 		dev_err(priv->dev, "error getting irq resource\n");
 		ret = ndev->irq;
+<<<<<<< HEAD
 		goto clean_dma_ret;
 	}
 
@@ -3549,6 +3918,24 @@ static int cpsw_probe(struct platform_device *pdev)
 	netif_tx_napi_add(ndev, &cpsw->napi_tx,
 			  cpsw->quirk_irq ? cpsw_tx_poll : cpsw_tx_mq_poll,
 			  CPSW_POLL_WEIGHT);
+=======
+		goto clean_ale_ret;
+	}
+
+	of_id = of_match_device(cpsw_of_mtable, &pdev->dev);
+	if (of_id) {
+		pdev->id_entry = of_id->data;
+		if (pdev->id_entry->driver_data)
+			cpsw->quirk_irq = true;
+	}
+
+	ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
+
+	ndev->netdev_ops = &cpsw_netdev_ops;
+	ndev->ethtool_ops = &cpsw_ethtool_ops;
+	netif_napi_add(ndev, &cpsw->napi_rx, cpsw_rx_poll, CPSW_POLL_WEIGHT);
+	netif_tx_napi_add(ndev, &cpsw->napi_tx, cpsw_tx_poll, CPSW_POLL_WEIGHT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpsw_split_res(ndev);
 
 	/* register the network device */
@@ -3557,7 +3944,11 @@ static int cpsw_probe(struct platform_device *pdev)
 	if (ret) {
 		dev_err(priv->dev, "error registering net device\n");
 		ret = -ENODEV;
+<<<<<<< HEAD
 		goto clean_dma_ret;
+=======
+		goto clean_ale_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (cpsw->data.dual_emac) {
@@ -3580,7 +3971,11 @@ static int cpsw_probe(struct platform_device *pdev)
 	irq = platform_get_irq(pdev, 1);
 	if (irq < 0) {
 		ret = irq;
+<<<<<<< HEAD
 		goto clean_dma_ret;
+=======
+		goto clean_ale_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cpsw->irqs_table[0] = irq;
@@ -3588,14 +3983,22 @@ static int cpsw_probe(struct platform_device *pdev)
 			       0, dev_name(&pdev->dev), cpsw);
 	if (ret < 0) {
 		dev_err(priv->dev, "error attaching irq (%d)\n", ret);
+<<<<<<< HEAD
 		goto clean_dma_ret;
+=======
+		goto clean_ale_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* TX IRQ */
 	irq = platform_get_irq(pdev, 2);
 	if (irq < 0) {
 		ret = irq;
+<<<<<<< HEAD
 		goto clean_dma_ret;
+=======
+		goto clean_ale_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cpsw->irqs_table[1] = irq;
@@ -3603,7 +4006,11 @@ static int cpsw_probe(struct platform_device *pdev)
 			       0, dev_name(&pdev->dev), cpsw);
 	if (ret < 0) {
 		dev_err(priv->dev, "error attaching irq (%d)\n", ret);
+<<<<<<< HEAD
 		goto clean_dma_ret;
+=======
+		goto clean_ale_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cpsw_notice(priv, probe,
@@ -3616,6 +4023,11 @@ static int cpsw_probe(struct platform_device *pdev)
 
 clean_unregister_netdev_ret:
 	unregister_netdev(ndev);
+<<<<<<< HEAD
+=======
+clean_ale_ret:
+	cpsw_ale_destroy(cpsw->ale);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 clean_dma_ret:
 	cpdma_ctlr_destroy(cpsw->dma);
 clean_dt_ret:
@@ -3645,6 +4057,10 @@ static int cpsw_remove(struct platform_device *pdev)
 	unregister_netdev(ndev);
 
 	cpts_release(cpsw->cpts);
+<<<<<<< HEAD
+=======
+	cpsw_ale_destroy(cpsw->ale);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpdma_ctlr_destroy(cpsw->dma);
 	cpsw_remove_dt(pdev);
 	pm_runtime_put_sync(&pdev->dev);

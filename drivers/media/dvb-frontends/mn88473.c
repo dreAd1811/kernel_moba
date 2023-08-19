@@ -764,7 +764,11 @@ MODULE_DEVICE_TABLE(i2c, mn88473_id_table);
 
 static struct i2c_driver mn88473_driver = {
 	.driver = {
+<<<<<<< HEAD
 		.name		     = "mn88473",
+=======
+		.name	             = "mn88473",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.suppress_bind_attrs = true,
 	},
 	.probe		= mn88473_probe,

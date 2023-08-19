@@ -107,7 +107,11 @@ static s32
 brcmf_fil_cmd_data(struct brcmf_if *ifp, u32 cmd, void *data, u32 len, bool set)
 {
 	struct brcmf_pub *drvr = ifp->drvr;
+<<<<<<< HEAD
 	s32 err, fwerr;
+=======
+	s32 err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (drvr->bus_if->state != BRCMF_BUS_UP) {
 		brcmf_err("bus is down. we have nothing to do.\n");
@@ -117,6 +121,7 @@ brcmf_fil_cmd_data(struct brcmf_if *ifp, u32 cmd, void *data, u32 len, bool set)
 	if (data != NULL)
 		len = min_t(uint, len, BRCMF_DCMD_MAXLEN);
 	if (set)
+<<<<<<< HEAD
 		err = brcmf_proto_set_dcmd(drvr, ifp->ifidx, cmd,
 					   data, len, &fwerr);
 	else
@@ -132,6 +137,17 @@ brcmf_fil_cmd_data(struct brcmf_if *ifp, u32 cmd, void *data, u32 len, bool set)
 	}
 	if (ifp->fwil_fwerr)
 		return fwerr;
+=======
+		err = brcmf_proto_set_dcmd(drvr, ifp->ifidx, cmd, data, len);
+	else
+		err = brcmf_proto_query_dcmd(drvr, ifp->ifidx, cmd, data, len);
+
+	if (err >= 0)
+		return 0;
+
+	brcmf_dbg(FIL, "Failed: %s (%d)\n",
+		  brcmf_fil_get_errstr((u32)(-err)), err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }

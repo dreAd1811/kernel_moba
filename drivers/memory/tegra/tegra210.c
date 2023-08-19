@@ -6,6 +6,14 @@
  * published by the Free Software Foundation.
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/of.h>
+#include <linux/mm.h>
+
+#include <asm/cacheflush.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <dt-bindings/memory/tegra210-mc.h>
 
 #include "mc.h"
@@ -1054,6 +1062,7 @@ static const struct tegra_smmu_swgroup tegra210_swgroups[] = {
 	{ .name = "tsecb",     .swgroup = TEGRA_SWGROUP_TSECB,     .reg = 0xad4 },
 };
 
+<<<<<<< HEAD
 static const unsigned int tegra210_group_display[] = {
 	TEGRA_SWGROUP_DC,
 	TEGRA_SWGROUP_DCB,
@@ -1067,19 +1076,25 @@ static const struct tegra_smmu_group_soc tegra210_groups[] = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct tegra_smmu_soc tegra210_smmu_soc = {
 	.clients = tegra210_mc_clients,
 	.num_clients = ARRAY_SIZE(tegra210_mc_clients),
 	.swgroups = tegra210_swgroups,
 	.num_swgroups = ARRAY_SIZE(tegra210_swgroups),
+<<<<<<< HEAD
 	.groups = tegra210_groups,
 	.num_groups = ARRAY_SIZE(tegra210_groups),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.supports_round_robin_arbitration = true,
 	.supports_request_limit = true,
 	.num_tlb_lines = 32,
 	.num_asids = 128,
 };
 
+<<<<<<< HEAD
 #define TEGRA210_MC_RESET(_name, _control, _status, _bit)	\
 	{							\
 		.name = #_name,					\
@@ -1122,6 +1137,8 @@ static const struct tegra_mc_reset tegra210_mc_resets[] = {
 	TEGRA210_MC_RESET(TSECB,     0x970, 0x974, 13),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct tegra_mc_soc tegra210_mc_soc = {
 	.clients = tegra210_mc_clients,
 	.num_clients = ARRAY_SIZE(tegra210_mc_clients),
@@ -1132,7 +1149,10 @@ const struct tegra_mc_soc tegra210_mc_soc = {
 	.intmask = MC_INT_DECERR_MTS | MC_INT_SECERR_SEC | MC_INT_DECERR_VPR |
 		   MC_INT_INVALID_APB_ASID_UPDATE | MC_INT_INVALID_SMMU_PAGE |
 		   MC_INT_SECURITY_VIOLATION | MC_INT_DECERR_EMEM,
+<<<<<<< HEAD
 	.reset_ops = &terga_mc_reset_ops_common,
 	.resets = tegra210_mc_resets,
 	.num_resets = ARRAY_SIZE(tegra210_mc_resets),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

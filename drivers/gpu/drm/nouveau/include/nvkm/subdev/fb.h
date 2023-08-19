@@ -2,7 +2,12 @@
 #ifndef __NVKM_FB_H__
 #define __NVKM_FB_H__
 #include <core/subdev.h>
+<<<<<<< HEAD
 #include <core/mm.h>
+=======
+
+#include <subdev/mmu.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* memory type/access flags, do not match hardware values */
 #define NV_MEM_ACCESS_RO  1
@@ -21,6 +26,25 @@
 #define NVKM_RAM_TYPE_VM 0x7f
 #define NV_MEM_COMP_VM 0x03
 
+<<<<<<< HEAD
+=======
+struct nvkm_mem {
+	struct drm_device *dev;
+
+	struct nvkm_vma bar_vma;
+	struct nvkm_vma vma[2];
+	u8  page_shift;
+
+	struct nvkm_mm_node *tag;
+	struct nvkm_mm_node *mem;
+	dma_addr_t *pages;
+	u32 memtype;
+	u64 offset;
+	u64 size;
+	struct sg_table *sg;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nvkm_fb_tile {
 	struct nvkm_mm_node *tag;
 	u32 addr;
@@ -34,7 +58,10 @@ struct nvkm_fb {
 	struct nvkm_subdev subdev;
 
 	struct nvkm_ram *ram;
+<<<<<<< HEAD
 	struct nvkm_mm tags;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct {
 		struct nvkm_fb_tile region[16];
@@ -47,6 +74,10 @@ struct nvkm_fb {
 	struct nvkm_memory *mmu_wr;
 };
 
+<<<<<<< HEAD
+=======
+bool nvkm_fb_memtype_valid(struct nvkm_fb *, u32 memtype);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void nvkm_fb_tile_init(struct nvkm_fb *, int region, u32 addr, u32 size,
 		       u32 pitch, u32 flags, struct nvkm_fb_tile *);
 void nvkm_fb_tile_fini(struct nvkm_fb *, int region, struct nvkm_fb_tile *);
@@ -75,7 +106,10 @@ int mcp89_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
 int gf100_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
 int gf108_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
 int gk104_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
+<<<<<<< HEAD
 int gk110_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int gk20a_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
 int gm107_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
 int gm200_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
@@ -83,7 +117,10 @@ int gm20b_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
 int gp100_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
 int gp102_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
 int gp10b_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
+<<<<<<< HEAD
 int gv100_fb_new(struct nvkm_device *, int, struct nvkm_fb **);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <subdev/bios.h>
 #include <subdev/bios/ramcfg.h>
@@ -115,11 +152,16 @@ struct nvkm_ram {
 	u64 size;
 
 #define NVKM_RAM_MM_SHIFT 12
+<<<<<<< HEAD
 #define NVKM_RAM_MM_ANY    (NVKM_MM_HEAP_ANY + 0)
 #define NVKM_RAM_MM_NORMAL (NVKM_MM_HEAP_ANY + 1)
 #define NVKM_RAM_MM_NOMAP  (NVKM_MM_HEAP_ANY + 2)
 #define NVKM_RAM_MM_MIXED  (NVKM_MM_HEAP_ANY + 3)
 	struct nvkm_mm vram;
+=======
+	struct nvkm_mm vram;
+	struct nvkm_mm tags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 stolen;
 
 	int ranks;
@@ -136,10 +178,13 @@ struct nvkm_ram {
 	struct nvkm_ram_data target;
 };
 
+<<<<<<< HEAD
 int
 nvkm_ram_get(struct nvkm_device *, u8 heap, u8 type, u8 page, u64 size,
 	     bool contig, bool back, struct nvkm_memory **);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nvkm_ram_func {
 	u64 upper;
 	u32 (*probe_fbp)(const struct nvkm_ram_func *, struct nvkm_device *,
@@ -150,8 +195,20 @@ struct nvkm_ram_func {
 	void *(*dtor)(struct nvkm_ram *);
 	int (*init)(struct nvkm_ram *);
 
+<<<<<<< HEAD
+=======
+	int (*get)(struct nvkm_ram *, u64 size, u32 align, u32 size_nc,
+		   u32 type, struct nvkm_mem **);
+	void (*put)(struct nvkm_ram *, struct nvkm_mem **);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*calc)(struct nvkm_ram *, u32 freq);
 	int (*prog)(struct nvkm_ram *);
 	void (*tidy)(struct nvkm_ram *);
 };
+<<<<<<< HEAD
+=======
+
+extern const u8 gf100_pte_storage_type_map[256];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

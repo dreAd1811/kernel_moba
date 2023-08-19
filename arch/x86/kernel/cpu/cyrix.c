@@ -437,7 +437,11 @@ static void cyrix_identify(struct cpuinfo_x86 *c)
 			/* enable MAPEN  */
 			setCx86(CX86_CCR3, (ccr3 & 0x0f) | 0x10);
 			/* enable cpuid  */
+<<<<<<< HEAD
 			setCx86_old(CX86_CCR4, getCx86_old(CX86_CCR4) | 0x80);
+=======
+			setCx86(CX86_CCR4, getCx86(CX86_CCR4) | 0x80);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* disable MAPEN */
 			setCx86(CX86_CCR3, ccr3);
 			local_irq_restore(flags);

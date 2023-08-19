@@ -53,6 +53,7 @@ static void vc4_bo_stats_dump(struct vc4_dev *vc4)
 			 vc4->bo_labels[i].size_allocated / 1024,
 			 vc4->bo_labels[i].num_allocated);
 	}
+<<<<<<< HEAD
 
 	mutex_lock(&vc4->purgeable.lock);
 	if (vc4->purgeable.num)
@@ -64,6 +65,8 @@ static void vc4_bo_stats_dump(struct vc4_dev *vc4)
 			 vc4->purgeable.purged_size / 1024,
 			 vc4->purgeable.purged_num);
 	mutex_unlock(&vc4->purgeable.lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_DEBUG_FS
@@ -86,6 +89,7 @@ int vc4_bo_stats_debugfs(struct seq_file *m, void *unused)
 	}
 	mutex_unlock(&vc4->bo_lock);
 
+<<<<<<< HEAD
 	mutex_lock(&vc4->purgeable.lock);
 	if (vc4->purgeable.num)
 		seq_printf(m, "%30s: %6zdkb BOs (%d)\n", "userspace BO cache",
@@ -97,6 +101,8 @@ int vc4_bo_stats_debugfs(struct seq_file *m, void *unused)
 			   vc4->purgeable.purged_num);
 	mutex_unlock(&vc4->purgeable.lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 #endif
@@ -270,6 +276,7 @@ static void vc4_bo_cache_purge(struct drm_device *dev)
 	mutex_unlock(&vc4->bo_lock);
 }
 
+<<<<<<< HEAD
 void vc4_bo_add_to_purgeable_pool(struct vc4_bo *bo)
 {
 	struct vc4_dev *vc4 = to_vc4_dev(bo->base.base.dev);
@@ -373,6 +380,8 @@ static void vc4_bo_userspace_cache_purge(struct drm_device *dev)
 	mutex_unlock(&vc4->purgeable.lock);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct vc4_bo *vc4_bo_get_from_cache(struct drm_device *dev,
 					    uint32_t size,
 					    enum vc4_kernel_bo_type type)
@@ -419,9 +428,12 @@ struct drm_gem_object *vc4_create_object(struct drm_device *dev, size_t size)
 	if (!bo)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	bo->madv = VC4_MADV_WILLNEED;
 	refcount_set(&bo->usecnt, 0);
 	mutex_init(&bo->madv_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&vc4->bo_lock);
 	bo->label = VC4_BO_TYPE_KERNEL;
 	vc4->bo_labels[VC4_BO_TYPE_KERNEL].num_allocated++;
@@ -459,6 +471,7 @@ struct vc4_bo *vc4_bo_create(struct drm_device *dev, size_t unaligned_size,
 		 * CMA allocations we've got laying around and try again.
 		 */
 		vc4_bo_cache_purge(dev);
+<<<<<<< HEAD
 		cma_obj = drm_gem_cma_create(dev, size);
 	}
 
@@ -491,6 +504,18 @@ struct vc4_bo *vc4_bo_create(struct drm_device *dev, size_t unaligned_size,
 	 */
 	bo->madv = __VC4_MADV_NOTSUPP;
 
+=======
+
+		cma_obj = drm_gem_cma_create(dev, size);
+		if (IS_ERR(cma_obj)) {
+			DRM_ERROR("Failed to allocate from CMA:\n");
+			vc4_bo_stats_dump(vc4);
+			return ERR_PTR(-ENOMEM);
+		}
+	}
+	bo = to_vc4_bo(&cma_obj->base);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&vc4->bo_lock);
 	vc4_bo_set_label(&cma_obj->base, type);
 	mutex_unlock(&vc4->bo_lock);
@@ -516,8 +541,11 @@ int vc4_dumb_create(struct drm_file *file_priv,
 	if (IS_ERR(bo))
 		return PTR_ERR(bo);
 
+<<<<<<< HEAD
 	bo->madv = VC4_MADV_WILLNEED;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_gem_handle_create(file_priv, &bo->base.base, &args->handle);
 	drm_gem_object_put_unlocked(&bo->base.base);
 
@@ -556,12 +584,15 @@ void vc4_free_object(struct drm_gem_object *gem_bo)
 	struct vc4_bo *bo = to_vc4_bo(gem_bo);
 	struct list_head *cache_list;
 
+<<<<<<< HEAD
 	/* Remove the BO from the purgeable list. */
 	mutex_lock(&bo->madv_lock);
 	if (bo->madv == VC4_MADV_DONTNEED && !refcount_read(&bo->usecnt))
 		vc4_bo_remove_from_purgeable_pool(bo);
 	mutex_unlock(&bo->madv_lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&vc4->bo_lock);
 	/* If the object references someone else's memory, we can't cache it.
 	 */
@@ -577,8 +608,12 @@ void vc4_free_object(struct drm_gem_object *gem_bo)
 	}
 
 	/* If this object was partially constructed but CMA allocation
+<<<<<<< HEAD
 	 * had failed, just free it. Can also happen when the BO has been
 	 * purged.
+=======
+	 * had failed, just free it.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (!bo->base.vaddr) {
 		vc4_bo_destroy(bo);
@@ -598,10 +633,13 @@ void vc4_free_object(struct drm_gem_object *gem_bo)
 		bo->validated_shader = NULL;
 	}
 
+<<<<<<< HEAD
 	/* Reset madv and usecnt before adding the BO to the cache. */
 	bo->madv = __VC4_MADV_NOTSUPP;
 	refcount_set(&bo->usecnt, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bo->t_format = false;
 	bo->free_time = jiffies;
 	list_add(&bo->size_head, cache_list);
@@ -626,6 +664,7 @@ static void vc4_bo_cache_time_work(struct work_struct *work)
 	mutex_unlock(&vc4->bo_lock);
 }
 
+<<<<<<< HEAD
 int vc4_bo_inc_usecnt(struct vc4_bo *bo)
 {
 	int ret;
@@ -680,6 +719,12 @@ void vc4_bo_dec_usecnt(struct vc4_bo *bo)
 static void vc4_bo_cache_time_timer(struct timer_list *t)
 {
 	struct vc4_dev *vc4 = from_timer(vc4, t, bo_cache.time_timer);
+=======
+static void vc4_bo_cache_time_timer(unsigned long data)
+{
+	struct drm_device *dev = (struct drm_device *)data;
+	struct vc4_dev *vc4 = to_vc4_dev(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	schedule_work(&vc4->bo_cache.time_work);
 }
@@ -695,14 +740,18 @@ struct dma_buf *
 vc4_prime_export(struct drm_device *dev, struct drm_gem_object *obj, int flags)
 {
 	struct vc4_bo *bo = to_vc4_bo(obj);
+<<<<<<< HEAD
 	struct dma_buf *dmabuf;
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bo->validated_shader) {
 		DRM_DEBUG("Attempting to export shader BO\n");
 		return ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	/* Note: as soon as the BO is exported it becomes unpurgeable, because
 	 * noone ever decrements the usecnt even if the reference held by the
 	 * exported BO is released. This shouldn't be a problem since we don't
@@ -735,12 +784,18 @@ vm_fault_t vc4_fault(struct vm_fault *vmf)
 	mutex_unlock(&bo->madv_lock);
 
 	return VM_FAULT_SIGBUS;
+=======
+	return drm_gem_prime_export(dev, obj, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int vc4_mmap(struct file *filp, struct vm_area_struct *vma)
 {
 	struct drm_gem_object *gem_obj;
+<<<<<<< HEAD
 	unsigned long vm_pgoff;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vc4_bo *bo;
 	int ret;
 
@@ -756,6 +811,7 @@ int vc4_mmap(struct file *filp, struct vm_area_struct *vma)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (bo->madv != VC4_MADV_WILLNEED) {
 		DRM_DEBUG("mmaping of %s BO not allowed\n",
 			  bo->madv == VC4_MADV_DONTNEED ?
@@ -763,12 +819,15 @@ int vc4_mmap(struct file *filp, struct vm_area_struct *vma)
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Clear the VM_PFNMAP flag that was set by drm_gem_mmap(), and set the
 	 * vm_pgoff (used as a fake buffer offset by DRM) to 0 as we want to map
 	 * the whole buffer.
 	 */
 	vma->vm_flags &= ~VM_PFNMAP;
+<<<<<<< HEAD
 
 	/* This ->vm_pgoff dance is needed to make all parties happy:
 	 * - dma_mmap_wc() uses ->vm_pgoff as an offset within the allocated
@@ -786,6 +845,12 @@ int vc4_mmap(struct file *filp, struct vm_area_struct *vma)
 			  bo->base.paddr, vma->vm_end - vma->vm_start);
 	vma->vm_pgoff = vm_pgoff;
 
+=======
+	vma->vm_pgoff = 0;
+
+	ret = dma_mmap_wc(bo->base.base.dev->dev, vma, bo->base.vaddr,
+			  bo->base.paddr, vma->vm_end - vma->vm_start);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		drm_gem_vm_close(vma);
 
@@ -849,8 +914,11 @@ int vc4_create_bo_ioctl(struct drm_device *dev, void *data,
 	if (IS_ERR(bo))
 		return PTR_ERR(bo);
 
+<<<<<<< HEAD
 	bo->madv = VC4_MADV_WILLNEED;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = drm_gem_handle_create(file_priv, &bo->base.base, &args->handle);
 	drm_gem_object_put_unlocked(&bo->base.base);
 
@@ -904,8 +972,11 @@ vc4_create_shader_bo_ioctl(struct drm_device *dev, void *data,
 	if (IS_ERR(bo))
 		return PTR_ERR(bo);
 
+<<<<<<< HEAD
 	bo->madv = VC4_MADV_WILLNEED;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (copy_from_user(bo->base.vaddr,
 			     (void __user *)(uintptr_t)args->data,
 			     args->size)) {
@@ -1041,7 +1112,13 @@ int vc4_bo_cache_init(struct drm_device *dev)
 	INIT_LIST_HEAD(&vc4->bo_cache.time_list);
 
 	INIT_WORK(&vc4->bo_cache.time_work, vc4_bo_cache_time_work);
+<<<<<<< HEAD
 	timer_setup(&vc4->bo_cache.time_timer, vc4_bo_cache_time_timer, 0);
+=======
+	setup_timer(&vc4->bo_cache.time_timer,
+		    vc4_bo_cache_time_timer,
+		    (unsigned long)dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

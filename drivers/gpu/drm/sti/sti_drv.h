@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (C) STMicroelectronics SA 2014
  * Author: Benjamin Gaignard <benjamin.gaignard@st.com> for STMicroelectronics.
+=======
+/*
+ * Copyright (C) STMicroelectronics SA 2014
+ * Author: Benjamin Gaignard <benjamin.gaignard@st.com> for STMicroelectronics.
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _STI_DRV_H_
@@ -24,6 +31,10 @@ struct sti_private {
 	struct sti_compositor *compo;
 	struct drm_property *plane_zorder_property;
 	struct drm_device *drm_dev;
+<<<<<<< HEAD
+=======
+	struct drm_fbdev_cma *fbdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern struct platform_driver sti_tvout_driver;

@@ -1783,7 +1783,11 @@ static void btc8192e2ant_tdma_duration_adjust(struct btc_coexist *btcoexist,
 		bool scan = false, link = false, roam = false;
 
 		RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
+<<<<<<< HEAD
 			 "[BTCoex], PsTdma type mismatch!!!, ");
+=======
+			 "[BTCoex], PsTdma type dismatch!!!, ");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
 			 "curPsTdma=%d, recordPsTdma=%d\n",
 			 coex_dm->cur_ps_tdma, coex_dm->tdma_adj_type);
@@ -2704,11 +2708,19 @@ void ex_btc8192e2ant_init_coex_dm(struct btc_coexist *btcoexist)
 	btc8192e2ant_init_coex_dm(btcoexist);
 }
 
+<<<<<<< HEAD
 void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 				       struct seq_file *m)
 {
 	struct btc_board_info *board_info = &btcoexist->board_info;
 	struct btc_stack_info *stack_info = &btcoexist->stack_info;
+=======
+void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist)
+{
+	struct btc_board_info *board_info = &btcoexist->board_info;
+	struct btc_stack_info *stack_info = &btcoexist->stack_info;
+	struct rtl_priv *rtlpriv = btcoexist->adapter;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 u8tmp[4], i, bt_info_ext, ps_tdma_case = 0;
 	u16 u16tmp[4];
 	u32 u32tmp[4];
@@ -2719,6 +2731,7 @@ void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 	u8 wifi_dot11_chnl, wifi_hs_chnl;
 	u32 fw_ver = 0, bt_patch_ver = 0;
 
+<<<<<<< HEAD
 	seq_puts(m, "\n ============[BT Coexist info]============");
 
 	if (btcoexist->manual_control) {
@@ -2730,20 +2743,52 @@ void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 		   board_info->pg_ant_num, board_info->btdm_ant_num);
 
 	seq_printf(m, "\n %-35s = %s / %d", "BT stack/ hci ext ver",
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+		 "\r\n ============[BT Coexist info]============");
+
+	if (btcoexist->manual_control) {
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+			 "\r\n ===========[Under Manual Control]===========");
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+			 "\r\n ==========================================");
+	}
+
+	if (!board_info->bt_exist) {
+		RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n BT not exists !!!");
+		return;
+	}
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+		 "\r\n %-35s = %d/ %d ", "Ant PG number/ Ant mechanism:",
+		   board_info->pg_ant_num, board_info->btdm_ant_num);
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %s / %d",
+		 "BT stack/ hci ext ver",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   ((stack_info->profile_notified) ? "Yes" : "No"),
 		   stack_info->hci_version);
 
 	btcoexist->btc_get(btcoexist, BTC_GET_U4_BT_PATCH_VER, &bt_patch_ver);
 	btcoexist->btc_get(btcoexist, BTC_GET_U4_WIFI_FW_VER, &fw_ver);
+<<<<<<< HEAD
 	seq_printf(m, "\n %-35s = %d_%d/ 0x%x/ 0x%x(%d)",
 		   "CoexVer/ FwVer/ PatchVer",
 		   glcoex_ver_date_8192e_2ant, glcoex_ver_8192e_2ant,
 		   fw_ver, bt_patch_ver, bt_patch_ver);
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+		 "\r\n %-35s = %d_%d/ 0x%x/ 0x%x(%d)",
+		 "CoexVer/ FwVer/ PatchVer",
+		 glcoex_ver_date_8192e_2ant, glcoex_ver_8192e_2ant,
+		 fw_ver, bt_patch_ver, bt_patch_ver);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	btcoexist->btc_get(btcoexist, BTC_GET_BL_HS_OPERATION, &bt_hs_on);
 	btcoexist->btc_get(btcoexist, BTC_GET_U1_WIFI_DOT11_CHNL,
 			   &wifi_dot11_chnl);
 	btcoexist->btc_get(btcoexist, BTC_GET_U1_WIFI_HS_CHNL, &wifi_hs_chnl);
+<<<<<<< HEAD
 	seq_printf(m, "\n %-35s = %d / %d(%d)",
 		   "Dot11 channel / HsMode(HsChnl)",
 		   wifi_dot11_chnl, bt_hs_on, wifi_hs_chnl);
@@ -2755,28 +2800,56 @@ void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 	btcoexist->btc_get(btcoexist, BTC_GET_S4_HS_RSSI, &bt_hs_rssi);
 	seq_printf(m, "\n %-35s = %d/ %d",
 		   "Wifi rssi/ HS rssi", wifi_rssi, bt_hs_rssi);
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d / %d(%d)",
+		 "Dot11 channel / HsMode(HsChnl)",
+		 wifi_dot11_chnl, bt_hs_on, wifi_hs_chnl);
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %3ph ",
+		 "H2C Wifi inform bt chnl Info", coex_dm->wifi_chnl_info);
+
+	btcoexist->btc_get(btcoexist, BTC_GET_S4_WIFI_RSSI, &wifi_rssi);
+	btcoexist->btc_get(btcoexist, BTC_GET_S4_HS_RSSI, &bt_hs_rssi);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d/ %d",
+		 "Wifi rssi/ HS rssi", wifi_rssi, bt_hs_rssi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	btcoexist->btc_get(btcoexist, BTC_GET_BL_WIFI_SCAN, &scan);
 	btcoexist->btc_get(btcoexist, BTC_GET_BL_WIFI_LINK, &link);
 	btcoexist->btc_get(btcoexist, BTC_GET_BL_WIFI_ROAM, &roam);
+<<<<<<< HEAD
 	seq_printf(m, "\n %-35s = %d/ %d/ %d ",
 		   "Wifi link/ roam/ scan", link, roam, scan);
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d/ %d/ %d ",
+		 "Wifi link/ roam/ scan", link, roam, scan);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	btcoexist->btc_get(btcoexist, BTC_GET_BL_WIFI_UNDER_5G, &wifi_under_5g);
 	btcoexist->btc_get(btcoexist, BTC_GET_U4_WIFI_BW, &wifi_bw);
 	btcoexist->btc_get(btcoexist, BTC_GET_BL_WIFI_BUSY, &wifi_busy);
 	btcoexist->btc_get(btcoexist, BTC_GET_U4_WIFI_TRAFFIC_DIRECTION,
 			   &wifi_traffic_dir);
+<<<<<<< HEAD
 	seq_printf(m, "\n %-35s = %s / %s/ %s ",
 		   "Wifi status", (wifi_under_5g ? "5G" : "2.4G"),
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %s / %s/ %s ",
+		 "Wifi status", (wifi_under_5g ? "5G" : "2.4G"),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   ((BTC_WIFI_BW_LEGACY == wifi_bw) ? "Legacy" :
 			(((BTC_WIFI_BW_HT40 == wifi_bw) ? "HT40" : "HT20"))),
 		   ((!wifi_busy) ? "idle" :
 			((BTC_WIFI_TRAFFIC_TX == wifi_traffic_dir) ?
 				"uplink" : "downlink")));
 
+<<<<<<< HEAD
 	seq_printf(m, "\n %-35s = [%s/ %d/ %d] ",
 		   "BT [status/ rssi/ retryCnt]",
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = [%s/ %d/ %d] ",
+		 "BT [status/ rssi/ retryCnt]",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   ((btcoexist->bt_info.bt_disabled) ? ("disabled") :
 		    ((coex_sta->c2h_bt_inquiry_page) ?
 		     ("inquiry/page scan") :
@@ -2786,6 +2859,7 @@ void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 			   coex_dm->bt_status) ? "connected-idle" : "busy")))),
 		   coex_sta->bt_rssi, coex_sta->bt_retry_cnt);
 
+<<<<<<< HEAD
 	seq_printf(m, "\n %-35s = %d / %d / %d / %d",
 		   "SCO/HID/PAN/A2DP", stack_info->sco_exist,
 		   stack_info->hid_exist, stack_info->pan_exist,
@@ -2795,10 +2869,22 @@ void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 	bt_info_ext = coex_sta->bt_info_ext;
 	seq_printf(m, "\n %-35s = %s",
 		   "BT Info A2DP rate",
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d / %d / %d / %d",
+		 "SCO/HID/PAN/A2DP", stack_info->sco_exist,
+		   stack_info->hid_exist, stack_info->pan_exist,
+		   stack_info->a2dp_exist);
+	btcoexist->btc_disp_dbg_msg(btcoexist, BTC_DBG_DISP_BT_LINK_INFO);
+
+	bt_info_ext = coex_sta->bt_info_ext;
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %s",
+		 "BT Info A2DP rate",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   (bt_info_ext&BIT0) ? "Basic rate" : "EDR rate");
 
 	for (i = 0; i < BT_INFO_SRC_8192E_2ANT_MAX; i++) {
 		if (coex_sta->bt_info_c2h_cnt[i]) {
+<<<<<<< HEAD
 			seq_printf(m, "\n %-35s = %7ph(%d)",
 				   glbt_info_src_8192e_2ant[i],
 				   coex_sta->bt_info_c2h[i],
@@ -2854,18 +2940,83 @@ void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 		   "backup ARFR1/ARFR2/RL/AMaxTime", coex_dm->backup_arfr_cnt1,
 		   coex_dm->backup_arfr_cnt2, coex_dm->backup_retry_limit,
 		   coex_dm->backup_ampdu_maxtime);
+=======
+			RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+				 "\r\n %-35s = %7ph(%d)",
+				 glbt_info_src_8192e_2ant[i],
+				 coex_sta->bt_info_c2h[i],
+				 coex_sta->bt_info_c2h_cnt[i]);
+		}
+	}
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %s/%s",
+		 "PS state, IPS/LPS",
+		 ((coex_sta->under_ips ? "IPS ON" : "IPS OFF")),
+		 ((coex_sta->under_lps ? "LPS ON" : "LPS OFF")));
+	btcoexist->btc_disp_dbg_msg(btcoexist, BTC_DBG_DISP_FW_PWR_MODE_CMD);
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x ", "SS Type",
+		 coex_dm->cur_ss_type);
+
+	/* Sw mechanism	*/
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s",
+		 "============[Sw mechanism]============");
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d/ %d/ %d ",
+		 "SM1[ShRf/ LpRA/ LimDig]", coex_dm->cur_rf_rx_lpf_shrink,
+		 coex_dm->cur_low_penalty_ra, coex_dm->limited_dig);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d/ %d/ %d(0x%x) ",
+		 "SM2[AgcT/ AdcB/ SwDacSwing(lvl)]",
+		 coex_dm->cur_agc_table_en, coex_dm->cur_adc_back_off,
+		 coex_dm->cur_dac_swing_on, coex_dm->cur_dac_swing_lvl);
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x ", "Rate Mask",
+		 btcoexist->bt_info.ra_mask);
+
+	/* Fw mechanism	*/
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s",
+		 "============[Fw mechanism]============");
+
+	ps_tdma_case = coex_dm->cur_ps_tdma;
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+		 "\r\n %-35s = %5ph case-%d (auto:%d)",
+		 "PS TDMA", coex_dm->ps_tdma_para,
+		 ps_tdma_case, coex_dm->auto_tdma_adjust);
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d/ %d ",
+		 "DecBtPwr/ IgnWlanAct",
+		 coex_dm->cur_dec_bt_pwr, coex_dm->cur_ignore_wlan_act);
+
+	/* Hw setting */
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s",
+		 "============[Hw setting]============");
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x",
+		 "RF-A, 0x1e initVal", coex_dm->bt_rf0x1e_backup);
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x/0x%x/0x%x/0x%x",
+		 "backup ARFR1/ARFR2/RL/AMaxTime", coex_dm->backup_arfr_cnt1,
+		 coex_dm->backup_arfr_cnt2, coex_dm->backup_retry_limit,
+		 coex_dm->backup_ampdu_maxtime);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32tmp[0] = btcoexist->btc_read_4byte(btcoexist, 0x430);
 	u32tmp[1] = btcoexist->btc_read_4byte(btcoexist, 0x434);
 	u16tmp[0] = btcoexist->btc_read_2byte(btcoexist, 0x42a);
 	u8tmp[0] = btcoexist->btc_read_1byte(btcoexist, 0x456);
+<<<<<<< HEAD
 	seq_printf(m, "\n %-35s = 0x%x/0x%x/0x%x/0x%x",
 		   "0x430/0x434/0x42a/0x456",
 		   u32tmp[0], u32tmp[1], u16tmp[0], u8tmp[0]);
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x/0x%x/0x%x/0x%x",
+		 "0x430/0x434/0x42a/0x456",
+		 u32tmp[0], u32tmp[1], u16tmp[0], u8tmp[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32tmp[0] = btcoexist->btc_read_4byte(btcoexist, 0xc04);
 	u32tmp[1] = btcoexist->btc_read_4byte(btcoexist, 0xd04);
 	u32tmp[2] = btcoexist->btc_read_4byte(btcoexist, 0x90c);
+<<<<<<< HEAD
 	seq_printf(m, "\n %-35s = 0x%x/ 0x%x/ 0x%x",
 		   "0xc04/ 0xd04/ 0x90c", u32tmp[0], u32tmp[1], u32tmp[2]);
 
@@ -2890,11 +3041,39 @@ void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 	u32tmp[0] = btcoexist->btc_read_4byte(btcoexist, 0xc50);
 	seq_printf(m, "\n %-35s = 0x%x", "0xc50(dig)",
 		   u32tmp[0]);
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x/ 0x%x/ 0x%x",
+		 "0xc04/ 0xd04/ 0x90c", u32tmp[0], u32tmp[1], u32tmp[2]);
+
+	u8tmp[0] = btcoexist->btc_read_1byte(btcoexist, 0x778);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x", "0x778",
+		 u8tmp[0]);
+
+	u8tmp[0] = btcoexist->btc_read_1byte(btcoexist, 0x92c);
+	u32tmp[0] = btcoexist->btc_read_4byte(btcoexist, 0x930);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x/ 0x%x",
+		 "0x92c/ 0x930", (u8tmp[0]), u32tmp[0]);
+
+	u8tmp[0] = btcoexist->btc_read_1byte(btcoexist, 0x40);
+	u8tmp[1] = btcoexist->btc_read_1byte(btcoexist, 0x4f);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x/ 0x%x",
+		 "0x40/ 0x4f", u8tmp[0], u8tmp[1]);
+
+	u32tmp[0] = btcoexist->btc_read_4byte(btcoexist, 0x550);
+	u8tmp[0] = btcoexist->btc_read_1byte(btcoexist, 0x522);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x/ 0x%x",
+		 "0x550(bcn ctrl)/0x522", u32tmp[0], u8tmp[0]);
+
+	u32tmp[0] = btcoexist->btc_read_4byte(btcoexist, 0xc50);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = 0x%x", "0xc50(dig)",
+		 u32tmp[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32tmp[0] = btcoexist->btc_read_4byte(btcoexist, 0x6c0);
 	u32tmp[1] = btcoexist->btc_read_4byte(btcoexist, 0x6c4);
 	u32tmp[2] = btcoexist->btc_read_4byte(btcoexist, 0x6c8);
 	u8tmp[0] = btcoexist->btc_read_1byte(btcoexist, 0x6cc);
+<<<<<<< HEAD
 	seq_printf(m,
 		   "\n %-35s = 0x%x/ 0x%x/ 0x%x/ 0x%x",
 		   "0x6c0/0x6c4/0x6c8/0x6cc(coexTable)",
@@ -2909,6 +3088,22 @@ void ex_btc8192e2ant_display_coex_info(struct btc_coexist *btcoexist,
 	if (btcoexist->auto_report_2ant)
 		btc8192e2ant_monitor_bt_ctr(btcoexist);
 	btcoexist->btc_disp_dbg_msg(btcoexist, BTC_DBG_DISP_COEX_STATISTICS, m);
+=======
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG,
+		 "\r\n %-35s = 0x%x/ 0x%x/ 0x%x/ 0x%x",
+		 "0x6c0/0x6c4/0x6c8/0x6cc(coexTable)",
+		 u32tmp[0], u32tmp[1], u32tmp[2], u8tmp[0]);
+
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d/ %d",
+		 "0x770(hp rx[31:16]/tx[15:0])",
+		 coex_sta->high_priority_rx, coex_sta->high_priority_tx);
+	RT_TRACE(rtlpriv, COMP_INIT, DBG_DMESG, "\r\n %-35s = %d/ %d",
+		 "0x774(lp rx[31:16]/tx[15:0])",
+		 coex_sta->low_priority_rx, coex_sta->low_priority_tx);
+	if (btcoexist->auto_report_2ant)
+		btc8192e2ant_monitor_bt_ctr(btcoexist);
+	btcoexist->btc_disp_dbg_msg(btcoexist, BTC_DBG_DISP_COEX_STATISTICS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void ex_btc8192e2ant_ips_notify(struct btc_coexist *btcoexist, u8 type)

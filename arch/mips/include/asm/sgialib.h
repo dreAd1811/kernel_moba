@@ -31,6 +31,10 @@ extern int prom_flags;
 #define PROM_FLAG_DONT_FREE_TEMP	4
 
 /* Simple char-by-char console I/O. */
+<<<<<<< HEAD
+=======
+extern void prom_putchar(char c);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern char prom_getchar(void);
 
 /* Get next memory descriptor after CURR, returns first descriptor

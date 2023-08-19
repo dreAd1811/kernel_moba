@@ -183,7 +183,10 @@ struct qed_filter_accept_flags {
 #define QED_ACCEPT_MCAST_MATCHED        0x08
 #define QED_ACCEPT_MCAST_UNMATCHED      0x10
 #define QED_ACCEPT_BCAST                0x20
+<<<<<<< HEAD
 #define QED_ACCEPT_ANY_VNI              0x40
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qed_arfs_config_params {
@@ -191,7 +194,11 @@ struct qed_arfs_config_params {
 	bool udp;
 	bool ipv4;
 	bool ipv6;
+<<<<<<< HEAD
 	enum qed_filter_config_mode mode;
+=======
+	bool arfs_enable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qed_sp_vport_update_params {
@@ -281,6 +288,7 @@ void qed_get_vport_stats(struct qed_dev *cdev, struct qed_eth_stats *stats);
 
 void qed_reset_vport_stats(struct qed_dev *cdev);
 
+<<<<<<< HEAD
 /**
  * *@brief qed_arfs_mode_configure -
  *
@@ -312,6 +320,8 @@ qed_configure_rfs_ntuple_filter(struct qed_hwfn *p_hwfn,
 				struct qed_spq_comp_cb *p_cb,
 				struct qed_ntuple_filter_params *p_params);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX_QUEUES_PER_QZONE    (sizeof(unsigned long) * 8)
 #define QED_QUEUE_CID_SELF	(0xff)
 

@@ -23,6 +23,10 @@
 #include <linux/stddef.h>
 #include <linux/ioport.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
+=======
+#include <linux/utsname.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/initrd.h>
 #include <linux/console.h>
 #include <linux/cache.h>
@@ -42,12 +46,19 @@
 #include <linux/psci.h>
 #include <linux/sched/task.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
+=======
+#include <linux/libfdt.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/acpi.h>
 #include <asm/fixmap.h>
 #include <asm/cpu.h>
 #include <asm/cputype.h>
+<<<<<<< HEAD
 #include <asm/daifflags.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/elf.h>
 #include <asm/cpufeature.h>
 #include <asm/cpu_ops.h>
@@ -63,9 +74,13 @@
 #include <asm/efi.h>
 #include <asm/xen/hypervisor.h>
 #include <asm/mmu_context.h>
+<<<<<<< HEAD
 
 static int num_standard_resources;
 static struct resource *standard_resources;
+=======
+#include <asm/system_misc.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 phys_addr_t __fdt_pointer __initdata;
 
@@ -101,10 +116,100 @@ static struct resource mem_res[] = {
  */
 u64 __cacheline_aligned boot_args[4];
 
+<<<<<<< HEAD
 void __init smp_setup_processor_id(void)
 {
 	u64 mpidr = read_cpuid_mpidr() & MPIDR_HWID_BITMASK;
 	cpu_logical_map(0) = mpidr;
+=======
+unsigned int logical_bootcpu_id __read_mostly;
+EXPORT_SYMBOL(logical_bootcpu_id);
+
+extern void *__init __fixmap_remap_fdt(phys_addr_t dt_phys, int *size,
+				       pgprot_t prot);
+/*
+ * Parse the device tree cpu nodes and enumerate logical cpu number for
+ * the boot cpu based on the mpidr value and reg value from the cpu node.
+ * If the parsing fails at any point, value 0 will be returned which make
+ * sure, we fallback to the default kernel behavior.
+ */
+static unsigned int __init parse_logical_bootcpu(u64 dt_phys)
+{
+	void *fdt;
+	int size, parent, node, len;
+	unsigned int logical_cpu_id = 0;
+	fdt64_t *prop;
+	u64 mpidr, hwid;
+
+	/*
+	 * Try to map the FDT early. If this fails, we simply bail,
+	 * and proceed with logical cpu as 0. We will make another
+	 * attempt at mapping the FDT in setup_machine()
+	 */
+	early_fixmap_init();
+	fdt = __fixmap_remap_fdt(dt_phys, &size, PAGE_KERNEL);
+	if (!fdt)
+		return 0;
+
+	mpidr = read_cpuid_mpidr() & MPIDR_HWID_BITMASK;
+
+	parent = fdt_path_offset(fdt, "/cpus");
+	if (parent < 0)
+		return 0;
+	/*
+	 * Like of_parse_and_init_cpus(), we assume that the device tree
+	 * entries for the dt nodes are defined in ascending order for
+	 * populating cpu logical map.
+	 */
+	fdt_for_each_subnode(node, fdt, parent) {
+		prop = fdt_getprop_w(fdt, node, "reg", &len);
+		if (!prop || len != sizeof(u64))
+			return 0;
+
+		hwid = fdt64_to_cpu(*prop);
+		if (hwid & ~MPIDR_HWID_BITMASK)
+			return 0;
+
+		/*
+		 * If the cpu node reg value matches the currently active
+		 * processor(boot cpu), we bail out from the loop.
+		 */
+		if (hwid == mpidr)
+			return logical_cpu_id;
+
+		logical_cpu_id++;
+
+		if (logical_cpu_id >= NR_CPUS)
+			return 0;
+	}
+
+	return 0;
+}
+
+DECLARE_PER_CPU_READ_MOSTLY(int, cpu_number);
+
+/*
+ * smp_processor_id() returns the current processor number which
+ * internally uses per-cpu variable cpu_number. At this stage,
+ * since per-cpu area is still not initialized and the kernel
+ * cannot assume current processor number to be 0. This function
+ * temporarily assigns the current processor to be logical_bootcpu_id,
+ * which is essentially enumerated from the device tree. In later stages
+ * of boot the appropriate values for cpu_number will be assigned with
+ * the call to smp_prepare_cpus().
+ */
+static inline void fix_smp_processor_id(void)
+{
+	per_cpu(cpu_number, 0) = logical_bootcpu_id;
+}
+
+void __init smp_setup_processor_id(void)
+{
+	u64 mpidr = read_cpuid_mpidr() & MPIDR_HWID_BITMASK;
+	logical_bootcpu_id = parse_logical_bootcpu(__fdt_pointer);
+
+	cpu_logical_map(logical_bootcpu_id) = mpidr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * clear __my_cpu_offset on boot CPU to avoid hang caused by
@@ -112,8 +217,14 @@ void __init smp_setup_processor_id(void)
 	 * access percpu variable inside lock_release
 	 */
 	set_my_cpu_offset(0);
+<<<<<<< HEAD
 	pr_info("Booting Linux on physical CPU 0x%010lx [0x%08x]\n",
 		(unsigned long)mpidr, read_cpuid_id());
+=======
+	pr_info("Booting Linux on physical CPU 0x%lx\n", (unsigned long)mpidr);
+
+	fix_smp_processor_id();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 bool arch_match_cpu_phys_id(int cpu, u64 phys_id)
@@ -187,10 +298,22 @@ static void __init smp_build_mpidr_hash(void)
 		pr_warn("Large number of MPIDR hash buckets detected\n");
 }
 
+<<<<<<< HEAD
 static void __init setup_machine_fdt(phys_addr_t dt_phys)
 {
 	void *dt_virt = fixmap_remap_fdt(dt_phys);
 	const char *name;
+=======
+const char * __init __weak arch_read_machine_name(void)
+{
+	return of_flat_dt_get_machine_name();
+}
+
+static void __init setup_machine_fdt(phys_addr_t dt_phys)
+{
+	void *dt_virt = fixmap_remap_fdt(dt_phys);
+	const char *machine_name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dt_virt || !early_init_dt_scan(dt_virt)) {
 		pr_crit("\n"
@@ -203,31 +326,48 @@ static void __init setup_machine_fdt(phys_addr_t dt_phys)
 			cpu_relax();
 	}
 
+<<<<<<< HEAD
 	name = of_flat_dt_get_machine_name();
 	if (!name)
 		return;
 
 	pr_info("Machine model: %s\n", name);
 	dump_stack_set_arch_desc("%s (DT)", name);
+=======
+	machine_name = arch_read_machine_name();
+	if (!machine_name)
+		return;
+
+	pr_info("Machine: %s\n", machine_name);
+	dump_stack_set_arch_desc("%s (DT)", machine_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init request_standard_resources(void)
 {
 	struct memblock_region *region;
 	struct resource *res;
+<<<<<<< HEAD
 	unsigned long i = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kernel_code.start   = __pa_symbol(_text);
 	kernel_code.end     = __pa_symbol(__init_begin - 1);
 	kernel_data.start   = __pa_symbol(_sdata);
 	kernel_data.end     = __pa_symbol(_end - 1);
 
+<<<<<<< HEAD
 	num_standard_resources = memblock.memory.cnt;
 	standard_resources = alloc_bootmem_low(num_standard_resources *
 					       sizeof(*standard_resources));
 
 	for_each_memblock(memory, region) {
 		res = &standard_resources[i++];
+=======
+	for_each_memblock(memory, region) {
+		res = alloc_bootmem_low(sizeof(*res));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (memblock_is_nomap(region)) {
 			res->name  = "reserved";
 			res->flags = IORESOURCE_MEM;
@@ -255,6 +395,7 @@ static void __init request_standard_resources(void)
 	}
 }
 
+<<<<<<< HEAD
 static int __init reserve_memblock_reserved_regions(void)
 {
 	u64 i, j;
@@ -283,12 +424,20 @@ static int __init reserve_memblock_reserved_regions(void)
 }
 arch_initcall(reserve_memblock_reserved_regions);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u64 __cpu_logical_map[NR_CPUS] = { [0 ... NR_CPUS-1] = INVALID_HWID };
 
 void __init __weak init_random_pool(void) { }
 
 void __init setup_arch(char **cmdline_p)
 {
+<<<<<<< HEAD
+=======
+	pr_info("Boot CPU: AArch64 Processor [%08x]\n", read_cpuid_id());
+
+	sprintf(init_utsname()->machine, UTS_MACHINE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_mm.start_code = (unsigned long) _text;
 	init_mm.end_code   = (unsigned long) _etext;
 	init_mm.end_data   = (unsigned long) _edata;
@@ -301,6 +450,7 @@ void __init setup_arch(char **cmdline_p)
 
 	setup_machine_fdt(__fdt_pointer);
 
+<<<<<<< HEAD
 	parse_early_param();
 
 	/*
@@ -309,6 +459,20 @@ void __init setup_arch(char **cmdline_p)
 	 * occurred).
 	 */
 	local_daif_restore(DAIF_PROCCTX_NOIRQ);
+=======
+	/*
+	 * Initialise the static keys early as they may be enabled by the
+	 * cpufeature code and early parameters.
+	 */
+	jump_label_init();
+	parse_early_param();
+
+	/*
+	 *  Unmask asynchronous aborts after bringing up possible earlycon.
+	 * (Report possible System Errors once we can report this occurred)
+	 */
+	local_async_enable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * TTBR0 is only used for the identity mapping at this stage. Make it
@@ -347,6 +511,12 @@ void __init setup_arch(char **cmdline_p)
 	smp_init_cpus();
 	smp_build_mpidr_hash();
 
+<<<<<<< HEAD
+=======
+	/* Init percpu seeds for random tags after cpus are set up. */
+	kasan_init_tags();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARM64_SW_TTBR0_PAN
 	/*
 	 * Make sure init_thread_info.ttbr0 always generates translation

@@ -18,6 +18,10 @@ targets := kernel/bounds.s
 
 # We use internal kbuild rules to avoid the "is up to date" message from make
 kernel/bounds.s: kernel/bounds.c FORCE
+<<<<<<< HEAD
+=======
+	$(Q)mkdir -p $(dir $@)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	$(call if_changed_dep,cc_s_c)
 
 $(obj)/$(bounds-file): kernel/bounds.s FORCE
@@ -53,6 +57,10 @@ targets += arch/$(SRCARCH)/kernel/asm-offsets.s
 # We use internal kbuild rules to avoid the "is up to date" message from make
 arch/$(SRCARCH)/kernel/asm-offsets.s: arch/$(SRCARCH)/kernel/asm-offsets.c \
                                       $(obj)/$(timeconst-file) $(obj)/$(bounds-file) FORCE
+<<<<<<< HEAD
+=======
+	$(Q)mkdir -p $(dir $@)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	$(call if_changed_dep,cc_s_c)
 
 $(obj)/$(offsets-file): arch/$(SRCARCH)/kernel/asm-offsets.s FORCE

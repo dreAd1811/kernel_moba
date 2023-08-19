@@ -1,7 +1,11 @@
 #ifndef _QP_H
 #define _QP_H
 /*
+<<<<<<< HEAD
  * Copyright(c) 2015 - 2018 Intel Corporation.
+=======
+ * Copyright(c) 2015 - 2017 Intel Corporation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -51,13 +55,17 @@
 #include <rdma/rdmavt_qp.h>
 #include "verbs.h"
 #include "sdma.h"
+<<<<<<< HEAD
 #include "verbs_txreq.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern unsigned int hfi1_qp_table_size;
 
 extern const struct rvt_operation_params hfi1_post_parms[];
 
 /*
+<<<<<<< HEAD
  * Send if not busy or waiting for I/O and either
  * a RC response is pending or we can process send work requests.
  */
@@ -90,6 +98,8 @@ static inline int hfi1_send_ok(struct rvt_qp *qp)
 #define HFI1_S_ANY_WAIT (HFI1_S_ANY_WAIT_IO | RVT_S_ANY_WAIT_SEND)
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * free_ahg - clear ahg from QP
  */
 static inline void clear_ahg(struct rvt_qp *qp)
@@ -97,7 +107,11 @@ static inline void clear_ahg(struct rvt_qp *qp)
 	struct hfi1_qp_priv *priv = qp->priv;
 
 	priv->s_ahg->ahgcount = 0;
+<<<<<<< HEAD
 	qp->s_flags &= ~(HFI1_S_AHG_VALID | HFI1_S_AHG_CLEAR);
+=======
+	qp->s_flags &= ~(RVT_S_AHG_VALID | RVT_S_AHG_CLEAR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (priv->s_sde && qp->s_ahgidx >= 0)
 		sdma_ahg_free(priv->s_sde, qp->s_ahgidx);
 	qp->s_ahgidx = -1;

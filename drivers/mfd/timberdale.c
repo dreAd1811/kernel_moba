@@ -30,8 +30,13 @@
 #include <linux/timb_gpio.h>
 
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-ocores.h>
 #include <linux/platform_data/i2c-xiic.h>
+=======
+#include <linux/i2c-ocores.h>
+#include <linux/i2c-xiic.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/spi/spi.h>
 #include <linux/spi/xilinx_spi.h>
@@ -707,8 +712,13 @@ static int timb_probe(struct pci_dev *dev,
 		goto err_config;
 	}
 
+<<<<<<< HEAD
 	msix_entries = kcalloc(TIMBERDALE_NR_IRQS, sizeof(*msix_entries),
 			       GFP_KERNEL);
+=======
+	msix_entries = kzalloc(TIMBERDALE_NR_IRQS * sizeof(*msix_entries),
+		GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!msix_entries)
 		goto err_config;
 
@@ -777,7 +787,11 @@ static int timb_probe(struct pci_dev *dev,
 			&dev->resource[0], msix_entries[0].vector, NULL);
 		break;
 	default:
+<<<<<<< HEAD
 		dev_err(&dev->dev, "Unknown IP setup: %d.%d.%d\n",
+=======
+		dev_err(&dev->dev, "Uknown IP setup: %d.%d.%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			priv->fw.major, priv->fw.minor, ip_setup);
 		err = -ENODEV;
 		goto err_mfd;

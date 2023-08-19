@@ -22,8 +22,11 @@
  *
  */
 
+<<<<<<< HEAD
 #include <drm/drm_print.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "i915_drv.h"
 #include "intel_ringbuffer.h"
 #include "intel_lrc.h"
@@ -36,12 +39,20 @@
  * Resource Streamer, is 66944 bytes, which rounds to 17 pages.
  */
 #define HSW_CXT_TOTAL_SIZE		(17 * PAGE_SIZE)
+<<<<<<< HEAD
 
 #define DEFAULT_LR_CONTEXT_RENDER_SIZE	(22 * PAGE_SIZE)
 #define GEN8_LR_CONTEXT_RENDER_SIZE	(20 * PAGE_SIZE)
 #define GEN9_LR_CONTEXT_RENDER_SIZE	(22 * PAGE_SIZE)
 #define GEN10_LR_CONTEXT_RENDER_SIZE	(18 * PAGE_SIZE)
 #define GEN11_LR_CONTEXT_RENDER_SIZE	(14 * PAGE_SIZE)
+=======
+/* Same as Haswell, but 72064 bytes now. */
+#define GEN8_CXT_TOTAL_SIZE		(18 * PAGE_SIZE)
+
+#define GEN8_LR_CONTEXT_RENDER_SIZE	(20 * PAGE_SIZE)
+#define GEN9_LR_CONTEXT_RENDER_SIZE	(22 * PAGE_SIZE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GEN8_LR_CONTEXT_OTHER_SIZE	( 2 * PAGE_SIZE)
 
@@ -49,8 +60,11 @@ struct engine_class_info {
 	const char *name;
 	int (*init_legacy)(struct intel_engine_cs *engine);
 	int (*init_execlists)(struct intel_engine_cs *engine);
+<<<<<<< HEAD
 
 	u8 uabi_class;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct engine_class_info intel_engine_classes[] = {
@@ -58,39 +72,59 @@ static const struct engine_class_info intel_engine_classes[] = {
 		.name = "rcs",
 		.init_execlists = logical_render_ring_init,
 		.init_legacy = intel_init_render_ring_buffer,
+<<<<<<< HEAD
 		.uabi_class = I915_ENGINE_CLASS_RENDER,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[COPY_ENGINE_CLASS] = {
 		.name = "bcs",
 		.init_execlists = logical_xcs_ring_init,
 		.init_legacy = intel_init_blt_ring_buffer,
+<<<<<<< HEAD
 		.uabi_class = I915_ENGINE_CLASS_COPY,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[VIDEO_DECODE_CLASS] = {
 		.name = "vcs",
 		.init_execlists = logical_xcs_ring_init,
 		.init_legacy = intel_init_bsd_ring_buffer,
+<<<<<<< HEAD
 		.uabi_class = I915_ENGINE_CLASS_VIDEO,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[VIDEO_ENHANCEMENT_CLASS] = {
 		.name = "vecs",
 		.init_execlists = logical_xcs_ring_init,
 		.init_legacy = intel_init_vebox_ring_buffer,
+<<<<<<< HEAD
 		.uabi_class = I915_ENGINE_CLASS_VIDEO_ENHANCE,
 	},
 };
 
 #define MAX_MMIO_BASES 3
+=======
+	},
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct engine_info {
 	unsigned int hw_id;
 	unsigned int uabi_id;
 	u8 class;
 	u8 instance;
+<<<<<<< HEAD
 	/* mmio bases table *must* be sorted in reverse gen order */
 	struct engine_mmio_base {
 		u32 gen : 8;
 		u32 base : 24;
 	} mmio_bases[MAX_MMIO_BASES];
+=======
+	u32 mmio_base;
+	unsigned irq_shift;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct engine_info intel_engines[] = {
@@ -99,35 +133,51 @@ static const struct engine_info intel_engines[] = {
 		.uabi_id = I915_EXEC_RENDER,
 		.class = RENDER_CLASS,
 		.instance = 0,
+<<<<<<< HEAD
 		.mmio_bases = {
 			{ .gen = 1, .base = RENDER_RING_BASE }
 		},
+=======
+		.mmio_base = RENDER_RING_BASE,
+		.irq_shift = GEN8_RCS_IRQ_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[BCS] = {
 		.hw_id = BCS_HW,
 		.uabi_id = I915_EXEC_BLT,
 		.class = COPY_ENGINE_CLASS,
 		.instance = 0,
+<<<<<<< HEAD
 		.mmio_bases = {
 			{ .gen = 6, .base = BLT_RING_BASE }
 		},
+=======
+		.mmio_base = BLT_RING_BASE,
+		.irq_shift = GEN8_BCS_IRQ_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[VCS] = {
 		.hw_id = VCS_HW,
 		.uabi_id = I915_EXEC_BSD,
 		.class = VIDEO_DECODE_CLASS,
 		.instance = 0,
+<<<<<<< HEAD
 		.mmio_bases = {
 			{ .gen = 11, .base = GEN11_BSD_RING_BASE },
 			{ .gen = 6, .base = GEN6_BSD_RING_BASE },
 			{ .gen = 4, .base = BSD_RING_BASE }
 		},
+=======
+		.mmio_base = GEN6_BSD_RING_BASE,
+		.irq_shift = GEN8_VCS1_IRQ_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[VCS2] = {
 		.hw_id = VCS2_HW,
 		.uabi_id = I915_EXEC_BSD,
 		.class = VIDEO_DECODE_CLASS,
 		.instance = 1,
+<<<<<<< HEAD
 		.mmio_bases = {
 			{ .gen = 11, .base = GEN11_BSD2_RING_BASE },
 			{ .gen = 8, .base = GEN8_BSD2_RING_BASE }
@@ -150,12 +200,17 @@ static const struct engine_info intel_engines[] = {
 		.mmio_bases = {
 			{ .gen = 11, .base = GEN11_BSD4_RING_BASE }
 		},
+=======
+		.mmio_base = GEN8_BSD2_RING_BASE,
+		.irq_shift = GEN8_VCS2_IRQ_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[VECS] = {
 		.hw_id = VECS_HW,
 		.uabi_id = I915_EXEC_VEBOX,
 		.class = VIDEO_ENHANCEMENT_CLASS,
 		.instance = 0,
+<<<<<<< HEAD
 		.mmio_bases = {
 			{ .gen = 11, .base = GEN11_VEBOX_RING_BASE },
 			{ .gen = 7, .base = VEBOX_RING_BASE }
@@ -169,6 +224,10 @@ static const struct engine_info intel_engines[] = {
 		.mmio_bases = {
 			{ .gen = 11, .base = GEN11_VEBOX2_RING_BASE }
 		},
+=======
+		.mmio_base = VEBOX_RING_BASE,
+		.irq_shift = GEN8_VECS_IRQ_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -198,6 +257,7 @@ __intel_engine_context_size(struct drm_i915_private *dev_priv, u8 class)
 		switch (INTEL_GEN(dev_priv)) {
 		default:
 			MISSING_CASE(INTEL_GEN(dev_priv));
+<<<<<<< HEAD
 			return DEFAULT_LR_CONTEXT_RENDER_SIZE;
 		case 11:
 			return GEN11_LR_CONTEXT_RENDER_SIZE;
@@ -207,6 +267,15 @@ __intel_engine_context_size(struct drm_i915_private *dev_priv, u8 class)
 			return GEN9_LR_CONTEXT_RENDER_SIZE;
 		case 8:
 			return GEN8_LR_CONTEXT_RENDER_SIZE;
+=======
+		case 10:
+		case 9:
+			return GEN9_LR_CONTEXT_RENDER_SIZE;
+		case 8:
+			return i915.enable_execlists ?
+			       GEN8_LR_CONTEXT_RENDER_SIZE :
+			       GEN8_CXT_TOTAL_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 7:
 			if (IS_HASWELL(dev_priv))
 				return HSW_CXT_TOTAL_SIZE;
@@ -229,7 +298,10 @@ __intel_engine_context_size(struct drm_i915_private *dev_priv, u8 class)
 		break;
 	default:
 		MISSING_CASE(class);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case VIDEO_DECODE_CLASS:
 	case VIDEO_ENHANCEMENT_CLASS:
 	case COPY_ENGINE_CLASS:
@@ -239,6 +311,7 @@ __intel_engine_context_size(struct drm_i915_private *dev_priv, u8 class)
 	}
 }
 
+<<<<<<< HEAD
 static u32 __engine_mmio_base(struct drm_i915_private *i915,
 			      const struct engine_mmio_base *bases)
 {
@@ -261,11 +334,14 @@ static void __sprint_engine_name(char *name, const struct engine_info *info)
 			 info->instance) >= INTEL_ENGINE_CS_MAX_NAME);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 intel_engine_setup(struct drm_i915_private *dev_priv,
 		   enum intel_engine_id id)
 {
 	const struct engine_info *info = &intel_engines[id];
+<<<<<<< HEAD
 	struct intel_engine_cs *engine;
 
 	GEM_BUG_ON(info->class >= ARRAY_SIZE(intel_engine_classes));
@@ -281,6 +357,13 @@ intel_engine_setup(struct drm_i915_private *dev_priv,
 
 	if (GEM_WARN_ON(dev_priv->engine_class[info->class][info->instance]))
 		return -EINVAL;
+=======
+	const struct engine_class_info *class_info;
+	struct intel_engine_cs *engine;
+
+	GEM_BUG_ON(info->class >= ARRAY_SIZE(intel_engine_classes));
+	class_info = &intel_engine_classes[info->class];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	GEM_BUG_ON(dev_priv->engine[id]);
 	engine = kzalloc(sizeof(*engine), GFP_KERNEL);
@@ -289,6 +372,7 @@ intel_engine_setup(struct drm_i915_private *dev_priv,
 
 	engine->id = id;
 	engine->i915 = dev_priv;
+<<<<<<< HEAD
 	__sprint_engine_name(engine->name, info);
 	engine->hw_id = engine->guc_id = info->hw_id;
 	engine->mmio_base = __engine_mmio_base(dev_priv, info->mmio_bases);
@@ -298,21 +382,41 @@ intel_engine_setup(struct drm_i915_private *dev_priv,
 	engine->uabi_id = info->uabi_id;
 	engine->uabi_class = intel_engine_classes[info->class].uabi_class;
 
+=======
+	WARN_ON(snprintf(engine->name, sizeof(engine->name), "%s%u",
+			 class_info->name, info->instance) >=
+		sizeof(engine->name));
+	engine->uabi_id = info->uabi_id;
+	engine->hw_id = engine->guc_id = info->hw_id;
+	engine->mmio_base = info->mmio_base;
+	engine->irq_shift = info->irq_shift;
+	engine->class = info->class;
+	engine->instance = info->instance;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	engine->context_size = __intel_engine_context_size(dev_priv,
 							   engine->class);
 	if (WARN_ON(engine->context_size > BIT(20)))
 		engine->context_size = 0;
+<<<<<<< HEAD
 	if (engine->context_size)
 		DRIVER_CAPS(dev_priv)->has_logical_contexts = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Nothing to do here, execute in order of dependencies */
 	engine->schedule = NULL;
 
+<<<<<<< HEAD
 	seqlock_init(&engine->stats.lock);
 
 	ATOMIC_INIT_NOTIFIER_HEAD(&engine->context_status_notifier);
 
 	dev_priv->engine_class[info->class][info->instance] = engine;
+=======
+	ATOMIC_INIT_NOTIFIER_HEAD(&engine->context_status_notifier);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_priv->engine[id] = engine;
 	return 0;
 }
@@ -364,8 +468,11 @@ int intel_engines_init_mmio(struct drm_i915_private *dev_priv)
 
 	device_info->num_rings = hweight32(mask);
 
+<<<<<<< HEAD
 	i915_check_and_clear_faults(dev_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 cleanup:
@@ -391,7 +498,11 @@ int intel_engines_init(struct drm_i915_private *dev_priv)
 			&intel_engine_classes[engine->class];
 		int (*init)(struct intel_engine_cs *engine);
 
+<<<<<<< HEAD
 		if (HAS_EXECLISTS(dev_priv))
+=======
+		if (i915.enable_execlists)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			init = class_info->init_execlists;
 		else
 			init = class_info->init_legacy;
@@ -441,6 +552,21 @@ void intel_engine_init_global_seqno(struct intel_engine_cs *engine, u32 seqno)
 		if (HAS_VEBOX(dev_priv))
 			I915_WRITE(RING_SYNC_2(engine->mmio_base), 0);
 	}
+<<<<<<< HEAD
+=======
+	if (dev_priv->semaphore) {
+		struct page *page = i915_vma_first_page(dev_priv->semaphore);
+		void *semaphores;
+
+		/* Semaphores are in noncoherent memory, flush to be safe */
+		semaphores = kmap_atomic(page);
+		memset(semaphores + GEN8_SEMAPHORE_OFFSET(engine->id, 0),
+		       0, I915_NUM_ENGINES * gen8_semaphore_seqno_size);
+		drm_clflush_virt_range(semaphores + GEN8_SEMAPHORE_OFFSET(engine->id, 0),
+				       I915_NUM_ENGINES * gen8_semaphore_seqno_size);
+		kunmap_atomic(semaphores);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_write_status_page(engine, I915_GEM_HWS_INDEX, seqno);
 	clear_bit(ENGINE_IRQ_BREADCRUMB, &engine->irq_posted);
@@ -453,6 +579,7 @@ void intel_engine_init_global_seqno(struct intel_engine_cs *engine, u32 seqno)
 	GEM_BUG_ON(intel_engine_get_seqno(engine) != seqno);
 }
 
+<<<<<<< HEAD
 static void intel_engine_init_batch_pool(struct intel_engine_cs *engine)
 {
 	i915_gem_batch_pool_init(&engine->batch_pool, engine);
@@ -468,6 +595,11 @@ static void intel_engine_init_execlist(struct intel_engine_cs *engine)
 
 	execlists->queue_priority = INT_MIN;
 	execlists->queue = RB_ROOT_CACHED;
+=======
+static void intel_engine_init_timeline(struct intel_engine_cs *engine)
+{
+	engine->timeline = &engine->i915->gt.global_timeline.engine[engine->id];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -481,6 +613,7 @@ static void intel_engine_init_execlist(struct intel_engine_cs *engine)
  */
 void intel_engine_setup_common(struct intel_engine_cs *engine)
 {
+<<<<<<< HEAD
 	i915_timeline_init(engine->i915, &engine->timeline, engine->name);
 	lockdep_set_subclass(&engine->timeline.lock, TIMELINE_ENGINE);
 
@@ -492,6 +625,19 @@ void intel_engine_setup_common(struct intel_engine_cs *engine)
 
 int intel_engine_create_scratch(struct intel_engine_cs *engine,
 				unsigned int size)
+=======
+	engine->execlist_queue = RB_ROOT;
+	engine->execlist_first = NULL;
+
+	intel_engine_init_timeline(engine);
+	intel_engine_init_hangcheck(engine);
+	i915_gem_batch_pool_init(engine, &engine->batch_pool);
+
+	intel_engine_init_cmd_parser(engine);
+}
+
+int intel_engine_create_scratch(struct intel_engine_cs *engine, int size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_gem_object *obj;
 	struct i915_vma *vma;
@@ -507,7 +653,11 @@ int intel_engine_create_scratch(struct intel_engine_cs *engine,
 		return PTR_ERR(obj);
 	}
 
+<<<<<<< HEAD
 	vma = i915_vma_instance(obj, &engine->i915->ggtt.vm, NULL);
+=======
+	vma = i915_vma_instance(obj, &engine->i915->ggtt.base, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vma)) {
 		ret = PTR_ERR(vma);
 		goto err_unref;
@@ -518,6 +668,11 @@ int intel_engine_create_scratch(struct intel_engine_cs *engine,
 		goto err_unref;
 
 	engine->scratch = vma;
+<<<<<<< HEAD
+=======
+	DRM_DEBUG_DRIVER("%s pipe control offset: 0x%08x\n",
+			 engine->name, i915_ggtt_offset(vma));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_unref:
@@ -525,11 +680,16 @@ err_unref:
 	return ret;
 }
 
+<<<<<<< HEAD
 void intel_engine_cleanup_scratch(struct intel_engine_cs *engine)
+=======
+static void intel_engine_cleanup_scratch(struct intel_engine_cs *engine)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	i915_vma_unpin_and_release(&engine->scratch);
 }
 
+<<<<<<< HEAD
 static void cleanup_phys_status_page(struct intel_engine_cs *engine)
 {
 	struct drm_i915_private *dev_priv = engine->i915;
@@ -643,6 +803,8 @@ static void __intel_context_unpin(struct i915_gem_context *ctx,
 	intel_context_unpin(to_intel_context(ctx, engine));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * intel_engines_init_common - initialize cengine state which might require hw access
  * @engine: Engine to initialize.
@@ -656,8 +818,12 @@ static void __intel_context_unpin(struct i915_gem_context *ctx,
  */
 int intel_engine_init_common(struct intel_engine_cs *engine)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *i915 = engine->i915;
 	struct intel_context *ce;
+=======
+	struct intel_ring *ring;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	engine->set_default_submission(engine);
@@ -669,6 +835,7 @@ int intel_engine_init_common(struct intel_engine_cs *engine)
 	 * be available. To avoid this we always pin the default
 	 * context.
 	 */
+<<<<<<< HEAD
 	ce = intel_context_pin(i915->kernel_context, engine);
 	if (IS_ERR(ce))
 		return PTR_ERR(ce);
@@ -706,6 +873,24 @@ err_unpin_preempt:
 
 err_unpin_kernel:
 	__intel_context_unpin(i915->kernel_context, engine);
+=======
+	ring = engine->context_pin(engine, engine->i915->kernel_context);
+	if (IS_ERR(ring))
+		return PTR_ERR(ring);
+
+	ret = intel_engine_init_breadcrumbs(engine);
+	if (ret)
+		goto err_unpin;
+
+	ret = i915_gem_render_state_init(engine);
+	if (ret)
+		goto err_unpin;
+
+	return 0;
+
+err_unpin:
+	engine->context_unpin(engine, engine->i915->kernel_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -718,6 +903,7 @@ err_unpin_kernel:
  */
 void intel_engine_cleanup_common(struct intel_engine_cs *engine)
 {
+<<<<<<< HEAD
 	struct drm_i915_private *i915 = engine->i915;
 
 	intel_engine_cleanup_scratch(engine);
@@ -727,10 +913,16 @@ void intel_engine_cleanup_common(struct intel_engine_cs *engine)
 	else
 		cleanup_status_page(engine);
 
+=======
+	intel_engine_cleanup_scratch(engine);
+
+	i915_gem_render_state_fini(engine);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	intel_engine_fini_breadcrumbs(engine);
 	intel_engine_cleanup_cmd_parser(engine);
 	i915_gem_batch_pool_fini(&engine->batch_pool);
 
+<<<<<<< HEAD
 	if (engine->default_state)
 		i915_gem_object_put(engine->default_state);
 
@@ -742,6 +934,12 @@ void intel_engine_cleanup_common(struct intel_engine_cs *engine)
 }
 
 u64 intel_engine_get_active_head(const struct intel_engine_cs *engine)
+=======
+	engine->context_unpin(engine, engine->i915->kernel_context);
+}
+
+u64 intel_engine_get_active_head(struct intel_engine_cs *engine)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *dev_priv = engine->i915;
 	u64 acthd;
@@ -757,7 +955,11 @@ u64 intel_engine_get_active_head(const struct intel_engine_cs *engine)
 	return acthd;
 }
 
+<<<<<<< HEAD
 u64 intel_engine_get_last_batch_head(const struct intel_engine_cs *engine)
+=======
+u64 intel_engine_get_last_batch_head(struct intel_engine_cs *engine)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_private *dev_priv = engine->i915;
 	u64 bbaddr;
@@ -771,6 +973,7 @@ u64 intel_engine_get_last_batch_head(const struct intel_engine_cs *engine)
 	return bbaddr;
 }
 
+<<<<<<< HEAD
 int intel_engine_stop_cs(struct intel_engine_cs *engine)
 {
 	struct drm_i915_private *dev_priv = engine->i915;
@@ -800,6 +1003,8 @@ int intel_engine_stop_cs(struct intel_engine_cs *engine)
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const char *i915_cache_level_str(struct drm_i915_private *i915, int type)
 {
 	switch (type) {
@@ -811,6 +1016,7 @@ const char *i915_cache_level_str(struct drm_i915_private *i915, int type)
 	}
 }
 
+<<<<<<< HEAD
 u32 intel_calculate_mcr_s_ss_select(struct drm_i915_private *dev_priv)
 {
 	const struct sseu_dev_info *sseu = &(INTEL_INFO(dev_priv)->sseu);
@@ -830,17 +1036,23 @@ u32 intel_calculate_mcr_s_ss_select(struct drm_i915_private *dev_priv)
 	return mcr_s_ss_select;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline uint32_t
 read_subslice_reg(struct drm_i915_private *dev_priv, int slice,
 		  int subslice, i915_reg_t reg)
 {
+<<<<<<< HEAD
 	uint32_t mcr_slice_subslice_mask;
 	uint32_t mcr_slice_subslice_select;
 	uint32_t default_mcr_s_ss_select;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t mcr;
 	uint32_t ret;
 	enum forcewake_domains fw_domains;
 
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 11) {
 		mcr_slice_subslice_mask = GEN11_MCR_SLICE_MASK |
 					  GEN11_MCR_SUBSLICE_MASK;
@@ -855,6 +1067,8 @@ read_subslice_reg(struct drm_i915_private *dev_priv, int slice,
 
 	default_mcr_s_ss_select = intel_calculate_mcr_s_ss_select(dev_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fw_domains = intel_uncore_forcewake_for_reg(dev_priv, reg,
 						    FW_REG_READ);
 	fw_domains |= intel_uncore_forcewake_for_reg(dev_priv,
@@ -865,19 +1079,33 @@ read_subslice_reg(struct drm_i915_private *dev_priv, int slice,
 	intel_uncore_forcewake_get__locked(dev_priv, fw_domains);
 
 	mcr = I915_READ_FW(GEN8_MCR_SELECTOR);
+<<<<<<< HEAD
 
 	WARN_ON_ONCE((mcr & mcr_slice_subslice_mask) !=
 		     default_mcr_s_ss_select);
 
 	mcr &= ~mcr_slice_subslice_mask;
 	mcr |= mcr_slice_subslice_select;
+=======
+	/*
+	 * The HW expects the slice and sublice selectors to be reset to 0
+	 * after reading out the registers.
+	 */
+	WARN_ON_ONCE(mcr & (GEN8_MCR_SLICE_MASK | GEN8_MCR_SUBSLICE_MASK));
+	mcr &= ~(GEN8_MCR_SLICE_MASK | GEN8_MCR_SUBSLICE_MASK);
+	mcr |= GEN8_MCR_SLICE(slice) | GEN8_MCR_SUBSLICE(subslice);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	I915_WRITE_FW(GEN8_MCR_SELECTOR, mcr);
 
 	ret = I915_READ_FW(reg);
 
+<<<<<<< HEAD
 	mcr &= ~mcr_slice_subslice_mask;
 	mcr |= default_mcr_s_ss_select;
 
+=======
+	mcr &= ~(GEN8_MCR_SLICE_MASK | GEN8_MCR_SUBSLICE_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	I915_WRITE_FW(GEN8_MCR_SELECTOR, mcr);
 
 	intel_uncore_forcewake_put__locked(dev_priv, fw_domains);
@@ -941,14 +1169,622 @@ void intel_engine_get_instdone(struct intel_engine_cs *engine,
 	}
 }
 
+<<<<<<< HEAD
+=======
+static int wa_add(struct drm_i915_private *dev_priv,
+		  i915_reg_t addr,
+		  const u32 mask, const u32 val)
+{
+	const u32 idx = dev_priv->workarounds.count;
+
+	if (WARN_ON(idx >= I915_MAX_WA_REGS))
+		return -ENOSPC;
+
+	dev_priv->workarounds.reg[idx].addr = addr;
+	dev_priv->workarounds.reg[idx].value = val;
+	dev_priv->workarounds.reg[idx].mask = mask;
+
+	dev_priv->workarounds.count++;
+
+	return 0;
+}
+
+#define WA_REG(addr, mask, val) do { \
+		const int r = wa_add(dev_priv, (addr), (mask), (val)); \
+		if (r) \
+			return r; \
+	} while (0)
+
+#define WA_SET_BIT_MASKED(addr, mask) \
+	WA_REG(addr, (mask), _MASKED_BIT_ENABLE(mask))
+
+#define WA_CLR_BIT_MASKED(addr, mask) \
+	WA_REG(addr, (mask), _MASKED_BIT_DISABLE(mask))
+
+#define WA_SET_FIELD_MASKED(addr, mask, value) \
+	WA_REG(addr, mask, _MASKED_FIELD(mask, value))
+
+#define WA_SET_BIT(addr, mask) WA_REG(addr, mask, I915_READ(addr) | (mask))
+#define WA_CLR_BIT(addr, mask) WA_REG(addr, mask, I915_READ(addr) & ~(mask))
+
+#define WA_WRITE(addr, val) WA_REG(addr, 0xffffffff, val)
+
+static int wa_ring_whitelist_reg(struct intel_engine_cs *engine,
+				 i915_reg_t reg)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	struct i915_workarounds *wa = &dev_priv->workarounds;
+	const uint32_t index = wa->hw_whitelist_count[engine->id];
+
+	if (WARN_ON(index >= RING_MAX_NONPRIV_SLOTS))
+		return -EINVAL;
+
+	WA_WRITE(RING_FORCE_TO_NONPRIV(engine->mmio_base, index),
+		 i915_mmio_reg_offset(reg));
+	wa->hw_whitelist_count[engine->id]++;
+
+	return 0;
+}
+
+static int gen8_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+
+	WA_SET_BIT_MASKED(INSTPM, INSTPM_FORCE_ORDERING);
+
+	/* WaDisableAsyncFlipPerfMode:bdw,chv */
+	WA_SET_BIT_MASKED(MI_MODE, ASYNC_FLIP_PERF_DISABLE);
+
+	/* WaDisablePartialInstShootdown:bdw,chv */
+	WA_SET_BIT_MASKED(GEN8_ROW_CHICKEN,
+			  PARTIAL_INSTRUCTION_SHOOTDOWN_DISABLE);
+
+	/* Use Force Non-Coherent whenever executing a 3D context. This is a
+	 * workaround for for a possible hang in the unlikely event a TLB
+	 * invalidation occurs during a PSD flush.
+	 */
+	/* WaForceEnableNonCoherent:bdw,chv */
+	/* WaHdcDisableFetchWhenMasked:bdw,chv */
+	WA_SET_BIT_MASKED(HDC_CHICKEN0,
+			  HDC_DONOT_FETCH_MEM_WHEN_MASKED |
+			  HDC_FORCE_NON_COHERENT);
+
+	/* From the Haswell PRM, Command Reference: Registers, CACHE_MODE_0:
+	 * "The Hierarchical Z RAW Stall Optimization allows non-overlapping
+	 *  polygons in the same 8x4 pixel/sample area to be processed without
+	 *  stalling waiting for the earlier ones to write to Hierarchical Z
+	 *  buffer."
+	 *
+	 * This optimization is off by default for BDW and CHV; turn it on.
+	 */
+	WA_CLR_BIT_MASKED(CACHE_MODE_0_GEN7, HIZ_RAW_STALL_OPT_DISABLE);
+
+	/* Wa4x4STCOptimizationDisable:bdw,chv */
+	WA_SET_BIT_MASKED(CACHE_MODE_1, GEN8_4x4_STC_OPTIMIZATION_DISABLE);
+
+	/*
+	 * BSpec recommends 8x4 when MSAA is used,
+	 * however in practice 16x4 seems fastest.
+	 *
+	 * Note that PS/WM thread counts depend on the WIZ hashing
+	 * disable bit, which we don't touch here, but it's good
+	 * to keep in mind (see 3DSTATE_PS and 3DSTATE_WM).
+	 */
+	WA_SET_FIELD_MASKED(GEN7_GT_MODE,
+			    GEN6_WIZ_HASHING_MASK,
+			    GEN6_WIZ_HASHING_16x4);
+
+	return 0;
+}
+
+static int bdw_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int ret;
+
+	ret = gen8_init_workarounds(engine);
+	if (ret)
+		return ret;
+
+	/* WaDisableThreadStallDopClockGating:bdw (pre-production) */
+	WA_SET_BIT_MASKED(GEN8_ROW_CHICKEN, STALL_DOP_GATING_DISABLE);
+
+	/* WaDisableDopClockGating:bdw
+	 *
+	 * Also see the related UCGTCL1 write in broadwell_init_clock_gating()
+	 * to disable EUTC clock gating.
+	 */
+	WA_SET_BIT_MASKED(GEN7_ROW_CHICKEN2,
+			  DOP_CLOCK_GATING_DISABLE);
+
+	WA_SET_BIT_MASKED(HALF_SLICE_CHICKEN3,
+			  GEN8_SAMPLER_POWER_BYPASS_DIS);
+
+	WA_SET_BIT_MASKED(HDC_CHICKEN0,
+			  /* WaForceContextSaveRestoreNonCoherent:bdw */
+			  HDC_FORCE_CONTEXT_SAVE_RESTORE_NON_COHERENT |
+			  /* WaDisableFenceDestinationToSLM:bdw (pre-prod) */
+			  (IS_BDW_GT3(dev_priv) ? HDC_FENCE_DEST_SLM_DISABLE : 0));
+
+	return 0;
+}
+
+static int chv_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int ret;
+
+	ret = gen8_init_workarounds(engine);
+	if (ret)
+		return ret;
+
+	/* WaDisableThreadStallDopClockGating:chv */
+	WA_SET_BIT_MASKED(GEN8_ROW_CHICKEN, STALL_DOP_GATING_DISABLE);
+
+	/* Improve HiZ throughput on CHV. */
+	WA_SET_BIT_MASKED(HIZ_CHICKEN, CHV_HZ_8X8_MODE_IN_1X);
+
+	return 0;
+}
+
+static int gen9_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int ret;
+
+	/* WaConextSwitchWithConcurrentTLBInvalidate:skl,bxt,kbl,glk,cfl */
+	I915_WRITE(GEN9_CSFE_CHICKEN1_RCS, _MASKED_BIT_ENABLE(GEN9_PREEMPT_GPGPU_SYNC_SWITCH_DISABLE));
+
+	/* WaEnableLbsSlaRetryTimerDecrement:skl,bxt,kbl,glk,cfl */
+	I915_WRITE(BDW_SCRATCH1, I915_READ(BDW_SCRATCH1) |
+		   GEN9_LBS_SLA_RETRY_TIMER_DECREMENT_ENABLE);
+
+	/* WaDisableKillLogic:bxt,skl,kbl */
+	if (!IS_COFFEELAKE(dev_priv))
+		I915_WRITE(GAM_ECOCHK, I915_READ(GAM_ECOCHK) |
+			   ECOCHK_DIS_TLB);
+
+	/* WaClearFlowControlGpgpuContextSave:skl,bxt,kbl,glk,cfl */
+	/* WaDisablePartialInstShootdown:skl,bxt,kbl,glk,cfl */
+	WA_SET_BIT_MASKED(GEN8_ROW_CHICKEN,
+			  FLOW_CONTROL_ENABLE |
+			  PARTIAL_INSTRUCTION_SHOOTDOWN_DISABLE);
+
+	/* Syncing dependencies between camera and graphics:skl,bxt,kbl */
+	if (!IS_COFFEELAKE(dev_priv))
+		WA_SET_BIT_MASKED(HALF_SLICE_CHICKEN3,
+				  GEN9_DISABLE_OCL_OOB_SUPPRESS_LOGIC);
+
+	/* WaDisableDgMirrorFixInHalfSliceChicken5:bxt */
+	if (IS_BXT_REVID(dev_priv, 0, BXT_REVID_A1))
+		WA_CLR_BIT_MASKED(GEN9_HALF_SLICE_CHICKEN5,
+				  GEN9_DG_MIRROR_FIX_ENABLE);
+
+	/* WaSetDisablePixMaskCammingAndRhwoInCommonSliceChicken:bxt */
+	if (IS_BXT_REVID(dev_priv, 0, BXT_REVID_A1)) {
+		WA_SET_BIT_MASKED(GEN7_COMMON_SLICE_CHICKEN1,
+				  GEN9_RHWO_OPTIMIZATION_DISABLE);
+		/*
+		 * WA also requires GEN9_SLICE_COMMON_ECO_CHICKEN0[14:14] to be set
+		 * but we do that in per ctx batchbuffer as there is an issue
+		 * with this register not getting restored on ctx restore
+		 */
+	}
+
+	/* WaEnableYV12BugFixInHalfSliceChicken7:skl,bxt,kbl,glk,cfl */
+	/* WaEnableSamplerGPGPUPreemptionSupport:skl,bxt,kbl,cfl */
+	WA_SET_BIT_MASKED(GEN9_HALF_SLICE_CHICKEN7,
+			  GEN9_ENABLE_YV12_BUGFIX |
+			  GEN9_ENABLE_GPGPU_PREEMPTION);
+
+	/* Wa4x4STCOptimizationDisable:skl,bxt,kbl,glk,cfl */
+	/* WaDisablePartialResolveInVc:skl,bxt,kbl,cfl */
+	WA_SET_BIT_MASKED(CACHE_MODE_1, (GEN8_4x4_STC_OPTIMIZATION_DISABLE |
+					 GEN9_PARTIAL_RESOLVE_IN_VC_DISABLE));
+
+	/* WaCcsTlbPrefetchDisable:skl,bxt,kbl,glk,cfl */
+	WA_CLR_BIT_MASKED(GEN9_HALF_SLICE_CHICKEN5,
+			  GEN9_CCS_TLB_PREFETCH_ENABLE);
+
+	/* WaDisableMaskBasedCammingInRCC:bxt */
+	if (IS_BXT_REVID(dev_priv, 0, BXT_REVID_A1))
+		WA_SET_BIT_MASKED(SLICE_ECO_CHICKEN0,
+				  PIXEL_MASK_CAMMING_DISABLE);
+
+	/* WaForceContextSaveRestoreNonCoherent:skl,bxt,kbl,cfl */
+	WA_SET_BIT_MASKED(HDC_CHICKEN0,
+			  HDC_FORCE_CONTEXT_SAVE_RESTORE_NON_COHERENT |
+			  HDC_FORCE_CSR_NON_COHERENT_OVR_DISABLE);
+
+	/* WaForceEnableNonCoherent and WaDisableHDCInvalidation are
+	 * both tied to WaForceContextSaveRestoreNonCoherent
+	 * in some hsds for skl. We keep the tie for all gen9. The
+	 * documentation is a bit hazy and so we want to get common behaviour,
+	 * even though there is no clear evidence we would need both on kbl/bxt.
+	 * This area has been source of system hangs so we play it safe
+	 * and mimic the skl regardless of what bspec says.
+	 *
+	 * Use Force Non-Coherent whenever executing a 3D context. This
+	 * is a workaround for a possible hang in the unlikely event
+	 * a TLB invalidation occurs during a PSD flush.
+	 */
+
+	/* WaForceEnableNonCoherent:skl,bxt,kbl,cfl */
+	WA_SET_BIT_MASKED(HDC_CHICKEN0,
+			  HDC_FORCE_NON_COHERENT);
+
+	/* WaDisableHDCInvalidation:skl,bxt,kbl,cfl */
+	I915_WRITE(GAM_ECOCHK, I915_READ(GAM_ECOCHK) |
+		   BDW_DISABLE_HDC_INVALIDATION);
+
+	/* WaDisableSamplerPowerBypassForSOPingPong:skl,bxt,kbl,cfl */
+	if (IS_SKYLAKE(dev_priv) ||
+	    IS_KABYLAKE(dev_priv) ||
+	    IS_COFFEELAKE(dev_priv) ||
+	    IS_BXT_REVID(dev_priv, 0, BXT_REVID_B0))
+		WA_SET_BIT_MASKED(HALF_SLICE_CHICKEN3,
+				  GEN8_SAMPLER_POWER_BYPASS_DIS);
+
+	/* WaDisableSTUnitPowerOptimization:skl,bxt,kbl,glk,cfl */
+	WA_SET_BIT_MASKED(HALF_SLICE_CHICKEN2, GEN8_ST_PO_DISABLE);
+
+	/* WaOCLCoherentLineFlush:skl,bxt,kbl,cfl */
+	I915_WRITE(GEN8_L3SQCREG4, (I915_READ(GEN8_L3SQCREG4) |
+				    GEN8_LQSC_FLUSH_COHERENT_LINES));
+
+	/* WaClearHIZ_WM_CHICKEN3:bxt,glk */
+	if (IS_GEN9_LP(dev_priv))
+		WA_SET_BIT_MASKED(GEN9_WM_CHICKEN3, GEN9_FACTOR_IN_CLR_VAL_HIZ);
+
+	/* WaVFEStateAfterPipeControlwithMediaStateClear:skl,bxt,glk,cfl */
+	ret = wa_ring_whitelist_reg(engine, GEN9_CTX_PREEMPT_REG);
+	if (ret)
+		return ret;
+
+	/* WaEnablePreemptionGranularityControlByUMD:skl,bxt,kbl,cfl */
+	ret= wa_ring_whitelist_reg(engine, GEN8_CS_CHICKEN1);
+	if (ret)
+		return ret;
+
+	/* WaAllowUMDToModifyHDCChicken1:skl,bxt,kbl,glk,cfl */
+	ret = wa_ring_whitelist_reg(engine, GEN8_HDC_CHICKEN1);
+	if (ret)
+		return ret;
+
+	return 0;
+}
+
+static int skl_tune_iz_hashing(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	u8 vals[3] = { 0, 0, 0 };
+	unsigned int i;
+
+	for (i = 0; i < 3; i++) {
+		u8 ss;
+
+		/*
+		 * Only consider slices where one, and only one, subslice has 7
+		 * EUs
+		 */
+		if (!is_power_of_2(INTEL_INFO(dev_priv)->sseu.subslice_7eu[i]))
+			continue;
+
+		/*
+		 * subslice_7eu[i] != 0 (because of the check above) and
+		 * ss_max == 4 (maximum number of subslices possible per slice)
+		 *
+		 * ->    0 <= ss <= 3;
+		 */
+		ss = ffs(INTEL_INFO(dev_priv)->sseu.subslice_7eu[i]) - 1;
+		vals[i] = 3 - ss;
+	}
+
+	if (vals[0] == 0 && vals[1] == 0 && vals[2] == 0)
+		return 0;
+
+	/* Tune IZ hashing. See intel_device_info_runtime_init() */
+	WA_SET_FIELD_MASKED(GEN7_GT_MODE,
+			    GEN9_IZ_HASHING_MASK(2) |
+			    GEN9_IZ_HASHING_MASK(1) |
+			    GEN9_IZ_HASHING_MASK(0),
+			    GEN9_IZ_HASHING(2, vals[2]) |
+			    GEN9_IZ_HASHING(1, vals[1]) |
+			    GEN9_IZ_HASHING(0, vals[0]));
+
+	return 0;
+}
+
+static int skl_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int ret;
+
+	ret = gen9_init_workarounds(engine);
+	if (ret)
+		return ret;
+
+	/*
+	 * Actual WA is to disable percontext preemption granularity control
+	 * until D0 which is the default case so this is equivalent to
+	 * !WaDisablePerCtxtPreemptionGranularityControl:skl
+	 */
+	I915_WRITE(GEN7_FF_SLICE_CS_CHICKEN1,
+		   _MASKED_BIT_ENABLE(GEN9_FFSC_PERCTX_PREEMPT_CTRL));
+
+	/* WaEnableGapsTsvCreditFix:skl */
+	I915_WRITE(GEN8_GARBCNTL, (I915_READ(GEN8_GARBCNTL) |
+				   GEN9_GAPS_TSV_CREDIT_DISABLE));
+
+	/* WaDisableGafsUnitClkGating:skl */
+	WA_SET_BIT(GEN7_UCGCTL4, GEN8_EU_GAUNIT_CLOCK_GATE_DISABLE);
+
+	/* WaInPlaceDecompressionHang:skl */
+	if (IS_SKL_REVID(dev_priv, SKL_REVID_H0, REVID_FOREVER))
+		WA_SET_BIT(GEN9_GAMT_ECO_REG_RW_IA,
+			   GAMT_ECO_ENABLE_IN_PLACE_DECOMPRESS);
+
+	/* WaDisableLSQCROPERFforOCL:skl */
+	ret = wa_ring_whitelist_reg(engine, GEN8_L3SQCREG4);
+	if (ret)
+		return ret;
+
+	return skl_tune_iz_hashing(engine);
+}
+
+static int bxt_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int ret;
+
+	ret = gen9_init_workarounds(engine);
+	if (ret)
+		return ret;
+
+	/* WaStoreMultiplePTEenable:bxt */
+	/* This is a requirement according to Hardware specification */
+	if (IS_BXT_REVID(dev_priv, 0, BXT_REVID_A1))
+		I915_WRITE(TILECTL, I915_READ(TILECTL) | TILECTL_TLBPF);
+
+	/* WaSetClckGatingDisableMedia:bxt */
+	if (IS_BXT_REVID(dev_priv, 0, BXT_REVID_A1)) {
+		I915_WRITE(GEN7_MISCCPCTL, (I915_READ(GEN7_MISCCPCTL) &
+					    ~GEN8_DOP_CLOCK_GATE_MEDIA_ENABLE));
+	}
+
+	/* WaDisableThreadStallDopClockGating:bxt */
+	WA_SET_BIT_MASKED(GEN8_ROW_CHICKEN,
+			  STALL_DOP_GATING_DISABLE);
+
+	/* WaDisablePooledEuLoadBalancingFix:bxt */
+	if (IS_BXT_REVID(dev_priv, BXT_REVID_B0, REVID_FOREVER)) {
+		WA_SET_BIT_MASKED(FF_SLICE_CS_CHICKEN2,
+				  GEN9_POOLED_EU_LOAD_BALANCING_FIX_DISABLE);
+	}
+
+	/* WaDisableSbeCacheDispatchPortSharing:bxt */
+	if (IS_BXT_REVID(dev_priv, 0, BXT_REVID_B0)) {
+		WA_SET_BIT_MASKED(
+			GEN7_HALF_SLICE_CHICKEN1,
+			GEN7_SBE_SS_CACHE_DISPATCH_PORT_SHARING_DISABLE);
+	}
+
+	/* WaDisableObjectLevelPreemptionForTrifanOrPolygon:bxt */
+	/* WaDisableObjectLevelPreemptionForInstancedDraw:bxt */
+	/* WaDisableObjectLevelPreemtionForInstanceId:bxt */
+	/* WaDisableLSQCROPERFforOCL:bxt */
+	if (IS_BXT_REVID(dev_priv, 0, BXT_REVID_A1)) {
+		ret = wa_ring_whitelist_reg(engine, GEN9_CS_DEBUG_MODE1);
+		if (ret)
+			return ret;
+
+		ret = wa_ring_whitelist_reg(engine, GEN8_L3SQCREG4);
+		if (ret)
+			return ret;
+	}
+
+	/* WaProgramL3SqcReg1DefaultForPerf:bxt */
+	if (IS_BXT_REVID(dev_priv, BXT_REVID_B0, REVID_FOREVER)) {
+		u32 val = I915_READ(GEN8_L3SQCREG1);
+		val &= ~L3_PRIO_CREDITS_MASK;
+		val |= L3_GENERAL_PRIO_CREDITS(62) | L3_HIGH_PRIO_CREDITS(2);
+		I915_WRITE(GEN8_L3SQCREG1, val);
+	}
+
+	/* WaToEnableHwFixForPushConstHWBug:bxt */
+	if (IS_BXT_REVID(dev_priv, BXT_REVID_C0, REVID_FOREVER))
+		WA_SET_BIT_MASKED(COMMON_SLICE_CHICKEN2,
+				  GEN8_SBE_DISABLE_REPLAY_BUF_OPTIMIZATION);
+
+	/* WaInPlaceDecompressionHang:bxt */
+	if (IS_BXT_REVID(dev_priv, BXT_REVID_C0, REVID_FOREVER))
+		WA_SET_BIT(GEN9_GAMT_ECO_REG_RW_IA,
+			   GAMT_ECO_ENABLE_IN_PLACE_DECOMPRESS);
+
+	return 0;
+}
+
+static int kbl_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int ret;
+
+	ret = gen9_init_workarounds(engine);
+	if (ret)
+		return ret;
+
+	/* WaEnableGapsTsvCreditFix:kbl */
+	I915_WRITE(GEN8_GARBCNTL, (I915_READ(GEN8_GARBCNTL) |
+				   GEN9_GAPS_TSV_CREDIT_DISABLE));
+
+	/* WaDisableDynamicCreditSharing:kbl */
+	if (IS_KBL_REVID(dev_priv, 0, KBL_REVID_B0))
+		WA_SET_BIT(GAMT_CHKN_BIT_REG,
+			   GAMT_CHKN_DISABLE_DYNAMIC_CREDIT_SHARING);
+
+	/* WaDisableFenceDestinationToSLM:kbl (pre-prod) */
+	if (IS_KBL_REVID(dev_priv, KBL_REVID_A0, KBL_REVID_A0))
+		WA_SET_BIT_MASKED(HDC_CHICKEN0,
+				  HDC_FENCE_DEST_SLM_DISABLE);
+
+	/* WaToEnableHwFixForPushConstHWBug:kbl */
+	if (IS_KBL_REVID(dev_priv, KBL_REVID_C0, REVID_FOREVER))
+		WA_SET_BIT_MASKED(COMMON_SLICE_CHICKEN2,
+				  GEN8_SBE_DISABLE_REPLAY_BUF_OPTIMIZATION);
+
+	/* WaDisableGafsUnitClkGating:kbl */
+	WA_SET_BIT(GEN7_UCGCTL4, GEN8_EU_GAUNIT_CLOCK_GATE_DISABLE);
+
+	/* WaDisableSbeCacheDispatchPortSharing:kbl */
+	WA_SET_BIT_MASKED(
+		GEN7_HALF_SLICE_CHICKEN1,
+		GEN7_SBE_SS_CACHE_DISPATCH_PORT_SHARING_DISABLE);
+
+	/* WaInPlaceDecompressionHang:kbl */
+	WA_SET_BIT(GEN9_GAMT_ECO_REG_RW_IA,
+		   GAMT_ECO_ENABLE_IN_PLACE_DECOMPRESS);
+
+	/* WaDisableLSQCROPERFforOCL:kbl */
+	ret = wa_ring_whitelist_reg(engine, GEN8_L3SQCREG4);
+	if (ret)
+		return ret;
+
+	return 0;
+}
+
+static int glk_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int ret;
+
+	ret = gen9_init_workarounds(engine);
+	if (ret)
+		return ret;
+
+	/* WA #0862: Userspace has to set "Barrier Mode" to avoid hangs. */
+	ret = wa_ring_whitelist_reg(engine, GEN9_SLICE_COMMON_ECO_CHICKEN1);
+	if (ret)
+		return ret;
+
+	/* WaToEnableHwFixForPushConstHWBug:glk */
+	WA_SET_BIT_MASKED(COMMON_SLICE_CHICKEN2,
+			  GEN8_SBE_DISABLE_REPLAY_BUF_OPTIMIZATION);
+
+	return 0;
+}
+
+static int cfl_init_workarounds(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int ret;
+
+	ret = gen9_init_workarounds(engine);
+	if (ret)
+		return ret;
+
+	/* WaEnableGapsTsvCreditFix:cfl */
+	I915_WRITE(GEN8_GARBCNTL, (I915_READ(GEN8_GARBCNTL) |
+				   GEN9_GAPS_TSV_CREDIT_DISABLE));
+
+	/* WaToEnableHwFixForPushConstHWBug:cfl */
+	WA_SET_BIT_MASKED(COMMON_SLICE_CHICKEN2,
+			  GEN8_SBE_DISABLE_REPLAY_BUF_OPTIMIZATION);
+
+	/* WaDisableGafsUnitClkGating:cfl */
+	WA_SET_BIT(GEN7_UCGCTL4, GEN8_EU_GAUNIT_CLOCK_GATE_DISABLE);
+
+	/* WaDisableSbeCacheDispatchPortSharing:cfl */
+	WA_SET_BIT_MASKED(
+		GEN7_HALF_SLICE_CHICKEN1,
+		GEN7_SBE_SS_CACHE_DISPATCH_PORT_SHARING_DISABLE);
+
+	/* WaInPlaceDecompressionHang:cfl */
+	WA_SET_BIT(GEN9_GAMT_ECO_REG_RW_IA,
+		   GAMT_ECO_ENABLE_IN_PLACE_DECOMPRESS);
+
+	return 0;
+}
+
+int init_workarounds_ring(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+	int err;
+
+	WARN_ON(engine->id != RCS);
+
+	dev_priv->workarounds.count = 0;
+	dev_priv->workarounds.hw_whitelist_count[engine->id] = 0;
+
+	if (IS_BROADWELL(dev_priv))
+		err = bdw_init_workarounds(engine);
+	else if (IS_CHERRYVIEW(dev_priv))
+		err = chv_init_workarounds(engine);
+	else if (IS_SKYLAKE(dev_priv))
+		err =  skl_init_workarounds(engine);
+	else if (IS_BROXTON(dev_priv))
+		err = bxt_init_workarounds(engine);
+	else if (IS_KABYLAKE(dev_priv))
+		err = kbl_init_workarounds(engine);
+	else if (IS_GEMINILAKE(dev_priv))
+		err =  glk_init_workarounds(engine);
+	else if (IS_COFFEELAKE(dev_priv))
+		err = cfl_init_workarounds(engine);
+	else
+		err = 0;
+	if (err)
+		return err;
+
+	DRM_DEBUG_DRIVER("%s: Number of context specific w/a: %d\n",
+			 engine->name, dev_priv->workarounds.count);
+	return 0;
+}
+
+int intel_ring_workarounds_emit(struct drm_i915_gem_request *req)
+{
+	struct i915_workarounds *w = &req->i915->workarounds;
+	u32 *cs;
+	int ret, i;
+
+	if (w->count == 0)
+		return 0;
+
+	ret = req->engine->emit_flush(req, EMIT_BARRIER);
+	if (ret)
+		return ret;
+
+	cs = intel_ring_begin(req, (w->count * 2 + 2));
+	if (IS_ERR(cs))
+		return PTR_ERR(cs);
+
+	*cs++ = MI_LOAD_REGISTER_IMM(w->count);
+	for (i = 0; i < w->count; i++) {
+		*cs++ = i915_mmio_reg_offset(w->reg[i].addr);
+		*cs++ = w->reg[i].value;
+	}
+	*cs++ = MI_NOOP;
+
+	intel_ring_advance(req, cs);
+
+	ret = req->engine->emit_flush(req, EMIT_BARRIER);
+	if (ret)
+		return ret;
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool ring_is_idle(struct intel_engine_cs *engine)
 {
 	struct drm_i915_private *dev_priv = engine->i915;
 	bool idle = true;
 
+<<<<<<< HEAD
 	/* If the whole device is asleep, the engine must be idle */
 	if (!intel_runtime_pm_get_if_in_use(dev_priv))
 		return true;
+=======
+	intel_runtime_pm_get(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* First check that no commands are left in the ring */
 	if ((I915_READ_HEAD(engine) & HEAD_ADDR) !=
@@ -987,6 +1823,7 @@ bool intel_engine_is_idle(struct intel_engine_cs *engine)
 	if (I915_SELFTEST_ONLY(engine->breadcrumbs.mock))
 		return true;
 
+<<<<<<< HEAD
 	/* Waiting to drain ELSP? */
 	if (READ_ONCE(engine->execlists.active)) {
 		struct tasklet_struct *t = &engine->execlists.tasklet;
@@ -1006,6 +1843,18 @@ bool intel_engine_is_idle(struct intel_engine_cs *engine)
 
 	/* ELSP is empty, but there are ready requests? E.g. after reset */
 	if (!RB_EMPTY_ROOT(&engine->execlists.queue.rb_root))
+=======
+	/* Interrupt/tasklet pending? */
+	if (test_bit(ENGINE_IRQ_EXECLIST, &engine->irq_posted))
+		return false;
+
+	/* Both ports drained, no more ELSP submission? */
+	if (port_request(&engine->execlist_port[0]))
+		return false;
+
+	/* ELSP is empty, but there are ready requests? */
+	if (READ_ONCE(engine->execlist_first))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	/* Ring stopped? */
@@ -1020,8 +1869,15 @@ bool intel_engines_are_idle(struct drm_i915_private *dev_priv)
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
 
+<<<<<<< HEAD
 	/*
 	 * If the driver is wedged, HW state may be very inconsistent and
+=======
+	if (READ_ONCE(dev_priv->gt.active_requests))
+		return false;
+
+	/* If the driver is wedged, HW state may be very inconsistent and
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * report that it is still busy, even though we have stopped using it.
 	 */
 	if (i915_terminally_wedged(&dev_priv->gpu_error))
@@ -1035,6 +1891,7 @@ bool intel_engines_are_idle(struct drm_i915_private *dev_priv)
 	return true;
 }
 
+<<<<<<< HEAD
 /**
  * intel_engine_has_kernel_context:
  * @engine: the engine
@@ -1063,6 +1920,8 @@ bool intel_engine_has_kernel_context(const struct intel_engine_cs *engine)
 		return engine->last_retired_context == kernel_context;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void intel_engines_reset_default_submission(struct drm_i915_private *i915)
 {
 	struct intel_engine_cs *engine;
@@ -1072,6 +1931,7 @@ void intel_engines_reset_default_submission(struct drm_i915_private *i915)
 		engine->set_default_submission(engine);
 }
 
+<<<<<<< HEAD
 /**
  * intel_engines_sanitize: called after the GPU has lost power
  * @i915: the i915 device
@@ -1103,11 +1963,15 @@ void intel_engines_sanitize(struct drm_i915_private *i915)
  * system).
  */
 void intel_engines_park(struct drm_i915_private *i915)
+=======
+void intel_engines_mark_idle(struct drm_i915_private *i915)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct intel_engine_cs *engine;
 	enum intel_engine_id id;
 
 	for_each_engine(engine, i915, id) {
+<<<<<<< HEAD
 		/* Flush the residual irq tasklets first. */
 		intel_engine_disarm_breadcrumbs(engine);
 		tasklet_kill(&engine->execlists.tasklet);
@@ -1714,4 +2578,15 @@ void intel_disable_engine_stats(struct intel_engine_cs *engine)
 #if IS_ENABLED(CONFIG_DRM_I915_SELFTEST)
 #include "selftests/mock_engine.c"
 #include "selftests/intel_engine_cs.c"
+=======
+		intel_engine_disarm_breadcrumbs(engine);
+		i915_gem_batch_pool_fini(&engine->batch_pool);
+		tasklet_kill(&engine->irq_tasklet);
+		engine->no_priolist = false;
+	}
+}
+
+#if IS_ENABLED(CONFIG_DRM_I915_SELFTEST)
+#include "selftests/mock_engine.c"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

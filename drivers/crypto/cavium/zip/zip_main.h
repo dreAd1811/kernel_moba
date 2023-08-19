@@ -74,6 +74,10 @@ struct zip_stats {
 	atomic64_t    comp_req_complete;
 	atomic64_t    decomp_req_submit;
 	atomic64_t    decomp_req_complete;
+<<<<<<< HEAD
+=======
+	atomic64_t    pending_req;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic64_t    comp_in_bytes;
 	atomic64_t    comp_out_bytes;
 	atomic64_t    decomp_in_bytes;

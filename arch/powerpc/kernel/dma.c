@@ -33,14 +33,22 @@ static u64 __maybe_unused get_pfn_limit(struct device *dev)
 	struct dev_archdata __maybe_unused *sd = &dev->archdata;
 
 #ifdef CONFIG_SWIOTLB
+<<<<<<< HEAD
 	if (sd->max_direct_dma_addr && dev->dma_ops == &powerpc_swiotlb_dma_ops)
+=======
+	if (sd->max_direct_dma_addr && dev->dma_ops == &swiotlb_dma_ops)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pfn = min_t(u64, pfn, sd->max_direct_dma_addr >> PAGE_SHIFT);
 #endif
 
 	return pfn;
 }
 
+<<<<<<< HEAD
 static int dma_nommu_dma_supported(struct device *dev, u64 mask)
+=======
+static int dma_direct_dma_supported(struct device *dev, u64 mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifdef CONFIG_PPC64
 	u64 limit = get_dma_offset(dev) + (memblock_end_of_DRAM() - 1);
@@ -62,7 +70,11 @@ static int dma_nommu_dma_supported(struct device *dev, u64 mask)
 #endif
 }
 
+<<<<<<< HEAD
 void *__dma_nommu_alloc_coherent(struct device *dev, size_t size,
+=======
+void *__dma_direct_alloc_coherent(struct device *dev, size_t size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  dma_addr_t *dma_handle, gfp_t flag,
 				  unsigned long attrs)
 {
@@ -105,6 +117,12 @@ void *__dma_nommu_alloc_coherent(struct device *dev, size_t size,
 	};
 #endif /* CONFIG_FSL_SOC */
 
+<<<<<<< HEAD
+=======
+	/* ignore region specifiers */
+	flag  &= ~(__GFP_HIGHMEM);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	page = alloc_pages_node(node, flag, get_order(size));
 	if (page == NULL)
 		return NULL;
@@ -116,7 +134,11 @@ void *__dma_nommu_alloc_coherent(struct device *dev, size_t size,
 #endif
 }
 
+<<<<<<< HEAD
 void __dma_nommu_free_coherent(struct device *dev, size_t size,
+=======
+void __dma_direct_free_coherent(struct device *dev, size_t size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				void *vaddr, dma_addr_t dma_handle,
 				unsigned long attrs)
 {
@@ -127,7 +149,11 @@ void __dma_nommu_free_coherent(struct device *dev, size_t size,
 #endif
 }
 
+<<<<<<< HEAD
 static void *dma_nommu_alloc_coherent(struct device *dev, size_t size,
+=======
+static void *dma_direct_alloc_coherent(struct device *dev, size_t size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       dma_addr_t *dma_handle, gfp_t flag,
 				       unsigned long attrs)
 {
@@ -136,8 +162,13 @@ static void *dma_nommu_alloc_coherent(struct device *dev, size_t size,
 	/* The coherent mask may be smaller than the real mask, check if
 	 * we can really use the direct ops
 	 */
+<<<<<<< HEAD
 	if (dma_nommu_dma_supported(dev, dev->coherent_dma_mask))
 		return __dma_nommu_alloc_coherent(dev, size, dma_handle,
+=======
+	if (dma_direct_dma_supported(dev, dev->coherent_dma_mask))
+		return __dma_direct_alloc_coherent(dev, size, dma_handle,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   flag, attrs);
 
 	/* Ok we can't ... do we have an iommu ? If not, fail */
@@ -151,15 +182,25 @@ static void *dma_nommu_alloc_coherent(struct device *dev, size_t size,
 				    dev_to_node(dev));
 }
 
+<<<<<<< HEAD
 static void dma_nommu_free_coherent(struct device *dev, size_t size,
+=======
+static void dma_direct_free_coherent(struct device *dev, size_t size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     void *vaddr, dma_addr_t dma_handle,
 				     unsigned long attrs)
 {
 	struct iommu_table *iommu;
 
+<<<<<<< HEAD
 	/* See comments in dma_nommu_alloc_coherent() */
 	if (dma_nommu_dma_supported(dev, dev->coherent_dma_mask))
 		return __dma_nommu_free_coherent(dev, size, vaddr, dma_handle,
+=======
+	/* See comments in dma_direct_alloc_coherent() */
+	if (dma_direct_dma_supported(dev, dev->coherent_dma_mask))
+		return __dma_direct_free_coherent(dev, size, vaddr, dma_handle,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  attrs);
 	/* Maybe we used an iommu ... */
 	iommu = get_iommu_table_base(dev);
@@ -172,7 +213,11 @@ static void dma_nommu_free_coherent(struct device *dev, size_t size,
 	iommu_free_coherent(iommu, size, vaddr, dma_handle);
 }
 
+<<<<<<< HEAD
 int dma_nommu_mmap_coherent(struct device *dev, struct vm_area_struct *vma,
+=======
+int dma_direct_mmap_coherent(struct device *dev, struct vm_area_struct *vma,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     void *cpu_addr, dma_addr_t handle, size_t size,
 			     unsigned long attrs)
 {
@@ -190,7 +235,11 @@ int dma_nommu_mmap_coherent(struct device *dev, struct vm_area_struct *vma,
 			       vma->vm_page_prot);
 }
 
+<<<<<<< HEAD
 static int dma_nommu_map_sg(struct device *dev, struct scatterlist *sgl,
+=======
+static int dma_direct_map_sg(struct device *dev, struct scatterlist *sgl,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     int nents, enum dma_data_direction direction,
 			     unsigned long attrs)
 {
@@ -210,13 +259,21 @@ static int dma_nommu_map_sg(struct device *dev, struct scatterlist *sgl,
 	return nents;
 }
 
+<<<<<<< HEAD
 static void dma_nommu_unmap_sg(struct device *dev, struct scatterlist *sg,
+=======
+static void dma_direct_unmap_sg(struct device *dev, struct scatterlist *sg,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				int nents, enum dma_data_direction direction,
 				unsigned long attrs)
 {
 }
 
+<<<<<<< HEAD
 static u64 dma_nommu_get_required_mask(struct device *dev)
+=======
+static u64 dma_direct_get_required_mask(struct device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 end, mask;
 
@@ -228,20 +285,33 @@ static u64 dma_nommu_get_required_mask(struct device *dev)
 	return mask;
 }
 
+<<<<<<< HEAD
 static inline dma_addr_t dma_nommu_map_page(struct device *dev,
+=======
+static inline dma_addr_t dma_direct_map_page(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct page *page,
 					     unsigned long offset,
 					     size_t size,
 					     enum dma_data_direction dir,
 					     unsigned long attrs)
 {
+<<<<<<< HEAD
+=======
+	BUG_ON(dir == DMA_NONE);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
 		__dma_sync_page(page, offset, size, dir);
 
 	return page_to_phys(page) + offset + get_dma_offset(dev);
 }
 
+<<<<<<< HEAD
 static inline void dma_nommu_unmap_page(struct device *dev,
+=======
+static inline void dma_direct_unmap_page(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 dma_addr_t dma_address,
 					 size_t size,
 					 enum dma_data_direction direction,
@@ -250,7 +320,11 @@ static inline void dma_nommu_unmap_page(struct device *dev,
 }
 
 #ifdef CONFIG_NOT_COHERENT_CACHE
+<<<<<<< HEAD
 static inline void dma_nommu_sync_sg(struct device *dev,
+=======
+static inline void dma_direct_sync_sg(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct scatterlist *sgl, int nents,
 		enum dma_data_direction direction)
 {
@@ -261,7 +335,11 @@ static inline void dma_nommu_sync_sg(struct device *dev,
 		__dma_sync_page(sg_page(sg), sg->offset, sg->length, direction);
 }
 
+<<<<<<< HEAD
 static inline void dma_nommu_sync_single(struct device *dev,
+=======
+static inline void dma_direct_sync_single(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  dma_addr_t dma_handle, size_t size,
 					  enum dma_data_direction direction)
 {
@@ -269,6 +347,7 @@ static inline void dma_nommu_sync_single(struct device *dev,
 }
 #endif
 
+<<<<<<< HEAD
 const struct dma_map_ops dma_nommu_ops = {
 	.alloc				= dma_nommu_alloc_coherent,
 	.free				= dma_nommu_free_coherent,
@@ -287,6 +366,26 @@ const struct dma_map_ops dma_nommu_ops = {
 #endif
 };
 EXPORT_SYMBOL(dma_nommu_ops);
+=======
+const struct dma_map_ops dma_direct_ops = {
+	.alloc				= dma_direct_alloc_coherent,
+	.free				= dma_direct_free_coherent,
+	.mmap				= dma_direct_mmap_coherent,
+	.map_sg				= dma_direct_map_sg,
+	.unmap_sg			= dma_direct_unmap_sg,
+	.dma_supported			= dma_direct_dma_supported,
+	.map_page			= dma_direct_map_page,
+	.unmap_page			= dma_direct_unmap_page,
+	.get_required_mask		= dma_direct_get_required_mask,
+#ifdef CONFIG_NOT_COHERENT_CACHE
+	.sync_single_for_cpu 		= dma_direct_sync_single,
+	.sync_single_for_device 	= dma_direct_sync_single,
+	.sync_sg_for_cpu 		= dma_direct_sync_sg,
+	.sync_sg_for_device 		= dma_direct_sync_sg,
+#endif
+};
+EXPORT_SYMBOL(dma_direct_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int dma_set_coherent_mask(struct device *dev, u64 mask)
 {
@@ -297,7 +396,11 @@ int dma_set_coherent_mask(struct device *dev, u64 mask)
 		 * is no dma_op->set_coherent_mask() so we have to do
 		 * things the hard way:
 		 */
+<<<<<<< HEAD
 		if (get_dma_ops(dev) != &dma_nommu_ops ||
+=======
+		if (get_dma_ops(dev) != &dma_direct_ops ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    get_iommu_table_base(dev) == NULL ||
 		    !dma_iommu_dma_supported(dev, mask))
 			return -EIO;
@@ -307,6 +410,11 @@ int dma_set_coherent_mask(struct device *dev, u64 mask)
 }
 EXPORT_SYMBOL(dma_set_coherent_mask);
 
+<<<<<<< HEAD
+=======
+#define PREALLOC_DMA_DEBUG_ENTRIES (1 << 16)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int dma_set_mask(struct device *dev, u64 dma_mask)
 {
 	if (ppc_md.dma_set_mask)
@@ -357,6 +465,13 @@ EXPORT_SYMBOL_GPL(dma_get_required_mask);
 
 static int __init dma_init(void)
 {
+<<<<<<< HEAD
+=======
+	dma_debug_init(PREALLOC_DMA_DEBUG_ENTRIES);
+#ifdef CONFIG_PCI
+	dma_debug_add_bus(&pci_bus_type);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_IBMVIO
 	dma_debug_add_bus(&vio_bus_type);
 #endif

@@ -50,7 +50,11 @@ config SPI_ATMEL_QUADSPI
 
 config SPI_CADENCE_QUADSPI
 	tristate "Cadence Quad SPI controller"
+<<<<<<< HEAD
 	depends on OF && (ARM || ARM64 || COMPILE_TEST)
+=======
+	depends on OF && (ARM || COMPILE_TEST)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Enable support for the Cadence Quad SPI Flash controller.
 
@@ -71,7 +75,11 @@ config SPI_FSL_QUADSPI
 config SPI_HISI_SFC
 	tristate "Hisilicon SPI-NOR Flash Controller(SFC)"
 	depends on ARCH_HISI || COMPILE_TEST
+<<<<<<< HEAD
 	depends on HAS_IOMEM
+=======
+	depends on HAS_IOMEM && HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This enables support for hisilicon SPI-NOR flash controller.
 
@@ -90,7 +98,11 @@ config SPI_INTEL_SPI
 	tristate
 
 config SPI_INTEL_SPI_PCI
+<<<<<<< HEAD
 	tristate "Intel PCH/PCU SPI flash PCI driver (DANGEROUS)"
+=======
+	tristate "Intel PCH/PCU SPI flash PCI driver" if EXPERT
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on X86 && PCI
 	select SPI_INTEL_SPI
 	help
@@ -106,7 +118,11 @@ config SPI_INTEL_SPI_PCI
 	  will be called intel-spi-pci.
 
 config SPI_INTEL_SPI_PLATFORM
+<<<<<<< HEAD
 	tristate "Intel PCH/PCU SPI flash platform driver (DANGEROUS)"
+=======
+	tristate "Intel PCH/PCU SPI flash platform driver" if EXPERT
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on X86
 	select SPI_INTEL_SPI
 	help

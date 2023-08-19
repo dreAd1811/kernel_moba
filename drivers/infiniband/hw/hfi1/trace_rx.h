@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright(c) 2015 - 2017 Intel Corporation.
+=======
+ * Copyright(c) 2015, 2016 Intel Corporation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is provided under a dual BSD/GPLv2 license.  When using or
  * redistributing this file, you may do so under either license.
@@ -62,10 +66,34 @@ __print_symbolic(type,                       \
 #undef TRACE_SYSTEM
 #define TRACE_SYSTEM hfi1_rx
 
+<<<<<<< HEAD
 TRACE_EVENT(hfi1_rcvhdr,
 	    TP_PROTO(struct hfi1_packet *packet),
 	    TP_ARGS(packet),
 	    TP_STRUCT__entry(DD_DEV_ENTRY(packet->rcd->dd)
+=======
+#define packettype_name(etype) { RHF_RCV_TYPE_##etype, #etype }
+#define show_packettype(etype)                  \
+__print_symbolic(etype,                         \
+	packettype_name(EXPECTED),              \
+	packettype_name(EAGER),                 \
+	packettype_name(IB),                    \
+	packettype_name(ERROR),                 \
+	packettype_name(BYPASS))
+
+TRACE_EVENT(hfi1_rcvhdr,
+	    TP_PROTO(struct hfi1_devdata *dd,
+		     u32 ctxt,
+		     u64 eflags,
+		     u32 etype,
+		     u32 hlen,
+		     u32 tlen,
+		     u32 updegr,
+		     u32 etail
+		    ),
+	    TP_ARGS(dd, ctxt, eflags, etype, hlen, tlen, updegr, etail),
+	    TP_STRUCT__entry(DD_DEV_ENTRY(dd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     __field(u64, eflags)
 			     __field(u32, ctxt)
 			     __field(u32, etype)
@@ -74,6 +102,7 @@ TRACE_EVENT(hfi1_rcvhdr,
 			     __field(u32, updegr)
 			     __field(u32, etail)
 			     ),
+<<<<<<< HEAD
 	     TP_fast_assign(DD_DEV_ASSIGN(packet->rcd->dd);
 			    __entry->eflags = rhf_err_flags(packet->rhf);
 			    __entry->ctxt = packet->rcd->ctxt;
@@ -82,6 +111,16 @@ TRACE_EVENT(hfi1_rcvhdr,
 			    __entry->tlen = packet->tlen;
 			    __entry->updegr = packet->updegr;
 			    __entry->etail = rhf_egr_index(packet->rhf);
+=======
+	     TP_fast_assign(DD_DEV_ASSIGN(dd);
+			    __entry->eflags = eflags;
+			    __entry->ctxt = ctxt;
+			    __entry->etype = etype;
+			    __entry->hlen = hlen;
+			    __entry->tlen = tlen;
+			    __entry->updegr = updegr;
+			    __entry->etail = etail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    ),
 	     TP_printk(
 		"[%s] ctxt %d eflags 0x%llx etype %d,%s hlen %d tlen %d updegr %d etail %d",

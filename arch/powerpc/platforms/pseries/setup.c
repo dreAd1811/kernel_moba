@@ -41,7 +41,10 @@
 #include <linux/root_dev.h>
 #include <linux/of.h>
 #include <linux/of_pci.h>
+<<<<<<< HEAD
 #include <linux/memblock.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/mmu.h>
 #include <asm/processor.h>
@@ -70,10 +73,15 @@
 #include <asm/kexec.h>
 #include <asm/isa-bridge.h>
 #include <asm/security_features.h>
+<<<<<<< HEAD
 #include <asm/asm-const.h>
 
 #include "pseries.h"
 #include "../../../../drivers/pci/pci.h"
+=======
+
+#include "pseries.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int CMO_PrPSP = -1;
 int CMO_SecPSP = -1;
@@ -104,9 +112,12 @@ static void pSeries_show_cpuinfo(struct seq_file *m)
 static void __init fwnmi_init(void)
 {
 	unsigned long system_reset_addr, machine_check_addr;
+<<<<<<< HEAD
 	u8 *mce_data_buf;
 	unsigned int i;
 	int nr_cpus = num_possible_cpus();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int ibm_nmi_register = rtas_token("ibm,nmi-register");
 	if (ibm_nmi_register == RTAS_UNKNOWN_SERVICE)
@@ -120,6 +131,7 @@ static void __init fwnmi_init(void)
 	if (0 == rtas_call(ibm_nmi_register, 2, 1, NULL, system_reset_addr,
 				machine_check_addr))
 		fwnmi_active = 1;
+<<<<<<< HEAD
 
 	/*
 	 * Allocate a chunk for per cpu buffer to hold rtas errorlog.
@@ -132,6 +144,8 @@ static void __init fwnmi_init(void)
 		paca_ptrs[i]->mce_data_buf = mce_data_buf +
 						(RTAS_ERROR_LOG_MAX * i);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void pseries_8259_cascade(struct irq_desc *desc)
@@ -265,7 +279,11 @@ static int alloc_dispatch_logs(void)
 		return 0;
 
 	for_each_possible_cpu(cpu) {
+<<<<<<< HEAD
 		pp = paca_ptrs[cpu];
+=======
+		pp = &paca[cpu];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dtl = kmem_cache_alloc(dtl_cache, GFP_KERNEL);
 		if (!dtl) {
 			pr_warn("Failed to allocate dispatch trace log for cpu %d\n",
@@ -393,8 +411,13 @@ void pseries_disable_reloc_on_exc(void)
 		mdelay(get_longbusy_msecs(rc));
 	}
 	if (rc != H_SUCCESS)
+<<<<<<< HEAD
 		pr_warn("Warning: Failed to disable relocation on exceptions: %ld\n",
 			rc);
+=======
+		pr_warning("Warning: Failed to disable relocation on "
+			   "exceptions: %ld\n", rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(pseries_disable_reloc_on_exc);
 
@@ -564,6 +587,7 @@ void pseries_setup_rfi_flush(void)
 	setup_count_cache_flush();
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PCI_IOV
 enum rtas_iov_fw_value_map {
 	NUM_RES_PROPERTY  = 0, /* Number of Resources */
@@ -729,6 +753,8 @@ static resource_size_t pseries_pci_iov_resource_alignment(struct pci_dev *pdev,
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __init pSeries_setup_arch(void)
 {
 	set_arch_panic_timeout(10, ARCH_PANIC_TIMEOUT);
@@ -763,6 +789,7 @@ static void __init pSeries_setup_arch(void)
 		vpa_init(boot_cpuid);
 		ppc_md.power_save = pseries_lpar_idle;
 		ppc_md.enable_pmcs = pseries_lpar_enable_pmcs;
+<<<<<<< HEAD
 #ifdef CONFIG_PCI_IOV
 		ppc_md.pcibios_fixup_resources =
 			pseries_pci_fixup_resources;
@@ -771,6 +798,8 @@ static void __init pSeries_setup_arch(void)
 		ppc_md.pcibios_iov_resource_alignment =
 			pseries_pci_iov_resource_alignment;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* No special idle routine */
 		ppc_md.enable_pmcs = power4_enable_pmcs;
@@ -779,12 +808,15 @@ static void __init pSeries_setup_arch(void)
 	ppc_md.pcibios_root_bridge_prepare = pseries_root_bridge_prepare;
 }
 
+<<<<<<< HEAD
 static void pseries_panic(char *str)
 {
 	panic_flush_kmsg_end();
 	rtas_os_term(str);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init pSeries_init_panel(void)
 {
 	/* Manually leave the kernel version on the panel. */
@@ -820,7 +852,11 @@ static int pseries_set_dawr(unsigned long dawr, unsigned long dawrx)
 	/* PAPR says we can't set HYP */
 	dawrx &= ~DAWRX_HYP;
 
+<<<<<<< HEAD
 	return  plpar_set_watchpoint0(dawr, dawrx);
+=======
+	return  plapr_set_watchpoint0(dawr, dawrx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define CMO_CHARACTERISTICS_TOKEN 44
@@ -1013,7 +1049,11 @@ define_machine(pseries) {
 	.pcibios_fixup		= pSeries_final_fixup,
 	.restart		= rtas_restart,
 	.halt			= rtas_halt,
+<<<<<<< HEAD
 	.panic			= pseries_panic,
+=======
+	.panic			= rtas_os_term,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_boot_time		= rtas_get_boot_time,
 	.get_rtc_time		= rtas_get_rtc_time,
 	.set_rtc_time		= rtas_set_rtc_time,

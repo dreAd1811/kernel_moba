@@ -53,6 +53,22 @@ struct dt_cpu_feature {
 	int disabled;
 };
 
+<<<<<<< HEAD
+=======
+#define CPU_FTRS_BASE \
+	   (CPU_FTR_USE_TB | \
+	    CPU_FTR_LWSYNC | \
+	    CPU_FTR_FPU_UNAVAILABLE |\
+	    CPU_FTR_NODSISRALIGN |\
+	    CPU_FTR_NOEXECUTE |\
+	    CPU_FTR_COHERENT_ICACHE | \
+	    CPU_FTR_STCX_CHECKS_ADDRESS |\
+	    CPU_FTR_POPCNTB | CPU_FTR_POPCNTD | \
+	    CPU_FTR_DAWR | \
+	    CPU_FTR_ARCH_206 |\
+	    CPU_FTR_ARCH_207S)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MMU_FTRS_HASH_BASE (MMU_FTRS_POWER8)
 
 #define COMMON_USER_BASE	(PPC_FEATURE_32 | PPC_FEATURE_64 | \
@@ -64,6 +80,11 @@ struct dt_cpu_feature {
  * Set up the base CPU
  */
 
+<<<<<<< HEAD
+=======
+extern void __flush_tlb_power8(unsigned int action);
+extern void __flush_tlb_power9(unsigned int action);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
 extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
 
@@ -78,6 +99,30 @@ static struct {
 
 static void (*init_pmu_registers)(void);
 
+<<<<<<< HEAD
+=======
+static void cpufeatures_flush_tlb(void)
+{
+	/*
+	 * This is a temporary measure to keep equivalent TLB flush as the
+	 * cputable based setup code.
+	 */
+	switch (PVR_VER(mfspr(SPRN_PVR))) {
+	case PVR_POWER8:
+	case PVR_POWER8E:
+	case PVR_POWER8NVL:
+		__flush_tlb_power8(TLB_INVAL_SCOPE_GLOBAL);
+		break;
+	case PVR_POWER9:
+		__flush_tlb_power9(TLB_INVAL_SCOPE_GLOBAL);
+		break;
+	default:
+		pr_err("unknown CPU version for boot TLB flush\n");
+		break;
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __restore_cpu_cpufeatures(void)
 {
 	u64 lpcr;
@@ -107,13 +152,22 @@ static void __restore_cpu_cpufeatures(void)
 
 	if (init_pmu_registers)
 		init_pmu_registers();
+<<<<<<< HEAD
+=======
+
+	cpufeatures_flush_tlb();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static char dt_cpu_name[64];
 
 static struct cpu_spec __initdata base_cpu_spec = {
 	.cpu_name		= NULL,
+<<<<<<< HEAD
 	.cpu_features		= CPU_FTRS_DT_CPU_BASE,
+=======
+	.cpu_features		= CPU_FTRS_BASE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.cpu_user_features	= COMMON_USER_BASE,
 	.cpu_user_features2	= COMMON_USER2_BASE,
 	.mmu_features		= 0,
@@ -125,6 +179,10 @@ static struct cpu_spec __initdata base_cpu_spec = {
 	.oprofile_type		= PPC_OPROFILE_INVALID,
 	.cpu_setup		= NULL,
 	.cpu_restore		= __restore_cpu_cpufeatures,
+<<<<<<< HEAD
+=======
+	.flush_tlb		= NULL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.machine_check_early	= NULL,
 	.platform		= NULL,
 };
@@ -346,6 +404,17 @@ static int __init feat_enable_dscr(struct dt_cpu_feature *f)
 {
 	u64 lpcr;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Linux relies on FSCR[DSCR] being clear, so that we can take the
+	 * facility unavailable interrupt and track the task's usage of DSCR.
+	 * See facility_unavailable_exception().
+	 * Clear the bit here so that feat_enable() doesn't set it.
+	 */
+	f->fscr_bit_nr = -1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	feat_enable(f);
 
 	lpcr = mfspr(SPRN_LPCR);
@@ -380,6 +449,10 @@ static void init_pmu_power8(void)
 static int __init feat_enable_mce_power8(struct dt_cpu_feature *f)
 {
 	cur_cpu_spec->platform = "power8";
+<<<<<<< HEAD
+=======
+	cur_cpu_spec->flush_tlb = __flush_tlb_power8;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cur_cpu_spec->machine_check_early = __machine_check_early_realmode_p8;
 
 	return 1;
@@ -418,6 +491,10 @@ static void init_pmu_power9(void)
 static int __init feat_enable_mce_power9(struct dt_cpu_feature *f)
 {
 	cur_cpu_spec->platform = "power9";
+<<<<<<< HEAD
+=======
+	cur_cpu_spec->flush_tlb = __flush_tlb_power9;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cur_cpu_spec->machine_check_early = __machine_check_early_realmode_p9;
 
 	return 1;
@@ -584,8 +661,11 @@ static struct dt_cpu_feature_match __initdata
 	{"virtual-page-class-key-protection", feat_enable, 0},
 	{"transactional-memory", feat_enable_tm, CPU_FTR_TM},
 	{"transactional-memory-v3", feat_enable_tm, 0},
+<<<<<<< HEAD
 	{"tm-suspend-hypervisor-assist", feat_enable, CPU_FTR_P9_TM_HV_ASSIST},
 	{"tm-suspend-xer-so-bug", feat_enable, CPU_FTR_P9_TM_XER_SO_BUG},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"idle-nap", feat_enable_idle_nap, 0},
 	{"alignment-interrupt-dsisr", feat_enable_align_dsisr, 0},
 	{"idle-stop", feat_enable_idle_stop, 0},
@@ -602,7 +682,11 @@ static struct dt_cpu_feature_match __initdata
 	{"no-execute", feat_enable, 0},
 	{"strong-access-ordering", feat_enable, CPU_FTR_SAO},
 	{"cache-inhibited-large-page", feat_enable_large_ci, 0},
+<<<<<<< HEAD
 	{"coprocessor-icswx", feat_enable, 0},
+=======
+	{"coprocessor-icswx", feat_enable, CPU_FTR_ICSWX},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"hypervisor-virtualization-interrupt", feat_enable_hvi, 0},
 	{"program-priority-register", feat_enable, CPU_FTR_HAS_PPR},
 	{"wait", feat_enable, 0},
@@ -666,8 +750,15 @@ static bool __init cpufeatures_process_feature(struct dt_cpu_feature *f)
 		m = &dt_cpu_feature_match_table[i];
 		if (!strcmp(f->name, m->name)) {
 			known = true;
+<<<<<<< HEAD
 			if (m->enable(f))
 				break;
+=======
+			if (m->enable(f)) {
+				cur_cpu_spec->cpu_features |= m->cpu_ftr_bit_mask;
+				break;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			pr_info("not enabling: %s (disabled or unsupported by kernel)\n",
 				f->name);
@@ -675,6 +766,7 @@ static bool __init cpufeatures_process_feature(struct dt_cpu_feature *f)
 		}
 	}
 
+<<<<<<< HEAD
 	if (!known && enable_unknown) {
 		if (!feat_try_enable_unknown(f)) {
 			pr_info("not enabling: %s (unknown and unsupported by kernel)\n",
@@ -686,6 +778,14 @@ static bool __init cpufeatures_process_feature(struct dt_cpu_feature *f)
 	if (m->cpu_ftr_bit_mask)
 		cur_cpu_spec->cpu_features |= m->cpu_ftr_bit_mask;
 
+=======
+	if (!known && (!enable_unknown || !feat_try_enable_unknown(f))) {
+		pr_info("not enabling: %s (unknown and unsupported by kernel)\n",
+			f->name);
+		return false;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (known)
 		pr_debug("enabling: %s\n", f->name);
 	else
@@ -717,6 +817,11 @@ static __init void update_tlbie_feature_flag(unsigned long pvr)
 			WARN_ONCE(1, "Unknown PVR");
 			cur_cpu_spec->cpu_features |= CPU_FTR_P9_TLBIE_STQ_BUG;
 		}
+<<<<<<< HEAD
+=======
+
+		cur_cpu_spec->cpu_features |= CPU_FTR_P9_TLBIE_ERAT_BUG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -727,6 +832,7 @@ static __init void cpufeatures_cpu_quirks(void)
 	/*
 	 * Not all quirks can be derived from the cpufeatures device tree.
 	 */
+<<<<<<< HEAD
 	if ((version & 0xffffefff) == 0x004e0200)
 		; /* DD2.0 has no feature flag */
 	else if ((version & 0xffffefff) == 0x004e0201)
@@ -751,6 +857,12 @@ static __init void cpufeatures_cpu_quirks(void)
 	 * cpu feature version sequence.
 	 */
 	cur_cpu_spec->cpu_features |= CPU_FTR_PKEY;
+=======
+	if ((version & 0xffffff00) == 0x004e0100)
+		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD1;
+
+	update_tlbie_feature_flag(version);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init cpufeatures_setup_finished(void)
@@ -762,13 +874,21 @@ static void __init cpufeatures_setup_finished(void)
 		cur_cpu_spec->cpu_features |= CPU_FTR_HVMODE;
 	}
 
+<<<<<<< HEAD
 	/* Make sure powerpc_base_platform is non-NULL */
 	powerpc_base_platform = cur_cpu_spec->platform;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	system_registers.lpcr = mfspr(SPRN_LPCR);
 	system_registers.hfscr = mfspr(SPRN_HFSCR);
 	system_registers.fscr = mfspr(SPRN_FSCR);
 
+<<<<<<< HEAD
+=======
+	cpufeatures_flush_tlb();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_info("final cpu/mmu features = 0x%016lx 0x%08x\n",
 		cur_cpu_spec->cpu_features, cur_cpu_spec->mmu_features);
 }

@@ -37,7 +37,11 @@
  * Allow hardware encryption to be disabled.
  */
 static bool modparam_nohwcrypt;
+<<<<<<< HEAD
 module_param_named(nohwcrypt, modparam_nohwcrypt, bool, 0444);
+=======
+module_param_named(nohwcrypt, modparam_nohwcrypt, bool, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(nohwcrypt, "Disable hardware encryption.");
 
 /*

@@ -22,19 +22,28 @@
  * Authors: Ben Skeggs
  */
 #include "gk104.h"
+<<<<<<< HEAD
 #include "cgrp.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "changk104.h"
 
 #include <core/client.h>
 #include <core/gpuobj.h>
 #include <subdev/bar.h>
+<<<<<<< HEAD
 #include <subdev/fault.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <subdev/timer.h>
 #include <subdev/top.h>
 #include <engine/sw.h>
 
 #include <nvif/class.h>
+<<<<<<< HEAD
 #include <nvif/cl0080.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct gk104_fifo_engine_status {
 	bool busy;
@@ -96,6 +105,7 @@ gk104_fifo_engine_status(struct gk104_fifo *fifo, int engn,
 }
 
 static int
+<<<<<<< HEAD
 gk104_fifo_class_new(struct nvkm_fifo *base, const struct nvkm_oclass *oclass,
 		     void *argv, u32 argc, struct nvkm_object **pobject)
 {
@@ -115,10 +125,15 @@ gk104_fifo_class_new(struct nvkm_fifo *base, const struct nvkm_oclass *oclass,
 static int
 gk104_fifo_class_get(struct nvkm_fifo *base, int index,
 		     struct nvkm_oclass *oclass)
+=======
+gk104_fifo_class_get(struct nvkm_fifo *base, int index,
+		     const struct nvkm_fifo_chan_oclass **psclass)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct gk104_fifo *fifo = gk104_fifo(base);
 	int c = 0;
 
+<<<<<<< HEAD
 	if (fifo->func->user.ctor && c++ == index) {
 		oclass->base =  fifo->func->user.user;
 		oclass->engn = &fifo->func->user;
@@ -129,6 +144,11 @@ gk104_fifo_class_get(struct nvkm_fifo *base, int index,
 		oclass->base =  fifo->func->chan.user;
 		oclass->engn = &fifo->func->chan;
 		return 0;
+=======
+	while ((*psclass = fifo->func->chan[c])) {
+		if (c++ == index)
+			return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return c;
@@ -151,12 +171,18 @@ gk104_fifo_uevent_init(struct nvkm_fifo *fifo)
 void
 gk104_fifo_runlist_commit(struct gk104_fifo *fifo, int runl)
 {
+<<<<<<< HEAD
 	const struct gk104_fifo_runlist_func *func = fifo->func->runlist;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gk104_fifo_chan *chan;
 	struct nvkm_subdev *subdev = &fifo->base.engine.subdev;
 	struct nvkm_device *device = subdev->device;
 	struct nvkm_memory *mem;
+<<<<<<< HEAD
 	struct nvkm_fifo_cgrp *cgrp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int nr = 0;
 	int target;
 
@@ -166,6 +192,7 @@ gk104_fifo_runlist_commit(struct gk104_fifo *fifo, int runl)
 
 	nvkm_kmap(mem);
 	list_for_each_entry(chan, &fifo->runlist[runl].chan, head) {
+<<<<<<< HEAD
 		func->chan(chan, mem, nr++ * func->size);
 	}
 
@@ -174,6 +201,11 @@ gk104_fifo_runlist_commit(struct gk104_fifo *fifo, int runl)
 		list_for_each_entry(chan, &cgrp->chan, head) {
 			func->chan(chan, mem, nr++ * func->size);
 		}
+=======
+		nvkm_wo32(mem, (nr * 8) + 0, chan->base.chid);
+		nvkm_wo32(mem, (nr * 8) + 4, 0x00000000);
+		nr++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	nvkm_done(mem);
 
@@ -201,6 +233,7 @@ unlock:
 void
 gk104_fifo_runlist_remove(struct gk104_fifo *fifo, struct gk104_fifo_chan *chan)
 {
+<<<<<<< HEAD
 	struct nvkm_fifo_cgrp *cgrp = chan->cgrp;
 	mutex_lock(&fifo->base.engine.subdev.mutex);
 	if (!list_empty(&chan->head)) {
@@ -208,12 +241,17 @@ gk104_fifo_runlist_remove(struct gk104_fifo *fifo, struct gk104_fifo_chan *chan)
 		if (cgrp && !--cgrp->chan_nr)
 			list_del_init(&cgrp->head);
 	}
+=======
+	mutex_lock(&fifo->base.engine.subdev.mutex);
+	list_del_init(&chan->head);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&fifo->base.engine.subdev.mutex);
 }
 
 void
 gk104_fifo_runlist_insert(struct gk104_fifo *fifo, struct gk104_fifo_chan *chan)
 {
+<<<<<<< HEAD
 	struct nvkm_fifo_cgrp *cgrp = chan->cgrp;
 	mutex_lock(&fifo->base.engine.subdev.mutex);
 	if (cgrp) {
@@ -240,6 +278,13 @@ gk104_fifo_runlist = {
 	.chan = gk104_fifo_runlist_chan,
 };
 
+=======
+	mutex_lock(&fifo->base.engine.subdev.mutex);
+	list_add_tail(&chan->head, &fifo->runlist[chan->runl].chan);
+	mutex_unlock(&fifo->base.engine.subdev.mutex);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 gk104_fifo_recover_work(struct work_struct *w)
 {
@@ -295,6 +340,7 @@ gk104_fifo_recover_runl(struct gk104_fifo *fifo, int runl)
 	schedule_work(&fifo->recover.work);
 }
 
+<<<<<<< HEAD
 static struct gk104_fifo_chan *
 gk104_fifo_recover_chid(struct gk104_fifo *fifo, int runl, int chid)
 {
@@ -321,6 +367,8 @@ gk104_fifo_recover_chid(struct gk104_fifo *fifo, int runl, int chid)
 	return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 gk104_fifo_recover_chan(struct nvkm_fifo *base, int chid)
 {
@@ -338,10 +386,20 @@ gk104_fifo_recover_chan(struct nvkm_fifo *base, int chid)
 		return;
 
 	/* Lookup SW state for channel, and mark it as dead. */
+<<<<<<< HEAD
 	chan = gk104_fifo_recover_chid(fifo, runl, chid);
 	if (chan) {
 		chan->killed = true;
 		nvkm_fifo_kevent(&fifo->base, chid);
+=======
+	list_for_each_entry(chan, &fifo->runlist[runl].chan, head) {
+		if (chan->base.chid == chid) {
+			list_del_init(&chan->head);
+			chan->killed = true;
+			nvkm_fifo_kevent(&fifo->base, chid);
+			break;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Disable channel. */
@@ -430,6 +488,7 @@ gk104_fifo_recover_engn(struct gk104_fifo *fifo, int engn)
 	schedule_work(&fifo->recover.work);
 }
 
+<<<<<<< HEAD
 static void
 gk104_fifo_fault(struct nvkm_fifo *base, struct nvkm_fault_data *info)
 {
@@ -514,6 +573,8 @@ gk104_fifo_fault(struct nvkm_fifo *base, struct nvkm_fault_data *info)
 	spin_unlock_irqrestore(&fifo->base.lock, flags);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct nvkm_enum
 gk104_fifo_bind_reason[] = {
 	{ 0x01, "BIND_NOT_UNBOUND" },
@@ -623,6 +684,7 @@ gk104_fifo_intr_fault(struct gk104_fifo *fifo, int unit)
 	u32 inst = nvkm_rd32(device, 0x002800 + (unit * 0x10));
 	u32 valo = nvkm_rd32(device, 0x002804 + (unit * 0x10));
 	u32 vahi = nvkm_rd32(device, 0x002808 + (unit * 0x10));
+<<<<<<< HEAD
 	u32 type = nvkm_rd32(device, 0x00280c + (unit * 0x10));
 	struct nvkm_fault_data info;
 
@@ -638,6 +700,90 @@ gk104_fifo_intr_fault(struct gk104_fifo *fifo, int unit)
 	info.reason = (type & 0x000000ff);
 
 	nvkm_fifo_fault(&fifo->base, &info);
+=======
+	u32 stat = nvkm_rd32(device, 0x00280c + (unit * 0x10));
+	u32 gpc    = (stat & 0x1f000000) >> 24;
+	u32 client = (stat & 0x00001f00) >> 8;
+	u32 write  = (stat & 0x00000080);
+	u32 hub    = (stat & 0x00000040);
+	u32 reason = (stat & 0x0000000f);
+	const struct nvkm_enum *er, *eu, *ec;
+	struct nvkm_engine *engine = NULL;
+	struct nvkm_fifo_chan *chan;
+	unsigned long flags;
+	char gpcid[8] = "", en[16] = "";
+	int engn;
+
+	er = nvkm_enum_find(fifo->func->fault.reason, reason);
+	eu = nvkm_enum_find(fifo->func->fault.engine, unit);
+	if (hub) {
+		ec = nvkm_enum_find(fifo->func->fault.hubclient, client);
+	} else {
+		ec = nvkm_enum_find(fifo->func->fault.gpcclient, client);
+		snprintf(gpcid, sizeof(gpcid), "GPC%d/", gpc);
+	}
+
+	if (eu && eu->data2) {
+		switch (eu->data2) {
+		case NVKM_SUBDEV_BAR:
+			nvkm_mask(device, 0x001704, 0x00000000, 0x00000000);
+			break;
+		case NVKM_SUBDEV_INSTMEM:
+			nvkm_mask(device, 0x001714, 0x00000000, 0x00000000);
+			break;
+		case NVKM_ENGINE_IFB:
+			nvkm_mask(device, 0x001718, 0x00000000, 0x00000000);
+			break;
+		default:
+			engine = nvkm_device_engine(device, eu->data2);
+			break;
+		}
+	}
+
+	if (eu == NULL) {
+		enum nvkm_devidx engidx = nvkm_top_fault(device, unit);
+		if (engidx < NVKM_SUBDEV_NR) {
+			const char *src = nvkm_subdev_name[engidx];
+			char *dst = en;
+			do {
+				*dst++ = toupper(*src++);
+			} while(*src);
+			engine = nvkm_device_engine(device, engidx);
+		}
+	} else {
+		snprintf(en, sizeof(en), "%s", eu->name);
+	}
+
+	spin_lock_irqsave(&fifo->base.lock, flags);
+	chan = nvkm_fifo_chan_inst_locked(&fifo->base, (u64)inst << 12);
+
+	nvkm_error(subdev,
+		   "%s fault at %010llx engine %02x [%s] client %02x [%s%s] "
+		   "reason %02x [%s] on channel %d [%010llx %s]\n",
+		   write ? "write" : "read", (u64)vahi << 32 | valo,
+		   unit, en, client, gpcid, ec ? ec->name : "",
+		   reason, er ? er->name : "", chan ? chan->chid : -1,
+		   (u64)inst << 12,
+		   chan ? chan->object.client->name : "unknown");
+
+
+	/* Kill the channel that caused the fault. */
+	if (chan)
+		gk104_fifo_recover_chan(&fifo->base, chan->chid);
+
+	/* Channel recovery will probably have already done this for the
+	 * correct engine(s), but just in case we can't find the channel
+	 * information...
+	 */
+	for (engn = 0; engn < fifo->engine_nr && engine; engn++) {
+		if (fifo->engine[engn].engine == engine) {
+			gk104_fifo_recover_engn(fifo, engn);
+			break;
+		}
+	}
+
+	spin_unlock_irqrestore(&fifo->base.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct nvkm_bitfield gk104_fifo_pbdma_intr_0[] = {
@@ -866,6 +1012,7 @@ gk104_fifo_fini(struct nvkm_fifo *base)
 }
 
 static int
+<<<<<<< HEAD
 gk104_fifo_info(struct nvkm_fifo *base, u64 mthd, u64 *data)
 {
 	struct gk104_fifo *fifo = gk104_fifo(base);
@@ -894,12 +1041,17 @@ gk104_fifo_info(struct nvkm_fifo *base, u64 mthd, u64 *data)
 }
 
 static int
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gk104_fifo_oneinit(struct nvkm_fifo *base)
 {
 	struct gk104_fifo *fifo = gk104_fifo(base);
 	struct nvkm_subdev *subdev = &fifo->base.engine.subdev;
 	struct nvkm_device *device = subdev->device;
+<<<<<<< HEAD
 	struct nvkm_vmm *bar = nvkm_bar_bar1_vmm(device);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int engn, runl, pbid, ret, i, j;
 	enum nvkm_devidx engidx;
 	u32 *map;
@@ -910,7 +1062,11 @@ gk104_fifo_oneinit(struct nvkm_fifo *base)
 	nvkm_debug(subdev, "%d PBDMA(s)\n", fifo->pbdma_nr);
 
 	/* Read PBDMA->runlist(s) mapping from HW. */
+<<<<<<< HEAD
 	if (!(map = kcalloc(fifo->pbdma_nr, sizeof(*map), GFP_KERNEL)))
+=======
+	if (!(map = kzalloc(sizeof(*map) * fifo->pbdma_nr, GFP_KERNEL)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	for (i = 0; i < fifo->pbdma_nr; i++)
@@ -941,6 +1097,7 @@ gk104_fifo_oneinit(struct nvkm_fifo *base)
 	kfree(map);
 
 	for (i = 0; i < fifo->runlist_nr; i++) {
+<<<<<<< HEAD
 		for (j = 0; j < ARRAY_SIZE(fifo->runlist[i].mem); j++) {
 			ret = nvkm_memory_new(device, NVKM_MEM_TARGET_INST,
 					      fifo->base.nr * 2/* TSG+chan */ *
@@ -953,6 +1110,21 @@ gk104_fifo_oneinit(struct nvkm_fifo *base)
 
 		init_waitqueue_head(&fifo->runlist[i].wait);
 		INIT_LIST_HEAD(&fifo->runlist[i].cgrp);
+=======
+		ret = nvkm_memory_new(device, NVKM_MEM_TARGET_INST,
+				      0x8000, 0x1000, false,
+				      &fifo->runlist[i].mem[0]);
+		if (ret)
+			return ret;
+
+		ret = nvkm_memory_new(device, NVKM_MEM_TARGET_INST,
+				      0x8000, 0x1000, false,
+				      &fifo->runlist[i].mem[1]);
+		if (ret)
+			return ret;
+
+		init_waitqueue_head(&fifo->runlist[i].wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		INIT_LIST_HEAD(&fifo->runlist[i].chan);
 	}
 
@@ -962,12 +1134,22 @@ gk104_fifo_oneinit(struct nvkm_fifo *base)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = nvkm_vmm_get(bar, 12, nvkm_memory_size(fifo->user.mem),
 			   &fifo->user.bar);
 	if (ret)
 		return ret;
 
 	return nvkm_memory_map(fifo->user.mem, 0, bar, fifo->user.bar, NULL, 0);
+=======
+	ret = nvkm_bar_umap(device->bar, fifo->base.nr * 0x200, 12,
+			    &fifo->user.bar);
+	if (ret)
+		return ret;
+
+	nvkm_memory_map(fifo->user.mem, &fifo->user.bar, 0);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -993,10 +1175,14 @@ gk104_fifo_init(struct nvkm_fifo *base)
 		nvkm_wr32(device, 0x04014c + (i * 0x2000), 0xffffffff); /* INTREN */
 	}
 
+<<<<<<< HEAD
 	nvkm_wr32(device, 0x002254, 0x10000000 | fifo->user.bar->addr >> 12);
 
 	if (fifo->func->init_pbdma_timeout)
 		fifo->func->init_pbdma_timeout(fifo);
+=======
+	nvkm_wr32(device, 0x002254, 0x10000000 | fifo->user.bar.offset >> 12);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	nvkm_wr32(device, 0x002100, 0xffffffff);
 	nvkm_wr32(device, 0x002140, 0x7fffffff);
@@ -1006,6 +1192,7 @@ static void *
 gk104_fifo_dtor(struct nvkm_fifo *base)
 {
 	struct gk104_fifo *fifo = gk104_fifo(base);
+<<<<<<< HEAD
 	struct nvkm_device *device = fifo->base.engine.subdev.device;
 	int i;
 
@@ -1015,6 +1202,16 @@ gk104_fifo_dtor(struct nvkm_fifo *base)
 	for (i = 0; i < fifo->runlist_nr; i++) {
 		nvkm_memory_unref(&fifo->runlist[i].mem[1]);
 		nvkm_memory_unref(&fifo->runlist[i].mem[0]);
+=======
+	int i;
+
+	nvkm_vm_put(&fifo->user.bar);
+	nvkm_memory_del(&fifo->user.mem);
+
+	for (i = 0; i < fifo->runlist_nr; i++) {
+		nvkm_memory_del(&fifo->runlist[i].mem[1]);
+		nvkm_memory_del(&fifo->runlist[i].mem[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return fifo;
@@ -1024,16 +1221,25 @@ static const struct nvkm_fifo_func
 gk104_fifo_ = {
 	.dtor = gk104_fifo_dtor,
 	.oneinit = gk104_fifo_oneinit,
+<<<<<<< HEAD
 	.info = gk104_fifo_info,
 	.init = gk104_fifo_init,
 	.fini = gk104_fifo_fini,
 	.intr = gk104_fifo_intr,
 	.fault = gk104_fifo_fault,
+=======
+	.init = gk104_fifo_init,
+	.fini = gk104_fifo_fini,
+	.intr = gk104_fifo_intr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.uevent_init = gk104_fifo_uevent_init,
 	.uevent_fini = gk104_fifo_uevent_fini,
 	.recover_chan = gk104_fifo_recover_chan,
 	.class_get = gk104_fifo_class_get,
+<<<<<<< HEAD
 	.class_new = gk104_fifo_class_new,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int
@@ -1052,6 +1258,7 @@ gk104_fifo_new_(const struct gk104_fifo_func *func, struct nvkm_device *device,
 }
 
 const struct nvkm_enum
+<<<<<<< HEAD
 gk104_fifo_fault_access[] = {
 	{ 0x0, "READ" },
 	{ 0x1, "WRITE" },
@@ -1059,6 +1266,8 @@ gk104_fifo_fault_access[] = {
 };
 
 const struct nvkm_enum
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gk104_fifo_fault_engine[] = {
 	{ 0x00, "GR", NULL, NVKM_ENGINE_GR },
 	{ 0x01, "DISPLAY" },
@@ -1175,13 +1384,23 @@ gk104_fifo_fault_gpcclient[] = {
 
 static const struct gk104_fifo_func
 gk104_fifo = {
+<<<<<<< HEAD
 	.fault.access = gk104_fifo_fault_access,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fault.engine = gk104_fifo_fault_engine,
 	.fault.reason = gk104_fifo_fault_reason,
 	.fault.hubclient = gk104_fifo_fault_hubclient,
 	.fault.gpcclient = gk104_fifo_fault_gpcclient,
+<<<<<<< HEAD
 	.runlist = &gk104_fifo_runlist,
 	.chan = {{0,0,KEPLER_CHANNEL_GPFIFO_A}, gk104_fifo_gpfifo_new },
+=======
+	.chan = {
+		&gk104_fifo_gpfifo_oclass,
+		NULL
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

@@ -1627,7 +1627,11 @@ nvkm_device_pci_new(struct pci_dev *pci_dev, const char *cfg, const char *dbg,
 	const struct nvkm_device_pci_vendor *pciv;
 	const char *name = NULL;
 	struct nvkm_device_pci *pdev;
+<<<<<<< HEAD
 	int ret, bits;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = pci_enable_device(pci_dev);
 	if (ret)
@@ -1679,6 +1683,7 @@ nvkm_device_pci_new(struct pci_dev *pci_dev, const char *cfg, const char *dbg,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	/* Set DMA mask based on capabilities reported by the MMU subdev. */
 	if (pdev->device.mmu && !pdev->device.pci->agp.bridge)
 		bits = pdev->device.mmu->dma_bits;
@@ -1690,6 +1695,19 @@ nvkm_device_pci_new(struct pci_dev *pci_dev, const char *cfg, const char *dbg,
 		dma_set_mask_and_coherent(&pci_dev->dev, DMA_BIT_MASK(32));
 		pdev->device.mmu->dma_bits = 32;
 	}
+=======
+	/*
+	 * Set a preliminary DMA mask based on the .dma_bits member of the
+	 * MMU subdevice. This allows other subdevices to create DMA mappings
+	 * in their init() or oneinit() methods, which may be called before the
+	 * TTM layer sets the DMA mask definitively.
+	 * This is necessary for platforms where the default DMA mask of 32
+	 * does not cover any system memory, i.e., when all RAM is > 4 GB.
+	 */
+	if (pdev->device.mmu)
+		dma_set_mask_and_coherent(&pci_dev->dev,
+				DMA_BIT_MASK(pdev->device.mmu->dma_bits));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

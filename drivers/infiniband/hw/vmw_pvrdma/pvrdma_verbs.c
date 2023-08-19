@@ -82,6 +82,7 @@ int pvrdma_query_device(struct ib_device *ibdev,
 	props->max_qp = dev->dsr->caps.max_qp;
 	props->max_qp_wr = dev->dsr->caps.max_qp_wr;
 	props->device_cap_flags = dev->dsr->caps.device_cap_flags;
+<<<<<<< HEAD
 	props->max_send_sge = dev->dsr->caps.max_sge;
 	props->max_recv_sge = dev->dsr->caps.max_sge;
 	props->max_sge_rd = PVRDMA_GET_CAP(dev, dev->dsr->caps.max_sge,
@@ -89,6 +90,11 @@ int pvrdma_query_device(struct ib_device *ibdev,
 	props->max_srq = dev->dsr->caps.max_srq;
 	props->max_srq_wr = dev->dsr->caps.max_srq_wr;
 	props->max_srq_sge = dev->dsr->caps.max_srq_sge;
+=======
+	props->max_sge = dev->dsr->caps.max_sge;
+	props->max_sge_rd = PVRDMA_GET_CAP(dev, dev->dsr->caps.max_sge,
+					   dev->dsr->caps.max_sge_rd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	props->max_cq = dev->dsr->caps.max_cq;
 	props->max_cqe = dev->dsr->caps.max_cqe;
 	props->max_mr = dev->dsr->caps.max_mr;
@@ -155,8 +161,12 @@ int pvrdma_query_port(struct ib_device *ibdev, u8 port,
 	props->gid_tbl_len = resp->attrs.gid_tbl_len;
 	props->port_cap_flags =
 		pvrdma_port_cap_flags_to_ib(resp->attrs.port_cap_flags);
+<<<<<<< HEAD
 	props->port_cap_flags |= IB_PORT_CM_SUP;
 	props->ip_gids = true;
+=======
+	props->port_cap_flags |= IB_PORT_CM_SUP | IB_PORT_IP_BASED_GIDS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	props->max_msg_sz = resp->attrs.max_msg_sz;
 	props->bad_pkey_cntr = resp->attrs.bad_pkey_cntr;
 	props->qkey_viol_cntr = resp->attrs.qkey_viol_cntr;
@@ -555,7 +565,11 @@ struct ib_ah *pvrdma_create_ah(struct ib_pd *pd, struct rdma_ah_attr *ah_attr,
 	if (!atomic_add_unless(&dev->num_ahs, 1, dev->dsr->caps.max_ah))
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	ah = kzalloc(sizeof(*ah), GFP_KERNEL);
+=======
+	ah = kzalloc(sizeof(*ah), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ah) {
 		atomic_dec(&dev->num_ahs);
 		return ERR_PTR(-ENOMEM);

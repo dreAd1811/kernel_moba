@@ -10,8 +10,11 @@
 #include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/tinydrm/tinydrm.h>
 #include <linux/device.h>
 #include <linux/dma-buf.h>
@@ -37,6 +40,26 @@
  */
 
 /**
+<<<<<<< HEAD
+=======
+ * tinydrm_lastclose - DRM lastclose helper
+ * @drm: DRM device
+ *
+ * This function ensures that fbdev is restored when drm_lastclose() is called
+ * on the last drm_release(). Drivers can use this as their
+ * &drm_driver->lastclose callback.
+ */
+void tinydrm_lastclose(struct drm_device *drm)
+{
+	struct tinydrm_device *tdev = drm->dev_private;
+
+	DRM_DEBUG_KMS("\n");
+	drm_fbdev_cma_restore_mode(tdev->fbdev_cma);
+}
+EXPORT_SYMBOL(tinydrm_lastclose);
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * tinydrm_gem_cma_prime_import_sg_table - Produce a CMA GEM object from
  *     another driver's scatter/gather table of pinned pages
  * @drm: DRM device to import into
@@ -91,7 +114,11 @@ EXPORT_SYMBOL(tinydrm_gem_cma_prime_import_sg_table);
  * GEM object state and frees the memory used to store the object itself using
  * drm_gem_cma_free_object(). It also handles PRIME buffers which has the kernel
  * virtual address set by tinydrm_gem_cma_prime_import_sg_table(). Drivers
+<<<<<<< HEAD
  * can use this as their &drm_driver->gem_free_object_unlocked callback.
+=======
+ * can use this as their &drm_driver->gem_free_object callback.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void tinydrm_gem_cma_free_object(struct drm_gem_object *gem_obj)
 {
@@ -113,7 +140,11 @@ tinydrm_fb_create(struct drm_device *drm, struct drm_file *file_priv,
 {
 	struct tinydrm_device *tdev = drm->dev_private;
 
+<<<<<<< HEAD
 	return drm_gem_fb_create_with_funcs(drm, file_priv, mode_cmd,
+=======
+	return drm_fb_cma_create_with_funcs(drm, file_priv, mode_cmd,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    tdev->fb_funcs);
 }
 
@@ -198,23 +229,49 @@ EXPORT_SYMBOL(devm_tinydrm_init);
 static int tinydrm_register(struct tinydrm_device *tdev)
 {
 	struct drm_device *drm = tdev->drm;
+<<<<<<< HEAD
+=======
+	int bpp = drm->mode_config.preferred_depth;
+	struct drm_fbdev_cma *fbdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = drm_dev_register(tdev->drm, 0);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = drm_fbdev_generic_setup(drm, 0);
 	if (ret)
 		DRM_ERROR("Failed to initialize fbdev: %d\n", ret);
+=======
+	fbdev = drm_fbdev_cma_init_with_funcs(drm, bpp ? bpp : 32,
+					      drm->mode_config.num_connector,
+					      tdev->fb_funcs);
+	if (IS_ERR(fbdev))
+		DRM_ERROR("Failed to initialize fbdev: %ld\n", PTR_ERR(fbdev));
+	else
+		tdev->fbdev_cma = fbdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static void tinydrm_unregister(struct tinydrm_device *tdev)
 {
+<<<<<<< HEAD
 	drm_atomic_helper_shutdown(tdev->drm);
 	drm_dev_unregister(tdev->drm);
+=======
+	struct drm_fbdev_cma *fbdev_cma = tdev->fbdev_cma;
+
+	drm_atomic_helper_shutdown(tdev->drm);
+	/* don't restore fbdev in lastclose, keep pipeline disabled */
+	tdev->fbdev_cma = NULL;
+	drm_dev_unregister(tdev->drm);
+	if (fbdev_cma)
+		drm_fbdev_cma_fini(fbdev_cma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void devm_tinydrm_register_release(void *data)
@@ -264,4 +321,74 @@ void tinydrm_shutdown(struct tinydrm_device *tdev)
 }
 EXPORT_SYMBOL(tinydrm_shutdown);
 
+<<<<<<< HEAD
+=======
+/**
+ * tinydrm_suspend - Suspend tinydrm
+ * @tdev: tinydrm device
+ *
+ * Used in driver PM operations to suspend tinydrm.
+ * Suspends fbdev and DRM.
+ * Resume with tinydrm_resume().
+ *
+ * Returns:
+ * Zero on success, negative error code on failure.
+ */
+int tinydrm_suspend(struct tinydrm_device *tdev)
+{
+	struct drm_atomic_state *state;
+
+	if (tdev->suspend_state) {
+		DRM_ERROR("Failed to suspend: state already set\n");
+		return -EINVAL;
+	}
+
+	drm_fbdev_cma_set_suspend_unlocked(tdev->fbdev_cma, 1);
+	state = drm_atomic_helper_suspend(tdev->drm);
+	if (IS_ERR(state)) {
+		drm_fbdev_cma_set_suspend_unlocked(tdev->fbdev_cma, 0);
+		return PTR_ERR(state);
+	}
+
+	tdev->suspend_state = state;
+
+	return 0;
+}
+EXPORT_SYMBOL(tinydrm_suspend);
+
+/**
+ * tinydrm_resume - Resume tinydrm
+ * @tdev: tinydrm device
+ *
+ * Used in driver PM operations to resume tinydrm.
+ * Suspend with tinydrm_suspend().
+ *
+ * Returns:
+ * Zero on success, negative error code on failure.
+ */
+int tinydrm_resume(struct tinydrm_device *tdev)
+{
+	struct drm_atomic_state *state = tdev->suspend_state;
+	int ret;
+
+	if (!state) {
+		DRM_ERROR("Failed to resume: state is not set\n");
+		return -EINVAL;
+	}
+
+	tdev->suspend_state = NULL;
+
+	ret = drm_atomic_helper_resume(tdev->drm, state);
+	if (ret) {
+		DRM_ERROR("Error resuming state: %d\n", ret);
+		return ret;
+	}
+
+	drm_fbdev_cma_set_suspend_unlocked(tdev->fbdev_cma, 0);
+
+	return 0;
+}
+EXPORT_SYMBOL(tinydrm_resume);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

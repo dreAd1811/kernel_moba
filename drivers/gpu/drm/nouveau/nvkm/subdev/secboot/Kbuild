@@ -7,10 +7,16 @@ nvkm-y += nvkm/subdev/secboot/acr_r352.o
 nvkm-y += nvkm/subdev/secboot/acr_r361.o
 nvkm-y += nvkm/subdev/secboot/acr_r364.o
 nvkm-y += nvkm/subdev/secboot/acr_r367.o
+<<<<<<< HEAD
 nvkm-y += nvkm/subdev/secboot/acr_r370.o
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm-y += nvkm/subdev/secboot/acr_r375.o
 nvkm-y += nvkm/subdev/secboot/gm200.o
 nvkm-y += nvkm/subdev/secboot/gm20b.o
 nvkm-y += nvkm/subdev/secboot/gp102.o
+<<<<<<< HEAD
 nvkm-y += nvkm/subdev/secboot/gp108.o
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 nvkm-y += nvkm/subdev/secboot/gp10b.o

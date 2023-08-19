@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * c8sectpfe-core.c - C8SECTPFE STi DVB driver
  *
@@ -7,6 +10,13 @@
  *   Author:Peter Bennett <peter.bennett@st.com>
  *	    Peter Griffin <peter.griffin@linaro.org>
  *
+<<<<<<< HEAD
+=======
+ *	This program is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU General Public License as
+ *	published by the Free Software Foundation; either version 2 of
+ *	the License, or (at your option) any later version.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/atomic.h>
 #include <linux/clk.h>
@@ -35,10 +45,17 @@
 #include "c8sectpfe-core.h"
 #include "c8sectpfe-common.h"
 #include "c8sectpfe-debugfs.h"
+<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
+=======
+#include "dmxdev.h"
+#include "dvb_demux.h"
+#include "dvb_frontend.h"
+#include "dvb_net.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define FIRMWARE_MEMDMA "pti_memdma_h407.elf"
 MODULE_FIRMWARE(FIRMWARE_MEMDMA);
@@ -58,9 +75,15 @@ static int load_c8sectpfe_fw(struct c8sectpfei *fei);
 
 #define FIFO_LEN 1024
 
+<<<<<<< HEAD
 static void c8sectpfe_timer_interrupt(struct timer_list *t)
 {
 	struct c8sectpfei *fei = from_timer(fei, t, timer);
+=======
+static void c8sectpfe_timer_interrupt(unsigned long ac8sectpfei)
+{
+	struct c8sectpfei *fei = (struct c8sectpfei *)ac8sectpfei;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct channel_info *channel;
 	int chan_num;
 
@@ -690,7 +713,11 @@ static int c8sectpfe_probe(struct platform_device *pdev)
 	if (IS_ERR(fei->sram))
 		return PTR_ERR(fei->sram);
 
+<<<<<<< HEAD
 	fei->sram_size = resource_size(res);
+=======
+	fei->sram_size = res->end - res->start;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fei->idle_irq = platform_get_irq_byname(pdev, "c8sectpfe-idle-irq");
 	if (fei->idle_irq < 0) {
@@ -864,7 +891,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
 	}
 
 	/* Setup timer interrupt */
+<<<<<<< HEAD
 	timer_setup(&fei->timer, c8sectpfe_timer_interrupt, 0);
+=======
+	setup_timer(&fei->timer, c8sectpfe_timer_interrupt,
+		    (unsigned long)fei);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&fei->lock);
 

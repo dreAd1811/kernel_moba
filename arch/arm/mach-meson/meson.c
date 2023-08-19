@@ -20,7 +20,10 @@ static const char * const meson_common_board_compat[] = {
 	"amlogic,meson6",
 	"amlogic,meson8",
 	"amlogic,meson8b",
+<<<<<<< HEAD
 	"amlogic,meson8m2",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 

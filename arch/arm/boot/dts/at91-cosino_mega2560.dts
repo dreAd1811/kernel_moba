@@ -62,7 +62,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		usb0: ohci@600000 {
+=======
+		usb0: ohci@00600000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "okay";
 			num-ports = <3>;
 			atmel,vbus-gpio = <0 /* &pioD 18 GPIO_ACTIVE_LOW */
@@ -71,7 +75,11 @@
 					  >;
 		};
 
+<<<<<<< HEAD
 		usb1: ehci@700000 {
+=======
+		usb1: ehci@00700000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "okay";
 		};
 	};

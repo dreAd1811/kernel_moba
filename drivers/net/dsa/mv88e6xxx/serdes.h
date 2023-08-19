@@ -19,8 +19,11 @@
 #define MV88E6352_ADDR_SERDES		0x0f
 #define MV88E6352_SERDES_PAGE_FIBER	0x01
 
+<<<<<<< HEAD
 #define MV88E6341_ADDR_SERDES		0x15
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MV88E6390_PORT9_LANE0		0x09
 #define MV88E6390_PORT9_LANE1		0x12
 #define MV88E6390_PORT9_LANE2		0x13
@@ -29,6 +32,10 @@
 #define MV88E6390_PORT10_LANE1		0x15
 #define MV88E6390_PORT10_LANE2		0x16
 #define MV88E6390_PORT10_LANE3		0x17
+<<<<<<< HEAD
+=======
+#define MV88E6390_SERDES_DEVICE		(4 << 16)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* 10GBASE-R and 10GBASE-X4/X2 */
 #define MV88E6390_PCS_CONTROL_1		0x1000
@@ -42,6 +49,7 @@
 #define MV88E6390_SGMII_CONTROL_RESET		BIT(15)
 #define MV88E6390_SGMII_CONTROL_LOOPBACK	BIT(14)
 #define MV88E6390_SGMII_CONTROL_PDOWN		BIT(11)
+<<<<<<< HEAD
 #define MV88E6390_SGMII_STATUS		0x2001
 #define MV88E6390_SGMII_STATUS_AN_DONE		BIT(5)
 #define MV88E6390_SGMII_STATUS_REMOTE_FAULT	BIT(4)
@@ -73,5 +81,10 @@ int mv88e6390_serdes_irq_enable(struct mv88e6xxx_chip *chip, int port,
 				int lane);
 int mv88e6390_serdes_irq_disable(struct mv88e6xxx_chip *chip, int port,
 				 int lane);
+=======
+
+int mv88e6352_serdes_power(struct mv88e6xxx_chip *chip, int port, bool on);
+int mv88e6390_serdes_power(struct mv88e6xxx_chip *chip, int port, bool on);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

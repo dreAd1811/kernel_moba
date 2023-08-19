@@ -98,7 +98,11 @@ int qxl_gem_object_create_with_handle(struct qxl_device *qdev,
 		return r;
 	/* drop reference from allocate - handle holds it now */
 	*qobj = gem_to_qxl_bo(gobj);
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(gobj);
+=======
+	drm_gem_object_unreference_unlocked(gobj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -62,7 +62,11 @@ void zx_vou_config_dividers(struct drm_crtc *crtc,
 			    struct vou_div_config *configs, int num);
 
 void zx_vou_layer_enable(struct drm_plane *plane);
+<<<<<<< HEAD
 void zx_vou_layer_disable(struct drm_plane *plane,
 			  struct drm_plane_state *old_state);
+=======
+void zx_vou_layer_disable(struct drm_plane *plane);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __ZX_VOU_H__ */

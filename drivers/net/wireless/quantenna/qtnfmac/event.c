@@ -25,7 +25,10 @@
 #include "trans.h"
 #include "util.h"
 #include "event.h"
+<<<<<<< HEAD
 #include "qlink_util.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int
 qtnf_event_handle_sta_assoc(struct qtnf_wmac *mac, struct qtnf_vif *vif,
@@ -34,13 +37,20 @@ qtnf_event_handle_sta_assoc(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 {
 	const u8 *sta_addr;
 	u16 frame_control;
+<<<<<<< HEAD
 	struct station_info *sinfo;
+=======
+	struct station_info sinfo = { 0 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t payload_len;
 	u16 tlv_type;
 	u16 tlv_value_len;
 	size_t tlv_full_len;
 	const struct qlink_tlv_hdr *tlv;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(len < sizeof(*sta_assoc))) {
 		pr_err("VIF%u.%u: payload is too short (%u < %zu)\n",
@@ -54,9 +64,17 @@ qtnf_event_handle_sta_assoc(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 		return -EPROTO;
 	}
 
+<<<<<<< HEAD
 	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
 	if (!sinfo)
 		return -ENOMEM;
+=======
+	if (!(vif->bss_status & QTNF_STATE_AP_START)) {
+		pr_err("VIF%u.%u: STA_ASSOC event when AP is not started\n",
+		       mac->macid, vif->vifid);
+		return -EPROTO;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sta_addr = sta_assoc->sta_addr;
 	frame_control = le16_to_cpu(sta_assoc->frame_control);
@@ -64,6 +82,7 @@ qtnf_event_handle_sta_assoc(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 	pr_debug("VIF%u.%u: MAC:%pM FC:%x\n", mac->macid, vif->vifid, sta_addr,
 		 frame_control);
 
+<<<<<<< HEAD
 	qtnf_sta_list_add(vif, sta_addr);
 
 	sinfo->assoc_req_ies = NULL;
@@ -74,11 +93,23 @@ qtnf_event_handle_sta_assoc(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 	tlv = (const struct qlink_tlv_hdr *)sta_assoc->ies;
 
 	while (payload_len >= sizeof(*tlv)) {
+=======
+	qtnf_sta_list_add(&vif->sta_list, sta_addr);
+
+	sinfo.assoc_req_ies = NULL;
+	sinfo.assoc_req_ies_len = 0;
+
+	payload_len = len - sizeof(*sta_assoc);
+	tlv = (struct qlink_tlv_hdr *)sta_assoc->ies;
+
+	while (payload_len >= sizeof(struct qlink_tlv_hdr)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tlv_type = le16_to_cpu(tlv->type);
 		tlv_value_len = le16_to_cpu(tlv->len);
 		tlv_full_len = tlv_value_len + sizeof(struct qlink_tlv_hdr);
 
 		if (tlv_full_len > payload_len) {
+<<<<<<< HEAD
 			ret = -EINVAL;
 			goto out;
 		}
@@ -100,6 +131,17 @@ qtnf_event_handle_sta_assoc(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 				sinfo->assoc_req_ies = ie_set->ie_data;
 				sinfo->assoc_req_ies_len = ie_len;
 			}
+=======
+			pr_warn("VIF%u.%u: malformed TLV 0x%.2X; LEN: %u\n",
+				mac->macid, vif->vifid, tlv_type,
+				tlv_value_len);
+			return -EINVAL;
+		}
+
+		if (tlv_type == QTN_TLV_ID_IE_SET) {
+			sinfo.assoc_req_ies = tlv->val;
+			sinfo.assoc_req_ies_len = tlv_value_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		payload_len -= tlv_full_len;
@@ -107,6 +149,7 @@ qtnf_event_handle_sta_assoc(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 	}
 
 	if (payload_len) {
+<<<<<<< HEAD
 		ret = -EINVAL;
 		goto out;
 	}
@@ -117,6 +160,17 @@ qtnf_event_handle_sta_assoc(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 out:
 	kfree(sinfo);
 	return ret;
+=======
+		pr_warn("VIF%u.%u: malformed TLV buf; bytes left: %zu\n",
+			mac->macid, vif->vifid, payload_len);
+		return -EINVAL;
+	}
+
+	cfg80211_new_sta(vif->netdev, sta_assoc->sta_addr, &sinfo,
+			 GFP_KERNEL);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -140,13 +194,26 @@ qtnf_event_handle_sta_deauth(struct qtnf_wmac *mac, struct qtnf_vif *vif,
 		return -EPROTO;
 	}
 
+<<<<<<< HEAD
+=======
+	if (!(vif->bss_status & QTNF_STATE_AP_START)) {
+		pr_err("VIF%u.%u: STA_DEAUTH event when AP is not started\n",
+		       mac->macid, vif->vifid);
+		return -EPROTO;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sta_addr = sta_deauth->sta_addr;
 	reason = le16_to_cpu(sta_deauth->reason);
 
 	pr_debug("VIF%u.%u: MAC:%pM reason:%x\n", mac->macid, vif->vifid,
 		 sta_addr, reason);
 
+<<<<<<< HEAD
 	if (qtnf_sta_list_del(vif, sta_addr))
+=======
+	if (qtnf_sta_list_del(&vif->sta_list, sta_addr))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cfg80211_del_sta(vif->netdev, sta_deauth->sta_addr,
 				 GFP_KERNEL);
 
@@ -211,9 +278,17 @@ qtnf_event_handle_bss_leave(struct qtnf_vif *vif,
 		return -EPROTO;
 	}
 
+<<<<<<< HEAD
 	if (vif->sta_state != QTNF_STA_CONNECTED)
 		pr_warn("VIF%u.%u: BSS_LEAVE event when STA is not connected\n",
 			vif->mac->macid, vif->vifid);
+=======
+	if (vif->sta_state != QTNF_STA_CONNECTED) {
+		pr_err("VIF%u.%u: BSS_LEAVE event when STA is not connected\n",
+		       vif->mac->macid, vif->vifid);
+		return -EPROTO;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("VIF%u.%u: disconnected\n", vif->mac->macid, vif->vifid);
 
@@ -249,8 +324,14 @@ qtnf_event_handle_mgmt_received(struct qtnf_vif *vif,
 	pr_debug("%s LEN:%u FC:%.4X SA:%pM\n", vif->netdev->name, frame_len,
 		 le16_to_cpu(frame->frame_control), frame->addr2);
 
+<<<<<<< HEAD
 	cfg80211_rx_mgmt(&vif->wdev, le32_to_cpu(rxmgmt->freq), rxmgmt->sig_dbm,
 			 rxmgmt->frame_data, frame_len, flags);
+=======
+	cfg80211_rx_mgmt(&vif->wdev, le32_to_cpu(rxmgmt->freq),
+			 le32_to_cpu(rxmgmt->sig_dbm), rxmgmt->frame_data,
+			 frame_len, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -263,12 +344,20 @@ qtnf_event_handle_scan_results(struct qtnf_vif *vif,
 	struct cfg80211_bss *bss;
 	struct ieee80211_channel *channel;
 	struct wiphy *wiphy = priv_to_wiphy(vif->mac);
+<<<<<<< HEAD
 	enum cfg80211_bss_frame_type frame_type = CFG80211_BSS_FTYPE_UNKNOWN;
+=======
+	enum cfg80211_bss_frame_type frame_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t payload_len;
 	u16 tlv_type;
 	u16 tlv_value_len;
 	size_t tlv_full_len;
 	const struct qlink_tlv_hdr *tlv;
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const u8 *ies = NULL;
 	size_t ies_len = 0;
 
@@ -285,6 +374,20 @@ qtnf_event_handle_scan_results(struct qtnf_vif *vif,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	switch (sr->frame_type) {
+	case QLINK_BSS_FTYPE_BEACON:
+		frame_type = CFG80211_BSS_FTYPE_BEACON;
+		break;
+	case QLINK_BSS_FTYPE_PRESP:
+		frame_type = CFG80211_BSS_FTYPE_PRESP;
+		break;
+	default:
+		frame_type = CFG80211_BSS_FTYPE_UNKNOWN;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	payload_len = len - sizeof(*sr);
 	tlv = (struct qlink_tlv_hdr *)sr->payload;
 
@@ -293,6 +396,7 @@ qtnf_event_handle_scan_results(struct qtnf_vif *vif,
 		tlv_value_len = le16_to_cpu(tlv->len);
 		tlv_full_len = tlv_value_len + sizeof(struct qlink_tlv_hdr);
 
+<<<<<<< HEAD
 		if (tlv_full_len > payload_len)
 			return -EINVAL;
 
@@ -322,20 +426,44 @@ qtnf_event_handle_scan_results(struct qtnf_vif *vif,
 				ies = ie_set->ie_data;
 				ies_len = ie_len;
 			}
+=======
+		if (tlv_full_len > payload_len) {
+			pr_warn("VIF%u.%u: malformed TLV 0x%.2X; LEN: %u\n",
+				vif->mac->macid, vif->vifid, tlv_type,
+				tlv_value_len);
+			return -EINVAL;
+		}
+
+		if (tlv_type == QTN_TLV_ID_IE_SET) {
+			ies = tlv->val;
+			ies_len = tlv_value_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		payload_len -= tlv_full_len;
 		tlv = (struct qlink_tlv_hdr *)(tlv->val + tlv_value_len);
 	}
 
+<<<<<<< HEAD
 	if (payload_len)
 		return -EINVAL;
+=======
+	if (payload_len) {
+		pr_warn("VIF%u.%u: malformed TLV buf; bytes left: %zu\n",
+			vif->mac->macid, vif->vifid, payload_len);
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bss = cfg80211_inform_bss(wiphy, channel, frame_type,
 				  sr->bssid, get_unaligned_le64(&sr->tsf),
 				  le16_to_cpu(sr->capab),
 				  le16_to_cpu(sr->bintval), ies, ies_len,
+<<<<<<< HEAD
 				  DBM_TO_MBM(sr->sig_dbm), GFP_KERNEL);
+=======
+				  sr->signal, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bss)
 		return -ENOMEM;
 
@@ -366,6 +494,7 @@ qtnf_event_handle_freq_change(struct qtnf_wmac *mac,
 {
 	struct wiphy *wiphy = priv_to_wiphy(mac);
 	struct cfg80211_chan_def chandef;
+<<<<<<< HEAD
 	struct qtnf_vif *vif;
 	int i;
 
@@ -390,6 +519,42 @@ qtnf_event_handle_freq_change(struct qtnf_wmac *mac,
 	pr_debug("MAC%d: new channel ieee=%u freq1=%u freq2=%u bw=%u\n",
 		 mac->macid, chandef.chan->hw_value, chandef.center_freq1,
 		 chandef.center_freq2, chandef.width);
+=======
+	struct ieee80211_channel *chan;
+	struct qtnf_vif *vif;
+	int freq;
+	int i;
+
+	if (len < sizeof(*data)) {
+		pr_err("payload is too short\n");
+		return -EINVAL;
+	}
+
+	freq = le32_to_cpu(data->freq);
+	chan = ieee80211_get_channel(wiphy, freq);
+	if (!chan) {
+		pr_err("channel at %d MHz not found\n", freq);
+		return -EINVAL;
+	}
+
+	pr_debug("MAC%d switch to new channel %u MHz\n", mac->macid, freq);
+
+	if (mac->status & QTNF_MAC_CSA_ACTIVE) {
+		mac->status &= ~QTNF_MAC_CSA_ACTIVE;
+		if (chan->hw_value != mac->csa_chandef.chan->hw_value)
+			pr_warn("unexpected switch to %u during CSA to %u\n",
+				chan->hw_value,
+				mac->csa_chandef.chan->hw_value);
+	}
+
+	/* FIXME: need to figure out proper nl80211_channel_type value */
+	cfg80211_chandef_create(&chandef, chan, NL80211_CHAN_HT20);
+	/* fall-back to minimal safe chandef description */
+	if (!cfg80211_chandef_valid(&chandef))
+		cfg80211_chandef_create(&chandef, chan, NL80211_CHAN_HT20);
+
+	memcpy(&mac->chandef, &chandef, sizeof(mac->chandef));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < QTNF_MAX_INTF; i++) {
 		vif = &mac->iflist[i];
@@ -406,6 +571,7 @@ qtnf_event_handle_freq_change(struct qtnf_wmac *mac,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qtnf_event_handle_radar(struct qtnf_vif *vif,
 				   const struct qlink_event_radar *ev,
 				   u16 len)
@@ -474,6 +640,8 @@ static int qtnf_event_handle_radar(struct qtnf_vif *vif,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int qtnf_event_parse(struct qtnf_wmac *mac,
 			    const struct sk_buff *event_skb)
 {
@@ -528,10 +696,13 @@ static int qtnf_event_parse(struct qtnf_wmac *mac,
 		ret = qtnf_event_handle_freq_change(mac, (const void *)event,
 						    event_len);
 		break;
+<<<<<<< HEAD
 	case QLINK_EVENT_RADAR:
 		ret = qtnf_event_handle_radar(vif, (const void *)event,
 					      event_len);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		pr_warn("unknown event type: %x\n", event_id);
 		break;
@@ -563,9 +734,15 @@ static int qtnf_event_process_skb(struct qtnf_bus *bus,
 	if (unlikely(!mac))
 		return -ENXIO;
 
+<<<<<<< HEAD
 	rtnl_lock();
 	res = qtnf_event_parse(mac, skb);
 	rtnl_unlock();
+=======
+	qtnf_bus_lock(bus);
+	res = qtnf_event_parse(mac, skb);
+	qtnf_bus_unlock(bus);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return res;
 }

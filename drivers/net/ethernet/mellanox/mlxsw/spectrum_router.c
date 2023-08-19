@@ -1,5 +1,44 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
 /* Copyright (c) 2016-2018 Mellanox Technologies. All rights reserved */
+=======
+/*
+ * drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+ * Copyright (c) 2016-2017 Mellanox Technologies. All rights reserved.
+ * Copyright (c) 2016 Jiri Pirko <jiri@mellanox.com>
+ * Copyright (c) 2016 Ido Schimmel <idosch@mellanox.com>
+ * Copyright (c) 2016 Yotam Gigi <yotamg@mellanox.com>
+ * Copyright (c) 2017 Petr Machata <petrm@mellanox.com>
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the names of the copyright holders nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * Alternatively, this software may be distributed under the terms of the
+ * GNU General Public License ("GPL") version 2 as published by the Free
+ * Software Foundation.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/types.h>
@@ -12,9 +51,12 @@
 #include <linux/if_bridge.h>
 #include <linux/socket.h>
 #include <linux/route.h>
+<<<<<<< HEAD
 #include <linux/gcd.h>
 #include <linux/random.h>
 #include <linux/if_macvlan.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <net/netevent.h>
 #include <net/neighbour.h>
 #include <net/arp.h>
@@ -27,7 +69,10 @@
 #include <net/ndisc.h>
 #include <net/ipv6.h>
 #include <net/fib_notifier.h>
+<<<<<<< HEAD
 #include <net/switchdev.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "spectrum.h"
 #include "core.h"
@@ -35,12 +80,17 @@
 #include "spectrum_cnt.h"
 #include "spectrum_dpipe.h"
 #include "spectrum_ipip.h"
+<<<<<<< HEAD
 #include "spectrum_mr.h"
 #include "spectrum_mr_tcam.h"
 #include "spectrum_router.h"
 #include "spectrum_span.h"
 
 struct mlxsw_sp_fib;
+=======
+#include "spectrum_router.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mlxsw_sp_vr;
 struct mlxsw_sp_lpm_tree;
 struct mlxsw_sp_rif_ops;
@@ -52,10 +102,14 @@ struct mlxsw_sp_router {
 	struct rhashtable neigh_ht;
 	struct rhashtable nexthop_group_ht;
 	struct rhashtable nexthop_ht;
+<<<<<<< HEAD
 	struct list_head nexthop_list;
 	struct {
 		/* One tree for each protocol: IPv4 and IPv6 */
 		struct mlxsw_sp_lpm_tree *proto_trees[2];
+=======
+	struct {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct mlxsw_sp_lpm_tree *trees;
 		unsigned int tree_count;
 	} lpm;
@@ -69,7 +123,10 @@ struct mlxsw_sp_router {
 	struct list_head ipip_list;
 	bool aborted;
 	struct notifier_block fib_nb;
+<<<<<<< HEAD
 	struct notifier_block netevent_nb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct mlxsw_sp_rif_ops **rif_ops_arr;
 	const struct mlxsw_sp_ipip_ops **ipip_ops_arr;
 };
@@ -131,6 +188,7 @@ struct mlxsw_sp_rif_ops {
 		      const struct mlxsw_sp_rif_params *params);
 	int (*configure)(struct mlxsw_sp_rif *rif);
 	void (*deconfigure)(struct mlxsw_sp_rif *rif);
+<<<<<<< HEAD
 	struct mlxsw_sp_fid * (*fid_get)(struct mlxsw_sp_rif *rif,
 					 struct netlink_ext_ack *extack);
 	void (*fdb_del)(struct mlxsw_sp_rif *rif, const char *mac);
@@ -145,6 +203,11 @@ static int mlxsw_sp_vr_lpm_tree_bind(struct mlxsw_sp *mlxsw_sp,
 static int mlxsw_sp_vr_lpm_tree_unbind(struct mlxsw_sp *mlxsw_sp,
 				       const struct mlxsw_sp_fib *fib);
 
+=======
+	struct mlxsw_sp_fid * (*fid_get)(struct mlxsw_sp_rif *rif);
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int *
 mlxsw_sp_rif_p_counter_get(struct mlxsw_sp_rif *rif,
 			   enum mlxsw_sp_rif_counter_dir dir)
@@ -312,6 +375,13 @@ static void mlxsw_sp_rif_counters_free(struct mlxsw_sp_rif *rif)
 	mlxsw_sp_rif_counter_free(mlxsw_sp, rif, MLXSW_SP_RIF_COUNTER_EGRESS);
 }
 
+<<<<<<< HEAD
+=======
+static struct mlxsw_sp_rif *
+mlxsw_sp_rif_find_by_dev(const struct mlxsw_sp *mlxsw_sp,
+			 const struct net_device *dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MLXSW_SP_PREFIX_COUNT (sizeof(struct in6_addr) * BITS_PER_BYTE + 1)
 
 struct mlxsw_sp_prefix_usage {
@@ -328,6 +398,17 @@ mlxsw_sp_prefix_usage_eq(struct mlxsw_sp_prefix_usage *prefix_usage1,
 	return !memcmp(prefix_usage1, prefix_usage2, sizeof(*prefix_usage1));
 }
 
+<<<<<<< HEAD
+=======
+static bool
+mlxsw_sp_prefix_usage_none(struct mlxsw_sp_prefix_usage *prefix_usage)
+{
+	struct mlxsw_sp_prefix_usage prefix_usage_none = {{ 0 } };
+
+	return mlxsw_sp_prefix_usage_eq(prefix_usage, &prefix_usage_none);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 mlxsw_sp_prefix_usage_cpy(struct mlxsw_sp_prefix_usage *prefix_usage1,
 			  struct mlxsw_sp_prefix_usage *prefix_usage2)
@@ -369,6 +450,10 @@ enum mlxsw_sp_fib_entry_type {
 };
 
 struct mlxsw_sp_nexthop_group;
+<<<<<<< HEAD
+=======
+struct mlxsw_sp_fib;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct mlxsw_sp_fib_node {
 	struct list_head entry_list;
@@ -408,14 +493,21 @@ struct mlxsw_sp_fib6_entry {
 
 struct mlxsw_sp_rt6 {
 	struct list_head list;
+<<<<<<< HEAD
 	struct fib6_info *rt;
+=======
+	struct rt6_info *rt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mlxsw_sp_lpm_tree {
 	u8 id; /* tree ID */
 	unsigned int ref_count;
 	enum mlxsw_sp_l3proto proto;
+<<<<<<< HEAD
 	unsigned long prefix_ref_count[MLXSW_SP_PREFIX_COUNT];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_prefix_usage prefix_usage;
 };
 
@@ -424,6 +516,11 @@ struct mlxsw_sp_fib {
 	struct list_head node_list;
 	struct mlxsw_sp_vr *vr;
 	struct mlxsw_sp_lpm_tree *lpm_tree;
+<<<<<<< HEAD
+=======
+	unsigned long prefix_ref_count[MLXSW_SP_PREFIX_COUNT];
+	struct mlxsw_sp_prefix_usage prefix_usage;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum mlxsw_sp_l3proto proto;
 };
 
@@ -433,11 +530,15 @@ struct mlxsw_sp_vr {
 	unsigned int rif_count;
 	struct mlxsw_sp_fib *fib4;
 	struct mlxsw_sp_fib *fib6;
+<<<<<<< HEAD
 	struct mlxsw_sp_mr_table *mr_table[MLXSW_SP_L3_PROTO_MAX];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct rhashtable_params mlxsw_sp_fib_ht_params;
 
+<<<<<<< HEAD
 static struct mlxsw_sp_fib *mlxsw_sp_fib_create(struct mlxsw_sp *mlxsw_sp,
 						struct mlxsw_sp_vr *vr,
 						enum mlxsw_sp_l3proto proto)
@@ -447,6 +548,14 @@ static struct mlxsw_sp_fib *mlxsw_sp_fib_create(struct mlxsw_sp *mlxsw_sp,
 	int err;
 
 	lpm_tree = mlxsw_sp->router->lpm.proto_trees[proto];
+=======
+static struct mlxsw_sp_fib *mlxsw_sp_fib_create(struct mlxsw_sp_vr *vr,
+						enum mlxsw_sp_l3proto proto)
+{
+	struct mlxsw_sp_fib *fib;
+	int err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fib = kzalloc(sizeof(*fib), GFP_KERNEL);
 	if (!fib)
 		return ERR_PTR(-ENOMEM);
@@ -456,6 +565,7 @@ static struct mlxsw_sp_fib *mlxsw_sp_fib_create(struct mlxsw_sp *mlxsw_sp,
 	INIT_LIST_HEAD(&fib->node_list);
 	fib->proto = proto;
 	fib->vr = vr;
+<<<<<<< HEAD
 	fib->lpm_tree = lpm_tree;
 	mlxsw_sp_lpm_tree_hold(lpm_tree);
 	err = mlxsw_sp_vr_lpm_tree_bind(mlxsw_sp, fib, lpm_tree->id);
@@ -465,17 +575,28 @@ static struct mlxsw_sp_fib *mlxsw_sp_fib_create(struct mlxsw_sp *mlxsw_sp,
 
 err_lpm_tree_bind:
 	mlxsw_sp_lpm_tree_put(mlxsw_sp, lpm_tree);
+=======
+	return fib;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_rhashtable_init:
 	kfree(fib);
 	return ERR_PTR(err);
 }
 
+<<<<<<< HEAD
 static void mlxsw_sp_fib_destroy(struct mlxsw_sp *mlxsw_sp,
 				 struct mlxsw_sp_fib *fib)
 {
 	mlxsw_sp_vr_lpm_tree_unbind(mlxsw_sp, fib);
 	mlxsw_sp_lpm_tree_put(mlxsw_sp, fib->lpm_tree);
 	WARN_ON(!list_empty(&fib->node_list));
+=======
+static void mlxsw_sp_fib_destroy(struct mlxsw_sp_fib *fib)
+{
+	WARN_ON(!list_empty(&fib->node_list));
+	WARN_ON(fib->lpm_tree);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rhashtable_destroy(&fib->ht);
 	kfree(fib);
 }
@@ -562,9 +683,12 @@ mlxsw_sp_lpm_tree_create(struct mlxsw_sp *mlxsw_sp,
 		goto err_left_struct_set;
 	memcpy(&lpm_tree->prefix_usage, prefix_usage,
 	       sizeof(lpm_tree->prefix_usage));
+<<<<<<< HEAD
 	memset(&lpm_tree->prefix_ref_count, 0,
 	       sizeof(lpm_tree->prefix_ref_count));
 	lpm_tree->ref_count = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return lpm_tree;
 
 err_left_struct_set:
@@ -591,10 +715,15 @@ mlxsw_sp_lpm_tree_get(struct mlxsw_sp *mlxsw_sp,
 		if (lpm_tree->ref_count != 0 &&
 		    lpm_tree->proto == proto &&
 		    mlxsw_sp_prefix_usage_eq(&lpm_tree->prefix_usage,
+<<<<<<< HEAD
 					     prefix_usage)) {
 			mlxsw_sp_lpm_tree_hold(lpm_tree);
 			return lpm_tree;
 		}
+=======
+					     prefix_usage))
+			return lpm_tree;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return mlxsw_sp_lpm_tree_create(mlxsw_sp, prefix_usage, proto);
 }
@@ -615,10 +744,16 @@ static void mlxsw_sp_lpm_tree_put(struct mlxsw_sp *mlxsw_sp,
 
 static int mlxsw_sp_lpm_init(struct mlxsw_sp *mlxsw_sp)
 {
+<<<<<<< HEAD
 	struct mlxsw_sp_prefix_usage req_prefix_usage = {{ 0 } };
 	struct mlxsw_sp_lpm_tree *lpm_tree;
 	u64 max_trees;
 	int err, i;
+=======
+	struct mlxsw_sp_lpm_tree *lpm_tree;
+	u64 max_trees;
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!MLXSW_CORE_RES_VALID(mlxsw_sp->core, MAX_LPM_TREES))
 		return -EIO;
@@ -636,6 +771,7 @@ static int mlxsw_sp_lpm_init(struct mlxsw_sp *mlxsw_sp)
 		lpm_tree->id = i + MLXSW_SP_LPM_TREE_MIN;
 	}
 
+<<<<<<< HEAD
 	lpm_tree = mlxsw_sp_lpm_tree_get(mlxsw_sp, &req_prefix_usage,
 					 MLXSW_SP_L3_PROTO_IPV4);
 	if (IS_ERR(lpm_tree)) {
@@ -660,10 +796,14 @@ err_ipv6_tree_get:
 err_ipv4_tree_get:
 	kfree(mlxsw_sp->router->lpm.trees);
 	return err;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlxsw_sp_lpm_fini(struct mlxsw_sp *mlxsw_sp)
 {
+<<<<<<< HEAD
 	struct mlxsw_sp_lpm_tree *lpm_tree;
 
 	lpm_tree = mlxsw_sp->router->lpm.proto_trees[MLXSW_SP_L3_PROTO_IPV6];
@@ -672,14 +812,20 @@ static void mlxsw_sp_lpm_fini(struct mlxsw_sp *mlxsw_sp)
 	lpm_tree = mlxsw_sp->router->lpm.proto_trees[MLXSW_SP_L3_PROTO_IPV4];
 	mlxsw_sp_lpm_tree_put(mlxsw_sp, lpm_tree);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(mlxsw_sp->router->lpm.trees);
 }
 
 static bool mlxsw_sp_vr_is_used(const struct mlxsw_sp_vr *vr)
 {
+<<<<<<< HEAD
 	return !!vr->fib4 || !!vr->fib6 ||
 	       !!vr->mr_table[MLXSW_SP_L3_PROTO_IPV4] ||
 	       !!vr->mr_table[MLXSW_SP_L3_PROTO_IPV6];
+=======
+	return !!vr->fib4 || !!vr->fib6;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct mlxsw_sp_vr *mlxsw_sp_vr_find_unused(struct mlxsw_sp *mlxsw_sp)
@@ -719,8 +865,13 @@ static int mlxsw_sp_vr_lpm_tree_unbind(struct mlxsw_sp *mlxsw_sp,
 
 static u32 mlxsw_sp_fix_tb_id(u32 tb_id)
 {
+<<<<<<< HEAD
 	/* For our purpose, squash main, default and local tables into one */
 	if (tb_id == RT_TABLE_LOCAL || tb_id == RT_TABLE_DEFAULT)
+=======
+	/* For our purpose, squash main and local table into one */
+	if (tb_id == RT_TABLE_LOCAL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tb_id = RT_TABLE_MAIN;
 	return tb_id;
 }
@@ -754,16 +905,22 @@ static struct mlxsw_sp_fib *mlxsw_sp_vr_fib(const struct mlxsw_sp_vr *vr,
 }
 
 static struct mlxsw_sp_vr *mlxsw_sp_vr_create(struct mlxsw_sp *mlxsw_sp,
+<<<<<<< HEAD
 					      u32 tb_id,
 					      struct netlink_ext_ack *extack)
 {
 	struct mlxsw_sp_mr_table *mr4_table, *mr6_table;
+=======
+					      u32 tb_id)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_fib *fib4;
 	struct mlxsw_sp_fib *fib6;
 	struct mlxsw_sp_vr *vr;
 	int err;
 
 	vr = mlxsw_sp_vr_find_unused(mlxsw_sp);
+<<<<<<< HEAD
 	if (!vr) {
 		NL_SET_ERR_MSG_MOD(extack, "Exceeded number of supported virtual routers");
 		return ERR_PTR(-EBUSY);
@@ -772,10 +929,19 @@ static struct mlxsw_sp_vr *mlxsw_sp_vr_create(struct mlxsw_sp *mlxsw_sp,
 	if (IS_ERR(fib4))
 		return ERR_CAST(fib4);
 	fib6 = mlxsw_sp_fib_create(mlxsw_sp, vr, MLXSW_SP_L3_PROTO_IPV6);
+=======
+	if (!vr)
+		return ERR_PTR(-EBUSY);
+	fib4 = mlxsw_sp_fib_create(vr, MLXSW_SP_L3_PROTO_IPV4);
+	if (IS_ERR(fib4))
+		return ERR_CAST(fib4);
+	fib6 = mlxsw_sp_fib_create(vr, MLXSW_SP_L3_PROTO_IPV6);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(fib6)) {
 		err = PTR_ERR(fib6);
 		goto err_fib6_create;
 	}
+<<<<<<< HEAD
 	mr4_table = mlxsw_sp_mr_table_create(mlxsw_sp, vr->id,
 					     MLXSW_SP_L3_PROTO_IPV4);
 	if (IS_ERR(mr4_table)) {
@@ -820,12 +986,34 @@ static void mlxsw_sp_vr_destroy(struct mlxsw_sp *mlxsw_sp,
 
 static struct mlxsw_sp_vr *mlxsw_sp_vr_get(struct mlxsw_sp *mlxsw_sp, u32 tb_id,
 					   struct netlink_ext_ack *extack)
+=======
+	vr->fib4 = fib4;
+	vr->fib6 = fib6;
+	vr->tb_id = tb_id;
+	return vr;
+
+err_fib6_create:
+	mlxsw_sp_fib_destroy(fib4);
+	return ERR_PTR(err);
+}
+
+static void mlxsw_sp_vr_destroy(struct mlxsw_sp_vr *vr)
+{
+	mlxsw_sp_fib_destroy(vr->fib6);
+	vr->fib6 = NULL;
+	mlxsw_sp_fib_destroy(vr->fib4);
+	vr->fib4 = NULL;
+}
+
+static struct mlxsw_sp_vr *mlxsw_sp_vr_get(struct mlxsw_sp *mlxsw_sp, u32 tb_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_vr *vr;
 
 	tb_id = mlxsw_sp_fix_tb_id(tb_id);
 	vr = mlxsw_sp_vr_find(mlxsw_sp, tb_id);
 	if (!vr)
+<<<<<<< HEAD
 		vr = mlxsw_sp_vr_create(mlxsw_sp, tb_id, extack);
 	return vr;
 }
@@ -837,6 +1025,17 @@ static void mlxsw_sp_vr_put(struct mlxsw_sp *mlxsw_sp, struct mlxsw_sp_vr *vr)
 	    mlxsw_sp_mr_table_empty(vr->mr_table[MLXSW_SP_L3_PROTO_IPV4]) &&
 	    mlxsw_sp_mr_table_empty(vr->mr_table[MLXSW_SP_L3_PROTO_IPV6]))
 		mlxsw_sp_vr_destroy(mlxsw_sp, vr);
+=======
+		vr = mlxsw_sp_vr_create(mlxsw_sp, tb_id);
+	return vr;
+}
+
+static void mlxsw_sp_vr_put(struct mlxsw_sp_vr *vr)
+{
+	if (!vr->rif_count && list_empty(&vr->fib4->node_list) &&
+	    list_empty(&vr->fib6->node_list))
+		mlxsw_sp_vr_destroy(vr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool
@@ -847,7 +1046,11 @@ mlxsw_sp_vr_lpm_tree_should_replace(struct mlxsw_sp_vr *vr,
 
 	if (!mlxsw_sp_vr_is_used(vr))
 		return false;
+<<<<<<< HEAD
 	if (fib->lpm_tree->id == tree_id)
+=======
+	if (fib->lpm_tree && fib->lpm_tree->id == tree_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 	return false;
 }
@@ -859,6 +1062,7 @@ static int mlxsw_sp_vr_lpm_tree_replace(struct mlxsw_sp *mlxsw_sp,
 	struct mlxsw_sp_lpm_tree *old_tree = fib->lpm_tree;
 	int err;
 
+<<<<<<< HEAD
 	fib->lpm_tree = new_tree;
 	mlxsw_sp_lpm_tree_hold(new_tree);
 	err = mlxsw_sp_vr_lpm_tree_bind(mlxsw_sp, fib, new_tree->id);
@@ -871,19 +1075,38 @@ err_tree_bind:
 	mlxsw_sp_lpm_tree_put(mlxsw_sp, new_tree);
 	fib->lpm_tree = old_tree;
 	return err;
+=======
+	err = mlxsw_sp_vr_lpm_tree_bind(mlxsw_sp, fib, new_tree->id);
+	if (err)
+		return err;
+	fib->lpm_tree = new_tree;
+	mlxsw_sp_lpm_tree_hold(new_tree);
+	mlxsw_sp_lpm_tree_put(mlxsw_sp, old_tree);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlxsw_sp_vrs_lpm_tree_replace(struct mlxsw_sp *mlxsw_sp,
 					 struct mlxsw_sp_fib *fib,
 					 struct mlxsw_sp_lpm_tree *new_tree)
 {
+<<<<<<< HEAD
 	enum mlxsw_sp_l3proto proto = fib->proto;
 	struct mlxsw_sp_lpm_tree *old_tree;
+=======
+	struct mlxsw_sp_lpm_tree *old_tree = fib->lpm_tree;
+	enum mlxsw_sp_l3proto proto = fib->proto;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 old_id, new_id = new_tree->id;
 	struct mlxsw_sp_vr *vr;
 	int i, err;
 
+<<<<<<< HEAD
 	old_tree = mlxsw_sp->router->lpm.proto_trees[proto];
+=======
+	if (!old_tree)
+		goto no_replace;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	old_id = old_tree->id;
 
 	for (i = 0; i < MLXSW_CORE_RES_GET(mlxsw_sp->core, MAX_VRS); i++) {
@@ -897,11 +1120,14 @@ static int mlxsw_sp_vrs_lpm_tree_replace(struct mlxsw_sp *mlxsw_sp,
 			goto err_tree_replace;
 	}
 
+<<<<<<< HEAD
 	memcpy(new_tree->prefix_ref_count, old_tree->prefix_ref_count,
 	       sizeof(new_tree->prefix_ref_count));
 	mlxsw_sp->router->lpm.proto_trees[proto] = new_tree;
 	mlxsw_sp_lpm_tree_put(mlxsw_sp, old_tree);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_tree_replace:
@@ -913,6 +1139,36 @@ err_tree_replace:
 					     old_tree);
 	}
 	return err;
+<<<<<<< HEAD
+=======
+
+no_replace:
+	err = mlxsw_sp_vr_lpm_tree_bind(mlxsw_sp, fib, new_tree->id);
+	if (err)
+		return err;
+	fib->lpm_tree = new_tree;
+	mlxsw_sp_lpm_tree_hold(new_tree);
+	return 0;
+}
+
+static void
+mlxsw_sp_vrs_prefixes(struct mlxsw_sp *mlxsw_sp,
+		      enum mlxsw_sp_l3proto proto,
+		      struct mlxsw_sp_prefix_usage *req_prefix_usage)
+{
+	int i;
+
+	for (i = 0; i < MLXSW_CORE_RES_GET(mlxsw_sp->core, MAX_VRS); i++) {
+		struct mlxsw_sp_vr *vr = &mlxsw_sp->router->vrs[i];
+		struct mlxsw_sp_fib *fib = mlxsw_sp_vr_fib(vr, proto);
+		unsigned char prefix;
+
+		if (!mlxsw_sp_vr_is_used(vr))
+			continue;
+		mlxsw_sp_prefix_usage_for_each(prefix, &fib->prefix_usage)
+			mlxsw_sp_prefix_usage_set(req_prefix_usage, prefix);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlxsw_sp_vrs_init(struct mlxsw_sp *mlxsw_sp)
@@ -963,7 +1219,11 @@ __mlxsw_sp_ipip_netdev_ul_dev_get(const struct net_device *ol_dev)
 	return __dev_get_by_index(net, tun->parms.link);
 }
 
+<<<<<<< HEAD
 u32 mlxsw_sp_ipip_dev_ul_tb_id(const struct net_device *ol_dev)
+=======
+static u32 mlxsw_sp_ipip_dev_ul_tb_id(const struct net_device *ol_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *d = __mlxsw_sp_ipip_netdev_ul_dev_get(ol_dev);
 
@@ -975,14 +1235,22 @@ u32 mlxsw_sp_ipip_dev_ul_tb_id(const struct net_device *ol_dev)
 
 static struct mlxsw_sp_rif *
 mlxsw_sp_rif_create(struct mlxsw_sp *mlxsw_sp,
+<<<<<<< HEAD
 		    const struct mlxsw_sp_rif_params *params,
 		    struct netlink_ext_ack *extack);
+=======
+		    const struct mlxsw_sp_rif_params *params);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct mlxsw_sp_rif_ipip_lb *
 mlxsw_sp_ipip_ol_ipip_lb_create(struct mlxsw_sp *mlxsw_sp,
 				enum mlxsw_sp_ipip_type ipipt,
+<<<<<<< HEAD
 				struct net_device *ol_dev,
 				struct netlink_ext_ack *extack)
+=======
+				struct net_device *ol_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_rif_params_ipip_lb lb_params;
 	const struct mlxsw_sp_ipip_ops *ipip_ops;
@@ -995,7 +1263,11 @@ mlxsw_sp_ipip_ol_ipip_lb_create(struct mlxsw_sp *mlxsw_sp,
 		.lb_config = ipip_ops->ol_loopback_config(mlxsw_sp, ol_dev),
 	};
 
+<<<<<<< HEAD
 	rif = mlxsw_sp_rif_create(mlxsw_sp, &lb_params.common, extack);
+=======
+	rif = mlxsw_sp_rif_create(mlxsw_sp, &lb_params.common);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rif))
 		return ERR_CAST(rif);
 	return container_of(rif, struct mlxsw_sp_rif_ipip_lb, common);
@@ -1006,17 +1278,27 @@ mlxsw_sp_ipip_entry_alloc(struct mlxsw_sp *mlxsw_sp,
 			  enum mlxsw_sp_ipip_type ipipt,
 			  struct net_device *ol_dev)
 {
+<<<<<<< HEAD
 	const struct mlxsw_sp_ipip_ops *ipip_ops;
 	struct mlxsw_sp_ipip_entry *ipip_entry;
 	struct mlxsw_sp_ipip_entry *ret = NULL;
 
 	ipip_ops = mlxsw_sp->router->ipip_ops_arr[ipipt];
+=======
+	struct mlxsw_sp_ipip_entry *ipip_entry;
+	struct mlxsw_sp_ipip_entry *ret = NULL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ipip_entry = kzalloc(sizeof(*ipip_entry), GFP_KERNEL);
 	if (!ipip_entry)
 		return ERR_PTR(-ENOMEM);
 
 	ipip_entry->ol_lb = mlxsw_sp_ipip_ol_ipip_lb_create(mlxsw_sp, ipipt,
+<<<<<<< HEAD
 							    ol_dev, NULL);
+=======
+							    ol_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ipip_entry->ol_lb)) {
 		ret = ERR_CAST(ipip_entry->ol_lb);
 		goto err_ol_ipip_lb_create;
@@ -1025,6 +1307,7 @@ mlxsw_sp_ipip_entry_alloc(struct mlxsw_sp *mlxsw_sp,
 	ipip_entry->ipipt = ipipt;
 	ipip_entry->ol_dev = ol_dev;
 
+<<<<<<< HEAD
 	switch (ipip_ops->ul_proto) {
 	case MLXSW_SP_L3_PROTO_IPV4:
 		ipip_entry->parms4 = mlxsw_sp_ipip_netdev_parms4(ol_dev);
@@ -1034,6 +1317,8 @@ mlxsw_sp_ipip_entry_alloc(struct mlxsw_sp *mlxsw_sp,
 		break;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ipip_entry;
 
 err_ol_ipip_lb_create:
@@ -1042,12 +1327,80 @@ err_ol_ipip_lb_create:
 }
 
 static void
+<<<<<<< HEAD
 mlxsw_sp_ipip_entry_dealloc(struct mlxsw_sp_ipip_entry *ipip_entry)
 {
+=======
+mlxsw_sp_ipip_entry_destroy(struct mlxsw_sp_ipip_entry *ipip_entry)
+{
+	WARN_ON(ipip_entry->ref_count > 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_rif_destroy(&ipip_entry->ol_lb->common);
 	kfree(ipip_entry);
 }
 
+<<<<<<< HEAD
+=======
+static __be32
+mlxsw_sp_ipip_netdev_saddr4(const struct net_device *ol_dev)
+{
+	struct ip_tunnel *tun = netdev_priv(ol_dev);
+
+	return tun->parms.iph.saddr;
+}
+
+union mlxsw_sp_l3addr
+mlxsw_sp_ipip_netdev_saddr(enum mlxsw_sp_l3proto proto,
+			   const struct net_device *ol_dev)
+{
+	switch (proto) {
+	case MLXSW_SP_L3_PROTO_IPV4:
+		return (union mlxsw_sp_l3addr) {
+			.addr4 = mlxsw_sp_ipip_netdev_saddr4(ol_dev),
+		};
+	case MLXSW_SP_L3_PROTO_IPV6:
+		break;
+	};
+
+	WARN_ON(1);
+	return (union mlxsw_sp_l3addr) {
+		.addr4 = 0,
+	};
+}
+
+__be32 mlxsw_sp_ipip_netdev_daddr4(const struct net_device *ol_dev)
+{
+	struct ip_tunnel *tun = netdev_priv(ol_dev);
+
+	return tun->parms.iph.daddr;
+}
+
+union mlxsw_sp_l3addr
+mlxsw_sp_ipip_netdev_daddr(enum mlxsw_sp_l3proto proto,
+			   const struct net_device *ol_dev)
+{
+	switch (proto) {
+	case MLXSW_SP_L3_PROTO_IPV4:
+		return (union mlxsw_sp_l3addr) {
+			.addr4 = mlxsw_sp_ipip_netdev_daddr4(ol_dev),
+		};
+	case MLXSW_SP_L3_PROTO_IPV6:
+		break;
+	};
+
+	WARN_ON(1);
+	return (union mlxsw_sp_l3addr) {
+		.addr4 = 0,
+	};
+}
+
+static bool mlxsw_sp_l3addr_eq(const union mlxsw_sp_l3addr *addr1,
+			       const union mlxsw_sp_l3addr *addr2)
+{
+	return !memcmp(addr1, addr2, sizeof(*addr1));
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool
 mlxsw_sp_ipip_entry_saddr_matches(struct mlxsw_sp *mlxsw_sp,
 				  const enum mlxsw_sp_l3proto ul_proto,
@@ -1075,8 +1428,12 @@ mlxsw_sp_fib_entry_decap_init(struct mlxsw_sp *mlxsw_sp,
 	u32 tunnel_index;
 	int err;
 
+<<<<<<< HEAD
 	err = mlxsw_sp_kvdl_alloc(mlxsw_sp, MLXSW_SP_KVDL_ENTRY_TYPE_ADJ,
 				  1, &tunnel_index);
+=======
+	err = mlxsw_sp_kvdl_alloc(mlxsw_sp, 1, &tunnel_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -1092,8 +1449,12 @@ static void mlxsw_sp_fib_entry_decap_fini(struct mlxsw_sp *mlxsw_sp,
 	/* Unlink this node from the IPIP entry that it's the decap entry of. */
 	fib_entry->decap.ipip_entry->decap_fib_entry = NULL;
 	fib_entry->decap.ipip_entry = NULL;
+<<<<<<< HEAD
 	mlxsw_sp_kvdl_free(mlxsw_sp, MLXSW_SP_KVDL_ENTRY_TYPE_ADJ,
 			   1, fib_entry->decap.tunnel_index);
+=======
+	mlxsw_sp_kvdl_free(mlxsw_sp, fib_entry->decap.tunnel_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct mlxsw_sp_fib_node *
@@ -1182,28 +1543,82 @@ mlxsw_sp_ipip_entry_find_decap(struct mlxsw_sp *mlxsw_sp,
 }
 
 static struct mlxsw_sp_ipip_entry *
+<<<<<<< HEAD
 mlxsw_sp_ipip_entry_create(struct mlxsw_sp *mlxsw_sp,
 			   enum mlxsw_sp_ipip_type ipipt,
 			   struct net_device *ol_dev)
 {
 	struct mlxsw_sp_ipip_entry *ipip_entry;
+=======
+mlxsw_sp_ipip_entry_get(struct mlxsw_sp *mlxsw_sp,
+			enum mlxsw_sp_ipip_type ipipt,
+			struct net_device *ol_dev)
+{
+	u32 ul_tb_id = mlxsw_sp_ipip_dev_ul_tb_id(ol_dev);
+	struct mlxsw_sp_router *router = mlxsw_sp->router;
+	struct mlxsw_sp_fib_entry *decap_fib_entry;
+	struct mlxsw_sp_ipip_entry *ipip_entry;
+	enum mlxsw_sp_l3proto ul_proto;
+	union mlxsw_sp_l3addr saddr;
+
+	list_for_each_entry(ipip_entry, &mlxsw_sp->router->ipip_list,
+			    ipip_list_node) {
+		if (ipip_entry->ol_dev == ol_dev)
+			goto inc_ref_count;
+
+		/* The configuration where several tunnels have the same local
+		 * address in the same underlay table needs special treatment in
+		 * the HW. That is currently not implemented in the driver.
+		 */
+		ul_proto = router->ipip_ops_arr[ipip_entry->ipipt]->ul_proto;
+		saddr = mlxsw_sp_ipip_netdev_saddr(ul_proto, ol_dev);
+		if (mlxsw_sp_ipip_entry_saddr_matches(mlxsw_sp, ul_proto, saddr,
+						      ul_tb_id, ipip_entry))
+			return ERR_PTR(-EEXIST);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ipip_entry = mlxsw_sp_ipip_entry_alloc(mlxsw_sp, ipipt, ol_dev);
 	if (IS_ERR(ipip_entry))
 		return ipip_entry;
 
+<<<<<<< HEAD
 	list_add_tail(&ipip_entry->ipip_list_node,
 		      &mlxsw_sp->router->ipip_list);
 
+=======
+	decap_fib_entry = mlxsw_sp_ipip_entry_find_decap(mlxsw_sp, ipip_entry);
+	if (decap_fib_entry)
+		mlxsw_sp_ipip_entry_promote_decap(mlxsw_sp, ipip_entry,
+						  decap_fib_entry);
+
+	list_add_tail(&ipip_entry->ipip_list_node,
+		      &mlxsw_sp->router->ipip_list);
+
+inc_ref_count:
+	++ipip_entry->ref_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ipip_entry;
 }
 
 static void
+<<<<<<< HEAD
 mlxsw_sp_ipip_entry_destroy(struct mlxsw_sp *mlxsw_sp,
 			    struct mlxsw_sp_ipip_entry *ipip_entry)
 {
 	list_del(&ipip_entry->ipip_list_node);
 	mlxsw_sp_ipip_entry_dealloc(ipip_entry);
+=======
+mlxsw_sp_ipip_entry_put(struct mlxsw_sp *mlxsw_sp,
+			struct mlxsw_sp_ipip_entry *ipip_entry)
+{
+	if (--ipip_entry->ref_count == 0) {
+		list_del(&ipip_entry->ipip_list_node);
+		if (ipip_entry->decap_fib_entry)
+			mlxsw_sp_ipip_entry_demote_decap(mlxsw_sp, ipip_entry);
+		mlxsw_sp_ipip_entry_destroy(ipip_entry);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool
@@ -1215,15 +1630,23 @@ mlxsw_sp_ipip_entry_matches_decap(struct mlxsw_sp *mlxsw_sp,
 {
 	u32 ul_tb_id = l3mdev_fib_table(ul_dev) ? : RT_TABLE_MAIN;
 	enum mlxsw_sp_ipip_type ipipt = ipip_entry->ipipt;
+<<<<<<< HEAD
 	struct net_device *ipip_ul_dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mlxsw_sp->router->ipip_ops_arr[ipipt]->ul_proto != ul_proto)
 		return false;
 
+<<<<<<< HEAD
 	ipip_ul_dev = __mlxsw_sp_ipip_netdev_ul_dev_get(ipip_entry->ol_dev);
 	return mlxsw_sp_ipip_entry_saddr_matches(mlxsw_sp, ul_proto, ul_dip,
 						 ul_tb_id, ipip_entry) &&
 	       (!ipip_ul_dev || ipip_ul_dev == ul_dev);
+=======
+	return mlxsw_sp_ipip_entry_saddr_matches(mlxsw_sp, ul_proto, ul_dip,
+						 ul_tb_id, ipip_entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Given decap parameters, find the corresponding IPIP entry. */
@@ -1245,6 +1668,7 @@ mlxsw_sp_ipip_entry_find_by_decap(struct mlxsw_sp *mlxsw_sp,
 	return NULL;
 }
 
+<<<<<<< HEAD
 static bool mlxsw_sp_netdev_ipip_type(const struct mlxsw_sp *mlxsw_sp,
 				      const struct net_device *dev,
 				      enum mlxsw_sp_ipip_type *p_type)
@@ -1765,6 +2189,8 @@ mlxsw_sp_netdevice_ipip_ul_event(struct mlxsw_sp *mlxsw_sp,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mlxsw_sp_neigh_key {
 	struct neighbour *n;
 };
@@ -1802,7 +2228,11 @@ mlxsw_sp_rif_neigh_next(struct mlxsw_sp_rif *rif,
 						typeof(*neigh_entry),
 						rif_list_node);
 	}
+<<<<<<< HEAD
 	if (list_is_last(&neigh_entry->rif_list_node, &rif->neigh_list))
+=======
+	if (neigh_entry->rif_list_node.next == &rif->neigh_list)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	return list_next_entry(neigh_entry, rif_list_node);
 }
@@ -2144,7 +2574,11 @@ __mlxsw_sp_router_neighs_update_rauhtd(struct mlxsw_sp *mlxsw_sp,
 		err = mlxsw_reg_query(mlxsw_sp->core, MLXSW_REG(rauhtd),
 				      rauhtd_pl);
 		if (err) {
+<<<<<<< HEAD
 			dev_err_ratelimited(mlxsw_sp->bus_info->dev, "Failed to dump neighbour table\n");
+=======
+			dev_err_ratelimited(mlxsw_sp->bus_info->dev, "Failed to dump neighbour talbe\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		num_rec = mlxsw_reg_rauhtd_num_rec_get(rauhtd_pl);
@@ -2248,7 +2682,11 @@ static void mlxsw_sp_router_probe_unresolved_nexthops(struct work_struct *work)
 static void
 mlxsw_sp_nexthop_neigh_update(struct mlxsw_sp *mlxsw_sp,
 			      struct mlxsw_sp_neigh_entry *neigh_entry,
+<<<<<<< HEAD
 			      bool removing);
+=======
+			      bool removing, bool dead);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static enum mlxsw_reg_rauht_op mlxsw_sp_rauht_op(bool adding)
 {
@@ -2337,7 +2775,11 @@ mlxsw_sp_neigh_entry_counter_update(struct mlxsw_sp *mlxsw_sp,
 	mlxsw_sp_neigh_entry_update(mlxsw_sp, neigh_entry, true);
 }
 
+<<<<<<< HEAD
 struct mlxsw_sp_netevent_work {
+=======
+struct mlxsw_sp_neigh_event_work {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct work_struct work;
 	struct mlxsw_sp *mlxsw_sp;
 	struct neighbour *n;
@@ -2345,11 +2787,19 @@ struct mlxsw_sp_netevent_work {
 
 static void mlxsw_sp_router_neigh_event_work(struct work_struct *work)
 {
+<<<<<<< HEAD
 	struct mlxsw_sp_netevent_work *net_work =
 		container_of(work, struct mlxsw_sp_netevent_work, work);
 	struct mlxsw_sp *mlxsw_sp = net_work->mlxsw_sp;
 	struct mlxsw_sp_neigh_entry *neigh_entry;
 	struct neighbour *n = net_work->n;
+=======
+	struct mlxsw_sp_neigh_event_work *neigh_work =
+		container_of(work, struct mlxsw_sp_neigh_event_work, work);
+	struct mlxsw_sp *mlxsw_sp = neigh_work->mlxsw_sp;
+	struct mlxsw_sp_neigh_entry *neigh_entry;
+	struct neighbour *n = neigh_work->n;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char ha[ETH_ALEN];
 	bool entry_connected;
 	u8 nud_state, dead;
@@ -2365,8 +2815,11 @@ static void mlxsw_sp_router_neigh_event_work(struct work_struct *work)
 	read_unlock_bh(&n->lock);
 
 	rtnl_lock();
+<<<<<<< HEAD
 	mlxsw_sp_span_respin(mlxsw_sp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	entry_connected = nud_state & NUD_VALID && !dead;
 	neigh_entry = mlxsw_sp_neigh_entry_lookup(mlxsw_sp, n);
 	if (!entry_connected && !neigh_entry)
@@ -2379,7 +2832,12 @@ static void mlxsw_sp_router_neigh_event_work(struct work_struct *work)
 
 	memcpy(neigh_entry->ha, ha, ETH_ALEN);
 	mlxsw_sp_neigh_entry_update(mlxsw_sp, neigh_entry, entry_connected);
+<<<<<<< HEAD
 	mlxsw_sp_nexthop_neigh_update(mlxsw_sp, neigh_entry, !entry_connected);
+=======
+	mlxsw_sp_nexthop_neigh_update(mlxsw_sp, neigh_entry, !entry_connected,
+				      dead);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!neigh_entry->connected && list_empty(&neigh_entry->nexthop_list))
 		mlxsw_sp_neigh_entry_destroy(mlxsw_sp, neigh_entry);
@@ -2387,6 +2845,7 @@ static void mlxsw_sp_router_neigh_event_work(struct work_struct *work)
 out:
 	rtnl_unlock();
 	neigh_release(n);
+<<<<<<< HEAD
 	kfree(net_work);
 }
 
@@ -2439,6 +2898,15 @@ static int mlxsw_sp_router_netevent_event(struct notifier_block *nb,
 					  unsigned long event, void *ptr)
 {
 	struct mlxsw_sp_netevent_work *net_work;
+=======
+	kfree(neigh_work);
+}
+
+int mlxsw_sp_router_netevent_event(struct notifier_block *unused,
+				   unsigned long event, void *ptr)
+{
+	struct mlxsw_sp_neigh_event_work *neigh_work;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_port *mlxsw_sp_port;
 	struct mlxsw_sp *mlxsw_sp;
 	unsigned long interval;
@@ -2477,21 +2945,33 @@ static int mlxsw_sp_router_netevent_event(struct notifier_block *nb,
 		if (!mlxsw_sp_port)
 			return NOTIFY_DONE;
 
+<<<<<<< HEAD
 		net_work = kzalloc(sizeof(*net_work), GFP_ATOMIC);
 		if (!net_work) {
+=======
+		neigh_work = kzalloc(sizeof(*neigh_work), GFP_ATOMIC);
+		if (!neigh_work) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mlxsw_sp_port_dev_put(mlxsw_sp_port);
 			return NOTIFY_BAD;
 		}
 
+<<<<<<< HEAD
 		INIT_WORK(&net_work->work, mlxsw_sp_router_neigh_event_work);
 		net_work->mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
 		net_work->n = n;
+=======
+		INIT_WORK(&neigh_work->work, mlxsw_sp_router_neigh_event_work);
+		neigh_work->mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
+		neigh_work->n = n;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Take a reference to ensure the neighbour won't be
 		 * destructed until we drop the reference in delayed
 		 * work.
 		 */
 		neigh_clone(n);
+<<<<<<< HEAD
 		mlxsw_core_schedule_work(&net_work->work);
 		mlxsw_sp_port_dev_put(mlxsw_sp_port);
 		break;
@@ -2503,6 +2983,11 @@ static int mlxsw_sp_router_netevent_event(struct notifier_block *nb,
 	case NETEVENT_IPV4_FWD_UPDATE_PRIORITY_UPDATE:
 		return mlxsw_sp_router_schedule_work(ptr, nb,
 				mlxsw_sp_router_update_priority_work);
+=======
+		mlxsw_core_schedule_work(&neigh_work->work);
+		mlxsw_sp_port_dev_put(mlxsw_sp_port);
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return NOTIFY_DONE;
@@ -2563,7 +3048,10 @@ struct mlxsw_sp_nexthop_key {
 struct mlxsw_sp_nexthop {
 	struct list_head neigh_list_node; /* member of neigh entry list */
 	struct list_head rif_list_node;
+<<<<<<< HEAD
 	struct list_head router_list_node;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_nexthop_group *nh_grp; /* pointer back to the group
 						* this belongs to
 						*/
@@ -2571,9 +3059,12 @@ struct mlxsw_sp_nexthop {
 	struct mlxsw_sp_nexthop_key key;
 	unsigned char gw_addr[sizeof(struct in6_addr)];
 	int ifindex;
+<<<<<<< HEAD
 	int nh_weight;
 	int norm_nh_weight;
 	int num_adj_entries;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_rif *rif;
 	u8 should_offload:1, /* set indicates this neigh is connected and
 			      * should be put to KVD linear area of this group.
@@ -2589,8 +3080,11 @@ struct mlxsw_sp_nexthop {
 		struct mlxsw_sp_neigh_entry *neigh_entry;
 		struct mlxsw_sp_ipip_entry *ipip_entry;
 	};
+<<<<<<< HEAD
 	unsigned int counter_index;
 	bool counter_valid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mlxsw_sp_nexthop_group {
@@ -2603,11 +3097,15 @@ struct mlxsw_sp_nexthop_group {
 	u32 adj_index;
 	u16 ecmp_size;
 	u16 count;
+<<<<<<< HEAD
 	int sum_norm_weight;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_nexthop nexthops[0];
 #define nh_rif	nexthops[0].rif
 };
 
+<<<<<<< HEAD
 void mlxsw_sp_nexthop_counter_alloc(struct mlxsw_sp *mlxsw_sp,
 				    struct mlxsw_sp_nexthop *nh)
 {
@@ -2715,6 +3213,8 @@ bool mlxsw_sp_nexthop_group_has_ipip(struct mlxsw_sp_nexthop *nh)
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct fib_info *
 mlxsw_sp_nexthop4_group_fi(const struct mlxsw_sp_nexthop_group *nh_grp)
 {
@@ -2731,8 +3231,12 @@ struct mlxsw_sp_nexthop_group_cmp_arg {
 
 static bool
 mlxsw_sp_nexthop6_group_has_nexthop(const struct mlxsw_sp_nexthop_group *nh_grp,
+<<<<<<< HEAD
 				    const struct in6_addr *gw, int ifindex,
 				    int weight)
+=======
+				    const struct in6_addr *gw, int ifindex)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -2740,7 +3244,11 @@ mlxsw_sp_nexthop6_group_has_nexthop(const struct mlxsw_sp_nexthop_group *nh_grp,
 		const struct mlxsw_sp_nexthop *nh;
 
 		nh = &nh_grp->nexthops[i];
+<<<<<<< HEAD
 		if (nh->ifindex == ifindex && nh->nh_weight == weight &&
+=======
+		if (nh->ifindex == ifindex &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    ipv6_addr_equal(gw, (struct in6_addr *) nh->gw_addr))
 			return true;
 	}
@@ -2759,6 +3267,7 @@ mlxsw_sp_nexthop6_group_cmp(const struct mlxsw_sp_nexthop_group *nh_grp,
 
 	list_for_each_entry(mlxsw_sp_rt6, &fib6_entry->rt6_list, list) {
 		struct in6_addr *gw;
+<<<<<<< HEAD
 		int ifindex, weight;
 
 		ifindex = mlxsw_sp_rt6->rt->fib6_nh.nh_dev->ifindex;
@@ -2766,6 +3275,13 @@ mlxsw_sp_nexthop6_group_cmp(const struct mlxsw_sp_nexthop_group *nh_grp,
 		gw = &mlxsw_sp_rt6->rt->fib6_nh.nh_gw;
 		if (!mlxsw_sp_nexthop6_group_has_nexthop(nh_grp, gw, ifindex,
 							 weight))
+=======
+		int ifindex;
+
+		ifindex = mlxsw_sp_rt6->rt->dst.dev->ifindex;
+		gw = &mlxsw_sp_rt6->rt->rt6i_gateway;
+		if (!mlxsw_sp_nexthop6_group_has_nexthop(nh_grp, gw, ifindex))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return false;
 	}
 
@@ -2829,7 +3345,11 @@ mlxsw_sp_nexthop6_group_hash(struct mlxsw_sp_fib6_entry *fib6_entry, u32 seed)
 	struct net_device *dev;
 
 	list_for_each_entry(mlxsw_sp_rt6, &fib6_entry->rt6_list, list) {
+<<<<<<< HEAD
 		dev = mlxsw_sp_rt6->rt->fib6_nh.nh_dev;
+=======
+		dev = mlxsw_sp_rt6->rt->dst.dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		val ^= dev->ifindex;
 	}
 
@@ -2975,8 +3495,13 @@ static int mlxsw_sp_adj_index_mass_update(struct mlxsw_sp *mlxsw_sp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __mlxsw_sp_nexthop_update(struct mlxsw_sp *mlxsw_sp, u32 adj_index,
 				     struct mlxsw_sp_nexthop *nh)
+=======
+static int mlxsw_sp_nexthop_mac_update(struct mlxsw_sp *mlxsw_sp, u32 adj_index,
+				       struct mlxsw_sp_nexthop *nh)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_neigh_entry *neigh_entry = nh->neigh_entry;
 	char ratr_pl[MLXSW_REG_RATR_LEN];
@@ -2985,6 +3510,7 @@ static int __mlxsw_sp_nexthop_update(struct mlxsw_sp *mlxsw_sp, u32 adj_index,
 			    true, MLXSW_REG_RATR_TYPE_ETHERNET,
 			    adj_index, neigh_entry->rif);
 	mlxsw_reg_ratr_eth_entry_pack(ratr_pl, neigh_entry->ha);
+<<<<<<< HEAD
 	if (nh->counter_valid)
 		mlxsw_reg_ratr_counter_pack(ratr_pl, nh->counter_index, true);
 	else
@@ -3019,10 +3545,16 @@ static int __mlxsw_sp_nexthop_ipip_update(struct mlxsw_sp *mlxsw_sp,
 	return ipip_ops->nexthop_update(mlxsw_sp, adj_index, nh->ipip_entry);
 }
 
+=======
+	return mlxsw_reg_write(mlxsw_sp->core, MLXSW_REG(ratr), ratr_pl);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_nexthop_ipip_update(struct mlxsw_sp *mlxsw_sp,
 					u32 adj_index,
 					struct mlxsw_sp_nexthop *nh)
 {
+<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < nh->num_adj_entries; i++) {
@@ -3035,6 +3567,12 @@ static int mlxsw_sp_nexthop_ipip_update(struct mlxsw_sp *mlxsw_sp,
 	}
 
 	return 0;
+=======
+	const struct mlxsw_sp_ipip_ops *ipip_ops;
+
+	ipip_ops = mlxsw_sp->router->ipip_ops_arr[nh->ipip_entry->ipipt];
+	return ipip_ops->nexthop_update(mlxsw_sp, adj_index, nh->ipip_entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -3058,7 +3596,11 @@ mlxsw_sp_nexthop_group_update(struct mlxsw_sp *mlxsw_sp,
 		if (nh->update || reallocate) {
 			switch (nh->type) {
 			case MLXSW_SP_NEXTHOP_TYPE_ETH:
+<<<<<<< HEAD
 				err = mlxsw_sp_nexthop_update
+=======
+				err = mlxsw_sp_nexthop_mac_update
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    (mlxsw_sp, adj_index, nh);
 				break;
 			case MLXSW_SP_NEXTHOP_TYPE_IPIP:
@@ -3071,7 +3613,11 @@ mlxsw_sp_nexthop_group_update(struct mlxsw_sp *mlxsw_sp,
 			nh->update = 0;
 			nh->offloaded = 1;
 		}
+<<<<<<< HEAD
 		adj_index += nh->num_adj_entries;
+=======
+		adj_index++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 }
@@ -3116,6 +3662,7 @@ mlxsw_sp_nexthop_fib_entries_refresh(struct mlxsw_sp_nexthop_group *nh_grp)
 	}
 }
 
+<<<<<<< HEAD
 static void mlxsw_sp_adj_grp_size_round_up(u16 *p_adj_grp_size)
 {
 	/* Valid sizes for an adjacency group are:
@@ -3219,16 +3766,28 @@ mlxsw_sp_nexthop_group_rebalance(struct mlxsw_sp_nexthop_group *nh_grp)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void
 mlxsw_sp_nexthop_group_refresh(struct mlxsw_sp *mlxsw_sp,
 			       struct mlxsw_sp_nexthop_group *nh_grp)
 {
+<<<<<<< HEAD
 	u16 ecmp_size, old_ecmp_size;
 	struct mlxsw_sp_nexthop *nh;
 	bool offload_change = false;
 	u32 adj_index;
 	bool old_adj_index_valid;
 	u32 old_adj_index;
+=======
+	struct mlxsw_sp_nexthop *nh;
+	bool offload_change = false;
+	u32 adj_index;
+	u16 ecmp_size = 0;
+	bool old_adj_index_valid;
+	u32 old_adj_index;
+	u16 old_ecmp_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	int err;
 
@@ -3245,6 +3804,11 @@ mlxsw_sp_nexthop_group_refresh(struct mlxsw_sp *mlxsw_sp,
 			if (nh->should_offload)
 				nh->update = 1;
 		}
+<<<<<<< HEAD
+=======
+		if (nh->should_offload)
+			ecmp_size++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (!offload_change) {
 		/* Nothing was added or removed, so no need to reallocate. Just
@@ -3257,13 +3821,18 @@ mlxsw_sp_nexthop_group_refresh(struct mlxsw_sp *mlxsw_sp,
 		}
 		return;
 	}
+<<<<<<< HEAD
 	mlxsw_sp_nexthop_group_normalize(nh_grp);
 	if (!nh_grp->sum_norm_weight)
+=======
+	if (!ecmp_size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* No neigh of this group is connected so we just set
 		 * the trap and let everthing flow through kernel.
 		 */
 		goto set_trap;
 
+<<<<<<< HEAD
 	ecmp_size = nh_grp->sum_norm_weight;
 	err = mlxsw_sp_fix_adj_grp_size(mlxsw_sp, &ecmp_size);
 	if (err)
@@ -3272,6 +3841,9 @@ mlxsw_sp_nexthop_group_refresh(struct mlxsw_sp *mlxsw_sp,
 
 	err = mlxsw_sp_kvdl_alloc(mlxsw_sp, MLXSW_SP_KVDL_ENTRY_TYPE_ADJ,
 				  ecmp_size, &adj_index);
+=======
+	err = mlxsw_sp_kvdl_alloc(mlxsw_sp, ecmp_size, &adj_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		/* We ran out of KVD linear space, just set the
 		 * trap and let everything flow through kernel.
@@ -3285,7 +3857,10 @@ mlxsw_sp_nexthop_group_refresh(struct mlxsw_sp *mlxsw_sp,
 	nh_grp->adj_index_valid = 1;
 	nh_grp->adj_index = adj_index;
 	nh_grp->ecmp_size = ecmp_size;
+<<<<<<< HEAD
 	mlxsw_sp_nexthop_group_rebalance(nh_grp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlxsw_sp_nexthop_group_update(mlxsw_sp, nh_grp, true);
 	if (err) {
 		dev_warn(mlxsw_sp->bus_info->dev, "Failed to update neigh MAC in adjacency table.\n");
@@ -3306,8 +3881,12 @@ mlxsw_sp_nexthop_group_refresh(struct mlxsw_sp *mlxsw_sp,
 
 	err = mlxsw_sp_adj_index_mass_update(mlxsw_sp, nh_grp,
 					     old_adj_index, old_ecmp_size);
+<<<<<<< HEAD
 	mlxsw_sp_kvdl_free(mlxsw_sp, MLXSW_SP_KVDL_ENTRY_TYPE_ADJ,
 			   old_ecmp_size, old_adj_index);
+=======
+	mlxsw_sp_kvdl_free(mlxsw_sp, old_adj_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		dev_warn(mlxsw_sp->bus_info->dev, "Failed to mass-update adjacency index for nexthop group.\n");
 		goto set_trap;
@@ -3329,8 +3908,12 @@ set_trap:
 	if (err)
 		dev_warn(mlxsw_sp->bus_info->dev, "Failed to set traps for fib entries.\n");
 	if (old_adj_index_valid)
+<<<<<<< HEAD
 		mlxsw_sp_kvdl_free(mlxsw_sp, MLXSW_SP_KVDL_ENTRY_TYPE_ADJ,
 				   nh_grp->ecmp_size, nh_grp->adj_index);
+=======
+		mlxsw_sp_kvdl_free(mlxsw_sp, nh_grp->adj_index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __mlxsw_sp_nexthop_neigh_update(struct mlxsw_sp_nexthop *nh,
@@ -3343,6 +3926,7 @@ static void __mlxsw_sp_nexthop_neigh_update(struct mlxsw_sp_nexthop *nh,
 	nh->update = 1;
 }
 
+<<<<<<< HEAD
 static void
 mlxsw_sp_nexthop_neigh_update(struct mlxsw_sp *mlxsw_sp,
 			      struct mlxsw_sp_neigh_entry *neigh_entry,
@@ -3350,6 +3934,81 @@ mlxsw_sp_nexthop_neigh_update(struct mlxsw_sp *mlxsw_sp,
 {
 	struct mlxsw_sp_nexthop *nh;
 
+=======
+static int
+mlxsw_sp_nexthop_dead_neigh_replace(struct mlxsw_sp *mlxsw_sp,
+				    struct mlxsw_sp_neigh_entry *neigh_entry)
+{
+	struct neighbour *n, *old_n = neigh_entry->key.n;
+	struct mlxsw_sp_nexthop *nh;
+	bool entry_connected;
+	u8 nud_state, dead;
+	int err;
+
+	nh = list_first_entry(&neigh_entry->nexthop_list,
+			      struct mlxsw_sp_nexthop, neigh_list_node);
+
+	n = neigh_lookup(nh->nh_grp->neigh_tbl, &nh->gw_addr, nh->rif->dev);
+	if (!n) {
+		n = neigh_create(nh->nh_grp->neigh_tbl, &nh->gw_addr,
+				 nh->rif->dev);
+		if (IS_ERR(n))
+			return PTR_ERR(n);
+		neigh_event_send(n, NULL);
+	}
+
+	mlxsw_sp_neigh_entry_remove(mlxsw_sp, neigh_entry);
+	neigh_entry->key.n = n;
+	err = mlxsw_sp_neigh_entry_insert(mlxsw_sp, neigh_entry);
+	if (err)
+		goto err_neigh_entry_insert;
+
+	read_lock_bh(&n->lock);
+	nud_state = n->nud_state;
+	dead = n->dead;
+	read_unlock_bh(&n->lock);
+	entry_connected = nud_state & NUD_VALID && !dead;
+
+	list_for_each_entry(nh, &neigh_entry->nexthop_list,
+			    neigh_list_node) {
+		neigh_release(old_n);
+		neigh_clone(n);
+		__mlxsw_sp_nexthop_neigh_update(nh, !entry_connected);
+		mlxsw_sp_nexthop_group_refresh(mlxsw_sp, nh->nh_grp);
+	}
+
+	neigh_release(n);
+
+	return 0;
+
+err_neigh_entry_insert:
+	neigh_entry->key.n = old_n;
+	mlxsw_sp_neigh_entry_insert(mlxsw_sp, neigh_entry);
+	neigh_release(n);
+	return err;
+}
+
+static void
+mlxsw_sp_nexthop_neigh_update(struct mlxsw_sp *mlxsw_sp,
+			      struct mlxsw_sp_neigh_entry *neigh_entry,
+			      bool removing, bool dead)
+{
+	struct mlxsw_sp_nexthop *nh;
+
+	if (list_empty(&neigh_entry->nexthop_list))
+		return;
+
+	if (dead) {
+		int err;
+
+		err = mlxsw_sp_nexthop_dead_neigh_replace(mlxsw_sp,
+							  neigh_entry);
+		if (err)
+			dev_err(mlxsw_sp->bus_info->dev, "Failed to replace dead neigh\n");
+		return;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(nh, &neigh_entry->nexthop_list,
 			    neigh_list_node) {
 		__mlxsw_sp_nexthop_neigh_update(nh, removing);
@@ -3457,6 +4116,7 @@ static void mlxsw_sp_nexthop_neigh_fini(struct mlxsw_sp *mlxsw_sp,
 	neigh_release(n);
 }
 
+<<<<<<< HEAD
 static bool mlxsw_sp_ipip_netdev_ul_up(struct net_device *ol_dev)
 {
 	struct net_device *ul_dev = __mlxsw_sp_ipip_netdev_ul_dev_get(ol_dev);
@@ -3477,6 +4137,41 @@ static void mlxsw_sp_nexthop_ipip_init(struct mlxsw_sp *mlxsw_sp,
 	removing = !mlxsw_sp_ipip_netdev_ul_up(ipip_entry->ol_dev);
 	__mlxsw_sp_nexthop_neigh_update(nh, removing);
 	mlxsw_sp_nexthop_rif_init(nh, &ipip_entry->ol_lb->common);
+=======
+static bool mlxsw_sp_netdev_ipip_type(const struct mlxsw_sp *mlxsw_sp,
+				      const struct net_device *dev,
+				      enum mlxsw_sp_ipip_type *p_type)
+{
+	struct mlxsw_sp_router *router = mlxsw_sp->router;
+	const struct mlxsw_sp_ipip_ops *ipip_ops;
+	enum mlxsw_sp_ipip_type ipipt;
+
+	for (ipipt = 0; ipipt < MLXSW_SP_IPIP_TYPE_MAX; ++ipipt) {
+		ipip_ops = router->ipip_ops_arr[ipipt];
+		if (dev->type == ipip_ops->dev_type) {
+			if (p_type)
+				*p_type = ipipt;
+			return true;
+		}
+	}
+	return false;
+}
+
+static int mlxsw_sp_nexthop_ipip_init(struct mlxsw_sp *mlxsw_sp,
+				      enum mlxsw_sp_ipip_type ipipt,
+				      struct mlxsw_sp_nexthop *nh,
+				      struct net_device *ol_dev)
+{
+	if (!nh->nh_grp->gateway || nh->ipip_entry)
+		return 0;
+
+	nh->ipip_entry = mlxsw_sp_ipip_entry_get(mlxsw_sp, ipipt, ol_dev);
+	if (IS_ERR(nh->ipip_entry))
+		return PTR_ERR(nh->ipip_entry);
+
+	__mlxsw_sp_nexthop_neigh_update(nh, false);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlxsw_sp_nexthop_ipip_fini(struct mlxsw_sp *mlxsw_sp,
@@ -3488,6 +4183,10 @@ static void mlxsw_sp_nexthop_ipip_fini(struct mlxsw_sp *mlxsw_sp,
 		return;
 
 	__mlxsw_sp_nexthop_neigh_update(nh, true);
+<<<<<<< HEAD
+=======
+	mlxsw_sp_ipip_entry_put(mlxsw_sp, ipip_entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nh->ipip_entry = NULL;
 }
 
@@ -3521,6 +4220,7 @@ static int mlxsw_sp_nexthop4_type_init(struct mlxsw_sp *mlxsw_sp,
 				       struct mlxsw_sp_nexthop *nh,
 				       struct fib_nh *fib_nh)
 {
+<<<<<<< HEAD
 	const struct mlxsw_sp_ipip_ops *ipip_ops;
 	struct net_device *dev = fib_nh->nh_dev;
 	struct mlxsw_sp_ipip_entry *ipip_entry;
@@ -3536,6 +4236,23 @@ static int mlxsw_sp_nexthop4_type_init(struct mlxsw_sp *mlxsw_sp,
 			mlxsw_sp_nexthop_ipip_init(mlxsw_sp, nh, ipip_entry);
 			return 0;
 		}
+=======
+	struct mlxsw_sp_router *router = mlxsw_sp->router;
+	struct net_device *dev = fib_nh->nh_dev;
+	enum mlxsw_sp_ipip_type ipipt;
+	struct mlxsw_sp_rif *rif;
+	int err;
+
+	if (mlxsw_sp_nexthop4_ipip_type(mlxsw_sp, fib_nh, &ipipt) &&
+	    router->ipip_ops_arr[ipipt]->can_offload(mlxsw_sp, dev,
+						     MLXSW_SP_L3_PROTO_IPV4)) {
+		nh->type = MLXSW_SP_NEXTHOP_TYPE_IPIP;
+		err = mlxsw_sp_nexthop_ipip_init(mlxsw_sp, ipipt, nh, dev);
+		if (err)
+			return err;
+		mlxsw_sp_nexthop_rif_init(nh, &nh->ipip_entry->ol_lb->common);
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	nh->type = MLXSW_SP_NEXTHOP_TYPE_ETH;
@@ -3572,19 +4289,25 @@ static int mlxsw_sp_nexthop4_init(struct mlxsw_sp *mlxsw_sp,
 
 	nh->nh_grp = nh_grp;
 	nh->key.fib_nh = fib_nh;
+<<<<<<< HEAD
 #ifdef CONFIG_IP_ROUTE_MULTIPATH
 	nh->nh_weight = fib_nh->nh_weight;
 #else
 	nh->nh_weight = 1;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(&nh->gw_addr, &fib_nh->nh_gw, sizeof(fib_nh->nh_gw));
 	err = mlxsw_sp_nexthop_insert(mlxsw_sp, nh);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	mlxsw_sp_nexthop_counter_alloc(mlxsw_sp, nh);
 	list_add_tail(&nh->router_list_node, &mlxsw_sp->router->nexthop_list);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dev)
 		return 0;
 
@@ -3608,8 +4331,11 @@ static void mlxsw_sp_nexthop4_fini(struct mlxsw_sp *mlxsw_sp,
 				   struct mlxsw_sp_nexthop *nh)
 {
 	mlxsw_sp_nexthop4_type_fini(mlxsw_sp, nh);
+<<<<<<< HEAD
 	list_del(&nh->router_list_node);
 	mlxsw_sp_nexthop_counter_free(mlxsw_sp, nh);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_nexthop_remove(mlxsw_sp, nh);
 }
 
@@ -3639,6 +4365,7 @@ static void mlxsw_sp_nexthop4_event(struct mlxsw_sp *mlxsw_sp,
 	mlxsw_sp_nexthop_group_refresh(mlxsw_sp, nh->nh_grp);
 }
 
+<<<<<<< HEAD
 static void mlxsw_sp_nexthop_rif_update(struct mlxsw_sp *mlxsw_sp,
 					struct mlxsw_sp_rif *rif)
 {
@@ -3675,6 +4402,8 @@ static void mlxsw_sp_nexthop_rif_migrate(struct mlxsw_sp *mlxsw_sp,
 	mlxsw_sp_nexthop_rif_update(mlxsw_sp, new_rif);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mlxsw_sp_nexthop_rif_gone_sync(struct mlxsw_sp *mlxsw_sp,
 					   struct mlxsw_sp_rif *rif)
 {
@@ -3829,11 +4558,19 @@ mlxsw_sp_rt6_nexthop(struct mlxsw_sp_nexthop_group *nh_grp,
 
 	for (i = 0; i < nh_grp->count; i++) {
 		struct mlxsw_sp_nexthop *nh = &nh_grp->nexthops[i];
+<<<<<<< HEAD
 		struct fib6_info *rt = mlxsw_sp_rt6->rt;
 
 		if (nh->rif && nh->rif->dev == rt->fib6_nh.nh_dev &&
 		    ipv6_addr_equal((const struct in6_addr *) &nh->gw_addr,
 				    &rt->fib6_nh.nh_gw))
+=======
+		struct rt6_info *rt = mlxsw_sp_rt6->rt;
+
+		if (nh->rif && nh->rif->dev == rt->dst.dev &&
+		    ipv6_addr_equal((const struct in6_addr *) &nh->gw_addr,
+				    &rt->rt6i_gateway))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return nh;
 		continue;
 	}
@@ -3890,7 +4627,11 @@ mlxsw_sp_fib6_entry_offload_set(struct mlxsw_sp_fib_entry *fib_entry)
 
 	if (fib_entry->type == MLXSW_SP_FIB_ENTRY_TYPE_LOCAL) {
 		list_first_entry(&fib6_entry->rt6_list, struct mlxsw_sp_rt6,
+<<<<<<< HEAD
 				 list)->rt->fib6_nh.nh_flags |= RTNH_F_OFFLOAD;
+=======
+				 list)->rt->rt6i_nh_flags |= RTNH_F_OFFLOAD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -3900,9 +4641,15 @@ mlxsw_sp_fib6_entry_offload_set(struct mlxsw_sp_fib_entry *fib_entry)
 
 		nh = mlxsw_sp_rt6_nexthop(nh_grp, mlxsw_sp_rt6);
 		if (nh && nh->offloaded)
+<<<<<<< HEAD
 			mlxsw_sp_rt6->rt->fib6_nh.nh_flags |= RTNH_F_OFFLOAD;
 		else
 			mlxsw_sp_rt6->rt->fib6_nh.nh_flags &= ~RTNH_F_OFFLOAD;
+=======
+			mlxsw_sp_rt6->rt->rt6i_nh_flags |= RTNH_F_OFFLOAD;
+		else
+			mlxsw_sp_rt6->rt->rt6i_nh_flags &= ~RTNH_F_OFFLOAD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3915,9 +4662,15 @@ mlxsw_sp_fib6_entry_offload_unset(struct mlxsw_sp_fib_entry *fib_entry)
 	fib6_entry = container_of(fib_entry, struct mlxsw_sp_fib6_entry,
 				  common);
 	list_for_each_entry(mlxsw_sp_rt6, &fib6_entry->rt6_list, list) {
+<<<<<<< HEAD
 		struct fib6_info *rt = mlxsw_sp_rt6->rt;
 
 		rt->fib6_nh.nh_flags &= ~RTNH_F_OFFLOAD;
+=======
+		struct rt6_info *rt = mlxsw_sp_rt6->rt;
+
+		rt->rt6i_nh_flags &= ~RTNH_F_OFFLOAD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -3958,7 +4711,11 @@ mlxsw_sp_fib_entry_offload_refresh(struct mlxsw_sp_fib_entry *fib_entry,
 			return;
 		if (mlxsw_sp_fib_entry_should_offload(fib_entry))
 			mlxsw_sp_fib_entry_offload_set(fib_entry);
+<<<<<<< HEAD
 		else
+=======
+		else if (!mlxsw_sp_fib_entry_should_offload(fib_entry))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mlxsw_sp_fib_entry_offload_unset(fib_entry);
 		return;
 	default:
@@ -4129,7 +4886,11 @@ mlxsw_sp_fib4_entry_type_set(struct mlxsw_sp *mlxsw_sp,
 	case RTN_LOCAL:
 		ipip_entry = mlxsw_sp_ipip_entry_find_by_decap(mlxsw_sp, dev,
 						 MLXSW_SP_L3_PROTO_IPV4, dip);
+<<<<<<< HEAD
 		if (ipip_entry && ipip_entry->ol_dev->flags & IFF_UP) {
+=======
+		if (ipip_entry) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fib_entry->type = MLXSW_SP_FIB_ENTRY_TYPE_IPIP_DECAP;
 			return mlxsw_sp_fib_entry_decap_init(mlxsw_sp,
 							     fib_entry,
@@ -4303,6 +5064,7 @@ mlxsw_sp_fib_node_entry_is_first(const struct mlxsw_sp_fib_node *fib_node,
 }
 
 static int mlxsw_sp_fib_lpm_tree_link(struct mlxsw_sp *mlxsw_sp,
+<<<<<<< HEAD
 				      struct mlxsw_sp_fib_node *fib_node)
 {
 	struct mlxsw_sp_prefix_usage req_prefix_usage;
@@ -4316,11 +5078,35 @@ static int mlxsw_sp_fib_lpm_tree_link(struct mlxsw_sp *mlxsw_sp,
 
 	mlxsw_sp_prefix_usage_cpy(&req_prefix_usage, &lpm_tree->prefix_usage);
 	mlxsw_sp_prefix_usage_set(&req_prefix_usage, fib_node->key.prefix_len);
+=======
+				      struct mlxsw_sp_fib *fib,
+				      struct mlxsw_sp_fib_node *fib_node)
+{
+	struct mlxsw_sp_prefix_usage req_prefix_usage = {{ 0 } };
+	struct mlxsw_sp_lpm_tree *lpm_tree;
+	int err;
+
+	/* Since the tree is shared between all virtual routers we must
+	 * make sure it contains all the required prefix lengths. This
+	 * can be computed by either adding the new prefix length to the
+	 * existing prefix usage of a bound tree, or by aggregating the
+	 * prefix lengths across all virtual routers and adding the new
+	 * one as well.
+	 */
+	if (fib->lpm_tree)
+		mlxsw_sp_prefix_usage_cpy(&req_prefix_usage,
+					  &fib->lpm_tree->prefix_usage);
+	else
+		mlxsw_sp_vrs_prefixes(mlxsw_sp, fib->proto, &req_prefix_usage);
+	mlxsw_sp_prefix_usage_set(&req_prefix_usage, fib_node->key.prefix_len);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lpm_tree = mlxsw_sp_lpm_tree_get(mlxsw_sp, &req_prefix_usage,
 					 fib->proto);
 	if (IS_ERR(lpm_tree))
 		return PTR_ERR(lpm_tree);
 
+<<<<<<< HEAD
 	err = mlxsw_sp_vrs_lpm_tree_replace(mlxsw_sp, fib, lpm_tree);
 	if (err)
 		goto err_lpm_tree_replace;
@@ -4363,6 +5149,44 @@ static void mlxsw_sp_fib_lpm_tree_unlink(struct mlxsw_sp *mlxsw_sp,
 
 err_lpm_tree_replace:
 	mlxsw_sp_lpm_tree_put(mlxsw_sp, lpm_tree);
+=======
+	if (fib->lpm_tree && fib->lpm_tree->id == lpm_tree->id)
+		return 0;
+
+	err = mlxsw_sp_vrs_lpm_tree_replace(mlxsw_sp, fib, lpm_tree);
+	if (err)
+		return err;
+
+	return 0;
+}
+
+static void mlxsw_sp_fib_lpm_tree_unlink(struct mlxsw_sp *mlxsw_sp,
+					 struct mlxsw_sp_fib *fib)
+{
+	if (!mlxsw_sp_prefix_usage_none(&fib->prefix_usage))
+		return;
+	mlxsw_sp_vr_lpm_tree_unbind(mlxsw_sp, fib);
+	mlxsw_sp_lpm_tree_put(mlxsw_sp, fib->lpm_tree);
+	fib->lpm_tree = NULL;
+}
+
+static void mlxsw_sp_fib_node_prefix_inc(struct mlxsw_sp_fib_node *fib_node)
+{
+	unsigned char prefix_len = fib_node->key.prefix_len;
+	struct mlxsw_sp_fib *fib = fib_node->fib;
+
+	if (fib->prefix_ref_count[prefix_len]++ == 0)
+		mlxsw_sp_prefix_usage_set(&fib->prefix_usage, prefix_len);
+}
+
+static void mlxsw_sp_fib_node_prefix_dec(struct mlxsw_sp_fib_node *fib_node)
+{
+	unsigned char prefix_len = fib_node->key.prefix_len;
+	struct mlxsw_sp_fib *fib = fib_node->fib;
+
+	if (--fib->prefix_ref_count[prefix_len] == 0)
+		mlxsw_sp_prefix_usage_clear(&fib->prefix_usage, prefix_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlxsw_sp_fib_node_init(struct mlxsw_sp *mlxsw_sp,
@@ -4376,10 +5200,19 @@ static int mlxsw_sp_fib_node_init(struct mlxsw_sp *mlxsw_sp,
 		return err;
 	fib_node->fib = fib;
 
+<<<<<<< HEAD
 	err = mlxsw_sp_fib_lpm_tree_link(mlxsw_sp, fib_node);
 	if (err)
 		goto err_fib_lpm_tree_link;
 
+=======
+	err = mlxsw_sp_fib_lpm_tree_link(mlxsw_sp, fib, fib_node);
+	if (err)
+		goto err_fib_lpm_tree_link;
+
+	mlxsw_sp_fib_node_prefix_inc(fib_node);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_fib_lpm_tree_link:
@@ -4393,7 +5226,12 @@ static void mlxsw_sp_fib_node_fini(struct mlxsw_sp *mlxsw_sp,
 {
 	struct mlxsw_sp_fib *fib = fib_node->fib;
 
+<<<<<<< HEAD
 	mlxsw_sp_fib_lpm_tree_unlink(mlxsw_sp, fib_node);
+=======
+	mlxsw_sp_fib_node_prefix_dec(fib_node);
+	mlxsw_sp_fib_lpm_tree_unlink(mlxsw_sp, fib);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fib_node->fib = NULL;
 	mlxsw_sp_fib_node_remove(fib, fib_node);
 }
@@ -4408,7 +5246,11 @@ mlxsw_sp_fib_node_get(struct mlxsw_sp *mlxsw_sp, u32 tb_id, const void *addr,
 	struct mlxsw_sp_vr *vr;
 	int err;
 
+<<<<<<< HEAD
 	vr = mlxsw_sp_vr_get(mlxsw_sp, tb_id, NULL);
+=======
+	vr = mlxsw_sp_vr_get(mlxsw_sp, tb_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vr))
 		return ERR_CAST(vr);
 	fib = mlxsw_sp_vr_fib(vr, proto);
@@ -4432,7 +5274,11 @@ mlxsw_sp_fib_node_get(struct mlxsw_sp *mlxsw_sp, u32 tb_id, const void *addr,
 err_fib_node_init:
 	mlxsw_sp_fib_node_destroy(fib_node);
 err_fib_node_create:
+<<<<<<< HEAD
 	mlxsw_sp_vr_put(mlxsw_sp, vr);
+=======
+	mlxsw_sp_vr_put(vr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ERR_PTR(err);
 }
 
@@ -4445,7 +5291,11 @@ static void mlxsw_sp_fib_node_put(struct mlxsw_sp *mlxsw_sp,
 		return;
 	mlxsw_sp_fib_node_fini(mlxsw_sp, fib_node);
 	mlxsw_sp_fib_node_destroy(fib_node);
+<<<<<<< HEAD
 	mlxsw_sp_vr_put(mlxsw_sp, vr);
+=======
+	mlxsw_sp_vr_put(vr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct mlxsw_sp_fib4_entry *
@@ -4694,29 +5544,49 @@ static void mlxsw_sp_router_fib4_del(struct mlxsw_sp *mlxsw_sp,
 	mlxsw_sp_fib_node_put(mlxsw_sp, fib_node);
 }
 
+<<<<<<< HEAD
 static bool mlxsw_sp_fib6_rt_should_ignore(const struct fib6_info *rt)
+=======
+static bool mlxsw_sp_fib6_rt_should_ignore(const struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Packets with link-local destination IP arriving to the router
 	 * are trapped to the CPU, so no need to program specific routes
 	 * for them.
 	 */
+<<<<<<< HEAD
 	if (ipv6_addr_type(&rt->fib6_dst.addr) & IPV6_ADDR_LINKLOCAL)
+=======
+	if (ipv6_addr_type(&rt->rt6i_dst.addr) & IPV6_ADDR_LINKLOCAL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 
 	/* Multicast routes aren't supported, so ignore them. Neighbour
 	 * Discovery packets are specifically trapped.
 	 */
+<<<<<<< HEAD
 	if (ipv6_addr_type(&rt->fib6_dst.addr) & IPV6_ADDR_MULTICAST)
 		return true;
 
 	/* Cloned routes are irrelevant in the forwarding path. */
 	if (rt->fib6_flags & RTF_CACHE)
+=======
+	if (ipv6_addr_type(&rt->rt6i_dst.addr) & IPV6_ADDR_MULTICAST)
+		return true;
+
+	/* Cloned routes are irrelevant in the forwarding path. */
+	if (rt->rt6i_flags & RTF_CACHE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 
 	return false;
 }
 
+<<<<<<< HEAD
 static struct mlxsw_sp_rt6 *mlxsw_sp_rt6_create(struct fib6_info *rt)
+=======
+static struct mlxsw_sp_rt6 *mlxsw_sp_rt6_create(struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_rt6 *mlxsw_sp_rt6;
 
@@ -4729,18 +5599,31 @@ static struct mlxsw_sp_rt6 *mlxsw_sp_rt6_create(struct fib6_info *rt)
 	 * memory.
 	 */
 	mlxsw_sp_rt6->rt = rt;
+<<<<<<< HEAD
 	fib6_info_hold(rt);
+=======
+	rt6_hold(rt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mlxsw_sp_rt6;
 }
 
 #if IS_ENABLED(CONFIG_IPV6)
+<<<<<<< HEAD
 static void mlxsw_sp_rt6_release(struct fib6_info *rt)
 {
 	fib6_info_release(rt);
 }
 #else
 static void mlxsw_sp_rt6_release(struct fib6_info *rt)
+=======
+static void mlxsw_sp_rt6_release(struct rt6_info *rt)
+{
+	rt6_release(rt);
+}
+#else
+static void mlxsw_sp_rt6_release(struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 #endif
@@ -4751,6 +5634,7 @@ static void mlxsw_sp_rt6_destroy(struct mlxsw_sp_rt6 *mlxsw_sp_rt6)
 	kfree(mlxsw_sp_rt6);
 }
 
+<<<<<<< HEAD
 static bool mlxsw_sp_fib6_rt_can_mp(const struct fib6_info *rt)
 {
 	/* RTF_CACHE routes are ignored */
@@ -4758,6 +5642,15 @@ static bool mlxsw_sp_fib6_rt_can_mp(const struct fib6_info *rt)
 }
 
 static struct fib6_info *
+=======
+static bool mlxsw_sp_fib6_rt_can_mp(const struct rt6_info *rt)
+{
+	/* RTF_CACHE routes are ignored */
+	return (rt->rt6i_flags & (RTF_GATEWAY | RTF_ADDRCONF)) == RTF_GATEWAY;
+}
+
+static struct rt6_info *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mlxsw_sp_fib6_entry_rt(const struct mlxsw_sp_fib6_entry *fib6_entry)
 {
 	return list_first_entry(&fib6_entry->rt6_list, struct mlxsw_sp_rt6,
@@ -4766,7 +5659,11 @@ mlxsw_sp_fib6_entry_rt(const struct mlxsw_sp_fib6_entry *fib6_entry)
 
 static struct mlxsw_sp_fib6_entry *
 mlxsw_sp_fib6_node_mp_entry_find(const struct mlxsw_sp_fib_node *fib_node,
+<<<<<<< HEAD
 				 const struct fib6_info *nrt, bool replace)
+=======
+				 const struct rt6_info *nrt, bool replace)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_fib6_entry *fib6_entry;
 
@@ -4774,11 +5671,16 @@ mlxsw_sp_fib6_node_mp_entry_find(const struct mlxsw_sp_fib_node *fib_node,
 		return NULL;
 
 	list_for_each_entry(fib6_entry, &fib_node->entry_list, common.list) {
+<<<<<<< HEAD
 		struct fib6_info *rt = mlxsw_sp_fib6_entry_rt(fib6_entry);
+=======
+		struct rt6_info *rt = mlxsw_sp_fib6_entry_rt(fib6_entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* RT6_TABLE_LOCAL and RT6_TABLE_MAIN share the same
 		 * virtual router.
 		 */
+<<<<<<< HEAD
 		if (rt->fib6_table->tb6_id > nrt->fib6_table->tb6_id)
 			continue;
 		if (rt->fib6_table->tb6_id != nrt->fib6_table->tb6_id)
@@ -4789,6 +5691,18 @@ mlxsw_sp_fib6_node_mp_entry_find(const struct mlxsw_sp_fib_node *fib_node,
 		    mlxsw_sp_fib6_rt_can_mp(rt))
 			return fib6_entry;
 		if (rt->fib6_metric > nrt->fib6_metric)
+=======
+		if (rt->rt6i_table->tb6_id > nrt->rt6i_table->tb6_id)
+			continue;
+		if (rt->rt6i_table->tb6_id != nrt->rt6i_table->tb6_id)
+			break;
+		if (rt->rt6i_metric < nrt->rt6i_metric)
+			continue;
+		if (rt->rt6i_metric == nrt->rt6i_metric &&
+		    mlxsw_sp_fib6_rt_can_mp(rt))
+			return fib6_entry;
+		if (rt->rt6i_metric > nrt->rt6i_metric)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 	}
 
@@ -4797,7 +5711,11 @@ mlxsw_sp_fib6_node_mp_entry_find(const struct mlxsw_sp_fib_node *fib_node,
 
 static struct mlxsw_sp_rt6 *
 mlxsw_sp_fib6_entry_rt_find(const struct mlxsw_sp_fib6_entry *fib6_entry,
+<<<<<<< HEAD
 			    const struct fib6_info *rt)
+=======
+			    const struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_rt6 *mlxsw_sp_rt6;
 
@@ -4810,16 +5728,25 @@ mlxsw_sp_fib6_entry_rt_find(const struct mlxsw_sp_fib6_entry *fib6_entry,
 }
 
 static bool mlxsw_sp_nexthop6_ipip_type(const struct mlxsw_sp *mlxsw_sp,
+<<<<<<< HEAD
 					const struct fib6_info *rt,
 					enum mlxsw_sp_ipip_type *ret)
 {
 	return rt->fib6_nh.nh_dev &&
 	       mlxsw_sp_netdev_ipip_type(mlxsw_sp, rt->fib6_nh.nh_dev, ret);
+=======
+					const struct rt6_info *rt,
+					enum mlxsw_sp_ipip_type *ret)
+{
+	return rt->dst.dev &&
+	       mlxsw_sp_netdev_ipip_type(mlxsw_sp, rt->dst.dev, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int mlxsw_sp_nexthop6_type_init(struct mlxsw_sp *mlxsw_sp,
 				       struct mlxsw_sp_nexthop_group *nh_grp,
 				       struct mlxsw_sp_nexthop *nh,
+<<<<<<< HEAD
 				       const struct fib6_info *rt)
 {
 	const struct mlxsw_sp_ipip_ops *ipip_ops;
@@ -4837,6 +5764,25 @@ static int mlxsw_sp_nexthop6_type_init(struct mlxsw_sp *mlxsw_sp,
 			mlxsw_sp_nexthop_ipip_init(mlxsw_sp, nh, ipip_entry);
 			return 0;
 		}
+=======
+				       const struct rt6_info *rt)
+{
+	struct mlxsw_sp_router *router = mlxsw_sp->router;
+	struct net_device *dev = rt->dst.dev;
+	enum mlxsw_sp_ipip_type ipipt;
+	struct mlxsw_sp_rif *rif;
+	int err;
+
+	if (mlxsw_sp_nexthop6_ipip_type(mlxsw_sp, rt, &ipipt) &&
+	    router->ipip_ops_arr[ipipt]->can_offload(mlxsw_sp, dev,
+						     MLXSW_SP_L3_PROTO_IPV6)) {
+		nh->type = MLXSW_SP_NEXTHOP_TYPE_IPIP;
+		err = mlxsw_sp_nexthop_ipip_init(mlxsw_sp, ipipt, nh, dev);
+		if (err)
+			return err;
+		mlxsw_sp_nexthop_rif_init(nh, &nh->ipip_entry->ol_lb->common);
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	nh->type = MLXSW_SP_NEXTHOP_TYPE_ETH;
@@ -4865,6 +5811,7 @@ static void mlxsw_sp_nexthop6_type_fini(struct mlxsw_sp *mlxsw_sp,
 static int mlxsw_sp_nexthop6_init(struct mlxsw_sp *mlxsw_sp,
 				  struct mlxsw_sp_nexthop_group *nh_grp,
 				  struct mlxsw_sp_nexthop *nh,
+<<<<<<< HEAD
 				  const struct fib6_info *rt)
 {
 	struct net_device *dev = rt->fib6_nh.nh_dev;
@@ -4875,6 +5822,14 @@ static int mlxsw_sp_nexthop6_init(struct mlxsw_sp *mlxsw_sp,
 	mlxsw_sp_nexthop_counter_alloc(mlxsw_sp, nh);
 
 	list_add_tail(&nh->router_list_node, &mlxsw_sp->router->nexthop_list);
+=======
+				  const struct rt6_info *rt)
+{
+	struct net_device *dev = rt->dst.dev;
+
+	nh->nh_grp = nh_grp;
+	memcpy(&nh->gw_addr, &rt->rt6i_gateway, sizeof(nh->gw_addr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dev)
 		return 0;
@@ -4887,6 +5842,7 @@ static void mlxsw_sp_nexthop6_fini(struct mlxsw_sp *mlxsw_sp,
 				   struct mlxsw_sp_nexthop *nh)
 {
 	mlxsw_sp_nexthop6_type_fini(mlxsw_sp, nh);
+<<<<<<< HEAD
 	list_del(&nh->router_list_node);
 	mlxsw_sp_nexthop_counter_free(mlxsw_sp, nh);
 }
@@ -4895,6 +5851,14 @@ static bool mlxsw_sp_rt6_is_gateway(const struct mlxsw_sp *mlxsw_sp,
 				    const struct fib6_info *rt)
 {
 	return rt->fib6_flags & RTF_GATEWAY ||
+=======
+}
+
+static bool mlxsw_sp_rt6_is_gateway(const struct mlxsw_sp *mlxsw_sp,
+				    const struct rt6_info *rt)
+{
+	return rt->rt6i_flags & RTF_GATEWAY ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	       mlxsw_sp_nexthop6_ipip_type(mlxsw_sp, rt, NULL);
 }
 
@@ -4923,7 +5887,11 @@ mlxsw_sp_nexthop6_group_create(struct mlxsw_sp *mlxsw_sp,
 	nh_grp->gateway = mlxsw_sp_rt6_is_gateway(mlxsw_sp, mlxsw_sp_rt6->rt);
 	nh_grp->count = fib6_entry->nrt6;
 	for (i = 0; i < nh_grp->count; i++) {
+<<<<<<< HEAD
 		struct fib6_info *rt = mlxsw_sp_rt6->rt;
+=======
+		struct rt6_info *rt = mlxsw_sp_rt6->rt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		nh = &nh_grp->nexthops[i];
 		err = mlxsw_sp_nexthop6_init(mlxsw_sp, nh_grp, nh, rt);
@@ -5035,7 +6003,11 @@ err_nexthop6_group_get:
 static int
 mlxsw_sp_fib6_entry_nexthop_add(struct mlxsw_sp *mlxsw_sp,
 				struct mlxsw_sp_fib6_entry *fib6_entry,
+<<<<<<< HEAD
 				struct fib6_info *rt)
+=======
+				struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_rt6 *mlxsw_sp_rt6;
 	int err;
@@ -5063,7 +6035,11 @@ err_nexthop6_group_update:
 static void
 mlxsw_sp_fib6_entry_nexthop_del(struct mlxsw_sp *mlxsw_sp,
 				struct mlxsw_sp_fib6_entry *fib6_entry,
+<<<<<<< HEAD
 				struct fib6_info *rt)
+=======
+				struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_rt6 *mlxsw_sp_rt6;
 
@@ -5079,7 +6055,11 @@ mlxsw_sp_fib6_entry_nexthop_del(struct mlxsw_sp *mlxsw_sp,
 
 static void mlxsw_sp_fib6_entry_type_set(struct mlxsw_sp *mlxsw_sp,
 					 struct mlxsw_sp_fib_entry *fib_entry,
+<<<<<<< HEAD
 					 const struct fib6_info *rt)
+=======
+					 const struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Packets hitting RTF_REJECT routes need to be discarded by the
 	 * stack. We can rely on their destination device not having a
@@ -5087,9 +6067,15 @@ static void mlxsw_sp_fib6_entry_type_set(struct mlxsw_sp *mlxsw_sp,
 	 * local, which will cause them to be trapped with a lower
 	 * priority than packets that need to be locally received.
 	 */
+<<<<<<< HEAD
 	if (rt->fib6_flags & (RTF_LOCAL | RTF_ANYCAST))
 		fib_entry->type = MLXSW_SP_FIB_ENTRY_TYPE_TRAP;
 	else if (rt->fib6_flags & RTF_REJECT)
+=======
+	if (rt->rt6i_flags & (RTF_LOCAL | RTF_ANYCAST))
+		fib_entry->type = MLXSW_SP_FIB_ENTRY_TYPE_TRAP;
+	else if (rt->rt6i_flags & RTF_REJECT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fib_entry->type = MLXSW_SP_FIB_ENTRY_TYPE_LOCAL;
 	else if (mlxsw_sp_rt6_is_gateway(mlxsw_sp, rt))
 		fib_entry->type = MLXSW_SP_FIB_ENTRY_TYPE_REMOTE;
@@ -5113,7 +6099,11 @@ mlxsw_sp_fib6_entry_rt_destroy_all(struct mlxsw_sp_fib6_entry *fib6_entry)
 static struct mlxsw_sp_fib6_entry *
 mlxsw_sp_fib6_entry_create(struct mlxsw_sp *mlxsw_sp,
 			   struct mlxsw_sp_fib_node *fib_node,
+<<<<<<< HEAD
 			   struct fib6_info *rt)
+=======
+			   struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_fib6_entry *fib6_entry;
 	struct mlxsw_sp_fib_entry *fib_entry;
@@ -5163,11 +6153,16 @@ static void mlxsw_sp_fib6_entry_destroy(struct mlxsw_sp *mlxsw_sp,
 
 static struct mlxsw_sp_fib6_entry *
 mlxsw_sp_fib6_node_entry_find(const struct mlxsw_sp_fib_node *fib_node,
+<<<<<<< HEAD
 			      const struct fib6_info *nrt, bool replace)
+=======
+			      const struct rt6_info *nrt, bool replace)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_fib6_entry *fib6_entry, *fallback = NULL;
 
 	list_for_each_entry(fib6_entry, &fib_node->entry_list, common.list) {
+<<<<<<< HEAD
 		struct fib6_info *rt = mlxsw_sp_fib6_entry_rt(fib6_entry);
 
 		if (rt->fib6_table->tb6_id > nrt->fib6_table->tb6_id)
@@ -5175,13 +6170,26 @@ mlxsw_sp_fib6_node_entry_find(const struct mlxsw_sp_fib_node *fib_node,
 		if (rt->fib6_table->tb6_id != nrt->fib6_table->tb6_id)
 			break;
 		if (replace && rt->fib6_metric == nrt->fib6_metric) {
+=======
+		struct rt6_info *rt = mlxsw_sp_fib6_entry_rt(fib6_entry);
+
+		if (rt->rt6i_table->tb6_id > nrt->rt6i_table->tb6_id)
+			continue;
+		if (rt->rt6i_table->tb6_id != nrt->rt6i_table->tb6_id)
+			break;
+		if (replace && rt->rt6i_metric == nrt->rt6i_metric) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (mlxsw_sp_fib6_rt_can_mp(rt) ==
 			    mlxsw_sp_fib6_rt_can_mp(nrt))
 				return fib6_entry;
 			if (mlxsw_sp_fib6_rt_can_mp(nrt))
 				fallback = fallback ?: fib6_entry;
 		}
+<<<<<<< HEAD
 		if (rt->fib6_metric > nrt->fib6_metric)
+=======
+		if (rt->rt6i_metric > nrt->rt6i_metric)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return fallback ?: fib6_entry;
 	}
 
@@ -5193,7 +6201,11 @@ mlxsw_sp_fib6_node_list_insert(struct mlxsw_sp_fib6_entry *new6_entry,
 			       bool replace)
 {
 	struct mlxsw_sp_fib_node *fib_node = new6_entry->common.fib_node;
+<<<<<<< HEAD
 	struct fib6_info *nrt = mlxsw_sp_fib6_entry_rt(new6_entry);
+=======
+	struct rt6_info *nrt = mlxsw_sp_fib6_entry_rt(new6_entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlxsw_sp_fib6_entry *fib6_entry;
 
 	fib6_entry = mlxsw_sp_fib6_node_entry_find(fib_node, nrt, replace);
@@ -5208,9 +6220,15 @@ mlxsw_sp_fib6_node_list_insert(struct mlxsw_sp_fib6_entry *new6_entry,
 		struct mlxsw_sp_fib6_entry *last;
 
 		list_for_each_entry(last, &fib_node->entry_list, common.list) {
+<<<<<<< HEAD
 			struct fib6_info *rt = mlxsw_sp_fib6_entry_rt(last);
 
 			if (nrt->fib6_table->tb6_id > rt->fib6_table->tb6_id)
+=======
+			struct rt6_info *rt = mlxsw_sp_fib6_entry_rt(last);
+
+			if (nrt->rt6i_table->tb6_id > rt->rt6i_table->tb6_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				break;
 			fib6_entry = last;
 		}
@@ -5263,29 +6281,50 @@ mlxsw_sp_fib6_node_entry_unlink(struct mlxsw_sp *mlxsw_sp,
 
 static struct mlxsw_sp_fib6_entry *
 mlxsw_sp_fib6_entry_lookup(struct mlxsw_sp *mlxsw_sp,
+<<<<<<< HEAD
 			   const struct fib6_info *rt)
+=======
+			   const struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_fib6_entry *fib6_entry;
 	struct mlxsw_sp_fib_node *fib_node;
 	struct mlxsw_sp_fib *fib;
 	struct mlxsw_sp_vr *vr;
 
+<<<<<<< HEAD
 	vr = mlxsw_sp_vr_find(mlxsw_sp, rt->fib6_table->tb6_id);
+=======
+	vr = mlxsw_sp_vr_find(mlxsw_sp, rt->rt6i_table->tb6_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!vr)
 		return NULL;
 	fib = mlxsw_sp_vr_fib(vr, MLXSW_SP_L3_PROTO_IPV6);
 
+<<<<<<< HEAD
 	fib_node = mlxsw_sp_fib_node_lookup(fib, &rt->fib6_dst.addr,
 					    sizeof(rt->fib6_dst.addr),
 					    rt->fib6_dst.plen);
+=======
+	fib_node = mlxsw_sp_fib_node_lookup(fib, &rt->rt6i_dst.addr,
+					    sizeof(rt->rt6i_dst.addr),
+					    rt->rt6i_dst.plen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!fib_node)
 		return NULL;
 
 	list_for_each_entry(fib6_entry, &fib_node->entry_list, common.list) {
+<<<<<<< HEAD
 		struct fib6_info *iter_rt = mlxsw_sp_fib6_entry_rt(fib6_entry);
 
 		if (rt->fib6_table->tb6_id == iter_rt->fib6_table->tb6_id &&
 		    rt->fib6_metric == iter_rt->fib6_metric &&
+=======
+		struct rt6_info *iter_rt = mlxsw_sp_fib6_entry_rt(fib6_entry);
+
+		if (rt->rt6i_table->tb6_id == iter_rt->rt6i_table->tb6_id &&
+		    rt->rt6i_metric == iter_rt->rt6i_metric &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    mlxsw_sp_fib6_entry_rt_find(fib6_entry, rt))
 			return fib6_entry;
 	}
@@ -5311,7 +6350,11 @@ static void mlxsw_sp_fib6_entry_replace(struct mlxsw_sp *mlxsw_sp,
 }
 
 static int mlxsw_sp_router_fib6_add(struct mlxsw_sp *mlxsw_sp,
+<<<<<<< HEAD
 				    struct fib6_info *rt, bool replace)
+=======
+				    struct rt6_info *rt, bool replace)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_fib6_entry *fib6_entry;
 	struct mlxsw_sp_fib_node *fib_node;
@@ -5320,16 +6363,27 @@ static int mlxsw_sp_router_fib6_add(struct mlxsw_sp *mlxsw_sp,
 	if (mlxsw_sp->router->aborted)
 		return 0;
 
+<<<<<<< HEAD
 	if (rt->fib6_src.plen)
+=======
+	if (rt->rt6i_src.plen)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (mlxsw_sp_fib6_rt_should_ignore(rt))
 		return 0;
 
+<<<<<<< HEAD
 	fib_node = mlxsw_sp_fib_node_get(mlxsw_sp, rt->fib6_table->tb6_id,
 					 &rt->fib6_dst.addr,
 					 sizeof(rt->fib6_dst.addr),
 					 rt->fib6_dst.plen,
+=======
+	fib_node = mlxsw_sp_fib_node_get(mlxsw_sp, rt->rt6i_table->tb6_id,
+					 &rt->rt6i_dst.addr,
+					 sizeof(rt->rt6i_dst.addr),
+					 rt->rt6i_dst.plen,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 MLXSW_SP_L3_PROTO_IPV6);
 	if (IS_ERR(fib_node))
 		return PTR_ERR(fib_node);
@@ -5368,7 +6422,11 @@ err_fib6_entry_nexthop_add:
 }
 
 static void mlxsw_sp_router_fib6_del(struct mlxsw_sp *mlxsw_sp,
+<<<<<<< HEAD
 				     struct fib6_info *rt)
+=======
+				     struct rt6_info *rt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_fib6_entry *fib6_entry;
 	struct mlxsw_sp_fib_node *fib_node;
@@ -5439,6 +6497,7 @@ static int __mlxsw_sp_router_set_abort_trap(struct mlxsw_sp *mlxsw_sp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct mlxsw_sp_mr_table *
 mlxsw_sp_router_fibmr_family_to_table(struct mlxsw_sp_vr *vr, int family)
 {
@@ -5525,6 +6584,8 @@ mlxsw_sp_router_fibmr_vif_del(struct mlxsw_sp *mlxsw_sp,
 	mlxsw_sp_vr_put(mlxsw_sp, vr);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_router_set_abort_trap(struct mlxsw_sp *mlxsw_sp)
 {
 	enum mlxsw_reg_ralxx_protocol proto = MLXSW_REG_RALXX_PROTOCOL_IPV4;
@@ -5535,10 +6596,13 @@ static int mlxsw_sp_router_set_abort_trap(struct mlxsw_sp *mlxsw_sp)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	/* The multicast router code does not need an abort trap as by default,
 	 * packets that don't match any routes are trapped to the CPU.
 	 */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	proto = MLXSW_REG_RALXX_PROTOCOL_IPV6;
 	return __mlxsw_sp_router_set_abort_trap(mlxsw_sp, proto,
 						MLXSW_SP_LPM_TREE_MIN + 1);
@@ -5613,16 +6677,23 @@ static void mlxsw_sp_vr_fib_flush(struct mlxsw_sp *mlxsw_sp,
 
 static void mlxsw_sp_router_fib_flush(struct mlxsw_sp *mlxsw_sp)
 {
+<<<<<<< HEAD
 	int i, j;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < MLXSW_CORE_RES_GET(mlxsw_sp->core, MAX_VRS); i++) {
 		struct mlxsw_sp_vr *vr = &mlxsw_sp->router->vrs[i];
 
 		if (!mlxsw_sp_vr_is_used(vr))
 			continue;
+<<<<<<< HEAD
 
 		for (j = 0; j < MLXSW_SP_L3_PROTO_MAX; j++)
 			mlxsw_sp_mr_table_flush(vr->mr_table[j]);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mlxsw_sp_vr_fib_flush(mlxsw_sp, vr, MLXSW_SP_L3_PROTO_IPV4);
 
 		/* If virtual router was only used for IPv4, then it's no
@@ -5655,8 +6726,11 @@ struct mlxsw_sp_fib_event_work {
 		struct fib_entry_notifier_info fen_info;
 		struct fib_rule_notifier_info fr_info;
 		struct fib_nh_notifier_info fnh_info;
+<<<<<<< HEAD
 		struct mfc_entry_notifier_info men_info;
 		struct vif_entry_notifier_info ven_info;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	struct mlxsw_sp *mlxsw_sp;
 	unsigned long event;
@@ -5667,13 +6741,20 @@ static void mlxsw_sp_router_fib4_event_work(struct work_struct *work)
 	struct mlxsw_sp_fib_event_work *fib_work =
 		container_of(work, struct mlxsw_sp_fib_event_work, work);
 	struct mlxsw_sp *mlxsw_sp = fib_work->mlxsw_sp;
+<<<<<<< HEAD
+=======
+	struct fib_rule *rule;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool replace, append;
 	int err;
 
 	/* Protect internal structures from changes */
 	rtnl_lock();
+<<<<<<< HEAD
 	mlxsw_sp_span_respin(mlxsw_sp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (fib_work->event) {
 	case FIB_EVENT_ENTRY_REPLACE: /* fall through */
 	case FIB_EVENT_ENTRY_APPEND: /* fall through */
@@ -5690,11 +6771,20 @@ static void mlxsw_sp_router_fib4_event_work(struct work_struct *work)
 		mlxsw_sp_router_fib4_del(mlxsw_sp, &fib_work->fen_info);
 		fib_info_put(fib_work->fen_info.fi);
 		break;
+<<<<<<< HEAD
 	case FIB_EVENT_RULE_ADD:
 		/* if we get here, a rule was added that we do not support.
 		 * just do the fib_abort
 		 */
 		mlxsw_sp_router_fib_abort(mlxsw_sp);
+=======
+	case FIB_EVENT_RULE_ADD: /* fall through */
+	case FIB_EVENT_RULE_DEL:
+		rule = fib_work->fr_info.rule;
+		if (!fib4_rule_default(rule) && !rule->l3mdev)
+			mlxsw_sp_router_fib_abort(mlxsw_sp);
+		fib_rule_put(rule);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case FIB_EVENT_NH_ADD: /* fall through */
 	case FIB_EVENT_NH_DEL:
@@ -5712,15 +6802,24 @@ static void mlxsw_sp_router_fib6_event_work(struct work_struct *work)
 	struct mlxsw_sp_fib_event_work *fib_work =
 		container_of(work, struct mlxsw_sp_fib_event_work, work);
 	struct mlxsw_sp *mlxsw_sp = fib_work->mlxsw_sp;
+<<<<<<< HEAD
+=======
+	struct fib_rule *rule;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool replace;
 	int err;
 
 	rtnl_lock();
+<<<<<<< HEAD
 	mlxsw_sp_span_respin(mlxsw_sp);
 
 	switch (fib_work->event) {
 	case FIB_EVENT_ENTRY_REPLACE: /* fall through */
 	case FIB_EVENT_ENTRY_APPEND: /* fall through */
+=======
+	switch (fib_work->event) {
+	case FIB_EVENT_ENTRY_REPLACE: /* fall through */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case FIB_EVENT_ENTRY_ADD:
 		replace = fib_work->event == FIB_EVENT_ENTRY_REPLACE;
 		err = mlxsw_sp_router_fib6_add(mlxsw_sp,
@@ -5733,6 +6832,7 @@ static void mlxsw_sp_router_fib6_event_work(struct work_struct *work)
 		mlxsw_sp_router_fib6_del(mlxsw_sp, fib_work->fen6_info.rt);
 		mlxsw_sp_rt6_release(fib_work->fen6_info.rt);
 		break;
+<<<<<<< HEAD
 	case FIB_EVENT_RULE_ADD:
 		/* if we get here, a rule was added that we do not support.
 		 * just do the fib_abort
@@ -5785,6 +6885,14 @@ static void mlxsw_sp_router_fibmr_event_work(struct work_struct *work)
 		 * just do the fib_abort
 		 */
 		mlxsw_sp_router_fib_abort(mlxsw_sp);
+=======
+	case FIB_EVENT_RULE_ADD: /* fall through */
+	case FIB_EVENT_RULE_DEL:
+		rule = fib_work->fr_info.rule;
+		if (!fib6_rule_default(rule) && !rule->l3mdev)
+			mlxsw_sp_router_fib_abort(mlxsw_sp);
+		fib_rule_put(rule);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	rtnl_unlock();
@@ -5794,27 +6902,46 @@ static void mlxsw_sp_router_fibmr_event_work(struct work_struct *work)
 static void mlxsw_sp_router_fib4_event(struct mlxsw_sp_fib_event_work *fib_work,
 				       struct fib_notifier_info *info)
 {
+<<<<<<< HEAD
 	struct fib_entry_notifier_info *fen_info;
 	struct fib_nh_notifier_info *fnh_info;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (fib_work->event) {
 	case FIB_EVENT_ENTRY_REPLACE: /* fall through */
 	case FIB_EVENT_ENTRY_APPEND: /* fall through */
 	case FIB_EVENT_ENTRY_ADD: /* fall through */
 	case FIB_EVENT_ENTRY_DEL:
+<<<<<<< HEAD
 		fen_info = container_of(info, struct fib_entry_notifier_info,
 					info);
 		fib_work->fen_info = *fen_info;
 		/* Take reference on fib_info to prevent it from being
+=======
+		memcpy(&fib_work->fen_info, info, sizeof(fib_work->fen_info));
+		/* Take referece on fib_info to prevent it from being
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * freed while work is queued. Release it afterwards.
 		 */
 		fib_info_hold(fib_work->fen_info.fi);
 		break;
+<<<<<<< HEAD
 	case FIB_EVENT_NH_ADD: /* fall through */
 	case FIB_EVENT_NH_DEL:
 		fnh_info = container_of(info, struct fib_nh_notifier_info,
 					info);
 		fib_work->fnh_info = *fnh_info;
+=======
+	case FIB_EVENT_RULE_ADD: /* fall through */
+	case FIB_EVENT_RULE_DEL:
+		memcpy(&fib_work->fr_info, info, sizeof(fib_work->fr_info));
+		fib_rule_get(fib_work->fr_info.rule);
+		break;
+	case FIB_EVENT_NH_ADD: /* fall through */
+	case FIB_EVENT_NH_DEL:
+		memcpy(&fib_work->fnh_info, info, sizeof(fib_work->fnh_info));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fib_info_hold(fib_work->fnh_info.fib_nh->nh_parent);
 		break;
 	}
@@ -5823,6 +6950,7 @@ static void mlxsw_sp_router_fib4_event(struct mlxsw_sp_fib_event_work *fib_work,
 static void mlxsw_sp_router_fib6_event(struct mlxsw_sp_fib_event_work *fib_work,
 				       struct fib_notifier_info *info)
 {
+<<<<<<< HEAD
 	struct fib6_entry_notifier_info *fen6_info;
 
 	switch (fib_work->event) {
@@ -5842,10 +6970,13 @@ static void
 mlxsw_sp_router_fibmr_event(struct mlxsw_sp_fib_event_work *fib_work,
 			    struct fib_notifier_info *info)
 {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (fib_work->event) {
 	case FIB_EVENT_ENTRY_REPLACE: /* fall through */
 	case FIB_EVENT_ENTRY_ADD: /* fall through */
 	case FIB_EVENT_ENTRY_DEL:
+<<<<<<< HEAD
 		memcpy(&fib_work->men_info, info, sizeof(fib_work->men_info));
 		mr_cache_hold(fib_work->men_info.mfc);
 		break;
@@ -5853,10 +6984,20 @@ mlxsw_sp_router_fibmr_event(struct mlxsw_sp_fib_event_work *fib_work,
 	case FIB_EVENT_VIF_DEL:
 		memcpy(&fib_work->ven_info, info, sizeof(fib_work->ven_info));
 		dev_hold(fib_work->ven_info.dev);
+=======
+		memcpy(&fib_work->fen6_info, info, sizeof(fib_work->fen6_info));
+		rt6_hold(fib_work->fen6_info.rt);
+		break;
+	case FIB_EVENT_RULE_ADD: /* fall through */
+	case FIB_EVENT_RULE_DEL:
+		memcpy(&fib_work->fr_info, info, sizeof(fib_work->fr_info));
+		fib_rule_get(fib_work->fr_info.rule);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
 
+<<<<<<< HEAD
 static int mlxsw_sp_router_fib_rule_event(unsigned long event,
 					  struct fib_notifier_info *info,
 					  struct mlxsw_sp *mlxsw_sp)
@@ -5901,6 +7042,8 @@ static int mlxsw_sp_router_fib_rule_event(unsigned long event,
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Called with rcu_read_lock() */
 static int mlxsw_sp_router_fib_event(struct notifier_block *nb,
 				     unsigned long event, void *ptr)
@@ -5908,6 +7051,7 @@ static int mlxsw_sp_router_fib_event(struct notifier_block *nb,
 	struct mlxsw_sp_fib_event_work *fib_work;
 	struct fib_notifier_info *info = ptr;
 	struct mlxsw_sp_router *router;
+<<<<<<< HEAD
 	int err;
 
 	if (!net_eq(info->net, &init_net) ||
@@ -5938,6 +7082,18 @@ static int mlxsw_sp_router_fib_event(struct notifier_block *nb,
 	if (WARN_ON(!fib_work))
 		return NOTIFY_BAD;
 
+=======
+
+	if (!net_eq(info->net, &init_net) ||
+	    (info->family != AF_INET && info->family != AF_INET6))
+		return NOTIFY_DONE;
+
+	fib_work = kzalloc(sizeof(*fib_work), GFP_ATOMIC);
+	if (!fib_work)
+		return NOTIFY_BAD;
+
+	router = container_of(nb, struct mlxsw_sp_router, fib_nb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fib_work->mlxsw_sp = router->mlxsw_sp;
 	fib_work->event = event;
 
@@ -5950,11 +7106,14 @@ static int mlxsw_sp_router_fib_event(struct notifier_block *nb,
 		INIT_WORK(&fib_work->work, mlxsw_sp_router_fib6_event_work);
 		mlxsw_sp_router_fib6_event(fib_work, info);
 		break;
+<<<<<<< HEAD
 	case RTNL_FAMILY_IP6MR:
 	case RTNL_FAMILY_IPMR:
 		INIT_WORK(&fib_work->work, mlxsw_sp_router_fibmr_event_work);
 		mlxsw_sp_router_fibmr_event(fib_work, info);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mlxsw_core_schedule_work(&fib_work->work);
@@ -5962,7 +7121,11 @@ static int mlxsw_sp_router_fib_event(struct notifier_block *nb,
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
 struct mlxsw_sp_rif *
+=======
+static struct mlxsw_sp_rif *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mlxsw_sp_rif_find_by_dev(const struct mlxsw_sp *mlxsw_sp,
 			 const struct net_device *dev)
 {
@@ -6019,12 +7182,15 @@ mlxsw_sp_rif_should_config(struct mlxsw_sp_rif *rif, struct net_device *dev,
 		    !list_empty(&inet6_dev->addr_list))
 			addr_list_empty = false;
 
+<<<<<<< HEAD
 		/* macvlans do not have a RIF, but rather piggy back on the
 		 * RIF of their lower device.
 		 */
 		if (netif_is_macvlan(dev) && addr_list_empty)
 			return true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rif && addr_list_empty &&
 		    !netif_is_l3_slave(rif->dev))
 			return true;
@@ -6121,6 +7287,7 @@ int mlxsw_sp_rif_dev_ifindex(const struct mlxsw_sp_rif *rif)
 	return rif->dev->ifindex;
 }
 
+<<<<<<< HEAD
 const struct net_device *mlxsw_sp_rif_dev(const struct mlxsw_sp_rif *rif)
 {
 	return rif->dev;
@@ -6135,6 +7302,11 @@ static struct mlxsw_sp_rif *
 mlxsw_sp_rif_create(struct mlxsw_sp *mlxsw_sp,
 		    const struct mlxsw_sp_rif_params *params,
 		    struct netlink_ext_ack *extack)
+=======
+static struct mlxsw_sp_rif *
+mlxsw_sp_rif_create(struct mlxsw_sp *mlxsw_sp,
+		    const struct mlxsw_sp_rif_params *params)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 tb_id = l3mdev_fib_table(params->dev);
 	const struct mlxsw_sp_rif_ops *ops;
@@ -6143,21 +7315,34 @@ mlxsw_sp_rif_create(struct mlxsw_sp *mlxsw_sp,
 	struct mlxsw_sp_rif *rif;
 	struct mlxsw_sp_vr *vr;
 	u16 rif_index;
+<<<<<<< HEAD
 	int i, err;
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	type = mlxsw_sp_dev_rif_type(mlxsw_sp, params->dev);
 	ops = mlxsw_sp->router->rif_ops_arr[type];
 
+<<<<<<< HEAD
 	vr = mlxsw_sp_vr_get(mlxsw_sp, tb_id ? : RT_TABLE_MAIN, extack);
+=======
+	vr = mlxsw_sp_vr_get(mlxsw_sp, tb_id ? : RT_TABLE_MAIN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vr))
 		return ERR_CAST(vr);
 	vr->rif_count++;
 
 	err = mlxsw_sp_rif_index_alloc(mlxsw_sp, &rif_index);
+<<<<<<< HEAD
 	if (err) {
 		NL_SET_ERR_MSG_MOD(extack, "Exceeded number of supported router interfaces");
 		goto err_rif_index_alloc;
 	}
+=======
+	if (err)
+		goto err_rif_index_alloc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rif = mlxsw_sp_rif_alloc(ops->rif_size, rif_index, vr->id, params->dev);
 	if (!rif) {
@@ -6168,7 +7353,11 @@ mlxsw_sp_rif_create(struct mlxsw_sp *mlxsw_sp,
 	rif->ops = ops;
 
 	if (ops->fid_get) {
+<<<<<<< HEAD
 		fid = ops->fid_get(rif, extack);
+=======
+		fid = ops->fid_get(rif);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(fid)) {
 			err = PTR_ERR(fid);
 			goto err_fid_get;
@@ -6183,21 +7372,27 @@ mlxsw_sp_rif_create(struct mlxsw_sp *mlxsw_sp,
 	if (err)
 		goto err_configure;
 
+<<<<<<< HEAD
 	for (i = 0; i < MLXSW_SP_L3_PROTO_MAX; i++) {
 		err = mlxsw_sp_mr_rif_add(vr->mr_table[i], rif);
 		if (err)
 			goto err_mr_rif_add;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_rif_counters_alloc(rif);
 	mlxsw_sp->router->rifs[rif_index] = rif;
 
 	return rif;
 
+<<<<<<< HEAD
 err_mr_rif_add:
 	for (i--; i >= 0; i--)
 		mlxsw_sp_mr_rif_del(vr->mr_table[i], rif);
 	ops->deconfigure(rif);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_configure:
 	if (fid)
 		mlxsw_sp_fid_put(fid);
@@ -6206,7 +7401,11 @@ err_fid_get:
 err_rif_alloc:
 err_rif_index_alloc:
 	vr->rif_count--;
+<<<<<<< HEAD
 	mlxsw_sp_vr_put(mlxsw_sp, vr);
+=======
+	mlxsw_sp_vr_put(vr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ERR_PTR(err);
 }
 
@@ -6216,22 +7415,32 @@ void mlxsw_sp_rif_destroy(struct mlxsw_sp_rif *rif)
 	struct mlxsw_sp *mlxsw_sp = rif->mlxsw_sp;
 	struct mlxsw_sp_fid *fid = rif->fid;
 	struct mlxsw_sp_vr *vr;
+<<<<<<< HEAD
 	int i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mlxsw_sp_router_rif_gone_sync(mlxsw_sp, rif);
 	vr = &mlxsw_sp->router->vrs[rif->vr_id];
 
 	mlxsw_sp->router->rifs[rif->rif_index] = NULL;
 	mlxsw_sp_rif_counters_free(rif);
+<<<<<<< HEAD
 	for (i = 0; i < MLXSW_SP_L3_PROTO_MAX; i++)
 		mlxsw_sp_mr_rif_del(vr->mr_table[i], rif);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ops->deconfigure(rif);
 	if (fid)
 		/* Loopback RIFs are not associated with a FID. */
 		mlxsw_sp_fid_put(fid);
 	kfree(rif);
 	vr->rif_count--;
+<<<<<<< HEAD
 	mlxsw_sp_vr_put(mlxsw_sp, vr);
+=======
+	mlxsw_sp_vr_put(vr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mlxsw_sp_rif_destroy_by_dev(struct mlxsw_sp *mlxsw_sp,
@@ -6261,8 +7470,12 @@ mlxsw_sp_rif_subport_params_init(struct mlxsw_sp_rif_params *params,
 
 static int
 mlxsw_sp_port_vlan_router_join(struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan,
+<<<<<<< HEAD
 			       struct net_device *l3_dev,
 			       struct netlink_ext_ack *extack)
+=======
+			       struct net_device *l3_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_port *mlxsw_sp_port = mlxsw_sp_port_vlan->mlxsw_sp_port;
 	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_port->mlxsw_sp;
@@ -6278,13 +7491,21 @@ mlxsw_sp_port_vlan_router_join(struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan,
 		};
 
 		mlxsw_sp_rif_subport_params_init(&params, mlxsw_sp_port_vlan);
+<<<<<<< HEAD
 		rif = mlxsw_sp_rif_create(mlxsw_sp, &params, extack);
+=======
+		rif = mlxsw_sp_rif_create(mlxsw_sp, &params);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(rif))
 			return PTR_ERR(rif);
 	}
 
 	/* FID was already created, just take a reference */
+<<<<<<< HEAD
 	fid = rif->ops->fid_get(rif, extack);
+=======
+	fid = rif->ops->fid_get(rif);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlxsw_sp_fid_port_vid_map(fid, mlxsw_sp_port, vid);
 	if (err)
 		goto err_fid_port_vid_map;
@@ -6333,8 +7554,12 @@ mlxsw_sp_port_vlan_router_leave(struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan)
 
 static int mlxsw_sp_inetaddr_port_vlan_event(struct net_device *l3_dev,
 					     struct net_device *port_dev,
+<<<<<<< HEAD
 					     unsigned long event, u16 vid,
 					     struct netlink_ext_ack *extack)
+=======
+					     unsigned long event, u16 vid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_port *mlxsw_sp_port = netdev_priv(port_dev);
 	struct mlxsw_sp_port_vlan *mlxsw_sp_port_vlan;
@@ -6346,7 +7571,11 @@ static int mlxsw_sp_inetaddr_port_vlan_event(struct net_device *l3_dev,
 	switch (event) {
 	case NETDEV_UP:
 		return mlxsw_sp_port_vlan_router_join(mlxsw_sp_port_vlan,
+<<<<<<< HEAD
 						      l3_dev, extack);
+=======
+						      l3_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case NETDEV_DOWN:
 		mlxsw_sp_port_vlan_router_leave(mlxsw_sp_port_vlan);
 		break;
@@ -6356,22 +7585,34 @@ static int mlxsw_sp_inetaddr_port_vlan_event(struct net_device *l3_dev,
 }
 
 static int mlxsw_sp_inetaddr_port_event(struct net_device *port_dev,
+<<<<<<< HEAD
 					unsigned long event,
 					struct netlink_ext_ack *extack)
+=======
+					unsigned long event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (netif_is_bridge_port(port_dev) ||
 	    netif_is_lag_port(port_dev) ||
 	    netif_is_ovs_port(port_dev))
 		return 0;
 
+<<<<<<< HEAD
 	return mlxsw_sp_inetaddr_port_vlan_event(port_dev, port_dev, event, 1,
 						 extack);
+=======
+	return mlxsw_sp_inetaddr_port_vlan_event(port_dev, port_dev, event, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __mlxsw_sp_inetaddr_lag_event(struct net_device *l3_dev,
 					 struct net_device *lag_dev,
+<<<<<<< HEAD
 					 unsigned long event, u16 vid,
 					 struct netlink_ext_ack *extack)
+=======
+					 unsigned long event, u16 vid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *port_dev;
 	struct list_head *iter;
@@ -6381,8 +7622,12 @@ static int __mlxsw_sp_inetaddr_lag_event(struct net_device *l3_dev,
 		if (mlxsw_sp_port_dev_check(port_dev)) {
 			err = mlxsw_sp_inetaddr_port_vlan_event(l3_dev,
 								port_dev,
+<<<<<<< HEAD
 								event, vid,
 								extack);
+=======
+								event, vid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (err)
 				return err;
 		}
@@ -6392,12 +7637,17 @@ static int __mlxsw_sp_inetaddr_lag_event(struct net_device *l3_dev,
 }
 
 static int mlxsw_sp_inetaddr_lag_event(struct net_device *lag_dev,
+<<<<<<< HEAD
 				       unsigned long event,
 				       struct netlink_ext_ack *extack)
+=======
+				       unsigned long event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (netif_is_bridge_port(lag_dev))
 		return 0;
 
+<<<<<<< HEAD
 	return __mlxsw_sp_inetaddr_lag_event(lag_dev, lag_dev, event, 1,
 					     extack);
 }
@@ -6405,6 +7655,13 @@ static int mlxsw_sp_inetaddr_lag_event(struct net_device *lag_dev,
 static int mlxsw_sp_inetaddr_bridge_event(struct net_device *l3_dev,
 					  unsigned long event,
 					  struct netlink_ext_ack *extack)
+=======
+	return __mlxsw_sp_inetaddr_lag_event(lag_dev, lag_dev, event, 1);
+}
+
+static int mlxsw_sp_inetaddr_bridge_event(struct net_device *l3_dev,
+					  unsigned long event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_lower_get(l3_dev);
 	struct mlxsw_sp_rif_params params = {
@@ -6414,7 +7671,11 @@ static int mlxsw_sp_inetaddr_bridge_event(struct net_device *l3_dev,
 
 	switch (event) {
 	case NETDEV_UP:
+<<<<<<< HEAD
 		rif = mlxsw_sp_rif_create(mlxsw_sp, &params, extack);
+=======
+		rif = mlxsw_sp_rif_create(mlxsw_sp, &params);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(rif))
 			return PTR_ERR(rif);
 		break;
@@ -6428,8 +7689,12 @@ static int mlxsw_sp_inetaddr_bridge_event(struct net_device *l3_dev,
 }
 
 static int mlxsw_sp_inetaddr_vlan_event(struct net_device *vlan_dev,
+<<<<<<< HEAD
 					unsigned long event,
 					struct netlink_ext_ack *extack)
+=======
+					unsigned long event)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *real_dev = vlan_dev_real_dev(vlan_dev);
 	u16 vid = vlan_dev_vlan_id(vlan_dev);
@@ -6439,6 +7704,7 @@ static int mlxsw_sp_inetaddr_vlan_event(struct net_device *vlan_dev,
 
 	if (mlxsw_sp_port_dev_check(real_dev))
 		return mlxsw_sp_inetaddr_port_vlan_event(vlan_dev, real_dev,
+<<<<<<< HEAD
 							 event, vid, extack);
 	else if (netif_is_lag_master(real_dev))
 		return __mlxsw_sp_inetaddr_lag_event(vlan_dev, real_dev, event,
@@ -6562,11 +7828,20 @@ static int mlxsw_sp_inetaddr_macvlan_event(struct net_device *macvlan_dev,
 		mlxsw_sp_rif_macvlan_del(mlxsw_sp, macvlan_dev);
 		break;
 	}
+=======
+							 event, vid);
+	else if (netif_is_lag_master(real_dev))
+		return __mlxsw_sp_inetaddr_lag_event(vlan_dev, real_dev, event,
+						     vid);
+	else if (netif_is_bridge_master(real_dev) && br_vlan_enabled(real_dev))
+		return mlxsw_sp_inetaddr_bridge_event(vlan_dev, event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 static int __mlxsw_sp_inetaddr_event(struct net_device *dev,
+<<<<<<< HEAD
 				     unsigned long event,
 				     struct netlink_ext_ack *extack)
 {
@@ -6580,6 +7855,18 @@ static int __mlxsw_sp_inetaddr_event(struct net_device *dev,
 		return mlxsw_sp_inetaddr_vlan_event(dev, event, extack);
 	else if (netif_is_macvlan(dev))
 		return mlxsw_sp_inetaddr_macvlan_event(dev, event, extack);
+=======
+				     unsigned long event)
+{
+	if (mlxsw_sp_port_dev_check(dev))
+		return mlxsw_sp_inetaddr_port_event(dev, event);
+	else if (netif_is_lag_master(dev))
+		return mlxsw_sp_inetaddr_lag_event(dev, event);
+	else if (netif_is_bridge_master(dev))
+		return mlxsw_sp_inetaddr_bridge_event(dev, event);
+	else if (is_vlan_dev(dev))
+		return mlxsw_sp_inetaddr_vlan_event(dev, event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		return 0;
 }
@@ -6593,10 +7880,13 @@ int mlxsw_sp_inetaddr_event(struct notifier_block *unused,
 	struct mlxsw_sp_rif *rif;
 	int err = 0;
 
+<<<<<<< HEAD
 	/* NETDEV_UP event is handled by mlxsw_sp_inetaddr_valid_event */
 	if (event == NETDEV_UP)
 		goto out;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp = mlxsw_sp_lower_get(dev);
 	if (!mlxsw_sp)
 		goto out;
@@ -6605,6 +7895,7 @@ int mlxsw_sp_inetaddr_event(struct notifier_block *unused,
 	if (!mlxsw_sp_rif_should_config(rif, dev, event))
 		goto out;
 
+<<<<<<< HEAD
 	err = __mlxsw_sp_inetaddr_event(dev, event, NULL);
 out:
 	return notifier_from_errno(err);
@@ -6628,6 +7919,9 @@ int mlxsw_sp_inetaddr_valid_event(struct notifier_block *unused,
 		goto out;
 
 	err = __mlxsw_sp_inetaddr_event(dev, event, ivi->extack);
+=======
+	err = __mlxsw_sp_inetaddr_event(dev, event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return notifier_from_errno(err);
 }
@@ -6656,7 +7950,11 @@ static void mlxsw_sp_inet6addr_event_work(struct work_struct *work)
 	if (!mlxsw_sp_rif_should_config(rif, dev, event))
 		goto out;
 
+<<<<<<< HEAD
 	__mlxsw_sp_inetaddr_event(dev, event, NULL);
+=======
+	__mlxsw_sp_inetaddr_event(dev, event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	rtnl_unlock();
 	dev_put(dev);
@@ -6671,10 +7969,13 @@ int mlxsw_sp_inet6addr_event(struct notifier_block *unused,
 	struct mlxsw_sp_inet6addr_event_work *inet6addr_work;
 	struct net_device *dev = if6->idev->dev;
 
+<<<<<<< HEAD
 	/* NETDEV_UP event is handled by mlxsw_sp_inet6addr_valid_event */
 	if (event == NETDEV_UP)
 		return NOTIFY_DONE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mlxsw_sp_port_dev_lower_find_rcu(dev))
 		return NOTIFY_DONE;
 
@@ -6691,6 +7992,7 @@ int mlxsw_sp_inet6addr_event(struct notifier_block *unused,
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
 int mlxsw_sp_inet6addr_valid_event(struct notifier_block *unused,
 				   unsigned long event, void *ptr)
 {
@@ -6713,6 +8015,8 @@ out:
 	return notifier_from_errno(err);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlxsw_sp_rif_edit(struct mlxsw_sp *mlxsw_sp, u16 rif_index,
 			     const char *mac, int mtu)
 {
@@ -6759,6 +8063,7 @@ int mlxsw_sp_netdevice_router_port_event(struct net_device *dev)
 	if (err)
 		goto err_rif_fdb_op;
 
+<<<<<<< HEAD
 	if (rif->mtu != dev->mtu) {
 		struct mlxsw_sp_vr *vr;
 		int i;
@@ -6773,6 +8078,8 @@ int mlxsw_sp_netdevice_router_port_event(struct net_device *dev)
 						   rif, dev->mtu);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ether_addr_copy(rif->addr, dev->dev_addr);
 	rif->mtu = dev->mtu;
 
@@ -6788,8 +8095,12 @@ err_rif_edit:
 }
 
 static int mlxsw_sp_port_vrf_join(struct mlxsw_sp *mlxsw_sp,
+<<<<<<< HEAD
 				  struct net_device *l3_dev,
 				  struct netlink_ext_ack *extack)
+=======
+				  struct net_device *l3_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlxsw_sp_rif *rif;
 
@@ -6798,9 +8109,15 @@ static int mlxsw_sp_port_vrf_join(struct mlxsw_sp *mlxsw_sp,
 	 */
 	rif = mlxsw_sp_rif_find_by_dev(mlxsw_sp, l3_dev);
 	if (rif)
+<<<<<<< HEAD
 		__mlxsw_sp_inetaddr_event(l3_dev, NETDEV_DOWN, extack);
 
 	return __mlxsw_sp_inetaddr_event(l3_dev, NETDEV_UP, extack);
+=======
+		__mlxsw_sp_inetaddr_event(l3_dev, NETDEV_DOWN);
+
+	return __mlxsw_sp_inetaddr_event(l3_dev, NETDEV_UP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlxsw_sp_port_vrf_leave(struct mlxsw_sp *mlxsw_sp,
@@ -6811,7 +8128,11 @@ static void mlxsw_sp_port_vrf_leave(struct mlxsw_sp *mlxsw_sp,
 	rif = mlxsw_sp_rif_find_by_dev(mlxsw_sp, l3_dev);
 	if (!rif)
 		return;
+<<<<<<< HEAD
 	__mlxsw_sp_inetaddr_event(l3_dev, NETDEV_DOWN, NULL);
+=======
+	__mlxsw_sp_inetaddr_event(l3_dev, NETDEV_DOWN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int mlxsw_sp_netdevice_vrf_event(struct net_device *l3_dev, unsigned long event,
@@ -6820,16 +8141,21 @@ int mlxsw_sp_netdevice_vrf_event(struct net_device *l3_dev, unsigned long event,
 	struct mlxsw_sp *mlxsw_sp = mlxsw_sp_lower_get(l3_dev);
 	int err = 0;
 
+<<<<<<< HEAD
 	/* We do not create a RIF for a macvlan, but only use it to
 	 * direct more MAC addresses to the router.
 	 */
 	if (!mlxsw_sp || netif_is_macvlan(l3_dev))
+=======
+	if (!mlxsw_sp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	switch (event) {
 	case NETDEV_PRECHANGEUPPER:
 		return 0;
 	case NETDEV_CHANGEUPPER:
+<<<<<<< HEAD
 		if (info->linking) {
 			struct netlink_ext_ack *extack;
 
@@ -6838,12 +8164,19 @@ int mlxsw_sp_netdevice_vrf_event(struct net_device *l3_dev, unsigned long event,
 		} else {
 			mlxsw_sp_port_vrf_leave(mlxsw_sp, l3_dev);
 		}
+=======
+		if (info->linking)
+			err = mlxsw_sp_port_vrf_join(mlxsw_sp, l3_dev);
+		else
+			mlxsw_sp_port_vrf_leave(mlxsw_sp, l3_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
 	return err;
 }
 
+<<<<<<< HEAD
 static int __mlxsw_sp_rif_macvlan_flush(struct net_device *dev, void *data)
 {
 	struct mlxsw_sp_rif *rif = data;
@@ -6865,6 +8198,8 @@ static int mlxsw_sp_rif_macvlan_flush(struct mlxsw_sp_rif *rif)
 					     __mlxsw_sp_rif_macvlan_flush, rif);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mlxsw_sp_rif_subport *
 mlxsw_sp_rif_subport_rif(const struct mlxsw_sp_rif *rif)
 {
@@ -6931,13 +8266,20 @@ static void mlxsw_sp_rif_subport_deconfigure(struct mlxsw_sp_rif *rif)
 	mlxsw_sp_fid_rif_set(fid, NULL);
 	mlxsw_sp_rif_fdb_op(rif->mlxsw_sp, rif->dev->dev_addr,
 			    mlxsw_sp_fid_index(fid), false);
+<<<<<<< HEAD
 	mlxsw_sp_rif_macvlan_flush(rif);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_rif_subport_op(rif, false);
 }
 
 static struct mlxsw_sp_fid *
+<<<<<<< HEAD
 mlxsw_sp_rif_subport_fid_get(struct mlxsw_sp_rif *rif,
 			     struct netlink_ext_ack *extack)
+=======
+mlxsw_sp_rif_subport_fid_get(struct mlxsw_sp_rif *rif)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return mlxsw_sp_fid_rfid_get(rif->mlxsw_sp, rif->rif_index);
 }
@@ -6966,7 +8308,11 @@ static int mlxsw_sp_rif_vlan_fid_op(struct mlxsw_sp_rif *rif,
 	return mlxsw_reg_write(mlxsw_sp->core, MLXSW_REG(ritr), ritr_pl);
 }
 
+<<<<<<< HEAD
 u8 mlxsw_sp_router_port(const struct mlxsw_sp *mlxsw_sp)
+=======
+static u8 mlxsw_sp_router_port(const struct mlxsw_sp *mlxsw_sp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return mlxsw_core_max_ports(mlxsw_sp->core) + 1;
 }
@@ -7019,7 +8365,10 @@ static void mlxsw_sp_rif_vlan_deconfigure(struct mlxsw_sp_rif *rif)
 	mlxsw_sp_fid_rif_set(fid, NULL);
 	mlxsw_sp_rif_fdb_op(rif->mlxsw_sp, rif->dev->dev_addr,
 			    mlxsw_sp_fid_index(fid), false);
+<<<<<<< HEAD
 	mlxsw_sp_rif_macvlan_flush(rif);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_fid_flood_set(rif->fid, MLXSW_SP_FLOOD_TYPE_BC,
 			       mlxsw_sp_router_port(mlxsw_sp), false);
 	mlxsw_sp_fid_flood_set(rif->fid, MLXSW_SP_FLOOD_TYPE_MC,
@@ -7028,6 +8377,7 @@ static void mlxsw_sp_rif_vlan_deconfigure(struct mlxsw_sp_rif *rif)
 }
 
 static struct mlxsw_sp_fid *
+<<<<<<< HEAD
 mlxsw_sp_rif_vlan_fid_get(struct mlxsw_sp_rif *rif,
 			  struct netlink_ext_ack *extack)
 {
@@ -7043,10 +8393,16 @@ mlxsw_sp_rif_vlan_fid_get(struct mlxsw_sp_rif *rif,
 			return ERR_PTR(-EINVAL);
 		}
 	}
+=======
+mlxsw_sp_rif_vlan_fid_get(struct mlxsw_sp_rif *rif)
+{
+	u16 vid = is_vlan_dev(rif->dev) ? vlan_dev_vlan_id(rif->dev) : 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mlxsw_sp_fid_8021q_get(rif->mlxsw_sp, vid);
 }
 
+<<<<<<< HEAD
 static void mlxsw_sp_rif_vlan_fdb_del(struct mlxsw_sp_rif *rif, const char *mac)
 {
 	u16 vid = mlxsw_sp_fid_8021q_vid(rif->fid);
@@ -7064,13 +8420,18 @@ static void mlxsw_sp_rif_vlan_fdb_del(struct mlxsw_sp_rif *rif, const char *mac)
 	call_switchdev_notifiers(SWITCHDEV_FDB_DEL_TO_BRIDGE, dev, &info.info);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct mlxsw_sp_rif_ops mlxsw_sp_rif_vlan_ops = {
 	.type			= MLXSW_SP_RIF_TYPE_VLAN,
 	.rif_size		= sizeof(struct mlxsw_sp_rif),
 	.configure		= mlxsw_sp_rif_vlan_configure,
 	.deconfigure		= mlxsw_sp_rif_vlan_deconfigure,
 	.fid_get		= mlxsw_sp_rif_vlan_fid_get,
+<<<<<<< HEAD
 	.fdb_del		= mlxsw_sp_rif_vlan_fdb_del,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int mlxsw_sp_rif_fid_configure(struct mlxsw_sp_rif *rif)
@@ -7122,7 +8483,10 @@ static void mlxsw_sp_rif_fid_deconfigure(struct mlxsw_sp_rif *rif)
 	mlxsw_sp_fid_rif_set(fid, NULL);
 	mlxsw_sp_rif_fdb_op(rif->mlxsw_sp, rif->dev->dev_addr,
 			    mlxsw_sp_fid_index(fid), false);
+<<<<<<< HEAD
 	mlxsw_sp_rif_macvlan_flush(rif);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_fid_flood_set(rif->fid, MLXSW_SP_FLOOD_TYPE_BC,
 			       mlxsw_sp_router_port(mlxsw_sp), false);
 	mlxsw_sp_fid_flood_set(rif->fid, MLXSW_SP_FLOOD_TYPE_MC,
@@ -7131,12 +8495,17 @@ static void mlxsw_sp_rif_fid_deconfigure(struct mlxsw_sp_rif *rif)
 }
 
 static struct mlxsw_sp_fid *
+<<<<<<< HEAD
 mlxsw_sp_rif_fid_fid_get(struct mlxsw_sp_rif *rif,
 			 struct netlink_ext_ack *extack)
+=======
+mlxsw_sp_rif_fid_fid_get(struct mlxsw_sp_rif *rif)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return mlxsw_sp_fid_8021d_get(rif->mlxsw_sp, rif->dev->ifindex);
 }
 
+<<<<<<< HEAD
 static void mlxsw_sp_rif_fid_fdb_del(struct mlxsw_sp_rif *rif, const char *mac)
 {
 	struct switchdev_notifier_fdb_info info;
@@ -7151,13 +8520,18 @@ static void mlxsw_sp_rif_fid_fdb_del(struct mlxsw_sp_rif *rif, const char *mac)
 	call_switchdev_notifiers(SWITCHDEV_FDB_DEL_TO_BRIDGE, dev, &info.info);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct mlxsw_sp_rif_ops mlxsw_sp_rif_fid_ops = {
 	.type			= MLXSW_SP_RIF_TYPE_FID,
 	.rif_size		= sizeof(struct mlxsw_sp_rif),
 	.configure		= mlxsw_sp_rif_fid_configure,
 	.deconfigure		= mlxsw_sp_rif_fid_deconfigure,
 	.fid_get		= mlxsw_sp_rif_fid_fid_get,
+<<<<<<< HEAD
 	.fdb_del		= mlxsw_sp_rif_fid_fdb_del,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct mlxsw_sp_rif_ipip_lb *
@@ -7180,6 +8554,36 @@ mlxsw_sp_rif_ipip_lb_setup(struct mlxsw_sp_rif *rif,
 }
 
 static int
+<<<<<<< HEAD
+=======
+mlxsw_sp_rif_ipip_lb_op(struct mlxsw_sp_rif_ipip_lb *lb_rif,
+			struct mlxsw_sp_vr *ul_vr, bool enable)
+{
+	struct mlxsw_sp_rif_ipip_lb_config lb_cf = lb_rif->lb_config;
+	struct mlxsw_sp_rif *rif = &lb_rif->common;
+	struct mlxsw_sp *mlxsw_sp = rif->mlxsw_sp;
+	char ritr_pl[MLXSW_REG_RITR_LEN];
+	u32 saddr4;
+
+	switch (lb_cf.ul_protocol) {
+	case MLXSW_SP_L3_PROTO_IPV4:
+		saddr4 = be32_to_cpu(lb_cf.saddr.addr4);
+		mlxsw_reg_ritr_pack(ritr_pl, enable, MLXSW_REG_RITR_LOOPBACK_IF,
+				    rif->rif_index, rif->vr_id, rif->dev->mtu);
+		mlxsw_reg_ritr_loopback_ipip4_pack(ritr_pl, lb_cf.lb_ipipt,
+			    MLXSW_REG_RITR_LOOPBACK_IPIP_OPTIONS_GRE_KEY_PRESET,
+			    ul_vr->id, saddr4, lb_cf.okey);
+		break;
+
+	case MLXSW_SP_L3_PROTO_IPV6:
+		return -EAFNOSUPPORT;
+	}
+
+	return mlxsw_reg_write(mlxsw_sp->core, MLXSW_REG(ritr), ritr_pl);
+}
+
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 mlxsw_sp_rif_ipip_lb_configure(struct mlxsw_sp_rif *rif)
 {
 	struct mlxsw_sp_rif_ipip_lb *lb_rif = mlxsw_sp_rif_ipip_lb_rif(rif);
@@ -7188,7 +8592,11 @@ mlxsw_sp_rif_ipip_lb_configure(struct mlxsw_sp_rif *rif)
 	struct mlxsw_sp_vr *ul_vr;
 	int err;
 
+<<<<<<< HEAD
 	ul_vr = mlxsw_sp_vr_get(mlxsw_sp, ul_tb_id, NULL);
+=======
+	ul_vr = mlxsw_sp_vr_get(mlxsw_sp, ul_tb_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(ul_vr))
 		return PTR_ERR(ul_vr);
 
@@ -7201,7 +8609,11 @@ mlxsw_sp_rif_ipip_lb_configure(struct mlxsw_sp_rif *rif)
 	return 0;
 
 err_loopback_op:
+<<<<<<< HEAD
 	mlxsw_sp_vr_put(mlxsw_sp, ul_vr);
+=======
+	mlxsw_sp_vr_put(ul_vr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -7215,7 +8627,11 @@ static void mlxsw_sp_rif_ipip_lb_deconfigure(struct mlxsw_sp_rif *rif)
 	mlxsw_sp_rif_ipip_lb_op(lb_rif, ul_vr, false);
 
 	--ul_vr->rif_count;
+<<<<<<< HEAD
 	mlxsw_sp_vr_put(mlxsw_sp, ul_vr);
+=======
+	mlxsw_sp_vr_put(ul_vr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct mlxsw_sp_rif_ops mlxsw_sp_rif_ipip_lb_ops = {
@@ -7292,6 +8708,7 @@ static void mlxsw_sp_router_fib_dump_flush(struct notifier_block *nb)
 	mlxsw_sp_router_fib_flush(router->mlxsw_sp);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_IP_ROUTE_MULTIPATH
 static void mlxsw_sp_mp_hash_header_set(char *recr2_pl, int header)
 {
@@ -7383,6 +8800,10 @@ static int mlxsw_sp_dscp_init(struct mlxsw_sp *mlxsw_sp)
 static int __mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp)
 {
 	bool usp = init_net.ipv4.sysctl_ip_fwd_update_priority;
+=======
+static int __mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char rgcr_pl[MLXSW_REG_RGCR_LEN];
 	u64 max_rifs;
 	int err;
@@ -7393,7 +8814,10 @@ static int __mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp)
 
 	mlxsw_reg_rgcr_pack(rgcr_pl, true, true);
 	mlxsw_reg_rgcr_max_router_interfaces_set(rgcr_pl, max_rifs);
+<<<<<<< HEAD
 	mlxsw_reg_rgcr_usp_set(rgcr_pl, usp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlxsw_reg_write(mlxsw_sp->core, MLXSW_REG(rgcr), rgcr_pl);
 	if (err)
 		return err;
@@ -7442,15 +8866,21 @@ int mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp)
 	if (err)
 		goto err_nexthop_group_ht_init;
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&mlxsw_sp->router->nexthop_list);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlxsw_sp_lpm_init(mlxsw_sp);
 	if (err)
 		goto err_lpm_init;
 
+<<<<<<< HEAD
 	err = mlxsw_sp_mr_init(mlxsw_sp, &mlxsw_sp_mr_tcam_ops);
 	if (err)
 		goto err_mr_init;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlxsw_sp_vrs_init(mlxsw_sp);
 	if (err)
 		goto err_vrs_init;
@@ -7459,6 +8889,7 @@ int mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp)
 	if (err)
 		goto err_neigh_init;
 
+<<<<<<< HEAD
 	mlxsw_sp->router->netevent_nb.notifier_call =
 		mlxsw_sp_router_netevent_event;
 	err = register_netevent_notifier(&mlxsw_sp->router->netevent_nb);
@@ -7473,6 +8904,8 @@ int mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp)
 	if (err)
 		goto err_dscp_init;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp->router->fib_nb.notifier_call = mlxsw_sp_router_fib_event;
 	err = register_fib_notifier(&mlxsw_sp->router->fib_nb,
 				    mlxsw_sp_router_fib_dump_flush);
@@ -7482,16 +8915,22 @@ int mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp)
 	return 0;
 
 err_register_fib_notifier:
+<<<<<<< HEAD
 err_dscp_init:
 err_mp_hash_init:
 	unregister_netevent_notifier(&mlxsw_sp->router->netevent_nb);
 err_register_netevent_notifier:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_neigh_fini(mlxsw_sp);
 err_neigh_init:
 	mlxsw_sp_vrs_fini(mlxsw_sp);
 err_vrs_init:
+<<<<<<< HEAD
 	mlxsw_sp_mr_fini(mlxsw_sp);
 err_mr_init:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_lpm_fini(mlxsw_sp);
 err_lpm_init:
 	rhashtable_destroy(&mlxsw_sp->router->nexthop_group_ht);
@@ -7511,10 +8950,15 @@ err_router_init:
 void mlxsw_sp_router_fini(struct mlxsw_sp *mlxsw_sp)
 {
 	unregister_fib_notifier(&mlxsw_sp->router->fib_nb);
+<<<<<<< HEAD
 	unregister_netevent_notifier(&mlxsw_sp->router->netevent_nb);
 	mlxsw_sp_neigh_fini(mlxsw_sp);
 	mlxsw_sp_vrs_fini(mlxsw_sp);
 	mlxsw_sp_mr_fini(mlxsw_sp);
+=======
+	mlxsw_sp_neigh_fini(mlxsw_sp);
+	mlxsw_sp_vrs_fini(mlxsw_sp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlxsw_sp_lpm_fini(mlxsw_sp);
 	rhashtable_destroy(&mlxsw_sp->router->nexthop_group_ht);
 	rhashtable_destroy(&mlxsw_sp->router->nexthop_ht);

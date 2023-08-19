@@ -670,9 +670,15 @@ exit:
 }
 
 /* timer to simulate tx done interrupt */
+<<<<<<< HEAD
 static void ene_tx_irqsim(struct timer_list *t)
 {
 	struct ene_device *dev = from_timer(dev, t, tx_sim_timer);
+=======
+static void ene_tx_irqsim(unsigned long data)
+{
+	struct ene_device *dev = (struct ene_device *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&dev->hw_lock, flags);
@@ -1045,7 +1051,12 @@ static int ene_probe(struct pnp_dev *pnp_dev, const struct pnp_device_id *id)
 
 	if (!dev->hw_learning_and_tx_capable && txsim) {
 		dev->hw_learning_and_tx_capable = true;
+<<<<<<< HEAD
 		timer_setup(&dev->tx_sim_timer, ene_tx_irqsim, 0);
+=======
+		setup_timer(&dev->tx_sim_timer, ene_tx_irqsim,
+						(long unsigned int)dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_warn("Simulation of TX activated\n");
 	}
 

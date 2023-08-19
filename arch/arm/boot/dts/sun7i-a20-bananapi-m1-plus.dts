@@ -60,6 +60,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	hdmi-connector {
 		compatible = "hdmi-connector";
 		type = "a";
@@ -71,6 +72,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	leds {
 		compatible = "gpio-leds";
 		pinctrl-names = "default";
@@ -120,10 +123,13 @@
 	cpu-supply = <&reg_dcdc2>;
 };
 
+<<<<<<< HEAD
 &de {
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ehci0 {
 	status = "okay";
 };
@@ -145,6 +151,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &hdmi {
 	status = "okay";
 };
@@ -155,6 +162,8 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &i2c0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c0_pins_a>;
@@ -184,7 +193,12 @@
 	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin_bpi_m1p>;
 	vmmc-supply = <&reg_vcc3v3>;
 	bus-width = <4>;
+<<<<<<< HEAD
 	cd-gpios = <&pio 7 10 GPIO_ACTIVE_LOW>; /* PH10 */
+=======
+	cd-gpios = <&pio 7 10 GPIO_ACTIVE_HIGH>; /* PH10 */
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

@@ -23,7 +23,11 @@
 #include <media/v4l2-ioctl.h>
 #include <media/videobuf2-v4l2.h>
 #include "regs-mfc.h"
+<<<<<<< HEAD
 #include "regs-mfc-v10.h"
+=======
+#include "regs-mfc-v8.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define S5P_MFC_NAME		"s5p-mfc"
 
@@ -61,7 +65,11 @@
 #define MFC_ENC_CAP_PLANE_COUNT	1
 #define MFC_ENC_OUT_PLANE_COUNT	2
 #define STUFF_BYTE		4
+<<<<<<< HEAD
 #define MFC_MAX_CTRLS		128
+=======
+#define MFC_MAX_CTRLS		77
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define S5P_MFC_CODEC_NONE		-1
 #define S5P_MFC_CODEC_H264_DEC		0
@@ -72,15 +80,21 @@
 #define S5P_MFC_CODEC_H263_DEC		5
 #define S5P_MFC_CODEC_VC1RCV_DEC	6
 #define S5P_MFC_CODEC_VP8_DEC		7
+<<<<<<< HEAD
 #define S5P_MFC_CODEC_HEVC_DEC		17
 #define S5P_MFC_CODEC_VP9_DEC		18
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define S5P_MFC_CODEC_H264_ENC		20
 #define S5P_MFC_CODEC_H264_MVC_ENC	21
 #define S5P_MFC_CODEC_MPEG4_ENC		22
 #define S5P_MFC_CODEC_H263_ENC		23
 #define S5P_MFC_CODEC_VP8_ENC		24
+<<<<<<< HEAD
 #define S5P_MFC_CODEC_HEVC_ENC		26
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define S5P_MFC_R2H_CMD_EMPTY			0
 #define S5P_MFC_R2H_CMD_SYS_INIT_RET		1
@@ -216,7 +230,10 @@ struct s5p_mfc_buf_size_v6 {
 	unsigned int h264_dec_ctx;
 	unsigned int other_dec_ctx;
 	unsigned int h264_enc_ctx;
+<<<<<<< HEAD
 	unsigned int hevc_enc_ctx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int other_enc_ctx;
 };
 
@@ -434,6 +451,7 @@ struct s5p_mfc_vp8_enc_params {
 	u8 profile;
 };
 
+<<<<<<< HEAD
 struct s5p_mfc_hevc_enc_params {
 	enum v4l2_mpeg_video_hevc_profile profile;
 	int level;
@@ -483,6 +501,8 @@ struct s5p_mfc_hevc_enc_params {
 	u8 prepend_sps_pps_to_idr;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct s5p_mfc_enc_params - general encoding parameters
  */
@@ -520,7 +540,10 @@ struct s5p_mfc_enc_params {
 		struct s5p_mfc_h264_enc_params h264;
 		struct s5p_mfc_mpeg4_enc_params mpeg4;
 		struct s5p_mfc_vp8_enc_params vp8;
+<<<<<<< HEAD
 		struct s5p_mfc_hevc_enc_params hevc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} codec;
 
 };
@@ -768,14 +791,19 @@ void s5p_mfc_cleanup_queue(struct list_head *lh, struct vb2_queue *vq);
 #define IS_TWOPORT(dev)		(dev->variant->port_num == 2 ? 1 : 0)
 #define IS_MFCV6_PLUS(dev)	(dev->variant->version >= 0x60 ? 1 : 0)
 #define IS_MFCV7_PLUS(dev)	(dev->variant->version >= 0x70 ? 1 : 0)
+<<<<<<< HEAD
 #define IS_MFCV8_PLUS(dev)	(dev->variant->version >= 0x80 ? 1 : 0)
 #define IS_MFCV10(dev)		(dev->variant->version >= 0xA0 ? 1 : 0)
 #define FW_HAS_E_MIN_SCRATCH_BUF(dev) (IS_MFCV10(dev))
+=======
+#define IS_MFCV8(dev)		(dev->variant->version >= 0x80 ? 1 : 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MFC_V5_BIT	BIT(0)
 #define MFC_V6_BIT	BIT(1)
 #define MFC_V7_BIT	BIT(2)
 #define MFC_V8_BIT	BIT(3)
+<<<<<<< HEAD
 #define MFC_V10_BIT	BIT(5)
 
 #define MFC_V5PLUS_BITS		(MFC_V5_BIT | MFC_V6_BIT | MFC_V7_BIT | \
@@ -783,5 +811,8 @@ void s5p_mfc_cleanup_queue(struct list_head *lh, struct vb2_queue *vq);
 #define MFC_V6PLUS_BITS		(MFC_V6_BIT | MFC_V7_BIT | MFC_V8_BIT | \
 					MFC_V10_BIT)
 #define MFC_V7PLUS_BITS		(MFC_V7_BIT | MFC_V8_BIT | MFC_V10_BIT)
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* S5P_MFC_COMMON_H_ */

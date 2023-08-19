@@ -320,6 +320,7 @@ static void meson_venci_cvbs_clock_config(struct meson_drm *priv)
 				CTS_VDAC_EN, CTS_VDAC_EN);
 }
 
+<<<<<<< HEAD
 enum {
 /* PLL	O1 O2 O3 VP DV     EN TX */
 /* 4320 /4 /4 /1 /5 /1  => /2 /2 */
@@ -337,6 +338,24 @@ enum {
 /* 5940 /1 /1 /2 /5 /1  => /1 /1 */
 	MESON_VCLK_HDMI_594000
 };
+=======
+
+/* PLL	O1 O2 O3 VP DV     EN TX */
+/* 4320 /4 /4 /1 /5 /1  => /2 /2 */
+#define MESON_VCLK_HDMI_ENCI_54000	1
+/* 4320 /4 /4 /1 /5 /1  => /1 /2 */
+#define MESON_VCLK_HDMI_DDR_54000	2
+/* 2970 /4 /1 /1 /5 /1  => /1 /2 */
+#define MESON_VCLK_HDMI_DDR_148500	3
+/* 2970 /2 /2 /2 /5 /1  => /1 /1 */
+#define MESON_VCLK_HDMI_74250		4
+/* 2970 /1 /2 /2 /5 /1  => /1 /1 */
+#define MESON_VCLK_HDMI_148500		5
+/* 2970 /1 /1 /1 /5 /2  => /1 /1 */
+#define MESON_VCLK_HDMI_297000		6
+/* 5940 /1 /1 /2 /5 /1  => /1 /1 */
+#define MESON_VCLK_HDMI_594000		7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct meson_vclk_params {
 	unsigned int pll_base_freq;
@@ -421,13 +440,22 @@ static inline unsigned int pll_od_to_reg(unsigned int od)
 	return 0;
 }
 
+<<<<<<< HEAD
 void meson_hdmi_pll_set_params(struct meson_drm *priv, unsigned int m,
 			       unsigned int frac, unsigned int od1,
 			       unsigned int od2, unsigned int od3)
+=======
+void meson_hdmi_pll_set(struct meson_drm *priv,
+			unsigned int base,
+			unsigned int od1,
+			unsigned int od2,
+			unsigned int od3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int val;
 
 	if (meson_vpu_is_compatible(priv, "amlogic,meson-gxbb-vpu")) {
+<<<<<<< HEAD
 		regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL, 0x58000200 | m);
 		if (frac)
 			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL2,
@@ -461,10 +489,107 @@ void meson_hdmi_pll_set_params(struct meson_drm *priv, unsigned int m,
 				HDMI_PLL_RESET, HDMI_PLL_RESET);
 		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL,
 				HDMI_PLL_RESET, 0);
+=======
+		switch (base) {
+		case 2970000:
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL, 0x5800023d);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL2, 0x00000000);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL3, 0x0d5c5091);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL4, 0x801da72c);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL5, 0x71486980);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL6, 0x00000e55);
+
+			/* Enable and unreset */
+			regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL,
+						0x7 << 28, 0x4 << 28);
+
+			/* Poll for lock bit */
+			regmap_read_poll_timeout(priv->hhi, HHI_HDMI_PLL_CNTL,
+					val, (val & HDMI_PLL_LOCK), 10, 0);
+
+			/* div_frac */
+			regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL2,
+						0xFFFF,  0x4e00);
+			break;
+
+		case 4320000:
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL, 0x5800025a);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL2, 0x00000000);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL3, 0x0d5c5091);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL4, 0x801da72c);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL5, 0x71486980);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL6, 0x00000e55);
+
+			/* unreset */
+			regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL,
+						BIT(28), 0);
+
+			/* Poll for lock bit */
+			regmap_read_poll_timeout(priv->hhi, HHI_HDMI_PLL_CNTL,
+					val, (val & HDMI_PLL_LOCK), 10, 0);
+			break;
+
+		case 5940000:
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL, 0x5800027b);
+			regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL2,
+						0xFFFF,  0x4c00);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL3, 0x135c5091);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL4, 0x801da72c);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL5, 0x71486980);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL6, 0x00000e55);
+
+			/* unreset */
+			regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL,
+						BIT(28), 0);
+
+			/* Poll for lock bit */
+			regmap_read_poll_timeout(priv->hhi, HHI_HDMI_PLL_CNTL,
+					val, (val & HDMI_PLL_LOCK), 10, 0);
+			break;
+		};
+	} else if (meson_vpu_is_compatible(priv, "amlogic,meson-gxm-vpu") ||
+		   meson_vpu_is_compatible(priv, "amlogic,meson-gxl-vpu")) {
+		switch (base) {
+		case 2970000:
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL, 0x4000027b);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL2, 0x800cb300);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL3, 0x860f30c4);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL4, 0x0c8e0000);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL5, 0x001fa729);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL6, 0x01a31500);
+			break;
+
+		case 4320000:
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL, 0x400002b4);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL2, 0x800cb000);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL3, 0x860f30c4);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL4, 0x0c8e0000);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL5, 0x001fa729);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL6, 0x01a31500);
+			break;
+
+		case 5940000:
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL, 0x400002f7);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL2, 0x800cb200);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL3, 0x860f30c4);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL4, 0x0c8e0000);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL5, 0x001fa729);
+			regmap_write(priv->hhi, HHI_HDMI_PLL_CNTL6, 0x01a31500);
+			break;
+
+		};
+
+		/* Reset PLL */
+		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL,
+					HDMI_PLL_RESET, HDMI_PLL_RESET);
+		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL,
+					HDMI_PLL_RESET, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Poll for lock bit */
 		regmap_read_poll_timeout(priv->hhi, HHI_HDMI_PLL_CNTL, val,
 				(val & HDMI_PLL_LOCK), 10, 0);
+<<<<<<< HEAD
 	}
 
 	if (meson_vpu_is_compatible(priv, "amlogic,meson-gxbb-vpu"))
@@ -632,6 +757,92 @@ static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
 			   unsigned int hdmi_tx_div, unsigned int venc_div,
 			   bool hdmi_use_enci)
 {
+=======
+	};
+
+	if (meson_vpu_is_compatible(priv, "amlogic,meson-gxbb-vpu"))
+		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL2,
+				   3 << 16, pll_od_to_reg(od1) << 16);
+	else if (meson_vpu_is_compatible(priv, "amlogic,meson-gxm-vpu") ||
+		 meson_vpu_is_compatible(priv, "amlogic,meson-gxl-vpu"))
+		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL3,
+				   3 << 21, pll_od_to_reg(od1) << 21);
+
+	if (meson_vpu_is_compatible(priv, "amlogic,meson-gxbb-vpu"))
+		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL2,
+				   3 << 22, pll_od_to_reg(od2) << 22);
+	else if (meson_vpu_is_compatible(priv, "amlogic,meson-gxm-vpu") ||
+		 meson_vpu_is_compatible(priv, "amlogic,meson-gxl-vpu"))
+		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL3,
+				   3 << 23, pll_od_to_reg(od2) << 23);
+
+	if (meson_vpu_is_compatible(priv, "amlogic,meson-gxbb-vpu"))
+		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL2,
+				   3 << 18, pll_od_to_reg(od3) << 18);
+	else if (meson_vpu_is_compatible(priv, "amlogic,meson-gxm-vpu") ||
+		 meson_vpu_is_compatible(priv, "amlogic,meson-gxl-vpu"))
+		regmap_update_bits(priv->hhi, HHI_HDMI_PLL_CNTL3,
+				   3 << 19, pll_od_to_reg(od3) << 19);
+}
+
+void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+		      unsigned int vclk_freq, unsigned int venc_freq,
+		      unsigned int dac_freq, bool hdmi_use_enci)
+{
+	unsigned int freq;
+	unsigned int hdmi_tx_div;
+	unsigned int venc_div;
+
+	if (target == MESON_VCLK_TARGET_CVBS) {
+		meson_venci_cvbs_clock_config(priv);
+		return;
+	}
+
+	hdmi_tx_div = vclk_freq / dac_freq;
+
+	if (hdmi_tx_div == 0) {
+		pr_err("Fatal Error, invalid HDMI-TX freq %d\n",
+				dac_freq);
+		return;
+	}
+
+	venc_div = vclk_freq / venc_freq;
+
+	if (venc_div == 0) {
+		pr_err("Fatal Error, invalid HDMI venc freq %d\n",
+				venc_freq);
+		return;
+	}
+
+	switch (vclk_freq) {
+	case 54000:
+		if (hdmi_use_enci)
+			freq = MESON_VCLK_HDMI_ENCI_54000;
+		else
+			freq = MESON_VCLK_HDMI_DDR_54000;
+		break;
+	case 74250:
+		freq = MESON_VCLK_HDMI_74250;
+		break;
+	case 148500:
+		if (dac_freq != 148500)
+			freq = MESON_VCLK_HDMI_DDR_148500;
+		else
+			freq = MESON_VCLK_HDMI_148500;
+		break;
+	case 297000:
+		freq = MESON_VCLK_HDMI_297000;
+		break;
+	case 594000:
+		freq = MESON_VCLK_HDMI_594000;
+		break;
+	default:
+		pr_err("Fatal Error, invalid HDMI vclk freq %d\n",
+			vclk_freq);
+		return;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set HDMI-TX sys clock */
 	regmap_update_bits(priv->hhi, HHI_HDMI_CLK_CNTL,
 			   CTS_HDMI_SYS_SEL_MASK, 0);
@@ -641,6 +852,7 @@ static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
 			   CTS_HDMI_SYS_EN, CTS_HDMI_SYS_EN);
 
 	/* Set HDMI PLL rate */
+<<<<<<< HEAD
 	if (!od1 && !od2 && !od3) {
 		meson_hdmi_pll_generic_set(priv, pll_base_freq);
 	} else if (meson_vpu_is_compatible(priv, "amlogic,meson-gxbb-vpu")) {
@@ -678,12 +890,25 @@ static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
 
 	/* Setup vid_pll divider */
 	meson_vid_pll_set(priv, vid_pll_div);
+=======
+	meson_hdmi_pll_set(priv, params[freq].pll_base_freq,
+			   params[freq].pll_od1,
+			   params[freq].pll_od2,
+			   params[freq].pll_od3);
+
+	/* Setup vid_pll divider */
+	meson_vid_pll_set(priv, params[freq].vid_pll_div);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set VCLK div */
 	regmap_update_bits(priv->hhi, HHI_VID_CLK_CNTL,
 			   VCLK_SEL_MASK, 0);
 	regmap_update_bits(priv->hhi, HHI_VID_CLK_DIV,
+<<<<<<< HEAD
 			   VCLK_DIV_MASK, vclk_div - 1);
+=======
+			   VCLK_DIV_MASK, params[freq].vclk_div - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set HDMI-TX source */
 	switch (hdmi_tx_div) {
@@ -821,6 +1046,7 @@ static void meson_vclk_set(struct meson_drm *priv, unsigned int pll_base_freq,
 
 	regmap_update_bits(priv->hhi, HHI_VID_CLK_CNTL, VCLK_EN, VCLK_EN);
 }
+<<<<<<< HEAD
 
 void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
 		      unsigned int vclk_freq, unsigned int venc_freq,
@@ -897,4 +1123,6 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
 		       params[freq].vclk_div, hdmi_tx_div, venc_div,
 		       hdmi_use_enci);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL_GPL(meson_vclk_setup);

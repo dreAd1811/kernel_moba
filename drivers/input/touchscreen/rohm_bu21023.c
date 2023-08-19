@@ -1103,6 +1103,16 @@ static void rohm_ts_close(struct input_dev *input_dev)
 	ts->initialized = false;
 }
 
+<<<<<<< HEAD
+=======
+static void rohm_ts_remove_sysfs_group(void *_dev)
+{
+	struct device *dev = _dev;
+
+	sysfs_remove_group(&dev->kobj, &rohm_ts_attr_group);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rohm_bu21023_i2c_probe(struct i2c_client *client,
 				  const struct i2c_device_id *id)
 {
@@ -1173,12 +1183,27 @@ static int rohm_bu21023_i2c_probe(struct i2c_client *client,
 		return error;
 	}
 
+<<<<<<< HEAD
 	error = devm_device_add_group(dev, &rohm_ts_attr_group);
+=======
+	error = sysfs_create_group(&dev->kobj, &rohm_ts_attr_group);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error) {
 		dev_err(dev, "failed to create sysfs group: %d\n", error);
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	error = devm_add_action(dev, rohm_ts_remove_sysfs_group, dev);
+	if (error) {
+		rohm_ts_remove_sysfs_group(dev);
+		dev_err(dev, "Failed to add sysfs cleanup action: %d\n",
+			error);
+		return error;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return error;
 }
 

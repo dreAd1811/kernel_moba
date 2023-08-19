@@ -25,11 +25,26 @@
 
 #include "halbt_precomp.h"
 
+<<<<<<< HEAD
+=======
+/***********************************************
+ *		Global variables
+ ***********************************************/
+
+struct btc_coexist gl_bt_coexist;
+
+u32 btc_dbg_type[BTC_MSG_MAX];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /***************************************************
  *		Debug related function
  ***************************************************/
 
+<<<<<<< HEAD
 static const char *const gl_btc_wifi_bw_string[] = {
+=======
+const char *const gl_btc_wifi_bw_string[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"11bg",
 	"HT20",
 	"HT40",
@@ -37,7 +52,11 @@ static const char *const gl_btc_wifi_bw_string[] = {
 	"HT160"
 };
 
+<<<<<<< HEAD
 static const char *const gl_btc_wifi_freq_string[] = {
+=======
+const char *const gl_btc_wifi_freq_string[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"2.4G",
 	"5G"
 };
@@ -95,6 +114,24 @@ static bool is_any_client_connect_to_ap(struct btc_coexist *btcoexist)
 		return false;
 }
 
+<<<<<<< HEAD
+=======
+static bool halbtc_is_bt40(struct rtl_priv *adapter)
+{
+	struct rtl_priv *rtlpriv = adapter;
+	struct rtl_phy *rtlphy = &(rtlpriv->phy);
+	bool is_ht40 = true;
+	enum ht_channel_width bw = rtlphy->current_chan_bw;
+
+	if (bw == HT_CHANNEL_WIDTH_20)
+		is_ht40 = false;
+	else if (bw == HT_CHANNEL_WIDTH_20_40)
+		is_ht40 = true;
+
+	return is_ht40;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool halbtc_legacy(struct rtl_priv *adapter)
 {
 	struct rtl_priv *rtlpriv = adapter;
@@ -120,6 +157,7 @@ bool halbtc_is_wifi_uplink(struct rtl_priv *adapter)
 
 static u32 halbtc_get_wifi_bw(struct btc_coexist *btcoexist)
 {
+<<<<<<< HEAD
 	struct rtl_priv *rtlpriv = btcoexist->adapter;
 	struct rtl_phy *rtlphy = &rtlpriv->phy;
 	u32 wifi_bw = BTC_WIFI_BW_HT20;
@@ -140,6 +178,20 @@ static u32 halbtc_get_wifi_bw(struct btc_coexist *btcoexist)
 		}
 	}
 
+=======
+	struct rtl_priv *rtlpriv =
+		(struct rtl_priv *)btcoexist->adapter;
+	u32 wifi_bw = BTC_WIFI_BW_HT20;
+
+	if (halbtc_is_bt40(rtlpriv)) {
+		wifi_bw = BTC_WIFI_BW_HT40;
+	} else {
+		if (halbtc_legacy(rtlpriv))
+			wifi_bw = BTC_WIFI_BW_LEGACY;
+		else
+			wifi_bw = BTC_WIFI_BW_HT20;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return wifi_bw;
 }
 
@@ -156,17 +208,29 @@ static u8 halbtc_get_wifi_central_chnl(struct btc_coexist *btcoexist)
 	return chnl;
 }
 
+<<<<<<< HEAD
 static u8 rtl_get_hwpg_single_ant_path(struct rtl_priv *rtlpriv)
+=======
+u8 rtl_get_hwpg_single_ant_path(struct rtl_priv *rtlpriv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return rtlpriv->btcoexist.btc_info.single_ant_path;
 }
 
+<<<<<<< HEAD
 static u8 rtl_get_hwpg_bt_type(struct rtl_priv *rtlpriv)
+=======
+u8 rtl_get_hwpg_bt_type(struct rtl_priv *rtlpriv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return rtlpriv->btcoexist.btc_info.bt_type;
 }
 
+<<<<<<< HEAD
 static u8 rtl_get_hwpg_ant_num(struct rtl_priv *rtlpriv)
+=======
+u8 rtl_get_hwpg_ant_num(struct rtl_priv *rtlpriv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 num;
 
@@ -178,13 +242,18 @@ static u8 rtl_get_hwpg_ant_num(struct rtl_priv *rtlpriv)
 	return num;
 }
 
+<<<<<<< HEAD
 static u8 rtl_get_hwpg_package_type(struct rtl_priv *rtlpriv)
+=======
+u8 rtl_get_hwpg_package_type(struct rtl_priv *rtlpriv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
 
 	return rtlhal->package_type;
 }
 
+<<<<<<< HEAD
 static
 u8 rtl_get_hwpg_rfe_type(struct rtl_priv *rtlpriv)
 {
@@ -289,6 +358,8 @@ bool halbtc_send_bt_mp_operation(struct btc_coexist *btcoexist, u8 op_code,
 	return true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void halbtc_leave_lps(struct btc_coexist *btcoexist)
 {
 	struct rtl_priv *rtlpriv;
@@ -348,6 +419,7 @@ static void halbtc_normal_lps(struct btc_coexist *btcoexist)
 	}
 }
 
+<<<<<<< HEAD
 static void halbtc_pre_normal_lps(struct btc_coexist *btcoexist)
 {
 	struct rtl_priv *rtlpriv = btcoexist->adapter;
@@ -364,6 +436,8 @@ static void halbtc_post_normal_lps(struct btc_coexist *btcoexist)
 		btcoexist->bt_info.bt_ctrl_lps = false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void halbtc_leave_low_power(struct btc_coexist *btcoexist)
 {
 }
@@ -432,19 +506,35 @@ static void halbtc_aggregation_check(struct btc_coexist *btcoexist)
 
 static u32 halbtc_get_bt_patch_version(struct btc_coexist *btcoexist)
 {
+<<<<<<< HEAD
 	u8 cmd_buffer[4] = {0};
+=======
+	struct rtl_priv *rtlpriv = btcoexist->adapter;
+	u8 cmd_buffer[4] = {0};
+	u8 oper_ver = 0;
+	u8 req_num = 0x0E;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (btcoexist->bt_info.bt_real_fw_ver)
 		goto label_done;
 
+<<<<<<< HEAD
 	/* cmd_buffer[0] and [1] is filled by halbtc_send_bt_mp_operation() */
 	halbtc_send_bt_mp_operation(btcoexist, BT_OP_GET_BT_VERSION,
 				    cmd_buffer, 4, 200);
+=======
+	cmd_buffer[0] |= (oper_ver & 0x0f);	/* Set OperVer */
+	cmd_buffer[0] |= ((req_num << 4) & 0xf0);	/* Set ReqNum */
+	cmd_buffer[1] = 0; /* BT_OP_GET_BT_VERSION = 0 */
+	rtlpriv->cfg->ops->fill_h2c_cmd(rtlpriv->mac80211.hw, 0x67, 4,
+					&cmd_buffer[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 label_done:
 	return btcoexist->bt_info.bt_real_fw_ver;
 }
 
+<<<<<<< HEAD
 static u32 halbtc_get_bt_coex_supported_feature(void *btc_context)
 {
 	struct btc_coexist *btcoexist = (struct btc_coexist *)btc_context;
@@ -506,6 +596,9 @@ static u32 halbtc_get_bt_forbidden_slot_val(void *btc_context)
 }
 
 static u32 halbtc_get_wifi_link_status(struct btc_coexist *btcoexist)
+=======
+u32 halbtc_get_wifi_link_status(struct btc_coexist *btcoexist)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* return value:
 	 * [31:16] => connected port number
@@ -578,9 +671,12 @@ static bool halbtc_get(void *void_btcoexist, u8 get_type, void *out_buf)
 			tmp = true;
 		*bool_tmp = tmp;
 		break;
+<<<<<<< HEAD
 	case BTC_GET_BL_WIFI_DUAL_BAND_CONNECTED:
 		*u8_tmp = BTC_MULTIPORT_SCC;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BTC_GET_BL_WIFI_BUSY:
 		if (halbtc_is_wifi_busy(rtlpriv))
 			*bool_tmp = true;
@@ -641,9 +737,12 @@ static bool halbtc_get(void *void_btcoexist, u8 get_type, void *out_buf)
 	case BTC_GET_BL_IS_ASUS_8723B:
 		*bool_tmp = false;
 		break;
+<<<<<<< HEAD
 	case BTC_GET_BL_RF4CE_CONNECTED:
 		*bool_tmp = false;
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BTC_GET_S4_WIFI_RSSI:
 		*s32_tmp = halbtc_get_wifi_rssi(rtlpriv);
 		break;
@@ -672,6 +771,7 @@ static bool halbtc_get(void *void_btcoexist, u8 get_type, void *out_buf)
 	case BTC_GET_U4_VENDOR:
 		*u32_tmp = BTC_VENDOR_OTHER;
 		break;
+<<<<<<< HEAD
 	case BTC_GET_U4_SUPPORTED_VERSION:
 		*u32_tmp = halbtc_get_bt_coex_supported_version(btcoexist);
 		break;
@@ -699,6 +799,8 @@ static bool halbtc_get(void *void_btcoexist, u8 get_type, void *out_buf)
 			btcoexist->btc_phydm_query_phy_counter(btcoexist,
 							       DM_INFO_IQK_NG);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BTC_GET_U1_WIFI_DOT11_CHNL:
 		*u8_tmp = rtlphy->current_channel;
 		break;
@@ -810,12 +912,15 @@ static bool halbtc_set(void *void_btcoexist, u8 set_type, void *in_buf)
 	case BTC_SET_ACT_NORMAL_LPS:
 		halbtc_normal_lps(btcoexist);
 		break;
+<<<<<<< HEAD
 	case BTC_SET_ACT_PRE_NORMAL_LPS:
 		halbtc_pre_normal_lps(btcoexist);
 		break;
 	case BTC_SET_ACT_POST_NORMAL_LPS:
 		halbtc_post_normal_lps(btcoexist);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BTC_SET_ACT_DISABLE_LOW_POWER:
 		halbtc_disable_low_power(btcoexist, *bool_tmp);
 		break;
@@ -837,6 +942,7 @@ static bool halbtc_set(void *void_btcoexist, u8 set_type, void *in_buf)
 	return ret;
 }
 
+<<<<<<< HEAD
 static void halbtc_display_coex_statistics(struct btc_coexist *btcoexist,
 					   struct seq_file *m)
 {
@@ -935,6 +1041,8 @@ static void halbtc_display_wifi_status(struct btc_coexist *btcoexist,
 		   btcoexist->bt_info.rpwm_val);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /************************************************************
  *		IO related function
  ************************************************************/
@@ -1008,8 +1116,12 @@ static void halbtc_write_4byte(void *bt_context, u32 reg_addr, u32 data)
 	rtl_write_dword(rtlpriv, reg_addr, data);
 }
 
+<<<<<<< HEAD
 static void halbtc_write_local_reg_1byte(void *btc_context, u32 reg_addr,
 					 u8 data)
+=======
+void halbtc_write_local_reg_1byte(void *btc_context, u32 reg_addr, u8 data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct btc_coexist *btcoexist = (struct btc_coexist *)btc_context;
 	struct rtl_priv *rtlpriv = btcoexist->adapter;
@@ -1022,6 +1134,25 @@ static void halbtc_write_local_reg_1byte(void *btc_context, u32 reg_addr,
 		rtl_write_byte(rtlpriv, reg_addr, data);
 }
 
+<<<<<<< HEAD
+=======
+void halbtc_set_macreg(void *btc_context, u32 reg_addr, u32 bit_mask, u32 data)
+{
+	struct btc_coexist *btcoexist = (struct btc_coexist *)btc_context;
+	struct rtl_priv *rtlpriv = btcoexist->adapter;
+
+	rtl_set_bbreg(rtlpriv->mac80211.hw, reg_addr, bit_mask, data);
+}
+
+u32 halbtc_get_macreg(void *btc_context, u32 reg_addr, u32 bit_mask)
+{
+	struct btc_coexist *btcoexist = (struct btc_coexist *)btc_context;
+	struct rtl_priv *rtlpriv = btcoexist->adapter;
+
+	return rtl_get_bbreg(rtlpriv->mac80211.hw, reg_addr, bit_mask);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void halbtc_set_bbreg(void *bt_context, u32 reg_addr, u32 bit_mask,
 			     u32 data)
 {
@@ -1067,6 +1198,7 @@ static void halbtc_fill_h2c_cmd(void *bt_context, u8 element_id,
 					cmd_len, cmd_buf);
 }
 
+<<<<<<< HEAD
 void halbtc_send_wifi_port_id_cmd(void *bt_context)
 {
 	struct btc_coexist *btcoexist = (struct btc_coexist *)bt_context;
@@ -1135,6 +1267,40 @@ static u32 halbtc_get_bt_reg(void *btc_context, u8 reg_type, u32 offset)
 }
 
 static bool halbtc_under_ips(struct btc_coexist *btcoexist)
+=======
+void halbtc_set_bt_reg(void *btc_context, u8 reg_type, u32 offset, u32 set_val)
+{
+	struct btc_coexist *btcoexist = (struct btc_coexist *)btc_context;
+	struct rtl_priv *rtlpriv = btcoexist->adapter;
+	u8 cmd_buffer1[4] = {0};
+	u8 cmd_buffer2[4] = {0};
+	u8 *addr_to_set = (u8 *)&offset;
+	u8 *value_to_set = (u8 *)&set_val;
+	u8 oper_ver = 0;
+	u8 req_num = 0;
+
+	if (IS_HARDWARE_TYPE_8723B(btcoexist->adapter)) {
+		cmd_buffer1[0] |= (oper_ver & 0x0f);	/* Set OperVer */
+		cmd_buffer1[0] |= ((req_num << 4) & 0xf0);	/* Set ReqNum */
+		cmd_buffer1[1] = 0x0d;	/* OpCode: BT_LO_OP_WRITE_REG_VALUE */
+		cmd_buffer1[2] = value_to_set[0];	/* Set WriteRegValue */
+		rtlpriv->cfg->ops->fill_h2c_cmd(rtlpriv->mac80211.hw, 0x67, 4,
+						&cmd_buffer1[0]);
+
+		msleep(200);
+		req_num++;
+
+		cmd_buffer2[0] |= (oper_ver & 0x0f);	/* Set OperVer */
+		cmd_buffer2[0] |= ((req_num << 4) & 0xf0);	/* Set ReqNum */
+		cmd_buffer2[1] = 0x0c;	/* OpCode: BT_LO_OP_WRITE_REG_ADDR */
+		cmd_buffer2[3] = addr_to_set[0];	/* Set WriteRegAddr */
+		rtlpriv->cfg->ops->fill_h2c_cmd(rtlpriv->mac80211.hw, 0x67, 4,
+						&cmd_buffer2[0]);
+	}
+}
+
+bool halbtc_under_ips(struct btc_coexist *btcoexist)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = btcoexist->adapter;
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtlpriv);
@@ -1152,6 +1318,7 @@ static bool halbtc_under_ips(struct btc_coexist *btcoexist)
 	return false;
 }
 
+<<<<<<< HEAD
 static
 u32 halbtc_get_phydm_version(void *btc_context)
 {
@@ -1260,6 +1427,14 @@ bool exhalbtc_initlize_variables(struct rtl_priv *rtlpriv)
 
 	if (!btcoexist)
 		return false;
+=======
+/*****************************************************************
+ *         Extern functions called by other module
+ *****************************************************************/
+bool exhalbtc_initlize_variables(void)
+{
+	struct btc_coexist *btcoexist = &gl_bt_coexist;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	halbtc_dbg_init();
 
@@ -1279,17 +1454,25 @@ bool exhalbtc_initlize_variables(struct rtl_priv *rtlpriv)
 	btcoexist->btc_get_rf_reg = halbtc_get_rfreg;
 
 	btcoexist->btc_fill_h2c = halbtc_fill_h2c_cmd;
+<<<<<<< HEAD
 	btcoexist->btc_disp_dbg_msg = halbtc_display_dbg_msg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	btcoexist->btc_get = halbtc_get;
 	btcoexist->btc_set = halbtc_set;
 	btcoexist->btc_set_bt_reg = halbtc_set_bt_reg;
+<<<<<<< HEAD
 	btcoexist->btc_get_bt_reg = halbtc_get_bt_reg;
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	btcoexist->bt_info.bt_ctrl_buf_size = false;
 	btcoexist->bt_info.agg_buf_size = 5;
 
 	btcoexist->bt_info.increase_scan_dev_num = false;
+<<<<<<< HEAD
 
 	btcoexist->btc_get_bt_coex_supported_feature =
 					halbtc_get_bt_coex_supported_feature;
@@ -1343,17 +1526,25 @@ bool exhalbtc_initlize_variables_wifi_only(struct rtl_priv *rtlpriv)
 	wifionly_haldata->rfe_type = rtl_get_hwpg_rfe_type(rtlpriv);
 	wifionly_haldata->ant_div_cfg = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
 bool exhalbtc_bind_bt_coex_withadapter(void *adapter)
 {
+<<<<<<< HEAD
 	struct rtl_priv *rtlpriv = adapter;
 	struct btc_coexist *btcoexist = rtl_btc_coexist(rtlpriv);
 	u8 ant_num = 2, chip_type, single_ant_path = 0;
 
 	if (!btcoexist)
 		return false;
+=======
+	struct btc_coexist *btcoexist = &gl_bt_coexist;
+	struct rtl_priv *rtlpriv = adapter;
+	u8 ant_num = 2, chip_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (btcoexist->binded)
 		return false;
@@ -1384,6 +1575,7 @@ bool exhalbtc_bind_bt_coex_withadapter(void *adapter)
 	btcoexist->bt_info.miracast_plus_bt = false;
 
 	chip_type = rtl_get_hwpg_bt_type(rtlpriv);
+<<<<<<< HEAD
 	exhalbtc_set_chip_type(btcoexist, chip_type);
 	ant_num = rtl_get_hwpg_ant_num(rtlpriv);
 	exhalbtc_set_ant_num(rtlpriv, BT_COEX_ANT_TYPE_PG, ant_num);
@@ -1394,6 +1586,12 @@ bool exhalbtc_bind_bt_coex_withadapter(void *adapter)
 	single_ant_path = rtl_get_hwpg_single_ant_path(rtlpriv);
 	exhalbtc_set_single_ant_path(btcoexist, single_ant_path);
 
+=======
+	exhalbtc_set_chip_type(chip_type);
+	ant_num = rtl_get_hwpg_ant_num(rtlpriv);
+	exhalbtc_set_ant_num(rtlpriv, BT_COEX_ANT_TYPE_PG, ant_num);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rtl_get_hwpg_package_type(rtlpriv) == 0)
 		btcoexist->board_info.tfbga_package = false;
 	else if (rtl_get_hwpg_package_type(rtlpriv) == 1)
@@ -1408,9 +1606,12 @@ bool exhalbtc_bind_bt_coex_withadapter(void *adapter)
 		RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
 			 "[BTCoex], Package Type = Non-TFBGA\n");
 
+<<<<<<< HEAD
 	btcoexist->board_info.rfe_type = rtl_get_hwpg_rfe_type(rtlpriv);
 	btcoexist->board_info.ant_div_cfg = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return true;
 }
 
@@ -1467,10 +1668,13 @@ void exhalbtc_init_hw_config(struct btc_coexist *btcoexist, bool wifi_only)
 	}
 }
 
+<<<<<<< HEAD
 void exhalbtc_init_hw_config_wifi_only(struct wifi_only_cfg *wifionly_cfg)
 {
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void exhalbtc_init_coex_dm(struct btc_coexist *btcoexist)
 {
 	if (!halbtc_is_bt_coexist_available(btcoexist))
@@ -1597,6 +1801,7 @@ void exhalbtc_scan_notify(struct btc_coexist *btcoexist, u8 type)
 	halbtc_normal_low_power(btcoexist);
 }
 
+<<<<<<< HEAD
 void exhalbtc_scan_notify_wifi_only(struct wifi_only_cfg *wifionly_cfg,
 				    u8 is_5g)
 {
@@ -1606,6 +1811,11 @@ void exhalbtc_connect_notify(struct btc_coexist *btcoexist, u8 action)
 {
 	u8 asso_type, asso_type_v2;
 	bool wifi_under_5g;
+=======
+void exhalbtc_connect_notify(struct btc_coexist *btcoexist, u8 action)
+{
+	u8 asso_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!halbtc_is_bt_coexist_available(btcoexist))
 		return;
@@ -1613,6 +1823,7 @@ void exhalbtc_connect_notify(struct btc_coexist *btcoexist, u8 action)
 	if (btcoexist->manual_control)
 		return;
 
+<<<<<<< HEAD
 	btcoexist->btc_get(btcoexist, BTC_GET_BL_WIFI_UNDER_5G, &wifi_under_5g);
 
 	if (action) {
@@ -1624,6 +1835,12 @@ void exhalbtc_connect_notify(struct btc_coexist *btcoexist, u8 action)
 		asso_type_v2 = wifi_under_5g ? BTC_ASSOCIATE_5G_FINISH :
 					       BTC_ASSOCIATE_FINISH;
 	}
+=======
+	if (action)
+		asso_type = BTC_ASSOCIATE_START;
+	else
+		asso_type = BTC_ASSOCIATE_FINISH;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	halbtc_leave_low_power(btcoexist);
 
@@ -1918,25 +2135,46 @@ void exhalbtc_stack_update_profile_info(void)
 {
 }
 
+<<<<<<< HEAD
 void exhalbtc_update_min_bt_rssi(struct btc_coexist *btcoexist, s8 bt_rssi)
 {
+=======
+void exhalbtc_update_min_bt_rssi(s8 bt_rssi)
+{
+	struct btc_coexist *btcoexist = &gl_bt_coexist;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!halbtc_is_bt_coexist_available(btcoexist))
 		return;
 
 	btcoexist->stack_info.min_bt_rssi = bt_rssi;
 }
 
+<<<<<<< HEAD
 void exhalbtc_set_hci_version(struct btc_coexist *btcoexist, u16 hci_version)
 {
+=======
+void exhalbtc_set_hci_version(u16 hci_version)
+{
+	struct btc_coexist *btcoexist = &gl_bt_coexist;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!halbtc_is_bt_coexist_available(btcoexist))
 		return;
 
 	btcoexist->stack_info.hci_version = hci_version;
 }
 
+<<<<<<< HEAD
 void exhalbtc_set_bt_patch_version(struct btc_coexist *btcoexist,
 				   u16 bt_hci_version, u16 bt_patch_version)
 {
+=======
+void exhalbtc_set_bt_patch_version(u16 bt_hci_version, u16 bt_patch_version)
+{
+	struct btc_coexist *btcoexist = &gl_bt_coexist;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!halbtc_is_bt_coexist_available(btcoexist))
 		return;
 
@@ -1944,7 +2182,11 @@ void exhalbtc_set_bt_patch_version(struct btc_coexist *btcoexist,
 	btcoexist->bt_info.bt_hci_ver = bt_hci_version;
 }
 
+<<<<<<< HEAD
 void exhalbtc_set_chip_type(struct btc_coexist *btcoexist, u8 chip_type)
+=======
+void exhalbtc_set_chip_type(u8 chip_type)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (chip_type) {
 	default:
@@ -1952,6 +2194,7 @@ void exhalbtc_set_chip_type(struct btc_coexist *btcoexist, u8 chip_type)
 	case BT_ISSC_3WIRE:
 	case BT_ACCEL:
 	case BT_RTL8756:
+<<<<<<< HEAD
 		btcoexist->board_info.bt_chip_type = BTC_CHIP_UNDEF;
 		break;
 	case BT_CSR_BC4:
@@ -1968,12 +2211,31 @@ void exhalbtc_set_chip_type(struct btc_coexist *btcoexist, u8 chip_type)
 		break;
 	case BT_RTL8723B:
 		btcoexist->board_info.bt_chip_type = BTC_CHIP_RTL8723B;
+=======
+		gl_bt_coexist.board_info.bt_chip_type = BTC_CHIP_UNDEF;
+		break;
+	case BT_CSR_BC4:
+		gl_bt_coexist.board_info.bt_chip_type = BTC_CHIP_CSR_BC4;
+		break;
+	case BT_CSR_BC8:
+		gl_bt_coexist.board_info.bt_chip_type = BTC_CHIP_CSR_BC8;
+		break;
+	case BT_RTL8723A:
+		gl_bt_coexist.board_info.bt_chip_type = BTC_CHIP_RTL8723A;
+		break;
+	case BT_RTL8821A:
+		gl_bt_coexist.board_info.bt_chip_type = BTC_CHIP_RTL8821;
+		break;
+	case BT_RTL8723B:
+		gl_bt_coexist.board_info.bt_chip_type = BTC_CHIP_RTL8723B;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
 
 void exhalbtc_set_ant_num(struct rtl_priv *rtlpriv, u8 type, u8 ant_num)
 {
+<<<<<<< HEAD
 	struct btc_coexist *btcoexist = rtl_btc_coexist(rtlpriv);
 
 	if (!btcoexist)
@@ -1991,11 +2253,26 @@ void exhalbtc_set_ant_num(struct rtl_priv *rtlpriv, u8 type, u8 ant_num)
 				BTC_ANTENNA_AT_AUX_PORT;
 		else
 			btcoexist->board_info.btdm_ant_pos =
+=======
+	if (BT_COEX_ANT_TYPE_PG == type) {
+		gl_bt_coexist.board_info.pg_ant_num = ant_num;
+		gl_bt_coexist.board_info.btdm_ant_num = ant_num;
+	} else if (BT_COEX_ANT_TYPE_ANTDIV == type) {
+		gl_bt_coexist.board_info.btdm_ant_num = ant_num;
+	} else if (type == BT_COEX_ANT_TYPE_DETECTED) {
+		gl_bt_coexist.board_info.btdm_ant_num = ant_num;
+		if (rtlpriv->cfg->mod_params->ant_sel == 1)
+			gl_bt_coexist.board_info.btdm_ant_pos =
+				BTC_ANTENNA_AT_AUX_PORT;
+		else
+			gl_bt_coexist.board_info.btdm_ant_pos =
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				BTC_ANTENNA_AT_MAIN_PORT;
 	}
 }
 
 /* Currently used by 8723b only, S0 or S1 */
+<<<<<<< HEAD
 void exhalbtc_set_single_ant_path(struct btc_coexist *btcoexist,
 				  u8 single_ant_path)
 {
@@ -2004,6 +2281,14 @@ void exhalbtc_set_single_ant_path(struct btc_coexist *btcoexist,
 
 void exhalbtc_display_bt_coex_info(struct btc_coexist *btcoexist,
 				   struct seq_file *m)
+=======
+void exhalbtc_set_single_ant_path(u8 single_ant_path)
+{
+	gl_bt_coexist.board_info.single_ant_path = single_ant_path;
+}
+
+void exhalbtc_display_bt_coex_info(struct btc_coexist *btcoexist)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!halbtc_is_bt_coexist_available(btcoexist))
 		return;
@@ -2012,6 +2297,7 @@ void exhalbtc_display_bt_coex_info(struct btc_coexist *btcoexist,
 
 	if (IS_HARDWARE_TYPE_8821(btcoexist->adapter)) {
 		if (btcoexist->board_info.btdm_ant_num == 2)
+<<<<<<< HEAD
 			ex_btc8821a2ant_display_coex_info(btcoexist, m);
 		else if (btcoexist->board_info.btdm_ant_num == 1)
 			ex_btc8821a1ant_display_coex_info(btcoexist, m);
@@ -2023,10 +2309,24 @@ void exhalbtc_display_bt_coex_info(struct btc_coexist *btcoexist,
 	} else if (IS_HARDWARE_TYPE_8192E(btcoexist->adapter)) {
 		if (btcoexist->board_info.btdm_ant_num == 2)
 			ex_btc8192e2ant_display_coex_info(btcoexist, m);
+=======
+			ex_btc8821a2ant_display_coex_info(btcoexist);
+		else if (btcoexist->board_info.btdm_ant_num == 1)
+			ex_btc8821a1ant_display_coex_info(btcoexist);
+	} else if (IS_HARDWARE_TYPE_8723B(btcoexist->adapter)) {
+		if (btcoexist->board_info.btdm_ant_num == 2)
+			ex_btc8723b2ant_display_coex_info(btcoexist);
+		else if (btcoexist->board_info.btdm_ant_num == 1)
+			ex_btc8723b1ant_display_coex_info(btcoexist);
+	} else if (IS_HARDWARE_TYPE_8192E(btcoexist->adapter)) {
+		if (btcoexist->board_info.btdm_ant_num == 2)
+			ex_btc8192e2ant_display_coex_info(btcoexist);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	halbtc_normal_low_power(btcoexist);
 }
+<<<<<<< HEAD
 
 void exhalbtc_switch_band_notify(struct btc_coexist *btcoexist, u8 type)
 {
@@ -2045,3 +2345,5 @@ void exhalbtc_switch_band_notify_wifi_only(struct wifi_only_cfg *wifionly_cfg,
 					   u8 is_5g)
 {
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

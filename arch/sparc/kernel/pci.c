@@ -214,8 +214,13 @@ static void pci_parse_of_addrs(struct platform_device *op,
 	if (!addrs)
 		return;
 	if (ofpci_verbose)
+<<<<<<< HEAD
 		pci_info(dev, "    parse addresses (%d bytes) @ %p\n",
 			 proplen, addrs);
+=======
+		printk("    parse addresses (%d bytes) @ %p\n",
+		       proplen, addrs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	op_res = &op->resource[0];
 	for (; proplen >= 20; proplen -= 20, addrs += 5, op_res++) {
 		struct resource *res;
@@ -227,8 +232,13 @@ static void pci_parse_of_addrs(struct platform_device *op,
 			continue;
 		i = addrs[0] & 0xff;
 		if (ofpci_verbose)
+<<<<<<< HEAD
 			pci_info(dev, "  start: %llx, end: %llx, i: %x\n",
 				 op_res->start, op_res->end, i);
+=======
+			printk("  start: %llx, end: %llx, i: %x\n",
+			       op_res->start, op_res->end, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (PCI_BASE_ADDRESS_0 <= i && i <= PCI_BASE_ADDRESS_5) {
 			res = &dev->resource[(i - PCI_BASE_ADDRESS_0) >> 2];
@@ -236,15 +246,22 @@ static void pci_parse_of_addrs(struct platform_device *op,
 			res = &dev->resource[PCI_ROM_RESOURCE];
 			flags |= IORESOURCE_READONLY | IORESOURCE_SIZEALIGN;
 		} else {
+<<<<<<< HEAD
 			pci_err(dev, "bad cfg reg num 0x%x\n", i);
+=======
+			printk(KERN_ERR "PCI: bad cfg reg num 0x%x\n", i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 		res->start = op_res->start;
 		res->end = op_res->end;
 		res->flags = flags;
 		res->name = pci_name(dev);
+<<<<<<< HEAD
 
 		pci_info(dev, "reg 0x%x: %pR\n", i, res);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -291,8 +308,13 @@ static struct pci_dev *of_create_pci_dev(struct pci_pbm_info *pbm,
 		type = "";
 
 	if (ofpci_verbose)
+<<<<<<< HEAD
 		pci_info(bus,"    create device, devfn: %x, type: %s\n",
 			 devfn, type);
+=======
+		printk("    create device, devfn: %x, type: %s\n",
+		       devfn, type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->sysdata = node;
 	dev->dev.parent = bus->bridge;
@@ -325,6 +347,13 @@ static struct pci_dev *of_create_pci_dev(struct pci_pbm_info *pbm,
 	dev_set_name(&dev->dev, "%04x:%02x:%02x.%d", pci_domain_nr(bus),
 		dev->bus->number, PCI_SLOT(devfn), PCI_FUNC(devfn));
 
+<<<<<<< HEAD
+=======
+	if (ofpci_verbose)
+		printk("    class: 0x%x device name: %s\n",
+		       dev->class, pci_name(dev));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* I have seen IDE devices which will not respond to
 	 * the bmdma simplex check reads if bus mastering is
 	 * disabled.
@@ -351,6 +380,7 @@ static struct pci_dev *of_create_pci_dev(struct pci_pbm_info *pbm,
 			dev->irq = PCI_IRQ_NONE;
 	}
 
+<<<<<<< HEAD
 	pci_info(dev, "[%04x:%04x] type %02x class %#08x\n",
 		 dev->vendor, dev->device, dev->hdr_type, dev->class);
 
@@ -358,6 +388,12 @@ static struct pci_dev *of_create_pci_dev(struct pci_pbm_info *pbm,
 
 	if (ofpci_verbose)
 		pci_info(dev, "    adding to system ...\n");
+=======
+	pci_parse_of_addrs(sd->op, node, dev);
+
+	if (ofpci_verbose)
+		printk("    adding to system ...\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_device_add(dev, bus);
 
@@ -431,19 +467,32 @@ static void of_scan_pci_bridge(struct pci_pbm_info *pbm,
 	u64 size;
 
 	if (ofpci_verbose)
+<<<<<<< HEAD
 		pci_info(dev, "of_scan_pci_bridge(%s)\n", node->full_name);
+=======
+		printk("of_scan_pci_bridge(%s)\n", node->full_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* parse bus-range property */
 	busrange = of_get_property(node, "bus-range", &len);
 	if (busrange == NULL || len != 8) {
+<<<<<<< HEAD
 		pci_info(dev, "Can't get bus-range for PCI-PCI bridge %s\n",
+=======
+		printk(KERN_DEBUG "Can't get bus-range for PCI-PCI bridge %s\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       node->full_name);
 		return;
 	}
 
 	if (ofpci_verbose)
+<<<<<<< HEAD
 		pci_info(dev, "    Bridge bus range [%u --> %u]\n",
 			 busrange[0], busrange[1]);
+=======
+		printk("    Bridge bus range [%u --> %u]\n",
+		       busrange[0], busrange[1]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ranges = of_get_property(node, "ranges", &len);
 	simba = 0;
@@ -455,8 +504,13 @@ static void of_scan_pci_bridge(struct pci_pbm_info *pbm,
 
 	bus = pci_add_new_bus(dev->bus, dev, busrange[0]);
 	if (!bus) {
+<<<<<<< HEAD
 		pci_err(dev, "Failed to create pci bus for %s\n",
 			node->full_name);
+=======
+		printk(KERN_ERR "Failed to create pci bus for %s\n",
+		       node->full_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -465,8 +519,13 @@ static void of_scan_pci_bridge(struct pci_pbm_info *pbm,
 	bus->bridge_ctl = 0;
 
 	if (ofpci_verbose)
+<<<<<<< HEAD
 		pci_info(dev, "    Bridge ranges[%p] simba[%d]\n",
 			 ranges, simba);
+=======
+		printk("    Bridge ranges[%p] simba[%d]\n",
+		       ranges, simba);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* parse ranges property, or cook one up by hand for Simba */
 	/* PCI #address-cells == 3 and #size-cells == 2 always */
@@ -488,10 +547,17 @@ static void of_scan_pci_bridge(struct pci_pbm_info *pbm,
 		u64 start;
 
 		if (ofpci_verbose)
+<<<<<<< HEAD
 			pci_info(dev, "    RAW Range[%08x:%08x:%08x:%08x:%08x:%08x:"
 				 "%08x:%08x]\n",
 				 ranges[0], ranges[1], ranges[2], ranges[3],
 				 ranges[4], ranges[5], ranges[6], ranges[7]);
+=======
+			printk("    RAW Range[%08x:%08x:%08x:%08x:%08x:%08x:"
+			       "%08x:%08x]\n",
+			       ranges[0], ranges[1], ranges[2], ranges[3],
+			       ranges[4], ranges[5], ranges[6], ranges[7]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		flags = pci_parse_of_flags(ranges[0]);
 		size = GET_64BIT(ranges, 6);
@@ -511,14 +577,24 @@ static void of_scan_pci_bridge(struct pci_pbm_info *pbm,
 		if (flags & IORESOURCE_IO) {
 			res = bus->resource[0];
 			if (res->flags) {
+<<<<<<< HEAD
 				pci_err(dev, "ignoring extra I/O range"
 					" for bridge %s\n", node->full_name);
+=======
+				printk(KERN_ERR "PCI: ignoring extra I/O range"
+				       " for bridge %s\n", node->full_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 			}
 		} else {
 			if (i >= PCI_NUM_RESOURCES - PCI_BRIDGE_RESOURCES) {
+<<<<<<< HEAD
 				pci_err(dev, "too many memory ranges"
 					" for bridge %s\n", node->full_name);
+=======
+				printk(KERN_ERR "PCI: too many memory ranges"
+				       " for bridge %s\n", node->full_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 			}
 			res = bus->resource[i];
@@ -530,8 +606,13 @@ static void of_scan_pci_bridge(struct pci_pbm_info *pbm,
 		region.end = region.start + size - 1;
 
 		if (ofpci_verbose)
+<<<<<<< HEAD
 			pci_info(dev, "      Using flags[%08x] start[%016llx] size[%016llx]\n",
 				 flags, start, size);
+=======
+			printk("      Using flags[%08x] start[%016llx] size[%016llx]\n",
+			       flags, start, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pcibios_bus_to_resource(dev->bus, res, &region);
 	}
@@ -539,7 +620,11 @@ after_ranges:
 	sprintf(bus->name, "PCI Bus %04x:%02x", pci_domain_nr(bus),
 		bus->number);
 	if (ofpci_verbose)
+<<<<<<< HEAD
 		pci_info(dev, "    bus name: %s\n", bus->name);
+=======
+		printk("    bus name: %s\n", bus->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pci_of_scan_bus(pbm, node, bus);
 }
@@ -554,14 +639,23 @@ static void pci_of_scan_bus(struct pci_pbm_info *pbm,
 	struct pci_dev *dev;
 
 	if (ofpci_verbose)
+<<<<<<< HEAD
 		pci_info(bus, "scan_bus[%s] bus no %d\n",
 			 node->full_name, bus->number);
+=======
+		printk("PCI: scan_bus[%s] bus no %d\n",
+		       node->full_name, bus->number);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	child = NULL;
 	prev_devfn = -1;
 	while ((child = of_get_next_child(node, child)) != NULL) {
 		if (ofpci_verbose)
+<<<<<<< HEAD
 			pci_info(bus, "  * %s\n", child->full_name);
+=======
+			printk("  * %s\n", child->full_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = of_get_property(child, "reg", &reglen);
 		if (reg == NULL || reglen < 20)
 			continue;
@@ -582,7 +676,12 @@ static void pci_of_scan_bus(struct pci_pbm_info *pbm,
 		if (!dev)
 			continue;
 		if (ofpci_verbose)
+<<<<<<< HEAD
 			pci_info(dev, "dev header type: %x\n", dev->hdr_type);
+=======
+			printk("PCI: dev header type: %x\n",
+			       dev->hdr_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (pci_is_bridge(dev))
 			of_scan_pci_bridge(pbm, child, dev);
@@ -624,6 +723,7 @@ static void pci_bus_register_of_sysfs(struct pci_bus *bus)
 		pci_bus_register_of_sysfs(child_bus);
 }
 
+<<<<<<< HEAD
 static void pci_claim_legacy_resources(struct pci_dev *dev)
 {
 	struct pci_bus_region region;
@@ -663,6 +763,8 @@ err:
 	kfree(p);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void pci_claim_bus_resources(struct pci_bus *bus)
 {
 	struct pci_bus *child_bus;
@@ -678,6 +780,7 @@ static void pci_claim_bus_resources(struct pci_bus *bus)
 				continue;
 
 			if (ofpci_verbose)
+<<<<<<< HEAD
 				pci_info(dev, "Claiming Resource %d: %pR\n",
 					 i, r);
 
@@ -685,6 +788,17 @@ static void pci_claim_bus_resources(struct pci_bus *bus)
 		}
 
 		pci_claim_legacy_resources(dev);
+=======
+				printk("PCI: Claiming %s: "
+				       "Resource %d: %016llx..%016llx [%x]\n",
+				       pci_name(dev), i,
+				       (unsigned long long)r->start,
+				       (unsigned long long)r->end,
+				       (unsigned int)r->flags);
+
+			pci_claim_resource(dev, i);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	list_for_each_entry(child_bus, &bus->children, node)
@@ -701,12 +815,21 @@ struct pci_bus *pci_scan_one_pbm(struct pci_pbm_info *pbm,
 	printk("PCI: Scanning PBM %s\n", node->full_name);
 
 	pci_add_resource_offset(&resources, &pbm->io_space,
+<<<<<<< HEAD
 				pbm->io_offset);
 	pci_add_resource_offset(&resources, &pbm->mem_space,
 				pbm->mem_offset);
 	if (pbm->mem64_space.flags)
 		pci_add_resource_offset(&resources, &pbm->mem64_space,
 					pbm->mem64_offset);
+=======
+				pbm->io_space.start);
+	pci_add_resource_offset(&resources, &pbm->mem_space,
+				pbm->mem_space.start);
+	if (pbm->mem64_space.flags)
+		pci_add_resource_offset(&resources, &pbm->mem64_space,
+					pbm->mem_space.start);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pbm->busn.start = pbm->pci_first_busno;
 	pbm->busn.end	= pbm->pci_last_busno;
 	pbm->busn.flags	= IORESOURCE_BUS;
@@ -724,7 +847,10 @@ struct pci_bus *pci_scan_one_pbm(struct pci_pbm_info *pbm,
 	pci_bus_register_of_sysfs(bus);
 
 	pci_claim_bus_resources(bus);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_bus_add_devices(bus);
 	return bus;
 }
@@ -751,7 +877,13 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
 	}
 
 	if (cmd != oldcmd) {
+<<<<<<< HEAD
 		pci_info(dev, "enabling device (%04x -> %04x)\n", oldcmd, cmd);
+=======
+		printk(KERN_DEBUG "PCI: Enabling device: (%s), cmd %x\n",
+		       pci_name(dev), cmd);
+                /* Enable the appropriate bits in the PCI command register.  */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pci_write_config_word(dev, PCI_COMMAND, cmd);
 	}
 	return 0;
@@ -1111,8 +1243,13 @@ static void pci_bus_slot_names(struct device_node *node, struct pci_bus *bus)
 	sp = prop->names;
 
 	if (ofpci_verbose)
+<<<<<<< HEAD
 		pci_info(bus, "Making slots for [%s] mask[0x%02x]\n",
 			 node->full_name, mask);
+=======
+		printk("PCI: Making slots for [%s] mask[0x%02x]\n",
+		       node->full_name, mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i = 0;
 	while (mask) {
@@ -1125,12 +1262,21 @@ static void pci_bus_slot_names(struct device_node *node, struct pci_bus *bus)
 		}
 
 		if (ofpci_verbose)
+<<<<<<< HEAD
 			pci_info(bus, "Making slot [%s]\n", sp);
 
 		pci_slot = pci_create_slot(bus, i, sp, NULL);
 		if (IS_ERR(pci_slot))
 			pci_err(bus, "pci_create_slot returned %ld\n",
 				PTR_ERR(pci_slot));
+=======
+			printk("PCI: Making slot [%s]\n", sp);
+
+		pci_slot = pci_create_slot(bus, i, sp, NULL);
+		if (IS_ERR(pci_slot))
+			printk(KERN_ERR "PCI: pci_create_slot returned %ld\n",
+			       PTR_ERR(pci_slot));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		sp += strlen(sp) + 1;
 		mask &= ~this_bit;

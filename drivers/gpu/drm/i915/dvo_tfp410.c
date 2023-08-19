@@ -90,7 +90,11 @@ struct tfp410_priv {
 	bool quiet;
 };
 
+<<<<<<< HEAD
 static bool tfp410_readb(struct intel_dvo_device *dvo, int addr, u8 *ch)
+=======
+static bool tfp410_readb(struct intel_dvo_device *dvo, int addr, uint8_t *ch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tfp410_priv *tfp = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
@@ -127,11 +131,19 @@ static bool tfp410_readb(struct intel_dvo_device *dvo, int addr, u8 *ch)
 	return false;
 }
 
+<<<<<<< HEAD
 static bool tfp410_writeb(struct intel_dvo_device *dvo, int addr, u8 ch)
 {
 	struct tfp410_priv *tfp = dvo->dev_priv;
 	struct i2c_adapter *adapter = dvo->i2c_bus;
 	u8 out_buf[2];
+=======
+static bool tfp410_writeb(struct intel_dvo_device *dvo, int addr, uint8_t ch)
+{
+	struct tfp410_priv *tfp = dvo->dev_priv;
+	struct i2c_adapter *adapter = dvo->i2c_bus;
+	uint8_t out_buf[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_msg msg = {
 		.addr = dvo->slave_addr,
 		.flags = 0,
@@ -155,7 +167,11 @@ static bool tfp410_writeb(struct intel_dvo_device *dvo, int addr, u8 ch)
 
 static int tfp410_getid(struct intel_dvo_device *dvo, int addr)
 {
+<<<<<<< HEAD
 	u8 ch1, ch2;
+=======
+	uint8_t ch1, ch2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tfp410_readb(dvo, addr+0, &ch1) &&
 	    tfp410_readb(dvo, addr+1, &ch2))
@@ -203,7 +219,11 @@ out:
 static enum drm_connector_status tfp410_detect(struct intel_dvo_device *dvo)
 {
 	enum drm_connector_status ret = connector_status_disconnected;
+<<<<<<< HEAD
 	u8 ctl2;
+=======
+	uint8_t ctl2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tfp410_readb(dvo, TFP410_CTL_2, &ctl2)) {
 		if (ctl2 & TFP410_CTL_2_RSEN)
@@ -236,7 +256,11 @@ static void tfp410_mode_set(struct intel_dvo_device *dvo,
 /* set the tfp410 power state */
 static void tfp410_dpms(struct intel_dvo_device *dvo, bool enable)
 {
+<<<<<<< HEAD
 	u8 ctl1;
+=======
+	uint8_t ctl1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tfp410_readb(dvo, TFP410_CTL_1, &ctl1))
 		return;
@@ -251,7 +275,11 @@ static void tfp410_dpms(struct intel_dvo_device *dvo, bool enable)
 
 static bool tfp410_get_hw_state(struct intel_dvo_device *dvo)
 {
+<<<<<<< HEAD
 	u8 ctl1;
+=======
+	uint8_t ctl1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tfp410_readb(dvo, TFP410_CTL_1, &ctl1))
 		return false;
@@ -264,7 +292,11 @@ static bool tfp410_get_hw_state(struct intel_dvo_device *dvo)
 
 static void tfp410_dump_regs(struct intel_dvo_device *dvo)
 {
+<<<<<<< HEAD
 	u8 val, val2;
+=======
+	uint8_t val, val2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tfp410_readb(dvo, TFP410_REV, &val);
 	DRM_DEBUG_KMS("TFP410_REV: 0x%02X\n", val);

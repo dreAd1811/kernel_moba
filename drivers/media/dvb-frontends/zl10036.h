@@ -18,7 +18,19 @@
 #define DVB_ZL10036_H
 
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+
+/**
+ * Attach a zl10036 tuner to the supplied frontend structure.
+ *
+ * @param fe Frontend to attach to.
+ * @param config zl10036_config structure
+ * @return FE pointer on success, NULL on failure.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct zl10036_config {
 	u8 tuner_address;
@@ -26,6 +38,7 @@ struct zl10036_config {
 };
 
 #if IS_REACHABLE(CONFIG_DVB_ZL10036)
+<<<<<<< HEAD
 /**
  * Attach a zl10036 tuner to the supplied frontend structure.
  *
@@ -34,6 +47,8 @@ struct zl10036_config {
  * @i2c: pointer to struct i2c_adapter.
  * return: FE pointer on success, NULL on failure.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct dvb_frontend *zl10036_attach(struct dvb_frontend *fe,
 	const struct zl10036_config *config, struct i2c_adapter *i2c);
 #else

@@ -11,7 +11,11 @@
 NM := $(NM) -B
 
 LDFLAGS_vmlinux	:= -static -N #-relax
+<<<<<<< HEAD
 CHECKFLAGS	+= -D__alpha__
+=======
+CHECKFLAGS	+= -D__alpha__ -m64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cflags-y	:= -pipe -mno-fp-regs -ffixed-8
 cflags-y	+= $(call cc-option, -fno-jump-tables)
 

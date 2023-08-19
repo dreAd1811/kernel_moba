@@ -97,10 +97,19 @@ flags	- flags of the cpufreq driver
 ==================================================================
 For details about OPP, see Documentation/power/opp.txt
 
+<<<<<<< HEAD
 dev_pm_opp_init_cpufreq_table -
 	This function provides a ready to use conversion routine to translate
 	the OPP layer's internal information about the available frequencies
 	into a format readily providable to cpufreq.
+=======
+dev_pm_opp_init_cpufreq_table - cpufreq framework typically is initialized with
+	cpufreq_table_validate_and_show() which is provided with the list of
+	frequencies that are available for operation. This function provides
+	a ready to use conversion routine to translate the OPP layer's internal
+	information about the available frequencies into a format readily
+	providable to cpufreq.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	WARNING: Do not use this function in interrupt context.
 
@@ -110,7 +119,11 @@ dev_pm_opp_init_cpufreq_table -
 		/* Do things */
 		r = dev_pm_opp_init_cpufreq_table(dev, &freq_table);
 		if (!r)
+<<<<<<< HEAD
 			policy->freq_table = freq_table;
+=======
+			cpufreq_table_validate_and_show(policy, freq_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Do other things */
 	 }
 

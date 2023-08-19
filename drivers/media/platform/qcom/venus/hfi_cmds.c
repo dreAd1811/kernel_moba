@@ -421,12 +421,19 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	pkt->shdr.hdr.pkt_type = HFI_CMD_SESSION_SET_PROPERTY;
 	pkt->shdr.session_id = hash32_ptr(cookie);
 	pkt->num_properties = 1;
+<<<<<<< HEAD
 	pkt->data[0] = ptype;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (ptype) {
 	case HFI_PROPERTY_CONFIG_FRAME_RATE: {
 		struct hfi_framerate *in = pdata, *frate = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_FRAME_RATE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		frate->buffer_type = in->buffer_type;
 		frate->framerate = in->framerate;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*frate);
@@ -436,6 +443,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_uncompressed_format_select *in = pdata;
 		struct hfi_uncompressed_format_select *hfi = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_UNCOMPRESSED_FORMAT_SELECT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hfi->buffer_type = in->buffer_type;
 		hfi->format = in->format;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*hfi);
@@ -444,6 +455,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_FRAME_SIZE: {
 		struct hfi_framesize *in = pdata, *fsize = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_FRAME_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fsize->buffer_type = in->buffer_type;
 		fsize->height = in->height;
 		fsize->width = in->width;
@@ -453,6 +468,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_REALTIME: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_REALTIME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) * 2;
 		break;
@@ -460,6 +479,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_BUFFER_COUNT_ACTUAL: {
 		struct hfi_buffer_count_actual *in = pdata, *count = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_BUFFER_COUNT_ACTUAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		count->count_actual = in->count_actual;
 		count->type = in->type;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*count);
@@ -468,6 +491,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_BUFFER_SIZE_ACTUAL: {
 		struct hfi_buffer_size_actual *in = pdata, *sz = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_BUFFER_SIZE_ACTUAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sz->size = in->size;
 		sz->type = in->type;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*sz);
@@ -477,6 +504,11 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_buffer_display_hold_count_actual *in = pdata;
 		struct hfi_buffer_display_hold_count_actual *count = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] =
+			HFI_PROPERTY_PARAM_BUFFER_DISPLAY_HOLD_COUNT_ACTUAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		count->hold_count = in->hold_count;
 		count->type = in->type;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*count);
@@ -486,6 +518,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_nal_stream_format_select *in = pdata;
 		struct hfi_nal_stream_format_select *fmt = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_NAL_STREAM_FORMAT_SELECT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fmt->format = in->format;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*fmt);
 		break;
@@ -502,6 +538,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_OUTPUT_ORDER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt->data[1] = *in;
 		pkt->shdr.hdr.size += sizeof(u32) * 2;
 		break;
@@ -509,6 +549,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VDEC_PICTURE_TYPE_DECODE: {
 		struct hfi_enable_picture *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_PICTURE_TYPE_DECODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->picture_type = in->picture_type;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -516,6 +560,11 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VDEC_OUTPUT2_KEEP_ASPECT_RATIO: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] =
+			HFI_PROPERTY_PARAM_VDEC_OUTPUT2_KEEP_ASPECT_RATIO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -524,6 +573,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_enable *in = pdata;
 		struct hfi_enable *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VDEC_POST_LOOP_DEBLOCKER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -531,6 +584,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VDEC_MULTI_STREAM: {
 		struct hfi_multi_stream *in = pdata, *multi = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_MULTI_STREAM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		multi->buffer_type = in->buffer_type;
 		multi->enable = in->enable;
 		multi->width = in->width;
@@ -542,6 +599,11 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_display_picture_buffer_count *in = pdata;
 		struct hfi_display_picture_buffer_count *count = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] =
+			HFI_PROPERTY_PARAM_VDEC_DISPLAY_PICTURE_BUFFER_COUNT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		count->count = in->count;
 		count->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*count);
@@ -560,6 +622,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_DIVX_FORMAT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt->data[1] = *in;
 		pkt->shdr.hdr.size += sizeof(u32) * 2;
 		break;
@@ -567,6 +633,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VDEC_MB_ERROR_MAP_REPORTING: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VDEC_MB_ERROR_MAP_REPORTING;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -574,6 +644,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VDEC_CONTINUE_DATA_TRANSFER: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_CONTINUE_DATA_TRANSFER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -581,6 +655,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VDEC_THUMBNAIL_MODE: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_THUMBNAIL_MODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -588,11 +666,20 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_SYNC_FRAME_SEQUENCE_HEADER: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] =
+			HFI_PROPERTY_CONFIG_VENC_SYNC_FRAME_SEQUENCE_HEADER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
 	}
 	case HFI_PROPERTY_CONFIG_VENC_REQUEST_SYNC_FRAME:
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_REQUEST_SYNC_FRAME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt->shdr.hdr.size += sizeof(u32);
 		break;
 	case HFI_PROPERTY_PARAM_VENC_MPEG4_SHORT_HEADER:
@@ -602,6 +689,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_TARGET_BITRATE: {
 		struct hfi_bitrate *in = pdata, *brate = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_TARGET_BITRATE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		brate->bitrate = in->bitrate;
 		brate->layer_id = in->layer_id;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*brate);
@@ -610,6 +701,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_MAX_BITRATE: {
 		struct hfi_bitrate *in = pdata, *hfi = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_MAX_BITRATE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hfi->bitrate = in->bitrate;
 		hfi->layer_id = in->layer_id;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*hfi);
@@ -618,6 +713,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_PROFILE_LEVEL_CURRENT: {
 		struct hfi_profile_level *in = pdata, *pl = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_PROFILE_LEVEL_CURRENT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pl->level = in->level;
 		pl->profile = in->profile;
 		if (pl->profile <= 0)
@@ -634,6 +733,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_H264_ENTROPY_CONTROL: {
 		struct hfi_h264_entropy_control *in = pdata, *hfi = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_H264_ENTROPY_CONTROL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hfi->entropy_mode = in->entropy_mode;
 		if (hfi->entropy_mode == HFI_H264_ENTROPY_CABAC)
 			hfi->cabac_model = in->cabac_model;
@@ -655,6 +758,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_RATE_CONTROL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt->data[1] = *in;
 		pkt->shdr.hdr.size += sizeof(u32) * 2;
 		break;
@@ -662,6 +769,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_MPEG4_TIME_RESOLUTION: {
 		struct hfi_mpeg4_time_resolution *in = pdata, *res = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_MPEG4_TIME_RESOLUTION;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		res->time_increment_resolution = in->time_increment_resolution;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*res);
 		break;
@@ -669,6 +780,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_MPEG4_HEADER_EXTENSION: {
 		struct hfi_mpeg4_header_extension *in = pdata, *ext = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_MPEG4_HEADER_EXTENSION;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ext->header_extension = in->header_extension;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*ext);
 		break;
@@ -686,6 +801,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_H264_DEBLOCK_CONTROL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		db->mode = in->mode;
 		db->slice_alpha_offset = in->slice_alpha_offset;
 		db->slice_beta_offset = in->slice_beta_offset;
@@ -695,6 +814,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_SESSION_QP: {
 		struct hfi_quantization *in = pdata, *quant = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_SESSION_QP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		quant->qp_i = in->qp_i;
 		quant->qp_p = in->qp_p;
 		quant->qp_b = in->qp_b;
@@ -706,6 +829,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_quantization_range *in = pdata, *range = prop_data;
 		u32 min_qp, max_qp;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_SESSION_QP_RANGE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		min_qp = in->min_qp;
 		max_qp = in->max_qp;
 
@@ -731,6 +858,11 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_VC1_PERF_CFG: {
 		struct hfi_vc1e_perf_cfg_type *in = pdata, *perf = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_VC1_PERF_CFG;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(perf->search_range_x_subsampled,
 		       in->search_range_x_subsampled,
 		       sizeof(perf->search_range_x_subsampled));
@@ -745,6 +877,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_max_num_b_frames *bframes = prop_data;
 		u32 *in = pdata;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_MAX_NUM_B_FRAMES;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bframes->max_num_b_frames = *in;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*bframes);
 		break;
@@ -752,6 +888,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_INTRA_PERIOD: {
 		struct hfi_intra_period *in = pdata, *intra = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_INTRA_PERIOD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intra->pframes = in->pframes;
 		intra->bframes = in->bframes;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*intra);
@@ -760,6 +900,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_IDR_PERIOD: {
 		struct hfi_idr_period *in = pdata, *idr = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_IDR_PERIOD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		idr->idr_period = in->idr_period;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*idr);
 		break;
@@ -768,6 +912,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_conceal_color *color = prop_data;
 		u32 *in = pdata;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_CONCEAL_COLOR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		color->conceal_color = *in;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*color);
 		break;
@@ -796,6 +944,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VPE_OPERATIONS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ops->rotation = in->rotation;
 		ops->flip = in->flip;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*ops);
@@ -816,6 +968,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_INTRA_REFRESH;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intra->mode = in->mode;
 		intra->air_mbs = in->air_mbs;
 		intra->air_ref = in->air_ref;
@@ -837,6 +993,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_MULTI_SLICE_CONTROL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		multi->multi_slice = in->multi_slice;
 		multi->slice_size = in->slice_size;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*multi);
@@ -845,6 +1005,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_SLICE_DELIVERY_MODE: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_SLICE_DELIVERY_MODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -852,6 +1016,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_H264_VUI_TIMING_INFO: {
 		struct hfi_h264_vui_timing_info *in = pdata, *vui = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_H264_VUI_TIMING_INFO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vui->enable = in->enable;
 		vui->fixed_framerate = in->fixed_framerate;
 		vui->time_scale = in->time_scale;
@@ -861,6 +1029,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VPE_DEINTERLACE: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VPE_DEINTERLACE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -868,6 +1040,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_H264_GENERATE_AUDNAL: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_H264_GENERATE_AUDNAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -875,6 +1051,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE: {
 		struct hfi_buffer_alloc_mode *in = pdata, *mode = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_BUFFER_ALLOC_MODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mode->type = in->type;
 		mode->mode = in->mode;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*mode);
@@ -883,6 +1063,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VDEC_FRAME_ASSEMBLY: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_FRAME_ASSEMBLY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -890,6 +1074,11 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_H264_VUI_BITSTREAM_RESTRC: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] =
+			HFI_PROPERTY_PARAM_VENC_H264_VUI_BITSTREAM_RESTRC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -897,6 +1086,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_PRESERVE_TEXT_QUALITY: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_PRESERVE_TEXT_QUALITY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -905,6 +1098,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_scs_threshold *thres = prop_data;
 		u32 *in = pdata;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_SCS_THRESHOLD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		thres->threshold_value = *in;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*thres);
 		break;
@@ -922,6 +1119,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_MVC_BUFFER_LAYOUT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mvc->layout_type = in->layout_type;
 		mvc->bright_view_first = in->bright_view_first;
 		mvc->ngap = in->ngap;
@@ -941,6 +1142,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_LTRMODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ltr->ltr_mode = in->ltr_mode;
 		ltr->ltr_count = in->ltr_count;
 		ltr->trust_mode = in->trust_mode;
@@ -950,6 +1155,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_USELTRFRAME: {
 		struct hfi_ltr_use *in = pdata, *ltr_use = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_USELTRFRAME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ltr_use->frames = in->frames;
 		ltr_use->ref_ltr = in->ref_ltr;
 		ltr_use->use_constrnt = in->use_constrnt;
@@ -959,6 +1168,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_MARKLTRFRAME: {
 		struct hfi_ltr_mark *in = pdata, *ltr_mark = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_MARKLTRFRAME;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ltr_mark->mark_frame = in->mark_frame;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*ltr_mark);
 		break;
@@ -966,6 +1179,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_HIER_P_MAX_NUM_ENH_LAYER: {
 		u32 *in = pdata;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_HIER_P_MAX_NUM_ENH_LAYER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt->data[1] = *in;
 		pkt->shdr.hdr.size += sizeof(u32) * 2;
 		break;
@@ -973,6 +1190,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_HIER_P_ENH_LAYER: {
 		u32 *in = pdata;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_HIER_P_ENH_LAYER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt->data[1] = *in;
 		pkt->shdr.hdr.size += sizeof(u32) * 2;
 		break;
@@ -980,6 +1201,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_DISABLE_RC_TIMESTAMP: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_DISABLE_RC_TIMESTAMP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -987,6 +1212,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_INITIAL_QP: {
 		struct hfi_initial_quantization *in = pdata, *quant = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_INITIAL_QP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		quant->init_qp_enable = in->init_qp_enable;
 		quant->qp_i = in->qp_i;
 		quant->qp_p = in->qp_p;
@@ -998,6 +1227,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_vpe_color_space_conversion *in = pdata;
 		struct hfi_vpe_color_space_conversion *csc = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VPE_COLOR_SPACE_CONVERSION;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(csc->csc_matrix, in->csc_matrix,
 		       sizeof(csc->csc_matrix));
 		memcpy(csc->csc_bias, in->csc_bias, sizeof(csc->csc_bias));
@@ -1008,6 +1241,11 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_VPX_ERROR_RESILIENCE_MODE: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] =
+			HFI_PROPERTY_PARAM_VENC_VPX_ERROR_RESILIENCE_MODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -1015,6 +1253,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_H264_NAL_SVC_EXT: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_H264_NAL_SVC_EXT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -1022,6 +1264,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_CONFIG_VENC_PERF_MODE: {
 		u32 *in = pdata;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_CONFIG_VENC_PERF_MODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt->data[1] = *in;
 		pkt->shdr.hdr.size += sizeof(u32) * 2;
 		break;
@@ -1029,6 +1275,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_HIER_B_MAX_NUM_ENH_LAYER: {
 		u32 *in = pdata;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_HIER_B_MAX_NUM_ENH_LAYER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pkt->data[1] = *in;
 		pkt->shdr.hdr.size += sizeof(u32) * 2;
 		break;
@@ -1036,6 +1286,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VDEC_NONCP_OUTPUT2: {
 		struct hfi_enable *in = pdata, *en = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_NONCP_OUTPUT2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		en->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*en);
 		break;
@@ -1043,6 +1297,10 @@ static int pkt_session_set_property_1x(struct hfi_session_set_property_pkt *pkt,
 	case HFI_PROPERTY_PARAM_VENC_HIER_P_HYBRID_MODE: {
 		struct hfi_hybrid_hierp *in = pdata, *hierp = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_HIER_P_HYBRID_MODE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hierp->layers = in->layers;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*hierp);
 		break;
@@ -1117,7 +1375,10 @@ pkt_session_set_property_3xx(struct hfi_session_set_property_pkt *pkt,
 	pkt->shdr.hdr.pkt_type = HFI_CMD_SESSION_SET_PROPERTY;
 	pkt->shdr.session_id = hash32_ptr(cookie);
 	pkt->num_properties = 1;
+<<<<<<< HEAD
 	pkt->data[0] = ptype;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Any session set property which is different in 3XX packetization
@@ -1129,6 +1390,10 @@ pkt_session_set_property_3xx(struct hfi_session_set_property_pkt *pkt,
 		struct hfi_multi_stream *in = pdata;
 		struct hfi_multi_stream_3x *multi = prop_data;
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VDEC_MULTI_STREAM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		multi->buffer_type = in->buffer_type;
 		multi->enable = in->enable;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*multi);
@@ -1150,6 +1415,10 @@ pkt_session_set_property_3xx(struct hfi_session_set_property_pkt *pkt,
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		pkt->data[0] = HFI_PROPERTY_PARAM_VENC_INTRA_REFRESH;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intra->mode = in->mode;
 		intra->mbs = in->cir_mbs;
 		pkt->shdr.hdr.size += sizeof(u32) + sizeof(*intra);
@@ -1166,6 +1435,7 @@ pkt_session_set_property_3xx(struct hfi_session_set_property_pkt *pkt,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int
 pkt_session_set_property_4xx(struct hfi_session_set_property_pkt *pkt,
 			     void *cookie, u32 ptype, void *pdata)
@@ -1223,6 +1493,8 @@ pkt_session_set_property_4xx(struct hfi_session_set_property_pkt *pkt,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pkt_session_get_property(struct hfi_session_get_property_pkt *pkt,
 			     void *cookie, u32 ptype)
 {
@@ -1238,10 +1510,14 @@ int pkt_session_set_property(struct hfi_session_set_property_pkt *pkt,
 	if (hfi_ver == HFI_VERSION_1XX)
 		return pkt_session_set_property_1x(pkt, cookie, ptype, pdata);
 
+<<<<<<< HEAD
 	if (hfi_ver == HFI_VERSION_3XX)
 		return pkt_session_set_property_3xx(pkt, cookie, ptype, pdata);
 
 	return pkt_session_set_property_4xx(pkt, cookie, ptype, pdata);
+=======
+	return pkt_session_set_property_3xx(pkt, cookie, ptype, pdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void pkt_set_version(enum hfi_version version)

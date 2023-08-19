@@ -1,8 +1,28 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * v4l2-dv-timings - dv-timings helper functions
  *
  * Copyright 2013 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you may redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -14,8 +34,11 @@
 #include <linux/v4l2-dv-timings.h>
 #include <media/v4l2-dv-timings.h>
 #include <linux/math64.h>
+<<<<<<< HEAD
 #include <linux/hdmi.h>
 #include <media/cec.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 MODULE_AUTHOR("Hans Verkuil");
 MODULE_DESCRIPTION("V4L2 DV Timings Helper Functions");
@@ -234,11 +257,19 @@ EXPORT_SYMBOL_GPL(v4l2_find_dv_timings_cea861_vic);
 
 /**
  * v4l2_match_dv_timings - check if two timings match
+<<<<<<< HEAD
  * @t1: compare this v4l2_dv_timings struct...
  * @t2: with this struct.
  * @pclock_delta: the allowed pixelclock deviation.
  * @match_reduced_fps: if true, then fail if V4L2_DV_FL_REDUCED_FPS does not
  *	match.
+=======
+ * @t1 - compare this v4l2_dv_timings struct...
+ * @t2 - with this struct.
+ * @pclock_delta - the allowed pixelclock deviation.
+ * @match_reduced_fps - if true, then fail if V4L2_DV_FL_REDUCED_FPS does not
+ * match.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Compare t1 with t2 with a given margin of error for the pixelclock.
  */
@@ -803,6 +834,7 @@ struct v4l2_fract v4l2_calc_aspect_ratio(u8 hor_landscape, u8 vert_portrait)
 	return aspect;
 }
 EXPORT_SYMBOL_GPL(v4l2_calc_aspect_ratio);
+<<<<<<< HEAD
 
 /** v4l2_hdmi_rx_colorimetry - determine HDMI colorimetry information
  *	based on various InfoFrames.
@@ -1093,3 +1125,5 @@ int v4l2_phys_addr_validate(u16 phys_addr, u16 *parent, u16 *port)
 	return 0;
 }
 EXPORT_SYMBOL_GPL(v4l2_phys_addr_validate);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

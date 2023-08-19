@@ -86,8 +86,15 @@ pmu_load(struct nv50_devinit *init, u8 type, bool post,
 	struct nvkm_bios *bios = subdev->device->bios;
 	struct nvbios_pmuR pmu;
 
+<<<<<<< HEAD
 	if (!nvbios_pmuRm(bios, type, &pmu))
 		return -EINVAL;
+=======
+	if (!nvbios_pmuRm(bios, type, &pmu)) {
+		nvkm_error(subdev, "VBIOS PMU fuc %02x not found\n", type);
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!post)
 		return 0;
@@ -105,7 +112,11 @@ pmu_load(struct nv50_devinit *init, u8 type, bool post,
 	return pmu_exec(init, pmu.init_addr_pmu), 0;
 }
 
+<<<<<<< HEAD
 int
+=======
+static int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gm200_devinit_post(struct nvkm_devinit *base, bool post)
 {
 	struct nv50_devinit *init = nv50_devinit(base);
@@ -122,6 +133,7 @@ gm200_devinit_post(struct nvkm_devinit *base, bool post)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	/* Upload DEVINIT application from VBIOS onto PMU. */
 	ret = pmu_load(init, 0x04, post, &exec, &args);
 	if (ret) {
@@ -131,21 +143,40 @@ gm200_devinit_post(struct nvkm_devinit *base, bool post)
 
 	/* Upload tables required by opcodes in boot scripts. */
 	if (post) {
+=======
+	ret = pmu_load(init, 0x04, post, &exec, &args);
+	if (ret)
+		return ret;
+
+	/* upload first chunk of init data */
+	if (post) {
+		// devinit tables
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 pmu = pmu_args(init, args + 0x08, 0x08);
 		u32 img = nvbios_rd16(bios, bit_I.offset + 0x14);
 		u32 len = nvbios_rd16(bios, bit_I.offset + 0x16);
 		pmu_data(init, pmu, img, len);
 	}
 
+<<<<<<< HEAD
 	/* Upload boot scripts. */
 	if (post) {
+=======
+	/* upload second chunk of init data */
+	if (post) {
+		// devinit boot scripts
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 pmu = pmu_args(init, args + 0x08, 0x10);
 		u32 img = nvbios_rd16(bios, bit_I.offset + 0x18);
 		u32 len = nvbios_rd16(bios, bit_I.offset + 0x1a);
 		pmu_data(init, pmu, img, len);
 	}
 
+<<<<<<< HEAD
 	/* Execute DEVINIT. */
+=======
+	/* execute init tables */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (post) {
 		nvkm_wr32(device, 0x10a040, 0x00005000);
 		pmu_exec(init, exec);
@@ -156,9 +187,13 @@ gm200_devinit_post(struct nvkm_devinit *base, bool post)
 			return -ETIMEDOUT;
 	}
 
+<<<<<<< HEAD
 	/* Optional: Execute PRE_OS application on PMU, which should at
 	 * least take care of fans until a full PMU has been loaded.
 	 */
+=======
+	/* load and execute some other ucode image (bios therm?) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pmu_load(init, 0x01, post, NULL, NULL);
 	return 0;
 }

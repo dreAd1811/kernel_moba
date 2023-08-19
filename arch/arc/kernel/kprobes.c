@@ -225,18 +225,38 @@ int __kprobes arc_kprobe_handler(unsigned long addr, struct pt_regs *regs)
 
 		/* If we have no pre-handler or it returned 0, we continue with
 		 * normal processing. If we have a pre-handler and it returned
+<<<<<<< HEAD
 		 * non-zero - which means user handler setup registers to exit
 		 * to another instruction, we must skip the single stepping.
+=======
+		 * non-zero - which is expected from setjmp_pre_handler for
+		 * jprobe, we return without single stepping and leave that to
+		 * the break-handler which is invoked by a kprobe from
+		 * jprobe_return
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 */
 		if (!p->pre_handler || !p->pre_handler(p, regs)) {
 			setup_singlestep(p, regs);
 			kcb->kprobe_status = KPROBE_HIT_SS;
+<<<<<<< HEAD
 		} else {
 			reset_current_kprobe();
 			preempt_enable_no_resched();
 		}
 
 		return 1;
+=======
+		}
+
+		return 1;
+	} else if (kprobe_running()) {
+		p = __this_cpu_read(current_kprobe);
+		if (p->break_handler && p->break_handler(p, regs)) {
+			setup_singlestep(p, regs);
+			kcb->kprobe_status = KPROBE_HIT_SS;
+			return 1;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* no_kprobe: */
@@ -380,6 +400,41 @@ int __kprobes kprobe_exceptions_notify(struct notifier_block *self,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+int __kprobes setjmp_pre_handler(struct kprobe *p, struct pt_regs *regs)
+{
+	struct jprobe *jp = container_of(p, struct jprobe, kp);
+	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+	unsigned long sp_addr = regs->sp;
+
+	kcb->jprobe_saved_regs = *regs;
+	memcpy(kcb->jprobes_stack, (void *)sp_addr, MIN_STACK_SIZE(sp_addr));
+	regs->ret = (unsigned long)(jp->entry);
+
+	return 1;
+}
+
+void __kprobes jprobe_return(void)
+{
+	__asm__ __volatile__("unimp_s");
+	return;
+}
+
+int __kprobes longjmp_break_handler(struct kprobe *p, struct pt_regs *regs)
+{
+	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+	unsigned long sp_addr;
+
+	*regs = kcb->jprobe_saved_regs;
+	sp_addr = regs->sp;
+	memcpy((void *)sp_addr, kcb->jprobes_stack, MIN_STACK_SIZE(sp_addr));
+	preempt_enable_no_resched();
+
+	return 1;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void __used kretprobe_trampoline_holder(void)
 {
 	__asm__ __volatile__(".global kretprobe_trampoline\n"
@@ -445,7 +500,13 @@ static int __kprobes trampoline_probe_handler(struct kprobe *p,
 	kretprobe_assert(ri, orig_ret_address, trampoline_address);
 	regs->ret = orig_ret_address;
 
+<<<<<<< HEAD
 	kretprobe_hash_unlock(current, &flags);
+=======
+	reset_current_kprobe();
+	kretprobe_hash_unlock(current, &flags);
+	preempt_enable_no_resched();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
 		hlist_del(&ri->hlist);

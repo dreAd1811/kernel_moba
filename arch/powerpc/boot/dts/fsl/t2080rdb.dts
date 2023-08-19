@@ -97,12 +97,20 @@
 
 		mdio@fd000 {
 			xg_cs4315_phy1: ethernet-phy@c {
+<<<<<<< HEAD
 				compatible = "ethernet-phy-id13e5.1002";
+=======
+				compatible = "ethernet-phy-ieee802.3-c45";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xc>;
 			};
 
 			xg_cs4315_phy2: ethernet-phy@d {
+<<<<<<< HEAD
 				compatible = "ethernet-phy-id13e5.1002";
+=======
+				compatible = "ethernet-phy-ieee802.3-c45";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xd>;
 			};
 

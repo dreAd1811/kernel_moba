@@ -38,7 +38,10 @@
 #include <linux/phy.h>
 #include <linux/io.h>
 #include <linux/uaccess.h>
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/irq.h>
 
@@ -47,6 +50,7 @@
 
 #include "mdio-boardinfo.h"
 
+<<<<<<< HEAD
 static int mdiobus_register_gpiod(struct mdio_device *mdiodev)
 {
 	struct gpio_desc *gpiod = NULL;
@@ -83,6 +87,13 @@ int mdiobus_register_device(struct mdio_device *mdiodev)
 			return err;
 	}
 
+=======
+int mdiobus_register_device(struct mdio_device *mdiodev)
+{
+	if (mdiodev->bus->mdio_map[mdiodev->addr])
+		return -EBUSY;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdiodev->bus->mdio_map[mdiodev->addr] = mdiodev;
 
 	return 0;
@@ -302,7 +313,10 @@ static void of_mdiobus_link_mdiodev(struct mii_bus *bus,
 
 		if (addr == mdiodev->addr) {
 			dev->of_node = child;
+<<<<<<< HEAD
 			dev->fwnode = of_fwnode_handle(child);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 		}
 	}
@@ -453,9 +467,12 @@ void mdiobus_unregister(struct mii_bus *bus)
 		if (!mdiodev)
 			continue;
 
+<<<<<<< HEAD
 		if (mdiodev->reset)
 			gpiod_put(mdiodev->reset);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mdiodev->device_remove(mdiodev);
 		mdiodev->device_free(mdiodev);
 	}
@@ -529,6 +546,7 @@ struct phy_device *mdiobus_scan(struct mii_bus *bus, int addr)
 EXPORT_SYMBOL(mdiobus_scan);
 
 /**
+<<<<<<< HEAD
  * __mdiobus_read - Unlocked version of the mdiobus_read function
  * @bus: the mii_bus struct
  * @addr: the phy address
@@ -578,6 +596,8 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
 EXPORT_SYMBOL(__mdiobus_write);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * mdiobus_read_nested - Nested version of the mdiobus_read function
  * @bus: the mii_bus struct
  * @addr: the phy address
@@ -597,9 +617,17 @@ int mdiobus_read_nested(struct mii_bus *bus, int addr, u32 regnum)
 	BUG_ON(in_interrupt());
 
 	mutex_lock_nested(&bus->mdio_lock, MDIO_MUTEX_NESTED);
+<<<<<<< HEAD
 	retval = __mdiobus_read(bus, addr, regnum);
 	mutex_unlock(&bus->mdio_lock);
 
+=======
+	retval = bus->read(bus, addr, regnum);
+	mutex_unlock(&bus->mdio_lock);
+
+	trace_mdio_access(bus, 1, addr, regnum, retval, retval);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 EXPORT_SYMBOL(mdiobus_read_nested);
@@ -621,9 +649,17 @@ int mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
 	BUG_ON(in_interrupt());
 
 	mutex_lock(&bus->mdio_lock);
+<<<<<<< HEAD
 	retval = __mdiobus_read(bus, addr, regnum);
 	mutex_unlock(&bus->mdio_lock);
 
+=======
+	retval = bus->read(bus, addr, regnum);
+	mutex_unlock(&bus->mdio_lock);
+
+	trace_mdio_access(bus, 1, addr, regnum, retval, retval);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 EXPORT_SYMBOL(mdiobus_read);
@@ -649,9 +685,17 @@ int mdiobus_write_nested(struct mii_bus *bus, int addr, u32 regnum, u16 val)
 	BUG_ON(in_interrupt());
 
 	mutex_lock_nested(&bus->mdio_lock, MDIO_MUTEX_NESTED);
+<<<<<<< HEAD
 	err = __mdiobus_write(bus, addr, regnum, val);
 	mutex_unlock(&bus->mdio_lock);
 
+=======
+	err = bus->write(bus, addr, regnum, val);
+	mutex_unlock(&bus->mdio_lock);
+
+	trace_mdio_access(bus, 0, addr, regnum, val, err);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 EXPORT_SYMBOL(mdiobus_write_nested);
@@ -674,9 +718,17 @@ int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
 	BUG_ON(in_interrupt());
 
 	mutex_lock(&bus->mdio_lock);
+<<<<<<< HEAD
 	err = __mdiobus_write(bus, addr, regnum, val);
 	mutex_unlock(&bus->mdio_lock);
 
+=======
+	err = bus->write(bus, addr, regnum, val);
+	mutex_unlock(&bus->mdio_lock);
+
+	trace_mdio_access(bus, 0, addr, regnum, val, err);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 EXPORT_SYMBOL(mdiobus_write);
@@ -717,10 +769,64 @@ static int mdio_uevent(struct device *dev, struct kobj_uevent_env *env)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM
+static int mdio_bus_suspend(struct device *dev)
+{
+	struct mdio_device *mdio = to_mdio_device(dev);
+
+	if (mdio->pm_ops && mdio->pm_ops->suspend)
+		return mdio->pm_ops->suspend(dev);
+
+	return 0;
+}
+
+static int mdio_bus_resume(struct device *dev)
+{
+	struct mdio_device *mdio = to_mdio_device(dev);
+
+	if (mdio->pm_ops && mdio->pm_ops->resume)
+		return mdio->pm_ops->resume(dev);
+
+	return 0;
+}
+
+static int mdio_bus_restore(struct device *dev)
+{
+	struct mdio_device *mdio = to_mdio_device(dev);
+
+	if (mdio->pm_ops && mdio->pm_ops->restore)
+		return mdio->pm_ops->restore(dev);
+
+	return 0;
+}
+
+static const struct dev_pm_ops mdio_bus_pm_ops = {
+	.suspend = mdio_bus_suspend,
+	.resume = mdio_bus_resume,
+	.freeze = mdio_bus_suspend,
+	.thaw = mdio_bus_resume,
+	.restore = mdio_bus_restore,
+};
+
+#define MDIO_BUS_PM_OPS (&mdio_bus_pm_ops)
+
+#else
+
+#define MDIO_BUS_PM_OPS NULL
+
+#endif /* CONFIG_PM */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct bus_type mdio_bus_type = {
 	.name		= "mdio_bus",
 	.match		= mdio_bus_match,
 	.uevent		= mdio_uevent,
+<<<<<<< HEAD
+=======
+	.pm		= MDIO_BUS_PM_OPS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 EXPORT_SYMBOL(mdio_bus_type);
 

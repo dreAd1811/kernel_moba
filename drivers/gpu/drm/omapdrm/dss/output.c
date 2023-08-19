@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2012 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * Copyright (C) 2012 Texas Instruments Ltd
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Archit Taneja <archit@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -156,6 +160,10 @@ struct omap_dss_device *omap_dss_find_output_by_port_node(struct device_node *po
 
 	return NULL;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(omap_dss_find_output_by_port_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct omap_dss_device *omapdss_find_output_from_display(struct omap_dss_device *dssdev)
 {
@@ -170,16 +178,24 @@ struct omap_dss_device *omapdss_find_output_from_display(struct omap_dss_device 
 EXPORT_SYMBOL(omapdss_find_output_from_display);
 
 static const struct dss_mgr_ops *dss_mgr_ops;
+<<<<<<< HEAD
 static struct omap_drm_private *dss_mgr_ops_priv;
 
 int dss_install_mgr_ops(const struct dss_mgr_ops *mgr_ops,
 			struct omap_drm_private *priv)
+=======
+
+int dss_install_mgr_ops(const struct dss_mgr_ops *mgr_ops)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (dss_mgr_ops)
 		return -EBUSY;
 
 	dss_mgr_ops = mgr_ops;
+<<<<<<< HEAD
 	dss_mgr_ops_priv = priv;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -188,6 +204,7 @@ EXPORT_SYMBOL(dss_install_mgr_ops);
 void dss_uninstall_mgr_ops(void)
 {
 	dss_mgr_ops = NULL;
+<<<<<<< HEAD
 	dss_mgr_ops_priv = NULL;
 }
 EXPORT_SYMBOL(dss_uninstall_mgr_ops);
@@ -254,5 +271,66 @@ void dss_mgr_unregister_framedone_handler(struct omap_dss_device *dssdev,
 	dss_mgr_ops->unregister_framedone_handler(dss_mgr_ops_priv,
 						  dssdev->dispc_channel,
 						  handler, data);
+=======
+}
+EXPORT_SYMBOL(dss_uninstall_mgr_ops);
+
+int dss_mgr_connect(enum omap_channel channel,
+		struct omap_dss_device *dst)
+{
+	return dss_mgr_ops->connect(channel, dst);
+}
+EXPORT_SYMBOL(dss_mgr_connect);
+
+void dss_mgr_disconnect(enum omap_channel channel,
+		struct omap_dss_device *dst)
+{
+	dss_mgr_ops->disconnect(channel, dst);
+}
+EXPORT_SYMBOL(dss_mgr_disconnect);
+
+void dss_mgr_set_timings(enum omap_channel channel, const struct videomode *vm)
+{
+	dss_mgr_ops->set_timings(channel, vm);
+}
+EXPORT_SYMBOL(dss_mgr_set_timings);
+
+void dss_mgr_set_lcd_config(enum omap_channel channel,
+		const struct dss_lcd_mgr_config *config)
+{
+	dss_mgr_ops->set_lcd_config(channel, config);
+}
+EXPORT_SYMBOL(dss_mgr_set_lcd_config);
+
+int dss_mgr_enable(enum omap_channel channel)
+{
+	return dss_mgr_ops->enable(channel);
+}
+EXPORT_SYMBOL(dss_mgr_enable);
+
+void dss_mgr_disable(enum omap_channel channel)
+{
+	dss_mgr_ops->disable(channel);
+}
+EXPORT_SYMBOL(dss_mgr_disable);
+
+void dss_mgr_start_update(enum omap_channel channel)
+{
+	dss_mgr_ops->start_update(channel);
+}
+EXPORT_SYMBOL(dss_mgr_start_update);
+
+int dss_mgr_register_framedone_handler(enum omap_channel channel,
+		void (*handler)(void *), void *data)
+{
+	return dss_mgr_ops->register_framedone_handler(channel, handler, data);
+}
+EXPORT_SYMBOL(dss_mgr_register_framedone_handler);
+
+void dss_mgr_unregister_framedone_handler(enum omap_channel channel,
+		void (*handler)(void *), void *data)
+{
+	dss_mgr_ops->unregister_framedone_handler(channel, handler, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(dss_mgr_unregister_framedone_handler);

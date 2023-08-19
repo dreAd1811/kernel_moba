@@ -1,11 +1,33 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0-only */
 /*
  * Copyright (c) 2012-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __KGSL_IOMMU_H
 #define __KGSL_IOMMU_H
 
+<<<<<<< HEAD
 #include "kgsl_mmu.h"
+=======
+#ifdef CONFIG_QCOM_IOMMU
+#include <linux/qcom_iommu.h>
+#endif
+#include <linux/of.h>
+#include "kgsl.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * These defines control the address range for allocations that
@@ -21,8 +43,11 @@
 
 #define KGSL_IOMMU_SECURE_SIZE SZ_256M
 #define KGSL_IOMMU_SECURE_END(_mmu) KGSL_IOMMU_GLOBAL_MEM_BASE(_mmu)
+<<<<<<< HEAD
 #define KGSL_IOMMU_SECURE_BASE(_mmu)	\
 	(KGSL_IOMMU_GLOBAL_MEM_BASE(_mmu) - KGSL_IOMMU_SECURE_SIZE)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KGSL_IOMMU_SVM_BASE32		0x300000
 #define KGSL_IOMMU_SVM_END32		(0xC0000000 - SZ_16M)
@@ -42,6 +67,13 @@
 /* TLBSTATUS register fields */
 #define KGSL_IOMMU_CTX_TLBSTATUS_SACTIVE BIT(0)
 
+<<<<<<< HEAD
+=======
+/* IMPLDEF_MICRO_MMU_CTRL register fields */
+#define KGSL_IOMMU_IMPLDEF_MICRO_MMU_CTRL_HALT  0x00000004
+#define KGSL_IOMMU_IMPLDEF_MICRO_MMU_CTRL_IDLE  0x00000008
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* SCTLR fields */
 #define KGSL_IOMMU_SCTLR_HUPCF_SHIFT		8
 #define KGSL_IOMMU_SCTLR_CFCFG_SHIFT		7
@@ -88,6 +120,10 @@ enum kgsl_iommu_context_id {
  * @kgsldev: The kgsl device that uses this context.
  * @stalled_on_fault: Flag when set indicates that this iommu device is stalled
  * on a page fault
+<<<<<<< HEAD
+=======
+ * @gpu_offset: Offset of this context bank in the GPU register space
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @default_pt: The default pagetable for this context,
  *		it may be changed by self programming.
  */
@@ -99,6 +135,10 @@ struct kgsl_iommu_context {
 	struct kgsl_device *kgsldev;
 	bool stalled_on_fault;
 	void __iomem *regbase;
+<<<<<<< HEAD
+=======
+	unsigned int gpu_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_pagetable *default_pt;
 };
 
@@ -111,7 +151,16 @@ struct kgsl_iommu_context {
  * @setstate: Scratch GPU memory for IOMMU operations
  * @clk_enable_count: The ref count of clock enable calls
  * @clks: Array of pointers to IOMMU clocks
+<<<<<<< HEAD
  * @smmu_info: smmu info used in a5xx preemption
+=======
+ * @vddcx_regulator: Handle to IOMMU regulator
+ * @micro_mmu_ctrl: GPU register offset of this glob al register
+ * @smmu_info: smmu info used in a5xx preemption
+ * @protect: register protection settings for the iommu.
+ * @pagefault_suppression_count: Total number of pagefaults
+ *				 suppressed since boot.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct kgsl_iommu {
 	struct kgsl_iommu_context ctx[KGSL_IOMMU_CONTEXT_MAX];
@@ -121,7 +170,16 @@ struct kgsl_iommu {
 	struct kgsl_memdesc setstate;
 	atomic_t clk_enable_count;
 	struct clk *clks[KGSL_IOMMU_MAX_CLKS];
+<<<<<<< HEAD
 	struct kgsl_memdesc smmu_info;
+=======
+	struct regulator *vddcx_regulator;
+	unsigned int micro_mmu_ctrl;
+	struct kgsl_memdesc smmu_info;
+	unsigned int version;
+	struct kgsl_protected_registers protect;
+	u32 pagefault_suppression_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -175,6 +233,12 @@ kgsl_iommu_reg(struct kgsl_iommu_context *ctx, enum kgsl_iommu_reg_map reg)
 	return ctx->regbase + kgsl_iommu_reg_list[reg];
 }
 
+<<<<<<< HEAD
+=======
+/* Program aperture registers using SCM call */
+int kgsl_program_smmu_aperture(void);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KGSL_IOMMU_SET_CTX_REG_Q(_ctx, REG, val) \
 		writeq_relaxed((val), \
 			kgsl_iommu_reg((_ctx), KGSL_IOMMU_CTX_##REG))

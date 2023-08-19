@@ -26,15 +26,24 @@
 #include <linux/spinlock.h>
 #include <linux/io.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/of_platform.h>
 #include <linux/gpio/driver.h>
+=======
+#include <linux/of_gpio.h>
+#include <linux/of_platform.h>
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/err.h>
 #include <linux/gpio/driver.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
 #include <linux/irqdomain.h>
+<<<<<<< HEAD
 #include <linux/bitops.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GRGPIO_MAX_NGPIO 32
 
@@ -96,11 +105,20 @@ static void grgpio_set_imask(struct grgpio_priv *priv, unsigned int offset,
 			     int val)
 {
 	struct gpio_chip *gc = &priv->gc;
+<<<<<<< HEAD
 
 	if (val)
 		priv->imask |= BIT(offset);
 	else
 		priv->imask &= ~BIT(offset);
+=======
+	unsigned long mask = gc->pin2mask(gc, offset);
+
+	if (val)
+		priv->imask |= mask;
+	else
+		priv->imask &= ~mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gc->write_reg(priv->regs + GRGPIO_IMASK, priv->imask);
 }
 
@@ -258,17 +276,27 @@ static int grgpio_irq_map(struct irq_domain *d, unsigned int irq,
 	lirq->irq = irq;
 	uirq = &priv->uirqs[lirq->index];
 	if (uirq->refcnt == 0) {
+<<<<<<< HEAD
+=======
+		spin_unlock_irqrestore(&priv->gc.bgpio_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = request_irq(uirq->uirq, grgpio_irq_handler, 0,
 				  dev_name(priv->dev), priv);
 		if (ret) {
 			dev_err(priv->dev,
 				"Could not request underlying irq %d\n",
 				uirq->uirq);
+<<<<<<< HEAD
 
 			spin_unlock_irqrestore(&priv->gc.bgpio_lock, flags);
 
 			return ret;
 		}
+=======
+			return ret;
+		}
+		spin_lock_irqsave(&priv->gc.bgpio_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	uirq->refcnt++;
 
@@ -314,8 +342,16 @@ static void grgpio_irq_unmap(struct irq_domain *d, unsigned int irq)
 	if (index >= 0) {
 		uirq = &priv->uirqs[lirq->index];
 		uirq->refcnt--;
+<<<<<<< HEAD
 		if (uirq->refcnt == 0)
 			free_irq(uirq->uirq, priv);
+=======
+		if (uirq->refcnt == 0) {
+			spin_unlock_irqrestore(&priv->gc.bgpio_lock, flags);
+			free_irq(uirq->uirq, priv);
+			return;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_unlock_irqrestore(&priv->gc.bgpio_lock, flags);

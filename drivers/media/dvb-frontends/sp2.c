@@ -357,6 +357,7 @@ static int sp2_exit(struct i2c_client *client)
 
 	dev_dbg(&client->dev, "\n");
 
+<<<<<<< HEAD
 	if (!client)
 		return 0;
 
@@ -365,6 +366,16 @@ static int sp2_exit(struct i2c_client *client)
 		return 0;
 
 	if (!s->ca.data)
+=======
+	if (client == NULL)
+		return 0;
+
+	s = i2c_get_clientdata(client);
+	if (s == NULL)
+		return 0;
+
+	if (s->ca.data == NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	dvb_ca_en50221_release(&s->ca);
@@ -381,9 +392,16 @@ static int sp2_probe(struct i2c_client *client,
 
 	dev_dbg(&client->dev, "\n");
 
+<<<<<<< HEAD
 	s = kzalloc(sizeof(*s), GFP_KERNEL);
 	if (!s) {
 		ret = -ENOMEM;
+=======
+	s = kzalloc(sizeof(struct sp2), GFP_KERNEL);
+	if (!s) {
+		ret = -ENOMEM;
+		dev_err(&client->dev, "kzalloc() failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 

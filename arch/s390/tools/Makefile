@@ -3,6 +3,7 @@
 # Makefile for s390 specific build tools
 #
 
+<<<<<<< HEAD
 kapi := arch/$(ARCH)/include/generated/asm
 kapi-hdrs-y := $(kapi)/facility-defs.h $(kapi)/dis-defs.h
 
@@ -33,3 +34,14 @@ $(kapi)/facility-defs.h: $(obj)/gen_facilities FORCE
 
 $(kapi)/dis-defs.h: $(obj)/gen_opcode_table FORCE
 	$(call filechk,dis-defs.h)
+=======
+hostprogs-y		    += gen_facilities
+HOSTCFLAGS_gen_facilities.o += -Wall $(LINUXINCLUDE)
+
+define filechk_facilities.h
+	$(obj)/gen_facilities
+endef
+
+include/generated/facilities.h: $(obj)/gen_facilities FORCE
+	$(call filechk,facilities.h)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

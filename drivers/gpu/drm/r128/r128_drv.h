@@ -147,10 +147,13 @@ extern int r128_engine_reset(struct drm_device *dev, void *data, struct drm_file
 extern int r128_fullscreen(struct drm_device *dev, void *data, struct drm_file *file_priv);
 extern int r128_cce_buffers(struct drm_device *dev, void *data, struct drm_file *file_priv);
 
+<<<<<<< HEAD
 extern int r128_cce_stipple(struct drm_device *dev, void *data, struct drm_file *file_priv);
 extern int r128_cce_depth(struct drm_device *dev, void *data, struct drm_file *file_priv);
 extern int r128_getparam(struct drm_device *dev, void *data, struct drm_file *file_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void r128_freelist_reset(struct drm_device *dev);
 
 extern int r128_wait_ring(drm_r128_private_t *dev_priv, int n);

@@ -12,7 +12,10 @@
  * published by the Free Software Foundation.
  */
 
+<<<<<<< HEAD
 #include <linux/cpu_pm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/delay.h>
 #include <linux/errno.h>
@@ -31,7 +34,10 @@
 #include "prcm44xx.h"
 #include "prminst44xx.h"
 #include "powerdomain.h"
+<<<<<<< HEAD
 #include "pm.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Static data */
 
@@ -52,6 +58,11 @@ static struct omap_prcm_irq_setup omap4_prcm_irq_setup = {
 	.nr_regs		= 2,
 	.irqs			= omap4_prcm_irqs,
 	.nr_irqs		= ARRAY_SIZE(omap4_prcm_irqs),
+<<<<<<< HEAD
+=======
+	.irq			= 11 + OMAP44XX_IRQ_GIC_START,
+	.xlate_irq		= omap4_xlate_irq,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_pending_irqs	= &omap44xx_prm_read_pending_irqs,
 	.ocp_barrier		= &omap44xx_prm_ocp_barrier,
 	.save_and_clear_irqen	= &omap44xx_prm_save_and_clear_irqen,
@@ -59,6 +70,7 @@ static struct omap_prcm_irq_setup omap4_prcm_irq_setup = {
 	.reconfigure_io_chain	= &omap44xx_prm_reconfigure_io_chain,
 };
 
+<<<<<<< HEAD
 struct omap_prm_irq_context {
 	unsigned long irq_enable;
 	unsigned long pm_ctrl;
@@ -66,6 +78,8 @@ struct omap_prm_irq_context {
 
 static struct omap_prm_irq_context omap_prm_context;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * omap44xx_prm_reset_src_map - map from bits in the PRM_RSTST
  *   hardware register (which are specific to OMAP44xx SoCs) to reset
@@ -676,6 +690,7 @@ static int omap4_check_vcvp(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * omap4_pwrdm_save_context - Saves the powerdomain state
  * @pwrdm: pointer to individual powerdomain
@@ -724,6 +739,8 @@ static void omap4_pwrdm_restore_context(struct powerdomain *pwrdm)
 		omap4_pwrdm_wait_transition(pwrdm);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pwrdm_ops omap4_pwrdm_operations = {
 	.pwrdm_set_next_pwrst	= omap4_pwrdm_set_next_pwrst,
 	.pwrdm_read_next_pwrst	= omap4_pwrdm_read_next_pwrst,
@@ -742,12 +759,16 @@ struct pwrdm_ops omap4_pwrdm_operations = {
 	.pwrdm_set_mem_retst	= omap4_pwrdm_set_mem_retst,
 	.pwrdm_wait_transition	= omap4_pwrdm_wait_transition,
 	.pwrdm_has_voltdm	= omap4_check_vcvp,
+<<<<<<< HEAD
 	.pwrdm_save_context	= omap4_pwrdm_save_context,
 	.pwrdm_restore_context	= omap4_pwrdm_restore_context,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int omap44xx_prm_late_init(void);
 
+<<<<<<< HEAD
 void prm_save_context(void)
 {
 	omap_prm_context.irq_enable =
@@ -786,6 +807,8 @@ static int cpu_notifier(struct notifier_block *nb, unsigned long cmd, void *v)
 	return NOTIFY_OK;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * XXX document
  */
@@ -806,7 +829,10 @@ static const struct omap_prcm_init_data *prm_init_data;
 
 int __init omap44xx_prm_init(const struct omap_prcm_init_data *data)
 {
+<<<<<<< HEAD
 	static struct notifier_block nb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	omap_prm_base_init();
 
 	prm_init_data = data;
@@ -828,12 +854,15 @@ int __init omap44xx_prm_init(const struct omap_prcm_init_data *data)
 		omap4_prcm_irq_setup.mask = AM43XX_PRM_IRQENABLE_MPU_OFFSET;
 	}
 
+<<<<<<< HEAD
 	/* Only AM43XX can lose prm context during rtc-ddr suspend */
 	if (soc_is_am43xx()) {
 		nb.notifier_call = cpu_notifier;
 		cpu_pm_register_notifier(&nb);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return prm_register(&omap44xx_prm_ll_data);
 }
 
@@ -845,10 +874,30 @@ static int omap44xx_prm_late_init(void)
 		return 0;
 
 	irq_num = of_irq_get(prm_init_data->np, 0);
+<<<<<<< HEAD
 	if (irq_num == -EPROBE_DEFER)
 		return irq_num;
 
 	omap4_prcm_irq_setup.irq = irq_num;
+=======
+	/*
+	 * Already have OMAP4 IRQ num. For all other platforms, we need
+	 * IRQ numbers from DT
+	 */
+	if (irq_num <= 0 && !(prm_init_data->flags & PRM_IRQ_DEFAULT)) {
+		if (irq_num == -EPROBE_DEFER)
+			return irq_num;
+
+		/* Have nothing to do */
+		return 0;
+	}
+
+	/* Once OMAP4 DT is filled as well */
+	if (irq_num > 0) {
+		omap4_prcm_irq_setup.irq = irq_num;
+		omap4_prcm_irq_setup.xlate_irq = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omap44xx_prm_enable_io_wakeup();
 

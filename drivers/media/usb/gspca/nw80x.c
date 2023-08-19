@@ -1543,11 +1543,18 @@ static void reg_w(struct gspca_dev *gspca_dev,
 	if (gspca_dev->usb_err < 0)
 		return;
 	if (len == 1)
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_USBO, "SET 00 0000 %04x %02x\n",
 			  index, *data);
 	else
 		gspca_dbg(gspca_dev, D_USBO, "SET 00 0000 %04x %02x %02x ...\n",
 			  index, *data, data[1]);
+=======
+		PDEBUG(D_USBO, "SET 00 0000 %04x %02x", index, *data);
+	else
+		PDEBUG(D_USBO, "SET 00 0000 %04x %02x %02x ...",
+				index, *data, data[1]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(gspca_dev->usb_buf, data, len);
 	ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
 			0x00,
@@ -1589,12 +1596,21 @@ static void reg_r(struct gspca_dev *gspca_dev,
 		return;
 	}
 	if (len == 1)
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_USBI, "GET 00 0000 %04x %02x\n",
 			  index, gspca_dev->usb_buf[0]);
 	else
 		gspca_dbg(gspca_dev, D_USBI, "GET 00 0000 %04x %02x %02x ..\n",
 			  index, gspca_dev->usb_buf[0],
 			  gspca_dev->usb_buf[1]);
+=======
+		PDEBUG(D_USBI, "GET 00 0000 %04x %02x",
+				index, gspca_dev->usb_buf[0]);
+	else
+		PDEBUG(D_USBI, "GET 00 0000 %04x %02x %02x ..",
+				index, gspca_dev->usb_buf[0],
+				gspca_dev->usb_buf[1]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void i2c_w(struct gspca_dev *gspca_dev,
@@ -1768,8 +1784,13 @@ static int sd_config(struct gspca_dev *gspca_dev,
 			sd->webcam = P35u;
 	} else if (id->idVendor == 0x06a5 && id->idProduct == 0xd800) {
 		reg_r(gspca_dev, 0x0403, 1);		/* GPIO */
+<<<<<<< HEAD
 		gspca_dbg(gspca_dev, D_PROBE, "et31x110 sensor type %02x\n",
 			  gspca_dev->usb_buf[0]);
+=======
+		PDEBUG(D_PROBE, "et31x110 sensor type %02x",
+				gspca_dev->usb_buf[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (gspca_dev->usb_buf[0] >> 1) {
 		case 0x00:				/* ?? */
 			if (sd->webcam == Generic800)
@@ -1791,8 +1812,12 @@ static int sd_config(struct gspca_dev *gspca_dev,
 		gspca_dev->usb_err = -ENODEV;
 		return gspca_dev->usb_err;
 	}
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Bridge nw80%d - type: %d\n",
 		  sd->bridge, sd->webcam);
+=======
+	PDEBUG(D_PROBE, "Bridge nw80%d - type: %d", sd->bridge, sd->webcam);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (sd->bridge == BRIDGE_NW800) {
 		switch (sd->webcam) {

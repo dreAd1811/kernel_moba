@@ -8,6 +8,7 @@
  * between kernel and user space.
  *
  * Pad space is left for:
+<<<<<<< HEAD
  * - 2 miscellaneous 32-bit values
  */
 
@@ -22,9 +23,30 @@ struct semid64_ds {
 	unsigned long	sem_ctime_high;
 	unsigned long	sem_ctime;		/* last change time */
 #endif
+=======
+ * - 64-bit time_t to solve y2038 problem
+ * - 2 miscellaneous 32-bit values
+ */
+#if defined(__sparc__) && defined(__arch64__)
+# define PADDING(x)
+#else
+# define PADDING(x) unsigned int x;
+#endif
+
+struct semid64_ds {
+	struct ipc64_perm sem_perm;		/* permissions .. see ipc.h */
+	PADDING(__pad1)
+	__kernel_time_t	sem_otime;		/* last semop time */
+	PADDING(__pad2)
+	__kernel_time_t	sem_ctime;		/* last change time */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long	sem_nsems;		/* no. of semaphores in array */
 	unsigned long	__unused1;
 	unsigned long	__unused2;
 };
+<<<<<<< HEAD
+=======
+#undef PADDING
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _SPARC64_SEMBUF_H */

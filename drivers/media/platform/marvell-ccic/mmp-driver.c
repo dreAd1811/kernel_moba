@@ -12,7 +12,11 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-gpio.h>
+=======
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/spinlock.h>
 #include <linux/slab.h>
@@ -37,7 +41,11 @@ MODULE_LICENSE("GPL");
 static char *mcam_clks[] = {"CCICAXICLK", "CCICFUNCLK", "CCICPHYCLK"};
 
 struct mmp_camera {
+<<<<<<< HEAD
 	void __iomem *power_regs;
+=======
+	void *power_regs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct platform_device *pdev;
 	struct mcam_camera mcam;
 	struct list_head devlist;
@@ -183,7 +191,11 @@ static void mmpcam_power_down(struct mcam_camera *mcam)
 	mcam_clk_disable(mcam);
 }
 
+<<<<<<< HEAD
 static void mcam_ctlr_reset(struct mcam_camera *mcam)
+=======
+void mcam_ctlr_reset(struct mcam_camera *mcam)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long val;
 	struct mmp_camera *cam = mcam_to_cam(mcam);
@@ -214,7 +226,11 @@ static void mcam_ctlr_reset(struct mcam_camera *mcam)
  * CSI2_DPHY3 and CSI2_DPHY6 can be set with a default value
  * or be calculated dynamically
  */
+<<<<<<< HEAD
 static void mmpcam_calc_dphy(struct mcam_camera *mcam)
+=======
+void mmpcam_calc_dphy(struct mcam_camera *mcam)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mmp_camera *cam = mcam_to_cam(mcam);
 	struct mmp_camera_platform_data *pdata = cam->pdev->dev.platform_data;

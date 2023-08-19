@@ -19,7 +19,11 @@
 	model = "Liebherr (LWN) monitor6 i.MX6 Quad Board";
 	compatible = "lwn,mccmon6", "fsl,imx6q";
 
+<<<<<<< HEAD
 	memory@10000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x10000000 0x80000000>;
 	};
 
@@ -121,7 +125,11 @@
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
 
+<<<<<<< HEAD
 	pfuze100: pmic@8 {
+=======
+	pfuze100: pmic@08 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,pfuze100";
 		reg = <0x08>;
 

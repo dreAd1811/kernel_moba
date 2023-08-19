@@ -18,6 +18,7 @@
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/cpu.h>
 #include <linux/cpufreq.h>
@@ -111,6 +112,29 @@ static int scpi_cpufreq_init(struct cpufreq_policy *policy)
 		pr_err("failed to get cpu%d device\n", policy->cpu);
 		return -ENODEV;
 	}
+=======
+#include <linux/cpu.h>
+#include <linux/cpufreq.h>
+#include <linux/module.h>
+#include <linux/platform_device.h>
+#include <linux/pm_opp.h>
+#include <linux/scpi_protocol.h>
+#include <linux/types.h>
+
+#include "arm_big_little.h"
+
+static struct scpi_ops *scpi_ops;
+
+static int scpi_get_transition_latency(struct device *cpu_dev)
+{
+	return scpi_ops->get_transition_latency(cpu_dev);
+}
+
+static int scpi_init_opp_table(const struct cpumask *cpumask)
+{
+	int ret;
+	struct device *cpu_dev = get_cpu_device(cpumask_first(cpumask));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = scpi_ops->add_opps_to_device(cpu_dev);
 	if (ret) {
@@ -118,6 +142,7 @@ static int scpi_cpufreq_init(struct cpufreq_policy *policy)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = scpi_get_sharing_cpus(cpu_dev, policy->cpus);
 	if (ret) {
 		dev_warn(cpu_dev, "failed to get sharing cpumask\n");
@@ -219,26 +244,51 @@ static struct cpufreq_driver scpi_cpufreq_driver = {
 	.exit	= scpi_cpufreq_exit,
 	.ready	= scpi_cpufreq_ready,
 	.target_index	= scpi_cpufreq_set_target,
+=======
+	ret = dev_pm_opp_set_sharing_cpus(cpu_dev, cpumask);
+	if (ret)
+		dev_err(cpu_dev, "%s: failed to mark OPPs as shared: %d\n",
+			__func__, ret);
+	return ret;
+}
+
+static struct cpufreq_arm_bL_ops scpi_cpufreq_ops = {
+	.name	= "scpi",
+	.get_transition_latency = scpi_get_transition_latency,
+	.init_opp_table = scpi_init_opp_table,
+	.free_opp_table = dev_pm_opp_cpumask_remove_table,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int scpi_cpufreq_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	int ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	scpi_ops = get_scpi_ops();
 	if (!scpi_ops)
 		return -EIO;
 
+<<<<<<< HEAD
 	ret = cpufreq_register_driver(&scpi_cpufreq_driver);
 	if (ret)
 		dev_err(&pdev->dev, "%s: registering cpufreq failed, err: %d\n",
 			__func__, ret);
 	return ret;
+=======
+	return bL_cpufreq_register(&scpi_cpufreq_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int scpi_cpufreq_remove(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	cpufreq_unregister_driver(&scpi_cpufreq_driver);
+=======
+	bL_cpufreq_unregister(&scpi_cpufreq_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	scpi_ops = NULL;
 	return 0;
 }

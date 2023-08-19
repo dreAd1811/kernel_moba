@@ -34,6 +34,7 @@ struct video_mux {
 	int active;
 };
 
+<<<<<<< HEAD
 static const struct v4l2_mbus_framefmt video_mux_format_mbus_default = {
 	.width = 1,
 	.height = 1,
@@ -41,6 +42,8 @@ static const struct v4l2_mbus_framefmt video_mux_format_mbus_default = {
 	.field = V4L2_FIELD_NONE,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct video_mux *v4l2_subdev_to_video_mux(struct v4l2_subdev *sd)
 {
 	return container_of(sd, struct video_mux, subdev);
@@ -52,7 +55,10 @@ static int video_mux_link_setup(struct media_entity *entity,
 {
 	struct v4l2_subdev *sd = media_entity_to_v4l2_subdev(entity);
 	struct video_mux *vmux = v4l2_subdev_to_video_mux(sd);
+<<<<<<< HEAD
 	u16 source_pad = entity->num_pads - 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	/*
@@ -82,9 +88,12 @@ static int video_mux_link_setup(struct media_entity *entity,
 		if (ret < 0)
 			goto out;
 		vmux->active = local->index;
+<<<<<<< HEAD
 
 		/* Propagate the active format to the source */
 		vmux->format_mbus[source_pad] = vmux->format_mbus[vmux->active];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (vmux->active != local->index)
 			goto out;
@@ -173,15 +182,21 @@ static int video_mux_set_format(struct v4l2_subdev *sd,
 			    struct v4l2_subdev_format *sdformat)
 {
 	struct video_mux *vmux = v4l2_subdev_to_video_mux(sd);
+<<<<<<< HEAD
 	struct v4l2_mbus_framefmt *mbusformat, *source_mbusformat;
 	struct media_pad *pad = &vmux->pads[sdformat->pad];
 	u16 source_pad = sd->entity.num_pads - 1;
+=======
+	struct v4l2_mbus_framefmt *mbusformat;
+	struct media_pad *pad = &vmux->pads[sdformat->pad];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mbusformat = __video_mux_get_pad_format(sd, cfg, sdformat->pad,
 					    sdformat->which);
 	if (!mbusformat)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	source_mbusformat = __video_mux_get_pad_format(sd, cfg, source_pad,
 						       sdformat->which);
 	if (!source_mbusformat)
@@ -269,6 +284,8 @@ static int video_mux_set_format(struct v4l2_subdev *sd,
 	if (sdformat->format.field == V4L2_FIELD_ANY)
 		sdformat->format.field = V4L2_FIELD_NONE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&vmux->lock);
 
 	/* Source pad mirrors active sink pad, no limitations on sink pads */
@@ -277,6 +294,7 @@ static int video_mux_set_format(struct v4l2_subdev *sd,
 
 	*mbusformat = sdformat->format;
 
+<<<<<<< HEAD
 	/* Propagate the format from an active sink to source */
 	if ((pad->flags & MEDIA_PAD_FL_SINK) && (pad->index == vmux->active))
 		*source_mbusformat = sdformat->format;
@@ -300,13 +318,18 @@ static int video_mux_init_cfg(struct v4l2_subdev *sd,
 		*mbusformat = video_mux_format_mbus_default;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&vmux->lock);
 
 	return 0;
 }
 
 static const struct v4l2_subdev_pad_ops video_mux_pad_ops = {
+<<<<<<< HEAD
 	.init_cfg = video_mux_init_cfg,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_fmt = video_mux_get_format,
 	.set_fmt = video_mux_set_format,
 };
@@ -323,8 +346,13 @@ static int video_mux_probe(struct platform_device *pdev)
 	struct device_node *ep;
 	struct video_mux *vmux;
 	unsigned int num_pads = 0;
+<<<<<<< HEAD
 	unsigned int i;
 	int ret;
+=======
+	int ret;
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vmux = devm_kzalloc(dev, sizeof(*vmux), GFP_KERNEL);
 	if (!vmux)
@@ -374,11 +402,17 @@ static int video_mux_probe(struct platform_device *pdev)
 	if (!vmux->format_mbus)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	for (i = 0; i < num_pads; i++) {
 		vmux->pads[i].flags = (i < num_pads - 1) ? MEDIA_PAD_FL_SINK
 							 : MEDIA_PAD_FL_SOURCE;
 		vmux->format_mbus[i] = video_mux_format_mbus_default;
 	}
+=======
+	for (i = 0; i < num_pads - 1; i++)
+		vmux->pads[i].flags = MEDIA_PAD_FL_SINK;
+	vmux->pads[num_pads - 1].flags = MEDIA_PAD_FL_SOURCE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vmux->subdev.entity.function = MEDIA_ENT_F_VID_MUX;
 	ret = media_entity_pads_init(&vmux->subdev.entity, num_pads,

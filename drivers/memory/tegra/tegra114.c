@@ -912,6 +912,7 @@ static const struct tegra_smmu_swgroup tegra114_swgroups[] = {
 	{ .name = "tsec",      .swgroup = TEGRA_SWGROUP_TSEC,      .reg = 0x294 },
 };
 
+<<<<<<< HEAD
 static const unsigned int tegra114_group_display[] = {
 	TEGRA_SWGROUP_DC,
 	TEGRA_SWGROUP_DCB,
@@ -925,19 +926,25 @@ static const struct tegra_smmu_group_soc tegra114_groups[] = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct tegra_smmu_soc tegra114_smmu_soc = {
 	.clients = tegra114_mc_clients,
 	.num_clients = ARRAY_SIZE(tegra114_mc_clients),
 	.swgroups = tegra114_swgroups,
 	.num_swgroups = ARRAY_SIZE(tegra114_swgroups),
+<<<<<<< HEAD
 	.groups = tegra114_groups,
 	.num_groups = ARRAY_SIZE(tegra114_groups),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.supports_round_robin_arbitration = false,
 	.supports_request_limit = false,
 	.num_tlb_lines = 32,
 	.num_asids = 4,
 };
 
+<<<<<<< HEAD
 #define TEGRA114_MC_RESET(_name, _control, _status, _bit)	\
 	{							\
 		.name = #_name,					\
@@ -966,6 +973,8 @@ static const struct tegra_mc_reset tegra114_mc_resets[] = {
 	TEGRA114_MC_RESET(VI,       0x200, 0x204, 17),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct tegra_mc_soc tegra114_mc_soc = {
 	.clients = tegra114_mc_clients,
 	.num_clients = ARRAY_SIZE(tegra114_mc_clients),
@@ -975,7 +984,10 @@ const struct tegra_mc_soc tegra114_mc_soc = {
 	.smmu = &tegra114_smmu_soc,
 	.intmask = MC_INT_INVALID_SMMU_PAGE | MC_INT_SECURITY_VIOLATION |
 		   MC_INT_DECERR_EMEM,
+<<<<<<< HEAD
 	.reset_ops = &terga_mc_reset_ops_common,
 	.resets = tegra114_mc_resets,
 	.num_resets = ARRAY_SIZE(tegra114_mc_resets),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

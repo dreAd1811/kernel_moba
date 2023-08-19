@@ -2,9 +2,13 @@
 #ifndef __NVKM_FIFO_H__
 #define __NVKM_FIFO_H__
 #include <core/engine.h>
+<<<<<<< HEAD
 #include <core/object.h>
 #include <core/event.h>
 struct nvkm_fault_data;
+=======
+#include <core/event.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NVKM_FIFO_CHID_NR 4096
 
@@ -24,7 +28,11 @@ struct nvkm_fifo_chan {
 	u16 chid;
 	struct nvkm_gpuobj *inst;
 	struct nvkm_gpuobj *push;
+<<<<<<< HEAD
 	struct nvkm_vmm *vmm;
+=======
+	struct nvkm_vm *vm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *user;
 	u64 addr;
 	u32 size;
@@ -46,7 +54,10 @@ struct nvkm_fifo {
 	struct nvkm_event kevent; /* channel killed */
 };
 
+<<<<<<< HEAD
 void nvkm_fifo_fault(struct nvkm_fifo *, struct nvkm_fault_data *);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void nvkm_fifo_pause(struct nvkm_fifo *, unsigned long *);
 void nvkm_fifo_start(struct nvkm_fifo *, unsigned long *);
 
@@ -73,5 +84,8 @@ int gm200_fifo_new(struct nvkm_device *, int, struct nvkm_fifo **);
 int gm20b_fifo_new(struct nvkm_device *, int, struct nvkm_fifo **);
 int gp100_fifo_new(struct nvkm_device *, int, struct nvkm_fifo **);
 int gp10b_fifo_new(struct nvkm_device *, int, struct nvkm_fifo **);
+<<<<<<< HEAD
 int gv100_fifo_new(struct nvkm_device *, int, struct nvkm_fifo **);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

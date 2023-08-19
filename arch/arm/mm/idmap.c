@@ -16,8 +16,13 @@
  * are not supported on any CPU using the idmap tables as its current
  * page tables.
  */
+<<<<<<< HEAD
 pgd_t *idmap_pgd __ro_after_init;
 long long arch_phys_to_idmap_offset __ro_after_init;
+=======
+pgd_t *idmap_pgd;
+long long arch_phys_to_idmap_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_ARM_LPAE
 static void idmap_add_pmd(pud_t *pud, unsigned long addr, unsigned long end,

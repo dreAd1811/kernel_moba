@@ -1,9 +1,13 @@
+<<<<<<< HEAD
 #include <linux/efi.h>
 #include <asm/e820/types.h>
 #include <asm/processor.h>
 #include <asm/efi.h>
 #include "pgtable.h"
 #include "../string.h"
+=======
+#include <asm/processor.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * __force_order is used by special_insns.h asm code to force instruction
@@ -14,6 +18,7 @@
  */
 unsigned long __force_order;
 
+<<<<<<< HEAD
 #define BIOS_START_MIN		0x20000U	/* 128K, less than this is insane */
 #define BIOS_START_MAX		0x9f000U	/* 640K, absolute maximum */
 
@@ -208,4 +213,22 @@ void cleanup_trampoline(void *pgtable)
 
 	/* Restore trampoline memory */
 	memcpy(trampoline_32bit, trampoline_save, TRAMPOLINE_32BIT_SIZE);
+=======
+int l5_paging_required(void)
+{
+	/* Check if leaf 7 is supported. */
+
+	if (native_cpuid_eax(0) < 7)
+		return 0;
+
+	/* Check if la57 is supported. */
+	if (!(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31))))
+		return 0;
+
+	/* Check if 5-level paging has already been enabled. */
+	if (native_read_cr4() & X86_CR4_LA57)
+		return 0;
+
+	return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

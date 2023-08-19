@@ -76,6 +76,11 @@ void user_enable_single_step(struct task_struct *task)
 	set_tsk_thread_flag(task, TIF_SINGLESTEP);
 
 	if (pa_psw(task)->n) {
+<<<<<<< HEAD
+=======
+		struct siginfo si;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Nullified, just crank over the queue. */
 		task_regs(task)->iaoq[0] = task_regs(task)->iaoq[1];
 		task_regs(task)->iasq[0] = task_regs(task)->iasq[1];
@@ -88,9 +93,17 @@ void user_enable_single_step(struct task_struct *task)
 		ptrace_disable(task);
 		/* Don't wake up the task, but let the
 		   parent know something happened. */
+<<<<<<< HEAD
 		force_sig_fault(SIGTRAP, TRAP_TRACE,
 				(void __user *) (task_regs(task)->iaoq[0] & ~3),
 				task);
+=======
+		si.si_code = TRAP_TRACE;
+		si.si_addr = (void __user *) (task_regs(task)->iaoq[0] & ~3);
+		si.si_signo = SIGTRAP;
+		si.si_errno = 0;
+		force_sig_info(SIGTRAP, &si, task);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* notify_parent(task, SIGCHLD); */
 		return;
 	}
@@ -698,6 +711,7 @@ const struct user_regset_view *task_user_regset_view(struct task_struct *task)
 #endif
 	return &user_parisc_native_view;
 }
+<<<<<<< HEAD
 
 
 /* HAVE_REGS_AND_STACK_ACCESS_API feature */
@@ -798,3 +812,5 @@ const char *regs_query_register_name(unsigned int offset)
 			return roff->name;
 	return NULL;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

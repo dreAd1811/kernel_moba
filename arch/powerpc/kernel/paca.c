@@ -18,6 +18,7 @@
 #include <asm/pgtable.h>
 #include <asm/kexec.h>
 
+<<<<<<< HEAD
 #include "setup.h"
 
 #ifndef CONFIG_SMP
@@ -98,11 +99,90 @@ static struct lppaca * __init new_lppaca(int cpu, unsigned long limit)
 
 /*
  * 3 persistent SLBs are allocated here.  The buffer will be zero
+=======
+#ifdef CONFIG_PPC_BOOK3S
+
+/*
+ * The structure which the hypervisor knows about - this structure
+ * should not cross a page boundary.  The vpa_init/register_vpa call
+ * is now known to fail if the lppaca structure crosses a page
+ * boundary.  The lppaca is also used on POWER5 pSeries boxes.
+ * The lppaca is 640 bytes long, and cannot readily
+ * change since the hypervisor knows its layout, so a 1kB alignment
+ * will suffice to ensure that it doesn't cross a page boundary.
+ */
+struct lppaca lppaca[] = {
+	[0 ... (NR_LPPACAS-1)] = {
+		.desc = cpu_to_be32(0xd397d781),	/* "LpPa" */
+		.size = cpu_to_be16(sizeof(struct lppaca)),
+		.fpregs_in_use = 1,
+		.slb_count = cpu_to_be16(64),
+		.vmxregs_in_use = 0,
+		.page_ins = 0,
+	},
+};
+
+static struct lppaca *extra_lppacas;
+static long __initdata lppaca_size;
+
+static void __init allocate_lppacas(int nr_cpus, unsigned long limit)
+{
+	if (nr_cpus <= NR_LPPACAS)
+		return;
+
+	lppaca_size = PAGE_ALIGN(sizeof(struct lppaca) *
+				 (nr_cpus - NR_LPPACAS));
+	extra_lppacas = __va(memblock_alloc_base(lppaca_size,
+						 PAGE_SIZE, limit));
+}
+
+static struct lppaca * __init new_lppaca(int cpu)
+{
+	struct lppaca *lp;
+
+	if (cpu < NR_LPPACAS)
+		return &lppaca[cpu];
+
+	lp = extra_lppacas + (cpu - NR_LPPACAS);
+	*lp = lppaca[0];
+
+	return lp;
+}
+
+static void __init free_lppacas(void)
+{
+	long new_size = 0, nr;
+
+	if (!lppaca_size)
+		return;
+	nr = num_possible_cpus() - NR_LPPACAS;
+	if (nr > 0)
+		new_size = PAGE_ALIGN(nr * sizeof(struct lppaca));
+	if (new_size >= lppaca_size)
+		return;
+
+	memblock_free(__pa(extra_lppacas) + new_size, lppaca_size - new_size);
+	lppaca_size = new_size;
+}
+
+#else
+
+static inline void allocate_lppacas(int nr_cpus, unsigned long limit) { }
+static inline void free_lppacas(void) { }
+
+#endif /* CONFIG_PPC_BOOK3S */
+
+#ifdef CONFIG_PPC_STD_MMU_64
+
+/*
+ * 3 persistent SLBs are registered here.  The buffer will be zero
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * initially, hence will all be invaild until we actually write them.
  *
  * If you make the number of persistent SLB entries dynamic, please also
  * update PR KVM to flush and restore them accordingly.
  */
+<<<<<<< HEAD
 static struct slb_shadow * __init new_slb_shadow(int cpu, unsigned long limit)
 {
 	struct slb_shadow *s;
@@ -119,6 +199,37 @@ static struct slb_shadow * __init new_slb_shadow(int cpu, unsigned long limit)
 
 	s = alloc_paca_data(sizeof(*s), L1_CACHE_BYTES, limit, cpu);
 	memset(s, 0, sizeof(*s));
+=======
+static struct slb_shadow * __initdata slb_shadow;
+
+static void __init allocate_slb_shadows(int nr_cpus, int limit)
+{
+	int size = PAGE_ALIGN(sizeof(struct slb_shadow) * nr_cpus);
+
+	if (early_radix_enabled())
+		return;
+
+	slb_shadow = __va(memblock_alloc_base(size, PAGE_SIZE, limit));
+	memset(slb_shadow, 0, size);
+}
+
+static struct slb_shadow * __init init_slb_shadow(int cpu)
+{
+	struct slb_shadow *s;
+
+	if (early_radix_enabled())
+		return NULL;
+
+	s = &slb_shadow[cpu];
+
+	/*
+	 * When we come through here to initialise boot_paca, the slb_shadow
+	 * buffers are not allocated yet. That's OK, we'll get one later in
+	 * boot, but make sure we don't corrupt memory at 0.
+	 */
+	if (!slb_shadow)
+		return NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	s->persistent = cpu_to_be32(SLB_NUM_BOLTED);
 	s->buffer_length = cpu_to_be32(sizeof(*s));
@@ -126,7 +237,15 @@ static struct slb_shadow * __init new_slb_shadow(int cpu, unsigned long limit)
 	return s;
 }
 
+<<<<<<< HEAD
 #endif /* CONFIG_PPC_BOOK3S_64 */
+=======
+#else /* CONFIG_PPC_STD_MMU_64 */
+
+static void __init allocate_slb_shadows(int nr_cpus, int limit) { }
+
+#endif /* CONFIG_PPC_STD_MMU_64 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* The Paca is an array with one entry per processor.  Each contains an
  * lppaca, which contains the information shared between the
@@ -137,6 +256,7 @@ static struct slb_shadow * __init new_slb_shadow(int cpu, unsigned long limit)
  * processors.  The processor VPD array needs one entry per physical
  * processor (not thread).
  */
+<<<<<<< HEAD
 struct paca_struct **paca_ptrs __read_mostly;
 EXPORT_SYMBOL(paca_ptrs);
 
@@ -146,6 +266,16 @@ void __init initialise_paca(struct paca_struct *new_paca, int cpu)
 	new_paca->lppaca_ptr = NULL;
 #endif
 #ifdef CONFIG_PPC_BOOK3E
+=======
+struct paca_struct *paca;
+EXPORT_SYMBOL(paca);
+
+void __init initialise_paca(struct paca_struct *new_paca, int cpu)
+{
+#ifdef CONFIG_PPC_BOOK3S
+	new_paca->lppaca_ptr = new_lppaca(cpu);
+#else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	new_paca->kernel_pgd = swapper_pg_dir;
 #endif
 	new_paca->lock_token = 0x8000;
@@ -158,9 +288,15 @@ void __init initialise_paca(struct paca_struct *new_paca, int cpu)
 	new_paca->kexec_state = KEXEC_STATE_NONE;
 	new_paca->__current = &init_task;
 	new_paca->data_offset = 0xfeeeeeeeeeeeeeeeULL;
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
 	new_paca->slb_shadow_ptr = NULL;
 #endif
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+	new_paca->slb_shadow_ptr = init_slb_shadow(cpu);
+#endif /* CONFIG_PPC_STD_MMU_64 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC_BOOK3E
 	/* For now -- if we have threads this will be adjusted later */
@@ -189,6 +325,7 @@ void setup_paca(struct paca_struct *new_paca)
 
 }
 
+<<<<<<< HEAD
 static int __initdata paca_nr_cpu_ids;
 static int __initdata paca_ptrs_size;
 static int __initdata paca_struct_size;
@@ -232,10 +369,46 @@ void __init allocate_paca(int cpu)
 	paca->slb_shadow_ptr = new_slb_shadow(cpu, limit);
 #endif
 	paca_struct_size += sizeof(struct paca_struct);
+=======
+static int __initdata paca_size;
+
+void __init allocate_pacas(void)
+{
+	u64 limit;
+	int cpu;
+
+	limit = ppc64_rma_size;
+
+#ifdef CONFIG_PPC_BOOK3S_64
+	/*
+	 * We can't take SLB misses on the paca, and we want to access them
+	 * in real mode, so allocate them within the RMA and also within
+	 * the first segment.
+	 */
+	limit = min(0x10000000ULL, limit);
+#endif
+
+	paca_size = PAGE_ALIGN(sizeof(struct paca_struct) * nr_cpu_ids);
+
+	paca = __va(memblock_alloc_base(paca_size, PAGE_SIZE, limit));
+	memset(paca, 0, paca_size);
+
+	printk(KERN_DEBUG "Allocated %u bytes for %u pacas at %p\n",
+		paca_size, nr_cpu_ids, paca);
+
+	allocate_lppacas(nr_cpu_ids, limit);
+
+	allocate_slb_shadows(nr_cpu_ids, limit);
+
+	/* Can't use for_each_*_cpu, as they aren't functional yet */
+	for (cpu = 0; cpu < nr_cpu_ids; cpu++)
+		initialise_paca(&paca[cpu], cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init free_unused_pacas(void)
 {
+<<<<<<< HEAD
 	int new_ptrs_size;
 
 	new_ptrs_size = sizeof(struct paca_struct *) * nr_cpu_ids;
@@ -257,6 +430,23 @@ void __init free_unused_pacas(void)
 
 	printk(KERN_DEBUG "Allocated %u bytes for %u pacas\n",
 			paca_ptrs_size + paca_struct_size, nr_cpu_ids);
+=======
+	int new_size;
+
+	new_size = PAGE_ALIGN(sizeof(struct paca_struct) * nr_cpu_ids);
+
+	if (new_size >= paca_size)
+		return;
+
+	memblock_free(__pa(paca) + new_size, paca_size - new_size);
+
+	printk(KERN_DEBUG "Freed %u bytes for unused pacas\n",
+		paca_size - new_size);
+
+	paca_size = new_size;
+
+	free_lppacas();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void copy_mm_to_paca(struct mm_struct *mm)
@@ -266,17 +456,27 @@ void copy_mm_to_paca(struct mm_struct *mm)
 
 	get_paca()->mm_ctx_id = context->id;
 #ifdef CONFIG_PPC_MM_SLICES
+<<<<<<< HEAD
 	VM_BUG_ON(!mm->context.slb_addr_limit);
 	get_paca()->mm_ctx_slb_addr_limit = mm->context.slb_addr_limit;
 	memcpy(&get_paca()->mm_ctx_low_slices_psize,
 	       &context->low_slices_psize, sizeof(context->low_slices_psize));
+=======
+	VM_BUG_ON(!mm->context.addr_limit);
+	get_paca()->addr_limit = mm->context.addr_limit;
+	get_paca()->mm_ctx_low_slices_psize = context->low_slices_psize;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(&get_paca()->mm_ctx_high_slices_psize,
 	       &context->high_slices_psize, TASK_SLICE_ARRAY_SZ(mm));
 #else /* CONFIG_PPC_MM_SLICES */
 	get_paca()->mm_ctx_user_psize = context->user_psize;
 	get_paca()->mm_ctx_sllp = context->sllp;
 #endif
+<<<<<<< HEAD
 #else /* !CONFIG_PPC_BOOK3S */
+=======
+#else /* CONFIG_PPC_BOOK3S */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return;
 #endif
 }

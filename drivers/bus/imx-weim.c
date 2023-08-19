@@ -45,8 +45,11 @@ static const struct imx_weim_devtype imx51_weim_devtype = {
 	.cs_stride	= 0x18,
 };
 
+<<<<<<< HEAD
 #define MAX_CS_REGS_COUNT	6
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id weim_id_table[] = {
 	/* i.MX1/21 */
 	{ .compatible = "fsl,imx1-weim", .data = &imx1_weim_devtype, },
@@ -114,12 +117,18 @@ err:
 static int __init weim_timing_setup(struct device_node *np, void __iomem *base,
 				    const struct imx_weim_devtype *devtype)
 {
+<<<<<<< HEAD
 	u32 cs_idx, value[MAX_CS_REGS_COUNT];
 	int i, ret;
 
 	if (WARN_ON(devtype->cs_regs_count > MAX_CS_REGS_COUNT))
 		return -EINVAL;
 
+=======
+	u32 cs_idx, value[devtype->cs_regs_count];
+	int i, ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* get the CS index from this child node's "reg" property. */
 	ret = of_property_read_u32(np, "reg", &cs_idx);
 	if (ret)

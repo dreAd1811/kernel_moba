@@ -35,6 +35,7 @@ struct renesas_sdhi_of_data {
 	unsigned short max_segs;
 };
 
+<<<<<<< HEAD
 struct tmio_mmc_dma {
 	enum dma_slave_buswidth dma_buswidth;
 	bool (*filter)(struct dma_chan *chan, void *arg);
@@ -57,6 +58,8 @@ struct renesas_sdhi {
 #define host_to_priv(host) \
 	container_of((host)->pdata, struct renesas_sdhi, mmc_data)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int renesas_sdhi_probe(struct platform_device *pdev,
 		       const struct tmio_mmc_dma_ops *dma_ops);
 int renesas_sdhi_remove(struct platform_device *pdev);

@@ -67,7 +67,10 @@
 #include <asm/smp.h>
 #include <asm/livepatch.h>
 #include <asm/asm-prototypes.h>
+<<<<<<< HEAD
 #include <asm/hw_irq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PPC64
 #include <asm/paca.h>
@@ -89,7 +92,11 @@ atomic_t ppc_n_lost_interrupts;
 
 #ifdef CONFIG_TAU_INT
 extern int tau_initialized;
+<<<<<<< HEAD
 u32 tau_interrupts(unsigned long cpu);
+=======
+extern int tau_interrupts(int);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #endif /* CONFIG_PPC32 */
 
@@ -107,6 +114,15 @@ static inline notrace unsigned long get_irq_happened(void)
 	return happened;
 }
 
+<<<<<<< HEAD
+=======
+static inline notrace void set_soft_enabled(unsigned long enable)
+{
+	__asm__ __volatile__("stb %0,%1(13)"
+	: : "r" (enable), "i" (offsetof(struct paca_struct, soft_enabled)));
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline notrace int decrementer_check_overflow(void)
 {
  	u64 now = get_tb_or_rtc();
@@ -138,6 +154,7 @@ notrace unsigned int __check_irq_replay(void)
 	 */
 	unsigned char happened = local_paca->irq_happened;
 
+<<<<<<< HEAD
 	/*
 	 * We are responding to the next interrupt, so interrupt-off
 	 * latencies should be reset here.
@@ -159,6 +176,10 @@ notrace unsigned int __check_irq_replay(void)
 	 * PACA_IRQ_HARD_DIS by hand (see comments in entry_64.S).
 	 */
 	if (happened & PACA_IRQ_HARD_DIS) {
+=======
+	if (happened & PACA_IRQ_HARD_DIS) {
+		/* Clear bit 0 which we wouldn't clear otherwise */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		local_paca->irq_happened &= ~PACA_IRQ_HARD_DIS;
 
 		/*
@@ -198,11 +219,14 @@ notrace unsigned int __check_irq_replay(void)
 		return 0x900;
 	}
 
+<<<<<<< HEAD
 	if (happened & PACA_IRQ_PMI) {
 		local_paca->irq_happened &= ~PACA_IRQ_PMI;
 		return 0xf00;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (happened & PACA_IRQ_EE) {
 		local_paca->irq_happened &= ~PACA_IRQ_EE;
 		return 0x500;
@@ -236,16 +260,26 @@ notrace unsigned int __check_irq_replay(void)
 	return 0;
 }
 
+<<<<<<< HEAD
 notrace void arch_local_irq_restore(unsigned long mask)
+=======
+notrace void arch_local_irq_restore(unsigned long en)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned char irq_happened;
 	unsigned int replay;
 
 	/* Write the new soft-enabled value */
+<<<<<<< HEAD
 	irq_soft_mask_set(mask);
 	if (mask)
 		return;
 
+=======
+	set_soft_enabled(en);
+	if (!en)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * From this point onward, we can take interrupts, preempt,
 	 * etc... unless we got hard-disabled. We check if an event
@@ -260,6 +294,7 @@ notrace void arch_local_irq_restore(unsigned long mask)
 	 * cannot have preempted.
 	 */
 	irq_happened = get_irq_happened();
+<<<<<<< HEAD
 	if (!irq_happened) {
 		/*
 		 * FIXME. Here we'd like to be able to do:
@@ -273,12 +308,17 @@ notrace void arch_local_irq_restore(unsigned long mask)
 		 */
 		return;
 	}
+=======
+	if (!irq_happened)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We need to hard disable to get a trusted value from
 	 * __check_irq_replay(). We also need to soft-disable
 	 * again to avoid warnings in there due to the use of
 	 * per-cpu variables.
+<<<<<<< HEAD
 	 */
 	if (!(irq_happened & PACA_IRQ_HARD_DIS)) {
 #ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
@@ -287,6 +327,18 @@ notrace void arch_local_irq_restore(unsigned long mask)
 		__hard_irq_disable();
 #ifdef CONFIG_PPC_IRQ_SOFT_MASK_DEBUG
 	} else {
+=======
+	 *
+	 * We know that if the value in irq_happened is exactly 0x01
+	 * then we are already hard disabled (there are other less
+	 * common cases that we'll ignore for now), so we skip the
+	 * (expensive) mtmsrd.
+	 */
+	if (unlikely(irq_happened != PACA_IRQ_HARD_DIS))
+		__hard_irq_disable();
+#ifdef CONFIG_TRACE_IRQFLAGS
+	else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We should already be hard disabled here. We had bugs
 		 * where that wasn't the case so let's dbl check it and
@@ -295,11 +347,18 @@ notrace void arch_local_irq_restore(unsigned long mask)
 		 */
 		if (WARN_ON(mfmsr() & MSR_EE))
 			__hard_irq_disable();
+<<<<<<< HEAD
 #endif
 	}
 
 	irq_soft_mask_set(IRQS_ALL_DISABLED);
 	trace_hardirqs_off();
+=======
+	}
+#endif /* CONFIG_TRACE_IRQFLAGS */
+
+	set_soft_enabled(0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Check if anything needs to be re-emitted. We haven't
@@ -309,8 +368,12 @@ notrace void arch_local_irq_restore(unsigned long mask)
 	replay = __check_irq_replay();
 
 	/* We can soft-enable now */
+<<<<<<< HEAD
 	trace_hardirqs_on();
 	irq_soft_mask_set(IRQS_ENABLED);
+=======
+	set_soft_enabled(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * And replay if we have to. This will return with interrupts
@@ -385,7 +448,11 @@ bool prep_irq_for_idle(void)
 	 * of entering the low power state.
 	 */
 	local_paca->irq_happened &= ~PACA_IRQ_HARD_DIS;
+<<<<<<< HEAD
 	irq_soft_mask_set(IRQS_ENABLED);
+=======
+	local_paca->soft_enabled = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Tell the caller to enter the low power state */
 	return true;
@@ -425,6 +492,7 @@ bool prep_irq_for_idle_irqsoff(void)
 /*
  * Take the SRR1 wakeup reason, index into this table to find the
  * appropriate irq_happened bit.
+<<<<<<< HEAD
  *
  * Sytem reset exceptions taken in idle state also come through here,
  * but they are NMI interrupts so do not need to wait for IRQs to be
@@ -438,6 +506,13 @@ static const u8 srr1_to_lazyirq[0x10] = {
 	0, 0, 0,
 	PACA_IRQ_DBELL,
 	IRQ_SYSTEM_RESET,
+=======
+ */
+static const u8 srr1_to_lazyirq[0x10] = {
+	0, 0, 0,
+	PACA_IRQ_DBELL,
+	0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PACA_IRQ_DBELL,
 	PACA_IRQ_DEC,
 	0,
@@ -446,6 +521,7 @@ static const u8 srr1_to_lazyirq[0x10] = {
 	PACA_IRQ_HMI,
 	0, 0, 0, 0, 0 };
 
+<<<<<<< HEAD
 void replay_system_reset(void)
 {
 	struct pt_regs regs;
@@ -483,6 +559,17 @@ void irq_set_pending_from_srr1(unsigned long srr1)
 	 * then a new index for no interrupt must be assigned.
 	 */
 	local_paca->irq_happened |= reason;
+=======
+void irq_set_pending_from_srr1(unsigned long srr1)
+{
+	unsigned int idx = (srr1 & SRR1_WAKEMASK_P8) >> 18;
+
+	/*
+	 * The 0 index (SRR1[42:45]=b0000) must always evaluate to 0,
+	 * so this can be called unconditionally with srr1 wake reason.
+	 */
+	local_paca->irq_happened |= srr1_to_lazyirq[idx];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_PPC_BOOK3S */
 
@@ -529,11 +616,14 @@ int arch_show_interrupts(struct seq_file *p, int prec)
 		seq_printf(p, "%10u ", per_cpu(irq_stat, j).timer_irqs_event);
         seq_printf(p, "  Local timer interrupts for timer event device\n");
 
+<<<<<<< HEAD
 	seq_printf(p, "%*s: ", prec, "BCT");
 	for_each_online_cpu(j)
 		seq_printf(p, "%10u ", per_cpu(irq_stat, j).broadcast_irqs_event);
 	seq_printf(p, "  Broadcast timer interrupts for timer event device\n");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	seq_printf(p, "%*s: ", prec, "LOC");
 	for_each_online_cpu(j)
 		seq_printf(p, "%10u ", per_cpu(irq_stat, j).timer_irqs_others);
@@ -593,7 +683,10 @@ u64 arch_irq_stat_cpu(unsigned int cpu)
 {
 	u64 sum = per_cpu(irq_stat, cpu).timer_irqs_event;
 
+<<<<<<< HEAD
 	sum += per_cpu(irq_stat, cpu).broadcast_irqs_event;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sum += per_cpu(irq_stat, cpu).pmu_irqs;
 	sum += per_cpu(irq_stat, cpu).mce_exceptions;
 	sum += per_cpu(irq_stat, cpu).spurious_irqs;
@@ -634,8 +727,11 @@ void __do_irq(struct pt_regs *regs)
 
 	trace_irq_entry(regs);
 
+<<<<<<< HEAD
 	check_stack_overflow();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Query the platform PIC for the interrupt & ack it.
 	 *
@@ -667,6 +763,11 @@ void do_IRQ(struct pt_regs *regs)
 	irqtp = hardirq_ctx[raw_smp_processor_id()];
 	sirqtp = softirq_ctx[raw_smp_processor_id()];
 
+<<<<<<< HEAD
+=======
+	check_stack_overflow();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Already there ? */
 	if (unlikely(curtp == irqtp || curtp == sirqtp)) {
 		__do_irq(regs);

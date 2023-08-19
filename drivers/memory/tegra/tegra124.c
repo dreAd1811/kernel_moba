@@ -999,6 +999,7 @@ static const struct tegra_smmu_swgroup tegra124_swgroups[] = {
 	{ .name = "vi",        .swgroup = TEGRA_SWGROUP_VI,        .reg = 0x280 },
 };
 
+<<<<<<< HEAD
 static const unsigned int tegra124_group_display[] = {
 	TEGRA_SWGROUP_DC,
 	TEGRA_SWGROUP_DCB,
@@ -1048,14 +1049,19 @@ static const struct tegra_mc_reset tegra124_mc_resets[] = {
 	TEGRA124_MC_RESET(GPU,       0x970, 0x974,  2),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARCH_TEGRA_124_SOC
 static const struct tegra_smmu_soc tegra124_smmu_soc = {
 	.clients = tegra124_mc_clients,
 	.num_clients = ARRAY_SIZE(tegra124_mc_clients),
 	.swgroups = tegra124_swgroups,
 	.num_swgroups = ARRAY_SIZE(tegra124_swgroups),
+<<<<<<< HEAD
 	.groups = tegra124_groups,
 	.num_groups = ARRAY_SIZE(tegra124_groups),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.supports_round_robin_arbitration = true,
 	.supports_request_limit = true,
 	.num_tlb_lines = 32,
@@ -1074,9 +1080,12 @@ const struct tegra_mc_soc tegra124_mc_soc = {
 	.intmask = MC_INT_DECERR_MTS | MC_INT_SECERR_SEC | MC_INT_DECERR_VPR |
 		   MC_INT_INVALID_APB_ASID_UPDATE | MC_INT_INVALID_SMMU_PAGE |
 		   MC_INT_SECURITY_VIOLATION | MC_INT_DECERR_EMEM,
+<<<<<<< HEAD
 	.reset_ops = &terga_mc_reset_ops_common,
 	.resets = tegra124_mc_resets,
 	.num_resets = ARRAY_SIZE(tegra124_mc_resets),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #endif /* CONFIG_ARCH_TEGRA_124_SOC */
 
@@ -1086,8 +1095,11 @@ static const struct tegra_smmu_soc tegra132_smmu_soc = {
 	.num_clients = ARRAY_SIZE(tegra124_mc_clients),
 	.swgroups = tegra124_swgroups,
 	.num_swgroups = ARRAY_SIZE(tegra124_swgroups),
+<<<<<<< HEAD
 	.groups = tegra124_groups,
 	.num_groups = ARRAY_SIZE(tegra124_groups),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.supports_round_robin_arbitration = true,
 	.supports_request_limit = true,
 	.num_tlb_lines = 32,
@@ -1104,8 +1116,11 @@ const struct tegra_mc_soc tegra132_mc_soc = {
 	.intmask = MC_INT_DECERR_MTS | MC_INT_SECERR_SEC | MC_INT_DECERR_VPR |
 		   MC_INT_INVALID_APB_ASID_UPDATE | MC_INT_INVALID_SMMU_PAGE |
 		   MC_INT_SECURITY_VIOLATION | MC_INT_DECERR_EMEM,
+<<<<<<< HEAD
 	.reset_ops = &terga_mc_reset_ops_common,
 	.resets = tegra124_mc_resets,
 	.num_resets = ARRAY_SIZE(tegra124_mc_resets),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #endif /* CONFIG_ARCH_TEGRA_132_SOC */

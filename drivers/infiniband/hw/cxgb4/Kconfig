@@ -1,7 +1,11 @@
 config INFINIBAND_CXGB4
 	tristate "Chelsio T4/T5 RDMA Driver"
+<<<<<<< HEAD
 	depends on CHELSIO_T4 && INET
 	depends on INFINIBAND_ADDR_TRANS
+=======
+	depends on CHELSIO_T4 && INET && (IPV6 || IPV6=n)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CHELSIO_LIB
 	select GENERIC_ALLOCATOR
 	---help---

@@ -926,6 +926,7 @@ static int reflash_parse_fw_image(void)
 static int reflash_get_fw_image(void)
 {
 	int retval;
+<<<<<<< HEAD
 	const char *fw_name;
 	struct syna_tcm_hcd *tcm_hcd = reflash_hcd->tcm_hcd;
 	const struct syna_tcm_board_data *bdata = tcm_hcd->hw_if->bdata;
@@ -937,11 +938,21 @@ static int reflash_get_fw_image(void)
 
 	if (reflash_hcd->image == NULL) {
 		retval = request_firmware(&reflash_hcd->fw_entry, fw_name,
+=======
+	struct syna_tcm_hcd *tcm_hcd = reflash_hcd->tcm_hcd;
+
+	if (reflash_hcd->image == NULL) {
+		retval = request_firmware(&reflash_hcd->fw_entry, FW_IMAGE_NAME,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				tcm_hcd->pdev->dev.parent);
 		if (retval < 0) {
 			LOGD(tcm_hcd->pdev->dev.parent,
 					"Failed to request %s\n",
+<<<<<<< HEAD
 					fw_name);
+=======
+					FW_IMAGE_NAME);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return retval;
 		}
 

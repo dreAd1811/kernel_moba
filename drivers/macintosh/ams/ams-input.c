@@ -91,7 +91,11 @@ static int ams_input_enable(void)
 		return error;
 	}
 
+<<<<<<< HEAD
 	joystick = true;
+=======
+	joystick = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -104,7 +108,11 @@ static void ams_input_disable(void)
 		ams_info.idev = NULL;
 	}
 
+<<<<<<< HEAD
 	joystick = false;
+=======
+	joystick = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t ams_input_show_joystick(struct device *dev,

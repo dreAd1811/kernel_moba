@@ -1,5 +1,30 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2007 - 2018 Intel Corporation. */
+=======
+/* Intel(R) Gigabit Ethernet Linux driver
+ * Copyright(c) 2007-2014 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ethtool support for igb */
 
@@ -143,7 +168,12 @@ static int igb_get_link_ksettings(struct net_device *netdev,
 	u32 speed;
 	u32 supported, advertising;
 
+<<<<<<< HEAD
 	status = rd32(E1000_STATUS);
+=======
+	status = pm_runtime_suspended(&adapter->pdev->dev) ?
+		 0 : rd32(E1000_STATUS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hw->phy.media_type == e1000_media_type_copper) {
 
 		supported = (SUPPORTED_10baseT_Half |
@@ -181,7 +211,11 @@ static int igb_get_link_ksettings(struct net_device *netdev,
 				advertising &= ~ADVERTISED_1000baseKX_Full;
 			}
 		}
+<<<<<<< HEAD
 		if (eth_flags->e100_base_fx) {
+=======
+		if (eth_flags->e100_base_fx || eth_flags->e100_base_lx) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			supported |= SUPPORTED_100baseT_Full;
 			advertising |= ADVERTISED_100baseT_Full;
 		}
@@ -736,8 +770,13 @@ static int igb_get_eeprom(struct net_device *netdev,
 	first_word = eeprom->offset >> 1;
 	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
 
+<<<<<<< HEAD
 	eeprom_buff = kmalloc_array(last_word - first_word + 1, sizeof(u16),
 				    GFP_KERNEL);
+=======
+	eeprom_buff = kmalloc(sizeof(u16) *
+			(last_word - first_word + 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!eeprom_buff)
 		return -ENOMEM;
 
@@ -902,11 +941,19 @@ static int igb_set_ringparam(struct net_device *netdev,
 	}
 
 	if (adapter->num_tx_queues > adapter->num_rx_queues)
+<<<<<<< HEAD
 		temp_ring = vmalloc(array_size(sizeof(struct igb_ring),
 					       adapter->num_tx_queues));
 	else
 		temp_ring = vmalloc(array_size(sizeof(struct igb_ring),
 					       adapter->num_rx_queues));
+=======
+		temp_ring = vmalloc(adapter->num_tx_queues *
+				    sizeof(struct igb_ring));
+	else
+		temp_ring = vmalloc(adapter->num_rx_queues *
+				    sizeof(struct igb_ring));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!temp_ring) {
 		err = -ENOMEM;
@@ -1649,7 +1696,11 @@ static int igb_integrated_phy_loopback(struct igb_adapter *adapter)
 	if (hw->phy.type == e1000_phy_m88)
 		igb_phy_disable_receiver(adapter);
 
+<<<<<<< HEAD
 	msleep(500);
+=======
+	mdelay(500);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2474,6 +2525,7 @@ static int igb_get_ethtool_nfc_entry(struct igb_adapter *adapter,
 			fsp->h_ext.vlan_tci = rule->filter.vlan_tci;
 			fsp->m_ext.vlan_tci = htons(VLAN_PRIO_MASK);
 		}
+<<<<<<< HEAD
 		if (rule->filter.match_flags & IGB_FILTER_FLAG_DST_MAC_ADDR) {
 			ether_addr_copy(fsp->h_u.ether_spec.h_dest,
 					rule->filter.dst_addr);
@@ -2491,6 +2543,8 @@ static int igb_get_ethtool_nfc_entry(struct igb_adapter *adapter,
 			eth_broadcast_addr(fsp->m_u.ether_spec.h_source);
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 	return -EINVAL;
@@ -2764,6 +2818,7 @@ static int igb_rxnfc_write_vlan_prio_filter(struct igb_adapter *adapter,
 
 int igb_add_filter(struct igb_adapter *adapter, struct igb_nfc_filter *input)
 {
+<<<<<<< HEAD
 	struct e1000_hw *hw = &adapter->hw;
 	int err = -EINVAL;
 
@@ -2774,12 +2829,17 @@ int igb_add_filter(struct igb_adapter *adapter, struct igb_nfc_filter *input)
 		return -EOPNOTSUPP;
 	}
 
+=======
+	int err = -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (input->filter.match_flags & IGB_FILTER_FLAG_ETHER_TYPE) {
 		err = igb_rxnfc_write_etype_filter(adapter, input);
 		if (err)
 			return err;
 	}
 
+<<<<<<< HEAD
 	if (input->filter.match_flags & IGB_FILTER_FLAG_DST_MAC_ADDR) {
 		err = igb_add_mac_steering_filter(adapter,
 						  input->filter.dst_addr,
@@ -2799,6 +2859,8 @@ int igb_add_filter(struct igb_adapter *adapter, struct igb_nfc_filter *input)
 			return err;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (input->filter.match_flags & IGB_FILTER_FLAG_VLAN_TCI)
 		err = igb_rxnfc_write_vlan_prio_filter(adapter, input);
 
@@ -2847,6 +2909,7 @@ int igb_erase_filter(struct igb_adapter *adapter, struct igb_nfc_filter *input)
 		igb_clear_vlan_prio_filter(adapter,
 					   ntohs(input->filter.vlan_tci));
 
+<<<<<<< HEAD
 	if (input->filter.match_flags & IGB_FILTER_FLAG_SRC_MAC_ADDR)
 		igb_del_mac_steering_filter(adapter, input->filter.src_addr,
 					    input->action,
@@ -2856,6 +2919,8 @@ int igb_erase_filter(struct igb_adapter *adapter, struct igb_nfc_filter *input)
 		igb_del_mac_steering_filter(adapter, input->filter.dst_addr,
 					    input->action, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2897,7 +2962,11 @@ static int igb_update_ethtool_nfc_entry(struct igb_adapter *adapter,
 
 	/* add filter to the list */
 	if (parent)
+<<<<<<< HEAD
 		hlist_add_behind(&input->nfc_node, &parent->nfc_node);
+=======
+		hlist_add_behind(&parent->nfc_node, &input->nfc_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		hlist_add_head(&input->nfc_node, &adapter->nfc_filter_list);
 
@@ -2937,6 +3006,13 @@ static int igb_add_ethtool_nfc_entry(struct igb_adapter *adapter,
 	if ((fsp->flow_type & ~FLOW_EXT) != ETHER_FLOW)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (fsp->m_u.ether_spec.h_proto != ETHER_TYPE_FULL_MASK &&
+	    fsp->m_ext.vlan_tci != htons(VLAN_PRIO_MASK))
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input = kzalloc(sizeof(*input), GFP_KERNEL);
 	if (!input)
 		return -ENOMEM;
@@ -2946,6 +3022,7 @@ static int igb_add_ethtool_nfc_entry(struct igb_adapter *adapter,
 		input->filter.match_flags = IGB_FILTER_FLAG_ETHER_TYPE;
 	}
 
+<<<<<<< HEAD
 	/* Only support matching addresses by the full mask */
 	if (is_broadcast_ether_addr(fsp->m_u.ether_spec.h_source)) {
 		input->filter.match_flags |= IGB_FILTER_FLAG_SRC_MAC_ADDR;
@@ -2960,6 +3037,8 @@ static int igb_add_ethtool_nfc_entry(struct igb_adapter *adapter,
 				fsp->h_u.ether_spec.h_dest);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((fsp->flow_type & FLOW_EXT) && fsp->m_ext.vlan_tci) {
 		if (fsp->m_ext.vlan_tci != htons(VLAN_PRIO_MASK)) {
 			err = -EINVAL;
@@ -3245,8 +3324,13 @@ static int igb_get_module_eeprom(struct net_device *netdev,
 	first_word = ee->offset >> 1;
 	last_word = (ee->offset + ee->len - 1) >> 1;
 
+<<<<<<< HEAD
 	dataword = kmalloc_array(last_word - first_word + 1, sizeof(u16),
 				 GFP_KERNEL);
+=======
+	dataword = kmalloc(sizeof(u16) * (last_word - first_word + 1),
+			   GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dataword)
 		return -ENOMEM;
 
@@ -3381,7 +3465,41 @@ static int igb_set_rxfh(struct net_device *netdev, const u32 *indir,
 
 static unsigned int igb_max_channels(struct igb_adapter *adapter)
 {
+<<<<<<< HEAD
 	return igb_get_max_rss_queues(adapter);
+=======
+	struct e1000_hw *hw = &adapter->hw;
+	unsigned int max_combined = 0;
+
+	switch (hw->mac.type) {
+	case e1000_i211:
+		max_combined = IGB_MAX_RX_QUEUES_I211;
+		break;
+	case e1000_82575:
+	case e1000_i210:
+		max_combined = IGB_MAX_RX_QUEUES_82575;
+		break;
+	case e1000_i350:
+		if (!!adapter->vfs_allocated_count) {
+			max_combined = 1;
+			break;
+		}
+		/* fall through */
+	case e1000_82576:
+		if (!!adapter->vfs_allocated_count) {
+			max_combined = 2;
+			break;
+		}
+		/* fall through */
+	case e1000_82580:
+	case e1000_i354:
+	default:
+		max_combined = IGB_MAX_RX_QUEUES;
+		break;
+	}
+
+	return max_combined;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void igb_get_channels(struct net_device *netdev,

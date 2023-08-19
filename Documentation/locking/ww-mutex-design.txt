@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Wound/Wait Deadlock-Proof Mutex Design
+=======
+Wait/Wound Deadlock-Proof Mutex Design
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ======================================
 
 Please read mutex-design.txt first, as it applies to wait/wound mutexes too.
@@ -32,6 +36,7 @@ the oldest task) wins, and the one with the higher reservation id (i.e. the
 younger task) unlocks all of the buffers that it has already locked, and then
 tries again.
 
+<<<<<<< HEAD
 In the RDBMS literature, a reservation ticket is associated with a transaction.
 and the deadlock handling approach is called Wait-Die. The name is based on
 the actions of a locking thread when it encounters an already locked mutex.
@@ -52,6 +57,12 @@ requires a reliable way to pick up up the wounded condition and preempt the
 running transaction. Note that this is not the same as process preemption. A
 Wound-Wait transaction is considered preempted when it dies (returning
 -EDEADLK) following a wound.
+=======
+In the RDBMS literature this deadlock handling approach is called wait/wound:
+The older tasks waits until it can acquire the contended lock. The younger tasks
+needs to back off and drop all the locks it is currently holding, i.e. the
+younger task is wounded.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Concepts
 --------
@@ -63,20 +74,33 @@ Acquire context: To ensure eventual forward progress it is important the a task
 trying to acquire locks doesn't grab a new reservation id, but keeps the one it
 acquired when starting the lock acquisition. This ticket is stored in the
 acquire context. Furthermore the acquire context keeps track of debugging state
+<<<<<<< HEAD
 to catch w/w mutex interface abuse. An acquire context is representing a
 transaction.
 
 W/w class: In contrast to normal mutexes the lock class needs to be explicit for
 w/w mutexes, since it is required to initialize the acquire context. The lock
 class also specifies what algorithm to use, Wound-Wait or Wait-Die.
+=======
+to catch w/w mutex interface abuse.
+
+W/w class: In contrast to normal mutexes the lock class needs to be explicit for
+w/w mutexes, since it is required to initialize the acquire context.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Furthermore there are three different class of w/w lock acquire functions:
 
 * Normal lock acquisition with a context, using ww_mutex_lock.
 
+<<<<<<< HEAD
 * Slowpath lock acquisition on the contending lock, used by the task that just
   killed its transaction after having dropped all already acquired locks.
   These functions have the _slow postfix.
+=======
+* Slowpath lock acquisition on the contending lock, used by the wounded task
+  after having dropped all already acquired locks. These functions have the
+  _slow postfix.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   From a simple semantics point-of-view the _slow functions are not strictly
   required, since simply calling the normal ww_mutex_lock functions on the
@@ -108,12 +132,15 @@ provided.
 Usage
 -----
 
+<<<<<<< HEAD
 The algorithm (Wait-Die vs Wound-Wait) is chosen by using either
 DEFINE_WW_CLASS() (Wound-Wait) or DEFINE_WD_CLASS() (Wait-Die)
 As a rough rule of thumb, use Wound-Wait iff you
 expect the number of simultaneous competing transactions to be typically small,
 and you want to reduce the number of rollbacks.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Three different ways to acquire locks within the same w/w class. Common
 definitions for methods #1 and #2:
 
@@ -244,7 +271,11 @@ mutexes are a natural fit for such a case for two reasons:
 
 Note that this approach differs in two important ways from the above methods:
 - Since the list of objects is dynamically constructed (and might very well be
+<<<<<<< HEAD
   different when retrying due to hitting the -EDEADLK die condition) there's
+=======
+  different when retrying due to hitting the -EDEADLK wound condition) there's
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   no need to keep any object on a persistent list when it's not locked. We can
   therefore move the list_head into the object itself.
 - On the other hand the dynamic object list construction also means that the -EALREADY return
@@ -336,6 +367,7 @@ Design:
   We maintain the following invariants for the wait list:
   (1) Waiters with an acquire context are sorted by stamp order; waiters
       without an acquire context are interspersed in FIFO order.
+<<<<<<< HEAD
   (2) For Wait-Die, among waiters with contexts, only the first one can have
       other locks acquired already (ctx->acquired > 0). Note that this waiter
       may come after other waiters without contexts in the list.
@@ -353,6 +385,14 @@ Design:
   In general, not much contention is expected. The locks are typically used to
   serialize access to resources for devices, and optimization focus should
   therefore be directed towards the uncontended cases.
+=======
+  (2) Among waiters with contexts, only the first one can have other locks
+      acquired already (ctx->acquired > 0). Note that this waiter may come
+      after other waiters without contexts in the list.
+
+  In general, not much contention is expected. The locks are typically used to
+  serialize access to resources for devices.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Lockdep:
   Special care has been taken to warn for as many cases of api abuse

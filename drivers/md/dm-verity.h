@@ -12,7 +12,11 @@
 #ifndef DM_VERITY_H
 #define DM_VERITY_H
 
+<<<<<<< HEAD
 #include <linux/dm-bufio.h>
+=======
+#include "dm-bufio.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/device-mapper.h>
 #include <crypto/hash.h>
 
@@ -91,6 +95,14 @@ struct dm_verity_io {
 	 */
 };
 
+<<<<<<< HEAD
+=======
+struct verity_result {
+	struct completion completion;
+	int err;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct ahash_request *verity_io_hash_req(struct dm_verity *v,
 						     struct dm_verity_io *io)
 {
@@ -129,7 +141,12 @@ extern int verity_hash_for_block(struct dm_verity *v, struct dm_verity_io *io,
 
 extern void verity_status(struct dm_target *ti, status_type_t type,
 			unsigned status_flags, char *result, unsigned maxlen);
+<<<<<<< HEAD
 extern int verity_prepare_ioctl(struct dm_target *ti, struct block_device **bdev);
+=======
+extern int verity_prepare_ioctl(struct dm_target *ti,
+                struct block_device **bdev, fmode_t *mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern int verity_iterate_devices(struct dm_target *ti,
 				iterate_devices_callout_fn fn, void *data);
 extern void verity_io_hints(struct dm_target *ti, struct queue_limits *limits);
@@ -137,5 +154,8 @@ extern void verity_dtr(struct dm_target *ti);
 extern int verity_ctr(struct dm_target *ti, unsigned argc, char **argv);
 extern int verity_map(struct dm_target *ti, struct bio *bio);
 extern void dm_verity_avb_error_handler(void);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* DM_VERITY_H */

@@ -103,9 +103,19 @@ radeon-y += \
 radeon-y += \
 	radeon_vce.o \
 	vce_v1_0.o \
+<<<<<<< HEAD
 	vce_v2_0.o
+=======
+	vce_v2_0.o \
+	radeon_kfd.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 radeon-$(CONFIG_VGA_SWITCHEROO) += radeon_atpx_handler.o
 radeon-$(CONFIG_ACPI) += radeon_acpi.o
 
 obj-$(CONFIG_DRM_RADEON)+= radeon.o
+<<<<<<< HEAD
+=======
+
+CFLAGS_radeon_trace_points.o := -I$(src)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

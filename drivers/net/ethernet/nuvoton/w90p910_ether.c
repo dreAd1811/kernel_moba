@@ -253,10 +253,17 @@ static void update_linkspeed(struct net_device *dev)
 	netif_carrier_on(dev);
 }
 
+<<<<<<< HEAD
 static void w90p910_check_link(struct timer_list *t)
 {
 	struct w90p910_ether *ether = from_timer(ether, t, check_timer);
 	struct net_device *dev = ether->mii.dev;
+=======
+static void w90p910_check_link(unsigned long dev_id)
+{
+	struct net_device *dev = (struct net_device *) dev_id;
+	struct w90p910_ether *ether = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	update_linkspeed(dev);
 	mod_timer(&ether->check_timer, jiffies + msecs_to_jiffies(1000));
@@ -957,7 +964,12 @@ static int w90p910_ether_setup(struct net_device *dev)
 	ether->mii.mdio_read = w90p910_mdio_read;
 	ether->mii.mdio_write = w90p910_mdio_write;
 
+<<<<<<< HEAD
 	timer_setup(&ether->check_timer, w90p910_check_link, 0);
+=======
+	setup_timer(&ether->check_timer, w90p910_check_link,
+						(unsigned long)dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

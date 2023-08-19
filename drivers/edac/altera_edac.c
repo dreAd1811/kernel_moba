@@ -1,8 +1,28 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  *  Copyright (C) 2017-2018, Intel Corporation. All rights reserved
  *  Copyright Altera Corporation (C) 2014-2016. All rights reserved.
  *  Copyright 2011-2012 Calxeda, Inc.
+=======
+/*
+ *  Copyright Altera Corporation (C) 2014-2016. All rights reserved.
+ *  Copyright 2011-2012 Calxeda, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Adapted from the highbank_mc_edac driver.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <asm/cacheflush.h>
@@ -14,7 +34,10 @@
 #include <linux/irqchip/chained_irq.h>
 #include <linux/kernel.h>
 #include <linux/mfd/syscon.h>
+<<<<<<< HEAD
 #include <linux/notifier.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
 #include <linux/of_platform.h>
@@ -69,6 +92,7 @@ static const struct altr_sdram_prv_data a10_data = {
 	.ue_set_mask        = A10_DIAGINT_TDERRA_MASK,
 };
 
+<<<<<<< HEAD
 static const struct altr_sdram_prv_data s10_data = {
 	.ecc_ctrl_offset    = S10_ECCCTRL1_OFST,
 	.ecc_ctl_en_mask    = A10_ECCCTRL1_ECC_EN,
@@ -88,6 +112,8 @@ static const struct altr_sdram_prv_data s10_data = {
 	.ue_set_mask        = A10_DIAGINT_TDERRA_MASK,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*********************** EDAC Memory Controller Functions ****************/
 
 /* The SDRAM controller uses the EDAC Memory Controller framework.       */
@@ -183,11 +209,19 @@ static ssize_t altr_sdr_mc_err_inject_write(struct file *file,
 	/*
 	 * To trigger the error, we need to read the data back
 	 * (the data was written with errors above).
+<<<<<<< HEAD
 	 * The READ_ONCE macros and printk are used to prevent the
 	 * the compiler optimizing these reads out.
 	 */
 	reg = READ_ONCE(ptemp[0]);
 	read_reg = READ_ONCE(ptemp[1]);
+=======
+	 * The ACCESS_ONCE macros and printk are used to prevent the
+	 * the compiler optimizing these reads out.
+	 */
+	reg = ACCESS_ONCE(ptemp[0]);
+	read_reg = ACCESS_ONCE(ptemp[1]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Force Read */
 	rmb();
 
@@ -239,7 +273,10 @@ static unsigned long get_total_mem(void)
 static const struct of_device_id altr_sdram_ctrl_of_match[] = {
 	{ .compatible = "altr,sdram-edac", .data = &c5_data},
 	{ .compatible = "altr,sdram-edac-a10", .data = &a10_data},
+<<<<<<< HEAD
 	{ .compatible = "altr,sdram-edac-s10", .data = &s10_data},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, altr_sdram_ctrl_of_match);
@@ -486,6 +523,7 @@ static int altr_sdram_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 /**************** Stratix 10 EDAC Memory Controller Functions ************/
 
 /**
@@ -773,6 +811,8 @@ static int altr_s10_sdram_remove(struct platform_device *pdev)
 
 /************** </Stratix10 EDAC Memory Controller Functions> ***********/
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * If you want to suspend, need to disable EDAC by removing it
  * from the device tree or defconfig.
@@ -804,6 +844,7 @@ static struct platform_driver altr_sdram_edac_driver = {
 
 module_platform_driver(altr_sdram_edac_driver);
 
+<<<<<<< HEAD
 static struct platform_driver altr_s10_sdram_edac_driver = {
 	.probe = altr_s10_sdram_probe,
 	.remove = altr_s10_sdram_remove,
@@ -818,6 +859,8 @@ static struct platform_driver altr_s10_sdram_edac_driver = {
 
 module_platform_driver(altr_s10_sdram_edac_driver);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /************************* EDAC Parent Probe *************************/
 
 static const struct of_device_id altr_edac_device_of_match[];
@@ -928,7 +971,11 @@ static ssize_t altr_edac_device_trig(struct file *file,
 	for (i = 0; i < (priv->trig_alloc_sz / sizeof(*ptemp)); i++) {
 		/* Read data so we're in the correct state */
 		rmb();
+<<<<<<< HEAD
 		if (READ_ONCE(ptemp[i]))
+=======
+		if (ACCESS_ONCE(ptemp[i]))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			result = -1;
 		/* Toggle Error bit (it is latched), leave ECC enabled */
 		writel(error_mask, (drvdata->base + priv->set_err_ofst));
@@ -945,7 +992,11 @@ static ssize_t altr_edac_device_trig(struct file *file,
 
 	/* Read out written data. ECC error caused here */
 	for (i = 0; i < ALTR_TRIGGER_READ_WRD_CNT; i++)
+<<<<<<< HEAD
 		if (READ_ONCE(ptemp[i]) != i)
+=======
+		if (ACCESS_ONCE(ptemp[i]) != i)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			edac_printk(KERN_ERR, EDAC_DEVICE,
 				    "Read doesn't match written data\n");
 
@@ -2237,6 +2288,7 @@ static struct platform_driver altr_edac_a10_driver = {
 };
 module_platform_driver(altr_edac_a10_driver);
 
+<<<<<<< HEAD
 /************** Stratix 10 EDAC Device Controller Functions> ************/
 
 #define to_s10edac(p, m) container_of(p, struct altr_stratix10_edac, m)
@@ -2402,6 +2454,8 @@ static struct platform_driver altr_edac_s10_driver = {
 };
 module_platform_driver(altr_edac_s10_driver);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL v2");
 MODULE_AUTHOR("Thor Thayer");
 MODULE_DESCRIPTION("EDAC Driver for Altera Memories");

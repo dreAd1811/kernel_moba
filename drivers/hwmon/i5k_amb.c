@@ -274,9 +274,14 @@ static int i5k_amb_hwmon_init(struct platform_device *pdev)
 		num_ambs += hweight16(data->amb_present[i] & 0x7fff);
 
 	/* Set up sysfs stuff */
+<<<<<<< HEAD
 	data->attrs = kzalloc(array3_size(num_ambs, KNOBS_PER_AMB,
 					  sizeof(*data->attrs)),
 			      GFP_KERNEL);
+=======
+	data->attrs = kzalloc(sizeof(*data->attrs) * num_ambs * KNOBS_PER_AMB,
+				GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data->attrs)
 		return -ENOMEM;
 	data->num_attrs = 0;

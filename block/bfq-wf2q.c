@@ -130,6 +130,7 @@ static bool bfq_update_next_in_service(struct bfq_sched_data *sd,
 	if (!change_without_lookup) /* lookup needed */
 		next_in_service = bfq_lookup_next_entity(sd, expiration);
 
+<<<<<<< HEAD
 	if (next_in_service) {
 		bool new_budget_triggers_change =
 			bfq_update_parent_budget(next_in_service);
@@ -137,6 +138,11 @@ static bool bfq_update_next_in_service(struct bfq_sched_data *sd,
 		parent_sched_may_change = !sd->next_in_service ||
 			new_budget_triggers_change;
 	}
+=======
+	if (next_in_service)
+		parent_sched_may_change = !sd->next_in_service ||
+			bfq_update_parent_budget(next_in_service);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sd->next_in_service = next_in_service;
 
@@ -503,6 +509,12 @@ static void bfq_active_insert(struct bfq_service_tree *st,
 	if (bfqq)
 		list_add(&bfqq->bfqq_list, &bfqq->bfqd->active_list);
 #ifdef CONFIG_BFQ_GROUP_IOSCHED
+<<<<<<< HEAD
+=======
+	else /* bfq_group */
+		bfq_weights_tree_add(bfqd, entity, &bfqd->group_weights_tree);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bfqg != bfqd->root_group)
 		bfqg->active_entities++;
 #endif
@@ -602,6 +614,13 @@ static void bfq_active_extract(struct bfq_service_tree *st,
 	if (bfqq)
 		list_del(&bfqq->bfqq_list);
 #ifdef CONFIG_BFQ_GROUP_IOSCHED
+<<<<<<< HEAD
+=======
+	else /* bfq_group */
+		bfq_weights_tree_remove(bfqd, entity,
+					&bfqd->group_weights_tree);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bfqg != bfqd->root_group)
 		bfqg->active_entities--;
 #endif
@@ -796,7 +815,11 @@ __bfq_entity_update_weight_prio(struct bfq_service_tree *old_st,
 		if (prev_weight != new_weight) {
 			root = bfqq ? &bfqd->queue_weights_tree :
 				      &bfqd->group_weights_tree;
+<<<<<<< HEAD
 			__bfq_weights_tree_remove(bfqd, entity, root);
+=======
+			bfq_weights_tree_remove(bfqd, entity, root);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		entity->weight = new_weight;
 		/*
@@ -832,6 +855,7 @@ void bfq_bfqq_served(struct bfq_queue *bfqq, int served)
 	struct bfq_entity *entity = &bfqq->entity;
 	struct bfq_service_tree *st;
 
+<<<<<<< HEAD
 	if (!bfqq->service_from_backlogged)
 		bfqq->first_IO_time = jiffies;
 
@@ -839,6 +863,8 @@ void bfq_bfqq_served(struct bfq_queue *bfqq, int served)
 		bfqq->service_from_wr += served;
 
 	bfqq->service_from_backlogged += served;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_entity(entity) {
 		st = bfq_entity_service_tree(entity);
 
@@ -847,6 +873,10 @@ void bfq_bfqq_served(struct bfq_queue *bfqq, int served)
 		st->vtime += bfq_delta(served, st->wsum);
 		bfq_forget_idle(st);
 	}
+<<<<<<< HEAD
+=======
+	bfqg_stats_set_start_empty_time(bfqq_group(bfqq));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfq_log_bfqq(bfqq->bfqd, bfqq, "bfqq_served %d secs", served);
 }
 
@@ -881,11 +911,23 @@ void bfq_bfqq_charge_time(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 			  unsigned long time_ms)
 {
 	struct bfq_entity *entity = &bfqq->entity;
+<<<<<<< HEAD
 	unsigned long timeout_ms = jiffies_to_msecs(bfq_timeout);
 	unsigned long bounded_time_ms = min(time_ms, timeout_ms);
 	int serv_to_charge_for_time =
 		(bfqd->bfq_max_budget * bounded_time_ms) / timeout_ms;
 	int tot_serv_to_charge = max(serv_to_charge_for_time, entity->service);
+=======
+	int tot_serv_to_charge = entity->service;
+	unsigned int timeout_ms = jiffies_to_msecs(bfq_timeout);
+
+	if (time_ms > 0 && time_ms < timeout_ms)
+		tot_serv_to_charge =
+			(bfqd->bfq_max_budget * time_ms) / timeout_ms;
+
+	if (tot_serv_to_charge < entity->service)
+		tot_serv_to_charge = entity->service;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Increase budget to avoid inconsistencies */
 	if (tot_serv_to_charge > entity->budget)
@@ -964,7 +1006,11 @@ static void bfq_update_fin_time_enqueue(struct bfq_entity *entity,
  * one of its children receives a new request.
  *
  * Basically, this function updates the timestamps of entity and
+<<<<<<< HEAD
  * inserts entity into its active tree, after possibly extracting it
+=======
+ * inserts entity into its active tree, ater possibly extracting it
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * from its idle tree.
  */
 static void __bfq_activate_entity(struct bfq_entity *entity,
@@ -1008,6 +1054,7 @@ static void __bfq_activate_entity(struct bfq_entity *entity,
 		entity->on_st = true;
 	}
 
+<<<<<<< HEAD
 #ifdef BFQ_GROUP_IOSCHED_ENABLED
 	if (!bfq_entity_to_bfqq(entity)) { /* bfq_group */
 		struct bfq_group *bfqg =
@@ -1018,6 +1065,8 @@ static void __bfq_activate_entity(struct bfq_entity *entity,
 	}
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bfq_update_fin_time_enqueue(entity, st, backshifted);
 }
 
@@ -1552,6 +1601,15 @@ struct bfq_queue *bfq_get_next_queue(struct bfq_data *bfqd)
 		sd->in_service_entity = entity;
 
 		/*
+<<<<<<< HEAD
+=======
+		 * Reset the accumulator of the amount of service that
+		 * the entity is about to receive.
+		 */
+		entity->service = 0;
+
+		/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * If entity is no longer a candidate for next
 		 * service, then it must be extracted from its active
 		 * tree, so as to make sure that it won't be
@@ -1668,7 +1726,12 @@ void bfq_del_bfqq_busy(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 	bfqd->busy_queues--;
 
 	if (!bfqq->dispatched)
+<<<<<<< HEAD
 		bfq_weights_tree_remove(bfqd, bfqq);
+=======
+		bfq_weights_tree_remove(bfqd, &bfqq->entity,
+					&bfqd->queue_weights_tree);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (bfqq->wr_coeff > 1)
 		bfqd->wr_busy_queues--;

@@ -3,6 +3,10 @@
  *
  * Copyright (C) 2012-2016 Synaptics Incorporated. All rights reserved.
  *
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
  * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
  *
@@ -43,7 +47,11 @@
 #define SYSFS_FOLDER_NAME "video"
 
 /*
+<<<<<<< HEAD
 #define RMI_DCS_SUSPEND_RESUME
+=======
+*#define RMI_DCS_SUSPEND_RESUME
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 */
 
 static ssize_t video_sysfs_dcs_write_store(struct device *dev,
@@ -112,10 +120,17 @@ static struct dcs_command resume_sequence[] = {
 #endif
 
 static struct device_attribute attrs[] = {
+<<<<<<< HEAD
 	__ATTR(dcs_write, (S_IWUSR | S_IWGRP),
 			synaptics_rmi4_show_error,
 			video_sysfs_dcs_write_store),
 	__ATTR(param, (S_IWUSR | S_IWGRP),
+=======
+	__ATTR(dcs_write, 0220,
+			synaptics_rmi4_show_error,
+			video_sysfs_dcs_write_store),
+	__ATTR(param, 0220,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			synaptics_rmi4_show_error,
 			video_sysfs_param_store),
 };
@@ -130,7 +145,11 @@ static ssize_t video_sysfs_dcs_write_store(struct device *dev,
 	int retval;
 	unsigned int input;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%x", &input) != 1)
+=======
+	if (kstrtouint(buf, 16, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	retval = video_send_dcs_command((unsigned char)input);
@@ -145,7 +164,11 @@ static ssize_t video_sysfs_param_store(struct device *dev,
 {
 	unsigned int input;
 
+<<<<<<< HEAD
 	if (sscanf(buf, "%x", &input) != 1)
+=======
+	if (kstrtouint(buf, 16, &input) != 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	video->param = (unsigned char)input;

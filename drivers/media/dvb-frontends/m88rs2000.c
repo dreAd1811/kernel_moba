@@ -31,7 +31,11 @@
 #include <linux/types.h>
 
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "m88rs2000.h"
 
 struct m88rs2000_state {
@@ -630,6 +634,7 @@ static int m88rs2000_set_frontend(struct dvb_frontend *fe)
 	if (ret < 0)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	if (fe->ops.tuner_ops.get_frequency) {
 		ret = fe->ops.tuner_ops.get_frequency(fe, &tuner_freq);
 
@@ -640,6 +645,15 @@ static int m88rs2000_set_frontend(struct dvb_frontend *fe)
 	} else {
 		offset = 0;
 	}
+=======
+	if (fe->ops.tuner_ops.get_frequency)
+		ret = fe->ops.tuner_ops.get_frequency(fe, &tuner_freq);
+
+	if (ret < 0)
+		return -ENODEV;
+
+	offset = (s16)((s32)tuner_freq - c->frequency);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* default mclk value 96.4285 * 2 * 1000 = 192857 */
 	if (((c->frequency % 192857) >= (192857 - 3000)) ||
@@ -759,10 +773,17 @@ static const struct dvb_frontend_ops m88rs2000_ops = {
 	.delsys = { SYS_DVBS },
 	.info = {
 		.name			= "M88RS2000 DVB-S",
+<<<<<<< HEAD
 		.frequency_min_hz	=  950 * MHz,
 		.frequency_max_hz	= 2150 * MHz,
 		.frequency_stepsize_hz	= 1 * MHz,
 		.frequency_tolerance_hz	= 5 * MHz,
+=======
+		.frequency_min		= 950000,
+		.frequency_max		= 2150000,
+		.frequency_stepsize	= 1000,	 /* kHz for QPSK frontends */
+		.frequency_tolerance	= 5000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min	= 1000000,
 		.symbol_rate_max	= 45000000,
 		.symbol_rate_tolerance	= 500,	/* ppm */

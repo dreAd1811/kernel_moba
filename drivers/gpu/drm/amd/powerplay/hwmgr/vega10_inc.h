@@ -24,6 +24,7 @@
 #ifndef VEGA10_INC_H
 #define VEGA10_INC_H
 
+<<<<<<< HEAD
 #include "asic_reg/thm/thm_9_0_default.h"
 #include "asic_reg/thm/thm_9_0_offset.h"
 #include "asic_reg/thm/thm_9_0_sh_mask.h"
@@ -38,6 +39,23 @@
 #include "asic_reg/nbio/nbio_6_1_default.h"
 #include "asic_reg/nbio/nbio_6_1_offset.h"
 #include "asic_reg/nbio/nbio_6_1_sh_mask.h"
+=======
+#include "asic_reg/vega10/THM/thm_9_0_default.h"
+#include "asic_reg/vega10/THM/thm_9_0_offset.h"
+#include "asic_reg/vega10/THM/thm_9_0_sh_mask.h"
+
+#include "asic_reg/vega10/MP/mp_9_0_default.h"
+#include "asic_reg/vega10/MP/mp_9_0_offset.h"
+#include "asic_reg/vega10/MP/mp_9_0_sh_mask.h"
+
+#include "asic_reg/vega10/GC/gc_9_0_default.h"
+#include "asic_reg/vega10/GC/gc_9_0_offset.h"
+#include "asic_reg/vega10/GC/gc_9_0_sh_mask.h"
+
+#include "asic_reg/vega10/NBIO/nbio_6_1_default.h"
+#include "asic_reg/vega10/NBIO/nbio_6_1_offset.h"
+#include "asic_reg/vega10/NBIO/nbio_6_1_sh_mask.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #endif

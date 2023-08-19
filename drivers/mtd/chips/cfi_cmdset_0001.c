@@ -608,9 +608,14 @@ static struct mtd_info *cfi_intelext_setup(struct mtd_info *mtd)
 	mtd->size = devsize * cfi->numchips;
 
 	mtd->numeraseregions = cfi->cfiq->NumEraseRegions * cfi->numchips;
+<<<<<<< HEAD
 	mtd->eraseregions = kcalloc(mtd->numeraseregions,
 				    sizeof(struct mtd_erase_region_info),
 				    GFP_KERNEL);
+=======
+	mtd->eraseregions = kzalloc(sizeof(struct mtd_erase_region_info)
+			* mtd->numeraseregions, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mtd->eraseregions)
 		goto setup_err;
 
@@ -759,9 +764,13 @@ static int cfi_intelext_partition_fixup(struct mtd_info *mtd,
 		newcfi = kmalloc(sizeof(struct cfi_private) + numvirtchips * sizeof(struct flchip), GFP_KERNEL);
 		if (!newcfi)
 			return -ENOMEM;
+<<<<<<< HEAD
 		shared = kmalloc_array(cfi->numchips,
 				       sizeof(struct flchip_shared),
 				       GFP_KERNEL);
+=======
+		shared = kmalloc(sizeof(struct flchip_shared) * cfi->numchips, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!shared) {
 			kfree(newcfi);
 			return -ENOMEM;
@@ -2019,8 +2028,25 @@ static int __xipram do_erase_oneblock(struct map_info *map, struct flchip *chip,
 
 static int cfi_intelext_erase_varsize(struct mtd_info *mtd, struct erase_info *instr)
 {
+<<<<<<< HEAD
 	return cfi_varsize_frob(mtd, do_erase_oneblock, instr->addr,
 				instr->len, NULL);
+=======
+	unsigned long ofs, len;
+	int ret;
+
+	ofs = instr->addr;
+	len = instr->len;
+
+	ret = cfi_varsize_frob(mtd, do_erase_oneblock, ofs, len, NULL);
+	if (ret)
+		return ret;
+
+	instr->state = MTD_ERASE_DONE;
+	mtd_erase_callback(instr);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cfi_intelext_sync (struct mtd_info *mtd)

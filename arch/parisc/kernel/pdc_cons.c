@@ -91,8 +91,13 @@ static int pdc_console_setup(struct console *co, char *options)
 
 #define PDC_CONS_POLL_DELAY (30 * HZ / 1000)
 
+<<<<<<< HEAD
 static void pdc_console_poll(struct timer_list *unused);
 static DEFINE_TIMER(pdc_console_timer, pdc_console_poll);
+=======
+static void pdc_console_poll(unsigned long unused);
+static DEFINE_TIMER(pdc_console_timer, pdc_console_poll, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct tty_port tty_port;
 
 static int pdc_console_tty_open(struct tty_struct *tty, struct file *filp)
@@ -135,7 +140,11 @@ static const struct tty_operations pdc_console_tty_ops = {
 	.chars_in_buffer = pdc_console_tty_chars_in_buffer,
 };
 
+<<<<<<< HEAD
 static void pdc_console_poll(struct timer_list *unused)
+=======
+static void pdc_console_poll(unsigned long unused)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int data, count = 0;
 

@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/init.h>
@@ -78,7 +91,10 @@ enum mem_buffer_allocation_mode {
 	MPQ_DMX_TSPP_CONTIGUOUS_PHYS_ALLOC = 1
 };
 
+<<<<<<< HEAD
 /* TODO: Convert below module parameters to sysfs tunables */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* module parameters for load time configuration */
 static int allocation_mode = MPQ_DMX_TSPP_INTERNAL_ALLOC;
 static int tspp_out_buffer_size = TSPP_BUFFER_SIZE;
@@ -86,6 +102,17 @@ static int tspp_desc_size = TSPP_DEFAULT_DESCRIPTOR_SIZE;
 static int tspp_notification_size =
 	TSPP_NOTIFICATION_SIZE(TSPP_DEFAULT_DESCRIPTOR_SIZE);
 static int tspp_channel_timeout = TSPP_CHANNEL_TIMEOUT;
+<<<<<<< HEAD
+=======
+static int tspp_out_ion_heap = ION_QSECOM_HEAP_ID;
+
+module_param(allocation_mode, int, 0644);
+module_param(tspp_out_buffer_size, int, 0644);
+module_param(tspp_desc_size, int, 0644);
+module_param(tspp_notification_size, int, 0644);
+module_param(tspp_channel_timeout, int, 0644);
+module_param(tspp_out_ion_heap, int, 0644);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* The following structure hold singleton information
  * required for dmx implementation on top of TSPP.

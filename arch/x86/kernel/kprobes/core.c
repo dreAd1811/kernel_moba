@@ -63,9 +63,18 @@
 #include <asm/insn.h>
 #include <asm/debugreg.h>
 #include <asm/set_memory.h>
+<<<<<<< HEAD
 
 #include "common.h"
 
+=======
+#include <asm/sections.h>
+
+#include "common.h"
+
+void jprobe_return_end(void);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 DEFINE_PER_CPU(struct kprobe *, current_kprobe) = NULL;
 DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
 
@@ -117,29 +126,49 @@ struct kretprobe_blackpoint kretprobe_blacklist[] = {
 const int kretprobe_blacklist_size = ARRAY_SIZE(kretprobe_blacklist);
 
 static nokprobe_inline void
+<<<<<<< HEAD
 __synthesize_relative_insn(void *dest, void *from, void *to, u8 op)
+=======
+__synthesize_relative_insn(void *from, void *to, u8 op)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct __arch_relative_insn {
 		u8 op;
 		s32 raddr;
 	} __packed *insn;
 
+<<<<<<< HEAD
 	insn = (struct __arch_relative_insn *)dest;
+=======
+	insn = (struct __arch_relative_insn *)from;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	insn->raddr = (s32)((long)(to) - ((long)(from) + 5));
 	insn->op = op;
 }
 
 /* Insert a jump instruction at address 'from', which jumps to address 'to'.*/
+<<<<<<< HEAD
 void synthesize_reljump(void *dest, void *from, void *to)
 {
 	__synthesize_relative_insn(dest, from, to, RELATIVEJUMP_OPCODE);
+=======
+void synthesize_reljump(void *from, void *to)
+{
+	__synthesize_relative_insn(from, to, RELATIVEJUMP_OPCODE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 NOKPROBE_SYMBOL(synthesize_reljump);
 
 /* Insert a call instruction at address 'from', which calls address 'to'.*/
+<<<<<<< HEAD
 void synthesize_relcall(void *dest, void *from, void *to)
 {
 	__synthesize_relative_insn(dest, from, to, RELATIVECALL_OPCODE);
+=======
+void synthesize_relcall(void *from, void *to)
+{
+	__synthesize_relative_insn(from, to, RELATIVECALL_OPCODE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 NOKPROBE_SYMBOL(synthesize_relcall);
 
@@ -344,11 +373,18 @@ static int is_IF_modifier(kprobe_opcode_t *insn)
 /*
  * Copy an instruction with recovering modified instruction by kprobes
  * and adjust the displacement if the instruction uses the %rip-relative
+<<<<<<< HEAD
  * addressing mode. Note that since @real will be the final place of copied
  * instruction, displacement must be adjust by @real, not @dest.
  * This returns the length of copied instruction, or 0 if it has an error.
  */
 int __copy_instruction(u8 *dest, u8 *src, u8 *real, struct insn *insn)
+=======
+ * addressing mode.
+ * This returns the length of copied instruction, or 0 if it has an error.
+ */
+int __copy_instruction(u8 *dest, u8 *src, struct insn *insn)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	kprobe_opcode_t buf[MAX_INSN_SIZE];
 	unsigned long recovered_insn =
@@ -390,7 +426,11 @@ int __copy_instruction(u8 *dest, u8 *src, u8 *real, struct insn *insn)
 		 * have given.
 		 */
 		newdisp = (u8 *) src + (s64) insn->displacement.value
+<<<<<<< HEAD
 			  - (u8 *) real;
+=======
+			  - (u8 *) dest;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if ((s64) (s32) newdisp != newdisp) {
 			pr_err("Kprobes error: new displacement does not fit into s32 (%llx)\n", newdisp);
 			return 0;
@@ -403,6 +443,7 @@ int __copy_instruction(u8 *dest, u8 *src, u8 *real, struct insn *insn)
 }
 
 /* Prepare reljump right after instruction to boost */
+<<<<<<< HEAD
 static int prepare_boost(kprobe_opcode_t *buf, struct kprobe *p,
 			  struct insn *insn)
 {
@@ -410,17 +451,29 @@ static int prepare_boost(kprobe_opcode_t *buf, struct kprobe *p,
 
 	if (can_boost(insn, p->addr) &&
 	    MAX_INSN_SIZE - len >= RELATIVEJUMP_SIZE) {
+=======
+static void prepare_boost(struct kprobe *p, struct insn *insn)
+{
+	if (can_boost(insn, p->addr) &&
+	    MAX_INSN_SIZE - insn->length >= RELATIVEJUMP_SIZE) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * These instructions can be executed directly if it
 		 * jumps back to correct address.
 		 */
+<<<<<<< HEAD
 		synthesize_reljump(buf + len, p->ainsn.insn + len,
 				   p->addr + insn->length);
 		len += RELATIVEJUMP_SIZE;
+=======
+		synthesize_reljump(p->ainsn.insn + insn->length,
+				   p->addr + insn->length);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		p->ainsn.boostable = true;
 	} else {
 		p->ainsn.boostable = false;
 	}
+<<<<<<< HEAD
 
 	return len;
 }
@@ -447,28 +500,44 @@ void *alloc_insn_page(void)
 	set_memory_x((unsigned long)page, 1);
 
 	return page;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Recover page to RW mode before releasing it */
 void free_insn_page(void *page)
 {
+<<<<<<< HEAD
 	/*
 	 * First make the page non-executable, and only then make it writable to
 	 * prevent it from being W+X in between.
 	 */
 	set_memory_nx((unsigned long)page, 1);
 	set_memory_rw((unsigned long)page, 1);
+=======
+	set_memory_nx((unsigned long)page & PAGE_MASK, 1);
+	set_memory_rw((unsigned long)page & PAGE_MASK, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	module_memfree(page);
 }
 
 static int arch_copy_kprobe(struct kprobe *p)
 {
 	struct insn insn;
+<<<<<<< HEAD
 	kprobe_opcode_t buf[MAX_INSN_SIZE];
 	int len;
 
 	/* Copy an instruction with recovering if other optprobe modifies it.*/
 	len = __copy_instruction(buf, p->addr, p->ainsn.insn, &insn);
+=======
+	int len;
+
+	set_memory_rw((unsigned long)p->ainsn.insn & PAGE_MASK, 1);
+
+	/* Copy an instruction with recovering if other optprobe modifies it.*/
+	len = __copy_instruction(p->ainsn.insn, p->addr, &insn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!len)
 		return -EINVAL;
 
@@ -476,6 +545,7 @@ static int arch_copy_kprobe(struct kprobe *p)
 	 * __copy_instruction can modify the displacement of the instruction,
 	 * but it doesn't affect boostable check.
 	 */
+<<<<<<< HEAD
 	len = prepare_boost(buf, p, &insn);
 
 	/* Check whether the instruction modifies Interrupt Flag or not */
@@ -486,6 +556,17 @@ static int arch_copy_kprobe(struct kprobe *p)
 
 	/* OK, write back the instruction(s) into ROX insn buffer */
 	text_poke(p->ainsn.insn, buf, len);
+=======
+	prepare_boost(p, &insn);
+
+	set_memory_ro((unsigned long)p->ainsn.insn & PAGE_MASK, 1);
+
+	/* Check whether the instruction modifies Interrupt Flag or not */
+	p->ainsn.if_modifier = is_IF_modifier(p->ainsn.insn);
+
+	/* Also, displacement change doesn't affect the first byte */
+	p->opcode = p->ainsn.insn[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -609,6 +690,10 @@ static void setup_singlestep(struct kprobe *p, struct pt_regs *regs,
 		 * stepping.
 		 */
 		regs->ip = (unsigned long)p->ainsn.insn;
+<<<<<<< HEAD
+=======
+		preempt_enable_no_resched();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 #endif
@@ -680,10 +765,19 @@ int kprobe_int3_handler(struct pt_regs *regs)
 
 	addr = (kprobe_opcode_t *)(regs->ip - sizeof(kprobe_opcode_t));
 	/*
+<<<<<<< HEAD
 	 * We don't want to be preempted for the entire duration of kprobe
 	 * processing. Since int3 and debug trap disables irqs and we clear
 	 * IF while singlestepping, it must be no preemptible.
 	 */
+=======
+	 * We don't want to be preempted for the entire
+	 * duration of kprobe processing. We conditionally
+	 * re-enable preemption at the end of this function,
+	 * and also in reenter_kprobe() and setup_singlestep().
+	 */
+	preempt_disable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kcb = get_kprobe_ctlblk();
 	p = get_kprobe(addr);
@@ -699,6 +793,7 @@ int kprobe_int3_handler(struct pt_regs *regs)
 			/*
 			 * If we have no pre-handler or it returned 0, we
 			 * continue with normal processing.  If we have a
+<<<<<<< HEAD
 			 * pre-handler and it returned non-zero, that means
 			 * user handler setup registers to exit to another
 			 * instruction, we must skip the single stepping.
@@ -707,6 +802,15 @@ int kprobe_int3_handler(struct pt_regs *regs)
 				setup_singlestep(p, regs, kcb, 0);
 			else
 				reset_current_kprobe();
+=======
+			 * pre-handler and it returned non-zero, it prepped
+			 * for calling the break_handler below on re-entry
+			 * for jprobe processing, so get out doing nothing
+			 * more here.
+			 */
+			if (!p->pre_handler || !p->pre_handler(p, regs))
+				setup_singlestep(p, regs, kcb, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 1;
 		}
 	} else if (*addr != BREAKPOINT_INSTRUCTION) {
@@ -720,9 +824,24 @@ int kprobe_int3_handler(struct pt_regs *regs)
 		 * the original instruction.
 		 */
 		regs->ip = (unsigned long)addr;
+<<<<<<< HEAD
 		return 1;
 	} /* else: not a kprobe fault; let the kernel handle it */
 
+=======
+		preempt_enable_no_resched();
+		return 1;
+	} else if (kprobe_running()) {
+		p = __this_cpu_read(current_kprobe);
+		if (p->break_handler && p->break_handler(p, regs)) {
+			if (!skip_singlestep(p, regs, kcb))
+				setup_singlestep(p, regs, kcb, 0);
+			return 1;
+		}
+	} /* else: not a kprobe fault; let the kernel handle it */
+
+	preempt_enable_no_resched();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 NOKPROBE_SYMBOL(kprobe_int3_handler);
@@ -765,16 +884,22 @@ asm(
 NOKPROBE_SYMBOL(kretprobe_trampoline);
 STACK_FRAME_NON_STANDARD(kretprobe_trampoline);
 
+<<<<<<< HEAD
 static struct kprobe kretprobe_kprobe = {
 	.addr = (void *)kretprobe_trampoline,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Called from kretprobe_trampoline
  */
 __visible __used void *trampoline_handler(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	struct kprobe_ctlblk *kcb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kretprobe_instance *ri = NULL;
 	struct hlist_head *head, empty_rp;
 	struct hlist_node *tmp;
@@ -784,16 +909,23 @@ __visible __used void *trampoline_handler(struct pt_regs *regs)
 	void *frame_pointer;
 	bool skipped = false;
 
+<<<<<<< HEAD
 	preempt_disable();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Set a dummy kprobe for avoiding kretprobe recursion.
 	 * Since kretprobe never run in kprobe handler, kprobe must not
 	 * be running at this point.
 	 */
+<<<<<<< HEAD
 	kcb = get_kprobe_ctlblk();
 	__this_cpu_write(current_kprobe, &kretprobe_kprobe);
 	kcb->kprobe_status = KPROBE_HIT_ACTIVE;
+=======
+	kprobe_busy_begin();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_HLIST_HEAD(&empty_rp);
 	kretprobe_hash_lock(current, &head, &flags);
@@ -872,7 +1004,11 @@ __visible __used void *trampoline_handler(struct pt_regs *regs)
 			__this_cpu_write(current_kprobe, &ri->rp->kp);
 			ri->ret_addr = correct_ret_addr;
 			ri->rp->handler(ri, regs);
+<<<<<<< HEAD
 			__this_cpu_write(current_kprobe, &kretprobe_kprobe);
+=======
+			__this_cpu_write(current_kprobe, &kprobe_busy);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		recycle_rp_inst(ri, &empty_rp);
@@ -888,8 +1024,12 @@ __visible __used void *trampoline_handler(struct pt_regs *regs)
 
 	kretprobe_hash_unlock(current, &flags);
 
+<<<<<<< HEAD
 	__this_cpu_write(current_kprobe, NULL);
 	preempt_enable();
+=======
+	kprobe_busy_end();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
 		hlist_del(&ri->hlist);
@@ -1016,6 +1156,11 @@ int kprobe_debug_handler(struct pt_regs *regs)
 	}
 	reset_current_kprobe();
 out:
+<<<<<<< HEAD
+=======
+	preempt_enable_no_resched();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * if somebody else is singlestepping across a probe point, flags
 	 * will have TF set, in which case, continue the remaining processing
@@ -1062,6 +1207,10 @@ int kprobe_fault_handler(struct pt_regs *regs, int trapnr)
 			restore_previous_kprobe(kcb);
 		else
 			reset_current_kprobe();
+<<<<<<< HEAD
+=======
+		preempt_enable_no_resched();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (kcb->kprobe_status == KPROBE_HIT_ACTIVE ||
 		   kcb->kprobe_status == KPROBE_HIT_SSDONE) {
 		/*
@@ -1124,6 +1273,96 @@ int kprobe_exceptions_notify(struct notifier_block *self, unsigned long val,
 }
 NOKPROBE_SYMBOL(kprobe_exceptions_notify);
 
+<<<<<<< HEAD
+=======
+int setjmp_pre_handler(struct kprobe *p, struct pt_regs *regs)
+{
+	struct jprobe *jp = container_of(p, struct jprobe, kp);
+	unsigned long addr;
+	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+
+	kcb->jprobe_saved_regs = *regs;
+	kcb->jprobe_saved_sp = stack_addr(regs);
+	addr = (unsigned long)(kcb->jprobe_saved_sp);
+
+	/*
+	 * As Linus pointed out, gcc assumes that the callee
+	 * owns the argument space and could overwrite it, e.g.
+	 * tailcall optimization. So, to be absolutely safe
+	 * we also save and restore enough stack bytes to cover
+	 * the argument area.
+	 * Use __memcpy() to avoid KASAN stack out-of-bounds reports as we copy
+	 * raw stack chunk with redzones:
+	 */
+	__memcpy(kcb->jprobes_stack, (kprobe_opcode_t *)addr, MIN_STACK_SIZE(addr));
+	regs->ip = (unsigned long)(jp->entry);
+
+	/*
+	 * jprobes use jprobe_return() which skips the normal return
+	 * path of the function, and this messes up the accounting of the
+	 * function graph tracer to get messed up.
+	 *
+	 * Pause function graph tracing while performing the jprobe function.
+	 */
+	pause_graph_tracing();
+	return 1;
+}
+NOKPROBE_SYMBOL(setjmp_pre_handler);
+
+void jprobe_return(void)
+{
+	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+
+	/* Unpoison stack redzones in the frames we are going to jump over. */
+	kasan_unpoison_stack_above_sp_to(kcb->jprobe_saved_sp);
+
+	asm volatile (
+#ifdef CONFIG_X86_64
+			"       xchg   %%rbx,%%rsp	\n"
+#else
+			"       xchgl   %%ebx,%%esp	\n"
+#endif
+			"       int3			\n"
+			"       .globl jprobe_return_end\n"
+			"       jprobe_return_end:	\n"
+			"       nop			\n"::"b"
+			(kcb->jprobe_saved_sp):"memory");
+}
+NOKPROBE_SYMBOL(jprobe_return);
+NOKPROBE_SYMBOL(jprobe_return_end);
+
+int longjmp_break_handler(struct kprobe *p, struct pt_regs *regs)
+{
+	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
+	u8 *addr = (u8 *) (regs->ip - 1);
+	struct jprobe *jp = container_of(p, struct jprobe, kp);
+	void *saved_sp = kcb->jprobe_saved_sp;
+
+	if ((addr > (u8 *) jprobe_return) &&
+	    (addr < (u8 *) jprobe_return_end)) {
+		if (stack_addr(regs) != saved_sp) {
+			struct pt_regs *saved_regs = &kcb->jprobe_saved_regs;
+			printk(KERN_ERR
+			       "current sp %p does not match saved sp %p\n",
+			       stack_addr(regs), saved_sp);
+			printk(KERN_ERR "Saved registers for jprobe %p\n", jp);
+			show_regs(saved_regs);
+			printk(KERN_ERR "Current registers\n");
+			show_regs(regs);
+			BUG();
+		}
+		/* It's OK to start function graph tracing again */
+		unpause_graph_tracing();
+		*regs = kcb->jprobe_saved_regs;
+		__memcpy(saved_sp, kcb->jprobes_stack, MIN_STACK_SIZE(saved_sp));
+		preempt_enable_no_resched();
+		return 1;
+	}
+	return 0;
+}
+NOKPROBE_SYMBOL(longjmp_break_handler);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool arch_within_kprobe_blacklist(unsigned long addr)
 {
 	bool is_in_entry_trampoline_section = false;

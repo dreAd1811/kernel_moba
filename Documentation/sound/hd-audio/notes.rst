@@ -192,7 +192,11 @@ preset model instead of PCI (and codec-) SSID look-up.
 What ``model`` option values are available depends on the codec chip.
 Check your codec chip from the codec proc file (see "Codec Proc-File"
 section below).  It will show the vendor/product name of your codec
+<<<<<<< HEAD
 chip.  Then, see Documentation/sound/hd-audio/models.rst file,
+=======
+chip.  Then, see Documentation/sound/HD-Audio-Models.rst file,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 the section of HD-audio driver.  You can find a list of codecs
 and ``model`` options belonging to each codec.  For example, for Realtek
 ALC262 codec chip, pass ``model=ultra`` for devices that are compatible

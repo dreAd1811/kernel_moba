@@ -20,16 +20,20 @@
 #include "msm_mmu.h"
 #include "msm_fence.h"
 
+<<<<<<< HEAD
 #include <generated/utsrelease.h>
 #include <linux/string_helpers.h>
 #include <linux/pm_opp.h>
 #include <linux/devfreq.h>
 #include <linux/devcoredump.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Power Management:
  */
 
+<<<<<<< HEAD
 static int msm_devfreq_target(struct device *dev, unsigned long *freq,
 		u32 flags)
 {
@@ -107,6 +111,39 @@ static void msm_devfreq_init(struct msm_gpu *gpu)
 	}
 }
 
+=======
+#ifdef DOWNSTREAM_CONFIG_MSM_BUS_SCALING
+#include <mach/board.h>
+static void bs_init(struct msm_gpu *gpu)
+{
+	if (gpu->bus_scale_table) {
+		gpu->bsc = msm_bus_scale_register_client(gpu->bus_scale_table);
+		DBG("bus scale client: %08x", gpu->bsc);
+	}
+}
+
+static void bs_fini(struct msm_gpu *gpu)
+{
+	if (gpu->bsc) {
+		msm_bus_scale_unregister_client(gpu->bsc);
+		gpu->bsc = 0;
+	}
+}
+
+static void bs_set(struct msm_gpu *gpu, int idx)
+{
+	if (gpu->bsc) {
+		DBG("set bus scaling: %d", idx);
+		msm_bus_scale_client_update_request(gpu->bsc, idx);
+	}
+}
+#else
+static void bs_init(struct msm_gpu *gpu) {}
+static void bs_fini(struct msm_gpu *gpu) {}
+static void bs_set(struct msm_gpu *gpu, int idx) {}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int enable_pwrrail(struct msm_gpu *gpu)
 {
 	struct drm_device *dev = gpu->dev;
@@ -142,6 +179,11 @@ static int disable_pwrrail(struct msm_gpu *gpu)
 
 static int enable_clk(struct msm_gpu *gpu)
 {
+<<<<<<< HEAD
+=======
+	int i;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gpu->core_clk && gpu->fast_rate)
 		clk_set_rate(gpu->core_clk, gpu->fast_rate);
 
@@ -149,12 +191,36 @@ static int enable_clk(struct msm_gpu *gpu)
 	if (gpu->rbbmtimer_clk)
 		clk_set_rate(gpu->rbbmtimer_clk, 19200000);
 
+<<<<<<< HEAD
 	return clk_bulk_prepare_enable(gpu->nr_clocks, gpu->grp_clks);
+=======
+	for (i = gpu->nr_clocks - 1; i >= 0; i--)
+		if (gpu->grp_clks[i])
+			clk_prepare(gpu->grp_clks[i]);
+
+	for (i = gpu->nr_clocks - 1; i >= 0; i--)
+		if (gpu->grp_clks[i])
+			clk_enable(gpu->grp_clks[i]);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int disable_clk(struct msm_gpu *gpu)
 {
+<<<<<<< HEAD
 	clk_bulk_disable_unprepare(gpu->nr_clocks, gpu->grp_clks);
+=======
+	int i;
+
+	for (i = gpu->nr_clocks - 1; i >= 0; i--)
+		if (gpu->grp_clks[i])
+			clk_disable(gpu->grp_clks[i]);
+
+	for (i = gpu->nr_clocks - 1; i >= 0; i--)
+		if (gpu->grp_clks[i])
+			clk_unprepare(gpu->grp_clks[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set the clock to a deliberately low rate. On older targets the clock
@@ -174,6 +240,11 @@ static int enable_axi(struct msm_gpu *gpu)
 {
 	if (gpu->ebi1_clk)
 		clk_prepare_enable(gpu->ebi1_clk);
+<<<<<<< HEAD
+=======
+	if (gpu->bus_freq)
+		bs_set(gpu, gpu->bus_freq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -181,6 +252,11 @@ static int disable_axi(struct msm_gpu *gpu)
 {
 	if (gpu->ebi1_clk)
 		clk_disable_unprepare(gpu->ebi1_clk);
+<<<<<<< HEAD
+=======
+	if (gpu->bus_freq)
+		bs_set(gpu, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -202,6 +278,7 @@ int msm_gpu_pm_resume(struct msm_gpu *gpu)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (gpu->devfreq.devfreq) {
 		gpu->devfreq.busy_cycles = 0;
 		gpu->devfreq.time = ktime_get();
@@ -209,6 +286,8 @@ int msm_gpu_pm_resume(struct msm_gpu *gpu)
 		devfreq_resume_device(gpu->devfreq.devfreq);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpu->needs_hw_init = true;
 
 	return 0;
@@ -220,9 +299,12 @@ int msm_gpu_pm_suspend(struct msm_gpu *gpu)
 
 	DBG("%s", gpu->name);
 
+<<<<<<< HEAD
 	if (gpu->devfreq.devfreq)
 		devfreq_suspend_device(gpu->devfreq.devfreq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = disable_axi(gpu);
 	if (ret)
 		return ret;
@@ -256,6 +338,7 @@ int msm_gpu_hw_init(struct msm_gpu *gpu)
 	return ret;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DEV_COREDUMP
 static ssize_t msm_gpu_devcoredump_read(char *buffer, loff_t offset,
 		size_t count, void *data, size_t datalen)
@@ -373,10 +456,13 @@ static void msm_gpu_crashstate_capture(struct msm_gpu *gpu,
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Hangcheck detection for locked gpu:
  */
 
+<<<<<<< HEAD
 static void update_fences(struct msm_gpu *gpu, struct msm_ringbuffer *ring,
 		uint32_t fence)
 {
@@ -405,21 +491,31 @@ find_submit(struct msm_ringbuffer *ring, uint32_t fence)
 	return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void retire_submits(struct msm_gpu *gpu);
 
 static void recover_worker(struct work_struct *work)
 {
 	struct msm_gpu *gpu = container_of(work, struct msm_gpu, recover_work);
 	struct drm_device *dev = gpu->dev;
+<<<<<<< HEAD
 	struct msm_drm_private *priv = dev->dev_private;
 	struct msm_gem_submit *submit;
 	struct msm_ringbuffer *cur_ring = gpu->funcs->active_ring(gpu);
 	char *comm = NULL, *cmd = NULL;
 	int i;
+=======
+	struct msm_gem_submit *submit;
+	uint32_t fence = gpu->funcs->last_fence(gpu);
+
+	msm_update_fence(gpu->fctx, fence + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev->struct_mutex);
 
 	dev_err(dev->dev, "%s: hangcheck recover!\n", gpu->name);
+<<<<<<< HEAD
 
 	submit = find_submit(cur_ring, cur_ring->memptrs->fence + 1);
 	if (submit) {
@@ -481,6 +577,21 @@ static void recover_worker(struct work_struct *work)
 			fence++;
 
 		update_fences(gpu, ring, fence);
+=======
+	list_for_each_entry(submit, &gpu->submit_list, node) {
+		if (submit->fence->seqno == (fence + 1)) {
+			struct task_struct *task;
+
+			rcu_read_lock();
+			task = pid_task(submit->pid, PIDTYPE_PID);
+			if (task) {
+				dev_err(dev->dev, "%s: offending task: %s\n",
+						gpu->name, task->comm);
+			}
+			rcu_read_unlock();
+			break;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (msm_gpu_active(gpu)) {
@@ -491,6 +602,7 @@ static void recover_worker(struct work_struct *work)
 		gpu->funcs->recover(gpu);
 		pm_runtime_put_sync(&gpu->pdev->dev);
 
+<<<<<<< HEAD
 		/*
 		 * Replay all remaining submits starting with highest priority
 		 * ring
@@ -500,6 +612,11 @@ static void recover_worker(struct work_struct *work)
 
 			list_for_each_entry(submit, &ring->submits, node)
 				gpu->funcs->submit(gpu, submit, NULL);
+=======
+		/* replay the remaining submits after the one that hung: */
+		list_for_each_entry(submit, &gpu->submit_list, node) {
+			gpu->funcs->submit(gpu, submit, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -515,6 +632,7 @@ static void hangcheck_timer_reset(struct msm_gpu *gpu)
 			round_jiffies_up(jiffies + DRM_MSM_HANGCHECK_JIFFIES));
 }
 
+<<<<<<< HEAD
 static void hangcheck_handler(struct timer_list *t)
 {
 	struct msm_gpu *gpu = from_timer(gpu, t, hangcheck_timer);
@@ -536,11 +654,36 @@ static void hangcheck_handler(struct timer_list *t)
 		dev_err(dev->dev, "%s:     submitted fence: %u\n",
 				gpu->name, ring->seqno);
 
+=======
+static void hangcheck_handler(unsigned long data)
+{
+	struct msm_gpu *gpu = (struct msm_gpu *)data;
+	struct drm_device *dev = gpu->dev;
+	struct msm_drm_private *priv = dev->dev_private;
+	uint32_t fence = gpu->funcs->last_fence(gpu);
+
+	if (fence != gpu->hangcheck_fence) {
+		/* some progress has been made.. ya! */
+		gpu->hangcheck_fence = fence;
+	} else if (fence < gpu->fctx->last_fence) {
+		/* no progress and not done.. hung! */
+		gpu->hangcheck_fence = fence;
+		dev_err(dev->dev, "%s: hangcheck detected gpu lockup!\n",
+				gpu->name);
+		dev_err(dev->dev, "%s:     completed fence: %u\n",
+				gpu->name, fence);
+		dev_err(dev->dev, "%s:     submitted fence: %u\n",
+				gpu->name, gpu->fctx->last_fence);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		queue_work(priv->wq, &gpu->recover_work);
 	}
 
 	/* if still more pending work, reset the hangcheck timer: */
+<<<<<<< HEAD
 	if (ring->seqno > ring->hangcheck_fence)
+=======
+	if (gpu->fctx->last_fence > gpu->hangcheck_fence)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hangcheck_timer_reset(gpu);
 
 	/* workaround for missing irq: */
@@ -658,7 +801,11 @@ static void retire_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
 		/* move to inactive: */
 		msm_gem_move_to_inactive(&msm_obj->base);
 		msm_gem_put_iova(&msm_obj->base, gpu->aspace);
+<<<<<<< HEAD
 		drm_gem_object_put(&msm_obj->base);
+=======
+		drm_gem_object_unreference(&msm_obj->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pm_runtime_mark_last_busy(&gpu->pdev->dev);
@@ -669,6 +816,7 @@ static void retire_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
 static void retire_submits(struct msm_gpu *gpu)
 {
 	struct drm_device *dev = gpu->dev;
+<<<<<<< HEAD
 	struct msm_gem_submit *submit, *tmp;
 	int i;
 
@@ -681,6 +829,21 @@ static void retire_submits(struct msm_gpu *gpu)
 		list_for_each_entry_safe(submit, tmp, &ring->submits, node) {
 			if (dma_fence_is_signaled(submit->fence))
 				retire_submit(gpu, submit);
+=======
+
+	WARN_ON(!mutex_is_locked(&dev->struct_mutex));
+
+	while (!list_empty(&gpu->submit_list)) {
+		struct msm_gem_submit *submit;
+
+		submit = list_first_entry(&gpu->submit_list,
+				struct msm_gem_submit, node);
+
+		if (dma_fence_is_signaled(submit->fence)) {
+			retire_submit(gpu, submit);
+		} else {
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 }
@@ -689,10 +852,16 @@ static void retire_worker(struct work_struct *work)
 {
 	struct msm_gpu *gpu = container_of(work, struct msm_gpu, retire_work);
 	struct drm_device *dev = gpu->dev;
+<<<<<<< HEAD
 	int i;
 
 	for (i = 0; i < gpu->nr_rings; i++)
 		update_fences(gpu, gpu->rb[i], gpu->rb[i]->memptrs->fence);
+=======
+	uint32_t fence = gpu->funcs->last_fence(gpu);
+
+	msm_update_fence(gpu->fctx, fence);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev->struct_mutex);
 	retire_submits(gpu);
@@ -713,7 +882,10 @@ void msm_gpu_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 {
 	struct drm_device *dev = gpu->dev;
 	struct msm_drm_private *priv = dev->dev_private;
+<<<<<<< HEAD
 	struct msm_ringbuffer *ring = submit->ring;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	WARN_ON(!mutex_is_locked(&dev->struct_mutex));
@@ -722,11 +894,17 @@ void msm_gpu_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 
 	msm_gpu_hw_init(gpu);
 
+<<<<<<< HEAD
 	submit->seqno = ++ring->seqno;
 
 	list_add_tail(&submit->node, &ring->submits);
 
 	msm_rd_dump_submit(priv->rd, submit, NULL);
+=======
+	list_add_tail(&submit->node, &gpu->submit_list);
+
+	msm_rd_dump_submit(submit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	update_sw_cntrs(gpu);
 
@@ -740,7 +918,11 @@ void msm_gpu_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 		WARN_ON(is_active(msm_obj) && (msm_obj->gpu != gpu));
 
 		/* submit takes a reference to the bo and iova until retired: */
+<<<<<<< HEAD
 		drm_gem_object_get(&msm_obj->base);
+=======
+		drm_gem_object_reference(&msm_obj->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		msm_gem_get_iova(&msm_obj->base,
 				submit->gpu->aspace, &iova);
 
@@ -766,6 +948,7 @@ static irqreturn_t irq_handler(int irq, void *data)
 	return gpu->funcs->irq(gpu);
 }
 
+<<<<<<< HEAD
 static int get_clocks(struct platform_device *pdev, struct msm_gpu *gpu)
 {
 	int ret = msm_clk_bulk_get(&pdev->dev, &gpu->grp_clks);
@@ -782,6 +965,44 @@ static int get_clocks(struct platform_device *pdev, struct msm_gpu *gpu)
 
 	gpu->rbbmtimer_clk = msm_clk_bulk_get_clock(gpu->grp_clks,
 		gpu->nr_clocks, "rbbmtimer");
+=======
+static struct clk *get_clock(struct device *dev, const char *name)
+{
+	struct clk *clk = devm_clk_get(dev, name);
+
+	return IS_ERR(clk) ? NULL : clk;
+}
+
+static int get_clocks(struct platform_device *pdev, struct msm_gpu *gpu)
+{
+	struct device *dev = &pdev->dev;
+	struct property *prop;
+	const char *name;
+	int i = 0;
+
+	gpu->nr_clocks = of_property_count_strings(dev->of_node, "clock-names");
+	if (gpu->nr_clocks < 1) {
+		gpu->nr_clocks = 0;
+		return 0;
+	}
+
+	gpu->grp_clks = devm_kcalloc(dev, sizeof(struct clk *), gpu->nr_clocks,
+		GFP_KERNEL);
+	if (!gpu->grp_clks)
+		return -ENOMEM;
+
+	of_property_for_each_string(dev->of_node, "clock-names", prop, name) {
+		gpu->grp_clks[i] = get_clock(dev, name);
+
+		/* Remember the key clocks that we need to control later */
+		if (!strcmp(name, "core") || !strcmp(name, "core_clk"))
+			gpu->core_clk = gpu->grp_clks[i];
+		else if (!strcmp(name, "rbbmtimer") || !strcmp(name, "rbbmtimer_clk"))
+			gpu->rbbmtimer_clk = gpu->grp_clks[i];
+
+		++i;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -829,9 +1050,13 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 		struct msm_gpu *gpu, const struct msm_gpu_funcs *funcs,
 		const char *name, struct msm_gpu_config *config)
 {
+<<<<<<< HEAD
 	int i, ret, nr_rings = config->nr_rings;
 	void *memptrs;
 	uint64_t memptrs_iova;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(gpu->num_perfcntrs > ARRAY_SIZE(gpu->last_cntrs)))
 		gpu->num_perfcntrs = ARRAY_SIZE(gpu->last_cntrs);
@@ -839,13 +1064,29 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 	gpu->dev = drm;
 	gpu->funcs = funcs;
 	gpu->name = name;
+<<<<<<< HEAD
+=======
+	gpu->fctx = msm_fence_context_alloc(drm, name);
+	if (IS_ERR(gpu->fctx)) {
+		ret = PTR_ERR(gpu->fctx);
+		gpu->fctx = NULL;
+		goto fail;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD(&gpu->active_list);
 	INIT_WORK(&gpu->retire_work, retire_worker);
 	INIT_WORK(&gpu->recover_work, recover_worker);
 
+<<<<<<< HEAD
 
 	timer_setup(&gpu->hangcheck_timer, hangcheck_handler, 0);
+=======
+	INIT_LIST_HEAD(&gpu->submit_list);
+
+	setup_timer(&gpu->hangcheck_timer, hangcheck_handler,
+			(unsigned long)gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&gpu->perf_lock);
 
@@ -895,7 +1136,11 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 	gpu->pdev = pdev;
 	platform_set_drvdata(pdev, gpu);
 
+<<<<<<< HEAD
 	msm_devfreq_init(gpu);
+=======
+	bs_init(gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gpu->aspace = msm_gpu_create_address_space(gpu, pdev,
 		config->va_start, config->va_end);
@@ -907,6 +1152,7 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	memptrs = msm_gem_kernel_new(drm, sizeof(*gpu->memptrs_bo),
 		MSM_BO_UNCACHED, gpu->aspace, &gpu->memptrs_bo,
 		&memptrs_iova);
@@ -954,18 +1200,36 @@ fail:
 		drm_gem_object_put_unlocked(gpu->memptrs_bo);
 	}
 
+=======
+	/* Create ringbuffer: */
+	gpu->rb = msm_ringbuffer_new(gpu, config->ringsz);
+	if (IS_ERR(gpu->rb)) {
+		ret = PTR_ERR(gpu->rb);
+		gpu->rb = NULL;
+		dev_err(drm->dev, "could not create ringbuffer: %d\n", ret);
+		goto fail;
+	}
+
+	return 0;
+
+fail:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_set_drvdata(pdev, NULL);
 	return ret;
 }
 
 void msm_gpu_cleanup(struct msm_gpu *gpu)
 {
+<<<<<<< HEAD
 	int i;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG("%s", gpu->name);
 
 	WARN_ON(!list_empty(&gpu->active_list));
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(gpu->rb); i++) {
 		msm_ringbuffer_destroy(gpu->rb[i]);
 		gpu->rb[i] = NULL;
@@ -975,6 +1239,14 @@ void msm_gpu_cleanup(struct msm_gpu *gpu)
 		msm_gem_put_vaddr(gpu->memptrs_bo);
 		msm_gem_put_iova(gpu->memptrs_bo, gpu->aspace);
 		drm_gem_object_put_unlocked(gpu->memptrs_bo);
+=======
+	bs_fini(gpu);
+
+	if (gpu->rb) {
+		if (gpu->rb_iova)
+			msm_gem_put_iova(gpu->rb->bo, gpu->aspace);
+		msm_ringbuffer_destroy(gpu->rb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!IS_ERR_OR_NULL(gpu->aspace)) {

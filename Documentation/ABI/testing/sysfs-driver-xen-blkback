@@ -15,6 +15,7 @@ Description:
                 blkback. If the frontend tries to use more than
                 max_persistent_grants, the LRU kicks in and starts
                 removing 5% of max_persistent_grants every 100ms.
+<<<<<<< HEAD
 
 What:           /sys/module/xen_blkback/parameters/persistent_grant_unused_seconds
 Date:           August 2018
@@ -25,3 +26,5 @@ Description:
                 allocated without being in use. The time is in
                 seconds, 0 means indefinitely long.
                 The default is 60 seconds.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

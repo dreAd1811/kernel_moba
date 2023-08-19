@@ -119,20 +119,32 @@ static int of_get_dml_pipe_index(struct device_node *np, const char *name)
 }
 
 /* Initialize the dml hardware connected to SD Card controller */
+<<<<<<< HEAD
 static void qcom_dma_setup(struct mmci_host *host)
+=======
+int dml_hw_init(struct mmci_host *host, struct device_node *np)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 config;
 	void __iomem *base;
 	int consumer_id, producer_id;
+<<<<<<< HEAD
 	struct device_node *np = host->mmc->parent->of_node;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	consumer_id = of_get_dml_pipe_index(np, "tx");
 	producer_id = of_get_dml_pipe_index(np, "rx");
 
+<<<<<<< HEAD
 	if (producer_id < 0 || consumer_id < 0) {
 		host->variant->qcom_dml = false;
 		return;
 	}
+=======
+	if (producer_id < 0 || consumer_id < 0)
+		return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	base = host->base + DML_OFFSET;
 
@@ -175,6 +187,7 @@ static void qcom_dma_setup(struct mmci_host *host)
 
 	/* Make sure dml initialization is finished */
 	mb();
+<<<<<<< HEAD
 }
 
 static struct mmci_host_ops qcom_variant_ops = {
@@ -184,4 +197,8 @@ static struct mmci_host_ops qcom_variant_ops = {
 void qcom_variant_init(struct mmci_host *host)
 {
 	host->ops = &qcom_variant_ops;
+=======
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

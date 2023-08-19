@@ -57,6 +57,14 @@ torture_type	  Type of lock to torture. By default, only spinlocks will
 
 		     o "rwsem_lock": read/write down() and up() semaphore pairs.
 
+<<<<<<< HEAD
+=======
+torture_runnable  Start locktorture at boot time in the case where the
+		  module is built into the kernel, otherwise wait for
+		  torture_runnable to be set via sysfs before starting.
+		  By default it will begin once the module is loaded.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	    ** Torture-framework (RCU + locking) **
 

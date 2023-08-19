@@ -90,14 +90,22 @@ int pcibios_unmap_io_space(struct pci_bus *bus)
 	 * to do an appropriate TLB flush here too
 	 */
 	if (bus->self) {
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct resource *res = bus->resource[0];
 #endif
 
 		pr_debug("IO unmapping for PCI-PCI bridge %s\n",
 			 pci_name(bus->self));
 
+<<<<<<< HEAD
 #ifdef CONFIG_PPC_BOOK3S_64
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__flush_hash_table_range(&init_mm, res->start + _IO_BASE,
 					 res->end + _IO_BASE + 1);
 #endif
@@ -203,8 +211,13 @@ void pcibios_setup_phb_io_space(struct pci_controller *hose)
 #define IOBASE_ISA_IO		3
 #define IOBASE_ISA_MEM		4
 
+<<<<<<< HEAD
 SYSCALL_DEFINE3(pciconfig_iobase, long, which, unsigned long, in_bus,
 			  unsigned long, in_devfn)
+=======
+long sys_pciconfig_iobase(long which, unsigned long in_bus,
+			  unsigned long in_devfn)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_controller* hose;
 	struct pci_bus *tmp_bus, *bus = NULL;

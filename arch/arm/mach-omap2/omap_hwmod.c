@@ -143,10 +143,13 @@
 #include <linux/of_address.h>
 #include <linux/bootmem.h>
 
+<<<<<<< HEAD
 #include <linux/platform_data/ti-sysc.h>
 
 #include <dt-bindings/bus/ti-sysc.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/system_misc.h>
 
 #include "clock.h"
@@ -189,15 +192,25 @@
 /**
  * struct clkctrl_provider - clkctrl provider mapping data
  * @addr: base address for the provider
+<<<<<<< HEAD
  * @size: size of the provider address space
  * @offset: offset of the provider from PRCM instance base
+=======
+ * @offset: base offset for the provider
+ * @clkdm: base clockdomain for provider
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @node: device node associated with the provider
  * @link: list link
  */
 struct clkctrl_provider {
 	u32			addr;
+<<<<<<< HEAD
 	u32			size;
 	u16			offset;
+=======
+	u16			offset;
+	struct clockdomain	*clkdm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device_node	*node;
 	struct list_head	link;
 };
@@ -227,7 +240,12 @@ struct omap_hwmod_soc_ops {
 	void (*update_context_lost)(struct omap_hwmod *oh);
 	int (*get_context_lost)(struct omap_hwmod *oh);
 	int (*disable_direct_prcm)(struct omap_hwmod *oh);
+<<<<<<< HEAD
 	u32 (*xlate_clkctrl)(struct omap_hwmod *oh);
+=======
+	u32 (*xlate_clkctrl)(struct omap_hwmod *oh,
+			     struct clkctrl_provider *provider);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* soc_ops: adapts the omap_hwmod code to the currently-booted SoC */
@@ -481,7 +499,11 @@ static int _wait_softreset_complete(struct omap_hwmod *oh)
 
 	sysc = oh->class->sysc;
 
+<<<<<<< HEAD
 	if (sysc->sysc_flags & SYSS_HAS_RESET_STATUS && sysc->syss_offs > 0)
+=======
+	if (sysc->sysc_flags & SYSS_HAS_RESET_STATUS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		omap_test_timeout((omap_hwmod_read(oh, sysc->syss_offs)
 				   & SYSS_RESETDONE_MASK),
 				  MAX_MODULE_SOFTRESET_WAIT, c);
@@ -719,16 +741,40 @@ static const struct of_device_id ti_clkctrl_match_table[] __initconst = {
 	{ }
 };
 
+<<<<<<< HEAD
 static int __init _setup_clkctrl_provider(struct device_node *np)
 {
 	const __be32 *addrp;
 	struct clkctrl_provider *provider;
 	u64 size;
+=======
+static int _match_clkdm(struct clockdomain *clkdm, void *user)
+{
+	struct clkctrl_provider *provider = user;
+
+	if (clkdm_xlate_address(clkdm) == provider->addr) {
+		pr_debug("%s: Matched clkdm %s for addr %x (%s)\n", __func__,
+			 clkdm->name, provider->addr,
+			 provider->node->parent->name);
+		provider->clkdm = clkdm;
+
+		return -1;
+	}
+
+	return 0;
+}
+
+static int _setup_clkctrl_provider(struct device_node *np)
+{
+	const __be32 *addrp;
+	struct clkctrl_provider *provider;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	provider = memblock_virt_alloc(sizeof(*provider), 0);
 	if (!provider)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	addrp = of_get_address(np, 0, &size, NULL);
 	provider->addr = (u32)of_translate_address(np, addrp);
 	addrp = of_get_address(np->parent, 0, NULL, NULL);
@@ -741,13 +787,33 @@ static int __init _setup_clkctrl_provider(struct device_node *np)
 	pr_debug("%s: %s: %x...%x [+%x]\n", __func__, np->parent->name,
 		 provider->addr, provider->addr + provider->size,
 		 provider->offset);
+=======
+	addrp = of_get_address(np, 0, NULL, NULL);
+	provider->addr = (u32)of_translate_address(np, addrp);
+	provider->offset = provider->addr & 0xff;
+	provider->addr &= ~0xff;
+	provider->node = np;
+
+	clkdm_for_each(_match_clkdm, provider);
+
+	if (!provider->clkdm) {
+		pr_err("%s: nothing matched for node %s (%x)\n",
+		       __func__, np->parent->name, provider->addr);
+		memblock_free_early(__pa(provider), sizeof(*provider));
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_add(&provider->link, &clkctrl_providers);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __init _init_clkctrl_providers(void)
+=======
+static int _init_clkctrl_providers(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *np;
 	int ret = 0;
@@ -761,6 +827,7 @@ static int __init _init_clkctrl_providers(void)
 	return ret;
 }
 
+<<<<<<< HEAD
 static u32 _omap4_xlate_clkctrl(struct omap_hwmod *oh)
 {
 	if (!oh->prcm.omap4.modulemode)
@@ -769,17 +836,28 @@ static u32 _omap4_xlate_clkctrl(struct omap_hwmod *oh)
 	return omap_cm_xlate_clkctrl(oh->clkdm->prcm_partition,
 				     oh->clkdm->cm_inst,
 				     oh->prcm.omap4.clkctrl_offs);
+=======
+static u32 _omap4_xlate_clkctrl(struct omap_hwmod *oh,
+				struct clkctrl_provider *provider)
+{
+	return oh->prcm.omap4.clkctrl_offs -
+	       provider->offset - provider->clkdm->clkdm_offs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct clk *_lookup_clkctrl_clk(struct omap_hwmod *oh)
 {
 	struct clkctrl_provider *provider;
 	struct clk *clk;
+<<<<<<< HEAD
 	u32 addr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!soc_ops.xlate_clkctrl)
 		return NULL;
 
+<<<<<<< HEAD
 	addr = soc_ops.xlate_clkctrl(oh);
 	if (!addr)
 		return NULL;
@@ -789,20 +867,31 @@ static struct clk *_lookup_clkctrl_clk(struct omap_hwmod *oh)
 	list_for_each_entry(provider, &clkctrl_providers, link) {
 		if (provider->addr <= addr &&
 		    provider->addr + provider->size >= addr) {
+=======
+	list_for_each_entry(provider, &clkctrl_providers, link) {
+		if (provider->clkdm == oh->clkdm) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct of_phandle_args clkspec;
 
 			clkspec.np = provider->node;
 			clkspec.args_count = 2;
+<<<<<<< HEAD
 			clkspec.args[0] = addr - provider->addr -
 					  provider->offset;
+=======
+			clkspec.args[0] = soc_ops.xlate_clkctrl(oh, provider);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clkspec.args[1] = 0;
 
 			clk = of_clk_get_from_provider(&clkspec);
 
+<<<<<<< HEAD
 			pr_debug("%s: %s got %p (offset=%x, provider=%s)\n",
 				 __func__, oh->name, clk, clkspec.args[0],
 				 provider->node->parent->name);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return clk;
 		}
 	}
@@ -979,9 +1068,12 @@ static int _enable_clocks(struct omap_hwmod *oh)
 
 	pr_debug("omap_hwmod: %s: enabling clocks\n", oh->name);
 
+<<<<<<< HEAD
 	if (oh->flags & HWMOD_OPT_CLKS_NEEDED)
 		_enable_optional_clocks(oh);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (oh->_clk)
 		clk_enable(oh->_clk);
 
@@ -990,12 +1082,19 @@ static int _enable_clocks(struct omap_hwmod *oh)
 			clk_enable(os->_clk);
 	}
 
+<<<<<<< HEAD
+=======
+	if (oh->flags & HWMOD_OPT_CLKS_NEEDED)
+		_enable_optional_clocks(oh);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The opt clocks are controlled by the device driver. */
 
 	return 0;
 }
 
 /**
+<<<<<<< HEAD
  * _omap4_clkctrl_managed_by_clkfwk - true if clkctrl managed by clock framework
  * @oh: struct omap_hwmod *
  */
@@ -1024,6 +1123,8 @@ static bool _omap4_has_clkctrl_clock(struct omap_hwmod *oh)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * _disable_clocks - disable hwmod main clock and interface clocks
  * @oh: struct omap_hwmod *
  *
@@ -1060,8 +1161,12 @@ static int _disable_clocks(struct omap_hwmod *oh)
  */
 static void _omap4_enable_module(struct omap_hwmod *oh)
 {
+<<<<<<< HEAD
 	if (!oh->clkdm || !oh->prcm.omap4.modulemode ||
 	    _omap4_clkctrl_managed_by_clkfwk(oh))
+=======
+	if (!oh->clkdm || !oh->prcm.omap4.modulemode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	pr_debug("omap_hwmod: %s: %s: %d\n",
@@ -1092,10 +1197,15 @@ static int _omap4_wait_target_disable(struct omap_hwmod *oh)
 	if (oh->flags & HWMOD_NO_IDLEST)
 		return 0;
 
+<<<<<<< HEAD
 	if (_omap4_clkctrl_managed_by_clkfwk(oh))
 		return 0;
 
 	if (!_omap4_has_clkctrl_clock(oh))
+=======
+	if (!oh->prcm.omap4.clkctrl_offs &&
+	    !(oh->prcm.omap4.flags & HWMOD_OMAP4_ZERO_CLKCTRL_OFFSET))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return omap_cm_wait_module_idle(oh->clkdm->prcm_partition,
@@ -1104,6 +1214,218 @@ static int _omap4_wait_target_disable(struct omap_hwmod *oh)
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * _count_mpu_irqs - count the number of MPU IRQ lines associated with @oh
+ * @oh: struct omap_hwmod *oh
+ *
+ * Count and return the number of MPU IRQs associated with the hwmod
+ * @oh.  Used to allocate struct resource data.  Returns 0 if @oh is
+ * NULL.
+ */
+static int _count_mpu_irqs(struct omap_hwmod *oh)
+{
+	struct omap_hwmod_irq_info *ohii;
+	int i = 0;
+
+	if (!oh || !oh->mpu_irqs)
+		return 0;
+
+	do {
+		ohii = &oh->mpu_irqs[i++];
+	} while (ohii->irq != -1);
+
+	return i-1;
+}
+
+/**
+ * _count_sdma_reqs - count the number of SDMA request lines associated with @oh
+ * @oh: struct omap_hwmod *oh
+ *
+ * Count and return the number of SDMA request lines associated with
+ * the hwmod @oh.  Used to allocate struct resource data.  Returns 0
+ * if @oh is NULL.
+ */
+static int _count_sdma_reqs(struct omap_hwmod *oh)
+{
+	struct omap_hwmod_dma_info *ohdi;
+	int i = 0;
+
+	if (!oh || !oh->sdma_reqs)
+		return 0;
+
+	do {
+		ohdi = &oh->sdma_reqs[i++];
+	} while (ohdi->dma_req != -1);
+
+	return i-1;
+}
+
+/**
+ * _count_ocp_if_addr_spaces - count the number of address space entries for @oh
+ * @oh: struct omap_hwmod *oh
+ *
+ * Count and return the number of address space ranges associated with
+ * the hwmod @oh.  Used to allocate struct resource data.  Returns 0
+ * if @oh is NULL.
+ */
+static int _count_ocp_if_addr_spaces(struct omap_hwmod_ocp_if *os)
+{
+	struct omap_hwmod_addr_space *mem;
+	int i = 0;
+
+	if (!os || !os->addr)
+		return 0;
+
+	do {
+		mem = &os->addr[i++];
+	} while (mem->pa_start != mem->pa_end);
+
+	return i-1;
+}
+
+/**
+ * _get_mpu_irq_by_name - fetch MPU interrupt line number by name
+ * @oh: struct omap_hwmod * to operate on
+ * @name: pointer to the name of the MPU interrupt number to fetch (optional)
+ * @irq: pointer to an unsigned int to store the MPU IRQ number to
+ *
+ * Retrieve a MPU hardware IRQ line number named by @name associated
+ * with the IP block pointed to by @oh.  The IRQ number will be filled
+ * into the address pointed to by @dma.  When @name is non-null, the
+ * IRQ line number associated with the named entry will be returned.
+ * If @name is null, the first matching entry will be returned.  Data
+ * order is not meaningful in hwmod data, so callers are strongly
+ * encouraged to use a non-null @name whenever possible to avoid
+ * unpredictable effects if hwmod data is later added that causes data
+ * ordering to change.  Returns 0 upon success or a negative error
+ * code upon error.
+ */
+static int _get_mpu_irq_by_name(struct omap_hwmod *oh, const char *name,
+				unsigned int *irq)
+{
+	int i;
+	bool found = false;
+
+	if (!oh->mpu_irqs)
+		return -ENOENT;
+
+	i = 0;
+	while (oh->mpu_irqs[i].irq != -1) {
+		if (name == oh->mpu_irqs[i].name ||
+		    !strcmp(name, oh->mpu_irqs[i].name)) {
+			found = true;
+			break;
+		}
+		i++;
+	}
+
+	if (!found)
+		return -ENOENT;
+
+	*irq = oh->mpu_irqs[i].irq;
+
+	return 0;
+}
+
+/**
+ * _get_sdma_req_by_name - fetch SDMA request line ID by name
+ * @oh: struct omap_hwmod * to operate on
+ * @name: pointer to the name of the SDMA request line to fetch (optional)
+ * @dma: pointer to an unsigned int to store the request line ID to
+ *
+ * Retrieve an SDMA request line ID named by @name on the IP block
+ * pointed to by @oh.  The ID will be filled into the address pointed
+ * to by @dma.  When @name is non-null, the request line ID associated
+ * with the named entry will be returned.  If @name is null, the first
+ * matching entry will be returned.  Data order is not meaningful in
+ * hwmod data, so callers are strongly encouraged to use a non-null
+ * @name whenever possible to avoid unpredictable effects if hwmod
+ * data is later added that causes data ordering to change.  Returns 0
+ * upon success or a negative error code upon error.
+ */
+static int _get_sdma_req_by_name(struct omap_hwmod *oh, const char *name,
+				 unsigned int *dma)
+{
+	int i;
+	bool found = false;
+
+	if (!oh->sdma_reqs)
+		return -ENOENT;
+
+	i = 0;
+	while (oh->sdma_reqs[i].dma_req != -1) {
+		if (name == oh->sdma_reqs[i].name ||
+		    !strcmp(name, oh->sdma_reqs[i].name)) {
+			found = true;
+			break;
+		}
+		i++;
+	}
+
+	if (!found)
+		return -ENOENT;
+
+	*dma = oh->sdma_reqs[i].dma_req;
+
+	return 0;
+}
+
+/**
+ * _get_addr_space_by_name - fetch address space start & end by name
+ * @oh: struct omap_hwmod * to operate on
+ * @name: pointer to the name of the address space to fetch (optional)
+ * @pa_start: pointer to a u32 to store the starting address to
+ * @pa_end: pointer to a u32 to store the ending address to
+ *
+ * Retrieve address space start and end addresses for the IP block
+ * pointed to by @oh.  The data will be filled into the addresses
+ * pointed to by @pa_start and @pa_end.  When @name is non-null, the
+ * address space data associated with the named entry will be
+ * returned.  If @name is null, the first matching entry will be
+ * returned.  Data order is not meaningful in hwmod data, so callers
+ * are strongly encouraged to use a non-null @name whenever possible
+ * to avoid unpredictable effects if hwmod data is later added that
+ * causes data ordering to change.  Returns 0 upon success or a
+ * negative error code upon error.
+ */
+static int _get_addr_space_by_name(struct omap_hwmod *oh, const char *name,
+				   u32 *pa_start, u32 *pa_end)
+{
+	int j;
+	struct omap_hwmod_ocp_if *os;
+	bool found = false;
+
+	list_for_each_entry(os, &oh->slave_ports, node) {
+
+		if (!os->addr)
+			return -ENOENT;
+
+		j = 0;
+		while (os->addr[j].pa_start != os->addr[j].pa_end) {
+			if (name == os->addr[j].name ||
+			    !strcmp(name, os->addr[j].name)) {
+				found = true;
+				break;
+			}
+			j++;
+		}
+
+		if (found)
+			break;
+	}
+
+	if (!found)
+		return -ENOENT;
+
+	*pa_start = os->addr[j].pa_start;
+	*pa_end = os->addr[j].pa_end;
+
+	return 0;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * _save_mpu_port_index - find and save the index to @oh's MPU port
  * @oh: struct omap_hwmod *
  *
@@ -1154,6 +1476,35 @@ static struct omap_hwmod_ocp_if *_find_mpu_rt_port(struct omap_hwmod *oh)
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * _find_mpu_rt_addr_space - return MPU register target address space for @oh
+ * @oh: struct omap_hwmod *
+ *
+ * Returns a pointer to the struct omap_hwmod_addr_space record representing
+ * the register target MPU address space; or returns NULL upon error.
+ */
+static struct omap_hwmod_addr_space * __init _find_mpu_rt_addr_space(struct omap_hwmod *oh)
+{
+	struct omap_hwmod_ocp_if *os;
+	struct omap_hwmod_addr_space *mem;
+	int found = 0, i = 0;
+
+	os = _find_mpu_rt_port(oh);
+	if (!os || !os->addr)
+		return NULL;
+
+	do {
+		mem = &os->addr[i++];
+		if (mem->flags & ADDR_TYPE_RT)
+			found = 1;
+	} while (!found && mem->pa_start != mem->pa_end);
+
+	return (found) ? mem : NULL;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * _enable_sysc - try to bring a module out of idle via OCP_SYSCONFIG
  * @oh: struct omap_hwmod *
  *
@@ -1645,8 +1996,12 @@ static int _omap4_disable_module(struct omap_hwmod *oh)
 {
 	int v;
 
+<<<<<<< HEAD
 	if (!oh->clkdm || !oh->prcm.omap4.modulemode ||
 	    _omap4_clkctrl_managed_by_clkfwk(oh))
+=======
+	if (!oh->clkdm || !oh->prcm.omap4.modulemode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	/*
@@ -2161,6 +2516,7 @@ static int of_dev_hwmod_lookup(struct device_node *np,
 }
 
 /**
+<<<<<<< HEAD
  * omap_hwmod_fix_mpu_rt_idx - fix up mpu_rt_idx register offsets
  *
  * @oh: struct omap_hwmod *
@@ -2267,6 +2623,8 @@ int omap_hwmod_parse_module_range(struct omap_hwmod *oh,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * _init_mpu_rt_base - populate the virtual address for a hwmod
  * @oh: struct omap_hwmod * to locate the virtual address
  * @data: (unused, caller should pass NULL)
@@ -2286,9 +2644,14 @@ int omap_hwmod_parse_module_range(struct omap_hwmod *oh,
 static int __init _init_mpu_rt_base(struct omap_hwmod *oh, void *data,
 				    int index, struct device_node *np)
 {
+<<<<<<< HEAD
 	void __iomem *va_start = NULL;
 	struct resource res;
 	int error;
+=======
+	struct omap_hwmod_addr_space *mem;
+	void __iomem *va_start = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!oh)
 		return -EINVAL;
@@ -2303,6 +2666,7 @@ static int __init _init_mpu_rt_base(struct omap_hwmod *oh, void *data,
 	if (oh->_int_flags & _HWMOD_NO_MPU_PORT)
 		return -ENXIO;
 
+<<<<<<< HEAD
 	if (!np) {
 		pr_err("omap_hwmod: %s: no dt node\n", oh->name);
 		return -ENXIO;
@@ -2319,6 +2683,30 @@ static int __init _init_mpu_rt_base(struct omap_hwmod *oh, void *data,
 	if (!va_start) {
 		pr_err("omap_hwmod: %s: Missing dt reg%i for %pOF\n",
 		       oh->name, index, np);
+=======
+	mem = _find_mpu_rt_addr_space(oh);
+	if (!mem) {
+		pr_debug("omap_hwmod: %s: no MPU register target found\n",
+			 oh->name);
+
+		/* Extract the IO space from device tree blob */
+		if (!np) {
+			pr_err("omap_hwmod: %s: no dt node\n", oh->name);
+			return -ENXIO;
+		}
+
+		va_start = of_iomap(np, index + oh->mpu_rt_idx);
+	} else {
+		va_start = ioremap(mem->pa_start, mem->pa_end - mem->pa_start);
+	}
+
+	if (!va_start) {
+		if (mem)
+			pr_err("omap_hwmod: %s: Could not ioremap\n", oh->name);
+		else
+			pr_err("omap_hwmod: %s: Missing dt reg%i for %pOF\n",
+			       oh->name, index, np);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENXIO;
 	}
 
@@ -2430,7 +2818,11 @@ static void _setup_iclk_autoidle(struct omap_hwmod *oh)
  */
 static int _setup_reset(struct omap_hwmod *oh)
 {
+<<<<<<< HEAD
 	int r;
+=======
+	int r = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (oh->_state != _HWMOD_STATE_INITIALIZED)
 		return -EINVAL;
@@ -2537,7 +2929,11 @@ static void _setup_postsetup(struct omap_hwmod *oh)
  * affects the IP block hardware, or system integration hardware
  * associated with the IP block.  Returns 0.
  */
+<<<<<<< HEAD
 static int _setup(struct omap_hwmod *oh, void *data)
+=======
+static int __init _setup(struct omap_hwmod *oh, void *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (oh->_state != _HWMOD_STATE_INITIALIZED)
 		return 0;
@@ -2729,10 +3125,15 @@ static int _omap4_wait_target_ready(struct omap_hwmod *oh)
 	if (!_find_mpu_rt_port(oh))
 		return 0;
 
+<<<<<<< HEAD
 	if (_omap4_clkctrl_managed_by_clkfwk(oh))
 		return 0;
 
 	if (!_omap4_has_clkctrl_clock(oh))
+=======
+	if (!oh->prcm.omap4.clkctrl_offs &&
+	    !(oh->prcm.omap4.flags & HWMOD_OMAP4_ZERO_CLKCTRL_OFFSET))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/* XXX check module SIDLEMODE, hardreset status */
@@ -2888,7 +3289,12 @@ static int _omap4_disable_direct_prcm(struct omap_hwmod *oh)
 	if (!oh)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	oh->prcm.omap4.flags |= HWMOD_OMAP4_CLKFWK_CLKCTR_CLOCK;
+=======
+	oh->prcm.omap4.clkctrl_offs = 0;
+	oh->prcm.omap4.modulemode = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -3099,6 +3505,7 @@ int __init omap_hwmod_setup_one(const char *oh_name)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void omap_hwmod_check_one(struct device *dev,
 				 const char *name, s8 v1, u8 v2)
 {
@@ -3508,6 +3915,8 @@ int omap_hwmod_init_module(struct device *dev,
 					  sysc_flags, idlemodes);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * omap_hwmod_setup_earlycon_flags - set up flags for early console
  *
@@ -3530,12 +3939,15 @@ static void __init omap_hwmod_setup_earlycon_flags(void)
 			if (np) {
 				uart = of_get_property(np, "ti,hwmods", NULL);
 				oh = omap_hwmod_lookup(uart);
+<<<<<<< HEAD
 				if (!oh) {
 					uart = of_get_property(np->parent,
 							       "ti,hwmods",
 							       NULL);
 					oh = omap_hwmod_lookup(uart);
 				}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (oh)
 					oh->flags |= DEBUG_OMAPUART_FLAGS;
 			}
@@ -3638,6 +4050,192 @@ int omap_hwmod_shutdown(struct omap_hwmod *oh)
  */
 
 /**
+<<<<<<< HEAD
+=======
+ * omap_hwmod_count_resources - count number of struct resources needed by hwmod
+ * @oh: struct omap_hwmod *
+ * @flags: Type of resources to include when counting (IRQ/DMA/MEM)
+ *
+ * Count the number of struct resource array elements necessary to
+ * contain omap_hwmod @oh resources.  Intended to be called by code
+ * that registers omap_devices.  Intended to be used to determine the
+ * size of a dynamically-allocated struct resource array, before
+ * calling omap_hwmod_fill_resources().  Returns the number of struct
+ * resource array elements needed.
+ *
+ * XXX This code is not optimized.  It could attempt to merge adjacent
+ * resource IDs.
+ *
+ */
+int omap_hwmod_count_resources(struct omap_hwmod *oh, unsigned long flags)
+{
+	int ret = 0;
+
+	if (flags & IORESOURCE_IRQ)
+		ret += _count_mpu_irqs(oh);
+
+	if (flags & IORESOURCE_DMA)
+		ret += _count_sdma_reqs(oh);
+
+	if (flags & IORESOURCE_MEM) {
+		struct omap_hwmod_ocp_if *os;
+
+		list_for_each_entry(os, &oh->slave_ports, node)
+			ret += _count_ocp_if_addr_spaces(os);
+	}
+
+	return ret;
+}
+
+/**
+ * omap_hwmod_fill_resources - fill struct resource array with hwmod data
+ * @oh: struct omap_hwmod *
+ * @res: pointer to the first element of an array of struct resource to fill
+ *
+ * Fill the struct resource array @res with resource data from the
+ * omap_hwmod @oh.  Intended to be called by code that registers
+ * omap_devices.  See also omap_hwmod_count_resources().  Returns the
+ * number of array elements filled.
+ */
+int omap_hwmod_fill_resources(struct omap_hwmod *oh, struct resource *res)
+{
+	struct omap_hwmod_ocp_if *os;
+	int i, j, mpu_irqs_cnt, sdma_reqs_cnt, addr_cnt;
+	int r = 0;
+
+	/* For each IRQ, DMA, memory area, fill in array.*/
+
+	mpu_irqs_cnt = _count_mpu_irqs(oh);
+	for (i = 0; i < mpu_irqs_cnt; i++) {
+		unsigned int irq;
+
+		if (oh->xlate_irq)
+			irq = oh->xlate_irq((oh->mpu_irqs + i)->irq);
+		else
+			irq = (oh->mpu_irqs + i)->irq;
+		(res + r)->name = (oh->mpu_irqs + i)->name;
+		(res + r)->start = irq;
+		(res + r)->end = irq;
+		(res + r)->flags = IORESOURCE_IRQ;
+		r++;
+	}
+
+	sdma_reqs_cnt = _count_sdma_reqs(oh);
+	for (i = 0; i < sdma_reqs_cnt; i++) {
+		(res + r)->name = (oh->sdma_reqs + i)->name;
+		(res + r)->start = (oh->sdma_reqs + i)->dma_req;
+		(res + r)->end = (oh->sdma_reqs + i)->dma_req;
+		(res + r)->flags = IORESOURCE_DMA;
+		r++;
+	}
+
+	list_for_each_entry(os, &oh->slave_ports, node) {
+		addr_cnt = _count_ocp_if_addr_spaces(os);
+
+		for (j = 0; j < addr_cnt; j++) {
+			(res + r)->name = (os->addr + j)->name;
+			(res + r)->start = (os->addr + j)->pa_start;
+			(res + r)->end = (os->addr + j)->pa_end;
+			(res + r)->flags = IORESOURCE_MEM;
+			r++;
+		}
+	}
+
+	return r;
+}
+
+/**
+ * omap_hwmod_fill_dma_resources - fill struct resource array with dma data
+ * @oh: struct omap_hwmod *
+ * @res: pointer to the array of struct resource to fill
+ *
+ * Fill the struct resource array @res with dma resource data from the
+ * omap_hwmod @oh.  Intended to be called by code that registers
+ * omap_devices.  See also omap_hwmod_count_resources().  Returns the
+ * number of array elements filled.
+ */
+int omap_hwmod_fill_dma_resources(struct omap_hwmod *oh, struct resource *res)
+{
+	int i, sdma_reqs_cnt;
+	int r = 0;
+
+	sdma_reqs_cnt = _count_sdma_reqs(oh);
+	for (i = 0; i < sdma_reqs_cnt; i++) {
+		(res + r)->name = (oh->sdma_reqs + i)->name;
+		(res + r)->start = (oh->sdma_reqs + i)->dma_req;
+		(res + r)->end = (oh->sdma_reqs + i)->dma_req;
+		(res + r)->flags = IORESOURCE_DMA;
+		r++;
+	}
+
+	return r;
+}
+
+/**
+ * omap_hwmod_get_resource_byname - fetch IP block integration data by name
+ * @oh: struct omap_hwmod * to operate on
+ * @type: one of the IORESOURCE_* constants from include/linux/ioport.h
+ * @name: pointer to the name of the data to fetch (optional)
+ * @rsrc: pointer to a struct resource, allocated by the caller
+ *
+ * Retrieve MPU IRQ, SDMA request line, or address space start/end
+ * data for the IP block pointed to by @oh.  The data will be filled
+ * into a struct resource record pointed to by @rsrc.  The struct
+ * resource must be allocated by the caller.  When @name is non-null,
+ * the data associated with the matching entry in the IRQ/SDMA/address
+ * space hwmod data arrays will be returned.  If @name is null, the
+ * first array entry will be returned.  Data order is not meaningful
+ * in hwmod data, so callers are strongly encouraged to use a non-null
+ * @name whenever possible to avoid unpredictable effects if hwmod
+ * data is later added that causes data ordering to change.  This
+ * function is only intended for use by OMAP core code.  Device
+ * drivers should not call this function - the appropriate bus-related
+ * data accessor functions should be used instead.  Returns 0 upon
+ * success or a negative error code upon error.
+ */
+int omap_hwmod_get_resource_byname(struct omap_hwmod *oh, unsigned int type,
+				   const char *name, struct resource *rsrc)
+{
+	int r;
+	unsigned int irq, dma;
+	u32 pa_start, pa_end;
+
+	if (!oh || !rsrc)
+		return -EINVAL;
+
+	if (type == IORESOURCE_IRQ) {
+		r = _get_mpu_irq_by_name(oh, name, &irq);
+		if (r)
+			return r;
+
+		rsrc->start = irq;
+		rsrc->end = irq;
+	} else if (type == IORESOURCE_DMA) {
+		r = _get_sdma_req_by_name(oh, name, &dma);
+		if (r)
+			return r;
+
+		rsrc->start = dma;
+		rsrc->end = dma;
+	} else if (type == IORESOURCE_MEM) {
+		r = _get_addr_space_by_name(oh, name, &pa_start, &pa_end);
+		if (r)
+			return r;
+
+		rsrc->start = pa_start;
+		rsrc->end = pa_end;
+	} else {
+		return -EINVAL;
+	}
+
+	rsrc->flags = type;
+	rsrc->name = name;
+
+	return 0;
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * omap_hwmod_get_pwrdm - return pointer to this module's main powerdomain
  * @oh: struct omap_hwmod *
  *
@@ -3975,7 +4573,10 @@ void __init omap_hwmod_init(void)
 		soc_ops.is_hardreset_asserted = _omap4_is_hardreset_asserted;
 		soc_ops.init_clkdm = _init_clkdm;
 		soc_ops.disable_direct_prcm = _omap4_disable_direct_prcm;
+<<<<<<< HEAD
 		soc_ops.xlate_clkctrl = _omap4_xlate_clkctrl;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		WARN(1, "omap_hwmod: unknown SoC type\n");
 	}

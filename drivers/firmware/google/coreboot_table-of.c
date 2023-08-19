@@ -34,7 +34,11 @@ static int coreboot_table_of_probe(struct platform_device *pdev)
 	if (!ptr)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	return coreboot_table_init(&pdev->dev, ptr);
+=======
+	return coreboot_table_init(ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int coreboot_table_of_remove(struct platform_device *pdev)

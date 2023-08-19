@@ -52,6 +52,11 @@ struct talitos_ptr {
 	__be32 ptr;     /* address */
 };
 
+<<<<<<< HEAD
+=======
+static const struct talitos_ptr zero_entry;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* descriptor */
 struct talitos_desc {
 	__be32 hdr;                     /* header high bits */
@@ -65,6 +70,7 @@ struct talitos_desc {
 
 #define TALITOS_DESC_SIZE	(sizeof(struct talitos_desc) - sizeof(__be32))
 
+<<<<<<< HEAD
 /*
  * talitos_edesc - s/w-extended descriptor
  * @src_nents: number of segments in input scatterlist
@@ -95,6 +101,8 @@ struct talitos_edesc {
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * talitos_request - descriptor submission request
  * @desc: descriptor pointer (kernel virtual)
@@ -238,6 +246,7 @@ static inline bool has_ftr_sec1(struct talitos_private *priv)
 #define TALITOS_ISR			0x1010  /* interrupt status register */
 #define   TALITOS1_ISR_4CHERR		ISR1_FORMAT(0xa) /* 4 ch errors mask */
 #define   TALITOS1_ISR_4CHDONE		ISR1_FORMAT(0x5) /* 4 ch done mask */
+<<<<<<< HEAD
 #define   TALITOS1_ISR_CH_0_ERR		(2 << 28) /* ch 0 errors mask */
 #define   TALITOS1_ISR_CH_0_DONE	(1 << 28) /* ch 0 done mask */
 #define   TALITOS1_ISR_TEA_ERR		0x00000040
@@ -245,6 +254,11 @@ static inline bool has_ftr_sec1(struct talitos_private *priv)
 #define   TALITOS2_ISR_4CHDONE		ISR2_FORMAT(0x5) /* 4 ch done mask */
 #define   TALITOS2_ISR_CH_0_ERR		2 /* ch 0 errors mask */
 #define   TALITOS2_ISR_CH_0_DONE	1 /* ch 0 done mask */
+=======
+#define   TALITOS1_ISR_TEA_ERR		0x00000040
+#define   TALITOS2_ISR_4CHERR		ISR2_FORMAT(0xa) /* 4 ch errors mask */
+#define   TALITOS2_ISR_4CHDONE		ISR2_FORMAT(0x5) /* 4 ch done mask */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   TALITOS2_ISR_CH_0_2_ERR	ISR2_FORMAT(0x2) /* ch 0, 2 err mask */
 #define   TALITOS2_ISR_CH_0_2_DONE	ISR2_FORMAT(0x1) /* ch 0, 2 done mask */
 #define   TALITOS2_ISR_CH_1_3_ERR	ISR2_FORMAT(0x8) /* ch 1, 3 err mask */
@@ -266,7 +280,10 @@ static inline bool has_ftr_sec1(struct talitos_private *priv)
 #define   TALITOS_CCCR_LO_IWSE		0x80   /* chan. ICCR writeback enab. */
 #define   TALITOS_CCCR_LO_EAE		0x20   /* extended address enable */
 #define   TALITOS_CCCR_LO_CDWE		0x10   /* chan. done writeback enab. */
+<<<<<<< HEAD
 #define   TALITOS_CCCR_LO_NE		0x8    /* fetch next descriptor enab. */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   TALITOS_CCCR_LO_NT		0x4    /* notification type */
 #define   TALITOS_CCCR_LO_CDIE		0x2    /* channel done IRQ enable */
 #define   TALITOS1_CCCR_LO_RESET	0x1    /* channel reset on SEC1 */

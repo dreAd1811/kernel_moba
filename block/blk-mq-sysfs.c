@@ -10,7 +10,10 @@
 #include <linux/smp.h>
 
 #include <linux/blk-mq.h>
+<<<<<<< HEAD
 #include "blk.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "blk-mq.h"
 #include "blk-mq-tag.h"
 
@@ -22,11 +25,14 @@ static void blk_mq_hw_sysfs_release(struct kobject *kobj)
 {
 	struct blk_mq_hw_ctx *hctx = container_of(kobj, struct blk_mq_hw_ctx,
 						  kobj);
+<<<<<<< HEAD
 
 	if (hctx->flags & BLK_MQ_F_BLOCKING)
 		cleanup_srcu_struct(hctx->srcu);
 	blk_free_flush_queue(hctx->fq);
 	sbitmap_free(&hctx->ctx_map);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_cpumask_var(hctx->cpumask);
 	kfree(hctx->ctxs);
 	kfree(hctx);
@@ -151,6 +157,7 @@ static ssize_t blk_mq_hw_sysfs_nr_reserved_tags_show(struct blk_mq_hw_ctx *hctx,
 
 static ssize_t blk_mq_hw_sysfs_cpus_show(struct blk_mq_hw_ctx *hctx, char *page)
 {
+<<<<<<< HEAD
 	unsigned int i, first = 1;
 	ssize_t ret = 0;
 
@@ -165,6 +172,27 @@ static ssize_t blk_mq_hw_sysfs_cpus_show(struct blk_mq_hw_ctx *hctx, char *page)
 
 	ret += sprintf(ret + page, "\n");
 	return ret;
+=======
+	const size_t size = PAGE_SIZE - 1;
+	unsigned int i, first = 1;
+	int ret = 0, pos = 0;
+
+	for_each_cpu(i, hctx->cpumask) {
+		if (first)
+			ret = snprintf(pos + page, size - pos, "%u", i);
+		else
+			ret = snprintf(pos + page, size - pos, ", %u", i);
+
+		if (ret >= size - pos)
+			break;
+
+		first = 0;
+		pos += ret;
+	}
+
+	ret = snprintf(pos + page, size + 1 - pos, "\n");
+	return pos + ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct attribute *default_ctx_attrs[] = {
@@ -172,6 +200,7 @@ static struct attribute *default_ctx_attrs[] = {
 };
 
 static struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_nr_tags = {
+<<<<<<< HEAD
 	.attr = {.name = "nr_tags", .mode = 0444 },
 	.show = blk_mq_hw_sysfs_nr_tags_show,
 };
@@ -181,6 +210,17 @@ static struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_nr_reserved_tags = {
 };
 static struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_cpus = {
 	.attr = {.name = "cpu_list", .mode = 0444 },
+=======
+	.attr = {.name = "nr_tags", .mode = S_IRUGO },
+	.show = blk_mq_hw_sysfs_nr_tags_show,
+};
+static struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_nr_reserved_tags = {
+	.attr = {.name = "nr_reserved_tags", .mode = S_IRUGO },
+	.show = blk_mq_hw_sysfs_nr_reserved_tags_show,
+};
+static struct blk_mq_hw_ctx_sysfs_entry blk_mq_hw_sysfs_cpus = {
+	.attr = {.name = "cpu_list", .mode = S_IRUGO },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.show = blk_mq_hw_sysfs_cpus_show,
 };
 
@@ -254,7 +294,11 @@ static int blk_mq_register_hctx(struct blk_mq_hw_ctx *hctx)
 	return ret;
 }
 
+<<<<<<< HEAD
 void blk_mq_unregister_dev(struct device *dev, struct request_queue *q)
+=======
+static void __blk_mq_unregister_dev(struct device *dev, struct request_queue *q)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct blk_mq_hw_ctx *hctx;
 	int i;
@@ -271,6 +315,16 @@ void blk_mq_unregister_dev(struct device *dev, struct request_queue *q)
 	q->mq_sysfs_init_done = false;
 }
 
+<<<<<<< HEAD
+=======
+void blk_mq_unregister_dev(struct device *dev, struct request_queue *q)
+{
+	mutex_lock(&q->sysfs_lock);
+	__blk_mq_unregister_dev(dev, q);
+	mutex_unlock(&q->sysfs_lock);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void blk_mq_hctx_kobj_init(struct blk_mq_hw_ctx *hctx)
 {
 	kobject_init(&hctx->kobj, &blk_mq_hw_ktype);

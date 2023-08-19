@@ -13,7 +13,10 @@
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/clock/qcom,gcc-msm8996.h>
 #include <dt-bindings/clock/qcom,mmcc-msm8996.h>
+<<<<<<< HEAD
 #include <dt-bindings/clock/qcom,rpmcc.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "Qualcomm Technologies, Inc. MSM8996";
@@ -75,6 +78,7 @@
 			reg = <0x0 0x86200000 0x0 0x2600000>;
 			no-map;
 		};
+<<<<<<< HEAD
 
 		rmtfs@86700000 {
 			compatible = "qcom,rmtfs-mem";
@@ -86,6 +90,8 @@
 			qcom,client-id = <1>;
 			qcom,vmid = <15>;
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	cpus {
@@ -243,10 +249,17 @@
 
 	timer {
 		compatible = "arm,armv8-timer";
+<<<<<<< HEAD
 		interrupts = <GIC_PPI 13 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 14 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 11 IRQ_TYPE_LEVEL_LOW>,
 			     <GIC_PPI 10 IRQ_TYPE_LEVEL_LOW>;
+=======
+		interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 11 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>,
+			     <GIC_PPI 10 (GIC_CPU_MASK_SIMPLE(4) | IRQ_TYPE_LEVEL_LOW)>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	clocks {
@@ -273,8 +286,11 @@
 	firmware {
 		scm {
 			compatible = "qcom,scm-msm8996";
+<<<<<<< HEAD
 
 			qcom,dload-mode = <&tcsr 0x13000>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -303,11 +319,14 @@
 			compatible = "qcom,rpm-msm8996";
 			qcom,glink-channels = "rpm_requests";
 
+<<<<<<< HEAD
 			rpmcc: qcom,rpmcc {
 				compatible = "qcom,rpmcc-msm8996";
 				#clock-cells = <1>;
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pm8994-regulators {
 				compatible = "qcom,rpm-pm8994-regulators";
 
@@ -377,6 +396,7 @@
 			reg = <0x740000 0x20000>;
 		};
 
+<<<<<<< HEAD
 		tsens0: thermal-sensor@4a9000 {
 			compatible = "qcom,msm8996-tsens";
 			reg = <0x4a9000 0x1000>, /* TM */
@@ -398,6 +418,8 @@
 			reg = <0x7a0000 0x18000>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intc: interrupt-controller@9bc0000 {
 			compatible = "qcom,msm8996-gic-v3", "arm,gic-v3";
 			#interrupt-cells = <3>;
@@ -435,6 +457,7 @@
 			#clock-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		blsp1_uart1: serial@7570000 {
 			compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
 			reg = <0x07570000 0x1000>;
@@ -446,6 +469,9 @@
 		};
 
 		blsp1_spi0: spi@7575000 {
+=======
+		blsp1_spi0: spi@07575000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "qcom,spi-qup-v2.2.1";
 			reg = <0x07575000 0x600>;
 			interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
@@ -460,10 +486,17 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		blsp2_i2c0: i2c@75b5000 {
 			compatible = "qcom,i2c-qup-v2.2.1";
 			reg = <0x075b5000 0x1000>;
 			interrupts = <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
+=======
+		blsp2_i2c0: i2c@075b5000 {
+			compatible = "qcom,i2c-qup-v2.2.1";
+			reg = <0x075b5000 0x1000>;
+			interrupts = <GIC_SPI 101 0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&gcc GCC_BLSP2_AHB_CLK>,
 				<&gcc GCC_BLSP2_QUP1_I2C_APPS_CLK>;
 			clock-names = "iface", "core";
@@ -475,6 +508,15 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
+=======
+		tsens0: thermal-sensor@4a8000 {
+			compatible = "qcom,msm8996-tsens";
+			reg = <0x4a8000 0x2000>;
+			#thermal-sensor-cells = <1>;
+		};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		blsp2_uart1: serial@75b0000 {
 			compatible = "qcom,msm-uartdm-v1.4", "qcom,msm-uartdm";
 			reg = <0x75b0000 0x1000>;
@@ -485,10 +527,17 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		blsp2_i2c1: i2c@75b6000 {
 			compatible = "qcom,i2c-qup-v2.2.1";
 			reg = <0x075b6000 0x1000>;
 			interrupts = <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>;
+=======
+		blsp2_i2c1: i2c@075b6000 {
+			compatible = "qcom,i2c-qup-v2.2.1";
+			reg = <0x075b6000 0x1000>;
+			interrupts = <GIC_SPI 102 0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&gcc GCC_BLSP2_AHB_CLK>,
 				<&gcc GCC_BLSP2_QUP2_I2C_APPS_CLK>;
 			clock-names = "iface", "core";
@@ -510,10 +559,17 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		blsp1_i2c2: i2c@7577000 {
 			compatible = "qcom,i2c-qup-v2.2.1";
 			reg = <0x07577000 0x1000>;
 			interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
+=======
+		blsp1_i2c2: i2c@07577000 {
+			compatible = "qcom,i2c-qup-v2.2.1";
+			reg = <0x07577000 0x1000>;
+			interrupts = <GIC_SPI 97 0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&gcc GCC_BLSP1_AHB_CLK>,
 				<&gcc GCC_BLSP1_QUP3_I2C_APPS_CLK>;
 			clock-names = "iface", "core";
@@ -525,7 +581,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		blsp2_spi5: spi@75ba000{
+=======
+		blsp2_spi5: spi@075ba000{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "qcom,spi-qup-v2.2.1";
 			reg = <0x075ba000 0x600>;
 			interrupts = <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>;
@@ -546,8 +606,12 @@
 			 reg = <0x74a4900 0x314>, <0x74a4000 0x800>;
 			 reg-names = "hc_mem", "core_mem";
 
+<<<<<<< HEAD
 			 interrupts = <0 125 IRQ_TYPE_LEVEL_HIGH>,
 				      <0 221 IRQ_TYPE_LEVEL_HIGH>;
+=======
+			 interrupts = <0 125 0>, <0 221 0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 interrupt-names = "hc_irq", "pwr_irq";
 
 			 clock-names = "iface", "core", "xo";
@@ -567,7 +631,11 @@
 			#interrupt-cells = <2>;
 		};
 
+<<<<<<< HEAD
 		timer@9840000 {
+=======
+		timer@09840000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges;
@@ -644,6 +712,7 @@
 			#interrupt-cells = <4>;
 		};
 
+<<<<<<< HEAD
 		ufsphy: phy@627000 {
 			compatible = "qcom,msm8996-ufs-phy-qmp-14nm";
 			reg = <0x627000 0xda8>;
@@ -729,6 +798,8 @@
 			};
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mmcc: clock-controller@8c0000 {
 			compatible = "qcom,mmcc-msm8996";
 			#clock-cells = <1>;
@@ -915,9 +986,17 @@
 			dwc3@7600000 {
 				compatible = "snps,dwc3";
 				reg = <0x7600000 0xcc00>;
+<<<<<<< HEAD
 				interrupts = <0 138 IRQ_TYPE_LEVEL_HIGH>;
 				phys = <&hsusb_phy2>;
 				phy-names = "usb2-phy";
+=======
+				interrupts = <0 138 0>;
+				phys = <&hsusb_phy2>;
+				phy-names = "usb2-phy";
+				snps,dis_u2_susphy_quirk;
+				snps,dis_enblslpm_quirk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
@@ -944,6 +1023,7 @@
 			dwc3@6a00000 {
 				compatible = "snps,dwc3";
 				reg = <0x6a00000 0xcc00>;
+<<<<<<< HEAD
 				interrupts = <0 131 IRQ_TYPE_LEVEL_HIGH>;
 				phys = <&hsusb_phy1>, <&ssusb_phy_0>;
 				phy-names = "usb2-phy", "usb3-phy";
@@ -1113,6 +1193,13 @@
 						"cfg",
 						"bus_master",
 						"bus_slave";
+=======
+				interrupts = <0 131 0>;
+				phys = <&hsusb_phy1>, <&ssusb_phy_0>;
+				phy-names = "usb2-phy", "usb3-phy";
+				snps,dis_u2_susphy_quirk;
+				snps,dis_enblslpm_quirk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 	};

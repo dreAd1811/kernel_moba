@@ -21,7 +21,10 @@
  */
 #include <core/ramht.h>
 #include <core/engine.h>
+<<<<<<< HEAD
 #include <core/object.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static u32
 nvkm_ramht_hash(struct nvkm_ramht *ramht, int chid, u32 handle)
@@ -144,7 +147,12 @@ nvkm_ramht_new(struct nvkm_device *device, u32 size, u32 align,
 	struct nvkm_ramht *ramht;
 	int ret, i;
 
+<<<<<<< HEAD
 	if (!(ramht = *pramht = vzalloc(struct_size(ramht, data, (size >> 3)))))
+=======
+	if (!(ramht = *pramht = vzalloc(sizeof(*ramht) +
+					(size >> 3) * sizeof(*ramht->data))))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	ramht->device = device;

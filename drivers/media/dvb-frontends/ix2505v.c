@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Driver for Sharp IX2505V (marked B0017) DVB-S silicon tuner
  *
  * Copyright (C) 2010 Malcolm Priestley
@@ -36,7 +40,11 @@ struct ix2505v_state {
 	u32 frequency;
 };
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *  Data read format of the Sharp IX2505V B0017
  *
  *  byte1:   1   |   1   |   0   |   0   |   0   |  MA1  |  MA0  |  1
@@ -99,7 +107,11 @@ static void ix2505v_release(struct dvb_frontend *fe)
 
 }
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *  Data write format of the Sharp IX2505V B0017
  *
  *  byte1:   1   |   1   |   0   |   0   |   0   | 0(MA1)| 0(MA0)|  0
@@ -135,8 +147,13 @@ static int ix2505v_set_params(struct dvb_frontend *fe)
 	u8 gain, cc, ref, psc, local_osc, lpf;
 	u8 data[4] = {0};
 
+<<<<<<< HEAD
 	if ((frequency < fe->ops.info.frequency_min_hz / kHz)
 	||  (frequency > fe->ops.info.frequency_max_hz / kHz))
+=======
+	if ((frequency < fe->ops.info.frequency_min)
+	||  (frequency > fe->ops.info.frequency_max))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (state->config->tuner_gain)
@@ -256,8 +273,13 @@ static int ix2505v_get_frequency(struct dvb_frontend *fe, u32 *frequency)
 static const struct dvb_tuner_ops ix2505v_tuner_ops = {
 	.info = {
 		.name = "Sharp IX2505V (B0017)",
+<<<<<<< HEAD
 		.frequency_min_hz =  950 * MHz,
 		.frequency_max_hz = 2175 * MHz
+=======
+		.frequency_min = 950000,
+		.frequency_max = 2175000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.release = ix2505v_release,
 	.set_params = ix2505v_set_params,

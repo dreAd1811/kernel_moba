@@ -164,12 +164,20 @@ static int __init nforce2_s4985_init(void)
 
 	printk(KERN_INFO "Enabling SMBus multiplexing for Tyan S4985\n");
 	/* Define the 5 virtual adapters and algorithms structures */
+<<<<<<< HEAD
 	s4985_adapter = kcalloc(5, sizeof(struct i2c_adapter), GFP_KERNEL);
+=======
+	s4985_adapter = kzalloc(5 * sizeof(struct i2c_adapter), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!s4985_adapter) {
 		error = -ENOMEM;
 		goto ERROR1;
 	}
+<<<<<<< HEAD
 	s4985_algo = kcalloc(5, sizeof(struct i2c_algorithm), GFP_KERNEL);
+=======
+	s4985_algo = kzalloc(5 * sizeof(struct i2c_algorithm), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!s4985_algo) {
 		error = -ENOMEM;
 		goto ERROR2;

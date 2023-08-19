@@ -42,22 +42,37 @@
 #include <linux/pm_wakeup.h>
 #include <media/rc-core.h>
 
+<<<<<<< HEAD
 #define DRIVER_VERSION	"1.95"
+=======
+#define DRIVER_VERSION	"1.93"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRIVER_AUTHOR	"Jarod Wilson <jarod@redhat.com>"
 #define DRIVER_DESC	"Windows Media Center Ed. eHome Infrared Transceiver " \
 			"device driver"
 #define DRIVER_NAME	"mceusb"
 
+<<<<<<< HEAD
 #define USB_TX_TIMEOUT		1000 /* in milliseconds */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define USB_CTRL_MSG_SZ		2  /* Size of usb ctrl msg on gen1 hw */
 #define MCE_G1_INIT_MSGS	40 /* Init messages on gen1 hw to throw out */
 
 /* MCE constants */
+<<<<<<< HEAD
 #define MCE_IRBUF_SIZE		128  /* TX IR buffer length */
 #define MCE_TIME_UNIT		50   /* Approx 50us resolution */
 #define MCE_PACKET_SIZE		31   /* Max length of packet (with header) */
 #define MCE_IRDATA_HEADER	(0x80 + MCE_PACKET_SIZE - 1)
 				     /* Actual format is 0x80 + num_bytes */
+=======
+#define MCE_CMDBUF_SIZE		384  /* MCE Command buffer length */
+#define MCE_TIME_UNIT		50   /* Approx 50us resolution */
+#define MCE_CODE_LENGTH		5    /* Normal length of packet (with header) */
+#define MCE_PACKET_SIZE		4    /* Normal length of packet (without header) */
+#define MCE_IRDATA_HEADER	0x84 /* Actual header format is 0x80 + num_bytes */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MCE_IRDATA_TRAILER	0x80 /* End of IR data */
 #define MCE_MAX_CHANNELS	2    /* Two transmitters, hardware dependent? */
 #define MCE_DEFAULT_TX_MASK	0x03 /* Vals: TX1=0x01, TX2=0x02, ALL=0x03 */
@@ -182,17 +197,24 @@ enum mceusb_model_type {
 	MCE_GEN2 = 0,		/* Most boards */
 	MCE_GEN1,
 	MCE_GEN3,
+<<<<<<< HEAD
 	MCE_GEN3_BROKEN_IRTIMEOUT,
 	MCE_GEN2_TX_INV,
 	MCE_GEN2_TX_INV_RX_GOOD,
+=======
+	MCE_GEN2_TX_INV,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	POLARIS_EVK,
 	CX_HYBRID_TV,
 	MULTIFUNCTION,
 	TIVO_KIT,
 	MCE_GEN2_NO_TX,
 	HAUPPAUGE_CX_HYBRID_TV,
+<<<<<<< HEAD
 	EVROMEDIA_FULL_HYBRID_FULLHD,
 	ASTROMETA_T2HYBRID,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mceusb_model {
@@ -201,6 +223,7 @@ struct mceusb_model {
 	u32 mce_gen3:1;
 	u32 tx_mask_normal:1;
 	u32 no_tx:1;
+<<<<<<< HEAD
 	u32 broken_irtimeout:1;
 	/*
 	 * 2nd IR receiver (short-range, wideband) for learning mode:
@@ -209,6 +232,8 @@ struct mceusb_model {
 	 *     2, rx2 which under counts IR carrier cycles
 	 */
 	u32 rx2;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int ir_intfnum;
 
@@ -220,11 +245,17 @@ static const struct mceusb_model mceusb_model[] = {
 	[MCE_GEN1] = {
 		.mce_gen1 = 1,
 		.tx_mask_normal = 1,
+<<<<<<< HEAD
 		.rx2 = 2,
 	},
 	[MCE_GEN2] = {
 		.mce_gen2 = 1,
 		.rx2 = 2,
+=======
+	},
+	[MCE_GEN2] = {
+		.mce_gen2 = 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[MCE_GEN2_NO_TX] = {
 		.mce_gen2 = 1,
@@ -233,16 +264,20 @@ static const struct mceusb_model mceusb_model[] = {
 	[MCE_GEN2_TX_INV] = {
 		.mce_gen2 = 1,
 		.tx_mask_normal = 1,
+<<<<<<< HEAD
 		.rx2 = 1,
 	},
 	[MCE_GEN2_TX_INV_RX_GOOD] = {
 		.mce_gen2 = 1,
 		.tx_mask_normal = 1,
 		.rx2 = 2,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[MCE_GEN3] = {
 		.mce_gen3 = 1,
 		.tx_mask_normal = 1,
+<<<<<<< HEAD
 		.rx2 = 2,
 	},
 	[MCE_GEN3_BROKEN_IRTIMEOUT] = {
@@ -250,6 +285,8 @@ static const struct mceusb_model mceusb_model[] = {
 		.tx_mask_normal = 1,
 		.rx2 = 2,
 		.broken_irtimeout = 1
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[POLARIS_EVK] = {
 		/*
@@ -258,7 +295,10 @@ static const struct mceusb_model mceusb_model[] = {
 		 * to allow testing it
 		 */
 		.name = "Conexant Hybrid TV (cx231xx) MCE IR",
+<<<<<<< HEAD
 		.rx2 = 2,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[CX_HYBRID_TV] = {
 		.no_tx = 1, /* tx isn't wired up at all */
@@ -271,11 +311,15 @@ static const struct mceusb_model mceusb_model[] = {
 	[MULTIFUNCTION] = {
 		.mce_gen2 = 1,
 		.ir_intfnum = 2,
+<<<<<<< HEAD
 		.rx2 = 2,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	[TIVO_KIT] = {
 		.mce_gen2 = 1,
 		.rc_map = RC_MAP_TIVO,
+<<<<<<< HEAD
 		.rx2 = 2,
 	},
 	[EVROMEDIA_FULL_HYBRID_FULLHD] = {
@@ -291,6 +335,12 @@ static const struct mceusb_model mceusb_model[] = {
 };
 
 static const struct usb_device_id mceusb_dev_table[] = {
+=======
+	},
+};
+
+static struct usb_device_id mceusb_dev_table[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Original Microsoft MCE IR Transceiver (often HP-branded) */
 	{ USB_DEVICE(VENDOR_MICROSOFT, 0x006d),
 	  .driver_info = MCE_GEN1 },
@@ -319,7 +369,11 @@ static const struct usb_device_id mceusb_dev_table[] = {
 	  .driver_info = MULTIFUNCTION },
 	/* SMK/Toshiba G83C0004D410 */
 	{ USB_DEVICE(VENDOR_SMK, 0x031d),
+<<<<<<< HEAD
 	  .driver_info = MCE_GEN2_TX_INV_RX_GOOD },
+=======
+	  .driver_info = MCE_GEN2_TX_INV },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* SMK eHome Infrared Transceiver (Sony VAIO) */
 	{ USB_DEVICE(VENDOR_SMK, 0x0322),
 	  .driver_info = MCE_GEN2_TX_INV },
@@ -361,7 +415,11 @@ static const struct usb_device_id mceusb_dev_table[] = {
 	  .driver_info = MCE_GEN2_TX_INV },
 	/* Topseed eHome Infrared Transceiver */
 	{ USB_DEVICE(VENDOR_TOPSEED, 0x0011),
+<<<<<<< HEAD
 	  .driver_info = MCE_GEN3_BROKEN_IRTIMEOUT },
+=======
+	  .driver_info = MCE_GEN3 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Ricavision internal Infrared Transceiver */
 	{ USB_DEVICE(VENDOR_RICAVISION, 0x0010) },
 	/* Itron ione Libra Q-11 */
@@ -439,12 +497,15 @@ static const struct usb_device_id mceusb_dev_table[] = {
 	  .driver_info = HAUPPAUGE_CX_HYBRID_TV },
 	/* Adaptec / HP eHome Receiver */
 	{ USB_DEVICE(VENDOR_ADAPTEC, 0x0094) },
+<<<<<<< HEAD
 	/* Evromedia USB Full Hybrid Full HD */
 	{ USB_DEVICE(0x1b80, 0xd3b2),
 	  .driver_info = EVROMEDIA_FULL_HYBRID_FULLHD },
 	/* Astrometa T2hybrid */
 	{ USB_DEVICE(0x15f4, 0x0135),
 	  .driver_info = ASTROMETA_T2HYBRID },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Terminating entry */
 	{ }
@@ -456,8 +517,12 @@ struct mceusb_dev {
 	struct rc_dev *rc;
 
 	/* optional features we can enable */
+<<<<<<< HEAD
 	bool carrier_report_enabled;
 	bool wideband_rx_enabled;	/* aka learning mode, short-range rx */
+=======
+	bool learning_enabled;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* core device bits */
 	struct device *dev;
@@ -488,7 +553,10 @@ struct mceusb_dev {
 		u32 tx_mask_normal:1;
 		u32 microsoft_gen1:1;
 		u32 no_tx:1;
+<<<<<<< HEAD
 		u32 rx2;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} flags;
 
 	/* transmit support */
@@ -505,11 +573,14 @@ struct mceusb_dev {
 	u8 num_rxports;		/* number of receive sensors */
 	u8 txports_cabled;	/* bitmask of transmitters with cable */
 	u8 rxports_active;	/* bitmask of active receive sensors */
+<<<<<<< HEAD
 	bool learning_active;	/* wideband rx is active */
 
 	/* receiver carrier frequency detection support */
 	u32 pulse_tunit;	/* IR pulse "on" cumulative time units */
 	u32 pulse_count;	/* pulse "on" count in measurement interval */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * support for async error handler mceusb_deferred_kevent()
@@ -573,7 +644,10 @@ static int mceusb_cmd_datasize(u8 cmd, u8 subcmd)
 			datasize = 1;
 			break;
 		}
+<<<<<<< HEAD
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MCE_CMD_PORT_IR:
 		switch (subcmd) {
 		case MCE_CMD_UNKNOWN:
@@ -610,9 +684,15 @@ static void mceusb_dev_printdata(struct mceusb_dev *ir, u8 *buf, int buf_len,
 	if (len <= skip)
 		return;
 
+<<<<<<< HEAD
 	dev_dbg(dev, "%cx data[%d]: %*ph (len=%d sz=%d)",
 		(out ? 't' : 'r'), offset,
 		min(len, buf_len - offset), buf + offset, len, buf_len);
+=======
+	dev_dbg(dev, "%cx data: %*ph (length=%d)",
+		(out ? 't' : 'r'),
+		min(len, buf_len - offset), buf + offset, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	inout = out ? "Request" : "Got";
 
@@ -721,8 +801,13 @@ static void mceusb_dev_printdata(struct mceusb_dev *ir, u8 *buf, int buf_len,
 		/* aka MCE_RSP_EQIRRXCFCNT */
 			if (out)
 				dev_dbg(dev, "Get receive sensor");
+<<<<<<< HEAD
 			else
 				dev_dbg(dev, "RX carrier cycle count: %d",
+=======
+			else if (ir->learning_enabled)
+				dev_dbg(dev, "RX pulse count: %d",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					((data[0] << 8) | data[1]));
 			break;
 		case MCE_RSP_EQIRNUMPORTS:
@@ -734,9 +819,12 @@ static void mceusb_dev_printdata(struct mceusb_dev *ir, u8 *buf, int buf_len,
 		case MCE_RSP_CMD_ILLEGAL:
 			dev_dbg(dev, "Illegal PORT_IR command");
 			break;
+<<<<<<< HEAD
 		case MCE_RSP_TX_TIMEOUT:
 			dev_dbg(dev, "IR TX timeout (TX buffer underrun)");
 			break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		default:
 			dev_dbg(dev, "Unknown command 0x%02x 0x%02x",
 				 cmd, subcmd);
@@ -751,14 +839,22 @@ static void mceusb_dev_printdata(struct mceusb_dev *ir, u8 *buf, int buf_len,
 		dev_dbg(dev, "End of raw IR data");
 	else if ((cmd != MCE_CMD_PORT_IR) &&
 		 ((cmd & MCE_PORT_MASK) == MCE_COMMAND_IRDATA))
+<<<<<<< HEAD
 		dev_dbg(dev, "Raw IR data, %d pulse/space samples",
 			cmd & MCE_PACKET_LENGTH_MASK);
+=======
+		dev_dbg(dev, "Raw IR data, %d pulse/space samples", ir->rem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 
 /*
  * Schedule work that can't be done in interrupt handlers
+<<<<<<< HEAD
  * (mceusb_dev_recv() and mce_write_callback()) nor tasklets.
+=======
+ * (mceusb_dev_recv() and mce_async_callback()) nor tasklets.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Invokes mceusb_deferred_kevent() for recovering from
  * error events specified by the kevent bit field.
  */
@@ -771,6 +867,7 @@ static void mceusb_defer_kevent(struct mceusb_dev *ir, int kevent)
 		dev_dbg(ir->dev, "kevent %d scheduled", kevent);
 }
 
+<<<<<<< HEAD
 static void mce_write_callback(struct urb *urb)
 {
 	if (!urb)
@@ -841,10 +938,28 @@ static int mce_write(struct mceusb_dev *ir, u8 *data, int size)
 	}
 	if (ret >= 0)
 		ret = urb->actual_length;	/* bytes written */
+=======
+static void mce_async_callback(struct urb *urb)
+{
+	struct mceusb_dev *ir;
+	int len;
+
+	if (!urb)
+		return;
+
+	ir = urb->context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (urb->status) {
 	/* success */
 	case 0:
+<<<<<<< HEAD
+=======
+		len = urb->actual_length;
+
+		mceusb_dev_printdata(ir, urb->transfer_buffer, len,
+				     0, len, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case -ECONNRESET:
@@ -854,12 +969,17 @@ static int mce_write(struct mceusb_dev *ir, u8 *data, int size)
 		break;
 
 	case -EPIPE:
+<<<<<<< HEAD
 		dev_err(ir->dev, "Error: mce write urb status = %d (TX HALT)",
+=======
+		dev_err(ir->dev, "Error: request urb status = %d (TX HALT)",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			urb->status);
 		mceusb_defer_kevent(ir, EVENT_TX_HALT);
 		break;
 
 	default:
+<<<<<<< HEAD
 		dev_err(ir->dev, "Error: mce write urb status = %d",
 			urb->status);
 		break;
@@ -876,11 +996,68 @@ static int mce_write(struct mceusb_dev *ir, u8 *data, int size)
 }
 
 static void mce_command_out(struct mceusb_dev *ir, u8 *data, int size)
+=======
+		dev_err(ir->dev, "Error: request urb status = %d", urb->status);
+		break;
+	}
+
+	/* the transfer buffer and urb were allocated in mce_request_packet */
+	kfree(urb->transfer_buffer);
+	usb_free_urb(urb);
+}
+
+/* request outgoing (send) usb packet - used to initialize remote */
+static void mce_request_packet(struct mceusb_dev *ir, unsigned char *data,
+								int size)
+{
+	int res;
+	struct urb *async_urb;
+	struct device *dev = ir->dev;
+	unsigned char *async_buf;
+
+	async_urb = usb_alloc_urb(0, GFP_KERNEL);
+	if (unlikely(!async_urb)) {
+		dev_err(dev, "Error, couldn't allocate urb!");
+		return;
+	}
+
+	async_buf = kmalloc(size, GFP_KERNEL);
+	if (!async_buf) {
+		usb_free_urb(async_urb);
+		return;
+	}
+
+	/* outbound data */
+	if (usb_endpoint_xfer_int(ir->usb_ep_out))
+		usb_fill_int_urb(async_urb, ir->usbdev, ir->pipe_out,
+				 async_buf, size, mce_async_callback, ir,
+				 ir->usb_ep_out->bInterval);
+	else
+		usb_fill_bulk_urb(async_urb, ir->usbdev, ir->pipe_out,
+				  async_buf, size, mce_async_callback, ir);
+
+	memcpy(async_buf, data, size);
+
+	dev_dbg(dev, "send request called (size=%#x)", size);
+
+	res = usb_submit_urb(async_urb, GFP_ATOMIC);
+	if (res) {
+		dev_err(dev, "send request FAILED! (res=%d)", res);
+		kfree(async_buf);
+		usb_free_urb(async_urb);
+		return;
+	}
+	dev_dbg(dev, "send request complete (res=%d)", res);
+}
+
+static void mce_async_out(struct mceusb_dev *ir, unsigned char *data, int size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int rsize = sizeof(DEVICE_RESUME);
 
 	if (ir->need_reset) {
 		ir->need_reset = false;
+<<<<<<< HEAD
 		mce_write(ir, DEVICE_RESUME, rsize);
 		msleep(10);
 	}
@@ -983,6 +1160,77 @@ static int mceusb_tx_ir(struct rc_dev *dev, unsigned *txbuf, unsigned count)
 		return ret;
 
 	return count;
+=======
+		mce_request_packet(ir, DEVICE_RESUME, rsize);
+		msleep(10);
+	}
+
+	mce_request_packet(ir, data, size);
+	msleep(10);
+}
+
+/* Send data out the IR blaster port(s) */
+static int mceusb_tx_ir(struct rc_dev *dev, unsigned *txbuf, unsigned count)
+{
+	struct mceusb_dev *ir = dev->priv;
+	int i, length, ret = 0;
+	int cmdcount = 0;
+	unsigned char cmdbuf[MCE_CMDBUF_SIZE];
+
+	/* MCE tx init header */
+	cmdbuf[cmdcount++] = MCE_CMD_PORT_IR;
+	cmdbuf[cmdcount++] = MCE_CMD_SETIRTXPORTS;
+	cmdbuf[cmdcount++] = ir->tx_mask;
+
+	/* Send the set TX ports command */
+	mce_async_out(ir, cmdbuf, cmdcount);
+	cmdcount = 0;
+
+	/* Generate mce packet data */
+	for (i = 0; (i < count) && (cmdcount < MCE_CMDBUF_SIZE); i++) {
+		txbuf[i] = txbuf[i] / MCE_TIME_UNIT;
+
+		do { /* loop to support long pulses/spaces > 127*50us=6.35ms */
+
+			/* Insert mce packet header every 4th entry */
+			if ((cmdcount < MCE_CMDBUF_SIZE) &&
+			    (cmdcount % MCE_CODE_LENGTH) == 0)
+				cmdbuf[cmdcount++] = MCE_IRDATA_HEADER;
+
+			/* Insert mce packet data */
+			if (cmdcount < MCE_CMDBUF_SIZE)
+				cmdbuf[cmdcount++] =
+					(txbuf[i] < MCE_PULSE_BIT ?
+					 txbuf[i] : MCE_MAX_PULSE_LENGTH) |
+					 (i & 1 ? 0x00 : MCE_PULSE_BIT);
+			else {
+				ret = -EINVAL;
+				goto out;
+			}
+
+		} while ((txbuf[i] > MCE_MAX_PULSE_LENGTH) &&
+			 (txbuf[i] -= MCE_MAX_PULSE_LENGTH));
+	}
+
+	/* Check if we have room for the empty packet at the end */
+	if (cmdcount >= MCE_CMDBUF_SIZE) {
+		ret = -EINVAL;
+		goto out;
+	}
+
+	/* Fix packet length in last header */
+	length = cmdcount % MCE_CODE_LENGTH;
+	cmdbuf[cmdcount - length] -= MCE_CODE_LENGTH - length;
+
+	/* All mce commands end with an empty packet (0x80) */
+	cmdbuf[cmdcount++] = MCE_IRDATA_TRAILER;
+
+	/* Transmit the command to the mce device */
+	mce_async_out(ir, cmdbuf, cmdcount);
+
+out:
+	return ret ? ret : count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Sets active IR outputs -- mce devices typically have two */
@@ -1022,7 +1270,11 @@ static int mceusb_set_tx_carrier(struct rc_dev *dev, u32 carrier)
 			cmdbuf[2] = MCE_CMD_SIG_END;
 			cmdbuf[3] = MCE_IRDATA_TRAILER;
 			dev_dbg(ir->dev, "disabling carrier modulation");
+<<<<<<< HEAD
 			mce_command_out(ir, cmdbuf, sizeof(cmdbuf));
+=======
+			mce_async_out(ir, cmdbuf, sizeof(cmdbuf));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 		}
 
@@ -1036,7 +1288,11 @@ static int mceusb_set_tx_carrier(struct rc_dev *dev, u32 carrier)
 								carrier);
 
 				/* Transmit new carrier to mce device */
+<<<<<<< HEAD
 				mce_command_out(ir, cmdbuf, sizeof(cmdbuf));
+=======
+				mce_async_out(ir, cmdbuf, sizeof(cmdbuf));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				return 0;
 			}
 		}
@@ -1048,6 +1304,7 @@ static int mceusb_set_tx_carrier(struct rc_dev *dev, u32 carrier)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mceusb_set_timeout(struct rc_dev *dev, unsigned int timeout)
 {
 	u8 cmdbuf[4] = { MCE_CMD_PORT_IR, MCE_CMD_SETIRTIMEOUT, 0, 0 };
@@ -1128,6 +1385,8 @@ static int mceusb_set_rx_carrier_report(struct rc_dev *dev, int enable)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We don't do anything but print debug spew for many of the command bits
  * we receive from the hardware, but some of them are useful information
@@ -1135,11 +1394,16 @@ static int mceusb_set_rx_carrier_report(struct rc_dev *dev, int enable)
  */
 static void mceusb_handle_command(struct mceusb_dev *ir, int index)
 {
+<<<<<<< HEAD
 	DEFINE_IR_RAW_EVENT(rawir);
 	u8 hi = ir->buf_in[index + 1] & 0xff;
 	u8 lo = ir->buf_in[index + 2] & 0xff;
 	u32 carrier_cycles;
 	u32 cycles_fix;
+=======
+	u8 hi = ir->buf_in[index + 1] & 0xff;
+	u8 lo = ir->buf_in[index + 2] & 0xff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (ir->buf_in[index]) {
 	/* the one and only 5-byte return value command */
@@ -1156,6 +1420,7 @@ static void mceusb_handle_command(struct mceusb_dev *ir, int index)
 		ir->num_txports = hi;
 		ir->num_rxports = lo;
 		break;
+<<<<<<< HEAD
 	case MCE_RSP_EQIRRXCFCNT:
 		/*
 		 * The carrier cycle counter can overflow and wrap around
@@ -1183,6 +1448,8 @@ static void mceusb_handle_command(struct mceusb_dev *ir, int index)
 			ir_raw_event_store(ir->rc, &rawir);
 		}
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* 1-byte return value commands */
 	case MCE_RSP_EQEMVER:
@@ -1192,6 +1459,7 @@ static void mceusb_handle_command(struct mceusb_dev *ir, int index)
 		ir->tx_mask = hi;
 		break;
 	case MCE_RSP_EQIRRXPORTEN:
+<<<<<<< HEAD
 		ir->learning_active = ((hi & 0x02) == 0x02);
 		if (ir->rxports_active != hi) {
 			dev_info(ir->dev, "%s-range (0x%x) receiver active",
@@ -1201,6 +1469,12 @@ static void mceusb_handle_command(struct mceusb_dev *ir, int index)
 		break;
 	case MCE_RSP_CMD_ILLEGAL:
 	case MCE_RSP_TX_TIMEOUT:
+=======
+		ir->learning_enabled = ((hi & 0x02) == 0x02);
+		ir->rxports_active = hi;
+		break;
+	case MCE_RSP_CMD_ILLEGAL:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ir->need_reset = true;
 		break;
 	default:
@@ -1235,6 +1509,7 @@ static void mceusb_process_ir_data(struct mceusb_dev *ir, int buf_len)
 			ir->rem--;
 			init_ir_raw_event(&rawir);
 			rawir.pulse = ((ir->buf_in[i] & MCE_PULSE_BIT) != 0);
+<<<<<<< HEAD
 			rawir.duration = (ir->buf_in[i] & MCE_PULSE_MASK);
 			if (unlikely(!rawir.duration)) {
 				dev_warn(ir->dev, "nonsensical irdata %02x with duration 0",
@@ -1250,6 +1525,14 @@ static void mceusb_process_ir_data(struct mceusb_dev *ir, int buf_len)
 			dev_dbg(ir->dev, "Storing %s %u ns (%02x)",
 				rawir.pulse ? "pulse" : "space",
 				rawir.duration,	ir->buf_in[i]);
+=======
+			rawir.duration = (ir->buf_in[i] & MCE_PULSE_MASK)
+					 * US_TO_NS(MCE_TIME_UNIT);
+
+			dev_dbg(ir->dev, "Storing %s with duration %u",
+				rawir.pulse ? "pulse" : "space",
+				rawir.duration);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (ir_raw_event_store_with_filter(ir->rc, &rawir))
 				event = true;
@@ -1270,6 +1553,7 @@ static void mceusb_process_ir_data(struct mceusb_dev *ir, int buf_len)
 			ir->rem = (ir->cmd & MCE_PACKET_LENGTH_MASK);
 			mceusb_dev_printdata(ir, ir->buf_in, buf_len,
 					     i, ir->rem + 1, false);
+<<<<<<< HEAD
 			if (ir->rem) {
 				ir->parser_state = PARSE_IRDATA;
 			} else {
@@ -1282,6 +1566,12 @@ static void mceusb_process_ir_data(struct mceusb_dev *ir, int buf_len)
 				ir->pulse_tunit = 0;
 				ir->pulse_count = 0;
 			}
+=======
+			if (ir->rem)
+				ir->parser_state = PARSE_IRDATA;
+			else
+				ir_raw_event_reset(ir->rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 
@@ -1338,7 +1628,11 @@ static void mceusb_get_emulator_version(struct mceusb_dev *ir)
 {
 	/* If we get no reply or an illegal command reply, its ver 1, says MS */
 	ir->emver = 1;
+<<<<<<< HEAD
 	mce_command_out(ir, GET_EMVER, sizeof(GET_EMVER));
+=======
+	mce_async_out(ir, GET_EMVER, sizeof(GET_EMVER));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mceusb_gen1_init(struct mceusb_dev *ir)
@@ -1384,10 +1678,17 @@ static void mceusb_gen1_init(struct mceusb_dev *ir)
 	dev_dbg(dev, "set handshake  - retC = %d", ret);
 
 	/* device resume */
+<<<<<<< HEAD
 	mce_command_out(ir, DEVICE_RESUME, sizeof(DEVICE_RESUME));
 
 	/* get hw/sw revision? */
 	mce_command_out(ir, GET_REVISION, sizeof(GET_REVISION));
+=======
+	mce_async_out(ir, DEVICE_RESUME, sizeof(DEVICE_RESUME));
+
+	/* get hw/sw revision? */
+	mce_async_out(ir, GET_REVISION, sizeof(GET_REVISION));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(data);
 }
@@ -1395,6 +1696,7 @@ static void mceusb_gen1_init(struct mceusb_dev *ir)
 static void mceusb_gen2_init(struct mceusb_dev *ir)
 {
 	/* device resume */
+<<<<<<< HEAD
 	mce_command_out(ir, DEVICE_RESUME, sizeof(DEVICE_RESUME));
 
 	/* get wake version (protocol, key, address) */
@@ -1402,6 +1704,15 @@ static void mceusb_gen2_init(struct mceusb_dev *ir)
 
 	/* unknown what this one actually returns... */
 	mce_command_out(ir, GET_UNKNOWN2, sizeof(GET_UNKNOWN2));
+=======
+	mce_async_out(ir, DEVICE_RESUME, sizeof(DEVICE_RESUME));
+
+	/* get wake version (protocol, key, address) */
+	mce_async_out(ir, GET_WAKEVERSION, sizeof(GET_WAKEVERSION));
+
+	/* unknown what this one actually returns... */
+	mce_async_out(ir, GET_UNKNOWN2, sizeof(GET_UNKNOWN2));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mceusb_get_parameters(struct mceusb_dev *ir)
@@ -1415,6 +1726,7 @@ static void mceusb_get_parameters(struct mceusb_dev *ir)
 	ir->num_rxports = 2;
 
 	/* get number of tx and rx ports */
+<<<<<<< HEAD
 	mce_command_out(ir, GET_NUM_PORTS, sizeof(GET_NUM_PORTS));
 
 	/* get the carrier and frequency */
@@ -1433,6 +1745,26 @@ static void mceusb_get_parameters(struct mceusb_dev *ir)
 	for (i = 0; i < ir->num_txports; i++) {
 		cmdbuf[2] = i;
 		mce_command_out(ir, cmdbuf, sizeof(cmdbuf));
+=======
+	mce_async_out(ir, GET_NUM_PORTS, sizeof(GET_NUM_PORTS));
+
+	/* get the carrier and frequency */
+	mce_async_out(ir, GET_CARRIER_FREQ, sizeof(GET_CARRIER_FREQ));
+
+	if (ir->num_txports && !ir->flags.no_tx)
+		/* get the transmitter bitmask */
+		mce_async_out(ir, GET_TX_BITMASK, sizeof(GET_TX_BITMASK));
+
+	/* get receiver timeout value */
+	mce_async_out(ir, GET_RX_TIMEOUT, sizeof(GET_RX_TIMEOUT));
+
+	/* get receiver sensor setting */
+	mce_async_out(ir, GET_RX_SENSOR, sizeof(GET_RX_SENSOR));
+
+	for (i = 0; i < ir->num_txports; i++) {
+		cmdbuf[2] = i;
+		mce_async_out(ir, cmdbuf, sizeof(cmdbuf));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1441,7 +1773,11 @@ static void mceusb_flash_led(struct mceusb_dev *ir)
 	if (ir->emver < 2)
 		return;
 
+<<<<<<< HEAD
 	mce_command_out(ir, FLASH_LED, sizeof(FLASH_LED));
+=======
+	mce_async_out(ir, FLASH_LED, sizeof(FLASH_LED));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1511,6 +1847,7 @@ static struct rc_dev *mceusb_init_rc_dev(struct mceusb_dev *ir)
 	rc->dev.parent = dev;
 	rc->priv = ir;
 	rc->allowed_protocols = RC_PROTO_BIT_ALL_IR_DECODER;
+<<<<<<< HEAD
 	rc->min_timeout = US_TO_NS(MCE_TIME_UNIT);
 	rc->timeout = MS_TO_NS(100);
 	if (!mceusb_model[ir->model].broken_irtimeout) {
@@ -1523,15 +1860,21 @@ static struct rc_dev *mceusb_init_rc_dev(struct mceusb_dev *ir)
 		 */
 		rc->max_timeout = rc->timeout;
 	}
+=======
+	rc->timeout = MS_TO_NS(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ir->flags.no_tx) {
 		rc->s_tx_mask = mceusb_set_tx_mask;
 		rc->s_tx_carrier = mceusb_set_tx_carrier;
 		rc->tx_ir = mceusb_tx_ir;
 	}
+<<<<<<< HEAD
 	if (ir->flags.rx2 > 0) {
 		rc->s_learning_mode = mceusb_set_rx_wideband;
 		rc->s_carrier_report = mceusb_set_rx_carrier_report;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc->driver_name = DRIVER_NAME;
 
 	switch (le16_to_cpu(udev->descriptor.idVendor)) {
@@ -1646,7 +1989,10 @@ static int mceusb_dev_probe(struct usb_interface *intf,
 	ir->flags.microsoft_gen1 = is_microsoft_gen1;
 	ir->flags.tx_mask_normal = tx_mask_normal;
 	ir->flags.no_tx = mceusb_model[model].no_tx;
+<<<<<<< HEAD
 	ir->flags.rx2 = mceusb_model[model].rx2;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ir->model = model;
 
 	/* Saving usb interface data for use by the transmitter routine */

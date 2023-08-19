@@ -21,20 +21,32 @@
 #include <linux/pm_runtime.h>
 #include <linux/regmap.h>
 
+<<<<<<< HEAD
+=======
+#include <video/exynos5433_decon.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "exynos_drm_drv.h"
 #include "exynos_drm_crtc.h"
 #include "exynos_drm_fb.h"
 #include "exynos_drm_plane.h"
 #include "exynos_drm_iommu.h"
+<<<<<<< HEAD
 #include "regs-decon5433.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DSD_CFG_MUX 0x1004
 #define DSD_CFG_MUX_TE_UNMASK_GLOBAL BIT(13)
 
+<<<<<<< HEAD
 #define WINDOWS_NR	5
 #define PRIMARY_WIN	2
 #define CURSON_WIN	4
 
+=======
+#define WINDOWS_NR	3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MIN_FB_WIDTH_FOR_16WORD_BURST	128
 
 #define I80_HW_TRG	(1 << 0)
@@ -46,9 +58,12 @@ static const char * const decon_clks_name[] = {
 	"aclk_smmu_decon0x",
 	"aclk_xiu_decon0x",
 	"pclk_smmu_decon0x",
+<<<<<<< HEAD
 	"aclk_smmu_decon1x",
 	"aclk_xiu_decon1x",
 	"pclk_smmu_decon1x",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"sclk_decon_vclk",
 	"sclk_decon_eclk",
 };
@@ -80,8 +95,14 @@ static const uint32_t decon_formats[] = {
 };
 
 static const enum drm_plane_type decon_win_types[WINDOWS_NR] = {
+<<<<<<< HEAD
 	[PRIMARY_WIN] = DRM_PLANE_TYPE_PRIMARY,
 	[CURSON_WIN] = DRM_PLANE_TYPE_CURSOR,
+=======
+	DRM_PLANE_TYPE_PRIMARY,
+	DRM_PLANE_TYPE_OVERLAY,
+	DRM_PLANE_TYPE_CURSOR,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline void decon_set_bits(struct decon_context *ctx, u32 reg, u32 mask,
@@ -548,10 +569,19 @@ static int decon_bind(struct device *dev, struct device *master, void *data)
 	ctx->drm_dev = drm_dev;
 
 	for (win = ctx->first_win; win < WINDOWS_NR; win++) {
+<<<<<<< HEAD
 		ctx->configs[win].pixel_formats = decon_formats;
 		ctx->configs[win].num_pixel_formats = ARRAY_SIZE(decon_formats);
 		ctx->configs[win].zpos = win - ctx->first_win;
 		ctx->configs[win].type = decon_win_types[win];
+=======
+		int tmp = (win == ctx->first_win) ? 0 : win;
+
+		ctx->configs[win].pixel_formats = decon_formats;
+		ctx->configs[win].num_pixel_formats = ARRAY_SIZE(decon_formats);
+		ctx->configs[win].zpos = win;
+		ctx->configs[win].type = decon_win_types[tmp];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = exynos_plane_init(drm_dev, &ctx->planes[win], win,
 					&ctx->configs[win]);
@@ -559,7 +589,11 @@ static int decon_bind(struct device *dev, struct device *master, void *data)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	exynos_plane = &ctx->planes[PRIMARY_WIN];
+=======
+	exynos_plane = &ctx->planes[ctx->first_win];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	out_type = (ctx->out_type & IFTYPE_HDMI) ? EXYNOS_DISPLAY_TYPE_HDMI
 						  : EXYNOS_DISPLAY_TYPE_LCD;
 	ctx->crtc = exynos_drm_crtc_create(drm_dev, &exynos_plane->base,
@@ -664,8 +698,11 @@ err:
 static const struct dev_pm_ops exynos5433_decon_pm_ops = {
 	SET_RUNTIME_PM_OPS(exynos5433_decon_suspend, exynos5433_decon_resume,
 			   NULL)
+<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				     pm_runtime_force_resume)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id exynos5433_decon_driver_dt_match[] = {
@@ -739,6 +776,14 @@ static int exynos5433_decon_probe(struct platform_device *pdev)
 	}
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+<<<<<<< HEAD
+=======
+	if (!res) {
+		dev_err(dev, "cannot find IO resource\n");
+		return -ENXIO;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ctx->addr = devm_ioremap_resource(dev, res);
 	if (IS_ERR(ctx->addr)) {
 		dev_err(dev, "ioremap failed\n");

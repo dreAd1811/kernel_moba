@@ -147,7 +147,13 @@ void pxa2xx_core_turbo_switch(bool on)
 	"	b	3f\n"
 	"2:	b	1b\n"
 	"3:	nop\n"
+<<<<<<< HEAD
 		: "=&r" (unused) : "r" (clkcfg));
+=======
+		: "=&r" (unused)
+		: "r" (clkcfg)
+		: );
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	local_irq_restore(flags);
 }

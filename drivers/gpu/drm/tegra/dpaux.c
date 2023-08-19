@@ -15,7 +15,10 @@
 #include <linux/pinctrl/pinconf-generic.h>
 #include <linux/pinctrl/pinctrl.h>
 #include <linux/pinctrl/pinmux.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 #include <linux/reset.h>
 #include <linux/regulator/consumer.h>
@@ -322,9 +325,12 @@ static int tegra_dpaux_pad_config(struct tegra_dpaux *dpaux, unsigned function)
 	case DPAUX_PADCTL_FUNC_I2C:
 		value = DPAUX_HYBRID_PADCTL_I2C_SDA_INPUT_RCV |
 			DPAUX_HYBRID_PADCTL_I2C_SCL_INPUT_RCV |
+<<<<<<< HEAD
 			DPAUX_HYBRID_PADCTL_AUX_CMH(2) |
 			DPAUX_HYBRID_PADCTL_AUX_DRVZ(4) |
 			DPAUX_HYBRID_PADCTL_AUX_DRVI(0x18) |
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			DPAUX_HYBRID_PADCTL_MODE_I2C;
 		break;
 
@@ -471,24 +477,54 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
 		return PTR_ERR(dpaux->clk);
 	}
 
+<<<<<<< HEAD
+=======
+	err = clk_prepare_enable(dpaux->clk);
+	if (err < 0) {
+		dev_err(&pdev->dev, "failed to enable module clock: %d\n",
+			err);
+		return err;
+	}
+
+	if (dpaux->rst)
+		reset_control_deassert(dpaux->rst);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dpaux->clk_parent = devm_clk_get(&pdev->dev, "parent");
 	if (IS_ERR(dpaux->clk_parent)) {
 		dev_err(&pdev->dev, "failed to get parent clock: %ld\n",
 			PTR_ERR(dpaux->clk_parent));
+<<<<<<< HEAD
 		return PTR_ERR(dpaux->clk_parent);
+=======
+		err = PTR_ERR(dpaux->clk_parent);
+		goto assert_reset;
+	}
+
+	err = clk_prepare_enable(dpaux->clk_parent);
+	if (err < 0) {
+		dev_err(&pdev->dev, "failed to enable parent clock: %d\n",
+			err);
+		goto assert_reset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = clk_set_rate(dpaux->clk_parent, 270000000);
 	if (err < 0) {
 		dev_err(&pdev->dev, "failed to set clock to 270 MHz: %d\n",
 			err);
+<<<<<<< HEAD
 		return err;
+=======
+		goto disable_parent_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dpaux->vdd = devm_regulator_get(&pdev->dev, "vdd");
 	if (IS_ERR(dpaux->vdd)) {
 		dev_err(&pdev->dev, "failed to get VDD supply: %ld\n",
 			PTR_ERR(dpaux->vdd));
+<<<<<<< HEAD
 		return PTR_ERR(dpaux->vdd);
 	}
 
@@ -496,12 +532,22 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
 	pm_runtime_enable(&pdev->dev);
 	pm_runtime_get_sync(&pdev->dev);
 
+=======
+		err = PTR_ERR(dpaux->vdd);
+		goto disable_parent_clk;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = devm_request_irq(dpaux->dev, dpaux->irq, tegra_dpaux_irq, 0,
 			       dev_name(dpaux->dev), dpaux);
 	if (err < 0) {
 		dev_err(dpaux->dev, "failed to request IRQ#%u: %d\n",
 			dpaux->irq, err);
+<<<<<<< HEAD
 		return err;
+=======
+		goto disable_parent_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	disable_irq(dpaux->irq);
@@ -511,7 +557,11 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
 
 	err = drm_dp_aux_register(&dpaux->aux);
 	if (err < 0)
+<<<<<<< HEAD
 		return err;
+=======
+		goto disable_parent_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Assume that by default the DPAUX/I2C pads will be used for HDMI,
@@ -549,13 +599,30 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
 	list_add_tail(&dpaux->list, &dpaux_list);
 	mutex_unlock(&dpaux_lock);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	platform_set_drvdata(pdev, dpaux);
+
+	return 0;
+
+disable_parent_clk:
+	clk_disable_unprepare(dpaux->clk_parent);
+assert_reset:
+	if (dpaux->rst)
+		reset_control_assert(dpaux->rst);
+
+	clk_disable_unprepare(dpaux->clk);
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int tegra_dpaux_remove(struct platform_device *pdev)
 {
 	struct tegra_dpaux *dpaux = platform_get_drvdata(pdev);
 
+<<<<<<< HEAD
 	cancel_work_sync(&dpaux->work);
 
 	/* make sure pads are powered down when not in use */
@@ -564,12 +631,18 @@ static int tegra_dpaux_remove(struct platform_device *pdev)
 	pm_runtime_put(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
 
+=======
+	/* make sure pads are powered down when not in use */
+	tegra_dpaux_pad_power_down(dpaux);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_dp_aux_unregister(&dpaux->aux);
 
 	mutex_lock(&dpaux_lock);
 	list_del(&dpaux->list);
 	mutex_unlock(&dpaux_lock);
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -640,6 +713,21 @@ static const struct dev_pm_ops tegra_dpaux_pm_ops = {
 
 static const struct of_device_id tegra_dpaux_of_match[] = {
 	{ .compatible = "nvidia,tegra186-dpaux", },
+=======
+	cancel_work_sync(&dpaux->work);
+
+	clk_disable_unprepare(dpaux->clk_parent);
+
+	if (dpaux->rst)
+		reset_control_assert(dpaux->rst);
+
+	clk_disable_unprepare(dpaux->clk);
+
+	return 0;
+}
+
+static const struct of_device_id tegra_dpaux_of_match[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "nvidia,tegra210-dpaux", },
 	{ .compatible = "nvidia,tegra124-dpaux", },
 	{ },
@@ -650,7 +738,10 @@ struct platform_driver tegra_dpaux_driver = {
 	.driver = {
 		.name = "tegra-dpaux",
 		.of_match_table = tegra_dpaux_of_match,
+<<<<<<< HEAD
 		.pm = &tegra_dpaux_pm_ops,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.probe = tegra_dpaux_probe,
 	.remove = tegra_dpaux_remove,

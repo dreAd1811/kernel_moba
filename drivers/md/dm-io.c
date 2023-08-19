@@ -22,8 +22,13 @@
 #define DM_IO_MAX_REGIONS	BITS_PER_LONG
 
 struct dm_io_client {
+<<<<<<< HEAD
 	mempool_t pool;
 	struct bio_set bios;
+=======
+	mempool_t *pool;
+	struct bio_set *bios;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -49,33 +54,57 @@ struct dm_io_client *dm_io_client_create(void)
 {
 	struct dm_io_client *client;
 	unsigned min_ios = dm_get_reserved_bio_based_ios();
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	client = kzalloc(sizeof(*client), GFP_KERNEL);
 	if (!client)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	ret = mempool_init_slab_pool(&client->pool, min_ios, _dm_io_cache);
 	if (ret)
 		goto bad;
 
 	ret = bioset_init(&client->bios, min_ios, 0, BIOSET_NEED_BVECS);
 	if (ret)
+=======
+	client->pool = mempool_create_slab_pool(min_ios, _dm_io_cache);
+	if (!client->pool)
+		goto bad;
+
+	client->bios = bioset_create(min_ios, 0, (BIOSET_NEED_BVECS |
+						  BIOSET_NEED_RESCUER));
+	if (!client->bios)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bad;
 
 	return client;
 
    bad:
+<<<<<<< HEAD
 	mempool_exit(&client->pool);
 	kfree(client);
 	return ERR_PTR(ret);
+=======
+	mempool_destroy(client->pool);
+	kfree(client);
+	return ERR_PTR(-ENOMEM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(dm_io_client_create);
 
 void dm_io_client_destroy(struct dm_io_client *client)
 {
+<<<<<<< HEAD
 	mempool_exit(&client->pool);
 	bioset_exit(&client->bios);
+=======
+	mempool_destroy(client->pool);
+	bioset_free(client->bios);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(client);
 }
 EXPORT_SYMBOL(dm_io_client_destroy);
@@ -121,7 +150,11 @@ static void complete_io(struct io *io)
 		invalidate_kernel_vmap_range(io->vma_invalidate_address,
 					     io->vma_invalidate_size);
 
+<<<<<<< HEAD
 	mempool_free(io, &io->client->pool);
+=======
+	mempool_free(io, io->client->pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fn(error_bits, context);
 }
 
@@ -345,7 +378,11 @@ static void do_region(int op, int op_flags, unsigned region,
 					  dm_sector_div_up(remaining, (PAGE_SIZE >> SECTOR_SHIFT)));
 		}
 
+<<<<<<< HEAD
 		bio = bio_alloc_bioset(GFP_NOIO, num_bvecs, &io->client->bios);
+=======
+		bio = bio_alloc_bioset(GFP_NOIO, num_bvecs, io->client->bios);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio->bi_iter.bi_sector = where->sector + (where->count - remaining);
 		bio_set_dev(bio, where->bdev);
 		bio->bi_end_io = endio;
@@ -443,7 +480,11 @@ static int sync_io(struct dm_io_client *client, unsigned int num_regions,
 
 	init_completion(&sio.wait);
 
+<<<<<<< HEAD
 	io = mempool_alloc(&client->pool, GFP_NOIO);
+=======
+	io = mempool_alloc(client->pool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	io->error_bits = 0;
 	atomic_set(&io->count, 1); /* see dispatch_io() */
 	io->client = client;
@@ -475,7 +516,11 @@ static int async_io(struct dm_io_client *client, unsigned int num_regions,
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	io = mempool_alloc(&client->pool, GFP_NOIO);
+=======
+	io = mempool_alloc(client->pool, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	io->error_bits = 0;
 	atomic_set(&io->count, 1); /* see dispatch_io() */
 	io->client = client;

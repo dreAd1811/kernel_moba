@@ -159,7 +159,11 @@
 #define CH7017_BANG_LIMIT_CONTROL	0x7f
 
 struct ch7017_priv {
+<<<<<<< HEAD
 	u8 dummy;
+=======
+	uint8_t dummy;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void ch7017_dump_regs(struct intel_dvo_device *dvo);
@@ -186,7 +190,11 @@ static bool ch7017_read(struct intel_dvo_device *dvo, u8 addr, u8 *val)
 
 static bool ch7017_write(struct intel_dvo_device *dvo, u8 addr, u8 val)
 {
+<<<<<<< HEAD
 	u8 buf[2] = { addr, val };
+=======
+	uint8_t buf[2] = { addr, val };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_msg msg = {
 		.addr = dvo->slave_addr,
 		.flags = 0,
@@ -258,11 +266,19 @@ static void ch7017_mode_set(struct intel_dvo_device *dvo,
 			    const struct drm_display_mode *mode,
 			    const struct drm_display_mode *adjusted_mode)
 {
+<<<<<<< HEAD
 	u8 lvds_pll_feedback_div, lvds_pll_vco_control;
 	u8 outputs_enable, lvds_control_2, lvds_power_down;
 	u8 horizontal_active_pixel_input;
 	u8 horizontal_active_pixel_output, vertical_active_line_output;
 	u8 active_input_line_output;
+=======
+	uint8_t lvds_pll_feedback_div, lvds_pll_vco_control;
+	uint8_t outputs_enable, lvds_control_2, lvds_power_down;
+	uint8_t horizontal_active_pixel_input;
+	uint8_t horizontal_active_pixel_output, vertical_active_line_output;
+	uint8_t active_input_line_output;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_KMS("Registers before mode setting\n");
 	ch7017_dump_regs(dvo);
@@ -333,7 +349,11 @@ static void ch7017_mode_set(struct intel_dvo_device *dvo,
 /* set the CH7017 power state */
 static void ch7017_dpms(struct intel_dvo_device *dvo, bool enable)
 {
+<<<<<<< HEAD
 	u8 val;
+=======
+	uint8_t val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ch7017_read(dvo, CH7017_LVDS_POWER_DOWN, &val);
 
@@ -361,7 +381,11 @@ static void ch7017_dpms(struct intel_dvo_device *dvo, bool enable)
 
 static bool ch7017_get_hw_state(struct intel_dvo_device *dvo)
 {
+<<<<<<< HEAD
 	u8 val;
+=======
+	uint8_t val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ch7017_read(dvo, CH7017_LVDS_POWER_DOWN, &val);
 
@@ -373,7 +397,11 @@ static bool ch7017_get_hw_state(struct intel_dvo_device *dvo)
 
 static void ch7017_dump_regs(struct intel_dvo_device *dvo)
 {
+<<<<<<< HEAD
 	u8 val;
+=======
+	uint8_t val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DUMP(reg)					\
 do {							\

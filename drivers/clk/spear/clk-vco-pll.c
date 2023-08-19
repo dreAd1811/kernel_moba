@@ -165,7 +165,11 @@ static int clk_pll_set_rate(struct clk_hw *hw, unsigned long drate,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct clk_ops clk_pll_ops = {
+=======
+static struct clk_ops clk_pll_ops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = clk_pll_recalc_rate,
 	.round_rate = clk_pll_round_rate,
 	.set_rate = clk_pll_set_rate,
@@ -266,7 +270,11 @@ static int clk_vco_set_rate(struct clk_hw *hw, unsigned long drate,
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct clk_ops clk_vco_ops = {
+=======
+static struct clk_ops clk_vco_ops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.recalc_rate = clk_vco_recalc_rate,
 	.round_rate = clk_vco_round_rate,
 	.set_rate = clk_vco_set_rate,
@@ -292,12 +300,25 @@ struct clk *clk_register_vco_pll(const char *vco_name, const char *pll_name,
 	}
 
 	vco = kzalloc(sizeof(*vco), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!vco)
 		return ERR_PTR(-ENOMEM);
 
 	pll = kzalloc(sizeof(*pll), GFP_KERNEL);
 	if (!pll)
 		goto free_vco;
+=======
+	if (!vco) {
+		pr_err("could not allocate vco clk\n");
+		return ERR_PTR(-ENOMEM);
+	}
+
+	pll = kzalloc(sizeof(*pll), GFP_KERNEL);
+	if (!pll) {
+		pr_err("could not allocate pll clk\n");
+		goto free_vco;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* struct clk_vco assignments */
 	vco->mode_reg = mode_reg;

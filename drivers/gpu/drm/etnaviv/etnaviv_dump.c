@@ -1,6 +1,23 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (C) 2015-2018 Etnaviv Project
+=======
+/*
+ * Copyright (C) 2015 Etnaviv Project
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/devcoredump.h>
@@ -9,6 +26,7 @@
 #include "etnaviv_gem.h"
 #include "etnaviv_gpu.h"
 #include "etnaviv_mmu.h"
+<<<<<<< HEAD
 #include "etnaviv_sched.h"
 #include "state.xml.h"
 #include "state_hi.xml.h"
@@ -16,6 +34,11 @@
 static bool etnaviv_dump_core = true;
 module_param_named(dump_core, etnaviv_dump_core, bool, 0600);
 
+=======
+#include "state.xml.h"
+#include "state_hi.xml.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct core_dump_iterator {
 	void *start;
 	struct etnaviv_dump_object_header *hdr;
@@ -113,12 +136,17 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 	struct core_dump_iterator iter;
 	struct etnaviv_vram_mapping *vram;
 	struct etnaviv_gem_object *obj;
+<<<<<<< HEAD
 	struct etnaviv_gem_submit *submit;
 	struct drm_sched_job *s_job;
+=======
+	struct etnaviv_cmdbuf *cmd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int n_obj, n_bomap_pages;
 	size_t file_size, mmu_size;
 	__le64 *bomap, *bomap_start;
 
+<<<<<<< HEAD
 	/* Only catch the first event, or when manually re-armed */
 	if (!etnaviv_dump_core)
 		return;
@@ -126,6 +154,8 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 
 	mutex_lock(&gpu->mmu->lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmu_size = etnaviv_iommu_dump_size(gpu->mmu);
 
 	/* We always dump registers, mmu, ring and end marker */
@@ -133,6 +163,7 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 	n_bomap_pages = 0;
 	file_size = ARRAY_SIZE(etnaviv_dump_registers) *
 			sizeof(struct etnaviv_dump_registers) +
+<<<<<<< HEAD
 		    mmu_size + gpu->buffer.size;
 
 	/* Add in the active command buffers */
@@ -143,6 +174,15 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 		n_obj++;
 	}
 	spin_unlock(&gpu->sched.job_list_lock);
+=======
+		    mmu_size + gpu->buffer->size;
+
+	/* Add in the active command buffers */
+	list_for_each_entry(cmd, &gpu->active_cmd_list, node) {
+		file_size += cmd->size;
+		n_obj++;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add in the active buffer objects */
 	list_for_each_entry(vram, &gpu->mmu->mappings, mmu_node) {
@@ -168,7 +208,10 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 	iter.start = __vmalloc(file_size, GFP_KERNEL | __GFP_NOWARN | __GFP_NORETRY,
 			       PAGE_KERNEL);
 	if (!iter.start) {
+<<<<<<< HEAD
 		mutex_unlock(&gpu->mmu->lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_warn(gpu->dev, "failed to allocate devcoredump file\n");
 		return;
 	}
@@ -181,6 +224,7 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 
 	etnaviv_core_dump_registers(&iter, gpu);
 	etnaviv_core_dump_mmu(&iter, gpu, mmu_size);
+<<<<<<< HEAD
 	etnaviv_core_dump_mem(&iter, ETDUMP_BUF_RING, gpu->buffer.vaddr,
 			      gpu->buffer.size,
 			      etnaviv_cmdbuf_get_va(&gpu->buffer));
@@ -193,6 +237,15 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 				      etnaviv_cmdbuf_get_va(&submit->cmdbuf));
 	}
 	spin_unlock(&gpu->sched.job_list_lock);
+=======
+	etnaviv_core_dump_mem(&iter, ETDUMP_BUF_RING, gpu->buffer->vaddr,
+			      gpu->buffer->size,
+			      etnaviv_cmdbuf_get_va(gpu->buffer));
+
+	list_for_each_entry(cmd, &gpu->active_cmd_list, node)
+		etnaviv_core_dump_mem(&iter, ETDUMP_BUF_CMD, cmd->vaddr,
+				      cmd->size, etnaviv_cmdbuf_get_va(cmd));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Reserve space for the bomap */
 	if (n_bomap_pages) {
@@ -217,7 +270,11 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 		mutex_lock(&obj->lock);
 		pages = etnaviv_gem_get_pages(obj);
 		mutex_unlock(&obj->lock);
+<<<<<<< HEAD
 		if (pages) {
+=======
+		if (!IS_ERR(pages)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			int j;
 
 			iter.hdr->data[0] = bomap - bomap_start;
@@ -236,8 +293,11 @@ void etnaviv_core_dump(struct etnaviv_gpu *gpu)
 					 obj->base.size);
 	}
 
+<<<<<<< HEAD
 	mutex_unlock(&gpu->mmu->lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	etnaviv_core_dump_header(&iter, ETDUMP_BUF_END, iter.data);
 
 	dev_coredumpv(gpu->dev, iter.start, iter.data - iter.start, GFP_KERNEL);

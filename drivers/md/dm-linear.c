@@ -45,7 +45,11 @@ int dm_linear_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	}
 
 	ret = -EINVAL;
+<<<<<<< HEAD
 	if (sscanf(argv[1], "%llu%c", &tmp, &dummy) != 1 || tmp != (sector_t)tmp) {
+=======
+	if (sscanf(argv[1], "%llu%c", &tmp, &dummy) != 1) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ti->error = "Invalid device sector";
 		goto bad;
 	}
@@ -59,9 +63,15 @@ int dm_linear_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 
 	ti->num_flush_bios = 1;
 	ti->num_discard_bios = 1;
+<<<<<<< HEAD
 	ti->num_secure_erase_bios = 1;
 	ti->num_write_same_bios = 1;
 	ti->num_write_zeroes_bios = 1;
+=======
+	ti->num_write_same_bios = 1;
+	ti->num_write_zeroes_bios = 1;
+	ti->may_passthrough_inline_crypto = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ti->private = lc;
 	return 0;
 
@@ -69,6 +79,10 @@ int dm_linear_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	kfree(lc);
 	return ret;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(dm_linear_ctr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void dm_linear_dtr(struct dm_target *ti)
 {
@@ -77,6 +91,10 @@ void dm_linear_dtr(struct dm_target *ti)
 	dm_put_device(ti, lc->dev);
 	kfree(lc);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(dm_linear_dtr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static sector_t linear_map_sector(struct dm_target *ti, sector_t bi_sector)
 {
@@ -101,8 +119,13 @@ int dm_linear_map(struct dm_target *ti, struct bio *bio)
 
 	return DM_MAPIO_REMAPPED;
 }
+<<<<<<< HEAD
 
 #ifdef CONFIG_BLK_DEV_ZONED
+=======
+EXPORT_SYMBOL_GPL(dm_linear_map);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int dm_linear_end_io(struct dm_target *ti, struct bio *bio,
 			 blk_status_t *error)
 {
@@ -114,7 +137,10 @@ int dm_linear_end_io(struct dm_target *ti, struct bio *bio,
 	return DM_ENDIO_DONE;
 }
 EXPORT_SYMBOL_GPL(dm_linear_end_io);
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void dm_linear_status(struct dm_target *ti, status_type_t type,
 			  unsigned status_flags, char *result, unsigned maxlen)
@@ -132,8 +158,15 @@ void dm_linear_status(struct dm_target *ti, status_type_t type,
 		break;
 	}
 }
+<<<<<<< HEAD
 
 int dm_linear_prepare_ioctl(struct dm_target *ti, struct block_device **bdev)
+=======
+EXPORT_SYMBOL_GPL(dm_linear_status);
+
+int dm_linear_prepare_ioctl(struct dm_target *ti,
+		struct block_device **bdev, fmode_t *mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct linear_c *lc = (struct linear_c *) ti->private;
 	struct dm_dev *dev = lc->dev;
@@ -148,6 +181,10 @@ int dm_linear_prepare_ioctl(struct dm_target *ti, struct block_device **bdev)
 		return 1;
 	return 0;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL_GPL(dm_linear_prepare_ioctl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int dm_linear_iterate_devices(struct dm_target *ti,
 				  iterate_devices_callout_fn fn, void *data)
@@ -156,8 +193,13 @@ int dm_linear_iterate_devices(struct dm_target *ti,
 
 	return fn(ti, lc->dev, lc->start, ti->len, data);
 }
+<<<<<<< HEAD
 
 #if IS_ENABLED(CONFIG_DAX_DRIVER)
+=======
+EXPORT_SYMBOL_GPL(dm_linear_iterate_devices);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 long dm_linear_dax_direct_access(struct dm_target *ti, pgoff_t pgoff,
 		long nr_pages, void **kaddr, pfn_t *pfn)
 {
@@ -190,6 +232,7 @@ size_t dm_linear_dax_copy_from_iter(struct dm_target *ti, pgoff_t pgoff,
 }
 EXPORT_SYMBOL_GPL(dm_linear_dax_copy_from_iter);
 
+<<<<<<< HEAD
 static size_t dm_linear_dax_copy_to_iter(struct dm_target *ti, pgoff_t pgoff,
 		void *addr, size_t bytes, struct iov_iter *i)
 {
@@ -219,16 +262,29 @@ static struct target_type linear_target = {
 #else
 	.features = DM_TARGET_PASSES_INTEGRITY,
 #endif
+=======
+static struct target_type linear_target = {
+	.name   = "linear",
+	.version = {1, 4, 0},
+	.features = DM_TARGET_PASSES_INTEGRITY | DM_TARGET_ZONED_HM,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.module = THIS_MODULE,
 	.ctr    = dm_linear_ctr,
 	.dtr    = dm_linear_dtr,
 	.map    = dm_linear_map,
 	.status = dm_linear_status,
+<<<<<<< HEAD
+=======
+	.end_io = dm_linear_end_io,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.prepare_ioctl = dm_linear_prepare_ioctl,
 	.iterate_devices = dm_linear_iterate_devices,
 	.direct_access = dm_linear_dax_direct_access,
 	.dax_copy_from_iter = dm_linear_dax_copy_from_iter,
+<<<<<<< HEAD
 	.dax_copy_to_iter = dm_linear_dax_copy_to_iter,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int __init dm_linear_init(void)

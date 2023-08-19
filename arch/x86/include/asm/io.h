@@ -94,10 +94,17 @@ build_mmio_write(__writel, "l", unsigned int, "r", )
 
 #ifdef CONFIG_X86_64
 
+<<<<<<< HEAD
 build_mmio_read(readq, "q", u64, "=r", :"memory")
 build_mmio_read(__readq, "q", u64, "=r", )
 build_mmio_write(writeq, "q", u64, "r", :"memory")
 build_mmio_write(__writeq, "q", u64, "r", )
+=======
+build_mmio_read(readq, "q", unsigned long, "=r", :"memory")
+build_mmio_read(__readq, "q", unsigned long, "=r", )
+build_mmio_write(writeq, "q", unsigned long, "r", :"memory")
+build_mmio_write(__writeq, "q", unsigned long, "r", )
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define readq_relaxed(a)	__readq(a)
 #define writeq_relaxed(v, a)	__writeq(v, a)
@@ -111,10 +118,13 @@ build_mmio_write(__writeq, "q", u64, "r", )
 
 #endif
 
+<<<<<<< HEAD
 #define ARCH_HAS_VALID_PHYS_ADDR_RANGE
 extern int valid_phys_addr_range(phys_addr_t addr, size_t size);
 extern int valid_mmap_phys_addr_range(unsigned long pfn, size_t size);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *	virt_to_phys	-	map virtual addresses to physical
  *	@address: address to remap
@@ -232,6 +242,24 @@ extern void set_iounmap_nonlazy(void);
  */
 #define __ISA_IO_base ((char __iomem *)(PAGE_OFFSET))
 
+<<<<<<< HEAD
+=======
+/*
+ *	Cache management
+ *
+ *	This needed for two cases
+ *	1. Out of order aware processors
+ *	2. Accidentally out of order processors (PPro errata #51)
+ */
+
+static inline void flush_write_buffers(void)
+{
+#if defined(CONFIG_X86_PPRO_FENCE)
+	asm volatile("lock; addl $0,0(%%esp)": : :"memory");
+#endif
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __KERNEL__ */
 
 extern void native_io_delay(void);
@@ -255,6 +283,7 @@ static inline void slow_down_io(void)
 
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_AMD_MEM_ENCRYPT
 #include <linux/jump_label.h>
 
@@ -270,6 +299,8 @@ static inline bool sev_key_active(void) { return false; }
 
 #endif /* CONFIG_AMD_MEM_ENCRYPT */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define BUILDIO(bwl, bw, type)						\
 static inline void out##bwl(unsigned type value, int port)		\
 {									\
@@ -300,6 +331,7 @@ static inline unsigned type in##bwl##_p(int port)			\
 									\
 static inline void outs##bwl(int port, const void *addr, unsigned long count) \
 {									\
+<<<<<<< HEAD
 	if (sev_key_active()) {						\
 		unsigned type *value = (unsigned type *)addr;		\
 		while (count) {						\
@@ -312,10 +344,15 @@ static inline void outs##bwl(int port, const void *addr, unsigned long count) \
 			     : "+S"(addr), "+c"(count)			\
 			     : "d"(port) : "memory");			\
 	}								\
+=======
+	asm volatile("rep; outs" #bwl					\
+		     : "+S"(addr), "+c"(count) : "d"(port) : "memory");	\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }									\
 									\
 static inline void ins##bwl(int port, void *addr, unsigned long count)	\
 {									\
+<<<<<<< HEAD
 	if (sev_key_active()) {						\
 		unsigned type *value = (unsigned type *)addr;		\
 		while (count) {						\
@@ -328,6 +365,10 @@ static inline void ins##bwl(int port, void *addr, unsigned long count)	\
 			     : "+D"(addr), "+c"(count)			\
 			     : "d"(port) : "memory");			\
 	}								\
+=======
+	asm volatile("rep; ins" #bwl					\
+		     : "+D"(addr), "+c"(count) : "d"(port) : "memory");	\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 BUILDIO(b, b, char)

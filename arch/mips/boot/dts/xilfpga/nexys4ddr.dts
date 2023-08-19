@@ -6,6 +6,7 @@
 / {
 	compatible = "digilent,nexys4ddr";
 
+<<<<<<< HEAD
 	aliases {
 		serial0 = &axi_uart16550;
 	};
@@ -14,6 +15,8 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memory {
 		device_type = "memory";
 		reg = <0x0 0x08000000>;

@@ -13,6 +13,7 @@
 #include <linux/pci.h>
 #include <linux/netdevice.h>
 #include <linux/etherdevice.h>
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/ethtool.h>
@@ -21,18 +22,40 @@
 #include <linux/crc32.h>
 #include <linux/in.h>
 #include <linux/io.h>
+=======
+#include <linux/delay.h>
+#include <linux/ethtool.h>
+#include <linux/mii.h>
+#include <linux/if_vlan.h>
+#include <linux/crc32.h>
+#include <linux/in.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/ip.h>
 #include <linux/tcp.h>
 #include <linux/interrupt.h>
 #include <linux/dma-mapping.h>
 #include <linux/pm_runtime.h>
 #include <linux/firmware.h>
+<<<<<<< HEAD
 #include <linux/prefetch.h>
 #include <linux/pci-aspm.h>
 #include <linux/ipv6.h>
 #include <net/ip6_checksum.h>
 
 #define MODULENAME "r8169"
+=======
+#include <linux/pci-aspm.h>
+#include <linux/prefetch.h>
+#include <linux/ipv6.h>
+#include <net/ip6_checksum.h>
+
+#include <asm/io.h>
+#include <asm/irq.h>
+
+#define RTL8169_VERSION "2.3LK-NAPI"
+#define MODULENAME "r8169"
+#define PFX MODULENAME ": "
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define FIRMWARE_8168D_1	"rtl_nic/rtl8168d-1.fw"
 #define FIRMWARE_8168D_2	"rtl_nic/rtl8168d-2.fw"
@@ -54,6 +77,22 @@
 #define FIRMWARE_8107E_1	"rtl_nic/rtl8107e-1.fw"
 #define FIRMWARE_8107E_2	"rtl_nic/rtl8107e-2.fw"
 
+<<<<<<< HEAD
+=======
+#ifdef RTL8169_DEBUG
+#define assert(expr) \
+	if (!(expr)) {					\
+		printk( "Assertion failed! %s,%s,%s,line=%d\n",	\
+		#expr,__FILE__,__func__,__LINE__);		\
+	}
+#define dprintk(fmt, args...) \
+	do { printk(KERN_DEBUG PFX fmt, ## args); } while (0)
+#else
+#define assert(expr) do {} while (0)
+#define dprintk(fmt, args...)	do {} while (0)
+#endif /* RTL8169_DEBUG */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define R8169_MSG_DEFAULT \
 	(NETIF_MSG_DRV | NETIF_MSG_PROBE | NETIF_MSG_IFUP | NETIF_MSG_IFDOWN)
 
@@ -68,17 +107,26 @@
    The RTL chips use a 64 element hash table based on the Ethernet CRC. */
 static const int multicast_filter_limit = 32;
 
+<<<<<<< HEAD
+=======
+#define MAX_READ_REQUEST_SHIFT	12
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TX_DMA_BURST	7	/* Maximum PCI burst, '7' is unlimited */
 #define InterFrameGap	0x03	/* 3 means InterFrameGap = the shortest one */
 
 #define R8169_REGS_SIZE		256
+<<<<<<< HEAD
 #define R8169_RX_BUF_SIZE	(SZ_16K - 1)
+=======
+#define R8169_NAPI_WEIGHT	64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NUM_TX_DESC	64	/* Number of Tx descriptor registers */
 #define NUM_RX_DESC	256U	/* Number of Rx descriptor registers */
 #define R8169_TX_RING_BYTES	(NUM_TX_DESC * sizeof(struct TxDesc))
 #define R8169_RX_RING_BYTES	(NUM_RX_DESC * sizeof(struct RxDesc))
 
 #define RTL8169_TX_TIMEOUT	(6*HZ)
+<<<<<<< HEAD
 
 /* write/read MMIO register */
 #define RTL_W8(tp, reg, val8)	writeb((val8), tp->mmio_addr + (reg))
@@ -87,6 +135,17 @@ static const int multicast_filter_limit = 32;
 #define RTL_R8(tp, reg)		readb(tp->mmio_addr + (reg))
 #define RTL_R16(tp, reg)		readw(tp->mmio_addr + (reg))
 #define RTL_R32(tp, reg)		readl(tp->mmio_addr + (reg))
+=======
+#define RTL8169_PHY_TIMEOUT	(10*HZ)
+
+/* write/read MMIO register */
+#define RTL_W8(reg, val8)	writeb ((val8), ioaddr + (reg))
+#define RTL_W16(reg, val16)	writew ((val16), ioaddr + (reg))
+#define RTL_W32(reg, val32)	writel ((val32), ioaddr + (reg))
+#define RTL_R8(reg)		readb (ioaddr + (reg))
+#define RTL_R16(reg)		readw (ioaddr + (reg))
+#define RTL_R32(reg)		readl (ioaddr + (reg))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum mac_version {
 	RTL_GIGA_MAC_VER_01 = 0,
@@ -143,12 +202,21 @@ enum mac_version {
 	RTL_GIGA_MAC_NONE   = 0xff,
 };
 
+<<<<<<< HEAD
+=======
+enum rtl_tx_desc_version {
+	RTL_TD_0	= 0,
+	RTL_TD_1	= 1,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define JUMBO_1K	ETH_DATA_LEN
 #define JUMBO_4K	(4*1024 - ETH_HLEN - 2)
 #define JUMBO_6K	(6*1024 - ETH_HLEN - 2)
 #define JUMBO_7K	(7*1024 - ETH_HLEN - 2)
 #define JUMBO_9K	(9*1024 - ETH_HLEN - 2)
 
+<<<<<<< HEAD
 static const struct {
 	const char *name;
 	const char *fw_name;
@@ -207,6 +275,152 @@ static const struct {
 	[RTL_GIGA_MAC_VER_50] = {"RTL8168ep/8111ep"			},
 	[RTL_GIGA_MAC_VER_51] = {"RTL8168ep/8111ep"			},
 };
+=======
+#define _R(NAME,TD,FW,SZ,B) {	\
+	.name = NAME,		\
+	.txd_version = TD,	\
+	.fw_name = FW,		\
+	.jumbo_max = SZ,	\
+	.jumbo_tx_csum = B	\
+}
+
+static const struct {
+	const char *name;
+	enum rtl_tx_desc_version txd_version;
+	const char *fw_name;
+	u16 jumbo_max;
+	bool jumbo_tx_csum;
+} rtl_chip_infos[] = {
+	/* PCI devices. */
+	[RTL_GIGA_MAC_VER_01] =
+		_R("RTL8169",		RTL_TD_0, NULL, JUMBO_7K, true),
+	[RTL_GIGA_MAC_VER_02] =
+		_R("RTL8169s",		RTL_TD_0, NULL, JUMBO_7K, true),
+	[RTL_GIGA_MAC_VER_03] =
+		_R("RTL8110s",		RTL_TD_0, NULL, JUMBO_7K, true),
+	[RTL_GIGA_MAC_VER_04] =
+		_R("RTL8169sb/8110sb",	RTL_TD_0, NULL, JUMBO_7K, true),
+	[RTL_GIGA_MAC_VER_05] =
+		_R("RTL8169sc/8110sc",	RTL_TD_0, NULL, JUMBO_7K, true),
+	[RTL_GIGA_MAC_VER_06] =
+		_R("RTL8169sc/8110sc",	RTL_TD_0, NULL, JUMBO_7K, true),
+	/* PCI-E devices. */
+	[RTL_GIGA_MAC_VER_07] =
+		_R("RTL8102e",		RTL_TD_1, NULL, JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_08] =
+		_R("RTL8102e",		RTL_TD_1, NULL, JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_09] =
+		_R("RTL8102e",		RTL_TD_1, NULL, JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_10] =
+		_R("RTL8101e",		RTL_TD_0, NULL, JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_11] =
+		_R("RTL8168b/8111b",	RTL_TD_0, NULL, JUMBO_4K, false),
+	[RTL_GIGA_MAC_VER_12] =
+		_R("RTL8168b/8111b",	RTL_TD_0, NULL, JUMBO_4K, false),
+	[RTL_GIGA_MAC_VER_13] =
+		_R("RTL8101e",		RTL_TD_0, NULL, JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_14] =
+		_R("RTL8100e",		RTL_TD_0, NULL, JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_15] =
+		_R("RTL8100e",		RTL_TD_0, NULL, JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_16] =
+		_R("RTL8101e",		RTL_TD_0, NULL, JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_17] =
+		_R("RTL8168b/8111b",	RTL_TD_0, NULL, JUMBO_4K, false),
+	[RTL_GIGA_MAC_VER_18] =
+		_R("RTL8168cp/8111cp",	RTL_TD_1, NULL, JUMBO_6K, false),
+	[RTL_GIGA_MAC_VER_19] =
+		_R("RTL8168c/8111c",	RTL_TD_1, NULL, JUMBO_6K, false),
+	[RTL_GIGA_MAC_VER_20] =
+		_R("RTL8168c/8111c",	RTL_TD_1, NULL, JUMBO_6K, false),
+	[RTL_GIGA_MAC_VER_21] =
+		_R("RTL8168c/8111c",	RTL_TD_1, NULL, JUMBO_6K, false),
+	[RTL_GIGA_MAC_VER_22] =
+		_R("RTL8168c/8111c",	RTL_TD_1, NULL, JUMBO_6K, false),
+	[RTL_GIGA_MAC_VER_23] =
+		_R("RTL8168cp/8111cp",	RTL_TD_1, NULL, JUMBO_6K, false),
+	[RTL_GIGA_MAC_VER_24] =
+		_R("RTL8168cp/8111cp",	RTL_TD_1, NULL, JUMBO_6K, false),
+	[RTL_GIGA_MAC_VER_25] =
+		_R("RTL8168d/8111d",	RTL_TD_1, FIRMWARE_8168D_1,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_26] =
+		_R("RTL8168d/8111d",	RTL_TD_1, FIRMWARE_8168D_2,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_27] =
+		_R("RTL8168dp/8111dp",	RTL_TD_1, NULL, JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_28] =
+		_R("RTL8168dp/8111dp",	RTL_TD_1, NULL, JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_29] =
+		_R("RTL8105e",		RTL_TD_1, FIRMWARE_8105E_1,
+							JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_30] =
+		_R("RTL8105e",		RTL_TD_1, FIRMWARE_8105E_1,
+							JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_31] =
+		_R("RTL8168dp/8111dp",	RTL_TD_1, NULL, JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_32] =
+		_R("RTL8168e/8111e",	RTL_TD_1, FIRMWARE_8168E_1,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_33] =
+		_R("RTL8168e/8111e",	RTL_TD_1, FIRMWARE_8168E_2,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_34] =
+		_R("RTL8168evl/8111evl",RTL_TD_1, FIRMWARE_8168E_3,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_35] =
+		_R("RTL8168f/8111f",	RTL_TD_1, FIRMWARE_8168F_1,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_36] =
+		_R("RTL8168f/8111f",	RTL_TD_1, FIRMWARE_8168F_2,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_37] =
+		_R("RTL8402",		RTL_TD_1, FIRMWARE_8402_1,
+							JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_38] =
+		_R("RTL8411",		RTL_TD_1, FIRMWARE_8411_1,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_39] =
+		_R("RTL8106e",		RTL_TD_1, FIRMWARE_8106E_1,
+							JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_40] =
+		_R("RTL8168g/8111g",	RTL_TD_1, FIRMWARE_8168G_2,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_41] =
+		_R("RTL8168g/8111g",	RTL_TD_1, NULL, JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_42] =
+		_R("RTL8168g/8111g",	RTL_TD_1, FIRMWARE_8168G_3,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_43] =
+		_R("RTL8106e",		RTL_TD_1, FIRMWARE_8106E_2,
+							JUMBO_1K, true),
+	[RTL_GIGA_MAC_VER_44] =
+		_R("RTL8411",		RTL_TD_1, FIRMWARE_8411_2,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_45] =
+		_R("RTL8168h/8111h",	RTL_TD_1, FIRMWARE_8168H_1,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_46] =
+		_R("RTL8168h/8111h",	RTL_TD_1, FIRMWARE_8168H_2,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_47] =
+		_R("RTL8107e",		RTL_TD_1, FIRMWARE_8107E_1,
+							JUMBO_1K, false),
+	[RTL_GIGA_MAC_VER_48] =
+		_R("RTL8107e",		RTL_TD_1, FIRMWARE_8107E_2,
+							JUMBO_1K, false),
+	[RTL_GIGA_MAC_VER_49] =
+		_R("RTL8168ep/8111ep",	RTL_TD_1, NULL,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_50] =
+		_R("RTL8168ep/8111ep",	RTL_TD_1, NULL,
+							JUMBO_9K, false),
+	[RTL_GIGA_MAC_VER_51] =
+		_R("RTL8168ep/8111ep",	RTL_TD_1, NULL,
+							JUMBO_9K, false),
+};
+#undef _R
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum cfg_version {
 	RTL_CFG_0 = 0x00,
@@ -239,6 +453,10 @@ static const struct pci_device_id rtl8169_pci_tbl[] = {
 
 MODULE_DEVICE_TABLE(pci, rtl8169_pci_tbl);
 
+<<<<<<< HEAD
+=======
+static int rx_buf_sz = 16383;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int use_dac = -1;
 static struct {
 	u32 msg_enable;
@@ -292,12 +510,15 @@ enum rtl_registers {
 	RxMaxSize	= 0xda,
 	CPlusCmd	= 0xe0,
 	IntrMitigate	= 0xe2,
+<<<<<<< HEAD
 
 #define RTL_COALESCE_MASK	0x0f
 #define RTL_COALESCE_SHIFT	4
 #define RTL_COALESCE_T_MAX	(RTL_COALESCE_MASK)
 #define RTL_COALESCE_FRAME_MAX	(RTL_COALESCE_MASK << 2)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RxDescAddrLow	= 0xe4,
 	RxDescAddrHigh	= 0xe8,
 	EarlyTxThres	= 0xec,	/* 8169. Unit of 32 bytes. */
@@ -319,13 +540,32 @@ enum rtl_registers {
 	FuncForceEvent	= 0xfc,
 };
 
+<<<<<<< HEAD
+=======
+enum rtl8110_registers {
+	TBICSR			= 0x64,
+	TBI_ANAR		= 0x68,
+	TBI_LPAR		= 0x6a,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rtl8168_8101_registers {
 	CSIDR			= 0x64,
 	CSIAR			= 0x68,
 #define	CSIAR_FLAG			0x80000000
 #define	CSIAR_WRITE_CMD			0x80000000
+<<<<<<< HEAD
 #define	CSIAR_BYTE_ENABLE		0x0000f000
 #define	CSIAR_ADDR_MASK			0x00000fff
+=======
+#define	CSIAR_BYTE_ENABLE		0x0f
+#define	CSIAR_BYTE_ENABLE_SHIFT		12
+#define	CSIAR_ADDR_MASK			0x0fff
+#define CSIAR_FUNC_CARD			0x00000000
+#define CSIAR_FUNC_SDIO			0x00010000
+#define CSIAR_FUNC_NIC			0x00020000
+#define CSIAR_FUNC_NIC2			0x00010000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PMCH			= 0x6f,
 	EPHYAR			= 0x80,
 #define	EPHYAR_FLAG			0x80000000
@@ -485,6 +725,17 @@ enum rtl_register_content {
 	PMEStatus	= (1 << 0),	/* PME status can be reset by PCI RST# */
 	ASPM_en		= (1 << 0),	/* ASPM enable */
 
+<<<<<<< HEAD
+=======
+	/* TBICSR p.28 */
+	TBIReset	= 0x80000000,
+	TBILoopback	= 0x40000000,
+	TBINwEnable	= 0x20000000,
+	TBINwRestart	= 0x10000000,
+	TBILinkOk	= 0x02000000,
+	TBINwComplete	= 0x01000000,
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* CPlusCmd p.31 */
 	EnableBist	= (1 << 15),	// 8168 8101
 	Mac_dbgo_oe	= (1 << 14),	// 8168 8101
@@ -500,7 +751,10 @@ enum rtl_register_content {
 	RxChkSum	= (1 << 5),
 	PCIDAC		= (1 << 4),
 	PCIMulRW	= (1 << 3),
+<<<<<<< HEAD
 #define INTT_MASK	GENMASK(1, 0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INTT_0		= 0x0000,	// 8168
 	INTT_1		= 0x0001,	// 8168
 	INTT_2		= 0x0002,	// 8168
@@ -591,7 +845,10 @@ enum rtl_rx_desc_bit {
 };
 
 #define RsvdMask	0x3fffc000
+<<<<<<< HEAD
 #define CPCMD_QUIRK_MASK	(Normal_mode | RxVlan | RxChkSum | INTT_MASK)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct TxDesc {
 	__le32 opts1;
@@ -611,6 +868,15 @@ struct ring_info {
 	u8		__pad[sizeof(void *) - sizeof(u32)];
 };
 
+<<<<<<< HEAD
+=======
+enum features {
+	RTL_FEATURE_WOL		= (1 << 0),
+	RTL_FEATURE_MSI		= (1 << 1),
+	RTL_FEATURE_GMII	= (1 << 2),
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rtl8169_counters {
 	__le64	tx_packets;
 	__le64	rx_packets;
@@ -638,6 +904,10 @@ enum rtl_flag {
 	RTL_FLAG_TASK_ENABLED = 0,
 	RTL_FLAG_TASK_SLOW_PENDING,
 	RTL_FLAG_TASK_RESET_PENDING,
+<<<<<<< HEAD
+=======
+	RTL_FLAG_TASK_PHY_PENDING,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RTL_FLAG_MAX
 };
 
@@ -653,6 +923,10 @@ struct rtl8169_private {
 	struct net_device *dev;
 	struct napi_struct napi;
 	u32 msg_enable;
+<<<<<<< HEAD
+=======
+	u16 txd_version;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 mac_version;
 	u32 cur_rx; /* Index into the Rx descriptor buffer of next Rx pkt. */
 	u32 cur_tx; /* Index into the Tx descriptor buffer of next Rx pkt. */
@@ -665,23 +939,54 @@ struct rtl8169_private {
 	dma_addr_t RxPhyAddr;
 	void *Rx_databuff[NUM_RX_DESC];	/* Rx data buffers */
 	struct ring_info tx_skb[NUM_TX_DESC];	/* Tx data buffers */
+<<<<<<< HEAD
 	u16 cp_cmd;
 
 	u16 event_slow;
 	const struct rtl_coalesce_info *coalesce_info;
 	struct clk *clk;
+=======
+	struct timer_list timer;
+	u16 cp_cmd;
+
+	u16 event_slow;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct mdio_ops {
 		void (*write)(struct rtl8169_private *, int, int);
 		int (*read)(struct rtl8169_private *, int);
 	} mdio_ops;
 
+<<<<<<< HEAD
+=======
+	struct pll_power_ops {
+		void (*down)(struct rtl8169_private *);
+		void (*up)(struct rtl8169_private *);
+	} pll_power_ops;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct jumbo_ops {
 		void (*enable)(struct rtl8169_private *);
 		void (*disable)(struct rtl8169_private *);
 	} jumbo_ops;
 
+<<<<<<< HEAD
 	void (*hw_start)(struct rtl8169_private *tp);
+=======
+	struct csi_ops {
+		void (*write)(struct rtl8169_private *, int, int);
+		u32 (*read)(struct rtl8169_private *, int);
+	} csi_ops;
+
+	int (*set_speed)(struct net_device *, u8 aneg, u16 sp, u8 dpx, u32 adv);
+	int (*get_link_ksettings)(struct net_device *,
+				  struct ethtool_link_ksettings *);
+	void (*phy_reset_enable)(struct rtl8169_private *tp);
+	void (*hw_start)(struct net_device *);
+	unsigned int (*phy_reset_pending)(struct rtl8169_private *tp);
+	unsigned int (*link_ok)(void __iomem *);
+	int (*do_ioctl)(struct rtl8169_private *tp, struct mii_ioctl_data *data, int cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool (*tso_csum)(struct rtl8169_private *, struct sk_buff *, u32 *);
 
 	struct {
@@ -690,12 +995,22 @@ struct rtl8169_private {
 		struct work_struct work;
 	} wk;
 
+<<<<<<< HEAD
 	unsigned supports_gmii:1;
 	struct mii_bus *mii_bus;
+=======
+	unsigned features;
+
+	struct mii_if_info mii;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t counters_phys_addr;
 	struct rtl8169_counters *counters;
 	struct rtl8169_tc_offsets tc_offset;
 	u32 saved_wolopts;
+<<<<<<< HEAD
+=======
+	u32 opts1_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct rtl_fw {
 		const struct firmware *fw;
@@ -720,8 +1035,13 @@ module_param(use_dac, int, 0);
 MODULE_PARM_DESC(use_dac, "Enable PCI DAC. Unsafe on 32 bit PCI slot.");
 module_param_named(debug, debug.msg_enable, int, 0);
 MODULE_PARM_DESC(debug, "Debug verbosity level (0=none, ..., 16=all)");
+<<<<<<< HEAD
 MODULE_SOFTDEP("pre: realtek");
 MODULE_LICENSE("GPL");
+=======
+MODULE_LICENSE("GPL");
+MODULE_VERSION(RTL8169_VERSION);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_FIRMWARE(FIRMWARE_8168D_1);
 MODULE_FIRMWARE(FIRMWARE_8168D_2);
 MODULE_FIRMWARE(FIRMWARE_8168E_1);
@@ -742,11 +1062,14 @@ MODULE_FIRMWARE(FIRMWARE_8168H_2);
 MODULE_FIRMWARE(FIRMWARE_8107E_1);
 MODULE_FIRMWARE(FIRMWARE_8107E_2);
 
+<<<<<<< HEAD
 static inline struct device *tp_to_dev(struct rtl8169_private *tp)
 {
 	return &tp->pci_dev->dev;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rtl_lock_work(struct rtl8169_private *tp)
 {
 	mutex_lock(&tp->wk.mutex);
@@ -757,9 +1080,15 @@ static void rtl_unlock_work(struct rtl8169_private *tp)
 	mutex_unlock(&tp->wk.mutex);
 }
 
+<<<<<<< HEAD
 static void rtl_tx_performance_tweak(struct rtl8169_private *tp, u16 force)
 {
 	pcie_capability_clear_and_set_word(tp->pci_dev, PCI_EXP_DEVCTL,
+=======
+static void rtl_tx_performance_tweak(struct pci_dev *pdev, u16 force)
+{
+	pcie_capability_clear_and_set_word(pdev, PCI_EXP_DEVCTL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   PCI_EXP_DEVCTL_READRQ, force);
 }
 
@@ -838,21 +1167,37 @@ static bool rtl_ocp_reg_failure(struct rtl8169_private *tp, u32 reg)
 
 DECLARE_RTL_COND(rtl_ocp_gphy_cond)
 {
+<<<<<<< HEAD
 	return RTL_R32(tp, GPHY_OCP) & OCPAR_FLAG;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(GPHY_OCP) & OCPAR_FLAG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168_phy_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
 {
+<<<<<<< HEAD
 	if (rtl_ocp_reg_failure(tp, reg))
 		return;
 
 	RTL_W32(tp, GPHY_OCP, OCPAR_FLAG | (reg << 15) | data);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	if (rtl_ocp_reg_failure(tp, reg))
+		return;
+
+	RTL_W32(GPHY_OCP, OCPAR_FLAG | (reg << 15) | data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_udelay_loop_wait_low(tp, &rtl_ocp_gphy_cond, 25, 10);
 }
 
 static u16 r8168_phy_ocp_read(struct rtl8169_private *tp, u32 reg)
 {
+<<<<<<< HEAD
 	if (rtl_ocp_reg_failure(tp, reg))
 		return 0;
 
@@ -860,24 +1205,55 @@ static u16 r8168_phy_ocp_read(struct rtl8169_private *tp, u32 reg)
 
 	return rtl_udelay_loop_wait_high(tp, &rtl_ocp_gphy_cond, 25, 10) ?
 		(RTL_R32(tp, GPHY_OCP) & 0xffff) : ~0;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	if (rtl_ocp_reg_failure(tp, reg))
+		return 0;
+
+	RTL_W32(GPHY_OCP, reg << 15);
+
+	return rtl_udelay_loop_wait_high(tp, &rtl_ocp_gphy_cond, 25, 10) ?
+		(RTL_R32(GPHY_OCP) & 0xffff) : ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
 {
+<<<<<<< HEAD
 	if (rtl_ocp_reg_failure(tp, reg))
 		return;
 
 	RTL_W32(tp, OCPDR, OCPAR_FLAG | (reg << 15) | data);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	if (rtl_ocp_reg_failure(tp, reg))
+		return;
+
+	RTL_W32(OCPDR, OCPAR_FLAG | (reg << 15) | data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u16 r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
 {
+<<<<<<< HEAD
 	if (rtl_ocp_reg_failure(tp, reg))
 		return 0;
 
 	RTL_W32(tp, OCPDR, reg << 15);
 
 	return RTL_R32(tp, OCPDR);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	if (rtl_ocp_reg_failure(tp, reg))
+		return 0;
+
+	RTL_W32(OCPDR, reg << 15);
+
+	return RTL_R32(OCPDR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define OCP_STD_PHY_BASE	0xa400
@@ -920,12 +1296,24 @@ static int mac_mcu_read(struct rtl8169_private *tp, int reg)
 
 DECLARE_RTL_COND(rtl_phyar_cond)
 {
+<<<<<<< HEAD
 	return RTL_R32(tp, PHYAR) & 0x80000000;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(PHYAR) & 0x80000000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8169_mdio_write(struct rtl8169_private *tp, int reg, int value)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, PHYAR, 0x80000000 | (reg & 0x1f) << 16 | (value & 0xffff));
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(PHYAR, 0x80000000 | (reg & 0x1f) << 16 | (value & 0xffff));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_udelay_loop_wait_low(tp, &rtl_phyar_cond, 25, 20);
 	/*
@@ -937,12 +1325,22 @@ static void r8169_mdio_write(struct rtl8169_private *tp, int reg, int value)
 
 static int r8169_mdio_read(struct rtl8169_private *tp, int reg)
 {
+<<<<<<< HEAD
 	int value;
 
 	RTL_W32(tp, PHYAR, 0x0 | (reg & 0x1f) << 16);
 
 	value = rtl_udelay_loop_wait_high(tp, &rtl_phyar_cond, 25, 20) ?
 		RTL_R32(tp, PHYAR) & 0xffff : ~0;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	int value;
+
+	RTL_W32(PHYAR, 0x0 | (reg & 0x1f) << 16);
+
+	value = rtl_udelay_loop_wait_high(tp, &rtl_phyar_cond, 25, 20) ?
+		RTL_R32(PHYAR) & 0xffff : ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * According to hardware specs a 20us delay is required after read
@@ -955,14 +1353,28 @@ static int r8169_mdio_read(struct rtl8169_private *tp, int reg)
 
 DECLARE_RTL_COND(rtl_ocpar_cond)
 {
+<<<<<<< HEAD
 	return RTL_R32(tp, OCPAR) & OCPAR_FLAG;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(OCPAR) & OCPAR_FLAG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168dp_1_mdio_access(struct rtl8169_private *tp, int reg, u32 data)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, OCPDR, data | ((reg & OCPDR_REG_MASK) << OCPDR_GPHY_REG_SHIFT));
 	RTL_W32(tp, OCPAR, OCPAR_GPHY_WRITE_CMD);
 	RTL_W32(tp, EPHY_RXER_NUM, 0);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(OCPDR, data | ((reg & OCPDR_REG_MASK) << OCPDR_GPHY_REG_SHIFT));
+	RTL_W32(OCPAR, OCPAR_GPHY_WRITE_CMD);
+	RTL_W32(EPHY_RXER_NUM, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_udelay_loop_wait_low(tp, &rtl_ocpar_cond, 1000, 100);
 }
@@ -975,6 +1387,7 @@ static void r8168dp_1_mdio_write(struct rtl8169_private *tp, int reg, int value)
 
 static int r8168dp_1_mdio_read(struct rtl8169_private *tp, int reg)
 {
+<<<<<<< HEAD
 	r8168dp_1_mdio_access(tp, reg, OCPDR_READ_CMD);
 
 	mdelay(1);
@@ -983,10 +1396,23 @@ static int r8168dp_1_mdio_read(struct rtl8169_private *tp, int reg)
 
 	return rtl_udelay_loop_wait_high(tp, &rtl_ocpar_cond, 1000, 100) ?
 		RTL_R32(tp, OCPDR) & OCPDR_DATA_MASK : ~0;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	r8168dp_1_mdio_access(tp, reg, OCPDR_READ_CMD);
+
+	mdelay(1);
+	RTL_W32(OCPAR, OCPAR_GPHY_READ_CMD);
+	RTL_W32(EPHY_RXER_NUM, 0);
+
+	return rtl_udelay_loop_wait_high(tp, &rtl_ocpar_cond, 1000, 100) ?
+		RTL_R32(OCPDR) & OCPDR_DATA_MASK : ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define R8168DP_1_MDIO_ACCESS_BIT	0x00020000
 
+<<<<<<< HEAD
 static void r8168dp_2_mdio_start(struct rtl8169_private *tp)
 {
 	RTL_W32(tp, 0xd0, RTL_R32(tp, 0xd0) & ~R8168DP_1_MDIO_ACCESS_BIT);
@@ -995,19 +1421,40 @@ static void r8168dp_2_mdio_start(struct rtl8169_private *tp)
 static void r8168dp_2_mdio_stop(struct rtl8169_private *tp)
 {
 	RTL_W32(tp, 0xd0, RTL_R32(tp, 0xd0) | R8168DP_1_MDIO_ACCESS_BIT);
+=======
+static void r8168dp_2_mdio_start(void __iomem *ioaddr)
+{
+	RTL_W32(0xd0, RTL_R32(0xd0) & ~R8168DP_1_MDIO_ACCESS_BIT);
+}
+
+static void r8168dp_2_mdio_stop(void __iomem *ioaddr)
+{
+	RTL_W32(0xd0, RTL_R32(0xd0) | R8168DP_1_MDIO_ACCESS_BIT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168dp_2_mdio_write(struct rtl8169_private *tp, int reg, int value)
 {
+<<<<<<< HEAD
 	r8168dp_2_mdio_start(tp);
 
 	r8169_mdio_write(tp, reg, value);
 
 	r8168dp_2_mdio_stop(tp);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	r8168dp_2_mdio_start(ioaddr);
+
+	r8169_mdio_write(tp, reg, value);
+
+	r8168dp_2_mdio_stop(ioaddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int r8168dp_2_mdio_read(struct rtl8169_private *tp, int reg)
 {
+<<<<<<< HEAD
 	int value;
 
 	r8168dp_2_mdio_start(tp);
@@ -1015,6 +1462,16 @@ static int r8168dp_2_mdio_read(struct rtl8169_private *tp, int reg)
 	value = r8169_mdio_read(tp, reg);
 
 	r8168dp_2_mdio_stop(tp);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	int value;
+
+	r8168dp_2_mdio_start(ioaddr);
+
+	value = r8169_mdio_read(tp, reg);
+
+	r8168dp_2_mdio_stop(ioaddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return value;
 }
@@ -1042,14 +1499,43 @@ static void rtl_w0w1_phy(struct rtl8169_private *tp, int reg_addr, int p, int m)
 	rtl_writephy(tp, reg_addr, (val & ~m) | p);
 }
 
+<<<<<<< HEAD
 DECLARE_RTL_COND(rtl_ephyar_cond)
 {
 	return RTL_R32(tp, EPHYAR) & EPHYAR_FLAG;
+=======
+static void rtl_mdio_write(struct net_device *dev, int phy_id, int location,
+			   int val)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	rtl_writephy(tp, location, val);
+}
+
+static int rtl_mdio_read(struct net_device *dev, int phy_id, int location)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	return rtl_readphy(tp, location);
+}
+
+DECLARE_RTL_COND(rtl_ephyar_cond)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(EPHYAR) & EPHYAR_FLAG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_ephy_write(struct rtl8169_private *tp, int reg_addr, int value)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, EPHYAR, EPHYAR_WRITE_CMD | (value & EPHYAR_DATA_MASK) |
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(EPHYAR, EPHYAR_WRITE_CMD | (value & EPHYAR_DATA_MASK) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		(reg_addr & EPHYAR_REG_MASK) << EPHYAR_REG_SHIFT);
 
 	rtl_udelay_loop_wait_low(tp, &rtl_ephyar_cond, 10, 100);
@@ -1059,33 +1545,65 @@ static void rtl_ephy_write(struct rtl8169_private *tp, int reg_addr, int value)
 
 static u16 rtl_ephy_read(struct rtl8169_private *tp, int reg_addr)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, EPHYAR, (reg_addr & EPHYAR_REG_MASK) << EPHYAR_REG_SHIFT);
 
 	return rtl_udelay_loop_wait_high(tp, &rtl_ephyar_cond, 10, 100) ?
 		RTL_R32(tp, EPHYAR) & EPHYAR_DATA_MASK : ~0;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(EPHYAR, (reg_addr & EPHYAR_REG_MASK) << EPHYAR_REG_SHIFT);
+
+	return rtl_udelay_loop_wait_high(tp, &rtl_ephyar_cond, 10, 100) ?
+		RTL_R32(EPHYAR) & EPHYAR_DATA_MASK : ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 DECLARE_RTL_COND(rtl_eriar_cond)
 {
+<<<<<<< HEAD
 	return RTL_R32(tp, ERIAR) & ERIAR_FLAG;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(ERIAR) & ERIAR_FLAG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_eri_write(struct rtl8169_private *tp, int addr, u32 mask,
 			  u32 val, int type)
 {
+<<<<<<< HEAD
 	BUG_ON((addr & 3) || (mask == 0));
 	RTL_W32(tp, ERIDR, val);
 	RTL_W32(tp, ERIAR, ERIAR_WRITE_CMD | type | mask | addr);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	BUG_ON((addr & 3) || (mask == 0));
+	RTL_W32(ERIDR, val);
+	RTL_W32(ERIAR, ERIAR_WRITE_CMD | type | mask | addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_udelay_loop_wait_low(tp, &rtl_eriar_cond, 100, 100);
 }
 
 static u32 rtl_eri_read(struct rtl8169_private *tp, int addr, int type)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, ERIAR, ERIAR_READ_CMD | type | ERIAR_MASK_1111 | addr);
 
 	return rtl_udelay_loop_wait_high(tp, &rtl_eriar_cond, 100, 100) ?
 		RTL_R32(tp, ERIDR) : ~0;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(ERIAR, ERIAR_READ_CMD | type | ERIAR_MASK_1111 | addr);
+
+	return rtl_udelay_loop_wait_high(tp, &rtl_eriar_cond, 100, 100) ?
+		RTL_R32(ERIDR) : ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_w0w1_eri(struct rtl8169_private *tp, int addr, u32 mask, u32 p,
@@ -1099,9 +1617,17 @@ static void rtl_w0w1_eri(struct rtl8169_private *tp, int addr, u32 mask, u32 p,
 
 static u32 r8168dp_ocp_read(struct rtl8169_private *tp, u8 mask, u16 reg)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, OCPAR, ((u32)mask & 0x0f) << 12 | (reg & 0x0fff));
 	return rtl_udelay_loop_wait_high(tp, &rtl_ocpar_cond, 100, 20) ?
 		RTL_R32(tp, OCPDR) : ~0;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(OCPAR, ((u32)mask & 0x0f) << 12 | (reg & 0x0fff));
+	return rtl_udelay_loop_wait_high(tp, &rtl_ocpar_cond, 100, 20) ?
+		RTL_R32(OCPDR) : ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 r8168ep_ocp_read(struct rtl8169_private *tp, u8 mask, u16 reg)
@@ -1129,8 +1655,15 @@ static u32 ocp_read(struct rtl8169_private *tp, u8 mask, u16 reg)
 static void r8168dp_ocp_write(struct rtl8169_private *tp, u8 mask, u16 reg,
 			      u32 data)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, OCPDR, data);
 	RTL_W32(tp, OCPAR, OCPAR_FLAG | ((u32)mask & 0x0f) << 12 | (reg & 0x0fff));
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(OCPDR, data);
+	RTL_W32(OCPAR, OCPAR_FLAG | ((u32)mask & 0x0f) << 12 | (reg & 0x0fff));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_udelay_loop_wait_low(tp, &rtl_ocpar_cond, 100, 20);
 }
 
@@ -1192,15 +1725,30 @@ DECLARE_RTL_COND(rtl_ep_ocp_read_cond)
 
 DECLARE_RTL_COND(rtl_ocp_tx_cond)
 {
+<<<<<<< HEAD
 	return RTL_R8(tp, IBISR0) & 0x20;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R8(IBISR0) & 0x20;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl8168ep_stop_cmac(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, IBCR2, RTL_R8(tp, IBCR2) & ~0x01);
 	rtl_msleep_loop_wait_high(tp, &rtl_ocp_tx_cond, 50, 2000);
 	RTL_W8(tp, IBISR0, RTL_R8(tp, IBISR0) | 0x20);
 	RTL_W8(tp, IBCR0, RTL_R8(tp, IBCR0) & ~0x01);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(IBCR2, RTL_R8(IBCR2) & ~0x01);
+	rtl_msleep_loop_wait_high(tp, &rtl_ocp_tx_cond, 50, 2000);
+	RTL_W8(IBISR0, RTL_R8(IBISR0) | 0x20);
+	RTL_W8(IBCR0, RTL_R8(IBCR0) & ~0x01);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl8168dp_driver_start(struct rtl8169_private *tp)
@@ -1268,6 +1816,7 @@ static void rtl8168_driver_stop(struct rtl8169_private *tp)
 	}
 }
 
+<<<<<<< HEAD
 static bool r8168dp_check_dash(struct rtl8169_private *tp)
 {
 	u16 reg = rtl8168_get_ocp_reg(tp);
@@ -1281,6 +1830,21 @@ static bool r8168ep_check_dash(struct rtl8169_private *tp)
 }
 
 static bool r8168_check_dash(struct rtl8169_private *tp)
+=======
+static int r8168dp_check_dash(struct rtl8169_private *tp)
+{
+	u16 reg = rtl8168_get_ocp_reg(tp);
+
+	return (ocp_read(tp, 0x0f, reg) & 0x00008000) ? 1 : 0;
+}
+
+static int r8168ep_check_dash(struct rtl8169_private *tp)
+{
+	return (ocp_read(tp, 0x0f, 0x128) & 0x00000001) ? 1 : 0;
+}
+
+static int r8168_check_dash(struct rtl8169_private *tp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_27:
@@ -1292,7 +1856,11 @@ static bool r8168_check_dash(struct rtl8169_private *tp)
 	case RTL_GIGA_MAC_VER_51:
 		return r8168ep_check_dash(tp);
 	default:
+<<<<<<< HEAD
 		return false;
+=======
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1313,37 +1881,76 @@ static void rtl_write_exgmac_batch(struct rtl8169_private *tp,
 
 DECLARE_RTL_COND(rtl_efusear_cond)
 {
+<<<<<<< HEAD
 	return RTL_R32(tp, EFUSEAR) & EFUSEAR_FLAG;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(EFUSEAR) & EFUSEAR_FLAG;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u8 rtl8168d_efuse_read(struct rtl8169_private *tp, int reg_addr)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, EFUSEAR, (reg_addr & EFUSEAR_REG_MASK) << EFUSEAR_REG_SHIFT);
 
 	return rtl_udelay_loop_wait_high(tp, &rtl_efusear_cond, 100, 300) ?
 		RTL_R32(tp, EFUSEAR) & EFUSEAR_DATA_MASK : ~0;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(EFUSEAR, (reg_addr & EFUSEAR_REG_MASK) << EFUSEAR_REG_SHIFT);
+
+	return rtl_udelay_loop_wait_high(tp, &rtl_efusear_cond, 100, 300) ?
+		RTL_R32(EFUSEAR) & EFUSEAR_DATA_MASK : ~0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u16 rtl_get_events(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	return RTL_R16(tp, IntrStatus);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R16(IntrStatus);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_ack_events(struct rtl8169_private *tp, u16 bits)
 {
+<<<<<<< HEAD
 	RTL_W16(tp, IntrStatus, bits);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W16(IntrStatus, bits);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmiowb();
 }
 
 static void rtl_irq_disable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W16(tp, IntrMask, 0);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W16(IntrMask, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmiowb();
 }
 
 static void rtl_irq_enable(struct rtl8169_private *tp, u16 bits)
 {
+<<<<<<< HEAD
 	RTL_W16(tp, IntrMask, bits);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W16(IntrMask, bits);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define RTL_EVENT_NAPI_RX	(RxOK | RxErr)
@@ -1357,27 +1964,85 @@ static void rtl_irq_enable_all(struct rtl8169_private *tp)
 
 static void rtl8169_irq_mask_and_ack(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_irq_disable(tp);
 	rtl_ack_events(tp, RTL_EVENT_NAPI | tp->event_slow);
 	RTL_R8(tp, ChipCmd);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	rtl_irq_disable(tp);
+	rtl_ack_events(tp, RTL_EVENT_NAPI | tp->event_slow);
+	RTL_R8(ChipCmd);
+}
+
+static unsigned int rtl8169_tbi_reset_pending(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(TBICSR) & TBIReset;
+}
+
+static unsigned int rtl8169_xmii_reset_pending(struct rtl8169_private *tp)
+{
+	return rtl_readphy(tp, MII_BMCR) & BMCR_RESET;
+}
+
+static unsigned int rtl8169_tbi_link_ok(void __iomem *ioaddr)
+{
+	return RTL_R32(TBICSR) & TBILinkOk;
+}
+
+static unsigned int rtl8169_xmii_link_ok(void __iomem *ioaddr)
+{
+	return RTL_R8(PHYstatus) & LinkStatus;
+}
+
+static void rtl8169_tbi_reset_enable(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(TBICSR, RTL_R32(TBICSR) | TBIReset);
+}
+
+static void rtl8169_xmii_reset_enable(struct rtl8169_private *tp)
+{
+	unsigned int val;
+
+	val = rtl_readphy(tp, MII_BMCR) | BMCR_RESET;
+	rtl_writephy(tp, MII_BMCR, val & 0xffff);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_link_chg_patch(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	struct net_device *dev = tp->dev;
 	struct phy_device *phydev = dev->phydev;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct net_device *dev = tp->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!netif_running(dev))
 		return;
 
 	if (tp->mac_version == RTL_GIGA_MAC_VER_34 ||
 	    tp->mac_version == RTL_GIGA_MAC_VER_38) {
+<<<<<<< HEAD
 		if (phydev->speed == SPEED_1000) {
+=======
+		if (RTL_R8(PHYstatus) & _1000bpsF) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rtl_eri_write(tp, 0x1bc, ERIAR_MASK_1111, 0x00000011,
 				      ERIAR_EXGMAC);
 			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_1111, 0x00000005,
 				      ERIAR_EXGMAC);
+<<<<<<< HEAD
 		} else if (phydev->speed == SPEED_100) {
+=======
+		} else if (RTL_R8(PHYstatus) & _100bps) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rtl_eri_write(tp, 0x1bc, ERIAR_MASK_1111, 0x0000001f,
 				      ERIAR_EXGMAC);
 			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_1111, 0x00000005,
@@ -1395,7 +2060,11 @@ static void rtl_link_chg_patch(struct rtl8169_private *tp)
 			     ERIAR_EXGMAC);
 	} else if (tp->mac_version == RTL_GIGA_MAC_VER_35 ||
 		   tp->mac_version == RTL_GIGA_MAC_VER_36) {
+<<<<<<< HEAD
 		if (phydev->speed == SPEED_1000) {
+=======
+		if (RTL_R8(PHYstatus) & _1000bpsF) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rtl_eri_write(tp, 0x1bc, ERIAR_MASK_1111, 0x00000011,
 				      ERIAR_EXGMAC);
 			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_1111, 0x00000005,
@@ -1407,7 +2076,11 @@ static void rtl_link_chg_patch(struct rtl8169_private *tp)
 				      ERIAR_EXGMAC);
 		}
 	} else if (tp->mac_version == RTL_GIGA_MAC_VER_37) {
+<<<<<<< HEAD
 		if (phydev->speed == SPEED_10) {
+=======
+		if (RTL_R8(PHYstatus) & _10bps) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rtl_eri_write(tp, 0x1d0, ERIAR_MASK_0011, 0x4d02,
 				      ERIAR_EXGMAC);
 			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_0011, 0x0060,
@@ -1419,10 +2092,41 @@ static void rtl_link_chg_patch(struct rtl8169_private *tp)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void __rtl8169_check_link_status(struct net_device *dev,
+					struct rtl8169_private *tp,
+					void __iomem *ioaddr, bool pm)
+{
+	if (tp->link_ok(ioaddr)) {
+		rtl_link_chg_patch(tp);
+		/* This is to cancel a scheduled suspend if there's one. */
+		if (pm)
+			pm_request_resume(&tp->pci_dev->dev);
+		netif_carrier_on(dev);
+		if (net_ratelimit())
+			netif_info(tp, ifup, dev, "link up\n");
+	} else {
+		netif_carrier_off(dev);
+		netif_info(tp, ifdown, dev, "link down\n");
+		if (pm)
+			pm_schedule_suspend(&tp->pci_dev->dev, 5000);
+	}
+}
+
+static void rtl8169_check_link_status(struct net_device *dev,
+				      struct rtl8169_private *tp,
+				      void __iomem *ioaddr)
+{
+	__rtl8169_check_link_status(dev, tp, ioaddr, false);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define WAKE_ANY (WAKE_PHY | WAKE_MAGIC | WAKE_UCAST | WAKE_BCAST | WAKE_MCAST)
 
 static u32 __rtl8169_get_wol(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	u8 options;
 	u32 wolopts = 0;
 
@@ -1436,6 +2140,37 @@ static u32 __rtl8169_get_wol(struct rtl8169_private *tp)
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_34 ... RTL_GIGA_MAC_VER_38:
 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_51:
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	u8 options;
+	u32 wolopts = 0;
+
+	options = RTL_R8(Config1);
+	if (!(options & PMEnable))
+		return 0;
+
+	options = RTL_R8(Config3);
+	if (options & LinkUp)
+		wolopts |= WAKE_PHY;
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_34:
+	case RTL_GIGA_MAC_VER_35:
+	case RTL_GIGA_MAC_VER_36:
+	case RTL_GIGA_MAC_VER_37:
+	case RTL_GIGA_MAC_VER_38:
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rtl_eri_read(tp, 0xdc, ERIAR_EXGMAC) & MagicPacket_v2)
 			wolopts |= WAKE_MAGIC;
 		break;
@@ -1445,7 +2180,11 @@ static u32 __rtl8169_get_wol(struct rtl8169_private *tp)
 		break;
 	}
 
+<<<<<<< HEAD
 	options = RTL_R8(tp, Config5);
+=======
+	options = RTL_R8(Config5);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (options & UWF)
 		wolopts |= WAKE_UCAST;
 	if (options & BWF)
@@ -1459,15 +2198,37 @@ static u32 __rtl8169_get_wol(struct rtl8169_private *tp)
 static void rtl8169_get_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
 
 	rtl_lock_work(tp);
 	wol->supported = WAKE_ANY;
 	wol->wolopts = tp->saved_wolopts;
 	rtl_unlock_work(tp);
+=======
+	struct device *d = &tp->pci_dev->dev;
+
+	pm_runtime_get_noresume(d);
+
+	rtl_lock_work(tp);
+
+	wol->supported = WAKE_ANY;
+	if (pm_runtime_active(d))
+		wol->wolopts = __rtl8169_get_wol(tp);
+	else
+		wol->wolopts = tp->saved_wolopts;
+
+	rtl_unlock_work(tp);
+
+	pm_runtime_put_noidle(d);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i, tmp;
 	static const struct {
 		u32 opt;
@@ -1483,11 +2244,34 @@ static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
 	};
 	u8 options;
 
+<<<<<<< HEAD
 	RTL_W8(tp, Cfg9346, Cfg9346_Unlock);
 
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_34 ... RTL_GIGA_MAC_VER_38:
 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_51:
+=======
+	RTL_W8(Cfg9346, Cfg9346_Unlock);
+
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_34:
+	case RTL_GIGA_MAC_VER_35:
+	case RTL_GIGA_MAC_VER_36:
+	case RTL_GIGA_MAC_VER_37:
+	case RTL_GIGA_MAC_VER_38:
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tmp = ARRAY_SIZE(cfg) - 1;
 		if (wolopts & WAKE_MAGIC)
 			rtl_w0w1_eri(tp,
@@ -1510,14 +2294,22 @@ static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
 	}
 
 	for (i = 0; i < tmp; i++) {
+<<<<<<< HEAD
 		options = RTL_R8(tp, cfg[i].reg) & ~cfg[i].mask;
 		if (wolopts & cfg[i].opt)
 			options |= cfg[i].mask;
 		RTL_W8(tp, cfg[i].reg, options);
+=======
+		options = RTL_R8(cfg[i].reg) & ~cfg[i].mask;
+		if (wolopts & cfg[i].opt)
+			options |= cfg[i].mask;
+		RTL_W8(cfg[i].reg, options);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_01 ... RTL_GIGA_MAC_VER_17:
+<<<<<<< HEAD
 		options = RTL_R8(tp, Config1) & ~PMEnable;
 		if (wolopts)
 			options |= PMEnable;
@@ -1534,20 +2326,41 @@ static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
 	RTL_W8(tp, Cfg9346, Cfg9346_Lock);
 
 	device_set_wakeup_enable(tp_to_dev(tp), wolopts);
+=======
+		options = RTL_R8(Config1) & ~PMEnable;
+		if (wolopts)
+			options |= PMEnable;
+		RTL_W8(Config1, options);
+		break;
+	default:
+		options = RTL_R8(Config2) & ~PME_SIGNAL;
+		if (wolopts)
+			options |= PME_SIGNAL;
+		RTL_W8(Config2, options);
+		break;
+	}
+
+	RTL_W8(Cfg9346, Cfg9346_Lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rtl8169_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
 	struct device *d = tp_to_dev(tp);
 
 	if (wol->wolopts & ~WAKE_ANY)
 		return -EINVAL;
+=======
+	struct device *d = &tp->pci_dev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_get_noresume(d);
 
 	rtl_lock_work(tp);
 
+<<<<<<< HEAD
 	tp->saved_wolopts = wol->wolopts;
 
 	if (pm_runtime_active(d))
@@ -1555,6 +2368,21 @@ static int rtl8169_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
 
 	rtl_unlock_work(tp);
 
+=======
+	if (wol->wolopts)
+		tp->features |= RTL_FEATURE_WOL;
+	else
+		tp->features &= ~RTL_FEATURE_WOL;
+	if (pm_runtime_active(d))
+		__rtl8169_set_wol(tp, wol->wolopts);
+	else
+		tp->saved_wolopts = wol->wolopts;
+
+	rtl_unlock_work(tp);
+
+	device_set_wakeup_enable(&tp->pci_dev->dev, wol->wolopts);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put_noidle(d);
 
 	return 0;
@@ -1572,6 +2400,10 @@ static void rtl8169_get_drvinfo(struct net_device *dev,
 	struct rtl_fw *rtl_fw = tp->rtl_fw;
 
 	strlcpy(info->driver, MODULENAME, sizeof(info->driver));
+<<<<<<< HEAD
+=======
+	strlcpy(info->version, RTL8169_VERSION, sizeof(info->version));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	strlcpy(info->bus_info, pci_name(tp->pci_dev), sizeof(info->bus_info));
 	BUILD_BUG_ON(sizeof(info->fw_version) < sizeof(rtl_fw->version));
 	if (!IS_ERR_OR_NULL(rtl_fw))
@@ -1584,6 +2416,130 @@ static int rtl8169_get_regs_len(struct net_device *dev)
 	return R8169_REGS_SIZE;
 }
 
+<<<<<<< HEAD
+=======
+static int rtl8169_set_speed_tbi(struct net_device *dev,
+				 u8 autoneg, u16 speed, u8 duplex, u32 ignored)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	void __iomem *ioaddr = tp->mmio_addr;
+	int ret = 0;
+	u32 reg;
+
+	reg = RTL_R32(TBICSR);
+	if ((autoneg == AUTONEG_DISABLE) && (speed == SPEED_1000) &&
+	    (duplex == DUPLEX_FULL)) {
+		RTL_W32(TBICSR, reg & ~(TBINwEnable | TBINwRestart));
+	} else if (autoneg == AUTONEG_ENABLE)
+		RTL_W32(TBICSR, reg | TBINwEnable | TBINwRestart);
+	else {
+		netif_warn(tp, link, dev,
+			   "incorrect speed setting refused in TBI mode\n");
+		ret = -EOPNOTSUPP;
+	}
+
+	return ret;
+}
+
+static int rtl8169_set_speed_xmii(struct net_device *dev,
+				  u8 autoneg, u16 speed, u8 duplex, u32 adv)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	int giga_ctrl, bmcr;
+	int rc = -EINVAL;
+
+	rtl_writephy(tp, 0x1f, 0x0000);
+
+	if (autoneg == AUTONEG_ENABLE) {
+		int auto_nego;
+
+		auto_nego = rtl_readphy(tp, MII_ADVERTISE);
+		auto_nego &= ~(ADVERTISE_10HALF | ADVERTISE_10FULL |
+				ADVERTISE_100HALF | ADVERTISE_100FULL);
+
+		if (adv & ADVERTISED_10baseT_Half)
+			auto_nego |= ADVERTISE_10HALF;
+		if (adv & ADVERTISED_10baseT_Full)
+			auto_nego |= ADVERTISE_10FULL;
+		if (adv & ADVERTISED_100baseT_Half)
+			auto_nego |= ADVERTISE_100HALF;
+		if (adv & ADVERTISED_100baseT_Full)
+			auto_nego |= ADVERTISE_100FULL;
+
+		auto_nego |= ADVERTISE_PAUSE_CAP | ADVERTISE_PAUSE_ASYM;
+
+		giga_ctrl = rtl_readphy(tp, MII_CTRL1000);
+		giga_ctrl &= ~(ADVERTISE_1000FULL | ADVERTISE_1000HALF);
+
+		/* The 8100e/8101e/8102e do Fast Ethernet only. */
+		if (tp->mii.supports_gmii) {
+			if (adv & ADVERTISED_1000baseT_Half)
+				giga_ctrl |= ADVERTISE_1000HALF;
+			if (adv & ADVERTISED_1000baseT_Full)
+				giga_ctrl |= ADVERTISE_1000FULL;
+		} else if (adv & (ADVERTISED_1000baseT_Half |
+				  ADVERTISED_1000baseT_Full)) {
+			netif_info(tp, link, dev,
+				   "PHY does not support 1000Mbps\n");
+			goto out;
+		}
+
+		bmcr = BMCR_ANENABLE | BMCR_ANRESTART;
+
+		rtl_writephy(tp, MII_ADVERTISE, auto_nego);
+		rtl_writephy(tp, MII_CTRL1000, giga_ctrl);
+	} else {
+		giga_ctrl = 0;
+
+		if (speed == SPEED_10)
+			bmcr = 0;
+		else if (speed == SPEED_100)
+			bmcr = BMCR_SPEED100;
+		else
+			goto out;
+
+		if (duplex == DUPLEX_FULL)
+			bmcr |= BMCR_FULLDPLX;
+	}
+
+	rtl_writephy(tp, MII_BMCR, bmcr);
+
+	if (tp->mac_version == RTL_GIGA_MAC_VER_02 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_03) {
+		if ((speed == SPEED_100) && (autoneg != AUTONEG_ENABLE)) {
+			rtl_writephy(tp, 0x17, 0x2138);
+			rtl_writephy(tp, 0x0e, 0x0260);
+		} else {
+			rtl_writephy(tp, 0x17, 0x2108);
+			rtl_writephy(tp, 0x0e, 0x0000);
+		}
+	}
+
+	rc = 0;
+out:
+	return rc;
+}
+
+static int rtl8169_set_speed(struct net_device *dev,
+			     u8 autoneg, u16 speed, u8 duplex, u32 advertising)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	int ret;
+
+	ret = tp->set_speed(dev, autoneg, speed, duplex, advertising);
+	if (ret < 0)
+		goto out;
+
+	if (netif_running(dev) && (autoneg == AUTONEG_ENABLE) &&
+	    (advertising & ADVERTISED_1000baseT_Full) &&
+	    !pci_is_pcie(tp->pci_dev)) {
+		mod_timer(&tp->timer, jiffies + RTL8169_PHY_TIMEOUT);
+	}
+out:
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static netdev_features_t rtl8169_fix_features(struct net_device *dev,
 	netdev_features_t features)
 {
@@ -1593,12 +2549,17 @@ static netdev_features_t rtl8169_fix_features(struct net_device *dev,
 		features &= ~NETIF_F_ALL_TSO;
 
 	if (dev->mtu > JUMBO_1K &&
+<<<<<<< HEAD
 	    tp->mac_version > RTL_GIGA_MAC_VER_06)
+=======
+	    !rtl_chip_infos[tp->mac_version].jumbo_tx_csum)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		features &= ~NETIF_F_IP_CSUM;
 
 	return features;
 }
 
+<<<<<<< HEAD
 static int rtl8169_set_features(struct net_device *dev,
 				netdev_features_t features)
 {
@@ -1608,12 +2569,26 @@ static int rtl8169_set_features(struct net_device *dev,
 	rtl_lock_work(tp);
 
 	rx_config = RTL_R32(tp, RxConfig);
+=======
+static void __rtl8169_set_features(struct net_device *dev,
+				   netdev_features_t features)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	void __iomem *ioaddr = tp->mmio_addr;
+	u32 rx_config;
+
+	rx_config = RTL_R32(RxConfig);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (features & NETIF_F_RXALL)
 		rx_config |= (AcceptErr | AcceptRunt);
 	else
 		rx_config &= ~(AcceptErr | AcceptRunt);
 
+<<<<<<< HEAD
 	RTL_W32(tp, RxConfig, rx_config);
+=======
+	RTL_W32(RxConfig, rx_config);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (features & NETIF_F_RXCSUM)
 		tp->cp_cmd |= RxChkSum;
@@ -1625,14 +2600,37 @@ static int rtl8169_set_features(struct net_device *dev,
 	else
 		tp->cp_cmd &= ~RxVlan;
 
+<<<<<<< HEAD
 	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
 	RTL_R16(tp, CPlusCmd);
 
+=======
+	tp->cp_cmd |= RTL_R16(CPlusCmd) & ~(RxVlan | RxChkSum);
+
+	RTL_W16(CPlusCmd, tp->cp_cmd);
+	RTL_R16(CPlusCmd);
+}
+
+static int rtl8169_set_features(struct net_device *dev,
+				netdev_features_t features)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	features &= NETIF_F_RXALL | NETIF_F_RXCSUM | NETIF_F_HW_VLAN_CTAG_RX;
+
+	rtl_lock_work(tp);
+	if (features ^ dev->features)
+		__rtl8169_set_features(dev, features);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_unlock_work(tp);
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 rtl8169_tx_vlan_tag(struct sk_buff *skb)
 {
 	return (skb_vlan_tag_present(skb)) ?
@@ -1647,6 +2645,80 @@ static void rtl8169_rx_vlan_tag(struct RxDesc *desc, struct sk_buff *skb)
 		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), swab16(opts2 & 0xffff));
 }
 
+<<<<<<< HEAD
+=======
+static int rtl8169_get_link_ksettings_tbi(struct net_device *dev,
+					  struct ethtool_link_ksettings *cmd)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	void __iomem *ioaddr = tp->mmio_addr;
+	u32 status;
+	u32 supported, advertising;
+
+	supported =
+		SUPPORTED_1000baseT_Full | SUPPORTED_Autoneg | SUPPORTED_FIBRE;
+	cmd->base.port = PORT_FIBRE;
+
+	status = RTL_R32(TBICSR);
+	advertising = (status & TBINwEnable) ?  ADVERTISED_Autoneg : 0;
+	cmd->base.autoneg = !!(status & TBINwEnable);
+
+	cmd->base.speed = SPEED_1000;
+	cmd->base.duplex = DUPLEX_FULL; /* Always set */
+
+	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.supported,
+						supported);
+	ethtool_convert_legacy_u32_to_link_mode(cmd->link_modes.advertising,
+						advertising);
+
+	return 0;
+}
+
+static int rtl8169_get_link_ksettings_xmii(struct net_device *dev,
+					   struct ethtool_link_ksettings *cmd)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	mii_ethtool_get_link_ksettings(&tp->mii, cmd);
+
+	return 0;
+}
+
+static int rtl8169_get_link_ksettings(struct net_device *dev,
+				      struct ethtool_link_ksettings *cmd)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	int rc;
+
+	rtl_lock_work(tp);
+	rc = tp->get_link_ksettings(dev, cmd);
+	rtl_unlock_work(tp);
+
+	return rc;
+}
+
+static int rtl8169_set_link_ksettings(struct net_device *dev,
+				      const struct ethtool_link_ksettings *cmd)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	int rc;
+	u32 advertising;
+
+	if (!ethtool_convert_link_mode_to_legacy_u32(&advertising,
+	    cmd->link_modes.advertising))
+		return -EINVAL;
+
+	del_timer_sync(&tp->timer);
+
+	rtl_lock_work(tp);
+	rc = rtl8169_set_speed(dev, cmd->base.autoneg, cmd->base.speed,
+			       cmd->base.duplex, advertising);
+	rtl_unlock_work(tp);
+
+	return rc;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rtl8169_get_regs(struct net_device *dev, struct ethtool_regs *regs,
 			     void *p)
 {
@@ -1703,6 +2775,7 @@ static int rtl8169_get_sset_count(struct net_device *dev, int sset)
 
 DECLARE_RTL_COND(rtl_counters_cond)
 {
+<<<<<<< HEAD
 	return RTL_R32(tp, CounterAddrLow) & (CounterReset | CounterDump);
 }
 
@@ -1716,12 +2789,38 @@ static bool rtl8169_do_counters(struct rtl8169_private *tp, u32 counter_cmd)
 	cmd = (u64)paddr & DMA_BIT_MASK(32);
 	RTL_W32(tp, CounterAddrLow, cmd);
 	RTL_W32(tp, CounterAddrLow, cmd | counter_cmd);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(CounterAddrLow) & (CounterReset | CounterDump);
+}
+
+static bool rtl8169_do_counters(struct net_device *dev, u32 counter_cmd)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	void __iomem *ioaddr = tp->mmio_addr;
+	dma_addr_t paddr = tp->counters_phys_addr;
+	u32 cmd;
+
+	RTL_W32(CounterAddrHigh, (u64)paddr >> 32);
+	RTL_R32(CounterAddrHigh);
+	cmd = (u64)paddr & DMA_BIT_MASK(32);
+	RTL_W32(CounterAddrLow, cmd);
+	RTL_W32(CounterAddrLow, cmd | counter_cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rtl_udelay_loop_wait_low(tp, &rtl_counters_cond, 10, 1000);
 }
 
+<<<<<<< HEAD
 static bool rtl8169_reset_counters(struct rtl8169_private *tp)
 {
+=======
+static bool rtl8169_reset_counters(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Versions prior to RTL_GIGA_MAC_VER_19 don't support resetting the
 	 * tally counters.
@@ -1729,6 +2828,7 @@ static bool rtl8169_reset_counters(struct rtl8169_private *tp)
 	if (tp->mac_version < RTL_GIGA_MAC_VER_19)
 		return true;
 
+<<<<<<< HEAD
 	return rtl8169_do_counters(tp, CounterReset);
 }
 
@@ -1748,6 +2848,29 @@ static bool rtl8169_update_counters(struct rtl8169_private *tp)
 
 static bool rtl8169_init_counter_offsets(struct rtl8169_private *tp)
 {
+=======
+	return rtl8169_do_counters(dev, CounterReset);
+}
+
+static bool rtl8169_update_counters(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	/*
+	 * Some chips are unable to dump tally counters when the receiver
+	 * is disabled.
+	 */
+	if ((RTL_R8(ChipCmd) & CmdRxEnb) == 0)
+		return true;
+
+	return rtl8169_do_counters(dev, CounterDump);
+}
+
+static bool rtl8169_init_counter_offsets(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rtl8169_counters *counters = tp->counters;
 	bool ret = false;
 
@@ -1770,10 +2893,17 @@ static bool rtl8169_init_counter_offsets(struct rtl8169_private *tp)
 		return true;
 
 	/* If both, reset and update fail, propagate to caller. */
+<<<<<<< HEAD
 	if (rtl8169_reset_counters(tp))
 		ret = true;
 
 	if (rtl8169_update_counters(tp))
+=======
+	if (rtl8169_reset_counters(dev))
+		ret = true;
+
+	if (rtl8169_update_counters(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = true;
 
 	tp->tc_offset.tx_errors = counters->tx_errors;
@@ -1788,7 +2918,11 @@ static void rtl8169_get_ethtool_stats(struct net_device *dev,
 				      struct ethtool_stats *stats, u64 *data)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
 	struct device *d = tp_to_dev(tp);
+=======
+	struct device *d = &tp->pci_dev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rtl8169_counters *counters = tp->counters;
 
 	ASSERT_RTNL();
@@ -1796,7 +2930,11 @@ static void rtl8169_get_ethtool_stats(struct net_device *dev,
 	pm_runtime_get_noresume(d);
 
 	if (pm_runtime_active(d))
+<<<<<<< HEAD
 		rtl8169_update_counters(tp);
+=======
+		rtl8169_update_counters(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_put_noidle(d);
 
@@ -1824,6 +2962,7 @@ static void rtl8169_get_strings(struct net_device *dev, u32 stringset, u8 *data)
 	}
 }
 
+<<<<<<< HEAD
 /*
  * Interrupt coalescing
  *
@@ -2037,14 +3176,24 @@ static int rtl_set_coalesce(struct net_device *dev, struct ethtool_coalesce *ec)
 	rtl_unlock_work(tp);
 
 	return 0;
+=======
+static int rtl8169_nway_reset(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	return mii_nway_restart(&tp->mii);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct ethtool_ops rtl8169_ethtool_ops = {
 	.get_drvinfo		= rtl8169_get_drvinfo,
 	.get_regs_len		= rtl8169_get_regs_len,
 	.get_link		= ethtool_op_get_link,
+<<<<<<< HEAD
 	.get_coalesce		= rtl_get_coalesce,
 	.set_coalesce		= rtl_set_coalesce,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_msglevel		= rtl8169_get_msglevel,
 	.set_msglevel		= rtl8169_set_msglevel,
 	.get_regs		= rtl8169_get_regs,
@@ -2054,6 +3203,7 @@ static const struct ethtool_ops rtl8169_ethtool_ops = {
 	.get_sset_count		= rtl8169_get_sset_count,
 	.get_ethtool_stats	= rtl8169_get_ethtool_stats,
 	.get_ts_info		= ethtool_op_get_ts_info,
+<<<<<<< HEAD
 	.nway_reset		= phy_ethtool_nway_reset,
 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
 	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
@@ -2062,16 +3212,35 @@ static const struct ethtool_ops rtl8169_ethtool_ops = {
 static void rtl8169_get_mac_version(struct rtl8169_private *tp,
 				    u8 default_version)
 {
+=======
+	.nway_reset		= rtl8169_nway_reset,
+	.get_link_ksettings	= rtl8169_get_link_ksettings,
+	.set_link_ksettings	= rtl8169_set_link_ksettings,
+};
+
+static void rtl8169_get_mac_version(struct rtl8169_private *tp,
+				    struct net_device *dev, u8 default_version)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The driver currently handles the 8168Bf and the 8168Be identically
 	 * but they can be identified more specifically through the test below
 	 * if needed:
 	 *
+<<<<<<< HEAD
 	 * (RTL_R32(tp, TxConfig) & 0x700000) == 0x500000 ? 8168Bf : 8168Be
 	 *
 	 * Same thing for the 8101Eb and the 8101Ec:
 	 *
 	 * (RTL_R32(tp, TxConfig) & 0x700000) == 0x200000 ? 8101Eb : 8101Ec
+=======
+	 * (RTL_R32(TxConfig) & 0x700000) == 0x500000 ? 8168Bf : 8168Be
+	 *
+	 * Same thing for the 8101Eb and the 8101Ec:
+	 *
+	 * (RTL_R32(TxConfig) & 0x700000) == 0x200000 ? 8101Eb : 8101Ec
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	static const struct rtl_mac_info {
 		u32 mask;
@@ -2100,10 +3269,18 @@ static void rtl8169_get_mac_version(struct rtl8169_private *tp,
 
 		/* 8168E family. */
 		{ 0x7c800000, 0x2c800000,	RTL_GIGA_MAC_VER_34 },
+<<<<<<< HEAD
+=======
+		{ 0x7cf00000, 0x2c200000,	RTL_GIGA_MAC_VER_33 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x7cf00000, 0x2c100000,	RTL_GIGA_MAC_VER_32 },
 		{ 0x7c800000, 0x2c000000,	RTL_GIGA_MAC_VER_33 },
 
 		/* 8168D family. */
+<<<<<<< HEAD
+=======
+		{ 0x7cf00000, 0x28300000,	RTL_GIGA_MAC_VER_26 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x7cf00000, 0x28100000,	RTL_GIGA_MAC_VER_25 },
 		{ 0x7c800000, 0x28000000,	RTL_GIGA_MAC_VER_26 },
 
@@ -2113,24 +3290,48 @@ static void rtl8169_get_mac_version(struct rtl8169_private *tp,
 		{ 0x7cf00000, 0x28b00000,	RTL_GIGA_MAC_VER_31 },
 
 		/* 8168C family. */
+<<<<<<< HEAD
+=======
+		{ 0x7cf00000, 0x3cb00000,	RTL_GIGA_MAC_VER_24 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x7cf00000, 0x3c900000,	RTL_GIGA_MAC_VER_23 },
 		{ 0x7cf00000, 0x3c800000,	RTL_GIGA_MAC_VER_18 },
 		{ 0x7c800000, 0x3c800000,	RTL_GIGA_MAC_VER_24 },
 		{ 0x7cf00000, 0x3c000000,	RTL_GIGA_MAC_VER_19 },
 		{ 0x7cf00000, 0x3c200000,	RTL_GIGA_MAC_VER_20 },
 		{ 0x7cf00000, 0x3c300000,	RTL_GIGA_MAC_VER_21 },
+<<<<<<< HEAD
+=======
+		{ 0x7cf00000, 0x3c400000,	RTL_GIGA_MAC_VER_22 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x7c800000, 0x3c000000,	RTL_GIGA_MAC_VER_22 },
 
 		/* 8168B family. */
 		{ 0x7cf00000, 0x38000000,	RTL_GIGA_MAC_VER_12 },
+<<<<<<< HEAD
+=======
+		{ 0x7cf00000, 0x38500000,	RTL_GIGA_MAC_VER_17 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x7c800000, 0x38000000,	RTL_GIGA_MAC_VER_17 },
 		{ 0x7c800000, 0x30000000,	RTL_GIGA_MAC_VER_11 },
 
 		/* 8101 family. */
+<<<<<<< HEAD
 		{ 0x7c800000, 0x44800000,	RTL_GIGA_MAC_VER_39 },
 		{ 0x7c800000, 0x44000000,	RTL_GIGA_MAC_VER_37 },
 		{ 0x7cf00000, 0x40900000,	RTL_GIGA_MAC_VER_29 },
 		{ 0x7c800000, 0x40800000,	RTL_GIGA_MAC_VER_30 },
+=======
+		{ 0x7cf00000, 0x44900000,	RTL_GIGA_MAC_VER_39 },
+		{ 0x7c800000, 0x44800000,	RTL_GIGA_MAC_VER_39 },
+		{ 0x7c800000, 0x44000000,	RTL_GIGA_MAC_VER_37 },
+		{ 0x7cf00000, 0x40b00000,	RTL_GIGA_MAC_VER_30 },
+		{ 0x7cf00000, 0x40a00000,	RTL_GIGA_MAC_VER_30 },
+		{ 0x7cf00000, 0x40900000,	RTL_GIGA_MAC_VER_29 },
+		{ 0x7c800000, 0x40800000,	RTL_GIGA_MAC_VER_30 },
+		{ 0x7cf00000, 0x34a00000,	RTL_GIGA_MAC_VER_09 },
+		{ 0x7cf00000, 0x24a00000,	RTL_GIGA_MAC_VER_09 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x7cf00000, 0x34900000,	RTL_GIGA_MAC_VER_08 },
 		{ 0x7cf00000, 0x24900000,	RTL_GIGA_MAC_VER_08 },
 		{ 0x7cf00000, 0x34800000,	RTL_GIGA_MAC_VER_07 },
@@ -2159,12 +3360,17 @@ static void rtl8169_get_mac_version(struct rtl8169_private *tp,
 	const struct rtl_mac_info *p = mac_info;
 	u32 reg;
 
+<<<<<<< HEAD
 	reg = RTL_R32(tp, TxConfig);
+=======
+	reg = RTL_R32(TxConfig);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while ((reg & p->mask) != p->val)
 		p++;
 	tp->mac_version = p->mac_version;
 
 	if (tp->mac_version == RTL_GIGA_MAC_NONE) {
+<<<<<<< HEAD
 		dev_notice(tp_to_dev(tp),
 			   "unknown MAC, using family default\n");
 		tp->mac_version = default_version;
@@ -2178,6 +3384,21 @@ static void rtl8169_get_mac_version(struct rtl8169_private *tp,
 				  RTL_GIGA_MAC_VER_47;
 	} else if (tp->mac_version == RTL_GIGA_MAC_VER_46) {
 		tp->mac_version = tp->supports_gmii ?
+=======
+		netif_notice(tp, probe, dev,
+			     "unknown MAC, using family default\n");
+		tp->mac_version = default_version;
+	} else if (tp->mac_version == RTL_GIGA_MAC_VER_42) {
+		tp->mac_version = tp->mii.supports_gmii ?
+				  RTL_GIGA_MAC_VER_42 :
+				  RTL_GIGA_MAC_VER_43;
+	} else if (tp->mac_version == RTL_GIGA_MAC_VER_45) {
+		tp->mac_version = tp->mii.supports_gmii ?
+				  RTL_GIGA_MAC_VER_45 :
+				  RTL_GIGA_MAC_VER_47;
+	} else if (tp->mac_version == RTL_GIGA_MAC_VER_46) {
+		tp->mac_version = tp->mii.supports_gmii ?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  RTL_GIGA_MAC_VER_46 :
 				  RTL_GIGA_MAC_VER_48;
 	}
@@ -2185,7 +3406,11 @@ static void rtl8169_get_mac_version(struct rtl8169_private *tp,
 
 static void rtl8169_print_mac_version(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	netif_dbg(tp, drv, tp->dev, "mac_version = 0x%02x\n", tp->mac_version);
+=======
+	dprintk("mac_version = 0x%02x\n", tp->mac_version);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct phy_reg {
@@ -3232,6 +4457,7 @@ static void rtl8168e_2_hw_phy_config(struct rtl8169_private *tp)
 	rtl_writephy(tp, 0x1f, 0x0000);
 
 	/* EEE setting */
+<<<<<<< HEAD
 	rtl_w0w1_eri(tp, 0x1b0, ERIAR_MASK_1111, 0x0003, 0x0000, ERIAR_EXGMAC);
 	rtl_writephy(tp, 0x1f, 0x0005);
 	rtl_writephy(tp, 0x05, 0x8b85);
@@ -3240,21 +4466,40 @@ static void rtl8168e_2_hw_phy_config(struct rtl8169_private *tp)
 	rtl_writephy(tp, 0x1f, 0x0007);
 	rtl_writephy(tp, 0x1e, 0x0020);
 	rtl_w0w1_phy(tp, 0x15, 0x0100, 0x0000);
+=======
+	rtl_w0w1_eri(tp, 0x1b0, ERIAR_MASK_1111, 0x0000, 0x0003, ERIAR_EXGMAC);
+	rtl_writephy(tp, 0x1f, 0x0005);
+	rtl_writephy(tp, 0x05, 0x8b85);
+	rtl_w0w1_phy(tp, 0x06, 0x0000, 0x2000);
+	rtl_writephy(tp, 0x1f, 0x0004);
+	rtl_writephy(tp, 0x1f, 0x0007);
+	rtl_writephy(tp, 0x1e, 0x0020);
+	rtl_w0w1_phy(tp, 0x15, 0x0000, 0x0100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_writephy(tp, 0x1f, 0x0002);
 	rtl_writephy(tp, 0x1f, 0x0000);
 	rtl_writephy(tp, 0x0d, 0x0007);
 	rtl_writephy(tp, 0x0e, 0x003c);
 	rtl_writephy(tp, 0x0d, 0x4007);
+<<<<<<< HEAD
 	rtl_writephy(tp, 0x0e, 0x0006);
+=======
+	rtl_writephy(tp, 0x0e, 0x0000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_writephy(tp, 0x0d, 0x0000);
 
 	/* Green feature */
 	rtl_writephy(tp, 0x1f, 0x0003);
+<<<<<<< HEAD
 	rtl_w0w1_phy(tp, 0x19, 0x0001, 0x0000);
 	rtl_w0w1_phy(tp, 0x10, 0x0400, 0x0000);
 	rtl_writephy(tp, 0x1f, 0x0000);
 	rtl_writephy(tp, 0x1f, 0x0005);
 	rtl_w0w1_phy(tp, 0x01, 0x0100, 0x0000);
+=======
+	rtl_w0w1_phy(tp, 0x19, 0x0000, 0x0001);
+	rtl_w0w1_phy(tp, 0x10, 0x0000, 0x0400);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_writephy(tp, 0x1f, 0x0000);
 
 	/* Broken BIOS workaround: feed GigaMAC registers with MAC address. */
@@ -4037,26 +5282,106 @@ static void rtl_hw_phy_config(struct net_device *dev)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void rtl_phy_work(struct rtl8169_private *tp)
+{
+	struct timer_list *timer = &tp->timer;
+	void __iomem *ioaddr = tp->mmio_addr;
+	unsigned long timeout = RTL8169_PHY_TIMEOUT;
+
+	assert(tp->mac_version > RTL_GIGA_MAC_VER_01);
+
+	if (tp->phy_reset_pending(tp)) {
+		/*
+		 * A busy loop could burn quite a few cycles on nowadays CPU.
+		 * Let's delay the execution of the timer for a few ticks.
+		 */
+		timeout = HZ/10;
+		goto out_mod_timer;
+	}
+
+	if (tp->link_ok(ioaddr))
+		return;
+
+	netif_dbg(tp, link, tp->dev, "PHY reset until link up\n");
+
+	tp->phy_reset_enable(tp);
+
+out_mod_timer:
+	mod_timer(timer, jiffies + timeout);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void rtl_schedule_task(struct rtl8169_private *tp, enum rtl_flag flag)
 {
 	if (!test_and_set_bit(flag, tp->wk.flags))
 		schedule_work(&tp->wk.work);
 }
 
+<<<<<<< HEAD
 static bool rtl_tbi_enabled(struct rtl8169_private *tp)
 {
 	return (tp->mac_version == RTL_GIGA_MAC_VER_01) &&
 	       (RTL_R8(tp, PHYstatus) & TBI_Enable);
+=======
+static void rtl8169_phy_timer(unsigned long __opaque)
+{
+	struct net_device *dev = (struct net_device *)__opaque;
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	rtl_schedule_task(tp, RTL_FLAG_TASK_PHY_PENDING);
+}
+
+static void rtl8169_release_board(struct pci_dev *pdev, struct net_device *dev,
+				  void __iomem *ioaddr)
+{
+	iounmap(ioaddr);
+	pci_release_regions(pdev);
+	pci_clear_mwi(pdev);
+	pci_disable_device(pdev);
+	free_netdev(dev);
+}
+
+DECLARE_RTL_COND(rtl_phy_reset_cond)
+{
+	return tp->phy_reset_pending(tp);
+}
+
+static void rtl8169_phy_reset(struct net_device *dev,
+			      struct rtl8169_private *tp)
+{
+	tp->phy_reset_enable(tp);
+	rtl_msleep_loop_wait_low(tp, &rtl_phy_reset_cond, 1, 100);
+}
+
+static bool rtl_tbi_enabled(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return (tp->mac_version == RTL_GIGA_MAC_VER_01) &&
+	    (RTL_R8(PHYstatus) & TBI_Enable);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl8169_init_phy(struct net_device *dev, struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_hw_phy_config(dev);
 
 	if (tp->mac_version <= RTL_GIGA_MAC_VER_06) {
 		netif_dbg(tp, drv, dev,
 			  "Set MAC Reg C+CR Offset 0x82h = 0x01h\n");
 		RTL_W8(tp, 0x82, 0x01);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	rtl_hw_phy_config(dev);
+
+	if (tp->mac_version <= RTL_GIGA_MAC_VER_06) {
+		dprintk("Set MAC Reg C+CR Offset 0x82h = 0x01h\n");
+		RTL_W8(0x82, 0x01);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pci_write_config_byte(tp->pci_dev, PCI_LATENCY_TIMER, 0x40);
@@ -4065,6 +5390,7 @@ static void rtl8169_init_phy(struct net_device *dev, struct rtl8169_private *tp)
 		pci_write_config_byte(tp->pci_dev, PCI_CACHE_LINE_SIZE, 0x08);
 
 	if (tp->mac_version == RTL_GIGA_MAC_VER_02) {
+<<<<<<< HEAD
 		netif_dbg(tp, drv, dev,
 			  "Set MAC Reg C+CR Offset 0x82h = 0x01h\n");
 		RTL_W8(tp, 0x82, 0x01);
@@ -4085,10 +5411,30 @@ static void rtl8169_init_phy(struct net_device *dev, struct rtl8169_private *tp)
 	 */
 	if (dev->phydev->autoneg == AUTONEG_ENABLE)
 		phy_restart_aneg(dev->phydev);
+=======
+		dprintk("Set MAC Reg C+CR Offset 0x82h = 0x01h\n");
+		RTL_W8(0x82, 0x01);
+		dprintk("Set PHY Reg 0x0bh = 0x00h\n");
+		rtl_writephy(tp, 0x0b, 0x0000); //w 0x0b 15 0 0
+	}
+
+	rtl8169_phy_reset(dev, tp);
+
+	rtl8169_set_speed(dev, AUTONEG_ENABLE, SPEED_1000, DUPLEX_FULL,
+			  ADVERTISED_10baseT_Half | ADVERTISED_10baseT_Full |
+			  ADVERTISED_100baseT_Half | ADVERTISED_100baseT_Full |
+			  (tp->mii.supports_gmii ?
+			   ADVERTISED_1000baseT_Half |
+			   ADVERTISED_1000baseT_Full : 0));
+
+	if (rtl_tbi_enabled(tp))
+		netif_info(tp, link, dev, "TBI auto-negotiating\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_rar_set(struct rtl8169_private *tp, u8 *addr)
 {
+<<<<<<< HEAD
 	rtl_lock_work(tp);
 
 	RTL_W8(tp, Cfg9346, Cfg9346_Unlock);
@@ -4098,11 +5444,28 @@ static void rtl_rar_set(struct rtl8169_private *tp, u8 *addr)
 
 	RTL_W32(tp, MAC0, addr[0] | addr[1] << 8 | addr[2] << 16 | addr[3] << 24);
 	RTL_R32(tp, MAC0);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	rtl_lock_work(tp);
+
+	RTL_W8(Cfg9346, Cfg9346_Unlock);
+
+	RTL_W32(MAC4, addr[4] | addr[5] << 8);
+	RTL_R32(MAC4);
+
+	RTL_W32(MAC0, addr[0] | addr[1] << 8 | addr[2] << 16 | addr[3] << 24);
+	RTL_R32(MAC0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tp->mac_version == RTL_GIGA_MAC_VER_34)
 		rtl_rar_exgmac_set(tp, addr);
 
+<<<<<<< HEAD
 	RTL_W8(tp, Cfg9346, Cfg9346_Lock);
+=======
+	RTL_W8(Cfg9346, Cfg9346_Lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_unlock_work(tp);
 }
@@ -4110,12 +5473,22 @@ static void rtl_rar_set(struct rtl8169_private *tp, u8 *addr)
 static int rtl_set_mac_address(struct net_device *dev, void *p)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
 	struct device *d = tp_to_dev(tp);
 	int ret;
 
 	ret = eth_mac_addr(dev, p);
 	if (ret)
 		return ret;
+=======
+	struct device *d = &tp->pci_dev->dev;
+	struct sockaddr *addr = p;
+
+	if (!is_valid_ether_addr(addr->sa_data))
+		return -EADDRNOTAVAIL;
+
+	memcpy(dev->dev_addr, addr->sa_data, dev->addr_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_get_noresume(d);
 
@@ -4129,10 +5502,49 @@ static int rtl_set_mac_address(struct net_device *dev, void *p)
 
 static int rtl8169_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
 {
+<<<<<<< HEAD
 	if (!netif_running(dev))
 		return -ENODEV;
 
 	return phy_mii_ioctl(dev->phydev, ifr, cmd);
+=======
+	struct rtl8169_private *tp = netdev_priv(dev);
+	struct mii_ioctl_data *data = if_mii(ifr);
+
+	return netif_running(dev) ? tp->do_ioctl(tp, data, cmd) : -ENODEV;
+}
+
+static int rtl_xmii_ioctl(struct rtl8169_private *tp,
+			  struct mii_ioctl_data *data, int cmd)
+{
+	switch (cmd) {
+	case SIOCGMIIPHY:
+		data->phy_id = 32; /* Internal PHY */
+		return 0;
+
+	case SIOCGMIIREG:
+		data->val_out = rtl_readphy(tp, data->reg_num & 0x1f);
+		return 0;
+
+	case SIOCSMIIREG:
+		rtl_writephy(tp, data->reg_num & 0x1f, data->val_in);
+		return 0;
+	}
+	return -EOPNOTSUPP;
+}
+
+static int rtl_tbi_ioctl(struct rtl8169_private *tp, struct mii_ioctl_data *data, int cmd)
+{
+	return -EOPNOTSUPP;
+}
+
+static void rtl_disable_msi(struct pci_dev *pdev, struct rtl8169_private *tp)
+{
+	if (tp->features & RTL_FEATURE_MSI) {
+		pci_disable_msi(pdev);
+		tp->features &= ~RTL_FEATURE_MSI;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_init_mdio_ops(struct rtl8169_private *tp)
@@ -4149,7 +5561,22 @@ static void rtl_init_mdio_ops(struct rtl8169_private *tp)
 		ops->write	= r8168dp_2_mdio_write;
 		ops->read	= r8168dp_2_mdio_read;
 		break;
+<<<<<<< HEAD
 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_51:
+=======
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ops->write	= r8168g_mdio_write;
 		ops->read	= r8168g_mdio_read;
 		break;
@@ -4160,8 +5587,39 @@ static void rtl_init_mdio_ops(struct rtl8169_private *tp)
 	}
 }
 
+<<<<<<< HEAD
 static void rtl_wol_suspend_quirk(struct rtl8169_private *tp)
 {
+=======
+static void rtl_speed_down(struct rtl8169_private *tp)
+{
+	u32 adv;
+	int lpa;
+
+	rtl_writephy(tp, 0x1f, 0x0000);
+	lpa = rtl_readphy(tp, MII_LPA);
+
+	if (lpa & (LPA_10HALF | LPA_10FULL))
+		adv = ADVERTISED_10baseT_Half | ADVERTISED_10baseT_Full;
+	else if (lpa & (LPA_100HALF | LPA_100FULL))
+		adv = ADVERTISED_10baseT_Half | ADVERTISED_10baseT_Full |
+		      ADVERTISED_100baseT_Half | ADVERTISED_100baseT_Full;
+	else
+		adv = ADVERTISED_10baseT_Half | ADVERTISED_10baseT_Full |
+		      ADVERTISED_100baseT_Half | ADVERTISED_100baseT_Full |
+		      (tp->mii.supports_gmii ?
+		       ADVERTISED_1000baseT_Half |
+		       ADVERTISED_1000baseT_Full : 0);
+
+	rtl8169_set_speed(tp->dev, AUTONEG_ENABLE, SPEED_1000, DUPLEX_FULL,
+			  adv);
+}
+
+static void rtl_wol_suspend_quirk(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_25:
 	case RTL_GIGA_MAC_VER_26:
@@ -4170,8 +5628,27 @@ static void rtl_wol_suspend_quirk(struct rtl8169_private *tp)
 	case RTL_GIGA_MAC_VER_32:
 	case RTL_GIGA_MAC_VER_33:
 	case RTL_GIGA_MAC_VER_34:
+<<<<<<< HEAD
 	case RTL_GIGA_MAC_VER_37 ... RTL_GIGA_MAC_VER_51:
 		RTL_W32(tp, RxConfig, RTL_R32(tp, RxConfig) |
+=======
+	case RTL_GIGA_MAC_VER_37:
+	case RTL_GIGA_MAC_VER_38:
+	case RTL_GIGA_MAC_VER_39:
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+		RTL_W32(RxConfig, RTL_R32(RxConfig) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			AcceptBroadcast | AcceptMulticast | AcceptMyPhys);
 		break;
 	default:
@@ -4181,6 +5658,7 @@ static void rtl_wol_suspend_quirk(struct rtl8169_private *tp)
 
 static bool rtl_wol_pll_power_down(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	struct phy_device *phydev;
 
 	if (!__rtl8169_get_wol(tp))
@@ -4190,15 +5668,162 @@ static bool rtl_wol_pll_power_down(struct rtl8169_private *tp)
 	phydev = mdiobus_get_phy(tp->mii_bus, 0);
 
 	phy_speed_down(phydev, false);
+=======
+	if (!(__rtl8169_get_wol(tp) & WAKE_ANY))
+		return false;
+
+	rtl_speed_down(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_wol_suspend_quirk(tp);
 
 	return true;
 }
 
+<<<<<<< HEAD
 static void r8168_pll_power_down(struct rtl8169_private *tp)
 {
 	if (r8168_check_dash(tp))
 		return;
+=======
+static void r810x_phy_power_down(struct rtl8169_private *tp)
+{
+	rtl_writephy(tp, 0x1f, 0x0000);
+	rtl_writephy(tp, MII_BMCR, BMCR_PDOWN);
+}
+
+static void r810x_phy_power_up(struct rtl8169_private *tp)
+{
+	rtl_writephy(tp, 0x1f, 0x0000);
+	rtl_writephy(tp, MII_BMCR, BMCR_ANENABLE);
+}
+
+static void r810x_pll_power_down(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	if (rtl_wol_pll_power_down(tp))
+		return;
+
+	r810x_phy_power_down(tp);
+
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_07:
+	case RTL_GIGA_MAC_VER_08:
+	case RTL_GIGA_MAC_VER_09:
+	case RTL_GIGA_MAC_VER_10:
+	case RTL_GIGA_MAC_VER_13:
+	case RTL_GIGA_MAC_VER_16:
+		break;
+	default:
+		RTL_W8(PMCH, RTL_R8(PMCH) & ~0x80);
+		break;
+	}
+}
+
+static void r810x_pll_power_up(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	r810x_phy_power_up(tp);
+
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_07:
+	case RTL_GIGA_MAC_VER_08:
+	case RTL_GIGA_MAC_VER_09:
+	case RTL_GIGA_MAC_VER_10:
+	case RTL_GIGA_MAC_VER_13:
+	case RTL_GIGA_MAC_VER_16:
+		break;
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+		RTL_W8(PMCH, RTL_R8(PMCH) | 0xc0);
+		break;
+	default:
+		RTL_W8(PMCH, RTL_R8(PMCH) | 0x80);
+		break;
+	}
+}
+
+static void r8168_phy_power_up(struct rtl8169_private *tp)
+{
+	rtl_writephy(tp, 0x1f, 0x0000);
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_11:
+	case RTL_GIGA_MAC_VER_12:
+	case RTL_GIGA_MAC_VER_17:
+	case RTL_GIGA_MAC_VER_18:
+	case RTL_GIGA_MAC_VER_19:
+	case RTL_GIGA_MAC_VER_20:
+	case RTL_GIGA_MAC_VER_21:
+	case RTL_GIGA_MAC_VER_22:
+	case RTL_GIGA_MAC_VER_23:
+	case RTL_GIGA_MAC_VER_24:
+	case RTL_GIGA_MAC_VER_25:
+	case RTL_GIGA_MAC_VER_26:
+	case RTL_GIGA_MAC_VER_27:
+	case RTL_GIGA_MAC_VER_28:
+	case RTL_GIGA_MAC_VER_31:
+		rtl_writephy(tp, 0x0e, 0x0000);
+		break;
+	default:
+		break;
+	}
+	rtl_writephy(tp, MII_BMCR, BMCR_ANENABLE);
+}
+
+static void r8168_phy_power_down(struct rtl8169_private *tp)
+{
+	rtl_writephy(tp, 0x1f, 0x0000);
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_32:
+	case RTL_GIGA_MAC_VER_33:
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+		rtl_writephy(tp, MII_BMCR, BMCR_ANENABLE | BMCR_PDOWN);
+		break;
+
+	case RTL_GIGA_MAC_VER_11:
+	case RTL_GIGA_MAC_VER_12:
+	case RTL_GIGA_MAC_VER_17:
+	case RTL_GIGA_MAC_VER_18:
+	case RTL_GIGA_MAC_VER_19:
+	case RTL_GIGA_MAC_VER_20:
+	case RTL_GIGA_MAC_VER_21:
+	case RTL_GIGA_MAC_VER_22:
+	case RTL_GIGA_MAC_VER_23:
+	case RTL_GIGA_MAC_VER_24:
+	case RTL_GIGA_MAC_VER_25:
+	case RTL_GIGA_MAC_VER_26:
+	case RTL_GIGA_MAC_VER_27:
+	case RTL_GIGA_MAC_VER_28:
+	case RTL_GIGA_MAC_VER_31:
+		rtl_writephy(tp, 0x0e, 0x0200);
+	default:
+		rtl_writephy(tp, MII_BMCR, BMCR_PDOWN);
+		break;
+	}
+}
+
+static void r8168_pll_power_down(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	if ((tp->mac_version == RTL_GIGA_MAC_VER_27 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_28 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_31 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_49 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_50 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_51) &&
+	    r8168_check_dash(tp)) {
+		return;
+	}
+
+	if ((tp->mac_version == RTL_GIGA_MAC_VER_23 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_24) &&
+	    (RTL_R16(CPlusCmd) & ASF)) {
+		return;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
 	    tp->mac_version == RTL_GIGA_MAC_VER_33)
@@ -4207,6 +5832,7 @@ static void r8168_pll_power_down(struct rtl8169_private *tp)
 	if (rtl_wol_pll_power_down(tp))
 		return;
 
+<<<<<<< HEAD
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_25 ... RTL_GIGA_MAC_VER_33:
 	case RTL_GIGA_MAC_VER_37:
@@ -4220,51 +5846,109 @@ static void r8168_pll_power_down(struct rtl8169_private *tp)
 	case RTL_GIGA_MAC_VER_50:
 	case RTL_GIGA_MAC_VER_51:
 		RTL_W8(tp, PMCH, RTL_R8(tp, PMCH) & ~0x80);
+=======
+	r8168_phy_power_down(tp);
+
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_25:
+	case RTL_GIGA_MAC_VER_26:
+	case RTL_GIGA_MAC_VER_27:
+	case RTL_GIGA_MAC_VER_28:
+	case RTL_GIGA_MAC_VER_31:
+	case RTL_GIGA_MAC_VER_32:
+	case RTL_GIGA_MAC_VER_33:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+		RTL_W8(PMCH, RTL_R8(PMCH) & ~0x80);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case RTL_GIGA_MAC_VER_40:
 	case RTL_GIGA_MAC_VER_41:
 	case RTL_GIGA_MAC_VER_49:
 		rtl_w0w1_eri(tp, 0x1a8, ERIAR_MASK_1111, 0x00000000,
 			     0xfc000000, ERIAR_EXGMAC);
+<<<<<<< HEAD
 		RTL_W8(tp, PMCH, RTL_R8(tp, PMCH) & ~0x80);
+=======
+		RTL_W8(PMCH, RTL_R8(PMCH) & ~0x80);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
 
 static void r8168_pll_power_up(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_25 ... RTL_GIGA_MAC_VER_33:
 	case RTL_GIGA_MAC_VER_37:
 	case RTL_GIGA_MAC_VER_39:
 	case RTL_GIGA_MAC_VER_43:
 		RTL_W8(tp, PMCH, RTL_R8(tp, PMCH) | 0x80);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_25:
+	case RTL_GIGA_MAC_VER_26:
+	case RTL_GIGA_MAC_VER_27:
+	case RTL_GIGA_MAC_VER_28:
+	case RTL_GIGA_MAC_VER_31:
+	case RTL_GIGA_MAC_VER_32:
+	case RTL_GIGA_MAC_VER_33:
+		RTL_W8(PMCH, RTL_R8(PMCH) | 0x80);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case RTL_GIGA_MAC_VER_44:
 	case RTL_GIGA_MAC_VER_45:
 	case RTL_GIGA_MAC_VER_46:
+<<<<<<< HEAD
 	case RTL_GIGA_MAC_VER_47:
 	case RTL_GIGA_MAC_VER_48:
 	case RTL_GIGA_MAC_VER_50:
 	case RTL_GIGA_MAC_VER_51:
 		RTL_W8(tp, PMCH, RTL_R8(tp, PMCH) | 0xc0);
+=======
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+		RTL_W8(PMCH, RTL_R8(PMCH) | 0xc0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case RTL_GIGA_MAC_VER_40:
 	case RTL_GIGA_MAC_VER_41:
 	case RTL_GIGA_MAC_VER_49:
+<<<<<<< HEAD
 		RTL_W8(tp, PMCH, RTL_R8(tp, PMCH) | 0xc0);
+=======
+		RTL_W8(PMCH, RTL_R8(PMCH) | 0xc0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtl_w0w1_eri(tp, 0x1a8, ERIAR_MASK_1111, 0xfc000000,
 			     0x00000000, ERIAR_EXGMAC);
 		break;
 	}
 
+<<<<<<< HEAD
 	phy_resume(tp->dev->phydev);
 	/* give MAC/PHY some time to resume */
 	msleep(20);
+=======
+	r8168_phy_power_up(tp);
+}
+
+static void rtl_generic_op(struct rtl8169_private *tp,
+			   void (*op)(struct rtl8169_private *))
+{
+	if (op)
+		op(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_pll_power_down(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_01 ... RTL_GIGA_MAC_VER_06:
 	case RTL_GIGA_MAC_VER_13 ... RTL_GIGA_MAC_VER_15:
@@ -4272,21 +5956,93 @@ static void rtl_pll_power_down(struct rtl8169_private *tp)
 	default:
 		r8168_pll_power_down(tp);
 	}
+=======
+	rtl_generic_op(tp, tp->pll_power_ops.down);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_pll_power_up(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_01 ... RTL_GIGA_MAC_VER_06:
 	case RTL_GIGA_MAC_VER_13 ... RTL_GIGA_MAC_VER_15:
 		break;
 	default:
 		r8168_pll_power_up(tp);
+=======
+	rtl_generic_op(tp, tp->pll_power_ops.up);
+
+	/* give MAC/PHY some time to resume */
+	msleep(20);
+}
+
+static void rtl_init_pll_power_ops(struct rtl8169_private *tp)
+{
+	struct pll_power_ops *ops = &tp->pll_power_ops;
+
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_07:
+	case RTL_GIGA_MAC_VER_08:
+	case RTL_GIGA_MAC_VER_09:
+	case RTL_GIGA_MAC_VER_10:
+	case RTL_GIGA_MAC_VER_16:
+	case RTL_GIGA_MAC_VER_29:
+	case RTL_GIGA_MAC_VER_30:
+	case RTL_GIGA_MAC_VER_37:
+	case RTL_GIGA_MAC_VER_39:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+		ops->down	= r810x_pll_power_down;
+		ops->up		= r810x_pll_power_up;
+		break;
+
+	case RTL_GIGA_MAC_VER_11:
+	case RTL_GIGA_MAC_VER_12:
+	case RTL_GIGA_MAC_VER_17:
+	case RTL_GIGA_MAC_VER_18:
+	case RTL_GIGA_MAC_VER_19:
+	case RTL_GIGA_MAC_VER_20:
+	case RTL_GIGA_MAC_VER_21:
+	case RTL_GIGA_MAC_VER_22:
+	case RTL_GIGA_MAC_VER_23:
+	case RTL_GIGA_MAC_VER_24:
+	case RTL_GIGA_MAC_VER_25:
+	case RTL_GIGA_MAC_VER_26:
+	case RTL_GIGA_MAC_VER_27:
+	case RTL_GIGA_MAC_VER_28:
+	case RTL_GIGA_MAC_VER_31:
+	case RTL_GIGA_MAC_VER_32:
+	case RTL_GIGA_MAC_VER_33:
+	case RTL_GIGA_MAC_VER_34:
+	case RTL_GIGA_MAC_VER_35:
+	case RTL_GIGA_MAC_VER_36:
+	case RTL_GIGA_MAC_VER_38:
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+		ops->down	= r8168_pll_power_down;
+		ops->up		= r8168_pll_power_up;
+		break;
+
+	default:
+		ops->down	= NULL;
+		ops->up		= NULL;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static void rtl_init_rxcfg(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_01 ... RTL_GIGA_MAC_VER_06:
 	case RTL_GIGA_MAC_VER_10 ... RTL_GIGA_MAC_VER_17:
@@ -4302,6 +6058,54 @@ static void rtl_init_rxcfg(struct rtl8169_private *tp)
 		break;
 	default:
 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_01:
+	case RTL_GIGA_MAC_VER_02:
+	case RTL_GIGA_MAC_VER_03:
+	case RTL_GIGA_MAC_VER_04:
+	case RTL_GIGA_MAC_VER_05:
+	case RTL_GIGA_MAC_VER_06:
+	case RTL_GIGA_MAC_VER_10:
+	case RTL_GIGA_MAC_VER_11:
+	case RTL_GIGA_MAC_VER_12:
+	case RTL_GIGA_MAC_VER_13:
+	case RTL_GIGA_MAC_VER_14:
+	case RTL_GIGA_MAC_VER_15:
+	case RTL_GIGA_MAC_VER_16:
+	case RTL_GIGA_MAC_VER_17:
+		RTL_W32(RxConfig, RX_FIFO_THRESH | RX_DMA_BURST);
+		break;
+	case RTL_GIGA_MAC_VER_18:
+	case RTL_GIGA_MAC_VER_19:
+	case RTL_GIGA_MAC_VER_20:
+	case RTL_GIGA_MAC_VER_21:
+	case RTL_GIGA_MAC_VER_22:
+	case RTL_GIGA_MAC_VER_23:
+	case RTL_GIGA_MAC_VER_24:
+	case RTL_GIGA_MAC_VER_34:
+	case RTL_GIGA_MAC_VER_35:
+		RTL_W32(RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST);
+		break;
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+		RTL_W32(RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
+		break;
+	default:
+		RTL_W32(RxConfig, RX128_INT_EN | RX_DMA_BURST);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 }
@@ -4313,86 +6117,173 @@ static void rtl8169_init_ring_indexes(struct rtl8169_private *tp)
 
 static void rtl_hw_jumbo_enable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	if (tp->jumbo_ops.enable) {
 		RTL_W8(tp, Cfg9346, Cfg9346_Unlock);
 		tp->jumbo_ops.enable(tp);
 		RTL_W8(tp, Cfg9346, Cfg9346_Lock);
 	}
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(Cfg9346, Cfg9346_Unlock);
+	rtl_generic_op(tp, tp->jumbo_ops.enable);
+	RTL_W8(Cfg9346, Cfg9346_Lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_jumbo_disable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	if (tp->jumbo_ops.disable) {
 		RTL_W8(tp, Cfg9346, Cfg9346_Unlock);
 		tp->jumbo_ops.disable(tp);
 		RTL_W8(tp, Cfg9346, Cfg9346_Lock);
 	}
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(Cfg9346, Cfg9346_Unlock);
+	rtl_generic_op(tp, tp->jumbo_ops.disable);
+	RTL_W8(Cfg9346, Cfg9346_Lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168c_hw_jumbo_enable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) | Jumbo_En0);
 	RTL_W8(tp, Config4, RTL_R8(tp, Config4) | Jumbo_En1);
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_512B);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(Config3, RTL_R8(Config3) | Jumbo_En0);
+	RTL_W8(Config4, RTL_R8(Config4) | Jumbo_En1);
+	rtl_tx_performance_tweak(tp->pci_dev, PCI_EXP_DEVCTL_READRQ_512B);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168c_hw_jumbo_disable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Jumbo_En0);
 	RTL_W8(tp, Config4, RTL_R8(tp, Config4) & ~Jumbo_En1);
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(Config3, RTL_R8(Config3) & ~Jumbo_En0);
+	RTL_W8(Config4, RTL_R8(Config4) & ~Jumbo_En1);
+	rtl_tx_performance_tweak(tp->pci_dev, 0x5 << MAX_READ_REQUEST_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168dp_hw_jumbo_enable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) | Jumbo_En0);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(Config3, RTL_R8(Config3) | Jumbo_En0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168dp_hw_jumbo_disable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Jumbo_En0);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(Config3, RTL_R8(Config3) & ~Jumbo_En0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168e_hw_jumbo_enable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, MaxTxPacketSize, 0x3f);
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) | Jumbo_En0);
 	RTL_W8(tp, Config4, RTL_R8(tp, Config4) | 0x01);
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_512B);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(MaxTxPacketSize, 0x3f);
+	RTL_W8(Config3, RTL_R8(Config3) | Jumbo_En0);
+	RTL_W8(Config4, RTL_R8(Config4) | 0x01);
+	rtl_tx_performance_tweak(tp->pci_dev, PCI_EXP_DEVCTL_READRQ_512B);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168e_hw_jumbo_disable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, MaxTxPacketSize, 0x0c);
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Jumbo_En0);
 	RTL_W8(tp, Config4, RTL_R8(tp, Config4) & ~0x01);
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(MaxTxPacketSize, 0x0c);
+	RTL_W8(Config3, RTL_R8(Config3) & ~Jumbo_En0);
+	RTL_W8(Config4, RTL_R8(Config4) & ~0x01);
+	rtl_tx_performance_tweak(tp->pci_dev, 0x5 << MAX_READ_REQUEST_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168b_0_hw_jumbo_enable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_tx_performance_tweak(tp,
+=======
+	rtl_tx_performance_tweak(tp->pci_dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		PCI_EXP_DEVCTL_READRQ_512B | PCI_EXP_DEVCTL_NOSNOOP_EN);
 }
 
 static void r8168b_0_hw_jumbo_disable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_tx_performance_tweak(tp,
 		PCI_EXP_DEVCTL_READRQ_4096B | PCI_EXP_DEVCTL_NOSNOOP_EN);
+=======
+	rtl_tx_performance_tweak(tp->pci_dev,
+		(0x5 << MAX_READ_REQUEST_SHIFT) | PCI_EXP_DEVCTL_NOSNOOP_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168b_1_hw_jumbo_enable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	r8168b_0_hw_jumbo_enable(tp);
 
 	RTL_W8(tp, Config4, RTL_R8(tp, Config4) | (1 << 0));
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	r8168b_0_hw_jumbo_enable(tp);
+
+	RTL_W8(Config4, RTL_R8(Config4) | (1 << 0));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void r8168b_1_hw_jumbo_disable(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	r8168b_0_hw_jumbo_disable(tp);
 
 	RTL_W8(tp, Config4, RTL_R8(tp, Config4) & ~(1 << 0));
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	r8168b_0_hw_jumbo_disable(tp);
+
+	RTL_W8(Config4, RTL_R8(Config4) & ~(1 << 0));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_init_jumbo_ops(struct rtl8169_private *tp)
@@ -4438,7 +6329,22 @@ static void rtl_init_jumbo_ops(struct rtl8169_private *tp)
 	 * No action needed for jumbo frames with 8169.
 	 * No jumbo for 810x at all.
 	 */
+<<<<<<< HEAD
 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_51:
+=======
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		ops->disable	= NULL;
 		ops->enable	= NULL;
@@ -4448,12 +6354,24 @@ static void rtl_init_jumbo_ops(struct rtl8169_private *tp)
 
 DECLARE_RTL_COND(rtl_chipcmd_cond)
 {
+<<<<<<< HEAD
 	return RTL_R8(tp, ChipCmd) & CmdReset;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R8(ChipCmd) & CmdReset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_reset(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, ChipCmd, CmdReset);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(ChipCmd, CmdReset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_udelay_loop_wait_low(tp, &rtl_chipcmd_cond, 100, 100);
 }
@@ -4472,7 +6390,11 @@ static void rtl_request_uncached_firmware(struct rtl8169_private *tp)
 	if (!rtl_fw)
 		goto err_warn;
 
+<<<<<<< HEAD
 	rc = request_firmware(&rtl_fw->fw, name, tp_to_dev(tp));
+=======
+	rc = request_firmware(&rtl_fw->fw, name, &tp->pci_dev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc < 0)
 		goto err_free;
 
@@ -4504,26 +6426,50 @@ static void rtl_request_firmware(struct rtl8169_private *tp)
 
 static void rtl_rx_close(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W32(tp, RxConfig, RTL_R32(tp, RxConfig) & ~RX_CONFIG_ACCEPT_MASK);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(RxConfig, RTL_R32(RxConfig) & ~RX_CONFIG_ACCEPT_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 DECLARE_RTL_COND(rtl_npq_cond)
 {
+<<<<<<< HEAD
 	return RTL_R8(tp, TxPoll) & NPQ;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R8(TxPoll) & NPQ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 DECLARE_RTL_COND(rtl_txcfg_empty_cond)
 {
+<<<<<<< HEAD
 	return RTL_R32(tp, TxConfig) & TXCFG_EMPTY;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(TxConfig) & TXCFG_EMPTY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl8169_hw_reset(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Disable interrupts */
 	rtl8169_irq_mask_and_ack(tp);
 
 	rtl_rx_close(tp);
 
+<<<<<<< HEAD
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_27:
 	case RTL_GIGA_MAC_VER_28:
@@ -4539,11 +6485,40 @@ static void rtl8169_hw_reset(struct rtl8169_private *tp)
 		RTL_W8(tp, ChipCmd, RTL_R8(tp, ChipCmd) | StopReq);
 		udelay(100);
 		break;
+=======
+	if (tp->mac_version == RTL_GIGA_MAC_VER_27 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_28 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_31) {
+		rtl_udelay_loop_wait_low(tp, &rtl_npq_cond, 20, 42*42);
+	} else if (tp->mac_version == RTL_GIGA_MAC_VER_34 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_36 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_37 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_38 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_40 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_41 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_42 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_43 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_44 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_45 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_47 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_48 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_49 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_50 ||
+		   tp->mac_version == RTL_GIGA_MAC_VER_51) {
+		RTL_W8(ChipCmd, RTL_R8(ChipCmd) | StopReq);
+		rtl_udelay_loop_wait_high(tp, &rtl_txcfg_empty_cond, 100, 666);
+	} else {
+		RTL_W8(ChipCmd, RTL_R8(ChipCmd) | StopReq);
+		udelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rtl_hw_reset(tp);
 }
 
+<<<<<<< HEAD
 static void rtl_set_tx_config_registers(struct rtl8169_private *tp)
 {
 	u32 val = TX_DMA_BURST << TxDMAShift |
@@ -4563,12 +6538,35 @@ static void rtl_set_rx_max_size(struct rtl8169_private *tp)
 }
 
 static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp)
+=======
+static void rtl_set_rx_tx_config_registers(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	/* Set DMA burst size and Interframe Gap Time */
+	RTL_W32(TxConfig, (TX_DMA_BURST << TxDMAShift) |
+		(InterFrameGap << TxInterFrameGapShift));
+}
+
+static void rtl_hw_start(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	tp->hw_start(dev);
+
+	rtl_irq_enable_all(tp);
+}
+
+static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp,
+					 void __iomem *ioaddr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * Magic spell: some iop3xx ARM board needs the TxDescAddrHigh
 	 * register to be written before TxDescAddrLow to work.
 	 * Switching from MMIO to I/O access fixes the issue as well.
 	 */
+<<<<<<< HEAD
 	RTL_W32(tp, TxDescStartAddrHigh, ((u64) tp->TxPhyAddr) >> 32);
 	RTL_W32(tp, TxDescStartAddrLow, ((u64) tp->TxPhyAddr) & DMA_BIT_MASK(32));
 	RTL_W32(tp, RxDescAddrHigh, ((u64) tp->RxPhyAddr) >> 32);
@@ -4576,6 +6574,30 @@ static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp)
 }
 
 static void rtl8169_set_magic_reg(struct rtl8169_private *tp, unsigned mac_version)
+=======
+	RTL_W32(TxDescStartAddrHigh, ((u64) tp->TxPhyAddr) >> 32);
+	RTL_W32(TxDescStartAddrLow, ((u64) tp->TxPhyAddr) & DMA_BIT_MASK(32));
+	RTL_W32(RxDescAddrHigh, ((u64) tp->RxPhyAddr) >> 32);
+	RTL_W32(RxDescAddrLow, ((u64) tp->RxPhyAddr) & DMA_BIT_MASK(32));
+}
+
+static u16 rtl_rw_cpluscmd(void __iomem *ioaddr)
+{
+	u16 cmd;
+
+	cmd = RTL_R16(CPlusCmd);
+	RTL_W16(CPlusCmd, cmd);
+	return cmd;
+}
+
+static void rtl_set_rx_max_size(void __iomem *ioaddr, unsigned int rx_buf_sz)
+{
+	/* Low hurts. Let's disable the filtering. */
+	RTL_W16(RxMaxSize, rx_buf_sz + 1);
+}
+
+static void rtl8169_set_magic_reg(void __iomem *ioaddr, unsigned mac_version)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const struct rtl_cfg2_info {
 		u32 mac_version;
@@ -4591,10 +6613,17 @@ static void rtl8169_set_magic_reg(struct rtl8169_private *tp, unsigned mac_versi
 	unsigned int i;
 	u32 clk;
 
+<<<<<<< HEAD
 	clk = RTL_R8(tp, Config2) & PCI_Clock_66MHz;
 	for (i = 0; i < ARRAY_SIZE(cfg2_info); i++, p++) {
 		if ((p->mac_version == mac_version) && (p->clk == clk)) {
 			RTL_W32(tp, 0x7c, p->val);
+=======
+	clk = RTL_R8(Config2) & PCI_Clock_66MHz;
+	for (i = 0; i < ARRAY_SIZE(cfg2_info); i++, p++) {
+		if ((p->mac_version == mac_version) && (p->clk == clk)) {
+			RTL_W32(0x7c, p->val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -4603,6 +6632,10 @@ static void rtl8169_set_magic_reg(struct rtl8169_private *tp, unsigned mac_versi
 static void rtl_set_rx_mode(struct net_device *dev)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 mc_filter[2];	/* Multicast hash filter */
 	int rx_mode;
 	u32 tmp = 0;
@@ -4634,7 +6667,11 @@ static void rtl_set_rx_mode(struct net_device *dev)
 	if (dev->features & NETIF_F_RXALL)
 		rx_mode |= (AcceptErr | AcceptRunt);
 
+<<<<<<< HEAD
 	tmp = (RTL_R32(tp, RxConfig) & ~RX_CONFIG_ACCEPT_MASK) | rx_mode;
+=======
+	tmp = (RTL_R32(RxConfig) & ~RX_CONFIG_ACCEPT_MASK) | rx_mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tp->mac_version > RTL_GIGA_MAC_VER_06) {
 		u32 data = mc_filter[0];
@@ -4646,6 +6683,7 @@ static void rtl_set_rx_mode(struct net_device *dev)
 	if (tp->mac_version == RTL_GIGA_MAC_VER_35)
 		mc_filter[1] = mc_filter[0] = 0xffffffff;
 
+<<<<<<< HEAD
 	RTL_W32(tp, MAR0 + 4, mc_filter[1]);
 	RTL_W32(tp, MAR0 + 0, mc_filter[0]);
 
@@ -4693,11 +6731,62 @@ static void rtl_hw_start_8169(struct rtl8169_private *tp)
 	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
 
 	rtl8169_set_magic_reg(tp, tp->mac_version);
+=======
+	RTL_W32(MAR0 + 4, mc_filter[1]);
+	RTL_W32(MAR0 + 0, mc_filter[0]);
+
+	RTL_W32(RxConfig, tmp);
+}
+
+static void rtl_hw_start_8169(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	if (tp->mac_version == RTL_GIGA_MAC_VER_05) {
+		RTL_W16(CPlusCmd, RTL_R16(CPlusCmd) | PCIMulRW);
+		pci_write_config_byte(pdev, PCI_CACHE_LINE_SIZE, 0x08);
+	}
+
+	RTL_W8(Cfg9346, Cfg9346_Unlock);
+	if (tp->mac_version == RTL_GIGA_MAC_VER_01 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_02 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_03 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_04)
+		RTL_W8(ChipCmd, CmdTxEnb | CmdRxEnb);
+
+	rtl_init_rxcfg(tp);
+
+	RTL_W8(EarlyTxThres, NoEarlyTx);
+
+	rtl_set_rx_max_size(ioaddr, rx_buf_sz);
+
+	if (tp->mac_version == RTL_GIGA_MAC_VER_01 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_02 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_03 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_04)
+		rtl_set_rx_tx_config_registers(tp);
+
+	tp->cp_cmd |= rtl_rw_cpluscmd(ioaddr) | PCIMulRW;
+
+	if (tp->mac_version == RTL_GIGA_MAC_VER_02 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_03) {
+		dprintk("Set MAC Reg C+CR Offset 0xe0. "
+			"Bit-3 and bit-14 MUST be 1\n");
+		tp->cp_cmd |= (1 << 14);
+	}
+
+	RTL_W16(CPlusCmd, tp->cp_cmd);
+
+	rtl8169_set_magic_reg(ioaddr, tp->mac_version);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Undocumented corner. Supposedly:
 	 * (TxTimer << 12) | (TxPackets << 8) | (RxTimer << 4) | RxPackets
 	 */
+<<<<<<< HEAD
 	RTL_W16(tp, IntrMitigate, 0x0000);
 
 	RTL_W32(tp, RxMissed, 0);
@@ -4706,10 +6795,36 @@ static void rtl_hw_start_8169(struct rtl8169_private *tp)
 DECLARE_RTL_COND(rtl_csiar_cond)
 {
 	return RTL_R32(tp, CSIAR) & CSIAR_FLAG;
+=======
+	RTL_W16(IntrMitigate, 0x0000);
+
+	rtl_set_rx_tx_desc_registers(tp, ioaddr);
+
+	if (tp->mac_version != RTL_GIGA_MAC_VER_01 &&
+	    tp->mac_version != RTL_GIGA_MAC_VER_02 &&
+	    tp->mac_version != RTL_GIGA_MAC_VER_03 &&
+	    tp->mac_version != RTL_GIGA_MAC_VER_04) {
+		RTL_W8(ChipCmd, CmdTxEnb | CmdRxEnb);
+		rtl_set_rx_tx_config_registers(tp);
+	}
+
+	RTL_W8(Cfg9346, Cfg9346_Lock);
+
+	/* Initially a 10 us delay. Turned it into a PCI commit. - FR */
+	RTL_R8(IntrMask);
+
+	RTL_W32(RxMissed, 0);
+
+	rtl_set_rx_mode(dev);
+
+	/* no early-rx interrupts */
+	RTL_W16(MultiIntr, RTL_R16(MultiIntr) & 0xf000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_csi_write(struct rtl8169_private *tp, int addr, int value)
 {
+<<<<<<< HEAD
 	u32 func = PCI_FUNC(tp->pci_dev->devfn);
 
 	RTL_W32(tp, CSIDR, value);
@@ -4717,10 +6832,15 @@ static void rtl_csi_write(struct rtl8169_private *tp, int addr, int value)
 		CSIAR_BYTE_ENABLE | func << 16);
 
 	rtl_udelay_loop_wait_low(tp, &rtl_csiar_cond, 10, 100);
+=======
+	if (tp->csi_ops.write)
+		tp->csi_ops.write(tp, addr, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 rtl_csi_read(struct rtl8169_private *tp, int addr)
 {
+<<<<<<< HEAD
 	u32 func = PCI_FUNC(tp->pci_dev->devfn);
 
 	RTL_W32(tp, CSIAR, (addr & CSIAR_ADDR_MASK) | func << 16 |
@@ -4752,6 +6872,143 @@ static void rtl_csi_access_enable(struct rtl8169_private *tp, u8 val)
 static void rtl_set_def_aspm_entry_latency(struct rtl8169_private *tp)
 {
 	rtl_csi_access_enable(tp, 0x27);
+=======
+	return tp->csi_ops.read ? tp->csi_ops.read(tp, addr) : ~0;
+}
+
+static void rtl_csi_access_enable(struct rtl8169_private *tp, u32 bits)
+{
+	u32 csi;
+
+	csi = rtl_csi_read(tp, 0x070c) & 0x00ffffff;
+	rtl_csi_write(tp, 0x070c, csi | bits);
+}
+
+static void rtl_csi_access_enable_1(struct rtl8169_private *tp)
+{
+	rtl_csi_access_enable(tp, 0x17000000);
+}
+
+static void rtl_csi_access_enable_2(struct rtl8169_private *tp)
+{
+	rtl_csi_access_enable(tp, 0x27000000);
+}
+
+DECLARE_RTL_COND(rtl_csiar_cond)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R32(CSIAR) & CSIAR_FLAG;
+}
+
+static void r8169_csi_write(struct rtl8169_private *tp, int addr, int value)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(CSIDR, value);
+	RTL_W32(CSIAR, CSIAR_WRITE_CMD | (addr & CSIAR_ADDR_MASK) |
+		CSIAR_BYTE_ENABLE << CSIAR_BYTE_ENABLE_SHIFT);
+
+	rtl_udelay_loop_wait_low(tp, &rtl_csiar_cond, 10, 100);
+}
+
+static u32 r8169_csi_read(struct rtl8169_private *tp, int addr)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(CSIAR, (addr & CSIAR_ADDR_MASK) |
+		CSIAR_BYTE_ENABLE << CSIAR_BYTE_ENABLE_SHIFT);
+
+	return rtl_udelay_loop_wait_high(tp, &rtl_csiar_cond, 10, 100) ?
+		RTL_R32(CSIDR) : ~0;
+}
+
+static void r8402_csi_write(struct rtl8169_private *tp, int addr, int value)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(CSIDR, value);
+	RTL_W32(CSIAR, CSIAR_WRITE_CMD | (addr & CSIAR_ADDR_MASK) |
+		CSIAR_BYTE_ENABLE << CSIAR_BYTE_ENABLE_SHIFT |
+		CSIAR_FUNC_NIC);
+
+	rtl_udelay_loop_wait_low(tp, &rtl_csiar_cond, 10, 100);
+}
+
+static u32 r8402_csi_read(struct rtl8169_private *tp, int addr)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(CSIAR, (addr & CSIAR_ADDR_MASK) | CSIAR_FUNC_NIC |
+		CSIAR_BYTE_ENABLE << CSIAR_BYTE_ENABLE_SHIFT);
+
+	return rtl_udelay_loop_wait_high(tp, &rtl_csiar_cond, 10, 100) ?
+		RTL_R32(CSIDR) : ~0;
+}
+
+static void r8411_csi_write(struct rtl8169_private *tp, int addr, int value)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(CSIDR, value);
+	RTL_W32(CSIAR, CSIAR_WRITE_CMD | (addr & CSIAR_ADDR_MASK) |
+		CSIAR_BYTE_ENABLE << CSIAR_BYTE_ENABLE_SHIFT |
+		CSIAR_FUNC_NIC2);
+
+	rtl_udelay_loop_wait_low(tp, &rtl_csiar_cond, 10, 100);
+}
+
+static u32 r8411_csi_read(struct rtl8169_private *tp, int addr)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W32(CSIAR, (addr & CSIAR_ADDR_MASK) | CSIAR_FUNC_NIC2 |
+		CSIAR_BYTE_ENABLE << CSIAR_BYTE_ENABLE_SHIFT);
+
+	return rtl_udelay_loop_wait_high(tp, &rtl_csiar_cond, 10, 100) ?
+		RTL_R32(CSIDR) : ~0;
+}
+
+static void rtl_init_csi_ops(struct rtl8169_private *tp)
+{
+	struct csi_ops *ops = &tp->csi_ops;
+
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_01:
+	case RTL_GIGA_MAC_VER_02:
+	case RTL_GIGA_MAC_VER_03:
+	case RTL_GIGA_MAC_VER_04:
+	case RTL_GIGA_MAC_VER_05:
+	case RTL_GIGA_MAC_VER_06:
+	case RTL_GIGA_MAC_VER_10:
+	case RTL_GIGA_MAC_VER_11:
+	case RTL_GIGA_MAC_VER_12:
+	case RTL_GIGA_MAC_VER_13:
+	case RTL_GIGA_MAC_VER_14:
+	case RTL_GIGA_MAC_VER_15:
+	case RTL_GIGA_MAC_VER_16:
+	case RTL_GIGA_MAC_VER_17:
+		ops->write	= NULL;
+		ops->read	= NULL;
+		break;
+
+	case RTL_GIGA_MAC_VER_37:
+	case RTL_GIGA_MAC_VER_38:
+		ops->write	= r8402_csi_write;
+		ops->read	= r8402_csi_read;
+		break;
+
+	case RTL_GIGA_MAC_VER_44:
+		ops->write	= r8411_csi_write;
+		ops->read	= r8411_csi_read;
+		break;
+
+	default:
+		ops->write	= r8169_csi_write;
+		ops->read	= r8169_csi_read;
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct ephy_info {
@@ -4772,6 +7029,7 @@ static void rtl_ephy_init(struct rtl8169_private *tp, const struct ephy_info *e,
 	}
 }
 
+<<<<<<< HEAD
 static void rtl_disable_clock_request(struct rtl8169_private *tp)
 {
 	pcie_capability_clear_word(tp->pci_dev, PCI_EXP_LNKCTL,
@@ -4781,20 +7039,39 @@ static void rtl_disable_clock_request(struct rtl8169_private *tp)
 static void rtl_enable_clock_request(struct rtl8169_private *tp)
 {
 	pcie_capability_set_word(tp->pci_dev, PCI_EXP_LNKCTL,
+=======
+static void rtl_disable_clock_request(struct pci_dev *pdev)
+{
+	pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL,
+				   PCI_EXP_LNKCTL_CLKREQ_EN);
+}
+
+static void rtl_enable_clock_request(struct pci_dev *pdev)
+{
+	pcie_capability_set_word(pdev, PCI_EXP_LNKCTL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 PCI_EXP_LNKCTL_CLKREQ_EN);
 }
 
 static void rtl_pcie_state_l2l3_enable(struct rtl8169_private *tp, bool enable)
 {
+<<<<<<< HEAD
 	u8 data;
 
 	data = RTL_R8(tp, Config3);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	u8 data;
+
+	data = RTL_R8(Config3);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (enable)
 		data |= Rdy_to_L23;
 	else
 		data &= ~Rdy_to_L23;
 
+<<<<<<< HEAD
 	RTL_W8(tp, Config3, data);
 }
 
@@ -4820,21 +7097,59 @@ static void rtl_hw_start_8168bb(struct rtl8169_private *tp)
 
 	if (tp->dev->mtu <= ETH_DATA_LEN) {
 		rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B |
+=======
+	RTL_W8(Config3, data);
+}
+
+#define R8168_CPCMD_QUIRK_MASK (\
+	EnableBist | \
+	Mac_dbgo_oe | \
+	Force_half_dup | \
+	Force_rxflow_en | \
+	Force_txflow_en | \
+	Cxpl_dbg_sel | \
+	ASF | \
+	PktCntrDisable | \
+	Mac_dbgo_sel)
+
+static void rtl_hw_start_8168bb(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	RTL_W8(Config3, RTL_R8(Config3) & ~Beacon_en);
+
+	RTL_W16(CPlusCmd, RTL_R16(CPlusCmd) & ~R8168_CPCMD_QUIRK_MASK);
+
+	if (tp->dev->mtu <= ETH_DATA_LEN) {
+		rtl_tx_performance_tweak(pdev, (0x5 << MAX_READ_REQUEST_SHIFT) |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 PCI_EXP_DEVCTL_NOSNOOP_EN);
 	}
 }
 
 static void rtl_hw_start_8168bef(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_hw_start_8168bb(tp);
 
 	RTL_W8(tp, MaxTxPacketSize, TxPacketMax);
 
 	RTL_W8(tp, Config4, RTL_R8(tp, Config4) & ~(1 << 0));
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	rtl_hw_start_8168bb(tp);
+
+	RTL_W8(MaxTxPacketSize, TxPacketMax);
+
+	RTL_W8(Config4, RTL_R8(Config4) & ~(1 << 0));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __rtl_hw_start_8168cp(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	RTL_W8(tp, Config1, RTL_R8(tp, Config1) | Speed_down);
 
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
@@ -4846,6 +7161,21 @@ static void __rtl_hw_start_8168cp(struct rtl8169_private *tp)
 
 	tp->cp_cmd &= CPCMD_QUIRK_MASK;
 	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	RTL_W8(Config1, RTL_R8(Config1) | Speed_down);
+
+	RTL_W8(Config3, RTL_R8(Config3) & ~Beacon_en);
+
+	if (tp->dev->mtu <= ETH_DATA_LEN)
+		rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	rtl_disable_clock_request(pdev);
+
+	RTL_W16(CPlusCmd, RTL_R16(CPlusCmd) & ~R8168_CPCMD_QUIRK_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168cp_1(struct rtl8169_private *tp)
@@ -4858,7 +7188,11 @@ static void rtl_hw_start_8168cp_1(struct rtl8169_private *tp)
 		{ 0x07, 0,	0x2000 }
 	};
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
+=======
+	rtl_csi_access_enable_2(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_ephy_init(tp, e_info_8168cp, ARRAY_SIZE(e_info_8168cp));
 
@@ -4867,6 +7201,7 @@ static void rtl_hw_start_8168cp_1(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8168cp_2(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
@@ -4876,10 +7211,24 @@ static void rtl_hw_start_8168cp_2(struct rtl8169_private *tp)
 
 	tp->cp_cmd &= CPCMD_QUIRK_MASK;
 	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	rtl_csi_access_enable_2(tp);
+
+	RTL_W8(Config3, RTL_R8(Config3) & ~Beacon_en);
+
+	if (tp->dev->mtu <= ETH_DATA_LEN)
+		rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	RTL_W16(CPlusCmd, RTL_R16(CPlusCmd) & ~R8168_CPCMD_QUIRK_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168cp_3(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
@@ -4894,19 +7243,47 @@ static void rtl_hw_start_8168cp_3(struct rtl8169_private *tp)
 
 	tp->cp_cmd &= CPCMD_QUIRK_MASK;
 	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	rtl_csi_access_enable_2(tp);
+
+	RTL_W8(Config3, RTL_R8(Config3) & ~Beacon_en);
+
+	/* Magic. */
+	RTL_W8(DBG_REG, 0x20);
+
+	RTL_W8(MaxTxPacketSize, TxPacketMax);
+
+	if (tp->dev->mtu <= ETH_DATA_LEN)
+		rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	RTL_W16(CPlusCmd, RTL_R16(CPlusCmd) & ~R8168_CPCMD_QUIRK_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168c_1(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168c_1[] = {
 		{ 0x02, 0x0800,	0x1000 },
 		{ 0x03, 0,	0x0002 },
 		{ 0x06, 0x0080,	0x0000 }
 	};
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	RTL_W8(tp, DBG_REG, 0x06 | FIX_NAK_1 | FIX_NAK_2);
+=======
+	rtl_csi_access_enable_2(tp);
+
+	RTL_W8(DBG_REG, 0x06 | FIX_NAK_1 | FIX_NAK_2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_ephy_init(tp, e_info_8168c_1, ARRAY_SIZE(e_info_8168c_1));
 
@@ -4920,7 +7297,11 @@ static void rtl_hw_start_8168c_2(struct rtl8169_private *tp)
 		{ 0x03, 0x0400,	0x0220 }
 	};
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
+=======
+	rtl_csi_access_enable_2(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_ephy_init(tp, e_info_8168c_2, ARRAY_SIZE(e_info_8168c_2));
 
@@ -4934,13 +7315,18 @@ static void rtl_hw_start_8168c_3(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8168c_4(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
+=======
+	rtl_csi_access_enable_2(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__rtl_hw_start_8168cp(tp);
 }
 
 static void rtl_hw_start_8168d(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	rtl_disable_clock_request(tp);
@@ -4952,10 +7338,26 @@ static void rtl_hw_start_8168d(struct rtl8169_private *tp)
 
 	tp->cp_cmd &= CPCMD_QUIRK_MASK;
 	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	rtl_csi_access_enable_2(tp);
+
+	rtl_disable_clock_request(pdev);
+
+	RTL_W8(MaxTxPacketSize, TxPacketMax);
+
+	if (tp->dev->mtu <= ETH_DATA_LEN)
+		rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	RTL_W16(CPlusCmd, RTL_R16(CPlusCmd) & ~R8168_CPCMD_QUIRK_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168dp(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	if (tp->dev->mtu <= ETH_DATA_LEN)
@@ -4964,16 +7366,35 @@ static void rtl_hw_start_8168dp(struct rtl8169_private *tp)
 	RTL_W8(tp, MaxTxPacketSize, TxPacketMax);
 
 	rtl_disable_clock_request(tp);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	rtl_csi_access_enable_1(tp);
+
+	if (tp->dev->mtu <= ETH_DATA_LEN)
+		rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	RTL_W8(MaxTxPacketSize, TxPacketMax);
+
+	rtl_disable_clock_request(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168d_4(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168d_4[] = {
 		{ 0x0b, 0x0000,	0x0048 },
 		{ 0x19, 0x0020,	0x0050 },
 		{ 0x0c, 0x0100,	0x0020 }
 	};
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
@@ -4983,10 +7404,26 @@ static void rtl_hw_start_8168d_4(struct rtl8169_private *tp)
 	rtl_ephy_init(tp, e_info_8168d_4, ARRAY_SIZE(e_info_8168d_4));
 
 	rtl_enable_clock_request(tp);
+=======
+	rtl_csi_access_enable_1(tp);
+
+	rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	RTL_W8(MaxTxPacketSize, TxPacketMax);
+
+	rtl_ephy_init(tp, e_info_8168d_4, ARRAY_SIZE(e_info_8168d_4));
+
+	rtl_enable_clock_request(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168e_1(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168e_1[] = {
 		{ 0x00, 0x0200,	0x0100 },
 		{ 0x00, 0x0000,	0x0004 },
@@ -5003,11 +7440,16 @@ static void rtl_hw_start_8168e_1(struct rtl8169_private *tp)
 		{ 0x0a, 0x0000,	0x0040 }
 	};
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
+=======
+	rtl_csi_access_enable_2(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_ephy_init(tp, e_info_8168e_1, ARRAY_SIZE(e_info_8168e_1));
 
 	if (tp->dev->mtu <= ETH_DATA_LEN)
+<<<<<<< HEAD
 		rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
 
 	RTL_W8(tp, MaxTxPacketSize, TxPacketMax);
@@ -5019,21 +7461,47 @@ static void rtl_hw_start_8168e_1(struct rtl8169_private *tp)
 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) & ~TXPLA_RST);
 
 	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
+=======
+		rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	RTL_W8(MaxTxPacketSize, TxPacketMax);
+
+	rtl_disable_clock_request(pdev);
+
+	/* Reset tx FIFO pointer */
+	RTL_W32(MISC, RTL_R32(MISC) | TXPLA_RST);
+	RTL_W32(MISC, RTL_R32(MISC) & ~TXPLA_RST);
+
+	RTL_W8(Config5, RTL_R8(Config5) & ~Spi_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168e_2(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168e_2[] = {
 		{ 0x09, 0x0000,	0x0080 },
 		{ 0x19, 0x0000,	0x0224 }
 	};
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
+=======
+	rtl_csi_access_enable_1(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_ephy_init(tp, e_info_8168e_2, ARRAY_SIZE(e_info_8168e_2));
 
 	if (tp->dev->mtu <= ETH_DATA_LEN)
+<<<<<<< HEAD
 		rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
+=======
+		rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
@@ -5044,6 +7512,7 @@ static void rtl_hw_start_8168e_2(struct rtl8169_private *tp)
 	rtl_w0w1_eri(tp, 0x1b0, ERIAR_MASK_0001, 0x10, 0x00, ERIAR_EXGMAC);
 	rtl_w0w1_eri(tp, 0x0d4, ERIAR_MASK_0011, 0x0c00, 0xff00, ERIAR_EXGMAC);
 
+<<<<<<< HEAD
 	RTL_W8(tp, MaxTxPacketSize, EarlySize);
 
 	rtl_disable_clock_request(tp);
@@ -5058,13 +7527,37 @@ static void rtl_hw_start_8168e_2(struct rtl8169_private *tp)
 	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
 
 	rtl_hw_aspm_clkreq_enable(tp, true);
+=======
+	RTL_W8(MaxTxPacketSize, EarlySize);
+
+	rtl_disable_clock_request(pdev);
+
+	RTL_W32(TxConfig, RTL_R32(TxConfig) | TXCFG_AUTO_FIFO);
+	RTL_W8(MCU, RTL_R8(MCU) & ~NOW_IS_OOB);
+
+	/* Adjust EEE LED frequency */
+	RTL_W8(EEE_LED, RTL_R8(EEE_LED) & ~0x07);
+
+	RTL_W8(DLLPR, RTL_R8(DLLPR) | PFM_EN);
+	RTL_W32(MISC, RTL_R32(MISC) | PWM_EN);
+	RTL_W8(Config5, RTL_R8(Config5) & ~Spi_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168f(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	rtl_csi_access_enable_2(tp);
+
+	rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
@@ -5077,6 +7570,7 @@ static void rtl_hw_start_8168f(struct rtl8169_private *tp)
 	rtl_eri_write(tp, 0xcc, ERIAR_MASK_1111, 0x00000050, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xd0, ERIAR_MASK_1111, 0x00000060, ERIAR_EXGMAC);
 
+<<<<<<< HEAD
 	RTL_W8(tp, MaxTxPacketSize, EarlySize);
 
 	rtl_disable_clock_request(tp);
@@ -5085,10 +7579,25 @@ static void rtl_hw_start_8168f(struct rtl8169_private *tp)
 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) | PFM_EN);
 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | PWM_EN);
 	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
+=======
+	RTL_W8(MaxTxPacketSize, EarlySize);
+
+	rtl_disable_clock_request(pdev);
+
+	RTL_W32(TxConfig, RTL_R32(TxConfig) | TXCFG_AUTO_FIFO);
+	RTL_W8(MCU, RTL_R8(MCU) & ~NOW_IS_OOB);
+	RTL_W8(DLLPR, RTL_R8(DLLPR) | PFM_EN);
+	RTL_W32(MISC, RTL_R32(MISC) | PWM_EN);
+	RTL_W8(Config5, RTL_R8(Config5) & ~Spi_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168f_1(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168f_1[] = {
 		{ 0x06, 0x00c0,	0x0020 },
 		{ 0x08, 0x0001,	0x0002 },
@@ -5103,7 +7612,11 @@ static void rtl_hw_start_8168f_1(struct rtl8169_private *tp)
 	rtl_w0w1_eri(tp, 0x0d4, ERIAR_MASK_0011, 0x0c00, 0xff00, ERIAR_EXGMAC);
 
 	/* Adjust EEE LED frequency */
+<<<<<<< HEAD
 	RTL_W8(tp, EEE_LED, RTL_R8(tp, EEE_LED) & ~0x07);
+=======
+	RTL_W8(EEE_LED, RTL_R8(EEE_LED) & ~0x07);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8411(struct rtl8169_private *tp)
@@ -5125,27 +7638,50 @@ static void rtl_hw_start_8411(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8168g(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	RTL_W32(TxConfig, RTL_R32(TxConfig) | TXCFG_AUTO_FIFO);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_eri_write(tp, 0xc8, ERIAR_MASK_0101, 0x080002, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xcc, ERIAR_MASK_0001, 0x38, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xd0, ERIAR_MASK_0001, 0x48, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xe8, ERIAR_MASK_1111, 0x00100006, ERIAR_EXGMAC);
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
+=======
+	rtl_csi_access_enable_1(tp);
+
+	rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_w0w1_eri(tp, 0xdc, ERIAR_MASK_0001, 0x00, 0x01, ERIAR_EXGMAC);
 	rtl_w0w1_eri(tp, 0xdc, ERIAR_MASK_0001, 0x01, 0x00, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0x2f8, ERIAR_MASK_0011, 0x1d8f, ERIAR_EXGMAC);
 
+<<<<<<< HEAD
 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) & ~RXDV_GATED_EN);
 	RTL_W8(tp, MaxTxPacketSize, EarlySize);
+=======
+	RTL_W32(MISC, RTL_R32(MISC) & ~RXDV_GATED_EN);
+	RTL_W8(MaxTxPacketSize, EarlySize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
 
 	/* Adjust EEE LED frequency */
+<<<<<<< HEAD
 	RTL_W8(tp, EEE_LED, RTL_R8(tp, EEE_LED) & ~0x07);
+=======
+	RTL_W8(EEE_LED, RTL_R8(EEE_LED) & ~0x07);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_w0w1_eri(tp, 0x2fc, ERIAR_MASK_0001, 0x01, 0x06, ERIAR_EXGMAC);
 	rtl_w0w1_eri(tp, 0x1b0, ERIAR_MASK_0011, 0x0000, 0x1000, ERIAR_EXGMAC);
@@ -5155,6 +7691,10 @@ static void rtl_hw_start_8168g(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8168g_1(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168g_1[] = {
 		{ 0x00, 0x0000,	0x0008 },
 		{ 0x0c, 0x37d0,	0x0820 },
@@ -5165,13 +7705,23 @@ static void rtl_hw_start_8168g_1(struct rtl8169_private *tp)
 	rtl_hw_start_8168g(tp);
 
 	/* disable aspm and clock request before access ephy */
+<<<<<<< HEAD
 	rtl_hw_aspm_clkreq_enable(tp, false);
 	rtl_ephy_init(tp, e_info_8168g_1, ARRAY_SIZE(e_info_8168g_1));
 	rtl_hw_aspm_clkreq_enable(tp, true);
+=======
+	RTL_W8(Config2, RTL_R8(Config2) & ~ClkReqEn);
+	RTL_W8(Config5, RTL_R8(Config5) & ~ASPM_en);
+	rtl_ephy_init(tp, e_info_8168g_1, ARRAY_SIZE(e_info_8168g_1));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168g_2(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168g_2[] = {
 		{ 0x00, 0x0000,	0x0008 },
 		{ 0x0c, 0x3df0,	0x0200 },
@@ -5182,13 +7732,22 @@ static void rtl_hw_start_8168g_2(struct rtl8169_private *tp)
 	rtl_hw_start_8168g(tp);
 
 	/* disable aspm and clock request before access ephy */
+<<<<<<< HEAD
 	RTL_W8(tp, Config2, RTL_R8(tp, Config2) & ~ClkReqEn);
 	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~ASPM_en);
+=======
+	RTL_W8(Config2, RTL_R8(Config2) & ~ClkReqEn);
+	RTL_W8(Config5, RTL_R8(Config5) & ~ASPM_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_ephy_init(tp, e_info_8168g_2, ARRAY_SIZE(e_info_8168g_2));
 }
 
 static void rtl_hw_start_8411_2(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8411_2[] = {
 		{ 0x00, 0x0000,	0x0008 },
 		{ 0x0c, 0x3df0,	0x0200 },
@@ -5200,6 +7759,7 @@ static void rtl_hw_start_8411_2(struct rtl8169_private *tp)
 	rtl_hw_start_8168g(tp);
 
 	/* disable aspm and clock request before access ephy */
+<<<<<<< HEAD
 	rtl_hw_aspm_clkreq_enable(tp, false);
 	rtl_ephy_init(tp, e_info_8411_2, ARRAY_SIZE(e_info_8411_2));
 
@@ -5340,10 +7900,20 @@ static void rtl_hw_start_8411_2(struct rtl8169_private *tp)
 	r8168_mac_ocp_write(tp, 0xFC36, 0x012D);
 
 	rtl_hw_aspm_clkreq_enable(tp, true);
+=======
+	RTL_W8(Config2, RTL_R8(Config2) & ~ClkReqEn);
+	RTL_W8(Config5, RTL_R8(Config5) & ~ASPM_en);
+	rtl_ephy_init(tp, e_info_8411_2, ARRAY_SIZE(e_info_8411_2));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rg_saw_cnt;
 	u32 data;
 	static const struct ephy_info e_info_8168h_1[] = {
@@ -5356,17 +7926,32 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
 	};
 
 	/* disable aspm and clock request before access ephy */
+<<<<<<< HEAD
 	rtl_hw_aspm_clkreq_enable(tp, false);
 	rtl_ephy_init(tp, e_info_8168h_1, ARRAY_SIZE(e_info_8168h_1));
 
+=======
+	RTL_W8(Config2, RTL_R8(Config2) & ~ClkReqEn);
+	RTL_W8(Config5, RTL_R8(Config5) & ~ASPM_en);
+	rtl_ephy_init(tp, e_info_8168h_1, ARRAY_SIZE(e_info_8168h_1));
+
+	RTL_W32(TxConfig, RTL_R32(TxConfig) | TXCFG_AUTO_FIFO);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_eri_write(tp, 0xc8, ERIAR_MASK_0101, 0x00080002, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xcc, ERIAR_MASK_0001, 0x38, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xd0, ERIAR_MASK_0001, 0x48, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xe8, ERIAR_MASK_1111, 0x00100006, ERIAR_EXGMAC);
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
+=======
+	rtl_csi_access_enable_1(tp);
+
+	rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_w0w1_eri(tp, 0xdc, ERIAR_MASK_0001, 0x00, 0x01, ERIAR_EXGMAC);
 	rtl_w0w1_eri(tp, 0xdc, ERIAR_MASK_0001, 0x01, 0x00, ERIAR_EXGMAC);
@@ -5377,19 +7962,33 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
 
 	rtl_eri_write(tp, 0x5f0, ERIAR_MASK_0011, 0x4f87, ERIAR_EXGMAC);
 
+<<<<<<< HEAD
 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) & ~RXDV_GATED_EN);
 	RTL_W8(tp, MaxTxPacketSize, EarlySize);
+=======
+	RTL_W32(MISC, RTL_R32(MISC) & ~RXDV_GATED_EN);
+	RTL_W8(MaxTxPacketSize, EarlySize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
 
 	/* Adjust EEE LED frequency */
+<<<<<<< HEAD
 	RTL_W8(tp, EEE_LED, RTL_R8(tp, EEE_LED) & ~0x07);
 
 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~PFM_EN);
 	RTL_W8(tp, MISC_1, RTL_R8(tp, MISC_1) & ~PFM_D3COLD_EN);
 
 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~TX_10M_PS_EN);
+=======
+	RTL_W8(EEE_LED, RTL_R8(EEE_LED) & ~0x07);
+
+	RTL_W8(DLLPR, RTL_R8(DLLPR) & ~PFM_EN);
+	RTL_W8(MISC_1, RTL_R8(MISC_1) & ~PFM_D3COLD_EN);
+
+	RTL_W8(DLLPR, RTL_R8(DLLPR) & ~TX_10M_PS_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_w0w1_eri(tp, 0x1b0, ERIAR_MASK_0011, 0x0000, 0x1000, ERIAR_EXGMAC);
 
@@ -5433,22 +8032,41 @@ static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
 	r8168_mac_ocp_write(tp, 0xe63e, 0x0000);
 	r8168_mac_ocp_write(tp, 0xc094, 0x0000);
 	r8168_mac_ocp_write(tp, 0xc09e, 0x0000);
+<<<<<<< HEAD
 
 	rtl_hw_aspm_clkreq_enable(tp, true);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168ep(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl8168ep_stop_cmac(tp);
 
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	rtl8168ep_stop_cmac(tp);
+
+	RTL_W32(TxConfig, RTL_R32(TxConfig) | TXCFG_AUTO_FIFO);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_eri_write(tp, 0xc8, ERIAR_MASK_0101, 0x00080002, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xcc, ERIAR_MASK_0001, 0x2f, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xd0, ERIAR_MASK_0001, 0x5f, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xe8, ERIAR_MASK_1111, 0x00100006, ERIAR_EXGMAC);
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
+=======
+	rtl_csi_access_enable_1(tp);
+
+	rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_w0w1_eri(tp, 0xdc, ERIAR_MASK_0001, 0x00, 0x01, ERIAR_EXGMAC);
 	rtl_w0w1_eri(tp, 0xdc, ERIAR_MASK_0001, 0x01, 0x00, ERIAR_EXGMAC);
@@ -5457,24 +8075,41 @@ static void rtl_hw_start_8168ep(struct rtl8169_private *tp)
 
 	rtl_eri_write(tp, 0x5f0, ERIAR_MASK_0011, 0x4f87, ERIAR_EXGMAC);
 
+<<<<<<< HEAD
 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) & ~RXDV_GATED_EN);
 	RTL_W8(tp, MaxTxPacketSize, EarlySize);
+=======
+	RTL_W32(MISC, RTL_R32(MISC) & ~RXDV_GATED_EN);
+	RTL_W8(MaxTxPacketSize, EarlySize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000, ERIAR_EXGMAC);
 
 	/* Adjust EEE LED frequency */
+<<<<<<< HEAD
 	RTL_W8(tp, EEE_LED, RTL_R8(tp, EEE_LED) & ~0x07);
 
 	rtl_w0w1_eri(tp, 0x2fc, ERIAR_MASK_0001, 0x01, 0x06, ERIAR_EXGMAC);
 
 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~TX_10M_PS_EN);
+=======
+	RTL_W8(EEE_LED, RTL_R8(EEE_LED) & ~0x07);
+
+	rtl_w0w1_eri(tp, 0x2fc, ERIAR_MASK_0001, 0x01, 0x06, ERIAR_EXGMAC);
+
+	RTL_W8(DLLPR, RTL_R8(DLLPR) & ~TX_10M_PS_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_pcie_state_l2l3_enable(tp, false);
 }
 
 static void rtl_hw_start_8168ep_1(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168ep_1[] = {
 		{ 0x00, 0xffff,	0x10ab },
 		{ 0x06, 0xffff,	0xf030 },
@@ -5484,16 +8119,28 @@ static void rtl_hw_start_8168ep_1(struct rtl8169_private *tp)
 	};
 
 	/* disable aspm and clock request before access ephy */
+<<<<<<< HEAD
 	rtl_hw_aspm_clkreq_enable(tp, false);
 	rtl_ephy_init(tp, e_info_8168ep_1, ARRAY_SIZE(e_info_8168ep_1));
 
 	rtl_hw_start_8168ep(tp);
 
 	rtl_hw_aspm_clkreq_enable(tp, true);
+=======
+	RTL_W8(Config2, RTL_R8(Config2) & ~ClkReqEn);
+	RTL_W8(Config5, RTL_R8(Config5) & ~ASPM_en);
+	rtl_ephy_init(tp, e_info_8168ep_1, ARRAY_SIZE(e_info_8168ep_1));
+
+	rtl_hw_start_8168ep(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168ep_2(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8168ep_2[] = {
 		{ 0x00, 0xffff,	0x10a3 },
 		{ 0x19, 0xffff,	0xfc00 },
@@ -5501,19 +8148,33 @@ static void rtl_hw_start_8168ep_2(struct rtl8169_private *tp)
 	};
 
 	/* disable aspm and clock request before access ephy */
+<<<<<<< HEAD
 	rtl_hw_aspm_clkreq_enable(tp, false);
+=======
+	RTL_W8(Config2, RTL_R8(Config2) & ~ClkReqEn);
+	RTL_W8(Config5, RTL_R8(Config5) & ~ASPM_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_ephy_init(tp, e_info_8168ep_2, ARRAY_SIZE(e_info_8168ep_2));
 
 	rtl_hw_start_8168ep(tp);
 
+<<<<<<< HEAD
 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~PFM_EN);
 	RTL_W8(tp, MISC_1, RTL_R8(tp, MISC_1) & ~PFM_D3COLD_EN);
 
 	rtl_hw_aspm_clkreq_enable(tp, true);
+=======
+	RTL_W8(DLLPR, RTL_R8(DLLPR) & ~PFM_EN);
+	RTL_W8(MISC_1, RTL_R8(MISC_1) & ~PFM_D3COLD_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8168ep_3(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 data;
 	static const struct ephy_info e_info_8168ep_3[] = {
 		{ 0x00, 0xffff,	0x10a3 },
@@ -5523,13 +8184,23 @@ static void rtl_hw_start_8168ep_3(struct rtl8169_private *tp)
 	};
 
 	/* disable aspm and clock request before access ephy */
+<<<<<<< HEAD
 	rtl_hw_aspm_clkreq_enable(tp, false);
+=======
+	RTL_W8(Config2, RTL_R8(Config2) & ~ClkReqEn);
+	RTL_W8(Config5, RTL_R8(Config5) & ~ASPM_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_ephy_init(tp, e_info_8168ep_3, ARRAY_SIZE(e_info_8168ep_3));
 
 	rtl_hw_start_8168ep(tp);
 
+<<<<<<< HEAD
 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~PFM_EN);
 	RTL_W8(tp, MISC_1, RTL_R8(tp, MISC_1) & ~PFM_D3COLD_EN);
+=======
+	RTL_W8(DLLPR, RTL_R8(DLLPR) & ~PFM_EN);
+	RTL_W8(MISC_1, RTL_R8(MISC_1) & ~PFM_D3COLD_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = r8168_mac_ocp_read(tp, 0xd3e2);
 	data &= 0xf000;
@@ -5543,6 +8214,7 @@ static void rtl_hw_start_8168ep_3(struct rtl8169_private *tp)
 	data = r8168_mac_ocp_read(tp, 0xe860);
 	data |= 0x0080;
 	r8168_mac_ocp_write(tp, 0xe860, data);
+<<<<<<< HEAD
 
 	rtl_hw_aspm_clkreq_enable(tp, true);
 }
@@ -5556,6 +8228,26 @@ static void rtl_hw_start_8168(struct rtl8169_private *tp)
 	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
 
 	RTL_W16(tp, IntrMitigate, 0x5100);
+=======
+}
+
+static void rtl_hw_start_8168(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	RTL_W8(Cfg9346, Cfg9346_Unlock);
+
+	RTL_W8(MaxTxPacketSize, TxPacketMax);
+
+	rtl_set_rx_max_size(ioaddr, rx_buf_sz);
+
+	tp->cp_cmd |= RTL_R16(CPlusCmd) | PktCntrDisable | INTT_1;
+
+	RTL_W16(CPlusCmd, tp->cp_cmd);
+
+	RTL_W16(IntrMitigate, 0x5151);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Work around for RxFIFO overflow. */
 	if (tp->mac_version == RTL_GIGA_MAC_VER_11) {
@@ -5563,6 +8255,15 @@ static void rtl_hw_start_8168(struct rtl8169_private *tp)
 		tp->event_slow &= ~RxOverflow;
 	}
 
+<<<<<<< HEAD
+=======
+	rtl_set_rx_tx_desc_registers(tp, ioaddr);
+
+	rtl_set_rx_tx_config_registers(tp);
+
+	RTL_R8(IntrMask);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_11:
 		rtl_hw_start_8168bb(tp);
@@ -5662,6 +8363,7 @@ static void rtl_hw_start_8168(struct rtl8169_private *tp)
 		break;
 
 	default:
+<<<<<<< HEAD
 		netif_err(tp, drv, tp->dev,
 			  "unknown chipset (mac_version = %d)\n",
 			  tp->mac_version);
@@ -5671,6 +8373,37 @@ static void rtl_hw_start_8168(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8102e_1(struct rtl8169_private *tp)
 {
+=======
+		printk(KERN_ERR PFX "%s: unknown chipset (mac_version = %d).\n",
+			dev->name, tp->mac_version);
+		break;
+	}
+
+	RTL_W8(Cfg9346, Cfg9346_Lock);
+
+	RTL_W8(ChipCmd, CmdTxEnb | CmdRxEnb);
+
+	rtl_set_rx_mode(dev);
+
+	RTL_W16(MultiIntr, RTL_R16(MultiIntr) & 0xf000);
+}
+
+#define R810X_CPCMD_QUIRK_MASK (\
+	EnableBist | \
+	Mac_dbgo_oe | \
+	Force_half_dup | \
+	Force_rxflow_en | \
+	Force_txflow_en | \
+	Cxpl_dbg_sel | \
+	ASF | \
+	PktCntrDisable | \
+	Mac_dbgo_sel)
+
+static void rtl_hw_start_8102e_1(struct rtl8169_private *tp)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8102e_1[] = {
 		{ 0x01,	0, 0x6e65 },
 		{ 0x02,	0, 0x091f },
@@ -5683,6 +8416,7 @@ static void rtl_hw_start_8102e_1(struct rtl8169_private *tp)
 	};
 	u8 cfg1;
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	RTL_W8(tp, DBG_REG, FIX_NAK_1);
@@ -5696,18 +8430,45 @@ static void rtl_hw_start_8102e_1(struct rtl8169_private *tp)
 	cfg1 = RTL_R8(tp, Config1);
 	if ((cfg1 & LEDS0) && (cfg1 & LEDS1))
 		RTL_W8(tp, Config1, cfg1 & ~LEDS0);
+=======
+	rtl_csi_access_enable_2(tp);
+
+	RTL_W8(DBG_REG, FIX_NAK_1);
+
+	rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	RTL_W8(Config1,
+	       LEDS1 | LEDS0 | Speed_down | MEMMAP | IOMAP | VPD | PMEnable);
+	RTL_W8(Config3, RTL_R8(Config3) & ~Beacon_en);
+
+	cfg1 = RTL_R8(Config1);
+	if ((cfg1 & LEDS0) && (cfg1 & LEDS1))
+		RTL_W8(Config1, cfg1 & ~LEDS0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_ephy_init(tp, e_info_8102e_1, ARRAY_SIZE(e_info_8102e_1));
 }
 
 static void rtl_hw_start_8102e_2(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
 
 	RTL_W8(tp, Config1, MEMMAP | IOMAP | VPD | PMEnable);
 	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+	rtl_csi_access_enable_2(tp);
+
+	rtl_tx_performance_tweak(pdev, 0x5 << MAX_READ_REQUEST_SHIFT);
+
+	RTL_W8(Config1, MEMMAP | IOMAP | VPD | PMEnable);
+	RTL_W8(Config3, RTL_R8(Config3) & ~Beacon_en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_start_8102e_3(struct rtl8169_private *tp)
@@ -5719,6 +8480,10 @@ static void rtl_hw_start_8102e_3(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8105e_1(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8105e_1[] = {
 		{ 0x07,	0, 0x4000 },
 		{ 0x19,	0, 0x0200 },
@@ -5731,6 +8496,7 @@ static void rtl_hw_start_8105e_1(struct rtl8169_private *tp)
 	};
 
 	/* Force LAN exit from ASPM if Rx/Tx are not idle */
+<<<<<<< HEAD
 	RTL_W32(tp, FuncEvent, RTL_R32(tp, FuncEvent) | 0x002800);
 
 	/* Disable Early Tally Counter */
@@ -5738,6 +8504,15 @@ static void rtl_hw_start_8105e_1(struct rtl8169_private *tp)
 
 	RTL_W8(tp, MCU, RTL_R8(tp, MCU) | EN_NDP | EN_OOB_RESET);
 	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) | PFM_EN);
+=======
+	RTL_W32(FuncEvent, RTL_R32(FuncEvent) | 0x002800);
+
+	/* Disable Early Tally Counter */
+	RTL_W32(FuncEvent, RTL_R32(FuncEvent) & ~0x010000);
+
+	RTL_W8(MCU, RTL_R8(MCU) | EN_NDP | EN_OOB_RESET);
+	RTL_W8(DLLPR, RTL_R8(DLLPR) | PFM_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_ephy_init(tp, e_info_8105e_1, ARRAY_SIZE(e_info_8105e_1));
 
@@ -5752,11 +8527,16 @@ static void rtl_hw_start_8105e_2(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8402(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static const struct ephy_info e_info_8402[] = {
 		{ 0x19,	0xffff, 0xff64 },
 		{ 0x1e,	0, 0x4000 }
 	};
 
+<<<<<<< HEAD
 	rtl_set_def_aspm_entry_latency(tp);
 
 	/* Force LAN exit from ASPM if Rx/Tx are not idle */
@@ -5767,6 +8547,19 @@ static void rtl_hw_start_8402(struct rtl8169_private *tp)
 	rtl_ephy_init(tp, e_info_8402, ARRAY_SIZE(e_info_8402));
 
 	rtl_tx_performance_tweak(tp, PCI_EXP_DEVCTL_READRQ_4096B);
+=======
+	rtl_csi_access_enable_2(tp);
+
+	/* Force LAN exit from ASPM if Rx/Tx are not idle */
+	RTL_W32(FuncEvent, RTL_R32(FuncEvent) | 0x002800);
+
+	RTL_W32(TxConfig, RTL_R32(TxConfig) | TXCFG_AUTO_FIFO);
+	RTL_W8(MCU, RTL_R8(MCU) & ~NOW_IS_OOB);
+
+	rtl_ephy_init(tp, e_info_8402, ARRAY_SIZE(e_info_8402));
+
+	rtl_tx_performance_tweak(tp->pci_dev, 0x5 << MAX_READ_REQUEST_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_eri_write(tp, 0xc8, ERIAR_MASK_1111, 0x00000002, ERIAR_EXGMAC);
 	rtl_eri_write(tp, 0xe8, ERIAR_MASK_1111, 0x00000006, ERIAR_EXGMAC);
@@ -5781,6 +8574,7 @@ static void rtl_hw_start_8402(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8106(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
 	rtl_hw_aspm_clkreq_enable(tp, false);
 
 	/* Force LAN exit from ASPM if Rx/Tx are not idle */
@@ -5796,11 +8590,32 @@ static void rtl_hw_start_8106(struct rtl8169_private *tp)
 
 static void rtl_hw_start_8101(struct rtl8169_private *tp)
 {
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	/* Force LAN exit from ASPM if Rx/Tx are not idle */
+	RTL_W32(FuncEvent, RTL_R32(FuncEvent) | 0x002800);
+
+	RTL_W32(MISC, (RTL_R32(MISC) | DISABLE_LAN_EN) & ~EARLY_TALLY_EN);
+	RTL_W8(MCU, RTL_R8(MCU) | EN_NDP | EN_OOB_RESET);
+	RTL_W8(DLLPR, RTL_R8(DLLPR) & ~PFM_EN);
+
+	rtl_pcie_state_l2l3_enable(tp, false);
+}
+
+static void rtl_hw_start_8101(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct pci_dev *pdev = tp->pci_dev;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tp->mac_version >= RTL_GIGA_MAC_VER_30)
 		tp->event_slow &= ~RxFIFOOver;
 
 	if (tp->mac_version == RTL_GIGA_MAC_VER_13 ||
 	    tp->mac_version == RTL_GIGA_MAC_VER_16)
+<<<<<<< HEAD
 		pcie_capability_set_word(tp->pci_dev, PCI_EXP_DEVCTL,
 					 PCI_EXP_DEVCTL_NOSNOOP_EN);
 
@@ -5808,6 +8623,23 @@ static void rtl_hw_start_8101(struct rtl8169_private *tp)
 
 	tp->cp_cmd &= CPCMD_QUIRK_MASK;
 	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
+=======
+		pcie_capability_set_word(pdev, PCI_EXP_DEVCTL,
+					 PCI_EXP_DEVCTL_NOSNOOP_EN);
+
+	RTL_W8(Cfg9346, Cfg9346_Unlock);
+
+	RTL_W8(MaxTxPacketSize, TxPacketMax);
+
+	rtl_set_rx_max_size(ioaddr, rx_buf_sz);
+
+	tp->cp_cmd &= ~R810X_CPCMD_QUIRK_MASK;
+	RTL_W16(CPlusCmd, tp->cp_cmd);
+
+	rtl_set_rx_tx_desc_registers(tp, ioaddr);
+
+	rtl_set_rx_tx_config_registers(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_07:
@@ -5845,7 +8677,21 @@ static void rtl_hw_start_8101(struct rtl8169_private *tp)
 		break;
 	}
 
+<<<<<<< HEAD
 	RTL_W16(tp, IntrMitigate, 0x0000);
+=======
+	RTL_W8(Cfg9346, Cfg9346_Lock);
+
+	RTL_W16(IntrMitigate, 0x0000);
+
+	RTL_W8(ChipCmd, CmdTxEnb | CmdRxEnb);
+
+	rtl_set_rx_mode(dev);
+
+	RTL_R8(IntrMask);
+
+	RTL_W16(MultiIntr, RTL_R16(MultiIntr) & 0xf000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rtl8169_change_mtu(struct net_device *dev, int new_mtu)
@@ -5872,22 +8718,42 @@ static inline void rtl8169_make_unusable_by_asic(struct RxDesc *desc)
 static void rtl8169_free_rx_databuff(struct rtl8169_private *tp,
 				     void **data_buff, struct RxDesc *desc)
 {
+<<<<<<< HEAD
 	dma_unmap_single(tp_to_dev(tp), le64_to_cpu(desc->addr),
 			 R8169_RX_BUF_SIZE, DMA_FROM_DEVICE);
+=======
+	dma_unmap_single(&tp->pci_dev->dev, le64_to_cpu(desc->addr), rx_buf_sz,
+			 DMA_FROM_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(*data_buff);
 	*data_buff = NULL;
 	rtl8169_make_unusable_by_asic(desc);
 }
 
+<<<<<<< HEAD
 static inline void rtl8169_mark_to_asic(struct RxDesc *desc)
+=======
+static inline void rtl8169_mark_to_asic(struct RxDesc *desc, u32 rx_buf_sz)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 eor = le32_to_cpu(desc->opts1) & RingEnd;
 
 	/* Force memory writes to complete before releasing descriptor */
 	dma_wmb();
 
+<<<<<<< HEAD
 	desc->opts1 = cpu_to_le32(DescOwn | eor | R8169_RX_BUF_SIZE);
+=======
+	desc->opts1 = cpu_to_le32(DescOwn | eor | rx_buf_sz);
+}
+
+static inline void rtl8169_map_to_asic(struct RxDesc *desc, dma_addr_t mapping,
+				       u32 rx_buf_sz)
+{
+	desc->addr = cpu_to_le64(mapping);
+	rtl8169_mark_to_asic(desc, rx_buf_sz);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void *rtl8169_align(void *data)
@@ -5900,21 +8766,37 @@ static struct sk_buff *rtl8169_alloc_rx_data(struct rtl8169_private *tp,
 {
 	void *data;
 	dma_addr_t mapping;
+<<<<<<< HEAD
 	struct device *d = tp_to_dev(tp);
 	int node = dev_to_node(d);
 
 	data = kmalloc_node(R8169_RX_BUF_SIZE, GFP_KERNEL, node);
+=======
+	struct device *d = &tp->pci_dev->dev;
+	struct net_device *dev = tp->dev;
+	int node = dev->dev.parent ? dev_to_node(dev->dev.parent) : -1;
+
+	data = kmalloc_node(rx_buf_sz, GFP_KERNEL, node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data)
 		return NULL;
 
 	if (rtl8169_align(data) != data) {
 		kfree(data);
+<<<<<<< HEAD
 		data = kmalloc_node(R8169_RX_BUF_SIZE + 15, GFP_KERNEL, node);
+=======
+		data = kmalloc_node(rx_buf_sz + 15, GFP_KERNEL, node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!data)
 			return NULL;
 	}
 
+<<<<<<< HEAD
 	mapping = dma_map_single(d, rtl8169_align(data), R8169_RX_BUF_SIZE,
+=======
+	mapping = dma_map_single(d, rtl8169_align(data), rx_buf_sz,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 DMA_FROM_DEVICE);
 	if (unlikely(dma_mapping_error(d, mapping))) {
 		if (net_ratelimit())
@@ -5922,8 +8804,12 @@ static struct sk_buff *rtl8169_alloc_rx_data(struct rtl8169_private *tp,
 		goto err_out;
 	}
 
+<<<<<<< HEAD
 	desc->addr = cpu_to_le64(mapping);
 	rtl8169_mark_to_asic(desc);
+=======
+	rtl8169_map_to_asic(desc, mapping, rx_buf_sz);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return data;
 
 err_out:
@@ -5955,6 +8841,12 @@ static int rtl8169_rx_fill(struct rtl8169_private *tp)
 	for (i = 0; i < NUM_RX_DESC; i++) {
 		void *data;
 
+<<<<<<< HEAD
+=======
+		if (tp->Rx_databuff[i])
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		data = rtl8169_alloc_rx_data(tp, tp->RxDescArray + i);
 		if (!data) {
 			rtl8169_make_unusable_by_asic(tp->RxDescArray + i);
@@ -5971,12 +8863,23 @@ err_out:
 	return -ENOMEM;
 }
 
+<<<<<<< HEAD
 static int rtl8169_init_ring(struct rtl8169_private *tp)
 {
 	rtl8169_init_ring_indexes(tp);
 
 	memset(tp->tx_skb, 0, sizeof(tp->tx_skb));
 	memset(tp->Rx_databuff, 0, sizeof(tp->Rx_databuff));
+=======
+static int rtl8169_init_ring(struct net_device *dev)
+{
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	rtl8169_init_ring_indexes(tp);
+
+	memset(tp->tx_skb, 0x0, NUM_TX_DESC * sizeof(struct ring_info));
+	memset(tp->Rx_databuff, 0x0, NUM_RX_DESC * sizeof(void *));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rtl8169_rx_fill(tp);
 }
@@ -6007,7 +8910,11 @@ static void rtl8169_tx_clear_range(struct rtl8169_private *tp, u32 start,
 		if (len) {
 			struct sk_buff *skb = tx_skb->skb;
 
+<<<<<<< HEAD
 			rtl8169_unmap_tx_skb(tp_to_dev(tp), tx_skb,
+=======
+			rtl8169_unmap_tx_skb(&tp->pci_dev->dev, tx_skb,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     tp->TxDescArray + entry);
 			if (skb) {
 				dev_consume_skb_any(skb);
@@ -6035,14 +8942,24 @@ static void rtl_reset_work(struct rtl8169_private *tp)
 	rtl8169_hw_reset(tp);
 
 	for (i = 0; i < NUM_RX_DESC; i++)
+<<<<<<< HEAD
 		rtl8169_mark_to_asic(tp->RxDescArray + i);
+=======
+		rtl8169_mark_to_asic(tp->RxDescArray + i, rx_buf_sz);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl8169_tx_clear(tp);
 	rtl8169_init_ring_indexes(tp);
 
 	napi_enable(&tp->napi);
+<<<<<<< HEAD
 	rtl_hw_start(tp);
 	netif_wake_queue(dev);
+=======
+	rtl_hw_start(dev);
+	netif_wake_queue(dev);
+	rtl8169_check_link_status(dev, tp, tp->mmio_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl8169_tx_timeout(struct net_device *dev)
@@ -6058,7 +8975,11 @@ static int rtl8169_xmit_frags(struct rtl8169_private *tp, struct sk_buff *skb,
 	struct skb_shared_info *info = skb_shinfo(skb);
 	unsigned int cur_frag, entry;
 	struct TxDesc *uninitialized_var(txd);
+<<<<<<< HEAD
 	struct device *d = tp_to_dev(tp);
+=======
+	struct device *d = &tp->pci_dev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	entry = tp->cur_tx;
 	for (cur_frag = 0; cur_frag < info->nr_frags; cur_frag++) {
@@ -6172,6 +9093,21 @@ static int msdn_giant_send_check(struct sk_buff *skb)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static inline __be16 get_protocol(struct sk_buff *skb)
+{
+	__be16 protocol;
+
+	if (skb->protocol == htons(ETH_P_8021Q))
+		protocol = vlan_eth_hdr(skb)->h_vlan_encapsulated_proto;
+	else
+		protocol = skb->protocol;
+
+	return protocol;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool rtl8169_tso_csum_v1(struct rtl8169_private *tp,
 				struct sk_buff *skb, u32 *opts)
 {
@@ -6208,7 +9144,11 @@ static bool rtl8169_tso_csum_v2(struct rtl8169_private *tp,
 			return false;
 		}
 
+<<<<<<< HEAD
 		switch (vlan_get_protocol(skb)) {
+=======
+		switch (get_protocol(skb)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case htons(ETH_P_IP):
 			opts[0] |= TD1_GTSENV4;
 			break;
@@ -6240,7 +9180,11 @@ static bool rtl8169_tso_csum_v2(struct rtl8169_private *tp,
 			return false;
 		}
 
+<<<<<<< HEAD
 		switch (vlan_get_protocol(skb)) {
+=======
+		switch (get_protocol(skb)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case htons(ETH_P_IP):
 			opts[1] |= TD1_IPv4_CS;
 			ip_protocol = ip_hdr(skb)->protocol;
@@ -6278,7 +9222,12 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
 	struct rtl8169_private *tp = netdev_priv(dev);
 	unsigned int entry = tp->cur_tx % NUM_TX_DESC;
 	struct TxDesc *txd = tp->TxDescArray + entry;
+<<<<<<< HEAD
 	struct device *d = tp_to_dev(tp);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+	struct device *d = &tp->pci_dev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t mapping;
 	u32 status, len;
 	u32 opts[2];
@@ -6337,7 +9286,11 @@ static netdev_tx_t rtl8169_start_xmit(struct sk_buff *skb,
 
 	tp->cur_tx += frags + 1;
 
+<<<<<<< HEAD
 	RTL_W8(tp, TxPoll, NPQ);
+=======
+	RTL_W8(TxPoll, NPQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmiowb();
 
@@ -6408,9 +9361,17 @@ static void rtl8169_pcierr_interrupt(struct net_device *dev)
 
 	/* The infamous DAC f*ckup only happens at boot time */
 	if ((tp->cp_cmd & PCIDAC) && !tp->cur_rx) {
+<<<<<<< HEAD
 		netif_info(tp, intr, dev, "disabling PCI DAC\n");
 		tp->cp_cmd &= ~PCIDAC;
 		RTL_W16(tp, CPlusCmd, tp->cp_cmd);
+=======
+		void __iomem *ioaddr = tp->mmio_addr;
+
+		netif_info(tp, intr, dev, "disabling PCI DAC\n");
+		tp->cp_cmd &= ~PCIDAC;
+		RTL_W16(CPlusCmd, tp->cp_cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->features &= ~NETIF_F_HIGHDMA;
 	}
 
@@ -6442,7 +9403,11 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp)
 		 */
 		dma_rmb();
 
+<<<<<<< HEAD
 		rtl8169_unmap_tx_skb(tp_to_dev(tp), tx_skb,
+=======
+		rtl8169_unmap_tx_skb(&tp->pci_dev->dev, tx_skb,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     tp->TxDescArray + entry);
 		if (status & LastFrag) {
 			u64_stats_update_begin(&tp->tx_stats.syncp);
@@ -6476,8 +9441,16 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp)
 		 * of start_xmit activity is detected (if it is not detected,
 		 * it is slow enough). -- FR
 		 */
+<<<<<<< HEAD
 		if (tp->cur_tx != dirty_tx)
 			RTL_W8(tp, TxPoll, NPQ);
+=======
+		if (tp->cur_tx != dirty_tx) {
+			void __iomem *ioaddr = tp->mmio_addr;
+
+			RTL_W8(TxPoll, NPQ);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -6503,14 +9476,22 @@ static struct sk_buff *rtl8169_try_rx_copy(void *data,
 					   dma_addr_t addr)
 {
 	struct sk_buff *skb;
+<<<<<<< HEAD
 	struct device *d = tp_to_dev(tp);
+=======
+	struct device *d = &tp->pci_dev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = rtl8169_align(data);
 	dma_sync_single_for_cpu(d, addr, pkt_size, DMA_FROM_DEVICE);
 	prefetch(data);
 	skb = napi_alloc_skb(&tp->napi, pkt_size);
 	if (skb)
+<<<<<<< HEAD
 		skb_copy_to_linear_data(skb, data, pkt_size);
+=======
+		memcpy(skb->data, data, pkt_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_sync_single_for_device(d, addr, pkt_size, DMA_FROM_DEVICE);
 
 	return skb;
@@ -6528,7 +9509,11 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, u32 budget
 		struct RxDesc *desc = tp->RxDescArray + entry;
 		u32 status;
 
+<<<<<<< HEAD
 		status = le32_to_cpu(desc->opts1);
+=======
+		status = le32_to_cpu(desc->opts1) & tp->opts1_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (status & DescOwn)
 			break;
 
@@ -6546,6 +9531,7 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, u32 budget
 				dev->stats.rx_length_errors++;
 			if (status & RxCRC)
 				dev->stats.rx_crc_errors++;
+<<<<<<< HEAD
 			/* RxFOVF is a reserved bit on later chip versions */
 			if (tp->mac_version == RTL_GIGA_MAC_VER_01 &&
 			    status & RxFOVF) {
@@ -6556,6 +9542,16 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, u32 budget
 				   dev->features & NETIF_F_RXALL) {
 				goto process_pkt;
 			}
+=======
+			if (status & RxFOVF) {
+				rtl_schedule_task(tp, RTL_FLAG_TASK_RESET_PENDING);
+				dev->stats.rx_fifo_errors++;
+			}
+			if ((status & (RxRUNT | RxCRC)) &&
+			    !(status & (RxRWT | RxFOVF)) &&
+			    (dev->features & NETIF_F_RXALL))
+				goto process_pkt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			struct sk_buff *skb;
 			dma_addr_t addr;
@@ -6604,7 +9600,11 @@ process_pkt:
 		}
 release_descriptor:
 		desc->opts2 = 0;
+<<<<<<< HEAD
 		rtl8169_mark_to_asic(desc);
+=======
+		rtl8169_mark_to_asic(desc, rx_buf_sz);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	count = cur_rx - tp->cur_rx;
@@ -6615,6 +9615,7 @@ release_descriptor:
 
 static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
 {
+<<<<<<< HEAD
 	struct rtl8169_private *tp = dev_instance;
 	u16 status = rtl_get_events(tp);
 
@@ -6625,6 +9626,24 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
 	napi_schedule_irqoff(&tp->napi);
 
 	return IRQ_HANDLED;
+=======
+	struct net_device *dev = dev_instance;
+	struct rtl8169_private *tp = netdev_priv(dev);
+	int handled = 0;
+	u16 status;
+
+	status = rtl_get_events(tp);
+	if (status && status != 0xffff) {
+		status &= RTL_EVENT_NAPI | tp->event_slow;
+		if (status) {
+			handled = 1;
+
+			rtl_irq_disable(tp);
+			napi_schedule(&tp->napi);
+		}
+	}
+	return IRQ_RETVAL(handled);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -6654,7 +9673,11 @@ static void rtl_slow_event_work(struct rtl8169_private *tp)
 		rtl8169_pcierr_interrupt(dev);
 
 	if (status & LinkChg)
+<<<<<<< HEAD
 		phy_mac_interrupt(dev->phydev);
+=======
+		__rtl8169_check_link_status(dev, tp, tp->mmio_addr, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_irq_enable_all(tp);
 }
@@ -6668,6 +9691,10 @@ static void rtl_task(struct work_struct *work)
 		/* XXX - keep rtl_slow_event_work() as first element. */
 		{ RTL_FLAG_TASK_SLOW_PENDING,	rtl_slow_event_work },
 		{ RTL_FLAG_TASK_RESET_PENDING,	rtl_reset_work },
+<<<<<<< HEAD
+=======
+		{ RTL_FLAG_TASK_PHY_PENDING,	rtl_phy_work }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	struct rtl8169_private *tp =
 		container_of(work, struct rtl8169_private, wk.work);
@@ -6723,13 +9750,18 @@ static int rtl8169_poll(struct napi_struct *napi, int budget)
 	return work_done;
 }
 
+<<<<<<< HEAD
 static void rtl8169_rx_missed(struct net_device *dev)
+=======
+static void rtl8169_rx_missed(struct net_device *dev, void __iomem *ioaddr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
 
 	if (tp->mac_version > RTL_GIGA_MAC_VER_06)
 		return;
 
+<<<<<<< HEAD
 	dev->stats.rx_missed_errors += RTL_R32(tp, RxMissed) & 0xffffff;
 	RTL_W32(tp, RxMissed, 0);
 }
@@ -6772,13 +9804,23 @@ static int r8169_phy_connect(struct rtl8169_private *tp)
 	phy_attached_info(phydev);
 
 	return 0;
+=======
+	dev->stats.rx_missed_errors += (RTL_R32(RxMissed) & 0xffffff);
+	RTL_W32(RxMissed, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl8169_down(struct net_device *dev)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
 
 	phy_stop(dev->phydev);
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	del_timer_sync(&tp->timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	napi_disable(&tp->napi);
 	netif_stop_queue(dev);
@@ -6789,7 +9831,11 @@ static void rtl8169_down(struct net_device *dev)
 	 * as netif_running is not true (rtl8169_interrupt, rtl8169_reset_task)
 	 * and napi is disabled (rtl8169_poll).
 	 */
+<<<<<<< HEAD
 	rtl8169_rx_missed(dev);
+=======
+	rtl8169_rx_missed(dev, ioaddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Give a racing hard_start_xmit a few cycles to complete. */
 	synchronize_sched();
@@ -6809,7 +9855,11 @@ static int rtl8169_close(struct net_device *dev)
 	pm_runtime_get_sync(&pdev->dev);
 
 	/* Update counters before going down */
+<<<<<<< HEAD
 	rtl8169_update_counters(tp);
+=======
+	rtl8169_update_counters(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_lock_work(tp);
 	/* Clear all task flags */
@@ -6820,9 +9870,13 @@ static int rtl8169_close(struct net_device *dev)
 
 	cancel_work_sync(&tp->wk.work);
 
+<<<<<<< HEAD
 	phy_disconnect(dev->phydev);
 
 	pci_free_irq(pdev, 0, tp);
+=======
+	free_irq(pdev->irq, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dma_free_coherent(&pdev->dev, R8169_RX_RING_BYTES, tp->RxDescArray,
 			  tp->RxPhyAddr);
@@ -6841,13 +9895,21 @@ static void rtl8169_netpoll(struct net_device *dev)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
 
+<<<<<<< HEAD
 	rtl8169_interrupt(pci_irq_vector(tp->pci_dev, 0), tp);
+=======
+	rtl8169_interrupt(tp->pci_dev->irq, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
 static int rtl_open(struct net_device *dev)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev = tp->pci_dev;
 	int retval = -ENOMEM;
 
@@ -6867,7 +9929,11 @@ static int rtl_open(struct net_device *dev)
 	if (!tp->RxDescArray)
 		goto err_free_tx_0;
 
+<<<<<<< HEAD
 	retval = rtl8169_init_ring(tp);
+=======
+	retval = rtl8169_init_ring(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval < 0)
 		goto err_free_rx_1;
 
@@ -6877,6 +9943,7 @@ static int rtl_open(struct net_device *dev)
 
 	rtl_request_firmware(tp);
 
+<<<<<<< HEAD
 	retval = pci_request_irq(pdev, 0, rtl8169_interrupt, NULL, tp,
 				 dev->name);
 	if (retval < 0)
@@ -6886,6 +9953,14 @@ static int rtl_open(struct net_device *dev)
 	if (retval)
 		goto err_free_irq;
 
+=======
+	retval = request_irq(pdev->irq, rtl8169_interrupt,
+			     (tp->features & RTL_FEATURE_MSI) ? 0 : IRQF_SHARED,
+			     dev->name, dev);
+	if (retval < 0)
+		goto err_release_fw_2;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_lock_work(tp);
 
 	set_bit(RTL_FLAG_TASK_ENABLED, tp->wk.flags);
@@ -6894,6 +9969,7 @@ static int rtl_open(struct net_device *dev)
 
 	rtl8169_init_phy(dev, tp);
 
+<<<<<<< HEAD
 	rtl_pll_power_up(tp);
 
 	rtl_hw_start(tp);
@@ -6902,16 +9978,37 @@ static int rtl_open(struct net_device *dev)
 		netif_warn(tp, hw, dev, "counter reset/update failed\n");
 
 	phy_start(dev->phydev);
+=======
+	__rtl8169_set_features(dev, dev->features);
+
+	rtl_pll_power_up(tp);
+
+	rtl_hw_start(dev);
+
+	if (!rtl8169_init_counter_offsets(dev))
+		netif_warn(tp, hw, dev, "counter reset/update failed\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_start_queue(dev);
 
 	rtl_unlock_work(tp);
 
+<<<<<<< HEAD
 	pm_runtime_put_sync(&pdev->dev);
 out:
 	return retval;
 
 err_free_irq:
 	pci_free_irq(pdev, 0, tp);
+=======
+	tp->saved_wolopts = 0;
+	pm_runtime_put_noidle(&pdev->dev);
+
+	rtl8169_check_link_status(dev, tp, ioaddr);
+out:
+	return retval;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_release_fw_2:
 	rtl_release_firmware(tp);
 	rtl8169_rx_clear(tp);
@@ -6932,6 +10029,10 @@ static void
 rtl8169_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
 {
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dev *pdev = tp->pci_dev;
 	struct rtl8169_counters *counters = tp->counters;
 	unsigned int start;
@@ -6939,7 +10040,11 @@ rtl8169_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
 	pm_runtime_get_noresume(&pdev->dev);
 
 	if (netif_running(dev) && pm_runtime_active(&pdev->dev))
+<<<<<<< HEAD
 		rtl8169_rx_missed(dev);
+=======
+		rtl8169_rx_missed(dev, ioaddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		start = u64_stats_fetch_begin_irq(&tp->rx_stats.syncp);
@@ -6967,7 +10072,11 @@ rtl8169_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
 	 * from tally counters.
 	 */
 	if (pm_runtime_active(&pdev->dev))
+<<<<<<< HEAD
 		rtl8169_update_counters(tp);
+=======
+		rtl8169_update_counters(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Subtract values fetched during initalization.
@@ -6990,7 +10099,10 @@ static void rtl8169_net_suspend(struct net_device *dev)
 	if (!netif_running(dev))
 		return;
 
+<<<<<<< HEAD
 	phy_stop(dev->phydev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	netif_device_detach(dev);
 	netif_stop_queue(dev);
 
@@ -7010,10 +10122,15 @@ static int rtl8169_suspend(struct device *device)
 {
 	struct pci_dev *pdev = to_pci_dev(device);
 	struct net_device *dev = pci_get_drvdata(pdev);
+<<<<<<< HEAD
 	struct rtl8169_private *tp = netdev_priv(dev);
 
 	rtl8169_net_suspend(dev);
 	clk_disable_unprepare(tp->clk);
+=======
+
+	rtl8169_net_suspend(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -7025,9 +10142,12 @@ static void __rtl8169_resume(struct net_device *dev)
 	netif_device_attach(dev);
 
 	rtl_pll_power_up(tp);
+<<<<<<< HEAD
 	rtl8169_init_phy(dev, tp);
 
 	phy_start(tp->dev->phydev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_lock_work(tp);
 	napi_enable(&tp->napi);
@@ -7043,7 +10163,11 @@ static int rtl8169_resume(struct device *device)
 	struct net_device *dev = pci_get_drvdata(pdev);
 	struct rtl8169_private *tp = netdev_priv(dev);
 
+<<<<<<< HEAD
 	clk_prepare_enable(tp->clk);
+=======
+	rtl8169_init_phy(dev, tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (netif_running(dev))
 		__rtl8169_resume(dev);
@@ -7061,14 +10185,23 @@ static int rtl8169_runtime_suspend(struct device *device)
 		return 0;
 
 	rtl_lock_work(tp);
+<<<<<<< HEAD
+=======
+	tp->saved_wolopts = __rtl8169_get_wol(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__rtl8169_set_wol(tp, WAKE_ANY);
 	rtl_unlock_work(tp);
 
 	rtl8169_net_suspend(dev);
 
 	/* Update counters before going runtime suspend */
+<<<<<<< HEAD
 	rtl8169_rx_missed(dev);
 	rtl8169_update_counters(tp);
+=======
+	rtl8169_rx_missed(dev, tp->mmio_addr);
+	rtl8169_update_counters(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -7085,8 +10218,16 @@ static int rtl8169_runtime_resume(struct device *device)
 
 	rtl_lock_work(tp);
 	__rtl8169_set_wol(tp, tp->saved_wolopts);
+<<<<<<< HEAD
 	rtl_unlock_work(tp);
 
+=======
+	tp->saved_wolopts = 0;
+	rtl_unlock_work(tp);
+
+	rtl8169_init_phy(dev, tp);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__rtl8169_resume(dev);
 
 	return 0;
@@ -7096,11 +10237,17 @@ static int rtl8169_runtime_idle(struct device *device)
 {
 	struct pci_dev *pdev = to_pci_dev(device);
 	struct net_device *dev = pci_get_drvdata(pdev);
+<<<<<<< HEAD
 
 	if (!netif_running(dev) || !netif_carrier_ok(dev))
 		pm_schedule_suspend(device, 10000);
 
 	return -EBUSY;
+=======
+	struct rtl8169_private *tp = netdev_priv(dev);
+
+	return tp->TxDescArray ? -EBUSY : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct dev_pm_ops rtl8169_pm_ops = {
@@ -7125,6 +10272,11 @@ static const struct dev_pm_ops rtl8169_pm_ops = {
 
 static void rtl_wol_shutdown_quirk(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* WoL fails with 8168b when the receiver is disabled. */
 	switch (tp->mac_version) {
 	case RTL_GIGA_MAC_VER_11:
@@ -7132,9 +10284,15 @@ static void rtl_wol_shutdown_quirk(struct rtl8169_private *tp)
 	case RTL_GIGA_MAC_VER_17:
 		pci_clear_master(tp->pci_dev);
 
+<<<<<<< HEAD
 		RTL_W8(tp, ChipCmd, CmdRxEnb);
 		/* PCI commit */
 		RTL_R8(tp, ChipCmd);
+=======
+		RTL_W8(ChipCmd, CmdRxEnb);
+		/* PCI commit */
+		RTL_R8(ChipCmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
@@ -7145,6 +10303,12 @@ static void rtl_shutdown(struct pci_dev *pdev)
 {
 	struct net_device *dev = pci_get_drvdata(pdev);
 	struct rtl8169_private *tp = netdev_priv(dev);
+<<<<<<< HEAD
+=======
+	struct device *d = &pdev->dev;
+
+	pm_runtime_get_sync(d);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl8169_net_suspend(dev);
 
@@ -7154,7 +10318,11 @@ static void rtl_shutdown(struct pci_dev *pdev)
 	rtl8169_hw_reset(tp);
 
 	if (system_state == SYSTEM_POWER_OFF) {
+<<<<<<< HEAD
 		if (tp->saved_wolopts) {
+=======
+		if (__rtl8169_get_wol(tp) & WAKE_ANY) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rtl_wol_suspend_quirk(tp);
 			rtl_wol_shutdown_quirk(tp);
 		}
@@ -7162,6 +10330,11 @@ static void rtl_shutdown(struct pci_dev *pdev)
 		pci_wake_from_d3(pdev, true);
 		pci_set_power_state(pdev, PCI_D3hot);
 	}
+<<<<<<< HEAD
+=======
+
+	pm_runtime_put_noidle(d);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_remove_one(struct pci_dev *pdev)
@@ -7169,13 +10342,31 @@ static void rtl_remove_one(struct pci_dev *pdev)
 	struct net_device *dev = pci_get_drvdata(pdev);
 	struct rtl8169_private *tp = netdev_priv(dev);
 
+<<<<<<< HEAD
 	if (r8168_check_dash(tp))
 		rtl8168_driver_stop(tp);
+=======
+	if ((tp->mac_version == RTL_GIGA_MAC_VER_27 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_28 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_31 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_49 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_50 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_51) &&
+	    r8168_check_dash(tp)) {
+		rtl8168_driver_stop(tp);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_napi_del(&tp->napi);
 
 	unregister_netdev(dev);
+<<<<<<< HEAD
 	mdiobus_unregister(tp->mii_bus);
+=======
+
+	dma_free_coherent(&tp->pci_dev->dev, sizeof(*tp->counters),
+			  tp->counters, tp->counters_phys_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_release_firmware(tp);
 
@@ -7184,6 +10375,12 @@ static void rtl_remove_one(struct pci_dev *pdev)
 
 	/* restore original MAC address */
 	rtl_rar_set(tp, dev->perm_addr);
+<<<<<<< HEAD
+=======
+
+	rtl_disable_msi(pdev, tp);
+	rtl8169_release_board(pdev, dev, tp->mmio_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct net_device_ops rtl_netdev_ops = {
@@ -7206,35 +10403,66 @@ static const struct net_device_ops rtl_netdev_ops = {
 };
 
 static const struct rtl_cfg_info {
+<<<<<<< HEAD
 	void (*hw_start)(struct rtl8169_private *tp);
 	u16 event_slow;
 	unsigned int has_gmii:1;
 	const struct rtl_coalesce_info *coalesce_info;
+=======
+	void (*hw_start)(struct net_device *);
+	unsigned int region;
+	unsigned int align;
+	u16 event_slow;
+	unsigned features;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 default_ver;
 } rtl_cfg_infos [] = {
 	[RTL_CFG_0] = {
 		.hw_start	= rtl_hw_start_8169,
+<<<<<<< HEAD
 		.event_slow	= SYSErr | LinkChg | RxOverflow | RxFIFOOver,
 		.has_gmii	= 1,
 		.coalesce_info	= rtl_coalesce_info_8169,
+=======
+		.region		= 1,
+		.align		= 0,
+		.event_slow	= SYSErr | LinkChg | RxOverflow | RxFIFOOver,
+		.features	= RTL_FEATURE_GMII,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.default_ver	= RTL_GIGA_MAC_VER_01,
 	},
 	[RTL_CFG_1] = {
 		.hw_start	= rtl_hw_start_8168,
+<<<<<<< HEAD
 		.event_slow	= SYSErr | LinkChg | RxOverflow,
 		.has_gmii	= 1,
 		.coalesce_info	= rtl_coalesce_info_8168_8136,
+=======
+		.region		= 2,
+		.align		= 8,
+		.event_slow	= SYSErr | LinkChg | RxOverflow,
+		.features	= RTL_FEATURE_GMII | RTL_FEATURE_MSI,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.default_ver	= RTL_GIGA_MAC_VER_11,
 	},
 	[RTL_CFG_2] = {
 		.hw_start	= rtl_hw_start_8101,
+<<<<<<< HEAD
 		.event_slow	= SYSErr | LinkChg | RxOverflow | RxFIFOOver |
 				  PCSTimeout,
 		.coalesce_info	= rtl_coalesce_info_8168_8136,
+=======
+		.region		= 2,
+		.align		= 8,
+		.event_slow	= SYSErr | LinkChg | RxOverflow | RxFIFOOver |
+				  PCSTimeout,
+		.features	= RTL_FEATURE_MSI,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.default_ver	= RTL_GIGA_MAC_VER_13,
 	}
 };
 
+<<<<<<< HEAD
 static int rtl_alloc_irq(struct rtl8169_private *tp)
 {
 	unsigned int flags;
@@ -7254,15 +10482,44 @@ static int rtl_alloc_irq(struct rtl8169_private *tp)
 	}
 
 	return pci_alloc_irq_vectors(tp->pci_dev, 1, 1, flags);
+=======
+/* Cfg9346_Unlock assumed. */
+static unsigned rtl_try_msi(struct rtl8169_private *tp,
+			    const struct rtl_cfg_info *cfg)
+{
+	void __iomem *ioaddr = tp->mmio_addr;
+	unsigned msi = 0;
+	u8 cfg2;
+
+	cfg2 = RTL_R8(Config2) & ~MSIEnable;
+	if (cfg->features & RTL_FEATURE_MSI) {
+		if (pci_enable_msi(tp->pci_dev)) {
+			netif_info(tp, hw, tp->dev, "no MSI. Back to INTx.\n");
+		} else {
+			cfg2 |= MSIEnable;
+			msi = RTL_FEATURE_MSI;
+		}
+	}
+	if (tp->mac_version <= RTL_GIGA_MAC_VER_06)
+		RTL_W8(Config2, cfg2);
+	return msi;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 DECLARE_RTL_COND(rtl_link_list_ready_cond)
 {
+<<<<<<< HEAD
 	return RTL_R8(tp, MCU) & LINK_LIST_RDY;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return RTL_R8(MCU) & LINK_LIST_RDY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 DECLARE_RTL_COND(rtl_rxtx_empty_cond)
 {
+<<<<<<< HEAD
 	return (RTL_R8(tp, MCU) & RXTX_EMPTY) == RXTX_EMPTY;
 }
 
@@ -7326,15 +10583,28 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
 	tp->mii_bus = new_bus;
 
 	return 0;
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+
+	return (RTL_R8(MCU) & RXTX_EMPTY) == RXTX_EMPTY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void rtl_hw_init_8168g(struct rtl8169_private *tp)
 {
+<<<<<<< HEAD
+=======
+	void __iomem *ioaddr = tp->mmio_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 data;
 
 	tp->ocp_base = OCP_STD_PHY_BASE;
 
+<<<<<<< HEAD
 	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | RXDV_GATED_EN);
+=======
+	RTL_W32(MISC, RTL_R32(MISC) | RXDV_GATED_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rtl_udelay_loop_wait_high(tp, &rtl_txcfg_empty_cond, 100, 42))
 		return;
@@ -7342,9 +10612,15 @@ static void rtl_hw_init_8168g(struct rtl8169_private *tp)
 	if (!rtl_udelay_loop_wait_high(tp, &rtl_rxtx_empty_cond, 100, 42))
 		return;
 
+<<<<<<< HEAD
 	RTL_W8(tp, ChipCmd, RTL_R8(tp, ChipCmd) & ~(CmdTxEnb | CmdRxEnb));
 	msleep(1);
 	RTL_W8(tp, MCU, RTL_R8(tp, MCU) & ~NOW_IS_OOB);
+=======
+	RTL_W8(ChipCmd, RTL_R8(ChipCmd) & ~(CmdTxEnb | CmdRxEnb));
+	msleep(1);
+	RTL_W8(MCU, RTL_R8(MCU) & ~NOW_IS_OOB);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	data = r8168_mac_ocp_read(tp, 0xe8de);
 	data &= ~(1 << 14);
@@ -7370,10 +10646,27 @@ static void rtl_hw_init_8168ep(struct rtl8169_private *tp)
 static void rtl_hw_initialize(struct rtl8169_private *tp)
 {
 	switch (tp->mac_version) {
+<<<<<<< HEAD
 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_48:
 		rtl_hw_init_8168g(tp);
 		break;
 	case RTL_GIGA_MAC_VER_49 ... RTL_GIGA_MAC_VER_51:
+=======
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+		rtl_hw_init_8168g(tp);
+		break;
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rtl_hw_init_8168ep(tp);
 		break;
 	default:
@@ -7381,6 +10674,7 @@ static void rtl_hw_initialize(struct rtl8169_private *tp)
 	}
 }
 
+<<<<<<< HEAD
 /* Versions RTL8102e and from RTL8168c onwards support csum_v2 */
 static bool rtl_chip_supports_csum_v2(struct rtl8169_private *tp)
 {
@@ -7432,6 +10726,29 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	dev = devm_alloc_etherdev(&pdev->dev, sizeof (*tp));
 	if (!dev)
 		return -ENOMEM;
+=======
+static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+{
+	const struct rtl_cfg_info *cfg = rtl_cfg_infos + ent->driver_data;
+	const unsigned int region = cfg->region;
+	struct rtl8169_private *tp;
+	struct mii_if_info *mii;
+	struct net_device *dev;
+	void __iomem *ioaddr;
+	int chipset, i;
+	int rc;
+
+	if (netif_msg_drv(&debug)) {
+		printk(KERN_INFO "%s Gigabit Ethernet driver %s loaded\n",
+		       MODULENAME, RTL8169_VERSION);
+	}
+
+	dev = alloc_etherdev(sizeof (*tp));
+	if (!dev) {
+		rc = -ENOMEM;
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	SET_NETDEV_DEV(dev, &pdev->dev);
 	dev->netdev_ops = &rtl_netdev_ops;
@@ -7439,6 +10756,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	tp->dev = dev;
 	tp->pci_dev = pdev;
 	tp->msg_enable = netif_msg_init(debug.msg_enable, R8169_MSG_DEFAULT);
+<<<<<<< HEAD
 	tp->supports_gmii = cfg->has_gmii;
 
 	/* Get the *optional* external "ether_clk" used on some boards */
@@ -7487,10 +10805,44 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	if (region < 0) {
 		dev_err(&pdev->dev, "no MMIO resource found\n");
 		return -ENODEV;
+=======
+
+	mii = &tp->mii;
+	mii->dev = dev;
+	mii->mdio_read = rtl_mdio_read;
+	mii->mdio_write = rtl_mdio_write;
+	mii->phy_id_mask = 0x1f;
+	mii->reg_num_mask = 0x1f;
+	mii->supports_gmii = !!(cfg->features & RTL_FEATURE_GMII);
+
+	/* disable ASPM completely as that cause random device stop working
+	 * problems as well as full system hangs for some PCIe devices users */
+	pci_disable_link_state(pdev, PCIE_LINK_STATE_L0S | PCIE_LINK_STATE_L1 |
+				     PCIE_LINK_STATE_CLKPM);
+
+	/* enable device (incl. PCI PM wakeup and hotplug setup) */
+	rc = pci_enable_device(pdev);
+	if (rc < 0) {
+		netif_err(tp, probe, dev, "enable failure\n");
+		goto err_out_free_dev_1;
+	}
+
+	if (pci_set_mwi(pdev) < 0)
+		netif_info(tp, probe, dev, "Mem-Wr-Inval unavailable\n");
+
+	/* make sure PCI base addr 1 is MMIO */
+	if (!(pci_resource_flags(pdev, region) & IORESOURCE_MEM)) {
+		netif_err(tp, probe, dev,
+			  "region #%d not an MMIO resource, aborting\n",
+			  region);
+		rc = -ENODEV;
+		goto err_out_mwi_2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* check for weird/broken PCI region reporting */
 	if (pci_resource_len(pdev, region) < R8169_REGS_SIZE) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "Invalid PCI region size(s), aborting\n");
 		return -ENODEV;
 	}
@@ -7515,6 +10867,36 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	}
 
 	tp->cp_cmd = RTL_R16(tp, CPlusCmd);
+=======
+		netif_err(tp, probe, dev,
+			  "Invalid PCI region size(s), aborting\n");
+		rc = -ENODEV;
+		goto err_out_mwi_2;
+	}
+
+	rc = pci_request_regions(pdev, MODULENAME);
+	if (rc < 0) {
+		netif_err(tp, probe, dev, "could not request regions\n");
+		goto err_out_mwi_2;
+	}
+
+	/* ioremap MMIO region */
+	ioaddr = ioremap(pci_resource_start(pdev, region), R8169_REGS_SIZE);
+	if (!ioaddr) {
+		netif_err(tp, probe, dev, "cannot remap MMIO, aborting\n");
+		rc = -EIO;
+		goto err_out_free_res_3;
+	}
+	tp->mmio_addr = ioaddr;
+
+	if (!pci_is_pcie(pdev))
+		netif_info(tp, probe, dev, "not PCI Express\n");
+
+	/* Identify chip attached to board */
+	rtl8169_get_mac_version(tp, dev, cfg->default_ver);
+
+	tp->cp_cmd = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((sizeof(dma_addr_t) > 4) &&
 	    (use_dac == 1 || (use_dac == -1 && pci_is_pcie(pdev) &&
@@ -7529,8 +10911,13 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	} else {
 		rc = pci_set_dma_mask(pdev, DMA_BIT_MASK(32));
 		if (rc < 0) {
+<<<<<<< HEAD
 			dev_err(&pdev->dev, "DMA configuration failed\n");
 			return rc;
+=======
+			netif_err(tp, probe, dev, "DMA configuration failed\n");
+			goto err_out_unmap_4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -7547,11 +10934,18 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	pci_set_master(pdev);
 
 	rtl_init_mdio_ops(tp);
+<<<<<<< HEAD
 	rtl_init_jumbo_ops(tp);
+=======
+	rtl_init_pll_power_ops(tp);
+	rtl_init_jumbo_ops(tp);
+	rtl_init_csi_ops(tp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl8169_print_mac_version(tp);
 
 	chipset = tp->mac_version;
+<<<<<<< HEAD
 
 	rc = rtl_alloc_irq(tp);
 	if (rc < 0) {
@@ -7560,12 +10954,68 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	}
 
 	tp->saved_wolopts = __rtl8169_get_wol(tp);
+=======
+	tp->txd_version = rtl_chip_infos[chipset].txd_version;
+
+	RTL_W8(Cfg9346, Cfg9346_Unlock);
+	RTL_W8(Config1, RTL_R8(Config1) | PMEnable);
+	RTL_W8(Config5, RTL_R8(Config5) & (BWF | MWF | UWF | LanWake | PMEStatus));
+	switch (tp->mac_version) {
+	case RTL_GIGA_MAC_VER_34:
+	case RTL_GIGA_MAC_VER_35:
+	case RTL_GIGA_MAC_VER_36:
+	case RTL_GIGA_MAC_VER_37:
+	case RTL_GIGA_MAC_VER_38:
+	case RTL_GIGA_MAC_VER_40:
+	case RTL_GIGA_MAC_VER_41:
+	case RTL_GIGA_MAC_VER_42:
+	case RTL_GIGA_MAC_VER_43:
+	case RTL_GIGA_MAC_VER_44:
+	case RTL_GIGA_MAC_VER_45:
+	case RTL_GIGA_MAC_VER_46:
+	case RTL_GIGA_MAC_VER_47:
+	case RTL_GIGA_MAC_VER_48:
+	case RTL_GIGA_MAC_VER_49:
+	case RTL_GIGA_MAC_VER_50:
+	case RTL_GIGA_MAC_VER_51:
+		if (rtl_eri_read(tp, 0xdc, ERIAR_EXGMAC) & MagicPacket_v2)
+			tp->features |= RTL_FEATURE_WOL;
+		if ((RTL_R8(Config3) & LinkUp) != 0)
+			tp->features |= RTL_FEATURE_WOL;
+		break;
+	default:
+		if ((RTL_R8(Config3) & (LinkUp | MagicPacket)) != 0)
+			tp->features |= RTL_FEATURE_WOL;
+		break;
+	}
+	if ((RTL_R8(Config5) & (UWF | BWF | MWF)) != 0)
+		tp->features |= RTL_FEATURE_WOL;
+	tp->features |= rtl_try_msi(tp, cfg);
+	RTL_W8(Cfg9346, Cfg9346_Lock);
+
+	if (rtl_tbi_enabled(tp)) {
+		tp->set_speed = rtl8169_set_speed_tbi;
+		tp->get_link_ksettings = rtl8169_get_link_ksettings_tbi;
+		tp->phy_reset_enable = rtl8169_tbi_reset_enable;
+		tp->phy_reset_pending = rtl8169_tbi_reset_pending;
+		tp->link_ok = rtl8169_tbi_link_ok;
+		tp->do_ioctl = rtl_tbi_ioctl;
+	} else {
+		tp->set_speed = rtl8169_set_speed_xmii;
+		tp->get_link_ksettings = rtl8169_get_link_ksettings_xmii;
+		tp->phy_reset_enable = rtl8169_xmii_reset_enable;
+		tp->phy_reset_pending = rtl8169_xmii_reset_pending;
+		tp->link_ok = rtl8169_xmii_link_ok;
+		tp->do_ioctl = rtl_xmii_ioctl;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&tp->wk.mutex);
 	u64_stats_init(&tp->rx_stats.syncp);
 	u64_stats_init(&tp->tx_stats.syncp);
 
 	/* Get MAC address */
+<<<<<<< HEAD
 	switch (tp->mac_version) {
 		u8 mac_addr[ETH_ALEN] __aligned(4);
 	case RTL_GIGA_MAC_VER_35 ... RTL_GIGA_MAC_VER_38:
@@ -7581,11 +11031,43 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 	}
 	for (i = 0; i < ETH_ALEN; i++)
 		dev->dev_addr[i] = RTL_R8(tp, MAC0 + i);
+=======
+	if (tp->mac_version == RTL_GIGA_MAC_VER_35 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_36 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_37 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_38 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_40 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_41 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_42 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_43 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_44 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_45 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_46 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_47 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_48 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_49 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_50 ||
+	    tp->mac_version == RTL_GIGA_MAC_VER_51) {
+		u16 mac_addr[3];
+
+		*(u32 *)&mac_addr[0] = rtl_eri_read(tp, 0xe0, ERIAR_EXGMAC);
+		*(u16 *)&mac_addr[2] = rtl_eri_read(tp, 0xe4, ERIAR_EXGMAC);
+
+		if (is_valid_ether_addr((u8 *)mac_addr))
+			rtl_rar_set(tp, (u8 *)mac_addr);
+	}
+	for (i = 0; i < ETH_ALEN; i++)
+		dev->dev_addr[i] = RTL_R8(MAC0 + i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->ethtool_ops = &rtl8169_ethtool_ops;
 	dev->watchdog_timeo = RTL8169_TX_TIMEOUT;
 
+<<<<<<< HEAD
 	netif_napi_add(dev, &tp->napi, rtl8169_poll, NAPI_POLL_WEIGHT);
+=======
+	netif_napi_add(dev, &tp->napi, rtl8169_poll, R8169_NAPI_WEIGHT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* don't enable SG, IP_CSUM and TSO by default - it might not work
 	 * properly for all devices */
@@ -7597,7 +11079,10 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		NETIF_F_HW_VLAN_CTAG_RX;
 	dev->vlan_features = NETIF_F_SG | NETIF_F_IP_CSUM | NETIF_F_TSO |
 		NETIF_F_HIGHDMA;
+<<<<<<< HEAD
 	dev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tp->cp_cmd |= RxChkSum | RxVlan;
 
@@ -7609,18 +11094,29 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 		/* Disallow toggling */
 		dev->hw_features &= ~NETIF_F_HW_VLAN_CTAG_RX;
 
+<<<<<<< HEAD
 	if (rtl_chip_supports_csum_v2(tp)) {
 		tp->tso_csum = rtl8169_tso_csum_v2;
 		dev->hw_features |= NETIF_F_IPV6_CSUM | NETIF_F_TSO6;
 	} else {
 		tp->tso_csum = rtl8169_tso_csum_v1;
 	}
+=======
+	if (tp->txd_version == RTL_TD_0)
+		tp->tso_csum = rtl8169_tso_csum_v1;
+	else if (tp->txd_version == RTL_TD_1) {
+		tp->tso_csum = rtl8169_tso_csum_v2;
+		dev->hw_features |= NETIF_F_IPV6_CSUM | NETIF_F_TSO6;
+	} else
+		WARN_ON_ONCE(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->hw_features |= NETIF_F_RXALL;
 	dev->hw_features |= NETIF_F_RXFCS;
 
 	/* MTU range: 60 - hw-specific max */
 	dev->min_mtu = ETH_ZLEN;
+<<<<<<< HEAD
 	jumbo_max = rtl_jumbo_max(tp);
 	dev->max_mtu = jumbo_max;
 
@@ -7671,6 +11167,77 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 err_mdio_unregister:
 	mdiobus_unregister(tp->mii_bus);
 	return rc;
+=======
+	dev->max_mtu = rtl_chip_infos[chipset].jumbo_max;
+
+	tp->hw_start = cfg->hw_start;
+	tp->event_slow = cfg->event_slow;
+
+	tp->opts1_mask = (tp->mac_version != RTL_GIGA_MAC_VER_01) ?
+		~(RxBOVF | RxFOVF) : ~0;
+
+	setup_timer(&tp->timer, rtl8169_phy_timer, (unsigned long)dev);
+
+	tp->rtl_fw = RTL_FIRMWARE_UNKNOWN;
+
+	tp->counters = dma_alloc_coherent (&pdev->dev, sizeof(*tp->counters),
+					   &tp->counters_phys_addr, GFP_KERNEL);
+	if (!tp->counters) {
+		rc = -ENOMEM;
+		goto err_out_msi_5;
+	}
+
+	pci_set_drvdata(pdev, dev);
+
+	rc = register_netdev(dev);
+	if (rc < 0)
+		goto err_out_cnt_6;
+
+	netif_info(tp, probe, dev, "%s at 0x%p, %pM, XID %08x IRQ %d\n",
+		   rtl_chip_infos[chipset].name, ioaddr, dev->dev_addr,
+		   (u32)(RTL_R32(TxConfig) & 0x9cf0f8ff), pdev->irq);
+	if (rtl_chip_infos[chipset].jumbo_max != JUMBO_1K) {
+		netif_info(tp, probe, dev, "jumbo features [frames: %d bytes, "
+			   "tx checksumming: %s]\n",
+			   rtl_chip_infos[chipset].jumbo_max,
+			   rtl_chip_infos[chipset].jumbo_tx_csum ? "ok" : "ko");
+	}
+
+	if ((tp->mac_version == RTL_GIGA_MAC_VER_27 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_28 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_31 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_49 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_50 ||
+	     tp->mac_version == RTL_GIGA_MAC_VER_51) &&
+	    r8168_check_dash(tp)) {
+		rtl8168_driver_start(tp);
+	}
+
+	if (pci_dev_run_wake(pdev))
+		pm_runtime_put_noidle(&pdev->dev);
+
+	netif_carrier_off(dev);
+
+out:
+	return rc;
+
+err_out_cnt_6:
+	dma_free_coherent(&pdev->dev, sizeof(*tp->counters), tp->counters,
+			  tp->counters_phys_addr);
+err_out_msi_5:
+	netif_napi_del(&tp->napi);
+	rtl_disable_msi(pdev, tp);
+err_out_unmap_4:
+	iounmap(ioaddr);
+err_out_free_res_3:
+	pci_release_regions(pdev);
+err_out_mwi_2:
+	pci_clear_mwi(pdev);
+	pci_disable_device(pdev);
+err_out_free_dev_1:
+	free_netdev(dev);
+	goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct pci_driver rtl8169_pci_driver = {

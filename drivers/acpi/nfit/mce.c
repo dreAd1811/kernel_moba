@@ -25,12 +25,17 @@ static int nfit_handle_mce(struct notifier_block *nb, unsigned long val,
 	struct acpi_nfit_desc *acpi_desc;
 	struct nfit_spa *nfit_spa;
 
+<<<<<<< HEAD
 	/* We only care about uncorrectable memory errors */
 	if (!mce_is_memory_error(mce) || mce_is_correctable(mce))
 		return NOTIFY_DONE;
 
 	/* Verify the address reported in the MCE is valid. */
 	if (!mce_usable_address(mce))
+=======
+	/* We only care about memory errors */
+	if (!mce_is_memory_error(mce))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NOTIFY_DONE;
 
 	/*
@@ -55,8 +60,14 @@ static int nfit_handle_mce(struct notifier_block *nb, unsigned long val,
 			if ((spa->address + spa->length - 1) < mce->addr)
 				continue;
 			found_match = 1;
+<<<<<<< HEAD
 			dev_dbg(dev, "addr in SPA %d (0x%llx, 0x%llx)\n",
 				spa->range_index, spa->address, spa->length);
+=======
+			dev_dbg(dev, "%s: addr in SPA %d (0x%llx, 0x%llx)\n",
+				__func__, spa->range_index, spa->address,
+				spa->length);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * We can break at the first match because we're going
 			 * to rescan all the SPA ranges. There shouldn't be any
@@ -70,7 +81,11 @@ static int nfit_handle_mce(struct notifier_block *nb, unsigned long val,
 			continue;
 
 		/* If this fails due to an -ENOMEM, there is little we can do */
+<<<<<<< HEAD
 		nvdimm_bus_add_badrange(acpi_desc->nvdimm_bus,
+=======
+		nvdimm_bus_add_poison(acpi_desc->nvdimm_bus,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ALIGN(mce->addr, L1_CACHE_BYTES),
 				L1_CACHE_BYTES);
 		nvdimm_region_notify(nfit_spa->nd_region,

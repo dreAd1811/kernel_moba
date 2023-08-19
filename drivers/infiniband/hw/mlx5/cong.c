@@ -247,14 +247,19 @@ static void mlx5_ib_set_cc_param_mask_val(void *field, int offset,
 	}
 }
 
+<<<<<<< HEAD
 static int mlx5_ib_get_cc_params(struct mlx5_ib_dev *dev, u8 port_num,
 				 int offset, u32 *var)
+=======
+static int mlx5_ib_get_cc_params(struct mlx5_ib_dev *dev, int offset, u32 *var)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int outlen = MLX5_ST_SZ_BYTES(query_cong_params_out);
 	void *out;
 	void *field;
 	int err;
 	enum mlx5_ib_cong_node_type node;
+<<<<<<< HEAD
 	struct mlx5_core_dev *mdev;
 
 	/* Takes a 1-based port number */
@@ -271,6 +276,16 @@ static int mlx5_ib_get_cc_params(struct mlx5_ib_dev *dev, u8 port_num,
 	node = mlx5_ib_param_to_node(offset);
 
 	err = mlx5_cmd_query_cong_params(mdev, node, out, outlen);
+=======
+
+	out = kvzalloc(outlen, GFP_KERNEL);
+	if (!out)
+		return -ENOMEM;
+
+	node = mlx5_ib_param_to_node(offset);
+
+	err = mlx5_cmd_query_cong_params(dev->mdev, node, out, outlen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto free;
 
@@ -279,6 +294,7 @@ static int mlx5_ib_get_cc_params(struct mlx5_ib_dev *dev, u8 port_num,
 
 free:
 	kvfree(out);
+<<<<<<< HEAD
 alloc_err:
 	mlx5_ib_put_native_port_mdev(dev, port_num + 1);
 	return err;
@@ -286,11 +302,18 @@ alloc_err:
 
 static int mlx5_ib_set_cc_params(struct mlx5_ib_dev *dev, u8 port_num,
 				 int offset, u32 var)
+=======
+	return err;
+}
+
+static int mlx5_ib_set_cc_params(struct mlx5_ib_dev *dev, int offset, u32 var)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int inlen = MLX5_ST_SZ_BYTES(modify_cong_params_in);
 	void *in;
 	void *field;
 	enum mlx5_ib_cong_node_type node;
+<<<<<<< HEAD
 	struct mlx5_core_dev *mdev;
 	u32 attr_mask = 0;
 	int err;
@@ -305,6 +328,14 @@ static int mlx5_ib_set_cc_params(struct mlx5_ib_dev *dev, u8 port_num,
 		err = -ENOMEM;
 		goto alloc_err;
 	}
+=======
+	u32 attr_mask = 0;
+	int err;
+
+	in = kvzalloc(inlen, GFP_KERNEL);
+	if (!in)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	MLX5_SET(modify_cong_params_in, in, opcode,
 		 MLX5_CMD_OP_MODIFY_CONG_PARAMS);
@@ -319,10 +350,15 @@ static int mlx5_ib_set_cc_params(struct mlx5_ib_dev *dev, u8 port_num,
 	MLX5_SET(field_select_r_roce_rp, field, field_select_r_roce_rp,
 		 attr_mask);
 
+<<<<<<< HEAD
 	err = mlx5_cmd_modify_cong_params(mdev, in, inlen);
 	kvfree(in);
 alloc_err:
 	mlx5_ib_put_native_port_mdev(dev, port_num + 1);
+=======
+	err = mlx5_cmd_modify_cong_params(dev->mdev, in, inlen);
+	kvfree(in);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -346,7 +382,11 @@ static ssize_t set_param(struct file *filp, const char __user *buf,
 	if (kstrtou32(lbuf, 0, &var))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = mlx5_ib_set_cc_params(param->dev, param->port_num, offset, var);
+=======
+	ret = mlx5_ib_set_cc_params(param->dev, offset, var);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret ? ret : count;
 }
 
@@ -359,7 +399,14 @@ static ssize_t get_param(struct file *filp, char __user *buf, size_t count,
 	int ret;
 	char lbuf[11];
 
+<<<<<<< HEAD
 	ret = mlx5_ib_get_cc_params(param->dev, param->port_num, offset, &var);
+=======
+	if (*pos)
+		return 0;
+
+	ret = mlx5_ib_get_cc_params(param->dev, offset, &var);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -367,7 +414,15 @@ static ssize_t get_param(struct file *filp, char __user *buf, size_t count,
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	return simple_read_from_buffer(buf, count, pos, lbuf, ret);
+=======
+	if (copy_to_user(buf, lbuf, ret))
+		return -EFAULT;
+
+	*pos += ret;
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct file_operations dbg_cc_fops = {
@@ -377,6 +432,7 @@ static const struct file_operations dbg_cc_fops = {
 	.read	= get_param,
 };
 
+<<<<<<< HEAD
 void mlx5_ib_cleanup_cong_debugfs(struct mlx5_ib_dev *dev, u8 port_num)
 {
 	if (!mlx5_debugfs_root ||
@@ -393,11 +449,29 @@ int mlx5_ib_init_cong_debugfs(struct mlx5_ib_dev *dev, u8 port_num)
 {
 	struct mlx5_ib_dbg_cc_params *dbg_cc_params;
 	struct mlx5_core_dev *mdev;
+=======
+void mlx5_ib_cleanup_cong_debugfs(struct mlx5_ib_dev *dev)
+{
+	if (!mlx5_debugfs_root ||
+	    !dev->dbg_cc_params ||
+	    !dev->dbg_cc_params->root)
+		return;
+
+	debugfs_remove_recursive(dev->dbg_cc_params->root);
+	kfree(dev->dbg_cc_params);
+	dev->dbg_cc_params = NULL;
+}
+
+int mlx5_ib_init_cong_debugfs(struct mlx5_ib_dev *dev)
+{
+	struct mlx5_ib_dbg_cc_params *dbg_cc_params;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	if (!mlx5_debugfs_root)
 		goto out;
 
+<<<<<<< HEAD
 	/* Takes a 1-based port number */
 	mdev = mlx5_ib_get_native_port_mdev(dev, port_num + 1, NULL);
 	if (!mdev)
@@ -415,13 +489,30 @@ int mlx5_ib_init_cong_debugfs(struct mlx5_ib_dev *dev, u8 port_num)
 
 	dbg_cc_params->root = debugfs_create_dir("cc_params",
 						 mdev->priv.dbg_root);
+=======
+	if (!MLX5_CAP_GEN(dev->mdev, cc_query_allowed) ||
+	    !MLX5_CAP_GEN(dev->mdev, cc_modify_allowed))
+		goto out;
+
+	dbg_cc_params = kzalloc(sizeof(*dbg_cc_params), GFP_KERNEL);
+	if (!dbg_cc_params)
+		goto out;
+
+	dev->dbg_cc_params = dbg_cc_params;
+
+	dbg_cc_params->root = debugfs_create_dir("cc_params",
+						 dev->mdev->priv.dbg_root);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!dbg_cc_params->root)
 		goto err;
 
 	for (i = 0; i < MLX5_IB_DBG_CC_MAX; i++) {
 		dbg_cc_params->params[i].offset = i;
 		dbg_cc_params->params[i].dev = dev;
+<<<<<<< HEAD
 		dbg_cc_params->params[i].port_num = port_num;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dbg_cc_params->params[i].dentry =
 			debugfs_create_file(mlx5_ib_dbg_cc_name[i],
 					    0600, dbg_cc_params->root,
@@ -430,6 +521,7 @@ int mlx5_ib_init_cong_debugfs(struct mlx5_ib_dev *dev, u8 port_num)
 		if (!dbg_cc_params->params[i].dentry)
 			goto err;
 	}
+<<<<<<< HEAD
 
 put_mdev:
 	mlx5_ib_put_native_port_mdev(dev, port_num + 1);
@@ -441,6 +533,13 @@ err:
 	mlx5_ib_cleanup_cong_debugfs(dev, port_num);
 	mlx5_ib_put_native_port_mdev(dev, port_num + 1);
 
+=======
+out:	return 0;
+
+err:
+	mlx5_ib_warn(dev, "cong debugfs failure\n");
+	mlx5_ib_cleanup_cong_debugfs(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We don't want to fail driver if debugfs failed to initialize,
 	 * so we are not forwarding error to the user.

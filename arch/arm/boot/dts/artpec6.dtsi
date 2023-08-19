@@ -41,7 +41,10 @@
  */
 
 #include <dt-bindings/interrupt-controller/arm-gic.h>
+<<<<<<< HEAD
 #include <dt-bindings/dma/nbpfaxi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <dt-bindings/clock/axis,artpec6-clkctrl.h>
 #include "skeleton.dtsi"
 
@@ -99,7 +102,11 @@
 		clock-frequency = <125000000>;
 	};
 
+<<<<<<< HEAD
 	clkctrl: clkctrl@f8000000 {
+=======
+	clkctrl: clkctrl@0xf8000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#clock-cells = <1>;
 		compatible = "axis,artpec6-clkctrl";
 		reg = <0xf8000000 0x48>;
@@ -152,12 +159,18 @@
 		interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>,
 			<GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH>;
 		interrupt-affinity = <&cpu0>, <&cpu1>;
+<<<<<<< HEAD
 	};
 
 	/*
 	 * Both pci nodes cannot be enabled at the same time,
 	 * leave the unwanted node as disabled.
 	 */
+=======
+		interrupt-parent = <&intc>;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pcie: pcie@f8050000 {
 		compatible = "axis,artpec6-pcie", "snps,dw-pcie";
 		reg = <0xf8050000 0x2000
@@ -185,6 +198,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	pcie_ep: pcie_ep@f8050000 {
 		compatible = "axis,artpec6-pcie-ep", "snps,dw-pcie";
 		reg = <0xf8050000 0x2000
@@ -225,10 +239,13 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	amba@0 {
 		compatible = "simple-bus";
 		#address-cells = <0x1>;
 		#size-cells = <0x1>;
+<<<<<<< HEAD
 		ranges;
 		dma-ranges;
 
@@ -325,6 +342,28 @@
 				queue0 {};
 				queue1 {};
 			};
+=======
+		interrupt-parent = <&intc>;
+		ranges;
+		dma-ranges = <0x80000000 0x00000000 0x40000000>;
+		dma-coherent;
+
+		ethernet: ethernet@f8010000 {
+			clock-names = "phy_ref_clk", "apb_pclk";
+			clocks = <&eth_phy_ref_clk>,
+				<&clkctrl ARTPEC6_CLK_ETH_ACLK>;
+			compatible = "snps,dwc-qos-ethernet-4.10";
+			interrupt-parent = <&intc>;
+			interrupts = <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>;
+			reg = <0xf8010000 0x4000>;
+
+			snps,write-requests = <2>;
+			snps,read-requests = <16>;
+			snps,txpbl = <8>;
+			snps,rxpbl = <2>;
+
+			status = "disabled";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		uart0: serial@f8036000 {
@@ -334,11 +373,14 @@
 			clocks = <&clkctrl ARTPEC6_CLK_UART_REFCLK>,
 				<&clkctrl ARTPEC6_CLK_UART_PCLK>;
 			clock-names = "uart_clk", "apb_pclk";
+<<<<<<< HEAD
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_uart0>;
 			dmas = <&dma0 4 (NBPF_SLAVE_RQ_HIGH | NBPF_SLAVE_RQ_LEVEL)>,
 			       <&dma0 5 (NBPF_SLAVE_RQ_HIGH | NBPF_SLAVE_RQ_LEVEL)>;
 			dma-names = "rx", "tx";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		uart1: serial@f8037000 {
@@ -348,11 +390,14 @@
 			clocks = <&clkctrl ARTPEC6_CLK_UART_REFCLK>,
 				<&clkctrl ARTPEC6_CLK_UART_PCLK>;
 			clock-names = "uart_clk", "apb_pclk";
+<<<<<<< HEAD
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_uart1>;
 			dmas = <&dma0 6 (NBPF_SLAVE_RQ_HIGH | NBPF_SLAVE_RQ_LEVEL)>,
 			       <&dma0 7 (NBPF_SLAVE_RQ_HIGH | NBPF_SLAVE_RQ_LEVEL)>;
 			dma-names = "rx", "tx";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		uart2: serial@f8038000 {
@@ -362,11 +407,14 @@
 			clocks = <&clkctrl ARTPEC6_CLK_UART_REFCLK>,
 				<&clkctrl ARTPEC6_CLK_UART_PCLK>;
 			clock-names = "uart_clk", "apb_pclk";
+<<<<<<< HEAD
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_uart2>;
 			dmas = <&dma1 0 (NBPF_SLAVE_RQ_HIGH | NBPF_SLAVE_RQ_LEVEL)>,
 			       <&dma1 1 (NBPF_SLAVE_RQ_HIGH | NBPF_SLAVE_RQ_LEVEL)>;
 			dma-names = "rx", "tx";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 		uart3: serial@f8039000 {
@@ -376,11 +424,14 @@
 			clocks = <&clkctrl ARTPEC6_CLK_UART_REFCLK>,
 				<&clkctrl ARTPEC6_CLK_UART_PCLK>;
 			clock-names = "uart_clk", "apb_pclk";
+<<<<<<< HEAD
 			pinctrl-names = "default";
 			pinctrl-0 = <&pinctrl_uart3>;
 			dmas = <&dma1 2 (NBPF_SLAVE_RQ_HIGH | NBPF_SLAVE_RQ_LEVEL)>,
 			       <&dma1 3 (NBPF_SLAVE_RQ_HIGH | NBPF_SLAVE_RQ_LEVEL)>;
 			dma-names = "rx", "tx";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 	};

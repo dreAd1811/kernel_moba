@@ -43,7 +43,11 @@ asm    (".pushsection .text;"
 	"push  %rdx;"
 	"mov   $0x1,%eax;"
 	"xor   %edx,%edx;"
+<<<<<<< HEAD
 	LOCK_PREFIX "cmpxchg %dl,(%rdi);"
+=======
+	"lock cmpxchg %dl,(%rdi);"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"cmp   $0x1,%al;"
 	"jne   .slowpath;"
 	"pop   %rdx;"

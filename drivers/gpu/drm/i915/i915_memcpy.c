@@ -96,11 +96,15 @@ bool i915_memcpy_from_wc(void *dst, const void *src, unsigned long len)
 
 void i915_memcpy_init_early(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	/*
 	 * Some hypervisors (e.g. KVM) don't support VEX-prefix instructions
 	 * emulation. So don't enable movntdqa in hypervisor guest.
 	 */
 	if (static_cpu_has(X86_FEATURE_XMM4_1) &&
 	    !boot_cpu_has(X86_FEATURE_HYPERVISOR))
+=======
+	if (static_cpu_has(X86_FEATURE_XMM4_1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		static_branch_enable(&has_movntdqa);
 }

@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 .. _readme:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Linux kernel release 4.x <http://kernel.org/>
 =============================================
 
@@ -28,8 +31,13 @@ On what hardware does it run?
   Although originally developed first for 32-bit x86-based PCs (386 or higher),
   today Linux also runs on (at least) the Compaq Alpha AXP, Sun SPARC and
   UltraSPARC, Motorola 68000, PowerPC, PowerPC64, ARM, Hitachi SuperH, Cell,
+<<<<<<< HEAD
   IBM S/390, MIPS, HP PA-RISC, Intel IA-64, DEC VAX, AMD x86-64 Xtensa, and
   ARC architectures.
+=======
+  IBM S/390, MIPS, HP PA-RISC, Intel IA-64, DEC VAX, AMD x86-64, AXIS CRIS,
+  Xtensa, Tilera TILE, ARC and Renesas M32R architectures.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   Linux is easily portable to most general-purpose 32- or 64-bit architectures
   as long as they have a paged memory management unit (PMMU) and a port of the
@@ -172,6 +180,14 @@ Configuring the kernel
                         your existing ./.config file and asking about
                         new config symbols.
 
+<<<<<<< HEAD
+=======
+     "make silentoldconfig"
+                        Like above, but avoids cluttering the screen
+                        with questions already answered.
+                        Additionally updates the dependencies.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
      "make olddefconfig"
                         Like above, but sets new symbols to their default
                         values without prompting.
@@ -220,6 +236,7 @@ Configuring the kernel
      "make localyesconfig" Similar to localmodconfig, except it will convert
                            all module options to built in (=y) options.
 
+<<<<<<< HEAD
      "make kvmconfig"   Enable additional options for kvm guest kernel support.
 
      "make xenconfig"   Enable additional options for xen dom0 guest kernel
@@ -227,6 +244,8 @@ Configuring the kernel
 
      "make tinyconfig"  Configure the tiniest possible kernel.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    You can find more information on using the Linux kernel config tools
    in Documentation/kbuild/kconfig.txt.
 
@@ -354,7 +373,11 @@ If something goes wrong
    help debugging the problem.  The text above the dump is also
    important: it tells something about why the kernel dumped code (in
    the above example, it's due to a bad kernel pointer). More information
+<<<<<<< HEAD
    on making sense of the dump is in Documentation/admin-guide/bug-hunting.rst
+=======
+   on making sense of the dump is in Documentation/admin-guide/oops-tracing.rst
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
  - If you compiled the kernel with CONFIG_KALLSYMS you can send the dump
    as is, otherwise you will have to use the ``ksymoops`` program to make

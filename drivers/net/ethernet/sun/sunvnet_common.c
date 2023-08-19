@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* sunvnet.c: Sun LDOM Virtual Network Driver.
  *
  * Copyright (C) 2007, 2008 David S. Miller <davem@davemloft.net>
@@ -1041,9 +1044,15 @@ static inline void vnet_free_skbs(struct sk_buff *skb)
 	}
 }
 
+<<<<<<< HEAD
 void sunvnet_clean_timer_expire_common(struct timer_list *t)
 {
 	struct vnet_port *port = from_timer(port, t, clean_timer);
+=======
+void sunvnet_clean_timer_expire_common(unsigned long port0)
+{
+	struct vnet_port *port = (struct vnet_port *)port0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *freeskbs;
 	unsigned pending;
 
@@ -1216,9 +1225,16 @@ static inline struct sk_buff *vnet_skb_shape(struct sk_buff *skb, int ncookies)
 	return skb;
 }
 
+<<<<<<< HEAD
 static int vnet_handle_offloads(struct vnet_port *port, struct sk_buff *skb,
 				struct vnet_port *(*vnet_tx_port)
 				(struct sk_buff *, struct net_device *))
+=======
+static netdev_tx_t
+vnet_handle_offloads(struct vnet_port *port, struct sk_buff *skb,
+		     struct vnet_port *(*vnet_tx_port)
+		     (struct sk_buff *, struct net_device *))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *dev = VNET_PORT_TO_NET_DEVICE(port);
 	struct vio_dring_state *dr = &port->vio.drings[VIO_DRIVER_TX_RING];
@@ -1321,9 +1337,16 @@ out_dropped:
 	return NETDEV_TX_OK;
 }
 
+<<<<<<< HEAD
 int sunvnet_start_xmit_common(struct sk_buff *skb, struct net_device *dev,
 			      struct vnet_port *(*vnet_tx_port)
 			      (struct sk_buff *, struct net_device *))
+=======
+netdev_tx_t
+sunvnet_start_xmit_common(struct sk_buff *skb, struct net_device *dev,
+			  struct vnet_port *(*vnet_tx_port)
+			  (struct sk_buff *, struct net_device *))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vnet_port *port = NULL;
 	struct vio_dring_state *dr;

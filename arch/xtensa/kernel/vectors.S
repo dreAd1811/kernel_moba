@@ -205,6 +205,12 @@ ENDPROC(_KernelExceptionVector)
  */
 
 	.section .DoubleExceptionVector.text, "ax"
+<<<<<<< HEAD
+=======
+	.begin literal_prefix .DoubleExceptionVector
+	.globl _DoubleExceptionVector_WindowUnderflow
+	.globl _DoubleExceptionVector_WindowOverflow
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ENTRY(_DoubleExceptionVector)
 
@@ -214,12 +220,17 @@ ENTRY(_DoubleExceptionVector)
 	/* Check for kernel double exception (usually fatal). */
 
 	rsr	a2, ps
+<<<<<<< HEAD
 	_bbsi.l	a2, PS_UM_BIT, 1f
 	j	.Lksp
 
 	.align	4
 	.literal_position
 1:
+=======
+	_bbci.l	a2, PS_UM_BIT, .Lksp
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check if we are currently handling a window exception. */
 	/* Note: We don't need to indicate that we enter a critical section. */
 
@@ -305,7 +316,12 @@ _DoubleExceptionVector_WindowUnderflow:
 .Lunrecoverable:
 	rsr	a3, excsave1
 	wsr	a0, excsave1
+<<<<<<< HEAD
 	call0	unrecoverable_exception
+=======
+	movi	a0, unrecoverable_exception
+	callx0	a0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .Lfixup:/* Check for a fixup handler or if we were in a critical section. */
 
@@ -475,8 +491,16 @@ _DoubleExceptionVector_handle_exception:
 	rotw	-3
 	j	1b
 
+<<<<<<< HEAD
 ENDPROC(_DoubleExceptionVector)
 
+=======
+
+ENDPROC(_DoubleExceptionVector)
+
+	.end literal_prefix
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.text
 /*
  * Fixup handler for TLB miss in double exception handler for window owerflow.
@@ -505,8 +529,11 @@ ENDPROC(_DoubleExceptionVector)
  * a3: exctable, original value in excsave1
  */
 
+<<<<<<< HEAD
 	.literal_position
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENTRY(window_overflow_restore_a0_fixup)
 
 	rsr	a0, ps

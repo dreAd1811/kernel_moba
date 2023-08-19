@@ -118,18 +118,30 @@ mwifiex_11n_dispatch_pkt_until_start_win(struct mwifiex_private *priv,
 		      tbl->win_size;
 
 	for (i = 0; i < pkt_to_send; ++i) {
+<<<<<<< HEAD
 		spin_lock_irqsave(&priv->rx_reorder_tbl_lock, flags);
+=======
+		spin_lock_irqsave(&priv->rx_pkt_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rx_tmp_ptr = NULL;
 		if (tbl->rx_reorder_ptr[i]) {
 			rx_tmp_ptr = tbl->rx_reorder_ptr[i];
 			tbl->rx_reorder_ptr[i] = NULL;
 		}
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&priv->rx_reorder_tbl_lock, flags);
+=======
+		spin_unlock_irqrestore(&priv->rx_pkt_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rx_tmp_ptr)
 			mwifiex_11n_dispatch_pkt(priv, rx_tmp_ptr);
 	}
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&priv->rx_reorder_tbl_lock, flags);
+=======
+	spin_lock_irqsave(&priv->rx_pkt_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We don't have a circular buffer, hence use rotation to simulate
 	 * circular buffer
@@ -140,7 +152,11 @@ mwifiex_11n_dispatch_pkt_until_start_win(struct mwifiex_private *priv,
 	}
 
 	tbl->start_win = start_win;
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&priv->rx_reorder_tbl_lock, flags);
+=======
+	spin_unlock_irqrestore(&priv->rx_pkt_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -160,19 +176,33 @@ mwifiex_11n_scan_and_dispatch(struct mwifiex_private *priv,
 	unsigned long flags;
 
 	for (i = 0; i < tbl->win_size; ++i) {
+<<<<<<< HEAD
 		spin_lock_irqsave(&priv->rx_reorder_tbl_lock, flags);
 		if (!tbl->rx_reorder_ptr[i]) {
 			spin_unlock_irqrestore(&priv->rx_reorder_tbl_lock,
 					       flags);
+=======
+		spin_lock_irqsave(&priv->rx_pkt_lock, flags);
+		if (!tbl->rx_reorder_ptr[i]) {
+			spin_unlock_irqrestore(&priv->rx_pkt_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		rx_tmp_ptr = tbl->rx_reorder_ptr[i];
 		tbl->rx_reorder_ptr[i] = NULL;
+<<<<<<< HEAD
 		spin_unlock_irqrestore(&priv->rx_reorder_tbl_lock, flags);
 		mwifiex_11n_dispatch_pkt(priv, rx_tmp_ptr);
 	}
 
 	spin_lock_irqsave(&priv->rx_reorder_tbl_lock, flags);
+=======
+		spin_unlock_irqrestore(&priv->rx_pkt_lock, flags);
+		mwifiex_11n_dispatch_pkt(priv, rx_tmp_ptr);
+	}
+
+	spin_lock_irqsave(&priv->rx_pkt_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We don't have a circular buffer, hence use rotation to simulate
 	 * circular buffer
@@ -185,7 +215,11 @@ mwifiex_11n_scan_and_dispatch(struct mwifiex_private *priv,
 		}
 	}
 	tbl->start_win = (tbl->start_win + i) & (MAX_TID_VALUE - 1);
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&priv->rx_reorder_tbl_lock, flags);
+=======
+	spin_unlock_irqrestore(&priv->rx_pkt_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -313,10 +347,17 @@ mwifiex_11n_find_last_seq_num(struct reorder_tmr_cnxt *ctx)
  * them and then dumps the Rx reordering table.
  */
 static void
+<<<<<<< HEAD
 mwifiex_flush_data(struct timer_list *t)
 {
 	struct reorder_tmr_cnxt *ctx =
 		from_timer(ctx, t, timer);
+=======
+mwifiex_flush_data(unsigned long context)
+{
+	struct reorder_tmr_cnxt *ctx =
+		(struct reorder_tmr_cnxt *) context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int start_win, seq_num;
 
 	ctx->timer_is_set = false;
@@ -400,8 +441,13 @@ mwifiex_11n_create_rx_reorder_tbl(struct mwifiex_private *priv, u8 *ta,
 
 	new_node->win_size = win_size;
 
+<<<<<<< HEAD
 	new_node->rx_reorder_ptr = kcalloc(win_size, sizeof(void *),
 					   GFP_KERNEL);
+=======
+	new_node->rx_reorder_ptr = kzalloc(sizeof(void *) * win_size,
+					GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!new_node->rx_reorder_ptr) {
 		kfree((u8 *) new_node);
 		mwifiex_dbg(priv->adapter, ERROR,
@@ -413,7 +459,12 @@ mwifiex_11n_create_rx_reorder_tbl(struct mwifiex_private *priv, u8 *ta,
 	new_node->timer_context.priv = priv;
 	new_node->timer_context.timer_is_set = false;
 
+<<<<<<< HEAD
 	timer_setup(&new_node->timer_context.timer, mwifiex_flush_data, 0);
+=======
+	setup_timer(&new_node->timer_context.timer, mwifiex_flush_data,
+		    (unsigned long)&new_node->timer_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < win_size; ++i)
 		new_node->rx_reorder_ptr[i] = NULL;
@@ -835,6 +886,15 @@ void mwifiex_update_rxreor_flags(struct mwifiex_adapter *adapter, u8 flags)
 			continue;
 
 		spin_lock_irqsave(&priv->rx_reorder_tbl_lock, lock_flags);
+<<<<<<< HEAD
+=======
+		if (list_empty(&priv->rx_reorder_tbl_ptr)) {
+			spin_unlock_irqrestore(&priv->rx_reorder_tbl_lock,
+					       lock_flags);
+			continue;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_for_each_entry(tbl, &priv->rx_reorder_tbl_ptr, list)
 			tbl->flags = flags;
 		spin_unlock_irqrestore(&priv->rx_reorder_tbl_lock, lock_flags);

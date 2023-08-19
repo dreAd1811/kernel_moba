@@ -592,16 +592,28 @@ static int s3c_camif_close(struct file *file)
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t s3c_camif_poll(struct file *file,
+=======
+static unsigned int s3c_camif_poll(struct file *file,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct poll_table_struct *wait)
 {
 	struct camif_vp *vp = video_drvdata(file);
 	struct camif_dev *camif = vp->camif;
+<<<<<<< HEAD
 	__poll_t ret;
 
 	mutex_lock(&camif->lock);
 	if (vp->owner && vp->owner != file->private_data)
 		ret = EPOLLERR;
+=======
+	int ret;
+
+	mutex_lock(&camif->lock);
+	if (vp->owner && vp->owner != file->private_data)
+		ret = -EBUSY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		ret = vb2_poll(&vp->vb_queue, file, wait);
 

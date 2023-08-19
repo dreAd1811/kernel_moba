@@ -7,7 +7,11 @@ subdir-ccflags-$(CONFIG_PPC_WERROR)	:= -Werror
 
 ifdef CONFIG_FUNCTION_TRACER
 # do not trace tracer code
+<<<<<<< HEAD
 CFLAGS_REMOVE_ftrace.o = $(CC_FLAGS_FTRACE)
+=======
+CFLAGS_REMOVE_ftrace.o = -mno-sched-epilog $(CC_FLAGS_FTRACE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 obj32-$(CONFIG_FUNCTION_TRACER)		+= ftrace_32.o

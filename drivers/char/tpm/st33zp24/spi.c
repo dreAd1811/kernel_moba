@@ -40,7 +40,11 @@
 #define ST33ZP24_OK					0x5A
 #define ST33ZP24_UNDEFINED_ERR				0x80
 #define ST33ZP24_BADLOCALITY				0x81
+<<<<<<< HEAD
 #define ST33ZP24_TISREGISTER_UNKNOWN			0x82
+=======
+#define ST33ZP24_TISREGISTER_UKNOWN			0x82
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ST33ZP24_LOCALITY_NOT_ACTIVATED			0x83
 #define ST33ZP24_HASH_END_BEFORE_HASH_START		0x84
 #define ST33ZP24_BAD_COMMAND_ORDER			0x85
@@ -63,7 +67,11 @@
  * some latency byte before the answer is available (max 15).
  * We have 2048 + 1024 + 15.
  */
+<<<<<<< HEAD
 #define ST33ZP24_SPI_BUFFER_SIZE (ST33ZP24_BUFSIZE + (ST33ZP24_BUFSIZE / 2) +\
+=======
+#define ST33ZP24_SPI_BUFFER_SIZE (TPM_BUFSIZE + (TPM_BUFSIZE / 2) +\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  MAX_SPI_LATENCY)
 
 
@@ -84,7 +92,11 @@ static int st33zp24_status_to_errno(u8 code)
 		return 0;
 	case ST33ZP24_UNDEFINED_ERR:
 	case ST33ZP24_BADLOCALITY:
+<<<<<<< HEAD
 	case ST33ZP24_TISREGISTER_UNKNOWN:
+=======
+	case ST33ZP24_TISREGISTER_UKNOWN:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ST33ZP24_LOCALITY_NOT_ACTIVATED:
 	case ST33ZP24_HASH_END_BEFORE_HASH_START:
 	case ST33ZP24_BAD_COMMAND_ORDER:

@@ -21,8 +21,11 @@
 #include "etnaviv_drv.h"
 #include "etnaviv_gpu.h"
 #include "etnaviv_gem.h"
+<<<<<<< HEAD
 #include "etnaviv_perfmon.h"
 #include "etnaviv_sched.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Cmdstream submission:
@@ -34,6 +37,7 @@
 #define BO_PINNED   0x2000
 
 static struct etnaviv_gem_submit *submit_create(struct drm_device *dev,
+<<<<<<< HEAD
 		struct etnaviv_gpu *gpu, size_t nr_bos, size_t nr_pmrs)
 {
 	struct etnaviv_gem_submit *submit;
@@ -53,6 +57,24 @@ static struct etnaviv_gem_submit *submit_create(struct drm_device *dev,
 
 	submit->gpu = gpu;
 	kref_init(&submit->refcount);
+=======
+		struct etnaviv_gpu *gpu, size_t nr)
+{
+	struct etnaviv_gem_submit *submit;
+	size_t sz = size_vstruct(nr, sizeof(submit->bos[0]), sizeof(*submit));
+
+	submit = kmalloc(sz, GFP_KERNEL | __GFP_NOWARN | __GFP_NORETRY);
+	if (submit) {
+		submit->dev = dev;
+		submit->gpu = gpu;
+
+		/* initially, until copy_from_user() and bo lookup succeeds: */
+		submit->nr_bos = 0;
+		submit->fence = NULL;
+
+		ww_acquire_init(&submit->ticket, &reservation_ww_class);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return submit;
 }
@@ -115,8 +137,12 @@ static void submit_unlock_object(struct etnaviv_gem_submit *submit, int i)
 	}
 }
 
+<<<<<<< HEAD
 static int submit_lock_objects(struct etnaviv_gem_submit *submit,
 		struct ww_acquire_ctx *ticket)
+=======
+static int submit_lock_objects(struct etnaviv_gem_submit *submit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int contended, slow_locked = -1, i, ret = 0;
 
@@ -131,7 +157,11 @@ retry:
 
 		if (!(submit->bos[i].flags & BO_LOCKED)) {
 			ret = ww_mutex_lock_interruptible(&etnaviv_obj->resv->lock,
+<<<<<<< HEAD
 							  ticket);
+=======
+					&submit->ticket);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret == -EALREADY)
 				DRM_ERROR("BO at index %u already on submit list\n",
 					  i);
@@ -141,7 +171,11 @@ retry:
 		}
 	}
 
+<<<<<<< HEAD
 	ww_acquire_done(ticket);
+=======
+	ww_acquire_done(&submit->ticket);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -159,7 +193,11 @@ fail:
 
 		/* we lost out in a seqno race, lock and retry.. */
 		ret = ww_mutex_lock_slow_interruptible(&etnaviv_obj->resv->lock,
+<<<<<<< HEAD
 						       ticket);
+=======
+				&submit->ticket);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ret) {
 			submit->bos[contended].flags |= BO_LOCKED;
 			slow_locked = contended;
@@ -170,6 +208,7 @@ fail:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int submit_fence_sync(struct etnaviv_gem_submit *submit)
 {
 	int i, ret = 0;
@@ -197,16 +236,37 @@ static int submit_fence_sync(struct etnaviv_gem_submit *submit)
 			bo->excl = reservation_object_get_excl_rcu(robj);
 		}
 
+=======
+static int submit_fence_sync(const struct etnaviv_gem_submit *submit)
+{
+	unsigned int context = submit->gpu->fence_context;
+	int i, ret = 0;
+
+	for (i = 0; i < submit->nr_bos; i++) {
+		struct etnaviv_gem_object *etnaviv_obj = submit->bos[i].obj;
+		bool write = submit->bos[i].flags & ETNA_SUBMIT_BO_WRITE;
+		bool explicit = !!(submit->flags & ETNA_SUBMIT_NO_IMPLICIT);
+
+		ret = etnaviv_gpu_fence_sync_obj(etnaviv_obj, context, write,
+						 explicit);
+		if (ret)
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
 }
 
+<<<<<<< HEAD
 static void submit_attach_object_fences(struct etnaviv_gem_submit *submit)
+=======
+static void submit_unpin_objects(struct etnaviv_gem_submit *submit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
 	for (i = 0; i < submit->nr_bos; i++) {
+<<<<<<< HEAD
 		struct etnaviv_gem_object *etnaviv_obj = submit->bos[i].obj;
 
 		if (submit->bos[i].flags & ETNA_SUBMIT_BO_WRITE)
@@ -217,6 +277,13 @@ static void submit_attach_object_fences(struct etnaviv_gem_submit *submit)
 							    submit->out_fence);
 
 		submit_unlock_object(submit, i);
+=======
+		if (submit->bos[i].flags & BO_PINNED)
+			etnaviv_gem_mapping_unreference(submit->bos[i].mapping);
+
+		submit->bos[i].mapping = NULL;
+		submit->bos[i].flags &= ~BO_PINNED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -234,7 +301,10 @@ static int submit_pin_objects(struct etnaviv_gem_submit *submit)
 			ret = PTR_ERR(mapping);
 			break;
 		}
+<<<<<<< HEAD
 		atomic_inc(&etnaviv_obj->gpu_active);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		submit->bos[i].flags |= BO_PINNED;
 		submit->bos[i].mapping = mapping;
@@ -308,6 +378,7 @@ static int submit_reloc(struct etnaviv_gem_submit *submit, void *stream,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int submit_perfmon_validate(struct etnaviv_gem_submit *submit,
 		u32 exec_state, const struct drm_etnaviv_gem_submit_pmr *pmrs)
 {
@@ -378,10 +449,20 @@ static void submit_cleanup(struct kref *kref)
 		}
 
 		/* if the GPU submit failed, objects might still be locked */
+=======
+static void submit_cleanup(struct etnaviv_gem_submit *submit)
+{
+	unsigned i;
+
+	for (i = 0; i < submit->nr_bos; i++) {
+		struct etnaviv_gem_object *etnaviv_obj = submit->bos[i].obj;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		submit_unlock_object(submit, i);
 		drm_gem_object_put_unlocked(&etnaviv_obj->base);
 	}
 
+<<<<<<< HEAD
 	wake_up_all(&submit->gpu->fence_event);
 
 	if (submit->in_fence)
@@ -415,6 +496,26 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 	struct etnaviv_gpu *gpu;
 	struct sync_file *sync_file = NULL;
 	struct ww_acquire_ctx ticket;
+=======
+	ww_acquire_fini(&submit->ticket);
+	if (submit->fence)
+		dma_fence_put(submit->fence);
+	kfree(submit);
+}
+
+int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
+		struct drm_file *file)
+{
+	struct etnaviv_drm_private *priv = dev->dev_private;
+	struct drm_etnaviv_gem_submit *args = data;
+	struct drm_etnaviv_gem_submit_reloc *relocs;
+	struct drm_etnaviv_gem_submit_bo *bos;
+	struct etnaviv_gem_submit *submit;
+	struct etnaviv_cmdbuf *cmdbuf;
+	struct etnaviv_gpu *gpu;
+	struct dma_fence *in_fence = NULL;
+	struct sync_file *sync_file = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int out_fence_fd = -1;
 	void *stream;
 	int ret;
@@ -450,13 +551,27 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 	 */
 	bos = kvmalloc_array(args->nr_bos, sizeof(*bos), GFP_KERNEL);
 	relocs = kvmalloc_array(args->nr_relocs, sizeof(*relocs), GFP_KERNEL);
+<<<<<<< HEAD
 	pmrs = kvmalloc_array(args->nr_pmrs, sizeof(*pmrs), GFP_KERNEL);
 	stream = kvmalloc_array(1, args->stream_size, GFP_KERNEL);
 	if (!bos || !relocs || !pmrs || !stream) {
+=======
+	stream = kvmalloc_array(1, args->stream_size, GFP_KERNEL);
+	cmdbuf = etnaviv_cmdbuf_new(gpu->cmdbuf_suballoc,
+				    ALIGN(args->stream_size, 8) + 8,
+				    args->nr_bos);
+	if (!bos || !relocs || !stream || !cmdbuf) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto err_submit_cmds;
 	}
 
+<<<<<<< HEAD
+=======
+	cmdbuf->exec_state = args->exec_state;
+	cmdbuf->ctx = file->driver_priv;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = copy_from_user(bos, u64_to_user_ptr(args->bos),
 			     args->nr_bos * sizeof(*bos));
 	if (ret) {
@@ -471,6 +586,7 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 		goto err_submit_cmds;
 	}
 
+<<<<<<< HEAD
 	ret = copy_from_user(pmrs, u64_to_user_ptr(args->pmrs),
 			     args->nr_pmrs * sizeof(*pmrs));
 	if (ret) {
@@ -478,6 +594,8 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 		goto err_submit_cmds;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = copy_from_user(stream, u64_to_user_ptr(args->stream),
 			     args->stream_size);
 	if (ret) {
@@ -493,6 +611,7 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 		}
 	}
 
+<<<<<<< HEAD
 	ww_acquire_init(&ticket, &reservation_ww_class);
 
 	submit = submit_create(dev, gpu, args->nr_bos, args->nr_pmrs);
@@ -508,12 +627,27 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 
 	submit->cmdbuf.ctx = file->driver_priv;
 	submit->exec_state = args->exec_state;
+=======
+	submit = submit_create(dev, gpu, args->nr_bos);
+	if (!submit) {
+		ret = -ENOMEM;
+		goto err_submit_cmds;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	submit->flags = args->flags;
 
 	ret = submit_lookup_objects(submit, file, bos, args->nr_bos);
 	if (ret)
 		goto err_submit_objects;
 
+<<<<<<< HEAD
+=======
+	ret = submit_lock_objects(submit);
+	if (ret)
+		goto err_submit_objects;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!etnaviv_cmd_validate_one(gpu, stream, args->stream_size / 4,
 				      relocs, args->nr_relocs)) {
 		ret = -EINVAL;
@@ -521,6 +655,7 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 	}
 
 	if (args->flags & ETNA_SUBMIT_FENCE_FD_IN) {
+<<<<<<< HEAD
 		submit->in_fence = sync_file_get_fence(args->fence_fd);
 		if (!submit->in_fence) {
 			ret = -EINVAL;
@@ -547,15 +682,54 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 	if (ret)
 		goto err_submit_objects;
 
+=======
+		in_fence = sync_file_get_fence(args->fence_fd);
+		if (!in_fence) {
+			ret = -EINVAL;
+			goto err_submit_objects;
+		}
+
+		/*
+		 * Wait if the fence is from a foreign context, or if the fence
+		 * array contains any fence from a foreign context.
+		 */
+		if (!dma_fence_match_context(in_fence, gpu->fence_context)) {
+			ret = dma_fence_wait(in_fence, true);
+			if (ret)
+				goto err_submit_objects;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = submit_fence_sync(submit);
 	if (ret)
 		goto err_submit_objects;
 
+<<<<<<< HEAD
 	ret = etnaviv_sched_push_job(&ctx->sched_entity[args->pipe], submit);
 	if (ret)
 		goto err_submit_objects;
 
 	submit_attach_object_fences(submit);
+=======
+	ret = submit_pin_objects(submit);
+	if (ret)
+		goto out;
+
+	ret = submit_reloc(submit, stream, args->stream_size / 4,
+			   relocs, args->nr_relocs);
+	if (ret)
+		goto out;
+
+	memcpy(cmdbuf->vaddr, stream, args->stream_size);
+	cmdbuf->user_size = ALIGN(args->stream_size, 8);
+
+	ret = etnaviv_gpu_submit(gpu, submit, cmdbuf);
+	if (ret)
+		goto out;
+
+	cmdbuf = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (args->flags & ETNA_SUBMIT_FENCE_FD_OUT) {
 		/*
@@ -564,15 +738,23 @@ int etnaviv_ioctl_gem_submit(struct drm_device *dev, void *data,
 		 * fence to the sync file here, eliminating the ENOMEM
 		 * possibility at this stage.
 		 */
+<<<<<<< HEAD
 		sync_file = sync_file_create(submit->out_fence);
 		if (!sync_file) {
 			ret = -ENOMEM;
 			goto err_submit_objects;
+=======
+		sync_file = sync_file_create(submit->fence);
+		if (!sync_file) {
+			ret = -ENOMEM;
+			goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		fd_install(out_fence_fd, sync_file->file);
 	}
 
 	args->fence_fd = out_fence_fd;
+<<<<<<< HEAD
 	args->fence = submit->out_fence_id;
 
 err_submit_objects:
@@ -580,18 +762,46 @@ err_submit_objects:
 
 err_submit_ww_acquire:
 	ww_acquire_fini(&ticket);
+=======
+	args->fence = submit->fence->seqno;
+
+out:
+	submit_unpin_objects(submit);
+
+	/*
+	 * If we're returning -EAGAIN, it may be due to the userptr code
+	 * wanting to run its workqueue outside of any locks. Flush our
+	 * workqueue to ensure that it is run in a timely manner.
+	 */
+	if (ret == -EAGAIN)
+		flush_workqueue(priv->wq);
+
+err_submit_objects:
+	if (in_fence)
+		dma_fence_put(in_fence);
+	submit_cleanup(submit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_submit_cmds:
 	if (ret && (out_fence_fd >= 0))
 		put_unused_fd(out_fence_fd);
+<<<<<<< HEAD
+=======
+	/* if we still own the cmdbuf */
+	if (cmdbuf)
+		etnaviv_cmdbuf_free(cmdbuf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (stream)
 		kvfree(stream);
 	if (bos)
 		kvfree(bos);
 	if (relocs)
 		kvfree(relocs);
+<<<<<<< HEAD
 	if (pmrs)
 		kvfree(pmrs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }

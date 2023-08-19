@@ -197,11 +197,30 @@ extern struct { char _entry[32]; } hypercall_page[];
 	(type)__res;							\
 })
 
+<<<<<<< HEAD
 static inline long
 xen_single_call(unsigned int call,
 		unsigned long a1, unsigned long a2,
 		unsigned long a3, unsigned long a4,
 		unsigned long a5)
+=======
+#define _hypercall5(type, name, a1, a2, a3, a4, a5)			\
+({									\
+	__HYPERCALL_DECLS;						\
+	__HYPERCALL_5ARG(a1, a2, a3, a4, a5);				\
+	asm volatile (__HYPERCALL					\
+		      : __HYPERCALL_5PARAM				\
+		      : __HYPERCALL_ENTRY(name)				\
+		      : __HYPERCALL_CLOBBER5);				\
+	(type)__res;							\
+})
+
+static inline long
+privcmd_call(unsigned call,
+	     unsigned long a1, unsigned long a2,
+	     unsigned long a3, unsigned long a4,
+	     unsigned long a5)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	__HYPERCALL_DECLS;
 	__HYPERCALL_5ARG(a1, a2, a3, a4, a5);
@@ -209,10 +228,15 @@ xen_single_call(unsigned int call,
 	if (call >= PAGE_SIZE / sizeof(hypercall_page[0]))
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	stac();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	asm volatile(CALL_NOSPEC
 		     : __HYPERCALL_5PARAM
 		     : [thunk_target] "a" (&hypercall_page[call])
 		     : __HYPERCALL_CLOBBER5);
+<<<<<<< HEAD
 
 	return (long)__res;
 }
@@ -230,6 +254,11 @@ privcmd_call(unsigned int call,
 	clac();
 
 	return res;
+=======
+	clac();
+
+	return (long)__res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int
@@ -259,12 +288,53 @@ HYPERVISOR_set_gdt(unsigned long *frame_list, int entries)
 }
 
 static inline int
+<<<<<<< HEAD
+=======
+HYPERVISOR_stack_switch(unsigned long ss, unsigned long esp)
+{
+	return _hypercall2(int, stack_switch, ss, esp);
+}
+
+#ifdef CONFIG_X86_32
+static inline int
+HYPERVISOR_set_callbacks(unsigned long event_selector,
+			 unsigned long event_address,
+			 unsigned long failsafe_selector,
+			 unsigned long failsafe_address)
+{
+	return _hypercall4(int, set_callbacks,
+			   event_selector, event_address,
+			   failsafe_selector, failsafe_address);
+}
+#else  /* CONFIG_X86_64 */
+static inline int
+HYPERVISOR_set_callbacks(unsigned long event_address,
+			unsigned long failsafe_address,
+			unsigned long syscall_address)
+{
+	return _hypercall3(int, set_callbacks,
+			   event_address, failsafe_address,
+			   syscall_address);
+}
+#endif  /* CONFIG_X86_{32,64} */
+
+static inline int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 HYPERVISOR_callback_op(int cmd, void *arg)
 {
 	return _hypercall2(int, callback_op, cmd, arg);
 }
 
 static inline int
+<<<<<<< HEAD
+=======
+HYPERVISOR_fpu_taskswitch(int set)
+{
+	return _hypercall1(int, fpu_taskswitch, set);
+}
+
+static inline int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 HYPERVISOR_sched_op(int cmd, void *arg)
 {
 	return _hypercall2(int, sched_op, cmd, arg);
@@ -376,6 +446,22 @@ HYPERVISOR_grant_table_op(unsigned int cmd, void *uop, unsigned int count)
 }
 
 static inline int
+<<<<<<< HEAD
+=======
+HYPERVISOR_update_va_mapping_otherdomain(unsigned long va, pte_t new_val,
+					 unsigned long flags, domid_t domid)
+{
+	if (sizeof(new_val) == sizeof(long))
+		return _hypercall4(int, update_va_mapping_otherdomain, va,
+				   new_val.pte, flags, domid);
+	else
+		return _hypercall5(int, update_va_mapping_otherdomain, va,
+				   new_val.pte, new_val.pte >> 32,
+				   flags, domid);
+}
+
+static inline int
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 HYPERVISOR_vm_assist(unsigned int cmd, unsigned int type)
 {
 	return _hypercall2(int, vm_assist, cmd, type);
@@ -409,6 +495,15 @@ HYPERVISOR_suspend(unsigned long start_info_mfn)
 	return _hypercall3(int, sched_op, SCHEDOP_shutdown, &r, start_info_mfn);
 }
 
+<<<<<<< HEAD
+=======
+static inline int
+HYPERVISOR_nmi_op(unsigned long op, unsigned long arg)
+{
+	return _hypercall2(int, nmi_op, op, arg);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned long __must_check
 HYPERVISOR_hvm_op(int op, void *arg)
 {
@@ -467,6 +562,42 @@ MULTI_update_va_mapping(struct multicall_entry *mcl, unsigned long va,
 }
 
 static inline void
+<<<<<<< HEAD
+=======
+MULTI_grant_table_op(struct multicall_entry *mcl, unsigned int cmd,
+		     void *uop, unsigned int count)
+{
+	mcl->op = __HYPERVISOR_grant_table_op;
+	mcl->args[0] = cmd;
+	mcl->args[1] = (unsigned long)uop;
+	mcl->args[2] = count;
+
+	trace_xen_mc_entry(mcl, 3);
+}
+
+static inline void
+MULTI_update_va_mapping_otherdomain(struct multicall_entry *mcl, unsigned long va,
+				    pte_t new_val, unsigned long flags,
+				    domid_t domid)
+{
+	mcl->op = __HYPERVISOR_update_va_mapping_otherdomain;
+	mcl->args[0] = va;
+	if (sizeof(new_val) == sizeof(long)) {
+		mcl->args[1] = new_val.pte;
+		mcl->args[2] = flags;
+		mcl->args[3] = domid;
+	} else {
+		mcl->args[1] = new_val.pte;
+		mcl->args[2] = new_val.pte >> 32;
+		mcl->args[3] = flags;
+		mcl->args[4] = domid;
+	}
+
+	trace_xen_mc_entry(mcl, sizeof(new_val) == sizeof(long) ? 4 : 5);
+}
+
+static inline void
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MULTI_update_descriptor(struct multicall_entry *mcl, u64 maddr,
 			struct desc_struct desc)
 {
@@ -487,6 +618,19 @@ MULTI_update_descriptor(struct multicall_entry *mcl, u64 maddr,
 }
 
 static inline void
+<<<<<<< HEAD
+=======
+MULTI_memory_op(struct multicall_entry *mcl, unsigned int cmd, void *arg)
+{
+	mcl->op = __HYPERVISOR_memory_op;
+	mcl->args[0] = cmd;
+	mcl->args[1] = (unsigned long)arg;
+
+	trace_xen_mc_entry(mcl, 2);
+}
+
+static inline void
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MULTI_mmu_update(struct multicall_entry *mcl, struct mmu_update *req,
 		 int count, int *success_count, domid_t domid)
 {
@@ -513,6 +657,19 @@ MULTI_mmuext_op(struct multicall_entry *mcl, struct mmuext_op *op, int count,
 }
 
 static inline void
+<<<<<<< HEAD
+=======
+MULTI_set_gdt(struct multicall_entry *mcl, unsigned long *frames, int entries)
+{
+	mcl->op = __HYPERVISOR_set_gdt;
+	mcl->args[0] = (unsigned long)frames;
+	mcl->args[1] = entries;
+
+	trace_xen_mc_entry(mcl, 2);
+}
+
+static inline void
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MULTI_stack_switch(struct multicall_entry *mcl,
 		   unsigned long ss, unsigned long esp)
 {

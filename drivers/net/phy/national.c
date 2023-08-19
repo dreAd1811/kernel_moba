@@ -139,6 +139,11 @@ static struct phy_driver dp83865_driver[] = { {
 	.features = PHY_GBIT_FEATURES,
 	.flags = PHY_HAS_INTERRUPT,
 	.config_init = ns_config_init,
+<<<<<<< HEAD
+=======
+	.config_aneg = genphy_config_aneg,
+	.read_status = genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ack_interrupt = ns_ack_interrupt,
 	.config_intr = ns_config_intr,
 } };

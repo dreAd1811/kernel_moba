@@ -108,7 +108,10 @@ ReadISAC(struct IsdnCardState *cs, u_char offset)
 	switch (cs->subtyp) {
 	case R647:
 		off2 = ((off2 << 8 & 0xf000) | (off2 & 0xf));
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case R685:
 		return (readreg(cs->hw.gazel.isac, off2));
 	case R753:
@@ -126,7 +129,10 @@ WriteISAC(struct IsdnCardState *cs, u_char offset, u_char value)
 	switch (cs->subtyp) {
 	case R647:
 		off2 = ((off2 << 8 & 0xf000) | (off2 & 0xf));
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case R685:
 		writereg(cs->hw.gazel.isac, off2, value);
 		break;
@@ -205,7 +211,10 @@ ReadHSCX(struct IsdnCardState *cs, int hscx, u_char offset)
 	switch (cs->subtyp) {
 	case R647:
 		off2 = ((off2 << 8 & 0xf000) | (off2 & 0xf));
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case R685:
 		return (readreg(cs->hw.gazel.hscx[hscx], off2));
 	case R753:
@@ -223,7 +232,10 @@ WriteHSCX(struct IsdnCardState *cs, int hscx, u_char offset, u_char value)
 	switch (cs->subtyp) {
 	case R647:
 		off2 = ((off2 << 8 & 0xf000) | (off2 & 0xf));
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case R685:
 		writereg(cs->hw.gazel.hscx[hscx], off2, value);
 		break;

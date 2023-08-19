@@ -4,7 +4,11 @@
 #include <asm/trace.h>
 #include <asm/asm-prototypes.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_JUMP_LABEL
+=======
+#ifdef HAVE_JUMP_LABEL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct static_key opal_tracepoint_key = STATIC_KEY_INIT;
 
 int opal_tracepoint_regfunc(void)

@@ -31,6 +31,15 @@
 #include <engine/gr.h>
 #include <engine/mpeg.h>
 
+<<<<<<< HEAD
+=======
+bool
+nvkm_fb_memtype_valid(struct nvkm_fb *fb, u32 memtype)
+{
+	return fb->func->memtype_valid(fb, memtype);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void
 nvkm_fb_tile_fini(struct nvkm_fb *fb, int region, struct nvkm_fb_tile *tile)
 {
@@ -94,7 +103,10 @@ static int
 nvkm_fb_oneinit(struct nvkm_subdev *subdev)
 {
 	struct nvkm_fb *fb = nvkm_fb(subdev);
+<<<<<<< HEAD
 	u32 tags = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fb->func->ram_new) {
 		int ret = fb->func->ram_new(fb, &fb->ram);
@@ -110,6 +122,7 @@ nvkm_fb_oneinit(struct nvkm_subdev *subdev)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	/* Initialise compression tag allocator.
 	 *
 	 * LTC oneinit() will override this on Fermi and newer.
@@ -120,6 +133,9 @@ nvkm_fb_oneinit(struct nvkm_subdev *subdev)
 	}
 
 	return nvkm_mm_init(&fb->tags, 0, 0, tags, 1);
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -139,6 +155,7 @@ nvkm_fb_init(struct nvkm_subdev *subdev)
 
 	if (fb->func->init)
 		fb->func->init(fb);
+<<<<<<< HEAD
 
 	if (fb->func->init_remapper)
 		fb->func->init_remapper(fb);
@@ -149,6 +166,10 @@ nvkm_fb_init(struct nvkm_subdev *subdev)
 			return ret;
 	}
 
+=======
+	if (fb->func->init_page)
+		fb->func->init_page(fb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (fb->func->init_unkn)
 		fb->func->init_unkn(fb);
 	return 0;
@@ -160,13 +181,21 @@ nvkm_fb_dtor(struct nvkm_subdev *subdev)
 	struct nvkm_fb *fb = nvkm_fb(subdev);
 	int i;
 
+<<<<<<< HEAD
 	nvkm_memory_unref(&fb->mmu_wr);
 	nvkm_memory_unref(&fb->mmu_rd);
+=======
+	nvkm_memory_del(&fb->mmu_wr);
+	nvkm_memory_del(&fb->mmu_rd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < fb->tile.regions; i++)
 		fb->func->tile.fini(fb, i, &fb->tile.region[i]);
 
+<<<<<<< HEAD
 	nvkm_mm_fini(&fb->tags);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nvkm_ram_del(&fb->ram);
 
 	if (fb->func->dtor)
@@ -189,8 +218,12 @@ nvkm_fb_ctor(const struct nvkm_fb_func *func, struct nvkm_device *device,
 	nvkm_subdev_ctor(&nvkm_fb, device, index, &fb->subdev);
 	fb->func = func;
 	fb->tile.regions = fb->func->tile.regions;
+<<<<<<< HEAD
 	fb->page = nvkm_longopt(device->cfgopt, "NvFbBigPage",
 				fb->func->default_bigpage);
+=======
+	fb->page = nvkm_longopt(device->cfgopt, "NvFbBigPage", 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int

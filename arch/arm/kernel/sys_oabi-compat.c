@@ -287,7 +287,11 @@ asmlinkage long sys_oabi_epoll_wait(int epfd,
 		return -EINVAL;
 	if (!access_ok(VERIFY_WRITE, events, sizeof(*events) * maxevents))
 		return -EFAULT;
+<<<<<<< HEAD
 	kbuf = kmalloc_array(maxevents, sizeof(*kbuf), GFP_KERNEL);
+=======
+	kbuf = kmalloc(sizeof(*kbuf) * maxevents, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!kbuf)
 		return -ENOMEM;
 	fs = get_fs();
@@ -328,7 +332,11 @@ asmlinkage long sys_oabi_semtimedop(int semid,
 		return -EINVAL;
 	if (!access_ok(VERIFY_READ, tsops, sizeof(*tsops) * nsops))
 		return -EFAULT;
+<<<<<<< HEAD
 	sops = kmalloc_array(nsops, sizeof(*sops), GFP_KERNEL);
+=======
+	sops = kmalloc(sizeof(*sops) * nsops, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sops)
 		return -ENOMEM;
 	err = 0;

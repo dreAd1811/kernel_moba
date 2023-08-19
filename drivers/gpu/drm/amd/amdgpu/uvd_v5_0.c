@@ -35,7 +35,10 @@
 #include "vi.h"
 #include "smu/smu_7_1_2_d.h"
 #include "smu/smu_7_1_2_sh_mask.h"
+<<<<<<< HEAD
 #include "ivsrcid/ivsrcid_vislands30.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void uvd_v5_0_set_ring_funcs(struct amdgpu_device *adev);
 static void uvd_v5_0_set_irq_funcs(struct amdgpu_device *adev);
@@ -90,7 +93,10 @@ static void uvd_v5_0_ring_set_wptr(struct amdgpu_ring *ring)
 static int uvd_v5_0_early_init(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+<<<<<<< HEAD
 	adev->uvd.num_uvd_inst = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	uvd_v5_0_set_ring_funcs(adev);
 	uvd_v5_0_set_irq_funcs(adev);
@@ -105,7 +111,11 @@ static int uvd_v5_0_sw_init(void *handle)
 	int r;
 
 	/* UVD TRAP */
+<<<<<<< HEAD
 	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, VISLANDS30_IV_SRCID_UVD_SYSTEM_MESSAGE, &adev->uvd.inst->irq);
+=======
+	r = amdgpu_irq_add_id(adev, AMDGPU_IH_CLIENTID_LEGACY, 124, &adev->uvd.irq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (r)
 		return r;
 
@@ -113,17 +123,26 @@ static int uvd_v5_0_sw_init(void *handle)
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	ring = &adev->uvd.inst->ring;
 	sprintf(ring->name, "uvd");
 	r = amdgpu_ring_init(adev, ring, 512, &adev->uvd.inst->irq, 0);
 	if (r)
 		return r;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = amdgpu_uvd_resume(adev);
 	if (r)
 		return r;
 
+<<<<<<< HEAD
 	r = amdgpu_uvd_entity_init(adev);
+=======
+	ring = &adev->uvd.ring;
+	sprintf(ring->name, "uvd");
+	r = amdgpu_ring_init(adev, ring, 512, &adev->uvd.irq, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
@@ -150,7 +169,11 @@ static int uvd_v5_0_sw_fini(void *handle)
 static int uvd_v5_0_hw_init(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+<<<<<<< HEAD
 	struct amdgpu_ring *ring = &adev->uvd.inst->ring;
+=======
+	struct amdgpu_ring *ring = &adev->uvd.ring;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t tmp;
 	int r;
 
@@ -210,7 +233,11 @@ done:
 static int uvd_v5_0_hw_fini(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+<<<<<<< HEAD
 	struct amdgpu_ring *ring = &adev->uvd.inst->ring;
+=======
+	struct amdgpu_ring *ring = &adev->uvd.ring;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (RREG32(mmUVD_STATUS) != 0)
 		uvd_v5_0_stop(adev);
@@ -259,12 +286,21 @@ static void uvd_v5_0_mc_resume(struct amdgpu_device *adev)
 
 	/* programm memory controller bits 0-27 */
 	WREG32(mmUVD_LMI_VCPU_CACHE_64BIT_BAR_LOW,
+<<<<<<< HEAD
 			lower_32_bits(adev->uvd.inst->gpu_addr));
 	WREG32(mmUVD_LMI_VCPU_CACHE_64BIT_BAR_HIGH,
 			upper_32_bits(adev->uvd.inst->gpu_addr));
 
 	offset = AMDGPU_UVD_FIRMWARE_OFFSET;
 	size = AMDGPU_UVD_FIRMWARE_SIZE(adev);
+=======
+			lower_32_bits(adev->uvd.gpu_addr));
+	WREG32(mmUVD_LMI_VCPU_CACHE_64BIT_BAR_HIGH,
+			upper_32_bits(adev->uvd.gpu_addr));
+
+	offset = AMDGPU_UVD_FIRMWARE_OFFSET;
+	size = AMDGPU_GPU_PAGE_ALIGN(adev->uvd.fw->size + 4);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32(mmUVD_VCPU_CACHE_OFFSET0, offset >> 3);
 	WREG32(mmUVD_VCPU_CACHE_SIZE0, size);
 
@@ -293,7 +329,11 @@ static void uvd_v5_0_mc_resume(struct amdgpu_device *adev)
  */
 static int uvd_v5_0_start(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	struct amdgpu_ring *ring = &adev->uvd.inst->ring;
+=======
+	struct amdgpu_ring *ring = &adev->uvd.ring;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t rb_bufsz, tmp;
 	uint32_t lmi_swap_cntl;
 	uint32_t mp_swap_cntl;
@@ -485,6 +525,35 @@ static void uvd_v5_0_ring_emit_fence(struct amdgpu_ring *ring, u64 addr, u64 seq
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * uvd_v5_0_ring_emit_hdp_flush - emit an hdp flush
+ *
+ * @ring: amdgpu_ring pointer
+ *
+ * Emits an hdp flush.
+ */
+static void uvd_v5_0_ring_emit_hdp_flush(struct amdgpu_ring *ring)
+{
+	amdgpu_ring_write(ring, PACKET0(mmHDP_MEM_COHERENCY_FLUSH_CNTL, 0));
+	amdgpu_ring_write(ring, 0);
+}
+
+/**
+ * uvd_v5_0_ring_hdp_invalidate - emit an hdp invalidate
+ *
+ * @ring: amdgpu_ring pointer
+ *
+ * Emits an hdp invalidate.
+ */
+static void uvd_v5_0_ring_emit_hdp_invalidate(struct amdgpu_ring *ring)
+{
+	amdgpu_ring_write(ring, PACKET0(mmHDP_DEBUG0, 0));
+	amdgpu_ring_write(ring, 1);
+}
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * uvd_v5_0_ring_test_ring - register write test
  *
  * @ring: amdgpu_ring pointer
@@ -516,7 +585,11 @@ static int uvd_v5_0_ring_test_ring(struct amdgpu_ring *ring)
 	}
 
 	if (i < adev->usec_timeout) {
+<<<<<<< HEAD
 		DRM_DEBUG("ring test on %d succeeded in %d usecs\n",
+=======
+		DRM_INFO("ring test on %d succeeded in %d usecs\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 ring->idx, i);
 	} else {
 		DRM_ERROR("amdgpu: ring %d test failed (0x%08X)\n",
@@ -536,7 +609,11 @@ static int uvd_v5_0_ring_test_ring(struct amdgpu_ring *ring)
  */
 static void uvd_v5_0_ring_emit_ib(struct amdgpu_ring *ring,
 				  struct amdgpu_ib *ib,
+<<<<<<< HEAD
 				  unsigned vmid, bool ctx_switch)
+=======
+				  unsigned vm_id, bool ctx_switch)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	amdgpu_ring_write(ring, PACKET0(mmUVD_LMI_RBC_IB_64BIT_BAR_LOW, 0));
 	amdgpu_ring_write(ring, lower_32_bits(ib->gpu_addr));
@@ -546,6 +623,7 @@ static void uvd_v5_0_ring_emit_ib(struct amdgpu_ring *ring,
 	amdgpu_ring_write(ring, ib->length_dw);
 }
 
+<<<<<<< HEAD
 static void uvd_v5_0_ring_insert_nop(struct amdgpu_ring *ring, uint32_t count)
 {
 	int i;
@@ -558,6 +636,8 @@ static void uvd_v5_0_ring_insert_nop(struct amdgpu_ring *ring, uint32_t count)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool uvd_v5_0_is_idle(void *handle)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
@@ -604,7 +684,11 @@ static int uvd_v5_0_process_interrupt(struct amdgpu_device *adev,
 				      struct amdgpu_iv_entry *entry)
 {
 	DRM_DEBUG("IH: UVD TRAP\n");
+<<<<<<< HEAD
 	amdgpu_fence_process(&adev->uvd.inst->ring);
+=======
+	amdgpu_fence_process(&adev->uvd.ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -858,19 +942,36 @@ static const struct amd_ip_funcs uvd_v5_0_ip_funcs = {
 static const struct amdgpu_ring_funcs uvd_v5_0_ring_funcs = {
 	.type = AMDGPU_RING_TYPE_UVD,
 	.align_mask = 0xf,
+<<<<<<< HEAD
+=======
+	.nop = PACKET0(mmUVD_NO_OP, 0),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.support_64bit_ptrs = false,
 	.get_rptr = uvd_v5_0_ring_get_rptr,
 	.get_wptr = uvd_v5_0_ring_get_wptr,
 	.set_wptr = uvd_v5_0_ring_set_wptr,
 	.parse_cs = amdgpu_uvd_ring_parse_cs,
 	.emit_frame_size =
+<<<<<<< HEAD
+=======
+		2 + /* uvd_v5_0_ring_emit_hdp_flush */
+		2 + /* uvd_v5_0_ring_emit_hdp_invalidate */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		14, /* uvd_v5_0_ring_emit_fence  x1 no user fence */
 	.emit_ib_size = 6, /* uvd_v5_0_ring_emit_ib */
 	.emit_ib = uvd_v5_0_ring_emit_ib,
 	.emit_fence = uvd_v5_0_ring_emit_fence,
+<<<<<<< HEAD
 	.test_ring = uvd_v5_0_ring_test_ring,
 	.test_ib = amdgpu_uvd_ring_test_ib,
 	.insert_nop = uvd_v5_0_ring_insert_nop,
+=======
+	.emit_hdp_flush = uvd_v5_0_ring_emit_hdp_flush,
+	.emit_hdp_invalidate = uvd_v5_0_ring_emit_hdp_invalidate,
+	.test_ring = uvd_v5_0_ring_test_ring,
+	.test_ib = amdgpu_uvd_ring_test_ib,
+	.insert_nop = amdgpu_ring_insert_nop,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.pad_ib = amdgpu_ring_generic_pad_ib,
 	.begin_use = amdgpu_uvd_ring_begin_use,
 	.end_use = amdgpu_uvd_ring_end_use,
@@ -878,7 +979,11 @@ static const struct amdgpu_ring_funcs uvd_v5_0_ring_funcs = {
 
 static void uvd_v5_0_set_ring_funcs(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	adev->uvd.inst->ring.funcs = &uvd_v5_0_ring_funcs;
+=======
+	adev->uvd.ring.funcs = &uvd_v5_0_ring_funcs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct amdgpu_irq_src_funcs uvd_v5_0_irq_funcs = {
@@ -888,8 +993,13 @@ static const struct amdgpu_irq_src_funcs uvd_v5_0_irq_funcs = {
 
 static void uvd_v5_0_set_irq_funcs(struct amdgpu_device *adev)
 {
+<<<<<<< HEAD
 	adev->uvd.inst->irq.num_types = 1;
 	adev->uvd.inst->irq.funcs = &uvd_v5_0_irq_funcs;
+=======
+	adev->uvd.irq.num_types = 1;
+	adev->uvd.irq.funcs = &uvd_v5_0_irq_funcs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct amdgpu_ip_block_version uvd_v5_0_ip_block =

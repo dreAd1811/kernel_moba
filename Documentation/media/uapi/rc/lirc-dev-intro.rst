@@ -6,19 +6,32 @@
 Introduction
 ************
 
+<<<<<<< HEAD
 LIRC stands for Linux Infrared Remote Control. The LIRC device interface is
 a bi-directional interface for transporting raw IR and decoded scancodes
 data between userspace and kernelspace. Fundamentally, it is just a chardev
 (/dev/lircX, for X = 0, 1, 2, ...), with a number of standard struct
 file_operations defined on it. With respect to transporting raw IR and
 decoded scancodes to and fro, the essential fops are read, write and ioctl.
+=======
+The LIRC device interface is a bi-directional interface for transporting
+raw IR data between userspace and kernelspace. Fundamentally, it is just
+a chardev (/dev/lircX, for X = 0, 1, 2, ...), with a number of standard
+struct file_operations defined on it. With respect to transporting raw
+IR data to and fro, the essential fops are read, write and ioctl.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Example dmesg output upon a driver registering w/LIRC:
 
 .. code-block:: none
 
     $ dmesg |grep lirc_dev
+<<<<<<< HEAD
     rc rc0: lirc_dev: driver mceusb registered at minor = 0, raw IR receiver, raw IR transmitter
+=======
+    lirc_dev: IR Remote Control driver registered, major 248
+    rc rc0: lirc_dev: driver ir-lirc-codec (mceusb) registered at minor = 0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 What you should see for a chardev:
 
@@ -36,6 +49,7 @@ LIRC modes
 LIRC supports some modes of receiving and sending IR codes, as shown
 on the following table.
 
+<<<<<<< HEAD
 .. _lirc-mode-scancode:
 .. _lirc-scancode-flag-toggle:
 .. _lirc-scancode-flag-repeat:
@@ -73,6 +87,8 @@ on the following table.
     The ``timestamp`` field is filled with the time nanoseconds
     (in ``CLOCK_MONOTONIC``) when the scancode was decoded.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .. _lirc-mode-mode2:
 
 ``LIRC_MODE_MODE2``
@@ -109,6 +125,24 @@ on the following table.
         this packet will be sent, with the number of microseconds with
         no IR.
 
+<<<<<<< HEAD
+=======
+.. _lirc-mode-lirccode:
+
+``LIRC_MODE_LIRCCODE``
+
+    This mode can be used for IR receive and send.
+
+    The IR signal is decoded internally by the receiver, or encoded by the
+    transmitter. The LIRC interface represents the scancode as byte string,
+    which might not be a u32, it can be any length. The value is entirely
+    driver dependent. This mode is used by some older lirc drivers.
+
+    The length of each code depends on the driver, which can be retrieved
+    with :ref:`lirc_get_length`. This length is used both
+    for transmitting and receiving IR.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .. _lirc-mode-pulse:
 
 ``LIRC_MODE_PULSE``
@@ -121,6 +155,7 @@ on the following table.
     of entries.
 
     This mode is used only for IR send.
+<<<<<<< HEAD
 
 
 **************************
@@ -131,3 +166,5 @@ An enum :c:type:`rc_proto` in the :ref:`lirc_header` lists all the
 supported IR protocols:
 
 .. kernel-doc:: include/uapi/linux/lirc.h
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

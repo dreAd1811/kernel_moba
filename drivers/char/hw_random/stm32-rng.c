@@ -16,7 +16,10 @@
 #include <linux/delay.h>
 #include <linux/hw_random.h>
 #include <linux/io.h>
+<<<<<<< HEAD
 #include <linux/iopoll.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/of_address.h>
@@ -27,7 +30,10 @@
 
 #define RNG_CR 0x00
 #define RNG_CR_RNGEN BIT(2)
+<<<<<<< HEAD
 #define RNG_CR_CED BIT(5)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RNG_SR 0x04
 #define RNG_SR_SEIS BIT(6)
@@ -36,12 +42,27 @@
 
 #define RNG_DR 0x08
 
+<<<<<<< HEAD
+=======
+/*
+ * It takes 40 cycles @ 48MHz to generate each random number (e.g. <1us).
+ * At the time of writing STM32 parts max out at ~200MHz meaning a timeout
+ * of 500 leaves us a very comfortable margin for error. The loop to which
+ * the timeout applies takes at least 4 instructions per iteration so the
+ * timeout is enough to take us up to multi-GHz parts!
+ */
+#define RNG_TIMEOUT 500
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct stm32_rng_private {
 	struct hwrng rng;
 	void __iomem *base;
 	struct clk *clk;
 	struct reset_control *rst;
+<<<<<<< HEAD
 	bool ced;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
@@ -55,6 +76,7 @@ static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
 
 	while (max > sizeof(u32)) {
 		sr = readl_relaxed(priv->base + RNG_SR);
+<<<<<<< HEAD
 		/* Manage timeout which is based on timer and take */
 		/* care of initial delay time when enabling rng	*/
 		if (!sr && wait) {
@@ -65,6 +87,15 @@ static int stm32_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
 			if (retval)
 				dev_err((struct device *)priv->rng.priv,
 					"%s: timeout %x!\n", __func__, sr);
+=======
+		if (!sr && wait) {
+			unsigned int timeout = RNG_TIMEOUT;
+
+			do {
+				cpu_relax();
+				sr = readl_relaxed(priv->base + RNG_SR);
+			} while (!sr && --timeout);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* If error detected or data not ready... */
@@ -98,11 +129,15 @@ static int stm32_rng_init(struct hwrng *rng)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	if (priv->ced)
 		writel_relaxed(RNG_CR_RNGEN, priv->base + RNG_CR);
 	else
 		writel_relaxed(RNG_CR_RNGEN | RNG_CR_CED,
 			       priv->base + RNG_CR);
+=======
+	writel_relaxed(RNG_CR_RNGEN, priv->base + RNG_CR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* clear error indicators */
 	writel_relaxed(0, priv->base + RNG_SR);
@@ -150,8 +185,11 @@ static int stm32_rng_probe(struct platform_device *ofdev)
 		reset_control_deassert(priv->rst);
 	}
 
+<<<<<<< HEAD
 	priv->ced = of_property_read_bool(np, "clock-error-detect");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_set_drvdata(dev, priv);
 
 	priv->rng.name = dev_driver_string(dev),
@@ -169,6 +207,16 @@ static int stm32_rng_probe(struct platform_device *ofdev)
 	return devm_hwrng_register(dev, &priv->rng);
 }
 
+<<<<<<< HEAD
+=======
+static int stm32_rng_remove(struct platform_device *ofdev)
+{
+	pm_runtime_disable(&ofdev->dev);
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PM
 static int stm32_rng_runtime_suspend(struct device *dev)
 {
@@ -187,6 +235,7 @@ static int stm32_rng_runtime_resume(struct device *dev)
 }
 #endif
 
+<<<<<<< HEAD
 static const struct dev_pm_ops stm32_rng_pm_ops = {
 	SET_RUNTIME_PM_OPS(stm32_rng_runtime_suspend,
 			   stm32_rng_runtime_resume, NULL)
@@ -194,6 +243,10 @@ static const struct dev_pm_ops stm32_rng_pm_ops = {
 				pm_runtime_force_resume)
 };
 
+=======
+static UNIVERSAL_DEV_PM_OPS(stm32_rng_pm_ops, stm32_rng_runtime_suspend,
+			    stm32_rng_runtime_resume, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct of_device_id stm32_rng_match[] = {
 	{
@@ -210,6 +263,10 @@ static struct platform_driver stm32_rng_driver = {
 		.of_match_table = stm32_rng_match,
 	},
 	.probe = stm32_rng_probe,
+<<<<<<< HEAD
+=======
+	.remove = stm32_rng_remove,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 module_platform_driver(stm32_rng_driver);

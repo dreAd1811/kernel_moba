@@ -27,7 +27,11 @@ struct gf100_fifo {
 
 	struct {
 		struct nvkm_memory *mem;
+<<<<<<< HEAD
 		struct nvkm_vma *bar;
+=======
+		struct nvkm_vma bar;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} user;
 };
 

@@ -38,7 +38,16 @@ int intel_lpss_resume(struct device *dev);
 #ifdef CONFIG_PM_SLEEP
 #define INTEL_LPSS_SLEEP_PM_OPS			\
 	.prepare = intel_lpss_prepare,		\
+<<<<<<< HEAD
 	SET_LATE_SYSTEM_SLEEP_PM_OPS(intel_lpss_suspend, intel_lpss_resume)
+=======
+	.suspend = intel_lpss_suspend,		\
+	.resume = intel_lpss_resume,		\
+	.freeze = intel_lpss_suspend,		\
+	.thaw = intel_lpss_resume,		\
+	.poweroff = intel_lpss_suspend,		\
+	.restore = intel_lpss_resume,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 #define INTEL_LPSS_SLEEP_PM_OPS
 #endif

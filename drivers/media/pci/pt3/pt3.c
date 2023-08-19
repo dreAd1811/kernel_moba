@@ -1,8 +1,24 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Earthsoft PT3 driver
  *
  * Copyright (C) 2014 Akihiro Tsukada <tskd08@gmail.com>
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation version 2.
+ *
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/freezer.h>
@@ -14,10 +30,17 @@
 #include <linux/string.h>
 #include <linux/sched/signal.h>
 
+<<<<<<< HEAD
 #include <media/dmxdev.h>
 #include <media/dvbdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
+=======
+#include "dmxdev.h"
+#include "dvbdev.h"
+#include "dvb_demux.h"
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "pt3.h"
 
@@ -367,12 +390,17 @@ static int pt3_fe_init(struct pt3_board *pt3)
 
 static int pt3_attach_fe(struct pt3_board *pt3, int i)
 {
+<<<<<<< HEAD
 	const struct i2c_board_info *info;
+=======
+	struct i2c_board_info info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tc90522_config cfg;
 	struct i2c_client *cl;
 	struct dvb_adapter *dvb_adap;
 	int ret;
 
+<<<<<<< HEAD
 	info = &adap_conf[i].demod_info;
 	cfg = adap_conf[i].demod_cfg;
 	cfg.tuner_i2c = NULL;
@@ -383,6 +411,21 @@ static int pt3_attach_fe(struct pt3_board *pt3, int i)
 	if (!cl)
 		return -ENODEV;
 	pt3->adaps[i]->i2c_demod = cl;
+=======
+	info = adap_conf[i].demod_info;
+	cfg = adap_conf[i].demod_cfg;
+	cfg.tuner_i2c = NULL;
+	info.platform_data = &cfg;
+
+	ret = -ENODEV;
+	request_module("tc90522");
+	cl = i2c_new_device(&pt3->i2c_adap, &info);
+	if (!cl || !cl->dev.driver)
+		return -ENODEV;
+	pt3->adaps[i]->i2c_demod = cl;
+	if (!try_module_get(cl->dev.driver->owner))
+		goto err_demod_i2c_unregister_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!strncmp(cl->name, TC90522_I2C_DEV_SAT,
 		     strlen(TC90522_I2C_DEV_SAT))) {
@@ -390,14 +433,22 @@ static int pt3_attach_fe(struct pt3_board *pt3, int i)
 
 		tcfg = adap_conf[i].tuner_cfg.qm1d1c0042;
 		tcfg.fe = cfg.fe;
+<<<<<<< HEAD
 		info = &adap_conf[i].tuner_info;
 		cl = dvb_module_probe("qm1d1c0042", info->type, cfg.tuner_i2c,
 				      info->addr, &tcfg);
+=======
+		info = adap_conf[i].tuner_info;
+		info.platform_data = &tcfg;
+		request_module("qm1d1c0042");
+		cl = i2c_new_device(cfg.tuner_i2c, &info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		struct mxl301rf_config tcfg;
 
 		tcfg = adap_conf[i].tuner_cfg.mxl301rf;
 		tcfg.fe = cfg.fe;
+<<<<<<< HEAD
 		info = &adap_conf[i].tuner_info;
 		cl = dvb_module_probe("mxl301rf", info->type, cfg.tuner_i2c,
 				      info->addr, &tcfg);
@@ -405,10 +456,23 @@ static int pt3_attach_fe(struct pt3_board *pt3, int i)
 	if (!cl)
 		goto err_demod_module_release;
 	pt3->adaps[i]->i2c_tuner = cl;
+=======
+		info = adap_conf[i].tuner_info;
+		info.platform_data = &tcfg;
+		request_module("mxl301rf");
+		cl = i2c_new_device(cfg.tuner_i2c, &info);
+	}
+	if (!cl || !cl->dev.driver)
+		goto err_demod_module_put;
+	pt3->adaps[i]->i2c_tuner = cl;
+	if (!try_module_get(cl->dev.driver->owner))
+		goto err_tuner_i2c_unregister_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dvb_adap = &pt3->adaps[one_adapter ? 0 : i]->dvb_adap;
 	ret = dvb_register_frontend(dvb_adap, cfg.fe);
 	if (ret < 0)
+<<<<<<< HEAD
 		goto err_tuner_module_release;
 	pt3->adaps[i]->fe = cfg.fe;
 	return 0;
@@ -417,6 +481,20 @@ err_tuner_module_release:
 	dvb_module_release(pt3->adaps[i]->i2c_tuner);
 err_demod_module_release:
 	dvb_module_release(pt3->adaps[i]->i2c_demod);
+=======
+		goto err_tuner_module_put;
+	pt3->adaps[i]->fe = cfg.fe;
+	return 0;
+
+err_tuner_module_put:
+	module_put(pt3->adaps[i]->i2c_tuner->dev.driver->owner);
+err_tuner_i2c_unregister_device:
+	i2c_unregister_device(pt3->adaps[i]->i2c_tuner);
+err_demod_module_put:
+	module_put(pt3->adaps[i]->i2c_demod->dev.driver->owner);
+err_demod_i2c_unregister_device:
+	i2c_unregister_device(pt3->adaps[i]->i2c_demod);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -444,7 +522,11 @@ static int pt3_fetch_thread(void *data)
 
 		pt3_proc_dma(adap);
 
+<<<<<<< HEAD
 		delay = ktime_set(0, PT3_FETCH_DELAY * NSEC_PER_MSEC);
+=======
+		delay = PT3_FETCH_DELAY * NSEC_PER_MSEC;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_current_state(TASK_UNINTERRUPTIBLE);
 		freezable_schedule_hrtimeout_range(&delay,
 					PT3_FETCH_DELAY_DELTA * NSEC_PER_MSEC,
@@ -610,8 +692,19 @@ static void pt3_cleanup_adapter(struct pt3_board *pt3, int index)
 		adap->fe->callback = NULL;
 		if (adap->fe->frontend_priv)
 			dvb_unregister_frontend(adap->fe);
+<<<<<<< HEAD
 		dvb_module_release(adap->i2c_tuner);
 		dvb_module_release(adap->i2c_demod);
+=======
+		if (adap->i2c_tuner) {
+			module_put(adap->i2c_tuner->dev.driver->owner);
+			i2c_unregister_device(adap->i2c_tuner);
+		}
+		if (adap->i2c_demod) {
+			module_put(adap->i2c_demod->dev.driver->owner);
+			i2c_unregister_device(adap->i2c_demod);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	pt3_free_dmabuf(adap);
 	dvb_dmxdev_release(&adap->dmxdev);

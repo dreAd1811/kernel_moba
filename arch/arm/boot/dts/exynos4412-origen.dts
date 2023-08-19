@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Insignal's Exynos4412 based Origen board device tree source
  *
@@ -7,7 +10,15 @@
  *
  * Device tree source file for Insignal's Origen board which is based on
  * Samsung's Exynos4412 SoC.
+<<<<<<< HEAD
  */
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "exynos4412.dtsi"
@@ -29,7 +40,11 @@
 		stdout-path = &serial_2;
 	};
 
+<<<<<<< HEAD
 	firmware@203f000 {
+=======
+	firmware@0203F000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "samsung,secure-firmware";
 		reg = <0x0203F000 0x1000>;
 	};
@@ -90,7 +105,11 @@
 	samsung,vbus-gpio = <&gpx3 5 1>;
 	status = "okay";
 
+<<<<<<< HEAD
 	port@1 {
+=======
+	port@1{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = "okay";
 	};
 	port@2 {

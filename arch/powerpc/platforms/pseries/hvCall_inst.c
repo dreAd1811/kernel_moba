@@ -125,7 +125,11 @@ static void probe_hcall_entry(void *ignored, unsigned long opcode, unsigned long
 	h->purr_start = mfspr(SPRN_PURR);
 }
 
+<<<<<<< HEAD
 static void probe_hcall_exit(void *ignored, unsigned long opcode, long retval,
+=======
+static void probe_hcall_exit(void *ignored, unsigned long opcode, unsigned long retval,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     unsigned long *retbuf)
 {
 	struct hcall_stats *h;
@@ -163,7 +167,11 @@ static int __init hcall_inst_init(void)
 
 	for_each_possible_cpu(cpu) {
 		snprintf(cpu_name_buf, CPU_NAME_BUF_SIZE, "cpu%d", cpu);
+<<<<<<< HEAD
 		hcall_file = debugfs_create_file(cpu_name_buf, 0444,
+=======
+		hcall_file = debugfs_create_file(cpu_name_buf, S_IRUGO,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 hcall_root,
 						 per_cpu(hcall_stats, cpu),
 						 &hcall_inst_seq_fops);

@@ -296,6 +296,7 @@ static inline void cr4_init_shadow(void)
 	this_cpu_write(cpu_tlbstate.cr4, __read_cr4());
 }
 
+<<<<<<< HEAD
 static inline void __cr4_set(unsigned long cr4)
 {
 	lockdep_assert_irqs_disabled();
@@ -313,11 +314,25 @@ static inline void cr4_set_bits(unsigned long mask)
 	if ((cr4 | mask) != cr4)
 		__cr4_set(cr4 | mask);
 	local_irq_restore(flags);
+=======
+/* Set in this cpu's CR4. */
+static inline void cr4_set_bits(unsigned long mask)
+{
+	unsigned long cr4;
+
+	cr4 = this_cpu_read(cpu_tlbstate.cr4);
+	if ((cr4 | mask) != cr4) {
+		cr4 |= mask;
+		this_cpu_write(cpu_tlbstate.cr4, cr4);
+		__write_cr4(cr4);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Clear in this cpu's CR4. */
 static inline void cr4_clear_bits(unsigned long mask)
 {
+<<<<<<< HEAD
 	unsigned long cr4, flags;
 
 	local_irq_save(flags);
@@ -328,11 +343,30 @@ static inline void cr4_clear_bits(unsigned long mask)
 }
 
 static inline void cr4_toggle_bits_irqsoff(unsigned long mask)
+=======
+	unsigned long cr4;
+
+	cr4 = this_cpu_read(cpu_tlbstate.cr4);
+	if ((cr4 & ~mask) != cr4) {
+		cr4 &= ~mask;
+		this_cpu_write(cpu_tlbstate.cr4, cr4);
+		__write_cr4(cr4);
+	}
+}
+
+static inline void cr4_toggle_bits(unsigned long mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long cr4;
 
 	cr4 = this_cpu_read(cpu_tlbstate.cr4);
+<<<<<<< HEAD
 	__cr4_set(cr4 ^ mask);
+=======
+	cr4 ^= mask;
+	this_cpu_write(cpu_tlbstate.cr4, cr4);
+	__write_cr4(cr4);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Read the CR4 shadow. */
@@ -602,9 +636,12 @@ extern void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch);
 #ifndef CONFIG_PARAVIRT
 #define flush_tlb_others(mask, info)	\
 	native_flush_tlb_others(mask, info)
+<<<<<<< HEAD
 
 #define paravirt_tlb_remove_table(tlb, page) \
 	tlb_remove_page(tlb, (void *)(page))
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #endif /* _ASM_X86_TLBFLUSH_H */

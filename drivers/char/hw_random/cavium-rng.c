@@ -62,7 +62,11 @@ static int cavium_rng_probe(struct pci_dev *pdev,
 }
 
 /* Disable VF and RNG Hardware */
+<<<<<<< HEAD
 static void cavium_rng_remove(struct pci_dev *pdev)
+=======
+void  cavium_rng_remove(struct pci_dev *pdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cavium_rng_pf *rng;
 

@@ -25,6 +25,7 @@
 #include <linux/sched.h>
 #include <linux/slab.h>
 #include <linux/syscalls.h>
+<<<<<<< HEAD
 
 #include <asm/cpufeature.h>
 #include <asm/syscall.h>
@@ -32,11 +33,22 @@
 SYSCALL_DEFINE6(mmap, unsigned long, addr, unsigned long, len,
 		unsigned long, prot, unsigned long, flags,
 		unsigned long, fd, unsigned long, off)
+=======
+#include <asm/cpufeature.h>
+
+asmlinkage long sys_mmap(unsigned long addr, unsigned long len,
+			 unsigned long prot, unsigned long flags,
+			 unsigned long fd, off_t off)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (offset_in_page(off) != 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	return ksys_mmap_pgoff(addr, len, prot, flags, fd, off >> PAGE_SHIFT);
+=======
+	return sys_mmap_pgoff(addr, len, prot, flags, fd, off >> PAGE_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 SYSCALL_DEFINE1(arm64_personality, unsigned int, personality)
@@ -44,6 +56,7 @@ SYSCALL_DEFINE1(arm64_personality, unsigned int, personality)
 	if (personality(personality) == PER_LINUX32 &&
 		!system_supports_32bit_el0())
 		return -EINVAL;
+<<<<<<< HEAD
 	return ksys_personality(personality);
 }
 
@@ -52,11 +65,15 @@ asmlinkage long sys_ni_syscall(void);
 asmlinkage long __arm64_sys_ni_syscall(const struct pt_regs *__unused)
 {
 	return sys_ni_syscall();
+=======
+	return sys_personality(personality);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
  * Wrappers to pass the pt_regs argument.
  */
+<<<<<<< HEAD
 #define __arm64_sys_personality		__arm64_sys_arm64_personality
 
 #undef __SYSCALL
@@ -68,5 +85,20 @@ asmlinkage long __arm64_sys_ni_syscall(const struct pt_regs *__unused)
 
 const syscall_fn_t sys_call_table[__NR_syscalls] = {
 	[0 ... __NR_syscalls - 1] = __arm64_sys_ni_syscall,
+=======
+asmlinkage long sys_rt_sigreturn_wrapper(void);
+#define sys_rt_sigreturn	sys_rt_sigreturn_wrapper
+#define sys_personality		sys_arm64_personality
+
+#undef __SYSCALL
+#define __SYSCALL(nr, sym)	[nr] = sym,
+
+/*
+ * The sys_call_table array must be 4K aligned to be accessible from
+ * kernel/entry.S.
+ */
+void * const sys_call_table[__NR_syscalls] __aligned(4096) = {
+	[0 ... __NR_syscalls - 1] = sys_ni_syscall,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/unistd.h>
 };

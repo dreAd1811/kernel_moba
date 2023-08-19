@@ -24,8 +24,16 @@
 #ifndef _I915_GEM_RENDER_STATE_H_
 #define _I915_GEM_RENDER_STATE_H_
 
+<<<<<<< HEAD
 struct i915_request;
 
 int i915_gem_render_state_emit(struct i915_request *rq);
+=======
+struct drm_i915_gem_request;
+
+int i915_gem_render_state_init(struct intel_engine_cs *engine);
+int i915_gem_render_state_emit(struct drm_i915_gem_request *req);
+void i915_gem_render_state_fini(struct intel_engine_cs *engine);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _I915_GEM_RENDER_STATE_H_ */

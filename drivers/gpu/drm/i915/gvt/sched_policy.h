@@ -57,6 +57,9 @@ void intel_vgpu_start_schedule(struct intel_vgpu *vgpu);
 
 void intel_vgpu_stop_schedule(struct intel_vgpu *vgpu);
 
+<<<<<<< HEAD
 void intel_gvt_kick_schedule(struct intel_gvt *gvt);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

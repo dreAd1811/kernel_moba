@@ -1,7 +1,11 @@
 /*
  * Generic DVI Connector driver
  *
+<<<<<<< HEAD
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * Copyright (C) 2013 Texas Instruments
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -9,7 +13,10 @@
  * the Free Software Foundation.
  */
 
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/i2c.h>
 #include <linux/module.h>
 #include <linux/platform_device.h>
@@ -45,6 +52,7 @@ struct panel_drv_data {
 	struct videomode vm;
 
 	struct i2c_adapter *i2c_adapter;
+<<<<<<< HEAD
 
 	struct gpio_desc *hpd_gpio;
 
@@ -53,6 +61,8 @@ struct panel_drv_data {
 	bool hpd_enabled;
 	/* mutex for hpd fields above */
 	struct mutex hpd_lock;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define to_panel_data(x) container_of(x, struct panel_drv_data, dssdev)
@@ -60,12 +70,17 @@ struct panel_drv_data {
 static int dvic_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
+<<<<<<< HEAD
 	struct omap_dss_device *in;
+=======
+	struct omap_dss_device *in = ddata->in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
+<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(dssdev->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(dssdev->dev, "failed to find video source\n");
@@ -79,6 +94,12 @@ static int dvic_connect(struct omap_dss_device *dssdev)
 	}
 
 	ddata->in = in;
+=======
+	r = in->ops.dvi->connect(in, dssdev);
+	if (r)
+		return r;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -91,9 +112,12 @@ static void dvic_disconnect(struct omap_dss_device *dssdev)
 		return;
 
 	in->ops.dvi->disconnect(in, dssdev);
+<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dvic_enable(struct omap_dss_device *dssdev)
@@ -198,9 +222,12 @@ static int dvic_read_edid(struct omap_dss_device *dssdev,
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
 	int r, l, bytes_read;
 
+<<<<<<< HEAD
 	if (ddata->hpd_gpio && !gpiod_get_value_cansleep(ddata->hpd_gpio))
 		return -ENODEV;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ddata->i2c_adapter)
 		return -ENODEV;
 
@@ -232,9 +259,12 @@ static bool dvic_detect(struct omap_dss_device *dssdev)
 	unsigned char out;
 	int r;
 
+<<<<<<< HEAD
 	if (ddata->hpd_gpio)
 		return gpiod_get_value_cansleep(ddata->hpd_gpio);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ddata->i2c_adapter)
 		return true;
 
@@ -243,6 +273,7 @@ static bool dvic_detect(struct omap_dss_device *dssdev)
 	return r == 0;
 }
 
+<<<<<<< HEAD
 static int dvic_register_hpd_cb(struct omap_dss_device *dssdev,
 				 void (*cb)(void *cb_data,
 					    enum drm_connector_status status),
@@ -297,6 +328,8 @@ static void dvic_disable_hpd(struct omap_dss_device *dssdev)
 	mutex_unlock(&ddata->hpd_lock);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct omap_dss_driver dvic_driver = {
 	.connect	= dvic_connect,
 	.disconnect	= dvic_disconnect,
@@ -310,6 +343,7 @@ static struct omap_dss_driver dvic_driver = {
 
 	.read_edid	= dvic_read_edid,
 	.detect		= dvic_detect,
+<<<<<<< HEAD
 
 	.register_hpd_cb	= dvic_register_hpd_cb,
 	.unregister_hpd_cb	= dvic_unregister_hpd_cb,
@@ -337,10 +371,15 @@ static irqreturn_t dvic_hpd_isr(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dvic_probe_of(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct device_node *node = pdev->dev.of_node;
+<<<<<<< HEAD
 	struct device_node *adapter_node;
 	struct i2c_adapter *adapter;
 	struct gpio_desc *gpio;
@@ -364,6 +403,19 @@ static int dvic_probe_of(struct platform_device *pdev)
 		if (r)
 			return r;
 	}
+=======
+	struct omap_dss_device *in;
+	struct device_node *adapter_node;
+	struct i2c_adapter *adapter;
+
+	in = omapdss_of_find_source_for_first_ep(node);
+	if (IS_ERR(in)) {
+		dev_err(&pdev->dev, "failed to find video source\n");
+		return PTR_ERR(in);
+	}
+
+	ddata->in = in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adapter_node = of_parse_phandle(node, "ddc-i2c-bus", 0);
 	if (adapter_node) {
@@ -371,6 +423,10 @@ static int dvic_probe_of(struct platform_device *pdev)
 		of_node_put(adapter_node);
 		if (adapter == NULL) {
 			dev_err(&pdev->dev, "failed to parse ddc-i2c-bus\n");
+<<<<<<< HEAD
+=======
+			omap_dss_put_device(ddata->in);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EPROBE_DEFER;
 		}
 
@@ -392,6 +448,12 @@ static int dvic_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, ddata);
 
+<<<<<<< HEAD
+=======
+	if (!pdev->dev.of_node)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = dvic_probe_of(pdev);
 	if (r)
 		return r;
@@ -414,8 +476,14 @@ static int dvic_probe(struct platform_device *pdev)
 	return 0;
 
 err_reg:
+<<<<<<< HEAD
 	i2c_put_adapter(ddata->i2c_adapter);
 	mutex_destroy(&ddata->hpd_lock);
+=======
+	omap_dss_put_device(ddata->in);
+
+	i2c_put_adapter(ddata->i2c_adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return r;
 }
@@ -424,15 +492,25 @@ static int __exit dvic_remove(struct platform_device *pdev)
 {
 	struct panel_drv_data *ddata = platform_get_drvdata(pdev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
+<<<<<<< HEAD
+=======
+	struct omap_dss_device *in = ddata->in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	omapdss_unregister_display(&ddata->dssdev);
 
 	dvic_disable(dssdev);
 	dvic_disconnect(dssdev);
 
+<<<<<<< HEAD
 	i2c_put_adapter(ddata->i2c_adapter);
 
 	mutex_destroy(&ddata->hpd_lock);
+=======
+	omap_dss_put_device(in);
+
+	i2c_put_adapter(ddata->i2c_adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

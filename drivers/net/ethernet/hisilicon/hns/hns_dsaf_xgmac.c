@@ -215,10 +215,17 @@ static void hns_xgmac_init(void *mac_drv)
 	u32 port = drv->mac_id;
 
 	dsaf_dev->misc_op->xge_srst(dsaf_dev, port, 0);
+<<<<<<< HEAD
 	msleep(100);
 	dsaf_dev->misc_op->xge_srst(dsaf_dev, port, 1);
 
 	msleep(100);
+=======
+	mdelay(100);
+	dsaf_dev->misc_op->xge_srst(dsaf_dev, port, 1);
+
+	mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hns_xgmac_lf_rf_control_init(drv);
 	hns_xgmac_exc_irq_en(drv, 0);
 
@@ -311,7 +318,11 @@ static void hns_xgmac_config_max_frame_length(void *mac_drv, u16 newval)
 	dsaf_write_dev(drv, XGMAC_MAC_MAX_PKT_SIZE_REG, newval);
 }
 
+<<<<<<< HEAD
 static void hns_xgmac_update_stats(void *mac_drv)
+=======
+void hns_xgmac_update_stats(void *mac_drv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mac_driver *drv = (struct mac_driver *)mac_drv;
 	struct mac_hw_stats *hw_stats = &drv->mac_cb->hw_stats;

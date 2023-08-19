@@ -1,4 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
+=======
+menu "Kernel hacking"
+
+source "lib/Kconfig.debug"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config GPROF
 	bool "Enable gprof support"
@@ -16,6 +22,10 @@ config GPROF
 config GCOV
 	bool "Enable gcov support"
 	depends on DEBUG_INFO
+<<<<<<< HEAD
+=======
+	depends on !KCOV
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This option allows developers to retrieve coverage data from a UML
 	  session.
@@ -34,3 +44,8 @@ config EARLY_PRINTK
 
 	  This is useful for kernel debugging when your machine crashes very
 	  early before the console code is initialized.
+<<<<<<< HEAD
+=======
+
+endmenu
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

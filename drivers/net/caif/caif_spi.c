@@ -35,17 +35,26 @@ MODULE_DESCRIPTION("CAIF SPI driver");
 #define PAD_POW2(x, pow) ((((x)&((pow)-1))==0) ? 0 : (((pow)-((x)&((pow)-1)))))
 
 static bool spi_loop;
+<<<<<<< HEAD
 module_param(spi_loop, bool, 0444);
 MODULE_PARM_DESC(spi_loop, "SPI running in loopback mode.");
 
 /* SPI frame alignment. */
 module_param(spi_frm_align, int, 0444);
+=======
+module_param(spi_loop, bool, S_IRUGO);
+MODULE_PARM_DESC(spi_loop, "SPI running in loopback mode.");
+
+/* SPI frame alignment. */
+module_param(spi_frm_align, int, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(spi_frm_align, "SPI frame alignment.");
 
 /*
  * SPI padding options.
  * Warning: must be a base of 2 (& operation used) and can not be zero !
  */
+<<<<<<< HEAD
 module_param(spi_up_head_align, int, 0444);
 MODULE_PARM_DESC(spi_up_head_align, "SPI uplink head alignment.");
 
@@ -56,6 +65,18 @@ module_param(spi_down_head_align, int, 0444);
 MODULE_PARM_DESC(spi_down_head_align, "SPI downlink head alignment.");
 
 module_param(spi_down_tail_align, int, 0444);
+=======
+module_param(spi_up_head_align, int, S_IRUGO);
+MODULE_PARM_DESC(spi_up_head_align, "SPI uplink head alignment.");
+
+module_param(spi_up_tail_align, int, S_IRUGO);
+MODULE_PARM_DESC(spi_up_tail_align, "SPI uplink tail alignment.");
+
+module_param(spi_down_head_align, int, S_IRUGO);
+MODULE_PARM_DESC(spi_down_head_align, "SPI downlink head alignment.");
+
+module_param(spi_down_tail_align, int, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(spi_down_tail_align, "SPI downlink tail alignment.");
 
 #ifdef CONFIG_ARM
@@ -250,10 +271,17 @@ static const struct file_operations dbgfs_frame_fops = {
 static inline void dev_debugfs_add(struct cfspi *cfspi)
 {
 	cfspi->dbgfs_dir = debugfs_create_dir(cfspi->pdev->name, dbgfs_root);
+<<<<<<< HEAD
 	cfspi->dbgfs_state = debugfs_create_file("state", 0444,
 						 cfspi->dbgfs_dir, cfspi,
 						 &dbgfs_state_fops);
 	cfspi->dbgfs_frame = debugfs_create_file("frame", 0444,
+=======
+	cfspi->dbgfs_state = debugfs_create_file("state", S_IRUGO,
+						 cfspi->dbgfs_dir, cfspi,
+						 &dbgfs_state_fops);
+	cfspi->dbgfs_frame = debugfs_create_file("frame", S_IRUGO,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						 cfspi->dbgfs_dir, cfspi,
 						 &dbgfs_frame_fops);
 }

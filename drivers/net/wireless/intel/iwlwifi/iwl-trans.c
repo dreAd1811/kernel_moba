@@ -6,7 +6,10 @@
  * GPL LICENSE SUMMARY
  *
  * Copyright(c) 2015 Intel Mobile Communications GmbH
+<<<<<<< HEAD
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -32,7 +35,10 @@
  * BSD LICENSE
  *
  * Copyright(c) 2015 Intel Mobile Communications GmbH
+<<<<<<< HEAD
  * Copyright(c) 2016 - 2017 Intel Deutschland GmbH
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -207,6 +213,7 @@ int iwl_cmd_groups_verify_sorted(const struct iwl_trans_config *trans)
 	return 0;
 }
 IWL_EXPORT_SYMBOL(iwl_cmd_groups_verify_sorted);
+<<<<<<< HEAD
 
 void iwl_trans_ref(struct iwl_trans *trans)
 {
@@ -221,3 +228,5 @@ void iwl_trans_unref(struct iwl_trans *trans)
 		trans->ops->unref(trans);
 }
 IWL_EXPORT_SYMBOL(iwl_trans_unref);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -13,7 +13,10 @@
 #include <linux/spinlock.h>
 #include <linux/clk.h>
 #include <linux/component.h>
+<<<<<<< HEAD
 #include <linux/console.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/list.h>
 #include <linux/of_graph.h>
 #include <linux/of_reserved_mem.h>
@@ -26,8 +29,11 @@
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_gem_framebuffer_helper.h>
 #include <drm/drm_modeset_helper.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_of.h>
 
 #include "hdlcd_drv.h"
@@ -101,9 +107,22 @@ setup_fail:
 	return ret;
 }
 
+<<<<<<< HEAD
 static const struct drm_mode_config_funcs hdlcd_mode_config_funcs = {
 	.fb_create = drm_gem_fb_create,
 	.output_poll_changed = drm_fb_helper_output_poll_changed,
+=======
+static void hdlcd_fb_output_poll_changed(struct drm_device *drm)
+{
+	struct hdlcd_drm_private *hdlcd = drm->dev_private;
+
+	drm_fbdev_cma_hotplug_event(hdlcd->fbdev);
+}
+
+static const struct drm_mode_config_funcs hdlcd_mode_config_funcs = {
+	.fb_create = drm_fb_cma_create,
+	.output_poll_changed = hdlcd_fb_output_poll_changed,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_check = drm_atomic_helper_check,
 	.atomic_commit = drm_atomic_helper_commit,
 };
@@ -118,6 +137,16 @@ static void hdlcd_setup_mode_config(struct drm_device *drm)
 	drm->mode_config.funcs = &hdlcd_mode_config_funcs;
 }
 
+<<<<<<< HEAD
+=======
+static void hdlcd_lastclose(struct drm_device *drm)
+{
+	struct hdlcd_drm_private *hdlcd = drm->dev_private;
+
+	drm_fbdev_cma_restore_mode(hdlcd->fbdev);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t hdlcd_irq(int irq, void *arg)
 {
 	struct drm_device *drm = arg;
@@ -218,6 +247,10 @@ static int hdlcd_show_pxlclock(struct seq_file *m, void *arg)
 static struct drm_info_list hdlcd_debugfs_list[] = {
 	{ "interrupt_count", hdlcd_show_underrun_count, 0 },
 	{ "clocks", hdlcd_show_pxlclock, 0 },
+<<<<<<< HEAD
+=======
+	{ "fb", drm_fb_cma_debugfs_show, 0 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int hdlcd_debugfs_init(struct drm_minor *minor)
@@ -233,13 +266,20 @@ static struct drm_driver hdlcd_driver = {
 	.driver_features = DRIVER_HAVE_IRQ | DRIVER_GEM |
 			   DRIVER_MODESET | DRIVER_PRIME |
 			   DRIVER_ATOMIC,
+<<<<<<< HEAD
 	.lastclose = drm_fb_helper_lastclose,
+=======
+	.lastclose = hdlcd_lastclose,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.irq_handler = hdlcd_irq,
 	.irq_preinstall = hdlcd_irq_preinstall,
 	.irq_postinstall = hdlcd_irq_postinstall,
 	.irq_uninstall = hdlcd_irq_uninstall,
 	.gem_free_object_unlocked = drm_gem_cma_free_object,
+<<<<<<< HEAD
 	.gem_print_info = drm_gem_cma_print_info,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gem_vm_ops = &drm_gem_cma_vm_ops,
 	.dumb_create = drm_gem_cma_dumb_create,
 	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
@@ -308,9 +348,20 @@ static int hdlcd_drm_bind(struct device *dev)
 	drm_mode_config_reset(drm);
 	drm_kms_helper_poll_init(drm);
 
+<<<<<<< HEAD
 	ret = drm_fb_cma_fbdev_init(drm, 32, 0);
 	if (ret)
 		goto err_fbdev;
+=======
+	hdlcd->fbdev = drm_fbdev_cma_init(drm, 32,
+					  drm->mode_config.num_connector);
+
+	if (IS_ERR(hdlcd->fbdev)) {
+		ret = PTR_ERR(hdlcd->fbdev);
+		hdlcd->fbdev = NULL;
+		goto err_fbdev;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = drm_dev_register(drm, 0);
 	if (ret)
@@ -319,13 +370,23 @@ static int hdlcd_drm_bind(struct device *dev)
 	return 0;
 
 err_register:
+<<<<<<< HEAD
 	drm_fb_cma_fbdev_fini(drm);
+=======
+	if (hdlcd->fbdev) {
+		drm_fbdev_cma_fini(hdlcd->fbdev);
+		hdlcd->fbdev = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_fbdev:
 	drm_kms_helper_poll_fini(drm);
 err_vblank:
 	pm_runtime_disable(drm->dev);
 err_pm_active:
+<<<<<<< HEAD
 	drm_atomic_helper_shutdown(drm);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	component_unbind_all(dev, drm);
 err_unload:
 	of_node_put(hdlcd->crtc.port);
@@ -335,7 +396,11 @@ err_unload:
 err_free:
 	drm_mode_config_cleanup(drm);
 	dev_set_drvdata(dev, NULL);
+<<<<<<< HEAD
 	drm_dev_put(drm);
+=======
+	drm_dev_unref(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -346,11 +411,19 @@ static void hdlcd_drm_unbind(struct device *dev)
 	struct hdlcd_drm_private *hdlcd = drm->dev_private;
 
 	drm_dev_unregister(drm);
+<<<<<<< HEAD
 	drm_fb_cma_fbdev_fini(drm);
+=======
+	if (hdlcd->fbdev) {
+		drm_fbdev_cma_fini(hdlcd->fbdev);
+		hdlcd->fbdev = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drm_kms_helper_poll_fini(drm);
 	component_unbind_all(dev, drm);
 	of_node_put(hdlcd->crtc.port);
 	hdlcd->crtc.port = NULL;
+<<<<<<< HEAD
 	pm_runtime_get_sync(dev);
 	drm_crtc_vblank_off(&hdlcd->crtc);
 	drm_irq_uninstall(drm);
@@ -363,6 +436,17 @@ static void hdlcd_drm_unbind(struct device *dev)
 	drm->dev_private = NULL;
 	dev_set_drvdata(dev, NULL);
 	drm_dev_put(drm);
+=======
+	pm_runtime_get_sync(drm->dev);
+	drm_irq_uninstall(drm);
+	pm_runtime_put_sync(drm->dev);
+	pm_runtime_disable(drm->dev);
+	of_reserved_mem_device_release(drm->dev);
+	drm_mode_config_cleanup(drm);
+	drm_dev_unref(drm);
+	drm->dev_private = NULL;
+	dev_set_drvdata(dev, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_master_ops hdlcd_master_ops = {
@@ -407,15 +491,43 @@ MODULE_DEVICE_TABLE(of, hdlcd_of_match);
 static int __maybe_unused hdlcd_pm_suspend(struct device *dev)
 {
 	struct drm_device *drm = dev_get_drvdata(dev);
+<<<<<<< HEAD
 
 	return drm_mode_config_helper_suspend(drm);
+=======
+	struct hdlcd_drm_private *hdlcd = drm ? drm->dev_private : NULL;
+
+	if (!hdlcd)
+		return 0;
+
+	drm_kms_helper_poll_disable(drm);
+
+	hdlcd->state = drm_atomic_helper_suspend(drm);
+	if (IS_ERR(hdlcd->state)) {
+		drm_kms_helper_poll_enable(drm);
+		return PTR_ERR(hdlcd->state);
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int __maybe_unused hdlcd_pm_resume(struct device *dev)
 {
 	struct drm_device *drm = dev_get_drvdata(dev);
+<<<<<<< HEAD
 
 	drm_mode_config_helper_resume(drm);
+=======
+	struct hdlcd_drm_private *hdlcd = drm ? drm->dev_private : NULL;
+
+	if (!hdlcd)
+		return 0;
+
+	drm_atomic_helper_resume(drm, hdlcd->state);
+	drm_kms_helper_poll_enable(drm);
+	pm_runtime_set_active(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

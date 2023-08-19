@@ -1,5 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2008-2014, 2016-2019 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2008-2014, 2016-2017, 2019, 2021 The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/init.h>
@@ -143,6 +157,12 @@ void diagmem_setsize(int pool_idx, int itemsize, int poolsize)
 	}
 
 	diag_mempools[pool_idx].itemsize = itemsize;
+<<<<<<< HEAD
+=======
+	if (diag_mempools[pool_idx].pool)
+		diag_mempools[pool_idx].pool->pool_data =
+			(void *)(uintptr_t)itemsize;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	diag_mempools[pool_idx].poolsize = poolsize;
 	pr_debug("diag: Mempool %s sizes: itemsize %d poolsize %d\n",
 		 diag_mempools[pool_idx].name, diag_mempools[pool_idx].itemsize,
@@ -168,7 +188,12 @@ void *diagmem_alloc(struct diagchar_dev *driver, int size, int pool_type)
 					   mempool->name);
 			break;
 		}
+<<<<<<< HEAD
 		if (size == 0 || size > mempool->itemsize) {
+=======
+		if (size == 0 || size > mempool->itemsize ||
+			size > (int)mempool->pool->pool_data) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err_ratelimited("diag: cannot alloc from mempool %s, invalid size: %d\n",
 					   mempool->name, size);
 			break;

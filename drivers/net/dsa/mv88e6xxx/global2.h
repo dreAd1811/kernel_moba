@@ -60,8 +60,12 @@
 #define MV88E6XXX_G2_DEVICE_MAPPING		0x06
 #define MV88E6XXX_G2_DEVICE_MAPPING_UPDATE	0x8000
 #define MV88E6XXX_G2_DEVICE_MAPPING_DEV_MASK	0x1f00
+<<<<<<< HEAD
 #define MV88E6352_G2_DEVICE_MAPPING_PORT_MASK	0x000f
 #define MV88E6390_G2_DEVICE_MAPPING_PORT_MASK	0x001f
+=======
+#define MV88E6XXX_G2_DEVICE_MAPPING_PORT_MASK	0x000f
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Offset 0x07: Trunk Mask Table Register */
 #define MV88E6XXX_G2_TRUNK_MASK			0x07
@@ -150,6 +154,7 @@
 #define MV88E6390_G2_EEPROM_ADDR_MASK	0xffff
 
 /* Offset 0x16: AVB Command Register */
+<<<<<<< HEAD
 #define MV88E6352_G2_AVB_CMD			0x16
 #define MV88E6352_G2_AVB_CMD_BUSY		0x8000
 #define MV88E6352_G2_AVB_CMD_OP_READ		0x4000
@@ -171,6 +176,9 @@
 #define MV88E6352_G2_AVB_CMD_BLOCK_QVB		3
 #define MV88E6352_G2_AVB_CMD_BLOCK_MASK		0x00e0
 #define MV88E6352_G2_AVB_CMD_ADDR_MASK		0x001f
+=======
+#define MV88E6352_G2_AVB_CMD		0x16
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Offset 0x17: AVB Data Register */
 #define MV88E6352_G2_AVB_DATA		0x17
@@ -244,6 +252,7 @@
 #define MV88E6352_G2_NOEGR_POLICY	0x2000
 #define MV88E6390_G2_LAG_ID_4		0x2000
 
+<<<<<<< HEAD
 /* Scratch/Misc registers accessed through MV88E6XXX_G2_SCRATCH_MISC */
 /* Offset 0x02: Misc Configuration */
 #define MV88E6352_G2_SCRATCH_MISC_CFG		0x02
@@ -278,6 +287,8 @@
 #define MV88E6352_G2_SCRATCH_GPIO_PCTL_TRIG	1
 #define MV88E6352_G2_SCRATCH_GPIO_PCTL_EVREQ	2
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_NET_DSA_MV88E6XXX_GLOBAL2
 
 static inline int mv88e6xxx_g2_require(struct mv88e6xxx_chip *chip)
@@ -285,11 +296,14 @@ static inline int mv88e6xxx_g2_require(struct mv88e6xxx_chip *chip)
 	return 0;
 }
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_read(struct mv88e6xxx_chip *chip, int reg, u16 *val);
 int mv88e6xxx_g2_write(struct mv88e6xxx_chip *chip, int reg, u16 val);
 int mv88e6xxx_g2_update(struct mv88e6xxx_chip *chip, int reg, u16 update);
 int mv88e6xxx_g2_wait(struct mv88e6xxx_chip *chip, int reg, u16 mask);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mv88e6352_g2_irl_init_all(struct mv88e6xxx_chip *chip, int port);
 int mv88e6390_g2_irl_init_all(struct mv88e6xxx_chip *chip, int port);
 
@@ -315,6 +329,7 @@ int mv88e6xxx_g2_pvt_write(struct mv88e6xxx_chip *chip, int src_dev,
 			   int src_port, u16 data);
 int mv88e6xxx_g2_misc_4_bit_port(struct mv88e6xxx_chip *chip);
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_irq_setup(struct mv88e6xxx_chip *chip);
 void mv88e6xxx_g2_irq_free(struct mv88e6xxx_chip *chip);
 
@@ -323,11 +338,18 @@ int mv88e6xxx_g2_irq_mdio_setup(struct mv88e6xxx_chip *chip,
 void mv88e6xxx_g2_irq_mdio_free(struct mv88e6xxx_chip *chip,
 				struct mii_bus *bus);
 
+=======
+int mv88e6xxx_g2_setup(struct mv88e6xxx_chip *chip);
+int mv88e6xxx_g2_irq_setup(struct mv88e6xxx_chip *chip);
+void mv88e6xxx_g2_irq_free(struct mv88e6xxx_chip *chip);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mv88e6185_g2_mgmt_rsvd2cpu(struct mv88e6xxx_chip *chip);
 int mv88e6352_g2_mgmt_rsvd2cpu(struct mv88e6xxx_chip *chip);
 
 int mv88e6xxx_g2_pot_clear(struct mv88e6xxx_chip *chip);
 
+<<<<<<< HEAD
 int mv88e6xxx_g2_trunk_clear(struct mv88e6xxx_chip *chip);
 
 int mv88e6xxx_g2_device_mapping_write(struct mv88e6xxx_chip *chip, int target,
@@ -345,6 +367,11 @@ extern const struct mv88e6xxx_gpio_ops mv88e6352_gpio_ops;
 int mv88e6xxx_g2_scratch_gpio_set_smi(struct mv88e6xxx_chip *chip,
 				      bool external);
 
+=======
+extern const struct mv88e6xxx_irq_ops mv88e6097_watchdog_ops;
+extern const struct mv88e6xxx_irq_ops mv88e6390_watchdog_ops;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* !CONFIG_NET_DSA_MV88E6XXX_GLOBAL2 */
 
 static inline int mv88e6xxx_g2_require(struct mv88e6xxx_chip *chip)
@@ -357,6 +384,7 @@ static inline int mv88e6xxx_g2_require(struct mv88e6xxx_chip *chip)
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int mv88e6xxx_g2_read(struct mv88e6xxx_chip *chip, int reg, u16 *val)
 {
 	return -EOPNOTSUPP;
@@ -377,6 +405,8 @@ static inline int mv88e6xxx_g2_wait(struct mv88e6xxx_chip *chip, int reg, u16 ma
 	return -EOPNOTSUPP;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int mv88e6352_g2_irl_init_all(struct mv88e6xxx_chip *chip,
 					    int port)
 {
@@ -448,6 +478,14 @@ static inline int mv88e6xxx_g2_misc_4_bit_port(struct mv88e6xxx_chip *chip)
 	return -EOPNOTSUPP;
 }
 
+<<<<<<< HEAD
+=======
+static inline int mv88e6xxx_g2_setup(struct mv88e6xxx_chip *chip)
+{
+	return -EOPNOTSUPP;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int mv88e6xxx_g2_irq_setup(struct mv88e6xxx_chip *chip)
 {
 	return -EOPNOTSUPP;
@@ -457,6 +495,7 @@ static inline void mv88e6xxx_g2_irq_free(struct mv88e6xxx_chip *chip)
 {
 }
 
+<<<<<<< HEAD
 static inline int mv88e6xxx_g2_irq_mdio_setup(struct mv88e6xxx_chip *chip,
 					      struct mii_bus *bus)
 {
@@ -468,6 +507,8 @@ static inline void mv88e6xxx_g2_irq_mdio_free(struct mv88e6xxx_chip *chip,
 {
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int mv88e6185_g2_mgmt_rsvd2cpu(struct mv88e6xxx_chip *chip)
 {
 	return -EOPNOTSUPP;
@@ -486,6 +527,7 @@ static inline int mv88e6xxx_g2_pot_clear(struct mv88e6xxx_chip *chip)
 static const struct mv88e6xxx_irq_ops mv88e6097_watchdog_ops = {};
 static const struct mv88e6xxx_irq_ops mv88e6390_watchdog_ops = {};
 
+<<<<<<< HEAD
 static const struct mv88e6xxx_avb_ops mv88e6165_avb_ops = {};
 static const struct mv88e6xxx_avb_ops mv88e6352_avb_ops = {};
 static const struct mv88e6xxx_avb_ops mv88e6390_avb_ops = {};
@@ -509,6 +551,8 @@ static inline int mv88e6xxx_g2_device_mapping_write(struct mv88e6xxx_chip *chip,
 	return -EOPNOTSUPP;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_NET_DSA_MV88E6XXX_GLOBAL2 */
 
 #endif /* _MV88E6XXX_GLOBAL2_H */

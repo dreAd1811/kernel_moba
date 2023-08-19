@@ -18,9 +18,12 @@
 #define __HAVE_ARCH_MEMMOVE	/* gcc builtin & arch function */
 #define __HAVE_ARCH_MEMSCAN	/* inline & arch function */
 #define __HAVE_ARCH_MEMSET	/* gcc builtin & arch function */
+<<<<<<< HEAD
 #define __HAVE_ARCH_MEMSET16	/* arch function */
 #define __HAVE_ARCH_MEMSET32	/* arch function */
 #define __HAVE_ARCH_MEMSET64	/* arch function */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __HAVE_ARCH_STRCAT	/* inline & arch function */
 #define __HAVE_ARCH_STRCMP	/* arch function */
 #define __HAVE_ARCH_STRCPY	/* inline & arch function */
@@ -34,6 +37,7 @@
 #define __HAVE_ARCH_STRSTR	/* arch function */
 
 /* Prototypes for non-inlined arch strings functions. */
+<<<<<<< HEAD
 int memcmp(const void *s1, const void *s2, size_t n);
 void *memcpy(void *dest, const void *src, size_t n);
 void *memset(void *s, int c, size_t n);
@@ -45,6 +49,19 @@ char *strncat(char *dest, const char *src, size_t n);
 char *strncpy(char *dest, const char *src, size_t n);
 char *strrchr(const char *s, int c);
 char *strstr(const char *s1, const char *s2);
+=======
+extern int memcmp(const void *, const void *, size_t);
+extern void *memcpy(void *, const void *, size_t);
+extern void *memset(void *, int, size_t);
+extern void *memmove(void *, const void *, size_t);
+extern int strcmp(const char *,const char *);
+extern size_t strlcat(char *, const char *, size_t);
+extern size_t strlcpy(char *, const char *, size_t);
+extern char *strncat(char *, const char *, size_t);
+extern char *strncpy(char *, const char *, size_t);
+extern char *strrchr(const char *, int);
+extern char *strstr(const char *, const char *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #undef __HAVE_ARCH_STRCHR
 #undef __HAVE_ARCH_STRNCHR
@@ -53,6 +70,7 @@ char *strstr(const char *s1, const char *s2);
 #undef __HAVE_ARCH_STRSEP
 #undef __HAVE_ARCH_STRSPN
 
+<<<<<<< HEAD
 void *__memset16(uint16_t *s, uint16_t v, size_t count);
 void *__memset32(uint32_t *s, uint32_t v, size_t count);
 void *__memset64(uint64_t *s, uint64_t v, size_t count);
@@ -73,6 +91,9 @@ static inline void *memset64(uint64_t *s, uint64_t v, size_t count)
 }
 
 #if !defined(IN_ARCH_STRING_C) && (!defined(CONFIG_FORTIFY_SOURCE) || defined(__NO_FORTIFY))
+=======
+#if !defined(IN_ARCH_STRING_C)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void *memchr(const void * s, int c, size_t n)
 {

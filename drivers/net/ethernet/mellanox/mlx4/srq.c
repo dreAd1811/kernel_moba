@@ -49,7 +49,11 @@ void mlx4_srq_event(struct mlx4_dev *dev, u32 srqn, int event_type)
 	srq = radix_tree_lookup(&srq_table->tree, srqn & (dev->caps.num_srqs - 1));
 	rcu_read_unlock();
 	if (srq)
+<<<<<<< HEAD
 		refcount_inc(&srq->refcount);
+=======
+		atomic_inc(&srq->refcount);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else {
 		mlx4_warn(dev, "Async event for bogus SRQ %08x\n", srqn);
 		return;
@@ -57,7 +61,11 @@ void mlx4_srq_event(struct mlx4_dev *dev, u32 srqn, int event_type)
 
 	srq->event(srq, event_type);
 
+<<<<<<< HEAD
 	if (refcount_dec_and_test(&srq->refcount))
+=======
+	if (atomic_dec_and_test(&srq->refcount))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		complete(&srq->free);
 }
 
@@ -203,7 +211,11 @@ int mlx4_srq_alloc(struct mlx4_dev *dev, u32 pdn, u32 cqn, u16 xrcd,
 	if (err)
 		goto err_radix;
 
+<<<<<<< HEAD
 	refcount_set(&srq->refcount, 1);
+=======
+	atomic_set(&srq->refcount, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_completion(&srq->free);
 
 	return 0;
@@ -232,7 +244,11 @@ void mlx4_srq_free(struct mlx4_dev *dev, struct mlx4_srq *srq)
 	radix_tree_delete(&srq_table->tree, srq->srqn);
 	spin_unlock_irq(&srq_table->lock);
 
+<<<<<<< HEAD
 	if (refcount_dec_and_test(&srq->refcount))
+=======
+	if (atomic_dec_and_test(&srq->refcount))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		complete(&srq->free);
 	wait_for_completion(&srq->free);
 

@@ -98,6 +98,7 @@ ENTRY(call_rwsem_down_read_failed)
 	ret
 ENDPROC(call_rwsem_down_read_failed)
 
+<<<<<<< HEAD
 ENTRY(call_rwsem_down_read_failed_killable)
 	FRAME_BEGIN
 	save_common_regs
@@ -110,6 +111,8 @@ ENTRY(call_rwsem_down_read_failed_killable)
 	ret
 ENDPROC(call_rwsem_down_read_failed_killable)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENTRY(call_rwsem_down_write_failed)
 	FRAME_BEGIN
 	save_common_regs

@@ -198,6 +198,7 @@ presented).  The transaction cannot then be continued and will take the failure
 handler route.  Furthermore, the transactional 2nd register state will be
 inaccessible.  GDB can currently be used on programs using TM, but not sensibly
 in parts within transactions.
+<<<<<<< HEAD
 
 POWER9
 ======
@@ -242,3 +243,5 @@ POWER9N DD2.2.
 Guest migration from POWER8 to POWER9 will work with POWER9N DD2.2 and
 POWER9C DD1.2. Since earlier POWER9 processors don't support TM
 emulation, migration from POWER8 to POWER9 is not supported there.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

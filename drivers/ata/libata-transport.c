@@ -224,8 +224,11 @@ static DECLARE_TRANSPORT_CLASS(ata_port_class,
 
 static void ata_tport_release(struct device *dev)
 {
+<<<<<<< HEAD
 	struct ata_port *ap = tdev_to_port(dev);
 	ata_host_put(ap->host);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -286,7 +289,10 @@ int ata_tport_add(struct device *parent,
 	dev->type = &ata_port_type;
 
 	dev->parent = parent;
+<<<<<<< HEAD
 	ata_host_get(ap->host);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->release = ata_tport_release;
 	dev_set_name(dev, "ata%d", ap->print_id);
 	transport_setup_device(dev);
@@ -317,7 +323,10 @@ int ata_tport_add(struct device *parent,
  tport_err:
 	transport_destroy_device(dev);
 	put_device(dev);
+<<<<<<< HEAD
 	ata_host_put(ap->host);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return error;
 }
 

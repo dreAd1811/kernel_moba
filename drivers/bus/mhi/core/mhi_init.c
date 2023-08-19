@@ -1,5 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved. */
+=======
+/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/debugfs.h>
 #include <linux/device.h>
@@ -13,6 +27,10 @@
 #include <linux/slab.h>
 #include <linux/wait.h>
 #include <linux/mhi.h>
+<<<<<<< HEAD
+=======
+#include <linux/memblock.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "mhi_internal.h"
 
 const char * const mhi_log_level_str[MHI_MSG_LVL_MAX] = {
@@ -97,8 +115,13 @@ const char *to_mhi_pm_state_str(enum MHI_PM_STATE state)
 	return mhi_pm_state_str[index];
 }
 
+<<<<<<< HEAD
 void mhi_time_async_cb(struct mhi_device *mhi_dev, u32 sequence,
 		       u64 local_time, u64 remote_time)
+=======
+static void mhi_time_async_cb(struct mhi_device *mhi_dev, u32 sequence,
+			      u64 local_time, u64 remote_time)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mhi_controller *mhi_cntrl = mhi_dev->mhi_cntrl;
 
@@ -106,8 +129,13 @@ void mhi_time_async_cb(struct mhi_device *mhi_dev, u32 sequence,
 		sequence, local_time, remote_time);
 }
 
+<<<<<<< HEAD
 void mhi_time_us_async_cb(struct mhi_device *mhi_dev, u32 sequence,
 			  u64 local_time, u64 remote_time)
+=======
+static void mhi_time_us_async_cb(struct mhi_device *mhi_dev, u32 sequence,
+				 u64 local_time, u64 remote_time)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mhi_controller *mhi_cntrl = mhi_dev->mhi_cntrl;
 
@@ -346,6 +374,12 @@ void mhi_destroy_sysfs(struct mhi_controller *mhi_cntrl)
 		}
 		spin_unlock(&mhi_tsync->lock);
 
+<<<<<<< HEAD
+=======
+		if (mhi_tsync->db_response_pending)
+			complete(&mhi_tsync->db_completion);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(mhi_cntrl->mhi_tsync);
 		mhi_cntrl->mhi_tsync = NULL;
 		mutex_unlock(&mhi_cntrl->tsync_mutex);
@@ -378,6 +412,7 @@ static int mhi_alloc_aligned_ring(struct mhi_controller *mhi_cntrl,
 	return 0;
 }
 
+<<<<<<< HEAD
 /* MHI protocol require transfer ring to be aligned to ring length */
 static int mhi_alloc_aligned_ring_uncached(
 	struct mhi_controller *mhi_cntrl, struct mhi_ring *ring, u64 len)
@@ -393,6 +428,8 @@ static int mhi_alloc_aligned_ring_uncached(
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mhi_deinit_free_irq(struct mhi_controller *mhi_cntrl)
 {
 	int i;
@@ -477,11 +514,15 @@ void mhi_deinit_dev_ctxt(struct mhi_controller *mhi_cntrl)
 			continue;
 
 		ring = &mhi_event->ring;
+<<<<<<< HEAD
 		if (mhi_event->force_uncached)
 			mhi_free_uncached(mhi_cntrl, ring->alloc_size,
 					  ring->pre_aligned, ring->dma_handle);
 		else
 			mhi_free_coherent(mhi_cntrl, ring->alloc_size,
+=======
+		mhi_free_coherent(mhi_cntrl, ring->alloc_size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  ring->pre_aligned, ring->dma_handle);
 		ring->base = NULL;
 		ring->iommu_base = 0;
@@ -520,6 +561,15 @@ static int mhi_init_debugfs_mhi_vote_open(struct inode *inode, struct file *fp)
 	return single_open(fp, mhi_debugfs_mhi_vote_show, inode->i_private);
 }
 
+<<<<<<< HEAD
+=======
+static int mhi_init_debugfs_mhi_regdump_open(struct inode *inode,
+					     struct file *fp)
+{
+	return single_open(fp, mhi_debugfs_mhi_regdump_show, inode->i_private);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct file_operations debugfs_state_ops = {
 	.open = mhi_init_debugfs_mhi_states_open,
 	.release = single_release,
@@ -544,9 +594,24 @@ static const struct file_operations debugfs_vote_ops = {
 	.read = seq_read,
 };
 
+<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(debugfs_trigger_reset_fops, NULL,
 			 mhi_debugfs_trigger_reset, "%llu\n");
 
+=======
+static const struct file_operations debugfs_regdump_ops = {
+	.open = mhi_init_debugfs_mhi_regdump_open,
+	.release = single_release,
+	.read = seq_read,
+};
+
+DEFINE_DEBUGFS_ATTRIBUTE(debugfs_trigger_reset_fops, NULL,
+			 mhi_debugfs_trigger_reset, "%llu\n");
+
+DEFINE_DEBUGFS_ATTRIBUTE(debugfs_trigger_soc_reset_fops, NULL,
+			 mhi_debugfs_trigger_soc_reset, "%llu\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mhi_init_debugfs(struct mhi_controller *mhi_cntrl)
 {
 	struct dentry *dentry;
@@ -563,6 +628,7 @@ void mhi_init_debugfs(struct mhi_controller *mhi_cntrl)
 	if (IS_ERR_OR_NULL(dentry))
 		return;
 
+<<<<<<< HEAD
 	debugfs_create_file_unsafe("states", 0444, dentry, mhi_cntrl,
 				   &debugfs_state_ops);
 	debugfs_create_file_unsafe("events", 0444, dentry, mhi_cntrl,
@@ -573,6 +639,22 @@ void mhi_init_debugfs(struct mhi_controller *mhi_cntrl)
 				   &debugfs_vote_ops);
 	debugfs_create_file_unsafe("reset", 0444, dentry, mhi_cntrl,
 				   &debugfs_trigger_reset_fops);
+=======
+	debugfs_create_file("states", 0444, dentry, mhi_cntrl,
+			    &debugfs_state_ops);
+	debugfs_create_file("events", 0444, dentry, mhi_cntrl,
+			    &debugfs_ev_ops);
+	debugfs_create_file("chan", 0444, dentry, mhi_cntrl, &debugfs_chan_ops);
+	debugfs_create_file("vote", 0444, dentry, mhi_cntrl,
+			    &debugfs_vote_ops);
+	debugfs_create_file("reset", 0444, dentry, mhi_cntrl,
+			    &debugfs_trigger_reset_fops);
+	debugfs_create_file("regdump", 0444, dentry, mhi_cntrl,
+			    &debugfs_regdump_ops);
+	debugfs_create_file("soc_reset", 0444, dentry, mhi_cntrl,
+			    &debugfs_trigger_soc_reset_fops);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mhi_cntrl->dentry = dentry;
 }
 
@@ -650,12 +732,16 @@ int mhi_init_dev_ctxt(struct mhi_controller *mhi_cntrl)
 
 		ring->el_size = sizeof(struct mhi_tre);
 		ring->len = ring->el_size * ring->elements;
+<<<<<<< HEAD
 		if (mhi_event->force_uncached)
 			ret = mhi_alloc_aligned_ring_uncached(mhi_cntrl, ring,
 				ring->len);
 		else
 			ret = mhi_alloc_aligned_ring(mhi_cntrl, ring,
 				ring->len);
+=======
+		ret = mhi_alloc_aligned_ring(mhi_cntrl, ring, ring->len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto error_alloc_er;
 
@@ -716,11 +802,15 @@ error_alloc_er:
 		if (mhi_event->offload_ev)
 			continue;
 
+<<<<<<< HEAD
 		if (mhi_event->force_uncached)
 			mhi_free_uncached(mhi_cntrl, ring->alloc_size,
 				  ring->pre_aligned, ring->dma_handle);
 		else
 			mhi_free_coherent(mhi_cntrl, ring->alloc_size,
+=======
+		mhi_free_coherent(mhi_cntrl, ring->alloc_size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  ring->pre_aligned, ring->dma_handle);
 	}
 	mhi_free_coherent(mhi_cntrl, sizeof(*mhi_ctxt->er_ctxt) *
@@ -771,8 +861,11 @@ static int mhi_init_timesync(struct mhi_controller *mhi_cntrl)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	mhi_cntrl->local_timer_freq = arch_timer_get_cntfrq();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* register method is supported */
 	mhi_tsync = kzalloc(sizeof(*mhi_tsync), GFP_ATOMIC);
 	if (!mhi_tsync)
@@ -1063,7 +1156,11 @@ int mhi_init_chan_ctxt(struct mhi_controller *mhi_cntrl,
 
 	tre_ring->rp = tre_ring->wp = tre_ring->base;
 	buf_ring->rp = buf_ring->wp = buf_ring->base;
+<<<<<<< HEAD
 	mhi_chan->db_cfg.db_mode = true;
+=======
+	mhi_chan->db_cfg.db_mode = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* update to all cores */
 	smp_wmb();
@@ -1166,10 +1263,13 @@ static int of_parse_ev_cfg(struct mhi_controller *mhi_cntrl,
 			continue;
 
 		mhi_event->er_index = i++;
+<<<<<<< HEAD
 
 		mhi_event->force_uncached = of_property_read_bool(child,
 				"mhi,force-uncached");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = of_property_read_u32(child, "mhi,num-elements",
 					   (u32 *)&mhi_event->ring.elements);
 		if (ret)
@@ -1517,6 +1617,14 @@ int of_register_mhi_controller(struct mhi_controller *mhi_cntrl)
 	if (!mhi_cntrl->status_cb || !mhi_cntrl->link_status)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (!mhi_cntrl->iova_stop) {
+		mhi_cntrl->iova_start = memblock_start_of_DRAM();
+		mhi_cntrl->iova_stop = memblock_end_of_DRAM();
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = of_parse_dt(mhi_cntrl, mhi_cntrl->of_node);
 	if (ret)
 		return -EINVAL;
@@ -1537,9 +1645,15 @@ int of_register_mhi_controller(struct mhi_controller *mhi_cntrl)
 	INIT_WORK(&mhi_cntrl->st_worker, mhi_pm_st_worker);
 	init_waitqueue_head(&mhi_cntrl->state_event);
 
+<<<<<<< HEAD
 	mhi_cntrl->special_wq = alloc_ordered_workqueue("mhi_special_w",
 						WQ_MEM_RECLAIM | WQ_HIGHPRI);
 	if (!mhi_cntrl->special_wq)
+=======
+	mhi_cntrl->wq = alloc_ordered_workqueue("mhi_w",
+						WQ_MEM_RECLAIM | WQ_HIGHPRI);
+	if (!mhi_cntrl->wq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error_alloc_cmd;
 
 	INIT_WORK(&mhi_cntrl->special_work, mhi_special_purpose_work);
@@ -1665,7 +1779,11 @@ error_add_dev:
 
 error_alloc_dev:
 	kfree(mhi_cntrl->mhi_cmd);
+<<<<<<< HEAD
 	destroy_workqueue(mhi_cntrl->special_wq);
+=======
+	destroy_workqueue(mhi_cntrl->wq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error_alloc_cmd:
 	vfree(mhi_cntrl->mhi_chan);
@@ -1697,6 +1815,10 @@ void mhi_unregister_mhi_controller(struct mhi_controller *mhi_cntrl)
 	list_del(&mhi_cntrl->node);
 	mutex_unlock(&mhi_bus.lock);
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mhi_unregister_mhi_controller);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* set ptr to control private data */
 static inline void mhi_controller_set_devdata(struct mhi_controller *mhi_cntrl,
@@ -1756,9 +1878,12 @@ int mhi_prepare_for_power_up(struct mhi_controller *mhi_cntrl)
 			mhi_cntrl->bhie = mhi_cntrl->regs + bhie_off;
 		}
 
+<<<<<<< HEAD
 		memset_io(mhi_cntrl->bhie + BHIE_RXVECADDR_LOW_OFFS, 0,
 			  BHIE_RXVECSTATUS_OFFS - BHIE_RXVECADDR_LOW_OFFS + 4);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (mhi_cntrl->rddm_image)
 			mhi_rddm_prepare(mhi_cntrl, mhi_cntrl->rddm_image);
 	}
@@ -1797,6 +1922,10 @@ void mhi_unprepare_after_power_down(struct mhi_controller *mhi_cntrl)
 	mhi_deinit_dev_ctxt(mhi_cntrl);
 	mhi_cntrl->pre_init = false;
 }
+<<<<<<< HEAD
+=======
+EXPORT_SYMBOL(mhi_unprepare_after_power_down);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* match dev to drv */
 static int mhi_match(struct device *dev, struct device_driver *drv)

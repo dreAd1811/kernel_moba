@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
 /**************************************************************************
  *
  * Copyright 2015 VMware, Inc., Palo Alto, CA., USA
+=======
+/**************************************************************************
+ *
+ * Copyright © 2015 VMware, Inc., Palo Alto, CA., USA
+ * All Rights Reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the
@@ -101,7 +108,10 @@ struct vmw_cmdbuf_context {
  * @handle: DMA address handle for the command buffer space if @using_mob is
  * false. Immutable.
  * @size: The size of the command buffer space. Immutable.
+<<<<<<< HEAD
  * @num_contexts: Number of contexts actually enabled.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct vmw_cmdbuf_man {
 	struct mutex cur_mutex;
@@ -129,7 +139,10 @@ struct vmw_cmdbuf_man {
 	bool has_pool;
 	dma_addr_t handle;
 	size_t size;
+<<<<<<< HEAD
 	u32 num_contexts;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -187,7 +200,11 @@ struct vmw_cmdbuf_alloc_info {
 
 /* Loop over each context in the command buffer manager. */
 #define for_each_cmdbuf_ctx(_man, _i, _ctx)				\
+<<<<<<< HEAD
 	for (_i = 0, _ctx = &(_man)->ctx[0]; (_i) < (_man)->num_contexts; \
+=======
+	for (_i = 0, _ctx = &(_man)->ctx[0]; (_i) < SVGA_CB_CONTEXT_MAX; \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	     ++(_i), ++(_ctx))
 
 static int vmw_cmdbuf_startstop(struct vmw_cmdbuf_man *man, u32 context,
@@ -516,7 +533,10 @@ static void vmw_cmdbuf_work_func(struct work_struct *work)
 	struct list_head restart_head[SVGA_CB_CONTEXT_MAX];
 	int i;
 	struct vmw_cmdbuf_context *ctx;
+<<<<<<< HEAD
 	bool global_block = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_cmdbuf_ctx(man, i, ctx) {
 		INIT_LIST_HEAD(&restart_head[i]);
@@ -534,7 +554,10 @@ static void vmw_cmdbuf_work_func(struct work_struct *work)
 
 		list_del_init(&entry->list);
 		restart[entry->cb_context] = true;
+<<<<<<< HEAD
 		global_block = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!vmw_cmd_describe(header, &error_cmd_size, &cmd_name)) {
 			DRM_ERROR("Unknown command causing device error.\n");
@@ -568,6 +591,7 @@ static void vmw_cmdbuf_work_func(struct work_struct *work)
 		cb_hdr->length -= new_start_offset;
 		cb_hdr->errorOffset = 0;
 		cb_hdr->offset = 0;
+<<<<<<< HEAD
 
 		list_add_tail(&entry->list, &restart_head[entry->cb_context]);
 	}
@@ -583,6 +607,25 @@ static void vmw_cmdbuf_work_func(struct work_struct *work)
 
 	spin_lock(&man->lock);
 	for_each_cmdbuf_ctx(man, i, ctx) {
+=======
+		list_add_tail(&entry->list, &restart_head[entry->cb_context]);
+		man->ctx[entry->cb_context].block_submission = true;
+	}
+	spin_unlock(&man->lock);
+
+	/* Preempt all contexts with errors */
+	for_each_cmdbuf_ctx(man, i, ctx) {
+		if (ctx->block_submission && vmw_cmdbuf_preempt(man, i))
+			DRM_ERROR("Failed preempting command buffer "
+				  "context %u.\n", i);
+	}
+
+	spin_lock(&man->lock);
+	for_each_cmdbuf_ctx(man, i, ctx) {
+		if (!ctx->block_submission)
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Move preempted command buffers to the preempted queue. */
 		vmw_cmdbuf_ctx_process(man, ctx, &dummy);
 
@@ -596,16 +639,30 @@ static void vmw_cmdbuf_work_func(struct work_struct *work)
 		 * Finally add all command buffers first in the submitted
 		 * queue, to rerun them.
 		 */
+<<<<<<< HEAD
 
 		ctx->block_submission = false;
 		list_splice_init(&restart_head[i], &ctx->submitted);
+=======
+		list_splice_init(&restart_head[i], &ctx->submitted);
+
+		ctx->block_submission = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	vmw_cmdbuf_man_process(man);
 	spin_unlock(&man->lock);
 
+<<<<<<< HEAD
 	if (global_block && vmw_cmdbuf_startstop(man, 0, true))
 		DRM_ERROR("Failed restarting command buffer contexts\n");
+=======
+	for_each_cmdbuf_ctx(man, i, ctx) {
+		if (restart[i] && vmw_cmdbuf_startstop(man, i, true))
+			DRM_ERROR("Failed restarting command buffer "
+				  "context %u.\n", i);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Send a new fence in case one was removed */
 	if (send_fence) {
@@ -1244,7 +1301,11 @@ int vmw_cmdbuf_set_pool_size(struct vmw_cmdbuf_man *man,
 			return -ENOMEM;
 
 		ret = ttm_bo_create(&dev_priv->bdev, size, ttm_bo_type_device,
+<<<<<<< HEAD
 				    &vmw_mob_ne_placement, 0, false,
+=======
+				    &vmw_mob_ne_placement, 0, false, NULL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    &man->cmd_space);
 		if (ret)
 			return ret;
@@ -1306,8 +1367,11 @@ struct vmw_cmdbuf_man *vmw_cmdbuf_man_create(struct vmw_private *dev_priv)
 	if (!man)
 		return ERR_PTR(-ENOMEM);
 
+<<<<<<< HEAD
 	man->num_contexts = (dev_priv->capabilities & SVGA_CAP_HP_CMD_QUEUE) ?
 		2 : 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	man->headers = dma_pool_create("vmwgfx cmdbuf",
 				       &dev_priv->dev->pdev->dev,
 				       sizeof(SVGACBHeader),
@@ -1342,11 +1406,22 @@ struct vmw_cmdbuf_man *vmw_cmdbuf_man_create(struct vmw_private *dev_priv)
 	INIT_WORK(&man->work, &vmw_cmdbuf_work_func);
 	vmw_generic_waiter_add(dev_priv, SVGA_IRQFLAG_ERROR,
 			       &dev_priv->error_waiters);
+<<<<<<< HEAD
 	ret = vmw_cmdbuf_startstop(man, 0, true);
 	if (ret) {
 		DRM_ERROR("Failed starting command buffer contexts\n");
 		vmw_cmdbuf_man_destroy(man);
 		return ERR_PTR(ret);
+=======
+	for_each_cmdbuf_ctx(man, i, ctx) {
+		ret = vmw_cmdbuf_startstop(man, i, true);
+		if (ret) {
+			DRM_ERROR("Failed starting command buffer "
+				  "context %u.\n", i);
+			vmw_cmdbuf_man_destroy(man);
+			return ERR_PTR(ret);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return man;
@@ -1396,11 +1471,24 @@ void vmw_cmdbuf_remove_pool(struct vmw_cmdbuf_man *man)
  */
 void vmw_cmdbuf_man_destroy(struct vmw_cmdbuf_man *man)
 {
+<<<<<<< HEAD
 	WARN_ON_ONCE(man->has_pool);
 	(void) vmw_cmdbuf_idle(man, false, 10*HZ);
 
 	if (vmw_cmdbuf_startstop(man, 0, false))
 		DRM_ERROR("Failed stopping command buffer contexts.\n");
+=======
+	struct vmw_cmdbuf_context *ctx;
+	unsigned int i;
+
+	WARN_ON_ONCE(man->has_pool);
+	(void) vmw_cmdbuf_idle(man, false, 10*HZ);
+
+	for_each_cmdbuf_ctx(man, i, ctx)
+		if (vmw_cmdbuf_startstop(man, i, false))
+			DRM_ERROR("Failed stopping command buffer "
+				  "context %u.\n", i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vmw_generic_waiter_remove(man->dev_priv, SVGA_IRQFLAG_ERROR,
 				  &man->dev_priv->error_waiters);

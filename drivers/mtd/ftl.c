@@ -140,6 +140,15 @@ typedef struct partition_t {
 #define XFER_PREPARED	0x03
 #define XFER_FAILED	0x04
 
+<<<<<<< HEAD
+=======
+/*====================================================================*/
+
+
+static void ftl_erase_callback(struct erase_info *done);
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*======================================================================
 
     Scan_header() checks to see if a memory region contains an FTL
@@ -201,16 +210,26 @@ static int build_maps(partition_t *part)
     /* Set up erase unit maps */
     part->DataUnits = le16_to_cpu(part->header.NumEraseUnits) -
 	part->header.NumTransferUnits;
+<<<<<<< HEAD
     part->EUNInfo = kmalloc_array(part->DataUnits, sizeof(struct eun_info_t),
                                   GFP_KERNEL);
+=======
+    part->EUNInfo = kmalloc(part->DataUnits * sizeof(struct eun_info_t),
+			    GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     if (!part->EUNInfo)
 	    goto out;
     for (i = 0; i < part->DataUnits; i++)
 	part->EUNInfo[i].Offset = 0xffffffff;
     part->XferInfo =
+<<<<<<< HEAD
 	kmalloc_array(part->header.NumTransferUnits,
                       sizeof(struct xfer_info_t),
                       GFP_KERNEL);
+=======
+	kmalloc(part->header.NumTransferUnits * sizeof(struct xfer_info_t),
+		GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     if (!part->XferInfo)
 	    goto out_EUNInfo;
 
@@ -263,15 +282,24 @@ static int build_maps(partition_t *part)
 
     /* Set up virtual page map */
     blocks = le32_to_cpu(header.FormattedSize) >> header.BlockSize;
+<<<<<<< HEAD
     part->VirtualBlockMap = vmalloc(array_size(blocks, sizeof(uint32_t)));
+=======
+    part->VirtualBlockMap = vmalloc(blocks * sizeof(uint32_t));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     if (!part->VirtualBlockMap)
 	    goto out_XferInfo;
 
     memset(part->VirtualBlockMap, 0xff, blocks * sizeof(uint32_t));
     part->BlocksPerUnit = (1 << header.EraseUnitSize) >> header.BlockSize;
 
+<<<<<<< HEAD
     part->bam_cache = kmalloc_array(part->BlocksPerUnit, sizeof(uint32_t),
                                     GFP_KERNEL);
+=======
+    part->bam_cache = kmalloc(part->BlocksPerUnit * sizeof(uint32_t),
+			      GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     if (!part->bam_cache)
 	    goto out_VirtualBlockMap;
 
@@ -343,6 +371,7 @@ static int erase_xfer(partition_t *part,
     if (!erase)
             return -ENOMEM;
 
+<<<<<<< HEAD
     erase->addr = xfer->Offset;
     erase->len = 1 << part->header.EraseUnitSize;
 
@@ -356,6 +385,20 @@ static int erase_xfer(partition_t *part,
     }
 
     kfree(erase);
+=======
+    erase->mtd = part->mbd.mtd;
+    erase->callback = ftl_erase_callback;
+    erase->addr = xfer->Offset;
+    erase->len = 1 << part->header.EraseUnitSize;
+    erase->priv = (u_long)part;
+
+    ret = mtd_erase(part->mbd.mtd, erase);
+
+    if (!ret)
+	    xfer->EraseCount++;
+    else
+	    kfree(erase);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
     return ret;
 } /* erase_xfer */
@@ -367,6 +410,40 @@ static int erase_xfer(partition_t *part,
 
 ======================================================================*/
 
+<<<<<<< HEAD
+=======
+static void ftl_erase_callback(struct erase_info *erase)
+{
+    partition_t *part;
+    struct xfer_info_t *xfer;
+    int i;
+
+    /* Look up the transfer unit */
+    part = (partition_t *)(erase->priv);
+
+    for (i = 0; i < part->header.NumTransferUnits; i++)
+	if (part->XferInfo[i].Offset == erase->addr) break;
+
+    if (i == part->header.NumTransferUnits) {
+	printk(KERN_NOTICE "ftl_cs: internal error: "
+	       "erase lookup failed!\n");
+	return;
+    }
+
+    xfer = &part->XferInfo[i];
+    if (erase->state == MTD_ERASE_DONE)
+	xfer->state = XFER_ERASED;
+    else {
+	xfer->state = XFER_FAILED;
+	printk(KERN_NOTICE "ftl_cs: erase failed: state = %d\n",
+	       erase->state);
+    }
+
+    kfree(erase);
+
+} /* ftl_erase_callback */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int prepare_xfer(partition_t *part, int i)
 {
     erase_unit_header_t header;
@@ -394,8 +471,13 @@ static int prepare_xfer(partition_t *part, int i)
     }
 
     /* Write the BAM stub */
+<<<<<<< HEAD
     nbam = DIV_ROUND_UP(part->BlocksPerUnit * sizeof(uint32_t) +
 			le32_to_cpu(part->header.BAMOffset), SECTOR_SIZE);
+=======
+    nbam = (part->BlocksPerUnit * sizeof(uint32_t) +
+	    le32_to_cpu(part->header.BAMOffset) + SECTOR_SIZE - 1) / SECTOR_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
     offset = xfer->Offset + le32_to_cpu(part->header.BAMOffset);
     ctl = cpu_to_le32(BLOCK_CONTROL);

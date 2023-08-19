@@ -28,7 +28,11 @@ every detail. More information/reference could be found here:
   https://en.wikipedia.org/wiki/Channel_I/O
 - s390 architecture:
   s390 Principles of Operation manual (IBM Form. No. SA22-7832)
+<<<<<<< HEAD
 - The existing QEMU code which implements a simple emulated channel
+=======
+- The existing Qemu code which implements a simple emulated channel
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   subsystem could also be a good reference. It makes it easier to follow
   the flow.
   qemu/hw/s390x/css.c
@@ -39,22 +43,36 @@ For vfio mediated device framework:
 Motivation of vfio-ccw
 ----------------------
 
+<<<<<<< HEAD
 Typically, a guest virtualized via QEMU/KVM on s390 only sees
+=======
+Currently, a guest virtualized via qemu/kvm on s390 only sees
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 paravirtualized virtio devices via the "Virtio Over Channel I/O
 (virtio-ccw)" transport. This makes virtio devices discoverable via
 standard operating system algorithms for handling channel devices.
 
 However this is not enough. On s390 for the majority of devices, which
 use the standard Channel I/O based mechanism, we also need to provide
+<<<<<<< HEAD
 the functionality of passing through them to a QEMU virtual machine.
+=======
+the functionality of passing through them to a Qemu virtual machine.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 This includes devices that don't have a virtio counterpart (e.g. tape
 drives) or that have specific characteristics which guests want to
 exploit.
 
 For passing a device to a guest, we want to use the same interface as
+<<<<<<< HEAD
 everybody else, namely vfio. We implement this vfio support for channel
 devices via the vfio mediated device framework and the subchannel device
 driver "vfio_ccw".
+=======
+everybody else, namely vfio. Thus, we would like to introduce vfio
+support for channel devices. And we would like to name this new vfio
+device "vfio-ccw".
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Access patterns of CCW devices
 ------------------------------
@@ -99,7 +117,11 @@ As mentioned above, we realize vfio-ccw with a mdev implementation.
 Channel I/O does not have IOMMU hardware support, so the physical
 vfio-ccw device does not have an IOMMU level translation or isolation.
 
+<<<<<<< HEAD
 Subchannel I/O instructions are all privileged instructions. When
+=======
+Sub-channel I/O instructions are all privileged instructions, When
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 handling the I/O instruction interception, vfio-ccw has the software
 policing and translation how the channel program is programmed before
 it gets sent to hardware.
@@ -121,7 +143,11 @@ devices:
 - The vfio_mdev driver for the mediated vfio ccw device.
   This is provided by the mdev framework. It is a vfio device driver for
   the mdev that created by vfio_ccw.
+<<<<<<< HEAD
   It realizes a group of vfio device driver callbacks, adds itself to a
+=======
+  It realize a group of vfio device driver callbacks, adds itself to a
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   vfio group, and registers itself to the mdev framework as a mdev
   driver.
   It uses a vfio iommu backend that uses the existing map and unmap
@@ -178,7 +204,11 @@ vfio-ccw I/O region
 
 An I/O region is used to accept channel program request from user
 space and store I/O interrupt result for user space to retrieve. The
+<<<<<<< HEAD
 definition of the region is:
+=======
+defination of the region is:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct ccw_io_region {
 #define ORB_AREA_SIZE 12
@@ -198,6 +228,7 @@ irb_area stores the I/O result.
 
 ret_code stores a return code for each access of the region.
 
+<<<<<<< HEAD
 vfio-ccw operation details
 --------------------------
 
@@ -215,6 +246,32 @@ vfio-iommu-type1 as the vfio iommu backend.
 
 * vfio_ccw device driver
   This driver utilizes the CCW translation APIs and introduces
+=======
+vfio-ccw patches overview
+-------------------------
+
+For now, our patches are rebased on the latest mdev implementation.
+vfio-ccw follows what vfio-pci did on the s390 paltform and uses
+vfio-iommu-type1 as the vfio iommu backend. It's a good start to launch
+the code review for vfio-ccw. Note that the implementation is far from
+complete yet; but we'd like to get feedback for the general
+architecture.
+
+* CCW translation APIs
+- Description:
+  These introduce a group of APIs (start with 'cp_') to do CCW
+  translation. The CCWs passed in by a user space program are
+  organized with their guest physical memory addresses. These APIs
+  will copy the CCWs into the kernel space, and assemble a runnable
+  kernel channel program by updating the guest physical addresses with
+  their corresponding host physical addresses.
+- Patches:
+  vfio: ccw: introduce channel program interfaces
+
+* vfio_ccw device driver
+- Description:
+  The following patches utilizes the CCW translation APIs and introduce
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   vfio_ccw, which is the driver for the I/O subchannel devices you want
   to pass through.
   vfio_ccw implements the following vfio ioctls:
@@ -229,6 +286,7 @@ vfio-iommu-type1 as the vfio iommu backend.
   This also provides the SET_IRQ ioctl to setup an event notifier to
   notify the user space program the I/O completion in an asynchronous
   way.
+<<<<<<< HEAD
 
 The use of vfio-ccw is not limited to QEMU, while QEMU is definitely a
 good example to get understand how these patches work. Here is a little
@@ -237,6 +295,22 @@ handled (without error handling).
 
 Explanation:
 Q1-Q7: QEMU side process.
+=======
+- Patches:
+  vfio: ccw: basic implementation for vfio_ccw driver
+  vfio: ccw: introduce ccw_io_region
+  vfio: ccw: realize VFIO_DEVICE_GET_REGION_INFO ioctl
+  vfio: ccw: realize VFIO_DEVICE_RESET ioctl
+  vfio: ccw: realize VFIO_DEVICE_G(S)ET_IRQ_INFO ioctls
+
+The user of vfio-ccw is not limited to Qemu, while Qemu is definitely a
+good example to get understand how these patches work. Here is a little
+bit more detail how an I/O request triggered by the Qemu guest will be
+handled (without error handling).
+
+Explanation:
+Q1-Q7: Qemu side process.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 K1-K5: Kernel side process.
 
 Q1. Get I/O region info during initialization.
@@ -250,7 +324,11 @@ Q4. Write the guest channel program and ORB to the I/O region.
     K2. Translate the guest channel program to a host kernel space
         channel program, which becomes runnable for a real device.
     K3. With the necessary information contained in the orb passed in
+<<<<<<< HEAD
         by QEMU, issue the ccwchain to the device.
+=======
+        by Qemu, issue the ccwchain to the device.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     K4. Return the ssch CC code.
 Q5. Return the CC code to the guest.
 
@@ -258,7 +336,11 @@ Q5. Return the CC code to the guest.
 
     K5. Interrupt handler gets the I/O result and write the result to
         the I/O region.
+<<<<<<< HEAD
     K6. Signal QEMU to retrieve the result.
+=======
+    K6. Signal Qemu to retrieve the result.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Q6. Get the signal and event handler reads out the result from the I/O
     region.
 Q7. Update the irb for the guest.
@@ -276,6 +358,7 @@ More information for DASD and ECKD could be found here:
 https://en.wikipedia.org/wiki/Direct-access_storage_device
 https://en.wikipedia.org/wiki/Count_key_data
 
+<<<<<<< HEAD
 Together with the corresponding work in QEMU, we can bring the passed
 through DASD/ECKD device online in a guest now and use it as a block
 device.
@@ -290,6 +373,12 @@ mode (HPF) is not supported.
 QDIO subchannels are currently not supported. Classic devices other than
 DASD/ECKD might work, but have not been tested.
 
+=======
+Together with the corresponding work in Qemu, we can bring the passed
+through DASD/ECKD device online in a guest now and use it as a block
+device.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Reference
 ---------
 1. ESA/s390 Principles of Operation manual (IBM Form. No. SA22-7832)

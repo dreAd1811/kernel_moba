@@ -12,7 +12,16 @@
 #include <asm/iommu.h>
 #include <asm/machvec.h>
 #include <linux/dma-mapping.h>
+<<<<<<< HEAD
 #include <linux/kernel.h>
+=======
+
+
+#ifdef CONFIG_INTEL_IOMMU
+
+#include <linux/kernel.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/page.h>
 
 dma_addr_t bad_dma_address __read_mostly;
@@ -99,6 +108,7 @@ void __init pci_iommu_alloc(void)
 	detect_intel_iommu();
 
 #ifdef CONFIG_SWIOTLB
+<<<<<<< HEAD
 	if (!iommu_detected) {
 #ifdef CONFIG_IA64_GENERIC
 		printk(KERN_INFO "PCI-DMA: Re-initialize machine vector.\n");
@@ -110,3 +120,10 @@ void __init pci_iommu_alloc(void)
 	}
 #endif /* CONFIG_SWIOTLB */
 }
+=======
+	pci_swiotlb_init();
+#endif
+}
+
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

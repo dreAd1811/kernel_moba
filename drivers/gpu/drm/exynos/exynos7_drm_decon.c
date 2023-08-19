@@ -25,13 +25,20 @@
 
 #include <video/of_display_timing.h>
 #include <video/of_videomode.h>
+<<<<<<< HEAD
+=======
+#include <video/exynos7_decon.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "exynos_drm_crtc.h"
 #include "exynos_drm_plane.h"
 #include "exynos_drm_drv.h"
 #include "exynos_drm_fb.h"
 #include "exynos_drm_iommu.h"
+<<<<<<< HEAD
 #include "regs-decon7.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * DECON stands for Display and Enhancement controller.
@@ -832,8 +839,11 @@ static int exynos7_decon_resume(struct device *dev)
 static const struct dev_pm_ops exynos7_decon_pm_ops = {
 	SET_RUNTIME_PM_OPS(exynos7_decon_suspend, exynos7_decon_resume,
 			   NULL)
+<<<<<<< HEAD
 	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				pm_runtime_force_resume)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct platform_driver decon_driver = {

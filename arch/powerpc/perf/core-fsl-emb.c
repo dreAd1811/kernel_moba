@@ -42,7 +42,11 @@ static DEFINE_MUTEX(pmc_reserve_mutex);
 static inline int perf_intr_is_nmi(struct pt_regs *regs)
 {
 #ifdef __powerpc64__
+<<<<<<< HEAD
 	return (regs->softe & IRQS_DISABLED);
+=======
+	return !regs->softe;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 	return 0;
 #endif
@@ -277,7 +281,11 @@ static int collect_events(struct perf_event *group, int max_count,
 		ctrs[n] = group;
 		n++;
 	}
+<<<<<<< HEAD
 	for_each_sibling_event(event, group) {
+=======
+	list_for_each_entry(event, &group->sibling_list, group_entry) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!is_software_event(event) &&
 		    event->state != PERF_EVENT_STATE_OFF) {
 			if (n >= max_count)

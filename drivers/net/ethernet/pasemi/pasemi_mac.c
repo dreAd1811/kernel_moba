@@ -212,7 +212,13 @@ static int pasemi_get_mac_addr(struct pasemi_mac *mac)
 		return -ENOENT;
 	}
 
+<<<<<<< HEAD
 	if (!mac_pton(maddr, addr)) {
+=======
+	if (sscanf(maddr, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
+		   &addr[0], &addr[1], &addr[2], &addr[3], &addr[4], &addr[5])
+	    != ETH_ALEN) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_warn(&pdev->dev,
 			 "can't parse mac address, not configuring\n");
 		return -EINVAL;
@@ -390,9 +396,14 @@ static int pasemi_mac_setup_rx_resources(const struct net_device *dev)
 	spin_lock_init(&ring->lock);
 
 	ring->size = RX_RING_SIZE;
+<<<<<<< HEAD
 	ring->ring_info = kcalloc(RX_RING_SIZE,
 				  sizeof(struct pasemi_mac_buffer),
 				  GFP_KERNEL);
+=======
+	ring->ring_info = kzalloc(sizeof(struct pasemi_mac_buffer) *
+				  RX_RING_SIZE, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ring->ring_info)
 		goto out_ring_info;
@@ -474,9 +485,14 @@ pasemi_mac_setup_tx_resources(const struct net_device *dev)
 	spin_lock_init(&ring->lock);
 
 	ring->size = TX_RING_SIZE;
+<<<<<<< HEAD
 	ring->ring_info = kcalloc(TX_RING_SIZE,
 				  sizeof(struct pasemi_mac_buffer),
 				  GFP_KERNEL);
+=======
+	ring->ring_info = kzalloc(sizeof(struct pasemi_mac_buffer) *
+				  TX_RING_SIZE, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ring->ring_info)
 		goto out_ring_info;
 
@@ -943,9 +959,15 @@ static irqreturn_t pasemi_mac_rx_intr(int irq, void *data)
 
 #define TX_CLEAN_INTERVAL HZ
 
+<<<<<<< HEAD
 static void pasemi_mac_tx_timer(struct timer_list *t)
 {
 	struct pasemi_mac_txring *txring = from_timer(txring, t, clean_timer);
+=======
+static void pasemi_mac_tx_timer(unsigned long data)
+{
+	struct pasemi_mac_txring *txring = (struct pasemi_mac_txring *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pasemi_mac *mac = txring->mac;
 
 	pasemi_mac_clean_tx(txring);
@@ -1053,7 +1075,10 @@ static int pasemi_mac_phy_init(struct net_device *dev)
 
 	dn = pci_device_to_OF_node(mac->pdev);
 	phy_dn = of_parse_phandle(dn, "phy-handle", 0);
+<<<<<<< HEAD
 	of_node_put(phy_dn);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mac->link = 0;
 	mac->speed = 0;
@@ -1062,6 +1087,10 @@ static int pasemi_mac_phy_init(struct net_device *dev)
 	phydev = of_phy_connect(dev, phy_dn, &pasemi_adjust_link, 0,
 				PHY_INTERFACE_MODE_SGMII);
 
+<<<<<<< HEAD
+=======
+	of_node_put(phy_dn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!phydev) {
 		printk(KERN_ERR "%s: Could not attach to phy\n", dev->name);
 		return -ENODEV;
@@ -1199,7 +1228,12 @@ static int pasemi_mac_open(struct net_device *dev)
 	if (dev->phydev)
 		phy_start(dev->phydev);
 
+<<<<<<< HEAD
 	timer_setup(&mac->tx->clean_timer, pasemi_mac_tx_timer, 0);
+=======
+	setup_timer(&mac->tx->clean_timer, pasemi_mac_tx_timer,
+		    (unsigned long)mac->tx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&mac->tx->clean_timer, jiffies + HZ);
 
 	return 0;

@@ -16,7 +16,10 @@
 #include <linux/init.h>
 #include <linux/io.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/sys_soc.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "renesas-cpg-mssr.h"
 #include "rcar-gen2-cpg.h"
@@ -261,6 +264,7 @@ static const struct clk_div_table cpg_sd01_div_table[] = {
 static const struct rcar_gen2_cpg_pll_config *cpg_pll_config __initdata;
 static unsigned int cpg_pll0_div __initdata;
 static u32 cpg_mode __initdata;
+<<<<<<< HEAD
 static u32 cpg_quirks __initdata;
 
 #define SD_SKIP_FIRST	BIT(0)		/* Skip first clock in SD table */
@@ -277,6 +281,14 @@ struct clk * __init rcar_gen2_cpg_clk_register(struct device *dev,
 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
 	struct clk **clks, void __iomem *base,
 	struct raw_notifier_head *notifiers)
+=======
+
+struct clk * __init rcar_gen2_cpg_clk_register(struct device *dev,
+					       const struct cpg_core_clk *core,
+					       const struct cpg_mssr_info *info,
+					       struct clk **clks,
+					       void __iomem *base)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct clk_div_table *table = NULL;
 	const struct clk *parent;
@@ -339,17 +351,23 @@ struct clk * __init rcar_gen2_cpg_clk_register(struct device *dev,
 
 	case CLK_TYPE_GEN2_SD0:
 		table = cpg_sd01_div_table;
+<<<<<<< HEAD
 		if (cpg_quirks & SD_SKIP_FIRST)
 			table++;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		shift = 4;
 		break;
 
 	case CLK_TYPE_GEN2_SD1:
 		table = cpg_sd01_div_table;
+<<<<<<< HEAD
 		if (cpg_quirks & SD_SKIP_FIRST)
 			table++;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		shift = 0;
 		break;
 
@@ -378,6 +396,7 @@ struct clk * __init rcar_gen2_cpg_clk_register(struct device *dev,
 int __init rcar_gen2_cpg_init(const struct rcar_gen2_cpg_pll_config *config,
 			      unsigned int pll0_div, u32 mode)
 {
+<<<<<<< HEAD
 	const struct soc_device_attribute *attr;
 
 	cpg_pll_config = config;
@@ -387,6 +406,11 @@ int __init rcar_gen2_cpg_init(const struct rcar_gen2_cpg_pll_config *config,
 	if (attr)
 		cpg_quirks = (uintptr_t)attr->data;
 	pr_debug("%s: mode = 0x%x quirks = 0x%x\n", __func__, mode, cpg_quirks);
+=======
+	cpg_pll_config = config;
+	cpg_pll0_div = pll0_div;
+	cpg_mode = mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_init(&cpg_lock);
 

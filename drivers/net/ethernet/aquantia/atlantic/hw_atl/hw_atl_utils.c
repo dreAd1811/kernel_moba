@@ -11,16 +11,27 @@
  * abstraction layer.
  */
 
+<<<<<<< HEAD
 #include "../aq_nic.h"
 #include "../aq_hw_utils.h"
 #include "hw_atl_utils.h"
 #include "hw_atl_llh.h"
 #include "hw_atl_llh_internal.h"
+=======
+#include "../aq_hw.h"
+#include "../aq_hw_utils.h"
+#include "../aq_pci_func.h"
+#include "../aq_ring.h"
+#include "../aq_vec.h"
+#include "hw_atl_utils.h"
+#include "hw_atl_llh.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/random.h>
 
 #define HW_ATL_UCP_0X370_REG    0x0370U
 
+<<<<<<< HEAD
 #define HW_ATL_MIF_CMD          0x0200U
 #define HW_ATL_MIF_ADDR         0x0208U
 #define HW_ATL_MIF_VAL          0x020CU
@@ -280,18 +291,43 @@ int hw_atl_utils_fw_downld_dwords(struct aq_hw_s *self, u32 a,
 	AQ_HW_WAIT_FOR(hw_atl_reg_glb_cpu_sem_get(self,
 						  HW_ATL_FW_SM_RAM) == 1U,
 						  1U, 10000U);
+=======
+#define HW_ATL_FW_SM_RAM        0x2U
+#define HW_ATL_MPI_CONTROL_ADR  0x0368U
+#define HW_ATL_MPI_STATE_ADR    0x036CU
+
+#define HW_ATL_MPI_STATE_MSK    0x00FFU
+#define HW_ATL_MPI_STATE_SHIFT  0U
+#define HW_ATL_MPI_SPEED_MSK    0xFFFFU
+#define HW_ATL_MPI_SPEED_SHIFT  16U
+
+static int hw_atl_utils_fw_downld_dwords(struct aq_hw_s *self, u32 a,
+					 u32 *p, u32 cnt)
+{
+	int err = 0;
+
+	AQ_HW_WAIT_FOR(reg_glb_cpu_sem_get(self,
+					   HW_ATL_FW_SM_RAM) == 1U,
+					   1U, 10000U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err < 0) {
 		bool is_locked;
 
+<<<<<<< HEAD
 		hw_atl_reg_glb_cpu_sem_set(self, 1U, HW_ATL_FW_SM_RAM);
 		is_locked = hw_atl_reg_glb_cpu_sem_get(self, HW_ATL_FW_SM_RAM);
+=======
+		reg_glb_cpu_sem_set(self, 1U, HW_ATL_FW_SM_RAM);
+		is_locked = reg_glb_cpu_sem_get(self, HW_ATL_FW_SM_RAM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!is_locked) {
 			err = -ETIME;
 			goto err_exit;
 		}
 	}
 
+<<<<<<< HEAD
 	aq_hw_write_reg(self, HW_ATL_MIF_ADDR, a);
 
 	for (++cnt; --cnt && !err;) {
@@ -311,6 +347,23 @@ int hw_atl_utils_fw_downld_dwords(struct aq_hw_s *self, u32 a,
 	}
 
 	hw_atl_reg_glb_cpu_sem_set(self, 1U, HW_ATL_FW_SM_RAM);
+=======
+	aq_hw_write_reg(self, 0x00000208U, a);
+
+	for (++cnt; --cnt;) {
+		u32 i = 0U;
+
+		aq_hw_write_reg(self, 0x00000200U, 0x00008000U);
+
+		for (i = 1024U;
+			(0x100U & aq_hw_read_reg(self, 0x00000200U)) && --i;) {
+		}
+
+		*(p++) = aq_hw_read_reg(self, 0x0000020CU);
+	}
+
+	reg_glb_cpu_sem_set(self, 1U, HW_ATL_FW_SM_RAM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_exit:
 	return err;
@@ -322,7 +375,11 @@ static int hw_atl_utils_fw_upload_dwords(struct aq_hw_s *self, u32 a, u32 *p,
 	int err = 0;
 	bool is_locked;
 
+<<<<<<< HEAD
 	is_locked = hw_atl_reg_glb_cpu_sem_get(self, HW_ATL_FW_SM_RAM);
+=======
+	is_locked = reg_glb_cpu_sem_get(self, HW_ATL_FW_SM_RAM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!is_locked) {
 		err = -ETIME;
 		goto err_exit;
@@ -341,7 +398,11 @@ static int hw_atl_utils_fw_upload_dwords(struct aq_hw_s *self, u32 a, u32 *p,
 		}
 	}
 
+<<<<<<< HEAD
 	hw_atl_reg_glb_cpu_sem_set(self, 1U, HW_ATL_FW_SM_RAM);
+=======
+	reg_glb_cpu_sem_set(self, 1U, HW_ATL_FW_SM_RAM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_exit:
 	return err;
@@ -363,7 +424,11 @@ err_exit:
 }
 
 static int hw_atl_utils_init_ucp(struct aq_hw_s *self,
+<<<<<<< HEAD
 				 const struct aq_hw_caps_s *aq_hw_caps)
+=======
+				 struct aq_hw_caps_s *aq_hw_caps)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 
@@ -377,12 +442,29 @@ static int hw_atl_utils_init_ucp(struct aq_hw_s *self,
 		aq_hw_write_reg(self, HW_ATL_UCP_0X370_REG, ucp_0x370);
 	}
 
+<<<<<<< HEAD
 	hw_atl_reg_glb_cpu_scratch_scp_set(self, 0x00000000U, 25U);
 
 	/* check 10 times by 1ms */
 	AQ_HW_WAIT_FOR(0U != (self->mbox_addr =
 			aq_hw_read_reg(self, 0x360U)), 1000U, 10U);
 
+=======
+	reg_glb_cpu_scratch_scp_set(self, 0x00000000U, 25U);
+
+	/* check 10 times by 1ms */
+	AQ_HW_WAIT_FOR(0U != (PHAL_ATLANTIC_A0->mbox_addr =
+			aq_hw_read_reg(self, 0x360U)), 1000U, 10U);
+
+	err = hw_atl_utils_ver_match(aq_hw_caps->fw_ver_expected,
+				     aq_hw_read_reg(self, 0x18U));
+
+	if (err < 0)
+		pr_err("%s: Bad FW version detected: expected=%x, actual=%x\n",
+		       AQ_CFG_DRV_NAME,
+		       aq_hw_caps->fw_ver_expected,
+		       aq_hw_read_reg(self, 0x18U));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -410,14 +492,23 @@ static int hw_atl_utils_fw_rpc_call(struct aq_hw_s *self, unsigned int rpc_size)
 		err = -1;
 		goto err_exit;
 	}
+<<<<<<< HEAD
 	err = hw_atl_utils_fw_upload_dwords(self, self->rpc_addr,
 					    (u32 *)(void *)&self->rpc,
+=======
+	err = hw_atl_utils_fw_upload_dwords(self, PHAL_ATLANTIC->rpc_addr,
+					    (u32 *)(void *)&PHAL_ATLANTIC->rpc,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    (rpc_size + sizeof(u32) -
 					    sizeof(u8)) / sizeof(u32));
 	if (err < 0)
 		goto err_exit;
 
+<<<<<<< HEAD
 	sw.tid = 0xFFFFU & (++self->rpc_tid);
+=======
+	sw.tid = 0xFFFFU & (++PHAL_ATLANTIC->rpc_tid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sw.len = (u16)rpc_size;
 	aq_hw_write_reg(self, HW_ATL_RPC_CONTROL_ADR, sw.val);
 
@@ -435,7 +526,11 @@ static int hw_atl_utils_fw_rpc_wait(struct aq_hw_s *self,
 	do {
 		sw.val = aq_hw_read_reg(self, HW_ATL_RPC_CONTROL_ADR);
 
+<<<<<<< HEAD
 		self->rpc_tid = sw.tid;
+=======
+		PHAL_ATLANTIC->rpc_tid = sw.tid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		AQ_HW_WAIT_FOR(sw.tid ==
 				(fw.val =
@@ -457,9 +552,15 @@ static int hw_atl_utils_fw_rpc_wait(struct aq_hw_s *self,
 		if (fw.len) {
 			err =
 			hw_atl_utils_fw_downld_dwords(self,
+<<<<<<< HEAD
 						      self->rpc_addr,
 						      (u32 *)(void *)
 						      &self->rpc,
+=======
+						      PHAL_ATLANTIC->rpc_addr,
+						      (u32 *)(void *)
+						      &PHAL_ATLANTIC->rpc,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						      (fw.len + sizeof(u32) -
 						      sizeof(u8)) /
 						      sizeof(u32));
@@ -467,18 +568,31 @@ static int hw_atl_utils_fw_rpc_wait(struct aq_hw_s *self,
 				goto err_exit;
 		}
 
+<<<<<<< HEAD
 		*rpc = &self->rpc;
+=======
+		*rpc = &PHAL_ATLANTIC->rpc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 err_exit:
 	return err;
 }
 
+<<<<<<< HEAD
 static int hw_atl_utils_mpi_create(struct aq_hw_s *self)
 {
 	int err = 0;
 
 	err = hw_atl_utils_init_ucp(self, self->aq_nic_cfg->aq_hw_caps);
+=======
+static int hw_atl_utils_mpi_create(struct aq_hw_s *self,
+				   struct aq_hw_caps_s *aq_hw_caps)
+{
+	int err = 0;
+
+	err = hw_atl_utils_init_ucp(self, aq_hw_caps);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		goto err_exit;
 
@@ -494,7 +608,11 @@ int hw_atl_utils_mpi_read_mbox(struct aq_hw_s *self,
 			       struct hw_aq_atl_utils_mbox_header *pmbox)
 {
 	return hw_atl_utils_fw_downld_dwords(self,
+<<<<<<< HEAD
 				      self->mbox_addr,
+=======
+				      PHAL_ATLANTIC->mbox_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      (u32 *)(void *)pmbox,
 				      sizeof(*pmbox) / sizeof(u32));
 }
@@ -505,7 +623,11 @@ void hw_atl_utils_mpi_read_stats(struct aq_hw_s *self,
 	int err = 0;
 
 	err = hw_atl_utils_fw_downld_dwords(self,
+<<<<<<< HEAD
 					    self->mbox_addr,
+=======
+					    PHAL_ATLANTIC->mbox_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    (u32 *)(void *)pmbox,
 					    sizeof(*pmbox) / sizeof(u32));
 	if (err < 0)
@@ -516,14 +638,21 @@ void hw_atl_utils_mpi_read_stats(struct aq_hw_s *self,
 					self->aq_nic_cfg->mtu : 1514U;
 		pmbox->stats.ubrc = pmbox->stats.uprc * mtu;
 		pmbox->stats.ubtc = pmbox->stats.uptc * mtu;
+<<<<<<< HEAD
 		pmbox->stats.dpc = atomic_read(&self->dpc);
 	} else {
 		pmbox->stats.dpc = hw_atl_reg_rx_dma_stat_counter7get(self);
+=======
+		pmbox->stats.dpc = atomic_read(&PHAL_ATLANTIC_A0->dpc);
+	} else {
+		pmbox->stats.dpc = reg_rx_dma_stat_counter7get(self);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 err_exit:;
 }
 
+<<<<<<< HEAD
 static int hw_atl_utils_mpi_set_speed(struct aq_hw_s *self, u32 speed)
 {
 	u32 val = aq_hw_read_reg(self, HW_ATL_MPI_CONTROL_ADR);
@@ -531,17 +660,34 @@ static int hw_atl_utils_mpi_set_speed(struct aq_hw_s *self, u32 speed)
 	val = val & ~HW_ATL_MPI_SPEED_MSK;
 	val |= speed << HW_ATL_MPI_SPEED_SHIFT;
 	aq_hw_write_reg(self, HW_ATL_MPI_CONTROL_ADR, val);
+=======
+int hw_atl_utils_mpi_set_speed(struct aq_hw_s *self, u32 speed,
+			       enum hal_atl_utils_fw_state_e state)
+{
+	u32 ucp_0x368 = 0;
+
+	ucp_0x368 = (speed << HW_ATL_MPI_SPEED_SHIFT) | state;
+	aq_hw_write_reg(self, HW_ATL_MPI_CONTROL_ADR, ucp_0x368);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hw_atl_utils_mpi_set_state(struct aq_hw_s *self,
 				      enum hal_atl_utils_fw_state_e state)
+=======
+void hw_atl_utils_mpi_set(struct aq_hw_s *self,
+			  enum hal_atl_utils_fw_state_e state, u32 speed)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err = 0;
 	u32 transaction_id = 0;
 	struct hw_aq_atl_utils_mbox_header mbox;
+<<<<<<< HEAD
 	u32 val = aq_hw_read_reg(self, HW_ATL_MPI_CONTROL_ADR);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (state == MPI_RESET) {
 		hw_atl_utils_mpi_read_mbox(self, &mbox);
@@ -555,6 +701,7 @@ static int hw_atl_utils_mpi_set_state(struct aq_hw_s *self,
 		if (err < 0)
 			goto err_exit;
 	}
+<<<<<<< HEAD
 	/* On interface DEINIT we disable DW (raise bit)
 	 * Otherwise enable DW (clear bit)
 	 */
@@ -570,6 +717,12 @@ static int hw_atl_utils_mpi_set_state(struct aq_hw_s *self,
 	aq_hw_write_reg(self, HW_ATL_MPI_CONTROL_ADR, val);
 err_exit:
 	return err;
+=======
+
+	err = hw_atl_utils_mpi_set_speed(self, speed, state);
+
+err_exit:;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int hw_atl_utils_mpi_get_link_status(struct aq_hw_s *self)
@@ -612,6 +765,10 @@ int hw_atl_utils_mpi_get_link_status(struct aq_hw_s *self)
 }
 
 int hw_atl_utils_get_mac_permanent(struct aq_hw_s *self,
+<<<<<<< HEAD
+=======
+				   struct aq_hw_caps_s *aq_hw_caps,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   u8 *mac)
 {
 	int err = 0;
@@ -619,6 +776,18 @@ int hw_atl_utils_get_mac_permanent(struct aq_hw_s *self,
 	u32 l = 0U;
 	u32 mac_addr[2];
 
+<<<<<<< HEAD
+=======
+	self->mmio = aq_pci_func_get_mmio(self->aq_pci_func);
+
+	hw_atl_utils_hw_chip_features_init(self,
+					   &PHAL_ATLANTIC_A0->chip_features);
+
+	err = hw_atl_utils_mpi_create(self, aq_hw_caps);
+	if (err < 0)
+		goto err_exit;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!aq_hw_read_reg(self, HW_ATL_UCP_0X370_REG)) {
 		unsigned int rnd = 0;
 		unsigned int ucp_0x370 = 0;
@@ -633,7 +802,11 @@ int hw_atl_utils_get_mac_permanent(struct aq_hw_s *self,
 					    aq_hw_read_reg(self, 0x00000374U) +
 					    (40U * 4U),
 					    mac_addr,
+<<<<<<< HEAD
 					    ARRAY_SIZE(mac_addr));
+=======
+					    AQ_DIMOF(mac_addr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0) {
 		mac_addr[0] = 0U;
 		mac_addr[1] = 0U;
@@ -664,6 +837,10 @@ int hw_atl_utils_get_mac_permanent(struct aq_hw_s *self,
 		mac[0] = (u8)(0xFFU & h);
 	}
 
+<<<<<<< HEAD
+=======
+err_exit:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -701,6 +878,7 @@ unsigned int hw_atl_utils_mbps_2_speed_index(unsigned int mbps)
 void hw_atl_utils_hw_chip_features_init(struct aq_hw_s *self, u32 *p)
 {
 	u32 chip_features = 0U;
+<<<<<<< HEAD
 	u32 val = hw_atl_reg_glb_mif_id_get(self);
 	u32 mif_rev = val & 0xFFU;
 
@@ -716,6 +894,19 @@ void hw_atl_utils_hw_chip_features_init(struct aq_hw_s *self, u32 *p)
 			HAL_ATLANTIC_UTILS_CHIP_RPF2;
 	} else if ((0xFU & mif_rev) == 0xAU) {
 		chip_features |= HAL_ATLANTIC_UTILS_CHIP_REVISION_B1 |
+=======
+	u32 val = reg_glb_mif_id_get(self);
+	u32 mif_rev = val & 0xFFU;
+
+	if ((3U & mif_rev) == 1U) {
+		chip_features |=
+			HAL_ATLANTIC_UTILS_CHIP_REVISION_A0 |
+			HAL_ATLANTIC_UTILS_CHIP_MPI_AQ |
+			HAL_ATLANTIC_UTILS_CHIP_MIPS;
+	} else if ((3U & mif_rev) == 2U) {
+		chip_features |=
+			HAL_ATLANTIC_UTILS_CHIP_REVISION_B0 |
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			HAL_ATLANTIC_UTILS_CHIP_MPI_AQ |
 			HAL_ATLANTIC_UTILS_CHIP_MIPS |
 			HAL_ATLANTIC_UTILS_CHIP_TPO2 |
@@ -725,23 +916,34 @@ void hw_atl_utils_hw_chip_features_init(struct aq_hw_s *self, u32 *p)
 	*p = chip_features;
 }
 
+<<<<<<< HEAD
 static int hw_atl_fw1x_deinit(struct aq_hw_s *self)
 {
 	hw_atl_utils_mpi_set_speed(self, 0);
 	hw_atl_utils_mpi_set_state(self, MPI_DEINIT);
+=======
+int hw_atl_utils_hw_deinit(struct aq_hw_s *self)
+{
+	hw_atl_utils_mpi_set(self, MPI_DEINIT, 0x0U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 int hw_atl_utils_hw_set_power(struct aq_hw_s *self,
 			      unsigned int power_state)
 {
+<<<<<<< HEAD
 	hw_atl_utils_mpi_set_speed(self, 0);
 	hw_atl_utils_mpi_set_state(self, MPI_POWER);
+=======
+	hw_atl_utils_mpi_set(self, MPI_POWER, 0x0U);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 int hw_atl_utils_update_stats(struct aq_hw_s *self)
 {
+<<<<<<< HEAD
 	struct hw_aq_atl_utils_mbox mbox;
 
 	hw_atl_utils_mpi_read_stats(self, &mbox);
@@ -775,13 +977,84 @@ int hw_atl_utils_update_stats(struct aq_hw_s *self)
 	self->curr_stats.dma_oct_tc = hw_atl_stats_tx_dma_good_octet_counterlsw_get(self);
 
 	memcpy(&self->last_stats, &mbox.stats, sizeof(mbox.stats));
+=======
+	struct hw_atl_s *hw_self = PHAL_ATLANTIC;
+	struct hw_aq_atl_utils_mbox mbox;
+
+	if (!self->aq_link_status.mbps)
+		return 0;
+
+	hw_atl_utils_mpi_read_stats(self, &mbox);
+
+#define AQ_SDELTA(_N_) (hw_self->curr_stats._N_ += \
+			mbox.stats._N_ - hw_self->last_stats._N_)
+
+	AQ_SDELTA(uprc);
+	AQ_SDELTA(mprc);
+	AQ_SDELTA(bprc);
+	AQ_SDELTA(erpt);
+
+	AQ_SDELTA(uptc);
+	AQ_SDELTA(mptc);
+	AQ_SDELTA(bptc);
+	AQ_SDELTA(erpr);
+
+	AQ_SDELTA(ubrc);
+	AQ_SDELTA(ubtc);
+	AQ_SDELTA(mbrc);
+	AQ_SDELTA(mbtc);
+	AQ_SDELTA(bbrc);
+	AQ_SDELTA(bbtc);
+	AQ_SDELTA(dpc);
+
+#undef AQ_SDELTA
+
+	memcpy(&hw_self->last_stats, &mbox.stats, sizeof(mbox.stats));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 struct aq_stats_s *hw_atl_utils_get_hw_stats(struct aq_hw_s *self)
 {
 	return &self->curr_stats;
+=======
+int hw_atl_utils_get_hw_stats(struct aq_hw_s *self,
+			      u64 *data, unsigned int *p_count)
+{
+	struct hw_atl_s *hw_self = PHAL_ATLANTIC;
+	struct hw_atl_stats_s *stats = &hw_self->curr_stats;
+	int i = 0;
+
+	data[i] = stats->uprc + stats->mprc + stats->bprc;
+	data[++i] = stats->uprc;
+	data[++i] = stats->mprc;
+	data[++i] = stats->bprc;
+	data[++i] = stats->erpt;
+	data[++i] = stats->uptc + stats->mptc + stats->bptc;
+	data[++i] = stats->uptc;
+	data[++i] = stats->mptc;
+	data[++i] = stats->bptc;
+	data[++i] = stats->ubrc;
+	data[++i] = stats->ubtc;
+	data[++i] = stats->mbrc;
+	data[++i] = stats->mbtc;
+	data[++i] = stats->bbrc;
+	data[++i] = stats->bbtc;
+	data[++i] = stats->ubrc + stats->mbrc + stats->bbrc;
+	data[++i] = stats->ubtc + stats->mbtc + stats->bbtc;
+	data[++i] = stats_rx_dma_good_pkt_counterlsw_get(self);
+	data[++i] = stats_tx_dma_good_pkt_counterlsw_get(self);
+	data[++i] = stats_rx_dma_good_octet_counterlsw_get(self);
+	data[++i] = stats_tx_dma_good_octet_counterlsw_get(self);
+	data[++i] = stats->dpc;
+
+	if (p_count)
+		*p_count = ++i;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const u32 hw_atl_utils_hw_mac_regs[] = {
@@ -810,14 +1083,22 @@ static const u32 hw_atl_utils_hw_mac_regs[] = {
 };
 
 int hw_atl_utils_hw_get_regs(struct aq_hw_s *self,
+<<<<<<< HEAD
 			     const struct aq_hw_caps_s *aq_hw_caps,
+=======
+			     struct aq_hw_caps_s *aq_hw_caps,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     u32 *regs_buff)
 {
 	unsigned int i = 0U;
 
 	for (i = 0; i < aq_hw_caps->mac_regs_count; i++)
 		regs_buff[i] = aq_hw_read_reg(self,
+<<<<<<< HEAD
 					      hw_atl_utils_hw_mac_regs[i]);
+=======
+			hw_atl_utils_hw_mac_regs[i]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -826,6 +1107,7 @@ int hw_atl_utils_get_fw_version(struct aq_hw_s *self, u32 *fw_version)
 	*fw_version = aq_hw_read_reg(self, 0x18U);
 	return 0;
 }
+<<<<<<< HEAD
 
 const struct aq_fw_ops aq_fw_1x_ops = {
 	.init = hw_atl_utils_mpi_create,
@@ -838,3 +1120,5 @@ const struct aq_fw_ops aq_fw_1x_ops = {
 	.update_stats = hw_atl_utils_update_stats,
 	.set_flow_control = NULL,
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

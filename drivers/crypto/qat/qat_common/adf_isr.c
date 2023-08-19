@@ -238,7 +238,11 @@ static int adf_isr_alloc_msix_entry_table(struct adf_accel_dev *accel_dev)
 	if (!accel_dev->pf.vf_info)
 		msix_num_entries += hw_data->num_banks;
 
+<<<<<<< HEAD
 	entries = kcalloc_node(msix_num_entries, sizeof(*entries),
+=======
+	entries = kzalloc_node(msix_num_entries * sizeof(*entries),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       GFP_KERNEL, dev_to_node(&GET_DEV(accel_dev)));
 	if (!entries)
 		return -ENOMEM;

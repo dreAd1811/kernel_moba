@@ -8,8 +8,12 @@
 #ifndef __ASSEMBLY__
 #include <linux/sched.h>
 #include <linux/threads.h>
+<<<<<<< HEAD
 #include <asm/mmu.h>			/* For sub-arch specific PPC_PIN_SIZE */
 #include <asm/asm-405.h>
+=======
+#include <asm/io.h>			/* For sub-arch specific PPC_PIN_SIZE */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern unsigned long ioremap_bot;
 
@@ -25,7 +29,10 @@ extern int icache_44x_need_flush;
 #define PGD_INDEX_SIZE	(32 - PGDIR_SHIFT)
 
 #define PMD_CACHE_INDEX	PMD_INDEX_SIZE
+<<<<<<< HEAD
 #define PUD_CACHE_INDEX	PUD_INDEX_SIZE
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __ASSEMBLY__
 #define PTE_TABLE_SIZE	(sizeof(pte_t) << PTE_INDEX_SIZE)
@@ -134,7 +141,11 @@ extern int icache_44x_need_flush;
 #ifndef __ASSEMBLY__
 
 #define pte_clear(mm, addr, ptep) \
+<<<<<<< HEAD
 	do { pte_update(ptep, ~0, 0); } while (0)
+=======
+	do { pte_update(ptep, ~_PAGE_HASHPTE, 0); } while (0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define pmd_none(pmd)		(!pmd_val(pmd))
 #define	pmd_bad(pmd)		(pmd_val(pmd) & _PMD_BAD)
@@ -147,6 +158,24 @@ static inline void pmd_clear(pmd_t *pmdp)
 
 
 /*
+<<<<<<< HEAD
+=======
+ * When flushing the tlb entry for a page, we also need to flush the hash
+ * table entry.  flush_hash_pages is assembler (for speed) in hashtable.S.
+ */
+extern int flush_hash_pages(unsigned context, unsigned long va,
+			    unsigned long pmdval, int count);
+
+/* Add an HPTE to the hash table */
+extern void add_hash_page(unsigned context, unsigned long va,
+			  unsigned long pmdval);
+
+/* Flush an entry from the TLB/hash table */
+extern void flush_hash_entry(struct mm_struct *mm, pte_t *ptep,
+			     unsigned long address);
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * PTE updates. This function is called whenever an existing
  * valid PTE is updated. This does -not- include set_pte_at()
  * which nowadays only sets a new PTE.
@@ -223,11 +252,27 @@ static inline unsigned long long pte_update(pte_t *p,
 }
 #endif /* CONFIG_PTE_64BIT */
 
+<<<<<<< HEAD
+=======
+/*
+ * 2.6 calls this without flushing the TLB entry; this is wrong
+ * for our hash-based implementation, we fix that up here.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
 static inline int __ptep_test_and_clear_young(unsigned int context, unsigned long addr, pte_t *ptep)
 {
 	unsigned long old;
 	old = pte_update(ptep, _PAGE_ACCESSED, 0);
+<<<<<<< HEAD
+=======
+#if _PAGE_HASHPTE != 0
+	if (old & _PAGE_HASHPTE) {
+		unsigned long ptephys = __pa(ptep) & PAGE_MASK;
+		flush_hash_pages(context, addr, ptephys, 1);
+	}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return (old & _PAGE_ACCESSED) != 0;
 }
 #define ptep_test_and_clear_young(__vma, __addr, __ptep) \
@@ -237,7 +282,11 @@ static inline int __ptep_test_and_clear_young(unsigned int context, unsigned lon
 static inline pte_t ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
 				       pte_t *ptep)
 {
+<<<<<<< HEAD
 	return __pte(pte_update(ptep, ~0, 0));
+=======
+	return __pte(pte_update(ptep, ~_PAGE_HASHPTE, 0));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define __HAVE_ARCH_PTEP_SET_WRPROTECT
@@ -253,6 +302,7 @@ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
 }
 
 
+<<<<<<< HEAD
 static inline void __ptep_set_access_flags(struct vm_area_struct *vma,
 					   pte_t *ptep, pte_t entry,
 					   unsigned long address,
@@ -274,6 +324,21 @@ static inline int pte_young(pte_t pte)
 
 #define __HAVE_ARCH_PTE_SAME
 #define pte_same(A,B)	((pte_val(A) ^ pte_val(B)) == 0)
+=======
+static inline void __ptep_set_access_flags(struct mm_struct *mm,
+					   pte_t *ptep, pte_t entry,
+					   unsigned long address)
+{
+	unsigned long set = pte_val(entry) &
+		(_PAGE_DIRTY | _PAGE_ACCESSED | _PAGE_RW | _PAGE_EXEC);
+	unsigned long clr = ~pte_val(entry) & _PAGE_RO;
+
+	pte_update(ptep, clr, set);
+}
+
+#define __HAVE_ARCH_PTE_SAME
+#define pte_same(A,B)	(((pte_val(A) ^ pte_val(B)) & ~_PAGE_HASHPTE) == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Note that on Book E processors, the pmd contains the kernel virtual
@@ -314,7 +379,11 @@ static inline int pte_young(pte_t pte)
 /*
  * Encode and decode a swap entry.
  * Note that the bits we use in a PTE for representing a swap entry
+<<<<<<< HEAD
  * must not include the _PAGE_PRESENT bit.
+=======
+ * must not include the _PAGE_PRESENT bit or the _PAGE_HASHPTE bit (if used).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *   -- paulus
  */
 #define __swp_type(entry)		((entry).val & 0x1f)

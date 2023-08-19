@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Copyright 2012 Freescale Semiconductor, Inc.
+=======
+/*
+ * Copyright 2012 Freescale Semiconductor, Inc.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "imx23.dtsi"
@@ -9,6 +22,7 @@
 	model = "Freescale i.MX23 Evaluation Kit";
 	compatible = "fsl,imx23-evk", "fsl,imx23";
 
+<<<<<<< HEAD
 	memory@40000000 {
 		reg = <0x40000000 0x08000000>;
 	};
@@ -50,6 +64,12 @@
 		};
 	};
 
+=======
+	memory {
+		reg = <0x40000000 0x08000000>;
+	};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	apb@80000000 {
 		apbh@80000000 {
 			gpmi-nand@8000c000 {
@@ -89,11 +109,39 @@
 			lcdif@80030000 {
 				pinctrl-names = "default";
 				pinctrl-0 = <&lcdif_24bit_pins_a>;
+<<<<<<< HEAD
 				status = "okay";
 
 				port {
 					display_out: endpoint {
 						remote-endpoint = <&panel_in>;
+=======
+				lcd-supply = <&reg_lcd_3v3>;
+				display = <&display0>;
+				status = "okay";
+
+				display0: display0 {
+					bits-per-pixel = <32>;
+					bus-width = <24>;
+
+					display-timings {
+						native-mode = <&timing0>;
+						timing0: timing0 {
+							clock-frequency = <9200000>;
+							hactive = <480>;
+							vactive = <272>;
+							hback-porch = <15>;
+							hfront-porch = <8>;
+							vback-porch = <12>;
+							vfront-porch = <4>;
+							hsync-len = <1>;
+							vsync-len = <1>;
+							hsync-active = <0>;
+							vsync-active = <0>;
+							de-active = <1>;
+							pixelclk-active = <0>;
+						};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 				};
 			};
@@ -135,7 +183,36 @@
 		};
 	};
 
+<<<<<<< HEAD
 	backlight_display: backlight {
+=======
+	regulators {
+		compatible = "simple-bus";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		reg_vddio_sd0: regulator@0 {
+			compatible = "regulator-fixed";
+			reg = <0>;
+			regulator-name = "vddio-sd0";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio1 29 0>;
+		};
+
+		reg_lcd_3v3: regulator@1 {
+			compatible = "regulator-fixed";
+			reg = <1>;
+			regulator-name = "lcd-3v3";
+			regulator-min-microvolt = <3300000>;
+			regulator-max-microvolt = <3300000>;
+			gpio = <&gpio1 18 0>;
+			enable-active-high;
+		};
+	};
+
+	backlight {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "pwm-backlight";
 		pwms = <&pwm 2 5000000>;
 		brightness-levels = <0 4 8 16 32 64 128 255>;

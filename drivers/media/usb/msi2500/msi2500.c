@@ -386,7 +386,11 @@ static void msi2500_isoc_handler(struct urb *urb)
 	if (unlikely(urb->status == -ENOENT ||
 		     urb->status == -ECONNRESET ||
 		     urb->status == -ESHUTDOWN)) {
+<<<<<<< HEAD
 		dev_dbg(dev->dev, "URB (%p) unlinked %ssynchronously\n",
+=======
+		dev_dbg(dev->dev, "URB (%p) unlinked %ssynchronuously\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			urb, urb->status == -ENOENT ? "" : "a");
 		return;
 	}

@@ -18,7 +18,11 @@
 	model = "Hisilicon D01 Development Board";
 	compatible = "hisilicon,hip04-d01";
 
+<<<<<<< HEAD
 	memory@0,10000000 {
+=======
+	memory@00000000,10000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_type = "memory";
 		reg = <0x00000000 0x10000000 0x00000000 0xc0000000>,
 		      <0x00000004 0xc0000000 0x00000003 0x40000000>;

@@ -444,6 +444,7 @@
 #define OP_PCLID_DSAVERIFY	(0x16 << OP_PCLID_SHIFT)
 #define OP_PCLID_RSAENC_PUBKEY  (0x18 << OP_PCLID_SHIFT)
 #define OP_PCLID_RSADEC_PRVKEY  (0x19 << OP_PCLID_SHIFT)
+<<<<<<< HEAD
 #define OP_PCLID_DKP_MD5	(0x20 << OP_PCLID_SHIFT)
 #define OP_PCLID_DKP_SHA1	(0x21 << OP_PCLID_SHIFT)
 #define OP_PCLID_DKP_SHA224	(0x22 << OP_PCLID_SHIFT)
@@ -456,6 +457,8 @@
 #define OP_PCLID_DKP_RIF_SHA256	(0x63 << OP_PCLID_SHIFT)
 #define OP_PCLID_DKP_RIF_SHA384	(0x64 << OP_PCLID_SHIFT)
 #define OP_PCLID_DKP_RIF_SHA512	(0x65 << OP_PCLID_SHIFT)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Assuming OP_TYPE = OP_TYPE_DECAP_PROTOCOL/ENCAP_PROTOCOL */
 #define OP_PCLID_IPSEC		(0x01 << OP_PCLID_SHIFT)
@@ -1105,6 +1108,7 @@
 /* MacSec protinfos */
 #define OP_PCL_MACSEC				 0x0001
 
+<<<<<<< HEAD
 /* Derived Key Protocol (DKP) Protinfo */
 #define OP_PCL_DKP_SRC_SHIFT	14
 #define OP_PCL_DKP_SRC_MASK	(3 << OP_PCL_DKP_SRC_SHIFT)
@@ -1121,6 +1125,8 @@
 #define OP_PCL_DKP_KEY_SHIFT	0
 #define OP_PCL_DKP_KEY_MASK	(0xfff << OP_PCL_DKP_KEY_SHIFT)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* PKI unidirectional protocol protinfo bits */
 #define OP_PCL_PKPROT_TEST			 0x0008
 #define OP_PCL_PKPROT_DECRYPT			 0x0004
@@ -1468,7 +1474,11 @@
 #define MATH_SRC1_REG2		(0x02 << MATH_SRC1_SHIFT)
 #define MATH_SRC1_REG3		(0x03 << MATH_SRC1_SHIFT)
 #define MATH_SRC1_IMM		(0x04 << MATH_SRC1_SHIFT)
+<<<<<<< HEAD
 #define MATH_SRC1_DPOVRD	(0x07 << MATH_SRC1_SHIFT)
+=======
+#define MATH_SRC1_DPOVRD	(0x07 << MATH_SRC0_SHIFT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MATH_SRC1_INFIFO	(0x0a << MATH_SRC1_SHIFT)
 #define MATH_SRC1_OUTFIFO	(0x0b << MATH_SRC1_SHIFT)
 #define MATH_SRC1_ONE		(0x0c << MATH_SRC1_SHIFT)
@@ -1480,7 +1490,10 @@
 #define MATH_DEST_REG1		(0x01 << MATH_DEST_SHIFT)
 #define MATH_DEST_REG2		(0x02 << MATH_DEST_SHIFT)
 #define MATH_DEST_REG3		(0x03 << MATH_DEST_SHIFT)
+<<<<<<< HEAD
 #define MATH_DEST_DPOVRD	(0x07 << MATH_DEST_SHIFT)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MATH_DEST_SEQINLEN	(0x08 << MATH_DEST_SHIFT)
 #define MATH_DEST_SEQOUTLEN	(0x09 << MATH_DEST_SHIFT)
 #define MATH_DEST_VARSEQINLEN	(0x0a << MATH_DEST_SHIFT)

@@ -135,7 +135,10 @@ struct mv64xxx_i2c_data {
 	u32			freq_m;
 	u32			freq_n;
 	struct clk              *clk;
+<<<<<<< HEAD
 	struct clk              *reg_clk;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wait_queue_head_t	waitq;
 	spinlock_t		lock;
 	struct i2c_msg		*msg;
@@ -899,13 +902,18 @@ mv64xxx_i2c_probe(struct platform_device *pd)
 	init_waitqueue_head(&drv_data->waitq);
 	spin_lock_init(&drv_data->lock);
 
+<<<<<<< HEAD
 	/* Not all platforms have clocks */
+=======
+	/* Not all platforms have a clk */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drv_data->clk = devm_clk_get(&pd->dev, NULL);
 	if (IS_ERR(drv_data->clk) && PTR_ERR(drv_data->clk) == -EPROBE_DEFER)
 		return -EPROBE_DEFER;
 	if (!IS_ERR(drv_data->clk))
 		clk_prepare_enable(drv_data->clk);
 
+<<<<<<< HEAD
 	drv_data->reg_clk = devm_clk_get(&pd->dev, "reg");
 	if (IS_ERR(drv_data->reg_clk) &&
 	    PTR_ERR(drv_data->reg_clk) == -EPROBE_DEFER)
@@ -913,6 +921,8 @@ mv64xxx_i2c_probe(struct platform_device *pd)
 	if (!IS_ERR(drv_data->reg_clk))
 		clk_prepare_enable(drv_data->reg_clk);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drv_data->irq = platform_get_irq(pd, 0);
 
 	if (pdata) {
@@ -962,8 +972,14 @@ exit_free_irq:
 exit_reset:
 	reset_control_assert(drv_data->rstc);
 exit_clk:
+<<<<<<< HEAD
 	clk_disable_unprepare(drv_data->reg_clk);
 	clk_disable_unprepare(drv_data->clk);
+=======
+	/* Not all platforms have a clk */
+	if (!IS_ERR(drv_data->clk))
+		clk_disable_unprepare(drv_data->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return rc;
 }
@@ -976,8 +992,14 @@ mv64xxx_i2c_remove(struct platform_device *dev)
 	i2c_del_adapter(&drv_data->adapter);
 	free_irq(drv_data->irq, drv_data);
 	reset_control_assert(drv_data->rstc);
+<<<<<<< HEAD
 	clk_disable_unprepare(drv_data->reg_clk);
 	clk_disable_unprepare(drv_data->clk);
+=======
+	/* Not all platforms have a clk */
+	if (!IS_ERR(drv_data->clk))
+		clk_disable_unprepare(drv_data->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

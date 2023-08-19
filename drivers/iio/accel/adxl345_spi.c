@@ -42,7 +42,11 @@ static int adxl345_spi_probe(struct spi_device *spi)
 		return PTR_ERR(regmap);
 	}
 
+<<<<<<< HEAD
 	return adxl345_core_probe(&spi->dev, regmap, id->driver_data, id->name);
+=======
+	return adxl345_core_probe(&spi->dev, regmap, id->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int adxl345_spi_remove(struct spi_device *spi)
@@ -51,8 +55,12 @@ static int adxl345_spi_remove(struct spi_device *spi)
 }
 
 static const struct spi_device_id adxl345_spi_id[] = {
+<<<<<<< HEAD
 	{ "adxl345", ADXL345 },
 	{ "adxl375", ADXL375 },
+=======
+	{ "adxl345", 0 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 
@@ -60,7 +68,10 @@ MODULE_DEVICE_TABLE(spi, adxl345_spi_id);
 
 static const struct of_device_id adxl345_of_match[] = {
 	{ .compatible = "adi,adxl345" },
+<<<<<<< HEAD
 	{ .compatible = "adi,adxl375" },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 

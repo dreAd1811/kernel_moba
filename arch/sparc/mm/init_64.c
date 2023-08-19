@@ -206,9 +206,15 @@ inline void flush_dcache_page_impl(struct page *page)
 #ifdef DCACHE_ALIASING_POSSIBLE
 	__flush_dcache_page(page_address(page),
 			    ((tlb_type == spitfire) &&
+<<<<<<< HEAD
 			     page_mapping_file(page) != NULL));
 #else
 	if (page_mapping_file(page) != NULL &&
+=======
+			     page_mapping(page) != NULL));
+#else
+	if (page_mapping(page) != NULL &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    tlb_type == spitfire)
 		__flush_icache_page(__pa(page_address(page)));
 #endif
@@ -490,7 +496,11 @@ void flush_dcache_page(struct page *page)
 
 	this_cpu = get_cpu();
 
+<<<<<<< HEAD
 	mapping = page_mapping_file(page);
+=======
+	mapping = page_mapping(page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mapping && !mapping_mapped(mapping)) {
 		int dirty = test_bit(PG_dcache_dirty, &page->flags);
 		if (dirty) {
@@ -1621,7 +1631,11 @@ static void __init bootmem_init_nonnuma(void)
 	       (top_of_ram - total_ram) >> 20);
 
 	init_node_masks_nonnuma();
+<<<<<<< HEAD
 	memblock_set_node(0, PHYS_ADDR_MAX, &memblock.memory, 0);
+=======
+	memblock_set_node(0, (phys_addr_t)ULLONG_MAX, &memblock.memory, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	allocate_node_data(0);
 	node_set_online(0);
 }
@@ -2629,7 +2643,11 @@ EXPORT_SYMBOL(_PAGE_CACHE);
 
 #ifdef CONFIG_SPARSEMEM_VMEMMAP
 int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+<<<<<<< HEAD
 			       int node, struct vmem_altmap *altmap)
+=======
+			       int node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long pte_base;
 
@@ -2645,11 +2663,16 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
 	vstart = vstart & PMD_MASK;
 	vend = ALIGN(vend, PMD_SIZE);
 	for (; vstart < vend; vstart += PMD_SIZE) {
+<<<<<<< HEAD
 		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+=======
+		pgd_t *pgd = pgd_offset_k(vstart);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long pte;
 		pud_t *pud;
 		pmd_t *pmd;
 
+<<<<<<< HEAD
 		if (!pgd)
 			return -ENOMEM;
 
@@ -2658,6 +2681,27 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
 			return -ENOMEM;
 
 		pmd = pmd_offset(pud, vstart);
+=======
+		if (pgd_none(*pgd)) {
+			pud_t *new = vmemmap_alloc_block(PAGE_SIZE, node);
+
+			if (!new)
+				return -ENOMEM;
+			pgd_populate(&init_mm, pgd, new);
+		}
+
+		pud = pud_offset(pgd, vstart);
+		if (pud_none(*pud)) {
+			pmd_t *new = vmemmap_alloc_block(PAGE_SIZE, node);
+
+			if (!new)
+				return -ENOMEM;
+			pud_populate(&init_mm, pud, new);
+		}
+
+		pmd = pmd_offset(pud, vstart);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pte = pmd_val(*pmd);
 		if (!(pte & _PAGE_VALID)) {
 			void *block = vmemmap_alloc_block(PMD_SIZE, node);
@@ -2672,8 +2716,12 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
 	return 0;
 }
 
+<<<<<<< HEAD
 void vmemmap_free(unsigned long start, unsigned long end,
 		struct vmem_altmap *altmap)
+=======
+void vmemmap_free(unsigned long start, unsigned long end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 }
 #endif /* CONFIG_SPARSEMEM_VMEMMAP */
@@ -2941,7 +2989,11 @@ pgtable_t pte_alloc_one(struct mm_struct *mm,
 	if (!page)
 		return NULL;
 	if (!pgtable_page_ctor(page)) {
+<<<<<<< HEAD
 		free_unref_page(page);
+=======
+		free_hot_cold_page(page, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 	return (pte_t *) page_address(page);
@@ -3161,6 +3213,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
 		do_flush_tlb_kernel_range(start, end);
 	}
 }
+<<<<<<< HEAD
 
 void copy_user_highpage(struct page *to, struct page *from,
 	unsigned long vaddr, struct vm_area_struct *vma)
@@ -3230,3 +3283,5 @@ void copy_highpage(struct page *to, struct page *from)
 	}
 }
 EXPORT_SYMBOL(copy_highpage);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

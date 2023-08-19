@@ -579,6 +579,7 @@ static enum qman_cb_dqrr_result caam_rsp_fq_dqrr_cb(struct qman_portal *p,
 
 	fd = &dqrr->fd;
 	status = be32_to_cpu(fd->status);
+<<<<<<< HEAD
 	if (unlikely(status)) {
 		u32 ssrc = status & JRSTA_SSRC_MASK;
 		u8 err_id = status & JRSTA_CCBERR_ERRID_MASK;
@@ -588,6 +589,10 @@ static enum qman_cb_dqrr_result caam_rsp_fq_dqrr_cb(struct qman_portal *p,
 			dev_err(qidev, "Error: %#x in CAAM response FD\n",
 				status);
 	}
+=======
+	if (unlikely(status))
+		dev_err(qidev, "Error: %#x in CAAM response FD\n", status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(qm_fd_get_format(fd) != qm_fd_compound)) {
 		dev_err(qidev, "Non-compound FD from CAAM\n");
@@ -657,8 +662,14 @@ static int init_cgr(struct device *qidev)
 {
 	int ret;
 	struct qm_mcc_initcgr opts;
+<<<<<<< HEAD
 	const u64 val = (u64)cpumask_weight(qman_affine_cpus()) *
 			MAX_RSP_FQ_BACKLOG_PER_CPU;
+=======
+	const u64 cpus = *(u64 *)qman_affine_cpus();
+	const int num_cpus = hweight64(cpus);
+	const u64 val = num_cpus * MAX_RSP_FQ_BACKLOG_PER_CPU;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = qman_alloc_cgrid(&qipriv.cgr.cgrid);
 	if (ret) {

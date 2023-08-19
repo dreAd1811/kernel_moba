@@ -56,21 +56,27 @@ int drm_mode_setcrtc(struct drm_device *dev,
 int drm_modeset_register_all(struct drm_device *dev);
 void drm_modeset_unregister_all(struct drm_device *dev);
 
+<<<<<<< HEAD
 /* drm_modes.c */
 const char *drm_get_mode_status_name(enum drm_mode_status status);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* IOCTLs */
 int drm_mode_getresources(struct drm_device *dev,
 			  void *data, struct drm_file *file_priv);
 
 
 /* drm_dumb_buffers.c */
+<<<<<<< HEAD
 int drm_mode_create_dumb(struct drm_device *dev,
 			 struct drm_mode_create_dumb *args,
 			 struct drm_file *file_priv);
 int drm_mode_destroy_dumb(struct drm_device *dev, u32 handle,
 			  struct drm_file *file_priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* IOCTLs */
 int drm_mode_create_dumb_ioctl(struct drm_device *dev,
 			       void *data, struct drm_file *file_priv);
@@ -80,8 +86,11 @@ int drm_mode_destroy_dumb_ioctl(struct drm_device *dev,
 				void *data, struct drm_file *file_priv);
 
 /* drm_color_mgmt.c */
+<<<<<<< HEAD
 const char *drm_get_color_encoding_name(enum drm_color_encoding encoding);
 const char *drm_get_color_range_name(enum drm_color_range range);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* IOCTLs */
 int drm_mode_gamma_get_ioctl(struct drm_device *dev,
@@ -148,16 +157,27 @@ void drm_connector_ida_init(void);
 void drm_connector_ida_destroy(void);
 void drm_connector_unregister_all(struct drm_device *dev);
 int drm_connector_register_all(struct drm_device *dev);
+<<<<<<< HEAD
 int drm_connector_set_obj_prop(struct drm_mode_object *obj,
+=======
+int drm_mode_connector_set_obj_prop(struct drm_mode_object *obj,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    struct drm_property *property,
 				    uint64_t value);
 int drm_connector_create_standard_properties(struct drm_device *dev);
 const char *drm_get_connector_force_name(enum drm_connector_force force);
+<<<<<<< HEAD
 void drm_connector_free_work_fn(struct work_struct *work);
 
 /* IOCTL */
 int drm_connector_property_set_ioctl(struct drm_device *dev,
 				     void *data, struct drm_file *file_priv);
+=======
+
+/* IOCTL */
+int drm_mode_connector_property_set_ioctl(struct drm_device *dev,
+					  void *data, struct drm_file *file_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int drm_mode_getconnector(struct drm_device *dev,
 			  void *data, struct drm_file *file_priv);
 
@@ -172,6 +192,7 @@ int drm_framebuffer_check_src_coords(uint32_t src_x, uint32_t src_y,
 				     const struct drm_framebuffer *fb);
 void drm_fb_release(struct drm_file *file_priv);
 
+<<<<<<< HEAD
 int drm_mode_addfb(struct drm_device *dev, struct drm_mode_fb_cmd *or,
 		   struct drm_file *file_priv);
 int drm_mode_rmfb(struct drm_device *dev, u32 fb_id,
@@ -185,6 +206,16 @@ int drm_mode_addfb2(struct drm_device *dev,
 		    void *data, struct drm_file *file_priv);
 int drm_mode_rmfb_ioctl(struct drm_device *dev,
 			void *data, struct drm_file *file_priv);
+=======
+
+/* IOCTL */
+int drm_mode_addfb(struct drm_device *dev,
+		   void *data, struct drm_file *file_priv);
+int drm_mode_addfb2(struct drm_device *dev,
+		    void *data, struct drm_file *file_priv);
+int drm_mode_rmfb(struct drm_device *dev,
+		  void *data, struct drm_file *file_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int drm_mode_getfb(struct drm_device *dev,
 		   void *data, struct drm_file *file_priv);
 int drm_mode_dirtyfb_ioctl(struct drm_device *dev,
@@ -212,8 +243,13 @@ int drm_mode_atomic_ioctl(struct drm_device *dev,
 /* drm_plane.c */
 int drm_plane_register_all(struct drm_device *dev);
 void drm_plane_unregister_all(struct drm_device *dev);
+<<<<<<< HEAD
 int drm_plane_check_pixel_format(struct drm_plane *plane,
 				 u32 format, u64 modifier);
+=======
+int drm_plane_check_pixel_format(const struct drm_plane *plane,
+				 u32 format);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* drm_bridge.c */
 void drm_bridge_detach(struct drm_bridge *bridge);
@@ -234,5 +270,8 @@ int drm_mode_page_flip_ioctl(struct drm_device *dev,
 
 /* drm_edid.c */
 void drm_mode_fixup_1366x768(struct drm_display_mode *mode);
+<<<<<<< HEAD
 void drm_reset_display_info(struct drm_connector *connector);
 u32 drm_add_display_info(struct drm_connector *connector, const struct edid *edid);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

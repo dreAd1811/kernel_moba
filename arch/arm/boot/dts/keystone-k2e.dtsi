@@ -1,8 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Keystone 2 Edison soc device tree
  *
  * Copyright (C) 2013-2017 Texas Instruments Incorporated - http://www.ti.com/
+=======
+/*
+ * Copyright 2013-2014 Texas Instruments, Inc.
+ *
+ * Keystone 2 Edison soc device tree
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/reset/ti-syscon.h>
@@ -45,9 +56,14 @@
 	aliases {
 		rproc0 = &dsp0;
 	};
+<<<<<<< HEAD
 };
 
 &soc0 {
+=======
+
+	soc {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/include/ "keystone-k2e-clocks.dtsi"
 
 		usb: usb@2680000 {
@@ -86,7 +102,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		msm_ram: msmram@c000000 {
+=======
+		msm_ram: msmram@0c000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mmio-sram";
 			reg = <0x0c000000 0x200000>;
 			ranges = <0x0 0x0c000000 0x200000>;
@@ -98,7 +118,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		psc: power-sleep-controller@2350000 {
+=======
+		psc: power-sleep-controller@02350000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pscrst: reset-controller {
 				compatible = "ti,k2e-pscrst", "ti,syscon-reset";
 				#reset-cells = <1>;
@@ -109,6 +133,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		devctrl: device-state-control@2620000 {
 			dspgpio0: keystone_dsp_gpio@240 {
 				compatible = "ti,keystone-dsp-gpio";
@@ -117,6 +142,13 @@
 				#gpio-cells = <2>;
 				gpio,syscon-dev = <&devctrl 0x240>;
 			};
+=======
+		dspgpio0: keystone_dsp_gpio@02620240 {
+			compatible = "ti,keystone-dsp-gpio";
+			gpio-controller;
+			#gpio-cells = <2>;
+			gpio,syscon-dev = <&devctrl 0x240>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		dsp0: dsp@10800000 {
@@ -195,4 +227,8 @@
 			bus_freq	= <2500000>;
 		};
 		/include/ "keystone-k2e-netcp.dtsi"
+<<<<<<< HEAD
+=======
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

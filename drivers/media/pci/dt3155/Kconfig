@@ -1,6 +1,10 @@
 config VIDEO_DT3155
 	tristate "DT3155 frame grabber"
 	depends on PCI && VIDEO_DEV && VIDEO_V4L2
+<<<<<<< HEAD
+=======
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select VIDEOBUF2_DMA_CONTIG
 	default n
 	---help---

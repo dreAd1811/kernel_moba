@@ -51,7 +51,11 @@ void hpte_need_flush(struct mm_struct *mm, unsigned long addr,
 	unsigned int psize;
 	int ssize;
 	real_pte_t rpte;
+<<<<<<< HEAD
 	int i, offset;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i = batch->index;
 
@@ -67,10 +71,13 @@ void hpte_need_flush(struct mm_struct *mm, unsigned long addr,
 		psize = get_slice_psize(mm, addr);
 		/* Mask the address for the correct page size */
 		addr &= ~((1UL << mmu_psize_defs[psize].shift) - 1);
+<<<<<<< HEAD
 		if (unlikely(psize == MMU_PAGE_16G))
 			offset = PTRS_PER_PUD;
 		else
 			offset = PTRS_PER_PMD;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 		BUG();
 		psize = pte_pagesize_index(mm, addr, pte); /* shutup gcc */
@@ -82,21 +89,32 @@ void hpte_need_flush(struct mm_struct *mm, unsigned long addr,
 		 * support 64k pages, this might be different from the
 		 * hardware page size encoded in the slice table. */
 		addr &= PAGE_MASK;
+<<<<<<< HEAD
 		offset = PTRS_PER_PTE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 
 	/* Build full vaddr */
 	if (!is_kernel_addr(addr)) {
 		ssize = user_segment_size(addr);
+<<<<<<< HEAD
 		vsid = get_user_vsid(&mm->context, addr, ssize);
+=======
+		vsid = get_vsid(mm->context.id, addr, ssize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		vsid = get_kernel_vsid(addr, mmu_kernel_ssize);
 		ssize = mmu_kernel_ssize;
 	}
 	WARN_ON(vsid == 0);
 	vpn = hpt_vpn(addr, vsid, ssize);
+<<<<<<< HEAD
 	rpte = __real_pte(__pte(pte), ptep, offset);
+=======
+	rpte = __real_pte(__pte(pte), ptep);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Check if we have an active batch on this CPU. If not, just

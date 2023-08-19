@@ -62,7 +62,10 @@ static inline int rsi_create_kthread(struct rsi_common *common,
 				     u8 *name)
 {
 	init_completion(&thread->completion);
+<<<<<<< HEAD
 	atomic_set(&thread->thread_done, 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	thread->task = kthread_run(func_ptr, common, "%s", name);
 	if (IS_ERR(thread->task))
 		return (int)PTR_ERR(thread->task);
@@ -79,6 +82,7 @@ static inline int rsi_kill_thread(struct rsi_thread *handle)
 }
 
 void rsi_mac80211_detach(struct rsi_hw *hw);
+<<<<<<< HEAD
 u16 rsi_get_connected_channel(struct ieee80211_vif *vif);
 struct rsi_hw *rsi_91x_init(u16 oper_mode);
 void rsi_91x_deinit(struct rsi_hw *adapter);
@@ -89,4 +93,11 @@ int rsi_config_wowlan(struct rsi_hw *adapter, struct cfg80211_wowlan *wowlan);
 struct rsi_sta *rsi_find_sta(struct rsi_common *common, u8 *mac_addr);
 struct ieee80211_vif *rsi_get_vif(struct rsi_hw *adapter, u8 *mac);
 void rsi_roc_timeout(struct timer_list *t);
+=======
+u16 rsi_get_connected_channel(struct rsi_hw *adapter);
+struct rsi_hw *rsi_91x_init(void);
+void rsi_91x_deinit(struct rsi_hw *adapter);
+int rsi_read_pkt(struct rsi_common *common, s32 rcv_pkt_len);
+struct rsi_sta *rsi_find_sta(struct rsi_common *common, u8 *mac_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

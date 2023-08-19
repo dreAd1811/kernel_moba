@@ -29,7 +29,10 @@
 		compatible = "usb-nop-xceiv";
 		reset-gpios = <&gpio1 21 GPIO_ACTIVE_LOW>; /* gpio_21 */
 		vcc-supply = <&hsusb2_power>;
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	leds {
@@ -133,7 +136,11 @@
 		compatible = "ti,wl1271";
 		reg = <2>;
 		interrupt-parent = <&gpio5>;
+<<<<<<< HEAD
 		interrupts = <21 IRQ_TYPE_EDGE_RISING>; /* gpio 149 */
+=======
+		interrupts = <21 IRQ_TYPE_LEVEL_HIGH>; /* gpio 149 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ref-clock-frequency = <38400000>;
 	};
 };

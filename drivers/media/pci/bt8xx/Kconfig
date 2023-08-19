@@ -16,7 +16,11 @@ config VIDEO_BT848
 	---help---
 	  Support for BT848 based frame grabber/overlay boards. This includes
 	  the Miro, Hauppauge and STB boards. Please read the material in
+<<<<<<< HEAD
 	  <file:Documentation/media/v4l-drivers/bttv.rst> for more information.
+=======
+	  <file:Documentation/video4linux/bttv/> for more information.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the
 	  module will be called bttv.

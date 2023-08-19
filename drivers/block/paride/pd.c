@@ -426,7 +426,10 @@ static void run_fsm(void)
 				pd_claimed = 1;
 				if (!pi_schedule_claimed(pi_current, run_fsm))
 					return;
+<<<<<<< HEAD
 				/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			case 1:
 				pd_claimed = 2;
 				pi_current->proto->connect(pi_current);
@@ -446,7 +449,10 @@ static void run_fsm(void)
 				spin_unlock_irqrestore(&pd_lock, saved_flags);
 				if (stop)
 					return;
+<<<<<<< HEAD
 				/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			case Hold:
 				schedule_fsm();
 				return;
@@ -742,7 +748,11 @@ static int pd_special_command(struct pd_unit *disk,
 {
 	struct request *rq;
 
+<<<<<<< HEAD
 	rq = blk_get_request(disk->gd->queue, REQ_OP_DRV_IN, 0);
+=======
+	rq = blk_get_request(disk->gd->queue, REQ_OP_DRV_IN, __GFP_RECLAIM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq))
 		return PTR_ERR(rq);
 

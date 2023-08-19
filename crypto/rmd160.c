@@ -256,6 +256,11 @@ static void rmd160_transform(u32 *state, const __le32 *in)
 	state[3] = state[4] + aa + bbb;
 	state[4] = state[0] + bb + ccc;
 	state[0] = ddd;
+<<<<<<< HEAD
+=======
+
+	return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rmd160_init(struct shash_desc *desc)
@@ -347,6 +352,10 @@ static struct shash_alg alg = {
 	.descsize	=	sizeof(struct rmd160_ctx),
 	.base		=	{
 		.cra_name	 =	"rmd160",
+<<<<<<< HEAD
+=======
+		.cra_flags	 =	CRYPTO_ALG_TYPE_SHASH,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.cra_blocksize	 =	RMD160_BLOCK_SIZE,
 		.cra_module	 =	THIS_MODULE,
 	}

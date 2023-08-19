@@ -697,8 +697,12 @@ void rtl92ce_set_desc(struct ieee80211_hw *hw, u8 *pdesc, bool istx,
 	}
 }
 
+<<<<<<< HEAD
 u64 rtl92ce_get_desc(struct ieee80211_hw *hw, u8 *p_desc,
 		     bool istx, u8 desc_name)
+=======
+u32 rtl92ce_get_desc(u8 *p_desc, bool istx, u8 desc_name)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 ret = 0;
 
@@ -741,7 +745,11 @@ bool rtl92ce_is_tx_desc_closed(struct ieee80211_hw *hw,
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
 	struct rtl8192_tx_ring *ring = &rtlpci->tx_ring[hw_queue];
 	u8 *entry = (u8 *)(&ring->desc[ring->idx]);
+<<<<<<< HEAD
 	u8 own = (u8)rtl92ce_get_desc(hw, entry, true, HW_DESC_OWN);
+=======
+	u8 own = (u8)rtl92ce_get_desc(entry, true, HW_DESC_OWN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*beacon packet will only use the first
 	 *descriptor defautly,and the own may not

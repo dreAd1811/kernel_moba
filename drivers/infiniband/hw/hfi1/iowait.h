@@ -371,6 +371,7 @@ static inline void iowait_starve_find_max(struct iowait *w, u8 *max,
 	}
 }
 
+<<<<<<< HEAD
 /**
  * iowait_packet_queued() - determine if a packet is already built
  * @wait: the wait structure
@@ -380,4 +381,6 @@ static inline bool iowait_packet_queued(struct iowait *wait)
 	return !list_empty(&wait->tx_head);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

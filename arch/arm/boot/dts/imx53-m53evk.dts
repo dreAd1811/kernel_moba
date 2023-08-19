@@ -16,7 +16,11 @@
 	model = "Aries/DENX M53EVK";
 	compatible = "aries,imx53-m53evk", "denx,imx53-m53evk", "fsl,imx53";
 
+<<<<<<< HEAD
 	display1: disp1 {
+=======
+	display1: display@di1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		interface-pix-fmt = "bgr666";
 		pinctrl-names = "default";
@@ -150,10 +154,16 @@
 	pinctrl-0 = <&pinctrl_i2c1>;
 	status = "okay";
 
+<<<<<<< HEAD
 	sgtl5000: codec@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		#sound-dai-cells = <0>;
+=======
+	sgtl5000: codec@0a {
+		compatible = "fsl,sgtl5000";
+		reg = <0x0a>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		VDDA-supply = <&reg_3p2v>;
 		VDDIO-supply = <&reg_3p2v>;
 		clocks = <&clks IMX5_CLK_SSI_EXT1_GATE>;
@@ -184,7 +194,11 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		led_pin_gpio: led_gpio {
+=======
+		led_pin_gpio: led_gpio@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fsl,pins = <
 				MX53_PAD_PATA_DATA8__GPIO2_8		0x80000000
 				MX53_PAD_PATA_DATA9__GPIO2_9		0x80000000

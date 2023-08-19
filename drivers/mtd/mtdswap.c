@@ -50,7 +50,11 @@
  * Number of free eraseblocks below which GC can also collect low frag
  * blocks.
  */
+<<<<<<< HEAD
 #define LOW_FRAG_GC_THRESHOLD	5
+=======
+#define LOW_FRAG_GC_TRESHOLD	5
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Wear level cost amortization. We want to do wear leveling on the background
@@ -536,10 +540,24 @@ static void mtdswap_store_eb(struct mtdswap_dev *d, struct swap_eb *eb)
 		mtdswap_rb_add(d, eb, MTDSWAP_HIFRAG);
 }
 
+<<<<<<< HEAD
+=======
+
+static void mtdswap_erase_callback(struct erase_info *done)
+{
+	wait_queue_head_t *wait_q = (wait_queue_head_t *)done->priv;
+	wake_up(wait_q);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mtdswap_erase_block(struct mtdswap_dev *d, struct swap_eb *eb)
 {
 	struct mtd_info *mtd = d->mtd;
 	struct erase_info erase;
+<<<<<<< HEAD
+=======
+	wait_queue_head_t wq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int retries = 0;
 	int ret;
 
@@ -548,9 +566,20 @@ static int mtdswap_erase_block(struct mtdswap_dev *d, struct swap_eb *eb)
 		d->max_erase_count = eb->erase_count;
 
 retry:
+<<<<<<< HEAD
 	memset(&erase, 0, sizeof(struct erase_info));
 	erase.addr	= mtdswap_eb_offset(d, eb);
 	erase.len	= mtd->erasesize;
+=======
+	init_waitqueue_head(&wq);
+	memset(&erase, 0, sizeof(struct erase_info));
+
+	erase.mtd	= mtd;
+	erase.callback	= mtdswap_erase_callback;
+	erase.addr	= mtdswap_eb_offset(d, eb);
+	erase.len	= mtd->erasesize;
+	erase.priv	= (u_long)&wq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mtd_erase(mtd, &erase);
 	if (ret) {
@@ -569,6 +598,30 @@ retry:
 		return -EIO;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = wait_event_interruptible(wq, erase.state == MTD_ERASE_DONE ||
+					   erase.state == MTD_ERASE_FAILED);
+	if (ret) {
+		dev_err(d->dev, "Interrupted erase block %#llx erasure on %s\n",
+			erase.addr, mtd->name);
+		return -EINTR;
+	}
+
+	if (erase.state == MTD_ERASE_FAILED) {
+		if (retries++ < MTDSWAP_ERASE_RETRIES) {
+			dev_warn(d->dev,
+				"erase of erase block %#llx on %s failed",
+				erase.addr, mtd->name);
+			yield();
+			goto retry;
+		}
+
+		mtdswap_handle_badblock(d, eb);
+		return -EIO;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -771,7 +824,11 @@ static int __mtdswap_choose_gc_tree(struct mtdswap_dev *d)
 {
 	int idx, stopat;
 
+<<<<<<< HEAD
 	if (TREE_COUNT(d, CLEAN) < LOW_FRAG_GC_THRESHOLD)
+=======
+	if (TREE_COUNT(d, CLEAN) < LOW_FRAG_GC_TRESHOLD)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		stopat = MTDSWAP_LOWFRAG;
 	else
 		stopat = MTDSWAP_HIFRAG;
@@ -1189,9 +1246,14 @@ static int mtdswap_show(struct seq_file *s, void *data)
 	unsigned int max[MTDSWAP_TREE_CNT];
 	unsigned int i, cw = 0, cwp = 0, cwecount = 0, bb_cnt, mapped, pages;
 	uint64_t use_size;
+<<<<<<< HEAD
 	static const char * const name[] = {
 		"clean", "used", "low", "high", "dirty", "bitflip", "failing"
 	};
+=======
+	char *name[] = {"clean", "used", "low", "high", "dirty", "bitflip",
+			"failing"};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&d->mbd_dev->lock);
 
@@ -1317,11 +1379,19 @@ static int mtdswap_init(struct mtdswap_dev *d, unsigned int eblocks,
 	for (i = 0; i < MTDSWAP_TREE_CNT; i++)
 		d->trees[i].root = RB_ROOT;
 
+<<<<<<< HEAD
 	d->page_data = vmalloc(array_size(pages, sizeof(int)));
 	if (!d->page_data)
 		goto page_data_fail;
 
 	d->revmap = vmalloc(array_size(blocks, sizeof(int)));
+=======
+	d->page_data = vmalloc(sizeof(int)*pages);
+	if (!d->page_data)
+		goto page_data_fail;
+
+	d->revmap = vmalloc(sizeof(int)*blocks);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d->revmap)
 		goto revmap_fail;
 
@@ -1340,7 +1410,11 @@ static int mtdswap_init(struct mtdswap_dev *d, unsigned int eblocks,
 	if (!d->page_buf)
 		goto page_buf_fail;
 
+<<<<<<< HEAD
 	d->oob_buf = kmalloc_array(2, mtd->oobavail, GFP_KERNEL);
+=======
+	d->oob_buf = kmalloc(2 * mtd->oobavail, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d->oob_buf)
 		goto oob_buf_fail;
 

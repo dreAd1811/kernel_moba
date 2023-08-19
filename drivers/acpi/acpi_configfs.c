@@ -204,7 +204,11 @@ struct configfs_attribute *acpi_table_attrs[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static const struct config_item_type acpi_table_type = {
+=======
+static struct config_item_type acpi_table_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_owner = THIS_MODULE,
 	.ct_bin_attrs = acpi_table_bin_attrs,
 	.ct_attrs = acpi_table_attrs,
@@ -237,12 +241,20 @@ struct configfs_group_operations acpi_table_group_ops = {
 	.drop_item = acpi_table_drop_item,
 };
 
+<<<<<<< HEAD
 static const struct config_item_type acpi_tables_type = {
+=======
+static struct config_item_type acpi_tables_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_owner = THIS_MODULE,
 	.ct_group_ops = &acpi_table_group_ops,
 };
 
+<<<<<<< HEAD
 static const struct config_item_type acpi_root_group_type = {
+=======
+static struct config_item_type acpi_root_group_type = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ct_owner = THIS_MODULE,
 };
 

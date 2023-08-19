@@ -104,6 +104,7 @@ error_free_cb_buff:
 }
 EXPORT_SYMBOL_GPL(iio_channel_get_all_cb);
 
+<<<<<<< HEAD
 int iio_channel_cb_set_buffer_watermark(struct iio_cb_buffer *cb_buff,
 					size_t watermark)
 {
@@ -115,6 +116,8 @@ int iio_channel_cb_set_buffer_watermark(struct iio_cb_buffer *cb_buff,
 }
 EXPORT_SYMBOL_GPL(iio_channel_cb_set_buffer_watermark);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int iio_channel_start_all_cb(struct iio_cb_buffer *cb_buff)
 {
 	return iio_update_buffers(cb_buff->indio_dev, &cb_buff->buffer,

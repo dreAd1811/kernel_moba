@@ -50,11 +50,14 @@ static const char *const mlx5_fpga_error_strings[] = {
 	"Temperature Critical",
 };
 
+<<<<<<< HEAD
 static const char * const mlx5_fpga_qp_error_strings[] = {
 	"Null Syndrome",
 	"Retry Counter Expired",
 	"RNR Expired",
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct mlx5_fpga_device *mlx5_fpga_device_alloc(void)
 {
 	struct mlx5_fpga_device *fdev = NULL;
@@ -80,6 +83,7 @@ static const char *mlx5_fpga_image_name(enum mlx5_fpga_image image)
 	}
 }
 
+<<<<<<< HEAD
 static const char *mlx5_fpga_device_name(u32 device)
 {
 	switch (device) {
@@ -95,6 +99,8 @@ static const char *mlx5_fpga_device_name(u32 device)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlx5_fpga_device_load_check(struct mlx5_fpga_device *fdev)
 {
 	struct mlx5_fpga_query query;
@@ -148,9 +154,14 @@ static int mlx5_fpga_device_brb(struct mlx5_fpga_device *fdev)
 int mlx5_fpga_device_start(struct mlx5_core_dev *mdev)
 {
 	struct mlx5_fpga_device *fdev = mdev->fpga;
+<<<<<<< HEAD
 	unsigned int max_num_qps;
 	unsigned long flags;
 	u32 fpga_device_id;
+=======
+	unsigned long flags;
+	unsigned int max_num_qps;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (!fdev)
@@ -164,6 +175,7 @@ int mlx5_fpga_device_start(struct mlx5_core_dev *mdev)
 	if (err)
 		goto out;
 
+<<<<<<< HEAD
 	fpga_device_id = MLX5_CAP_FPGA(fdev->mdev, fpga_device);
 	mlx5_fpga_info(fdev, "%s:%u; %s image, version %u; SBU %06x:%04x version %d\n",
 		       mlx5_fpga_device_name(fpga_device_id),
@@ -181,6 +193,14 @@ int mlx5_fpga_device_start(struct mlx5_core_dev *mdev)
 		goto out;
 	}
 
+=======
+	mlx5_fpga_info(fdev, "device %u; %s image, version %u\n",
+		       MLX5_CAP_FPGA(fdev->mdev, fpga_device),
+		       mlx5_fpga_image_name(fdev->last_oper_image),
+		       MLX5_CAP_FPGA(fdev->mdev, image_version));
+
+	max_num_qps = MLX5_CAP_FPGA(mdev, shell_caps.max_num_qps);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mlx5_core_reserve_gids(mdev, max_num_qps);
 	if (err)
 		goto out;
@@ -276,6 +296,7 @@ static const char *mlx5_fpga_syndrome_to_string(u8 syndrome)
 	return "Unknown";
 }
 
+<<<<<<< HEAD
 static const char *mlx5_fpga_qp_syndrome_to_string(u8 syndrome)
 {
 	if (syndrome < ARRAY_SIZE(mlx5_fpga_qp_error_strings))
@@ -283,12 +304,15 @@ static const char *mlx5_fpga_qp_syndrome_to_string(u8 syndrome)
 	return "Unknown";
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void mlx5_fpga_event(struct mlx5_core_dev *mdev, u8 event, void *data)
 {
 	struct mlx5_fpga_device *fdev = mdev->fpga;
 	const char *event_name;
 	bool teardown = false;
 	unsigned long flags;
+<<<<<<< HEAD
 	u32 fpga_qpn;
 	u8 syndrome;
 
@@ -303,11 +327,22 @@ void mlx5_fpga_event(struct mlx5_core_dev *mdev, u8 event, void *data)
 		fpga_qpn = MLX5_GET(fpga_qp_error_event, data, fpga_qpn);
 		break;
 	default:
+=======
+	u8 syndrome;
+
+	if (event != MLX5_EVENT_TYPE_FPGA_ERROR) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mlx5_fpga_warn_ratelimited(fdev, "Unexpected event %u\n",
 					   event);
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	syndrome = MLX5_GET(fpga_error_event, data, syndrome);
+	event_name = mlx5_fpga_syndrome_to_string(syndrome);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&fdev->state_lock, flags);
 	switch (fdev->state) {
 	case MLX5_FPGA_STATUS_SUCCESS:

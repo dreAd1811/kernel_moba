@@ -19,6 +19,7 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/sound/apq8016-lpass.h>
 
+<<<<<<< HEAD
 /*
  * GPIO name legend: proper name = the GPIO line is used as GPIO
  *         NC = not connected (pin out but not routed from the chip to
@@ -43,6 +44,8 @@
  * ones actually used for GPIO.
  */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 / {
 	aliases {
 		serial0 = &blsp1_uart2;
@@ -71,6 +74,7 @@
 	};
 
 	soc {
+<<<<<<< HEAD
 		pinctrl@1000000 {
 			gpio-line-names =
 				"[UART0_TX]", /* GPIO_0, LSEC pin 5 */
@@ -197,6 +201,8 @@
 				"SB_HS_ID";
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma@7884000 {
 			status = "okay";
 		};
@@ -324,7 +330,10 @@
 				label = "apq8016-sbc:green:user4";
 				gpios = <&pm8916_gpios 2 GPIO_ACTIVE_HIGH>;
 				linux,default-trigger = "none";
+<<<<<<< HEAD
 				panic-indicator;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				default-state = "off";
 			};
 
@@ -343,7 +352,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		sdhci@7824000 {
+=======
+		sdhci@07824000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vmmc-supply = <&pm8916_l8>;
 			vqmmc-supply = <&pm8916_l5>;
 
@@ -353,7 +366,11 @@
 			status = "okay";
 		};
 
+<<<<<<< HEAD
 		sdhci@7864000 {
+=======
+		sdhci@07864000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vmmc-supply = <&pm8916_l11>;
 			vqmmc-supply = <&pm8916_l12>;
 
@@ -383,7 +400,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		lpass@7708000 {
+=======
+		lpass@07708000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "okay";
 		};
 
@@ -480,6 +501,7 @@
                         };
                 };
 
+<<<<<<< HEAD
 		spmi@200f000 {
 			pm8916@0 {
 				gpios@c000 {
@@ -499,6 +521,8 @@
 			};
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		wcnss@a21b000 {
 			status = "okay";
 		};
@@ -549,8 +573,11 @@
         status = "okay";
         clocks = <&gcc GCC_CODEC_DIGCODEC_CLK>;
         clock-names = "mclk";
+<<<<<<< HEAD
 	qcom,mbhc-vthreshold-low = <75 150 237 450 500>;
 	qcom,mbhc-vthreshold-high = <75 150 237 450 500>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &smd_rpm_regulators {
@@ -630,6 +657,11 @@
 	l11 {
 		regulator-min-microvolt = <1750000>;
 		regulator-max-microvolt = <3337000>;
+<<<<<<< HEAD
+=======
+		regulator-allow-set-load;
+		regulator-system-load = <200000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	l12 {

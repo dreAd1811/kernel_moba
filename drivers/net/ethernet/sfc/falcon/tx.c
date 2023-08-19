@@ -134,8 +134,13 @@ static void ef4_tx_maybe_stop_queue(struct ef4_tx_queue *txq1)
 	 */
 	netif_tx_stop_queue(txq1->core_txq);
 	smp_mb();
+<<<<<<< HEAD
 	txq1->old_read_count = READ_ONCE(txq1->read_count);
 	txq2->old_read_count = READ_ONCE(txq2->read_count);
+=======
+	txq1->old_read_count = ACCESS_ONCE(txq1->read_count);
+	txq2->old_read_count = ACCESS_ONCE(txq2->read_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fill_level = max(txq1->insert_count - txq1->old_read_count,
 			 txq2->insert_count - txq2->old_read_count);
@@ -435,7 +440,11 @@ int ef4_setup_tc(struct net_device *net_dev, enum tc_setup_type type,
 	unsigned tc, num_tc;
 	int rc;
 
+<<<<<<< HEAD
 	if (type != TC_SETUP_QDISC_MQPRIO)
+=======
+	if (type != TC_SETUP_MQPRIO)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EOPNOTSUPP;
 
 	num_tc = mqprio->num_tc;
@@ -524,7 +533,11 @@ void ef4_xmit_done(struct ef4_tx_queue *tx_queue, unsigned int index)
 
 	/* Check whether the hardware queue is now empty */
 	if ((int)(tx_queue->read_count - tx_queue->old_write_count) >= 0) {
+<<<<<<< HEAD
 		tx_queue->old_write_count = READ_ONCE(tx_queue->write_count);
+=======
+		tx_queue->old_write_count = ACCESS_ONCE(tx_queue->write_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (tx_queue->read_count == tx_queue->old_write_count) {
 			smp_mb();
 			tx_queue->empty_read_count =

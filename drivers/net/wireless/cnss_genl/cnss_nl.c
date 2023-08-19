@@ -1,5 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved. */
+=======
+/* Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <net/genetlink.h>
 #include <net/cnss_nl.h>
@@ -57,6 +71,11 @@ static const struct nla_policy cld80211_policy[CLD80211_ATTR_MAX + 1] = {
 				 .len = CLD80211_MAX_NL_DATA },
 	[CLD80211_ATTR_META_DATA] = { .type = NLA_BINARY,
 				 .len = CLD80211_MAX_NL_DATA },
+<<<<<<< HEAD
+=======
+	[CLD80211_ATTR_CMD] = { .type = NLA_U32 },
+	[CLD80211_ATTR_CMD_TAG_DATA] = { .type = NLA_NESTED },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int cld80211_pre_doit(const struct genl_ops *ops, struct sk_buff *skb,

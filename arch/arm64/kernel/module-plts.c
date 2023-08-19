@@ -36,12 +36,17 @@ u64 module_emit_plt_entry(struct module *mod, void *loc, const Elf64_Rela *rela,
 		return (u64)&plt[i - 1];
 
 	pltsec->plt_num_entries++;
+<<<<<<< HEAD
 	if (WARN_ON(pltsec->plt_num_entries > pltsec->plt_max_entries))
 		return 0;
+=======
+	BUG_ON(pltsec->plt_num_entries > pltsec->plt_max_entries);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return (u64)&plt[i];
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM64_ERRATUM_843419
 u64 module_emit_veneer_for_adrp(struct module *mod, void *loc, u64 val)
 {
@@ -83,6 +88,8 @@ u64 module_emit_veneer_for_adrp(struct module *mod, void *loc, u64 val)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define cmp_3way(a,b)	((a) < (b) ? -1 : (a) > (b))
 
 static int cmp_rela(const void *a, const void *b)
@@ -110,13 +117,18 @@ static bool duplicate_rel(const Elf64_Rela *rela, int num)
 }
 
 static unsigned int count_plts(Elf64_Sym *syms, Elf64_Rela *rela, int num,
+<<<<<<< HEAD
 			       Elf64_Word dstidx, Elf_Shdr *dstsec)
+=======
+			       Elf64_Word dstidx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int ret = 0;
 	Elf64_Sym *s;
 	int i;
 
 	for (i = 0; i < num; i++) {
+<<<<<<< HEAD
 		u64 min_align;
 
 		switch (ELF64_R_TYPE(rela[i].r_info)) {
@@ -125,6 +137,11 @@ static unsigned int count_plts(Elf64_Sym *syms, Elf64_Rela *rela, int num,
 			if (!IS_ENABLED(CONFIG_RANDOMIZE_BASE))
 				break;
 
+=======
+		switch (ELF64_R_TYPE(rela[i].r_info)) {
+		case R_AARCH64_JUMP26:
+		case R_AARCH64_CALL26:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * We only have to consider branch targets that resolve
 			 * to symbols that are defined in a different section.
@@ -156,6 +173,7 @@ static unsigned int count_plts(Elf64_Sym *syms, Elf64_Rela *rela, int num,
 			if (rela[i].r_addend != 0 || !duplicate_rel(rela, i))
 				ret++;
 			break;
+<<<<<<< HEAD
 		case R_AARCH64_ADR_PREL_PG_HI21_NC:
 		case R_AARCH64_ADR_PREL_PG_HI21:
 			if (!IS_ENABLED(CONFIG_ARM64_ERRATUM_843419) ||
@@ -191,6 +209,8 @@ static unsigned int count_plts(Elf64_Sym *syms, Elf64_Rela *rela, int num,
 				dstsec->sh_addralign = max(dstsec->sh_addralign,
 							   min_align);
 			break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return ret;
@@ -248,10 +268,17 @@ int module_frob_arch_sections(Elf_Ehdr *ehdr, Elf_Shdr *sechdrs,
 
 		if (strncmp(secstrings + dstsec->sh_name, ".init", 5) != 0)
 			core_plts += count_plts(syms, rels, numrels,
+<<<<<<< HEAD
 						sechdrs[i].sh_info, dstsec);
 		else
 			init_plts += count_plts(syms, rels, numrels,
 						sechdrs[i].sh_info, dstsec);
+=======
+						sechdrs[i].sh_info);
+		else
+			init_plts += count_plts(syms, rels, numrels,
+						sechdrs[i].sh_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mod->arch.core.plt->sh_type = SHT_NOBITS;

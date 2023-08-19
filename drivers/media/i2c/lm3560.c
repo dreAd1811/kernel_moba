@@ -1,6 +1,10 @@
 /*
  * drivers/media/i2c/lm3560.c
+<<<<<<< HEAD
  * General device driver for TI lm3559, lm3560, FLASH LED Driver
+=======
+ * General device driver for TI lm3560, FLASH LED Driver
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Copyright (C) 2013 Texas Instruments
  *
@@ -50,7 +54,10 @@ enum led_enable {
 /**
  * struct lm3560_flash
  *
+<<<<<<< HEAD
  * @dev: pointer to &struct device
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @pdata: platform data
  * @regmap: reg. map for i2c
  * @lock: muxtex for serial access.
@@ -465,7 +472,10 @@ static int lm3560_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id lm3560_id_table[] = {
+<<<<<<< HEAD
 	{LM3559_NAME, 0},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{LM3560_NAME, 0},
 	{}
 };

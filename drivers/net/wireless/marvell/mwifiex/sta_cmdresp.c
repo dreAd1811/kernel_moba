@@ -70,7 +70,15 @@ mwifiex_process_cmdresp_error(struct mwifiex_private *priv,
 		break;
 	case HostCmd_CMD_802_11_SCAN:
 	case HostCmd_CMD_802_11_SCAN_EXT:
+<<<<<<< HEAD
 		mwifiex_cancel_scan(adapter);
+=======
+		mwifiex_cancel_pending_scan_cmd(adapter);
+
+		spin_lock_irqsave(&adapter->mwifiex_cmd_lock, flags);
+		adapter->scan_processing = false;
+		spin_unlock_irqrestore(&adapter->mwifiex_cmd_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case HostCmd_CMD_MAC_CONTROL:
@@ -1170,6 +1178,7 @@ static int mwifiex_ret_pkt_aggr_ctrl(struct mwifiex_private *priv,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mwifiex_ret_get_chan_info(struct mwifiex_private *priv,
 				     struct host_cmd_ds_command *resp,
 				     struct mwifiex_channel_band *channel_band)
@@ -1186,6 +1195,8 @@ static int mwifiex_ret_get_chan_info(struct mwifiex_private *priv,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This function handles the command responses.
  *
@@ -1409,9 +1420,12 @@ int mwifiex_process_sta_cmdresp(struct mwifiex_private *priv, u16 cmdresp_no,
 	case HostCmd_CMD_CHAN_REGION_CFG:
 		ret = mwifiex_ret_chan_region_cfg(priv, resp);
 		break;
+<<<<<<< HEAD
 	case HostCmd_CMD_STA_CONFIGURE:
 		ret = mwifiex_ret_get_chan_info(priv, resp, data_buf);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		mwifiex_dbg(adapter, ERROR,
 			    "CMD_RESP: unknown cmd response %#x\n",

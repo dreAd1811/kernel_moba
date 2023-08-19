@@ -180,7 +180,11 @@
 				clocks = <&soc_clocks MMP2_CLK_GPIO>;
 				resets = <&soc_clocks MMP2_CLK_GPIO>;
 				interrupt-controller;
+<<<<<<< HEAD
 				#interrupt-cells = <1>;
+=======
+				#interrupt-cells = <2>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ranges;
 
 				gcb0: gpio@d4019000 {

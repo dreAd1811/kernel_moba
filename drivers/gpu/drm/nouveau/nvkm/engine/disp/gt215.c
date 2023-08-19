@@ -28,20 +28,34 @@
 
 static const struct nv50_disp_func
 gt215_disp = {
+<<<<<<< HEAD
 	.init = nv50_disp_init,
 	.fini = nv50_disp_fini,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.intr = nv50_disp_intr,
 	.uevent = &nv50_disp_chan_uevent,
 	.super = nv50_disp_super,
 	.root = &gt215_disp_root_oclass,
+<<<<<<< HEAD
 	.head = { .cnt = nv50_head_cnt, .new = nv50_head_new },
 	.dac = { .cnt = nv50_dac_cnt, .new = nv50_dac_new },
 	.sor = { .cnt = g94_sor_cnt, .new = gt215_sor_new },
 	.pior = { .cnt = nv50_pior_cnt, .new = nv50_pior_new },
+=======
+	.head.new = nv50_head_new,
+	.dac = { .nr = 3, .new = nv50_dac_new },
+	.sor = { .nr = 4, .new = gt215_sor_new },
+	.pior = { .nr = 3, .new = nv50_pior_new },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int
 gt215_disp_new(struct nvkm_device *device, int index, struct nvkm_disp **pdisp)
 {
+<<<<<<< HEAD
 	return nv50_disp_new_(&gt215_disp, device, index, pdisp);
+=======
+	return nv50_disp_new_(&gt215_disp, device, index, 2, pdisp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

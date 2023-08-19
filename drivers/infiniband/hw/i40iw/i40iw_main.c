@@ -99,10 +99,13 @@ static struct notifier_block i40iw_net_notifier = {
 	.notifier_call = i40iw_net_event
 };
 
+<<<<<<< HEAD
 static struct notifier_block i40iw_netdevice_notifier = {
 	.notifier_call = i40iw_netdevice_event
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * i40iw_find_i40e_handler - find a handler given a client info
  * @ldev: pointer to a client info
@@ -357,8 +360,11 @@ static void i40iw_dele_ceqs(struct i40iw_device *iwdev)
 		i40iw_disable_irq(dev, msix_vec, (void *)iwceq);
 		i40iw_destroy_ceq(iwdev, iwceq);
 	}
+<<<<<<< HEAD
 
 	iwdev->sc_dev.ceq_valid = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -487,7 +493,10 @@ static enum i40iw_status_code i40iw_create_hmc_objs(struct i40iw_device *iwdev,
 	for (i = 0; i < IW_HMC_OBJ_TYPE_NUM; i++) {
 		info.rsrc_type = iw_hmc_obj_types[i];
 		info.count = dev->hmc_info->hmc_obj[info.rsrc_type].cnt;
+<<<<<<< HEAD
 		info.add_sd_cnt = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = i40iw_create_hmc_obj_type(dev, &info);
 		if (status) {
 			i40iw_pr_err("create obj type %d status = %d\n",
@@ -612,7 +621,11 @@ static enum i40iw_status_code i40iw_create_cqp(struct i40iw_device *iwdev)
 	INIT_LIST_HEAD(&cqp->cqp_avail_reqs);
 	INIT_LIST_HEAD(&cqp->cqp_pending_reqs);
 	/* init the waitq of the cqp_requests and add them to the list */
+<<<<<<< HEAD
 	for (i = 0; i < sqsize; i++) {
+=======
+	for (i = 0; i < I40IW_CQP_SW_SQSIZE_2048; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		init_waitqueue_head(&cqp->cqp_requests[i].waitq);
 		list_add_tail(&cqp->cqp_requests[i].list, &cqp->cqp_avail_reqs);
 	}
@@ -687,6 +700,10 @@ static enum i40iw_status_code i40iw_configure_ceq_vector(struct i40iw_device *iw
 							 struct i40iw_msix_vector *msix_vec)
 {
 	enum i40iw_status_code status;
+<<<<<<< HEAD
+=======
+	cpumask_t mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (iwdev->msix_shared && !ceq_id) {
 		tasklet_init(&iwdev->dpc_tasklet, i40iw_dpc, (unsigned long)iwdev);
@@ -696,9 +713,15 @@ static enum i40iw_status_code i40iw_configure_ceq_vector(struct i40iw_device *iw
 		status = request_irq(msix_vec->irq, i40iw_ceq_handler, 0, "CEQ", iwceq);
 	}
 
+<<<<<<< HEAD
 	cpumask_clear(&msix_vec->mask);
 	cpumask_set_cpu(msix_vec->cpu_affinity, &msix_vec->mask);
 	irq_set_affinity_hint(msix_vec->irq, &msix_vec->mask);
+=======
+	cpumask_clear(&mask);
+	cpumask_set_cpu(msix_vec->cpu_affinity, &mask);
+	irq_set_affinity_hint(msix_vec->irq, &mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (status) {
 		i40iw_pr_err("ceq irq config fail\n");
@@ -816,6 +839,7 @@ static enum i40iw_status_code i40iw_setup_ceqs(struct i40iw_device *iwdev,
 		i40iw_enable_intr(&iwdev->sc_dev, msix_vec->idx);
 		iwdev->ceqs_count++;
 	}
+<<<<<<< HEAD
 exit:
 	if (status && !iwdev->ceqs_count) {
 		kfree(iwdev->ceqlist);
@@ -826,6 +850,19 @@ exit:
 		return 0;
 	}
 
+=======
+
+exit:
+	if (status) {
+		if (!iwdev->ceqs_count) {
+			kfree(iwdev->ceqlist);
+			iwdev->ceqlist = NULL;
+		} else {
+			status = 0;
+		}
+	}
+	return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -963,13 +1000,22 @@ static enum i40iw_status_code i40iw_initialize_ieq(struct i40iw_device *iwdev)
 	memset(&info, 0, sizeof(info));
 	info.type = I40IW_PUDA_RSRC_TYPE_IEQ;
 	info.cq_id = 2;
+<<<<<<< HEAD
 	info.qp_id = iwdev->vsi.exception_lan_queue;
+=======
+	info.qp_id = iwdev->sc_dev.exception_lan_queue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.count = 1;
 	info.pd_id = 2;
 	info.sq_size = 8192;
 	info.rq_size = 8192;
+<<<<<<< HEAD
 	info.buf_size = iwdev->vsi.mtu + VLAN_ETH_HLEN;
 	info.tx_buf_cnt = 4096;
+=======
+	info.buf_size = 2048;
+	info.tx_buf_cnt = 16384;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = i40iw_puda_create_rsrc(&iwdev->vsi, &info);
 	if (status)
 		i40iw_pr_err("ieq create fail\n");
@@ -977,6 +1023,7 @@ static enum i40iw_status_code i40iw_initialize_ieq(struct i40iw_device *iwdev)
 }
 
 /**
+<<<<<<< HEAD
  * i40iw_reinitialize_ieq - destroy and re-create ieq
  * @dev: iwarp device
  */
@@ -992,6 +1039,8 @@ void i40iw_reinitialize_ieq(struct i40iw_sc_dev *dev)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40iw_hmc_setup - create hmc objects for the device
  * @iwdev: iwarp device
  *
@@ -1289,7 +1338,11 @@ static void i40iw_wait_pe_ready(struct i40iw_hw *hw)
 			      __LINE__, statuscpu2);
 		if ((statuscpu0 == 0x80) && (statuscpu1 == 0x80) && (statuscpu2 == 0x80))
 			break;	/* SUCCESS */
+<<<<<<< HEAD
 		msleep(1000);
+=======
+		mdelay(1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		retrycount++;
 	} while (retrycount < 14);
 	i40iw_wr32(hw, 0xb4040, 0x4C104C5);
@@ -1347,8 +1400,13 @@ static enum i40iw_status_code i40iw_initialize_dev(struct i40iw_device *iwdev,
 	info.bar0 = ldev->hw_addr;
 	info.hw = &iwdev->hw;
 	info.debug_mask = debug;
+<<<<<<< HEAD
 	l2params.mtu =
 		(ldev->params.mtu) ? ldev->params.mtu : I40IW_DEFAULT_MTU;
+=======
+	l2params.mss =
+		(ldev->params.mtu) ? ldev->params.mtu - I40IW_MTU_TO_MSS : I40IW_DEFAULT_MSS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < I40E_CLIENT_MAX_USER_PRIORITY; i++) {
 		qset = ldev->params.qos.prio_qos[i].qs_handle;
 		l2params.qs_handle_list[i] = qset;
@@ -1358,6 +1416,10 @@ static enum i40iw_status_code i40iw_initialize_dev(struct i40iw_device *iwdev,
 			iwdev->dcb = true;
 	}
 	i40iw_pr_info("DCB is set/clear = %d\n", iwdev->dcb);
+<<<<<<< HEAD
+=======
+	info.exception_lan_queue = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.vchnl_send = i40iw_virtchnl_send;
 	status = i40iw_device_init(&iwdev->sc_dev, &info);
 
@@ -1367,7 +1429,10 @@ static enum i40iw_status_code i40iw_initialize_dev(struct i40iw_device *iwdev,
 	vsi_info.dev = &iwdev->sc_dev;
 	vsi_info.back_vsi = (void *)iwdev;
 	vsi_info.params = &l2params;
+<<<<<<< HEAD
 	vsi_info.exception_lan_queue = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40iw_sc_vsi_init(&iwdev->vsi, &vsi_info);
 
 	if (dev->is_pf) {
@@ -1397,7 +1462,10 @@ static void i40iw_register_notifiers(void)
 	register_inetaddr_notifier(&i40iw_inetaddr_notifier);
 	register_inet6addr_notifier(&i40iw_inetaddr6_notifier);
 	register_netevent_notifier(&i40iw_net_notifier);
+<<<<<<< HEAD
 	register_netdevice_notifier(&i40iw_netdevice_notifier);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1409,7 +1477,10 @@ static void i40iw_unregister_notifiers(void)
 	unregister_netevent_notifier(&i40iw_net_notifier);
 	unregister_inetaddr_notifier(&i40iw_inetaddr_notifier);
 	unregister_inet6addr_notifier(&i40iw_inetaddr6_notifier);
+<<<<<<< HEAD
 	unregister_netdevice_notifier(&i40iw_netdevice_notifier);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1559,6 +1630,11 @@ static enum i40iw_status_code i40iw_setup_init_state(struct i40iw_handler *hdl,
 	enum i40iw_status_code status;
 
 	memcpy(&hdl->ldev, ldev, sizeof(*ldev));
+<<<<<<< HEAD
+=======
+	if (resource_profile == 1)
+		resource_profile = 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iwdev->mpa_version = mpa_version;
 	iwdev->resource_profile = (resource_profile < I40IW_HMC_PROFILE_EQUAL) ?
@@ -1757,7 +1833,11 @@ static void i40iw_l2param_change(struct i40e_info *ldev, struct i40e_client *cli
 		return;
 
 
+<<<<<<< HEAD
 	work = kzalloc(sizeof(*work), GFP_KERNEL);
+=======
+	work = kzalloc(sizeof(*work), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!work)
 		return;
 
@@ -1768,7 +1848,11 @@ static void i40iw_l2param_change(struct i40e_info *ldev, struct i40e_client *cli
 	for (i = 0; i < I40E_CLIENT_MAX_USER_PRIORITY; i++)
 		l2params->qs_handle_list[i] = params->qos.prio_qos[i].qs_handle;
 
+<<<<<<< HEAD
 	l2params->mtu = (params->mtu) ? params->mtu : iwdev->vsi.mtu;
+=======
+	l2params->mss = (params->mtu) ? params->mtu - I40IW_MTU_TO_MSS : iwdev->vsi.mss;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&work->work, i40iw_l2params_worker);
 	queue_work(iwdev->param_wq, &work->work);
@@ -1797,7 +1881,11 @@ static void i40iw_close(struct i40e_info *ldev, struct i40e_client *client, bool
 	if (reset)
 		iwdev->reset = true;
 
+<<<<<<< HEAD
 	i40iw_cm_teardown_connections(iwdev, NULL, NULL, true);
+=======
+	i40iw_cm_disconnect_all(iwdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	destroy_workqueue(iwdev->virtchnl_wq);
 	i40iw_deinit_device(iwdev);
 }

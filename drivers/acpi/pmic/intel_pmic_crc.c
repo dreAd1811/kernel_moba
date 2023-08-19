@@ -25,6 +25,7 @@
 #define PMIC_A0LOCK_REG		0xc5
 
 static struct pmic_table power_table[] = {
+<<<<<<< HEAD
 /*	{
 		.address = 0x00,
 		.reg = ??,
@@ -70,10 +71,13 @@ static struct pmic_table power_table[] = {
 		.reg = ??,
 		.bit = ??,
 	}, ** S285 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.address = 0x24,
 		.reg = 0x66,
 		.bit = 0x00,
+<<<<<<< HEAD
 	}, /* X285 -> V2P85SX, camera */
 /*	{
 		.address = 0x28,
@@ -100,10 +104,14 @@ static struct pmic_table power_table[] = {
 		.reg = 0x5c,
 		.bit = 0x00,
 	}, /* V18S -> V1P8S, SOC/USB PHY/SIM */
+=======
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.address = 0x48,
 		.reg = 0x5d,
 		.bit = 0x00,
+<<<<<<< HEAD
 	}, /* V18X -> V1P8SX, eMMC/camara/audio */
 	{
 		.address = 0x4c,
@@ -140,6 +148,9 @@ static struct pmic_table power_table[] = {
 		.reg = 0x59,
 		.bit = 0x00,
 	}, /* V105 -> V1P05S, L2 SRAM */
+=======
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct pmic_table thermal_table[] = {
@@ -306,4 +317,13 @@ static struct platform_driver intel_crc_pmic_opregion_driver = {
 		.name = "crystal_cove_pmic",
 	},
 };
+<<<<<<< HEAD
 builtin_platform_driver(intel_crc_pmic_opregion_driver);
+=======
+
+static int __init intel_crc_pmic_opregion_driver_init(void)
+{
+	return platform_driver_register(&intel_crc_pmic_opregion_driver);
+}
+device_initcall(intel_crc_pmic_opregion_driver_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

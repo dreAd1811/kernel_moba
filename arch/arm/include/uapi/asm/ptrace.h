@@ -32,10 +32,13 @@
 #define PTRACE_SETVFPREGS	28
 #define PTRACE_GETHBPREGS	29
 #define PTRACE_SETHBPREGS	30
+<<<<<<< HEAD
 #define PTRACE_GETFDPIC		31
 
 #define PTRACE_GETFDPIC_EXEC	0
 #define PTRACE_GETFDPIC_INTERP	1
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * PSR bits
@@ -58,7 +61,10 @@
 #endif
 #define FIQ_MODE	0x00000011
 #define IRQ_MODE	0x00000012
+<<<<<<< HEAD
 #define MON_MODE	0x00000016
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ABT_MODE	0x00000017
 #define HYP_MODE	0x0000001a
 #define UND_MODE	0x0000001b

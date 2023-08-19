@@ -43,6 +43,11 @@
 #define PCA963X_LED_PWM		0x2	/* Controlled through PWM */
 #define PCA963X_LED_GRP_PWM	0x3	/* Controlled through PWM/GRPPWM */
 
+<<<<<<< HEAD
+=======
+#define PCA963X_MODE2_OUTDRV	0x04	/* Open-drain or totem pole */
+#define PCA963X_MODE2_INVRT	0x10	/* Normal or inverted direction */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PCA963X_MODE2_DMBLNK	0x20	/* Enable blinking */
 
 #define PCA963X_MODE1		0x00
@@ -300,8 +305,13 @@ pca963x_dt_init(struct i2c_client *client, struct pca963x_chipdef *chip)
 	if (!count || count > chip->n_leds)
 		return ERR_PTR(-ENODEV);
 
+<<<<<<< HEAD
 	pca963x_leds = devm_kcalloc(&client->dev,
 			chip->n_leds, sizeof(struct led_info), GFP_KERNEL);
+=======
+	pca963x_leds = devm_kzalloc(&client->dev,
+			sizeof(struct led_info) * chip->n_leds, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pca963x_leds)
 		return ERR_PTR(-ENOMEM);
 
@@ -407,7 +417,11 @@ static int pca963x_probe(struct i2c_client *client,
 								GFP_KERNEL);
 	if (!pca963x_chip)
 		return -ENOMEM;
+<<<<<<< HEAD
 	pca963x = devm_kcalloc(&client->dev, chip->n_leds, sizeof(*pca963x),
+=======
+	pca963x = devm_kzalloc(&client->dev, chip->n_leds * sizeof(*pca963x),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 								GFP_KERNEL);
 	if (!pca963x)
 		return -ENOMEM;
@@ -462,12 +476,21 @@ static int pca963x_probe(struct i2c_client *client,
 						    PCA963X_MODE2);
 		/* Configure output: open-drain or totem pole (push-pull) */
 		if (pdata->outdrv == PCA963X_OPEN_DRAIN)
+<<<<<<< HEAD
 			mode2 |= 0x01;
 		else
 			mode2 |= 0x05;
 		/* Configure direction: normal or inverted */
 		if (pdata->dir == PCA963X_INVERTED)
 			mode2 |= 0x10;
+=======
+			mode2 &= ~PCA963X_MODE2_OUTDRV;
+		else
+			mode2 |= PCA963X_MODE2_OUTDRV;
+		/* Configure direction: normal or inverted */
+		if (pdata->dir == PCA963X_INVERTED)
+			mode2 |= PCA963X_MODE2_INVRT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i2c_smbus_write_byte_data(pca963x->chip->client, PCA963X_MODE2,
 					  mode2);
 	}

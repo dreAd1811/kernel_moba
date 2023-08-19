@@ -256,7 +256,15 @@ on downward growing arches, it looks like this:
  * it in here from the current->personality
  */
 
+<<<<<<< HEAD
 #define USER_WIDE_MODE	(!is_32bit_task())
+=======
+#ifdef CONFIG_64BIT
+#define USER_WIDE_MODE	(!test_thread_flag(TIF_32BIT))
+#else
+#define USER_WIDE_MODE	0
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define start_thread(regs, new_pc, new_sp) do {		\
 	elf_addr_t *sp = (elf_addr_t *)new_sp;		\

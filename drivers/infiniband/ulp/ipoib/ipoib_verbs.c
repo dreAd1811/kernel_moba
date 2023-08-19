@@ -52,7 +52,11 @@ int ipoib_mcast_attach(struct net_device *dev, struct ib_device *hca,
 
 	if (set_qkey) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		qp_attr = kmalloc(sizeof(*qp_attr), GFP_KERNEL);
+=======
+		qp_attr = kmalloc(sizeof *qp_attr, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!qp_attr)
 			goto out;
 
@@ -147,7 +151,11 @@ int ipoib_transport_dev_init(struct net_device *dev, struct ib_device *ca)
 		.cap = {
 			.max_send_wr  = ipoib_sendq_size,
 			.max_recv_wr  = ipoib_recvq_size,
+<<<<<<< HEAD
 			.max_send_sge = min_t(u32, priv->ca->attrs.max_send_sge,
+=======
+			.max_send_sge = min_t(u32, priv->ca->attrs.max_sge,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      MAX_SKB_FRAGS + 1),
 			.max_recv_sge = IPOIB_UD_RX_SG
 		},
@@ -156,7 +164,11 @@ int ipoib_transport_dev_init(struct net_device *dev, struct ib_device *ca)
 	};
 	struct ib_cq_init_attr cq_attr = {};
 
+<<<<<<< HEAD
 	int ret, size, req_vec;
+=======
+	int ret, size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	size = ipoib_recvq_size + 1;
@@ -168,6 +180,7 @@ int ipoib_transport_dev_init(struct net_device *dev, struct ib_device *ca)
 		else
 			size += ipoib_recvq_size * ipoib_max_conn_qp;
 	} else
+<<<<<<< HEAD
 		if (ret != -EOPNOTSUPP)
 			return ret;
 
@@ -179,15 +192,32 @@ int ipoib_transport_dev_init(struct net_device *dev, struct ib_device *ca)
 				     priv, &cq_attr);
 	if (IS_ERR(priv->recv_cq)) {
 		pr_warn("%s: failed to create receive CQ\n", ca->name);
+=======
+		if (ret != -ENOSYS)
+			return -ENODEV;
+
+	cq_attr.cqe = size;
+	priv->recv_cq = ib_create_cq(priv->ca, ipoib_ib_completion, NULL,
+				     dev, &cq_attr);
+	if (IS_ERR(priv->recv_cq)) {
+		printk(KERN_WARNING "%s: failed to create receive CQ\n", ca->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_cm_dev_cleanup;
 	}
 
 	cq_attr.cqe = ipoib_sendq_size;
+<<<<<<< HEAD
 	cq_attr.comp_vector = (req_vec + 1) % priv->ca->num_comp_vectors;
 	priv->send_cq = ib_create_cq(priv->ca, ipoib_ib_tx_completion, NULL,
 				     priv, &cq_attr);
 	if (IS_ERR(priv->send_cq)) {
 		pr_warn("%s: failed to create send CQ\n", ca->name);
+=======
+	priv->send_cq = ib_create_cq(priv->ca, ipoib_send_comp_handler, NULL,
+				     dev, &cq_attr);
+	if (IS_ERR(priv->send_cq)) {
+		printk(KERN_WARNING "%s: failed to create send CQ\n", ca->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_free_recv_cq;
 	}
 
@@ -208,6 +238,7 @@ int ipoib_transport_dev_init(struct net_device *dev, struct ib_device *ca)
 
 	priv->qp = ib_create_qp(priv->pd, &init_attr);
 	if (IS_ERR(priv->qp)) {
+<<<<<<< HEAD
 		pr_warn("%s: failed to create QP\n", ca->name);
 		goto out_free_send_cq;
 	}
@@ -215,6 +246,12 @@ int ipoib_transport_dev_init(struct net_device *dev, struct ib_device *ca)
 	if (ib_req_notify_cq(priv->send_cq, IB_CQ_NEXT_COMP))
 		goto out_free_send_cq;
 
+=======
+		printk(KERN_WARNING "%s: failed to create QP\n", ca->name);
+		goto out_free_send_cq;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < MAX_SKB_FRAGS + 1; ++i)
 		priv->tx_sge[i].lkey = priv->pd->local_dma_lkey;
 

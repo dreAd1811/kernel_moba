@@ -634,9 +634,16 @@ static int ca8210_test_int_driver_write(
 	for (i = 0; i < len; i++)
 		dev_dbg(&priv->spi->dev, "%#03x\n", buf[i]);
 
+<<<<<<< HEAD
 	fifo_buffer = kmemdup(buf, len, GFP_KERNEL);
 	if (!fifo_buffer)
 		return -ENOMEM;
+=======
+	fifo_buffer = kmalloc(len, GFP_KERNEL);
+	if (!fifo_buffer)
+		return -ENOMEM;
+	memcpy(fifo_buffer, buf, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfifo_in(&test->up_fifo, &fifo_buffer, 4);
 	wake_up_interruptible(&priv->test.readq);
 
@@ -923,7 +930,11 @@ static int ca8210_spi_transfer(
 	priv = spi_get_drvdata(spi);
 	reinit_completion(&priv->spi_transfer_complete);
 
+<<<<<<< HEAD
 	dev_dbg(&spi->dev, "%s called\n", __func__);
+=======
+	dev_dbg(&spi->dev, "ca8210_spi_transfer called\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cas_ctl = kmalloc(sizeof(*cas_ctl), GFP_ATOMIC);
 	if (!cas_ctl)
@@ -1302,7 +1313,11 @@ static u8 tdme_checkpibattribute(
 		break;
 	/* MAC */
 	case MAC_BATT_LIFE_EXT_PERIODS:
+<<<<<<< HEAD
 		if (value < 6 || value > 41)
+=======
+		if ((value < 6) || (value > 41))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = MAC_INVALID_PARAMETER;
 		break;
 	case MAC_BEACON_PAYLOAD:
@@ -1318,7 +1333,11 @@ static u8 tdme_checkpibattribute(
 			status = MAC_INVALID_PARAMETER;
 		break;
 	case MAC_MAX_BE:
+<<<<<<< HEAD
 		if (value < 3 || value > 8)
+=======
+		if ((value < 3) || (value > 8))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = MAC_INVALID_PARAMETER;
 		break;
 	case MAC_MAX_CSMA_BACKOFFS:
@@ -1334,7 +1353,11 @@ static u8 tdme_checkpibattribute(
 			status = MAC_INVALID_PARAMETER;
 		break;
 	case MAC_RESPONSE_WAIT_TIME:
+<<<<<<< HEAD
 		if (value < 2 || value > 64)
+=======
+		if ((value < 2) || (value > 64))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = MAC_INVALID_PARAMETER;
 		break;
 	case MAC_SUPERFRAME_ORDER:
@@ -1510,7 +1533,11 @@ static u8 mcps_data_request(
 	psec = (struct secspec *)(command.pdata.data_req.msdu + msdu_length);
 	command.length = sizeof(struct mcps_data_request_pset) -
 		MAX_DATA_SIZE + msdu_length;
+<<<<<<< HEAD
 	if (!security || security->security_level == 0) {
+=======
+	if (!security || (security->security_level == 0)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		psec->security_level = 0;
 		command.length += 1;
 	} else {
@@ -1560,7 +1587,11 @@ static u8 mlme_reset_request_sync(
 	status = response.pdata.status;
 
 	/* reset COORD Bit for Channel Filtering as Coordinator */
+<<<<<<< HEAD
 	if (CA8210_MAC_WORKAROUNDS && set_default_pib && !status) {
+=======
+	if (CA8210_MAC_WORKAROUNDS && set_default_pib && (!status)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		status = tdme_setsfr_request_sync(
 			0,
 			CA8210_SFR_MACCON,
@@ -1897,7 +1928,11 @@ static int ca8210_net_rx(struct ieee802154_hw *hw, u8 *command, size_t len)
 	unsigned long flags;
 	u8 status;
 
+<<<<<<< HEAD
 	dev_dbg(&priv->spi->dev, "%s: CmdID = %d\n", __func__, command[0]);
+=======
+	dev_dbg(&priv->spi->dev, "ca8210_net_rx(), CmdID = %d\n", command[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (command[0] == SPI_MCPS_DATA_INDICATION) {
 		/* Received data */
@@ -1943,11 +1978,19 @@ static int ca8210_skb_tx(
 )
 {
 	int status;
+<<<<<<< HEAD
 	struct ieee802154_hdr header = { };
 	struct secspec secspec;
 	unsigned int mac_len;
 
 	dev_dbg(&priv->spi->dev, "%s called\n", __func__);
+=======
+	struct ieee802154_hdr header = { 0 };
+	struct secspec secspec;
+	unsigned int mac_len;
+
+	dev_dbg(&priv->spi->dev, "ca8210_skb_tx() called\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get addressing info from skb - ieee802154 layer creates a full
 	 * packet
@@ -2050,7 +2093,11 @@ static int ca8210_xmit_async(struct ieee802154_hw *hw, struct sk_buff *skb)
 	struct ca8210_priv *priv = hw->priv;
 	int status;
 
+<<<<<<< HEAD
 	dev_dbg(&priv->spi->dev, "calling %s\n", __func__);
+=======
+	dev_dbg(&priv->spi->dev, "calling ca8210_xmit_async()\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->tx_skb = skb;
 	priv->async_tx_pending = true;
@@ -2368,7 +2415,11 @@ static int ca8210_set_promiscuous_mode(struct ieee802154_hw *hw, const bool on)
 		MAC_PROMISCUOUS_MODE,
 		0,
 		1,
+<<<<<<< HEAD
 		(const void *)&on,
+=======
+		(const void*)&on,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		priv->spi
 	);
 	if (status) {
@@ -2645,21 +2696,37 @@ static long ca8210_test_int_ioctl(
  *
  * Return: set of poll return flags
  */
+<<<<<<< HEAD
 static __poll_t ca8210_test_int_poll(
+=======
+static unsigned int ca8210_test_int_poll(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct file *filp,
 	struct poll_table_struct *ptable
 )
 {
+<<<<<<< HEAD
 	__poll_t return_flags = 0;
+=======
+	unsigned int return_flags = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ca8210_priv *priv = filp->private_data;
 
 	poll_wait(filp, &priv->test.readq, ptable);
 	if (!kfifo_is_empty(&priv->test.up_fifo))
+<<<<<<< HEAD
 		return_flags |= (EPOLLIN | EPOLLRDNORM);
 	if (wait_event_interruptible(
 		priv->test.readq,
 		!kfifo_is_empty(&priv->test.up_fifo))) {
 		return EPOLLERR;
+=======
+		return_flags |= (POLLIN | POLLRDNORM);
+	if (wait_event_interruptible(
+		priv->test.readq,
+		!kfifo_is_empty(&priv->test.up_fifo))) {
+		return POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return return_flags;
 }
@@ -3043,7 +3110,12 @@ static void ca8210_test_interface_clear(struct ca8210_priv *priv)
 {
 	struct ca8210_test *test = &priv->test;
 
+<<<<<<< HEAD
 	debugfs_remove(test->ca8210_dfs_spi_int);
+=======
+	if (!IS_ERR(test->ca8210_dfs_spi_int))
+		debugfs_remove(test->ca8210_dfs_spi_int);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfifo_free(&test->up_fifo);
 	dev_info(&priv->spi->dev, "Test interface removed\n");
 }

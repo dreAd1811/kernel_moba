@@ -2,8 +2,11 @@
 
 #include <linux/spinlock.h>
 #include <linux/percpu.h>
+<<<<<<< HEAD
 #include <linux/kallsyms.h>
 #include <linux/kcore.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/cpu_entry_area.h>
 #include <asm/pgtable.h>
@@ -15,7 +18,10 @@ static DEFINE_PER_CPU_PAGE_ALIGNED(struct entry_stack_page, entry_stack_storage)
 #ifdef CONFIG_X86_64
 static DEFINE_PER_CPU_PAGE_ALIGNED(char, exception_stacks
 	[(N_EXCEPTION_STACKS - 1) * EXCEPTION_STKSZ + DEBUG_STKSZ]);
+<<<<<<< HEAD
 static DEFINE_PER_CPU(struct kcore_list, kcore_entry_trampoline);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 struct cpu_entry_area *get_cpu_entry_area(int cpu)
@@ -30,6 +36,7 @@ EXPORT_SYMBOL(get_cpu_entry_area);
 void cea_set_pte(void *cea_vaddr, phys_addr_t pa, pgprot_t flags)
 {
 	unsigned long va = (unsigned long) cea_vaddr;
+<<<<<<< HEAD
 	pte_t pte = pfn_pte(pa >> PAGE_SHIFT, flags);
 
 	/*
@@ -44,6 +51,10 @@ void cea_set_pte(void *cea_vaddr, phys_addr_t pa, pgprot_t flags)
 		pte = pte_set_flags(pte, _PAGE_GLOBAL);
 
 	set_pte_vaddr(va, pte);
+=======
+
+	set_pte_vaddr(va, pfn_pte(pa >> PAGE_SHIFT, flags));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init
@@ -149,6 +160,7 @@ static void __init setup_cpu_entry_area(int cpu)
 
 	cea_set_pte(&get_cpu_entry_area(cpu)->entry_trampoline,
 		     __pa_symbol(_entry_trampoline), PAGE_KERNEL_RX);
+<<<<<<< HEAD
 	/*
 	 * The cpu_entry_area alias addresses are not in the kernel binary
 	 * so they do not show up in /proc/kcore normally.  This adds entries
@@ -157,10 +169,13 @@ static void __init setup_cpu_entry_area(int cpu)
 	kclist_add_remap(&per_cpu(kcore_entry_trampoline, cpu),
 			 _entry_trampoline,
 			 &get_cpu_entry_area(cpu)->entry_trampoline, PAGE_SIZE);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	percpu_setup_debug_store(cpu);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_64
 int arch_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
 		     char *name)
@@ -183,6 +198,8 @@ int arch_get_kallsym(unsigned int symnum, unsigned long *value, char *type,
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static __init void setup_cpu_entry_area_ptes(void)
 {
 #ifdef CONFIG_X86_32

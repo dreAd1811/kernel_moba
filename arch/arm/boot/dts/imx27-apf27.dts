@@ -19,6 +19,7 @@
 	model = "Armadeus Systems APF27 module";
 	compatible = "armadeus,imx27-apf27", "fsl,imx27";
 
+<<<<<<< HEAD
 	memory@a0000000 {
 		reg = <0xa0000000 0x04000000>;
 	};
@@ -26,6 +27,22 @@
 
 &clk_osc26m {
 	clock-frequency = <0>;
+=======
+	memory {
+		reg = <0xa0000000 0x04000000>;
+	};
+
+	clocks {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		osc26m {
+			compatible = "fsl,imx-osc26m", "fixed-clock";
+			#clock-cells = <0>;
+			clock-frequency = <0>;
+		};
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &iomuxc {

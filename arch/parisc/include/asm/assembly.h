@@ -36,7 +36,10 @@
 #define RP_OFFSET	16
 #define FRAME_SIZE	128
 #define CALLEE_REG_FRAME_SIZE	144
+<<<<<<< HEAD
 #define REG_SZ		8
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ASM_ULONG_INSN	.dword
 #else	/* CONFIG_64BIT */
 #define LDREG	ldw
@@ -51,7 +54,10 @@
 #define RP_OFFSET	20
 #define FRAME_SIZE	64
 #define CALLEE_REG_FRAME_SIZE	128
+<<<<<<< HEAD
 #define REG_SZ		4
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ASM_ULONG_INSN	.word
 #endif
 

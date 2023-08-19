@@ -53,8 +53,11 @@
 #define AT49BV32XT	0x00C9
 
 /* Eon */
+<<<<<<< HEAD
 #define EN29LV400AT	0x22B9
 #define EN29LV400AB	0x22BA
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define EN29SL800BB	0x226B
 #define EN29SL800BT	0x22EA
 
@@ -645,6 +648,7 @@ static const struct amd_flash_info jedec_table[] = {
 		}
 	}, {
 		.mfr_id		= CFI_MFR_EON,
+<<<<<<< HEAD
 		.dev_id		= EN29LV400AT,
 		.name		= "Eon EN29LV400AT",
 		.devtypes	= CFI_DEVICETYPE_X16|CFI_DEVICETYPE_X8,
@@ -675,6 +679,8 @@ static const struct amd_flash_info jedec_table[] = {
 		}
 	}, {
 		.mfr_id		= CFI_MFR_EON,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.dev_id		= EN29SL800BT,
 		.name		= "Eon EN29SL800BT",
 		.devtypes	= CFI_DEVICETYPE_X16|CFI_DEVICETYPE_X8,

@@ -2642,6 +2642,7 @@ void radeon_combios_get_power_modes(struct radeon_device *rdev)
 	rdev->pm.default_power_state_index = -1;
 
 	/* allocate 2 power states */
+<<<<<<< HEAD
 	rdev->pm.power_state = kcalloc(2, sizeof(struct radeon_power_state),
 				       GFP_KERNEL);
 	if (rdev->pm.power_state) {
@@ -2652,6 +2653,15 @@ void radeon_combios_get_power_modes(struct radeon_device *rdev)
 		rdev->pm.power_state[1].clock_info =
 			kcalloc(1, sizeof(struct radeon_pm_clock_info),
 				GFP_KERNEL);
+=======
+	rdev->pm.power_state = kzalloc(sizeof(struct radeon_power_state) * 2, GFP_KERNEL);
+	if (rdev->pm.power_state) {
+		/* allocate 1 clock mode per state */
+		rdev->pm.power_state[0].clock_info =
+			kzalloc(sizeof(struct radeon_pm_clock_info) * 1, GFP_KERNEL);
+		rdev->pm.power_state[1].clock_info =
+			kzalloc(sizeof(struct radeon_pm_clock_info) * 1, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rdev->pm.power_state[0].clock_info ||
 		    !rdev->pm.power_state[1].clock_info)
 			goto pm_failed;

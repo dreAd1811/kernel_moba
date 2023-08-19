@@ -76,14 +76,24 @@
 		allwinner,pipelines = <&fe0>;
 	};
 
+<<<<<<< HEAD
 	soc@1c00000 {
 		hdmi: hdmi@1c16000 {
+=======
+	soc@01c00000 {
+		hdmi: hdmi@01c16000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a10s-hdmi";
 			reg = <0x01c16000 0x1000>;
 			interrupts = <58>;
 			clocks = <&ccu CLK_AHB_HDMI>, <&ccu CLK_HDMI>,
+<<<<<<< HEAD
 				 <&ccu CLK_PLL_VIDEO0_2X>,
 				 <&ccu CLK_PLL_VIDEO1_2X>;
+=======
+				 <&ccu 9>,
+				 <&ccu 16>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clock-names = "ahb", "mod", "pll-0", "pll-1";
 			dmas = <&dma SUN4I_DMA_NORMAL 16>,
 			       <&dma SUN4I_DMA_NORMAL 16>,
@@ -104,14 +114,21 @@
 				};
 
 				hdmi_out: port@1 {
+<<<<<<< HEAD
 					#address-cells = <1>;
 					#size-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					reg = <1>;
 				};
 			};
 		};
 
+<<<<<<< HEAD
 		pwm: pwm@1c20e00 {
+=======
+		pwm: pwm@01c20e00 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "allwinner,sun5i-a10s-pwm";
 			reg = <0x01c20e00 0xc>;
 			clocks = <&ccu CLK_HOSC>;

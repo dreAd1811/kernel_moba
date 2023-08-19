@@ -23,10 +23,27 @@
 
 /*
  * Memory and IO mappings. We use a 1:1 mapping for local host memory to
+<<<<<<< HEAD
  * PCI bus memory (no reason not to really). IO space is mapped in its own
  * separate address region. The device configuration space is mapped over
  * the IO map space when we enable it in the PCICAR register.
  */
+=======
+ * PCI bus memory (no reason not to really). IO space doesn't matter, we
+ * always use access functions for that. The device configuration space is
+ * mapped over the IO map space when we enable it in the PCICAR register.
+ */
+#define	PCI_MEM_PA	0xf0000000		/* Host physical address */
+#define	PCI_MEM_BA	0xf0000000		/* Bus physical address */
+#define	PCI_MEM_SIZE	0x08000000		/* 128 MB */
+#define	PCI_MEM_MASK	(PCI_MEM_SIZE - 1)
+
+#define	PCI_IO_PA	0xf8000000		/* Host physical address */
+#define	PCI_IO_BA	0x00000000		/* Bus physical address */
+#define	PCI_IO_SIZE	0x00010000		/* 64k */
+#define	PCI_IO_MASK	(PCI_IO_SIZE - 1)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct pci_bus *rootbus;
 static unsigned long iospace;
 
@@ -46,6 +63,16 @@ static unsigned char mcf_host_irq[] = {
 	0, 69, 69, 71, 71,
 };
 
+<<<<<<< HEAD
+=======
+
+static inline void syncio(void)
+{
+	/* The ColdFire "nop" instruction waits for all bus IO to complete */
+	__asm__ __volatile__ ("nop");
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Configuration space access functions. Configuration space access is
  * through the IO mapping window, enabling it via the PCICAR register.
@@ -67,9 +94,15 @@ static int mcf_pci_readconfig(struct pci_bus *bus, unsigned int devfn,
 			return PCIBIOS_SUCCESSFUL;
 	}
 
+<<<<<<< HEAD
 	addr = mcf_mk_pcicar(bus->number, devfn, where);
 	__raw_writel(PCICAR_E | addr, PCICAR);
 	__raw_readl(PCICAR);
+=======
+	syncio();
+	addr = mcf_mk_pcicar(bus->number, devfn, where);
+	__raw_writel(PCICAR_E | addr, PCICAR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr = iospace + (where & 0x3);
 
 	switch (size) {
@@ -84,8 +117,13 @@ static int mcf_pci_readconfig(struct pci_bus *bus, unsigned int devfn,
 		break;
 	}
 
+<<<<<<< HEAD
 	__raw_writel(0, PCICAR);
 	__raw_readl(PCICAR);
+=======
+	syncio();
+	__raw_writel(0, PCICAR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return PCIBIOS_SUCCESSFUL;
 }
 
@@ -99,9 +137,15 @@ static int mcf_pci_writeconfig(struct pci_bus *bus, unsigned int devfn,
 			return PCIBIOS_SUCCESSFUL;
 	}
 
+<<<<<<< HEAD
 	addr = mcf_mk_pcicar(bus->number, devfn, where);
 	__raw_writel(PCICAR_E | addr, PCICAR);
 	__raw_readl(PCICAR);
+=======
+	syncio();
+	addr = mcf_mk_pcicar(bus->number, devfn, where);
+	__raw_writel(PCICAR_E | addr, PCICAR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr = iospace + (where & 0x3);
 
 	switch (size) {
@@ -116,8 +160,13 @@ static int mcf_pci_writeconfig(struct pci_bus *bus, unsigned int devfn,
 		break;
 	}
 
+<<<<<<< HEAD
 	__raw_writel(0, PCICAR);
 	__raw_readl(PCICAR);
+=======
+	syncio();
+	__raw_writel(0, PCICAR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return PCIBIOS_SUCCESSFUL;
 }
 
@@ -127,6 +176,92 @@ static struct pci_ops mcf_pci_ops = {
 };
 
 /*
+<<<<<<< HEAD
+=======
+ *	IO address space access functions. Pretty strait forward, these are
+ *	directly mapped in to the IO mapping window. And that is mapped into
+ *	virtual address space.
+ */
+u8 mcf_pci_inb(u32 addr)
+{
+	return __raw_readb(iospace + (addr & PCI_IO_MASK));
+}
+EXPORT_SYMBOL(mcf_pci_inb);
+
+u16 mcf_pci_inw(u32 addr)
+{
+	return le16_to_cpu(__raw_readw(iospace + (addr & PCI_IO_MASK)));
+}
+EXPORT_SYMBOL(mcf_pci_inw);
+
+u32 mcf_pci_inl(u32 addr)
+{
+	return le32_to_cpu(__raw_readl(iospace + (addr & PCI_IO_MASK)));
+}
+EXPORT_SYMBOL(mcf_pci_inl);
+
+void mcf_pci_insb(u32 addr, u8 *buf, u32 len)
+{
+	for (; len; len--)
+		*buf++ = mcf_pci_inb(addr);
+}
+EXPORT_SYMBOL(mcf_pci_insb);
+
+void mcf_pci_insw(u32 addr, u16 *buf, u32 len)
+{
+	for (; len; len--)
+		*buf++ = mcf_pci_inw(addr);
+}
+EXPORT_SYMBOL(mcf_pci_insw);
+
+void mcf_pci_insl(u32 addr, u32 *buf, u32 len)
+{
+	for (; len; len--)
+		*buf++ = mcf_pci_inl(addr);
+}
+EXPORT_SYMBOL(mcf_pci_insl);
+
+void mcf_pci_outb(u8 v, u32 addr)
+{
+	__raw_writeb(v, iospace + (addr & PCI_IO_MASK));
+}
+EXPORT_SYMBOL(mcf_pci_outb);
+
+void mcf_pci_outw(u16 v, u32 addr)
+{
+	__raw_writew(cpu_to_le16(v), iospace + (addr & PCI_IO_MASK));
+}
+EXPORT_SYMBOL(mcf_pci_outw);
+
+void mcf_pci_outl(u32 v, u32 addr)
+{
+	__raw_writel(cpu_to_le32(v), iospace + (addr & PCI_IO_MASK));
+}
+EXPORT_SYMBOL(mcf_pci_outl);
+
+void mcf_pci_outsb(u32 addr, const u8 *buf, u32 len)
+{
+	for (; len; len--)
+		mcf_pci_outb(*buf++, addr);
+}
+EXPORT_SYMBOL(mcf_pci_outsb);
+
+void mcf_pci_outsw(u32 addr, const u16 *buf, u32 len)
+{
+	for (; len; len--)
+		mcf_pci_outw(*buf++, addr);
+}
+EXPORT_SYMBOL(mcf_pci_outsw);
+
+void mcf_pci_outsl(u32 addr, const u32 *buf, u32 len)
+{
+	for (; len; len--)
+		mcf_pci_outl(*buf++, addr);
+}
+EXPORT_SYMBOL(mcf_pci_outsl);
+
+/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Initialize the PCI bus registers, and scan the bus.
  */
 static struct resource mcf_pci_mem = {
@@ -216,8 +351,15 @@ static int __init mcf_pci_init(void)
 
 	/* Keep a virtual mapping to IO/config space active */
 	iospace = (unsigned long) ioremap(PCI_IO_PA, PCI_IO_SIZE);
+<<<<<<< HEAD
 	if (iospace == 0)
 		return -ENODEV;
+=======
+	if (iospace == 0) {
+		pci_free_host_bridge(bridge);
+		return -ENODEV;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_info("Coldfire: PCI IO/config window mapped to 0x%x\n",
 		(u32) iospace);
 

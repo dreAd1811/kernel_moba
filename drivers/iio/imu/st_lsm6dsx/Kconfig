@@ -8,8 +8,12 @@ config IIO_ST_LSM6DSX
 	select IIO_ST_LSM6DSX_SPI if (SPI_MASTER)
 	help
 	  Say yes here to build support for STMicroelectronics LSM6DSx imu
+<<<<<<< HEAD
 	  sensor. Supported devices: lsm6ds3, lsm6ds3h, lsm6dsl, lsm6dsm,
 	  ism330dlc
+=======
+	  sensor. Supported devices: lsm6ds3, lsm6ds3h, lsm6dsl, lsm6dsm
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	  To compile this driver as a module, choose M here: the module
 	  will be called st_lsm6dsx.
@@ -17,9 +21,15 @@ config IIO_ST_LSM6DSX
 config IIO_ST_LSM6DSX_I2C
 	tristate
 	depends on IIO_ST_LSM6DSX
+<<<<<<< HEAD
 	select REGMAP_I2C
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config IIO_ST_LSM6DSX_SPI
 	tristate
 	depends on IIO_ST_LSM6DSX
+<<<<<<< HEAD
 	select REGMAP_SPI
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

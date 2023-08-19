@@ -237,6 +237,10 @@ static void i2c_parport_attach(struct parport *port)
 
 	/* Setup SMBus alert if supported */
 	if (adapter_parm[type].smbus_alert) {
+<<<<<<< HEAD
+=======
+		adapter->alert_data.alert_edge_triggered = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adapter->ara = i2c_setup_smbus_alert(&adapter->adapter,
 						     &adapter->alert_data);
 		if (adapter->ara)

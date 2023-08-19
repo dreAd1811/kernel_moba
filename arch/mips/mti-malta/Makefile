@@ -13,9 +13,17 @@ obj-y				+= malta-init.o
 obj-y				+= malta-int.o
 obj-y				+= malta-memory.o
 obj-y				+= malta-platform.o
+<<<<<<< HEAD
+=======
+obj-y				+= malta-reset.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 obj-y				+= malta-setup.o
 obj-y				+= malta-time.o
 
 obj-$(CONFIG_MIPS_CMP)		+= malta-amon.o
+<<<<<<< HEAD
+=======
+obj-$(CONFIG_MIPS_MALTA_PM)	+= malta-pm.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 CFLAGS_malta-dtshim.o = -I$(src)/../../../scripts/dtc/libfdt

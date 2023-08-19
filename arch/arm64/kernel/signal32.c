@@ -26,7 +26,10 @@
 #include <asm/esr.h>
 #include <asm/fpsimd.h>
 #include <asm/signal32.h>
+<<<<<<< HEAD
 #include <asm/traps.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/uaccess.h>
 #include <asm/unistd.h>
 
@@ -126,6 +129,89 @@ static inline int get_sigset_t(sigset_t *set,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+int copy_siginfo_to_user32(compat_siginfo_t __user *to, const siginfo_t *from)
+{
+	int err;
+
+	if (!access_ok(VERIFY_WRITE, to, sizeof(*to)))
+		return -EFAULT;
+
+	/* If you change siginfo_t structure, please be sure
+	 * this code is fixed accordingly.
+	 * It should never copy any pad contained in the structure
+	 * to avoid security leaks, but must copy the generic
+	 * 3 ints plus the relevant union member.
+	 * This routine must convert siginfo from 64bit to 32bit as well
+	 * at the same time.
+	 */
+	err = __put_user(from->si_signo, &to->si_signo);
+	err |= __put_user(from->si_errno, &to->si_errno);
+	err |= __put_user(from->si_code, &to->si_code);
+	if (from->si_code < 0)
+		err |= __copy_to_user(&to->_sifields._pad, &from->_sifields._pad,
+				      SI_PAD_SIZE);
+	else switch (siginfo_layout(from->si_signo, from->si_code)) {
+	case SIL_KILL:
+		err |= __put_user(from->si_pid, &to->si_pid);
+		err |= __put_user(from->si_uid, &to->si_uid);
+		break;
+	case SIL_TIMER:
+		 err |= __put_user(from->si_tid, &to->si_tid);
+		 err |= __put_user(from->si_overrun, &to->si_overrun);
+		 err |= __put_user(from->si_int, &to->si_int);
+		break;
+	case SIL_POLL:
+		err |= __put_user(from->si_band, &to->si_band);
+		err |= __put_user(from->si_fd, &to->si_fd);
+		break;
+	case SIL_FAULT:
+		err |= __put_user((compat_uptr_t)(unsigned long)from->si_addr,
+				  &to->si_addr);
+#ifdef BUS_MCEERR_AO
+		/*
+		 * Other callers might not initialize the si_lsb field,
+		 * so check explicitly for the right codes here.
+		 */
+		if (from->si_signo == SIGBUS &&
+		    (from->si_code == BUS_MCEERR_AR || from->si_code == BUS_MCEERR_AO))
+			err |= __put_user(from->si_addr_lsb, &to->si_addr_lsb);
+#endif
+		break;
+	case SIL_CHLD:
+		err |= __put_user(from->si_pid, &to->si_pid);
+		err |= __put_user(from->si_uid, &to->si_uid);
+		err |= __put_user(from->si_status, &to->si_status);
+		err |= __put_user(from->si_utime, &to->si_utime);
+		err |= __put_user(from->si_stime, &to->si_stime);
+		break;
+	case SIL_RT:
+		err |= __put_user(from->si_pid, &to->si_pid);
+		err |= __put_user(from->si_uid, &to->si_uid);
+		err |= __put_user(from->si_int, &to->si_int);
+		break;
+	case SIL_SYS:
+		err |= __put_user((compat_uptr_t)(unsigned long)
+				from->si_call_addr, &to->si_call_addr);
+		err |= __put_user(from->si_syscall, &to->si_syscall);
+		err |= __put_user(from->si_arch, &to->si_arch);
+		break;
+	}
+	return err;
+}
+
+int copy_siginfo_from_user32(siginfo_t *to, compat_siginfo_t __user *from)
+{
+	if (copy_from_user(to, from, __ARCH_SI_PREAMBLE_SIZE) ||
+	    copy_from_user(to->_sifields._pad,
+			   from->_sifields._pad, SI_PAD_SIZE))
+		return -EFAULT;
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * VFP save/restore code.
  *
@@ -149,8 +235,12 @@ union __fpsimd_vreg {
 
 static int compat_preserve_vfp_context(struct compat_vfp_sigframe __user *frame)
 {
+<<<<<<< HEAD
 	struct user_fpsimd_state const *fpsimd =
 		&current->thread.uw.fpsimd_state;
+=======
+	struct fpsimd_state *fpsimd = &current->thread.fpsimd_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	compat_ulong_t magic = VFP_MAGIC;
 	compat_ulong_t size = VFP_STORAGE_SIZE;
 	compat_ulong_t fpscr, fpexc;
@@ -161,7 +251,11 @@ static int compat_preserve_vfp_context(struct compat_vfp_sigframe __user *frame)
 	 * Note that this also saves V16-31, which aren't visible
 	 * in AArch32.
 	 */
+<<<<<<< HEAD
 	fpsimd_signal_preserve_current_state();
+=======
+	fpsimd_preserve_current_state();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Place structure header on the stack */
 	__put_user_error(magic, &frame->magic, err);
@@ -199,7 +293,11 @@ static int compat_preserve_vfp_context(struct compat_vfp_sigframe __user *frame)
 
 static int compat_restore_vfp_context(struct compat_vfp_sigframe __user *frame)
 {
+<<<<<<< HEAD
 	struct user_fpsimd_state fpsimd;
+=======
+	struct fpsimd_state fpsimd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	compat_ulong_t magic = VFP_MAGIC;
 	compat_ulong_t size = VFP_STORAGE_SIZE;
 	compat_ulong_t fpscr;
@@ -285,9 +383,14 @@ static int compat_restore_sigframe(struct pt_regs *regs,
 	return err;
 }
 
+<<<<<<< HEAD
 COMPAT_SYSCALL_DEFINE0(sigreturn)
 {
 	struct pt_regs *regs = current_pt_regs();
+=======
+asmlinkage int compat_sys_sigreturn(struct pt_regs *regs)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct compat_sigframe __user *frame;
 
 	/* Always make any pending restarted system calls return -EINTR */
@@ -312,6 +415,7 @@ COMPAT_SYSCALL_DEFINE0(sigreturn)
 	return regs->regs[0];
 
 badframe:
+<<<<<<< HEAD
 	arm64_notify_segfault(regs->compat_sp);
 	return 0;
 }
@@ -319,6 +423,18 @@ badframe:
 COMPAT_SYSCALL_DEFINE0(rt_sigreturn)
 {
 	struct pt_regs *regs = current_pt_regs();
+=======
+	if (show_unhandled_signals)
+		pr_info_ratelimited("%s[%d]: bad frame in %s: pc=%08llx sp=%08llx\n",
+				    current->comm, task_pid_nr(current), __func__,
+				    regs->pc, regs->compat_sp);
+	force_sig(SIGSEGV, current);
+	return 0;
+}
+
+asmlinkage int compat_sys_rt_sigreturn(struct pt_regs *regs)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct compat_rt_sigframe __user *frame;
 
 	/* Always make any pending restarted system calls return -EINTR */
@@ -346,7 +462,15 @@ COMPAT_SYSCALL_DEFINE0(rt_sigreturn)
 	return regs->regs[0];
 
 badframe:
+<<<<<<< HEAD
 	arm64_notify_segfault(regs->compat_sp);
+=======
+	if (show_unhandled_signals)
+		pr_info_ratelimited("%s[%d]: bad frame in %s: pc=%08llx sp=%08llx\n",
+				    current->comm, task_pid_nr(current), __func__,
+				    regs->pc, regs->compat_sp);
+	force_sig(SIGSEGV, current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -377,13 +501,18 @@ static void compat_setup_return(struct pt_regs *regs, struct k_sigaction *ka,
 {
 	compat_ulong_t handler = ptr_to_compat(ka->sa.sa_handler);
 	compat_ulong_t retcode;
+<<<<<<< HEAD
 	compat_ulong_t spsr = regs->pstate & ~(PSR_f | PSR_AA32_E_BIT);
+=======
+	compat_ulong_t spsr = regs->pstate & ~(PSR_f | COMPAT_PSR_E_BIT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int thumb;
 
 	/* Check if the handler is written for ARM or Thumb */
 	thumb = handler & 1;
 
 	if (thumb)
+<<<<<<< HEAD
 		spsr |= PSR_AA32_T_BIT;
 	else
 		spsr &= ~PSR_AA32_T_BIT;
@@ -393,6 +522,17 @@ static void compat_setup_return(struct pt_regs *regs, struct k_sigaction *ka,
 
 	/* Restore the original endianness */
 	spsr |= PSR_AA32_ENDSTATE;
+=======
+		spsr |= COMPAT_PSR_T_BIT;
+	else
+		spsr &= ~COMPAT_PSR_T_BIT;
+
+	/* The IT state must be cleared for both ARM and Thumb-2 */
+	spsr &= ~COMPAT_PSR_IT_MASK;
+
+	/* Restore the original endianness */
+	spsr |= COMPAT_PSR_ENDSTATE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ka->sa.sa_flags & SA_RESTORER) {
 		retcode = ptr_to_compat(ka->sa.sa_restorer);

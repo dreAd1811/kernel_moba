@@ -24,9 +24,12 @@
 
 #include "../i915_selftest.h"
 
+<<<<<<< HEAD
 #include "lib_sw_fence.h"
 #include "mock_context.h"
 #include "mock_drm.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "mock_gem_device.h"
 
 static int populate_ggtt(struct drm_i915_private *i915)
@@ -35,7 +38,11 @@ static int populate_ggtt(struct drm_i915_private *i915)
 	u64 size;
 
 	for (size = 0;
+<<<<<<< HEAD
 	     size + I915_GTT_PAGE_SIZE <= i915->ggtt.vm.total;
+=======
+	     size + I915_GTT_PAGE_SIZE <= i915->ggtt.base.total;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	     size += I915_GTT_PAGE_SIZE) {
 		struct i915_vma *vma;
 
@@ -50,14 +57,22 @@ static int populate_ggtt(struct drm_i915_private *i915)
 
 	if (!list_empty(&i915->mm.unbound_list)) {
 		size = 0;
+<<<<<<< HEAD
 		list_for_each_entry(obj, &i915->mm.unbound_list, mm.link)
+=======
+		list_for_each_entry(obj, &i915->mm.unbound_list, global_link)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			size++;
 
 		pr_err("Found %lld objects unbound!\n", size);
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (list_empty(&i915->ggtt.vm.inactive_list)) {
+=======
+	if (list_empty(&i915->ggtt.base.inactive_list)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("No objects on the GGTT inactive list!\n");
 		return -EINVAL;
 	}
@@ -69,7 +84,11 @@ static void unpin_ggtt(struct drm_i915_private *i915)
 {
 	struct i915_vma *vma;
 
+<<<<<<< HEAD
 	list_for_each_entry(vma, &i915->ggtt.vm.inactive_list, vm_link)
+=======
+	list_for_each_entry(vma, &i915->ggtt.base.inactive_list, vm_link)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i915_vma_unpin(vma);
 }
 
@@ -77,10 +96,17 @@ static void cleanup_objects(struct drm_i915_private *i915)
 {
 	struct drm_i915_gem_object *obj, *on;
 
+<<<<<<< HEAD
 	list_for_each_entry_safe(obj, on, &i915->mm.unbound_list, mm.link)
 		i915_gem_object_put(obj);
 
 	list_for_each_entry_safe(obj, on, &i915->mm.bound_list, mm.link)
+=======
+	list_for_each_entry_safe(obj, on, &i915->mm.unbound_list, global_link)
+		i915_gem_object_put(obj);
+
+	list_for_each_entry_safe(obj, on, &i915->mm.bound_list, global_link)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i915_gem_object_put(obj);
 
 	mutex_unlock(&i915->drm.struct_mutex);
@@ -103,7 +129,11 @@ static int igt_evict_something(void *arg)
 		goto cleanup;
 
 	/* Everything is pinned, nothing should happen */
+<<<<<<< HEAD
 	err = i915_gem_evict_something(&ggtt->vm,
+=======
+	err = i915_gem_evict_something(&ggtt->base,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       I915_GTT_PAGE_SIZE, 0, 0,
 				       0, U64_MAX,
 				       0);
@@ -116,7 +146,11 @@ static int igt_evict_something(void *arg)
 	unpin_ggtt(i915);
 
 	/* Everything is unpinned, we should be able to evict something */
+<<<<<<< HEAD
 	err = i915_gem_evict_something(&ggtt->vm,
+=======
+	err = i915_gem_evict_something(&ggtt->base,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       I915_GTT_PAGE_SIZE, 0, 0,
 				       0, U64_MAX,
 				       0);
@@ -152,6 +186,11 @@ static int igt_overcommit(void *arg)
 		goto cleanup;
 	}
 
+<<<<<<< HEAD
+=======
+	list_move(&obj->global_link, &i915->mm.unbound_list);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vma = i915_gem_object_ggtt_pin(obj, NULL, 0, 0, 0);
 	if (!IS_ERR(vma) || PTR_ERR(vma) != -ENOSPC) {
 		pr_err("Failed to evict+insert, i915_gem_object_ggtt_pin returned err=%d\n", (int)PTR_ERR(vma));
@@ -181,7 +220,11 @@ static int igt_evict_for_vma(void *arg)
 		goto cleanup;
 
 	/* Everything is pinned, nothing should happen */
+<<<<<<< HEAD
 	err = i915_gem_evict_for_node(&ggtt->vm, &target, 0);
+=======
+	err = i915_gem_evict_for_node(&ggtt->base, &target, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err != -ENOSPC) {
 		pr_err("i915_gem_evict_for_node on a full GGTT returned err=%d\n",
 		       err);
@@ -191,7 +234,11 @@ static int igt_evict_for_vma(void *arg)
 	unpin_ggtt(i915);
 
 	/* Everything is unpinned, we should be able to evict the node */
+<<<<<<< HEAD
 	err = i915_gem_evict_for_node(&ggtt->vm, &target, 0);
+=======
+	err = i915_gem_evict_for_node(&ggtt->base, &target, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("i915_gem_evict_for_node returned err=%d\n",
 		       err);
@@ -229,7 +276,11 @@ static int igt_evict_for_cache_color(void *arg)
 	 * i915_gtt_color_adjust throughout our driver, so using a mock color
 	 * adjust will work just fine for our purposes.
 	 */
+<<<<<<< HEAD
 	ggtt->vm.mm.color_adjust = mock_color_adjust;
+=======
+	ggtt->base.mm.color_adjust = mock_color_adjust;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	obj = i915_gem_object_create_internal(i915, I915_GTT_PAGE_SIZE);
 	if (IS_ERR(obj)) {
@@ -265,7 +316,11 @@ static int igt_evict_for_cache_color(void *arg)
 	i915_vma_unpin(vma);
 
 	/* Remove just the second vma */
+<<<<<<< HEAD
 	err = i915_gem_evict_for_node(&ggtt->vm, &target, 0);
+=======
+	err = i915_gem_evict_for_node(&ggtt->base, &target, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("[0]i915_gem_evict_for_node returned err=%d\n", err);
 		goto cleanup;
@@ -276,7 +331,11 @@ static int igt_evict_for_cache_color(void *arg)
 	 */
 	target.color = I915_CACHE_L3_LLC;
 
+<<<<<<< HEAD
 	err = i915_gem_evict_for_node(&ggtt->vm, &target, 0);
+=======
+	err = i915_gem_evict_for_node(&ggtt->base, &target, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!err) {
 		pr_err("[1]i915_gem_evict_for_node returned err=%d\n", err);
 		err = -EINVAL;
@@ -288,7 +347,11 @@ static int igt_evict_for_cache_color(void *arg)
 cleanup:
 	unpin_ggtt(i915);
 	cleanup_objects(i915);
+<<<<<<< HEAD
 	ggtt->vm.mm.color_adjust = NULL;
+=======
+	ggtt->base.mm.color_adjust = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -305,7 +368,11 @@ static int igt_evict_vm(void *arg)
 		goto cleanup;
 
 	/* Everything is pinned, nothing should happen */
+<<<<<<< HEAD
 	err = i915_gem_evict_vm(&ggtt->vm);
+=======
+	err = i915_gem_evict_vm(&ggtt->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("i915_gem_evict_vm on a full GGTT returned err=%d]\n",
 		       err);
@@ -314,7 +381,11 @@ static int igt_evict_vm(void *arg)
 
 	unpin_ggtt(i915);
 
+<<<<<<< HEAD
 	err = i915_gem_evict_vm(&ggtt->vm);
+=======
+	err = i915_gem_evict_vm(&ggtt->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		pr_err("i915_gem_evict_vm on a full GGTT returned err=%d]\n",
 		       err);
@@ -326,6 +397,7 @@ cleanup:
 	return err;
 }
 
+<<<<<<< HEAD
 static int igt_evict_contexts(void *arg)
 {
 	const u64 PRETEND_GGTT_SIZE = 16ull << 20;
@@ -470,6 +542,8 @@ out_locked:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int i915_gem_evict_mock_selftests(void)
 {
 	static const struct i915_subtest tests[] = {
@@ -490,6 +564,7 @@ int i915_gem_evict_mock_selftests(void)
 	err = i915_subtests(tests, i915);
 	mutex_unlock(&i915->drm.struct_mutex);
 
+<<<<<<< HEAD
 	drm_dev_put(&i915->drm);
 	return err;
 }
@@ -505,3 +580,8 @@ int i915_gem_evict_live_selftests(struct drm_i915_private *i915)
 
 	return i915_subtests(tests, i915);
 }
+=======
+	drm_dev_unref(&i915->drm);
+	return err;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

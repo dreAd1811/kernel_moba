@@ -84,7 +84,11 @@ static int synaptics_mode_cmd(struct psmouse *psmouse, u8 mode)
 	u8 param[1];
 	int error;
 
+<<<<<<< HEAD
 	error = ps2_sliced_command(&psmouse->ps2dev, mode);
+=======
+	error = psmouse_sliced_command(psmouse, mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error)
 		return error;
 
@@ -149,7 +153,10 @@ static const char * const topbuttonpad_pnp_ids[] = {
 	"LEN0042", /* Yoga */
 	"LEN0045",
 	"LEN0047",
+<<<<<<< HEAD
 	"LEN0049",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"LEN2000", /* S540 */
 	"LEN2001", /* Edge E431 */
 	"LEN2002", /* Edge E531 */
@@ -169,23 +176,47 @@ static const char * const smbus_pnp_ids[] = {
 	/* all of the topbuttonpad_pnp_ids are valid, we just add some extras */
 	"LEN0048", /* X1 Carbon 3 */
 	"LEN0046", /* X250 */
+<<<<<<< HEAD
 	"LEN004a", /* W541 */
 	"LEN005b", /* P50 */
 	"LEN005e", /* T560 */
 	"LEN0071", /* T480 */
 	"LEN0072", /* X1 Carbon Gen 5 (2017) - Elan/ALPS trackpoint */
 	"LEN0073", /* X1 Carbon G5 (Elantech) */
+=======
+	"LEN0049", /* Yoga 11e */
+	"LEN004a", /* W541 */
+	"LEN005b", /* P50 */
+	"LEN005e", /* T560 */
+	"LEN006c", /* T470s */
+	"LEN007a", /* T470s */
+	"LEN0071", /* T480 */
+	"LEN0072", /* X1 Carbon Gen 5 (2017) - Elan/ALPS trackpoint */
+	"LEN0073", /* X1 Carbon G5 (Elantech) */
+	"LEN0091", /* X1 Carbon 6 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"LEN0092", /* X1 Carbon 6 */
 	"LEN0093", /* T480 */
 	"LEN0096", /* X280 */
 	"LEN0097", /* X280 -> ALPS trackpoint */
+<<<<<<< HEAD
 	"LEN009b", /* T580 */
 	"LEN200f", /* T450s */
+=======
+	"LEN0099", /* X1 Extreme 1st */
+	"LEN009b", /* T580 */
+	"LEN200f", /* T450s */
+	"LEN2044", /* L470  */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"LEN2054", /* E480 */
 	"LEN2055", /* E580 */
 	"SYN3052", /* HP EliteBook 840 G4 */
 	"SYN3221", /* HP 15-ay000 */
 	"SYN323d", /* HP Spectre X360 13-w013dx */
+<<<<<<< HEAD
+=======
+	"SYN3257", /* HP Envy 13-ad105ng */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL
 };
 
@@ -202,7 +233,11 @@ static int synaptics_send_cmd(struct psmouse *psmouse, u8 cmd, u8 *param)
 {
 	int error;
 
+<<<<<<< HEAD
 	error = ps2_sliced_command(&psmouse->ps2dev, cmd);
+=======
+	error = psmouse_sliced_command(psmouse, cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error)
 		return error;
 
@@ -559,7 +594,11 @@ static int synaptics_set_advanced_gesture_mode(struct psmouse *psmouse)
 	static u8 param = 0xc8;
 	int error;
 
+<<<<<<< HEAD
 	error = ps2_sliced_command(&psmouse->ps2dev, SYN_QUE_MODEL);
+=======
+	error = psmouse_sliced_command(psmouse, SYN_QUE_MODEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error)
 		return error;
 
@@ -626,7 +665,11 @@ static int synaptics_pt_write(struct serio *serio, u8 c)
 	u8 rate_param = SYN_PS_CLIENT_CMD; /* indicates that we want pass-through port */
 	int error;
 
+<<<<<<< HEAD
 	error = ps2_sliced_command(&parent->ps2dev, c);
+=======
+	error = psmouse_sliced_command(parent, c);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error)
 		return error;
 
@@ -1240,12 +1283,18 @@ static void set_abs_position_params(struct input_dev *dev,
 	input_abs_set_res(dev, y_code, info->y_res);
 }
 
+<<<<<<< HEAD
 static int set_input_params(struct psmouse *psmouse,
 			    struct synaptics_data *priv)
+=======
+static void set_input_params(struct psmouse *psmouse,
+			     struct synaptics_data *priv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct input_dev *dev = psmouse->dev;
 	struct synaptics_device_info *info = &priv->info;
 	int i;
+<<<<<<< HEAD
 	int error;
 
 	/* Reset default psmouse capabilities */
@@ -1273,6 +1322,28 @@ static int set_input_params(struct psmouse *psmouse,
 	}
 
 	/* Absolute mode */
+=======
+
+	/* Things that apply to both modes */
+	__set_bit(INPUT_PROP_POINTER, dev->propbit);
+	__set_bit(EV_KEY, dev->evbit);
+	__set_bit(BTN_LEFT, dev->keybit);
+	__set_bit(BTN_RIGHT, dev->keybit);
+
+	if (SYN_CAP_MIDDLE_BUTTON(info->capabilities))
+		__set_bit(BTN_MIDDLE, dev->keybit);
+
+	if (!priv->absolute_mode) {
+		/* Relative mode */
+		__set_bit(EV_REL, dev->evbit);
+		__set_bit(REL_X, dev->relbit);
+		__set_bit(REL_Y, dev->relbit);
+		return;
+	}
+
+	/* Absolute mode */
+	__set_bit(EV_ABS, dev->evbit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_abs_position_params(dev, &priv->info, ABS_X, ABS_Y);
 	input_set_abs_params(dev, ABS_PRESSURE, 0, 255, 0, 0);
 
@@ -1284,6 +1355,7 @@ static int set_input_params(struct psmouse *psmouse,
 					ABS_MT_POSITION_X, ABS_MT_POSITION_Y);
 		/* Image sensors can report per-contact pressure */
 		input_set_abs_params(dev, ABS_MT_PRESSURE, 0, 255, 0, 0);
+<<<<<<< HEAD
 
 		error = input_mt_init_slots(dev, 2,
 					    INPUT_MT_POINTER | INPUT_MT_TRACK);
@@ -1293,6 +1365,13 @@ static int set_input_params(struct psmouse *psmouse,
 		/* Image sensors can signal 4 and 5 finger clicks */
 		input_set_capability(dev, EV_KEY, BTN_TOOL_QUADTAP);
 		input_set_capability(dev, EV_KEY, BTN_TOOL_QUINTTAP);
+=======
+		input_mt_init_slots(dev, 2, INPUT_MT_POINTER | INPUT_MT_TRACK);
+
+		/* Image sensors can signal 4 and 5 finger clicks */
+		__set_bit(BTN_TOOL_QUADTAP, dev->keybit);
+		__set_bit(BTN_TOOL_QUINTTAP, dev->keybit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (SYN_CAP_ADV_GESTURE(info->ext_cap_0c)) {
 		set_abs_position_params(dev, info,
 					ABS_MT_POSITION_X, ABS_MT_POSITION_Y);
@@ -1300,6 +1379,7 @@ static int set_input_params(struct psmouse *psmouse,
 		 * Profile sensor in CR-48 tracks contacts reasonably well,
 		 * other non-image sensors with AGM use semi-mt.
 		 */
+<<<<<<< HEAD
 		error = input_mt_init_slots(dev, 2,
 					    INPUT_MT_POINTER |
 					     (cr48_profile_sensor ?
@@ -1307,6 +1387,12 @@ static int set_input_params(struct psmouse *psmouse,
 					      INPUT_MT_SEMI_MT));
 		if (error)
 			return error;
+=======
+		input_mt_init_slots(dev, 2,
+				    INPUT_MT_POINTER |
+				    (cr48_profile_sensor ?
+					INPUT_MT_TRACK : INPUT_MT_SEMI_MT));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * For semi-mt devices we send ABS_X/Y ourselves instead of
@@ -1322,32 +1408,61 @@ static int set_input_params(struct psmouse *psmouse,
 	if (SYN_CAP_PALMDETECT(info->capabilities))
 		input_set_abs_params(dev, ABS_TOOL_WIDTH, 0, 15, 0, 0);
 
+<<<<<<< HEAD
 	input_set_capability(dev, EV_KEY, BTN_TOUCH);
 	input_set_capability(dev, EV_KEY, BTN_TOOL_FINGER);
 
 	if (synaptics_has_multifinger(priv)) {
 		input_set_capability(dev, EV_KEY, BTN_TOOL_DOUBLETAP);
 		input_set_capability(dev, EV_KEY, BTN_TOOL_TRIPLETAP);
+=======
+	__set_bit(BTN_TOUCH, dev->keybit);
+	__set_bit(BTN_TOOL_FINGER, dev->keybit);
+
+	if (synaptics_has_multifinger(priv)) {
+		__set_bit(BTN_TOOL_DOUBLETAP, dev->keybit);
+		__set_bit(BTN_TOOL_TRIPLETAP, dev->keybit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (SYN_CAP_FOUR_BUTTON(info->capabilities) ||
 	    SYN_CAP_MIDDLE_BUTTON(info->capabilities)) {
+<<<<<<< HEAD
 		input_set_capability(dev, EV_KEY, BTN_FORWARD);
 		input_set_capability(dev, EV_KEY, BTN_BACK);
+=======
+		__set_bit(BTN_FORWARD, dev->keybit);
+		__set_bit(BTN_BACK, dev->keybit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!SYN_CAP_EXT_BUTTONS_STICK(info->ext_cap_10))
 		for (i = 0; i < SYN_CAP_MULTI_BUTTON_NO(info->ext_cap); i++)
+<<<<<<< HEAD
 			input_set_capability(dev, EV_KEY, BTN_0 + i);
+=======
+			__set_bit(BTN_0 + i, dev->keybit);
+
+	__clear_bit(EV_REL, dev->evbit);
+	__clear_bit(REL_X, dev->relbit);
+	__clear_bit(REL_Y, dev->relbit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (SYN_CAP_CLICKPAD(info->ext_cap_0c)) {
 		__set_bit(INPUT_PROP_BUTTONPAD, dev->propbit);
 		if (psmouse_matches_pnp_id(psmouse, topbuttonpad_pnp_ids) &&
 		    !SYN_CAP_EXT_BUTTONS_STICK(info->ext_cap_10))
 			__set_bit(INPUT_PROP_TOPBUTTONPAD, dev->propbit);
+<<<<<<< HEAD
 	}
 
 	return 0;
+=======
+		/* Clickpads report only left button */
+		__clear_bit(BTN_RIGHT, dev->keybit);
+		__clear_bit(BTN_MIDDLE, dev->keybit);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t synaptics_show_disable_gesture(struct psmouse *psmouse,
@@ -1585,12 +1700,16 @@ static int synaptics_init_ps2(struct psmouse *psmouse,
 		     info->capabilities, info->ext_cap, info->ext_cap_0c,
 		     info->ext_cap_10, info->board_id, info->firmware_id);
 
+<<<<<<< HEAD
 	err = set_input_params(psmouse, priv);
 	if (err) {
 		psmouse_err(psmouse,
 			    "failed to set up capabilities: %d\n", err);
 		goto init_fail;
 	}
+=======
+	set_input_params(psmouse, priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Encode touchpad model so that it can be used to set
@@ -1761,7 +1880,11 @@ static int synaptics_create_intertouch(struct psmouse *psmouse,
 	};
 
 	return psmouse_smbus_init(psmouse, &intertouch_board,
+<<<<<<< HEAD
 				  &pdata, sizeof(pdata), true,
+=======
+				  &pdata, sizeof(pdata),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  leave_breadcrumbs);
 }
 

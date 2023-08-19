@@ -330,7 +330,11 @@ static int budget_start_feed(struct dvb_demux_feed *feed)
 		return -EINVAL;
 
 	spin_lock(&budget->feedlock);
+<<<<<<< HEAD
 	feed->pusi_seen = false; /* have a clean section start */
+=======
+	feed->pusi_seen = 0; /* have a clean section start */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (budget->feeding++ == 0)
 		status = start_ts_capture(budget);
 	spin_unlock(&budget->feedlock);

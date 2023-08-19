@@ -68,11 +68,18 @@ void tegra_bo_free_object(struct drm_gem_object *gem);
 int tegra_bo_dumb_create(struct drm_file *file, struct drm_device *drm,
 			 struct drm_mode_create_dumb *args);
 
+<<<<<<< HEAD
 extern const struct vm_operations_struct tegra_bo_vm_ops;
 
 int __tegra_gem_mmap(struct drm_gem_object *gem, struct vm_area_struct *vma);
 int tegra_drm_mmap(struct file *file, struct vm_area_struct *vma);
 
+=======
+int tegra_drm_mmap(struct file *file, struct vm_area_struct *vma);
+
+extern const struct vm_operations_struct tegra_bo_vm_ops;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dma_buf *tegra_gem_prime_export(struct drm_device *drm,
 				       struct drm_gem_object *gem,
 				       int flags);

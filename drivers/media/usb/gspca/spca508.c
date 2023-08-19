@@ -1247,8 +1247,13 @@ static int reg_write(struct gspca_dev *gspca_dev, u16 index, u16 value)
 			0,		/* request */
 			USB_TYPE_VENDOR | USB_RECIP_DEVICE,
 			value, index, NULL, 0, 500);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBO, "reg write i:0x%04x = 0x%02x\n",
 		  index, value);
+=======
+	PDEBUG(D_USBO, "reg write i:0x%04x = 0x%02x",
+		index, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		pr_err("reg write: error %d\n", ret);
 	return ret;
@@ -1269,8 +1274,13 @@ static int reg_read(struct gspca_dev *gspca_dev,
 			index,
 			gspca_dev->usb_buf, 1,
 			500);			/* timeout */
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_USBI, "reg read i:%04x --> %02x\n",
 		  index, gspca_dev->usb_buf[0]);
+=======
+	PDEBUG(D_USBI, "reg read i:%04x --> %02x",
+		index, gspca_dev->usb_buf[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("reg_read err %d\n", ret);
 		return ret;
@@ -1309,8 +1319,12 @@ static int ssi_w(struct gspca_dev *gspca_dev,
 		if (gspca_dev->usb_buf[0] == 0)
 			break;
 		if (--retry <= 0) {
+<<<<<<< HEAD
 			gspca_err(gspca_dev, "ssi_w busy %02x\n",
 				  gspca_dev->usb_buf[0]);
+=======
+			PERR("ssi_w busy %02x", gspca_dev->usb_buf[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -1;
 			break;
 		}
@@ -1366,6 +1380,7 @@ static int sd_config(struct gspca_dev *gspca_dev,
 	 * is a 508. */
 	data1 = reg_read(gspca_dev, 0x8104);
 	data2 = reg_read(gspca_dev, 0x8105);
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_PROBE, "Webcam Vendor ID: 0x%02x%02x\n",
 		  data2, data1);
 
@@ -1377,6 +1392,16 @@ static int sd_config(struct gspca_dev *gspca_dev,
 	data1 = reg_read(gspca_dev, 0x8621);
 	gspca_dbg(gspca_dev, D_PROBE, "Window 1 average luminance: %d\n",
 		  data1);
+=======
+	PDEBUG(D_PROBE, "Webcam Vendor ID: 0x%02x%02x", data2, data1);
+
+	data1 = reg_read(gspca_dev, 0x8106);
+	data2 = reg_read(gspca_dev, 0x8107);
+	PDEBUG(D_PROBE, "Webcam Product ID: 0x%02x%02x", data2, data1);
+
+	data1 = reg_read(gspca_dev, 0x8621);
+	PDEBUG(D_PROBE, "Window 1 average luminance: %d", data1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cam = &gspca_dev->cam;
 	cam->cam_mode = sif_mode;

@@ -82,6 +82,7 @@ struct kvm_split_mode {
 	u8		do_nap;
 	u8		napped[MAX_SMT_THREADS];
 	struct kvmppc_vcore *vc[MAX_SUBCORES];
+<<<<<<< HEAD
 	/* Bits for changing lpcr on P9 */
 	unsigned long	lpcr_req;
 	unsigned long	lpidr_req;
@@ -92,6 +93,8 @@ struct kvm_split_mode {
 		u32	allphases;
 		u8	phase[4];
 	} lpcr_sync;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -114,12 +117,23 @@ struct kvmppc_host_state {
 	u8 napping;
 
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+<<<<<<< HEAD
 	u8 hwthread_req;
 	u8 hwthread_state;
 	u8 host_ipi;
 	u8 ptid;		/* thread number within subcore when split */
 	u8 tid;			/* thread number within whole core */
 	u8 fake_suspend;
+=======
+	/*
+	 * hwthread_req/hwthread_state pair is used to pull sibling threads
+	 * out of guest on pre-ISAv3.0B CPUs where threads share MMU.
+	 */
+	u8 hwthread_req;
+	u8 hwthread_state;
+	u8 host_ipi;
+	u8 ptid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kvm_vcpu *kvm_vcpu;
 	struct kvmppc_vcore *kvm_vcore;
 	void __iomem *xics_phys;

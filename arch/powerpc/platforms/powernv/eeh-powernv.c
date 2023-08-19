@@ -41,6 +41,7 @@
 #include "powernv.h"
 #include "pci.h"
 
+<<<<<<< HEAD
 static int eeh_event_irq = -EINVAL;
 
 void pnv_pcibios_bus_add_device(struct pci_dev *pdev)
@@ -59,6 +60,11 @@ void pnv_pcibios_bus_add_device(struct pci_dev *pdev)
 	eeh_sysfs_add_device(pdev);
 }
 
+=======
+static bool pnv_eeh_nb_init = false;
+static int eeh_event_irq = -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pnv_eeh_init(void)
 {
 	struct pci_controller *hose;
@@ -102,7 +108,10 @@ static int pnv_eeh_init(void)
 	}
 
 	eeh_set_pe_aux_size(max_diag_size);
+<<<<<<< HEAD
 	ppc_md.pcibios_bus_add_device = pnv_pcibios_bus_add_device;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -213,12 +222,17 @@ PNV_EEH_DBGFS_ENTRY(inbB, 0xE10);
  * been built. If the I/O cache staff has been built, EEH is
  * ready to supply service.
  */
+<<<<<<< HEAD
 int pnv_eeh_post_init(void)
+=======
+static int pnv_eeh_post_init(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_controller *hose;
 	struct pnv_phb *phb;
 	int ret = 0;
 
+<<<<<<< HEAD
 	/* Probe devices & build address cache */
 	eeh_probe_devices();
 	eeh_addr_cache_build();
@@ -246,6 +260,27 @@ int pnv_eeh_post_init(void)
 		pr_err("%s: Can't request OPAL event interrupt (%d)\n",
 		       __func__, eeh_event_irq);
 		return ret;
+=======
+	/* Register OPAL event notifier */
+	if (!pnv_eeh_nb_init) {
+		eeh_event_irq = opal_event_request(ilog2(OPAL_EVENT_PCI_ERROR));
+		if (eeh_event_irq < 0) {
+			pr_err("%s: Can't register OPAL event interrupt (%d)\n",
+			       __func__, eeh_event_irq);
+			return eeh_event_irq;
+		}
+
+		ret = request_irq(eeh_event_irq, pnv_eeh_event,
+				IRQ_TYPE_LEVEL_HIGH, "opal-eeh", NULL);
+		if (ret < 0) {
+			irq_dispose_mapping(eeh_event_irq);
+			pr_err("%s: Can't request OPAL event interrupt (%d)\n",
+			       __func__, eeh_event_irq);
+			return ret;
+		}
+
+		pnv_eeh_nb_init = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (!eeh_enabled())
@@ -391,12 +426,15 @@ static void *pnv_eeh_probe(struct pci_dn *pdn, void *data)
 	if ((pdn->class_code >> 8) == PCI_CLASS_BRIDGE_ISA)
 		return NULL;
 
+<<<<<<< HEAD
 	/* Skip if we haven't probed yet */
 	if (phb->ioda.pe_rmap[config_addr] == IODA_INVALID_PE) {
 		eeh_add_flag(EEH_POSTPONED_PROBE);
 		return NULL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Initialize eeh device */
 	edev->class_code = pdn->class_code;
 	edev->mode	&= 0xFFFFFF00;
@@ -578,8 +616,13 @@ static void pnv_eeh_get_phb_diag(struct eeh_pe *pe)
 static int pnv_eeh_get_phb_state(struct eeh_pe *pe)
 {
 	struct pnv_phb *phb = pe->phb->private_data;
+<<<<<<< HEAD
 	u8 fstate;
 	__be16 pcierr;
+=======
+	u8 fstate = 0;
+	__be16 pcierr = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s64 rc;
 	int result = 0;
 
@@ -617,8 +660,13 @@ static int pnv_eeh_get_phb_state(struct eeh_pe *pe)
 static int pnv_eeh_get_pe_state(struct eeh_pe *pe)
 {
 	struct pnv_phb *phb = pe->phb->private_data;
+<<<<<<< HEAD
 	u8 fstate;
 	__be16 pcierr;
+=======
+	u8 fstate = 0;
+	__be16 pcierr = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s64 rc;
 	int result;
 
@@ -1435,8 +1483,16 @@ static int pnv_eeh_get_pe(struct pci_controller *hose,
 	dev_pe = dev_pe->parent;
 	while (dev_pe && !(dev_pe->type & EEH_PE_PHB)) {
 		int ret;
+<<<<<<< HEAD
 		ret = eeh_ops->get_state(dev_pe, NULL);
 		if (ret <= 0 || eeh_state_active(ret)) {
+=======
+		int active_flags = (EEH_STATE_MMIO_ACTIVE |
+				    EEH_STATE_DMA_ACTIVE);
+
+		ret = eeh_ops->get_state(dev_pe, NULL);
+		if (ret <= 0 || (ret & active_flags) == active_flags) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_pe = dev_pe->parent;
 			continue;
 		}
@@ -1470,6 +1526,10 @@ static int pnv_eeh_next_error(struct eeh_pe **pe)
 	struct eeh_pe *phb_pe, *parent_pe;
 	__be64 frozen_pe_no;
 	__be16 err_type, severity;
+<<<<<<< HEAD
+=======
+	int active_flags = (EEH_STATE_MMIO_ACTIVE | EEH_STATE_DMA_ACTIVE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	long rc;
 	int state, ret = EEH_NEXT_ERR_NONE;
 
@@ -1632,7 +1692,12 @@ static int pnv_eeh_next_error(struct eeh_pe **pe)
 
 				/* Frozen parent PE ? */
 				state = eeh_ops->get_state(parent_pe, NULL);
+<<<<<<< HEAD
 				if (state > 0 && !eeh_state_active(state))
+=======
+				if (state > 0 &&
+				    (state & active_flags) != active_flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					*pe = parent_pe;
 
 				/* Next parent level */
@@ -1660,11 +1725,77 @@ static int pnv_eeh_next_error(struct eeh_pe **pe)
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static int pnv_eeh_restore_vf_config(struct pci_dn *pdn)
+{
+	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
+	u32 devctl, cmd, cap2, aer_capctl;
+	int old_mps;
+
+	if (edev->pcie_cap) {
+		/* Restore MPS */
+		old_mps = (ffs(pdn->mps) - 8) << 5;
+		eeh_ops->read_config(pdn, edev->pcie_cap + PCI_EXP_DEVCTL,
+				     2, &devctl);
+		devctl &= ~PCI_EXP_DEVCTL_PAYLOAD;
+		devctl |= old_mps;
+		eeh_ops->write_config(pdn, edev->pcie_cap + PCI_EXP_DEVCTL,
+				      2, devctl);
+
+		/* Disable Completion Timeout */
+		eeh_ops->read_config(pdn, edev->pcie_cap + PCI_EXP_DEVCAP2,
+				     4, &cap2);
+		if (cap2 & 0x10) {
+			eeh_ops->read_config(pdn,
+					     edev->pcie_cap + PCI_EXP_DEVCTL2,
+					     4, &cap2);
+			cap2 |= 0x10;
+			eeh_ops->write_config(pdn,
+					      edev->pcie_cap + PCI_EXP_DEVCTL2,
+					      4, cap2);
+		}
+	}
+
+	/* Enable SERR and parity checking */
+	eeh_ops->read_config(pdn, PCI_COMMAND, 2, &cmd);
+	cmd |= (PCI_COMMAND_PARITY | PCI_COMMAND_SERR);
+	eeh_ops->write_config(pdn, PCI_COMMAND, 2, cmd);
+
+	/* Enable report various errors */
+	if (edev->pcie_cap) {
+		eeh_ops->read_config(pdn, edev->pcie_cap + PCI_EXP_DEVCTL,
+				     2, &devctl);
+		devctl &= ~PCI_EXP_DEVCTL_CERE;
+		devctl |= (PCI_EXP_DEVCTL_NFERE |
+			   PCI_EXP_DEVCTL_FERE |
+			   PCI_EXP_DEVCTL_URRE);
+		eeh_ops->write_config(pdn, edev->pcie_cap + PCI_EXP_DEVCTL,
+				      2, devctl);
+	}
+
+	/* Enable ECRC generation and check */
+	if (edev->pcie_cap && edev->aer_cap) {
+		eeh_ops->read_config(pdn, edev->aer_cap + PCI_ERR_CAP,
+				     4, &aer_capctl);
+		aer_capctl |= (PCI_ERR_CAP_ECRC_GENE | PCI_ERR_CAP_ECRC_CHKE);
+		eeh_ops->write_config(pdn, edev->aer_cap + PCI_ERR_CAP,
+				      4, aer_capctl);
+	}
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pnv_eeh_restore_config(struct pci_dn *pdn)
 {
 	struct eeh_dev *edev = pdn_to_eeh_dev(pdn);
 	struct pnv_phb *phb;
+<<<<<<< HEAD
 	s64 ret = 0;
+=======
+	s64 ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int config_addr = (pdn->busno << 8) | (pdn->devfn);
 
 	if (!edev)
@@ -1678,7 +1809,11 @@ static int pnv_eeh_restore_config(struct pci_dn *pdn)
 	 * to be exported by firmware in extendible way.
 	 */
 	if (edev->physfn) {
+<<<<<<< HEAD
 		ret = eeh_restore_vf_config(pdn);
+=======
+		ret = pnv_eeh_restore_vf_config(pdn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		phb = pdn->phb->private_data;
 		ret = opal_pci_reinit(phb->opal_id,
@@ -1691,12 +1826,20 @@ static int pnv_eeh_restore_config(struct pci_dn *pdn)
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	return ret;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct eeh_ops pnv_eeh_ops = {
 	.name                   = "powernv",
 	.init                   = pnv_eeh_init,
+<<<<<<< HEAD
+=======
+	.post_init              = pnv_eeh_post_init,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.probe			= pnv_eeh_probe,
 	.set_option             = pnv_eeh_set_option,
 	.get_pe_addr            = pnv_eeh_get_pe_addr,
@@ -1709,10 +1852,32 @@ static struct eeh_ops pnv_eeh_ops = {
 	.read_config            = pnv_eeh_read_config,
 	.write_config           = pnv_eeh_write_config,
 	.next_error		= pnv_eeh_next_error,
+<<<<<<< HEAD
 	.restore_config		= pnv_eeh_restore_config,
 	.notify_resume		= NULL
 };
 
+=======
+	.restore_config		= pnv_eeh_restore_config
+};
+
+void pcibios_bus_add_device(struct pci_dev *pdev)
+{
+	struct pci_dn *pdn = pci_get_pdn(pdev);
+
+	if (!pdev->is_virtfn)
+		return;
+
+	/*
+	 * The following operations will fail if VF's sysfs files
+	 * aren't created or its resources aren't finalized.
+	 */
+	eeh_add_device_early(pdn);
+	eeh_add_device_late(pdev);
+	eeh_sysfs_add_device(pdev);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PCI_IOV
 static void pnv_pci_fixup_vf_mps(struct pci_dev *pdev)
 {

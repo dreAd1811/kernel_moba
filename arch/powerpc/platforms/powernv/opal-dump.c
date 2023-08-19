@@ -103,9 +103,15 @@ static ssize_t dump_ack_store(struct dump_obj *dump_obj,
  * due to the dynamic size of the dump
  */
 static struct dump_attribute id_attribute =
+<<<<<<< HEAD
 	__ATTR(id, 0444, dump_id_show, NULL);
 static struct dump_attribute type_attribute =
 	__ATTR(type, 0444, dump_type_show, NULL);
+=======
+	__ATTR(id, S_IRUGO, dump_id_show, NULL);
+static struct dump_attribute type_attribute =
+	__ATTR(type, S_IRUGO, dump_type_show, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct dump_attribute ack_attribute =
 	__ATTR(acknowledge, 0660, dump_ack_show, dump_ack_store);
 
@@ -225,16 +231,25 @@ static int64_t dump_read_info(uint32_t *dump_id, uint32_t *dump_size, uint32_t *
 	if (rc == OPAL_PARAMETER)
 		rc = opal_dump_info(&id, &size);
 
+<<<<<<< HEAD
 	if (rc) {
 		pr_warn("%s: Failed to get dump info (%d)\n",
 			__func__, rc);
 		return rc;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*dump_id = be32_to_cpu(id);
 	*dump_size = be32_to_cpu(size);
 	*dump_type = be32_to_cpu(type);
 
+<<<<<<< HEAD
+=======
+	if (rc)
+		pr_warn("%s: Failed to get dump info (%d)\n",
+			__func__, rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -371,12 +386,20 @@ static irqreturn_t process_dump(int irq, void *data)
 {
 	int rc;
 	uint32_t dump_id, dump_size, dump_type;
+<<<<<<< HEAD
+=======
+	struct dump_obj *dump;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char name[22];
 	struct kobject *kobj;
 
 	rc = dump_read_info(&dump_id, &dump_size, &dump_type);
 	if (rc != OPAL_SUCCESS)
+<<<<<<< HEAD
 		return IRQ_HANDLED;
+=======
+		return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sprintf(name, "0x%x-0x%x", dump_type, dump_id);
 
@@ -388,10 +411,19 @@ static irqreturn_t process_dump(int irq, void *data)
 	if (kobj) {
 		/* Drop reference added by kset_find_obj() */
 		kobject_put(kobj);
+<<<<<<< HEAD
 		return IRQ_HANDLED;
 	}
 
 	create_dump_obj(dump_id, dump_size, dump_type);
+=======
+		return 0;
+	}
+
+	dump = create_dump_obj(dump_id, dump_size, dump_type);
+	if (!dump)
+		return -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }

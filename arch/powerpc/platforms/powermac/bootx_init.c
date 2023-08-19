@@ -519,7 +519,11 @@ void __init bootx_init(unsigned long r3, unsigned long r4)
 			;
 	}
 	if (bi->architecture != BOOT_ARCH_PCI) {
+<<<<<<< HEAD
 		bootx_printf(" !!! WARNING - Unsupported machine"
+=======
+		bootx_printf(" !!! WARNING - Usupported machine"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     " architecture !\n");
 		for (;;)
 			;

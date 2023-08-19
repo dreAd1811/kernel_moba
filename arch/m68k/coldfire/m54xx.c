@@ -96,6 +96,13 @@ static void mcf54xx_reset(void)
 
 void __init config_BSP(char *commandp, int size)
 {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MMU
+	cf_bootmem_alloc();
+	mmu_context_init();
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mach_reset = mcf54xx_reset;
 	mach_sched_init = hw_timer_init;
 	m54xx_uarts_init();

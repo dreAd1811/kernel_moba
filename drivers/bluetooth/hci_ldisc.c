@@ -195,7 +195,11 @@ restart:
 	clear_bit(HCI_UART_SENDING, &hu->tx_state);
 }
 
+<<<<<<< HEAD
 void hci_uart_init_work(struct work_struct *work)
+=======
+static void hci_uart_init_work(struct work_struct *work)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hci_uart *hu = container_of(work, struct hci_uart, init_ready);
 	int err;
@@ -229,6 +233,18 @@ int hci_uart_init_ready(struct hci_uart *hu)
 }
 
 /* ------- Interface to HCI layer ------ */
+<<<<<<< HEAD
+=======
+/* Initialize device */
+static int hci_uart_open(struct hci_dev *hdev)
+{
+	BT_DBG("%s %p", hdev->name, hdev);
+
+	/* Nothing to do for UART driver */
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Reset device */
 static int hci_uart_flush(struct hci_dev *hdev)
 {
@@ -255,6 +271,7 @@ static int hci_uart_flush(struct hci_dev *hdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* Initialize device */
 static int hci_uart_open(struct hci_dev *hdev)
 {
@@ -266,6 +283,8 @@ static int hci_uart_open(struct hci_dev *hdev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Close device */
 static int hci_uart_close(struct hci_dev *hdev)
 {
@@ -462,8 +481,11 @@ static int hci_uart_setup(struct hci_dev *hdev)
 		btbcm_check_bdaddr(hdev);
 		break;
 #endif
+<<<<<<< HEAD
 	default:
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 done:
@@ -819,7 +841,11 @@ static ssize_t hci_uart_tty_write(struct tty_struct *tty, struct file *file,
 	return 0;
 }
 
+<<<<<<< HEAD
 static __poll_t hci_uart_tty_poll(struct tty_struct *tty,
+=======
+static unsigned int hci_uart_tty_poll(struct tty_struct *tty,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct file *filp, poll_table *wait)
 {
 	return 0;

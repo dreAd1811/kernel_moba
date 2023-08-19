@@ -25,6 +25,10 @@
 #define _ACP_GFX_IF_H
 
 #include <linux/types.h>
+<<<<<<< HEAD
+=======
+#include "cgs_linux.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "cgs_common.h"
 
 int amd_acp_hw_init(struct cgs_device *cgs_device,

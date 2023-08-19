@@ -61,9 +61,13 @@
 #include <linux/sched.h>
 #include <linux/vmalloc.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARM_DMA_USE_IOMMU
 #include <asm/dma-iommu.h>
 #endif
+=======
+#include <asm/dma-iommu.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <media/v4l2-common.h>
 #include <media/v4l2-fwnode.h>
@@ -286,6 +290,16 @@ static const struct clk_ops isp_xclk_ops = {
 
 static const char *isp_xclk_parent_name = "cam_mclk";
 
+<<<<<<< HEAD
+=======
+static const struct clk_init_data isp_xclk_init_data = {
+	.name = "cam_xclk",
+	.ops = &isp_xclk_ops,
+	.parent_names = &isp_xclk_parent_name,
+	.num_parents = 1,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clk *isp_xclk_src_get(struct of_phandle_args *clkspec, void *data)
 {
 	unsigned int idx = clkspec->args[0];
@@ -300,7 +314,11 @@ static struct clk *isp_xclk_src_get(struct of_phandle_args *clkspec, void *data)
 static int isp_xclk_init(struct isp_device *isp)
 {
 	struct device_node *np = isp->dev->of_node;
+<<<<<<< HEAD
 	struct clk_init_data init = {};
+=======
+	struct clk_init_data init = { 0 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 
 	for (i = 0; i < ARRAY_SIZE(isp->xclks); ++i)
@@ -923,7 +941,11 @@ static void isp_pipeline_suspend(struct isp_pipeline *pipe)
 
 /*
  * isp_pipeline_is_last - Verify if entity has an enabled link to the output
+<<<<<<< HEAD
  *			  video node
+=======
+ * 			  video node
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @me: ISP module's media entity
  *
  * Returns 1 if the entity has an enabled link to the output video node or 0
@@ -979,7 +1001,11 @@ static void isp_resume_module_pipeline(struct media_entity *me)
  * Returns 0 if suspend left in idle state all the submodules properly,
  * or returns 1 if a general Reset is required to suspend the submodules.
  */
+<<<<<<< HEAD
 static int __maybe_unused isp_suspend_modules(struct isp_device *isp)
+=======
+static int isp_suspend_modules(struct isp_device *isp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long timeout;
 
@@ -1013,7 +1039,11 @@ static int __maybe_unused isp_suspend_modules(struct isp_device *isp)
  * isp_resume_modules - Resume ISP submodules.
  * @isp: OMAP3 ISP device
  */
+<<<<<<< HEAD
 static void __maybe_unused isp_resume_modules(struct isp_device *isp)
+=======
+static void isp_resume_modules(struct isp_device *isp)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	omap3isp_stat_resume(&isp->isp_aewb);
 	omap3isp_stat_resume(&isp->isp_af);
@@ -1673,8 +1703,13 @@ static int isp_link_entity(
 			break;
 	}
 	if (i == entity->num_pads) {
+<<<<<<< HEAD
 		dev_err(isp->dev, "%s: no source pad in external entity %s\n",
 			__func__, entity->name);
+=======
+		dev_err(isp->dev, "%s: no source pad in external entity\n",
+			__func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1949,16 +1984,25 @@ error_csi2:
 
 static void isp_detach_iommu(struct isp_device *isp)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_ARM_DMA_USE_IOMMU
 	arm_iommu_detach_device(isp->dev);
 	arm_iommu_release_mapping(isp->mapping);
 	isp->mapping = NULL;
 #endif
+=======
+	arm_iommu_detach_device(isp->dev);
+	arm_iommu_release_mapping(isp->mapping);
+	isp->mapping = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int isp_attach_iommu(struct isp_device *isp)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_ARM_DMA_USE_IOMMU
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dma_iommu_mapping *mapping;
 	int ret;
 
@@ -1987,9 +2031,12 @@ error:
 	arm_iommu_release_mapping(isp->mapping);
 	isp->mapping = NULL;
 	return ret;
+<<<<<<< HEAD
 #else
 	return -ENODEV;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -2012,7 +2059,10 @@ static int isp_remove(struct platform_device *pdev)
 	__omap3isp_put(isp, false);
 
 	media_entity_enum_cleanup(&isp->crashed);
+<<<<<<< HEAD
 	v4l2_async_notifier_cleanup(&isp->notifier);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2023,6 +2073,7 @@ enum isp_of_phy {
 	ISP_OF_PHY_CSIPHY2,
 };
 
+<<<<<<< HEAD
 static int isp_fwnode_parse(struct device *dev,
 			    struct v4l2_fwnode_endpoint *vep,
 			    struct v4l2_async_subdev *asd)
@@ -2053,11 +2104,50 @@ static int isp_fwnode_parse(struct device *dev,
 		buscfg->bus.parallel.data_pol =
 			!!(vep->bus.parallel.flags & V4L2_MBUS_DATA_ACTIVE_LOW);
 		buscfg->bus.parallel.bt656 = vep->bus_type == V4L2_MBUS_BT656;
+=======
+static int isp_fwnode_parse(struct device *dev, struct fwnode_handle *fwnode,
+			    struct isp_async_subdev *isd)
+{
+	struct isp_bus_cfg *buscfg = &isd->bus;
+	struct v4l2_fwnode_endpoint vep;
+	unsigned int i;
+	int ret;
+	bool csi1 = false;
+
+	ret = v4l2_fwnode_endpoint_parse(fwnode, &vep);
+	if (ret)
+		return ret;
+
+	dev_dbg(dev, "parsing endpoint %pOF, interface %u\n",
+		to_of_node(fwnode), vep.base.port);
+
+	switch (vep.base.port) {
+	case ISP_OF_PHY_PARALLEL:
+		buscfg->interface = ISP_INTERFACE_PARALLEL;
+		buscfg->bus.parallel.data_lane_shift =
+			vep.bus.parallel.data_shift;
+		buscfg->bus.parallel.clk_pol =
+			!!(vep.bus.parallel.flags
+			   & V4L2_MBUS_PCLK_SAMPLE_FALLING);
+		buscfg->bus.parallel.hs_pol =
+			!!(vep.bus.parallel.flags & V4L2_MBUS_VSYNC_ACTIVE_LOW);
+		buscfg->bus.parallel.vs_pol =
+			!!(vep.bus.parallel.flags & V4L2_MBUS_HSYNC_ACTIVE_LOW);
+		buscfg->bus.parallel.fld_pol =
+			!!(vep.bus.parallel.flags & V4L2_MBUS_FIELD_EVEN_LOW);
+		buscfg->bus.parallel.data_pol =
+			!!(vep.bus.parallel.flags & V4L2_MBUS_DATA_ACTIVE_LOW);
+		buscfg->bus.parallel.bt656 = vep.bus_type == V4L2_MBUS_BT656;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case ISP_OF_PHY_CSIPHY1:
 	case ISP_OF_PHY_CSIPHY2:
+<<<<<<< HEAD
 		switch (vep->bus_type) {
+=======
+		switch (vep.bus_type) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case V4L2_MBUS_CCP2:
 		case V4L2_MBUS_CSI1:
 			dev_dbg(dev, "CSI-1/CCP-2 configuration\n");
@@ -2069,11 +2159,19 @@ static int isp_fwnode_parse(struct device *dev,
 			break;
 		default:
 			dev_err(dev, "unsupported bus type %u\n",
+<<<<<<< HEAD
 				vep->bus_type);
 			return -EINVAL;
 		}
 
 		switch (vep->base.port) {
+=======
+				vep.bus_type);
+			return -EINVAL;
+		}
+
+		switch (vep.base.port) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case ISP_OF_PHY_CSIPHY1:
 			if (csi1)
 				buscfg->interface = ISP_INTERFACE_CCP2B_PHY1;
@@ -2089,40 +2187,66 @@ static int isp_fwnode_parse(struct device *dev,
 		}
 		if (csi1) {
 			buscfg->bus.ccp2.lanecfg.clk.pos =
+<<<<<<< HEAD
 				vep->bus.mipi_csi1.clock_lane;
 			buscfg->bus.ccp2.lanecfg.clk.pol =
 				vep->bus.mipi_csi1.lane_polarity[0];
+=======
+				vep.bus.mipi_csi1.clock_lane;
+			buscfg->bus.ccp2.lanecfg.clk.pol =
+				vep.bus.mipi_csi1.lane_polarity[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_dbg(dev, "clock lane polarity %u, pos %u\n",
 				buscfg->bus.ccp2.lanecfg.clk.pol,
 				buscfg->bus.ccp2.lanecfg.clk.pos);
 
 			buscfg->bus.ccp2.lanecfg.data[0].pos =
+<<<<<<< HEAD
 				vep->bus.mipi_csi1.data_lane;
 			buscfg->bus.ccp2.lanecfg.data[0].pol =
 				vep->bus.mipi_csi1.lane_polarity[1];
+=======
+				vep.bus.mipi_csi1.data_lane;
+			buscfg->bus.ccp2.lanecfg.data[0].pol =
+				vep.bus.mipi_csi1.lane_polarity[1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			dev_dbg(dev, "data lane polarity %u, pos %u\n",
 				buscfg->bus.ccp2.lanecfg.data[0].pol,
 				buscfg->bus.ccp2.lanecfg.data[0].pos);
 
 			buscfg->bus.ccp2.strobe_clk_pol =
+<<<<<<< HEAD
 				vep->bus.mipi_csi1.clock_inv;
 			buscfg->bus.ccp2.phy_layer = vep->bus.mipi_csi1.strobe;
 			buscfg->bus.ccp2.ccp2_mode =
 				vep->bus_type == V4L2_MBUS_CCP2;
+=======
+				vep.bus.mipi_csi1.clock_inv;
+			buscfg->bus.ccp2.phy_layer = vep.bus.mipi_csi1.strobe;
+			buscfg->bus.ccp2.ccp2_mode =
+				vep.bus_type == V4L2_MBUS_CCP2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			buscfg->bus.ccp2.vp_clk_pol = 1;
 
 			buscfg->bus.ccp2.crc = 1;
 		} else {
 			buscfg->bus.csi2.lanecfg.clk.pos =
+<<<<<<< HEAD
 				vep->bus.mipi_csi2.clock_lane;
 			buscfg->bus.csi2.lanecfg.clk.pol =
 				vep->bus.mipi_csi2.lane_polarities[0];
+=======
+				vep.bus.mipi_csi2.clock_lane;
+			buscfg->bus.csi2.lanecfg.clk.pol =
+				vep.bus.mipi_csi2.lane_polarities[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev_dbg(dev, "clock lane polarity %u, pos %u\n",
 				buscfg->bus.csi2.lanecfg.clk.pol,
 				buscfg->bus.csi2.lanecfg.clk.pos);
 
 			buscfg->bus.csi2.num_data_lanes =
+<<<<<<< HEAD
 				vep->bus.mipi_csi2.num_data_lanes;
 
 			for (i = 0; i < buscfg->bus.csi2.num_data_lanes; i++) {
@@ -2130,6 +2254,15 @@ static int isp_fwnode_parse(struct device *dev,
 					vep->bus.mipi_csi2.data_lanes[i];
 				buscfg->bus.csi2.lanecfg.data[i].pol =
 					vep->bus.mipi_csi2.lane_polarities[i + 1];
+=======
+				vep.bus.mipi_csi2.num_data_lanes;
+
+			for (i = 0; i < buscfg->bus.csi2.num_data_lanes; i++) {
+				buscfg->bus.csi2.lanecfg.data[i].pos =
+					vep.bus.mipi_csi2.data_lanes[i];
+				buscfg->bus.csi2.lanecfg.data[i].pol =
+					vep.bus.mipi_csi2.lane_polarities[i + 1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				dev_dbg(dev,
 					"data lane %u polarity %u, pos %u\n", i,
 					buscfg->bus.csi2.lanecfg.data[i].pol,
@@ -2146,13 +2279,64 @@ static int isp_fwnode_parse(struct device *dev,
 
 	default:
 		dev_warn(dev, "%pOF: invalid interface %u\n",
+<<<<<<< HEAD
 			 to_of_node(vep->base.local_fwnode), vep->base.port);
+=======
+			 to_of_node(fwnode), vep.base.port);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int isp_fwnodes_parse(struct device *dev,
+			     struct v4l2_async_notifier *notifier)
+{
+	struct fwnode_handle *fwnode = NULL;
+
+	notifier->subdevs = devm_kcalloc(
+		dev, ISP_MAX_SUBDEVS, sizeof(*notifier->subdevs), GFP_KERNEL);
+	if (!notifier->subdevs)
+		return -ENOMEM;
+
+	while (notifier->num_subdevs < ISP_MAX_SUBDEVS &&
+	       (fwnode = fwnode_graph_get_next_endpoint(
+			of_fwnode_handle(dev->of_node), fwnode))) {
+		struct isp_async_subdev *isd;
+
+		isd = devm_kzalloc(dev, sizeof(*isd), GFP_KERNEL);
+		if (!isd)
+			goto error;
+
+		if (isp_fwnode_parse(dev, fwnode, isd)) {
+			devm_kfree(dev, isd);
+			continue;
+		}
+
+		notifier->subdevs[notifier->num_subdevs] = &isd->asd;
+
+		isd->asd.match.fwnode.fwnode =
+			fwnode_graph_get_remote_port_parent(fwnode);
+		if (!isd->asd.match.fwnode.fwnode) {
+			dev_warn(dev, "bad remote port parent\n");
+			goto error;
+		}
+
+		isd->asd.match_type = V4L2_ASYNC_MATCH_FWNODE;
+		notifier->num_subdevs++;
+	}
+
+	return notifier->num_subdevs;
+
+error:
+	fwnode_handle_put(fwnode);
+	return -EINVAL;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int isp_subdev_notifier_complete(struct v4l2_async_notifier *async)
 {
 	struct isp_device *isp = container_of(async, struct isp_device,
@@ -2166,7 +2350,11 @@ static int isp_subdev_notifier_complete(struct v4l2_async_notifier *async)
 		return ret;
 
 	list_for_each_entry(sd, &v4l2_dev->subdevs, list) {
+<<<<<<< HEAD
 		if (sd->notifier != &isp->notifier)
+=======
+		if (!sd->asd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		ret = isp_link_entity(isp, &sd->entity,
@@ -2182,10 +2370,13 @@ static int isp_subdev_notifier_complete(struct v4l2_async_notifier *async)
 	return media_device_register(&isp->media_dev);
 }
 
+<<<<<<< HEAD
 static const struct v4l2_async_notifier_operations isp_subdev_notifier_ops = {
 	.complete = isp_subdev_notifier_complete,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * isp_probe - Probe ISP platform device
  * @pdev: Pointer to ISP platform device
@@ -2225,17 +2416,27 @@ static int isp_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
+=======
+	ret = isp_fwnodes_parse(&pdev->dev, &isp->notifier);
+	if (ret < 0)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isp->autoidle = autoidle;
 
 	mutex_init(&isp->isp_mutex);
 	spin_lock_init(&isp->stat_lock);
 
+<<<<<<< HEAD
 	ret = v4l2_async_notifier_parse_fwnode_endpoints(
 		&pdev->dev, &isp->notifier, sizeof(struct isp_async_subdev),
 		isp_fwnode_parse);
 	if (ret < 0)
 		goto error;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isp->dev = &pdev->dev;
 	isp->ref_count = 0;
 
@@ -2356,7 +2557,11 @@ static int isp_probe(struct platform_device *pdev)
 	if (ret < 0)
 		goto error_register_entities;
 
+<<<<<<< HEAD
 	isp->notifier.ops = &isp_subdev_notifier_ops;
+=======
+	isp->notifier.complete = isp_subdev_notifier_complete;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = v4l2_async_notifier_register(&isp->v4l2_dev, &isp->notifier);
 	if (ret)
@@ -2377,7 +2582,10 @@ error_isp:
 	isp_xclk_cleanup(isp);
 	__omap3isp_put(isp, false);
 error:
+<<<<<<< HEAD
 	v4l2_async_notifier_cleanup(&isp->notifier);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_destroy(&isp->isp_mutex);
 
 	return ret;

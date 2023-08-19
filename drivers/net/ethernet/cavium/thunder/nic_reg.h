@@ -99,7 +99,10 @@
 #define   NIC_PF_ECC3_DBE_INT_W1S		(0x2708)
 #define   NIC_PF_ECC3_DBE_ENA_W1C		(0x2710)
 #define   NIC_PF_ECC3_DBE_ENA_W1S		(0x2718)
+<<<<<<< HEAD
 #define   NIC_PF_INTFX_SEND_CFG			(0x4000)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define   NIC_PF_MCAM_0_191_ENA			(0x100000)
 #define   NIC_PF_MCAM_0_191_M_0_5_DATA		(0x110000)
 #define   NIC_PF_MCAM_CTRL			(0x120000)

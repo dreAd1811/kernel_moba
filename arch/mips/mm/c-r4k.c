@@ -852,7 +852,11 @@ static void r4k_flush_icache_user_range(unsigned long start, unsigned long end)
 	return __r4k_flush_icache_range(start, end, true);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_DMA_NONCOHERENT
+=======
+#if defined(CONFIG_DMA_NONCOHERENT) || defined(CONFIG_DMA_MAYBE_COHERENT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void r4k_dma_cache_wback_inv(unsigned long addr, unsigned long size)
 {
@@ -935,7 +939,11 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
 	bc_inv(addr, size);
 	__sync();
 }
+<<<<<<< HEAD
 #endif /* CONFIG_DMA_NONCOHERENT */
+=======
+#endif /* CONFIG_DMA_NONCOHERENT || CONFIG_DMA_MAYBE_COHERENT */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct flush_cache_sigtramp_args {
 	struct mm_struct *mm;
@@ -1536,6 +1544,7 @@ static void probe_pcache(void)
 	if (c->dcache.flags & MIPS_CACHE_PINDEX)
 		c->dcache.flags &= ~MIPS_CACHE_ALIASES;
 
+<<<<<<< HEAD
 	/*
 	 * In systems with CM the icache fills from L2 or closer caches, and
 	 * thus sees remote stores without needing to write them back any
@@ -1544,6 +1553,8 @@ static void probe_pcache(void)
 	if (mips_cm_present())
 		c->icache.flags |= MIPS_IC_SNOOPS_REMOTE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (current_cpu_type()) {
 	case CPU_20KC:
 		/*

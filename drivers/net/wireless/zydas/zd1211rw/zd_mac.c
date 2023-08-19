@@ -509,6 +509,10 @@ void zd_mac_tx_failed(struct urb *urb)
 	int found = 0;
 	int i, position = 0;
 
+<<<<<<< HEAD
+=======
+	q = &mac->ack_wait_queue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&q->lock, flags);
 
 	skb_queue_walk(q, skb) {
@@ -732,8 +736,12 @@ static int zd_mac_config_beacon(struct ieee80211_hw *hw, struct sk_buff *beacon,
 
 	/* Alloc memory for full beacon write at once. */
 	num_cmds = 1 + zd_chip_is_zd1211b(&mac->chip) + full_len;
+<<<<<<< HEAD
 	ioreqs = kmalloc_array(num_cmds, sizeof(struct zd_ioreq32),
 			       GFP_KERNEL);
+=======
+	ioreqs = kmalloc(num_cmds * sizeof(struct zd_ioreq32), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ioreqs) {
 		r = -ENOMEM;
 		goto out_nofree;

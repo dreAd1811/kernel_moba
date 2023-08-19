@@ -22,7 +22,11 @@
 #define RWSEM_ACTIVE_READ_BIAS		RWSEM_ACTIVE_BIAS
 #define RWSEM_ACTIVE_WRITE_BIAS		(RWSEM_WAITING_BIAS + RWSEM_ACTIVE_BIAS)
 
+<<<<<<< HEAD
 static inline int ___down_read(struct rw_semaphore *sem)
+=======
+static inline void __down_read(struct rw_semaphore *sem)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	long oldcount;
 #ifndef	CONFIG_SMP
@@ -42,6 +46,7 @@ static inline int ___down_read(struct rw_semaphore *sem)
 	:"=&r" (oldcount), "=m" (sem->count), "=&r" (temp)
 	:"Ir" (RWSEM_ACTIVE_READ_BIAS), "m" (sem->count) : "memory");
 #endif
+<<<<<<< HEAD
 	return (oldcount < 0);
 }
 
@@ -60,6 +65,12 @@ static inline int __down_read_killable(struct rw_semaphore *sem)
 	return 0;
 }
 
+=======
+	if (unlikely(oldcount < 0))
+		rwsem_down_read_failed(sem);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * trylock for reading -- returns 1 if successful, 0 if contention
  */
@@ -109,10 +120,16 @@ static inline void __down_write(struct rw_semaphore *sem)
 
 static inline int __down_write_killable(struct rw_semaphore *sem)
 {
+<<<<<<< HEAD
 	if (unlikely(___down_write(sem))) {
 		if (IS_ERR(rwsem_down_write_failed_killable(sem)))
 			return -EINTR;
 	}
+=======
+	if (unlikely(___down_write(sem)))
+		if (IS_ERR(rwsem_down_write_failed_killable(sem)))
+			return -EINTR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

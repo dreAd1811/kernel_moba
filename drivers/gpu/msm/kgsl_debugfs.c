@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2002,2008-2019, The Linux Foundation. All rights reserved.
@@ -9,6 +10,28 @@
 #include "kgsl_debugfs.h"
 #include "kgsl_device.h"
 #include "kgsl_sharedmem.h"
+=======
+/* Copyright (c) 2002, 2008-2017, 2019-2021, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+
+#include <linux/module.h>
+#include <linux/debugfs.h>
+
+#include "kgsl.h"
+#include "kgsl_device.h"
+#include "kgsl_sharedmem.h"
+#include "kgsl_debugfs.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*default log levels is error for everything*/
 #define KGSL_LOG_LEVEL_MAX     7
@@ -16,6 +39,36 @@
 struct dentry *kgsl_debugfs_dir;
 static struct dentry *proc_d_debugfs;
 
+<<<<<<< HEAD
+=======
+static inline int kgsl_log_set(unsigned int *log_val, void *data, u64 val)
+{
+	*log_val = min_t(unsigned int, val, KGSL_LOG_LEVEL_MAX);
+	return 0;
+}
+
+#define KGSL_DEBUGFS_LOG(__log)                         \
+static int __log ## _set(void *data, u64 val)           \
+{                                                       \
+	struct kgsl_device *device = data;              \
+	return kgsl_log_set(&device->__log, data, val); \
+}                                                       \
+static int __log ## _get(void *data, u64 *val)	        \
+{                                                       \
+	struct kgsl_device *device = data;              \
+	*val = device->__log;                           \
+	return 0;                                       \
+}                                                       \
+DEFINE_SIMPLE_ATTRIBUTE(__log ## _fops,                 \
+__log ## _get, __log ## _set, "%llu\n")                 \
+
+KGSL_DEBUGFS_LOG(drv_log);
+KGSL_DEBUGFS_LOG(cmd_log);
+KGSL_DEBUGFS_LOG(ctxt_log);
+KGSL_DEBUGFS_LOG(mem_log);
+KGSL_DEBUGFS_LOG(pwr_log);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int _strict_set(void *data, u64 val)
 {
 	kgsl_sharedmem_set_noretry(val ? true : false);
@@ -28,6 +81,7 @@ static int _strict_get(void *data, u64 *val)
 	return 0;
 }
 
+<<<<<<< HEAD
 DEFINE_DEBUGFS_ATTRIBUTE(_strict_fops, _strict_get, _strict_set, "%llu\n");
 
 static void kgsl_qdss_gfx_register_probe(struct kgsl_device *device)
@@ -80,6 +134,29 @@ void kgsl_device_debugfs_init(struct kgsl_device *device)
 	snapshot_dir = debugfs_create_dir("snapshot", kgsl_debugfs_dir);
 	debugfs_create_file("break_isdb", 0644, snapshot_dir, device,
 		&_isdb_fops);
+=======
+DEFINE_SIMPLE_ATTRIBUTE(_strict_fops, _strict_get, _strict_set, "%llu\n");
+
+void kgsl_device_debugfs_init(struct kgsl_device *device)
+{
+	if (kgsl_debugfs_dir && !IS_ERR(kgsl_debugfs_dir))
+		device->d_debugfs = debugfs_create_dir(device->name,
+						       kgsl_debugfs_dir);
+
+	if (!device->d_debugfs || IS_ERR(device->d_debugfs))
+		return;
+
+	debugfs_create_file("log_level_cmd", 0644, device->d_debugfs, device,
+			    &cmd_log_fops);
+	debugfs_create_file("log_level_ctxt", 0644, device->d_debugfs, device,
+			    &ctxt_log_fops);
+	debugfs_create_file("log_level_drv", 0644, device->d_debugfs, device,
+			    &drv_log_fops);
+	debugfs_create_file("log_level_mem", 0644, device->d_debugfs, device,
+				&mem_log_fops);
+	debugfs_create_file("log_level_pwr", 0644, device->d_debugfs, device,
+				&pwr_log_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void kgsl_device_debugfs_close(struct kgsl_device *device)
@@ -147,7 +224,15 @@ static int print_mem_entry(void *data, void *ptr)
 	flags[3] = get_alignflag(m);
 	flags[4] = get_cacheflag(m);
 	flags[5] = kgsl_memdesc_use_cpu_map(m) ? 'p' : '-';
+<<<<<<< HEAD
 	flags[6] = (m->useraddr) ? 'Y' : 'N';
+=======
+	/*
+	 * Show Y if at least one vma has this entry
+	 * mapped (could be multiple)
+	 */
+	flags[6] = atomic_read(&entry->map_count) ? 'Y' : 'N';
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	flags[7] = kgsl_memdesc_is_secured(m) ?  's' : '-';
 	flags[8] = m->flags & KGSL_MEMFLAGS_SPARSE_PHYS ? 'P' : '-';
 	flags[9] = '\0';
@@ -158,6 +243,7 @@ static int print_mem_entry(void *data, void *ptr)
 		kgsl_get_egl_counts(entry, &egl_surface_count,
 						&egl_image_count);
 
+<<<<<<< HEAD
 	seq_printf(s, "%pK %pK %16llu %5d %9s %10s %16s %5d %16ld %6d %6d",
 			(uint64_t *)(uintptr_t) m->gpuaddr,
 			(unsigned long *) m->useraddr,
@@ -165,6 +251,18 @@ static int print_mem_entry(void *data, void *ptr)
 			memtype_str(usermem_type),
 			usage, (m->sgt ? m->sgt->nents : 0),
 			atomic_long_read(&m->mapsize),
+=======
+	seq_printf(s, "%pK %pK %16llu %5d %9s %10s %16s %5d %16d %6d %6d",
+			(uint64_t *)(uintptr_t) m->gpuaddr,
+			/*
+			 * Show zero for the useraddr - we can't reliably track
+			 * that value for multiple vmas anyway
+			 */
+			0, m->size, entry->id, flags,
+			memtype_str(usermem_type),
+			usage, (m->sgt ? m->sgt->nents : 0),
+			atomic_read(&entry->map_count),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			egl_surface_count, egl_image_count);
 
 	if (entry->metadata[0] != 0)
@@ -235,7 +333,11 @@ static int process_mem_seq_show(struct seq_file *s, void *ptr)
 	if (ptr == SEQ_START_TOKEN) {
 		seq_printf(s, "%16s %16s %16s %5s %9s %10s %16s %5s %16s %6s %6s\n",
 			"gpuaddr", "useraddr", "size", "id", "flags", "type",
+<<<<<<< HEAD
 			"usage", "sglen", "mapsize", "eglsrf", "eglimg");
+=======
+			"usage", "sglen", "mapcount", "eglsrf", "eglimg");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	} else
 		return print_mem_entry(s, ptr);
@@ -393,7 +495,11 @@ void kgsl_process_init_debugfs(struct kgsl_process_private *private)
 	unsigned char name[16];
 	struct dentry *dentry;
 
+<<<<<<< HEAD
 	snprintf(name, sizeof(name), "%d", private->pid);
+=======
+	snprintf(name, sizeof(name), "%d", pid_nr(private->pid));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	private->debug_root = debugfs_create_dir(name, proc_d_debugfs);
 
@@ -413,14 +519,23 @@ void kgsl_process_init_debugfs(struct kgsl_process_private *private)
 	}
 
 	dentry = debugfs_create_file("mem", 0444, private->debug_root,
+<<<<<<< HEAD
 		(void *) ((unsigned long) private->pid), &process_mem_fops);
+=======
+		(void *) ((unsigned long) pid_nr(private->pid)),
+		&process_mem_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_ERR_OR_NULL(dentry))
 		WARN((dentry == NULL),
 			"Unable to create 'mem' file for %s\n", name);
 
 	dentry = debugfs_create_file("sparse_mem", 0444, private->debug_root,
+<<<<<<< HEAD
 		(void *) ((unsigned long) private->pid),
+=======
+		(void *) ((unsigned long) pid_nr(private->pid)),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		&process_sparse_mem_fops);
 
 	if (IS_ERR_OR_NULL(dentry))
@@ -434,8 +549,11 @@ void kgsl_core_debugfs_init(void)
 	struct dentry *debug_dir;
 
 	kgsl_debugfs_dir = debugfs_create_dir("kgsl", NULL);
+<<<<<<< HEAD
 	if (IS_ERR_OR_NULL(kgsl_debugfs_dir))
 		return;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	debugfs_create_file("globals", 0444, kgsl_debugfs_dir, NULL,
 		&global_fops);

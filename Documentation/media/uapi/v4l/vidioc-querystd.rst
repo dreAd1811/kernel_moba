@@ -2,14 +2,24 @@
 
 .. _VIDIOC_QUERYSTD:
 
+<<<<<<< HEAD
 *********************************************
 ioctl VIDIOC_QUERYSTD, VIDIOC_SUBDEV_QUERYSTD
 *********************************************
+=======
+*********************
+ioctl VIDIOC_QUERYSTD
+*********************
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Name
 ====
 
+<<<<<<< HEAD
 VIDIOC_QUERYSTD - VIDIOC_SUBDEV_QUERYSTD - Sense the video standard received by the current input
+=======
+VIDIOC_QUERYSTD - Sense the video standard received by the current input
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Synopsis
@@ -18,9 +28,12 @@ Synopsis
 .. c:function:: int ioctl( int fd, VIDIOC_QUERYSTD, v4l2_std_id *argp )
     :name: VIDIOC_QUERYSTD
 
+<<<<<<< HEAD
 .. c:function:: int ioctl( int fd, VIDIOC_SUBDEV_QUERYSTD, v4l2_std_id *argp )
     :name: VIDIOC_SUBDEV_QUERYSTD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 Arguments
 =========

@@ -643,7 +643,11 @@ static int pmf_add_function_prop(struct pmf_device *dev, void *driverdata,
 
 	while (length >= 12) {
 		/* Allocate a structure */
+<<<<<<< HEAD
 		func = kzalloc(sizeof(*func), GFP_KERNEL);
+=======
+		func = kzalloc(sizeof(struct pmf_function), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (func == NULL)
 			goto bail;
 		kref_init(&func->ref);
@@ -719,7 +723,11 @@ int pmf_register_driver(struct device_node *np,
 		return -EBUSY;
 	}
 
+<<<<<<< HEAD
 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
+=======
+	dev = kzalloc(sizeof(struct pmf_device), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev == NULL) {
 		DBG("pmf: no memory !\n");
 		return -ENOMEM;

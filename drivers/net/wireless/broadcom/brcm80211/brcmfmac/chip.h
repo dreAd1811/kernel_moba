@@ -45,7 +45,11 @@ struct brcmf_chip {
 	u32 rambase;
 	u32 ramsize;
 	u32 srsize;
+<<<<<<< HEAD
 	char name[12];
+=======
+	char name[8];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -93,6 +97,9 @@ void brcmf_chip_resetcore(struct brcmf_core *core, u32 prereset, u32 reset,
 void brcmf_chip_set_passive(struct brcmf_chip *ci);
 bool brcmf_chip_set_active(struct brcmf_chip *ci, u32 rstvec);
 bool brcmf_chip_sr_capable(struct brcmf_chip *pub);
+<<<<<<< HEAD
 char *brcmf_chip_name(u32 chipid, u32 chiprev, char *buf, uint len);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* BRCMF_AXIDMP_H */

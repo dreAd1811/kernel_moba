@@ -130,9 +130,15 @@ static void handle_catas(struct mthca_dev *dev)
 	spin_unlock_irqrestore(&catas_lock, flags);
 }
 
+<<<<<<< HEAD
 static void poll_catas(struct timer_list *t)
 {
 	struct mthca_dev *dev = from_timer(dev, t, catas_err.timer);
+=======
+static void poll_catas(unsigned long dev_ptr)
+{
+	struct mthca_dev *dev = (struct mthca_dev *) dev_ptr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	for (i = 0; i < dev->catas_err.size; ++i)
@@ -149,7 +155,11 @@ void mthca_start_catas_poll(struct mthca_dev *dev)
 {
 	phys_addr_t addr;
 
+<<<<<<< HEAD
 	timer_setup(&dev->catas_err.timer, poll_catas, 0);
+=======
+	init_timer(&dev->catas_err.timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->catas_err.map  = NULL;
 
 	addr = pci_resource_start(dev->pdev, 0) +
@@ -164,6 +174,11 @@ void mthca_start_catas_poll(struct mthca_dev *dev)
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	dev->catas_err.timer.data     = (unsigned long) dev;
+	dev->catas_err.timer.function = poll_catas;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->catas_err.timer.expires  = jiffies + MTHCA_CATAS_POLL_INTERVAL;
 	INIT_LIST_HEAD(&dev->catas_err.list);
 	add_timer(&dev->catas_err.timer);

@@ -173,6 +173,7 @@ static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user *buf,
  *
  * Return: Poll flags
  */
+<<<<<<< HEAD
 static __poll_t vtpm_proxy_fops_poll(struct file *filp, poll_table *wait)
 {
 	struct proxy_dev *proxy_dev = filp->private_data;
@@ -181,14 +182,31 @@ static __poll_t vtpm_proxy_fops_poll(struct file *filp, poll_table *wait)
 	poll_wait(filp, &proxy_dev->wq, wait);
 
 	ret = EPOLLOUT;
+=======
+static unsigned int vtpm_proxy_fops_poll(struct file *filp, poll_table *wait)
+{
+	struct proxy_dev *proxy_dev = filp->private_data;
+	unsigned ret;
+
+	poll_wait(filp, &proxy_dev->wq, wait);
+
+	ret = POLLOUT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&proxy_dev->buf_lock);
 
 	if (proxy_dev->req_len)
+<<<<<<< HEAD
 		ret |= EPOLLIN | EPOLLRDNORM;
 
 	if (!(proxy_dev->state & STATE_OPENED_FLAG))
 		ret |= EPOLLHUP;
+=======
+		ret |= POLLIN | POLLRDNORM;
+
+	if (!(proxy_dev->state & STATE_OPENED_FLAG))
+		ret |= POLLHUP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_unlock(&proxy_dev->buf_lock);
 
@@ -417,7 +435,11 @@ static int vtpm_proxy_request_locality(struct tpm_chip *chip, int locality)
 	proxy_dev->state |= STATE_DRIVER_COMMAND;
 
 	rc = tpm_transmit_cmd(chip, NULL, buf.data, tpm_buf_length(&buf), 0,
+<<<<<<< HEAD
 			      TPM_TRANSMIT_NESTED,
+=======
+			      TPM_TRANSMIT_UNLOCKED | TPM_TRANSMIT_RAW,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      "attempting to set locality");
 
 	proxy_dev->state &= ~STATE_DRIVER_COMMAND;

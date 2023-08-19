@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2017, 2019 The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2017, 2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -18,6 +31,10 @@
 #include <linux/coresight.h>
 
 #include "coresight-priv.h"
+<<<<<<< HEAD
+=======
+#include "apss_tgu.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define tgu_writel(drvdata, val, off)	__raw_writel((val), drvdata->base + off)
 #define tgu_readl(drvdata, off)		__raw_readl(drvdata->base + off)
@@ -103,7 +120,11 @@ struct tgu_drvdata {
 	bool				enable;
 };
 
+<<<<<<< HEAD
 static ssize_t enable_tgu_store(struct device *dev,
+=======
+static ssize_t enable_tgu(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct device_attribute *attr,
 				const char *buf, size_t size)
 {
@@ -170,6 +191,10 @@ static ssize_t enable_tgu_store(struct device *dev,
 	} else {
 		/* Disable TGU to program the triggers */
 		tgu_writel(drvdata, 0, TGU_CONTROL);
+<<<<<<< HEAD
+=======
+		TGU_LOCK(drvdata);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pm_runtime_put(drvdata->dev);
 		dev_dbg(dev, "Coresight-TGU disabled\n");
@@ -179,9 +204,15 @@ static ssize_t enable_tgu_store(struct device *dev,
 	spin_unlock(&drvdata->spinlock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(enable_tgu);
 
 static ssize_t reset_tgu_store(struct device *dev,
+=======
+static DEVICE_ATTR(enable_tgu, 0200, NULL, enable_tgu);
+
+static ssize_t reset_tgu(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct device_attribute *attr,
 				const char *buf, size_t size)
 {
@@ -225,17 +256,28 @@ static ssize_t reset_tgu_store(struct device *dev,
 	pm_runtime_put(drvdata->dev);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(reset_tgu);
 
 static ssize_t set_group_store(struct device *dev, struct device_attribute
 					*attr, const char *buf, size_t size)
+=======
+static DEVICE_ATTR(reset_tgu, 0200, NULL, reset_tgu);
+
+static ssize_t set_group(struct device *dev, struct device_attribute *attr,
+						const char *buf, size_t size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tgu_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	int grp, reg, step;
 	unsigned long value;
 
 	if (drvdata->grp_refcnt >= MAX_GROUP_SETS) {
+<<<<<<< HEAD
 		dev_err(drvdata->dev, " Too many groups are being configured\n");
+=======
+		dev_err(drvdata->dev, " Too many groups are being configured");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -255,9 +297,15 @@ static ssize_t set_group_store(struct device *dev, struct device_attribute
 
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(set_group);
 
 static ssize_t set_condition_store(struct device *dev, struct device_attribute
+=======
+static DEVICE_ATTR(set_group, 0200, NULL, set_group);
+
+static ssize_t tgu_set_condition(struct device *dev, struct device_attribute
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					*attr, const char *buf, size_t size)
 {
 	struct tgu_drvdata *drvdata = dev_get_drvdata(dev->parent);
@@ -265,7 +313,11 @@ static ssize_t set_condition_store(struct device *dev, struct device_attribute
 	int cond, step;
 
 	if (drvdata->cond_refcnt >= MAX_CONDITION_SETS) {
+<<<<<<< HEAD
 		dev_err(drvdata->dev, " Too many groups are being configured\n");
+=======
+		dev_err(drvdata->dev, " Too many groups are being configured");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -286,17 +338,28 @@ static ssize_t set_condition_store(struct device *dev, struct device_attribute
 
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(set_condition);
 
 static ssize_t set_select_store(struct device *dev, struct device_attribute
 					*attr, const char *buf, size_t size)
+=======
+static DEVICE_ATTR(set_condition, 0200, NULL, tgu_set_condition);
+
+static ssize_t tgu_set_select(struct device *dev, struct device_attribute *attr,
+						const char *buf, size_t size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tgu_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	unsigned long value;
 	int select, step;
 
 	if (drvdata->select_refcnt >= MAX_CONDITION_SETS) {
+<<<<<<< HEAD
 		dev_err(drvdata->dev, " Too many groups are being configured\n");
+=======
+		dev_err(drvdata->dev, " Too many groups are being configured");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -318,17 +381,28 @@ static ssize_t set_select_store(struct device *dev, struct device_attribute
 
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(set_select);
 
 static ssize_t set_timer_store(struct device *dev, struct device_attribute
 					*attr, const char *buf, size_t size)
+=======
+static DEVICE_ATTR(set_select, 0200, NULL, tgu_set_select);
+
+static ssize_t tgu_set_timers(struct device *dev, struct device_attribute *attr,
+						const char *buf, size_t size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tgu_drvdata *drvdata = dev_get_drvdata(dev->parent);
 	unsigned long value;
 	int step;
 
 	if (drvdata->timer_refcnt >= MAX_TIMER_COUNTER_SETS) {
+<<<<<<< HEAD
 		dev_err(drvdata->dev, " Too many groups are being configured\n");
+=======
+		dev_err(drvdata->dev, " Too many groups are being configured");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -348,9 +422,15 @@ static ssize_t set_timer_store(struct device *dev, struct device_attribute
 
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(set_timer);
 
 static ssize_t set_counter_store(struct device *dev, struct device_attribute
+=======
+static DEVICE_ATTR(set_timer, 0200, NULL, tgu_set_timers);
+
+static ssize_t tgu_set_counters(struct device *dev, struct device_attribute
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					*attr, const char *buf, size_t size)
 {
 	struct tgu_drvdata *drvdata = dev_get_drvdata(dev->parent);
@@ -358,7 +438,11 @@ static ssize_t set_counter_store(struct device *dev, struct device_attribute
 	int step;
 
 	if (drvdata->counter_refcnt >= MAX_TIMER_COUNTER_SETS) {
+<<<<<<< HEAD
 		dev_err(drvdata->dev, " Too many groups are being configured\n");
+=======
+		dev_err(drvdata->dev, " Too many groups are being configured");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -378,7 +462,11 @@ static ssize_t set_counter_store(struct device *dev, struct device_attribute
 
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_WO(set_counter);
+=======
+static DEVICE_ATTR(set_counter, 0200, NULL, tgu_set_counters);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *tgu_attrs[] = {
 	&dev_attr_enable_tgu.attr,
@@ -407,6 +495,10 @@ static int tgu_probe(struct amba_device *adev, const struct amba_id *id)
 	struct coresight_platform_data *pdata;
 	struct tgu_drvdata *drvdata;
 	struct coresight_desc *desc;
+<<<<<<< HEAD
+=======
+	const char *name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata = of_get_coresight_platform_data(dev, adev->dev.of_node);
 	if (IS_ERR(pdata))
@@ -496,6 +588,16 @@ static int tgu_probe(struct amba_device *adev, const struct amba_id *id)
 		goto err;
 	}
 
+<<<<<<< HEAD
+=======
+	of_property_read_string(adev->dev.of_node, "coresight-name", &name);
+	if (!strcmp(name, "coresight-tgu-apss")) {
+		ret = register_interrupt_handler(adev->dev.of_node);
+		if (ret)
+			return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_put(&adev->dev);
 	dev_dbg(dev, "TGU initialized\n");
 	return 0;

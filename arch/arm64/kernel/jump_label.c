@@ -20,6 +20,11 @@
 #include <linux/jump_label.h>
 #include <asm/insn.h>
 
+<<<<<<< HEAD
+=======
+#ifdef HAVE_JUMP_LABEL
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void arch_jump_label_transform(struct jump_entry *entry,
 			       enum jump_label_type type)
 {
@@ -34,7 +39,11 @@ void arch_jump_label_transform(struct jump_entry *entry,
 		insn = aarch64_insn_gen_nop();
 	}
 
+<<<<<<< HEAD
 	aarch64_insn_patch_text_nosync(addr, insn);
+=======
+	aarch64_insn_patch_text(&addr, &insn, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void arch_jump_label_transform_static(struct jump_entry *entry,
@@ -47,3 +56,8 @@ void arch_jump_label_transform_static(struct jump_entry *entry,
 	 * NOP needs to be replaced by a branch.
 	 */
 }
+<<<<<<< HEAD
+=======
+
+#endif	/* HAVE_JUMP_LABEL */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

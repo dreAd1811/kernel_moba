@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: (GPL-2.0 OR MIT)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree Include file for Marvell Armada 1500-mini (Berlin BG2CD) SoC
  *
@@ -6,6 +9,41 @@
  *
  * based on GPL'ed 2.6 kernel sources
  *  (c) Marvell International Ltd.
+<<<<<<< HEAD
+=======
+ *
+ * This file is dual-licensed: you can use it either under the terms
+ * of the GPL or the X11 license, at your option. Note that this dual
+ * licensing only applies to this file, and not this project as a
+ * whole.
+ *
+ *  a) This file is licensed under the terms of the GNU General Public
+ *     License version 2. This program is licensed "as is" without any
+ *     warranty of any kind, whether express or implied.
+ *
+ * Or, alternatively,
+ *
+ *  b) Permission is hereby granted, free of charge, to any person
+ *     obtaining a copy of this software and associated documentation
+ *     files (the "Software"), to deal in the Software without
+ *     restriction, including without limitation the rights to use,
+ *     copy, modify, merge, publish, distribute, sublicense, and/or
+ *     sell copies of the Software, and to permit persons to whom the
+ *     Software is furnished to do so, subject to the following
+ *     conditions:
+ *
+ *     The above copyright notice and this permission notice shall be
+ *     included in all copies or substantial portions of the Software.
+ *
+ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *     OTHER DEALINGS IN THE SOFTWARE.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/clock/berlin2.h>
@@ -26,7 +64,11 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		cpu: cpu@0 {
+=======
+		cpu@0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,cortex-a9";
 			device_type = "cpu";
 			next-level-cache = <&l2>;
@@ -42,12 +84,15 @@
 		};
 	};
 
+<<<<<<< HEAD
 	pmu {
 		compatible = "arm,cortex-a9-pmu";
 		interrupt-parent = <&gic>;
 		interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	refclk: oscillator {
 		compatible = "fixed-clock";
 		#clock-cells = <0>;
@@ -62,6 +107,14 @@
 
 		ranges = <0 0xf7000000 0x1000000>;
 
+<<<<<<< HEAD
+=======
+		pmu {
+			compatible = "arm,cortex-a9-pmu";
+			interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>;
+		};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sdhci0: sdhci@ab0000 {
 			compatible = "mrvl,pxav3-mmc";
 			reg = <0xab0000 0x200>;
@@ -78,11 +131,14 @@
 			cache-level = <2>;
 		};
 
+<<<<<<< HEAD
 		snoop-control-unit@ad0000 {
 			compatible = "arm,cortex-a9-scu";
 			reg = <0xad0000 0x100>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gic: interrupt-controller@ad1000 {
 			compatible = "arm,cortex-a9-gic";
 			reg = <0xad1000 0x1000>, <0xad0100 0x0100>;
@@ -90,6 +146,7 @@
 			#interrupt-cells = <3>;
 		};
 
+<<<<<<< HEAD
 		global-timer@ad0200 {
 			compatible = "arm,cortex-a9-global-timer";
 			reg = <0xad0200 0x20>;
@@ -108,6 +165,12 @@
 			compatible = "arm,cortex-a9-twd-wdt";
 			reg = <0xad0620 0x20>;
 			interrupts = <GIC_PPI 14 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_EDGE_RISING)>;
+=======
+		local-timer@ad0600 {
+			compatible = "arm,cortex-a9-twd-timer";
+			reg = <0xad0600 0x20>;
+			interrupts = <GIC_PPI 13 (GIC_CPU_MASK_SIMPLE(1) | IRQ_TYPE_LEVEL_HIGH)>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			clocks = <&chip_clk CLKID_TWD>;
 		};
 
@@ -171,7 +234,11 @@
 			ranges = <0 0xe80000 0x10000>;
 			interrupt-parent = <&aic>;
 
+<<<<<<< HEAD
 			gpio0: gpio@400 {
+=======
+			gpio0: gpio@0400 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "snps,dw-apb-gpio";
 				reg = <0x0400 0x400>;
 				#address-cells = <1>;
@@ -189,7 +256,11 @@
 				};
 			};
 
+<<<<<<< HEAD
 			gpio1: gpio@800 {
+=======
+			gpio1: gpio@0800 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "snps,dw-apb-gpio";
 				reg = <0x0800 0x400>;
 				#address-cells = <1>;
@@ -207,7 +278,11 @@
 				};
 			};
 
+<<<<<<< HEAD
 			gpio2: gpio@c00 {
+=======
+			gpio2: gpio@0c00 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "snps,dw-apb-gpio";
 				reg = <0x0c00 0x400>;
 				#address-cells = <1>;
@@ -243,6 +318,7 @@
 				};
 			};
 
+<<<<<<< HEAD
 			i2c0: i2c@1400 {
 				compatible = "snps,designware-i2c";
 				#address-cells = <1>;
@@ -297,6 +373,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			timer0: timer@2c00 {
 				compatible = "snps,dw-apb-timer";
 				reg = <0x2c00 0x14>;
@@ -478,6 +556,7 @@
 				};
 			};
 
+<<<<<<< HEAD
 			spi1: spi@6000 {
 				compatible = "snps,dw-apb-ssi";
 				#address-cells = <1>;
@@ -508,6 +587,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sm_gpio0: gpio@c000 {
 				compatible = "snps,dw-apb-gpio";
 				reg = <0xc000 0x400>;
@@ -545,6 +626,7 @@
 				status = "disabled";
 			};
 
+<<<<<<< HEAD
 			uart2: serial@b000 {
 				compatible = "snps,dw-apb-uart";
 				reg = <0xb000 0x100>;
@@ -555,6 +637,8 @@
 				status = "disabled";
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sysctrl: system-controller@d000 {
 				compatible = "simple-mfd", "syscon";
 				reg = <0xd000 0x100>;
@@ -562,12 +646,15 @@
 				sys_pinctrl: pin-controller {
 					compatible = "marvell,berlin2cd-system-pinctrl";
 				};
+<<<<<<< HEAD
 
 				adc: adc {
 					compatible = "marvell,berlin2-adc";
 					interrupts = <12>, <14>;
 					interrupt-names = "adc", "tsen";
 				};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			sic: interrupt-controller@e000 {

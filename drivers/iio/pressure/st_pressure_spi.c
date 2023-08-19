@@ -41,6 +41,7 @@ static const struct of_device_id st_press_of_match[] = {
 		.compatible = "st,lps22hb-press",
 		.data = LPS22HB_PRESS_DEV_NAME,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "st,lps33hw",
 		.data = LPS33HW_PRESS_DEV_NAME,
@@ -49,6 +50,8 @@ static const struct of_device_id st_press_of_match[] = {
 		.compatible = "st,lps35hw",
 		.data = LPS35HW_PRESS_DEV_NAME,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, st_press_of_match);
@@ -91,8 +94,11 @@ static const struct spi_device_id st_press_id_table[] = {
 	{ LPS25H_PRESS_DEV_NAME },
 	{ LPS331AP_PRESS_DEV_NAME },
 	{ LPS22HB_PRESS_DEV_NAME },
+<<<<<<< HEAD
 	{ LPS33HW_PRESS_DEV_NAME },
 	{ LPS35HW_PRESS_DEV_NAME },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(spi, st_press_id_table);

@@ -53,7 +53,11 @@ nvkm_ioctl_sclass(struct nvkm_client *client,
 	union {
 		struct nvif_ioctl_sclass_v0 v0;
 	} *args = data;
+<<<<<<< HEAD
 	struct nvkm_oclass oclass = { .client = client };
+=======
+	struct nvkm_oclass oclass;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -ENOSYS, i = 0;
 
 	nvif_ioctl(object, "sclass size %d\n", size);
@@ -257,6 +261,7 @@ nvkm_ioctl_map(struct nvkm_client *client,
 	union {
 		struct nvif_ioctl_map_v0 v0;
 	} *args = data;
+<<<<<<< HEAD
 	enum nvkm_object_map type;
 	int ret = -ENOSYS;
 
@@ -270,6 +275,15 @@ nvkm_ioctl_map(struct nvkm_client *client,
 			args->v0.type = NVIF_IOCTL_MAP_V0_IO;
 		else
 			args->v0.type = NVIF_IOCTL_MAP_V0_VA;
+=======
+	int ret = -ENOSYS;
+
+	nvif_ioctl(object, "map size %d\n", size);
+	if (!(ret = nvif_unpack(ret, &data, &size, args->v0, 0, 0, false))) {
+		nvif_ioctl(object, "map vers %d\n", args->v0.version);
+		ret = nvkm_object_map(object, &args->v0.handle,
+					      &args->v0.length);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -287,7 +301,10 @@ nvkm_ioctl_unmap(struct nvkm_client *client,
 	nvif_ioctl(object, "unmap size %d\n", size);
 	if (!(ret = nvif_unvers(ret, &data, &size, args->none))) {
 		nvif_ioctl(object, "unmap\n");
+<<<<<<< HEAD
 		ret = nvkm_object_unmap(object);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;

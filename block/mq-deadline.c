@@ -59,7 +59,10 @@ struct deadline_data {
 	int front_merges;
 
 	spinlock_t lock;
+<<<<<<< HEAD
 	spinlock_t zone_lock;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head dispatch;
 };
 
@@ -193,6 +196,7 @@ static inline int deadline_check_fifo(struct deadline_data *dd, int ddir)
 }
 
 /*
+<<<<<<< HEAD
  * For the specified data direction, return the next request to
  * dispatch using arrival ordered lists.
  */
@@ -270,6 +274,15 @@ deadline_next_request(struct deadline_data *dd, int data_dir)
 static struct request *__dd_dispatch_request(struct deadline_data *dd)
 {
 	struct request *rq, *next_rq;
+=======
+ * deadline_dispatch_requests selects the best request according to
+ * read/write expire, fifo_batch, etc
+ */
+static struct request *__dd_dispatch_request(struct blk_mq_hw_ctx *hctx)
+{
+	struct deadline_data *dd = hctx->queue->elevator->elevator_data;
+	struct request *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool reads, writes;
 	int data_dir;
 
@@ -285,9 +298,16 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd)
 	/*
 	 * batches are currently reads XOR writes
 	 */
+<<<<<<< HEAD
 	rq = deadline_next_request(dd, WRITE);
 	if (!rq)
 		rq = deadline_next_request(dd, READ);
+=======
+	if (dd->next_rq[WRITE])
+		rq = dd->next_rq[WRITE];
+	else
+		rq = dd->next_rq[READ];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rq && dd->batching < dd->fifo_batch)
 		/* we have a next request are still entitled to batch */
@@ -301,8 +321,12 @@ static struct request *__dd_dispatch_request(struct deadline_data *dd)
 	if (reads) {
 		BUG_ON(RB_EMPTY_ROOT(&dd->sort_list[READ]));
 
+<<<<<<< HEAD
 		if (deadline_fifo_request(dd, WRITE) &&
 		    (dd->starved++ >= dd->writes_starved))
+=======
+		if (writes && (dd->starved++ >= dd->writes_starved))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto dispatch_writes;
 
 		data_dir = READ;
@@ -331,19 +355,28 @@ dispatch_find_request:
 	/*
 	 * we are not running a batch, find best request for selected data_dir
 	 */
+<<<<<<< HEAD
 	next_rq = deadline_next_request(dd, data_dir);
 	if (deadline_check_fifo(dd, data_dir) || !next_rq) {
+=======
+	if (deadline_check_fifo(dd, data_dir) || !dd->next_rq[data_dir]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * A deadline has expired, the last request was in the other
 		 * direction, or we have run out of higher-sectored requests.
 		 * Start again from the request with the earliest expiry time.
 		 */
+<<<<<<< HEAD
 		rq = deadline_fifo_request(dd, data_dir);
+=======
+		rq = rq_entry_fifo(dd->fifo_list[data_dir].next);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * The last req was the same dir and we have a next request in
 		 * sort order. No expired requests so continue on from here.
 		 */
+<<<<<<< HEAD
 		rq = next_rq;
 	}
 
@@ -354,6 +387,11 @@ dispatch_find_request:
 	if (!rq)
 		return NULL;
 
+=======
+		rq = dd->next_rq[data_dir];
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dd->batching = 0;
 
 dispatch_request:
@@ -363,27 +401,37 @@ dispatch_request:
 	dd->batching++;
 	deadline_move_request(dd, rq);
 done:
+<<<<<<< HEAD
 	/*
 	 * If the request needs its target zone locked, do it.
 	 */
 	blk_req_zone_write_lock(rq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rq->rq_flags |= RQF_STARTED;
 	return rq;
 }
 
+<<<<<<< HEAD
 /*
  * One confusing aspect here is that we get called for a specific
  * hardware queue, but we may return a request that is for a
  * different hardware queue. This is because mq-deadline has shared
  * state for all hardware queues, in terms of sorting, FIFOs, etc.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct request *dd_dispatch_request(struct blk_mq_hw_ctx *hctx)
 {
 	struct deadline_data *dd = hctx->queue->elevator->elevator_data;
 	struct request *rq;
 
 	spin_lock(&dd->lock);
+<<<<<<< HEAD
 	rq = __dd_dispatch_request(dd);
+=======
+	rq = __dd_dispatch_request(hctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&dd->lock);
 
 	return rq;
@@ -428,7 +476,10 @@ static int dd_init_queue(struct request_queue *q, struct elevator_type *e)
 	dd->front_merges = 1;
 	dd->fifo_batch = fifo_batch;
 	spin_lock_init(&dd->lock);
+<<<<<<< HEAD
 	spin_lock_init(&dd->zone_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	INIT_LIST_HEAD(&dd->dispatch);
 
 	q->elevator = eq;
@@ -485,12 +536,15 @@ static void dd_insert_request(struct blk_mq_hw_ctx *hctx, struct request *rq,
 	struct deadline_data *dd = q->elevator->elevator_data;
 	const int data_dir = rq_data_dir(rq);
 
+<<<<<<< HEAD
 	/*
 	 * This may be a requeue of a write request that has locked its
 	 * target zone. If it is the case, this releases the zone lock.
 	 */
 	blk_req_zone_write_unlock(rq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (blk_mq_sched_try_insert_merge(q, rq))
 		return;
 
@@ -535,6 +589,7 @@ static void dd_insert_requests(struct blk_mq_hw_ctx *hctx,
 	spin_unlock(&dd->lock);
 }
 
+<<<<<<< HEAD
 /*
  * Nothing to do here. This is defined only to ensure that .finish_request
  * method is called upon request completion.
@@ -577,6 +632,8 @@ static void dd_finish_request(struct request *rq)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool dd_has_work(struct blk_mq_hw_ctx *hctx)
 {
 	struct deadline_data *dd = hctx->queue->elevator->elevator_data;
@@ -643,7 +700,12 @@ STORE_FUNCTION(deadline_fifo_batch_store, &dd->fifo_batch, 0, INT_MAX, 0);
 #undef STORE_FUNCTION
 
 #define DD_ATTR(name) \
+<<<<<<< HEAD
 	__ATTR(name, 0644, deadline_##name##_show, deadline_##name##_store)
+=======
+	__ATTR(name, S_IRUGO|S_IWUSR, deadline_##name##_show, \
+				      deadline_##name##_store)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct elv_fs_entry deadline_attrs[] = {
 	DD_ATTR(read_expire),
@@ -777,8 +839,11 @@ static struct elevator_type mq_deadline = {
 	.ops.mq = {
 		.insert_requests	= dd_insert_requests,
 		.dispatch_request	= dd_dispatch_request,
+<<<<<<< HEAD
 		.prepare_request	= dd_prepare_request,
 		.finish_request		= dd_finish_request,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.next_request		= elv_rb_latter_request,
 		.former_request		= elv_rb_former_request,
 		.bio_merge		= dd_bio_merge,
@@ -796,7 +861,10 @@ static struct elevator_type mq_deadline = {
 #endif
 	.elevator_attrs = deadline_attrs,
 	.elevator_name = "mq-deadline",
+<<<<<<< HEAD
 	.elevator_alias = "deadline",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.elevator_owner = THIS_MODULE,
 };
 MODULE_ALIAS("mq-deadline-iosched");

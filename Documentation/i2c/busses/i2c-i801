@@ -21,22 +21,39 @@ Supported adapters:
   * Intel DH89xxCC (PCH)
   * Intel Panther Point (PCH)
   * Intel Lynx Point (PCH)
+<<<<<<< HEAD
+=======
+  * Intel Lynx Point-LP (PCH)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   * Intel Avoton (SOC)
   * Intel Wellsburg (PCH)
   * Intel Coleto Creek (PCH)
   * Intel Wildcat Point (PCH)
+<<<<<<< HEAD
   * Intel BayTrail (SOC)
   * Intel Braswell (SOC)
   * Intel Sunrise Point (PCH)
   * Intel Kaby Lake (PCH)
+=======
+  * Intel Wildcat Point-LP (PCH)
+  * Intel BayTrail (SOC)
+  * Intel Sunrise Point-H (PCH)
+  * Intel Sunrise Point-LP (PCH)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   * Intel DNV (SOC)
   * Intel Broxton (SOC)
   * Intel Lewisburg (PCH)
   * Intel Gemini Lake (SOC)
+<<<<<<< HEAD
   * Intel Cannon Lake (PCH)
   * Intel Cedar Fork (PCH)
   * Intel Ice Lake (PCH)
   * Intel Comet Lake (PCH)
+=======
+  * Intel Cannon Lake-H (PCH)
+  * Intel Cannon Lake-LP (PCH)
+  * Intel Cedar Fork (PCH)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    Datasheets: Publicly available at the Intel website
 
 On Intel Patsburg and later chipsets, both the normal host SMBus controller

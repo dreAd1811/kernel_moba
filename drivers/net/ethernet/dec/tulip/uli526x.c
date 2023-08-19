@@ -241,7 +241,11 @@ static void phy_write_1bit(struct uli526x_board_info *db, u32);
 static u16 phy_read_1bit(struct uli526x_board_info *db);
 static u8 uli526x_sense_speed(struct uli526x_board_info *);
 static void uli526x_process_mode(struct uli526x_board_info *);
+<<<<<<< HEAD
 static void uli526x_timer(struct timer_list *t);
+=======
+static void uli526x_timer(unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void uli526x_rx_packet(struct net_device *, struct uli526x_board_info *);
 static void uli526x_free_tx_pkt(struct net_device *, struct uli526x_board_info *);
 static void uli526x_reuse_skb(struct uli526x_board_info *, struct sk_buff *);
@@ -491,8 +495,15 @@ static int uli526x_open(struct net_device *dev)
 	netif_wake_queue(dev);
 
 	/* set and active a timer process */
+<<<<<<< HEAD
 	timer_setup(&db->timer, uli526x_timer, 0);
 	db->timer.expires = ULI526X_TIMER_WUT + HZ * 2;
+=======
+	init_timer(&db->timer);
+	db->timer.expires = ULI526X_TIMER_WUT + HZ * 2;
+	db->timer.data = (unsigned long)dev;
+	db->timer.function = uli526x_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&db->timer);
 
 	return 0;
@@ -1021,10 +1032,17 @@ static const struct ethtool_ops netdev_ethtool_ops = {
  *	Dynamic media sense, allocate Rx buffer...
  */
 
+<<<<<<< HEAD
 static void uli526x_timer(struct timer_list *t)
 {
 	struct uli526x_board_info *db = from_timer(db, t, timer);
 	struct net_device *dev = pci_get_drvdata(db->pdev);
+=======
+static void uli526x_timer(unsigned long data)
+{
+	struct net_device *dev = (struct net_device *) data;
+	struct uli526x_board_info *db = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct uli_phy_ops *phy = &db->phy;
 	void __iomem *ioaddr = db->ioaddr;
  	unsigned long flags;
@@ -1817,8 +1835,13 @@ static int __init uli526x_init_module(void)
 	if (cr6set)
 		uli526x_cr6_user_set = cr6set;
 
+<<<<<<< HEAD
  	switch (mode) {
    	case ULI526X_10MHF:
+=======
+	switch (mode) {
+	case ULI526X_10MHF:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ULI526X_100MHF:
 	case ULI526X_10MFD:
 	case ULI526X_100MFD:

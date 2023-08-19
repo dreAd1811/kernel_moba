@@ -27,9 +27,12 @@
 #include <asm/cache.h>
 #include <asm/8xx_immap.h>
 #include <asm/machdep.h>
+<<<<<<< HEAD
 #include <asm/asm-prototypes.h>
 
 #include "setup.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct tau_temp
 {
@@ -53,7 +56,11 @@ struct timer_list tau_timer;
 #define shrink_timer	2*HZ	/* period between shrinking the window */
 #define min_window	2	/* minimum window size, degrees C */
 
+<<<<<<< HEAD
 static void set_thresholds(unsigned long cpu)
+=======
+void set_thresholds(unsigned long cpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifdef CONFIG_TAU_INT
 	/*
@@ -73,7 +80,11 @@ static void set_thresholds(unsigned long cpu)
 #endif
 }
 
+<<<<<<< HEAD
 static void TAUupdate(int cpu)
+=======
+void TAUupdate(int cpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned thrm;
 
@@ -191,7 +202,11 @@ static void tau_timeout(void * info)
 	local_irq_restore(flags);
 }
 
+<<<<<<< HEAD
 static void tau_timeout_smp(struct timer_list *unused)
+=======
+static void tau_timeout_smp(unsigned long unused)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 
 	/* schedule ourselves to be run again */
@@ -208,7 +223,11 @@ static void tau_timeout_smp(struct timer_list *unused)
 
 int tau_initialized = 0;
 
+<<<<<<< HEAD
 static void __init TAU_init_smp(void *info)
+=======
+void __init TAU_init_smp(void * info)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long cpu = smp_processor_id();
 
@@ -220,7 +239,11 @@ static void __init TAU_init_smp(void *info)
 	set_thresholds(cpu);
 }
 
+<<<<<<< HEAD
 static int __init TAU_init(void)
+=======
+int __init TAU_init(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* We assume in SMP that if one CPU has TAU support, they
 	 * all have it --BenH
@@ -233,7 +256,12 @@ static int __init TAU_init(void)
 
 
 	/* first, set up the window shrinking timer */
+<<<<<<< HEAD
 	timer_setup(&tau_timer, tau_timeout_smp, 0);
+=======
+	init_timer(&tau_timer);
+	tau_timer.function = tau_timeout_smp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tau_timer.expires = jiffies + shrink_timer;
 	add_timer(&tau_timer);
 
@@ -262,12 +290,20 @@ u32 cpu_temp_both(unsigned long cpu)
 	return ((tau[cpu].high << 16) | tau[cpu].low);
 }
 
+<<<<<<< HEAD
 u32 cpu_temp(unsigned long cpu)
+=======
+int cpu_temp(unsigned long cpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return ((tau[cpu].high + tau[cpu].low) / 2);
 }
 
+<<<<<<< HEAD
 u32 tau_interrupts(unsigned long cpu)
+=======
+int tau_interrupts(unsigned long cpu)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return (tau[cpu].interrupts);
 }

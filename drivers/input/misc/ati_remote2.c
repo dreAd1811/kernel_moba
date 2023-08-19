@@ -14,15 +14,26 @@
 #include <linux/module.h>
 
 #define DRIVER_DESC    "ATI/Philips USB RF remote driver"
+<<<<<<< HEAD
 
 MODULE_DESCRIPTION(DRIVER_DESC);
+=======
+#define DRIVER_VERSION "0.3"
+
+MODULE_DESCRIPTION(DRIVER_DESC);
+MODULE_VERSION(DRIVER_VERSION);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Ville Syrjala <syrjala@sci.fi>");
 MODULE_LICENSE("GPL");
 
 /*
  * ATI Remote Wonder II Channel Configuration
  *
+<<<<<<< HEAD
  * The remote control can be assigned one of sixteen "channels" in order to facilitate
+=======
+ * The remote control can by assigned one of sixteen "channels" in order to facilitate
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * the use of multiple remote controls within range of each other.
  * A remote's "channel" may be altered by pressing and holding the "PC" button for
  * approximately 3 seconds, after which the button will slowly flash the count of the

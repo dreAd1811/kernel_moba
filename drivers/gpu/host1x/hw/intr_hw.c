@@ -72,6 +72,7 @@ static void _host1x_intr_disable_all_syncpt_intrs(struct host1x *host)
 	}
 }
 
+<<<<<<< HEAD
 static void intr_hw_init(struct host1x *host, u32 cpm)
 {
 #if HOST1X_HW < 6
@@ -89,6 +90,8 @@ static void intr_hw_init(struct host1x *host, u32 cpm)
 #endif
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int
 _host1x_intr_init_host_sync(struct host1x *host, u32 cpm,
 			    void (*syncpt_thresh_work)(struct work_struct *))
@@ -109,7 +112,21 @@ _host1x_intr_init_host_sync(struct host1x *host, u32 cpm,
 		return err;
 	}
 
+<<<<<<< HEAD
 	intr_hw_init(host, cpm);
+=======
+	/* disable the ip_busy_timeout. this prevents write drops */
+	host1x_sync_writel(host, 0, HOST1X_SYNC_IP_BUSY_TIMEOUT);
+
+	/*
+	 * increase the auto-ack timout to the maximum value. 2d will hang
+	 * otherwise on Tegra2.
+	 */
+	host1x_sync_writel(host, 0xff, HOST1X_SYNC_CTXSW_TIMEOUT_CFG);
+
+	/* update host clocks per usec */
+	host1x_sync_writel(host, cpm, HOST1X_SYNC_USEC_CLK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

@@ -25,12 +25,32 @@
 /*
  * Returns (address we are running at) - (address we were linked at)
  * for use before the text and data are mapped to KERNELBASE.
+<<<<<<< HEAD
 
  * add_reloc_offset(x) returns x + reloc_offset().
  */
 
 _GLOBAL(reloc_offset)
 	li	r3, 0
+=======
+ */
+
+_GLOBAL(reloc_offset)
+	mflr	r0
+	bl	1f
+1:	mflr	r3
+	PPC_LL	r4,(2f-1b)(r3)
+	subf	r3,r4,r3
+	mtlr	r0
+	blr
+
+	.align	3
+2:	PPC_LONG 1b
+
+/*
+ * add_reloc_offset(x) returns x + reloc_offset().
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 _GLOBAL(add_reloc_offset)
 	mflr	r0
 	bl	1f
@@ -49,10 +69,13 @@ _GLOBAL(setjmp)
 	PPC_STL	r0,0(r3)
 	PPC_STL	r1,SZL(r3)
 	PPC_STL	r2,2*SZL(r3)
+<<<<<<< HEAD
 #ifdef CONFIG_PPC32
 	mfcr	r12
 	stmw	r12, 3*SZL(r3)
 #else
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mfcr	r0
 	PPC_STL	r0,3*SZL(r3)
 	PPC_STL	r13,4*SZL(r3)
@@ -74,16 +97,26 @@ _GLOBAL(setjmp)
 	PPC_STL	r29,20*SZL(r3)
 	PPC_STL	r30,21*SZL(r3)
 	PPC_STL	r31,22*SZL(r3)
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	li	r3,0
 	blr
 
 _GLOBAL(longjmp)
+<<<<<<< HEAD
 #ifdef CONFIG_PPC32
 	lmw	r12, 3*SZL(r3)
 	mtcrf	0x38, r12
 #else
 	PPC_LL	r13,4*SZL(r3)
+=======
+	PPC_LCMPI r4,0
+	bne	1f
+	li	r4,1
+1:	PPC_LL	r13,4*SZL(r3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PPC_LL	r14,5*SZL(r3)
 	PPC_LL	r15,6*SZL(r3)
 	PPC_LL	r16,7*SZL(r3)
@@ -104,14 +137,21 @@ _GLOBAL(longjmp)
 	PPC_LL	r31,22*SZL(r3)
 	PPC_LL	r0,3*SZL(r3)
 	mtcrf	0x38,r0
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PPC_LL	r0,0(r3)
 	PPC_LL	r1,SZL(r3)
 	PPC_LL	r2,2*SZL(r3)
 	mtlr	r0
+<<<<<<< HEAD
 	mr.	r3, r4
 	bnelr
 	li	r3, 1
+=======
+	mr	r3,r4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blr
 
 _GLOBAL(current_stack_pointer)

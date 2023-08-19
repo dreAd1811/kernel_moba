@@ -16,6 +16,12 @@
  * GNU General Public License for more details.
  */
 
+<<<<<<< HEAD
+=======
+/* We need to access legacy defines from linux/media.h */
+#define __NEED_MEDIA_LEGACY_API
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/compat.h>
 #include <linux/export.h>
 #include <linux/idr.h>
@@ -25,7 +31,10 @@
 #include <linux/types.h>
 #include <linux/pci.h>
 #include <linux/usb.h>
+<<<<<<< HEAD
 #include <linux/version.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <media/media-device.h>
 #include <media/media-devnode.h>
@@ -33,6 +42,7 @@
 
 #ifdef CONFIG_MEDIA_CONTROLLER
 
+<<<<<<< HEAD
 /*
  * Legacy defines from linux/media.h. This is the only place we need this
  * so we just define it here. The media.h header doesn't expose it to the
@@ -43,6 +53,8 @@
 #define MEDIA_ENT_T_DEVNODE_UNKNOWN		(MEDIA_ENT_F_OLD_BASE | \
 						 MEDIA_ENT_SUBTYPE_MASK)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Userspace API
  */
@@ -199,7 +211,10 @@ static long media_device_enum_links(struct media_device *mdev, void *arg)
 			ulink_desc++;
 		}
 	}
+<<<<<<< HEAD
 	memset(links->reserved, 0, sizeof(links->reserved));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -228,8 +243,11 @@ static long media_device_setup_link(struct media_device *mdev, void *arg)
 	if (link == NULL)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	memset(linkd->reserved, 0, sizeof(linkd->reserved));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Setup the link on both entities. */
 	return __media_entity_setup_link(link, linkd->flags);
 }
@@ -267,8 +285,12 @@ static long media_device_get_topology(struct media_device *mdev, void *arg)
 		memset(&kentity, 0, sizeof(kentity));
 		kentity.id = entity->graph_obj.id;
 		kentity.function = entity->function;
+<<<<<<< HEAD
 		kentity.flags = entity->flags;
 		strlcpy(kentity.name, entity->name,
+=======
+		strncpy(kentity.name, entity->name,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sizeof(kentity.name));
 
 		if (copy_to_user(uentity, &kentity, sizeof(kentity)))
@@ -276,7 +298,10 @@ static long media_device_get_topology(struct media_device *mdev, void *arg)
 		uentity++;
 	}
 	topo->num_entities = i;
+<<<<<<< HEAD
 	topo->reserved1 = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get interfaces and number of interfaces */
 	i = 0;
@@ -312,7 +337,10 @@ static long media_device_get_topology(struct media_device *mdev, void *arg)
 		uintf++;
 	}
 	topo->num_interfaces = i;
+<<<<<<< HEAD
 	topo->reserved2 = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get pads and number of pads */
 	i = 0;
@@ -333,14 +361,20 @@ static long media_device_get_topology(struct media_device *mdev, void *arg)
 		kpad.id = pad->graph_obj.id;
 		kpad.entity_id = pad->entity->graph_obj.id;
 		kpad.flags = pad->flags;
+<<<<<<< HEAD
 		kpad.index = pad->index;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (copy_to_user(upad, &kpad, sizeof(kpad)))
 			ret = -EFAULT;
 		upad++;
 	}
 	topo->num_pads = i;
+<<<<<<< HEAD
 	topo->reserved3 = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get links and number of links */
 	i = 0;
@@ -372,7 +406,10 @@ static long media_device_get_topology(struct media_device *mdev, void *arg)
 		ulink++;
 	}
 	topo->num_links = i;
+<<<<<<< HEAD
 	topo->reserved4 = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -593,12 +630,27 @@ int __must_check media_device_register_entity(struct media_device *mdev,
 	entity->num_links = 0;
 	entity->num_backlinks = 0;
 
+<<<<<<< HEAD
 	ret = ida_alloc_min(&mdev->entity_internal_idx, 1, GFP_KERNEL);
 	if (ret < 0)
 		return ret;
 	entity->internal_idx = ret;
 
 	mutex_lock(&mdev->graph_mutex);
+=======
+	if (!ida_pre_get(&mdev->entity_internal_idx, GFP_KERNEL))
+		return -ENOMEM;
+
+	mutex_lock(&mdev->graph_mutex);
+
+	ret = ida_get_new_above(&mdev->entity_internal_idx, 1,
+				&entity->internal_idx);
+	if (ret < 0) {
+		mutex_unlock(&mdev->graph_mutex);
+		return ret;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mdev->entity_internal_idx_max =
 		max(mdev->entity_internal_idx_max, entity->internal_idx);
 
@@ -644,7 +696,11 @@ static void __media_device_unregister_entity(struct media_entity *entity)
 	struct media_interface *intf;
 	unsigned int i;
 
+<<<<<<< HEAD
 	ida_free(&mdev->entity_internal_idx, entity->internal_idx);
+=======
+	ida_simple_remove(&mdev->entity_internal_idx, entity->internal_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Remove all interface links pointing to this entity */
 	list_for_each_entry(intf, &mdev->interfaces, graph_obj.list) {

@@ -2,6 +2,12 @@
 #ifndef __ASM_ARM_CPUTYPE_H
 #define __ASM_ARM_CPUTYPE_H
 
+<<<<<<< HEAD
+=======
+#include <linux/stringify.h>
+#include <linux/kernel.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CPUID_ID	0
 #define CPUID_CACHETYPE	1
 #define CPUID_TCM	2
@@ -59,7 +65,10 @@
 	((mpidr >> (MPIDR_LEVEL_BITS * level)) & MPIDR_LEVEL_MASK)
 
 #define ARM_CPU_IMP_ARM			0x41
+<<<<<<< HEAD
 #define ARM_CPU_IMP_BRCM		0x42
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARM_CPU_IMP_DEC			0x44
 #define ARM_CPU_IMP_INTEL		0x69
 
@@ -82,9 +91,14 @@
 #define ARM_CPU_PART_CORTEX_A75		0x4100d0a0
 #define ARM_CPU_PART_MASK		0xff00fff0
 
+<<<<<<< HEAD
 /* Broadcom implemented processors */
 #define ARM_CPU_PART_BRAHMA_B15		0x420000f0
 #define ARM_CPU_PART_BRAHMA_B53		0x42001000
+=======
+/* Broadcom cores */
+#define ARM_CPU_PART_BRAHMA_B15		0x420000f0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* DEC implemented cores */
 #define ARM_CPU_PART_SA1100		0x4400a110
@@ -105,11 +119,14 @@
 /* Qualcomm implemented cores */
 #define ARM_CPU_PART_SCORPION		0x510002d0
 
+<<<<<<< HEAD
 #ifndef __ASSEMBLY__
 
 #include <linux/stringify.h>
 #include <linux/kernel.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern unsigned int processor_id;
 struct proc_info_list *lookup_processor(u32 midr);
 
@@ -187,11 +204,14 @@ static inline unsigned int __attribute_const__ read_cpuid_cachetype(void)
 	return read_cpuid(CPUID_CACHETYPE);
 }
 
+<<<<<<< HEAD
 static inline unsigned int __attribute_const__ read_cpuid_mputype(void)
 {
 	return read_cpuid(CPUID_MPUIR);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #elif defined(CONFIG_CPU_V7M)
 
 static inline unsigned int __attribute_const__ read_cpuid_id(void)
@@ -204,11 +224,14 @@ static inline unsigned int __attribute_const__ read_cpuid_cachetype(void)
 	return readl(BASEADDR_V7M_SCB + V7M_SCB_CTR);
 }
 
+<<<<<<< HEAD
 static inline unsigned int __attribute_const__ read_cpuid_mputype(void)
 {
 	return readl(BASEADDR_V7M_SCB + MPU_TYPE);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else /* ifdef CONFIG_CPU_CP15 / elif defined(CONFIG_CPU_V7M) */
 
 static inline unsigned int __attribute_const__ read_cpuid_id(void)
@@ -339,6 +362,9 @@ static inline int __attribute_const__ cpuid_feature_extract_field(u32 features,
 #define cpuid_feature_extract(reg, field) \
 	cpuid_feature_extract_field(read_cpuid_ext(reg), field)
 
+<<<<<<< HEAD
 #endif /* __ASSEMBLY__ */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

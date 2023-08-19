@@ -756,7 +756,11 @@ static void *alloc_ring(struct device *dev, size_t nelem, size_t hwsize,
 	 * Allocate the hardware ring and PCI DMA bus address space for said.
 	 */
 	size_t hwlen = nelem * hwsize + stat_size;
+<<<<<<< HEAD
 	void *hwring = dma_zalloc_coherent(dev, hwlen, busaddrp, GFP_KERNEL);
+=======
+	void *hwring = dma_alloc_coherent(dev, hwlen, busaddrp, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!hwring)
 		return NULL;
@@ -776,6 +780,14 @@ static void *alloc_ring(struct device *dev, size_t nelem, size_t hwsize,
 		*(void **)swringp = swring;
 	}
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Zero out the hardware ring and return its address as our function
+	 * value.
+	 */
+	memset(hwring, 0, hwlen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return hwring;
 }
 
@@ -1197,10 +1209,13 @@ int t4vf_eth_xmit(struct sk_buff *skb, struct net_device *dev)
 	BUG_ON(qidx >= pi->nqsets);
 	txq = &adapter->sge.ethtxq[pi->first_qset + qidx];
 
+<<<<<<< HEAD
 	if (pi->vlan_id && !skb_vlan_tag_present(skb))
 		__vlan_hwaccel_put_tag(skb, cpu_to_be16(ETH_P_8021Q),
 				       pi->vlan_id);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Take this opportunity to reclaim any TX Descriptors whose DMA
 	 * transfers have completed.
@@ -1569,7 +1584,10 @@ static void do_gro(struct sge_eth_rxq *rxq, const struct pkt_gl *gl,
 {
 	struct adapter *adapter = rxq->rspq.adapter;
 	struct sge *s = &adapter->sge;
+<<<<<<< HEAD
 	struct port_info *pi;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	struct sk_buff *skb;
 
@@ -1586,9 +1604,14 @@ static void do_gro(struct sge_eth_rxq *rxq, const struct pkt_gl *gl,
 	skb->truesize += skb->data_len;
 	skb->ip_summed = CHECKSUM_UNNECESSARY;
 	skb_record_rx_queue(skb, rxq->rspq.idx);
+<<<<<<< HEAD
 	pi = netdev_priv(skb->dev);
 
 	if (pkt->vlan_ex && !pi->vlan_id) {
+=======
+
+	if (pkt->vlan_ex) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__vlan_hwaccel_put_tag(skb, cpu_to_be16(ETH_P_8021Q),
 					be16_to_cpu(pkt->vlan));
 		rxq->stats.vlan_ex++;
@@ -1621,7 +1644,10 @@ int t4vf_ethrx_handler(struct sge_rspq *rspq, const __be64 *rsp,
 	struct sge_eth_rxq *rxq = container_of(rspq, struct sge_eth_rxq, rspq);
 	struct adapter *adapter = rspq->adapter;
 	struct sge *s = &adapter->sge;
+<<<<<<< HEAD
 	struct port_info *pi;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If this is a good TCP packet and we have Generic Receive Offload
@@ -1646,7 +1672,10 @@ int t4vf_ethrx_handler(struct sge_rspq *rspq, const __be64 *rsp,
 	__skb_pull(skb, s->pktshift);
 	skb->protocol = eth_type_trans(skb, rspq->netdev);
 	skb_record_rx_queue(skb, rspq->idx);
+<<<<<<< HEAD
 	pi = netdev_priv(skb->dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rxq->stats.pkts++;
 
 	if (csum_ok && !pkt->err_vec &&
@@ -1663,10 +1692,16 @@ int t4vf_ethrx_handler(struct sge_rspq *rspq, const __be64 *rsp,
 	} else
 		skb_checksum_none_assert(skb);
 
+<<<<<<< HEAD
 	if (pkt->vlan_ex && !pi->vlan_id) {
 		rxq->stats.vlan_ex++;
 		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q),
 				       be16_to_cpu(pkt->vlan));
+=======
+	if (pkt->vlan_ex) {
+		rxq->stats.vlan_ex++;
+		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), be16_to_cpu(pkt->vlan));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	netif_receive_skb(skb);
@@ -2062,9 +2097,15 @@ irq_handler_t t4vf_intr_handler(struct adapter *adapter)
  *	when out of memory a queue can become empty.  We schedule NAPI to do
  *	the actual refill.
  */
+<<<<<<< HEAD
 static void sge_rx_timer_cb(struct timer_list *t)
 {
 	struct adapter *adapter = from_timer(adapter, t, sge.rx_timer);
+=======
+static void sge_rx_timer_cb(unsigned long data)
+{
+	struct adapter *adapter = (struct adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sge *s = &adapter->sge;
 	unsigned int i;
 
@@ -2121,9 +2162,15 @@ static void sge_rx_timer_cb(struct timer_list *t)
  *	when no new packets are being submitted.  This is essential for pktgen,
  *	at least.
  */
+<<<<<<< HEAD
 static void sge_tx_timer_cb(struct timer_list *t)
 {
 	struct adapter *adapter = from_timer(adapter, t, sge.tx_timer);
+=======
+static void sge_tx_timer_cb(unsigned long data)
+{
+	struct adapter *adapter = (struct adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sge *s = &adapter->sge;
 	unsigned int i, budget;
 
@@ -2691,8 +2738,13 @@ int t4vf_sge_init(struct adapter *adapter)
 	/*
 	 * Set up tasklet timers.
 	 */
+<<<<<<< HEAD
 	timer_setup(&s->rx_timer, sge_rx_timer_cb, 0);
 	timer_setup(&s->tx_timer, sge_tx_timer_cb, 0);
+=======
+	setup_timer(&s->rx_timer, sge_rx_timer_cb, (unsigned long)adapter);
+	setup_timer(&s->tx_timer, sge_tx_timer_cb, (unsigned long)adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Initialize Forwarded Interrupt Queue lock.

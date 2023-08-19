@@ -4,8 +4,12 @@
 
 menuconfig NVM
 	bool "Open-Channel SSD target support"
+<<<<<<< HEAD
 	depends on BLOCK && PCI
 	select BLK_DEV_NVME
+=======
+	depends on BLOCK && HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to get to enable Open-channel SSDs.
 
@@ -17,6 +21,7 @@ menuconfig NVM
 
 if NVM
 
+<<<<<<< HEAD
 config NVM_PBLK
 	tristate "Physical Block Device Open-Channel SSD target"
 	help
@@ -37,5 +42,32 @@ config NVM_PBLK_DEBUG
 	  entries.
 
 endif # NVM_PBLK_DEBUG
+=======
+config NVM_DEBUG
+	bool "Open-Channel SSD debugging support"
+	default n
+	---help---
+	Exposes a debug management interface to create/remove targets at:
+
+	  /sys/module/lnvm/parameters/configure_debug
+
+	It is required to create/remove targets without IOCTLs.
+
+config NVM_RRPC
+	tristate "Round-robin Hybrid Open-Channel SSD target"
+	---help---
+	Allows an open-channel SSD to be exposed as a block device to the
+	host. The target is implemented using a linear mapping table and
+	cost-based garbage collection. It is optimized for 4K IO sizes.
+
+config NVM_PBLK
+	tristate "Physical Block Device Open-Channel SSD target"
+	---help---
+	Allows an open-channel SSD to be exposed as a block device to the
+	host. The target assumes the device exposes raw flash and must be
+	explicitly managed by the host.
+
+	Please note the disk format is considered EXPERIMENTAL for now.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 endif # NVM

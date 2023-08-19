@@ -47,13 +47,18 @@ enum {
 
 	 /* UNMAP HEM */
 	HEM_TYPE_MTT,
+<<<<<<< HEAD
 	HEM_TYPE_CQE,
 	HEM_TYPE_IRRL,
 	HEM_TYPE_TRRL,
+=======
+	HEM_TYPE_IRRL,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define HNS_ROCE_HEM_CHUNK_LEN	\
 	 ((256 - sizeof(struct list_head) - 2 * sizeof(int)) /	 \
+<<<<<<< HEAD
 	 (sizeof(struct scatterlist)))
 
 #define check_whether_bt_num_3(type, hop_num) \
@@ -67,6 +72,9 @@ enum {
 	((type < HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0) || \
 	(type >= HEM_TYPE_MTT && hop_num == 1) || \
 	(type >= HEM_TYPE_MTT && hop_num == HNS_ROCE_HOP_NUM_0))
+=======
+	 (sizeof(struct scatterlist) + sizeof(void *)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	 HNS_ROCE_HEM_PAGE_SHIFT = 12,
@@ -78,7 +86,10 @@ struct hns_roce_hem_chunk {
 	int			 npages;
 	int			 nsg;
 	struct scatterlist	 mem[HNS_ROCE_HEM_CHUNK_LEN];
+<<<<<<< HEAD
 	void			 *buf[HNS_ROCE_HEM_CHUNK_LEN];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct hns_roce_hem {
@@ -92,6 +103,7 @@ struct hns_roce_hem_iter {
 	int				 page_idx;
 };
 
+<<<<<<< HEAD
 struct hns_roce_hem_mhop {
 	u32	hop_num;
 	u32	buf_chunk_size;
@@ -102,13 +114,19 @@ struct hns_roce_hem_mhop {
 	u32	l2_idx;/* level 2 base address table index */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void hns_roce_free_hem(struct hns_roce_dev *hr_dev, struct hns_roce_hem *hem);
 int hns_roce_table_get(struct hns_roce_dev *hr_dev,
 		       struct hns_roce_hem_table *table, unsigned long obj);
 void hns_roce_table_put(struct hns_roce_dev *hr_dev,
 			struct hns_roce_hem_table *table, unsigned long obj);
+<<<<<<< HEAD
 void *hns_roce_table_find(struct hns_roce_dev *hr_dev,
 			  struct hns_roce_hem_table *table, unsigned long obj,
+=======
+void *hns_roce_table_find(struct hns_roce_hem_table *table, unsigned long obj,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  dma_addr_t *dma_handle);
 int hns_roce_table_get_range(struct hns_roce_dev *hr_dev,
 			     struct hns_roce_hem_table *table,
@@ -123,10 +141,13 @@ int hns_roce_init_hem_table(struct hns_roce_dev *hr_dev,
 void hns_roce_cleanup_hem_table(struct hns_roce_dev *hr_dev,
 				struct hns_roce_hem_table *table);
 void hns_roce_cleanup_hem(struct hns_roce_dev *hr_dev);
+<<<<<<< HEAD
 int hns_roce_calc_hem_mhop(struct hns_roce_dev *hr_dev,
 			   struct hns_roce_hem_table *table, unsigned long *obj,
 			   struct hns_roce_hem_mhop *mhop);
 bool hns_roce_check_whether_mhop(struct hns_roce_dev *hr_dev, u32 type);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void hns_roce_hem_first(struct hns_roce_hem *hem,
 				      struct hns_roce_hem_iter *iter)
@@ -135,7 +156,11 @@ static inline void hns_roce_hem_first(struct hns_roce_hem *hem,
 	iter->chunk = list_empty(&hem->chunk_list) ? NULL :
 				 list_entry(hem->chunk_list.next,
 					    struct hns_roce_hem_chunk, list);
+<<<<<<< HEAD
 	iter->page_idx = 0;
+=======
+	 iter->page_idx = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int hns_roce_hem_last(struct hns_roce_hem_iter *iter)

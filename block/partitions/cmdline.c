@@ -58,6 +58,7 @@ static int __init cmdline_parts_setup(char *s)
 }
 __setup("blkdevparts=", cmdline_parts_setup);
 
+<<<<<<< HEAD
 static bool has_overlaps(sector_t from, sector_t size,
 			 sector_t from2, sector_t size2)
 {
@@ -114,6 +115,8 @@ static void cmdline_parts_verifier(int slot, struct parsed_partitions *state)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Purpose: allocate cmdline partitions.
  * Returns:
@@ -149,7 +152,10 @@ int cmdline_partition(struct parsed_partitions *state)
 	disk_size = get_capacity(state->bdev->bd_disk) << 9;
 
 	cmdline_parts_set(parts, disk_size, 1, add_part, (void *)state);
+<<<<<<< HEAD
 	cmdline_parts_verifier(1, state);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	strlcat(state->pp_buf, "\n", PAGE_SIZE);
 

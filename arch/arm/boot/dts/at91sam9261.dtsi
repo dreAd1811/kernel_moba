@@ -60,7 +60,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	sram: sram@300000 {
+=======
+	sram: sram@00300000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "mmio-sram";
 		reg = <0x00300000 0x28000>;
 	};
@@ -71,7 +75,11 @@
 		#size-cells = <1>;
 		ranges;
 
+<<<<<<< HEAD
 		usb0: ohci@500000 {
+=======
+		usb0: ohci@00500000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "atmel,at91rm9200-ohci", "usb-ohci";
 			reg = <0x00500000 0x100000>;
 			interrupts = <20 IRQ_TYPE_LEVEL_HIGH 2>;
@@ -80,7 +88,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		fb0: fb@600000 {
+=======
+		fb0: fb@0x00600000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "atmel,at91sam9261-lcdc";
 			reg = <0x00600000 0x1000>;
 			interrupts = <21 IRQ_TYPE_LEVEL_HIGH 3>;
@@ -125,9 +137,13 @@
 			ranges;
 
 			tcb0: timer@fffa0000 {
+<<<<<<< HEAD
 				compatible = "atmel,at91rm9200-tcb", "simple-mfd", "syscon";
 				#address-cells = <1>;
 				#size-cells = <0>;
+=======
+				compatible = "atmel,at91rm9200-tcb";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xfffa0000 0x100>;
 				interrupts = <17 IRQ_TYPE_LEVEL_HIGH 0>,
 					     <18 IRQ_TYPE_LEVEL_HIGH 0>,
@@ -328,8 +344,13 @@
 				usart0 {
 					pinctrl_usart0: usart0-0 {
 						atmel,pins =
+<<<<<<< HEAD
 							<AT91_PIOC 8 AT91_PERIPH_A AT91_PINCTRL_NONE>,
 							<AT91_PIOC 9 AT91_PERIPH_A AT91_PINCTRL_PULL_UP>;
+=======
+							<AT91_PIOC 8 AT91_PERIPH_A AT91_PINCTRL_PULL_UP>,
+							<AT91_PIOC 9 AT91_PERIPH_A AT91_PINCTRL_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 
 					pinctrl_usart0_rts: usart0_rts-0 {
@@ -346,8 +367,13 @@
 				usart1 {
 					pinctrl_usart1: usart1-0 {
 						atmel,pins =
+<<<<<<< HEAD
 							<AT91_PIOC 12 AT91_PERIPH_A AT91_PINCTRL_NONE>,
 							<AT91_PIOC 13 AT91_PERIPH_A AT91_PINCTRL_PULL_UP>;
+=======
+							<AT91_PIOC 12 AT91_PERIPH_A AT91_PINCTRL_PULL_UP>,
+							<AT91_PIOC 13 AT91_PERIPH_A AT91_PINCTRL_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 
 					pinctrl_usart1_rts: usart1_rts-0 {
@@ -364,8 +390,13 @@
 				usart2 {
 					pinctrl_usart2: usart2-0 {
 						atmel,pins =
+<<<<<<< HEAD
 							<AT91_PIOC 14 AT91_PERIPH_A AT91_PINCTRL_NONE>,
 							<AT91_PIOC 15 AT91_PERIPH_A AT91_PINCTRL_PULL_UP>;
+=======
+							<AT91_PIOC 14 AT91_PERIPH_A AT91_PINCTRL_PULL_UP>,
+							<AT91_PIOC 15 AT91_PERIPH_A AT91_PINCTRL_NONE>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 
 					pinctrl_usart2_rts: usart2_rts-0 {
@@ -590,7 +621,11 @@
 			};
 
 			pmc: pmc@fffffc00 {
+<<<<<<< HEAD
 				compatible = "atmel,at91sam9261-pmc", "syscon";
+=======
+				compatible = "atmel,at91rm9200-pmc", "syscon";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				reg = <0xfffffc00 0x100>;
 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
 				interrupt-controller;

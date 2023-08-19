@@ -354,10 +354,14 @@ static struct cxgbi_ppm_pool *ppm_alloc_cpu_pool(unsigned int *total,
 		ppmax = max;
 
 	/* pool size must be multiple of unsigned long */
+<<<<<<< HEAD
 	bmap = ppmax / BITS_PER_TYPE(unsigned long);
 	if (!bmap)
 		return NULL;
 
+=======
+	bmap = BITS_TO_LONGS(ppmax);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ppmax = (bmap * sizeof(unsigned long)) << 3;
 
 	alloc_sz = sizeof(*pools) + sizeof(unsigned long) * bmap;
@@ -405,10 +409,13 @@ int cxgbi_ppm_init(void **ppm_pp, struct net_device *ndev,
 	if (reserve_factor) {
 		ppmax_pool = ppmax / reserve_factor;
 		pool = ppm_alloc_cpu_pool(&ppmax_pool, &pool_index_max);
+<<<<<<< HEAD
 		if (!pool) {
 			ppmax_pool = 0;
 			reserve_factor = 0;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pr_debug("%s: ppmax %u, cpu total %u, per cpu %u.\n",
 			 ndev->name, ppmax, ppmax_pool, pool_index_max);
@@ -419,10 +426,19 @@ int cxgbi_ppm_init(void **ppm_pp, struct net_device *ndev,
 			ppmax * (sizeof(struct cxgbi_ppod_data)) +
 			ppod_bmap_size * sizeof(unsigned long);
 
+<<<<<<< HEAD
 	ppm = vzalloc(alloc_sz);
 	if (!ppm)
 		goto release_ppm_pool;
 
+=======
+	ppm = vmalloc(alloc_sz);
+	if (!ppm)
+		goto release_ppm_pool;
+
+	memset(ppm, 0, alloc_sz);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ppm->ppod_bmap = (unsigned long *)(&ppm->ppod_data[ppmax]);
 
 	if ((ppod_bmap_size >> 3) > (ppmax - ppmax_pool)) {

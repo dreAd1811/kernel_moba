@@ -10,7 +10,10 @@ The PCI driver for the test device performs the following tests
 	*) verifying addresses programmed in BAR
 	*) raise legacy IRQ
 	*) raise MSI IRQ
+<<<<<<< HEAD
 	*) raise MSI-X IRQ
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*) read data
 	*) write data
 	*) copy data
@@ -26,11 +29,14 @@ ioctl
  PCITEST_LEGACY_IRQ: Tests legacy IRQ
  PCITEST_MSI: Tests message signalled interrupts. The MSI number
 	      to be tested should be passed as argument.
+<<<<<<< HEAD
  PCITEST_MSIX: Tests message signalled interrupts. The MSI-X number
 	      to be tested should be passed as argument.
  PCITEST_SET_IRQTYPE: Changes driver IRQ type configuration. The IRQ type
 	      should be passed as argument (0: Legacy, 1:MSI, 2:MSI-X).
  PCITEST_GET_IRQTYPE: Gets driver IRQ type configuration.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  PCITEST_WRITE: Perform write tests. The size of the buffer should be passed
 		as argument.
  PCITEST_READ: Perform read tests. The size of the buffer should be passed

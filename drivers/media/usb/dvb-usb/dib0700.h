@@ -51,8 +51,11 @@ struct dib0700_state {
 	int (*read_status)(struct dvb_frontend *, enum fe_status *);
 	int (*sleep)(struct dvb_frontend* fe);
 	u8 buf[255];
+<<<<<<< HEAD
 	struct i2c_client *i2c_client_demod;
 	struct i2c_client *i2c_client_tuner;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern int dib0700_get_version(struct dvb_usb_device *d, u32 *hwversion,

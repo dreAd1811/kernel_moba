@@ -117,7 +117,11 @@ static const char version[] =
 static int apne_owned;	/* signal if card already owned */
 
 static u32 apne_msg_enable;
+<<<<<<< HEAD
 module_param_named(msg_enable, apne_msg_enable, uint, 0444);
+=======
+module_param_named(msg_enable, apne_msg_enable, uint, (S_IRUSR|S_IRGRP|S_IROTH));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(msg_enable, "Debug message level (see linux/netdevice.h for bitmap)");
 
 struct net_device * __init apne_probe(int unit)

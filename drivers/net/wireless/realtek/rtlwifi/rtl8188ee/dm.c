@@ -1221,8 +1221,12 @@ static void rtl88e_dm_refresh_rate_adaptive_mask(struct ieee80211_hw *hw)
 			sta = rtl_find_sta(hw, mac->bssid);
 			if (sta)
 				rtlpriv->cfg->ops->update_rate_tbl(hw, sta,
+<<<<<<< HEAD
 							p_ra->ratr_state,
 								   true);
+=======
+								   p_ra->ratr_state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rcu_read_unlock();
 
 			p_ra->pre_ratr_state = p_ra->ratr_state;
@@ -1708,11 +1712,17 @@ static void rtl88e_dm_fast_ant_training(struct ieee80211_hw *hw)
 	}
 }
 
+<<<<<<< HEAD
 void rtl88e_dm_fast_antenna_training_callback(struct timer_list *t)
 {
 	struct rtl_priv *rtlpriv =
 		from_timer(rtlpriv, t, works.fast_antenna_training_timer);
 	struct ieee80211_hw *hw = rtlpriv->hw;
+=======
+void rtl88e_dm_fast_antenna_training_callback(unsigned long data)
+{
+	struct ieee80211_hw *hw = (struct ieee80211_hw *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl88e_dm_fast_ant_training(hw);
 }

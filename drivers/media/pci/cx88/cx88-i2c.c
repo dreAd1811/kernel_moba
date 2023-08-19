@@ -8,7 +8,11 @@
  * (c) 2002 Yurij Sysoev <yurij@naturesoft.net>
  * (c) 1999-2003 Gerd Knorr <kraxel@bytesex.org>
  *
+<<<<<<< HEAD
  * (c) 2005 Mauro Carvalho Chehab <mchehab@kernel.org>
+=======
+ * (c) 2005 Mauro Carvalho Chehab <mchehab@infradead.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	- Multituner support and i2c address binding
  *
  * This program is free software; you can redistribute it and/or modify

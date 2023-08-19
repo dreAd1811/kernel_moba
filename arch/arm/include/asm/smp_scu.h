@@ -28,8 +28,11 @@ static inline unsigned long scu_a9_get_base(void)
 #ifdef CONFIG_HAVE_ARM_SCU
 unsigned int scu_get_core_count(void __iomem *);
 int scu_power_mode(void __iomem *, unsigned int);
+<<<<<<< HEAD
 int scu_cpu_power_enable(void __iomem *, unsigned int);
 int scu_get_cpu_power_mode(void __iomem *scu_base, unsigned int logical_cpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static inline unsigned int scu_get_core_count(void __iomem *scu_base)
 {
@@ -39,6 +42,7 @@ static inline int scu_power_mode(void __iomem *scu_base, unsigned int mode)
 {
 	return -EINVAL;
 }
+<<<<<<< HEAD
 static inline int scu_cpu_power_enable(void __iomem *scu_base,
 				       unsigned int mode)
 {
@@ -49,6 +53,8 @@ static inline int scu_get_cpu_power_mode(void __iomem *scu_base,
 {
 	return -EINVAL;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #if defined(CONFIG_SMP) && defined(CONFIG_HAVE_ARM_SCU)

@@ -22,20 +22,30 @@
 #include "rsi_main.h"
 #include "rsi_common.h"
 
+<<<<<<< HEAD
 #define RSI_USB_VID_9113	0x1618
 #define RSI_USB_PID_9113	0x9113
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define USB_INTERNAL_REG_1           0x25000
 #define RSI_USB_READY_MAGIC_NUM      0xab
 #define FW_STATUS_REG                0x41050012
 #define RSI_TA_HOLD_REG              0x22000844
+<<<<<<< HEAD
 #define RSI_FW_WDT_DISABLE_REQ	     0x69
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define USB_VENDOR_REGISTER_READ     0x15
 #define USB_VENDOR_REGISTER_WRITE    0x16
 #define RSI_USB_TX_HEAD_ROOM         128
 
+<<<<<<< HEAD
 #define MAX_RX_URBS                  2
+=======
+#define MAX_RX_URBS                  1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX_BULK_EP                  8
 #define WLAN_EP                      1
 #define BT_EP                        2
@@ -43,6 +53,7 @@
 #define RSI_USB_BUF_SIZE	     4096
 #define RSI_USB_CTRL_BUF_SIZE	     0x04
 
+<<<<<<< HEAD
 struct rx_usb_ctrl_block {
 	u8 *data;
 	struct urb *rx_urb;
@@ -52,19 +63,32 @@ struct rx_usb_ctrl_block {
 
 struct rsi_91x_usbdev {
 	void *priv;
+=======
+struct rsi_91x_usbdev {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct rsi_thread rx_thread;
 	u8 endpoint;
 	struct usb_device *usbdev;
 	struct usb_interface *pfunction;
+<<<<<<< HEAD
 	struct rx_usb_ctrl_block rx_cb[MAX_RX_URBS];
 	u8 *tx_buffer;
 	__le16 bulkin_size[MAX_BULK_EP];
 	u8 bulkin_endpoint_addr[MAX_BULK_EP];
+=======
+	struct urb *rx_usb_urb[MAX_RX_URBS];
+	u8 *tx_buffer;
+	__le16 bulkin_size;
+	u8 bulkin_endpoint_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 bulkout_size[MAX_BULK_EP];
 	u8 bulkout_endpoint_addr[MAX_BULK_EP];
 	u32 tx_blk_size;
 	u8 write_fail;
+<<<<<<< HEAD
 	struct sk_buff_head rx_q;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline int rsi_usb_check_queue_status(struct rsi_hw *adapter, u8 q_num)

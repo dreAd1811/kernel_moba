@@ -42,7 +42,11 @@ static int ve_spc_get_transition_latency(struct device *cpu_dev)
 	return 1000000; /* 1 ms */
 }
 
+<<<<<<< HEAD
 static const struct cpufreq_arm_bL_ops ve_spc_cpufreq_ops = {
+=======
+static struct cpufreq_arm_bL_ops ve_spc_cpufreq_ops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name	= "vexpress-spc",
 	.get_transition_latency = ve_spc_get_transition_latency,
 	.init_opp_table = ve_spc_init_opp_table,

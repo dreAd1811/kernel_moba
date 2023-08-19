@@ -25,6 +25,11 @@
 #include "fweh.h"
 #include "debug.h"
 
+<<<<<<< HEAD
+=======
+static struct dentry *root_folder;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int brcmf_debug_create_memdump(struct brcmf_bus *bus, const void *data,
 			       size_t len)
 {
@@ -40,8 +45,12 @@ int brcmf_debug_create_memdump(struct brcmf_bus *bus, const void *data,
 	if (!dump)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	if (data && len > 0)
 		memcpy(dump, data, len);
+=======
+	memcpy(dump, data, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = brcmf_bus_get_memdump(bus, dump + len, ramsize);
 	if (err) {
 		vfree(dump);
@@ -53,9 +62,50 @@ int brcmf_debug_create_memdump(struct brcmf_bus *bus, const void *data,
 	return 0;
 }
 
+<<<<<<< HEAD
 struct dentry *brcmf_debugfs_get_devdir(struct brcmf_pub *drvr)
 {
 	return drvr->wiphy->debugfsdir;
+=======
+void brcmf_debugfs_init(void)
+{
+	root_folder = debugfs_create_dir(KBUILD_MODNAME, NULL);
+	if (IS_ERR(root_folder))
+		root_folder = NULL;
+}
+
+void brcmf_debugfs_exit(void)
+{
+	if (!root_folder)
+		return;
+
+	debugfs_remove_recursive(root_folder);
+	root_folder = NULL;
+}
+
+int brcmf_debug_attach(struct brcmf_pub *drvr)
+{
+	struct device *dev = drvr->bus_if->dev;
+
+	if (!root_folder)
+		return -ENODEV;
+
+	drvr->dbgfs_dir = debugfs_create_dir(dev_name(dev), root_folder);
+	return PTR_ERR_OR_ZERO(drvr->dbgfs_dir);
+}
+
+void brcmf_debug_detach(struct brcmf_pub *drvr)
+{
+	brcmf_fweh_unregister(drvr, BRCMF_E_PSM_WATCHDOG);
+
+	if (!IS_ERR_OR_NULL(drvr->dbgfs_dir))
+		debugfs_remove_recursive(drvr->dbgfs_dir);
+}
+
+struct dentry *brcmf_debugfs_get_devdir(struct brcmf_pub *drvr)
+{
+	return drvr->dbgfs_dir;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int brcmf_debugfs_add_entry(struct brcmf_pub *drvr, const char *fn,
@@ -63,8 +113,13 @@ int brcmf_debugfs_add_entry(struct brcmf_pub *drvr, const char *fn,
 {
 	struct dentry *e;
 
+<<<<<<< HEAD
 	WARN(!drvr->wiphy->debugfsdir, "wiphy not (yet) registered\n");
 	e = debugfs_create_devm_seqfile(drvr->bus_if->dev, fn,
 					drvr->wiphy->debugfsdir, read_fn);
+=======
+	e = debugfs_create_devm_seqfile(drvr->bus_if->dev, fn,
+					drvr->dbgfs_dir, read_fn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return PTR_ERR_OR_ZERO(e);
 }

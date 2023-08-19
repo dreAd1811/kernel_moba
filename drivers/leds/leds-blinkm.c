@@ -549,12 +549,17 @@ static int blinkm_detect(struct i2c_client *client, struct i2c_board_info *info)
 	/* make sure the blinkM is balanced (read/writes) */
 	while (count > 0) {
 		ret = blinkm_write(client, BLM_GET_ADDR, NULL);
+<<<<<<< HEAD
 		if (ret)
 			return ret;
 		usleep_range(5000, 10000);
 		ret = blinkm_read(client, BLM_GET_ADDR, tmpargs);
 		if (ret)
 			return ret;
+=======
+		usleep_range(5000, 10000);
+		ret = blinkm_read(client, BLM_GET_ADDR, tmpargs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		usleep_range(5000, 10000);
 		if (tmpargs[0] == 0x09)
 			count = 0;

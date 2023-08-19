@@ -588,7 +588,11 @@ static void clear_IO_APIC_pin(unsigned int apic, unsigned int pin)
 		       mpc_ioapic_id(apic), pin);
 }
 
+<<<<<<< HEAD
 void clear_IO_APIC (void)
+=======
+static void clear_IO_APIC (void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int apic, pin;
 
@@ -801,18 +805,31 @@ static int irq_polarity(int idx)
 	/*
 	 * Determine IRQ line polarity (high active or low active):
 	 */
+<<<<<<< HEAD
 	switch (mp_irqs[idx].irqflag & MP_IRQPOL_MASK) {
 	case MP_IRQPOL_DEFAULT:
+=======
+	switch (mp_irqs[idx].irqflag & 0x03) {
+	case 0:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* conforms to spec, ie. bus-type dependent polarity */
 		if (test_bit(bus, mp_bus_not_pci))
 			return default_ISA_polarity(idx);
 		else
 			return default_PCI_polarity(idx);
+<<<<<<< HEAD
 	case MP_IRQPOL_ACTIVE_HIGH:
 		return IOAPIC_POL_HIGH;
 	case MP_IRQPOL_RESERVED:
 		pr_warn("IOAPIC: Invalid polarity: 2, defaulting to low\n");
 	case MP_IRQPOL_ACTIVE_LOW:
+=======
+	case 1:
+		return IOAPIC_POL_HIGH;
+	case 2:
+		pr_warn("IOAPIC: Invalid polarity: 2, defaulting to low\n");
+	case 3:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default: /* Pointless default required due to do gcc stupidity */
 		return IOAPIC_POL_LOW;
 	}
@@ -846,8 +863,13 @@ static int irq_trigger(int idx)
 	/*
 	 * Determine IRQ trigger mode (edge or level sensitive):
 	 */
+<<<<<<< HEAD
 	switch (mp_irqs[idx].irqflag & MP_IRQTRIG_MASK) {
 	case MP_IRQTRIG_DEFAULT:
+=======
+	switch ((mp_irqs[idx].irqflag >> 2) & 0x03) {
+	case 0:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* conforms to spec, ie. bus-type dependent trigger mode */
 		if (test_bit(bus, mp_bus_not_pci))
 			trigger = default_ISA_trigger(idx);
@@ -855,11 +877,19 @@ static int irq_trigger(int idx)
 			trigger = default_PCI_trigger(idx);
 		/* Take EISA into account */
 		return eisa_irq_trigger(idx, bus, trigger);
+<<<<<<< HEAD
 	case MP_IRQTRIG_EDGE:
 		return IOAPIC_EDGE;
 	case MP_IRQTRIG_RESERVED:
 		pr_warn("IOAPIC: Invalid trigger mode 2 defaulting to level\n");
 	case MP_IRQTRIG_LEVEL:
+=======
+	case 1:
+		return IOAPIC_EDGE;
+	case 2:
+		pr_warn("IOAPIC: Invalid trigger mode 2 defaulting to level\n");
+	case 3:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default: /* Pointless default required due to do gcc stupidity */
 		return IOAPIC_LEVEL;
 	}
@@ -1015,7 +1045,10 @@ static int alloc_isa_irq_from_domain(struct irq_domain *domain,
 					  info->ioapic_pin))
 			return -ENOMEM;
 	} else {
+<<<<<<< HEAD
 		info->flags |= X86_IRQ_ALLOC_LEGACY;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irq = __irq_domain_alloc_irqs(domain, irq, 1, node, info, true,
 					      NULL);
 		if (irq >= 0) {
@@ -1411,7 +1444,11 @@ void __init enable_IO_APIC(void)
 	clear_IO_APIC();
 }
 
+<<<<<<< HEAD
 void native_restore_boot_irq_mode(void)
+=======
+void native_disable_io_apic(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * If the i8259 is routed through an IOAPIC
@@ -1439,12 +1476,29 @@ void native_restore_boot_irq_mode(void)
 		disconnect_bsp_APIC(ioapic_i8259.pin != -1);
 }
 
+<<<<<<< HEAD
 void restore_boot_irq_mode(void)
 {
 	if (!nr_legacy_irqs())
 		return;
 
 	x86_apic_ops.restore();
+=======
+/*
+ * Not an __init, needed by the reboot code
+ */
+void disable_IO_APIC(void)
+{
+	/*
+	 * Clear the IO-APIC before rebooting:
+	 */
+	clear_IO_APIC();
+
+	if (!nr_legacy_irqs())
+		return;
+
+	x86_io_apic_ops.disable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_X86_32
@@ -1580,6 +1634,7 @@ static int __init notimercheck(char *s)
 }
 __setup("no_timer_check", notimercheck);
 
+<<<<<<< HEAD
 static void __init delay_with_tsc(void)
 {
 	unsigned long long start, now;
@@ -1617,6 +1672,8 @@ static void __init delay_without_tsc(void)
 	} while (band < 12 && time_before_eq(jiffies, end));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * There is a nasty bug in some older SMP boards, their mptable lies
  * about the timer IRQ. We do the following to work around the situation:
@@ -1635,12 +1692,17 @@ static int __init timer_irq_works(void)
 
 	local_save_flags(flags);
 	local_irq_enable();
+<<<<<<< HEAD
 
 	if (boot_cpu_has(X86_FEATURE_TSC))
 		delay_with_tsc();
 	else
 		delay_without_tsc();
 
+=======
+	/* Let ten ticks pass... */
+	mdelay((10 * 1000) / HZ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local_irq_restore(flags);
 
 	/*
@@ -1724,9 +1786,16 @@ static bool io_apic_level_ack_pending(struct mp_chip_data *data)
 
 static inline bool ioapic_irqd_mask(struct irq_data *data)
 {
+<<<<<<< HEAD
 	/* If we are moving the irq we need to mask it */
 	if (unlikely(irqd_is_setaffinity_pending(data))) {
 		mask_ioapic_irq(data);
+=======
+	/* If we are moving the IRQ we need to mask it */
+	if (unlikely(irqd_is_setaffinity_pending(data))) {
+		if (!irqd_irq_masked(data))
+			mask_ioapic_irq(data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return true;
 	}
 	return false;
@@ -1763,7 +1832,13 @@ static inline void ioapic_irqd_unmask(struct irq_data *data, bool masked)
 		 */
 		if (!io_apic_level_ack_pending(data->chip_data))
 			irq_move_masked_irq(data);
+<<<<<<< HEAD
 		unmask_ioapic_irq(data);
+=======
+		/* If the IRQ is masked in the core, leave it: */
+		if (!irqd_irq_masked(data))
+			unmask_ioapic_irq(data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 #else
@@ -1852,6 +1927,7 @@ static void ioapic_ir_ack_level(struct irq_data *irq_data)
 	 * intr-remapping table entry. Hence for the io-apic
 	 * EOI we use the pin number.
 	 */
+<<<<<<< HEAD
 	apic_ack_irq(irq_data);
 	eoi_ioapic_pin(data->entry.vector, data);
 }
@@ -1875,22 +1951,46 @@ static void ioapic_configure_entry(struct irq_data *irqd)
 		__ioapic_write_entry(entry->apic, entry->pin, mpd->entry);
 }
 
+=======
+	ack_APIC_irq();
+	eoi_ioapic_pin(data->entry.vector, data);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ioapic_set_affinity(struct irq_data *irq_data,
 			       const struct cpumask *mask, bool force)
 {
 	struct irq_data *parent = irq_data->parent_data;
+<<<<<<< HEAD
+=======
+	struct mp_chip_data *data = irq_data->chip_data;
+	struct irq_pin_list *entry;
+	struct irq_cfg *cfg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 	int ret;
 
 	ret = parent->chip->irq_set_affinity(parent, mask, force);
 	raw_spin_lock_irqsave(&ioapic_lock, flags);
+<<<<<<< HEAD
 	if (ret >= 0 && ret != IRQ_SET_MASK_OK_DONE)
 		ioapic_configure_entry(irq_data);
+=======
+	if (ret >= 0 && ret != IRQ_SET_MASK_OK_DONE) {
+		cfg = irqd_cfg(irq_data);
+		data->entry.dest = cfg->dest_apicid;
+		data->entry.vector = cfg->vector;
+		for_each_irq_pin(entry, data->irq_2_pin)
+			__ioapic_write_entry(entry->apic, entry->pin,
+					     data->entry);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	raw_spin_unlock_irqrestore(&ioapic_lock, flags);
 
 	return ret;
 }
 
+<<<<<<< HEAD
 /*
  * Interrupt shutdown masks the ioapic pin, but the interrupt might already
  * be in flight, but not yet serviced by the target CPU. That means
@@ -1935,6 +2035,8 @@ static int ioapic_irq_get_chip_state(struct irq_data *irqd,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct irq_chip ioapic_chip __read_mostly = {
 	.name			= "IO-APIC",
 	.irq_startup		= startup_ioapic_irq,
@@ -1944,7 +2046,10 @@ static struct irq_chip ioapic_chip __read_mostly = {
 	.irq_eoi		= ioapic_ack_level,
 	.irq_set_affinity	= ioapic_set_affinity,
 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+<<<<<<< HEAD
 	.irq_get_irqchip_state	= ioapic_irq_get_chip_state,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.flags			= IRQCHIP_SKIP_SET_WAKE,
 };
 
@@ -1957,7 +2062,10 @@ static struct irq_chip ioapic_ir_chip __read_mostly = {
 	.irq_eoi		= ioapic_ir_ack_level,
 	.irq_set_affinity	= ioapic_set_affinity,
 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+<<<<<<< HEAD
 	.irq_get_irqchip_state	= ioapic_irq_get_chip_state,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.flags			= IRQCHIP_SKIP_SET_WAKE,
 };
 
@@ -2188,7 +2296,11 @@ static inline void __init check_timer(void)
 				unmask_ioapic_irq(irq_get_irq_data(0));
 		}
 		irq_domain_deactivate_irq(irq_data);
+<<<<<<< HEAD
 		irq_domain_activate_irq(irq_data, false);
+=======
+		irq_domain_activate_irq(irq_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (timer_irq_works()) {
 			if (disable_timer_pin_1 > 0)
 				clear_IO_APIC_pin(0, pin1);
@@ -2210,7 +2322,11 @@ static inline void __init check_timer(void)
 		 */
 		replace_pin_at_irq_node(data, node, apic1, pin1, apic2, pin2);
 		irq_domain_deactivate_irq(irq_data);
+<<<<<<< HEAD
 		irq_domain_activate_irq(irq_data, false);
+=======
+		irq_domain_activate_irq(irq_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		legacy_pic->unmask(0);
 		if (timer_irq_works()) {
 			apic_printk(APIC_QUIET, KERN_INFO "....... works.\n");
@@ -2320,12 +2436,21 @@ static int mp_irqdomain_create(int ioapic)
 	ip->irqdomain = irq_domain_create_linear(fn, hwirqs, cfg->ops,
 						 (void *)(long)ioapic);
 
+<<<<<<< HEAD
 	/* Release fw handle if it was allocated above */
 	if (!cfg->dev)
 		irq_domain_free_fwnode(fn);
 
 	if (!ip->irqdomain)
 		return -ENOMEM;
+=======
+	if (!ip->irqdomain) {
+		/* Release fw handle if it was allocated above */
+		if (!cfg->dev)
+			irq_domain_free_fwnode(fn);
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ip->irqdomain->parent = parent;
 
@@ -2610,9 +2735,58 @@ int acpi_get_override_irq(u32 gsi, int *trigger, int *polarity)
 }
 
 /*
+<<<<<<< HEAD
  * This function updates target affinity of IOAPIC interrupts to include
  * the CPUs which came online during SMP bringup.
  */
+=======
+ * This function currently is only a helper for the i386 smp boot process where
+ * we need to reprogram the ioredtbls to cater for the cpus which have come online
+ * so mask in all cases should simply be apic->target_cpus()
+ */
+#ifdef CONFIG_SMP
+void __init setup_ioapic_dest(void)
+{
+	int pin, ioapic, irq, irq_entry;
+	const struct cpumask *mask;
+	struct irq_desc *desc;
+	struct irq_data *idata;
+	struct irq_chip *chip;
+
+	if (skip_ioapic_setup == 1)
+		return;
+
+	for_each_ioapic_pin(ioapic, pin) {
+		irq_entry = find_irq_entry(ioapic, pin, mp_INT);
+		if (irq_entry == -1)
+			continue;
+
+		irq = pin_2_irq(irq_entry, ioapic, pin, 0);
+		if (irq < 0 || !mp_init_irq_at_boot(ioapic, irq))
+			continue;
+
+		desc = irq_to_desc(irq);
+		raw_spin_lock_irq(&desc->lock);
+		idata = irq_desc_get_irq_data(desc);
+
+		/*
+		 * Honour affinities which have been set in early boot
+		 */
+		if (!irqd_can_balance(idata) || irqd_affinity_was_set(idata))
+			mask = irq_data_get_affinity_mask(idata);
+		else
+			mask = apic->target_cpus();
+
+		chip = irq_data_get_irq_chip(idata);
+		/* Might be lapic_chip for irq 0 */
+		if (chip->irq_set_affinity)
+			chip->irq_set_affinity(idata, mask, false);
+		raw_spin_unlock_irq(&desc->lock);
+	}
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IOAPIC_RESOURCE_NAME_SIZE 11
 
 static struct resource *ioapic_resources;
@@ -3032,6 +3206,7 @@ void mp_irqdomain_free(struct irq_domain *domain, unsigned int virq,
 	irq_domain_free_irqs_top(domain, virq, nr_irqs);
 }
 
+<<<<<<< HEAD
 int mp_irqdomain_activate(struct irq_domain *domain,
 			  struct irq_data *irq_data, bool reserve)
 {
@@ -3041,6 +3216,19 @@ int mp_irqdomain_activate(struct irq_domain *domain,
 	ioapic_configure_entry(irq_data);
 	raw_spin_unlock_irqrestore(&ioapic_lock, flags);
 	return 0;
+=======
+void mp_irqdomain_activate(struct irq_domain *domain,
+			   struct irq_data *irq_data)
+{
+	unsigned long flags;
+	struct irq_pin_list *entry;
+	struct mp_chip_data *data = irq_data->chip_data;
+
+	raw_spin_lock_irqsave(&ioapic_lock, flags);
+	for_each_irq_pin(entry, data->irq_2_pin)
+		__ioapic_write_entry(entry->apic, entry->pin, data->entry);
+	raw_spin_unlock_irqrestore(&ioapic_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mp_irqdomain_deactivate(struct irq_domain *domain,

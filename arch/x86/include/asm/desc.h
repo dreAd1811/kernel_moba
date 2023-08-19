@@ -389,7 +389,11 @@ static inline void set_desc_limit(struct desc_struct *desc, unsigned long limit)
 void update_intr_gate(unsigned int n, const void *addr);
 void alloc_intr_gate(unsigned int n, const void *addr);
 
+<<<<<<< HEAD
 extern unsigned long system_vectors[];
+=======
+extern unsigned long used_vectors[];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_X86_64
 DECLARE_PER_CPU(u32, debug_idt_ctr);

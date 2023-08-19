@@ -1,4 +1,8 @@
 CONFIG_SYSVIPC=y
+<<<<<<< HEAD
+=======
+CONFIG_IRQ_DOMAIN_DEBUG=y
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_NO_HZ=y
 CONFIG_HIGH_RES_TIMERS=y
 CONFIG_IKCONFIG=y
@@ -75,6 +79,10 @@ CONFIG_RFKILL_INPUT=y
 CONFIG_RFKILL_GPIO=y
 CONFIG_DEVTMPFS=y
 CONFIG_DEVTMPFS_MOUNT=y
+<<<<<<< HEAD
+=======
+# CONFIG_FIRMWARE_IN_KERNEL is not set
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 CONFIG_DMA_CMA=y
 CONFIG_CMA_SIZE_MBYTES=64
 CONFIG_TEGRA_GMI=y

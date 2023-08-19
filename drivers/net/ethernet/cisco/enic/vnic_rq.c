@@ -35,7 +35,11 @@ static int vnic_rq_alloc_bufs(struct vnic_rq *rq)
 	unsigned int blks = VNIC_RQ_BUF_BLKS_NEEDED(count);
 
 	for (i = 0; i < blks; i++) {
+<<<<<<< HEAD
 		rq->bufs[i] = kzalloc(VNIC_RQ_BUF_BLK_SZ(count), GFP_KERNEL);
+=======
+		rq->bufs[i] = kzalloc(VNIC_RQ_BUF_BLK_SZ(count), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!rq->bufs[i])
 			return -ENOMEM;
 	}
@@ -139,8 +143,25 @@ void vnic_rq_init(struct vnic_rq *rq, unsigned int cq_index,
 	unsigned int error_interrupt_enable,
 	unsigned int error_interrupt_offset)
 {
+<<<<<<< HEAD
 	vnic_rq_init_start(rq, cq_index, 0, 0, error_interrupt_enable,
 			   error_interrupt_offset);
+=======
+	u32 fetch_index = 0;
+
+	/* Use current fetch_index as the ring starting point */
+	fetch_index = ioread32(&rq->ctrl->fetch_index);
+
+	if (fetch_index == 0xFFFFFFFF) { /* check for hardware gone  */
+		/* Hardware surprise removal: reset fetch_index */
+		fetch_index = 0;
+	}
+
+	vnic_rq_init_start(rq, cq_index,
+		fetch_index, fetch_index,
+		error_interrupt_enable,
+		error_interrupt_offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 unsigned int vnic_rq_error_status(struct vnic_rq *rq)

@@ -1,8 +1,25 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
  */
 
+=======
+/* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -------------------------------------------------------------------------
  * Includes
  * -------------------------------------------------------------------------
@@ -23,17 +40,29 @@
 static uint32_t npu_reg_read(void __iomem *base, size_t size, uint32_t off)
 {
 	if (!base) {
+<<<<<<< HEAD
 		NPU_ERR("NULL base address\n");
+=======
+		pr_err("NULL base address\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
 	if ((off % 4) != 0) {
+<<<<<<< HEAD
 		NPU_ERR("offset %x is not aligned\n", off);
+=======
+		pr_err("offset %x is not aligned\n", off);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
 	if (off >= size) {
+<<<<<<< HEAD
 		NPU_ERR("offset exceeds io region %x:%x\n", off, size);
+=======
+		pr_err("offset exceeds io region %x:%x\n", off, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -44,17 +73,29 @@ static void npu_reg_write(void __iomem *base, size_t size, uint32_t off,
 	uint32_t val)
 {
 	if (!base) {
+<<<<<<< HEAD
 		NPU_ERR("NULL base address\n");
+=======
+		pr_err("NULL base address\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	if ((off % 4) != 0) {
+<<<<<<< HEAD
 		NPU_ERR("offset %x is not aligned\n", off);
+=======
+		pr_err("offset %x is not aligned\n", off);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	if (off >= size) {
+<<<<<<< HEAD
 		NPU_ERR("offset exceeds io region %x:%x\n", off, size);
+=======
+		pr_err("offset exceeds io region %x:%x\n", off, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -73,6 +114,7 @@ void npu_core_reg_write(struct npu_device *npu_dev, uint32_t off, uint32_t val)
 		off, val);
 }
 
+<<<<<<< HEAD
 uint32_t npu_tcsr_reg_read(struct npu_device *npu_dev, uint32_t off)
 {
 	return npu_reg_read(npu_dev->tcsr_io.base, npu_dev->tcsr_io.size, off);
@@ -100,6 +142,18 @@ void npu_cc_reg_write(struct npu_device *npu_dev, uint32_t off,
 	uint32_t val)
 {
 	npu_reg_write(npu_dev->cc_io.base, npu_dev->cc_io.size,
+=======
+uint32_t npu_bwmon_reg_read(struct npu_device *npu_dev, uint32_t off)
+{
+	return npu_reg_read(npu_dev->bwmon_io.base, npu_dev->bwmon_io.size,
+		off);
+}
+
+void npu_bwmon_reg_write(struct npu_device *npu_dev, uint32_t off,
+	uint32_t val)
+{
+	npu_reg_write(npu_dev->bwmon_io.base, npu_dev->bwmon_io.size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		off, val);
 }
 
@@ -124,7 +178,11 @@ void npu_mem_write(struct npu_device *npu_dev, void *dst, void *src,
 
 	if (dst_off >= npu_dev->tcm_io.size ||
 		(npu_dev->tcm_io.size - dst_off) < size) {
+<<<<<<< HEAD
 		NPU_ERR("memory write exceeds io region %x:%x:%x\n",
+=======
+		pr_err("memory write exceeds io region %x:%x:%x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dst_off, size, npu_dev->tcm_io.size);
 		return;
 	}
@@ -159,7 +217,11 @@ int32_t npu_mem_read(struct npu_device *npu_dev, void *src, void *dst,
 
 	if (src_off >= npu_dev->tcm_io.size ||
 		(npu_dev->tcm_io.size - src_off) < size) {
+<<<<<<< HEAD
 		NPU_ERR("memory read exceeds io region %x:%x:%x\n",
+=======
+		pr_err("memory read exceeds io region %x:%x:%x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			src_off, size, npu_dev->tcm_io.size);
 		return 0;
 	}
@@ -192,17 +254,54 @@ void *npu_ipc_addr(void)
  */
 void npu_interrupt_ack(struct npu_device *npu_dev, uint32_t intr_num)
 {
+<<<<<<< HEAD
+=======
+	struct npu_host_ctx *host_ctx = &npu_dev->host_ctx;
+	uint32_t wdg_irq_sts = 0, error_irq_sts = 0;
+
+	/* Clear irq state */
+	REGW(npu_dev, NPU_MASTERn_IPC_IRQ_OUT(0), 0x0);
+
+	wdg_irq_sts = REGR(npu_dev, NPU_MASTERn_WDOG_IRQ_STATUS(0));
+	if (wdg_irq_sts != 0) {
+		pr_err("wdg irq %x\n", wdg_irq_sts);
+		host_ctx->wdg_irq_sts |= wdg_irq_sts;
+		host_ctx->fw_error = true;
+	}
+
+	error_irq_sts = REGR(npu_dev, NPU_MASTERn_ERROR_IRQ_STATUS(0));
+	error_irq_sts &= REGR(npu_dev, NPU_MASTERn_ERROR_IRQ_ENABLE(0));
+	if (error_irq_sts != 0) {
+		REGW(npu_dev, NPU_MASTERn_ERROR_IRQ_CLEAR(0), error_irq_sts);
+		pr_err("error irq %x\n", error_irq_sts);
+		host_ctx->err_irq_sts |= error_irq_sts;
+		host_ctx->fw_error = true;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int32_t npu_interrupt_raise_m0(struct npu_device *npu_dev)
 {
+<<<<<<< HEAD
 	npu_apss_shared_reg_write(npu_dev, APSS_SHARED_IPC_INTERRUPT_1, 0x40);
+=======
+	/* Bit 4 is setting IRQ_SOURCE_SELECT to local
+	 * and we're triggering a pulse to NPU_MASTER0_IPC_IN_IRQ0
+	 */
+	npu_core_reg_write(npu_dev, NPU_MASTERn_IPC_IRQ_IN_CTRL(0), 0x1
+		<< NPU_MASTER0_IPC_IRQ_IN_CTRL__IRQ_SOURCE_SELECT___S | 0x1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
 int32_t npu_interrupt_raise_dsp(struct npu_device *npu_dev)
 {
+<<<<<<< HEAD
+=======
+	npu_core_reg_write(npu_dev, NPU_MASTERn_IPC_IRQ_OUT_CTRL(1), 0x8);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -227,7 +326,11 @@ static struct npu_ion_buf *npu_alloc_npu_ion_buffer(struct npu_client
 
 	if (ret_val) {
 		/* mapped already, treat as invalid request */
+<<<<<<< HEAD
 		NPU_ERR("ion buf has been mapped\n");
+=======
+		pr_err("ion buf has been mapped\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret_val = NULL;
 	} else {
 		ret_val = kzalloc(sizeof(*ret_val), GFP_KERNEL);
@@ -294,7 +397,11 @@ int npu_mem_map(struct npu_client *client, int buf_hdl, uint32_t size,
 
 	ion_buf = npu_alloc_npu_ion_buffer(client, buf_hdl, size);
 	if (!ion_buf) {
+<<<<<<< HEAD
 		NPU_ERR("fail to alloc npu_ion_buffer\n");
+=======
+		pr_err("%s fail to alloc npu_ion_buffer\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		return ret;
 	}
@@ -303,7 +410,11 @@ int npu_mem_map(struct npu_client *client, int buf_hdl, uint32_t size,
 
 	ion_buf->dma_buf = dma_buf_get(ion_buf->fd);
 	if (IS_ERR_OR_NULL(ion_buf->dma_buf)) {
+<<<<<<< HEAD
 		NPU_ERR("dma_buf_get failed %d\n", ion_buf->fd);
+=======
+		pr_err("dma_buf_get failed %d\n", ion_buf->fd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		ion_buf->dma_buf = NULL;
 		goto map_end;
@@ -322,7 +433,11 @@ int npu_mem_map(struct npu_client *client, int buf_hdl, uint32_t size,
 	ion_buf->table = dma_buf_map_attachment(ion_buf->attachment,
 			DMA_BIDIRECTIONAL);
 	if (IS_ERR(ion_buf->table)) {
+<<<<<<< HEAD
 		NPU_ERR("npu dma_buf_map_attachment failed\n");
+=======
+		pr_err("npu dma_buf_map_attachment failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		ion_buf->table = NULL;
 		goto map_end;
@@ -331,9 +446,14 @@ int npu_mem_map(struct npu_client *client, int buf_hdl, uint32_t size,
 	ion_buf->iova = ion_buf->table->sgl->dma_address;
 	ion_buf->size = ion_buf->dma_buf->size;
 	*addr = ion_buf->iova;
+<<<<<<< HEAD
 	NPU_DBG("mapped mem addr:0x%llx size:0x%x\n", ion_buf->iova,
 		ion_buf->size);
 	NPU_DBG("physical address 0x%llx\n", sg_phys(ion_buf->table->sgl));
+=======
+	pr_debug("mapped mem addr:0x%llx size:0x%x\n", ion_buf->iova,
+		ion_buf->size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 map_end:
 	if (ret)
 		npu_mem_unmap(client, buf_hdl, 0);
@@ -348,7 +468,11 @@ void npu_mem_invalidate(struct npu_client *client, int buf_hdl)
 		buf_hdl);
 
 	if (!ion_buf)
+<<<<<<< HEAD
 		NPU_ERR("cant find ion buf\n");
+=======
+		pr_err("%s cant find ion buf\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		dma_sync_sg_for_cpu(&(npu_dev->pdev->dev), ion_buf->table->sgl,
 			ion_buf->table->nents, DMA_BIDIRECTIONAL);
@@ -381,12 +505,20 @@ void npu_mem_unmap(struct npu_client *client, int buf_hdl,  uint64_t addr)
 	/* clear entry and retrieve the corresponding buffer */
 	ion_buf = npu_get_npu_ion_buffer(client, buf_hdl);
 	if (!ion_buf) {
+<<<<<<< HEAD
 		NPU_ERR("could not find buffer\n");
+=======
+		pr_err("%s could not find buffer\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	if (ion_buf->iova != addr)
+<<<<<<< HEAD
 		NPU_WARN("unmap address %llu doesn't match %llu\n", addr,
+=======
+		pr_warn("unmap address %llu doesn't match %llu\n", addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ion_buf->iova);
 
 	if (ion_buf->table)
@@ -398,7 +530,11 @@ void npu_mem_unmap(struct npu_client *client, int buf_hdl,  uint64_t addr)
 		dma_buf_put(ion_buf->dma_buf);
 	npu_dev->smmu_ctx.attach_cnt--;
 
+<<<<<<< HEAD
 	NPU_DBG("unmapped mem addr:0x%llx size:0x%x\n", ion_buf->iova,
+=======
+	pr_debug("unmapped mem addr:0x%llx size:0x%x\n", ion_buf->iova,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ion_buf->size);
 	npu_free_npu_ion_buffer(client, buf_hdl);
 }

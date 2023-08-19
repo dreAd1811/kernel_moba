@@ -445,7 +445,10 @@
 	ENTRY_COMP(preadv2)
 	ENTRY_COMP(pwritev2)
 	ENTRY_SAME(statx)
+<<<<<<< HEAD
 	ENTRY_COMP(io_pgetevents)	/* 350 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 .ifne (. - 90b) - (__NR_Linux_syscalls * (91b - 90b))

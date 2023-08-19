@@ -166,8 +166,12 @@ static int __init check_nmi_watchdog(void)
 	if (!atomic_read(&nmi_active))
 		return 0;
 
+<<<<<<< HEAD
 	prev_nmi_count = kmalloc_array(nr_cpu_ids, sizeof(unsigned int),
 				       GFP_KERNEL);
+=======
+	prev_nmi_count = kmalloc(nr_cpu_ids * sizeof(unsigned int), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!prev_nmi_count) {
 		err = -ENOMEM;
 		goto error;

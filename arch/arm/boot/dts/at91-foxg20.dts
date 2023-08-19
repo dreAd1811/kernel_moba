@@ -34,6 +34,7 @@
 
 	ahb {
 		apb {
+<<<<<<< HEAD
 			tcb0: timer@fffa0000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -46,6 +47,8 @@
 				};
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			usb1: gadget@fffa4000 {
 				atmel,vbus-gpio = <&pioC 6 GPIO_ACTIVE_HIGH>;
 				status = "okay";

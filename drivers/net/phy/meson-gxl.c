@@ -22,6 +22,7 @@
 #include <linux/ethtool.h>
 #include <linux/phy.h>
 #include <linux/netdevice.h>
+<<<<<<< HEAD
 #include <linux/bitfield.h>
 
 #define TSTCNTL		20
@@ -126,22 +127,62 @@ out:
 	meson_gxl_close_banks(phydev);
 	return ret;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int meson_gxl_config_init(struct phy_device *phydev)
 {
 	int ret;
 
+<<<<<<< HEAD
 	/* Enable fractional PLL */
 	ret = meson_gxl_write_reg(phydev, BANK_BIST, FR_PLL_CONTROL, 0x5);
+=======
+	/* Enable Analog and DSP register Bank access by */
+	ret = phy_write(phydev, 0x14, 0x0000);
+	if (ret)
+		return ret;
+	ret = phy_write(phydev, 0x14, 0x0400);
+	if (ret)
+		return ret;
+	ret = phy_write(phydev, 0x14, 0x0000);
+	if (ret)
+		return ret;
+	ret = phy_write(phydev, 0x14, 0x0400);
+	if (ret)
+		return ret;
+
+	/* Write Analog register 23 */
+	ret = phy_write(phydev, 0x17, 0x8E0D);
+	if (ret)
+		return ret;
+	ret = phy_write(phydev, 0x14, 0x4417);
+	if (ret)
+		return ret;
+
+	/* Enable fractional PLL */
+	ret = phy_write(phydev, 0x17, 0x0005);
+	if (ret)
+		return ret;
+	ret = phy_write(phydev, 0x14, 0x5C1B);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	/* Program fraction FR_PLL_DIV1 */
+<<<<<<< HEAD
 	ret = meson_gxl_write_reg(phydev, BANK_BIST, FR_PLL_DIV1, 0x029a);
+=======
+	ret = phy_write(phydev, 0x17, 0x029A);
+	if (ret)
+		return ret;
+	ret = phy_write(phydev, 0x14, 0x5C1D);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	/* Program fraction FR_PLL_DIV1 */
+<<<<<<< HEAD
 	ret = meson_gxl_write_reg(phydev, BANK_BIST, FR_PLL_DIV0, 0xaaaa);
 	if (ret)
 		return ret;
@@ -230,6 +271,16 @@ static int meson_gxl_config_intr(struct phy_device *phydev)
 		return ret;
 
 	return phy_write(phydev, INTSRC_MASK, val);
+=======
+	ret = phy_write(phydev, 0x17, 0xAAAA);
+	if (ret)
+		return ret;
+	ret = phy_write(phydev, 0x14, 0x5C1C);
+	if (ret)
+		return ret;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct phy_driver meson_gxl_phy[] = {
@@ -238,12 +289,20 @@ static struct phy_driver meson_gxl_phy[] = {
 		.phy_id_mask	= 0xfffffff0,
 		.name		= "Meson GXL Internal PHY",
 		.features	= PHY_BASIC_FEATURES,
+<<<<<<< HEAD
 		.flags		= PHY_IS_INTERNAL | PHY_HAS_INTERRUPT,
 		.config_init	= meson_gxl_config_init,
 		.aneg_done      = genphy_aneg_done,
 		.read_status	= meson_gxl_read_status,
 		.ack_interrupt	= meson_gxl_ack_interrupt,
 		.config_intr	= meson_gxl_config_intr,
+=======
+		.flags		= PHY_IS_INTERNAL,
+		.config_init	= meson_gxl_config_init,
+		.config_aneg	= genphy_config_aneg,
+		.aneg_done      = genphy_aneg_done,
+		.read_status	= genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.suspend        = genphy_suspend,
 		.resume         = genphy_resume,
 	},
@@ -261,5 +320,8 @@ MODULE_DEVICE_TABLE(mdio, meson_gxl_tbl);
 MODULE_DESCRIPTION("Amlogic Meson GXL Internal PHY driver");
 MODULE_AUTHOR("Baoqi wang");
 MODULE_AUTHOR("Neil Armstrong <narmstrong@baylibre.com>");
+<<<<<<< HEAD
 MODULE_AUTHOR("Jerome Brunet <jbrunet@baylibre.com>");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");

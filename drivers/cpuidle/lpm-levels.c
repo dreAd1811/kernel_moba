@@ -1,8 +1,24 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 
 /* Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
  * Copyright (C) 2006-2007 Adam Belay <abelay@novell.com>
  * Copyright (C) 2009 Intel Corporation
+=======
+/* Copyright (c) 2012-2020, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2006-2007 Adam Belay <abelay@novell.com>
+ * Copyright (C) 2009 Intel Corporation
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "%s: " fmt, KBUILD_MODNAME
@@ -27,7 +43,10 @@
 #include <linux/sched.h>
 #include <linux/cpu_pm.h>
 #include <linux/cpuhotplug.h>
+<<<<<<< HEAD
 #include <linux/regulator/machine.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/sched/clock.h>
 #include <linux/sched/stat.h>
 #include <soc/qcom/pm.h>
@@ -40,13 +59,25 @@
 #include <asm/cpuidle.h>
 #include "lpm-levels.h"
 #include <trace/events/power.h>
+<<<<<<< HEAD
 #include "../clk/clk.h"
+=======
+#if defined(CONFIG_COMMON_CLK)
+#include "../clk/clk.h"
+#elif defined(CONFIG_COMMON_CLK_MSM)
+#include "../../drivers/clk/msm/clock.h"
+#endif /* CONFIG_COMMON_CLK */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CREATE_TRACE_POINTS
 #include <trace/events/trace_msm_low_power.h>
 
 #define SCLK_HZ (32768)
 #define PSCI_POWER_STATE(reset) (reset << 30)
 #define PSCI_AFFINITY_LEVEL(lvl) ((lvl & 0x3) << 24)
+<<<<<<< HEAD
+=======
+#define BIAS_HYST (bias_hyst * NSEC_PER_MSEC)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	MSM_LPM_LVL_DBG_SUSPEND_LIMITS = BIT(0),
@@ -82,6 +113,11 @@ struct lpm_cluster *lpm_root_node;
 static bool lpm_prediction = true;
 module_param_named(lpm_prediction, lpm_prediction, bool, 0664);
 
+<<<<<<< HEAD
+=======
+static uint32_t bias_hyst;
+module_param_named(bias_hyst, bias_hyst, uint, 0664);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool lpm_ipi_prediction = true;
 module_param_named(lpm_ipi_prediction, lpm_ipi_prediction, bool, 0664);
 
@@ -648,6 +684,7 @@ static void clear_predict_history(void)
 
 static void update_history(struct cpuidle_device *dev, int idx);
 
+<<<<<<< HEAD
 static inline bool lpm_disallowed(s64 sleep_us, int cpu, struct lpm_cpu *pm_cpu)
 {
 	uint64_t bias_time = 0;
@@ -693,6 +730,33 @@ static int cpu_power_select(struct cpuidle_device *dev,
 	int best_level = 0;
 	uint32_t latency_us = pm_qos_request_for_cpu(PM_QOS_CPU_DMA_LATENCY,
 							dev->cpu);
+=======
+static inline bool is_cpu_biased(int cpu, uint64_t *bias_time)
+{
+	u64 now = sched_clock();
+	u64 last = sched_get_cpu_last_busy_time(cpu);
+	u64 diff = 0;
+
+	if (!last)
+		return false;
+
+	diff = now - last;
+	if (diff < BIAS_HYST) {
+		*bias_time = BIAS_HYST - diff;
+		return true;
+	}
+
+	return false;
+}
+
+static int cpu_power_select(struct cpuidle_device *dev,
+		struct lpm_cpu *cpu)
+{
+	int best_level = 0;
+	uint32_t latency_us = pm_qos_request_for_cpu(PM_QOS_CPU_DMA_LATENCY,
+							dev->cpu);
+	ktime_t delta_next;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s64 sleep_us = ktime_to_us(tick_nohz_get_sleep_length(&delta_next));
 	uint32_t modified_time_us = 0;
 	uint32_t next_event_us = 0;
@@ -703,6 +767,7 @@ static int cpu_power_select(struct cpuidle_device *dev,
 	uint32_t next_wakeup_us = (uint32_t)sleep_us;
 	uint32_t min_residency, max_residency;
 	struct power_params *pwr_params;
+<<<<<<< HEAD
 
 	if (lpm_disallowed(sleep_us, dev->cpu, cpu))
 		goto done_select;
@@ -712,6 +777,28 @@ static int cpu_power_select(struct cpuidle_device *dev,
 
 	for (i = 0; i < cpu->nlevels; i++) {
 		if (!lpm_cpu_mode_allow(dev->cpu, i, true))
+=======
+	uint64_t bias_time = 0;
+
+	if ((sleep_disabled && !cpu_isolated(dev->cpu)) || sleep_us < 0)
+		return best_level;
+
+	idx_restrict = cpu->nlevels + 1;
+
+	next_event_us = (uint32_t)(ktime_to_us(get_next_event_time(dev->cpu)));
+
+	if (is_cpu_biased(dev->cpu, &bias_time) && (!cpu_isolated(dev->cpu))) {
+		cpu->bias = bias_time;
+		goto done_select;
+	}
+
+	for (i = 0; i < cpu->nlevels; i++) {
+		bool allow;
+
+		allow = i ? lpm_cpu_mode_allow(dev->cpu, i, true) : true;
+
+		if (!allow)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		pwr_params = &cpu->levels[i].pwr;
@@ -722,8 +809,19 @@ static int cpu_power_select(struct cpuidle_device *dev,
 		if (latency_us < lvl_latency_us)
 			break;
 
+<<<<<<< HEAD
 		calculate_next_wakeup(&next_wakeup_us, next_event_us,
 				      lvl_latency_us, sleep_us);
+=======
+		if (next_event_us) {
+			if (next_event_us < lvl_latency_us)
+				break;
+
+			if (((next_event_us - lvl_latency_us) < sleep_us) ||
+					(next_event_us < sleep_us))
+				next_wakeup_us = next_event_us - lvl_latency_us;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!i && !cpu_isolated(dev->cpu)) {
 			/*
@@ -768,8 +866,13 @@ static int cpu_power_select(struct cpuidle_device *dev,
 	min_residency = pwr_params->min_residency;
 	max_residency = pwr_params->max_residency;
 
+<<<<<<< HEAD
 	if ((predicted || (idx_restrict != cpu->nlevels + 1)) &&
 	    (best_level < (cpu->nlevels-1))) {
+=======
+	if ((predicted || (idx_restrict != (cpu->nlevels + 1)))
+			&& (best_level < (cpu->nlevels-1))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		htime = predicted + cpu->tmr_add;
 		if (lpm_ipi_prediction && cpu->ipi_prediction)
 			htime += DEFAULT_IPI_TIMER_ADD;
@@ -1092,6 +1195,18 @@ static int cluster_select(struct lpm_cluster *cluster, bool from_idle,
 	return best_level;
 }
 
+<<<<<<< HEAD
+=======
+static void cluster_notify(struct lpm_cluster *cluster,
+		struct lpm_cluster_level *level, bool enter)
+{
+	if (level->is_reset && enter)
+		cpu_cluster_pm_enter(cluster->aff_level);
+	else if (level->is_reset && !enter)
+		cpu_cluster_pm_exit(cluster->aff_level);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cluster_configure(struct lpm_cluster *cluster, int idx,
 		bool from_idle, int predicted)
 {
@@ -1122,6 +1237,7 @@ static int cluster_configure(struct lpm_cluster *cluster, int idx,
 
 	if (level->notify_rpm) {
 		/*
+<<<<<<< HEAD
 		 * Print the clocks and regulators which are enabled during
 		 * system suspend.  This debug information is useful to know
 		 * which resources are enabled and preventing the system level
@@ -1131,6 +1247,15 @@ static int cluster_configure(struct lpm_cluster *cluster, int idx,
 			clock_debug_print_enabled();
 			regulator_debug_print_enabled();
 		}
+=======
+		 * Print the clocks which are enabled during system suspend
+		 * This debug information is useful to know which are the
+		 * clocks that are enabled and preventing the system level
+		 * LPMs(XO and Vmin).
+		 */
+		if (!from_idle)
+			clock_debug_print_enabled(true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		cpu = get_next_online_cpu(from_idle);
 		cpumask_copy(&cpumask, cpumask_of(cpu));
@@ -1140,6 +1265,11 @@ static int cluster_configure(struct lpm_cluster *cluster, int idx,
 			if ((sys_pm_ops->enter(&cpumask)))
 				return -EBUSY;
 	}
+<<<<<<< HEAD
+=======
+	/* Notify cluster enter event after successfully config completion */
+	cluster_notify(cluster, level, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cluster->last_level = idx;
 
@@ -1214,7 +1344,12 @@ static void cluster_prepare(struct lpm_cluster *cluster,
 	if (cluster_configure(cluster, i, from_idle, predicted))
 		goto failed;
 
+<<<<<<< HEAD
 	cluster->stats->sleep_time = start_time;
+=======
+	if (!IS_ERR_OR_NULL(cluster->stats))
+		cluster->stats->sleep_time = start_time;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cluster_prepare(cluster->parent, &cluster->num_children_in_sync, i,
 			from_idle, start_time);
 
@@ -1222,7 +1357,12 @@ static void cluster_prepare(struct lpm_cluster *cluster,
 	return;
 failed:
 	spin_unlock(&cluster->sync_lock);
+<<<<<<< HEAD
 	cluster->stats->sleep_time = 0;
+=======
+	if (!IS_ERR_OR_NULL(cluster->stats))
+		cluster->stats->sleep_time = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cluster_unprepare(struct lpm_cluster *cluster,
@@ -1261,7 +1401,11 @@ static void cluster_unprepare(struct lpm_cluster *cluster,
 	if (!first_cpu || cluster->last_level == cluster->default_level)
 		goto unlock_return;
 
+<<<<<<< HEAD
 	if (cluster->stats->sleep_time)
+=======
+	if (!IS_ERR_OR_NULL(cluster->stats) && cluster->stats->sleep_time)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cluster->stats->sleep_time = end_time -
 			cluster->stats->sleep_time;
 	lpm_stats_cluster_exit(cluster->stats, cluster->last_level, success);
@@ -1282,6 +1426,11 @@ static void cluster_unprepare(struct lpm_cluster *cluster,
 	last_level = cluster->last_level;
 	cluster->last_level = cluster->default_level;
 
+<<<<<<< HEAD
+=======
+	cluster_notify(cluster, &cluster->levels[last_level], false);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (from_idle)
 		update_cluster_history(&cluster->history, last_level);
 
@@ -1371,9 +1520,15 @@ static bool psci_enter_sleep(struct lpm_cpu *cpu, int idx, bool from_idle)
 		if (cpu->bias)
 			biastimer_start(cpu->bias);
 		stop_critical_timings();
+<<<<<<< HEAD
 		wfi();
 		start_critical_timings();
 		return true;
+=======
+		cpu_do_idle();
+		start_critical_timings();
+		return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (from_idle && cpu->levels[idx].use_bc_timer) {
@@ -1534,6 +1689,10 @@ static int cpuidle_register_cpu(struct cpuidle_driver *drv,
 	struct cpuidle_device *device;
 	int cpu, ret;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mask || !drv)
 		return -EINVAL;
 
@@ -1605,8 +1764,13 @@ static int cluster_cpuidle_register(struct lpm_cluster *cl)
 			struct lpm_cpu_level *cpu_level = &lpm_cpu->levels[i];
 
 			snprintf(st->name, CPUIDLE_NAME_LEN, "C%u\n", i);
+<<<<<<< HEAD
 			strlcpy(st->desc, cpu_level->name, CPUIDLE_DESC_LEN);
 
+=======
+			snprintf(st->desc, CPUIDLE_DESC_LEN, "%s",
+					cpu_level->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			st->flags = 0;
 			st->exit_latency = cpu_level->pwr.exit_latency;
 			st->target_residency = 0;
@@ -1700,10 +1864,20 @@ static void register_cluster_lpm_stats(struct lpm_cluster *cl,
 
 	cl->stats = lpm_stats_config_level(cl->cluster_name, level_name,
 			cl->nlevels, parent ? parent->stats : NULL, NULL);
+<<<<<<< HEAD
+=======
+	if (IS_ERR_OR_NULL(cl->stats))
+		pr_info("Cluster (%s) stats not registered\n",
+			cl->cluster_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kfree(level_name);
 
 	list_for_each_entry(cpu, &cl->cpu, list) {
+<<<<<<< HEAD
+=======
+		pr_err("%s()\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		register_cpu_lpm_stats(cpu, cl);
 	}
 	if (!list_empty(&cl->cpu))
@@ -1842,7 +2016,10 @@ static int lpm_probe(struct platform_device *pdev)
 	md_entry.virt_addr = (uintptr_t)lpm_debug;
 	md_entry.phys_addr = lpm_debug_phys;
 	md_entry.size = size;
+<<<<<<< HEAD
 	md_entry.id = MINIDUMP_DEFAULT_ID;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (msm_minidump_add_region(&md_entry))
 		pr_info("Failed to add lpm_debug in Minidump\n");
 
@@ -1862,6 +2039,10 @@ static struct platform_driver lpm_driver = {
 	.probe = lpm_probe,
 	.driver = {
 		.name = "lpm-levels",
+<<<<<<< HEAD
+=======
+		.owner = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.suppress_bind_attrs = true,
 		.of_match_table = lpm_mtch_tbl,
 	},

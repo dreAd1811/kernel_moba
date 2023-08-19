@@ -24,7 +24,11 @@
 #include <linux/types.h>
 #include <linux/kernel.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <drm/amdgpu_drm.h>
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "processpptables.h"
 #include <atom-types.h>
 #include <atombios.h>
@@ -394,8 +398,13 @@ static int get_clock_voltage_dependency_table(struct pp_hwmgr *hwmgr,
 		dep_table->entries[i].clk =
 			((unsigned long)table->entries[i].ucClockHigh << 16) |
 			le16_to_cpu(table->entries[i].usClockLow);
+<<<<<<< HEAD
 		dep_table->entries[i].v =
 			(unsigned long)le16_to_cpu(table->entries[i].usVoltage);
+=======
+			dep_table->entries[i].v =
+				(unsigned long)le16_to_cpu(table->entries[i].usVoltage);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	*ptable = dep_table;
@@ -790,6 +799,7 @@ static const ATOM_PPLIB_STATE_V2 *get_state_entry_v2(
 	return pstate;
 }
 
+<<<<<<< HEAD
 static const unsigned char soft_dummy_pp_table[] = {
 	0xe1, 0x01, 0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x42, 0x00, 0x4a, 0x00, 0x6c, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x42, 0x00, 0x02, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
@@ -823,6 +833,8 @@ static const unsigned char soft_dummy_pp_table[] = {
 	0x66, 0x00, 0x40, 0x19, 0x01, 0x58, 0x00, 0x0e, 0x28, 0x01, 0x52, 0x00, 0x80, 0x38, 0x01, 0x4a,
 	0x00
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const ATOM_PPLIB_POWERPLAYTABLE *get_powerplay_table(
 				     struct pp_hwmgr *hwmgr)
@@ -832,6 +844,7 @@ static const ATOM_PPLIB_POWERPLAYTABLE *get_powerplay_table(
 	uint16_t size;
 
 	if (!table_addr) {
+<<<<<<< HEAD
 		if (hwmgr->chip_id == CHIP_RAVEN) {
 			table_addr = &soft_dummy_pp_table[0];
 			hwmgr->soft_pp_table = &soft_dummy_pp_table[0];
@@ -843,6 +856,14 @@ static const ATOM_PPLIB_POWERPLAYTABLE *get_powerplay_table(
 			hwmgr->soft_pp_table = table_addr;
 			hwmgr->soft_pp_table_size = size;
 		}
+=======
+		table_addr = cgs_atom_get_data_table(hwmgr->device,
+				GetIndexIntoMasterTable(DATA, PowerPlayInfo),
+				&size, &frev, &crev);
+
+		hwmgr->soft_pp_table = table_addr;
+		hwmgr->soft_pp_table_size = size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return (const ATOM_PPLIB_POWERPLAYTABLE *)table_addr;
@@ -962,14 +983,25 @@ int pp_tables_get_entry(struct pp_hwmgr *hwmgr,
 		}
 	}
 
+<<<<<<< HEAD
 	if ((0 == result) && (0 != (ps->classification.flags & PP_StateClassificationFlag_Boot))) {
 		if (hwmgr->chip_family < AMDGPU_FAMILY_RV)
 			result = hwmgr->hwmgr_func->patch_boot_state(hwmgr, &(ps->hardware));
 	}
+=======
+	if ((0 == result) &&
+		(0 != (ps->classification.flags & PP_StateClassificationFlag_Boot)))
+		result = hwmgr->hwmgr_func->patch_boot_state(hwmgr, &(ps->hardware));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return result;
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int init_powerplay_tables(
 			struct pp_hwmgr *hwmgr,
 			const ATOM_PPLIB_POWERPLAYTABLE *powerplay_table
@@ -1042,7 +1074,11 @@ static int init_overdrive_limits_V2_1(struct pp_hwmgr *hwmgr,
 static int init_overdrive_limits(struct pp_hwmgr *hwmgr,
 			const ATOM_PPLIB_POWERPLAYTABLE *powerplay_table)
 {
+<<<<<<< HEAD
 	int result = 0;
+=======
+	int result;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint8_t frev, crev;
 	uint16_t size;
 
@@ -1058,7 +1094,11 @@ static int init_overdrive_limits(struct pp_hwmgr *hwmgr,
 		return 0;
 
 	/* We assume here that fw_info is unchanged if this call fails.*/
+<<<<<<< HEAD
 	fw_info = smu_atom_get_data_table(hwmgr->adev,
+=======
+	fw_info = cgs_atom_get_data_table(hwmgr->device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 GetIndexIntoMasterTable(DATA, FirmwareInfo),
 			 &size, &frev, &crev);
 
@@ -1074,6 +1114,16 @@ static int init_overdrive_limits(struct pp_hwmgr *hwmgr,
 				powerplay_table,
 				(const ATOM_FIRMWARE_INFO_V2_1 *)fw_info);
 
+<<<<<<< HEAD
+=======
+	if (hwmgr->platform_descriptor.overdriveLimit.engineClock > 0
+		&& hwmgr->platform_descriptor.overdriveLimit.memoryClock > 0
+		&& !phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
+			PHM_PlatformCaps_OverdriveDisabledByPowerBudget))
+		phm_cap_set(hwmgr->platform_descriptor.platformCaps,
+				PHM_PlatformCaps_ACOverdriveSupport);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return result;
 }
 
@@ -1645,6 +1695,7 @@ static int pp_tables_uninitialize(struct pp_hwmgr *hwmgr)
 	if (hwmgr->chip_id == CHIP_RAVEN)
 		return 0;
 
+<<<<<<< HEAD
 	kfree(hwmgr->dyn_state.vddc_dependency_on_sclk);
 	hwmgr->dyn_state.vddc_dependency_on_sclk = NULL;
 
@@ -1689,6 +1740,87 @@ static int pp_tables_uninitialize(struct pp_hwmgr *hwmgr)
 
 	kfree(hwmgr->dyn_state.vdd_gfx_dependency_on_sclk);
 	hwmgr->dyn_state.vdd_gfx_dependency_on_sclk = NULL;
+=======
+	if (NULL != hwmgr->dyn_state.vddc_dependency_on_sclk) {
+		kfree(hwmgr->dyn_state.vddc_dependency_on_sclk);
+		hwmgr->dyn_state.vddc_dependency_on_sclk = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.vddci_dependency_on_mclk) {
+		kfree(hwmgr->dyn_state.vddci_dependency_on_mclk);
+		hwmgr->dyn_state.vddci_dependency_on_mclk = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.vddc_dependency_on_mclk) {
+		kfree(hwmgr->dyn_state.vddc_dependency_on_mclk);
+		hwmgr->dyn_state.vddc_dependency_on_mclk = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.mvdd_dependency_on_mclk) {
+		kfree(hwmgr->dyn_state.mvdd_dependency_on_mclk);
+		hwmgr->dyn_state.mvdd_dependency_on_mclk = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.valid_mclk_values) {
+		kfree(hwmgr->dyn_state.valid_mclk_values);
+		hwmgr->dyn_state.valid_mclk_values = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.valid_sclk_values) {
+		kfree(hwmgr->dyn_state.valid_sclk_values);
+		hwmgr->dyn_state.valid_sclk_values = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.cac_leakage_table) {
+		kfree(hwmgr->dyn_state.cac_leakage_table);
+		hwmgr->dyn_state.cac_leakage_table = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.vddc_phase_shed_limits_table) {
+		kfree(hwmgr->dyn_state.vddc_phase_shed_limits_table);
+		hwmgr->dyn_state.vddc_phase_shed_limits_table = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.vce_clock_voltage_dependency_table) {
+		kfree(hwmgr->dyn_state.vce_clock_voltage_dependency_table);
+		hwmgr->dyn_state.vce_clock_voltage_dependency_table = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.uvd_clock_voltage_dependency_table) {
+		kfree(hwmgr->dyn_state.uvd_clock_voltage_dependency_table);
+		hwmgr->dyn_state.uvd_clock_voltage_dependency_table = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.samu_clock_voltage_dependency_table) {
+		kfree(hwmgr->dyn_state.samu_clock_voltage_dependency_table);
+		hwmgr->dyn_state.samu_clock_voltage_dependency_table = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.acp_clock_voltage_dependency_table) {
+		kfree(hwmgr->dyn_state.acp_clock_voltage_dependency_table);
+		hwmgr->dyn_state.acp_clock_voltage_dependency_table = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.cac_dtp_table) {
+		kfree(hwmgr->dyn_state.cac_dtp_table);
+		hwmgr->dyn_state.cac_dtp_table = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.ppm_parameter_table) {
+		kfree(hwmgr->dyn_state.ppm_parameter_table);
+		hwmgr->dyn_state.ppm_parameter_table = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.vdd_gfx_dependency_on_sclk) {
+		kfree(hwmgr->dyn_state.vdd_gfx_dependency_on_sclk);
+		hwmgr->dyn_state.vdd_gfx_dependency_on_sclk = NULL;
+	}
+
+	if (NULL != hwmgr->dyn_state.vq_budgeting_table) {
+		kfree(hwmgr->dyn_state.vq_budgeting_table);
+		hwmgr->dyn_state.vq_budgeting_table = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

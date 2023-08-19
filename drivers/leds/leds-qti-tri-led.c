@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/bitops.h>
@@ -390,7 +403,11 @@ unlock:
 	return (rc < 0) ? rc : count;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(breath);
+=======
+static DEVICE_ATTR(breath, 0644, breath_show, breath_store);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct attribute *breath_attrs[] = {
 	&dev_attr_breath.attr,
 	NULL
@@ -409,6 +426,7 @@ static int qpnp_tri_led_register(struct qpnp_tri_led_chip *chip)
 		led->cdev.brightness_set_blocking = qpnp_tri_led_set_brightness;
 		led->cdev.brightness_get = qpnp_tri_led_get_brightness;
 		led->cdev.blink_set = qpnp_tri_led_set_blink;
+<<<<<<< HEAD
 		if (!strcmp(led->cdev.name, "green")){
 			led->cdev.default_trigger = led->default_trigger;
 		}
@@ -418,6 +436,12 @@ static int qpnp_tri_led_register(struct qpnp_tri_led_chip *chip)
 		} else
 			led->cdev.brightness = LED_OFF;
 		led->cdev.flags |= LED_KEEP_TRIGGER;
+=======
+		led->cdev.default_trigger = led->default_trigger;
+		led->cdev.brightness = LED_OFF;
+		led->cdev.flags |= LED_KEEP_TRIGGER;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc = devm_led_classdev_register(chip->dev, &led->cdev);
 		if (rc < 0) {
 			dev_err(chip->dev, "%s led class device registering failed, rc=%d\n",

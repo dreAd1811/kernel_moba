@@ -94,8 +94,11 @@ intel_display_power_domain_str(enum intel_display_power_domain domain)
 		return "PORT_DDI_D_LANES";
 	case POWER_DOMAIN_PORT_DDI_E_LANES:
 		return "PORT_DDI_E_LANES";
+<<<<<<< HEAD
 	case POWER_DOMAIN_PORT_DDI_F_LANES:
 		return "PORT_DDI_F_LANES";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case POWER_DOMAIN_PORT_DDI_A_IO:
 		return "PORT_DDI_A_IO";
 	case POWER_DOMAIN_PORT_DDI_B_IO:
@@ -106,8 +109,11 @@ intel_display_power_domain_str(enum intel_display_power_domain domain)
 		return "PORT_DDI_D_IO";
 	case POWER_DOMAIN_PORT_DDI_E_IO:
 		return "PORT_DDI_E_IO";
+<<<<<<< HEAD
 	case POWER_DOMAIN_PORT_DDI_F_IO:
 		return "PORT_DDI_F_IO";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case POWER_DOMAIN_PORT_DSI:
 		return "PORT_DSI";
 	case POWER_DOMAIN_PORT_CRT:
@@ -128,6 +134,7 @@ intel_display_power_domain_str(enum intel_display_power_domain domain)
 		return "AUX_C";
 	case POWER_DOMAIN_AUX_D:
 		return "AUX_D";
+<<<<<<< HEAD
 	case POWER_DOMAIN_AUX_E:
 		return "AUX_E";
 	case POWER_DOMAIN_AUX_F:
@@ -142,14 +149,19 @@ intel_display_power_domain_str(enum intel_display_power_domain domain)
 		return "AUX_TBT3";
 	case POWER_DOMAIN_AUX_TBT4:
 		return "AUX_TBT4";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case POWER_DOMAIN_GMBUS:
 		return "GMBUS";
 	case POWER_DOMAIN_INIT:
 		return "INIT";
 	case POWER_DOMAIN_MODESET:
 		return "MODESET";
+<<<<<<< HEAD
 	case POWER_DOMAIN_GT_IRQ:
 		return "GT_IRQ";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		MISSING_CASE(domain);
 		return "?";
@@ -207,7 +219,11 @@ bool __intel_display_power_is_enabled(struct drm_i915_private *dev_priv,
 	struct i915_power_well *power_well;
 	bool is_enabled;
 
+<<<<<<< HEAD
 	if (dev_priv->runtime_pm.suspended)
+=======
+	if (dev_priv->pm.suspended)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	is_enabled = true;
@@ -392,8 +408,12 @@ static void hsw_power_well_enable(struct drm_i915_private *dev_priv,
 	u32 val;
 
 	if (wait_fuses) {
+<<<<<<< HEAD
 		pg = INTEL_GEN(dev_priv) >= 11 ? ICL_PW_TO_PG(id) :
 						 SKL_PW_TO_PG(id);
+=======
+		pg = SKL_PW_TO_PG(id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * For PW1 we have to wait both for the PW0/PG0 fuse state
 		 * before enabling the power well and PW1/PG1's own fuse
@@ -409,6 +429,7 @@ static void hsw_power_well_enable(struct drm_i915_private *dev_priv,
 	I915_WRITE(HSW_PWR_WELL_CTL_DRIVER(id), val | HSW_PWR_WELL_CTL_REQ(id));
 	hsw_wait_for_power_well_enable(dev_priv, power_well);
 
+<<<<<<< HEAD
 	/* Display WA #1178: cnl */
 	if (IS_CANNONLAKE(dev_priv) &&
 	    (id == CNL_DISP_PW_AUX_B || id == CNL_DISP_PW_AUX_C ||
@@ -418,6 +439,8 @@ static void hsw_power_well_enable(struct drm_i915_private *dev_priv,
 		I915_WRITE(CNL_AUX_ANAOVRD1(id), val);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wait_fuses)
 		gen9_wait_for_power_well_fuses(dev_priv, pg);
 
@@ -439,6 +462,7 @@ static void hsw_power_well_disable(struct drm_i915_private *dev_priv,
 	hsw_wait_for_power_well_disable(dev_priv, power_well);
 }
 
+<<<<<<< HEAD
 #define ICL_AUX_PW_TO_PORT(pw)	((pw) - ICL_DISP_PW_AUX_A)
 
 static void
@@ -476,6 +500,8 @@ icl_combo_phy_aux_power_well_disable(struct drm_i915_private *dev_priv,
 	hsw_wait_for_power_well_disable(dev_priv, power_well);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We should only use the power well if we explicitly asked the hardware to
  * enable it, so check if it's enabled and also check if we've requested it to
@@ -590,6 +616,7 @@ void gen9_sanitize_dc_state(struct drm_i915_private *dev_priv)
 	dev_priv->csr.dc_state = val;
 }
 
+<<<<<<< HEAD
 /**
  * gen9_set_dc_state - set target display C power state
  * @dev_priv: i915 device instance
@@ -613,6 +640,8 @@ void gen9_sanitize_dc_state(struct drm_i915_private *dev_priv)
  * back on and register state is restored. This is guaranteed by the MMIO write
  * to DC_STATE_EN blocking until the state is restored.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void gen9_set_dc_state(struct drm_i915_private *dev_priv, uint32_t state)
 {
 	uint32_t val;
@@ -706,7 +735,11 @@ static void assert_can_enable_dc6(struct drm_i915_private *dev_priv)
 	assert_csr_loaded(dev_priv);
 }
 
+<<<<<<< HEAD
 static void skl_enable_dc6(struct drm_i915_private *dev_priv)
+=======
+void skl_enable_dc6(struct drm_i915_private *dev_priv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	assert_can_enable_dc6(dev_priv);
 
@@ -720,6 +753,16 @@ static void skl_enable_dc6(struct drm_i915_private *dev_priv)
 	gen9_set_dc_state(dev_priv, DC_STATE_EN_UPTO_DC6);
 }
 
+<<<<<<< HEAD
+=======
+void skl_disable_dc6(struct drm_i915_private *dev_priv)
+{
+	DRM_DEBUG_KMS("Disabling DC6\n");
+
+	gen9_set_dc_state(dev_priv, DC_STATE_DISABLE);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void hsw_power_well_sync_hw(struct drm_i915_private *dev_priv,
 				   struct i915_power_well *power_well)
 {
@@ -797,8 +840,12 @@ static void gen9_dc_off_power_well_enable(struct drm_i915_private *dev_priv,
 	gen9_set_dc_state(dev_priv, DC_STATE_DISABLE);
 
 	dev_priv->display.get_cdclk(dev_priv, &cdclk_state);
+<<<<<<< HEAD
 	/* Can't read out voltage_level so can't use intel_cdclk_changed() */
 	WARN_ON(intel_cdclk_needs_modeset(&dev_priv->cdclk.hw, &cdclk_state));
+=======
+	WARN_ON(!intel_cdclk_state_compare(&dev_priv->cdclk.hw, &cdclk_state));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gen9_assert_dbuf_enabled(dev_priv);
 
@@ -878,7 +925,11 @@ static void vlv_set_power_well(struct drm_i915_private *dev_priv,
 	state = enable ? PUNIT_PWRGT_PWR_ON(power_well_id) :
 			 PUNIT_PWRGT_PWR_GATE(power_well_id);
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define COND \
 	((vlv_punit_read(dev_priv, PUNIT_REG_PWRGT_STATUS) & mask) == state)
@@ -899,7 +950,11 @@ static void vlv_set_power_well(struct drm_i915_private *dev_priv,
 #undef COND
 
 out:
+<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vlv_power_well_enable(struct drm_i915_private *dev_priv,
@@ -926,7 +981,11 @@ static bool vlv_power_well_enabled(struct drm_i915_private *dev_priv,
 	mask = PUNIT_PWRGT_MASK(power_well_id);
 	ctrl = PUNIT_PWRGT_PWR_ON(power_well_id);
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	state = vlv_punit_read(dev_priv, PUNIT_REG_PWRGT_STATUS) & mask;
 	/*
@@ -945,7 +1004,11 @@ static bool vlv_power_well_enabled(struct drm_i915_private *dev_priv,
 	ctrl = vlv_punit_read(dev_priv, PUNIT_REG_PWRGT_CTRL) & mask;
 	WARN_ON(ctrl != state);
 
+<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return enabled;
 }
@@ -1457,7 +1520,11 @@ static bool chv_pipe_power_well_enabled(struct drm_i915_private *dev_priv,
 	bool enabled;
 	u32 state, ctrl;
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	state = vlv_punit_read(dev_priv, PUNIT_REG_DSPFREQ) & DP_SSS_MASK(pipe);
 	/*
@@ -1474,7 +1541,11 @@ static bool chv_pipe_power_well_enabled(struct drm_i915_private *dev_priv,
 	ctrl = vlv_punit_read(dev_priv, PUNIT_REG_DSPFREQ) & DP_SSC_MASK(pipe);
 	WARN_ON(ctrl << 16 != state);
 
+<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return enabled;
 }
@@ -1489,7 +1560,11 @@ static void chv_set_pipe_power_well(struct drm_i915_private *dev_priv,
 
 	state = enable ? DP_SSS_PWR_ON(pipe) : DP_SSS_PWR_GATE(pipe);
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define COND \
 	((vlv_punit_read(dev_priv, PUNIT_REG_DSPFREQ) & DP_SSS_MASK(pipe)) == state)
@@ -1510,7 +1585,11 @@ static void chv_set_pipe_power_well(struct drm_i915_private *dev_priv,
 #undef COND
 
 out:
+<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void chv_pipe_power_well_enable(struct drm_i915_private *dev_priv,
@@ -1797,7 +1876,10 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 	BIT_ULL(POWER_DOMAIN_INIT))
 #define SKL_DISPLAY_DC_OFF_POWER_DOMAINS (		\
 	SKL_DISPLAY_POWERWELL_2_POWER_DOMAINS |		\
+<<<<<<< HEAD
 	BIT_ULL(POWER_DOMAIN_GT_IRQ) |			\
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BIT_ULL(POWER_DOMAIN_MODESET) |			\
 	BIT_ULL(POWER_DOMAIN_AUX_A) |			\
 	BIT_ULL(POWER_DOMAIN_INIT))
@@ -1816,6 +1898,7 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 	BIT_ULL(POWER_DOMAIN_AUX_C) |			\
 	BIT_ULL(POWER_DOMAIN_AUDIO) |			\
 	BIT_ULL(POWER_DOMAIN_VGA) |				\
+<<<<<<< HEAD
 	BIT_ULL(POWER_DOMAIN_INIT))
 #define BXT_DISPLAY_DC_OFF_POWER_DOMAINS (		\
 	BXT_DISPLAY_POWERWELL_2_POWER_DOMAINS |		\
@@ -1823,6 +1906,14 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 	BIT_ULL(POWER_DOMAIN_MODESET) |			\
 	BIT_ULL(POWER_DOMAIN_AUX_A) |			\
 	BIT_ULL(POWER_DOMAIN_GMBUS) |			\
+=======
+	BIT_ULL(POWER_DOMAIN_GMBUS) |			\
+	BIT_ULL(POWER_DOMAIN_INIT))
+#define BXT_DISPLAY_DC_OFF_POWER_DOMAINS (		\
+	BXT_DISPLAY_POWERWELL_2_POWER_DOMAINS |		\
+	BIT_ULL(POWER_DOMAIN_MODESET) |			\
+	BIT_ULL(POWER_DOMAIN_AUX_A) |			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BIT_ULL(POWER_DOMAIN_INIT))
 #define BXT_DPIO_CMN_A_POWER_DOMAINS (			\
 	BIT_ULL(POWER_DOMAIN_PORT_DDI_A_LANES) |		\
@@ -1870,7 +1961,10 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 	BIT_ULL(POWER_DOMAIN_INIT))
 #define GLK_DISPLAY_AUX_A_POWER_DOMAINS (		\
 	BIT_ULL(POWER_DOMAIN_AUX_A) |		\
+<<<<<<< HEAD
 	BIT_ULL(POWER_DOMAIN_AUX_IO_A) |		\
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BIT_ULL(POWER_DOMAIN_INIT))
 #define GLK_DISPLAY_AUX_B_POWER_DOMAINS (		\
 	BIT_ULL(POWER_DOMAIN_AUX_B) |		\
@@ -1880,7 +1974,10 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 	BIT_ULL(POWER_DOMAIN_INIT))
 #define GLK_DISPLAY_DC_OFF_POWER_DOMAINS (		\
 	GLK_DISPLAY_POWERWELL_2_POWER_DOMAINS |		\
+<<<<<<< HEAD
 	BIT_ULL(POWER_DOMAIN_GT_IRQ) |			\
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BIT_ULL(POWER_DOMAIN_MODESET) |			\
 	BIT_ULL(POWER_DOMAIN_AUX_A) |			\
 	BIT_ULL(POWER_DOMAIN_GMBUS) |			\
@@ -1897,11 +1994,17 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 	BIT_ULL(POWER_DOMAIN_PORT_DDI_B_LANES) |		\
 	BIT_ULL(POWER_DOMAIN_PORT_DDI_C_LANES) |		\
 	BIT_ULL(POWER_DOMAIN_PORT_DDI_D_LANES) |		\
+<<<<<<< HEAD
 	BIT_ULL(POWER_DOMAIN_PORT_DDI_F_LANES) |		\
 	BIT_ULL(POWER_DOMAIN_AUX_B) |                       \
 	BIT_ULL(POWER_DOMAIN_AUX_C) |			\
 	BIT_ULL(POWER_DOMAIN_AUX_D) |			\
 	BIT_ULL(POWER_DOMAIN_AUX_F) |			\
+=======
+	BIT_ULL(POWER_DOMAIN_AUX_B) |                       \
+	BIT_ULL(POWER_DOMAIN_AUX_C) |			\
+	BIT_ULL(POWER_DOMAIN_AUX_D) |			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BIT_ULL(POWER_DOMAIN_AUDIO) |			\
 	BIT_ULL(POWER_DOMAIN_VGA) |				\
 	BIT_ULL(POWER_DOMAIN_INIT))
@@ -1919,7 +2022,10 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 	BIT_ULL(POWER_DOMAIN_INIT))
 #define CNL_DISPLAY_AUX_A_POWER_DOMAINS (		\
 	BIT_ULL(POWER_DOMAIN_AUX_A) |			\
+<<<<<<< HEAD
 	BIT_ULL(POWER_DOMAIN_AUX_IO_A) |		\
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BIT_ULL(POWER_DOMAIN_INIT))
 #define CNL_DISPLAY_AUX_B_POWER_DOMAINS (		\
 	BIT_ULL(POWER_DOMAIN_AUX_B) |			\
@@ -1930,6 +2036,7 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 #define CNL_DISPLAY_AUX_D_POWER_DOMAINS (		\
 	BIT_ULL(POWER_DOMAIN_AUX_D) |			\
 	BIT_ULL(POWER_DOMAIN_INIT))
+<<<<<<< HEAD
 #define CNL_DISPLAY_AUX_F_POWER_DOMAINS (		\
 	BIT_ULL(POWER_DOMAIN_AUX_F) |			\
 	BIT_ULL(POWER_DOMAIN_INIT))
@@ -2042,6 +2149,15 @@ void intel_display_power_put(struct drm_i915_private *dev_priv,
 #define ICL_AUX_TBT4_IO_POWER_DOMAINS (			\
 	BIT_ULL(POWER_DOMAIN_AUX_TBT4))
 
+=======
+#define CNL_DISPLAY_DC_OFF_POWER_DOMAINS (		\
+	CNL_DISPLAY_POWERWELL_2_POWER_DOMAINS |		\
+	BIT_ULL(POWER_DOMAIN_MODESET) |			\
+	BIT_ULL(POWER_DOMAIN_AUX_A) |			\
+	BIT_ULL(POWER_DOMAIN_GMBUS) |			\
+	BIT_ULL(POWER_DOMAIN_INIT))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct i915_power_well_ops i9xx_always_on_power_well_ops = {
 	.sync_hw = i9xx_power_well_sync_hw_noop,
 	.enable = i9xx_always_on_power_well_noop,
@@ -2585,6 +2701,7 @@ static struct i915_power_well cnl_power_wells[] = {
 		.ops = &hsw_power_well_ops,
 		.id = SKL_DISP_PW_DDI_D,
 	},
+<<<<<<< HEAD
 	{
 		.name = "DDI F IO power well",
 		.domains = CNL_DISPLAY_DDI_F_IO_POWER_DOMAINS,
@@ -2748,6 +2865,8 @@ static struct i915_power_well icl_power_wells[] = {
 		.hsw.has_fuses = true,
 		.hsw.irq_pipe_mask = BIT(PIPE_C),
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int
@@ -2767,7 +2886,11 @@ static uint32_t get_allowed_dc_mask(const struct drm_i915_private *dev_priv,
 	int requested_dc;
 	int max_dc;
 
+<<<<<<< HEAD
 	if (IS_GEN9_BC(dev_priv) || INTEL_INFO(dev_priv)->gen >= 10) {
+=======
+	if (IS_GEN9_BC(dev_priv) || IS_CANNONLAKE(dev_priv)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		max_dc = 2;
 		mask = 0;
 	} else if (IS_GEN9_LP(dev_priv)) {
@@ -2783,7 +2906,11 @@ static uint32_t get_allowed_dc_mask(const struct drm_i915_private *dev_priv,
 		mask = 0;
 	}
 
+<<<<<<< HEAD
 	if (!i915_modparams.disable_power_well)
+=======
+	if (!i915.disable_power_well)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		max_dc = 0;
 
 	if (enable_dc >= 0 && enable_dc <= max_dc) {
@@ -2841,11 +2968,18 @@ int intel_power_domains_init(struct drm_i915_private *dev_priv)
 {
 	struct i915_power_domains *power_domains = &dev_priv->power_domains;
 
+<<<<<<< HEAD
 	i915_modparams.disable_power_well =
 		sanitize_disable_power_well_option(dev_priv,
 						   i915_modparams.disable_power_well);
 	dev_priv->csr.allowed_dc_mask =
 		get_allowed_dc_mask(dev_priv, i915_modparams.enable_dc);
+=======
+	i915.disable_power_well = sanitize_disable_power_well_option(dev_priv,
+						     i915.disable_power_well);
+	dev_priv->csr.allowed_dc_mask = get_allowed_dc_mask(dev_priv,
+							    i915.enable_dc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUILD_BUG_ON(POWER_DOMAIN_NUM > 64);
 
@@ -2855,9 +2989,13 @@ int intel_power_domains_init(struct drm_i915_private *dev_priv)
 	 * The enabling order will be from lower to higher indexed wells,
 	 * the disabling order is reversed.
 	 */
+<<<<<<< HEAD
 	if (IS_ICELAKE(dev_priv)) {
 		set_power_wells(power_domains, icl_power_wells);
 	} else if (IS_HASWELL(dev_priv)) {
+=======
+	if (IS_HASWELL(dev_priv)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_power_wells(power_domains, hsw_power_wells);
 	} else if (IS_BROADWELL(dev_priv)) {
 		set_power_wells(power_domains, bdw_power_wells);
@@ -2865,6 +3003,7 @@ int intel_power_domains_init(struct drm_i915_private *dev_priv)
 		set_power_wells(power_domains, skl_power_wells);
 	} else if (IS_CANNONLAKE(dev_priv)) {
 		set_power_wells(power_domains, cnl_power_wells);
+<<<<<<< HEAD
 
 		/*
 		 * DDI and Aux IO are getting enabled for all ports
@@ -2875,6 +3014,8 @@ int intel_power_domains_init(struct drm_i915_private *dev_priv)
 		if (!IS_CNL_WITH_PORT_F(dev_priv))
 			power_domains->power_well_count -= 2;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (IS_BROXTON(dev_priv)) {
 		set_power_wells(power_domains, bxt_power_wells);
 	} else if (IS_GEMINILAKE(dev_priv)) {
@@ -2918,7 +3059,11 @@ void intel_power_domains_fini(struct drm_i915_private *dev_priv)
 	intel_display_set_init_power(dev_priv, true);
 
 	/* Remove the refcount we took to keep power well support disabled. */
+<<<<<<< HEAD
 	if (!i915_modparams.disable_power_well)
+=======
+	if (!i915.disable_power_well)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intel_display_power_put(dev_priv, POWER_DOMAIN_INIT);
 
 	/*
@@ -2943,6 +3088,7 @@ static void intel_power_domains_sync_hw(struct drm_i915_private *dev_priv)
 	mutex_unlock(&power_domains->lock);
 }
 
+<<<<<<< HEAD
 static inline
 bool intel_dbuf_slice_set(struct drm_i915_private *dev_priv,
 			  i915_reg_t reg, bool enable)
@@ -2967,10 +3113,22 @@ bool intel_dbuf_slice_set(struct drm_i915_private *dev_priv,
 static void gen9_dbuf_enable(struct drm_i915_private *dev_priv)
 {
 	intel_dbuf_slice_set(dev_priv, DBUF_CTL, true);
+=======
+static void gen9_dbuf_enable(struct drm_i915_private *dev_priv)
+{
+	I915_WRITE(DBUF_CTL, I915_READ(DBUF_CTL) | DBUF_POWER_REQUEST);
+	POSTING_READ(DBUF_CTL);
+
+	udelay(10);
+
+	if (!(I915_READ(DBUF_CTL) & DBUF_POWER_STATE))
+		DRM_ERROR("DBuf power enable timeout\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gen9_dbuf_disable(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	intel_dbuf_slice_set(dev_priv, DBUF_CTL, false);
 }
 
@@ -3046,6 +3204,15 @@ static void icl_mbus_init(struct drm_i915_private *dev_priv)
 	      MBUS_ABOX_BW_CREDIT(1);
 
 	I915_WRITE(MBUS_ABOX_CTL, val);
+=======
+	I915_WRITE(DBUF_CTL, I915_READ(DBUF_CTL) & ~DBUF_POWER_REQUEST);
+	POSTING_READ(DBUF_CTL);
+
+	udelay(10);
+
+	if (I915_READ(DBUF_CTL) & DBUF_POWER_STATE)
+		DRM_ERROR("DBuf power disable timeout!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void skl_display_core_init(struct drm_i915_private *dev_priv,
@@ -3173,6 +3340,7 @@ void bxt_display_core_uninit(struct drm_i915_private *dev_priv)
 	usleep_range(10, 30);		/* 10 us delay per Bspec */
 }
 
+<<<<<<< HEAD
 enum {
 	PROCMON_0_85V_DOT_0,
 	PROCMON_0_95V_DOT_0,
@@ -3242,6 +3410,32 @@ static void cnl_set_procmon_ref_values(struct drm_i915_private *dev_priv,
 static void cnl_display_core_init(struct drm_i915_private *dev_priv, bool resume)
 {
 	struct i915_power_domains *power_domains = &dev_priv->power_domains;
+=======
+#define CNL_PROCMON_IDX(val) \
+	(((val) & (PROCESS_INFO_MASK | VOLTAGE_INFO_MASK)) >> VOLTAGE_INFO_SHIFT)
+#define NUM_CNL_PROCMON \
+	(CNL_PROCMON_IDX(VOLTAGE_INFO_MASK | PROCESS_INFO_MASK) + 1)
+
+static const struct cnl_procmon {
+	u32 dw1, dw9, dw10;
+} cnl_procmon_values[NUM_CNL_PROCMON] = {
+	[CNL_PROCMON_IDX(VOLTAGE_INFO_0_85V | PROCESS_INFO_DOT_0)] =
+		{ .dw1 = 0x00 << 16, .dw9 = 0x62AB67BB, .dw10 = 0x51914F96, },
+	[CNL_PROCMON_IDX(VOLTAGE_INFO_0_95V | PROCESS_INFO_DOT_0)] =
+		{ .dw1 = 0x00 << 16, .dw9 = 0x86E172C7, .dw10 = 0x77CA5EAB, },
+	[CNL_PROCMON_IDX(VOLTAGE_INFO_0_95V | PROCESS_INFO_DOT_1)] =
+		{ .dw1 = 0x00 << 16, .dw9 = 0x93F87FE1, .dw10 = 0x8AE871C5, },
+	[CNL_PROCMON_IDX(VOLTAGE_INFO_1_05V | PROCESS_INFO_DOT_0)] =
+		{ .dw1 = 0x00 << 16, .dw9 = 0x98FA82DD, .dw10 = 0x89E46DC1, },
+	[CNL_PROCMON_IDX(VOLTAGE_INFO_1_05V | PROCESS_INFO_DOT_1)] =
+		{ .dw1 = 0x44 << 16, .dw9 = 0x9A00AB25, .dw10 = 0x8AE38FF1, },
+};
+
+static void cnl_display_core_init(struct drm_i915_private *dev_priv, bool resume)
+{
+	struct i915_power_domains *power_domains = &dev_priv->power_domains;
+	const struct cnl_procmon *procmon;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_power_well *well;
 	u32 val;
 
@@ -3257,8 +3451,23 @@ static void cnl_display_core_init(struct drm_i915_private *dev_priv, bool resume
 	val &= ~CNL_COMP_PWR_DOWN;
 	I915_WRITE(CHICKEN_MISC_2, val);
 
+<<<<<<< HEAD
 	/* Dummy PORT_A to get the correct CNL register from the ICL macro */
 	cnl_set_procmon_ref_values(dev_priv, PORT_A);
+=======
+	val = I915_READ(CNL_PORT_COMP_DW3);
+	procmon = &cnl_procmon_values[CNL_PROCMON_IDX(val)];
+
+	WARN_ON(procmon->dw10 == 0);
+
+	val = I915_READ(CNL_PORT_COMP_DW1);
+	val &= ~((0xff << 16) | 0xff);
+	val |= procmon->dw1;
+	I915_WRITE(CNL_PORT_COMP_DW1, val);
+
+	I915_WRITE(CNL_PORT_COMP_DW9, procmon->dw9);
+	I915_WRITE(CNL_PORT_COMP_DW10, procmon->dw10);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val = I915_READ(CNL_PORT_COMP_DW0);
 	val |= COMP_INIT;
@@ -3288,6 +3497,12 @@ static void cnl_display_core_init(struct drm_i915_private *dev_priv, bool resume
 		intel_csr_load_program(dev_priv);
 }
 
+<<<<<<< HEAD
+=======
+#undef CNL_PROCMON_IDX
+#undef NUM_CNL_PROCMON
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cnl_display_core_uninit(struct drm_i915_private *dev_priv)
 {
 	struct i915_power_domains *power_domains = &dev_priv->power_domains;
@@ -3322,6 +3537,7 @@ static void cnl_display_core_uninit(struct drm_i915_private *dev_priv)
 	I915_WRITE(CHICKEN_MISC_2, val);
 }
 
+<<<<<<< HEAD
 static void icl_display_core_init(struct drm_i915_private *dev_priv,
 				  bool resume)
 {
@@ -3413,6 +3629,8 @@ static void icl_display_core_uninit(struct drm_i915_private *dev_priv)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void chv_phy_control_init(struct drm_i915_private *dev_priv)
 {
 	struct i915_power_well *cmn_bc =
@@ -3545,9 +3763,13 @@ void intel_power_domains_init_hw(struct drm_i915_private *dev_priv, bool resume)
 
 	power_domains->initializing = true;
 
+<<<<<<< HEAD
 	if (IS_ICELAKE(dev_priv)) {
 		icl_display_core_init(dev_priv, resume);
 	} else if (IS_CANNONLAKE(dev_priv)) {
+=======
+	if (IS_CANNONLAKE(dev_priv)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cnl_display_core_init(dev_priv, resume);
 	} else if (IS_GEN9_BC(dev_priv)) {
 		skl_display_core_init(dev_priv, resume);
@@ -3566,7 +3788,11 @@ void intel_power_domains_init_hw(struct drm_i915_private *dev_priv, bool resume)
 	/* For now, we need the power well to be always enabled. */
 	intel_display_set_init_power(dev_priv, true);
 	/* Disable power support if the user asked so. */
+<<<<<<< HEAD
 	if (!i915_modparams.disable_power_well)
+=======
+	if (!i915.disable_power_well)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		intel_display_power_get(dev_priv, POWER_DOMAIN_INIT);
 	intel_power_domains_sync_hw(dev_priv);
 	power_domains->initializing = false;
@@ -3585,12 +3811,19 @@ void intel_power_domains_suspend(struct drm_i915_private *dev_priv)
 	 * Even if power well support was disabled we still want to disable
 	 * power wells while we are system suspended.
 	 */
+<<<<<<< HEAD
 	if (!i915_modparams.disable_power_well)
 		intel_display_power_put(dev_priv, POWER_DOMAIN_INIT);
 
 	if (IS_ICELAKE(dev_priv))
 		icl_display_core_uninit(dev_priv);
 	else if (IS_CANNONLAKE(dev_priv))
+=======
+	if (!i915.disable_power_well)
+		intel_display_power_put(dev_priv, POWER_DOMAIN_INIT);
+
+	if (IS_CANNONLAKE(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cnl_display_core_uninit(dev_priv);
 	else if (IS_GEN9_BC(dev_priv))
 		skl_display_core_uninit(dev_priv);
@@ -3697,7 +3930,11 @@ void intel_runtime_pm_get(struct drm_i915_private *dev_priv)
 	ret = pm_runtime_get_sync(kdev);
 	WARN_ONCE(ret < 0, "pm_runtime_get_sync() failed: %d\n", ret);
 
+<<<<<<< HEAD
 	atomic_inc(&dev_priv->runtime_pm.wakeref_count);
+=======
+	atomic_inc(&dev_priv->pm.wakeref_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	assert_rpm_wakelock_held(dev_priv);
 }
 
@@ -3706,6 +3943,7 @@ void intel_runtime_pm_get(struct drm_i915_private *dev_priv)
  * @dev_priv: i915 device instance
  *
  * This function grabs a device-level runtime pm reference if the device is
+<<<<<<< HEAD
  * already in use and ensures that it is powered up. It is illegal to try
  * and access the HW should intel_runtime_pm_get_if_in_use() report failure.
  *
@@ -3719,6 +3957,20 @@ bool intel_runtime_pm_get_if_in_use(struct drm_i915_private *dev_priv)
 	if (IS_ENABLED(CONFIG_PM)) {
 		struct pci_dev *pdev = dev_priv->drm.pdev;
 		struct device *kdev = &pdev->dev;
+=======
+ * already in use and ensures that it is powered up.
+ *
+ * Any runtime pm reference obtained by this function must have a symmetric
+ * call to intel_runtime_pm_put() to release the reference again.
+ */
+bool intel_runtime_pm_get_if_in_use(struct drm_i915_private *dev_priv)
+{
+	struct pci_dev *pdev = dev_priv->drm.pdev;
+	struct device *kdev = &pdev->dev;
+
+	if (IS_ENABLED(CONFIG_PM)) {
+		int ret = pm_runtime_get_if_in_use(kdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * In cases runtime PM is disabled by the RPM core and we get
@@ -3726,11 +3978,21 @@ bool intel_runtime_pm_get_if_in_use(struct drm_i915_private *dev_priv)
 		 * function, since the power state is undefined. This applies
 		 * atm to the late/early system suspend/resume handlers.
 		 */
+<<<<<<< HEAD
 		if (pm_runtime_get_if_in_use(kdev) <= 0)
 			return false;
 	}
 
 	atomic_inc(&dev_priv->runtime_pm.wakeref_count);
+=======
+		WARN_ONCE(ret < 0,
+			  "pm_runtime_get_if_in_use() failed: %d\n", ret);
+		if (ret <= 0)
+			return false;
+	}
+
+	atomic_inc(&dev_priv->pm.wakeref_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	assert_rpm_wakelock_held(dev_priv);
 
 	return true;
@@ -3761,7 +4023,11 @@ void intel_runtime_pm_get_noresume(struct drm_i915_private *dev_priv)
 	assert_rpm_wakelock_held(dev_priv);
 	pm_runtime_get_noresume(kdev);
 
+<<<<<<< HEAD
 	atomic_inc(&dev_priv->runtime_pm.wakeref_count);
+=======
+	atomic_inc(&dev_priv->pm.wakeref_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -3778,7 +4044,11 @@ void intel_runtime_pm_put(struct drm_i915_private *dev_priv)
 	struct device *kdev = &pdev->dev;
 
 	assert_rpm_wakelock_held(dev_priv);
+<<<<<<< HEAD
 	atomic_dec(&dev_priv->runtime_pm.wakeref_count);
+=======
+	atomic_dec(&dev_priv->pm.wakeref_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_mark_last_busy(kdev);
 	pm_runtime_put_autosuspend(kdev);

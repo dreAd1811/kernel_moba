@@ -4,7 +4,11 @@ core-y += arch/x86/crypto/
 ifeq ($(CONFIG_X86_32),y)
 START := 0x8048000
 
+<<<<<<< HEAD
 KBUILD_LDFLAGS		+= -m elf_i386
+=======
+LDFLAGS			+= -m elf_i386
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ELF_ARCH		:= i386
 ELF_FORMAT 		:= elf32-i386
 CHECKFLAGS	+= -D__i386__
@@ -13,6 +17,11 @@ KBUILD_CFLAGS		+= $(call cc-option,-m32)
 KBUILD_AFLAGS		+= $(call cc-option,-m32)
 LINK-y			+= $(call cc-option,-m32)
 
+<<<<<<< HEAD
+=======
+export LDFLAGS
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 LDS_EXTRA		:= -Ui386
 export LDS_EXTRA
 
@@ -43,7 +52,11 @@ KBUILD_CFLAGS += -fno-builtin -m64
 
 CHECKFLAGS  += -m64 -D__x86_64__
 KBUILD_AFLAGS += -m64
+<<<<<<< HEAD
 KBUILD_LDFLAGS += -m elf_x86_64
+=======
+LDFLAGS += -m elf_x86_64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 KBUILD_CPPFLAGS += -m64
 
 ELF_ARCH := i386:x86-64

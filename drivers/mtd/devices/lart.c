@@ -414,7 +414,14 @@ static int flash_erase (struct mtd_info *mtd,struct erase_info *instr)
    while (len)
 	 {
 		if (!erase_block (addr))
+<<<<<<< HEAD
 			 return (-EIO);
+=======
+		  {
+			 instr->state = MTD_ERASE_FAILED;
+			 return (-EIO);
+		  }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		addr += mtd->eraseregions[i].erasesize;
 		len -= mtd->eraseregions[i].erasesize;
@@ -422,6 +429,12 @@ static int flash_erase (struct mtd_info *mtd,struct erase_info *instr)
 		if (addr == mtd->eraseregions[i].offset + (mtd->eraseregions[i].erasesize * mtd->eraseregions[i].numblocks)) i++;
 	 }
 
+<<<<<<< HEAD
+=======
+   instr->state = MTD_ERASE_DONE;
+   mtd_erase_callback(instr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    return (0);
 }
 
@@ -577,7 +590,11 @@ static struct mtd_erase_region_info erase_regions[] = {
 	}
 };
 
+<<<<<<< HEAD
 static const struct mtd_partition lart_partitions[] = {
+=======
+static struct mtd_partition lart_partitions[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* blob */
 	{
 		.name	= "blob",

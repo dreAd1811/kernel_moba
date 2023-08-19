@@ -24,14 +24,21 @@
 #include <linux/string.h>
 #include <linux/module.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/i2c.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/slab.h>
 #include <linux/device.h>
 #include <linux/fs.h>
 #include <linux/cdev.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <media/dvbdev.h>
+=======
+#include "dvbdev.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Due to enum tuner_pad_index */
 #include <media/tuner.h>
@@ -52,6 +59,7 @@ static LIST_HEAD(dvb_adapter_list);
 static DEFINE_MUTEX(dvbdev_register_lock);
 
 static const char * const dnames[] = {
+<<<<<<< HEAD
 	[DVB_DEVICE_VIDEO] =		"video",
 	[DVB_DEVICE_AUDIO] =		"audio",
 	[DVB_DEVICE_SEC] =		"sec",
@@ -61,6 +69,10 @@ static const char * const dnames[] = {
 	[DVB_DEVICE_CA] =		"ca",
 	[DVB_DEVICE_NET] =		"net",
 	[DVB_DEVICE_OSD] =		"osd"
+=======
+	"video", "audio", "sec", "frontend", "demux", "dvr", "ca",
+	"net", "osd"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #ifdef CONFIG_DVB_DYNAMIC_MINORS
@@ -68,6 +80,7 @@ static const char * const dnames[] = {
 #define DVB_MAX_IDS		MAX_DVB_MINORS
 #else
 #define DVB_MAX_IDS		4
+<<<<<<< HEAD
 
 static const u8 minor_type[] = {
        [DVB_DEVICE_VIDEO]      = 0,
@@ -84,6 +97,9 @@ static const u8 minor_type[] = {
 #define nums2minor(num, type, id) \
        (((num) << 6) | ((id) << 4) | minor_type[type])
 
+=======
+#define nums2minor(num, type, id)	((num << 6) | (id << 4) | type)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX_DVB_MINORS		(DVB_MAX_ADAPTERS*64)
 #endif
 
@@ -442,10 +458,15 @@ static int dvb_register_media_device(struct dvb_device *dvbdev,
 	if (!dvbdev->entity)
 		return 0;
 
+<<<<<<< HEAD
 	link = media_create_intf_link(dvbdev->entity,
 				      &dvbdev->intf_devnode->intf,
 				      MEDIA_LNK_FL_ENABLED |
 				      MEDIA_LNK_FL_IMMUTABLE);
+=======
+	link = media_create_intf_link(dvbdev->entity, &dvbdev->intf_devnode->intf,
+				      MEDIA_LNK_FL_ENABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!link)
 		return -ENOMEM;
 #endif
@@ -453,8 +474,13 @@ static int dvb_register_media_device(struct dvb_device *dvbdev,
 }
 
 int dvb_register_device(struct dvb_adapter *adap, struct dvb_device **pdvbdev,
+<<<<<<< HEAD
 			const struct dvb_device *template, void *priv,
 			enum dvb_device_type type, int demux_sink_pads)
+=======
+			const struct dvb_device *template, void *priv, int type,
+			int demux_sink_pads)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dvb_device *dvbdev;
 	struct file_operations *dvbdevfops;
@@ -603,8 +629,12 @@ static int dvb_create_io_intf_links(struct dvb_adapter *adap,
 			if (strncmp(entity->name, name, strlen(name)))
 				continue;
 			link = media_create_intf_link(entity, intf,
+<<<<<<< HEAD
 						      MEDIA_LNK_FL_ENABLED |
 						      MEDIA_LNK_FL_IMMUTABLE);
+=======
+						      MEDIA_LNK_FL_ENABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!link)
 				return -ENOMEM;
 		}
@@ -759,16 +789,24 @@ int dvb_create_media_graph(struct dvb_adapter *adap,
 	media_device_for_each_intf(intf, mdev) {
 		if (intf->type == MEDIA_INTF_T_DVB_CA && ca) {
 			link = media_create_intf_link(ca, intf,
+<<<<<<< HEAD
 						      MEDIA_LNK_FL_ENABLED |
 						      MEDIA_LNK_FL_IMMUTABLE);
+=======
+						      MEDIA_LNK_FL_ENABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!link)
 				return -ENOMEM;
 		}
 
 		if (intf->type == MEDIA_INTF_T_DVB_FE && tuner) {
 			link = media_create_intf_link(tuner, intf,
+<<<<<<< HEAD
 						      MEDIA_LNK_FL_ENABLED |
 						      MEDIA_LNK_FL_IMMUTABLE);
+=======
+						      MEDIA_LNK_FL_ENABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!link)
 				return -ENOMEM;
 		}
@@ -780,8 +818,12 @@ int dvb_create_media_graph(struct dvb_adapter *adap,
 		 */
 		if (intf->type == MEDIA_INTF_T_DVB_DVR && demux) {
 			link = media_create_intf_link(demux, intf,
+<<<<<<< HEAD
 						      MEDIA_LNK_FL_ENABLED |
 						      MEDIA_LNK_FL_IMMUTABLE);
+=======
+						      MEDIA_LNK_FL_ENABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!link)
 				return -ENOMEM;
 		}
@@ -867,10 +909,13 @@ int dvb_register_adapter(struct dvb_adapter *adap, const char *name,
 	adap->mfe_dvbdev = NULL;
 	mutex_init (&adap->mfe_lock);
 
+<<<<<<< HEAD
 #ifdef CONFIG_MEDIA_CONTROLLER_DVB
 	mutex_init(&adap->mdev_lock);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_add_tail (&adap->list_head, &dvb_adapter_list);
 
 	mutex_unlock(&dvbdev_register_lock);
@@ -954,6 +999,7 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_I2C)
 struct i2c_client *dvb_module_probe(const char *module_name,
 				    const char *name,
@@ -1003,6 +1049,8 @@ void dvb_module_release(struct i2c_client *client)
 EXPORT_SYMBOL_GPL(dvb_module_release);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dvb_uevent(struct device *dev, struct kobj_uevent_env *env)
 {
 	struct dvb_device *dvbdev = dev_get_drvdata(dev);

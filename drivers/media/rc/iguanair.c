@@ -347,12 +347,18 @@ static int iguanair_set_tx_mask(struct rc_dev *dev, uint32_t mask)
 static int iguanair_tx(struct rc_dev *dev, unsigned *txbuf, unsigned count)
 {
 	struct iguanair *ir = dev->priv;
+<<<<<<< HEAD
 	unsigned int i, size, p, periods;
+=======
+	uint8_t space;
+	unsigned i, size, periods, bytes;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	mutex_lock(&ir->lock);
 
 	/* convert from us to carrier periods */
+<<<<<<< HEAD
 	for (i = size = 0; i < count; i++) {
 		periods = DIV_ROUND_CLOSEST(txbuf[i] * ir->carrier, 1000000);
 		while (periods) {
@@ -364,6 +370,21 @@ static int iguanair_tx(struct rc_dev *dev, unsigned *txbuf, unsigned count)
 			ir->packet->payload[size++] = p | ((i & 1) ? 0x80 : 0);
 			periods -= p;
 		}
+=======
+	for (i = space = size = 0; i < count; i++) {
+		periods = DIV_ROUND_CLOSEST(txbuf[i] * ir->carrier, 1000000);
+		bytes = DIV_ROUND_UP(periods, 127);
+		if (size + bytes > ir->bufsize) {
+			rc = -EINVAL;
+			goto out;
+		}
+		while (periods) {
+			unsigned p = min(periods, 127u);
+			ir->packet->payload[size++] = p | space;
+			periods -= p;
+		}
+		space ^= 0x80;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ir->packet->header.start = 0;
@@ -424,7 +445,11 @@ static int iguanair_probe(struct usb_interface *intf,
 	int ret, pipein, pipeout;
 	struct usb_host_interface *idesc;
 
+<<<<<<< HEAD
 	idesc = intf->altsetting;
+=======
+	idesc = intf->cur_altsetting;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (idesc->desc.bNumEndpoints < 2)
 		return -ENODEV;
 

@@ -69,7 +69,11 @@ static void clps711x_restart(enum reboot_mode mode, const char *cmd)
 	soft_restart(0);
 }
 
+<<<<<<< HEAD
 static const char *const clps711x_compat[] __initconst = {
+=======
+static const char *clps711x_compat[] __initconst = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	"cirrus,ep7209",
 	NULL
 };

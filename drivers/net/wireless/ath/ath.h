@@ -33,6 +33,11 @@
  */
 #define	ATH_KEYMAX	        128     /* max key cache size we handle */
 
+<<<<<<< HEAD
+=======
+static const u8 ath_bcast_mac[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ath_ani {
 	bool caldone;
 	unsigned int longcal_timer;

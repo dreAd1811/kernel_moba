@@ -24,7 +24,10 @@
 #include <linux/i2c.h>
 #include <linux/platform_data/at24.h>
 #include <linux/platform_data/pcf857x.h>
+<<<<<<< HEAD
 #include <linux/platform_data/ti-aemif.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <media/i2c/tvp514x.h>
 #include <media/i2c/adv7343.h>
@@ -45,8 +48,15 @@
 #include <mach/common.h>
 #include <mach/irqs.h>
 #include <mach/serial.h>
+<<<<<<< HEAD
 
 #include "davinci.h"
+=======
+#include <mach/clock.h>
+
+#include "davinci.h"
+#include "clock.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define NAND_BLOCK_SIZE		SZ_128K
 
@@ -85,7 +95,10 @@ static struct davinci_aemif_timing dm6467tevm_nandflash_timing = {
 };
 
 static struct davinci_nand_pdata davinci_nand_data = {
+<<<<<<< HEAD
 	.core_chipsel		= 0,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mask_cle 		= 0x80000,
 	.mask_ale 		= 0x40000,
 	.parts			= davinci_nand_partitions,
@@ -107,6 +120,7 @@ static struct resource davinci_nand_resources[] = {
 	},
 };
 
+<<<<<<< HEAD
 static struct platform_device davinci_aemif_devices[] = {
 	{
 		.name		= "davinci_nand",
@@ -150,6 +164,20 @@ static struct platform_device davinci_aemif_device = {
 	.num_resources	= ARRAY_SIZE(davinci_aemif_resources),
 };
 
+=======
+static struct platform_device davinci_nand_device = {
+	.name			= "davinci_nand",
+	.id			= 0,
+
+	.num_resources		= ARRAY_SIZE(davinci_nand_resources),
+	.resource		= davinci_nand_resources,
+
+	.dev			= {
+		.platform_data	= &davinci_nand_data,
+	},
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HAS_ATA		(IS_ENABLED(CONFIG_BLK_DEV_PALMCHIP_BK3710) || \
 			 IS_ENABLED(CONFIG_PATA_BK3710))
 
@@ -750,13 +778,17 @@ static void __init evm_init_i2c(void)
 }
 #endif
 
+<<<<<<< HEAD
 #define DM646X_REF_FREQ			27000000
 #define DM646X_AUX_FREQ			24000000
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DM6467T_EVM_REF_FREQ		33000000
 
 static void __init davinci_map_io(void)
 {
 	dm646x_init();
+<<<<<<< HEAD
 }
 
 static void __init dm646x_evm_init_time(void)
@@ -767,6 +799,11 @@ static void __init dm646x_evm_init_time(void)
 static void __init dm6467t_evm_init_time(void)
 {
 	dm646x_init_time(DM6467T_EVM_REF_FREQ, DM646X_AUX_FREQ);
+=======
+
+	if (machine_is_davinci_dm6467tevm())
+		davinci_set_refclk_rate(DM6467T_EVM_REF_FREQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define DM646X_EVM_PHY_ID		"davinci_mdio-0:01"
@@ -808,8 +845,11 @@ static __init void evm_init(void)
 	int ret;
 	struct davinci_soc_info *soc_info = &davinci_soc_info;
 
+<<<<<<< HEAD
 	dm646x_register_clocks();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = dm646x_gpio_register();
 	if (ret)
 		pr_warn("%s: GPIO init failed: %d\n", __func__, ret);
@@ -825,8 +865,15 @@ static __init void evm_init(void)
 	if (machine_is_davinci_dm6467tevm())
 		davinci_nand_data.timing = &dm6467tevm_nandflash_timing;
 
+<<<<<<< HEAD
 	if (platform_device_register(&davinci_aemif_device))
 		pr_warn("%s: Cannot register AEMIF device.\n", __func__);
+=======
+	platform_device_register(&davinci_nand_device);
+
+	if (davinci_aemif_setup(&davinci_nand_device))
+		pr_warn("%s: Cannot configure AEMIF.\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dm646x_init_edma(dm646x_edma_rsv);
 
@@ -840,19 +887,35 @@ MACHINE_START(DAVINCI_DM6467_EVM, "DaVinci DM646x EVM")
 	.atag_offset  = 0x100,
 	.map_io       = davinci_map_io,
 	.init_irq     = davinci_irq_init,
+<<<<<<< HEAD
 	.init_time	= dm646x_evm_init_time,
 	.init_machine = evm_init,
 	.init_late	= davinci_init_late,
 	.dma_zone_size	= SZ_128M,
+=======
+	.init_time	= davinci_timer_init,
+	.init_machine = evm_init,
+	.init_late	= davinci_init_late,
+	.dma_zone_size	= SZ_128M,
+	.restart	= davinci_restart,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MACHINE_END
 
 MACHINE_START(DAVINCI_DM6467TEVM, "DaVinci DM6467T EVM")
 	.atag_offset  = 0x100,
 	.map_io       = davinci_map_io,
 	.init_irq     = davinci_irq_init,
+<<<<<<< HEAD
 	.init_time	= dm6467t_evm_init_time,
 	.init_machine = evm_init,
 	.init_late	= davinci_init_late,
 	.dma_zone_size	= SZ_128M,
+=======
+	.init_time	= davinci_timer_init,
+	.init_machine = evm_init,
+	.init_late	= davinci_init_late,
+	.dma_zone_size	= SZ_128M,
+	.restart	= davinci_restart,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MACHINE_END
 

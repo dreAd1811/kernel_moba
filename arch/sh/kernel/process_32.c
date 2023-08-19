@@ -20,6 +20,10 @@
 #include <linux/sched/task_stack.h>
 #include <linux/slab.h>
 #include <linux/elfcore.h>
+<<<<<<< HEAD
+=======
+#include <linux/kallsyms.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/fs.h>
 #include <linux/ftrace.h>
 #include <linux/hw_breakpoint.h>
@@ -36,8 +40,13 @@ void show_regs(struct pt_regs * regs)
 	printk("\n");
 	show_regs_print_info(KERN_DEFAULT);
 
+<<<<<<< HEAD
 	printk("PC is at %pS\n", (void *)instruction_pointer(regs));
 	printk("PR is at %pS\n", (void *)regs->pr);
+=======
+	print_symbol("PC is at %s\n", instruction_pointer(regs));
+	print_symbol("PR is at %s\n", regs->pr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk("PC  : %08lx SP  : %08lx SR  : %08lx ",
 	       regs->pc, regs->regs[15], regs->sr);
@@ -177,7 +186,11 @@ __switch_to(struct task_struct *prev, struct task_struct *next)
 {
 	struct thread_struct *next_t = &next->thread;
 
+<<<<<<< HEAD
 #if defined(CONFIG_STACKPROTECTOR) && !defined(CONFIG_SMP)
+=======
+#if defined(CONFIG_CC_STACKPROTECTOR) && !defined(CONFIG_SMP)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__stack_chk_guard = next->stack_canary;
 #endif
 

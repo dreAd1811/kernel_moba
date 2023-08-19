@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 // ir-sanyo-decoder.c - handle SANYO IR Pulse/Space protocol
 //
@@ -11,6 +12,30 @@
 //
 // According with LIRC, this protocol is used on Sanyo, Aiwa and Chinon
 // Information for this protocol is available at the Sanyo LC7461 datasheet.
+=======
+/* ir-sanyo-decoder.c - handle SANYO IR Pulse/Space protocol
+ *
+ * Copyright (C) 2011 by Mauro Carvalho Chehab
+ *
+ * This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation version 2 of the License.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ * This protocol uses the NEC protocol timings. However, data is formatted as:
+ *	13 bits Custom Code
+ *	13 bits NOT(Custom Code)
+ *	8 bits Key data
+ *	8 bits NOT(Key data)
+ *
+ * According with LIRC, this protocol is used on Sanyo, Aiwa and Chinon
+ * Information for this protocol is available at the Sanyo LC7461 datasheet.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/module.h>
 #include <linux/bitrev.h>
@@ -39,7 +64,11 @@ enum sanyo_state {
 /**
  * ir_sanyo_decode() - Decode one SANYO pulse or space
  * @dev:	the struct rc_dev descriptor of the device
+<<<<<<< HEAD
  * @ev:		the struct ir_raw_event descriptor of the pulse/space
+=======
+ * @duration:	the struct ir_raw_event descriptor of the pulse/space
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function returns -EINVAL if the pulse violates the state machine
  */
@@ -52,14 +81,23 @@ static int ir_sanyo_decode(struct rc_dev *dev, struct ir_raw_event ev)
 
 	if (!is_timing_event(ev)) {
 		if (ev.reset) {
+<<<<<<< HEAD
 			dev_dbg(&dev->dev, "SANYO event reset received. reset to state 0\n");
+=======
+			IR_dprintk(1, "SANYO event reset received. reset to state 0\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->state = STATE_INACTIVE;
 		}
 		return 0;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(&dev->dev, "SANYO decode started at state %d (%uus %s)\n",
 		data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+=======
+	IR_dprintk(2, "SANYO decode started at state %d (%uus %s)\n",
+		   data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (data->state) {
 
@@ -102,7 +140,11 @@ static int ir_sanyo_decode(struct rc_dev *dev, struct ir_raw_event ev)
 
 		if (!data->count && geq_margin(ev.duration, SANYO_REPEAT_SPACE, SANYO_UNIT / 2)) {
 			rc_repeat(dev);
+<<<<<<< HEAD
 			dev_dbg(&dev->dev, "SANYO repeat last key\n");
+=======
+			IR_dprintk(1, "SANYO repeat last key\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->state = STATE_INACTIVE;
 			return 0;
 		}
@@ -144,21 +186,35 @@ static int ir_sanyo_decode(struct rc_dev *dev, struct ir_raw_event ev)
 		not_command = bitrev8((data->bits >>  0) & 0xff);
 
 		if ((command ^ not_command) != 0xff) {
+<<<<<<< HEAD
 			dev_dbg(&dev->dev, "SANYO checksum error: received 0x%08llx\n",
 				data->bits);
+=======
+			IR_dprintk(1, "SANYO checksum error: received 0x%08Lx\n",
+				   data->bits);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->state = STATE_INACTIVE;
 			return 0;
 		}
 
 		scancode = address << 8 | command;
+<<<<<<< HEAD
 		dev_dbg(&dev->dev, "SANYO scancode: 0x%06x\n", scancode);
+=======
+		IR_dprintk(1, "SANYO scancode: 0x%06x\n", scancode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rc_keydown(dev, RC_PROTO_SANYO, scancode, 0);
 		data->state = STATE_INACTIVE;
 		return 0;
 	}
 
+<<<<<<< HEAD
 	dev_dbg(&dev->dev, "SANYO decode failed at count %d state %d (%uus %s)\n",
 		data->count, data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+=======
+	IR_dprintk(1, "SANYO decode failed at count %d state %d (%uus %s)\n",
+		   data->count, data->state, TO_US(ev.duration), TO_STR(ev.pulse));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->state = STATE_INACTIVE;
 	return -EINVAL;
 }
@@ -209,8 +265,11 @@ static struct ir_raw_handler sanyo_handler = {
 	.protocols	= RC_PROTO_BIT_SANYO,
 	.decode		= ir_sanyo_decode,
 	.encode		= ir_sanyo_encode,
+<<<<<<< HEAD
 	.carrier	= 38000,
 	.min_timeout	= SANYO_TRAILER_SPACE,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init ir_sanyo_decode_init(void)
@@ -229,7 +288,11 @@ static void __exit ir_sanyo_decode_exit(void)
 module_init(ir_sanyo_decode_init);
 module_exit(ir_sanyo_decode_exit);
 
+<<<<<<< HEAD
 MODULE_LICENSE("GPL v2");
+=======
+MODULE_LICENSE("GPL");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Mauro Carvalho Chehab");
 MODULE_AUTHOR("Red Hat Inc. (http://www.redhat.com)");
 MODULE_DESCRIPTION("SANYO IR protocol decoder");

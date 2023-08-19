@@ -486,7 +486,11 @@ static struct crypto_alg cbc_aes_alg = {
 	}
 };
 
+<<<<<<< HEAD
 static const struct x86_cpu_id padlock_cpu_id[] = {
+=======
+static struct x86_cpu_id padlock_cpu_id[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	X86_FEATURE_MATCH(X86_FEATURE_XCRYPT),
 	{}
 };

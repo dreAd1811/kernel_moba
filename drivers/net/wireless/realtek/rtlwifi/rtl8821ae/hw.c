@@ -57,7 +57,10 @@ static void _rtl8821ae_return_beacon_queue_skb(struct ieee80211_hw *hw)
 
 		pci_unmap_single(rtlpci->pdev,
 				 rtlpriv->cfg->ops->get_desc(
+<<<<<<< HEAD
 				 hw,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 (u8 *)entry, true, HW_DESC_TXBUFF_ADDR),
 				 skb->len, PCI_DMA_TODEVICE);
 		kfree_skb(skb);
@@ -1131,6 +1134,7 @@ static u8 _rtl8821ae_dbi_read(struct rtl_priv *rtlpriv, u16 addr)
 static void _rtl8821ae_dbi_write(struct rtl_priv *rtlpriv, u16 addr, u8 data)
 {
 	u8 tmp = 0, count = 0;
+<<<<<<< HEAD
 	u16 write_addr, remainder = addr % 4;
 
 	write_addr = REG_DBI_WDATA + remainder;
@@ -1138,6 +1142,15 @@ static void _rtl8821ae_dbi_write(struct rtl_priv *rtlpriv, u16 addr, u8 data)
 
 	write_addr = (addr & 0xfffc) | (BIT(0) << (remainder + 12));
 	rtl_write_word(rtlpriv, REG_DBI_ADDR, write_addr);
+=======
+	u16 wrtie_addr, remainder = addr % 4;
+
+	wrtie_addr = REG_DBI_WDATA + remainder;
+	rtl_write_byte(rtlpriv, wrtie_addr, data);
+
+	wrtie_addr = (addr & 0xfffc) | (BIT(0) << (remainder + 12));
+	rtl_write_word(rtlpriv, REG_DBI_ADDR, wrtie_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtl_write_byte(rtlpriv, REG_DBI_FLAG, 0x1);
 
@@ -1365,6 +1378,10 @@ static void _rtl8821ae_get_wakeup_reason(struct ieee80211_hw *hw)
 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtlpriv);
 	u8 fw_reason = 0;
+<<<<<<< HEAD
+=======
+	struct timeval ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fw_reason = rtl_read_byte(rtlpriv, REG_MCUTST_WOWLAN);
 
@@ -1373,16 +1390,31 @@ static void _rtl8821ae_get_wakeup_reason(struct ieee80211_hw *hw)
 
 	ppsc->wakeup_reason = 0;
 
+<<<<<<< HEAD
 	rtlhal->last_suspend_sec = ktime_get_real_seconds();
+=======
+	do_gettimeofday(&ts);
+	rtlhal->last_suspend_sec = ts.tv_sec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (fw_reason) {
 	case FW_WOW_V2_PTK_UPDATE_EVENT:
 		ppsc->wakeup_reason = WOL_REASON_PTK_UPDATE;
+<<<<<<< HEAD
+=======
+		do_gettimeofday(&ts);
+		ppsc->last_wakeup_time = ts.tv_sec*1000 + ts.tv_usec/1000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG,
 			 "It's a WOL PTK Key update event!\n");
 		break;
 	case FW_WOW_V2_GTK_UPDATE_EVENT:
 		ppsc->wakeup_reason = WOL_REASON_GTK_UPDATE;
+<<<<<<< HEAD
+=======
+		do_gettimeofday(&ts);
+		ppsc->last_wakeup_time = ts.tv_sec*1000 + ts.tv_usec/1000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		RT_TRACE(rtlpriv, COMP_POWER, DBG_DMESG,
 			 "It's a WOL GTK Key update event!\n");
 		break;
@@ -2484,16 +2516,28 @@ void rtl8821ae_card_disable(struct ieee80211_hw *hw)
 }
 
 void rtl8821ae_interrupt_recognized(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 				    struct rtl_int *intvec)
+=======
+				  u32 *p_inta, u32 *p_intb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
 
+<<<<<<< HEAD
 	intvec->inta = rtl_read_dword(rtlpriv, ISR) & rtlpci->irq_mask[0];
 	rtl_write_dword(rtlpriv, ISR, intvec->inta);
 
 	intvec->intb = rtl_read_dword(rtlpriv, REG_HISRE) & rtlpci->irq_mask[1];
 	rtl_write_dword(rtlpriv, REG_HISRE, intvec->intb);
+=======
+	*p_inta = rtl_read_dword(rtlpriv, ISR) & rtlpci->irq_mask[0];
+	rtl_write_dword(rtlpriv, ISR, *p_inta);
+
+	*p_intb = rtl_read_dword(rtlpriv, REG_HISRE) & rtlpci->irq_mask[1];
+	rtl_write_dword(rtlpriv, REG_HISRE, *p_intb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void rtl8821ae_set_beacon_related_registers(struct ieee80211_hw *hw)
@@ -3595,7 +3639,11 @@ static bool _rtl8821ae_get_ra_shortgi(struct ieee80211_hw *hw, struct ieee80211_
 }
 
 static void rtl8821ae_update_hal_rate_mask(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 		struct ieee80211_sta *sta, u8 rssi_level, bool update_bw)
+=======
+		struct ieee80211_sta *sta, u8 rssi_level)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_phy *rtlphy = &rtlpriv->phy;
@@ -3774,7 +3822,11 @@ static void rtl8821ae_update_hal_rate_mask(struct ieee80211_hw *hw,
 
 	rate_mask[0] = macid;
 	rate_mask[1] = ratr_index | (b_shortgi ? 0x80 : 0x00);
+<<<<<<< HEAD
 	rate_mask[2] = rtlphy->current_chan_bw | ((!update_bw) << 3)
+=======
+	rate_mask[2] = rtlphy->current_chan_bw
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   | _rtl8821ae_get_vht_eni(wirelessmode, ratr_bitmap)
 			   | _rtl8821ae_get_ra_ldpc(hw, macid, sta_entry, wirelessmode);
 
@@ -3795,11 +3847,19 @@ static void rtl8821ae_update_hal_rate_mask(struct ieee80211_hw *hw,
 }
 
 void rtl8821ae_update_hal_rate_tbl(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 		struct ieee80211_sta *sta, u8 rssi_level, bool update_bw)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	if (rtlpriv->dm.useramask)
 		rtl8821ae_update_hal_rate_mask(hw, sta, rssi_level, update_bw);
+=======
+		struct ieee80211_sta *sta, u8 rssi_level)
+{
+	struct rtl_priv *rtlpriv = rtl_priv(hw);
+	if (rtlpriv->dm.useramask)
+		rtl8821ae_update_hal_rate_mask(hw, sta, rssi_level);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		/*RT_TRACE(rtlpriv, COMP_RATR,DBG_LOUD,
 			   "rtl8821ae_update_hal_rate_tbl() Error! 8821ae FW RA Only\n");*/
@@ -3842,7 +3902,11 @@ bool rtl8821ae_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
 	struct rtl_phy *rtlphy = &rtlpriv->phy;
+<<<<<<< HEAD
 	enum rf_pwrstate e_rfpowerstate_toset;
+=======
+	enum rf_pwrstate e_rfpowerstate_toset, cur_rfstate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 u1tmp = 0;
 	bool b_actuallyset = false;
 
@@ -3861,6 +3925,11 @@ bool rtl8821ae_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
 		spin_unlock(&rtlpriv->locks.rf_ps_lock);
 	}
 
+<<<<<<< HEAD
+=======
+	cur_rfstate = ppsc->rfpwr_state;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl_write_byte(rtlpriv, REG_GPIO_IO_SEL_2,
 			rtl_read_byte(rtlpriv,
 					REG_GPIO_IO_SEL_2) & ~(BIT(1)));

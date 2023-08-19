@@ -209,7 +209,11 @@ sqrt_stage_2_finish:
 
 #ifdef PARANOID
 /* It should be possible to get here only if the arg is ffff....ffff */
+<<<<<<< HEAD
 	cmp	$0xffffffff,FPU_fsqrt_arg_1
+=======
+	cmpl	$0xffffffff,FPU_fsqrt_arg_1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	jnz	sqrt_stage_2_error
 #endif /* PARANOID */
 

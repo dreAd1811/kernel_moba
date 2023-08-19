@@ -355,9 +355,15 @@ static int fc2580_dvb_get_if_frequency(struct dvb_frontend *fe, u32 *frequency)
 
 static const struct dvb_tuner_ops fc2580_dvb_tuner_ops = {
 	.info = {
+<<<<<<< HEAD
 		.name             = "FCI FC2580",
 		.frequency_min_hz = 174 * MHz,
 		.frequency_max_hz = 862 * MHz,
+=======
+		.name           = "FCI FC2580",
+		.frequency_min  = 174000000,
+		.frequency_max  = 862000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.init = fc2580_dvb_init,
@@ -386,18 +392,40 @@ static inline struct fc2580_dev *fc2580_subdev_to_dev(struct v4l2_subdev *sd)
 	return container_of(sd, struct fc2580_dev, subdev);
 }
 
+<<<<<<< HEAD
 static int fc2580_standby(struct v4l2_subdev *sd)
 {
 	struct fc2580_dev *dev = fc2580_subdev_to_dev(sd);
 	int ret;
 
 	ret = fc2580_sleep(dev);
+=======
+static int fc2580_s_power(struct v4l2_subdev *sd, int on)
+{
+	struct fc2580_dev *dev = fc2580_subdev_to_dev(sd);
+	struct i2c_client *client = dev->client;
+	int ret;
+
+	dev_dbg(&client->dev, "on=%d\n", on);
+
+	if (on)
+		ret = fc2580_init(dev);
+	else
+		ret = fc2580_sleep(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	return fc2580_set_params(dev);
 }
 
+<<<<<<< HEAD
+=======
+static const struct v4l2_subdev_core_ops fc2580_subdev_core_ops = {
+	.s_power                  = fc2580_s_power,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int fc2580_g_tuner(struct v4l2_subdev *sd, struct v4l2_tuner *v)
 {
 	struct fc2580_dev *dev = fc2580_subdev_to_dev(sd);
@@ -465,7 +493,10 @@ static int fc2580_enum_freq_bands(struct v4l2_subdev *sd,
 }
 
 static const struct v4l2_subdev_tuner_ops fc2580_subdev_tuner_ops = {
+<<<<<<< HEAD
 	.standby                  = fc2580_standby,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.g_tuner                  = fc2580_g_tuner,
 	.s_tuner                  = fc2580_s_tuner,
 	.g_frequency              = fc2580_g_frequency,
@@ -474,6 +505,10 @@ static const struct v4l2_subdev_tuner_ops fc2580_subdev_tuner_ops = {
 };
 
 static const struct v4l2_subdev_ops fc2580_subdev_ops = {
+<<<<<<< HEAD
+=======
+	.core                     = &fc2580_subdev_core_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.tuner                    = &fc2580_subdev_tuner_ops,
 };
 

@@ -134,7 +134,11 @@
 	/*wait power state to suspend*/					\
 	{0x0086, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_SDIO_MSK,	\
 	 PWR_BASEADDR_SDIO , PWR_CMD_POLLING, BIT(1), BIT(1)},		\
+<<<<<<< HEAD
 	/*0x04[12:11] = 2b'00 disable WL suspend*/			\
+=======
+	/*0x04[12:11] = 2b'01enable WL suspend*/			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0x0005, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_ALL_MSK,	\
 	 PWR_BASEADDR_MAC , PWR_CMD_WRITE, BIT(3) | BIT(4), 0},
 
@@ -181,7 +185,11 @@
 	/*Lock small LDO Register*/					\
 	{0x00CC, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_SDIO_MSK,	\
 	 PWR_BASEADDR_MAC , PWR_CMD_WRITE, BIT(2), 0},			\
+<<<<<<< HEAD
 	/*0x04[12:11] = 2b'00 disable WL suspend*/			\
+=======
+	/*0x04[12:11] = 2b'01enable WL suspend*/			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0x0005, PWR_CUT_ALL_MSK, PWR_FAB_ALL_MSK, PWR_INTF_ALL_MSK,	\
 	 PWR_BASEADDR_MAC , PWR_CMD_WRITE, BIT(3) | BIT(4), 0},
 

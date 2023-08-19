@@ -14,7 +14,11 @@ passing pointers to structures via a void * pointer.  The tty code,
 for example, does this frequently to pass driver-specific and line
 discipline-specific structures back and forth.
 
+<<<<<<< HEAD
 The way to use magic numbers is to declare them at the beginning of
+=======
+The way to use magic numbers is to declare then at the beginning of
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 the structure, like so::
 
 	struct tty_ldisc {
@@ -157,5 +161,11 @@ memory management. See ``include/sound/sndmagic.h`` for complete list of them. M
 OSS sound drivers have their magic numbers constructed from the soundcard PCI
 ID - these are not listed here as well.
 
+<<<<<<< HEAD
+=======
+IrDA subsystem also uses large number of own magic numbers, see
+``include/net/irda/irda.h`` for a complete list of them.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 HFS is another larger user of magic numbers - you can find them in
 ``fs/hfs/hfs.h``.

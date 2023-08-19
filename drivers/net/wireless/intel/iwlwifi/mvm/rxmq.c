@@ -8,7 +8,10 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -31,7 +34,10 @@
  * Copyright(c) 2012 - 2014 Intel Corporation. All rights reserved.
  * Copyright(c) 2013 - 2015 Intel Mobile Communications GmbH
  * Copyright(c) 2015 - 2017 Intel Deutschland GmbH
+<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -114,7 +120,11 @@ static inline int iwl_mvm_check_pn(struct iwl_mvm *mvm, struct sk_buff *skb,
 		return -1;
 
 	if (ieee80211_is_data_qos(hdr->frame_control))
+<<<<<<< HEAD
 		tid = ieee80211_get_tid(hdr);
+=======
+		tid = *ieee80211_get_qos_ctl(hdr) & IEEE80211_QOS_CTL_TID_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		tid = 0;
 
@@ -153,9 +163,23 @@ static int iwl_mvm_create_skb(struct iwl_mvm *mvm, struct sk_buff *skb,
 	unsigned int hdrlen = ieee80211_hdrlen(hdr->frame_control);
 
 	if (desc->mac_flags2 & IWL_RX_MPDU_MFLG2_PAD) {
+<<<<<<< HEAD
 		len -= 2;
 		pad_len = 2;
 	}
+=======
+		pad_len = 2;
+
+		/*
+		 * If the device inserted padding it means that (it thought)
+		 * the 802.11 header wasn't a multiple of 4 bytes long. In
+		 * this case, reserve two bytes at the start of the SKB to
+		 * align the payload properly in case we end up copying it.
+		 */
+		skb_reserve(skb, pad_len);
+	}
+	len -= pad_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If frame is small enough to fit in skb->head, pull it completely.
 	 * If not, only pull ieee80211_hdr (including crypto if present, and
@@ -214,6 +238,7 @@ static void iwl_mvm_pass_packet_to_mac80211(struct iwl_mvm *mvm,
 					    struct sk_buff *skb, int queue,
 					    struct ieee80211_sta *sta)
 {
+<<<<<<< HEAD
 	struct ieee80211_rx_status *rx_status = IEEE80211_SKB_RXCB(skb);
 
 	if (iwl_mvm_check_pn(mvm, skb, queue, sta)) {
@@ -239,6 +264,23 @@ static void iwl_mvm_get_signal_strength(struct iwl_mvm *mvm,
 	u32 rate_flags = rate_n_flags;
 
 	energy_a = energy_a ? -energy_a : S8_MIN;
+=======
+	if (iwl_mvm_check_pn(mvm, skb, queue, sta))
+		kfree_skb(skb);
+	else
+		ieee80211_rx_napi(mvm->hw, sta, skb, napi);
+}
+
+static void iwl_mvm_get_signal_strength(struct iwl_mvm *mvm,
+					struct iwl_rx_mpdu_desc *desc,
+					struct ieee80211_rx_status *rx_status)
+{
+	int energy_a, energy_b, max_energy;
+
+	energy_a = desc->energy_a;
+	energy_a = energy_a ? -energy_a : S8_MIN;
+	energy_b = desc->energy_b;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	energy_b = energy_b ? -energy_b : S8_MIN;
 	max_energy = max(energy_a, energy_b);
 
@@ -246,14 +288,19 @@ static void iwl_mvm_get_signal_strength(struct iwl_mvm *mvm,
 			energy_a, energy_b, max_energy);
 
 	rx_status->signal = max_energy;
+<<<<<<< HEAD
 	rx_status->chains =
 		(rate_flags & RATE_MCS_ANT_AB_MSK) >> RATE_MCS_ANT_POS;
+=======
+	rx_status->chains = 0; /* TODO: phy info */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rx_status->chain_signal[0] = energy_a;
 	rx_status->chain_signal[1] = energy_b;
 	rx_status->chain_signal[2] = S8_MIN;
 }
 
 static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_hdr *hdr,
+<<<<<<< HEAD
 			     struct ieee80211_rx_status *stats, u16 phy_info,
 			     struct iwl_rx_mpdu_desc *desc,
 			     u32 pkt_flags, int queue, u8 *crypt_len)
@@ -272,6 +319,14 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_hdr *hdr,
 	    IWL_RX_MPDU_STATUS_SEC_UNKNOWN && !mvm->monitor_on)
 		return -1;
 
+=======
+			     struct ieee80211_rx_status *stats,
+			     struct iwl_rx_mpdu_desc *desc, u32 pkt_flags,
+			     int queue, u8 *crypt_len)
+{
+	u16 status = le16_to_cpu(desc->status);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ieee80211_has_protected(hdr->frame_control) ||
 	    (status & IWL_RX_MPDU_STATUS_SEC_MASK) ==
 	    IWL_RX_MPDU_STATUS_SEC_NONE)
@@ -294,9 +349,13 @@ static int iwl_mvm_rx_crypto(struct iwl_mvm *mvm, struct ieee80211_hdr *hdr,
 		return 0;
 	case IWL_RX_MPDU_STATUS_SEC_TKIP:
 		/* Don't drop the frame and decrypt it in SW */
+<<<<<<< HEAD
 		if (!fw_has_api(&mvm->fw->ucode_capa,
 				IWL_UCODE_TLV_API_DEPRECATE_TTAK) &&
 		    !(status & IWL_RX_MPDU_RES_STATUS_TTAK_OK))
+=======
+		if (!(status & IWL_RX_MPDU_RES_STATUS_TTAK_OK))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 0;
 
 		*crypt_len = IEEE80211_TKIP_IV_LEN;
@@ -378,13 +437,22 @@ static bool iwl_mvm_is_dup(struct ieee80211_sta *sta, int queue,
 
 	if (ieee80211_is_data_qos(hdr->frame_control))
 		/* frame has qos control */
+<<<<<<< HEAD
 		tid = ieee80211_get_tid(hdr);
+=======
+		tid = *ieee80211_get_qos_ctl(hdr) &
+			IEEE80211_QOS_CTL_TID_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		tid = IWL_MAX_TID_COUNT;
 
 	/* If this wasn't a part of an A-MSDU the sub-frame index will be 0 */
+<<<<<<< HEAD
 	sub_frame_idx = desc->amsdu_info &
 		IWL_RX_MPDU_AMSDU_SUBFRAME_IDX_MASK;
+=======
+	sub_frame_idx = desc->amsdu_info & IWL_RX_MPDU_AMSDU_SUBFRAME_IDX_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(ieee80211_has_retry(hdr->frame_control) &&
 		     dup_data->last_seq[tid] == hdr->seq_ctrl &&
@@ -451,6 +519,7 @@ static bool iwl_mvm_is_sn_less(u16 sn1, u16 sn2, u16 buffer_size)
 static void iwl_mvm_release_frames(struct iwl_mvm *mvm,
 				   struct ieee80211_sta *sta,
 				   struct napi_struct *napi,
+<<<<<<< HEAD
 				   struct iwl_mvm_baid_data *baid_data,
 				   struct iwl_mvm_reorder_buffer *reorder_buf,
 				   u16 nssn)
@@ -458,6 +527,11 @@ static void iwl_mvm_release_frames(struct iwl_mvm *mvm,
 	struct iwl_mvm_reorder_buf_entry *entries =
 		&baid_data->entries[reorder_buf->queue *
 				    baid_data->entries_per_queue];
+=======
+				   struct iwl_mvm_reorder_buffer *reorder_buf,
+				   u16 nssn)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 ssn = reorder_buf->head_sn;
 
 	lockdep_assert_held(&reorder_buf->lock);
@@ -468,7 +542,11 @@ static void iwl_mvm_release_frames(struct iwl_mvm *mvm,
 
 	while (iwl_mvm_is_sn_less(ssn, nssn, reorder_buf->buf_size)) {
 		int index = ssn % reorder_buf->buf_size;
+<<<<<<< HEAD
 		struct sk_buff_head *skb_list = &entries[index].e.frames;
+=======
+		struct sk_buff_head *skb_list = &reorder_buf->entries[index];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct sk_buff *skb;
 
 		ssn = ieee80211_sn_inc(ssn);
@@ -491,17 +569,26 @@ set_timer:
 	if (reorder_buf->num_stored && !reorder_buf->removed) {
 		u16 index = reorder_buf->head_sn % reorder_buf->buf_size;
 
+<<<<<<< HEAD
 		while (skb_queue_empty(&entries[index].e.frames))
 			index = (index + 1) % reorder_buf->buf_size;
 		/* modify timer to match next frame's expiration time */
 		mod_timer(&reorder_buf->reorder_timer,
 			  entries[index].e.reorder_time + 1 +
+=======
+		while (skb_queue_empty(&reorder_buf->entries[index]))
+			index = (index + 1) % reorder_buf->buf_size;
+		/* modify timer to match next frame's expiration time */
+		mod_timer(&reorder_buf->reorder_timer,
+			  reorder_buf->reorder_time[index] + 1 +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  RX_REORDER_BUF_TIMEOUT_MQ);
 	} else {
 		del_timer(&reorder_buf->reorder_timer);
 	}
 }
 
+<<<<<<< HEAD
 void iwl_mvm_reorder_timer_expired(struct timer_list *t)
 {
 	struct iwl_mvm_reorder_buffer *buf = from_timer(buf, t, reorder_timer);
@@ -509,6 +596,11 @@ void iwl_mvm_reorder_timer_expired(struct timer_list *t)
 		iwl_mvm_baid_data_from_reorder_buf(buf);
 	struct iwl_mvm_reorder_buf_entry *entries =
 		&baid_data->entries[buf->queue * baid_data->entries_per_queue];
+=======
+void iwl_mvm_reorder_timer_expired(unsigned long data)
+{
+	struct iwl_mvm_reorder_buffer *buf = (void *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	u16 sn = 0, index = 0;
 	bool expired = false;
@@ -524,7 +616,11 @@ void iwl_mvm_reorder_timer_expired(struct timer_list *t)
 	for (i = 0; i < buf->buf_size ; i++) {
 		index = (buf->head_sn + i) % buf->buf_size;
 
+<<<<<<< HEAD
 		if (skb_queue_empty(&entries[index].e.frames)) {
+=======
+		if (skb_queue_empty(&buf->entries[index])) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * If there is a hole and the next frame didn't expire
 			 * we want to break and not advance SN
@@ -532,8 +628,12 @@ void iwl_mvm_reorder_timer_expired(struct timer_list *t)
 			cont = false;
 			continue;
 		}
+<<<<<<< HEAD
 		if (!cont &&
 		    !time_after(jiffies, entries[index].e.reorder_time +
+=======
+		if (!cont && !time_after(jiffies, buf->reorder_time[index] +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 RX_REORDER_BUF_TIMEOUT_MQ))
 			break;
 
@@ -545,6 +645,7 @@ void iwl_mvm_reorder_timer_expired(struct timer_list *t)
 
 	if (expired) {
 		struct ieee80211_sta *sta;
+<<<<<<< HEAD
 		struct iwl_mvm_sta *mvmsta;
 		u8 sta_id = baid_data->sta_id;
 
@@ -559,6 +660,16 @@ void iwl_mvm_reorder_timer_expired(struct timer_list *t)
 		iwl_mvm_event_frame_timeout_callback(buf->mvm, mvmsta->vif,
 						     sta, baid_data->tid);
 		iwl_mvm_release_frames(buf->mvm, sta, NULL, baid_data, buf, sn);
+=======
+
+		rcu_read_lock();
+		sta = rcu_dereference(buf->mvm->fw_id_to_mac_id[buf->sta_id]);
+		/* SN is set to the last expired frame + 1 */
+		IWL_DEBUG_HT(buf->mvm,
+			     "Releasing expired frames for sta %u, sn %d\n",
+			     buf->sta_id, sn);
+		iwl_mvm_release_frames(buf->mvm, sta, NULL, buf, sn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rcu_read_unlock();
 	} else {
 		/*
@@ -567,7 +678,11 @@ void iwl_mvm_reorder_timer_expired(struct timer_list *t)
 		 * accordingly to this frame.
 		 */
 		mod_timer(&buf->reorder_timer,
+<<<<<<< HEAD
 			  entries[index].e.reorder_time +
+=======
+			  buf->reorder_time[index] +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  1 + RX_REORDER_BUF_TIMEOUT_MQ);
 	}
 	spin_unlock(&buf->lock);
@@ -598,7 +713,11 @@ static void iwl_mvm_del_ba(struct iwl_mvm *mvm, int queue,
 
 	/* release all frames that are in the reorder buffer to the stack */
 	spin_lock_bh(&reorder_buf->lock);
+<<<<<<< HEAD
 	iwl_mvm_release_frames(mvm, sta, NULL, ba_data, reorder_buf,
+=======
+	iwl_mvm_release_frames(mvm, sta, NULL, reorder_buf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       ieee80211_sn_add(reorder_buf->head_sn,
 						reorder_buf->buf_size));
 	spin_unlock_bh(&reorder_buf->lock);
@@ -618,10 +737,21 @@ void iwl_mvm_rx_queue_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb,
 	notif = (void *)pkt->data;
 	internal_notif = (void *)notif->payload;
 
+<<<<<<< HEAD
 	if (internal_notif->sync &&
 	    mvm->queue_sync_cookie != internal_notif->cookie) {
 		WARN_ONCE(1, "Received expired RX queue sync message\n");
 		return;
+=======
+	if (internal_notif->sync) {
+		if (mvm->queue_sync_cookie != internal_notif->cookie) {
+			WARN_ONCE(1,
+				  "Received expired RX queue sync message\n");
+			return;
+		}
+		if (!atomic_dec_return(&mvm->queue_sync_counter))
+			wake_up(&mvm->rx_sync_waitq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	switch (internal_notif->type) {
@@ -633,10 +763,13 @@ void iwl_mvm_rx_queue_notif(struct iwl_mvm *mvm, struct iwl_rx_cmd_buffer *rxb,
 	default:
 		WARN_ONCE(1, "Invalid identifier %d", internal_notif->type);
 	}
+<<<<<<< HEAD
 
 	if (internal_notif->sync &&
 	    !atomic_dec_return(&mvm->queue_sync_counter))
 		wake_up(&mvm->rx_sync_waitq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -659,10 +792,16 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 	bool amsdu = desc->mac_flags2 & IWL_RX_MPDU_MFLG2_AMSDU;
 	bool last_subframe =
 		desc->amsdu_info & IWL_RX_MPDU_AMSDU_LAST_SUBFRAME;
+<<<<<<< HEAD
 	u8 tid = ieee80211_get_tid(hdr);
 	u8 sub_frame_idx = desc->amsdu_info &
 			   IWL_RX_MPDU_AMSDU_SUBFRAME_IDX_MASK;
 	struct iwl_mvm_reorder_buf_entry *entries;
+=======
+	u8 tid = *ieee80211_get_qos_ctl(hdr) & IEEE80211_QOS_CTL_TID_MASK;
+	u8 sub_frame_idx = desc->amsdu_info &
+			   IWL_RX_MPDU_AMSDU_SUBFRAME_IDX_MASK;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int index;
 	u16 nssn, sn;
 	u8 baid;
@@ -679,8 +818,12 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 		return false;
 
 	/* no sta yet */
+<<<<<<< HEAD
 	if (WARN_ONCE(IS_ERR_OR_NULL(sta),
 		      "Got valid BAID without a valid station assigned\n"))
+=======
+	if (WARN_ON(IS_ERR_OR_NULL(sta)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	mvm_sta = iwl_mvm_sta_from_mac80211(sta);
@@ -713,7 +856,10 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 		IWL_RX_MPDU_REORDER_SN_SHIFT;
 
 	buffer = &baid_data->reorder_buf[queue];
+<<<<<<< HEAD
 	entries = &baid_data->entries[queue * baid_data->entries_per_queue];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock_bh(&buffer->lock);
 
@@ -726,7 +872,11 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 	}
 
 	if (ieee80211_is_back_req(hdr->frame_control)) {
+<<<<<<< HEAD
 		iwl_mvm_release_frames(mvm, sta, napi, baid_data, buffer, nssn);
+=======
+		iwl_mvm_release_frames(mvm, sta, napi, buffer, nssn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto drop;
 	}
 
@@ -742,8 +892,12 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 	    !ieee80211_sn_less(sn, buffer->head_sn + buffer->buf_size)) {
 		u16 min_sn = ieee80211_sn_less(sn, nssn) ? sn : nssn;
 
+<<<<<<< HEAD
 		iwl_mvm_release_frames(mvm, sta, napi, baid_data, buffer,
 				       min_sn);
+=======
+		iwl_mvm_release_frames(mvm, sta, napi, buffer, min_sn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* drop any oudated packets */
@@ -761,6 +915,7 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 		return false;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * release immediately if there are no stored frames, and the sn is
 	 * equal to the head.
@@ -777,6 +932,8 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 		return false;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	index = sn % buffer->buf_size;
 
 	/*
@@ -787,7 +944,11 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 	 * If it is the same SN then if the subframe index is incrementing it
 	 * is the same AMSDU - otherwise it is a retransmission.
 	 */
+<<<<<<< HEAD
 	tail = skb_peek_tail(&entries[index].e.frames);
+=======
+	tail = skb_peek_tail(&buffer->entries[index]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tail && !amsdu)
 		goto drop;
 	else if (tail && (sn != buffer->last_amsdu ||
@@ -795,9 +956,15 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 		goto drop;
 
 	/* put in reorder buffer */
+<<<<<<< HEAD
 	__skb_queue_tail(&entries[index].e.frames, skb);
 	buffer->num_stored++;
 	entries[index].e.reorder_time = jiffies;
+=======
+	__skb_queue_tail(&buffer->entries[index], skb);
+	buffer->num_stored++;
+	buffer->reorder_time[index] = jiffies;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (amsdu) {
 		buffer->last_amsdu = sn;
@@ -816,7 +983,11 @@ static bool iwl_mvm_reorder(struct iwl_mvm *mvm,
 	 * release notification with up to date NSSN.
 	 */
 	if (!amsdu || last_subframe)
+<<<<<<< HEAD
 		iwl_mvm_release_frames(mvm, sta, napi, baid_data, buffer, nssn);
+=======
+		iwl_mvm_release_frames(mvm, sta, napi, buffer, nssn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_bh(&buffer->lock);
 	return true;
@@ -862,6 +1033,7 @@ out:
 	rcu_read_unlock();
 }
 
+<<<<<<< HEAD
 static void iwl_mvm_flip_address(u8 *addr)
 {
 	int i;
@@ -872,12 +1044,15 @@ static void iwl_mvm_flip_address(u8 *addr)
 	ether_addr_copy(addr, mac_addr);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 			struct iwl_rx_cmd_buffer *rxb, int queue)
 {
 	struct ieee80211_rx_status *rx_status;
 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
 	struct iwl_rx_mpdu_desc *desc = (void *)pkt->data;
+<<<<<<< HEAD
 	struct ieee80211_hdr *hdr;
 	u32 len = le16_to_cpu(desc->mpdu_len);
 	u32 rate_n_flags, gp2_on_air_rise;
@@ -913,6 +1088,16 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 	}
 
 	hdr = (void *)(pkt->data + desc_size);
+=======
+	struct ieee80211_hdr *hdr = (void *)(pkt->data + sizeof(*desc));
+	u32 len = le16_to_cpu(desc->mpdu_len);
+	u32 rate_n_flags = le32_to_cpu(desc->rate_n_flags);
+	u16 phy_info = le16_to_cpu(desc->phy_info);
+	struct ieee80211_sta *sta = NULL;
+	struct sk_buff *skb;
+	u8 crypt_len = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Dont use dev_alloc_skb(), we'll have enough headroom once
 	 * ieee80211_hdr pulled.
 	 */
@@ -922,6 +1107,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 		return;
 	}
 
+<<<<<<< HEAD
 	if (desc->mac_flags2 & IWL_RX_MPDU_MFLG2_PAD) {
 		/*
 		 * If the device inserted padding it means that (it thought)
@@ -980,6 +1166,11 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 	rx_status = IEEE80211_SKB_RXCB(skb);
 
 	if (iwl_mvm_rx_crypto(mvm, hdr, rx_status, phy_info, desc,
+=======
+	rx_status = IEEE80211_SKB_RXCB(skb);
+
+	if (iwl_mvm_rx_crypto(mvm, hdr, rx_status, desc,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      le32_to_cpu(pkt->len_n_flags), queue,
 			      &crypt_len)) {
 		kfree_skb(skb);
@@ -1001,6 +1192,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 		rx_status->enc_flags |= RX_ENC_FLAG_SHORTPRE;
 
 	if (likely(!(phy_info & IWL_RX_MPDU_PHY_TSF_OVERLOAD))) {
+<<<<<<< HEAD
 		u64 tsf_on_air_rise;
 
 		if (mvm->trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560)
@@ -1065,10 +1257,23 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 							 rx_status->band);
 	iwl_mvm_get_signal_strength(mvm, rx_status, rate_n_flags, energy_a,
 				    energy_b);
+=======
+		rx_status->mactime = le64_to_cpu(desc->tsf_on_air_rise);
+		/* TSF as indicated by the firmware is at INA time */
+		rx_status->flag |= RX_FLAG_MACTIME_PLCP_START;
+	}
+	rx_status->device_timestamp = le32_to_cpu(desc->gp2_on_air_rise);
+	rx_status->band = desc->channel > 14 ? NL80211_BAND_5GHZ :
+					       NL80211_BAND_2GHZ;
+	rx_status->freq = ieee80211_channel_to_frequency(desc->channel,
+							 rx_status->band);
+	iwl_mvm_get_signal_strength(mvm, desc, rx_status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* update aggregation data for monitor sake on default queue */
 	if (!queue && (phy_info & IWL_RX_MPDU_PHY_AMPDU)) {
 		bool toggle_bit = phy_info & IWL_RX_MPDU_PHY_AMPDU_TOGGLE;
+<<<<<<< HEAD
 		u64 he_phy_data;
 
 		if (mvm->trans->cfg->device_family >= IWL_DEVICE_FAMILY_22560)
@@ -1078,10 +1283,15 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 
 		rx_status->flag |= RX_FLAG_AMPDU_DETAILS;
 		rx_status->ampdu_reference = mvm->ampdu_ref;
+=======
+
+		rx_status->flag |= RX_FLAG_AMPDU_DETAILS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* toggle is switched whenever new aggregation starts */
 		if (toggle_bit != mvm->ampdu_toggle) {
 			mvm->ampdu_ref++;
 			mvm->ampdu_toggle = toggle_bit;
+<<<<<<< HEAD
 
 			if (he_phy_data != HE_PHY_DATA_INVAL &&
 			    he_type == RATE_MCS_HE_TYPE_MU) {
@@ -1092,6 +1302,10 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 						RX_FLAG_AMPDU_EOF_BIT;
 			}
 		}
+=======
+		}
+		rx_status->ampdu_reference = mvm->ampdu_ref;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rcu_read_lock();
@@ -1120,12 +1334,15 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 			       IWL_RX_MPDU_REORDER_BAID_MASK) >>
 			       IWL_RX_MPDU_REORDER_BAID_SHIFT);
 
+<<<<<<< HEAD
 		if (!mvm->tcm.paused && len >= sizeof(*hdr) &&
 		    !is_multicast_ether_addr(hdr->addr1) &&
 		    ieee80211_is_data(hdr->frame_control) &&
 		    time_after(jiffies, mvm->tcm.ts + MVM_TCM_PERIOD))
 			schedule_delayed_work(&mvm->tcm.work, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We have tx blocked stations (with CS bit). If we heard
 		 * frames from a blocked station on a new channel we can
@@ -1141,7 +1358,11 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 								 false);
 		}
 
+<<<<<<< HEAD
 		rs_update_last_rssi(mvm, mvmsta, rx_status);
+=======
+		rs_update_last_rssi(mvm, &mvmsta->lq_sta, rx_status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (iwl_fw_dbg_trigger_enabled(mvm->fw, FW_DBG_TRIGGER_RSSI) &&
 		    ieee80211_is_beacon(hdr->frame_control)) {
@@ -1180,6 +1401,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 		 */
 		if ((desc->mac_flags2 & IWL_RX_MPDU_MFLG2_AMSDU) &&
 		    !WARN_ON(!ieee80211_is_data_qos(hdr->frame_control))) {
+<<<<<<< HEAD
 			u8 *qc = ieee80211_get_qos_ctl(hdr);
 
 			*qc &= ~IEEE80211_QOS_CTL_A_MSDU_PRESENT;
@@ -1190,6 +1412,23 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 
 				if (ieee80211_has_a4(hdr->frame_control))
 					iwl_mvm_flip_address(hdr->addr4);
+=======
+			int i;
+			u8 *qc = ieee80211_get_qos_ctl(hdr);
+			u8 mac_addr[ETH_ALEN];
+
+			*qc &= ~IEEE80211_QOS_CTL_A_MSDU_PRESENT;
+
+			for (i = 0; i < ETH_ALEN; i++)
+				mac_addr[i] = hdr->addr3[ETH_ALEN - i - 1];
+			ether_addr_copy(hdr->addr3, mac_addr);
+
+			if (ieee80211_has_a4(hdr->frame_control)) {
+				for (i = 0; i < ETH_ALEN; i++)
+					mac_addr[i] =
+						hdr->addr4[ETH_ALEN - i - 1];
+				ether_addr_copy(hdr->addr4, mac_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 		if (baid != IWL_RX_REORDER_DATA_INVALID_BAID) {
@@ -1199,6 +1438,10 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	/* Set up the HT phy flags */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (rate_n_flags & RATE_MCS_CHAN_WIDTH_MSK) {
 	case RATE_MCS_CHAN_WIDTH_20:
 		break;
@@ -1213,6 +1456,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 		break;
 	}
 
+<<<<<<< HEAD
 	if (he_type == RATE_MCS_HE_TYPE_EXT_SU &&
 	    rate_n_flags & RATE_MCS_HE_106T_MSK) {
 		rx_status->bw = RATE_INFO_BW_HE_RU;
@@ -1277,6 +1521,8 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 			cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA1_BW_RU_ALLOC_KNOWN);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(rate_n_flags & RATE_MCS_CCK_MSK) &&
 	    rate_n_flags & RATE_MCS_SGI_MSK)
 		rx_status->enc_flags |= RX_ENC_FLAG_SHORT_GI;
@@ -1301,6 +1547,7 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 		rx_status->enc_flags |= stbc << RX_ENC_FLAG_STBC_SHIFT;
 		if (rate_n_flags & RATE_MCS_BF_MSK)
 			rx_status->enc_flags |= RX_ENC_FLAG_BF;
+<<<<<<< HEAD
 	} else if (he) {
 		u8 stbc = (rate_n_flags & RATE_MCS_STBC_MSK) >>
 				RATE_MCS_STBC_POS;
@@ -1414,6 +1661,8 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
 			/* not supported yet */
 			break;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		int rate = iwl_mvm_legacy_rate_to_mac80211_idx(rate_n_flags,
 							       rx_status->band);
@@ -1482,7 +1731,11 @@ void iwl_mvm_rx_frame_release(struct iwl_mvm *mvm, struct napi_struct *napi,
 	reorder_buf = &ba_data->reorder_buf[queue];
 
 	spin_lock_bh(&reorder_buf->lock);
+<<<<<<< HEAD
 	iwl_mvm_release_frames(mvm, sta, napi, ba_data, reorder_buf,
+=======
+	iwl_mvm_release_frames(mvm, sta, napi, reorder_buf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       le16_to_cpu(release->nssn));
 	spin_unlock_bh(&reorder_buf->lock);
 

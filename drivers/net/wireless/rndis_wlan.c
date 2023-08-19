@@ -2480,7 +2480,11 @@ static void rndis_fill_station_info(struct usbnet *usbdev,
 	ret = rndis_query_oid(usbdev, RNDIS_OID_GEN_LINK_SPEED, &linkspeed, &len);
 	if (ret == 0) {
 		sinfo->txrate.legacy = le32_to_cpu(linkspeed) / 1000;
+<<<<<<< HEAD
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
+=======
+		sinfo->filled |= BIT(NL80211_STA_INFO_TX_BITRATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	len = sizeof(rssi);
@@ -2488,7 +2492,11 @@ static void rndis_fill_station_info(struct usbnet *usbdev,
 			      &rssi, &len);
 	if (ret == 0) {
 		sinfo->signal = level_to_qual(le32_to_cpu(rssi));
+<<<<<<< HEAD
 		sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
+=======
+		sinfo->filled |= BIT(NL80211_STA_INFO_SIGNAL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 

@@ -13,7 +13,10 @@
  */
 
 #include <linux/types.h>
+<<<<<<< HEAD
 #include <asm/asm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "ctype.h"
 #include "string.h"
 
@@ -29,6 +32,7 @@
 int memcmp(const void *s1, const void *s2, size_t len)
 {
 	bool diff;
+<<<<<<< HEAD
 	asm("repe; cmpsb" CC_SET(nz)
 	    : CC_OUT(nz) (diff), "+D" (s1), "+S" (s2), "+c" (len));
 	return diff;
@@ -42,6 +46,13 @@ int bcmp(const void *s1, const void *s2, size_t len)
 	return memcmp(s1, s2, len);
 }
 
+=======
+	asm("repe; cmpsb; setnz %0"
+	    : "=qm" (diff), "+D" (s1), "+S" (s2), "+c" (len));
+	return diff;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int strcmp(const char *str1, const char *str2)
 {
 	const unsigned char *s1 = (const unsigned char *)str1;

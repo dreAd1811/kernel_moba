@@ -44,7 +44,11 @@
 #include "ena_eth_com.h"
 
 #define DRV_MODULE_VER_MAJOR	1
+<<<<<<< HEAD
 #define DRV_MODULE_VER_MINOR	5
+=======
+#define DRV_MODULE_VER_MINOR	2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_MODULE_VER_SUBMINOR 0
 
 #define DRV_MODULE_NAME		"ena"
@@ -52,7 +56,11 @@
 #define DRV_MODULE_VERSION \
 	__stringify(DRV_MODULE_VER_MAJOR) "."	\
 	__stringify(DRV_MODULE_VER_MINOR) "."	\
+<<<<<<< HEAD
 	__stringify(DRV_MODULE_VER_SUBMINOR) "K"
+=======
+	__stringify(DRV_MODULE_VER_SUBMINOR) "k"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define DEVICE_NAME	"Elastic Network Adapter (ENA)"
@@ -113,6 +121,11 @@
 
 #define ENA_IO_TXQ_IDX(q)	(2 * (q))
 #define ENA_IO_RXQ_IDX(q)	(2 * (q) + 1)
+<<<<<<< HEAD
+=======
+#define ENA_IO_TXQ_IDX_TO_COMBINED_IDX(q)	((q) / 2)
+#define ENA_IO_RXQ_IDX_TO_COMBINED_IDX(q)	(((q) - 1) / 2)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ENA_MGMNT_IRQ_IDX		0
 #define ENA_IO_IRQ_FIRST_IDX		1
@@ -122,7 +135,10 @@
  * We wait for 6 sec just to be on the safe side.
  */
 #define ENA_DEVICE_KALIVE_TIMEOUT	(6 * HZ)
+<<<<<<< HEAD
 #define ENA_MAX_NO_INTERRUPT_ITERATIONS 3
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ENA_MMIO_DISABLE_REG_READ	BIT(0)
 
@@ -186,7 +202,10 @@ struct ena_stats_tx {
 	u64 tx_poll;
 	u64 doorbells;
 	u64 bad_req_id;
+<<<<<<< HEAD
 	u64 missed_tx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ena_stats_rx {
@@ -237,9 +256,12 @@ struct ena_ring {
 	/* The maximum header length the device can handle */
 	u8 tx_max_header_size;
 
+<<<<<<< HEAD
 	bool first_interrupt;
 	u16 no_interrupt_event_cnt;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* cpu for TPH */
 	int cpu;
 	 /* number of tx/rx_buffer_info's entries */
@@ -262,8 +284,13 @@ struct ena_ring {
 
 struct ena_stats_dev {
 	u64 tx_timeout;
+<<<<<<< HEAD
 	u64 suspend;
 	u64 resume;
+=======
+	u64 io_suspend;
+	u64 io_resume;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 wd_expired;
 	u64 interface_up;
 	u64 interface_down;
@@ -276,8 +303,12 @@ enum ena_flags_t {
 	ENA_FLAG_DEV_UP,
 	ENA_FLAG_LINK_UP,
 	ENA_FLAG_MSIX_ENABLED,
+<<<<<<< HEAD
 	ENA_FLAG_TRIGGER_RESET,
 	ENA_FLAG_ONGOING_RESET
+=======
+	ENA_FLAG_TRIGGER_RESET
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* adapter specific private data structure */
@@ -332,10 +363,18 @@ struct ena_adapter {
 
 	/* timer service */
 	struct work_struct reset_task;
+<<<<<<< HEAD
 	struct timer_list timer_service;
 
 	bool wd_state;
 	bool dev_up_before_reset;
+=======
+	struct work_struct suspend_io_task;
+	struct work_struct resume_io_task;
+	struct timer_list timer_service;
+
+	bool wd_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long last_keep_alive_jiffies;
 
 	struct u64_stats_sync syncp;

@@ -474,6 +474,10 @@ static const struct iio_info ad5592r_info = {
 	.read_raw = ad5592r_read_raw,
 	.write_raw = ad5592r_write_raw,
 	.write_raw_get_fmt = ad5592r_write_raw_get_fmt,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static ssize_t ad5592r_show_scale_available(struct iio_dev *iio_dev,
@@ -536,9 +540,14 @@ static int ad5592r_alloc_channels(struct ad5592r_state *st)
 			st->channel_offstate[reg] = tmp;
 	}
 
+<<<<<<< HEAD
 	channels = devm_kcalloc(st->dev,
 			1 + 2 * num_channels, sizeof(*channels),
 			GFP_KERNEL);
+=======
+	channels = devm_kzalloc(st->dev,
+			(1 + 2 * num_channels) * sizeof(*channels), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!channels)
 		return -ENOMEM;
 

@@ -241,9 +241,14 @@ struct xenvif_hash_cache {
 struct xenvif_hash {
 	unsigned int alg;
 	u32 flags;
+<<<<<<< HEAD
 	bool mapping_sel;
 	u8 key[XEN_NETBK_MAX_HASH_KEY_SIZE];
 	u32 mapping[2][XEN_NETBK_MAX_HASH_MAPPING_SIZE];
+=======
+	u8 key[XEN_NETBK_MAX_HASH_KEY_SIZE];
+	u32 mapping[XEN_NETBK_MAX_HASH_MAPPING_SIZE];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int size;
 	struct xenvif_hash_cache cache;
 };
@@ -308,7 +313,11 @@ static inline struct xenbus_device *xenvif_to_xenbus_device(struct xenvif *vif)
 	return to_xenbus_device(vif->dev->dev.parent);
 }
 
+<<<<<<< HEAD
 void xenvif_tx_credit_callback(struct timer_list *t);
+=======
+void xenvif_tx_credit_callback(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct xenvif *xenvif_alloc(struct device *parent,
 			    domid_t domid,

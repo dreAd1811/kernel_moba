@@ -116,6 +116,10 @@ static int socfpga_pm_suspend(unsigned long arg)
 static int socfpga_pm_enter(suspend_state_t state)
 {
 	switch (state) {
+<<<<<<< HEAD
+=======
+	case PM_SUSPEND_STANDBY:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case PM_SUSPEND_MEM:
 		outer_disable();
 		cpu_suspend(0, socfpga_pm_suspend);

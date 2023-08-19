@@ -27,6 +27,7 @@
 #include <asm/time.h>
 #include <asm/uic.h>
 #include <asm/ppc4xx.h>
+<<<<<<< HEAD
 #include <asm/dcr.h>
 #include <linux/interrupt.h>
 #include <linux/of_irq.h>
@@ -38,6 +39,8 @@
 #define FSP2_OPBD_ERR	"ibm,opbd-error-irq"
 #define FSP2_MCUE	"ibm,mc-ue-irq"
 #define FSP2_RST_WRN	"ibm,reset-warning-irq"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static __initdata struct of_device_id fsp2_of_bus[] = {
 	{ .compatible = "ibm,plb4", },
@@ -46,6 +49,7 @@ static __initdata struct of_device_id fsp2_of_bus[] = {
 	{},
 };
 
+<<<<<<< HEAD
 static void l2regs(void)
 {
 	pr_err("L2 Controller:\n");
@@ -234,6 +238,8 @@ static void critical_irq_setup(void)
 	node_irq_request(FSP2_RST_WRN, rst_wrn_handler);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init fsp2_device_probe(void)
 {
 	of_platform_bus_probe(NULL, fsp2_of_bus, NULL);
@@ -243,11 +249,15 @@ machine_device_initcall(fsp2, fsp2_device_probe);
 
 static int __init fsp2_probe(void)
 {
+<<<<<<< HEAD
 	u32 val;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long root = of_get_flat_dt_root();
 
 	if (!of_flat_dt_is_compatible(root, "ibm,fsp2"))
 		return 0;
+<<<<<<< HEAD
 
 	/* Clear BC_ERR and mask snoopable request plb errors. */
 	val = mfdcr(DCRN_PLB6_CR0);
@@ -308,11 +318,20 @@ static void __init fsp2_irq_init(void)
 	critical_irq_setup();
 }
 
+=======
+	return 1;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 define_machine(fsp2) {
 	.name			= "FSP-2",
 	.probe			= fsp2_probe,
 	.progress		= udbg_progress,
+<<<<<<< HEAD
 	.init_IRQ		= fsp2_irq_init,
+=======
+	.init_IRQ		= uic_init_tree,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_irq		= uic_get_irq,
 	.restart		= ppc4xx_reset_system,
 	.calibrate_decr		= generic_calibrate_decr,

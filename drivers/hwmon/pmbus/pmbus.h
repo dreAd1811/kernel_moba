@@ -190,6 +190,7 @@ enum pmbus_regs {
 	PMBUS_VIRT_VMON_UV_FAULT_LIMIT,
 	PMBUS_VIRT_VMON_OV_FAULT_LIMIT,
 	PMBUS_VIRT_STATUS_VMON,
+<<<<<<< HEAD
 
 	/*
 	 * RPM and PWM Fan control
@@ -217,6 +218,8 @@ enum pmbus_regs {
 	PMBUS_VIRT_PWM_ENABLE_2,
 	PMBUS_VIRT_PWM_ENABLE_3,
 	PMBUS_VIRT_PWM_ENABLE_4,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -250,8 +253,11 @@ enum pmbus_regs {
 #define PB_FAN_1_RPM			BIT(6)
 #define PB_FAN_1_INSTALLED		BIT(7)
 
+<<<<<<< HEAD
 enum pmbus_fan_mode { percent = 0, rpm };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * STATUS_BYTE, STATUS_WORD (lower)
  */
@@ -342,7 +348,10 @@ enum pmbus_sensor_classes {
 	PSC_POWER,
 	PSC_TEMPERATURE,
 	PSC_FAN,
+<<<<<<< HEAD
 	PSC_PWM,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PSC_NUM_CLASSES		/* Number of power sensor classes */
 };
 
@@ -369,10 +378,13 @@ enum pmbus_sensor_classes {
 #define PMBUS_HAVE_STATUS_FAN34	BIT(17)
 #define PMBUS_HAVE_VMON		BIT(18)
 #define PMBUS_HAVE_STATUS_VMON	BIT(19)
+<<<<<<< HEAD
 #define PMBUS_HAVE_PWM12	BIT(20)
 #define PMBUS_HAVE_PWM34	BIT(21)
 
 #define PMBUS_PAGE_VIRTUAL	BIT(31)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum pmbus_data_format { linear = 0, direct, vid };
 enum vrm_version { vr11 = 0, vr12, vr13 };
@@ -455,6 +467,7 @@ int pmbus_do_probe(struct i2c_client *client, const struct i2c_device_id *id,
 int pmbus_do_remove(struct i2c_client *client);
 const struct pmbus_driver_info *pmbus_get_driver_info(struct i2c_client
 						      *client);
+<<<<<<< HEAD
 int pmbus_get_fan_rate_device(struct i2c_client *client, int page, int id,
 			      enum pmbus_fan_mode mode);
 int pmbus_get_fan_rate_cached(struct i2c_client *client, int page, int id,
@@ -462,5 +475,7 @@ int pmbus_get_fan_rate_cached(struct i2c_client *client, int page, int id,
 int pmbus_update_fan(struct i2c_client *client, int page, int id,
 		     u8 config, u8 mask, u16 command);
 struct dentry *pmbus_get_debugfs_dir(struct i2c_client *client);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* PMBUS_H */

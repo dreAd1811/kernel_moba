@@ -40,6 +40,13 @@
 #define PBLK_MAX_REQ_ADDRS (64)
 #define PBLK_MAX_REQ_ADDRS_PW (6)
 
+<<<<<<< HEAD
+=======
+#define PBLK_WS_POOL_SIZE (128)
+#define PBLK_META_POOL_SIZE (128)
+#define PBLK_READ_REQ_POOL_SIZE (1024)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PBLK_NR_CLOSE_JOBS (4)
 
 #define PBLK_CACHE_NAME_LEN (DISK_NAME_LEN + 16)
@@ -51,6 +58,7 @@
 
 #define NR_PHY_IN_LOG (PBLK_EXPOSED_PAGE_SIZE / PBLK_SECTOR)
 
+<<<<<<< HEAD
 /* Static pool sizes */
 #define PBLK_GEN_WS_POOL_SIZE (2)
 
@@ -63,6 +71,13 @@ enum {
 	PBLK_READ_RECOV,		/* Recovery read - errors allowed */
 	PBLK_ERASE,
 };
+=======
+#define pblk_for_each_lun(pblk, rlun, i) \
+		for ((i) = 0, rlun = &(pblk)->luns[0]; \
+			(i) < (pblk)->nr_luns; (i)++, rlun = &(pblk)->luns[(i)])
+
+#define ERASE 2 /* READ = 0, WRITE = 1 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	/* IO Types */
@@ -89,6 +104,7 @@ struct pblk_sec_meta {
 /* The number of GC lists and the rate-limiter states go together. This way the
  * rate-limiter can dictate how much GC is needed based on resource utilization.
  */
+<<<<<<< HEAD
 #define PBLK_GC_NR_LISTS 4
 
 enum {
@@ -101,6 +117,17 @@ enum {
 
 #define pblk_dma_meta_size (sizeof(struct pblk_sec_meta) * PBLK_MAX_REQ_ADDRS)
 #define pblk_dma_ppa_size (sizeof(u64) * PBLK_MAX_REQ_ADDRS)
+=======
+#define PBLK_GC_NR_LISTS 3
+
+enum {
+	PBLK_RL_HIGH = 1,
+	PBLK_RL_MID = 2,
+	PBLK_RL_LOW = 3,
+};
+
+#define pblk_dma_meta_size (sizeof(struct pblk_sec_meta) * PBLK_MAX_REQ_ADDRS)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* write buffer completion context */
 struct pblk_c_ctx {
@@ -112,6 +139,7 @@ struct pblk_c_ctx {
 	unsigned int nr_padded;
 };
 
+<<<<<<< HEAD
 /* read context */
 struct pblk_g_ctx {
 	void *private;
@@ -127,6 +155,11 @@ struct pblk_pr_ctx {
 	unsigned int bio_init_idx;
 	void *ppa_ptr;
 	dma_addr_t dma_ppa_list;
+=======
+/* generic context */
+struct pblk_g_ctx {
+	void *private;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Pad context */
@@ -140,6 +173,10 @@ struct pblk_pad_rq {
 struct pblk_rec_ctx {
 	struct pblk *pblk;
 	struct nvm_rq *rqd;
+<<<<<<< HEAD
+=======
+	struct list_head failed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct work_struct ws_rec;
 };
 
@@ -181,7 +218,11 @@ struct pblk_rb {
 					 * the last submitted entry that has
 					 * been successfully persisted to media
 					 */
+<<<<<<< HEAD
 	unsigned int flush_point;	/* Sync point - last entry that must be
+=======
+	unsigned int sync_point;	/* Sync point - last entry that must be
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 * flushed to the media. Used with
 					 * REQ_FLUSH and REQ_FUA
 					 */
@@ -203,8 +244,13 @@ struct pblk_rb {
 	spinlock_t w_lock;		/* Write lock */
 	spinlock_t s_lock;		/* Sync lock */
 
+<<<<<<< HEAD
 #ifdef CONFIG_NVM_PBLK_DEBUG
 	atomic_t inflight_flush_point;	/* Not served REQ_FLUSH | REQ_FUA */
+=======
+#ifdef CONFIG_NVM_DEBUG
+	atomic_t inflight_sync_point;	/* Not served REQ_FLUSH | REQ_FUA */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 };
 
@@ -212,13 +258,25 @@ struct pblk_rb {
 
 struct pblk_lun {
 	struct ppa_addr bppa;
+<<<<<<< HEAD
+=======
+
+	u8 *bb_list;			/* Bad block list for LUN. Only used on
+					 * bring up. Bad blocks are managed
+					 * within lines on run-time.
+					 */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct semaphore wr_sem;
 };
 
 struct pblk_gc_rq {
 	struct pblk_line *line;
 	void *data;
+<<<<<<< HEAD
 	u64 paddr_list[PBLK_MAX_REQ_ADDRS];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 lba_list[PBLK_MAX_REQ_ADDRS];
 	int nr_secs;
 	int secs_to_gc;
@@ -243,10 +301,14 @@ struct pblk_gc {
 	struct timer_list gc_timer;
 
 	struct semaphore gc_sem;
+<<<<<<< HEAD
 	atomic_t read_inflight_gc; /* Number of lines with inflight GC reads */
 	atomic_t pipeline_gc;	   /* Number of lines in the GC pipeline -
 				    * started reads to finished writes
 				    */
+=======
+	atomic_t inflight_gc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int w_entries;
 
 	struct list_head w_list;
@@ -261,6 +323,12 @@ struct pblk_rl {
 	unsigned int high;	/* Upper threshold for rate limiter (free run -
 				 * user I/O rate limiter
 				 */
+<<<<<<< HEAD
+=======
+	unsigned int low;	/* Lower threshold for rate limiter (user I/O
+				 * rate limiter - stall)
+				 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int high_pw;	/* High rounded up as a power of 2 */
 
 #define PBLK_USER_HIGH_THRS 8	/* Begin write limit at 12% available blks */
@@ -279,7 +347,10 @@ struct pblk_rl {
 	int rb_gc_max;		/* Max buffer entries available for GC I/O */
 	int rb_gc_rsv;		/* Reserved buffer entries for GC I/O */
 	int rb_state;		/* Rate-limiter current state */
+<<<<<<< HEAD
 	int rb_max_io;		/* Maximum size for an I/O giving the config */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	atomic_t rb_user_cnt;	/* User I/O buffer counter */
 	atomic_t rb_gc_cnt;	/* GC I/O buffer counter */
@@ -290,15 +361,22 @@ struct pblk_rl {
 	int rb_user_active;
 	int rb_gc_active;
 
+<<<<<<< HEAD
 	atomic_t werr_lines;	/* Number of write error lines that needs gc */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct timer_list u_timer;
 
 	unsigned long long nr_secs;
 	unsigned long total_blocks;
+<<<<<<< HEAD
 
 	atomic_t free_blocks;		/* Total number of free blocks (+ OP) */
 	atomic_t free_user_blocks;	/* Number of user free blocks (no OP) */
+=======
+	atomic_t free_blocks;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define PBLK_LINE_EMPTY (~0U)
@@ -310,7 +388,10 @@ enum {
 	PBLK_LINETYPE_DATA = 2,
 
 	/* Line state */
+<<<<<<< HEAD
 	PBLK_LINESTATE_NEW = 9,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PBLK_LINESTATE_FREE = 10,
 	PBLK_LINESTATE_OPEN = 11,
 	PBLK_LINESTATE_CLOSED = 12,
@@ -325,11 +406,15 @@ enum {
 	PBLK_LINEGC_MID = 23,
 	PBLK_LINEGC_HIGH = 24,
 	PBLK_LINEGC_FULL = 25,
+<<<<<<< HEAD
 	PBLK_LINEGC_WERR = 26
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define PBLK_MAGIC 0x70626c6b /*pblk*/
 
+<<<<<<< HEAD
 /* emeta/smeta persistent storage format versions:
  * Changes in major version requires offline migration.
  * Changes in minor version are handled automatically during
@@ -342,13 +427,19 @@ enum {
 #define EMETA_VERSION_MAJOR (0)
 #define EMETA_VERSION_MINOR (2)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct line_header {
 	__le32 crc;
 	__le32 identifier;	/* pblk identifier */
 	__u8 uuid[16];		/* instance uuid */
 	__le16 type;		/* line type */
+<<<<<<< HEAD
 	__u8 version_major;	/* version major */
 	__u8 version_minor;	/* version minor */
+=======
+	__le16 version;		/* type version */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 id;		/* line id for current line */
 };
 
@@ -370,13 +461,19 @@ struct line_smeta {
 	__le64 lun_bitmap[];
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Metadata layout in media:
  *	First sector:
  *		1. struct line_emeta
  *		2. bad block bitmap (u64 * window_wr_lun)
+<<<<<<< HEAD
  *		3. write amplification counters
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	Mid sectors (start at lbas_sector):
  *		3. nr_lbas (u64) forming lba list
  *	Last sectors (start at vsc_sector):
@@ -400,6 +497,7 @@ struct line_emeta {
 	__le32 next_id;		/* Line id for next line */
 	__le64 nr_lbas;		/* Number of lbas mapped in line */
 	__le64 nr_valid_lbas;	/* Number of valid lbas mapped in line */
+<<<<<<< HEAD
 	__le64 bb_bitmap[];     /* Updated bad block bitmap for line */
 };
 
@@ -409,6 +507,9 @@ struct wa_counters {
 	__le64 user;		/* Number of user written sectors */
 	__le64 gc;		/* Number of sectors written by GC*/
 	__le64 pad;		/* Number of padded sectors */
+=======
+	__le64 bb_bitmap[];	/* Updated bad block bitmap for line */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct pblk_emeta {
@@ -427,11 +528,14 @@ struct pblk_smeta {
 	struct line_smeta *buf;		/* smeta buffer in persistent format */
 };
 
+<<<<<<< HEAD
 struct pblk_w_err_gc {
 	int has_write_err;
 	__le64 *lba_list;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pblk_line {
 	struct pblk *pblk;
 	unsigned int id;		/* Line number corresponds to the
@@ -446,8 +550,11 @@ struct pblk_line {
 
 	unsigned long *lun_bitmap;	/* Bitmap for LUNs mapped in line */
 
+<<<<<<< HEAD
 	struct nvm_chk_meta *chks;	/* Chunks forming line */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pblk_smeta *smeta;	/* Start metadata */
 	struct pblk_emeta *emeta;	/* End medatada */
 
@@ -477,8 +584,11 @@ struct pblk_line {
 
 	struct kref ref;		/* Write buffer L2P references */
 
+<<<<<<< HEAD
 	struct pblk_w_err_gc *w_err_gc;	/* Write error gc recovery metadata */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spinlock_t lock;		/* Necessary for invalid_bitmap only */
 };
 
@@ -510,8 +620,11 @@ struct pblk_line_mgmt {
 	struct list_head gc_mid_list;	/* Full lines ready to GC, mid isc */
 	struct list_head gc_low_list;	/* Full lines ready to GC, low isc */
 
+<<<<<<< HEAD
 	struct list_head gc_werr_list;  /* Write err recovery list */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head gc_full_list;	/* Full lines ready to GC, no valid */
 	struct list_head gc_empty_list;	/* Full lines close, all valid */
 
@@ -549,11 +662,18 @@ struct pblk_line_meta {
 	unsigned int smeta_sec;		/* Sectors needed for smeta */
 
 	unsigned int emeta_len[4];	/* Lengths for emeta:
+<<<<<<< HEAD
 					 *  [0]: Total
 					 *  [1]: struct line_emeta +
 					 *       bb_bitmap + struct wa_counters
 					 *  [2]: L2P portion
 					 *  [3]: vsc
+=======
+					 *  [0]: Total length
+					 *  [1]: struct line_emeta length
+					 *  [2]: L2P portion length
+					 *  [3]: vsc list length
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 */
 	unsigned int emeta_sec[4];	/* Sectors needed for emeta. Same layout
 					 * as emeta_len
@@ -577,6 +697,24 @@ struct pblk_line_meta {
 	unsigned int meta_distance;	/* Distance between data and metadata */
 };
 
+<<<<<<< HEAD
+=======
+struct pblk_addr_format {
+	u64	ch_mask;
+	u64	lun_mask;
+	u64	pln_mask;
+	u64	blk_mask;
+	u64	pg_mask;
+	u64	sec_mask;
+	u8	ch_offset;
+	u8	lun_offset;
+	u8	pln_offset;
+	u8	blk_offset;
+	u8	pg_offset;
+	u8	sec_offset;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	PBLK_STATE_RUNNING = 0,
 	PBLK_STATE_STOPPING = 1,
@@ -584,6 +722,7 @@ enum {
 	PBLK_STATE_STOPPED = 3,
 };
 
+<<<<<<< HEAD
 /* Internal format to support not power-of-2 device formats */
 struct pblk_addrf {
 	/* gen to dev */
@@ -596,6 +735,8 @@ struct pblk_addrf {
 	int sec_ws_stripe;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pblk {
 	struct nvm_tgt_dev *dev;
 	struct gendisk *disk;
@@ -608,9 +749,14 @@ struct pblk {
 	struct pblk_line_mgmt l_mg;		/* Line management */
 	struct pblk_line_meta lm;		/* Line metadata */
 
+<<<<<<< HEAD
 	struct nvm_addrf addrf;		/* Aligned address format */
 	struct pblk_addrf uaddrf;	/* Unaligned address format */
 	int addrf_len;
+=======
+	int ppaf_bitsize;
+	struct pblk_addr_format ppaf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct pblk_rb rwb;
 
@@ -618,11 +764,20 @@ struct pblk {
 
 	int min_write_pgs; /* Minimum amount of pages required by controller */
 	int max_write_pgs; /* Maximum amount of pages supported by controller */
+<<<<<<< HEAD
 
 	sector_t capacity; /* Device capacity when bad blocks are subtracted */
 
 	int op;      /* Percentage of device used for over-provisioning */
 	int op_blks; /* Number of blocks used for over-provisioning */
+=======
+	int pgs_in_buffer; /* Number of pages that need to be held in buffer to
+			    * guarantee successful reads.
+			    */
+
+	sector_t capacity; /* Device capacity when bad blocks are subtracted */
+	int over_pct;      /* Percentage of device used for over-provisioning */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* pblk provisioning values. Used by rate limiter */
 	struct pblk_rl rl;
@@ -630,6 +785,7 @@ struct pblk {
 	int sec_per_write;
 
 	unsigned char instance_uuid[16];
+<<<<<<< HEAD
 
 	/* Persistent write amplification counters, 4kb sector I/Os */
 	atomic64_t user_wa;		/* Sectors written by user */
@@ -651,6 +807,14 @@ struct pblk {
 	atomic_long_t inflight_writes;	/* Inflight writes (user and gc) */
 	atomic_long_t padded_writes;	/* Sectors padded due to flush/fua */
 	atomic_long_t padded_wb;	/* Sectors padded in write buffer */
+=======
+#ifdef CONFIG_NVM_DEBUG
+	/* All debug counters apply to 4kb sector I/Os */
+	atomic_long_t inflight_writes;	/* Inflight writes (user and gc) */
+	atomic_long_t padded_writes;	/* Sectors padded due to flush/fua */
+	atomic_long_t padded_wb;	/* Sectors padded in write buffer */
+	atomic_long_t nr_flush;		/* Number of flush/fua I/O */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_long_t req_writes;	/* Sectors stored on write buffer */
 	atomic_long_t sub_writes;	/* Sectors submitted from buffer */
 	atomic_long_t sync_writes;	/* Sectors synced to media */
@@ -684,6 +848,7 @@ struct pblk {
 
 	struct list_head compl_list;
 
+<<<<<<< HEAD
 	spinlock_t resubmit_lock;	 /* Resubmit list lock */
 	struct list_head resubmit_list; /* Resubmit list for failed writes*/
 
@@ -697,6 +862,17 @@ struct pblk {
 	struct workqueue_struct *close_wq;
 	struct workqueue_struct *bb_wq;
 	struct workqueue_struct *r_end_wq;
+=======
+	mempool_t *page_bio_pool;
+	mempool_t *line_ws_pool;
+	mempool_t *rec_pool;
+	mempool_t *g_rq_pool;
+	mempool_t *w_rq_pool;
+	mempool_t *line_meta_pool;
+
+	struct workqueue_struct *close_wq;
+	struct workqueue_struct *bb_wq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct timer_list wtimer;
 
@@ -713,6 +889,7 @@ struct pblk_line_ws {
 #define pblk_g_rq_size (sizeof(struct nvm_rq) + sizeof(struct pblk_g_ctx))
 #define pblk_w_rq_size (sizeof(struct nvm_rq) + sizeof(struct pblk_c_ctx))
 
+<<<<<<< HEAD
 #define pblk_err(pblk, fmt, ...)			\
 	pr_err("pblk %s: " fmt, pblk->disk->disk_name, ##__VA_ARGS__)
 #define pblk_info(pblk, fmt, ...)			\
@@ -722,6 +899,8 @@ struct pblk_line_ws {
 #define pblk_debug(pblk, fmt, ...)			\
 	pr_debug("pblk %s: " fmt, pblk->disk->disk_name, ##__VA_ARGS__)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * pblk ring buffer operations
  */
@@ -736,15 +915,28 @@ int pblk_rb_may_write_gc(struct pblk_rb *rb, unsigned int nr_entries,
 void pblk_rb_write_entry_user(struct pblk_rb *rb, void *data,
 			      struct pblk_w_ctx w_ctx, unsigned int pos);
 void pblk_rb_write_entry_gc(struct pblk_rb *rb, void *data,
+<<<<<<< HEAD
 			    struct pblk_w_ctx w_ctx, struct pblk_line *line,
 			    u64 paddr, unsigned int pos);
+=======
+			    struct pblk_w_ctx w_ctx, struct pblk_line *gc_line,
+			    unsigned int pos);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pblk_w_ctx *pblk_rb_w_ctx(struct pblk_rb *rb, unsigned int pos);
 void pblk_rb_flush(struct pblk_rb *rb);
 
 void pblk_rb_sync_l2p(struct pblk_rb *rb);
 unsigned int pblk_rb_read_to_bio(struct pblk_rb *rb, struct nvm_rq *rqd,
+<<<<<<< HEAD
 				 unsigned int pos, unsigned int nr_entries,
 				 unsigned int count);
+=======
+				 struct bio *bio, unsigned int pos,
+				 unsigned int nr_entries, unsigned int count);
+unsigned int pblk_rb_read_to_bio_list(struct pblk_rb *rb, struct bio *bio,
+				      struct list_head *list,
+				      unsigned int max);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pblk_rb_copy_to_bio(struct pblk_rb *rb, struct bio *bio, sector_t lba,
 			struct ppa_addr ppa, int bio_iter, bool advanced_bio);
 unsigned int pblk_rb_read_commit(struct pblk_rb *rb, unsigned int entries);
@@ -754,7 +946,11 @@ unsigned int pblk_rb_sync_advance(struct pblk_rb *rb, unsigned int nr_entries);
 struct pblk_rb_entry *pblk_rb_sync_scan_entry(struct pblk_rb *rb,
 					      struct ppa_addr *ppa);
 void pblk_rb_sync_end(struct pblk_rb *rb, unsigned long *flags);
+<<<<<<< HEAD
 unsigned int pblk_rb_flush_point_count(struct pblk_rb *rb);
+=======
+unsigned int pblk_rb_sync_point_count(struct pblk_rb *rb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unsigned int pblk_rb_read_count(struct pblk_rb *rb);
 unsigned int pblk_rb_sync_count(struct pblk_rb *rb);
@@ -768,6 +964,7 @@ ssize_t pblk_rb_sysfs(struct pblk_rb *rb, char *buf);
 /*
  * pblk core
  */
+<<<<<<< HEAD
 struct nvm_rq *pblk_alloc_rqd(struct pblk *pblk, int type);
 void pblk_free_rqd(struct pblk *pblk, struct nvm_rq *rqd, int type);
 void pblk_set_sec_per_write(struct pblk *pblk, int sec_per_write);
@@ -782,19 +979,37 @@ void pblk_log_write_err(struct pblk *pblk, struct nvm_rq *rqd);
 void pblk_log_read_err(struct pblk *pblk, struct nvm_rq *rqd);
 int pblk_submit_io(struct pblk *pblk, struct nvm_rq *rqd);
 int pblk_submit_io_sync(struct pblk *pblk, struct nvm_rq *rqd);
+=======
+struct nvm_rq *pblk_alloc_rqd(struct pblk *pblk, int rw);
+void pblk_set_sec_per_write(struct pblk *pblk, int sec_per_write);
+int pblk_setup_w_rec_rq(struct pblk *pblk, struct nvm_rq *rqd,
+			struct pblk_c_ctx *c_ctx);
+void pblk_free_rqd(struct pblk *pblk, struct nvm_rq *rqd, int rw);
+void pblk_wait_for_meta(struct pblk *pblk);
+struct ppa_addr pblk_get_lba_map(struct pblk *pblk, sector_t lba);
+void pblk_discard(struct pblk *pblk, struct bio *bio);
+void pblk_log_write_err(struct pblk *pblk, struct nvm_rq *rqd);
+void pblk_log_read_err(struct pblk *pblk, struct nvm_rq *rqd);
+int pblk_submit_io(struct pblk *pblk, struct nvm_rq *rqd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pblk_submit_meta_io(struct pblk *pblk, struct pblk_line *meta_line);
 struct bio *pblk_bio_map_addr(struct pblk *pblk, void *data,
 			      unsigned int nr_secs, unsigned int len,
 			      int alloc_type, gfp_t gfp_mask);
 struct pblk_line *pblk_line_get(struct pblk *pblk);
 struct pblk_line *pblk_line_get_first_data(struct pblk *pblk);
+<<<<<<< HEAD
 struct pblk_line *pblk_line_replace_data(struct pblk *pblk);
+=======
+void pblk_line_replace_data(struct pblk *pblk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pblk_line_recov_alloc(struct pblk *pblk, struct pblk_line *line);
 void pblk_line_recov_close(struct pblk *pblk, struct pblk_line *line);
 struct pblk_line *pblk_line_get_data(struct pblk *pblk);
 struct pblk_line *pblk_line_get_erase(struct pblk *pblk);
 int pblk_line_erase(struct pblk *pblk, struct pblk_line *line);
 int pblk_line_is_full(struct pblk_line *line);
+<<<<<<< HEAD
 void pblk_line_free(struct pblk_line *line);
 void pblk_line_close_meta(struct pblk *pblk, struct pblk_line *line);
 void pblk_line_close(struct pblk *pblk, struct pblk_line *line);
@@ -805,13 +1020,28 @@ void __pblk_pipeline_flush(struct pblk *pblk);
 void pblk_gen_run_ws(struct pblk *pblk, struct pblk_line *line, void *priv,
 		     void (*work)(struct work_struct *), gfp_t gfp_mask,
 		     struct workqueue_struct *wq);
+=======
+void pblk_line_free(struct pblk *pblk, struct pblk_line *line);
+void pblk_line_close_meta(struct pblk *pblk, struct pblk_line *line);
+void pblk_line_close(struct pblk *pblk, struct pblk_line *line);
+void pblk_line_close_meta_sync(struct pblk *pblk);
+void pblk_line_close_ws(struct work_struct *work);
+void pblk_pipeline_stop(struct pblk *pblk);
+void pblk_line_mark_bb(struct work_struct *work);
+void pblk_line_run_ws(struct pblk *pblk, struct pblk_line *line, void *priv,
+		      void (*work)(struct work_struct *),
+		      struct workqueue_struct *wq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 u64 pblk_line_smeta_start(struct pblk *pblk, struct pblk_line *line);
 int pblk_line_read_smeta(struct pblk *pblk, struct pblk_line *line);
 int pblk_line_read_emeta(struct pblk *pblk, struct pblk_line *line,
 			 void *emeta_buf);
 int pblk_blk_erase_async(struct pblk *pblk, struct ppa_addr erase_ppa);
 void pblk_line_put(struct kref *ref);
+<<<<<<< HEAD
 void pblk_line_put_wq(struct kref *ref);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct list_head *pblk_line_gc_list(struct pblk *pblk, struct pblk_line *line);
 u64 pblk_lookup_page(struct pblk *pblk, struct pblk_line *line);
 void pblk_dealloc_page(struct pblk *pblk, struct pblk_line *line, int nr_secs);
@@ -825,6 +1055,11 @@ void pblk_down_rq(struct pblk *pblk, struct ppa_addr *ppa_list, int nr_ppas,
 void pblk_down_page(struct pblk *pblk, struct ppa_addr *ppa_list, int nr_ppas);
 void pblk_up_rq(struct pblk *pblk, struct ppa_addr *ppa_list, int nr_ppas,
 		unsigned long *lun_bitmap);
+<<<<<<< HEAD
+=======
+void pblk_end_bio_sync(struct bio *bio);
+void pblk_end_io_sync(struct nvm_rq *rqd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pblk_bio_add_pages(struct pblk *pblk, struct bio *bio, gfp_t flags,
 		       int nr_pages);
 void pblk_bio_free_pages(struct pblk *pblk, struct bio *bio, int off,
@@ -838,7 +1073,11 @@ void pblk_update_map_cache(struct pblk *pblk, sector_t lba,
 void pblk_update_map_dev(struct pblk *pblk, sector_t lba,
 			 struct ppa_addr ppa, struct ppa_addr entry_line);
 int pblk_update_map_gc(struct pblk *pblk, sector_t lba, struct ppa_addr ppa,
+<<<<<<< HEAD
 		       struct pblk_line *gc_line, u64 paddr);
+=======
+		       struct pblk_line *gc_line);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pblk_lookup_l2p_rand(struct pblk *pblk, struct ppa_addr *ppas,
 			  u64 *lba_list, int nr_secs);
 void pblk_lookup_l2p_seq(struct pblk *pblk, struct ppa_addr *ppas,
@@ -849,7 +1088,13 @@ void pblk_lookup_l2p_seq(struct pblk *pblk, struct ppa_addr *ppas,
  */
 int pblk_write_to_cache(struct pblk *pblk, struct bio *bio,
 			unsigned long flags);
+<<<<<<< HEAD
 int pblk_write_gc_to_cache(struct pblk *pblk, struct pblk_gc_rq *gc_rq);
+=======
+int pblk_write_gc_to_cache(struct pblk *pblk, void *data, u64 *lba_list,
+			   unsigned int nr_entries, unsigned int nr_rec_entries,
+			   struct pblk_line *gc_line, unsigned long flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * pblk map
@@ -865,13 +1110,19 @@ void pblk_map_rq(struct pblk *pblk, struct nvm_rq *rqd, unsigned int sentry,
  * pblk write thread
  */
 int pblk_write_ts(void *data);
+<<<<<<< HEAD
 void pblk_write_timer_fn(struct timer_list *t);
 void pblk_write_should_kick(struct pblk *pblk);
 void pblk_write_kick(struct pblk *pblk);
+=======
+void pblk_write_timer_fn(unsigned long data);
+void pblk_write_should_kick(struct pblk *pblk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * pblk read path
  */
+<<<<<<< HEAD
 extern struct bio_set pblk_bio_set;
 int pblk_submit_read(struct pblk *pblk, struct bio *bio);
 int pblk_submit_read_gc(struct pblk *pblk, struct pblk_gc_rq *gc_rq);
@@ -881,21 +1132,50 @@ int pblk_submit_read_gc(struct pblk *pblk, struct pblk_gc_rq *gc_rq);
 struct pblk_line *pblk_recov_l2p(struct pblk *pblk);
 int pblk_recov_pad(struct pblk *pblk);
 int pblk_recov_check_emeta(struct pblk *pblk, struct line_emeta *emeta);
+=======
+extern struct bio_set *pblk_bio_set;
+int pblk_submit_read(struct pblk *pblk, struct bio *bio);
+int pblk_submit_read_gc(struct pblk *pblk, u64 *lba_list, void *data,
+			unsigned int nr_secs, unsigned int *secs_to_gc,
+			struct pblk_line *line);
+/*
+ * pblk recovery
+ */
+void pblk_submit_rec(struct work_struct *work);
+struct pblk_line *pblk_recov_l2p(struct pblk *pblk);
+int pblk_recov_pad(struct pblk *pblk);
+__le64 *pblk_recov_get_lba_list(struct pblk *pblk, struct line_emeta *emeta);
+int pblk_recov_setup_rq(struct pblk *pblk, struct pblk_c_ctx *c_ctx,
+			struct pblk_rec_ctx *recovery, u64 *comp_bits,
+			unsigned int comp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * pblk gc
  */
 #define PBLK_GC_MAX_READERS 8	/* Max number of outstanding GC reader jobs */
+<<<<<<< HEAD
 #define PBLK_GC_RQ_QD 128	/* Queue depth for inflight GC requests */
+=======
+#define PBLK_GC_W_QD 128	/* Queue depth for inflight GC write I/Os */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PBLK_GC_L_QD 4		/* Queue depth for inflight GC lines */
 #define PBLK_GC_RSV_LINE 1	/* Reserved lines for GC */
 
 int pblk_gc_init(struct pblk *pblk);
+<<<<<<< HEAD
 void pblk_gc_exit(struct pblk *pblk, bool graceful);
 void pblk_gc_should_start(struct pblk *pblk);
 void pblk_gc_should_stop(struct pblk *pblk);
 void pblk_gc_should_kick(struct pblk *pblk);
 void pblk_gc_free_full_lines(struct pblk *pblk);
+=======
+void pblk_gc_exit(struct pblk *pblk);
+void pblk_gc_should_start(struct pblk *pblk);
+void pblk_gc_should_stop(struct pblk *pblk);
+void pblk_gc_should_kick(struct pblk *pblk);
+void pblk_gc_kick(struct pblk *pblk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void pblk_gc_sysfs_state_show(struct pblk *pblk, int *gc_enabled,
 			      int *gc_active);
 int pblk_gc_sysfs_force(struct pblk *pblk, int force);
@@ -905,16 +1185,23 @@ int pblk_gc_sysfs_force(struct pblk *pblk, int force);
  */
 void pblk_rl_init(struct pblk_rl *rl, int budget);
 void pblk_rl_free(struct pblk_rl *rl);
+<<<<<<< HEAD
 void pblk_rl_update_rates(struct pblk_rl *rl);
 int pblk_rl_high_thrs(struct pblk_rl *rl);
 unsigned long pblk_rl_nr_free_blks(struct pblk_rl *rl);
 unsigned long pblk_rl_nr_user_free_blks(struct pblk_rl *rl);
+=======
+int pblk_rl_high_thrs(struct pblk_rl *rl);
+int pblk_rl_low_thrs(struct pblk_rl *rl);
+unsigned long pblk_rl_nr_free_blks(struct pblk_rl *rl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pblk_rl_user_may_insert(struct pblk_rl *rl, int nr_entries);
 void pblk_rl_inserted(struct pblk_rl *rl, int nr_entries);
 void pblk_rl_user_in(struct pblk_rl *rl, int nr_entries);
 int pblk_rl_gc_may_insert(struct pblk_rl *rl, int nr_entries);
 void pblk_rl_gc_in(struct pblk_rl *rl, int nr_entries);
 void pblk_rl_out(struct pblk_rl *rl, int nr_user, int nr_gc);
+<<<<<<< HEAD
 int pblk_rl_max_io(struct pblk_rl *rl);
 void pblk_rl_free_lines_inc(struct pblk_rl *rl, struct pblk_line *line);
 void pblk_rl_free_lines_dec(struct pblk_rl *rl, struct pblk_line *line,
@@ -924,6 +1211,14 @@ int pblk_rl_is_limit(struct pblk_rl *rl);
 void pblk_rl_werr_line_in(struct pblk_rl *rl);
 void pblk_rl_werr_line_out(struct pblk_rl *rl);
 
+=======
+int pblk_rl_sysfs_rate_show(struct pblk_rl *rl);
+void pblk_rl_free_lines_inc(struct pblk_rl *rl, struct pblk_line *line);
+void pblk_rl_free_lines_dec(struct pblk_rl *rl, struct pblk_line *line);
+void pblk_rl_set_space_limit(struct pblk_rl *rl, int entries_left);
+int pblk_rl_is_limit(struct pblk_rl *rl);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * pblk sysfs
  */
@@ -955,12 +1250,15 @@ static inline void *emeta_to_bb(struct line_emeta *emeta)
 	return emeta->bb_bitmap;
 }
 
+<<<<<<< HEAD
 static inline void *emeta_to_wa(struct pblk_line_meta *lm,
 				struct line_emeta *emeta)
 {
 	return emeta->bb_bitmap + lm->blk_bitmap_len;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void *emeta_to_lbas(struct pblk *pblk, struct line_emeta *emeta)
 {
 	return ((void *)emeta + pblk->lm.emeta_len[1]);
@@ -973,24 +1271,53 @@ static inline void *emeta_to_vsc(struct pblk *pblk, struct line_emeta *emeta)
 
 static inline int pblk_line_vsc(struct pblk_line *line)
 {
+<<<<<<< HEAD
 	return le32_to_cpu(*line->vsc);
 }
 
+=======
+	int vsc;
+
+	spin_lock(&line->lock);
+	vsc = le32_to_cpu(*line->vsc);
+	spin_unlock(&line->lock);
+
+	return vsc;
+}
+
+#define NVM_MEM_PAGE_WRITE (8)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int pblk_pad_distance(struct pblk *pblk)
 {
 	struct nvm_tgt_dev *dev = pblk->dev;
 	struct nvm_geo *geo = &dev->geo;
 
+<<<<<<< HEAD
 	return geo->mw_cunits * geo->all_luns * geo->ws_opt;
 }
 
 static inline int pblk_ppa_to_line(struct ppa_addr p)
 {
 	return p.a.blk;
+=======
+	return NVM_MEM_PAGE_WRITE * geo->nr_luns * geo->sec_per_pl;
+}
+
+static inline int pblk_dev_ppa_to_line(struct ppa_addr p)
+{
+	return p.g.blk;
+}
+
+static inline int pblk_tgt_ppa_to_line(struct ppa_addr p)
+{
+	return p.g.blk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int pblk_ppa_to_pos(struct nvm_geo *geo, struct ppa_addr p)
 {
+<<<<<<< HEAD
 	return p.a.lun * geo->num_ch + p.a.ch;
 }
 
@@ -1063,6 +1390,15 @@ static inline u64 pblk_dev_ppa_to_line_addr(struct pblk *pblk,
 	}
 
 	return paddr;
+=======
+	return p.g.lun * geo->nr_chnls + p.g.ch;
+}
+
+/* A block within a line corresponds to the lun */
+static inline int pblk_dev_ppa_to_pos(struct nvm_geo *geo, struct ppa_addr p)
+{
+	return p.g.lun * geo->nr_chnls + p.g.ch;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline struct ppa_addr pblk_ppa32_to_ppa64(struct pblk *pblk, u32 ppa32)
@@ -1077,6 +1413,7 @@ static inline struct ppa_addr pblk_ppa32_to_ppa64(struct pblk *pblk, u32 ppa32)
 		ppa64.c.line = ppa32 & ((~0U) >> 1);
 		ppa64.c.is_cached = 1;
 	} else {
+<<<<<<< HEAD
 		struct nvm_tgt_dev *dev = pblk->dev;
 		struct nvm_geo *geo = &dev->geo;
 
@@ -1108,11 +1445,26 @@ static inline struct ppa_addr pblk_ppa32_to_ppa64(struct pblk *pblk, u32 ppa32)
 			ppa64.m.sec = (ppa32 & lbaf->sec_mask) >>
 							lbaf->sec_offset;
 		}
+=======
+		ppa64.g.blk = (ppa32 & pblk->ppaf.blk_mask) >>
+							pblk->ppaf.blk_offset;
+		ppa64.g.pg = (ppa32 & pblk->ppaf.pg_mask) >>
+							pblk->ppaf.pg_offset;
+		ppa64.g.lun = (ppa32 & pblk->ppaf.lun_mask) >>
+							pblk->ppaf.lun_offset;
+		ppa64.g.ch = (ppa32 & pblk->ppaf.ch_mask) >>
+							pblk->ppaf.ch_offset;
+		ppa64.g.pl = (ppa32 & pblk->ppaf.pln_mask) >>
+							pblk->ppaf.pln_offset;
+		ppa64.g.sec = (ppa32 & pblk->ppaf.sec_mask) >>
+							pblk->ppaf.sec_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ppa64;
 }
 
+<<<<<<< HEAD
 static inline u32 pblk_ppa64_to_ppa32(struct pblk *pblk, struct ppa_addr ppa64)
 {
 	u32 ppa32 = 0;
@@ -1149,12 +1501,18 @@ static inline u32 pblk_ppa64_to_ppa32(struct pblk *pblk, struct ppa_addr ppa64)
 	return ppa32;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct ppa_addr pblk_trans_map_get(struct pblk *pblk,
 								sector_t lba)
 {
 	struct ppa_addr ppa;
 
+<<<<<<< HEAD
 	if (pblk->addrf_len < 32) {
+=======
+	if (pblk->ppaf_bitsize < 32) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 *map = (u32 *)pblk->trans_map;
 
 		ppa = pblk_ppa32_to_ppa64(pblk, map[lba]);
@@ -1167,10 +1525,38 @@ static inline struct ppa_addr pblk_trans_map_get(struct pblk *pblk,
 	return ppa;
 }
 
+<<<<<<< HEAD
 static inline void pblk_trans_map_set(struct pblk *pblk, sector_t lba,
 						struct ppa_addr ppa)
 {
 	if (pblk->addrf_len < 32) {
+=======
+static inline u32 pblk_ppa64_to_ppa32(struct pblk *pblk, struct ppa_addr ppa64)
+{
+	u32 ppa32 = 0;
+
+	if (ppa64.ppa == ADDR_EMPTY) {
+		ppa32 = ~0U;
+	} else if (ppa64.c.is_cached) {
+		ppa32 |= ppa64.c.line;
+		ppa32 |= 1U << 31;
+	} else {
+		ppa32 |= ppa64.g.blk << pblk->ppaf.blk_offset;
+		ppa32 |= ppa64.g.pg << pblk->ppaf.pg_offset;
+		ppa32 |= ppa64.g.lun << pblk->ppaf.lun_offset;
+		ppa32 |= ppa64.g.ch << pblk->ppaf.ch_offset;
+		ppa32 |= ppa64.g.pl << pblk->ppaf.pln_offset;
+		ppa32 |= ppa64.g.sec << pblk->ppaf.sec_offset;
+	}
+
+	return ppa32;
+}
+
+static inline void pblk_trans_map_set(struct pblk *pblk, sector_t lba,
+						struct ppa_addr ppa)
+{
+	if (pblk->ppaf_bitsize < 32) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 *map = (u32 *)pblk->trans_map;
 
 		map[lba] = pblk_ppa64_to_ppa32(pblk, ppa);
@@ -1181,6 +1567,24 @@ static inline void pblk_trans_map_set(struct pblk *pblk, sector_t lba,
 	}
 }
 
+<<<<<<< HEAD
+=======
+static inline u64 pblk_dev_ppa_to_line_addr(struct pblk *pblk,
+							struct ppa_addr p)
+{
+	u64 paddr;
+
+	paddr = 0;
+	paddr |= (u64)p.g.pg << pblk->ppaf.pg_offset;
+	paddr |= (u64)p.g.lun << pblk->ppaf.lun_offset;
+	paddr |= (u64)p.g.ch << pblk->ppaf.ch_offset;
+	paddr |= (u64)p.g.pl << pblk->ppaf.pln_offset;
+	paddr |= (u64)p.g.sec << pblk->ppaf.sec_offset;
+
+	return paddr;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int pblk_ppa_empty(struct ppa_addr ppa_addr)
 {
 	return (ppa_addr.ppa == ADDR_EMPTY);
@@ -1193,7 +1597,14 @@ static inline void pblk_ppa_set_empty(struct ppa_addr *ppa_addr)
 
 static inline bool pblk_ppa_comp(struct ppa_addr lppa, struct ppa_addr rppa)
 {
+<<<<<<< HEAD
 	return (lppa.ppa == rppa.ppa);
+=======
+	if (lppa.ppa == rppa.ppa)
+		return true;
+
+	return false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int pblk_addr_in_cache(struct ppa_addr ppa)
@@ -1216,6 +1627,35 @@ static inline struct ppa_addr pblk_cacheline_to_addr(int addr)
 	return p;
 }
 
+<<<<<<< HEAD
+=======
+static inline struct ppa_addr addr_to_gen_ppa(struct pblk *pblk, u64 paddr,
+					      u64 line_id)
+{
+	struct ppa_addr ppa;
+
+	ppa.ppa = 0;
+	ppa.g.blk = line_id;
+	ppa.g.pg = (paddr & pblk->ppaf.pg_mask) >> pblk->ppaf.pg_offset;
+	ppa.g.lun = (paddr & pblk->ppaf.lun_mask) >> pblk->ppaf.lun_offset;
+	ppa.g.ch = (paddr & pblk->ppaf.ch_mask) >> pblk->ppaf.ch_offset;
+	ppa.g.pl = (paddr & pblk->ppaf.pln_mask) >> pblk->ppaf.pln_offset;
+	ppa.g.sec = (paddr & pblk->ppaf.sec_mask) >> pblk->ppaf.sec_offset;
+
+	return ppa;
+}
+
+static inline struct ppa_addr addr_to_pblk_ppa(struct pblk *pblk, u64 paddr,
+					 u64 line_id)
+{
+	struct ppa_addr ppa;
+
+	ppa = addr_to_gen_ppa(pblk, paddr, line_id);
+
+	return ppa;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u32 pblk_calc_meta_header_crc(struct pblk *pblk,
 					    struct line_header *header)
 {
@@ -1261,12 +1701,18 @@ static inline int pblk_set_progr_mode(struct pblk *pblk, int type)
 	struct nvm_geo *geo = &dev->geo;
 	int flags;
 
+<<<<<<< HEAD
 	if (geo->version == NVM_OCSSD_SPEC_20)
 		return 0;
 
 	flags = geo->pln_mode >> 1;
 
 	if (type == PBLK_WRITE)
+=======
+	flags = geo->plane_mode >> 1;
+
+	if (type == WRITE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		flags |= NVM_IO_SCRAMBLE_ENABLE;
 
 	return flags;
@@ -1283,12 +1729,18 @@ static inline int pblk_set_read_mode(struct pblk *pblk, int type)
 	struct nvm_geo *geo = &dev->geo;
 	int flags;
 
+<<<<<<< HEAD
 	if (geo->version == NVM_OCSSD_SPEC_20)
 		return 0;
 
 	flags = NVM_IO_SUSPEND | NVM_IO_SCRAMBLE_ENABLE;
 	if (type == PBLK_READ_SEQUENTIAL)
 		flags |= geo->pln_mode >> 1;
+=======
+	flags = NVM_IO_SUSPEND | NVM_IO_SCRAMBLE_ENABLE;
+	if (type == PBLK_READ_SEQUENTIAL)
+		flags |= geo->plane_mode >> 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return flags;
 }
@@ -1298,6 +1750,7 @@ static inline int pblk_io_aligned(struct pblk *pblk, int nr_secs)
 	return !(nr_secs % pblk->min_write_pgs);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_NVM_PBLK_DEBUG
 static inline void print_ppa(struct pblk *pblk, struct ppa_addr *p,
 			     char *msg, int error)
@@ -1316,6 +1769,19 @@ static inline void print_ppa(struct pblk *pblk, struct ppa_addr *p,
 		pblk_err(pblk, "ppa: (%s: %x):ch:%d,lun:%d,chk:%d,sec:%d\n",
 			msg, error,
 			p->m.grp, p->m.pu, p->m.chk, p->m.sec);
+=======
+#ifdef CONFIG_NVM_DEBUG
+static inline void print_ppa(struct ppa_addr *p, char *msg, int error)
+{
+	if (p->c.is_cached) {
+		pr_err("ppa: (%s: %x) cache line: %llu\n",
+				msg, error, (u64)p->c.line);
+	} else {
+		pr_err("ppa: (%s: %x):ch:%d,lun:%d,blk:%d,pg:%d,pl:%d,sec:%d\n",
+			msg, error,
+			p->g.ch, p->g.lun, p->g.blk,
+			p->g.pg, p->g.pl, p->g.sec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1325,17 +1791,30 @@ static inline void pblk_print_failed_rqd(struct pblk *pblk, struct nvm_rq *rqd,
 	int bit = -1;
 
 	if (rqd->nr_ppas ==  1) {
+<<<<<<< HEAD
 		print_ppa(pblk, &rqd->ppa_addr, "rqd", error);
+=======
+		print_ppa(&rqd->ppa_addr, "rqd", error);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
 	while ((bit = find_next_bit((void *)&rqd->ppa_status, rqd->nr_ppas,
 						bit + 1)) < rqd->nr_ppas) {
+<<<<<<< HEAD
 		print_ppa(pblk, &rqd->ppa_list[bit], "rqd", error);
 	}
 
 	pblk_err(pblk, "error:%d, ppa_status:%llx\n", error, rqd->ppa_status);
 }
+=======
+		print_ppa(&rqd->ppa_list[bit], "rqd", error);
+	}
+
+	pr_err("error:%d, ppa_status:%llx\n", error, rqd->ppa_status);
+}
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline int pblk_boundary_ppa_checks(struct nvm_tgt_dev *tgt_dev,
 				       struct ppa_addr *ppas, int nr_ppas)
@@ -1347,6 +1826,7 @@ static inline int pblk_boundary_ppa_checks(struct nvm_tgt_dev *tgt_dev,
 	for (i = 0; i < nr_ppas; i++) {
 		ppa = &ppas[i];
 
+<<<<<<< HEAD
 		if (geo->version == NVM_OCSSD_SPEC_12) {
 			if (!ppa->c.is_cached &&
 					ppa->g.ch < geo->num_ch &&
@@ -1367,11 +1847,26 @@ static inline int pblk_boundary_ppa_checks(struct nvm_tgt_dev *tgt_dev,
 
 		print_ppa(tgt_dev->q->queuedata, ppa, "boundary", i);
 
+=======
+		if (!ppa->c.is_cached &&
+				ppa->g.ch < geo->nr_chnls &&
+				ppa->g.lun < geo->luns_per_chnl &&
+				ppa->g.pl < geo->nr_planes &&
+				ppa->g.blk < geo->blks_per_lun &&
+				ppa->g.pg < geo->pgs_per_blk &&
+				ppa->g.sec < geo->sec_per_pg)
+			continue;
+
+#ifdef CONFIG_NVM_DEBUG
+		print_ppa(ppa, "boundary", i);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 	return 0;
 }
 
+<<<<<<< HEAD
 static inline int pblk_check_io(struct pblk *pblk, struct nvm_rq *rqd)
 {
 	struct nvm_tgt_dev *dev = pblk->dev;
@@ -1409,6 +1904,8 @@ static inline int pblk_check_io(struct pblk *pblk, struct nvm_rq *rqd)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int pblk_boundary_paddr_checks(struct pblk *pblk, u64 paddr)
 {
 	struct pblk_line_meta *lm = &pblk->lm;
@@ -1434,6 +1931,14 @@ static inline unsigned int pblk_get_secs(struct bio *bio)
 	return  bio->bi_iter.bi_size / PBLK_EXPOSED_PAGE_SIZE;
 }
 
+<<<<<<< HEAD
+=======
+static inline sector_t pblk_get_sector(sector_t lba)
+{
+	return lba * NR_PHY_IN_LOG;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void pblk_setup_uuid(struct pblk *pblk)
 {
 	uuid_le uuid;

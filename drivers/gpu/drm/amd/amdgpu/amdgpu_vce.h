@@ -30,8 +30,11 @@
 #define AMDGPU_VCE_HARVEST_VCE0 (1 << 0)
 #define AMDGPU_VCE_HARVEST_VCE1 (1 << 1)
 
+<<<<<<< HEAD
 #define AMDGPU_VCE_FW_53_45	((53 << 24) | (45 << 16))
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct amdgpu_vce {
 	struct amdgpu_bo	*vcpu_bo;
 	uint64_t		gpu_addr;
@@ -48,14 +51,21 @@ struct amdgpu_vce {
 	struct amdgpu_ring	ring[AMDGPU_MAX_VCE_RINGS];
 	struct amdgpu_irq_src	irq;
 	unsigned		harvest_config;
+<<<<<<< HEAD
 	struct drm_sched_entity	entity;
+=======
+	struct amd_sched_entity	entity;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t                srbm_soft_reset;
 	unsigned		num_rings;
 };
 
 int amdgpu_vce_sw_init(struct amdgpu_device *adev, unsigned long size);
 int amdgpu_vce_sw_fini(struct amdgpu_device *adev);
+<<<<<<< HEAD
 int amdgpu_vce_entity_init(struct amdgpu_device *adev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_vce_suspend(struct amdgpu_device *adev);
 int amdgpu_vce_resume(struct amdgpu_device *adev);
 int amdgpu_vce_get_create_msg(struct amdgpu_ring *ring, uint32_t handle,
@@ -66,7 +76,11 @@ void amdgpu_vce_free_handles(struct amdgpu_device *adev, struct drm_file *filp);
 int amdgpu_vce_ring_parse_cs(struct amdgpu_cs_parser *p, uint32_t ib_idx);
 int amdgpu_vce_ring_parse_cs_vm(struct amdgpu_cs_parser *p, uint32_t ib_idx);
 void amdgpu_vce_ring_emit_ib(struct amdgpu_ring *ring, struct amdgpu_ib *ib,
+<<<<<<< HEAD
 			     unsigned vmid, bool ctx_switch);
+=======
+			     unsigned vm_id, bool ctx_switch);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_vce_ring_emit_fence(struct amdgpu_ring *ring, u64 addr, u64 seq,
 				unsigned flags);
 int amdgpu_vce_ring_test_ring(struct amdgpu_ring *ring);

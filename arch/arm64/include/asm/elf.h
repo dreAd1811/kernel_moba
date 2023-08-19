@@ -121,9 +121,12 @@
 
 #ifndef __ASSEMBLY__
 
+<<<<<<< HEAD
 #include <linux/bug.h>
 #include <asm/processor.h> /* for signal_minsigstksz, used by ARCH_DLINFO */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef unsigned long elf_greg_t;
 
 #define ELF_NGREG (sizeof(struct user_pt_regs) / sizeof(elf_greg_t))
@@ -151,6 +154,7 @@ typedef struct user_fpsimd_state elf_fpregset_t;
 do {									\
 	NEW_AUX_ENT(AT_SYSINFO_EHDR,					\
 		    (elf_addr_t)current->mm->context.vdso);		\
+<<<<<<< HEAD
 									\
 	/*								\
 	 * Should always be nonzero unless there's a kernel bug.	\
@@ -161,6 +165,8 @@ do {									\
 		NEW_AUX_ENT(AT_MINSIGSTKSZ, signal_minsigstksz);	\
 	else								\
 		NEW_AUX_ENT(AT_IGNORE, 0);				\
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } while (0)
 
 #define ARCH_HAS_SETUP_ADDITIONAL_PAGES
@@ -201,8 +207,13 @@ typedef compat_elf_greg_t		compat_elf_gregset_t[COMPAT_ELF_NGREG];
 
 #define compat_start_thread		compat_start_thread
 /*
+<<<<<<< HEAD
  * Unlike the native SET_PERSONALITY macro, the compat version maintains
  * READ_IMPLIES_EXEC across an execve() since this is the behaviour on
+=======
+ * Unlike the native SET_PERSONALITY macro, the compat version inherits
+ * READ_IMPLIES_EXEC across a fork() since this is the behaviour on
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * arch/arm/.
  */
 #define COMPAT_SET_PERSONALITY(ex)					\

@@ -52,6 +52,7 @@ struct t4_status_page {
 	__be16 pidx;
 	u8 qp_err;	/* flit 1 - sw owns */
 	u8 db_off;
+<<<<<<< HEAD
 	u8 pad[2];
 	u16 host_wq_pidx;
 	u16 host_cidx;
@@ -62,6 +63,14 @@ struct t4_status_page {
 
 #define T4_RQT_ENTRY_SHIFT 6
 #define T4_RQT_ENTRY_SIZE  BIT(T4_RQT_ENTRY_SHIFT)
+=======
+	u8 pad;
+	u16 host_wq_pidx;
+	u16 host_cidx;
+	u16 host_pidx;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define T4_EQ_ENTRY_SIZE 64
 
 #define T4_SQ_NUM_SLOTS 5
@@ -91,9 +100,12 @@ static inline int t4_max_fr_depth(int use_dsgl)
 #define T4_RQ_NUM_BYTES (T4_EQ_ENTRY_SIZE * T4_RQ_NUM_SLOTS)
 #define T4_MAX_RECV_SGE 4
 
+<<<<<<< HEAD
 #define T4_WRITE_CMPL_MAX_SGL 4
 #define T4_WRITE_CMPL_MAX_CQE 16
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union t4_wr {
 	struct fw_ri_res_wr res;
 	struct fw_ri_wr ri;
@@ -104,7 +116,10 @@ union t4_wr {
 	struct fw_ri_fr_nsmr_wr fr;
 	struct fw_ri_fr_nsmr_tpte_wr fr_tpte;
 	struct fw_ri_inv_lstag_wr inv;
+<<<<<<< HEAD
 	struct fw_ri_rdma_write_cmpl_wr write_cmpl;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct t4_status_page status;
 	__be64 flits[T4_EQ_ENTRY_SIZE / sizeof(__be64) * T4_SQ_NUM_SLOTS];
 };
@@ -187,6 +202,7 @@ struct t4_cqe {
 			__be32 wrid_hi;
 			__be32 wrid_low;
 		} gen;
+<<<<<<< HEAD
 		struct {
 			__be32 stag;
 			__be32 msn;
@@ -213,6 +229,11 @@ struct t4_cqe {
 		__be64 flits[3];
 	} u;
 	__be64 reserved[3];
+=======
+		u64 drain_cookie;
+	} u;
+	__be64 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__be64 bits_type_ts;
 };
 
@@ -268,9 +289,12 @@ struct t4_cqe {
 /* used for RQ completion processing */
 #define CQE_WRID_STAG(x)  (be32_to_cpu((x)->u.rcqe.stag))
 #define CQE_WRID_MSN(x)   (be32_to_cpu((x)->u.rcqe.msn))
+<<<<<<< HEAD
 #define CQE_ABS_RQE_IDX(x) (be32_to_cpu((x)->u.srcqe.abs_rqe_idx))
 #define CQE_IMM_DATA(x)( \
 	(x)->u.imm_data_rcqe.iw_imm_data.ib_imm_data.imm_data32)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* used for SQ completion processing */
 #define CQE_WRID_SQ_IDX(x)	((x)->u.scqe.cidx)
@@ -311,7 +335,11 @@ struct t4_swsqe {
 	int			signaled;
 	u16			idx;
 	int                     flushed;
+<<<<<<< HEAD
 	ktime_t			host_time;
+=======
+	struct timespec         host_ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64                     sge_ts;
 };
 
@@ -352,9 +380,14 @@ struct t4_sq {
 
 struct t4_swrqe {
 	u64 wr_id;
+<<<<<<< HEAD
 	ktime_t	host_time;
 	u64 sge_ts;
 	int valid;
+=======
+	struct timespec host_ts;
+	u64 sge_ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct t4_rq {
@@ -384,6 +417,7 @@ struct t4_wq {
 	void __iomem *db;
 	struct c4iw_rdev *rdev;
 	int flushed;
+<<<<<<< HEAD
 	u8 *qp_errp;
 	u32 *srqidxp;
 };
@@ -476,6 +510,10 @@ static inline void t4_srq_consume(struct t4_srq *srq)
 	srq->queue[srq->size].status.host_cidx = srq->cidx;
 }
 
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline int t4_rqes_posted(struct t4_wq *wq)
 {
 	return wq->rq.in_use;
@@ -509,6 +547,10 @@ static inline void t4_rq_produce(struct t4_wq *wq, u8 len16)
 static inline void t4_rq_consume(struct t4_wq *wq)
 {
 	wq->rq.in_use--;
+<<<<<<< HEAD
+=======
+	wq->rq.msn++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (++wq->rq.cidx == wq->rq.size)
 		wq->rq.cidx = 0;
 }
@@ -555,6 +597,10 @@ static inline void t4_sq_produce(struct t4_wq *wq, u8 len16)
 
 static inline void t4_sq_consume(struct t4_wq *wq)
 {
+<<<<<<< HEAD
+=======
+	BUG_ON(wq->sq.in_use < 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wq->sq.cidx == wq->sq.flush_cidx)
 		wq->sq.flush_cidx = -1;
 	wq->sq.in_use--;
@@ -588,6 +634,7 @@ static inline void pio_copy(u64 __iomem *dst, u64 *src)
 	}
 }
 
+<<<<<<< HEAD
 static inline void t4_ring_srq_db(struct t4_srq *srq, u16 inc, u8 len16,
 				  union t4_recv_wr *wqe)
 {
@@ -607,6 +654,8 @@ static inline void t4_ring_srq_db(struct t4_srq *srq, u16 inc, u8 len16,
 	wmb();
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void t4_ring_sq_db(struct t4_wq *wq, u16 inc, union t4_wr *wqe)
 {
 
@@ -614,12 +663,22 @@ static inline void t4_ring_sq_db(struct t4_wq *wq, u16 inc, union t4_wr *wqe)
 	wmb();
 	if (wq->sq.bar2_va) {
 		if (inc == 1 && wq->sq.bar2_qid == 0 && wqe) {
+<<<<<<< HEAD
 			pr_debug("WC wq->sq.pidx = %d\n", wq->sq.pidx);
+=======
+			pr_debug("%s: WC wq->sq.pidx = %d\n",
+				 __func__, wq->sq.pidx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pio_copy((u64 __iomem *)
 				 (wq->sq.bar2_va + SGE_UDB_WCDOORBELL),
 				 (u64 *)wqe);
 		} else {
+<<<<<<< HEAD
 			pr_debug("DB wq->sq.pidx = %d\n", wq->sq.pidx);
+=======
+			pr_debug("%s: DB wq->sq.pidx = %d\n",
+				 __func__, wq->sq.pidx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			writel(PIDX_T5_V(inc) | QID_V(wq->sq.bar2_qid),
 			       wq->sq.bar2_va + SGE_UDB_KDOORBELL);
 		}
@@ -639,12 +698,22 @@ static inline void t4_ring_rq_db(struct t4_wq *wq, u16 inc,
 	wmb();
 	if (wq->rq.bar2_va) {
 		if (inc == 1 && wq->rq.bar2_qid == 0 && wqe) {
+<<<<<<< HEAD
 			pr_debug("WC wq->rq.pidx = %d\n", wq->rq.pidx);
+=======
+			pr_debug("%s: WC wq->rq.pidx = %d\n",
+				 __func__, wq->rq.pidx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pio_copy((u64 __iomem *)
 				 (wq->rq.bar2_va + SGE_UDB_WCDOORBELL),
 				 (void *)wqe);
 		} else {
+<<<<<<< HEAD
 			pr_debug("DB wq->rq.pidx = %d\n", wq->rq.pidx);
+=======
+			pr_debug("%s: DB wq->rq.pidx = %d\n",
+				 __func__, wq->rq.pidx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			writel(PIDX_T5_V(inc) | QID_V(wq->rq.bar2_qid),
 			       wq->rq.bar2_va + SGE_UDB_KDOORBELL);
 		}
@@ -658,6 +727,7 @@ static inline void t4_ring_rq_db(struct t4_wq *wq, u16 inc,
 
 static inline int t4_wq_in_error(struct t4_wq *wq)
 {
+<<<<<<< HEAD
 	return *wq->qp_errp;
 }
 
@@ -666,6 +736,14 @@ static inline void t4_set_wq_in_error(struct t4_wq *wq, u32 srqidx)
 	if (srqidx)
 		*wq->srqidxp = srqidx;
 	*wq->qp_errp = 1;
+=======
+	return wq->rq.queue[wq->rq.size].status.qp_err;
+}
+
+static inline void t4_set_wq_in_error(struct t4_wq *wq)
+{
+	wq->rq.queue[wq->rq.size].status.qp_err = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void t4_disable_wq_db(struct t4_wq *wq)
@@ -710,7 +788,10 @@ struct t4_cq {
 	u16 cidx_inc;
 	u8 gen;
 	u8 error;
+<<<<<<< HEAD
 	u8 *qp_errp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 };
 
@@ -748,11 +829,18 @@ static inline void t4_swcq_produce(struct t4_cq *cq)
 {
 	cq->sw_in_use++;
 	if (cq->sw_in_use == cq->size) {
+<<<<<<< HEAD
 		pr_warn("%s cxgb4 sw cq overflow cqid %u\n",
 			__func__, cq->cqid);
 		cq->error = 1;
 		cq->sw_in_use--;
 		return;
+=======
+		pr_debug("%s cxgb4 sw cq overflow cqid %u\n",
+			 __func__, cq->cqid);
+		cq->error = 1;
+		BUG_ON(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (++cq->sw_pidx == cq->size)
 		cq->sw_pidx = 0;
@@ -760,6 +848,10 @@ static inline void t4_swcq_produce(struct t4_cq *cq)
 
 static inline void t4_swcq_consume(struct t4_cq *cq)
 {
+<<<<<<< HEAD
+=======
+	BUG_ON(cq->sw_in_use < 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cq->sw_in_use--;
 	if (++cq->sw_cidx == cq->size)
 		cq->sw_cidx = 0;
@@ -805,6 +897,10 @@ static inline int t4_next_hw_cqe(struct t4_cq *cq, struct t4_cqe **cqe)
 		ret = -EOVERFLOW;
 		cq->error = 1;
 		pr_err("cq overflow cqid %u\n", cq->cqid);
+<<<<<<< HEAD
+=======
+		BUG_ON(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (t4_valid_cqe(cq, &cq->queue[cq->cidx])) {
 
 		/* Ensure CQE is flushed to memory */
@@ -819,9 +915,16 @@ static inline int t4_next_hw_cqe(struct t4_cq *cq, struct t4_cqe **cqe)
 static inline struct t4_cqe *t4_next_sw_cqe(struct t4_cq *cq)
 {
 	if (cq->sw_in_use == cq->size) {
+<<<<<<< HEAD
 		pr_warn("%s cxgb4 sw cq overflow cqid %u\n",
 			__func__, cq->cqid);
 		cq->error = 1;
+=======
+		pr_debug("%s cxgb4 sw cq overflow cqid %u\n",
+			 __func__, cq->cqid);
+		cq->error = 1;
+		BUG_ON(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 	if (cq->sw_in_use)
@@ -844,18 +947,30 @@ static inline int t4_next_cqe(struct t4_cq *cq, struct t4_cqe **cqe)
 
 static inline int t4_cq_in_error(struct t4_cq *cq)
 {
+<<<<<<< HEAD
 	return *cq->qp_errp;
+=======
+	return ((struct t4_status_page *)&cq->queue[cq->size])->qp_err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void t4_set_cq_in_error(struct t4_cq *cq)
 {
+<<<<<<< HEAD
 	*cq->qp_errp = 1;
+=======
+	((struct t4_status_page *)&cq->queue[cq->size])->qp_err = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 
 struct t4_dev_status_page {
 	u8 db_off;
+<<<<<<< HEAD
 	u8 write_cmpl_supported;
+=======
+	u8 pad1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u16 pad2;
 	u32 pad3;
 	u64 qp_start;

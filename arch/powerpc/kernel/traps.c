@@ -20,7 +20,10 @@
 #include <linux/sched/debug.h>
 #include <linux/kernel.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/pkeys.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/stddef.h>
 #include <linux/unistd.h>
 #include <linux/ptrace.h>
@@ -38,9 +41,12 @@
 #include <linux/kdebug.h>
 #include <linux/ratelimit.h>
 #include <linux/context_tracking.h>
+<<<<<<< HEAD
 #include <linux/smp.h>
 #include <linux/console.h>
 #include <linux/kmsg_dump.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/emulated_ops.h>
 #include <asm/pgtable.h>
@@ -70,7 +76,10 @@
 #include <asm/hmi.h>
 #include <sysdev/fsl_pci.h>
 #include <asm/kprobes.h>
+<<<<<<< HEAD
 #include <asm/stacktrace.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(CONFIG_DEBUGGER) || defined(CONFIG_KEXEC_CORE)
 int (*__debugger)(struct pt_regs *regs) __read_mostly;
@@ -97,6 +106,7 @@ EXPORT_SYMBOL(__debugger_fault_handler);
 #define TM_DEBUG(x...) do { } while(0)
 #endif
 
+<<<<<<< HEAD
 static const char *signame(int signr)
 {
 	switch (signr) {
@@ -110,6 +120,8 @@ static const char *signame(int signr)
 	return "unknown signal";
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Trap & Exception support
  */
@@ -159,6 +171,7 @@ static int die_owner = -1;
 static unsigned int die_nest_count;
 static int die_counter;
 
+<<<<<<< HEAD
 extern void panic_flush_kmsg_start(void)
 {
 	/*
@@ -181,6 +194,8 @@ extern void panic_flush_kmsg_end(void)
 	console_flush_on_panic();
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned long oops_begin(struct pt_regs *regs)
 {
 	int cpu;
@@ -310,11 +325,16 @@ NOKPROBE_SYMBOL(die);
 void user_single_step_siginfo(struct task_struct *tsk,
 				struct pt_regs *regs, siginfo_t *info)
 {
+<<<<<<< HEAD
+=======
+	memset(info, 0, sizeof(*info));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info->si_signo = SIGTRAP;
 	info->si_code = TRAP_TRACE;
 	info->si_addr = (void __user *)regs->nip;
 }
 
+<<<<<<< HEAD
 static void show_signal_msg(int signr, struct pt_regs *regs, int code,
 			    unsigned long addr)
 {
@@ -345,18 +365,36 @@ void _exception_pkey(int signr, struct pt_regs *regs, int code,
 		     unsigned long addr, int key)
 {
 	siginfo_t info;
+=======
+void _exception(int signr, struct pt_regs *regs, int code, unsigned long addr)
+{
+	siginfo_t info;
+	const char fmt32[] = KERN_INFO "%s[%d]: unhandled signal %d " \
+			"at %08lx nip %08lx lr %08lx code %x\n";
+	const char fmt64[] = KERN_INFO "%s[%d]: unhandled signal %d " \
+			"at %016lx nip %016lx lr %016lx code %x\n";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!user_mode(regs)) {
 		die("Exception in kernel mode", regs, signr);
 		return;
 	}
 
+<<<<<<< HEAD
 	show_signal_msg(signr, regs, code, addr);
+=======
+	if (show_unhandled_signals && unhandled_signal(current, signr)) {
+		printk_ratelimited(regs->msr & MSR_64BIT ? fmt64 : fmt32,
+				   current->comm, current->pid, signr,
+				   addr, regs->nip, regs->link, code);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (arch_irqs_disabled() && !arch_irq_disabled_regs(regs))
 		local_irq_enable();
 
 	current->thread.trap_nr = code;
+<<<<<<< HEAD
 
 	/*
 	 * Save all the pkey registers AMR/IAMR/UAMOR. Eg: Core dumps need
@@ -378,6 +416,15 @@ void _exception(int signr, struct pt_regs *regs, int code, unsigned long addr)
 	_exception_pkey(signr, regs, code, addr, 0);
 }
 
+=======
+	memset(&info, 0, sizeof(info));
+	info.si_signo = signr;
+	info.si_code = code;
+	info.si_addr = (void __user *) addr;
+	force_sig_info(signr, &info, current);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void system_reset_exception(struct pt_regs *regs)
 {
 	/*
@@ -399,7 +446,10 @@ void system_reset_exception(struct pt_regs *regs)
 	if (debugger(regs))
 		goto out;
 
+<<<<<<< HEAD
 	kmsg_dump(KMSG_DUMP_OOPS);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * A system reset is a request to dump, so we always send
 	 * it through the crashdump code (if fadump or kdump are
@@ -502,7 +552,11 @@ static inline int check_io_access(struct pt_regs *regs)
 /* single-step stuff */
 #define single_stepping(regs)	(current->thread.debug.dbcr0 & DBCR0_IC)
 #define clear_single_step(regs)	(current->thread.debug.dbcr0 &= ~DBCR0_IC)
+<<<<<<< HEAD
 #define clear_br_trace(regs)	do {} while(0)
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 /* On non-4xx, the reason for the machine check or program
    exception is in the MSR. */
@@ -515,7 +569,10 @@ static inline int check_io_access(struct pt_regs *regs)
 
 #define single_stepping(regs)	((regs)->msr & MSR_SE)
 #define clear_single_step(regs)	((regs)->msr &= ~MSR_SE)
+<<<<<<< HEAD
 #define clear_br_trace(regs)	((regs)->msr &= ~MSR_BE)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #if defined(CONFIG_E500)
@@ -789,6 +846,7 @@ void SMIException(struct pt_regs *regs)
 	die("System Management Interrupt", regs, SIGABRT);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_VSX
 static void p9_hmi_special_emu(struct pt_regs *regs)
 {
@@ -970,6 +1028,8 @@ static void p9_hmi_special_emu(struct pt_regs *regs)
 }
 #endif /* CONFIG_VSX */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void handle_hmi_exception(struct pt_regs *regs)
 {
 	struct pt_regs *old_regs;
@@ -977,6 +1037,7 @@ void handle_hmi_exception(struct pt_regs *regs)
 	old_regs = set_irq_regs(regs);
 	irq_enter();
 
+<<<<<<< HEAD
 #ifdef CONFIG_VSX
 	/* Real mode flagged P9 special emu is needed */
 	if (local_paca->hmi_p9_special_emu) {
@@ -992,6 +1053,8 @@ void handle_hmi_exception(struct pt_regs *regs)
 	}
 #endif /* CONFIG_VSX */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ppc_md.handle_hmi_exception)
 		ppc_md.handle_hmi_exception(regs);
 
@@ -1006,7 +1069,11 @@ void unknown_exception(struct pt_regs *regs)
 	printk("Bad trap at PC: %lx, SR: %lx, vector=%lx\n",
 	       regs->nip, regs->msr, regs->trap);
 
+<<<<<<< HEAD
 	_exception(SIGTRAP, regs, TRAP_UNK, 0);
+=======
+	_exception(SIGTRAP, regs, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	exception_exit(prev_state);
 }
@@ -1028,7 +1095,11 @@ bail:
 
 void RunModeException(struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	_exception(SIGTRAP, regs, TRAP_UNK, 0);
+=======
+	_exception(SIGTRAP, regs, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void single_step_exception(struct pt_regs *regs)
@@ -1036,7 +1107,10 @@ void single_step_exception(struct pt_regs *regs)
 	enum ctx_state prev_state = exception_enter();
 
 	clear_single_step(regs);
+<<<<<<< HEAD
 	clear_br_trace(regs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (kprobe_post_handler(regs))
 		return;
@@ -1068,7 +1142,11 @@ static void emulate_single_step(struct pt_regs *regs)
 
 static inline int __parse_fpscr(unsigned long fpscr)
 {
+<<<<<<< HEAD
 	int ret = FPE_FLTUNK;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Invalid operation */
 	if ((fpscr & FPSCR_VE) && (fpscr & FPSCR_VX))
@@ -1427,8 +1505,18 @@ void program_check_exception(struct pt_regs *regs)
 		 * -  A treclaim is attempted when non transactional.
 		 * -  A tend is illegally attempted.
 		 * -  writing a TM SPR when transactional.
+<<<<<<< HEAD
 		 *
 		 * If usermode caused this, it's done something illegal and
+=======
+		 */
+		if (!user_mode(regs) &&
+		    report_bug(regs->nip, regs) == BUG_TRAP_TYPE_WARN) {
+			regs->nip += 4;
+			goto bail;
+		}
+		/* If usermode caused this, it's done something illegal and
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * gets a SIGILL slap on the wrist.  We call it an illegal
 		 * operand to distinguish from the instruction just being bad
 		 * (e.g. executing a 'tend' on a CPU without TM!); it's an
@@ -1544,6 +1632,21 @@ bail:
 	exception_exit(prev_state);
 }
 
+<<<<<<< HEAD
+=======
+void slb_miss_bad_addr(struct pt_regs *regs)
+{
+	enum ctx_state prev_state = exception_enter();
+
+	if (user_mode(regs))
+		_exception(SIGSEGV, regs, SEGV_BNDERR, regs->dar);
+	else
+		bad_page_fault(regs, regs->dar, SIGSEGV);
+
+	exception_exit(prev_state);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void StackOverflow(struct pt_regs *regs)
 {
 	pr_crit("Kernel stack overflow in process %s[%d], r1=%lx\n",
@@ -1642,7 +1745,11 @@ void facility_unavailable_exception(struct pt_regs *regs)
 	u8 status;
 	bool hv;
 
+<<<<<<< HEAD
 	hv = (TRAP(regs) == 0xf80);
+=======
+	hv = (regs->trap == 0xf80);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hv)
 		value = mfspr(SPRN_HFSCR);
 	else
@@ -1759,7 +1866,11 @@ void fp_unavailable_tm(struct pt_regs *regs)
 	/* Reclaim didn't save out any FPRs to transact_fprs. */
 
 	/* Enable FP for the task: */
+<<<<<<< HEAD
 	current->thread.load_fp = 1;
+=======
+	regs->msr |= (MSR_FP | current->thread.fpexc_mode);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* This loads and recheckpoints the FP registers from
 	 * thread.fpr[].  They will remain in registers after the
@@ -1767,7 +1878,19 @@ void fp_unavailable_tm(struct pt_regs *regs)
 	 * If VMX is in use, the VRs now hold checkpointed values,
 	 * so we don't want to load the VRs from the thread_struct.
 	 */
+<<<<<<< HEAD
 	tm_recheckpoint(&current->thread);
+=======
+	tm_recheckpoint(&current->thread, MSR_FP);
+
+	/* If VMX is in use, get the transactional values back */
+	if (regs->msr & MSR_VEC) {
+		msr_check_and_set(MSR_VEC);
+		load_vr_state(&current->thread.vr_state);
+		/* At this point all the VSX state is loaded, so enable it */
+		regs->msr |= MSR_VSX;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void altivec_unavailable_tm(struct pt_regs *regs)
@@ -1780,13 +1903,30 @@ void altivec_unavailable_tm(struct pt_regs *regs)
 		 "MSR=%lx\n",
 		 regs->nip, regs->msr);
 	tm_reclaim_current(TM_CAUSE_FAC_UNAV);
+<<<<<<< HEAD
 	current->thread.load_vec = 1;
 	tm_recheckpoint(&current->thread);
 	current->thread.used_vr = 1;
+=======
+	regs->msr |= MSR_VEC;
+	tm_recheckpoint(&current->thread, MSR_VEC);
+	current->thread.used_vr = 1;
+
+	if (regs->msr & MSR_FP) {
+		msr_check_and_set(MSR_FP);
+		load_fp_state(&current->thread.fp_state);
+		regs->msr |= MSR_VSX;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void vsx_unavailable_tm(struct pt_regs *regs)
 {
+<<<<<<< HEAD
+=======
+	unsigned long orig_msr = regs->msr;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* See the comments in fp_unavailable_tm().  This works similarly,
 	 * though we're loading both FP and VEC registers in here.
 	 *
@@ -1800,6 +1940,7 @@ void vsx_unavailable_tm(struct pt_regs *regs)
 
 	current->thread.used_vsr = 1;
 
+<<<<<<< HEAD
 	/* This reclaims FP and/or VR regs if they're already enabled */
 	tm_reclaim_current(TM_CAUSE_FAC_UNAV);
 
@@ -1807,6 +1948,31 @@ void vsx_unavailable_tm(struct pt_regs *regs)
 	current->thread.load_fp = 1;
 
 	tm_recheckpoint(&current->thread);
+=======
+	/* If FP and VMX are already loaded, we have all the state we need */
+	if ((orig_msr & (MSR_FP | MSR_VEC)) == (MSR_FP | MSR_VEC)) {
+		regs->msr |= MSR_VSX;
+		return;
+	}
+
+	/* This reclaims FP and/or VR regs if they're already enabled */
+	tm_reclaim_current(TM_CAUSE_FAC_UNAV);
+
+	regs->msr |= MSR_VEC | MSR_FP | current->thread.fpexc_mode |
+		MSR_VSX;
+
+	/* This loads & recheckpoints FP and VRs; but we have
+	 * to be sure not to overwrite previously-valid state.
+	 */
+	tm_recheckpoint(&current->thread, regs->msr & ~orig_msr);
+
+	msr_check_and_set(orig_msr & (MSR_FP | MSR_VEC));
+
+	if (orig_msr & MSR_FP)
+		load_fp_state(&current->thread.fp_state);
+	if (orig_msr & MSR_VEC)
+		load_vr_state(&current->thread.vr_state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
 
@@ -1830,34 +1996,58 @@ static void handle_debug(struct pt_regs *regs, unsigned long debug_status)
 #ifdef CONFIG_PPC_ADV_DEBUG_DAC_RANGE
 		current->thread.debug.dbcr2 &= ~DBCR2_DAC12MODE;
 #endif
+<<<<<<< HEAD
 		do_send_trap(regs, mfspr(SPRN_DAC1), debug_status,
+=======
+		do_send_trap(regs, mfspr(SPRN_DAC1), debug_status, TRAP_HWBKPT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     5);
 		changed |= 0x01;
 	}  else if (debug_status & (DBSR_DAC2R | DBSR_DAC2W)) {
 		dbcr_dac(current) &= ~(DBCR_DAC2R | DBCR_DAC2W);
+<<<<<<< HEAD
 		do_send_trap(regs, mfspr(SPRN_DAC2), debug_status,
+=======
+		do_send_trap(regs, mfspr(SPRN_DAC2), debug_status, TRAP_HWBKPT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     6);
 		changed |= 0x01;
 	}  else if (debug_status & DBSR_IAC1) {
 		current->thread.debug.dbcr0 &= ~DBCR0_IAC1;
 		dbcr_iac_range(current) &= ~DBCR_IAC12MODE;
+<<<<<<< HEAD
 		do_send_trap(regs, mfspr(SPRN_IAC1), debug_status,
+=======
+		do_send_trap(regs, mfspr(SPRN_IAC1), debug_status, TRAP_HWBKPT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     1);
 		changed |= 0x01;
 	}  else if (debug_status & DBSR_IAC2) {
 		current->thread.debug.dbcr0 &= ~DBCR0_IAC2;
+<<<<<<< HEAD
 		do_send_trap(regs, mfspr(SPRN_IAC2), debug_status,
+=======
+		do_send_trap(regs, mfspr(SPRN_IAC2), debug_status, TRAP_HWBKPT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     2);
 		changed |= 0x01;
 	}  else if (debug_status & DBSR_IAC3) {
 		current->thread.debug.dbcr0 &= ~DBCR0_IAC3;
 		dbcr_iac_range(current) &= ~DBCR_IAC34MODE;
+<<<<<<< HEAD
 		do_send_trap(regs, mfspr(SPRN_IAC3), debug_status,
+=======
+		do_send_trap(regs, mfspr(SPRN_IAC3), debug_status, TRAP_HWBKPT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     3);
 		changed |= 0x01;
 	}  else if (debug_status & DBSR_IAC4) {
 		current->thread.debug.dbcr0 &= ~DBCR0_IAC4;
+<<<<<<< HEAD
 		do_send_trap(regs, mfspr(SPRN_IAC4), debug_status,
+=======
+		do_send_trap(regs, mfspr(SPRN_IAC4), debug_status, TRAP_HWBKPT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     4);
 		changed |= 0x01;
 	}
@@ -2009,7 +2199,11 @@ void SPEFloatingPointException(struct pt_regs *regs)
 	extern int do_spe_mathemu(struct pt_regs *regs);
 	unsigned long spefscr;
 	int fpexc_mode;
+<<<<<<< HEAD
 	int code = FPE_FLTUNK;
+=======
+	int code = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	flush_spe_to_thread(current);
@@ -2078,7 +2272,11 @@ void SPEFloatingPointRoundException(struct pt_regs *regs)
 		printk(KERN_ERR "unrecognized spe instruction "
 		       "in %s at %lx\n", current->comm, regs->nip);
 	} else {
+<<<<<<< HEAD
 		_exception(SIGFPE, regs, FPE_FLTUNK, regs->nip);
+=======
+		_exception(SIGFPE, regs, 0, regs->nip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 }
@@ -2164,10 +2362,13 @@ struct ppc_emulated ppc_emulated = {
 	WARN_EMULATED_SETUP(mfdscr),
 	WARN_EMULATED_SETUP(mtdscr),
 	WARN_EMULATED_SETUP(lq_stq),
+<<<<<<< HEAD
 	WARN_EMULATED_SETUP(lxvw4x),
 	WARN_EMULATED_SETUP(lxvh8x),
 	WARN_EMULATED_SETUP(lxvd2x),
 	WARN_EMULATED_SETUP(lxvb16x),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 };
 
@@ -2193,13 +2394,21 @@ static int __init ppc_warn_emulated_init(void)
 	if (!dir)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	d = debugfs_create_u32("do_warn", 0644, dir,
+=======
+	d = debugfs_create_u32("do_warn", S_IRUGO | S_IWUSR, dir,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       &ppc_warn_emulated);
 	if (!d)
 		goto fail;
 
 	for (i = 0; i < sizeof(ppc_emulated)/sizeof(*entries); i++) {
+<<<<<<< HEAD
 		d = debugfs_create_u32(entries[i].name, 0644, dir,
+=======
+		d = debugfs_create_u32(entries[i].name, S_IRUGO | S_IWUSR, dir,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       (u32 *)&entries[i].val.counter);
 		if (!d)
 			goto fail;

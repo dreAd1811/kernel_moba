@@ -69,7 +69,11 @@ static int space_init(struct entry_space *es, unsigned nr_entries)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	es->begin = vzalloc(array_size(nr_entries, sizeof(struct entry)));
+=======
+	es->begin = vzalloc(sizeof(struct entry) * nr_entries);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!es->begin)
 		return -ENOMEM;
 
@@ -213,6 +217,7 @@ static void l_del(struct entry_space *es, struct ilist *l, struct entry *e)
 		l->nr_elts--;
 }
 
+<<<<<<< HEAD
 static struct entry *l_pop_head(struct entry_space *es, struct ilist *l)
 {
 	struct entry *e;
@@ -226,6 +231,8 @@ static struct entry *l_pop_head(struct entry_space *es, struct ilist *l)
 	return NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct entry *l_pop_tail(struct entry_space *es, struct ilist *l)
 {
 	struct entry *e;
@@ -588,7 +595,11 @@ static int h_init(struct smq_hash_table *ht, struct entry_space *es, unsigned nr
 	nr_buckets = roundup_pow_of_two(max(nr_entries / 4u, 16u));
 	ht->hash_bits = __ffs(nr_buckets);
 
+<<<<<<< HEAD
 	ht->buckets = vmalloc(array_size(nr_buckets, sizeof(*ht->buckets)));
+=======
+	ht->buckets = vmalloc(sizeof(*ht->buckets) * nr_buckets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ht->buckets)
 		return -ENOMEM;
 
@@ -732,7 +743,11 @@ static struct entry *alloc_entry(struct entry_alloc *ea)
 	if (l_empty(&ea->free))
 		return NULL;
 
+<<<<<<< HEAD
 	e = l_pop_head(ea->es, &ea->free);
+=======
+	e = l_pop_tail(ea->es, &ea->free);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_entry(e);
 	ea->nr_allocated++;
 
@@ -1171,13 +1186,21 @@ static void clear_pending(struct smq_policy *mq, struct entry *e)
 	e->pending_work = false;
 }
 
+<<<<<<< HEAD
 static void queue_writeback(struct smq_policy *mq, bool idle)
+=======
+static void queue_writeback(struct smq_policy *mq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int r;
 	struct policy_work work;
 	struct entry *e;
 
+<<<<<<< HEAD
 	e = q_peek(&mq->dirty, mq->dirty.nr_levels, idle);
+=======
+	e = q_peek(&mq->dirty, mq->dirty.nr_levels, !mq->migrations_allowed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (e) {
 		mark_pending(mq, e);
 		q_del(&mq->dirty, e);
@@ -1187,16 +1210,23 @@ static void queue_writeback(struct smq_policy *mq, bool idle)
 		work.cblock = infer_cblock(mq, e);
 
 		r = btracker_queue(mq->bg_work, &work, NULL);
+<<<<<<< HEAD
 		if (r) {
 			clear_pending(mq, e);
 			q_push_front(&mq->dirty, e);
 		}
+=======
+		WARN_ON_ONCE(r); // FIXME: finish, I think we have to get rid of this race.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
 static void queue_demotion(struct smq_policy *mq)
 {
+<<<<<<< HEAD
 	int r;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct policy_work work;
 	struct entry *e;
 
@@ -1206,7 +1236,11 @@ static void queue_demotion(struct smq_policy *mq)
 	e = q_peek(&mq->clean, mq->clean.nr_levels / 2, true);
 	if (!e) {
 		if (!clean_target_met(mq, true))
+<<<<<<< HEAD
 			queue_writeback(mq, false);
+=======
+			queue_writeback(mq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1216,17 +1250,24 @@ static void queue_demotion(struct smq_policy *mq)
 	work.op = POLICY_DEMOTE;
 	work.oblock = e->oblock;
 	work.cblock = infer_cblock(mq, e);
+<<<<<<< HEAD
 	r = btracker_queue(mq->bg_work, &work, NULL);
 	if (r) {
 		clear_pending(mq, e);
 		q_push_front(&mq->clean, e);
 	}
+=======
+	btracker_queue(mq->bg_work, &work, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void queue_promotion(struct smq_policy *mq, dm_oblock_t oblock,
 			    struct policy_work **workp)
 {
+<<<<<<< HEAD
 	int r;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct entry *e;
 	struct policy_work work;
 
@@ -1256,9 +1297,13 @@ static void queue_promotion(struct smq_policy *mq, dm_oblock_t oblock,
 	work.op = POLICY_PROMOTE;
 	work.oblock = oblock;
 	work.cblock = infer_cblock(mq, e);
+<<<<<<< HEAD
 	r = btracker_queue(mq->bg_work, &work, workp);
 	if (r)
 		free_entry(&mq->cache_alloc, e);
+=======
+	btracker_queue(mq->bg_work, &work, workp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*----------------------------------------------------------------*/
@@ -1442,7 +1487,11 @@ static int smq_get_background_work(struct dm_cache_policy *p, bool idle,
 	r = btracker_issue(mq->bg_work, result);
 	if (r == -ENODATA) {
 		if (!clean_target_met(mq, idle)) {
+<<<<<<< HEAD
 			queue_writeback(mq, idle);
+=======
+			queue_writeback(mq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			r = btracker_issue(mq->bg_work, result);
 		}
 	}
@@ -1802,7 +1851,11 @@ static struct dm_cache_policy *__smq_create(dm_cblock_t cache_size,
 	mq->next_hotspot_period = jiffies;
 	mq->next_cache_period = jiffies;
 
+<<<<<<< HEAD
 	mq->bg_work = btracker_create(4096); /* FIXME: hard coded value */
+=======
+	mq->bg_work = btracker_create(10240); /* FIXME: hard coded value */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mq->bg_work)
 		goto bad_btracker;
 

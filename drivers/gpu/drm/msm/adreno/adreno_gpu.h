@@ -2,7 +2,11 @@
  * Copyright (C) 2013 Red Hat
  * Author: Rob Clark <robdclark@gmail.com>
  *
+<<<<<<< HEAD
  * Copyright (c) 2014,2017 The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2014 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 2 as published by
@@ -48,6 +52,7 @@ enum adreno_regs {
 	REG_ADRENO_REGISTER_MAX,
 };
 
+<<<<<<< HEAD
 enum {
 	ADRENO_FW_PM4 = 0,
 	ADRENO_FW_SQE = 0, /* a6xx */
@@ -57,6 +62,8 @@ enum {
 	ADRENO_FW_MAX,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum adreno_quirks {
 	ADRENO_QUIRK_TWO_PASS_USE_WFI = 1,
 	ADRENO_QUIRK_FAULT_DETECT_MASK = 2,
@@ -81,16 +88,35 @@ struct adreno_info {
 	struct adreno_rev rev;
 	uint32_t revn;
 	const char *name;
+<<<<<<< HEAD
 	const char *fw[ADRENO_FW_MAX];
+=======
+	const char *pm4fw, *pfpfw;
+	const char *gpmufw;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t gmem;
 	enum adreno_quirks quirks;
 	struct msm_gpu *(*init)(struct drm_device *dev);
 	const char *zapfw;
+<<<<<<< HEAD
 	u32 inactive_period;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct adreno_info *adreno_info(struct adreno_rev rev);
 
+<<<<<<< HEAD
+=======
+#define rbmemptr(adreno_gpu, member)  \
+	((adreno_gpu)->memptrs_iova + offsetof(struct adreno_rbmemptrs, member))
+
+struct adreno_rbmemptrs {
+	volatile uint32_t rptr;
+	volatile uint32_t fence;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct adreno_gpu {
 	struct msm_gpu base;
 	struct adreno_rev rev;
@@ -102,6 +128,7 @@ struct adreno_gpu {
 	/* interesting register offsets to dump: */
 	const unsigned int *registers;
 
+<<<<<<< HEAD
 	/*
 	 * Are we loading fw from legacy path?  Prior to addition
 	 * of gpu firmware to linux-firmware, the fw files were
@@ -125,6 +152,17 @@ struct adreno_gpu {
 
 	/* firmware: */
 	const struct firmware *fw[ADRENO_FW_MAX];
+=======
+	/* firmware: */
+	const struct firmware *pm4, *pfp;
+
+	/* ringbuffer rptr/wptr: */
+	// TODO should this be in msm_ringbuffer?  I think it would be
+	// different for z180..
+	struct adreno_rbmemptrs *memptrs;
+	struct drm_gem_object *memptrs_bo;
+	uint64_t memptrs_iova;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Register offsets are different between some GPUs.
@@ -138,6 +176,13 @@ struct adreno_gpu {
 /* platform config data (ie. from DT, or pdata) */
 struct adreno_platform_config {
 	struct adreno_rev rev;
+<<<<<<< HEAD
+=======
+	uint32_t fast_rate, bus_freq;
+#ifdef DOWNSTREAM_CONFIG_MSM_BUS_SCALING
+	struct msm_bus_scale_pdata *bus_scale_table;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define ADRENO_IDLE_TIMEOUT msecs_to_jiffies(1000)
@@ -207,6 +252,7 @@ static inline int adreno_is_a530(struct adreno_gpu *gpu)
 }
 
 int adreno_get_param(struct msm_gpu *gpu, uint32_t param, uint64_t *value);
+<<<<<<< HEAD
 const struct firmware *adreno_request_fw(struct adreno_gpu *adreno_gpu,
 		const char *fwname);
 struct drm_gem_object *adreno_fw_create_bo(struct msm_gpu *gpu,
@@ -236,13 +282,37 @@ void adreno_gpu_state_destroy(struct msm_gpu_state *state);
 
 int adreno_gpu_state_get(struct msm_gpu *gpu, struct msm_gpu_state *state);
 int adreno_gpu_state_put(struct msm_gpu_state *state);
+=======
+int adreno_hw_init(struct msm_gpu *gpu);
+uint32_t adreno_last_fence(struct msm_gpu *gpu);
+void adreno_recover(struct msm_gpu *gpu);
+void adreno_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
+		struct msm_file_private *ctx);
+void adreno_flush(struct msm_gpu *gpu);
+bool adreno_idle(struct msm_gpu *gpu);
+#ifdef CONFIG_DEBUG_FS
+void adreno_show(struct msm_gpu *gpu, struct seq_file *m);
+#endif
+void adreno_dump_info(struct msm_gpu *gpu);
+void adreno_dump(struct msm_gpu *gpu);
+void adreno_wait_ring(struct msm_gpu *gpu, uint32_t ndwords);
+
+int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
+		struct adreno_gpu *gpu, const struct adreno_gpu_funcs *funcs);
+void adreno_gpu_cleanup(struct adreno_gpu *gpu);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ringbuffer helpers (the parts that are adreno specific) */
 
 static inline void
 OUT_PKT0(struct msm_ringbuffer *ring, uint16_t regindx, uint16_t cnt)
 {
+<<<<<<< HEAD
 	adreno_wait_ring(ring, cnt+1);
+=======
+	adreno_wait_ring(ring->gpu, cnt+1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OUT_RING(ring, CP_TYPE0_PKT | ((cnt-1) << 16) | (regindx & 0x7FFF));
 }
 
@@ -250,14 +320,22 @@ OUT_PKT0(struct msm_ringbuffer *ring, uint16_t regindx, uint16_t cnt)
 static inline void
 OUT_PKT2(struct msm_ringbuffer *ring)
 {
+<<<<<<< HEAD
 	adreno_wait_ring(ring, 1);
+=======
+	adreno_wait_ring(ring->gpu, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OUT_RING(ring, CP_TYPE2_PKT);
 }
 
 static inline void
 OUT_PKT3(struct msm_ringbuffer *ring, uint8_t opcode, uint16_t cnt)
 {
+<<<<<<< HEAD
 	adreno_wait_ring(ring, cnt+1);
+=======
+	adreno_wait_ring(ring->gpu, cnt+1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OUT_RING(ring, CP_TYPE3_PKT | ((cnt-1) << 16) | ((opcode & 0xFF) << 8));
 }
 
@@ -279,14 +357,22 @@ static inline u32 PM4_PARITY(u32 val)
 static inline void
 OUT_PKT4(struct msm_ringbuffer *ring, uint16_t regindx, uint16_t cnt)
 {
+<<<<<<< HEAD
 	adreno_wait_ring(ring, cnt + 1);
+=======
+	adreno_wait_ring(ring->gpu, cnt + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OUT_RING(ring, PKT4(regindx, cnt));
 }
 
 static inline void
 OUT_PKT7(struct msm_ringbuffer *ring, uint8_t opcode, uint16_t cnt)
 {
+<<<<<<< HEAD
 	adreno_wait_ring(ring, cnt + 1);
+=======
+	adreno_wait_ring(ring->gpu, cnt + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OUT_RING(ring, CP_TYPE7_PKT | (cnt << 0) | (PM4_PARITY(cnt) << 15) |
 		((opcode & 0x7F) << 16) | (PM4_PARITY(opcode) << 23));
 }
@@ -337,7 +423,10 @@ static inline void adreno_gpu_write(struct adreno_gpu *gpu,
 struct msm_gpu *a3xx_gpu_init(struct drm_device *dev);
 struct msm_gpu *a4xx_gpu_init(struct drm_device *dev);
 struct msm_gpu *a5xx_gpu_init(struct drm_device *dev);
+<<<<<<< HEAD
 struct msm_gpu *a6xx_gpu_init(struct drm_device *dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void adreno_gpu_write64(struct adreno_gpu *gpu,
 		enum adreno_regs lo, enum adreno_regs hi, u64 data)
@@ -346,11 +435,14 @@ static inline void adreno_gpu_write64(struct adreno_gpu *gpu,
 	adreno_gpu_write(gpu, hi, upper_32_bits(data));
 }
 
+<<<<<<< HEAD
 static inline uint32_t get_wptr(struct msm_ringbuffer *ring)
 {
 	return (ring->cur - ring->start) % (MSM_GPU_RINGBUFFER_SZ >> 2);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Given a register and a count, return a value to program into
  * REG_CP_PROTECT_REG(n) - this will block both reads and writes for _len

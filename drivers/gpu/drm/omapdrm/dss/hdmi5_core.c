@@ -1,7 +1,12 @@
 /*
  * OMAP5 HDMI CORE IP driver library
  *
+<<<<<<< HEAD
  * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * Copyright (C) 2014 Texas Instruments Incorporated
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Authors:
  *	Yong Zhi
  *	Mythri pk
@@ -50,6 +55,7 @@ static void hdmi_core_ddc_init(struct hdmi_core_data *core)
 {
 	void __iomem *base = core->base;
 	const unsigned long long iclk = 266000000;	/* DSS L3 ICLK */
+<<<<<<< HEAD
 	const unsigned int ss_scl_high = 4600;		/* ns */
 	const unsigned int ss_scl_low = 5400;		/* ns */
 	const unsigned int fs_scl_high = 600;		/* ns */
@@ -58,6 +64,16 @@ static void hdmi_core_ddc_init(struct hdmi_core_data *core)
 	const unsigned int sfr_div = 10;
 	unsigned long long sfr;
 	unsigned int v;
+=======
+	const unsigned ss_scl_high = 4600;		/* ns */
+	const unsigned ss_scl_low = 5400;		/* ns */
+	const unsigned fs_scl_high = 600;		/* ns */
+	const unsigned fs_scl_low = 1300;		/* ns */
+	const unsigned sda_hold = 1000;			/* ns */
+	const unsigned sfr_div = 10;
+	unsigned long long sfr;
+	unsigned v;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sfr = iclk / sfr_div;	/* SFR_DIV */
 	sfr /= 1000;		/* SFR clock in kHz */
@@ -430,11 +446,19 @@ static void hdmi_core_write_avi_infoframe(struct hdmi_core_data *core,
 	void __iomem *base = core->base;
 	u8 data[HDMI_INFOFRAME_SIZE(AVI)];
 	u8 *ptr;
+<<<<<<< HEAD
 	unsigned int y, a, b, s;
 	unsigned int c, m, r;
 	unsigned int itc, ec, q, sc;
 	unsigned int vic;
 	unsigned int yq, cn, pr;
+=======
+	unsigned y, a, b, s;
+	unsigned c, m, r;
+	unsigned itc, ec, q, sc;
+	unsigned vic;
+	unsigned yq, cn, pr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdmi_avi_infoframe_pack(frame, data, sizeof(data));
 

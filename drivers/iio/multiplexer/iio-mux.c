@@ -173,6 +173,10 @@ static const struct iio_info mux_info = {
 	.read_raw = mux_read_raw,
 	.read_avail = mux_read_avail,
 	.write_raw = mux_write_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static ssize_t mux_read_ext_info(struct iio_dev *indio_dev, uintptr_t private,
@@ -281,10 +285,16 @@ static int mux_configure_channel(struct device *dev, struct mux *mux,
 		if (!page)
 			return -ENOMEM;
 	}
+<<<<<<< HEAD
 	child->ext_info_cache = devm_kcalloc(dev,
 					     num_ext_info,
 					     sizeof(*child->ext_info_cache),
 					     GFP_KERNEL);
+=======
+	child->ext_info_cache = devm_kzalloc(dev,
+					     sizeof(*child->ext_info_cache) *
+					     num_ext_info, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!child->ext_info_cache)
 		return -ENOMEM;
 

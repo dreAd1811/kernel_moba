@@ -11,8 +11,11 @@
  * (at your option) any later version.
  */
 
+<<<<<<< HEAD
 #include <linux/interrupt.h>
 #include <linux/irqdomain.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mii.h>
 
 #include "chip.h"
@@ -37,6 +40,7 @@ static int mv88e6352_serdes_write(struct mv88e6xxx_chip *chip, int reg,
 					reg, val);
 }
 
+<<<<<<< HEAD
 static int mv88e6390_serdes_read(struct mv88e6xxx_chip *chip,
 				 int lane, int device, int reg, u16 *val)
 {
@@ -53,6 +57,8 @@ static int mv88e6390_serdes_write(struct mv88e6xxx_chip *chip,
 	return mv88e6xxx_phy_write(chip, lane, reg_c45, val);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mv88e6352_serdes_power_set(struct mv88e6xxx_chip *chip, bool on)
 {
 	u16 val, new_val;
@@ -73,6 +79,7 @@ static int mv88e6352_serdes_power_set(struct mv88e6xxx_chip *chip, bool on)
 	return err;
 }
 
+<<<<<<< HEAD
 static bool mv88e6352_port_has_serdes(struct mv88e6xxx_chip *chip, int port)
 {
 	u8 cmode = chip->ports[port].cmode;
@@ -90,6 +97,20 @@ int mv88e6352_serdes_power(struct mv88e6xxx_chip *chip, int port, bool on)
 	int err;
 
 	if (mv88e6352_port_has_serdes(chip, port)) {
+=======
+int mv88e6352_serdes_power(struct mv88e6xxx_chip *chip, int port, bool on)
+{
+	int err;
+	u8 cmode;
+
+	err = mv88e6xxx_port_get_cmode(chip, port, &cmode);
+	if (err)
+		return err;
+
+	if ((cmode == MV88E6XXX_PORT_STS_CMODE_100BASE_X) ||
+	    (cmode == MV88E6XXX_PORT_STS_CMODE_1000BASE_X) ||
+	    (cmode == MV88E6XXX_PORT_STS_CMODE_SGMII)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = mv88e6352_serdes_power_set(chip, on);
 		if (err < 0)
 			return err;
@@ -98,6 +119,7 @@ int mv88e6352_serdes_power(struct mv88e6xxx_chip *chip, int port, bool on)
 	return 0;
 }
 
+<<<<<<< HEAD
 struct mv88e6352_serdes_hw_stat {
 	char string[ETH_GSTRING_LEN];
 	int sizeof_stat;
@@ -300,6 +322,18 @@ static int mv88e6390_serdes_power_10g(struct mv88e6xxx_chip *chip, int lane,
 	err = mv88e6390_serdes_read(chip, lane, MDIO_MMD_PHYXS,
 				    MV88E6390_PCS_CONTROL_1, &val);
 
+=======
+/* Set the power on/off for 10GBASE-R and 10GBASE-X4/X2 */
+static int mv88e6390_serdes_10g(struct mv88e6xxx_chip *chip, int addr, bool on)
+{
+	u16 val, new_val;
+	int reg_c45;
+	int err;
+
+	reg_c45 = MII_ADDR_C45 | MV88E6390_SERDES_DEVICE |
+		MV88E6390_PCS_CONTROL_1;
+	err = mv88e6xxx_phy_read(chip, addr, reg_c45, &val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -311,12 +345,17 @@ static int mv88e6390_serdes_power_10g(struct mv88e6xxx_chip *chip, int lane,
 		new_val = val | MV88E6390_PCS_CONTROL_1_PDOWN;
 
 	if (val != new_val)
+<<<<<<< HEAD
 		err = mv88e6390_serdes_write(chip, lane, MDIO_MMD_PHYXS,
 					     MV88E6390_PCS_CONTROL_1, new_val);
+=======
+		err = mv88e6xxx_phy_write(chip, addr, reg_c45, new_val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
+<<<<<<< HEAD
 /* Set the power on/off for SGMII and 1000Base-X */
 static int mv88e6390_serdes_power_sgmii(struct mv88e6xxx_chip *chip, int lane,
 					bool on)
@@ -326,6 +365,19 @@ static int mv88e6390_serdes_power_sgmii(struct mv88e6xxx_chip *chip, int lane,
 
 	err = mv88e6390_serdes_read(chip, lane, MDIO_MMD_PHYXS,
 				    MV88E6390_SGMII_CONTROL, &val);
+=======
+/* Set the power on/off for 10GBASE-R and 10GBASE-X4/X2 */
+static int mv88e6390_serdes_sgmii(struct mv88e6xxx_chip *chip, int addr,
+				  bool on)
+{
+	u16 val, new_val;
+	int reg_c45;
+	int err;
+
+	reg_c45 = MII_ADDR_C45 | MV88E6390_SERDES_DEVICE |
+		MV88E6390_SGMII_CONTROL;
+	err = mv88e6xxx_phy_read(chip, addr, reg_c45, &val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -337,12 +389,17 @@ static int mv88e6390_serdes_power_sgmii(struct mv88e6xxx_chip *chip, int lane,
 		new_val = val | MV88E6390_SGMII_CONTROL_PDOWN;
 
 	if (val != new_val)
+<<<<<<< HEAD
 		err = mv88e6390_serdes_write(chip, lane, MDIO_MMD_PHYXS,
 					     MV88E6390_SGMII_CONTROL, new_val);
+=======
+		err = mv88e6xxx_phy_write(chip, addr, reg_c45, new_val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
+<<<<<<< HEAD
 static int mv88e6390_serdes_power_lane(struct mv88e6xxx_chip *chip, int port,
 				       int lane, bool on)
 {
@@ -356,6 +413,60 @@ static int mv88e6390_serdes_power_lane(struct mv88e6xxx_chip *chip, int port,
 	case MV88E6XXX_PORT_STS_CMODE_XAUI:
 	case MV88E6XXX_PORT_STS_CMODE_RXAUI:
 		return mv88e6390_serdes_power_10g(chip, lane, on);
+=======
+static int mv88e6390_serdes_lower(struct mv88e6xxx_chip *chip, u8 cmode,
+				  int port_donor, int lane, bool rxaui, bool on)
+{
+	int err;
+	u8 cmode_donor;
+
+	err = mv88e6xxx_port_get_cmode(chip, port_donor, &cmode_donor);
+	if (err)
+		return err;
+
+	switch (cmode_donor) {
+	case MV88E6XXX_PORT_STS_CMODE_RXAUI:
+		if (!rxaui)
+			break;
+		/* Fall through */
+	case MV88E6XXX_PORT_STS_CMODE_1000BASE_X:
+	case MV88E6XXX_PORT_STS_CMODE_SGMII:
+	case MV88E6XXX_PORT_STS_CMODE_2500BASEX:
+		if (cmode == MV88E6XXX_PORT_STS_CMODE_1000BASE_X ||
+		    cmode == MV88E6XXX_PORT_STS_CMODE_SGMII)
+			return	mv88e6390_serdes_sgmii(chip, lane, on);
+	}
+	return 0;
+}
+
+static int mv88e6390_serdes_port9(struct mv88e6xxx_chip *chip, u8 cmode,
+				  bool on)
+{
+	switch (cmode) {
+	case MV88E6XXX_PORT_STS_CMODE_1000BASE_X:
+	case MV88E6XXX_PORT_STS_CMODE_SGMII:
+		return mv88e6390_serdes_sgmii(chip, MV88E6390_PORT9_LANE0, on);
+	case MV88E6XXX_PORT_STS_CMODE_XAUI:
+	case MV88E6XXX_PORT_STS_CMODE_RXAUI:
+	case MV88E6XXX_PORT_STS_CMODE_2500BASEX:
+		return mv88e6390_serdes_10g(chip, MV88E6390_PORT9_LANE0, on);
+	}
+
+	return 0;
+}
+
+static int mv88e6390_serdes_port10(struct mv88e6xxx_chip *chip, u8 cmode,
+				   bool on)
+{
+	switch (cmode) {
+	case MV88E6XXX_PORT_STS_CMODE_SGMII:
+		return mv88e6390_serdes_sgmii(chip, MV88E6390_PORT10_LANE0, on);
+	case MV88E6XXX_PORT_STS_CMODE_XAUI:
+	case MV88E6XXX_PORT_STS_CMODE_RXAUI:
+	case MV88E6XXX_PORT_STS_CMODE_1000BASE_X:
+	case MV88E6XXX_PORT_STS_CMODE_2500BASEX:
+		return mv88e6390_serdes_10g(chip, MV88E6390_PORT10_LANE0, on);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -363,6 +474,7 @@ static int mv88e6390_serdes_power_lane(struct mv88e6xxx_chip *chip, int port,
 
 int mv88e6390_serdes_power(struct mv88e6xxx_chip *chip, int port, bool on)
 {
+<<<<<<< HEAD
 	int lane;
 
 	lane = mv88e6390_serdes_get_lane(chip, port);
@@ -593,5 +705,45 @@ int mv88e6341_serdes_power(struct mv88e6xxx_chip *chip, int port, bool on)
 		return mv88e6390_serdes_power_sgmii(chip, MV88E6341_ADDR_SERDES,
 						    on);
 
+=======
+	u8 cmode;
+	int err;
+
+	err = mv88e6xxx_port_get_cmode(chip, port, &cmode);
+	if (err)
+		return err;
+
+	switch (port) {
+	case 2:
+		return mv88e6390_serdes_lower(chip, cmode, 9,
+					      MV88E6390_PORT9_LANE1,
+					      false, on);
+	case 3:
+		return mv88e6390_serdes_lower(chip, cmode, 9,
+					      MV88E6390_PORT9_LANE2,
+					      true, on);
+	case 4:
+		return mv88e6390_serdes_lower(chip, cmode, 9,
+					      MV88E6390_PORT9_LANE3,
+					      true, on);
+	case 5:
+		return mv88e6390_serdes_lower(chip, cmode, 10,
+					      MV88E6390_PORT10_LANE1,
+					      false, on);
+	case 6:
+		return mv88e6390_serdes_lower(chip, cmode, 10,
+					      MV88E6390_PORT10_LANE2,
+					      true, on);
+	case 7:
+		return mv88e6390_serdes_lower(chip, cmode, 10,
+					      MV88E6390_PORT10_LANE3,
+					      true, on);
+	case 9:
+		return mv88e6390_serdes_port9(chip, cmode, on);
+	case 10:
+		return mv88e6390_serdes_port10(chip, cmode, on);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }

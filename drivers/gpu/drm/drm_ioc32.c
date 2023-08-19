@@ -105,7 +105,11 @@ static int compat_drm_version(struct file *file, unsigned int cmd,
 		.desc = compat_ptr(v32.desc),
 	};
 	err = drm_ioctl_kernel(file, drm_version, &v,
+<<<<<<< HEAD
 			       DRM_UNLOCKED|DRM_RENDER_ALLOW);
+=======
+			DRM_UNLOCKED|DRM_RENDER_ALLOW|DRM_CONTROL_ALLOW);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
@@ -185,7 +189,11 @@ static int compat_drm_getmap(struct file *file, unsigned int cmd,
 	m32.size = map.size;
 	m32.type = map.type;
 	m32.flags = map.flags;
+<<<<<<< HEAD
 	m32.handle = ptr_to_compat((void __user *)map.handle);
+=======
+	m32.handle = ptr_to_compat(map.handle);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	m32.mtrr = map.mtrr;
 	if (copy_to_user(argp, &m32, sizeof(m32)))
 		return -EFAULT;
@@ -216,7 +224,11 @@ static int compat_drm_addmap(struct file *file, unsigned int cmd,
 
 	m32.offset = map.offset;
 	m32.mtrr = map.mtrr;
+<<<<<<< HEAD
 	m32.handle = ptr_to_compat((void __user *)map.handle);
+=======
+	m32.handle = ptr_to_compat(map.handle);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (map.handle != compat_ptr(m32.handle))
 		pr_err_ratelimited("compat_drm_addmap truncated handle %p for type %d offset %x\n",
 				   map.handle, m32.type, m32.offset);
@@ -529,7 +541,11 @@ static int compat_drm_getsareactx(struct file *file, unsigned int cmd,
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	req32.handle = ptr_to_compat((void __user *)req.handle);
+=======
+	req32.handle = ptr_to_compat(req.handle);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (copy_to_user(argp, &req32, sizeof(req32)))
 		return -EFAULT;
 
@@ -888,7 +904,11 @@ static int compat_drm_mode_addfb2(struct file *file, unsigned int cmd,
 		return -EFAULT;
 
 	err = drm_ioctl_kernel(file, drm_mode_addfb2, &req64,
+<<<<<<< HEAD
 			       DRM_UNLOCKED);
+=======
+				DRM_CONTROL_ALLOW|DRM_UNLOCKED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 

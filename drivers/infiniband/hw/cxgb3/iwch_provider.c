@@ -61,6 +61,45 @@
 #include <rdma/cxgb3-abi.h>
 #include "common.h"
 
+<<<<<<< HEAD
+=======
+static struct ib_ah *iwch_ah_create(struct ib_pd *pd,
+				    struct rdma_ah_attr *ah_attr,
+				    struct ib_udata *udata)
+{
+	return ERR_PTR(-ENOSYS);
+}
+
+static int iwch_ah_destroy(struct ib_ah *ah)
+{
+	return -ENOSYS;
+}
+
+static int iwch_multicast_attach(struct ib_qp *ibqp, union ib_gid *gid, u16 lid)
+{
+	return -ENOSYS;
+}
+
+static int iwch_multicast_detach(struct ib_qp *ibqp, union ib_gid *gid, u16 lid)
+{
+	return -ENOSYS;
+}
+
+static int iwch_process_mad(struct ib_device *ibdev,
+			    int mad_flags,
+			    u8 port_num,
+			    const struct ib_wc *in_wc,
+			    const struct ib_grh *in_grh,
+			    const struct ib_mad_hdr *in_mad,
+			    size_t in_mad_size,
+			    struct ib_mad_hdr *out_mad,
+			    size_t *out_mad_size,
+			    u16 *out_mad_pkey_index)
+{
+	return -ENOSYS;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int iwch_dealloc_ucontext(struct ib_ucontext *context)
 {
 	struct iwch_dev *rhp = to_iwch_dev(context->device);
@@ -404,9 +443,13 @@ static struct ib_pd *iwch_allocate_pd(struct ib_device *ibdev,
 	php->pdid = pdid;
 	php->rhp = rhp;
 	if (context) {
+<<<<<<< HEAD
 		struct iwch_alloc_pd_resp resp = {.pdid = php->pdid};
 
 		if (ib_copy_to_udata(udata, &resp, sizeof(resp))) {
+=======
+		if (ib_copy_to_udata(udata, &php->pdid, sizeof (__u32))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			iwch_deallocate_pd(&php->ibpd);
 			return ERR_PTR(-EFAULT);
 		}
@@ -935,6 +978,10 @@ static struct ib_qp *iwch_create_qp(struct ib_pd *pd,
 		insert_mmap(ucontext, mm2);
 	}
 	qhp->ibqp.qp_num = qhp->wq.qpid;
+<<<<<<< HEAD
+=======
+	init_timer(&(qhp->timer));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("%s sq_num_entries %d, rq_num_entries %d qpid 0x%0x qhp %p dma_addr 0x%llx size %d rq_addr 0x%x\n",
 		 __func__, qhp->attr.sq_num_entries, qhp->attr.rq_num_entries,
 		 qhp->wq.qpid, qhp, (unsigned long long)qhp->wq.dma_addr,
@@ -1067,8 +1114,12 @@ static int iwch_query_device(struct ib_device *ibdev, struct ib_device_attr *pro
 	props->max_mr_size = dev->attr.max_mr_size;
 	props->max_qp = dev->attr.max_qps;
 	props->max_qp_wr = dev->attr.max_wrs;
+<<<<<<< HEAD
 	props->max_send_sge = dev->attr.max_sge_per_wr;
 	props->max_recv_sge = dev->attr.max_sge_per_wr;
+=======
+	props->max_sge = dev->attr.max_sge_per_wr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	props->max_sge_rd = 1;
 	props->max_qp_rd_atom = dev->attr.max_rdma_reads_per_qp;
 	props->max_qp_init_rd_atom = dev->attr.max_rdma_reads_per_qp;
@@ -1363,6 +1414,11 @@ int iwch_register_device(struct iwch_dev *dev)
 	dev->ibdev.mmap = iwch_mmap;
 	dev->ibdev.alloc_pd = iwch_allocate_pd;
 	dev->ibdev.dealloc_pd = iwch_deallocate_pd;
+<<<<<<< HEAD
+=======
+	dev->ibdev.create_ah = iwch_ah_create;
+	dev->ibdev.destroy_ah = iwch_ah_destroy;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->ibdev.create_qp = iwch_create_qp;
 	dev->ibdev.modify_qp = iwch_ib_modify_qp;
 	dev->ibdev.destroy_qp = iwch_destroy_qp;
@@ -1377,6 +1433,12 @@ int iwch_register_device(struct iwch_dev *dev)
 	dev->ibdev.dealloc_mw = iwch_dealloc_mw;
 	dev->ibdev.alloc_mr = iwch_alloc_mr;
 	dev->ibdev.map_mr_sg = iwch_map_mr_sg;
+<<<<<<< HEAD
+=======
+	dev->ibdev.attach_mcast = iwch_multicast_attach;
+	dev->ibdev.detach_mcast = iwch_multicast_detach;
+	dev->ibdev.process_mad = iwch_process_mad;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->ibdev.req_notify_cq = iwch_arm_cq;
 	dev->ibdev.post_send = iwch_post_send;
 	dev->ibdev.post_recv = iwch_post_receive;
@@ -1401,7 +1463,10 @@ int iwch_register_device(struct iwch_dev *dev)
 	memcpy(dev->ibdev.iwcm->ifname, dev->rdev.t3cdev_p->lldev->name,
 	       sizeof(dev->ibdev.iwcm->ifname));
 
+<<<<<<< HEAD
 	dev->ibdev.driver_id = RDMA_DRIVER_CXGB3;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ib_register_device(&dev->ibdev, NULL);
 	if (ret)
 		goto bail1;

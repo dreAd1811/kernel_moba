@@ -105,11 +105,25 @@ $(obj)/uImage: $(obj)/uImage.$(suffix-y)
 # Flattened Image Tree (.itb) images
 #
 
+<<<<<<< HEAD
 ifeq ($(ADDR_BITS),32)
 itb_addr_cells = 1
 endif
 ifeq ($(ADDR_BITS),64)
 itb_addr_cells = 2
+=======
+targets += vmlinux.itb
+targets += vmlinux.gz.itb
+targets += vmlinux.bz2.itb
+targets += vmlinux.lzma.itb
+targets += vmlinux.lzo.itb
+
+ifeq ($(ADDR_BITS),32)
+	itb_addr_cells = 1
+endif
+ifeq ($(ADDR_BITS),64)
+	itb_addr_cells = 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 targets += vmlinux.its.S
@@ -120,6 +134,7 @@ quiet_cmd_its_cat = CAT     $@
 $(obj)/vmlinux.its.S: $(addprefix $(srctree)/arch/mips/$(PLATFORM)/,$(ITS_INPUTS)) FORCE
 	$(call if_changed,its_cat)
 
+<<<<<<< HEAD
 targets += vmlinux.its
 targets += vmlinux.gz.its
 targets += vmlinux.bz2.its
@@ -128,6 +143,11 @@ targets += vmlinux.lzo.its
 
 quiet_cmd_cpp_its_S = ITS     $@
       cmd_cpp_its_S = $(CPP) -P -C -o $@ $< \
+=======
+quiet_cmd_cpp_its_S = ITS     $@
+      cmd_cpp_its_S = $(CPP) $(cpp_flags) -P -C -o $@ $< \
+			-D__ASSEMBLY__ \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		        -DKERNEL_NAME="\"Linux $(KERNELRELEASE)\"" \
 			-DVMLINUX_BINARY="\"$(3)\"" \
 			-DVMLINUX_COMPRESSION="\"$(2)\"" \
@@ -137,6 +157,7 @@ quiet_cmd_cpp_its_S = ITS     $@
 			-DADDR_CELLS=$(itb_addr_cells)
 
 $(obj)/vmlinux.its: $(obj)/vmlinux.its.S $(VMLINUX) FORCE
+<<<<<<< HEAD
 	$(call if_changed,cpp_its_S,none,vmlinux.bin)
 
 $(obj)/vmlinux.gz.its: $(obj)/vmlinux.its.S $(VMLINUX) FORCE
@@ -156,6 +177,21 @@ targets += vmlinux.gz.itb
 targets += vmlinux.bz2.itb
 targets += vmlinux.lzma.itb
 targets += vmlinux.lzo.itb
+=======
+	$(call if_changed_dep,cpp_its_S,none,vmlinux.bin)
+
+$(obj)/vmlinux.gz.its: $(obj)/vmlinux.its.S $(VMLINUX) FORCE
+	$(call if_changed_dep,cpp_its_S,gzip,vmlinux.bin.gz)
+
+$(obj)/vmlinux.bz2.its: $(obj)/vmlinux.its.S $(VMLINUX)  FORCE
+	$(call if_changed_dep,cpp_its_S,bzip2,vmlinux.bin.bz2)
+
+$(obj)/vmlinux.lzma.its: $(obj)/vmlinux.its.S $(VMLINUX) FORCE
+	$(call if_changed_dep,cpp_its_S,lzma,vmlinux.bin.lzma)
+
+$(obj)/vmlinux.lzo.its: $(obj)/vmlinux.its.S $(VMLINUX) FORCE
+	$(call if_changed_dep,cpp_its_S,lzo,vmlinux.bin.lzo)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 quiet_cmd_itb-image = ITB     $@
       cmd_itb-image = \
@@ -169,5 +205,18 @@ quiet_cmd_itb-image = ITB     $@
 $(obj)/vmlinux.itb: $(obj)/vmlinux.its $(obj)/vmlinux.bin FORCE
 	$(call if_changed,itb-image,$<)
 
+<<<<<<< HEAD
 $(obj)/vmlinux.%.itb: $(obj)/vmlinux.%.its $(obj)/vmlinux.bin.% FORCE
+=======
+$(obj)/vmlinux.gz.itb: $(obj)/vmlinux.gz.its $(obj)/vmlinux.bin.gz FORCE
+	$(call if_changed,itb-image,$<)
+
+$(obj)/vmlinux.bz2.itb: $(obj)/vmlinux.bz2.its $(obj)/vmlinux.bin.bz2 FORCE
+	$(call if_changed,itb-image,$<)
+
+$(obj)/vmlinux.lzma.itb: $(obj)/vmlinux.lzma.its $(obj)/vmlinux.bin.lzma FORCE
+	$(call if_changed,itb-image,$<)
+
+$(obj)/vmlinux.lzo.itb: $(obj)/vmlinux.lzo.its $(obj)/vmlinux.bin.lzo FORCE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	$(call if_changed,itb-image,$<)

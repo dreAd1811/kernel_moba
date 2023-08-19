@@ -143,6 +143,7 @@
 		port1-otg;
 	};
 
+<<<<<<< HEAD
 	bridge {
 		compatible = "ti,ths8134a", "ti,ths8134";
 		#address-cells = <1>;
@@ -180,6 +181,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* These peripherals are inside the FPGA */
 	fpga {
 		#address-cells = <1>;
@@ -371,7 +374,11 @@
 			clock-names = "uartclk", "apb_pclk";
 		};
 
+<<<<<<< HEAD
 		ssp: ssp@1000d000 {
+=======
+		ssp: spi@1000d000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,pl022", "arm,primecell";
 			reg = <0x1000d000 0x1000>;
 			clocks = <&sspclk>, <&pclk>;
@@ -446,6 +453,7 @@
 			interrupt-names = "combined";
 			clocks = <&oscclk0>, <&pclk>;
 			clock-names = "clcdclk", "apb_pclk";
+<<<<<<< HEAD
 			/* 1024x768 16bpp @65MHz works fine */
 			max-memory-bandwidth = <95000000>;
 
@@ -455,6 +463,38 @@
 					arm,pl11x,tft-r0g0b0-pads = <0 8 16>;
 				};
 			};
+=======
+
+			port {
+				clcd_pads: endpoint {
+					remote-endpoint = <&clcd_panel>;
+					arm,pl11x,tft-r0g0b0-pads = <0 8 16>;
+				};
+			};
+
+			panel {
+				compatible = "panel-dpi";
+
+				port {
+					clcd_panel: endpoint {
+						remote-endpoint = <&clcd_pads>;
+					};
+				};
+
+				/* Standard 640x480 VGA timings */
+				panel-timing {
+					clock-frequency = <25175000>;
+					hactive = <640>;
+					hback-porch = <48>;
+					hfront-porch = <16>;
+					hsync-len = <96>;
+					vactive = <480>;
+					vback-porch = <33>;
+					vfront-porch = <10>;
+					vsync-len = <2>;
+				};
+			};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };

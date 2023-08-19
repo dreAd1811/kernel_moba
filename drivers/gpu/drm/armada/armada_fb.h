@@ -10,15 +10,27 @@
 
 struct armada_framebuffer {
 	struct drm_framebuffer	fb;
+<<<<<<< HEAD
+=======
+	struct armada_gem_object *obj;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint8_t			fmt;
 	uint8_t			mod;
 };
 #define drm_fb_to_armada_fb(dfb) \
 	container_of(dfb, struct armada_framebuffer, fb)
+<<<<<<< HEAD
 #define drm_fb_obj(fb) drm_to_armada_gem((fb)->obj[0])
 
 struct armada_framebuffer *armada_framebuffer_create(struct drm_device *,
 	const struct drm_mode_fb_cmd2 *, struct armada_gem_object *);
 struct drm_framebuffer *armada_fb_create(struct drm_device *dev,
 	struct drm_file *dfile, const struct drm_mode_fb_cmd2 *mode);
+=======
+#define drm_fb_obj(fb) drm_fb_to_armada_fb(fb)->obj
+
+struct armada_framebuffer *armada_framebuffer_create(struct drm_device *,
+	const struct drm_mode_fb_cmd2 *, struct armada_gem_object *);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

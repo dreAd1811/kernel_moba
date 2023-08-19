@@ -21,15 +21,26 @@
  *
  * Authors: Ben Skeggs
  */
+<<<<<<< HEAD
 #include "channv50.h"
 #include "head.h"
 
 #include <core/client.h>
 
+=======
+#include "dmacnv50.h"
+#include "head.h"
+#include "rootnv50.h"
+
+#include <core/client.h>
+
+#include <nvif/class.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <nvif/cl507c.h>
 #include <nvif/unpack.h>
 
 int
+<<<<<<< HEAD
 nv50_disp_base_new_(const struct nv50_disp_chan_func *func,
 		    const struct nv50_disp_chan_mthd *mthd,
 		    struct nv50_disp *disp, int chid,
@@ -45,6 +56,24 @@ nv50_disp_base_new_(const struct nv50_disp_chan_func *func,
 
 	nvif_ioctl(parent, "create disp base channel dma size %d\n", argc);
 	if (!(ret = nvif_unpack(ret, &argv, &argc, args->v0, 0, 0, false))) {
+=======
+nv50_disp_base_new(const struct nv50_disp_dmac_func *func,
+		   const struct nv50_disp_chan_mthd *mthd,
+		   struct nv50_disp_root *root, int chid,
+		   const struct nvkm_oclass *oclass, void *data, u32 size,
+		   struct nvkm_object **pobject)
+{
+	union {
+		struct nv50_disp_base_channel_dma_v0 v0;
+	} *args = data;
+	struct nvkm_object *parent = oclass->parent;
+	struct nv50_disp *disp = root->disp;
+	int head, ret = -ENOSYS;
+	u64 push;
+
+	nvif_ioctl(parent, "create disp base channel dma size %d\n", size);
+	if (!(ret = nvif_unpack(ret, &data, &size, args->v0, 0, 0, false))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvif_ioctl(parent, "create disp base channel dma vers %d "
 				   "pushbuf %016llx head %d\n",
 			   args->v0.version, args->v0.pushbuf, args->v0.head);
@@ -55,7 +84,11 @@ nv50_disp_base_new_(const struct nv50_disp_chan_func *func,
 	} else
 		return ret;
 
+<<<<<<< HEAD
 	return nv50_disp_dmac_new_(func, mthd, disp, chid + head,
+=======
+	return nv50_disp_dmac_new_(func, mthd, root, chid + head,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   head, push, oclass, pobject);
 }
 
@@ -99,7 +132,11 @@ nv50_disp_base_mthd_image = {
 };
 
 static const struct nv50_disp_chan_mthd
+<<<<<<< HEAD
 nv50_disp_base_mthd = {
+=======
+nv50_disp_base_chan_mthd = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "Base",
 	.addr = 0x000540,
 	.prev = 0x000004,
@@ -110,6 +147,7 @@ nv50_disp_base_mthd = {
 	}
 };
 
+<<<<<<< HEAD
 int
 nv50_disp_base_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 		   struct nv50_disp *disp, struct nvkm_object **pobject)
@@ -117,3 +155,15 @@ nv50_disp_base_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 	return nv50_disp_base_new_(&nv50_disp_dmac_func, &nv50_disp_base_mthd,
 				   disp, 1, oclass, argv, argc, pobject);
 }
+=======
+const struct nv50_disp_dmac_oclass
+nv50_disp_base_oclass = {
+	.base.oclass = NV50_DISP_BASE_CHANNEL_DMA,
+	.base.minver = 0,
+	.base.maxver = 0,
+	.ctor = nv50_disp_base_new,
+	.func = &nv50_disp_dmac_func,
+	.mthd = &nv50_disp_base_chan_mthd,
+	.chid = 1,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

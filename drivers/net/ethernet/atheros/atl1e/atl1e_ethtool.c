@@ -236,8 +236,13 @@ static int atl1e_get_eeprom(struct net_device *netdev,
 	first_dword = eeprom->offset >> 2;
 	last_dword = (eeprom->offset + eeprom->len - 1) >> 2;
 
+<<<<<<< HEAD
 	eeprom_buff = kmalloc_array(last_dword - first_dword + 1, sizeof(u32),
 				    GFP_KERNEL);
+=======
+	eeprom_buff = kmalloc(sizeof(u32) *
+			(last_dword - first_dword + 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (eeprom_buff == NULL)
 		return -ENOMEM;
 

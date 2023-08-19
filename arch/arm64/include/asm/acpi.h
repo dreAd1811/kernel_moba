@@ -12,12 +12,18 @@
 #ifndef _ASM_ACPI_H
 #define _ASM_ACPI_H
 
+<<<<<<< HEAD
 #include <linux/efi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/memblock.h>
 #include <linux/psci.h>
 
 #include <asm/cputype.h>
+<<<<<<< HEAD
 #include <asm/io.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/smp_plat.h>
 #include <asm/tlbflush.h>
 
@@ -31,12 +37,16 @@
 
 /* Basic configuration for ACPI */
 #ifdef	CONFIG_ACPI
+<<<<<<< HEAD
 pgprot_t __acpi_get_mem_attribute(phys_addr_t addr);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ACPI table mapping after acpi_permanent_mmap is set */
 static inline void __iomem *acpi_os_ioremap(acpi_physical_address phys,
 					    acpi_size size)
 {
+<<<<<<< HEAD
 	/* For normal memory we already have a cacheable mapping. */
 	if (memblock_is_map_memory(phys))
 		return (void __iomem *)__phys_to_virt(phys);
@@ -47,6 +57,16 @@ static inline void __iomem *acpi_os_ioremap(acpi_physical_address phys,
 	 * regions from memblock list.
 	 */
 	return __ioremap(phys, size, __acpi_get_mem_attribute(phys));
+=======
+	/*
+	 * EFI's reserve_regions() call adds memory with the WB attribute
+	 * to memblock via early_init_dt_add_memory_arch().
+	 */
+	if (!memblock_is_memory(phys))
+		return ioremap(phys, size);
+
+	return ioremap_cache(phys, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #define acpi_os_ioremap acpi_os_ioremap
 
@@ -92,10 +112,13 @@ static inline bool acpi_has_cpu_in_madt(void)
 }
 
 struct acpi_madt_generic_interrupt *acpi_cpu_get_madt_gicc(int cpu);
+<<<<<<< HEAD
 static inline u32 get_acpi_id_for_cpu(unsigned int cpu)
 {
 	return	acpi_cpu_get_madt_gicc(cpu)->uid;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void arch_fix_phys_package_id(int num, u32 slot) { }
 void __init acpi_init_cpus(void);
@@ -135,20 +158,42 @@ static inline const char *acpi_get_enable_method(int cpu)
  * for compatibility.
  */
 #define acpi_disable_cmcff 1
+<<<<<<< HEAD
 static inline pgprot_t arch_apei_get_mem_attribute(phys_addr_t addr)
 {
 	return __acpi_get_mem_attribute(addr);
+=======
+pgprot_t arch_apei_get_mem_attribute(phys_addr_t addr);
+
+/*
+ * Despite its name, this function must still broadcast the TLB
+ * invalidation in order to ensure other CPUs don't end up with junk
+ * entries as a result of speculation. Unusually, its also called in
+ * IRQ context (ghes_iounmap_irq) so if we ever need to use IPIs for
+ * TLB broadcasting, then we're in trouble here.
+ */
+static inline void arch_apei_flush_tlb_one(unsigned long addr)
+{
+	flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_ACPI_APEI */
 
 #ifdef CONFIG_ACPI_NUMA
 int arm64_acpi_numa_init(void);
+<<<<<<< HEAD
 int acpi_numa_get_nid(unsigned int cpu);
 void acpi_map_cpus_to_nodes(void);
 #else
 static inline int arm64_acpi_numa_init(void) { return -ENOSYS; }
 static inline int acpi_numa_get_nid(unsigned int cpu) { return NUMA_NO_NODE; }
 static inline void acpi_map_cpus_to_nodes(void) { }
+=======
+int acpi_numa_get_nid(unsigned int cpu, u64 hwid);
+#else
+static inline int arm64_acpi_numa_init(void) { return -ENOSYS; }
+static inline int acpi_numa_get_nid(unsigned int cpu, u64 hwid) { return NUMA_NO_NODE; }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_ACPI_NUMA */
 
 #define ACPI_TABLE_UPGRADE_MAX_PHYS MEMBLOCK_ALLOC_ACCESSIBLE

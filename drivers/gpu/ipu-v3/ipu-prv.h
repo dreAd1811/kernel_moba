@@ -269,8 +269,13 @@ int ipu_pre_get(struct ipu_pre *pre);
 void ipu_pre_put(struct ipu_pre *pre);
 u32 ipu_pre_get_baddr(struct ipu_pre *pre);
 void ipu_pre_configure(struct ipu_pre *pre, unsigned int width,
+<<<<<<< HEAD
 		       unsigned int height, unsigned int stride, u32 format,
 		       uint64_t modifier, unsigned int bufaddr);
+=======
+		       unsigned int height,
+		       unsigned int stride, u32 format, unsigned int bufaddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void ipu_pre_update(struct ipu_pre *pre, unsigned int bufaddr);
 
 struct ipu_prg *ipu_prg_lookup_by_phandle(struct device *dev, const char *name,

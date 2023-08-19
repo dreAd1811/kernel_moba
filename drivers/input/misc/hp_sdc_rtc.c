@@ -408,13 +408,21 @@ static ssize_t hp_sdc_rtc_read(struct file *file, char __user *buf,
 	return retval;
 }
 
+<<<<<<< HEAD
 static __poll_t hp_sdc_rtc_poll(struct file *file, poll_table *wait)
+=======
+static unsigned int hp_sdc_rtc_poll(struct file *file, poll_table *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
         unsigned long l;
 
 	l = 0;
         if (l != 0)
+<<<<<<< HEAD
                 return EPOLLIN | EPOLLRDNORM;
+=======
+                return POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         return 0;
 }
 
@@ -509,6 +517,21 @@ static int hp_sdc_rtc_proc_show(struct seq_file *m, void *v)
 #undef NY
 }
 
+<<<<<<< HEAD
+=======
+static int hp_sdc_rtc_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, hp_sdc_rtc_proc_show, NULL);
+}
+
+static const struct file_operations hp_sdc_rtc_proc_fops = {
+	.open		= hp_sdc_rtc_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hp_sdc_rtc_ioctl(struct file *file, 
 			    unsigned int cmd, unsigned long arg)
 {
@@ -701,7 +724,11 @@ static int __init hp_sdc_rtc_init(void)
 	if (misc_register(&hp_sdc_rtc_dev) != 0)
 		printk(KERN_INFO "Could not register misc. dev for i8042 rtc\n");
 
+<<<<<<< HEAD
         proc_create_single("driver/rtc", 0, NULL, hp_sdc_rtc_proc_show);
+=======
+        proc_create("driver/rtc", 0, NULL, &hp_sdc_rtc_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	printk(KERN_INFO "HP i8042 SDC + MSM-58321 RTC support loaded "
 			 "(RTC v " RTC_VERSION ")\n");

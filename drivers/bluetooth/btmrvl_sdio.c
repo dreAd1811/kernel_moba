@@ -64,7 +64,11 @@ static irqreturn_t btmrvl_wake_irq_bt(int irq, void *priv)
 	struct btmrvl_sdio_card *card = priv;
 	struct btmrvl_plt_wake_cfg *cfg = card->plt_wake_cfg;
 
+<<<<<<< HEAD
 	pr_info("%s: wake by bt\n", __func__);
+=======
+	pr_info("%s: wake by bt", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cfg->wake_by_bt = true;
 	disable_irq_nosync(irq);
 
@@ -87,7 +91,11 @@ static int btmrvl_sdio_probe_of(struct device *dev,
 
 	if (!dev->of_node ||
 	    !of_match_node(btmrvl_sdio_of_match_table, dev->of_node)) {
+<<<<<<< HEAD
 		pr_err("sdio platform data not available\n");
+=======
+		pr_err("sdio platform data not available");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 	}
 
@@ -99,7 +107,11 @@ static int btmrvl_sdio_probe_of(struct device *dev,
 	if (cfg && card->plt_of_node) {
 		cfg->irq_bt = irq_of_parse_and_map(card->plt_of_node, 0);
 		if (!cfg->irq_bt) {
+<<<<<<< HEAD
 			dev_err(dev, "fail to parse irq_bt from device tree\n");
+=======
+			dev_err(dev, "fail to parse irq_bt from device tree");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cfg->irq_bt = -1;
 		} else {
 			ret = devm_request_irq(dev, cfg->irq_bt,
@@ -689,7 +701,11 @@ static int btmrvl_sdio_card_to_host(struct btmrvl_private *priv)
 	int ret, num_blocks, blksz;
 	struct sk_buff *skb = NULL;
 	u32 type;
+<<<<<<< HEAD
 	u8 *payload;
+=======
+	u8 *payload = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hci_dev *hdev = priv->btmrvl_dev.hcidev;
 	struct btmrvl_sdio_card *card = priv->btmrvl_dev.card;
 
@@ -718,7 +734,11 @@ static int btmrvl_sdio_card_to_host(struct btmrvl_private *priv)
 	}
 
 	/* Allocate buffer */
+<<<<<<< HEAD
 	skb = bt_skb_alloc(num_blocks * blksz + BTSDIO_DMA_ALIGN, GFP_KERNEL);
+=======
+	skb = bt_skb_alloc(num_blocks * blksz + BTSDIO_DMA_ALIGN, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!skb) {
 		BT_ERR("No free skb");
 		ret = -ENOMEM;
@@ -920,7 +940,11 @@ static int btmrvl_sdio_register_dev(struct btmrvl_sdio_card *card)
 {
 	struct sdio_func *func;
 	u8 reg;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!card || !card->func) {
 		BT_ERR("Error: card or function is NULL!");
@@ -1311,11 +1335,17 @@ rdwr_status btmrvl_sdio_rdwr_firmware(struct btmrvl_private *priv,
 }
 
 /* This function dump sdio register and memory data */
+<<<<<<< HEAD
 static void btmrvl_sdio_coredump(struct device *dev)
 {
 	struct sdio_func *func = dev_to_sdio_func(dev);
 	struct btmrvl_sdio_card *card;
 	struct btmrvl_private *priv;
+=======
+static void btmrvl_sdio_dump_firmware(struct btmrvl_private *priv)
+{
+	struct btmrvl_sdio_card *card = priv->btmrvl_dev.card;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	unsigned int reg, reg_start, reg_end;
 	enum rdwr_status stat;
@@ -1323,9 +1353,12 @@ static void btmrvl_sdio_coredump(struct device *dev)
 	u8 dump_num = 0, idx, i, read_reg, doneflag = 0;
 	u32 memory_size, fw_dump_len = 0;
 
+<<<<<<< HEAD
 	card = sdio_get_drvdata(func);
 	priv = card->priv;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* dump sdio register first */
 	btmrvl_sdio_dump_regs(priv);
 
@@ -1552,6 +1585,10 @@ static int btmrvl_sdio_probe(struct sdio_func *func,
 	priv->hw_host_to_card = btmrvl_sdio_host_to_card;
 	priv->hw_wakeup_firmware = btmrvl_sdio_wakeup_fw;
 	priv->hw_process_int_status = btmrvl_sdio_process_int_status;
+<<<<<<< HEAD
+=======
+	priv->firmware_dump = btmrvl_sdio_dump_firmware;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (btmrvl_register_hdev(priv)) {
 		BT_ERR("Register hdev failed!");
@@ -1721,7 +1758,10 @@ static struct sdio_driver bt_mrvl_sdio = {
 	.remove		= btmrvl_sdio_remove,
 	.drv = {
 		.owner = THIS_MODULE,
+<<<<<<< HEAD
 		.coredump = btmrvl_sdio_coredump,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.pm = &btmrvl_sdio_pm_ops,
 	}
 };

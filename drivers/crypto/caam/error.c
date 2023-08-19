@@ -22,7 +22,11 @@ void caam_dump_sg(const char *level, const char *prefix_str, int prefix_type,
 	size_t len;
 	void *buf;
 
+<<<<<<< HEAD
 	for (it = sg; it && tlen > 0 ; it = sg_next(sg)) {
+=======
+	for (it = sg; it && tlen > 0 ; it = sg_next(it)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * make sure the scatterlist's page
 		 * has a valid virtual memory mapping

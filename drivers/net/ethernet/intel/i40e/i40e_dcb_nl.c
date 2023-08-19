@@ -1,5 +1,33 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
+=======
+/*******************************************************************************
+ *
+ * Intel Ethernet Controller XL710 Family Linux Driver
+ * Copyright(c) 2013 - 2014 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ *
+ ******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_I40E_DCB
 #include "i40e.h"
@@ -23,7 +51,11 @@ static void i40e_get_pfc_delay(struct i40e_hw *hw, u16 *delay)
 
 /**
  * i40e_dcbnl_ieee_getets - retrieve local IEEE ETS configuration
+<<<<<<< HEAD
  * @dev: the corresponding netdev
+=======
+ * @netdev: the corresponding netdev
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @ets: structure to hold the ETS information
  *
  * Returns local IEEE ETS configuration
@@ -62,8 +94,13 @@ static int i40e_dcbnl_ieee_getets(struct net_device *dev,
 
 /**
  * i40e_dcbnl_ieee_getpfc - retrieve local IEEE PFC configuration
+<<<<<<< HEAD
  * @dev: the corresponding netdev
  * @pfc: structure to hold the PFC information
+=======
+ * @netdev: the corresponding netdev
+ * @ets: structure to hold the PFC information
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns local IEEE PFC configuration
  **/
@@ -95,7 +132,11 @@ static int i40e_dcbnl_ieee_getpfc(struct net_device *dev,
 
 /**
  * i40e_dcbnl_getdcbx - retrieve current DCBx capability
+<<<<<<< HEAD
  * @dev: the corresponding netdev
+=======
+ * @netdev: the corresponding netdev
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns DCBx capability features
  **/
@@ -108,8 +149,12 @@ static u8 i40e_dcbnl_getdcbx(struct net_device *dev)
 
 /**
  * i40e_dcbnl_get_perm_hw_addr - MAC address used by DCBx
+<<<<<<< HEAD
  * @dev: the corresponding netdev
  * @perm_addr: buffer to store the MAC address
+=======
+ * @netdev: the corresponding netdev
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns the SAN MAC address used for LLDP exchange
  **/

@@ -1,5 +1,35 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /* Copyright(c) 1999 - 2008 Intel Corporation. */
+=======
+/*******************************************************************************
+
+  Intel PRO/10GbE Linux driver
+  Copyright(c) 1999 - 2008 Intel Corporation.
+
+  This program is free software; you can redistribute it and/or modify it
+  under the terms and conditions of the GNU General Public License,
+  version 2, as published by the Free Software Foundation.
+
+  This program is distributed in the hope it will be useful, but WITHOUT
+  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+  more details.
+
+  You should have received a copy of the GNU General Public License along with
+  this program; if not, write to the Free Software Foundation, Inc.,
+  51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
+
+  The full GNU General Public License is included in this distribution in
+  the file called "COPYING".
+
+  Contact Information:
+  Linux NICS <linux.nics@intel.com>
+  e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+  Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+
+*******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
@@ -58,7 +88,11 @@ static void ixgb_setup_rctl(struct ixgb_adapter *adapter);
 static void ixgb_clean_tx_ring(struct ixgb_adapter *adapter);
 static void ixgb_clean_rx_ring(struct ixgb_adapter *adapter);
 static void ixgb_set_multi(struct net_device *netdev);
+<<<<<<< HEAD
 static void ixgb_watchdog(struct timer_list *t);
+=======
+static void ixgb_watchdog(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static netdev_tx_t ixgb_xmit_frame(struct sk_buff *skb,
 				   struct net_device *netdev);
 static int ixgb_change_mtu(struct net_device *netdev, int new_mtu);
@@ -81,6 +115,14 @@ static int ixgb_vlan_rx_kill_vid(struct net_device *netdev,
 				 __be16 proto, u16 vid);
 static void ixgb_restore_vlan(struct ixgb_adapter *adapter);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+/* for netdump / net console */
+static void ixgb_netpoll(struct net_device *dev);
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static pci_ers_result_t ixgb_io_error_detected (struct pci_dev *pdev,
                              enum pci_channel_state state);
 static pci_ers_result_t ixgb_io_slot_reset (struct pci_dev *pdev);
@@ -343,6 +385,12 @@ static const struct net_device_ops ixgb_netdev_ops = {
 	.ndo_tx_timeout		= ixgb_tx_timeout,
 	.ndo_vlan_rx_add_vid	= ixgb_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid	= ixgb_vlan_rx_kill_vid,
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+	.ndo_poll_controller	= ixgb_netpoll,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_fix_features       = ixgb_fix_features,
 	.ndo_set_features       = ixgb_set_features,
 };
@@ -475,7 +523,13 @@ ixgb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	adapter->part_num = ixgb_get_ee_pba_number(&adapter->hw);
 
+<<<<<<< HEAD
 	timer_setup(&adapter->watchdog_timer, ixgb_watchdog, 0);
+=======
+	init_timer(&adapter->watchdog_timer);
+	adapter->watchdog_timer.function = ixgb_watchdog;
+	adapter->watchdog_timer.data = (unsigned long)adapter;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&adapter->tx_timeout_task, ixgb_tx_timeout_task);
 
@@ -763,13 +817,22 @@ ixgb_setup_rx_resources(struct ixgb_adapter *adapter)
 	rxdr->size = rxdr->count * sizeof(struct ixgb_rx_desc);
 	rxdr->size = ALIGN(rxdr->size, 4096);
 
+<<<<<<< HEAD
 	rxdr->desc = dma_zalloc_coherent(&pdev->dev, rxdr->size, &rxdr->dma,
 					 GFP_KERNEL);
+=======
+	rxdr->desc = dma_alloc_coherent(&pdev->dev, rxdr->size, &rxdr->dma,
+					GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!rxdr->desc) {
 		vfree(rxdr->buffer_info);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
+=======
+	memset(rxdr->desc, 0, rxdr->size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rxdr->next_to_clean = 0;
 	rxdr->next_to_use = 0;
@@ -1084,9 +1147,14 @@ ixgb_set_multi(struct net_device *netdev)
 		rctl |= IXGB_RCTL_MPE;
 		IXGB_WRITE_REG(hw, RCTL, rctl);
 	} else {
+<<<<<<< HEAD
 		u8 *mta = kmalloc_array(ETH_ALEN,
 				        IXGB_MAX_NUM_MULTICAST_ADDRESSES,
 				        GFP_ATOMIC);
+=======
+		u8 *mta = kmalloc(IXGB_MAX_NUM_MULTICAST_ADDRESSES *
+			      ETH_ALEN, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u8 *addr;
 		if (!mta)
 			goto alloc_failed;
@@ -1117,9 +1185,15 @@ alloc_failed:
  **/
 
 static void
+<<<<<<< HEAD
 ixgb_watchdog(struct timer_list *t)
 {
 	struct ixgb_adapter *adapter = from_timer(adapter, t, watchdog_timer);
+=======
+ixgb_watchdog(unsigned long data)
+{
+	struct ixgb_adapter *adapter = (struct ixgb_adapter *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *netdev = adapter->netdev;
 	struct ixgb_desc_ring *txdr = &adapter->tx_ring;
 
@@ -2187,6 +2261,26 @@ ixgb_restore_vlan(struct ixgb_adapter *adapter)
 		ixgb_vlan_rx_add_vid(adapter->netdev, htons(ETH_P_8021Q), vid);
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_NET_POLL_CONTROLLER
+/*
+ * Polling 'interrupt' - used by things like netconsole to send skbs
+ * without having to re-enable interrupts. It's not called while
+ * the interrupt routine is executing.
+ */
+
+static void ixgb_netpoll(struct net_device *dev)
+{
+	struct ixgb_adapter *adapter = netdev_priv(dev);
+
+	disable_irq(adapter->pdev->irq);
+	ixgb_intr(adapter->pdev->irq, dev);
+	enable_irq(adapter->pdev->irq);
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * ixgb_io_error_detected - called when PCI error is detected
  * @pdev:    pointer to pci device with error

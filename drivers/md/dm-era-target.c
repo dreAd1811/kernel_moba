@@ -1513,6 +1513,10 @@ static int era_ctr(struct dm_target *ti, unsigned argc, char **argv)
 	ti->flush_supported = true;
 
 	ti->num_discard_bios = 1;
+<<<<<<< HEAD
+=======
+	ti->discards_supported = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	era->callbacks.congested_fn = era_is_congested;
 	dm_table_add_target_callbacks(ti->table, &era->callbacks);
 
@@ -1635,8 +1639,12 @@ err:
 	DMEMIT("Error");
 }
 
+<<<<<<< HEAD
 static int era_message(struct dm_target *ti, unsigned argc, char **argv,
 		       char *result, unsigned maxlen)
+=======
+static int era_message(struct dm_target *ti, unsigned argc, char **argv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct era *era = ti->private;
 

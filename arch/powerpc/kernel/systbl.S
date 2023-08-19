@@ -35,7 +35,11 @@
 #endif
 #define SYSCALL_SPU(func)	SYSCALL(func)
 #define COMPAT_SYS_SPU(func)	COMPAT_SYS(func)
+<<<<<<< HEAD
 #define COMPAT_SPU_NEW(func)	COMPAT_SYS(func)
+=======
+#define PPC_SYS_SPU(func)	PPC_SYS(func)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SYSX_SPU(f, f3264, f32)	SYSX(f, f3264, f32)
 
 .section .rodata,"a"

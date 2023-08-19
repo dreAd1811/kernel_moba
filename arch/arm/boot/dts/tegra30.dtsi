@@ -5,6 +5,7 @@
 #include <dt-bindings/pinctrl/pinctrl-tegra.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 
+<<<<<<< HEAD
 / {
 	compatible = "nvidia,tegra30";
 	interrupt-parent = <&lic>;
@@ -15,6 +16,13 @@
 		device_type = "memory";
 		reg = <0x80000000 0x0>;
 	};
+=======
+#include "skeleton.dtsi"
+
+/ {
+	compatible = "nvidia,tegra30";
+	interrupt-parent = <&lic>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pcie@3000 {
 		compatible = "nvidia,tegra30-pcie";
@@ -96,6 +104,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	iram@40000000 {
 		compatible = "mmio-sram";
 		reg = <0x40000000 0x40000>;
@@ -109,6 +118,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host1x@50000000 {
 		compatible = "nvidia,tegra30-host1x", "simple-bus";
 		reg = <0x50000000 0x00024000>;
@@ -117,7 +128,10 @@
 		clocks = <&tegra_car TEGRA30_CLK_HOST1X>;
 		resets = <&tegra_car 28>;
 		reset-names = "host1x";
+<<<<<<< HEAD
 		iommus = <&mc TEGRA_SWGROUP_HC>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -131,8 +145,11 @@
 			clocks = <&tegra_car TEGRA30_CLK_MPE>;
 			resets = <&tegra_car 60>;
 			reset-names = "mpe";
+<<<<<<< HEAD
 
 			iommus = <&mc TEGRA_SWGROUP_MPE>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		vi@54080000 {
@@ -142,8 +159,11 @@
 			clocks = <&tegra_car TEGRA30_CLK_VI>;
 			resets = <&tegra_car 20>;
 			reset-names = "vi";
+<<<<<<< HEAD
 
 			iommus = <&mc TEGRA_SWGROUP_VI>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		epp@540c0000 {
@@ -153,8 +173,11 @@
 			clocks = <&tegra_car TEGRA30_CLK_EPP>;
 			resets = <&tegra_car 19>;
 			reset-names = "epp";
+<<<<<<< HEAD
 
 			iommus = <&mc TEGRA_SWGROUP_EPP>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		isp@54100000 {
@@ -164,8 +187,11 @@
 			clocks = <&tegra_car TEGRA30_CLK_ISP>;
 			resets = <&tegra_car 23>;
 			reset-names = "isp";
+<<<<<<< HEAD
 
 			iommus = <&mc TEGRA_SWGROUP_ISP>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		gr2d@54140000 {
@@ -175,8 +201,11 @@
 			clocks = <&tegra_car TEGRA30_CLK_GR2D>;
 			resets = <&tegra_car 21>;
 			reset-names = "2d";
+<<<<<<< HEAD
 
 			iommus = <&mc TEGRA_SWGROUP_G2>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		gr3d@54180000 {
@@ -188,9 +217,12 @@
 			resets = <&tegra_car 24>,
 				 <&tegra_car 98>;
 			reset-names = "3d", "3d2";
+<<<<<<< HEAD
 
 			iommus = <&mc TEGRA_SWGROUP_NV>,
 				 <&mc TEGRA_SWGROUP_NV2>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		dc@54200000 {
@@ -390,6 +422,7 @@
 		*/
 	};
 
+<<<<<<< HEAD
 	vde@6001a000 {
 		compatible = "nvidia,tegra30-vde", "nvidia,tegra20-vde";
 		reg = <0x6001a000 0x1000   /* Syntax Engine */
@@ -413,6 +446,8 @@
 		resets = <&tegra_car 61>, <&mc TEGRA30_MC_RESET_VDE>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	apbmisc@70000800 {
 		compatible = "nvidia,tegra30-apbmisc", "nvidia,tegra20-apbmisc";
 		reg = <0x70000800 0x64   /* Chip revision */
@@ -718,7 +753,10 @@
 		interrupts = <GIC_SPI 77 IRQ_TYPE_LEVEL_HIGH>;
 
 		#iommu-cells = <1>;
+<<<<<<< HEAD
 		#reset-cells = <1>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	fuse@7000f800 {
@@ -896,7 +934,11 @@
 		nvidia,elastic-limit = <16>;
 		nvidia,term-range-adj = <6>;
 		nvidia,xcvr-setup = <51>;
+<<<<<<< HEAD
 		nvidia.xcvr-setup-use-fuses;
+=======
+		nvidia,xcvr-setup-use-fuses;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvidia,xcvr-lsfslew = <1>;
 		nvidia,xcvr-lsrslew = <1>;
 		nvidia,xcvr-hsslew = <32>;
@@ -933,7 +975,11 @@
 		nvidia,elastic-limit = <16>;
 		nvidia,term-range-adj = <6>;
 		nvidia,xcvr-setup = <51>;
+<<<<<<< HEAD
 		nvidia.xcvr-setup-use-fuses;
+=======
+		nvidia,xcvr-setup-use-fuses;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvidia,xcvr-lsfslew = <2>;
 		nvidia,xcvr-lsrslew = <2>;
 		nvidia,xcvr-hsslew = <32>;
@@ -969,7 +1015,11 @@
 		nvidia,elastic-limit = <16>;
 		nvidia,term-range-adj = <6>;
 		nvidia,xcvr-setup = <51>;
+<<<<<<< HEAD
 		nvidia.xcvr-setup-use-fuses;
+=======
+		nvidia,xcvr-setup-use-fuses;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvidia,xcvr-lsfslew = <2>;
 		nvidia,xcvr-lsrslew = <2>;
 		nvidia,xcvr-hsslew = <32>;

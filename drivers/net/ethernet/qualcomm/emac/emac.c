@@ -130,7 +130,11 @@ static int emac_start_xmit(struct sk_buff *skb, struct net_device *netdev)
 	return emac_mac_tx_buf_send(adpt, &adpt->tx_q, skb);
 }
 
+<<<<<<< HEAD
 static irqreturn_t emac_isr(int _irq, void *data)
+=======
+irqreturn_t emac_isr(int _irq, void *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct emac_irq *irq = data;
 	struct emac_adapter *adpt =
@@ -148,8 +152,14 @@ static irqreturn_t emac_isr(int _irq, void *data)
 		goto exit;
 
 	if (status & ISR_ERROR) {
+<<<<<<< HEAD
 		net_err_ratelimited("%s: error interrupt 0x%lx\n",
 				    adpt->netdev->name, status & ISR_ERROR);
+=======
+		netif_warn(adpt,  intr, adpt->netdev,
+			   "warning: error irq status 0x%lx\n",
+			   status & ISR_ERROR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* reset MAC */
 		schedule_work(&adpt->work_thread);
 	}
@@ -168,8 +178,12 @@ static irqreturn_t emac_isr(int _irq, void *data)
 		emac_mac_tx_process(adpt, &adpt->tx_q);
 
 	if (status & ISR_OVER)
+<<<<<<< HEAD
 		net_warn_ratelimited("%s: TX/RX overflow interrupt\n",
 				     adpt->netdev->name);
+=======
+		net_warn_ratelimited("warning: TX/RX overflow\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 exit:
 	/* enable the interrupt */
@@ -253,18 +267,30 @@ static int emac_open(struct net_device *netdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = emac_sgmii_open(adpt);
+=======
+	ret = emac_mac_up(adpt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		emac_mac_rx_tx_rings_free_all(adpt);
 		free_irq(irq->irq, irq);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = emac_mac_up(adpt);
 	if (ret) {
 		emac_mac_rx_tx_rings_free_all(adpt);
 		free_irq(irq->irq, irq);
 		emac_sgmii_close(adpt);
+=======
+	ret = adpt->phy.open(adpt);
+	if (ret) {
+		emac_mac_down(adpt);
+		emac_mac_rx_tx_rings_free_all(adpt);
+		free_irq(irq->irq, irq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -278,7 +304,11 @@ static int emac_close(struct net_device *netdev)
 
 	mutex_lock(&adpt->reset_lock);
 
+<<<<<<< HEAD
 	emac_sgmii_close(adpt);
+=======
+	adpt->phy.close(adpt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	emac_mac_down(adpt);
 	emac_mac_rx_tx_rings_free_all(adpt);
 
@@ -615,6 +645,7 @@ static int emac_probe(struct platform_device *pdev)
 	u32 reg;
 	int ret;
 
+<<<<<<< HEAD
 	/* The TPD buffer address is limited to:
 	 * 1. PTP:	45bits. (Driver doesn't support yet.)
 	 * 2. NON-PTP:	46bits.
@@ -623,6 +654,22 @@ static int emac_probe(struct platform_device *pdev)
 	if (ret) {
 		dev_err(&pdev->dev, "could not set DMA mask\n");
 		return ret;
+=======
+	/* The EMAC itself is capable of 64-bit DMA, so try that first. */
+	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+	if (ret) {
+		/* Some platforms may restrict the EMAC's address bus to less
+		 * then the size of DDR. In this case, we need to try a
+		 * smaller mask.  We could try every possible smaller mask,
+		 * but that's overkill.  Instead, just fall to 32-bit, which
+		 * should always work.
+		 */
+		ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+		if (ret) {
+			dev_err(&pdev->dev, "could not set DMA mask\n");
+			return ret;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	netdev = alloc_etherdev(sizeof(struct emac_adapter));
@@ -761,10 +808,18 @@ static void emac_shutdown(struct platform_device *pdev)
 {
 	struct net_device *netdev = dev_get_drvdata(&pdev->dev);
 	struct emac_adapter *adpt = netdev_priv(netdev);
+<<<<<<< HEAD
 
 	if (netdev->flags & IFF_UP) {
 		/* Closing the SGMII turns off its interrupts */
 		emac_sgmii_close(adpt);
+=======
+	struct emac_sgmii *sgmii = &adpt->phy;
+
+	if (netdev->flags & IFF_UP) {
+		/* Closing the SGMII turns off its interrupts */
+		sgmii->close(adpt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Resetting the MAC turns off all DMA and its interrupts */
 		emac_mac_reset(adpt);

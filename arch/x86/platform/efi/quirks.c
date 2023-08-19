@@ -75,7 +75,11 @@ struct quark_security_header {
 	u32 rsvd[2];
 };
 
+<<<<<<< HEAD
 static const efi_char16_t efi_dummy_name[] = L"DUMMY";
+=======
+static efi_char16_t efi_dummy_name[6] = { 'D', 'U', 'M', 'M', 'Y', 0 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static bool efi_no_storage_paranoia;
 
@@ -105,11 +109,19 @@ early_param("efi_no_storage_paranoia", setup_storage_paranoia);
 */
 void efi_delete_dummy_variable(void)
 {
+<<<<<<< HEAD
 	efi.set_variable_nonblocking((efi_char16_t *)efi_dummy_name,
 				     &EFI_DUMMY_GUID,
 				     EFI_VARIABLE_NON_VOLATILE |
 				     EFI_VARIABLE_BOOTSERVICE_ACCESS |
 				     EFI_VARIABLE_RUNTIME_ACCESS, 0, NULL);
+=======
+	efi.set_variable(efi_dummy_name, &EFI_DUMMY_GUID,
+			 EFI_VARIABLE_NON_VOLATILE |
+			 EFI_VARIABLE_BOOTSERVICE_ACCESS |
+			 EFI_VARIABLE_RUNTIME_ACCESS,
+			 0, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -177,13 +189,21 @@ efi_status_t efi_query_variable_store(u32 attributes, unsigned long size,
 		 * that by attempting to use more space than is available.
 		 */
 		unsigned long dummy_size = remaining_size + 1024;
+<<<<<<< HEAD
 		void *dummy = kzalloc(dummy_size, GFP_KERNEL);
+=======
+		void *dummy = kzalloc(dummy_size, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!dummy)
 			return EFI_OUT_OF_RESOURCES;
 
+<<<<<<< HEAD
 		status = efi.set_variable((efi_char16_t *)efi_dummy_name,
 					  &EFI_DUMMY_GUID,
+=======
+		status = efi.set_variable(efi_dummy_name, &EFI_DUMMY_GUID,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  EFI_VARIABLE_NON_VOLATILE |
 					  EFI_VARIABLE_BOOTSERVICE_ACCESS |
 					  EFI_VARIABLE_RUNTIME_ACCESS,
@@ -248,8 +268,12 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
 	int num_entries;
 	void *new;
 
+<<<<<<< HEAD
 	if (efi_mem_desc_lookup(addr, &md) ||
 	    md.type != EFI_BOOT_SERVICES_DATA) {
+=======
+	if (efi_mem_desc_lookup(addr, &md)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("Failed to lookup EFI memory descriptor for %pa\n", &addr);
 		return;
 	}
@@ -259,10 +283,13 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
 		return;
 	}
 
+<<<<<<< HEAD
 	/* No need to reserve regions that will never be freed. */
 	if (md.attribute & EFI_MEMORY_RUNTIME)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size += addr % EFI_PAGE_SIZE;
 	size = round_up(size, EFI_PAGE_SIZE);
 	addr = round_down(addr, EFI_PAGE_SIZE);
@@ -292,6 +319,11 @@ void __init efi_arch_mem_reserve(phys_addr_t addr, u64 size)
 	early_memunmap(new, new_size);
 
 	efi_memmap_install(new_phys, num_entries);
+<<<<<<< HEAD
+=======
+	e820__range_update(addr, size, E820_TYPE_RAM, E820_TYPE_RESERVED);
+	e820__update_table(e820_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

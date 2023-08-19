@@ -151,6 +151,7 @@ etrap_save:	save	%g2, -STACK_BIAS, %sp
 		stx	%g6, [%sp + PTREGS_OFF + PT_V9_G6]
 		stx	%g7, [%sp + PTREGS_OFF + PT_V9_G7]
 		or	%l7, %l0, %l7
+<<<<<<< HEAD
 661:		sethi	%hi(TSTATE_TSO | TSTATE_PEF), %l0
 		/* If userspace is using ADI, it could potentially pass
 		 * a pointer with version tag embedded in it. To maintain
@@ -177,6 +178,9 @@ etrap_save:	save	%g2, -STACK_BIAS, %sp
 		.word	661b
 		.word 0xaf902001	/* wrpr %g0, 1, %pmcdper */
 		.previous
+=======
+		sethi	%hi(TSTATE_TSO | TSTATE_PEF), %l0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		or	%l7, %l0, %l7
 		wrpr	%l2, %tnpc
 		wrpr	%l7, (TSTATE_PRIV | TSTATE_IE), %tstate

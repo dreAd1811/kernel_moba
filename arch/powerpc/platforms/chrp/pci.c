@@ -31,7 +31,11 @@ void __iomem *gg2_pci_config_base;
  * limit the bus number to 3 bits
  */
 
+<<<<<<< HEAD
 static int gg2_read_config(struct pci_bus *bus, unsigned int devfn, int off,
+=======
+int gg2_read_config(struct pci_bus *bus, unsigned int devfn, int off,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   int len, u32 *val)
 {
 	volatile void __iomem *cfg_data;
@@ -58,7 +62,11 @@ static int gg2_read_config(struct pci_bus *bus, unsigned int devfn, int off,
 	return PCIBIOS_SUCCESSFUL;
 }
 
+<<<<<<< HEAD
 static int gg2_write_config(struct pci_bus *bus, unsigned int devfn, int off,
+=======
+int gg2_write_config(struct pci_bus *bus, unsigned int devfn, int off,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    int len, u32 val)
 {
 	volatile void __iomem *cfg_data;
@@ -94,8 +102,13 @@ static struct pci_ops gg2_pci_ops =
 /*
  * Access functions for PCI config space using RTAS calls.
  */
+<<<<<<< HEAD
 static int rtas_read_config(struct pci_bus *bus, unsigned int devfn, int offset,
 			    int len, u32 *val)
+=======
+int rtas_read_config(struct pci_bus *bus, unsigned int devfn, int offset,
+		     int len, u32 *val)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_controller *hose = pci_bus_to_host(bus);
 	unsigned long addr = (offset & 0xff) | ((devfn & 0xff) << 8)
@@ -109,8 +122,13 @@ static int rtas_read_config(struct pci_bus *bus, unsigned int devfn, int offset,
 	return rval? PCIBIOS_DEVICE_NOT_FOUND: PCIBIOS_SUCCESSFUL;
 }
 
+<<<<<<< HEAD
 static int rtas_write_config(struct pci_bus *bus, unsigned int devfn, int offset,
 			     int len, u32 val)
+=======
+int rtas_write_config(struct pci_bus *bus, unsigned int devfn, int offset,
+		      int len, u32 val)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_controller *hose = pci_bus_to_host(bus);
 	unsigned long addr = (offset & 0xff) | ((devfn & 0xff) << 8)

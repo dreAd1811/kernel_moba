@@ -16,7 +16,10 @@
 #include <asm/asm-offsets.h>
 #include <asm/cache.h>
 #include <asm/mmu.h>
+<<<<<<< HEAD
 #include <asm/feature-fixups.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 _GLOBAL(__setup_cpu_603)
 	mflr	r5
@@ -227,7 +230,11 @@ BEGIN_FTR_SECTION
 	beq	1f
 END_FTR_SECTION_IFSET(CPU_FTR_L3CR)
 	lwz	r6,CPU_SPEC_FEATURES(r4)
+<<<<<<< HEAD
 	andis.	r0,r6,CPU_FTR_L3_DISABLE_NAP@h
+=======
+	andi.	r0,r6,CPU_FTR_L3_DISABLE_NAP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	beq	1f
 	li	r7,CPU_FTR_CAN_NAP
 	andc	r6,r6,r7

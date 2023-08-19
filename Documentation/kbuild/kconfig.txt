@@ -2,9 +2,15 @@ This file contains some assistance for using "make *config".
 
 Use "make help" to list all of the possible configuration targets.
 
+<<<<<<< HEAD
 The xconfig ('qconf'), menuconfig ('mconf'), and nconfig ('nconf')
 programs also have embedded help text.  Be sure to check that for
 navigation, search, and other general help text.
+=======
+The xconfig ('qconf') and menuconfig ('mconf') programs also
+have embedded help text.  Be sure to check it for navigation,
+search, and other general help text.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ======================================================================
 General
@@ -17,16 +23,23 @@ this happens, using a previously working .config file and running
 for you, so you may find that you need to see what NEW kernel
 symbols have been introduced.
 
+<<<<<<< HEAD
 To see a list of new config symbols, use
+=======
+To see a list of new config symbols when using "make oldconfig", use
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cp user/some/old.config .config
 	make listnewconfig
 
 and the config program will list any new symbols, one per line.
 
+<<<<<<< HEAD
 Alternatively, you can use the brute force method:
 
 	make oldconfig
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	scripts/diffconfig .config.old .config | less
 
 ______________________________________________________________________
@@ -122,7 +135,11 @@ Examples:
 		15% of tristates will be set to 'y', 15% to 'm', 70% to 'n'
 
 ______________________________________________________________________
+<<<<<<< HEAD
 Environment variables for 'syncconfig'
+=======
+Environment variables for 'silentoldconfig'
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 KCONFIG_NOSILENTUPDATE
 --------------------------------------------------
@@ -163,7 +180,11 @@ Searching in menuconfig:
 		This lists all config symbols that contain "hotplug",
 		e.g., HOTPLUG_CPU, MEMORY_HOTPLUG.
 
+<<<<<<< HEAD
 	For search help, enter / followed by TAB-TAB (to highlight
+=======
+	For search help, enter / followed TAB-TAB-TAB (to highlight
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	<Help>) and Enter.  This will tell you that you can also use
 	regular expressions (regexes) in the search string, so if you
 	are not interested in MEMORY_HOTPLUG, you could try
@@ -206,6 +227,7 @@ Example:
 
 
 ======================================================================
+<<<<<<< HEAD
 nconfig
 --------------------------------------------------
 
@@ -239,6 +261,8 @@ Example:
 
 
 ======================================================================
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 xconfig
 --------------------------------------------------
 
@@ -266,7 +290,13 @@ gconfig
 
 Searching in gconfig:
 
+<<<<<<< HEAD
 	There is no search command in gconfig.  However, gconfig does
 	have several different viewing choices, modes, and options.
+=======
+	None (gconfig isn't maintained as well as xconfig or menuconfig);
+	however, gconfig does have a few more viewing choices than
+	xconfig does.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ###

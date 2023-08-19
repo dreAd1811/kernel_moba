@@ -100,7 +100,11 @@ ATOMIC_OP(xor)
  *
  * This is often used through atomic_inc_not_zero()
  */
+<<<<<<< HEAD
 static inline int atomic_fetch_add_unless(atomic_t *v, int a, int u)
+=======
+static inline int __atomic_add_unless(atomic_t *v, int a, int u)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int old, tmp;
 
@@ -119,7 +123,11 @@ static inline int atomic_fetch_add_unless(atomic_t *v, int a, int u)
 
 	return old;
 }
+<<<<<<< HEAD
 #define atomic_fetch_add_unless	atomic_fetch_add_unless
+=======
+#define __atomic_add_unless	__atomic_add_unless
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm-generic/atomic.h>
 

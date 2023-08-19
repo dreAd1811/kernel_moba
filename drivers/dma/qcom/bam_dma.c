@@ -46,7 +46,10 @@
 #include <linux/of_address.h>
 #include <linux/of_irq.h>
 #include <linux/of_dma.h>
+<<<<<<< HEAD
 #include <linux/circ_buf.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/clk.h>
 #include <linux/dmaengine.h>
 #include <linux/pm_runtime.h>
@@ -79,8 +82,11 @@ struct bam_async_desc {
 
 	struct bam_desc_hw *curr_desc;
 
+<<<<<<< HEAD
 	/* list node for the desc in the bam_chan list of descriptors */
 	struct list_head desc_node;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum dma_transfer_direction dir;
 	size_t length;
 	struct bam_desc_hw desc[0];
@@ -350,8 +356,11 @@ static const struct reg_offset_data bam_v1_7_reg_info[] = {
 #define BAM_DESC_FIFO_SIZE	SZ_32K
 #define MAX_DESCRIPTORS (BAM_DESC_FIFO_SIZE / sizeof(struct bam_desc_hw) - 1)
 #define BAM_FIFO_SIZE	(SZ_32K - 8)
+<<<<<<< HEAD
 #define IS_BUSY(chan)	(CIRC_SPACE(bchan->tail, bchan->head,\
 			 MAX_DESCRIPTORS + 1) == 0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct bam_chan {
 	struct virt_dma_chan vc;
@@ -361,6 +370,11 @@ struct bam_chan {
 	/* configuration from device tree */
 	u32 id;
 
+<<<<<<< HEAD
+=======
+	struct bam_async_desc *curr_txd;	/* current running dma */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* runtime configuration */
 	struct dma_slave_config slave;
 
@@ -375,8 +389,11 @@ struct bam_chan {
 	unsigned int initialized;	/* is the channel hw initialized? */
 	unsigned int paused;		/* is the channel paused? */
 	unsigned int reconfigure;	/* new slave config? */
+<<<<<<< HEAD
 	/* list of descriptors currently processed */
 	struct list_head desc_list;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct list_head node;
 };
@@ -451,7 +468,10 @@ static void bam_reset_channel(struct bam_chan *bchan)
 /**
  * bam_chan_init_hw - Initialize channel hardware
  * @bchan: bam channel
+<<<<<<< HEAD
  * @dir: DMA transfer direction
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function resets and initializes the BAM channel
  */
@@ -525,6 +545,7 @@ static int bam_alloc_chan(struct dma_chan *chan)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bam_pm_runtime_get_sync(struct device *dev)
 {
 	if (pm_runtime_enabled(dev))
@@ -533,6 +554,8 @@ static int bam_pm_runtime_get_sync(struct device *dev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * bam_free_chan - Frees dma resources associated with specific channel
  * @chan: specified channel
@@ -548,13 +571,21 @@ static void bam_free_chan(struct dma_chan *chan)
 	unsigned long flags;
 	int ret;
 
+<<<<<<< HEAD
 	ret = bam_pm_runtime_get_sync(bdev->dev);
+=======
+	ret = pm_runtime_get_sync(bdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return;
 
 	vchan_free_chan_resources(to_virt_chan(chan));
 
+<<<<<<< HEAD
 	if (!list_empty(&bchan->desc_list)) {
+=======
+	if (bchan->curr_txd) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(bchan->bdev->dev, "Cannot free busy channel\n");
 		goto err;
 	}
@@ -647,6 +678,11 @@ static struct dma_async_tx_descriptor *bam_prep_slave_sg(struct dma_chan *chan,
 
 	if (flags & DMA_PREP_INTERRUPT)
 		async_desc->flags |= DESC_FLAG_EOT;
+<<<<<<< HEAD
+=======
+	else
+		async_desc->flags |= DESC_FLAG_INT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	async_desc->num_desc = num_alloc;
 	async_desc->curr_desc = async_desc->desc;
@@ -674,7 +710,11 @@ static struct dma_async_tx_descriptor *bam_prep_slave_sg(struct dma_chan *chan,
 				remainder = 0;
 			}
 
+<<<<<<< HEAD
 			async_desc->length += le16_to_cpu(desc->size);
+=======
+			async_desc->length += desc->size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			desc++;
 		} while (remainder > 0);
 	}
@@ -688,7 +728,11 @@ err_out:
 
 /**
  * bam_dma_terminate_all - terminate all transactions on a channel
+<<<<<<< HEAD
  * @chan: bam dma channel
+=======
+ * @bchan: bam dma channel
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Dequeues and frees all transactions
  * No callbacks are done
@@ -697,16 +741,39 @@ err_out:
 static int bam_dma_terminate_all(struct dma_chan *chan)
 {
 	struct bam_chan *bchan = to_bam_chan(chan);
+<<<<<<< HEAD
 	struct bam_async_desc *async_desc, *tmp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flag;
 	LIST_HEAD(head);
 
 	/* remove all transactions, including active transaction */
 	spin_lock_irqsave(&bchan->vc.lock, flag);
+<<<<<<< HEAD
 	list_for_each_entry_safe(async_desc, tmp,
 				 &bchan->desc_list, desc_node) {
 		list_add(&async_desc->vd.node, &bchan->vc.desc_issued);
 		list_del(&async_desc->desc_node);
+=======
+	/*
+	 * If we have transactions queued, then some might be committed to the
+	 * hardware in the desc fifo.  The only way to reset the desc fifo is
+	 * to do a hardware reset (either by pipe or the entire block).
+	 * bam_chan_init_hw() will trigger a pipe reset, and also reinit the
+	 * pipe.  If the pipe is left disabled (default state after pipe reset)
+	 * and is accessed by a connected hardware engine, a fatal error in
+	 * the BAM will occur.  There is a small window where this could happen
+	 * with bam_chan_init_hw(), but it is assumed that the caller has
+	 * stopped activity on any attached hardware engine.  Make sure to do
+	 * this first so that the BAM hardware doesn't cause memory corruption
+	 * by accessing freed resources.
+	 */
+	if (bchan->curr_txd) {
+		bam_chan_init_hw(bchan, bchan->curr_txd->dir);
+		list_add(&bchan->curr_txd->vd.node, &bchan->vc.desc_issued);
+		bchan->curr_txd = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	vchan_get_all_descriptors(&bchan->vc, &head);
@@ -729,7 +796,11 @@ static int bam_pause(struct dma_chan *chan)
 	unsigned long flag;
 	int ret;
 
+<<<<<<< HEAD
 	ret = bam_pm_runtime_get_sync(bdev->dev);
+=======
+	ret = pm_runtime_get_sync(bdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -755,7 +826,11 @@ static int bam_resume(struct dma_chan *chan)
 	unsigned long flag;
 	int ret;
 
+<<<<<<< HEAD
 	ret = bam_pm_runtime_get_sync(bdev->dev);
+=======
+	ret = pm_runtime_get_sync(bdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -778,9 +853,15 @@ static int bam_resume(struct dma_chan *chan)
  */
 static u32 process_channel_irqs(struct bam_device *bdev)
 {
+<<<<<<< HEAD
 	u32 i, srcs, pipe_stts, offset, avail;
 	unsigned long flags;
 	struct bam_async_desc *async_desc, *tmp;
+=======
+	u32 i, srcs, pipe_stts;
+	unsigned long flags;
+	struct bam_async_desc *async_desc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	srcs = readl_relaxed(bam_addr(bdev, 0, BAM_IRQ_SRCS_EE));
 
@@ -800,6 +881,7 @@ static u32 process_channel_irqs(struct bam_device *bdev)
 		writel_relaxed(pipe_stts, bam_addr(bdev, i, BAM_P_IRQ_CLR));
 
 		spin_lock_irqsave(&bchan->vc.lock, flags);
+<<<<<<< HEAD
 
 		offset = readl_relaxed(bam_addr(bdev, i, BAM_P_SW_OFSTS)) &
 				       P_SW_OFSTS_MASK;
@@ -816,11 +898,20 @@ static u32 process_channel_irqs(struct bam_device *bdev)
 			/* Not enough data to read */
 			if (avail < async_desc->xfer_len)
 				break;
+=======
+		async_desc = bchan->curr_txd;
+
+		if (async_desc) {
+			async_desc->num_desc -= async_desc->xfer_len;
+			async_desc->curr_desc += async_desc->xfer_len;
+			bchan->curr_txd = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/* manage FIFO */
 			bchan->head += async_desc->xfer_len;
 			bchan->head %= MAX_DESCRIPTORS;
 
+<<<<<<< HEAD
 			async_desc->num_desc -= async_desc->xfer_len;
 			async_desc->curr_desc += async_desc->xfer_len;
 			avail -= async_desc->xfer_len;
@@ -837,6 +928,18 @@ static u32 process_channel_irqs(struct bam_device *bdev)
 					 &bchan->vc.desc_issued);
 			}
 			list_del(&async_desc->desc_node);
+=======
+			/*
+			 * if complete, process cookie.  Otherwise
+			 * push back to front of desc_issued so that
+			 * it gets restarted by the tasklet
+			 */
+			if (!async_desc->num_desc)
+				vchan_cookie_complete(&async_desc->vd);
+			else
+				list_add(&async_desc->vd.node,
+					&bchan->vc.desc_issued);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		spin_unlock_irqrestore(&bchan->vc.lock, flags);
@@ -864,7 +967,11 @@ static irqreturn_t bam_dma_irq(int irq, void *data)
 	if (srcs & P_IRQ)
 		tasklet_schedule(&bdev->task);
 
+<<<<<<< HEAD
 	ret = bam_pm_runtime_get_sync(bdev->dev);
+=======
+	ret = pm_runtime_get_sync(bdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -898,7 +1005,10 @@ static enum dma_status bam_tx_status(struct dma_chan *chan, dma_cookie_t cookie,
 		struct dma_tx_state *txstate)
 {
 	struct bam_chan *bchan = to_bam_chan(chan);
+<<<<<<< HEAD
 	struct bam_async_desc *async_desc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct virt_dma_desc *vd;
 	int ret;
 	size_t residue = 0;
@@ -914,6 +1024,7 @@ static enum dma_status bam_tx_status(struct dma_chan *chan, dma_cookie_t cookie,
 
 	spin_lock_irqsave(&bchan->vc.lock, flags);
 	vd = vchan_find_desc(&bchan->vc, cookie);
+<<<<<<< HEAD
 	if (vd) {
 		residue = container_of(vd, struct bam_async_desc, vd)->length;
 	} else {
@@ -926,6 +1037,13 @@ static enum dma_status bam_tx_status(struct dma_chan *chan, dma_cookie_t cookie,
 						async_desc->curr_desc[i].size);
 		}
 	}
+=======
+	if (vd)
+		residue = container_of(vd, struct bam_async_desc, vd)->length;
+	else if (bchan->curr_txd && bchan->curr_txd->vd.tx.cookie == cookie)
+		for (i = 0; i < bchan->curr_txd->num_desc; i++)
+			residue += bchan->curr_txd->curr_desc[i].size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_irqrestore(&bchan->vc.lock, flags);
 
@@ -948,6 +1066,7 @@ static void bam_apply_new_config(struct bam_chan *bchan,
 	struct bam_device *bdev = bchan->bdev;
 	u32 maxburst;
 
+<<<<<<< HEAD
 	if (!bdev->controlled_remotely) {
 		if (dir == DMA_DEV_TO_MEM)
 			maxburst = bchan->slave.src_maxburst;
@@ -957,31 +1076,51 @@ static void bam_apply_new_config(struct bam_chan *bchan,
 		writel_relaxed(maxburst,
 			       bam_addr(bdev, 0, BAM_DESC_CNT_TRSHLD));
 	}
+=======
+	if (dir == DMA_DEV_TO_MEM)
+		maxburst = bchan->slave.src_maxburst;
+	else
+		maxburst = bchan->slave.dst_maxburst;
+
+	writel_relaxed(maxburst, bam_addr(bdev, 0, BAM_DESC_CNT_TRSHLD));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bchan->reconfigure = 0;
 }
 
 /**
  * bam_start_dma - start next transaction
+<<<<<<< HEAD
  * @bchan: bam dma channel
+=======
+ * @bchan - bam dma channel
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static void bam_start_dma(struct bam_chan *bchan)
 {
 	struct virt_dma_desc *vd = vchan_next_desc(&bchan->vc);
 	struct bam_device *bdev = bchan->bdev;
+<<<<<<< HEAD
 	struct bam_async_desc *async_desc = NULL;
+=======
+	struct bam_async_desc *async_desc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bam_desc_hw *desc;
 	struct bam_desc_hw *fifo = PTR_ALIGN(bchan->fifo_virt,
 					sizeof(struct bam_desc_hw));
 	int ret;
+<<<<<<< HEAD
 	unsigned int avail;
 	struct dmaengine_desc_callback cb;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	lockdep_assert_held(&bchan->vc.lock);
 
 	if (!vd)
 		return;
 
+<<<<<<< HEAD
 	ret = bam_pm_runtime_get_sync(bdev->dev);
 	if (ret < 0)
 		return;
@@ -1050,6 +1189,55 @@ static void bam_start_dma(struct bam_chan *bchan)
 		list_add_tail(&async_desc->desc_node, &bchan->desc_list);
 	}
 
+=======
+	list_del(&vd->node);
+
+	async_desc = container_of(vd, struct bam_async_desc, vd);
+	bchan->curr_txd = async_desc;
+
+	ret = pm_runtime_get_sync(bdev->dev);
+	if (ret < 0)
+		return;
+
+	/* on first use, initialize the channel hardware */
+	if (!bchan->initialized)
+		bam_chan_init_hw(bchan, async_desc->dir);
+
+	/* apply new slave config changes, if necessary */
+	if (bchan->reconfigure)
+		bam_apply_new_config(bchan, async_desc->dir);
+
+	desc = bchan->curr_txd->curr_desc;
+
+	if (async_desc->num_desc > MAX_DESCRIPTORS)
+		async_desc->xfer_len = MAX_DESCRIPTORS;
+	else
+		async_desc->xfer_len = async_desc->num_desc;
+
+	/* set any special flags on the last descriptor */
+	if (async_desc->num_desc == async_desc->xfer_len)
+		desc[async_desc->xfer_len - 1].flags |=
+					cpu_to_le16(async_desc->flags);
+	else
+		desc[async_desc->xfer_len - 1].flags |=
+					cpu_to_le16(DESC_FLAG_INT);
+
+	if (bchan->tail + async_desc->xfer_len > MAX_DESCRIPTORS) {
+		u32 partial = MAX_DESCRIPTORS - bchan->tail;
+
+		memcpy(&fifo[bchan->tail], desc,
+				partial * sizeof(struct bam_desc_hw));
+		memcpy(fifo, &desc[partial], (async_desc->xfer_len - partial) *
+				sizeof(struct bam_desc_hw));
+	} else {
+		memcpy(&fifo[bchan->tail], desc,
+			async_desc->xfer_len * sizeof(struct bam_desc_hw));
+	}
+
+	bchan->tail += async_desc->xfer_len;
+	bchan->tail %= MAX_DESCRIPTORS;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* ensure descriptor writes and dma start not reordered */
 	wmb();
 	writel_relaxed(bchan->tail * sizeof(struct bam_desc_hw),
@@ -1077,7 +1265,11 @@ static void dma_tasklet(unsigned long data)
 		bchan = &bdev->channels[i];
 		spin_lock_irqsave(&bchan->vc.lock, flags);
 
+<<<<<<< HEAD
 		if (!list_empty(&bchan->vc.desc_issued) && !IS_BUSY(bchan))
+=======
+		if (!list_empty(&bchan->vc.desc_issued) && !bchan->curr_txd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bam_start_dma(bchan);
 		spin_unlock_irqrestore(&bchan->vc.lock, flags);
 	}
@@ -1098,7 +1290,11 @@ static void bam_issue_pending(struct dma_chan *chan)
 	spin_lock_irqsave(&bchan->vc.lock, flags);
 
 	/* if work pending and idle, start a transaction */
+<<<<<<< HEAD
 	if (vchan_issue_pending(&bchan->vc) && !IS_BUSY(bchan))
+=======
+	if (vchan_issue_pending(&bchan->vc) && !bchan->curr_txd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bam_start_dma(bchan);
 
 	spin_unlock_irqrestore(&bchan->vc.lock, flags);
@@ -1202,7 +1398,10 @@ static void bam_channel_init(struct bam_device *bdev, struct bam_chan *bchan,
 
 	vchan_init(&bchan->vc, &bdev->common);
 	bchan->vc.desc_free = bam_dma_free_desc;
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&bchan->desc_list);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id bam_of_match[] = {
@@ -1266,12 +1465,17 @@ static int bam_dma_probe(struct platform_device *pdev)
 	}
 
 	bdev->bamclk = devm_clk_get(bdev->dev, "bam_clk");
+<<<<<<< HEAD
 	if (IS_ERR(bdev->bamclk)) {
 		if (!bdev->controlled_remotely)
 			return PTR_ERR(bdev->bamclk);
 
 		bdev->bamclk = NULL;
 	}
+=======
+	if (IS_ERR(bdev->bamclk))
+		return PTR_ERR(bdev->bamclk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = clk_prepare_enable(bdev->bamclk);
 	if (ret) {
@@ -1346,11 +1550,14 @@ static int bam_dma_probe(struct platform_device *pdev)
 	if (ret)
 		goto err_unregister_dma;
 
+<<<<<<< HEAD
 	if (bdev->controlled_remotely) {
 		pm_runtime_disable(&pdev->dev);
 		return 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_irq_safe(&pdev->dev);
 	pm_runtime_set_autosuspend_delay(&pdev->dev, BAM_DMA_AUTOSUSPEND_DELAY);
 	pm_runtime_use_autosuspend(&pdev->dev);
@@ -1434,8 +1641,12 @@ static int __maybe_unused bam_dma_suspend(struct device *dev)
 {
 	struct bam_device *bdev = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
 	if (!bdev->controlled_remotely)
 		pm_runtime_force_suspend(dev);
+=======
+	pm_runtime_force_suspend(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk_unprepare(bdev->bamclk);
 
@@ -1451,8 +1662,12 @@ static int __maybe_unused bam_dma_resume(struct device *dev)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (!bdev->controlled_remotely)
 		pm_runtime_force_resume(dev);
+=======
+	pm_runtime_force_resume(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

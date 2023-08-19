@@ -99,8 +99,12 @@ err1:
 
 int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
 		      struct ib_srq_init_attr *init,
+<<<<<<< HEAD
 		      struct ib_ucontext *context,
 		      struct rxe_create_srq_resp __user *uresp)
+=======
+		      struct ib_ucontext *context, struct ib_udata *udata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 	int srq_wqe_size;
@@ -127,22 +131,35 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
 
 	srq->rq.queue = q;
 
+<<<<<<< HEAD
 	err = do_mmap_info(rxe, uresp ? &uresp->mi : NULL, context, q->buf,
+=======
+	err = do_mmap_info(rxe, udata, false, context, q->buf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   q->buf_size, &q->ip);
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	if (uresp) {
 		if (copy_to_user(&uresp->srq_num, &srq->srq_num,
 				 sizeof(uresp->srq_num)))
 			return -EFAULT;
 	}
 
+=======
+	if (udata && udata->outlen >= sizeof(struct mminfo) + sizeof(u32)) {
+		if (copy_to_user(udata->outbuf + sizeof(struct mminfo),
+				 &srq->srq_num, sizeof(u32)))
+			return -EFAULT;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 int rxe_srq_from_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
 		      struct ib_srq_attr *attr, enum ib_srq_attr_mask mask,
+<<<<<<< HEAD
 		      struct rxe_modify_srq_cmd *ucmd)
 {
 	int err;
@@ -155,13 +172,46 @@ int rxe_srq_from_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
 		 * be in the outbuf not like this.
 		 */
 		mi = u64_to_user_ptr(ucmd->mmap_info_addr);
+=======
+		      struct ib_udata *udata)
+{
+	int err;
+	struct rxe_queue *q = srq->rq.queue;
+	struct mminfo mi = { .offset = 1, .size = 0};
+
+	if (mask & IB_SRQ_MAX_WR) {
+		/* Check that we can write the mminfo struct to user space */
+		if (udata && udata->inlen >= sizeof(__u64)) {
+			__u64 mi_addr;
+
+			/* Get address of user space mminfo struct */
+			err = ib_copy_from_udata(&mi_addr, udata,
+						 sizeof(mi_addr));
+			if (err)
+				goto err1;
+
+			udata->outbuf = (void __user *)(unsigned long)mi_addr;
+			udata->outlen = sizeof(mi);
+
+			if (!access_ok(VERIFY_WRITE,
+				       (void __user *)udata->outbuf,
+					udata->outlen)) {
+				err = -EFAULT;
+				goto err1;
+			}
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		err = rxe_queue_resize(q, &attr->max_wr,
 				       rcv_wqe_size(srq->rq.max_sge),
 				       srq->rq.queue->ip ?
 						srq->rq.queue->ip->context :
 						NULL,
+<<<<<<< HEAD
 				       mi, &srq->rq.producer_lock,
+=======
+				       udata, &srq->rq.producer_lock,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       &srq->rq.consumer_lock);
 		if (err)
 			goto err2;
@@ -175,5 +225,9 @@ int rxe_srq_from_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
 err2:
 	rxe_queue_cleanup(q);
 	srq->rq.queue = NULL;
+<<<<<<< HEAD
+=======
+err1:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }

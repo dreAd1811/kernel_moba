@@ -50,8 +50,12 @@ struct ath10k;
  * 4-byte aligned.
  */
 
+<<<<<<< HEAD
 #define HTC_HOST_MAX_MSG_PER_RX_BUNDLE        8
 #define HTC_HOST_MAX_MSG_PER_TX_BUNDLE        16
+=======
+#define HTC_HOST_MAX_MSG_PER_BUNDLE        8
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum ath10k_htc_tx_flags {
 	ATH10K_HTC_FLAG_NEED_CREDIT_UPDATE = 0x01,
@@ -59,7 +63,10 @@ enum ath10k_htc_tx_flags {
 };
 
 enum ath10k_htc_rx_flags {
+<<<<<<< HEAD
 	ATH10K_HTC_FLAGS_RECV_1MORE_BLOCK = 0x01,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ATH10K_HTC_FLAG_TRAILER_PRESENT = 0x02,
 	ATH10K_HTC_FLAG_BUNDLE_MASK     = 0xF0
 };

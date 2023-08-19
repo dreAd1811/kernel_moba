@@ -26,7 +26,10 @@
 #include <linux/init.h>
 #include <linux/input/mt.h>
 #include <linux/interrupt.h>
+<<<<<<< HEAD
 #include <linux/irq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/kernel.h>
@@ -36,13 +39,20 @@
 #include <linux/jiffies.h>
 #include <linux/completion.h>
 #include <linux/of.h>
+<<<<<<< HEAD
 #include <linux/property.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regulator/consumer.h>
 #include <asm/unaligned.h>
 
 #include "elan_i2c.h"
 
 #define DRIVER_NAME		"elan_i2c"
+<<<<<<< HEAD
+=======
+#define ELAN_DRIVER_VERSION	"1.6.3"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ELAN_VENDOR_ID		0x04f3
 #define ETP_MAX_PRESSURE	255
 #define ETP_FWIDTH_REDUCE	90
@@ -52,7 +62,10 @@
 #define ETP_MAX_FINGERS		5
 #define ETP_FINGER_DATA_LEN	5
 #define ETP_REPORT_ID		0x5D
+<<<<<<< HEAD
 #define ETP_TP_REPORT_ID	0x5E
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ETP_REPORT_ID_OFFSET	2
 #define ETP_TOUCH_INFO_OFFSET	3
 #define ETP_FINGER_DATA_OFFSET	4
@@ -63,7 +76,10 @@
 struct elan_tp_data {
 	struct i2c_client	*client;
 	struct input_dev	*input;
+<<<<<<< HEAD
 	struct input_dev	*tp_input; /* trackpoint input node */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct regulator	*vcc;
 
 	const struct elan_transport_ops *ops;
@@ -933,6 +949,7 @@ static void elan_report_absolute(struct elan_tp_data *data, u8 *packet)
 	input_sync(input);
 }
 
+<<<<<<< HEAD
 static void elan_report_trackpoint(struct elan_tp_data *data, u8 *report)
 {
 	struct input_dev *input = data->tp_input;
@@ -960,6 +977,8 @@ static void elan_report_trackpoint(struct elan_tp_data *data, u8 *report)
 	input_sync(input);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t elan_isr(int irq, void *dev_id)
 {
 	struct elan_tp_data *data = dev_id;
@@ -981,6 +1000,7 @@ static irqreturn_t elan_isr(int irq, void *dev_id)
 	if (error)
 		goto out;
 
+<<<<<<< HEAD
 	switch (report[ETP_REPORT_ID_OFFSET]) {
 	case ETP_REPORT_ID:
 		elan_report_absolute(data, report);
@@ -992,6 +1012,13 @@ static irqreturn_t elan_isr(int irq, void *dev_id)
 		dev_err(dev, "invalid report id data (%x)\n",
 			report[ETP_REPORT_ID_OFFSET]);
 	}
+=======
+	if (report[ETP_REPORT_ID_OFFSET] != ETP_REPORT_ID)
+		dev_err(dev, "invalid report id data (%x)\n",
+			report[ETP_REPORT_ID_OFFSET]);
+	else
+		elan_report_absolute(data, report);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	return IRQ_HANDLED;
@@ -1002,6 +1029,7 @@ out:
  * Elan initialization functions
  ******************************************************************
  */
+<<<<<<< HEAD
 
 static int elan_setup_trackpoint_input_device(struct elan_tp_data *data)
 {
@@ -1032,6 +1060,8 @@ static int elan_setup_trackpoint_input_device(struct elan_tp_data *data)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int elan_setup_input_device(struct elan_tp_data *data)
 {
 	struct device *dev = &data->client->dev;
@@ -1206,6 +1236,7 @@ static int elan_probe(struct i2c_client *client,
 	if (error)
 		return error;
 
+<<<<<<< HEAD
 	if (device_property_read_bool(&client->dev, "elan,trackpoint")) {
 		error = elan_setup_trackpoint_input_device(data);
 		if (error)
@@ -1220,6 +1251,13 @@ static int elan_probe(struct i2c_client *client,
 	irqflags = irq_get_trigger_type(client->irq);
 	if (!irqflags)
 		irqflags = IRQF_TRIGGER_FALLING;
+=======
+	/*
+	 * Systems using device tree should set up interrupt via DTS,
+	 * the rest will use the default falling edge interrupts.
+	 */
+	irqflags = dev->of_node ? 0 : IRQF_TRIGGER_FALLING;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	error = devm_request_threaded_irq(dev, client->irq, NULL, elan_isr,
 					  irqflags | IRQF_ONESHOT,
@@ -1249,6 +1287,7 @@ static int elan_probe(struct i2c_client *client,
 		return error;
 	}
 
+<<<<<<< HEAD
 	if (data->tp_input) {
 		error = input_register_device(data->tp_input);
 		if (error) {
@@ -1259,6 +1298,8 @@ static int elan_probe(struct i2c_client *client,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Systems using device tree should set up wakeup via DTS,
 	 * the rest will configure device as wakeup source by default.
@@ -1345,6 +1386,10 @@ static const struct acpi_device_id elan_acpi_id[] = {
 	{ "ELAN0606", 0 },
 	{ "ELAN0607", 0 },
 	{ "ELAN0608", 0 },
+<<<<<<< HEAD
+=======
+	{ "ELAN0605", 0 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ "ELAN0609", 0 },
 	{ "ELAN060B", 0 },
 	{ "ELAN060C", 0 },
@@ -1410,3 +1455,7 @@ module_i2c_driver(elan_driver);
 MODULE_AUTHOR("Duson Lin <dusonlin@emc.com.tw>");
 MODULE_DESCRIPTION("Elan I2C/SMBus Touchpad driver");
 MODULE_LICENSE("GPL");
+<<<<<<< HEAD
+=======
+MODULE_VERSION(ELAN_DRIVER_VERSION);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -391,7 +391,11 @@ EM28xx cards list
    * - 94
      - PCTV tripleStick (292e)
      - em28178
+<<<<<<< HEAD
      - 2013:025f, 2013:0264, 2040:0264, 2040:8264, 2040:8268, 2040:8268
+=======
+     - 2013:025f, 2040:0264
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    * - 95
      - Leadtek VC100
      - em2861
@@ -411,16 +415,27 @@ EM28xx cards list
    * - 99
      - Hauppauge WinTV-dualHD DVB
      - em28174
+<<<<<<< HEAD
      - 2040:0265, 2040:8265
    * - 100
      - Hauppauge WinTV-dualHD 01595 ATSC/QAM
      - em28174
      - 2040:026d, 2040:826d
+=======
+     - 2040:0265
+   * - 100
+     - Hauppauge WinTV-dualHD 01595 ATSC/QAM
+     - em28174
+     - 2040:026d
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    * - 101
      - Terratec Cinergy H6 rev. 2
      - em2884
      - 0ccd:10b2
+<<<<<<< HEAD
    * - 102
      - :ZOLID HYBRID TV STICK
      - em2882
      -
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -1,10 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vsp1_lut.c  --  R-Car VSP1 Look-Up Table
  *
  * Copyright (C) 2013 Renesas Corporation
  *
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/device.h>
@@ -19,16 +30,26 @@
 #define LUT_MIN_SIZE				4U
 #define LUT_MAX_SIZE				8190U
 
+<<<<<<< HEAD
 #define LUT_SIZE				256
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Device Access
  */
 
+<<<<<<< HEAD
 static inline void vsp1_lut_write(struct vsp1_lut *lut,
 				  struct vsp1_dl_body *dlb, u32 reg, u32 data)
 {
 	vsp1_dl_body_write(dlb, reg, data);
+=======
+static inline void vsp1_lut_write(struct vsp1_lut *lut, struct vsp1_dl_list *dl,
+				  u32 reg, u32 data)
+{
+	vsp1_dl_list_write(dl, reg, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -----------------------------------------------------------------------------
@@ -42,19 +63,32 @@ static int lut_set_table(struct vsp1_lut *lut, struct v4l2_ctrl *ctrl)
 	struct vsp1_dl_body *dlb;
 	unsigned int i;
 
+<<<<<<< HEAD
 	dlb = vsp1_dl_body_get(lut->pool);
 	if (!dlb)
 		return -ENOMEM;
 
 	for (i = 0; i < LUT_SIZE; ++i)
 		vsp1_dl_body_write(dlb, VI6_LUT_TABLE + 4 * i,
+=======
+	dlb = vsp1_dl_fragment_alloc(lut->entity.vsp1, 256);
+	if (!dlb)
+		return -ENOMEM;
+
+	for (i = 0; i < 256; ++i)
+		vsp1_dl_fragment_write(dlb, VI6_LUT_TABLE + 4 * i,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       ctrl->p_new.p_u32[i]);
 
 	spin_lock_irq(&lut->lock);
 	swap(lut->lut, dlb);
 	spin_unlock_irq(&lut->lock);
 
+<<<<<<< HEAD
 	vsp1_dl_body_put(dlb);
+=======
+	vsp1_dl_fragment_free(dlb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -85,25 +119,43 @@ static const struct v4l2_ctrl_config lut_table_control = {
 	.max = 0x00ffffff,
 	.step = 1,
 	.def = 0,
+<<<<<<< HEAD
 	.dims = { LUT_SIZE },
+=======
+	.dims = { 256},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* -----------------------------------------------------------------------------
  * V4L2 Subdevice Pad Operations
  */
 
+<<<<<<< HEAD
 static const unsigned int lut_codes[] = {
 	MEDIA_BUS_FMT_ARGB8888_1X32,
 	MEDIA_BUS_FMT_AHSV8888_1X32,
 	MEDIA_BUS_FMT_AYUV8_1X32,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lut_enum_mbus_code(struct v4l2_subdev *subdev,
 			      struct v4l2_subdev_pad_config *cfg,
 			      struct v4l2_subdev_mbus_code_enum *code)
 {
+<<<<<<< HEAD
 	return vsp1_subdev_enum_mbus_code(subdev, cfg, code, lut_codes,
 					  ARRAY_SIZE(lut_codes));
+=======
+	static const unsigned int codes[] = {
+		MEDIA_BUS_FMT_ARGB8888_1X32,
+		MEDIA_BUS_FMT_AHSV8888_1X32,
+		MEDIA_BUS_FMT_AYUV8_1X32,
+	};
+
+	return vsp1_subdev_enum_mbus_code(subdev, cfg, code, codes,
+					  ARRAY_SIZE(codes));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int lut_enum_frame_size(struct v4l2_subdev *subdev,
@@ -119,10 +171,58 @@ static int lut_set_format(struct v4l2_subdev *subdev,
 			  struct v4l2_subdev_pad_config *cfg,
 			  struct v4l2_subdev_format *fmt)
 {
+<<<<<<< HEAD
 	return vsp1_subdev_set_pad_format(subdev, cfg, fmt, lut_codes,
 					  ARRAY_SIZE(lut_codes),
 					  LUT_MIN_SIZE, LUT_MIN_SIZE,
 					  LUT_MAX_SIZE, LUT_MAX_SIZE);
+=======
+	struct vsp1_lut *lut = to_lut(subdev);
+	struct v4l2_subdev_pad_config *config;
+	struct v4l2_mbus_framefmt *format;
+	int ret = 0;
+
+	mutex_lock(&lut->entity.lock);
+
+	config = vsp1_entity_get_pad_config(&lut->entity, cfg, fmt->which);
+	if (!config) {
+		ret = -EINVAL;
+		goto done;
+	}
+
+	/* Default to YUV if the requested format is not supported. */
+	if (fmt->format.code != MEDIA_BUS_FMT_ARGB8888_1X32 &&
+	    fmt->format.code != MEDIA_BUS_FMT_AHSV8888_1X32 &&
+	    fmt->format.code != MEDIA_BUS_FMT_AYUV8_1X32)
+		fmt->format.code = MEDIA_BUS_FMT_AYUV8_1X32;
+
+	format = vsp1_entity_get_pad_format(&lut->entity, config, fmt->pad);
+
+	if (fmt->pad == LUT_PAD_SOURCE) {
+		/* The LUT output format can't be modified. */
+		fmt->format = *format;
+		goto done;
+	}
+
+	format->code = fmt->format.code;
+	format->width = clamp_t(unsigned int, fmt->format.width,
+				LUT_MIN_SIZE, LUT_MAX_SIZE);
+	format->height = clamp_t(unsigned int, fmt->format.height,
+				 LUT_MIN_SIZE, LUT_MAX_SIZE);
+	format->field = V4L2_FIELD_NONE;
+	format->colorspace = V4L2_COLORSPACE_SRGB;
+
+	fmt->format = *format;
+
+	/* Propagate the format to the source pad. */
+	format = vsp1_entity_get_pad_format(&lut->entity, config,
+					    LUT_PAD_SOURCE);
+	*format = fmt->format;
+
+done:
+	mutex_unlock(&lut->entity.lock);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* -----------------------------------------------------------------------------
@@ -145,6 +245,7 @@ static const struct v4l2_subdev_ops lut_ops = {
  * VSP1 Entity Operations
  */
 
+<<<<<<< HEAD
 static void lut_configure_stream(struct vsp1_entity *entity,
 				 struct vsp1_pipeline *pipe,
 				 struct vsp1_dl_body *dlb)
@@ -187,6 +288,39 @@ static const struct vsp1_entity_operations lut_entity_ops = {
 	.configure_stream = lut_configure_stream,
 	.configure_frame = lut_configure_frame,
 	.destroy = lut_destroy,
+=======
+static void lut_configure(struct vsp1_entity *entity,
+			  struct vsp1_pipeline *pipe,
+			  struct vsp1_dl_list *dl,
+			  enum vsp1_entity_params params)
+{
+	struct vsp1_lut *lut = to_lut(&entity->subdev);
+	struct vsp1_dl_body *dlb;
+	unsigned long flags;
+
+	switch (params) {
+	case VSP1_ENTITY_PARAMS_INIT:
+		vsp1_lut_write(lut, dl, VI6_LUT_CTRL, VI6_LUT_CTRL_EN);
+		break;
+
+	case VSP1_ENTITY_PARAMS_PARTITION:
+		break;
+
+	case VSP1_ENTITY_PARAMS_RUNTIME:
+		spin_lock_irqsave(&lut->lock, flags);
+		dlb = lut->lut;
+		lut->lut = NULL;
+		spin_unlock_irqrestore(&lut->lock, flags);
+
+		if (dlb)
+			vsp1_dl_list_add_fragment(dl, dlb);
+		break;
+	}
+}
+
+static const struct vsp1_entity_operations lut_entity_ops = {
+	.configure = lut_configure,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* -----------------------------------------------------------------------------
@@ -212,6 +346,7 @@ struct vsp1_lut *vsp1_lut_create(struct vsp1_device *vsp1)
 	if (ret < 0)
 		return ERR_PTR(ret);
 
+<<<<<<< HEAD
 	/*
 	 * Pre-allocate a body pool, with 3 bodies allowing a userspace update
 	 * before the hardware has committed a previous set of tables, handling
@@ -221,6 +356,8 @@ struct vsp1_lut *vsp1_lut_create(struct vsp1_device *vsp1)
 	if (!lut->pool)
 		return ERR_PTR(-ENOMEM);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Initialize the control handler. */
 	v4l2_ctrl_handler_init(&lut->ctrls, 1);
 	v4l2_ctrl_new_custom(&lut->ctrls, &lut_table_control, NULL);

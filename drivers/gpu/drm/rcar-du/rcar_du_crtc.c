@@ -125,6 +125,7 @@ static void rcar_du_dpll_divider(struct rcar_du_crtc *rcrtc,
 	unsigned int m;
 	unsigned int n;
 
+<<<<<<< HEAD
 	/*
 	 *   fin                                 fvco        fout       fclkout
 	 * in --> [1/M] --> |PD| -> [LPF] -> [VCO] -> [1/P] -+-> [1/FDPLL] -> out
@@ -174,6 +175,16 @@ static void rcar_du_dpll_divider(struct rcar_du_crtc *rcrtc,
 
 				output = fout / (fdpll + 1);
 				if (output >= 400 * 1000 * 1000)
+=======
+	for (n = 39; n < 120; n++) {
+		for (m = 0; m < 4; m++) {
+			for (fdpll = 1; fdpll < 32; fdpll++) {
+				unsigned long output;
+
+				output = input * (n + 1) / (m + 1)
+				       / (fdpll + 1);
+				if (output >= 400000000)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					continue;
 
 				diff = abs((long)output - (long)target);
@@ -360,8 +371,12 @@ static void rcar_du_crtc_update_planes(struct rcar_du_crtc *rcrtc)
 		struct rcar_du_plane *plane = &rcrtc->group->planes[i];
 		unsigned int j;
 
+<<<<<<< HEAD
 		if (plane->plane.state->crtc != &rcrtc->crtc ||
 		    !plane->plane.state->visible)
+=======
+		if (plane->plane.state->crtc != &rcrtc->crtc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		/* Insert the plane in the sorted planes array. */
@@ -599,6 +614,44 @@ static void rcar_du_crtc_stop(struct rcar_du_crtc *rcrtc)
 	rcar_du_group_start_stop(rcrtc->group, false);
 }
 
+<<<<<<< HEAD
+=======
+void rcar_du_crtc_suspend(struct rcar_du_crtc *rcrtc)
+{
+	if (rcar_du_has(rcrtc->group->dev, RCAR_DU_FEATURE_VSP1_SOURCE))
+		rcar_du_vsp_disable(rcrtc);
+
+	rcar_du_crtc_stop(rcrtc);
+	rcar_du_crtc_put(rcrtc);
+}
+
+void rcar_du_crtc_resume(struct rcar_du_crtc *rcrtc)
+{
+	unsigned int i;
+
+	if (!rcrtc->crtc.state->active)
+		return;
+
+	rcar_du_crtc_get(rcrtc);
+	rcar_du_crtc_setup(rcrtc);
+
+	/* Commit the planes state. */
+	if (!rcar_du_has(rcrtc->group->dev, RCAR_DU_FEATURE_VSP1_SOURCE)) {
+		for (i = 0; i < rcrtc->group->num_planes; ++i) {
+			struct rcar_du_plane *plane = &rcrtc->group->planes[i];
+
+			if (plane->plane.state->crtc != &rcrtc->crtc)
+				continue;
+
+			rcar_du_plane_setup(plane);
+		}
+	}
+
+	rcar_du_crtc_update_planes(rcrtc);
+	rcar_du_crtc_start(rcrtc);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * CRTC Functions
  */
@@ -691,6 +744,7 @@ static const struct drm_crtc_helper_funcs crtc_helper_funcs = {
 	.atomic_disable = rcar_du_crtc_atomic_disable,
 };
 
+<<<<<<< HEAD
 static struct drm_crtc_state *
 rcar_du_crtc_atomic_duplicate_state(struct drm_crtc *crtc)
 {
@@ -737,6 +791,8 @@ static void rcar_du_crtc_reset(struct drm_crtc *crtc)
 	crtc->state->crtc = crtc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rcar_du_crtc_enable_vblank(struct drm_crtc *crtc)
 {
 	struct rcar_du_crtc *rcrtc = to_rcar_crtc(crtc);
@@ -756,6 +812,7 @@ static void rcar_du_crtc_disable_vblank(struct drm_crtc *crtc)
 	rcrtc->vblank_enable = false;
 }
 
+<<<<<<< HEAD
 static int rcar_du_crtc_set_crc_source(struct drm_crtc *crtc,
 				       const char *source_name,
 				       size_t *values_cnt)
@@ -847,10 +904,20 @@ static const struct drm_crtc_funcs crtc_funcs_gen2 = {
 	.page_flip = drm_atomic_helper_page_flip,
 	.atomic_duplicate_state = rcar_du_crtc_atomic_duplicate_state,
 	.atomic_destroy_state = rcar_du_crtc_atomic_destroy_state,
+=======
+static const struct drm_crtc_funcs crtc_funcs = {
+	.reset = drm_atomic_helper_crtc_reset,
+	.destroy = drm_crtc_cleanup,
+	.set_config = drm_atomic_helper_set_config,
+	.page_flip = drm_atomic_helper_page_flip,
+	.atomic_duplicate_state = drm_atomic_helper_crtc_duplicate_state,
+	.atomic_destroy_state = drm_atomic_helper_crtc_destroy_state,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.enable_vblank = rcar_du_crtc_enable_vblank,
 	.disable_vblank = rcar_du_crtc_disable_vblank,
 };
 
+<<<<<<< HEAD
 static const struct drm_crtc_funcs crtc_funcs_gen3 = {
 	.reset = rcar_du_crtc_reset,
 	.destroy = drm_crtc_cleanup,
@@ -863,6 +930,8 @@ static const struct drm_crtc_funcs crtc_funcs_gen3 = {
 	.set_crc_source = rcar_du_crtc_set_crc_source,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Interrupt Handling
  */
@@ -909,8 +978,12 @@ static irqreturn_t rcar_du_crtc_irq(int irq, void *arg)
  * Initialization
  */
 
+<<<<<<< HEAD
 int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 			unsigned int hwindex)
+=======
+int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int index)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const unsigned int mmio_offsets[] = {
 		DU0_REG_OFFSET, DU1_REG_OFFSET, DU2_REG_OFFSET, DU3_REG_OFFSET
@@ -918,7 +991,11 @@ int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 
 	struct rcar_du_device *rcdu = rgrp->dev;
 	struct platform_device *pdev = to_platform_device(rcdu->dev);
+<<<<<<< HEAD
 	struct rcar_du_crtc *rcrtc = &rcdu->crtcs[swindex];
+=======
+	struct rcar_du_crtc *rcrtc = &rcdu->crtcs[index];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_crtc *crtc = &rcrtc->crtc;
 	struct drm_plane *primary;
 	unsigned int irqflags;
@@ -930,7 +1007,11 @@ int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 
 	/* Get the CRTC clock and the optional external clock. */
 	if (rcar_du_has(rcdu, RCAR_DU_FEATURE_CRTC_IRQ_CLOCK)) {
+<<<<<<< HEAD
 		sprintf(clk_name, "du.%u", hwindex);
+=======
+		sprintf(clk_name, "du.%u", index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		name = clk_name;
 	} else {
 		name = NULL;
@@ -938,16 +1019,28 @@ int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 
 	rcrtc->clock = devm_clk_get(rcdu->dev, name);
 	if (IS_ERR(rcrtc->clock)) {
+<<<<<<< HEAD
 		dev_err(rcdu->dev, "no clock for DU channel %u\n", hwindex);
 		return PTR_ERR(rcrtc->clock);
 	}
 
 	sprintf(clk_name, "dclkin.%u", hwindex);
+=======
+		dev_err(rcdu->dev, "no clock for CRTC %u\n", index);
+		return PTR_ERR(rcrtc->clock);
+	}
+
+	sprintf(clk_name, "dclkin.%u", index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk = devm_clk_get(rcdu->dev, clk_name);
 	if (!IS_ERR(clk)) {
 		rcrtc->extclock = clk;
 	} else if (PTR_ERR(rcrtc->clock) == -EPROBE_DEFER) {
+<<<<<<< HEAD
 		dev_info(rcdu->dev, "can't get external clock %u\n", hwindex);
+=======
+		dev_info(rcdu->dev, "can't get external clock %u\n", index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EPROBE_DEFER;
 	}
 
@@ -956,18 +1049,30 @@ int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 	spin_lock_init(&rcrtc->vblank_lock);
 
 	rcrtc->group = rgrp;
+<<<<<<< HEAD
 	rcrtc->mmio_offset = mmio_offsets[hwindex];
 	rcrtc->index = hwindex;
+=======
+	rcrtc->mmio_offset = mmio_offsets[index];
+	rcrtc->index = index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rcar_du_has(rcdu, RCAR_DU_FEATURE_VSP1_SOURCE))
 		primary = &rcrtc->vsp->planes[rcrtc->vsp_pipe].plane;
 	else
+<<<<<<< HEAD
 		primary = &rgrp->planes[swindex % 2].plane;
 
 	ret = drm_crtc_init_with_planes(rcdu->ddev, crtc, primary, NULL,
 					rcdu->info->gen <= 2 ?
 					&crtc_funcs_gen2 : &crtc_funcs_gen3,
 					NULL);
+=======
+		primary = &rgrp->planes[index % 2].plane;
+
+	ret = drm_crtc_init_with_planes(rcdu->ddev, crtc, primary,
+					NULL, &crtc_funcs, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		return ret;
 
@@ -978,8 +1083,12 @@ int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 
 	/* Register the interrupt handler. */
 	if (rcar_du_has(rcdu, RCAR_DU_FEATURE_CRTC_IRQ_CLOCK)) {
+<<<<<<< HEAD
 		/* The IRQ's are associated with the CRTC (sw)index. */
 		irq = platform_get_irq(pdev, swindex);
+=======
+		irq = platform_get_irq(pdev, index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		irqflags = 0;
 	} else {
 		irq = platform_get_irq(pdev, 0);
@@ -987,7 +1096,11 @@ int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 	}
 
 	if (irq < 0) {
+<<<<<<< HEAD
 		dev_err(rcdu->dev, "no IRQ for CRTC %u\n", swindex);
+=======
+		dev_err(rcdu->dev, "no IRQ for CRTC %u\n", index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return irq;
 	}
 
@@ -995,7 +1108,11 @@ int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 			       dev_name(rcdu->dev), rcrtc);
 	if (ret < 0) {
 		dev_err(rcdu->dev,
+<<<<<<< HEAD
 			"failed to register IRQ for CRTC %u\n", swindex);
+=======
+			"failed to register IRQ for CRTC %u\n", index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 

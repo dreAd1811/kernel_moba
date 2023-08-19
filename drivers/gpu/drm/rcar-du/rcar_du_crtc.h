@@ -21,8 +21,11 @@
 #include <drm/drmP.h>
 #include <drm/drm_crtc.h>
 
+<<<<<<< HEAD
 #include <media/vsp1.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rcar_du_group;
 struct rcar_du_vsp;
 
@@ -71,6 +74,7 @@ struct rcar_du_crtc {
 
 #define to_rcar_crtc(c)	container_of(c, struct rcar_du_crtc, crtc)
 
+<<<<<<< HEAD
 /**
  * struct rcar_du_crtc_state - Driver-specific CRTC state
  * @state: base DRM CRTC state
@@ -84,6 +88,8 @@ struct rcar_du_crtc_state {
 
 #define to_rcar_crtc_state(s) container_of(s, struct rcar_du_crtc_state, state)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rcar_du_output {
 	RCAR_DU_OUTPUT_DPAD0,
 	RCAR_DU_OUTPUT_DPAD1,
@@ -95,8 +101,12 @@ enum rcar_du_output {
 	RCAR_DU_OUTPUT_MAX,
 };
 
+<<<<<<< HEAD
 int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int swindex,
 			unsigned int hwindex);
+=======
+int rcar_du_crtc_create(struct rcar_du_group *rgrp, unsigned int index);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void rcar_du_crtc_suspend(struct rcar_du_crtc *rcrtc);
 void rcar_du_crtc_resume(struct rcar_du_crtc *rcrtc);
 

@@ -3,6 +3,7 @@ config ARM
 	bool
 	default y
 	select ARCH_CLOCKSOURCE_DATA
+<<<<<<< HEAD
 	select ARCH_DISCARD_MEMBLOCK if !HAVE_ARCH_PFN_VALID && !KEXEC
 	select ARCH_HAS_DEBUG_VIRTUAL if MMU
 	select ARCH_HAS_DEVMEM_IS_ALLOWED
@@ -12,6 +13,11 @@ config ARM
 	select ARCH_HAS_MEMBARRIER_SYNC_CORE
 	select ARCH_HAS_PTE_SPECIAL if ARM_LPAE
 	select ARCH_HAS_PHYS_TO_DMA
+=======
+	select ARCH_HAS_DEBUG_VIRTUAL
+	select ARCH_HAS_DEVMEM_IS_ALLOWED
+	select ARCH_HAS_ELF_RANDOMIZE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARCH_HAS_SET_MEMORY
 	select ARCH_HAS_STRICT_KERNEL_RWX if MMU && !XIP_KERNEL
 	select ARCH_HAS_STRICT_MODULE_RWX if MMU
@@ -25,11 +31,19 @@ config ARM
 	select ARCH_USE_BUILTIN_BSWAP
 	select ARCH_USE_CMPXCHG_LOCKREF
 	select ARCH_WANT_IPC_PARSE_VERSION
+<<<<<<< HEAD
+=======
+	select ARM_PSCI_FW if PM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select BUILDTIME_EXTABLE_SORT if MMU
 	select CLONE_BACKWARDS
 	select CPU_PM if (SUSPEND || CPU_IDLE)
 	select DCACHE_WORD_ACCESS if HAVE_EFFICIENT_UNALIGNED_ACCESS
+<<<<<<< HEAD
 	select DMA_DIRECT_OPS if !MMU
+=======
+	select DMA_NOOP_OPS if !MMU
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select EDAC_SUPPORT
 	select EDAC_ATOMIC_SCRUB
 	select GENERIC_ALLOCATOR
@@ -55,6 +69,7 @@ config ARM
 	select HAVE_ARCH_KGDB if !CPU_ENDIAN_BE32 && MMU
 	select HAVE_ARCH_MMAP_RND_BITS if MMU
 	select HAVE_ARCH_SECCOMP_FILTER if (AEABI && !OABI_COMPAT)
+<<<<<<< HEAD
 	select HAVE_ARCH_THREAD_STRUCT_WHITELIST
 	select HAVE_ARCH_TRACEHOOK
 	select HAVE_ARM_SMCCC if CPU_V7
@@ -62,6 +77,16 @@ config ARM
 	select HAVE_CONTEXT_TRACKING
 	select HAVE_C_RECORDMCOUNT
 	select HAVE_DEBUG_KMEMLEAK
+=======
+	select HAVE_ARCH_TRACEHOOK
+	select HAVE_ARM_SMCCC if CPU_V7
+	select HAVE_EBPF_JIT if !CPU_ENDIAN_BE32
+	select HAVE_CC_STACKPROTECTOR
+	select HAVE_CONTEXT_TRACKING
+	select HAVE_C_RECORDMCOUNT
+	select HAVE_DEBUG_KMEMLEAK
+	select HAVE_DMA_API_DEBUG
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_DMA_CONTIGUOUS if MMU
 	select HAVE_DYNAMIC_FTRACE if (!XIP_KERNEL) && !CPU_ENDIAN_BE32 && MMU
 	select HAVE_DYNAMIC_FTRACE_WITH_REGS if HAVE_DYNAMIC_FTRACE
@@ -70,6 +95,10 @@ config ARM
 	select HAVE_FTRACE_MCOUNT_RECORD if (!XIP_KERNEL)
 	select HAVE_FUNCTION_GRAPH_TRACER if (!THUMB2_KERNEL)
 	select HAVE_FUNCTION_TRACER if (!XIP_KERNEL)
+<<<<<<< HEAD
+=======
+	select HAVE_FUTEX_CMPXCHG if FUTEX
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HAVE_GCC_PLUGINS
 	select HAVE_GENERIC_DMA_COHERENT
 	select HAVE_HW_BREAKPOINT if (PERF_EVENTS && (CPU_V6 || CPU_V6K || CPU_V7))
@@ -92,6 +121,7 @@ config ARM
 	select HAVE_PERF_USER_STACK_DUMP
 	select HAVE_RCU_TABLE_FREE if (SMP && ARM_LPAE)
 	select HAVE_REGS_AND_STACK_ACCESS_API
+<<<<<<< HEAD
 	select HAVE_RSEQ
 	select HAVE_STACKPROTECTOR
 	select HAVE_SYSCALL_TRACEPOINTS
@@ -101,13 +131,23 @@ config ARM
 	select IRQ_FORCED_THREADING
 	select MODULES_USE_ELF_REL
 	select NEED_DMA_MAP_STATE
+=======
+	select HAVE_SYSCALL_TRACEPOINTS
+	select HAVE_UID16
+	select HAVE_VIRT_CPU_ACCOUNTING_GEN
+	select IRQ_FORCED_THREADING
+	select MODULES_USE_ELF_REL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select NO_BOOTMEM
 	select OF_EARLY_FLATTREE if OF
 	select OF_RESERVED_MEM if OF
 	select OLD_SIGACTION
 	select OLD_SIGSUSPEND3
 	select PERF_USE_VMALLOC
+<<<<<<< HEAD
 	select REFCOUNT_FULL
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select RTC_LIB
 	select SYS_SUPPORTS_APM_EMULATION
 	# Above selects are sorted alphabetically; please add new ones
@@ -124,6 +164,12 @@ config ARM_HAS_SG_CHAIN
 	select ARCH_HAS_SG_CHAIN
 	bool
 
+<<<<<<< HEAD
+=======
+config NEED_SG_DMA_LENGTH
+	bool
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARM_DMA_USE_IOMMU
 	bool
 	select ARM_HAS_SG_CHAIN
@@ -226,6 +272,12 @@ config ARCH_MAY_HAVE_PC_FDC
 config ZONE_DMA
 	bool
 
+<<<<<<< HEAD
+=======
+config NEED_DMA_MAP_STATE
+       def_bool y
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARCH_SUPPORTS_UPROBES
 	def_bool y
 
@@ -244,6 +296,21 @@ config NEED_RET_TO_USER
 config ARCH_MTD_XIP
 	bool
 
+<<<<<<< HEAD
+=======
+config ARCH_WANT_KMAP_ATOMIC_FLUSH
+	bool
+
+config VECTORS_BASE
+	hex
+	default 0xffff0000 if MMU || CPU_HIGH_VECTOR
+	default DRAM_BASE if REMAP_VECTORS_TO_RAM
+	default 0x00000000
+	help
+	  The base address of exception vectors.  This must be two pages
+	  in size.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARM_PATCH_PHYS_VIRT
 	bool "Patch physical to virtual translations at runtime" if EMBEDDED
 	default y
@@ -300,6 +367,13 @@ config PGTABLE_LEVELS
 	default 3 if ARM_LPAE
 	default 2
 
+<<<<<<< HEAD
+=======
+source "init/Kconfig"
+
+source "kernel/Kconfig.freezer"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 menu "System Type"
 
 config MMU
@@ -335,8 +409,13 @@ config ARCH_MULTIPLATFORM
 	select TIMER_OF
 	select COMMON_CLK
 	select GENERIC_CLOCKEVENTS
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
 	select MIGHT_HAVE_PCI
+=======
+	select MIGHT_HAVE_PCI
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select PCI_DOMAINS if PCI
 	select SPARSE_IRQ
 	select USE_OF
@@ -370,7 +449,11 @@ config ARCH_EBSA110
 
 config ARCH_EP93XX
 	bool "EP93xx-based"
+<<<<<<< HEAD
 	select ARCH_SPARSEMEM_ENABLE
+=======
+	select ARCH_HAS_HOLES_MEMORYMODEL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select ARM_AMBA
 	imply ARM_PATCH_PHYS_VIRT
 	select ARM_VIC
@@ -463,9 +546,15 @@ config ARCH_DOVE
 	bool "Marvell Dove"
 	select CPU_PJ4
 	select GENERIC_CLOCKEVENTS
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
 	select GPIOLIB
 	select MIGHT_HAVE_PCI
+=======
+	select GPIOLIB
+	select MIGHT_HAVE_PCI
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select MVEBU_MBUS
 	select PINCTRL
 	select PINCTRL_DOVE
@@ -510,8 +599,13 @@ config ARCH_LPC32XX
 	select COMMON_CLK
 	select CPU_ARM926T
 	select GENERIC_CLOCKEVENTS
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
 	select GPIOLIB
+=======
+	select GPIOLIB
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select SPARSE_IRQ
 	select USE_OF
 	help
@@ -530,16 +624,54 @@ config ARCH_PXA
 	select TIMER_OF
 	select CPU_XSCALE if !CPU_XSC3
 	select GENERIC_CLOCKEVENTS
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select GPIO_PXA
 	select GPIOLIB
 	select HAVE_IDE
 	select IRQ_DOMAIN
+<<<<<<< HEAD
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select PLAT_PXA
 	select SPARSE_IRQ
 	help
 	  Support for Intel/Marvell's PXA2xx/PXA3xx processor line.
 
+<<<<<<< HEAD
+=======
+config ARCH_QCOM
+       bool "Qualcomm MSM (non-multiplatform)"
+       select ARCH_REQUIRE_GPIOLIB
+       select CPU_V7
+       select AUTO_ZRELADDR
+       select HAVE_SMP
+       select CLKDEV_LOOKUP
+       select GENERIC_CLOCKEVENTS
+       select GENERIC_ALLOCATOR
+       select ARM_GIC
+       select ARM_PATCH_PHYS_VIRT
+       select ARM_HAS_SG_CHAIN
+       select ARCH_HAS_OPP
+       select SOC_BUS
+       select MULTI_IRQ_HANDLER
+       select PM_OPP
+       select SPARSE_IRQ
+       select USE_OF
+       select PINCTRL
+       select ARCH_WANT_KMAP_ATOMIC_FLUSH
+       select MFD_CORE
+       help
+         Support for Qualcomm MSM/QSD based systems.  This runs on the
+         apps processor of the MSM/QSD and depends on a shared memory
+         interface to the modem processor which runs the baseband
+         stack and controls some vital subsystems
+         (clock and power control, etc).
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARCH_RPC
 	bool "RiscPC"
 	depends on MMU
@@ -570,11 +702,18 @@ config ARCH_SA1100
 	select CPU_FREQ
 	select CPU_SA1100
 	select GENERIC_CLOCKEVENTS
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select GPIOLIB
 	select HAVE_IDE
 	select IRQ_DOMAIN
 	select ISA
+<<<<<<< HEAD
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select NEED_MACH_MEMORY_H
 	select SPARSE_IRQ
 	help
@@ -588,6 +727,7 @@ config ARCH_S3C24XX
 	select GENERIC_CLOCKEVENTS
 	select GPIO_SAMSUNG
 	select GPIOLIB
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
 	select HAVE_S3C2410_I2C if I2C
 	select HAVE_S3C2410_WATCHDOG if WATCHDOG
@@ -595,6 +735,14 @@ config ARCH_S3C24XX
 	select NEED_MACH_IO_H
 	select SAMSUNG_ATAGS
 	select USE_OF
+=======
+	select HAVE_S3C2410_I2C if I2C
+	select HAVE_S3C2410_WATCHDOG if WATCHDOG
+	select HAVE_S3C_RTC if RTC_CLASS
+	select MULTI_IRQ_HANDLER
+	select NEED_MACH_IO_H
+	select SAMSUNG_ATAGS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Samsung S3C2410, S3C2412, S3C2413, S3C2416, S3C2440, S3C2442, S3C2443
 	  and S3C2450 SoCs based systems, such as the Simtec Electronics BAST
@@ -604,17 +752,24 @@ config ARCH_S3C24XX
 config ARCH_DAVINCI
 	bool "TI DaVinci"
 	select ARCH_HAS_HOLES_MEMORYMODEL
+<<<<<<< HEAD
 	select COMMON_CLK
+=======
+	select CLKDEV_LOOKUP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CPU_ARM926T
 	select GENERIC_ALLOCATOR
 	select GENERIC_CLOCKEVENTS
 	select GENERIC_IRQ_CHIP
 	select GPIOLIB
 	select HAVE_IDE
+<<<<<<< HEAD
 	select PM_GENERIC_DOMAINS if PM
 	select PM_GENERIC_DOMAINS_OF if PM && OF
 	select REGMAP_MMIO
 	select RESET_CONTROLLER
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select USE_OF
 	select ZONE_DMA
 	help
@@ -629,10 +784,17 @@ config ARCH_OMAP1
 	select CLKSRC_MMIO
 	select GENERIC_CLOCKEVENTS
 	select GENERIC_IRQ_CHIP
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
 	select GPIOLIB
 	select HAVE_IDE
 	select IRQ_DOMAIN
+=======
+	select GPIOLIB
+	select HAVE_IDE
+	select IRQ_DOMAIN
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select NEED_MACH_IO_H if PCCARD
 	select NEED_MACH_MEMORY_H
 	select SPARSE_IRQ
@@ -709,6 +871,11 @@ config ARCH_VIRT
 # Kconfigs may be included either alphabetically (according to the
 # plat- suffix) or along side the corresponding mach-* source.
 #
+<<<<<<< HEAD
+=======
+source "arch/arm/mach-mvebu/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-actions/Kconfig"
 
 source "arch/arm/mach-alpine/Kconfig"
@@ -717,8 +884,11 @@ source "arch/arm/mach-artpec/Kconfig"
 
 source "arch/arm/mach-asm9260/Kconfig"
 
+<<<<<<< HEAD
 source "arch/arm/mach-aspeed/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-at91/Kconfig"
 
 source "arch/arm/mach-axxia/Kconfig"
@@ -739,9 +909,12 @@ source "arch/arm/mach-dove/Kconfig"
 
 source "arch/arm/mach-ep93xx/Kconfig"
 
+<<<<<<< HEAD
 source "arch/arm/mach-exynos/Kconfig"
 source "arch/arm/plat-samsung/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-footbridge/Kconfig"
 
 source "arch/arm/mach-gemini/Kconfig"
@@ -750,22 +923,33 @@ source "arch/arm/mach-highbank/Kconfig"
 
 source "arch/arm/mach-hisi/Kconfig"
 
+<<<<<<< HEAD
 source "arch/arm/mach-imx/Kconfig"
 
 source "arch/arm/mach-integrator/Kconfig"
 
 source "arch/arm/mach-iop13xx/Kconfig"
 
+=======
+source "arch/arm/mach-integrator/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-iop32x/Kconfig"
 
 source "arch/arm/mach-iop33x/Kconfig"
 
+<<<<<<< HEAD
+=======
+source "arch/arm/mach-iop13xx/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-ixp4xx/Kconfig"
 
 source "arch/arm/mach-keystone/Kconfig"
 
 source "arch/arm/mach-ks8695/Kconfig"
 
+<<<<<<< HEAD
 source "arch/arm/mach-mediatek/Kconfig"
 
 source "arch/arm/mach-meson/Kconfig"
@@ -777,6 +961,19 @@ source "arch/arm/mach-moxart/Kconfig"
 source "arch/arm/mach-mv78xx0/Kconfig"
 
 source "arch/arm/mach-mvebu/Kconfig"
+=======
+source "arch/arm/mach-meson/Kconfig"
+
+source "arch/arm/mach-moxart/Kconfig"
+
+source "arch/arm/mach-aspeed/Kconfig"
+
+source "arch/arm/mach-mv78xx0/Kconfig"
+
+source "arch/arm/mach-imx/Kconfig"
+
+source "arch/arm/mach-mediatek/Kconfig"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 source "arch/arm/mach-mxs/Kconfig"
 
@@ -784,8 +981,11 @@ source "arch/arm/mach-netx/Kconfig"
 
 source "arch/arm/mach-nomadik/Kconfig"
 
+<<<<<<< HEAD
 source "arch/arm/mach-npcm/Kconfig"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-nspire/Kconfig"
 
 source "arch/arm/plat-omap/Kconfig"
@@ -796,6 +996,7 @@ source "arch/arm/mach-omap2/Kconfig"
 
 source "arch/arm/mach-orion5x/Kconfig"
 
+<<<<<<< HEAD
 source "arch/arm/mach-oxnas/Kconfig"
 
 source "arch/arm/mach-picoxcell/Kconfig"
@@ -805,12 +1006,24 @@ source "arch/arm/mach-prima2/Kconfig"
 source "arch/arm/mach-pxa/Kconfig"
 source "arch/arm/plat-pxa/Kconfig"
 
+=======
+source "arch/arm/mach-picoxcell/Kconfig"
+
+source "arch/arm/mach-pxa/Kconfig"
+source "arch/arm/plat-pxa/Kconfig"
+
+source "arch/arm/mach-mmp/Kconfig"
+
+source "arch/arm/mach-oxnas/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-qcom/Kconfig"
 
 source "arch/arm/mach-realview/Kconfig"
 
 source "arch/arm/mach-rockchip/Kconfig"
 
+<<<<<<< HEAD
 source "arch/arm/mach-s3c24xx/Kconfig"
 
 source "arch/arm/mach-s3c64xx/Kconfig"
@@ -821,6 +1034,10 @@ source "arch/arm/mach-sa1100/Kconfig"
 
 source "arch/arm/mach-shmobile/Kconfig"
 
+=======
+source "arch/arm/mach-sa1100/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-socfpga/Kconfig"
 
 source "arch/arm/mach-spear/Kconfig"
@@ -829,8 +1046,26 @@ source "arch/arm/mach-sti/Kconfig"
 
 source "arch/arm/mach-stm32/Kconfig"
 
+<<<<<<< HEAD
 source "arch/arm/mach-sunxi/Kconfig"
 
+=======
+source "arch/arm/mach-s3c24xx/Kconfig"
+
+source "arch/arm/mach-s3c64xx/Kconfig"
+
+source "arch/arm/mach-s5pv210/Kconfig"
+
+source "arch/arm/mach-exynos/Kconfig"
+source "arch/arm/plat-samsung/Kconfig"
+
+source "arch/arm/mach-shmobile/Kconfig"
+
+source "arch/arm/mach-sunxi/Kconfig"
+
+source "arch/arm/mach-prima2/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/mach-tango/Kconfig"
 
 source "arch/arm/mach-tegra/Kconfig"
@@ -923,6 +1158,14 @@ config IWMMXT
 	  Enable support for iWMMXt context switching at run time if
 	  running on a CPU that supports it.
 
+<<<<<<< HEAD
+=======
+config MULTI_IRQ_HANDLER
+	bool
+	help
+	  Allow each machine to specify it's own IRQ handler at run time.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 if !MMU
 source "arch/arm/Kconfig-nommu"
 endif
@@ -1242,6 +1485,7 @@ config PCI
 	  VESA. If you have PCI, say Y, otherwise N.
 
 config PCI_DOMAINS
+<<<<<<< HEAD
 	bool "Support for multiple PCI domains"
 	depends on PCI
 	help
@@ -1250,6 +1494,10 @@ config PCI_DOMAINS
 	  domain (aka segment) to be correctly managed. Say N otherwise.
 
 	  If you don't know what to do here, say N.
+=======
+	bool
+	depends on PCI
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config PCI_DOMAINS_GENERIC
 	def_bool PCI_DOMAINS
@@ -1305,7 +1553,11 @@ config SMP
 	  will run faster if you say N here.
 
 	  See also <file:Documentation/x86/i386/IO-APIC.txt>,
+<<<<<<< HEAD
 	  <file:Documentation/lockup-watchdogs.txt> and the SMP-HOWTO available at
+=======
+	  <file:Documentation/nmi_watchdog.txt> and the SMP-HOWTO available at
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  <http://tldp.org/HOWTO/SMP-HOWTO.html>.
 
 	  If you don't know what to do here, say N.
@@ -1437,6 +1689,15 @@ config PAGE_OFFSET
 	default 0xB0000000 if VMSPLIT_3G_OPT
 	default 0xC0000000
 
+<<<<<<< HEAD
+=======
+config COMMAND_LINE_SIZE
+	int "Maximum size of the command line."
+	default "1024"
+	help
+	This is the per architecture maximum command line size.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config NR_CPUS
 	int "Maximum number of CPUs (2-32)"
 	range 2 32
@@ -1468,8 +1729,13 @@ config ARM_PSCI
 config ARCH_NR_GPIO
 	int
 	default 2048 if ARCH_SOCFPGA
+<<<<<<< HEAD
 	default 1024 if ARCH_BRCMSTB || ARCH_RENESAS || ARCH_TEGRA || \
 		ARCH_ZYNQ
+=======
+	default 1024 if ARCH_BRCMSTB || ARCH_SHMOBILE || ARCH_TEGRA || \
+		ARCH_ZYNQ || ARCH_QCOM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default 512 if ARCH_EXYNOS || ARCH_KEYSTONE || SOC_OMAP5 || \
 		SOC_DRA7XX || ARCH_S3C24XX || ARCH_S3C64XX || ARCH_S5PV210
 	default 416 if ARCH_SUNXI
@@ -1483,6 +1749,11 @@ config ARCH_NR_GPIO
 
 	  If unsure, leave the default value.
 
+<<<<<<< HEAD
+=======
+source kernel/Kconfig.preempt
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HZ_FIXED
 	int
 	default 200 if ARCH_EBSA110
@@ -1587,9 +1858,14 @@ config ARM_PATCH_IDIV
 	  code to do integer division.
 
 config AEABI
+<<<<<<< HEAD
 	bool "Use the ARM EABI to compile the kernel" if !CPU_V7 && \
 		!CPU_V7M && !CPU_V6 && !CPU_V6K && !CC_IS_CLANG
 	default CPU_V7 || CPU_V7M || CPU_V6 || CPU_V6K || CC_IS_CLANG
+=======
+	bool "Use the ARM EABI to compile the kernel" if !CPU_V7 && !CPU_V7M && !CPU_V6 && !CPU_V6K
+	default CPU_V7 || CPU_V7M || CPU_V6 || CPU_V6K
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This option allows for the kernel to be compiled using the latest
 	  ARM ABI (aka EABI).  This is only useful if you are using a user
@@ -1686,6 +1962,29 @@ config CPU_SW_DOMAIN_PAN
 	  Their lower 1MB needs to remain accessible for the vectors, but
 	  the remainder of userspace will become appropriately inaccessible.
 
+<<<<<<< HEAD
+=======
+config MODULES_USE_LONG_CALLS
+	bool
+	help
+	  Use long calls for calling exported symbols.
+
+config MODULES_USE_VMALLOC
+	bool "Put modules into vmalloc area"
+	select MODULES_USE_LONG_CALLS
+	depends on MMU && MODULES
+	depends on !XIP_KERNEL
+	depends on !FUNCTION_TRACER
+	help
+	  Usually modules are loaded into small area prior to the kernel text
+	  because they are linked with the kernel using short calls.
+
+	  This option enables long calls and moves modules into vmalloc area.
+	  This allows to load more modules but adds some perfromance penalty.
+
+	  If unsure, say n.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config HW_PERF_EVENTS
 	def_bool y
 	depends on ARM_PMU
@@ -1704,7 +2003,10 @@ config ARCH_WANT_GENERAL_HUGETLB
 config ARM_MODULE_PLTS
 	bool "Use PLTs to allow module memory to spill over into vmalloc area"
 	depends on MODULES
+<<<<<<< HEAD
 	default y
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Allocate PLTs when loading modules so that jumps and calls whose
 	  targets are too far away for their relative offsets to be encoded
@@ -1715,6 +2017,7 @@ config ARM_MODULE_PLTS
 	  rounding up to page size, the actual memory footprint is usually
 	  the same.
 
+<<<<<<< HEAD
 	  Disabling this is usually safe for small single-platform
 	  configurations. If unsure, say y.
 
@@ -1746,6 +2049,11 @@ config NO_VM_RECLAIM
 	  above.
 
 endchoice
+=======
+	  Say y if you are getting out of memory errors while loading modules
+
+source "mm/Kconfig"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config FORCE_MAX_ZONEORDER
 	int "Maximum zone order"
@@ -1807,6 +2115,15 @@ config SECCOMP
 	  and the task is only allowed to execute a few safe syscalls
 	  defined by each seccomp mode.
 
+<<<<<<< HEAD
+=======
+config SWIOTLB
+	def_bool y
+
+config IOMMU_HELPER
+	def_bool SWIOTLB
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config PARAVIRT
 	bool "Enable paravirtualization code"
 	help
@@ -1838,12 +2155,27 @@ config XEN
 	depends on MMU
 	select ARCH_DMA_ADDR_T_64BIT
 	select ARM_PSCI
+<<<<<<< HEAD
 	select SWIOTLB
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select SWIOTLB_XEN
 	select PARAVIRT
 	help
 	  Say Y if you want to run Linux in a Virtual Machine on Xen on ARM.
 
+<<<<<<< HEAD
+=======
+config ARM_FLUSH_CONSOLE_ON_RESTART
+	bool "Force flush the console on restart"
+	help
+	  If the console is locked while the system is rebooted, the messages
+	  in the temporary logbuffer would not have propogated to all the
+	  console drivers. This option forces the console lock to be
+	  released if it failed to be acquired, which will cause all the
+	  pending messages to be flushed.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu
 
 menu "Boot options"
@@ -1879,6 +2211,29 @@ config BUILD_ARM_APPENDED_DTB_IMAGE
 	  Enabling this option will cause a concatenated zImage and list of
 	  DTBs to be built by default (instead of a standalone zImage.)
 	  The image will built in arch/arm/boot/zImage-dtb
+<<<<<<< HEAD
+=======
+choice
+	prompt "Appended DTB Kernel Image name"
+	depends on BUILD_ARM_APPENDED_DTB_IMAGE
+	default ZIMG_DTB
+	help
+	  Enabling this option will cause a specific kernel image Image or
+	  Image.gz to be used for final image creation.
+	  The image will built in arch/arm/boot/IMAGE-NAME-dtb
+
+	config ZIMG_DTB
+		bool "zImage-dtb"
+	config IMG_DTB
+		bool "Image-dtb"
+endchoice
+
+config BUILD_ARM_APPENDED_KERNEL_IMAGE_NAME
+	string
+	depends on BUILD_ARM_APPENDED_DTB_IMAGE
+	default "zImage-dtb" if ZIMG_DTB
+	default "Image-dtb" if IMG_DTB
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config BUILD_ARM_APPENDED_DTB_IMAGE_NAMES
 	string "Default dtb names"
@@ -2039,6 +2394,7 @@ config XIP_PHYS_ADDR
 	  be linked for and stored to.  This address is dependent on your
 	  own flash usage.
 
+<<<<<<< HEAD
 config XIP_DEFLATED_DATA
 	bool "Store kernel .data section compressed in ROM"
 	depends on XIP_KERNEL
@@ -2054,6 +2410,12 @@ config KEXEC
 	bool "Kexec system call (EXPERIMENTAL)"
 	depends on (!SMP || PM_SLEEP_SMP)
 	depends on !CPU_V7M
+=======
+config KEXEC
+	bool "Kexec system call (EXPERIMENTAL)"
+	depends on (!SMP || PM_SLEEP_SMP)
+	depends on MMU
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select KEXEC_CORE
 	help
 	  kexec is a system call that implements the ability to shutdown your
@@ -2097,6 +2459,20 @@ config AUTO_ZRELADDR
 config EFI_STUB
 	bool
 
+<<<<<<< HEAD
+=======
+config ARM_DECOMPRESSOR_LIMIT
+        hex "Limit the decompressor memory area"
+        default 0x3200000
+        help
+          Allows overriding of the memory size that decompressor maps with
+          read, write and execute permissions to avoid speculative prefetch.
+
+          By default ARM_DECOMPRESSOR_LIMIT maps first 1GB of memory
+          with read, write and execute permissions and reset of the memory
+          as strongly ordered.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config EFI
 	bool "UEFI runtime support"
 	depends on OF && !CPU_BIG_ENDIAN && MMU && AUTO_ZRELADDR && !XIP_KERNEL
@@ -2214,6 +2590,15 @@ config KERNEL_MODE_NEON
 
 endmenu
 
+<<<<<<< HEAD
+=======
+menu "Userspace binary formats"
+
+source "fs/Kconfig.binfmt"
+
+endmenu
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 menu "Power management options"
 
 source "kernel/power/Kconfig"
@@ -2234,10 +2619,31 @@ config ARCH_HIBERNATION_POSSIBLE
 
 endmenu
 
+<<<<<<< HEAD
 source "drivers/firmware/Kconfig"
 
+=======
+source "net/Kconfig"
+
+source "drivers/Kconfig"
+
+source "drivers/firmware/Kconfig"
+
+source "fs/Kconfig"
+
+source "arch/arm/Kconfig.debug"
+
+source "security/Kconfig"
+
+source "crypto/Kconfig"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 if CRYPTO
 source "arch/arm/crypto/Kconfig"
 endif
 
+<<<<<<< HEAD
+=======
+source "lib/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 source "arch/arm/kvm/Kconfig"

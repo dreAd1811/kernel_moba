@@ -85,16 +85,22 @@ struct mqd_manager {
 				uint64_t queue_address,	uint32_t pipe_id,
 				uint32_t queue_id);
 
+<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS)
 	int	(*debugfs_show_mqd)(struct seq_file *m, void *data);
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mutex	mqd_mutex;
 	struct kfd_dev	*dev;
 };
 
+<<<<<<< HEAD
 void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
 		const uint32_t *cu_mask, uint32_t cu_mask_count,
 		uint32_t *se_mask);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* KFD_MQD_MANAGER_H_ */

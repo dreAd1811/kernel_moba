@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-or-later OR MIT
 /*
  * Copyright (C) 2017 Rafał Miłecki <rafal@milecki.pl>
+=======
+/*
+ * Copyright (C) 2017 Rafał Miłecki <rafal@milecki.pl>
+ *
+ * Licensed under the ISC license.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -38,7 +45,10 @@
 		};
 	};
 };
+<<<<<<< HEAD
 
 &usb3_phy {
 	status = "okay";
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

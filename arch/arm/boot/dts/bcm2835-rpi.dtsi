@@ -18,9 +18,13 @@
 
 	soc {
 		firmware: firmware {
+<<<<<<< HEAD
 			compatible = "raspberrypi,bcm2835-firmware", "simple-bus";
 			#address-cells = <0>;
 			#size-cells = <0>;
+=======
+			compatible = "raspberrypi,bcm2835-firmware";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			mboxes = <&mailbox>;
 		};
 
@@ -29,12 +33,15 @@
 			firmware = <&firmware>;
 			#power-domain-cells = <1>;
 		};
+<<<<<<< HEAD
 
 		mailbox@7e00b840 {
 			compatible = "brcm,bcm2835-vchiq";
 			reg = <0x7e00b840 0xf>;
 			interrupts = <0 2>;
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -83,6 +90,15 @@
 	bus-width = <4>;
 };
 
+<<<<<<< HEAD
+=======
+&pwm {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm0_gpio40 &pwm1_gpio45>;
+	status = "okay";
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usb {
 	power-domains = <&power RPI_POWER_DOMAIN_USB>;
 };

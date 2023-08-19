@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #ifndef __KGSL_RGMU_H
 #define __KGSL_RGMU_H
@@ -23,8 +37,11 @@
  * @reg_len: RGMU CSR range
  * @rgmu_interrupt_num: RGMU interrupt number
  * @oob_interrupt_num: number of RGMU asserted OOB interrupt
+<<<<<<< HEAD
  * @fw_hostptr: Buffer which holds the RGMU firmware
  * @fw_size: Size of RGMU firmware buffer
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @cx_gdsc: CX headswitch that controls power of RGMU and
 		subsystem peripherals
  * @clks: RGMU clocks including the GPU
@@ -35,6 +52,10 @@
  * @flags: RGMU flags
  * @idle_level: Minimal GPU idle power level
  * @fault_count: RGMU fault count
+<<<<<<< HEAD
+=======
+ * @fw_image: RGMU firmware image
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct rgmu_device {
 	u32 ver;
@@ -43,8 +64,11 @@ struct rgmu_device {
 	unsigned int reg_len;
 	unsigned int rgmu_interrupt_num;
 	unsigned int oob_interrupt_num;
+<<<<<<< HEAD
 	unsigned int *fw_hostptr;
 	uint32_t fw_size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct regulator *cx_gdsc;
 	struct regulator *gx_gdsc;
 	struct clk *clks[MAX_RGMU_CLKS];
@@ -54,6 +78,10 @@ struct rgmu_device {
 	unsigned int num_gpupwrlevels;
 	unsigned int idle_level;
 	unsigned int fault_count;
+<<<<<<< HEAD
+=======
+	const struct firmware *fw_image;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 extern struct gmu_dev_ops adreno_a6xx_rgmudev;

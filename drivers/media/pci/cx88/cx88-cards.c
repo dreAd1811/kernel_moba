@@ -3307,9 +3307,15 @@ static void cx88_card_setup_pre_i2c(struct cx88_core *core)
 	case CX88_BOARD_PROLINK_PV_GLOBAL_XTREME:
 	case CX88_BOARD_PROLINK_PV_8000GT:
 		cx_write(MO_GP2_IO, 0xcf7);
+<<<<<<< HEAD
 		msleep(50);
 		cx_write(MO_GP2_IO, 0xef5);
 		msleep(50);
+=======
+		mdelay(50);
+		cx_write(MO_GP2_IO, 0xef5);
+		mdelay(50);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_write(MO_GP2_IO, 0xcf7);
 		usleep_range(10000, 20000);
 		break;
@@ -3592,7 +3598,11 @@ static void cx88_card_setup(struct cx88_core *core)
 			ctl.fname);
 		call_all(core, tuner, s_config, &xc2028_cfg);
 	}
+<<<<<<< HEAD
 	call_all(core, tuner, standby);
+=======
+	call_all(core, core, s_power, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* ------------------------------------------------------------------ */

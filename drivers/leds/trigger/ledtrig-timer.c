@@ -8,6 +8,10 @@
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
+<<<<<<< HEAD
+=======
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/module.h>
@@ -20,7 +24,11 @@
 static ssize_t led_delay_on_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	struct led_classdev *led_cdev = led_trigger_get_led(dev);
+=======
+	struct led_classdev *led_cdev = dev_get_drvdata(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return sprintf(buf, "%lu\n", led_cdev->blink_delay_on);
 }
@@ -28,7 +36,11 @@ static ssize_t led_delay_on_show(struct device *dev,
 static ssize_t led_delay_on_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t size)
 {
+<<<<<<< HEAD
 	struct led_classdev *led_cdev = led_trigger_get_led(dev);
+=======
+	struct led_classdev *led_cdev = dev_get_drvdata(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long state;
 	ssize_t ret = -EINVAL;
 
@@ -45,7 +57,11 @@ static ssize_t led_delay_on_store(struct device *dev,
 static ssize_t led_delay_off_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
+<<<<<<< HEAD
 	struct led_classdev *led_cdev = led_trigger_get_led(dev);
+=======
+	struct led_classdev *led_cdev = dev_get_drvdata(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return sprintf(buf, "%lu\n", led_cdev->blink_delay_off);
 }
@@ -53,7 +69,11 @@ static ssize_t led_delay_off_show(struct device *dev,
 static ssize_t led_delay_off_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t size)
 {
+<<<<<<< HEAD
 	struct led_classdev *led_cdev = led_trigger_get_led(dev);
+=======
+	struct led_classdev *led_cdev = dev_get_drvdata(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long state;
 	ssize_t ret = -EINVAL;
 
@@ -70,6 +90,7 @@ static ssize_t led_delay_off_store(struct device *dev,
 static DEVICE_ATTR(delay_on, 0644, led_delay_on_show, led_delay_on_store);
 static DEVICE_ATTR(delay_off, 0644, led_delay_off_show, led_delay_off_store);
 
+<<<<<<< HEAD
 static struct attribute *timer_trig_attrs[] = {
 	&dev_attr_delay_on.attr,
 	&dev_attr_delay_off.attr,
@@ -83,10 +104,42 @@ static int timer_trig_activate(struct led_classdev *led_cdev)
 		      &led_cdev->blink_delay_off);
 
 	return 0;
+=======
+static void timer_trig_activate(struct led_classdev *led_cdev)
+{
+	int rc;
+
+	led_cdev->trigger_data = NULL;
+
+	rc = device_create_file(led_cdev->dev, &dev_attr_delay_on);
+	if (rc)
+		return;
+	rc = device_create_file(led_cdev->dev, &dev_attr_delay_off);
+	if (rc)
+		goto err_out_delayon;
+
+	led_blink_set(led_cdev, &led_cdev->blink_delay_on,
+		      &led_cdev->blink_delay_off);
+	led_cdev->activated = true;
+
+	return;
+
+err_out_delayon:
+	device_remove_file(led_cdev->dev, &dev_attr_delay_on);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void timer_trig_deactivate(struct led_classdev *led_cdev)
 {
+<<<<<<< HEAD
+=======
+	if (led_cdev->activated) {
+		device_remove_file(led_cdev->dev, &dev_attr_delay_on);
+		device_remove_file(led_cdev->dev, &dev_attr_delay_off);
+		led_cdev->activated = false;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Stop blinking */
 	led_set_brightness(led_cdev, LED_OFF);
 }
@@ -95,6 +148,7 @@ static struct led_trigger timer_led_trigger = {
 	.name     = "timer",
 	.activate = timer_trig_activate,
 	.deactivate = timer_trig_deactivate,
+<<<<<<< HEAD
 	.groups = timer_trig_groups,
 };
 module_led_trigger(timer_led_trigger);
@@ -102,3 +156,23 @@ module_led_trigger(timer_led_trigger);
 MODULE_AUTHOR("Richard Purdie <rpurdie@openedhand.com>");
 MODULE_DESCRIPTION("Timer LED trigger");
 MODULE_LICENSE("GPL v2");
+=======
+};
+
+static int __init timer_trig_init(void)
+{
+	return led_trigger_register(&timer_led_trigger);
+}
+
+static void __exit timer_trig_exit(void)
+{
+	led_trigger_unregister(&timer_led_trigger);
+}
+
+module_init(timer_trig_init);
+module_exit(timer_trig_exit);
+
+MODULE_AUTHOR("Richard Purdie <rpurdie@openedhand.com>");
+MODULE_DESCRIPTION("Timer LED trigger");
+MODULE_LICENSE("GPL");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

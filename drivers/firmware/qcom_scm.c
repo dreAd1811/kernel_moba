@@ -1,7 +1,11 @@
 /*
  * Qualcomm SCM driver
  *
+<<<<<<< HEAD
  * Copyright (c) 2010,2015, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2010,2015,2020 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2015 Linaro Ltd.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -18,6 +22,7 @@
 #include <linux/init.h>
 #include <linux/cpumask.h>
 #include <linux/export.h>
+<<<<<<< HEAD
 #include <linux/dma-direct.h>
 #include <linux/dma-mapping.h>
 #include <linux/module.h>
@@ -25,15 +30,24 @@
 #include <linux/qcom_scm.h>
 #include <linux/of.h>
 #include <linux/of_address.h>
+=======
+#include <linux/dma-mapping.h>
+#include <linux/types.h>
+#include <linux/qcom_scm.h>
+#include <linux/of.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_platform.h>
 #include <linux/clk.h>
 #include <linux/reset-controller.h>
 
 #include "qcom_scm.h"
 
+<<<<<<< HEAD
 static bool download_mode = IS_ENABLED(CONFIG_QCOM_SCM_DOWNLOAD_MODE_DEFAULT);
 module_param(download_mode, bool, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SCM_HAS_CORE_CLK	BIT(0)
 #define SCM_HAS_IFACE_CLK	BIT(1)
 #define SCM_HAS_BUS_CLK		BIT(2)
@@ -44,8 +58,11 @@ struct qcom_scm {
 	struct clk *iface_clk;
 	struct clk *bus_clk;
 	struct reset_controller_dev reset;
+<<<<<<< HEAD
 
 	u64 dload_mode_addr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qcom_scm_current_perm_info {
@@ -354,6 +371,7 @@ int qcom_scm_iommu_secure_ptbl_init(u64 addr, u32 size, u32 spare)
 }
 EXPORT_SYMBOL(qcom_scm_iommu_secure_ptbl_init);
 
+<<<<<<< HEAD
 int qcom_scm_io_readl(phys_addr_t addr, unsigned int *val)
 {
 	return __qcom_scm_io_readl(__scm->dev, addr, val);
@@ -414,6 +432,8 @@ static int qcom_scm_find_dload_address(struct device *dev, u64 *addr)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * qcom_scm_is_available() - Checks if SCM is available
  */
@@ -450,7 +470,10 @@ int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
 	phys_addr_t mem_to_map_phys;
 	phys_addr_t dest_phys;
 	phys_addr_t ptr_phys;
+<<<<<<< HEAD
 	dma_addr_t ptr_dma;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t mem_to_map_sz;
 	size_t dest_sz;
 	size_t src_sz;
@@ -468,10 +491,16 @@ int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
 	ptr_sz = ALIGN(src_sz, SZ_64) + ALIGN(mem_to_map_sz, SZ_64) +
 			ALIGN(dest_sz, SZ_64);
 
+<<<<<<< HEAD
 	ptr = dma_alloc_coherent(__scm->dev, ptr_sz, &ptr_dma, GFP_KERNEL);
 	if (!ptr)
 		return -ENOMEM;
 	ptr_phys = dma_to_phys(__scm->dev, ptr_dma);
+=======
+	ptr = dma_alloc_coherent(__scm->dev, ptr_sz, &ptr_phys, GFP_KERNEL);
+	if (!ptr)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Fill source vmid detail */
 	src = ptr;
@@ -501,7 +530,11 @@ int qcom_scm_assign_mem(phys_addr_t mem_addr, size_t mem_sz,
 
 	ret = __qcom_scm_assign_mem(__scm->dev, mem_to_map_phys, mem_to_map_sz,
 				    ptr_phys, src_sz, dest_phys, dest_sz);
+<<<<<<< HEAD
 	dma_free_coherent(__scm->dev, ptr_sz, ptr, ptr_dma);
+=======
+	dma_free_coherent(__scm->dev, ALIGN(ptr_sz, SZ_64), ptr, ptr_phys);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(__scm->dev,
 			"Assign memory protection call failed %d.\n", ret);
@@ -523,10 +556,13 @@ static int qcom_scm_probe(struct platform_device *pdev)
 	if (!scm)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	ret = qcom_scm_find_dload_address(&pdev->dev, &scm->dload_mode_addr);
 	if (ret < 0)
 		return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clks = (unsigned long)of_device_get_match_data(&pdev->dev);
 	if (clks & SCM_HAS_CORE_CLK) {
 		scm->core_clk = devm_clk_get(&pdev->dev, "core");
@@ -575,6 +611,7 @@ static int qcom_scm_probe(struct platform_device *pdev)
 
 	__qcom_scm_init();
 
+<<<<<<< HEAD
 	/*
 	 * If requested enable "download mode", from this point on warmboot
 	 * will cause the the boot stages to enter download mode, unless
@@ -593,6 +630,11 @@ static void qcom_scm_shutdown(struct platform_device *pdev)
 		qcom_scm_set_download_mode(false);
 }
 
+=======
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct of_device_id qcom_scm_dt_match[] = {
 	{ .compatible = "qcom,scm-apq8064",
 	  /* FIXME: This should have .data = (void *) SCM_HAS_CORE_CLK */
@@ -606,9 +648,12 @@ static const struct of_device_id qcom_scm_dt_match[] = {
 	{ .compatible = "qcom,scm-msm8996",
 	  .data = NULL, /* no clocks */
 	},
+<<<<<<< HEAD
 	{ .compatible = "qcom,scm-ipq4019",
 	  .data = NULL, /* no clocks */
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "qcom,scm",
 	  .data = (void *)(SCM_HAS_CORE_CLK
 			   | SCM_HAS_IFACE_CLK
@@ -623,11 +668,41 @@ static struct platform_driver qcom_scm_driver = {
 		.of_match_table = qcom_scm_dt_match,
 	},
 	.probe = qcom_scm_probe,
+<<<<<<< HEAD
 	.shutdown = qcom_scm_shutdown,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init qcom_scm_init(void)
 {
+<<<<<<< HEAD
+=======
+	struct device_node *np, *fw_np;
+	int ret;
+
+	fw_np = of_find_node_by_name(NULL, "firmware");
+
+	if (!fw_np)
+		return -ENODEV;
+
+	np = of_find_matching_node(fw_np, qcom_scm_dt_match);
+
+	if (!np) {
+		of_node_put(fw_np);
+		return -ENODEV;
+	}
+
+	of_node_put(np);
+
+	ret = of_platform_populate(fw_np, qcom_scm_dt_match, NULL, NULL);
+
+	of_node_put(fw_np);
+
+	if (ret)
+		return ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return platform_driver_register(&qcom_scm_driver);
 }
 subsys_initcall(qcom_scm_init);

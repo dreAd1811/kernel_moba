@@ -184,9 +184,14 @@ static struct mtd_info *cfi_staa_setup(struct map_info *map)
 	mtd->size = devsize * cfi->numchips;
 
 	mtd->numeraseregions = cfi->cfiq->NumEraseRegions * cfi->numchips;
+<<<<<<< HEAD
 	mtd->eraseregions = kmalloc_array(mtd->numeraseregions,
 					  sizeof(struct mtd_erase_region_info),
 					  GFP_KERNEL);
+=======
+	mtd->eraseregions = kmalloc(sizeof(struct mtd_erase_region_info)
+			* mtd->numeraseregions, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mtd->eraseregions) {
 		kfree(cfi->cmdset_priv);
 		kfree(mtd);
@@ -966,6 +971,12 @@ static int cfi_staa_erase_varsize(struct mtd_info *mtd,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	instr->state = MTD_ERASE_DONE;
+	mtd_erase_callback(instr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

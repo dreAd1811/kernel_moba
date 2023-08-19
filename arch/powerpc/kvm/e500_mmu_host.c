@@ -377,7 +377,11 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
 
 			start = vma->vm_pgoff;
 			end = start +
+<<<<<<< HEAD
 			      vma_pages(vma);
+=======
+			      ((vma->vm_end - vma->vm_start) >> PAGE_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			pfn = start + ((hva - vma->vm_start) >> PAGE_SHIFT);
 
@@ -625,8 +629,13 @@ void kvmppc_mmu_map(struct kvm_vcpu *vcpu, u64 eaddr, gpa_t gpaddr,
 }
 
 #ifdef CONFIG_KVM_BOOKE_HV
+<<<<<<< HEAD
 int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
 		enum instruction_fetch_type type, u32 *instr)
+=======
+int kvmppc_load_last_inst(struct kvm_vcpu *vcpu, enum instruction_type type,
+			  u32 *instr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	gva_t geaddr;
 	hpa_t addr;
@@ -715,8 +724,13 @@ int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
 	return EMULATE_DONE;
 }
 #else
+<<<<<<< HEAD
 int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
 		enum instruction_fetch_type type, u32 *instr)
+=======
+int kvmppc_load_last_inst(struct kvm_vcpu *vcpu, enum instruction_type type,
+			  u32 *instr)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return EMULATE_AGAIN;
 }
@@ -724,7 +738,11 @@ int kvmppc_load_last_inst(struct kvm_vcpu *vcpu,
 
 /************* MMU Notifiers *************/
 
+<<<<<<< HEAD
 static int kvm_unmap_hva(struct kvm *kvm, unsigned long hva)
+=======
+int kvm_unmap_hva(struct kvm *kvm, unsigned long hva)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	trace_kvm_unmap_hva(hva);
 

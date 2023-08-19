@@ -11,9 +11,12 @@
 #define XGLUE(a,b) a##b
 #define GLUE(a,b) XGLUE(a,b)
 
+<<<<<<< HEAD
 /* Dummy interrupt used when taking interrupts out of a queue in H_CPPR */
 #define XICS_DUMMY	1
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void GLUE(X_PFX,ack_pending)(struct kvmppc_xive_vcpu *xc)
 {
 	u8 cppr;
@@ -25,6 +28,21 @@ static void GLUE(X_PFX,ack_pending)(struct kvmppc_xive_vcpu *xc)
 	 */
 	eieio();
 
+<<<<<<< HEAD
+=======
+	/*
+	 * DD1 bug workaround: If PIPR is less favored than CPPR
+	 * ignore the interrupt or we might incorrectly lose an IPB
+	 * bit.
+	 */
+	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+		__be64 qw1 = __x_readq(__x_tima + TM_QW1_OS);
+		u8 pipr = be64_to_cpu(qw1) & 0xff;
+		if (pipr >= xc->hw_cppr)
+			return;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Perform the acknowledge OS to register cycle. */
 	ack = be16_to_cpu(__x_readw(__x_tima + TM_SPC_ACK_OS_REG));
 
@@ -77,6 +95,7 @@ static void GLUE(X_PFX,source_eoi)(u32 hw_irq, struct xive_irq_data *xd)
 	/* If the XIVE supports the new "store EOI facility, use it */
 	if (xd->flags & XIVE_IRQ_FLAG_STORE_EOI)
 		__x_writeq(0, __x_eoi_page(xd) + XIVE_ESB_STORE_EOI);
+<<<<<<< HEAD
 	else if (hw_irq && xd->flags & XIVE_IRQ_FLAG_EOI_FW)
 		opal_int_eoi(hw_irq);
 	else if (xd->flags & XIVE_IRQ_FLAG_LSI) {
@@ -86,6 +105,10 @@ static void GLUE(X_PFX,source_eoi)(u32 hw_irq, struct xive_irq_data *xd)
 		 * pending.
 		 */
 		__x_readq(__x_eoi_page(xd) + XIVE_ESB_LOAD_EOI);
+=======
+	else if (hw_irq && xd->flags & XIVE_IRQ_FLAG_EOI_FW) {
+		opal_int_eoi(hw_irq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		uint64_t eoi_val;
 
@@ -97,12 +120,29 @@ static void GLUE(X_PFX,source_eoi)(u32 hw_irq, struct xive_irq_data *xd)
 		 *
 		 * This allows us to then do a re-trigger if Q was set
 		 * rather than synthetizing an interrupt in software
+<<<<<<< HEAD
 		 */
 		eoi_val = GLUE(X_PFX,esb_load)(xd, XIVE_ESB_SET_PQ_00);
 
 		/* Re-trigger if needed */
 		if ((eoi_val & 1) && __x_trig_page(xd))
 			__x_writeq(0, __x_trig_page(xd));
+=======
+		 *
+		 * For LSIs, using the HW EOI cycle works around a problem
+		 * on P9 DD1 PHBs where the other ESB accesses don't work
+		 * properly.
+		 */
+		if (xd->flags & XIVE_IRQ_FLAG_LSI)
+			__x_readq(__x_eoi_page(xd) + XIVE_ESB_LOAD_EOI);
+		else {
+			eoi_val = GLUE(X_PFX,esb_load)(xd, XIVE_ESB_SET_PQ_00);
+
+			/* Re-trigger if needed */
+			if ((eoi_val & 1) && __x_trig_page(xd))
+				__x_writeq(0, __x_trig_page(xd));
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -195,10 +235,13 @@ skip_ipi:
 				goto skip_ipi;
 		}
 
+<<<<<<< HEAD
 		/* If it's the dummy interrupt, continue searching */
 		if (hirq == XICS_DUMMY)
 			goto skip_ipi;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* If fetching, update queue pointers */
 		if (scan_type == scan_fetch) {
 			q->idx = idx;
@@ -321,7 +364,11 @@ X_STATIC unsigned long GLUE(X_PFX,h_xirr)(struct kvm_vcpu *vcpu)
 	 */
 
 	/* Return interrupt and old CPPR in GPR4 */
+<<<<<<< HEAD
 	vcpu->arch.regs.gpr[4] = hirq | (old_cppr << 24);
+=======
+	vcpu->arch.gpr[4] = hirq | (old_cppr << 24);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return H_SUCCESS;
 }
@@ -356,7 +403,11 @@ X_STATIC unsigned long GLUE(X_PFX,h_ipoll)(struct kvm_vcpu *vcpu, unsigned long 
 	hirq = GLUE(X_PFX,scan_interrupts)(xc, pending, scan_poll);
 
 	/* Return interrupt and old CPPR in GPR4 */
+<<<<<<< HEAD
 	vcpu->arch.regs.gpr[4] = hirq | (xc->cppr << 24);
+=======
+	vcpu->arch.gpr[4] = hirq | (xc->cppr << 24);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return H_SUCCESS;
 }
@@ -379,6 +430,7 @@ static void GLUE(X_PFX,push_pending_to_hw)(struct kvmppc_xive_vcpu *xc)
 	__x_writeb(prio, __x_tima + TM_SPC_SET_OS_PENDING);
 }
 
+<<<<<<< HEAD
 static void GLUE(X_PFX,scan_for_rerouted_irqs)(struct kvmppc_xive *xive,
 					       struct kvmppc_xive_vcpu *xc)
 {
@@ -449,6 +501,11 @@ X_STATIC int GLUE(X_PFX,h_cppr)(struct kvm_vcpu *vcpu, unsigned long cppr)
 {
 	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
 	struct kvmppc_xive *xive = vcpu->kvm->arch.xive;
+=======
+X_STATIC int GLUE(X_PFX,h_cppr)(struct kvm_vcpu *vcpu, unsigned long cppr)
+{
+	struct kvmppc_xive_vcpu *xc = vcpu->arch.xive_vcpu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 old_cppr;
 
 	pr_devel("H_CPPR(cppr=%ld)\n", cppr);
@@ -468,6 +525,7 @@ X_STATIC int GLUE(X_PFX,h_cppr)(struct kvm_vcpu *vcpu, unsigned long cppr)
 	 */
 	smp_mb();
 
+<<<<<<< HEAD
 	if (cppr > old_cppr) {
 		/*
 		 * We are masking less, we need to look for pending things
@@ -496,6 +554,16 @@ X_STATIC int GLUE(X_PFX,h_cppr)(struct kvm_vcpu *vcpu, unsigned long cppr)
 		 */
 		GLUE(X_PFX,scan_for_rerouted_irqs)(xive, xc);
 	}
+=======
+	/*
+	 * We are masking less, we need to look for pending things
+	 * to deliver and set VP pending bits accordingly to trigger
+	 * a new interrupt otherwise we might miss MFRR changes for
+	 * which we have optimized out sending an IPI signal.
+	 */
+	if (cppr > old_cppr)
+		GLUE(X_PFX,push_pending_to_hw)(xc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Apply new CPPR */
 	xc->hw_cppr = cppr;

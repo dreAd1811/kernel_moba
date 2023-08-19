@@ -3,7 +3,11 @@ CFLAGS_bootx_init.o  		+= -fPIC
 
 ifdef CONFIG_FUNCTION_TRACER
 # Do not trace early boot code
+<<<<<<< HEAD
 CFLAGS_REMOVE_bootx_init.o = $(CC_FLAGS_FTRACE)
+=======
+CFLAGS_REMOVE_bootx_init.o = -mno-sched-epilog $(CC_FLAGS_FTRACE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif
 
 obj-y				+= pic.o setup.o time.o feature.o pci.o \

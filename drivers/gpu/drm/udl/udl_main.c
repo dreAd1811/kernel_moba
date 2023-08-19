@@ -11,7 +11,10 @@
  * more details.
  */
 #include <drm/drmP.h>
+<<<<<<< HEAD
 #include <drm/drm_crtc_helper.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "udl_drv.h"
 
 /* -BULK_SIZE as per usb-skeleton. Can we get full page and avoid overhead? */
@@ -170,6 +173,10 @@ static void udl_free_urb_list(struct drm_device *dev)
 	struct list_head *node;
 	struct urb_node *unode;
 	struct urb *urb;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG("Waiting for completes and freeing all render urbs\n");
 
@@ -177,12 +184,20 @@ static void udl_free_urb_list(struct drm_device *dev)
 	while (count--) {
 		down(&udl->urbs.limit_sem);
 
+<<<<<<< HEAD
 		spin_lock_irq(&udl->urbs.lock);
+=======
+		spin_lock_irqsave(&udl->urbs.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		node = udl->urbs.list.next; /* have reserved one with sem */
 		list_del_init(node);
 
+<<<<<<< HEAD
 		spin_unlock_irq(&udl->urbs.lock);
+=======
+		spin_unlock_irqrestore(&udl->urbs.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		unode = list_entry(node, struct urb_node, entry);
 		urb = unode->urb;
@@ -267,6 +282,10 @@ struct urb *udl_get_urb(struct drm_device *dev)
 	struct list_head *entry;
 	struct urb_node *unode;
 	struct urb *urb = NULL;
+<<<<<<< HEAD
+=======
+	unsigned long flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Wait for an in-flight buffer to complete and get re-queued */
 	ret = down_timeout(&udl->urbs.limit_sem, GET_URB_TIMEOUT);
@@ -277,14 +296,22 @@ struct urb *udl_get_urb(struct drm_device *dev)
 		goto error;
 	}
 
+<<<<<<< HEAD
 	spin_lock_irq(&udl->urbs.lock);
+=======
+	spin_lock_irqsave(&udl->urbs.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	BUG_ON(list_empty(&udl->urbs.list)); /* reserved one with limit_sem */
 	entry = udl->urbs.list.next;
 	list_del_init(entry);
 	udl->urbs.available--;
 
+<<<<<<< HEAD
 	spin_unlock_irq(&udl->urbs.lock);
+=======
+	spin_unlock_irqrestore(&udl->urbs.lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unode = list_entry(entry, struct urb_node, entry);
 	urb = unode->urb;
@@ -317,8 +344,11 @@ int udl_init(struct udl_device *udl)
 
 	DRM_DEBUG("\n");
 
+<<<<<<< HEAD
 	mutex_init(&udl->gem_lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!udl_parse_vendor_descriptor(dev, udl->udev)) {
 		ret = -ENODEV;
 		DRM_ERROR("firmware not recognized. Assume incompatible device\n");
@@ -342,10 +372,20 @@ int udl_init(struct udl_device *udl)
 	if (ret)
 		goto err;
 
+<<<<<<< HEAD
 	drm_kms_helper_poll_init(dev);
 
 	return 0;
 
+=======
+	ret = drm_vblank_init(dev, 1);
+	if (ret)
+		goto err_fb;
+
+	return 0;
+err_fb:
+	udl_fbdev_cleanup(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	if (udl->urbs.count)
 		udl_free_urb_list(dev);
@@ -363,8 +403,11 @@ void udl_fini(struct drm_device *dev)
 {
 	struct udl_device *udl = to_udl(dev);
 
+<<<<<<< HEAD
 	drm_kms_helper_poll_fini(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (udl->urbs.count)
 		udl_free_urb_list(dev);
 

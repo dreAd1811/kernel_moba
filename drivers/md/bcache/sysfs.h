@@ -44,9 +44,15 @@ STORE(fn)								\
 	static struct attribute sysfs_##_name =				\
 		{ .name = #_name, .mode = _mode }
 
+<<<<<<< HEAD
 #define write_attribute(n)	__sysfs_attribute(n, 0200)
 #define read_attribute(n)	__sysfs_attribute(n, 0444)
 #define rw_attribute(n)		__sysfs_attribute(n, 0644)
+=======
+#define write_attribute(n)	__sysfs_attribute(n, S_IWUSR)
+#define read_attribute(n)	__sysfs_attribute(n, S_IRUGO)
+#define rw_attribute(n)		__sysfs_attribute(n, S_IRUGO|S_IWUSR)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define sysfs_printf(file, fmt, ...)					\
 do {									\

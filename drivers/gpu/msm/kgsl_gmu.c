@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
@@ -18,10 +19,53 @@
 #include "adreno.h"
 #include "kgsl_device.h"
 #include "kgsl_gmu.h"
+=======
+/* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+#include <linux/module.h>
+#include <linux/device.h>
+#include <linux/iommu.h>
+#include <linux/interrupt.h>
+#include <linux/io.h>
+#include <linux/of_platform.h>
+#include <linux/msm-bus.h>
+#include <linux/msm-bus-board.h>
+#include <linux/pm_opp.h>
+#include <soc/qcom/cmd-db.h>
+#include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+
+#include "kgsl_device.h"
+#include "kgsl_gmu.h"
+#include "kgsl_hfi.h"
+#include "adreno.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #undef MODULE_PARAM_PREFIX
 #define MODULE_PARAM_PREFIX "kgsl."
 
+<<<<<<< HEAD
+=======
+static bool noacd;
+module_param(noacd, bool, 0444);
+MODULE_PARM_DESC(noacd, "Disable GPU ACD");
+
+#define GMU_CONTEXT_USER		0
+#define GMU_CONTEXT_KERNEL		1
+#define GMU_KERNEL_ENTRIES		16
+
+#define GMU_CM3_CFG_NONMASKINTR_SHIFT    9
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gmu_iommu_context {
 	const char *name;
 	struct device *dev;
@@ -33,6 +77,7 @@ struct gmu_iommu_context {
 #define DUMMY_SIZE   SZ_4K
 
 /* Define target specific GMU VMA configurations */
+<<<<<<< HEAD
 
 struct gmu_vma_entry {
 	unsigned int start;
@@ -40,12 +85,19 @@ struct gmu_vma_entry {
 };
 
 static const struct gmu_vma_entry gmu_vma_legacy[] = {
+=======
+static const struct gmu_vma_entry {
+	unsigned int start;
+	unsigned int size;
+} gmu_vma[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[GMU_ITCM] = { .start = 0x00000, .size = SZ_16K },
 	[GMU_ICACHE] = { .start = 0x04000, .size = (SZ_256K - SZ_16K) },
 	[GMU_DTCM] = { .start = 0x40000, .size = SZ_16K },
 	[GMU_DCACHE] = { .start = 0x44000, .size = (SZ_256K - SZ_16K) },
 	[GMU_NONCACHED_KERNEL] = { .start = 0x60000000, .size = SZ_512M },
 	[GMU_NONCACHED_USER] = { .start = 0x80000000, .size = SZ_1G },
+<<<<<<< HEAD
 	[GMU_MEM_TYPE_MAX] = { .start = 0x0, .size = 0x0 },
 };
 
@@ -57,6 +109,8 @@ static const struct gmu_vma_entry gmu_vma[] = {
 	[GMU_NONCACHED_KERNEL] = { .start = 0x60000000, .size = SZ_512M },
 	[GMU_NONCACHED_USER] = { .start = 0x80000000, .size = SZ_1G },
 	[GMU_MEM_TYPE_MAX] = { .start = 0x0, .size = 0x0 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct gmu_iommu_context gmu_ctx[] = {
@@ -71,10 +125,20 @@ struct gmu_iommu_context gmu_ctx[] = {
  *
  * We define an array and a simple allocator to keep track of the currently
  * active SMMU entries of GMU kernel mode context. Each entry is assigned
+<<<<<<< HEAD
  * a unique address inside GMU kernel mode address range.
  */
 static unsigned int next_uncached_kernel_alloc;
 static unsigned int next_uncached_user_alloc;
+=======
+ * a unique address inside GMU kernel mode address range. The addresses
+ * are assigned sequentially and aligned to 1MB each.
+ *
+ */
+static struct gmu_memdesc gmu_kmem_entries[GMU_KERNEL_ENTRIES];
+static unsigned long gmu_kmem_bitmap;
+static unsigned int num_uncached_entries;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void gmu_snapshot(struct kgsl_device *device);
 static void gmu_remove(struct kgsl_device *device);
@@ -82,7 +146,11 @@ static void gmu_remove(struct kgsl_device *device);
 unsigned int gmu_get_memtype_base(struct gmu_device *gmu,
 		enum gmu_mem_type type)
 {
+<<<<<<< HEAD
 	return gmu->vma[type].start;
+=======
+	return gmu_vma[type].start;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int _gmu_iommu_fault_handler(struct device *dev,
@@ -129,13 +197,25 @@ static void free_gmu_mem(struct gmu_device *gmu,
 	memset(md, 0, sizeof(*md));
 }
 
+<<<<<<< HEAD
 static int alloc_and_map(struct gmu_device *gmu, struct gmu_memdesc *md,
 		unsigned int attrs)
+=======
+static int alloc_and_map(struct gmu_device *gmu, unsigned int ctx_id,
+		struct gmu_memdesc *md, unsigned int attrs)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct iommu_domain *domain;
 
+<<<<<<< HEAD
 	domain = gmu_ctx[md->ctx_idx].domain;
+=======
+	if (md->mem_type == GMU_ITCM || md->mem_type == GMU_DTCM)
+		return 0;
+
+	domain = gmu_ctx[ctx_id].domain;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	md->hostptr = dma_alloc_attrs(&gmu->pdev->dev, (size_t) md->size,
 		&md->physaddr, GFP_KERNEL, 0);
@@ -155,13 +235,18 @@ static int alloc_and_map(struct gmu_device *gmu, struct gmu_memdesc *md,
 	return ret;
 }
 
+<<<<<<< HEAD
 struct gmu_memdesc *gmu_get_memdesc(struct gmu_device *gmu,
 		unsigned int addr, unsigned int size)
+=======
+struct gmu_memdesc *gmu_get_memdesc(unsigned int addr, unsigned int size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	struct gmu_memdesc *mem;
 
 	for (i = 0; i < GMU_KERNEL_ENTRIES; i++) {
+<<<<<<< HEAD
 		if (!test_bit(i, &gmu->kmem_bitmap))
 			continue;
 
@@ -169,6 +254,15 @@ struct gmu_memdesc *gmu_get_memdesc(struct gmu_device *gmu,
 
 		if (addr >= mem->gmuaddr &&
 				(addr + size <= mem->gmuaddr + mem->size))
+=======
+		if (!test_bit(i, &gmu_kmem_bitmap))
+			continue;
+
+		mem = &gmu_kmem_entries[i];
+
+		if (addr >= mem->gmuaddr &&
+				(addr + size < mem->gmuaddr + mem->size))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return mem;
 	}
 
@@ -182,6 +276,7 @@ struct gmu_memdesc *gmu_get_memdesc(struct gmu_device *gmu,
  * @attrs: IOMMU mapping attributes
  */
 static struct gmu_memdesc *allocate_gmu_kmem(struct gmu_device *gmu,
+<<<<<<< HEAD
 		enum gmu_mem_type mem_type, unsigned int addr,
 		unsigned int size, unsigned int attrs)
 {
@@ -189,6 +284,15 @@ static struct gmu_memdesc *allocate_gmu_kmem(struct gmu_device *gmu,
 	int ret;
 	int entry_idx = find_first_zero_bit(
 			&gmu->kmem_bitmap, GMU_KERNEL_ENTRIES);
+=======
+		enum gmu_mem_type mem_type, unsigned int size,
+		unsigned int attrs)
+{
+	struct gmu_memdesc *md;
+	int ret = 0;
+	int entry_idx = find_first_zero_bit(
+			&gmu_kmem_bitmap, GMU_KERNEL_ENTRIES);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (entry_idx >= GMU_KERNEL_ENTRIES) {
 		dev_err(&gmu->pdev->dev,
@@ -196,6 +300,7 @@ static struct gmu_memdesc *allocate_gmu_kmem(struct gmu_device *gmu,
 		return ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	/* Non-TCM requests have page alignment requirement */
 	if ((mem_type != GMU_ITCM) && (mem_type != GMU_DTCM) &&
 			addr & (PAGE_SIZE - 1)) {
@@ -247,12 +352,63 @@ static struct gmu_memdesc *allocate_gmu_kmem(struct gmu_device *gmu,
 
 		size = PAGE_ALIGN(size);
 		md->ctx_idx = GMU_CONTEXT_USER;
+=======
+	switch (mem_type) {
+	case GMU_NONCACHED_KERNEL:
+		size = PAGE_ALIGN(size);
+		if (size > SZ_1M || size == 0) {
+			dev_err(&gmu->pdev->dev,
+					"Invalid uncached GMU memory req %d\n",
+					size);
+			return ERR_PTR(-EINVAL);
+		}
+
+		md = &gmu_kmem_entries[entry_idx];
+		md->gmuaddr = gmu_vma[mem_type].start +
+			(num_uncached_entries * SZ_1M);
+		set_bit(entry_idx, &gmu_kmem_bitmap);
+		md->size = size;
+		md->mem_type = mem_type;
+		break;
+
+	case GMU_DCACHE:
+		md = &gmu_kmem_entries[entry_idx];
+		md->gmuaddr = gmu_vma[mem_type].start;
+		set_bit(entry_idx, &gmu_kmem_bitmap);
+		md->size = size;
+		md->mem_type = mem_type;
+		break;
+
+	case GMU_ICACHE:
+		md = &gmu_kmem_entries[entry_idx];
+		md->gmuaddr = gmu_vma[mem_type].start;
+		set_bit(entry_idx, &gmu_kmem_bitmap);
+		md->size = size;
+		md->mem_type = mem_type;
+		break;
+
+	case GMU_ITCM:
+		md = &gmu_kmem_entries[entry_idx];
+		md->gmuaddr = gmu_vma[mem_type].start;
+		set_bit(entry_idx, &gmu_kmem_bitmap);
+		md->size = size;
+		md->mem_type = mem_type;
+		break;
+
+	case GMU_DTCM:
+		md = &gmu_kmem_entries[entry_idx];
+		md->gmuaddr = gmu_vma[mem_type].start;
+		set_bit(entry_idx, &gmu_kmem_bitmap);
+		md->size = size;
+		md->mem_type = mem_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	default:
 		dev_err(&gmu->pdev->dev,
 				"Invalid memory type (%d) requested\n",
 				mem_type);
+<<<<<<< HEAD
 		clear_bit(entry_idx, &gmu->kmem_bitmap);
 		return ERR_PTR(-EINVAL);
 	}
@@ -264,13 +420,26 @@ static struct gmu_memdesc *allocate_gmu_kmem(struct gmu_device *gmu,
 	ret = alloc_and_map(gmu, md, attrs);
 	if (ret) {
 		clear_bit(entry_idx, &gmu->kmem_bitmap);
+=======
+			return ERR_PTR(-EINVAL);
+	};
+
+	ret = alloc_and_map(gmu, GMU_CONTEXT_KERNEL, md, attrs);
+	if (ret) {
+		clear_bit(entry_idx, &gmu_kmem_bitmap);
+		md->gmuaddr = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(ret);
 	}
 
 	if (mem_type == GMU_NONCACHED_KERNEL)
+<<<<<<< HEAD
 		next_uncached_kernel_alloc = PAGE_ALIGN(md->gmuaddr + md->size);
 	else if (mem_type == GMU_NONCACHED_USER)
 		next_uncached_user_alloc = PAGE_ALIGN(md->gmuaddr + md->size);
+=======
+		num_uncached_entries++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return md;
 }
@@ -284,7 +453,11 @@ static int gmu_iommu_cb_probe(struct gmu_device *gmu,
 	int ret;
 
 	dev = &pdev->dev;
+<<<<<<< HEAD
 	of_dma_configure(dev, node, true);
+=======
+	of_dma_configure(dev, node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx->dev = dev;
 	ctx->domain = iommu_domain_alloc(&platform_bus_type);
@@ -299,6 +472,10 @@ static int gmu_iommu_cb_probe(struct gmu_device *gmu,
 		dev_err(&gmu->pdev->dev, "gmu iommu fail to attach %s device\n",
 			ctx->name);
 		iommu_domain_free(ctx->domain);
+<<<<<<< HEAD
+=======
+		ctx->domain = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -358,6 +535,7 @@ static int gmu_iommu_init(struct gmu_device *gmu, struct device_node *node)
 }
 
 /*
+<<<<<<< HEAD
  * gmu_memory_close() - free all memory allocated for GMU and detach GMU
  * from IOMMU context banks.
  * @gmu: Pointer to GMU device
@@ -383,6 +561,34 @@ static void gmu_memory_close(struct gmu_device *gmu)
 
 		if (!ctx->domain)
 			continue;
+=======
+ * gmu_kmem_close() - free all kernel memory allocated for GMU and detach GMU
+ * from IOMMU context banks.
+ * @gmu: Pointer to GMU device
+ */
+static void gmu_kmem_close(struct gmu_device *gmu)
+{
+	int i;
+	struct gmu_memdesc *md;
+	struct gmu_iommu_context *ctx = &gmu_ctx[GMU_CONTEXT_KERNEL];
+
+	gmu->hfi_mem = NULL;
+	gmu->persist_mem = NULL;
+	gmu->icache_mem = NULL;
+	gmu->dcache_mem = NULL;
+	gmu->dump_mem = NULL;
+	gmu->gmu_log = NULL;
+
+	if (!ctx->domain)
+		return;
+
+	/* Unmap and free all memories in GMU kernel memory pool */
+	for (i = 0; i < GMU_KERNEL_ENTRIES; i++) {
+		if (!test_bit(i, &gmu_kmem_bitmap))
+			continue;
+
+		md = &gmu_kmem_entries[i];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (md->gmuaddr && md->mem_type != GMU_ITCM &&
 				md->mem_type != GMU_DTCM)
@@ -390,6 +596,7 @@ static void gmu_memory_close(struct gmu_device *gmu)
 
 		free_gmu_mem(gmu, md);
 
+<<<<<<< HEAD
 		clear_bit(i, &gmu->kmem_bitmap);
 	}
 
@@ -441,12 +648,40 @@ int gmu_prealloc_req(struct kgsl_device *device, struct gmu_block_header *blk)
 	gmu->preallocations = true;
 
 	return 0;
+=======
+		clear_bit(i, &gmu_kmem_bitmap);
+	}
+
+	/* Detach the device from SMMU context bank */
+	iommu_detach_device(ctx->domain, ctx->dev);
+
+	/* free kernel mem context */
+	iommu_domain_free(ctx->domain);
+	ctx->domain = NULL;
+}
+
+static void gmu_memory_close(struct gmu_device *gmu)
+{
+	struct gmu_iommu_context *ctx = &gmu_ctx[GMU_CONTEXT_USER];
+
+	gmu_kmem_close(gmu);
+
+	if (ctx->domain) {
+		/* Detach the device from SMMU context bank */
+		iommu_detach_device(ctx->domain, ctx->dev);
+
+		/* Free user memory context */
+		iommu_domain_free(ctx->domain);
+		ctx->domain = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
  * gmu_memory_probe() - probe GMU IOMMU context banks and allocate memory
  * to share with GMU in kernel mode.
  * @device: Pointer to KGSL device
+<<<<<<< HEAD
  */
 static int gmu_memory_probe(struct kgsl_device *device)
 {
@@ -459,24 +694,118 @@ static int gmu_memory_probe(struct kgsl_device *device)
 				HFIMEM_SIZE, (IOMMU_READ | IOMMU_WRITE));
 	if (IS_ERR(gmu->hfi_mem))
 		return PTR_ERR(gmu->hfi_mem);
+=======
+ * @gmu: Pointer to GMU device
+ * @node: Pointer to GMU device node
+ */
+static int gmu_memory_probe(struct kgsl_device *device,
+		struct gmu_device *gmu, struct device_node *node)
+{
+	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
+	struct gmu_memdesc *md;
+	int ret;
+
+	ret = gmu_iommu_init(gmu, node);
+	if (ret)
+		return ret;
+
+	/* Reserve a memdesc for ITCM. No actually memory allocated */
+	md = allocate_gmu_kmem(gmu, GMU_ITCM, gmu_vma[GMU_ITCM].size, 0);
+	if (IS_ERR(md)) {
+		ret = PTR_ERR(md);
+		goto err_ret;
+	}
+
+	/* Reserve a memdesc for DTCM. No actually memory allocated */
+	md = allocate_gmu_kmem(gmu, GMU_DTCM, gmu_vma[GMU_DTCM].size, 0);
+	if (IS_ERR(md)) {
+		ret = PTR_ERR(md);
+		goto err_ret;
+	}
+
+	/* Allocates & maps memory for WB DUMMY PAGE */
+	/* Must be the first alloc */
+	if (IS_ERR_OR_NULL(gmu->persist_mem))
+		gmu->persist_mem = allocate_gmu_kmem(gmu, GMU_NONCACHED_KERNEL,
+				DUMMY_SIZE,
+				(IOMMU_READ | IOMMU_WRITE | IOMMU_PRIV));
+	if (IS_ERR(gmu->persist_mem)) {
+		ret = PTR_ERR(gmu->persist_mem);
+		goto err_ret;
+	}
+
+	/* Allocates & maps memory for DCACHE */
+	if (IS_ERR_OR_NULL(gmu->dcache_mem))
+		gmu->dcache_mem = allocate_gmu_kmem(gmu, GMU_DCACHE,
+				gmu_vma[GMU_DCACHE].size,
+				(IOMMU_READ | IOMMU_WRITE | IOMMU_PRIV));
+	if (IS_ERR(gmu->dcache_mem)) {
+		ret = PTR_ERR(gmu->dcache_mem);
+		goto err_ret;
+	}
+
+	/* Allocates & maps memory for ICACHE */
+	if (IS_ERR_OR_NULL(gmu->icache_mem))
+		gmu->icache_mem = allocate_gmu_kmem(gmu, GMU_ICACHE,
+				gmu_vma[GMU_ICACHE].size,
+				(IOMMU_READ | IOMMU_WRITE | IOMMU_PRIV));
+	if (IS_ERR(gmu->icache_mem)) {
+		ret = PTR_ERR(gmu->icache_mem);
+		goto err_ret;
+	}
+
+	/* Allocates & maps memory for HFI */
+	if (IS_ERR_OR_NULL(gmu->hfi_mem))
+		gmu->hfi_mem = allocate_gmu_kmem(gmu, GMU_NONCACHED_KERNEL,
+				HFIMEM_SIZE, (IOMMU_READ | IOMMU_WRITE));
+	if (IS_ERR(gmu->hfi_mem)) {
+		ret = PTR_ERR(gmu->hfi_mem);
+		goto err_ret;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocates & maps GMU crash dump memory */
 	if (adreno_is_a630(adreno_dev) || adreno_is_a615_family(adreno_dev)) {
 		if (IS_ERR_OR_NULL(gmu->dump_mem))
 			gmu->dump_mem = allocate_gmu_kmem(gmu,
+<<<<<<< HEAD
 					GMU_NONCACHED_KERNEL, 0,
 					DUMPMEM_SIZE,
 					(IOMMU_READ | IOMMU_WRITE));
 		if (IS_ERR(gmu->dump_mem))
 			return PTR_ERR(gmu->dump_mem);
+=======
+					GMU_NONCACHED_KERNEL,
+					DUMPMEM_SIZE,
+					(IOMMU_READ | IOMMU_WRITE));
+		if (IS_ERR(gmu->dump_mem)) {
+			ret = PTR_ERR(gmu->dump_mem);
+			goto err_ret;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* GMU master log */
 	if (IS_ERR_OR_NULL(gmu->gmu_log))
+<<<<<<< HEAD
 		gmu->gmu_log = allocate_gmu_kmem(gmu, GMU_NONCACHED_KERNEL, 0,
 				LOGMEM_SIZE,
 				(IOMMU_READ | IOMMU_WRITE | IOMMU_PRIV));
 	return PTR_ERR_OR_ZERO(gmu->gmu_log);
+=======
+		gmu->gmu_log = allocate_gmu_kmem(gmu, GMU_NONCACHED_KERNEL,
+				LOGMEM_SIZE,
+				(IOMMU_READ | IOMMU_WRITE | IOMMU_PRIV));
+	if (IS_ERR(gmu->gmu_log)) {
+		ret = PTR_ERR(gmu->gmu_log);
+		goto err_ret;
+	}
+
+	return 0;
+err_ret:
+	gmu_memory_close(gmu);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -528,7 +857,11 @@ static int gmu_dcvs_set(struct kgsl_device *device,
 	}
 
 	if (ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_HFI_USE_REG))
+<<<<<<< HEAD
 		ret = gmu_dev_ops->rpmh_gpu_pwrctrl(device,
+=======
+		ret = gmu_dev_ops->rpmh_gpu_pwrctrl(adreno_dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GMU_DCVS_NOHFI, req.freq, req.bw);
 	else if (test_bit(GMU_HFI_ON, &device->gmu_core.flags))
 		ret = hfi_send_req(gmu, H2F_MSG_GX_BW_PERF_VOTE, &req);
@@ -537,6 +870,7 @@ static int gmu_dcvs_set(struct kgsl_device *device,
 		dev_err_ratelimited(&gmu->pdev->dev,
 			"Failed to set GPU perf idx %d, bw idx %d\n",
 			req.freq, req.bw);
+<<<<<<< HEAD
 
 		/*
 		 * We can be here in two situations. First, we send a dcvs
@@ -554,6 +888,9 @@ static int gmu_dcvs_set(struct kgsl_device *device,
 				ADRENO_GMU_FAULT_SKIP_SNAPSHOT);
 			adreno_dispatcher_schedule(device);
 		}
+=======
+		gmu_snapshot(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* indicate actual clock change */
@@ -576,6 +913,14 @@ enum rpmh_vote_type {
 	INVALID_ARC_VOTE,
 };
 
+<<<<<<< HEAD
+=======
+static const char debug_strs[][8] = {
+	[GPU_ARC_VOTE] = "gpu",
+	[GMU_ARC_VOTE] = "gmu",
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * rpmh_arc_cmds() - query RPMh command database for GX/CX/MX rail
  * VLVL tables. The index of table will be used by GMU to vote rail
@@ -590,9 +935,13 @@ static int rpmh_arc_cmds(struct gmu_device *gmu,
 {
 	unsigned int len;
 
+<<<<<<< HEAD
 	memset(arc, 0, sizeof(*arc));
 
 	len = cmd_db_read_aux_data_len(res_id);
+=======
+	len = cmd_db_get_aux_data_len(res_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (len == 0)
 		return -EINVAL;
 
@@ -603,10 +952,17 @@ static int rpmh_arc_cmds(struct gmu_device *gmu,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	cmd_db_read_aux_data(res_id, (uint8_t *)arc->val, len);
 
 	/*
 	 * cmd_db_read_aux_data() gives us a zero-padded table of
+=======
+	cmd_db_get_aux_data(res_id, (uint8_t *)arc->val, len);
+
+	/*
+	 * cmd_db_get_aux_data() gives us a zero-padded table of
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * size len that contains the arc values. To determine the
 	 * number of arc values, we loop through the table and count
 	 * them until we get to the end of the buffer or hit the
@@ -634,7 +990,11 @@ static int rpmh_arc_cmds(struct gmu_device *gmu,
  */
 static int setup_volt_dependency_tbl(uint32_t *votes,
 		struct rpmh_arc_vals *pri_rail, struct rpmh_arc_vals *sec_rail,
+<<<<<<< HEAD
 		u16 *vlvl, unsigned int num_entries)
+=======
+		unsigned int *vlvl, unsigned int num_entries)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i, j, k;
 	uint16_t cur_vlvl;
@@ -680,6 +1040,7 @@ static int setup_volt_dependency_tbl(uint32_t *votes,
 	return 0;
 }
 
+<<<<<<< HEAD
 
 static int rpmh_gmu_arc_votes_init(struct gmu_device *gmu,
 		struct rpmh_arc_vals *pri_rail, struct rpmh_arc_vals *sec_rail)
@@ -694,6 +1055,11 @@ static int rpmh_gmu_arc_votes_init(struct gmu_device *gmu,
 /*
  * rpmh_arc_votes_init() - initialized GX RPMh votes needed for rails
  * voltage scaling by GMU.
+=======
+/*
+ * rpmh_arc_votes_init() - initialized RPMh votes needed for rails voltage
+ * scaling by GMU.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @device: Pointer to KGSL device
  * @gmu: Pointer to GMU device
  * @pri_rail: Pointer to primary power rail VLVL table
@@ -705,6 +1071,7 @@ static int rpmh_arc_votes_init(struct kgsl_device *device,
 		struct gmu_device *gmu, struct rpmh_arc_vals *pri_rail,
 		struct rpmh_arc_vals *sec_rail, unsigned int type)
 {
+<<<<<<< HEAD
 	unsigned int num_freqs;
 	u16 vlvl_tbl[MAX_GX_LEVELS];
 	unsigned int *freq_tbl;
@@ -720,19 +1087,53 @@ static int rpmh_arc_votes_init(struct kgsl_device *device,
 	if (num_freqs > pri_rail->num || num_freqs > MAX_GX_LEVELS) {
 		dev_err(&gmu->pdev->dev,
 			"Defined more GPU DCVS levels than RPMh can support\n");
+=======
+	struct device *dev;
+	unsigned int num_freqs;
+	uint32_t *votes;
+	unsigned int vlvl_tbl[MAX_GX_LEVELS];
+	unsigned int *freq_tbl;
+	int i, ret;
+	struct dev_pm_opp *opp;
+
+	if (type == GPU_ARC_VOTE) {
+		num_freqs = gmu->num_gpupwrlevels;
+		votes = gmu->rpmh_votes.gx_votes;
+		freq_tbl = gmu->gpu_freqs;
+		dev = &device->pdev->dev;
+	} else if (type == GMU_ARC_VOTE) {
+		num_freqs = gmu->num_gmupwrlevels;
+		votes = gmu->rpmh_votes.cx_votes;
+		freq_tbl = gmu->gmu_freqs;
+		dev = &gmu->pdev->dev;
+	} else {
+		return -EINVAL;
+	}
+
+	if (num_freqs > pri_rail->num) {
+		dev_err(&gmu->pdev->dev,
+			"%s defined more DCVS levels than RPMh can support\n",
+			debug_strs[type]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	memset(vlvl_tbl, 0, sizeof(vlvl_tbl));
+<<<<<<< HEAD
 
 	/* Get the values from OPP API */
 	for (i = 0; i < num_freqs; i++) {
 		/* Hardcode VLVL 0 because it is not present in OPP */
+=======
+	for (i = 0; i < num_freqs; i++) {
+		/* Hardcode VLVL for 0 because it is not registered in OPP */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (freq_tbl[i] == 0) {
 			vlvl_tbl[i] = 0;
 			continue;
 		}
 
+<<<<<<< HEAD
 		opp = dev_pm_opp_find_freq_exact(&device->pdev->dev,
 			freq_tbl[i], true);
 
@@ -749,6 +1150,31 @@ static int rpmh_arc_votes_init(struct kgsl_device *device,
 
 	return setup_volt_dependency_tbl(gmu->rpmh_votes.gx_votes, pri_rail,
 						sec_rail, vlvl_tbl, num_freqs);
+=======
+		/* Otherwise get the value from the OPP API */
+		opp = dev_pm_opp_find_freq_exact(dev, freq_tbl[i], true);
+		if (IS_ERR(opp)) {
+			dev_err(&gmu->pdev->dev,
+				"Failed to find opp freq %d of %s\n",
+				freq_tbl[i], debug_strs[type]);
+			return PTR_ERR(opp);
+		}
+
+		/* Values from OPP framework are offset by 1 */
+		vlvl_tbl[i] = dev_pm_opp_get_voltage(opp)
+				- RPMH_REGULATOR_LEVEL_OFFSET;
+		dev_pm_opp_put(opp);
+	}
+
+	ret = setup_volt_dependency_tbl(votes,
+			pri_rail, sec_rail, vlvl_tbl, num_freqs);
+
+	if (ret)
+		dev_err(&gmu->pdev->dev, "%s rail volt failed to match DT freqs\n",
+				debug_strs[type]);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -778,7 +1204,11 @@ static void build_rpmh_bw_votes(struct gmu_bw_votes *rpmh_vote,
 			 */
 				rpmh_vote->cmds_per_bw_vote = tmp->num_cmds;
 				rpmh_vote->cmds_wait_bitmask =
+<<<<<<< HEAD
 						tmp->cmds[j].wait ?
+=======
+						tmp->cmds[j].complete ?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						rpmh_vote->cmds_wait_bitmask
 						| BIT(i)
 						: rpmh_vote->cmds_wait_bitmask
@@ -821,6 +1251,41 @@ static void build_bwtable_cmd_cache(struct gmu_device *gmu)
 				votes->cnoc_votes.cmd_data[i][j];
 }
 
+<<<<<<< HEAD
+=======
+static int gmu_acd_probe(struct gmu_device *gmu, struct device_node *node)
+{
+	struct hfi_acd_table_cmd *cmd = &gmu->hfi.acd_tbl_cmd;
+	struct device_node *acd_node;
+
+	acd_node = of_find_node_by_name(node, "qcom,gpu-acd-table");
+	if (!acd_node)
+		return -ENODEV;
+
+	cmd->hdr = 0xFFFFFFFF;
+	cmd->version = HFI_ACD_INIT_VERSION;
+	cmd->enable_by_level = 0;
+	cmd->stride = 0;
+	cmd->num_levels = 0;
+
+	of_property_read_u32(acd_node, "qcom,acd-stride", &cmd->stride);
+	if (!cmd->stride || cmd->stride > MAX_ACD_STRIDE)
+		return -EINVAL;
+
+	of_property_read_u32(acd_node, "qcom,acd-num-levels", &cmd->num_levels);
+	if (!cmd->num_levels || cmd->num_levels > MAX_ACD_NUM_LEVELS)
+		return -EINVAL;
+
+	of_property_read_u32(acd_node, "qcom,acd-enable-by-level",
+			&cmd->enable_by_level);
+	if (hweight32(cmd->enable_by_level) != cmd->num_levels)
+		return -EINVAL;
+
+	return of_property_read_u32_array(acd_node, "qcom,acd-data",
+			cmd->data, cmd->stride * cmd->num_levels);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * gmu_bus_vote_init - initialized RPMh votes needed for bw scaling by GMU.
  * @gmu: Pointer to GMU device
@@ -897,6 +1362,30 @@ static int gmu_rpmh_init(struct kgsl_device *device,
 	return rpmh_arc_votes_init(device, gmu, &cx_arc, &mx_arc, GMU_ARC_VOTE);
 }
 
+<<<<<<< HEAD
+=======
+static void send_nmi_to_gmu(struct adreno_device *adreno_dev)
+{
+	u32 val;
+
+	/* Mask so there's no interrupt caused by NMI */
+	adreno_write_gmureg(adreno_dev,
+			ADRENO_REG_GMU_GMU2HOST_INTR_MASK, 0xFFFFFFFF);
+
+	/* Make sure the interrupt is masked before causing it */
+	wmb();
+	adreno_write_gmureg(adreno_dev,
+		ADRENO_REG_GMU_NMI_CONTROL_STATUS, 0);
+
+	adreno_read_gmureg(adreno_dev, ADRENO_REG_GMU_CM3_CFG, &val);
+	val |= 1 << GMU_CM3_CFG_NONMASKINTR_SHIFT;
+	adreno_write_gmureg(adreno_dev, ADRENO_REG_GMU_CM3_CFG, val);
+
+	/* Make sure the NMI is invoked before we proceed*/
+	wmb();
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t gmu_irq_handler(int irq, void *data)
 {
 	struct kgsl_device *device = data;
@@ -918,7 +1407,11 @@ static irqreturn_t gmu_irq_handler(int irq, void *data)
 				ADRENO_REG_GMU_AO_HOST_INTERRUPT_MASK,
 				(mask | GMU_INT_WDOG_BITE));
 
+<<<<<<< HEAD
 		adreno_gmu_send_nmi(adreno_dev);
+=======
+		send_nmi_to_gmu(adreno_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * There is sufficient delay for the GMU to have finished
 		 * handling the NMI before snapshot is taken, as the fault
@@ -927,6 +1420,11 @@ static irqreturn_t gmu_irq_handler(int irq, void *data)
 
 		dev_err_ratelimited(&gmu->pdev->dev,
 				"GMU watchdog expired interrupt received\n");
+<<<<<<< HEAD
+=======
+		adreno_set_gpu_fault(adreno_dev, ADRENO_GMU_FAULT);
+		adreno_dispatcher_schedule(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (status & GMU_INT_HOST_AHB_BUS_ERR)
 		dev_err_ratelimited(&gmu->pdev->dev,
@@ -948,6 +1446,57 @@ static irqreturn_t gmu_irq_handler(int irq, void *data)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
+=======
+static int gmu_pwrlevel_probe(struct gmu_device *gmu, struct device_node *node)
+{
+	int ret;
+	struct device_node *pwrlevel_node, *child;
+
+	/* Add the GMU OPP table if we define it */
+	if (of_find_property(gmu->pdev->dev.of_node,
+			"operating-points-v2", NULL)) {
+		ret = dev_pm_opp_of_add_table(&gmu->pdev->dev);
+		if (ret) {
+			dev_err(&gmu->pdev->dev,
+					"Unable to set the GMU OPP table: %d\n",
+					ret);
+			return ret;
+		}
+	}
+
+	pwrlevel_node = of_find_node_by_name(node, "qcom,gmu-pwrlevels");
+	if (pwrlevel_node == NULL) {
+		dev_err(&gmu->pdev->dev, "Unable to find 'qcom,gmu-pwrlevels'\n");
+		return -EINVAL;
+	}
+
+	gmu->num_gmupwrlevels = 0;
+
+	for_each_child_of_node(pwrlevel_node, child) {
+		unsigned int index;
+
+		if (of_property_read_u32(child, "reg", &index))
+			return -EINVAL;
+
+		if (index >= MAX_CX_LEVELS) {
+			dev_err(&gmu->pdev->dev, "gmu pwrlevel %d is out of range\n",
+				index);
+			continue;
+		}
+
+		if (index >= gmu->num_gmupwrlevels)
+			gmu->num_gmupwrlevels = index + 1;
+
+		if (of_property_read_u32(child, "qcom,gmu-freq",
+					&gmu->gmu_freqs[index]))
+			return -EINVAL;
+	}
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gmu_reg_probe(struct kgsl_device *device)
 {
 	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
@@ -1010,9 +1559,15 @@ static int gmu_clocks_probe(struct gmu_device *gmu, struct device_node *node)
 
 static int gmu_gpu_bw_probe(struct kgsl_device *device, struct gmu_device *gmu)
 {
+<<<<<<< HEAD
 	struct msm_bus_scale_pdata *bus_scale_table =
 		kgsl_get_bus_scale_table(device);
 
+=======
+	struct msm_bus_scale_pdata *bus_scale_table;
+
+	bus_scale_table = msm_bus_cl_get_pdata(device->pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (bus_scale_table == NULL) {
 		dev_err(&gmu->pdev->dev, "dt: cannot get bus table\n");
 		return -ENODEV;
@@ -1082,11 +1637,45 @@ static int gmu_regulators_probe(struct gmu_device *gmu,
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int gmu_irq_probe(struct kgsl_device *device, struct gmu_device *gmu)
+{
+	int ret;
+	struct kgsl_hfi *hfi = &gmu->hfi;
+
+	hfi->hfi_interrupt_num = platform_get_irq_byname(gmu->pdev,
+			"kgsl_hfi_irq");
+	ret = devm_request_irq(&gmu->pdev->dev,
+			hfi->hfi_interrupt_num,
+			hfi_irq_handler, IRQF_TRIGGER_HIGH,
+			"HFI", device);
+	if (ret) {
+		dev_err(&gmu->pdev->dev, "request_irq(%d) failed: %d\n",
+				hfi->hfi_interrupt_num, ret);
+		return ret;
+	}
+
+	gmu->gmu_interrupt_num = platform_get_irq_byname(gmu->pdev,
+			"kgsl_gmu_irq");
+	ret = devm_request_irq(&gmu->pdev->dev,
+			gmu->gmu_interrupt_num,
+			gmu_irq_handler, IRQF_TRIGGER_HIGH,
+			"GMU", device);
+	if (ret)
+		dev_err(&gmu->pdev->dev, "request_irq(%d) failed: %d\n",
+				gmu->gmu_interrupt_num, ret);
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mbox_message {
 	uint32_t len;
 	void *msg;
 };
 
+<<<<<<< HEAD
 static void gmu_aop_send_acd_state(struct kgsl_device *device, bool flag)
 {
 	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
@@ -1105,6 +1694,36 @@ static void gmu_aop_send_acd_state(struct kgsl_device *device, bool flag)
 	if (ret < 0)
 		dev_err(&gmu->pdev->dev,
 				"AOP mbox send message failed: %d\n", ret);
+=======
+static void gmu_aop_send_acd_state(struct kgsl_device *device)
+{
+	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
+	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
+	struct kgsl_mailbox *mailbox = &gmu->mailbox;
+	struct mbox_message msg;
+	char msg_buf[33];
+	bool state = test_bit(ADRENO_ACD_CTRL, &adreno_dev->pwrctrl_flag);
+	int ret;
+
+	if (!mailbox->client)
+		return;
+
+	if (state == mailbox->enabled)
+		return;
+
+	msg.len = scnprintf(msg_buf, sizeof(msg_buf),
+			"{class: gpu, res: acd, value: %d}", state);
+	msg.msg = msg_buf;
+
+	ret = mbox_send_message(mailbox->channel, &msg);
+	if (ret < 0) {
+		dev_err(&gmu->pdev->dev,
+				"AOP mbox send message failed: %d\n", ret);
+		return;
+	}
+
+	mailbox->enabled = state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gmu_aop_mailbox_destroy(struct kgsl_device *device)
@@ -1116,13 +1735,23 @@ static void gmu_aop_mailbox_destroy(struct kgsl_device *device)
 	if (!mailbox->client)
 		return;
 
+<<<<<<< HEAD
+=======
+	/* Turn off ACD in AOP */
+	clear_bit(ADRENO_ACD_CTRL, &adreno_dev->pwrctrl_flag);
+	gmu_aop_send_acd_state(device);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mbox_free_channel(mailbox->channel);
 	mailbox->channel = NULL;
 
 	kfree(mailbox->client);
 	mailbox->client = NULL;
+<<<<<<< HEAD
 
 	clear_bit(ADRENO_ACD_CTRL, &adreno_dev->pwrctrl_flag);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gmu_aop_mailbox_init(struct kgsl_device *device,
@@ -1131,6 +1760,12 @@ static int gmu_aop_mailbox_init(struct kgsl_device *device,
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
 	struct kgsl_mailbox *mailbox = &gmu->mailbox;
 
+<<<<<<< HEAD
+=======
+	if (adreno_is_a640v2(adreno_dev) && (!adreno_dev->speed_bin))
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mailbox->client = kzalloc(sizeof(*mailbox->client), GFP_KERNEL);
 	if (!mailbox->client)
 		return -ENOMEM;
@@ -1148,6 +1783,10 @@ static int gmu_aop_mailbox_init(struct kgsl_device *device,
 	}
 
 	set_bit(ADRENO_ACD_CTRL, &adreno_dev->pwrctrl_flag);
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1163,6 +1802,7 @@ static int gmu_acd_set(struct kgsl_device *device, unsigned int val)
 	if (val == test_bit(ADRENO_ACD_CTRL, &adreno_dev->pwrctrl_flag))
 		return 0;
 
+<<<<<<< HEAD
 	mutex_lock(&device->mutex);
 
 	/* Power down the GPU before enabling or disabling ACD */
@@ -1276,12 +1916,20 @@ static void gmu_acd_probe(struct kgsl_device *device, struct gmu_device *gmu,
 	if (ret)
 		dev_err(&gmu->pdev->dev,
 			"AOP mailbox init failed: %d\n", ret);
+=======
+	return kgsl_change_flag(device, ADRENO_ACD_CTRL,
+			&adreno_dev->pwrctrl_flag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Do not access any GMU registers in GMU probe function */
 static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 {
 	struct gmu_device *gmu;
+<<<<<<< HEAD
+=======
+	struct gmu_memdesc *mem_addr = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kgsl_hfi *hfi;
 	struct kgsl_pwrctrl *pwr = &device->pwrctrl;
 	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
@@ -1292,6 +1940,7 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 	if (gmu == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	gmu->pdev = of_find_device_by_node(node);
 	if (!gmu->pdev) {
 		kfree(gmu);
@@ -1303,6 +1952,15 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 	gmu->load_mode = TCM_BOOT;
 
 	of_dma_configure(&gmu->pdev->dev, node, true);
+=======
+	device->gmu_core.ptr = (void *)gmu;
+	hfi = &gmu->hfi;
+	gmu->load_mode = TCM_BOOT;
+	gmu->ver = ~0U;
+
+	gmu->pdev = of_find_device_by_node(node);
+	of_dma_configure(&gmu->pdev->dev, node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Set up GMU regulators */
 	ret = gmu_regulators_probe(gmu, node);
@@ -1315,6 +1973,7 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 		goto error;
 
 	/* Set up GMU IOMMU and shared memory with GMU */
+<<<<<<< HEAD
 	ret = gmu_iommu_init(gmu, node);
 	if (ret)
 		goto error;
@@ -1327,6 +1986,12 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 	ret = gmu_tcm_init(gmu);
 	if (ret)
 		goto error;
+=======
+	ret = gmu_memory_probe(device, gmu, node);
+	if (ret)
+		goto error;
+	mem_addr = gmu->hfi_mem;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Map and reserve GMU CSRs registers */
 	ret = gmu_reg_probe(device);
@@ -1338,6 +2003,7 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 	device->gmu_core.reg_len = gmu->reg_len;
 
 	/* Initialize HFI and GMU interrupts */
+<<<<<<< HEAD
 	hfi->hfi_interrupt_num = kgsl_request_irq(gmu->pdev, "kgsl_hfi_irq",
 		hfi_irq_handler, device);
 
@@ -1345,6 +2011,10 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 		gmu_irq_handler, device);
 
 	if (hfi->hfi_interrupt_num < 0 || gmu->gmu_interrupt_num < 0)
+=======
+	ret = gmu_irq_probe(device, gmu);
+	if (ret)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error;
 
 	/* Don't enable GMU interrupts until GMU started */
@@ -1355,6 +2025,14 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 	tasklet_init(&hfi->tasklet, hfi_receiver, (unsigned long) gmu);
 	hfi->kgsldev = device;
 
+<<<<<<< HEAD
+=======
+	/* Retrieves GMU/GPU power level configurations*/
+	ret = gmu_pwrlevel_probe(gmu, node);
+	if (ret)
+		goto error;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gmu->num_gpupwrlevels = pwr->num_pwrlevels;
 
 	for (i = 0; i < gmu->num_gpupwrlevels; i++) {
@@ -1378,6 +2056,11 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 	if (ret)
 		goto error;
 
+<<<<<<< HEAD
+=======
+	hfi_init(&gmu->hfi, mem_addr, HFI_QUEUE_SIZE);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set up GMU idle states */
 	if (ADRENO_FEATURE(adreno_dev, ADRENO_MIN_VOLT))
 		gmu->idle_level = GPU_HW_MIN_VOLT;
@@ -1390,7 +2073,24 @@ static int gmu_probe(struct kgsl_device *device, struct device_node *node)
 	else
 		gmu->idle_level = GPU_HW_ACTIVE;
 
+<<<<<<< HEAD
 	gmu_acd_probe(device, gmu, node);
+=======
+	if (ADRENO_FEATURE(adreno_dev, ADRENO_ACD) && !noacd) {
+		if (!gmu_acd_probe(gmu, node)) {
+			/* Init the AOP mailbox if we have a valid ACD table */
+			ret = gmu_aop_mailbox_init(device, gmu);
+			if (ret)
+				dev_err(&gmu->pdev->dev,
+					"AOP mailbox init failed: %d\n", ret);
+		} else
+			dev_err(&gmu->pdev->dev,
+				"ACD probe failed: missing or invalid table\n");
+	}
+
+	if (ADRENO_FEATURE(adreno_dev, ADRENO_LM))
+		set_bit(ADRENO_LM_CTRL, &adreno_dev->pwrctrl_flag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_bit(GMU_ENABLED, &device->gmu_core.flags);
 	device->gmu_core.dev_ops = &adreno_a6xx_gmudev;
@@ -1410,10 +2110,17 @@ static int gmu_enable_clks(struct kgsl_device *device)
 	if (IS_ERR_OR_NULL(gmu->clks[0]))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	ret = clk_set_rate(gmu->clks[0], GMU_FREQUENCY);
 	if (ret) {
 		dev_err(&gmu->pdev->dev, "fail to set default GMU clk freq %d\n",
 				GMU_FREQUENCY);
+=======
+	ret = clk_set_rate(gmu->clks[0], gmu->gmu_freqs[DEFAULT_GMU_FREQ_IDX]);
+	if (ret) {
+		dev_err(&gmu->pdev->dev, "fail to set default GMU clk freq %d\n",
+				gmu->gmu_freqs[DEFAULT_GMU_FREQ_IDX]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -1499,7 +2206,11 @@ static int gmu_disable_gdsc(struct kgsl_device *device)
 	if (!gmu_core_dev_cx_is_on(device))
 		return 0;
 
+<<<<<<< HEAD
 	dev_err(&gmu->pdev->dev, "GMU CX gdsc off timeout\n");
+=======
+	dev_err(&gmu->pdev->dev, "GMU CX gdsc off timeout");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -ETIMEDOUT;
 }
 
@@ -1516,7 +2227,11 @@ static int gmu_suspend(struct kgsl_device *device)
 	gmu_dev_ops->irq_disable(device);
 	hfi_stop(gmu);
 
+<<<<<<< HEAD
 	if (gmu_dev_ops->rpmh_gpu_pwrctrl(device, GMU_SUSPEND, 0, 0))
+=======
+	if (gmu_dev_ops->rpmh_gpu_pwrctrl(adreno_dev, GMU_SUSPEND, 0, 0))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	gmu_disable_clks(device);
@@ -1530,9 +2245,12 @@ static int gmu_suspend(struct kgsl_device *device)
 		regulator_set_mode(gmu->cx_gdsc, REGULATOR_MODE_NORMAL);
 
 	dev_err(&gmu->pdev->dev, "Suspended GMU\n");
+<<<<<<< HEAD
 
 	clear_bit(GMU_FAULT, &device->gmu_core.flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1542,11 +2260,15 @@ static void gmu_snapshot(struct kgsl_device *device)
 	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
 	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
 
+<<<<<<< HEAD
 	/* Abstain from sending another nmi or over-writing snapshot */
 	if (test_and_set_bit(GMU_FAULT, &device->gmu_core.flags))
 		return;
 
 	adreno_gmu_send_nmi(adreno_dev);
+=======
+	send_nmi_to_gmu(adreno_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Wait for the NMI to be handled */
 	udelay(100);
 	kgsl_device_snapshot(device, NULL, true);
@@ -1560,6 +2282,7 @@ static void gmu_snapshot(struct kgsl_device *device)
 	gmu->fault_count++;
 }
 
+<<<<<<< HEAD
 static int gmu_init(struct kgsl_device *device)
 {
 	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
@@ -1578,6 +2301,8 @@ static int gmu_init(struct kgsl_device *device)
 
 	return 0;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* To be called to power on both GPU and GMU */
 static int gmu_start(struct kgsl_device *device)
 {
@@ -1589,23 +2314,41 @@ static int gmu_start(struct kgsl_device *device)
 
 	switch (device->state) {
 	case KGSL_STATE_INIT:
+<<<<<<< HEAD
 		gmu_aop_send_acd_state(device, test_bit(ADRENO_ACD_CTRL,
 					&adreno_dev->pwrctrl_flag));
 	case KGSL_STATE_SUSPEND:
 		WARN_ON(test_bit(GMU_CLK_ON, &device->gmu_core.flags));
 
+=======
+	case KGSL_STATE_SUSPEND:
+		WARN_ON(test_bit(GMU_CLK_ON, &device->gmu_core.flags));
+
+		gmu_aop_send_acd_state(device);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gmu_enable_gdsc(gmu);
 		gmu_enable_clks(device);
 		gmu_dev_ops->irq_enable(device);
 
+<<<<<<< HEAD
 		/* Vote for minimal DDR BW for GMU to init */
 		ret = msm_bus_scale_client_update_request(gmu->pcl,
 				pwr->pwrlevels[pwr->default_pwrlevel].bus_min);
+=======
+		/* Vote for 300MHz DDR for GMU to init */
+		ret = msm_bus_scale_client_update_request(gmu->pcl,
+				pwr->pwrlevels[pwr->default_pwrlevel].bus_freq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			dev_err(&gmu->pdev->dev,
 				"Failed to allocate gmu b/w: %d\n", ret);
 
+<<<<<<< HEAD
 		ret = gmu_dev_ops->rpmh_gpu_pwrctrl(device, GMU_FW_START,
+=======
+		ret = gmu_dev_ops->rpmh_gpu_pwrctrl(adreno_dev, GMU_FW_START,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GMU_COLD_BOOT, 0);
 		if (ret)
 			goto error_gmu;
@@ -1615,21 +2358,34 @@ static int gmu_start(struct kgsl_device *device)
 			goto error_gmu;
 
 		/* Request default DCVS level */
+<<<<<<< HEAD
 		ret = kgsl_pwrctrl_set_default_gpu_pwrlevel(device);
 		if (ret)
 			goto error_gmu;
 
+=======
+		kgsl_pwrctrl_set_default_gpu_pwrlevel(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		msm_bus_scale_client_update_request(gmu->pcl, 0);
 		break;
 
 	case KGSL_STATE_SLUMBER:
 		WARN_ON(test_bit(GMU_CLK_ON, &device->gmu_core.flags));
 
+<<<<<<< HEAD
+=======
+		gmu_aop_send_acd_state(device);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gmu_enable_gdsc(gmu);
 		gmu_enable_clks(device);
 		gmu_dev_ops->irq_enable(device);
 
+<<<<<<< HEAD
 		ret = gmu_dev_ops->rpmh_gpu_pwrctrl(device, GMU_FW_START,
+=======
+		ret = gmu_dev_ops->rpmh_gpu_pwrctrl(adreno_dev, GMU_FW_START,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				GMU_COLD_BOOT, 0);
 		if (ret)
 			goto error_gmu;
@@ -1638,20 +2394,33 @@ static int gmu_start(struct kgsl_device *device)
 		if (ret)
 			goto error_gmu;
 
+<<<<<<< HEAD
 		ret = kgsl_pwrctrl_set_default_gpu_pwrlevel(device);
 		if (ret)
 			goto error_gmu;
+=======
+		kgsl_pwrctrl_set_default_gpu_pwrlevel(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case KGSL_STATE_RESET:
 		gmu_suspend(device);
 
+<<<<<<< HEAD
+=======
+		gmu_aop_send_acd_state(device);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gmu_enable_gdsc(gmu);
 		gmu_enable_clks(device);
 		gmu_dev_ops->irq_enable(device);
 
 		ret = gmu_dev_ops->rpmh_gpu_pwrctrl(
+<<<<<<< HEAD
 			device, GMU_FW_START, GMU_COLD_BOOT, 0);
+=======
+				adreno_dev, GMU_FW_START, GMU_COLD_BOOT, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			goto error_gmu;
 
@@ -1662,7 +2431,10 @@ static int gmu_start(struct kgsl_device *device)
 
 		/* Send DCVS level prior to reset*/
 		kgsl_pwrctrl_set_default_gpu_pwrlevel(device);
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
@@ -1672,7 +2444,11 @@ static int gmu_start(struct kgsl_device *device)
 
 error_gmu:
 	if (ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_HFI_USE_REG))
+<<<<<<< HEAD
 		gmu_core_dev_oob_clear(device, oob_boot_slumber);
+=======
+		gmu_dev_ops->oob_clear(adreno_dev, oob_boot_slumber);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gmu_core_snapshot(device);
 	return ret;
 }
@@ -1681,12 +2457,17 @@ error_gmu:
 static void gmu_stop(struct kgsl_device *device)
 {
 	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
+<<<<<<< HEAD
+=======
+	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
 	int ret = 0;
 
 	if (!test_bit(GMU_CLK_ON, &device->gmu_core.flags))
 		return;
 
+<<<<<<< HEAD
 	/* Force suspend if gmu is already in fault */
 	if (test_bit(GMU_FAULT, &device->gmu_core.flags)) {
 		gmu_core_suspend(device);
@@ -1698,19 +2479,35 @@ static void gmu_stop(struct kgsl_device *device)
 		goto error;
 
 	ret = gmu_dev_ops->rpmh_gpu_pwrctrl(device,
+=======
+	/* Wait for the lowest idle level we requested */
+	if (gmu_dev_ops->wait_for_lowest_idle &&
+			gmu_dev_ops->wait_for_lowest_idle(adreno_dev))
+		goto error;
+
+	ret = gmu_dev_ops->rpmh_gpu_pwrctrl(adreno_dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			GMU_NOTIFY_SLUMBER, 0, 0);
 	if (ret)
 		goto error;
 
 	if (gmu_dev_ops->wait_for_gmu_idle &&
+<<<<<<< HEAD
 			gmu_dev_ops->wait_for_gmu_idle(device))
+=======
+			gmu_dev_ops->wait_for_gmu_idle(adreno_dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto error;
 
 	/* Pending message in all queues are abandoned */
 	gmu_dev_ops->irq_disable(device);
 	hfi_stop(gmu);
 
+<<<<<<< HEAD
 	gmu_dev_ops->rpmh_gpu_pwrctrl(device, GMU_FW_STOP, 0, 0);
+=======
+	gmu_dev_ops->rpmh_gpu_pwrctrl(adreno_dev, GMU_FW_STOP, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gmu_disable_clks(device);
 	gmu_disable_gdsc(device);
 
@@ -1718,6 +2515,7 @@ static void gmu_stop(struct kgsl_device *device)
 	return;
 
 error:
+<<<<<<< HEAD
 	dev_err(&gmu->pdev->dev, "Failed to stop GMU\n");
 	gmu_core_snapshot(device);
 	/*
@@ -1725,6 +2523,16 @@ error:
 	 * to set things up for a fresh start.
 	 */
 	gmu_core_suspend(device);
+=======
+	/*
+	 * The power controller will change state to SLUMBER anyway
+	 * Set GMU_FAULT flag to indicate to power contrller
+	 * that hang recovery is needed to power on GPU
+	 */
+	set_bit(GMU_FAULT, &device->gmu_core.flags);
+	dev_err(&gmu->pdev->dev, "Failed to stop GMU\n");
+	gmu_core_snapshot(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void gmu_remove(struct kgsl_device *device)
@@ -1749,6 +2557,21 @@ static void gmu_remove(struct kgsl_device *device)
 		i++;
 	}
 
+<<<<<<< HEAD
+=======
+	if (gmu->gmu_interrupt_num) {
+		devm_free_irq(&gmu->pdev->dev,
+				gmu->gmu_interrupt_num, device);
+		gmu->gmu_interrupt_num = 0;
+	}
+
+	if (hfi->hfi_interrupt_num) {
+		devm_free_irq(&gmu->pdev->dev,
+				hfi->hfi_interrupt_num, device);
+		hfi->hfi_interrupt_num = 0;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (gmu->ccl) {
 		msm_bus_scale_unregister_client(gmu->ccl);
 		gmu->ccl = 0;
@@ -1793,13 +2616,38 @@ static bool gmu_regulator_isenabled(struct kgsl_device *device)
 {
 	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
 
+<<<<<<< HEAD
 	return (gmu->gx_gdsc && regulator_is_enabled(gmu->gx_gdsc));
+=======
+	return (gmu->gx_gdsc &&	regulator_is_enabled(gmu->gx_gdsc));
+}
+
+static bool gmu_is_initialized(struct kgsl_device *device)
+{
+	struct adreno_device *adreno_dev = ADRENO_DEVICE(device);
+	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
+	struct gmu_device *gmu = KGSL_GMU_DEVICE(device);
+	bool ret;
+
+	gmu_enable_gdsc(gmu);
+	gmu_enable_clks(device);
+
+	ret = gmu_dev_ops->is_initialized(adreno_dev);
+
+	gmu_disable_clks(device);
+	gmu_disable_gdsc(device);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct gmu_core_ops gmu_ops = {
 	.probe = gmu_probe,
 	.remove = gmu_remove,
+<<<<<<< HEAD
 	.init = gmu_init,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.start = gmu_start,
 	.stop = gmu_stop,
 	.dcvs_set = gmu_dcvs_set,
@@ -1807,4 +2655,8 @@ struct gmu_core_ops gmu_ops = {
 	.regulator_isenabled = gmu_regulator_isenabled,
 	.suspend = gmu_suspend,
 	.acd_set = gmu_acd_set,
+<<<<<<< HEAD
+=======
+	.is_initialized = gmu_is_initialized,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

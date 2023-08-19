@@ -33,10 +33,17 @@ README for the ISDN-subsystem
      de.alt.comm.isdn4linux
 
   There is also a well maintained FAQ in English available at
+<<<<<<< HEAD
      https://www.mhessler.de/i4lfaq/
   It can be viewed online, or downloaded in sgml/text/html format.
   The FAQ can also be viewed online at
      https://www.isdn4linux.de/faq/i4lfaq.html
+=======
+     http://www.mhessler.de/i4lfaq/
+  It can be viewed online, or downloaded in sgml/text/html format.
+  The FAQ can also be viewed online at
+     http://www.isdn4linux.de/faq/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   or downloaded from
      ftp://ftp.isdn4linux.de/pub/isdn4linux/FAQ/
 

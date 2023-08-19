@@ -6,10 +6,16 @@
 
 #undef DEBUG
 
+<<<<<<< HEAD
 #include <linux/dma-noncoherent.h>
 #include <linux/device.h>
 #include <linux/kernel.h>
 #include <linux/platform_device.h>
+=======
+#include <linux/dma-mapping.h>
+#include <linux/device.h>
+#include <linux/kernel.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/scatterlist.h>
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
@@ -19,7 +25,11 @@
 
 #if defined(CONFIG_MMU) && !defined(CONFIG_COLDFIRE)
 
+<<<<<<< HEAD
 void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+=======
+static void *m68k_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gfp_t flag, unsigned long attrs)
 {
 	struct page *page, **map;
@@ -62,7 +72,11 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *handle,
 	return addr;
 }
 
+<<<<<<< HEAD
 void arch_dma_free(struct device *dev, size_t size, void *addr,
+=======
+static void m68k_dma_free(struct device *dev, size_t size, void *addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma_addr_t handle, unsigned long attrs)
 {
 	pr_debug("dma_free_coherent: %p, %x\n", addr, handle);
@@ -73,10 +87,19 @@ void arch_dma_free(struct device *dev, size_t size, void *addr,
 
 #include <asm/cacheflush.h>
 
+<<<<<<< HEAD
 void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
 		gfp_t gfp, unsigned long attrs)
 {
 	void *ret;
+=======
+static void *m68k_dma_alloc(struct device *dev, size_t size,
+		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
+{
+	void *ret;
+	/* ignore region specifiers */
+	gfp &= ~(__GFP_DMA | __GFP_HIGHMEM);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev == NULL || (*dev->dma_mask < 0xffffffff))
 		gfp |= GFP_DMA;
@@ -89,7 +112,11 @@ void *arch_dma_alloc(struct device *dev, size_t size, dma_addr_t *dma_handle,
 	return ret;
 }
 
+<<<<<<< HEAD
 void arch_dma_free(struct device *dev, size_t size, void *vaddr,
+=======
+static void m68k_dma_free(struct device *dev, size_t size, void *vaddr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma_addr_t dma_handle, unsigned long attrs)
 {
 	free_pages((unsigned long)vaddr, get_order(size));
@@ -97,8 +124,13 @@ void arch_dma_free(struct device *dev, size_t size, void *vaddr,
 
 #endif /* CONFIG_MMU && !CONFIG_COLDFIRE */
 
+<<<<<<< HEAD
 void arch_sync_dma_for_device(struct device *dev, phys_addr_t handle,
 		size_t size, enum dma_data_direction dir)
+=======
+static void m68k_dma_sync_single_for_device(struct device *dev,
+		dma_addr_t handle, size_t size, enum dma_data_direction dir)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	switch (dir) {
 	case DMA_BIDIRECTIONAL:
@@ -115,6 +147,7 @@ void arch_sync_dma_for_device(struct device *dev, phys_addr_t handle,
 	}
 }
 
+<<<<<<< HEAD
 void arch_setup_pdev_archdata(struct platform_device *pdev)
 {
 	if (pdev->dev.coherent_dma_mask == DMA_MASK_NONE &&
@@ -123,3 +156,56 @@ void arch_setup_pdev_archdata(struct platform_device *pdev)
 		pdev->dev.dma_mask = &pdev->dev.coherent_dma_mask;
 	}
 }
+=======
+static void m68k_dma_sync_sg_for_device(struct device *dev,
+		struct scatterlist *sglist, int nents, enum dma_data_direction dir)
+{
+	int i;
+	struct scatterlist *sg;
+
+	for_each_sg(sglist, sg, nents, i) {
+		dma_sync_single_for_device(dev, sg->dma_address, sg->length,
+					   dir);
+	}
+}
+
+static dma_addr_t m68k_dma_map_page(struct device *dev, struct page *page,
+		unsigned long offset, size_t size, enum dma_data_direction dir,
+		unsigned long attrs)
+{
+	dma_addr_t handle = page_to_phys(page) + offset;
+
+	if (!(attrs & DMA_ATTR_SKIP_CPU_SYNC))
+		dma_sync_single_for_device(dev, handle, size, dir);
+
+	return handle;
+}
+
+static int m68k_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+		int nents, enum dma_data_direction dir, unsigned long attrs)
+{
+	int i;
+	struct scatterlist *sg;
+
+	for_each_sg(sglist, sg, nents, i) {
+		sg->dma_address = sg_phys(sg);
+
+		if (attrs & DMA_ATTR_SKIP_CPU_SYNC)
+			continue;
+
+		dma_sync_single_for_device(dev, sg->dma_address, sg->length,
+					   dir);
+	}
+	return nents;
+}
+
+const struct dma_map_ops m68k_dma_ops = {
+	.alloc			= m68k_dma_alloc,
+	.free			= m68k_dma_free,
+	.map_page		= m68k_dma_map_page,
+	.map_sg			= m68k_dma_map_sg,
+	.sync_single_for_device	= m68k_dma_sync_single_for_device,
+	.sync_sg_for_device	= m68k_dma_sync_sg_for_device,
+};
+EXPORT_SYMBOL(m68k_dma_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

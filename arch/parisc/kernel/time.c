@@ -174,7 +174,11 @@ static int rtc_generic_get_time(struct device *dev, struct rtc_time *tm)
 
 	/* we treat tod_sec as unsigned, so this can work until year 2106 */
 	rtc_time64_to_tm(tod_data.tod_sec, tm);
+<<<<<<< HEAD
 	return 0;
+=======
+	return rtc_valid_tm(tm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rtc_generic_set_time(struct device *dev, struct rtc_time *tm)

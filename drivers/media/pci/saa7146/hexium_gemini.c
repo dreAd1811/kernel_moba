@@ -27,7 +27,10 @@
 
 #include <media/drv-intf/saa7146_vv.h>
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/kernel.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int debug;
 module_param(debug, int, 0);
@@ -70,8 +73,13 @@ struct hexium
 	struct video_device	video_dev;
 	struct i2c_adapter	i2c_adapter;
 
+<<<<<<< HEAD
 	int		cur_input;	/* current input */
 	v4l2_std_id	cur_std;	/* current standard */
+=======
+	int 		cur_input;	/* current input */
+	v4l2_std_id 	cur_std;	/* current standard */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Samsung KS0127B decoder default registers */
@@ -138,6 +146,7 @@ static struct hexium_data hexium_input_select[] = {
    are currently *not* supported*/
 static struct saa7146_standard hexium_standards[] = {
 	{
+<<<<<<< HEAD
 		.name	= "PAL",	.id	= V4L2_STD_PAL,
 		.v_offset	= 28,	.v_field	= 288,
 		.h_offset	= 1,	.h_pixels	= 680,
@@ -151,6 +160,21 @@ static struct saa7146_standard hexium_standards[] = {
 		.name	= "SECAM",	.id	= V4L2_STD_SECAM,
 		.v_offset	= 28,	.v_field	= 288,
 		.h_offset	= 1,	.h_pixels	= 720,
+=======
+		.name	= "PAL", 	.id	= V4L2_STD_PAL,
+		.v_offset	= 28,	.v_field 	= 288,
+		.h_offset	= 1,	.h_pixels 	= 680,
+		.v_max_out	= 576,	.h_max_out	= 768,
+	}, {
+		.name	= "NTSC", 	.id	= V4L2_STD_NTSC,
+		.v_offset	= 28,	.v_field 	= 240,
+		.h_offset	= 1,	.h_pixels 	= 640,
+		.v_max_out	= 480,	.h_max_out	= 640,
+	}, {
+		.name	= "SECAM", 	.id	= V4L2_STD_SECAM,
+		.v_offset	= 28,	.v_field 	= 288,
+		.h_offset	= 1,	.h_pixels 	= 720,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.v_max_out	= 576,	.h_max_out	= 768,
 	}
 };
@@ -261,10 +285,18 @@ static int hexium_attach(struct saa7146_dev *dev, struct saa7146_pci_extension_d
 
 	DEB_EE("\n");
 
+<<<<<<< HEAD
 	hexium = kzalloc(sizeof(*hexium), GFP_KERNEL);
 	if (!hexium)
 		return -ENOMEM;
 
+=======
+	hexium = kzalloc(sizeof(struct hexium), GFP_KERNEL);
+	if (NULL == hexium) {
+		pr_err("not enough kernel memory in hexium_attach()\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->ext_priv = hexium;
 
 	/* enable i2c-port pins */
@@ -391,7 +423,11 @@ static struct saa7146_ext_vv vv_data = {
 	.inputs = HEXIUM_INPUTS,
 	.capabilities = 0,
 	.stds = &hexium_standards[0],
+<<<<<<< HEAD
 	.num_stds = ARRAY_SIZE(hexium_standards),
+=======
+	.num_stds = sizeof(hexium_standards) / sizeof(struct saa7146_standard),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.std_callback = &std_callback,
 };
 

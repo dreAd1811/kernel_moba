@@ -14,6 +14,10 @@
 
 typedef u32		compat_size_t;
 typedef s32		compat_ssize_t;
+<<<<<<< HEAD
+=======
+typedef s32		compat_time_t;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef s32		compat_clock_t;
 typedef s32		compat_suseconds_t;
 
@@ -37,16 +41,35 @@ typedef struct {
 typedef s32		compat_timer_t;
 typedef s32		compat_key_t;
 
+<<<<<<< HEAD
 typedef s16		compat_short_t;
 typedef s32		compat_int_t;
 typedef s32		compat_long_t;
 typedef s64		compat_s64;
 typedef u16		compat_ushort_t;
+=======
+typedef s32		compat_int_t;
+typedef s32		compat_long_t;
+typedef s64		compat_s64;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef u32		compat_uint_t;
 typedef u32		compat_ulong_t;
 typedef u64		compat_u64;
 typedef u32		compat_uptr_t;
 
+<<<<<<< HEAD
+=======
+struct compat_timespec {
+	compat_time_t	tv_sec;
+	s32		tv_nsec;
+};
+
+struct compat_timeval {
+	compat_time_t	tv_sec;
+	s32		tv_usec;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct compat_stat {
 	compat_dev_t	st_dev;
 	s32		st_pad1[3];
@@ -116,6 +139,82 @@ typedef u32		compat_old_sigset_t;	/* at least 32 bits */
 
 typedef u32		compat_sigset_word;
 
+<<<<<<< HEAD
+=======
+typedef union compat_sigval {
+	compat_int_t	sival_int;
+	compat_uptr_t	sival_ptr;
+} compat_sigval_t;
+
+/* Can't use the generic version because si_code and si_errno are swapped */
+
+#define SI_PAD_SIZE32	(128/sizeof(int) - 3)
+
+typedef struct compat_siginfo {
+	int si_signo;
+	int si_code;
+	int si_errno;
+
+	union {
+		int _pad[128 / sizeof(int) - 3];
+
+		/* kill() */
+		struct {
+			compat_pid_t _pid;	/* sender's pid */
+			__compat_uid32_t _uid;	/* sender's uid */
+		} _kill;
+
+		/* POSIX.1b timers */
+		struct {
+			compat_timer_t _tid;	/* timer id */
+			int _overrun;		/* overrun count */
+			compat_sigval_t _sigval;	/* same as below */
+		} _timer;
+
+		/* POSIX.1b signals */
+		struct {
+			compat_pid_t _pid;	/* sender's pid */
+			__compat_uid32_t _uid;	/* sender's uid */
+			compat_sigval_t _sigval;
+		} _rt;
+
+		/* SIGCHLD */
+		struct {
+			compat_pid_t _pid;	/* which child */
+			__compat_uid32_t _uid;	/* sender's uid */
+			int _status;		/* exit code */
+			compat_clock_t _utime;
+			compat_clock_t _stime;
+		} _sigchld;
+
+		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS */
+		struct {
+			compat_uptr_t _addr;	/* faulting insn/memory ref. */
+#ifdef __ARCH_SI_TRAPNO
+			int _trapno;	/* TRAP # which caused the signal */
+#endif
+			short _addr_lsb; /* LSB of the reported address */
+			struct {
+				compat_uptr_t _lower;
+				compat_uptr_t _upper;
+			} _addr_bnd;
+		} _sigfault;
+
+		/* SIGPOLL */
+		struct {
+			compat_long_t _band; /* POLL_IN, POLL_OUT, POLL_MSG */
+			int _fd;
+		} _sigpoll;
+
+		struct {
+			compat_uptr_t _call_addr; /* calling insn */
+			int _syscall;	/* triggering system call number */
+			compat_uint_t _arch;	/* AUDIT_ARCH_* of syscall */
+		} _sigsys;
+	} _sifields;
+} compat_siginfo_t;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define COMPAT_OFF_T_MAX	0x7fffffff
 
 /*
@@ -159,16 +258,25 @@ struct compat_ipc64_perm {
 
 struct compat_semid64_ds {
 	struct compat_ipc64_perm sem_perm;
+<<<<<<< HEAD
 	compat_ulong_t	sem_otime;
 	compat_ulong_t	sem_ctime;
 	compat_ulong_t	sem_nsems;
 	compat_ulong_t	sem_otime_high;
 	compat_ulong_t	sem_ctime_high;
+=======
+	compat_time_t	sem_otime;
+	compat_time_t	sem_ctime;
+	compat_ulong_t	sem_nsems;
+	compat_ulong_t	__unused1;
+	compat_ulong_t	__unused2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct compat_msqid64_ds {
 	struct compat_ipc64_perm msg_perm;
 #ifndef CONFIG_CPU_LITTLE_ENDIAN
+<<<<<<< HEAD
 	compat_ulong_t	msg_stime_high;
 #endif
 	compat_ulong_t	msg_stime;
@@ -188,6 +296,27 @@ struct compat_msqid64_ds {
 	compat_ulong_t	msg_ctime;
 #ifdef CONFIG_CPU_LITTLE_ENDIAN
 	compat_ulong_t	msg_ctime_high;
+=======
+	compat_ulong_t	__unused1;
+#endif
+	compat_time_t	msg_stime;
+#ifdef CONFIG_CPU_LITTLE_ENDIAN
+	compat_ulong_t	__unused1;
+#endif
+#ifndef CONFIG_CPU_LITTLE_ENDIAN
+	compat_ulong_t	__unused2;
+#endif
+	compat_time_t	msg_rtime;
+#ifdef CONFIG_CPU_LITTLE_ENDIAN
+	compat_ulong_t	__unused2;
+#endif
+#ifndef CONFIG_CPU_LITTLE_ENDIAN
+	compat_ulong_t	__unused3;
+#endif
+	compat_time_t	msg_ctime;
+#ifdef CONFIG_CPU_LITTLE_ENDIAN
+	compat_ulong_t	__unused3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	compat_ulong_t	msg_cbytes;
 	compat_ulong_t	msg_qnum;
@@ -201,6 +330,7 @@ struct compat_msqid64_ds {
 struct compat_shmid64_ds {
 	struct compat_ipc64_perm shm_perm;
 	compat_size_t	shm_segsz;
+<<<<<<< HEAD
 	compat_ulong_t	shm_atime;
 	compat_ulong_t	shm_dtime;
 	compat_ulong_t	shm_ctime;
@@ -211,6 +341,16 @@ struct compat_shmid64_ds {
 	compat_ushort_t	shm_dtime_high;
 	compat_ushort_t	shm_ctime_high;
 	compat_ushort_t	__unused2;
+=======
+	compat_time_t	shm_atime;
+	compat_time_t	shm_dtime;
+	compat_time_t	shm_ctime;
+	compat_pid_t	shm_cpid;
+	compat_pid_t	shm_lpid;
+	compat_ulong_t	shm_nattch;
+	compat_ulong_t	__unused1;
+	compat_ulong_t	__unused2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* MIPS has unusual order of fields in stack_t */

@@ -40,6 +40,7 @@ static inline int copy_with_mvcos(void)
 }
 #endif
 
+<<<<<<< HEAD
 void set_fs(mm_segment_t fs)
 {
 	current->thread.mm_segment = fs;
@@ -101,6 +102,12 @@ static inline unsigned long copy_from_user_mvcos(void *x, const void __user *ptr
 						 unsigned long size)
 {
 	register unsigned long reg0 asm("0") = 0x01UL;
+=======
+static inline unsigned long copy_from_user_mvcos(void *x, const void __user *ptr,
+						 unsigned long size)
+{
+	register unsigned long reg0 asm("0") = 0x81UL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long tmp1, tmp2;
 
 	tmp1 = -4096UL;
@@ -131,9 +138,14 @@ static inline unsigned long copy_from_user_mvcp(void *x, const void __user *ptr,
 						unsigned long size)
 {
 	unsigned long tmp1, tmp2;
+<<<<<<< HEAD
 	mm_segment_t old_fs;
 
 	old_fs = enable_sacf_uaccess();
+=======
+
+	load_kernel_asce();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tmp1 = -256UL;
 	asm volatile(
 		"   sacf  0\n"
@@ -160,7 +172,10 @@ static inline unsigned long copy_from_user_mvcp(void *x, const void __user *ptr,
 		EX_TABLE(7b,3b) EX_TABLE(8b,3b) EX_TABLE(9b,6b)
 		: "+a" (size), "+a" (ptr), "+a" (x), "+a" (tmp1), "=a" (tmp2)
 		: : "cc", "memory");
+<<<<<<< HEAD
 	disable_sacf_uaccess(old_fs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return size;
 }
 
@@ -175,7 +190,11 @@ EXPORT_SYMBOL(raw_copy_from_user);
 static inline unsigned long copy_to_user_mvcos(void __user *ptr, const void *x,
 					       unsigned long size)
 {
+<<<<<<< HEAD
 	register unsigned long reg0 asm("0") = 0x010000UL;
+=======
+	register unsigned long reg0 asm("0") = 0x810000UL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long tmp1, tmp2;
 
 	tmp1 = -4096UL;
@@ -206,9 +225,14 @@ static inline unsigned long copy_to_user_mvcs(void __user *ptr, const void *x,
 					      unsigned long size)
 {
 	unsigned long tmp1, tmp2;
+<<<<<<< HEAD
 	mm_segment_t old_fs;
 
 	old_fs = enable_sacf_uaccess();
+=======
+
+	load_kernel_asce();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tmp1 = -256UL;
 	asm volatile(
 		"   sacf  0\n"
@@ -235,7 +259,10 @@ static inline unsigned long copy_to_user_mvcs(void __user *ptr, const void *x,
 		EX_TABLE(7b,3b) EX_TABLE(8b,3b) EX_TABLE(9b,6b)
 		: "+a" (size), "+a" (ptr), "+a" (x), "+a" (tmp1), "=a" (tmp2)
 		: : "cc", "memory");
+<<<<<<< HEAD
 	disable_sacf_uaccess(old_fs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return size;
 }
 
@@ -250,7 +277,11 @@ EXPORT_SYMBOL(raw_copy_to_user);
 static inline unsigned long copy_in_user_mvcos(void __user *to, const void __user *from,
 					       unsigned long size)
 {
+<<<<<<< HEAD
 	register unsigned long reg0 asm("0") = 0x010001UL;
+=======
+	register unsigned long reg0 asm("0") = 0x810081UL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long tmp1, tmp2;
 
 	tmp1 = -4096UL;
@@ -273,10 +304,16 @@ static inline unsigned long copy_in_user_mvcos(void __user *to, const void __use
 static inline unsigned long copy_in_user_mvc(void __user *to, const void __user *from,
 					     unsigned long size)
 {
+<<<<<<< HEAD
 	mm_segment_t old_fs;
 	unsigned long tmp1;
 
 	old_fs = enable_sacf_uaccess();
+=======
+	unsigned long tmp1;
+
+	load_kernel_asce();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	asm volatile(
 		"   sacf  256\n"
 		"   aghi  %0,-1\n"
@@ -300,7 +337,10 @@ static inline unsigned long copy_in_user_mvc(void __user *to, const void __user 
 		EX_TABLE(1b,6b) EX_TABLE(2b,0b) EX_TABLE(4b,0b)
 		: "+a" (size), "+a" (to), "+a" (from), "=a" (tmp1)
 		: : "cc", "memory");
+<<<<<<< HEAD
 	disable_sacf_uaccess(old_fs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return size;
 }
 
@@ -314,7 +354,11 @@ EXPORT_SYMBOL(raw_copy_in_user);
 
 static inline unsigned long clear_user_mvcos(void __user *to, unsigned long size)
 {
+<<<<<<< HEAD
 	register unsigned long reg0 asm("0") = 0x010000UL;
+=======
+	register unsigned long reg0 asm("0") = 0x810000UL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long tmp1, tmp2;
 
 	tmp1 = -4096UL;
@@ -342,10 +386,16 @@ static inline unsigned long clear_user_mvcos(void __user *to, unsigned long size
 
 static inline unsigned long clear_user_xc(void __user *to, unsigned long size)
 {
+<<<<<<< HEAD
 	mm_segment_t old_fs;
 	unsigned long tmp1, tmp2;
 
 	old_fs = enable_sacf_uaccess();
+=======
+	unsigned long tmp1, tmp2;
+
+	load_kernel_asce();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	asm volatile(
 		"   sacf  256\n"
 		"   aghi  %0,-1\n"
@@ -374,7 +424,10 @@ static inline unsigned long clear_user_xc(void __user *to, unsigned long size)
 		EX_TABLE(1b,6b) EX_TABLE(2b,0b) EX_TABLE(4b,0b)
 		: "+a" (size), "+a" (to), "=a" (tmp1), "=a" (tmp2)
 		: : "cc", "memory");
+<<<<<<< HEAD
 	disable_sacf_uaccess(old_fs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return size;
 }
 
@@ -410,6 +463,7 @@ static inline unsigned long strnlen_user_srst(const char __user *src,
 
 unsigned long __strnlen_user(const char __user *src, unsigned long size)
 {
+<<<<<<< HEAD
 	mm_segment_t old_fs;
 	unsigned long len;
 
@@ -419,6 +473,12 @@ unsigned long __strnlen_user(const char __user *src, unsigned long size)
 	len = strnlen_user_srst(src, size);
 	disable_sacf_uaccess(old_fs);
 	return len;
+=======
+	if (unlikely(!size))
+		return 0;
+	load_kernel_asce();
+	return strnlen_user_srst(src, size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(__strnlen_user);
 

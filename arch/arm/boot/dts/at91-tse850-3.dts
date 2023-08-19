@@ -221,7 +221,10 @@
 	jc42@18 {
 		compatible = "nxp,se97b", "jedec,jc-42.4-temp";
 		reg = <0x18>;
+<<<<<<< HEAD
 		smbus-timeout-disable;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	dpot: mcp4651-104@28 {
@@ -234,7 +237,10 @@
 		compatible = "ti,pcm5142";
 
 		reg = <0x4c>;
+<<<<<<< HEAD
 		#sound-dai-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		AVDD-supply = <&reg_3v3>;
 		DVDD-supply = <&reg_3v3>;

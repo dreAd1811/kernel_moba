@@ -71,6 +71,7 @@ static irqreturn_t timer_interrupt(int irq, void *dummy)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_M68KCLASSIC
 #if !IS_BUILTIN(CONFIG_RTC_DRV_GENERIC)
 void read_persistent_clock64(struct timespec64 *ts)
@@ -95,6 +96,29 @@ static int rtc_generic_get_time(struct device *dev, struct rtc_time *tm)
 {
 	mach_hwclk(0, tm);
 	return 0;
+=======
+void read_persistent_clock(struct timespec *ts)
+{
+	struct rtc_time time;
+	ts->tv_sec = 0;
+	ts->tv_nsec = 0;
+
+	if (mach_hwclk) {
+		mach_hwclk(0, &time);
+
+		if ((time.tm_year += 1900) < 1970)
+			time.tm_year += 100;
+		ts->tv_sec = mktime(time.tm_year, time.tm_mon, time.tm_mday,
+				      time.tm_hour, time.tm_min, time.tm_sec);
+	}
+}
+
+#if defined(CONFIG_ARCH_USES_GETTIMEOFFSET) && IS_ENABLED(CONFIG_RTC_DRV_GENERIC)
+static int rtc_generic_get_time(struct device *dev, struct rtc_time *tm)
+{
+	mach_hwclk(0, tm);
+	return rtc_valid_tm(tm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rtc_generic_set_time(struct device *dev, struct rtc_time *tm)
@@ -148,8 +172,13 @@ static int __init rtc_init(void)
 }
 
 module_init(rtc_init);
+<<<<<<< HEAD
 #endif /* CONFIG_RTC_DRV_GENERIC */
 #endif /* CONFIG M68KCLASSIC */
+=======
+
+#endif /* CONFIG_ARCH_USES_GETTIMEOFFSET */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void __init time_init(void)
 {

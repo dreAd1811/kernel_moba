@@ -24,7 +24,11 @@ config DVB_AV7110
 	  onboard MPEG2 decoder.
 
 	  This driver needs an external firmware. Please use the script
+<<<<<<< HEAD
 	  "<kerneldir>/scripts/get_dvb_firmware av7110" to
+=======
+	  "<kerneldir>/Documentation/dvb/get_dvb_firmware av7110" to
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  download/extract it, and then copy it to /usr/lib/hotplug/firmware
 	  or /lib/firmware (depending on configuration of firmware hotplug).
 

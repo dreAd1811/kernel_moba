@@ -7,8 +7,12 @@ menu "Counters"
 
 config 104_QUAD_8
 	tristate "ACCES 104-QUAD-8 driver"
+<<<<<<< HEAD
 	depends on PC104 && X86
 	select ISA_BUS_API
+=======
+	depends on PC104 && X86 && ISA_BUS_API
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say yes here to build support for the ACCES 104-QUAD-8 quadrature
 	  encoder counter/interface device family (104-QUAD-8, 104-QUAD-4).

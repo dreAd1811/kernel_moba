@@ -83,4 +83,18 @@ endif
 config NLM_COMMON
 	bool
 
+<<<<<<< HEAD
+=======
+config IOMMU_HELPER
+	bool
+
+config NEED_SG_DMA_LENGTH
+	bool
+
+config SWIOTLB
+	def_bool y
+	select NEED_SG_DMA_LENGTH
+	select IOMMU_HELPER
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif

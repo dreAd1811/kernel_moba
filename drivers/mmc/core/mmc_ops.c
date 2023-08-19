@@ -55,6 +55,17 @@ static const u8 tuning_blk_pattern_8bit[] = {
 	0xff, 0x77, 0x77, 0xff, 0x77, 0xbb, 0xdd, 0xee,
 };
 
+<<<<<<< HEAD
+=======
+static void mmc_update_bkops_hpi(struct mmc_bkops_stats *stats)
+{
+	spin_lock_irq(&stats->lock);
+	if (stats->enabled)
+		stats->hpi++;
+	spin_unlock_irq(&stats->lock);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __mmc_send_status(struct mmc_card *card, u32 *status, unsigned int retries)
 {
 	int err;
@@ -417,7 +428,11 @@ static int mmc_switch_status_error(struct mmc_host *host, u32 status)
 		if (status & R1_SPI_ILLEGAL_COMMAND)
 			return -EBADMSG;
 	} else {
+<<<<<<< HEAD
 		if (R1_STATUS(status))
+=======
+		if (status & 0xFDFFA000)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_warn("%s: unexpected status %#x after switch\n",
 				mmc_hostname(host), status);
 		if (status & R1_SWITCH_ERROR)
@@ -455,6 +470,10 @@ static int mmc_poll_for_busy(struct mmc_card *card, unsigned int timeout_ms,
 	u32 status = 0;
 	bool expired = false;
 	bool busy = false;
+<<<<<<< HEAD
+=======
+	int retries = 5;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* We have an unspecified cmd timeout, use the fallback value. */
 	if (!timeout_ms)
@@ -496,9 +515,22 @@ static int mmc_poll_for_busy(struct mmc_card *card, unsigned int timeout_ms,
 
 		/* Timeout if the device still remains busy. */
 		if (expired && busy) {
+<<<<<<< HEAD
 			pr_err("%s: Card stuck being busy! %s\n",
 				mmc_hostname(host), __func__);
 			return -ETIMEDOUT;
+=======
+			pr_err("%s: Card stuck being busy! %s, timeout:%ums, retries:%d\n",
+				mmc_hostname(host), __func__,
+				timeout_ms, retries);
+			if (retries)
+				timeout = jiffies +
+					msecs_to_jiffies(timeout_ms);
+			else {
+				return -ETIMEDOUT;
+			}
+			retries--;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} while (busy);
 
@@ -506,6 +538,48 @@ static int mmc_poll_for_busy(struct mmc_card *card, unsigned int timeout_ms,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ *	mmc_prepare_switch - helper; prepare to modify EXT_CSD register
+ *	@card: the MMC card associated with the data transfer
+ *	@set: cmd set values
+ *	@index: EXT_CSD register index
+ *	@value: value to program into EXT_CSD register
+ *	@tout_ms: timeout (ms) for operation performed by register write,
+ *                   timeout of zero implies maximum possible timeout
+ *	@use_busy_signal: use the busy signal as response type
+ *
+ *	Helper to prepare to modify EXT_CSD register for selected card.
+ */
+
+static inline void mmc_prepare_switch(struct mmc_command *cmd, u8 index,
+				      u8 value, u8 set, unsigned int tout_ms,
+				      bool use_busy_signal)
+{
+	cmd->opcode = MMC_SWITCH;
+	cmd->arg = (MMC_SWITCH_MODE_WRITE_BYTE << 24) |
+		  (index << 16) |
+		  (value << 8) |
+		  set;
+	cmd->flags = MMC_CMD_AC;
+	cmd->busy_timeout = tout_ms;
+	if (use_busy_signal)
+		cmd->flags |= MMC_RSP_SPI_R1B | MMC_RSP_R1B;
+	else
+		cmd->flags |= MMC_RSP_SPI_R1 | MMC_RSP_R1;
+}
+
+int __mmc_switch_cmdq_mode(struct mmc_command *cmd, u8 set, u8 index, u8 value,
+			   unsigned int timeout_ms, bool use_busy_signal,
+			   bool ignore_timeout)
+{
+	mmc_prepare_switch(cmd, index, value, set, timeout_ms, use_busy_signal);
+	return 0;
+}
+EXPORT_SYMBOL(__mmc_switch_cmdq_mode);
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	__mmc_switch - modify EXT_CSD register
  *	@card: the MMC card associated with the data transfer
  *	@set: cmd set values
@@ -542,6 +616,7 @@ int __mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
 		(timeout_ms > host->max_busy_timeout))
 		use_r1b_resp = false;
 
+<<<<<<< HEAD
 	cmd.opcode = MMC_SWITCH;
 	cmd.arg = (MMC_SWITCH_MODE_WRITE_BYTE << 24) |
 		  (index << 16) |
@@ -561,6 +636,15 @@ int __mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
 
 	if (index == EXT_CSD_SANITIZE_START)
 		cmd.sanitize_busy = true;
+=======
+	mmc_prepare_switch(&cmd, index, value, set, timeout_ms,
+			   use_r1b_resp);
+
+	if (index == EXT_CSD_SANITIZE_START)
+		cmd.sanitize_busy = true;
+	else if (index == EXT_CSD_BKOPS_START)
+		cmd.bkops_busy = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
 	if (err)
@@ -754,7 +838,14 @@ mmc_send_bus_test(struct mmc_card *card, struct mmc_host *host, u8 opcode,
 
 	data.sg = &sg;
 	data.sg_len = 1;
+<<<<<<< HEAD
 	mmc_set_data_timeout(&data, card);
+=======
+	data.timeout_ns = 1000000;
+	data.timeout_clks = 0;
+	mmc_set_data_timeout(&data, card);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sg_init_one(&sg, data_buf, len);
 	mmc_wait_for_req(host, &mrq);
 	err = 0;
@@ -848,6 +939,10 @@ int mmc_interrupt_hpi(struct mmc_card *card)
 		return 1;
 	}
 
+<<<<<<< HEAD
+=======
+	mmc_claim_host(card->host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mmc_send_status(card, &status);
 	if (err) {
 		pr_err("%s: Get card status fail\n", mmc_hostname(card->host));
@@ -875,6 +970,11 @@ int mmc_interrupt_hpi(struct mmc_card *card)
 	}
 
 	err = mmc_send_hpi_cmd(card, &status);
+<<<<<<< HEAD
+=======
+	if (err)
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	prg_wait = jiffies + msecs_to_jiffies(card->ext_csd.out_of_int_time);
 	do {
@@ -892,6 +992,10 @@ int mmc_interrupt_hpi(struct mmc_card *card)
 	} while (!err);
 
 out:
+<<<<<<< HEAD
+=======
+	mmc_release_host(card->host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -900,6 +1004,27 @@ int mmc_can_ext_csd(struct mmc_card *card)
 	return (card && card->csd.mmca_vsn > CSD_SPEC_VER_3);
 }
 
+<<<<<<< HEAD
+=======
+int mmc_discard_queue(struct mmc_host *host, u32 tasks)
+{
+	struct mmc_command cmd = {0};
+
+	cmd.opcode = MMC_CMDQ_TASK_MGMT;
+	if (tasks) {
+		cmd.arg = DISCARD_TASK;
+		cmd.arg |= (tasks << 16);
+	} else {
+		cmd.arg = DISCARD_QUEUE;
+	}
+
+	cmd.flags = MMC_RSP_R1B | MMC_CMD_AC;
+
+	return mmc_wait_for_cmd(host, &cmd, 0);
+}
+EXPORT_SYMBOL(mmc_discard_queue);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  *	mmc_stop_bkops - stop ongoing BKOPS
  *	@card: MMC card to check BKOPS
@@ -913,6 +1038,14 @@ int mmc_stop_bkops(struct mmc_card *card)
 {
 	int err = 0;
 
+<<<<<<< HEAD
+=======
+	if (unlikely(!mmc_card_configured_manual_bkops(card)))
+		goto out;
+	if (!mmc_card_doing_bkops(card))
+		goto out;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = mmc_interrupt_hpi(card);
 
 	/*
@@ -921,6 +1054,7 @@ int mmc_stop_bkops(struct mmc_card *card)
 	 */
 	if (!err || (err == -EINVAL)) {
 		mmc_card_clr_doing_bkops(card);
+<<<<<<< HEAD
 		mmc_retune_release(card->host);
 		err = 0;
 	}
@@ -929,15 +1063,34 @@ int mmc_stop_bkops(struct mmc_card *card)
 }
 
 static int mmc_read_bkops_status(struct mmc_card *card)
+=======
+		mmc_update_bkops_hpi(&card->bkops.stats);
+		mmc_retune_release(card->host);
+		err = 0;
+	}
+out:
+	return err;
+}
+EXPORT_SYMBOL(mmc_stop_bkops);
+
+int mmc_read_bkops_status(struct mmc_card *card)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int err;
 	u8 *ext_csd;
 
+<<<<<<< HEAD
 	err = mmc_get_ext_csd(card, &ext_csd);
+=======
+	mmc_claim_host(card->host);
+	err = mmc_get_ext_csd(card, &ext_csd);
+	mmc_release_host(card->host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 
 	card->ext_csd.raw_bkops_status = ext_csd[EXT_CSD_BKOPS_STATUS] &
+<<<<<<< HEAD
 						MMC_BKOPS_URGENCY_MASK;
 	card->ext_csd.raw_exception_status =
 					ext_csd[EXT_CSD_EXP_EVENTS_STATUS] &
@@ -948,6 +1101,18 @@ static int mmc_read_bkops_status(struct mmc_card *card)
 	kfree(ext_csd);
 	return 0;
 }
+=======
+		MMC_BKOPS_URGENCY_MASK;
+	card->ext_csd.raw_exception_status =
+		ext_csd[EXT_CSD_EXP_EVENTS_STATUS] &
+					(EXT_CSD_URGENT_BKOPS |
+					 EXT_CSD_DYNCAP_NEEDED |
+					 EXT_CSD_SYSPOOL_EXHAUSTED);
+	kfree(ext_csd);
+	return 0;
+}
+EXPORT_SYMBOL(mmc_read_bkops_status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  *	mmc_start_bkops - start BKOPS for supported cards
@@ -982,6 +1147,10 @@ void mmc_start_bkops(struct mmc_card *card, bool from_exception)
 	    from_exception)
 		return;
 
+<<<<<<< HEAD
+=======
+	mmc_claim_host(card->host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (card->ext_csd.raw_bkops_status >= EXT_CSD_BKOPS_LEVEL_2) {
 		timeout = MMC_OPS_TIMEOUT_MS;
 		use_busy_signal = true;
@@ -999,7 +1168,11 @@ void mmc_start_bkops(struct mmc_card *card, bool from_exception)
 		pr_warn("%s: Error %d starting bkops\n",
 			mmc_hostname(card->host), err);
 		mmc_retune_release(card->host);
+<<<<<<< HEAD
 		return;
+=======
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -1011,8 +1184,14 @@ void mmc_start_bkops(struct mmc_card *card, bool from_exception)
 		mmc_card_set_doing_bkops(card);
 	else
 		mmc_retune_release(card->host);
+<<<<<<< HEAD
 }
 EXPORT_SYMBOL(mmc_start_bkops);
+=======
+out:
+	mmc_release_host(card->host);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Flush the cache to the non-volatile storage.
@@ -1027,9 +1206,25 @@ int mmc_flush_cache(struct mmc_card *card)
 			(!(card->quirks & MMC_QUIRK_CACHE_DISABLE))) {
 		err = mmc_switch(card, EXT_CSD_CMD_SET_NORMAL,
 				EXT_CSD_FLUSH_CACHE, 1, 0);
+<<<<<<< HEAD
 		if (err)
 			pr_err("%s: cache flush error %d\n",
 					mmc_hostname(card->host), err);
+=======
+		if (err == -ETIMEDOUT) {
+			pr_err("%s: cache flush timeout\n",
+					mmc_hostname(card->host));
+			err = mmc_interrupt_hpi(card);
+			if (err) {
+				pr_err("%s: mmc_interrupt_hpi() failed (%d)\n",
+						mmc_hostname(card->host), err);
+				err = -ENODEV;
+			}
+		} else if (err) {
+			pr_err("%s: cache flush error %d\n",
+					mmc_hostname(card->host), err);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return err;

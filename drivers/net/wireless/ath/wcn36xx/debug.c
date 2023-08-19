@@ -161,8 +161,14 @@ void wcn36xx_debugfs_init(struct wcn36xx *wcn)
 		dfs->rootdir = NULL;
 	}
 
+<<<<<<< HEAD
 	ADD_FILE(bmps_switcher, 0600, &fops_wcn36xx_bmps, wcn);
 	ADD_FILE(dump, 0200, &fops_wcn36xx_dump, wcn);
+=======
+	ADD_FILE(bmps_switcher, S_IRUSR | S_IWUSR,
+		 &fops_wcn36xx_bmps, wcn);
+	ADD_FILE(dump, S_IWUSR, &fops_wcn36xx_dump, wcn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void wcn36xx_debugfs_exit(struct wcn36xx *wcn)

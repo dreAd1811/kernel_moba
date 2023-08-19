@@ -255,7 +255,10 @@ temperature) and throttle appropriate devices.
 2. sysfs attributes structure
 
 RO	read only value
+<<<<<<< HEAD
 WO	write only value
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 RW	read/write value
 
 Thermal sysfs attributes will be represented under /sys/class/thermal.
@@ -287,11 +290,14 @@ Thermal cooling device sys I/F, created once it's registered:
     |---type:			Type of the cooling device(processor/fan/...)
     |---max_state:		Maximum cooling state of the cooling device
     |---cur_state:		Current cooling state of the cooling device
+<<<<<<< HEAD
     |---stats:			Directory containing cooling device's statistics
     |---stats/reset:		Writing any value resets the statistics
     |---stats/time_in_state_ms:	Time (msec) spent in various cooling states
     |---stats/total_trans:	Total number of times cooling state is changed
     |---stats/trans_table:	Cooing state transition table
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 Then next two dynamic attributes are created/removed in pairs. They represent
@@ -496,6 +502,7 @@ cur_state
 	- cur_state == max_state means the maximum cooling.
 	RW, Required
 
+<<<<<<< HEAD
 stats/reset
 	Writing any value resets the cooling device's statistics.
 	WO, Required
@@ -521,6 +528,8 @@ stats/trans_table:
 	reading this will return an -EFBIG error.
 	RO, Required
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 3. A simple implementation
 
 ACPI thermal zone may support multiple trip points like critical, hot,

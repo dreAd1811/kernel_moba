@@ -321,10 +321,17 @@ scdrv_write(struct file *file, const char __user *buf,
 	return status;
 }
 
+<<<<<<< HEAD
 static __poll_t
 scdrv_poll(struct file *file, struct poll_table_struct *wait)
 {
 	__poll_t mask = 0;
+=======
+static unsigned int
+scdrv_poll(struct file *file, struct poll_table_struct *wait)
+{
+	unsigned int mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status = 0;
 	struct subch_data_s *sd = (struct subch_data_s *) file->private_data;
 	unsigned long flags;
@@ -340,10 +347,17 @@ scdrv_poll(struct file *file, struct poll_table_struct *wait)
 
 	if (status > 0) {
 		if (status & SAL_IROUTER_INTR_RECV) {
+<<<<<<< HEAD
 			mask |= EPOLLIN | EPOLLRDNORM;
 		}
 		if (status & SAL_IROUTER_INTR_XMIT) {
 			mask |= EPOLLOUT | EPOLLWRNORM;
+=======
+			mask |= POLLIN | POLLRDNORM;
+		}
+		if (status & SAL_IROUTER_INTR_XMIT) {
+			mask |= POLLOUT | POLLWRNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 

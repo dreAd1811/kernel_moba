@@ -53,8 +53,11 @@ struct power_pmu {
 			       [PERF_COUNT_HW_CACHE_OP_MAX]
 			       [PERF_COUNT_HW_CACHE_RESULT_MAX];
 
+<<<<<<< HEAD
 	int		n_blacklist_ev;
 	int 		*blacklist_ev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* BHRB entries in the PMU */
 	int		bhrb_nr;
 };

@@ -136,7 +136,11 @@ void __init opal_psr_init(void)
 		return;
 	}
 
+<<<<<<< HEAD
 	psr_attrs = kcalloc(of_get_child_count(psr), sizeof(*psr_attrs),
+=======
+	psr_attrs = kcalloc(of_get_child_count(psr), sizeof(struct psr_attr),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    GFP_KERNEL);
 	if (!psr_attrs)
 		return;

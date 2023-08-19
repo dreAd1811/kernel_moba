@@ -821,7 +821,11 @@ int dib0700_rc_setup(struct dvb_usb_device *d, struct usb_interface *intf)
 
 	/* Starting in firmware 1.20, the RC info is provided on a bulk pipe */
 
+<<<<<<< HEAD
 	if (intf->altsetting[0].desc.bNumEndpoints < rc_ep + 1)
+=======
+	if (intf->cur_altsetting->desc.bNumEndpoints < rc_ep + 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 
 	purb = usb_alloc_urb(0, GFP_KERNEL);
@@ -841,7 +845,11 @@ int dib0700_rc_setup(struct dvb_usb_device *d, struct usb_interface *intf)
 	 * Some devices like the Hauppauge NovaTD model 52009 use an interrupt
 	 * endpoint, while others use a bulk one.
 	 */
+<<<<<<< HEAD
 	e = &intf->altsetting[0].endpoint[rc_ep].desc;
+=======
+	e = &intf->cur_altsetting->endpoint[rc_ep].desc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (usb_endpoint_dir_in(e)) {
 		if (usb_endpoint_xfer_bulk(e)) {
 			pipe = usb_rcvbulkpipe(d->udev, rc_ep);
@@ -911,6 +919,7 @@ static int dib0700_probe(struct usb_interface *intf,
 	return -ENODEV;
 }
 
+<<<<<<< HEAD
 static void dib0700_disconnect(struct usb_interface *intf)
 {
 	struct dvb_usb_device *d = usb_get_intfdata(intf);
@@ -939,6 +948,12 @@ static struct usb_driver dib0700_driver = {
 	.name       = "dvb_usb_dib0700",
 	.probe      = dib0700_probe,
 	.disconnect = dib0700_disconnect,
+=======
+static struct usb_driver dib0700_driver = {
+	.name       = "dvb_usb_dib0700",
+	.probe      = dib0700_probe,
+	.disconnect = dvb_usb_device_exit,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id_table   = dib0700_usb_id_table,
 };
 

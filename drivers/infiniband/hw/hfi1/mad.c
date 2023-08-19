@@ -98,6 +98,7 @@ static inline void clear_opa_smp_data(struct opa_smp *smp)
 	memset(data, 0, size);
 }
 
+<<<<<<< HEAD
 static u16 hfi1_lookup_pkey_value(struct hfi1_ibport *ibp, int pkey_idx)
 {
 	struct hfi1_pportdata *ppd = ppd_from_ibp(ibp);
@@ -108,6 +109,8 @@ static u16 hfi1_lookup_pkey_value(struct hfi1_ibport *ibp, int pkey_idx)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void hfi1_event_pkey_change(struct hfi1_devdata *dd, u8 port)
 {
 	struct ib_event event;
@@ -409,9 +412,15 @@ static void send_trap(struct hfi1_ibport *ibp, struct trap_node *trap)
 		ib_free_send_mad(send_buf);
 }
 
+<<<<<<< HEAD
 void hfi1_handle_trap_timer(struct timer_list *t)
 {
 	struct hfi1_ibport *ibp = from_timer(ibp, t, rvp.trap_timer);
+=======
+void hfi1_handle_trap_timer(unsigned long data)
+{
+	struct hfi1_ibport *ibp = (struct hfi1_ibport *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct trap_node *trap = NULL;
 	unsigned long flags;
 	int i;
@@ -721,7 +730,10 @@ static int check_mkey(struct hfi1_ibport *ibp, struct ib_mad_hdr *mad,
 			/* Bad mkey not a violation below level 2 */
 			if (ibp->rvp.mkeyprot < 2)
 				break;
+<<<<<<< HEAD
 			/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case IB_MGMT_METHOD_SET:
 		case IB_MGMT_METHOD_TRAP_REPRESS:
 			if (ibp->rvp.mkey_violations != 0xFFFF)
@@ -1238,7 +1250,12 @@ static int port_states_transition_allowed(struct hfi1_pportdata *ppd,
 }
 
 static int set_port_states(struct hfi1_pportdata *ppd, struct opa_smp *smp,
+<<<<<<< HEAD
 			   u32 logical_state, u32 phys_state, int local_mad)
+=======
+			   u32 logical_state, u32 phys_state,
+			   int suppress_idle_sma)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hfi1_devdata *dd = ppd->dd;
 	u32 link_state;
@@ -1314,12 +1331,20 @@ static int set_port_states(struct hfi1_pportdata *ppd, struct opa_smp *smp,
 		 * Don't send a reply if the response would be sent
 		 * through the disabled port.
 		 */
+<<<<<<< HEAD
 		if (link_state == HLS_DN_DISABLE && !local_mad)
+=======
+		if (link_state == HLS_DN_DISABLE && smp->hop_cnt)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return IB_MAD_RESULT_SUCCESS | IB_MAD_RESULT_CONSUMED;
 		break;
 	case IB_PORT_ARMED:
 		ret = set_link_state(ppd, HLS_UP_ARMED);
+<<<<<<< HEAD
 		if (!ret)
+=======
+		if ((ret == 0) && (suppress_idle_sma == 0))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			send_idle_sma(dd, SMA_IDLE_ARM);
 		break;
 	case IB_PORT_ACTIVE:
@@ -1350,7 +1375,11 @@ static int set_port_states(struct hfi1_pportdata *ppd, struct opa_smp *smp,
  */
 static int __subn_set_opa_portinfo(struct opa_smp *smp, u32 am, u8 *data,
 				   struct ib_device *ibdev, u8 port,
+<<<<<<< HEAD
 				   u32 *resp_len, u32 max_len, int local_mad)
+=======
+				   u32 *resp_len, u32 max_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct opa_port_info *pi = (struct opa_port_info *)data;
 	struct ib_event event;
@@ -1613,10 +1642,15 @@ static int __subn_set_opa_portinfo(struct opa_smp *smp, u32 am, u8 *data,
 			if (ls_new == ls_old || (ls_new == IB_PORT_ARMED))
 				ppd->is_sm_config_started = 1;
 		} else if (ls_new == IB_PORT_ARMED) {
+<<<<<<< HEAD
 			if (ppd->is_sm_config_started == 0) {
 				invalid = 1;
 				smp->status |= IB_SMP_INVALID_FIELD;
 			}
+=======
+			if (ppd->is_sm_config_started == 0)
+				invalid = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1633,11 +1667,17 @@ static int __subn_set_opa_portinfo(struct opa_smp *smp, u32 am, u8 *data,
 	 * is down or is being set to down.
 	 */
 
+<<<<<<< HEAD
 	if (!invalid) {
 		ret = set_port_states(ppd, smp, ls_new, ps_new, local_mad);
 		if (ret)
 			return ret;
 	}
+=======
+	ret = set_port_states(ppd, smp, ls_new, ps_new, invalid);
+	if (ret)
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = __subn_get_opa_portinfo(smp, am, data, ibdev, port, resp_len,
 				      max_len);
@@ -2085,7 +2125,11 @@ static int __subn_get_opa_psi(struct opa_smp *smp, u32 am, u8 *data,
 
 static int __subn_set_opa_psi(struct opa_smp *smp, u32 am, u8 *data,
 			      struct ib_device *ibdev, u8 port,
+<<<<<<< HEAD
 			      u32 *resp_len, u32 max_len, int local_mad)
+=======
+			      u32 *resp_len, u32 max_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 nports = OPA_AM_NPORT(am);
 	u32 start_of_sm_config = OPA_AM_START_SM_CFG(am);
@@ -2114,6 +2158,7 @@ static int __subn_set_opa_psi(struct opa_smp *smp, u32 am, u8 *data,
 			if (ls_new == ls_old || (ls_new == IB_PORT_ARMED))
 				ppd->is_sm_config_started = 1;
 		} else if (ls_new == IB_PORT_ARMED) {
+<<<<<<< HEAD
 			if (ppd->is_sm_config_started == 0) {
 				invalid = 1;
 				smp->status |= IB_SMP_INVALID_FIELD;
@@ -2126,6 +2171,19 @@ static int __subn_set_opa_psi(struct opa_smp *smp, u32 am, u8 *data,
 		if (ret)
 			return ret;
 	}
+=======
+			if (ppd->is_sm_config_started == 0)
+				invalid = 1;
+		}
+	}
+
+	ret = set_port_states(ppd, smp, ls_new, ps_new, invalid);
+	if (ret)
+		return ret;
+
+	if (invalid)
+		smp->status |= IB_SMP_INVALID_FIELD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return __subn_get_opa_psi(smp, am, data, ibdev, port, resp_len,
 				  max_len);
@@ -2648,6 +2706,7 @@ static void a0_portstatus(struct hfi1_pportdata *ppd,
 	}
 }
 
+<<<<<<< HEAD
 /**
  * tx_link_width - convert link width bitmask to integer
  * value representing actual link width.
@@ -2721,6 +2780,8 @@ u64 get_xmit_wait_counters(struct hfi1_pportdata *ppd,
 	return ppd->vl_xmit_flit_cnt[vl];
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pma_get_opa_portstatus(struct opa_pma_mad *pmp,
 				  struct ib_device *ibdev,
 				  u8 port, u32 *resp_len)
@@ -2740,8 +2801,11 @@ static int pma_get_opa_portstatus(struct opa_pma_mad *pmp,
 	struct hfi1_pportdata *ppd = ppd_from_ibp(ibp);
 	int vfi;
 	u64 tmp, tmp2;
+<<<<<<< HEAD
 	u16 link_width;
 	u16 link_speed;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	response_data_size = sizeof(struct opa_port_status_rsp) +
 				num_vls * sizeof(struct _vls_pctrs);
@@ -2785,6 +2849,7 @@ static int pma_get_opa_portstatus(struct opa_pma_mad *pmp,
 	rsp->port_multicast_rcv_pkts =
 		cpu_to_be64(read_dev_cntr(dd, C_DC_MC_RCV_PKTS,
 					  CNTR_INVALID_VL));
+<<<<<<< HEAD
 	/*
 	 * Convert PortXmitWait counter from TXE cycle times
 	 * to flit times.
@@ -2795,6 +2860,10 @@ static int pma_get_opa_portstatus(struct opa_pma_mad *pmp,
 	rsp->port_xmit_wait =
 		cpu_to_be64(get_xmit_wait_counters(ppd, link_width,
 						   link_speed, C_VL_COUNT));
+=======
+	rsp->port_xmit_wait =
+		cpu_to_be64(read_port_cntr(ppd, C_TX_WAIT, CNTR_INVALID_VL));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rsp->port_rcv_fecn =
 		cpu_to_be64(read_dev_cntr(dd, C_DC_RCV_FCN, CNTR_INVALID_VL));
 	rsp->port_rcv_becn =
@@ -2858,6 +2927,7 @@ static int pma_get_opa_portstatus(struct opa_pma_mad *pmp,
 		rsp->vls[vfi].port_vl_xmit_pkts =
 			cpu_to_be64(read_port_cntr(ppd, C_TX_PKT_VL,
 						   idx_from_vl(vl)));
+<<<<<<< HEAD
 		/*
 		 * Convert PortVlXmitWait counter from TXE cycle
 		 * times to flit times.
@@ -2866,6 +2936,12 @@ static int pma_get_opa_portstatus(struct opa_pma_mad *pmp,
 			cpu_to_be64(get_xmit_wait_counters(ppd, link_width,
 							   link_speed,
 							   idx_from_vl(vl)));
+=======
+
+		rsp->vls[vfi].port_vl_xmit_wait =
+			cpu_to_be64(read_port_cntr(ppd, C_TX_WAIT_VL,
+						   idx_from_vl(vl)));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rsp->vls[vfi].port_vl_rcv_fecn =
 			cpu_to_be64(read_dev_cntr(dd, C_DC_RCV_FCN_VL,
@@ -2986,6 +3062,10 @@ static int pma_get_opa_datacounters(struct opa_pma_mad *pmp,
 	struct _vls_dctrs *vlinfo;
 	size_t response_data_size;
 	u32 num_ports;
+<<<<<<< HEAD
+=======
+	u8 num_pslm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 lq, num_vls;
 	u8 res_lli, res_ler;
 	u64 port_mask;
@@ -2993,10 +3073,16 @@ static int pma_get_opa_datacounters(struct opa_pma_mad *pmp,
 	unsigned long vl;
 	unsigned long vl_select_mask;
 	int vfi;
+<<<<<<< HEAD
 	u16 link_width;
 	u16 link_speed;
 
 	num_ports = be32_to_cpu(pmp->mad_hdr.attr_mod) >> 24;
+=======
+
+	num_ports = be32_to_cpu(pmp->mad_hdr.attr_mod) >> 24;
+	num_pslm = hweight64(be64_to_cpu(req->port_select_mask[3]));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	num_vls = hweight32(be32_to_cpu(req->vl_select_mask));
 	vl_select_mask = be32_to_cpu(req->vl_select_mask);
 	res_lli = (u8)(be32_to_cpu(req->resolution) & MSK_LLI) >> MSK_LLI_SFT;
@@ -3044,6 +3130,7 @@ static int pma_get_opa_datacounters(struct opa_pma_mad *pmp,
 	rsp->link_quality_indicator = cpu_to_be32((u32)lq);
 	pma_get_opa_port_dctrs(ibdev, rsp);
 
+<<<<<<< HEAD
 	/*
 	 * Convert PortXmitWait counter from TXE
 	 * cycle times to flit times.
@@ -3054,6 +3141,10 @@ static int pma_get_opa_datacounters(struct opa_pma_mad *pmp,
 	rsp->port_xmit_wait =
 		cpu_to_be64(get_xmit_wait_counters(ppd, link_width,
 						   link_speed, C_VL_COUNT));
+=======
+	rsp->port_xmit_wait =
+		cpu_to_be64(read_port_cntr(ppd, C_TX_WAIT, CNTR_INVALID_VL));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rsp->port_rcv_fecn =
 		cpu_to_be64(read_dev_cntr(dd, C_DC_RCV_FCN, CNTR_INVALID_VL));
 	rsp->port_rcv_becn =
@@ -3088,6 +3179,7 @@ static int pma_get_opa_datacounters(struct opa_pma_mad *pmp,
 			cpu_to_be64(read_dev_cntr(dd, C_DC_RX_PKT_VL,
 						  idx_from_vl(vl)));
 
+<<<<<<< HEAD
 		/*
 		 * Convert PortVlXmitWait counter from TXE
 		 * cycle times to flit times.
@@ -3096,6 +3188,11 @@ static int pma_get_opa_datacounters(struct opa_pma_mad *pmp,
 			cpu_to_be64(get_xmit_wait_counters(ppd, link_width,
 							   link_speed,
 							   idx_from_vl(vl)));
+=======
+		rsp->vls[vfi].port_vl_xmit_wait =
+			cpu_to_be64(read_port_cntr(ppd, C_TX_WAIT_VL,
+						   idx_from_vl(vl)));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		rsp->vls[vfi].port_vl_rcv_fecn =
 			cpu_to_be64(read_dev_cntr(dd, C_DC_RCV_FCN_VL,
@@ -3418,7 +3515,10 @@ static int pma_get_opa_errorinfo(struct opa_pma_mad *pmp,
 		pmp->mad_hdr.status |= IB_SMP_INVALID_FIELD;
 		return reply((struct ib_mad_hdr *)pmp);
 	}
+<<<<<<< HEAD
 	rsp->port_number = port;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* PortRcvErrorInfo */
 	rsp->port_rcv_ei.status_and_code =
@@ -3513,11 +3613,17 @@ static int pma_set_opa_portstatus(struct opa_pma_mad *pmp,
 	if (counter_select & CS_PORT_MCAST_RCV_PKTS)
 		write_dev_cntr(dd, C_DC_MC_RCV_PKTS, CNTR_INVALID_VL, 0);
 
+<<<<<<< HEAD
 	if (counter_select & CS_PORT_XMIT_WAIT) {
 		write_port_cntr(ppd, C_TX_WAIT, CNTR_INVALID_VL, 0);
 		ppd->port_vl_xmit_wait_last[C_VL_COUNT] = 0;
 		ppd->vl_xmit_flit_cnt[C_VL_COUNT] = 0;
 	}
+=======
+	if (counter_select & CS_PORT_XMIT_WAIT)
+		write_port_cntr(ppd, C_TX_WAIT, CNTR_INVALID_VL, 0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* ignore cs_sw_portCongestion for HFIs */
 
 	if (counter_select & CS_PORT_RCV_FECN)
@@ -3589,11 +3695,16 @@ static int pma_set_opa_portstatus(struct opa_pma_mad *pmp,
 		if (counter_select & CS_PORT_RCV_PKTS)
 			write_dev_cntr(dd, C_DC_RX_PKT_VL, idx_from_vl(vl), 0);
 
+<<<<<<< HEAD
 		if (counter_select & CS_PORT_XMIT_WAIT) {
 			write_port_cntr(ppd, C_TX_WAIT_VL, idx_from_vl(vl), 0);
 			ppd->port_vl_xmit_wait_last[idx_from_vl(vl)] = 0;
 			ppd->vl_xmit_flit_cnt[idx_from_vl(vl)] = 0;
 		}
+=======
+		if (counter_select & CS_PORT_XMIT_WAIT)
+			write_port_cntr(ppd, C_TX_WAIT_VL, idx_from_vl(vl), 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* sw_port_vl_congestion is 0 for HFIs */
 		if (counter_select & CS_PORT_RCV_FECN)
@@ -3802,11 +3913,15 @@ static void apply_cc_state(struct hfi1_pportdata *ppd)
 
 	*new_cc_state = *old_cc_state;
 
+<<<<<<< HEAD
 	if (ppd->total_cct_entry)
 		new_cc_state->cct.ccti_limit = ppd->total_cct_entry - 1;
 	else
 		new_cc_state->cct.ccti_limit = 0;
 
+=======
+	new_cc_state->cct.ccti_limit = ppd->total_cct_entry - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(new_cc_state->cct.entries, ppd->ccti_entries,
 	       ppd->total_cct_entry * sizeof(struct ib_cc_table_entry));
 
@@ -3869,7 +3984,11 @@ static int __subn_get_opa_hfi1_cong_log(struct opa_smp *smp, u32 am,
 	struct hfi1_ibport *ibp = to_iport(ibdev, port);
 	struct hfi1_pportdata *ppd = ppd_from_ibp(ibp);
 	struct opa_hfi1_cong_log *cong_log = (struct opa_hfi1_cong_log *)data;
+<<<<<<< HEAD
 	u64 ts;
+=======
+	s64 ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	if (am || smp_length_check(sizeof(*cong_log), max_len)) {
@@ -3887,7 +4006,11 @@ static int __subn_get_opa_hfi1_cong_log(struct opa_smp *smp, u32 am,
 	       ppd->threshold_cong_event_map,
 	       sizeof(cong_log->threshold_cong_event_map));
 	/* keep timestamp in units of 1.024 usec */
+<<<<<<< HEAD
 	ts = ktime_get_ns() / 1024;
+=======
+	ts = ktime_to_ns(ktime_get()) / 1024;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cong_log->current_time_stamp = cpu_to_be32(ts);
 	for (i = 0; i < OPA_CONG_LOG_ELEMS; i++) {
 		struct opa_hfi1_cong_log_event_internal *cce =
@@ -3899,7 +4022,11 @@ static int __subn_get_opa_hfi1_cong_log(struct opa_smp *smp, u32 am,
 		 * required to wrap the counter are supposed to
 		 * be zeroed (CA10-49 IBTA, release 1.2.1, V1).
 		 */
+<<<<<<< HEAD
 		if ((ts - cce->timestamp) / 2 > U32_MAX)
+=======
+		if ((u64)(ts - cce->timestamp) > (2 * UINT_MAX))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		memcpy(cong_log->events[i].local_qp_cn_entry, &cce->lqpn, 3);
 		memcpy(cong_log->events[i].remote_qp_number_cn_entry,
@@ -4184,7 +4311,11 @@ static int subn_get_opa_sma(__be16 attr_id, struct opa_smp *smp, u32 am,
 
 static int subn_set_opa_sma(__be16 attr_id, struct opa_smp *smp, u32 am,
 			    u8 *data, struct ib_device *ibdev, u8 port,
+<<<<<<< HEAD
 			    u32 *resp_len, u32 max_len, int local_mad)
+=======
+			    u32 *resp_len, u32 max_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct hfi1_ibport *ibp = to_iport(ibdev, port);
@@ -4192,7 +4323,11 @@ static int subn_set_opa_sma(__be16 attr_id, struct opa_smp *smp, u32 am,
 	switch (attr_id) {
 	case IB_SMP_ATTR_PORT_INFO:
 		ret = __subn_set_opa_portinfo(smp, am, data, ibdev, port,
+<<<<<<< HEAD
 					      resp_len, max_len, local_mad);
+=======
+					      resp_len, max_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case IB_SMP_ATTR_PKEY_TABLE:
 		ret = __subn_set_opa_pkeytable(smp, am, data, ibdev, port,
@@ -4216,7 +4351,11 @@ static int subn_set_opa_sma(__be16 attr_id, struct opa_smp *smp, u32 am,
 		break;
 	case OPA_ATTRIB_ID_PORT_STATE_INFO:
 		ret = __subn_set_opa_psi(smp, am, data, ibdev, port,
+<<<<<<< HEAD
 					 resp_len, max_len, local_mad);
+=======
+					 resp_len, max_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case OPA_ATTRIB_ID_BUFFER_CONTROL_TABLE:
 		ret = __subn_set_opa_bct(smp, am, data, ibdev, port,
@@ -4308,7 +4447,11 @@ static int subn_get_opa_aggregate(struct opa_smp *smp,
 
 static int subn_set_opa_aggregate(struct opa_smp *smp,
 				  struct ib_device *ibdev, u8 port,
+<<<<<<< HEAD
 				  u32 *resp_len, int local_mad)
+=======
+				  u32 *resp_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 	u32 num_attr = be32_to_cpu(smp->attr_mod) & 0x000000ff;
@@ -4338,9 +4481,13 @@ static int subn_set_opa_aggregate(struct opa_smp *smp,
 		}
 
 		(void)subn_set_opa_sma(agg->attr_id, smp, am, agg->data,
+<<<<<<< HEAD
 				       ibdev, port, NULL, (u32)agg_data_len,
 				       local_mad);
 
+=======
+				       ibdev, port, NULL, (u32)agg_data_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (smp->status & IB_SMP_INVALID_FIELD)
 			break;
 		if (smp->status & ~IB_SMP_DIRECTION) {
@@ -4380,6 +4527,7 @@ void clear_linkup_counters(struct hfi1_devdata *dd)
 	dd->err_info_xmit_constraint.status &= ~OPA_EI_STATUS_SMASK;
 }
 
+<<<<<<< HEAD
 static int is_full_mgmt_pkey_in_table(struct hfi1_ibport *ibp)
 {
 	unsigned int i;
@@ -4392,6 +4540,8 @@ static int is_full_mgmt_pkey_in_table(struct hfi1_ibport *ibp)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * is_local_mad() returns 1 if 'mad' is sent from, and destined to the
  * local node, 0 otherwise.
@@ -4451,6 +4601,7 @@ static int opa_local_smp_check(struct hfi1_ibport *ibp,
 	 */
 	if (pkey == LIM_MGMT_P_KEY || pkey == FULL_MGMT_P_KEY)
 		return 0;
+<<<<<<< HEAD
 	ingress_pkey_table_fail(ppd, pkey, in_wc->slid);
 	return 1;
 }
@@ -4516,6 +4667,20 @@ static int process_subn_opa(struct ib_device *ibdev, int mad_flags,
 			    u8 port, const struct opa_mad *in_mad,
 			    struct opa_mad *out_mad,
 			    u32 *resp_len, int local_mad)
+=======
+	/*
+	 * On OPA devices it is okay to lose the upper 16 bits of LID as this
+	 * information is obtained elsewhere. Mask off the upper 16 bits.
+	 */
+	ingress_pkey_table_fail(ppd, pkey, ib_lid_cpu16(0xFFFF & in_wc->slid));
+	return 1;
+}
+
+static int process_subn_opa(struct ib_device *ibdev, int mad_flags,
+			    u8 port, const struct opa_mad *in_mad,
+			    struct opa_mad *out_mad,
+			    u32 *resp_len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct opa_smp *smp = (struct opa_smp *)out_mad;
 	struct hfi1_ibport *ibp = to_iport(ibdev, port);
@@ -4584,11 +4749,19 @@ static int process_subn_opa(struct ib_device *ibdev, int mad_flags,
 		default:
 			ret = subn_set_opa_sma(attr_id, smp, am, data,
 					       ibdev, port, resp_len,
+<<<<<<< HEAD
 					       data_size, local_mad);
 			break;
 		case OPA_ATTRIB_ID_AGGREGATE:
 			ret = subn_set_opa_aggregate(smp, ibdev, port,
 						     resp_len, local_mad);
+=======
+					       data_size);
+			break;
+		case OPA_ATTRIB_ID_AGGREGATE:
+			ret = subn_set_opa_aggregate(smp, ibdev, port,
+						     resp_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 		break;
@@ -4828,7 +5001,10 @@ static int hfi1_process_opa_mad(struct ib_device *ibdev, int mad_flags,
 {
 	int ret;
 	int pkey_idx;
+<<<<<<< HEAD
 	int local_mad = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 resp_len = 0;
 	struct hfi1_ibport *ibp = to_iport(ibdev, port);
 
@@ -4843,13 +5019,18 @@ static int hfi1_process_opa_mad(struct ib_device *ibdev, int mad_flags,
 	switch (in_mad->mad_hdr.mgmt_class) {
 	case IB_MGMT_CLASS_SUBN_DIRECTED_ROUTE:
 	case IB_MGMT_CLASS_SUBN_LID_ROUTED:
+<<<<<<< HEAD
 		local_mad = is_local_mad(ibp, in_mad, in_wc);
 		if (local_mad) {
+=======
+		if (is_local_mad(ibp, in_mad, in_wc)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = opa_local_smp_check(ibp, in_wc);
 			if (ret)
 				return IB_MAD_RESULT_FAILURE;
 		}
 		ret = process_subn_opa(ibdev, mad_flags, port, in_mad,
+<<<<<<< HEAD
 				       out_mad, &resp_len, local_mad);
 		goto bail;
 	case IB_MGMT_CLASS_PERF_MGMT:
@@ -4858,6 +5039,13 @@ static int hfi1_process_opa_mad(struct ib_device *ibdev, int mad_flags,
 			return IB_MAD_RESULT_FAILURE;
 
 		ret = process_perf_opa(ibdev, port, in_mad, out_mad, &resp_len);
+=======
+				       out_mad, &resp_len);
+		goto bail;
+	case IB_MGMT_CLASS_PERF_MGMT:
+		ret = process_perf_opa(ibdev, port, in_mad, out_mad,
+				       &resp_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto bail;
 
 	default:

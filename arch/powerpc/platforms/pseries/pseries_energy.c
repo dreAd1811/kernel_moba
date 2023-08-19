@@ -22,7 +22,10 @@
 #include <asm/page.h>
 #include <asm/hvcall.h>
 #include <asm/firmware.h>
+<<<<<<< HEAD
 #include <asm/prom.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #define MODULE_VERS "1.0"
@@ -39,13 +42,19 @@ static int sysfs_entries;
 static u32 cpu_to_drc_index(int cpu)
 {
 	struct device_node *dn = NULL;
+<<<<<<< HEAD
 	int thread_index;
+=======
+	const int *indexes;
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 1;
 	u32 ret = 0;
 
 	dn = of_find_node_by_path("/cpus");
 	if (dn == NULL)
 		goto err;
+<<<<<<< HEAD
 
 	/* Convert logical cpu number to core number */
 	thread_index = cpu_core_index_of_thread(cpu);
@@ -100,6 +109,20 @@ static u32 cpu_to_drc_index(int cpu)
 		ret = thread_drc_index;
 	}
 
+=======
+	indexes = of_get_property(dn, "ibm,drc-indexes", NULL);
+	if (indexes == NULL)
+		goto err_of_node_put;
+	/* Convert logical cpu number to core number */
+	i = cpu_core_index_of_thread(cpu);
+	/*
+	 * The first element indexes[0] is the number of drc_indexes
+	 * returned in the list.  Hence i+1 will get the drc_index
+	 * corresponding to core number i.
+	 */
+	WARN_ON(i > indexes[0]);
+	ret = indexes[i + 1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rc = 0;
 
 err_of_node_put:
@@ -114,12 +137,17 @@ static int drc_index_to_cpu(u32 drc_index)
 {
 	struct device_node *dn = NULL;
 	const int *indexes;
+<<<<<<< HEAD
 	int thread_index = 0, cpu = 0;
+=======
+	int i, cpu = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 1;
 
 	dn = of_find_node_by_path("/cpus");
 	if (dn == NULL)
 		goto err;
+<<<<<<< HEAD
 
 	if (firmware_has_feature(FW_FEATURE_DRC_INFO)) {
 		struct property *info = NULL;
@@ -172,13 +200,34 @@ static int drc_index_to_cpu(u32 drc_index)
 		thread_index = cpu_first_thread_of_core(i);
 		rc = 0;
 	}
+=======
+	indexes = of_get_property(dn, "ibm,drc-indexes", NULL);
+	if (indexes == NULL)
+		goto err_of_node_put;
+	/*
+	 * First element in the array is the number of drc_indexes
+	 * returned.  Search through the list to find the matching
+	 * drc_index and get the core number
+	 */
+	for (i = 0; i < indexes[0]; i++) {
+		if (indexes[i + 1] == drc_index)
+			break;
+	}
+	/* Convert core number to logical cpu number */
+	cpu = cpu_first_thread_of_core(i);
+	rc = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_of_node_put:
 	of_node_put(dn);
 err:
 	if (rc)
 		printk(KERN_WARNING "drc_index_to_cpu(%d) failed", drc_index);
+<<<<<<< HEAD
 	return thread_index;
+=======
+	return cpu;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

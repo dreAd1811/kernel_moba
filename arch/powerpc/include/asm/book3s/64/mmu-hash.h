@@ -12,9 +12,15 @@
  * 2 of the License, or (at your option) any later version.
  */
 
+<<<<<<< HEAD
 #include <asm/page.h>
 #include <asm/bug.h>
 #include <asm/asm-const.h>
+=======
+#include <asm/asm-compat.h>
+#include <asm/page.h>
+#include <asm/bug.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * This is necessary to get the definition of PGTABLE_RANGE which we
@@ -90,8 +96,11 @@
 #define HPTE_R_PP0		ASM_CONST(0x8000000000000000)
 #define HPTE_R_TS		ASM_CONST(0x4000000000000000)
 #define HPTE_R_KEY_HI		ASM_CONST(0x3000000000000000)
+<<<<<<< HEAD
 #define HPTE_R_KEY_BIT0		ASM_CONST(0x2000000000000000)
 #define HPTE_R_KEY_BIT1		ASM_CONST(0x1000000000000000)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HPTE_R_RPN_SHIFT	12
 #define HPTE_R_RPN		ASM_CONST(0x0ffffffffffff000)
 #define HPTE_R_RPN_3_0		ASM_CONST(0x01fffffffffff000)
@@ -106,9 +115,12 @@
 #define HPTE_R_C		ASM_CONST(0x0000000000000080)
 #define HPTE_R_R		ASM_CONST(0x0000000000000100)
 #define HPTE_R_KEY_LO		ASM_CONST(0x0000000000000e00)
+<<<<<<< HEAD
 #define HPTE_R_KEY_BIT2		ASM_CONST(0x0000000000000800)
 #define HPTE_R_KEY_BIT3		ASM_CONST(0x0000000000000400)
 #define HPTE_R_KEY_BIT4		ASM_CONST(0x0000000000000200)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HPTE_R_KEY		(HPTE_R_KEY_LO | HPTE_R_KEY_HI)
 
 #define HPTE_V_1TB_SEG		ASM_CONST(0x4000000000000000)
@@ -364,6 +376,7 @@ static inline unsigned long hpte_new_to_old_r(unsigned long r)
 	return r & ~HPTE_R_3_0_SSIZE_MASK;
 }
 
+<<<<<<< HEAD
 static inline unsigned long hpte_get_old_v(struct hash_pte *hptep)
 {
 	unsigned long hpte_v;
@@ -374,6 +387,8 @@ static inline unsigned long hpte_get_old_v(struct hash_pte *hptep)
 	return hpte_v;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This function sets the AVPN and L fields of the HPTE  appropriately
  * using the base page size and actual page size.
@@ -497,9 +512,12 @@ extern void hpte_init_native(void);
 
 extern void slb_initialize(void);
 extern void slb_flush_and_rebolt(void);
+<<<<<<< HEAD
 void slb_flush_all_realmode(void);
 void __slb_restore_bolted_realmode(void);
 void slb_restore_bolted_realmode(void);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void slb_vmalloc_update(void);
 extern void slb_set_size(u16 size);
@@ -624,7 +642,11 @@ extern void slb_set_size(u16 size);
 
 /* 4 bits per slice and we have one slice per 1TB */
 #define SLICE_ARRAY_SIZE	(H_PGTABLE_RANGE >> 41)
+<<<<<<< HEAD
 #define TASK_SLICE_ARRAY_SZ(x)	((x)->context.slb_addr_limit >> 41)
+=======
+#define TASK_SLICE_ARRAY_SZ(x)	((x)->context.addr_limit >> 41)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef __ASSEMBLY__
 

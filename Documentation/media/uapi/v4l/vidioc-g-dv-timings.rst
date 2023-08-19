@@ -267,7 +267,11 @@ EBUSY
 	will also be cleared.
     * - ``V4L2_DV_FL_HALF_LINE``
       - Specific to interlaced formats: if set, then the vertical
+<<<<<<< HEAD
 	backporch of field 1 (aka the odd field) is really one half-line
+=======
+	frontporch of field 1 (aka the odd field) is really one half-line
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	longer and the vertical backporch of field 2 (aka the even field)
 	is really one half-line shorter, so each field has exactly the
 	same number of half-lines. Whether half-lines can be detected or

@@ -44,6 +44,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+<<<<<<< HEAD
 
 #define packettype_name(etype) { RHF_RCV_TYPE_##etype, #etype }
 #define show_packettype(etype)                  \
@@ -54,6 +55,8 @@ __print_symbolic(etype,                         \
 	packettype_name(ERROR),                 \
 	packettype_name(BYPASS))
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "trace_dbg.h"
 #include "trace_misc.h"
 #include "trace_ctxts.h"

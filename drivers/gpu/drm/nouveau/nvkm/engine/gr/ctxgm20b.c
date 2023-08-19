@@ -22,6 +22,23 @@
 #include "ctxgf100.h"
 
 static void
+<<<<<<< HEAD
+=======
+gm20b_grctx_generate_r406028(struct gf100_gr *gr)
+{
+	struct nvkm_device *device = gr->base.engine.subdev.device;
+	u32 tpc_per_gpc = 0;
+	int i;
+
+	for (i = 0; i < gr->gpc_nr; i++)
+		tpc_per_gpc |= gr->tpc_nr[i] << (4 * i);
+
+	nvkm_wr32(device, 0x406028, tpc_per_gpc);
+	nvkm_wr32(device, 0x405870, tpc_per_gpc);
+}
+
+static void
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gm20b_grctx_generate_main(struct gf100_gr *gr, struct gf100_grctx *info)
 {
 	struct nvkm_device *device = gr->base.engine.subdev.device;
@@ -39,7 +56,13 @@ gm20b_grctx_generate_main(struct gf100_gr *gr, struct gf100_grctx *info)
 
 	grctx->unkn(gr);
 
+<<<<<<< HEAD
 	gf100_grctx_generate_floorsweep(gr);
+=======
+	gm200_grctx_generate_tpcid(gr);
+	gm20b_grctx_generate_r406028(gr);
+	gk104_grctx_generate_r418bb8(gr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < 8; i++)
 		nvkm_wr32(device, 0x4064d0 + (i * 0x04), 0x00000000);
@@ -52,7 +75,11 @@ gm20b_grctx_generate_main(struct gf100_gr *gr, struct gf100_grctx *info)
 		tmp |= ((1 << gr->tpc_nr[i]) - 1) << (i * 4);
 	nvkm_wr32(device, 0x4041c4, tmp);
 
+<<<<<<< HEAD
 	gm200_grctx_generate_smid_config(gr);
+=======
+	gm200_grctx_generate_405b60(gr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gf100_gr_wait_idle(gr);
 
@@ -82,6 +109,9 @@ gm20b_grctx = {
 	.attrib_nr = 0x400,
 	.alpha_nr_max = 0xc00,
 	.alpha_nr = 0x800,
+<<<<<<< HEAD
 	.sm_id = gm107_grctx_generate_sm_id,
 	.rop_mapping = gf117_grctx_generate_rop_mapping,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

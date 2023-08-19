@@ -34,7 +34,11 @@ static void opal_to_tm(u32 y_m_d, u64 h_m_s_ms, struct rtc_time *tm)
 	tm->tm_wday     = -1;
 }
 
+<<<<<<< HEAD
 time64_t __init opal_get_boot_time(void)
+=======
+unsigned long __init opal_get_boot_time(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtc_time tm;
 	u32 y_m_d;
@@ -61,7 +65,12 @@ time64_t __init opal_get_boot_time(void)
 	y_m_d = be32_to_cpu(__y_m_d);
 	h_m_s_ms = be64_to_cpu(__h_m_s_ms);
 	opal_to_tm(y_m_d, h_m_s_ms, &tm);
+<<<<<<< HEAD
 	return rtc_tm_to_time64(&tm);
+=======
+	return mktime(tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
+		      tm.tm_hour, tm.tm_min, tm.tm_sec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static __init int opal_time_init(void)

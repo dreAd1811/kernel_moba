@@ -258,9 +258,17 @@ static int rc5t583_i2c_probe(struct i2c_client *i2c,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	rc5t583 = devm_kzalloc(&i2c->dev, sizeof(*rc5t583), GFP_KERNEL);
 	if (!rc5t583)
 		return -ENOMEM;
+=======
+	rc5t583 = devm_kzalloc(&i2c->dev, sizeof(struct rc5t583), GFP_KERNEL);
+	if (!rc5t583) {
+		dev_err(&i2c->dev, "Memory allocation failed\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc5t583->dev = &i2c->dev;
 	i2c_set_clientdata(i2c, rc5t583);

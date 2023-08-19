@@ -16,6 +16,10 @@
  * Author: Zhu, Lejun <lejun.zhu@linux.intel.com>
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/acpi.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/mfd/core.h>
 #include <linux/i2c.h>

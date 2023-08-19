@@ -33,3 +33,14 @@ config CXL
 	  CAPI adapters are found in POWER8 based systems.
 
 	  If unsure, say N.
+<<<<<<< HEAD
+=======
+
+config CXL_BIMODAL
+	bool "Support for bi-modal CAPI cards"
+	depends on HOTPLUG_PCI_POWERNV = y && CXL || HOTPLUG_PCI_POWERNV = m && CXL = m
+	default y
+	help
+	  Select this option to enable support for bi-modal CAPI cards, such as
+	  the Mellanox CX-4.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -48,6 +48,7 @@ config MACH_SUN9I
 	default ARCH_SUNXI
 	select ARM_GIC
 
+<<<<<<< HEAD
 config ARCH_SUNXI_MC_SMP
 	bool
 	depends on SMP
@@ -55,4 +56,6 @@ config ARCH_SUNXI_MC_SMP
 	select ARM_CCI400_PORT_CTRL
 	select ARM_CPU_SUSPEND
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endif

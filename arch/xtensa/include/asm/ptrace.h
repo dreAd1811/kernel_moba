@@ -10,7 +10,10 @@
 #ifndef _XTENSA_PTRACE_H
 #define _XTENSA_PTRACE_H
 
+<<<<<<< HEAD
 #include <asm/kmem_layout.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <uapi/asm/ptrace.h>
 
 /*
@@ -39,6 +42,23 @@
  *		+-----------------------+ --------
  */
 
+<<<<<<< HEAD
+=======
+#define KERNEL_STACK_SIZE (2 * PAGE_SIZE)
+
+/*  Offsets for exception_handlers[] (3 x 64-entries x 4-byte tables). */
+
+#define EXC_TABLE_KSTK		0x004	/* Kernel Stack */
+#define EXC_TABLE_DOUBLE_SAVE	0x008	/* Double exception save area for a0 */
+#define EXC_TABLE_FIXUP		0x00c	/* Fixup handler */
+#define EXC_TABLE_PARAM		0x010	/* For passing a parameter to fixup */
+#define EXC_TABLE_SYSCALL_SAVE	0x014	/* For fast syscall handler */
+#define EXC_TABLE_FAST_USER	0x100	/* Fast user exception handler */
+#define EXC_TABLE_FAST_KERNEL	0x200	/* Fast kernel exception handler */
+#define EXC_TABLE_DEFAULT	0x300	/* Default C-Handler */
+#define EXC_TABLE_SIZE		0x400
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifndef __ASSEMBLY__
 
 #include <asm/coprocessor.h>

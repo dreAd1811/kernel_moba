@@ -36,11 +36,19 @@ static int highbank_suspend_finish(unsigned long val)
 static int highbank_pm_enter(suspend_state_t state)
 {
 	cpu_pm_enter();
+<<<<<<< HEAD
 	cpu_cluster_pm_enter();
 
 	cpu_suspend(0, highbank_suspend_finish);
 
 	cpu_cluster_pm_exit();
+=======
+	cpu_cluster_pm_enter(0);
+
+	cpu_suspend(0, highbank_suspend_finish);
+
+	cpu_cluster_pm_exit(0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpu_pm_exit();
 
 	return 0;

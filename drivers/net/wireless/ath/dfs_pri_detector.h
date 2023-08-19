@@ -62,9 +62,14 @@ struct pri_detector {
 	     (*add_pulse)(struct pri_detector *de, struct pulse_event *e);
 	void (*reset)    (struct pri_detector *de, u64 ts);
 
+<<<<<<< HEAD
 	const struct radar_detector_specs *rs;
 
 /* private: internal use only */
+=======
+/* private: internal use only */
+	const struct radar_detector_specs *rs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 last_ts;
 	struct list_head sequences;
 	struct list_head pulses;

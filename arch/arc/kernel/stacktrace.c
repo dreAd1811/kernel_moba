@@ -163,7 +163,11 @@ arc_unwind_core(struct task_struct *tsk, struct pt_regs *regs,
  */
 static int __print_sym(unsigned int address, void *unused)
 {
+<<<<<<< HEAD
 	printk("  %pS\n", (void *)address);
+=======
+	__print_symbol("  %s\n", address);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

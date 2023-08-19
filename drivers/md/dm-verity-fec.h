@@ -48,10 +48,17 @@ struct dm_verity_fec {
 	sector_t hash_blocks;	/* blocks covered after v->hash_start */
 	unsigned char roots;	/* number of parity bytes, M-N of RS(M, N) */
 	unsigned char rsn;	/* N of RS(M, N) */
+<<<<<<< HEAD
 	mempool_t rs_pool;	/* mempool for fio->rs */
 	mempool_t prealloc_pool;	/* mempool for preallocated buffers */
 	mempool_t extra_pool;	/* mempool for extra buffers */
 	mempool_t output_pool;	/* mempool for output */
+=======
+	mempool_t *rs_pool;	/* mempool for fio->rs */
+	mempool_t *prealloc_pool;	/* mempool for preallocated buffers */
+	mempool_t *extra_pool;	/* mempool for extra buffers */
+	mempool_t *output_pool;	/* mempool for output */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kmem_cache *cache;	/* cache for buffers */
 	atomic_t corrected;		/* corrected errors */
 	struct dm_kobject_holder kobj_holder;	/* for sysfs attributes */

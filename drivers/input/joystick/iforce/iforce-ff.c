@@ -19,6 +19,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+<<<<<<< HEAD
+=======
+ *
+ * Should you need to contact me, the author, you can do so either by
+ * e-mail - mail your message to <vojtech@ucw.cz>, or by paper mail:
+ * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include "iforce.h"
@@ -52,7 +59,11 @@ static int make_magnitude_modifier(struct iforce* iforce,
 
 	iforce_send_packet(iforce, FF_CMD_MAGNITUDE, data);
 
+<<<<<<< HEAD
 	iforce_dump_packet(iforce, "magnitude", FF_CMD_MAGNITUDE, data);
+=======
+	iforce_dump_packet("magnitude: ", FF_CMD_MAGNITUDE, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -174,7 +185,11 @@ static int make_condition_modifier(struct iforce* iforce,
 	data[9] = (100 * lsat) >> 16;
 
 	iforce_send_packet(iforce, FF_CMD_CONDITION, data);
+<<<<<<< HEAD
 	iforce_dump_packet(iforce, "condition", FF_CMD_CONDITION, data);
+=======
+	iforce_dump_packet("condition", FF_CMD_CONDITION, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

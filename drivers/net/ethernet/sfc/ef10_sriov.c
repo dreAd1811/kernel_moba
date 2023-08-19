@@ -199,7 +199,11 @@ static int efx_ef10_sriov_alloc_vf_vswitching(struct efx_nic *efx)
 		return -ENOMEM;
 
 	for (i = 0; i < efx->vf_count; i++) {
+<<<<<<< HEAD
 		eth_random_addr(nic_data->vf[i].mac);
+=======
+		random_ether_addr(nic_data->vf[i].mac);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nic_data->vf[i].efx = NULL;
 		nic_data->vf[i].vlan = EFX_EF10_NO_VLAN;
 
@@ -564,7 +568,11 @@ int efx_ef10_sriov_set_vf_vlan(struct efx_nic *efx, int vf_i, u16 vlan,
 {
 	struct efx_ef10_nic_data *nic_data = efx->nic_data;
 	struct ef10_vf *vf;
+<<<<<<< HEAD
 	u16 new_vlan;
+=======
+	u16 old_vlan, new_vlan;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc = 0, rc2 = 0;
 
 	if (vf_i >= efx->vf_count)
@@ -619,6 +627,10 @@ int efx_ef10_sriov_set_vf_vlan(struct efx_nic *efx, int vf_i, u16 vlan,
 	}
 
 	/* Do the actual vlan change */
+<<<<<<< HEAD
+=======
+	old_vlan = vf->vlan;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vf->vlan = new_vlan;
 
 	/* Restore everything in reverse order */

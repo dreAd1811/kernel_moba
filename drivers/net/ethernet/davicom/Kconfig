@@ -4,7 +4,11 @@
 
 config DM9000
 	tristate "DM9000 support"
+<<<<<<< HEAD
 	depends on ARM || MIPS || COLDFIRE || NIOS2
+=======
+	depends on ARM || BLACKFIN || MIPS || COLDFIRE || NIOS2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRC32
 	select MII
 	---help---

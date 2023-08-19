@@ -16,8 +16,11 @@
 #include <linux/bootmem.h>
 #include <linux/spinlock.h>
 #include <linux/gfp.h>
+<<<<<<< HEAD
 #include <linux/dma-direct.h>
 #include <linux/dma-noncoherent.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mipsregs.h>
 #include <asm/jazz.h>
 #include <asm/io.h>
@@ -89,7 +92,10 @@ static int __init vdma_init(void)
 	printk(KERN_INFO "VDMA: R4030 DMA pagetables initialized.\n");
 	return 0;
 }
+<<<<<<< HEAD
 arch_initcall(vdma_init);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Allocate DMA pagetables using a simple first-fit algorithm
@@ -560,6 +566,7 @@ int vdma_get_enable(int channel)
 	return enable;
 }
 
+<<<<<<< HEAD
 static void *jazz_dma_alloc(struct device *dev, size_t size,
 		dma_addr_t *dma_handle, gfp_t gfp, unsigned long attrs)
 {
@@ -697,3 +704,6 @@ const struct dma_map_ops jazz_dma_ops = {
 	.mapping_error		= jazz_dma_mapping_error,
 };
 EXPORT_SYMBOL(jazz_dma_ops);
+=======
+arch_initcall(vdma_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -958,6 +958,7 @@ static struct gsc_pix_max gsc_v_100_max = {
 	.target_rot_en_h	= 2016,
 };
 
+<<<<<<< HEAD
 static struct gsc_pix_max gsc_v_5250_max = {
 	.org_scaler_bypass_w	= 8192,
 	.org_scaler_bypass_h	= 8192,
@@ -1003,6 +1004,8 @@ static struct gsc_pix_max gsc_v_5433_max = {
 	.target_rot_en_h	= 2016,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct gsc_pix_min gsc_v_100_min = {
 	.org_w			= 64,
 	.org_h			= 32,
@@ -1037,6 +1040,7 @@ static struct gsc_variant gsc_v_100_variant = {
 	.local_sc_down		= 2,
 };
 
+<<<<<<< HEAD
 static struct gsc_variant gsc_v_5250_variant = {
 	.pix_max		= &gsc_v_5250_max,
 	.pix_min		= &gsc_v_100_min,
@@ -1076,6 +1080,8 @@ static struct gsc_variant gsc_v_5433_variant = {
 	.local_sc_down		= 2,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct gsc_driverdata gsc_v_100_drvdata = {
 	.variant = {
 		[0] = &gsc_v_100_variant,
@@ -1088,6 +1094,7 @@ static struct gsc_driverdata gsc_v_100_drvdata = {
 	.num_clocks = 1,
 };
 
+<<<<<<< HEAD
 static struct gsc_driverdata gsc_v_5250_drvdata = {
 	.variant = {
 		[0] = &gsc_v_5250_variant,
@@ -1115,6 +1122,13 @@ static struct gsc_driverdata gsc_5433_drvdata = {
 		[0] = &gsc_v_5433_variant,
 		[1] = &gsc_v_5433_variant,
 		[2] = &gsc_v_5433_variant,
+=======
+static struct gsc_driverdata gsc_5433_drvdata = {
+	.variant = {
+		[0] = &gsc_v_100_variant,
+		[1] = &gsc_v_100_variant,
+		[2] = &gsc_v_100_variant,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.num_entities = 3,
 	.clk_names = { "pclk", "aclk", "aclk_xiu", "aclk_gsclbend" },
@@ -1123,21 +1137,29 @@ static struct gsc_driverdata gsc_5433_drvdata = {
 
 static const struct of_device_id exynos_gsc_match[] = {
 	{
+<<<<<<< HEAD
 		.compatible = "samsung,exynos5250-gsc",
 		.data = &gsc_v_5250_drvdata,
 	},
 	{
 		.compatible = "samsung,exynos5420-gsc",
 		.data = &gsc_v_5420_drvdata,
+=======
+		.compatible = "samsung,exynos5-gsc",
+		.data = &gsc_v_100_drvdata,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.compatible = "samsung,exynos5433-gsc",
 		.data = &gsc_5433_drvdata,
 	},
+<<<<<<< HEAD
 	{
 		.compatible = "samsung,exynos5-gsc",
 		.data = &gsc_v_100_drvdata,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, exynos_gsc_match);
@@ -1159,9 +1181,12 @@ static int gsc_probe(struct platform_device *pdev)
 	if (ret < 0)
 		return ret;
 
+<<<<<<< HEAD
 	if (drv_data == &gsc_v_100_drvdata)
 		dev_info(dev, "compatible 'exynos5-gsc' is deprecated\n");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gsc->id = ret;
 	if (gsc->id >= drv_data->num_entities) {
 		dev_err(dev, "Invalid platform device id: %d\n", gsc->id);

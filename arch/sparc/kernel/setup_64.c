@@ -294,8 +294,11 @@ static void __init sun4v_patch(void)
 	case SUN4V_CHIP_SPARC_M7:
 	case SUN4V_CHIP_SPARC_M8:
 	case SUN4V_CHIP_SPARC_SN:
+<<<<<<< HEAD
 		sun4v_patch_1insn_range(&__sun_m7_1insn_patch,
 					&__sun_m7_1insn_patch_end);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sun_m7_patch_2insn_range(&__sun_m7_2insn_patch,
 					 &__sun_m7_2insn_patch_end);
 		break;

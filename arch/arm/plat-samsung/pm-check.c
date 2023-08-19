@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // originally in linux/arch/arm/plat-s3c24xx/pm.c
@@ -7,6 +8,21 @@
 //	Ben Dooks <ben@simtec.co.uk>
 //
 // S3C Power Mangament - suspend/resume memory corruption check.
+=======
+/* linux/arch/arm/plat-s3c/pm-check.c
+ *  originally in linux/arch/arm/plat-s3c24xx/pm.c
+ *
+ * Copyright (c) 2004-2008 Simtec Electronics
+ *	http://armlinux.simtec.co.uk
+ *	Ben Dooks <ben@simtec.co.uk>
+ *
+ * S3C Power Mangament - suspend/resume memory corruption check.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/suspend.h>

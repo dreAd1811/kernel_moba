@@ -53,7 +53,11 @@ static inline char *strncpy(char *__dest, const char *__src, size_t __n)
 		"bne	%1, %5, 1b\n"
 		"2:"
 		: "=r" (__dest), "=r" (__src), "=&r" (__dummy)
+<<<<<<< HEAD
 		: "0" (__dest), "1" (__src), "r" ((uintptr_t)__src+__n)
+=======
+		: "0" (__dest), "1" (__src), "r" (__src+__n)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "memory");
 
 	return __xdest;
@@ -101,13 +105,18 @@ static inline int strncmp(const char *__cs, const char *__ct, size_t __n)
 		"2:\n\t"
 		"sub	%2, %2, %3"
 		: "=r" (__cs), "=r" (__ct), "=&r" (__res), "=&r" (__dummy)
+<<<<<<< HEAD
 		: "0" (__cs), "1" (__ct), "r" ((uintptr_t)__cs+__n));
+=======
+		: "0" (__cs), "1" (__ct), "r" (__cs+__n));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return __res;
 }
 
 #define __HAVE_ARCH_MEMSET
 extern void *memset(void *__s, int __c, size_t __count);
+<<<<<<< HEAD
 extern void *__memset(void *__s, int __c, size_t __count);
 
 #define __HAVE_ARCH_MEMCPY
@@ -117,10 +126,19 @@ extern void *__memcpy(void *__to, __const__ void *__from, size_t __n);
 #define __HAVE_ARCH_MEMMOVE
 extern void *memmove(void *__dest, __const__ void *__src, size_t __n);
 extern void *__memmove(void *__dest, __const__ void *__src, size_t __n);
+=======
+
+#define __HAVE_ARCH_MEMCPY
+extern void *memcpy(void *__to, __const__ void *__from, size_t __n);
+
+#define __HAVE_ARCH_MEMMOVE
+extern void *memmove(void *__dest, __const__ void *__src, size_t __n);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Don't build bcopy at all ...  */
 #define __HAVE_ARCH_BCOPY
 
+<<<<<<< HEAD
 #if defined(CONFIG_KASAN) && !defined(__SANITIZE_ADDRESS__)
 
 /*
@@ -137,4 +155,6 @@ extern void *__memmove(void *__dest, __const__ void *__src, size_t __n);
 #endif
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _XTENSA_STRING_H */

@@ -19,6 +19,10 @@
 #include <linux/uaccess.h>
 #include <asm/pci_debug.h>
 #include <asm/pci_clp.h>
+<<<<<<< HEAD
+=======
+#include <asm/compat.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/clp.h>
 #include <uapi/asm/clp.h>
 

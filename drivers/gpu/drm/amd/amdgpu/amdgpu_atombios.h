@@ -195,6 +195,12 @@ int amdgpu_atombios_init_mc_reg_table(struct amdgpu_device *adev,
 bool amdgpu_atombios_has_gpu_virtualization_table(struct amdgpu_device *adev);
 
 void amdgpu_atombios_scratch_regs_lock(struct amdgpu_device *adev, bool lock);
+<<<<<<< HEAD
+=======
+void amdgpu_atombios_scratch_regs_init(struct amdgpu_device *adev);
+void amdgpu_atombios_scratch_regs_save(struct amdgpu_device *adev);
+void amdgpu_atombios_scratch_regs_restore(struct amdgpu_device *adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void amdgpu_atombios_scratch_regs_engine_hung(struct amdgpu_device *adev,
 					      bool hung);
 bool amdgpu_atombios_scratch_need_asic_init(struct amdgpu_device *adev);
@@ -216,7 +222,11 @@ int amdgpu_atombios_get_svi2_info(struct amdgpu_device *adev,
 			      u8 voltage_type,
 			      u8 *svd_gpio_id, u8 *svc_gpio_id);
 
+<<<<<<< HEAD
 void amdgpu_atombios_fini(struct amdgpu_device *adev);
 int amdgpu_atombios_init(struct amdgpu_device *adev);
+=======
+int amdgpu_atombios_allocate_fb_scratch(struct amdgpu_device *adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

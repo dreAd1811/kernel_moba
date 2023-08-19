@@ -30,6 +30,10 @@
 
 /* A handy thing to have if one has the RAM. Declared in head.S */
 extern unsigned long empty_zero_page;
+<<<<<<< HEAD
+=======
+extern unsigned long zero_page_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * The PTE model described here is that of the Hexagon Virtual Machine,

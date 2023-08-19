@@ -123,6 +123,10 @@ static struct i2c_adapter parport_adapter = {
 
 /* SMBus alert support */
 static struct i2c_smbus_alert_setup alert_data = {
+<<<<<<< HEAD
+=======
+	.alert_edge_triggered	= 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 static struct i2c_client *ara;
 static struct lineop parport_ctrl_irq = {

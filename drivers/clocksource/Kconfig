@@ -1,8 +1,16 @@
 menu "Clock Source drivers"
+<<<<<<< HEAD
 	depends on GENERIC_CLOCKEVENTS
 
 config TIMER_OF
 	bool
+=======
+	depends on !ARCH_USES_GETTIMEOFFSET
+
+config TIMER_OF
+	bool
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TIMER_PROBE
 
 config TIMER_ACPI
@@ -21,9 +29,12 @@ config CLKEVT_I8253
 config I8253_LOCK
 	bool
 
+<<<<<<< HEAD
 config OMAP_DM_TIMER
 	bool
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CLKBLD_I8253
 	def_bool y if CLKSRC_I8253 || CLKEVT_I8253 || I8253_LOCK
 
@@ -32,18 +43,30 @@ config CLKSRC_MMIO
 
 config BCM2835_TIMER
 	bool "BCM2835 timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables the support for the BCM2835 timer driver.
 
 config BCM_KONA_TIMER
 	bool "BCM mobile timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables the support for the BCM Kona mobile timer driver.
 
 config DIGICOLOR_TIMER
 	bool "Digicolor timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	depends on HAS_IOMEM
 	help
@@ -51,6 +74,10 @@ config DIGICOLOR_TIMER
 
 config DW_APB_TIMER
 	bool "DW APB timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Enables the support for the dw_apb timer.
 
@@ -61,6 +88,10 @@ config DW_APB_TIMER_OF
 
 config FTTMR010_TIMER
 	bool "Faraday Technology timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	select CLKSRC_MMIO
 	select TIMER_OF
@@ -87,6 +118,10 @@ config ARMADA_370_XP_TIMER
 
 config MESON6_TIMER
 	bool "Meson6 timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables the support for the Meson6 timer driver.
@@ -101,12 +136,20 @@ config ORION_TIMER
 
 config OWL_TIMER
 	bool "Owl timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables the support for the Actions Semi Owl timer driver.
 
 config SUN4I_TIMER
 	bool "Sun4i timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	select CLKSRC_MMIO
 	select TIMER_OF
@@ -129,10 +172,15 @@ config TEGRA_TIMER
 
 config VT8500_TIMER
 	bool "VT8500 timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	help
 	  Enables support for the VT8500 driver.
 
+<<<<<<< HEAD
 config NPCM7XX_TIMER
 	bool "NPCM7xx timer driver" if COMPILE_TEST
 	depends on HAS_IOMEM
@@ -142,6 +190,8 @@ config NPCM7XX_TIMER
 	  Enable 24-bit TIMER0 and TIMER1 counters in the NPCM7xx architecture,
 	  While TIMER0 serves as clockevent and TIMER1 serves as clocksource.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CADENCE_TTC_TIMER
 	bool "Cadence TTC timer driver" if COMPILE_TEST
 	depends on COMMON_CLK
@@ -150,6 +200,10 @@ config CADENCE_TTC_TIMER
 
 config ASM9260_TIMER
 	bool "ASM9260 timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	select TIMER_OF
 	help
@@ -172,24 +226,40 @@ config CLKSRC_NOMADIK_MTU_SCHED_CLOCK
 
 config CLKSRC_DBX500_PRCMU
 	bool "Clocksource PRCMU Timer" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	help
 	  Use the always on PRCMU Timer as clocksource
 
 config CLPS711X_TIMER
 	bool "Cirrus logic timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables support for the Cirrus Logic PS711 timer.
 
 config ATLAS7_TIMER
 	bool "Atlas7 timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables support for the Atlas7 timer.
 
 config MXS_TIMER
 	bool "Mxs timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	select STMP_DEVICE
 	help
@@ -197,12 +267,20 @@ config MXS_TIMER
 
 config PRIMA2_TIMER
 	bool "Prima2 timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables support for the Prima2 timer.
 
 config U300_TIMER
 	bool "U300 timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARM
 	select CLKSRC_MMIO
 	help
@@ -210,12 +288,20 @@ config U300_TIMER
 
 config NSPIRE_TIMER
 	bool "NSpire timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables support for the Nspire timer.
 
 config KEYSTONE_TIMER
 	bool "Keystone timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARM || ARM64
 	select CLKSRC_MMIO
 	help
@@ -223,6 +309,10 @@ config KEYSTONE_TIMER
 
 config INTEGRATOR_AP_TIMER
 	bool "Integrator-ap timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables support for the Integrator-ap timer.
@@ -245,7 +335,11 @@ config CLKSRC_EFM32
 
 config CLKSRC_LPC32XX
 	bool "Clocksource for LPC32XX" if COMPILE_TEST
+<<<<<<< HEAD
 	depends on HAS_IOMEM
+=======
+	depends on GENERIC_CLOCKEVENTS && HAS_IOMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARM
 	select CLKSRC_MMIO
 	select TIMER_OF
@@ -254,7 +348,11 @@ config CLKSRC_LPC32XX
 
 config CLKSRC_PISTACHIO
 	bool "Clocksource for Pistachio SoC" if COMPILE_TEST
+<<<<<<< HEAD
 	depends on HAS_IOMEM
+=======
+	depends on GENERIC_CLOCKEVENTS && HAS_IOMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TIMER_OF
 	help
 	  Enables the clocksource for the Pistachio SoC.
@@ -281,7 +379,10 @@ config CLKSRC_STM32
 	bool "Clocksource for STM32 SoCs" if !ARCH_STM32
 	depends on OF && ARM && (ARCH_STM32 || COMPILE_TEST)
 	select CLKSRC_MMIO
+<<<<<<< HEAD
 	select TIMER_OF
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config CLKSRC_MPS2
 	bool "Clocksource for MPS2 SoCs" if COMPILE_TEST
@@ -291,7 +392,11 @@ config CLKSRC_MPS2
 
 config ARC_TIMERS
 	bool "Support for 32-bit TIMERn counters in ARC Cores" if COMPILE_TEST
+<<<<<<< HEAD
 	depends on GENERIC_SCHED_CLOCK
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TIMER_OF
 	help
 	  These are legacy 32-bit TIMER0 and TIMER1 counters found on all ARC cores
@@ -300,6 +405,10 @@ config ARC_TIMERS
 
 config ARC_TIMERS_64BIT
 	bool "Support for 64-bit counters in ARC HS38 cores" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARC_TIMERS
 	select TIMER_OF
 	help
@@ -366,6 +475,7 @@ config ARM64_ERRATUM_858921
 	  The workaround will be dynamically enabled when an affected
 	  core is detected.
 
+<<<<<<< HEAD
 config SUN50I_ERRATUM_UNKNOWN1
 	bool "Workaround for Allwinner A64 erratum UNKNOWN1"
 	default y
@@ -376,6 +486,8 @@ config SUN50I_ERRATUM_UNKNOWN1
 	  the Allwinner A64 SoC. The workaround will only be active if the
 	  allwinner,erratum-unknown1 property is found in the timer node.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config ARM_ARCH_TIMER_VCT_ACCESS
 	bool "Support for ARM architected timer virtual counter access in userspace"
 	default !ARM64
@@ -417,12 +529,24 @@ config ATMEL_PIT
 
 config ATMEL_ST
 	bool "Atmel ST timer support" if COMPILE_TEST
+<<<<<<< HEAD
 	depends on HAS_IOMEM
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TIMER_OF
 	select MFD_SYSCON
 	help
 	  Support for the Atmel ST timer.
 
+<<<<<<< HEAD
+=======
+config CLKSRC_METAG_GENERIC
+	def_bool y if METAG
+	help
+	  This option enables support for the Meta per-thread timers.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config CLKSRC_EXYNOS_MCT
 	bool "Exynos multi core timer driver" if COMPILE_TEST
 	depends on ARM || ARM64
@@ -431,6 +555,10 @@ config CLKSRC_EXYNOS_MCT
 
 config CLKSRC_SAMSUNG_PWM
 	bool "PWM timer driver for Samsung S3C, S5P" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	help
 	  This is a new clocksource driver for the PWM timer found in
@@ -440,6 +568,10 @@ config CLKSRC_SAMSUNG_PWM
 
 config FSL_FTM_TIMER
 	bool "Freescale FlexTimer Module driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	select CLKSRC_MMIO
 	help
@@ -453,6 +585,10 @@ config VF_PIT_TIMER
 
 config OXNAS_RPS_TIMER
 	bool "Oxford Semiconductor OXNAS RPS Timers driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TIMER_OF
 	select CLKSRC_MMIO
 	help
@@ -463,12 +599,17 @@ config SYS_SUPPORTS_SH_CMT
 
 config MTK_TIMER
 	bool "Mediatek timer driver" if COMPILE_TEST
+<<<<<<< HEAD
 	depends on HAS_IOMEM
+=======
+	depends on GENERIC_CLOCKEVENTS && HAS_IOMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TIMER_OF
 	select CLKSRC_MMIO
 	help
 	  Support for Mediatek timer driver.
 
+<<<<<<< HEAD
 config SPRD_TIMER
 	bool "Spreadtrum timer driver" if EXPERT
 	depends on HAS_IOMEM
@@ -478,6 +619,8 @@ config SPRD_TIMER
 	help
 	  Enables support for the Spreadtrum timer driver.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config SYS_SUPPORTS_SH_MTU2
         bool
 
@@ -490,6 +633,10 @@ config SYS_SUPPORTS_EM_STI
 config CLKSRC_JCORE_PIT
 	bool "J-Core PIT timer driver" if COMPILE_TEST
 	depends on OF
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	select CLKSRC_MMIO
 	help
@@ -498,6 +645,10 @@ config CLKSRC_JCORE_PIT
 
 config SH_TIMER_CMT
 	bool "Renesas CMT timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	default SYS_SUPPORTS_SH_CMT
 	help
@@ -507,6 +658,10 @@ config SH_TIMER_CMT
 
 config SH_TIMER_MTU2
 	bool "Renesas MTU2 timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	default SYS_SUPPORTS_SH_MTU2
 	help
@@ -516,12 +671,20 @@ config SH_TIMER_MTU2
 
 config RENESAS_OSTM
 	bool "Renesas OSTM timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enables the support for the Renesas OSTM.
 
 config SH_TIMER_TMU
 	bool "Renesas TMU timer driver" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	default SYS_SUPPORTS_SH_TMU
 	help
@@ -531,7 +694,11 @@ config SH_TIMER_TMU
 
 config EM_TIMER_STI
 	bool "Renesas STI timer driver" if COMPILE_TEST
+<<<<<<< HEAD
 	depends on HAS_IOMEM
+=======
+	depends on GENERIC_CLOCKEVENTS && HAS_IOMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default SYS_SUPPORTS_EM_STI
 	help
 	  This enables build of a clocksource and clockevent driver for
@@ -572,6 +739,10 @@ config CLKSRC_TANGO_XTAL
 
 config CLKSRC_PXA
 	bool "Clocksource for PXA or SA-11x0 platform" if COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_IOMEM
 	select CLKSRC_MMIO
 	help
@@ -580,20 +751,32 @@ config CLKSRC_PXA
 
 config H8300_TMR8
         bool "Clockevent timer for the H8300 platform" if COMPILE_TEST
+<<<<<<< HEAD
         depends on HAS_IOMEM
+=======
+        depends on GENERIC_CLOCKEVENTS && HAS_IOMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This enables the 8 bits timer for the H8300 platform.
 
 config H8300_TMR16
         bool "Clockevent timer for the H83069 platform" if COMPILE_TEST
+<<<<<<< HEAD
         depends on HAS_IOMEM
+=======
+        depends on GENERIC_CLOCKEVENTS && HAS_IOMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This enables the 16 bits timer for the H8300 platform with the
 	  H83069 cpu.
 
 config H8300_TPU
         bool "Clocksource for the H8300 platform" if COMPILE_TEST
+<<<<<<< HEAD
         depends on HAS_IOMEM
+=======
+        depends on GENERIC_CLOCKEVENTS && HAS_IOMEM
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This enables the clocksource for the H8300 platform with the
 	  H8S2678 cpu.
@@ -605,7 +788,11 @@ config CLKSRC_IMX_GPT
 
 config CLKSRC_IMX_TPM
 	bool "Clocksource using i.MX TPM" if COMPILE_TEST
+<<<<<<< HEAD
 	depends on ARM && CLKDEV_LOOKUP
+=======
+	depends on ARM && CLKDEV_LOOKUP && GENERIC_CLOCKEVENTS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CLKSRC_MMIO
 	help
 	  Enable this option to use IMX Timer/PWM Module (TPM) timer as
@@ -620,6 +807,7 @@ config CLKSRC_ST_LPC
 	  Enable this option to use the Low Power controller timer
 	  as clocksource.
 
+<<<<<<< HEAD
 config ATCPIT100_TIMER
 	bool "ATCPIT100 timer driver"
 	depends on NDS32 || COMPILE_TEST
@@ -640,4 +828,6 @@ config RISCV_TIMER
 	  is accessed via both the SBI and the rdcycle instruction.  This is
 	  required for all RISC-V systems.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu

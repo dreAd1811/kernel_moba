@@ -9,6 +9,7 @@
  * Common Clock Framework support for Exynos5433 SoC.
  */
 
+<<<<<<< HEAD
 #include <linux/clk.h>
 #include <linux/clk-provider.h>
 #include <linux/of.h>
@@ -16,6 +17,11 @@
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
 #include <linux/pm_runtime.h>
+=======
+#include <linux/clk-provider.h>
+#include <linux/of.h>
+#include <linux/of_address.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <dt-bindings/clock/exynos5433.h>
 
@@ -703,6 +709,7 @@ static const struct samsung_gate_clock top_gate_clks[] __initconst = {
  * & MPHY_PLL & G3D_PLL & DISP_PLL & ISP_PLL
  */
 static const struct samsung_pll_rate_table exynos5433_pll_rates[] __initconst = {
+<<<<<<< HEAD
 	PLL_35XX_RATE(24 * MHZ, 2500000000U, 625, 6,  0),
 	PLL_35XX_RATE(24 * MHZ, 2400000000U, 500, 5,  0),
 	PLL_35XX_RATE(24 * MHZ, 2300000000U, 575, 6,  0),
@@ -751,11 +758,62 @@ static const struct samsung_pll_rate_table exynos5433_pll_rates[] __initconst = 
 	PLL_35XX_RATE(24 * MHZ, 160000000U,  320, 6,  3),
 	PLL_35XX_RATE(24 * MHZ, 133000000U,  532, 6,  4),
 	PLL_35XX_RATE(24 * MHZ, 100000000U,  400, 6,  4),
+=======
+	PLL_35XX_RATE(2500000000U, 625, 6,  0),
+	PLL_35XX_RATE(2400000000U, 500, 5,  0),
+	PLL_35XX_RATE(2300000000U, 575, 6,  0),
+	PLL_35XX_RATE(2200000000U, 550, 6,  0),
+	PLL_35XX_RATE(2100000000U, 350, 4,  0),
+	PLL_35XX_RATE(2000000000U, 500, 6,  0),
+	PLL_35XX_RATE(1900000000U, 475, 6,  0),
+	PLL_35XX_RATE(1800000000U, 375, 5,  0),
+	PLL_35XX_RATE(1700000000U, 425, 6,  0),
+	PLL_35XX_RATE(1600000000U, 400, 6,  0),
+	PLL_35XX_RATE(1500000000U, 250, 4,  0),
+	PLL_35XX_RATE(1400000000U, 350, 6,  0),
+	PLL_35XX_RATE(1332000000U, 222, 4,  0),
+	PLL_35XX_RATE(1300000000U, 325, 6,  0),
+	PLL_35XX_RATE(1200000000U, 500, 5,  1),
+	PLL_35XX_RATE(1100000000U, 550, 6,  1),
+	PLL_35XX_RATE(1086000000U, 362, 4,  1),
+	PLL_35XX_RATE(1066000000U, 533, 6,  1),
+	PLL_35XX_RATE(1000000000U, 500, 6,  1),
+	PLL_35XX_RATE(933000000U,  311, 4,  1),
+	PLL_35XX_RATE(921000000U,  307, 4,  1),
+	PLL_35XX_RATE(900000000U,  375, 5,  1),
+	PLL_35XX_RATE(825000000U,  275, 4,  1),
+	PLL_35XX_RATE(800000000U,  400, 6,  1),
+	PLL_35XX_RATE(733000000U,  733, 12, 1),
+	PLL_35XX_RATE(700000000U,  175, 3,  1),
+	PLL_35XX_RATE(666000000U,  222, 4,  1),
+	PLL_35XX_RATE(633000000U,  211, 4,  1),
+	PLL_35XX_RATE(600000000U,  500, 5,  2),
+	PLL_35XX_RATE(552000000U,  460, 5,  2),
+	PLL_35XX_RATE(550000000U,  550, 6,  2),
+	PLL_35XX_RATE(543000000U,  362, 4,  2),
+	PLL_35XX_RATE(533000000U,  533, 6,  2),
+	PLL_35XX_RATE(500000000U,  500, 6,  2),
+	PLL_35XX_RATE(444000000U,  370, 5,  2),
+	PLL_35XX_RATE(420000000U,  350, 5,  2),
+	PLL_35XX_RATE(400000000U,  400, 6,  2),
+	PLL_35XX_RATE(350000000U,  350, 6,  2),
+	PLL_35XX_RATE(333000000U,  222, 4,  2),
+	PLL_35XX_RATE(300000000U,  500, 5,  3),
+	PLL_35XX_RATE(278000000U,  556, 6,  3),
+	PLL_35XX_RATE(266000000U,  532, 6,  3),
+	PLL_35XX_RATE(250000000U,  500, 6,  3),
+	PLL_35XX_RATE(200000000U,  400, 6,  3),
+	PLL_35XX_RATE(166000000U,  332, 6,  3),
+	PLL_35XX_RATE(160000000U,  320, 6,  3),
+	PLL_35XX_RATE(133000000U,  532, 6,  4),
+	PLL_35XX_RATE(100000000U,  400, 6,  4),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ }
 };
 
 /* AUD_PLL */
 static const struct samsung_pll_rate_table exynos5433_aud_pll_rates[] __initconst = {
+<<<<<<< HEAD
 	PLL_36XX_RATE(24 * MHZ, 400000000U, 200, 3, 2,      0),
 	PLL_36XX_RATE(24 * MHZ, 393216003U, 197, 3, 2, -25690),
 	PLL_36XX_RATE(24 * MHZ, 384000000U, 128, 2, 2,      0),
@@ -766,6 +824,17 @@ static const struct samsung_pll_rate_table exynos5433_aud_pll_rates[] __initcons
 	PLL_36XX_RATE(24 * MHZ, 288000000U,  96, 1, 3,      0),
 	PLL_36XX_RATE(24 * MHZ, 252000000U,  84, 1, 3,      0),
 	PLL_36XX_RATE(24 * MHZ, 196608001U, 197, 3, 3, -25690),
+=======
+	PLL_36XX_RATE(400000000U, 200, 3, 2,      0),
+	PLL_36XX_RATE(393216003U, 197, 3, 2, -25690),
+	PLL_36XX_RATE(384000000U, 128, 2, 2,      0),
+	PLL_36XX_RATE(368639991U, 246, 4, 2, -15729),
+	PLL_36XX_RATE(361507202U, 181, 3, 2, -16148),
+	PLL_36XX_RATE(338687988U, 113, 2, 2,  -6816),
+	PLL_36XX_RATE(294912002U,  98, 1, 3,  19923),
+	PLL_36XX_RATE(288000000U,  96, 1, 3,      0),
+	PLL_36XX_RATE(252000000U,  84, 1, 3,      0),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ }
 };
 
@@ -1673,13 +1742,22 @@ static const struct samsung_gate_clock peric_gate_clks[] __initconst = {
 			ENABLE_SCLK_PERIC, 11, CLK_SET_RATE_PARENT, 0),
 	GATE(CLK_SCLK_IOCLK_I2S1_BCLK, "sclk_ioclk_i2s1_bclk",
 			"ioclk_i2s1_bclk_in", ENABLE_SCLK_PERIC, 10,
+<<<<<<< HEAD
 			CLK_SET_RATE_PARENT | CLK_IGNORE_UNUSED, 0),
+=======
+			CLK_SET_RATE_PARENT, 0),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GATE(CLK_SCLK_SPDIF, "sclk_spdif", "sclk_spdif_peric",
 			ENABLE_SCLK_PERIC, 8, CLK_SET_RATE_PARENT, 0),
 	GATE(CLK_SCLK_PCM1, "sclk_pcm1", "sclk_pcm1_peric",
 			ENABLE_SCLK_PERIC, 7, CLK_SET_RATE_PARENT, 0),
 	GATE(CLK_SCLK_I2S1, "sclk_i2s1", "sclk_i2s1_peric",
+<<<<<<< HEAD
 			ENABLE_SCLK_PERIC, 6, CLK_SET_RATE_PARENT, 0),
+=======
+			ENABLE_SCLK_PERIC, 6,
+			CLK_SET_RATE_PARENT | CLK_IGNORE_UNUSED, 0),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GATE(CLK_SCLK_SPI2, "sclk_spi2", "sclk_spi2_peric", ENABLE_SCLK_PERIC,
 			5, CLK_SET_RATE_PARENT, 0),
 	GATE(CLK_SCLK_SPI1, "sclk_spi1", "sclk_spi1_peric", ENABLE_SCLK_PERIC,
@@ -1996,6 +2074,7 @@ static const unsigned long fsys_clk_regs[] __initconst = {
 	ENABLE_IP_FSYS1,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump fsys_suspend_regs[] = {
 	{ MUX_SEL_FSYS0, 0 },
 	{ MUX_SEL_FSYS1, 0 },
@@ -2004,6 +2083,8 @@ static const struct samsung_clk_reg_dump fsys_suspend_regs[] = {
 	{ MUX_SEL_FSYS4, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct samsung_fixed_rate_clock fsys_fixed_clks[] __initconst = {
 	/* PHY clocks from USBDRD30_PHY */
 	FRATE(CLK_PHYCLK_USBDRD30_UDRD30_PHYCLOCK_PHY,
@@ -2309,11 +2390,24 @@ static const struct samsung_cmu_info fsys_cmu_info __initconst = {
 	.nr_clk_ids		= FSYS_NR_CLK,
 	.clk_regs		= fsys_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(fsys_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= fsys_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(fsys_suspend_regs),
 	.clk_name		= "aclk_fsys_200",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_fsys_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &fsys_cmu_info);
+}
+
+CLK_OF_DECLARE(exynos5433_cmu_fsys, "samsung,exynos5433-cmu-fsys",
+		exynos5433_cmu_fsys_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_G2D
  */
@@ -2343,10 +2437,13 @@ static const unsigned long g2d_clk_regs[] __initconst = {
 	DIV_ENABLE_IP_G2D_SECURE_SMMU_G2D,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump g2d_suspend_regs[] = {
 	{ MUX_SEL_G2D0, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* list of all parent clock list */
 PNAME(mout_aclk_g2d_266_user_p)		= { "oscclk", "aclk_g2d_266", };
 PNAME(mout_aclk_g2d_400_user_p)		= { "oscclk", "aclk_g2d_400", };
@@ -2432,11 +2529,24 @@ static const struct samsung_cmu_info g2d_cmu_info __initconst = {
 	.nr_clk_ids		= G2D_NR_CLK,
 	.clk_regs		= g2d_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(g2d_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= g2d_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(g2d_suspend_regs),
 	.clk_name		= "aclk_g2d_400",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_g2d_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &g2d_cmu_info);
+}
+
+CLK_OF_DECLARE(exynos5433_cmu_g2d, "samsung,exynos5433-cmu-g2d",
+		exynos5433_cmu_g2d_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_DISP
  */
@@ -2501,6 +2611,7 @@ static const unsigned long disp_clk_regs[] __initconst = {
 	CLKOUT_CMU_DISP_DIV_STAT,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump disp_suspend_regs[] = {
 	/* PLL has to be enabled for suspend */
 	{ DISP_PLL_CON0, 0x85f40502 },
@@ -2513,6 +2624,8 @@ static const struct samsung_clk_reg_dump disp_suspend_regs[] = {
 	{ MUX_SEL_DISP4, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* list of all parent clock list */
 PNAME(mout_disp_pll_p)			= { "oscclk", "fout_disp_pll", };
 PNAME(mout_sclk_dsim1_user_p)		= { "oscclk", "sclk_dsim1_disp", };
@@ -2860,11 +2973,24 @@ static const struct samsung_cmu_info disp_cmu_info __initconst = {
 	.nr_clk_ids		= DISP_NR_CLK,
 	.clk_regs		= disp_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(disp_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= disp_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(disp_suspend_regs),
 	.clk_name		= "aclk_disp_333",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_disp_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &disp_cmu_info);
+}
+
+CLK_OF_DECLARE(exynos5433_cmu_disp, "samsung,exynos5433-cmu-disp",
+		exynos5433_cmu_disp_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_AUD
  */
@@ -2899,11 +3025,14 @@ static const unsigned long aud_clk_regs[] __initconst = {
 	ENABLE_IP_AUD1,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump aud_suspend_regs[] = {
 	{ MUX_SEL_AUD0, 0 },
 	{ MUX_SEL_AUD1, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* list of all parent clock list */
 PNAME(mout_aud_pll_user_aud_p)	= { "oscclk", "fout_aud_pll", };
 PNAME(mout_sclk_aud_pcm_p)	= { "mout_aud_pll_user", "ioclk_audiocdclk0",};
@@ -3030,11 +3159,24 @@ static const struct samsung_cmu_info aud_cmu_info __initconst = {
 	.nr_clk_ids		= AUD_NR_CLK,
 	.clk_regs		= aud_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(aud_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= aud_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(aud_suspend_regs),
 	.clk_name		= "fout_aud_pll",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_aud_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &aud_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_aud, "samsung,exynos5433-cmu-aud",
+		exynos5433_cmu_aud_init);
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_BUS{0|1|2}
  */
@@ -3236,10 +3378,13 @@ static const unsigned long g3d_clk_regs[] __initconst = {
 	CLK_STOPCTRL,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump g3d_suspend_regs[] = {
 	{ MUX_SEL_G3D, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* list of all parent clock list */
 PNAME(mout_aclk_g3d_400_p)	= { "mout_g3d_pll", "aclk_g3d_400", };
 PNAME(mout_g3d_pll_p)		= { "oscclk", "fout_g3d_pll", };
@@ -3313,11 +3458,23 @@ static const struct samsung_cmu_info g3d_cmu_info __initconst = {
 	.nr_clk_ids		= G3D_NR_CLK,
 	.clk_regs		= g3d_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(g3d_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= g3d_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(g3d_suspend_regs),
 	.clk_name		= "aclk_g3d_400",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_g3d_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &g3d_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_g3d, "samsung,exynos5433-cmu-g3d",
+		exynos5433_cmu_g3d_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_GSCL
  */
@@ -3356,12 +3513,15 @@ static const unsigned long gscl_clk_regs[] __initconst = {
 	ENABLE_IP_GSCL_SECURE_SMMU_GSCL2,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump gscl_suspend_regs[] = {
 	{ MUX_SEL_GSCL, 0 },
 	{ ENABLE_ACLK_GSCL, 0xfff },
 	{ ENABLE_PCLK_GSCL, 0xff },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* list of all parent clock list */
 PNAME(aclk_gscl_111_user_p)	= { "oscclk", "aclk_gscl_111", };
 PNAME(aclk_gscl_333_user_p)	= { "oscclk", "aclk_gscl_333", };
@@ -3456,11 +3616,23 @@ static const struct samsung_cmu_info gscl_cmu_info __initconst = {
 	.nr_clk_ids		= GSCL_NR_CLK,
 	.clk_regs		= gscl_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(gscl_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= gscl_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(gscl_suspend_regs),
 	.clk_name		= "aclk_gscl_111",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_gscl_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &gscl_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_gscl, "samsung,exynos5433-cmu-gscl",
+		exynos5433_cmu_gscl_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_APOLLO
  */
@@ -3986,11 +4158,14 @@ static const unsigned long mscl_clk_regs[] __initconst = {
 	ENABLE_IP_MSCL_SECURE_SMMU_JPEG,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump mscl_suspend_regs[] = {
 	{ MUX_SEL_MSCL0, 0 },
 	{ MUX_SEL_MSCL1, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* list of all parent clock list */
 PNAME(mout_sclk_jpeg_user_p)		= { "oscclk", "sclk_jpeg_mscl", };
 PNAME(mout_aclk_mscl_400_user_p)	= { "oscclk", "aclk_mscl_400", };
@@ -4103,11 +4278,23 @@ static const struct samsung_cmu_info mscl_cmu_info __initconst = {
 	.nr_clk_ids		= MSCL_NR_CLK,
 	.clk_regs		= mscl_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(mscl_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= mscl_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(mscl_suspend_regs),
 	.clk_name		= "aclk_mscl_400",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_mscl_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &mscl_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_mscl, "samsung,exynos5433-cmu-mscl",
+		exynos5433_cmu_mscl_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_MFC
  */
@@ -4137,10 +4324,13 @@ static const unsigned long mfc_clk_regs[] __initconst = {
 	ENABLE_IP_MFC_SECURE_SMMU_MFC,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump mfc_suspend_regs[] = {
 	{ MUX_SEL_MFC, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 PNAME(mout_aclk_mfc_400_user_p)		= { "oscclk", "aclk_mfc_400", };
 
 static const struct samsung_mux_clock mfc_mux_clks[] __initconst = {
@@ -4211,11 +4401,23 @@ static const struct samsung_cmu_info mfc_cmu_info __initconst = {
 	.nr_clk_ids		= MFC_NR_CLK,
 	.clk_regs		= mfc_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(mfc_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= mfc_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(mfc_suspend_regs),
 	.clk_name		= "aclk_mfc_400",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_mfc_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &mfc_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_mfc, "samsung,exynos5433-cmu-mfc",
+		exynos5433_cmu_mfc_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_HEVC
  */
@@ -4245,10 +4447,13 @@ static const unsigned long hevc_clk_regs[] __initconst = {
 	ENABLE_IP_HEVC_SECURE_SMMU_HEVC,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump hevc_suspend_regs[] = {
 	{ MUX_SEL_HEVC, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 PNAME(mout_aclk_hevc_400_user_p)	= { "oscclk", "aclk_hevc_400", };
 
 static const struct samsung_mux_clock hevc_mux_clks[] __initconst = {
@@ -4321,11 +4526,23 @@ static const struct samsung_cmu_info hevc_cmu_info __initconst = {
 	.nr_clk_ids		= HEVC_NR_CLK,
 	.clk_regs		= hevc_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(hevc_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= hevc_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(hevc_suspend_regs),
 	.clk_name		= "aclk_hevc_400",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_hevc_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &hevc_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_hevc, "samsung,exynos5433-cmu-hevc",
+		exynos5433_cmu_hevc_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_ISP
  */
@@ -4359,10 +4576,13 @@ static const unsigned long isp_clk_regs[] __initconst = {
 	ENABLE_IP_ISP3,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump isp_suspend_regs[] = {
 	{ MUX_SEL_ISP, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 PNAME(mout_aclk_isp_dis_400_user_p)	= { "oscclk", "aclk_isp_dis_400", };
 PNAME(mout_aclk_isp_400_user_p)		= { "oscclk", "aclk_isp_400", };
 
@@ -4574,11 +4794,23 @@ static const struct samsung_cmu_info isp_cmu_info __initconst = {
 	.nr_clk_ids		= ISP_NR_CLK,
 	.clk_regs		= isp_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(isp_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= isp_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(isp_suspend_regs),
 	.clk_name		= "aclk_isp_400",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_isp_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &isp_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_isp, "samsung,exynos5433-cmu-isp",
+		exynos5433_cmu_isp_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_CAM0
  */
@@ -4642,6 +4874,7 @@ static const unsigned long cam0_clk_regs[] __initconst = {
 	ENABLE_IP_CAM02,
 	ENABLE_IP_CAM03,
 };
+<<<<<<< HEAD
 
 static const struct samsung_clk_reg_dump cam0_suspend_regs[] = {
 	{ MUX_SEL_CAM00, 0 },
@@ -4651,6 +4884,8 @@ static const struct samsung_clk_reg_dump cam0_suspend_regs[] = {
 	{ MUX_SEL_CAM04, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 PNAME(mout_aclk_cam0_333_user_p)	= { "oscclk", "aclk_cam0_333", };
 PNAME(mout_aclk_cam0_400_user_p)	= { "oscclk", "aclk_cam0_400", };
 PNAME(mout_aclk_cam0_552_user_p)	= { "oscclk", "aclk_cam0_552", };
@@ -5056,11 +5291,23 @@ static const struct samsung_cmu_info cam0_cmu_info __initconst = {
 	.nr_clk_ids		= CAM0_NR_CLK,
 	.clk_regs		= cam0_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(cam0_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= cam0_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(cam0_suspend_regs),
 	.clk_name		= "aclk_cam0_400",
 };
 
+=======
+};
+
+static void __init exynos5433_cmu_cam0_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &cam0_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_cam0, "samsung,exynos5433-cmu-cam0",
+		exynos5433_cmu_cam0_init);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Register offset definitions for CMU_CAM1
  */
@@ -5107,12 +5354,15 @@ static const unsigned long cam1_clk_regs[] __initconst = {
 	ENABLE_IP_CAM12,
 };
 
+<<<<<<< HEAD
 static const struct samsung_clk_reg_dump cam1_suspend_regs[] = {
 	{ MUX_SEL_CAM10, 0 },
 	{ MUX_SEL_CAM11, 0 },
 	{ MUX_SEL_CAM12, 0 },
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 PNAME(mout_sclk_isp_uart_user_p)	= { "oscclk", "sclk_isp_uart_cam1", };
 PNAME(mout_sclk_isp_spi1_user_p)	= { "oscclk", "sclk_isp_spi1_cam1", };
 PNAME(mout_sclk_isp_spi0_user_p)	= { "oscclk", "sclk_isp_spi0_cam1", };
@@ -5431,6 +5681,7 @@ static const struct samsung_cmu_info cam1_cmu_info __initconst = {
 	.nr_clk_ids		= CAM1_NR_CLK,
 	.clk_regs		= cam1_clk_regs,
 	.nr_clk_regs		= ARRAY_SIZE(cam1_clk_regs),
+<<<<<<< HEAD
 	.suspend_regs		= cam1_suspend_regs,
 	.nr_suspend_regs	= ARRAY_SIZE(cam1_suspend_regs),
 	.clk_name		= "aclk_cam1_400",
@@ -5649,3 +5900,13 @@ static int __init exynos5433_cmu_init(void)
 	return platform_driver_register(&exynos5433_cmu_driver);
 }
 core_initcall(exynos5433_cmu_init);
+=======
+};
+
+static void __init exynos5433_cmu_cam1_init(struct device_node *np)
+{
+	samsung_cmu_register_one(np, &cam1_cmu_info);
+}
+CLK_OF_DECLARE(exynos5433_cmu_cam1, "samsung,exynos5433-cmu-cam1",
+		exynos5433_cmu_cam1_init);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

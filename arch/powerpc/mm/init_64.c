@@ -68,6 +68,15 @@
 
 #include "mmu_decl.h"
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PPC_STD_MMU_64
+#if H_PGTABLE_RANGE > USER_VSID_RANGE
+#warning Limited user VSID range means pagetable space is wasted
+#endif
+#endif /* CONFIG_PPC_STD_MMU_64 */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 phys_addr_t memstart_addr = ~0;
 EXPORT_SYMBOL_GPL(memstart_addr);
 phys_addr_t kernstart_addr;
@@ -177,8 +186,12 @@ static __meminit void vmemmap_list_populate(unsigned long phys,
 	vmemmap_list = vmem_back;
 }
 
+<<<<<<< HEAD
 int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 		struct vmem_altmap *altmap)
+=======
+int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long page_size = 1 << mmu_psize_defs[mmu_vmemmap_psize].shift;
 
@@ -188,12 +201,18 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 	pr_debug("vmemmap_populate %lx..%lx, node %d\n", start, end, node);
 
 	for (; start < end; start += page_size) {
+<<<<<<< HEAD
 		void *p = NULL;
+=======
+		struct vmem_altmap *altmap;
+		void *p;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int rc;
 
 		if (vmemmap_populated(start, page_size))
 			continue;
 
+<<<<<<< HEAD
 		/*
 		 * Allocate from the altmap first if we have one. This may
 		 * fail due to alignment issues when using 16MB hugepages, so
@@ -203,6 +222,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 			p = altmap_alloc_block_buf(page_size, altmap);
 		if (!p)
 			p = vmemmap_alloc_block_buf(page_size, node);
+=======
+		/* altmap lookups only work at section boundaries */
+		altmap = to_vmem_altmap(SECTION_ALIGN_DOWN(start));
+
+		p =  __vmemmap_alloc_block_buf(page_size, node, altmap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!p)
 			return -ENOMEM;
 
@@ -213,8 +238,14 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 
 		rc = vmemmap_create_mapping(start, page_size, __pa(p));
 		if (rc < 0) {
+<<<<<<< HEAD
 			pr_warn("%s: Unable to create vmemmap mapping: %d\n",
 				__func__, rc);
+=======
+			pr_warning(
+				"vmemmap_populate: Unable to create vmemmap mapping: %d\n",
+				rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EFAULT;
 		}
 	}
@@ -255,6 +286,7 @@ static unsigned long vmemmap_list_free(unsigned long start)
 	return vmem_back->phys;
 }
 
+<<<<<<< HEAD
 void __ref vmemmap_free(unsigned long start, unsigned long end,
 		struct vmem_altmap *altmap)
 {
@@ -269,11 +301,23 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
 		alt_end = altmap->base_pfn + altmap->reserve +
 			  altmap->free + altmap->alloc + altmap->align;
 	}
+=======
+void __ref vmemmap_free(unsigned long start, unsigned long end)
+{
+	unsigned long page_size = 1 << mmu_psize_defs[mmu_vmemmap_psize].shift;
+	unsigned long page_order = get_order(page_size);
+
+	start = _ALIGN_DOWN(start, page_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("vmemmap_free %lx...%lx\n", start, end);
 
 	for (; start < end; start += page_size) {
 		unsigned long nr_pages, addr;
+<<<<<<< HEAD
+=======
+		struct vmem_altmap *altmap;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct page *section_base;
 		struct page *page;
 
@@ -292,9 +336,15 @@ void __ref vmemmap_free(unsigned long start, unsigned long end,
 		page = pfn_to_page(addr >> PAGE_SHIFT);
 		section_base = pfn_to_page(vmemmap_section_start(start));
 		nr_pages = 1 << page_order;
+<<<<<<< HEAD
 		base_pfn = PHYS_PFN(addr);
 
 		if (base_pfn >= alt_start && base_pfn < alt_end) {
+=======
+
+		altmap = to_vmem_altmap((unsigned long) section_base);
+		if (altmap) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vmem_altmap_free(altmap, nr_pages);
 		} else if (PageReserved(page)) {
 			/* allocated from bootmem */
@@ -321,6 +371,7 @@ void register_page_bootmem_memmap(unsigned long section_nr,
 {
 }
 
+<<<<<<< HEAD
 #endif /* CONFIG_SPARSEMEM_VMEMMAP */
 
 #ifdef CONFIG_PPC_BOOK3S_64
@@ -337,6 +388,64 @@ static int __init parse_disable_radix(char *p)
 
 	disable_radix = val;
 
+=======
+/*
+ * We do not have access to the sparsemem vmemmap, so we fallback to
+ * walking the list of sparsemem blocks which we already maintain for
+ * the sake of crashdump. In the long run, we might want to maintain
+ * a tree if performance of that linear walk becomes a problem.
+ *
+ * realmode_pfn_to_page functions can fail due to:
+ * 1) As real sparsemem blocks do not lay in RAM continously (they
+ * are in virtual address space which is not available in the real mode),
+ * the requested page struct can be split between blocks so get_page/put_page
+ * may fail.
+ * 2) When huge pages are used, the get_page/put_page API will fail
+ * in real mode as the linked addresses in the page struct are virtual
+ * too.
+ */
+struct page *realmode_pfn_to_page(unsigned long pfn)
+{
+	struct vmemmap_backing *vmem_back;
+	struct page *page;
+	unsigned long page_size = 1 << mmu_psize_defs[mmu_vmemmap_psize].shift;
+	unsigned long pg_va = (unsigned long) pfn_to_page(pfn);
+
+	for (vmem_back = vmemmap_list; vmem_back; vmem_back = vmem_back->list) {
+		if (pg_va < vmem_back->virt_addr)
+			continue;
+
+		/* After vmemmap_list entry free is possible, need check all */
+		if ((pg_va + sizeof(struct page)) <=
+				(vmem_back->virt_addr + page_size)) {
+			page = (struct page *) (vmem_back->phys + pg_va -
+				vmem_back->virt_addr);
+			return page;
+		}
+	}
+
+	/* Probably that page struct is split between real pages */
+	return NULL;
+}
+EXPORT_SYMBOL_GPL(realmode_pfn_to_page);
+
+#else
+
+struct page *realmode_pfn_to_page(unsigned long pfn)
+{
+	struct page *page = pfn_to_page(pfn);
+	return page;
+}
+EXPORT_SYMBOL_GPL(realmode_pfn_to_page);
+
+#endif /* CONFIG_SPARSEMEM_VMEMMAP */
+
+#ifdef CONFIG_PPC_STD_MMU_64
+static bool disable_radix;
+static int __init parse_disable_radix(char *p)
+{
+	disable_radix = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 early_param("disable_radix", parse_disable_radix);
@@ -409,4 +518,8 @@ void __init mmu_early_init_devtree(void)
 	else
 		hash__early_init_devtree();
 }
+<<<<<<< HEAD
 #endif /* CONFIG_PPC_BOOK3S_64 */
+=======
+#endif /* CONFIG_PPC_STD_MMU_64 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

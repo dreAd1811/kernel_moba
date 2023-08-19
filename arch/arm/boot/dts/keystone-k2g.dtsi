@@ -1,8 +1,24 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Device Tree Source for K2G SOC
  *
  * Copyright (C) 2016-2017 Texas Instruments Incorporated - http://www.ti.com/
+=======
+/*
+ * Device Tree Source for K2G SOC
+ *
+ * Copyright (C) 2016 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed "as is" WITHOUT ANY WARRANTY of any
+ * kind, whether express or implied; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <dt-bindings/interrupt-controller/arm-gic.h>
@@ -20,11 +36,14 @@
 
 	aliases {
 		serial0 = &uart0;
+<<<<<<< HEAD
 		serial1 = &uart1;
 		serial2 = &uart2;
 		i2c0 = &i2c0;
 		i2c1 = &i2c1;
 		i2c2 = &i2c2;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rproc0 = &dsp0;
 	};
 
@@ -39,7 +58,11 @@
 		};
 	};
 
+<<<<<<< HEAD
 	gic: interrupt-controller@2561000 {
+=======
+	gic: interrupt-controller@02561000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "arm,gic-400", "arm,cortex-a15-gic";
 		#interrupt-cells = <3>;
 		interrupt-controller;
@@ -69,6 +92,7 @@
 		interrupts = <GIC_SPI 4 IRQ_TYPE_EDGE_RISING>;
 	};
 
+<<<<<<< HEAD
 	usbphy {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -88,6 +112,9 @@
 	};
 
 	soc0: soc@0 {
+=======
+	soc {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		#address-cells = <1>;
 		#size-cells = <1>;
 		#pinctrl-cells = <1>;
@@ -95,7 +122,11 @@
 		ranges = <0x0 0x0 0x0 0xc0000000>;
 		dma-ranges = <0x80000000 0x8 0x00000000 0x80000000>;
 
+<<<<<<< HEAD
 		msm_ram: msmram@c000000 {
+=======
+		msm_ram: msmram@0c000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "mmio-sram";
 			reg = <0x0c000000 0x100000>;
 			ranges = <0x0 0x0c000000 0x100000>;
@@ -107,13 +138,18 @@
 			};
 		};
 
+<<<<<<< HEAD
 		k2g_pinctrl: pinmux@2621000 {
+=======
+		k2g_pinctrl: pinmux@02621000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "pinctrl-single";
 			reg = <0x02621000 0x410>;
 			pinctrl-single,register-width = <32>;
 			pinctrl-single,function-mask = <0x001b0007>;
 		};
 
+<<<<<<< HEAD
 		devctrl: device-state-control@2620000 {
 			compatible = "ti,keystone-devctrl", "syscon", "simple-mfd";
 			reg = <0x02620000 0x1000>;
@@ -140,12 +176,21 @@
 		};
 
 		uart0: serial@2530c00 {
+=======
+		devctrl: device-state-control@02620000 {
+			compatible = "ti,keystone-devctrl", "syscon";
+			reg = <0x02620000 0x1000>;
+		};
+
+		uart0: serial@02530c00 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,da830-uart", "ns16550a";
 			current-speed = <115200>;
 			reg-shift = <2>;
 			reg-io-width = <4>;
 			reg = <0x02530c00 0x100>;
 			interrupts = <GIC_SPI 164 IRQ_TYPE_EDGE_RISING>;
+<<<<<<< HEAD
 			clocks = <&k2g_clks 0x2c 0>;
 			power-domains = <&k2g_pds 0x2c>;
 			status = "disabled";
@@ -176,6 +221,13 @@
 		};
 
 		dcan0: can@260b200 {
+=======
+			clock-frequency = <200000000>;
+			status = "disabled";
+		};
+
+		dcan0: can@0260B200 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,am4372-d_can", "ti,am3352-d_can";
 			reg = <0x0260B200 0x200>;
 			interrupts = <GIC_SPI 190 IRQ_TYPE_EDGE_RISING>;
@@ -184,7 +236,11 @@
 			clocks = <&k2g_clks 0x0008 1>;
 		};
 
+<<<<<<< HEAD
 		dcan1: can@260b400 {
+=======
+		dcan1: can@0260B400 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,am4372-d_can", "ti,am3352-d_can";
 			reg = <0x0260B400 0x200>;
 			interrupts = <GIC_SPI 193 IRQ_TYPE_EDGE_RISING>;
@@ -193,6 +249,7 @@
 			clocks = <&k2g_clks 0x0009 1>;
 		};
 
+<<<<<<< HEAD
 		i2c0: i2c@2530000 {
 			compatible = "ti,keystone-i2c";
 			reg = <0x02530000 0x400>;
@@ -224,6 +281,21 @@
 			#address-cells = <1>;
 			#size-cells = <0>;
 			status = "disabled";
+=======
+		kirq0: keystone_irq@026202a0 {
+			compatible = "ti,keystone-irq";
+			interrupts = <GIC_SPI 1 IRQ_TYPE_EDGE_RISING>;
+			interrupt-controller;
+			#interrupt-cells = <1>;
+			ti,syscon-dev = <&devctrl 0x2a0>;
+		};
+
+		dspgpio0: keystone_dsp_gpio@02620240 {
+			compatible = "ti,keystone-dsp-gpio";
+			gpio-controller;
+			#gpio-cells = <2>;
+			gpio,syscon-dev = <&devctrl 0x240>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		dsp0: dsp@10800000 {
@@ -242,7 +314,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		msgmgr: msgmgr@2a00000 {
+=======
+		msgmgr: msgmgr@02a00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,k2g-message-manager";
 			#mbox-cells = <2>;
 			reg-names = "queue_proxy_region",
@@ -254,7 +330,11 @@
 				     <GIC_SPI 327 IRQ_TYPE_LEVEL_HIGH>;
 		};
 
+<<<<<<< HEAD
 		pmmc: pmmc@2921c00 {
+=======
+		pmmc: pmmc@02921c00 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,k2g-sci";
 			/*
 			 * In case of rare platforms that does not use k2g as
@@ -324,7 +404,11 @@
 			clock-names = "gpio";
 		};
 
+<<<<<<< HEAD
 		edma0: edma@2700000 {
+=======
+		edma0: edma@02700000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,k2g-edma3-tpcc", "ti,edma3-tpcc";
 			reg =	<0x02700000 0x8000>;
 			reg-names = "edma3_cc";
@@ -343,19 +427,31 @@
 			power-domains = <&k2g_pds 0x3f>;
 		};
 
+<<<<<<< HEAD
 		edma0_tptc0: tptc@2760000 {
+=======
+		edma0_tptc0: tptc@02760000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,k2g-edma3-tptc", "ti,edma3-tptc";
 			reg =	<0x02760000 0x400>;
 			power-domains = <&k2g_pds 0x3f>;
 		};
 
+<<<<<<< HEAD
 		edma0_tptc1: tptc@2768000 {
+=======
+		edma0_tptc1: tptc@02768000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,k2g-edma3-tptc", "ti,edma3-tptc";
 			reg =	<0x02768000 0x400>;
 			power-domains = <&k2g_pds 0x3f>;
 		};
 
+<<<<<<< HEAD
 		edma1: edma@2728000 {
+=======
+		edma1: edma@02728000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,k2g-edma3-tpcc", "ti,edma3-tpcc";
 			reg =	<0x02728000 0x8000>;
 			reg-names = "edma3_cc";
@@ -378,23 +474,41 @@
 			power-domains = <&k2g_pds 0x4f>;
 		};
 
+<<<<<<< HEAD
 		edma1_tptc0: tptc@27b0000 {
+=======
+		edma1_tptc0: tptc@027b0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,k2g-edma3-tptc", "ti,edma3-tptc";
 			reg =	<0x027b0000 0x400>;
 			power-domains = <&k2g_pds 0x4f>;
 		};
 
+<<<<<<< HEAD
 		edma1_tptc1: tptc@27b8000 {
+=======
+		edma1_tptc1: tptc@027b8000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "ti,k2g-edma3-tptc", "ti,edma3-tptc";
 			reg =	<0x027b8000 0x400>;
 			power-domains = <&k2g_pds 0x4f>;
 		};
 
 		mmc0: mmc@23000000 {
+<<<<<<< HEAD
 			compatible = "ti,k2g-sdhci";
 			reg = <0x23000000 0x400>;
 			interrupts = <GIC_SPI 96 IRQ_TYPE_EDGE_RISING>;
 			bus-width = <4>;
+=======
+			compatible = "ti,k2g-hsmmc", "ti,omap4-hsmmc";
+			reg = <0x23000000 0x400>;
+			interrupts = <GIC_SPI 96 IRQ_TYPE_EDGE_RISING>;
+			dmas = <&edma1 24 0>, <&edma1 25 0>;
+			dma-names = "tx", "rx";
+			bus-width = <4>;
+			ti,needs-special-reset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			no-1-8-v;
 			max-frequency = <96000000>;
 			power-domains = <&k2g_pds 0xb>;
@@ -404,16 +518,28 @@
 		};
 
 		mmc1: mmc@23100000 {
+<<<<<<< HEAD
 			compatible = "ti,k2g-sdhci";
 			reg = <0x23100000 0x400>;
 			interrupts = <GIC_SPI 97 IRQ_TYPE_EDGE_RISING>;
 			bus-width = <8>;
 			no-1-8-v;
 			non-removable;
+=======
+			compatible = "ti,k2g-hsmmc", "ti,omap4-hsmmc";
+			reg = <0x23100000 0x400>;
+			interrupts = <GIC_SPI 97 IRQ_TYPE_EDGE_RISING>;
+			dmas = <&edma1 26 0>, <&edma1 27 0>;
+			dma-names = "tx", "rx";
+			bus-width = <8>;
+			ti,needs-special-reset;
+			ti,non-removable;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			max-frequency = <96000000>;
 			power-domains = <&k2g_pds 0xc>;
 			clocks = <&k2g_clks 0xc 1>, <&k2g_clks 0xc 2>;
 			clock-names = "fck", "mmchsdb_fck";
+<<<<<<< HEAD
 		};
 
 		qspi: qspi@2940000 {
@@ -618,5 +744,9 @@
 			bus_freq = <2500000>;
 		};
 		#include "keystone-k2g-netcp.dtsi"
+=======
+			status = "disabled";
+		};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

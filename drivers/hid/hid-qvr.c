@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (c) 2018-2020, The Linux Foundation. All rights reserved.
  *
@@ -154,7 +157,11 @@ static uint8_t *read_calibration_data(void)
 	uint8_t *complete_data = NULL;
 
 	if (sensor->calib_data_len < 0) {
+<<<<<<< HEAD
 		pr_err("%s: calibration data len missing\n", __func__);
+=======
+		pr_err("%s: calibration data len missing", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 
@@ -182,7 +189,11 @@ static uint8_t *read_calibration_data(void)
 			sensor->calib_data_recv == 1,
 			msecs_to_jiffies(TIME_OUT_READ_WRITE_MS));
 		if (ret == 0) {
+<<<<<<< HEAD
 			pr_err("%s:get calibration data timeout\n", __func__);
+=======
+			pr_err("%s:get calibration data timeout", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(hid_buf);
 			kfree(complete_data);
 			return NULL;
@@ -229,7 +240,11 @@ static int control_imu_stream(bool status)
 		HID_REQ_SET_REPORT);
 	ret = wait_event_interruptible_timeout(wq, sensor->ext_ack == 1,
 		msecs_to_jiffies(TIME_OUT_START_STOP_MS));
+<<<<<<< HEAD
 	if (!ret && status) {
+=======
+	if (ret && status) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("qvr: falling back - start IMU stream failed\n");
 		hid_buf[0] = QVR_HID_REPORT_ID_CAL;
 		hid_buf[1] = QVR_CMD_ID_IMU_CONTROL_FALLBACK;
@@ -311,8 +326,13 @@ static int qvr_send_package_wrap(u8 *message, int msize, struct hid_device *hid)
 	data->gx = imuData.gx0;
 	data->gy = imuData.gy0;
 	data->gz = imuData.gz0;
+<<<<<<< HEAD
 	data->mx = imuData.my0;
 	data->my = imuData.mx0;
+=======
+	data->mx = imuData.mx0;
+	data->my = imuData.my0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->mz = imuData.mz0;
 	data->aNumerator = imuData.aNumerator;
 	data->aDenominator = imuData.aDenominator;
@@ -411,7 +431,11 @@ static ssize_t fd_show(struct kobject *kobj,
 	struct kobj_attribute *attr,
 	char *buf)
 {
+<<<<<<< HEAD
 	return snprintf(buf, 16, "%d\n", qvr_external_sensor.fd);
+=======
+	return snprintf(buf, sizeof(buf), "%d\n", qvr_external_sensor.fd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t fd_store(struct kobject *kobj,
@@ -489,6 +513,7 @@ static int qvr_external_sensor_probe(struct hid_device *hdev,
 	struct qvr_external_sensor *sensor = &qvr_external_sensor;
 	int ret;
 	char *node_name = "qcom,smp2p-interrupt-qvrexternal-5-out";
+<<<<<<< HEAD
 
 	//For devices with non-standard HID report descriptors, it is
 	//required to force the registration of an input device.
@@ -497,21 +522,35 @@ static int qvr_external_sensor_probe(struct hid_device *hdev,
 	//Devices with non-standard incoming events need to use this quirk.
 	hdev->quirks |= HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sensor->hdev = hdev;
 
 	ret = register_smp2p(&hdev->dev, node_name, &sensor->gpio_info_out);
 	if (ret) {
+<<<<<<< HEAD
 		pr_err("%s: register_smp2p failed\n", __func__);
+=======
+		pr_err("%s: register_smp2p failed", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_free;
 	}
 	ret = hid_open_report(hdev);
 	if (ret) {
+<<<<<<< HEAD
 		pr_err("%s: hid_open_report failed\n", __func__);
+=======
+		pr_err("%s: hid_open_report failed", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_free;
 	}
 	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT);
 	if (ret) {
+<<<<<<< HEAD
 		pr_err("%s: hid_hw_start failed\n", __func__);
+=======
+		pr_err("%s: hid_hw_start failed", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_free;
 	}
 	sensor->device = &hdev->dev;
@@ -544,7 +583,11 @@ static long qvr_external_sensor_ioctl(struct file *file, unsigned int cmd,
 	int ret;
 
 	if (sensor->device == NULL) {
+<<<<<<< HEAD
 		pr_err("%s: device not connected\n", __func__);
+=======
+		pr_err("%s: device not connected", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -578,7 +621,11 @@ static long qvr_external_sensor_ioctl(struct file *file, unsigned int cmd,
 		kfree(calib_data);
 		return 0;
 	default:
+<<<<<<< HEAD
 		pr_err("%s: wrong command\n", __func__);
+=======
+		pr_err("%s: wrong command", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	}
@@ -666,14 +713,22 @@ static int __init qvr_external_sensor_init(void)
 
 	ret = alloc_chrdev_region(&sensor->dev_no, 0, 1, "qvr_external_sensor");
 	if (ret < 0) {
+<<<<<<< HEAD
 		pr_err("%s: alloc_chrdev_region failed\n");
+=======
+		pr_err("%s: alloc_chrdev_region failed");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 	cdev_init(&sensor->cdev, &qvr_external_sensor_ops);
 	ret = cdev_add(&sensor->cdev, sensor->dev_no, 1);
 
 	if (ret < 0) {
+<<<<<<< HEAD
 		pr_err("%s: cdev_add failed\n");
+=======
+		pr_err("%s: cdev_add failed");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 	sensor->class = class_create(THIS_MODULE, "qvr_external_sensor");

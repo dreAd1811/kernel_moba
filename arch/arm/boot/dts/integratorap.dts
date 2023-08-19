@@ -154,6 +154,7 @@
 	};
 
 	pci: pciv3@62000000 {
+<<<<<<< HEAD
 		compatible = "arm,integrator-ap-pci", "v3,v360epc-pci";
 		#interrupt-cells = <1>;
 		#size-cells = <2>;
@@ -174,6 +175,23 @@
 			0x20000000 0 0x20000000 /* 512 MB @ LB 20000000 1:1 */
 			0x02000000 0 0x80000000 /* Core module alias memory */
 			0x80000000 0 0x40000000>; /* 1GB @ LB 80000000 */
+=======
+		compatible = "v3,v360epc-pci";
+		#interrupt-cells = <1>;
+		#size-cells = <2>;
+		#address-cells = <3>;
+		reg = <0x62000000 0x10000>;
+		interrupt-parent = <&pic>;
+		interrupts = <17>; /* Bus error IRQ */
+		ranges = <0x00000000 0 0x61000000 /* config space */
+			0x61000000 0 0x00100000 /* 16 MiB @ 61000000 */
+			0x01000000 0 0x0 /* I/O space */
+			0x60000000 0 0x00100000 /* 16 MiB @ 60000000 */
+			0x02000000 0 0x00000000 /* non-prefectable memory */
+			0x40000000 0 0x10000000 /* 256 MiB @ 40000000 */
+			0x42000000 0 0x10000000 /* prefetchable memory */
+			0x50000000 0 0x10000000>; /* 256 MiB @ 50000000 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		interrupt-map-mask = <0xf800 0 0 0x7>;
 		interrupt-map = <
 		/* IDSEL 9 */

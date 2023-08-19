@@ -101,7 +101,11 @@ static int __init mpc86xx_hpcn_probe(void)
 
 	/* Be nice and don't give silent boot death.  Delete this in 2.6.27 */
 	if (of_machine_is_compatible("mpc86xx")) {
+<<<<<<< HEAD
 		pr_warn("WARNING: your dts/dtb is old. You must update before the next kernel release.\n");
+=======
+		pr_warning("WARNING: your dts/dtb is old. You must update before the next kernel release\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 

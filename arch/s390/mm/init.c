@@ -95,7 +95,10 @@ void __init paging_init(void)
 	}
 	init_mm.context.asce = (__pa(init_mm.pgd) & PAGE_MASK) | asce_bits;
 	S390_lowcore.kernel_asce = init_mm.context.asce;
+<<<<<<< HEAD
 	S390_lowcore.user_asce = S390_lowcore.kernel_asce;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	crst_table_init((unsigned long *) init_mm.pgd, pgd_type);
 	vmem_map_init();
 
@@ -146,8 +149,13 @@ void __init mem_init(void)
 
 void free_initmem(void)
 {
+<<<<<<< HEAD
 	__set_memory((unsigned long)_sinittext,
 		     (unsigned long)(_einittext - _sinittext) >> PAGE_SHIFT,
+=======
+	__set_memory((unsigned long) _sinittext,
+		     (_einittext - _sinittext) >> PAGE_SHIFT,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     SET_MEMORY_RW | SET_MEMORY_NX);
 	free_initmem_default(POISON_FREE_INITMEM);
 }
@@ -222,8 +230,12 @@ device_initcall(s390_cma_mem_init);
 
 #endif /* CONFIG_CMA */
 
+<<<<<<< HEAD
 int arch_add_memory(int nid, u64 start, u64 size, struct vmem_altmap *altmap,
 		bool want_memblock)
+=======
+int arch_add_memory(int nid, u64 start, u64 size, bool want_memblock)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long start_pfn = PFN_DOWN(start);
 	unsigned long size_pages = PFN_DOWN(size);
@@ -233,14 +245,22 @@ int arch_add_memory(int nid, u64 start, u64 size, struct vmem_altmap *altmap,
 	if (rc)
 		return rc;
 
+<<<<<<< HEAD
 	rc = __add_pages(nid, start_pfn, size_pages, altmap, want_memblock);
+=======
+	rc = __add_pages(nid, start_pfn, size_pages, want_memblock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc)
 		vmem_remove_mapping(start, size);
 	return rc;
 }
 
 #ifdef CONFIG_MEMORY_HOTREMOVE
+<<<<<<< HEAD
 int arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+=======
+int arch_remove_memory(u64 start, u64 size)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * There is no hardware or firmware interface which could trigger a

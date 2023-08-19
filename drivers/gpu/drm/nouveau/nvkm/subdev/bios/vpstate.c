@@ -58,6 +58,7 @@ nvbios_vpstate_parse(struct nvkm_bios *b, struct nvbios_vpstate_header *h)
 		h->ecount   = nvbios_rd08(b, h->offset + 0x5);
 
 		h->base_id  = nvbios_rd08(b, h->offset + 0x0f);
+<<<<<<< HEAD
 		if (h->hlen > 0x10)
 			h->boost_id = nvbios_rd08(b, h->offset + 0x10);
 		else
@@ -66,6 +67,10 @@ nvbios_vpstate_parse(struct nvkm_bios *b, struct nvbios_vpstate_header *h)
 			h->tdp_id = nvbios_rd08(b, h->offset + 0x11);
 		else
 			h->tdp_id = 0xff;
+=======
+		h->boost_id = nvbios_rd08(b, h->offset + 0x10);
+		h->tdp_id   = nvbios_rd08(b, h->offset + 0x11);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	default:
 		return -EINVAL;

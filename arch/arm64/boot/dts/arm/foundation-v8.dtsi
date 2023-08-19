@@ -29,6 +29,7 @@
 		#address-cells = <2>;
 		#size-cells = <0>;
 
+<<<<<<< HEAD
 		cpu0: cpu@0 {
 			device_type = "cpu";
 			compatible = "arm,armv8";
@@ -51,6 +52,38 @@
 			device_type = "cpu";
 			compatible = "arm,armv8";
 			reg = <0x0 0x3>;
+=======
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x0>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x8000fff8>;
+			next-level-cache = <&L2_0>;
+		};
+		cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x1>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x8000fff8>;
+			next-level-cache = <&L2_0>;
+		};
+		cpu@2 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x2>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x8000fff8>;
+			next-level-cache = <&L2_0>;
+		};
+		cpu@3 {
+			device_type = "cpu";
+			compatible = "arm,armv8";
+			reg = <0x0 0x3>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0x0 0x8000fff8>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			next-level-cache = <&L2_0>;
 		};
 
@@ -90,7 +123,11 @@
 		timeout-sec = <30>;
 	};
 
+<<<<<<< HEAD
 	smb@8000000 {
+=======
+	smb@08000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "arm,vexpress,v2m-p1", "simple-bus";
 		arm,v2m-memory-map = "rs1";
 		#address-cells = <2>; /* SMB chipselect number and offset */
@@ -182,12 +219,20 @@
 			#size-cells = <1>;
 			ranges = <0 3 0 0x200000>;
 
+<<<<<<< HEAD
 			v2m_sysreg: sysreg@10000 {
+=======
+			v2m_sysreg: sysreg@010000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "arm,vexpress-sysreg";
 				reg = <0x010000 0x1000>;
 			};
 
+<<<<<<< HEAD
 			v2m_serial0: uart@90000 {
+=======
+			v2m_serial0: uart@090000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "arm,pl011", "arm,primecell";
 				reg = <0x090000 0x1000>;
 				interrupts = <5>;
@@ -195,7 +240,11 @@
 				clock-names = "uartclk", "apb_pclk";
 			};
 
+<<<<<<< HEAD
 			v2m_serial1: uart@a0000 {
+=======
+			v2m_serial1: uart@0a0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "arm,pl011", "arm,primecell";
 				reg = <0x0a0000 0x1000>;
 				interrupts = <6>;
@@ -203,7 +252,11 @@
 				clock-names = "uartclk", "apb_pclk";
 			};
 
+<<<<<<< HEAD
 			v2m_serial2: uart@b0000 {
+=======
+			v2m_serial2: uart@0b0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "arm,pl011", "arm,primecell";
 				reg = <0x0b0000 0x1000>;
 				interrupts = <7>;
@@ -211,7 +264,11 @@
 				clock-names = "uartclk", "apb_pclk";
 			};
 
+<<<<<<< HEAD
 			v2m_serial3: uart@c0000 {
+=======
+			v2m_serial3: uart@0c0000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "arm,pl011", "arm,primecell";
 				reg = <0x0c0000 0x1000>;
 				interrupts = <8>;
@@ -219,7 +276,11 @@
 				clock-names = "uartclk", "apb_pclk";
 			};
 
+<<<<<<< HEAD
 			virtio-block@130000 {
+=======
+			virtio-block@0130000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "virtio,mmio";
 				reg = <0x130000 0x200>;
 				interrupts = <42>;

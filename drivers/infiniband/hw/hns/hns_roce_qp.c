@@ -44,7 +44,11 @@
 void hns_roce_qp_event(struct hns_roce_dev *hr_dev, u32 qpn, int event_type)
 {
 	struct hns_roce_qp_table *qp_table = &hr_dev->qp_table;
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hns_roce_qp *qp;
 
 	spin_lock(&qp_table->lock);
@@ -65,7 +69,10 @@ void hns_roce_qp_event(struct hns_roce_dev *hr_dev, u32 qpn, int event_type)
 	if (atomic_dec_and_test(&qp->refcount))
 		complete(&qp->free);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_qp_event);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void hns_roce_ib_qp_event(struct hns_roce_qp *hr_qp,
 				 enum hns_roce_event type)
@@ -140,7 +147,10 @@ enum hns_roce_qp_state to_hns_roce_state(enum ib_qp_state state)
 		return HNS_ROCE_QP_NUM_STATE;
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(to_hns_roce_state);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int hns_roce_gsi_qp_alloc(struct hns_roce_dev *hr_dev, unsigned long qpn,
 				 struct hns_roce_qp *hr_qp)
@@ -158,7 +168,11 @@ static int hns_roce_gsi_qp_alloc(struct hns_roce_dev *hr_dev, unsigned long qpn,
 				hr_qp->qpn & (hr_dev->caps.num_qps - 1), hr_qp);
 	spin_unlock_irq(&qp_table->lock);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(hr_dev->dev, "QPC radix_tree_insert failed\n");
+=======
+		dev_err(&hr_dev->pdev->dev, "QPC radix_tree_insert failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_put_irrl;
 	}
 
@@ -176,7 +190,11 @@ static int hns_roce_qp_alloc(struct hns_roce_dev *hr_dev, unsigned long qpn,
 			     struct hns_roce_qp *hr_qp)
 {
 	struct hns_roce_qp_table *qp_table = &hr_dev->qp_table;
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!qpn)
@@ -198,6 +216,7 @@ static int hns_roce_qp_alloc(struct hns_roce_dev *hr_dev, unsigned long qpn,
 		goto err_put_qp;
 	}
 
+<<<<<<< HEAD
 	if (hr_dev->caps.trrl_entry_sz) {
 		/* Alloc memory for TRRL */
 		ret = hns_roce_table_get(hr_dev, &qp_table->trrl_table,
@@ -208,13 +227,19 @@ static int hns_roce_qp_alloc(struct hns_roce_dev *hr_dev, unsigned long qpn,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irq(&qp_table->lock);
 	ret = radix_tree_insert(&hr_dev->qp_table_tree,
 				hr_qp->qpn & (hr_dev->caps.num_qps - 1), hr_qp);
 	spin_unlock_irq(&qp_table->lock);
 	if (ret) {
 		dev_err(dev, "QPC radix_tree_insert failed\n");
+<<<<<<< HEAD
 		goto err_put_trrl;
+=======
+		goto err_put_irrl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	atomic_set(&hr_qp->refcount, 1);
@@ -222,10 +247,13 @@ static int hns_roce_qp_alloc(struct hns_roce_dev *hr_dev, unsigned long qpn,
 
 	return 0;
 
+<<<<<<< HEAD
 err_put_trrl:
 	if (hr_dev->caps.trrl_entry_sz)
 		hns_roce_table_put(hr_dev, &qp_table->trrl_table, hr_qp->qpn);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_put_irrl:
 	hns_roce_table_put(hr_dev, &qp_table->irrl_table, hr_qp->qpn);
 
@@ -246,7 +274,10 @@ void hns_roce_qp_remove(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp)
 			  hr_qp->qpn & (hr_dev->caps.num_qps - 1));
 	spin_unlock_irqrestore(&qp_table->lock, flags);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_qp_remove);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void hns_roce_qp_free(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp)
 {
@@ -257,6 +288,7 @@ void hns_roce_qp_free(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp)
 	wait_for_completion(&hr_qp->free);
 
 	if ((hr_qp->ibqp.qp_type) != IB_QPT_GSI) {
+<<<<<<< HEAD
 		if (hr_dev->caps.trrl_entry_sz)
 			hns_roce_table_put(hr_dev, &qp_table->trrl_table,
 					   hr_qp->qpn);
@@ -265,6 +297,11 @@ void hns_roce_qp_free(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp)
 	}
 }
 EXPORT_SYMBOL_GPL(hns_roce_qp_free);
+=======
+		hns_roce_table_put(hr_dev, &qp_table->irrl_table, hr_qp->qpn);
+	}
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void hns_roce_release_range_qp(struct hns_roce_dev *hr_dev, int base_qpn,
 			       int cnt)
@@ -276,14 +313,22 @@ void hns_roce_release_range_qp(struct hns_roce_dev *hr_dev, int base_qpn,
 
 	hns_roce_bitmap_free_range(&qp_table->bitmap, base_qpn, cnt, BITMAP_RR);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_release_range_qp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int hns_roce_set_rq_size(struct hns_roce_dev *hr_dev,
 				struct ib_qp_cap *cap, int is_user, int has_srq,
 				struct hns_roce_qp *hr_qp)
 {
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	u32 max_cnt;
+=======
+	u32 max_cnt;
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check the validity of QP support capacity */
 	if (cap->max_recv_wr > hr_dev->caps.max_wqes ||
@@ -307,6 +352,7 @@ static int hns_roce_set_rq_size(struct hns_roce_dev *hr_dev,
 			return -EINVAL;
 		}
 
+<<<<<<< HEAD
 		if (hr_dev->caps.min_wqes)
 			max_cnt = max(cap->max_recv_wr, hr_dev->caps.min_wqes);
 		else
@@ -316,11 +362,21 @@ static int hns_roce_set_rq_size(struct hns_roce_dev *hr_dev,
 
 		if ((u32)hr_qp->rq.wqe_cnt > hr_dev->caps.max_wqes) {
 			dev_err(dev, "while setting rq size, rq.wqe_cnt too large\n");
+=======
+		/* In v1 engine, parameter verification procession */
+		max_cnt = cap->max_recv_wr > HNS_ROCE_MIN_WQE_NUM ?
+			  cap->max_recv_wr : HNS_ROCE_MIN_WQE_NUM;
+		hr_qp->rq.wqe_cnt = roundup_pow_of_two(max_cnt);
+
+		if ((u32)hr_qp->rq.wqe_cnt > hr_dev->caps.max_wqes) {
+			dev_err(dev, "hns_roce_set_rq_size rq.wqe_cnt too large\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 
 		max_cnt = max(1U, cap->max_recv_sge);
 		hr_qp->rq.max_gs = roundup_pow_of_two(max_cnt);
+<<<<<<< HEAD
 		if (hr_dev->caps.max_rq_sg <= 2)
 			hr_qp->rq.wqe_shift =
 					ilog2(hr_dev->caps.max_rq_desc_sz);
@@ -328,6 +384,10 @@ static int hns_roce_set_rq_size(struct hns_roce_dev *hr_dev,
 			hr_qp->rq.wqe_shift =
 					ilog2(hr_dev->caps.max_rq_desc_sz
 					      * hr_qp->rq.max_gs);
+=======
+		/* WQE is fixed for 64B */
+		hr_qp->rq.wqe_shift = ilog2(hr_dev->caps.max_rq_desc_sz);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	cap->max_recv_wr = hr_qp->rq.max_post = hr_qp->rq.wqe_cnt;
@@ -337,19 +397,26 @@ static int hns_roce_set_rq_size(struct hns_roce_dev *hr_dev,
 }
 
 static int hns_roce_set_user_sq_size(struct hns_roce_dev *hr_dev,
+<<<<<<< HEAD
 				     struct ib_qp_cap *cap,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     struct hns_roce_qp *hr_qp,
 				     struct hns_roce_ib_create_qp *ucmd)
 {
 	u32 roundup_sq_stride = roundup_pow_of_two(hr_dev->caps.max_sq_desc_sz);
 	u8 max_sq_stride = ilog2(roundup_sq_stride);
+<<<<<<< HEAD
 	u32 page_size;
 	u32 max_cnt;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Sanity check SQ size before proceeding */
 	if ((u32)(1 << ucmd->log_sq_bb_count) > hr_dev->caps.max_wqes ||
 	     ucmd->log_sq_stride > max_sq_stride ||
 	     ucmd->log_sq_stride < HNS_ROCE_IB_MIN_SQ_STRIDE) {
+<<<<<<< HEAD
 		dev_err(hr_dev->dev, "check SQ size error!\n");
 		return -EINVAL;
 	}
@@ -357,12 +424,16 @@ static int hns_roce_set_user_sq_size(struct hns_roce_dev *hr_dev,
 	if (cap->max_send_sge > hr_dev->caps.max_sq_sg) {
 		dev_err(hr_dev->dev, "SQ sge error! max_send_sge=%d\n",
 			cap->max_send_sge);
+=======
+		dev_err(&hr_dev->pdev->dev, "check SQ size error!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	hr_qp->sq.wqe_cnt = 1 << ucmd->log_sq_bb_count;
 	hr_qp->sq.wqe_shift = ucmd->log_sq_stride;
 
+<<<<<<< HEAD
 	max_cnt = max(1U, cap->max_send_sge);
 	if (hr_dev->caps.max_sq_sg <= 2)
 		hr_qp->sq.max_gs = roundup_pow_of_two(max_cnt);
@@ -410,6 +481,17 @@ static int hns_roce_set_user_sq_size(struct hns_roce_dev *hr_dev,
 							page_size);
 		}
 	}
+=======
+	/* Get buf size, SQ and RQ  are aligned to page_szie */
+	hr_qp->buff_size = HNS_ROCE_ALOGN_UP((hr_qp->rq.wqe_cnt <<
+					     hr_qp->rq.wqe_shift), PAGE_SIZE) +
+			   HNS_ROCE_ALOGN_UP((hr_qp->sq.wqe_cnt <<
+					     hr_qp->sq.wqe_shift), PAGE_SIZE);
+
+	hr_qp->sq.offset = 0;
+	hr_qp->rq.offset = HNS_ROCE_ALOGN_UP((hr_qp->sq.wqe_cnt <<
+					     hr_qp->sq.wqe_shift), PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -418,15 +500,24 @@ static int hns_roce_set_kernel_sq_size(struct hns_roce_dev *hr_dev,
 				       struct ib_qp_cap *cap,
 				       struct hns_roce_qp *hr_qp)
 {
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	u32 page_size;
 	u32 max_cnt;
 	int size;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+	u32 max_cnt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cap->max_send_wr  > hr_dev->caps.max_wqes  ||
 	    cap->max_send_sge > hr_dev->caps.max_sq_sg ||
 	    cap->max_inline_data > hr_dev->caps.max_sq_inline) {
+<<<<<<< HEAD
 		dev_err(dev, "SQ WR or sge or inline data error!\n");
+=======
+		dev_err(dev, "hns_roce_set_kernel_sq_size error1\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -434,6 +525,7 @@ static int hns_roce_set_kernel_sq_size(struct hns_roce_dev *hr_dev,
 	hr_qp->sq_max_wqes_per_wr = 1;
 	hr_qp->sq_spare_wqes = 0;
 
+<<<<<<< HEAD
 	if (hr_dev->caps.min_wqes)
 		max_cnt = max(cap->max_send_wr, hr_dev->caps.min_wqes);
 	else
@@ -442,11 +534,20 @@ static int hns_roce_set_kernel_sq_size(struct hns_roce_dev *hr_dev,
 	hr_qp->sq.wqe_cnt = roundup_pow_of_two(max_cnt);
 	if ((u32)hr_qp->sq.wqe_cnt > hr_dev->caps.max_wqes) {
 		dev_err(dev, "while setting kernel sq size, sq.wqe_cnt too large\n");
+=======
+	/* In v1 engine, parameter verification procession */
+	max_cnt = cap->max_send_wr > HNS_ROCE_MIN_WQE_NUM ?
+		  cap->max_send_wr : HNS_ROCE_MIN_WQE_NUM;
+	hr_qp->sq.wqe_cnt = roundup_pow_of_two(max_cnt);
+	if ((u32)hr_qp->sq.wqe_cnt > hr_dev->caps.max_wqes) {
+		dev_err(dev, "hns_roce_set_kernel_sq_size sq.wqe_cnt too large\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	/* Get data_seg numbers */
 	max_cnt = max(1U, cap->max_send_sge);
+<<<<<<< HEAD
 	if (hr_dev->caps.max_sq_sg <= 2)
 		hr_qp->sq.max_gs = roundup_pow_of_two(max_cnt);
 	else
@@ -481,6 +582,18 @@ static int hns_roce_set_kernel_sq_size(struct hns_roce_dev *hr_dev,
 	size += HNS_ROCE_ALOGN_UP((hr_qp->rq.wqe_cnt << hr_qp->rq.wqe_shift),
 				  page_size);
 	hr_qp->buff_size = size;
+=======
+	hr_qp->sq.max_gs = roundup_pow_of_two(max_cnt);
+
+	/* Get buf size, SQ and RQ  are aligned to page_szie */
+	hr_qp->buff_size = HNS_ROCE_ALOGN_UP((hr_qp->rq.wqe_cnt <<
+					     hr_qp->rq.wqe_shift), PAGE_SIZE) +
+			   HNS_ROCE_ALOGN_UP((hr_qp->sq.wqe_cnt <<
+					     hr_qp->sq.wqe_shift), PAGE_SIZE);
+	hr_qp->sq.offset = 0;
+	hr_qp->rq.offset = HNS_ROCE_ALOGN_UP((hr_qp->sq.wqe_cnt <<
+					      hr_qp->sq.wqe_shift), PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Get wr and sge number which send */
 	cap->max_send_wr = hr_qp->sq.max_post = hr_qp->sq.wqe_cnt;
@@ -492,6 +605,7 @@ static int hns_roce_set_kernel_sq_size(struct hns_roce_dev *hr_dev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hns_roce_qp_has_sq(struct ib_qp_init_attr *attr)
 {
 	if (attr->qp_type == IB_QPT_XRC_TGT || !attr->cap.max_send_wr)
@@ -509,12 +623,15 @@ static int hns_roce_qp_has_rq(struct ib_qp_init_attr *attr)
 	return 1;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 				     struct ib_pd *ib_pd,
 				     struct ib_qp_init_attr *init_attr,
 				     struct ib_udata *udata, unsigned long sqpn,
 				     struct hns_roce_qp *hr_qp)
 {
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	struct hns_roce_ib_create_qp ucmd;
 	struct hns_roce_ib_create_qp_resp resp = {};
@@ -523,6 +640,12 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 	u32 page_shift;
 	u32 npages;
 	int i;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+	struct hns_roce_ib_create_qp ucmd;
+	unsigned long qpn = 0;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_init(&hr_qp->mutex);
 	spin_lock_init(&hr_qp->sq.lock);
@@ -530,12 +653,19 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 
 	hr_qp->state = IB_QPS_RESET;
 
+<<<<<<< HEAD
 	hr_qp->ibqp.qp_type = init_attr->qp_type;
 
 	if (init_attr->sq_sig_type == IB_SIGNAL_ALL_WR)
 		hr_qp->sq_signal_bits = cpu_to_le32(IB_SIGNAL_ALL_WR);
 	else
 		hr_qp->sq_signal_bits = cpu_to_le32(IB_SIGNAL_REQ_WR);
+=======
+	if (init_attr->sq_sig_type == IB_SIGNAL_ALL_WR)
+		hr_qp->sq_signal_bits = IB_SIGNAL_ALL_WR;
+	else
+		hr_qp->sq_signal_bits = IB_SIGNAL_REQ_WR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = hns_roce_set_rq_size(hr_dev, &init_attr->cap, !!ib_pd->uobject,
 				   !!init_attr->srq, hr_qp);
@@ -544,6 +674,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 		goto err_out;
 	}
 
+<<<<<<< HEAD
 	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RQ_INLINE) {
 		/* allocate recv inline buf */
 		hr_qp->rq_inl_buf.wqe_list = kcalloc(hr_qp->rq.wqe_cnt,
@@ -574,10 +705,13 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 				init_attr->cap.max_recv_sge];
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ib_pd->uobject) {
 		if (ib_copy_from_udata(&ucmd, udata, sizeof(ucmd))) {
 			dev_err(dev, "ib_copy_from_udata error for create qp\n");
 			ret = -EFAULT;
+<<<<<<< HEAD
 			goto err_rq_sge_list;
 		}
 
@@ -586,6 +720,15 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 		if (ret) {
 			dev_err(dev, "hns_roce_set_user_sq_size error for create qp\n");
 			goto err_rq_sge_list;
+=======
+			goto err_out;
+		}
+
+		ret = hns_roce_set_user_sq_size(hr_dev, hr_qp, &ucmd);
+		if (ret) {
+			dev_err(dev, "hns_roce_set_user_sq_size error for create qp\n");
+			goto err_out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		hr_qp->umem = ib_umem_get(ib_pd->uobject->context,
@@ -594,6 +737,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 		if (IS_ERR(hr_qp->umem)) {
 			dev_err(dev, "ib_umem_get error for create qp\n");
 			ret = PTR_ERR(hr_qp->umem);
+<<<<<<< HEAD
 			goto err_rq_sge_list;
 		}
 
@@ -612,6 +756,13 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 				    hr_qp->umem->page_shift,
 				    &hr_qp->mtt);
 		}
+=======
+			goto err_out;
+		}
+
+		ret = hns_roce_mtt_init(hr_dev, ib_umem_page_count(hr_qp->umem),
+					hr_qp->umem->page_shift, &hr_qp->mtt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret) {
 			dev_err(dev, "hns_roce_mtt_init error for create qp\n");
 			goto err_buf;
@@ -623,6 +774,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 			dev_err(dev, "hns_roce_ib_umem_write_mtt error for create qp\n");
 			goto err_mtt;
 		}
+<<<<<<< HEAD
 
 		if ((hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_SQ_RECORD_DB) &&
 		    (udata->inlen >= sizeof(ucmd)) &&
@@ -652,18 +804,28 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 				goto err_sq_dbmap;
 			}
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (init_attr->create_flags &
 		    IB_QP_CREATE_BLOCK_MULTICAST_LOOPBACK) {
 			dev_err(dev, "init_attr->create_flags error!\n");
 			ret = -EINVAL;
+<<<<<<< HEAD
 			goto err_rq_sge_list;
+=======
+			goto err_out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (init_attr->create_flags & IB_QP_CREATE_IPOIB_UD_LSO) {
 			dev_err(dev, "init_attr->create_flags error!\n");
 			ret = -EINVAL;
+<<<<<<< HEAD
 			goto err_rq_sge_list;
+=======
+			goto err_out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* Set SQ size */
@@ -671,6 +833,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 						  hr_qp);
 		if (ret) {
 			dev_err(dev, "hns_roce_set_kernel_sq_size error!\n");
+<<<<<<< HEAD
 			goto err_rq_sge_list;
 		}
 
@@ -702,6 +865,26 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 		}
 
 		hr_qp->mtt.mtt_type = MTT_TYPE_WQE;
+=======
+			goto err_out;
+		}
+
+		/* QP doorbell register address */
+		hr_qp->sq.db_reg_l = hr_dev->reg_base + ROCEE_DB_SQ_L_0_REG +
+				     DB_REG_OFFSET * hr_dev->priv_uar.index;
+		hr_qp->rq.db_reg_l = hr_dev->reg_base +
+				     ROCEE_DB_OTHERS_L_0_REG +
+				     DB_REG_OFFSET * hr_dev->priv_uar.index;
+
+		/* Allocate QP buf */
+		if (hns_roce_buf_alloc(hr_dev, hr_qp->buff_size, PAGE_SIZE * 2,
+				       &hr_qp->hr_buf)) {
+			dev_err(dev, "hns_roce_buf_alloc error!\n");
+			ret = -ENOMEM;
+			goto err_out;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Write MTT */
 		ret = hns_roce_mtt_init(hr_dev, hr_qp->hr_buf.npages,
 					hr_qp->hr_buf.page_shift, &hr_qp->mtt);
@@ -738,9 +921,13 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 		}
 	}
 
+<<<<<<< HEAD
 	if (init_attr->qp_type == IB_QPT_GSI &&
 	    hr_dev->hw_rev == HNS_ROCE_HW_VER1) {
 		/* In v1 engine, GSI QP context in RoCE engine's register */
+=======
+	if ((init_attr->qp_type) == IB_QPT_GSI) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = hns_roce_gsi_qp_alloc(hr_dev, qpn, hr_qp);
 		if (ret) {
 			dev_err(dev, "hns_roce_qp_alloc failed!\n");
@@ -759,6 +946,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 	else
 		hr_qp->doorbell_qpn = cpu_to_le64(hr_qp->qpn);
 
+<<<<<<< HEAD
 	if (ib_pd->uobject && (udata->outlen >= sizeof(resp)) &&
 		(hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RECORD_DB)) {
 
@@ -770,10 +958,13 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
 
 		hr_qp->rdb_en = 1;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hr_qp->event = hns_roce_ib_qp_event;
 
 	return 0;
 
+<<<<<<< HEAD
 err_qp:
 	if (init_attr->qp_type == IB_QPT_GSI &&
 		hr_dev->hw_rev == HNS_ROCE_HW_VER1)
@@ -781,11 +972,14 @@ err_qp:
 	else
 		hns_roce_qp_free(hr_dev, hr_qp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_qpn:
 	if (!sqpn)
 		hns_roce_release_range_qp(hr_dev, qpn, 1);
 
 err_wrid:
+<<<<<<< HEAD
 	if (ib_pd->uobject) {
 		if ((hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RECORD_DB) &&
 		    (udata->outlen >= sizeof(resp)) &&
@@ -807,6 +1001,10 @@ err_sq_dbmap:
 			hns_roce_db_unmap_user(
 					to_hr_ucontext(ib_pd->uobject->context),
 					&hr_qp->sdb);
+=======
+	kfree(hr_qp->sq.wrid);
+	kfree(hr_qp->rq.wrid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_mtt:
 	hns_roce_mtt_cleanup(hr_dev, &hr_qp->mtt);
@@ -817,6 +1015,7 @@ err_buf:
 	else
 		hns_roce_buf_free(hr_dev, hr_qp->buff_size, &hr_qp->hr_buf);
 
+<<<<<<< HEAD
 err_db:
 	if (!ib_pd->uobject && hns_roce_qp_has_rq(init_attr) &&
 	    (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RECORD_DB))
@@ -830,6 +1029,8 @@ err_wqe_list:
 	if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RQ_INLINE)
 		kfree(hr_qp->rq_inl_buf.wqe_list);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_out:
 	return ret;
 }
@@ -839,7 +1040,11 @@ struct ib_qp *hns_roce_create_qp(struct ib_pd *pd,
 				 struct ib_udata *udata)
 {
 	struct hns_roce_dev *hr_dev = to_hr_dev(pd->device);
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hns_roce_sqp *hr_sqp;
 	struct hns_roce_qp *hr_qp;
 	int ret;
@@ -876,6 +1081,7 @@ struct ib_qp *hns_roce_create_qp(struct ib_pd *pd,
 		hr_qp = &hr_sqp->hr_qp;
 		hr_qp->port = init_attr->port_num - 1;
 		hr_qp->phy_port = hr_dev->iboe.phy_port[hr_qp->port];
+<<<<<<< HEAD
 
 		/* when hw version is v1, the sqpn is allocated */
 		if (hr_dev->caps.max_sq_sg <= 2)
@@ -883,6 +1089,10 @@ struct ib_qp *hns_roce_create_qp(struct ib_pd *pd,
 					     hr_dev->iboe.phy_port[hr_qp->port];
 		else
 			hr_qp->ibqp.qp_num = 1;
+=======
+		hr_qp->ibqp.qp_num = HNS_ROCE_MAX_PORTS +
+				     hr_dev->iboe.phy_port[hr_qp->port];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = hns_roce_create_qp_common(hr_dev, pd, init_attr, udata,
 						hr_qp->ibqp.qp_num, hr_qp);
@@ -902,7 +1112,10 @@ struct ib_qp *hns_roce_create_qp(struct ib_pd *pd,
 
 	return &hr_qp->ibqp;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_create_qp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int to_hr_qp_type(int qp_type)
 {
@@ -921,7 +1134,10 @@ int to_hr_qp_type(int qp_type)
 
 	return transport_type;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(to_hr_qp_type);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int hns_roce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		       int attr_mask, struct ib_udata *udata)
@@ -929,7 +1145,11 @@ int hns_roce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	struct hns_roce_dev *hr_dev = to_hr_dev(ibqp->device);
 	struct hns_roce_qp *hr_qp = to_hr_qp(ibqp);
 	enum ib_qp_state cur_state, new_state;
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -EINVAL;
 	int p;
 	enum ib_mtu active_mtu;
@@ -941,6 +1161,7 @@ int hns_roce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	new_state = attr_mask & IB_QP_STATE ?
 		    attr->qp_state : cur_state;
 
+<<<<<<< HEAD
 	if (ibqp->uobject &&
 	    (attr_mask & IB_QP_STATE) && new_state == IB_QPS_ERR) {
 		if (hr_qp->sdb_en == 1) {
@@ -952,6 +1173,8 @@ int hns_roce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ib_modify_qp_is_ok(cur_state, new_state, ibqp->qp_type, attr_mask,
 				IB_LINK_LAYER_ETHERNET)) {
 		dev_err(dev, "ib_modify_qp_is_ok failed\n");
@@ -978,10 +1201,14 @@ int hns_roce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 		p = attr_mask & IB_QP_PORT ? (attr->port_num - 1) : hr_qp->port;
 		active_mtu = iboe_get_mtu(hr_dev->iboe.netdevs[p]->mtu);
 
+<<<<<<< HEAD
 		if ((hr_dev->caps.max_mtu == IB_MTU_4096 &&
 		    attr->path_mtu > IB_MTU_4096) ||
 		    (hr_dev->caps.max_mtu == IB_MTU_2048 &&
 		    attr->path_mtu > IB_MTU_2048) ||
+=======
+		if (attr->path_mtu > IB_MTU_2048 ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    attr->path_mtu < IB_MTU_256 ||
 		    attr->path_mtu > active_mtu) {
 			dev_err(dev, "attr path_mtu(%d)invalid while modify qp",
@@ -1005,6 +1232,7 @@ int hns_roce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 	}
 
 	if (cur_state == new_state && cur_state == IB_QPS_RESET) {
+<<<<<<< HEAD
 		if (hr_dev->caps.min_wqes) {
 			ret = -EPERM;
 			dev_err(dev, "cur_state=%d new_state=%d\n", cur_state,
@@ -1013,6 +1241,11 @@ int hns_roce_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
 			ret = 0;
 		}
 
+=======
+		ret = -EPERM;
+		dev_err(dev, "cur_state=%d new_state=%d\n", cur_state,
+			new_state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
@@ -1039,7 +1272,10 @@ void hns_roce_lock_cqs(struct hns_roce_cq *send_cq, struct hns_roce_cq *recv_cq)
 		spin_lock_nested(&send_cq->lock, SINGLE_DEPTH_NESTING);
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_lock_cqs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void hns_roce_unlock_cqs(struct hns_roce_cq *send_cq,
 			 struct hns_roce_cq *recv_cq) __releases(&send_cq->lock)
@@ -1056,7 +1292,23 @@ void hns_roce_unlock_cqs(struct hns_roce_cq *send_cq,
 		spin_unlock_irq(&recv_cq->lock);
 	}
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_unlock_cqs);
+=======
+
+__be32 send_ieth(struct ib_send_wr *wr)
+{
+	switch (wr->opcode) {
+	case IB_WR_SEND_WITH_IMM:
+	case IB_WR_RDMA_WRITE_WITH_IMM:
+		return cpu_to_le32(wr->ex.imm_data);
+	case IB_WR_SEND_WITH_INV:
+		return cpu_to_le32(wr->ex.invalidate_rkey);
+	default:
+		return 0;
+	}
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void *get_wqe(struct hns_roce_qp *hr_qp, int offset)
 {
@@ -1068,12 +1320,16 @@ void *get_recv_wqe(struct hns_roce_qp *hr_qp, int n)
 {
 	return get_wqe(hr_qp, hr_qp->rq.offset + (n << hr_qp->rq.wqe_shift));
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(get_recv_wqe);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void *get_send_wqe(struct hns_roce_qp *hr_qp, int n)
 {
 	return get_wqe(hr_qp, hr_qp->sq.offset + (n << hr_qp->sq.wqe_shift));
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(get_send_wqe);
 
 void *get_send_extend_sge(struct hns_roce_qp *hr_qp, int n)
@@ -1082,6 +1338,8 @@ void *get_send_extend_sge(struct hns_roce_qp *hr_qp, int n)
 					(n << hr_qp->sge.sge_shift));
 }
 EXPORT_SYMBOL_GPL(get_send_extend_sge);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 bool hns_roce_wq_overflow(struct hns_roce_wq *hr_wq, int nreq,
 			  struct ib_cq *ib_cq)
@@ -1100,7 +1358,10 @@ bool hns_roce_wq_overflow(struct hns_roce_wq *hr_wq, int nreq,
 
 	return cur + nreq >= hr_wq->max_post;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_wq_overflow);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int hns_roce_init_qp_table(struct hns_roce_dev *hr_dev)
 {
@@ -1116,7 +1377,11 @@ int hns_roce_init_qp_table(struct hns_roce_dev *hr_dev)
 				   hr_dev->caps.num_qps - 1, SQP_NUM,
 				   reserved_from_top);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(hr_dev->dev, "qp bitmap init failed!error=%d\n",
+=======
+		dev_err(&hr_dev->pdev->dev, "qp bitmap init failed!error=%d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret);
 		return ret;
 	}

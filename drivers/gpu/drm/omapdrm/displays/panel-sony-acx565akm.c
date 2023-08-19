@@ -4,7 +4,11 @@
  * Copyright (C) 2010 Nokia Corporation
  *
  * Original Driver Author: Imre Deak <imre.deak@nokia.com>
+<<<<<<< HEAD
  * Based on panel-generic.c by Tomi Valkeinen <tomi.valkeinen@ti.com>
+=======
+ * Based on panel-generic.c by Tomi Valkeinen <tomi.valkeinen@nokia.com>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Adapted to new DSS2 framework: Roger Quadros <roger.quadros@nokia.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -216,12 +220,21 @@ static void set_display_state(struct panel_drv_data *ddata, int enabled)
 
 static int panel_enabled(struct panel_drv_data *ddata)
 {
+<<<<<<< HEAD
 	__be32 v;
 	u32 disp_status;
 	int enabled;
 
 	acx565akm_read(ddata, MIPID_CMD_READ_DISP_STATUS, (u8 *)&v, 4);
 	disp_status = __be32_to_cpu(v);
+=======
+	u32 disp_status;
+	int enabled;
+
+	acx565akm_read(ddata, MIPID_CMD_READ_DISP_STATUS,
+			(u8 *)&disp_status, 4);
+	disp_status = __be32_to_cpu(disp_status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enabled = (disp_status & (1 << 17)) && (disp_status & (1 << 10));
 	dev_dbg(&ddata->spi->dev,
 		"LCD panel %senabled by bootloader (status 0x%04x)\n",
@@ -289,7 +302,11 @@ static void enable_backlight_ctrl(struct panel_drv_data *ddata, int enable)
 	acx565akm_write(ddata, MIPID_CMD_WRITE_CTRL_DISP, (u8 *)&ctrl, 2);
 }
 
+<<<<<<< HEAD
 static void set_cabc_mode(struct panel_drv_data *ddata, unsigned int mode)
+=======
+static void set_cabc_mode(struct panel_drv_data *ddata, unsigned mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u16 cabc_ctrl;
 
@@ -303,12 +320,20 @@ static void set_cabc_mode(struct panel_drv_data *ddata, unsigned int mode)
 	acx565akm_write(ddata, MIPID_CMD_WRITE_CABC, (u8 *)&cabc_ctrl, 2);
 }
 
+<<<<<<< HEAD
 static unsigned int get_cabc_mode(struct panel_drv_data *ddata)
+=======
+static unsigned get_cabc_mode(struct panel_drv_data *ddata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return ddata->cabc_mode;
 }
 
+<<<<<<< HEAD
 static unsigned int get_hw_cabc_mode(struct panel_drv_data *ddata)
+=======
+static unsigned get_hw_cabc_mode(struct panel_drv_data *ddata)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u8 cabc_ctrl;
 
@@ -510,12 +535,17 @@ static const struct attribute_group bldev_attr_group = {
 static int acx565akm_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
+<<<<<<< HEAD
 	struct omap_dss_device *in;
+=======
+	struct omap_dss_device *in = ddata->in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
+<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(dssdev->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(dssdev->dev, "failed to find video source\n");
@@ -529,6 +559,12 @@ static int acx565akm_connect(struct omap_dss_device *dssdev)
 	}
 
 	ddata->in = in;
+=======
+	r = in->ops.sdi->connect(in, dssdev);
+	if (r)
+		return r;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -541,9 +577,12 @@ static void acx565akm_disconnect(struct omap_dss_device *dssdev)
 		return;
 
 	in->ops.sdi->disconnect(in, dssdev);
+<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int acx565akm_panel_power_on(struct omap_dss_device *dssdev)
@@ -712,6 +751,15 @@ static int acx565akm_probe_of(struct spi_device *spi)
 
 	ddata->reset_gpio = of_get_named_gpio(np, "reset-gpios", 0);
 
+<<<<<<< HEAD
+=======
+	ddata->in = omapdss_of_find_source_for_first_ep(np);
+	if (IS_ERR(ddata->in)) {
+		dev_err(&spi->dev, "failed to find video source\n");
+		return PTR_ERR(ddata->in);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -726,6 +774,12 @@ static int acx565akm_probe(struct spi_device *spi)
 
 	dev_dbg(&spi->dev, "%s\n", __func__);
 
+<<<<<<< HEAD
+=======
+	if (!spi->dev.of_node)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spi->mode = SPI_MODE_3;
 
 	ddata = devm_kzalloc(&spi->dev, sizeof(*ddata), GFP_KERNEL);
@@ -829,6 +883,10 @@ err_sysfs:
 err_reg_bl:
 err_detect:
 err_gpio:
+<<<<<<< HEAD
+=======
+	omap_dss_put_device(ddata->in);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
@@ -836,6 +894,10 @@ static int acx565akm_remove(struct spi_device *spi)
 {
 	struct panel_drv_data *ddata = dev_get_drvdata(&spi->dev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
+<<<<<<< HEAD
+=======
+	struct omap_dss_device *in = ddata->in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&ddata->spi->dev, "%s\n", __func__);
 
@@ -847,6 +909,11 @@ static int acx565akm_remove(struct spi_device *spi)
 	acx565akm_disable(dssdev);
 	acx565akm_disconnect(dssdev);
 
+<<<<<<< HEAD
+=======
+	omap_dss_put_device(in);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

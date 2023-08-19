@@ -19,8 +19,11 @@
 
 #define CPDMA_RX_SOURCE_PORT(__status__)	((__status__ >> 16) & 0x7)
 
+<<<<<<< HEAD
 #define CPDMA_RX_VLAN_ENCAP BIT(19)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define CPDMA_EOI_RX_THRESH	0x0
 #define CPDMA_EOI_RX		0x1
 #define CPDMA_EOI_TX		0x2

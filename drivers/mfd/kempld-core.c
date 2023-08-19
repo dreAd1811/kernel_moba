@@ -143,7 +143,11 @@ static struct platform_device *kempld_pdev;
 
 static int kempld_create_platform_device(const struct dmi_system_id *id)
 {
+<<<<<<< HEAD
 	const struct kempld_platform_data *pdata = id->driver_data;
+=======
+	struct kempld_platform_data *pdata = id->driver_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	kempld_pdev = platform_device_alloc("kempld", -1);
@@ -259,7 +263,11 @@ EXPORT_SYMBOL_GPL(kempld_write32);
  */
 void kempld_get_mutex(struct kempld_device_data *pld)
 {
+<<<<<<< HEAD
 	const struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+=======
+	struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&pld->lock);
 	pdata->get_hardware_mutex(pld);
@@ -272,7 +280,11 @@ EXPORT_SYMBOL_GPL(kempld_get_mutex);
  */
 void kempld_release_mutex(struct kempld_device_data *pld)
 {
+<<<<<<< HEAD
 	const struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+=======
+	struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata->release_hardware_mutex(pld);
 	mutex_unlock(&pld->lock);
@@ -290,7 +302,11 @@ EXPORT_SYMBOL_GPL(kempld_release_mutex);
 static int kempld_get_info(struct kempld_device_data *pld)
 {
 	int ret;
+<<<<<<< HEAD
 	const struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+=======
+	struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	char major, minor;
 
 	ret = pdata->get_info(pld);
@@ -332,7 +348,11 @@ static int kempld_get_info(struct kempld_device_data *pld)
  */
 static int kempld_register_cells(struct kempld_device_data *pld)
 {
+<<<<<<< HEAD
 	const struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+=======
+	struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return pdata->register_cells(pld);
 }
@@ -444,8 +464,12 @@ static int kempld_detect_device(struct kempld_device_data *pld)
 
 static int kempld_probe(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	const struct kempld_platform_data *pdata =
 		dev_get_platdata(&pdev->dev);
+=======
+	struct kempld_platform_data *pdata = dev_get_platdata(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct device *dev = &pdev->dev;
 	struct kempld_device_data *pld;
 	struct resource *ioport;
@@ -459,7 +483,11 @@ static int kempld_probe(struct platform_device *pdev)
 		return -EINVAL;
 
 	pld->io_base = devm_ioport_map(dev, ioport->start,
+<<<<<<< HEAD
 					resource_size(ioport));
+=======
+					ioport->end - ioport->start);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pld->io_base)
 		return -ENOMEM;
 
@@ -477,7 +505,11 @@ static int kempld_probe(struct platform_device *pdev)
 static int kempld_remove(struct platform_device *pdev)
 {
 	struct kempld_device_data *pld = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	const struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+=======
+	struct kempld_platform_data *pdata = dev_get_platdata(pld->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sysfs_remove_group(&pld->dev->kobj, &pld_attr_group);
 

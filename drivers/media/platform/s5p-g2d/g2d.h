@@ -31,6 +31,10 @@ struct g2d_dev {
 	struct g2d_ctx		*curr;
 	struct g2d_variant	*variant;
 	int irq;
+<<<<<<< HEAD
+=======
+	wait_queue_head_t	irq_queue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct g2d_frame {

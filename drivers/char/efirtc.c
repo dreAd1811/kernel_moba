@@ -358,6 +358,22 @@ static int efi_rtc_proc_show(struct seq_file *m, void *v)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static int efi_rtc_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, efi_rtc_proc_show, NULL);
+}
+
+static const struct file_operations efi_rtc_proc_fops = {
+	.open		= efi_rtc_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init 
 efi_rtc_init(void)
 {
@@ -373,7 +389,11 @@ efi_rtc_init(void)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	dir = proc_create_single("driver/efirtc", 0, NULL, efi_rtc_proc_show);
+=======
+	dir = proc_create("driver/efirtc", 0, NULL, &efi_rtc_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dir == NULL) {
 		printk(KERN_ERR "efirtc: can't create /proc/driver/efirtc.\n");
 		misc_deregister(&efi_rtc_dev);

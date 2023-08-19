@@ -419,8 +419,11 @@ int kvmppc_hcall_impl_pr(unsigned long cmd)
 	case H_PROTECT:
 	case H_BULK_REMOVE:
 	case H_PUT_TCE:
+<<<<<<< HEAD
 	case H_PUT_TCE_INDIRECT:
 	case H_STUFF_TCE:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case H_CEDE:
 	case H_LOGICAL_CI_LOAD:
 	case H_LOGICAL_CI_STORE:

@@ -21,10 +21,17 @@ enum coherent_io_user_state {
 extern enum coherent_io_user_state coherentio;
 extern int hw_coherentio;
 #else
+<<<<<<< HEAD
 #ifdef CONFIG_DMA_NONCOHERENT
 #define coherentio	IO_COHERENCE_DISABLED
 #else
 #define coherentio	IO_COHERENCE_ENABLED
+=======
+#ifdef CONFIG_DMA_COHERENT
+#define coherentio	IO_COHERENCE_ENABLED
+#else
+#define coherentio	IO_COHERENCE_DISABLED
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 #define hw_coherentio	0
 #endif /* CONFIG_DMA_MAYBE_COHERENT */

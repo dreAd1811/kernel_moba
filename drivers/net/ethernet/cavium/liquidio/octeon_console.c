@@ -803,11 +803,15 @@ static int octeon_console_read(struct octeon_device *oct, u32 console_num,
 }
 
 #define FBUF_SIZE	(4 * 1024 * 1024)
+<<<<<<< HEAD
 #define MAX_BOOTTIME_SIZE    80
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int octeon_download_firmware(struct octeon_device *oct, const u8 *data,
 			     size_t size)
 {
+<<<<<<< HEAD
 	struct octeon_firmware_file_header *h;
 	char boottime[MAX_BOOTTIME_SIZE];
 	struct timespec64 ts;
@@ -815,6 +819,13 @@ int octeon_download_firmware(struct octeon_device *oct, const u8 *data,
 	u64 load_addr;
 	u32 image_len;
 	int ret = 0;
+=======
+	int ret = 0;
+	u32 crc32_result;
+	u64 load_addr;
+	u32 image_len;
+	struct octeon_firmware_file_header *h;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 i, rem;
 
 	if (size < sizeof(struct octeon_firmware_file_header)) {
@@ -893,6 +904,7 @@ int octeon_download_firmware(struct octeon_device *oct, const u8 *data,
 			load_addr += size;
 		}
 	}
+<<<<<<< HEAD
 
 	/* Pass date and time information to NIC at the time of loading
 	 * firmware and periodically update the host time to NIC firmware.
@@ -914,13 +926,20 @@ int octeon_download_firmware(struct octeon_device *oct, const u8 *data,
 	strncat(h->bootcmd, boottime,
 		sizeof(h->bootcmd) - strnlen(h->bootcmd, sizeof(h->bootcmd)));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(&oct->pci_dev->dev, "Writing boot command: %s\n",
 		 h->bootcmd);
 
 	/* Invoke the bootcmd */
 	ret = octeon_console_send_cmd(oct, h->bootcmd, 50);
+<<<<<<< HEAD
 	if (ret)
 		dev_info(&oct->pci_dev->dev, "Boot command send failed\n");
 
 	return ret;
+=======
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

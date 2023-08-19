@@ -199,8 +199,14 @@ static struct ttm_backend_func ast_tt_backend_func = {
 };
 
 
+<<<<<<< HEAD
 static struct ttm_tt *ast_ttm_tt_create(struct ttm_buffer_object *bo,
 					uint32_t page_flags)
+=======
+static struct ttm_tt *ast_ttm_tt_create(struct ttm_bo_device *bdev,
+				 unsigned long size, uint32_t page_flags,
+				 struct page *dummy_read_page)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ttm_tt *tt;
 
@@ -208,15 +214,36 @@ static struct ttm_tt *ast_ttm_tt_create(struct ttm_buffer_object *bo,
 	if (tt == NULL)
 		return NULL;
 	tt->func = &ast_tt_backend_func;
+<<<<<<< HEAD
 	if (ttm_tt_init(tt, bo, page_flags)) {
+=======
+	if (ttm_tt_init(tt, bdev, size, page_flags, dummy_read_page)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(tt);
 		return NULL;
 	}
 	return tt;
 }
 
+<<<<<<< HEAD
 struct ttm_bo_driver ast_bo_driver = {
 	.ttm_tt_create = ast_ttm_tt_create,
+=======
+static int ast_ttm_tt_populate(struct ttm_tt *ttm)
+{
+	return ttm_pool_populate(ttm);
+}
+
+static void ast_ttm_tt_unpopulate(struct ttm_tt *ttm)
+{
+	ttm_pool_unpopulate(ttm);
+}
+
+struct ttm_bo_driver ast_bo_driver = {
+	.ttm_tt_create = ast_ttm_tt_create,
+	.ttm_tt_populate = ast_ttm_tt_populate,
+	.ttm_tt_unpopulate = ast_ttm_tt_unpopulate,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init_mem_type = ast_bo_init_mem_type,
 	.eviction_valuable = ttm_bo_eviction_valuable,
 	.evict_flags = ast_bo_evict_flags,
@@ -224,6 +251,10 @@ struct ttm_bo_driver ast_bo_driver = {
 	.verify_access = ast_bo_verify_access,
 	.io_mem_reserve = &ast_ttm_io_mem_reserve,
 	.io_mem_free = &ast_ttm_io_mem_free,
+<<<<<<< HEAD
+=======
+	.io_mem_pfn = ttm_bo_default_io_mem_pfn,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int ast_mm_init(struct ast_private *ast)
@@ -321,7 +352,11 @@ int ast_bo_create(struct drm_device *dev, int size, int align,
 
 	ret = ttm_bo_init(&ast->ttm.bdev, &astbo->bo, size,
 			  ttm_bo_type_device, &astbo->placement,
+<<<<<<< HEAD
 			  align >> PAGE_SHIFT, false, acc_size,
+=======
+			  align >> PAGE_SHIFT, false, NULL, acc_size,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  NULL, NULL, ast_bo_ttm_destroy);
 	if (ret)
 		goto error;
@@ -340,7 +375,10 @@ static inline u64 ast_bo_gpu_offset(struct ast_bo *bo)
 
 int ast_bo_pin(struct ast_bo *bo, u32 pl_flag, u64 *gpu_addr)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, false };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	if (bo->pin_count) {
@@ -352,7 +390,11 @@ int ast_bo_pin(struct ast_bo *bo, u32 pl_flag, u64 *gpu_addr)
 	ast_ttm_placement(bo, pl_flag);
 	for (i = 0; i < bo->placement.num_placement; i++)
 		bo->placements[i].flags |= TTM_PL_FLAG_NO_EVICT;
+<<<<<<< HEAD
 	ret = ttm_bo_validate(&bo->bo, &bo->placement, &ctx);
+=======
+	ret = ttm_bo_validate(&bo->bo, &bo->placement, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -364,7 +406,10 @@ int ast_bo_pin(struct ast_bo *bo, u32 pl_flag, u64 *gpu_addr)
 
 int ast_bo_unpin(struct ast_bo *bo)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, false };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	if (!bo->pin_count) {
 		DRM_ERROR("unpin bad %p\n", bo);
@@ -376,12 +421,19 @@ int ast_bo_unpin(struct ast_bo *bo)
 
 	for (i = 0; i < bo->placement.num_placement ; i++)
 		bo->placements[i].flags &= ~TTM_PL_FLAG_NO_EVICT;
+<<<<<<< HEAD
 	return ttm_bo_validate(&bo->bo, &bo->placement, &ctx);
+=======
+	return ttm_bo_validate(&bo->bo, &bo->placement, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int ast_bo_push_sysram(struct ast_bo *bo)
 {
+<<<<<<< HEAD
 	struct ttm_operation_ctx ctx = { false, false };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 	if (!bo->pin_count) {
 		DRM_ERROR("unpin bad %p\n", bo);
@@ -398,7 +450,11 @@ int ast_bo_push_sysram(struct ast_bo *bo)
 	for (i = 0; i < bo->placement.num_placement ; i++)
 		bo->placements[i].flags |= TTM_PL_FLAG_NO_EVICT;
 
+<<<<<<< HEAD
 	ret = ttm_bo_validate(&bo->bo, &bo->placement, &ctx);
+=======
+	ret = ttm_bo_validate(&bo->bo, &bo->placement, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("pushing to VRAM failed\n");
 		return ret;

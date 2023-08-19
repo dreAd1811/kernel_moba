@@ -76,7 +76,11 @@ static void v6_copy_user_highpage_aliasing(struct page *to,
 	unsigned long kfrom, kto;
 
 	if (!test_and_set_bit(PG_dcache_clean, &from->flags))
+<<<<<<< HEAD
 		__flush_dcache_page(page_mapping_file(from), from);
+=======
+		__flush_dcache_page(page_mapping(from), from);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* FIXME: not highmem safe */
 	discard_old_kernel_data(page_address(to));

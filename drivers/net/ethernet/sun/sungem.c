@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* $Id: sungem.c,v 1.44.2.22 2002/03/13 01:18:12 davem Exp $
  * sungem.c: Sun GEM ethernet driver.
  *
@@ -1499,9 +1502,15 @@ static int gem_mdio_link_not_up(struct gem *gp)
 	}
 }
 
+<<<<<<< HEAD
 static void gem_link_timer(struct timer_list *t)
 {
 	struct gem *gp = from_timer(gp, t, link_timer);
+=======
+static void gem_link_timer(unsigned long data)
+{
+	struct gem *gp = (struct gem *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct net_device *dev = gp->dev;
 	int restart_aneg = 0;
 
@@ -2913,7 +2922,13 @@ static int gem_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	gp->msg_enable = DEFAULT_MSG;
 
+<<<<<<< HEAD
 	timer_setup(&gp->link_timer, gem_link_timer, 0);
+=======
+	init_timer(&gp->link_timer);
+	gp->link_timer.function = gem_link_timer;
+	gp->link_timer.data = (unsigned long) gp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&gp->reset_task, gem_reset_task);
 

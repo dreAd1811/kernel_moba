@@ -29,6 +29,10 @@ struct udl_drm_dmabuf_attachment {
 };
 
 static int udl_attach_dma_buf(struct dma_buf *dmabuf,
+<<<<<<< HEAD
+=======
+			      struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      struct dma_buf_attachment *attach)
 {
 	struct udl_drm_dmabuf_attachment *udl_attach;
@@ -75,7 +79,10 @@ static struct sg_table *udl_map_dma_buf(struct dma_buf_attachment *attach,
 	struct udl_drm_dmabuf_attachment *udl_attach = attach->priv;
 	struct udl_gem_object *obj = to_udl_bo(attach->dmabuf->priv);
 	struct drm_device *dev = obj->base.dev;
+<<<<<<< HEAD
 	struct udl_device *udl = dev->dev_private;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct scatterlist *rd, *wr;
 	struct sg_table *sgt = NULL;
 	unsigned int i;
@@ -112,7 +119,11 @@ static struct sg_table *udl_map_dma_buf(struct dma_buf_attachment *attach,
 		return ERR_PTR(-ENOMEM);
 	}
 
+<<<<<<< HEAD
 	mutex_lock(&udl->gem_lock);
+=======
+	mutex_lock(&dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rd = obj->sg->sgl;
 	wr = sgt->sgl;
@@ -137,7 +148,11 @@ static struct sg_table *udl_map_dma_buf(struct dma_buf_attachment *attach,
 	attach->priv = udl_attach;
 
 err_unlock:
+<<<<<<< HEAD
 	mutex_unlock(&udl->gem_lock);
+=======
+	mutex_unlock(&dev->struct_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sgt;
 }
 
@@ -157,12 +172,33 @@ static void *udl_dmabuf_kmap(struct dma_buf *dma_buf, unsigned long page_num)
 	return NULL;
 }
 
+<<<<<<< HEAD
+=======
+static void *udl_dmabuf_kmap_atomic(struct dma_buf *dma_buf,
+				    unsigned long page_num)
+{
+	/* TODO */
+
+	return NULL;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void udl_dmabuf_kunmap(struct dma_buf *dma_buf,
 			      unsigned long page_num, void *addr)
 {
 	/* TODO */
 }
 
+<<<<<<< HEAD
+=======
+static void udl_dmabuf_kunmap_atomic(struct dma_buf *dma_buf,
+				     unsigned long page_num,
+				     void *addr)
+{
+	/* TODO */
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int udl_dmabuf_mmap(struct dma_buf *dma_buf,
 			   struct vm_area_struct *vma)
 {
@@ -177,7 +213,13 @@ static const struct dma_buf_ops udl_dmabuf_ops = {
 	.map_dma_buf		= udl_map_dma_buf,
 	.unmap_dma_buf		= udl_unmap_dma_buf,
 	.map			= udl_dmabuf_kmap,
+<<<<<<< HEAD
 	.unmap			= udl_dmabuf_kunmap,
+=======
+	.map_atomic		= udl_dmabuf_kmap_atomic,
+	.unmap			= udl_dmabuf_kunmap,
+	.unmap_atomic		= udl_dmabuf_kunmap_atomic,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.mmap			= udl_dmabuf_mmap,
 	.release		= drm_gem_dmabuf_release,
 };

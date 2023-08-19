@@ -108,7 +108,11 @@
 				reg = <0x50000000 0x4>;
 			};
 
+<<<<<<< HEAD
 			IIC0: i2c@0 {
+=======
+			IIC0: i2c@00000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				compatible = "ibm,iic-currituck", "ibm,iic";
 				reg = <0x0 0x00000014>;
 				interrupt-parent = <&MPIC>;
@@ -237,6 +241,10 @@
 	};
 
 	chosen {
+<<<<<<< HEAD
 		stdout-path = &UART0;
+=======
+		linux,stdout-path = &UART0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

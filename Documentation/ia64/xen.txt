@@ -41,7 +41,11 @@ Getting and Building Xen and Dom0
 
  5. make initrd for Dom0/DomU
     # make -C linux-2.6.18-xen.hg ARCH=ia64 modules_install \
+<<<<<<< HEAD
       O=$(pwd)/build-linux-2.6.18-xen_ia64
+=======
+      O=$(/bin/pwd)/build-linux-2.6.18-xen_ia64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     # mkinitrd -f /boot/efi/efi/redhat/initrd-2.6.18.8-xen.img \
       2.6.18.8-xen --builtin mptspi --builtin mptbase \
       --builtin mptscsih --builtin uhci-hcd --builtin ohci-hcd \

@@ -208,7 +208,10 @@ static int __init rockchip_smp_prepare_sram(struct device_node *node)
 }
 
 static const struct regmap_config rockchip_pmu_regmap_config = {
+<<<<<<< HEAD
 	.name = "rockchip-pmu",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.reg_bits = 32,
 	.val_bits = 32,
 	.reg_stride = 4,

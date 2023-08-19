@@ -42,6 +42,7 @@ static u8 _rtl_rc_get_highest_rix(struct rtl_priv *rtlpriv,
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
 	struct rtl_sta_info *sta_entry = NULL;
 	u16 wireless_mode = 0;
+<<<<<<< HEAD
 	u8 nss;
 	struct ieee80211_tx_rate rate;
 
@@ -59,6 +60,8 @@ static u8 _rtl_rc_get_highest_rix(struct rtl_priv *rtlpriv,
 		nss = 1;
 		break;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 *this rate is no use for true rate, firmware
@@ -83,11 +86,16 @@ static u8 _rtl_rc_get_highest_rix(struct rtl_priv *rtlpriv,
 			} else if (wireless_mode == WIRELESS_MODE_G) {
 				return G_MODE_MAX_RIX;
 			} else if (wireless_mode == WIRELESS_MODE_N_24G) {
+<<<<<<< HEAD
 				if (nss == 1)
+=======
+				if (get_rf_type(rtlphy) != RF_2T2R)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return N_MODE_MCS7_RIX;
 				else
 					return N_MODE_MCS15_RIX;
 			} else if (wireless_mode == WIRELESS_MODE_AC_24G) {
+<<<<<<< HEAD
 				if (sta->bandwidth == IEEE80211_STA_RX_BW_20) {
 					ieee80211_rate_set_vht(&rate,
 							       AC_MODE_MCS8_RIX,
@@ -99,17 +107,25 @@ static u8 _rtl_rc_get_highest_rix(struct rtl_priv *rtlpriv,
 							       nss);
 					goto out;
 				}
+=======
+				return AC_MODE_MCS9_RIX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			return 0;
 		} else {
 			if (wireless_mode == WIRELESS_MODE_A) {
 				return A_MODE_MAX_RIX;
 			} else if (wireless_mode == WIRELESS_MODE_N_5G) {
+<<<<<<< HEAD
 				if (nss == 1)
+=======
+				if (get_rf_type(rtlphy) != RF_2T2R)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return N_MODE_MCS7_RIX;
 				else
 					return N_MODE_MCS15_RIX;
 			} else if (wireless_mode == WIRELESS_MODE_AC_5G) {
+<<<<<<< HEAD
 				if (sta->bandwidth == IEEE80211_STA_RX_BW_20) {
 					ieee80211_rate_set_vht(&rate,
 							       AC_MODE_MCS8_RIX,
@@ -121,13 +137,19 @@ static u8 _rtl_rc_get_highest_rix(struct rtl_priv *rtlpriv,
 							       nss);
 					goto out;
 				}
+=======
+				return AC_MODE_MCS9_RIX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 			return 0;
 		}
 	}
+<<<<<<< HEAD
 
 out:
 	return rate.idx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void _rtl_rc_rate_set_series(struct rtl_priv *rtlpriv,
@@ -151,6 +173,12 @@ static void _rtl_rc_rate_set_series(struct rtl_priv *rtlpriv,
 	}
 	rate->count = tries;
 	rate->idx = rix >= 0x00 ? rix : 0x00;
+<<<<<<< HEAD
+=======
+	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8812AE &&
+	    wireless_mode == WIRELESS_MODE_AC_5G)
+		rate->idx += 0x10;/*2NSS for 8812AE*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!not_data) {
 		if (txrc->short_preamble)
@@ -160,6 +188,7 @@ static void _rtl_rc_rate_set_series(struct rtl_priv *rtlpriv,
 			if (sta && (sta->ht_cap.cap &
 				    IEEE80211_HT_CAP_SUP_WIDTH_20_40))
 				rate->flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
+<<<<<<< HEAD
 			if (sta && sta->vht_cap.vht_supported)
 				rate->flags |= IEEE80211_TX_RC_80_MHZ_WIDTH;
 		} else {
@@ -167,13 +196,27 @@ static void _rtl_rc_rate_set_series(struct rtl_priv *rtlpriv,
 				rate->flags |= IEEE80211_TX_RC_80_MHZ_WIDTH;
 			else if (mac->bw_40)
 				rate->flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
+=======
+			if (sta && (sta->vht_cap.vht_supported))
+				rate->flags |= IEEE80211_TX_RC_80_MHZ_WIDTH;
+		} else {
+			if (mac->bw_40)
+				rate->flags |= IEEE80211_TX_RC_40_MHZ_WIDTH;
+			if (mac->bw_80)
+				rate->flags |= IEEE80211_TX_RC_80_MHZ_WIDTH;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (sgi_20 || sgi_40 || sgi_80)
 			rate->flags |= IEEE80211_TX_RC_SHORT_GI;
 		if (sta && sta->ht_cap.ht_supported &&
+<<<<<<< HEAD
 		    (wireless_mode == WIRELESS_MODE_N_5G ||
 		     wireless_mode == WIRELESS_MODE_N_24G))
+=======
+		    ((wireless_mode == WIRELESS_MODE_N_5G) ||
+		     (wireless_mode == WIRELESS_MODE_N_24G)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rate->flags |= IEEE80211_TX_RC_MCS;
 		if (sta && sta->vht_cap.vht_supported &&
 		    (wireless_mode == WIRELESS_MODE_AC_5G ||
@@ -253,8 +296,13 @@ static void rtl_tx_status(void *ppriv,
 
 	if (sta) {
 		/* Check if aggregation has to be enabled for this tid */
+<<<<<<< HEAD
 		sta_entry = (struct rtl_sta_info *)sta->drv_priv;
 		if (sta->ht_cap.ht_supported &&
+=======
+		sta_entry = (struct rtl_sta_info *) sta->drv_priv;
+		if ((sta->ht_cap.ht_supported) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    !(skb->protocol == cpu_to_be16(ETH_P_PAE))) {
 			if (ieee80211_is_data_qos(fc)) {
 				u8 tid = rtl_get_tid(skb);
@@ -302,9 +350,17 @@ static void *rtl_rate_alloc_sta(void *ppriv,
 	struct rtl_priv *rtlpriv = ppriv;
 	struct rtl_rate_priv *rate_priv;
 
+<<<<<<< HEAD
 	rate_priv = kzalloc(sizeof(*rate_priv), gfp);
 	if (!rate_priv)
 		return NULL;
+=======
+	rate_priv = kzalloc(sizeof(struct rtl_rate_priv), gfp);
+	if (!rate_priv) {
+		pr_err("Unable to allocate private rc structure\n");
+		return NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rtlpriv->rate_priv = rate_priv;
 

@@ -48,6 +48,7 @@ mlx5_eswitch_add_offloaded_rule(struct mlx5_eswitch *esw,
 				struct mlx5_flow_spec *spec,
 				struct mlx5_esw_flow_attr *attr)
 {
+<<<<<<< HEAD
 	struct mlx5_flow_destination dest[MLX5_MAX_FLOW_FWD_VPORTS + 1] = {};
 	struct mlx5_flow_act flow_act = {0};
 	struct mlx5_flow_table *ft = NULL;
@@ -55,10 +56,19 @@ mlx5_eswitch_add_offloaded_rule(struct mlx5_eswitch *esw,
 	struct mlx5_flow_handle *rule;
 	int j, i = 0;
 	void *misc;
+=======
+	struct mlx5_flow_destination dest[2] = {};
+	struct mlx5_flow_act flow_act = {0};
+	struct mlx5_fc *counter = NULL;
+	struct mlx5_flow_handle *rule;
+	void *misc;
+	int i = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (esw->mode != SRIOV_OFFLOADS)
 		return ERR_PTR(-EOPNOTSUPP);
 
+<<<<<<< HEAD
 	if (attr->mirror_count)
 		ft = esw->fdb_table.offloads.fwd_fdb;
 	else
@@ -89,6 +99,15 @@ mlx5_eswitch_add_offloaded_rule(struct mlx5_eswitch *esw,
 			dest[i].vport.vhca_id_valid = !!MLX5_CAP_ESW(esw->dev, merged_eswitch);
 			i++;
 		}
+=======
+	/* per flow vlan pop/push is emulated, don't set that into the firmware */
+	flow_act.action = attr->action & ~(MLX5_FLOW_CONTEXT_ACTION_VLAN_PUSH | MLX5_FLOW_CONTEXT_ACTION_VLAN_POP);
+
+	if (flow_act.action & MLX5_FLOW_CONTEXT_ACTION_FWD_DEST) {
+		dest[i].type = MLX5_FLOW_DESTINATION_TYPE_VPORT;
+		dest[i].vport_num = attr->out_rep->vport;
+		i++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	if (flow_act.action & MLX5_FLOW_CONTEXT_ACTION_COUNT) {
 		counter = mlx5_fc_create(esw->dev, true);
@@ -104,6 +123,7 @@ mlx5_eswitch_add_offloaded_rule(struct mlx5_eswitch *esw,
 	misc = MLX5_ADDR_OF(fte_match_param, spec->match_value, misc_parameters);
 	MLX5_SET(fte_match_set_misc, misc, source_port, attr->in_rep->vport);
 
+<<<<<<< HEAD
 	if (MLX5_CAP_ESW(esw->dev, merged_eswitch))
 		MLX5_SET(fte_match_set_misc, misc,
 			 source_eswitch_owner_vhca_id,
@@ -131,6 +151,24 @@ mlx5_eswitch_add_offloaded_rule(struct mlx5_eswitch *esw,
 		flow_act.encap_id = attr->encap_id;
 
 	rule = mlx5_add_flow_rules(ft, spec, &flow_act, dest, i);
+=======
+	misc = MLX5_ADDR_OF(fte_match_param, spec->match_criteria, misc_parameters);
+	MLX5_SET_TO_ONES(fte_match_set_misc, misc, source_port);
+
+	spec->match_criteria_enable = MLX5_MATCH_OUTER_HEADERS |
+				      MLX5_MATCH_MISC_PARAMETERS;
+	if (flow_act.action & MLX5_FLOW_CONTEXT_ACTION_DECAP)
+		spec->match_criteria_enable |= MLX5_MATCH_INNER_HEADERS;
+
+	if (attr->action & MLX5_FLOW_CONTEXT_ACTION_MOD_HDR)
+		flow_act.modify_id = attr->mod_hdr_id;
+
+	if (attr->action & MLX5_FLOW_CONTEXT_ACTION_ENCAP)
+		flow_act.encap_id = attr->encap_id;
+
+	rule = mlx5_add_flow_rules((struct mlx5_flow_table *)esw->fdb_table.fdb,
+				   spec, &flow_act, dest, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rule))
 		goto err_add_rule;
 	else
@@ -144,6 +182,7 @@ err_counter_alloc:
 	return rule;
 }
 
+<<<<<<< HEAD
 struct mlx5_flow_handle *
 mlx5_eswitch_add_fwd_rule(struct mlx5_eswitch *esw,
 			  struct mlx5_flow_spec *spec,
@@ -195,6 +234,8 @@ mlx5_eswitch_add_fwd_rule(struct mlx5_eswitch *esw,
 	return rule;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void
 mlx5_eswitch_del_offloaded_rule(struct mlx5_eswitch *esw,
 				struct mlx5_flow_handle *rule,
@@ -216,7 +257,11 @@ static int esw_set_global_vlan_pop(struct mlx5_eswitch *esw, u8 val)
 	esw_debug(esw->dev, "%s applying global %s policy\n", __func__, val ? "pop" : "none");
 	for (vf_vport = 1; vf_vport < esw->enabled_vports; vf_vport++) {
 		rep = &esw->offloads.vport_reps[vf_vport];
+<<<<<<< HEAD
 		if (!rep->rep_if[REP_ETH].valid)
+=======
+		if (!rep->valid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		err = __mlx5_eswitch_set_vport_vlan(esw, rep->vport, 0, 0, val);
@@ -234,7 +279,11 @@ esw_vlan_action_get_vport(struct mlx5_esw_flow_attr *attr, bool push, bool pop)
 	struct mlx5_eswitch_rep *in_rep, *out_rep, *vport = NULL;
 
 	in_rep  = attr->in_rep;
+<<<<<<< HEAD
 	out_rep = attr->out_rep[0];
+=======
+	out_rep = attr->out_rep;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (push)
 		vport = in_rep;
@@ -255,7 +304,11 @@ static int esw_add_vlan_action_check(struct mlx5_esw_flow_attr *attr,
 		goto out_notsupp;
 
 	in_rep  = attr->in_rep;
+<<<<<<< HEAD
 	out_rep = attr->out_rep[0];
+=======
+	out_rep = attr->out_rep;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (push && in_rep->vport == FDB_UPLINK_VPORT)
 		goto out_notsupp;
@@ -271,7 +324,11 @@ static int esw_add_vlan_action_check(struct mlx5_esw_flow_attr *attr,
 	/* protects against (1) setting rules with different vlans to push and
 	 * (2) setting rules w.o vlans (attr->vlan = 0) && w. vlans to push (!= 0)
 	 */
+<<<<<<< HEAD
 	if (push && in_rep->vlan_refcount && (in_rep->vlan != attr->vlan_vid[0]))
+=======
+	if (push && in_rep->vlan_refcount && (in_rep->vlan != attr->vlan))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_notsupp;
 
 	return 0;
@@ -288,10 +345,13 @@ int mlx5_eswitch_add_vlan_action(struct mlx5_eswitch *esw,
 	bool push, pop, fwd;
 	int err = 0;
 
+<<<<<<< HEAD
 	/* nop if we're on the vlan push/pop non emulation mode */
 	if (mlx5_eswitch_vlan_actions_supported(esw->dev, 1))
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	push = !!(attr->action & MLX5_FLOW_CONTEXT_ACTION_VLAN_PUSH);
 	pop  = !!(attr->action & MLX5_FLOW_CONTEXT_ACTION_VLAN_POP);
 	fwd  = !!(attr->action & MLX5_FLOW_CONTEXT_ACTION_FWD_DEST);
@@ -306,7 +366,11 @@ int mlx5_eswitch_add_vlan_action(struct mlx5_eswitch *esw,
 
 	if (!push && !pop && fwd) {
 		/* tracks VF --> wire rules without vlan push action */
+<<<<<<< HEAD
 		if (attr->out_rep[0]->vport == FDB_UPLINK_VPORT) {
+=======
+		if (attr->out_rep->vport == FDB_UPLINK_VPORT) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vport->vlan_refcount++;
 			attr->vlan_handled = true;
 		}
@@ -329,11 +393,19 @@ int mlx5_eswitch_add_vlan_action(struct mlx5_eswitch *esw,
 		if (vport->vlan_refcount)
 			goto skip_set_push;
 
+<<<<<<< HEAD
 		err = __mlx5_eswitch_set_vport_vlan(esw, vport->vport, attr->vlan_vid[0], 0,
 						    SET_VLAN_INSERT | SET_VLAN_STRIP);
 		if (err)
 			goto out;
 		vport->vlan = attr->vlan_vid[0];
+=======
+		err = __mlx5_eswitch_set_vport_vlan(esw, vport->vport, attr->vlan, 0,
+						    SET_VLAN_INSERT | SET_VLAN_STRIP);
+		if (err)
+			goto out;
+		vport->vlan = attr->vlan;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 skip_set_push:
 		vport->vlan_refcount++;
 	}
@@ -351,10 +423,13 @@ int mlx5_eswitch_del_vlan_action(struct mlx5_eswitch *esw,
 	bool push, pop, fwd;
 	int err = 0;
 
+<<<<<<< HEAD
 	/* nop if we're on the vlan push/pop non emulation mode */
 	if (mlx5_eswitch_vlan_actions_supported(esw->dev, 1))
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!attr->vlan_handled)
 		return 0;
 
@@ -366,7 +441,11 @@ int mlx5_eswitch_del_vlan_action(struct mlx5_eswitch *esw,
 
 	if (!push && !pop && fwd) {
 		/* tracks VF --> wire rules without vlan push action */
+<<<<<<< HEAD
 		if (attr->out_rep[0]->vport == FDB_UPLINK_VPORT)
+=======
+		if (attr->out_rep->vport == FDB_UPLINK_VPORT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vport->vlan_refcount--;
 
 		return 0;
@@ -396,11 +475,19 @@ out:
 	return err;
 }
 
+<<<<<<< HEAD
 struct mlx5_flow_handle *
 mlx5_eswitch_add_send_to_vport_rule(struct mlx5_eswitch *esw, int vport, u32 sqn)
 {
 	struct mlx5_flow_act flow_act = {0};
 	struct mlx5_flow_destination dest = {};
+=======
+static struct mlx5_flow_handle *
+mlx5_eswitch_add_send_to_vport_rule(struct mlx5_eswitch *esw, int vport, u32 sqn)
+{
+	struct mlx5_flow_act flow_act = {0};
+	struct mlx5_flow_destination dest;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_flow_handle *flow_rule;
 	struct mlx5_flow_spec *spec;
 	void *misc;
@@ -421,10 +508,17 @@ mlx5_eswitch_add_send_to_vport_rule(struct mlx5_eswitch *esw, int vport, u32 sqn
 
 	spec->match_criteria_enable = MLX5_MATCH_MISC_PARAMETERS;
 	dest.type = MLX5_FLOW_DESTINATION_TYPE_VPORT;
+<<<<<<< HEAD
 	dest.vport.num = vport;
 	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
 
 	flow_rule = mlx5_add_flow_rules(esw->fdb_table.offloads.slow_fdb, spec,
+=======
+	dest.vport_num = vport;
+	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
+
+	flow_rule = mlx5_add_flow_rules(esw->fdb_table.offloads.fdb, spec,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					&flow_act, &dest, 1);
 	if (IS_ERR(flow_rule))
 		esw_warn(esw->dev, "FDB: Failed to add send to vport rule err %ld\n", PTR_ERR(flow_rule));
@@ -432,16 +526,72 @@ out:
 	kvfree(spec);
 	return flow_rule;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(mlx5_eswitch_add_send_to_vport_rule);
 
 void mlx5_eswitch_del_send_to_vport_rule(struct mlx5_flow_handle *rule)
 {
 	mlx5_del_flow_rules(rule);
+=======
+
+void mlx5_eswitch_sqs2vport_stop(struct mlx5_eswitch *esw,
+				 struct mlx5_eswitch_rep *rep)
+{
+	struct mlx5_esw_sq *esw_sq, *tmp;
+
+	if (esw->mode != SRIOV_OFFLOADS)
+		return;
+
+	list_for_each_entry_safe(esw_sq, tmp, &rep->vport_sqs_list, list) {
+		mlx5_del_flow_rules(esw_sq->send_to_vport_rule);
+		list_del(&esw_sq->list);
+		kfree(esw_sq);
+	}
+}
+
+int mlx5_eswitch_sqs2vport_start(struct mlx5_eswitch *esw,
+				 struct mlx5_eswitch_rep *rep,
+				 u16 *sqns_array, int sqns_num)
+{
+	struct mlx5_flow_handle *flow_rule;
+	struct mlx5_esw_sq *esw_sq;
+	int err;
+	int i;
+
+	if (esw->mode != SRIOV_OFFLOADS)
+		return 0;
+
+	for (i = 0; i < sqns_num; i++) {
+		esw_sq = kzalloc(sizeof(*esw_sq), GFP_KERNEL);
+		if (!esw_sq) {
+			err = -ENOMEM;
+			goto out_err;
+		}
+
+		/* Add re-inject rule to the PF/representor sqs */
+		flow_rule = mlx5_eswitch_add_send_to_vport_rule(esw,
+								rep->vport,
+								sqns_array[i]);
+		if (IS_ERR(flow_rule)) {
+			err = PTR_ERR(flow_rule);
+			kfree(esw_sq);
+			goto out_err;
+		}
+		esw_sq->send_to_vport_rule = flow_rule;
+		list_add(&esw_sq->list, &rep->vport_sqs_list);
+	}
+	return 0;
+
+out_err:
+	mlx5_eswitch_sqs2vport_stop(esw, rep);
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int esw_add_fdb_miss_rule(struct mlx5_eswitch *esw)
 {
 	struct mlx5_flow_act flow_act = {0};
+<<<<<<< HEAD
 	struct mlx5_flow_destination dest = {};
 	struct mlx5_flow_handle *flow_rule = NULL;
 	struct mlx5_flow_spec *spec;
@@ -450,6 +600,12 @@ static int esw_add_fdb_miss_rule(struct mlx5_eswitch *esw)
 	int err = 0;
 	u8 *dmac_c;
 	u8 *dmac_v;
+=======
+	struct mlx5_flow_destination dest;
+	struct mlx5_flow_handle *flow_rule = NULL;
+	struct mlx5_flow_spec *spec;
+	int err = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spec = kvzalloc(sizeof(*spec), GFP_KERNEL);
 	if (!spec) {
@@ -457,6 +613,7 @@ static int esw_add_fdb_miss_rule(struct mlx5_eswitch *esw)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	spec->match_criteria_enable = MLX5_MATCH_OUTER_HEADERS;
 	headers_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
 				 outer_headers);
@@ -494,6 +651,21 @@ static int esw_add_fdb_miss_rule(struct mlx5_eswitch *esw)
 
 	esw->fdb_table.offloads.miss_rule_multi = flow_rule;
 
+=======
+	dest.type = MLX5_FLOW_DESTINATION_TYPE_VPORT;
+	dest.vport_num = 0;
+	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
+
+	flow_rule = mlx5_add_flow_rules(esw->fdb_table.offloads.fdb, spec,
+					&flow_act, &dest, 1);
+	if (IS_ERR(flow_rule)) {
+		err = PTR_ERR(flow_rule);
+		esw_warn(esw->dev,  "FDB: Failed to add miss flow rule err %d\n", err);
+		goto out;
+	}
+
+	esw->fdb_table.offloads.miss_rule = flow_rule;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	kvfree(spec);
 	return err;
@@ -515,7 +687,11 @@ static int esw_create_offloads_fast_fdb_table(struct mlx5_eswitch *esw)
 	if (!root_ns) {
 		esw_warn(dev, "Failed to get FDB flow namespace\n");
 		err = -EOPNOTSUPP;
+<<<<<<< HEAD
 		goto out_namespace;
+=======
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	esw_debug(dev, "Create offloads FDB table, min (max esw size(2^%d), max counters(%d)*groups(%d))\n",
@@ -525,9 +701,12 @@ static int esw_create_offloads_fast_fdb_table(struct mlx5_eswitch *esw)
 	esw_size = min_t(int, max_flow_counter * ESW_OFFLOADS_NUM_GROUPS,
 			 1 << MLX5_CAP_ESW_FLOWTABLE_FDB(dev, log_max_ft_size));
 
+<<<<<<< HEAD
 	if (mlx5_esw_has_fwd_fdb(dev))
 		esw_size >>= 1;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (esw->offloads.encap != DEVLINK_ESWITCH_ENCAP_MODE_NONE)
 		flags |= MLX5_FLOW_TABLE_TUNNEL_EN;
 
@@ -538,6 +717,7 @@ static int esw_create_offloads_fast_fdb_table(struct mlx5_eswitch *esw)
 	if (IS_ERR(fdb)) {
 		err = PTR_ERR(fdb);
 		esw_warn(dev, "Failed to create Fast path FDB Table err %d\n", err);
+<<<<<<< HEAD
 		goto out_namespace;
 	}
 	esw->fdb_table.offloads.fast_fdb = fdb;
@@ -561,11 +741,19 @@ static int esw_create_offloads_fast_fdb_table(struct mlx5_eswitch *esw)
 out_ft:
 	mlx5_destroy_flow_table(esw->fdb_table.offloads.fast_fdb);
 out_namespace:
+=======
+		goto out;
+	}
+	esw->fdb_table.fdb = fdb;
+
+out:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
 static void esw_destroy_offloads_fast_fdb_table(struct mlx5_eswitch *esw)
 {
+<<<<<<< HEAD
 	if (mlx5_esw_has_fwd_fdb(esw->dev))
 		mlx5_destroy_flow_table(esw->fdb_table.offloads.fwd_fdb);
 	mlx5_destroy_flow_table(esw->fdb_table.offloads.fast_fdb);
@@ -573,6 +761,12 @@ static void esw_destroy_offloads_fast_fdb_table(struct mlx5_eswitch *esw)
 
 #define MAX_PF_SQ 256
 #define MAX_SQ_NVPORTS 32
+=======
+	mlx5_destroy_flow_table(esw->fdb_table.fdb);
+}
+
+#define MAX_PF_SQ 256
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int esw_create_offloads_fdb_tables(struct mlx5_eswitch *esw, int nvports)
 {
@@ -585,7 +779,10 @@ static int esw_create_offloads_fdb_tables(struct mlx5_eswitch *esw, int nvports)
 	struct mlx5_flow_group *g;
 	void *match_criteria;
 	u32 *flow_group_in;
+<<<<<<< HEAD
 	u8 *dmac;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	esw_debug(esw->dev, "Create offloads FDB Tables\n");
 	flow_group_in = kvzalloc(inlen, GFP_KERNEL);
@@ -603,7 +800,11 @@ static int esw_create_offloads_fdb_tables(struct mlx5_eswitch *esw, int nvports)
 	if (err)
 		goto fast_fdb_err;
 
+<<<<<<< HEAD
 	table_size = nvports * MAX_SQ_NVPORTS + MAX_PF_SQ + 2;
+=======
+	table_size = nvports + MAX_PF_SQ + 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ft_attr.max_fte = table_size;
 	ft_attr.prio = FDB_SLOW_PATH;
@@ -614,7 +815,11 @@ static int esw_create_offloads_fdb_tables(struct mlx5_eswitch *esw, int nvports)
 		esw_warn(dev, "Failed to create slow path FDB Table err %d\n", err);
 		goto slow_fdb_err;
 	}
+<<<<<<< HEAD
 	esw->fdb_table.offloads.slow_fdb = fdb;
+=======
+	esw->fdb_table.offloads.fdb = fdb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* create send-to-vport group */
 	memset(flow_group_in, 0, inlen);
@@ -626,7 +831,11 @@ static int esw_create_offloads_fdb_tables(struct mlx5_eswitch *esw, int nvports)
 	MLX5_SET_TO_ONES(fte_match_param, match_criteria, misc_parameters.source_sqn);
 	MLX5_SET_TO_ONES(fte_match_param, match_criteria, misc_parameters.source_port);
 
+<<<<<<< HEAD
 	ix = nvports * MAX_SQ_NVPORTS + MAX_PF_SQ;
+=======
+	ix = nvports + MAX_PF_SQ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MLX5_SET(create_flow_group_in, flow_group_in, start_flow_index, 0);
 	MLX5_SET(create_flow_group_in, flow_group_in, end_flow_index, ix - 1);
 
@@ -640,6 +849,7 @@ static int esw_create_offloads_fdb_tables(struct mlx5_eswitch *esw, int nvports)
 
 	/* create miss group */
 	memset(flow_group_in, 0, inlen);
+<<<<<<< HEAD
 	MLX5_SET(create_flow_group_in, flow_group_in, match_criteria_enable,
 		 MLX5_MATCH_OUTER_HEADERS);
 	match_criteria = MLX5_ADDR_OF(create_flow_group_in, flow_group_in,
@@ -650,6 +860,12 @@ static int esw_create_offloads_fdb_tables(struct mlx5_eswitch *esw, int nvports)
 
 	MLX5_SET(create_flow_group_in, flow_group_in, start_flow_index, ix);
 	MLX5_SET(create_flow_group_in, flow_group_in, end_flow_index, ix + 2);
+=======
+	MLX5_SET(create_flow_group_in, flow_group_in, match_criteria_enable, 0);
+
+	MLX5_SET(create_flow_group_in, flow_group_in, start_flow_index, ix);
+	MLX5_SET(create_flow_group_in, flow_group_in, end_flow_index, ix + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	g = mlx5_create_flow_group(fdb, flow_group_in);
 	if (IS_ERR(g)) {
@@ -671,9 +887,15 @@ miss_rule_err:
 miss_err:
 	mlx5_destroy_flow_group(esw->fdb_table.offloads.send_to_vport_grp);
 send_vport_err:
+<<<<<<< HEAD
 	mlx5_destroy_flow_table(esw->fdb_table.offloads.slow_fdb);
 slow_fdb_err:
 	esw_destroy_offloads_fast_fdb_table(esw);
+=======
+	mlx5_destroy_flow_table(esw->fdb_table.offloads.fdb);
+slow_fdb_err:
+	mlx5_destroy_flow_table(esw->fdb_table.fdb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fast_fdb_err:
 ns_err:
 	kvfree(flow_group_in);
@@ -682,6 +904,7 @@ ns_err:
 
 static void esw_destroy_offloads_fdb_tables(struct mlx5_eswitch *esw)
 {
+<<<<<<< HEAD
 	if (!esw->fdb_table.offloads.fast_fdb)
 		return;
 
@@ -692,6 +915,17 @@ static void esw_destroy_offloads_fdb_tables(struct mlx5_eswitch *esw)
 	mlx5_destroy_flow_group(esw->fdb_table.offloads.miss_grp);
 
 	mlx5_destroy_flow_table(esw->fdb_table.offloads.slow_fdb);
+=======
+	if (!esw->fdb_table.fdb)
+		return;
+
+	esw_debug(esw->dev, "Destroy offloads FDB Tables\n");
+	mlx5_del_flow_rules(esw->fdb_table.offloads.miss_rule);
+	mlx5_destroy_flow_group(esw->fdb_table.offloads.send_to_vport_grp);
+	mlx5_destroy_flow_group(esw->fdb_table.offloads.miss_grp);
+
+	mlx5_destroy_flow_table(esw->fdb_table.offloads.fdb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	esw_destroy_offloads_fast_fdb_table(esw);
 }
 
@@ -765,7 +999,11 @@ static int esw_create_vport_rx_group(struct mlx5_eswitch *esw)
 
 	esw->offloads.vport_rx_group = g;
 out:
+<<<<<<< HEAD
 	kvfree(flow_group_in);
+=======
+	kfree(flow_group_in);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -778,7 +1016,11 @@ struct mlx5_flow_handle *
 mlx5_eswitch_create_vport_rx_rule(struct mlx5_eswitch *esw, int vport, u32 tirn)
 {
 	struct mlx5_flow_act flow_act = {0};
+<<<<<<< HEAD
 	struct mlx5_flow_destination dest = {};
+=======
+	struct mlx5_flow_destination dest;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx5_flow_handle *flow_rule;
 	struct mlx5_flow_spec *spec;
 	void *misc;
@@ -840,6 +1082,7 @@ static int esw_offloads_start(struct mlx5_eswitch *esw)
 	return err;
 }
 
+<<<<<<< HEAD
 void esw_offloads_cleanup_reps(struct mlx5_eswitch *esw)
 {
 	kfree(esw->offloads.vport_reps);
@@ -948,6 +1191,22 @@ int esw_offloads_init(struct mlx5_eswitch *esw, int nvports)
 	err = esw_create_offloads_fdb_tables(esw, nvports);
 	if (err)
 		return err;
+=======
+int esw_offloads_init(struct mlx5_eswitch *esw, int nvports)
+{
+	struct mlx5_eswitch_rep *rep;
+	int vport;
+	int err;
+
+	/* disable PF RoCE so missed packets don't go through RoCE steering */
+	mlx5_dev_list_lock();
+	mlx5_remove_dev_by_protocol(esw->dev, MLX5_INTERFACE_PROTOCOL_IB);
+	mlx5_dev_list_unlock();
+
+	err = esw_create_offloads_fdb_tables(esw, nvports);
+	if (err)
+		goto create_fdb_err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = esw_create_offloads_table(esw);
 	if (err)
@@ -957,13 +1216,34 @@ int esw_offloads_init(struct mlx5_eswitch *esw, int nvports)
 	if (err)
 		goto create_fg_err;
 
+<<<<<<< HEAD
 	err = esw_offloads_load_reps(esw, nvports);
 	if (err)
 		goto err_reps;
+=======
+	for (vport = 0; vport < nvports; vport++) {
+		rep = &esw->offloads.vport_reps[vport];
+		if (!rep->valid)
+			continue;
+
+		err = rep->load(esw, rep);
+		if (err)
+			goto err_reps;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
 err_reps:
+<<<<<<< HEAD
+=======
+	for (vport--; vport >= 0; vport--) {
+		rep = &esw->offloads.vport_reps[vport];
+		if (!rep->valid)
+			continue;
+		rep->unload(esw, rep);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	esw_destroy_vport_rx_group(esw);
 
 create_fg_err:
@@ -972,6 +1252,15 @@ create_fg_err:
 create_ft_err:
 	esw_destroy_offloads_fdb_tables(esw);
 
+<<<<<<< HEAD
+=======
+create_fdb_err:
+	/* enable back PF RoCE */
+	mlx5_dev_list_lock();
+	mlx5_add_dev_by_protocol(esw->dev, MLX5_INTERFACE_PROTOCOL_IB);
+	mlx5_dev_list_unlock();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -989,14 +1278,33 @@ static int esw_offloads_stop(struct mlx5_eswitch *esw)
 	}
 
 	/* enable back PF RoCE */
+<<<<<<< HEAD
 	mlx5_reload_interface(esw->dev, MLX5_INTERFACE_PROTOCOL_IB);
+=======
+	mlx5_dev_list_lock();
+	mlx5_add_dev_by_protocol(esw->dev, MLX5_INTERFACE_PROTOCOL_IB);
+	mlx5_dev_list_unlock();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return err;
 }
 
 void esw_offloads_cleanup(struct mlx5_eswitch *esw, int nvports)
 {
+<<<<<<< HEAD
 	esw_offloads_unload_reps(esw, nvports);
+=======
+	struct mlx5_eswitch_rep *rep;
+	int vport;
+
+	for (vport = nvports - 1; vport >= 0; vport--) {
+		rep = &esw->offloads.vport_reps[vport];
+		if (!rep->valid)
+			continue;
+		rep->unload(esw, rep);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	esw_destroy_vport_rx_group(esw);
 	esw_destroy_offloads_table(esw);
 	esw_destroy_offloads_fdb_tables(esw);
@@ -1293,6 +1601,7 @@ int mlx5_devlink_eswitch_encap_mode_get(struct devlink *devlink, u8 *encap)
 
 void mlx5_eswitch_register_vport_rep(struct mlx5_eswitch *esw,
 				     int vport_index,
+<<<<<<< HEAD
 				     struct mlx5_eswitch_rep_if *__rep_if,
 				     u8 rep_type)
 {
@@ -1312,6 +1621,29 @@ EXPORT_SYMBOL(mlx5_eswitch_register_vport_rep);
 
 void mlx5_eswitch_unregister_vport_rep(struct mlx5_eswitch *esw,
 				       int vport_index, u8 rep_type)
+=======
+				     struct mlx5_eswitch_rep *__rep)
+{
+	struct mlx5_esw_offload *offloads = &esw->offloads;
+	struct mlx5_eswitch_rep *rep;
+
+	rep = &offloads->vport_reps[vport_index];
+
+	memset(rep, 0, sizeof(*rep));
+
+	rep->load   = __rep->load;
+	rep->unload = __rep->unload;
+	rep->vport  = __rep->vport;
+	rep->netdev = __rep->netdev;
+	ether_addr_copy(rep->hw_id, __rep->hw_id);
+
+	INIT_LIST_HEAD(&rep->vport_sqs_list);
+	rep->valid = true;
+}
+
+void mlx5_eswitch_unregister_vport_rep(struct mlx5_eswitch *esw,
+				       int vport_index)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx5_esw_offload *offloads = &esw->offloads;
 	struct mlx5_eswitch_rep *rep;
@@ -1319,6 +1651,7 @@ void mlx5_eswitch_unregister_vport_rep(struct mlx5_eswitch *esw,
 	rep = &offloads->vport_reps[vport_index];
 
 	if (esw->mode == SRIOV_OFFLOADS && esw->vports[vport_index].enabled)
+<<<<<<< HEAD
 		rep->rep_if[rep_type].unload(rep);
 
 	rep->rep_if[rep_type].valid = false;
@@ -1326,12 +1659,21 @@ void mlx5_eswitch_unregister_vport_rep(struct mlx5_eswitch *esw,
 EXPORT_SYMBOL(mlx5_eswitch_unregister_vport_rep);
 
 void *mlx5_eswitch_get_uplink_priv(struct mlx5_eswitch *esw, u8 rep_type)
+=======
+		rep->unload(esw, rep);
+
+	rep->valid = false;
+}
+
+struct net_device *mlx5_eswitch_get_uplink_netdev(struct mlx5_eswitch *esw)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #define UPLINK_REP_INDEX 0
 	struct mlx5_esw_offload *offloads = &esw->offloads;
 	struct mlx5_eswitch_rep *rep;
 
 	rep = &offloads->vport_reps[UPLINK_REP_INDEX];
+<<<<<<< HEAD
 	return rep->rep_if[rep_type].priv;
 }
 
@@ -1366,3 +1708,7 @@ struct mlx5_eswitch_rep *mlx5_eswitch_vport_rep(struct mlx5_eswitch *esw,
 	return &esw->offloads.vport_reps[vport];
 }
 EXPORT_SYMBOL(mlx5_eswitch_vport_rep);
+=======
+	return rep->netdev;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0 OR MIT
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (c) 2006-2009 VMware, Inc., Palo Alto, CA., USA
  * Copyright (c) 2012 David Airlie <airlied@linux.ie>
@@ -204,6 +207,7 @@ EXPORT_SYMBOL(drm_vma_offset_lookup_locked);
 int drm_vma_offset_add(struct drm_vma_offset_manager *mgr,
 		       struct drm_vma_offset_node *node, unsigned long pages)
 {
+<<<<<<< HEAD
 	int ret = 0;
 
 	write_lock(&mgr->vm_lock);
@@ -214,6 +218,23 @@ int drm_vma_offset_add(struct drm_vma_offset_manager *mgr,
 
 	write_unlock(&mgr->vm_lock);
 
+=======
+	int ret;
+
+	write_lock(&mgr->vm_lock);
+
+	if (drm_mm_node_allocated(&node->vm_node)) {
+		ret = 0;
+		goto out_unlock;
+	}
+
+	ret = drm_mm_insert_node(&mgr->vm_addr_space_mm, &node->vm_node, pages);
+	if (ret)
+		goto out_unlock;
+
+out_unlock:
+	write_unlock(&mgr->vm_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 EXPORT_SYMBOL(drm_vma_offset_add);

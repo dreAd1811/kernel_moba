@@ -169,10 +169,17 @@ static ssize_t cpia2_v4l_read(struct file *file, char __user *buf, size_t count,
  *  cpia2_v4l_poll
  *
  *****************************************************************************/
+<<<<<<< HEAD
 static __poll_t cpia2_v4l_poll(struct file *filp, struct poll_table_struct *wait)
 {
 	struct camera_data *cam = video_drvdata(filp);
 	__poll_t res;
+=======
+static unsigned int cpia2_v4l_poll(struct file *filp, struct poll_table_struct *wait)
+{
+	struct camera_data *cam = video_drvdata(filp);
+	unsigned int res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&cam->v4l2_lock);
 	res = cpia2_poll(cam, filp, wait);

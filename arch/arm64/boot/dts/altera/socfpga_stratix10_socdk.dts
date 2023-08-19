@@ -14,7 +14,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+<<<<<<< HEAD
 #include "socfpga_stratix10.dtsi"
+=======
+/include/ "socfpga_stratix10.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "SoCFPGA Stratix 10 SoCDK";
@@ -27,6 +31,7 @@
 		stdout-path = "serial0:115200n8";
 	};
 
+<<<<<<< HEAD
 	leds {
 		compatible = "gpio-leds";
 		hps0 {
@@ -45,11 +50,14 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memory {
 		device_type = "memory";
 		/* We expect the bootloader to fill in the reg */
 		reg = <0 0 0 0>;
 	};
+<<<<<<< HEAD
 
 	ref_033v: 033-v-ref {
 		compatible = "regulator-fixed";
@@ -106,11 +114,14 @@
 	cap-sd-highspeed;
 	broken-cd;
 	bus-width = <4>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart0 {
 	status = "okay";
 };
+<<<<<<< HEAD
 
 &usb0 {
 	status = "okay";
@@ -182,3 +193,5 @@
 		};
 	};
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

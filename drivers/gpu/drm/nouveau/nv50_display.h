@@ -28,6 +28,10 @@
 #define __NV50_DISPLAY_H__
 
 #include "nouveau_display.h"
+<<<<<<< HEAD
+=======
+#include "nouveau_crtc.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "nouveau_reg.h"
 
 int  nv50_display_create(struct drm_device *);

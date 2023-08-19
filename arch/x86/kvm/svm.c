@@ -37,10 +37,13 @@
 #include <linux/amd-iommu.h>
 #include <linux/hashtable.h>
 #include <linux/frame.h>
+<<<<<<< HEAD
 #include <linux/psp-sev.h>
 #include <linux/file.h>
 #include <linux/pagemap.h>
 #include <linux/swap.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/apic.h>
 #include <asm/perf_event.h>
@@ -49,6 +52,10 @@
 #include <asm/debugreg.h>
 #include <asm/kvm_para.h>
 #include <asm/irq_remapping.h>
+<<<<<<< HEAD
+=======
+#include <asm/microcode.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/spec-ctrl.h>
 
 #include <asm/virtext.h>
@@ -131,6 +138,7 @@ static const u32 host_save_user_msrs[] = {
 
 #define NR_HOST_SAVE_USER_MSRS ARRAY_SIZE(host_save_user_msrs)
 
+<<<<<<< HEAD
 struct kvm_sev_info {
 	bool active;		/* SEV enabled guest */
 	unsigned int asid;	/* ASID used for this guest */
@@ -153,6 +161,8 @@ struct kvm_svm {
 	struct kvm_sev_info sev_info;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kvm_vcpu;
 
 struct nested_state {
@@ -248,9 +258,12 @@ struct vcpu_svm {
 	 */
 	struct list_head ir_list;
 	spinlock_t ir_list_lock;
+<<<<<<< HEAD
 
 	/* which host CPU was used for running this vcpu */
 	unsigned int last_cpu;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -304,6 +317,7 @@ static bool npt_enabled = true;
 static bool npt_enabled;
 #endif
 
+<<<<<<< HEAD
 /*
  * These 2 parameters are used to config the controls for Pause-Loop Exiting:
  * pause_filter_count: On processors that support Pause filtering(indicated
@@ -352,6 +366,8 @@ module_param(pause_filter_count_shrink, ushort, 0444);
 static unsigned short pause_filter_count_max = KVM_SVM_DEFAULT_PLE_WINDOW_MAX;
 module_param(pause_filter_count_max, ushort, 0444);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* allow nested paging (virtualized MMU) for all guests */
 static int npt = true;
 module_param(npt, int, S_IRUGO);
@@ -374,12 +390,15 @@ module_param(vls, int, 0444);
 static int vgif = true;
 module_param(vgif, int, 0444);
 
+<<<<<<< HEAD
 /* enable/disable SEV support */
 static int sev = IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT_ACTIVE_BY_DEFAULT);
 module_param(sev, int, 0444);
 
 static u8 rsm_ins_bytes[] = "\x0f\xaa";
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void svm_set_cr0(struct kvm_vcpu *vcpu, unsigned long cr0);
 static void svm_flush_tlb(struct kvm_vcpu *vcpu, bool invalidate_gpa);
 static void svm_complete_interrupts(struct vcpu_svm *svm);
@@ -415,6 +434,7 @@ enum {
 
 #define VMCB_AVIC_APIC_BAR_MASK		0xFFFFFFFFFF000ULL
 
+<<<<<<< HEAD
 static unsigned int max_sev_asid;
 static unsigned int min_sev_asid;
 static unsigned long *sev_asid_bitmap;
@@ -457,6 +477,8 @@ static inline int sev_get_asid(struct kvm *kvm)
 	return sev->asid;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void mark_all_dirty(struct vmcb *vmcb)
 {
 	vmcb->control.clean = 0;
@@ -663,14 +685,20 @@ struct svm_cpu_data {
 	u64 asid_generation;
 	u32 max_asid;
 	u32 next_asid;
+<<<<<<< HEAD
 	u32 min_asid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kvm_ldttss_desc *tss_desc;
 
 	struct page *save_area;
 	struct vmcb *current_vmcb;
+<<<<<<< HEAD
 
 	/* index = sev_asid, value = vmcb pointer */
 	struct vmcb **sev_vmcbs;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static DEFINE_PER_CPU(struct svm_cpu_data *, svm_data);
@@ -736,8 +764,19 @@ static int get_npt_level(struct kvm_vcpu *vcpu)
 static void svm_set_efer(struct kvm_vcpu *vcpu, u64 efer)
 {
 	vcpu->arch.efer = efer;
+<<<<<<< HEAD
 	if (!npt_enabled && !(efer & EFER_LMA))
 		efer &= ~EFER_LME;
+=======
+
+	if (!npt_enabled) {
+		/* Shadow paging assumes NX to be available.  */
+		efer |= EFER_NX;
+
+		if (!(efer & EFER_LMA))
+			efer &= ~EFER_LME;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	to_svm(vcpu)->vmcb->save.efer = efer | EFER_SVME;
 	mark_dirty(to_svm(vcpu)->vmcb, VMCB_CR);
@@ -780,7 +819,11 @@ static void skip_emulated_instruction(struct kvm_vcpu *vcpu)
 	}
 
 	if (!svm->next_rip) {
+<<<<<<< HEAD
 		if (kvm_emulate_instruction(vcpu, EMULTYPE_SKIP) !=
+=======
+		if (emulate_instruction(vcpu, EMULTYPE_SKIP) !=
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				EMULATE_DONE)
 			printk(KERN_DEBUG "%s: NOP\n", __func__);
 		return;
@@ -925,7 +968,10 @@ static int svm_hardware_enable(void)
 	sd->asid_generation = 1;
 	sd->max_asid = cpuid_ebx(SVM_CPUID_FUNC) - 1;
 	sd->next_asid = sd->max_asid + 1;
+<<<<<<< HEAD
 	sd->min_asid = max_sev_asid + 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gdt = get_current_gdt_rw();
 	sd->tss_desc = (struct kvm_ldttss_desc *)(gdt + GDT_ENTRY_TSS);
@@ -984,7 +1030,10 @@ static void svm_cpu_uninit(int cpu)
 		return;
 
 	per_cpu(svm_data, raw_smp_processor_id()) = NULL;
+<<<<<<< HEAD
 	kfree(sd->sev_vmcbs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__free_page(sd->save_area);
 	kfree(sd);
 }
@@ -998,6 +1047,7 @@ static int svm_cpu_init(int cpu)
 	if (!sd)
 		return -ENOMEM;
 	sd->cpu = cpu;
+<<<<<<< HEAD
 	r = -ENOMEM;
 	sd->save_area = alloc_page(GFP_KERNEL);
 	if (!sd->save_area)
@@ -1012,6 +1062,13 @@ static int svm_cpu_init(int cpu)
 			goto err_1;
 	}
 
+=======
+	sd->save_area = alloc_page(GFP_KERNEL);
+	r = -ENOMEM;
+	if (!sd->save_area)
+		goto err_1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	per_cpu(svm_data, cpu) = sd;
 
 	return 0;
@@ -1171,7 +1228,11 @@ static void disable_nmi_singlestep(struct vcpu_svm *svm)
 }
 
 /* Note:
+<<<<<<< HEAD
  * This hash table is used to map VM_ID to a struct kvm_svm,
+=======
+ * This hash table is used to map VM_ID to a struct kvm_arch,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * when handling AMD IOMMU GALOG notification to schedule in
  * a particular vCPU.
  */
@@ -1188,7 +1249,11 @@ static DEFINE_SPINLOCK(svm_vm_data_hash_lock);
 static int avic_ga_log_notifier(u32 ga_tag)
 {
 	unsigned long flags;
+<<<<<<< HEAD
 	struct kvm_svm *kvm_svm;
+=======
+	struct kvm_arch *ka = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kvm_vcpu *vcpu = NULL;
 	u32 vm_id = AVIC_GATAG_TO_VMID(ga_tag);
 	u32 vcpu_id = AVIC_GATAG_TO_VCPUID(ga_tag);
@@ -1196,25 +1261,46 @@ static int avic_ga_log_notifier(u32 ga_tag)
 	pr_debug("SVM: %s: vm_id=%#x, vcpu_id=%#x\n", __func__, vm_id, vcpu_id);
 
 	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
+<<<<<<< HEAD
 	hash_for_each_possible(svm_vm_data_hash, kvm_svm, hnode, vm_id) {
 		if (kvm_svm->avic_vm_id != vm_id)
 			continue;
 		vcpu = kvm_get_vcpu_by_id(&kvm_svm->kvm, vcpu_id);
+=======
+	hash_for_each_possible(svm_vm_data_hash, ka, hnode, vm_id) {
+		struct kvm *kvm = container_of(ka, struct kvm, arch);
+		struct kvm_arch *vm_data = &kvm->arch;
+
+		if (vm_data->avic_vm_id != vm_id)
+			continue;
+		vcpu = kvm_get_vcpu_by_id(kvm, vcpu_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
 
+<<<<<<< HEAD
+=======
+	if (!vcpu)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Note:
 	 * At this point, the IOMMU should have already set the pending
 	 * bit in the vAPIC backing page. So, we just need to schedule
 	 * in the vcpu.
 	 */
+<<<<<<< HEAD
 	if (vcpu)
+=======
+	if (vcpu->mode == OUTSIDE_GUEST_MODE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kvm_vcpu_wake_up(vcpu);
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static __init int sev_hardware_setup(void)
 {
 	struct sev_user_data_status *status;
@@ -1290,6 +1376,47 @@ static void shrink_ple_window(struct kvm_vcpu *vcpu)
 
 	trace_kvm_ple_window_shrink(vcpu->vcpu_id,
 				    control->pause_filter_count, old);
+=======
+/*
+ * The default MMIO mask is a single bit (excluding the present bit),
+ * which could conflict with the memory encryption bit. Check for
+ * memory encryption support and override the default MMIO mask if
+ * memory encryption is enabled.
+ */
+static __init void svm_adjust_mmio_mask(void)
+{
+	unsigned int enc_bit, mask_bit;
+	u64 msr, mask;
+
+	/* If there is no memory encryption support, use existing mask */
+	if (cpuid_eax(0x80000000) < 0x8000001f)
+		return;
+
+	/* If memory encryption is not enabled, use existing mask */
+	rdmsrl(MSR_K8_SYSCFG, msr);
+	if (!(msr & MSR_K8_SYSCFG_MEM_ENCRYPT))
+		return;
+
+	enc_bit = cpuid_ebx(0x8000001f) & 0x3f;
+	mask_bit = boot_cpu_data.x86_phys_bits;
+
+	/* Increment the mask bit if it is the same as the encryption bit */
+	if (enc_bit == mask_bit)
+		mask_bit++;
+
+	/*
+	 * If the mask bit location is below 52, then some bits above the
+	 * physical addressing limit will always be reserved, so use the
+	 * rsvd_bits() function to generate the mask. This mask, along with
+	 * the present bit, will be used to generate a page fault with
+	 * PFER.RSV = 1.
+	 *
+	 * If the mask bit location is 52 (or above), then clear the mask.
+	 */
+	mask = (mask_bit < 52) ? rsvd_bits(mask_bit, 51) | PT_PRESENT_MASK : 0;
+
+	kvm_mmu_set_mmio_spte_mask(mask, mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static __init int svm_hardware_setup(void)
@@ -1322,6 +1449,7 @@ static __init int svm_hardware_setup(void)
 		kvm_tsc_scaling_ratio_frac_bits = 32;
 	}
 
+<<<<<<< HEAD
 	/* Check for pause filtering support */
 	if (!boot_cpu_has(X86_FEATURE_PAUSEFILTER)) {
 		pause_filter_count = 0;
@@ -1330,11 +1458,14 @@ static __init int svm_hardware_setup(void)
 		pause_filter_thresh = 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nested) {
 		printk(KERN_INFO "kvm: Nested Virtualization enabled\n");
 		kvm_enable_efer_bits(EFER_SVME | EFER_LMSLE);
 	}
 
+<<<<<<< HEAD
 	if (sev) {
 		if (boot_cpu_has(X86_FEATURE_SEV) &&
 		    IS_ENABLED(CONFIG_KVM_AMD_SEV)) {
@@ -1345,6 +1476,9 @@ static __init int svm_hardware_setup(void)
 			sev = false;
 		}
 	}
+=======
+	svm_adjust_mmio_mask();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_possible_cpu(cpu) {
 		r = svm_cpu_init(cpu);
@@ -1407,9 +1541,12 @@ static __exit void svm_hardware_unsetup(void)
 {
 	int cpu;
 
+<<<<<<< HEAD
 	if (svm_sev_enabled())
 		bitmap_free(sev_asid_bitmap);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_possible_cpu(cpu)
 		svm_cpu_uninit(cpu);
 
@@ -1434,6 +1571,7 @@ static void init_sys_seg(struct vmcb_seg *seg, uint32_t type)
 	seg->base = 0;
 }
 
+<<<<<<< HEAD
 static u64 svm_read_l1_tsc_offset(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
@@ -1445,12 +1583,18 @@ static u64 svm_read_l1_tsc_offset(struct kvm_vcpu *vcpu)
 }
 
 static u64 svm_write_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 offset)
+=======
+static void svm_write_tsc_offset(struct kvm_vcpu *vcpu, u64 offset)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
 	u64 g_tsc_offset = 0;
 
 	if (is_guest_mode(vcpu)) {
+<<<<<<< HEAD
 		/* Write L1's TSC offset.  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		g_tsc_offset = svm->vmcb->control.tsc_offset -
 			       svm->nested.hsave->control.tsc_offset;
 		svm->nested.hsave->control.tsc_offset = offset;
@@ -1462,16 +1606,26 @@ static u64 svm_write_l1_tsc_offset(struct kvm_vcpu *vcpu, u64 offset)
 	svm->vmcb->control.tsc_offset = offset + g_tsc_offset;
 
 	mark_dirty(svm->vmcb, VMCB_INTERCEPTS);
+<<<<<<< HEAD
 	return svm->vmcb->control.tsc_offset;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void avic_init_vmcb(struct vcpu_svm *svm)
 {
 	struct vmcb *vmcb = svm->vmcb;
+<<<<<<< HEAD
 	struct kvm_svm *kvm_svm = to_kvm_svm(svm->vcpu.kvm);
 	phys_addr_t bpa = __sme_set(page_to_phys(svm->avic_backing_page));
 	phys_addr_t lpa = __sme_set(page_to_phys(kvm_svm->avic_logical_id_table_page));
 	phys_addr_t ppa = __sme_set(page_to_phys(kvm_svm->avic_physical_id_table_page));
+=======
+	struct kvm_arch *vm_data = &svm->vcpu.kvm->arch;
+	phys_addr_t bpa = __sme_set(page_to_phys(svm->avic_backing_page));
+	phys_addr_t lpa = __sme_set(page_to_phys(vm_data->avic_logical_id_table_page));
+	phys_addr_t ppa = __sme_set(page_to_phys(vm_data->avic_physical_id_table_page));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vmcb->control.avic_backing_page = bpa & AVIC_HPA_MASK;
 	vmcb->control.avic_logical_id = lpa & AVIC_HPA_MASK;
@@ -1503,6 +1657,7 @@ static void init_vmcb(struct vcpu_svm *svm)
 	set_exception_intercept(svm, MC_VECTOR);
 	set_exception_intercept(svm, AC_VECTOR);
 	set_exception_intercept(svm, DB_VECTOR);
+<<<<<<< HEAD
 	/*
 	 * Guest access to VMware backdoor ports could legitimately
 	 * trigger #GP because of TSS I/O permission bitmap.
@@ -1511,6 +1666,8 @@ static void init_vmcb(struct vcpu_svm *svm)
 	 */
 	if (enable_vmware_backdoor)
 		set_exception_intercept(svm, GP_VECTOR);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_intercept(svm, INTERCEPT_INTR);
 	set_intercept(svm, INTERCEPT_NMI);
@@ -1519,6 +1676,10 @@ static void init_vmcb(struct vcpu_svm *svm)
 	set_intercept(svm, INTERCEPT_RDPMC);
 	set_intercept(svm, INTERCEPT_CPUID);
 	set_intercept(svm, INTERCEPT_INVD);
+<<<<<<< HEAD
+=======
+	set_intercept(svm, INTERCEPT_HLT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_intercept(svm, INTERCEPT_INVLPG);
 	set_intercept(svm, INTERCEPT_INVLPGA);
 	set_intercept(svm, INTERCEPT_IOIO_PROT);
@@ -1534,16 +1695,24 @@ static void init_vmcb(struct vcpu_svm *svm)
 	set_intercept(svm, INTERCEPT_SKINIT);
 	set_intercept(svm, INTERCEPT_WBINVD);
 	set_intercept(svm, INTERCEPT_XSETBV);
+<<<<<<< HEAD
 	set_intercept(svm, INTERCEPT_RSM);
 
 	if (!kvm_mwait_in_guest(svm->vcpu.kvm)) {
+=======
+
+	if (!kvm_mwait_in_guest()) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		set_intercept(svm, INTERCEPT_MONITOR);
 		set_intercept(svm, INTERCEPT_MWAIT);
 	}
 
+<<<<<<< HEAD
 	if (!kvm_hlt_in_guest(svm->vcpu.kvm))
 		set_intercept(svm, INTERCEPT_HLT);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	control->iopm_base_pa = __sme_set(iopm_base);
 	control->msrpm_base_pa = __sme_set(__pa(svm->msrpm));
 	control->int_ctl = V_INTR_MASKING_MASK;
@@ -1585,7 +1754,11 @@ static void init_vmcb(struct vcpu_svm *svm)
 
 	if (npt_enabled) {
 		/* Setup VMCB for Nested Paging */
+<<<<<<< HEAD
 		control->nested_ctl |= SVM_NESTED_CTL_NP_ENABLE;
+=======
+		control->nested_ctl = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		clr_intercept(svm, INTERCEPT_INVLPG);
 		clr_exception_intercept(svm, PF_VECTOR);
 		clr_cr_intercept(svm, INTERCEPT_CR3_READ);
@@ -1599,6 +1772,7 @@ static void init_vmcb(struct vcpu_svm *svm)
 	svm->nested.vmcb = 0;
 	svm->vcpu.arch.hflags = 0;
 
+<<<<<<< HEAD
 	if (pause_filter_count) {
 		control->pause_filter_count = pause_filter_count;
 		if (pause_filter_thresh)
@@ -1606,6 +1780,11 @@ static void init_vmcb(struct vcpu_svm *svm)
 		set_intercept(svm, INTERCEPT_PAUSE);
 	} else {
 		clr_intercept(svm, INTERCEPT_PAUSE);
+=======
+	if (boot_cpu_has(X86_FEATURE_PAUSEFILTER)) {
+		control->pause_filter_count = 3000;
+		set_intercept(svm, INTERCEPT_PAUSE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (kvm_vcpu_apicv_active(&svm->vcpu))
@@ -1627,11 +1806,14 @@ static void init_vmcb(struct vcpu_svm *svm)
 		svm->vmcb->control.int_ctl |= V_GIF_ENABLE_MASK;
 	}
 
+<<<<<<< HEAD
 	if (sev_guest(svm->vcpu.kvm)) {
 		svm->vmcb->control.nested_ctl |= SVM_NESTED_CTL_SEV_ENABLE;
 		clr_exception_intercept(svm, UD_VECTOR);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mark_all_dirty(svm->vmcb);
 
 	enable_gif(svm);
@@ -1642,12 +1824,20 @@ static u64 *avic_get_physical_id_entry(struct kvm_vcpu *vcpu,
 				       unsigned int index)
 {
 	u64 *avic_physical_id_table;
+<<<<<<< HEAD
 	struct kvm_svm *kvm_svm = to_kvm_svm(vcpu->kvm);
+=======
+	struct kvm_arch *vm_data = &vcpu->kvm->arch;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (index >= AVIC_MAX_PHYSICAL_ID_COUNT)
 		return NULL;
 
+<<<<<<< HEAD
 	avic_physical_id_table = page_address(kvm_svm->avic_physical_id_table_page);
+=======
+	avic_physical_id_table = page_address(vm_data->avic_physical_id_table_page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &avic_physical_id_table[index];
 }
@@ -1717,6 +1907,7 @@ static int avic_init_backing_page(struct kvm_vcpu *vcpu)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void __sev_asid_free(int asid)
 {
 	struct svm_cpu_data *sd;
@@ -1908,10 +2099,17 @@ static void avic_vm_destroy(struct kvm *kvm)
 {
 	unsigned long flags;
 	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
+=======
+static void avic_vm_destroy(struct kvm *kvm)
+{
+	unsigned long flags;
+	struct kvm_arch *vm_data = &kvm->arch;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!avic)
 		return;
 
+<<<<<<< HEAD
 	if (kvm_svm->avic_logical_id_table_page)
 		__free_page(kvm_svm->avic_logical_id_table_page);
 	if (kvm_svm->avic_physical_id_table_page)
@@ -1928,14 +2126,33 @@ static void svm_vm_destroy(struct kvm *kvm)
 	sev_vm_destroy(kvm);
 }
 
+=======
+	if (vm_data->avic_logical_id_table_page)
+		__free_page(vm_data->avic_logical_id_table_page);
+	if (vm_data->avic_physical_id_table_page)
+		__free_page(vm_data->avic_physical_id_table_page);
+
+	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
+	hash_del(&vm_data->hnode);
+	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int avic_vm_init(struct kvm *kvm)
 {
 	unsigned long flags;
 	int err = -ENOMEM;
+<<<<<<< HEAD
 	struct kvm_svm *kvm_svm = to_kvm_svm(kvm);
 	struct kvm_svm *k2;
 	struct page *p_page;
 	struct page *l_page;
+=======
+	struct kvm_arch *vm_data = &kvm->arch;
+	struct page *p_page;
+	struct page *l_page;
+	struct kvm_arch *ka;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 vm_id;
 
 	if (!avic)
@@ -1946,7 +2163,11 @@ static int avic_vm_init(struct kvm *kvm)
 	if (!p_page)
 		goto free_avic;
 
+<<<<<<< HEAD
 	kvm_svm->avic_physical_id_table_page = p_page;
+=======
+	vm_data->avic_physical_id_table_page = p_page;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clear_page(page_address(p_page));
 
 	/* Allocating logical APIC ID table (4KB) */
@@ -1954,7 +2175,11 @@ static int avic_vm_init(struct kvm *kvm)
 	if (!l_page)
 		goto free_avic;
 
+<<<<<<< HEAD
 	kvm_svm->avic_logical_id_table_page = l_page;
+=======
+	vm_data->avic_logical_id_table_page = l_page;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clear_page(page_address(l_page));
 
 	spin_lock_irqsave(&svm_vm_data_hash_lock, flags);
@@ -1966,6 +2191,7 @@ static int avic_vm_init(struct kvm *kvm)
 	}
 	/* Is it still in use? Only possible if wrapped at least once */
 	if (next_vm_id_wrapped) {
+<<<<<<< HEAD
 		hash_for_each_possible(svm_vm_data_hash, k2, hnode, vm_id) {
 			if (k2->avic_vm_id == vm_id)
 				goto again;
@@ -1973,6 +2199,17 @@ static int avic_vm_init(struct kvm *kvm)
 	}
 	kvm_svm->avic_vm_id = vm_id;
 	hash_add(svm_vm_data_hash, &kvm_svm->hnode, kvm_svm->avic_vm_id);
+=======
+		hash_for_each_possible(svm_vm_data_hash, ka, hnode, vm_id) {
+			struct kvm *k2 = container_of(ka, struct kvm, arch);
+			struct kvm_arch *vd2 = &k2->arch;
+			if (vd2->avic_vm_id == vm_id)
+				goto again;
+		}
+	}
+	vm_data->avic_vm_id = vm_id;
+	hash_add(svm_vm_data_hash, &vm_data->hnode, vm_data->avic_vm_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock_irqrestore(&svm_vm_data_hash_lock, flags);
 
 	return 0;
@@ -2611,7 +2848,11 @@ static void new_asid(struct vcpu_svm *svm, struct svm_cpu_data *sd)
 {
 	if (sd->next_asid > sd->max_asid) {
 		++sd->asid_generation;
+<<<<<<< HEAD
 		sd->next_asid = sd->min_asid;
+=======
+		sd->next_asid = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		svm->vmcb->control.tlb_ctl = TLB_CONTROL_FLUSH_ALL_ASID;
 	}
 
@@ -2659,6 +2900,7 @@ static void svm_set_dr7(struct kvm_vcpu *vcpu, unsigned long value)
 
 static int pf_interception(struct vcpu_svm *svm)
 {
+<<<<<<< HEAD
 	u64 fault_address = __sme_clr(svm->vmcb->control.exit_info_2);
 	u64 error_code = svm->vmcb->control.exit_info_1;
 
@@ -2678,6 +2920,14 @@ static int npf_interception(struct vcpu_svm *svm)
 			static_cpu_has(X86_FEATURE_DECODEASSISTS) ?
 			svm->vmcb->control.insn_bytes : NULL,
 			svm->vmcb->control.insn_len);
+=======
+	u64 fault_address = svm->vmcb->control.exit_info_2;
+	u64 error_code = svm->vmcb->control.exit_info_1;
+
+	return kvm_handle_page_fault(&svm->vcpu, error_code, fault_address,
+			svm->vmcb->control.insn_bytes,
+			svm->vmcb->control.insn_len, !npt_enabled);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int db_interception(struct vcpu_svm *svm)
@@ -2722,7 +2972,18 @@ static int bp_interception(struct vcpu_svm *svm)
 
 static int ud_interception(struct vcpu_svm *svm)
 {
+<<<<<<< HEAD
 	return handle_ud(&svm->vcpu);
+=======
+	int er;
+
+	er = emulate_instruction(&svm->vcpu, EMULTYPE_TRAP_UD);
+	if (er == EMULATE_USER_EXIT)
+		return 0;
+	if (er != EMULATE_DONE)
+		kvm_queue_exception(&svm->vcpu, UD_VECTOR);
+	return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ac_interception(struct vcpu_svm *svm)
@@ -2731,6 +2992,7 @@ static int ac_interception(struct vcpu_svm *svm)
 	return 1;
 }
 
+<<<<<<< HEAD
 static int gp_interception(struct vcpu_svm *svm)
 {
 	struct kvm_vcpu *vcpu = &svm->vcpu;
@@ -2748,6 +3010,8 @@ static int gp_interception(struct vcpu_svm *svm)
 	return 1;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool is_erratum_383(void)
 {
 	int err, i;
@@ -2836,20 +3100,41 @@ static int io_interception(struct vcpu_svm *svm)
 {
 	struct kvm_vcpu *vcpu = &svm->vcpu;
 	u32 io_info = svm->vmcb->control.exit_info_1; /* address size bug? */
+<<<<<<< HEAD
 	int size, in, string;
+=======
+	int size, in, string, ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned port;
 
 	++svm->vcpu.stat.io_exits;
 	string = (io_info & SVM_IOIO_STR_MASK) != 0;
 	in = (io_info & SVM_IOIO_TYPE_MASK) != 0;
 	if (string)
+<<<<<<< HEAD
 		return kvm_emulate_instruction(vcpu, 0) == EMULATE_DONE;
+=======
+		return emulate_instruction(vcpu, 0) == EMULATE_DONE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	port = io_info >> 16;
 	size = (io_info & SVM_IOIO_SIZE_MASK) >> SVM_IOIO_SIZE_SHIFT;
 	svm->next_rip = svm->vmcb->control.exit_info_2;
+<<<<<<< HEAD
 
 	return kvm_fast_pio(&svm->vcpu, size, port, in);
+=======
+	ret = kvm_skip_emulated_instruction(&svm->vcpu);
+
+	/*
+	 * TODO: we might be squashing a KVM_GUESTDBG_SINGLESTEP-triggered
+	 * KVM_EXIT_DEBUG here.
+	 */
+	if (in)
+		return kvm_fast_pio_in(vcpu, size, port) && ret;
+	else
+		return kvm_fast_pio_out(vcpu, size, port) && ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nmi_interception(struct vcpu_svm *svm)
@@ -2908,6 +3193,10 @@ static void nested_svm_set_tdp_cr3(struct kvm_vcpu *vcpu,
 
 	svm->vmcb->control.nested_cr3 = __sme_set(root);
 	mark_dirty(svm->vmcb, VMCB_NPT);
+<<<<<<< HEAD
+=======
+	svm_flush_tlb(vcpu, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void nested_svm_inject_npf_exit(struct kvm_vcpu *vcpu,
@@ -3177,8 +3466,13 @@ static int nested_svm_exit_special(struct vcpu_svm *svm)
 			return NESTED_EXIT_HOST;
 		break;
 	case SVM_EXIT_EXCP_BASE + PF_VECTOR:
+<<<<<<< HEAD
 		/* When we're shadowing, trap PFs, but not async PF */
 		if (!npt_enabled && svm->vcpu.arch.apf.host_apf_reason == 0)
+=======
+		/* Trap async PF even if not shadowing */
+		if (!npt_enabled || svm->vcpu.arch.apf.host_apf_reason)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return NESTED_EXIT_HOST;
 		break;
 	default:
@@ -3267,7 +3561,11 @@ static inline void copy_vmcb_control_area(struct vmcb *dst_vmcb, struct vmcb *fr
 	dst->iopm_base_pa         = from->iopm_base_pa;
 	dst->msrpm_base_pa        = from->msrpm_base_pa;
 	dst->tsc_offset           = from->tsc_offset;
+<<<<<<< HEAD
 	dst->asid                 = from->asid;
+=======
+	/* asid not copied, it is handled manually for svm->vmcb.  */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dst->tlb_ctl              = from->tlb_ctl;
 	dst->int_ctl              = from->int_ctl;
 	dst->int_vector           = from->int_vector;
@@ -3368,7 +3666,10 @@ static int nested_svm_vmexit(struct vcpu_svm *svm)
 	/* Restore the original control entries */
 	copy_vmcb_control_area(vmcb, hsave);
 
+<<<<<<< HEAD
 	svm->vcpu.arch.tsc_offset = svm->vmcb->control.tsc_offset;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvm_clear_exception_queue(&svm->vcpu);
 	kvm_clear_interrupt_queue(&svm->vcpu);
 
@@ -3458,13 +3759,18 @@ static bool nested_vmcb_checks(struct vmcb *vmcb)
 	if (vmcb->control.asid == 0)
 		return false;
 
+<<<<<<< HEAD
 	if ((vmcb->control.nested_ctl & SVM_NESTED_CTL_NP_ENABLE) &&
 	    !npt_enabled)
+=======
+	if (vmcb->control.nested_ctl && !npt_enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 
 	return true;
 }
 
+<<<<<<< HEAD
 static void enter_svm_guest_mode(struct vcpu_svm *svm, u64 vmcb_gpa,
 				 struct vmcb *nested_vmcb, struct page *page)
 {
@@ -3564,6 +3870,8 @@ static void enter_svm_guest_mode(struct vcpu_svm *svm, u64 vmcb_gpa,
 	mark_all_dirty(svm->vmcb);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool nested_svm_vmrun(struct vcpu_svm *svm)
 {
 	struct vmcb *nested_vmcb;
@@ -3628,7 +3936,102 @@ static bool nested_svm_vmrun(struct vcpu_svm *svm)
 
 	copy_vmcb_control_area(hsave, vmcb);
 
+<<<<<<< HEAD
 	enter_svm_guest_mode(svm, vmcb_gpa, nested_vmcb, page);
+=======
+	if (kvm_get_rflags(&svm->vcpu) & X86_EFLAGS_IF)
+		svm->vcpu.arch.hflags |= HF_HIF_MASK;
+	else
+		svm->vcpu.arch.hflags &= ~HF_HIF_MASK;
+
+	if (nested_vmcb->control.nested_ctl) {
+		kvm_mmu_unload(&svm->vcpu);
+		svm->nested.nested_cr3 = nested_vmcb->control.nested_cr3;
+		nested_svm_init_mmu_context(&svm->vcpu);
+	}
+
+	/* Load the nested guest state */
+	svm->vmcb->save.es = nested_vmcb->save.es;
+	svm->vmcb->save.cs = nested_vmcb->save.cs;
+	svm->vmcb->save.ss = nested_vmcb->save.ss;
+	svm->vmcb->save.ds = nested_vmcb->save.ds;
+	svm->vmcb->save.gdtr = nested_vmcb->save.gdtr;
+	svm->vmcb->save.idtr = nested_vmcb->save.idtr;
+	kvm_set_rflags(&svm->vcpu, nested_vmcb->save.rflags);
+	svm_set_efer(&svm->vcpu, nested_vmcb->save.efer);
+	svm_set_cr0(&svm->vcpu, nested_vmcb->save.cr0);
+	svm_set_cr4(&svm->vcpu, nested_vmcb->save.cr4);
+	if (npt_enabled) {
+		svm->vmcb->save.cr3 = nested_vmcb->save.cr3;
+		svm->vcpu.arch.cr3 = nested_vmcb->save.cr3;
+	} else
+		(void)kvm_set_cr3(&svm->vcpu, nested_vmcb->save.cr3);
+
+	/* Guest paging mode is active - reset mmu */
+	kvm_mmu_reset_context(&svm->vcpu);
+
+	svm->vmcb->save.cr2 = svm->vcpu.arch.cr2 = nested_vmcb->save.cr2;
+	kvm_register_write(&svm->vcpu, VCPU_REGS_RAX, nested_vmcb->save.rax);
+	kvm_register_write(&svm->vcpu, VCPU_REGS_RSP, nested_vmcb->save.rsp);
+	kvm_register_write(&svm->vcpu, VCPU_REGS_RIP, nested_vmcb->save.rip);
+
+	/* In case we don't even reach vcpu_run, the fields are not updated */
+	svm->vmcb->save.rax = nested_vmcb->save.rax;
+	svm->vmcb->save.rsp = nested_vmcb->save.rsp;
+	svm->vmcb->save.rip = nested_vmcb->save.rip;
+	svm->vmcb->save.dr7 = nested_vmcb->save.dr7;
+	svm->vmcb->save.dr6 = nested_vmcb->save.dr6;
+	svm->vmcb->save.cpl = nested_vmcb->save.cpl;
+
+	svm->nested.vmcb_msrpm = nested_vmcb->control.msrpm_base_pa & ~0x0fffULL;
+	svm->nested.vmcb_iopm  = nested_vmcb->control.iopm_base_pa  & ~0x0fffULL;
+
+	/* cache intercepts */
+	svm->nested.intercept_cr         = nested_vmcb->control.intercept_cr;
+	svm->nested.intercept_dr         = nested_vmcb->control.intercept_dr;
+	svm->nested.intercept_exceptions = nested_vmcb->control.intercept_exceptions;
+	svm->nested.intercept            = nested_vmcb->control.intercept;
+
+	svm_flush_tlb(&svm->vcpu, true);
+	svm->vmcb->control.int_ctl = nested_vmcb->control.int_ctl | V_INTR_MASKING_MASK;
+	if (nested_vmcb->control.int_ctl & V_INTR_MASKING_MASK)
+		svm->vcpu.arch.hflags |= HF_VINTR_MASK;
+	else
+		svm->vcpu.arch.hflags &= ~HF_VINTR_MASK;
+
+	if (svm->vcpu.arch.hflags & HF_VINTR_MASK) {
+		/* We only want the cr8 intercept bits of the guest */
+		clr_cr_intercept(svm, INTERCEPT_CR8_READ);
+		clr_cr_intercept(svm, INTERCEPT_CR8_WRITE);
+	}
+
+	/* We don't want to see VMMCALLs from a nested guest */
+	clr_intercept(svm, INTERCEPT_VMMCALL);
+
+	svm->vmcb->control.virt_ext = nested_vmcb->control.virt_ext;
+	svm->vmcb->control.int_vector = nested_vmcb->control.int_vector;
+	svm->vmcb->control.int_state = nested_vmcb->control.int_state;
+	svm->vmcb->control.tsc_offset += nested_vmcb->control.tsc_offset;
+	svm->vmcb->control.event_inj = nested_vmcb->control.event_inj;
+	svm->vmcb->control.event_inj_err = nested_vmcb->control.event_inj_err;
+
+	nested_svm_unmap(page);
+
+	/* Enter Guest-Mode */
+	enter_guest_mode(&svm->vcpu);
+
+	/*
+	 * Merge guest and host intercepts - must be called  with vcpu in
+	 * guest-mode to take affect here
+	 */
+	recalc_intercepts(svm);
+
+	svm->nested.vmcb = vmcb_gpa;
+
+	enable_gif(svm);
+
+	mark_all_dirty(svm->vmcb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return true;
 }
@@ -3730,7 +4133,11 @@ static int stgi_interception(struct vcpu_svm *svm)
 
 	/*
 	 * If VGIF is enabled, the STGI intercept is only added to
+<<<<<<< HEAD
 	 * detect the opening of the SMI/NMI window; remove it now.
+=======
+	 * detect the opening of the NMI window; remove it now.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (vgif_enabled(svm))
 		clr_intercept(svm, INTERCEPT_STGI);
@@ -3893,7 +4300,11 @@ static int iret_interception(struct vcpu_svm *svm)
 static int invlpg_interception(struct vcpu_svm *svm)
 {
 	if (!static_cpu_has(X86_FEATURE_DECODEASSISTS))
+<<<<<<< HEAD
 		return kvm_emulate_instruction(&svm->vcpu, 0) == EMULATE_DONE;
+=======
+		return emulate_instruction(&svm->vcpu, 0) == EMULATE_DONE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kvm_mmu_invlpg(&svm->vcpu, svm->vmcb->control.exit_info_1);
 	return kvm_skip_emulated_instruction(&svm->vcpu);
@@ -3901,6 +4312,7 @@ static int invlpg_interception(struct vcpu_svm *svm)
 
 static int emulate_on_interception(struct vcpu_svm *svm)
 {
+<<<<<<< HEAD
 	return kvm_emulate_instruction(&svm->vcpu, 0) == EMULATE_DONE;
 }
 
@@ -3908,6 +4320,9 @@ static int rsm_interception(struct vcpu_svm *svm)
 {
 	return kvm_emulate_instruction_from_buffer(&svm->vcpu,
 					rsm_ins_bytes, 2) == EMULATE_DONE;
+=======
+	return emulate_instruction(&svm->vcpu, 0) == EMULATE_DONE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rdpmc_interception(struct vcpu_svm *svm)
@@ -4092,6 +4507,15 @@ static int svm_get_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
 	struct vcpu_svm *svm = to_svm(vcpu);
 
 	switch (msr_info->index) {
+<<<<<<< HEAD
+=======
+	case MSR_IA32_TSC: {
+		msr_info->data = svm->vmcb->control.tsc_offset +
+			kvm_scale_tsc(vcpu, rdtsc());
+
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MSR_STAR:
 		msr_info->data = svm->vmcb->save.star;
 		break;
@@ -4252,6 +4676,12 @@ static int svm_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr)
 		svm->vmcb->save.g_pat = data;
 		mark_dirty(svm->vmcb, VMCB_NPT);
 		break;
+<<<<<<< HEAD
+=======
+	case MSR_IA32_TSC:
+		kvm_write_tsc(vcpu, msr);
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MSR_IA32_SPEC_CTRL:
 		if (!msr->host_initiated &&
 		    !guest_cpuid_has(vcpu, X86_FEATURE_AMD_IBRS) &&
@@ -4442,9 +4872,12 @@ static int pause_interception(struct vcpu_svm *svm)
 	struct kvm_vcpu *vcpu = &svm->vcpu;
 	bool in_kernel = (svm_get_cpl(vcpu) == 0);
 
+<<<<<<< HEAD
 	if (pause_filter_thresh)
 		grow_ple_window(vcpu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvm_vcpu_on_spin(vcpu, in_kernel);
 	return 1;
 }
@@ -4535,7 +4968,11 @@ static int avic_incomplete_ipi_interception(struct vcpu_svm *svm)
 
 static u32 *avic_get_logical_id_entry(struct kvm_vcpu *vcpu, u32 ldr, bool flat)
 {
+<<<<<<< HEAD
 	struct kvm_svm *kvm_svm = to_kvm_svm(vcpu->kvm);
+=======
+	struct kvm_arch *vm_data = &vcpu->kvm->arch;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int index;
 	u32 *logical_apic_id_table;
 	int dlid = GET_APIC_LOGICAL_ID(ldr);
@@ -4557,7 +4994,11 @@ static u32 *avic_get_logical_id_entry(struct kvm_vcpu *vcpu, u32 ldr, bool flat)
 		index = (cluster << 2) + apic;
 	}
 
+<<<<<<< HEAD
 	logical_apic_id_table = (u32 *) page_address(kvm_svm->avic_logical_id_table_page);
+=======
+	logical_apic_id_table = (u32 *) page_address(vm_data->avic_logical_id_table_page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &logical_apic_id_table[index];
 }
@@ -4637,7 +5078,11 @@ static int avic_handle_apic_id_update(struct kvm_vcpu *vcpu)
 static int avic_handle_dfr_update(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
+<<<<<<< HEAD
 	struct kvm_svm *kvm_svm = to_kvm_svm(vcpu->kvm);
+=======
+	struct kvm_arch *vm_data = &vcpu->kvm->arch;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 dfr = kvm_lapic_get_reg(vcpu->arch.apic, APIC_DFR);
 	u32 mod = (dfr >> 28) & 0xf;
 
@@ -4646,11 +5091,19 @@ static int avic_handle_dfr_update(struct kvm_vcpu *vcpu)
 	 * If this changes, we need to flush the AVIC logical
 	 * APID id table.
 	 */
+<<<<<<< HEAD
 	if (kvm_svm->ldr_mode == mod)
 		return 0;
 
 	clear_page(page_address(kvm_svm->avic_logical_id_table_page));
 	kvm_svm->ldr_mode = mod;
+=======
+	if (vm_data->ldr_mode == mod)
+		return 0;
+
+	clear_page(page_address(vm_data->avic_logical_id_table_page));
+	vm_data->ldr_mode = mod;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (svm->ldr_reg)
 		avic_handle_ldr_update(vcpu);
@@ -4732,7 +5185,11 @@ static int avic_unaccelerated_access_interception(struct vcpu_svm *svm)
 		ret = avic_unaccel_trap_write(svm);
 	} else {
 		/* Handling Fault */
+<<<<<<< HEAD
 		ret = (kvm_emulate_instruction(&svm->vcpu, 0) == EMULATE_DONE);
+=======
+		ret = (emulate_instruction(&svm->vcpu, 0) == EMULATE_DONE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return ret;
@@ -4770,7 +5227,10 @@ static int (*const svm_exit_handlers[])(struct vcpu_svm *svm) = {
 	[SVM_EXIT_EXCP_BASE + PF_VECTOR]	= pf_interception,
 	[SVM_EXIT_EXCP_BASE + MC_VECTOR]	= mc_interception,
 	[SVM_EXIT_EXCP_BASE + AC_VECTOR]	= ac_interception,
+<<<<<<< HEAD
 	[SVM_EXIT_EXCP_BASE + GP_VECTOR]	= gp_interception,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[SVM_EXIT_INTR]				= intr_interception,
 	[SVM_EXIT_NMI]				= nmi_interception,
 	[SVM_EXIT_SMI]				= nop_on_interception,
@@ -4799,8 +5259,13 @@ static int (*const svm_exit_handlers[])(struct vcpu_svm *svm) = {
 	[SVM_EXIT_MONITOR]			= monitor_interception,
 	[SVM_EXIT_MWAIT]			= mwait_interception,
 	[SVM_EXIT_XSETBV]			= xsetbv_interception,
+<<<<<<< HEAD
 	[SVM_EXIT_NPF]				= npf_interception,
 	[SVM_EXIT_RSM]                          = rsm_interception,
+=======
+	[SVM_EXIT_NPF]				= pf_interception,
+	[SVM_EXIT_RSM]                          = emulate_on_interception,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[SVM_EXIT_AVIC_INCOMPLETE_IPI]		= avic_incomplete_ipi_interception,
 	[SVM_EXIT_AVIC_UNACCELERATED_ACCESS]	= avic_unaccelerated_access_interception,
 };
@@ -4819,8 +5284,11 @@ static void dump_vmcb(struct kvm_vcpu *vcpu)
 	pr_err("%-20s%08x\n", "exceptions:", control->intercept_exceptions);
 	pr_err("%-20s%016llx\n", "intercepts:", control->intercept);
 	pr_err("%-20s%d\n", "pause filter count:", control->pause_filter_count);
+<<<<<<< HEAD
 	pr_err("%-20s%d\n", "pause filter threshold:",
 	       control->pause_filter_thresh);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_err("%-20s%016llx\n", "iopm_base_pa:", control->iopm_base_pa);
 	pr_err("%-20s%016llx\n", "msrpm_base_pa:", control->msrpm_base_pa);
 	pr_err("%-20s%016llx\n", "tsc_offset:", control->tsc_offset);
@@ -5002,6 +5470,7 @@ static void reload_tss(struct kvm_vcpu *vcpu)
 	load_TR_desc();
 }
 
+<<<<<<< HEAD
 static void pre_sev_run(struct vcpu_svm *svm, int cpu)
 {
 	struct svm_cpu_data *sd = per_cpu(svm_data, cpu);
@@ -5026,15 +5495,20 @@ static void pre_sev_run(struct vcpu_svm *svm, int cpu)
 	mark_dirty(svm->vmcb, VMCB_ASID);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void pre_svm_run(struct vcpu_svm *svm)
 {
 	int cpu = raw_smp_processor_id();
 
 	struct svm_cpu_data *sd = per_cpu(svm_data, cpu);
 
+<<<<<<< HEAD
 	if (sev_guest(svm->vcpu.kvm))
 		return pre_sev_run(svm, cpu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* FIXME: handle wraparound of asid_generation */
 	if (svm->asid_generation != sd->asid_generation)
 		new_asid(svm, sd);
@@ -5134,8 +5608,16 @@ static void svm_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
 	return;
 }
 
+<<<<<<< HEAD
 static void svm_deliver_avic_intr(struct kvm_vcpu *vcpu, int vec)
 {
+=======
+static int svm_deliver_avic_intr(struct kvm_vcpu *vcpu, int vec)
+{
+	if (!vcpu->arch.apicv_active)
+		return -1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvm_lapic_set_irr(vec, vcpu->arch.apic);
 	smp_mb__after_atomic();
 
@@ -5144,6 +5626,11 @@ static void svm_deliver_avic_intr(struct kvm_vcpu *vcpu, int vec)
 		       kvm_cpu_get_apicid(vcpu->cpu));
 	else
 		kvm_vcpu_wake_up(vcpu);
+<<<<<<< HEAD
+=======
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool svm_dy_apicv_has_pending_interrupt(struct kvm_vcpu *vcpu)
@@ -5293,7 +5780,11 @@ static int svm_update_pi_irte(struct kvm *kvm, unsigned int host_irq,
 			/* Try to enable guest_mode in IRTE */
 			pi.base = __sme_set(page_to_phys(svm->avic_backing_page) &
 					    AVIC_HPA_MASK);
+<<<<<<< HEAD
 			pi.ga_tag = AVIC_GATAG(to_kvm_svm(kvm)->avic_vm_id,
+=======
+			pi.ga_tag = AVIC_GATAG(kvm->arch.avic_vm_id,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						     svm->vcpu.vcpu_id);
 			pi.is_guest_mode = true;
 			pi.vcpu_data = &vcpu_info;
@@ -5456,11 +5947,14 @@ static int svm_set_tss_addr(struct kvm *kvm, unsigned int addr)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int svm_set_identity_map_addr(struct kvm *kvm, u64 ident_addr)
 {
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void svm_flush_tlb(struct kvm_vcpu *vcpu, bool invalidate_gpa)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
@@ -5471,6 +5965,7 @@ static void svm_flush_tlb(struct kvm_vcpu *vcpu, bool invalidate_gpa)
 		svm->asid_generation--;
 }
 
+<<<<<<< HEAD
 static void svm_flush_tlb_gva(struct kvm_vcpu *vcpu, gva_t gva)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
@@ -5478,6 +5973,8 @@ static void svm_flush_tlb_gva(struct kvm_vcpu *vcpu, gva_t gva)
 	invlpga(gva, svm->vmcb->control.asid);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void svm_prepare_guest_switch(struct kvm_vcpu *vcpu)
 {
 }
@@ -5622,7 +6119,10 @@ static void svm_vcpu_run(struct kvm_vcpu *vcpu)
 	svm->vmcb->save.cr2 = vcpu->arch.cr2;
 
 	clgi();
+<<<<<<< HEAD
 	kvm_load_guest_xcr0(vcpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If this vCPU has touched SPEC_CTRL, restore the guest's value if
@@ -5768,15 +6268,24 @@ static void svm_vcpu_run(struct kvm_vcpu *vcpu)
 	vcpu->arch.regs[VCPU_REGS_RIP] = svm->vmcb->save.rip;
 
 	if (unlikely(svm->vmcb->control.exit_code == SVM_EXIT_NMI))
+<<<<<<< HEAD
 		kvm_before_interrupt(&svm->vcpu);
 
 	kvm_put_guest_xcr0(vcpu);
+=======
+		kvm_before_handle_nmi(&svm->vcpu);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stgi();
 
 	/* Any pending NMI will happen here */
 
 	if (unlikely(svm->vmcb->control.exit_code == SVM_EXIT_NMI))
+<<<<<<< HEAD
 		kvm_after_interrupt(&svm->vcpu);
+=======
+		kvm_after_handle_nmi(&svm->vcpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sync_cr8_to_lapic(vcpu);
 
@@ -5811,6 +6320,10 @@ static void svm_set_cr3(struct kvm_vcpu *vcpu, unsigned long root)
 
 	svm->vmcb->save.cr3 = __sme_set(root);
 	mark_dirty(svm->vmcb, VMCB_CR);
+<<<<<<< HEAD
+=======
+	svm_flush_tlb(vcpu, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void set_tdp_cr3(struct kvm_vcpu *vcpu, unsigned long root)
@@ -5823,6 +6336,11 @@ static void set_tdp_cr3(struct kvm_vcpu *vcpu, unsigned long root)
 	/* Also sync guest cr3 here in case we live migrate */
 	svm->vmcb->save.cr3 = kvm_read_cr3(vcpu);
 	mark_dirty(svm->vmcb, VMCB_CR);
+<<<<<<< HEAD
+=======
+
+	svm_flush_tlb(vcpu, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int is_disabled(void)
@@ -5915,12 +6433,15 @@ static void svm_set_supported_cpuid(u32 func, struct kvm_cpuid_entry2 *entry)
 			entry->edx |= SVM_FEATURE_NPT;
 
 		break;
+<<<<<<< HEAD
 	case 0x8000001F:
 		/* Support memory encryption cpuid if host supports it */
 		if (boot_cpu_has(X86_FEATURE_SEV))
 			cpuid(0x8000001f, &entry->eax, &entry->ebx,
 				&entry->ecx, &entry->edx);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -5949,11 +6470,14 @@ static bool svm_xsaves_supported(void)
 	return false;
 }
 
+<<<<<<< HEAD
 static bool svm_umip_emulated(void)
 {
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool svm_has_wbinvd_exit(void)
 {
 	return true;
@@ -6156,8 +6680,11 @@ static void svm_handle_external_intr(struct kvm_vcpu *vcpu)
 
 static void svm_sched_in(struct kvm_vcpu *vcpu, int cpu)
 {
+<<<<<<< HEAD
 	if (pause_filter_thresh)
 		shrink_ple_window(vcpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void avic_post_state_restore(struct kvm_vcpu *vcpu)
@@ -6175,6 +6702,7 @@ static void svm_setup_mce(struct kvm_vcpu *vcpu)
 	vcpu->arch.mcg_cap &= 0x1ff;
 }
 
+<<<<<<< HEAD
 static int svm_smi_allowed(struct kvm_vcpu *vcpu)
 {
 	struct vcpu_svm *svm = to_svm(vcpu);
@@ -7092,6 +7620,8 @@ failed:
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct kvm_x86_ops svm_x86_ops __ro_after_init = {
 	.cpu_has_kvm_support = has_svm,
 	.disabled_by_bios = is_disabled,
@@ -7107,10 +7637,15 @@ static struct kvm_x86_ops svm_x86_ops __ro_after_init = {
 	.vcpu_free = svm_free_vcpu,
 	.vcpu_reset = svm_vcpu_reset,
 
+<<<<<<< HEAD
 	.vm_alloc = svm_vm_alloc,
 	.vm_free = svm_vm_free,
 	.vm_init = avic_vm_init,
 	.vm_destroy = svm_vm_destroy,
+=======
+	.vm_init = avic_vm_init,
+	.vm_destroy = avic_vm_destroy,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.prepare_guest_switch = svm_prepare_guest_switch,
 	.vcpu_load = svm_vcpu_load,
@@ -7147,7 +7682,10 @@ static struct kvm_x86_ops svm_x86_ops __ro_after_init = {
 	.set_rflags = svm_set_rflags,
 
 	.tlb_flush = svm_flush_tlb,
+<<<<<<< HEAD
 	.tlb_flush_gva = svm_flush_tlb_gva,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.run = svm_vcpu_run,
 	.handle_exit = handle_exit,
@@ -7172,11 +7710,17 @@ static struct kvm_x86_ops svm_x86_ops __ro_after_init = {
 	.load_eoi_exitmap = svm_load_eoi_exitmap,
 	.hwapic_irr_update = svm_hwapic_irr_update,
 	.hwapic_isr_update = svm_hwapic_isr_update,
+<<<<<<< HEAD
 	.sync_pir_to_irr = kvm_lapic_find_highest_irr,
 	.apicv_post_state_restore = avic_post_state_restore,
 
 	.set_tss_addr = svm_set_tss_addr,
 	.set_identity_map_addr = svm_set_identity_map_addr,
+=======
+	.apicv_post_state_restore = avic_post_state_restore,
+
+	.set_tss_addr = svm_set_tss_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_tdp_level = get_npt_level,
 	.get_mt_mask = svm_get_mt_mask,
 
@@ -7190,22 +7734,32 @@ static struct kvm_x86_ops svm_x86_ops __ro_after_init = {
 	.invpcid_supported = svm_invpcid_supported,
 	.mpx_supported = svm_mpx_supported,
 	.xsaves_supported = svm_xsaves_supported,
+<<<<<<< HEAD
 	.umip_emulated = svm_umip_emulated,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.set_supported_cpuid = svm_set_supported_cpuid,
 
 	.has_wbinvd_exit = svm_has_wbinvd_exit,
 
+<<<<<<< HEAD
 	.read_l1_tsc_offset = svm_read_l1_tsc_offset,
 	.write_l1_tsc_offset = svm_write_l1_tsc_offset,
+=======
+	.write_tsc_offset = svm_write_tsc_offset,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.set_tdp_cr3 = set_tdp_cr3,
 
 	.check_intercept = svm_check_intercept,
 	.handle_external_intr = svm_handle_external_intr,
 
+<<<<<<< HEAD
 	.request_immediate_exit = __kvm_request_immediate_exit,
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sched_in = svm_sched_in,
 
 	.pmu_ops = &amd_pmu_ops,
@@ -7213,6 +7767,7 @@ static struct kvm_x86_ops svm_x86_ops __ro_after_init = {
 	.dy_apicv_has_pending_interrupt = svm_dy_apicv_has_pending_interrupt,
 	.update_pi_irte = svm_update_pi_irte,
 	.setup_mce = svm_setup_mce,
+<<<<<<< HEAD
 
 	.smi_allowed = svm_smi_allowed,
 	.pre_enter_smm = svm_pre_enter_smm,
@@ -7222,6 +7777,8 @@ static struct kvm_x86_ops svm_x86_ops __ro_after_init = {
 	.mem_enc_op = svm_mem_enc_op,
 	.mem_enc_reg_region = svm_register_enc_region,
 	.mem_enc_unreg_region = svm_unregister_enc_region,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init svm_init(void)

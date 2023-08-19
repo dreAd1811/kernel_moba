@@ -112,7 +112,12 @@ static struct fw_node *fw_node_create(u32 sid, int port_count, int color)
 {
 	struct fw_node *node;
 
+<<<<<<< HEAD
 	node = kzalloc(struct_size(node, ports, port_count), GFP_ATOMIC);
+=======
+	node = kzalloc(sizeof(*node) + port_count * sizeof(node->ports[0]),
+		       GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (node == NULL)
 		return NULL;
 

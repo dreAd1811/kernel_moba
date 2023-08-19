@@ -6,6 +6,7 @@
 
 #include <linux/cpuidle.h>
 #include <linux/sched.h>
+<<<<<<< HEAD
 #include <linux/sched/clock.h>
 #include <linux/sched/idle.h>
 
@@ -30,6 +31,17 @@ static int __cpuidle poll_idle(struct cpuidle_device *dev,
 			if (local_clock() - time_start > POLL_IDLE_TIME_LIMIT)
 				break;
 		}
+=======
+#include <linux/sched/idle.h>
+
+static int __cpuidle poll_idle(struct cpuidle_device *dev,
+			       struct cpuidle_driver *drv, int index)
+{
+	local_irq_enable();
+	if (!current_set_polling_and_test()) {
+		while (!need_resched())
+			cpu_relax();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	current_clr_polling();
 

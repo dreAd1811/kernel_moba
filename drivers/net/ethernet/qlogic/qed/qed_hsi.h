@@ -54,7 +54,11 @@
 struct qed_hwfn;
 struct qed_ptt;
 
+<<<<<<< HEAD
 /* Opcodes for the event ring */
+=======
+/* opcodes for the event ring */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum common_event_opcode {
 	COMMON_EVENT_PF_START,
 	COMMON_EVENT_PF_STOP,
@@ -82,6 +86,7 @@ enum common_ramrod_cmd_id {
 	MAX_COMMON_RAMROD_CMD_ID
 };
 
+<<<<<<< HEAD
 /* How ll2 should deal with packet upon errors */
 enum core_error_handle {
 	LL2_DROP_PACKET,
@@ -376,6 +381,8 @@ enum dcb_dscp_update_mode {
 	MAX_DCB_DSCP_UPDATE_MODE
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* The core storm context for the Ystorm */
 struct ystorm_core_conn_st_ctx {
 	__le32 reserved[4];
@@ -396,6 +403,7 @@ struct xstorm_core_conn_st_ctx {
 	__le32 reserved0[55];
 };
 
+<<<<<<< HEAD
 struct e4_xstorm_core_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -606,13 +614,229 @@ struct e4_xstorm_core_conn_ag_ctx {
 #define E4_XSTORM_CORE_CONN_AG_CTX_BIT21_SHIFT	5
 #define E4_XSTORM_CORE_CONN_AG_CTX_CF23_MASK	0x3
 #define E4_XSTORM_CORE_CONN_AG_CTX_CF23_SHIFT	6
+=======
+struct xstorm_core_conn_ag_ctx {
+	u8 reserved0;
+	u8 core_state;
+	u8 flags0;
+#define XSTORM_CORE_CONN_AG_CTX_EXIST_IN_QM0_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_EXIST_IN_QM0_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED1_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED1_SHIFT		1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED2_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED2_SHIFT		2
+#define XSTORM_CORE_CONN_AG_CTX_EXIST_IN_QM3_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_EXIST_IN_QM3_SHIFT	3
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED3_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED3_SHIFT		4
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED4_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED4_SHIFT		5
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED5_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED5_SHIFT		6
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED6_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED6_SHIFT		7
+	u8 flags1;
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED7_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED7_SHIFT		0
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED8_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED8_SHIFT		1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED9_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED9_SHIFT		2
+#define XSTORM_CORE_CONN_AG_CTX_BIT11_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT11_SHIFT		3
+#define XSTORM_CORE_CONN_AG_CTX_BIT12_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT12_SHIFT		4
+#define XSTORM_CORE_CONN_AG_CTX_BIT13_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT13_SHIFT		5
+#define XSTORM_CORE_CONN_AG_CTX_TX_RULE_ACTIVE_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_TX_RULE_ACTIVE_SHIFT	6
+#define XSTORM_CORE_CONN_AG_CTX_DQ_CF_ACTIVE_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_DQ_CF_ACTIVE_SHIFT	7
+	u8 flags2;
+#define XSTORM_CORE_CONN_AG_CTX_CF0_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF0_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_CF1_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF1_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_CF2_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF2_SHIFT	4
+#define XSTORM_CORE_CONN_AG_CTX_CF3_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF3_SHIFT	6
+	u8 flags3;
+#define XSTORM_CORE_CONN_AG_CTX_CF4_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF4_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_CF5_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF5_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_CF6_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF6_SHIFT	4
+#define XSTORM_CORE_CONN_AG_CTX_CF7_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF7_SHIFT	6
+	u8 flags4;
+#define XSTORM_CORE_CONN_AG_CTX_CF8_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF8_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_CF9_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF9_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_CF10_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF10_SHIFT	4
+#define XSTORM_CORE_CONN_AG_CTX_CF11_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF11_SHIFT	6
+	u8 flags5;
+#define XSTORM_CORE_CONN_AG_CTX_CF12_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF12_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_CF13_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF13_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_CF14_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF14_SHIFT	4
+#define XSTORM_CORE_CONN_AG_CTX_CF15_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF15_SHIFT	6
+	u8 flags6;
+#define XSTORM_CORE_CONN_AG_CTX_CONSOLID_PROD_CF_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CONSOLID_PROD_CF_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_CF17_MASK		0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF17_SHIFT		2
+#define XSTORM_CORE_CONN_AG_CTX_DQ_CF_MASK		0x3
+#define XSTORM_CORE_CONN_AG_CTX_DQ_CF_SHIFT		4
+#define XSTORM_CORE_CONN_AG_CTX_TERMINATE_CF_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_TERMINATE_CF_SHIFT	6
+	u8 flags7;
+#define XSTORM_CORE_CONN_AG_CTX_FLUSH_Q0_MASK		0x3
+#define XSTORM_CORE_CONN_AG_CTX_FLUSH_Q0_SHIFT		0
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED10_MASK		0x3
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED10_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_SLOW_PATH_MASK		0x3
+#define XSTORM_CORE_CONN_AG_CTX_SLOW_PATH_SHIFT		4
+#define XSTORM_CORE_CONN_AG_CTX_CF0EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF0EN_SHIFT		6
+#define XSTORM_CORE_CONN_AG_CTX_CF1EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF1EN_SHIFT		7
+	u8 flags8;
+#define XSTORM_CORE_CONN_AG_CTX_CF2EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF2EN_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_CF3EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF3EN_SHIFT	1
+#define XSTORM_CORE_CONN_AG_CTX_CF4EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF4EN_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_CF5EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF5EN_SHIFT	3
+#define XSTORM_CORE_CONN_AG_CTX_CF6EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF6EN_SHIFT	4
+#define XSTORM_CORE_CONN_AG_CTX_CF7EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF7EN_SHIFT	5
+#define XSTORM_CORE_CONN_AG_CTX_CF8EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF8EN_SHIFT	6
+#define XSTORM_CORE_CONN_AG_CTX_CF9EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF9EN_SHIFT	7
+	u8 flags9;
+#define XSTORM_CORE_CONN_AG_CTX_CF10EN_MASK			0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF10EN_SHIFT			0
+#define XSTORM_CORE_CONN_AG_CTX_CF11EN_MASK			0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF11EN_SHIFT			1
+#define XSTORM_CORE_CONN_AG_CTX_CF12EN_MASK			0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF12EN_SHIFT			2
+#define XSTORM_CORE_CONN_AG_CTX_CF13EN_MASK			0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF13EN_SHIFT			3
+#define XSTORM_CORE_CONN_AG_CTX_CF14EN_MASK			0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF14EN_SHIFT			4
+#define XSTORM_CORE_CONN_AG_CTX_CF15EN_MASK			0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF15EN_SHIFT			5
+#define XSTORM_CORE_CONN_AG_CTX_CONSOLID_PROD_CF_EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_CONSOLID_PROD_CF_EN_SHIFT	6
+#define XSTORM_CORE_CONN_AG_CTX_CF17EN_MASK			0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF17EN_SHIFT			7
+	u8 flags10;
+#define XSTORM_CORE_CONN_AG_CTX_DQ_CF_EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_DQ_CF_EN_SHIFT		0
+#define XSTORM_CORE_CONN_AG_CTX_TERMINATE_CF_EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_TERMINATE_CF_EN_SHIFT	1
+#define XSTORM_CORE_CONN_AG_CTX_FLUSH_Q0_EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_FLUSH_Q0_EN_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED11_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED11_SHIFT	3
+#define XSTORM_CORE_CONN_AG_CTX_SLOW_PATH_EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_SLOW_PATH_EN_SHIFT	4
+#define XSTORM_CORE_CONN_AG_CTX_CF23EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_CF23EN_SHIFT		5
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED12_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED12_SHIFT	6
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED13_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED13_SHIFT	7
+	u8 flags11;
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED14_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED14_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED15_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RESERVED15_SHIFT	1
+#define XSTORM_CORE_CONN_AG_CTX_TX_DEC_RULE_EN_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_TX_DEC_RULE_EN_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_RULE5EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE5EN_SHIFT		3
+#define XSTORM_CORE_CONN_AG_CTX_RULE6EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE6EN_SHIFT		4
+#define XSTORM_CORE_CONN_AG_CTX_RULE7EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE7EN_SHIFT		5
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED1_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED1_SHIFT	6
+#define XSTORM_CORE_CONN_AG_CTX_RULE9EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE9EN_SHIFT		7
+	u8 flags12;
+#define XSTORM_CORE_CONN_AG_CTX_RULE10EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE10EN_SHIFT		0
+#define XSTORM_CORE_CONN_AG_CTX_RULE11EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE11EN_SHIFT		1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED2_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED2_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED3_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED3_SHIFT	3
+#define XSTORM_CORE_CONN_AG_CTX_RULE14EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE14EN_SHIFT		4
+#define XSTORM_CORE_CONN_AG_CTX_RULE15EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE15EN_SHIFT		5
+#define XSTORM_CORE_CONN_AG_CTX_RULE16EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE16EN_SHIFT		6
+#define XSTORM_CORE_CONN_AG_CTX_RULE17EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE17EN_SHIFT		7
+	u8 flags13;
+#define XSTORM_CORE_CONN_AG_CTX_RULE18EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE18EN_SHIFT		0
+#define XSTORM_CORE_CONN_AG_CTX_RULE19EN_MASK		0x1
+#define XSTORM_CORE_CONN_AG_CTX_RULE19EN_SHIFT		1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED4_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED4_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED5_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED5_SHIFT	3
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED6_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED6_SHIFT	4
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED7_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED7_SHIFT	5
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED8_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED8_SHIFT	6
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED9_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_A0_RESERVED9_SHIFT	7
+	u8 flags14;
+#define XSTORM_CORE_CONN_AG_CTX_BIT16_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT16_SHIFT	0
+#define XSTORM_CORE_CONN_AG_CTX_BIT17_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT17_SHIFT	1
+#define XSTORM_CORE_CONN_AG_CTX_BIT18_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT18_SHIFT	2
+#define XSTORM_CORE_CONN_AG_CTX_BIT19_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT19_SHIFT	3
+#define XSTORM_CORE_CONN_AG_CTX_BIT20_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT20_SHIFT	4
+#define XSTORM_CORE_CONN_AG_CTX_BIT21_MASK	0x1
+#define XSTORM_CORE_CONN_AG_CTX_BIT21_SHIFT	5
+#define XSTORM_CORE_CONN_AG_CTX_CF23_MASK	0x3
+#define XSTORM_CORE_CONN_AG_CTX_CF23_SHIFT	6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	__le16 physical_q0;
 	__le16 consolid_prod;
 	__le16 reserved16;
 	__le16 tx_bd_cons;
 	__le16 tx_bd_or_spq_prod;
+<<<<<<< HEAD
 	__le16 updated_qm_pq_id;
+=======
+	__le16 word5;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 conn_dpi;
 	u8 byte3;
 	u8 byte4;
@@ -659,6 +883,7 @@ struct e4_xstorm_core_conn_ag_ctx {
 	__le16 word15;
 };
 
+<<<<<<< HEAD
 struct e4_tstorm_core_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -742,6 +967,91 @@ struct e4_tstorm_core_conn_ag_ctx {
 #define E4_TSTORM_CORE_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_TSTORM_CORE_CONN_AG_CTX_RULE8EN_MASK		0x1
 #define E4_TSTORM_CORE_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+struct tstorm_core_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define TSTORM_CORE_CONN_AG_CTX_BIT0_MASK     0x1	/* exist_in_qm0 */
+#define TSTORM_CORE_CONN_AG_CTX_BIT0_SHIFT    0
+#define TSTORM_CORE_CONN_AG_CTX_BIT1_MASK     0x1	/* exist_in_qm1 */
+#define TSTORM_CORE_CONN_AG_CTX_BIT1_SHIFT    1
+#define TSTORM_CORE_CONN_AG_CTX_BIT2_MASK     0x1	/* bit2 */
+#define TSTORM_CORE_CONN_AG_CTX_BIT2_SHIFT    2
+#define TSTORM_CORE_CONN_AG_CTX_BIT3_MASK     0x1	/* bit3 */
+#define TSTORM_CORE_CONN_AG_CTX_BIT3_SHIFT    3
+#define TSTORM_CORE_CONN_AG_CTX_BIT4_MASK     0x1	/* bit4 */
+#define TSTORM_CORE_CONN_AG_CTX_BIT4_SHIFT    4
+#define TSTORM_CORE_CONN_AG_CTX_BIT5_MASK     0x1	/* bit5 */
+#define TSTORM_CORE_CONN_AG_CTX_BIT5_SHIFT    5
+#define TSTORM_CORE_CONN_AG_CTX_CF0_MASK      0x3	/* timer0cf */
+#define TSTORM_CORE_CONN_AG_CTX_CF0_SHIFT     6
+	u8 flags1;
+#define TSTORM_CORE_CONN_AG_CTX_CF1_MASK      0x3	/* timer1cf */
+#define TSTORM_CORE_CONN_AG_CTX_CF1_SHIFT     0
+#define TSTORM_CORE_CONN_AG_CTX_CF2_MASK      0x3	/* timer2cf */
+#define TSTORM_CORE_CONN_AG_CTX_CF2_SHIFT     2
+#define TSTORM_CORE_CONN_AG_CTX_CF3_MASK      0x3	/* timer_stop_all */
+#define TSTORM_CORE_CONN_AG_CTX_CF3_SHIFT     4
+#define TSTORM_CORE_CONN_AG_CTX_CF4_MASK      0x3	/* cf4 */
+#define TSTORM_CORE_CONN_AG_CTX_CF4_SHIFT     6
+	u8 flags2;
+#define TSTORM_CORE_CONN_AG_CTX_CF5_MASK      0x3	/* cf5 */
+#define TSTORM_CORE_CONN_AG_CTX_CF5_SHIFT     0
+#define TSTORM_CORE_CONN_AG_CTX_CF6_MASK      0x3	/* cf6 */
+#define TSTORM_CORE_CONN_AG_CTX_CF6_SHIFT     2
+#define TSTORM_CORE_CONN_AG_CTX_CF7_MASK      0x3	/* cf7 */
+#define TSTORM_CORE_CONN_AG_CTX_CF7_SHIFT     4
+#define TSTORM_CORE_CONN_AG_CTX_CF8_MASK      0x3	/* cf8 */
+#define TSTORM_CORE_CONN_AG_CTX_CF8_SHIFT     6
+	u8 flags3;
+#define TSTORM_CORE_CONN_AG_CTX_CF9_MASK      0x3	/* cf9 */
+#define TSTORM_CORE_CONN_AG_CTX_CF9_SHIFT     0
+#define TSTORM_CORE_CONN_AG_CTX_CF10_MASK     0x3	/* cf10 */
+#define TSTORM_CORE_CONN_AG_CTX_CF10_SHIFT    2
+#define TSTORM_CORE_CONN_AG_CTX_CF0EN_MASK    0x1	/* cf0en */
+#define TSTORM_CORE_CONN_AG_CTX_CF0EN_SHIFT   4
+#define TSTORM_CORE_CONN_AG_CTX_CF1EN_MASK    0x1	/* cf1en */
+#define TSTORM_CORE_CONN_AG_CTX_CF1EN_SHIFT   5
+#define TSTORM_CORE_CONN_AG_CTX_CF2EN_MASK    0x1	/* cf2en */
+#define TSTORM_CORE_CONN_AG_CTX_CF2EN_SHIFT   6
+#define TSTORM_CORE_CONN_AG_CTX_CF3EN_MASK    0x1	/* cf3en */
+#define TSTORM_CORE_CONN_AG_CTX_CF3EN_SHIFT   7
+	u8 flags4;
+#define TSTORM_CORE_CONN_AG_CTX_CF4EN_MASK    0x1	/* cf4en */
+#define TSTORM_CORE_CONN_AG_CTX_CF4EN_SHIFT   0
+#define TSTORM_CORE_CONN_AG_CTX_CF5EN_MASK    0x1	/* cf5en */
+#define TSTORM_CORE_CONN_AG_CTX_CF5EN_SHIFT   1
+#define TSTORM_CORE_CONN_AG_CTX_CF6EN_MASK    0x1	/* cf6en */
+#define TSTORM_CORE_CONN_AG_CTX_CF6EN_SHIFT   2
+#define TSTORM_CORE_CONN_AG_CTX_CF7EN_MASK    0x1	/* cf7en */
+#define TSTORM_CORE_CONN_AG_CTX_CF7EN_SHIFT   3
+#define TSTORM_CORE_CONN_AG_CTX_CF8EN_MASK    0x1	/* cf8en */
+#define TSTORM_CORE_CONN_AG_CTX_CF8EN_SHIFT   4
+#define TSTORM_CORE_CONN_AG_CTX_CF9EN_MASK    0x1	/* cf9en */
+#define TSTORM_CORE_CONN_AG_CTX_CF9EN_SHIFT   5
+#define TSTORM_CORE_CONN_AG_CTX_CF10EN_MASK   0x1	/* cf10en */
+#define TSTORM_CORE_CONN_AG_CTX_CF10EN_SHIFT  6
+#define TSTORM_CORE_CONN_AG_CTX_RULE0EN_MASK  0x1	/* rule0en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE0EN_SHIFT 7
+	u8 flags5;
+#define TSTORM_CORE_CONN_AG_CTX_RULE1EN_MASK  0x1	/* rule1en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE1EN_SHIFT 0
+#define TSTORM_CORE_CONN_AG_CTX_RULE2EN_MASK  0x1	/* rule2en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE2EN_SHIFT 1
+#define TSTORM_CORE_CONN_AG_CTX_RULE3EN_MASK  0x1	/* rule3en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE3EN_SHIFT 2
+#define TSTORM_CORE_CONN_AG_CTX_RULE4EN_MASK  0x1	/* rule4en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE4EN_SHIFT 3
+#define TSTORM_CORE_CONN_AG_CTX_RULE5EN_MASK  0x1	/* rule5en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE5EN_SHIFT 4
+#define TSTORM_CORE_CONN_AG_CTX_RULE6EN_MASK  0x1	/* rule6en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE6EN_SHIFT 5
+#define TSTORM_CORE_CONN_AG_CTX_RULE7EN_MASK  0x1	/* rule7en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE7EN_SHIFT 6
+#define TSTORM_CORE_CONN_AG_CTX_RULE8EN_MASK  0x1	/* rule8en */
+#define TSTORM_CORE_CONN_AG_CTX_RULE8EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 reg0;
 	__le32 reg1;
 	__le32 reg2;
@@ -763,6 +1073,7 @@ struct e4_tstorm_core_conn_ag_ctx {
 	__le32 reg10;
 };
 
+<<<<<<< HEAD
 struct e4_ustorm_core_conn_ag_ctx {
 	u8 reserved;
 	u8 byte1;
@@ -820,6 +1131,65 @@ struct e4_ustorm_core_conn_ag_ctx {
 #define E4_USTORM_CORE_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_USTORM_CORE_CONN_AG_CTX_RULE8EN_MASK		0x1
 #define E4_USTORM_CORE_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+struct ustorm_core_conn_ag_ctx {
+	u8 reserved;
+	u8 byte1;
+	u8 flags0;
+#define USTORM_CORE_CONN_AG_CTX_BIT0_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_BIT0_SHIFT	0
+#define USTORM_CORE_CONN_AG_CTX_BIT1_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_BIT1_SHIFT	1
+#define USTORM_CORE_CONN_AG_CTX_CF0_MASK	0x3
+#define USTORM_CORE_CONN_AG_CTX_CF0_SHIFT	2
+#define USTORM_CORE_CONN_AG_CTX_CF1_MASK	0x3
+#define USTORM_CORE_CONN_AG_CTX_CF1_SHIFT	4
+#define USTORM_CORE_CONN_AG_CTX_CF2_MASK	0x3
+#define USTORM_CORE_CONN_AG_CTX_CF2_SHIFT	6
+	u8 flags1;
+#define USTORM_CORE_CONN_AG_CTX_CF3_MASK	0x3
+#define USTORM_CORE_CONN_AG_CTX_CF3_SHIFT	0
+#define USTORM_CORE_CONN_AG_CTX_CF4_MASK	0x3
+#define USTORM_CORE_CONN_AG_CTX_CF4_SHIFT	2
+#define USTORM_CORE_CONN_AG_CTX_CF5_MASK	0x3
+#define USTORM_CORE_CONN_AG_CTX_CF5_SHIFT	4
+#define USTORM_CORE_CONN_AG_CTX_CF6_MASK	0x3
+#define USTORM_CORE_CONN_AG_CTX_CF6_SHIFT	6
+	u8 flags2;
+#define USTORM_CORE_CONN_AG_CTX_CF0EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_CF0EN_SHIFT	0
+#define USTORM_CORE_CONN_AG_CTX_CF1EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_CF1EN_SHIFT	1
+#define USTORM_CORE_CONN_AG_CTX_CF2EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_CF2EN_SHIFT	2
+#define USTORM_CORE_CONN_AG_CTX_CF3EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_CF3EN_SHIFT	3
+#define USTORM_CORE_CONN_AG_CTX_CF4EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_CF4EN_SHIFT	4
+#define USTORM_CORE_CONN_AG_CTX_CF5EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_CF5EN_SHIFT	5
+#define USTORM_CORE_CONN_AG_CTX_CF6EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_CF6EN_SHIFT	6
+#define USTORM_CORE_CONN_AG_CTX_RULE0EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE0EN_SHIFT	7
+	u8 flags3;
+#define USTORM_CORE_CONN_AG_CTX_RULE1EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE1EN_SHIFT	0
+#define USTORM_CORE_CONN_AG_CTX_RULE2EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE2EN_SHIFT	1
+#define USTORM_CORE_CONN_AG_CTX_RULE3EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE3EN_SHIFT	2
+#define USTORM_CORE_CONN_AG_CTX_RULE4EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE4EN_SHIFT	3
+#define USTORM_CORE_CONN_AG_CTX_RULE5EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE5EN_SHIFT	4
+#define USTORM_CORE_CONN_AG_CTX_RULE6EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE6EN_SHIFT	5
+#define USTORM_CORE_CONN_AG_CTX_RULE7EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE7EN_SHIFT	6
+#define USTORM_CORE_CONN_AG_CTX_RULE8EN_MASK	0x1
+#define USTORM_CORE_CONN_AG_CTX_RULE8EN_SHIFT	7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -843,20 +1213,285 @@ struct ustorm_core_conn_st_ctx {
 };
 
 /* core connection context */
+<<<<<<< HEAD
 struct e4_core_conn_context {
+=======
+struct core_conn_context {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ystorm_core_conn_st_ctx ystorm_st_context;
 	struct regpair ystorm_st_padding[2];
 	struct pstorm_core_conn_st_ctx pstorm_st_context;
 	struct regpair pstorm_st_padding[2];
 	struct xstorm_core_conn_st_ctx xstorm_st_context;
+<<<<<<< HEAD
 	struct e4_xstorm_core_conn_ag_ctx xstorm_ag_context;
 	struct e4_tstorm_core_conn_ag_ctx tstorm_ag_context;
 	struct e4_ustorm_core_conn_ag_ctx ustorm_ag_context;
+=======
+	struct xstorm_core_conn_ag_ctx xstorm_ag_context;
+	struct tstorm_core_conn_ag_ctx tstorm_ag_context;
+	struct ustorm_core_conn_ag_ctx ustorm_ag_context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mstorm_core_conn_st_ctx mstorm_st_context;
 	struct ustorm_core_conn_st_ctx ustorm_st_context;
 	struct regpair ustorm_st_padding[2];
 };
 
+<<<<<<< HEAD
+=======
+enum core_error_handle {
+	LL2_DROP_PACKET,
+	LL2_DO_NOTHING,
+	LL2_ASSERT,
+	MAX_CORE_ERROR_HANDLE
+};
+
+enum core_event_opcode {
+	CORE_EVENT_TX_QUEUE_START,
+	CORE_EVENT_TX_QUEUE_STOP,
+	CORE_EVENT_RX_QUEUE_START,
+	CORE_EVENT_RX_QUEUE_STOP,
+	CORE_EVENT_RX_QUEUE_FLUSH,
+	MAX_CORE_EVENT_OPCODE
+};
+
+enum core_l4_pseudo_checksum_mode {
+	CORE_L4_PSEUDO_CSUM_CORRECT_LENGTH,
+	CORE_L4_PSEUDO_CSUM_ZERO_LENGTH,
+	MAX_CORE_L4_PSEUDO_CHECKSUM_MODE
+};
+
+struct core_ll2_port_stats {
+	struct regpair gsi_invalid_hdr;
+	struct regpair gsi_invalid_pkt_length;
+	struct regpair gsi_unsupported_pkt_typ;
+	struct regpair gsi_crcchksm_error;
+};
+
+struct core_ll2_pstorm_per_queue_stat {
+	struct regpair sent_ucast_bytes;
+	struct regpair sent_mcast_bytes;
+	struct regpair sent_bcast_bytes;
+	struct regpair sent_ucast_pkts;
+	struct regpair sent_mcast_pkts;
+	struct regpair sent_bcast_pkts;
+};
+
+struct core_ll2_rx_prod {
+	__le16 bd_prod;
+	__le16 cqe_prod;
+	__le32 reserved;
+};
+
+struct core_ll2_tstorm_per_queue_stat {
+	struct regpair packet_too_big_discard;
+	struct regpair no_buff_discard;
+};
+
+struct core_ll2_ustorm_per_queue_stat {
+	struct regpair rcv_ucast_bytes;
+	struct regpair rcv_mcast_bytes;
+	struct regpair rcv_bcast_bytes;
+	struct regpair rcv_ucast_pkts;
+	struct regpair rcv_mcast_pkts;
+	struct regpair rcv_bcast_pkts;
+};
+
+enum core_ramrod_cmd_id {
+	CORE_RAMROD_UNUSED,
+	CORE_RAMROD_RX_QUEUE_START,
+	CORE_RAMROD_TX_QUEUE_START,
+	CORE_RAMROD_RX_QUEUE_STOP,
+	CORE_RAMROD_TX_QUEUE_STOP,
+	CORE_RAMROD_RX_QUEUE_FLUSH,
+	MAX_CORE_RAMROD_CMD_ID
+};
+
+enum core_roce_flavor_type {
+	CORE_ROCE,
+	CORE_RROCE,
+	MAX_CORE_ROCE_FLAVOR_TYPE
+};
+
+struct core_rx_action_on_error {
+	u8 error_type;
+#define CORE_RX_ACTION_ON_ERROR_PACKET_TOO_BIG_MASK	0x3
+#define CORE_RX_ACTION_ON_ERROR_PACKET_TOO_BIG_SHIFT 0
+#define CORE_RX_ACTION_ON_ERROR_NO_BUFF_MASK	0x3
+#define CORE_RX_ACTION_ON_ERROR_NO_BUFF_SHIFT	2
+#define CORE_RX_ACTION_ON_ERROR_RESERVED_MASK	0xF
+#define CORE_RX_ACTION_ON_ERROR_RESERVED_SHIFT	4
+};
+
+struct core_rx_bd {
+	struct regpair addr;
+	__le16 reserved[4];
+};
+
+struct core_rx_bd_with_buff_len {
+	struct regpair addr;
+	__le16 buff_length;
+	__le16 reserved[3];
+};
+
+union core_rx_bd_union {
+	struct core_rx_bd rx_bd;
+	struct core_rx_bd_with_buff_len rx_bd_with_len;
+};
+
+struct core_rx_cqe_opaque_data {
+	__le32 data[2];
+};
+
+enum core_rx_cqe_type {
+	CORE_RX_CQE_ILLIGAL_TYPE,
+	CORE_RX_CQE_TYPE_REGULAR,
+	CORE_RX_CQE_TYPE_GSI_OFFLOAD,
+	CORE_RX_CQE_TYPE_SLOW_PATH,
+	MAX_CORE_RX_CQE_TYPE
+};
+
+struct core_rx_fast_path_cqe {
+	u8 type;
+	u8 placement_offset;
+	struct parsing_and_err_flags parse_flags;
+	__le16 packet_length;
+	__le16 vlan;
+	struct core_rx_cqe_opaque_data opaque_data;
+	struct parsing_err_flags err_flags;
+	__le16 reserved0;
+	__le32 reserved1[3];
+};
+
+struct core_rx_gsi_offload_cqe {
+	u8 type;
+	u8 data_length_error;
+	struct parsing_and_err_flags parse_flags;
+	__le16 data_length;
+	__le16 vlan;
+	__le32 src_mac_addrhi;
+	__le16 src_mac_addrlo;
+	__le16 qp_id;
+	__le32 gid_dst[4];
+};
+
+struct core_rx_slow_path_cqe {
+	u8 type;
+	u8 ramrod_cmd_id;
+	__le16 echo;
+	struct core_rx_cqe_opaque_data opaque_data;
+	__le32 reserved1[5];
+};
+
+union core_rx_cqe_union {
+	struct core_rx_fast_path_cqe rx_cqe_fp;
+	struct core_rx_gsi_offload_cqe rx_cqe_gsi;
+	struct core_rx_slow_path_cqe rx_cqe_sp;
+};
+
+struct core_rx_start_ramrod_data {
+	struct regpair bd_base;
+	struct regpair cqe_pbl_addr;
+	__le16 mtu;
+	__le16 sb_id;
+	u8 sb_index;
+	u8 complete_cqe_flg;
+	u8 complete_event_flg;
+	u8 drop_ttl0_flg;
+	__le16 num_of_pbl_pages;
+	u8 inner_vlan_removal_en;
+	u8 queue_id;
+	u8 main_func_queue;
+	u8 mf_si_bcast_accept_all;
+	u8 mf_si_mcast_accept_all;
+	struct core_rx_action_on_error action_on_error;
+	u8 gsi_offload_flag;
+	u8 reserved[7];
+};
+
+struct core_rx_stop_ramrod_data {
+	u8 complete_cqe_flg;
+	u8 complete_event_flg;
+	u8 queue_id;
+	u8 reserved1;
+	__le16 reserved2[2];
+};
+
+struct core_tx_bd_data {
+	__le16 as_bitfield;
+#define CORE_TX_BD_DATA_FORCE_VLAN_MODE_MASK	0x1
+#define CORE_TX_BD_DATA_FORCE_VLAN_MODE_SHIFT     0
+#define CORE_TX_BD_DATA_VLAN_INSERTION_MASK	0x1
+#define CORE_TX_BD_DATA_VLAN_INSERTION_SHIFT      1
+#define CORE_TX_BD_DATA_START_BD_MASK	0x1
+#define CORE_TX_BD_DATA_START_BD_SHIFT            2
+#define CORE_TX_BD_DATA_IP_CSUM_MASK	0x1
+#define CORE_TX_BD_DATA_IP_CSUM_SHIFT             3
+#define CORE_TX_BD_DATA_L4_CSUM_MASK	0x1
+#define CORE_TX_BD_DATA_L4_CSUM_SHIFT             4
+#define CORE_TX_BD_DATA_IPV6_EXT_MASK	0x1
+#define CORE_TX_BD_DATA_IPV6_EXT_SHIFT            5
+#define CORE_TX_BD_DATA_L4_PROTOCOL_MASK	0x1
+#define CORE_TX_BD_DATA_L4_PROTOCOL_SHIFT         6
+#define CORE_TX_BD_DATA_L4_PSEUDO_CSUM_MODE_MASK	0x1
+#define CORE_TX_BD_DATA_L4_PSEUDO_CSUM_MODE_SHIFT 7
+#define CORE_TX_BD_DATA_NBDS_MASK	0xF
+#define CORE_TX_BD_DATA_NBDS_SHIFT                8
+#define CORE_TX_BD_DATA_ROCE_FLAV_MASK	0x1
+#define CORE_TX_BD_DATA_ROCE_FLAV_SHIFT           12
+#define CORE_TX_BD_DATA_IP_LEN_MASK	0x1
+#define CORE_TX_BD_DATA_IP_LEN_SHIFT              13
+#define CORE_TX_BD_DATA_RESERVED0_MASK            0x3
+#define CORE_TX_BD_DATA_RESERVED0_SHIFT           14
+};
+
+struct core_tx_bd {
+	struct regpair addr;
+	__le16 nbytes;
+	__le16 nw_vlan_or_lb_echo;
+	struct core_tx_bd_data bd_data;
+	__le16 bitfield1;
+#define CORE_TX_BD_L4_HDR_OFFSET_W_MASK	0x3FFF
+#define CORE_TX_BD_L4_HDR_OFFSET_W_SHIFT 0
+#define CORE_TX_BD_TX_DST_MASK		0x3
+#define CORE_TX_BD_TX_DST_SHIFT		14
+};
+
+enum core_tx_dest {
+	CORE_TX_DEST_NW,
+	CORE_TX_DEST_LB,
+	CORE_TX_DEST_RESERVED,
+	CORE_TX_DEST_DROP,
+	MAX_CORE_TX_DEST
+};
+
+struct core_tx_start_ramrod_data {
+	struct regpair pbl_base_addr;
+	__le16 mtu;
+	__le16 sb_id;
+	u8 sb_index;
+	u8 stats_en;
+	u8 stats_id;
+	u8 conn_type;
+	__le16 pbl_size;
+	__le16 qm_pq_id;
+	u8 gsi_offload_flag;
+	u8 resrved[3];
+};
+
+struct core_tx_stop_ramrod_data {
+	__le32 reserved0[2];
+};
+
+enum dcb_dscp_update_mode {
+	DONT_UPDATE_DCB_DSCP,
+	UPDATE_DCB,
+	UPDATE_DSCP,
+	UPDATE_DCB_DSCP,
+	MAX_DCB_DSCP_UPDATE_MODE
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct eth_mstorm_per_pf_stat {
 	struct regpair gre_discard_pkts;
 	struct regpair vxlan_discard_pkts;
@@ -938,6 +1573,7 @@ struct eth_ustorm_per_queue_stat {
 	struct regpair rcv_bcast_pkts;
 };
 
+<<<<<<< HEAD
 /* Event Ring VF-PF Channel data */
 struct vf_pf_channel_eqe_data {
 	struct regpair msg_addr;
@@ -982,6 +1618,8 @@ struct event_ring_entry {
 	union event_ring_data data;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Event Ring Next Page Address */
 struct event_ring_next_addr {
 	struct regpair addr;
@@ -994,13 +1632,17 @@ union event_ring_element {
 	struct event_ring_next_addr next_addr;
 };
 
+<<<<<<< HEAD
 /* Ports mode */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum fw_flow_ctrl_mode {
 	flow_ctrl_pause,
 	flow_ctrl_pfc,
 	MAX_FW_FLOW_CTRL_MODE
 };
 
+<<<<<<< HEAD
 /* GFT profile type */
 enum gft_profile_type {
 	GFT_PROFILE_TYPE_4_TUPLE,
@@ -1011,6 +1653,8 @@ enum gft_profile_type {
 	MAX_GFT_PROFILE_TYPE
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Major and Minor hsi Versions */
 struct hsi_fp_ver_struct {
 	u8 minor_ver_arr[2];
@@ -1018,14 +1662,22 @@ struct hsi_fp_ver_struct {
 };
 
 enum iwarp_ll2_tx_queues {
+<<<<<<< HEAD
 	IWARP_LL2_IN_ORDER_TX_QUEUE = 1,
+=======
+	IWARP_LL2_IN_ORDER_TX_QUEUE =			1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	IWARP_LL2_ALIGNED_TX_QUEUE,
 	IWARP_LL2_ALIGNED_RIGHT_TRIMMED_TX_QUEUE,
 	IWARP_LL2_ERROR,
 	MAX_IWARP_LL2_TX_QUEUES
 };
 
+<<<<<<< HEAD
 /* Malicious VF error ID */
+=======
+/* Mstorm non-triggering VF zone */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum malicious_vf_error_id {
 	MALICIOUS_VF_NO_ERROR,
 	VF_PF_CHANNEL_NOT_READY,
@@ -1048,11 +1700,17 @@ enum malicious_vf_error_id {
 	ETH_TUNN_IPV6_EXT_NBD_ERR,
 	ETH_CONTROL_PACKET_VIOLATION,
 	ETH_ANTI_SPOOFING_ERR,
+<<<<<<< HEAD
 	ETH_PACKET_SIZE_TOO_LARGE,
 	MAX_MALICIOUS_VF_ERROR_ID
 };
 
 /* Mstorm non-triggering VF zone */
+=======
+	MAX_MALICIOUS_VF_ERROR_ID
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mstorm_non_trigger_vf_zone {
 	struct eth_mstorm_per_queue_stat eth_queue_stat;
 	struct eth_rx_prod_data eth_rx_queue_producers[ETH_MAX_NUM_RX_QUEUES_PER_VF_QUAD];
@@ -1061,6 +1719,7 @@ struct mstorm_non_trigger_vf_zone {
 /* Mstorm VF zone */
 struct mstorm_vf_zone {
 	struct mstorm_non_trigger_vf_zone non_trigger;
+<<<<<<< HEAD
 };
 
 /* vlan header including TPID and TCI fields */
@@ -1076,6 +1735,9 @@ struct outer_tag_config_struct {
 	u8 reserved[2];
 	struct vlan_header outer_tag;
 	u8 inner_to_outer_pri_map[8];
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* personality per PF */
@@ -1087,7 +1749,11 @@ enum personality_type {
 	PERSONALITY_RDMA,
 	PERSONALITY_CORE,
 	PERSONALITY_ETH,
+<<<<<<< HEAD
 	PERSONALITY_RESERVED,
+=======
+	PERSONALITY_RESERVED4,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MAX_PERSONALITY_TYPE
 };
 
@@ -1095,16 +1761,25 @@ enum personality_type {
 struct pf_start_tunnel_config {
 	u8 set_vxlan_udp_port_flg;
 	u8 set_geneve_udp_port_flg;
+<<<<<<< HEAD
 	u8 set_no_inner_l2_vxlan_udp_port_flg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 tunnel_clss_vxlan;
 	u8 tunnel_clss_l2geneve;
 	u8 tunnel_clss_ipgeneve;
 	u8 tunnel_clss_l2gre;
 	u8 tunnel_clss_ipgre;
+<<<<<<< HEAD
 	__le16 vxlan_udp_port;
 	__le16 geneve_udp_port;
 	__le16 no_inner_l2_vxlan_udp_port;
 	__le16 reserved[3];
+=======
+	u8 reserved;
+	__le16 vxlan_udp_port;
+	__le16 geneve_udp_port;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Ramrod data for PF start ramrod */
@@ -1112,6 +1787,10 @@ struct pf_start_ramrod_data {
 	struct regpair event_ring_pbl_addr;
 	struct regpair consolid_q_pbl_addr;
 	struct pf_start_tunnel_config tunnel_config;
+<<<<<<< HEAD
+=======
+	__le32 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 event_ring_sb_id;
 	u8 base_vf_id;
 	u8 num_vfs;
@@ -1125,6 +1804,7 @@ struct pf_start_ramrod_data {
 	u8 mf_mode;
 	u8 integ_phase;
 	u8 allow_npar_tx_switching;
+<<<<<<< HEAD
 	u8 reserved0;
 	struct hsi_fp_ver_struct hsi_fp_ver;
 	struct outer_tag_config_struct outer_tag_config;
@@ -1141,18 +1821,39 @@ struct protocol_dcb_data {
 };
 
 /* Update tunnel configuration */
+=======
+	u8 inner_to_outer_pri_map[8];
+	u8 pri_map_valid;
+	__le32 outer_tag;
+	struct hsi_fp_ver_struct hsi_fp_ver;
+};
+
+struct protocol_dcb_data {
+	u8 dcb_enable_flag;
+	u8 reserved_a;
+	u8 dcb_priority;
+	u8 dcb_tc;
+	u8 reserved_b;
+	u8 reserved0;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pf_update_tunnel_config {
 	u8 update_rx_pf_clss;
 	u8 update_rx_def_ucast_clss;
 	u8 update_rx_def_non_ucast_clss;
 	u8 set_vxlan_udp_port_flg;
 	u8 set_geneve_udp_port_flg;
+<<<<<<< HEAD
 	u8 set_no_inner_l2_vxlan_udp_port_flg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 tunnel_clss_vxlan;
 	u8 tunnel_clss_l2geneve;
 	u8 tunnel_clss_ipgeneve;
 	u8 tunnel_clss_l2gre;
 	u8 tunnel_clss_ipgre;
+<<<<<<< HEAD
 	u8 reserved;
 	__le16 vxlan_udp_port;
 	__le16 geneve_udp_port;
@@ -1162,6 +1863,15 @@ struct pf_update_tunnel_config {
 
 /* Data for port update ramrod */
 struct pf_update_ramrod_data {
+=======
+	__le16 vxlan_udp_port;
+	__le16 geneve_udp_port;
+	__le16 reserved;
+};
+
+struct pf_update_ramrod_data {
+	u8 pf_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 update_eth_dcb_data_mode;
 	u8 update_fcoe_dcb_data_mode;
 	u8 update_iscsi_dcb_data_mode;
@@ -1169,7 +1879,10 @@ struct pf_update_ramrod_data {
 	u8 update_rroce_dcb_data_mode;
 	u8 update_iwarp_dcb_data_mode;
 	u8 update_mf_vlan_flag;
+<<<<<<< HEAD
 	u8 update_enable_stag_pri_change;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct protocol_dcb_data eth_dcb_data;
 	struct protocol_dcb_data fcoe_dcb_data;
 	struct protocol_dcb_data iscsi_dcb_data;
@@ -1177,8 +1890,12 @@ struct pf_update_ramrod_data {
 	struct protocol_dcb_data rroce_dcb_data;
 	struct protocol_dcb_data iwarp_dcb_data;
 	__le16 mf_vlan;
+<<<<<<< HEAD
 	u8 enable_stag_pri_change;
 	u8 reserved;
+=======
+	__le16 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pf_update_tunnel_config tunnel_config;
 };
 
@@ -1199,13 +1916,19 @@ enum protocol_version_array_key {
 	MAX_PROTOCOL_VERSION_ARRAY_KEY
 };
 
+<<<<<<< HEAD
 /* RDMA TX Stats */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_sent_stats {
 	struct regpair sent_bytes;
 	struct regpair sent_pkts;
 };
 
+<<<<<<< HEAD
 /* Pstorm non-triggering VF zone */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pstorm_non_trigger_vf_zone {
 	struct eth_pstorm_per_queue_stat eth_queue_stat;
 	struct rdma_sent_stats rdma_stats;
@@ -1225,12 +1948,16 @@ struct ramrod_header {
 	__le16 echo;
 };
 
+<<<<<<< HEAD
 /* RDMA RX Stats */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_rcv_stats {
 	struct regpair rcv_bytes;
 	struct regpair rcv_pkts;
 };
 
+<<<<<<< HEAD
 /* Data for update QCN/DCQCN RL ramrod */
 struct rl_update_ramrod_data {
 	u8 qcn_update_param_flg;
@@ -1253,6 +1980,8 @@ struct rl_update_ramrod_data {
 };
 
 /* Slowpath Element (SPQE) */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct slow_path_element {
 	struct ramrod_header hdr;
 	struct regpair data_ptr;
@@ -1275,12 +2004,19 @@ struct tstorm_per_port_stat {
 	struct regpair roce_irregular_pkt;
 	struct regpair iwarp_irregular_pkt;
 	struct regpair eth_irregular_pkt;
+<<<<<<< HEAD
 	struct regpair toe_irregular_pkt;
+=======
+	struct regpair reserved1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct regpair preroce_irregular_pkt;
 	struct regpair eth_gre_tunn_filter_discard;
 	struct regpair eth_vxlan_tunn_filter_discard;
 	struct regpair eth_geneve_tunn_filter_discard;
+<<<<<<< HEAD
 	struct regpair eth_gft_drop_pkt;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Tstorm VF zone */
@@ -1343,7 +2079,10 @@ struct vf_stop_ramrod_data {
 	__le32 reserved2;
 };
 
+<<<<<<< HEAD
 /* VF zone size mode */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum vf_zone_size_mode {
 	VF_ZONE_SIZE_MODE_DEFAULT,
 	VF_ZONE_SIZE_MODE_DOUBLE,
@@ -1351,7 +2090,10 @@ enum vf_zone_size_mode {
 	MAX_VF_ZONE_SIZE_MODE
 };
 
+<<<<<<< HEAD
 /* Attentions status block */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct atten_status_block {
 	__le32 atten_bits;
 	__le32 atten_ack;
@@ -1360,6 +2102,15 @@ struct atten_status_block {
 	__le32 reserved1;
 };
 
+<<<<<<< HEAD
+=======
+enum command_type_bit {
+	IGU_COMMAND_TYPE_NOP = 0,
+	IGU_COMMAND_TYPE_SET = 1,
+	MAX_COMMAND_TYPE_BIT
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* DMAE command */
 struct dmae_cmd {
 	__le32 opcode;
@@ -1469,6 +2220,7 @@ enum dmae_cmd_src_enum {
 	MAX_DMAE_CMD_SRC_ENUM
 };
 
+<<<<<<< HEAD
 struct e4_mstorm_core_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -1500,12 +2252,46 @@ struct e4_mstorm_core_conn_ag_ctx {
 #define E4_MSTORM_CORE_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_MSTORM_CORE_CONN_AG_CTX_RULE4EN_MASK		0x1
 #define E4_MSTORM_CORE_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+struct mstorm_core_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define MSTORM_CORE_CONN_AG_CTX_BIT0_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_BIT0_SHIFT	0
+#define MSTORM_CORE_CONN_AG_CTX_BIT1_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_BIT1_SHIFT	1
+#define MSTORM_CORE_CONN_AG_CTX_CF0_MASK	0x3
+#define MSTORM_CORE_CONN_AG_CTX_CF0_SHIFT	2
+#define MSTORM_CORE_CONN_AG_CTX_CF1_MASK	0x3
+#define MSTORM_CORE_CONN_AG_CTX_CF1_SHIFT	4
+#define MSTORM_CORE_CONN_AG_CTX_CF2_MASK	0x3
+#define MSTORM_CORE_CONN_AG_CTX_CF2_SHIFT	6
+	u8 flags1;
+#define MSTORM_CORE_CONN_AG_CTX_CF0EN_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_CF0EN_SHIFT	0
+#define MSTORM_CORE_CONN_AG_CTX_CF1EN_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_CF1EN_SHIFT	1
+#define MSTORM_CORE_CONN_AG_CTX_CF2EN_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_CF2EN_SHIFT	2
+#define MSTORM_CORE_CONN_AG_CTX_RULE0EN_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_RULE0EN_SHIFT	3
+#define MSTORM_CORE_CONN_AG_CTX_RULE1EN_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_RULE1EN_SHIFT	4
+#define MSTORM_CORE_CONN_AG_CTX_RULE2EN_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_RULE2EN_SHIFT	5
+#define MSTORM_CORE_CONN_AG_CTX_RULE3EN_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_RULE3EN_SHIFT	6
+#define MSTORM_CORE_CONN_AG_CTX_RULE4EN_MASK	0x1
+#define MSTORM_CORE_CONN_AG_CTX_RULE4EN_SHIFT	7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 word0;
 	__le16 word1;
 	__le32 reg0;
 	__le32 reg1;
 };
 
+<<<<<<< HEAD
 struct e4_ystorm_core_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -1537,6 +2323,39 @@ struct e4_ystorm_core_conn_ag_ctx {
 #define E4_YSTORM_CORE_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_YSTORM_CORE_CONN_AG_CTX_RULE4EN_MASK		0x1
 #define E4_YSTORM_CORE_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+struct ystorm_core_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define YSTORM_CORE_CONN_AG_CTX_BIT0_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_BIT0_SHIFT	0
+#define YSTORM_CORE_CONN_AG_CTX_BIT1_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_BIT1_SHIFT	1
+#define YSTORM_CORE_CONN_AG_CTX_CF0_MASK	0x3
+#define YSTORM_CORE_CONN_AG_CTX_CF0_SHIFT	2
+#define YSTORM_CORE_CONN_AG_CTX_CF1_MASK	0x3
+#define YSTORM_CORE_CONN_AG_CTX_CF1_SHIFT	4
+#define YSTORM_CORE_CONN_AG_CTX_CF2_MASK	0x3
+#define YSTORM_CORE_CONN_AG_CTX_CF2_SHIFT	6
+	u8 flags1;
+#define YSTORM_CORE_CONN_AG_CTX_CF0EN_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_CF0EN_SHIFT	0
+#define YSTORM_CORE_CONN_AG_CTX_CF1EN_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_CF1EN_SHIFT	1
+#define YSTORM_CORE_CONN_AG_CTX_CF2EN_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_CF2EN_SHIFT	2
+#define YSTORM_CORE_CONN_AG_CTX_RULE0EN_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_RULE0EN_SHIFT	3
+#define YSTORM_CORE_CONN_AG_CTX_RULE1EN_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_RULE1EN_SHIFT	4
+#define YSTORM_CORE_CONN_AG_CTX_RULE2EN_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_RULE2EN_SHIFT	5
+#define YSTORM_CORE_CONN_AG_CTX_RULE3EN_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_RULE3EN_SHIFT	6
+#define YSTORM_CORE_CONN_AG_CTX_RULE4EN_MASK	0x1
+#define YSTORM_CORE_CONN_AG_CTX_RULE4EN_SHIFT	7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -1687,6 +2506,7 @@ struct qm_rf_opportunistic_mask {
 };
 
 /* QM hardware structure of QM map memory */
+<<<<<<< HEAD
 struct qm_rf_pq_map_e4 {
 	__le32 reg;
 #define QM_RF_PQ_MAP_E4_PQ_VALID_MASK		0x1
@@ -1703,6 +2523,24 @@ struct qm_rf_pq_map_e4 {
 #define QM_RF_PQ_MAP_E4_RL_VALID_SHIFT		25
 #define QM_RF_PQ_MAP_E4_RESERVED_MASK		0x3F
 #define QM_RF_PQ_MAP_E4_RESERVED_SHIFT		26
+=======
+struct qm_rf_pq_map {
+	__le32 reg;
+#define QM_RF_PQ_MAP_PQ_VALID_MASK		0x1
+#define QM_RF_PQ_MAP_PQ_VALID_SHIFT		0
+#define QM_RF_PQ_MAP_RL_ID_MASK			0xFF
+#define QM_RF_PQ_MAP_RL_ID_SHIFT		1
+#define QM_RF_PQ_MAP_VP_PQ_ID_MASK		0x1FF
+#define QM_RF_PQ_MAP_VP_PQ_ID_SHIFT		9
+#define QM_RF_PQ_MAP_VOQ_MASK			0x1F
+#define QM_RF_PQ_MAP_VOQ_SHIFT			18
+#define QM_RF_PQ_MAP_WRR_WEIGHT_GROUP_MASK	0x3
+#define QM_RF_PQ_MAP_WRR_WEIGHT_GROUP_SHIFT	23
+#define QM_RF_PQ_MAP_RL_VALID_MASK		0x1
+#define QM_RF_PQ_MAP_RL_VALID_SHIFT		25
+#define QM_RF_PQ_MAP_RESERVED_MASK		0x3F
+#define QM_RF_PQ_MAP_RESERVED_SHIFT		26
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Completion params for aggregated interrupt completion */
@@ -1785,8 +2623,13 @@ enum block_addr {
 	GRCBASE_MULD = 0x4e0000,
 	GRCBASE_YULD = 0x4c8000,
 	GRCBASE_XYLD = 0x4c0000,
+<<<<<<< HEAD
 	GRCBASE_PTLD = 0x5a0000,
 	GRCBASE_YPLD = 0x5c0000,
+=======
+	GRCBASE_PTLD = 0x590000,
+	GRCBASE_YPLD = 0x5b0000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GRCBASE_PRM = 0x230000,
 	GRCBASE_PBF_PB1 = 0xda0000,
 	GRCBASE_PBF_PB2 = 0xda4000,
@@ -1817,7 +2660,10 @@ enum block_addr {
 	GRCBASE_PHY_PCIE = 0x620000,
 	GRCBASE_LED = 0x6b8000,
 	GRCBASE_AVS_WRAP = 0x6b0000,
+<<<<<<< HEAD
 	GRCBASE_PXPREQBUS = 0x56000,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GRCBASE_MISC_AEU = 0x8000,
 	GRCBASE_BAR0_MAP = 0x1c00000,
 	MAX_BLOCK_ADDR
@@ -1909,7 +2755,10 @@ enum block_id {
 	BLOCK_PHY_PCIE,
 	BLOCK_LED,
 	BLOCK_AVS_WRAP,
+<<<<<<< HEAD
 	BLOCK_PXPREQBUS,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	BLOCK_MISC_AEU,
 	BLOCK_BAR0_MAP,
 	MAX_BLOCK_ID
@@ -1939,7 +2788,11 @@ enum bin_dbg_buffer_type {
 
 /* Attention bit mapping */
 struct dbg_attn_bit_mapping {
+<<<<<<< HEAD
 	u16 data;
+=======
+	__le16 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DBG_ATTN_BIT_MAPPING_VAL_MASK			0x7FFF
 #define DBG_ATTN_BIT_MAPPING_VAL_SHIFT			0
 #define DBG_ATTN_BIT_MAPPING_IS_UNUSED_BIT_CNT_MASK	0x1
@@ -1948,12 +2801,20 @@ struct dbg_attn_bit_mapping {
 
 /* Attention block per-type data */
 struct dbg_attn_block_type_data {
+<<<<<<< HEAD
 	u16 names_offset;
 	u16 reserved1;
 	u8 num_regs;
 	u8 reserved2;
 	u16 regs_offset;
 
+=======
+	__le16 names_offset;
+	__le16 reserved1;
+	u8 num_regs;
+	u8 reserved2;
+	__le16 regs_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Block attentions */
@@ -1963,15 +2824,26 @@ struct dbg_attn_block {
 
 /* Attention register result */
 struct dbg_attn_reg_result {
+<<<<<<< HEAD
 	u32 data;
+=======
+	__le32 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DBG_ATTN_REG_RESULT_STS_ADDRESS_MASK	0xFFFFFF
 #define DBG_ATTN_REG_RESULT_STS_ADDRESS_SHIFT	0
 #define DBG_ATTN_REG_RESULT_NUM_REG_ATTN_MASK	0xFF
 #define DBG_ATTN_REG_RESULT_NUM_REG_ATTN_SHIFT	24
+<<<<<<< HEAD
 	u16 block_attn_offset;
 	u16 reserved;
 	u32 sts_val;
 	u32 mask_val;
+=======
+	__le16 block_attn_offset;
+	__le16 reserved;
+	__le32 sts_val;
+	__le32 mask_val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Attention block result */
@@ -1982,6 +2854,7 @@ struct dbg_attn_block_result {
 #define DBG_ATTN_BLOCK_RESULT_ATTN_TYPE_SHIFT	0
 #define DBG_ATTN_BLOCK_RESULT_NUM_REGS_MASK	0x3F
 #define DBG_ATTN_BLOCK_RESULT_NUM_REGS_SHIFT	2
+<<<<<<< HEAD
 	u16 names_offset;
 	struct dbg_attn_reg_result reg_results[15];
 };
@@ -1989,6 +2862,15 @@ struct dbg_attn_block_result {
 /* Mode header */
 struct dbg_mode_hdr {
 	u16 data;
+=======
+	__le16 names_offset;
+	struct dbg_attn_reg_result reg_results[15];
+};
+
+/* mode header */
+struct dbg_mode_hdr {
+	__le16 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DBG_MODE_HDR_EVAL_MODE_MASK		0x1
 #define DBG_MODE_HDR_EVAL_MODE_SHIFT		0
 #define DBG_MODE_HDR_MODES_BUF_OFFSET_MASK	0x7FFF
@@ -1998,23 +2880,37 @@ struct dbg_mode_hdr {
 /* Attention register */
 struct dbg_attn_reg {
 	struct dbg_mode_hdr mode;
+<<<<<<< HEAD
 	u16 block_attn_offset;
 	u32 data;
+=======
+	__le16 block_attn_offset;
+	__le32 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DBG_ATTN_REG_STS_ADDRESS_MASK	0xFFFFFF
 #define DBG_ATTN_REG_STS_ADDRESS_SHIFT	0
 #define DBG_ATTN_REG_NUM_REG_ATTN_MASK	0xFF
 #define DBG_ATTN_REG_NUM_REG_ATTN_SHIFT 24
+<<<<<<< HEAD
 	u32 sts_clr_address;
 	u32 mask_address;
 };
 
 /* Attention types */
+=======
+	__le32 sts_clr_address;
+	__le32 mask_address;
+};
+
+/* attention types */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum dbg_attn_type {
 	ATTN_TYPE_INTERRUPT,
 	ATTN_TYPE_PARITY,
 	MAX_DBG_ATTN_TYPE
 };
 
+<<<<<<< HEAD
 /* Debug Bus block data */
 struct dbg_bus_block {
 	u8 num_of_lines;
@@ -2042,12 +2938,39 @@ struct dbg_bus_line {
 };
 
 /* Condition header for registers dump */
+=======
+struct dbg_bus_block {
+	u8 num_of_lines;
+	u8 has_latency_events;
+	__le16 lines_offset;
+};
+
+struct dbg_bus_block_user_data {
+	u8 num_of_lines;
+	u8 has_latency_events;
+	__le16 names_offset;
+};
+
+struct dbg_bus_line {
+	u8 data;
+#define DBG_BUS_LINE_NUM_OF_GROUPS_MASK  0xF
+#define DBG_BUS_LINE_NUM_OF_GROUPS_SHIFT 0
+#define DBG_BUS_LINE_IS_256B_MASK        0x1
+#define DBG_BUS_LINE_IS_256B_SHIFT       4
+#define DBG_BUS_LINE_RESERVED_MASK       0x7
+#define DBG_BUS_LINE_RESERVED_SHIFT      5
+	u8 group_sizes;
+};
+
+/* condition header for registers dump */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dbg_dump_cond_hdr {
 	struct dbg_mode_hdr mode; /* Mode header */
 	u8 block_id; /* block ID */
 	u8 data_size; /* size in dwords of the data following this header */
 };
 
+<<<<<<< HEAD
 /* Memory data for registers dump */
 struct dbg_dump_mem {
 	u32 dword0;
@@ -2088,10 +3011,53 @@ struct dbg_dump_split_hdr {
 struct dbg_idle_chk_cond_hdr {
 	struct dbg_mode_hdr mode; /* Mode header */
 	u16 data_size; /* size in dwords of the data following this header */
+=======
+/* memory data for registers dump */
+struct dbg_dump_mem {
+	__le32 dword0;
+#define DBG_DUMP_MEM_ADDRESS_MASK       0xFFFFFF
+#define DBG_DUMP_MEM_ADDRESS_SHIFT      0
+#define DBG_DUMP_MEM_MEM_GROUP_ID_MASK  0xFF
+#define DBG_DUMP_MEM_MEM_GROUP_ID_SHIFT 24
+	__le32 dword1;
+#define DBG_DUMP_MEM_LENGTH_MASK        0xFFFFFF
+#define DBG_DUMP_MEM_LENGTH_SHIFT       0
+#define DBG_DUMP_MEM_WIDE_BUS_MASK      0x1
+#define DBG_DUMP_MEM_WIDE_BUS_SHIFT     24
+#define DBG_DUMP_MEM_RESERVED_MASK      0x7F
+#define DBG_DUMP_MEM_RESERVED_SHIFT     25
+};
+
+/* register data for registers dump */
+struct dbg_dump_reg {
+	__le32 data;
+#define DBG_DUMP_REG_ADDRESS_MASK 0x7FFFFF /* register address (in dwords) */
+#define DBG_DUMP_REG_ADDRESS_SHIFT 0
+#define DBG_DUMP_REG_WIDE_BUS_MASK 0x1 /* indicates register is wide-bus */
+#define DBG_DUMP_REG_WIDE_BUS_SHIFT 23
+#define DBG_DUMP_REG_LENGTH_MASK  0xFF /* register size (in dwords) */
+#define DBG_DUMP_REG_LENGTH_SHIFT 24
+};
+
+/* split header for registers dump */
+struct dbg_dump_split_hdr {
+	__le32 hdr;
+#define DBG_DUMP_SPLIT_HDR_DATA_SIZE_MASK      0xFFFFFF
+#define DBG_DUMP_SPLIT_HDR_DATA_SIZE_SHIFT     0
+#define DBG_DUMP_SPLIT_HDR_SPLIT_TYPE_ID_MASK  0xFF
+#define DBG_DUMP_SPLIT_HDR_SPLIT_TYPE_ID_SHIFT 24
+};
+
+/* condition header for idle check */
+struct dbg_idle_chk_cond_hdr {
+	struct dbg_mode_hdr mode; /* Mode header */
+	__le16 data_size; /* size in dwords of the data following this header */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Idle Check condition register */
 struct dbg_idle_chk_cond_reg {
+<<<<<<< HEAD
 	u32 data;
 #define DBG_IDLE_CHK_COND_REG_ADDRESS_MASK	0x7FFFFF
 #define DBG_IDLE_CHK_COND_REG_ADDRESS_SHIFT	0
@@ -2100,12 +3066,23 @@ struct dbg_idle_chk_cond_reg {
 #define DBG_IDLE_CHK_COND_REG_BLOCK_ID_MASK	0xFF
 #define DBG_IDLE_CHK_COND_REG_BLOCK_ID_SHIFT	24
 	u16 num_entries;
+=======
+	__le32 data;
+#define DBG_IDLE_CHK_COND_REG_ADDRESS_MASK   0x7FFFFF
+#define DBG_IDLE_CHK_COND_REG_ADDRESS_SHIFT  0
+#define DBG_IDLE_CHK_COND_REG_WIDE_BUS_MASK  0x1
+#define DBG_IDLE_CHK_COND_REG_WIDE_BUS_SHIFT 23
+#define DBG_IDLE_CHK_COND_REG_BLOCK_ID_MASK  0xFF
+#define DBG_IDLE_CHK_COND_REG_BLOCK_ID_SHIFT 24
+	__le16 num_entries;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 entry_size;
 	u8 start_entry;
 };
 
 /* Idle Check info register */
 struct dbg_idle_chk_info_reg {
+<<<<<<< HEAD
 	u32 data;
 #define DBG_IDLE_CHK_INFO_REG_ADDRESS_MASK	0x7FFFFF
 #define DBG_IDLE_CHK_INFO_REG_ADDRESS_SHIFT	0
@@ -2114,6 +3091,16 @@ struct dbg_idle_chk_info_reg {
 #define DBG_IDLE_CHK_INFO_REG_BLOCK_ID_MASK	0xFF
 #define DBG_IDLE_CHK_INFO_REG_BLOCK_ID_SHIFT	24
 	u16 size; /* register size in dwords */
+=======
+	__le32 data;
+#define DBG_IDLE_CHK_INFO_REG_ADDRESS_MASK   0x7FFFFF
+#define DBG_IDLE_CHK_INFO_REG_ADDRESS_SHIFT  0
+#define DBG_IDLE_CHK_INFO_REG_WIDE_BUS_MASK  0x1
+#define DBG_IDLE_CHK_INFO_REG_WIDE_BUS_SHIFT 23
+#define DBG_IDLE_CHK_INFO_REG_BLOCK_ID_MASK  0xFF
+#define DBG_IDLE_CHK_INFO_REG_BLOCK_ID_SHIFT 24
+	__le16 size; /* register size in dwords */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct dbg_mode_hdr mode; /* Mode header */
 };
 
@@ -2125,8 +3112,13 @@ union dbg_idle_chk_reg {
 
 /* Idle Check result header */
 struct dbg_idle_chk_result_hdr {
+<<<<<<< HEAD
 	u16 rule_id; /* Failing rule index */
 	u16 mem_entry_id; /* Failing memory entry index */
+=======
+	__le16 rule_id; /* Failing rule index */
+	__le16 mem_entry_id; /* Failing memory entry index */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 num_dumped_cond_regs; /* number of dumped condition registers */
 	u8 num_dumped_info_regs; /* number of dumped condition registers */
 	u8 severity; /* from dbg_idle_chk_severity_types enum */
@@ -2141,28 +3133,46 @@ struct dbg_idle_chk_result_reg_hdr {
 #define DBG_IDLE_CHK_RESULT_REG_HDR_REG_ID_MASK  0x7F
 #define DBG_IDLE_CHK_RESULT_REG_HDR_REG_ID_SHIFT 1
 	u8 start_entry; /* index of the first checked entry */
+<<<<<<< HEAD
 	u16 size; /* register size in dwords */
+=======
+	__le16 size; /* register size in dwords */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Idle Check rule */
 struct dbg_idle_chk_rule {
+<<<<<<< HEAD
 	u16 rule_id; /* Idle Check rule ID */
+=======
+	__le16 rule_id; /* Idle Check rule ID */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 severity; /* value from dbg_idle_chk_severity_types enum */
 	u8 cond_id; /* Condition ID */
 	u8 num_cond_regs; /* number of condition registers */
 	u8 num_info_regs; /* number of info registers */
 	u8 num_imms; /* number of immediates in the condition */
 	u8 reserved1;
+<<<<<<< HEAD
 	u16 reg_offset; /* offset of this rules registers in the idle check
 			 * register array (in dbg_idle_chk_reg units).
 			 */
 	u16 imm_offset; /* offset of this rules immediate values in the
 			 * immediate values array (in dwords).
 			 */
+=======
+	__le16 reg_offset; /* offset of this rules registers in the idle check
+			    * register array (in dbg_idle_chk_reg units).
+			    */
+	__le16 imm_offset; /* offset of this rules immediate values in the
+			    * immediate values array (in dwords).
+			    */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Idle Check rule parsing data */
 struct dbg_idle_chk_rule_parsing_data {
+<<<<<<< HEAD
 	u32 data;
 #define DBG_IDLE_CHK_RULE_PARSING_DATA_HAS_FW_MSG_MASK	0x1
 #define DBG_IDLE_CHK_RULE_PARSING_DATA_HAS_FW_MSG_SHIFT	0
@@ -2171,6 +3181,16 @@ struct dbg_idle_chk_rule_parsing_data {
 };
 
 /* Idle check severity types */
+=======
+	__le32 data;
+#define DBG_IDLE_CHK_RULE_PARSING_DATA_HAS_FW_MSG_MASK  0x1
+#define DBG_IDLE_CHK_RULE_PARSING_DATA_HAS_FW_MSG_SHIFT 0
+#define DBG_IDLE_CHK_RULE_PARSING_DATA_STR_OFFSET_MASK  0x7FFFFFFF
+#define DBG_IDLE_CHK_RULE_PARSING_DATA_STR_OFFSET_SHIFT 1
+};
+
+/* idle check severity types */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum dbg_idle_chk_severity_types {
 	/* idle check failure should cause an error */
 	IDLE_CHK_SEVERITY_ERROR,
@@ -2183,6 +3203,7 @@ enum dbg_idle_chk_severity_types {
 
 /* Debug Bus block data */
 struct dbg_bus_block_data {
+<<<<<<< HEAD
 	u16 data;
 #define DBG_BUS_BLOCK_DATA_ENABLE_MASK_MASK		0xF
 #define DBG_BUS_BLOCK_DATA_ENABLE_MASK_SHIFT		0
@@ -2192,6 +3213,17 @@ struct dbg_bus_block_data {
 #define DBG_BUS_BLOCK_DATA_FORCE_VALID_MASK_SHIFT	8
 #define DBG_BUS_BLOCK_DATA_FORCE_FRAME_MASK_MASK	0xF
 #define DBG_BUS_BLOCK_DATA_FORCE_FRAME_MASK_SHIFT	12
+=======
+	__le16 data;
+#define DBG_BUS_BLOCK_DATA_ENABLE_MASK_MASK       0xF
+#define DBG_BUS_BLOCK_DATA_ENABLE_MASK_SHIFT      0
+#define DBG_BUS_BLOCK_DATA_RIGHT_SHIFT_MASK       0xF
+#define DBG_BUS_BLOCK_DATA_RIGHT_SHIFT_SHIFT      4
+#define DBG_BUS_BLOCK_DATA_FORCE_VALID_MASK_MASK  0xF
+#define DBG_BUS_BLOCK_DATA_FORCE_VALID_MASK_SHIFT 8
+#define DBG_BUS_BLOCK_DATA_FORCE_FRAME_MASK_MASK  0xF
+#define DBG_BUS_BLOCK_DATA_FORCE_FRAME_MASK_SHIFT 12
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 line_num;
 	u8 hw_id;
 };
@@ -2220,7 +3252,10 @@ enum dbg_bus_clients {
 	MAX_DBG_BUS_CLIENTS
 };
 
+<<<<<<< HEAD
 /* Debug Bus constraint operation types */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum dbg_bus_constraint_ops {
 	DBG_BUS_CONSTRAINT_OP_EQ,
 	DBG_BUS_CONSTRAINT_OP_NE,
@@ -2235,6 +3270,7 @@ enum dbg_bus_constraint_ops {
 	MAX_DBG_BUS_CONSTRAINT_OPS
 };
 
+<<<<<<< HEAD
 /* Debug Bus trigger state data */
 struct dbg_bus_trigger_state_data {
 	u8 data;
@@ -2242,19 +3278,36 @@ struct dbg_bus_trigger_state_data {
 #define DBG_BUS_TRIGGER_STATE_DATA_BLOCK_SHIFTED_ENABLE_MASK_SHIFT	0
 #define DBG_BUS_TRIGGER_STATE_DATA_CONSTRAINT_DWORD_MASK_MASK		0xF
 #define DBG_BUS_TRIGGER_STATE_DATA_CONSTRAINT_DWORD_MASK_SHIFT		4
+=======
+struct dbg_bus_trigger_state_data {
+	u8 data;
+#define DBG_BUS_TRIGGER_STATE_DATA_BLOCK_SHIFTED_ENABLE_MASK_MASK  0xF
+#define DBG_BUS_TRIGGER_STATE_DATA_BLOCK_SHIFTED_ENABLE_MASK_SHIFT 0
+#define DBG_BUS_TRIGGER_STATE_DATA_CONSTRAINT_DWORD_MASK_MASK      0xF
+#define DBG_BUS_TRIGGER_STATE_DATA_CONSTRAINT_DWORD_MASK_SHIFT     4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Debug Bus memory address */
 struct dbg_bus_mem_addr {
+<<<<<<< HEAD
 	u32 lo;
 	u32 hi;
+=======
+	__le32 lo;
+	__le32 hi;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Debug Bus PCI buffer data */
 struct dbg_bus_pci_buf_data {
 	struct dbg_bus_mem_addr phys_addr; /* PCI buffer physical address */
 	struct dbg_bus_mem_addr virt_addr; /* PCI buffer virtual address */
+<<<<<<< HEAD
 	u32 size; /* PCI buffer size in bytes */
+=======
+	__le32 size; /* PCI buffer size in bytes */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Debug Bus Storm EID range filter params */
@@ -2284,15 +3337,26 @@ struct dbg_bus_storm_data {
 	u8 eid_range_not_mask;
 	u8 cid_filter_en;
 	union dbg_bus_storm_eid_params eid_filter_params;
+<<<<<<< HEAD
 	u32 cid;
+=======
+	__le32 cid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Debug Bus data */
 struct dbg_bus_data {
+<<<<<<< HEAD
 	u32 app_version;
 	u8 state;
 	u8 hw_dwords;
 	u16 hw_id_mask;
+=======
+	__le32 app_version;
+	u8 state;
+	u8 hw_dwords;
+	__le16 hw_id_mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 num_enabled_blocks;
 	u8 num_enabled_storms;
 	u8 target;
@@ -2303,7 +3367,11 @@ struct dbg_bus_data {
 	u8 adding_filter;
 	u8 filter_pre_trigger;
 	u8 filter_post_trigger;
+<<<<<<< HEAD
 	u16 reserved;
+=======
+	__le16 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 trigger_en;
 	struct dbg_bus_trigger_state_data trigger_states[3];
 	u8 next_trigger_state;
@@ -2315,7 +3383,10 @@ struct dbg_bus_data {
 	struct dbg_bus_storm_data storms[6];
 };
 
+<<<<<<< HEAD
 /* Debug bus filter types */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum dbg_bus_filter_types {
 	DBG_BUS_FILTER_TYPE_OFF,
 	DBG_BUS_FILTER_TYPE_PRE,
@@ -2332,7 +3403,10 @@ enum dbg_bus_frame_modes {
 	MAX_DBG_BUS_FRAME_MODES
 };
 
+<<<<<<< HEAD
 /* Debug bus other engine mode */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum dbg_bus_other_engine_modes {
 	DBG_BUS_OTHER_ENGINE_MODE_NONE,
 	DBG_BUS_OTHER_ENGINE_MODE_DOUBLE_BW_TX,
@@ -2342,14 +3416,20 @@ enum dbg_bus_other_engine_modes {
 	MAX_DBG_BUS_OTHER_ENGINE_MODES
 };
 
+<<<<<<< HEAD
 /* Debug bus post-trigger recording types */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum dbg_bus_post_trigger_types {
 	DBG_BUS_POST_TRIGGER_RECORD,
 	DBG_BUS_POST_TRIGGER_DROP,
 	MAX_DBG_BUS_POST_TRIGGER_TYPES
 };
 
+<<<<<<< HEAD
 /* Debug bus pre-trigger recording types */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum dbg_bus_pre_trigger_types {
 	DBG_BUS_PRE_TRIGGER_START_FROM_ZERO,
 	DBG_BUS_PRE_TRIGGER_NUM_CHUNKS,
@@ -2357,10 +3437,18 @@ enum dbg_bus_pre_trigger_types {
 	MAX_DBG_BUS_PRE_TRIGGER_TYPES
 };
 
+<<<<<<< HEAD
 /* Debug bus SEMI frame modes */
 enum dbg_bus_semi_frame_modes {
 	DBG_BUS_SEMI_FRAME_MODE_0SLOW_4FAST = 0,
 	DBG_BUS_SEMI_FRAME_MODE_4SLOW_0FAST = 3,
+=======
+enum dbg_bus_semi_frame_modes {
+	DBG_BUS_SEMI_FRAME_MODE_0SLOW_4FAST =
+	    0,
+	DBG_BUS_SEMI_FRAME_MODE_4SLOW_0FAST =
+	    3,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MAX_DBG_BUS_SEMI_FRAME_MODES
 };
 
@@ -2373,7 +3461,10 @@ enum dbg_bus_states {
 	MAX_DBG_BUS_STATES
 };
 
+<<<<<<< HEAD
 /* Debug Bus Storm modes */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum dbg_bus_storm_modes {
 	DBG_BUS_STORM_MODE_PRINTF,
 	DBG_BUS_STORM_MODE_PRAM_ADDR,
@@ -2399,8 +3490,13 @@ enum dbg_bus_targets {
 struct dbg_grc_data {
 	u8 params_initialized;
 	u8 reserved1;
+<<<<<<< HEAD
 	u16 reserved2;
 	u32 param_val[48];
+=======
+	__le16 reserved2;
+	__le32 param_val[48];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Debug GRC params */
@@ -2422,7 +3518,11 @@ enum dbg_grc_params {
 	DBG_GRC_PARAM_DUMP_CAU,
 	DBG_GRC_PARAM_DUMP_QM,
 	DBG_GRC_PARAM_DUMP_MCP,
+<<<<<<< HEAD
 	DBG_GRC_PARAM_MCP_TRACE_META_SIZE,
+=======
+	DBG_GRC_PARAM_RESERVED,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG_GRC_PARAM_DUMP_CFC,
 	DBG_GRC_PARAM_DUMP_IGU,
 	DBG_GRC_PARAM_DUMP_BRB,
@@ -2506,7 +3606,11 @@ enum dbg_status {
 	DBG_STATUS_MCP_TRACE_NO_META,
 	DBG_STATUS_MCP_COULD_NOT_HALT,
 	DBG_STATUS_MCP_COULD_NOT_RESUME,
+<<<<<<< HEAD
 	DBG_STATUS_RESERVED2,
+=======
+	DBG_STATUS_DMAE_FAILED,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DBG_STATUS_SEMI_FIFO_NOT_EMPTY,
 	DBG_STATUS_IGU_FIFO_BAD_DATA,
 	DBG_STATUS_MCP_COULD_NOT_MASK_PRTY,
@@ -2534,6 +3638,7 @@ enum dbg_storms {
 
 /* Idle Check data */
 struct idle_chk_data {
+<<<<<<< HEAD
 	u32 buf_size;
 	u8 buf_size_set;
 	u8 reserved1;
@@ -2548,6 +3653,15 @@ struct pretend_params {
 
 /* Debug Tools data (per HW function)
  */
+=======
+	__le32 buf_size;
+	u8 buf_size_set;
+	u8 reserved1;
+	__le16 reserved2;
+};
+
+/* Debug Tools data (per HW function) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dbg_tools_data {
 	struct dbg_grc_data grc;
 	struct dbg_bus_data bus;
@@ -2556,6 +3670,7 @@ struct dbg_tools_data {
 	u8 block_in_reset[88];
 	u8 chip_id;
 	u8 platform_id;
+<<<<<<< HEAD
 	u8 num_ports;
 	u8 num_pfs_per_port;
 	u8 num_vfs;
@@ -2564,6 +3679,10 @@ struct dbg_tools_data {
 	u8 reserved;
 	struct pretend_params pretend;
 	u32 num_regs_read;
+=======
+	u8 initialized;
+	u8 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /********************************/
@@ -2573,6 +3692,7 @@ struct dbg_tools_data {
 /* Number of VLAN priorities */
 #define NUM_OF_VLAN_PRIORITIES	8
 
+<<<<<<< HEAD
 /* BRB RAM init requirements */
 struct init_brb_ram_req {
 	u32 guranteed_per_tc;
@@ -2604,16 +3724,48 @@ struct init_nig_lb_rl_req {
 };
 
 /* NIG TC mapping for each priority */
+=======
+struct init_brb_ram_req {
+	__le32 guranteed_per_tc;
+	__le32 headroom_per_tc;
+	__le32 min_pkt_size;
+	__le32 max_ports_per_engine;
+	u8 num_active_tcs[MAX_NUM_PORTS];
+};
+
+struct init_ets_tc_req {
+	u8 use_sp;
+	u8 use_wfq;
+	__le16 weight;
+};
+
+struct init_ets_req {
+	__le32 mtu;
+	struct init_ets_tc_req tc_req[NUM_OF_TCS];
+};
+
+struct init_nig_lb_rl_req {
+	__le16 lb_mac_rate;
+	__le16 lb_rate;
+	__le32 mtu;
+	__le16 tc_rate[NUM_OF_PHYS_TCS];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct init_nig_pri_tc_map_entry {
 	u8 tc_id;
 	u8 valid;
 };
 
+<<<<<<< HEAD
 /* NIG priority to TC map init requirements */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct init_nig_pri_tc_map_req {
 	struct init_nig_pri_tc_map_entry pri[NUM_OF_VLAN_PRIORITIES];
 };
 
+<<<<<<< HEAD
 /* QM per-port init parameters */
 struct init_qm_port_params {
 	u8 active;
@@ -2621,6 +3773,14 @@ struct init_qm_port_params {
 	u16 num_pbf_cmd_lines;
 	u16 num_btb_blocks;
 	u16 reserved;
+=======
+struct init_qm_port_params {
+	u8 active;
+	u8 active_phys_tcs;
+	__le16 num_pbf_cmd_lines;
+	__le16 num_btb_blocks;
+	__le16 reserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* QM per-PQ init parameters */
@@ -2629,16 +3789,25 @@ struct init_qm_pq_params {
 	u8 tc_id;
 	u8 wrr_group;
 	u8 rl_valid;
+<<<<<<< HEAD
 	u8 port_id;
 	u8 reserved0;
 	u16 reserved1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* QM per-vport init parameters */
 struct init_qm_vport_params {
+<<<<<<< HEAD
 	u32 vport_rl;
 	u16 vport_wfq;
 	u16 first_tx_pq_id[NUM_OF_TCS];
+=======
+	__le32 vport_rl;
+	__le16 vport_wfq;
+	__le16 first_tx_pq_id[NUM_OF_TCS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**************************************/
@@ -2662,8 +3831,13 @@ enum chip_ids {
 };
 
 struct fw_asserts_ram_section {
+<<<<<<< HEAD
 	u16 section_ram_line_offset;
 	u16 section_ram_line_size;
+=======
+	__le16 section_ram_line_offset;
+	__le16 section_ram_line_size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 list_dword_offset;
 	u8 list_element_dword_size;
 	u8 list_num_elements;
@@ -2736,11 +3910,19 @@ enum init_split_types {
 
 /* Binary buffer header */
 struct bin_buffer_hdr {
+<<<<<<< HEAD
 	u32 offset;
 	u32 length;
 };
 
 /* Binary init buffer types */
+=======
+	__le32 offset;
+	__le32 length;
+};
+
+/* binary init buffer types */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum bin_init_buffer_type {
 	BIN_BUF_INIT_FW_VER_INFO,
 	BIN_BUF_INIT_CMD,
@@ -2752,7 +3934,11 @@ enum bin_init_buffer_type {
 
 /* init array header: raw */
 struct init_array_raw_hdr {
+<<<<<<< HEAD
 	u32 data;
+=======
+	__le32 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_ARRAY_RAW_HDR_TYPE_MASK	0xF
 #define INIT_ARRAY_RAW_HDR_TYPE_SHIFT	0
 #define INIT_ARRAY_RAW_HDR_PARAMS_MASK	0xFFFFFFF
@@ -2761,7 +3947,11 @@ struct init_array_raw_hdr {
 
 /* init array header: standard */
 struct init_array_standard_hdr {
+<<<<<<< HEAD
 	u32 data;
+=======
+	__le32 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_ARRAY_STANDARD_HDR_TYPE_MASK	0xF
 #define INIT_ARRAY_STANDARD_HDR_TYPE_SHIFT	0
 #define INIT_ARRAY_STANDARD_HDR_SIZE_MASK	0xFFFFFFF
@@ -2770,7 +3960,11 @@ struct init_array_standard_hdr {
 
 /* init array header: zipped */
 struct init_array_zipped_hdr {
+<<<<<<< HEAD
 	u32 data;
+=======
+	__le32 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_ARRAY_ZIPPED_HDR_TYPE_MASK		0xF
 #define INIT_ARRAY_ZIPPED_HDR_TYPE_SHIFT	0
 #define INIT_ARRAY_ZIPPED_HDR_ZIPPED_SIZE_MASK	0xFFFFFFF
@@ -2779,7 +3973,11 @@ struct init_array_zipped_hdr {
 
 /* init array header: pattern */
 struct init_array_pattern_hdr {
+<<<<<<< HEAD
 	u32 data;
+=======
+	__le32 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_ARRAY_PATTERN_HDR_TYPE_MASK		0xF
 #define INIT_ARRAY_PATTERN_HDR_TYPE_SHIFT		0
 #define INIT_ARRAY_PATTERN_HDR_PATTERN_SIZE_MASK	0xF
@@ -2806,41 +4004,71 @@ enum init_array_types {
 
 /* init operation: callback */
 struct init_callback_op {
+<<<<<<< HEAD
 	u32 op_data;
+=======
+	__le32 op_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_CALLBACK_OP_OP_MASK	0xF
 #define INIT_CALLBACK_OP_OP_SHIFT	0
 #define INIT_CALLBACK_OP_RESERVED_MASK	0xFFFFFFF
 #define INIT_CALLBACK_OP_RESERVED_SHIFT	4
+<<<<<<< HEAD
 	u16 callback_id;
 	u16 block_id;
+=======
+	__le16 callback_id;
+	__le16 block_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* init operation: delay */
 struct init_delay_op {
+<<<<<<< HEAD
 	u32 op_data;
+=======
+	__le32 op_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_DELAY_OP_OP_MASK		0xF
 #define INIT_DELAY_OP_OP_SHIFT		0
 #define INIT_DELAY_OP_RESERVED_MASK	0xFFFFFFF
 #define INIT_DELAY_OP_RESERVED_SHIFT	4
+<<<<<<< HEAD
 	u32 delay;
+=======
+	__le32 delay;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* init operation: if_mode */
 struct init_if_mode_op {
+<<<<<<< HEAD
 	u32 op_data;
+=======
+	__le32 op_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_IF_MODE_OP_OP_MASK			0xF
 #define INIT_IF_MODE_OP_OP_SHIFT		0
 #define INIT_IF_MODE_OP_RESERVED1_MASK		0xFFF
 #define INIT_IF_MODE_OP_RESERVED1_SHIFT		4
 #define INIT_IF_MODE_OP_CMD_OFFSET_MASK		0xFFFF
 #define INIT_IF_MODE_OP_CMD_OFFSET_SHIFT	16
+<<<<<<< HEAD
 	u16 reserved2;
 	u16 modes_buf_offset;
+=======
+	__le16 reserved2;
+	__le16 modes_buf_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* init operation: if_phase */
 struct init_if_phase_op {
+<<<<<<< HEAD
 	u32 op_data;
+=======
+	__le32 op_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_IF_PHASE_OP_OP_MASK		0xF
 #define INIT_IF_PHASE_OP_OP_SHIFT		0
 #define INIT_IF_PHASE_OP_DMAE_ENABLE_MASK	0x1
@@ -2849,7 +4077,11 @@ struct init_if_phase_op {
 #define INIT_IF_PHASE_OP_RESERVED1_SHIFT	5
 #define INIT_IF_PHASE_OP_CMD_OFFSET_MASK	0xFFFF
 #define INIT_IF_PHASE_OP_CMD_OFFSET_SHIFT	16
+<<<<<<< HEAD
 	u32 phase_data;
+=======
+	__le32 phase_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_IF_PHASE_OP_PHASE_MASK		0xFF
 #define INIT_IF_PHASE_OP_PHASE_SHIFT		0
 #define INIT_IF_PHASE_OP_RESERVED2_MASK		0xFF
@@ -2868,31 +4100,54 @@ enum init_mode_ops {
 
 /* init operation: raw */
 struct init_raw_op {
+<<<<<<< HEAD
 	u32 op_data;
+=======
+	__le32 op_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_RAW_OP_OP_MASK		0xF
 #define INIT_RAW_OP_OP_SHIFT		0
 #define INIT_RAW_OP_PARAM1_MASK		0xFFFFFFF
 #define INIT_RAW_OP_PARAM1_SHIFT	4
+<<<<<<< HEAD
 	u32 param2;
+=======
+	__le32 param2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* init array params */
 struct init_op_array_params {
+<<<<<<< HEAD
 	u16 size;
 	u16 offset;
+=======
+	__le16 size;
+	__le16 offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Write init operation arguments */
 union init_write_args {
+<<<<<<< HEAD
 	u32 inline_val;
 	u32 zeros_count;
 	u32 array_offset;
+=======
+	__le32 inline_val;
+	__le32 zeros_count;
+	__le32 array_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct init_op_array_params runtime;
 };
 
 /* init operation: write */
 struct init_write_op {
+<<<<<<< HEAD
 	u32 data;
+=======
+	__le32 data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_WRITE_OP_OP_MASK		0xF
 #define INIT_WRITE_OP_OP_SHIFT		0
 #define INIT_WRITE_OP_SOURCE_MASK	0x7
@@ -2908,7 +4163,11 @@ struct init_write_op {
 
 /* init operation: read */
 struct init_read_op {
+<<<<<<< HEAD
 	u32 op_data;
+=======
+	__le32 op_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INIT_READ_OP_OP_MASK		0xF
 #define INIT_READ_OP_OP_SHIFT		0
 #define INIT_READ_OP_POLL_TYPE_MASK	0xF
@@ -2917,7 +4176,11 @@ struct init_read_op {
 #define INIT_READ_OP_RESERVED_SHIFT	8
 #define INIT_READ_OP_ADDRESS_MASK	0x7FFFFF
 #define INIT_READ_OP_ADDRESS_SHIFT	9
+<<<<<<< HEAD
 	u32 expected_val;
+=======
+	__le32 expected_val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Init operations union */
@@ -2962,6 +4225,7 @@ enum init_source_types {
 
 /* Internal RAM Offsets macro data */
 struct iro {
+<<<<<<< HEAD
 	u32 base;
 	u16 m1;
 	u16 m2;
@@ -2971,6 +4235,16 @@ struct iro {
 
 /***************************** Public Functions *******************************/
 
+=======
+	__le32 base;
+	__le16 m1;
+	__le16 m2;
+	__le16 m3;
+	__le16 size;
+};
+
+/***************************** Public Functions *******************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * @brief qed_dbg_set_bin_ptr - Sets a pointer to the binary data with debug
  *	arrays.
@@ -2980,6 +4254,7 @@ struct iro {
 enum dbg_status qed_dbg_set_bin_ptr(const u8 * const bin_ptr);
 
 /**
+<<<<<<< HEAD
  * @brief qed_read_regs - Reads registers into a buffer (using GRC).
  *
  * @param p_hwfn - HW device data
@@ -3010,6 +4285,8 @@ bool qed_read_fw_info(struct qed_hwfn *p_hwfn,
 		      struct qed_ptt *p_ptt, struct fw_info *fw_info);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @brief qed_dbg_grc_set_params_default - Reverts all GRC parameters to their
  *	default value.
  *
@@ -3327,7 +4604,10 @@ enum dbg_status qed_dbg_print_attn(struct qed_hwfn *p_hwfn,
 #define MAX_NAME_LEN	16
 
 /***************************** Public Functions *******************************/
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * @brief qed_dbg_user_set_bin_ptr - Sets a pointer to the binary data with
  *	debug arrays.
@@ -3381,6 +4661,7 @@ enum dbg_status qed_print_idle_chk_results(struct qed_hwfn *p_hwfn,
 					   u32 *num_warnings);
 
 /**
+<<<<<<< HEAD
  * @brief qed_dbg_mcp_trace_set_meta_data - Sets a pointer to the MCP Trace
  *	meta data.
  *
@@ -3393,6 +4674,8 @@ enum dbg_status qed_print_idle_chk_results(struct qed_hwfn *p_hwfn,
 void qed_dbg_mcp_trace_set_meta_data(u32 *data, u32 size);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @brief qed_get_mcp_trace_results_buf_size - Returns the required buffer size
  *	for MCP Trace results (in bytes).
  *
@@ -3425,6 +4708,7 @@ enum dbg_status qed_print_mcp_trace_results(struct qed_hwfn *p_hwfn,
 					    char *results_buf);
 
 /**
+<<<<<<< HEAD
  * @brief print_mcp_trace_line - Prints MCP Trace results for a single line
  *
  * @param dump_buf -	      mcp trace dump buffer, starting from the header.
@@ -3438,6 +4722,8 @@ enum dbg_status qed_print_mcp_trace_line(u8 *dump_buf,
 					 char *results_buf);
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @brief qed_get_reg_fifo_results_buf_size - Returns the required buffer size
  *	for reg_fifo results (in bytes).
  *
@@ -3841,9 +5127,12 @@ static const u32 dbg_bus_blocks[] = {
 	0x00000000,		/* bar0_map, bb, 0 lines */
 	0x00000000,		/* bar0_map, k2, 0 lines */
 	0x00000000,
+<<<<<<< HEAD
 	0x00000000,		/* bar0_map, bb, 0 lines */
 	0x00000000,		/* bar0_map, k2, 0 lines */
 	0x00000000,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Win 2 */
@@ -3882,6 +5171,10 @@ static const u32 dbg_bus_blocks[] = {
  * Returns the required host memory size in 4KB units.
  * Must be called before all QM init HSI functions.
  *
+<<<<<<< HEAD
+=======
+ * @param pf_id - physical function ID
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @param num_pf_cids - number of connections used by this PF
  * @param num_vf_cids - number of connections used by VFs of this PF
  * @param num_tids - number of tasks used by this PF
@@ -3890,7 +5183,12 @@ static const u32 dbg_bus_blocks[] = {
  *
  * @return The required host memory size in 4KB units.
  */
+<<<<<<< HEAD
 u32 qed_qm_pf_mem_size(u32 num_pf_cids,
+=======
+u32 qed_qm_pf_mem_size(u8 pf_id,
+		       u32 num_pf_cids,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       u32 num_vf_cids,
 		       u32 num_tids, u16 num_pf_pqs, u16 num_vf_pqs);
 
@@ -3911,7 +5209,11 @@ struct qed_qm_pf_rt_init_params {
 	u8 port_id;
 	u8 pf_id;
 	u8 max_phys_tcs_per_port;
+<<<<<<< HEAD
 	bool is_pf_loading;
+=======
+	bool is_first_pf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 num_pf_cids;
 	u32 num_vf_cids;
 	u32 num_tids;
@@ -3922,7 +5224,10 @@ struct qed_qm_pf_rt_init_params {
 	u8 num_vports;
 	u16 pf_wfq;
 	u32 pf_rl;
+<<<<<<< HEAD
 	u32 link_speed;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct init_qm_pq_params *pq_params;
 	struct init_qm_vport_params *vport_params;
 };
@@ -3980,14 +5285,21 @@ int qed_init_vport_wfq(struct qed_hwfn *p_hwfn,
  * @param p_ptt - ptt window used for writing the registers
  * @param vport_id - VPORT ID
  * @param vport_rl - rate limit in Mb/sec units
+<<<<<<< HEAD
  * @param link_speed - link speed in Mbps.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @return 0 on success, -1 on error.
  */
 int qed_init_vport_rl(struct qed_hwfn *p_hwfn,
+<<<<<<< HEAD
 		      struct qed_ptt *p_ptt,
 		      u8 vport_id, u32 vport_rl, u32 link_speed);
 
+=======
+		      struct qed_ptt *p_ptt, u8 vport_id, u32 vport_rl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * @brief qed_send_qm_stop_cmd  Sends a stop command to the QM
  *
@@ -3998,8 +5310,12 @@ int qed_init_vport_rl(struct qed_hwfn *p_hwfn,
  * @param start_pq - first PQ ID to stop
  * @param num_pqs - Number of PQs to stop, starting from start_pq.
  *
+<<<<<<< HEAD
  * @return bool, true if successful, false if timeout occurred while waiting for
  *	QM command done.
+=======
+ * @return bool, true if successful, false if timeout occured while waiting for QM command done.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 bool qed_send_qm_stop_cmd(struct qed_hwfn *p_hwfn,
 			  struct qed_ptt *p_ptt,
@@ -4009,7 +5325,10 @@ bool qed_send_qm_stop_cmd(struct qed_hwfn *p_hwfn,
 /**
  * @brief qed_set_vxlan_dest_port - initializes vxlan tunnel destination udp port
  *
+<<<<<<< HEAD
  * @param p_hwfn
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @param p_ptt - ptt window used for writing the registers.
  * @param dest_port - vxlan destination udp port.
  */
@@ -4019,7 +5338,10 @@ void qed_set_vxlan_dest_port(struct qed_hwfn *p_hwfn,
 /**
  * @brief qed_set_vxlan_enable - enable or disable VXLAN tunnel in HW
  *
+<<<<<<< HEAD
  * @param p_hwfn
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @param p_ptt - ptt window used for writing the registers.
  * @param vxlan_enable - vxlan enable flag.
  */
@@ -4029,7 +5351,10 @@ void qed_set_vxlan_enable(struct qed_hwfn *p_hwfn,
 /**
  * @brief qed_set_gre_enable - enable or disable GRE tunnel in HW
  *
+<<<<<<< HEAD
  * @param p_hwfn
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @param p_ptt - ptt window used for writing the registers.
  * @param eth_gre_enable - eth GRE enable enable flag.
  * @param ip_gre_enable - IP GRE enable enable flag.
@@ -4041,7 +5366,10 @@ void qed_set_gre_enable(struct qed_hwfn *p_hwfn,
 /**
  * @brief qed_set_geneve_dest_port - initializes geneve tunnel destination udp port
  *
+<<<<<<< HEAD
  * @param p_hwfn
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @param p_ptt - ptt window used for writing the registers.
  * @param dest_port - geneve destination udp port.
  */
@@ -4058,6 +5386,7 @@ void qed_set_geneve_dest_port(struct qed_hwfn *p_hwfn,
 void qed_set_geneve_enable(struct qed_hwfn *p_hwfn,
 			   struct qed_ptt *p_ptt,
 			   bool eth_geneve_enable, bool ip_geneve_enable);
+<<<<<<< HEAD
 
 void qed_set_vxlan_no_l2_enable(struct qed_hwfn *p_hwfn,
 				struct qed_ptt *p_ptt, bool enable);
@@ -4454,11 +5783,134 @@ static const struct iro iro_arr[59] = {
 	{0x0, 0x0, 0x0, 0x0, 0x8},
 	{0x4cb8, 0x88, 0x0, 0x0, 0x88},
 	{0x6530, 0x20, 0x0, 0x0, 0x20},
+=======
+void qed_set_rfs_mode_disable(struct qed_hwfn *p_hwfn,
+			      struct qed_ptt *p_ptt, u16 pf_id);
+void qed_set_rfs_mode_enable(struct qed_hwfn *p_hwfn, struct qed_ptt *p_ptt,
+			     u16 pf_id, bool tcp, bool udp,
+			     bool ipv4, bool ipv6);
+
+#define	YSTORM_FLOW_CONTROL_MODE_OFFSET			(IRO[0].base)
+#define	YSTORM_FLOW_CONTROL_MODE_SIZE			(IRO[0].size)
+#define	TSTORM_PORT_STAT_OFFSET(port_id) \
+	(IRO[1].base + ((port_id) * IRO[1].m1))
+#define	TSTORM_PORT_STAT_SIZE				(IRO[1].size)
+#define TSTORM_LL2_PORT_STAT_OFFSET(port_id) \
+	(IRO[2].base + ((port_id) * IRO[2].m1))
+#define TSTORM_LL2_PORT_STAT_SIZE			(IRO[2].size)
+#define	USTORM_VF_PF_CHANNEL_READY_OFFSET(vf_id) \
+	(IRO[3].base + ((vf_id) * IRO[3].m1))
+#define	USTORM_VF_PF_CHANNEL_READY_SIZE			(IRO[3].size)
+#define	USTORM_FLR_FINAL_ACK_OFFSET(pf_id) \
+	(IRO[4].base + (pf_id) * IRO[4].m1)
+#define	USTORM_FLR_FINAL_ACK_SIZE			(IRO[4].size)
+#define	USTORM_EQE_CONS_OFFSET(pf_id) \
+	(IRO[5].base + ((pf_id) * IRO[5].m1))
+#define	USTORM_EQE_CONS_SIZE				(IRO[5].size)
+#define	USTORM_ETH_QUEUE_ZONE_OFFSET(queue_zone_id) \
+	(IRO[6].base + ((queue_zone_id) * IRO[6].m1))
+#define	USTORM_ETH_QUEUE_ZONE_SIZE			(IRO[6].size)
+#define	USTORM_COMMON_QUEUE_CONS_OFFSET(queue_zone_id) \
+	(IRO[7].base + ((queue_zone_id) * IRO[7].m1))
+#define	USTORM_COMMON_QUEUE_CONS_SIZE			(IRO[7].size)
+#define TSTORM_LL2_RX_PRODS_OFFSET(core_rx_queue_id) \
+	(IRO[14].base +	((core_rx_queue_id) * IRO[14].m1))
+#define TSTORM_LL2_RX_PRODS_SIZE			(IRO[14].size)
+#define CORE_LL2_TSTORM_PER_QUEUE_STAT_OFFSET(core_rx_queue_id) \
+	(IRO[15].base + ((core_rx_queue_id) * IRO[15].m1))
+#define CORE_LL2_TSTORM_PER_QUEUE_STAT_SIZE		(IRO[15].size)
+#define CORE_LL2_USTORM_PER_QUEUE_STAT_OFFSET(core_rx_queue_id) \
+	(IRO[16].base +	((core_rx_queue_id) * IRO[16].m1))
+#define CORE_LL2_USTORM_PER_QUEUE_STAT_SIZE		(IRO[16].size)
+#define CORE_LL2_PSTORM_PER_QUEUE_STAT_OFFSET(core_tx_stats_id) \
+	(IRO[17].base +	((core_tx_stats_id) * IRO[17].m1))
+#define CORE_LL2_PSTORM_PER_QUEUE_STAT_SIZE	(IRO[17].	size)
+#define	MSTORM_QUEUE_STAT_OFFSET(stat_counter_id) \
+	(IRO[18].base + ((stat_counter_id) * IRO[18].m1))
+#define	MSTORM_QUEUE_STAT_SIZE				(IRO[18].size)
+#define	MSTORM_ETH_PF_PRODS_OFFSET(queue_id) \
+	(IRO[19].base + ((queue_id) * IRO[19].m1))
+#define	MSTORM_ETH_PF_PRODS_SIZE			(IRO[19].size)
+#define MSTORM_ETH_VF_PRODS_OFFSET(vf_id, vf_queue_id) \
+	(IRO[20].base +	((vf_id) * IRO[20].m1) + ((vf_queue_id) * IRO[20].m2))
+#define MSTORM_ETH_VF_PRODS_SIZE			(IRO[20].size)
+#define	MSTORM_TPA_TIMEOUT_US_OFFSET			(IRO[21].base)
+#define	MSTORM_TPA_TIMEOUT_US_SIZE			(IRO[21].size)
+#define	MSTORM_ETH_PF_STAT_OFFSET(pf_id) \
+	(IRO[22].base + ((pf_id) * IRO[22].m1))
+#define	MSTORM_ETH_PF_STAT_SIZE				(IRO[22].size)
+#define	USTORM_QUEUE_STAT_OFFSET(stat_counter_id) \
+	(IRO[23].base + ((stat_counter_id) * IRO[23].m1))
+#define	USTORM_QUEUE_STAT_SIZE				(IRO[23].size)
+#define	USTORM_ETH_PF_STAT_OFFSET(pf_id) \
+	(IRO[24].base + ((pf_id) * IRO[24].m1))
+#define	USTORM_ETH_PF_STAT_SIZE				(IRO[24].size)
+#define	PSTORM_QUEUE_STAT_OFFSET(stat_counter_id) \
+	(IRO[25].base + ((stat_counter_id) * IRO[25].m1))
+#define	PSTORM_QUEUE_STAT_SIZE				(IRO[25].size)
+#define	PSTORM_ETH_PF_STAT_OFFSET(pf_id) \
+	(IRO[26].base + ((pf_id) * IRO[26].m1))
+#define	PSTORM_ETH_PF_STAT_SIZE				(IRO[26].size)
+#define	PSTORM_CTL_FRAME_ETHTYPE_OFFSET(ethtype) \
+	(IRO[27].base + ((ethtype) * IRO[27].m1))
+#define	PSTORM_CTL_FRAME_ETHTYPE_SIZE			(IRO[27].size)
+#define	TSTORM_ETH_PRS_INPUT_OFFSET			(IRO[28].base)
+#define	TSTORM_ETH_PRS_INPUT_SIZE			(IRO[28].size)
+#define	ETH_RX_RATE_LIMIT_OFFSET(pf_id) \
+	(IRO[29].base + ((pf_id) * IRO[29].m1))
+#define	ETH_RX_RATE_LIMIT_SIZE				(IRO[29].size)
+#define	XSTORM_ETH_QUEUE_ZONE_OFFSET(queue_id) \
+	(IRO[30].base + ((queue_id) * IRO[30].m1))
+#define	XSTORM_ETH_QUEUE_ZONE_SIZE			(IRO[30].size)
+#define TSTORM_SCSI_CMDQ_CONS_OFFSET(cmdq_queue_id) \
+	(IRO[34].base +	((cmdq_queue_id) * IRO[34].m1))
+#define TSTORM_SCSI_CMDQ_CONS_SIZE				(IRO[34].size)
+#define TSTORM_SCSI_BDQ_EXT_PROD_OFFSET(func_id, bdq_id) \
+	(IRO[35].base +	((func_id) * IRO[35].m1) + ((bdq_id) * IRO[35].m2))
+#define TSTORM_SCSI_BDQ_EXT_PROD_SIZE				(IRO[35].size)
+#define MSTORM_SCSI_BDQ_EXT_PROD_OFFSET(func_id, bdq_id) \
+	(IRO[36].base +	((func_id) * IRO[36].m1) + ((bdq_id) * IRO[36].m2))
+#define MSTORM_SCSI_BDQ_EXT_PROD_SIZE				(IRO[36].size)
+#define TSTORM_ISCSI_RX_STATS_OFFSET(pf_id) \
+	(IRO[37].base +	((pf_id) * IRO[37].m1))
+#define TSTORM_ISCSI_RX_STATS_SIZE				(IRO[37].size)
+#define MSTORM_ISCSI_RX_STATS_OFFSET(pf_id) \
+	(IRO[38].base +	((pf_id) * IRO[38].m1))
+#define MSTORM_ISCSI_RX_STATS_SIZE				(IRO[38].size)
+#define USTORM_ISCSI_RX_STATS_OFFSET(pf_id) \
+	(IRO[39].base +	((pf_id) * IRO[39].m1))
+#define USTORM_ISCSI_RX_STATS_SIZE				(IRO[39].size)
+#define XSTORM_ISCSI_TX_STATS_OFFSET(pf_id) \
+	(IRO[40].base +	((pf_id) * IRO[40].m1))
+#define XSTORM_ISCSI_TX_STATS_SIZE				(IRO[40].size)
+#define YSTORM_ISCSI_TX_STATS_OFFSET(pf_id) \
+	(IRO[41].base +	((pf_id) * IRO[41].m1))
+#define YSTORM_ISCSI_TX_STATS_SIZE				(IRO[41].size)
+#define PSTORM_ISCSI_TX_STATS_OFFSET(pf_id) \
+	(IRO[42].base +	((pf_id) * IRO[42].m1))
+#define PSTORM_ISCSI_TX_STATS_SIZE				(IRO[42].size)
+#define PSTORM_RDMA_QUEUE_STAT_OFFSET(rdma_stat_counter_id) \
+	(IRO[45].base +	((rdma_stat_counter_id) * IRO[45].m1))
+#define PSTORM_RDMA_QUEUE_STAT_SIZE				(IRO[45].size)
+#define TSTORM_RDMA_QUEUE_STAT_OFFSET(rdma_stat_counter_id) \
+	(IRO[46].base +	((rdma_stat_counter_id) * IRO[46].m1))
+#define TSTORM_RDMA_QUEUE_STAT_SIZE				(IRO[46].size)
+#define TSTORM_FCOE_RX_STATS_OFFSET(pf_id) \
+	(IRO[43].base +	((pf_id) * IRO[43].m1))
+#define PSTORM_FCOE_TX_STATS_OFFSET(pf_id) \
+	(IRO[44].base + ((pf_id) * IRO[44].m1))
+
+static const struct iro iro_arr[49] = {
+	{0x0, 0x0, 0x0, 0x0, 0x8},
+	{0x4cb0, 0x80, 0x0, 0x0, 0x80},
+	{0x6518, 0x20, 0x0, 0x0, 0x20},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0xb00, 0x8, 0x0, 0x0, 0x4},
 	{0xa80, 0x8, 0x0, 0x0, 0x4},
 	{0x0, 0x8, 0x0, 0x0, 0x2},
 	{0x80, 0x8, 0x0, 0x0, 0x4},
 	{0x84, 0x8, 0x0, 0x0, 0x2},
+<<<<<<< HEAD
 	{0x4c48, 0x0, 0x0, 0x0, 0x78},
 	{0x3e38, 0x0, 0x0, 0x0, 0x78},
 	{0x2b78, 0x0, 0x0, 0x0, 0x78},
@@ -4481,11 +5933,36 @@ static const struct iro iro_arr[59] = {
 	{0x1f8, 0x4, 0x0, 0x0, 0x4},
 	{0xaf20, 0x0, 0x0, 0x0, 0xf0},
 	{0xb010, 0x8, 0x0, 0x0, 0x8},
+=======
+	{0x4c40, 0x0, 0x0, 0x0, 0x78},
+	{0x3df0, 0x0, 0x0, 0x0, 0x78},
+	{0x29b0, 0x0, 0x0, 0x0, 0x78},
+	{0x4c38, 0x0, 0x0, 0x0, 0x78},
+	{0x4990, 0x0, 0x0, 0x0, 0x78},
+	{0x7f48, 0x0, 0x0, 0x0, 0x78},
+	{0xa28, 0x8, 0x0, 0x0, 0x8},
+	{0x61f8, 0x10, 0x0, 0x0, 0x10},
+	{0xbd20, 0x30, 0x0, 0x0, 0x30},
+	{0x95b8, 0x30, 0x0, 0x0, 0x30},
+	{0x4b60, 0x80, 0x0, 0x0, 0x40},
+	{0x1f8, 0x4, 0x0, 0x0, 0x4},
+	{0x53a0, 0x80, 0x4, 0x0, 0x4},
+	{0xc7c8, 0x0, 0x0, 0x0, 0x4},
+	{0x4ba0, 0x80, 0x0, 0x0, 0x20},
+	{0x8150, 0x40, 0x0, 0x0, 0x30},
+	{0xec70, 0x60, 0x0, 0x0, 0x60},
+	{0x2b48, 0x80, 0x0, 0x0, 0x38},
+	{0xf1b0, 0x78, 0x0, 0x0, 0x78},
+	{0x1f8, 0x4, 0x0, 0x0, 0x4},
+	{0xaef8, 0x0, 0x0, 0x0, 0xf0},
+	{0xafe8, 0x8, 0x0, 0x0, 0x8},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{0x1f8, 0x8, 0x0, 0x0, 0x8},
 	{0xac0, 0x8, 0x0, 0x0, 0x8},
 	{0x2578, 0x8, 0x0, 0x0, 0x8},
 	{0x24f8, 0x8, 0x0, 0x0, 0x8},
 	{0x0, 0x8, 0x0, 0x0, 0x8},
+<<<<<<< HEAD
 	{0x400, 0x18, 0x8, 0x0, 0x8},
 	{0xb78, 0x18, 0x8, 0x0, 0x2},
 	{0xd898, 0x50, 0x0, 0x0, 0x3c},
@@ -5039,6 +6516,462 @@ static const struct iro iro_arr[59] = {
 
 /* Init Callbacks */
 #define DMAE_READY_CB	0
+=======
+	{0x200, 0x10, 0x8, 0x0, 0x8},
+	{0xb78, 0x10, 0x8, 0x0, 0x2},
+	{0xd9a8, 0x38, 0x0, 0x0, 0x24},
+	{0x12988, 0x10, 0x0, 0x0, 0x8},
+	{0x11fa0, 0x38, 0x0, 0x0, 0x18},
+	{0xa580, 0x38, 0x0, 0x0, 0x10},
+	{0x86f8, 0x30, 0x0, 0x0, 0x18},
+	{0x101f8, 0x10, 0x0, 0x0, 0x10},
+	{0xde28, 0x48, 0x0, 0x0, 0x38},
+	{0x10660, 0x20, 0x0, 0x0, 0x20},
+	{0x2b80, 0x80, 0x0, 0x0, 0x10},
+	{0x5020, 0x10, 0x0, 0x0, 0x10},
+	{0xc9b0, 0x30, 0x0, 0x0, 0x10},
+	{0xeec0, 0x10, 0x0, 0x0, 0x10},
+};
+
+/* Runtime array offsets */
+#define DORQ_REG_PF_MAX_ICID_0_RT_OFFSET	0
+#define DORQ_REG_PF_MAX_ICID_1_RT_OFFSET	1
+#define DORQ_REG_PF_MAX_ICID_2_RT_OFFSET	2
+#define DORQ_REG_PF_MAX_ICID_3_RT_OFFSET	3
+#define DORQ_REG_PF_MAX_ICID_4_RT_OFFSET	4
+#define DORQ_REG_PF_MAX_ICID_5_RT_OFFSET	5
+#define DORQ_REG_PF_MAX_ICID_6_RT_OFFSET	6
+#define DORQ_REG_PF_MAX_ICID_7_RT_OFFSET	7
+#define DORQ_REG_VF_MAX_ICID_0_RT_OFFSET	8
+#define DORQ_REG_VF_MAX_ICID_1_RT_OFFSET	9
+#define DORQ_REG_VF_MAX_ICID_2_RT_OFFSET	10
+#define DORQ_REG_VF_MAX_ICID_3_RT_OFFSET	11
+#define DORQ_REG_VF_MAX_ICID_4_RT_OFFSET	12
+#define DORQ_REG_VF_MAX_ICID_5_RT_OFFSET	13
+#define DORQ_REG_VF_MAX_ICID_6_RT_OFFSET	14
+#define DORQ_REG_VF_MAX_ICID_7_RT_OFFSET	15
+#define DORQ_REG_PF_WAKE_ALL_RT_OFFSET	16
+#define DORQ_REG_TAG1_ETHERTYPE_RT_OFFSET	17
+#define IGU_REG_PF_CONFIGURATION_RT_OFFSET	18
+#define IGU_REG_VF_CONFIGURATION_RT_OFFSET	19
+#define IGU_REG_ATTN_MSG_ADDR_L_RT_OFFSET	20
+#define IGU_REG_ATTN_MSG_ADDR_H_RT_OFFSET	21
+#define IGU_REG_LEADING_EDGE_LATCH_RT_OFFSET	22
+#define IGU_REG_TRAILING_EDGE_LATCH_RT_OFFSET	23
+#define CAU_REG_CQE_AGG_UNIT_SIZE_RT_OFFSET	24
+#define CAU_REG_SB_VAR_MEMORY_RT_OFFSET	761
+#define CAU_REG_SB_VAR_MEMORY_RT_SIZE	736
+#define CAU_REG_SB_VAR_MEMORY_RT_OFFSET	761
+#define CAU_REG_SB_VAR_MEMORY_RT_SIZE	736
+#define CAU_REG_SB_ADDR_MEMORY_RT_OFFSET	1497
+#define CAU_REG_SB_ADDR_MEMORY_RT_SIZE	736
+#define CAU_REG_PI_MEMORY_RT_OFFSET	2233
+#define CAU_REG_PI_MEMORY_RT_SIZE	4416
+#define PRS_REG_SEARCH_RESP_INITIATOR_TYPE_RT_OFFSET	6649
+#define PRS_REG_TASK_ID_MAX_INITIATOR_PF_RT_OFFSET	6650
+#define PRS_REG_TASK_ID_MAX_INITIATOR_VF_RT_OFFSET	6651
+#define PRS_REG_TASK_ID_MAX_TARGET_PF_RT_OFFSET	6652
+#define PRS_REG_TASK_ID_MAX_TARGET_VF_RT_OFFSET	6653
+#define PRS_REG_SEARCH_TCP_RT_OFFSET	6654
+#define PRS_REG_SEARCH_FCOE_RT_OFFSET	6655
+#define PRS_REG_SEARCH_ROCE_RT_OFFSET	6656
+#define PRS_REG_ROCE_DEST_QP_MAX_VF_RT_OFFSET	6657
+#define PRS_REG_ROCE_DEST_QP_MAX_PF_RT_OFFSET	6658
+#define PRS_REG_SEARCH_OPENFLOW_RT_OFFSET	6659
+#define PRS_REG_SEARCH_NON_IP_AS_OPENFLOW_RT_OFFSET	6660
+#define PRS_REG_OPENFLOW_SUPPORT_ONLY_KNOWN_OVER_IP_RT_OFFSET	6661
+#define PRS_REG_OPENFLOW_SEARCH_KEY_MASK_RT_OFFSET	6662
+#define PRS_REG_TAG_ETHERTYPE_0_RT_OFFSET	6663
+#define PRS_REG_LIGHT_L2_ETHERTYPE_EN_RT_OFFSET	6664
+#define SRC_REG_FIRSTFREE_RT_OFFSET	6665
+#define SRC_REG_FIRSTFREE_RT_SIZE	2
+#define SRC_REG_LASTFREE_RT_OFFSET	6667
+#define SRC_REG_LASTFREE_RT_SIZE	2
+#define SRC_REG_COUNTFREE_RT_OFFSET	6669
+#define SRC_REG_NUMBER_HASH_BITS_RT_OFFSET	6670
+#define PSWRQ2_REG_CDUT_P_SIZE_RT_OFFSET	6671
+#define PSWRQ2_REG_CDUC_P_SIZE_RT_OFFSET	6672
+#define PSWRQ2_REG_TM_P_SIZE_RT_OFFSET	6673
+#define PSWRQ2_REG_QM_P_SIZE_RT_OFFSET	6674
+#define PSWRQ2_REG_SRC_P_SIZE_RT_OFFSET	6675
+#define PSWRQ2_REG_TSDM_P_SIZE_RT_OFFSET	6676
+#define PSWRQ2_REG_TM_FIRST_ILT_RT_OFFSET	6677
+#define PSWRQ2_REG_TM_LAST_ILT_RT_OFFSET	6678
+#define PSWRQ2_REG_QM_FIRST_ILT_RT_OFFSET	6679
+#define PSWRQ2_REG_QM_LAST_ILT_RT_OFFSET	6680
+#define PSWRQ2_REG_SRC_FIRST_ILT_RT_OFFSET	6681
+#define PSWRQ2_REG_SRC_LAST_ILT_RT_OFFSET	6682
+#define PSWRQ2_REG_CDUC_FIRST_ILT_RT_OFFSET	6683
+#define PSWRQ2_REG_CDUC_LAST_ILT_RT_OFFSET	6684
+#define PSWRQ2_REG_CDUT_FIRST_ILT_RT_OFFSET	6685
+#define PSWRQ2_REG_CDUT_LAST_ILT_RT_OFFSET	6686
+#define PSWRQ2_REG_TSDM_FIRST_ILT_RT_OFFSET	6687
+#define PSWRQ2_REG_TSDM_LAST_ILT_RT_OFFSET	6688
+#define PSWRQ2_REG_TM_NUMBER_OF_PF_BLOCKS_RT_OFFSET	6689
+#define PSWRQ2_REG_CDUT_NUMBER_OF_PF_BLOCKS_RT_OFFSET	6690
+#define PSWRQ2_REG_CDUC_NUMBER_OF_PF_BLOCKS_RT_OFFSET	6691
+#define PSWRQ2_REG_TM_VF_BLOCKS_RT_OFFSET	6692
+#define PSWRQ2_REG_CDUT_VF_BLOCKS_RT_OFFSET	6693
+#define PSWRQ2_REG_CDUC_VF_BLOCKS_RT_OFFSET	6694
+#define PSWRQ2_REG_TM_BLOCKS_FACTOR_RT_OFFSET	6695
+#define PSWRQ2_REG_CDUT_BLOCKS_FACTOR_RT_OFFSET	6696
+#define PSWRQ2_REG_CDUC_BLOCKS_FACTOR_RT_OFFSET	6697
+#define PSWRQ2_REG_VF_BASE_RT_OFFSET	6698
+#define PSWRQ2_REG_VF_LAST_ILT_RT_OFFSET	6699
+#define PSWRQ2_REG_DRAM_ALIGN_WR_RT_OFFSET	6700
+#define PSWRQ2_REG_DRAM_ALIGN_RD_RT_OFFSET	6701
+#define PSWRQ2_REG_ILT_MEMORY_RT_OFFSET	6702
+#define PSWRQ2_REG_ILT_MEMORY_RT_SIZE	22000
+#define PGLUE_REG_B_VF_BASE_RT_OFFSET	28702
+#define PGLUE_REG_B_MSDM_OFFSET_MASK_B_RT_OFFSET	28703
+#define PGLUE_REG_B_MSDM_VF_SHIFT_B_RT_OFFSET	28704
+#define PGLUE_REG_B_CACHE_LINE_SIZE_RT_OFFSET	28705
+#define PGLUE_REG_B_PF_BAR0_SIZE_RT_OFFSET	28706
+#define PGLUE_REG_B_PF_BAR1_SIZE_RT_OFFSET	28707
+#define PGLUE_REG_B_VF_BAR1_SIZE_RT_OFFSET	28708
+#define TM_REG_VF_ENABLE_CONN_RT_OFFSET	28709
+#define TM_REG_PF_ENABLE_CONN_RT_OFFSET	28710
+#define TM_REG_PF_ENABLE_TASK_RT_OFFSET	28711
+#define TM_REG_GROUP_SIZE_RESOLUTION_CONN_RT_OFFSET	28712
+#define TM_REG_GROUP_SIZE_RESOLUTION_TASK_RT_OFFSET	28713
+#define TM_REG_CONFIG_CONN_MEM_RT_OFFSET	28714
+#define TM_REG_CONFIG_CONN_MEM_RT_SIZE	416
+#define TM_REG_CONFIG_TASK_MEM_RT_OFFSET	29130
+#define TM_REG_CONFIG_TASK_MEM_RT_SIZE	608
+#define QM_REG_MAXPQSIZE_0_RT_OFFSET	29738
+#define QM_REG_MAXPQSIZE_1_RT_OFFSET	29739
+#define QM_REG_MAXPQSIZE_2_RT_OFFSET	29740
+#define QM_REG_MAXPQSIZETXSEL_0_RT_OFFSET	29741
+#define QM_REG_MAXPQSIZETXSEL_1_RT_OFFSET	29742
+#define QM_REG_MAXPQSIZETXSEL_2_RT_OFFSET	29743
+#define QM_REG_MAXPQSIZETXSEL_3_RT_OFFSET	29744
+#define QM_REG_MAXPQSIZETXSEL_4_RT_OFFSET	29745
+#define QM_REG_MAXPQSIZETXSEL_5_RT_OFFSET	29746
+#define QM_REG_MAXPQSIZETXSEL_6_RT_OFFSET	29747
+#define QM_REG_MAXPQSIZETXSEL_7_RT_OFFSET	29748
+#define QM_REG_MAXPQSIZETXSEL_8_RT_OFFSET	29749
+#define QM_REG_MAXPQSIZETXSEL_9_RT_OFFSET	29750
+#define QM_REG_MAXPQSIZETXSEL_10_RT_OFFSET	29751
+#define QM_REG_MAXPQSIZETXSEL_11_RT_OFFSET	29752
+#define QM_REG_MAXPQSIZETXSEL_12_RT_OFFSET	29753
+#define QM_REG_MAXPQSIZETXSEL_13_RT_OFFSET	29754
+#define QM_REG_MAXPQSIZETXSEL_14_RT_OFFSET	29755
+#define QM_REG_MAXPQSIZETXSEL_15_RT_OFFSET	29756
+#define QM_REG_MAXPQSIZETXSEL_16_RT_OFFSET	29757
+#define QM_REG_MAXPQSIZETXSEL_17_RT_OFFSET	29758
+#define QM_REG_MAXPQSIZETXSEL_18_RT_OFFSET	29759
+#define QM_REG_MAXPQSIZETXSEL_19_RT_OFFSET	29760
+#define QM_REG_MAXPQSIZETXSEL_20_RT_OFFSET	29761
+#define QM_REG_MAXPQSIZETXSEL_21_RT_OFFSET	29762
+#define QM_REG_MAXPQSIZETXSEL_22_RT_OFFSET	29763
+#define QM_REG_MAXPQSIZETXSEL_23_RT_OFFSET	29764
+#define QM_REG_MAXPQSIZETXSEL_24_RT_OFFSET	29765
+#define QM_REG_MAXPQSIZETXSEL_25_RT_OFFSET	29766
+#define QM_REG_MAXPQSIZETXSEL_26_RT_OFFSET	29767
+#define QM_REG_MAXPQSIZETXSEL_27_RT_OFFSET	29768
+#define QM_REG_MAXPQSIZETXSEL_28_RT_OFFSET	29769
+#define QM_REG_MAXPQSIZETXSEL_29_RT_OFFSET	29770
+#define QM_REG_MAXPQSIZETXSEL_30_RT_OFFSET	29771
+#define QM_REG_MAXPQSIZETXSEL_31_RT_OFFSET	29772
+#define QM_REG_MAXPQSIZETXSEL_32_RT_OFFSET	29773
+#define QM_REG_MAXPQSIZETXSEL_33_RT_OFFSET	29774
+#define QM_REG_MAXPQSIZETXSEL_34_RT_OFFSET	29775
+#define QM_REG_MAXPQSIZETXSEL_35_RT_OFFSET	29776
+#define QM_REG_MAXPQSIZETXSEL_36_RT_OFFSET	29777
+#define QM_REG_MAXPQSIZETXSEL_37_RT_OFFSET	29778
+#define QM_REG_MAXPQSIZETXSEL_38_RT_OFFSET	29779
+#define QM_REG_MAXPQSIZETXSEL_39_RT_OFFSET	29780
+#define QM_REG_MAXPQSIZETXSEL_40_RT_OFFSET	29781
+#define QM_REG_MAXPQSIZETXSEL_41_RT_OFFSET	29782
+#define QM_REG_MAXPQSIZETXSEL_42_RT_OFFSET	29783
+#define QM_REG_MAXPQSIZETXSEL_43_RT_OFFSET	29784
+#define QM_REG_MAXPQSIZETXSEL_44_RT_OFFSET	29785
+#define QM_REG_MAXPQSIZETXSEL_45_RT_OFFSET	29786
+#define QM_REG_MAXPQSIZETXSEL_46_RT_OFFSET	29787
+#define QM_REG_MAXPQSIZETXSEL_47_RT_OFFSET	29788
+#define QM_REG_MAXPQSIZETXSEL_48_RT_OFFSET	29789
+#define QM_REG_MAXPQSIZETXSEL_49_RT_OFFSET	29790
+#define QM_REG_MAXPQSIZETXSEL_50_RT_OFFSET	29791
+#define QM_REG_MAXPQSIZETXSEL_51_RT_OFFSET	29792
+#define QM_REG_MAXPQSIZETXSEL_52_RT_OFFSET	29793
+#define QM_REG_MAXPQSIZETXSEL_53_RT_OFFSET	29794
+#define QM_REG_MAXPQSIZETXSEL_54_RT_OFFSET	29795
+#define QM_REG_MAXPQSIZETXSEL_55_RT_OFFSET	29796
+#define QM_REG_MAXPQSIZETXSEL_56_RT_OFFSET	29797
+#define QM_REG_MAXPQSIZETXSEL_57_RT_OFFSET	29798
+#define QM_REG_MAXPQSIZETXSEL_58_RT_OFFSET	29799
+#define QM_REG_MAXPQSIZETXSEL_59_RT_OFFSET	29800
+#define QM_REG_MAXPQSIZETXSEL_60_RT_OFFSET	29801
+#define QM_REG_MAXPQSIZETXSEL_61_RT_OFFSET	29802
+#define QM_REG_MAXPQSIZETXSEL_62_RT_OFFSET	29803
+#define QM_REG_MAXPQSIZETXSEL_63_RT_OFFSET	29804
+#define QM_REG_BASEADDROTHERPQ_RT_OFFSET	29805
+#define QM_REG_BASEADDROTHERPQ_RT_SIZE	128
+#define QM_REG_AFULLQMBYPTHRPFWFQ_RT_OFFSET	29933
+#define QM_REG_AFULLQMBYPTHRVPWFQ_RT_OFFSET	29934
+#define QM_REG_AFULLQMBYPTHRPFRL_RT_OFFSET	29935
+#define QM_REG_AFULLQMBYPTHRGLBLRL_RT_OFFSET	29936
+#define QM_REG_AFULLOPRTNSTCCRDMASK_RT_OFFSET	29937
+#define QM_REG_WRROTHERPQGRP_0_RT_OFFSET	29938
+#define QM_REG_WRROTHERPQGRP_1_RT_OFFSET	29939
+#define QM_REG_WRROTHERPQGRP_2_RT_OFFSET	29940
+#define QM_REG_WRROTHERPQGRP_3_RT_OFFSET	29941
+#define QM_REG_WRROTHERPQGRP_4_RT_OFFSET	29942
+#define QM_REG_WRROTHERPQGRP_5_RT_OFFSET	29943
+#define QM_REG_WRROTHERPQGRP_6_RT_OFFSET	29944
+#define QM_REG_WRROTHERPQGRP_7_RT_OFFSET	29945
+#define QM_REG_WRROTHERPQGRP_8_RT_OFFSET	29946
+#define QM_REG_WRROTHERPQGRP_9_RT_OFFSET	29947
+#define QM_REG_WRROTHERPQGRP_10_RT_OFFSET	29948
+#define QM_REG_WRROTHERPQGRP_11_RT_OFFSET	29949
+#define QM_REG_WRROTHERPQGRP_12_RT_OFFSET	29950
+#define QM_REG_WRROTHERPQGRP_13_RT_OFFSET	29951
+#define QM_REG_WRROTHERPQGRP_14_RT_OFFSET	29952
+#define QM_REG_WRROTHERPQGRP_15_RT_OFFSET	29953
+#define QM_REG_WRROTHERGRPWEIGHT_0_RT_OFFSET	29954
+#define QM_REG_WRROTHERGRPWEIGHT_1_RT_OFFSET	29955
+#define QM_REG_WRROTHERGRPWEIGHT_2_RT_OFFSET	29956
+#define QM_REG_WRROTHERGRPWEIGHT_3_RT_OFFSET	29957
+#define QM_REG_WRRTXGRPWEIGHT_0_RT_OFFSET	29958
+#define QM_REG_WRRTXGRPWEIGHT_1_RT_OFFSET	29959
+#define QM_REG_PQTX2PF_0_RT_OFFSET	29960
+#define QM_REG_PQTX2PF_1_RT_OFFSET	29961
+#define QM_REG_PQTX2PF_2_RT_OFFSET	29962
+#define QM_REG_PQTX2PF_3_RT_OFFSET	29963
+#define QM_REG_PQTX2PF_4_RT_OFFSET	29964
+#define QM_REG_PQTX2PF_5_RT_OFFSET	29965
+#define QM_REG_PQTX2PF_6_RT_OFFSET	29966
+#define QM_REG_PQTX2PF_7_RT_OFFSET	29967
+#define QM_REG_PQTX2PF_8_RT_OFFSET	29968
+#define QM_REG_PQTX2PF_9_RT_OFFSET	29969
+#define QM_REG_PQTX2PF_10_RT_OFFSET	29970
+#define QM_REG_PQTX2PF_11_RT_OFFSET	29971
+#define QM_REG_PQTX2PF_12_RT_OFFSET	29972
+#define QM_REG_PQTX2PF_13_RT_OFFSET	29973
+#define QM_REG_PQTX2PF_14_RT_OFFSET	29974
+#define QM_REG_PQTX2PF_15_RT_OFFSET	29975
+#define QM_REG_PQTX2PF_16_RT_OFFSET	29976
+#define QM_REG_PQTX2PF_17_RT_OFFSET	29977
+#define QM_REG_PQTX2PF_18_RT_OFFSET	29978
+#define QM_REG_PQTX2PF_19_RT_OFFSET	29979
+#define QM_REG_PQTX2PF_20_RT_OFFSET	29980
+#define QM_REG_PQTX2PF_21_RT_OFFSET	29981
+#define QM_REG_PQTX2PF_22_RT_OFFSET	29982
+#define QM_REG_PQTX2PF_23_RT_OFFSET	29983
+#define QM_REG_PQTX2PF_24_RT_OFFSET	29984
+#define QM_REG_PQTX2PF_25_RT_OFFSET	29985
+#define QM_REG_PQTX2PF_26_RT_OFFSET	29986
+#define QM_REG_PQTX2PF_27_RT_OFFSET	29987
+#define QM_REG_PQTX2PF_28_RT_OFFSET	29988
+#define QM_REG_PQTX2PF_29_RT_OFFSET	29989
+#define QM_REG_PQTX2PF_30_RT_OFFSET	29990
+#define QM_REG_PQTX2PF_31_RT_OFFSET	29991
+#define QM_REG_PQTX2PF_32_RT_OFFSET	29992
+#define QM_REG_PQTX2PF_33_RT_OFFSET	29993
+#define QM_REG_PQTX2PF_34_RT_OFFSET	29994
+#define QM_REG_PQTX2PF_35_RT_OFFSET	29995
+#define QM_REG_PQTX2PF_36_RT_OFFSET	29996
+#define QM_REG_PQTX2PF_37_RT_OFFSET	29997
+#define QM_REG_PQTX2PF_38_RT_OFFSET	29998
+#define QM_REG_PQTX2PF_39_RT_OFFSET	29999
+#define QM_REG_PQTX2PF_40_RT_OFFSET	30000
+#define QM_REG_PQTX2PF_41_RT_OFFSET	30001
+#define QM_REG_PQTX2PF_42_RT_OFFSET	30002
+#define QM_REG_PQTX2PF_43_RT_OFFSET	30003
+#define QM_REG_PQTX2PF_44_RT_OFFSET	30004
+#define QM_REG_PQTX2PF_45_RT_OFFSET	30005
+#define QM_REG_PQTX2PF_46_RT_OFFSET	30006
+#define QM_REG_PQTX2PF_47_RT_OFFSET	30007
+#define QM_REG_PQTX2PF_48_RT_OFFSET	30008
+#define QM_REG_PQTX2PF_49_RT_OFFSET	30009
+#define QM_REG_PQTX2PF_50_RT_OFFSET	30010
+#define QM_REG_PQTX2PF_51_RT_OFFSET	30011
+#define QM_REG_PQTX2PF_52_RT_OFFSET	30012
+#define QM_REG_PQTX2PF_53_RT_OFFSET	30013
+#define QM_REG_PQTX2PF_54_RT_OFFSET	30014
+#define QM_REG_PQTX2PF_55_RT_OFFSET	30015
+#define QM_REG_PQTX2PF_56_RT_OFFSET	30016
+#define QM_REG_PQTX2PF_57_RT_OFFSET	30017
+#define QM_REG_PQTX2PF_58_RT_OFFSET	30018
+#define QM_REG_PQTX2PF_59_RT_OFFSET	30019
+#define QM_REG_PQTX2PF_60_RT_OFFSET	30020
+#define QM_REG_PQTX2PF_61_RT_OFFSET	30021
+#define QM_REG_PQTX2PF_62_RT_OFFSET	30022
+#define QM_REG_PQTX2PF_63_RT_OFFSET	30023
+#define QM_REG_PQOTHER2PF_0_RT_OFFSET	30024
+#define QM_REG_PQOTHER2PF_1_RT_OFFSET	30025
+#define QM_REG_PQOTHER2PF_2_RT_OFFSET	30026
+#define QM_REG_PQOTHER2PF_3_RT_OFFSET	30027
+#define QM_REG_PQOTHER2PF_4_RT_OFFSET	30028
+#define QM_REG_PQOTHER2PF_5_RT_OFFSET	30029
+#define QM_REG_PQOTHER2PF_6_RT_OFFSET	30030
+#define QM_REG_PQOTHER2PF_7_RT_OFFSET	30031
+#define QM_REG_PQOTHER2PF_8_RT_OFFSET	30032
+#define QM_REG_PQOTHER2PF_9_RT_OFFSET	30033
+#define QM_REG_PQOTHER2PF_10_RT_OFFSET	30034
+#define QM_REG_PQOTHER2PF_11_RT_OFFSET	30035
+#define QM_REG_PQOTHER2PF_12_RT_OFFSET	30036
+#define QM_REG_PQOTHER2PF_13_RT_OFFSET	30037
+#define QM_REG_PQOTHER2PF_14_RT_OFFSET	30038
+#define QM_REG_PQOTHER2PF_15_RT_OFFSET	30039
+#define QM_REG_RLGLBLPERIOD_0_RT_OFFSET	30040
+#define QM_REG_RLGLBLPERIOD_1_RT_OFFSET	30041
+#define QM_REG_RLGLBLPERIODTIMER_0_RT_OFFSET	30042
+#define QM_REG_RLGLBLPERIODTIMER_1_RT_OFFSET	30043
+#define QM_REG_RLGLBLPERIODSEL_0_RT_OFFSET	30044
+#define QM_REG_RLGLBLPERIODSEL_1_RT_OFFSET	30045
+#define QM_REG_RLGLBLPERIODSEL_2_RT_OFFSET	30046
+#define QM_REG_RLGLBLPERIODSEL_3_RT_OFFSET	30047
+#define QM_REG_RLGLBLPERIODSEL_4_RT_OFFSET	30048
+#define QM_REG_RLGLBLPERIODSEL_5_RT_OFFSET	30049
+#define QM_REG_RLGLBLPERIODSEL_6_RT_OFFSET	30050
+#define QM_REG_RLGLBLPERIODSEL_7_RT_OFFSET	30051
+#define QM_REG_RLGLBLINCVAL_RT_OFFSET	30052
+#define QM_REG_RLGLBLINCVAL_RT_SIZE	256
+#define QM_REG_RLGLBLUPPERBOUND_RT_OFFSET	30308
+#define QM_REG_RLGLBLUPPERBOUND_RT_SIZE	256
+#define QM_REG_RLGLBLCRD_RT_OFFSET	30564
+#define QM_REG_RLGLBLCRD_RT_SIZE	256
+#define QM_REG_RLGLBLENABLE_RT_OFFSET	30820
+#define QM_REG_RLPFPERIOD_RT_OFFSET	30821
+#define QM_REG_RLPFPERIODTIMER_RT_OFFSET	30822
+#define QM_REG_RLPFINCVAL_RT_OFFSET	30823
+#define QM_REG_RLPFINCVAL_RT_SIZE	16
+#define QM_REG_RLPFUPPERBOUND_RT_OFFSET	30839
+#define QM_REG_RLPFUPPERBOUND_RT_SIZE	16
+#define QM_REG_RLPFCRD_RT_OFFSET	30855
+#define QM_REG_RLPFCRD_RT_SIZE	16
+#define QM_REG_RLPFENABLE_RT_OFFSET	30871
+#define QM_REG_RLPFVOQENABLE_RT_OFFSET	30872
+#define QM_REG_WFQPFWEIGHT_RT_OFFSET	30873
+#define QM_REG_WFQPFWEIGHT_RT_SIZE	16
+#define QM_REG_WFQPFUPPERBOUND_RT_OFFSET	30889
+#define QM_REG_WFQPFUPPERBOUND_RT_SIZE	16
+#define QM_REG_WFQPFCRD_RT_OFFSET	30905
+#define QM_REG_WFQPFCRD_RT_SIZE	256
+#define QM_REG_WFQPFENABLE_RT_OFFSET	31161
+#define QM_REG_WFQVPENABLE_RT_OFFSET	31162
+#define QM_REG_BASEADDRTXPQ_RT_OFFSET	31163
+#define QM_REG_BASEADDRTXPQ_RT_SIZE	512
+#define QM_REG_TXPQMAP_RT_OFFSET	31675
+#define QM_REG_TXPQMAP_RT_SIZE	512
+#define QM_REG_WFQVPWEIGHT_RT_OFFSET	32187
+#define QM_REG_WFQVPWEIGHT_RT_SIZE	512
+#define QM_REG_WFQVPCRD_RT_OFFSET	32699
+#define QM_REG_WFQVPCRD_RT_SIZE	512
+#define QM_REG_WFQVPMAP_RT_OFFSET	33211
+#define QM_REG_WFQVPMAP_RT_SIZE	512
+#define QM_REG_WFQPFCRD_MSB_RT_OFFSET	33723
+#define QM_REG_WFQPFCRD_MSB_RT_SIZE	320
+#define QM_REG_VOQCRDLINE_RT_OFFSET	34043
+#define QM_REG_VOQCRDLINE_RT_SIZE	36
+#define QM_REG_VOQINITCRDLINE_RT_OFFSET	34079
+#define QM_REG_VOQINITCRDLINE_RT_SIZE	36
+#define NIG_REG_TAG_ETHERTYPE_0_RT_OFFSET	34115
+#define NIG_REG_OUTER_TAG_VALUE_LIST0_RT_OFFSET	34116
+#define NIG_REG_OUTER_TAG_VALUE_LIST1_RT_OFFSET	34117
+#define NIG_REG_OUTER_TAG_VALUE_LIST2_RT_OFFSET	34118
+#define NIG_REG_OUTER_TAG_VALUE_LIST3_RT_OFFSET	34119
+#define NIG_REG_OUTER_TAG_VALUE_MASK_RT_OFFSET	34120
+#define NIG_REG_LLH_FUNC_TAGMAC_CLS_TYPE_RT_OFFSET	34121
+#define NIG_REG_LLH_FUNC_TAG_EN_RT_OFFSET	34122
+#define NIG_REG_LLH_FUNC_TAG_EN_RT_SIZE	4
+#define NIG_REG_LLH_FUNC_TAG_HDR_SEL_RT_OFFSET	34126
+#define NIG_REG_LLH_FUNC_TAG_HDR_SEL_RT_SIZE	4
+#define NIG_REG_LLH_FUNC_TAG_VALUE_RT_OFFSET	34130
+#define NIG_REG_LLH_FUNC_TAG_VALUE_RT_SIZE	4
+#define NIG_REG_LLH_FUNC_NO_TAG_RT_OFFSET	34134
+#define NIG_REG_LLH_FUNC_FILTER_VALUE_RT_OFFSET	34135
+#define NIG_REG_LLH_FUNC_FILTER_VALUE_RT_SIZE	32
+#define NIG_REG_LLH_FUNC_FILTER_EN_RT_OFFSET	34167
+#define NIG_REG_LLH_FUNC_FILTER_EN_RT_SIZE	16
+#define NIG_REG_LLH_FUNC_FILTER_MODE_RT_OFFSET	34183
+#define NIG_REG_LLH_FUNC_FILTER_MODE_RT_SIZE	16
+#define NIG_REG_LLH_FUNC_FILTER_PROTOCOL_TYPE_RT_OFFSET	34199
+#define NIG_REG_LLH_FUNC_FILTER_PROTOCOL_TYPE_RT_SIZE	16
+#define NIG_REG_LLH_FUNC_FILTER_HDR_SEL_RT_OFFSET	34215
+#define NIG_REG_LLH_FUNC_FILTER_HDR_SEL_RT_SIZE	16
+#define NIG_REG_TX_EDPM_CTRL_RT_OFFSET	34231
+#define NIG_REG_ROCE_DUPLICATE_TO_HOST_RT_OFFSET	34232
+#define CDU_REG_CID_ADDR_PARAMS_RT_OFFSET	34233
+#define CDU_REG_SEGMENT0_PARAMS_RT_OFFSET	34234
+#define CDU_REG_SEGMENT1_PARAMS_RT_OFFSET	34235
+#define CDU_REG_PF_SEG0_TYPE_OFFSET_RT_OFFSET	34236
+#define CDU_REG_PF_SEG1_TYPE_OFFSET_RT_OFFSET	34237
+#define CDU_REG_PF_SEG2_TYPE_OFFSET_RT_OFFSET	34238
+#define CDU_REG_PF_SEG3_TYPE_OFFSET_RT_OFFSET	34239
+#define CDU_REG_PF_FL_SEG0_TYPE_OFFSET_RT_OFFSET	34240
+#define CDU_REG_PF_FL_SEG1_TYPE_OFFSET_RT_OFFSET	34241
+#define CDU_REG_PF_FL_SEG2_TYPE_OFFSET_RT_OFFSET	34242
+#define CDU_REG_PF_FL_SEG3_TYPE_OFFSET_RT_OFFSET	34243
+#define CDU_REG_VF_SEG_TYPE_OFFSET_RT_OFFSET	34244
+#define CDU_REG_VF_FL_SEG_TYPE_OFFSET_RT_OFFSET	34245
+#define PBF_REG_TAG_ETHERTYPE_0_RT_OFFSET	34246
+#define PBF_REG_BTB_SHARED_AREA_SIZE_RT_OFFSET	34247
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ0_RT_OFFSET	34248
+#define PBF_REG_BTB_GUARANTEED_VOQ0_RT_OFFSET	34249
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ0_RT_OFFSET	34250
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ1_RT_OFFSET	34251
+#define PBF_REG_BTB_GUARANTEED_VOQ1_RT_OFFSET	34252
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ1_RT_OFFSET	34253
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ2_RT_OFFSET	34254
+#define PBF_REG_BTB_GUARANTEED_VOQ2_RT_OFFSET	34255
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ2_RT_OFFSET	34256
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ3_RT_OFFSET	34257
+#define PBF_REG_BTB_GUARANTEED_VOQ3_RT_OFFSET	34258
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ3_RT_OFFSET	34259
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ4_RT_OFFSET	34260
+#define PBF_REG_BTB_GUARANTEED_VOQ4_RT_OFFSET	34261
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ4_RT_OFFSET	34262
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ5_RT_OFFSET	34263
+#define PBF_REG_BTB_GUARANTEED_VOQ5_RT_OFFSET	34264
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ5_RT_OFFSET	34265
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ6_RT_OFFSET	34266
+#define PBF_REG_BTB_GUARANTEED_VOQ6_RT_OFFSET	34267
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ6_RT_OFFSET	34268
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ7_RT_OFFSET	34269
+#define PBF_REG_BTB_GUARANTEED_VOQ7_RT_OFFSET	34270
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ7_RT_OFFSET	34271
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ8_RT_OFFSET	34272
+#define PBF_REG_BTB_GUARANTEED_VOQ8_RT_OFFSET	34273
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ8_RT_OFFSET	34274
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ9_RT_OFFSET	34275
+#define PBF_REG_BTB_GUARANTEED_VOQ9_RT_OFFSET	34276
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ9_RT_OFFSET	34277
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ10_RT_OFFSET	34278
+#define PBF_REG_BTB_GUARANTEED_VOQ10_RT_OFFSET	34279
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ10_RT_OFFSET	34280
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ11_RT_OFFSET	34281
+#define PBF_REG_BTB_GUARANTEED_VOQ11_RT_OFFSET	34282
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ11_RT_OFFSET	34283
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ12_RT_OFFSET	34284
+#define PBF_REG_BTB_GUARANTEED_VOQ12_RT_OFFSET	34285
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ12_RT_OFFSET	34286
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ13_RT_OFFSET	34287
+#define PBF_REG_BTB_GUARANTEED_VOQ13_RT_OFFSET	34288
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ13_RT_OFFSET	34289
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ14_RT_OFFSET	34290
+#define PBF_REG_BTB_GUARANTEED_VOQ14_RT_OFFSET	34291
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ14_RT_OFFSET	34292
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ15_RT_OFFSET	34293
+#define PBF_REG_BTB_GUARANTEED_VOQ15_RT_OFFSET	34294
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ15_RT_OFFSET	34295
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ16_RT_OFFSET	34296
+#define PBF_REG_BTB_GUARANTEED_VOQ16_RT_OFFSET	34297
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ16_RT_OFFSET	34298
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ17_RT_OFFSET	34299
+#define PBF_REG_BTB_GUARANTEED_VOQ17_RT_OFFSET	34300
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ17_RT_OFFSET	34301
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ18_RT_OFFSET	34302
+#define PBF_REG_BTB_GUARANTEED_VOQ18_RT_OFFSET	34303
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ18_RT_OFFSET	34304
+#define PBF_REG_YCMD_QS_NUM_LINES_VOQ19_RT_OFFSET	34305
+#define PBF_REG_BTB_GUARANTEED_VOQ19_RT_OFFSET	34306
+#define PBF_REG_BTB_SHARED_AREA_SETUP_VOQ19_RT_OFFSET	34307
+#define XCM_REG_CON_PHY_Q3_RT_OFFSET	34308
+
+#define RUNTIME_ARRAY_SIZE 34309
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* The eth storm context for the Tstorm */
 struct tstorm_eth_conn_st_ctx {
@@ -5055,6 +6988,7 @@ struct xstorm_eth_conn_st_ctx {
 	__le32 reserved[60];
 };
 
+<<<<<<< HEAD
 struct e4_xstorm_eth_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -5272,6 +7206,225 @@ struct e4_xstorm_eth_conn_ag_ctx {
 	__le16 tx_bd_cons;
 	__le16 tx_bd_prod;
 	__le16 updated_qm_pq_id;
+=======
+struct xstorm_eth_conn_ag_ctx {
+	u8 reserved0;
+	u8 eth_state;
+	u8 flags0;
+#define XSTORM_ETH_CONN_AG_CTX_EXIST_IN_QM0_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_EXIST_IN_QM0_SHIFT	0
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED1_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED1_SHIFT		1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED2_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED2_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_EXIST_IN_QM3_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_EXIST_IN_QM3_SHIFT	3
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED3_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED3_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED4_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED4_SHIFT		5
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED5_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED5_SHIFT		6
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED6_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED6_SHIFT		7
+		u8 flags1;
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED7_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED7_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED8_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED8_SHIFT		1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED9_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED9_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_BIT11_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_BIT11_SHIFT		3
+#define XSTORM_ETH_CONN_AG_CTX_BIT12_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_BIT12_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_BIT13_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_BIT13_SHIFT		5
+#define XSTORM_ETH_CONN_AG_CTX_TX_RULE_ACTIVE_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_TX_RULE_ACTIVE_SHIFT	6
+#define XSTORM_ETH_CONN_AG_CTX_DQ_CF_ACTIVE_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_DQ_CF_ACTIVE_SHIFT	7
+	u8 flags2;
+#define XSTORM_ETH_CONN_AG_CTX_CF0_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF0_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_CF1_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF1_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_CF2_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF2_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_CF3_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF3_SHIFT		6
+	u8 flags3;
+#define XSTORM_ETH_CONN_AG_CTX_CF4_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF4_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_CF5_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF5_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_CF6_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF6_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_CF7_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF7_SHIFT		6
+		u8 flags4;
+#define XSTORM_ETH_CONN_AG_CTX_CF8_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF8_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_CF9_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF9_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_CF10_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF10_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_CF11_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF11_SHIFT		6
+	u8 flags5;
+#define XSTORM_ETH_CONN_AG_CTX_CF12_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF12_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_CF13_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF13_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_CF14_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF14_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_CF15_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_CF15_SHIFT		6
+	u8 flags6;
+#define XSTORM_ETH_CONN_AG_CTX_GO_TO_BD_CONS_CF_MASK	0x3
+#define XSTORM_ETH_CONN_AG_CTX_GO_TO_BD_CONS_CF_SHIFT	0
+#define XSTORM_ETH_CONN_AG_CTX_MULTI_UNICAST_CF_MASK	0x3
+#define XSTORM_ETH_CONN_AG_CTX_MULTI_UNICAST_CF_SHIFT	2
+#define XSTORM_ETH_CONN_AG_CTX_DQ_CF_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_DQ_CF_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_TERMINATE_CF_MASK	0x3
+#define XSTORM_ETH_CONN_AG_CTX_TERMINATE_CF_SHIFT	6
+	u8 flags7;
+#define XSTORM_ETH_CONN_AG_CTX_FLUSH_Q0_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_FLUSH_Q0_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED10_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED10_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_SLOW_PATH_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_SLOW_PATH_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_CF0EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF0EN_SHIFT		6
+#define XSTORM_ETH_CONN_AG_CTX_CF1EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF1EN_SHIFT		7
+	u8 flags8;
+#define XSTORM_ETH_CONN_AG_CTX_CF2EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF2EN_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_CF3EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF3EN_SHIFT		1
+#define XSTORM_ETH_CONN_AG_CTX_CF4EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF4EN_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_CF5EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF5EN_SHIFT		3
+#define XSTORM_ETH_CONN_AG_CTX_CF6EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF6EN_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_CF7EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF7EN_SHIFT		5
+#define XSTORM_ETH_CONN_AG_CTX_CF8EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF8EN_SHIFT		6
+#define XSTORM_ETH_CONN_AG_CTX_CF9EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF9EN_SHIFT		7
+	u8 flags9;
+#define XSTORM_ETH_CONN_AG_CTX_CF10EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF10EN_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_CF11EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF11EN_SHIFT		1
+#define XSTORM_ETH_CONN_AG_CTX_CF12EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF12EN_SHIFT		2
+#define XSTORM_ETH_CONN_AG_CTX_CF13EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF13EN_SHIFT		3
+#define XSTORM_ETH_CONN_AG_CTX_CF14EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF14EN_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_CF15EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_CF15EN_SHIFT		5
+#define XSTORM_ETH_CONN_AG_CTX_GO_TO_BD_CONS_CF_EN_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_GO_TO_BD_CONS_CF_EN_SHIFT 6
+#define XSTORM_ETH_CONN_AG_CTX_MULTI_UNICAST_CF_EN_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_MULTI_UNICAST_CF_EN_SHIFT 7
+	u8 flags10;
+#define XSTORM_ETH_CONN_AG_CTX_DQ_CF_EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_DQ_CF_EN_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_TERMINATE_CF_EN_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_TERMINATE_CF_EN_SHIFT	1
+#define XSTORM_ETH_CONN_AG_CTX_FLUSH_Q0_EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_FLUSH_Q0_EN_SHIFT	2
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED11_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED11_SHIFT		3
+#define XSTORM_ETH_CONN_AG_CTX_SLOW_PATH_EN_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_SLOW_PATH_EN_SHIFT	4
+#define XSTORM_ETH_CONN_AG_CTX_TPH_ENABLE_EN_RESERVED_MASK 0x1
+#define XSTORM_ETH_CONN_AG_CTX_TPH_ENABLE_EN_RESERVED_SHIFT 5
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED12_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED12_SHIFT		6
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED13_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED13_SHIFT		7
+	u8 flags11;
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED14_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED14_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED15_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RESERVED15_SHIFT		1
+#define XSTORM_ETH_CONN_AG_CTX_TX_DEC_RULE_EN_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_TX_DEC_RULE_EN_SHIFT	2
+#define XSTORM_ETH_CONN_AG_CTX_RULE5EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE5EN_SHIFT		3
+#define XSTORM_ETH_CONN_AG_CTX_RULE6EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE6EN_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_RULE7EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE7EN_SHIFT		5
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED1_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED1_SHIFT	6
+#define XSTORM_ETH_CONN_AG_CTX_RULE9EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE9EN_SHIFT		7
+	u8 flags12;
+#define XSTORM_ETH_CONN_AG_CTX_RULE10EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE10EN_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_RULE11EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE11EN_SHIFT		1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED2_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED2_SHIFT	2
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED3_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED3_SHIFT	3
+#define XSTORM_ETH_CONN_AG_CTX_RULE14EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE14EN_SHIFT		4
+#define XSTORM_ETH_CONN_AG_CTX_RULE15EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE15EN_SHIFT		5
+#define XSTORM_ETH_CONN_AG_CTX_RULE16EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE16EN_SHIFT		6
+#define XSTORM_ETH_CONN_AG_CTX_RULE17EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE17EN_SHIFT		7
+	u8 flags13;
+#define XSTORM_ETH_CONN_AG_CTX_RULE18EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE18EN_SHIFT		0
+#define XSTORM_ETH_CONN_AG_CTX_RULE19EN_MASK		0x1
+#define XSTORM_ETH_CONN_AG_CTX_RULE19EN_SHIFT		1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED4_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED4_SHIFT	2
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED5_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED5_SHIFT	3
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED6_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED6_SHIFT	4
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED7_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED7_SHIFT	5
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED8_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED8_SHIFT	6
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED9_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_A0_RESERVED9_SHIFT	7
+	u8 flags14;
+#define XSTORM_ETH_CONN_AG_CTX_EDPM_USE_EXT_HDR_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_EDPM_USE_EXT_HDR_SHIFT	0
+#define XSTORM_ETH_CONN_AG_CTX_EDPM_SEND_RAW_L3L4_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_EDPM_SEND_RAW_L3L4_SHIFT	1
+#define XSTORM_ETH_CONN_AG_CTX_EDPM_INBAND_PROP_HDR_MASK 0x1
+#define XSTORM_ETH_CONN_AG_CTX_EDPM_INBAND_PROP_HDR_SHIFT 2
+#define XSTORM_ETH_CONN_AG_CTX_EDPM_SEND_EXT_TUNNEL_MASK 0x1
+#define XSTORM_ETH_CONN_AG_CTX_EDPM_SEND_EXT_TUNNEL_SHIFT 3
+#define XSTORM_ETH_CONN_AG_CTX_L2_EDPM_ENABLE_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_L2_EDPM_ENABLE_SHIFT	4
+#define XSTORM_ETH_CONN_AG_CTX_ROCE_EDPM_ENABLE_MASK	0x1
+#define XSTORM_ETH_CONN_AG_CTX_ROCE_EDPM_ENABLE_SHIFT	5
+#define XSTORM_ETH_CONN_AG_CTX_TPH_ENABLE_MASK		0x3
+#define XSTORM_ETH_CONN_AG_CTX_TPH_ENABLE_SHIFT		6
+	u8 edpm_event_id;
+	__le16 physical_q0;
+	__le16 ereserved1;
+	__le16 edpm_num_bds;
+	__le16 tx_bd_cons;
+	__le16 tx_bd_prod;
+	__le16 tx_class;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 conn_dpi;
 	u8 byte3;
 	u8 byte4;
@@ -5300,7 +7453,11 @@ struct e4_xstorm_eth_conn_ag_ctx {
 	u8 byte13;
 	u8 byte14;
 	u8 byte15;
+<<<<<<< HEAD
 	u8 e5_reserved;
+=======
+	u8 ereserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 word11;
 	__le32 reg10;
 	__le32 reg11;
@@ -5323,6 +7480,7 @@ struct ystorm_eth_conn_st_ctx {
 	__le32 reserved[8];
 };
 
+<<<<<<< HEAD
 struct e4_ystorm_eth_conn_ag_ctx {
 	u8 byte0;
 	u8 state;
@@ -5354,6 +7512,39 @@ struct e4_ystorm_eth_conn_ag_ctx {
 #define E4_YSTORM_ETH_CONN_AG_CTX_RULE3EN_SHIFT			6
 #define E4_YSTORM_ETH_CONN_AG_CTX_RULE4EN_MASK			0x1
 #define E4_YSTORM_ETH_CONN_AG_CTX_RULE4EN_SHIFT			7
+=======
+struct ystorm_eth_conn_ag_ctx {
+	u8 byte0;
+	u8 state;
+	u8 flags0;
+#define YSTORM_ETH_CONN_AG_CTX_BIT0_MASK		0x1
+#define YSTORM_ETH_CONN_AG_CTX_BIT0_SHIFT		0
+#define YSTORM_ETH_CONN_AG_CTX_BIT1_MASK		0x1
+#define YSTORM_ETH_CONN_AG_CTX_BIT1_SHIFT		1
+#define YSTORM_ETH_CONN_AG_CTX_TX_BD_CONS_UPD_CF_MASK	0x3
+#define YSTORM_ETH_CONN_AG_CTX_TX_BD_CONS_UPD_CF_SHIFT	2
+#define YSTORM_ETH_CONN_AG_CTX_PMD_TERMINATE_CF_MASK	0x3
+#define YSTORM_ETH_CONN_AG_CTX_PMD_TERMINATE_CF_SHIFT	4
+#define YSTORM_ETH_CONN_AG_CTX_CF2_MASK			0x3
+#define YSTORM_ETH_CONN_AG_CTX_CF2_SHIFT		6
+	u8 flags1;
+#define YSTORM_ETH_CONN_AG_CTX_TX_BD_CONS_UPD_CF_EN_MASK	0x1
+#define YSTORM_ETH_CONN_AG_CTX_TX_BD_CONS_UPD_CF_EN_SHIFT	0
+#define YSTORM_ETH_CONN_AG_CTX_PMD_TERMINATE_CF_EN_MASK		0x1
+#define YSTORM_ETH_CONN_AG_CTX_PMD_TERMINATE_CF_EN_SHIFT	1
+#define YSTORM_ETH_CONN_AG_CTX_CF2EN_MASK			0x1
+#define YSTORM_ETH_CONN_AG_CTX_CF2EN_SHIFT			2
+#define YSTORM_ETH_CONN_AG_CTX_RULE0EN_MASK			0x1
+#define YSTORM_ETH_CONN_AG_CTX_RULE0EN_SHIFT			3
+#define YSTORM_ETH_CONN_AG_CTX_RULE1EN_MASK			0x1
+#define YSTORM_ETH_CONN_AG_CTX_RULE1EN_SHIFT			4
+#define YSTORM_ETH_CONN_AG_CTX_RULE2EN_MASK			0x1
+#define YSTORM_ETH_CONN_AG_CTX_RULE2EN_SHIFT			5
+#define YSTORM_ETH_CONN_AG_CTX_RULE3EN_MASK			0x1
+#define YSTORM_ETH_CONN_AG_CTX_RULE3EN_SHIFT			6
+#define YSTORM_ETH_CONN_AG_CTX_RULE4EN_MASK			0x1
+#define YSTORM_ETH_CONN_AG_CTX_RULE4EN_SHIFT			7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 tx_q0_int_coallecing_timeset;
 	u8 byte3;
 	__le16 word0;
@@ -5367,6 +7558,7 @@ struct e4_ystorm_eth_conn_ag_ctx {
 	__le32 reg3;
 };
 
+<<<<<<< HEAD
 struct e4_tstorm_eth_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -5450,6 +7642,91 @@ struct e4_tstorm_eth_conn_ag_ctx {
 #define E4_TSTORM_ETH_CONN_AG_CTX_RULE7EN_SHIFT		6
 #define E4_TSTORM_ETH_CONN_AG_CTX_RULE8EN_MASK		0x1
 #define E4_TSTORM_ETH_CONN_AG_CTX_RULE8EN_SHIFT		7
+=======
+struct tstorm_eth_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define TSTORM_ETH_CONN_AG_CTX_BIT0_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_BIT0_SHIFT		0
+#define TSTORM_ETH_CONN_AG_CTX_BIT1_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_BIT1_SHIFT		1
+#define TSTORM_ETH_CONN_AG_CTX_BIT2_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_BIT2_SHIFT		2
+#define TSTORM_ETH_CONN_AG_CTX_BIT3_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_BIT3_SHIFT		3
+#define TSTORM_ETH_CONN_AG_CTX_BIT4_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_BIT4_SHIFT		4
+#define TSTORM_ETH_CONN_AG_CTX_BIT5_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_BIT5_SHIFT		5
+#define TSTORM_ETH_CONN_AG_CTX_CF0_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF0_SHIFT		6
+	u8 flags1;
+#define TSTORM_ETH_CONN_AG_CTX_CF1_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF1_SHIFT		0
+#define TSTORM_ETH_CONN_AG_CTX_CF2_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF2_SHIFT		2
+#define TSTORM_ETH_CONN_AG_CTX_CF3_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF3_SHIFT		4
+#define TSTORM_ETH_CONN_AG_CTX_CF4_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF4_SHIFT		6
+	u8 flags2;
+#define TSTORM_ETH_CONN_AG_CTX_CF5_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF5_SHIFT		0
+#define TSTORM_ETH_CONN_AG_CTX_CF6_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF6_SHIFT		2
+#define TSTORM_ETH_CONN_AG_CTX_CF7_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF7_SHIFT		4
+#define TSTORM_ETH_CONN_AG_CTX_CF8_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF8_SHIFT		6
+	u8 flags3;
+#define TSTORM_ETH_CONN_AG_CTX_CF9_MASK			0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF9_SHIFT		0
+#define TSTORM_ETH_CONN_AG_CTX_CF10_MASK		0x3
+#define TSTORM_ETH_CONN_AG_CTX_CF10_SHIFT		2
+#define TSTORM_ETH_CONN_AG_CTX_CF0EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF0EN_SHIFT		4
+#define TSTORM_ETH_CONN_AG_CTX_CF1EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF1EN_SHIFT		5
+#define TSTORM_ETH_CONN_AG_CTX_CF2EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF2EN_SHIFT		6
+#define TSTORM_ETH_CONN_AG_CTX_CF3EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF3EN_SHIFT		7
+	u8 flags4;
+#define TSTORM_ETH_CONN_AG_CTX_CF4EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF4EN_SHIFT		0
+#define TSTORM_ETH_CONN_AG_CTX_CF5EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF5EN_SHIFT		1
+#define TSTORM_ETH_CONN_AG_CTX_CF6EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF6EN_SHIFT		2
+#define TSTORM_ETH_CONN_AG_CTX_CF7EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF7EN_SHIFT		3
+#define TSTORM_ETH_CONN_AG_CTX_CF8EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF8EN_SHIFT		4
+#define TSTORM_ETH_CONN_AG_CTX_CF9EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF9EN_SHIFT		5
+#define TSTORM_ETH_CONN_AG_CTX_CF10EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_CF10EN_SHIFT		6
+#define TSTORM_ETH_CONN_AG_CTX_RULE0EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RULE0EN_SHIFT		7
+	u8 flags5;
+#define TSTORM_ETH_CONN_AG_CTX_RULE1EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RULE1EN_SHIFT		0
+#define TSTORM_ETH_CONN_AG_CTX_RULE2EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RULE2EN_SHIFT		1
+#define TSTORM_ETH_CONN_AG_CTX_RULE3EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RULE3EN_SHIFT		2
+#define TSTORM_ETH_CONN_AG_CTX_RULE4EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RULE4EN_SHIFT		3
+#define TSTORM_ETH_CONN_AG_CTX_RULE5EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RULE5EN_SHIFT		4
+#define TSTORM_ETH_CONN_AG_CTX_RX_BD_EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RX_BD_EN_SHIFT		5
+#define TSTORM_ETH_CONN_AG_CTX_RULE7EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RULE7EN_SHIFT		6
+#define TSTORM_ETH_CONN_AG_CTX_RULE8EN_MASK		0x1
+#define TSTORM_ETH_CONN_AG_CTX_RULE8EN_SHIFT		7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 reg0;
 	__le32 reg1;
 	__le32 reg2;
@@ -5471,6 +7748,7 @@ struct e4_tstorm_eth_conn_ag_ctx {
 	__le32 reg10;
 };
 
+<<<<<<< HEAD
 struct e4_ustorm_eth_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -5528,6 +7806,65 @@ struct e4_ustorm_eth_conn_ag_ctx {
 #define E4_USTORM_ETH_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_USTORM_ETH_CONN_AG_CTX_RULE8EN_MASK	0x1
 #define E4_USTORM_ETH_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+struct ustorm_eth_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define USTORM_ETH_CONN_AG_CTX_BIT0_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_BIT0_SHIFT			0
+#define USTORM_ETH_CONN_AG_CTX_BIT1_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_BIT1_SHIFT			1
+#define USTORM_ETH_CONN_AG_CTX_TX_PMD_TERMINATE_CF_MASK		0x3
+#define USTORM_ETH_CONN_AG_CTX_TX_PMD_TERMINATE_CF_SHIFT	2
+#define USTORM_ETH_CONN_AG_CTX_RX_PMD_TERMINATE_CF_MASK		0x3
+#define USTORM_ETH_CONN_AG_CTX_RX_PMD_TERMINATE_CF_SHIFT	4
+#define USTORM_ETH_CONN_AG_CTX_CF2_MASK				0x3
+#define USTORM_ETH_CONN_AG_CTX_CF2_SHIFT			6
+	u8 flags1;
+#define USTORM_ETH_CONN_AG_CTX_CF3_MASK				0x3
+#define USTORM_ETH_CONN_AG_CTX_CF3_SHIFT			0
+#define USTORM_ETH_CONN_AG_CTX_TX_ARM_CF_MASK			0x3
+#define USTORM_ETH_CONN_AG_CTX_TX_ARM_CF_SHIFT			2
+#define USTORM_ETH_CONN_AG_CTX_RX_ARM_CF_MASK			0x3
+#define USTORM_ETH_CONN_AG_CTX_RX_ARM_CF_SHIFT			4
+#define USTORM_ETH_CONN_AG_CTX_TX_BD_CONS_UPD_CF_MASK		0x3
+#define USTORM_ETH_CONN_AG_CTX_TX_BD_CONS_UPD_CF_SHIFT		6
+	u8 flags2;
+#define USTORM_ETH_CONN_AG_CTX_TX_PMD_TERMINATE_CF_EN_MASK	0x1
+#define USTORM_ETH_CONN_AG_CTX_TX_PMD_TERMINATE_CF_EN_SHIFT	0
+#define USTORM_ETH_CONN_AG_CTX_RX_PMD_TERMINATE_CF_EN_MASK	0x1
+#define USTORM_ETH_CONN_AG_CTX_RX_PMD_TERMINATE_CF_EN_SHIFT	1
+#define USTORM_ETH_CONN_AG_CTX_CF2EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_CF2EN_SHIFT			2
+#define USTORM_ETH_CONN_AG_CTX_CF3EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_CF3EN_SHIFT			3
+#define USTORM_ETH_CONN_AG_CTX_TX_ARM_CF_EN_MASK		0x1
+#define USTORM_ETH_CONN_AG_CTX_TX_ARM_CF_EN_SHIFT		4
+#define USTORM_ETH_CONN_AG_CTX_RX_ARM_CF_EN_MASK		0x1
+#define USTORM_ETH_CONN_AG_CTX_RX_ARM_CF_EN_SHIFT		5
+#define USTORM_ETH_CONN_AG_CTX_TX_BD_CONS_UPD_CF_EN_MASK	0x1
+#define USTORM_ETH_CONN_AG_CTX_TX_BD_CONS_UPD_CF_EN_SHIFT	6
+#define USTORM_ETH_CONN_AG_CTX_RULE0EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE0EN_SHIFT			7
+	u8 flags3;
+#define USTORM_ETH_CONN_AG_CTX_RULE1EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE1EN_SHIFT			0
+#define USTORM_ETH_CONN_AG_CTX_RULE2EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE2EN_SHIFT			1
+#define USTORM_ETH_CONN_AG_CTX_RULE3EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE3EN_SHIFT			2
+#define USTORM_ETH_CONN_AG_CTX_RULE4EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE4EN_SHIFT			3
+#define USTORM_ETH_CONN_AG_CTX_RULE5EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE5EN_SHIFT			4
+#define USTORM_ETH_CONN_AG_CTX_RULE6EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE6EN_SHIFT			5
+#define USTORM_ETH_CONN_AG_CTX_RULE7EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE7EN_SHIFT			6
+#define USTORM_ETH_CONN_AG_CTX_RULE8EN_MASK			0x1
+#define USTORM_ETH_CONN_AG_CTX_RULE8EN_SHIFT			7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -5551,21 +7888,36 @@ struct mstorm_eth_conn_st_ctx {
 };
 
 /* eth connection context */
+<<<<<<< HEAD
 struct e4_eth_conn_context {
+=======
+struct eth_conn_context {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tstorm_eth_conn_st_ctx tstorm_st_context;
 	struct regpair tstorm_st_padding[2];
 	struct pstorm_eth_conn_st_ctx pstorm_st_context;
 	struct xstorm_eth_conn_st_ctx xstorm_st_context;
+<<<<<<< HEAD
 	struct e4_xstorm_eth_conn_ag_ctx xstorm_ag_context;
 	struct ystorm_eth_conn_st_ctx ystorm_st_context;
 	struct e4_ystorm_eth_conn_ag_ctx ystorm_ag_context;
 	struct e4_tstorm_eth_conn_ag_ctx tstorm_ag_context;
 	struct e4_ustorm_eth_conn_ag_ctx ustorm_ag_context;
+=======
+	struct xstorm_eth_conn_ag_ctx xstorm_ag_context;
+	struct ystorm_eth_conn_st_ctx ystorm_st_context;
+	struct ystorm_eth_conn_ag_ctx ystorm_ag_context;
+	struct tstorm_eth_conn_ag_ctx tstorm_ag_context;
+	struct ustorm_eth_conn_ag_ctx ustorm_ag_context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ustorm_eth_conn_st_ctx ustorm_st_context;
 	struct mstorm_eth_conn_st_ctx mstorm_st_context;
 };
 
+<<<<<<< HEAD
 /* Ethernet filter types: mac/vlan/pair */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum eth_error_code {
 	ETH_OK = 0x00,
 	ETH_FILTERS_MAC_ADD_FAIL_FULL,
@@ -5592,7 +7944,10 @@ enum eth_error_code {
 	MAX_ETH_ERROR_CODE
 };
 
+<<<<<<< HEAD
 /* Opcodes for the event ring */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum eth_event_opcode {
 	ETH_EVENT_UNUSED,
 	ETH_EVENT_VPORT_START,
@@ -5604,6 +7959,7 @@ enum eth_event_opcode {
 	ETH_EVENT_RX_QUEUE_UPDATE,
 	ETH_EVENT_RX_QUEUE_STOP,
 	ETH_EVENT_FILTERS_UPDATE,
+<<<<<<< HEAD
 	ETH_EVENT_RX_ADD_OPENFLOW_FILTER,
 	ETH_EVENT_RX_DELETE_OPENFLOW_FILTER,
 	ETH_EVENT_RX_CREATE_OPENFLOW_ACTION,
@@ -5612,6 +7968,15 @@ enum eth_event_opcode {
 	ETH_EVENT_RX_CREATE_GFT_ACTION,
 	ETH_EVENT_RX_GFT_UPDATE_FILTER,
 	ETH_EVENT_TX_QUEUE_UPDATE,
+=======
+	ETH_EVENT_RESERVED,
+	ETH_EVENT_RESERVED2,
+	ETH_EVENT_RESERVED3,
+	ETH_EVENT_RX_ADD_UDP_FILTER,
+	ETH_EVENT_RX_DELETE_UDP_FILTER,
+	ETH_EVENT_RESERVED4,
+	ETH_EVENT_RESERVED5,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MAX_ETH_EVENT_OPCODE
 };
 
@@ -5661,7 +8026,10 @@ enum eth_filter_type {
 	MAX_ETH_FILTER_TYPE
 };
 
+<<<<<<< HEAD
 /* Eth IPv4 Fragment Type */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum eth_ipv4_frag_type {
 	ETH_IPV4_NOT_FRAG,
 	ETH_IPV4_FIRST_FRAG,
@@ -5669,14 +8037,20 @@ enum eth_ipv4_frag_type {
 	MAX_ETH_IPV4_FRAG_TYPE
 };
 
+<<<<<<< HEAD
 /* eth IPv4 Fragment Type */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum eth_ip_type {
 	ETH_IPV4,
 	ETH_IPV6,
 	MAX_ETH_IP_TYPE
 };
 
+<<<<<<< HEAD
 /* Ethernet Ramrod Command IDs */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum eth_ramrod_cmd_id {
 	ETH_RAMROD_UNUSED,
 	ETH_RAMROD_VPORT_START,
@@ -5695,11 +8069,18 @@ enum eth_ramrod_cmd_id {
 	ETH_RAMROD_RX_DELETE_UDP_FILTER,
 	ETH_RAMROD_RX_CREATE_GFT_ACTION,
 	ETH_RAMROD_GFT_UPDATE_FILTER,
+<<<<<<< HEAD
 	ETH_RAMROD_TX_QUEUE_UPDATE,
 	MAX_ETH_RAMROD_CMD_ID
 };
 
 /* Return code from eth sp ramrods */
+=======
+	MAX_ETH_RAMROD_CMD_ID
+};
+
+/* return code from eth sp ramrods */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct eth_return_code {
 	u8 value;
 #define ETH_RETURN_CODE_ERR_CODE_MASK	0x1F
@@ -5792,10 +8173,16 @@ struct eth_vport_rx_mode {
 #define ETH_VPORT_RX_MODE_MCAST_ACCEPT_ALL_SHIFT	4
 #define ETH_VPORT_RX_MODE_BCAST_ACCEPT_ALL_MASK		0x1
 #define ETH_VPORT_RX_MODE_BCAST_ACCEPT_ALL_SHIFT	5
+<<<<<<< HEAD
 #define ETH_VPORT_RX_MODE_ACCEPT_ANY_VNI_MASK		0x1
 #define ETH_VPORT_RX_MODE_ACCEPT_ANY_VNI_SHIFT		6
 #define ETH_VPORT_RX_MODE_RESERVED1_MASK		0x1FF
 #define ETH_VPORT_RX_MODE_RESERVED1_SHIFT		7
+=======
+#define ETH_VPORT_RX_MODE_RESERVED1_MASK		0x3FF
+#define ETH_VPORT_RX_MODE_RESERVED1_SHIFT		6
+	__le16 reserved2[3];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Command for setting tpa parameters */
@@ -5833,16 +8220,31 @@ struct eth_vport_tx_mode {
 #define ETH_VPORT_TX_MODE_BCAST_ACCEPT_ALL_SHIFT	4
 #define ETH_VPORT_TX_MODE_RESERVED1_MASK		0x7FF
 #define ETH_VPORT_TX_MODE_RESERVED1_SHIFT		5
+<<<<<<< HEAD
 };
 
 /* GFT filter update action type */
+=======
+	__le16 reserved2[3];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum gft_filter_update_action {
 	GFT_ADD_FILTER,
 	GFT_DELETE_FILTER,
 	MAX_GFT_FILTER_UPDATE_ACTION
 };
 
+<<<<<<< HEAD
 /* Ramrod data for rx add openflow filter */
+=======
+enum gft_logic_filter_type {
+	GFT_FILTER_TYPE,
+	RFS_FILTER_TYPE,
+	MAX_GFT_LOGIC_FILTER_TYPE
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rx_add_openflow_filter_data {
 	__le16 action_icid;
 	u8 priority;
@@ -5866,13 +8268,19 @@ struct rx_add_openflow_filter_data {
 	__le16 l4_src_port;
 };
 
+<<<<<<< HEAD
 /* Ramrod data for rx create gft action */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rx_create_gft_action_data {
 	u8 vport_id;
 	u8 reserved[7];
 };
 
+<<<<<<< HEAD
 /* Ramrod data for rx create openflow action */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rx_create_openflow_action_data {
 	u8 vport_id;
 	u8 reserved[7];
@@ -5910,7 +8318,11 @@ struct rx_queue_start_ramrod_data {
 	struct regpair reserved2;
 };
 
+<<<<<<< HEAD
 /* Ramrod data for rx queue stop ramrod */
+=======
+/* Ramrod data for rx queue start ramrod */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rx_queue_stop_ramrod_data {
 	__le16 rx_queue_id;
 	u8 complete_cqe_flg;
@@ -5925,8 +8337,12 @@ struct rx_queue_update_ramrod_data {
 	u8 complete_cqe_flg;
 	u8 complete_event_flg;
 	u8 vport_id;
+<<<<<<< HEAD
 	u8 set_default_rss_queue;
 	u8 reserved[3];
+=======
+	u8 reserved[4];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 reserved1;
 	u8 reserved2;
 	u8 reserved3;
@@ -5949,6 +8365,7 @@ struct rx_udp_filter_data {
 	__le32 tenant_id;
 };
 
+<<<<<<< HEAD
 /* Add or delete GFT filter - filter is packet header of type of packet wished
  * to pass certain FW flow.
  */
@@ -5965,6 +8382,16 @@ struct rx_update_gft_filter_data {
 	u8 filter_action;
 	u8 assert_on_error;
 	u8 inner_vlan_removal_en;
+=======
+struct rx_update_gft_filter_data {
+	struct regpair pkt_hdr_addr;
+	__le16 pkt_hdr_length;
+	__le16 rx_qid_or_action_icid;
+	u8 vport_id;
+	u8 filter_type;
+	u8 filter_action;
+	u8 assert_on_error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Ramrod data for rx queue start ramrod */
@@ -6010,6 +8437,7 @@ struct tx_queue_stop_ramrod_data {
 	__le16 reserved[4];
 };
 
+<<<<<<< HEAD
 /* Ramrod data for tx queue update ramrod */
 struct tx_queue_update_ramrod_data {
 	__le16 update_qm_pq_id_flg;
@@ -6018,6 +8446,8 @@ struct tx_queue_update_ramrod_data {
 	struct regpair reserved1[5];
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Ramrod data for vport update ramrod */
 struct vport_filter_update_ramrod_data {
 	struct eth_filter_cmd_header filter_cmd_hdr;
@@ -6048,7 +8478,11 @@ struct vport_start_ramrod_data {
 	u8 zero_placement_offset;
 	u8 ctl_frame_mac_check_en;
 	u8 ctl_frame_ethtype_check_en;
+<<<<<<< HEAD
 	u8 reserved[1];
+=======
+	u8 reserved[5];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Ramrod data for vport stop ramrod */
@@ -6113,12 +8547,16 @@ struct vport_update_ramrod_data {
 
 	struct eth_vport_rx_mode rx_mode;
 	struct eth_vport_tx_mode tx_mode;
+<<<<<<< HEAD
 	__le32 reserved[3];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct eth_vport_tpa_param tpa_param;
 	struct vport_update_ramrod_mcast approx_mcast;
 	struct eth_vport_rss_config rss_config;
 };
 
+<<<<<<< HEAD
 struct e4_xstorm_eth_conn_ag_ctx_dq_ext_ldpart {
 	u8 reserved0;
 	u8 state;
@@ -6336,6 +8774,225 @@ struct e4_xstorm_eth_conn_ag_ctx_dq_ext_ldpart {
 	__le16 tx_bd_cons;
 	__le16 tx_bd_prod;
 	__le16 updated_qm_pq_id;
+=======
+struct xstorm_eth_conn_agctxdq_ext_ldpart {
+	u8 reserved0;
+	u8 eth_state;
+	u8 flags0;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EXIST_IN_QM0_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EXIST_IN_QM0_SHIFT           0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED1_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED1_SHIFT              1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED2_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED2_SHIFT              2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EXIST_IN_QM3_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EXIST_IN_QM3_SHIFT           3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED3_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED3_SHIFT              4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED4_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED4_SHIFT              5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED5_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED5_SHIFT              6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED6_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED6_SHIFT              7
+	u8 flags1;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED7_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED7_SHIFT              0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED8_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED8_SHIFT              1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED9_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED9_SHIFT              2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_BIT11_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_BIT11_SHIFT                  3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_BIT12_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_BIT12_SHIFT                  4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_BIT13_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_BIT13_SHIFT                  5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TX_RULE_ACTIVE_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TX_RULE_ACTIVE_SHIFT         6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_DQ_CF_ACTIVE_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_DQ_CF_ACTIVE_SHIFT           7
+	u8 flags2;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF0_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF0_SHIFT                    0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF1_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF1_SHIFT                    2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF2_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF2_SHIFT                    4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF3_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF3_SHIFT                    6
+	u8 flags3;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF4_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF4_SHIFT                    0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF5_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF5_SHIFT                    2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF6_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF6_SHIFT                    4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF7_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF7_SHIFT                    6
+	u8 flags4;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF8_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF8_SHIFT                    0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF9_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF9_SHIFT                    2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF10_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF10_SHIFT                   4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF11_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF11_SHIFT                   6
+	u8 flags5;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF12_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF12_SHIFT                   0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF13_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF13_SHIFT                   2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF14_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF14_SHIFT                   4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF15_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF15_SHIFT                   6
+	u8 flags6;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_GO_TO_BD_CONS_CF_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_GO_TO_BD_CONS_CF_SHIFT       0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_MULTI_UNICAST_CF_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_MULTI_UNICAST_CF_SHIFT       2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_DQ_CF_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_DQ_CF_SHIFT                  4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TERMINATE_CF_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TERMINATE_CF_SHIFT           6
+	u8 flags7;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_FLUSH_Q0_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_FLUSH_Q0_SHIFT               0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED10_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED10_SHIFT             2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_SLOW_PATH_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_SLOW_PATH_SHIFT              4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF0EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF0EN_SHIFT                  6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF1EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF1EN_SHIFT                  7
+	u8 flags8;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF2EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF2EN_SHIFT                  0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF3EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF3EN_SHIFT                  1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF4EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF4EN_SHIFT                  2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF5EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF5EN_SHIFT                  3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF6EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF6EN_SHIFT                  4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF7EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF7EN_SHIFT                  5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF8EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF8EN_SHIFT                  6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF9EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF9EN_SHIFT                  7
+	u8 flags9;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF10EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF10EN_SHIFT                 0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF11EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF11EN_SHIFT                 1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF12EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF12EN_SHIFT                 2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF13EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF13EN_SHIFT                 3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF14EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF14EN_SHIFT                 4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF15EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_CF15EN_SHIFT                 5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_GO_TO_BD_CONS_CF_EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_GO_TO_BD_CONS_CF_EN_SHIFT    6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_MULTI_UNICAST_CF_EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_MULTI_UNICAST_CF_EN_SHIFT    7
+	u8 flags10;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_DQ_CF_EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_DQ_CF_EN_SHIFT               0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TERMINATE_CF_EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TERMINATE_CF_EN_SHIFT        1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_FLUSH_Q0_EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_FLUSH_Q0_EN_SHIFT            2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED11_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED11_SHIFT             3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_SLOW_PATH_EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_SLOW_PATH_EN_SHIFT           4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TPH_ENABLE_EN_RESERVED_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TPH_ENABLE_EN_RESERVED_SHIFT 5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED12_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED12_SHIFT             6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED13_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED13_SHIFT             7
+	u8 flags11;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED14_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED14_SHIFT             0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED15_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RESERVED15_SHIFT             1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TX_DEC_RULE_EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TX_DEC_RULE_EN_SHIFT         2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE5EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE5EN_SHIFT                3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE6EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE6EN_SHIFT                4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE7EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE7EN_SHIFT                5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED1_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED1_SHIFT           6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE9EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE9EN_SHIFT                7
+	u8 flags12;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE10EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE10EN_SHIFT               0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE11EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE11EN_SHIFT               1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED2_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED2_SHIFT           2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED3_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED3_SHIFT           3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE14EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE14EN_SHIFT               4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE15EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE15EN_SHIFT               5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE16EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE16EN_SHIFT               6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE17EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE17EN_SHIFT               7
+	u8 flags13;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE18EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE18EN_SHIFT               0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE19EN_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_RULE19EN_SHIFT               1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED4_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED4_SHIFT           2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED5_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED5_SHIFT           3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED6_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED6_SHIFT           4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED7_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED7_SHIFT           5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED8_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED8_SHIFT           6
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED9_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_A0_RESERVED9_SHIFT           7
+	u8 flags14;
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EDPM_USE_EXT_HDR_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EDPM_USE_EXT_HDR_SHIFT       0
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EDPM_SEND_RAW_L3L4_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EDPM_SEND_RAW_L3L4_SHIFT     1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EDPM_INBAND_PROP_HDR_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EDPM_INBAND_PROP_HDR_SHIFT   2
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EDPM_SEND_EXT_TUNNEL_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_EDPM_SEND_EXT_TUNNEL_SHIFT   3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_L2_EDPM_ENABLE_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_L2_EDPM_ENABLE_SHIFT         4
+#define XSTORMETHCONNAGCTXDQEXTLDPART_ROCE_EDPM_ENABLE_MASK	0x1
+#define XSTORMETHCONNAGCTXDQEXTLDPART_ROCE_EDPM_ENABLE_SHIFT       5
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TPH_ENABLE_MASK	0x3
+#define XSTORMETHCONNAGCTXDQEXTLDPART_TPH_ENABLE_SHIFT             6
+	u8 edpm_event_id;
+	__le16 physical_q0;
+	__le16 ereserved1;
+	__le16 edpm_num_bds;
+	__le16 tx_bd_cons;
+	__le16 tx_bd_prod;
+	__le16 tx_class;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 conn_dpi;
 	u8 byte3;
 	u8 byte4;
@@ -6348,6 +9005,7 @@ struct e4_xstorm_eth_conn_ag_ctx_dq_ext_ldpart {
 	__le32 reg4;
 };
 
+<<<<<<< HEAD
 struct e4_mstorm_eth_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -6379,12 +9037,46 @@ struct e4_mstorm_eth_conn_ag_ctx {
 #define E4_MSTORM_ETH_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_MSTORM_ETH_CONN_AG_CTX_RULE4EN_MASK	0x1
 #define E4_MSTORM_ETH_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+struct mstorm_eth_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define MSTORM_ETH_CONN_AG_CTX_EXIST_IN_QM0_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_EXIST_IN_QM0_SHIFT 0
+#define MSTORM_ETH_CONN_AG_CTX_BIT1_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_BIT1_SHIFT         1
+#define MSTORM_ETH_CONN_AG_CTX_CF0_MASK	0x3
+#define MSTORM_ETH_CONN_AG_CTX_CF0_SHIFT          2
+#define MSTORM_ETH_CONN_AG_CTX_CF1_MASK	0x3
+#define MSTORM_ETH_CONN_AG_CTX_CF1_SHIFT          4
+#define MSTORM_ETH_CONN_AG_CTX_CF2_MASK	0x3
+#define MSTORM_ETH_CONN_AG_CTX_CF2_SHIFT          6
+	u8 flags1;
+#define MSTORM_ETH_CONN_AG_CTX_CF0EN_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_CF0EN_SHIFT        0
+#define MSTORM_ETH_CONN_AG_CTX_CF1EN_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_CF1EN_SHIFT        1
+#define MSTORM_ETH_CONN_AG_CTX_CF2EN_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_CF2EN_SHIFT        2
+#define MSTORM_ETH_CONN_AG_CTX_RULE0EN_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_RULE0EN_SHIFT      3
+#define MSTORM_ETH_CONN_AG_CTX_RULE1EN_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_RULE1EN_SHIFT      4
+#define MSTORM_ETH_CONN_AG_CTX_RULE2EN_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_RULE2EN_SHIFT      5
+#define MSTORM_ETH_CONN_AG_CTX_RULE3EN_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_RULE3EN_SHIFT      6
+#define MSTORM_ETH_CONN_AG_CTX_RULE4EN_MASK	0x1
+#define MSTORM_ETH_CONN_AG_CTX_RULE4EN_SHIFT      7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 word0;
 	__le16 word1;
 	__le32 reg0;
 	__le32 reg1;
 };
 
+<<<<<<< HEAD
 struct e4_xstorm_eth_hw_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -6606,6 +9298,228 @@ struct e4_xstorm_eth_hw_conn_ag_ctx {
 };
 
 /* GFT CAM line struct */
+=======
+struct xstorm_eth_hw_conn_ag_ctx {
+	u8 reserved0;
+	u8 eth_state;
+	u8 flags0;
+#define XSTORM_ETH_HW_CONN_AG_CTX_EXIST_IN_QM0_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_EXIST_IN_QM0_SHIFT           0
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED1_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED1_SHIFT              1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED2_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED2_SHIFT              2
+#define XSTORM_ETH_HW_CONN_AG_CTX_EXIST_IN_QM3_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_EXIST_IN_QM3_SHIFT           3
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED3_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED3_SHIFT              4
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED4_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED4_SHIFT              5
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED5_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED5_SHIFT              6
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED6_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED6_SHIFT              7
+	u8 flags1;
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED7_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED7_SHIFT              0
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED8_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED8_SHIFT              1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED9_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED9_SHIFT              2
+#define XSTORM_ETH_HW_CONN_AG_CTX_BIT11_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_BIT11_SHIFT                  3
+#define XSTORM_ETH_HW_CONN_AG_CTX_BIT12_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_BIT12_SHIFT                  4
+#define XSTORM_ETH_HW_CONN_AG_CTX_BIT13_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_BIT13_SHIFT                  5
+#define XSTORM_ETH_HW_CONN_AG_CTX_TX_RULE_ACTIVE_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_TX_RULE_ACTIVE_SHIFT         6
+#define XSTORM_ETH_HW_CONN_AG_CTX_DQ_CF_ACTIVE_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_DQ_CF_ACTIVE_SHIFT           7
+	u8 flags2;
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF0_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF0_SHIFT                    0
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF1_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF1_SHIFT                    2
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF2_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF2_SHIFT                    4
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF3_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF3_SHIFT                    6
+	u8 flags3;
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF4_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF4_SHIFT                    0
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF5_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF5_SHIFT                    2
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF6_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF6_SHIFT                    4
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF7_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF7_SHIFT                    6
+	u8 flags4;
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF8_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF8_SHIFT                    0
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF9_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF9_SHIFT                    2
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF10_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF10_SHIFT                   4
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF11_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF11_SHIFT                   6
+	u8 flags5;
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF12_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF12_SHIFT                   0
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF13_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF13_SHIFT                   2
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF14_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF14_SHIFT                   4
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF15_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF15_SHIFT                   6
+	u8 flags6;
+#define XSTORM_ETH_HW_CONN_AG_CTX_GO_TO_BD_CONS_CF_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_GO_TO_BD_CONS_CF_SHIFT       0
+#define XSTORM_ETH_HW_CONN_AG_CTX_MULTI_UNICAST_CF_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_MULTI_UNICAST_CF_SHIFT       2
+#define XSTORM_ETH_HW_CONN_AG_CTX_DQ_CF_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_DQ_CF_SHIFT                  4
+#define XSTORM_ETH_HW_CONN_AG_CTX_TERMINATE_CF_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_TERMINATE_CF_SHIFT           6
+	u8 flags7;
+#define XSTORM_ETH_HW_CONN_AG_CTX_FLUSH_Q0_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_FLUSH_Q0_SHIFT               0
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED10_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED10_SHIFT             2
+#define XSTORM_ETH_HW_CONN_AG_CTX_SLOW_PATH_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_SLOW_PATH_SHIFT              4
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF0EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF0EN_SHIFT                  6
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF1EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF1EN_SHIFT                  7
+	u8 flags8;
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF2EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF2EN_SHIFT                  0
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF3EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF3EN_SHIFT                  1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF4EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF4EN_SHIFT                  2
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF5EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF5EN_SHIFT                  3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF6EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF6EN_SHIFT                  4
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF7EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF7EN_SHIFT                  5
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF8EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF8EN_SHIFT                  6
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF9EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF9EN_SHIFT                  7
+	u8 flags9;
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF10EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF10EN_SHIFT                 0
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF11EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF11EN_SHIFT                 1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF12EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF12EN_SHIFT                 2
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF13EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF13EN_SHIFT                 3
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF14EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF14EN_SHIFT                 4
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF15EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_CF15EN_SHIFT                 5
+#define XSTORM_ETH_HW_CONN_AG_CTX_GO_TO_BD_CONS_CF_EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_GO_TO_BD_CONS_CF_EN_SHIFT    6
+#define XSTORM_ETH_HW_CONN_AG_CTX_MULTI_UNICAST_CF_EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_MULTI_UNICAST_CF_EN_SHIFT    7
+	u8 flags10;
+#define XSTORM_ETH_HW_CONN_AG_CTX_DQ_CF_EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_DQ_CF_EN_SHIFT               0
+#define XSTORM_ETH_HW_CONN_AG_CTX_TERMINATE_CF_EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_TERMINATE_CF_EN_SHIFT        1
+#define XSTORM_ETH_HW_CONN_AG_CTX_FLUSH_Q0_EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_FLUSH_Q0_EN_SHIFT            2
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED11_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED11_SHIFT             3
+#define XSTORM_ETH_HW_CONN_AG_CTX_SLOW_PATH_EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_SLOW_PATH_EN_SHIFT           4
+#define XSTORM_ETH_HW_CONN_AG_CTX_TPH_ENABLE_EN_RESERVED_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_TPH_ENABLE_EN_RESERVED_SHIFT 5
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED12_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED12_SHIFT             6
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED13_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED13_SHIFT             7
+	u8 flags11;
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED14_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED14_SHIFT             0
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED15_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RESERVED15_SHIFT             1
+#define XSTORM_ETH_HW_CONN_AG_CTX_TX_DEC_RULE_EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_TX_DEC_RULE_EN_SHIFT         2
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE5EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE5EN_SHIFT                3
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE6EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE6EN_SHIFT                4
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE7EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE7EN_SHIFT                5
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED1_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED1_SHIFT           6
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE9EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE9EN_SHIFT                7
+	u8 flags12;
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE10EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE10EN_SHIFT               0
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE11EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE11EN_SHIFT               1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED2_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED2_SHIFT           2
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED3_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED3_SHIFT           3
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE14EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE14EN_SHIFT               4
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE15EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE15EN_SHIFT               5
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE16EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE16EN_SHIFT               6
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE17EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE17EN_SHIFT               7
+	u8 flags13;
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE18EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE18EN_SHIFT               0
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE19EN_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_RULE19EN_SHIFT               1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED4_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED4_SHIFT           2
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED5_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED5_SHIFT           3
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED6_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED6_SHIFT           4
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED7_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED7_SHIFT           5
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED8_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED8_SHIFT           6
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED9_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_A0_RESERVED9_SHIFT           7
+	u8 flags14;
+#define XSTORM_ETH_HW_CONN_AG_CTX_EDPM_USE_EXT_HDR_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_EDPM_USE_EXT_HDR_SHIFT       0
+#define XSTORM_ETH_HW_CONN_AG_CTX_EDPM_SEND_RAW_L3L4_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_EDPM_SEND_RAW_L3L4_SHIFT     1
+#define XSTORM_ETH_HW_CONN_AG_CTX_EDPM_INBAND_PROP_HDR_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_EDPM_INBAND_PROP_HDR_SHIFT   2
+#define XSTORM_ETH_HW_CONN_AG_CTX_EDPM_SEND_EXT_TUNNEL_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_EDPM_SEND_EXT_TUNNEL_SHIFT   3
+#define XSTORM_ETH_HW_CONN_AG_CTX_L2_EDPM_ENABLE_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_L2_EDPM_ENABLE_SHIFT         4
+#define XSTORM_ETH_HW_CONN_AG_CTX_ROCE_EDPM_ENABLE_MASK	0x1
+#define XSTORM_ETH_HW_CONN_AG_CTX_ROCE_EDPM_ENABLE_SHIFT       5
+#define XSTORM_ETH_HW_CONN_AG_CTX_TPH_ENABLE_MASK	0x3
+#define XSTORM_ETH_HW_CONN_AG_CTX_TPH_ENABLE_SHIFT             6
+	u8 edpm_event_id;
+	__le16 physical_q0;
+	__le16 ereserved1;
+	__le16 edpm_num_bds;
+	__le16 tx_bd_cons;
+	__le16 tx_bd_prod;
+	__le16 tx_class;
+	__le16 conn_dpi;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gft_cam_line {
 	__le32 camline;
 #define GFT_CAM_LINE_VALID_MASK		0x1
@@ -6618,7 +9532,10 @@ struct gft_cam_line {
 #define GFT_CAM_LINE_RESERVED1_SHIFT	29
 };
 
+<<<<<<< HEAD
 /* GFT CAM line struct with fields breakout */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gft_cam_line_mapped {
 	__le32 camline;
 #define GFT_CAM_LINE_MAPPED_VALID_MASK				0x1
@@ -6652,13 +9569,17 @@ union gft_cam_line_union {
 	struct gft_cam_line_mapped cam_line_mapped;
 };
 
+<<<<<<< HEAD
 /* Used in gft_profile_key: Indication for ip version */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum gft_profile_ip_version {
 	GFT_PROFILE_IPV4 = 0,
 	GFT_PROFILE_IPV6 = 1,
 	MAX_GFT_PROFILE_IP_VERSION
 };
 
+<<<<<<< HEAD
 /* Profile key stucr fot GFT logic in Prs */
 struct gft_profile_key {
 	__le16 profile_key;
@@ -6677,6 +9598,24 @@ struct gft_profile_key {
 };
 
 /* Used in gft_profile_key: Indication for tunnel type */
+=======
+struct gft_profile_key {
+	__le16 profile_key;
+#define GFT_PROFILE_KEY_IP_VERSION_MASK           0x1
+#define GFT_PROFILE_KEY_IP_VERSION_SHIFT          0
+#define GFT_PROFILE_KEY_TUNNEL_IP_VERSION_MASK    0x1
+#define GFT_PROFILE_KEY_TUNNEL_IP_VERSION_SHIFT   1
+#define GFT_PROFILE_KEY_UPPER_PROTOCOL_TYPE_MASK  0xF
+#define GFT_PROFILE_KEY_UPPER_PROTOCOL_TYPE_SHIFT 2
+#define GFT_PROFILE_KEY_TUNNEL_TYPE_MASK          0xF
+#define GFT_PROFILE_KEY_TUNNEL_TYPE_SHIFT         6
+#define GFT_PROFILE_KEY_PF_ID_MASK                0xF
+#define GFT_PROFILE_KEY_PF_ID_SHIFT               10
+#define GFT_PROFILE_KEY_RESERVED0_MASK            0x3
+#define GFT_PROFILE_KEY_RESERVED0_SHIFT           14
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum gft_profile_tunnel_type {
 	GFT_PROFILE_NO_TUNNEL = 0,
 	GFT_PROFILE_VXLAN_TUNNEL = 1,
@@ -6687,7 +9626,10 @@ enum gft_profile_tunnel_type {
 	MAX_GFT_PROFILE_TUNNEL_TYPE
 };
 
+<<<<<<< HEAD
 /* Used in gft_profile_key: Indication for protocol type */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum gft_profile_upper_protocol_type {
 	GFT_PROFILE_ROCE_PROTOCOL = 0,
 	GFT_PROFILE_RROCE_PROTOCOL = 1,
@@ -6708,7 +9650,10 @@ enum gft_profile_upper_protocol_type {
 	MAX_GFT_PROFILE_UPPER_PROTOCOL_TYPE
 };
 
+<<<<<<< HEAD
 /* GFT RAM line struct */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct gft_ram_line {
 	__le32 lo;
 #define GFT_RAM_LINE_VLAN_SELECT_MASK			0x3
@@ -6798,7 +9743,10 @@ struct gft_ram_line {
 #define GFT_RAM_LINE_RESERVED1_SHIFT			10
 };
 
+<<<<<<< HEAD
 /* Used in the first 2 bits for gft_ram_line: Indication for vlan mask */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum gft_vlan_select {
 	INNER_PROVIDER_VLAN = 0,
 	INNER_VLAN = 1,
@@ -6807,6 +9755,7 @@ enum gft_vlan_select {
 	MAX_GFT_VLAN_SELECT
 };
 
+<<<<<<< HEAD
 /* The rdma task context of Mstorm */
 struct ystorm_rdma_task_st_ctx {
 	struct regpair temp[4];
@@ -6925,10 +9874,13 @@ struct e4_mstorm_rdma_task_ag_ctx {
 };
 
 /* The roce task context of Mstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mstorm_rdma_task_st_ctx {
 	struct regpair temp[4];
 };
 
+<<<<<<< HEAD
 /* The roce task context of Ustorm */
 struct ustorm_rdma_task_st_ctx {
 	struct regpair temp[2];
@@ -7013,6 +9965,8 @@ struct e4_rdma_task_context {
 };
 
 /* rdma function init ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_close_func_ramrod_data {
 	u8 cnq_start_offset;
 	u8 num_cnqs;
@@ -7021,7 +9975,10 @@ struct rdma_close_func_ramrod_data {
 	u8 reserved[4];
 };
 
+<<<<<<< HEAD
 /* rdma function init CNQ parameters */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_cnq_params {
 	__le16 sb_num;
 	u8 sb_index;
@@ -7032,7 +9989,10 @@ struct rdma_cnq_params {
 	u8 reserved1[6];
 };
 
+<<<<<<< HEAD
 /* rdma create cq ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_create_cq_ramrod_data {
 	struct regpair cq_handle;
 	struct regpair pbl_addr;
@@ -7047,25 +10007,37 @@ struct rdma_create_cq_ramrod_data {
 	__le16 reserved1;
 };
 
+<<<<<<< HEAD
 /* rdma deregister tid ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_deregister_tid_ramrod_data {
 	__le32 itid;
 	__le32 reserved;
 };
 
+<<<<<<< HEAD
 /* rdma destroy cq output params */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_destroy_cq_output_params {
 	__le16 cnq_num;
 	__le16 reserved0;
 	__le32 reserved1;
 };
 
+<<<<<<< HEAD
 /* rdma destroy cq ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_destroy_cq_ramrod_data {
 	struct regpair output_params_addr;
 };
 
+<<<<<<< HEAD
 /* RDMA slow path EQ cmd IDs */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rdma_event_opcode {
 	RDMA_EVENT_UNUSED,
 	RDMA_EVENT_FUNC_INIT,
@@ -7081,7 +10053,10 @@ enum rdma_event_opcode {
 	MAX_RDMA_EVENT_OPCODE
 };
 
+<<<<<<< HEAD
 /* RDMA FW return code for slow path ramrods */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rdma_fw_return_code {
 	RDMA_RETURN_OK = 0,
 	RDMA_RETURN_REGISTER_MR_BAD_STATE_ERR,
@@ -7091,13 +10066,17 @@ enum rdma_fw_return_code {
 	MAX_RDMA_FW_RETURN_CODE
 };
 
+<<<<<<< HEAD
 /* rdma function init header */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_init_func_hdr {
 	u8 cnq_start_offset;
 	u8 num_cnqs;
 	u8 cq_ring_mode;
 	u8 vf_id;
 	u8 vf_valid;
+<<<<<<< HEAD
 	u8 relaxed_ordering;
 	__le16 first_reg_srq_id;
 	__le32 reg_srq_base_addr;
@@ -7105,12 +10084,20 @@ struct rdma_init_func_hdr {
 };
 
 /* rdma function init ramrod data */
+=======
+	u8 reserved[3];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_init_func_ramrod_data {
 	struct rdma_init_func_hdr params_header;
 	struct rdma_cnq_params cnq_params[NUM_OF_GLOBAL_QUEUES];
 };
 
+<<<<<<< HEAD
 /* RDMA ramrod command IDs */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum rdma_ramrod_cmd_id {
 	RDMA_RAMROD_UNUSED,
 	RDMA_RAMROD_FUNC_INIT,
@@ -7126,13 +10113,17 @@ enum rdma_ramrod_cmd_id {
 	MAX_RDMA_RAMROD_CMD_ID
 };
 
+<<<<<<< HEAD
 /* rdma register tid ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_register_tid_ramrod_data {
 	__le16 flags;
 #define RDMA_REGISTER_TID_RAMROD_DATA_PAGE_SIZE_LOG_MASK	0x1F
 #define RDMA_REGISTER_TID_RAMROD_DATA_PAGE_SIZE_LOG_SHIFT	0
 #define RDMA_REGISTER_TID_RAMROD_DATA_TWO_LEVEL_PBL_MASK	0x1
 #define RDMA_REGISTER_TID_RAMROD_DATA_TWO_LEVEL_PBL_SHIFT	5
+<<<<<<< HEAD
 #define RDMA_REGISTER_TID_RAMROD_DATA_ZERO_BASED_MASK		0x1
 #define RDMA_REGISTER_TID_RAMROD_DATA_ZERO_BASED_SHIFT		6
 #define RDMA_REGISTER_TID_RAMROD_DATA_PHY_MR_MASK		0x1
@@ -7163,6 +10154,38 @@ struct rdma_register_tid_ramrod_data {
 #define RDMA_REGISTER_TID_RAMROD_DATA_DIF_ON_HOST_FLG_SHIFT	1
 #define RDMA_REGISTER_TID_RAMROD_DATA_RESERVED1_MASK		0x3F
 #define RDMA_REGISTER_TID_RAMROD_DATA_RESERVED1_SHIFT		2
+=======
+#define RDMA_REGISTER_TID_RAMROD_DATA_ZERO_BASED_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_ZERO_BASED_SHIFT	6
+#define RDMA_REGISTER_TID_RAMROD_DATA_PHY_MR_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_PHY_MR_SHIFT	7
+#define RDMA_REGISTER_TID_RAMROD_DATA_REMOTE_READ_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_REMOTE_READ_SHIFT	8
+#define RDMA_REGISTER_TID_RAMROD_DATA_REMOTE_WRITE_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_REMOTE_WRITE_SHIFT	9
+#define RDMA_REGISTER_TID_RAMROD_DATA_REMOTE_ATOMIC_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_REMOTE_ATOMIC_SHIFT	10
+#define RDMA_REGISTER_TID_RAMROD_DATA_LOCAL_WRITE_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_LOCAL_WRITE_SHIFT	11
+#define RDMA_REGISTER_TID_RAMROD_DATA_LOCAL_READ_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_LOCAL_READ_SHIFT	12
+#define RDMA_REGISTER_TID_RAMROD_DATA_ENABLE_MW_BIND_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_ENABLE_MW_BIND_SHIFT	13
+#define RDMA_REGISTER_TID_RAMROD_DATA_RESERVED_MASK	0x3
+#define RDMA_REGISTER_TID_RAMROD_DATA_RESERVED_SHIFT	14
+	u8 flags1;
+#define RDMA_REGISTER_TID_RAMROD_DATA_PBL_PAGE_SIZE_LOG_MASK	0x1F
+#define RDMA_REGISTER_TID_RAMROD_DATA_PBL_PAGE_SIZE_LOG_SHIFT 0
+#define RDMA_REGISTER_TID_RAMROD_DATA_TID_TYPE_MASK	0x7
+#define RDMA_REGISTER_TID_RAMROD_DATA_TID_TYPE_SHIFT	5
+	u8 flags2;
+#define RDMA_REGISTER_TID_RAMROD_DATA_DMA_MR_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_DMA_MR_SHIFT	0
+#define RDMA_REGISTER_TID_RAMROD_DATA_DIF_ON_HOST_FLG_MASK	0x1
+#define RDMA_REGISTER_TID_RAMROD_DATA_DIF_ON_HOST_FLG_SHIFT	1
+#define RDMA_REGISTER_TID_RAMROD_DATA_RESERVED1_MASK	0x3F
+#define RDMA_REGISTER_TID_RAMROD_DATA_RESERVED1_SHIFT	2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 key;
 	u8 length_hi;
 	u8 vf_id;
@@ -7175,15 +10198,23 @@ struct rdma_register_tid_ramrod_data {
 	struct regpair va;
 	struct regpair pbl_base;
 	struct regpair dif_error_addr;
+<<<<<<< HEAD
 	__le32 reserved4[4];
 };
 
 /* rdma resize cq output params */
+=======
+	struct regpair dif_runt_addr;
+	__le32 reserved4[2];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_resize_cq_output_params {
 	__le32 old_cq_cons;
 	__le32 old_cq_prod;
 };
 
+<<<<<<< HEAD
 /* rdma resize cq ramrod data */
 struct rdma_resize_cq_ramrod_data {
 	u8 flags;
@@ -7193,6 +10224,16 @@ struct rdma_resize_cq_ramrod_data {
 #define RDMA_RESIZE_CQ_RAMROD_DATA_IS_TWO_LEVEL_PBL_SHIFT	1
 #define RDMA_RESIZE_CQ_RAMROD_DATA_RESERVED_MASK		0x3F
 #define RDMA_RESIZE_CQ_RAMROD_DATA_RESERVED_SHIFT		2
+=======
+struct rdma_resize_cq_ramrod_data {
+	u8 flags;
+#define RDMA_RESIZE_CQ_RAMROD_DATA_TOGGLE_BIT_MASK        0x1
+#define RDMA_RESIZE_CQ_RAMROD_DATA_TOGGLE_BIT_SHIFT       0
+#define RDMA_RESIZE_CQ_RAMROD_DATA_IS_TWO_LEVEL_PBL_MASK  0x1
+#define RDMA_RESIZE_CQ_RAMROD_DATA_IS_TWO_LEVEL_PBL_SHIFT 1
+#define RDMA_RESIZE_CQ_RAMROD_DATA_RESERVED_MASK          0x3F
+#define RDMA_RESIZE_CQ_RAMROD_DATA_RESERVED_SHIFT         2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 pbl_log_page_size;
 	__le16 pbl_num_pages;
 	__le32 max_cqes;
@@ -7200,11 +10241,15 @@ struct rdma_resize_cq_ramrod_data {
 	struct regpair output_params_addr;
 };
 
+<<<<<<< HEAD
 /* The rdma storm context of Mstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_srq_context {
 	struct regpair temp[8];
 };
 
+<<<<<<< HEAD
 /* rdma create qp requester ramrod data */
 struct rdma_srq_create_ramrod_data {
 	u8 flags;
@@ -7217,28 +10262,43 @@ struct rdma_srq_create_ramrod_data {
 	u8 reserved2;
 	__le16 xrc_domain;
 	__le32 xrc_srq_cq_cid;
+=======
+struct rdma_srq_create_ramrod_data {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct regpair pbl_base_addr;
 	__le16 pages_in_srq_pbl;
 	__le16 pd_id;
 	struct rdma_srq_id srq_id;
 	__le16 page_size;
+<<<<<<< HEAD
 	__le16 reserved3;
 	__le32 reserved4;
 	struct regpair producers_addr;
 };
 
 /* rdma create qp requester ramrod data */
+=======
+	__le16 reserved1;
+	__le32 reserved2;
+	struct regpair producers_addr;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_srq_destroy_ramrod_data {
 	struct rdma_srq_id srq_id;
 	__le32 reserved;
 };
 
+<<<<<<< HEAD
 /* rdma create qp requester ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rdma_srq_modify_ramrod_data {
 	struct rdma_srq_id srq_id;
 	__le32 wqe_limit;
 };
 
+<<<<<<< HEAD
 /* RDMA Tid type enumeration (for register_tid ramrod) */
 enum rdma_tid_type {
 	RDMA_TID_REGISTERED_MR,
@@ -7607,6 +10667,414 @@ struct e4_xstorm_roce_conn_ag_ctx {
 #define E4_XSTORM_ROCE_CONN_AG_CTX_ROCE_EDPM_ENABLE_SHIFT 5
 #define E4_XSTORM_ROCE_CONN_AG_CTX_CF23_MASK              0x3
 #define E4_XSTORM_ROCE_CONN_AG_CTX_CF23_SHIFT             6
+=======
+struct ystorm_rdma_task_st_ctx {
+	struct regpair temp[4];
+};
+
+struct ystorm_rdma_task_ag_ctx {
+	u8 reserved;
+	u8 byte1;
+	__le16 msem_ctx_upd_seq;
+	u8 flags0;
+#define YSTORM_RDMA_TASK_AG_CTX_CONNECTION_TYPE_MASK  0xF
+#define YSTORM_RDMA_TASK_AG_CTX_CONNECTION_TYPE_SHIFT 0
+#define YSTORM_RDMA_TASK_AG_CTX_EXIST_IN_QM0_MASK     0x1
+#define YSTORM_RDMA_TASK_AG_CTX_EXIST_IN_QM0_SHIFT    4
+#define YSTORM_RDMA_TASK_AG_CTX_BIT1_MASK             0x1
+#define YSTORM_RDMA_TASK_AG_CTX_BIT1_SHIFT            5
+#define YSTORM_RDMA_TASK_AG_CTX_VALID_MASK            0x1
+#define YSTORM_RDMA_TASK_AG_CTX_VALID_SHIFT           6
+#define YSTORM_RDMA_TASK_AG_CTX_BIT3_MASK             0x1
+#define YSTORM_RDMA_TASK_AG_CTX_BIT3_SHIFT            7
+	u8 flags1;
+#define YSTORM_RDMA_TASK_AG_CTX_CF0_MASK              0x3
+#define YSTORM_RDMA_TASK_AG_CTX_CF0_SHIFT             0
+#define YSTORM_RDMA_TASK_AG_CTX_CF1_MASK              0x3
+#define YSTORM_RDMA_TASK_AG_CTX_CF1_SHIFT             2
+#define YSTORM_RDMA_TASK_AG_CTX_CF2SPECIAL_MASK       0x3
+#define YSTORM_RDMA_TASK_AG_CTX_CF2SPECIAL_SHIFT      4
+#define YSTORM_RDMA_TASK_AG_CTX_CF0EN_MASK            0x1
+#define YSTORM_RDMA_TASK_AG_CTX_CF0EN_SHIFT           6
+#define YSTORM_RDMA_TASK_AG_CTX_CF1EN_MASK            0x1
+#define YSTORM_RDMA_TASK_AG_CTX_CF1EN_SHIFT           7
+	u8 flags2;
+#define YSTORM_RDMA_TASK_AG_CTX_BIT4_MASK             0x1
+#define YSTORM_RDMA_TASK_AG_CTX_BIT4_SHIFT            0
+#define YSTORM_RDMA_TASK_AG_CTX_RULE0EN_MASK          0x1
+#define YSTORM_RDMA_TASK_AG_CTX_RULE0EN_SHIFT         1
+#define YSTORM_RDMA_TASK_AG_CTX_RULE1EN_MASK          0x1
+#define YSTORM_RDMA_TASK_AG_CTX_RULE1EN_SHIFT         2
+#define YSTORM_RDMA_TASK_AG_CTX_RULE2EN_MASK          0x1
+#define YSTORM_RDMA_TASK_AG_CTX_RULE2EN_SHIFT         3
+#define YSTORM_RDMA_TASK_AG_CTX_RULE3EN_MASK          0x1
+#define YSTORM_RDMA_TASK_AG_CTX_RULE3EN_SHIFT         4
+#define YSTORM_RDMA_TASK_AG_CTX_RULE4EN_MASK          0x1
+#define YSTORM_RDMA_TASK_AG_CTX_RULE4EN_SHIFT         5
+#define YSTORM_RDMA_TASK_AG_CTX_RULE5EN_MASK          0x1
+#define YSTORM_RDMA_TASK_AG_CTX_RULE5EN_SHIFT         6
+#define YSTORM_RDMA_TASK_AG_CTX_RULE6EN_MASK          0x1
+#define YSTORM_RDMA_TASK_AG_CTX_RULE6EN_SHIFT         7
+	u8 key;
+	__le32 mw_cnt;
+	u8 ref_cnt_seq;
+	u8 ctx_upd_seq;
+	__le16 dif_flags;
+	__le16 tx_ref_count;
+	__le16 last_used_ltid;
+	__le16 parent_mr_lo;
+	__le16 parent_mr_hi;
+	__le32 fbo_lo;
+	__le32 fbo_hi;
+};
+
+struct mstorm_rdma_task_ag_ctx {
+	u8 reserved;
+	u8 byte1;
+	__le16 icid;
+	u8 flags0;
+#define MSTORM_RDMA_TASK_AG_CTX_CONNECTION_TYPE_MASK  0xF
+#define MSTORM_RDMA_TASK_AG_CTX_CONNECTION_TYPE_SHIFT 0
+#define MSTORM_RDMA_TASK_AG_CTX_EXIST_IN_QM0_MASK     0x1
+#define MSTORM_RDMA_TASK_AG_CTX_EXIST_IN_QM0_SHIFT    4
+#define MSTORM_RDMA_TASK_AG_CTX_BIT1_MASK             0x1
+#define MSTORM_RDMA_TASK_AG_CTX_BIT1_SHIFT            5
+#define MSTORM_RDMA_TASK_AG_CTX_BIT2_MASK             0x1
+#define MSTORM_RDMA_TASK_AG_CTX_BIT2_SHIFT            6
+#define MSTORM_RDMA_TASK_AG_CTX_BIT3_MASK             0x1
+#define MSTORM_RDMA_TASK_AG_CTX_BIT3_SHIFT            7
+	u8 flags1;
+#define MSTORM_RDMA_TASK_AG_CTX_CF0_MASK              0x3
+#define MSTORM_RDMA_TASK_AG_CTX_CF0_SHIFT             0
+#define MSTORM_RDMA_TASK_AG_CTX_CF1_MASK              0x3
+#define MSTORM_RDMA_TASK_AG_CTX_CF1_SHIFT             2
+#define MSTORM_RDMA_TASK_AG_CTX_CF2_MASK              0x3
+#define MSTORM_RDMA_TASK_AG_CTX_CF2_SHIFT             4
+#define MSTORM_RDMA_TASK_AG_CTX_CF0EN_MASK            0x1
+#define MSTORM_RDMA_TASK_AG_CTX_CF0EN_SHIFT           6
+#define MSTORM_RDMA_TASK_AG_CTX_CF1EN_MASK            0x1
+#define MSTORM_RDMA_TASK_AG_CTX_CF1EN_SHIFT           7
+	u8 flags2;
+#define MSTORM_RDMA_TASK_AG_CTX_CF2EN_MASK            0x1
+#define MSTORM_RDMA_TASK_AG_CTX_CF2EN_SHIFT           0
+#define MSTORM_RDMA_TASK_AG_CTX_RULE0EN_MASK          0x1
+#define MSTORM_RDMA_TASK_AG_CTX_RULE0EN_SHIFT         1
+#define MSTORM_RDMA_TASK_AG_CTX_RULE1EN_MASK          0x1
+#define MSTORM_RDMA_TASK_AG_CTX_RULE1EN_SHIFT         2
+#define MSTORM_RDMA_TASK_AG_CTX_RULE2EN_MASK          0x1
+#define MSTORM_RDMA_TASK_AG_CTX_RULE2EN_SHIFT         3
+#define MSTORM_RDMA_TASK_AG_CTX_RULE3EN_MASK          0x1
+#define MSTORM_RDMA_TASK_AG_CTX_RULE3EN_SHIFT         4
+#define MSTORM_RDMA_TASK_AG_CTX_RULE4EN_MASK          0x1
+#define MSTORM_RDMA_TASK_AG_CTX_RULE4EN_SHIFT         5
+#define MSTORM_RDMA_TASK_AG_CTX_RULE5EN_MASK          0x1
+#define MSTORM_RDMA_TASK_AG_CTX_RULE5EN_SHIFT         6
+#define MSTORM_RDMA_TASK_AG_CTX_RULE6EN_MASK          0x1
+#define MSTORM_RDMA_TASK_AG_CTX_RULE6EN_SHIFT         7
+	u8 key;
+	__le32 mw_cnt;
+	u8 ref_cnt_seq;
+	u8 ctx_upd_seq;
+	__le16 dif_flags;
+	__le16 tx_ref_count;
+	__le16 last_used_ltid;
+	__le16 parent_mr_lo;
+	__le16 parent_mr_hi;
+	__le32 fbo_lo;
+	__le32 fbo_hi;
+};
+
+struct ustorm_rdma_task_st_ctx {
+	struct regpair temp[2];
+};
+
+struct ustorm_rdma_task_ag_ctx {
+	u8 reserved;
+	u8 byte1;
+	__le16 icid;
+	u8 flags0;
+#define USTORM_RDMA_TASK_AG_CTX_CONNECTION_TYPE_MASK         0xF
+#define USTORM_RDMA_TASK_AG_CTX_CONNECTION_TYPE_SHIFT        0
+#define USTORM_RDMA_TASK_AG_CTX_EXIST_IN_QM0_MASK            0x1
+#define USTORM_RDMA_TASK_AG_CTX_EXIST_IN_QM0_SHIFT           4
+#define USTORM_RDMA_TASK_AG_CTX_DIF_RUNT_VALID_MASK          0x1
+#define USTORM_RDMA_TASK_AG_CTX_DIF_RUNT_VALID_SHIFT         5
+#define USTORM_RDMA_TASK_AG_CTX_DIF_WRITE_RESULT_CF_MASK     0x3
+#define USTORM_RDMA_TASK_AG_CTX_DIF_WRITE_RESULT_CF_SHIFT    6
+	u8 flags1;
+#define USTORM_RDMA_TASK_AG_CTX_DIF_RESULT_TOGGLE_BIT_MASK   0x3
+#define USTORM_RDMA_TASK_AG_CTX_DIF_RESULT_TOGGLE_BIT_SHIFT  0
+#define USTORM_RDMA_TASK_AG_CTX_DIF_TX_IO_FLG_MASK           0x3
+#define USTORM_RDMA_TASK_AG_CTX_DIF_TX_IO_FLG_SHIFT          2
+#define USTORM_RDMA_TASK_AG_CTX_CF3_MASK                     0x3
+#define USTORM_RDMA_TASK_AG_CTX_CF3_SHIFT                    4
+#define USTORM_RDMA_TASK_AG_CTX_DIF_ERROR_CF_MASK            0x3
+#define USTORM_RDMA_TASK_AG_CTX_DIF_ERROR_CF_SHIFT           6
+	u8 flags2;
+#define USTORM_RDMA_TASK_AG_CTX_DIF_WRITE_RESULT_CF_EN_MASK  0x1
+#define USTORM_RDMA_TASK_AG_CTX_DIF_WRITE_RESULT_CF_EN_SHIFT 0
+#define USTORM_RDMA_TASK_AG_CTX_RESERVED2_MASK               0x1
+#define USTORM_RDMA_TASK_AG_CTX_RESERVED2_SHIFT              1
+#define USTORM_RDMA_TASK_AG_CTX_RESERVED3_MASK               0x1
+#define USTORM_RDMA_TASK_AG_CTX_RESERVED3_SHIFT              2
+#define USTORM_RDMA_TASK_AG_CTX_CF3EN_MASK                   0x1
+#define USTORM_RDMA_TASK_AG_CTX_CF3EN_SHIFT                  3
+#define USTORM_RDMA_TASK_AG_CTX_DIF_ERROR_CF_EN_MASK         0x1
+#define USTORM_RDMA_TASK_AG_CTX_DIF_ERROR_CF_EN_SHIFT        4
+#define USTORM_RDMA_TASK_AG_CTX_RULE0EN_MASK                 0x1
+#define USTORM_RDMA_TASK_AG_CTX_RULE0EN_SHIFT                5
+#define USTORM_RDMA_TASK_AG_CTX_RULE1EN_MASK                 0x1
+#define USTORM_RDMA_TASK_AG_CTX_RULE1EN_SHIFT                6
+#define USTORM_RDMA_TASK_AG_CTX_RULE2EN_MASK                 0x1
+#define USTORM_RDMA_TASK_AG_CTX_RULE2EN_SHIFT                7
+	u8 flags3;
+#define USTORM_RDMA_TASK_AG_CTX_RULE3EN_MASK                 0x1
+#define USTORM_RDMA_TASK_AG_CTX_RULE3EN_SHIFT                0
+#define USTORM_RDMA_TASK_AG_CTX_RULE4EN_MASK                 0x1
+#define USTORM_RDMA_TASK_AG_CTX_RULE4EN_SHIFT                1
+#define USTORM_RDMA_TASK_AG_CTX_RULE5EN_MASK                 0x1
+#define USTORM_RDMA_TASK_AG_CTX_RULE5EN_SHIFT                2
+#define USTORM_RDMA_TASK_AG_CTX_RULE6EN_MASK                 0x1
+#define USTORM_RDMA_TASK_AG_CTX_RULE6EN_SHIFT                3
+#define USTORM_RDMA_TASK_AG_CTX_DIF_ERROR_TYPE_MASK          0xF
+#define USTORM_RDMA_TASK_AG_CTX_DIF_ERROR_TYPE_SHIFT         4
+	__le32 dif_err_intervals;
+	__le32 dif_error_1st_interval;
+	__le32 reg2;
+	__le32 dif_runt_value;
+	__le32 reg4;
+	__le32 reg5;
+};
+
+struct rdma_task_context {
+	struct ystorm_rdma_task_st_ctx ystorm_st_context;
+	struct ystorm_rdma_task_ag_ctx ystorm_ag_context;
+	struct tdif_task_context tdif_context;
+	struct mstorm_rdma_task_ag_ctx mstorm_ag_context;
+	struct mstorm_rdma_task_st_ctx mstorm_st_context;
+	struct rdif_task_context rdif_context;
+	struct ustorm_rdma_task_st_ctx ustorm_st_context;
+	struct regpair ustorm_st_padding[2];
+	struct ustorm_rdma_task_ag_ctx ustorm_ag_context;
+};
+
+enum rdma_tid_type {
+	RDMA_TID_REGISTERED_MR,
+	RDMA_TID_FMR,
+	RDMA_TID_MW_TYPE1,
+	RDMA_TID_MW_TYPE2A,
+	MAX_RDMA_TID_TYPE
+};
+
+struct xstorm_roce_conn_ag_ctx_dq_ext_ld_part {
+	u8 reserved0;
+	u8 state;
+	u8 flags0;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_EXIST_IN_QM0_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_EXIST_IN_QM0_SHIFT     0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT1_MASK              0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT1_SHIFT             1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT2_MASK              0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT2_SHIFT             2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_EXIST_IN_QM3_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_EXIST_IN_QM3_SHIFT     3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT4_MASK              0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT4_SHIFT             4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT5_MASK              0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT5_SHIFT             5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT6_MASK              0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT6_SHIFT             6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT7_MASK              0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT7_SHIFT             7
+	u8 flags1;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT8_MASK              0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT8_SHIFT             0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT9_MASK              0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT9_SHIFT             1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT10_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT10_SHIFT            2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT11_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT11_SHIFT            3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT12_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT12_SHIFT            4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_MSTORM_FLUSH_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_MSTORM_FLUSH_SHIFT     5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT14_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT14_SHIFT            6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_YSTORM_FLUSH_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_YSTORM_FLUSH_SHIFT     7
+	u8 flags2;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF0_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF0_SHIFT              0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF1_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF1_SHIFT              2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF2_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF2_SHIFT              4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF3_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF3_SHIFT              6
+	u8 flags3;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF4_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF4_SHIFT              0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF5_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF5_SHIFT              2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF6_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF6_SHIFT              4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_FLUSH_Q0_CF_MASK       0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_FLUSH_Q0_CF_SHIFT      6
+	u8 flags4;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF8_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF8_SHIFT              0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF9_MASK               0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF9_SHIFT              2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF10_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF10_SHIFT             4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF11_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF11_SHIFT             6
+	u8 flags5;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF12_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF12_SHIFT             0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF13_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF13_SHIFT             2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF14_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF14_SHIFT             4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF15_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF15_SHIFT             6
+	u8 flags6;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF16_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF16_SHIFT             0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF17_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF17_SHIFT             2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF18_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF18_SHIFT             4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF19_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF19_SHIFT             6
+	u8 flags7;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF20_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF20_SHIFT             0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF21_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF21_SHIFT             2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_SLOW_PATH_MASK         0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_SLOW_PATH_SHIFT        4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF0EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF0EN_SHIFT            6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF1EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF1EN_SHIFT            7
+	u8 flags8;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF2EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF2EN_SHIFT            0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF3EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF3EN_SHIFT            1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF4EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF4EN_SHIFT            2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF5EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF5EN_SHIFT            3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF6EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF6EN_SHIFT            4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_FLUSH_Q0_CF_EN_MASK    0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_FLUSH_Q0_CF_EN_SHIFT   5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF8EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF8EN_SHIFT            6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF9EN_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF9EN_SHIFT            7
+	u8 flags9;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF10EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF10EN_SHIFT           0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF11EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF11EN_SHIFT           1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF12EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF12EN_SHIFT           2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF13EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF13EN_SHIFT           3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF14EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF14EN_SHIFT           4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF15EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF15EN_SHIFT           5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF16EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF16EN_SHIFT           6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF17EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF17EN_SHIFT           7
+	u8 flags10;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF18EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF18EN_SHIFT           0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF19EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF19EN_SHIFT           1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF20EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF20EN_SHIFT           2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF21EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF21EN_SHIFT           3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_SLOW_PATH_EN_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_SLOW_PATH_EN_SHIFT     4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF23EN_MASK            0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF23EN_SHIFT           5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE0EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE0EN_SHIFT          6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE1EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE1EN_SHIFT          7
+	u8 flags11;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE2EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE2EN_SHIFT          0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE3EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE3EN_SHIFT          1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE4EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE4EN_SHIFT          2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE5EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE5EN_SHIFT          3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE6EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE6EN_SHIFT          4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE7EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE7EN_SHIFT          5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED1_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED1_SHIFT     6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE9EN_MASK           0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE9EN_SHIFT          7
+	u8 flags12;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE10EN_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE10EN_SHIFT         0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE11EN_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE11EN_SHIFT         1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED2_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED2_SHIFT     2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED3_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED3_SHIFT     3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE14EN_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE14EN_SHIFT         4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE15EN_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE15EN_SHIFT         5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE16EN_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE16EN_SHIFT         6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE17EN_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE17EN_SHIFT         7
+	u8 flags13;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE18EN_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE18EN_SHIFT         0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE19EN_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RULE19EN_SHIFT         1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED4_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED4_SHIFT     2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED5_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED5_SHIFT     3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED6_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED6_SHIFT     4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED7_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED7_SHIFT     5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED8_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED8_SHIFT     6
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED9_MASK      0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_A0_RESERVED9_SHIFT     7
+	u8 flags14;
+#define XSTORMROCECONNAGCTXDQEXTLDPART_MIGRATION_MASK         0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_MIGRATION_SHIFT        0
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT17_MASK             0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_BIT17_SHIFT            1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_DPM_PORT_NUM_MASK      0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_DPM_PORT_NUM_SHIFT     2
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RESERVED_MASK          0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_RESERVED_SHIFT         4
+#define XSTORMROCECONNAGCTXDQEXTLDPART_ROCE_EDPM_ENABLE_MASK  0x1
+#define XSTORMROCECONNAGCTXDQEXTLDPART_ROCE_EDPM_ENABLE_SHIFT 5
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF23_MASK              0x3
+#define XSTORMROCECONNAGCTXDQEXTLDPART_CF23_SHIFT             6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	__le16 physical_q0;
 	__le16 word1;
@@ -7624,6 +11092,7 @@ struct e4_xstorm_roce_conn_ag_ctx {
 	__le32 reg2;
 	__le32 snd_nxt_psn;
 	__le32 reg4;
+<<<<<<< HEAD
 	__le32 reg5;
 	__le32 reg6;
 };
@@ -7711,6 +11180,130 @@ struct e4_tstorm_roce_conn_ag_ctx {
 #define E4_TSTORM_ROCE_CONN_AG_CTX_RULE7EN_SHIFT              6
 #define E4_TSTORM_ROCE_CONN_AG_CTX_RULE8EN_MASK               0x1
 #define E4_TSTORM_ROCE_CONN_AG_CTX_RULE8EN_SHIFT              7
+=======
+};
+
+struct mstorm_rdma_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define MSTORM_RDMA_CONN_AG_CTX_BIT0_MASK     0x1
+#define MSTORM_RDMA_CONN_AG_CTX_BIT0_SHIFT    0
+#define MSTORM_RDMA_CONN_AG_CTX_BIT1_MASK     0x1
+#define MSTORM_RDMA_CONN_AG_CTX_BIT1_SHIFT    1
+#define MSTORM_RDMA_CONN_AG_CTX_CF0_MASK      0x3
+#define MSTORM_RDMA_CONN_AG_CTX_CF0_SHIFT     2
+#define MSTORM_RDMA_CONN_AG_CTX_CF1_MASK      0x3
+#define MSTORM_RDMA_CONN_AG_CTX_CF1_SHIFT     4
+#define MSTORM_RDMA_CONN_AG_CTX_CF2_MASK      0x3
+#define MSTORM_RDMA_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define MSTORM_RDMA_CONN_AG_CTX_CF0EN_MASK    0x1
+#define MSTORM_RDMA_CONN_AG_CTX_CF0EN_SHIFT   0
+#define MSTORM_RDMA_CONN_AG_CTX_CF1EN_MASK    0x1
+#define MSTORM_RDMA_CONN_AG_CTX_CF1EN_SHIFT   1
+#define MSTORM_RDMA_CONN_AG_CTX_CF2EN_MASK    0x1
+#define MSTORM_RDMA_CONN_AG_CTX_CF2EN_SHIFT   2
+#define MSTORM_RDMA_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define MSTORM_RDMA_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define MSTORM_RDMA_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define MSTORM_RDMA_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define MSTORM_RDMA_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define MSTORM_RDMA_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define MSTORM_RDMA_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define MSTORM_RDMA_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define MSTORM_RDMA_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define MSTORM_RDMA_CONN_AG_CTX_RULE4EN_SHIFT 7
+	__le16 word0;
+	__le16 word1;
+	__le32 reg0;
+	__le32 reg1;
+};
+
+struct tstorm_rdma_conn_ag_ctx {
+	u8 reserved0;
+	u8 byte1;
+	u8 flags0;
+#define TSTORM_RDMA_CONN_AG_CTX_EXIST_IN_QM0_MASK          0x1
+#define TSTORM_RDMA_CONN_AG_CTX_EXIST_IN_QM0_SHIFT         0
+#define TSTORM_RDMA_CONN_AG_CTX_BIT1_MASK                  0x1
+#define TSTORM_RDMA_CONN_AG_CTX_BIT1_SHIFT                 1
+#define TSTORM_RDMA_CONN_AG_CTX_BIT2_MASK                  0x1
+#define TSTORM_RDMA_CONN_AG_CTX_BIT2_SHIFT                 2
+#define TSTORM_RDMA_CONN_AG_CTX_BIT3_MASK                  0x1
+#define TSTORM_RDMA_CONN_AG_CTX_BIT3_SHIFT                 3
+#define TSTORM_RDMA_CONN_AG_CTX_BIT4_MASK                  0x1
+#define TSTORM_RDMA_CONN_AG_CTX_BIT4_SHIFT                 4
+#define TSTORM_RDMA_CONN_AG_CTX_BIT5_MASK                  0x1
+#define TSTORM_RDMA_CONN_AG_CTX_BIT5_SHIFT                 5
+#define TSTORM_RDMA_CONN_AG_CTX_CF0_MASK                   0x3
+#define TSTORM_RDMA_CONN_AG_CTX_CF0_SHIFT                  6
+	u8 flags1;
+#define TSTORM_RDMA_CONN_AG_CTX_CF1_MASK                   0x3
+#define TSTORM_RDMA_CONN_AG_CTX_CF1_SHIFT                  0
+#define TSTORM_RDMA_CONN_AG_CTX_CF2_MASK                   0x3
+#define TSTORM_RDMA_CONN_AG_CTX_CF2_SHIFT                  2
+#define TSTORM_RDMA_CONN_AG_CTX_TIMER_STOP_ALL_CF_MASK     0x3
+#define TSTORM_RDMA_CONN_AG_CTX_TIMER_STOP_ALL_CF_SHIFT    4
+#define TSTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_MASK           0x3
+#define TSTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_SHIFT          6
+	u8 flags2;
+#define TSTORM_RDMA_CONN_AG_CTX_MSTORM_FLUSH_CF_MASK       0x3
+#define TSTORM_RDMA_CONN_AG_CTX_MSTORM_FLUSH_CF_SHIFT      0
+#define TSTORM_RDMA_CONN_AG_CTX_CF6_MASK                   0x3
+#define TSTORM_RDMA_CONN_AG_CTX_CF6_SHIFT                  2
+#define TSTORM_RDMA_CONN_AG_CTX_CF7_MASK                   0x3
+#define TSTORM_RDMA_CONN_AG_CTX_CF7_SHIFT                  4
+#define TSTORM_RDMA_CONN_AG_CTX_CF8_MASK                   0x3
+#define TSTORM_RDMA_CONN_AG_CTX_CF8_SHIFT                  6
+	u8 flags3;
+#define TSTORM_RDMA_CONN_AG_CTX_CF9_MASK                   0x3
+#define TSTORM_RDMA_CONN_AG_CTX_CF9_SHIFT                  0
+#define TSTORM_RDMA_CONN_AG_CTX_CF10_MASK                  0x3
+#define TSTORM_RDMA_CONN_AG_CTX_CF10_SHIFT                 2
+#define TSTORM_RDMA_CONN_AG_CTX_CF0EN_MASK                 0x1
+#define TSTORM_RDMA_CONN_AG_CTX_CF0EN_SHIFT                4
+#define TSTORM_RDMA_CONN_AG_CTX_CF1EN_MASK                 0x1
+#define TSTORM_RDMA_CONN_AG_CTX_CF1EN_SHIFT                5
+#define TSTORM_RDMA_CONN_AG_CTX_CF2EN_MASK                 0x1
+#define TSTORM_RDMA_CONN_AG_CTX_CF2EN_SHIFT                6
+#define TSTORM_RDMA_CONN_AG_CTX_TIMER_STOP_ALL_CF_EN_MASK  0x1
+#define TSTORM_RDMA_CONN_AG_CTX_TIMER_STOP_ALL_CF_EN_SHIFT 7
+	u8 flags4;
+#define TSTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_EN_MASK        0x1
+#define TSTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_EN_SHIFT       0
+#define TSTORM_RDMA_CONN_AG_CTX_MSTORM_FLUSH_CF_EN_MASK    0x1
+#define TSTORM_RDMA_CONN_AG_CTX_MSTORM_FLUSH_CF_EN_SHIFT   1
+#define TSTORM_RDMA_CONN_AG_CTX_CF6EN_MASK                 0x1
+#define TSTORM_RDMA_CONN_AG_CTX_CF6EN_SHIFT                2
+#define TSTORM_RDMA_CONN_AG_CTX_CF7EN_MASK                 0x1
+#define TSTORM_RDMA_CONN_AG_CTX_CF7EN_SHIFT                3
+#define TSTORM_RDMA_CONN_AG_CTX_CF8EN_MASK                 0x1
+#define TSTORM_RDMA_CONN_AG_CTX_CF8EN_SHIFT                4
+#define TSTORM_RDMA_CONN_AG_CTX_CF9EN_MASK                 0x1
+#define TSTORM_RDMA_CONN_AG_CTX_CF9EN_SHIFT                5
+#define TSTORM_RDMA_CONN_AG_CTX_CF10EN_MASK                0x1
+#define TSTORM_RDMA_CONN_AG_CTX_CF10EN_SHIFT               6
+#define TSTORM_RDMA_CONN_AG_CTX_RULE0EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE0EN_SHIFT              7
+	u8 flags5;
+#define TSTORM_RDMA_CONN_AG_CTX_RULE1EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE1EN_SHIFT              0
+#define TSTORM_RDMA_CONN_AG_CTX_RULE2EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE2EN_SHIFT              1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE3EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE3EN_SHIFT              2
+#define TSTORM_RDMA_CONN_AG_CTX_RULE4EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE4EN_SHIFT              3
+#define TSTORM_RDMA_CONN_AG_CTX_RULE5EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE5EN_SHIFT              4
+#define TSTORM_RDMA_CONN_AG_CTX_RULE6EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE6EN_SHIFT              5
+#define TSTORM_RDMA_CONN_AG_CTX_RULE7EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE7EN_SHIFT              6
+#define TSTORM_RDMA_CONN_AG_CTX_RULE8EN_MASK               0x1
+#define TSTORM_RDMA_CONN_AG_CTX_RULE8EN_SHIFT              7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 reg0;
 	__le32 reg1;
 	__le32 reg2;
@@ -7732,6 +11325,7 @@ struct e4_tstorm_roce_conn_ag_ctx {
 	__le32 reg10;
 };
 
+<<<<<<< HEAD
 /* The roce storm context of Ystorm */
 struct ystorm_roce_conn_st_ctx {
 	struct regpair temp[2];
@@ -7753,21 +11347,468 @@ struct tstorm_roce_conn_st_ctx {
 };
 
 /* The roce storm context of Mstorm */
+=======
+struct tstorm_rdma_task_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	__le16 word0;
+	u8 flags0;
+#define TSTORM_RDMA_TASK_AG_CTX_NIBBLE0_MASK  0xF
+#define TSTORM_RDMA_TASK_AG_CTX_NIBBLE0_SHIFT 0
+#define TSTORM_RDMA_TASK_AG_CTX_BIT0_MASK     0x1
+#define TSTORM_RDMA_TASK_AG_CTX_BIT0_SHIFT    4
+#define TSTORM_RDMA_TASK_AG_CTX_BIT1_MASK     0x1
+#define TSTORM_RDMA_TASK_AG_CTX_BIT1_SHIFT    5
+#define TSTORM_RDMA_TASK_AG_CTX_BIT2_MASK     0x1
+#define TSTORM_RDMA_TASK_AG_CTX_BIT2_SHIFT    6
+#define TSTORM_RDMA_TASK_AG_CTX_BIT3_MASK     0x1
+#define TSTORM_RDMA_TASK_AG_CTX_BIT3_SHIFT    7
+	u8 flags1;
+#define TSTORM_RDMA_TASK_AG_CTX_BIT4_MASK     0x1
+#define TSTORM_RDMA_TASK_AG_CTX_BIT4_SHIFT    0
+#define TSTORM_RDMA_TASK_AG_CTX_BIT5_MASK     0x1
+#define TSTORM_RDMA_TASK_AG_CTX_BIT5_SHIFT    1
+#define TSTORM_RDMA_TASK_AG_CTX_CF0_MASK      0x3
+#define TSTORM_RDMA_TASK_AG_CTX_CF0_SHIFT     2
+#define TSTORM_RDMA_TASK_AG_CTX_CF1_MASK      0x3
+#define TSTORM_RDMA_TASK_AG_CTX_CF1_SHIFT     4
+#define TSTORM_RDMA_TASK_AG_CTX_CF2_MASK      0x3
+#define TSTORM_RDMA_TASK_AG_CTX_CF2_SHIFT     6
+	u8 flags2;
+#define TSTORM_RDMA_TASK_AG_CTX_CF3_MASK      0x3
+#define TSTORM_RDMA_TASK_AG_CTX_CF3_SHIFT     0
+#define TSTORM_RDMA_TASK_AG_CTX_CF4_MASK      0x3
+#define TSTORM_RDMA_TASK_AG_CTX_CF4_SHIFT     2
+#define TSTORM_RDMA_TASK_AG_CTX_CF5_MASK      0x3
+#define TSTORM_RDMA_TASK_AG_CTX_CF5_SHIFT     4
+#define TSTORM_RDMA_TASK_AG_CTX_CF6_MASK      0x3
+#define TSTORM_RDMA_TASK_AG_CTX_CF6_SHIFT     6
+	u8 flags3;
+#define TSTORM_RDMA_TASK_AG_CTX_CF7_MASK      0x3
+#define TSTORM_RDMA_TASK_AG_CTX_CF7_SHIFT     0
+#define TSTORM_RDMA_TASK_AG_CTX_CF0EN_MASK    0x1
+#define TSTORM_RDMA_TASK_AG_CTX_CF0EN_SHIFT   2
+#define TSTORM_RDMA_TASK_AG_CTX_CF1EN_MASK    0x1
+#define TSTORM_RDMA_TASK_AG_CTX_CF1EN_SHIFT   3
+#define TSTORM_RDMA_TASK_AG_CTX_CF2EN_MASK    0x1
+#define TSTORM_RDMA_TASK_AG_CTX_CF2EN_SHIFT   4
+#define TSTORM_RDMA_TASK_AG_CTX_CF3EN_MASK    0x1
+#define TSTORM_RDMA_TASK_AG_CTX_CF3EN_SHIFT   5
+#define TSTORM_RDMA_TASK_AG_CTX_CF4EN_MASK    0x1
+#define TSTORM_RDMA_TASK_AG_CTX_CF4EN_SHIFT   6
+#define TSTORM_RDMA_TASK_AG_CTX_CF5EN_MASK    0x1
+#define TSTORM_RDMA_TASK_AG_CTX_CF5EN_SHIFT   7
+	u8 flags4;
+#define TSTORM_RDMA_TASK_AG_CTX_CF6EN_MASK    0x1
+#define TSTORM_RDMA_TASK_AG_CTX_CF6EN_SHIFT   0
+#define TSTORM_RDMA_TASK_AG_CTX_CF7EN_MASK    0x1
+#define TSTORM_RDMA_TASK_AG_CTX_CF7EN_SHIFT   1
+#define TSTORM_RDMA_TASK_AG_CTX_RULE0EN_MASK  0x1
+#define TSTORM_RDMA_TASK_AG_CTX_RULE0EN_SHIFT 2
+#define TSTORM_RDMA_TASK_AG_CTX_RULE1EN_MASK  0x1
+#define TSTORM_RDMA_TASK_AG_CTX_RULE1EN_SHIFT 3
+#define TSTORM_RDMA_TASK_AG_CTX_RULE2EN_MASK  0x1
+#define TSTORM_RDMA_TASK_AG_CTX_RULE2EN_SHIFT 4
+#define TSTORM_RDMA_TASK_AG_CTX_RULE3EN_MASK  0x1
+#define TSTORM_RDMA_TASK_AG_CTX_RULE3EN_SHIFT 5
+#define TSTORM_RDMA_TASK_AG_CTX_RULE4EN_MASK  0x1
+#define TSTORM_RDMA_TASK_AG_CTX_RULE4EN_SHIFT 6
+#define TSTORM_RDMA_TASK_AG_CTX_RULE5EN_MASK  0x1
+#define TSTORM_RDMA_TASK_AG_CTX_RULE5EN_SHIFT 7
+	u8 byte2;
+	__le16 word1;
+	__le32 reg0;
+	u8 byte3;
+	u8 byte4;
+	__le16 word2;
+	__le16 word3;
+	__le16 word4;
+	__le32 reg1;
+	__le32 reg2;
+};
+
+struct ustorm_rdma_conn_ag_ctx {
+	u8 reserved;
+	u8 byte1;
+	u8 flags0;
+#define USTORM_RDMA_CONN_AG_CTX_EXIST_IN_QM0_MASK     0x1
+#define USTORM_RDMA_CONN_AG_CTX_EXIST_IN_QM0_SHIFT    0
+#define USTORM_RDMA_CONN_AG_CTX_BIT1_MASK             0x1
+#define USTORM_RDMA_CONN_AG_CTX_BIT1_SHIFT            1
+#define USTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_MASK      0x3
+#define USTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_SHIFT     2
+#define USTORM_RDMA_CONN_AG_CTX_CF1_MASK              0x3
+#define USTORM_RDMA_CONN_AG_CTX_CF1_SHIFT             4
+#define USTORM_RDMA_CONN_AG_CTX_CF2_MASK              0x3
+#define USTORM_RDMA_CONN_AG_CTX_CF2_SHIFT             6
+	u8 flags1;
+#define USTORM_RDMA_CONN_AG_CTX_CF3_MASK              0x3
+#define USTORM_RDMA_CONN_AG_CTX_CF3_SHIFT             0
+#define USTORM_RDMA_CONN_AG_CTX_CQ_ARM_SE_CF_MASK     0x3
+#define USTORM_RDMA_CONN_AG_CTX_CQ_ARM_SE_CF_SHIFT    2
+#define USTORM_RDMA_CONN_AG_CTX_CQ_ARM_CF_MASK        0x3
+#define USTORM_RDMA_CONN_AG_CTX_CQ_ARM_CF_SHIFT       4
+#define USTORM_RDMA_CONN_AG_CTX_CF6_MASK              0x3
+#define USTORM_RDMA_CONN_AG_CTX_CF6_SHIFT             6
+	u8 flags2;
+#define USTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_EN_MASK   0x1
+#define USTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_EN_SHIFT  0
+#define USTORM_RDMA_CONN_AG_CTX_CF1EN_MASK            0x1
+#define USTORM_RDMA_CONN_AG_CTX_CF1EN_SHIFT           1
+#define USTORM_RDMA_CONN_AG_CTX_CF2EN_MASK            0x1
+#define USTORM_RDMA_CONN_AG_CTX_CF2EN_SHIFT           2
+#define USTORM_RDMA_CONN_AG_CTX_CF3EN_MASK            0x1
+#define USTORM_RDMA_CONN_AG_CTX_CF3EN_SHIFT           3
+#define USTORM_RDMA_CONN_AG_CTX_CQ_ARM_SE_CF_EN_MASK  0x1
+#define USTORM_RDMA_CONN_AG_CTX_CQ_ARM_SE_CF_EN_SHIFT 4
+#define USTORM_RDMA_CONN_AG_CTX_CQ_ARM_CF_EN_MASK     0x1
+#define USTORM_RDMA_CONN_AG_CTX_CQ_ARM_CF_EN_SHIFT    5
+#define USTORM_RDMA_CONN_AG_CTX_CF6EN_MASK            0x1
+#define USTORM_RDMA_CONN_AG_CTX_CF6EN_SHIFT           6
+#define USTORM_RDMA_CONN_AG_CTX_CQ_SE_EN_MASK         0x1
+#define USTORM_RDMA_CONN_AG_CTX_CQ_SE_EN_SHIFT        7
+	u8 flags3;
+#define USTORM_RDMA_CONN_AG_CTX_CQ_EN_MASK            0x1
+#define USTORM_RDMA_CONN_AG_CTX_CQ_EN_SHIFT           0
+#define USTORM_RDMA_CONN_AG_CTX_RULE2EN_MASK          0x1
+#define USTORM_RDMA_CONN_AG_CTX_RULE2EN_SHIFT         1
+#define USTORM_RDMA_CONN_AG_CTX_RULE3EN_MASK          0x1
+#define USTORM_RDMA_CONN_AG_CTX_RULE3EN_SHIFT         2
+#define USTORM_RDMA_CONN_AG_CTX_RULE4EN_MASK          0x1
+#define USTORM_RDMA_CONN_AG_CTX_RULE4EN_SHIFT         3
+#define USTORM_RDMA_CONN_AG_CTX_RULE5EN_MASK          0x1
+#define USTORM_RDMA_CONN_AG_CTX_RULE5EN_SHIFT         4
+#define USTORM_RDMA_CONN_AG_CTX_RULE6EN_MASK          0x1
+#define USTORM_RDMA_CONN_AG_CTX_RULE6EN_SHIFT         5
+#define USTORM_RDMA_CONN_AG_CTX_RULE7EN_MASK          0x1
+#define USTORM_RDMA_CONN_AG_CTX_RULE7EN_SHIFT         6
+#define USTORM_RDMA_CONN_AG_CTX_RULE8EN_MASK          0x1
+#define USTORM_RDMA_CONN_AG_CTX_RULE8EN_SHIFT         7
+	u8 byte2;
+	u8 byte3;
+	__le16 conn_dpi;
+	__le16 word1;
+	__le32 cq_cons;
+	__le32 cq_se_prod;
+	__le32 cq_prod;
+	__le32 reg3;
+	__le16 int_timeout;
+	__le16 word3;
+};
+
+struct xstorm_rdma_conn_ag_ctx {
+	u8 reserved0;
+	u8 state;
+	u8 flags0;
+#define XSTORM_RDMA_CONN_AG_CTX_EXIST_IN_QM0_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_EXIST_IN_QM0_SHIFT     0
+#define XSTORM_RDMA_CONN_AG_CTX_BIT1_MASK              0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT1_SHIFT             1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT2_MASK              0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT2_SHIFT             2
+#define XSTORM_RDMA_CONN_AG_CTX_EXIST_IN_QM3_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_EXIST_IN_QM3_SHIFT     3
+#define XSTORM_RDMA_CONN_AG_CTX_BIT4_MASK              0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT4_SHIFT             4
+#define XSTORM_RDMA_CONN_AG_CTX_BIT5_MASK              0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT5_SHIFT             5
+#define XSTORM_RDMA_CONN_AG_CTX_BIT6_MASK              0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT6_SHIFT             6
+#define XSTORM_RDMA_CONN_AG_CTX_BIT7_MASK              0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT7_SHIFT             7
+	u8 flags1;
+#define XSTORM_RDMA_CONN_AG_CTX_BIT8_MASK              0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT8_SHIFT             0
+#define XSTORM_RDMA_CONN_AG_CTX_BIT9_MASK              0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT9_SHIFT             1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT10_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT10_SHIFT            2
+#define XSTORM_RDMA_CONN_AG_CTX_BIT11_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT11_SHIFT            3
+#define XSTORM_RDMA_CONN_AG_CTX_BIT12_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT12_SHIFT            4
+#define XSTORM_RDMA_CONN_AG_CTX_MSTORM_FLUSH_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_MSTORM_FLUSH_SHIFT     5
+#define XSTORM_RDMA_CONN_AG_CTX_BIT14_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT14_SHIFT            6
+#define XSTORM_RDMA_CONN_AG_CTX_YSTORM_FLUSH_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_YSTORM_FLUSH_SHIFT     7
+	u8 flags2;
+#define XSTORM_RDMA_CONN_AG_CTX_CF0_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF0_SHIFT              0
+#define XSTORM_RDMA_CONN_AG_CTX_CF1_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF1_SHIFT              2
+#define XSTORM_RDMA_CONN_AG_CTX_CF2_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF2_SHIFT              4
+#define XSTORM_RDMA_CONN_AG_CTX_CF3_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF3_SHIFT              6
+	u8 flags3;
+#define XSTORM_RDMA_CONN_AG_CTX_CF4_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF4_SHIFT              0
+#define XSTORM_RDMA_CONN_AG_CTX_CF5_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF5_SHIFT              2
+#define XSTORM_RDMA_CONN_AG_CTX_CF6_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF6_SHIFT              4
+#define XSTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_MASK       0x3
+#define XSTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_SHIFT      6
+	u8 flags4;
+#define XSTORM_RDMA_CONN_AG_CTX_CF8_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF8_SHIFT              0
+#define XSTORM_RDMA_CONN_AG_CTX_CF9_MASK               0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF9_SHIFT              2
+#define XSTORM_RDMA_CONN_AG_CTX_CF10_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF10_SHIFT             4
+#define XSTORM_RDMA_CONN_AG_CTX_CF11_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF11_SHIFT             6
+	u8 flags5;
+#define XSTORM_RDMA_CONN_AG_CTX_CF12_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF12_SHIFT             0
+#define XSTORM_RDMA_CONN_AG_CTX_CF13_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF13_SHIFT             2
+#define XSTORM_RDMA_CONN_AG_CTX_CF14_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF14_SHIFT             4
+#define XSTORM_RDMA_CONN_AG_CTX_CF15_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF15_SHIFT             6
+	u8 flags6;
+#define XSTORM_RDMA_CONN_AG_CTX_CF16_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF16_SHIFT             0
+#define XSTORM_RDMA_CONN_AG_CTX_CF17_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF17_SHIFT             2
+#define XSTORM_RDMA_CONN_AG_CTX_CF18_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF18_SHIFT             4
+#define XSTORM_RDMA_CONN_AG_CTX_CF19_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF19_SHIFT             6
+	u8 flags7;
+#define XSTORM_RDMA_CONN_AG_CTX_CF20_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF20_SHIFT             0
+#define XSTORM_RDMA_CONN_AG_CTX_CF21_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF21_SHIFT             2
+#define XSTORM_RDMA_CONN_AG_CTX_SLOW_PATH_MASK         0x3
+#define XSTORM_RDMA_CONN_AG_CTX_SLOW_PATH_SHIFT        4
+#define XSTORM_RDMA_CONN_AG_CTX_CF0EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF0EN_SHIFT            6
+#define XSTORM_RDMA_CONN_AG_CTX_CF1EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF1EN_SHIFT            7
+	u8 flags8;
+#define XSTORM_RDMA_CONN_AG_CTX_CF2EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF2EN_SHIFT            0
+#define XSTORM_RDMA_CONN_AG_CTX_CF3EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF3EN_SHIFT            1
+#define XSTORM_RDMA_CONN_AG_CTX_CF4EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF4EN_SHIFT            2
+#define XSTORM_RDMA_CONN_AG_CTX_CF5EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF5EN_SHIFT            3
+#define XSTORM_RDMA_CONN_AG_CTX_CF6EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF6EN_SHIFT            4
+#define XSTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_EN_MASK    0x1
+#define XSTORM_RDMA_CONN_AG_CTX_FLUSH_Q0_CF_EN_SHIFT   5
+#define XSTORM_RDMA_CONN_AG_CTX_CF8EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF8EN_SHIFT            6
+#define XSTORM_RDMA_CONN_AG_CTX_CF9EN_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF9EN_SHIFT            7
+	u8 flags9;
+#define XSTORM_RDMA_CONN_AG_CTX_CF10EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF10EN_SHIFT           0
+#define XSTORM_RDMA_CONN_AG_CTX_CF11EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF11EN_SHIFT           1
+#define XSTORM_RDMA_CONN_AG_CTX_CF12EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF12EN_SHIFT           2
+#define XSTORM_RDMA_CONN_AG_CTX_CF13EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF13EN_SHIFT           3
+#define XSTORM_RDMA_CONN_AG_CTX_CF14EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF14EN_SHIFT           4
+#define XSTORM_RDMA_CONN_AG_CTX_CF15EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF15EN_SHIFT           5
+#define XSTORM_RDMA_CONN_AG_CTX_CF16EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF16EN_SHIFT           6
+#define XSTORM_RDMA_CONN_AG_CTX_CF17EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF17EN_SHIFT           7
+	u8 flags10;
+#define XSTORM_RDMA_CONN_AG_CTX_CF18EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF18EN_SHIFT           0
+#define XSTORM_RDMA_CONN_AG_CTX_CF19EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF19EN_SHIFT           1
+#define XSTORM_RDMA_CONN_AG_CTX_CF20EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF20EN_SHIFT           2
+#define XSTORM_RDMA_CONN_AG_CTX_CF21EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF21EN_SHIFT           3
+#define XSTORM_RDMA_CONN_AG_CTX_SLOW_PATH_EN_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_SLOW_PATH_EN_SHIFT     4
+#define XSTORM_RDMA_CONN_AG_CTX_CF23EN_MASK            0x1
+#define XSTORM_RDMA_CONN_AG_CTX_CF23EN_SHIFT           5
+#define XSTORM_RDMA_CONN_AG_CTX_RULE0EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE0EN_SHIFT          6
+#define XSTORM_RDMA_CONN_AG_CTX_RULE1EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE1EN_SHIFT          7
+	u8 flags11;
+#define XSTORM_RDMA_CONN_AG_CTX_RULE2EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE2EN_SHIFT          0
+#define XSTORM_RDMA_CONN_AG_CTX_RULE3EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE3EN_SHIFT          1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE4EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE4EN_SHIFT          2
+#define XSTORM_RDMA_CONN_AG_CTX_RULE5EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE5EN_SHIFT          3
+#define XSTORM_RDMA_CONN_AG_CTX_RULE6EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE6EN_SHIFT          4
+#define XSTORM_RDMA_CONN_AG_CTX_RULE7EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE7EN_SHIFT          5
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED1_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED1_SHIFT     6
+#define XSTORM_RDMA_CONN_AG_CTX_RULE9EN_MASK           0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE9EN_SHIFT          7
+	u8 flags12;
+#define XSTORM_RDMA_CONN_AG_CTX_RULE10EN_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE10EN_SHIFT         0
+#define XSTORM_RDMA_CONN_AG_CTX_RULE11EN_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE11EN_SHIFT         1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED2_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED2_SHIFT     2
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED3_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED3_SHIFT     3
+#define XSTORM_RDMA_CONN_AG_CTX_RULE14EN_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE14EN_SHIFT         4
+#define XSTORM_RDMA_CONN_AG_CTX_RULE15EN_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE15EN_SHIFT         5
+#define XSTORM_RDMA_CONN_AG_CTX_RULE16EN_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE16EN_SHIFT         6
+#define XSTORM_RDMA_CONN_AG_CTX_RULE17EN_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE17EN_SHIFT         7
+	u8 flags13;
+#define XSTORM_RDMA_CONN_AG_CTX_RULE18EN_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE18EN_SHIFT         0
+#define XSTORM_RDMA_CONN_AG_CTX_RULE19EN_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RULE19EN_SHIFT         1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED4_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED4_SHIFT     2
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED5_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED5_SHIFT     3
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED6_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED6_SHIFT     4
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED7_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED7_SHIFT     5
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED8_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED8_SHIFT     6
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED9_MASK      0x1
+#define XSTORM_RDMA_CONN_AG_CTX_A0_RESERVED9_SHIFT     7
+	u8 flags14;
+#define XSTORM_RDMA_CONN_AG_CTX_MIGRATION_MASK         0x1
+#define XSTORM_RDMA_CONN_AG_CTX_MIGRATION_SHIFT        0
+#define XSTORM_RDMA_CONN_AG_CTX_BIT17_MASK             0x1
+#define XSTORM_RDMA_CONN_AG_CTX_BIT17_SHIFT            1
+#define XSTORM_RDMA_CONN_AG_CTX_DPM_PORT_NUM_MASK      0x3
+#define XSTORM_RDMA_CONN_AG_CTX_DPM_PORT_NUM_SHIFT     2
+#define XSTORM_RDMA_CONN_AG_CTX_RESERVED_MASK          0x1
+#define XSTORM_RDMA_CONN_AG_CTX_RESERVED_SHIFT         4
+#define XSTORM_RDMA_CONN_AG_CTX_ROCE_EDPM_ENABLE_MASK  0x1
+#define XSTORM_RDMA_CONN_AG_CTX_ROCE_EDPM_ENABLE_SHIFT 5
+#define XSTORM_RDMA_CONN_AG_CTX_CF23_MASK              0x3
+#define XSTORM_RDMA_CONN_AG_CTX_CF23_SHIFT             6
+	u8 byte2;
+	__le16 physical_q0;
+	__le16 word1;
+	__le16 word2;
+	__le16 word3;
+	__le16 word4;
+	__le16 word5;
+	__le16 conn_dpi;
+	u8 byte3;
+	u8 byte4;
+	u8 byte5;
+	u8 byte6;
+	__le32 reg0;
+	__le32 reg1;
+	__le32 reg2;
+	__le32 snd_nxt_psn;
+	__le32 reg4;
+	__le32 reg5;
+	__le32 reg6;
+};
+
+struct ystorm_rdma_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define YSTORM_RDMA_CONN_AG_CTX_BIT0_MASK     0x1
+#define YSTORM_RDMA_CONN_AG_CTX_BIT0_SHIFT    0
+#define YSTORM_RDMA_CONN_AG_CTX_BIT1_MASK     0x1
+#define YSTORM_RDMA_CONN_AG_CTX_BIT1_SHIFT    1
+#define YSTORM_RDMA_CONN_AG_CTX_CF0_MASK      0x3
+#define YSTORM_RDMA_CONN_AG_CTX_CF0_SHIFT     2
+#define YSTORM_RDMA_CONN_AG_CTX_CF1_MASK      0x3
+#define YSTORM_RDMA_CONN_AG_CTX_CF1_SHIFT     4
+#define YSTORM_RDMA_CONN_AG_CTX_CF2_MASK      0x3
+#define YSTORM_RDMA_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define YSTORM_RDMA_CONN_AG_CTX_CF0EN_MASK    0x1
+#define YSTORM_RDMA_CONN_AG_CTX_CF0EN_SHIFT   0
+#define YSTORM_RDMA_CONN_AG_CTX_CF1EN_MASK    0x1
+#define YSTORM_RDMA_CONN_AG_CTX_CF1EN_SHIFT   1
+#define YSTORM_RDMA_CONN_AG_CTX_CF2EN_MASK    0x1
+#define YSTORM_RDMA_CONN_AG_CTX_CF2EN_SHIFT   2
+#define YSTORM_RDMA_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define YSTORM_RDMA_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define YSTORM_RDMA_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define YSTORM_RDMA_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define YSTORM_RDMA_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define YSTORM_RDMA_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define YSTORM_RDMA_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define YSTORM_RDMA_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define YSTORM_RDMA_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define YSTORM_RDMA_CONN_AG_CTX_RULE4EN_SHIFT 7
+	u8 byte2;
+	u8 byte3;
+	__le16 word0;
+	__le32 reg0;
+	__le32 reg1;
+	__le16 word1;
+	__le16 word2;
+	__le16 word3;
+	__le16 word4;
+	__le32 reg2;
+	__le32 reg3;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mstorm_roce_conn_st_ctx {
 	struct regpair temp[6];
 };
 
+<<<<<<< HEAD
 /* The roce storm context of Ystorm */
+=======
+struct pstorm_roce_conn_st_ctx {
+	struct regpair temp[16];
+};
+
+struct ystorm_roce_conn_st_ctx {
+	struct regpair temp[2];
+};
+
+struct xstorm_roce_conn_st_ctx {
+	struct regpair temp[24];
+};
+
+struct tstorm_roce_conn_st_ctx {
+	struct regpair temp[30];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ustorm_roce_conn_st_ctx {
 	struct regpair temp[12];
 };
 
+<<<<<<< HEAD
 /* roce connection context */
 struct e4_roce_conn_context {
+=======
+struct roce_conn_context {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ystorm_roce_conn_st_ctx ystorm_st_context;
 	struct regpair ystorm_st_padding[2];
 	struct pstorm_roce_conn_st_ctx pstorm_st_context;
 	struct xstorm_roce_conn_st_ctx xstorm_st_context;
+<<<<<<< HEAD
 	struct e4_xstorm_roce_conn_ag_ctx xstorm_ag_context;
 	struct e4_tstorm_roce_conn_ag_ctx tstorm_ag_context;
 	struct timers_context timer_context;
@@ -7806,6 +11847,35 @@ struct roce_create_qp_req_ramrod_data {
 #define ROCE_CREATE_QP_REQ_RAMROD_DATA_ERR_RETRY_CNT_SHIFT		8
 #define ROCE_CREATE_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_MASK			0xF
 #define ROCE_CREATE_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_SHIFT		12
+=======
+	struct regpair xstorm_st_padding[2];
+	struct xstorm_rdma_conn_ag_ctx xstorm_ag_context;
+	struct tstorm_rdma_conn_ag_ctx tstorm_ag_context;
+	struct timers_context timer_context;
+	struct ustorm_rdma_conn_ag_ctx ustorm_ag_context;
+	struct tstorm_roce_conn_st_ctx tstorm_st_context;
+	struct mstorm_roce_conn_st_ctx mstorm_st_context;
+	struct ustorm_roce_conn_st_ctx ustorm_st_context;
+	struct regpair ustorm_st_padding[2];
+};
+
+struct roce_create_qp_req_ramrod_data {
+	__le16 flags;
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_ROCE_FLAVOR_MASK          0x3
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_ROCE_FLAVOR_SHIFT         0
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_FMR_AND_RESERVED_EN_MASK  0x1
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_FMR_AND_RESERVED_EN_SHIFT 2
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_SIGNALED_COMP_MASK        0x1
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_SIGNALED_COMP_SHIFT       3
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_PRI_MASK                  0x7
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_PRI_SHIFT                 4
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_RESERVED_MASK             0x1
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_RESERVED_SHIFT            7
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_ERR_RETRY_CNT_MASK        0xF
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_ERR_RETRY_CNT_SHIFT       8
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_MASK          0xF
+#define ROCE_CREATE_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_SHIFT         12
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 max_ord;
 	u8 traffic_class;
 	u8 hop_limit;
@@ -7827,15 +11897,23 @@ struct roce_create_qp_req_ramrod_data {
 	__le16 udp_src_port;
 	__le32 src_gid[4];
 	__le32 dst_gid[4];
+<<<<<<< HEAD
 	__le32 cq_cid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct regpair qp_handle_for_cqe;
 	struct regpair qp_handle_for_async;
 	u8 stats_counter_id;
 	u8 reserved3[7];
+<<<<<<< HEAD
+=======
+	__le32 cq_cid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 regular_latency_phy_queue;
 	__le16 dpi;
 };
 
+<<<<<<< HEAD
 /* roce create qp responder ramrod data */
 struct roce_create_qp_resp_ramrod_data {
 	__le32 flags;
@@ -7862,6 +11940,28 @@ struct roce_create_qp_resp_ramrod_data {
 #define ROCE_CREATE_QP_RESP_RAMROD_DATA_RESERVED_MASK             0x7FFF
 #define ROCE_CREATE_QP_RESP_RAMROD_DATA_RESERVED_SHIFT            17
 	__le16 xrc_domain;
+=======
+struct roce_create_qp_resp_ramrod_data {
+	__le16 flags;
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_ROCE_FLAVOR_MASK          0x3
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_ROCE_FLAVOR_SHIFT         0
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_RDMA_RD_EN_MASK           0x1
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_RDMA_RD_EN_SHIFT          2
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_RDMA_WR_EN_MASK           0x1
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_RDMA_WR_EN_SHIFT          3
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_ATOMIC_EN_MASK            0x1
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_ATOMIC_EN_SHIFT           4
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_SRQ_FLG_MASK              0x1
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_SRQ_FLG_SHIFT             5
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_E2E_FLOW_CONTROL_EN_MASK  0x1
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_E2E_FLOW_CONTROL_EN_SHIFT 6
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_RESERVED_KEY_EN_MASK	0x1
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_RESERVED_KEY_EN_SHIFT	7
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_PRI_MASK                  0x7
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_PRI_SHIFT                 8
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_MIN_RNR_NAK_TIMER_MASK    0x1F
+#define ROCE_CREATE_QP_RESP_RAMROD_DATA_MIN_RNR_NAK_TIMER_SHIFT   11
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 max_ird;
 	u8 traffic_class;
 	u8 hop_limit;
@@ -7887,12 +11987,17 @@ struct roce_create_qp_resp_ramrod_data {
 	struct regpair qp_handle_for_cqe;
 	struct regpair qp_handle_for_async;
 	__le16 low_latency_phy_queue;
+<<<<<<< HEAD
 	u8 reserved2[2];
+=======
+	u8 reserved2[6];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 cq_cid;
 	__le16 regular_latency_phy_queue;
 	__le16 dpi;
 };
 
+<<<<<<< HEAD
 /* roce DCQCN received statistics */
 struct roce_dcqcn_received_stats {
 	struct regpair ecn_pkt_rcv;
@@ -7911,10 +12016,18 @@ struct roce_destroy_qp_req_output_params {
 };
 
 /* RoCE destroy qp requester ramrod data */
+=======
+struct roce_destroy_qp_req_output_params {
+	__le32 num_bound_mw;
+	__le32 cq_prod;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct roce_destroy_qp_req_ramrod_data {
 	struct regpair output_params_addr;
 };
 
+<<<<<<< HEAD
 /* RoCE destroy qp responder output params */
 struct roce_destroy_qp_resp_output_params {
 	__le32 cq_prod;
@@ -7922,10 +12035,18 @@ struct roce_destroy_qp_resp_output_params {
 };
 
 /* RoCE destroy qp responder ramrod data */
+=======
+struct roce_destroy_qp_resp_output_params {
+	__le32 num_invalidated_mw;
+	__le32 cq_prod;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct roce_destroy_qp_resp_ramrod_data {
 	struct regpair output_params_addr;
 };
 
+<<<<<<< HEAD
 /* roce error statistics */
 struct roce_error_stats {
 	__le32 resp_remote_access_errors;
@@ -7947,6 +12068,16 @@ struct roce_events_stats {
 };
 
 /* roce slow path EQ cmd IDs */
+=======
+struct roce_events_stats {
+	__le16 silent_drops;
+	__le16 rnr_naks_sent;
+	__le32 retransmit_count;
+	__le32 icrc_error_count;
+	__le32 reserved;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum roce_event_opcode {
 	ROCE_EVENT_CREATE_QP = 11,
 	ROCE_EVENT_MODIFY_QP,
@@ -7957,24 +12088,33 @@ enum roce_event_opcode {
 	MAX_ROCE_EVENT_OPCODE
 };
 
+<<<<<<< HEAD
 /* roce func init ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct roce_init_func_params {
 	u8 ll2_queue_id;
 	u8 cnp_vlan_priority;
 	u8 cnp_dscp;
 	u8 reserved;
 	__le32 cnp_send_timeout;
+<<<<<<< HEAD
 	__le16 rl_offset;
 	u8 rl_count_log;
 	u8 reserved1[5];
 };
 
 /* roce func init ramrod data */
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct roce_init_func_ramrod_data {
 	struct rdma_init_func_ramrod_data rdma;
 	struct roce_init_func_params roce;
 };
 
+<<<<<<< HEAD
 /* roce modify qp requester ramrod data */
 struct roce_modify_qp_req_ramrod_data {
 	__le16 flags;
@@ -8009,6 +12149,39 @@ struct roce_modify_qp_req_ramrod_data {
 #define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ERR_RETRY_CNT_SHIFT	0
 #define ROCE_MODIFY_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_MASK		0xF
 #define ROCE_MODIFY_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_SHIFT	4
+=======
+struct roce_modify_qp_req_ramrod_data {
+	__le16 flags;
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_MOVE_TO_ERR_FLG_MASK      0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_MOVE_TO_ERR_FLG_SHIFT     0
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_MOVE_TO_SQD_FLG_MASK      0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_MOVE_TO_SQD_FLG_SHIFT     1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_EN_SQD_ASYNC_NOTIFY_MASK  0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_EN_SQD_ASYNC_NOTIFY_SHIFT 2
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_P_KEY_FLG_MASK            0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_P_KEY_FLG_SHIFT           3
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ADDRESS_VECTOR_FLG_MASK   0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ADDRESS_VECTOR_FLG_SHIFT  4
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_MAX_ORD_FLG_MASK          0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_MAX_ORD_FLG_SHIFT         5
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_FLG_MASK      0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_FLG_SHIFT     6
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ERR_RETRY_CNT_FLG_MASK    0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ERR_RETRY_CNT_FLG_SHIFT   7
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ACK_TIMEOUT_FLG_MASK      0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ACK_TIMEOUT_FLG_SHIFT     8
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_PRI_FLG_MASK              0x1
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_PRI_FLG_SHIFT             9
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_PRI_MASK                  0x7
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_PRI_SHIFT                 10
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_RESERVED1_MASK            0x7
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_RESERVED1_SHIFT           13
+	u8 fields;
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ERR_RETRY_CNT_MASK        0xF
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_ERR_RETRY_CNT_SHIFT       0
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_MASK          0xF
+#define ROCE_MODIFY_QP_REQ_RAMROD_DATA_RNR_NAK_CNT_SHIFT         4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 max_ord;
 	u8 traffic_class;
 	u8 hop_limit;
@@ -8017,13 +12190,18 @@ struct roce_modify_qp_req_ramrod_data {
 	__le32 ack_timeout_val;
 	__le16 mtu;
 	__le16 reserved2;
+<<<<<<< HEAD
 	__le32 reserved3[2];
 	__le16 low_latency_phy_queue;
 	__le16 regular_latency_phy_queue;
+=======
+	__le32 reserved3[3];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 src_gid[4];
 	__le32 dst_gid[4];
 };
 
+<<<<<<< HEAD
 /* roce modify qp responder ramrod data */
 struct roce_modify_qp_resp_ramrod_data {
 	__le16 flags;
@@ -8056,19 +12234,55 @@ struct roce_modify_qp_resp_ramrod_data {
 #define ROCE_MODIFY_QP_RESP_RAMROD_DATA_PRI_SHIFT		0
 #define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MIN_RNR_NAK_TIMER_MASK	0x1F
 #define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MIN_RNR_NAK_TIMER_SHIFT	3
+=======
+struct roce_modify_qp_resp_ramrod_data {
+	__le16 flags;
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MOVE_TO_ERR_FLG_MASK        0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MOVE_TO_ERR_FLG_SHIFT       0
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_RDMA_RD_EN_MASK             0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_RDMA_RD_EN_SHIFT            1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_RDMA_WR_EN_MASK             0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_RDMA_WR_EN_SHIFT            2
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_ATOMIC_EN_MASK              0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_ATOMIC_EN_SHIFT             3
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_P_KEY_FLG_MASK              0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_P_KEY_FLG_SHIFT             4
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_ADDRESS_VECTOR_FLG_MASK     0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_ADDRESS_VECTOR_FLG_SHIFT    5
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MAX_IRD_FLG_MASK            0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MAX_IRD_FLG_SHIFT           6
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_PRI_FLG_MASK                0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_PRI_FLG_SHIFT               7
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MIN_RNR_NAK_TIMER_FLG_MASK  0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MIN_RNR_NAK_TIMER_FLG_SHIFT 8
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_RDMA_OPS_EN_FLG_MASK        0x1
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_RDMA_OPS_EN_FLG_SHIFT       9
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_RESERVED1_MASK              0x3F
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_RESERVED1_SHIFT             10
+	u8 fields;
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_PRI_MASK                    0x7
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_PRI_SHIFT                   0
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MIN_RNR_NAK_TIMER_MASK      0x1F
+#define ROCE_MODIFY_QP_RESP_RAMROD_DATA_MIN_RNR_NAK_TIMER_SHIFT     3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 max_ird;
 	u8 traffic_class;
 	u8 hop_limit;
 	__le16 p_key;
 	__le32 flow_label;
 	__le16 mtu;
+<<<<<<< HEAD
 	__le16 low_latency_phy_queue;
 	__le16 regular_latency_phy_queue;
 	u8 reserved2[6];
+=======
+	__le16 reserved2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 src_gid[4];
 	__le32 dst_gid[4];
 };
 
+<<<<<<< HEAD
 /* RoCE query qp requester output params */
 struct roce_query_qp_req_output_params {
 	__le32 psn;
@@ -8082,11 +12296,27 @@ struct roce_query_qp_req_output_params {
 };
 
 /* RoCE query qp requester ramrod data */
+=======
+struct roce_query_qp_req_output_params {
+	__le32 psn;
+	__le32 flags;
+#define ROCE_QUERY_QP_REQ_OUTPUT_PARAMS_ERR_FLG_MASK          0x1
+#define ROCE_QUERY_QP_REQ_OUTPUT_PARAMS_ERR_FLG_SHIFT         0
+#define ROCE_QUERY_QP_REQ_OUTPUT_PARAMS_SQ_DRAINING_FLG_MASK  0x1
+#define ROCE_QUERY_QP_REQ_OUTPUT_PARAMS_SQ_DRAINING_FLG_SHIFT 1
+#define ROCE_QUERY_QP_REQ_OUTPUT_PARAMS_RESERVED0_MASK        0x3FFFFFFF
+#define ROCE_QUERY_QP_REQ_OUTPUT_PARAMS_RESERVED0_SHIFT       2
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct roce_query_qp_req_ramrod_data {
 	struct regpair output_params_addr;
 };
 
+<<<<<<< HEAD
 /* RoCE query qp responder output params */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct roce_query_qp_resp_output_params {
 	__le32 psn;
 	__le32 err_flag;
@@ -8096,12 +12326,18 @@ struct roce_query_qp_resp_output_params {
 #define ROCE_QUERY_QP_RESP_OUTPUT_PARAMS_RESERVED0_SHIFT 1
 };
 
+<<<<<<< HEAD
 /* RoCE query qp responder ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct roce_query_qp_resp_ramrod_data {
 	struct regpair output_params_addr;
 };
 
+<<<<<<< HEAD
 /* ROCE ramrod command IDs */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum roce_ramrod_cmd_id {
 	ROCE_RAMROD_CREATE_QP = 11,
 	ROCE_RAMROD_MODIFY_QP,
@@ -8112,6 +12348,7 @@ enum roce_ramrod_cmd_id {
 	MAX_ROCE_RAMROD_CMD_ID
 };
 
+<<<<<<< HEAD
 struct e4_xstorm_roce_conn_ag_ctx_dq_ext_ld_part {
 	u8 reserved0;
 	u8 state;
@@ -8533,6 +12770,165 @@ struct e4_tstorm_roce_req_conn_ag_ctx {
 #define E4_TSTORM_ROCE_REQ_CONN_AG_CTX_RULE7EN_SHIFT		6
 #define E4_TSTORM_ROCE_REQ_CONN_AG_CTX_RULE8EN_MASK		0x1
 #define E4_TSTORM_ROCE_REQ_CONN_AG_CTX_RULE8EN_SHIFT		7
+=======
+struct mstorm_roce_req_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_BIT0_MASK     0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_BIT0_SHIFT    0
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_BIT1_MASK     0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_BIT1_SHIFT    1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF0_MASK      0x3
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF0_SHIFT     2
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF1_MASK      0x3
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF1_SHIFT     4
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF2_MASK      0x3
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF0EN_MASK    0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF0EN_SHIFT   0
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_MASK    0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_SHIFT   1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF2EN_MASK    0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_CF2EN_SHIFT   2
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define MSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_SHIFT 7
+	__le16 word0;
+	__le16 word1;
+	__le32 reg0;
+	__le32 reg1;
+};
+
+struct mstorm_roce_resp_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_BIT0_MASK     0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_BIT0_SHIFT    0
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_BIT1_MASK     0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_BIT1_SHIFT    1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF0_MASK      0x3
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF0_SHIFT     2
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF1_MASK      0x3
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF1_SHIFT     4
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF2_MASK      0x3
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_MASK    0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_SHIFT   0
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF1EN_MASK    0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF1EN_SHIFT   1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF2EN_MASK    0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_CF2EN_SHIFT   2
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define MSTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_SHIFT 7
+	__le16 word0;
+	__le16 word1;
+	__le32 reg0;
+	__le32 reg1;
+};
+
+struct tstorm_roce_req_conn_ag_ctx {
+	u8 reserved0;
+	u8 state;
+	u8 flags0;
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_EXIST_IN_QM0_MASK                0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_EXIST_IN_QM0_SHIFT               0
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RX_ERROR_OCCURED_MASK            0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RX_ERROR_OCCURED_SHIFT           1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TX_CQE_ERROR_OCCURED_MASK        0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TX_CQE_ERROR_OCCURED_SHIFT       2
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_BIT3_MASK                        0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_BIT3_SHIFT                       3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_MSTORM_FLUSH_MASK                0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_MSTORM_FLUSH_SHIFT               4
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_CACHED_ORQ_MASK                  0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_CACHED_ORQ_SHIFT                 5
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TIMER_CF_MASK                    0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TIMER_CF_SHIFT                   6
+	u8 flags1;
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_CF1_MASK                         0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_CF1_SHIFT                        0
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_SQ_CF_MASK                 0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_SQ_CF_SHIFT                2
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TIMER_STOP_ALL_CF_MASK           0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TIMER_STOP_ALL_CF_SHIFT          4
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_Q0_CF_MASK                 0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_Q0_CF_SHIFT                6
+	u8 flags2;
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_MSTORM_FLUSH_CF_MASK             0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_MSTORM_FLUSH_CF_SHIFT            0
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SET_TIMER_CF_MASK                0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SET_TIMER_CF_SHIFT               2
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TX_ASYNC_ERROR_CF_MASK           0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TX_ASYNC_ERROR_CF_SHIFT          4
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RXMIT_DONE_CF_MASK               0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RXMIT_DONE_CF_SHIFT              6
+	u8 flags3;
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_ERROR_SCAN_COMPLETED_CF_MASK     0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_ERROR_SCAN_COMPLETED_CF_SHIFT    0
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SQ_DRAIN_COMPLETED_CF_MASK       0x3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SQ_DRAIN_COMPLETED_CF_SHIFT      2
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TIMER_CF_EN_MASK                 0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TIMER_CF_EN_SHIFT                4
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_MASK                       0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_SHIFT                      5
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_SQ_CF_EN_MASK              0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_SQ_CF_EN_SHIFT             6
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TIMER_STOP_ALL_CF_EN_MASK        0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TIMER_STOP_ALL_CF_EN_SHIFT       7
+	u8 flags4;
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_Q0_CF_EN_MASK              0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_Q0_CF_EN_SHIFT             0
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_MSTORM_FLUSH_CF_EN_MASK          0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_MSTORM_FLUSH_CF_EN_SHIFT         1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SET_TIMER_CF_EN_MASK             0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SET_TIMER_CF_EN_SHIFT            2
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TX_ASYNC_ERROR_CF_EN_MASK        0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_TX_ASYNC_ERROR_CF_EN_SHIFT       3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RXMIT_DONE_CF_EN_MASK            0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RXMIT_DONE_CF_EN_SHIFT           4
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_ERROR_SCAN_COMPLETED_CF_EN_MASK  0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_ERROR_SCAN_COMPLETED_CF_EN_SHIFT 5
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SQ_DRAIN_COMPLETED_CF_EN_MASK    0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SQ_DRAIN_COMPLETED_CF_EN_SHIFT   6
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_MASK                     0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_SHIFT                    7
+	u8 flags5;
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_MASK                     0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_SHIFT                    0
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_MASK                     0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_SHIFT                    1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_MASK                     0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_SHIFT                    2
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_MASK                     0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_SHIFT                    3
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE5EN_MASK                     0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE5EN_SHIFT                    4
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SND_SQ_CONS_EN_MASK              0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_SND_SQ_CONS_EN_SHIFT             5
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE7EN_MASK                     0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE7EN_SHIFT                    6
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE8EN_MASK                     0x1
+#define TSTORM_ROCE_REQ_CONN_AG_CTX_RULE8EN_SHIFT                    7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 reg0;
 	__le32 snd_nxt_psn;
 	__le32 snd_max_psn;
@@ -8548,12 +12944,18 @@ struct e4_tstorm_roce_req_conn_ag_ctx {
 	u8 byte4;
 	u8 byte5;
 	__le16 snd_sq_cons;
+<<<<<<< HEAD
 	__le16 conn_dpi;
 	__le16 force_comp_cons;
+=======
+	__le16 word2;
+	__le16 word3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 reg9;
 	__le32 reg10;
 };
 
+<<<<<<< HEAD
 struct e4_tstorm_roce_resp_conn_ag_ctx {
 	u8 byte0;
 	u8 state;
@@ -8637,6 +13039,91 @@ struct e4_tstorm_roce_resp_conn_ag_ctx {
 #define E4_TSTORM_ROCE_RESP_CONN_AG_CTX_RULE7EN_SHIFT		6
 #define E4_TSTORM_ROCE_RESP_CONN_AG_CTX_RULE8EN_MASK		0x1
 #define E4_TSTORM_ROCE_RESP_CONN_AG_CTX_RULE8EN_SHIFT		7
+=======
+struct tstorm_roce_resp_conn_ag_ctx {
+	u8 byte0;
+	u8 state;
+	u8 flags0;
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_EXIST_IN_QM0_MASK        0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_EXIST_IN_QM0_SHIFT       0
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_NOTIFY_REQUESTER_MASK  0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_NOTIFY_REQUESTER_SHIFT 1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_BIT2_MASK                0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_BIT2_SHIFT               2
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_BIT3_MASK                0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_BIT3_SHIFT               3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_MSTORM_FLUSH_MASK        0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_MSTORM_FLUSH_SHIFT       4
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_BIT5_MASK                0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_BIT5_SHIFT               5
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF0_MASK                 0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF0_SHIFT                6
+	u8 flags1;
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_CF_MASK         0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_CF_SHIFT        0
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_TX_ERROR_CF_MASK         0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_TX_ERROR_CF_SHIFT        2
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF3_MASK                 0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF3_SHIFT                4
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_FLUSH_Q0_CF_MASK         0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_FLUSH_Q0_CF_SHIFT        6
+	u8 flags2;
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_MSTORM_FLUSH_CF_MASK     0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_MSTORM_FLUSH_CF_SHIFT    0
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF6_MASK                 0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF6_SHIFT                2
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF7_MASK                 0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF7_SHIFT                4
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF8_MASK                 0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF8_SHIFT                6
+	u8 flags3;
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF9_MASK                 0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF9_SHIFT                0
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF10_MASK                0x3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF10_SHIFT               2
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_MASK               0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_SHIFT              4
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_CF_EN_MASK      0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_CF_EN_SHIFT     5
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_TX_ERROR_CF_EN_MASK      0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_TX_ERROR_CF_EN_SHIFT     6
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF3EN_MASK               0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF3EN_SHIFT              7
+	u8 flags4;
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_FLUSH_Q0_CF_EN_MASK      0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_FLUSH_Q0_CF_EN_SHIFT     0
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_MSTORM_FLUSH_CF_EN_MASK  0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_MSTORM_FLUSH_CF_EN_SHIFT 1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF6EN_MASK               0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF6EN_SHIFT              2
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF7EN_MASK               0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF7EN_SHIFT              3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF8EN_MASK               0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF8EN_SHIFT              4
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF9EN_MASK               0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF9EN_SHIFT              5
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF10EN_MASK              0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_CF10EN_SHIFT             6
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_MASK             0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_SHIFT            7
+	u8 flags5;
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_MASK             0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_SHIFT            0
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_MASK             0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_SHIFT            1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_MASK             0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_SHIFT            2
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_MASK             0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_SHIFT            3
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE5EN_MASK             0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE5EN_SHIFT            4
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RQ_RULE_EN_MASK          0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RQ_RULE_EN_SHIFT         5
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE7EN_MASK             0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE7EN_SHIFT            6
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE8EN_MASK             0x1
+#define TSTORM_ROCE_RESP_CONN_AG_CTX_RULE8EN_SHIFT            7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 psn_and_rxmit_id_echo;
 	__le32 reg1;
 	__le32 reg2;
@@ -8654,6 +13141,7 @@ struct e4_tstorm_roce_resp_conn_ag_ctx {
 	__le16 rq_prod;
 	__le16 conn_dpi;
 	__le16 irq_cons;
+<<<<<<< HEAD
 	__le32 reg9;
 	__le32 reg10;
 };
@@ -8715,6 +13203,69 @@ struct e4_ustorm_roce_req_conn_ag_ctx {
 #define E4_USTORM_ROCE_REQ_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_USTORM_ROCE_REQ_CONN_AG_CTX_RULE8EN_MASK	0x1
 #define E4_USTORM_ROCE_REQ_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+	__le32 num_invlidated_mw;
+	__le32 reg10;
+};
+
+struct ustorm_roce_req_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define USTORM_ROCE_REQ_CONN_AG_CTX_BIT0_MASK     0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_BIT0_SHIFT    0
+#define USTORM_ROCE_REQ_CONN_AG_CTX_BIT1_MASK     0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_BIT1_SHIFT    1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF0_MASK      0x3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF0_SHIFT     2
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF1_MASK      0x3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF1_SHIFT     4
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF2_MASK      0x3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF3_MASK      0x3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF3_SHIFT     0
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF4_MASK      0x3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF4_SHIFT     2
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF5_MASK      0x3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF5_SHIFT     4
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF6_MASK      0x3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF6_SHIFT     6
+	u8 flags2;
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF0EN_MASK    0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF0EN_SHIFT   0
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_MASK    0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_SHIFT   1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF2EN_MASK    0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF2EN_SHIFT   2
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF3EN_MASK    0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF3EN_SHIFT   3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF4EN_MASK    0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF4EN_SHIFT   4
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF5EN_MASK    0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF5EN_SHIFT   5
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF6EN_MASK    0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_CF6EN_SHIFT   6
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_SHIFT 7
+	u8 flags3;
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_SHIFT 0
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_SHIFT 1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_SHIFT 2
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_SHIFT 3
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE5EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE5EN_SHIFT 4
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE6EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE6EN_SHIFT 5
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE7EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE7EN_SHIFT 6
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE8EN_MASK  0x1
+#define USTORM_ROCE_REQ_CONN_AG_CTX_RULE8EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -8727,6 +13278,7 @@ struct e4_ustorm_roce_req_conn_ag_ctx {
 	__le16 word3;
 };
 
+<<<<<<< HEAD
 struct e4_ustorm_roce_resp_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -8784,6 +13336,65 @@ struct e4_ustorm_roce_resp_conn_ag_ctx {
 #define E4_USTORM_ROCE_RESP_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_USTORM_ROCE_RESP_CONN_AG_CTX_RULE8EN_MASK	0x1
 #define E4_USTORM_ROCE_RESP_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+struct ustorm_roce_resp_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define USTORM_ROCE_RESP_CONN_AG_CTX_BIT0_MASK     0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_BIT0_SHIFT    0
+#define USTORM_ROCE_RESP_CONN_AG_CTX_BIT1_MASK     0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_BIT1_SHIFT    1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF0_MASK      0x3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF0_SHIFT     2
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF1_MASK      0x3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF1_SHIFT     4
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF2_MASK      0x3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF3_MASK      0x3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF3_SHIFT     0
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF4_MASK      0x3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF4_SHIFT     2
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF5_MASK      0x3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF5_SHIFT     4
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF6_MASK      0x3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF6_SHIFT     6
+	u8 flags2;
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_MASK    0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_SHIFT   0
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF1EN_MASK    0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF1EN_SHIFT   1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF2EN_MASK    0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF2EN_SHIFT   2
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF3EN_MASK    0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF3EN_SHIFT   3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF4EN_MASK    0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF4EN_SHIFT   4
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF5EN_MASK    0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF5EN_SHIFT   5
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF6EN_MASK    0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_CF6EN_SHIFT   6
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_SHIFT 7
+	u8 flags3;
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_SHIFT 0
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_SHIFT 1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_SHIFT 2
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_SHIFT 3
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE5EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE5EN_SHIFT 4
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE6EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE6EN_SHIFT 5
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE7EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE7EN_SHIFT 6
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE8EN_MASK  0x1
+#define USTORM_ROCE_RESP_CONN_AG_CTX_RULE8EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -8796,6 +13407,7 @@ struct e4_ustorm_roce_resp_conn_ag_ctx {
 	__le16 word3;
 };
 
+<<<<<<< HEAD
 struct e4_xstorm_roce_req_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -9004,15 +13616,231 @@ struct e4_xstorm_roce_req_conn_ag_ctx {
 #define E4_XSTORM_ROCE_REQ_CONN_AG_CTX_ROCE_EDPM_ENABLE_SHIFT	5
 #define E4_XSTORM_ROCE_REQ_CONN_AG_CTX_CF23_MASK		0x3
 #define E4_XSTORM_ROCE_REQ_CONN_AG_CTX_CF23_SHIFT		6
+=======
+struct xstorm_roce_req_conn_ag_ctx {
+	u8 reserved0;
+	u8 state;
+	u8 flags0;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_EXIST_IN_QM0_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_EXIST_IN_QM0_SHIFT       0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED1_MASK           0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED1_SHIFT          1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED2_MASK           0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED2_SHIFT          2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_EXIST_IN_QM3_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_EXIST_IN_QM3_SHIFT       3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED3_MASK           0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED3_SHIFT          4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED4_MASK           0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED4_SHIFT          5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED5_MASK           0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED5_SHIFT          6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED6_MASK           0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED6_SHIFT          7
+	u8 flags1;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED7_MASK           0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED7_SHIFT          0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED8_MASK           0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED8_SHIFT          1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT10_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT10_SHIFT              2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT11_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT11_SHIFT              3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT12_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT12_SHIFT              4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT13_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT13_SHIFT              5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_ERROR_STATE_MASK         0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_ERROR_STATE_SHIFT        6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_YSTORM_FLUSH_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_YSTORM_FLUSH_SHIFT       7
+	u8 flags2;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF0_MASK                 0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF0_SHIFT                0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF1_MASK                 0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF1_SHIFT                2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF2_MASK                 0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF2_SHIFT                4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF3_MASK                 0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF3_SHIFT                6
+	u8 flags3;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SQ_FLUSH_CF_MASK         0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SQ_FLUSH_CF_SHIFT        0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RX_ERROR_CF_MASK         0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RX_ERROR_CF_SHIFT        2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SND_RXMIT_CF_MASK        0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SND_RXMIT_CF_SHIFT       4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_Q0_CF_MASK         0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_Q0_CF_SHIFT        6
+	u8 flags4;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF8_MASK                 0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF8_SHIFT                0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF9_MASK                 0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF9_SHIFT                2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF10_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF10_SHIFT               4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF11_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF11_SHIFT               6
+	u8 flags5;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF12_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF12_SHIFT               0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF13_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF13_SHIFT               2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_FMR_ENDED_CF_MASK        0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_FMR_ENDED_CF_SHIFT       4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF15_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF15_SHIFT               6
+	u8 flags6;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF16_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF16_SHIFT               0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF17_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF17_SHIFT               2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF18_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF18_SHIFT               4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF19_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF19_SHIFT               6
+	u8 flags7;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF20_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF20_SHIFT               0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF21_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF21_SHIFT               2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SLOW_PATH_MASK           0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SLOW_PATH_SHIFT          4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF0EN_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF0EN_SHIFT              6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_SHIFT              7
+	u8 flags8;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF2EN_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF2EN_SHIFT              0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF3EN_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF3EN_SHIFT              1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SQ_FLUSH_CF_EN_MASK      0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SQ_FLUSH_CF_EN_SHIFT     2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RX_ERROR_CF_EN_MASK      0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RX_ERROR_CF_EN_SHIFT     3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SND_RXMIT_CF_EN_MASK     0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SND_RXMIT_CF_EN_SHIFT    4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_Q0_CF_EN_MASK      0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_FLUSH_Q0_CF_EN_SHIFT     5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF8EN_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF8EN_SHIFT              6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF9EN_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF9EN_SHIFT              7
+	u8 flags9;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF10EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF10EN_SHIFT             0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF11EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF11EN_SHIFT             1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF12EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF12EN_SHIFT             2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF13EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF13EN_SHIFT             3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_FME_ENDED_CF_EN_MASK     0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_FME_ENDED_CF_EN_SHIFT    4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF15EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF15EN_SHIFT             5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF16EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF16EN_SHIFT             6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF17EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF17EN_SHIFT             7
+	u8 flags10;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF18EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF18EN_SHIFT             0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF19EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF19EN_SHIFT             1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF20EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF20EN_SHIFT             2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF21EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF21EN_SHIFT             3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SLOW_PATH_EN_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SLOW_PATH_EN_SHIFT       4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF23EN_MASK              0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF23EN_SHIFT             5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_MASK             0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_SHIFT            6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_MASK             0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_SHIFT            7
+	u8 flags11;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_MASK             0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_SHIFT            0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_MASK             0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_SHIFT            1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_MASK             0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_SHIFT            2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE5EN_MASK             0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE5EN_SHIFT            3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE6EN_MASK             0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE6EN_SHIFT            4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_E2E_CREDIT_RULE_EN_MASK  0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_E2E_CREDIT_RULE_EN_SHIFT 5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED1_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED1_SHIFT       6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE9EN_MASK             0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE9EN_SHIFT            7
+	u8 flags12;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SQ_PROD_EN_MASK          0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_SQ_PROD_EN_SHIFT         0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE11EN_MASK            0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE11EN_SHIFT           1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED2_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED2_SHIFT       2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED3_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED3_SHIFT       3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_INV_FENCE_RULE_EN_MASK   0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_INV_FENCE_RULE_EN_SHIFT  4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE15EN_MASK            0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE15EN_SHIFT           5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_ORQ_FENCE_RULE_EN_MASK   0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_ORQ_FENCE_RULE_EN_SHIFT  6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_MAX_ORD_RULE_EN_MASK     0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_MAX_ORD_RULE_EN_SHIFT    7
+	u8 flags13;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE18EN_MASK            0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE18EN_SHIFT           0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE19EN_MASK            0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RULE19EN_SHIFT           1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED4_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED4_SHIFT       2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED5_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED5_SHIFT       3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED6_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED6_SHIFT       4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED7_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED7_SHIFT       5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED8_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED8_SHIFT       6
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED9_MASK        0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_A0_RESERVED9_SHIFT       7
+	u8 flags14;
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_MIGRATION_FLAG_MASK      0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_MIGRATION_FLAG_SHIFT     0
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT17_MASK               0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_BIT17_SHIFT              1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_DPM_PORT_NUM_MASK        0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_DPM_PORT_NUM_SHIFT       2
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED_MASK            0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_RESERVED_SHIFT           4
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_ROCE_EDPM_ENABLE_MASK    0x1
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_ROCE_EDPM_ENABLE_SHIFT   5
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF23_MASK                0x3
+#define XSTORM_ROCE_REQ_CONN_AG_CTX_CF23_SHIFT               6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	__le16 physical_q0;
 	__le16 word1;
 	__le16 sq_cmp_cons;
 	__le16 sq_cons;
 	__le16 sq_prod;
+<<<<<<< HEAD
 	__le16 dif_error_first_sq_cons;
 	__le16 conn_dpi;
 	u8 dif_error_sge_index;
+=======
+	__le16 word5;
+	__le16 conn_dpi;
+	u8 byte3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte4;
 	u8 byte5;
 	u8 byte6;
@@ -9020,11 +13848,16 @@ struct e4_xstorm_roce_req_conn_ag_ctx {
 	__le32 ssn;
 	__le32 snd_una_psn;
 	__le32 snd_nxt_psn;
+<<<<<<< HEAD
 	__le32 dif_error_offset;
+=======
+	__le32 reg4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 orq_cons_th;
 	__le32 orq_cons;
 };
 
+<<<<<<< HEAD
 struct e4_xstorm_roce_resp_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -9243,6 +14076,226 @@ struct e4_xstorm_roce_resp_conn_ag_ctx {
 	__le16 irq_prod;
 	__le16 e5_reserved1;
 	__le16 conn_dpi;
+=======
+struct xstorm_roce_resp_conn_ag_ctx {
+	u8 reserved0;
+	u8 state;
+	u8 flags0;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_EXIST_IN_QM0_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_EXIST_IN_QM0_SHIFT     0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED1_MASK         0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED1_SHIFT        1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED2_MASK         0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED2_SHIFT        2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_EXIST_IN_QM3_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_EXIST_IN_QM3_SHIFT     3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED3_MASK         0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED3_SHIFT        4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED4_MASK         0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED4_SHIFT        5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED5_MASK         0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED5_SHIFT        6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED6_MASK         0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED6_SHIFT        7
+	u8 flags1;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED7_MASK         0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED7_SHIFT        0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED8_MASK         0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RESERVED8_SHIFT        1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT10_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT10_SHIFT            2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT11_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT11_SHIFT            3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT12_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT12_SHIFT            4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT13_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT13_SHIFT            5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_ERROR_STATE_MASK       0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_ERROR_STATE_SHIFT      6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_YSTORM_FLUSH_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_YSTORM_FLUSH_SHIFT     7
+	u8 flags2;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF0_MASK               0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF0_SHIFT              0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF1_MASK               0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF1_SHIFT              2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF2_MASK               0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF2_SHIFT              4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF3_MASK               0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF3_SHIFT              6
+	u8 flags3;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RXMIT_CF_MASK          0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RXMIT_CF_SHIFT         0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_CF_MASK       0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_CF_SHIFT      2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_FORCE_ACK_CF_MASK      0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_FORCE_ACK_CF_SHIFT     4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_FLUSH_Q0_CF_MASK       0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_FLUSH_Q0_CF_SHIFT      6
+	u8 flags4;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF8_MASK               0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF8_SHIFT              0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF9_MASK               0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF9_SHIFT              2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF10_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF10_SHIFT             4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF11_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF11_SHIFT             6
+	u8 flags5;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF12_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF12_SHIFT             0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF13_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF13_SHIFT             2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF14_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF14_SHIFT             4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF15_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF15_SHIFT             6
+	u8 flags6;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF16_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF16_SHIFT             0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF17_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF17_SHIFT             2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF18_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF18_SHIFT             4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF19_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF19_SHIFT             6
+	u8 flags7;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF20_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF20_SHIFT             0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF21_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF21_SHIFT             2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_SLOW_PATH_MASK         0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_SLOW_PATH_SHIFT        4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_SHIFT            6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF1EN_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF1EN_SHIFT            7
+	u8 flags8;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF2EN_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF2EN_SHIFT            0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF3EN_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF3EN_SHIFT            1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RXMIT_CF_EN_MASK       0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RXMIT_CF_EN_SHIFT      2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_CF_EN_MASK    0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RX_ERROR_CF_EN_SHIFT   3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_FORCE_ACK_CF_EN_MASK   0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_FORCE_ACK_CF_EN_SHIFT  4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_FLUSH_Q0_CF_EN_MASK    0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_FLUSH_Q0_CF_EN_SHIFT   5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF8EN_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF8EN_SHIFT            6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF9EN_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF9EN_SHIFT            7
+	u8 flags9;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF10EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF10EN_SHIFT           0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF11EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF11EN_SHIFT           1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF12EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF12EN_SHIFT           2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF13EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF13EN_SHIFT           3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF14EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF14EN_SHIFT           4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF15EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF15EN_SHIFT           5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF16EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF16EN_SHIFT           6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF17EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF17EN_SHIFT           7
+	u8 flags10;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF18EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF18EN_SHIFT           0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF19EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF19EN_SHIFT           1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF20EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF20EN_SHIFT           2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF21EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF21EN_SHIFT           3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_SLOW_PATH_EN_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_SLOW_PATH_EN_SHIFT     4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF23EN_MASK            0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF23EN_SHIFT           5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_SHIFT          6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_SHIFT          7
+	u8 flags11;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_SHIFT          0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_SHIFT          1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_SHIFT          2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE5EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE5EN_SHIFT          3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE6EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE6EN_SHIFT          4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE7EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE7EN_SHIFT          5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED1_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED1_SHIFT     6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE9EN_MASK           0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE9EN_SHIFT          7
+	u8 flags12;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE10EN_MASK          0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE10EN_SHIFT         0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_IRQ_PROD_RULE_EN_MASK  0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_IRQ_PROD_RULE_EN_SHIFT 1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED2_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED2_SHIFT     2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED3_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED3_SHIFT     3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE14EN_MASK          0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE14EN_SHIFT         4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE15EN_MASK          0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE15EN_SHIFT         5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE16EN_MASK          0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE16EN_SHIFT         6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE17EN_MASK          0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE17EN_SHIFT         7
+	u8 flags13;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE18EN_MASK          0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE18EN_SHIFT         0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE19EN_MASK          0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_RULE19EN_SHIFT         1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED4_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED4_SHIFT     2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED5_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED5_SHIFT     3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED6_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED6_SHIFT     4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED7_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED7_SHIFT     5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED8_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED8_SHIFT     6
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED9_MASK      0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_A0_RESERVED9_SHIFT     7
+	u8 flags14;
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT16_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT16_SHIFT            0
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT17_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT17_SHIFT            1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT18_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT18_SHIFT            2
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT19_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT19_SHIFT            3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT20_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT20_SHIFT            4
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT21_MASK             0x1
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_BIT21_SHIFT            5
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF23_MASK              0x3
+#define XSTORM_ROCE_RESP_CONN_AG_CTX_CF23_SHIFT             6
+	u8 byte2;
+	__le16 physical_q0;
+	__le16 word1;
+	__le16 irq_prod;
+	__le16 word3;
+	__le16 word4;
+	__le16 ereserved1;
+	__le16 irq_cons;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 rxmit_opcode;
 	u8 byte4;
 	u8 byte5;
@@ -9256,6 +14309,7 @@ struct e4_xstorm_roce_resp_conn_ag_ctx {
 	__le32 msn_and_syndrome;
 };
 
+<<<<<<< HEAD
 struct e4_ystorm_roce_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -9287,6 +14341,39 @@ struct e4_ystorm_roce_conn_ag_ctx {
 #define E4_YSTORM_ROCE_CONN_AG_CTX_RULE3EN_SHIFT 6
 #define E4_YSTORM_ROCE_CONN_AG_CTX_RULE4EN_MASK  0x1
 #define E4_YSTORM_ROCE_CONN_AG_CTX_RULE4EN_SHIFT 7
+=======
+struct ystorm_roce_req_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_BIT0_MASK     0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_BIT0_SHIFT    0
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_BIT1_MASK     0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_BIT1_SHIFT    1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF0_MASK      0x3
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF0_SHIFT     2
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF1_MASK      0x3
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF1_SHIFT     4
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF2_MASK      0x3
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF0EN_MASK    0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF0EN_SHIFT   0
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_MASK    0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF1EN_SHIFT   1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF2EN_MASK    0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_CF2EN_SHIFT   2
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define YSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -9300,6 +14387,7 @@ struct e4_ystorm_roce_conn_ag_ctx {
 	__le32 reg3;
 };
 
+<<<<<<< HEAD
 struct e4_ystorm_roce_req_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -9331,6 +14419,39 @@ struct e4_ystorm_roce_req_conn_ag_ctx {
 #define E4_YSTORM_ROCE_REQ_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_YSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_MASK	0x1
 #define E4_YSTORM_ROCE_REQ_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+struct ystorm_roce_resp_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_BIT0_MASK     0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_BIT0_SHIFT    0
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_BIT1_MASK     0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_BIT1_SHIFT    1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF0_MASK      0x3
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF0_SHIFT     2
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF1_MASK      0x3
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF1_SHIFT     4
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF2_MASK      0x3
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_MASK    0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF0EN_SHIFT   0
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF1EN_MASK    0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF1EN_SHIFT   1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF2EN_MASK    0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_CF2EN_SHIFT   2
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define YSTORM_ROCE_RESP_CONN_AG_CTX_RULE4EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -9344,6 +14465,7 @@ struct e4_ystorm_roce_req_conn_ag_ctx {
 	__le32 reg3;
 };
 
+<<<<<<< HEAD
 struct e4_ystorm_roce_resp_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -9389,6 +14511,8 @@ struct e4_ystorm_roce_resp_conn_ag_ctx {
 };
 
 /* Roce doorbell data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum roce_flavor {
 	PLAIN_ROCE,
 	RROCE_IPV4,
@@ -9396,16 +14520,23 @@ enum roce_flavor {
 	MAX_ROCE_FLAVOR
 };
 
+<<<<<<< HEAD
 /* The iwarp storm context of Ystorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ystorm_iwarp_conn_st_ctx {
 	__le32 reserved[4];
 };
 
+<<<<<<< HEAD
 /* The iwarp storm context of Pstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pstorm_iwarp_conn_st_ctx {
 	__le32 reserved[36];
 };
 
+<<<<<<< HEAD
 /* The iwarp storm context of Xstorm */
 struct xstorm_iwarp_conn_st_ctx {
 	__le32 reserved[48];
@@ -9621,6 +14752,222 @@ struct e4_xstorm_iwarp_conn_ag_ctx {
 #define E4_XSTORM_IWARP_CONN_AG_CTX_E5_RESERVED3_SHIFT	5
 #define E4_XSTORM_IWARP_CONN_AG_CTX_SEND_TERMINATE_CF_MASK	0x3
 #define E4_XSTORM_IWARP_CONN_AG_CTX_SEND_TERMINATE_CF_SHIFT	6
+=======
+struct xstorm_iwarp_conn_st_ctx {
+	__le32 reserved[44];
+};
+
+struct xstorm_iwarp_conn_ag_ctx {
+	u8 reserved0;
+	u8 state;
+	u8 flags0;
+#define XSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM0_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM0_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM1_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM1_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM2_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM2_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM3_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM3_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_BIT4_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT4_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_RESERVED2_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RESERVED2_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_BIT6_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT6_SHIFT	6
+#define XSTORM_IWARP_CONN_AG_CTX_BIT7_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT7_SHIFT	7
+	u8 flags1;
+#define XSTORM_IWARP_CONN_AG_CTX_BIT8_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT8_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_BIT9_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT9_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT10_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT10_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_BIT11_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT11_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_BIT12_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT12_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_BIT13_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT13_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_BIT14_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT14_SHIFT	6
+#define XSTORM_IWARP_CONN_AG_CTX_YSTORM_FLUSH_OR_REWIND_SND_MAX_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_YSTORM_FLUSH_OR_REWIND_SND_MAX_SHIFT	7
+	u8 flags2;
+#define XSTORM_IWARP_CONN_AG_CTX_CF0_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF0_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_CF1_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF1_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_CF2_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF2_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_TIMER_STOP_ALL_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_TIMER_STOP_ALL_SHIFT	6
+	u8 flags3;
+#define XSTORM_IWARP_CONN_AG_CTX_CF4_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF4_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_CF5_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF5_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_CF6_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF6_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_CF7_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF7_SHIFT	6
+	u8 flags4;
+#define XSTORM_IWARP_CONN_AG_CTX_CF8_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF8_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_CF9_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF9_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_CF10_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF10_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_CF11_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF11_SHIFT	6
+	u8 flags5;
+#define XSTORM_IWARP_CONN_AG_CTX_CF12_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF12_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_CF13_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF13_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_SQ_FLUSH_CF_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_SQ_FLUSH_CF_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_CF15_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF15_SHIFT	6
+	u8 flags6;
+#define XSTORM_IWARP_CONN_AG_CTX_MPA_OR_ERROR_WAKEUP_TRIGGER_CF_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_MPA_OR_ERROR_WAKEUP_TRIGGER_CF_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_CF17_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF17_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_CF18_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF18_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_DQ_FLUSH_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_DQ_FLUSH_SHIFT	6
+	u8 flags7;
+#define XSTORM_IWARP_CONN_AG_CTX_FLUSH_Q0_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_FLUSH_Q0_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_FLUSH_Q1_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_FLUSH_Q1_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_SLOW_PATH_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_SLOW_PATH_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_CF0EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF0EN_SHIFT	6
+#define XSTORM_IWARP_CONN_AG_CTX_CF1EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF1EN_SHIFT	7
+	u8 flags8;
+#define XSTORM_IWARP_CONN_AG_CTX_CF2EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF2EN_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_TIMER_STOP_ALL_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_TIMER_STOP_ALL_EN_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_CF4EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF4EN_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_CF5EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF5EN_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_CF6EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF6EN_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_CF7EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF7EN_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_CF8EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF8EN_SHIFT	6
+#define XSTORM_IWARP_CONN_AG_CTX_CF9EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF9EN_SHIFT	7
+	u8 flags9;
+#define XSTORM_IWARP_CONN_AG_CTX_CF10EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF10EN_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_CF11EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF11EN_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_CF12EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF12EN_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_CF13EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF13EN_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_SQ_FLUSH_CF_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_SQ_FLUSH_CF_EN_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_CF15EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF15EN_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_MPA_OR_ERROR_WAKEUP_TRIGGER_CF_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_MPA_OR_ERROR_WAKEUP_TRIGGER_CF_EN_SHIFT 6
+#define XSTORM_IWARP_CONN_AG_CTX_CF17EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF17EN_SHIFT	7
+	u8 flags10;
+#define XSTORM_IWARP_CONN_AG_CTX_CF18EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF18EN_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_DQ_FLUSH_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_DQ_FLUSH_EN_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_FLUSH_Q0_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_FLUSH_Q0_EN_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_FLUSH_Q1_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_FLUSH_Q1_EN_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_SLOW_PATH_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_SLOW_PATH_EN_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_CF23EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_CF23EN_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_RULE0EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE0EN_SHIFT	6
+#define XSTORM_IWARP_CONN_AG_CTX_MORE_TO_SEND_RULE_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_MORE_TO_SEND_RULE_EN_SHIFT	7
+	u8 flags11;
+#define XSTORM_IWARP_CONN_AG_CTX_TX_BLOCKED_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_TX_BLOCKED_EN_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_RULE3EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE3EN_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_RESERVED3_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RESERVED3_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_RULE5EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE5EN_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_RULE6EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE6EN_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_RULE7EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE7EN_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED1_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED1_SHIFT	6
+#define XSTORM_IWARP_CONN_AG_CTX_RULE9EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE9EN_SHIFT	7
+	u8 flags12;
+#define XSTORM_IWARP_CONN_AG_CTX_SQ_NOT_EMPTY_RULE_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_SQ_NOT_EMPTY_RULE_EN_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_RULE11EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE11EN_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED2_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED2_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED3_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED3_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_SQ_FENCE_RULE_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_SQ_FENCE_RULE_EN_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_RULE15EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE15EN_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_RULE16EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE16EN_SHIFT	6
+#define XSTORM_IWARP_CONN_AG_CTX_RULE17EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE17EN_SHIFT	7
+	u8 flags13;
+#define XSTORM_IWARP_CONN_AG_CTX_IRQ_NOT_EMPTY_RULE_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_IRQ_NOT_EMPTY_RULE_EN_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_HQ_NOT_FULL_RULE_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_HQ_NOT_FULL_RULE_EN_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_ORQ_RD_FENCE_RULE_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_ORQ_RD_FENCE_RULE_EN_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_RULE21EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_RULE21EN_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED6_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED6_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_ORQ_NOT_FULL_RULE_EN_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_ORQ_NOT_FULL_RULE_EN_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED8_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED8_SHIFT	6
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED9_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_A0_RESERVED9_SHIFT	7
+	u8 flags14;
+#define XSTORM_IWARP_CONN_AG_CTX_BIT16_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT16_SHIFT	0
+#define XSTORM_IWARP_CONN_AG_CTX_BIT17_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT17_SHIFT	1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT18_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_BIT18_SHIFT	2
+#define XSTORM_IWARP_CONN_AG_CTX_E5_RESERVED1_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_E5_RESERVED1_SHIFT	3
+#define XSTORM_IWARP_CONN_AG_CTX_E5_RESERVED2_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_E5_RESERVED2_SHIFT	4
+#define XSTORM_IWARP_CONN_AG_CTX_E5_RESERVED3_MASK	0x1
+#define XSTORM_IWARP_CONN_AG_CTX_E5_RESERVED3_SHIFT	5
+#define XSTORM_IWARP_CONN_AG_CTX_CF23_MASK	0x3
+#define XSTORM_IWARP_CONN_AG_CTX_CF23_SHIFT	6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	__le16 physical_q0;
 	__le16 physical_q1;
@@ -9638,7 +14985,11 @@ struct e4_xstorm_iwarp_conn_ag_ctx {
 	__le32 reg2;
 	__le32 more_to_send_seq;
 	__le32 reg4;
+<<<<<<< HEAD
 	__le32 rewinded_snd_max_or_term_opcode;
+=======
+	__le32 rewinded_snd_max;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 rd_msn;
 	__le16 irq_prod_via_msdm;
 	__le16 irq_cons;
@@ -9648,8 +14999,13 @@ struct e4_xstorm_iwarp_conn_ag_ctx {
 	__le32 orq_cons;
 	__le32 orq_cons_th;
 	u8 byte7;
+<<<<<<< HEAD
 	u8 wqe_data_pad_bytes;
 	u8 max_ord;
+=======
+	u8 max_ord;
+	u8 wqe_data_pad_bytes;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 former_hq_prod;
 	u8 irq_prod_via_msem;
 	u8 byte12;
@@ -9668,6 +15024,7 @@ struct e4_xstorm_iwarp_conn_ag_ctx {
 	__le32 reg17;
 };
 
+<<<<<<< HEAD
 struct e4_tstorm_iwarp_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -9751,6 +15108,91 @@ struct e4_tstorm_iwarp_conn_ag_ctx {
 #define E4_TSTORM_IWARP_CONN_AG_CTX_RULE7EN_SHIFT		6
 #define E4_TSTORM_IWARP_CONN_AG_CTX_RULE8EN_MASK		0x1
 #define E4_TSTORM_IWARP_CONN_AG_CTX_RULE8EN_SHIFT		7
+=======
+struct tstorm_iwarp_conn_ag_ctx {
+	u8 reserved0;
+	u8 state;
+	u8 flags0;
+#define TSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM0_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM0_SHIFT	0
+#define TSTORM_IWARP_CONN_AG_CTX_BIT1_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_BIT1_SHIFT	1
+#define TSTORM_IWARP_CONN_AG_CTX_BIT2_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_BIT2_SHIFT	2
+#define TSTORM_IWARP_CONN_AG_CTX_MSTORM_FLUSH_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_MSTORM_FLUSH_SHIFT	3
+#define TSTORM_IWARP_CONN_AG_CTX_BIT4_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_BIT4_SHIFT	4
+#define TSTORM_IWARP_CONN_AG_CTX_CACHED_ORQ_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_CACHED_ORQ_SHIFT	5
+#define TSTORM_IWARP_CONN_AG_CTX_CF0_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_CF0_SHIFT	6
+	u8 flags1;
+#define TSTORM_IWARP_CONN_AG_CTX_RQ_POST_CF_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_RQ_POST_CF_SHIFT	0
+#define TSTORM_IWARP_CONN_AG_CTX_MPA_TIMEOUT_CF_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_MPA_TIMEOUT_CF_SHIFT	2
+#define TSTORM_IWARP_CONN_AG_CTX_TIMER_STOP_ALL_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_TIMER_STOP_ALL_SHIFT	4
+#define TSTORM_IWARP_CONN_AG_CTX_CF4_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_CF4_SHIFT	6
+	u8 flags2;
+#define TSTORM_IWARP_CONN_AG_CTX_CF5_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_CF5_SHIFT	0
+#define TSTORM_IWARP_CONN_AG_CTX_CF6_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_CF6_SHIFT	2
+#define TSTORM_IWARP_CONN_AG_CTX_CF7_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_CF7_SHIFT	4
+#define TSTORM_IWARP_CONN_AG_CTX_CF8_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_CF8_SHIFT	6
+	u8 flags3;
+#define TSTORM_IWARP_CONN_AG_CTX_FLUSH_Q0_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_FLUSH_Q0_SHIFT	0
+#define TSTORM_IWARP_CONN_AG_CTX_FLUSH_OR_ERROR_DETECTED_MASK	0x3
+#define TSTORM_IWARP_CONN_AG_CTX_FLUSH_OR_ERROR_DETECTED_SHIFT	2
+#define TSTORM_IWARP_CONN_AG_CTX_CF0EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_CF0EN_SHIFT	4
+#define TSTORM_IWARP_CONN_AG_CTX_RQ_POST_CF_EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RQ_POST_CF_EN_SHIFT	5
+#define TSTORM_IWARP_CONN_AG_CTX_MPA_TIMEOUT_CF_EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_MPA_TIMEOUT_CF_EN_SHIFT	6
+#define TSTORM_IWARP_CONN_AG_CTX_TIMER_STOP_ALL_EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_TIMER_STOP_ALL_EN_SHIFT	7
+	u8 flags4;
+#define TSTORM_IWARP_CONN_AG_CTX_CF4EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_CF4EN_SHIFT	0
+#define TSTORM_IWARP_CONN_AG_CTX_CF5EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_CF5EN_SHIFT	1
+#define TSTORM_IWARP_CONN_AG_CTX_CF6EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_CF6EN_SHIFT	2
+#define TSTORM_IWARP_CONN_AG_CTX_CF7EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_CF7EN_SHIFT	3
+#define TSTORM_IWARP_CONN_AG_CTX_CF8EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_CF8EN_SHIFT	4
+#define TSTORM_IWARP_CONN_AG_CTX_FLUSH_Q0_EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_FLUSH_Q0_EN_SHIFT	5
+#define TSTORM_IWARP_CONN_AG_CTX_FLUSH_OR_ERROR_DETECTED_EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_FLUSH_OR_ERROR_DETECTED_EN_SHIFT 6
+#define TSTORM_IWARP_CONN_AG_CTX_RULE0EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE0EN_SHIFT	7
+	u8 flags5;
+#define TSTORM_IWARP_CONN_AG_CTX_RULE1EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE1EN_SHIFT	0
+#define TSTORM_IWARP_CONN_AG_CTX_RULE2EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE2EN_SHIFT	1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE3EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE3EN_SHIFT	2
+#define TSTORM_IWARP_CONN_AG_CTX_RULE4EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE4EN_SHIFT	3
+#define TSTORM_IWARP_CONN_AG_CTX_RULE5EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE5EN_SHIFT	4
+#define TSTORM_IWARP_CONN_AG_CTX_SND_SQ_CONS_RULE_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_SND_SQ_CONS_RULE_SHIFT	5
+#define TSTORM_IWARP_CONN_AG_CTX_RULE7EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE7EN_SHIFT	6
+#define TSTORM_IWARP_CONN_AG_CTX_RULE8EN_MASK	0x1
+#define TSTORM_IWARP_CONN_AG_CTX_RULE8EN_SHIFT	7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 reg0;
 	__le32 reg1;
 	__le32 unaligned_nxt_seq;
@@ -9772,38 +15214,60 @@ struct e4_tstorm_iwarp_conn_ag_ctx {
 	__le32 last_hq_sequence;
 };
 
+<<<<<<< HEAD
 /* The iwarp storm context of Tstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct tstorm_iwarp_conn_st_ctx {
 	__le32 reserved[60];
 };
 
+<<<<<<< HEAD
 /* The iwarp storm context of Mstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mstorm_iwarp_conn_st_ctx {
 	__le32 reserved[32];
 };
 
+<<<<<<< HEAD
 /* The iwarp storm context of Ustorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ustorm_iwarp_conn_st_ctx {
 	__le32 reserved[24];
 };
 
+<<<<<<< HEAD
 /* iwarp connection context */
 struct e4_iwarp_conn_context {
+=======
+struct iwarp_conn_context {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ystorm_iwarp_conn_st_ctx ystorm_st_context;
 	struct regpair ystorm_st_padding[2];
 	struct pstorm_iwarp_conn_st_ctx pstorm_st_context;
 	struct regpair pstorm_st_padding[2];
 	struct xstorm_iwarp_conn_st_ctx xstorm_st_context;
+<<<<<<< HEAD
 	struct e4_xstorm_iwarp_conn_ag_ctx xstorm_ag_context;
 	struct e4_tstorm_iwarp_conn_ag_ctx tstorm_ag_context;
 	struct timers_context timer_context;
 	struct e4_ustorm_rdma_conn_ag_ctx ustorm_ag_context;
+=======
+	struct regpair xstorm_st_padding[2];
+	struct xstorm_iwarp_conn_ag_ctx xstorm_ag_context;
+	struct tstorm_iwarp_conn_ag_ctx tstorm_ag_context;
+	struct timers_context timer_context;
+	struct ustorm_rdma_conn_ag_ctx ustorm_ag_context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct tstorm_iwarp_conn_st_ctx tstorm_st_context;
 	struct regpair tstorm_st_padding[2];
 	struct mstorm_iwarp_conn_st_ctx mstorm_st_context;
 	struct ustorm_iwarp_conn_st_ctx ustorm_st_context;
 };
 
+<<<<<<< HEAD
 /* iWARP create QP params passed by driver to FW in CreateQP Request Ramrod */
 struct iwarp_create_qp_ramrod_data {
 	u8 flags;
@@ -9823,6 +15287,24 @@ struct iwarp_create_qp_ramrod_data {
 #define IWARP_CREATE_QP_RAMROD_DATA_LOW_LATENCY_QUEUE_EN_SHIFT	6
 #define IWARP_CREATE_QP_RAMROD_DATA_RESERVED0_MASK		0x1
 #define IWARP_CREATE_QP_RAMROD_DATA_RESERVED0_SHIFT		7
+=======
+struct iwarp_create_qp_ramrod_data {
+	u8 flags;
+#define IWARP_CREATE_QP_RAMROD_DATA_FMR_AND_RESERVED_EN_MASK	0x1
+#define IWARP_CREATE_QP_RAMROD_DATA_FMR_AND_RESERVED_EN_SHIFT 0
+#define IWARP_CREATE_QP_RAMROD_DATA_SIGNALED_COMP_MASK	0x1
+#define IWARP_CREATE_QP_RAMROD_DATA_SIGNALED_COMP_SHIFT	1
+#define IWARP_CREATE_QP_RAMROD_DATA_RDMA_RD_EN_MASK	0x1
+#define IWARP_CREATE_QP_RAMROD_DATA_RDMA_RD_EN_SHIFT	2
+#define IWARP_CREATE_QP_RAMROD_DATA_RDMA_WR_EN_MASK	0x1
+#define IWARP_CREATE_QP_RAMROD_DATA_RDMA_WR_EN_SHIFT	3
+#define IWARP_CREATE_QP_RAMROD_DATA_ATOMIC_EN_MASK	0x1
+#define IWARP_CREATE_QP_RAMROD_DATA_ATOMIC_EN_SHIFT	4
+#define IWARP_CREATE_QP_RAMROD_DATA_SRQ_FLG_MASK	0x1
+#define IWARP_CREATE_QP_RAMROD_DATA_SRQ_FLG_SHIFT	5
+#define IWARP_CREATE_QP_RAMROD_DATA_RESERVED0_MASK	0x3
+#define IWARP_CREATE_QP_RAMROD_DATA_RESERVED0_SHIFT	6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 reserved1;
 	__le16 pd;
 	__le16 sq_num_pages;
@@ -9838,7 +15320,10 @@ struct iwarp_create_qp_ramrod_data {
 	u8 reserved2[6];
 };
 
+<<<<<<< HEAD
 /* iWARP completion queue types */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum iwarp_eqe_async_opcode {
 	IWARP_EVENT_TYPE_ASYNC_CONNECT_COMPLETE,
 	IWARP_EVENT_TYPE_ASYNC_ENHANCED_MPA_REPLY_ARRIVED,
@@ -9847,8 +15332,11 @@ enum iwarp_eqe_async_opcode {
 	IWARP_EVENT_TYPE_ASYNC_EXCEPTION_DETECTED,
 	IWARP_EVENT_TYPE_ASYNC_QP_IN_ERROR_STATE,
 	IWARP_EVENT_TYPE_ASYNC_CQ_OVERFLOW,
+<<<<<<< HEAD
 	IWARP_EVENT_TYPE_ASYNC_SRQ_EMPTY,
 	IWARP_EVENT_TYPE_ASYNC_SRQ_LIMIT,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MAX_IWARP_EQE_ASYNC_OPCODE
 };
 
@@ -9863,7 +15351,10 @@ struct iwarp_eqe_data_tcp_async_completion {
 	u8 reserved[5];
 };
 
+<<<<<<< HEAD
 /* iWARP completion queue types */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum iwarp_eqe_sync_opcode {
 	IWARP_EVENT_TYPE_TCP_OFFLOAD =
 	11,
@@ -9873,11 +15364,17 @@ enum iwarp_eqe_sync_opcode {
 	IWARP_EVENT_TYPE_QUERY_QP,
 	IWARP_EVENT_TYPE_MODIFY_QP,
 	IWARP_EVENT_TYPE_DESTROY_QP,
+<<<<<<< HEAD
 	IWARP_EVENT_TYPE_ABORT_TCP_OFFLOAD,
 	MAX_IWARP_EQE_SYNC_OPCODE
 };
 
 /* iWARP EQE completion status */
+=======
+	MAX_IWARP_EQE_SYNC_OPCODE
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum iwarp_fw_return_code {
 	IWARP_CONN_ERROR_TCP_CONNECT_INVALID_PACKET = 5,
 	IWARP_CONN_ERROR_TCP_CONNECTION_RST,
@@ -9898,8 +15395,11 @@ enum iwarp_fw_return_code {
 	IWARP_EXCEPTION_DETECTED_LLP_RESET,
 	IWARP_EXCEPTION_DETECTED_IRQ_FULL,
 	IWARP_EXCEPTION_DETECTED_RQ_EMPTY,
+<<<<<<< HEAD
 	IWARP_EXCEPTION_DETECTED_SRQ_EMPTY,
 	IWARP_EXCEPTION_DETECTED_SRQ_LIMIT,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	IWARP_EXCEPTION_DETECTED_LLP_TIMEOUT,
 	IWARP_EXCEPTION_DETECTED_REMOTE_PROTECTION_ERROR,
 	IWARP_EXCEPTION_DETECTED_CQ_OVERFLOW,
@@ -9910,19 +15410,26 @@ enum iwarp_fw_return_code {
 	MAX_IWARP_FW_RETURN_CODE
 };
 
+<<<<<<< HEAD
 /* unaligned opaque data received from LL2 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwarp_init_func_params {
 	u8 ll2_ooo_q_index;
 	u8 reserved1[7];
 };
 
+<<<<<<< HEAD
 /* iwarp func init ramrod data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwarp_init_func_ramrod_data {
 	struct rdma_init_func_ramrod_data rdma;
 	struct tcp_init_params tcp;
 	struct iwarp_init_func_params iwarp;
 };
 
+<<<<<<< HEAD
 /* iWARP QP - possible states to transition to */
 enum iwarp_modify_qp_new_state_type {
 	IWARP_MODIFY_QP_STATE_CLOSING = 1,
@@ -9954,19 +15461,53 @@ struct iwarp_modify_qp_ramrod_data {
 };
 
 /* MPA params for Enhanced mode */
+=======
+enum iwarp_modify_qp_new_state_type {
+	IWARP_MODIFY_QP_STATE_CLOSING = 1,
+	IWARP_MODIFY_QP_STATE_ERROR =
+	2,
+	MAX_IWARP_MODIFY_QP_NEW_STATE_TYPE
+};
+
+struct iwarp_modify_qp_ramrod_data {
+	__le16 transition_to_state;
+	__le16 flags;
+#define IWARP_MODIFY_QP_RAMROD_DATA_RDMA_RD_EN_MASK	0x1
+#define IWARP_MODIFY_QP_RAMROD_DATA_RDMA_RD_EN_SHIFT	0
+#define IWARP_MODIFY_QP_RAMROD_DATA_RDMA_WR_EN_MASK	0x1
+#define IWARP_MODIFY_QP_RAMROD_DATA_RDMA_WR_EN_SHIFT	1
+#define IWARP_MODIFY_QP_RAMROD_DATA_ATOMIC_EN_MASK	0x1
+#define IWARP_MODIFY_QP_RAMROD_DATA_ATOMIC_EN_SHIFT	2
+#define IWARP_MODIFY_QP_RAMROD_DATA_STATE_TRANS_EN_MASK	0x1
+#define IWARP_MODIFY_QP_RAMROD_DATA_STATE_TRANS_EN_SHIFT	3
+#define IWARP_MODIFY_QP_RAMROD_DATA_RDMA_OPS_EN_FLG_MASK	0x1
+#define IWARP_MODIFY_QP_RAMROD_DATA_RDMA_OPS_EN_FLG_SHIFT 4
+#define IWARP_MODIFY_QP_RAMROD_DATA_RESERVED_MASK	0x7FF
+#define IWARP_MODIFY_QP_RAMROD_DATA_RESERVED_SHIFT	5
+	__le32 reserved3[3];
+	__le32 reserved4[8];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mpa_rq_params {
 	__le32 ird;
 	__le32 ord;
 };
 
+<<<<<<< HEAD
 /* MPA host Address-Len for private data */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mpa_ulp_buffer {
 	struct regpair addr;
 	__le16 len;
 	__le16 reserved[3];
 };
 
+<<<<<<< HEAD
 /* iWARP MPA offload params common to Basic and Enhanced modes */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mpa_outgoing_params {
 	u8 crc_needed;
 	u8 reject;
@@ -9975,9 +15516,12 @@ struct mpa_outgoing_params {
 	struct mpa_ulp_buffer outgoing_ulp_buffer;
 };
 
+<<<<<<< HEAD
 /* iWARP MPA offload params passed by driver to FW in MPA Offload Request
  * Ramrod.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwarp_mpa_offload_ramrod_data {
 	struct mpa_outgoing_params common;
 	__le32 tcp_cid;
@@ -9985,20 +15529,33 @@ struct iwarp_mpa_offload_ramrod_data {
 	u8 tcp_connect_side;
 	u8 rtr_pref;
 #define IWARP_MPA_OFFLOAD_RAMROD_DATA_RTR_SUPPORTED_MASK	0x7
+<<<<<<< HEAD
 #define IWARP_MPA_OFFLOAD_RAMROD_DATA_RTR_SUPPORTED_SHIFT	0
 #define IWARP_MPA_OFFLOAD_RAMROD_DATA_RESERVED1_MASK		0x1F
 #define IWARP_MPA_OFFLOAD_RAMROD_DATA_RESERVED1_SHIFT		3
+=======
+#define IWARP_MPA_OFFLOAD_RAMROD_DATA_RTR_SUPPORTED_SHIFT 0
+#define IWARP_MPA_OFFLOAD_RAMROD_DATA_RESERVED1_MASK	0x1F
+#define IWARP_MPA_OFFLOAD_RAMROD_DATA_RESERVED1_SHIFT	3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 reserved2;
 	struct mpa_ulp_buffer incoming_ulp_buffer;
 	struct regpair async_eqe_output_buf;
 	struct regpair handle_for_async;
 	struct regpair shared_queue_addr;
+<<<<<<< HEAD
 	__le16 rcv_wnd;
 	u8 stats_counter_id;
 	u8 reserved3[13];
 };
 
 /* iWARP TCP connection offload params passed by driver to FW */
+=======
+	u8 stats_counter_id;
+	u8 reserved3[15];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwarp_offload_params {
 	struct mpa_ulp_buffer incoming_ulp_buffer;
 	struct regpair async_eqe_output_buf;
@@ -10010,6 +15567,7 @@ struct iwarp_offload_params {
 	u8 reserved[10];
 };
 
+<<<<<<< HEAD
 /* iWARP query QP output params */
 struct iwarp_query_qp_output_params {
 	__le32 flags;
@@ -10021,45 +15579,77 @@ struct iwarp_query_qp_output_params {
 };
 
 /* iWARP query QP ramrod data */
+=======
+struct iwarp_query_qp_output_params {
+	__le32 flags;
+#define IWARP_QUERY_QP_OUTPUT_PARAMS_ERROR_FLG_MASK	0x1
+#define IWARP_QUERY_QP_OUTPUT_PARAMS_ERROR_FLG_SHIFT 0
+#define IWARP_QUERY_QP_OUTPUT_PARAMS_RESERVED0_MASK	0x7FFFFFFF
+#define IWARP_QUERY_QP_OUTPUT_PARAMS_RESERVED0_SHIFT 1
+	u8 reserved1[4];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwarp_query_qp_ramrod_data {
 	struct regpair output_params_addr;
 };
 
+<<<<<<< HEAD
 /* iWARP Ramrod Command IDs */
 enum iwarp_ramrod_cmd_id {
 	IWARP_RAMROD_CMD_ID_TCP_OFFLOAD = 11,
+=======
+enum iwarp_ramrod_cmd_id {
+	IWARP_RAMROD_CMD_ID_TCP_OFFLOAD =
+	11,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	IWARP_RAMROD_CMD_ID_MPA_OFFLOAD,
 	IWARP_RAMROD_CMD_ID_MPA_OFFLOAD_SEND_RTR,
 	IWARP_RAMROD_CMD_ID_CREATE_QP,
 	IWARP_RAMROD_CMD_ID_QUERY_QP,
 	IWARP_RAMROD_CMD_ID_MODIFY_QP,
 	IWARP_RAMROD_CMD_ID_DESTROY_QP,
+<<<<<<< HEAD
 	IWARP_RAMROD_CMD_ID_ABORT_TCP_OFFLOAD,
 	MAX_IWARP_RAMROD_CMD_ID
 };
 
 /* Per PF iWARP retransmit path statistics */
+=======
+	MAX_IWARP_RAMROD_CMD_ID
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwarp_rxmit_stats_drv {
 	struct regpair tx_go_to_slow_start_event_cnt;
 	struct regpair tx_fast_retransmit_event_cnt;
 };
 
+<<<<<<< HEAD
 /* iWARP and TCP connection offload params passed by driver to FW in iWARP
  * offload ramrod.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iwarp_tcp_offload_ramrod_data {
 	struct iwarp_offload_params iwarp;
 	struct tcp_offload_params_opt2 tcp;
 };
 
+<<<<<<< HEAD
 /* iWARP MPA negotiation types */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum mpa_negotiation_mode {
 	MPA_NEGOTIATION_TYPE_BASIC = 1,
 	MPA_NEGOTIATION_TYPE_ENHANCED = 2,
 	MAX_MPA_NEGOTIATION_MODE
 };
 
+<<<<<<< HEAD
 /* iWARP MPA Enhanced mode RTR types */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum mpa_rtr_type {
 	MPA_RTR_TYPE_NONE = 0,
 	MPA_RTR_TYPE_ZERO_SEND = 1,
@@ -10072,12 +15662,16 @@ enum mpa_rtr_type {
 	MAX_MPA_RTR_TYPE
 };
 
+<<<<<<< HEAD
 /* unaligned opaque data received from LL2 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct unaligned_opaque_data {
 	__le16 first_mpa_offset;
 	u8 tcp_payload_offset;
 	u8 flags;
 #define UNALIGNED_OPAQUE_DATA_PKT_REACHED_WIN_RIGHT_EDGE_MASK	0x1
+<<<<<<< HEAD
 #define UNALIGNED_OPAQUE_DATA_PKT_REACHED_WIN_RIGHT_EDGE_SHIFT	0
 #define UNALIGNED_OPAQUE_DATA_CONNECTION_CLOSED_MASK		0x1
 #define UNALIGNED_OPAQUE_DATA_CONNECTION_CLOSED_SHIFT		1
@@ -10117,12 +15711,54 @@ struct e4_mstorm_iwarp_conn_ag_ctx {
 #define E4_MSTORM_IWARP_CONN_AG_CTX_RCQ_CONS_EN_SHIFT		6
 #define E4_MSTORM_IWARP_CONN_AG_CTX_RULE4EN_MASK		0x1
 #define E4_MSTORM_IWARP_CONN_AG_CTX_RULE4EN_SHIFT		7
+=======
+#define UNALIGNED_OPAQUE_DATA_PKT_REACHED_WIN_RIGHT_EDGE_SHIFT 0
+#define UNALIGNED_OPAQUE_DATA_CONNECTION_CLOSED_MASK	0x1
+#define UNALIGNED_OPAQUE_DATA_CONNECTION_CLOSED_SHIFT	1
+#define UNALIGNED_OPAQUE_DATA_RESERVED_MASK	0x3F
+#define UNALIGNED_OPAQUE_DATA_RESERVED_SHIFT	2
+	__le32 cid;
+};
+
+struct mstorm_iwarp_conn_ag_ctx {
+	u8 reserved;
+	u8 state;
+	u8 flags0;
+#define MSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM0_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM0_SHIFT	0
+#define MSTORM_IWARP_CONN_AG_CTX_BIT1_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_BIT1_SHIFT	1
+#define MSTORM_IWARP_CONN_AG_CTX_INV_STAG_DONE_CF_MASK	0x3
+#define MSTORM_IWARP_CONN_AG_CTX_INV_STAG_DONE_CF_SHIFT	2
+#define MSTORM_IWARP_CONN_AG_CTX_CF1_MASK	0x3
+#define MSTORM_IWARP_CONN_AG_CTX_CF1_SHIFT	4
+#define MSTORM_IWARP_CONN_AG_CTX_CF2_MASK	0x3
+#define MSTORM_IWARP_CONN_AG_CTX_CF2_SHIFT	6
+	u8 flags1;
+#define MSTORM_IWARP_CONN_AG_CTX_INV_STAG_DONE_CF_EN_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_INV_STAG_DONE_CF_EN_SHIFT 0
+#define MSTORM_IWARP_CONN_AG_CTX_CF1EN_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_CF1EN_SHIFT	1
+#define MSTORM_IWARP_CONN_AG_CTX_CF2EN_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_CF2EN_SHIFT	2
+#define MSTORM_IWARP_CONN_AG_CTX_RULE0EN_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_RULE0EN_SHIFT	3
+#define MSTORM_IWARP_CONN_AG_CTX_RULE1EN_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_RULE1EN_SHIFT	4
+#define MSTORM_IWARP_CONN_AG_CTX_RULE2EN_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_RULE2EN_SHIFT	5
+#define MSTORM_IWARP_CONN_AG_CTX_RCQ_CONS_EN_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_RCQ_CONS_EN_SHIFT	6
+#define MSTORM_IWARP_CONN_AG_CTX_RULE4EN_MASK	0x1
+#define MSTORM_IWARP_CONN_AG_CTX_RULE4EN_SHIFT	7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 rcq_cons;
 	__le16 rcq_cons_th;
 	__le32 reg0;
 	__le32 reg1;
 };
 
+<<<<<<< HEAD
 struct e4_ustorm_iwarp_conn_ag_ctx {
 	u8 reserved;
 	u8 byte1;
@@ -10180,6 +15816,65 @@ struct e4_ustorm_iwarp_conn_ag_ctx {
 #define E4_USTORM_IWARP_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_USTORM_IWARP_CONN_AG_CTX_RULE8EN_MASK	0x1
 #define E4_USTORM_IWARP_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+struct ustorm_iwarp_conn_ag_ctx {
+	u8 reserved;
+	u8 byte1;
+	u8 flags0;
+#define USTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM0_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_EXIST_IN_QM0_SHIFT	0
+#define USTORM_IWARP_CONN_AG_CTX_BIT1_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_BIT1_SHIFT	1
+#define USTORM_IWARP_CONN_AG_CTX_CF0_MASK	0x3
+#define USTORM_IWARP_CONN_AG_CTX_CF0_SHIFT	2
+#define USTORM_IWARP_CONN_AG_CTX_CF1_MASK	0x3
+#define USTORM_IWARP_CONN_AG_CTX_CF1_SHIFT	4
+#define USTORM_IWARP_CONN_AG_CTX_CF2_MASK	0x3
+#define USTORM_IWARP_CONN_AG_CTX_CF2_SHIFT	6
+	u8 flags1;
+#define USTORM_IWARP_CONN_AG_CTX_CF3_MASK	0x3
+#define USTORM_IWARP_CONN_AG_CTX_CF3_SHIFT	0
+#define USTORM_IWARP_CONN_AG_CTX_CQ_ARM_SE_CF_MASK	0x3
+#define USTORM_IWARP_CONN_AG_CTX_CQ_ARM_SE_CF_SHIFT	2
+#define USTORM_IWARP_CONN_AG_CTX_CQ_ARM_CF_MASK	0x3
+#define USTORM_IWARP_CONN_AG_CTX_CQ_ARM_CF_SHIFT	4
+#define USTORM_IWARP_CONN_AG_CTX_CF6_MASK	0x3
+#define USTORM_IWARP_CONN_AG_CTX_CF6_SHIFT	6
+	u8 flags2;
+#define USTORM_IWARP_CONN_AG_CTX_CF0EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CF0EN_SHIFT	0
+#define USTORM_IWARP_CONN_AG_CTX_CF1EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CF1EN_SHIFT	1
+#define USTORM_IWARP_CONN_AG_CTX_CF2EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CF2EN_SHIFT	2
+#define USTORM_IWARP_CONN_AG_CTX_CF3EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CF3EN_SHIFT	3
+#define USTORM_IWARP_CONN_AG_CTX_CQ_ARM_SE_CF_EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CQ_ARM_SE_CF_EN_SHIFT 4
+#define USTORM_IWARP_CONN_AG_CTX_CQ_ARM_CF_EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CQ_ARM_CF_EN_SHIFT	5
+#define USTORM_IWARP_CONN_AG_CTX_CF6EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CF6EN_SHIFT	6
+#define USTORM_IWARP_CONN_AG_CTX_CQ_SE_EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CQ_SE_EN_SHIFT	7
+	u8 flags3;
+#define USTORM_IWARP_CONN_AG_CTX_CQ_EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_CQ_EN_SHIFT	0
+#define USTORM_IWARP_CONN_AG_CTX_RULE2EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_RULE2EN_SHIFT	1
+#define USTORM_IWARP_CONN_AG_CTX_RULE3EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_RULE3EN_SHIFT	2
+#define USTORM_IWARP_CONN_AG_CTX_RULE4EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_RULE4EN_SHIFT	3
+#define USTORM_IWARP_CONN_AG_CTX_RULE5EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_RULE5EN_SHIFT	4
+#define USTORM_IWARP_CONN_AG_CTX_RULE6EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_RULE6EN_SHIFT	5
+#define USTORM_IWARP_CONN_AG_CTX_RULE7EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_RULE7EN_SHIFT	6
+#define USTORM_IWARP_CONN_AG_CTX_RULE8EN_MASK	0x1
+#define USTORM_IWARP_CONN_AG_CTX_RULE8EN_SHIFT	7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -10192,6 +15887,7 @@ struct e4_ustorm_iwarp_conn_ag_ctx {
 	__le16 word3;
 };
 
+<<<<<<< HEAD
 struct e4_ystorm_iwarp_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -10223,6 +15919,39 @@ struct e4_ystorm_iwarp_conn_ag_ctx {
 #define E4_YSTORM_IWARP_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_YSTORM_IWARP_CONN_AG_CTX_RULE4EN_MASK	0x1
 #define E4_YSTORM_IWARP_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+struct ystorm_iwarp_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define YSTORM_IWARP_CONN_AG_CTX_BIT0_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_BIT0_SHIFT	0
+#define YSTORM_IWARP_CONN_AG_CTX_BIT1_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_BIT1_SHIFT	1
+#define YSTORM_IWARP_CONN_AG_CTX_CF0_MASK	0x3
+#define YSTORM_IWARP_CONN_AG_CTX_CF0_SHIFT	2
+#define YSTORM_IWARP_CONN_AG_CTX_CF1_MASK	0x3
+#define YSTORM_IWARP_CONN_AG_CTX_CF1_SHIFT	4
+#define YSTORM_IWARP_CONN_AG_CTX_CF2_MASK	0x3
+#define YSTORM_IWARP_CONN_AG_CTX_CF2_SHIFT	6
+	u8 flags1;
+#define YSTORM_IWARP_CONN_AG_CTX_CF0EN_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_CF0EN_SHIFT	0
+#define YSTORM_IWARP_CONN_AG_CTX_CF1EN_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_CF1EN_SHIFT	1
+#define YSTORM_IWARP_CONN_AG_CTX_CF2EN_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_CF2EN_SHIFT	2
+#define YSTORM_IWARP_CONN_AG_CTX_RULE0EN_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define YSTORM_IWARP_CONN_AG_CTX_RULE1EN_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define YSTORM_IWARP_CONN_AG_CTX_RULE2EN_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define YSTORM_IWARP_CONN_AG_CTX_RULE3EN_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define YSTORM_IWARP_CONN_AG_CTX_RULE4EN_MASK	0x1
+#define YSTORM_IWARP_CONN_AG_CTX_RULE4EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -10236,7 +15965,10 @@ struct e4_ystorm_iwarp_conn_ag_ctx {
 	__le32 reg3;
 };
 
+<<<<<<< HEAD
 /* The fcoe storm context of Ystorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ystorm_fcoe_conn_st_ctx {
 	u8 func_mode;
 	u8 cos;
@@ -10252,16 +15984,26 @@ struct ystorm_fcoe_conn_st_ctx {
 	struct regpair reserved;
 	__le16 min_frame_size;
 	u8 protection_info_flags;
+<<<<<<< HEAD
 #define YSTORM_FCOE_CONN_ST_CTX_SUPPORT_PROTECTION_MASK		0x1
 #define YSTORM_FCOE_CONN_ST_CTX_SUPPORT_PROTECTION_SHIFT	0
 #define YSTORM_FCOE_CONN_ST_CTX_VALID_MASK			0x1
 #define YSTORM_FCOE_CONN_ST_CTX_VALID_SHIFT			1
 #define YSTORM_FCOE_CONN_ST_CTX_RESERVED1_MASK			0x3F
 #define YSTORM_FCOE_CONN_ST_CTX_RESERVED1_SHIFT			2
+=======
+#define YSTORM_FCOE_CONN_ST_CTX_SUPPORT_PROTECTION_MASK  0x1
+#define YSTORM_FCOE_CONN_ST_CTX_SUPPORT_PROTECTION_SHIFT 0
+#define YSTORM_FCOE_CONN_ST_CTX_VALID_MASK               0x1
+#define YSTORM_FCOE_CONN_ST_CTX_VALID_SHIFT              1
+#define YSTORM_FCOE_CONN_ST_CTX_RESERVED1_MASK           0x3F
+#define YSTORM_FCOE_CONN_ST_CTX_RESERVED1_SHIFT          2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 dst_protection_per_mss;
 	u8 src_protection_per_mss;
 	u8 ptu_log_page_size;
 	u8 flags;
+<<<<<<< HEAD
 #define YSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_MASK	0x1
 #define YSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_SHIFT	0
 #define YSTORM_FCOE_CONN_ST_CTX_OUTER_VLAN_FLAG_MASK	0x1
@@ -10283,18 +16025,45 @@ struct fcoe_vlan_fields {
 };
 
 /* FCoE 16-bits vlan union */
+=======
+#define YSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_MASK     0x1
+#define YSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_SHIFT    0
+#define YSTORM_FCOE_CONN_ST_CTX_OUTER_VLAN_FLAG_MASK     0x1
+#define YSTORM_FCOE_CONN_ST_CTX_OUTER_VLAN_FLAG_SHIFT    1
+#define YSTORM_FCOE_CONN_ST_CTX_RSRV_MASK                0x3F
+#define YSTORM_FCOE_CONN_ST_CTX_RSRV_SHIFT               2
+	u8 fcp_xfer_size;
+};
+
+struct fcoe_vlan_fields {
+	__le16 fields;
+#define FCOE_VLAN_FIELDS_VID_MASK  0xFFF
+#define FCOE_VLAN_FIELDS_VID_SHIFT 0
+#define FCOE_VLAN_FIELDS_CLI_MASK  0x1
+#define FCOE_VLAN_FIELDS_CLI_SHIFT 12
+#define FCOE_VLAN_FIELDS_PRI_MASK  0x7
+#define FCOE_VLAN_FIELDS_PRI_SHIFT 13
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union fcoe_vlan_field_union {
 	struct fcoe_vlan_fields fields;
 	__le16 val;
 };
 
+<<<<<<< HEAD
 /* FCoE 16-bits vlan, vif union */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union fcoe_vlan_vif_field_union {
 	union fcoe_vlan_field_union vlan;
 	__le16 vif;
 };
 
+<<<<<<< HEAD
 /* Ethernet context section */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pstorm_fcoe_eth_context_section {
 	u8 remote_addr_3;
 	u8 remote_addr_2;
@@ -10314,7 +16083,10 @@ struct pstorm_fcoe_eth_context_section {
 	__le16 inner_eth_type;
 };
 
+<<<<<<< HEAD
 /* The fcoe storm context of Pstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pstorm_fcoe_conn_st_ctx {
 	u8 func_mode;
 	u8 cos;
@@ -10328,6 +16100,7 @@ struct pstorm_fcoe_conn_st_ctx {
 	u8 sid_1;
 	u8 sid_0;
 	u8 flags;
+<<<<<<< HEAD
 #define PSTORM_FCOE_CONN_ST_CTX_VNTAG_VLAN_MASK			0x1
 #define PSTORM_FCOE_CONN_ST_CTX_VNTAG_VLAN_SHIFT		0
 #define PSTORM_FCOE_CONN_ST_CTX_SUPPORT_REC_RR_TOV_MASK		0x1
@@ -10340,6 +16113,18 @@ struct pstorm_fcoe_conn_st_ctx {
 #define PSTORM_FCOE_CONN_ST_CTX_SINGLE_VLAN_FLAG_SHIFT		4
 #define PSTORM_FCOE_CONN_ST_CTX_RESERVED_MASK			0x7
 #define PSTORM_FCOE_CONN_ST_CTX_RESERVED_SHIFT			5
+=======
+#define PSTORM_FCOE_CONN_ST_CTX_VNTAG_VLAN_MASK          0x1
+#define PSTORM_FCOE_CONN_ST_CTX_VNTAG_VLAN_SHIFT         0
+#define PSTORM_FCOE_CONN_ST_CTX_SUPPORT_REC_RR_TOV_MASK  0x1
+#define PSTORM_FCOE_CONN_ST_CTX_SUPPORT_REC_RR_TOV_SHIFT 1
+#define PSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_MASK     0x1
+#define PSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_SHIFT    2
+#define PSTORM_FCOE_CONN_ST_CTX_OUTER_VLAN_FLAG_MASK     0x1
+#define PSTORM_FCOE_CONN_ST_CTX_OUTER_VLAN_FLAG_SHIFT    3
+#define PSTORM_FCOE_CONN_ST_CTX_RESERVED_MASK            0xF
+#define PSTORM_FCOE_CONN_ST_CTX_RESERVED_SHIFT           4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 did_2;
 	u8 did_1;
 	u8 did_0;
@@ -10349,7 +16134,10 @@ struct pstorm_fcoe_conn_st_ctx {
 	u8 reserved1;
 };
 
+<<<<<<< HEAD
 /* The fcoe storm context of Xstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct xstorm_fcoe_conn_st_ctx {
 	u8 func_mode;
 	u8 src_mac_index;
@@ -10357,6 +16145,7 @@ struct xstorm_fcoe_conn_st_ctx {
 	u8 cached_wqes_avail;
 	__le16 stat_ram_addr;
 	u8 flags;
+<<<<<<< HEAD
 #define XSTORM_FCOE_CONN_ST_CTX_SQ_DEFERRED_MASK		0x1
 #define XSTORM_FCOE_CONN_ST_CTX_SQ_DEFERRED_SHIFT		0
 #define XSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_MASK		0x1
@@ -10367,6 +16156,18 @@ struct xstorm_fcoe_conn_st_ctx {
 #define XSTORM_FCOE_CONN_ST_CTX_LAST_QUEUE_HANDLED_SHIFT	3
 #define XSTORM_FCOE_CONN_ST_CTX_RSRV_MASK			0x7
 #define XSTORM_FCOE_CONN_ST_CTX_RSRV_SHIFT			5
+=======
+#define XSTORM_FCOE_CONN_ST_CTX_SQ_DEFERRED_MASK             0x1
+#define XSTORM_FCOE_CONN_ST_CTX_SQ_DEFERRED_SHIFT            0
+#define XSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_MASK         0x1
+#define XSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_SHIFT        1
+#define XSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_ORIG_MASK    0x1
+#define XSTORM_FCOE_CONN_ST_CTX_INNER_VLAN_FLAG_ORIG_SHIFT   2
+#define XSTORM_FCOE_CONN_ST_CTX_LAST_QUEUE_HANDLED_MASK      0x3
+#define XSTORM_FCOE_CONN_ST_CTX_LAST_QUEUE_HANDLED_SHIFT     3
+#define XSTORM_FCOE_CONN_ST_CTX_RSRV_MASK                    0x7
+#define XSTORM_FCOE_CONN_ST_CTX_RSRV_SHIFT                   5
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 cached_wqes_offset;
 	u8 reserved2;
 	u8 eth_hdr_size;
@@ -10392,6 +16193,7 @@ struct xstorm_fcoe_conn_st_ctx {
 	u8 fcp_cmd_byte_credit;
 	u8 fcp_rsp_byte_credit;
 	__le16 protection_info;
+<<<<<<< HEAD
 #define XSTORM_FCOE_CONN_ST_CTX_PROTECTION_PERF_MASK		0x1
 #define XSTORM_FCOE_CONN_ST_CTX_PROTECTION_PERF_SHIFT		0
 #define XSTORM_FCOE_CONN_ST_CTX_SUPPORT_PROTECTION_MASK		0x1
@@ -10404,6 +16206,20 @@ struct xstorm_fcoe_conn_st_ctx {
 #define XSTORM_FCOE_CONN_ST_CTX_RESERVED3_SHIFT			4
 #define XSTORM_FCOE_CONN_ST_CTX_DST_PROTECTION_PER_MSS_MASK	0xFF
 #define XSTORM_FCOE_CONN_ST_CTX_DST_PROTECTION_PER_MSS_SHIFT	8
+=======
+#define XSTORM_FCOE_CONN_ST_CTX_PROTECTION_PERF_MASK         0x1
+#define XSTORM_FCOE_CONN_ST_CTX_PROTECTION_PERF_SHIFT        0
+#define XSTORM_FCOE_CONN_ST_CTX_SUPPORT_PROTECTION_MASK      0x1
+#define XSTORM_FCOE_CONN_ST_CTX_SUPPORT_PROTECTION_SHIFT     1
+#define XSTORM_FCOE_CONN_ST_CTX_VALID_MASK                   0x1
+#define XSTORM_FCOE_CONN_ST_CTX_VALID_SHIFT                  2
+#define XSTORM_FCOE_CONN_ST_CTX_FRAME_PROT_ALIGNED_MASK      0x1
+#define XSTORM_FCOE_CONN_ST_CTX_FRAME_PROT_ALIGNED_SHIFT     3
+#define XSTORM_FCOE_CONN_ST_CTX_RESERVED3_MASK               0xF
+#define XSTORM_FCOE_CONN_ST_CTX_RESERVED3_SHIFT              4
+#define XSTORM_FCOE_CONN_ST_CTX_DST_PROTECTION_PER_MSS_MASK  0xFF
+#define XSTORM_FCOE_CONN_ST_CTX_DST_PROTECTION_PER_MSS_SHIFT 8
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 xferq_pbl_next_index;
 	__le16 page_size;
 	u8 mid_seq;
@@ -10412,6 +16228,7 @@ struct xstorm_fcoe_conn_st_ctx {
 	struct fcoe_wqe cached_wqes[16];
 };
 
+<<<<<<< HEAD
 struct e4_xstorm_fcoe_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -10622,6 +16439,218 @@ struct e4_xstorm_fcoe_conn_ag_ctx {
 #define E4_XSTORM_FCOE_CONN_AG_CTX_BIT21_SHIFT	5
 #define E4_XSTORM_FCOE_CONN_AG_CTX_CF23_MASK	0x3
 #define E4_XSTORM_FCOE_CONN_AG_CTX_CF23_SHIFT	6
+=======
+struct xstorm_fcoe_conn_ag_ctx {
+	u8 reserved0;
+	u8 fcoe_state;
+	u8 flags0;
+#define XSTORM_FCOE_CONN_AG_CTX_EXIST_IN_QM0_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_EXIST_IN_QM0_SHIFT      0
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED1_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED1_SHIFT         1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED2_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED2_SHIFT         2
+#define XSTORM_FCOE_CONN_AG_CTX_EXIST_IN_QM3_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_EXIST_IN_QM3_SHIFT      3
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED3_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED3_SHIFT         4
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED4_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED4_SHIFT         5
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED5_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED5_SHIFT         6
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED6_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED6_SHIFT         7
+	u8 flags1;
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED7_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED7_SHIFT         0
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED8_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED8_SHIFT         1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED9_MASK          0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED9_SHIFT         2
+#define XSTORM_FCOE_CONN_AG_CTX_BIT11_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT11_SHIFT             3
+#define XSTORM_FCOE_CONN_AG_CTX_BIT12_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT12_SHIFT             4
+#define XSTORM_FCOE_CONN_AG_CTX_BIT13_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT13_SHIFT             5
+#define XSTORM_FCOE_CONN_AG_CTX_BIT14_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT14_SHIFT             6
+#define XSTORM_FCOE_CONN_AG_CTX_BIT15_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT15_SHIFT             7
+	u8 flags2;
+#define XSTORM_FCOE_CONN_AG_CTX_CF0_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF0_SHIFT               0
+#define XSTORM_FCOE_CONN_AG_CTX_CF1_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF1_SHIFT               2
+#define XSTORM_FCOE_CONN_AG_CTX_CF2_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF2_SHIFT               4
+#define XSTORM_FCOE_CONN_AG_CTX_CF3_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF3_SHIFT               6
+	u8 flags3;
+#define XSTORM_FCOE_CONN_AG_CTX_CF4_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF4_SHIFT               0
+#define XSTORM_FCOE_CONN_AG_CTX_CF5_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF5_SHIFT               2
+#define XSTORM_FCOE_CONN_AG_CTX_CF6_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF6_SHIFT               4
+#define XSTORM_FCOE_CONN_AG_CTX_CF7_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF7_SHIFT               6
+	u8 flags4;
+#define XSTORM_FCOE_CONN_AG_CTX_CF8_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF8_SHIFT               0
+#define XSTORM_FCOE_CONN_AG_CTX_CF9_MASK                0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF9_SHIFT               2
+#define XSTORM_FCOE_CONN_AG_CTX_CF10_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF10_SHIFT              4
+#define XSTORM_FCOE_CONN_AG_CTX_CF11_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF11_SHIFT              6
+	u8 flags5;
+#define XSTORM_FCOE_CONN_AG_CTX_CF12_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF12_SHIFT              0
+#define XSTORM_FCOE_CONN_AG_CTX_CF13_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF13_SHIFT              2
+#define XSTORM_FCOE_CONN_AG_CTX_CF14_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF14_SHIFT              4
+#define XSTORM_FCOE_CONN_AG_CTX_CF15_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF15_SHIFT              6
+	u8 flags6;
+#define XSTORM_FCOE_CONN_AG_CTX_CF16_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF16_SHIFT              0
+#define XSTORM_FCOE_CONN_AG_CTX_CF17_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF17_SHIFT              2
+#define XSTORM_FCOE_CONN_AG_CTX_CF18_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF18_SHIFT              4
+#define XSTORM_FCOE_CONN_AG_CTX_DQ_CF_MASK              0x3
+#define XSTORM_FCOE_CONN_AG_CTX_DQ_CF_SHIFT             6
+	u8 flags7;
+#define XSTORM_FCOE_CONN_AG_CTX_FLUSH_Q0_MASK           0x3
+#define XSTORM_FCOE_CONN_AG_CTX_FLUSH_Q0_SHIFT          0
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED10_MASK         0x3
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED10_SHIFT        2
+#define XSTORM_FCOE_CONN_AG_CTX_SLOW_PATH_MASK          0x3
+#define XSTORM_FCOE_CONN_AG_CTX_SLOW_PATH_SHIFT         4
+#define XSTORM_FCOE_CONN_AG_CTX_CF0EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF0EN_SHIFT             6
+#define XSTORM_FCOE_CONN_AG_CTX_CF1EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF1EN_SHIFT             7
+	u8 flags8;
+#define XSTORM_FCOE_CONN_AG_CTX_CF2EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF2EN_SHIFT             0
+#define XSTORM_FCOE_CONN_AG_CTX_CF3EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF3EN_SHIFT             1
+#define XSTORM_FCOE_CONN_AG_CTX_CF4EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF4EN_SHIFT             2
+#define XSTORM_FCOE_CONN_AG_CTX_CF5EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF5EN_SHIFT             3
+#define XSTORM_FCOE_CONN_AG_CTX_CF6EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF6EN_SHIFT             4
+#define XSTORM_FCOE_CONN_AG_CTX_CF7EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF7EN_SHIFT             5
+#define XSTORM_FCOE_CONN_AG_CTX_CF8EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF8EN_SHIFT             6
+#define XSTORM_FCOE_CONN_AG_CTX_CF9EN_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF9EN_SHIFT             7
+	u8 flags9;
+#define XSTORM_FCOE_CONN_AG_CTX_CF10EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF10EN_SHIFT            0
+#define XSTORM_FCOE_CONN_AG_CTX_CF11EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF11EN_SHIFT            1
+#define XSTORM_FCOE_CONN_AG_CTX_CF12EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF12EN_SHIFT            2
+#define XSTORM_FCOE_CONN_AG_CTX_CF13EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF13EN_SHIFT            3
+#define XSTORM_FCOE_CONN_AG_CTX_CF14EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF14EN_SHIFT            4
+#define XSTORM_FCOE_CONN_AG_CTX_CF15EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF15EN_SHIFT            5
+#define XSTORM_FCOE_CONN_AG_CTX_CF16EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF16EN_SHIFT            6
+#define XSTORM_FCOE_CONN_AG_CTX_CF17EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF17EN_SHIFT            7
+	u8 flags10;
+#define XSTORM_FCOE_CONN_AG_CTX_CF18EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF18EN_SHIFT            0
+#define XSTORM_FCOE_CONN_AG_CTX_DQ_CF_EN_MASK           0x1
+#define XSTORM_FCOE_CONN_AG_CTX_DQ_CF_EN_SHIFT          1
+#define XSTORM_FCOE_CONN_AG_CTX_FLUSH_Q0_EN_MASK        0x1
+#define XSTORM_FCOE_CONN_AG_CTX_FLUSH_Q0_EN_SHIFT       2
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED11_MASK         0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED11_SHIFT        3
+#define XSTORM_FCOE_CONN_AG_CTX_SLOW_PATH_EN_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_SLOW_PATH_EN_SHIFT      4
+#define XSTORM_FCOE_CONN_AG_CTX_CF23EN_MASK             0x1
+#define XSTORM_FCOE_CONN_AG_CTX_CF23EN_SHIFT            5
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED12_MASK         0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED12_SHIFT        6
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED13_MASK         0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED13_SHIFT        7
+	u8 flags11;
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED14_MASK         0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED14_SHIFT        0
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED15_MASK         0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED15_SHIFT        1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED16_MASK         0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESERVED16_SHIFT        2
+#define XSTORM_FCOE_CONN_AG_CTX_RULE5EN_MASK            0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE5EN_SHIFT           3
+#define XSTORM_FCOE_CONN_AG_CTX_RULE6EN_MASK            0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE6EN_SHIFT           4
+#define XSTORM_FCOE_CONN_AG_CTX_RULE7EN_MASK            0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE7EN_SHIFT           5
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED1_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED1_SHIFT      6
+#define XSTORM_FCOE_CONN_AG_CTX_XFERQ_DECISION_EN_MASK  0x1
+#define XSTORM_FCOE_CONN_AG_CTX_XFERQ_DECISION_EN_SHIFT 7
+	u8 flags12;
+#define XSTORM_FCOE_CONN_AG_CTX_SQ_DECISION_EN_MASK     0x1
+#define XSTORM_FCOE_CONN_AG_CTX_SQ_DECISION_EN_SHIFT    0
+#define XSTORM_FCOE_CONN_AG_CTX_RULE11EN_MASK           0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE11EN_SHIFT          1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED2_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED2_SHIFT      2
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED3_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED3_SHIFT      3
+#define XSTORM_FCOE_CONN_AG_CTX_RULE14EN_MASK           0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE14EN_SHIFT          4
+#define XSTORM_FCOE_CONN_AG_CTX_RULE15EN_MASK           0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE15EN_SHIFT          5
+#define XSTORM_FCOE_CONN_AG_CTX_RULE16EN_MASK           0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE16EN_SHIFT          6
+#define XSTORM_FCOE_CONN_AG_CTX_RULE17EN_MASK           0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE17EN_SHIFT          7
+	u8 flags13;
+#define XSTORM_FCOE_CONN_AG_CTX_RESPQ_DECISION_EN_MASK  0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RESPQ_DECISION_EN_SHIFT 0
+#define XSTORM_FCOE_CONN_AG_CTX_RULE19EN_MASK           0x1
+#define XSTORM_FCOE_CONN_AG_CTX_RULE19EN_SHIFT          1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED4_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED4_SHIFT      2
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED5_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED5_SHIFT      3
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED6_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED6_SHIFT      4
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED7_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED7_SHIFT      5
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED8_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED8_SHIFT      6
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED9_MASK       0x1
+#define XSTORM_FCOE_CONN_AG_CTX_A0_RESERVED9_SHIFT      7
+	u8 flags14;
+#define XSTORM_FCOE_CONN_AG_CTX_BIT16_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT16_SHIFT             0
+#define XSTORM_FCOE_CONN_AG_CTX_BIT17_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT17_SHIFT             1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT18_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT18_SHIFT             2
+#define XSTORM_FCOE_CONN_AG_CTX_BIT19_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT19_SHIFT             3
+#define XSTORM_FCOE_CONN_AG_CTX_BIT20_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT20_SHIFT             4
+#define XSTORM_FCOE_CONN_AG_CTX_BIT21_MASK              0x1
+#define XSTORM_FCOE_CONN_AG_CTX_BIT21_SHIFT             5
+#define XSTORM_FCOE_CONN_AG_CTX_CF23_MASK               0x3
+#define XSTORM_FCOE_CONN_AG_CTX_CF23_SHIFT              6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	__le16 physical_q0;
 	__le16 word1;
@@ -10649,7 +16678,10 @@ struct e4_xstorm_fcoe_conn_ag_ctx {
 	__le32 reg8;
 };
 
+<<<<<<< HEAD
 /* The fcoe storm context of Ustorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ustorm_fcoe_conn_st_ctx {
 	struct regpair respq_pbl_addr;
 	__le16 num_pages_in_pbl;
@@ -10659,6 +16691,7 @@ struct ustorm_fcoe_conn_st_ctx {
 	u8 reserved[2];
 };
 
+<<<<<<< HEAD
 struct e4_tstorm_fcoe_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -10742,10 +16775,96 @@ struct e4_tstorm_fcoe_conn_ag_ctx {
 #define E4_TSTORM_FCOE_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_TSTORM_FCOE_CONN_AG_CTX_RULE8EN_MASK		0x1
 #define E4_TSTORM_FCOE_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+struct tstorm_fcoe_conn_ag_ctx {
+	u8 reserved0;
+	u8 fcoe_state;
+	u8 flags0;
+#define TSTORM_FCOE_CONN_AG_CTX_EXIST_IN_QM0_MASK          0x1
+#define TSTORM_FCOE_CONN_AG_CTX_EXIST_IN_QM0_SHIFT         0
+#define TSTORM_FCOE_CONN_AG_CTX_BIT1_MASK                  0x1
+#define TSTORM_FCOE_CONN_AG_CTX_BIT1_SHIFT                 1
+#define TSTORM_FCOE_CONN_AG_CTX_BIT2_MASK                  0x1
+#define TSTORM_FCOE_CONN_AG_CTX_BIT2_SHIFT                 2
+#define TSTORM_FCOE_CONN_AG_CTX_BIT3_MASK                  0x1
+#define TSTORM_FCOE_CONN_AG_CTX_BIT3_SHIFT                 3
+#define TSTORM_FCOE_CONN_AG_CTX_BIT4_MASK                  0x1
+#define TSTORM_FCOE_CONN_AG_CTX_BIT4_SHIFT                 4
+#define TSTORM_FCOE_CONN_AG_CTX_BIT5_MASK                  0x1
+#define TSTORM_FCOE_CONN_AG_CTX_BIT5_SHIFT                 5
+#define TSTORM_FCOE_CONN_AG_CTX_DUMMY_TIMER_CF_MASK        0x3
+#define TSTORM_FCOE_CONN_AG_CTX_DUMMY_TIMER_CF_SHIFT       6
+	u8 flags1;
+#define TSTORM_FCOE_CONN_AG_CTX_FLUSH_Q0_CF_MASK           0x3
+#define TSTORM_FCOE_CONN_AG_CTX_FLUSH_Q0_CF_SHIFT          0
+#define TSTORM_FCOE_CONN_AG_CTX_CF2_MASK                   0x3
+#define TSTORM_FCOE_CONN_AG_CTX_CF2_SHIFT                  2
+#define TSTORM_FCOE_CONN_AG_CTX_TIMER_STOP_ALL_CF_MASK     0x3
+#define TSTORM_FCOE_CONN_AG_CTX_TIMER_STOP_ALL_CF_SHIFT    4
+#define TSTORM_FCOE_CONN_AG_CTX_CF4_MASK                   0x3
+#define TSTORM_FCOE_CONN_AG_CTX_CF4_SHIFT                  6
+	u8 flags2;
+#define TSTORM_FCOE_CONN_AG_CTX_CF5_MASK                   0x3
+#define TSTORM_FCOE_CONN_AG_CTX_CF5_SHIFT                  0
+#define TSTORM_FCOE_CONN_AG_CTX_CF6_MASK                   0x3
+#define TSTORM_FCOE_CONN_AG_CTX_CF6_SHIFT                  2
+#define TSTORM_FCOE_CONN_AG_CTX_CF7_MASK                   0x3
+#define TSTORM_FCOE_CONN_AG_CTX_CF7_SHIFT                  4
+#define TSTORM_FCOE_CONN_AG_CTX_CF8_MASK                   0x3
+#define TSTORM_FCOE_CONN_AG_CTX_CF8_SHIFT                  6
+	u8 flags3;
+#define TSTORM_FCOE_CONN_AG_CTX_CF9_MASK                   0x3
+#define TSTORM_FCOE_CONN_AG_CTX_CF9_SHIFT                  0
+#define TSTORM_FCOE_CONN_AG_CTX_CF10_MASK                  0x3
+#define TSTORM_FCOE_CONN_AG_CTX_CF10_SHIFT                 2
+#define TSTORM_FCOE_CONN_AG_CTX_DUMMY_TIMER_CF_EN_MASK     0x1
+#define TSTORM_FCOE_CONN_AG_CTX_DUMMY_TIMER_CF_EN_SHIFT    4
+#define TSTORM_FCOE_CONN_AG_CTX_FLUSH_Q0_CF_EN_MASK        0x1
+#define TSTORM_FCOE_CONN_AG_CTX_FLUSH_Q0_CF_EN_SHIFT       5
+#define TSTORM_FCOE_CONN_AG_CTX_CF2EN_MASK                 0x1
+#define TSTORM_FCOE_CONN_AG_CTX_CF2EN_SHIFT                6
+#define TSTORM_FCOE_CONN_AG_CTX_TIMER_STOP_ALL_CF_EN_MASK  0x1
+#define TSTORM_FCOE_CONN_AG_CTX_TIMER_STOP_ALL_CF_EN_SHIFT 7
+	u8 flags4;
+#define TSTORM_FCOE_CONN_AG_CTX_CF4EN_MASK                 0x1
+#define TSTORM_FCOE_CONN_AG_CTX_CF4EN_SHIFT                0
+#define TSTORM_FCOE_CONN_AG_CTX_CF5EN_MASK                 0x1
+#define TSTORM_FCOE_CONN_AG_CTX_CF5EN_SHIFT                1
+#define TSTORM_FCOE_CONN_AG_CTX_CF6EN_MASK                 0x1
+#define TSTORM_FCOE_CONN_AG_CTX_CF6EN_SHIFT                2
+#define TSTORM_FCOE_CONN_AG_CTX_CF7EN_MASK                 0x1
+#define TSTORM_FCOE_CONN_AG_CTX_CF7EN_SHIFT                3
+#define TSTORM_FCOE_CONN_AG_CTX_CF8EN_MASK                 0x1
+#define TSTORM_FCOE_CONN_AG_CTX_CF8EN_SHIFT                4
+#define TSTORM_FCOE_CONN_AG_CTX_CF9EN_MASK                 0x1
+#define TSTORM_FCOE_CONN_AG_CTX_CF9EN_SHIFT                5
+#define TSTORM_FCOE_CONN_AG_CTX_CF10EN_MASK                0x1
+#define TSTORM_FCOE_CONN_AG_CTX_CF10EN_SHIFT               6
+#define TSTORM_FCOE_CONN_AG_CTX_RULE0EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE0EN_SHIFT              7
+	u8 flags5;
+#define TSTORM_FCOE_CONN_AG_CTX_RULE1EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE1EN_SHIFT              0
+#define TSTORM_FCOE_CONN_AG_CTX_RULE2EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE2EN_SHIFT              1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE3EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE3EN_SHIFT              2
+#define TSTORM_FCOE_CONN_AG_CTX_RULE4EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE4EN_SHIFT              3
+#define TSTORM_FCOE_CONN_AG_CTX_RULE5EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE5EN_SHIFT              4
+#define TSTORM_FCOE_CONN_AG_CTX_RULE6EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE6EN_SHIFT              5
+#define TSTORM_FCOE_CONN_AG_CTX_RULE7EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE7EN_SHIFT              6
+#define TSTORM_FCOE_CONN_AG_CTX_RULE8EN_MASK               0x1
+#define TSTORM_FCOE_CONN_AG_CTX_RULE8EN_SHIFT              7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 reg0;
 	__le32 reg1;
 };
 
+<<<<<<< HEAD
 struct e4_ustorm_fcoe_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -10803,6 +16922,65 @@ struct e4_ustorm_fcoe_conn_ag_ctx {
 #define E4_USTORM_FCOE_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_USTORM_FCOE_CONN_AG_CTX_RULE8EN_MASK		0x1
 #define E4_USTORM_FCOE_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+struct ustorm_fcoe_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define USTORM_FCOE_CONN_AG_CTX_BIT0_MASK     0x1
+#define USTORM_FCOE_CONN_AG_CTX_BIT0_SHIFT    0
+#define USTORM_FCOE_CONN_AG_CTX_BIT1_MASK     0x1
+#define USTORM_FCOE_CONN_AG_CTX_BIT1_SHIFT    1
+#define USTORM_FCOE_CONN_AG_CTX_CF0_MASK      0x3
+#define USTORM_FCOE_CONN_AG_CTX_CF0_SHIFT     2
+#define USTORM_FCOE_CONN_AG_CTX_CF1_MASK      0x3
+#define USTORM_FCOE_CONN_AG_CTX_CF1_SHIFT     4
+#define USTORM_FCOE_CONN_AG_CTX_CF2_MASK      0x3
+#define USTORM_FCOE_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define USTORM_FCOE_CONN_AG_CTX_CF3_MASK      0x3
+#define USTORM_FCOE_CONN_AG_CTX_CF3_SHIFT     0
+#define USTORM_FCOE_CONN_AG_CTX_CF4_MASK      0x3
+#define USTORM_FCOE_CONN_AG_CTX_CF4_SHIFT     2
+#define USTORM_FCOE_CONN_AG_CTX_CF5_MASK      0x3
+#define USTORM_FCOE_CONN_AG_CTX_CF5_SHIFT     4
+#define USTORM_FCOE_CONN_AG_CTX_CF6_MASK      0x3
+#define USTORM_FCOE_CONN_AG_CTX_CF6_SHIFT     6
+	u8 flags2;
+#define USTORM_FCOE_CONN_AG_CTX_CF0EN_MASK    0x1
+#define USTORM_FCOE_CONN_AG_CTX_CF0EN_SHIFT   0
+#define USTORM_FCOE_CONN_AG_CTX_CF1EN_MASK    0x1
+#define USTORM_FCOE_CONN_AG_CTX_CF1EN_SHIFT   1
+#define USTORM_FCOE_CONN_AG_CTX_CF2EN_MASK    0x1
+#define USTORM_FCOE_CONN_AG_CTX_CF2EN_SHIFT   2
+#define USTORM_FCOE_CONN_AG_CTX_CF3EN_MASK    0x1
+#define USTORM_FCOE_CONN_AG_CTX_CF3EN_SHIFT   3
+#define USTORM_FCOE_CONN_AG_CTX_CF4EN_MASK    0x1
+#define USTORM_FCOE_CONN_AG_CTX_CF4EN_SHIFT   4
+#define USTORM_FCOE_CONN_AG_CTX_CF5EN_MASK    0x1
+#define USTORM_FCOE_CONN_AG_CTX_CF5EN_SHIFT   5
+#define USTORM_FCOE_CONN_AG_CTX_CF6EN_MASK    0x1
+#define USTORM_FCOE_CONN_AG_CTX_CF6EN_SHIFT   6
+#define USTORM_FCOE_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE0EN_SHIFT 7
+	u8 flags3;
+#define USTORM_FCOE_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE1EN_SHIFT 0
+#define USTORM_FCOE_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE2EN_SHIFT 1
+#define USTORM_FCOE_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE3EN_SHIFT 2
+#define USTORM_FCOE_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE4EN_SHIFT 3
+#define USTORM_FCOE_CONN_AG_CTX_RULE5EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE5EN_SHIFT 4
+#define USTORM_FCOE_CONN_AG_CTX_RULE6EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE6EN_SHIFT 5
+#define USTORM_FCOE_CONN_AG_CTX_RULE7EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE7EN_SHIFT 6
+#define USTORM_FCOE_CONN_AG_CTX_RULE8EN_MASK  0x1
+#define USTORM_FCOE_CONN_AG_CTX_RULE8EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -10815,12 +16993,16 @@ struct e4_ustorm_fcoe_conn_ag_ctx {
 	__le16 word3;
 };
 
+<<<<<<< HEAD
 /* The fcoe storm context of Tstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct tstorm_fcoe_conn_st_ctx {
 	__le16 stat_ram_addr;
 	__le16 rx_max_fc_payload_len;
 	__le16 e_d_tov_val;
 	u8 flags;
+<<<<<<< HEAD
 #define TSTORM_FCOE_CONN_ST_CTX_INC_SEQ_CNT_MASK	0x1
 #define TSTORM_FCOE_CONN_ST_CTX_INC_SEQ_CNT_SHIFT	0
 #define TSTORM_FCOE_CONN_ST_CTX_SUPPORT_CONF_MASK	0x1
@@ -10874,17 +17056,77 @@ struct e4_mstorm_fcoe_conn_ag_ctx {
 #define E4_MSTORM_FCOE_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_MSTORM_FCOE_CONN_AG_CTX_RULE4EN_MASK		0x1
 #define E4_MSTORM_FCOE_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+#define TSTORM_FCOE_CONN_ST_CTX_INC_SEQ_CNT_MASK   0x1
+#define TSTORM_FCOE_CONN_ST_CTX_INC_SEQ_CNT_SHIFT  0
+#define TSTORM_FCOE_CONN_ST_CTX_SUPPORT_CONF_MASK  0x1
+#define TSTORM_FCOE_CONN_ST_CTX_SUPPORT_CONF_SHIFT 1
+#define TSTORM_FCOE_CONN_ST_CTX_DEF_Q_IDX_MASK     0x3F
+#define TSTORM_FCOE_CONN_ST_CTX_DEF_Q_IDX_SHIFT    2
+	u8 timers_cleanup_invocation_cnt;
+	__le32 reserved1[2];
+	__le32 dst_mac_address_bytes0to3;
+	__le16 dst_mac_address_bytes4to5;
+	__le16 ramrod_echo;
+	u8 flags1;
+#define TSTORM_FCOE_CONN_ST_CTX_MODE_MASK          0x3
+#define TSTORM_FCOE_CONN_ST_CTX_MODE_SHIFT         0
+#define TSTORM_FCOE_CONN_ST_CTX_RESERVED_MASK      0x3F
+#define TSTORM_FCOE_CONN_ST_CTX_RESERVED_SHIFT     2
+	u8 q_relative_offset;
+	u8 bdq_resource_id;
+	u8 reserved0[5];
+};
+
+struct mstorm_fcoe_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define MSTORM_FCOE_CONN_AG_CTX_BIT0_MASK     0x1
+#define MSTORM_FCOE_CONN_AG_CTX_BIT0_SHIFT    0
+#define MSTORM_FCOE_CONN_AG_CTX_BIT1_MASK     0x1
+#define MSTORM_FCOE_CONN_AG_CTX_BIT1_SHIFT    1
+#define MSTORM_FCOE_CONN_AG_CTX_CF0_MASK      0x3
+#define MSTORM_FCOE_CONN_AG_CTX_CF0_SHIFT     2
+#define MSTORM_FCOE_CONN_AG_CTX_CF1_MASK      0x3
+#define MSTORM_FCOE_CONN_AG_CTX_CF1_SHIFT     4
+#define MSTORM_FCOE_CONN_AG_CTX_CF2_MASK      0x3
+#define MSTORM_FCOE_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define MSTORM_FCOE_CONN_AG_CTX_CF0EN_MASK    0x1
+#define MSTORM_FCOE_CONN_AG_CTX_CF0EN_SHIFT   0
+#define MSTORM_FCOE_CONN_AG_CTX_CF1EN_MASK    0x1
+#define MSTORM_FCOE_CONN_AG_CTX_CF1EN_SHIFT   1
+#define MSTORM_FCOE_CONN_AG_CTX_CF2EN_MASK    0x1
+#define MSTORM_FCOE_CONN_AG_CTX_CF2EN_SHIFT   2
+#define MSTORM_FCOE_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define MSTORM_FCOE_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define MSTORM_FCOE_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define MSTORM_FCOE_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define MSTORM_FCOE_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define MSTORM_FCOE_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define MSTORM_FCOE_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define MSTORM_FCOE_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define MSTORM_FCOE_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define MSTORM_FCOE_CONN_AG_CTX_RULE4EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 word0;
 	__le16 word1;
 	__le32 reg0;
 	__le32 reg1;
 };
 
+<<<<<<< HEAD
 /* Fast path part of the fcoe storm context of Mstorm */
 struct fcoe_mstorm_fcoe_conn_st_ctx_fp {
 	__le16 xfer_prod;
 	u8 num_cqs;
 	u8 reserved1;
+=======
+struct fcoe_mstorm_fcoe_conn_st_ctx_fp {
+	__le16 xfer_prod;
+	__le16 reserved1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 protection_info;
 #define FCOE_MSTORM_FCOE_CONN_ST_CTX_FP_SUPPORT_PROTECTION_MASK  0x1
 #define FCOE_MSTORM_FCOE_CONN_ST_CTX_FP_SUPPORT_PROTECTION_SHIFT 0
@@ -10896,7 +17138,10 @@ struct fcoe_mstorm_fcoe_conn_st_ctx_fp {
 	u8 reserved2[2];
 };
 
+<<<<<<< HEAD
 /* Non fast path part of the fcoe storm context of Mstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fcoe_mstorm_fcoe_conn_st_ctx_non_fp {
 	__le16 conn_id;
 	__le16 stat_ram_addr;
@@ -10912,18 +17157,26 @@ struct fcoe_mstorm_fcoe_conn_st_ctx_non_fp {
 	struct regpair reserved2[3];
 };
 
+<<<<<<< HEAD
 /* The fcoe storm context of Mstorm */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct mstorm_fcoe_conn_st_ctx {
 	struct fcoe_mstorm_fcoe_conn_st_ctx_fp fp;
 	struct fcoe_mstorm_fcoe_conn_st_ctx_non_fp non_fp;
 };
 
+<<<<<<< HEAD
 /* fcoe connection context */
 struct e4_fcoe_conn_context {
+=======
+struct fcoe_conn_context {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ystorm_fcoe_conn_st_ctx ystorm_st_context;
 	struct pstorm_fcoe_conn_st_ctx pstorm_st_context;
 	struct regpair pstorm_st_padding[2];
 	struct xstorm_fcoe_conn_st_ctx xstorm_st_context;
+<<<<<<< HEAD
 	struct e4_xstorm_fcoe_conn_ag_ctx xstorm_ag_context;
 	struct regpair xstorm_ag_padding[6];
 	struct ustorm_fcoe_conn_st_ctx ustorm_st_context;
@@ -10940,18 +17193,39 @@ struct e4_fcoe_conn_context {
 /* FCoE connection offload params passed by driver to FW in FCoE offload
  * ramrod.
  */
+=======
+	struct xstorm_fcoe_conn_ag_ctx xstorm_ag_context;
+	struct regpair xstorm_ag_padding[6];
+	struct ustorm_fcoe_conn_st_ctx ustorm_st_context;
+	struct regpair ustorm_st_padding[2];
+	struct tstorm_fcoe_conn_ag_ctx tstorm_ag_context;
+	struct regpair tstorm_ag_padding[2];
+	struct timers_context timer_context;
+	struct ustorm_fcoe_conn_ag_ctx ustorm_ag_context;
+	struct tstorm_fcoe_conn_st_ctx tstorm_st_context;
+	struct mstorm_fcoe_conn_ag_ctx mstorm_ag_context;
+	struct mstorm_fcoe_conn_st_ctx mstorm_st_context;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fcoe_conn_offload_ramrod_params {
 	struct fcoe_conn_offload_ramrod_data offload_ramrod_data;
 };
 
+<<<<<<< HEAD
 /* FCoE connection terminate params passed by driver to FW in FCoE terminate
  * conn ramrod.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fcoe_conn_terminate_ramrod_params {
 	struct fcoe_conn_terminate_ramrod_data terminate_ramrod_data;
 };
 
+<<<<<<< HEAD
 /* FCoE event type */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum fcoe_event_type {
 	FCOE_EVENT_INIT_FUNC,
 	FCOE_EVENT_DESTROY_FUNC,
@@ -10962,12 +17236,18 @@ enum fcoe_event_type {
 	MAX_FCOE_EVENT_TYPE
 };
 
+<<<<<<< HEAD
 /* FCoE init params passed by driver to FW in FCoE init ramrod */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fcoe_init_ramrod_params {
 	struct fcoe_init_func_ramrod_data init_ramrod_data;
 };
 
+<<<<<<< HEAD
 /* FCoE ramrod Command IDs */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum fcoe_ramrod_cmd_id {
 	FCOE_RAMROD_CMD_ID_INIT_FUNC,
 	FCOE_RAMROD_CMD_ID_DESTROY_FUNC,
@@ -10977,13 +17257,17 @@ enum fcoe_ramrod_cmd_id {
 	MAX_FCOE_RAMROD_CMD_ID
 };
 
+<<<<<<< HEAD
 /* FCoE statistics params buffer passed by driver to FW in FCoE statistics
  * ramrod.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct fcoe_stat_ramrod_params {
 	struct fcoe_stat_ramrod_data stat_ramrod_data;
 };
 
+<<<<<<< HEAD
 struct e4_ystorm_fcoe_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -11015,6 +17299,39 @@ struct e4_ystorm_fcoe_conn_ag_ctx {
 #define E4_YSTORM_FCOE_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_YSTORM_FCOE_CONN_AG_CTX_RULE4EN_MASK		0x1
 #define E4_YSTORM_FCOE_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+struct ystorm_fcoe_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define YSTORM_FCOE_CONN_AG_CTX_BIT0_MASK     0x1
+#define YSTORM_FCOE_CONN_AG_CTX_BIT0_SHIFT    0
+#define YSTORM_FCOE_CONN_AG_CTX_BIT1_MASK     0x1
+#define YSTORM_FCOE_CONN_AG_CTX_BIT1_SHIFT    1
+#define YSTORM_FCOE_CONN_AG_CTX_CF0_MASK      0x3
+#define YSTORM_FCOE_CONN_AG_CTX_CF0_SHIFT     2
+#define YSTORM_FCOE_CONN_AG_CTX_CF1_MASK      0x3
+#define YSTORM_FCOE_CONN_AG_CTX_CF1_SHIFT     4
+#define YSTORM_FCOE_CONN_AG_CTX_CF2_MASK      0x3
+#define YSTORM_FCOE_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define YSTORM_FCOE_CONN_AG_CTX_CF0EN_MASK    0x1
+#define YSTORM_FCOE_CONN_AG_CTX_CF0EN_SHIFT   0
+#define YSTORM_FCOE_CONN_AG_CTX_CF1EN_MASK    0x1
+#define YSTORM_FCOE_CONN_AG_CTX_CF1EN_SHIFT   1
+#define YSTORM_FCOE_CONN_AG_CTX_CF2EN_MASK    0x1
+#define YSTORM_FCOE_CONN_AG_CTX_CF2EN_SHIFT   2
+#define YSTORM_FCOE_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define YSTORM_FCOE_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define YSTORM_FCOE_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define YSTORM_FCOE_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define YSTORM_FCOE_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define YSTORM_FCOE_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define YSTORM_FCOE_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define YSTORM_FCOE_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define YSTORM_FCOE_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define YSTORM_FCOE_CONN_AG_CTX_RULE4EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -11028,17 +17345,25 @@ struct e4_ystorm_fcoe_conn_ag_ctx {
 	__le32 reg3;
 };
 
+<<<<<<< HEAD
 /* The iscsi storm connection context of Ystorm */
 struct ystorm_iscsi_conn_st_ctx {
 	__le32 reserved[8];
 };
 
 /* Combined iSCSI and TCP storm connection of Pstorm */
+=======
+struct ystorm_iscsi_conn_st_ctx {
+	__le32 reserved[4];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct pstorm_iscsi_tcp_conn_st_ctx {
 	__le32 tcp[32];
 	__le32 iscsi[4];
 };
 
+<<<<<<< HEAD
 /* The combined tcp and iscsi storm context of Xstorm */
 struct xstorm_iscsi_tcp_conn_st_ctx {
 	__le32 reserved_tcp[4];
@@ -11255,6 +17580,223 @@ struct e4_xstorm_iscsi_conn_ag_ctx {
 #define E4_XSTORM_ISCSI_CONN_AG_CTX_DUMMY_READ_DONE_SHIFT	5
 #define E4_XSTORM_ISCSI_CONN_AG_CTX_PROC_ONLY_CLEANUP_MASK	0x3
 #define E4_XSTORM_ISCSI_CONN_AG_CTX_PROC_ONLY_CLEANUP_SHIFT	6
+=======
+struct xstorm_iscsi_tcp_conn_st_ctx {
+	__le32 reserved_iscsi[40];
+	__le32 reserved_tcp[4];
+};
+
+struct xstorm_iscsi_conn_ag_ctx {
+	u8 cdu_validation;
+	u8 state;
+	u8 flags0;
+#define XSTORM_ISCSI_CONN_AG_CTX_EXIST_IN_QM0_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_EXIST_IN_QM0_SHIFT               0
+#define XSTORM_ISCSI_CONN_AG_CTX_EXIST_IN_QM1_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_EXIST_IN_QM1_SHIFT               1
+#define XSTORM_ISCSI_CONN_AG_CTX_RESERVED1_MASK                   0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RESERVED1_SHIFT                  2
+#define XSTORM_ISCSI_CONN_AG_CTX_EXIST_IN_QM3_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_EXIST_IN_QM3_SHIFT               3
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT4_MASK                        0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT4_SHIFT                       4
+#define XSTORM_ISCSI_CONN_AG_CTX_RESERVED2_MASK                   0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RESERVED2_SHIFT                  5
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT6_MASK                        0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT6_SHIFT                       6
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT7_MASK                        0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT7_SHIFT                       7
+	u8 flags1;
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT8_MASK                        0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT8_SHIFT                       0
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT9_MASK                        0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT9_SHIFT                       1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT10_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT10_SHIFT                      2
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT11_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT11_SHIFT                      3
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT12_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT12_SHIFT                      4
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT13_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT13_SHIFT                      5
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT14_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT14_SHIFT                      6
+#define XSTORM_ISCSI_CONN_AG_CTX_TX_TRUNCATE_MASK                 0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_TX_TRUNCATE_SHIFT                7
+	u8 flags2;
+#define XSTORM_ISCSI_CONN_AG_CTX_CF0_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF0_SHIFT                        0
+#define XSTORM_ISCSI_CONN_AG_CTX_CF1_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF1_SHIFT                        2
+#define XSTORM_ISCSI_CONN_AG_CTX_CF2_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF2_SHIFT                        4
+#define XSTORM_ISCSI_CONN_AG_CTX_TIMER_STOP_ALL_MASK              0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_TIMER_STOP_ALL_SHIFT             6
+	u8 flags3;
+#define XSTORM_ISCSI_CONN_AG_CTX_CF4_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF4_SHIFT                        0
+#define XSTORM_ISCSI_CONN_AG_CTX_CF5_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF5_SHIFT                        2
+#define XSTORM_ISCSI_CONN_AG_CTX_CF6_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF6_SHIFT                        4
+#define XSTORM_ISCSI_CONN_AG_CTX_CF7_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF7_SHIFT                        6
+	u8 flags4;
+#define XSTORM_ISCSI_CONN_AG_CTX_CF8_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF8_SHIFT                        0
+#define XSTORM_ISCSI_CONN_AG_CTX_CF9_MASK                         0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF9_SHIFT                        2
+#define XSTORM_ISCSI_CONN_AG_CTX_CF10_MASK                        0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF10_SHIFT                       4
+#define XSTORM_ISCSI_CONN_AG_CTX_CF11_MASK                        0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF11_SHIFT                       6
+	u8 flags5;
+#define XSTORM_ISCSI_CONN_AG_CTX_CF12_MASK                        0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF12_SHIFT                       0
+#define XSTORM_ISCSI_CONN_AG_CTX_CF13_MASK                        0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF13_SHIFT                       2
+#define XSTORM_ISCSI_CONN_AG_CTX_CF14_MASK                        0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF14_SHIFT                       4
+#define XSTORM_ISCSI_CONN_AG_CTX_UPDATE_STATE_TO_BASE_CF_MASK     0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_UPDATE_STATE_TO_BASE_CF_SHIFT    6
+	u8 flags6;
+#define XSTORM_ISCSI_CONN_AG_CTX_CF16_MASK                        0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF16_SHIFT                       0
+#define XSTORM_ISCSI_CONN_AG_CTX_CF17_MASK                        0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF17_SHIFT                       2
+#define XSTORM_ISCSI_CONN_AG_CTX_CF18_MASK                        0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF18_SHIFT                       4
+#define XSTORM_ISCSI_CONN_AG_CTX_DQ_FLUSH_MASK                    0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_DQ_FLUSH_SHIFT                   6
+	u8 flags7;
+#define XSTORM_ISCSI_CONN_AG_CTX_MST_XCM_Q0_FLUSH_CF_MASK	0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_MST_XCM_Q0_FLUSH_CF_SHIFT        0
+#define XSTORM_ISCSI_CONN_AG_CTX_UST_XCM_Q1_FLUSH_CF_MASK	0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_UST_XCM_Q1_FLUSH_CF_SHIFT        2
+#define XSTORM_ISCSI_CONN_AG_CTX_SLOW_PATH_MASK                   0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_SLOW_PATH_SHIFT                  4
+#define XSTORM_ISCSI_CONN_AG_CTX_CF0EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF0EN_SHIFT                      6
+#define XSTORM_ISCSI_CONN_AG_CTX_CF1EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF1EN_SHIFT                      7
+	u8 flags8;
+#define XSTORM_ISCSI_CONN_AG_CTX_CF2EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF2EN_SHIFT                      0
+#define XSTORM_ISCSI_CONN_AG_CTX_TIMER_STOP_ALL_EN_MASK           0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_TIMER_STOP_ALL_EN_SHIFT          1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF4EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF4EN_SHIFT                      2
+#define XSTORM_ISCSI_CONN_AG_CTX_CF5EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF5EN_SHIFT                      3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF6EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF6EN_SHIFT                      4
+#define XSTORM_ISCSI_CONN_AG_CTX_CF7EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF7EN_SHIFT                      5
+#define XSTORM_ISCSI_CONN_AG_CTX_CF8EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF8EN_SHIFT                      6
+#define XSTORM_ISCSI_CONN_AG_CTX_CF9EN_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF9EN_SHIFT                      7
+	u8 flags9;
+#define XSTORM_ISCSI_CONN_AG_CTX_CF10EN_MASK                      0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF10EN_SHIFT                     0
+#define XSTORM_ISCSI_CONN_AG_CTX_CF11EN_MASK                      0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF11EN_SHIFT                     1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF12EN_MASK                      0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF12EN_SHIFT                     2
+#define XSTORM_ISCSI_CONN_AG_CTX_CF13EN_MASK                      0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF13EN_SHIFT                     3
+#define XSTORM_ISCSI_CONN_AG_CTX_CF14EN_MASK                      0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF14EN_SHIFT                     4
+#define XSTORM_ISCSI_CONN_AG_CTX_UPDATE_STATE_TO_BASE_CF_EN_MASK  0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_UPDATE_STATE_TO_BASE_CF_EN_SHIFT 5
+#define XSTORM_ISCSI_CONN_AG_CTX_CF16EN_MASK                      0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF16EN_SHIFT                     6
+#define XSTORM_ISCSI_CONN_AG_CTX_CF17EN_MASK                      0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF17EN_SHIFT                     7
+	u8 flags10;
+#define XSTORM_ISCSI_CONN_AG_CTX_CF18EN_MASK                      0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_CF18EN_SHIFT                     0
+#define XSTORM_ISCSI_CONN_AG_CTX_DQ_FLUSH_EN_MASK                 0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_DQ_FLUSH_EN_SHIFT                1
+#define XSTORM_ISCSI_CONN_AG_CTX_MST_XCM_Q0_FLUSH_CF_EN_MASK	0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_MST_XCM_Q0_FLUSH_CF_EN_SHIFT     2
+#define XSTORM_ISCSI_CONN_AG_CTX_UST_XCM_Q1_FLUSH_CF_EN_MASK	0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_UST_XCM_Q1_FLUSH_CF_EN_SHIFT     3
+#define XSTORM_ISCSI_CONN_AG_CTX_SLOW_PATH_EN_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_SLOW_PATH_EN_SHIFT               4
+#define XSTORM_ISCSI_CONN_AG_CTX_PROC_ONLY_CLEANUP_EN_MASK        0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_PROC_ONLY_CLEANUP_EN_SHIFT       5
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE0EN_MASK                     0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE0EN_SHIFT                    6
+#define XSTORM_ISCSI_CONN_AG_CTX_MORE_TO_SEND_DEC_RULE_EN_MASK    0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_MORE_TO_SEND_DEC_RULE_EN_SHIFT   7
+	u8 flags11;
+#define XSTORM_ISCSI_CONN_AG_CTX_TX_BLOCKED_EN_MASK	0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_TX_BLOCKED_EN_SHIFT              0
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE3EN_MASK                     0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE3EN_SHIFT                    1
+#define XSTORM_ISCSI_CONN_AG_CTX_RESERVED3_MASK                   0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RESERVED3_SHIFT                  2
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE5EN_MASK                     0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE5EN_SHIFT                    3
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE6EN_MASK                     0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE6EN_SHIFT                    4
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE7EN_MASK                     0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE7EN_SHIFT                    5
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED1_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED1_SHIFT               6
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE9EN_MASK                     0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE9EN_SHIFT                    7
+	u8 flags12;
+#define XSTORM_ISCSI_CONN_AG_CTX_SQ_DEC_RULE_EN_MASK              0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_SQ_DEC_RULE_EN_SHIFT             0
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE11EN_MASK                    0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE11EN_SHIFT                   1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED2_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED2_SHIFT               2
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED3_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED3_SHIFT               3
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE14EN_MASK                    0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE14EN_SHIFT                   4
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE15EN_MASK                    0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE15EN_SHIFT                   5
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE16EN_MASK                    0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE16EN_SHIFT                   6
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE17EN_MASK                    0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_RULE17EN_SHIFT                   7
+	u8 flags13;
+#define XSTORM_ISCSI_CONN_AG_CTX_R2TQ_DEC_RULE_EN_MASK            0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_R2TQ_DEC_RULE_EN_SHIFT           0
+#define XSTORM_ISCSI_CONN_AG_CTX_HQ_DEC_RULE_EN_MASK              0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_HQ_DEC_RULE_EN_SHIFT             1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED4_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED4_SHIFT               2
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED5_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED5_SHIFT               3
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED6_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED6_SHIFT               4
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED7_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED7_SHIFT               5
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED8_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED8_SHIFT               6
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED9_MASK                0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_A0_RESERVED9_SHIFT               7
+	u8 flags14;
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT16_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT16_SHIFT                      0
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT17_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT17_SHIFT                      1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT18_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT18_SHIFT                      2
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT19_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT19_SHIFT                      3
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT20_MASK                       0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_BIT20_SHIFT                      4
+#define XSTORM_ISCSI_CONN_AG_CTX_DUMMY_READ_DONE_MASK             0x1
+#define XSTORM_ISCSI_CONN_AG_CTX_DUMMY_READ_DONE_SHIFT            5
+#define XSTORM_ISCSI_CONN_AG_CTX_PROC_ONLY_CLEANUP_MASK           0x3
+#define XSTORM_ISCSI_CONN_AG_CTX_PROC_ONLY_CLEANUP_SHIFT          6
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	__le16 physical_q0;
 	__le16 physical_q1;
@@ -11290,7 +17832,11 @@ struct e4_xstorm_iscsi_conn_ag_ctx {
 	u8 byte13;
 	u8 byte14;
 	u8 byte15;
+<<<<<<< HEAD
 	u8 e5_reserved;
+=======
+	u8 ereserved;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 word11;
 	__le32 reg10;
 	__le32 reg11;
@@ -11302,6 +17848,7 @@ struct e4_xstorm_iscsi_conn_ag_ctx {
 	__le32 reg17;
 };
 
+<<<<<<< HEAD
 struct e4_tstorm_iscsi_conn_ag_ctx {
 	u8 reserved0;
 	u8 state;
@@ -11388,6 +17935,94 @@ struct e4_tstorm_iscsi_conn_ag_ctx {
 	__le32 reg0;
 	__le32 reg1;
 	__le32 rx_tcp_checksum_err_cnt;
+=======
+struct tstorm_iscsi_conn_ag_ctx {
+	u8 reserved0;
+	u8 state;
+	u8 flags0;
+#define TSTORM_ISCSI_CONN_AG_CTX_EXIST_IN_QM0_MASK       0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_EXIST_IN_QM0_SHIFT      0
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT1_MASK               0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT1_SHIFT              1
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT2_MASK               0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT2_SHIFT              2
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT3_MASK               0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT3_SHIFT              3
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT4_MASK               0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT4_SHIFT              4
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT5_MASK               0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_BIT5_SHIFT              5
+#define TSTORM_ISCSI_CONN_AG_CTX_CF0_MASK                0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_CF0_SHIFT               6
+	u8 flags1;
+#define TSTORM_ISCSI_CONN_AG_CTX_P2T_FLUSH_CF_MASK	0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_P2T_FLUSH_CF_SHIFT      0
+#define TSTORM_ISCSI_CONN_AG_CTX_M2T_FLUSH_CF_MASK	0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_M2T_FLUSH_CF_SHIFT      2
+#define TSTORM_ISCSI_CONN_AG_CTX_TIMER_STOP_ALL_MASK     0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_TIMER_STOP_ALL_SHIFT    4
+#define TSTORM_ISCSI_CONN_AG_CTX_CF4_MASK                0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_CF4_SHIFT               6
+	u8 flags2;
+#define TSTORM_ISCSI_CONN_AG_CTX_CF5_MASK                0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_CF5_SHIFT               0
+#define TSTORM_ISCSI_CONN_AG_CTX_CF6_MASK                0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_CF6_SHIFT               2
+#define TSTORM_ISCSI_CONN_AG_CTX_CF7_MASK                0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_CF7_SHIFT               4
+#define TSTORM_ISCSI_CONN_AG_CTX_CF8_MASK                0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_CF8_SHIFT               6
+	u8 flags3;
+#define TSTORM_ISCSI_CONN_AG_CTX_FLUSH_Q0_MASK           0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_FLUSH_Q0_SHIFT          0
+#define TSTORM_ISCSI_CONN_AG_CTX_CF10_MASK               0x3
+#define TSTORM_ISCSI_CONN_AG_CTX_CF10_SHIFT              2
+#define TSTORM_ISCSI_CONN_AG_CTX_CF0EN_MASK              0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_CF0EN_SHIFT             4
+#define TSTORM_ISCSI_CONN_AG_CTX_P2T_FLUSH_CF_EN_MASK	0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_P2T_FLUSH_CF_EN_SHIFT   5
+#define TSTORM_ISCSI_CONN_AG_CTX_M2T_FLUSH_CF_EN_MASK	0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_M2T_FLUSH_CF_EN_SHIFT   6
+#define TSTORM_ISCSI_CONN_AG_CTX_TIMER_STOP_ALL_EN_MASK  0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_TIMER_STOP_ALL_EN_SHIFT 7
+	u8 flags4;
+#define TSTORM_ISCSI_CONN_AG_CTX_CF4EN_MASK              0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_CF4EN_SHIFT             0
+#define TSTORM_ISCSI_CONN_AG_CTX_CF5EN_MASK              0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_CF5EN_SHIFT             1
+#define TSTORM_ISCSI_CONN_AG_CTX_CF6EN_MASK              0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_CF6EN_SHIFT             2
+#define TSTORM_ISCSI_CONN_AG_CTX_CF7EN_MASK              0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_CF7EN_SHIFT             3
+#define TSTORM_ISCSI_CONN_AG_CTX_CF8EN_MASK              0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_CF8EN_SHIFT             4
+#define TSTORM_ISCSI_CONN_AG_CTX_FLUSH_Q0_EN_MASK        0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_FLUSH_Q0_EN_SHIFT       5
+#define TSTORM_ISCSI_CONN_AG_CTX_CF10EN_MASK             0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_CF10EN_SHIFT            6
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE0EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE0EN_SHIFT           7
+	u8 flags5;
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE1EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE1EN_SHIFT           0
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE2EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE2EN_SHIFT           1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE3EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE3EN_SHIFT           2
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE4EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE4EN_SHIFT           3
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE5EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE5EN_SHIFT           4
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE6EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE6EN_SHIFT           5
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE7EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE7EN_SHIFT           6
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE8EN_MASK            0x1
+#define TSTORM_ISCSI_CONN_AG_CTX_RULE8EN_SHIFT           7
+	__le32 reg0;
+	__le32 reg1;
+	__le32 reg2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 reg3;
 	__le32 reg4;
 	__le32 reg5;
@@ -11399,6 +18034,7 @@ struct e4_tstorm_iscsi_conn_ag_ctx {
 	__le16 word0;
 };
 
+<<<<<<< HEAD
 struct e4_ustorm_iscsi_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -11456,6 +18092,65 @@ struct e4_ustorm_iscsi_conn_ag_ctx {
 #define E4_USTORM_ISCSI_CONN_AG_CTX_RULE7EN_SHIFT	6
 #define E4_USTORM_ISCSI_CONN_AG_CTX_RULE8EN_MASK	0x1
 #define E4_USTORM_ISCSI_CONN_AG_CTX_RULE8EN_SHIFT	7
+=======
+struct ustorm_iscsi_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define USTORM_ISCSI_CONN_AG_CTX_BIT0_MASK     0x1
+#define USTORM_ISCSI_CONN_AG_CTX_BIT0_SHIFT    0
+#define USTORM_ISCSI_CONN_AG_CTX_BIT1_MASK     0x1
+#define USTORM_ISCSI_CONN_AG_CTX_BIT1_SHIFT    1
+#define USTORM_ISCSI_CONN_AG_CTX_CF0_MASK      0x3
+#define USTORM_ISCSI_CONN_AG_CTX_CF0_SHIFT     2
+#define USTORM_ISCSI_CONN_AG_CTX_CF1_MASK      0x3
+#define USTORM_ISCSI_CONN_AG_CTX_CF1_SHIFT     4
+#define USTORM_ISCSI_CONN_AG_CTX_CF2_MASK      0x3
+#define USTORM_ISCSI_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define USTORM_ISCSI_CONN_AG_CTX_CF3_MASK      0x3
+#define USTORM_ISCSI_CONN_AG_CTX_CF3_SHIFT     0
+#define USTORM_ISCSI_CONN_AG_CTX_CF4_MASK      0x3
+#define USTORM_ISCSI_CONN_AG_CTX_CF4_SHIFT     2
+#define USTORM_ISCSI_CONN_AG_CTX_CF5_MASK      0x3
+#define USTORM_ISCSI_CONN_AG_CTX_CF5_SHIFT     4
+#define USTORM_ISCSI_CONN_AG_CTX_CF6_MASK      0x3
+#define USTORM_ISCSI_CONN_AG_CTX_CF6_SHIFT     6
+	u8 flags2;
+#define USTORM_ISCSI_CONN_AG_CTX_CF0EN_MASK    0x1
+#define USTORM_ISCSI_CONN_AG_CTX_CF0EN_SHIFT   0
+#define USTORM_ISCSI_CONN_AG_CTX_CF1EN_MASK    0x1
+#define USTORM_ISCSI_CONN_AG_CTX_CF1EN_SHIFT   1
+#define USTORM_ISCSI_CONN_AG_CTX_CF2EN_MASK    0x1
+#define USTORM_ISCSI_CONN_AG_CTX_CF2EN_SHIFT   2
+#define USTORM_ISCSI_CONN_AG_CTX_CF3EN_MASK    0x1
+#define USTORM_ISCSI_CONN_AG_CTX_CF3EN_SHIFT   3
+#define USTORM_ISCSI_CONN_AG_CTX_CF4EN_MASK    0x1
+#define USTORM_ISCSI_CONN_AG_CTX_CF4EN_SHIFT   4
+#define USTORM_ISCSI_CONN_AG_CTX_CF5EN_MASK    0x1
+#define USTORM_ISCSI_CONN_AG_CTX_CF5EN_SHIFT   5
+#define USTORM_ISCSI_CONN_AG_CTX_CF6EN_MASK    0x1
+#define USTORM_ISCSI_CONN_AG_CTX_CF6EN_SHIFT   6
+#define USTORM_ISCSI_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE0EN_SHIFT 7
+	u8 flags3;
+#define USTORM_ISCSI_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE1EN_SHIFT 0
+#define USTORM_ISCSI_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE2EN_SHIFT 1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE3EN_SHIFT 2
+#define USTORM_ISCSI_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE4EN_SHIFT 3
+#define USTORM_ISCSI_CONN_AG_CTX_RULE5EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE5EN_SHIFT 4
+#define USTORM_ISCSI_CONN_AG_CTX_RULE6EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE6EN_SHIFT 5
+#define USTORM_ISCSI_CONN_AG_CTX_RULE7EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE7EN_SHIFT 6
+#define USTORM_ISCSI_CONN_AG_CTX_RULE8EN_MASK  0x1
+#define USTORM_ISCSI_CONN_AG_CTX_RULE8EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -11468,6 +18163,7 @@ struct e4_ustorm_iscsi_conn_ag_ctx {
 	__le16 word3;
 };
 
+<<<<<<< HEAD
 /* The iscsi storm connection context of Tstorm */
 struct tstorm_iscsi_conn_st_ctx {
 	__le32 reserved[44];
@@ -11504,12 +18200,50 @@ struct e4_mstorm_iscsi_conn_ag_ctx {
 #define E4_MSTORM_ISCSI_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_MSTORM_ISCSI_CONN_AG_CTX_RULE4EN_MASK	0x1
 #define E4_MSTORM_ISCSI_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+struct tstorm_iscsi_conn_st_ctx {
+	__le32 reserved[40];
+};
+
+struct mstorm_iscsi_conn_ag_ctx {
+	u8 reserved;
+	u8 state;
+	u8 flags0;
+#define MSTORM_ISCSI_CONN_AG_CTX_BIT0_MASK     0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_BIT0_SHIFT    0
+#define MSTORM_ISCSI_CONN_AG_CTX_BIT1_MASK     0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_BIT1_SHIFT    1
+#define MSTORM_ISCSI_CONN_AG_CTX_CF0_MASK      0x3
+#define MSTORM_ISCSI_CONN_AG_CTX_CF0_SHIFT     2
+#define MSTORM_ISCSI_CONN_AG_CTX_CF1_MASK      0x3
+#define MSTORM_ISCSI_CONN_AG_CTX_CF1_SHIFT     4
+#define MSTORM_ISCSI_CONN_AG_CTX_CF2_MASK      0x3
+#define MSTORM_ISCSI_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define MSTORM_ISCSI_CONN_AG_CTX_CF0EN_MASK    0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_CF0EN_SHIFT   0
+#define MSTORM_ISCSI_CONN_AG_CTX_CF1EN_MASK    0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_CF1EN_SHIFT   1
+#define MSTORM_ISCSI_CONN_AG_CTX_CF2EN_MASK    0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_CF2EN_SHIFT   2
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define MSTORM_ISCSI_CONN_AG_CTX_RULE4EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 word0;
 	__le16 word1;
 	__le32 reg0;
 	__le32 reg1;
 };
 
+<<<<<<< HEAD
 /* Combined iSCSI and TCP storm connection of Mstorm */
 struct mstorm_iscsi_tcp_conn_st_ctx {
 	__le32 reserved_tcp[20];
@@ -11517,18 +18251,32 @@ struct mstorm_iscsi_tcp_conn_st_ctx {
 };
 
 /* The iscsi storm context of Ustorm */
+=======
+struct mstorm_iscsi_tcp_conn_st_ctx {
+	__le32 reserved_tcp[20];
+	__le32 reserved_iscsi[8];
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ustorm_iscsi_conn_st_ctx {
 	__le32 reserved[52];
 };
 
+<<<<<<< HEAD
 /* iscsi connection context */
 struct e4_iscsi_conn_context {
 	struct ystorm_iscsi_conn_st_ctx ystorm_st_context;
+=======
+struct iscsi_conn_context {
+	struct ystorm_iscsi_conn_st_ctx ystorm_st_context;
+	struct regpair ystorm_st_padding[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pstorm_iscsi_tcp_conn_st_ctx pstorm_st_context;
 	struct regpair pstorm_st_padding[2];
 	struct pb_context xpb2_context;
 	struct xstorm_iscsi_tcp_conn_st_ctx xstorm_st_context;
 	struct regpair xstorm_st_padding[2];
+<<<<<<< HEAD
 	struct e4_xstorm_iscsi_conn_ag_ctx xstorm_ag_context;
 	struct e4_tstorm_iscsi_conn_ag_ctx tstorm_ag_context;
 	struct regpair tstorm_ag_padding[2];
@@ -11538,16 +18286,31 @@ struct e4_iscsi_conn_context {
 	struct tstorm_iscsi_conn_st_ctx tstorm_st_context;
 	struct regpair tstorm_st_padding[2];
 	struct e4_mstorm_iscsi_conn_ag_ctx mstorm_ag_context;
+=======
+	struct xstorm_iscsi_conn_ag_ctx xstorm_ag_context;
+	struct tstorm_iscsi_conn_ag_ctx tstorm_ag_context;
+	struct regpair tstorm_ag_padding[2];
+	struct timers_context timer_context;
+	struct ustorm_iscsi_conn_ag_ctx ustorm_ag_context;
+	struct pb_context upb_context;
+	struct tstorm_iscsi_conn_st_ctx tstorm_st_context;
+	struct regpair tstorm_st_padding[2];
+	struct mstorm_iscsi_conn_ag_ctx mstorm_ag_context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mstorm_iscsi_tcp_conn_st_ctx mstorm_st_context;
 	struct ustorm_iscsi_conn_st_ctx ustorm_st_context;
 };
 
+<<<<<<< HEAD
 /* iSCSI init params passed by driver to FW in iSCSI init ramrod */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct iscsi_init_ramrod_params {
 	struct iscsi_spe_func_init iscsi_init_spe;
 	struct tcp_init_params tcp_init;
 };
 
+<<<<<<< HEAD
 struct e4_ystorm_iscsi_conn_ag_ctx {
 	u8 byte0;
 	u8 byte1;
@@ -11579,6 +18342,39 @@ struct e4_ystorm_iscsi_conn_ag_ctx {
 #define E4_YSTORM_ISCSI_CONN_AG_CTX_RULE3EN_SHIFT	6
 #define E4_YSTORM_ISCSI_CONN_AG_CTX_RULE4EN_MASK	0x1
 #define E4_YSTORM_ISCSI_CONN_AG_CTX_RULE4EN_SHIFT	7
+=======
+struct ystorm_iscsi_conn_ag_ctx {
+	u8 byte0;
+	u8 byte1;
+	u8 flags0;
+#define YSTORM_ISCSI_CONN_AG_CTX_BIT0_MASK     0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_BIT0_SHIFT    0
+#define YSTORM_ISCSI_CONN_AG_CTX_BIT1_MASK     0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_BIT1_SHIFT    1
+#define YSTORM_ISCSI_CONN_AG_CTX_CF0_MASK      0x3
+#define YSTORM_ISCSI_CONN_AG_CTX_CF0_SHIFT     2
+#define YSTORM_ISCSI_CONN_AG_CTX_CF1_MASK      0x3
+#define YSTORM_ISCSI_CONN_AG_CTX_CF1_SHIFT     4
+#define YSTORM_ISCSI_CONN_AG_CTX_CF2_MASK      0x3
+#define YSTORM_ISCSI_CONN_AG_CTX_CF2_SHIFT     6
+	u8 flags1;
+#define YSTORM_ISCSI_CONN_AG_CTX_CF0EN_MASK    0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_CF0EN_SHIFT   0
+#define YSTORM_ISCSI_CONN_AG_CTX_CF1EN_MASK    0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_CF1EN_SHIFT   1
+#define YSTORM_ISCSI_CONN_AG_CTX_CF2EN_MASK    0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_CF2EN_SHIFT   2
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE0EN_MASK  0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE0EN_SHIFT 3
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE1EN_MASK  0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE1EN_SHIFT 4
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE2EN_MASK  0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE2EN_SHIFT 5
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE3EN_MASK  0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE3EN_SHIFT 6
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE4EN_MASK  0x1
+#define YSTORM_ISCSI_CONN_AG_CTX_RULE4EN_SHIFT 7
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 byte2;
 	u8 byte3;
 	__le16 word0;
@@ -11987,9 +18783,12 @@ struct public_global {
 	u32 running_bundle_id;
 	s32 external_temperature;
 	u32 mdump_reason;
+<<<<<<< HEAD
 	u64 reserved;
 	u32 data_ptr;
 	u32 data_size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct fw_flr_mb {
@@ -12120,6 +18919,7 @@ struct public_port {
 #define EEE_REMOTE_TW_TX_OFFSET 0
 #define EEE_REMOTE_TW_RX_MASK   0xffff0000
 #define EEE_REMOTE_TW_RX_OFFSET 16
+<<<<<<< HEAD
 
 	u32 reserved1;
 	u32 oem_cfg_port;
@@ -12131,6 +18931,8 @@ struct public_port {
 #define OEM_CFG_SCHED_TYPE_OFFSET                       2
 #define OEM_CFG_SCHED_TYPE_ETS                          0x1
 #define OEM_CFG_SCHED_TYPE_VNIC_BW                      0x2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct public_func {
@@ -12207,6 +19009,7 @@ struct public_func {
 #define DRV_ID_DRV_INIT_HW_MASK		0x80000000
 #define DRV_ID_DRV_INIT_HW_SHIFT	31
 #define DRV_ID_DRV_INIT_HW_FLAG		(1 << DRV_ID_DRV_INIT_HW_SHIFT)
+<<<<<<< HEAD
 
 	u32 oem_cfg_func;
 #define OEM_CFG_FUNC_TC_MASK                    0x0000000F
@@ -12224,6 +19027,8 @@ struct public_func {
 #define OEM_CFG_FUNC_HOST_PRI_CTRL_OFFSET       4
 #define OEM_CFG_FUNC_HOST_PRI_CTRL_VNIC         0x1
 #define OEM_CFG_FUNC_HOST_PRI_CTRL_OS           0x2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct mcp_mac {
@@ -12415,7 +19220,10 @@ struct public_drv_mb {
 #define DRV_MSG_SET_RESOURCE_VALUE_MSG		0x35000000
 #define DRV_MSG_CODE_OV_UPDATE_WOL              0x38000000
 #define DRV_MSG_CODE_OV_UPDATE_ESWITCH_MODE     0x39000000
+<<<<<<< HEAD
 #define DRV_MSG_CODE_GET_OEM_UPDATES            0x41000000
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRV_MSG_CODE_BW_UPDATE_ACK		0x32000000
 #define DRV_MSG_CODE_NIG_DRAIN			0x30000000
@@ -12424,11 +19232,16 @@ struct public_drv_mb {
 #define DRV_MSG_CODE_VF_DISABLED_DONE		0xc0000000
 #define DRV_MSG_CODE_CFG_VF_MSIX		0xc0010000
 #define DRV_MSG_CODE_CFG_PF_VFS_MSIX		0xc0020000
+<<<<<<< HEAD
 #define DRV_MSG_CODE_NVM_PUT_FILE_BEGIN		0x00010000
 #define DRV_MSG_CODE_NVM_PUT_FILE_DATA		0x00020000
 #define DRV_MSG_CODE_NVM_GET_FILE_ATT		0x00030000
 #define DRV_MSG_CODE_NVM_READ_NVRAM		0x00050000
 #define DRV_MSG_CODE_NVM_WRITE_NVRAM		0x00060000
+=======
+#define DRV_MSG_CODE_NVM_GET_FILE_ATT		0x00030000
+#define DRV_MSG_CODE_NVM_READ_NVRAM		0x00050000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_MSG_CODE_MCP_RESET			0x00090000
 #define DRV_MSG_CODE_SET_VERSION		0x000f0000
 #define DRV_MSG_CODE_MCP_HALT                   0x00100000
@@ -12446,14 +19259,20 @@ struct public_drv_mb {
 #define DRV_MSG_CODE_STATS_TYPE_ISCSI           3
 #define DRV_MSG_CODE_STATS_TYPE_RDMA            4
 
+<<<<<<< HEAD
 #define DRV_MSG_CODE_TRANSCEIVER_READ           0x00160000
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_MSG_CODE_MASK_PARITIES              0x001a0000
 
 #define DRV_MSG_CODE_BIST_TEST			0x001e0000
 #define DRV_MSG_CODE_SET_LED_MODE		0x00200000
 #define DRV_MSG_CODE_RESOURCE_CMD	0x00230000
+<<<<<<< HEAD
 #define DRV_MSG_CODE_GET_TLV_DONE		0x002f0000
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define RESOURCE_CMD_REQ_RESC_MASK		0x0000001F
 #define RESOURCE_CMD_REQ_RESC_SHIFT		0
@@ -12485,6 +19304,10 @@ struct public_drv_mb {
 
 #define DRV_MSG_CODE_FEATURE_SUPPORT		0x00300000
 #define DRV_MSG_CODE_GET_MFW_FEATURE_SUPPORT	0x00310000
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_MSG_SEQ_NUMBER_MASK			0x0000ffff
 
 	u32 drv_mb_param;
@@ -12495,7 +19318,11 @@ struct public_drv_mb {
 #define DRV_MB_PARAM_DCBX_NOTIFY_MASK		0x000000FF
 #define DRV_MB_PARAM_DCBX_NOTIFY_SHIFT		3
 
+<<<<<<< HEAD
 #define DRV_MB_PARAM_NVM_LEN_OFFSET		24
+=======
+#define DRV_MB_PARAM_NVM_LEN_SHIFT		24
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRV_MB_PARAM_CFG_VF_MSIX_VF_ID_SHIFT	0
 #define DRV_MB_PARAM_CFG_VF_MSIX_VF_ID_MASK	0x000000FF
@@ -12543,13 +19370,17 @@ struct public_drv_mb {
 #define DRV_MB_PARAM_ESWITCH_MODE_VEB	0x1
 #define DRV_MB_PARAM_ESWITCH_MODE_VEPA	0x2
 
+<<<<<<< HEAD
 #define DRV_MB_PARAM_DUMMY_OEM_UPDATES_MASK	0x1
 #define DRV_MB_PARAM_DUMMY_OEM_UPDATES_OFFSET	0
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRV_MB_PARAM_SET_LED_MODE_OPER		0x0
 #define DRV_MB_PARAM_SET_LED_MODE_ON		0x1
 #define DRV_MB_PARAM_SET_LED_MODE_OFF		0x2
 
+<<<<<<< HEAD
 #define DRV_MB_PARAM_TRANSCEIVER_PORT_OFFSET		0
 #define DRV_MB_PARAM_TRANSCEIVER_PORT_MASK		0x00000003
 #define DRV_MB_PARAM_TRANSCEIVER_SIZE_OFFSET		2
@@ -12559,6 +19390,8 @@ struct public_drv_mb {
 #define DRV_MB_PARAM_TRANSCEIVER_OFFSET_OFFSET		16
 #define DRV_MB_PARAM_TRANSCEIVER_OFFSET_MASK		0xFFFF0000
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Resource Allocation params - Driver version support */
 #define DRV_MB_PARAM_RESOURCE_ALLOC_VERSION_MAJOR_MASK	0xFFFF0000
 #define DRV_MB_PARAM_RESOURCE_ALLOC_VERSION_MAJOR_SHIFT	16
@@ -12608,6 +19441,7 @@ struct public_drv_mb {
 #define FW_MSG_CODE_DRV_CFG_VF_MSIX_DONE	0xb0010000
 
 #define FW_MSG_CODE_NVM_OK			0x00010000
+<<<<<<< HEAD
 #define FW_MSG_CODE_NVM_PUT_FILE_FINISH_OK	0x00400000
 #define FW_MSG_CODE_PHY_OK			0x00110000
 #define FW_MSG_CODE_OK				0x00160000
@@ -12615,6 +19449,9 @@ struct public_drv_mb {
 #define FW_MSG_CODE_TRANSCEIVER_DIAG_OK		0x00160000
 #define FW_MSG_CODE_TRANSCEIVER_DIAG_ERROR	0x00170000
 #define FW_MSG_CODE_TRANSCEIVER_NOT_PRESENT	0x00020000
+=======
+#define FW_MSG_CODE_OK				0x00160000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define FW_MSG_CODE_OS_WOL_SUPPORTED            0x00800000
 #define FW_MSG_CODE_OS_WOL_NOT_SUPPORTED        0x00810000
@@ -12669,9 +19506,12 @@ enum MFW_DRV_MSG_TYPE {
 	MFW_DRV_MSG_BW_UPDATE10,
 	MFW_DRV_MSG_TRANSCEIVER_STATE_CHANGE,
 	MFW_DRV_MSG_BW_UPDATE11,
+<<<<<<< HEAD
 	MFW_DRV_MSG_RESERVED,
 	MFW_DRV_MSG_GET_TLV_REQ,
 	MFW_DRV_MSG_OEM_CFG_UPDATE,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MFW_DRV_MSG_MAX
 };
 
@@ -12707,6 +19547,7 @@ struct mcp_public_data {
 	struct public_func func[MCP_GLOB_FUNC_MAX];
 };
 
+<<<<<<< HEAD
 #define MAX_I2C_TRANSACTION_SIZE	16
 
 /* OCBB definitions */
@@ -12936,6 +19777,8 @@ enum tlvs {
 	DRV_TLV_ISCSI_PDU_TX_BYTES_SENT
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct nvm_cfg_mac_address {
 	u32 mac_addr_hi;
 #define NVM_CFG_MAC_ADDRESS_HI_MASK	0x0000FFFF

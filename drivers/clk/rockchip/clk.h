@@ -34,6 +34,7 @@ struct clk;
 #define HIWORD_UPDATE(val, mask, shift) \
 		((val) << (shift) | (mask) << ((shift) + 16))
 
+<<<<<<< HEAD
 /* register positions shared by PX30, RV1108, RK2928, RK3036, RK3066, RK3188 and RK3228 */
 #define BOOST_PLL_H_CON(x)		((x) * 0x4)
 #define BOOST_CLK_CON			0x0008
@@ -74,6 +75,9 @@ struct clk;
 #define PX30_PMU_CLKGATE_CON(x)		((x) * 0x4 + 0x80)
 #define PX30_PMU_MODE			0x0020
 
+=======
+/* register positions shared by RV1108, RK2928, RK3036, RK3066, RK3188 and RK3228 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RV1108_PLL_CON(x)		((x) * 0x4)
 #define RV1108_CLKSEL_CON(x)		((x) * 0x4 + 0x60)
 #define RV1108_CLKGATE_CON(x)		((x) * 0x4 + 0x120)
@@ -393,7 +397,10 @@ enum rockchip_clk_branch_type {
 	branch_inverter,
 	branch_factor,
 	branch_ddrclk,
+<<<<<<< HEAD
 	branch_half_divider,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct rockchip_clk_branch {
@@ -724,6 +731,7 @@ struct rockchip_clk_branch {
 		.gate_flags	= gf,				\
 	}
 
+<<<<<<< HEAD
 #define COMPOSITE_HALFDIV(_id, cname, pnames, f, mo, ms, mw, mf, ds, dw,\
 			  df, go, gs, gf)				\
 	{							\
@@ -797,6 +805,8 @@ struct rockchip_clk_branch {
 		.gate_offset	= -1,				\
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rockchip_clk_provider *rockchip_clk_init(struct device_node *np,
 			void __iomem *base, unsigned long nr_clks);
 void rockchip_clk_of_add_provider(struct device_node *np,
@@ -821,6 +831,7 @@ void rockchip_register_restart_notifier(struct rockchip_clk_provider *ctx,
 
 #define ROCKCHIP_SOFTRST_HIWORD_MASK	BIT(0)
 
+<<<<<<< HEAD
 struct clk *rockchip_clk_register_halfdiv(const char *name,
 					  const char *const *parent_names,
 					  u8 num_parents, void __iomem *base,
@@ -832,6 +843,8 @@ struct clk *rockchip_clk_register_halfdiv(const char *name,
 					  unsigned long flags,
 					  spinlock_t *lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_RESET_CONTROLLER
 void rockchip_register_softrst(struct device_node *np,
 			       unsigned int num_regs,

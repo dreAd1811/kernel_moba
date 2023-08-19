@@ -289,7 +289,11 @@ int tegra_dc_rgb_init(struct drm_device *drm, struct tegra_dc *dc)
 	drm_encoder_helper_add(&output->encoder,
 			       &tegra_rgb_encoder_helper_funcs);
 
+<<<<<<< HEAD
 	drm_connector_attach_encoder(&output->connector,
+=======
+	drm_mode_connector_attach_encoder(&output->connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  &output->encoder);
 	drm_connector_register(&output->connector);
 

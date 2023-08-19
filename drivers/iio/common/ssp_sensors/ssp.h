@@ -188,7 +188,11 @@ struct ssp_sensorhub_info {
  */
 struct ssp_data {
 	struct spi_device *spi;
+<<<<<<< HEAD
 	const struct ssp_sensorhub_info *sensorhub_info;
+=======
+	struct ssp_sensorhub_info *sensorhub_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct timer_list wdt_timer;
 	struct work_struct work_wdt;
 	struct delayed_work work_refresh;

@@ -56,10 +56,18 @@ static u32 spu_hw_mbox_stat_read(struct spu_context *ctx)
 	return in_be32(&ctx->spu->problem->mb_stat_R);
 }
 
+<<<<<<< HEAD
 static __poll_t spu_hw_mbox_stat_poll(struct spu_context *ctx, __poll_t events)
 {
 	struct spu *spu = ctx->spu;
 	__poll_t ret = 0;
+=======
+static unsigned int spu_hw_mbox_stat_poll(struct spu_context *ctx,
+					  unsigned int events)
+{
+	struct spu *spu = ctx->spu;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 stat;
 
 	spin_lock_irq(&spu->register_lock);
@@ -70,17 +78,29 @@ static __poll_t spu_hw_mbox_stat_poll(struct spu_context *ctx, __poll_t events)
 	   but first mark any pending interrupts as done so
 	   we don't get woken up unnecessarily */
 
+<<<<<<< HEAD
 	if (events & (EPOLLIN | EPOLLRDNORM)) {
 		if (stat & 0xff0000)
 			ret |= EPOLLIN | EPOLLRDNORM;
+=======
+	if (events & (POLLIN | POLLRDNORM)) {
+		if (stat & 0xff0000)
+			ret |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else {
 			spu_int_stat_clear(spu, 2, CLASS2_MAILBOX_INTR);
 			spu_int_mask_or(spu, 2, CLASS2_ENABLE_MAILBOX_INTR);
 		}
 	}
+<<<<<<< HEAD
 	if (events & (EPOLLOUT | EPOLLWRNORM)) {
 		if (stat & 0x00ff00)
 			ret = EPOLLOUT | EPOLLWRNORM;
+=======
+	if (events & (POLLOUT | POLLWRNORM)) {
+		if (stat & 0x00ff00)
+			ret = POLLOUT | POLLWRNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		else {
 			spu_int_stat_clear(spu, 2,
 					CLASS2_MAILBOX_THRESHOLD_INTR);

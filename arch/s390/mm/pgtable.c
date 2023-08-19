@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *    Copyright IBM Corp. 2007, 2011
  *    Author(s): Martin Schwidefsky <schwidefsky@de.ibm.com>
@@ -158,7 +161,11 @@ static inline pgste_t pgste_update_all(pte_t pte, pgste_t pgste,
 #ifdef CONFIG_PGSTE
 	unsigned long address, bits, skey;
 
+<<<<<<< HEAD
 	if (!mm_uses_skeys(mm) || pte_val(pte) & _PAGE_INVALID)
+=======
+	if (!mm_use_skey(mm) || pte_val(pte) & _PAGE_INVALID)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return pgste;
 	address = pte_val(pte) & PAGE_MASK;
 	skey = (unsigned long) page_get_storage_key(address);
@@ -180,7 +187,11 @@ static inline void pgste_set_key(pte_t *ptep, pgste_t pgste, pte_t entry,
 	unsigned long address;
 	unsigned long nkey;
 
+<<<<<<< HEAD
 	if (!mm_uses_skeys(mm) || pte_val(entry) & _PAGE_INVALID)
+=======
+	if (!mm_use_skey(mm) || pte_val(entry) & _PAGE_INVALID)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	VM_BUG_ON(!(pte_val(*ptep) & _PAGE_INVALID));
 	address = pte_val(entry) & PAGE_MASK;
@@ -347,13 +358,17 @@ static inline void pmdp_idte_local(struct mm_struct *mm,
 			    mm->context.asce, IDTE_LOCAL);
 	else
 		__pmdp_idte(addr, pmdp, 0, 0, IDTE_LOCAL);
+<<<<<<< HEAD
 	if (mm_has_pgste(mm) && mm->context.allow_gmap_hpage_1m)
 		gmap_pmdp_idte_local(mm, addr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void pmdp_idte_global(struct mm_struct *mm,
 				    unsigned long addr, pmd_t *pmdp)
 {
+<<<<<<< HEAD
 	if (MACHINE_HAS_TLB_GUEST) {
 		__pmdp_idte(addr, pmdp, IDTE_NODAT | IDTE_GUEST_ASCE,
 			    mm->context.asce, IDTE_GLOBAL);
@@ -368,6 +383,15 @@ static inline void pmdp_idte_global(struct mm_struct *mm,
 		if (mm_has_pgste(mm) && mm->context.allow_gmap_hpage_1m)
 			gmap_pmdp_csp(mm, addr);
 	}
+=======
+	if (MACHINE_HAS_TLB_GUEST)
+		__pmdp_idte(addr, pmdp, IDTE_NODAT | IDTE_GUEST_ASCE,
+			    mm->context.asce, IDTE_GLOBAL);
+	else if (MACHINE_HAS_IDTE)
+		__pmdp_idte(addr, pmdp, 0, 0, IDTE_GLOBAL);
+	else
+		__pmdp_csp(pmdp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline pmd_t pmdp_flush_direct(struct mm_struct *mm,
@@ -401,8 +425,11 @@ static inline pmd_t pmdp_flush_lazy(struct mm_struct *mm,
 			  cpumask_of(smp_processor_id()))) {
 		pmd_val(*pmdp) |= _SEGMENT_ENTRY_INVALID;
 		mm->context.flush_mm = 1;
+<<<<<<< HEAD
 		if (mm_has_pgste(mm))
 			gmap_pmdp_invalidate(mm, addr);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		pmdp_idte_global(mm, addr, pmdp);
 	}
@@ -410,6 +437,7 @@ static inline pmd_t pmdp_flush_lazy(struct mm_struct *mm,
 	return old;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PGSTE
 static pmd_t *pmd_alloc_map(struct mm_struct *mm, unsigned long addr)
 {
@@ -430,6 +458,8 @@ static pmd_t *pmd_alloc_map(struct mm_struct *mm, unsigned long addr)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 pmd_t pmdp_xchg_direct(struct mm_struct *mm, unsigned long addr,
 		       pmd_t *pmdp, pmd_t new)
 {
@@ -724,14 +754,50 @@ void ptep_zap_key(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
 /*
  * Test and reset if a guest page is dirty
  */
+<<<<<<< HEAD
 bool ptep_test_and_clear_uc(struct mm_struct *mm, unsigned long addr,
 		       pte_t *ptep)
 {
 	pgste_t pgste;
+=======
+bool test_and_clear_guest_dirty(struct mm_struct *mm, unsigned long addr)
+{
+	spinlock_t *ptl;
+	pgd_t *pgd;
+	p4d_t *p4d;
+	pud_t *pud;
+	pmd_t *pmd;
+	pgste_t pgste;
+	pte_t *ptep;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pte_t pte;
 	bool dirty;
 	int nodat;
 
+<<<<<<< HEAD
+=======
+	pgd = pgd_offset(mm, addr);
+	p4d = p4d_alloc(mm, pgd, addr);
+	if (!p4d)
+		return false;
+	pud = pud_alloc(mm, p4d, addr);
+	if (!pud)
+		return false;
+	pmd = pmd_alloc(mm, pud, addr);
+	if (!pmd)
+		return false;
+	/* We can't run guests backed by huge pages, but userspace can
+	 * still set them up and then try to migrate them without any
+	 * migration support.
+	 */
+	if (pmd_large(*pmd))
+		return true;
+
+	ptep = pte_alloc_map_lock(mm, pmd, addr, &ptl);
+	if (unlikely(!ptep))
+		return false;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pgste = pgste_get_lock(ptep);
 	dirty = !!(pgste_val(pgste) & PGSTE_UC_BIT);
 	pgste_val(pgste) &= ~PGSTE_UC_BIT;
@@ -747,13 +813,22 @@ bool ptep_test_and_clear_uc(struct mm_struct *mm, unsigned long addr,
 		*ptep = pte;
 	}
 	pgste_set_unlock(ptep, pgste);
+<<<<<<< HEAD
 	return dirty;
 }
 EXPORT_SYMBOL_GPL(ptep_test_and_clear_uc);
+=======
+
+	spin_unlock(ptl);
+	return dirty;
+}
+EXPORT_SYMBOL_GPL(test_and_clear_guest_dirty);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int set_guest_storage_key(struct mm_struct *mm, unsigned long addr,
 			  unsigned char key, bool nq)
 {
+<<<<<<< HEAD
 	unsigned long keyul, paddr;
 	spinlock_t *ptl;
 	pgste_t old, new;
@@ -784,6 +859,14 @@ int set_guest_storage_key(struct mm_struct *mm, unsigned long addr,
 	spin_unlock(ptl);
 
 	ptep = pte_alloc_map_lock(mm, pmdp, addr, &ptl);
+=======
+	unsigned long keyul;
+	spinlock_t *ptl;
+	pgste_t old, new;
+	pte_t *ptep;
+
+	ptep = get_locked_pte(mm, addr, &ptl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!ptep))
 		return -EFAULT;
 
@@ -794,6 +877,7 @@ int set_guest_storage_key(struct mm_struct *mm, unsigned long addr,
 	pgste_val(new) |= (keyul & (_PAGE_CHANGED | _PAGE_REFERENCED)) << 48;
 	pgste_val(new) |= (keyul & (_PAGE_ACC_BITS | _PAGE_FP_BIT)) << 56;
 	if (!(pte_val(*ptep) & _PAGE_INVALID)) {
+<<<<<<< HEAD
 		unsigned long bits, skey;
 
 		paddr = pte_val(*ptep) & PAGE_MASK;
@@ -802,6 +886,16 @@ int set_guest_storage_key(struct mm_struct *mm, unsigned long addr,
 		skey = key & (_PAGE_ACC_BITS | _PAGE_FP_BIT);
 		/* Set storage key ACC and FP */
 		page_set_storage_key(paddr, skey, !nq);
+=======
+		unsigned long address, bits, skey;
+
+		address = pte_val(*ptep) & PAGE_MASK;
+		skey = (unsigned long) page_get_storage_key(address);
+		bits = skey & (_PAGE_CHANGED | _PAGE_REFERENCED);
+		skey = key & (_PAGE_ACC_BITS | _PAGE_FP_BIT);
+		/* Set storage key ACC and FP */
+		page_set_storage_key(address, skey, !nq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Merge host changed & referenced into pgste  */
 		pgste_val(new) |= bits << 52;
 	}
@@ -857,6 +951,7 @@ EXPORT_SYMBOL(cond_set_guest_storage_key);
 int reset_guest_reference_bit(struct mm_struct *mm, unsigned long addr)
 {
 	spinlock_t *ptl;
+<<<<<<< HEAD
 	unsigned long paddr;
 	pgste_t old, new;
 	pmd_t *pmdp;
@@ -883,6 +978,13 @@ int reset_guest_reference_bit(struct mm_struct *mm, unsigned long addr)
 	spin_unlock(ptl);
 
 	ptep = pte_alloc_map_lock(mm, pmdp, addr, &ptl);
+=======
+	pgste_t old, new;
+	pte_t *ptep;
+	int cc = 0;
+
+	ptep = get_locked_pte(mm, addr, &ptl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!ptep))
 		return -EFAULT;
 
@@ -891,8 +993,12 @@ int reset_guest_reference_bit(struct mm_struct *mm, unsigned long addr)
 	pgste_val(new) &= ~PGSTE_GR_BIT;
 
 	if (!(pte_val(*ptep) & _PAGE_INVALID)) {
+<<<<<<< HEAD
 		paddr = pte_val(*ptep) & PAGE_MASK;
 		cc = page_reset_referenced(paddr);
+=======
+		cc = page_reset_referenced(pte_val(*ptep) & PAGE_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Merge real referenced bit into host-set */
 		pgste_val(new) |= ((unsigned long) cc << 53) & PGSTE_HR_BIT;
 	}
@@ -911,6 +1017,7 @@ EXPORT_SYMBOL(reset_guest_reference_bit);
 int get_guest_storage_key(struct mm_struct *mm, unsigned long addr,
 			  unsigned char *key)
 {
+<<<<<<< HEAD
 	unsigned long paddr;
 	spinlock_t *ptl;
 	pgste_t pgste;
@@ -939,14 +1046,26 @@ int get_guest_storage_key(struct mm_struct *mm, unsigned long addr,
 	spin_unlock(ptl);
 
 	ptep = pte_alloc_map_lock(mm, pmdp, addr, &ptl);
+=======
+	spinlock_t *ptl;
+	pgste_t pgste;
+	pte_t *ptep;
+
+	ptep = get_locked_pte(mm, addr, &ptl);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!ptep))
 		return -EFAULT;
 
 	pgste = pgste_get_lock(ptep);
 	*key = (pgste_val(pgste) & (PGSTE_ACC_BITS | PGSTE_FP_BIT)) >> 56;
+<<<<<<< HEAD
 	paddr = pte_val(*ptep) & PAGE_MASK;
 	if (!(pte_val(*ptep) & _PAGE_INVALID))
 		*key = page_get_storage_key(paddr);
+=======
+	if (!(pte_val(*ptep) & _PAGE_INVALID))
+		*key = page_get_storage_key(pte_val(*ptep) & PAGE_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Reflect guest's logical view, not physical */
 	*key |= (pgste_val(pgste) & (PGSTE_GR_BIT | PGSTE_GC_BIT)) >> 48;
 	pgste_set_unlock(ptep, pgste);

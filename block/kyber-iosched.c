@@ -72,6 +72,7 @@ static const unsigned int kyber_batch_size[] = {
 	[KYBER_OTHER] = 8,
 };
 
+<<<<<<< HEAD
 /*
  * There is a same mapping between ctx & hctx and kcq & khd,
  * we use request->mq_ctx->index_hw to index the kcq in khd.
@@ -85,6 +86,8 @@ struct kyber_ctx_queue {
 	struct list_head rq_list[KYBER_NUM_DOMAINS];
 } ____cacheline_aligned_in_smp;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kyber_queue_data {
 	struct request_queue *q;
 
@@ -112,6 +115,7 @@ struct kyber_hctx_data {
 	struct list_head rqs[KYBER_NUM_DOMAINS];
 	unsigned int cur_domain;
 	unsigned int batching;
+<<<<<<< HEAD
 	struct kyber_ctx_queue *kcqs;
 	struct sbitmap kcq_map[KYBER_NUM_DOMAINS];
 	wait_queue_entry_t domain_wait[KYBER_NUM_DOMAINS];
@@ -124,6 +128,16 @@ static int kyber_domain_wake(wait_queue_entry_t *wait, unsigned mode, int flags,
 
 static unsigned int kyber_sched_domain(unsigned int op)
 {
+=======
+	wait_queue_entry_t domain_wait[KYBER_NUM_DOMAINS];
+	atomic_t wait_index[KYBER_NUM_DOMAINS];
+};
+
+static int rq_sched_domain(const struct request *rq)
+{
+	unsigned int op = rq->cmd_flags;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((op & REQ_OP_MASK) == REQ_OP_READ)
 		return KYBER_READ;
 	else if ((op & REQ_OP_MASK) == REQ_OP_WRITE && op_is_sync(op))
@@ -297,11 +311,14 @@ static unsigned int kyber_sched_tags_shift(struct kyber_queue_data *kqd)
 	return kqd->q->queue_hw_ctx[0]->sched_tags->bitmap_tags.sb.shift;
 }
 
+<<<<<<< HEAD
 static int kyber_bucket_fn(const struct request *rq)
 {
 	return kyber_sched_domain(rq->cmd_flags);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct kyber_queue_data *kyber_queue_data_alloc(struct request_queue *q)
 {
 	struct kyber_queue_data *kqd;
@@ -315,7 +332,11 @@ static struct kyber_queue_data *kyber_queue_data_alloc(struct request_queue *q)
 		goto err;
 	kqd->q = q;
 
+<<<<<<< HEAD
 	kqd->cb = blk_stat_alloc_callback(kyber_stat_timer_fn, kyber_bucket_fn,
+=======
+	kqd->cb = blk_stat_alloc_callback(kyber_stat_timer_fn, rq_sched_domain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  KYBER_NUM_DOMAINS, kqd);
 	if (!kqd->cb)
 		goto err_kqd;
@@ -394,6 +415,7 @@ static void kyber_exit_sched(struct elevator_queue *e)
 	kfree(kqd);
 }
 
+<<<<<<< HEAD
 static void kyber_ctx_queue_init(struct kyber_ctx_queue *kcq)
 {
 	unsigned int i;
@@ -406,6 +428,10 @@ static void kyber_ctx_queue_init(struct kyber_ctx_queue *kcq)
 static int kyber_init_hctx(struct blk_mq_hw_ctx *hctx, unsigned int hctx_idx)
 {
 	struct kyber_queue_data *kqd = hctx->queue->elevator->elevator_data;
+=======
+static int kyber_init_hctx(struct blk_mq_hw_ctx *hctx, unsigned int hctx_idx)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kyber_hctx_data *khd;
 	int i;
 
@@ -413,6 +439,7 @@ static int kyber_init_hctx(struct blk_mq_hw_ctx *hctx, unsigned int hctx_idx)
 	if (!khd)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	khd->kcqs = kmalloc_array_node(hctx->nr_ctx,
 				       sizeof(struct kyber_ctx_queue),
 				       GFP_KERNEL, hctx->numa_node);
@@ -431,13 +458,18 @@ static int kyber_init_hctx(struct blk_mq_hw_ctx *hctx, unsigned int hctx_idx)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&khd->lock);
 
 	for (i = 0; i < KYBER_NUM_DOMAINS; i++) {
 		INIT_LIST_HEAD(&khd->rqs[i]);
+<<<<<<< HEAD
 		init_waitqueue_func_entry(&khd->domain_wait[i],
 					  kyber_domain_wake);
 		khd->domain_wait[i].private = hctx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		INIT_LIST_HEAD(&khd->domain_wait[i].entry);
 		atomic_set(&khd->wait_index[i], 0);
 	}
@@ -446,6 +478,7 @@ static int kyber_init_hctx(struct blk_mq_hw_ctx *hctx, unsigned int hctx_idx)
 	khd->batching = 0;
 
 	hctx->sched_data = khd;
+<<<<<<< HEAD
 	sbitmap_queue_min_shallow_depth(&hctx->sched_tags->bitmap_tags,
 					kqd->async_depth);
 
@@ -456,16 +489,23 @@ err_kcqs:
 err_khd:
 	kfree(khd);
 	return -ENOMEM;
+=======
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void kyber_exit_hctx(struct blk_mq_hw_ctx *hctx, unsigned int hctx_idx)
 {
+<<<<<<< HEAD
 	struct kyber_hctx_data *khd = hctx->sched_data;
 	int i;
 
 	for (i = 0; i < KYBER_NUM_DOMAINS; i++)
 		sbitmap_free(&khd->kcq_map[i]);
 	kfree(khd->kcqs);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(hctx->sched_data);
 }
 
@@ -487,7 +527,11 @@ static void rq_clear_domain_token(struct kyber_queue_data *kqd,
 
 	nr = rq_get_domain_token(rq);
 	if (nr != -1) {
+<<<<<<< HEAD
 		sched_domain = kyber_sched_domain(rq->cmd_flags);
+=======
+		sched_domain = rq_sched_domain(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sbitmap_queue_clear(&kqd->domain_tokens[sched_domain], nr,
 				    rq->mq_ctx->cpu);
 	}
@@ -506,6 +550,7 @@ static void kyber_limit_depth(unsigned int op, struct blk_mq_alloc_data *data)
 	}
 }
 
+<<<<<<< HEAD
 static bool kyber_bio_merge(struct blk_mq_hw_ctx *hctx, struct bio *bio)
 {
 	struct kyber_hctx_data *khd = hctx->sched_data;
@@ -523,11 +568,14 @@ static bool kyber_bio_merge(struct blk_mq_hw_ctx *hctx, struct bio *bio)
 	return merged;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void kyber_prepare_request(struct request *rq, struct bio *bio)
 {
 	rq_set_domain_token(rq, -1);
 }
 
+<<<<<<< HEAD
 static void kyber_insert_requests(struct blk_mq_hw_ctx *hctx,
 				  struct list_head *rq_list, bool at_head)
 {
@@ -551,6 +599,8 @@ static void kyber_insert_requests(struct blk_mq_hw_ctx *hctx,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void kyber_finish_request(struct request *rq)
 {
 	struct kyber_queue_data *kqd = rq->q->elevator->elevator_data;
@@ -569,7 +619,11 @@ static void kyber_completed_request(struct request *rq)
 	 * Check if this request met our latency goal. If not, quickly gather
 	 * some statistics and start throttling.
 	 */
+<<<<<<< HEAD
 	sched_domain = kyber_sched_domain(rq->cmd_flags);
+=======
+	sched_domain = rq_sched_domain(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (sched_domain) {
 	case KYBER_READ:
 		target = kqd->read_lat_nsec;
@@ -585,16 +639,25 @@ static void kyber_completed_request(struct request *rq)
 	if (blk_stat_is_active(kqd->cb))
 		return;
 
+<<<<<<< HEAD
 	now = ktime_get_ns();
 	if (now < rq->io_start_time_ns)
 		return;
 
 	latency = now - rq->io_start_time_ns;
+=======
+	now = __blk_stat_time(ktime_to_ns(ktime_get()));
+	if (now < blk_stat_time(&rq->issue_stat))
+		return;
+
+	latency = now - blk_stat_time(&rq->issue_stat);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (latency > target)
 		blk_stat_activate_msecs(kqd->cb, 10);
 }
 
+<<<<<<< HEAD
 struct flush_kcq_data {
 	struct kyber_hctx_data *khd;
 	unsigned int sched_domain;
@@ -627,6 +690,21 @@ static void kyber_flush_busy_kcqs(struct kyber_hctx_data *khd,
 
 	sbitmap_for_each_set(&khd->kcq_map[sched_domain],
 			     flush_busy_kcq, &data);
+=======
+static void kyber_flush_busy_ctxs(struct kyber_hctx_data *khd,
+				  struct blk_mq_hw_ctx *hctx)
+{
+	LIST_HEAD(rq_list);
+	struct request *rq, *next;
+
+	blk_mq_flush_busy_ctxs(hctx, &rq_list);
+	list_for_each_entry_safe(rq, next, &rq_list, queuelist) {
+		unsigned int sched_domain;
+
+		sched_domain = rq_sched_domain(rq);
+		list_move_tail(&rq->queuelist, &khd->rqs[sched_domain]);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int kyber_domain_wake(wait_queue_entry_t *wait, unsigned mode, int flags,
@@ -650,16 +728,29 @@ static int kyber_get_domain_token(struct kyber_queue_data *kqd,
 	int nr;
 
 	nr = __sbitmap_queue_get(domain_tokens);
+<<<<<<< HEAD
+=======
+	if (nr >= 0)
+		return nr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we failed to get a domain token, make sure the hardware queue is
 	 * run when one becomes available. Note that this is serialized on
 	 * khd->lock, but we still need to be careful about the waker.
 	 */
+<<<<<<< HEAD
 	if (nr < 0 && list_empty_careful(&wait->entry)) {
 		ws = sbq_wait_ptr(domain_tokens,
 				  &khd->wait_index[sched_domain]);
 		khd->domain_ws[sched_domain] = ws;
+=======
+	if (list_empty_careful(&wait->entry)) {
+		init_waitqueue_func_entry(wait, kyber_domain_wake);
+		wait->private = hctx;
+		ws = sbq_wait_ptr(domain_tokens,
+				  &khd->wait_index[sched_domain]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		add_wait_queue(&ws->wait, wait);
 
 		/*
@@ -668,6 +759,7 @@ static int kyber_get_domain_token(struct kyber_queue_data *kqd,
 		 */
 		nr = __sbitmap_queue_get(domain_tokens);
 	}
+<<<<<<< HEAD
 
 	/*
 	 * If we got a token while we were on the wait queue, remove ourselves
@@ -683,19 +775,27 @@ static int kyber_get_domain_token(struct kyber_queue_data *kqd,
 		spin_unlock_irq(&ws->wait.lock);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return nr;
 }
 
 static struct request *
 kyber_dispatch_cur_domain(struct kyber_queue_data *kqd,
 			  struct kyber_hctx_data *khd,
+<<<<<<< HEAD
 			  struct blk_mq_hw_ctx *hctx)
+=======
+			  struct blk_mq_hw_ctx *hctx,
+			  bool *flushed)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct list_head *rqs;
 	struct request *rq;
 	int nr;
 
 	rqs = &khd->rqs[khd->cur_domain];
+<<<<<<< HEAD
 
 	/*
 	 * If we already have a flushed request, then we just need to get a
@@ -706,6 +806,20 @@ kyber_dispatch_cur_domain(struct kyber_queue_data *kqd,
 	 * the kcq_map, we will always get a request.
 	 */
 	rq = list_first_entry_or_null(rqs, struct request, queuelist);
+=======
+	rq = list_first_entry_or_null(rqs, struct request, queuelist);
+
+	/*
+	 * If there wasn't already a pending request and we haven't flushed the
+	 * software queues yet, flush the software queues and check again.
+	 */
+	if (!rq && !*flushed) {
+		kyber_flush_busy_ctxs(khd, hctx);
+		*flushed = true;
+		rq = list_first_entry_or_null(rqs, struct request, queuelist);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rq) {
 		nr = kyber_get_domain_token(kqd, khd, hctx);
 		if (nr >= 0) {
@@ -714,6 +828,7 @@ kyber_dispatch_cur_domain(struct kyber_queue_data *kqd,
 			list_del_init(&rq->queuelist);
 			return rq;
 		}
+<<<<<<< HEAD
 	} else if (sbitmap_any_bit_set(&khd->kcq_map[khd->cur_domain])) {
 		nr = kyber_get_domain_token(kqd, khd, hctx);
 		if (nr >= 0) {
@@ -724,6 +839,8 @@ kyber_dispatch_cur_domain(struct kyber_queue_data *kqd,
 			list_del_init(&rq->queuelist);
 			return rq;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* There were either no pending requests or no tokens. */
@@ -734,6 +851,10 @@ static struct request *kyber_dispatch_request(struct blk_mq_hw_ctx *hctx)
 {
 	struct kyber_queue_data *kqd = hctx->queue->elevator->elevator_data;
 	struct kyber_hctx_data *khd = hctx->sched_data;
+<<<<<<< HEAD
+=======
+	bool flushed = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct request *rq;
 	int i;
 
@@ -744,7 +865,11 @@ static struct request *kyber_dispatch_request(struct blk_mq_hw_ctx *hctx)
 	 * from the batch.
 	 */
 	if (khd->batching < kyber_batch_size[khd->cur_domain]) {
+<<<<<<< HEAD
 		rq = kyber_dispatch_cur_domain(kqd, khd, hctx);
+=======
+		rq = kyber_dispatch_cur_domain(kqd, khd, hctx, &flushed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rq)
 			goto out;
 	}
@@ -765,7 +890,11 @@ static struct request *kyber_dispatch_request(struct blk_mq_hw_ctx *hctx)
 		else
 			khd->cur_domain++;
 
+<<<<<<< HEAD
 		rq = kyber_dispatch_cur_domain(kqd, khd, hctx);
+=======
+		rq = kyber_dispatch_cur_domain(kqd, khd, hctx, &flushed);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (rq)
 			goto out;
 	}
@@ -782,11 +911,17 @@ static bool kyber_has_work(struct blk_mq_hw_ctx *hctx)
 	int i;
 
 	for (i = 0; i < KYBER_NUM_DOMAINS; i++) {
+<<<<<<< HEAD
 		if (!list_empty_careful(&khd->rqs[i]) ||
 		    sbitmap_any_bit_set(&khd->kcq_map[i]))
 			return true;
 	}
 
+=======
+		if (!list_empty_careful(&khd->rqs[i]))
+			return true;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return false;
 }
 
@@ -958,9 +1093,13 @@ static struct elevator_type kyber_sched = {
 		.init_hctx = kyber_init_hctx,
 		.exit_hctx = kyber_exit_hctx,
 		.limit_depth = kyber_limit_depth,
+<<<<<<< HEAD
 		.bio_merge = kyber_bio_merge,
 		.prepare_request = kyber_prepare_request,
 		.insert_requests = kyber_insert_requests,
+=======
+		.prepare_request = kyber_prepare_request,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.finish_request = kyber_finish_request,
 		.requeue_request = kyber_finish_request,
 		.completed_request = kyber_completed_request,

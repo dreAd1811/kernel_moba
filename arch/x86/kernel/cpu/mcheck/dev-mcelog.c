@@ -243,6 +243,7 @@ out:
 	return err ? err : buf - ubuf;
 }
 
+<<<<<<< HEAD
 static __poll_t mce_chrdev_poll(struct file *file, poll_table *wait)
 {
 	poll_wait(file, &mce_chrdev_wait, wait);
@@ -250,6 +251,15 @@ static __poll_t mce_chrdev_poll(struct file *file, poll_table *wait)
 		return EPOLLIN | EPOLLRDNORM;
 	if (!mce_apei_read_done && apei_check_mce())
 		return EPOLLIN | EPOLLRDNORM;
+=======
+static unsigned int mce_chrdev_poll(struct file *file, poll_table *wait)
+{
+	poll_wait(file, &mce_chrdev_wait, wait);
+	if (READ_ONCE(mcelog.next))
+		return POLLIN | POLLRDNORM;
+	if (!mce_apei_read_done && apei_check_mce())
+		return POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

@@ -47,7 +47,10 @@ unsigned long key_to_hw_index(u32 key)
 {
 	return (key << 24) | (key >> 8);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(key_to_hw_index);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int hns_roce_sw2hw_mpt(struct hns_roce_dev *hr_dev,
 			      struct hns_roce_cmd_mailbox *mailbox,
@@ -66,7 +69,10 @@ int hns_roce_hw2sw_mpt(struct hns_roce_dev *hr_dev,
 				 mpt_index, !mailbox, HNS_ROCE_CMD_HW2SW_MPT,
 				 HNS_ROCE_CMD_TIMEOUT_MSECS);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_hw2sw_mpt);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int hns_roce_buddy_alloc(struct hns_roce_buddy *buddy, int order,
 				unsigned long *seg)
@@ -144,7 +150,11 @@ static int hns_roce_buddy_init(struct hns_roce_buddy *buddy, int max_order)
 		buddy->bits[i] = kcalloc(s, sizeof(long), GFP_KERNEL |
 					 __GFP_NOWARN);
 		if (!buddy->bits[i]) {
+<<<<<<< HEAD
 			buddy->bits[i] = vzalloc(array_size(s, sizeof(long)));
+=======
+			buddy->bits[i] = vzalloc(s * sizeof(long));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!buddy->bits[i])
 				goto err_out_free;
 		}
@@ -177,6 +187,7 @@ static void hns_roce_buddy_cleanup(struct hns_roce_buddy *buddy)
 }
 
 static int hns_roce_alloc_mtt_range(struct hns_roce_dev *hr_dev, int order,
+<<<<<<< HEAD
 				    unsigned long *seg, u32 mtt_type)
 {
 	struct hns_roce_mr_table *mr_table = &hr_dev->mr_table;
@@ -199,6 +210,20 @@ static int hns_roce_alloc_mtt_range(struct hns_roce_dev *hr_dev, int order,
 	if (hns_roce_table_get_range(hr_dev, table, *seg,
 				     *seg + (1 << order) - 1)) {
 		hns_roce_buddy_free(buddy, *seg, order);
+=======
+				    unsigned long *seg)
+{
+	struct hns_roce_mr_table *mr_table = &hr_dev->mr_table;
+	int ret = 0;
+
+	ret = hns_roce_buddy_alloc(&mr_table->mtt_buddy, order, seg);
+	if (ret == -1)
+		return -1;
+
+	if (hns_roce_table_get_range(hr_dev, &mr_table->mtt_table, *seg,
+				     *seg + (1 << order) - 1)) {
+		hns_roce_buddy_free(&mr_table->mtt_buddy, *seg, order);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 	}
 
@@ -208,7 +233,11 @@ static int hns_roce_alloc_mtt_range(struct hns_roce_dev *hr_dev, int order,
 int hns_roce_mtt_init(struct hns_roce_dev *hr_dev, int npages, int page_shift,
 		      struct hns_roce_mtt *mtt)
 {
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	/* Page num is zero, correspond to DMA memory register */
@@ -227,8 +256,12 @@ int hns_roce_mtt_init(struct hns_roce_dev *hr_dev, int npages, int page_shift,
 		++mtt->order;
 
 	/* Allocate MTT entry */
+<<<<<<< HEAD
 	ret = hns_roce_alloc_mtt_range(hr_dev, mtt->order, &mtt->first_seg,
 				       mtt->mtt_type);
+=======
+	ret = hns_roce_alloc_mtt_range(hr_dev, mtt->order, &mtt->first_seg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret == -1)
 		return -ENOMEM;
 
@@ -242,6 +275,7 @@ void hns_roce_mtt_cleanup(struct hns_roce_dev *hr_dev, struct hns_roce_mtt *mtt)
 	if (mtt->order < 0)
 		return;
 
+<<<<<<< HEAD
 	if (mtt->mtt_type == MTT_TYPE_WQE) {
 		hns_roce_buddy_free(&mr_table->mtt_buddy, mtt->first_seg,
 				    mtt->order);
@@ -488,15 +522,26 @@ err_kcalloc_bt_l1:
 	mr->pbl_l1_dma_addr = NULL;
 
 	return -ENOMEM;
+=======
+	hns_roce_buddy_free(&mr_table->mtt_buddy, mtt->first_seg, mtt->order);
+	hns_roce_table_put_range(hr_dev, &mr_table->mtt_table, mtt->first_seg,
+				 mtt->first_seg + (1 << mtt->order) - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int hns_roce_mr_alloc(struct hns_roce_dev *hr_dev, u32 pd, u64 iova,
 			     u64 size, u32 access, int npages,
 			     struct hns_roce_mr *mr)
 {
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	unsigned long index = 0;
 	int ret = 0;
+=======
+	unsigned long index = 0;
+	int ret = 0;
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate a key for mr from mr_table */
 	ret = hns_roce_bitmap_alloc(&hr_dev->mr_table.mtpt_bitmap, &index);
@@ -514,6 +559,7 @@ static int hns_roce_mr_alloc(struct hns_roce_dev *hr_dev, u32 pd, u64 iova,
 		mr->type = MR_TYPE_DMA;
 		mr->pbl_buf = NULL;
 		mr->pbl_dma_addr = 0;
+<<<<<<< HEAD
 		/* PBL multi-hop addressing parameters */
 		mr->pbl_bt_l2 = NULL;
 		mr->pbl_bt_l1 = NULL;
@@ -619,12 +665,28 @@ static void hns_roce_mhop_free(struct hns_roce_dev *hr_dev,
 		mr->pbl_bt_l2 = NULL;
 		mr->pbl_l2_dma_addr = NULL;
 	}
+=======
+	} else {
+		mr->type = MR_TYPE_MR;
+		mr->pbl_buf = dma_alloc_coherent(dev, npages * 8,
+						 &(mr->pbl_dma_addr),
+						 GFP_KERNEL);
+		if (!mr->pbl_buf)
+			return -ENOMEM;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hns_roce_mr_free(struct hns_roce_dev *hr_dev,
 			     struct hns_roce_mr *mr)
 {
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int npages = 0;
 	int ret;
 
@@ -637,6 +699,7 @@ static void hns_roce_mr_free(struct hns_roce_dev *hr_dev,
 
 	if (mr->size != ~0ULL) {
 		npages = ib_umem_page_count(mr->umem);
+<<<<<<< HEAD
 
 		if (!hr_dev->caps.pbl_hop_num)
 			dma_free_coherent(dev, (unsigned int)(npages * 8),
@@ -649,6 +712,12 @@ static void hns_roce_mr_free(struct hns_roce_dev *hr_dev,
 		hns_roce_table_put(hr_dev, &hr_dev->mr_table.mtpt_table,
 				   key_to_hw_index(mr->key));
 
+=======
+		dma_free_coherent(dev, (unsigned int)(npages * 8), mr->pbl_buf,
+				  mr->pbl_dma_addr);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hns_roce_bitmap_free(&hr_dev->mr_table.mtpt_bitmap,
 			     key_to_hw_index(mr->key), BITMAP_NO_RR);
 }
@@ -658,7 +727,11 @@ static int hns_roce_mr_enable(struct hns_roce_dev *hr_dev,
 {
 	int ret;
 	unsigned long mtpt_idx = key_to_hw_index(mr->key);
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hns_roce_cmd_mailbox *mailbox;
 	struct hns_roce_mr_table *mr_table = &hr_dev->mr_table;
 
@@ -704,6 +777,7 @@ static int hns_roce_write_mtt_chunk(struct hns_roce_dev *hr_dev,
 				    struct hns_roce_mtt *mtt, u32 start_index,
 				    u32 npages, u64 *page_list)
 {
+<<<<<<< HEAD
 	struct hns_roce_hem_table *table;
 	dma_addr_t dma_handle;
 	__le64 *mtts;
@@ -718,11 +792,22 @@ static int hns_roce_write_mtt_chunk(struct hns_roce_dev *hr_dev,
 	/* All MTTs must fit in the same page */
 	if (start_index / (bt_page_size / sizeof(u64)) !=
 		(start_index + npages - 1) / (bt_page_size / sizeof(u64)))
+=======
+	u32 i = 0;
+	__le64 *mtts = NULL;
+	dma_addr_t dma_handle;
+	u32 s = start_index * sizeof(u64);
+
+	/* All MTTs must fit in the same page */
+	if (start_index / (PAGE_SIZE / sizeof(u64)) !=
+		(start_index + npages - 1) / (PAGE_SIZE / sizeof(u64)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	if (start_index & (HNS_ROCE_MTT_ENTRY_PER_SEG - 1))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (mtt->mtt_type == MTT_TYPE_WQE)
 		table = &hr_dev->mr_table.mtt_table;
 	else
@@ -731,17 +816,26 @@ static int hns_roce_write_mtt_chunk(struct hns_roce_dev *hr_dev,
 	mtts = hns_roce_table_find(hr_dev, table,
 				mtt->first_seg +
 				start_index / HNS_ROCE_MTT_ENTRY_PER_SEG,
+=======
+	mtts = hns_roce_table_find(&hr_dev->mr_table.mtt_table,
+				mtt->first_seg + s / hr_dev->caps.mtt_entry_sz,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				&dma_handle);
 	if (!mtts)
 		return -ENOMEM;
 
 	/* Save page addr, low 12 bits : 0 */
+<<<<<<< HEAD
 	for (i = 0; i < npages; ++i) {
 		if (!hr_dev->caps.mtt_hop_num)
 			mtts[i] = cpu_to_le64(page_list[i] >> PAGE_ADDR_SHIFT);
 		else
 			mtts[i] = cpu_to_le64(page_list[i]);
 	}
+=======
+	for (i = 0; i < npages; ++i)
+		mtts[i] = (cpu_to_le64(page_list[i])) >> PAGE_ADDR_SHIFT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -752,11 +846,15 @@ static int hns_roce_write_mtt(struct hns_roce_dev *hr_dev,
 {
 	int chunk;
 	int ret;
+<<<<<<< HEAD
 	u32 bt_page_size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mtt->order < 0)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (mtt->mtt_type == MTT_TYPE_WQE)
 		bt_page_size = 1 << (hr_dev->caps.mtt_ba_pg_sz + PAGE_SHIFT);
 	else
@@ -764,6 +862,10 @@ static int hns_roce_write_mtt(struct hns_roce_dev *hr_dev,
 
 	while (npages > 0) {
 		chunk = min_t(int, bt_page_size / sizeof(u64), npages);
+=======
+	while (npages > 0) {
+		chunk = min_t(int, PAGE_SIZE / sizeof(u64), npages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = hns_roce_write_mtt_chunk(hr_dev, mtt, start_index, chunk,
 					       page_list);
@@ -781,9 +883,15 @@ static int hns_roce_write_mtt(struct hns_roce_dev *hr_dev,
 int hns_roce_buf_write_mtt(struct hns_roce_dev *hr_dev,
 			   struct hns_roce_mtt *mtt, struct hns_roce_buf *buf)
 {
+<<<<<<< HEAD
 	u64 *page_list;
 	int ret;
 	u32 i;
+=======
+	u32 i = 0;
+	int ret = 0;
+	u64 *page_list = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	page_list = kmalloc_array(buf->npages, sizeof(*page_list), GFP_KERNEL);
 	if (!page_list)
@@ -806,7 +914,11 @@ int hns_roce_buf_write_mtt(struct hns_roce_dev *hr_dev,
 int hns_roce_init_mr_table(struct hns_roce_dev *hr_dev)
 {
 	struct hns_roce_mr_table *mr_table = &hr_dev->mr_table;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = hns_roce_bitmap_init(&mr_table->mtpt_bitmap,
 				   hr_dev->caps.num_mtpts,
@@ -820,6 +932,7 @@ int hns_roce_init_mr_table(struct hns_roce_dev *hr_dev)
 	if (ret)
 		goto err_buddy;
 
+<<<<<<< HEAD
 	if (hns_roce_check_whether_mhop(hr_dev, HEM_TYPE_CQE)) {
 		ret = hns_roce_buddy_init(&mr_table->mtt_cqe_buddy,
 					  ilog2(hr_dev->caps.num_cqe_segs));
@@ -831,6 +944,10 @@ int hns_roce_init_mr_table(struct hns_roce_dev *hr_dev)
 err_buddy_cqe:
 	hns_roce_buddy_cleanup(&mr_table->mtt_buddy);
 
+=======
+	return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_buddy:
 	hns_roce_bitmap_cleanup(&mr_table->mtpt_bitmap);
 	return ret;
@@ -841,15 +958,23 @@ void hns_roce_cleanup_mr_table(struct hns_roce_dev *hr_dev)
 	struct hns_roce_mr_table *mr_table = &hr_dev->mr_table;
 
 	hns_roce_buddy_cleanup(&mr_table->mtt_buddy);
+<<<<<<< HEAD
 	if (hns_roce_check_whether_mhop(hr_dev, HEM_TYPE_CQE))
 		hns_roce_buddy_cleanup(&mr_table->mtt_cqe_buddy);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hns_roce_bitmap_cleanup(&mr_table->mtpt_bitmap);
 }
 
 struct ib_mr *hns_roce_get_dma_mr(struct ib_pd *pd, int acc)
 {
+<<<<<<< HEAD
 	struct hns_roce_mr *mr;
 	int ret;
+=======
+	int ret = 0;
+	struct hns_roce_mr *mr = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mr = kmalloc(sizeof(*mr), GFP_KERNEL);
 	if (mr == NULL)
@@ -881,6 +1006,7 @@ err_free:
 int hns_roce_ib_umem_write_mtt(struct hns_roce_dev *hr_dev,
 			       struct hns_roce_mtt *mtt, struct ib_umem *umem)
 {
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	struct scatterlist *sg;
 	unsigned int order;
@@ -898,12 +1024,23 @@ int hns_roce_ib_umem_write_mtt(struct hns_roce_dev *hr_dev,
 	bt_page_size = 1 << (order + PAGE_SHIFT);
 
 	pages = (u64 *) __get_free_pages(GFP_KERNEL, order);
+=======
+	struct scatterlist *sg;
+	int i, k, entry;
+	int ret = 0;
+	u64 *pages;
+	u32 n;
+	int len;
+
+	pages = (u64 *) __get_free_page(GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!pages)
 		return -ENOMEM;
 
 	i = n = 0;
 
 	for_each_sg(umem->sg_head.sgl, sg, umem->nmap, entry) {
+<<<<<<< HEAD
 		len = sg_dma_len(sg) >> PAGE_SHIFT;
 		for (k = 0; k < len; ++k) {
 			page_addr =
@@ -919,6 +1056,13 @@ int hns_roce_ib_umem_write_mtt(struct hns_roce_dev *hr_dev,
 			}
 			npage++;
 			if (i == bt_page_size / sizeof(u64)) {
+=======
+		len = sg_dma_len(sg) >> mtt->page_shift;
+		for (k = 0; k < len; ++k) {
+			pages[i++] = sg_dma_address(sg) +
+				(k << umem->page_shift);
+			if (i == PAGE_SIZE / sizeof(u64)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ret = hns_roce_write_mtt(hr_dev, mtt, n, i,
 							 pages);
 				if (ret)
@@ -933,6 +1077,7 @@ int hns_roce_ib_umem_write_mtt(struct hns_roce_dev *hr_dev,
 		ret = hns_roce_write_mtt(hr_dev, mtt, n, i, pages);
 
 out:
+<<<<<<< HEAD
 	free_pages((unsigned long) pages, order);
 	return ret;
 }
@@ -975,6 +1120,22 @@ static int hns_roce_ib_umem_write_mr(struct hns_roce_dev *hr_dev,
 				}
 			}
 		}
+=======
+	free_page((unsigned long) pages);
+	return ret;
+}
+
+static int hns_roce_ib_umem_write_mr(struct hns_roce_mr *mr,
+				     struct ib_umem *umem)
+{
+	int i = 0;
+	int entry;
+	struct scatterlist *sg;
+
+	for_each_sg(umem->sg_head.sgl, sg, umem->nmap, entry) {
+		mr->pbl_buf[i] = ((u64)sg_dma_address(sg)) >> 12;
+		i++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Memory barrier */
@@ -988,12 +1149,19 @@ struct ib_mr *hns_roce_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 				   struct ib_udata *udata)
 {
 	struct hns_roce_dev *hr_dev = to_hr_dev(pd->device);
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	struct hns_roce_mr *mr;
 	int bt_size;
 	int ret;
 	int n;
 	int i;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+	struct hns_roce_mr *mr = NULL;
+	int ret = 0;
+	int n = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mr = kmalloc(sizeof(*mr), GFP_KERNEL);
 	if (!mr)
@@ -1007,6 +1175,7 @@ struct ib_mr *hns_roce_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	}
 
 	n = ib_umem_page_count(mr->umem);
+<<<<<<< HEAD
 
 	if (!hr_dev->caps.pbl_hop_num) {
 		if (n > HNS_ROCE_MAX_MTPT_PBL_NUM) {
@@ -1029,6 +1198,20 @@ struct ib_mr *hns_roce_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 			ret = -EINVAL;
 			goto err_umem;
 		}
+=======
+	if (mr->umem->page_shift != HNS_ROCE_HEM_PAGE_SHIFT) {
+		dev_err(dev, "Just support 4K page size but is 0x%lx now!\n",
+			BIT(mr->umem->page_shift));
+		ret = -EINVAL;
+		goto err_umem;
+	}
+
+	if (n > HNS_ROCE_MAX_MTPT_PBL_NUM) {
+		dev_err(dev, " MR len %lld err. MR is limited to 4G at most!\n",
+			length);
+		ret = -EINVAL;
+		goto err_umem;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = hns_roce_mr_alloc(hr_dev, to_hr_pd(pd)->pdn, virt_addr, length,
@@ -1036,7 +1219,11 @@ struct ib_mr *hns_roce_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	if (ret)
 		goto err_umem;
 
+<<<<<<< HEAD
 	ret = hns_roce_ib_umem_write_mr(hr_dev, mr, mr->umem);
+=======
+	ret = hns_roce_ib_umem_write_mr(mr, mr->umem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err_mr;
 
@@ -1059,6 +1246,7 @@ err_free:
 	return ERR_PTR(ret);
 }
 
+<<<<<<< HEAD
 int hns_roce_rereg_user_mr(struct ib_mr *ibmr, int flags, u64 start, u64 length,
 			   u64 virt_addr, int mr_access_flags, struct ib_pd *pd,
 			   struct ib_udata *udata)
@@ -1182,6 +1370,8 @@ free_cmd_mbox:
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int hns_roce_dereg_mr(struct ib_mr *ibmr)
 {
 	struct hns_roce_dev *hr_dev = to_hr_dev(ibmr->device);

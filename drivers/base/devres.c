@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * drivers/base/devres.c - device resource management
  *
  * Copyright (c) 2006  SUSE Linux Products GmbH
  * Copyright (c) 2006  Tejun Heo <teheo@suse.de>
+<<<<<<< HEAD
+=======
+ *
+ * This file is released under the GPLv2.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/device.h>
@@ -90,6 +98,7 @@ static struct devres_group * node_to_group(struct devres_node *node)
 static __always_inline struct devres * alloc_dr(dr_release_t release,
 						size_t size, gfp_t gfp, int nid)
 {
+<<<<<<< HEAD
 	size_t tot_size;
 	struct devres *dr;
 
@@ -98,6 +107,11 @@ static __always_inline struct devres * alloc_dr(dr_release_t release,
 					&tot_size)))
 		return NULL;
 
+=======
+	size_t tot_size = sizeof(struct devres) + size;
+	struct devres *dr;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dr = kmalloc_node_track_caller(tot_size, gfp, nid);
 	if (unlikely(!dr))
 		return NULL;

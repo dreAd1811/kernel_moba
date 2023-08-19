@@ -12,7 +12,10 @@
  */
 
 #include <linux/init.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/platform_data/sa11x0-serial.h>
 #include <linux/mtd/mtd.h>
@@ -100,6 +103,7 @@ static void __init nanoengine_map_io(void)
 	Ser2HSCR0 = 0;
 }
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table nanoengine_pcmcia0_gpio_table = {
 	.dev_id = "sa11x0-pcmcia.0",
 	.table = {
@@ -124,6 +128,10 @@ static void __init nanoengine_init(void)
 {
 	sa11x0_register_pcmcia(0, &nanoengine_pcmcia0_gpio_table);
 	sa11x0_register_pcmcia(1, &nanoengine_pcmcia1_gpio_table);
+=======
+static void __init nanoengine_init(void)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sa11x0_register_mtd(&nanoengine_flash_data, nanoengine_flash_resources,
 		ARRAY_SIZE(nanoengine_flash_resources));
 }

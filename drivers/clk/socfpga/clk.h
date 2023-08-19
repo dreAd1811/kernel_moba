@@ -54,11 +54,17 @@ struct socfpga_gate_clk {
 	char *parent_name;
 	u32 fixed_div;
 	void __iomem *div_reg;
+<<<<<<< HEAD
 	void __iomem *bypass_reg;
 	struct regmap *sys_mgr_base_addr;
 	u32 width;	/* only valid if div_reg != 0 */
 	u32 shift;	/* only valid if div_reg != 0 */
 	u32 bypass_shift;      /* only valid if bypass_reg != 0 */
+=======
+	struct regmap *sys_mgr_base_addr;
+	u32 width;	/* only valid if div_reg != 0 */
+	u32 shift;	/* only valid if div_reg != 0 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 clk_phase[2];
 };
 
@@ -67,10 +73,15 @@ struct socfpga_periph_clk {
 	char *parent_name;
 	u32 fixed_div;
 	void __iomem *div_reg;
+<<<<<<< HEAD
 	void __iomem *bypass_reg;
 	u32 width;      /* only valid if div_reg != 0 */
 	u32 shift;      /* only valid if div_reg != 0 */
 	u32 bypass_shift;      /* only valid if bypass_reg != 0 */
+=======
+	u32 width;      /* only valid if div_reg != 0 */
+	u32 shift;      /* only valid if div_reg != 0 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif /* SOCFPGA_CLK_H */

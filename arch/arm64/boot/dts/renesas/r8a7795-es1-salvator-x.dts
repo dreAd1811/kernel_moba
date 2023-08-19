@@ -1,8 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Device Tree Source for the Salvator-X board with R-Car H3 ES1.x
  *
  * Copyright (C) 2015 Renesas Electronics Corp.
+=======
+/*
+ * Device Tree Source for the Salvator-X board
+ *
+ * Copyright (C) 2015 Renesas Electronics Corp.
+ *
+ * This file is licensed under the terms of the GNU General Public License
+ * version 2.  This program is licensed "as is" without any warranty of any
+ * kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /dts-v1/;
@@ -53,12 +64,15 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &sound_card {
 	dais = <&rsnd_port0	/* ak4613 */
 		&rsnd_port1	/* HDMI0  */
 		&rsnd_port2>;	/* HDMI1  */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &hdmi0 {
 	status = "okay";
 
@@ -69,12 +83,15 @@
 				remote-endpoint = <&hdmi0_con>;
 			};
 		};
+<<<<<<< HEAD
 		port@2 {
 			reg = <2>;
 			dw_hdmi0_snd_in: endpoint {
 				remote-endpoint = <&rsnd_endpoint1>;
 			};
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -92,12 +109,15 @@
 				remote-endpoint = <&hdmi1_con>;
 			};
 		};
+<<<<<<< HEAD
 		port@2 {
 			reg = <2>;
 			dw_hdmi1_snd_in: endpoint {
 				remote-endpoint = <&rsnd_endpoint2>;
 			};
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -109,6 +129,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &rcar_sound {
 	ports {
 		/* rsnd_port0 is on salvator-common */
@@ -137,6 +158,8 @@
 	};
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &pfc {
 	usb2_pins: usb2 {
 		groups = "usb2";

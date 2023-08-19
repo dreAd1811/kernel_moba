@@ -85,8 +85,12 @@ static int amd_create_gatt_pages(int nr_tables)
 	int retval = 0;
 	int i;
 
+<<<<<<< HEAD
 	tables = kcalloc(nr_tables + 1, sizeof(struct amd_page_map *),
 			 GFP_KERNEL);
+=======
+	tables = kzalloc((nr_tables + 1) * sizeof(struct amd_page_map *),GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tables == NULL)
 		return -ENOMEM;
 

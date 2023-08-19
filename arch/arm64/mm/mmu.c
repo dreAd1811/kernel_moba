@@ -53,7 +53,10 @@
 #define NO_CONT_MAPPINGS	BIT(1)
 
 u64 idmap_t0sz = TCR_T0SZ(VA_BITS);
+<<<<<<< HEAD
 u64 idmap_ptrs_per_pgd = PTRS_PER_PGD;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u64 kimage_voffset __ro_after_init;
 EXPORT_SYMBOL(kimage_voffset);
@@ -162,6 +165,7 @@ static bool pgattr_change_is_safe(u64 old, u64 new)
 	return ((old ^ new) & ~mask) == 0;
 }
 
+<<<<<<< HEAD
 static void init_pte(pmd_t *pmdp, unsigned long addr, unsigned long end,
 		     phys_addr_t phys, pgprot_t prot)
 {
@@ -172,27 +176,51 @@ static void init_pte(pmd_t *pmdp, unsigned long addr, unsigned long end,
 		pte_t old_pte = READ_ONCE(*ptep);
 
 		set_pte(ptep, pfn_pte(__phys_to_pfn(phys), prot));
+=======
+static void init_pte(pmd_t *pmd, unsigned long addr, unsigned long end,
+		     phys_addr_t phys, pgprot_t prot)
+{
+	pte_t *pte;
+
+	pte = pte_set_fixmap_offset(pmd, addr);
+	do {
+		pte_t old_pte = *pte;
+
+		set_pte(pte, pfn_pte(__phys_to_pfn(phys), prot));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/*
 		 * After the PTE entry has been populated once, we
 		 * only allow updates to the permission attributes.
 		 */
+<<<<<<< HEAD
 		BUG_ON(!pgattr_change_is_safe(pte_val(old_pte),
 					      READ_ONCE(pte_val(*ptep))));
 
 		phys += PAGE_SIZE;
 	} while (ptep++, addr += PAGE_SIZE, addr != end);
+=======
+		BUG_ON(!pgattr_change_is_safe(pte_val(old_pte), pte_val(*pte)));
+
+		phys += PAGE_SIZE;
+	} while (pte++, addr += PAGE_SIZE, addr != end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pte_clear_fixmap();
 }
 
+<<<<<<< HEAD
 static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+=======
+static void alloc_init_cont_pte(pmd_t *pmd, unsigned long addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				unsigned long end, phys_addr_t phys,
 				pgprot_t prot,
 				phys_addr_t (*pgtable_alloc)(void),
 				int flags)
 {
 	unsigned long next;
+<<<<<<< HEAD
 	pmd_t pmd = READ_ONCE(*pmdp);
 
 	BUG_ON(pmd_sect(pmd));
@@ -204,6 +232,17 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
 		pmd = READ_ONCE(*pmdp);
 	}
 	BUG_ON(pmd_bad(pmd));
+=======
+
+	BUG_ON(pmd_sect(*pmd));
+	if (pmd_none(*pmd)) {
+		phys_addr_t pte_phys;
+		BUG_ON(!pgtable_alloc);
+		pte_phys = pgtable_alloc();
+		__pmd_populate(pmd, pte_phys, PMD_TYPE_TABLE);
+	}
+	BUG_ON(pmd_bad(*pmd));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		pgprot_t __prot = prot;
@@ -215,22 +254,38 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
 		    (flags & NO_CONT_MAPPINGS) == 0)
 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
 
+<<<<<<< HEAD
 		init_pte(pmdp, addr, next, phys, __prot);
+=======
+		init_pte(pmd, addr, next, phys, __prot);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		phys += next - addr;
 	} while (addr = next, addr != end);
 }
 
+<<<<<<< HEAD
 static void init_pmd(pud_t *pudp, unsigned long addr, unsigned long end,
+=======
+static void init_pmd(pud_t *pud, unsigned long addr, unsigned long end,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     phys_addr_t phys, pgprot_t prot,
 		     phys_addr_t (*pgtable_alloc)(void), int flags)
 {
 	unsigned long next;
+<<<<<<< HEAD
 	pmd_t *pmdp;
 
 	pmdp = pmd_set_fixmap_offset(pudp, addr);
 	do {
 		pmd_t old_pmd = READ_ONCE(*pmdp);
+=======
+	pmd_t *pmd;
+
+	pmd = pmd_set_fixmap_offset(pud, addr);
+	do {
+		pmd_t old_pmd = *pmd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		next = pmd_addr_end(addr, end);
 
@@ -238,13 +293,18 @@ static void init_pmd(pud_t *pudp, unsigned long addr, unsigned long end,
 		if (((addr | next | phys) & ~SECTION_MASK) == 0 &&
 		    (flags & NO_BLOCK_MAPPINGS) == 0 &&
 		    !dma_overlap(phys, phys + next - addr)) {
+<<<<<<< HEAD
 			pmd_set_huge(pmdp, phys, prot);
+=======
+			pmd_set_huge(pmd, phys, prot);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/*
 			 * After the PMD entry has been populated once, we
 			 * only allow updates to the permission attributes.
 			 */
 			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
+<<<<<<< HEAD
 						      READ_ONCE(pmd_val(*pmdp))));
 		} else {
 			alloc_init_cont_pte(pmdp, addr, next, phys, prot,
@@ -255,21 +315,41 @@ static void init_pmd(pud_t *pudp, unsigned long addr, unsigned long end,
 		}
 		phys += next - addr;
 	} while (pmdp++, addr = next, addr != end);
+=======
+						      pmd_val(*pmd)));
+		} else {
+			alloc_init_cont_pte(pmd, addr, next, phys, prot,
+					    pgtable_alloc, flags);
+
+			BUG_ON(pmd_val(old_pmd) != 0 &&
+			       pmd_val(old_pmd) != pmd_val(*pmd));
+		}
+		phys += next - addr;
+	} while (pmd++, addr = next, addr != end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pmd_clear_fixmap();
 }
 
+<<<<<<< HEAD
 static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+=======
+static void alloc_init_cont_pmd(pud_t *pud, unsigned long addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				unsigned long end, phys_addr_t phys,
 				pgprot_t prot,
 				phys_addr_t (*pgtable_alloc)(void), int flags)
 {
 	unsigned long next;
+<<<<<<< HEAD
 	pud_t pud = READ_ONCE(*pudp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Check for initial section mappings in the pgd/pud.
 	 */
+<<<<<<< HEAD
 	BUG_ON(pud_sect(pud));
 	if (pud_none(pud)) {
 		phys_addr_t pmd_phys;
@@ -279,6 +359,16 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
 		pud = READ_ONCE(*pudp);
 	}
 	BUG_ON(pud_bad(pud));
+=======
+	BUG_ON(pud_sect(*pud));
+	if (pud_none(*pud)) {
+		phys_addr_t pmd_phys;
+		BUG_ON(!pgtable_alloc);
+		pmd_phys = pgtable_alloc();
+		__pud_populate(pud, pmd_phys, PUD_TYPE_TABLE);
+	}
+	BUG_ON(pud_bad(*pud));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	do {
 		pgprot_t __prot = prot;
@@ -290,7 +380,11 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
 		    (flags & NO_CONT_MAPPINGS) == 0)
 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
 
+<<<<<<< HEAD
 		init_pmd(pudp, addr, next, phys, __prot, pgtable_alloc, flags);
+=======
+		init_pmd(pud, addr, next, phys, __prot, pgtable_alloc, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		phys += next - addr;
 	} while (addr = next, addr != end);
@@ -308,6 +402,7 @@ static inline bool use_1G_block(unsigned long addr, unsigned long next,
 	return true;
 }
 
+<<<<<<< HEAD
 static void alloc_init_pud(pgd_t *pgdp, unsigned long addr, unsigned long end,
 			   phys_addr_t phys, pgprot_t prot,
 			   phys_addr_t (*pgtable_alloc)(void),
@@ -329,6 +424,27 @@ static void alloc_init_pud(pgd_t *pgdp, unsigned long addr, unsigned long end,
 	pudp = pud_set_fixmap_offset(pgdp, addr);
 	do {
 		pud_t old_pud = READ_ONCE(*pudp);
+=======
+static void alloc_init_pud(pgd_t *pgd, unsigned long addr, unsigned long end,
+				  phys_addr_t phys, pgprot_t prot,
+				  phys_addr_t (*pgtable_alloc)(void),
+				  int flags)
+{
+	pud_t *pud;
+	unsigned long next;
+
+	if (pgd_none(*pgd)) {
+		phys_addr_t pud_phys;
+		BUG_ON(!pgtable_alloc);
+		pud_phys = pgtable_alloc();
+		__pgd_populate(pgd, pud_phys, PUD_TYPE_TABLE);
+	}
+	BUG_ON(pgd_bad(*pgd));
+
+	pud = pud_set_fixmap_offset(pgd, addr);
+	do {
+		pud_t old_pud = *pud;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		next = pud_addr_end(addr, end);
 
@@ -338,13 +454,18 @@ static void alloc_init_pud(pgd_t *pgdp, unsigned long addr, unsigned long end,
 		if (use_1G_block(addr, next, phys) &&
 		    (flags & NO_BLOCK_MAPPINGS) == 0 &&
 		    !dma_overlap(phys, phys + next - addr)) {
+<<<<<<< HEAD
 			pud_set_huge(pudp, phys, prot);
+=======
+			pud_set_huge(pud, phys, prot);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			/*
 			 * After the PUD entry has been populated once, we
 			 * only allow updates to the permission attributes.
 			 */
 			BUG_ON(!pgattr_change_is_safe(pud_val(old_pud),
+<<<<<<< HEAD
 						      READ_ONCE(pud_val(*pudp))));
 		} else {
 			alloc_init_cont_pmd(pudp, addr, next, phys, prot,
@@ -355,6 +476,18 @@ static void alloc_init_pud(pgd_t *pgdp, unsigned long addr, unsigned long end,
 		}
 		phys += next - addr;
 	} while (pudp++, addr = next, addr != end);
+=======
+						      pud_val(*pud)));
+		} else {
+			alloc_init_cont_pmd(pud, addr, next, phys, prot,
+					    pgtable_alloc, flags);
+
+			BUG_ON(pud_val(old_pud) != 0 &&
+			       pud_val(old_pud) != pud_val(*pud));
+		}
+		phys += next - addr;
+	} while (pud++, addr = next, addr != end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pud_clear_fixmap();
 }
@@ -366,7 +499,11 @@ static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
 				 int flags)
 {
 	unsigned long addr, length, end, next;
+<<<<<<< HEAD
 	pgd_t *pgdp = pgd_offset_raw(pgdir, virt);
+=======
+	pgd_t *pgd = pgd_offset_raw(pgdir, virt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If the virtual and physical address don't have the same offset
@@ -382,10 +519,17 @@ static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
 	end = addr + length;
 	do {
 		next = pgd_addr_end(addr, end);
+<<<<<<< HEAD
 		alloc_init_pud(pgdp, addr, next, phys, prot, pgtable_alloc,
 			       flags);
 		phys += next - addr;
 	} while (pgdp++, addr = next, addr != end);
+=======
+		alloc_init_pud(pgd, addr, next, phys, prot, pgtable_alloc,
+			       flags);
+		phys += next - addr;
+	} while (pgd++, addr = next, addr != end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static phys_addr_t pgd_pgtable_alloc(void)
@@ -455,10 +599,17 @@ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
 	flush_tlb_kernel_range(virt, virt + size);
 }
 
+<<<<<<< HEAD
 static void __init __map_memblock(pgd_t *pgdp, phys_addr_t start,
 				  phys_addr_t end, pgprot_t prot, int flags)
 {
 	__create_pgd_mapping(pgdp, start, __phys_to_virt(start), end - start,
+=======
+static void __init __map_memblock(pgd_t *pgd, phys_addr_t start,
+				  phys_addr_t end, pgprot_t prot, int flags)
+{
+	__create_pgd_mapping(pgd, start, __phys_to_virt(start), end - start,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     prot, early_pgtable_alloc, flags);
 }
 
@@ -472,7 +623,11 @@ void __init mark_linear_text_alias_ro(void)
 			    PAGE_KERNEL_RO);
 }
 
+<<<<<<< HEAD
 static void __init map_mem(pgd_t *pgdp)
+=======
+static void __init map_mem(pgd_t *pgd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	phys_addr_t kernel_start = __pa_symbol(_text);
 	phys_addr_t kernel_end = __pa_symbol(__init_begin);
@@ -505,7 +660,11 @@ static void __init map_mem(pgd_t *pgdp)
 		if (memblock_is_nomap(reg))
 			continue;
 
+<<<<<<< HEAD
 		__map_memblock(pgdp, start, end, PAGE_KERNEL, flags);
+=======
+		__map_memblock(pgd, start, end, PAGE_KERNEL, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -518,7 +677,11 @@ static void __init map_mem(pgd_t *pgdp)
 	 * Note that contiguous mappings cannot be remapped in this way,
 	 * so we should avoid them here.
 	 */
+<<<<<<< HEAD
 	__map_memblock(pgdp, kernel_start, kernel_end,
+=======
+	__map_memblock(pgd, kernel_start, kernel_end,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       PAGE_KERNEL, NO_CONT_MAPPINGS);
 	memblock_clear_nomap(kernel_start, kernel_end - kernel_start);
 
@@ -529,7 +692,11 @@ static void __init map_mem(pgd_t *pgdp)
 	 * through /sys/kernel/kexec_crash_size interface.
 	 */
 	if (crashk_res.end) {
+<<<<<<< HEAD
 		__map_memblock(pgdp, crashk_res.start, crashk_res.end + 1,
+=======
+		__map_memblock(pgd, crashk_res.start, crashk_res.end + 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			       PAGE_KERNEL,
 			       NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS);
 		memblock_clear_nomap(crashk_res.start,
@@ -553,7 +720,11 @@ void mark_rodata_ro(void)
 	debug_checkwx();
 }
 
+<<<<<<< HEAD
 static void __init map_kernel_segment(pgd_t *pgdp, void *va_start, void *va_end,
+=======
+static void __init map_kernel_segment(pgd_t *pgd, void *va_start, void *va_end,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      pgprot_t prot, struct vm_struct *vma,
 				      int flags, unsigned long vm_flags)
 {
@@ -563,7 +734,11 @@ static void __init map_kernel_segment(pgd_t *pgdp, void *va_start, void *va_end,
 	BUG_ON(!PAGE_ALIGNED(pa_start));
 	BUG_ON(!PAGE_ALIGNED(size));
 
+<<<<<<< HEAD
 	__create_pgd_mapping(pgdp, pa_start, (unsigned long)va_start, size, prot,
+=======
+	__create_pgd_mapping(pgd, pa_start, (unsigned long)va_start, size, prot,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     early_pgtable_alloc, flags);
 
 	if (!(vm_flags & VM_NO_GUARD))
@@ -587,6 +762,11 @@ early_param("rodata", parse_rodata);
 #ifdef CONFIG_UNMAP_KERNEL_AT_EL0
 static int __init map_entry_trampoline(void)
 {
+<<<<<<< HEAD
+=======
+	extern char __entry_tramp_text_start[];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pgprot_t prot = rodata_enabled ? PAGE_KERNEL_ROX : PAGE_KERNEL_EXEC;
 	phys_addr_t pa_start = __pa_symbol(__entry_tramp_text_start);
 
@@ -616,7 +796,11 @@ core_initcall(map_entry_trampoline);
 /*
  * Create fine-grained mappings for the kernel.
  */
+<<<<<<< HEAD
 static void __init map_kernel(pgd_t *pgdp)
+=======
+static void __init map_kernel(pgd_t *pgd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static struct vm_struct vmlinux_text, vmlinux_rodata, vmlinux_inittext,
 				vmlinux_initdata, vmlinux_data;
@@ -632,6 +816,7 @@ static void __init map_kernel(pgd_t *pgdp)
 	 * Only rodata will be remapped with different permissions later on,
 	 * all other segments are allowed to use contiguous mappings.
 	 */
+<<<<<<< HEAD
 	map_kernel_segment(pgdp, _text, _etext, text_prot, &vmlinux_text, 0,
 			   VM_NO_GUARD);
 	map_kernel_segment(pgdp, __start_rodata, __inittext_begin, PAGE_KERNEL,
@@ -643,13 +828,31 @@ static void __init map_kernel(pgd_t *pgdp)
 	map_kernel_segment(pgdp, _data, _end, PAGE_KERNEL, &vmlinux_data, 0, 0);
 
 	if (!READ_ONCE(pgd_val(*pgd_offset_raw(pgdp, FIXADDR_START)))) {
+=======
+	map_kernel_segment(pgd, _text, _etext, text_prot, &vmlinux_text, 0,
+			   VM_NO_GUARD);
+	map_kernel_segment(pgd, __start_rodata, __inittext_begin, PAGE_KERNEL,
+			   &vmlinux_rodata, NO_CONT_MAPPINGS, VM_NO_GUARD);
+	map_kernel_segment(pgd, __inittext_begin, __inittext_end, text_prot,
+			   &vmlinux_inittext, 0, VM_NO_GUARD);
+	map_kernel_segment(pgd, __initdata_begin, __initdata_end, PAGE_KERNEL,
+			   &vmlinux_initdata, 0, VM_NO_GUARD);
+	map_kernel_segment(pgd, _data, _end, PAGE_KERNEL, &vmlinux_data, 0, 0);
+
+	if (!pgd_val(*pgd_offset_raw(pgd, FIXADDR_START))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * The fixmap falls in a separate pgd to the kernel, and doesn't
 		 * live in the carveout for the swapper_pg_dir. We can simply
 		 * re-use the existing dir for the fixmap.
 		 */
+<<<<<<< HEAD
 		set_pgd(pgd_offset_raw(pgdp, FIXADDR_START),
 			READ_ONCE(*pgd_offset_k(FIXADDR_START)));
+=======
+		set_pgd(pgd_offset_raw(pgd, FIXADDR_START),
+			*pgd_offset_k(FIXADDR_START));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (CONFIG_PGTABLE_LEVELS > 3) {
 		/*
 		 * The fixmap shares its top level pgd entry with the kernel
@@ -658,15 +861,23 @@ static void __init map_kernel(pgd_t *pgdp)
 		 * entry instead.
 		 */
 		BUG_ON(!IS_ENABLED(CONFIG_ARM64_16K_PAGES));
+<<<<<<< HEAD
 		pud_populate(&init_mm,
 			     pud_set_fixmap_offset(pgdp, FIXADDR_START),
+=======
+		pud_populate(&init_mm, pud_set_fixmap_offset(pgd, FIXADDR_START),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     lm_alias(bm_pmd));
 		pud_clear_fixmap();
 	} else {
 		BUG();
 	}
 
+<<<<<<< HEAD
 	kasan_copy_shadow(pgdp);
+=======
+	kasan_copy_shadow(pgd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -676,10 +887,17 @@ static void __init map_kernel(pgd_t *pgdp)
 void __init paging_init(void)
 {
 	phys_addr_t pgd_phys = early_pgtable_alloc();
+<<<<<<< HEAD
 	pgd_t *pgdp = pgd_set_fixmap(pgd_phys);
 
 	map_kernel(pgdp);
 	map_mem(pgdp);
+=======
+	pgd_t *pgd = pgd_set_fixmap(pgd_phys);
+
+	map_kernel(pgd);
+	map_mem(pgd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We want to reuse the original swapper_pg_dir so we don't have to
@@ -690,7 +908,11 @@ void __init paging_init(void)
 	 * To do this we need to go via a temporary pgd.
 	 */
 	cpu_replace_ttbr1(__va(pgd_phys));
+<<<<<<< HEAD
 	memcpy(swapper_pg_dir, pgdp, PGD_SIZE);
+=======
+	memcpy(swapper_pg_dir, pgd, PGD_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpu_replace_ttbr1(lm_alias(swapper_pg_dir));
 
 	pgd_clear_fixmap();
@@ -701,8 +923,12 @@ void __init paging_init(void)
 	 * allocated with it.
 	 */
 	memblock_free(__pa_symbol(swapper_pg_dir) + PAGE_SIZE,
+<<<<<<< HEAD
 		      __pa_symbol(swapper_pg_end) - __pa_symbol(swapper_pg_dir)
 		      - PAGE_SIZE);
+=======
+		      SWAPPER_DIR_SIZE - PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_MEMORY_HOTPLUG
@@ -1102,14 +1328,22 @@ void remove_pagetable(unsigned long start, unsigned long end, bool direct)
  */
 int kern_addr_valid(unsigned long addr)
 {
+<<<<<<< HEAD
 	pgd_t *pgdp;
 	pud_t *pudp, pud;
 	pmd_t *pmdp, pmd;
 	pte_t *ptep, pte;
+=======
+	pgd_t *pgd;
+	pud_t *pud;
+	pmd_t *pmd;
+	pte_t *pte;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if ((((long)addr) >> VA_BITS) != -1UL)
 		return 0;
 
+<<<<<<< HEAD
 	pgdp = pgd_offset_k(addr);
 	if (pgd_none(READ_ONCE(*pgdp)))
 		return 0;
@@ -1141,10 +1375,40 @@ int kern_addr_valid(unsigned long addr)
 #if !ARM64_SWAPPER_USES_SECTION_MAPS
 int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 		struct vmem_altmap *altmap)
+=======
+	pgd = pgd_offset_k(addr);
+	if (pgd_none(*pgd))
+		return 0;
+
+	pud = pud_offset(pgd, addr);
+	if (pud_none(*pud))
+		return 0;
+
+	if (pud_sect(*pud))
+		return pfn_valid(pud_pfn(*pud));
+
+	pmd = pmd_offset(pud, addr);
+	if (pmd_none(*pmd))
+		return 0;
+
+	if (pmd_sect(*pmd))
+		return pfn_valid(pmd_pfn(*pmd));
+
+	pte = pte_offset_kernel(pmd, addr);
+	if (pte_none(*pte))
+		return 0;
+
+	return pfn_valid(pte_pfn(*pte));
+}
+#ifdef CONFIG_SPARSEMEM_VMEMMAP
+#if !ARM64_SWAPPER_USES_SECTION_MAPS
+int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return vmemmap_populate_basepages(start, end, node);
 }
 #else	/* !ARM64_SWAPPER_USES_SECTION_MAPS */
+<<<<<<< HEAD
 int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 		struct vmem_altmap *altmap)
 {
@@ -1153,11 +1417,21 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 	pgd_t *pgdp;
 	pud_t *pudp;
 	pmd_t *pmdp;
+=======
+int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node)
+{
+	unsigned long addr = start;
+	unsigned long next;
+	pgd_t *pgd;
+	pud_t *pud;
+	pmd_t *pmd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 
 	do {
 		next = pmd_addr_end(addr, end);
 
+<<<<<<< HEAD
 		pgdp = vmemmap_pgd_populate(addr, node);
 		if (!pgdp)
 			return -ENOMEM;
@@ -1168,20 +1442,42 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 
 		pmdp = pmd_offset(pudp, addr);
 		if (pmd_none(READ_ONCE(*pmdp))) {
+=======
+		pgd = vmemmap_pgd_populate(addr, node);
+		if (!pgd)
+			return -ENOMEM;
+
+		pud = vmemmap_pud_populate(pgd, addr, node);
+		if (!pud)
+			return -ENOMEM;
+
+		pmd = pmd_offset(pud, addr);
+		if (pmd_none(*pmd)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			void *p = NULL;
 
 			p = vmemmap_alloc_block_buf(PMD_SIZE, node);
 			if (!p) {
 #ifdef CONFIG_MEMORY_HOTPLUG
+<<<<<<< HEAD
 				vmemmap_free(start, end, altmap);
+=======
+				vmemmap_free(start, end);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 				ret = -ENOMEM;
 				break;
 			}
 
+<<<<<<< HEAD
 			pmd_set_huge(pmdp, __pa(p), __pgprot(PROT_SECT_NORMAL));
 		} else
 			vmemmap_verify((pte_t *)pmdp, node, addr, next);
+=======
+			pmd_set_huge(pmd, __pa(p), __pgprot(PROT_SECT_NORMAL));
+		} else
+			vmemmap_verify((pte_t *)pmd, node, addr, next);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (addr = next, addr != end);
 
 	if (ret)
@@ -1190,8 +1486,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
 		return ret;
 }
 #endif	/* CONFIG_ARM64_64K_PAGES */
+<<<<<<< HEAD
 void vmemmap_free(unsigned long start, unsigned long end,
 		struct vmem_altmap *altmap)
+=======
+void vmemmap_free(unsigned long start, unsigned long end)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 #ifdef CONFIG_MEMORY_HOTREMOVE
 	remove_pagetable(start, end, false);
@@ -1201,22 +1501,38 @@ void vmemmap_free(unsigned long start, unsigned long end,
 
 static inline pud_t * fixmap_pud(unsigned long addr)
 {
+<<<<<<< HEAD
 	pgd_t *pgdp = pgd_offset_k(addr);
 	pgd_t pgd = READ_ONCE(*pgdp);
 
 	BUG_ON(pgd_none(pgd) || pgd_bad(pgd));
 
 	return pud_offset_kimg(pgdp, addr);
+=======
+	pgd_t *pgd = pgd_offset_k(addr);
+
+	BUG_ON(pgd_none(*pgd) || pgd_bad(*pgd));
+
+	return pud_offset_kimg(pgd, addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline pmd_t * fixmap_pmd(unsigned long addr)
 {
+<<<<<<< HEAD
 	pud_t *pudp = fixmap_pud(addr);
 	pud_t pud = READ_ONCE(*pudp);
 
 	BUG_ON(pud_none(pud) || pud_bad(pud));
 
 	return pmd_offset_kimg(pudp, addr);
+=======
+	pud_t *pud = fixmap_pud(addr);
+
+	BUG_ON(pud_none(*pud) || pud_bad(*pud));
+
+	return pmd_offset_kimg(pud, addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline pte_t * fixmap_pte(unsigned long addr)
@@ -1232,6 +1548,7 @@ static inline pte_t * fixmap_pte(unsigned long addr)
  */
 void __init early_fixmap_init(void)
 {
+<<<<<<< HEAD
 	pgd_t *pgdp, pgd;
 	pud_t *pudp;
 	pmd_t *pmdp;
@@ -1241,12 +1558,23 @@ void __init early_fixmap_init(void)
 	pgd = READ_ONCE(*pgdp);
 	if (CONFIG_PGTABLE_LEVELS > 3 &&
 	    !(pgd_none(pgd) || pgd_page_paddr(pgd) == __pa_symbol(bm_pud))) {
+=======
+	pgd_t *pgd;
+	pud_t *pud;
+	pmd_t *pmd;
+	unsigned long addr = FIXADDR_START;
+
+	pgd = pgd_offset_k(addr);
+	if (CONFIG_PGTABLE_LEVELS > 3 &&
+	    !(pgd_none(*pgd) || pgd_page_paddr(*pgd) == __pa_symbol(bm_pud))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We only end up here if the kernel mapping and the fixmap
 		 * share the top level pgd entry, which should only happen on
 		 * 16k/4 levels configurations.
 		 */
 		BUG_ON(!IS_ENABLED(CONFIG_ARM64_16K_PAGES));
+<<<<<<< HEAD
 		pudp = pud_offset_kimg(pgdp, addr);
 	} else {
 		if (pgd_none(pgd))
@@ -1257,6 +1585,18 @@ void __init early_fixmap_init(void)
 		__pud_populate(pudp, __pa_symbol(bm_pmd), PMD_TYPE_TABLE);
 	pmdp = fixmap_pmd(addr);
 	__pmd_populate(pmdp, __pa_symbol(bm_pte), PMD_TYPE_TABLE);
+=======
+		pud = pud_offset_kimg(pgd, addr);
+	} else {
+		if (pgd_none(*pgd))
+			__pgd_populate(pgd, __pa_symbol(bm_pud), PUD_TYPE_TABLE);
+		pud = fixmap_pud(addr);
+	}
+	if (pud_none(*pud))
+		__pud_populate(pud, __pa_symbol(bm_pmd), PMD_TYPE_TABLE);
+	pmd = fixmap_pmd(addr);
+	__pmd_populate(pmd, __pa_symbol(bm_pte), PMD_TYPE_TABLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * The boot-ioremap range spans multiple pmds, for which
@@ -1265,11 +1605,19 @@ void __init early_fixmap_init(void)
 	BUILD_BUG_ON((__fix_to_virt(FIX_BTMAP_BEGIN) >> PMD_SHIFT)
 		     != (__fix_to_virt(FIX_BTMAP_END) >> PMD_SHIFT));
 
+<<<<<<< HEAD
 	if ((pmdp != fixmap_pmd(fix_to_virt(FIX_BTMAP_BEGIN)))
 	     || pmdp != fixmap_pmd(fix_to_virt(FIX_BTMAP_END))) {
 		WARN_ON(1);
 		pr_warn("pmdp %p != %p, %p\n",
 			pmdp, fixmap_pmd(fix_to_virt(FIX_BTMAP_BEGIN)),
+=======
+	if ((pmd != fixmap_pmd(fix_to_virt(FIX_BTMAP_BEGIN)))
+	     || pmd != fixmap_pmd(fix_to_virt(FIX_BTMAP_END))) {
+		WARN_ON(1);
+		pr_warn("pmd %p != %p, %p\n",
+			pmd, fixmap_pmd(fix_to_virt(FIX_BTMAP_BEGIN)),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			fixmap_pmd(fix_to_virt(FIX_BTMAP_END)));
 		pr_warn("fix_to_virt(FIX_BTMAP_BEGIN): %08lx\n",
 			fix_to_virt(FIX_BTMAP_BEGIN));
@@ -1281,14 +1629,18 @@ void __init early_fixmap_init(void)
 	}
 }
 
+<<<<<<< HEAD
 /*
  * Unusually, this is also called in IRQ context (ghes_iounmap_irq) so if we
  * ever need to use IPIs for TLB broadcasting, then we're in trouble here.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __set_fixmap(enum fixed_addresses idx,
 			       phys_addr_t phys, pgprot_t flags)
 {
 	unsigned long addr = __fix_to_virt(idx);
+<<<<<<< HEAD
 	pte_t *ptep;
 
 	BUG_ON(idx <= FIX_HOLE || idx >= __end_of_fixed_addresses);
@@ -1299,6 +1651,18 @@ void __set_fixmap(enum fixed_addresses idx,
 		set_pte(ptep, pfn_pte(phys >> PAGE_SHIFT, flags));
 	} else {
 		pte_clear(&init_mm, addr, ptep);
+=======
+	pte_t *pte;
+
+	BUG_ON(idx <= FIX_HOLE || idx >= __end_of_fixed_addresses);
+
+	pte = fixmap_pte(addr);
+
+	if (pgprot_val(flags)) {
+		set_pte(pte, pfn_pte(phys >> PAGE_SHIFT, flags));
+	} else {
+		pte_clear(&init_mm, addr, pte);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		flush_tlb_kernel_range(addr, addr+PAGE_SIZE);
 	}
 }
@@ -1366,6 +1730,17 @@ void *__init fixmap_remap_fdt(phys_addr_t dt_phys)
 		return NULL;
 
 	memblock_reserve(dt_phys, size);
+<<<<<<< HEAD
+=======
+
+	/*
+	 * memblock_dbg is not up because of parse_early_param get called after
+	 * setup_machine_fd. To capture fdt reserved info below pr_info is
+	 * added.
+	 */
+	pr_info("memblock_reserve: 0x%x %pS\n", size - 1, (void *) _RET_IP_);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return dt_virt;
 }
 
@@ -1417,6 +1792,7 @@ int pmd_set_huge(pmd_t *pmdp, phys_addr_t phys, pgprot_t prot)
 	return 1;
 }
 
+<<<<<<< HEAD
 int pud_clear_huge(pud_t *pudp)
 {
 	if (!pud_sect(READ_ONCE(*pudp)))
@@ -1430,6 +1806,21 @@ int pmd_clear_huge(pmd_t *pmdp)
 	if (!pmd_sect(READ_ONCE(*pmdp)))
 		return 0;
 	pmd_clear(pmdp);
+=======
+int pud_clear_huge(pud_t *pud)
+{
+	if (!pud_sect(*pud))
+		return 0;
+	pud_clear(pud);
+	return 1;
+}
+
+int pmd_clear_huge(pmd_t *pmd)
+{
+	if (!pmd_sect(*pmd))
+		return 0;
+	pmd_clear(pmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 1;
 }
 

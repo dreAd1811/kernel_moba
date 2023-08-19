@@ -2074,6 +2074,7 @@ static void intel_pmu_disable_event(struct perf_event *event)
 	cpuc->intel_ctrl_host_mask &= ~(1ull << hwc->idx);
 	cpuc->intel_cp_status &= ~(1ull << hwc->idx);
 
+<<<<<<< HEAD
 	if (unlikely(hwc->config_base == MSR_ARCH_PERFMON_FIXED_CTR_CTRL))
 		intel_pmu_disable_fixed(hwc);
 	else
@@ -2083,6 +2084,15 @@ static void intel_pmu_disable_event(struct perf_event *event)
 	 * Needs to be called after x86_pmu_disable_event,
 	 * so we don't trigger the event without PEBS bit set.
 	 */
+=======
+	if (unlikely(hwc->config_base == MSR_ARCH_PERFMON_FIXED_CTR_CTRL)) {
+		intel_pmu_disable_fixed(hwc);
+		return;
+	}
+
+	x86_pmu_disable_event(event);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(event->attr.precise_ip))
 		intel_pmu_pebs_disable(event);
 }
@@ -2095,6 +2105,7 @@ static void intel_pmu_del_event(struct perf_event *event)
 		intel_pmu_pebs_del(event);
 }
 
+<<<<<<< HEAD
 static void intel_pmu_read_event(struct perf_event *event)
 {
 	if (event->hw.flags & PERF_X86_EVENT_AUTO_RELOAD)
@@ -2116,6 +2127,19 @@ static void intel_pmu_enable_fixed(struct perf_event *event)
 	 */
 	if (!event->attr.precise_ip)
 		bits |= 0x8;
+=======
+static void intel_pmu_enable_fixed(struct hw_perf_event *hwc)
+{
+	int idx = hwc->idx - INTEL_PMC_IDX_FIXED;
+	u64 ctrl_val, bits, mask;
+
+	/*
+	 * Enable IRQ generation (0x8),
+	 * and enable ring-3 counting (0x2) and ring-0 counting (0x1)
+	 * if requested:
+	 */
+	bits = 0x8ULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hwc->config & ARCH_PERFMON_EVENTSEL_USR)
 		bits |= 0x2;
 	if (hwc->config & ARCH_PERFMON_EVENTSEL_OS)
@@ -2157,6 +2181,7 @@ static void intel_pmu_enable_event(struct perf_event *event)
 	if (unlikely(event_is_checkpointed(event)))
 		cpuc->intel_cp_status |= (1ull << hwc->idx);
 
+<<<<<<< HEAD
 	if (unlikely(event->attr.precise_ip))
 		intel_pmu_pebs_enable(event);
 
@@ -2165,6 +2190,16 @@ static void intel_pmu_enable_event(struct perf_event *event)
 		return;
 	}
 
+=======
+	if (unlikely(hwc->config_base == MSR_ARCH_PERFMON_FIXED_CTR_CTRL)) {
+		intel_pmu_enable_fixed(hwc);
+		return;
+	}
+
+	if (unlikely(event->attr.precise_ip))
+		intel_pmu_pebs_enable(event);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__x86_pmu_enable_event(hwc, ARCH_PERFMON_EVENTSEL_ENABLE);
 }
 
@@ -2317,10 +2352,14 @@ again:
 	 * counters from the GLOBAL_STATUS mask and we always process PEBS
 	 * events via drain_pebs().
 	 */
+<<<<<<< HEAD
 	if (x86_pmu.flags & PMU_FL_PEBS_ALL)
 		status &= ~cpuc->pebs_enabled;
 	else
 		status &= ~(cpuc->pebs_enabled & PEBS_COUNTER_MASK);
+=======
+	status &= ~(cpuc->pebs_enabled & PEBS_COUNTER_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * PEBS overflow sets bit 62 in the global status register
@@ -3008,9 +3047,15 @@ static void intel_pebs_aliases_skl(struct perf_event *event)
 	return intel_pebs_aliases_precdist(event);
 }
 
+<<<<<<< HEAD
 static unsigned long intel_pmu_large_pebs_flags(struct perf_event *event)
 {
 	unsigned long flags = x86_pmu.large_pebs_flags;
+=======
+static unsigned long intel_pmu_free_running_flags(struct perf_event *event)
+{
+	unsigned long flags = x86_pmu.free_running_flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (event->attr.use_clockid)
 		flags &= ~PERF_SAMPLE_TIME;
@@ -3034,10 +3079,13 @@ static int intel_pmu_bts_config(struct perf_event *event)
 		if (!attr->exclude_kernel)
 			return -EOPNOTSUPP;
 
+<<<<<<< HEAD
 		/* BTS is not allowed for precise events. */
 		if (attr->precise_ip)
 			return -EOPNOTSUPP;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* disallow bts if conflicting events are present */
 		if (x86_add_exclusive(x86_lbr_exclusive_lbr))
 			return -EBUSY;
@@ -3073,6 +3121,7 @@ static int intel_pmu_hw_config(struct perf_event *event)
 		if (!(event->attr.freq || (event->attr.wakeup_events && !event->attr.watermark))) {
 			event->hw.flags |= PERF_X86_EVENT_AUTO_RELOAD;
 			if (!(event->attr.sample_type &
+<<<<<<< HEAD
 			      ~intel_pmu_large_pebs_flags(event)))
 				event->hw.flags |= PERF_X86_EVENT_LARGE_PEBS;
 		}
@@ -3081,6 +3130,13 @@ static int intel_pmu_hw_config(struct perf_event *event)
 
 		if (event->attr.sample_type & PERF_SAMPLE_CALLCHAIN)
 			event->attr.sample_type |= __PERF_SAMPLE_CALLCHAIN_EARLY;
+=======
+			      ~intel_pmu_free_running_flags(event)))
+				event->hw.flags |= PERF_X86_EVENT_FREERUNNING;
+		}
+		if (x86_pmu.pebs_aliases)
+			x86_pmu.pebs_aliases(event);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (needs_branch_stack(event)) {
@@ -3109,8 +3165,14 @@ static int intel_pmu_hw_config(struct perf_event *event)
 	if (x86_pmu.version < 3)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (perf_paranoid_cpu() && !capable(CAP_SYS_ADMIN))
 		return -EACCES;
+=======
+	ret = perf_allow_cpu(&event->attr);
+	if (ret)
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	event->hw.config |= ARCH_PERFMON_EVENTSEL_ANY;
 
@@ -3610,7 +3672,11 @@ static __initconst const struct x86_pmu core_pmu = {
 	.event_map		= intel_pmu_event_map,
 	.max_events		= ARRAY_SIZE(intel_perfmon_event_map),
 	.apic			= 1,
+<<<<<<< HEAD
 	.large_pebs_flags	= LARGE_PEBS_FLAGS,
+=======
+	.free_running_flags	= PEBS_FREERUNNING_FLAGS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Intel PMCs cannot be accessed sanely above 32-bit width,
@@ -3650,7 +3716,10 @@ static __initconst const struct x86_pmu intel_pmu = {
 	.disable		= intel_pmu_disable_event,
 	.add			= intel_pmu_add_event,
 	.del			= intel_pmu_del_event,
+<<<<<<< HEAD
 	.read			= intel_pmu_read_event,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.hw_config		= intel_pmu_hw_config,
 	.schedule_events	= x86_schedule_events,
 	.eventsel		= MSR_ARCH_PERFMON_EVENTSEL0,
@@ -3658,7 +3727,11 @@ static __initconst const struct x86_pmu intel_pmu = {
 	.event_map		= intel_pmu_event_map,
 	.max_events		= ARRAY_SIZE(intel_perfmon_event_map),
 	.apic			= 1,
+<<<<<<< HEAD
 	.large_pebs_flags	= LARGE_PEBS_FLAGS,
+=======
+	.free_running_flags	= PEBS_FREERUNNING_FLAGS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Intel PMCs cannot be accessed sanely above 32 bit width,
 	 * so we install an artificial 1<<31 period regardless of
@@ -4215,6 +4288,10 @@ __init int intel_pmu_init(void)
 		intel_pmu_lbr_init_skl();
 
 		x86_pmu.event_constraints = intel_slm_event_constraints;
+<<<<<<< HEAD
+=======
+		x86_pmu.pebs_constraints = intel_glp_pebs_event_constraints;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		x86_pmu.extra_regs = intel_glm_extra_regs;
 		/*
 		 * It's recommended to use CPU_CLK_UNHALTED.CORE_P + NPEBS
@@ -4224,7 +4301,10 @@ __init int intel_pmu_init(void)
 		x86_pmu.pebs_prec_dist = true;
 		x86_pmu.lbr_pt_coexist = true;
 		x86_pmu.flags |= PMU_FL_HAS_RSP_1;
+<<<<<<< HEAD
 		x86_pmu.flags |= PMU_FL_PEBS_ALL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		x86_pmu.get_event_constraints = glp_get_event_constraints;
 		x86_pmu.cpu_events = glm_events_attrs;
 		/* Goldmont Plus has 4-wide pipeline */

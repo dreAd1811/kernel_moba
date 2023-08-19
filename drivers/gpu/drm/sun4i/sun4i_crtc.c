@@ -25,12 +25,16 @@
 
 #include <video/videomode.h>
 
+<<<<<<< HEAD
 #include "sun4i_backend.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "sun4i_crtc.h"
 #include "sun4i_drv.h"
 #include "sunxi_engine.h"
 #include "sun4i_tcon.h"
 
+<<<<<<< HEAD
 /*
  * While this isn't really working in the DRM theory, in practice we
  * can only ever have one encoder per TCON since we have a mux in our
@@ -60,12 +64,17 @@ static int sun4i_crtc_atomic_check(struct drm_crtc *crtc,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sun4i_crtc_atomic_begin(struct drm_crtc *crtc,
 				    struct drm_crtc_state *old_state)
 {
 	struct sun4i_crtc *scrtc = drm_crtc_to_sun4i_crtc(crtc);
 	struct drm_device *dev = crtc->dev;
+<<<<<<< HEAD
 	struct sunxi_engine *engine = scrtc->engine;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	if (crtc->state->event) {
@@ -75,10 +84,14 @@ static void sun4i_crtc_atomic_begin(struct drm_crtc *crtc,
 		scrtc->event = crtc->state->event;
 		spin_unlock_irqrestore(&dev->event_lock, flags);
 		crtc->state->event = NULL;
+<<<<<<< HEAD
 	}
 
 	if (engine->ops->atomic_begin)
 		engine->ops->atomic_begin(engine, old_state);
+=======
+	 }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sun4i_crtc_atomic_flush(struct drm_crtc *crtc,
@@ -106,14 +119,21 @@ static void sun4i_crtc_atomic_flush(struct drm_crtc *crtc,
 static void sun4i_crtc_atomic_disable(struct drm_crtc *crtc,
 				      struct drm_crtc_state *old_state)
 {
+<<<<<<< HEAD
 	struct drm_encoder *encoder = sun4i_crtc_get_encoder(crtc);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sun4i_crtc *scrtc = drm_crtc_to_sun4i_crtc(crtc);
 
 	DRM_DEBUG_DRIVER("Disabling the CRTC\n");
 
+<<<<<<< HEAD
 	drm_crtc_vblank_off(crtc);
 
 	sun4i_tcon_set_status(scrtc->tcon, encoder, false);
+=======
+	sun4i_tcon_disable(scrtc->tcon);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (crtc->state->event && !crtc->state->active) {
 		spin_lock_irq(&crtc->dev->event_lock);
@@ -127,11 +147,15 @@ static void sun4i_crtc_atomic_disable(struct drm_crtc *crtc,
 static void sun4i_crtc_atomic_enable(struct drm_crtc *crtc,
 				     struct drm_crtc_state *old_state)
 {
+<<<<<<< HEAD
 	struct drm_encoder *encoder = sun4i_crtc_get_encoder(crtc);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sun4i_crtc *scrtc = drm_crtc_to_sun4i_crtc(crtc);
 
 	DRM_DEBUG_DRIVER("Enabling the CRTC\n");
 
+<<<<<<< HEAD
 	sun4i_tcon_set_status(scrtc->tcon, encoder, true);
 
 	drm_crtc_vblank_on(crtc);
@@ -148,11 +172,20 @@ static void sun4i_crtc_mode_set_nofb(struct drm_crtc *crtc)
 
 static const struct drm_crtc_helper_funcs sun4i_crtc_helper_funcs = {
 	.atomic_check	= sun4i_crtc_atomic_check,
+=======
+	sun4i_tcon_enable(scrtc->tcon);
+}
+
+static const struct drm_crtc_helper_funcs sun4i_crtc_helper_funcs = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.atomic_begin	= sun4i_crtc_atomic_begin,
 	.atomic_flush	= sun4i_crtc_atomic_flush,
 	.atomic_enable	= sun4i_crtc_atomic_enable,
 	.atomic_disable	= sun4i_crtc_atomic_disable,
+<<<<<<< HEAD
 	.mode_set_nofb	= sun4i_crtc_mode_set_nofb,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sun4i_crtc_enable_vblank(struct drm_crtc *crtc)
@@ -242,7 +275,11 @@ struct sun4i_crtc *sun4i_crtc_init(struct drm_device *drm,
 
 	/* Set possible_crtcs to this crtc for overlay planes */
 	for (i = 0; planes[i]; i++) {
+<<<<<<< HEAD
 		uint32_t possible_crtcs = drm_crtc_mask(&scrtc->crtc);
+=======
+		uint32_t possible_crtcs = BIT(drm_crtc_index(&scrtc->crtc));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct drm_plane *plane = planes[i];
 
 		if (plane->type == DRM_PLANE_TYPE_OVERLAY)

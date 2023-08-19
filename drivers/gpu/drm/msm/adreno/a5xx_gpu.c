@@ -11,17 +11,23 @@
  *
  */
 
+<<<<<<< HEAD
 #include <linux/kernel.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/types.h>
 #include <linux/cpumask.h>
 #include <linux/qcom_scm.h>
 #include <linux/dma-mapping.h>
 #include <linux/of_address.h>
 #include <linux/soc/qcom/mdt_loader.h>
+<<<<<<< HEAD
 #include <linux/pm_opp.h>
 #include <linux/nvmem-consumer.h>
 #include <linux/iopoll.h>
 #include <linux/slab.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "msm_gem.h"
 #include "msm_mmu.h"
 #include "a5xx_gpu.h"
@@ -31,9 +37,14 @@ static void a5xx_dump(struct msm_gpu *gpu);
 
 #define GPU_PAS_ID 13
 
+<<<<<<< HEAD
 static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname)
 {
 	struct device *dev = &gpu->pdev->dev;
+=======
+static int zap_shader_load_mdt(struct device *dev, const char *fwname)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct firmware *fw;
 	struct device_node *np, *mem_np;
 	struct resource r;
@@ -63,10 +74,17 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname)
 	mem_size = resource_size(&r);
 
 	/* Request the MDT file for the firmware */
+<<<<<<< HEAD
 	fw = adreno_request_fw(to_adreno_gpu(gpu), fwname);
 	if (IS_ERR(fw)) {
 		DRM_DEV_ERROR(dev, "Unable to load %s\n", fwname);
 		return PTR_ERR(fw);
+=======
+	ret = request_firmware(&fw, fwname, dev);
+	if (ret) {
+		DRM_DEV_ERROR(dev, "Unable to load %s\n", fwname);
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Figure out how much memory we need */
@@ -83,6 +101,7 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname)
 		goto out;
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Load the rest of the MDT
 	 *
@@ -104,6 +123,11 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname)
 				mem_region, mem_phys, mem_size, NULL);
 		kfree(newname);
 	}
+=======
+	/* Load the rest of the MDT */
+	ret = qcom_mdt_load(dev, fw, fwname, GPU_PAS_ID, mem_region, mem_phys,
+		mem_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto out;
 
@@ -121,6 +145,7 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
 static void a5xx_flush(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
@@ -205,10 +230,13 @@ static void a5xx_submit_in_rb(struct msm_gpu *gpu, struct msm_gem_submit *submit
 	msm_gpu_retire(gpu);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void a5xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 	struct msm_file_private *ctx)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+<<<<<<< HEAD
 	struct a5xx_gpu *a5xx_gpu = to_a5xx_gpu(adreno_gpu);
 	struct msm_drm_private *priv = gpu->dev->dev_private;
 	struct msm_ringbuffer *ring = submit->ring;
@@ -245,6 +273,12 @@ static void a5xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 	OUT_RING(ring, 0x02);
 
 	/* Submit the commands */
+=======
+	struct msm_drm_private *priv = gpu->dev->dev_private;
+	struct msm_ringbuffer *ring = gpu->rb;
+	unsigned int i, ibs = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < submit->nr_cmds; i++) {
 		switch (submit->cmd[i].type) {
 		case MSM_SUBMIT_CMD_IB_TARGET_BUF:
@@ -262,6 +296,7 @@ static void a5xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 		}
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Write the render mode to NULL (0) to indicate to the CP that the IBs
 	 * are done rendering - otherwise a lucky preemption would start
@@ -310,6 +345,18 @@ static void a5xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 
 	/* Check to see if we need to start preemption */
 	a5xx_preempt_trigger(gpu);
+=======
+	OUT_PKT4(ring, REG_A5XX_CP_SCRATCH_REG(2), 1);
+	OUT_RING(ring, submit->fence->seqno);
+
+	OUT_PKT7(ring, CP_EVENT_WRITE, 4);
+	OUT_RING(ring, CACHE_FLUSH_TS | (1 << 31));
+	OUT_RING(ring, lower_32_bits(rbmemptr(adreno_gpu, fence)));
+	OUT_RING(ring, upper_32_bits(rbmemptr(adreno_gpu, fence)));
+	OUT_RING(ring, submit->fence->seqno);
+
+	gpu->funcs->flush(gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct {
@@ -425,7 +472,11 @@ void a5xx_set_hwcg(struct msm_gpu *gpu, bool state)
 static int a5xx_me_init(struct msm_gpu *gpu)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
+<<<<<<< HEAD
 	struct msm_ringbuffer *ring = gpu->rb[0];
+=======
+	struct msm_ringbuffer *ring = gpu->rb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	OUT_PKT7(ring, CP_ME_INIT, 8);
 
@@ -456,6 +507,7 @@ static int a5xx_me_init(struct msm_gpu *gpu)
 	OUT_RING(ring, 0x00000000);
 	OUT_RING(ring, 0x00000000);
 
+<<<<<<< HEAD
 	gpu->funcs->flush(gpu, ring);
 	return a5xx_idle(gpu, ring) ? 0 : -EINVAL;
 }
@@ -501,6 +553,29 @@ static int a5xx_preempt_start(struct msm_gpu *gpu)
 	gpu->funcs->flush(gpu, ring);
 
 	return a5xx_idle(gpu, ring) ? 0 : -EINVAL;
+=======
+	gpu->funcs->flush(gpu);
+
+	return a5xx_idle(gpu) ? 0 : -EINVAL;
+}
+
+static struct drm_gem_object *a5xx_ucode_load_bo(struct msm_gpu *gpu,
+		const struct firmware *fw, u64 *iova)
+{
+	struct drm_gem_object *bo;
+	void *ptr;
+
+	ptr = msm_gem_kernel_new_locked(gpu->dev, fw->size - 4,
+		MSM_BO_UNCACHED | MSM_BO_GPU_READONLY, gpu->aspace, &bo, iova);
+
+	if (IS_ERR(ptr))
+		return ERR_CAST(ptr);
+
+	memcpy(ptr, &fw->data[4], fw->size - 4);
+
+	msm_gem_put_vaddr(bo);
+	return bo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int a5xx_ucode_init(struct msm_gpu *gpu)
@@ -510,8 +585,13 @@ static int a5xx_ucode_init(struct msm_gpu *gpu)
 	int ret;
 
 	if (!a5xx_gpu->pm4_bo) {
+<<<<<<< HEAD
 		a5xx_gpu->pm4_bo = adreno_fw_create_bo(gpu,
 			adreno_gpu->fw[ADRENO_FW_PM4], &a5xx_gpu->pm4_iova);
+=======
+		a5xx_gpu->pm4_bo = a5xx_ucode_load_bo(gpu, adreno_gpu->pm4,
+			&a5xx_gpu->pm4_iova);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (IS_ERR(a5xx_gpu->pm4_bo)) {
 			ret = PTR_ERR(a5xx_gpu->pm4_bo);
@@ -523,8 +603,13 @@ static int a5xx_ucode_init(struct msm_gpu *gpu)
 	}
 
 	if (!a5xx_gpu->pfp_bo) {
+<<<<<<< HEAD
 		a5xx_gpu->pfp_bo = adreno_fw_create_bo(gpu,
 			adreno_gpu->fw[ADRENO_FW_PFP], &a5xx_gpu->pfp_iova);
+=======
+		a5xx_gpu->pfp_bo = a5xx_ucode_load_bo(gpu, adreno_gpu->pfp,
+			&a5xx_gpu->pfp_iova);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (IS_ERR(a5xx_gpu->pfp_bo)) {
 			ret = PTR_ERR(a5xx_gpu->pfp_bo);
@@ -585,7 +670,11 @@ static int a5xx_zap_shader_init(struct msm_gpu *gpu)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	ret = zap_shader_load_mdt(gpu, adreno_gpu->info->zapfw);
+=======
+	ret = zap_shader_load_mdt(&pdev->dev, adreno_gpu->info->zapfw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	loaded = !ret;
 
@@ -600,7 +689,10 @@ static int a5xx_zap_shader_init(struct msm_gpu *gpu)
 	  A5XX_RBBM_INT_0_MASK_RBBM_ATB_ASYNC_OVERFLOW | \
 	  A5XX_RBBM_INT_0_MASK_CP_HW_ERROR | \
 	  A5XX_RBBM_INT_0_MASK_MISC_HANG_DETECT | \
+<<<<<<< HEAD
 	  A5XX_RBBM_INT_0_MASK_CP_SW | \
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  A5XX_RBBM_INT_0_MASK_CP_CACHE_FLUSH_TS | \
 	  A5XX_RBBM_INT_0_MASK_UCHE_OOB_ACCESS | \
 	  A5XX_RBBM_INT_0_MASK_GPMU_VOLTAGE_DROOP)
@@ -649,12 +741,15 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
 	/* Turn on performance counters */
 	gpu_write(gpu, REG_A5XX_RBBM_PERFCTR_CNTL, 0x01);
 
+<<<<<<< HEAD
 	/* Select CP0 to always count cycles */
 	gpu_write(gpu, REG_A5XX_CP_PERFCTR_CP_SEL_0, PERF_CP_ALWAYS_COUNT);
 
 	/* Select RBBM0 to countable 6 to get the busy status for devfreq */
 	gpu_write(gpu, REG_A5XX_RBBM_PERFCTR_RBBM_SEL_0, 6);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Increase VFD cache access so LRZ and other data gets evicted less */
 	gpu_write(gpu, REG_A5XX_UCHE_CACHE_WAYS, 0x02);
 
@@ -747,14 +842,23 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
 		REG_A5XX_RBBM_SECVID_TSB_TRUSTED_BASE_HI, 0x00000000);
 	gpu_write(gpu, REG_A5XX_RBBM_SECVID_TSB_TRUSTED_SIZE, 0x00000000);
 
+<<<<<<< HEAD
+=======
+	/* Load the GPMU firmware before starting the HW init */
+	a5xx_gpmu_ucode_init(gpu);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = adreno_hw_init(gpu);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	a5xx_preempt_hw_init(gpu);
 
 	a5xx_gpmu_ucode_init(gpu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = a5xx_ucode_init(gpu);
 	if (ret)
 		return ret;
@@ -777,11 +881,19 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
 	 * ticking correctly
 	 */
 	if (adreno_is_a530(adreno_gpu)) {
+<<<<<<< HEAD
 		OUT_PKT7(gpu->rb[0], CP_EVENT_WRITE, 1);
 		OUT_RING(gpu->rb[0], 0x0F);
 
 		gpu->funcs->flush(gpu, gpu->rb[0]);
 		if (!a5xx_idle(gpu, gpu->rb[0]))
+=======
+		OUT_PKT7(gpu->rb, CP_EVENT_WRITE, 1);
+		OUT_RING(gpu->rb, 0x0F);
+
+		gpu->funcs->flush(gpu);
+		if (!a5xx_idle(gpu))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 	}
 
@@ -794,11 +906,19 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
 	 */
 	ret = a5xx_zap_shader_init(gpu);
 	if (!ret) {
+<<<<<<< HEAD
 		OUT_PKT7(gpu->rb[0], CP_SET_SECURE_MODE, 1);
 		OUT_RING(gpu->rb[0], 0x00000000);
 
 		gpu->funcs->flush(gpu, gpu->rb[0]);
 		if (!a5xx_idle(gpu, gpu->rb[0]))
+=======
+		OUT_PKT7(gpu->rb, CP_SET_SECURE_MODE, 1);
+		OUT_RING(gpu->rb, 0x00000000);
+
+		gpu->funcs->flush(gpu);
+		if (!a5xx_idle(gpu))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 	} else {
 		/* Print a warning so if we die, we know why */
@@ -807,9 +927,12 @@ static int a5xx_hw_init(struct msm_gpu *gpu)
 		gpu_write(gpu, REG_A5XX_RBBM_SECVID_TRUST_CNTL, 0x0);
 	}
 
+<<<<<<< HEAD
 	/* Last step - yield the ringbuffer */
 	a5xx_preempt_start(gpu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -840,24 +963,39 @@ static void a5xx_destroy(struct msm_gpu *gpu)
 
 	DBG("%s", gpu->name);
 
+<<<<<<< HEAD
 	a5xx_preempt_fini(gpu);
 
 	if (a5xx_gpu->pm4_bo) {
 		if (a5xx_gpu->pm4_iova)
 			msm_gem_put_iova(a5xx_gpu->pm4_bo, gpu->aspace);
 		drm_gem_object_put_unlocked(a5xx_gpu->pm4_bo);
+=======
+	if (a5xx_gpu->pm4_bo) {
+		if (a5xx_gpu->pm4_iova)
+			msm_gem_put_iova(a5xx_gpu->pm4_bo, gpu->aspace);
+		drm_gem_object_unreference_unlocked(a5xx_gpu->pm4_bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (a5xx_gpu->pfp_bo) {
 		if (a5xx_gpu->pfp_iova)
 			msm_gem_put_iova(a5xx_gpu->pfp_bo, gpu->aspace);
+<<<<<<< HEAD
 		drm_gem_object_put_unlocked(a5xx_gpu->pfp_bo);
+=======
+		drm_gem_object_unreference_unlocked(a5xx_gpu->pfp_bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (a5xx_gpu->gpmu_bo) {
 		if (a5xx_gpu->gpmu_iova)
 			msm_gem_put_iova(a5xx_gpu->gpmu_bo, gpu->aspace);
+<<<<<<< HEAD
 		drm_gem_object_put_unlocked(a5xx_gpu->gpmu_bo);
+=======
+		drm_gem_object_unreference_unlocked(a5xx_gpu->gpmu_bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	adreno_gpu_cleanup(adreno_gpu);
@@ -877,6 +1015,7 @@ static inline bool _a5xx_check_idle(struct msm_gpu *gpu)
 		A5XX_RBBM_INT_0_MASK_MISC_HANG_DETECT);
 }
 
+<<<<<<< HEAD
 bool a5xx_idle(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
 {
 	struct adreno_gpu *adreno_gpu = to_adreno_gpu(gpu);
@@ -898,6 +1037,20 @@ bool a5xx_idle(struct msm_gpu *gpu, struct msm_ringbuffer *ring)
 			gpu_read(gpu, REG_A5XX_RBBM_INT_0_STATUS),
 			gpu_read(gpu, REG_A5XX_CP_RB_RPTR),
 			gpu_read(gpu, REG_A5XX_CP_RB_WPTR));
+=======
+bool a5xx_idle(struct msm_gpu *gpu)
+{
+	/* wait for CP to drain ringbuffer: */
+	if (!adreno_idle(gpu))
+		return false;
+
+	if (spin_until(_a5xx_check_idle(gpu))) {
+		DRM_ERROR("%s: %ps: timeout waiting for GPU to idle: status %8.8X irq %8.8X\n",
+			gpu->name, __builtin_return_address(0),
+			gpu_read(gpu, REG_A5XX_RBBM_STATUS),
+			gpu_read(gpu, REG_A5XX_RBBM_INT_0_STATUS));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return false;
 	}
 
@@ -1028,10 +1181,16 @@ static void a5xx_fault_detect_irq(struct msm_gpu *gpu)
 {
 	struct drm_device *dev = gpu->dev;
 	struct msm_drm_private *priv = dev->dev_private;
+<<<<<<< HEAD
 	struct msm_ringbuffer *ring = gpu->funcs->active_ring(gpu);
 
 	dev_err(dev->dev, "gpu fault ring %d fence %x status %8.8X rb %4.4x/%4.4x ib1 %16.16llX/%4.4x ib2 %16.16llX/%4.4x\n",
 		ring ? ring->id : -1, ring ? ring->seqno : 0,
+=======
+
+	dev_err(dev->dev, "gpu fault fence %x status %8.8X rb %4.4x/%4.4x ib1 %16.16llX/%4.4x ib2 %16.16llX/%4.4x\n",
+		gpu->funcs->last_fence(gpu),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gpu_read(gpu, REG_A5XX_RBBM_STATUS),
 		gpu_read(gpu, REG_A5XX_CP_RB_RPTR),
 		gpu_read(gpu, REG_A5XX_CP_RB_WPTR),
@@ -1081,6 +1240,7 @@ static irqreturn_t a5xx_irq(struct msm_gpu *gpu)
 	if (status & A5XX_RBBM_INT_0_MASK_GPMU_VOLTAGE_DROOP)
 		a5xx_gpmu_err_irq(gpu);
 
+<<<<<<< HEAD
 	if (status & A5XX_RBBM_INT_0_MASK_CP_CACHE_FLUSH_TS) {
 		a5xx_preempt_trigger(gpu);
 		msm_gpu_retire(gpu);
@@ -1088,6 +1248,10 @@ static irqreturn_t a5xx_irq(struct msm_gpu *gpu)
 
 	if (status & A5XX_RBBM_INT_0_MASK_CP_SW)
 		a5xx_preempt_irq(gpu);
+=======
+	if (status & A5XX_RBBM_INT_0_MASK_CP_CACHE_FLUSH_TS)
+		msm_gpu_retire(gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }
@@ -1129,9 +1293,14 @@ static const u32 a5xx_registers[] = {
 	0xE800, 0xE806, 0xE810, 0xE89A, 0xE8A0, 0xE8A4, 0xE8AA, 0xE8EB,
 	0xE900, 0xE905, 0xEB80, 0xEB8F, 0xEBB0, 0xEBB0, 0xEC00, 0xEC05,
 	0xEC08, 0xECE9, 0xECF0, 0xECF0, 0xEA80, 0xEA80, 0xEA82, 0xEAA3,
+<<<<<<< HEAD
 	0xEAA5, 0xEAC2, 0xA800, 0xA800, 0xA820, 0xA828, 0xA840, 0xA87D,
 	0XA880, 0xA88D, 0xA890, 0xA8A3, 0xA8D0, 0xA8D8, 0xA8E0, 0xA8F5,
 	0xAC60, 0xAC60, ~0,
+=======
+	0xEAA5, 0xEAC2, 0xA800, 0xA8FF, 0xAC60, 0xAC60, 0xB000, 0xB97F,
+	0xB9A0, 0xB9BF, ~0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void a5xx_dump(struct msm_gpu *gpu)
@@ -1202,6 +1371,7 @@ static int a5xx_get_timestamp(struct msm_gpu *gpu, uint64_t *value)
 	return 0;
 }
 
+<<<<<<< HEAD
 struct a5xx_crashdumper {
 	void *ptr;
 	struct drm_gem_object *bo;
@@ -1446,6 +1616,24 @@ static int a5xx_gpu_busy(struct msm_gpu *gpu, uint64_t *value)
 	return 0;
 }
 
+=======
+#ifdef CONFIG_DEBUG_FS
+static void a5xx_show(struct msm_gpu *gpu, struct seq_file *m)
+{
+	seq_printf(m, "status:   %08x\n",
+			gpu_read(gpu, REG_A5XX_RBBM_STATUS));
+
+	/*
+	 * Temporarily disable hardware clock gating before going into
+	 * adreno_show to avoid issues while reading the registers
+	 */
+	a5xx_set_hwcg(gpu, false);
+	adreno_show(gpu, m);
+	a5xx_set_hwcg(gpu, true);
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct adreno_gpu_funcs funcs = {
 	.base = {
 		.get_param = adreno_get_param,
@@ -1453,6 +1641,7 @@ static const struct adreno_gpu_funcs funcs = {
 		.pm_suspend = a5xx_pm_suspend,
 		.pm_resume = a5xx_pm_resume,
 		.recover = a5xx_recover,
+<<<<<<< HEAD
 		.submit = a5xx_submit,
 		.flush = a5xx_flush,
 		.active_ring = a5xx_active_ring,
@@ -1467,10 +1656,21 @@ static const struct adreno_gpu_funcs funcs = {
 		.gpu_busy = a5xx_gpu_busy,
 		.gpu_state_get = a5xx_gpu_state_get,
 		.gpu_state_put = a5xx_gpu_state_put,
+=======
+		.last_fence = adreno_last_fence,
+		.submit = a5xx_submit,
+		.flush = adreno_flush,
+		.irq = a5xx_irq,
+		.destroy = a5xx_destroy,
+#ifdef CONFIG_DEBUG_FS
+		.show = a5xx_show,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.get_timestamp = a5xx_get_timestamp,
 };
 
+<<<<<<< HEAD
 static void check_speed_bin(struct device *dev)
 {
 	struct nvmem_cell *cell;
@@ -1490,6 +1690,8 @@ static void check_speed_bin(struct device *dev)
 	dev_pm_opp_set_supported_hw(dev, &val, 1);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
 {
 	struct msm_drm_private *priv = dev->dev_private;
@@ -1516,9 +1718,13 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
 
 	a5xx_gpu->lm_leakage = 0x4E001A;
 
+<<<<<<< HEAD
 	check_speed_bin(&pdev->dev);
 
 	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs, 4);
+=======
+	ret = adreno_gpu_init(dev, pdev, adreno_gpu, &funcs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		a5xx_destroy(&(a5xx_gpu->base.base));
 		return ERR_PTR(ret);
@@ -1527,8 +1733,11 @@ struct msm_gpu *a5xx_gpu_init(struct drm_device *dev)
 	if (gpu->aspace)
 		msm_mmu_set_fault_handler(gpu->aspace->mmu, gpu, a5xx_fault_handler);
 
+<<<<<<< HEAD
 	/* Set up the preemption specific bits and pieces for each ringbuffer */
 	a5xx_preempt_init(gpu);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return gpu;
 }

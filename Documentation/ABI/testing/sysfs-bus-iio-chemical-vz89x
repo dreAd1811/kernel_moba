@@ -1,7 +1,11 @@
 What:		/sys/bus/iio/devices/iio:deviceX/in_concentration_VOC_short_raw
 Date:		September 2015
 KernelVersion:	4.3
+<<<<<<< HEAD
 Contact:	Matt Ranostay <matt.ranostay@konsulko.com>
+=======
+Contact:	Matt Ranostay <mranostay@gmail.com>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Description:
 		Get the raw calibration VOC value from the sensor.
 		This value has little application outside of calibration.

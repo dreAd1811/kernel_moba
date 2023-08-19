@@ -36,17 +36,29 @@
 #define TCR_TG_FLAGS	TCR_TG0_4K | TCR_TG1_4K
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_RANDOMIZE_BASE
 #define TCR_KASLR_FLAGS	TCR_NFD1
 #else
 #define TCR_KASLR_FLAGS	0
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TCR_SMP_FLAGS	TCR_SHARED
 
 /* PTWs cacheable, inner/outer WBWA */
 #define TCR_CACHE_FLAGS	TCR_IRGN_WBWA | TCR_ORGN_WBWA
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_KASAN_SW_TAGS
+#define TCR_KASAN_FLAGS TCR_TBI1
+#else
+#define TCR_KASAN_FLAGS 0
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAIR(attr, mt)	((attr) << ((mt) * 8))
 
 /*
@@ -111,6 +123,11 @@ ENDPROC(cpu_do_idle)
  * cpu_do_suspend - save CPU registers context
  *
  * x0: virtual address of context pointer
+<<<<<<< HEAD
+=======
+ *
+ * This must be kept in sync with struct cpu_suspend_ctx in <asm/suspend.h>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 ENTRY(cpu_do_suspend)
 	mrs	x2, tpidr_el0
@@ -135,6 +152,14 @@ alternative_endif
 	stp	x8, x9, [x0, #48]
 	stp	x10, x11, [x0, #64]
 	stp	x12, x13, [x0, #80]
+<<<<<<< HEAD
+=======
+	/*
+	 * Save x18 as it may be used as a platform register, e.g. by shadow
+	 * call stack.
+	 */
+	str	x18, [x0, #96]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret
 ENDPROC(cpu_do_suspend)
 
@@ -151,6 +176,16 @@ ENTRY(cpu_do_resume)
 	ldp	x9, x10, [x0, #48]
 	ldp	x11, x12, [x0, #64]
 	ldp	x13, x14, [x0, #80]
+<<<<<<< HEAD
+=======
+	/*
+	 * Restore x18, as it may be used as a platform register, and clear
+	 * the buffer to minimize the risk of exposure when used for shadow
+	 * call stack.
+	 */
+	ldr	x18, [x0, #96]
+	str	xzr, [x0, #96]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msr	tpidr_el0, x2
 	msr	tpidrro_el0, x3
 	msr	contextidr_el1, x4
@@ -166,10 +201,17 @@ ENTRY(cpu_do_resume)
 	/*
 	 * __cpu_setup() cleared MDSCR_EL1.MDE and friends, before unmasking
 	 * debug exceptions. By restoring MDSCR_EL1 here, we may take a debug
+<<<<<<< HEAD
 	 * exception. Mask them until local_daif_restore() in cpu_suspend()
 	 * resets them.
 	 */
 	disable_daif
+=======
+	 * exception. Mask them until local_dbg_restore() in cpu_suspend()
+	 * resets them.
+	 */
+	disable_dbg
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msr	mdscr_el1, x10
 
 	msr	sctlr_el1, x12
@@ -186,11 +228,14 @@ alternative_endif
 	ubfx	x11, x11, #1, #1
 	msr	oslar_el1, x11
 	reset_pmuserenr_el0 x0			// Disable PMU access from EL0
+<<<<<<< HEAD
 
 alternative_if ARM64_HAS_RAS_EXTN
 	msr_s	SYS_DISR_EL1, xzr
 alternative_else_nop_endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isb
 	ret
 ENDPROC(cpu_do_resume)
@@ -207,14 +252,23 @@ ENDPROC(cpu_do_resume)
 ENTRY(cpu_do_switch_mm)
 	mrs	x2, ttbr1_el1
 	mmid	x1, x1				// get mm->context.id
+<<<<<<< HEAD
 	phys_to_ttbr x3, x0
 #ifdef CONFIG_ARM64_SW_TTBR0_PAN
 	bfi	x3, x1, #48, #16		// set the ASID field in TTBR0
+=======
+#ifdef CONFIG_ARM64_SW_TTBR0_PAN
+	bfi	x0, x1, #48, #16		// set the ASID field in TTBR0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	bfi	x2, x1, #48, #16		// set the ASID
 	msr	ttbr1_el1, x2			// in TTBR1 (since TCR.A1 is set)
 	isb
+<<<<<<< HEAD
 	msr	ttbr0_el1, x3			// now update TTBR0
+=======
+	msr	ttbr0_el1, x0			// now update TTBR0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isb
 	b	post_ttbr_update_workaround	// Back to C code...
 ENDPROC(cpu_do_switch_mm)
@@ -223,8 +277,12 @@ ENDPROC(cpu_do_switch_mm)
 
 .macro	__idmap_cpu_set_reserved_ttbr1, tmp1, tmp2
 	adrp	\tmp1, empty_zero_page
+<<<<<<< HEAD
 	phys_to_ttbr \tmp2, \tmp1
 	msr	ttbr1_el1, \tmp2
+=======
+	msr	ttbr1_el1, \tmp1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isb
 	tlbi	vmalle1
 	dsb	nsh
@@ -238,6 +296,7 @@ ENDPROC(cpu_do_switch_mm)
  * called by anything else. It can only be executed from a TTBR0 mapping.
  */
 ENTRY(idmap_cpu_replace_ttbr1)
+<<<<<<< HEAD
 	save_and_disable_daif flags=x2
 
 	__idmap_cpu_set_reserved_ttbr1 x1, x3
@@ -247,6 +306,17 @@ ENTRY(idmap_cpu_replace_ttbr1)
 	isb
 
 	restore_daif x2
+=======
+	mrs	x2, daif
+	msr	daifset, #0xf
+
+	__idmap_cpu_set_reserved_ttbr1 x1, x3
+
+	msr	ttbr1_el1, x0
+	isb
+
+	msr	daif, x2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret
 ENDPROC(idmap_cpu_replace_ttbr1)
@@ -304,6 +374,7 @@ ENTRY(idmap_kpti_install_ng_mappings)
 	/* We're the boot CPU. Wait for the others to catch up */
 	sevl
 1:	wfe
+<<<<<<< HEAD
 	ldaxr	w18, [flag_ptr]
 	eor	w18, w18, num_cpus
 	cbnz	w18, 1b
@@ -313,6 +384,16 @@ ENTRY(idmap_kpti_install_ng_mappings)
 	mrs	x18, sctlr_el1
 	bic	x18, x18, #SCTLR_ELx_M
 	msr	sctlr_el1, x18
+=======
+	ldaxr	w17, [flag_ptr]
+	eor	w17, w17, num_cpus
+	cbnz	w17, 1b
+
+	/* We need to walk swapper, so turn off the MMU. */
+	mrs	x17, sctlr_el1
+	bic	x17, x17, #SCTLR_ELx_M
+	msr	sctlr_el1, x17
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isb
 
 	/* Everybody is enjoying the idmap, so we can rewrite swapper. */
@@ -335,9 +416,15 @@ skip_pgd:
 	isb
 
 	/* We're done: fire up the MMU again */
+<<<<<<< HEAD
 	mrs	x18, sctlr_el1
 	orr	x18, x18, #SCTLR_ELx_M
 	msr	sctlr_el1, x18
+=======
+	mrs	x17, sctlr_el1
+	orr	x17, x17, #SCTLR_ELx_M
+	msr	sctlr_el1, x17
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isb
 
 	/*
@@ -407,6 +494,7 @@ skip_pte:
 	b.ne	do_pte
 	b	next_pmd
 
+<<<<<<< HEAD
 	/* Secondary CPUs end up here */
 __idmap_kpti_secondary:
 	/* Uninstall swapper before surgery begins */
@@ -434,6 +522,11 @@ __idmap_kpti_secondary:
 	.unreq	swapper_pa
 	.unreq	swapper_ttb
 	.unreq	flag_ptr
+=======
+	.unreq	cpu
+	.unreq	num_cpus
+	.unreq	swapper_pa
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.unreq	cur_pgdp
 	.unreq	end_pgdp
 	.unreq	pgd
@@ -446,6 +539,34 @@ __idmap_kpti_secondary:
 	.unreq	cur_ptep
 	.unreq	end_ptep
 	.unreq	pte
+<<<<<<< HEAD
+=======
+
+	/* Secondary CPUs end up here */
+__idmap_kpti_secondary:
+	/* Uninstall swapper before surgery begins */
+	__idmap_cpu_set_reserved_ttbr1 x16, x17
+
+	/* Increment the flag to let the boot CPU we're ready */
+1:	ldxr	w16, [flag_ptr]
+	add	w16, w16, #1
+	stxr	w17, w16, [flag_ptr]
+	cbnz	w17, 1b
+
+	/* Wait for the boot CPU to finish messing around with swapper */
+	sevl
+1:	wfe
+	ldxr	w16, [flag_ptr]
+	cbnz	w16, 1b
+
+	/* All done, act like nothing happened */
+	msr	ttbr1_el1, swapper_ttb
+	isb
+	ret
+
+	.unreq	swapper_ttb
+	.unreq	flag_ptr
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENDPROC(idmap_kpti_install_ng_mappings)
 	.popsection
 #endif
@@ -496,6 +617,7 @@ ENTRY(__cpu_setup)
 	 * both user and kernel.
 	 */
 	ldr	x10, =TCR_TxSZ(VA_BITS) | TCR_CACHE_FLAGS | TCR_SMP_FLAGS | \
+<<<<<<< HEAD
 			TCR_TG_FLAGS | TCR_KASLR_FLAGS | TCR_ASID16 | \
 			TCR_TBI0 | TCR_A1
 	tcr_set_idmap_t0sz	x10, x9
@@ -504,6 +626,18 @@ ENTRY(__cpu_setup)
 	 * Set the IPS bits in TCR_EL1.
 	 */
 	tcr_compute_pa_size x10, #TCR_IPS_SHIFT, x5, x6
+=======
+			TCR_TG_FLAGS | TCR_ASID16 | TCR_TBI0 | TCR_A1 | \
+			TCR_KASAN_FLAGS
+	tcr_set_idmap_t0sz	x10, x9
+
+	/*
+	 * Read the PARange bits from ID_AA64MMFR0_EL1 and set the IPS bits in
+	 * TCR_EL1.
+	 */
+	mrs	x9, ID_AA64MMFR0_EL1
+	bfi	x10, x9, #32, #3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARM64_HW_AFDBM
 	/*
 	 * Enable hardware update of the Access Flags bit.

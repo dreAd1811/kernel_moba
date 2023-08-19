@@ -123,13 +123,19 @@
 #define DTSEC_ECNTRL_R100M		0x00000008
 #define DTSEC_ECNTRL_QSGMIIM		0x00000001
 
+<<<<<<< HEAD
 #define TCTRL_TTSE			0x00000040
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define TCTRL_GTS			0x00000020
 
 #define RCTRL_PAL_MASK			0x001f0000
 #define RCTRL_PAL_SHIFT			16
 #define RCTRL_GHTX			0x00000400
+<<<<<<< HEAD
 #define RCTRL_RTSE			0x00000040
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define RCTRL_GRS			0x00000020
 #define RCTRL_MPROM			0x00000008
 #define RCTRL_RSF			0x00000004
@@ -1119,6 +1125,7 @@ int dtsec_add_hash_mac_address(struct fman_mac *dtsec, enet_addr_t *eth_addr)
 	return 0;
 }
 
+<<<<<<< HEAD
 int dtsec_set_allmulti(struct fman_mac *dtsec, bool enable)
 {
 	u32 tmp;
@@ -1163,6 +1170,8 @@ int dtsec_set_tstamp(struct fman_mac *dtsec, bool enable)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int dtsec_del_hash_mac_address(struct fman_mac *dtsec, enet_addr_t *eth_addr)
 {
 	struct dtsec_regs __iomem *regs = dtsec->regs;

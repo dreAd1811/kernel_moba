@@ -504,11 +504,14 @@ acpi_numa_memory_affinity_init(struct acpi_srat_mem_affinity *ma)
 	if (!(ma->flags & ACPI_SRAT_MEM_ENABLED))
 		return -1;
 
+<<<<<<< HEAD
 	if (num_node_memblks >= NR_NODE_MEMBLKS) {
 		pr_err("NUMA: too many memblk ranges\n");
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* record this node in proximity bitmap */
 	pxm_bit_set(pxm);
 

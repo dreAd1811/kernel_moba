@@ -36,7 +36,10 @@
 
 #include <asm/patch.h>
 #include <asm/unaligned.h>
+<<<<<<< HEAD
 #include <asm/sections.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ARCH_MODULE_DEBUG 0
 
@@ -923,6 +926,7 @@ module_arch_cleanup (struct module *mod)
 		mod->arch.core_unw_table = NULL;
 	}
 }
+<<<<<<< HEAD
 
 void *dereference_module_function_descriptor(struct module *mod, void *ptr)
 {
@@ -934,3 +938,5 @@ void *dereference_module_function_descriptor(struct module *mod, void *ptr)
 
 	return dereference_function_descriptor(ptr);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

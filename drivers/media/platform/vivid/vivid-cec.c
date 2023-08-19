@@ -1,8 +1,27 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vivid-cec.c - A Virtual Video Test Driver, cec emulation
  *
  * Copyright 2016 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you may redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <media/cec.h>
@@ -70,6 +89,7 @@ static void vivid_cec_pin_adap_events(struct cec_adapter *adap, ktime_t ts,
 
 	if (adap == NULL)
 		return;
+<<<<<<< HEAD
 
 	/*
 	 * Suffix ULL on constant 10 makes the expression
@@ -82,6 +102,13 @@ static void vivid_cec_pin_adap_events(struct cec_adapter *adap, ktime_t ts,
 	cec_queue_pin_cec_event(adap, false, false, ts);
 	ts = ktime_add_us(ts, CEC_TIM_START_BIT_LOW);
 	cec_queue_pin_cec_event(adap, true, false, ts);
+=======
+	ts = ktime_sub_us(ts, (CEC_TIM_START_BIT_TOTAL +
+			       len * 10 * CEC_TIM_DATA_BIT_TOTAL));
+	cec_queue_pin_cec_event(adap, false, ts);
+	ts = ktime_add_us(ts, CEC_TIM_START_BIT_LOW);
+	cec_queue_pin_cec_event(adap, true, ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ts = ktime_add_us(ts, CEC_TIM_START_BIT_HIGH);
 
 	for (i = 0; i < 10 * len; i++) {
@@ -96,12 +123,20 @@ static void vivid_cec_pin_adap_events(struct cec_adapter *adap, ktime_t ts,
 			bit = cec_msg_is_broadcast(msg) ^ nacked;
 			break;
 		}
+<<<<<<< HEAD
 		cec_queue_pin_cec_event(adap, false, false, ts);
+=======
+		cec_queue_pin_cec_event(adap, false, ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bit)
 			ts = ktime_add_us(ts, CEC_TIM_DATA_BIT_1_LOW);
 		else
 			ts = ktime_add_us(ts, CEC_TIM_DATA_BIT_0_LOW);
+<<<<<<< HEAD
 		cec_queue_pin_cec_event(adap, true, false, ts);
+=======
+		cec_queue_pin_cec_event(adap, true, ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bit)
 			ts = ktime_add_us(ts, CEC_TIM_DATA_BIT_1_HIGH);
 		else

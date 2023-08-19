@@ -41,10 +41,13 @@
 	model = "Broadcom Cygnus SoC";
 	interrupt-parent = <&gic>;
 
+<<<<<<< HEAD
 	aliases {
 		ethernet0 = &eth0;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpus {
 		#address-cells = <1>;
 		#size-cells = <0>;
@@ -100,14 +103,22 @@
 		#address-cells = <1>;
 		#size-cells = <1>;
 
+<<<<<<< HEAD
 		otp: otp@301c800 {
+=======
+		otp: otp@0301c800 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "brcm,ocotp";
 			reg = <0x0301c800 0x2c>;
 			brcm,ocotp-size = <2048>;
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		pcie_phy: phy@301d0a0 {
+=======
+		pcie_phy: phy@0301d0a0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "brcm,cygnus-pcie-phy";
 			reg = <0x0301d0a0 0x14>;
 			#address-cells = <1>;
@@ -124,7 +135,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		pinctrl: pinctrl@301d0c8 {
+=======
+		pinctrl: pinctrl@0301d0c8 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "brcm,cygnus-pinmux";
 			reg = <0x0301d0c8 0x30>,
 			      <0x0301d24c 0x2c>;
@@ -145,7 +160,11 @@
 			};
 		};
 
+<<<<<<< HEAD
 		mailbox: mailbox@3024024 {
+=======
+		mailbox: mailbox@03024024 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "brcm,iproc-mailbox";
 			reg = <0x03024024 0x40>;
 			interrupts = <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>;
@@ -154,7 +173,11 @@
 			#mbox-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		gpio_crmu: gpio@3024800 {
+=======
+		gpio_crmu: gpio@03024800 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "brcm,cygnus-crmu-gpio";
 			reg = <0x03024800 0x50>,
 			      <0x03024008 0x18>;
@@ -169,8 +192,13 @@
 		mdio: mdio@18002000 {
 			compatible = "brcm,iproc-mdio";
 			reg = <0x18002000 0x8>;
+<<<<<<< HEAD
 			#size-cells = <1>;
 			#address-cells = <0>;
+=======
+			#size-cells = <0>;
+			#address-cells = <1>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 
 			gphy0: ethernet-phy@0 {
@@ -421,11 +449,14 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		rng: rng@18032000 {
 			compatible = "brcm,iproc-rng200";
 			reg = <0x18032000 0x28>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sdhci0: sdhci@18041000 {
 			compatible = "brcm,sdhci-iproc-cygnus";
 			reg = <0x18041000 0x100>;
@@ -482,6 +513,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		clcd: clcd@180a0000 {
 			compatible = "arm,pl111", "arm,primecell";
 			reg = <0x180a0000 0x1000>;
@@ -492,6 +524,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		v3d: v3d@180a2000 {
 			compatible = "brcm,cygnus-v3d";
 			reg = <0x180a2000 0x1000>;
@@ -594,6 +628,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		pwm: pwm@180aa500 {
 			compatible = "brcm,kona-pwm";
 			reg = <0x180aa500 0xc4>;
@@ -602,6 +637,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		keypad: keypad@180ac000 {
 			compatible = "brcm,bcm-keypad";
 			reg = <0x180ac000 0x14c>;

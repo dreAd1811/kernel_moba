@@ -96,10 +96,17 @@ static void print_lyr_2_4_hdrs(struct trace_seq *p,
 					  "%pI4");
 		} else if (ethertype.v == ETH_P_IPV6) {
 			static const struct in6_addr full_ones = {
+<<<<<<< HEAD
 				.in6_u.u6_addr32 = {__constant_htonl(0xffffffff),
 						    __constant_htonl(0xffffffff),
 						    __constant_htonl(0xffffffff),
 						    __constant_htonl(0xffffffff)},
+=======
+				.in6_u.u6_addr32 = {htonl(0xffffffff),
+						    htonl(0xffffffff),
+						    htonl(0xffffffff),
+						    htonl(0xffffffff)},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 			DECLARE_MASK_VAL(struct in6_addr, src_ipv6);
 			DECLARE_MASK_VAL(struct in6_addr, dst_ipv6);
@@ -235,23 +242,33 @@ const char *parse_fs_dst(struct trace_seq *p,
 
 	switch (dst->type) {
 	case MLX5_FLOW_DESTINATION_TYPE_VPORT:
+<<<<<<< HEAD
 		trace_seq_printf(p, "vport=%u\n", dst->vport.num);
+=======
+		trace_seq_printf(p, "vport=%u\n", dst->vport_num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE:
 		trace_seq_printf(p, "ft=%p\n", dst->ft);
 		break;
+<<<<<<< HEAD
 	case MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE_NUM:
 		trace_seq_printf(p, "ft_num=%u\n", dst->ft_num);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case MLX5_FLOW_DESTINATION_TYPE_TIR:
 		trace_seq_printf(p, "tir=%u\n", dst->tir_num);
 		break;
 	case MLX5_FLOW_DESTINATION_TYPE_COUNTER:
 		trace_seq_printf(p, "counter_id=%u\n", counter_id);
 		break;
+<<<<<<< HEAD
 	case MLX5_FLOW_DESTINATION_TYPE_PORT:
 		trace_seq_printf(p, "port\n");
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	trace_seq_putc(p, 0);

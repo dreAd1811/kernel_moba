@@ -23,11 +23,19 @@
 #define __NWBUTTON_C		/* Tell the header file who we are */
 #include "nwbutton.h"
 
+<<<<<<< HEAD
 static void button_sequence_finished(struct timer_list *unused);
 
 static int button_press_count;		/* The count of button presses */
 /* Times for the end of a sequence */
 static DEFINE_TIMER(button_timer, button_sequence_finished);
+=======
+static void button_sequence_finished (unsigned long parameters);
+
+static int button_press_count;		/* The count of button presses */
+/* Times for the end of a sequence */
+static DEFINE_TIMER(button_timer, button_sequence_finished, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static DECLARE_WAIT_QUEUE_HEAD(button_wait_queue); /* Used for blocking read */
 static char button_output_buffer[32];	/* Stores data to write out of device */
 static int bcount;			/* The number of bytes in the buffer */
@@ -127,7 +135,11 @@ static void button_consume_callbacks (int bpcount)
  * any matching registered function callbacks, initiate reboot, etc.).
  */
 
+<<<<<<< HEAD
 static void button_sequence_finished(struct timer_list *unused)
+=======
+static void button_sequence_finished (unsigned long parameters)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (IS_ENABLED(CONFIG_NWBUTTON_REBOOT) &&
 	    button_press_count == reboot_count)

@@ -71,7 +71,10 @@
  */
 
 /* HHI Registers */
+<<<<<<< HEAD
 #define HHI_GCLK_MPEG2		0x148 /* 0x52 offset in data sheet */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HHI_VDAC_CNTL0		0x2F4 /* 0xbd offset in data sheet */
 #define HHI_VDAC_CNTL1		0x2F8 /* 0xbe offset in data sheet */
 #define HHI_HDMI_PHY_CNTL0	0x3a0 /* 0xe8 offset in data sheet */
@@ -738,6 +741,7 @@ static unsigned long modulo(unsigned long a, unsigned long b)
 		return a;
 }
 
+<<<<<<< HEAD
 enum drm_mode_status
 meson_venc_hdmi_supported_mode(const struct drm_display_mode *mode)
 {
@@ -755,6 +759,8 @@ meson_venc_hdmi_supported_mode(const struct drm_display_mode *mode)
 }
 EXPORT_SYMBOL_GPL(meson_venc_hdmi_supported_mode);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool meson_venc_hdmi_supported_vic(int vic)
 {
 	struct meson_hdmi_venc_vic_mode *vmode = meson_hdmi_venc_vic_modes;
@@ -769,6 +775,7 @@ bool meson_venc_hdmi_supported_vic(int vic)
 }
 EXPORT_SYMBOL_GPL(meson_venc_hdmi_supported_vic);
 
+<<<<<<< HEAD
 void meson_venc_hdmi_get_dmt_vmode(const struct drm_display_mode *mode,
 				   union meson_hdmi_venc_mode *dmt_mode)
 {
@@ -794,6 +801,8 @@ void meson_venc_hdmi_get_dmt_vmode(const struct drm_display_mode *mode,
 	dmt_mode->encp.max_lncnt = mode->vtotal - 1;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static union meson_hdmi_venc_mode *meson_venc_hdmi_get_vic_vmode(int vic)
 {
 	struct meson_hdmi_venc_vic_mode *vmode = meson_hdmi_venc_vic_modes;
@@ -828,7 +837,10 @@ void meson_venc_hdmi_mode_set(struct meson_drm *priv, int vic,
 			      struct drm_display_mode *mode)
 {
 	union meson_hdmi_venc_mode *vmode = NULL;
+<<<<<<< HEAD
 	union meson_hdmi_venc_mode vmode_dmt;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool use_enci = false;
 	bool venc_repeat = false;
 	bool hdmi_repeat = false;
@@ -856,6 +868,7 @@ void meson_venc_hdmi_mode_set(struct meson_drm *priv, int vic,
 	unsigned int sof_lines;
 	unsigned int vsync_lines;
 
+<<<<<<< HEAD
 	if (meson_venc_hdmi_supported_vic(vic)) {
 		vmode = meson_venc_hdmi_get_vic_vmode(vic);
 		if (!vmode) {
@@ -867,6 +880,13 @@ void meson_venc_hdmi_mode_set(struct meson_drm *priv, int vic,
 	} else {
 		meson_venc_hdmi_get_dmt_vmode(mode, &vmode_dmt);
 		vmode = &vmode_dmt;
+=======
+	vmode = meson_venc_hdmi_get_vic_vmode(vic);
+	if (!vmode) {
+		dev_err(priv->dev, "%s: Fatal Error, unsupported vic %d\n",
+			__func__, vic);
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Use VENCI for 480i and 576i and double HDMI pixels */
@@ -915,7 +935,11 @@ void meson_venc_hdmi_mode_set(struct meson_drm *priv, int vic,
 		hsync_pixels_venc *= 2;
 
 	/* Disable VDACs */
+<<<<<<< HEAD
 	writel_bits_relaxed(0xff, 0xff,
+=======
+	writel_bits_relaxed(0x1f, 0x1f,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			priv->io_base + _REG(VENC_VDAC_SETTING));
 
 	writel_relaxed(0, priv->io_base + _REG(ENCI_VIDEO_EN));
@@ -1531,12 +1555,18 @@ unsigned int meson_venci_get_field(struct meson_drm *priv)
 void meson_venc_enable_vsync(struct meson_drm *priv)
 {
 	writel_relaxed(2, priv->io_base + _REG(VENC_INTCTRL));
+<<<<<<< HEAD
 	regmap_update_bits(priv->hhi, HHI_GCLK_MPEG2, BIT(25), BIT(25));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void meson_venc_disable_vsync(struct meson_drm *priv)
 {
+<<<<<<< HEAD
 	regmap_update_bits(priv->hhi, HHI_GCLK_MPEG2, BIT(25), 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel_relaxed(0, priv->io_base + _REG(VENC_INTCTRL));
 }
 

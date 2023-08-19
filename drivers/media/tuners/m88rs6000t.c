@@ -569,9 +569,15 @@ err:
 
 static const struct dvb_tuner_ops m88rs6000t_tuner_ops = {
 	.info = {
+<<<<<<< HEAD
 		.name             = "Montage M88RS6000 Internal Tuner",
 		.frequency_min_hz =  950 * MHz,
 		.frequency_max_hz = 2150 * MHz,
+=======
+		.name          = "Montage M88RS6000 Internal Tuner",
+		.frequency_min = 950000,
+		.frequency_max = 2150000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.init = m88rs6000t_init,

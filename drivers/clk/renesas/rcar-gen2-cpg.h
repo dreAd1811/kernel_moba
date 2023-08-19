@@ -34,9 +34,15 @@ struct rcar_gen2_cpg_pll_config {
 };
 
 struct clk *rcar_gen2_cpg_clk_register(struct device *dev,
+<<<<<<< HEAD
 	const struct cpg_core_clk *core, const struct cpg_mssr_info *info,
 	struct clk **clks, void __iomem *base,
 	struct raw_notifier_head *notifiers);
+=======
+				       const struct cpg_core_clk *core,
+				       const struct cpg_mssr_info *info,
+				       struct clk **clks, void __iomem *base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int rcar_gen2_cpg_init(const struct rcar_gen2_cpg_pll_config *config,
 		       unsigned int pll0_div, u32 mode);
 

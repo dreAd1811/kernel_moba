@@ -339,6 +339,12 @@ static int aemif_probe(struct platform_device *pdev)
 	struct aemif_platform_data *pdata;
 	struct of_dev_auxdata *dev_lookup;
 
+<<<<<<< HEAD
+=======
+	if (np == NULL)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	aemif = devm_kzalloc(dev, sizeof(*aemif), GFP_KERNEL);
 	if (!aemif)
 		return -ENOMEM;
@@ -360,10 +366,15 @@ static int aemif_probe(struct platform_device *pdev)
 
 	aemif->clk_rate = clk_get_rate(aemif->clk) / MSEC_PER_SEC;
 
+<<<<<<< HEAD
 	if (np && of_device_is_compatible(np, "ti,da850-aemif"))
 		aemif->cs_offset = 2;
 	else if (pdata)
 		aemif->cs_offset = pdata->cs_offset;
+=======
+	if (of_device_is_compatible(np, "ti,da850-aemif"))
+		aemif->cs_offset = 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	aemif->base = devm_ioremap_resource(dev, res);
@@ -372,6 +383,7 @@ static int aemif_probe(struct platform_device *pdev)
 		goto error;
 	}
 
+<<<<<<< HEAD
 	if (np) {
 		/*
 		 * For every controller device node, there is a cs device node
@@ -389,6 +401,17 @@ static int aemif_probe(struct platform_device *pdev)
 			aemif->cs_data[i].cs = pdata->abus_data[i].cs;
 			aemif_get_hw_params(pdev, i);
 		}
+=======
+	/*
+	 * For every controller device node, there is a cs device node that
+	 * describe the bus configuration parameters. This functions iterate
+	 * over these nodes and update the cs data array.
+	 */
+	for_each_available_child_of_node(np, child_np) {
+		ret = of_aemif_parse_abus_config(pdev, child_np);
+		if (ret < 0)
+			goto error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < aemif->num_cs; i++) {
@@ -401,6 +424,7 @@ static int aemif_probe(struct platform_device *pdev)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Create a child devices explicitly from here to guarantee that the
 	 * child will be probed after the AEMIF timing parameters are set.
 	 */
@@ -420,6 +444,16 @@ static int aemif_probe(struct platform_device *pdev)
 					 pdata->sub_devices[i].name);
 			}
 		}
+=======
+	 * Create a child devices explicitly from here to
+	 * guarantee that the child will be probed after the AEMIF timing
+	 * parameters are set.
+	 */
+	for_each_available_child_of_node(np, child_np) {
+		ret = of_platform_populate(child_np, NULL, dev_lookup, dev);
+		if (ret < 0)
+			goto error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -440,7 +474,11 @@ static struct platform_driver aemif_driver = {
 	.probe = aemif_probe,
 	.remove = aemif_remove,
 	.driver = {
+<<<<<<< HEAD
 		.name = "ti-aemif",
+=======
+		.name = KBUILD_MODNAME,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.of_match_table = of_match_ptr(aemif_of_match),
 	},
 };

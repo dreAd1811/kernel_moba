@@ -1553,7 +1553,11 @@ static int mga_vga_get_modes(struct drm_connector *connector)
 
 	edid = drm_get_edid(connector, &mga_connector->i2c->adapter);
 	if (edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, edid);
+=======
+		drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_add_edid_modes(connector, edid);
 		kfree(edid);
 	}
@@ -1586,7 +1590,11 @@ static uint32_t mga_vga_calculate_mode_bandwidth(struct drm_display_mode *mode,
 
 #define MODE_BANDWIDTH	MODE_BAD
 
+<<<<<<< HEAD
 static enum drm_mode_status mga_vga_mode_valid(struct drm_connector *connector,
+=======
+static int mga_vga_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 struct drm_display_mode *mode)
 {
 	struct drm_device *dev = connector->dev;
@@ -1620,8 +1628,13 @@ static enum drm_mode_status mga_vga_mode_valid(struct drm_connector *connector,
 			return MODE_VIRTUAL_X;
 		if (mode->vdisplay > 1024)
 			return MODE_VIRTUAL_Y;
+<<<<<<< HEAD
 		if (mga_vga_calculate_mode_bandwidth(mode, bpp) >
 		    (31877 * 1024))
+=======
+		if (mga_vga_calculate_mode_bandwidth(mode,
+			bpp > (31877 * 1024)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return MODE_BANDWIDTH;
 	} else if (mdev->type == G200_EV &&
 		(mga_vga_calculate_mode_bandwidth(mode, bpp)
@@ -1747,7 +1760,11 @@ int mgag200_modeset_init(struct mga_device *mdev)
 		return -1;
 	}
 
+<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
+=======
+	drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = mgag200_fbdev_init(mdev);
 	if (ret) {

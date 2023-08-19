@@ -18,6 +18,10 @@
 #include <linux/timer.h>
 #include <linux/completion.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/i2c-pnx.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/io.h>
 #include <linux/err.h>
 #include <linux/clk.h>
@@ -28,6 +32,7 @@
 #define I2C_PNX_SPEED_KHZ_DEFAULT	100
 #define I2C_PNX_REGION_SIZE		0x100
 
+<<<<<<< HEAD
 struct i2c_pnx_mif {
 	int			ret;		/* Return value */
 	int			mode;		/* Interface mode */
@@ -48,6 +53,8 @@ struct i2c_pnx_algo_data {
 	u32			timeout;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	mstatus_tdi = 0x00000001,
 	mstatus_afi = 0x00000002,
@@ -131,6 +138,10 @@ static inline void i2c_pnx_arm_timer(struct i2c_pnx_algo_data *alg_data)
 		jiffies, expires);
 
 	timer->expires = jiffies + expires;
+<<<<<<< HEAD
+=======
+	timer->data = (unsigned long)alg_data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	add_timer(timer);
 }
@@ -453,9 +464,15 @@ static irqreturn_t i2c_pnx_interrupt(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static void i2c_pnx_timeout(struct timer_list *t)
 {
 	struct i2c_pnx_algo_data *alg_data = from_timer(alg_data, t, mif.timer);
+=======
+static void i2c_pnx_timeout(unsigned long data)
+{
+	struct i2c_pnx_algo_data *alg_data = (struct i2c_pnx_algo_data *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 ctl;
 
 	dev_err(&alg_data->adapter.dev,
@@ -677,7 +694,12 @@ static int i2c_pnx_probe(struct platform_device *pdev)
 	if (IS_ERR(alg_data->clk))
 		return PTR_ERR(alg_data->clk);
 
+<<<<<<< HEAD
 	timer_setup(&alg_data->mif.timer, i2c_pnx_timeout, 0);
+=======
+	setup_timer(&alg_data->mif.timer, i2c_pnx_timeout,
+			(unsigned long)alg_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	snprintf(alg_data->adapter.name, sizeof(alg_data->adapter.name),
 		 "%s", pdev->name);

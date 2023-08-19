@@ -128,6 +128,7 @@ struct mem_ctl_info *edac_mc_alloc(unsigned mc_num,
 				   unsigned sz_pvt);
 
 /**
+<<<<<<< HEAD
  * edac_get_owner - Return the owner's mod_name of EDAC MC
  *
  * Returns:
@@ -136,6 +137,8 @@ struct mem_ctl_info *edac_mc_alloc(unsigned mc_num,
 extern const char *edac_get_owner(void);
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * edac_mc_add_mc_with_groups() - Insert the @mci structure into the mci
  *	global list and create sysfs entries associated with @mci structure.
  *

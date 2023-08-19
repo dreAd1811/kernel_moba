@@ -16,6 +16,7 @@
 #ifndef __ASM_FP_H
 #define __ASM_FP_H
 
+<<<<<<< HEAD
 #include <asm/errno.h>
 #include <asm/ptrace.h>
 #include <asm/processor.h>
@@ -28,6 +29,33 @@
 #include <linux/cache.h>
 #include <linux/init.h>
 #include <linux/stddef.h>
+=======
+#include <asm/ptrace.h>
+
+#ifndef __ASSEMBLY__
+
+/*
+ * FP/SIMD storage area has:
+ *  - FPSR and FPCR
+ *  - 32 128-bit data registers
+ *
+ * Note that user_fpsimd forms a prefix of this structure, which is
+ * relied upon in the ptrace FP/SIMD accessors.
+ */
+struct fpsimd_state {
+	union {
+		struct user_fpsimd_state user_fpsimd;
+		struct {
+			__uint128_t vregs[32];
+			u32 fpsr;
+			u32 fpcr;
+		};
+	};
+	/* the id of the last cpu to have restored this state */
+	unsigned int cpu;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(__KERNEL__) && defined(CONFIG_COMPAT)
 /* Masks for extracting the FPSR and FPCR from the FPSCR */
@@ -42,14 +70,20 @@
 
 struct task_struct;
 
+<<<<<<< HEAD
 extern void fpsimd_save_state(struct user_fpsimd_state *state);
 extern void fpsimd_load_state(struct user_fpsimd_state *state);
 
 extern void fpsimd_save(void);
+=======
+extern void fpsimd_save_state(struct fpsimd_state *state);
+extern void fpsimd_load_state(struct fpsimd_state *state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void fpsimd_thread_switch(struct task_struct *next);
 extern void fpsimd_flush_thread(void);
 
+<<<<<<< HEAD
 extern void fpsimd_signal_preserve_current_state(void);
 extern void fpsimd_preserve_current_state(void);
 extern void fpsimd_restore_current_state(void);
@@ -149,6 +183,13 @@ static inline int sve_verify_vq_map(void) { return 0; }
 static inline void sve_setup(void) { }
 
 #endif /* ! CONFIG_ARM64_SVE */
+=======
+extern void fpsimd_preserve_current_state(void);
+extern void fpsimd_restore_current_state(void);
+extern void fpsimd_update_current_state(struct fpsimd_state *state);
+
+extern void fpsimd_flush_task_state(struct task_struct *target);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* For use by EFI runtime services calls only */
 extern void __efi_fpsimd_begin(void);

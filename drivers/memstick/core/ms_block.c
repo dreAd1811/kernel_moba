@@ -1201,8 +1201,12 @@ static int msb_read_boot_blocks(struct msb_data *msb)
 	dbg_verbose("Start of a scan for the boot blocks");
 
 	if (!msb->boot_page) {
+<<<<<<< HEAD
 		page = kmalloc_array(2, sizeof(struct ms_boot_page),
 				     GFP_KERNEL);
+=======
+		page = kmalloc(sizeof(struct ms_boot_page)*2, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!page)
 			return -ENOMEM;
 
@@ -1342,8 +1346,12 @@ static int msb_ftl_initialize(struct msb_data *msb)
 	msb->used_blocks_bitmap = kzalloc(msb->block_count / 8, GFP_KERNEL);
 	msb->erased_blocks_bitmap = kzalloc(msb->block_count / 8, GFP_KERNEL);
 	msb->lba_to_pba_table =
+<<<<<<< HEAD
 		kmalloc_array(msb->logical_block_count, sizeof(u16),
 			      GFP_KERNEL);
+=======
+		kmalloc(msb->logical_block_count * sizeof(u16), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!msb->used_blocks_bitmap || !msb->lba_to_pba_table ||
 						!msb->erased_blocks_bitmap) {
@@ -1494,9 +1502,15 @@ static int msb_ftl_scan(struct msb_data *msb)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void msb_cache_flush_timer(struct timer_list *t)
 {
 	struct msb_data *msb = from_timer(msb, t, cache_flush_timer);
+=======
+static void msb_cache_flush_timer(unsigned long data)
+{
+	struct msb_data *msb = (struct msb_data *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msb->need_flush_cache = true;
 	queue_work(msb->io_queue, &msb->io_work);
 }
@@ -1516,7 +1530,12 @@ static void msb_cache_discard(struct msb_data *msb)
 
 static int msb_cache_init(struct msb_data *msb)
 {
+<<<<<<< HEAD
 	timer_setup(&msb->cache_flush_timer, msb_cache_flush_timer, 0);
+=======
+	setup_timer(&msb->cache_flush_timer, msb_cache_flush_timer,
+		(unsigned long)msb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!msb->cache)
 		msb->cache = kzalloc(msb->block_size, GFP_KERNEL);
@@ -2096,9 +2115,20 @@ static const struct block_device_operations msb_bdops = {
 static int msb_init_disk(struct memstick_dev *card)
 {
 	struct msb_data *msb = memstick_get_drvdata(card);
+<<<<<<< HEAD
 	int rc;
 	unsigned long capacity;
 
+=======
+	struct memstick_host *host = card->host;
+	int rc;
+	u64 limit = BLK_BOUNCE_HIGH;
+	unsigned long capacity;
+
+	if (host->dev.dma_mask && *(host->dev.dma_mask))
+		limit = *(host->dev.dma_mask);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&msb_disk_lock);
 	msb->disk_id = idr_alloc(&msb_disk_idr, card, 0, 256, GFP_KERNEL);
 	mutex_unlock(&msb_disk_lock);
@@ -2120,6 +2150,10 @@ static int msb_init_disk(struct memstick_dev *card)
 
 	msb->queue->queuedata = card;
 
+<<<<<<< HEAD
+=======
+	blk_queue_bounce_limit(msb->queue, limit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	blk_queue_max_hw_sectors(msb->queue, MS_BLOCK_MAX_PAGES);
 	blk_queue_max_segments(msb->queue, MS_BLOCK_MAX_SEGS);
 	blk_queue_max_segment_size(msb->queue,

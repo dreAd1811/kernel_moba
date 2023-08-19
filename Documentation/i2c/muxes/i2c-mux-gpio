@@ -30,12 +30,20 @@ i2c-mux-gpio uses the platform bus, so you need to provide a struct
 platform_device with the platform_data pointing to a struct
 i2c_mux_gpio_platform_data with the I2C adapter number of the master
 bus, the number of bus segments to create and the GPIO pins used
+<<<<<<< HEAD
 to control it. See include/linux/platform_data/i2c-mux-gpio.h for details.
+=======
+to control it. See include/linux/i2c-mux-gpio.h for details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 E.G. something like this for a MUX providing 4 bus segments
 controlled through 3 GPIO pins:
 
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-mux-gpio.h>
+=======
+#include <linux/i2c-mux-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 
 static const unsigned myboard_gpiomux_gpios[] = {

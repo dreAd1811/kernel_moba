@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/kernel.h>
@@ -39,7 +52,10 @@ do {									\
 #define TPDA_FLUSH_CR		(0x090)
 #define TPDA_FLUSH_SR		(0x094)
 #define TPDA_FLUSH_ERR		(0x098)
+<<<<<<< HEAD
 #define TPDA_SPARE		(0xefc)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define TPDA_MAX_INPORTS	32
 
@@ -60,7 +76,10 @@ struct tpda_drvdata {
 	bool			freq_ts;
 	uint32_t		freq_req_val;
 	bool			freq_req;
+<<<<<<< HEAD
 	bool			cmbchan_mode;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static void __tpda_enable_pre_port(struct tpda_drvdata *drvdata)
@@ -88,10 +107,13 @@ static void __tpda_enable_pre_port(struct tpda_drvdata *drvdata)
 		val = val | BIT(2);
 	else
 		val = val & ~BIT(2);
+<<<<<<< HEAD
 	if (drvdata->cmbchan_mode)
 		val = val | BIT(20);
 	else
 		val = val & ~BIT(20);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tpda_writel(drvdata, val, TPDA_CR);
 
 	/*
@@ -226,6 +248,7 @@ static const struct coresight_ops tpda_cs_ops = {
 	.link_ops	= &tpda_link_ops,
 };
 
+<<<<<<< HEAD
 static ssize_t legacy_ts_mode_enable_show(struct device *dev,
 					   struct device_attribute *attr,
 					   char *buf)
@@ -280,6 +303,9 @@ static ssize_t legacy_ts_mode_enable_store(struct device *dev,
 static DEVICE_ATTR_RW(legacy_ts_mode_enable);
 
 static ssize_t trig_async_enable_show(struct device *dev,
+=======
+static ssize_t tpda_show_trig_async_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   char *buf)
 {
@@ -289,7 +315,11 @@ static ssize_t trig_async_enable_show(struct device *dev,
 			 (unsigned int)drvdata->trig_async);
 }
 
+<<<<<<< HEAD
 static ssize_t trig_async_enable_store(struct device *dev,
+=======
+static ssize_t tpda_store_trig_async_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    struct device_attribute *attr,
 					    const char *buf,
 					    size_t size)
@@ -308,9 +338,17 @@ static ssize_t trig_async_enable_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(trig_async_enable);
 
 static ssize_t trig_flag_ts_enable_show(struct device *dev,
+=======
+static DEVICE_ATTR(trig_async_enable, 0644,
+		   tpda_show_trig_async_enable,
+		   tpda_store_trig_async_enable);
+
+static ssize_t tpda_show_trig_flag_ts_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     struct device_attribute *attr,
 					     char *buf)
 {
@@ -320,7 +358,11 @@ static ssize_t trig_flag_ts_enable_show(struct device *dev,
 			 (unsigned int)drvdata->trig_flag_ts);
 }
 
+<<<<<<< HEAD
 static ssize_t trig_flag_ts_enable_store(struct device *dev,
+=======
+static ssize_t tpda_store_trig_flag_ts_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					      struct device_attribute *attr,
 					      const char *buf,
 					      size_t size)
@@ -339,9 +381,17 @@ static ssize_t trig_flag_ts_enable_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(trig_flag_ts_enable);
 
 static ssize_t trig_freq_enable_show(struct device *dev,
+=======
+static DEVICE_ATTR(trig_flag_ts_enable, 0644,
+		   tpda_show_trig_flag_ts_enable,
+		   tpda_store_trig_flag_ts_enable);
+
+static ssize_t tpda_show_trig_freq_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  char *buf)
 {
@@ -351,7 +401,11 @@ static ssize_t trig_freq_enable_show(struct device *dev,
 			 (unsigned int)drvdata->trig_freq);
 }
 
+<<<<<<< HEAD
 static ssize_t trig_freq_enable_store(struct device *dev,
+=======
+static ssize_t tpda_store_trig_freq_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   const char *buf,
 					   size_t size)
@@ -370,9 +424,17 @@ static ssize_t trig_freq_enable_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(trig_freq_enable);
 
 static ssize_t freq_ts_enable_show(struct device *dev,
+=======
+static DEVICE_ATTR(trig_freq_enable, 0644,
+		   tpda_show_trig_freq_enable,
+		   tpda_store_trig_freq_enable);
+
+static ssize_t tpda_show_freq_ts_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -382,7 +444,11 @@ static ssize_t freq_ts_enable_show(struct device *dev,
 			 (unsigned int)drvdata->freq_ts);
 }
 
+<<<<<<< HEAD
 static ssize_t freq_ts_enable_store(struct device *dev,
+=======
+static ssize_t tpda_store_freq_ts_enable(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -401,9 +467,16 @@ static ssize_t freq_ts_enable_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(freq_ts_enable);
 
 static ssize_t freq_req_val_show(struct device *dev,
+=======
+static DEVICE_ATTR(freq_ts_enable, 0644, tpda_show_freq_ts_enable,
+		   tpda_store_freq_ts_enable);
+
+static ssize_t tpda_show_freq_req_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct device_attribute *attr,
 				      char *buf)
 {
@@ -413,7 +486,11 @@ static ssize_t freq_req_val_show(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%#lx\n", val);
 }
 
+<<<<<<< HEAD
 static ssize_t freq_req_val_store(struct device *dev,
+=======
+static ssize_t tpda_store_freq_req_val(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				       struct device_attribute *attr,
 				       const char *buf,
 				       size_t size)
@@ -429,9 +506,16 @@ static ssize_t freq_req_val_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(freq_req_val);
 
 static ssize_t freq_req_show(struct device *dev,
+=======
+static DEVICE_ATTR(freq_req_val, 0644, tpda_show_freq_req_val,
+		   tpda_store_freq_req_val);
+
+static ssize_t tpda_show_freq_req(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct device_attribute *attr,
 				  char *buf)
 {
@@ -441,7 +525,11 @@ static ssize_t freq_req_show(struct device *dev,
 			 (unsigned int)drvdata->freq_req);
 }
 
+<<<<<<< HEAD
 static ssize_t freq_req_store(struct device *dev,
+=======
+static ssize_t tpda_store_freq_req(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   struct device_attribute *attr,
 				   const char *buf,
 				   size_t size)
@@ -460,9 +548,16 @@ static ssize_t freq_req_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(freq_req);
 
 static ssize_t global_flush_req_show(struct device *dev,
+=======
+static DEVICE_ATTR(freq_req, 0644, tpda_show_freq_req,
+		   tpda_store_freq_req);
+
+static ssize_t tpda_show_global_flush_req(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  struct device_attribute *attr,
 					  char *buf)
 {
@@ -484,7 +579,11 @@ static ssize_t global_flush_req_show(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
+<<<<<<< HEAD
 static ssize_t global_flush_req_store(struct device *dev,
+=======
+static ssize_t tpda_store_global_flush_req(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   struct device_attribute *attr,
 					   const char *buf,
 					   size_t size)
@@ -513,9 +612,16 @@ static ssize_t global_flush_req_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(global_flush_req);
 
 static ssize_t port_flush_req_show(struct device *dev,
+=======
+static DEVICE_ATTR(global_flush_req, 0644,
+		   tpda_show_global_flush_req, tpda_store_global_flush_req);
+
+static ssize_t tpda_show_port_flush_req(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					struct device_attribute *attr,
 					char *buf)
 {
@@ -537,7 +643,11 @@ static ssize_t port_flush_req_show(struct device *dev,
 	return scnprintf(buf, PAGE_SIZE, "%lx\n", val);
 }
 
+<<<<<<< HEAD
 static ssize_t port_flush_req_store(struct device *dev,
+=======
+static ssize_t tpda_store_port_flush_req(struct device *dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 struct device_attribute *attr,
 					 const char *buf,
 					 size_t size)
@@ -564,6 +674,7 @@ static ssize_t port_flush_req_store(struct device *dev,
 	mutex_unlock(&drvdata->lock);
 	return size;
 }
+<<<<<<< HEAD
 static DEVICE_ATTR_RW(port_flush_req);
 
 static ssize_t cmbchan_mode_show(struct device *dev,
@@ -596,6 +707,10 @@ static ssize_t cmbchan_mode_store(struct device *dev,
 	return size;
 }
 static DEVICE_ATTR_RW(cmbchan_mode);
+=======
+static DEVICE_ATTR(port_flush_req, 0644, tpda_show_port_flush_req,
+		   tpda_store_port_flush_req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct attribute *tpda_attrs[] = {
 	&dev_attr_trig_async_enable.attr,
@@ -606,8 +721,11 @@ static struct attribute *tpda_attrs[] = {
 	&dev_attr_freq_req.attr,
 	&dev_attr_global_flush_req.attr,
 	&dev_attr_port_flush_req.attr,
+<<<<<<< HEAD
 	&dev_attr_cmbchan_mode.attr,
 	&dev_attr_legacy_ts_mode_enable.attr,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NULL,
 };
 
@@ -620,6 +738,7 @@ static const struct attribute_group *tpda_attr_grps[] = {
 	NULL,
 };
 
+<<<<<<< HEAD
 static int tpda_parse_tc(struct tpda_drvdata *drvdata)
 {
 	int len, port, i;
@@ -655,6 +774,20 @@ static int tpda_parse_bc(struct tpda_drvdata *drvdata)
 	const __be32 *prop;
 	struct device_node *node = drvdata->dev->of_node;
 
+=======
+static int tpda_parse_of_data(struct tpda_drvdata *drvdata)
+{
+	int len, port, i, ret;
+	const __be32 *prop;
+	struct device_node *node = drvdata->dev->of_node;
+
+	ret = of_property_read_u32(node, "qcom,tpda-atid", &drvdata->atid);
+	if (ret) {
+		dev_err(drvdata->dev, "TPDA ATID is not specified\n");
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	prop = of_get_property(node, "qcom,bc-elem-size", &len);
 	if (prop) {
 		len /= sizeof(__be32);
@@ -675,6 +808,7 @@ static int tpda_parse_bc(struct tpda_drvdata *drvdata)
 		}
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -683,6 +817,27 @@ static int tpda_parse_dsb(struct tpda_drvdata *drvdata)
 	int len, port, i;
 	const __be32 *prop;
 	struct device_node *node = drvdata->dev->of_node;
+=======
+	prop = of_get_property(node, "qcom,tc-elem-size", &len);
+	if (prop) {
+		len /= sizeof(__be32);
+		if (len < 2 || len > 63 || len % 2 != 0) {
+			dev_err(drvdata->dev,
+				"Dataset TC width entries are wrong\n");
+			return -EINVAL;
+		}
+
+		for (i = 0; i < len; i++) {
+			port = be32_to_cpu(prop[i++]);
+			if (port >= TPDA_MAX_INPORTS) {
+				dev_err(drvdata->dev,
+					"Wrong port specified for TC\n");
+				return -EINVAL;
+			}
+			drvdata->tc_esize[port] = be32_to_cpu(prop[i]);
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	prop = of_get_property(node, "qcom,dsb-elem-size", &len);
 	if (prop) {
@@ -704,6 +859,7 @@ static int tpda_parse_dsb(struct tpda_drvdata *drvdata)
 		}
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -713,6 +869,8 @@ static int tpda_parse_cmb(struct tpda_drvdata *drvdata)
 	const __be32 *prop;
 	struct device_node *node = drvdata->dev->of_node;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	prop = of_get_property(node, "qcom,cmb-elem-size", &len);
 	if (prop) {
 		len /= sizeof(__be32);
@@ -732,6 +890,7 @@ static int tpda_parse_cmb(struct tpda_drvdata *drvdata)
 			drvdata->cmb_esize[port] = be32_to_cpu(prop[i]);
 		}
 	}
+<<<<<<< HEAD
 
 	return 0;
 }
@@ -771,6 +930,8 @@ static int tpda_parse_of_data(struct tpda_drvdata *drvdata)
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -779,6 +940,7 @@ static void tpda_init_default_data(struct tpda_drvdata *drvdata)
 	drvdata->freq_ts = true;
 }
 
+<<<<<<< HEAD
 static bool coresight_authstatus_enabled(void __iomem *addr)
 {
 	int ret;
@@ -800,6 +962,8 @@ static bool coresight_authstatus_enabled(void __iomem *addr)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int tpda_probe(struct amba_device *adev, const struct amba_id *id)
 {
 	int ret;

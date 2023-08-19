@@ -185,8 +185,13 @@ int mlx4_bitmap_init(struct mlx4_bitmap *bitmap, u32 num, u32 mask,
 	bitmap->avail = num - reserved_top - reserved_bot;
 	bitmap->effective_len = bitmap->avail;
 	spin_lock_init(&bitmap->lock);
+<<<<<<< HEAD
 	bitmap->table = kcalloc(BITS_TO_LONGS(bitmap->max), sizeof(long),
 				GFP_KERNEL);
+=======
+	bitmap->table = kzalloc(BITS_TO_LONGS(bitmap->max) *
+				sizeof(long), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!bitmap->table)
 		return -ENOMEM;
 

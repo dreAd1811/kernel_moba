@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2015, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2015, 2018 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -172,6 +176,10 @@ static struct platform_driver dsi_driver = {
 		.name = "msm_dsi",
 		.of_match_table = dt_match,
 		.pm = &dsi_pm_ops,
+<<<<<<< HEAD
+=======
+		.suppress_bind_attrs = true,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -192,6 +200,7 @@ void __exit msm_dsi_unregister(void)
 int msm_dsi_modeset_init(struct msm_dsi *msm_dsi, struct drm_device *dev,
 			 struct drm_encoder *encoder)
 {
+<<<<<<< HEAD
 	struct msm_drm_private *priv;
 	struct drm_bridge *ext_bridge;
 	int ret;
@@ -200,6 +209,15 @@ int msm_dsi_modeset_init(struct msm_dsi *msm_dsi, struct drm_device *dev,
 		return -EINVAL;
 
 	priv = dev->dev_private;
+=======
+	struct msm_drm_private *priv = dev->dev_private;
+	struct drm_bridge *ext_bridge;
+	int ret;
+
+	if (WARN_ON(!encoder))
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msm_dsi->dev = dev;
 
 	ret = msm_dsi_host_modeset_init(msm_dsi->host, dev);
@@ -208,9 +226,12 @@ int msm_dsi_modeset_init(struct msm_dsi *msm_dsi, struct drm_device *dev,
 		goto fail;
 	}
 
+<<<<<<< HEAD
 	if (!msm_dsi_manager_validate_current_config(msm_dsi->id))
 		goto fail;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msm_dsi->encoder = encoder;
 
 	msm_dsi->bridge = msm_dsi_manager_bridge_init(msm_dsi->id);
@@ -249,6 +270,7 @@ int msm_dsi_modeset_init(struct msm_dsi *msm_dsi, struct drm_device *dev,
 
 	return 0;
 fail:
+<<<<<<< HEAD
 	/* bridge/connector are normally destroyed by drm: */
 	if (msm_dsi->bridge) {
 		msm_dsi_manager_bridge_destroy(msm_dsi->bridge);
@@ -261,6 +283,22 @@ fail:
 
 	msm_dsi->connector = NULL;
 
+=======
+	if (msm_dsi) {
+		/* bridge/connector are normally destroyed by drm: */
+		if (msm_dsi->bridge) {
+			msm_dsi_manager_bridge_destroy(msm_dsi->bridge);
+			msm_dsi->bridge = NULL;
+		}
+
+		/* don't destroy connector if we didn't make it */
+		if (msm_dsi->connector && !msm_dsi->external_bridge)
+			msm_dsi->connector->funcs->destroy(msm_dsi->connector);
+
+		msm_dsi->connector = NULL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

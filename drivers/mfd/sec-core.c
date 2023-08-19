@@ -146,7 +146,10 @@ static const struct of_device_id sec_dt_match[] = {
 		/* Sentinel */
 	},
 };
+<<<<<<< HEAD
 MODULE_DEVICE_TABLE(of, sec_dt_match);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static bool s2mpa01_volatile(struct device *dev, unsigned int reg)

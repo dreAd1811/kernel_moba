@@ -67,6 +67,11 @@
 #define PR_LIMIT_MASK			(0x3fff << PR_LIMIT_SHIFT)
 #define PR_RPE				BIT(15)
 #define PR_BASE_MASK			0x3fff
+<<<<<<< HEAD
+=======
+/* Last PR is GPR0 */
+#define PR_NUM				(5 + 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Offsets are from @ispi->sregs */
 #define SSFSTS_CTL			0x00
@@ -88,27 +93,37 @@
 #define OPMENU0				0x08
 #define OPMENU1				0x0c
 
+<<<<<<< HEAD
 #define OPTYPE_READ_NO_ADDR		0
 #define OPTYPE_WRITE_NO_ADDR		1
 #define OPTYPE_READ_WITH_ADDR		2
 #define OPTYPE_WRITE_WITH_ADDR		3
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* CPU specifics */
 #define BYT_PR				0x74
 #define BYT_SSFSTS_CTL			0x90
 #define BYT_BCR				0xfc
 #define BYT_BCR_WPD			BIT(0)
 #define BYT_FREG_NUM			5
+<<<<<<< HEAD
 #define BYT_PR_NUM			5
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define LPT_PR				0x74
 #define LPT_SSFSTS_CTL			0x90
 #define LPT_FREG_NUM			5
+<<<<<<< HEAD
 #define LPT_PR_NUM			5
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define BXT_PR				0x84
 #define BXT_SSFSTS_CTL			0xa0
 #define BXT_FREG_NUM			12
+<<<<<<< HEAD
 #define BXT_PR_NUM			6
 
 #define LVSCC				0xc4
@@ -117,6 +132,8 @@
 #define ERASE_OPCODE_MASK		(0xff << ERASE_OPCODE_SHIFT)
 #define ERASE_64K_OPCODE_SHIFT		16
 #define ERASE_64K_OPCODE_MASK		(0xff << ERASE_OPCODE_SHIFT)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define INTEL_SPI_TIMEOUT		5000 /* ms */
 #define INTEL_SPI_FIFO_SZ		64
@@ -130,6 +147,7 @@
  * @pregs: Start of protection registers
  * @sregs: Start of software sequencer registers
  * @nregions: Maximum number of regions
+<<<<<<< HEAD
  * @pr_num: Maximum number of protected range registers
  * @writeable: Is the chip writeable
  * @locked: Is SPI setting locked
@@ -139,6 +157,14 @@
  * @atomic_preopcode: Holds preopcode when atomic sequence is requested
  * @opcodes: Opcodes which are supported. This are programmed by BIOS
  *           before it locks down the controller.
+=======
+ * @writeable: Is the chip writeable
+ * @swseq: Use SW sequencer in register reads/writes
+ * @erase_64k: 64k erase supported
+ * @opcodes: Opcodes which are supported. This are programmed by BIOS
+ *           before it locks down the controller.
+ * @preopcodes: Preopcodes which are supported.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct intel_spi {
 	struct device *dev;
@@ -148,6 +174,7 @@ struct intel_spi {
 	void __iomem *pregs;
 	void __iomem *sregs;
 	size_t nregions;
+<<<<<<< HEAD
 	size_t pr_num;
 	bool writeable;
 	bool locked;
@@ -156,6 +183,13 @@ struct intel_spi {
 	bool erase_64k;
 	u8 atomic_preopcode;
 	u8 opcodes[8];
+=======
+	bool writeable;
+	bool swseq;
+	bool erase_64k;
+	u8 opcodes[8];
+	u8 preopcodes[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static bool writeable;
@@ -186,7 +220,11 @@ static void intel_spi_dump_regs(struct intel_spi *ispi)
 	for (i = 0; i < ispi->nregions; i++)
 		dev_dbg(ispi->dev, "FREG(%d)=0x%08x\n", i,
 			readl(ispi->base + FREG(i)));
+<<<<<<< HEAD
 	for (i = 0; i < ispi->pr_num; i++)
+=======
+	for (i = 0; i < PR_NUM; i++)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_dbg(ispi->dev, "PR(%d)=0x%08x\n", i,
 			readl(ispi->pregs + PR(i)));
 
@@ -200,11 +238,16 @@ static void intel_spi_dump_regs(struct intel_spi *ispi)
 	if (ispi->info->type == INTEL_SPI_BYT)
 		dev_dbg(ispi->dev, "BCR=0x%08x\n", readl(ispi->base + BYT_BCR));
 
+<<<<<<< HEAD
 	dev_dbg(ispi->dev, "LVSCC=0x%08x\n", readl(ispi->base + LVSCC));
 	dev_dbg(ispi->dev, "UVSCC=0x%08x\n", readl(ispi->base + UVSCC));
 
 	dev_dbg(ispi->dev, "Protected regions:\n");
 	for (i = 0; i < ispi->pr_num; i++) {
+=======
+	dev_dbg(ispi->dev, "Protected regions:\n");
+	for (i = 0; i < PR_NUM; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 base, limit;
 
 		value = readl(ispi->pregs + PR(i));
@@ -236,9 +279,13 @@ static void intel_spi_dump_regs(struct intel_spi *ispi)
 	}
 
 	dev_dbg(ispi->dev, "Using %cW sequencer for register access\n",
+<<<<<<< HEAD
 		ispi->swseq_reg ? 'S' : 'H');
 	dev_dbg(ispi->dev, "Using %cW sequencer for erase operation\n",
 		ispi->swseq_erase ? 'S' : 'H');
+=======
+		ispi->swseq ? 'S' : 'H');
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Reads max INTEL_SPI_FIFO_SZ bytes from the device fifo */
@@ -287,7 +334,11 @@ static int intel_spi_wait_hw_busy(struct intel_spi *ispi)
 	u32 val;
 
 	return readl_poll_timeout(ispi->base + HSFSTS_CTL, val,
+<<<<<<< HEAD
 				  !(val & HSFSTS_CTL_SCIP), 40,
+=======
+				  !(val & HSFSTS_CTL_SCIP), 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  INTEL_SPI_TIMEOUT * 1000);
 }
 
@@ -296,13 +347,21 @@ static int intel_spi_wait_sw_busy(struct intel_spi *ispi)
 	u32 val;
 
 	return readl_poll_timeout(ispi->sregs + SSFSTS_CTL, val,
+<<<<<<< HEAD
 				  !(val & SSFSTS_CTL_SCIP), 40,
+=======
+				  !(val & SSFSTS_CTL_SCIP), 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  INTEL_SPI_TIMEOUT * 1000);
 }
 
 static int intel_spi_init(struct intel_spi *ispi)
 {
+<<<<<<< HEAD
 	u32 opmenu0, opmenu1, lvscc, uvscc, val;
+=======
+	u32 opmenu0, opmenu1, val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	switch (ispi->info->type) {
@@ -310,8 +369,11 @@ static int intel_spi_init(struct intel_spi *ispi)
 		ispi->sregs = ispi->base + BYT_SSFSTS_CTL;
 		ispi->pregs = ispi->base + BYT_PR;
 		ispi->nregions = BYT_FREG_NUM;
+<<<<<<< HEAD
 		ispi->pr_num = BYT_PR_NUM;
 		ispi->swseq_reg = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (writeable) {
 			/* Disable write protection */
@@ -331,15 +393,21 @@ static int intel_spi_init(struct intel_spi *ispi)
 		ispi->sregs = ispi->base + LPT_SSFSTS_CTL;
 		ispi->pregs = ispi->base + LPT_PR;
 		ispi->nregions = LPT_FREG_NUM;
+<<<<<<< HEAD
 		ispi->pr_num = LPT_PR_NUM;
 		ispi->swseq_reg = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case INTEL_SPI_BXT:
 		ispi->sregs = ispi->base + BXT_SSFSTS_CTL;
 		ispi->pregs = ispi->base + BXT_PR;
 		ispi->nregions = BXT_FREG_NUM;
+<<<<<<< HEAD
 		ispi->pr_num = BXT_PR_NUM;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ispi->erase_64k = true;
 		break;
 
@@ -347,12 +415,17 @@ static int intel_spi_init(struct intel_spi *ispi)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	/* Disable #SMI generation from HW sequencer */
+=======
+	/* Disable #SMI generation */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = readl(ispi->base + HSFSTS_CTL);
 	val &= ~HSFSTS_CTL_FSMIE;
 	writel(val, ispi->base + HSFSTS_CTL);
 
 	/*
+<<<<<<< HEAD
 	 * Determine whether erase operation should use HW or SW sequencer.
 	 *
 	 * The HW sequencer has a predefined list of opcodes, with only the
@@ -369,17 +442,43 @@ static int intel_spi_init(struct intel_spi *ispi)
 		if (!(lvscc & ERASE_64K_OPCODE_MASK) ||
 		    !(uvscc & ERASE_64K_OPCODE_MASK))
 			ispi->erase_64k = false;
+=======
+	 * BIOS programs allowed opcodes and then locks down the register.
+	 * So read back what opcodes it decided to support. That's the set
+	 * we are going to support as well.
+	 */
+	opmenu0 = readl(ispi->sregs + OPMENU0);
+	opmenu1 = readl(ispi->sregs + OPMENU1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Some controllers can only do basic operations using hardware
 	 * sequencer. All other operations are supposed to be carried out
+<<<<<<< HEAD
 	 * using software sequencer.
 	 */
 	if (ispi->swseq_reg) {
+=======
+	 * using software sequencer. If we find that BIOS has programmed
+	 * opcodes for the software sequencer we use that over the hardware
+	 * sequencer.
+	 */
+	if (opmenu0 && opmenu1) {
+		for (i = 0; i < ARRAY_SIZE(ispi->opcodes) / 2; i++) {
+			ispi->opcodes[i] = opmenu0 >> i * 8;
+			ispi->opcodes[i + 4] = opmenu1 >> i * 8;
+		}
+
+		val = readl(ispi->sregs + PREOP_OPTYPE);
+		ispi->preopcodes[0] = val;
+		ispi->preopcodes[1] = val >> 8;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Disable #SMI generation from SW sequencer */
 		val = readl(ispi->sregs + SSFSTS_CTL);
 		val &= ~SSFSTS_CTL_FSMIE;
 		writel(val, ispi->sregs + SSFSTS_CTL);
+<<<<<<< HEAD
 	}
 
 	/* Check controller's lock status */
@@ -401,6 +500,10 @@ static int intel_spi_init(struct intel_spi *ispi)
 				ispi->opcodes[i + 4] = opmenu1 >> i * 8;
 			}
 		}
+=======
+
+		ispi->swseq = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	intel_spi_dump_regs(ispi);
@@ -408,6 +511,7 @@ static int intel_spi_init(struct intel_spi *ispi)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int intel_spi_opcode_index(struct intel_spi *ispi, u8 opcode, int optype)
 {
 	int i;
@@ -430,6 +534,20 @@ static int intel_spi_opcode_index(struct intel_spi *ispi, u8 opcode, int optype)
 }
 
 static int intel_spi_hw_cycle(struct intel_spi *ispi, u8 opcode, int len)
+=======
+static int intel_spi_opcode_index(struct intel_spi *ispi, u8 opcode)
+{
+	int i;
+
+	for (i = 0; i < ARRAY_SIZE(ispi->opcodes); i++)
+		if (ispi->opcodes[i] == opcode)
+			return i;
+	return -EINVAL;
+}
+
+static int intel_spi_hw_cycle(struct intel_spi *ispi, u8 opcode, u8 *buf,
+			      int len)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 val, status;
 	int ret;
@@ -451,9 +569,12 @@ static int intel_spi_hw_cycle(struct intel_spi *ispi, u8 opcode, int len)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (len > INTEL_SPI_FIFO_SZ)
 		return -EINVAL;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val |= (len - 1) << HSFSTS_CTL_FDBC_SHIFT;
 	val |= HSFSTS_CTL_FCERR | HSFSTS_CTL_FDONE;
 	val |= HSFSTS_CTL_FGO;
@@ -472,6 +593,7 @@ static int intel_spi_hw_cycle(struct intel_spi *ispi, u8 opcode, int len)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int intel_spi_sw_cycle(struct intel_spi *ispi, u8 opcode, int len,
 			      int optype)
 {
@@ -523,6 +645,22 @@ static int intel_spi_sw_cycle(struct intel_spi *ispi, u8 opcode, int len,
 		}
 
 	}
+=======
+static int intel_spi_sw_cycle(struct intel_spi *ispi, u8 opcode, u8 *buf,
+			      int len)
+{
+	u32 val, status;
+	int ret;
+
+	ret = intel_spi_opcode_index(ispi, opcode);
+	if (ret < 0)
+		return ret;
+
+	val = ((len - 1) << SSFSTS_CTL_DBC_SHIFT) | SSFSTS_CTL_DS;
+	val |= ret << SSFSTS_CTL_COP_SHIFT;
+	val |= SSFSTS_CTL_FCERR | SSFSTS_CTL_FDONE;
+	val |= SSFSTS_CTL_SCGO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	writel(val, ispi->sregs + SSFSTS_CTL);
 
 	ret = intel_spi_wait_sw_busy(ispi);
@@ -546,11 +684,18 @@ static int intel_spi_read_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
 	/* Address of the first chip */
 	writel(0, ispi->base + FADDR);
 
+<<<<<<< HEAD
 	if (ispi->swseq_reg)
 		ret = intel_spi_sw_cycle(ispi, opcode, len,
 					 OPTYPE_READ_NO_ADDR);
 	else
 		ret = intel_spi_hw_cycle(ispi, opcode, len);
+=======
+	if (ispi->swseq)
+		ret = intel_spi_sw_cycle(ispi, opcode, buf, len);
+	else
+		ret = intel_spi_hw_cycle(ispi, opcode, buf, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret)
 		return ret;
@@ -565,6 +710,7 @@ static int intel_spi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
 
 	/*
 	 * This is handled with atomic operation and preop code in Intel
+<<<<<<< HEAD
 	 * controller so we only verify that it is available. If the
 	 * controller is not locked, program the opcode to the PREOP
 	 * register for later use.
@@ -592,6 +738,12 @@ static int intel_spi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
 		ispi->atomic_preopcode = opcode;
 		return 0;
 	}
+=======
+	 * controller so skip it here now.
+	 */
+	if (opcode == SPINOR_OP_WREN)
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel(0, ispi->base + FADDR);
 
@@ -600,10 +752,16 @@ static int intel_spi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (ispi->swseq_reg)
 		return intel_spi_sw_cycle(ispi, opcode, len,
 					  OPTYPE_WRITE_NO_ADDR);
 	return intel_spi_hw_cycle(ispi, opcode, len);
+=======
+	if (ispi->swseq)
+		return intel_spi_sw_cycle(ispi, opcode, buf, len);
+	return intel_spi_hw_cycle(ispi, opcode, buf, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t intel_spi_read(struct spi_nor *nor, loff_t from, size_t len,
@@ -614,6 +772,7 @@ static ssize_t intel_spi_read(struct spi_nor *nor, loff_t from, size_t len,
 	u32 val, status;
 	ssize_t ret;
 
+<<<<<<< HEAD
 	/*
 	 * Atomic sequence is not expected with HW sequencer reads. Make
 	 * sure it is cleared regardless.
@@ -621,6 +780,8 @@ static ssize_t intel_spi_read(struct spi_nor *nor, loff_t from, size_t len,
 	if (WARN_ON_ONCE(ispi->atomic_preopcode))
 		ispi->atomic_preopcode = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (nor->read_opcode) {
 	case SPINOR_OP_READ:
 	case SPINOR_OP_READ_FAST:
@@ -683,9 +844,12 @@ static ssize_t intel_spi_write(struct spi_nor *nor, loff_t to, size_t len,
 	u32 val, status;
 	ssize_t ret;
 
+<<<<<<< HEAD
 	/* Not needed with HW sequencer write, make sure it is cleared */
 	ispi->atomic_preopcode = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (len > 0) {
 		block_size = min_t(size_t, len, INTEL_SPI_FIFO_SZ);
 
@@ -701,6 +865,15 @@ static ssize_t intel_spi_write(struct spi_nor *nor, loff_t to, size_t len,
 		val |= (block_size - 1) << HSFSTS_CTL_FDBC_SHIFT;
 		val |= HSFSTS_CTL_FCYCLE_WRITE;
 
+<<<<<<< HEAD
+=======
+		/* Write enable */
+		if (ispi->preopcodes[1] == SPINOR_OP_WREN)
+			val |= SSFSTS_CTL_SPOP;
+		val |= SSFSTS_CTL_ACS;
+		writel(val, ispi->base + HSFSTS_CTL);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = intel_spi_write_block(ispi, write_buf, block_size);
 		if (ret) {
 			dev_err(ispi->dev, "failed to write block\n");
@@ -708,8 +881,13 @@ static ssize_t intel_spi_write(struct spi_nor *nor, loff_t to, size_t len,
 		}
 
 		/* Start the write now */
+<<<<<<< HEAD
 		val |= HSFSTS_CTL_FGO;
 		writel(val, ispi->base + HSFSTS_CTL);
+=======
+		val = readl(ispi->base + HSFSTS_CTL);
+		writel(val | HSFSTS_CTL_FGO, ispi->base + HSFSTS_CTL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = intel_spi_wait_hw_busy(ispi);
 		if (ret) {
@@ -754,6 +932,7 @@ static int intel_spi_erase(struct spi_nor *nor, loff_t offs)
 		erase_size = SZ_4K;
 	}
 
+<<<<<<< HEAD
 	if (ispi->swseq_erase) {
 		while (len > 0) {
 			writel(offs, ispi->base + FADDR);
@@ -773,6 +952,8 @@ static int intel_spi_erase(struct spi_nor *nor, loff_t offs)
 	/* Not needed with HW sequencer erase, make sure it is cleared */
 	ispi->atomic_preopcode = 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (len > 0) {
 		writel(offs, ispi->base + FADDR);
 
@@ -805,7 +986,11 @@ static bool intel_spi_is_protected(const struct intel_spi *ispi,
 {
 	int i;
 
+<<<<<<< HEAD
 	for (i = 0; i < ispi->pr_num; i++) {
+=======
+	for (i = 0; i < PR_NUM; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 pr_base, pr_limit, pr_value;
 
 		pr_value = readl(ispi->pregs + PR(i));
@@ -916,7 +1101,11 @@ struct intel_spi *intel_spi_probe(struct device *dev,
 	if (!ispi->writeable || !writeable)
 		ispi->nor.mtd.flags &= ~MTD_WRITEABLE;
 
+<<<<<<< HEAD
 	ret = mtd_device_register(&ispi->nor.mtd, &part, 1);
+=======
+	ret = mtd_device_parse_register(&ispi->nor.mtd, NULL, NULL, &part, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ERR_PTR(ret);
 

@@ -43,8 +43,12 @@
 
 /dts-v1/;
 #include "sun8i-a83t.dtsi"
+<<<<<<< HEAD
 
 #include <dt-bindings/gpio/gpio.h>
+=======
+#include "sunxi-common-regulators.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	model = "Allwinner A83T H8Homlet Proto Dev Board v2.0";
@@ -57,6 +61,7 @@
 	chosen {
 		stdout-path = "serial0:115200n8";
 	};
+<<<<<<< HEAD
 
 	reg_usb0_vbus: reg-usb0-vbus {
 		compatible = "regulator-fixed";
@@ -85,6 +90,8 @@
 
 &cpu100 {
 	cpu-supply = <&reg_dcdc3>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &ehci0 {
@@ -94,17 +101,28 @@
 &mmc0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc0_pins>;
+<<<<<<< HEAD
 	vmmc-supply = <&reg_dcdc1>;
 	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
 	bus-width = <4>;
+=======
+	vmmc-supply = <&reg_vcc3v0>;
+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>; /* PF6 */
+	bus-width = <4>;
+	cd-inverted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 
 &mmc2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc2_8bit_emmc_pins>;
+<<<<<<< HEAD
 	vmmc-supply = <&reg_dcdc1>;
 	vqmmc-supply = <&reg_dcdc1>;
+=======
+	vmmc-supply = <&reg_vcc3v0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus-width = <8>;
 	non-removable;
 	cap-mmc-hw-reset;
@@ -115,6 +133,19 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
+=======
+&reg_usb0_vbus {
+	gpio = <&r_pio 0 5 GPIO_ACTIVE_HIGH>; /* PL5 */
+	status = "okay";
+};
+
+&reg_usb1_vbus {
+	gpio = <&r_pio 0 6 GPIO_ACTIVE_HIGH>; /* PL6 */
+	status = "okay";
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &r_rsb {
 	status = "okay";
 
@@ -123,8 +154,11 @@
 		reg = <0x3a3>;
 		interrupt-parent = <&r_intc>;
 		interrupts = <0 IRQ_TYPE_LEVEL_LOW>;
+<<<<<<< HEAD
 		eldoin-supply = <&reg_dcdc1>;
 		swin-supply = <&reg_dcdc1>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	ac100: codec@e89 {
@@ -152,6 +186,7 @@
 	};
 };
 
+<<<<<<< HEAD
 #include "axp81x.dtsi"
 
 &reg_aldo1 {
@@ -259,6 +294,8 @@
 	regulator-name = "vcc-wifi";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pb_pins>;

@@ -3,10 +3,13 @@ static inline void init_mmu(void)
 {
 }
 
+<<<<<<< HEAD
 static inline void init_kio(void)
 {
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void enter_lazy_tlb(struct mm_struct *mm, struct task_struct *tsk)
 {
 }

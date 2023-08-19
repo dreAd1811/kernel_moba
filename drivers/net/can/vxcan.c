@@ -227,8 +227,15 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
 	netif_carrier_off(peer);
 
 	err = rtnl_configure_link(peer, ifmp);
+<<<<<<< HEAD
 	if (err < 0)
 		goto unregister_network_device;
+=======
+	if (err < 0) {
+		unregister_netdevice(peer);
+		return err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* register first device */
 	if (tb[IFLA_IFNAME])
@@ -237,8 +244,15 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
 		snprintf(dev->name, IFNAMSIZ, DRV_NAME "%%d");
 
 	err = register_netdevice(dev);
+<<<<<<< HEAD
 	if (err < 0)
 		goto unregister_network_device;
+=======
+	if (err < 0) {
+		unregister_netdevice(peer);
+		return err;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_carrier_off(dev);
 
@@ -250,10 +264,13 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
 	rcu_assign_pointer(priv->peer, dev);
 
 	return 0;
+<<<<<<< HEAD
 
 unregister_network_device:
 	unregister_netdevice(peer);
 	return err;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vxcan_dellink(struct net_device *dev, struct list_head *head)

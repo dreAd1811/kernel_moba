@@ -1195,6 +1195,12 @@ void __init adjust_lowmem_bounds(void)
 		phys_addr_t block_start = reg->base;
 		phys_addr_t block_end = reg->base + reg->size;
 
+<<<<<<< HEAD
+=======
+		if (memblock_is_nomap(reg))
+			continue;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (reg->base < vmalloc_limit) {
 			if (block_end > lowmem_limit)
 				/*
@@ -1261,16 +1267,26 @@ void __init adjust_lowmem_bounds(void)
 
 static inline void prepare_page_table(void)
 {
+<<<<<<< HEAD
 	unsigned long addr;
+=======
+	unsigned long addr = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phys_addr_t end;
 
 	/*
 	 * Clear out all the mappings below the kernel image.
 	 */
+<<<<<<< HEAD
 	for (addr = 0; addr < MODULES_VADDR; addr += PMD_SIZE)
 		pmd_clear(pmd_off_k(addr));
 
 #ifdef CONFIG_XIP_KERNEL
+=======
+#ifdef CONFIG_XIP_KERNEL
+	for ( ; addr < MODULES_VADDR; addr += PMD_SIZE)
+		pmd_clear(pmd_off_k(addr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* The XIP kernel is mapped in the module area -- skip over it */
 	addr = ((unsigned long)_exiprom + PMD_SIZE - 1) & PMD_MASK;
 #endif
@@ -1761,11 +1777,20 @@ static void __init early_fixmap_shutdown(void)
 	pmd_clear(fixmap_pmd(va));
 	local_flush_tlb_kernel_page(va);
 
+<<<<<<< HEAD
+=======
+	BUILD_BUG_ON(__end_of_permanent_fixed_addresses >
+			__end_of_fixed_addresses);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < __end_of_permanent_fixed_addresses; i++) {
 		pte_t *pte;
 		struct map_desc map;
 
+<<<<<<< HEAD
 		map.virtual = fix_to_virt(i);
+=======
+		map.virtual = __fix_to_virt(i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pte = pte_offset_early_fixmap(pmd_off_k(map.virtual), map.virtual);
 
 		/* Only i/o device mappings are supported ATM */

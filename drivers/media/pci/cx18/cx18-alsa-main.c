@@ -32,6 +32,10 @@
 #include "cx18-driver.h"
 #include "cx18-version.h"
 #include "cx18-alsa.h"
+<<<<<<< HEAD
+=======
+#include "cx18-alsa-mixer.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "cx18-alsa-pcm.h"
 
 int cx18_alsa_debug;

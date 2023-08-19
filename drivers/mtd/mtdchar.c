@@ -36,6 +36,10 @@
 #include <linux/mtd/mtd.h>
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/map.h>
+<<<<<<< HEAD
+=======
+#include <linux/mtd/partitions.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/uaccess.h>
 
@@ -328,6 +332,13 @@ static ssize_t mtdchar_write(struct file *file, const char __user *buf, size_t c
     IOCTL calls for getting device parameters.
 
 ======================================================================*/
+<<<<<<< HEAD
+=======
+static void mtdchar_erase_callback (struct erase_info *instr)
+{
+	wake_up((wait_queue_head_t *)instr->priv);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int otp_select_filemode(struct mtd_file_info *mfi, int mode)
 {
@@ -375,7 +386,16 @@ static int mtdchar_writeoob(struct file *file, struct mtd_info *mtd,
 		return -EINVAL;
 
 	if (!mtd->_write_oob)
+<<<<<<< HEAD
 		return -EOPNOTSUPP;
+=======
+		ret = -EOPNOTSUPP;
+	else
+		ret = access_ok(VERIFY_READ, ptr, length) ? 0 : -EFAULT;
+
+	if (ret)
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ops.ooblen = length;
 	ops.ooboffs = start & (mtd->writesize - 1);
@@ -414,6 +434,12 @@ static int mtdchar_readoob(struct file *file, struct mtd_info *mtd,
 	if (length > 4096)
 		return -EINVAL;
 
+<<<<<<< HEAD
+=======
+	if (!access_ok(VERIFY_WRITE, ptr, length))
+		return -EFAULT;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ops.ooblen = length;
 	ops.ooboffs = start & (mtd->writesize - 1);
 	ops.datbuf = NULL;
@@ -610,6 +636,12 @@ static int mtdchar_write_ioctl(struct mtd_info *mtd,
 
 	usr_data = (const void __user *)(uintptr_t)req.usr_data;
 	usr_oob = (const void __user *)(uintptr_t)req.usr_oob;
+<<<<<<< HEAD
+=======
+	if (!access_ok(VERIFY_READ, usr_data, req.len) ||
+	    !access_ok(VERIFY_READ, usr_oob, req.ooblen))
+		return -EFAULT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!mtd->_write_oob)
 		return -EOPNOTSUPP;
@@ -651,10 +683,27 @@ static int mtdchar_ioctl(struct file *file, u_int cmd, u_long arg)
 	struct mtd_info *mtd = mfi->mtd;
 	void __user *argp = (void __user *)arg;
 	int ret = 0;
+<<<<<<< HEAD
+=======
+	u_long size;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mtd_info_user info;
 
 	pr_debug("MTD_ioctl\n");
 
+<<<<<<< HEAD
+=======
+	size = (cmd & IOCSIZE_MASK) >> IOCSIZE_SHIFT;
+	if (cmd & IOC_IN) {
+		if (!access_ok(VERIFY_READ, argp, size))
+			return -EFAULT;
+	}
+	if (cmd & IOC_OUT) {
+		if (!access_ok(VERIFY_WRITE, argp, size))
+			return -EFAULT;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (cmd) {
 	case MEMGETREGIONCOUNT:
 		if (copy_to_user(argp, &(mtd->numeraseregions), sizeof(int)))
@@ -709,6 +758,14 @@ static int mtdchar_ioctl(struct file *file, u_int cmd, u_long arg)
 		if (!erase)
 			ret = -ENOMEM;
 		else {
+<<<<<<< HEAD
+=======
+			wait_queue_head_t waitq;
+			DECLARE_WAITQUEUE(wait, current);
+
+			init_waitqueue_head(&waitq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (cmd == MEMERASE64) {
 				struct erase_info_user64 einfo64;
 
@@ -730,8 +787,36 @@ static int mtdchar_ioctl(struct file *file, u_int cmd, u_long arg)
 				erase->addr = einfo32.start;
 				erase->len = einfo32.length;
 			}
+<<<<<<< HEAD
 
 			ret = mtd_erase(mtd, erase);
+=======
+			erase->mtd = mtd;
+			erase->callback = mtdchar_erase_callback;
+			erase->priv = (unsigned long)&waitq;
+
+			/*
+			  FIXME: Allow INTERRUPTIBLE. Which means
+			  not having the wait_queue head on the stack.
+
+			  If the wq_head is on the stack, and we
+			  leave because we got interrupted, then the
+			  wq_head is no longer there when the
+			  callback routine tries to wake us up.
+			*/
+			ret = mtd_erase(mtd, erase);
+			if (!ret) {
+				set_current_state(TASK_UNINTERRUPTIBLE);
+				add_wait_queue(&waitq, &wait);
+				if (erase->state != MTD_ERASE_DONE &&
+				    erase->state != MTD_ERASE_FAILED)
+					schedule();
+				remove_wait_queue(&waitq, &wait);
+				set_current_state(TASK_RUNNING);
+
+				ret = (erase->state == MTD_ERASE_FAILED)?-EIO:0;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(erase);
 		}
 		break;
@@ -949,6 +1034,12 @@ static int mtdchar_ioctl(struct file *file, u_int cmd, u_long arg)
 
 	case ECCGETSTATS:
 	{
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MTD_LAZYECCSTATS
+		part_fill_badblockstats(mtd);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (copy_to_user(argp, &mtd->ecc_stats,
 				 sizeof(struct mtd_ecc_stats)))
 			return -EFAULT;

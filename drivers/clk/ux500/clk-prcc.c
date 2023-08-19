@@ -107,9 +107,17 @@ static struct clk *clk_reg_prcc(const char *name,
 		return ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	clk = kzalloc(sizeof(*clk), GFP_KERNEL);
 	if (!clk)
 		return ERR_PTR(-ENOMEM);
+=======
+	clk = kzalloc(sizeof(struct clk_prcc), GFP_KERNEL);
+	if (!clk) {
+		pr_err("clk_prcc: %s could not allocate clk\n", __func__);
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	clk->base = ioremap(phy_base, SZ_4K);
 	if (!clk->base)

@@ -31,8 +31,11 @@
 #include <linux/mfd/ds1wm.h>
 #include <linux/mfd/tmio.h>
 
+<<<<<<< HEAD
 #include <linux/mmc/host.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	ASIC3_CLOCK_SPI,
 	ASIC3_CLOCK_OWM,
@@ -721,7 +724,10 @@ static void asic3_mmc_clk_div(struct platform_device *pdev, int state)
 
 static struct tmio_mmc_data asic3_mmc_data = {
 	.hclk           = 24576000,
+<<<<<<< HEAD
 	.ocr_mask	= MMC_VDD_32_33 | MMC_VDD_33_34,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_pwr        = asic3_mmc_pwr,
 	.set_clk_div    = asic3_mmc_clk_div,
 };

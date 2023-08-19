@@ -708,12 +708,22 @@ bool rtl8723e_rx_query_desc(struct ieee80211_hw *hw,
 			    u8 *pdesc, struct sk_buff *skb);
 void rtl8723e_set_desc(struct ieee80211_hw *hw,
 		       u8 *pdesc, bool istx, u8 desc_name, u8 *val);
+<<<<<<< HEAD
 u64 rtl8723e_get_desc(struct ieee80211_hw *hw,
 		      u8 *pdesc, bool istx, u8 desc_name);
+=======
+u32 rtl8723e_get_desc(u8 *pdesc, bool istx, u8 desc_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool rtl8723e_is_tx_desc_closed(struct ieee80211_hw *hw,
 				u8 hw_queue, u16 index);
 void rtl8723e_tx_polling(struct ieee80211_hw *hw, u8 hw_queue);
 void rtl8723e_tx_fill_cmddesc(struct ieee80211_hw *hw, u8 *pdesc,
 			      bool firstseg, bool lastseg,
 			      struct sk_buff *skb);
+<<<<<<< HEAD
+=======
+u32 rtl8723e_rx_command_packet(struct ieee80211_hw *hw,
+			       const struct rtl_stats *status,
+			       struct sk_buff *skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

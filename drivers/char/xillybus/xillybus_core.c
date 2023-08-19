@@ -1736,10 +1736,17 @@ end:
 	return pos;
 }
 
+<<<<<<< HEAD
 static __poll_t xillybus_poll(struct file *filp, poll_table *wait)
 {
 	struct xilly_channel *channel = filp->private_data;
 	__poll_t mask = 0;
+=======
+static unsigned int xillybus_poll(struct file *filp, poll_table *wait)
+{
+	struct xilly_channel *channel = filp->private_data;
+	unsigned int mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	poll_wait(filp, &channel->endpoint->ep_wait, wait);
@@ -1758,6 +1765,7 @@ static __poll_t xillybus_poll(struct file *filp, poll_table *wait)
 
 		spin_lock_irqsave(&channel->wr_spinlock, flags);
 		if (!channel->wr_empty || channel->wr_ready)
+<<<<<<< HEAD
 			mask |= EPOLLIN | EPOLLRDNORM;
 
 		if (channel->wr_hangup)
@@ -1767,6 +1775,17 @@ static __poll_t xillybus_poll(struct file *filp, poll_table *wait)
 			 * the read file descriptor so it sees EOF.
 			 */
 			mask |=  EPOLLIN | EPOLLRDNORM;
+=======
+			mask |= POLLIN | POLLRDNORM;
+
+		if (channel->wr_hangup)
+			/*
+			 * Not POLLHUP, because its behavior is in the
+			 * mist, and POLLIN does what we want: Wake up
+			 * the read file descriptor so it sees EOF.
+			 */
+			mask |=  POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&channel->wr_spinlock, flags);
 	}
 
@@ -1781,12 +1800,20 @@ static __poll_t xillybus_poll(struct file *filp, poll_table *wait)
 
 		spin_lock_irqsave(&channel->rd_spinlock, flags);
 		if (!channel->rd_full)
+<<<<<<< HEAD
 			mask |= EPOLLOUT | EPOLLWRNORM;
+=======
+			mask |= POLLOUT | POLLWRNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&channel->rd_spinlock, flags);
 	}
 
 	if (channel->endpoint->fatal_error)
+<<<<<<< HEAD
 		mask |= EPOLLERR;
+=======
+		mask |= POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

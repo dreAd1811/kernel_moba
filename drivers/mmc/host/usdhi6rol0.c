@@ -1757,7 +1757,11 @@ static int usdhi6_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	ret = mmc_regulator_get_supply(mmc);
+<<<<<<< HEAD
 	if (ret)
+=======
+	if (ret == -EPROBE_DEFER)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto e_free_mmc;
 
 	ret = mmc_of_parse(mmc);

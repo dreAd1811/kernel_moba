@@ -444,7 +444,11 @@ int cpia2_allocate_buffers(struct camera_data *cam);
 void cpia2_free_buffers(struct camera_data *cam);
 long cpia2_read(struct camera_data *cam,
 		char __user *buf, unsigned long count, int noblock);
+<<<<<<< HEAD
 __poll_t cpia2_poll(struct camera_data *cam,
+=======
+unsigned int cpia2_poll(struct camera_data *cam,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			struct file *filp, poll_table *wait);
 int cpia2_remap_buffer(struct camera_data *cam, struct vm_area_struct *vma);
 void cpia2_set_property_flip(struct camera_data *cam, int prop_val);

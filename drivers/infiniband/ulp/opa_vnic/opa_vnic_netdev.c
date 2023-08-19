@@ -95,7 +95,11 @@ static netdev_tx_t opa_netdev_start_xmit(struct sk_buff *skb,
 }
 
 static u16 opa_vnic_select_queue(struct net_device *netdev, struct sk_buff *skb,
+<<<<<<< HEAD
 				 struct net_device *sb_dev,
+=======
+				 void *accel_priv,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 select_queue_fallback_t fallback)
 {
 	struct opa_vnic_adapter *adapter = opa_vnic_priv(netdev);
@@ -104,14 +108,22 @@ static u16 opa_vnic_select_queue(struct net_device *netdev, struct sk_buff *skb,
 
 	/* pass entropy and vl as metadata in skb */
 	mdata = skb_push(skb, sizeof(*mdata));
+<<<<<<< HEAD
 	mdata->entropy = opa_vnic_calc_entropy(skb);
 	mdata->vl = opa_vnic_get_vl(adapter, skb);
 	rc = adapter->rn_ops->ndo_select_queue(netdev, skb,
 					       sb_dev, fallback);
+=======
+	mdata->entropy =  opa_vnic_calc_entropy(adapter, skb);
+	mdata->vl = opa_vnic_get_vl(adapter, skb);
+	rc = adapter->rn_ops->ndo_select_queue(netdev, skb,
+					       accel_priv, fallback);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb_pull(skb, sizeof(*mdata));
 	return rc;
 }
 
+<<<<<<< HEAD
 static void opa_vnic_update_state(struct opa_vnic_adapter *adapter, bool up)
 {
 	struct __opa_veswport_info *info = &adapter->info;
@@ -133,6 +145,8 @@ static void opa_vnic_update_state(struct opa_vnic_adapter *adapter, bool up)
 	mutex_unlock(&adapter->lock);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* opa_vnic_process_vema_config - process vema configuration updates */
 void opa_vnic_process_vema_config(struct opa_vnic_adapter *adapter)
 {
@@ -151,7 +165,11 @@ void opa_vnic_process_vema_config(struct opa_vnic_adapter *adapter)
 		memcpy(saddr.sa_data, info->vport.base_mac_addr,
 		       ARRAY_SIZE(info->vport.base_mac_addr));
 		mutex_lock(&adapter->lock);
+<<<<<<< HEAD
 		eth_commit_mac_addr_change(netdev, &saddr);
+=======
+		eth_mac_addr(netdev, &saddr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(adapter->vema_mac_addr,
 		       info->vport.base_mac_addr, ETH_ALEN);
 		mutex_unlock(&adapter->lock);
@@ -161,7 +179,11 @@ void opa_vnic_process_vema_config(struct opa_vnic_adapter *adapter)
 
 	/* Handle MTU limit change */
 	rtnl_lock();
+<<<<<<< HEAD
 	netdev->max_mtu = max_t(unsigned int, info->vesw.eth_mtu,
+=======
+	netdev->max_mtu = max_t(unsigned int, info->vesw.eth_mtu_non_vlan,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				netdev->min_mtu);
 	if (netdev->mtu > netdev->max_mtu)
 		dev_set_mtu(netdev, netdev->max_mtu);
@@ -185,8 +207,19 @@ void opa_vnic_process_vema_config(struct opa_vnic_adapter *adapter)
 		adapter->flow_tbl[i] = port_count ? port_num[i % port_count] :
 						    OPA_VNIC_INVALID_PORT;
 
+<<<<<<< HEAD
 	/* update state */
 	opa_vnic_update_state(adapter, !!(netdev->flags & IFF_UP));
+=======
+	/* Operational state can only be DROP_ALL or FORWARDING */
+	if (info->vport.config_state == OPA_VNIC_STATE_FORWARDING) {
+		info->vport.oper_state = OPA_VNIC_STATE_FORWARDING;
+		netif_dormant_off(netdev);
+	} else {
+		info->vport.oper_state = OPA_VNIC_STATE_DROP_ALL;
+		netif_dormant_on(netdev);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -198,7 +231,10 @@ static inline void opa_vnic_set_pod_values(struct opa_vnic_adapter *adapter)
 	adapter->info.vport.max_smac_ent = OPA_VNIC_MAX_SMAC_LIMIT;
 	adapter->info.vport.config_state = OPA_VNIC_STATE_DROP_ALL;
 	adapter->info.vport.eth_link_status = OPA_VNIC_ETH_LINK_DOWN;
+<<<<<<< HEAD
 	adapter->info.vesw.eth_mtu = ETH_DATA_LEN;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* opa_vnic_set_mac_addr - change mac address */
@@ -284,8 +320,13 @@ static int opa_netdev_open(struct net_device *netdev)
 		return rc;
 	}
 
+<<<<<<< HEAD
 	/* Update status and send trap */
 	opa_vnic_update_state(adapter, true);
+=======
+	/* Update eth link status and send trap */
+	adapter->info.vport.eth_link_status = OPA_VNIC_ETH_LINK_UP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	opa_vnic_vema_report_event(adapter,
 				   OPA_VESWPORT_TRAP_ETH_LINK_STATUS_CHANGE);
 	return 0;
@@ -303,8 +344,13 @@ static int opa_netdev_close(struct net_device *netdev)
 		return rc;
 	}
 
+<<<<<<< HEAD
 	/* Update status and send trap */
 	opa_vnic_update_state(adapter, false);
+=======
+	/* Update eth link status and send trap */
+	adapter->info.vport.eth_link_status = OPA_VNIC_ETH_LINK_DOWN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	opa_vnic_vema_report_event(adapter,
 				   OPA_VESWPORT_TRAP_ETH_LINK_STATUS_CHANGE);
 	return 0;

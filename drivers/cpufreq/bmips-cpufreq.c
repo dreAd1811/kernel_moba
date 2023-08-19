@@ -71,7 +71,11 @@ bmips_cpufreq_get_freq_table(const struct cpufreq_policy *policy)
 
 	cpu_freq = htp_freq_to_cpu_freq(priv->clk_mult);
 
+<<<<<<< HEAD
 	table = kmalloc_array(priv->max_freqs + 1, sizeof(*table), GFP_KERNEL);
+=======
+	table = kmalloc((priv->max_freqs + 1) * sizeof(*table), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!table)
 		return ERR_PTR(-ENOMEM);
 

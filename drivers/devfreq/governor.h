@@ -54,9 +54,12 @@ struct devfreq_governor {
 				unsigned int event, void *data);
 };
 
+<<<<<<< HEAD
 /* Caution: devfreq->lock must be locked before calling update_devfreq */
 extern int update_devfreq(struct devfreq *devfreq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void devfreq_monitor_start(struct devfreq *devfreq);
 extern void devfreq_monitor_stop(struct devfreq *devfreq);
 extern void devfreq_monitor_suspend(struct devfreq *devfreq);
@@ -71,10 +74,14 @@ extern int devfreq_update_status(struct devfreq *devfreq, unsigned long freq);
 
 static inline int devfreq_update_stats(struct devfreq *df)
 {
+<<<<<<< HEAD
 	if (df->profile->get_dev_status)
 		return df->profile->get_dev_status(df->dev.parent,
 							 &df->last_status);
 	else
 		return -ENODEV;
+=======
+	return df->profile->get_dev_status(df->dev.parent, &df->last_status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* _GOVERNOR_H */

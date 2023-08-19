@@ -397,7 +397,11 @@ static int rackmeter_probe(struct macio_dev* mdev,
 	}
 
 	/* Create and initialize our instance data */
+<<<<<<< HEAD
 	rm = kzalloc(sizeof(*rm), GFP_KERNEL);
+=======
+	rm = kzalloc(sizeof(struct rackmeter), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rm == NULL) {
 		printk(KERN_ERR "rackmeter: failed to allocate memory !\n");
 		rc = -ENOMEM;

@@ -2,9 +2,16 @@
 # FSI subsystem
 #
 
+<<<<<<< HEAD
 menuconfig FSI
 	tristate "FSI support"
 	depends on OF
+=======
+menu "FSI support"
+
+config FSI
+	tristate "FSI support"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRC4
 	---help---
 	  FSI - the FRU Support Interface - is a simple bus for low-level
@@ -12,6 +19,7 @@ menuconfig FSI
 
 if FSI
 
+<<<<<<< HEAD
 config FSI_NEW_DEV_NODE
 	bool "Create '/dev/fsi' directory for char devices"
 	default n
@@ -27,6 +35,8 @@ config FSI_NEW_DEV_NODE
 	New userspace will use udev rules to generate predictable access
 	symlinks in /dev/fsi/by-path when this option is enabled.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config FSI_MASTER_GPIO
 	tristate "GPIO-based FSI master"
 	depends on GPIOLIB
@@ -42,6 +52,7 @@ config FSI_MASTER_HUB
 	allow chaining of FSI links to an arbitrary depth.  This allows for
 	a high target device fanout.
 
+<<<<<<< HEAD
 config FSI_MASTER_AST_CF
 	tristate "FSI master based on Aspeed ColdFire coprocessor"
 	depends on GPIOLIB
@@ -52,11 +63,14 @@ config FSI_MASTER_AST_CF
 	lines driven by the internal ColdFire coprocessor. This requires
 	the corresponding machine specific ColdFire firmware to be available.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config FSI_SCOM
 	tristate "SCOM FSI client device driver"
 	---help---
 	This option enables an FSI based SCOM device driver.
 
+<<<<<<< HEAD
 config FSI_SBEFIFO
 	tristate "SBEFIFO FSI client device driver"
 	depends on OF_ADDRESS
@@ -66,3 +80,8 @@ config FSI_SBEFIFO
 	(SBE) on POWER processors.
 
 endif
+=======
+endif
+
+endmenu
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

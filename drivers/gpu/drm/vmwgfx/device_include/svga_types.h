@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
 /**********************************************************
  * Copyright 2015 VMware, Inc.
+=======
+/**********************************************************
+ * Copyright 2015 VMware, Inc.  All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -41,10 +46,16 @@ typedef uint64 PPN64;
 
 typedef bool Bool;
 
+<<<<<<< HEAD
 #define MAX_UINT64 U64_MAX
 #define MAX_UINT32 U32_MAX
 #define MAX_UINT16 U16_MAX
 
 #define CONST64U(x) x##ULL
 
+=======
+#define MAX_UINT32 U32_MAX
+#define MAX_UINT16 U16_MAX
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

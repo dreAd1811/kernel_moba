@@ -5,8 +5,13 @@
 #ifdef __KERNEL__
 #include <linux/compiler.h>
 #include <asm/synch.h>
+<<<<<<< HEAD
 #include <linux/bug.h>
 #include <asm/asm-405.h>
+=======
+#include <asm/asm-compat.h>
+#include <linux/bug.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef __BIG_ENDIAN
 #define BITOFF_CAL(size, off)	((sizeof(u32) - size - off) * BITS_PER_BYTE)

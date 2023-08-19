@@ -230,6 +230,7 @@ err:
 	return NETDEV_TX_BUSY;
 }
 
+<<<<<<< HEAD
 static void ntb_netdev_tx_timer(struct timer_list *t)
 {
 	struct ntb_netdev *dev = from_timer(dev, t, tx_timer);
@@ -237,6 +238,15 @@ static void ntb_netdev_tx_timer(struct timer_list *t)
 
 	if (ntb_transport_tx_free_entry(dev->qp) < tx_stop) {
 		mod_timer(&dev->tx_timer, jiffies + msecs_to_jiffies(tx_time));
+=======
+static void ntb_netdev_tx_timer(unsigned long data)
+{
+	struct net_device *ndev = (struct net_device *)data;
+	struct ntb_netdev *dev = netdev_priv(ndev);
+
+	if (ntb_transport_tx_free_entry(dev->qp) < tx_stop) {
+		mod_timer(&dev->tx_timer, jiffies + usecs_to_jiffies(tx_time));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* Make sure anybody stopping the queue after this sees the new
 		 * value of ntb_transport_tx_free_entry()
@@ -269,7 +279,11 @@ static int ntb_netdev_open(struct net_device *ndev)
 		}
 	}
 
+<<<<<<< HEAD
 	timer_setup(&dev->tx_timer, ntb_netdev_tx_timer, 0);
+=======
+	setup_timer(&dev->tx_timer, ntb_netdev_tx_timer, (unsigned long)ndev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	netif_carrier_off(ndev);
 	ntb_transport_link_up(dev->qp);
@@ -430,7 +444,11 @@ static int ntb_netdev_probe(struct device *client_dev)
 	ndev->hw_features = ndev->features;
 	ndev->watchdog_timeo = msecs_to_jiffies(NTB_TX_TIMEOUT_MS);
 
+<<<<<<< HEAD
 	eth_random_addr(ndev->perm_addr);
+=======
+	random_ether_addr(ndev->perm_addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(ndev->dev_addr, ndev->perm_addr, ndev->addr_len);
 
 	ndev->netdev_ops = &ntb_netdev_ops;

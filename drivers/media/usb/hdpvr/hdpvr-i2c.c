@@ -32,11 +32,32 @@
 #define Z8F0811_IR_RX_I2C_ADDR	0x71
 
 
+<<<<<<< HEAD
 struct i2c_client *hdpvr_register_ir_i2c(struct hdpvr_device *dev)
 {
 	struct IR_i2c_init_data *init_data = &dev->ir_i2c_init_data;
 	struct i2c_board_info info = {
 		I2C_BOARD_INFO("ir_z8f0811_hdpvr", Z8F0811_IR_RX_I2C_ADDR),
+=======
+struct i2c_client *hdpvr_register_ir_tx_i2c(struct hdpvr_device *dev)
+{
+	struct IR_i2c_init_data *init_data = &dev->ir_i2c_init_data;
+	struct i2c_board_info hdpvr_ir_tx_i2c_board_info = {
+		I2C_BOARD_INFO("ir_tx_z8f0811_hdpvr", Z8F0811_IR_TX_I2C_ADDR),
+	};
+
+	init_data->name = "HD-PVR";
+	hdpvr_ir_tx_i2c_board_info.platform_data = init_data;
+
+	return i2c_new_device(&dev->i2c_adapter, &hdpvr_ir_tx_i2c_board_info);
+}
+
+struct i2c_client *hdpvr_register_ir_rx_i2c(struct hdpvr_device *dev)
+{
+	struct IR_i2c_init_data *init_data = &dev->ir_i2c_init_data;
+	struct i2c_board_info hdpvr_ir_rx_i2c_board_info = {
+		I2C_BOARD_INFO("ir_rx_z8f0811_hdpvr", Z8F0811_IR_RX_I2C_ADDR),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* Our default information for ir-kbd-i2c.c to use */
@@ -46,9 +67,15 @@ struct i2c_client *hdpvr_register_ir_i2c(struct hdpvr_device *dev)
 			  RC_PROTO_BIT_RC6_6A_32;
 	init_data->name = "HD-PVR";
 	init_data->polling_interval = 405; /* ms, duplicated from Windows */
+<<<<<<< HEAD
 	info.platform_data = init_data;
 
 	return i2c_new_device(&dev->i2c_adapter, &info);
+=======
+	hdpvr_ir_rx_i2c_board_info.platform_data = init_data;
+
+	return i2c_new_device(&dev->i2c_adapter, &hdpvr_ir_rx_i2c_board_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int hdpvr_i2c_read(struct hdpvr_device *dev, int bus,
@@ -117,6 +144,12 @@ static int hdpvr_transfer(struct i2c_adapter *i2c_adapter, struct i2c_msg *msgs,
 	struct hdpvr_device *dev = i2c_get_adapdata(i2c_adapter);
 	int retval = 0, addr;
 
+<<<<<<< HEAD
+=======
+	if (num <= 0)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_lock(&dev->i2c_mutex);
 
 	addr = msgs[0].addr << 1;
@@ -170,7 +203,11 @@ static const struct i2c_algorithm hdpvr_algo = {
 };
 
 static const struct i2c_adapter hdpvr_i2c_adapter_template = {
+<<<<<<< HEAD
 	.name   = "Hauppauge HD PVR I2C",
+=======
+	.name   = "Hauppage HD PVR I2C",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.owner  = THIS_MODULE,
 	.algo   = &hdpvr_algo,
 };

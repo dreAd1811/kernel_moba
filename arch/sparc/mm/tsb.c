@@ -546,9 +546,12 @@ int init_new_context(struct task_struct *tsk, struct mm_struct *mm)
 
 	mm->context.sparc64_ctx_val = 0UL;
 
+<<<<<<< HEAD
 	mm->context.tag_store = NULL;
 	spin_lock_init(&mm->context.tag_lock);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_HUGETLB_PAGE) || defined(CONFIG_TRANSPARENT_HUGEPAGE)
 	/* We reset them to zero because the fork() page copying
 	 * will re-increment the counters as the parent PTEs are
@@ -614,6 +617,7 @@ void destroy_context(struct mm_struct *mm)
 	}
 
 	spin_unlock_irqrestore(&ctx_alloc_lock, flags);
+<<<<<<< HEAD
 
 	/* If ADI tag storage was allocated for this task, free it */
 	if (mm->context.tag_store) {
@@ -632,4 +636,6 @@ void destroy_context(struct mm_struct *mm)
 		kfree(mm->context.tag_store);
 		mm->context.tag_store = NULL;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

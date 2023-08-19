@@ -7,8 +7,11 @@
  */
 
 #include <dt-bindings/interrupt-controller/arm-gic.h>
+<<<<<<< HEAD
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/gpio/gpio.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "whale2.dtsi"
 
 / {
@@ -114,7 +117,11 @@
 	};
 
 	idle-states{
+<<<<<<< HEAD
 		entry-method = "psci";
+=======
+		entry-method = "arm,psci";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		CORE_PD: core_pd {
 			compatible = "arm,idle-state";
@@ -185,6 +192,7 @@
 	};
 
 	soc {
+<<<<<<< HEAD
 		pmu_gate: pmu-gate {
 			compatible = "sprd,sc9860-pmu-gate";
 			sprd,syscon = <&pmu_regs>; /* 0x402b0000 */
@@ -299,6 +307,8 @@
 			#clock-cells = <1>;
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		funnel@10001000 { /* SoC Funnel */
 			compatible = "arm,coresight-funnel", "arm,primecell";
 			reg = <0 0x10001000 0 0x1000>;
@@ -328,7 +338,11 @@
 					reg = <4>;
 					soc_funnel_in_port1: endpoint {
 						slave-mode;
+<<<<<<< HEAD
 						remote-endpoint =
+=======
+						remote-endpioint =
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							<&stm_out_port>;
 					};
 				};
@@ -681,6 +695,7 @@
 				};
 			};
 		};
+<<<<<<< HEAD
 
 		gpio-keys {
 			compatible = "gpio-keys";
@@ -709,5 +724,7 @@
 				wakeup-source;
 			};
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

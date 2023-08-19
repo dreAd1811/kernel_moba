@@ -54,11 +54,16 @@ void blk_mq_sched_assign_ioc(struct request *rq, struct bio *bio)
  * Mark a hardware queue as needing a restart. For shared queues, maintain
  * a count of how many hardware queues are marked for restart.
  */
+<<<<<<< HEAD
 void blk_mq_sched_mark_restart_hctx(struct blk_mq_hw_ctx *hctx)
+=======
+static void blk_mq_sched_mark_restart_hctx(struct blk_mq_hw_ctx *hctx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (test_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state))
 		return;
 
+<<<<<<< HEAD
 	set_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state);
 }
 EXPORT_SYMBOL_GPL(blk_mq_sched_mark_restart_hctx);
@@ -158,6 +163,36 @@ static void blk_mq_do_dispatch_ctx(struct blk_mq_hw_ctx *hctx)
 	} while (blk_mq_dispatch_rq_list(q, &rq_list, true));
 
 	WRITE_ONCE(hctx->dispatch_from, ctx);
+=======
+	if (hctx->flags & BLK_MQ_F_TAG_SHARED) {
+		struct request_queue *q = hctx->queue;
+
+		if (!test_and_set_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state))
+			atomic_inc(&q->shared_hctx_restart);
+	} else
+		set_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state);
+}
+
+static bool blk_mq_sched_restart_hctx(struct blk_mq_hw_ctx *hctx)
+{
+	if (!test_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state))
+		return false;
+
+	if (hctx->flags & BLK_MQ_F_TAG_SHARED) {
+		struct request_queue *q = hctx->queue;
+
+		if (test_and_clear_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state))
+			atomic_dec(&q->shared_hctx_restart);
+	} else
+		clear_bit(BLK_MQ_S_SCHED_RESTART, &hctx->state);
+
+	if (blk_mq_hctx_has_pending(hctx)) {
+		blk_mq_run_hw_queue(hctx, true);
+		return true;
+	}
+
+	return false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void blk_mq_sched_dispatch_requests(struct blk_mq_hw_ctx *hctx)
@@ -165,6 +200,10 @@ void blk_mq_sched_dispatch_requests(struct blk_mq_hw_ctx *hctx)
 	struct request_queue *q = hctx->queue;
 	struct elevator_queue *e = q->elevator;
 	const bool has_sched_dispatch = e && e->type->ops.mq.dispatch_request;
+<<<<<<< HEAD
+=======
+	bool do_sched_dispatch = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	LIST_HEAD(rq_list);
 
 	/* RCU or SRCU read lock is needed before checking quiesced flag */
@@ -192,11 +231,25 @@ void blk_mq_sched_dispatch_requests(struct blk_mq_hw_ctx *hctx)
 	 * scheduler, we can no longer merge or sort them. So it's best to
 	 * leave them there for as long as we can. Mark the hw queue as
 	 * needing a restart in that case.
+<<<<<<< HEAD
 	 *
+=======
+	 */
+	if (!list_empty(&rq_list)) {
+		blk_mq_sched_mark_restart_hctx(hctx);
+		do_sched_dispatch = blk_mq_dispatch_rq_list(q, &rq_list);
+	} else if (!has_sched_dispatch) {
+		blk_mq_flush_busy_ctxs(hctx, &rq_list);
+		blk_mq_dispatch_rq_list(q, &rq_list);
+	}
+
+	/*
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * We want to dispatch from the scheduler if there was nothing
 	 * on the dispatch list or we were able to dispatch from the
 	 * dispatch list.
 	 */
+<<<<<<< HEAD
 	if (!list_empty(&rq_list)) {
 		blk_mq_sched_mark_restart_hctx(hctx);
 		if (blk_mq_dispatch_rq_list(q, &rq_list, false)) {
@@ -213,6 +266,17 @@ void blk_mq_sched_dispatch_requests(struct blk_mq_hw_ctx *hctx)
 	} else {
 		blk_mq_flush_busy_ctxs(hctx, &rq_list);
 		blk_mq_dispatch_rq_list(q, &rq_list, false);
+=======
+	if (do_sched_dispatch && has_sched_dispatch) {
+		do {
+			struct request *rq;
+
+			rq = e->type->ops.mq.dispatch_request(hctx);
+			if (!rq)
+				break;
+			list_add(&rq->queuelist, &rq_list);
+		} while (blk_mq_dispatch_rq_list(q, &rq_list));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -240,8 +304,11 @@ bool blk_mq_sched_try_merge(struct request_queue *q, struct bio *bio,
 		if (!*merged_request)
 			elv_merged_request(q, rq, ELEVATOR_FRONT_MERGE);
 		return true;
+<<<<<<< HEAD
 	case ELEVATOR_DISCARD_MERGE:
 		return bio_attempt_discard_merge(q, rq, bio);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return false;
 	}
@@ -249,16 +316,31 @@ bool blk_mq_sched_try_merge(struct request_queue *q, struct bio *bio,
 EXPORT_SYMBOL_GPL(blk_mq_sched_try_merge);
 
 /*
+<<<<<<< HEAD
  * Iterate list of requests and see if we can merge this bio with any
  * of them.
  */
 bool blk_mq_bio_list_merge(struct request_queue *q, struct list_head *list,
 			   struct bio *bio)
+=======
+ * Reverse check our software queue for entries that we could potentially
+ * merge with. Currently includes a hand-wavy stop count of 8, to not spend
+ * too much time checking for merges.
+ */
+static bool blk_mq_attempt_merge(struct request_queue *q,
+				 struct blk_mq_ctx *ctx, struct bio *bio)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct request *rq;
 	int checked = 8;
 
+<<<<<<< HEAD
 	list_for_each_entry_reverse(rq, list, queuelist) {
+=======
+	lockdep_assert_held(&ctx->lock);
+
+	list_for_each_entry_reverse(rq, &ctx->rq_list, queuelist) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bool merged = false;
 
 		if (!checked--)
@@ -283,11 +365,17 @@ bool blk_mq_bio_list_merge(struct request_queue *q, struct list_head *list,
 			continue;
 		}
 
+<<<<<<< HEAD
+=======
+		if (merged)
+			ctx->rq_merged++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return merged;
 	}
 
 	return false;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(blk_mq_bio_list_merge);
 
 /*
@@ -307,6 +395,8 @@ static bool blk_mq_attempt_merge(struct request_queue *q,
 
 	return false;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 bool __blk_mq_sched_bio_merge(struct request_queue *q, struct bio *bio)
 {
@@ -345,6 +435,7 @@ void blk_mq_sched_request_inserted(struct request *rq)
 EXPORT_SYMBOL_GPL(blk_mq_sched_request_inserted);
 
 static bool blk_mq_sched_bypass_insert(struct blk_mq_hw_ctx *hctx,
+<<<<<<< HEAD
 				       bool has_sched,
 				       struct request *rq)
 {
@@ -364,12 +455,111 @@ static bool blk_mq_sched_bypass_insert(struct blk_mq_hw_ctx *hctx,
 
 void blk_mq_sched_insert_request(struct request *rq, bool at_head,
 				 bool run_queue, bool async)
+=======
+				       struct request *rq)
+{
+	if (rq->tag == -1) {
+		rq->rq_flags |= RQF_SORTED;
+		return false;
+	}
+
+	/*
+	 * If we already have a real request tag, send directly to
+	 * the dispatch list.
+	 */
+	spin_lock(&hctx->lock);
+	list_add(&rq->queuelist, &hctx->dispatch);
+	spin_unlock(&hctx->lock);
+	return true;
+}
+
+/**
+ * list_for_each_entry_rcu_rr - iterate in a round-robin fashion over rcu list
+ * @pos:    loop cursor.
+ * @skip:   the list element that will not be examined. Iteration starts at
+ *          @skip->next.
+ * @head:   head of the list to examine. This list must have at least one
+ *          element, namely @skip.
+ * @member: name of the list_head structure within typeof(*pos).
+ */
+#define list_for_each_entry_rcu_rr(pos, skip, head, member)		\
+	for ((pos) = (skip);						\
+	     (pos = (pos)->member.next != (head) ? list_entry_rcu(	\
+			(pos)->member.next, typeof(*pos), member) :	\
+	      list_entry_rcu((pos)->member.next->next, typeof(*pos), member)), \
+	     (pos) != (skip); )
+
+/*
+ * Called after a driver tag has been freed to check whether a hctx needs to
+ * be restarted. Restarts @hctx if its tag set is not shared. Restarts hardware
+ * queues in a round-robin fashion if the tag set of @hctx is shared with other
+ * hardware queues.
+ */
+void blk_mq_sched_restart(struct blk_mq_hw_ctx *const hctx)
+{
+	struct blk_mq_tags *const tags = hctx->tags;
+	struct blk_mq_tag_set *const set = hctx->queue->tag_set;
+	struct request_queue *const queue = hctx->queue, *q;
+	struct blk_mq_hw_ctx *hctx2;
+	unsigned int i, j;
+
+	if (set->flags & BLK_MQ_F_TAG_SHARED) {
+		/*
+		 * If this is 0, then we know that no hardware queues
+		 * have RESTART marked. We're done.
+		 */
+		if (!atomic_read(&queue->shared_hctx_restart))
+			return;
+
+		rcu_read_lock();
+		list_for_each_entry_rcu_rr(q, queue, &set->tag_list,
+					   tag_set_list) {
+			queue_for_each_hw_ctx(q, hctx2, i)
+				if (hctx2->tags == tags &&
+				    blk_mq_sched_restart_hctx(hctx2))
+					goto done;
+		}
+		j = hctx->queue_num + 1;
+		for (i = 0; i < queue->nr_hw_queues; i++, j++) {
+			if (j == queue->nr_hw_queues)
+				j = 0;
+			hctx2 = queue->queue_hw_ctx[j];
+			if (hctx2->tags == tags &&
+			    blk_mq_sched_restart_hctx(hctx2))
+				break;
+		}
+done:
+		rcu_read_unlock();
+	} else {
+		blk_mq_sched_restart_hctx(hctx);
+	}
+}
+
+/*
+ * Add flush/fua to the queue. If we fail getting a driver tag, then
+ * punt to the requeue list. Requeue will re-invoke us from a context
+ * that's safe to block from.
+ */
+static void blk_mq_sched_insert_flush(struct blk_mq_hw_ctx *hctx,
+				      struct request *rq, bool can_block)
+{
+	if (blk_mq_get_driver_tag(rq, &hctx, can_block)) {
+		blk_insert_flush(rq);
+		blk_mq_run_hw_queue(hctx, true);
+	} else
+		blk_mq_add_to_requeue_list(rq, false, true);
+}
+
+void blk_mq_sched_insert_request(struct request *rq, bool at_head,
+				 bool run_queue, bool async, bool can_block)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct request_queue *q = rq->q;
 	struct elevator_queue *e = q->elevator;
 	struct blk_mq_ctx *ctx = rq->mq_ctx;
 	struct blk_mq_hw_ctx *hctx = blk_mq_map_queue(q, ctx->cpu);
 
+<<<<<<< HEAD
 	/* flush rq in flush machinery need to be dispatched directly */
 	if (!(rq->rq_flags & RQF_FLUSH_SEQ) && op_is_flush(rq->cmd_flags)) {
 		blk_insert_flush(rq);
@@ -379,6 +569,14 @@ void blk_mq_sched_insert_request(struct request *rq, bool at_head,
 	WARN_ON(e && (rq->tag != -1));
 
 	if (blk_mq_sched_bypass_insert(hctx, !!e, rq))
+=======
+	if (rq->tag == -1 && op_is_flush(rq->cmd_flags)) {
+		blk_mq_sched_insert_flush(hctx, rq, can_block);
+		return;
+	}
+
+	if (e && blk_mq_sched_bypass_insert(hctx, rq))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto run;
 
 	if (e && e->type->ops.mq.insert_requests) {
@@ -404,6 +602,7 @@ void blk_mq_sched_insert_requests(struct request_queue *q,
 	struct blk_mq_hw_ctx *hctx = blk_mq_map_queue(q, ctx->cpu);
 	struct elevator_queue *e = hctx->queue->elevator;
 
+<<<<<<< HEAD
 	if (e && e->type->ops.mq.insert_requests)
 		e->type->ops.mq.insert_requests(hctx, list, false);
 	else {
@@ -419,6 +618,29 @@ void blk_mq_sched_insert_requests(struct request_queue *q,
 		}
 		blk_mq_insert_requests(hctx, ctx, list);
 	}
+=======
+	if (e) {
+		struct request *rq, *next;
+
+		/*
+		 * We bypass requests that already have a driver tag assigned,
+		 * which should only be flushes. Flushes are only ever inserted
+		 * as single requests, so we shouldn't ever hit the
+		 * WARN_ON_ONCE() below (but let's handle it just in case).
+		 */
+		list_for_each_entry_safe(rq, next, list, queuelist) {
+			if (WARN_ON_ONCE(rq->tag != -1)) {
+				list_del_init(&rq->queuelist);
+				blk_mq_sched_bypass_insert(hctx, rq);
+			}
+		}
+	}
+
+	if (e && e->type->ops.mq.insert_requests)
+		e->type->ops.mq.insert_requests(hctx, list, false);
+	else
+		blk_mq_insert_requests(hctx, ctx, list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	blk_mq_run_hw_queue(hctx, run_queue_async);
 }
@@ -463,6 +685,53 @@ static void blk_mq_sched_tags_teardown(struct request_queue *q)
 		blk_mq_sched_free_tags(set, hctx, i);
 }
 
+<<<<<<< HEAD
+=======
+int blk_mq_sched_init_hctx(struct request_queue *q, struct blk_mq_hw_ctx *hctx,
+			   unsigned int hctx_idx)
+{
+	struct elevator_queue *e = q->elevator;
+	int ret;
+
+	if (!e)
+		return 0;
+
+	ret = blk_mq_sched_alloc_tags(q, hctx, hctx_idx);
+	if (ret)
+		return ret;
+
+	if (e->type->ops.mq.init_hctx) {
+		ret = e->type->ops.mq.init_hctx(hctx, hctx_idx);
+		if (ret) {
+			blk_mq_sched_free_tags(q->tag_set, hctx, hctx_idx);
+			return ret;
+		}
+	}
+
+	blk_mq_debugfs_register_sched_hctx(q, hctx);
+
+	return 0;
+}
+
+void blk_mq_sched_exit_hctx(struct request_queue *q, struct blk_mq_hw_ctx *hctx,
+			    unsigned int hctx_idx)
+{
+	struct elevator_queue *e = q->elevator;
+
+	if (!e)
+		return;
+
+	blk_mq_debugfs_unregister_sched_hctx(hctx);
+
+	if (e->type->ops.mq.exit_hctx && hctx->sched_data) {
+		e->type->ops.mq.exit_hctx(hctx, hctx_idx);
+		hctx->sched_data = NULL;
+	}
+
+	blk_mq_sched_free_tags(q->tag_set, hctx, hctx_idx);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e)
 {
 	struct blk_mq_hw_ctx *hctx;
@@ -472,7 +741,10 @@ int blk_mq_init_sched(struct request_queue *q, struct elevator_type *e)
 
 	if (!e) {
 		q->elevator = NULL;
+<<<<<<< HEAD
 		q->nr_requests = q->tag_set->queue_depth;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -535,3 +807,17 @@ void blk_mq_exit_sched(struct request_queue *q, struct elevator_queue *e)
 	blk_mq_sched_tags_teardown(q);
 	q->elevator = NULL;
 }
+<<<<<<< HEAD
+=======
+
+int blk_mq_sched_init(struct request_queue *q)
+{
+	int ret;
+
+	mutex_lock(&q->sysfs_lock);
+	ret = elevator_init(q, NULL);
+	mutex_unlock(&q->sysfs_lock);
+
+	return ret;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

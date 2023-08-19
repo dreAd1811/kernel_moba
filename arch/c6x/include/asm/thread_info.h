@@ -60,6 +60,12 @@ struct thread_info {
 	.addr_limit	= KERNEL_DS,		\
 }
 
+<<<<<<< HEAD
+=======
+#define init_thread_info	(init_thread_union.thread_info)
+#define init_stack		(init_thread_union.stack)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* get the thread information struct of current task */
 static inline __attribute__((const))
 struct thread_info *current_thread_info(void)

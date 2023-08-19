@@ -22,7 +22,11 @@
 #define DRV_NAME "ide-pnp"
 
 /* Add your devices here :)) */
+<<<<<<< HEAD
 static const struct pnp_device_id idepnp_devices[] = {
+=======
+static struct pnp_device_id idepnp_devices[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Generic ESDI/IDE/ATA compatible hard disk controller */
 	{.id = "PNP0600", .driver_data = 0},
 	{.id = ""}

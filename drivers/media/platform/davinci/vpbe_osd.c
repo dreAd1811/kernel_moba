@@ -18,17 +18,25 @@
  *
  */
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/mod_devicetable.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
 #include <linux/clk.h>
 #include <linux/slab.h>
 
+<<<<<<< HEAD
 #ifdef CONFIG_ARCH_DAVINCI
 #include <mach/cputype.h>
 #include <mach/hardware.h>
 #endif
+=======
+#include <mach/cputype.h>
+#include <mach/hardware.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <media/davinci/vpss.h>
 #include <media/v4l2-device.h>
@@ -125,10 +133,17 @@ static inline u32 osd_modify(struct osd_state *sd, u32 mask, u32 val,
 
 /**
  * _osd_dm6446_vid0_pingpong() - field inversion fix for DM6446
+<<<<<<< HEAD
  * @sd: ptr to struct osd_state
  * @field_inversion: inversion flag
  * @fb_base_phys: frame buffer address
  * @lconfig: ptr to layer config
+=======
+ * @sd - ptr to struct osd_state
+ * @field_inversion - inversion flag
+ * @fb_base_phys - frame buffer address
+ * @lconfig - ptr to layer config
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This routine implements a workaround for the field signal inversion silicon
  * erratum described in Advisory 1.3.8 for the DM6446.  The fb_base_phys and
@@ -785,9 +800,15 @@ static void osd_get_layer_config(struct osd_state *sd, enum osd_layer layer,
 
 /**
  * try_layer_config() - Try a specific configuration for the layer
+<<<<<<< HEAD
  * @sd: ptr to struct osd_state
  * @layer: layer to configure
  * @lconfig: layer configuration to try
+=======
+ * @sd  - ptr to struct osd_state
+ * @layer - layer to configure
+ * @lconfig - layer configuration to try
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * If the requested lconfig is completely rejected and the value of lconfig on
  * exit is the current lconfig, then try_layer_config() returns 1.  Otherwise,
@@ -847,10 +868,16 @@ static int try_layer_config(struct osd_state *sd, enum osd_layer layer,
 
 	/* DM6446: */
 	/* only one OSD window at a time can use RGB pixel formats */
+<<<<<<< HEAD
 	if ((osd->vpbe_type == VPBE_VERSION_1) &&
 	    is_osd_win(layer) && is_rgb_pixfmt(lconfig->pixfmt)) {
 		enum osd_pix_format pixfmt;
 
+=======
+	  if ((osd->vpbe_type == VPBE_VERSION_1) &&
+		  is_osd_win(layer) && is_rgb_pixfmt(lconfig->pixfmt)) {
+		enum osd_pix_format pixfmt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (layer == WIN_OSD0)
 			pixfmt = osd->win[WIN_OSD1].lconfig.pixfmt;
 		else

@@ -61,7 +61,11 @@ Setting the ramoops parameters can be done in several different manners:
 	mem=128M ramoops.mem_address=0x8000000 ramoops.ecc=1
 
  B. Use Device Tree bindings, as described in
+<<<<<<< HEAD
  ``Documentation/devicetree/bindings/reserved-memory/ramoops.txt``.
+=======
+ ``Documentation/device-tree/bindings/reserved-memory/admin-guide/ramoops.rst``.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  For example::
 
 	reserved-memory {

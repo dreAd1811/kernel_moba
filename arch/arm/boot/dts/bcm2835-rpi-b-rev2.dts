@@ -11,7 +11,11 @@
 
 	leds {
 		act {
+<<<<<<< HEAD
 			gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
+=======
+			gpios = <&gpio 16 1>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 };
@@ -96,12 +100,15 @@
 	hpd-gpios = <&gpio 46 GPIO_ACTIVE_HIGH>;
 };
 
+<<<<<<< HEAD
 &pwm {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pwm0_gpio40 &pwm1_gpio45>;
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_gpio14>;

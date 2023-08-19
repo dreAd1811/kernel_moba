@@ -146,10 +146,17 @@ int __init ath25_find_config(phys_addr_t base, unsigned long size)
 			pr_info("Fixing up empty mac addresses\n");
 			config->reset_config_gpio = 0xffff;
 			config->sys_led_gpio = 0xffff;
+<<<<<<< HEAD
 			eth_random_addr(config->wlan0_mac);
 			config->wlan0_mac[0] &= ~0x06;
 			eth_random_addr(config->enet0_mac);
 			eth_random_addr(config->enet1_mac);
+=======
+			random_ether_addr(config->wlan0_mac);
+			config->wlan0_mac[0] &= ~0x06;
+			random_ether_addr(config->enet0_mac);
+			random_ether_addr(config->enet1_mac);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 

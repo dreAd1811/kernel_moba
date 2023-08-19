@@ -93,12 +93,17 @@ static void ls_scfg_msi_compose_msg(struct irq_data *data, struct msi_msg *msg)
 	msg->address_lo = lower_32_bits(msi_data->msiir_addr);
 	msg->data = data->hwirq;
 
+<<<<<<< HEAD
 	if (msi_affinity_flag) {
 		const struct cpumask *mask;
 
 		mask = irq_data_get_effective_affinity_mask(data);
 		msg->data |= cpumask_first(mask);
 	}
+=======
+	if (msi_affinity_flag)
+		msg->data |= cpumask_first(data->common->affinity);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	iommu_dma_map_msi_msg(data->irq, msg);
 }
@@ -125,7 +130,11 @@ static int ls_scfg_msi_set_affinity(struct irq_data *irq_data,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	irq_data_update_effective_affinity(irq_data, cpumask_of(cpu));
+=======
+	cpumask_copy(irq_data->common->affinity, mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_SET_MASK_OK;
 }
@@ -323,7 +332,10 @@ static const struct of_device_id ls_scfg_msi_id[] = {
 	{ .compatible = "fsl,1s1021a-msi", .data = &ls1021_msi_cfg},
 	{ .compatible = "fsl,1s1043a-msi", .data = &ls1021_msi_cfg},
 
+<<<<<<< HEAD
 	{ .compatible = "fsl,ls1012a-msi", .data = &ls1021_msi_cfg },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "fsl,ls1021a-msi", .data = &ls1021_msi_cfg },
 	{ .compatible = "fsl,ls1043a-msi", .data = &ls1021_msi_cfg },
 	{ .compatible = "fsl,ls1043a-v1.1-msi", .data = &ls1043_v1_1_msi_cfg },

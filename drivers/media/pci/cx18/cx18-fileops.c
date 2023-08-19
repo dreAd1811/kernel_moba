@@ -484,7 +484,11 @@ static ssize_t cx18_read_pos(struct cx18_stream *s, char __user *ubuf,
 
 	CX18_DEBUG_HI_FILE("read %zd from %s, got %zd\n", count, s->name, rc);
 	if (rc > 0)
+<<<<<<< HEAD
 		pos += rc;
+=======
+		*pos += rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -602,18 +606,32 @@ ssize_t cx18_v4l2_read(struct file *filp, char __user *buf, size_t count,
 	return cx18_read_pos(s, buf, count, pos, filp->f_flags & O_NONBLOCK);
 }
 
+<<<<<<< HEAD
 __poll_t cx18_v4l2_enc_poll(struct file *filp, poll_table *wait)
 {
 	__poll_t req_events = poll_requested_events(wait);
+=======
+unsigned int cx18_v4l2_enc_poll(struct file *filp, poll_table *wait)
+{
+	unsigned long req_events = poll_requested_events(wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cx18_open_id *id = file2id(filp);
 	struct cx18 *cx = id->cx;
 	struct cx18_stream *s = &cx->streams[id->type];
 	int eof = test_bit(CX18_F_S_STREAMOFF, &s->s_flags);
+<<<<<<< HEAD
 	__poll_t res = 0;
 
 	/* Start a capture if there is none */
 	if (!eof && !test_bit(CX18_F_S_STREAMING, &s->s_flags) &&
 			(req_events & (EPOLLIN | EPOLLRDNORM))) {
+=======
+	unsigned res = 0;
+
+	/* Start a capture if there is none */
+	if (!eof && !test_bit(CX18_F_S_STREAMING, &s->s_flags) &&
+			(req_events & (POLLIN | POLLRDNORM))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int rc;
 
 		mutex_lock(&cx->serialize_lock);
@@ -622,33 +640,56 @@ __poll_t cx18_v4l2_enc_poll(struct file *filp, poll_table *wait)
 		if (rc) {
 			CX18_DEBUG_INFO("Could not start capture for %s (%d)\n",
 					s->name, rc);
+<<<<<<< HEAD
 			return EPOLLERR;
+=======
+			return POLLERR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		CX18_DEBUG_FILE("Encoder poll started capture\n");
 	}
 
 	if ((s->vb_type == V4L2_BUF_TYPE_VIDEO_CAPTURE) &&
 		(id->type == CX18_ENC_STREAM_TYPE_YUV)) {
+<<<<<<< HEAD
 		__poll_t videobuf_poll = videobuf_poll_stream(filp, &s->vbuf_q, wait);
 
 		if (v4l2_event_pending(&id->fh))
 			res |= EPOLLPRI;
 		if (eof && videobuf_poll == EPOLLERR)
 			return res | EPOLLHUP;
+=======
+		int videobuf_poll = videobuf_poll_stream(filp, &s->vbuf_q, wait);
+
+		if (v4l2_event_pending(&id->fh))
+			res |= POLLPRI;
+                if (eof && videobuf_poll == POLLERR)
+			return res | POLLHUP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return res | videobuf_poll;
 	}
 
 	/* add stream's waitq to the poll list */
 	CX18_DEBUG_HI_FILE("Encoder poll\n");
 	if (v4l2_event_pending(&id->fh))
+<<<<<<< HEAD
 		res |= EPOLLPRI;
+=======
+		res |= POLLPRI;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		poll_wait(filp, &s->waitq, wait);
 
 	if (atomic_read(&s->q_full.depth))
+<<<<<<< HEAD
 		return res | EPOLLIN | EPOLLRDNORM;
 	if (eof)
 		return res | EPOLLHUP;
+=======
+		return res | POLLIN | POLLRDNORM;
+	if (eof)
+		return res | POLLHUP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return res;
 }
 
@@ -684,9 +725,15 @@ int cx18_v4l2_mmap(struct file *file, struct vm_area_struct *vma)
 	return -EINVAL;
 }
 
+<<<<<<< HEAD
 void cx18_vb_timeout(struct timer_list *t)
 {
 	struct cx18_stream *s = from_timer(s, t, vb_timeout);
+=======
+void cx18_vb_timeout(unsigned long data)
+{
+	struct cx18_stream *s = (struct cx18_stream *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct cx18_videobuf_buffer *buf;
 	unsigned long flags;
 

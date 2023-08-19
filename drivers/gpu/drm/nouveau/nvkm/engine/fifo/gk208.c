@@ -24,6 +24,7 @@
 #include "gk104.h"
 #include "changk104.h"
 
+<<<<<<< HEAD
 #include <nvif/class.h>
 
 void
@@ -40,12 +41,23 @@ static const struct gk104_fifo_func
 gk208_fifo = {
 	.init_pbdma_timeout = gk208_fifo_init_pbdma_timeout,
 	.fault.access = gk104_fifo_fault_access,
+=======
+static const struct gk104_fifo_func
+gk208_fifo = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fault.engine = gk104_fifo_fault_engine,
 	.fault.reason = gk104_fifo_fault_reason,
 	.fault.hubclient = gk104_fifo_fault_hubclient,
 	.fault.gpcclient = gk104_fifo_fault_gpcclient,
+<<<<<<< HEAD
 	.runlist = &gk110_fifo_runlist,
 	.chan = {{0,0,KEPLER_CHANNEL_GPFIFO_A}, gk104_fifo_gpfifo_new },
+=======
+	.chan = {
+		&gk104_fifo_gpfifo_oclass,
+		NULL
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

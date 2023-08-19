@@ -17,8 +17,11 @@
 #include <asm/sn/types.h>
 #include <asm/sn/shub_mmr.h>
 
+<<<<<<< HEAD
 struct nodepda_s;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IBCT_NOTIFY             (0x1UL << 4)
 #define IBCT_ZFIL_MODE          (0x1UL << 0)
 
@@ -212,7 +215,11 @@ struct bteinfo_s {
  */
 extern bte_result_t bte_copy(u64, u64, u64, u64, void *);
 extern bte_result_t bte_unaligned_copy(u64, u64, u64, u64);
+<<<<<<< HEAD
 extern void bte_error_handler(struct nodepda_s *);
+=======
+extern void bte_error_handler(unsigned long);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define bte_zero(dest, len, mode, notification) \
 	bte_copy(0, dest, len, ((mode) | BTE_ZERO_FILL), notification)

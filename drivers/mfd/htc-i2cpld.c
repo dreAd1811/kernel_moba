@@ -477,12 +477,21 @@ static int htcpld_setup_chips(struct platform_device *pdev)
 
 	/* Setup each chip's output GPIOs */
 	htcpld->nchips = pdata->num_chip;
+<<<<<<< HEAD
 	htcpld->chip = devm_kcalloc(dev,
 				    htcpld->nchips,
 				    sizeof(struct htcpld_chip),
 				    GFP_KERNEL);
 	if (!htcpld->chip)
 		return -ENOMEM;
+=======
+	htcpld->chip = devm_kzalloc(dev, sizeof(struct htcpld_chip) * htcpld->nchips,
+				    GFP_KERNEL);
+	if (!htcpld->chip) {
+		dev_warn(dev, "Unable to allocate memory for chips\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Add the chips as best we can */
 	for (i = 0; i < htcpld->nchips; i++) {

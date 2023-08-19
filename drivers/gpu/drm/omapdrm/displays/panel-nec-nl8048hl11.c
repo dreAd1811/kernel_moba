@@ -1,7 +1,11 @@
 /*
  * NEC NL8048HL11 Panel driver
  *
+<<<<<<< HEAD
  * Copyright (C) 2010 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * Copyright (C) 2010 Texas Instruments Inc.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Erik Gilling <konkers@android.com>
  * Converted to new DSS device model: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
@@ -115,12 +119,17 @@ static int init_nec_8048_wvga_lcd(struct spi_device *spi)
 static int nec_8048_connect(struct omap_dss_device *dssdev)
 {
 	struct panel_drv_data *ddata = to_panel_data(dssdev);
+<<<<<<< HEAD
 	struct omap_dss_device *in;
+=======
+	struct omap_dss_device *in = ddata->in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r;
 
 	if (omapdss_device_is_connected(dssdev))
 		return 0;
 
+<<<<<<< HEAD
 	in = omapdss_of_find_source_for_first_ep(dssdev->dev->of_node);
 	if (IS_ERR(in)) {
 		dev_err(dssdev->dev, "failed to find video source\n");
@@ -134,6 +143,12 @@ static int nec_8048_connect(struct omap_dss_device *dssdev)
 	}
 
 	ddata->in = in;
+=======
+	r = in->ops.dpi->connect(in, dssdev);
+	if (r)
+		return r;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -146,9 +161,12 @@ static void nec_8048_disconnect(struct omap_dss_device *dssdev)
 		return;
 
 	in->ops.dpi->disconnect(in, dssdev);
+<<<<<<< HEAD
 
 	omap_dss_put_device(in);
 	ddata->in = NULL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nec_8048_enable(struct omap_dss_device *dssdev)
@@ -238,6 +256,10 @@ static int nec_8048_probe_of(struct spi_device *spi)
 {
 	struct device_node *node = spi->dev.of_node;
 	struct panel_drv_data *ddata = dev_get_drvdata(&spi->dev);
+<<<<<<< HEAD
+=======
+	struct omap_dss_device *in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int gpio;
 
 	gpio = of_get_named_gpio(node, "reset-gpios", 0);
@@ -250,6 +272,17 @@ static int nec_8048_probe_of(struct spi_device *spi)
 	/* XXX the panel spec doesn't mention any QVGA pin?? */
 	ddata->qvga_gpio = -ENOENT;
 
+<<<<<<< HEAD
+=======
+	in = omapdss_of_find_source_for_first_ep(node);
+	if (IS_ERR(in)) {
+		dev_err(&spi->dev, "failed to find video source\n");
+		return PTR_ERR(in);
+	}
+
+	ddata->in = in;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -280,6 +313,12 @@ static int nec_8048_probe(struct spi_device *spi)
 
 	ddata->spi = spi;
 
+<<<<<<< HEAD
+=======
+	if (!spi->dev.of_node)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	r = nec_8048_probe_of(spi);
 	if (r)
 		return r;
@@ -288,14 +327,22 @@ static int nec_8048_probe(struct spi_device *spi)
 		r = devm_gpio_request_one(&spi->dev, ddata->qvga_gpio,
 				GPIOF_OUT_INIT_HIGH, "lcd QVGA");
 		if (r)
+<<<<<<< HEAD
 			return r;
+=======
+			goto err_gpio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (gpio_is_valid(ddata->res_gpio)) {
 		r = devm_gpio_request_one(&spi->dev, ddata->res_gpio,
 				GPIOF_OUT_INIT_LOW, "lcd RES");
 		if (r)
+<<<<<<< HEAD
 			return r;
+=======
+			goto err_gpio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ddata->vm = nec_8048_panel_vm;
@@ -310,16 +357,32 @@ static int nec_8048_probe(struct spi_device *spi)
 	r = omapdss_register_display(dssdev);
 	if (r) {
 		dev_err(&spi->dev, "Failed to register panel\n");
+<<<<<<< HEAD
 		return r;
 	}
 
 	return 0;
+=======
+		goto err_reg;
+	}
+
+	return 0;
+
+err_reg:
+err_gpio:
+	omap_dss_put_device(ddata->in);
+	return r;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int nec_8048_remove(struct spi_device *spi)
 {
 	struct panel_drv_data *ddata = dev_get_drvdata(&spi->dev);
 	struct omap_dss_device *dssdev = &ddata->dssdev;
+<<<<<<< HEAD
+=======
+	struct omap_dss_device *in = ddata->in;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&ddata->spi->dev, "%s\n", __func__);
 
@@ -328,6 +391,11 @@ static int nec_8048_remove(struct spi_device *spi)
 	nec_8048_disable(dssdev);
 	nec_8048_disconnect(dssdev);
 
+<<<<<<< HEAD
+=======
+	omap_dss_put_device(in);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

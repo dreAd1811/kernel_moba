@@ -137,6 +137,7 @@ struct iwl_fw_runtime {
 		/* ts of the beginning of a non-collect fw dbg data period */
 		unsigned long non_collect_ts_start[FW_DBG_TRIGGER_MAX - 1];
 	} dump;
+<<<<<<< HEAD
 #ifdef CONFIG_IWLWIFI_DEBUGFS
 	struct {
 		struct delayed_work wk;
@@ -156,6 +157,13 @@ void iwl_fw_runtime_exit(struct iwl_fw_runtime *fwrt);
 void iwl_fw_runtime_suspend(struct iwl_fw_runtime *fwrt);
 
 void iwl_fw_runtime_resume(struct iwl_fw_runtime *fwrt);
+=======
+};
+
+void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
+			 const struct iwl_fw *fw,
+			 const struct iwl_fw_runtime_ops *ops, void *ops_ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void iwl_fw_set_current_image(struct iwl_fw_runtime *fwrt,
 					    enum iwl_ucode_type cur_fw_img)
@@ -168,4 +176,11 @@ void iwl_free_fw_paging(struct iwl_fw_runtime *fwrt);
 
 void iwl_get_shared_mem_conf(struct iwl_fw_runtime *fwrt);
 
+<<<<<<< HEAD
+=======
+void iwl_fwrt_handle_notification(struct iwl_fw_runtime *fwrt,
+				  struct iwl_rx_cmd_buffer *rxb);
+struct iwl_nvm_data *iwl_fw_get_nvm(struct iwl_fw_runtime *fwrt);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __iwl_fw_runtime_h__ */

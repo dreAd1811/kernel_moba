@@ -16,6 +16,10 @@
 
 #ifdef CONFIG_PIC32MZDA
 #define PHYS_OFFSET	_AC(0x08000000, UL)
+<<<<<<< HEAD
+=======
+#define UNCAC_BASE	_AC(0xa8000000, UL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #include <asm/mach-generic/spaces.h>

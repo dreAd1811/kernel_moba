@@ -20,6 +20,10 @@
 #include <linux/mm.h>
 #include <linux/proc_fs.h>
 #include <linux/screen_info.h>
+<<<<<<< HEAD
+=======
+#include <linux/bootmem.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/kernel.h>
 #include <linux/percpu.h>
 #include <linux/cpu.h>
@@ -35,7 +39,10 @@
 #endif
 
 #include <asm/bootparam.h>
+<<<<<<< HEAD
 #include <asm/kasan.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mmu_context.h>
 #include <asm/pgtable.h>
 #include <asm/processor.h>
@@ -47,6 +54,11 @@
 #include <asm/smp.h>
 #include <asm/sysmem.h>
 
+<<<<<<< HEAD
+=======
+#include <platform/hardware.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_VGA_CONSOLE) || defined(CONFIG_DUMMY_CONSOLE)
 struct screen_info screen_info = {
 	.orig_x = 0,
@@ -79,7 +91,10 @@ static char __initdata command_line[COMMAND_LINE_SIZE];
 static char default_command_line[COMMAND_LINE_SIZE] __initdata = CONFIG_CMDLINE;
 #endif
 
+<<<<<<< HEAD
 #ifdef CONFIG_PARSE_BOOTPARAM
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Boot parameter parsing.
  *
@@ -155,7 +170,11 @@ static int __init parse_bootparam(const bp_tag_t* tag)
 	/* Boot parameters must start with a BP_TAG_FIRST tag. */
 
 	if (tag->id != BP_TAG_FIRST) {
+<<<<<<< HEAD
 		pr_warn("Invalid boot parameters!\n");
+=======
+		printk(KERN_WARNING "Invalid boot parameters!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -164,19 +183,29 @@ static int __init parse_bootparam(const bp_tag_t* tag)
 	/* Parse all tags. */
 
 	while (tag != NULL && tag->id != BP_TAG_LAST) {
+<<<<<<< HEAD
 		for (t = &__tagtable_begin; t < &__tagtable_end; t++) {
+=======
+	 	for (t = &__tagtable_begin; t < &__tagtable_end; t++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (tag->id == t->tag) {
 				t->parse(tag);
 				break;
 			}
 		}
 		if (t == &__tagtable_end)
+<<<<<<< HEAD
 			pr_warn("Ignoring tag 0x%08x\n", tag->id);
+=======
+			printk(KERN_WARNING "Ignoring tag "
+			       "0x%08x\n", tag->id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tag = (bp_tag_t*)((unsigned long)(tag + 1) + tag->size);
 	}
 
 	return 0;
 }
+<<<<<<< HEAD
 #else
 static int __init parse_bootparam(const bp_tag_t *tag)
 {
@@ -184,6 +213,8 @@ static int __init parse_bootparam(const bp_tag_t *tag)
 	return 0;
 }
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_OF
 
@@ -213,8 +244,11 @@ static int __init xtensa_dt_io_area(unsigned long node, const char *uname,
 	/* round down to nearest 256MB boundary */
 	xtensa_kio_paddr &= 0xf0000000;
 
+<<<<<<< HEAD
 	init_kio();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 1;
 }
 #else
@@ -225,6 +259,20 @@ static int __init xtensa_dt_io_area(unsigned long node, const char *uname,
 }
 #endif
 
+<<<<<<< HEAD
+=======
+void __init early_init_dt_add_memory_arch(u64 base, u64 size)
+{
+	size &= PAGE_MASK;
+	memblock_add(base, size);
+}
+
+void * __init early_init_dt_alloc_memory_arch(u64 size, u64 align)
+{
+	return __alloc_bootmem(size, align, 0);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init early_init_devtree(void *params)
 {
 	early_init_dt_scan(params);
@@ -242,6 +290,7 @@ void __init early_init_devtree(void *params)
 
 void __init init_arch(bp_tag_t *bp_start)
 {
+<<<<<<< HEAD
 	/* Initialize MMU. */
 
 	init_mmu();
@@ -250,6 +299,8 @@ void __init init_arch(bp_tag_t *bp_start)
 
 	kasan_early_init();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Parse boot parameters */
 
 	if (bp_start)
@@ -267,6 +318,13 @@ void __init init_arch(bp_tag_t *bp_start)
 	/* Early hook for platforms */
 
 	platform_init(bp_start);
+<<<<<<< HEAD
+=======
+
+	/* Initialize MMU. */
+
+	init_mmu();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -277,6 +335,7 @@ extern char _end[];
 extern char _stext[];
 extern char _WindowVectors_text_start;
 extern char _WindowVectors_text_end;
+<<<<<<< HEAD
 extern char _DebugInterruptVector_text_start;
 extern char _DebugInterruptVector_text_end;
 extern char _KernelExceptionVector_text_start;
@@ -284,6 +343,15 @@ extern char _KernelExceptionVector_text_end;
 extern char _UserExceptionVector_text_start;
 extern char _UserExceptionVector_text_end;
 extern char _DoubleExceptionVector_text_start;
+=======
+extern char _DebugInterruptVector_literal_start;
+extern char _DebugInterruptVector_text_end;
+extern char _KernelExceptionVector_literal_start;
+extern char _KernelExceptionVector_text_end;
+extern char _UserExceptionVector_literal_start;
+extern char _UserExceptionVector_text_end;
+extern char _DoubleExceptionVector_literal_start;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern char _DoubleExceptionVector_text_end;
 #if XCHAL_EXCM_LEVEL >= 2
 extern char _Level2InterruptVector_text_start;
@@ -318,6 +386,7 @@ static inline int __init_memblock mem_reserve(unsigned long start,
 
 void __init setup_arch(char **cmdline_p)
 {
+<<<<<<< HEAD
 	pr_info("config ID: %08x:%08x\n",
 		get_sr(SREG_EPC), get_sr(SREG_EXCSAVE));
 	if (get_sr(SREG_EPC) != XCHAL_HW_CONFIGID0 ||
@@ -325,6 +394,8 @@ void __init setup_arch(char **cmdline_p)
 		pr_info("built for config ID: %08x:%08x\n",
 			XCHAL_HW_CONFIGID0, XCHAL_HW_CONFIGID1);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*cmdline_p = command_line;
 	platform_setup(cmdline_p);
 	strlcpy(boot_command_line, *cmdline_p, COMMAND_LINE_SIZE);
@@ -347,6 +418,7 @@ void __init setup_arch(char **cmdline_p)
 	mem_reserve(__pa(&_WindowVectors_text_start),
 		    __pa(&_WindowVectors_text_end));
 
+<<<<<<< HEAD
 	mem_reserve(__pa(&_DebugInterruptVector_text_start),
 		    __pa(&_DebugInterruptVector_text_end));
 
@@ -357,6 +429,18 @@ void __init setup_arch(char **cmdline_p)
 		    __pa(&_UserExceptionVector_text_end));
 
 	mem_reserve(__pa(&_DoubleExceptionVector_text_start),
+=======
+	mem_reserve(__pa(&_DebugInterruptVector_literal_start),
+		    __pa(&_DebugInterruptVector_text_end));
+
+	mem_reserve(__pa(&_KernelExceptionVector_literal_start),
+		    __pa(&_KernelExceptionVector_text_end));
+
+	mem_reserve(__pa(&_UserExceptionVector_literal_start),
+		    __pa(&_UserExceptionVector_text_end));
+
+	mem_reserve(__pa(&_DoubleExceptionVector_literal_start),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    __pa(&_DoubleExceptionVector_text_end));
 
 #if XCHAL_EXCM_LEVEL >= 2
@@ -388,7 +472,11 @@ void __init setup_arch(char **cmdline_p)
 #endif
 	parse_early_param();
 	bootmem_init();
+<<<<<<< HEAD
 	kasan_init();
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unflatten_and_copy_device_tree();
 
 #ifdef CONFIG_SMP
@@ -591,14 +679,20 @@ c_show(struct seq_file *f, void *slot)
 		      "model\t\t: Xtensa " XCHAL_HW_VERSION_NAME "\n"
 		      "core ID\t\t: " XCHAL_CORE_ID "\n"
 		      "build ID\t: 0x%x\n"
+<<<<<<< HEAD
 		      "config ID\t: %08x:%08x\n"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      "byte order\t: %s\n"
 		      "cpu MHz\t\t: %lu.%02lu\n"
 		      "bogomips\t: %lu.%02lu\n",
 		      num_online_cpus(),
 		      cpumask_pr_args(cpu_online_mask),
 		      XCHAL_BUILD_UNIQUE_ID,
+<<<<<<< HEAD
 		      get_sr(SREG_EPC), get_sr(SREG_EXCSAVE),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      XCHAL_HAVE_BE ?  "big" : "little",
 		      ccount_freq/1000000,
 		      (ccount_freq/10000) % 100,
@@ -720,7 +814,12 @@ c_start(struct seq_file *f, loff_t *pos)
 static void *
 c_next(struct seq_file *f, void *v, loff_t *pos)
 {
+<<<<<<< HEAD
 	return NULL;
+=======
+	++*pos;
+	return c_start(f, pos);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void

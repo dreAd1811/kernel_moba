@@ -202,19 +202,29 @@ static inline struct mtd_info *cfi_cmdset_unknown(struct map_info *map,
 	struct cfi_private *cfi = map->fldrv_priv;
 	__u16 type = primary?cfi->cfiq->P_ID:cfi->cfiq->A_ID;
 #ifdef CONFIG_MODULES
+<<<<<<< HEAD
 	cfi_cmdset_fn_t *probe_function;
 	char *probename;
 
 	probename = kasprintf(GFP_KERNEL, "cfi_cmdset_%4.4X", type);
 	if (!probename)
 		return NULL;
+=======
+	char probename[sizeof(VMLINUX_SYMBOL_STR(cfi_cmdset_%4.4X))];
+	cfi_cmdset_fn_t *probe_function;
+
+	sprintf(probename, VMLINUX_SYMBOL_STR(cfi_cmdset_%4.4X), type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	probe_function = __symbol_get(probename);
 	if (!probe_function) {
 		request_module("cfi_cmdset_%4.4X", type);
 		probe_function = __symbol_get(probename);
 	}
+<<<<<<< HEAD
 	kfree(probename);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (probe_function) {
 		struct mtd_info *mtd;

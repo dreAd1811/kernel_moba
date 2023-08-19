@@ -45,6 +45,7 @@ void arch_gnttab_unmap(void *shared, unsigned long nr_gframes)
 	return;
 }
 
+<<<<<<< HEAD
 int arch_gnttab_map_status(uint64_t *frames, unsigned long nr_gframes,
 			   unsigned long max_nr_gframes,
 			   grant_status_t **__shared)
@@ -53,6 +54,9 @@ int arch_gnttab_map_status(uint64_t *frames, unsigned long nr_gframes,
 }
 
 int arch_gnttab_init(unsigned long nr_shared, unsigned long nr_status)
+=======
+int arch_gnttab_init(unsigned long nr_shared)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return 0;
 }

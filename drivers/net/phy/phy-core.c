@@ -189,6 +189,7 @@ size_t phy_speeds(unsigned int *speeds, size_t size,
 	return count;
 }
 
+<<<<<<< HEAD
 /**
  * phy_resolve_aneg_linkmode - resolve the advertisements into phy settings
  * @phydev: The phy_device struct
@@ -232,10 +233,13 @@ void phy_resolve_aneg_linkmode(struct phy_device *phydev)
 }
 EXPORT_SYMBOL_GPL(phy_resolve_aneg_linkmode);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void mmd_phy_indirect(struct mii_bus *bus, int phy_addr, int devad,
 			     u16 regnum)
 {
 	/* Write the desired MMD Devad */
+<<<<<<< HEAD
 	__mdiobus_write(bus, phy_addr, MII_MMD_CTRL, devad);
 
 	/* Write the desired MMD register address */
@@ -244,6 +248,15 @@ static void mmd_phy_indirect(struct mii_bus *bus, int phy_addr, int devad,
 	/* Select the Function : DATA with no post increment */
 	__mdiobus_write(bus, phy_addr, MII_MMD_CTRL,
 			devad | MII_MMD_CTRL_NOINCR);
+=======
+	bus->write(bus, phy_addr, MII_MMD_CTRL, devad);
+
+	/* Write the desired MMD register address */
+	bus->write(bus, phy_addr, MII_MMD_DATA, regnum);
+
+	/* Select the Function : DATA with no post increment */
+	bus->write(bus, phy_addr, MII_MMD_CTRL, devad | MII_MMD_CTRL_NOINCR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -276,7 +289,11 @@ int phy_read_mmd(struct phy_device *phydev, int devad, u32 regnum)
 		mmd_phy_indirect(bus, phy_addr, devad, regnum);
 
 		/* Read the content of the MMD's selected register */
+<<<<<<< HEAD
 		val = __mdiobus_read(bus, phy_addr, MII_MMD_DATA);
+=======
+		val = bus->read(bus, phy_addr, MII_MMD_DATA);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&bus->mdio_lock);
 	}
 	return val;
@@ -315,7 +332,11 @@ int phy_write_mmd(struct phy_device *phydev, int devad, u32 regnum, u16 val)
 		mmd_phy_indirect(bus, phy_addr, devad, regnum);
 
 		/* Write the data into MMD's selected register */
+<<<<<<< HEAD
 		__mdiobus_write(bus, phy_addr, MII_MMD_DATA, val);
+=======
+		bus->write(bus, phy_addr, MII_MMD_DATA, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&bus->mdio_lock);
 
 		ret = 0;
@@ -323,6 +344,7 @@ int phy_write_mmd(struct phy_device *phydev, int devad, u32 regnum, u16 val)
 	return ret;
 }
 EXPORT_SYMBOL(phy_write_mmd);
+<<<<<<< HEAD
 
 /**
  * __phy_modify() - Convenience function for modifying a PHY register
@@ -527,3 +549,5 @@ int phy_modify_paged(struct phy_device *phydev, int page, u32 regnum,
 	return phy_restore_page(phydev, oldpage, ret);
 }
 EXPORT_SYMBOL(phy_modify_paged);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

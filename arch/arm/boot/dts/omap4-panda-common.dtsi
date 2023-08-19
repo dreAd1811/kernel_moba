@@ -5,7 +5,10 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  */
+<<<<<<< HEAD
 #include <dt-bindings/input/input.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "elpida_ecb240abacn.dtsi"
 
 / {
@@ -14,10 +17,13 @@
 		reg = <0x80000000 0x40000000>; /* 1 GB */
 	};
 
+<<<<<<< HEAD
 	chosen {
 		stdout-path = &uart3;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	aliases {
 		display0 = &dvi0;
 		display1 = &hdmi0;
@@ -44,6 +50,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	gpio_keys: gpio_keys {
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
@@ -59,6 +66,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sound: sound {
 		compatible = "ti,abe-twl6040";
 		ti,model = "PandaBoard";
@@ -105,7 +114,10 @@
 	hsusb1_phy: hsusb1_phy {
 		compatible = "usb-nop-xceiv";
 		reset-gpios = <&gpio2 30 GPIO_ACTIVE_LOW>;   /* gpio_62 */
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vcc-supply = <&hsusb1_power>;
 		clocks = <&auxclk3_ck>;
 		clock-names = "main_clk";
@@ -373,12 +385,15 @@
 			OMAP4_IOPAD(0x152, PIN_INPUT_PULLUP | MUX_MODE0)	/* sdmmc5_dat3.sdmmc5_dat3 */
 		>;
 	};
+<<<<<<< HEAD
 
 	button_pins: pinmux_button_pins {
 		pinctrl-single,pins = <
 			OMAP4_IOPAD(0x114, PIN_INPUT_PULLUP | MUX_MODE3)	/* gpio_121 */
 		>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &omap4_pmx_wkup {
@@ -486,7 +501,11 @@
 		compatible = "ti,wl1271";
 		reg = <2>;
 		interrupt-parent = <&gpio2>;
+<<<<<<< HEAD
 		interrupts = <21 IRQ_TYPE_EDGE_RISING>; /* gpio 53 */
+=======
+		interrupts = <21 IRQ_TYPE_LEVEL_HIGH>; /* gpio 53 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ref-clock-frequency = <38400000>;
 	};
 };

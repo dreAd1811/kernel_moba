@@ -115,6 +115,7 @@ extern int dm_linear_end_io(struct dm_target *ti, struct bio *bio,
 			 blk_status_t *error);
 extern void dm_linear_status(struct dm_target *ti, status_type_t type,
 			unsigned status_flags, char *result, unsigned maxlen);
+<<<<<<< HEAD
 extern int dm_linear_prepare_ioctl(struct dm_target *ti, struct block_device **bdev);
 extern int dm_linear_iterate_devices(struct dm_target *ti,
 			iterate_devices_callout_fn fn, void *data);
@@ -129,4 +130,16 @@ extern size_t dm_linear_dax_copy_from_iter(struct dm_target *ti, pgoff_t pgoff,
 #define dm_linear_dax_direct_access NULL
 #define dm_linear_dax_copy_from_iter NULL
 #endif
+=======
+extern int dm_linear_prepare_ioctl(struct dm_target *ti,
+                struct block_device **bdev, fmode_t *mode);
+extern int dm_linear_iterate_devices(struct dm_target *ti,
+			iterate_devices_callout_fn fn, void *data);
+extern int dm_linear_ctr(struct dm_target *ti, unsigned int argc, char **argv);
+extern long dm_linear_dax_direct_access(struct dm_target *ti, pgoff_t pgoff,
+					long nr_pages, void **kaddr,
+					pfn_t *pfn);
+extern size_t dm_linear_dax_copy_from_iter(struct dm_target *ti, pgoff_t pgoff,
+		void *addr, size_t bytes, struct iov_iter *i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* DM_ANDROID_VERITY_H */

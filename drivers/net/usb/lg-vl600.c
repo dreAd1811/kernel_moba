@@ -157,8 +157,17 @@ static int vl600_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
 
 		s->current_rx_buf = skb_copy_expand(skb, 0,
 				le32_to_cpup(&frame->len), GFP_ATOMIC);
+<<<<<<< HEAD
 		if (!s->current_rx_buf)
 			dev->net->stats.rx_errors++;
+=======
+		if (!s->current_rx_buf) {
+			netif_err(dev, ifup, dev->net, "Reserving %i bytes "
+					"for packet assembly failed.\n",
+					le32_to_cpup(&frame->len));
+			dev->net->stats.rx_errors++;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return 0;
 	}

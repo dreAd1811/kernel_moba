@@ -662,7 +662,11 @@ void omap3_cm_save_scratchpad_contents(u32 *ptr)
  *
  */
 
+<<<<<<< HEAD
 static const struct cm_ll_data omap3xxx_cm_ll_data = {
+=======
+static struct cm_ll_data omap3xxx_cm_ll_data = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.split_idlest_reg	= &omap3xxx_cm_split_idlest_reg,
 	.wait_module_ready	= &omap3xxx_cm_wait_module_ready,
 };

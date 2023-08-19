@@ -60,7 +60,11 @@ void *
 nv20_gr_chan_dtor(struct nvkm_object *object)
 {
 	struct nv20_gr_chan *chan = nv20_gr_chan(object);
+<<<<<<< HEAD
 	nvkm_memory_unref(&chan->inst);
+=======
+	nvkm_memory_del(&chan->inst);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return chan;
 }
 
@@ -324,7 +328,11 @@ void *
 nv20_gr_dtor(struct nvkm_gr *base)
 {
 	struct nv20_gr *gr = nv20_gr(base);
+<<<<<<< HEAD
 	nvkm_memory_unref(&gr->ctxtab);
+=======
+	nvkm_memory_del(&gr->ctxtab);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return gr;
 }
 

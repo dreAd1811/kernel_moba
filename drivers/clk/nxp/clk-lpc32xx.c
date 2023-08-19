@@ -67,7 +67,10 @@
 #define LPC32XX_USB_CLK_STS		0xF8
 
 static struct regmap_config lpc32xx_scb_regmap_config = {
+<<<<<<< HEAD
 	.name = "scb",
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.reg_bits = 32,
 	.val_bits = 32,
 	.reg_stride = 4,
@@ -527,7 +530,11 @@ static unsigned long clk_pll_recalc_rate(struct clk_hw *hw,
 	    !(pll_is_valid(parent_rate, 1, 1000000, 20000000)
 	      && pll_is_valid(cco_rate, 1, 156000000, 320000000)
 	      && pll_is_valid(ref_rate, 1, 1000000, 27000000)))
+<<<<<<< HEAD
 		pr_err("%s: PLL clocks are not in valid ranges: %lu/%lu/%lu\n",
+=======
+		pr_err("%s: PLL clocks are not in valid ranges: %lu/%lu/%lu",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		       clk_hw_get_name(hw),
 		       parent_rate, cco_rate, ref_rate);
 
@@ -1506,7 +1513,11 @@ static void __init lpc32xx_clk_init(struct device_node *np)
 		return;
 	}
 	if (clk_get_rate(clk_32k) != 32768) {
+<<<<<<< HEAD
 		pr_err("invalid clock rate of external 32KHz oscillator\n");
+=======
+		pr_err("invalid clock rate of external 32KHz oscillator");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 

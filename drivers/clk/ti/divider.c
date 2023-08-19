@@ -263,8 +263,11 @@ static int ti_clk_divider_set_rate(struct clk_hw *hw, unsigned long rate,
 	val |= value << divider->shift;
 	ti_clk_ll_ops->clk_writel(val, &divider->reg);
 
+<<<<<<< HEAD
 	ti_clk_latch(&divider->reg, divider->latch);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -278,8 +281,12 @@ static struct clk *_register_divider(struct device *dev, const char *name,
 				     const char *parent_name,
 				     unsigned long flags,
 				     struct clk_omap_reg *reg,
+<<<<<<< HEAD
 				     u8 shift, u8 width, s8 latch,
 				     u8 clk_divider_flags,
+=======
+				     u8 shift, u8 width, u8 clk_divider_flags,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     const struct clk_div_table *table)
 {
 	struct clk_omap_divider *div;
@@ -295,8 +302,15 @@ static struct clk *_register_divider(struct device *dev, const char *name,
 
 	/* allocate the divider */
 	div = kzalloc(sizeof(*div), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!div)
 		return ERR_PTR(-ENOMEM);
+=======
+	if (!div) {
+		pr_err("%s: could not allocate divider clk\n", __func__);
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	init.name = name;
 	init.ops = &ti_clk_divider_ops;
@@ -308,7 +322,10 @@ static struct clk *_register_divider(struct device *dev, const char *name,
 	memcpy(&div->reg, reg, sizeof(*reg));
 	div->shift = shift;
 	div->width = width;
+<<<<<<< HEAD
 	div->latch = latch;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	div->flags = clk_divider_flags;
 	div->hw.init = &init;
 	div->table = table;
@@ -366,11 +383,17 @@ int ti_clk_parse_divider_data(int *div_table, int num_dividers, int max_div,
 
 	num_dividers = i;
 
+<<<<<<< HEAD
 	tmp = kcalloc(valid_div + 1, sizeof(*tmp), GFP_KERNEL);
 	if (!tmp) {
 		*table = ERR_PTR(-ENOMEM);
 		return -ENOMEM;
 	}
+=======
+	tmp = kzalloc(sizeof(*tmp) * (valid_div + 1), GFP_KERNEL);
+	if (!tmp)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	valid_div = 0;
 	*width = 0;
@@ -405,7 +428,10 @@ struct clk_hw *ti_clk_build_component_div(struct ti_clk_divider *setup)
 {
 	struct clk_omap_divider *div;
 	struct clk_omap_reg *reg;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!setup)
 		return NULL;
@@ -425,6 +451,7 @@ struct clk_hw *ti_clk_build_component_div(struct ti_clk_divider *setup)
 		div->flags |= CLK_DIVIDER_POWER_OF_TWO;
 
 	div->table = _get_div_table_from_setup(setup, &div->width);
+<<<<<<< HEAD
 	if (IS_ERR(div->table)) {
 		ret = PTR_ERR(div->table);
 		kfree(div);
@@ -434,6 +461,10 @@ struct clk_hw *ti_clk_build_component_div(struct ti_clk_divider *setup)
 
 	div->shift = setup->bit_shift;
 	div->latch = -EINVAL;
+=======
+
+	div->shift = setup->bit_shift;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &div->hw;
 }
@@ -466,7 +497,11 @@ struct clk *ti_clk_register_divider(struct ti_clk *setup)
 
 	clk = _register_divider(NULL, setup->name, div->parent,
 				flags, &reg, div->bit_shift,
+<<<<<<< HEAD
 				width, -EINVAL, div_flags, table);
+=======
+				width, div_flags, table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_ERR(clk))
 		kfree(table);
@@ -505,7 +540,11 @@ __init ti_clk_get_div_table(struct device_node *node)
 		return ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	table = kcalloc(valid_div + 1, sizeof(*table), GFP_KERNEL);
+=======
+	table = kzalloc(sizeof(*table) * (valid_div + 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!table)
 		return ERR_PTR(-ENOMEM);
@@ -570,7 +609,11 @@ static int _get_divider_width(struct device_node *node,
 
 static int __init ti_clk_divider_populate(struct device_node *node,
 	struct clk_omap_reg *reg, const struct clk_div_table **table,
+<<<<<<< HEAD
 	u32 *flags, u8 *div_flags, u8 *width, u8 *shift, s8 *latch)
+=======
+	u32 *flags, u8 *div_flags, u8 *width, u8 *shift)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 val;
 	int ret;
@@ -584,6 +627,7 @@ static int __init ti_clk_divider_populate(struct device_node *node,
 	else
 		*shift = 0;
 
+<<<<<<< HEAD
 	if (latch) {
 		if (!of_property_read_u32(node, "ti,latch-bit", &val))
 			*latch = val;
@@ -591,6 +635,8 @@ static int __init ti_clk_divider_populate(struct device_node *node,
 			*latch = -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*flags = 0;
 	*div_flags = 0;
 
@@ -627,18 +673,29 @@ static void __init of_ti_divider_clk_setup(struct device_node *node)
 	u8 clk_divider_flags = 0;
 	u8 width = 0;
 	u8 shift = 0;
+<<<<<<< HEAD
 	s8 latch = -EINVAL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct clk_div_table *table = NULL;
 	u32 flags = 0;
 
 	parent_name = of_clk_get_parent_name(node, 0);
 
 	if (ti_clk_divider_populate(node, &reg, &table, &flags,
+<<<<<<< HEAD
 				    &clk_divider_flags, &width, &shift, &latch))
 		goto cleanup;
 
 	clk = _register_divider(NULL, node->name, parent_name, flags, &reg,
 				shift, width, latch, clk_divider_flags, table);
+=======
+				    &clk_divider_flags, &width, &shift))
+		goto cleanup;
+
+	clk = _register_divider(NULL, node->name, parent_name, flags, &reg,
+				shift, width, clk_divider_flags, table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!IS_ERR(clk)) {
 		of_clk_add_provider(node, of_clk_src_simple_get, clk);
@@ -661,8 +718,12 @@ static void __init of_ti_composite_divider_clk_setup(struct device_node *node)
 		return;
 
 	if (ti_clk_divider_populate(node, &div->reg, &div->table, &val,
+<<<<<<< HEAD
 				    &div->flags, &div->width, &div->shift,
 				    NULL) < 0)
+=======
+				    &div->flags, &div->width, &div->shift) < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto cleanup;
 
 	if (!ti_clk_add_component(node, &div->hw, CLK_COMPONENT_TYPE_DIVIDER))

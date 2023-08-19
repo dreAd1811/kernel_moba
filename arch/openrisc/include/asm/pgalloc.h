@@ -98,12 +98,17 @@ static inline void pte_free(struct mm_struct *mm, struct page *pte)
 	__free_page(pte);
 }
 
+<<<<<<< HEAD
 #define __pte_free_tlb(tlb, pte, addr)	\
 do {					\
 	pgtable_page_dtor(pte);		\
 	tlb_remove_page((tlb), (pte));	\
 } while (0)
 
+=======
+
+#define __pte_free_tlb(tlb, pte, addr) tlb_remove_page((tlb), (pte))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define pmd_pgtable(pmd) pmd_page(pmd)
 
 #define check_pgt_cache()          do { } while (0)

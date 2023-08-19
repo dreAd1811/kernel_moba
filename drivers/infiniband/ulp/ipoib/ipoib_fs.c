@@ -262,15 +262,25 @@ static const struct file_operations ipoib_path_fops = {
 void ipoib_create_debug_files(struct net_device *dev)
 {
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
+<<<<<<< HEAD
 	char name[IFNAMSIZ + sizeof("_path")];
 
 	snprintf(name, sizeof(name), "%s_mcg", dev->name);
+=======
+	char name[IFNAMSIZ + sizeof "_path"];
+
+	snprintf(name, sizeof name, "%s_mcg", dev->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->mcg_dentry = debugfs_create_file(name, S_IFREG | S_IRUGO,
 					       ipoib_root, dev, &ipoib_mcg_fops);
 	if (!priv->mcg_dentry)
 		ipoib_warn(priv, "failed to create mcg debug file\n");
 
+<<<<<<< HEAD
 	snprintf(name, sizeof(name), "%s_path", dev->name);
+=======
+	snprintf(name, sizeof name, "%s_path", dev->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->path_dentry = debugfs_create_file(name, S_IFREG | S_IRUGO,
 						ipoib_root, dev, &ipoib_path_fops);
 	if (!priv->path_dentry)
@@ -281,6 +291,11 @@ void ipoib_delete_debug_files(struct net_device *dev)
 {
 	struct ipoib_dev_priv *priv = ipoib_priv(dev);
 
+<<<<<<< HEAD
+=======
+	WARN_ONCE(!priv->mcg_dentry, "null mcg debug file\n");
+	WARN_ONCE(!priv->path_dentry, "null path debug file\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	debugfs_remove(priv->mcg_dentry);
 	debugfs_remove(priv->path_dentry);
 	priv->mcg_dentry = priv->path_dentry = NULL;

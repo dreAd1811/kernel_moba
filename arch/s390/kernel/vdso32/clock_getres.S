@@ -1,22 +1,39 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Userland implementation of clock_getres() for 32 bits processes in a
  * s390 kernel for use in the vDSO
  *
  *  Copyright IBM Corp. 2008
  *  Author(s): Martin Schwidefsky (schwidefsky@de.ibm.com)
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License (version 2 only)
+ * as published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <asm/vdso.h>
 #include <asm/asm-offsets.h>
 #include <asm/unistd.h>
+<<<<<<< HEAD
 #include <asm/dwarf.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.text
 	.align 4
 	.globl __kernel_clock_getres
 	.type  __kernel_clock_getres,@function
 __kernel_clock_getres:
+<<<<<<< HEAD
 	CFI_STARTPROC
+=======
+	.cfi_startproc
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	basr	%r1,0
 	la	%r1,4f-.(%r1)
 	chi	%r2,__CLOCK_REALTIME
@@ -38,7 +55,13 @@ __kernel_clock_getres:
 3:	lhi	%r1,__NR_clock_getres		/* fallback to svc */
 	svc	0
 	br	%r14
+<<<<<<< HEAD
 	CFI_ENDPROC
 4:	.long	__CLOCK_REALTIME_RES
 5:	.long	__CLOCK_COARSE_RES
+=======
+4:	.long	__CLOCK_REALTIME_RES
+5:	.long	__CLOCK_COARSE_RES
+	.cfi_endproc
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.size	__kernel_clock_getres,.-__kernel_clock_getres

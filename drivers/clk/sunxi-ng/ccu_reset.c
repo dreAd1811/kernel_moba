@@ -60,6 +60,7 @@ static int ccu_reset_reset(struct reset_controller_dev *rcdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ccu_reset_status(struct reset_controller_dev *rcdev,
 			    unsigned long id)
 {
@@ -73,9 +74,14 @@ static int ccu_reset_status(struct reset_controller_dev *rcdev,
 	return !(map->bit & readl(ccu->base + map->reg));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct reset_control_ops ccu_reset_ops = {
 	.assert		= ccu_reset_assert,
 	.deassert	= ccu_reset_deassert,
 	.reset		= ccu_reset_reset,
+<<<<<<< HEAD
 	.status		= ccu_reset_status,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

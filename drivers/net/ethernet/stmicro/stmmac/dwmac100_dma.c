@@ -29,7 +29,12 @@
 #include "dwmac_dma.h"
 
 static void dwmac100_dma_init(void __iomem *ioaddr,
+<<<<<<< HEAD
 			      struct stmmac_dma_cfg *dma_cfg, int atds)
+=======
+			      struct stmmac_dma_cfg *dma_cfg,
+			      u32 dma_tx, u32 dma_rx, int atds)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* Enable Application Access by writing to DMA CSR0 */
 	writel(DMA_BUS_MODE_DEFAULT | (dma_cfg->pbl << DMA_BUS_MODE_PBL_SHIFT),
@@ -37,6 +42,7 @@ static void dwmac100_dma_init(void __iomem *ioaddr,
 
 	/* Mask interrupts by writing to CSR7 */
 	writel(DMA_INTR_DEFAULT_MASK, ioaddr + DMA_INTR_ENA);
+<<<<<<< HEAD
 }
 
 static void dwmac100_dma_init_rx(void __iomem *ioaddr,
@@ -53,6 +59,14 @@ static void dwmac100_dma_init_tx(void __iomem *ioaddr,
 {
 	/* TX descriptor base addr lists must be written into DMA CSR4 */
 	writel(dma_tx_phy, ioaddr + DMA_TX_BASE_ADDR);
+=======
+
+	/* RX/TX descriptor base addr lists must be written into
+	 * DMA CSR3 and CSR4, respectively
+	 */
+	writel(dma_tx, ioaddr + DMA_TX_BASE_ADDR);
+	writel(dma_rx, ioaddr + DMA_RCV_BASE_ADDR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Store and Forward capability is not used at all.
@@ -60,6 +74,7 @@ static void dwmac100_dma_init_tx(void __iomem *ioaddr,
  * The transmit threshold can be programmed by setting the TTC bits in the DMA
  * control register.
  */
+<<<<<<< HEAD
 static void dwmac100_dma_operation_mode_tx(void __iomem *ioaddr, int mode,
 					   u32 channel, int fifosz, u8 qmode)
 {
@@ -68,6 +83,16 @@ static void dwmac100_dma_operation_mode_tx(void __iomem *ioaddr, int mode,
 	if (mode <= 32)
 		csr6 |= DMA_CONTROL_TTC_32;
 	else if (mode <= 64)
+=======
+static void dwmac100_dma_operation_mode(void __iomem *ioaddr, int txmode,
+					int rxmode, int rxfifosz)
+{
+	u32 csr6 = readl(ioaddr + DMA_CONTROL);
+
+	if (txmode <= 32)
+		csr6 |= DMA_CONTROL_TTC_32;
+	else if (txmode <= 64)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		csr6 |= DMA_CONTROL_TTC_64;
 	else
 		csr6 |= DMA_CONTROL_TTC_128;
@@ -121,10 +146,15 @@ static void dwmac100_dma_diagnostic_fr(void *data, struct stmmac_extra_stats *x,
 const struct stmmac_dma_ops dwmac100_dma_ops = {
 	.reset = dwmac_dma_reset,
 	.init = dwmac100_dma_init,
+<<<<<<< HEAD
 	.init_rx_chan = dwmac100_dma_init_rx,
 	.init_tx_chan = dwmac100_dma_init_tx,
 	.dump_regs = dwmac100_dump_dma_regs,
 	.dma_tx_mode = dwmac100_dma_operation_mode_tx,
+=======
+	.dump_regs = dwmac100_dump_dma_regs,
+	.dma_mode = dwmac100_dma_operation_mode,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.dma_diagnostic_fr = dwmac100_dma_diagnostic_fr,
 	.enable_dma_transmission = dwmac_enable_dma_transmission,
 	.enable_dma_irq = dwmac_enable_dma_irq,

@@ -198,6 +198,7 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		watchdog: watchdog@4067e8 {
 			clocks = <&upg_clk>;
 			compatible = "brcm,bcm7038-wdt";
@@ -205,6 +206,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		upg_gio: gpio@406700 {
 			compatible = "brcm,brcmstb-gpio";
 			reg = <0x406700 0x80>;

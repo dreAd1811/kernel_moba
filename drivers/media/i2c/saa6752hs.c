@@ -72,8 +72,13 @@ struct saa6752hs_mpeg_params {
 	/* video */
 	enum v4l2_mpeg_video_aspect	vi_aspect;
 	enum v4l2_mpeg_video_bitrate_mode vi_bitrate_mode;
+<<<<<<< HEAD
 	__u32				vi_bitrate;
 	__u32				vi_bitrate_peak;
+=======
+	__u32 				vi_bitrate;
+	__u32 				vi_bitrate_peak;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct v4l2_format v4l2_format_table[] =
@@ -98,8 +103,13 @@ struct saa6752hs_state {
 		struct v4l2_ctrl *video_bitrate;
 		struct v4l2_ctrl *video_bitrate_peak;
 	};
+<<<<<<< HEAD
 	u32			      revision;
 	int			      has_ac3;
+=======
+	u32 			      revision;
+	int 			      has_ac3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct saa6752hs_mpeg_params  params;
 	enum saa6752hs_videoformat    video_format;
 	v4l2_std_id                   standard;

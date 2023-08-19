@@ -1444,24 +1444,42 @@ static int mcam_vidioc_s_input(struct file *filp, void *priv, unsigned int i)
  * the level which controls the number of read buffers.
  */
 static int mcam_vidioc_g_parm(struct file *filp, void *priv,
+<<<<<<< HEAD
 		struct v4l2_streamparm *a)
+=======
+		struct v4l2_streamparm *parms)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mcam_camera *cam = video_drvdata(filp);
 	int ret;
 
+<<<<<<< HEAD
 	ret = v4l2_g_parm_cap(video_devdata(filp), cam->sensor, a);
 	a->parm.capture.readbuffers = n_dma_bufs;
+=======
+	ret = sensor_call(cam, video, g_parm, parms);
+	parms->parm.capture.readbuffers = n_dma_bufs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int mcam_vidioc_s_parm(struct file *filp, void *priv,
+<<<<<<< HEAD
 		struct v4l2_streamparm *a)
+=======
+		struct v4l2_streamparm *parms)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mcam_camera *cam = video_drvdata(filp);
 	int ret;
 
+<<<<<<< HEAD
 	ret = v4l2_s_parm_cap(video_devdata(filp), cam->sensor, a);
 	a->parm.capture.readbuffers = n_dma_bufs;
+=======
+	ret = sensor_call(cam, video, s_parm, parms);
+	parms->parm.capture.readbuffers = n_dma_bufs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1721,7 +1739,10 @@ int mccic_irq(struct mcam_camera *cam, unsigned int irqs)
 	}
 	return handled;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mccic_irq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ---------------------------------------------------------------------- */
 /*
@@ -1832,7 +1853,11 @@ out_unregister:
 	v4l2_device_unregister(&cam->v4l2_dev);
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mccic_register);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void mccic_shutdown(struct mcam_camera *cam)
 {
@@ -1852,7 +1877,10 @@ void mccic_shutdown(struct mcam_camera *cam)
 	v4l2_ctrl_handler_free(&cam->ctrl_handler);
 	v4l2_device_unregister(&cam->v4l2_dev);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mccic_shutdown);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Power management
@@ -1871,7 +1899,10 @@ void mccic_suspend(struct mcam_camera *cam)
 	}
 	mutex_unlock(&cam->s_mutex);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mccic_suspend);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int mccic_resume(struct mcam_camera *cam)
 {
@@ -1902,8 +1933,12 @@ int mccic_resume(struct mcam_camera *cam)
 	}
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mccic_resume);
 #endif /* CONFIG_PM */
 
 MODULE_LICENSE("GPL v2");
 MODULE_AUTHOR("Jonathan Corbet <corbet@lwn.net>");
+=======
+#endif /* CONFIG_PM */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

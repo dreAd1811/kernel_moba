@@ -31,6 +31,10 @@
 #include <linux/vmalloc.h>
 #include <linux/hyperv.h>
 #include <linux/export.h>
+<<<<<<< HEAD
+=======
+#include <asm/hyperv.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mshyperv.h>
 
 #include "hyperv_vmbus.h"
@@ -63,9 +67,12 @@ static __u32 vmbus_get_next_version(__u32 current_version)
 	case (VERSION_WIN10):
 		return VERSION_WIN8_1;
 
+<<<<<<< HEAD
 	case (VERSION_WIN10_V5):
 		return VERSION_WIN10;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case (VERSION_WS2008):
 	default:
 		return VERSION_INVAL;
@@ -84,6 +91,7 @@ static int vmbus_negotiate_version(struct vmbus_channel_msginfo *msginfo,
 
 	msg = (struct vmbus_channel_initiate_contact *)msginfo->msg;
 
+<<<<<<< HEAD
 	memset(msg, 0, sizeof(*msg));
 	msg->header.msgtype = CHANNELMSG_INITIATE_CONTACT;
 	msg->vmbus_version_requested = version;
@@ -107,6 +115,11 @@ static int vmbus_negotiate_version(struct vmbus_channel_msginfo *msginfo,
 		vmbus_connection.msg_conn_id = VMBUS_MESSAGE_CONNECTION_ID;
 	}
 
+=======
+	msg->header.msgtype = CHANNELMSG_INITIATE_CONTACT;
+	msg->vmbus_version_requested = version;
+	msg->interrupt_page = virt_to_phys(vmbus_connection.int_page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msg->monitor_page1 = virt_to_phys(vmbus_connection.monitor_pages[0]);
 	msg->monitor_page2 = virt_to_phys(vmbus_connection.monitor_pages[1]);
 	/*
@@ -141,9 +154,12 @@ static int vmbus_negotiate_version(struct vmbus_channel_msginfo *msginfo,
 	ret = vmbus_post_msg(msg,
 			     sizeof(struct vmbus_channel_initiate_contact),
 			     true);
+<<<<<<< HEAD
 
 	trace_vmbus_negotiate_version(msg, ret);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret != 0) {
 		spin_lock_irqsave(&vmbus_connection.channelmsg_lock, flags);
 		list_del(&msginfo->msglistentry);
@@ -162,10 +178,13 @@ static int vmbus_negotiate_version(struct vmbus_channel_msginfo *msginfo,
 	/* Check if successful */
 	if (msginfo->response.version_response.version_supported) {
 		vmbus_connection.conn_state = CONNECTED;
+<<<<<<< HEAD
 
 		if (version >= VERSION_WIN10_V5)
 			vmbus_connection.msg_conn_id =
 				msginfo->response.version_response.msg_conn_id;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		return -ECONNREFUSED;
 	}
@@ -368,8 +387,11 @@ void vmbus_on_event(unsigned long data)
 	struct vmbus_channel *channel = (void *) data;
 	unsigned long time_limit = jiffies + 2;
 
+<<<<<<< HEAD
 	trace_vmbus_on_event(channel);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	do {
 		void (*callback_fn)(void *);
 
@@ -401,14 +423,21 @@ void vmbus_on_event(unsigned long data)
  */
 int vmbus_post_msg(void *buffer, size_t buflen, bool can_sleep)
 {
+<<<<<<< HEAD
 	struct vmbus_channel_message_header *hdr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union hv_connection_id conn_id;
 	int ret = 0;
 	int retries = 0;
 	u32 usec = 1;
 
 	conn_id.asu32 = 0;
+<<<<<<< HEAD
 	conn_id.u.id = vmbus_connection.msg_conn_id;
+=======
+	conn_id.u.id = VMBUS_MESSAGE_CONNECTION_ID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * hv_post_message() can have transient failures because of
@@ -421,6 +450,7 @@ int vmbus_post_msg(void *buffer, size_t buflen, bool can_sleep)
 		switch (ret) {
 		case HV_STATUS_INVALID_CONNECTION_ID:
 			/*
+<<<<<<< HEAD
 			 * See vmbus_negotiate_version(): VMBus protocol 5.0
 			 * requires that we must use
 			 * VMBUS_MESSAGE_CONNECTION_ID_4 for the Initiate
@@ -433,6 +463,8 @@ int vmbus_post_msg(void *buffer, size_t buflen, bool can_sleep)
 			if (hdr->msgtype == CHANNELMSG_INITIATE_CONTACT)
 				return -EINVAL;
 			/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 * We could get this if we send messages too
 			 * frequently.
 			 */
@@ -473,8 +505,11 @@ void vmbus_set_event(struct vmbus_channel *channel)
 	if (!channel->is_dedicated_interrupt)
 		vmbus_send_interrupt(child_relid);
 
+<<<<<<< HEAD
 	++channel->sig_events;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hv_do_fast_hypercall8(HVCALL_SIGNAL_EVENT, channel->sig_event);
 }
 EXPORT_SYMBOL_GPL(vmbus_set_event);

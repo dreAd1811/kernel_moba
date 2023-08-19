@@ -17,8 +17,13 @@
 #ifndef MN88472_PRIV_H
 #define MN88472_PRIV_H
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
 #include <media/dvb_math.h>
+=======
+#include "dvb_frontend.h"
+#include "dvb_math.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "mn88472.h"
 #include <linux/firmware.h>
 #include <linux/regmap.h>

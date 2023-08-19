@@ -718,8 +718,12 @@ bool rtl92ce_rx_query_desc(struct ieee80211_hw *hw,
 			   u8 *pdesc, struct sk_buff *skb);
 void rtl92ce_set_desc(struct ieee80211_hw *hw, u8 *pdesc, bool istx,
 		      u8 desc_name, u8 *val);
+<<<<<<< HEAD
 u64 rtl92ce_get_desc(struct ieee80211_hw *hw, u8 *p_desc,
 		     bool istx, u8 desc_name);
+=======
+u32 rtl92ce_get_desc(u8 *pdesc, bool istx, u8 desc_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bool rtl92ce_is_tx_desc_closed(struct ieee80211_hw *hw,
 			       u8 hw_queue, u16 index);
 void rtl92ce_tx_polling(struct ieee80211_hw *hw, u8 hw_queue);

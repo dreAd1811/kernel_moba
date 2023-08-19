@@ -53,7 +53,10 @@
 		     "allwinner,sun50i-a64";
 
 	aliases {
+<<<<<<< HEAD
 		ethernet0 = &emac;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		serial0 = &uart0;
 	};
 
@@ -77,6 +80,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &emac {
 	pinctrl-names = "default";
 	pinctrl-0 = <&rgmii_pins>;
@@ -97,6 +101,12 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&mmc2_pins>;
 	vmmc-supply = <&reg_dcdc1>;
+=======
+&mmc2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&mmc2_pins>;
+	vmmc-supply = <&reg_vcc3v3>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vqmmc-supply = <&reg_vcc1v8>;
 	bus-width = <8>;
 	non-removable;
@@ -134,10 +144,13 @@
 	regulator-name = "vcc-wifi";
 };
 
+<<<<<<< HEAD
 &simplefb_hdmi {
 	vcc-hdmi-supply = <&reg_dldo1>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pins_a>;

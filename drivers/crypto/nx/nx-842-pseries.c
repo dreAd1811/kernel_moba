@@ -1082,7 +1082,11 @@ static int nx842_remove(struct vio_dev *viodev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct vio_device_id nx842_vio_driver_ids[] = {
+=======
+static struct vio_device_id nx842_vio_driver_ids[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{"ibm,compression-v1", "ibm,compression"},
 	{"", ""},
 };
@@ -1105,9 +1109,16 @@ static int __init nx842_pseries_init(void)
 
 	RCU_INIT_POINTER(devdata, NULL);
 	new_devdata = kzalloc(sizeof(*new_devdata), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!new_devdata)
 		return -ENOMEM;
 
+=======
+	if (!new_devdata) {
+		pr_err("Could not allocate memory for device data\n");
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	RCU_INIT_POINTER(devdata, new_devdata);
 
 	ret = vio_register_driver(&nx842_vio_driver);

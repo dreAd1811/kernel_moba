@@ -113,7 +113,11 @@ static int igt_gem_huge(void *arg)
 
 	obj = huge_gem_object(i915,
 			      nreal * PAGE_SIZE,
+<<<<<<< HEAD
 			      i915->ggtt.vm.total + PAGE_SIZE);
+=======
+			      i915->ggtt.base.total + PAGE_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(obj))
 		return PTR_ERR(obj);
 
@@ -169,6 +173,7 @@ static u64 tiled_offset(const struct tile *tile, u64 v)
 		v += y * tile->width;
 		v += div64_u64_rem(x, tile->width, &x) << tile->size;
 		v += x;
+<<<<<<< HEAD
 	} else if (tile->width == 128) {
 		const unsigned int ytile_span = 16;
 		const unsigned int ytile_height = 512;
@@ -179,6 +184,11 @@ static u64 tiled_offset(const struct tile *tile, u64 v)
 	} else {
 		const unsigned int ytile_span = 32;
 		const unsigned int ytile_height = 256;
+=======
+	} else {
+		const unsigned int ytile_span = 16;
+		const unsigned int ytile_height = 32 * ytile_span;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		v += y * ytile_span;
 		v += div64_u64_rem(x, ytile_span, &x) * ytile_height;
@@ -219,11 +229,16 @@ static int check_partial_mapping(struct drm_i915_gem_object *obj,
 		return -EINTR;
 
 	err = i915_gem_object_set_tiling(obj, tile->tiling, tile->stride);
+<<<<<<< HEAD
 	if (err) {
 		pr_err("Failed to set tiling mode=%u, stride=%u, err=%d\n",
 		       tile->tiling, tile->stride, err);
 		return err;
 	}
+=======
+	if (err)
+		return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	GEM_BUG_ON(i915_gem_object_get_tiling(obj) != tile->tiling);
 	GEM_BUG_ON(i915_gem_object_get_stride(obj) != tile->stride);
@@ -240,6 +255,7 @@ static int check_partial_mapping(struct drm_i915_gem_object *obj,
 		GEM_BUG_ON(view.partial.size > nreal);
 
 		err = i915_gem_object_set_to_gtt_domain(obj, true);
+<<<<<<< HEAD
 		if (err) {
 			pr_err("Failed to flush to GTT write domain; err=%d\n",
 			       err);
@@ -250,6 +266,15 @@ static int check_partial_mapping(struct drm_i915_gem_object *obj,
 		if (IS_ERR(vma)) {
 			pr_err("Failed to pin partial view: offset=%lu; err=%d\n",
 			       page, (int)PTR_ERR(vma));
+=======
+		if (err)
+			return err;
+
+		vma = i915_gem_object_ggtt_pin(obj, &view, 0, 0, PIN_MAPPABLE);
+		if (IS_ERR(vma)) {
+			pr_err("Failed to pin partial view: offset=%lu\n",
+			       page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return PTR_ERR(vma);
 		}
 
@@ -259,11 +284,27 @@ static int check_partial_mapping(struct drm_i915_gem_object *obj,
 		io = i915_vma_pin_iomap(vma);
 		i915_vma_unpin(vma);
 		if (IS_ERR(io)) {
+<<<<<<< HEAD
 			pr_err("Failed to iomap partial view: offset=%lu; err=%d\n",
 			       page, (int)PTR_ERR(io));
 			return PTR_ERR(io);
 		}
 
+=======
+			pr_err("Failed to iomap partial view: offset=%lu\n",
+			       page);
+			return PTR_ERR(io);
+		}
+
+		err = i915_vma_get_fence(vma);
+		if (err) {
+			pr_err("Failed to get fence for partial view: offset=%lu\n",
+			       page);
+			i915_vma_unpin_iomap(vma);
+			return err;
+		}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iowrite32(page, io + n * PAGE_SIZE/sizeof(*io));
 		i915_vma_unpin_iomap(vma);
 
@@ -295,8 +336,11 @@ static int check_partial_mapping(struct drm_i915_gem_object *obj,
 		kunmap(p);
 		if (err)
 			return err;
+<<<<<<< HEAD
 
 		i915_vma_destroy(vma);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -320,7 +364,11 @@ static int igt_partial_tiling(void *arg)
 
 	obj = huge_gem_object(i915,
 			      nreal << PAGE_SHIFT,
+<<<<<<< HEAD
 			      (1 + next_prime_number(i915->ggtt.vm.total >> PAGE_SHIFT)) << PAGE_SHIFT);
+=======
+			      (1 + next_prime_number(i915->ggtt.base.total >> PAGE_SHIFT)) << PAGE_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(obj))
 		return PTR_ERR(obj);
 
@@ -332,7 +380,10 @@ static int igt_partial_tiling(void *arg)
 	}
 
 	mutex_lock(&i915->drm.struct_mutex);
+<<<<<<< HEAD
 	intel_runtime_pm_get(i915);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (1) {
 		IGT_TIMEOUT(end);
@@ -356,6 +407,7 @@ static int igt_partial_tiling(void *arg)
 		unsigned int pitch;
 		struct tile tile;
 
+<<<<<<< HEAD
 		if (i915->quirks & QUIRK_PIN_SWIZZLED_PAGES)
 			/*
 			 * The swizzling pattern is actually unknown as it
@@ -364,6 +416,8 @@ static int igt_partial_tiling(void *arg)
 			 */
 			break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tile.tiling = tiling;
 		switch (tiling) {
 		case I915_TILING_X:
@@ -374,8 +428,12 @@ static int igt_partial_tiling(void *arg)
 			break;
 		}
 
+<<<<<<< HEAD
 		GEM_BUG_ON(tile.swizzle == I915_BIT_6_SWIZZLE_UNKNOWN);
 		if (tile.swizzle == I915_BIT_6_SWIZZLE_9_17 ||
+=======
+		if (tile.swizzle == I915_BIT_6_SWIZZLE_UNKNOWN ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		    tile.swizzle == I915_BIT_6_SWIZZLE_9_10_17)
 			continue;
 
@@ -443,7 +501,10 @@ next_tiling: ;
 	}
 
 out_unlock:
+<<<<<<< HEAD
 	intel_runtime_pm_put(i915);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&i915->drm.struct_mutex);
 	i915_gem_object_unpin_pages(obj);
 out:
@@ -454,11 +515,19 @@ out:
 static int make_obj_busy(struct drm_i915_gem_object *obj)
 {
 	struct drm_i915_private *i915 = to_i915(obj->base.dev);
+<<<<<<< HEAD
 	struct i915_request *rq;
 	struct i915_vma *vma;
 	int err;
 
 	vma = i915_vma_instance(obj, &i915->ggtt.vm, NULL);
+=======
+	struct drm_i915_gem_request *rq;
+	struct i915_vma *vma;
+	int err;
+
+	vma = i915_vma_instance(obj, &i915->ggtt.base, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vma))
 		return PTR_ERR(vma);
 
@@ -466,12 +535,17 @@ static int make_obj_busy(struct drm_i915_gem_object *obj)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
 	rq = i915_request_alloc(i915->engine[RCS], i915->kernel_context);
+=======
+	rq = i915_gem_request_alloc(i915->engine[RCS], i915->kernel_context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq)) {
 		i915_vma_unpin(vma);
 		return PTR_ERR(rq);
 	}
 
+<<<<<<< HEAD
 	err = i915_vma_move_to_active(vma, rq, EXEC_OBJECT_WRITE);
 
 	i915_request_add(rq);
@@ -480,6 +554,14 @@ static int make_obj_busy(struct drm_i915_gem_object *obj)
 	i915_vma_unpin(vma);
 
 	return err;
+=======
+	i915_vma_move_to_active(vma, rq, 0);
+	i915_add_request(rq);
+
+	i915_gem_object_set_active_reference(obj);
+	i915_vma_unpin(vma);
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool assert_mmap_offset(struct drm_i915_private *i915,
@@ -499,6 +581,7 @@ static bool assert_mmap_offset(struct drm_i915_private *i915,
 	return err == expected;
 }
 
+<<<<<<< HEAD
 static void disable_retire_worker(struct drm_i915_private *i915)
 {
 	mutex_lock(&i915->drm.struct_mutex);
@@ -512,6 +595,8 @@ static void disable_retire_worker(struct drm_i915_private *i915)
 	cancel_delayed_work_sync(&i915->gt.idle_work);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int igt_mmap_offset_exhaustion(void *arg)
 {
 	struct drm_i915_private *i915 = arg;
@@ -521,10 +606,13 @@ static int igt_mmap_offset_exhaustion(void *arg)
 	u64 hole_start, hole_end;
 	int loop, err;
 
+<<<<<<< HEAD
 	/* Disable background reaper */
 	disable_retire_worker(i915);
 	GEM_BUG_ON(!i915->gt.awake);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Trim the device mmap space to only a page */
 	memset(&resv, 0, sizeof(resv));
 	drm_mm_for_each_hole(hole, mm, hole_start, hole_end) {
@@ -533,7 +621,11 @@ static int igt_mmap_offset_exhaustion(void *arg)
 		err = drm_mm_reserve_node(mm, &resv);
 		if (err) {
 			pr_err("Failed to trim VMA manager, err=%d\n", err);
+<<<<<<< HEAD
 			goto out_park;
+=======
+			return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	}
@@ -575,9 +667,12 @@ static int igt_mmap_offset_exhaustion(void *arg)
 
 	/* Now fill with busy dead objects that we expect to reap */
 	for (loop = 0; loop < 3; loop++) {
+<<<<<<< HEAD
 		if (i915_terminally_wedged(&i915->gpu_error))
 			break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		obj = i915_gem_object_create_internal(i915, PAGE_SIZE);
 		if (IS_ERR(obj)) {
 			err = PTR_ERR(obj);
@@ -594,7 +689,10 @@ static int igt_mmap_offset_exhaustion(void *arg)
 			goto err_obj;
 		}
 
+<<<<<<< HEAD
 		/* NB we rely on the _active_ reference to access obj now */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		GEM_BUG_ON(!i915_gem_object_is_active(obj));
 		err = i915_gem_object_create_mmap_offset(obj);
 		if (err) {
@@ -606,6 +704,7 @@ static int igt_mmap_offset_exhaustion(void *arg)
 
 out:
 	drm_mm_remove_node(&resv);
+<<<<<<< HEAD
 out_park:
 	mutex_lock(&i915->drm.struct_mutex);
 	if (--i915->gt.active_requests)
@@ -613,6 +712,8 @@ out_park:
 	else
 		queue_delayed_work(i915->wq, &i915->gt.idle_work, 0);
 	mutex_unlock(&i915->drm.struct_mutex);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 err_obj:
 	i915_gem_object_put(obj);
@@ -634,7 +735,11 @@ int i915_gem_object_mock_selftests(void)
 
 	err = i915_subtests(tests, i915);
 
+<<<<<<< HEAD
 	drm_dev_put(&i915->drm);
+=======
+	drm_dev_unref(&i915->drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 

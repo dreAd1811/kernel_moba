@@ -17,7 +17,10 @@
 #include <asm/processor.h>
 #include <asm/thread_info.h>
 #include <asm/epapr_hcalls.h>
+<<<<<<< HEAD
 #include <asm/hw_irq.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* 64-bit version only for now */
 #ifdef CONFIG_PPC64
@@ -36,7 +39,11 @@ _GLOBAL(\name)
 	 */
 	lbz	r3,PACAIRQHAPPENED(r13)
 	cmpwi	cr0,r3,0
+<<<<<<< HEAD
 	bne	2f
+=======
+	bnelr
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Now we are going to mark ourselves as soft and hard enabled in
 	 * order to be able to take interrupts while asleep. We inform lockdep
@@ -47,8 +54,13 @@ _GLOBAL(\name)
 	bl	trace_hardirqs_on
 	addi    r1,r1,128
 #endif
+<<<<<<< HEAD
 	li	r0,IRQS_ENABLED
 	stb	r0,PACAIRQSOFTMASK(r13)
+=======
+	li	r0,1
+	stb	r0,PACASOFTIRQEN(r13)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	
 	/* Interrupts will make use return to LR, so get something we want
 	 * in there
@@ -72,11 +84,14 @@ _GLOBAL(\name)
 	wrteei	1
 	\loop
 
+<<<<<<< HEAD
 2:
 	lbz	r10,PACAIRQHAPPENED(r13)
 	ori	r10,r10,PACA_IRQ_HARD_DIS
 	stb	r10,PACAIRQHAPPENED(r13)
 	blr
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .endm
 
 .macro BOOK3E_IDLE_LOOP

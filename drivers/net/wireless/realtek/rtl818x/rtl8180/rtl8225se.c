@@ -363,7 +363,11 @@ void rtl8225se_rf_init(struct ieee80211_hw *dev)
 	rtl8187se_rf_writereg(dev, 0x00, 0x0037); mdelay(11);
 	rtl8187se_rf_writereg(dev, 0x04, 0x0160); mdelay(11);
 	rtl8187se_rf_writereg(dev, 0x07, 0x0080); mdelay(11);
+<<<<<<< HEAD
 	rtl8187se_rf_writereg(dev, 0x02, 0x088D); msleep(221);
+=======
+	rtl8187se_rf_writereg(dev, 0x02, 0x088D); mdelay(221);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl8187se_rf_writereg(dev, 0x00, 0x0137); mdelay(11);
 	rtl8187se_rf_writereg(dev, 0x07, 0x0000); mdelay(1);
 	rtl8187se_rf_writereg(dev, 0x07, 0x0180); mdelay(1);
@@ -386,7 +390,11 @@ void rtl8225se_rf_init(struct ieee80211_hw *dev)
 	rtl8187se_rf_writereg(dev, 0x00, 0x00BF); mdelay(1);
 	rtl8187se_rf_writereg(dev, 0x0D, 0x08DF); mdelay(1);
 	rtl8187se_rf_writereg(dev, 0x02, 0x004D); mdelay(1);
+<<<<<<< HEAD
 	rtl8187se_rf_writereg(dev, 0x04, 0x0975); msleep(31);
+=======
+	rtl8187se_rf_writereg(dev, 0x04, 0x0975); mdelay(31);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rtl8187se_rf_writereg(dev, 0x00, 0x0197); mdelay(1);
 	rtl8187se_rf_writereg(dev, 0x05, 0x05AB); mdelay(1);
 

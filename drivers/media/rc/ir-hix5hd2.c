@@ -71,10 +71,16 @@ struct hix5hd2_ir_priv {
 	unsigned long		rate;
 };
 
+<<<<<<< HEAD
 static int hix5hd2_ir_enable(struct hix5hd2_ir_priv *dev, bool on)
 {
 	u32 val;
 	int ret = 0;
+=======
+static void hix5hd2_ir_enable(struct hix5hd2_ir_priv *dev, bool on)
+{
+	u32 val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dev->regmap) {
 		regmap_read(dev->regmap, IR_CLK, &val);
@@ -88,11 +94,18 @@ static int hix5hd2_ir_enable(struct hix5hd2_ir_priv *dev, bool on)
 		regmap_write(dev->regmap, IR_CLK, val);
 	} else {
 		if (on)
+<<<<<<< HEAD
 			ret = clk_prepare_enable(dev->clock);
 		else
 			clk_disable_unprepare(dev->clock);
 	}
 	return ret;
+=======
+			clk_prepare_enable(dev->clock);
+		else
+			clk_disable_unprepare(dev->clock);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int hix5hd2_ir_config(struct hix5hd2_ir_priv *priv)
@@ -129,6 +142,7 @@ static int hix5hd2_ir_config(struct hix5hd2_ir_priv *priv)
 static int hix5hd2_ir_open(struct rc_dev *rdev)
 {
 	struct hix5hd2_ir_priv *priv = rdev->priv;
+<<<<<<< HEAD
 	int ret;
 
 	ret = hix5hd2_ir_enable(priv, true);
@@ -141,6 +155,11 @@ static int hix5hd2_ir_open(struct rc_dev *rdev)
 		return ret;
 	}
 	return 0;
+=======
+
+	hix5hd2_ir_enable(priv, true);
+	return hix5hd2_ir_config(priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hix5hd2_ir_close(struct rc_dev *rdev)
@@ -250,9 +269,13 @@ static int hix5hd2_ir_probe(struct platform_device *pdev)
 		ret = PTR_ERR(priv->clock);
 		goto err;
 	}
+<<<<<<< HEAD
 	ret = clk_prepare_enable(priv->clock);
 	if (ret)
 		goto err;
+=======
+	clk_prepare_enable(priv->clock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv->rate = clk_get_rate(priv->clock);
 
 	rdev->allowed_protocols = RC_PROTO_BIT_ALL_IR_DECODER;
@@ -322,6 +345,7 @@ static int hix5hd2_ir_suspend(struct device *dev)
 static int hix5hd2_ir_resume(struct device *dev)
 {
 	struct hix5hd2_ir_priv *priv = dev_get_drvdata(dev);
+<<<<<<< HEAD
 	int ret;
 
 	ret = hix5hd2_ir_enable(priv, true);
@@ -333,6 +357,11 @@ static int hix5hd2_ir_resume(struct device *dev)
 		hix5hd2_ir_enable(priv, false);
 		return ret;
 	}
+=======
+
+	hix5hd2_ir_enable(priv, true);
+	clk_prepare_enable(priv->clock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	writel_relaxed(0x01, priv->base + IR_ENABLE);
 	writel_relaxed(0x00, priv->base + IR_INTM);

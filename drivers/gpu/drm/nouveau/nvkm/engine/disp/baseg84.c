@@ -21,7 +21,14 @@
  *
  * Authors: Ben Skeggs
  */
+<<<<<<< HEAD
 #include "channv50.h"
+=======
+#include "dmacnv50.h"
+#include "rootnv50.h"
+
+#include <nvif/class.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const struct nv50_disp_mthd_list
 g84_disp_base_mthd_base = {
@@ -53,8 +60,13 @@ g84_disp_base_mthd_base = {
 	}
 };
 
+<<<<<<< HEAD
 static const struct nv50_disp_chan_mthd
 g84_disp_base_mthd = {
+=======
+const struct nv50_disp_chan_mthd
+g84_disp_base_chan_mthd = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.name = "Base",
 	.addr = 0x000540,
 	.prev = 0x000004,
@@ -65,6 +77,7 @@ g84_disp_base_mthd = {
 	}
 };
 
+<<<<<<< HEAD
 int
 g84_disp_base_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 		  struct nv50_disp *disp, struct nvkm_object **pobject)
@@ -72,3 +85,15 @@ g84_disp_base_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 	return nv50_disp_base_new_(&nv50_disp_dmac_func, &g84_disp_base_mthd,
 				   disp, 1, oclass, argv, argc, pobject);
 }
+=======
+const struct nv50_disp_dmac_oclass
+g84_disp_base_oclass = {
+	.base.oclass = G82_DISP_BASE_CHANNEL_DMA,
+	.base.minver = 0,
+	.base.maxver = 0,
+	.ctor = nv50_disp_base_new,
+	.func = &nv50_disp_dmac_func,
+	.mthd = &g84_disp_base_chan_mthd,
+	.chid = 1,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

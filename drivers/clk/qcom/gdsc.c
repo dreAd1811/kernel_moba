@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (c) 2015, 2017-2018, The Linux Foundation. All rights reserved.
+=======
+ * Copyright (c) 2015, The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -31,12 +35,15 @@
 #define HW_CONTROL_MASK		BIT(1)
 #define SW_COLLAPSE_MASK	BIT(0)
 #define GMEM_CLAMP_IO_MASK	BIT(0)
+<<<<<<< HEAD
 #define GMEM_RESET_MASK		BIT(4)
 
 /* CFG_GDSCR */
 #define GDSC_POWER_UP_COMPLETE		BIT(16)
 #define GDSC_POWER_DOWN_COMPLETE	BIT(15)
 #define CFG_GDSCR_OFFSET		0x4
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Wait 2^n CXO cycles between all states. Here, n=2 (4 cycles). */
 #define EN_REST_WAIT_VAL	(0x2 << 20)
@@ -46,6 +53,7 @@
 #define RETAIN_MEM		BIT(14)
 #define RETAIN_PERIPH		BIT(13)
 
+<<<<<<< HEAD
 #define TIMEOUT_US		500
 
 #define domain_to_gdsc(domain) container_of(domain, struct gdsc, pd)
@@ -69,10 +77,22 @@ static int gdsc_check_status(struct gdsc *sc, enum gdsc_status status)
 	else
 		reg = sc->gdscr;
 
+=======
+#define TIMEOUT_US		100
+
+#define domain_to_gdsc(domain) container_of(domain, struct gdsc, pd)
+
+static int gdsc_is_enabled(struct gdsc *sc, unsigned int reg)
+{
+	u32 val;
+	int ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = regmap_read(sc->regmap, reg, &val);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	if (sc->flags & POLL_CFG_GDSCR) {
 		switch (status) {
 		case GDSC_ON:
@@ -90,6 +110,9 @@ static int gdsc_check_status(struct gdsc *sc, enum gdsc_status status)
 	}
 
 	return -EINVAL;
+=======
+	return !!(val & PWR_ON_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int gdsc_hwctrl(struct gdsc *sc, bool en)
@@ -99,33 +122,57 @@ static int gdsc_hwctrl(struct gdsc *sc, bool en)
 	return regmap_update_bits(sc->regmap, sc->gdscr, HW_CONTROL_MASK, val);
 }
 
+<<<<<<< HEAD
 static int gdsc_poll_status(struct gdsc *sc, enum gdsc_status status)
+=======
+static int gdsc_poll_status(struct gdsc *sc, unsigned int reg, bool en)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	ktime_t start;
 
 	start = ktime_get();
 	do {
+<<<<<<< HEAD
 		if (gdsc_check_status(sc, status))
 			return 0;
 	} while (ktime_us_delta(ktime_get(), start) < TIMEOUT_US);
 
 	if (gdsc_check_status(sc, status))
+=======
+		if (gdsc_is_enabled(sc, reg) == en)
+			return 0;
+	} while (ktime_us_delta(ktime_get(), start) < TIMEOUT_US);
+
+	if (gdsc_is_enabled(sc, reg) == en)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	return -ETIMEDOUT;
 }
 
+<<<<<<< HEAD
 static int gdsc_toggle_logic(struct gdsc *sc, enum gdsc_status status)
 {
 	int ret;
 	u32 val = (status == GDSC_ON) ? 0 : SW_COLLAPSE_MASK;
+=======
+static int gdsc_toggle_logic(struct gdsc *sc, bool en)
+{
+	int ret;
+	u32 val = en ? 0 : SW_COLLAPSE_MASK;
+	unsigned int status_reg = sc->gdscr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = regmap_update_bits(sc->regmap, sc->gdscr, SW_COLLAPSE_MASK, val);
 	if (ret)
 		return ret;
 
 	/* If disabling votable gdscs, don't poll on status */
+<<<<<<< HEAD
 	if ((sc->flags & VOTABLE) && status == GDSC_OFF) {
+=======
+	if ((sc->flags & VOTABLE) && !en) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Add a short delay here to ensure that an enable
 		 * right after it was disabled does not put it in an
@@ -136,6 +183,10 @@ static int gdsc_toggle_logic(struct gdsc *sc, enum gdsc_status status)
 	}
 
 	if (sc->gds_hw_ctrl) {
+<<<<<<< HEAD
+=======
+		status_reg = sc->gds_hw_ctrl;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * The gds hw controller asserts/de-asserts the status bit soon
 		 * after it receives a power on/off request from a master.
@@ -149,7 +200,11 @@ static int gdsc_toggle_logic(struct gdsc *sc, enum gdsc_status status)
 		udelay(1);
 	}
 
+<<<<<<< HEAD
 	return gdsc_poll_status(sc, status);
+=======
+	return gdsc_poll_status(sc, status_reg, en);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline int gdsc_deassert_reset(struct gdsc *sc)
@@ -200,6 +255,7 @@ static inline void gdsc_assert_clamp_io(struct gdsc *sc)
 			   GMEM_CLAMP_IO_MASK, 1);
 }
 
+<<<<<<< HEAD
 static inline void gdsc_assert_reset_aon(struct gdsc *sc)
 {
 	regmap_update_bits(sc->regmap, sc->clamp_io_ctrl,
@@ -208,6 +264,8 @@ static inline void gdsc_assert_reset_aon(struct gdsc *sc)
 	regmap_update_bits(sc->regmap, sc->clamp_io_ctrl,
 			   GMEM_RESET_MASK, 0);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int gdsc_enable(struct generic_pm_domain *domain)
 {
 	struct gdsc *sc = domain_to_gdsc(domain);
@@ -216,6 +274,7 @@ static int gdsc_enable(struct generic_pm_domain *domain)
 	if (sc->pwrsts == PWRSTS_ON)
 		return gdsc_deassert_reset(sc);
 
+<<<<<<< HEAD
 	if (sc->flags & SW_RESET) {
 		gdsc_assert_reset(sc);
 		udelay(1);
@@ -229,6 +288,12 @@ static int gdsc_enable(struct generic_pm_domain *domain)
 	}
 
 	ret = gdsc_toggle_logic(sc, GDSC_ON);
+=======
+	if (sc->flags & CLAMP_IO)
+		gdsc_deassert_clamp_io(sc);
+
+	ret = gdsc_toggle_logic(sc, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -273,6 +338,11 @@ static int gdsc_disable(struct generic_pm_domain *domain)
 
 	/* Turn off HW trigger mode if supported */
 	if (sc->flags & HW_CTRL) {
+<<<<<<< HEAD
+=======
+		unsigned int reg;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = gdsc_hwctrl(sc, false);
 		if (ret < 0)
 			return ret;
@@ -284,7 +354,12 @@ static int gdsc_disable(struct generic_pm_domain *domain)
 		 */
 		udelay(1);
 
+<<<<<<< HEAD
 		ret = gdsc_poll_status(sc, GDSC_ON);
+=======
+		reg = sc->gds_hw_ctrl ? sc->gds_hw_ctrl : sc->gdscr;
+		ret = gdsc_poll_status(sc, reg, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -292,7 +367,11 @@ static int gdsc_disable(struct generic_pm_domain *domain)
 	if (sc->pwrsts & PWRSTS_OFF)
 		gdsc_clear_mem_on(sc);
 
+<<<<<<< HEAD
 	ret = gdsc_toggle_logic(sc, GDSC_OFF);
+=======
+	ret = gdsc_toggle_logic(sc, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -306,6 +385,10 @@ static int gdsc_init(struct gdsc *sc)
 {
 	u32 mask, val;
 	int on, ret;
+<<<<<<< HEAD
+=======
+	unsigned int reg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Disable HW trigger: collapse/restore occur based on registers writes.
@@ -321,12 +404,21 @@ static int gdsc_init(struct gdsc *sc)
 
 	/* Force gdsc ON if only ON state is supported */
 	if (sc->pwrsts == PWRSTS_ON) {
+<<<<<<< HEAD
 		ret = gdsc_toggle_logic(sc, GDSC_ON);
+=======
+		ret = gdsc_toggle_logic(sc, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	on = gdsc_check_status(sc, GDSC_ON);
+=======
+	reg = sc->gds_hw_ctrl ? sc->gds_hw_ctrl : sc->gdscr;
+	on = gdsc_is_enabled(sc, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (on < 0)
 		return on;
 
@@ -337,6 +429,7 @@ static int gdsc_init(struct gdsc *sc)
 	if ((sc->flags & VOTABLE) && on)
 		gdsc_enable(&sc->pd);
 
+<<<<<<< HEAD
 	/* If ALWAYS_ON GDSCs are not ON, turn them ON */
 	if (sc->flags & ALWAYS_ON) {
 		if (!on)
@@ -345,6 +438,8 @@ static int gdsc_init(struct gdsc *sc)
 		sc->pd.flags |= GENPD_FLAG_ALWAYS_ON;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (on || (sc->pwrsts & PWRSTS_RET))
 		gdsc_force_mem_on(sc);
 	else

@@ -188,7 +188,11 @@ static int bochs_connector_get_modes(struct drm_connector *connector)
 	return count;
 }
 
+<<<<<<< HEAD
 static enum drm_mode_status bochs_connector_mode_valid(struct drm_connector *connector,
+=======
+static int bochs_connector_mode_valid(struct drm_connector *connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      struct drm_display_mode *mode)
 {
 	struct bochs_device *bochs =
@@ -259,7 +263,11 @@ int bochs_kms_init(struct bochs_device *bochs)
 	bochs_crtc_init(bochs->dev);
 	bochs_encoder_init(bochs->dev);
 	bochs_connector_init(bochs->dev);
+<<<<<<< HEAD
 	drm_connector_attach_encoder(&bochs->connector,
+=======
+	drm_mode_connector_attach_encoder(&bochs->connector,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  &bochs->encoder);
 
 	return 0;

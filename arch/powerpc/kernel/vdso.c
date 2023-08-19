@@ -22,6 +22,10 @@
 #include <linux/security.h>
 #include <linux/memblock.h>
 
+<<<<<<< HEAD
+=======
+#include <asm/cpu_has_feature.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/pgtable.h>
 #include <asm/processor.h>
 #include <asm/mmu.h>
@@ -98,6 +102,7 @@ static struct vdso_patch_def vdso_patches[] = {
 		CPU_FTR_COHERENT_ICACHE, CPU_FTR_COHERENT_ICACHE,
 		"__kernel_sync_dicache", "__kernel_sync_dicache_p5"
 	},
+<<<<<<< HEAD
 #ifdef CONFIG_PPC32
 	{
 		CPU_FTR_USE_RTC, CPU_FTR_USE_RTC,
@@ -120,6 +125,28 @@ static struct vdso_patch_def vdso_patches[] = {
 		"__kernel_time", NULL
 	},
 #endif
+=======
+	{
+		CPU_FTR_USE_TB, 0,
+		"__kernel_gettimeofday", NULL
+	},
+	{
+		CPU_FTR_USE_TB, 0,
+		"__kernel_clock_gettime", NULL
+	},
+	{
+		CPU_FTR_USE_TB, 0,
+		"__kernel_clock_getres", NULL
+	},
+	{
+		CPU_FTR_USE_TB, 0,
+		"__kernel_get_tbfreq", NULL
+	},
+	{
+		CPU_FTR_USE_TB, 0,
+		"__kernel_time", NULL
+	},
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*
@@ -790,7 +817,11 @@ static int __init vdso_init(void)
 
 #ifdef CONFIG_VDSO32
 	/* Make sure pages are in the correct state */
+<<<<<<< HEAD
 	vdso32_pagelist = kcalloc(vdso32_pages + 2, sizeof(struct page *),
+=======
+	vdso32_pagelist = kzalloc(sizeof(struct page *) * (vdso32_pages + 2),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	BUG_ON(vdso32_pagelist == NULL);
 	for (i = 0; i < vdso32_pages; i++) {
@@ -804,7 +835,11 @@ static int __init vdso_init(void)
 #endif
 
 #ifdef CONFIG_PPC64
+<<<<<<< HEAD
 	vdso64_pagelist = kcalloc(vdso64_pages + 2, sizeof(struct page *),
+=======
+	vdso64_pagelist = kzalloc(sizeof(struct page *) * (vdso64_pages + 2),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  GFP_KERNEL);
 	BUG_ON(vdso64_pagelist == NULL);
 	for (i = 0; i < vdso64_pages; i++) {

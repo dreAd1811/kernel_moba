@@ -24,18 +24,26 @@
 #ifndef __AMDGPU_RING_H__
 #define __AMDGPU_RING_H__
 
+<<<<<<< HEAD
 #include <drm/amdgpu_drm.h>
 #include <drm/gpu_scheduler.h>
 #include <drm/drm_print.h>
 
 /* max number of rings */
 #define AMDGPU_MAX_RINGS		21
+=======
+#include "gpu_scheduler.h"
+
+/* max number of rings */
+#define AMDGPU_MAX_RINGS		18
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define AMDGPU_MAX_GFX_RINGS		1
 #define AMDGPU_MAX_COMPUTE_RINGS	8
 #define AMDGPU_MAX_VCE_RINGS		3
 #define AMDGPU_MAX_UVD_ENC_RINGS	2
 
 /* some special values for the owner field */
+<<<<<<< HEAD
 #define AMDGPU_FENCE_OWNER_UNDEFINED	((void *)0ul)
 #define AMDGPU_FENCE_OWNER_VM		((void *)1ul)
 #define AMDGPU_FENCE_OWNER_KFD		((void *)2ul)
@@ -45,6 +53,13 @@
 #define AMDGPU_FENCE_FLAG_TC_WB_ONLY    (1 << 2)
 
 #define to_amdgpu_ring(s) container_of((s), struct amdgpu_ring, sched)
+=======
+#define AMDGPU_FENCE_OWNER_UNDEFINED	((void*)0ul)
+#define AMDGPU_FENCE_OWNER_VM		((void*)1ul)
+
+#define AMDGPU_FENCE_FLAG_64BIT         (1 << 0)
+#define AMDGPU_FENCE_FLAG_INT           (1 << 1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum amdgpu_ring_type {
 	AMDGPU_RING_TYPE_GFX,
@@ -55,15 +70,22 @@ enum amdgpu_ring_type {
 	AMDGPU_RING_TYPE_KIQ,
 	AMDGPU_RING_TYPE_UVD_ENC,
 	AMDGPU_RING_TYPE_VCN_DEC,
+<<<<<<< HEAD
 	AMDGPU_RING_TYPE_VCN_ENC,
 	AMDGPU_RING_TYPE_VCN_JPEG
+=======
+	AMDGPU_RING_TYPE_VCN_ENC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct amdgpu_device;
 struct amdgpu_ring;
 struct amdgpu_ib;
 struct amdgpu_cs_parser;
+<<<<<<< HEAD
 struct amdgpu_job;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Fences.
@@ -85,7 +107,12 @@ struct amdgpu_fence_driver {
 
 int amdgpu_fence_driver_init(struct amdgpu_device *adev);
 void amdgpu_fence_driver_fini(struct amdgpu_device *adev);
+<<<<<<< HEAD
 void amdgpu_fence_driver_force_completion(struct amdgpu_ring *ring);
+=======
+void amdgpu_fence_driver_force_completion(struct amdgpu_device *adev);
+void amdgpu_fence_driver_force_completion_ring(struct amdgpu_ring *ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int amdgpu_fence_driver_init_ring(struct amdgpu_ring *ring,
 				  unsigned num_hw_submission);
@@ -94,6 +121,7 @@ int amdgpu_fence_driver_start_ring(struct amdgpu_ring *ring,
 				   unsigned irq_type);
 void amdgpu_fence_driver_suspend(struct amdgpu_device *adev);
 void amdgpu_fence_driver_resume(struct amdgpu_device *adev);
+<<<<<<< HEAD
 int amdgpu_fence_emit(struct amdgpu_ring *ring, struct dma_fence **fence,
 		      unsigned flags);
 int amdgpu_fence_emit_polling(struct amdgpu_ring *ring, uint32_t *s);
@@ -102,6 +130,11 @@ int amdgpu_fence_wait_empty(struct amdgpu_ring *ring);
 signed long amdgpu_fence_wait_polling(struct amdgpu_ring *ring,
 				      uint32_t wait_seq,
 				      signed long timeout);
+=======
+int amdgpu_fence_emit(struct amdgpu_ring *ring, struct dma_fence **fence);
+void amdgpu_fence_process(struct amdgpu_ring *ring);
+int amdgpu_fence_wait_empty(struct amdgpu_ring *ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 unsigned amdgpu_fence_count_emitted(struct amdgpu_ring *ring);
 
 /*
@@ -115,7 +148,10 @@ struct amdgpu_ring_funcs {
 	u32			nop;
 	bool			support_64bit_ptrs;
 	unsigned		vmhub;
+<<<<<<< HEAD
 	unsigned		extra_dw;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* ring read/write ptr handling */
 	u64 (*get_rptr)(struct amdgpu_ring *ring);
@@ -123,13 +159,17 @@ struct amdgpu_ring_funcs {
 	void (*set_wptr)(struct amdgpu_ring *ring);
 	/* validating and patching of IBs */
 	int (*parse_cs)(struct amdgpu_cs_parser *p, uint32_t ib_idx);
+<<<<<<< HEAD
 	int (*patch_cs_in_place)(struct amdgpu_cs_parser *p, uint32_t ib_idx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* constants to calculate how many DW are needed for an emit */
 	unsigned emit_frame_size;
 	unsigned emit_ib_size;
 	/* command emit functions */
 	void (*emit_ib)(struct amdgpu_ring *ring,
 			struct amdgpu_ib *ib,
+<<<<<<< HEAD
 			unsigned vmid, bool ctx_switch);
 	void (*emit_fence)(struct amdgpu_ring *ring, uint64_t addr,
 			   uint64_t seq, unsigned flags);
@@ -137,6 +177,16 @@ struct amdgpu_ring_funcs {
 	void (*emit_vm_flush)(struct amdgpu_ring *ring, unsigned vmid,
 			      uint64_t pd_addr);
 	void (*emit_hdp_flush)(struct amdgpu_ring *ring);
+=======
+			unsigned vm_id, bool ctx_switch);
+	void (*emit_fence)(struct amdgpu_ring *ring, uint64_t addr,
+			   uint64_t seq, unsigned flags);
+	void (*emit_pipeline_sync)(struct amdgpu_ring *ring);
+	void (*emit_vm_flush)(struct amdgpu_ring *ring, unsigned vm_id,
+			      uint64_t pd_addr);
+	void (*emit_hdp_flush)(struct amdgpu_ring *ring);
+	void (*emit_hdp_invalidate)(struct amdgpu_ring *ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*emit_gds_switch)(struct amdgpu_ring *ring, uint32_t vmid,
 				uint32_t gds_base, uint32_t gds_size,
 				uint32_t gws_base, uint32_t gws_size,
@@ -159,6 +209,7 @@ struct amdgpu_ring_funcs {
 	void (*emit_cntxcntl) (struct amdgpu_ring *ring, uint32_t flags);
 	void (*emit_rreg)(struct amdgpu_ring *ring, uint32_t reg);
 	void (*emit_wreg)(struct amdgpu_ring *ring, uint32_t reg, uint32_t val);
+<<<<<<< HEAD
 	void (*emit_reg_wait)(struct amdgpu_ring *ring, uint32_t reg,
 			      uint32_t val, uint32_t mask);
 	void (*emit_reg_write_reg_wait)(struct amdgpu_ring *ring,
@@ -168,13 +219,20 @@ struct amdgpu_ring_funcs {
 	/* priority functions */
 	void (*set_priority) (struct amdgpu_ring *ring,
 			      enum drm_sched_priority priority);
+=======
+	void (*emit_tmz)(struct amdgpu_ring *ring, bool start);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct amdgpu_ring {
 	struct amdgpu_device		*adev;
 	const struct amdgpu_ring_funcs	*funcs;
 	struct amdgpu_fence_driver	fence_drv;
+<<<<<<< HEAD
 	struct drm_gpu_scheduler	sched;
+=======
+	struct amd_gpu_scheduler	sched;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head		lru_list;
 
 	struct amdgpu_bo	*ring_obj;
@@ -199,7 +257,10 @@ struct amdgpu_ring {
 	uint64_t                eop_gpu_addr;
 	u32			doorbell_index;
 	bool			use_doorbell;
+<<<<<<< HEAD
 	bool			use_pollmem;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned		wptr_offs;
 	unsigned		fence_offs;
 	uint64_t		current_ctx;
@@ -208,6 +269,7 @@ struct amdgpu_ring {
 	u64			cond_exe_gpu_addr;
 	volatile u32		*cond_exe_cpu_addr;
 	unsigned		vm_inv_eng;
+<<<<<<< HEAD
 	struct dma_fence	*vmid_wait;
 	bool			has_compute_vm_bug;
 
@@ -216,6 +278,9 @@ struct amdgpu_ring {
 	/* protected by priority_mutex */
 	int			priority;
 
+=======
+	bool			has_compute_vm_bug;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(CONFIG_DEBUG_FS)
 	struct dentry *ent;
 #endif
@@ -226,14 +291,18 @@ void amdgpu_ring_insert_nop(struct amdgpu_ring *ring, uint32_t count);
 void amdgpu_ring_generic_pad_ib(struct amdgpu_ring *ring, struct amdgpu_ib *ib);
 void amdgpu_ring_commit(struct amdgpu_ring *ring);
 void amdgpu_ring_undo(struct amdgpu_ring *ring);
+<<<<<<< HEAD
 void amdgpu_ring_priority_get(struct amdgpu_ring *ring,
 			      enum drm_sched_priority priority);
 void amdgpu_ring_priority_put(struct amdgpu_ring *ring,
 			      enum drm_sched_priority priority);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
 		     unsigned ring_size, struct amdgpu_irq_src *irq_src,
 		     unsigned irq_type);
 void amdgpu_ring_fini(struct amdgpu_ring *ring);
+<<<<<<< HEAD
 int amdgpu_ring_lru_get(struct amdgpu_device *adev, int type,
 			int *blacklist, int num_blacklist,
 			bool lru_pipe_order, struct amdgpu_ring **ring);
@@ -242,6 +311,11 @@ void amdgpu_ring_emit_reg_write_reg_wait_helper(struct amdgpu_ring *ring,
 						uint32_t reg0, uint32_t val0,
 						uint32_t reg1, uint32_t val1);
 
+=======
+int amdgpu_ring_lru_get(struct amdgpu_device *adev, int type, int *blacklist,
+			int num_blacklist, struct amdgpu_ring **ring);
+void amdgpu_ring_lru_touch(struct amdgpu_device *adev, struct amdgpu_ring *ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void amdgpu_ring_clear_ring(struct amdgpu_ring *ring)
 {
 	int i = 0;

@@ -19,6 +19,11 @@
 #include <linux/platform_data/brcmfmac.h>
 #include "fwil_types.h"
 
+<<<<<<< HEAD
+=======
+extern const u8 ALLFFMAC[ETH_ALEN];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define BRCMF_FW_ALTPATH_LEN			256
 
 /* Definitions for the module global and device specific settings are defined
@@ -56,7 +61,10 @@ struct brcmf_mp_device {
 	unsigned int	feature_disable;
 	int		fcmode;
 	bool		roamoff;
+<<<<<<< HEAD
 	bool		iapp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool		ignore_probe_fail;
 	struct brcmfmac_pd_cc *country_codes;
 	union {

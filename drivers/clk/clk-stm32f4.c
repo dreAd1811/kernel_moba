@@ -282,7 +282,10 @@ static const struct stm32f4_gate_data stm32f746_gates[] __initconst = {
 
 	{ STM32F4_RCC_APB2ENR,  0,	"tim1",		"apb2_mul" },
 	{ STM32F4_RCC_APB2ENR,  1,	"tim8",		"apb2_mul" },
+<<<<<<< HEAD
 	{ STM32F4_RCC_APB2ENR,  7,	"sdmmc2",	"sdmux"    },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ STM32F4_RCC_APB2ENR,  8,	"adc1",		"apb2_div" },
 	{ STM32F4_RCC_APB2ENR,  9,	"adc2",		"apb2_div" },
 	{ STM32F4_RCC_APB2ENR, 10,	"adc3",		"apb2_div" },
@@ -316,7 +319,11 @@ static const u64 stm32f46xx_gate_map[MAX_GATE_MAP] = { 0x000000f17ef417ffull,
 
 static const u64 stm32f746_gate_map[MAX_GATE_MAP] = { 0x000000f17ef417ffull,
 						      0x0000000000000003ull,
+<<<<<<< HEAD
 						      0x04f77f833e01c9ffull };
+=======
+						      0x04f77f033e01c9ffull };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static const u64 *stm32f4_gate_map;
 
@@ -522,7 +529,11 @@ static const struct stm32f4_pll_data stm32f429_pll[MAX_PLL_DIV] = {
 };
 
 static const struct stm32f4_pll_data stm32f469_pll[MAX_PLL_DIV] = {
+<<<<<<< HEAD
 	{ PLL,	   50, { "pll",	     "pll-q",    "pll-r"    } },
+=======
+	{ PLL,	   50, { "pll",	     "pll-q",    NULL	    } },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ PLL_I2S, 50, { "plli2s-p", "plli2s-q", "plli2s-r" } },
 	{ PLL_SAI, 50, { "pllsai-p", "pllsai-q", "pllsai-r" } },
 };
@@ -1048,8 +1059,11 @@ static const char *rtc_parents[4] = {
 	"no-clock", "lse", "lsi", "hse-rtc"
 };
 
+<<<<<<< HEAD
 static const char *dsi_parent[2] = { NULL, "pll-r" };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const char *lcd_parent[1] = { "pllsai-r-div" };
 
 static const char *i2s_parents[2] = { "plli2s-r", NULL };
@@ -1159,12 +1173,15 @@ static const struct stm32_aux_clk stm32f469_aux_clk[] = {
 		NO_GATE, 0,
 		0
 	},
+<<<<<<< HEAD
 	{
 		CLK_F469_DSI, "dsi", dsi_parent, ARRAY_SIZE(dsi_parent),
 		STM32F4_RCC_DCKCFGR, 29, 1,
 		STM32F4_RCC_APB2ENR, 27,
 		CLK_SET_RATE_PARENT | CLK_SET_RATE_NO_REPARENT
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct stm32_aux_clk stm32f746_aux_clk[] = {
@@ -1433,7 +1450,11 @@ static void __init stm32f4_rcc_init(struct device_node *np)
 
 	base = of_iomap(np, 0);
 	if (!base) {
+<<<<<<< HEAD
 		pr_err("%s: unable to map resource\n", np->name);
+=======
+		pr_err("%s: unable to map resource", np->name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1459,7 +1480,10 @@ static void __init stm32f4_rcc_init(struct device_node *np)
 	stm32f4_gate_map = data->gates_map;
 
 	hse_clk = of_clk_get_parent_name(np, 0);
+<<<<<<< HEAD
 	dsi_parent[0] = hse_clk;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i2s_in_clk = of_clk_get_parent_name(np, 1);
 

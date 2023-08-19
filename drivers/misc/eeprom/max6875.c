@@ -148,8 +148,12 @@ static int max6875_probe(struct i2c_client *client,
 	if (client->addr & 1)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	data = kzalloc(sizeof(struct max6875_data), GFP_KERNEL);
 	if (!data)
+=======
+	if (!(data = kzalloc(sizeof(struct max6875_data), GFP_KERNEL)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	/* A fake client is created on the odd address */

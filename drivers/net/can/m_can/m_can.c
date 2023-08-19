@@ -23,7 +23,10 @@
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/pm_runtime.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/iopoll.h>
 #include <linux/can/dev.h>
 #include <linux/pinctrl/consumer.h>
@@ -128,12 +131,15 @@ enum m_can_mram_cfg {
 #define DBTP_DSJW_SHIFT		0
 #define DBTP_DSJW_MASK		(0xf << DBTP_DSJW_SHIFT)
 
+<<<<<<< HEAD
 /* Transmitter Delay Compensation Register (TDCR) */
 #define TDCR_TDCO_SHIFT		8
 #define TDCR_TDCO_MASK		(0x7F << TDCR_TDCO_SHIFT)
 #define TDCR_TDCF_SHIFT		0
 #define TDCR_TDCF_MASK		(0x7F << TDCR_TDCF_SHIFT)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Test Register (TEST) */
 #define TEST_LBCK		BIT(4)
 
@@ -633,6 +639,7 @@ static int m_can_clk_start(struct m_can_priv *priv)
 {
 	int err;
 
+<<<<<<< HEAD
 	err = pm_runtime_get_sync(priv->device);
 	if (err < 0) {
 		pm_runtime_put_noidle(priv->device);
@@ -640,11 +647,27 @@ static int m_can_clk_start(struct m_can_priv *priv)
 	}
 
 	return 0;
+=======
+	err = clk_prepare_enable(priv->hclk);
+	if (err)
+		return err;
+
+	err = clk_prepare_enable(priv->cclk);
+	if (err)
+		clk_disable_unprepare(priv->hclk);
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void m_can_clk_stop(struct m_can_priv *priv)
 {
+<<<<<<< HEAD
 	pm_runtime_put_sync(priv->device);
+=======
+	clk_disable_unprepare(priv->cclk);
+	clk_disable_unprepare(priv->hclk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m_can_get_berr_counter(const struct net_device *dev,
@@ -1013,11 +1036,15 @@ static int m_can_set_bittiming(struct net_device *dev)
 	m_can_write(priv, M_CAN_NBTP, reg_btp);
 
 	if (priv->can.ctrlmode & CAN_CTRLMODE_FD) {
+<<<<<<< HEAD
 		reg_btp = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		brp = dbt->brp - 1;
 		sjw = dbt->sjw - 1;
 		tseg1 = dbt->prop_seg + dbt->phase_seg1 - 1;
 		tseg2 = dbt->phase_seg2 - 1;
+<<<<<<< HEAD
 
 		/* TDC is only needed for bitrates beyond 2.5 MBit/s.
 		 * This is mentioned in the "Bit Time Requirements for CAN FD"
@@ -1054,6 +1081,11 @@ static int m_can_set_bittiming(struct net_device *dev)
 			   (tseg1 << DBTP_DTSEG1_SHIFT) |
 			   (tseg2 << DBTP_DTSEG2_SHIFT);
 
+=======
+		reg_btp = (brp << DBTP_DBRP_SHIFT) | (sjw << DBTP_DSJW_SHIFT) |
+			(tseg1 << DBTP_DTSEG1_SHIFT) |
+			(tseg2 << DBTP_DTSEG2_SHIFT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		m_can_write(priv, M_CAN_DBTP, reg_btp);
 	}
 
@@ -1204,6 +1236,14 @@ static int m_can_set_mode(struct net_device *dev, enum can_mode mode)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void free_m_can_dev(struct net_device *dev)
+{
+	free_candev(dev);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Checks core release number of M_CAN
  * returns 0 if an unsupported device is detected
  * else it returns the release and step coded as:
@@ -1263,20 +1303,47 @@ static bool m_can_niso_supported(const struct m_can_priv *priv)
 	return !niso_timeout;
 }
 
+<<<<<<< HEAD
 static int m_can_dev_setup(struct platform_device *pdev, struct net_device *dev,
 			   void __iomem *addr)
 {
 	struct m_can_priv *priv;
 	int m_can_version;
+=======
+static struct net_device *alloc_m_can_dev(struct platform_device *pdev,
+					  void __iomem *addr, u32 tx_fifo_size)
+{
+	struct net_device *dev;
+	struct m_can_priv *priv;
+	int m_can_version;
+	unsigned int echo_buffer_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	m_can_version = m_can_check_core_release(addr);
 	/* return if unsupported version */
 	if (!m_can_version) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "Unsupported version number: %2d",
 			m_can_version);
 		return -EINVAL;
 	}
 
+=======
+		dev = NULL;
+		goto return_dev;
+	}
+
+	/* If version < 3.1.x, then only one echo buffer is used */
+	echo_buffer_count = ((m_can_version == 30)
+				? 1U
+				: (unsigned int)tx_fifo_size);
+
+	dev = alloc_candev(sizeof(*priv), echo_buffer_count);
+	if (!dev) {
+		dev = NULL;
+		goto return_dev;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv = netdev_priv(dev);
 	netif_napi_add(dev, &priv->napi, m_can_poll, M_CAN_NAPI_WEIGHT);
 
@@ -1318,12 +1385,25 @@ static int m_can_dev_setup(struct platform_device *pdev, struct net_device *dev,
 						: 0);
 		break;
 	default:
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "Unsupported version number: %2d",
 			priv->version);
 		return -EINVAL;
 	}
 
 	return 0;
+=======
+		/* Unsupported device: free candev */
+		free_m_can_dev(dev);
+		dev_err(&pdev->dev, "Unsupported version number: %2d",
+			priv->version);
+		dev = NULL;
+		break;
+	}
+
+return_dev:
+	return dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m_can_open(struct net_device *dev)
@@ -1615,26 +1695,52 @@ static int m_can_plat_probe(struct platform_device *pdev)
 		goto failed_ret;
 	}
 
+<<<<<<< HEAD
+=======
+	/* Enable clocks. Necessary to read Core Release in order to determine
+	 * M_CAN version
+	 */
+	ret = clk_prepare_enable(hclk);
+	if (ret)
+		goto disable_hclk_ret;
+
+	ret = clk_prepare_enable(cclk);
+	if (ret)
+		goto disable_cclk_ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "m_can");
 	addr = devm_ioremap_resource(&pdev->dev, res);
 	irq = platform_get_irq_byname(pdev, "int0");
 
 	if (IS_ERR(addr) || irq < 0) {
 		ret = -EINVAL;
+<<<<<<< HEAD
 		goto failed_ret;
+=======
+		goto disable_cclk_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* message ram could be shared */
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "message_ram");
 	if (!res) {
 		ret = -ENODEV;
+<<<<<<< HEAD
 		goto failed_ret;
+=======
+		goto disable_cclk_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mram_addr = devm_ioremap(&pdev->dev, res->start, resource_size(res));
 	if (!mram_addr) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto failed_ret;
+=======
+		goto disable_cclk_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* get message ram configuration */
@@ -1643,7 +1749,11 @@ static int m_can_plat_probe(struct platform_device *pdev)
 					 sizeof(mram_config_vals) / 4);
 	if (ret) {
 		dev_err(&pdev->dev, "Could not get Message RAM configuration.");
+<<<<<<< HEAD
 		goto failed_ret;
+=======
+		goto disable_cclk_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Get TX FIFO size
@@ -1652,12 +1762,20 @@ static int m_can_plat_probe(struct platform_device *pdev)
 	tx_fifo_size = mram_config_vals[7];
 
 	/* allocate the m_can device */
+<<<<<<< HEAD
 	dev = alloc_candev(sizeof(*priv), tx_fifo_size);
 	if (!dev) {
 		ret = -ENOMEM;
 		goto failed_ret;
 	}
 
+=======
+	dev = alloc_m_can_dev(pdev, addr, tx_fifo_size);
+	if (!dev) {
+		ret = -ENOMEM;
+		goto disable_cclk_ret;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	priv = netdev_priv(dev);
 	dev->irq = irq;
 	priv->device = &pdev->dev;
@@ -1669,6 +1787,7 @@ static int m_can_plat_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, dev);
 	SET_NETDEV_DEV(dev, &pdev->dev);
 
+<<<<<<< HEAD
 	/* Enable clocks. Necessary to read Core Release in order to determine
 	 * M_CAN version
 	 */
@@ -1681,25 +1800,35 @@ static int m_can_plat_probe(struct platform_device *pdev)
 	if (ret)
 		goto clk_disable;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = register_m_can_dev(dev);
 	if (ret) {
 		dev_err(&pdev->dev, "registering %s failed (err=%d)\n",
 			KBUILD_MODNAME, ret);
+<<<<<<< HEAD
 		goto clk_disable;
+=======
+		goto failed_free_dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	m_can_of_parse_mram(priv, mram_config_vals);
 
 	devm_can_led_init(dev);
 
+<<<<<<< HEAD
 	of_can_transceiver(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(&pdev->dev, "%s device registered (irq=%d, version=%d)\n",
 		 KBUILD_MODNAME, dev->irq, priv->version);
 
 	/* Probe finished
 	 * Stop clocks. They will be reactivated once the M_CAN device is opened
 	 */
+<<<<<<< HEAD
 clk_disable:
 	m_can_clk_stop(priv);
 pm_runtime_fail:
@@ -1707,10 +1836,26 @@ pm_runtime_fail:
 		pm_runtime_disable(&pdev->dev);
 		free_candev(dev);
 	}
+=======
+
+	goto disable_cclk_ret;
+
+failed_free_dev:
+	free_m_can_dev(dev);
+disable_cclk_ret:
+	clk_disable_unprepare(cclk);
+disable_hclk_ret:
+	clk_disable_unprepare(hclk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 failed_ret:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+/* TODO: runtime PM with power down or sleep mode  */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static __maybe_unused int m_can_suspend(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
@@ -1765,16 +1910,23 @@ static int m_can_plat_remove(struct platform_device *pdev)
 	struct net_device *dev = platform_get_drvdata(pdev);
 
 	unregister_m_can_dev(dev);
+<<<<<<< HEAD
 
 	pm_runtime_disable(&pdev->dev);
 
 	platform_set_drvdata(pdev, NULL);
 
 	free_candev(dev);
+=======
+	platform_set_drvdata(pdev, NULL);
+
+	free_m_can_dev(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int __maybe_unused m_can_runtime_suspend(struct device *dev)
 {
 	struct net_device *ndev = dev_get_drvdata(dev);
@@ -1806,6 +1958,9 @@ static int __maybe_unused m_can_runtime_resume(struct device *dev)
 static const struct dev_pm_ops m_can_pmops = {
 	SET_RUNTIME_PM_OPS(m_can_runtime_suspend,
 			   m_can_runtime_resume, NULL)
+=======
+static const struct dev_pm_ops m_can_pmops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SET_SYSTEM_SLEEP_PM_OPS(m_can_suspend, m_can_resume)
 };
 

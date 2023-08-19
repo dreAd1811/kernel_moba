@@ -24,8 +24,13 @@ int input_event_from_user(const char __user *buffer,
 				   sizeof(struct input_event_compat)))
 			return -EFAULT;
 
+<<<<<<< HEAD
 		event->input_event_sec = compat_event.sec;
 		event->input_event_usec = compat_event.usec;
+=======
+		event->time.tv_sec = compat_event.time.tv_sec;
+		event->time.tv_usec = compat_event.time.tv_usec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		event->type = compat_event.type;
 		event->code = compat_event.code;
 		event->value = compat_event.value;
@@ -44,8 +49,13 @@ int input_event_to_user(char __user *buffer,
 	if (in_compat_syscall() && !COMPAT_USE_64BIT_TIME) {
 		struct input_event_compat compat_event;
 
+<<<<<<< HEAD
 		compat_event.sec = event->input_event_sec;
 		compat_event.usec = event->input_event_usec;
+=======
+		compat_event.time.tv_sec = event->time.tv_sec;
+		compat_event.time.tv_usec = event->time.tv_usec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compat_event.type = event->type;
 		compat_event.code = event->code;
 		compat_event.value = event->value;

@@ -215,7 +215,10 @@
 			#dma-cells = <1>;
 			dma-channels = <32>;
 			dma-requests = <96>;
+<<<<<<< HEAD
 			ti,hwmods = "dma";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 		gpio1: gpio@48310000 {
@@ -557,7 +560,10 @@
 			dma-names = "tx", "rx";
 			clocks = <&mcbsp4_fck>;
 			clock-names = "fck";
+<<<<<<< HEAD
 			#sound-dai-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -588,6 +594,23 @@
 			dma-names = "rx";
 		};
 
+<<<<<<< HEAD
+=======
+		smartreflex_core: smartreflex@480cb000 {
+			compatible = "ti,omap3-smartreflex-core";
+			ti,hwmods = "smartreflex_core";
+			reg = <0x480cb000 0x400>;
+			interrupts = <19>;
+		};
+
+		smartreflex_mpu_iva: smartreflex@480c9000 {
+			compatible = "ti,omap3-smartreflex-iva";
+			ti,hwmods = "smartreflex_mpu_iva";
+			reg = <0x480c9000 0x400>;
+			interrupts = <18>;
+		};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		timer1: timer@48318000 {
 			compatible = "ti,omap3430-timer";
 			reg = <0x48318000 0x400>;
@@ -702,7 +725,10 @@
 				compatible = "ti,ohci-omap3";
 				reg = <0x48064400 0x400>;
 				interrupts = <76>;
+<<<<<<< HEAD
 				remote-wakeup-connected;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 
 			usbhsehci: ehci@48064800 {

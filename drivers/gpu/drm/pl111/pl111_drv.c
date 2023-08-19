@@ -41,6 +41,12 @@
  * - Fix race between setting plane base address and getting IRQ for
  *   vsync firing the pageflip completion.
  *
+<<<<<<< HEAD
+=======
+ * - Expose the correct set of formats we can support based on the
+ *   "arm,pl11x,tft-r0g0b0-pads" DT property.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * - Use the "max-memory-bandwidth" DT property to filter the
  *   supported formats.
  *
@@ -58,15 +64,19 @@
 #include <linux/dma-buf.h>
 #include <linux/module.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/of.h>
 #include <linux/of_graph.h>
 #include <linux/of_reserved_mem.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <drm/drmP.h>
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_gem_cma_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_of.h>
@@ -76,6 +86,11 @@
 #include "pl111_drm.h"
 #include "pl111_versatile.h"
 #include "pl111_nomadik.h"
+=======
+#include <drm/drm_fb_cma_helper.h>
+
+#include "pl111_drm.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRIVER_DESC      "DRM module for PL111"
 
@@ -89,6 +104,7 @@ static int pl111_modeset_init(struct drm_device *dev)
 {
 	struct drm_mode_config *mode_config;
 	struct pl111_drm_dev_private *priv = dev->dev_private;
+<<<<<<< HEAD
 	struct device_node *np = dev->dev->of_node;
 	struct device_node *remote;
 	struct drm_panel *panel = NULL;
@@ -96,6 +112,9 @@ static int pl111_modeset_init(struct drm_device *dev)
 	bool defer = false;
 	int ret = 0;
 	int i;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_mode_config_init(dev);
 	mode_config = &dev->mode_config;
@@ -105,6 +124,7 @@ static int pl111_modeset_init(struct drm_device *dev)
 	mode_config->min_height = 1;
 	mode_config->max_height = 768;
 
+<<<<<<< HEAD
 	i = 0;
 	for_each_endpoint_of_node(np, remote) {
 		struct drm_panel *tmp_panel;
@@ -171,11 +191,30 @@ static int pl111_modeset_init(struct drm_device *dev)
 	if (panel) {
 		priv->panel = panel;
 		priv->connector = panel->connector;
+=======
+	ret = pl111_connector_init(dev);
+	if (ret) {
+		dev_err(dev->dev, "Failed to create pl111_drm_connector\n");
+		goto out_config;
+	}
+
+	/* Don't actually attach if we didn't find a drm_panel
+	 * attached to us.  This will allow a kernel to include both
+	 * the fbdev pl111 driver and this one, and choose between
+	 * them based on which subsystem has support for the panel.
+	 */
+	if (!priv->connector.panel) {
+		dev_info(dev->dev,
+			 "Disabling due to lack of DRM panel device.\n");
+		ret = -ENODEV;
+		goto out_config;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = pl111_display_init(dev);
 	if (ret != 0) {
 		dev_err(dev->dev, "Failed to init display\n");
+<<<<<<< HEAD
 		goto out_bridge;
 	}
 
@@ -190,25 +229,43 @@ static int pl111_modeset_init(struct drm_device *dev)
 			dev_err(dev->dev, "Failed to init vblank\n");
 			goto out_bridge;
 		}
+=======
+		goto out_config;
+	}
+
+	ret = drm_vblank_init(dev, 1);
+	if (ret != 0) {
+		dev_err(dev->dev, "Failed to init vblank\n");
+		goto out_config;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	drm_mode_config_reset(dev);
 
+<<<<<<< HEAD
 	drm_fb_cma_fbdev_init(dev, priv->variant->fb_bpp, 0);
+=======
+	priv->fbdev = drm_fbdev_cma_init(dev, 32,
+					 dev->mode_config.num_connector);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_kms_helper_poll_init(dev);
 
 	goto finish;
 
+<<<<<<< HEAD
 out_bridge:
 	if (panel)
 		drm_panel_bridge_remove(bridge);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_config:
 	drm_mode_config_cleanup(dev);
 finish:
 	return ret;
 }
 
+<<<<<<< HEAD
 static struct drm_gem_object *
 pl111_gem_import_sg_table(struct drm_device *dev,
 			  struct dma_buf_attachment *attach,
@@ -233,6 +290,21 @@ static struct drm_driver pl111_drm_driver = {
 	.driver_features =
 		DRIVER_MODESET | DRIVER_GEM | DRIVER_PRIME | DRIVER_ATOMIC,
 	.lastclose = drm_fb_helper_lastclose,
+=======
+DEFINE_DRM_GEM_CMA_FOPS(drm_fops);
+
+static void pl111_lastclose(struct drm_device *dev)
+{
+	struct pl111_drm_dev_private *priv = dev->dev_private;
+
+	drm_fbdev_cma_restore_mode(priv->fbdev);
+}
+
+static struct drm_driver pl111_drm_driver = {
+	.driver_features =
+		DRIVER_MODESET | DRIVER_GEM | DRIVER_PRIME | DRIVER_ATOMIC,
+	.lastclose = pl111_lastclose,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ioctls = NULL,
 	.fops = &drm_fops,
 	.name = "pl111",
@@ -244,6 +316,7 @@ static struct drm_driver pl111_drm_driver = {
 	.dumb_create = drm_gem_cma_dumb_create,
 	.gem_free_object_unlocked = drm_gem_cma_free_object,
 	.gem_vm_ops = &drm_gem_cma_vm_ops,
+<<<<<<< HEAD
 	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
 	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
 	.gem_prime_import = drm_gem_prime_import,
@@ -252,6 +325,18 @@ static struct drm_driver pl111_drm_driver = {
 	.gem_prime_get_sg_table	= drm_gem_cma_prime_get_sg_table,
 	.gem_prime_mmap = drm_gem_cma_prime_mmap,
 	.gem_prime_vmap = drm_gem_cma_prime_vmap,
+=======
+
+	.enable_vblank = pl111_enable_vblank,
+	.disable_vblank = pl111_disable_vblank,
+
+	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
+	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
+	.gem_prime_import = drm_gem_prime_import,
+	.gem_prime_import_sg_table = drm_gem_cma_prime_import_sg_table,
+	.gem_prime_export = drm_gem_prime_export,
+	.gem_prime_get_sg_table	= drm_gem_cma_prime_get_sg_table,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if defined(CONFIG_DEBUG_FS)
 	.debugfs_init = pl111_debugfs_init,
@@ -263,7 +348,10 @@ static int pl111_amba_probe(struct amba_device *amba_dev,
 {
 	struct device *dev = &amba_dev->dev;
 	struct pl111_drm_dev_private *priv;
+<<<<<<< HEAD
 	const struct pl111_variant_data *variant = id->data;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *drm;
 	int ret;
 
@@ -277,6 +365,7 @@ static int pl111_amba_probe(struct amba_device *amba_dev,
 	amba_set_drvdata(amba_dev, drm);
 	priv->drm = drm;
 	drm->dev_private = priv;
+<<<<<<< HEAD
 	priv->variant = variant;
 
 	ret = of_reserved_mem_device_init(dev);
@@ -299,10 +388,13 @@ static int pl111_amba_probe(struct amba_device *amba_dev,
 		priv->ienb = CLCD_PL111_IENB;
 		priv->ctrl = CLCD_PL111_CNTL;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->regs = devm_ioremap_resource(dev, &amba_dev->res);
 	if (IS_ERR(priv->regs)) {
 		dev_err(dev, "%s failed mmio\n", __func__);
+<<<<<<< HEAD
 		ret = PTR_ERR(priv->regs);
 		goto dev_put;
 	}
@@ -319,6 +411,16 @@ static int pl111_amba_probe(struct amba_device *amba_dev,
 
 	ret = devm_request_irq(dev, amba_dev->irq[0], pl111_irq, 0,
 			       variant->name, priv);
+=======
+		return PTR_ERR(priv->regs);
+	}
+
+	/* turn off interrupts before requesting the irq */
+	writel(0, priv->regs + CLCD_PL111_IENB);
+
+	ret = devm_request_irq(dev, amba_dev->irq[0], pl111_irq, 0,
+			       "pl111", priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret != 0) {
 		dev_err(dev, "%s failed irq %d\n", __func__, ret);
 		return ret;
@@ -326,6 +428,7 @@ static int pl111_amba_probe(struct amba_device *amba_dev,
 
 	ret = pl111_modeset_init(drm);
 	if (ret != 0)
+<<<<<<< HEAD
 		goto dev_put;
 
 	ret = drm_dev_register(drm, 0);
@@ -338,26 +441,49 @@ dev_put:
 	drm_dev_put(drm);
 	of_reserved_mem_device_release(dev);
 
+=======
+		goto dev_unref;
+
+	ret = drm_dev_register(drm, 0);
+	if (ret < 0)
+		goto dev_unref;
+
+	return 0;
+
+dev_unref:
+	drm_dev_unref(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static int pl111_amba_remove(struct amba_device *amba_dev)
 {
+<<<<<<< HEAD
 	struct device *dev = &amba_dev->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_device *drm = amba_get_drvdata(amba_dev);
 	struct pl111_drm_dev_private *priv = drm->dev_private;
 
 	drm_dev_unregister(drm);
+<<<<<<< HEAD
 	drm_fb_cma_fbdev_fini(drm);
 	if (priv->panel)
 		drm_panel_bridge_remove(priv->bridge);
 	drm_mode_config_cleanup(drm);
 	drm_dev_put(drm);
 	of_reserved_mem_device_release(dev);
+=======
+	if (priv->fbdev)
+		drm_fbdev_cma_fini(priv->fbdev);
+	drm_mode_config_cleanup(drm);
+	drm_dev_unref(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * This early variant lacks the 565 and 444 pixel formats.
  */
@@ -449,6 +575,12 @@ static const struct amba_id pl111_id_table[] = {
 		.id = 0x00041111,
 		.mask = 0x000fffff,
 		.data = (void *)&pl111_variant,
+=======
+static struct amba_id pl111_id_table[] = {
+	{
+		.id = 0x00041111,
+		.mask = 0x000fffff,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{0, 0},
 };

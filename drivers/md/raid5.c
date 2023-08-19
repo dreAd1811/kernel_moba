@@ -55,6 +55,10 @@
 #include <linux/ratelimit.h>
 #include <linux/nodemask.h>
 #include <linux/flex_array.h>
+<<<<<<< HEAD
+=======
+#include <linux/sched/signal.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <trace/events/block.h>
 #include <linux/list_sort.h>
@@ -62,7 +66,11 @@
 #include "md.h"
 #include "raid5.h"
 #include "raid0.h"
+<<<<<<< HEAD
 #include "md-bitmap.h"
+=======
+#include "bitmap.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "raid5-log.h"
 
 #define UNSUPPORTED_MDDEV_FLAGS	(1L << MD_FAILFAST_SUPPORTED)
@@ -409,6 +417,7 @@ void raid5_release_stripe(struct stripe_head *sh)
 		md_wakeup_thread(conf->mddev->thread);
 	return;
 slow_path:
+<<<<<<< HEAD
 	/* we are ok here if STRIPE_ON_RELEASE_LIST is set or not */
 	if (atomic_dec_and_lock_irqsave(&sh->count, &conf->device_lock, flags)) {
 		INIT_LIST_HEAD(&list);
@@ -417,6 +426,18 @@ slow_path:
 		spin_unlock_irqrestore(&conf->device_lock, flags);
 		release_inactive_stripe_list(conf, &list, hash);
 	}
+=======
+	local_irq_save(flags);
+	/* we are ok here if STRIPE_ON_RELEASE_LIST is set or not */
+	if (atomic_dec_and_lock(&sh->count, &conf->device_lock)) {
+		INIT_LIST_HEAD(&list);
+		hash = sh->hash_lock_index;
+		do_release_stripe(conf, sh, &list);
+		spin_unlock(&conf->device_lock);
+		release_inactive_stripe_list(conf, &list, hash);
+	}
+	local_irq_restore(flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline void remove_hash(struct stripe_head *sh)
@@ -1137,9 +1158,12 @@ again:
 			bi->bi_io_vec[0].bv_len = STRIPE_SIZE;
 			bi->bi_io_vec[0].bv_offset = 0;
 			bi->bi_iter.bi_size = STRIPE_SIZE;
+<<<<<<< HEAD
 			bi->bi_write_hint = sh->dev[i].write_hint;
 			if (!rrdev)
 				sh->dev[i].write_hint = RWF_WRITE_LIFE_NOT_SET;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * If this is discard request, set bi_vcnt 0. We don't
 			 * want to confuse SCSI because SCSI will replace payload
@@ -1191,8 +1215,11 @@ again:
 			rbi->bi_io_vec[0].bv_len = STRIPE_SIZE;
 			rbi->bi_io_vec[0].bv_offset = 0;
 			rbi->bi_iter.bi_size = STRIPE_SIZE;
+<<<<<<< HEAD
 			rbi->bi_write_hint = sh->dev[i].write_hint;
 			sh->dev[i].write_hint = RWF_WRITE_LIFE_NOT_SET;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * If this is discard request, set bi_vcnt 0. We don't
 			 * want to confuse SCSI because SCSI will replace payload
@@ -2394,7 +2421,11 @@ static int resize_stripes(struct r5conf *conf, int newsize)
 	 * is completely stalled, so now is a good time to resize
 	 * conf->disks and the scribble region
 	 */
+<<<<<<< HEAD
 	ndisks = kcalloc(newsize, sizeof(struct disk_info), GFP_NOIO);
+=======
+	ndisks = kzalloc(newsize * sizeof(struct disk_info), GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ndisks) {
 		for (i = 0; i < conf->pool_size; i++)
 			ndisks[i] = conf->disks[i];
@@ -3210,7 +3241,10 @@ static int add_stripe_bio(struct stripe_head *sh, struct bio *bi, int dd_idx,
 		(unsigned long long)sh->sector);
 
 	spin_lock_irq(&sh->stripe_lock);
+<<<<<<< HEAD
 	sh->dev[dd_idx].write_hint = bi->bi_write_hint;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Don't allow new IO added to stripes in batch list */
 	if (sh->batch_head)
 		goto overlap;
@@ -3302,8 +3336,13 @@ static int add_stripe_bio(struct stripe_head *sh, struct bio *bi, int dd_idx,
 		 */
 		set_bit(STRIPE_BITMAP_PENDING, &sh->state);
 		spin_unlock_irq(&sh->stripe_lock);
+<<<<<<< HEAD
 		md_bitmap_startwrite(conf->mddev->bitmap, sh->sector,
 				     STRIPE_SECTORS, 0);
+=======
+		bitmap_startwrite(conf->mddev->bitmap, sh->sector,
+				  STRIPE_SECTORS, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_lock_irq(&sh->stripe_lock);
 		clear_bit(STRIPE_BITMAP_PENDING, &sh->state);
 		if (!sh->batch_head) {
@@ -3393,8 +3432,13 @@ handle_failed_stripe(struct r5conf *conf, struct stripe_head *sh,
 			bi = nextbi;
 		}
 		if (bitmap_end)
+<<<<<<< HEAD
 			md_bitmap_endwrite(conf->mddev->bitmap, sh->sector,
 					   STRIPE_SECTORS, 0, 0);
+=======
+			bitmap_endwrite(conf->mddev->bitmap, sh->sector,
+				STRIPE_SECTORS, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bitmap_end = 0;
 		/* and fail all 'written' */
 		bi = sh->dev[i].written;
@@ -3439,8 +3483,13 @@ handle_failed_stripe(struct r5conf *conf, struct stripe_head *sh,
 			}
 		}
 		if (bitmap_end)
+<<<<<<< HEAD
 			md_bitmap_endwrite(conf->mddev->bitmap, sh->sector,
 					   STRIPE_SECTORS, 0, 0);
+=======
+			bitmap_endwrite(conf->mddev->bitmap, sh->sector,
+					STRIPE_SECTORS, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* If we were in the middle of a write the parity block might
 		 * still be locked - so just clear all R5_LOCKED flags
 		 */
@@ -3780,10 +3829,17 @@ returnbi:
 					bio_endio(wbi);
 					wbi = wbi2;
 				}
+<<<<<<< HEAD
 				md_bitmap_endwrite(conf->mddev->bitmap, sh->sector,
 						   STRIPE_SECTORS,
 						   !test_bit(STRIPE_DEGRADED, &sh->state),
 						   0);
+=======
+				bitmap_endwrite(conf->mddev->bitmap, sh->sector,
+						STRIPE_SECTORS,
+					 !test_bit(STRIPE_DEGRADED, &sh->state),
+						0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				if (head_sh->batch_head) {
 					sh = list_first_entry(&sh->batch_list,
 							      struct stripe_head,
@@ -4635,15 +4691,24 @@ static void break_stripe_batch_list(struct stripe_head *head_sh,
 
 		sh->check_state = head_sh->check_state;
 		sh->reconstruct_state = head_sh->reconstruct_state;
+<<<<<<< HEAD
 		spin_lock_irq(&sh->stripe_lock);
 		sh->batch_head = NULL;
 		spin_unlock_irq(&sh->stripe_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < sh->disks; i++) {
 			if (test_and_clear_bit(R5_Overlap, &sh->dev[i].flags))
 				do_wakeup = 1;
 			sh->dev[i].flags = head_sh->dev[i].flags &
 				(~((1 << R5_WriteError) | (1 << R5_Overlap)));
 		}
+<<<<<<< HEAD
+=======
+		spin_lock_irq(&sh->stripe_lock);
+		sh->batch_head = NULL;
+		spin_unlock_irq(&sh->stripe_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (handle_flags == 0 ||
 		    sh->state & handle_flags)
 			set_bit(STRIPE_HANDLE, &sh->state);
@@ -5213,7 +5278,11 @@ static int raid5_read_one_chunk(struct mddev *mddev, struct bio *raid_bio)
 	/*
 	 * use bio_clone_fast to make a copy of the bio
 	 */
+<<<<<<< HEAD
 	align_bi = bio_clone_fast(raid_bio, GFP_NOIO, &mddev->bio_set);
+=======
+	align_bi = bio_clone_fast(raid_bio, GFP_NOIO, mddev->bio_set);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!align_bi)
 		return 0;
 	/*
@@ -5298,7 +5367,11 @@ static struct bio *chunk_aligned_read(struct mddev *mddev, struct bio *raid_bio)
 
 	if (sectors < bio_sectors(raid_bio)) {
 		struct r5conf *conf = mddev->private;
+<<<<<<< HEAD
 		split = bio_split(raid_bio, sectors, GFP_NOIO, &conf->bio_split);
+=======
+		split = bio_split(raid_bio, sectors, GFP_NOIO, conf->bio_split);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		bio_chain(split, raid_bio);
 		generic_make_request(raid_bio);
 		raid_bio = split;
@@ -5554,10 +5627,17 @@ static void make_discard_request(struct mddev *mddev, struct bio *bi)
 			for (d = 0;
 			     d < conf->raid_disks - conf->max_degraded;
 			     d++)
+<<<<<<< HEAD
 				md_bitmap_startwrite(mddev->bitmap,
 						     sh->sector,
 						     STRIPE_SECTORS,
 						     0);
+=======
+				bitmap_startwrite(mddev->bitmap,
+						  sh->sector,
+						  STRIPE_SECTORS,
+						  0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			sh->bm_seq = conf->seq_flush + 1;
 			set_bit(STRIPE_BIT_DELAY, &sh->state);
 		}
@@ -5585,7 +5665,11 @@ static bool raid5_make_request(struct mddev *mddev, struct bio * bi)
 	bool do_flush = false;
 
 	if (unlikely(bi->bi_opf & REQ_PREFLUSH)) {
+<<<<<<< HEAD
 		int ret = log_handle_flush_request(conf, bi);
+=======
+		int ret = r5l_handle_flush_request(conf->log, bi);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (ret == 0)
 			return true;
@@ -5724,7 +5808,11 @@ static bool raid5_make_request(struct mddev *mddev, struct bio * bi)
 				do_flush = false;
 			}
 
+<<<<<<< HEAD
 			if (!sh->batch_head)
+=======
+			if (!sh->batch_head || sh == sh->batch_head)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				set_bit(STRIPE_HANDLE, &sh->state);
 			clear_bit(STRIPE_DELAYED, &sh->state);
 			if ((!sh->batch_head || sh == sh->batch_head) &&
@@ -5761,7 +5849,10 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
 	 */
 	struct r5conf *conf = mddev->private;
 	struct stripe_head *sh;
+<<<<<<< HEAD
 	struct md_rdev *rdev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sector_t first_sector, last_sector;
 	int raid_disks = conf->previous_raid_disks;
 	int data_disks = raid_disks - conf->max_degraded;
@@ -5884,6 +5975,7 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
 			return 0;
 		mddev->reshape_position = conf->reshape_progress;
 		mddev->curr_resync_completed = sector_nr;
+<<<<<<< HEAD
 		if (!mddev->reshape_backwards)
 			/* Can update recovery_offset */
 			rdev_for_each(rdev, mddev)
@@ -5893,6 +5985,8 @@ static sector_t reshape_request(struct mddev *mddev, sector_t sector_nr, int *sk
 				    rdev->recovery_offset < sector_nr)
 					rdev->recovery_offset = sector_nr;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		conf->reshape_checkpoint = jiffies;
 		set_bit(MD_SB_CHANGE_DEVS, &mddev->sb_flags);
 		md_wakeup_thread(mddev->thread);
@@ -5991,6 +6085,7 @@ finish:
 			goto ret;
 		mddev->reshape_position = conf->reshape_progress;
 		mddev->curr_resync_completed = sector_nr;
+<<<<<<< HEAD
 		if (!mddev->reshape_backwards)
 			/* Can update recovery_offset */
 			rdev_for_each(rdev, mddev)
@@ -5999,6 +6094,8 @@ finish:
 				    !test_bit(In_sync, &rdev->flags) &&
 				    rdev->recovery_offset < sector_nr)
 					rdev->recovery_offset = sector_nr;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		conf->reshape_checkpoint = jiffies;
 		set_bit(MD_SB_CHANGE_DEVS, &mddev->sb_flags);
 		md_wakeup_thread(mddev->thread);
@@ -6036,11 +6133,19 @@ static inline sector_t raid5_sync_request(struct mddev *mddev, sector_t sector_n
 		}
 
 		if (mddev->curr_resync < max_sector) /* aborted */
+<<<<<<< HEAD
 			md_bitmap_end_sync(mddev->bitmap, mddev->curr_resync,
 					   &sync_blocks, 1);
 		else /* completed sync */
 			conf->fullsync = 0;
 		md_bitmap_close_sync(mddev->bitmap);
+=======
+			bitmap_end_sync(mddev->bitmap, mddev->curr_resync,
+					&sync_blocks, 1);
+		else /* completed sync */
+			conf->fullsync = 0;
+		bitmap_close_sync(mddev->bitmap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		return 0;
 	}
@@ -6069,7 +6174,11 @@ static inline sector_t raid5_sync_request(struct mddev *mddev, sector_t sector_n
 	}
 	if (!test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) &&
 	    !conf->fullsync &&
+<<<<<<< HEAD
 	    !md_bitmap_start_sync(mddev->bitmap, sector_nr, &sync_blocks, 1) &&
+=======
+	    !bitmap_start_sync(mddev->bitmap, sector_nr, &sync_blocks, 1) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    sync_blocks >= STRIPE_SECTORS) {
 		/* we can skip this block, and probably more */
 		sync_blocks /= STRIPE_SECTORS;
@@ -6077,7 +6186,11 @@ static inline sector_t raid5_sync_request(struct mddev *mddev, sector_t sector_n
 		return sync_blocks * STRIPE_SECTORS; /* keep things rounded to whole stripes */
 	}
 
+<<<<<<< HEAD
 	md_bitmap_cond_end_sync(mddev->bitmap, sector_nr, false);
+=======
+	bitmap_cond_end_sync(mddev->bitmap, sector_nr, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sh = raid5_get_active_stripe(conf, sector_nr, 0, 1, 0);
 	if (sh == NULL) {
@@ -6093,14 +6206,22 @@ static inline sector_t raid5_sync_request(struct mddev *mddev, sector_t sector_n
 	 */
 	rcu_read_lock();
 	for (i = 0; i < conf->raid_disks; i++) {
+<<<<<<< HEAD
 		struct md_rdev *rdev = READ_ONCE(conf->disks[i].rdev);
+=======
+		struct md_rdev *rdev = ACCESS_ONCE(conf->disks[i].rdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (rdev == NULL || test_bit(Faulty, &rdev->flags))
 			still_degraded = 1;
 	}
 	rcu_read_unlock();
 
+<<<<<<< HEAD
 	md_bitmap_start_sync(mddev->bitmap, sector_nr, &sync_blocks, still_degraded);
+=======
+	bitmap_start_sync(mddev->bitmap, sector_nr, &sync_blocks, still_degraded);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_bit(STRIPE_SYNC_REQUESTED, &sh->state);
 	set_bit(STRIPE_HANDLE, &sh->state);
@@ -6191,7 +6312,11 @@ static int handle_active_stripes(struct r5conf *conf, int group,
 				break;
 		if (i == NR_STRIPE_HASH_LOCKS) {
 			spin_unlock_irq(&conf->device_lock);
+<<<<<<< HEAD
 			log_flush_stripe_to_raid(conf);
+=======
+			r5l_flush_stripe_to_raid(conf->log);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_lock_irq(&conf->device_lock);
 			return batch_size;
 		}
@@ -6301,7 +6426,11 @@ static void raid5d(struct md_thread *thread)
 			/* Now is a good time to flush some bitmap updates */
 			conf->seq_flush++;
 			spin_unlock_irq(&conf->device_lock);
+<<<<<<< HEAD
 			md_bitmap_unplug(mddev->bitmap);
+=======
+			bitmap_unplug(mddev->bitmap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			spin_lock_irq(&conf->device_lock);
 			conf->seq_write = conf->seq_flush;
 			activate_bit_delay(conf, conf->temp_inactive_list);
@@ -6684,9 +6813,15 @@ static int alloc_thread_groups(struct r5conf *conf, int cnt,
 	}
 	*group_cnt = num_possible_nodes();
 	size = sizeof(struct r5worker) * cnt;
+<<<<<<< HEAD
 	workers = kcalloc(size, *group_cnt, GFP_NOIO);
 	*worker_groups = kcalloc(*group_cnt, sizeof(struct r5worker_group),
 				 GFP_NOIO);
+=======
+	workers = kzalloc(size * *group_cnt, GFP_NOIO);
+	*worker_groups = kzalloc(sizeof(struct r5worker_group) *
+				*group_cnt, GFP_NOIO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!*worker_groups || !workers) {
 		kfree(workers);
 		kfree(*worker_groups);
@@ -6791,7 +6926,13 @@ static void free_conf(struct r5conf *conf)
 
 	log_exit(conf);
 
+<<<<<<< HEAD
 	unregister_shrinker(&conf->shrinker);
+=======
+	if (conf->shrinker.nr_deferred)
+		unregister_shrinker(&conf->shrinker);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	free_thread_groups(conf);
 	shrink_stripes(conf);
 	raid5_free_percpu(conf);
@@ -6799,7 +6940,12 @@ static void free_conf(struct r5conf *conf)
 		if (conf->disks[i].extra_page)
 			put_page(conf->disks[i].extra_page);
 	kfree(conf->disks);
+<<<<<<< HEAD
 	bioset_exit(&conf->bio_split);
+=======
+	if (conf->bio_split)
+		bioset_free(conf->bio_split);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(conf->stripe_hashtbl);
 	kfree(conf->pending_data);
 	kfree(conf);
@@ -6878,7 +7024,10 @@ static struct r5conf *setup_conf(struct mddev *mddev)
 	int i;
 	int group_cnt, worker_cnt_per_group;
 	struct r5worker_group *new_group;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (mddev->new_level != 5
 	    && mddev->new_level != 4
@@ -6914,9 +7063,14 @@ static struct r5conf *setup_conf(struct mddev *mddev)
 		goto abort;
 	INIT_LIST_HEAD(&conf->free_list);
 	INIT_LIST_HEAD(&conf->pending_list);
+<<<<<<< HEAD
 	conf->pending_data = kcalloc(PENDING_IO_MAX,
 				     sizeof(struct r5pending_data),
 				     GFP_KERNEL);
+=======
+	conf->pending_data = kzalloc(sizeof(struct r5pending_data) *
+		PENDING_IO_MAX, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!conf->pending_data)
 		goto abort;
 	for (i = 0; i < PENDING_IO_MAX; i++)
@@ -6965,7 +7119,11 @@ static struct r5conf *setup_conf(struct mddev *mddev)
 		conf->previous_raid_disks = mddev->raid_disks - mddev->delta_disks;
 	max_disks = max(conf->raid_disks, conf->previous_raid_disks);
 
+<<<<<<< HEAD
 	conf->disks = kcalloc(max_disks, sizeof(struct disk_info),
+=======
+	conf->disks = kzalloc(max_disks * sizeof(struct disk_info),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      GFP_KERNEL);
 
 	if (!conf->disks)
@@ -6977,8 +7135,13 @@ static struct r5conf *setup_conf(struct mddev *mddev)
 			goto abort;
 	}
 
+<<<<<<< HEAD
 	ret = bioset_init(&conf->bio_split, BIO_POOL_SIZE, 0, 0);
 	if (ret)
+=======
+	conf->bio_split = bioset_create(BIO_POOL_SIZE, 0, 0);
+	if (!conf->bio_split)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto abort;
 	conf->mddev = mddev;
 
@@ -7472,10 +7635,17 @@ static int raid5_run(struct mddev *mddev)
 		if (devices_handle_discard_safely &&
 		    mddev->queue->limits.max_discard_sectors >= (stripe >> 9) &&
 		    mddev->queue->limits.discard_granularity >= stripe)
+<<<<<<< HEAD
 			blk_queue_flag_set(QUEUE_FLAG_DISCARD,
 						mddev->queue);
 		else
 			blk_queue_flag_clear(QUEUE_FLAG_DISCARD,
+=======
+			queue_flag_set_unlocked(QUEUE_FLAG_DISCARD,
+						mddev->queue);
+		else
+			queue_flag_clear_unlocked(QUEUE_FLAG_DISCARD,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						mddev->queue);
 
 		blk_queue_max_hw_sectors(mddev->queue, UINT_MAX);
@@ -7674,7 +7844,11 @@ abort:
 static int raid5_add_disk(struct mddev *mddev, struct md_rdev *rdev)
 {
 	struct r5conf *conf = mddev->private;
+<<<<<<< HEAD
 	int ret, err = -EEXIST;
+=======
+	int err = -EEXIST;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int disk;
 	struct disk_info *p;
 	int first = 0;
@@ -7689,6 +7863,7 @@ static int raid5_add_disk(struct mddev *mddev, struct md_rdev *rdev)
 		 * The array is in readonly mode if journal is missing, so no
 		 * write requests running. We should be safe
 		 */
+<<<<<<< HEAD
 		ret = log_init(conf, rdev, false);
 		if (ret)
 			return ret;
@@ -7697,6 +7872,9 @@ static int raid5_add_disk(struct mddev *mddev, struct md_rdev *rdev)
 		if (ret)
 			return ret;
 
+=======
+		log_init(conf, rdev, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 	if (mddev->recovery_disabled == conf->recovery_disabled)
@@ -7770,7 +7948,11 @@ static int raid5_resize(struct mddev *mddev, sector_t sectors)
 	    mddev->array_sectors > newsize)
 		return -EINVAL;
 	if (mddev->bitmap) {
+<<<<<<< HEAD
 		int ret = md_bitmap_resize(mddev->bitmap, sectors, 0, 0);
+=======
+		int ret = bitmap_resize(mddev->bitmap, sectors, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -7998,7 +8180,10 @@ static void end_reshape(struct r5conf *conf)
 {
 
 	if (!test_bit(MD_RECOVERY_INTR, &conf->mddev->recovery)) {
+<<<<<<< HEAD
 		struct md_rdev *rdev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_lock_irq(&conf->device_lock);
 		conf->previous_raid_disks = conf->raid_disks;
@@ -8006,11 +8191,14 @@ static void end_reshape(struct r5conf *conf)
 		smp_wmb();
 		conf->reshape_progress = MaxSector;
 		conf->mddev->reshape_position = MaxSector;
+<<<<<<< HEAD
 		rdev_for_each(rdev, conf->mddev)
 			if (rdev->raid_disk >= 0 &&
 			    !test_bit(Journal, &rdev->flags) &&
 			    !test_bit(In_sync, &rdev->flags))
 				rdev->recovery_offset = MaxSector;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irq(&conf->device_lock);
 		wake_up(&conf->wait_for_overlap);
 
@@ -8089,7 +8277,11 @@ static void raid5_quiesce(struct mddev *mddev, int quiesce)
 		wake_up(&conf->wait_for_overlap);
 		unlock_all_device_hash_locks_irq(conf);
 	}
+<<<<<<< HEAD
 	log_quiesce(conf, quiesce);
+=======
+	r5l_quiesce(conf->log, quiesce);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void *raid45_takeover_raid0(struct mddev *mddev, int level)
@@ -8393,6 +8585,7 @@ static int raid5_change_consistency_policy(struct mddev *mddev, const char *buf)
 	return err;
 }
 
+<<<<<<< HEAD
 static int raid5_start(struct mddev *mddev)
 {
 	struct r5conf *conf = mddev->private;
@@ -8400,6 +8593,8 @@ static int raid5_start(struct mddev *mddev)
 	return r5l_start(conf->log);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct md_personality raid6_personality =
 {
 	.name		= "raid6",
@@ -8407,7 +8602,10 @@ static struct md_personality raid6_personality =
 	.owner		= THIS_MODULE,
 	.make_request	= raid5_make_request,
 	.run		= raid5_run,
+<<<<<<< HEAD
 	.start		= raid5_start,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.free		= raid5_free,
 	.status		= raid5_status,
 	.error_handler	= raid5_error,
@@ -8432,7 +8630,10 @@ static struct md_personality raid5_personality =
 	.owner		= THIS_MODULE,
 	.make_request	= raid5_make_request,
 	.run		= raid5_run,
+<<<<<<< HEAD
 	.start		= raid5_start,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.free		= raid5_free,
 	.status		= raid5_status,
 	.error_handler	= raid5_error,
@@ -8458,7 +8659,10 @@ static struct md_personality raid4_personality =
 	.owner		= THIS_MODULE,
 	.make_request	= raid5_make_request,
 	.run		= raid5_run,
+<<<<<<< HEAD
 	.start		= raid5_start,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.free		= raid5_free,
 	.status		= raid5_status,
 	.error_handler	= raid5_error,

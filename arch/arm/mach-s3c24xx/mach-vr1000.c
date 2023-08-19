@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright (c) 2003-2008 Simtec Electronics
@@ -5,6 +6,20 @@
 //
 // Machine support for Thorcom VR1000 board. Designed for Thorcom by
 // Simtec Electronics, http://www.simtec.co.uk/
+=======
+/*
+ * Copyright (c) 2003-2008 Simtec Electronics
+ *   Ben Dooks <ben@simtec.co.uk>
+ *
+ * Machine support for Thorcom VR1000 board. Designed for Thorcom by
+ * Simtec Electronics, http://www.simtec.co.uk/
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/types.h>

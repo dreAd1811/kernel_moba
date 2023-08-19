@@ -24,8 +24,12 @@ extern u32 pnv_get_supported_cpuidle_states(void);
 
 extern void pnv_lpc_init(void);
 
+<<<<<<< HEAD
 extern void opal_handle_events(void);
 extern bool opal_have_pending_events(void);
+=======
+extern void opal_handle_events(uint64_t events);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern void opal_event_shutdown(void);
 
 bool cpu_core_split_required(void);

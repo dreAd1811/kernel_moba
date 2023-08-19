@@ -31,10 +31,13 @@
 
 #include "nouveau_ttm.h"
 #include "nouveau_gem.h"
+<<<<<<< HEAD
 #include "nouveau_mem.h"
 #include "nouveau_vmm.h"
 
 #include <nvif/class.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void
 nouveau_gem_object_del(struct drm_gem_object *gem)
@@ -68,17 +71,26 @@ nouveau_gem_object_open(struct drm_gem_object *gem, struct drm_file *file_priv)
 	struct nouveau_cli *cli = nouveau_cli(file_priv);
 	struct nouveau_bo *nvbo = nouveau_gem_object(gem);
 	struct nouveau_drm *drm = nouveau_bdev(nvbo->bo.bdev);
+<<<<<<< HEAD
 	struct device *dev = drm->dev->dev;
 	struct nouveau_vma *vma;
 	int ret;
 
 	if (cli->vmm.vmm.object.oclass < NVIF_CLASS_VMM_NV50)
+=======
+	struct nvkm_vma *vma;
+	struct device *dev = drm->dev->dev;
+	int ret;
+
+	if (!cli->vm)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	ret = ttm_bo_reserve(&nvbo->bo, false, false, NULL);
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = pm_runtime_get_sync(dev);
 	if (ret < 0 && ret != -EACCES)
 		goto out;
@@ -86,11 +98,38 @@ nouveau_gem_object_open(struct drm_gem_object *gem, struct drm_file *file_priv)
 	ret = nouveau_vma_new(nvbo, &cli->vmm, &vma);
 	pm_runtime_mark_last_busy(dev);
 	pm_runtime_put_autosuspend(dev);
+=======
+	vma = nouveau_bo_vma_find(nvbo, cli->vm);
+	if (!vma) {
+		vma = kzalloc(sizeof(*vma), GFP_KERNEL);
+		if (!vma) {
+			ret = -ENOMEM;
+			goto out;
+		}
+
+		ret = pm_runtime_get_sync(dev);
+		if (ret < 0 && ret != -EACCES) {
+			kfree(vma);
+			goto out;
+		}
+
+		ret = nouveau_bo_vma_add(nvbo, cli->vm, vma);
+		if (ret)
+			kfree(vma);
+
+		pm_runtime_mark_last_busy(dev);
+		pm_runtime_put_autosuspend(dev);
+	} else {
+		vma->refcount++;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	ttm_bo_unreserve(&nvbo->bo);
 	return ret;
 }
 
+<<<<<<< HEAD
 struct nouveau_gem_object_unmap {
 	struct nouveau_cli_work work;
 	struct nouveau_vma *vma;
@@ -134,6 +173,45 @@ nouveau_gem_object_unmap(struct nouveau_bo *nvbo, struct nouveau_vma *vma)
 	work->work.func = nouveau_gem_object_delete_work;
 	work->vma = vma;
 	nouveau_cli_work_queue(vma->vmm->cli, fence, &work->work);
+=======
+static void
+nouveau_gem_object_delete(void *data)
+{
+	struct nvkm_vma *vma = data;
+	nvkm_vm_unmap(vma);
+	nvkm_vm_put(vma);
+	kfree(vma);
+}
+
+static void
+nouveau_gem_object_unmap(struct nouveau_bo *nvbo, struct nvkm_vma *vma)
+{
+	const bool mapped = nvbo->bo.mem.mem_type != TTM_PL_SYSTEM;
+	struct reservation_object *resv = nvbo->bo.resv;
+	struct reservation_object_list *fobj;
+	struct dma_fence *fence = NULL;
+
+	fobj = reservation_object_get_list(resv);
+
+	list_del(&vma->head);
+
+	if (fobj && fobj->shared_count > 1)
+		ttm_bo_wait(&nvbo->bo, false, false);
+	else if (fobj && fobj->shared_count == 1)
+		fence = rcu_dereference_protected(fobj->shared[0],
+						reservation_object_held(resv));
+	else
+		fence = reservation_object_get_excl(nvbo->bo.resv);
+
+	if (fence && mapped) {
+		nouveau_fence_work(fence, nouveau_gem_object_delete, vma);
+	} else {
+		if (mapped)
+			nvkm_vm_unmap(vma);
+		nvkm_vm_put(vma);
+		kfree(vma);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void
@@ -143,19 +221,32 @@ nouveau_gem_object_close(struct drm_gem_object *gem, struct drm_file *file_priv)
 	struct nouveau_bo *nvbo = nouveau_gem_object(gem);
 	struct nouveau_drm *drm = nouveau_bdev(nvbo->bo.bdev);
 	struct device *dev = drm->dev->dev;
+<<<<<<< HEAD
 	struct nouveau_vma *vma;
 	int ret;
 
 	if (cli->vmm.vmm.object.oclass < NVIF_CLASS_VMM_NV50)
+=======
+	struct nvkm_vma *vma;
+	int ret;
+
+	if (!cli->vm)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	ret = ttm_bo_reserve(&nvbo->bo, false, false, NULL);
 	if (ret)
 		return;
 
+<<<<<<< HEAD
 	vma = nouveau_vma_find(nvbo, &cli->vmm);
 	if (vma) {
 		if (--vma->refs == 0) {
+=======
+	vma = nouveau_bo_vma_find(nvbo, cli->vm);
+	if (vma) {
+		if (--vma->refcount == 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = pm_runtime_get_sync(dev);
 			if (!WARN_ON(ret < 0 && ret != -EACCES)) {
 				nouveau_gem_object_unmap(nvbo, vma);
@@ -172,7 +263,11 @@ nouveau_gem_new(struct nouveau_cli *cli, u64 size, int align, uint32_t domain,
 		uint32_t tile_mode, uint32_t tile_flags,
 		struct nouveau_bo **pnvbo)
 {
+<<<<<<< HEAD
 	struct nouveau_drm *drm = cli->drm;
+=======
+	struct nouveau_drm *drm = nouveau_drm(cli->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nouveau_bo *nvbo;
 	u32 flags = 0;
 	int ret;
@@ -220,7 +315,11 @@ nouveau_gem_info(struct drm_file *file_priv, struct drm_gem_object *gem,
 {
 	struct nouveau_cli *cli = nouveau_cli(file_priv);
 	struct nouveau_bo *nvbo = nouveau_gem_object(gem);
+<<<<<<< HEAD
 	struct nouveau_vma *vma;
+=======
+	struct nvkm_vma *vma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (is_power_of_2(nvbo->valid_domains))
 		rep->domain = nvbo->valid_domains;
@@ -229,16 +328,26 @@ nouveau_gem_info(struct drm_file *file_priv, struct drm_gem_object *gem,
 	else
 		rep->domain = NOUVEAU_GEM_DOMAIN_VRAM;
 	rep->offset = nvbo->bo.offset;
+<<<<<<< HEAD
 	if (cli->vmm.vmm.object.oclass >= NVIF_CLASS_VMM_NV50) {
 		vma = nouveau_vma_find(nvbo, &cli->vmm);
 		if (!vma)
 			return -EINVAL;
 
 		rep->offset = vma->addr;
+=======
+	if (cli->vm) {
+		vma = nouveau_bo_vma_find(nvbo, cli->vm);
+		if (!vma)
+			return -EINVAL;
+
+		rep->offset = vma->offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rep->size = nvbo->bo.mem.num_pages << PAGE_SHIFT;
 	rep->map_handle = drm_vma_node_offset_addr(&nvbo->bo.vma_node);
+<<<<<<< HEAD
 	rep->tile_mode = nvbo->mode;
 	rep->tile_flags = nvbo->contig ? 0 : NOUVEAU_GEM_TILE_NONCONTIG;
 	if (cli->device.info.family >= NV_DEVICE_INFO_V0_FERMI)
@@ -248,6 +357,10 @@ nouveau_gem_info(struct drm_file *file_priv, struct drm_gem_object *gem,
 		rep->tile_flags |= nvbo->kind << 8 | nvbo->comp << 16;
 	else
 		rep->tile_flags |= nvbo->zeta;
+=======
+	rep->tile_mode = nvbo->tile_mode;
+	rep->tile_flags = nvbo->tile_flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -255,11 +368,25 @@ int
 nouveau_gem_ioctl_new(struct drm_device *dev, void *data,
 		      struct drm_file *file_priv)
 {
+<<<<<<< HEAD
 	struct nouveau_cli *cli = nouveau_cli(file_priv);
+=======
+	struct nouveau_drm *drm = nouveau_drm(dev);
+	struct nouveau_cli *cli = nouveau_cli(file_priv);
+	struct nvkm_fb *fb = nvxx_fb(&drm->client.device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_nouveau_gem_new *req = data;
 	struct nouveau_bo *nvbo = NULL;
 	int ret = 0;
 
+<<<<<<< HEAD
+=======
+	if (!nvkm_fb_memtype_valid(fb, req->info.tile_flags)) {
+		NV_PRINTK(err, cli, "bad page flags: 0x%08x\n", req->info.tile_flags);
+		return -EINVAL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = nouveau_gem_new(cli, req->info.size, req->align,
 			      req->info.domain, req->info.tile_mode,
 			      req->info.tile_flags, &nvbo);
@@ -274,7 +401,11 @@ nouveau_gem_ioctl_new(struct drm_device *dev, void *data,
 	}
 
 	/* drop reference from allocate - handle holds it now */
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(&nvbo->gem);
+=======
+	drm_gem_object_unreference_unlocked(&nvbo->gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -332,6 +463,7 @@ validate_fini_no_ticket(struct validate_op *op, struct nouveau_fence *fence,
 		nvbo = list_entry(op->list.next, struct nouveau_bo, entry);
 		b = &pbbo[nvbo->pbbo_index];
 
+<<<<<<< HEAD
 		if (likely(fence)) {
 			struct nouveau_drm *drm = nouveau_bdev(nvbo->bo.bdev);
 			struct nouveau_vma *vma;
@@ -346,6 +478,11 @@ validate_fini_no_ticket(struct validate_op *op, struct nouveau_fence *fence,
 			}
 		}
 
+=======
+		if (likely(fence))
+			nouveau_bo_fence(nvbo, fence, !!b->write_domains);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(nvbo->validate_mapped)) {
 			ttm_bo_kunmap(&nvbo->kmap);
 			nvbo->validate_mapped = false;
@@ -353,8 +490,13 @@ validate_fini_no_ticket(struct validate_op *op, struct nouveau_fence *fence,
 
 		list_del(&nvbo->entry);
 		nvbo->reserved_by = NULL;
+<<<<<<< HEAD
 		ttm_bo_unreserve(&nvbo->bo);
 		drm_gem_object_put_unlocked(&nvbo->gem);
+=======
+		ttm_bo_unreserve_ticket(&nvbo->bo, &op->ticket);
+		drm_gem_object_unreference_unlocked(&nvbo->gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -400,14 +542,22 @@ retry:
 		nvbo = nouveau_gem_object(gem);
 		if (nvbo == res_bo) {
 			res_bo = NULL;
+<<<<<<< HEAD
 			drm_gem_object_put_unlocked(gem);
+=======
+			drm_gem_object_unreference_unlocked(gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 
 		if (nvbo->reserved_by && nvbo->reserved_by == file_priv) {
 			NV_PRINTK(err, cli, "multiple instances of buffer %d on "
 				      "validation list\n", b->handle);
+<<<<<<< HEAD
 			drm_gem_object_put_unlocked(gem);
+=======
+			drm_gem_object_unreference_unlocked(gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -EINVAL;
 			break;
 		}
@@ -431,6 +581,7 @@ retry:
 			}
 		}
 
+<<<<<<< HEAD
 		if (cli->vmm.vmm.object.oclass >= NVIF_CLASS_VMM_NV50) {
 			struct nouveau_vmm *vmm = &cli->vmm;
 			struct nouveau_vma *vma = nouveau_vma_find(nvbo, vmm);
@@ -445,6 +596,9 @@ retry:
 			b->user_priv = (uint64_t)(unsigned long)nvbo;
 		}
 
+=======
+		b->user_priv = (uint64_t)(unsigned long)nvbo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		nvbo->reserved_by = file_priv;
 		nvbo->pbbo_index = i;
 		if ((b->valid_domains & NOUVEAU_GEM_DOMAIN_VRAM) &&
@@ -775,10 +929,17 @@ nouveau_gem_ioctl_pushbuf(struct drm_device *dev, void *data,
 		}
 
 		for (i = 0; i < req->nr_push; i++) {
+<<<<<<< HEAD
 			struct nouveau_vma *vma = (void *)(unsigned long)
 				bo[push[i].bo_index].user_priv;
 
 			nv50_dma_push(chan, vma->addr + push[i].offset,
+=======
+			struct nouveau_bo *nvbo = (void *)(unsigned long)
+				bo[push[i].bo_index].user_priv;
+
+			nv50_dma_push(chan, nvbo, push[i].offset,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      push[i].length);
 		}
 	} else
@@ -808,7 +969,11 @@ nouveau_gem_ioctl_pushbuf(struct drm_device *dev, void *data,
 				bo[push[i].bo_index].user_priv;
 			uint32_t cmd;
 
+<<<<<<< HEAD
 			cmd = chan->push.addr + ((chan->dma.cur + 2) << 2);
+=======
+			cmd = chan->push.vma.offset + ((chan->dma.cur + 2) << 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			cmd |= 0x20000000;
 			if (unlikely(cmd != req->suffix0)) {
 				if (!nvbo->kmap.virtual) {
@@ -860,7 +1025,11 @@ out_next:
 		req->suffix1 = 0x00000000;
 	} else {
 		req->suffix0 = 0x20000000 |
+<<<<<<< HEAD
 			      (chan->push.addr + ((chan->dma.cur + 2) << 2));
+=======
+			      (chan->push.vma.offset + ((chan->dma.cur + 2) << 2));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		req->suffix1 = 0x00000000;
 	}
 
@@ -894,7 +1063,11 @@ nouveau_gem_ioctl_cpu_prep(struct drm_device *dev, void *data,
 		ret = lret;
 
 	nouveau_bo_sync_for_cpu(nvbo);
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(gem);
+=======
+	drm_gem_object_unreference_unlocked(gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -913,7 +1086,11 @@ nouveau_gem_ioctl_cpu_fini(struct drm_device *dev, void *data,
 	nvbo = nouveau_gem_object(gem);
 
 	nouveau_bo_sync_for_device(nvbo);
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(gem);
+=======
+	drm_gem_object_unreference_unlocked(gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -930,7 +1107,11 @@ nouveau_gem_ioctl_info(struct drm_device *dev, void *data,
 		return -ENOENT;
 
 	ret = nouveau_gem_info(file_priv, gem, req);
+<<<<<<< HEAD
 	drm_gem_object_put_unlocked(gem);
+=======
+	drm_gem_object_unreference_unlocked(gem);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

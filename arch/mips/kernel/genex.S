@@ -354,6 +354,7 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
 	sll	k0, k0, 30	# Check for SDBBP.
 	bgez	k0, ejtag_return
 
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
 1:	PTR_LA	k0, ejtag_debug_buffer_spinlock
 	ll	k0, 0(k0)
@@ -385,10 +386,15 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
 	LONG_S	k1, 0(k0)
 #endif
 
+=======
+	PTR_LA	k0, ejtag_debug_buffer
+	LONG_S	k1, 0(k0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SAVE_ALL
 	move	a0, sp
 	jal	ejtag_exception_handler
 	RESTORE_ALL
+<<<<<<< HEAD
 
 #ifdef CONFIG_SMP
 	ASM_CPUID_MFC0 k1, ASM_SMP_CPUID_REG
@@ -404,6 +410,12 @@ NESTED(ejtag_debug_handler, PT_SIZE, sp)
 
 ejtag_return:
 	back_to_back_c0_hazard
+=======
+	PTR_LA	k0, ejtag_debug_buffer
+	LONG_L	k1, 0(k0)
+
+ejtag_return:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MFC0	k0, CP0_DESAVE
 	.set	mips32
 	deret
@@ -417,12 +429,15 @@ ejtag_return:
 	.data
 EXPORT(ejtag_debug_buffer)
 	.fill	LONGSIZE
+<<<<<<< HEAD
 #ifdef CONFIG_SMP
 EXPORT(ejtag_debug_buffer_spinlock)
 	.fill	LONGSIZE
 EXPORT(ejtag_debug_buffer_per_cpu)
 	.fill	LONGSIZE * NR_CPUS
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.previous
 
 	__INIT
@@ -477,12 +492,18 @@ NESTED(nmi_handler, PT_SIZE, sp)
 	.endm
 
 	.macro	__build_clear_fpe
+<<<<<<< HEAD
+=======
+	CLI
+	TRACE_IRQS_OFF
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set	push
 	/* gas fails to assemble cfc1 for some archs (octeon).*/ \
 	.set	mips1
 	SET_HARDFLOAT
 	cfc1	a1, fcr31
 	.set	pop
+<<<<<<< HEAD
 	CLI
 	TRACE_IRQS_OFF
 	.endm
@@ -491,6 +512,14 @@ NESTED(nmi_handler, PT_SIZE, sp)
 	_cfcmsa	a1, MSA_CSR
 	CLI
 	TRACE_IRQS_OFF
+=======
+	.endm
+
+	.macro	__build_clear_msa_fpe
+	CLI
+	TRACE_IRQS_OFF
+	_cfcmsa	a1, MSA_CSR
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.endm
 
 	.macro	__build_clear_ade

@@ -23,12 +23,17 @@ config MACH_BERLIN_BG2
 
 config MACH_BERLIN_BG2CD
 	bool "Marvell Armada 1500-mini (BG2CD)"
+<<<<<<< HEAD
 	select ARM_ERRATA_754322
 	select ARM_ERRATA_775420
 	select ARM_GLOBAL_TIMER
 	select CACHE_L2X0
 	select HAVE_ARM_SCU
 	select HAVE_ARM_TWD
+=======
+	select CACHE_L2X0
+	select HAVE_ARM_TWD if SMP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select PINCTRL_BERLIN_BG2CD
 
 config MACH_BERLIN_BG2Q

@@ -22,6 +22,11 @@
 #include <linux/blk-mq.h>
 #include <linux/mount.h>
 #include <linux/dax.h>
+<<<<<<< HEAD
+=======
+#include <linux/bio.h>
+#include <linux/keyslot-manager.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DM_MSG_PREFIX "table"
 
@@ -452,17 +457,27 @@ int dm_get_device(struct dm_target *ti, const char *path, fmode_t mode,
 			return r;
 		}
 
+<<<<<<< HEAD
 		refcount_set(&dd->count, 1);
 		list_add(&dd->list, &t->devices);
 		goto out;
+=======
+		atomic_set(&dd->count, 0);
+		list_add(&dd->list, &t->devices);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	} else if (dd->dm_dev->mode != (mode | dd->dm_dev->mode)) {
 		r = upgrade_mode(dd, mode, t->md);
 		if (r)
 			return r;
 	}
+<<<<<<< HEAD
 	refcount_inc(&dd->count);
 out:
+=======
+	atomic_inc(&dd->count);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*result = dd->dm_dev;
 	return 0;
 }
@@ -517,7 +532,11 @@ void dm_put_device(struct dm_target *ti, struct dm_dev *d)
 		       dm_device_name(ti->table->md), d->name);
 		return;
 	}
+<<<<<<< HEAD
 	if (refcount_dec_and_test(&dd->count)) {
+=======
+	if (atomic_dec_and_test(&dd->count)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dm_put_table_device(ti->table->md, d);
 		list_del(&dd->list);
 		kfree(dd);
@@ -562,8 +581,13 @@ static char **realloc_argv(unsigned *size, char **old_argv)
 		new_size = 8;
 		gfp = GFP_NOIO;
 	}
+<<<<<<< HEAD
 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
 	if (argv && old_argv) {
+=======
+	argv = kmalloc(new_size * sizeof(*argv), gfp);
+	if (argv) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy(argv, old_argv, *size * sizeof(*argv));
 		*size = new_size;
 	}
@@ -867,8 +891,12 @@ EXPORT_SYMBOL(dm_consume_args);
 static bool __table_type_bio_based(enum dm_queue_mode table_type)
 {
 	return (table_type == DM_TYPE_BIO_BASED ||
+<<<<<<< HEAD
 		table_type == DM_TYPE_DAX_BIO_BASED ||
 		table_type == DM_TYPE_NVME_BIO_BASED);
+=======
+		table_type == DM_TYPE_DAX_BIO_BASED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool __table_type_request_based(enum dm_queue_mode table_type)
@@ -909,6 +937,7 @@ static bool dm_table_supports_dax(struct dm_table *t)
 	return true;
 }
 
+<<<<<<< HEAD
 static bool dm_table_does_not_support_partial_completion(struct dm_table *t);
 
 struct verify_rq_based_data {
@@ -930,23 +959,37 @@ static int device_is_rq_based(struct dm_target *ti, struct dm_dev *dev,
 	return queue_is_rq_based(q);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int dm_table_determine_type(struct dm_table *t)
 {
 	unsigned i;
 	unsigned bio_based = 0, request_based = 0, hybrid = 0;
+<<<<<<< HEAD
 	struct verify_rq_based_data v = {.sq_count = 0, .mq_count = 0};
 	struct dm_target *tgt;
+=======
+	unsigned sq_count = 0, mq_count = 0;
+	struct dm_target *tgt;
+	struct dm_dev_internal *dd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head *devices = dm_table_get_devices(t);
 	enum dm_queue_mode live_md_type = dm_get_md_type(t->md);
 
 	if (t->type != DM_TYPE_NONE) {
 		/* target already set the table's type */
+<<<<<<< HEAD
 		if (t->type == DM_TYPE_BIO_BASED) {
 			/* possibly upgrade to a variant of bio-based */
 			goto verify_bio_based;
 		}
 		BUG_ON(t->type == DM_TYPE_DAX_BIO_BASED);
 		BUG_ON(t->type == DM_TYPE_NVME_BIO_BASED);
+=======
+		if (t->type == DM_TYPE_BIO_BASED)
+			return 0;
+		BUG_ON(t->type == DM_TYPE_DAX_BIO_BASED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto verify_rq_based;
 	}
 
@@ -960,8 +1003,13 @@ static int dm_table_determine_type(struct dm_table *t)
 			bio_based = 1;
 
 		if (bio_based && request_based) {
+<<<<<<< HEAD
 			DMERR("Inconsistent table: different target types"
 			      " can't be mixed up");
+=======
+			DMWARN("Inconsistent table: different target types"
+			       " can't be mixed up");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -EINVAL;
 		}
 	}
@@ -979,6 +1027,7 @@ static int dm_table_determine_type(struct dm_table *t)
 	}
 
 	if (bio_based) {
+<<<<<<< HEAD
 verify_bio_based:
 		/* We must use this table as bio-based */
 		t->type = DM_TYPE_BIO_BASED;
@@ -995,6 +1044,13 @@ verify_bio_based:
 				t->type = DM_TYPE_NVME_BIO_BASED;
 			}
 		}
+=======
+		/* We must use this table as bio-based */
+		t->type = DM_TYPE_BIO_BASED;
+		if (dm_table_supports_dax(t) ||
+		    (list_empty(devices) && live_md_type == DM_TYPE_DAX_BIO_BASED))
+			t->type = DM_TYPE_DAX_BIO_BASED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 
@@ -1014,8 +1070,12 @@ verify_rq_based:
 	 * (e.g. request completion process for partial completion.)
 	 */
 	if (t->num_targets > 1) {
+<<<<<<< HEAD
 		DMERR("%s DM doesn't support multiple targets",
 		      t->type == DM_TYPE_NVME_BIO_BASED ? "nvme bio-based" : "request-based");
+=======
+		DMWARN("Request-based dm doesn't support multiple targets yet");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -1032,6 +1092,7 @@ verify_rq_based:
 		return 0;
 	}
 
+<<<<<<< HEAD
 	tgt = dm_table_get_immutable_target(t);
 	if (!tgt) {
 		DMERR("table load rejected: immutable target is required");
@@ -1055,6 +1116,30 @@ verify_rq_based:
 
 	if (!t->all_blk_mq &&
 	    (t->type == DM_TYPE_MQ_REQUEST_BASED || t->type == DM_TYPE_NVME_BIO_BASED)) {
+=======
+	/* Non-request-stackable devices can't be used for request-based dm */
+	list_for_each_entry(dd, devices, list) {
+		struct request_queue *q = bdev_get_queue(dd->dm_dev->bdev);
+
+		if (!blk_queue_stackable(q)) {
+			DMERR("table load rejected: including"
+			      " non-request-stackable devices");
+			return -EINVAL;
+		}
+
+		if (q->mq_ops)
+			mq_count++;
+		else
+			sq_count++;
+	}
+	if (sq_count && mq_count) {
+		DMERR("table load rejected: not all devices are blk-mq request-stackable");
+		return -EINVAL;
+	}
+	t->all_blk_mq = mq_count > 0;
+
+	if (t->type == DM_TYPE_MQ_REQUEST_BASED && !t->all_blk_mq) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DMERR("table load rejected: all devices are not blk-mq request-stackable");
 		return -EINVAL;
 	}
@@ -1115,8 +1200,12 @@ static int dm_table_alloc_md_mempools(struct dm_table *t, struct mapped_device *
 {
 	enum dm_queue_mode type = dm_table_get_type(t);
 	unsigned per_io_data_size = 0;
+<<<<<<< HEAD
 	unsigned min_pool_size = 0;
 	struct dm_target *ti;
+=======
+	struct dm_target *tgt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned i;
 
 	if (unlikely(type == DM_TYPE_NONE)) {
@@ -1126,6 +1215,7 @@ static int dm_table_alloc_md_mempools(struct dm_table *t, struct mapped_device *
 
 	if (__table_type_bio_based(type))
 		for (i = 0; i < t->num_targets; i++) {
+<<<<<<< HEAD
 			ti = t->targets + i;
 			per_io_data_size = max(per_io_data_size, ti->per_io_data_size);
 			min_pool_size = max(min_pool_size, ti->num_flush_bios);
@@ -1133,6 +1223,13 @@ static int dm_table_alloc_md_mempools(struct dm_table *t, struct mapped_device *
 
 	t->mempools = dm_alloc_md_mempools(md, type, t->integrity_supported,
 					   per_io_data_size, min_pool_size);
+=======
+			tgt = t->targets + i;
+			per_io_data_size = max(per_io_data_size, tgt->per_io_data_size);
+		}
+
+	t->mempools = dm_alloc_md_mempools(md, type, t->integrity_supported, per_io_data_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!t->mempools)
 		return -ENOMEM;
 
@@ -1638,6 +1735,57 @@ static void dm_table_verify_integrity(struct dm_table *t)
 	}
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_BLK_INLINE_ENCRYPTION
+static int device_intersect_crypto_modes(struct dm_target *ti,
+					 struct dm_dev *dev, sector_t start,
+					 sector_t len, void *data)
+{
+	struct keyslot_manager *parent = data;
+	struct keyslot_manager *child = bdev_get_queue(dev->bdev)->ksm;
+
+	keyslot_manager_intersect_modes(parent, child);
+	return 0;
+}
+
+/*
+ * Update the inline crypto modes supported by 'q->ksm' to be the intersection
+ * of the modes supported by all targets in the table.
+ *
+ * For any mode to be supported at all, all targets must have explicitly
+ * declared that they can pass through inline crypto support.  For a particular
+ * mode to be supported, all underlying devices must also support it.
+ *
+ * Assume that 'q->ksm' initially declares all modes to be supported.
+ */
+static void dm_calculate_supported_crypto_modes(struct dm_table *t,
+						struct request_queue *q)
+{
+	struct dm_target *ti;
+	unsigned int i;
+
+	for (i = 0; i < dm_table_get_num_targets(t); i++) {
+		ti = dm_table_get_target(t, i);
+
+		if (!ti->may_passthrough_inline_crypto) {
+			keyslot_manager_intersect_modes(q->ksm, NULL);
+			return;
+		}
+		if (!ti->type->iterate_devices)
+			continue;
+		ti->type->iterate_devices(ti, device_intersect_crypto_modes,
+					  q->ksm);
+	}
+}
+#else /* CONFIG_BLK_INLINE_ENCRYPTION */
+static inline void dm_calculate_supported_crypto_modes(struct dm_table *t,
+						       struct request_queue *q)
+{
+}
+#endif /* !CONFIG_BLK_INLINE_ENCRYPTION */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int device_flush_capable(struct dm_target *ti, struct dm_dev *dev,
 				sector_t start, sector_t len, void *data)
 {
@@ -1730,6 +1878,7 @@ static int queue_supports_sg_merge(struct dm_target *ti, struct dm_dev *dev,
 	return q && !test_bit(QUEUE_FLAG_NO_SG_MERGE, &q->queue_flags);
 }
 
+<<<<<<< HEAD
 static int queue_supports_inline_encryption(struct dm_target *ti,
 					    struct dm_dev *dev,
 					    sector_t start, sector_t len,
@@ -1740,6 +1889,8 @@ static int queue_supports_inline_encryption(struct dm_target *ti,
 	return q && blk_queue_inlinecrypt(q);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool dm_table_all_devices_attribute(struct dm_table *t,
 					   iterate_devices_callout_fn func)
 {
@@ -1757,6 +1908,7 @@ static bool dm_table_all_devices_attribute(struct dm_table *t,
 	return true;
 }
 
+<<<<<<< HEAD
 static int device_no_partial_completion(struct dm_target *ti, struct dm_dev *dev,
 					sector_t start, sector_t len, void *data)
 {
@@ -1771,6 +1923,8 @@ static bool dm_table_does_not_support_partial_completion(struct dm_table *t)
 	return dm_table_all_devices_attribute(t, device_no_partial_completion);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int device_not_write_same_capable(struct dm_target *ti, struct dm_dev *dev,
 					 sector_t start, sector_t len, void *data)
 {
@@ -1858,6 +2012,7 @@ static bool dm_table_supports_discards(struct dm_table *t)
 	return true;
 }
 
+<<<<<<< HEAD
 static int device_not_secure_erase_capable(struct dm_target *ti,
 					   struct dm_dev *dev, sector_t start,
 					   sector_t len, void *data)
@@ -1886,6 +2041,8 @@ static bool dm_table_supports_secure_erase(struct dm_table *t)
 	return true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int device_requires_stable_pages(struct dm_target *ti,
 					struct dm_dev *dev, sector_t start,
 					sector_t len, void *data)
@@ -1926,6 +2083,7 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 	 */
 	q->limits = *limits;
 
+<<<<<<< HEAD
 	if (!dm_table_supports_discards(t)) {
 		blk_queue_flag_clear(QUEUE_FLAG_DISCARD, q);
 		/* Must also clear discard limits... */
@@ -1939,6 +2097,12 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 
 	if (dm_table_supports_secure_erase(t))
 		blk_queue_flag_set(QUEUE_FLAG_SECERASE, q);
+=======
+	if (!dm_table_supports_discards(t))
+		queue_flag_clear_unlocked(QUEUE_FLAG_DISCARD, q);
+	else
+		queue_flag_set_unlocked(QUEUE_FLAG_DISCARD, q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dm_table_supports_flush(t, (1UL << QUEUE_FLAG_WC))) {
 		wc = true;
@@ -1948,18 +2112,30 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 	blk_queue_write_cache(q, wc, fua);
 
 	if (dm_table_supports_dax(t))
+<<<<<<< HEAD
 		blk_queue_flag_set(QUEUE_FLAG_DAX, q);
 	else
 		blk_queue_flag_clear(QUEUE_FLAG_DAX, q);
+=======
+		queue_flag_set_unlocked(QUEUE_FLAG_DAX, q);
+	else
+		queue_flag_clear_unlocked(QUEUE_FLAG_DAX, q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dm_table_supports_dax_write_cache(t))
 		dax_write_cache(t->md->dax_dev, true);
 
 	/* Ensure that all underlying devices are non-rotational. */
 	if (dm_table_all_devices_attribute(t, device_is_nonrot))
+<<<<<<< HEAD
 		blk_queue_flag_set(QUEUE_FLAG_NONROT, q);
 	else
 		blk_queue_flag_clear(QUEUE_FLAG_NONROT, q);
+=======
+		queue_flag_set_unlocked(QUEUE_FLAG_NONROT, q);
+	else
+		queue_flag_clear_unlocked(QUEUE_FLAG_NONROT, q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dm_table_supports_write_same(t))
 		q->limits.max_write_same_sectors = 0;
@@ -1967,6 +2143,7 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 		q->limits.max_write_zeroes_sectors = 0;
 
 	if (dm_table_all_devices_attribute(t, queue_supports_sg_merge))
+<<<<<<< HEAD
 		blk_queue_flag_clear(QUEUE_FLAG_NO_SG_MERGE, q);
 	else
 		blk_queue_flag_set(QUEUE_FLAG_NO_SG_MERGE, q);
@@ -1978,6 +2155,16 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 
 	dm_table_verify_integrity(t);
 
+=======
+		queue_flag_clear_unlocked(QUEUE_FLAG_NO_SG_MERGE, q);
+	else
+		queue_flag_set_unlocked(QUEUE_FLAG_NO_SG_MERGE, q);
+
+	dm_table_verify_integrity(t);
+
+	dm_calculate_supported_crypto_modes(t, q);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Some devices don't use blk_integrity but still want stable pages
 	 * because they do their own checksumming.
@@ -1994,7 +2181,24 @@ void dm_table_set_restrictions(struct dm_table *t, struct request_queue *q,
 	 * have it set.
 	 */
 	if (blk_queue_add_random(q) && dm_table_all_devices_attribute(t, device_is_not_random))
+<<<<<<< HEAD
 		blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, q);
+=======
+		queue_flag_clear_unlocked(QUEUE_FLAG_ADD_RANDOM, q);
+
+	/*
+	 * QUEUE_FLAG_STACKABLE must be set after all queue settings are
+	 * visible to other CPUs because, once the flag is set, incoming bios
+	 * are processed by request-based dm, which refers to the queue
+	 * settings.
+	 * Until the flag set, bios are passed to bio-based dm and queued to
+	 * md->deferred where queue settings are not needed yet.
+	 * Those bios are passed to request-based dm at the resume time.
+	 */
+	smp_mb();
+	if (dm_table_request_based(t))
+		queue_flag_set_unlocked(QUEUE_FLAG_STACKABLE, q);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* io_pages is used for readahead */
 	q->backing_dev_info->io_pages = limits->max_sectors >> (PAGE_SHIFT - 9);

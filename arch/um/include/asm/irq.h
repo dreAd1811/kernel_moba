@@ -18,6 +18,7 @@
 #define XTERM_IRQ 		13
 #define RANDOM_IRQ 		14
 
+<<<<<<< HEAD
 #ifdef CONFIG_UML_NET_VECTOR
 
 #define VECTOR_BASE_IRQ		15
@@ -31,6 +32,9 @@
 
 #endif
 
+=======
+#define LAST_IRQ RANDOM_IRQ
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NR_IRQS (LAST_IRQ + 1)
 
 #endif

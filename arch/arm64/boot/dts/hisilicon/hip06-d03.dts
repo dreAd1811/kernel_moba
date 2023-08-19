@@ -17,7 +17,11 @@
 	model = "Hisilicon Hip06 D03 Development Board";
 	compatible = "hisilicon,hip06-d03";
 
+<<<<<<< HEAD
 	memory@0 {
+=======
+	memory@00000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		device_type = "memory";
 		reg = <0x0 0x00000000 0x0 0x40000000>;
 	};
@@ -25,6 +29,7 @@
 	chosen { };
 };
 
+<<<<<<< HEAD
 &ipmi0 {
 	status = "ok";
 };
@@ -33,6 +38,8 @@
 	status = "ok";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &eth0 {
 	status = "ok";
 };

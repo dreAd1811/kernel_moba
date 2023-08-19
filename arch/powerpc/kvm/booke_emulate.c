@@ -34,19 +34,31 @@
 
 static void kvmppc_emul_rfi(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	vcpu->arch.regs.nip = vcpu->arch.shared->srr0;
+=======
+	vcpu->arch.pc = vcpu->arch.shared->srr0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvmppc_set_msr(vcpu, vcpu->arch.shared->srr1);
 }
 
 static void kvmppc_emul_rfdi(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	vcpu->arch.regs.nip = vcpu->arch.dsrr0;
+=======
+	vcpu->arch.pc = vcpu->arch.dsrr0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvmppc_set_msr(vcpu, vcpu->arch.dsrr1);
 }
 
 static void kvmppc_emul_rfci(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	vcpu->arch.regs.nip = vcpu->arch.csrr0;
+=======
+	vcpu->arch.pc = vcpu->arch.csrr0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvmppc_set_msr(vcpu, vcpu->arch.csrr1);
 }
 

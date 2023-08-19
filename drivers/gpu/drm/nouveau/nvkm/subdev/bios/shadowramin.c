@@ -78,10 +78,14 @@ pramin_init(struct nvkm_bios *bios, const char *name)
 	 * important as we don't want to be touching vram on an
 	 * uninitialised board
 	 */
+<<<<<<< HEAD
 	if (device->card_type >= GV100)
 		addr = nvkm_rd32(device, 0x625f04);
 	else
 		addr = nvkm_rd32(device, 0x619f04);
+=======
+	addr = nvkm_rd32(device, 0x619f04);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!(addr & 0x00000008)) {
 		nvkm_debug(subdev, "... not enabled\n");
 		return ERR_PTR(-ENODEV);

@@ -62,6 +62,11 @@ static const char * const gcc_xo_gpll0_gpll4[] = {
 	"gpll4_vote",
 };
 
+<<<<<<< HEAD
+=======
+#define F(f, s, h, m, n) { (f), (s), (2 * (h) - 1), (m), (n) }
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clk_pll gpll0 = {
 	.l_reg = 0x0004,
 	.m_reg = 0x0008,

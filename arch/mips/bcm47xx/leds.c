@@ -409,12 +409,15 @@ bcm47xx_leds_luxul_xap_1500_v1[] __initconst = {
 };
 
 static const struct gpio_led
+<<<<<<< HEAD
 bcm47xx_leds_luxul_xap1500_v1_extra[] __initconst = {
 	BCM47XX_GPIO_LED(44, "green", "5ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
 	BCM47XX_GPIO_LED(76, "green", "2ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
 };
 
 static const struct gpio_led
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bcm47xx_leds_luxul_xbr_4400_v1[] __initconst = {
 	BCM47XX_GPIO_LED(12, "green", "usb", 0, LEDS_GPIO_DEFSTATE_OFF),
 	BCM47XX_GPIO_LED_TRIGGER(15, "green", "status", 0, "timer"),
@@ -441,11 +444,14 @@ bcm47xx_leds_luxul_xwr_1750_v1[] __initconst = {
 	BCM47XX_GPIO_LED(15, "green", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
 };
 
+<<<<<<< HEAD
 static const struct gpio_led
 bcm47xx_leds_luxul_xwr1750_v1_extra[] __initconst = {
 	BCM47XX_GPIO_LED(76, "green", "2ghz", 0, LEDS_GPIO_DEFSTATE_OFF),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Microsoft */
 
 static const struct gpio_led
@@ -498,12 +504,15 @@ bcm47xx_leds_netgear_wndr4500v1[] __initconst = {
 };
 
 static const struct gpio_led
+<<<<<<< HEAD
 bcm47xx_leds_netgear_wnr1000_v3[] __initconst = {
 	BCM47XX_GPIO_LED(0, "blue", "wlan", 0, LEDS_GPIO_DEFSTATE_OFF),
 	BCM47XX_GPIO_LED(1, "green", "wps", 0, LEDS_GPIO_DEFSTATE_OFF),
 };
 
 static const struct gpio_led
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 bcm47xx_leds_netgear_wnr3500lv1[] __initconst = {
 	BCM47XX_GPIO_LED(0, "blue", "wlan", 1, LEDS_GPIO_DEFSTATE_OFF),
 	BCM47XX_GPIO_LED(1, "green", "wps", 1, LEDS_GPIO_DEFSTATE_OFF),
@@ -538,19 +547,26 @@ bcm47xx_leds_simpletech_simpleshare[] __initconst = {
  * Init
  **************************************************/
 
+<<<<<<< HEAD
 static struct gpio_led_platform_data bcm47xx_leds_pdata __initdata;
+=======
+static struct gpio_led_platform_data bcm47xx_leds_pdata;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define bcm47xx_set_pdata(dev_leds) do {				\
 	bcm47xx_leds_pdata.leds = dev_leds;				\
 	bcm47xx_leds_pdata.num_leds = ARRAY_SIZE(dev_leds);		\
 } while (0)
 
+<<<<<<< HEAD
 static struct gpio_led_platform_data bcm47xx_leds_pdata_extra __initdata = {};
 #define bcm47xx_set_pdata_extra(dev_leds) do {				\
 	bcm47xx_leds_pdata_extra.leds = dev_leds;			\
 	bcm47xx_leds_pdata_extra.num_leds = ARRAY_SIZE(dev_leds);	\
 } while (0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init bcm47xx_leds_register(void)
 {
 	enum bcm47xx_board board = bcm47xx_board_get();
@@ -728,7 +744,10 @@ void __init bcm47xx_leds_register(void)
 		break;
 	case BCM47XX_BOARD_LUXUL_XAP_1500_V1:
 		bcm47xx_set_pdata(bcm47xx_leds_luxul_xap_1500_v1);
+<<<<<<< HEAD
 		bcm47xx_set_pdata_extra(bcm47xx_leds_luxul_xap1500_v1_extra);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case BCM47XX_BOARD_LUXUL_XBR_4400_V1:
 		bcm47xx_set_pdata(bcm47xx_leds_luxul_xbr_4400_v1);
@@ -741,7 +760,10 @@ void __init bcm47xx_leds_register(void)
 		break;
 	case BCM47XX_BOARD_LUXUL_XWR_1750_V1:
 		bcm47xx_set_pdata(bcm47xx_leds_luxul_xwr_1750_v1);
+<<<<<<< HEAD
 		bcm47xx_set_pdata_extra(bcm47xx_leds_luxul_xwr1750_v1_extra);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 
 	case BCM47XX_BOARD_MICROSOFT_MN700:
@@ -764,9 +786,12 @@ void __init bcm47xx_leds_register(void)
 	case BCM47XX_BOARD_NETGEAR_WNDR4500V1:
 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wndr4500v1);
 		break;
+<<<<<<< HEAD
 	case BCM47XX_BOARD_NETGEAR_WNR1000_V3:
 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wnr1000_v3);
 		break;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case BCM47XX_BOARD_NETGEAR_WNR3500L:
 		bcm47xx_set_pdata(bcm47xx_leds_netgear_wnr3500lv1);
 		break;
@@ -788,6 +813,9 @@ void __init bcm47xx_leds_register(void)
 	}
 
 	gpio_led_register_device(-1, &bcm47xx_leds_pdata);
+<<<<<<< HEAD
 	if (bcm47xx_leds_pdata_extra.num_leds)
 		gpio_led_register_device(0, &bcm47xx_leds_pdata_extra);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

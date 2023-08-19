@@ -9,11 +9,20 @@
  *  published by the Free Software Foundation.
  */
 
+<<<<<<< HEAD
 #include <linux/init.h>
 #include <linux/mutex.h>
 #include <linux/spi/spi.h>
 #include <linux/gpio/driver.h>
 #include <linux/gpio/consumer.h>
+=======
+#include <linux/gpio/consumer.h>
+#include <linux/init.h>
+#include <linux/mutex.h>
+#include <linux/spi/spi.h>
+#include <linux/gpio.h>
+#include <linux/of_gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/module.h>
 

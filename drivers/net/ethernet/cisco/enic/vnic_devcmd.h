@@ -148,6 +148,7 @@ enum vnic_devcmd_cmd {
 	/* del VLAN id in (u16)a0 */
 	CMD_VLAN_DEL            = _CMDCNW(_CMD_DIR_WRITE, _CMD_VTYPE_ENET, 15),
 
+<<<<<<< HEAD
 	/* nic_cfg (no wait, always succeeds)
 	 * in: (u32)a0
 	 *
@@ -168,6 +169,10 @@ enum vnic_devcmd_cmd {
 	 * flags are CMD_NIC_CFG_CAPF_xxx
 	 */
 	CMD_NIC_CFG_CHK		= _CMDC(_CMD_DIR_WRITE, _CMD_VTYPE_ALL, 16),
+=======
+	/* nic_cfg in (u32)a0 */
+	CMD_NIC_CFG             = _CMDCNW(_CMD_DIR_WRITE, _CMD_VTYPE_ALL, 16),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* union vnic_rss_key in mem: (u64)a0=paddr, (u16)a1=len */
 	CMD_RSS_KEY             = _CMDC(_CMD_DIR_WRITE, _CMD_VTYPE_ENET, 17),
@@ -457,7 +462,10 @@ enum vnic_devcmd_cmd {
 
 /* flags for CMD_OPEN */
 #define CMD_OPENF_OPROM		0x1	/* open coming from option rom */
+<<<<<<< HEAD
 #define CMD_OPENF_IG_DESCCACHE	0x2	/* Do not flush IG DESC cache */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* flags for CMD_INIT */
 #define CMD_INITF_DEFAULT_MAC	0x1	/* init with default mac addr */
@@ -716,10 +724,13 @@ enum overlay_ofld_cmd {
 
 #define OVERLAY_CFG_VXLAN_PORT_UPDATE	0
 
+<<<<<<< HEAD
 #define ENIC_VXLAN_INNER_IPV6		BIT(0)
 #define ENIC_VXLAN_OUTER_IPV6		BIT(1)
 #define ENIC_VXLAN_MULTI_WQ		BIT(2)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Use this enum to get the supported versions for each of these features
  * If you need to use the devcmd_get_supported_feature_version(), add
  * the new feature into this enum and install function handler in devcmd.c

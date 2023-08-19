@@ -10,11 +10,16 @@
  * between kernel and user space.
  *
  * Pad space is left for:
+<<<<<<< HEAD
+=======
+ * - 64-bit time_t to solve y2038 problem
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * - 2 miscellaneous 32-bit values
  */
 
 struct shmid64_ds {
 	struct ipc64_perm	shm_perm;	/* operation perms */
+<<<<<<< HEAD
 #if __BITS_PER_LONG == 64
 	__kernel_time_t		shm_atime;	/* last attach time */
 	__kernel_time_t		shm_dtime;	/* last detach time */
@@ -26,6 +31,21 @@ struct shmid64_ds {
 	unsigned long		shm_dtime;	/* last detach time */
 	unsigned long		shm_ctime_high;
 	unsigned long		shm_ctime;	/* last change time */
+=======
+#if __BITS_PER_LONG != 64
+	unsigned int		__pad1;
+#endif
+	__kernel_time_t		shm_atime;	/* last attach time */
+#if __BITS_PER_LONG != 64
+	unsigned int		__pad2;
+#endif
+	__kernel_time_t		shm_dtime;	/* last detach time */
+#if __BITS_PER_LONG != 64
+	unsigned int		__pad3;
+#endif
+	__kernel_time_t		shm_ctime;	/* last change time */
+#if __BITS_PER_LONG != 64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int		__pad4;
 #endif
 	__kernel_size_t		shm_segsz;	/* size of segment (bytes) */

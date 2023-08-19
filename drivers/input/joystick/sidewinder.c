@@ -20,6 +20,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+<<<<<<< HEAD
+=======
+ *
+ * Should you need to contact me, the author, you can do so either by
+ * e-mail - mail your message to <vojtech@ucw.cz>, or by paper mail:
+ * Vojtech Pavlik, Simunkova 1594, Prague 8, 182 00 Czech Republic
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/delay.h>
@@ -668,16 +675,26 @@ static int sw_connect(struct gameport *gameport, struct gameport_driver *drv)
 
 			switch (i * m) {
 				case 60:
+<<<<<<< HEAD
 					sw->number++;			/* fall through */
+=======
+					sw->number++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				case 45:				/* Ambiguous packet length */
 					if (j <= 40) {			/* ID length less or eq 40 -> FSP */
 				case 43:
 						sw->type = SW_ID_FSP;
 						break;
 					}
+<<<<<<< HEAD
 					sw->number++;			/* fall through */
 				case 30:
 					sw->number++;			/* fall through */
+=======
+					sw->number++;
+				case 30:
+					sw->number++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				case 15:
 					sw->type = SW_ID_GP;
 					break;
@@ -693,9 +710,15 @@ static int sw_connect(struct gameport *gameport, struct gameport_driver *drv)
 						sw->type = SW_ID_PP;
 					break;
 				case 66:
+<<<<<<< HEAD
 					sw->bits = 3;			/* fall through */
 				case 198:
 					sw->length = 22;		/* fall through */
+=======
+					sw->bits = 3;
+				case 198:
+					sw->length = 22;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				case 64:
 					sw->type = SW_ID_3DP;
 					if (j == 160)

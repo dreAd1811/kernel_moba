@@ -1,5 +1,33 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
+=======
+/*******************************************************************************
+ *
+ * Intel Ethernet Controller XL710 Family Linux Virtual Function Driver
+ * Copyright(c) 2013 - 2017 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ *
+ ******************************************************************************/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _I40E_ADMINQ_CMD_H_
 #define _I40E_ADMINQ_CMD_H_
@@ -11,6 +39,7 @@
  */
 
 #define I40E_FW_API_VERSION_MAJOR	0x0001
+<<<<<<< HEAD
 #define I40E_FW_API_VERSION_MINOR_X722	0x0005
 #define I40E_FW_API_VERSION_MINOR_X710	0x0007
 
@@ -20,6 +49,9 @@
 
 /* API version 1.7 implements additional link and PHY-specific APIs  */
 #define I40E_MINOR_VER_GET_LINK_INFO_XL710 0x0007
+=======
+#define I40E_FW_API_VERSION_MINOR	0x0005
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct i40e_aq_desc {
 	__le16 flags;
@@ -175,14 +207,21 @@ enum i40e_admin_queue_opc {
 	i40e_aqc_opc_add_mirror_rule	= 0x0260,
 	i40e_aqc_opc_delete_mirror_rule	= 0x0261,
 
+<<<<<<< HEAD
 	/* Dynamic Device Personalization */
+=======
+	/* Pipeline Personalization Profile */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i40e_aqc_opc_write_personalization_profile	= 0x0270,
 	i40e_aqc_opc_get_personalization_profile_list	= 0x0271,
 
 	/* DCB commands */
 	i40e_aqc_opc_dcb_ignore_pfc	= 0x0301,
 	i40e_aqc_opc_dcb_updated	= 0x0302,
+<<<<<<< HEAD
 	i40e_aqc_opc_set_dcb_parameters = 0x0303,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* TX scheduler */
 	i40e_aqc_opc_configure_vsi_bw_limit		= 0x0400,
@@ -222,8 +261,11 @@ enum i40e_admin_queue_opc {
 	i40e_aqc_opc_set_phy_debug		= 0x0622,
 	i40e_aqc_opc_upload_ext_phy_fm		= 0x0625,
 	i40e_aqc_opc_run_phy_activity		= 0x0626,
+<<<<<<< HEAD
 	i40e_aqc_opc_set_phy_register		= 0x0628,
 	i40e_aqc_opc_get_phy_register		= 0x0629,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* NVM commands */
 	i40e_aqc_opc_nvm_read			= 0x0701,
@@ -749,6 +791,7 @@ struct i40e_aqc_set_switch_config {
 #define I40E_AQ_SET_SWITCH_CFG_PROMISC		0x0001
 #define I40E_AQ_SET_SWITCH_CFG_L2_FILTER	0x0002
 	__le16	valid_flags;
+<<<<<<< HEAD
 	/* The ethertype in switch_tag is dropped on ingress and used
 	 * internally by the switch. Set this to zero for the default
 	 * of 0x88a8 (802.1ad). Should be zero for firmware API
@@ -765,6 +808,9 @@ struct i40e_aqc_set_switch_config {
 	__le16	first_tag;
 	__le16	second_tag;
 	u8	reserved[6];
+=======
+	u8	reserved[12];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_set_switch_config);
@@ -1317,16 +1363,24 @@ struct i40e_aqc_add_remove_cloud_filters {
 #define I40E_AQC_ADD_CLOUD_CMD_SEID_NUM_SHIFT	0
 #define I40E_AQC_ADD_CLOUD_CMD_SEID_NUM_MASK	(0x3FF << \
 					I40E_AQC_ADD_CLOUD_CMD_SEID_NUM_SHIFT)
+<<<<<<< HEAD
 	u8	big_buffer_flag;
 #define I40E_AQC_ADD_CLOUD_CMD_BB	1
 	u8	reserved2[3];
+=======
+	u8	reserved2[4];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32	addr_high;
 	__le32	addr_low;
 };
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_add_remove_cloud_filters);
 
+<<<<<<< HEAD
 struct i40e_aqc_cloud_filters_element_data {
+=======
+struct i40e_aqc_add_remove_cloud_filters_element_data {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8	outer_mac[6];
 	u8	inner_mac[6];
 	__le16	inner_vlan;
@@ -1338,9 +1392,12 @@ struct i40e_aqc_cloud_filters_element_data {
 		struct {
 			u8 data[16];
 		} v6;
+<<<<<<< HEAD
 		struct {
 			__le16 data[8];
 		} raw_v6;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} ipaddr;
 	__le16	flags;
 #define I40E_AQC_ADD_CLOUD_FILTER_SHIFT			0
@@ -1359,10 +1416,13 @@ struct i40e_aqc_cloud_filters_element_data {
 #define I40E_AQC_ADD_CLOUD_FILTER_IMAC			0x000A
 #define I40E_AQC_ADD_CLOUD_FILTER_OMAC_TEN_ID_IMAC	0x000B
 #define I40E_AQC_ADD_CLOUD_FILTER_IIP			0x000C
+<<<<<<< HEAD
 /* 0x0010 to 0x0017 is for custom filters */
 #define I40E_AQC_ADD_CLOUD_FILTER_IP_PORT		0x0010 /* Dest IP + L4 Port */
 #define I40E_AQC_ADD_CLOUD_FILTER_MAC_PORT		0x0011 /* Dest MAC + L4 Port */
 #define I40E_AQC_ADD_CLOUD_FILTER_MAC_VLAN_PORT		0x0012 /* Dest MAC + VLAN + L4 Port */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define I40E_AQC_ADD_CLOUD_FLAGS_TO_QUEUE		0x0080
 #define I40E_AQC_ADD_CLOUD_VNK_SHIFT			6
@@ -1397,6 +1457,7 @@ struct i40e_aqc_cloud_filters_element_data {
 	u8	response_reserved[7];
 };
 
+<<<<<<< HEAD
 I40E_CHECK_STRUCT_LEN(0x40, i40e_aqc_cloud_filters_element_data);
 
 /* i40e_aqc_cloud_filters_element_bb is used when
@@ -1440,6 +1501,8 @@ struct i40e_aqc_cloud_filters_element_bb {
 
 I40E_CHECK_STRUCT_LEN(0x80, i40e_aqc_cloud_filters_element_bb);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct i40e_aqc_remove_cloud_filters_completion {
 	__le16 perfect_ovlan_used;
 	__le16 perfect_ovlan_free;
@@ -1451,6 +1514,7 @@ struct i40e_aqc_remove_cloud_filters_completion {
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_remove_cloud_filters_completion);
 
+<<<<<<< HEAD
 /* Replace filter Command 0x025F
  * uses the i40e_aqc_replace_cloud_filters,
  * and the generic indirect completion structure
@@ -1505,6 +1569,8 @@ struct i40e_aqc_replace_cloud_filters_cmd_buf {
 
 I40E_CHECK_STRUCT_LEN(0x40, i40e_aqc_replace_cloud_filters_cmd_buf);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Add Mirror Rule (indirect or direct 0x0260)
  * Delete Mirror Rule (indirect or direct 0x0261)
  * note: some rule types (4,5) do not use an external buffer.
@@ -1540,7 +1606,11 @@ struct i40e_aqc_add_delete_mirror_rule_completion {
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_add_delete_mirror_rule_completion);
 
+<<<<<<< HEAD
 /* Dynamic Device Personalization */
+=======
+/* Pipeline Personalization Profile */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct i40e_aqc_write_personalization_profile {
 	u8      flags;
 	u8      reserved[3];
@@ -1551,7 +1621,11 @@ struct i40e_aqc_write_personalization_profile {
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_write_personalization_profile);
 
+<<<<<<< HEAD
 struct i40e_aqc_write_ddp_resp {
+=======
+struct i40e_aqc_write_ppp_resp {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 error_offset;
 	__le32 error_info;
 	__le32 addr_high;
@@ -1560,8 +1634,13 @@ struct i40e_aqc_write_ddp_resp {
 
 struct i40e_aqc_get_applied_profiles {
 	u8      flags;
+<<<<<<< HEAD
 #define I40E_AQC_GET_DDP_GET_CONF	0x1
 #define I40E_AQC_GET_DDP_GET_RDPU_CONF	0x2
+=======
+#define I40E_AQC_GET_PPP_GET_CONF	0x1
+#define I40E_AQC_GET_PPP_GET_RDPU_CONF	0x2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8      rsv[3];
 	__le32  reserved;
 	__le32  addr_high;
@@ -1831,8 +1910,11 @@ enum i40e_aq_phy_type {
 	I40E_PHY_TYPE_10GBASE_CR1_CU		= 0xB,
 	I40E_PHY_TYPE_10GBASE_AOC		= 0xC,
 	I40E_PHY_TYPE_40GBASE_AOC		= 0xD,
+<<<<<<< HEAD
 	I40E_PHY_TYPE_UNRECOGNIZED		= 0xE,
 	I40E_PHY_TYPE_UNSUPPORTED		= 0xF,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	I40E_PHY_TYPE_100BASE_TX		= 0x11,
 	I40E_PHY_TYPE_1000BASE_T		= 0x12,
 	I40E_PHY_TYPE_10GBASE_T			= 0x13,
@@ -1851,12 +1933,16 @@ enum i40e_aq_phy_type {
 	I40E_PHY_TYPE_25GBASE_CR		= 0x20,
 	I40E_PHY_TYPE_25GBASE_SR		= 0x21,
 	I40E_PHY_TYPE_25GBASE_LR		= 0x22,
+<<<<<<< HEAD
 	I40E_PHY_TYPE_25GBASE_AOC		= 0x23,
 	I40E_PHY_TYPE_25GBASE_ACC		= 0x24,
 	I40E_PHY_TYPE_MAX,
 	I40E_PHY_TYPE_NOT_SUPPORTED_HIGH_TEMP	= 0xFD,
 	I40E_PHY_TYPE_EMPTY			= 0xFE,
 	I40E_PHY_TYPE_DEFAULT			= 0xFF,
+=======
+	I40E_PHY_TYPE_MAX
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define I40E_LINK_SPEED_100MB_SHIFT	0x1
@@ -1913,8 +1999,11 @@ struct i40e_aq_get_phy_abilities_resp {
 #define I40E_AQ_PHY_TYPE_EXT_25G_CR	0X02
 #define I40E_AQ_PHY_TYPE_EXT_25G_SR	0x04
 #define I40E_AQ_PHY_TYPE_EXT_25G_LR	0x08
+<<<<<<< HEAD
 #define I40E_AQ_PHY_TYPE_EXT_25G_AOC	0x10
 #define I40E_AQ_PHY_TYPE_EXT_25G_ACC	0x20
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8	fec_cfg_curr_mod_ext_info;
 #define I40E_AQ_ENABLE_FEC_KR		0x01
 #define I40E_AQ_ENABLE_FEC_RS		0x02
@@ -2048,24 +2137,32 @@ struct i40e_aqc_get_link_status {
 #define I40E_AQ_25G_SERDES_UCODE_ERR	0X04
 #define I40E_AQ_25G_NIMB_UCODE_ERR	0X05
 	u8	loopback; /* use defines from i40e_aqc_set_lb_mode */
+<<<<<<< HEAD
 /* Since firmware API 1.7 loopback field keeps power class info as well */
 #define I40E_AQ_LOOPBACK_MASK		0x07
 #define I40E_AQ_PWR_CLASS_SHIFT_LB	6
 #define I40E_AQ_PWR_CLASS_MASK_LB	(0x03 << I40E_AQ_PWR_CLASS_SHIFT_LB)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16	max_frame_size;
 	u8	config;
 #define I40E_AQ_CONFIG_FEC_KR_ENA	0x01
 #define I40E_AQ_CONFIG_FEC_RS_ENA	0x02
 #define I40E_AQ_CONFIG_CRC_ENA		0x04
 #define I40E_AQ_CONFIG_PACING_MASK	0x78
+<<<<<<< HEAD
 	union {
 		struct {
 			u8	power_desc;
+=======
+	u8	power_desc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define I40E_AQ_LINK_POWER_CLASS_1	0x00
 #define I40E_AQ_LINK_POWER_CLASS_2	0x01
 #define I40E_AQ_LINK_POWER_CLASS_3	0x02
 #define I40E_AQ_LINK_POWER_CLASS_4	0x03
 #define I40E_AQ_PWR_CLASS_MASK		0x03
+<<<<<<< HEAD
 			u8	reserved[4];
 		};
 		struct {
@@ -2073,6 +2170,9 @@ struct i40e_aqc_get_link_status {
 			u8	link_type_ext;
 		};
 	};
+=======
+	u8	reserved[4];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_get_link_status);
@@ -2152,6 +2252,7 @@ struct i40e_aqc_run_phy_activity {
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_run_phy_activity);
 
+<<<<<<< HEAD
 /* Set PHY Register command (0x0628) */
 /* Get PHY Register command (0x0629) */
 struct i40e_aqc_phy_register_access {
@@ -2168,12 +2269,15 @@ struct i40e_aqc_phy_register_access {
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_phy_register_access);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* NVM Read command (indirect 0x0701)
  * NVM Erase commands (direct 0x0702)
  * NVM Update commands (indirect 0x0703)
  */
 struct i40e_aqc_nvm_update {
 	u8	command_flags;
+<<<<<<< HEAD
 #define I40E_AQ_NVM_LAST_CMD			0x01
 #define I40E_AQ_NVM_REARRANGE_TO_FLAT		0x20
 #define I40E_AQ_NVM_REARRANGE_TO_STRUCT		0x40
@@ -2182,6 +2286,10 @@ struct i40e_aqc_nvm_update {
 #define I40E_AQ_NVM_PRESERVATION_FLAGS_MASK	0x03
 #define I40E_AQ_NVM_PRESERVATION_FLAGS_SELECTED	0x03
 #define I40E_AQ_NVM_PRESERVATION_FLAGS_ALL	0x01
+=======
+#define I40E_AQ_NVM_LAST_CMD	0x01
+#define I40E_AQ_NVM_FLASH_ONLY	0x80
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8	module_pointer;
 	__le16	length;
 	__le32	offset;
@@ -2441,6 +2549,7 @@ struct i40e_aqc_lldp_start {
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_lldp_start);
 
+<<<<<<< HEAD
 /* Set DCB (direct 0x0303) */
 struct i40e_aqc_set_dcb_parameters {
 	u8 command;
@@ -2452,6 +2561,8 @@ struct i40e_aqc_set_dcb_parameters {
 
 I40E_CHECK_CMD_LENGTH(i40e_aqc_set_dcb_parameters);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Apply MIB changes (0x0A07)
  * uses the generic struc as it contains no data
  */

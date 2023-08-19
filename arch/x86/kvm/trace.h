@@ -1367,6 +1367,7 @@ TRACE_EVENT(kvm_hv_timer_state,
 			__entry->vcpu_id,
 			__entry->hv_timer_in_use)
 );
+<<<<<<< HEAD
 
 /*
  * Tracepoint for kvm_hv_flush_tlb.
@@ -1418,6 +1419,8 @@ TRACE_EVENT(kvm_hv_flush_tlb_ex,
 		  __entry->valid_bank_mask, __entry->format,
 		  __entry->address_space, __entry->flags)
 );
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _TRACE_KVM_H */
 
 #undef TRACE_INCLUDE_PATH

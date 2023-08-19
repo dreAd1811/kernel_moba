@@ -18,6 +18,7 @@
 #include <linux/module.h>
 #include "rsi_sdio.h"
 #include "rsi_common.h"
+<<<<<<< HEAD
 #include "rsi_coex.h"
 #include "rsi_hal.h"
 
@@ -29,6 +30,10 @@ MODULE_PARM_DESC(dev_oper_mode,
 		 "9[Wi-Fi STA + BT LE], 13[Wi-Fi STA + BT classic + BT LE]\n"
 		 "6[AP + BT classic], 14[AP + BT classic + BT LE]");
 
+=======
+#include "rsi_hal.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * rsi_sdio_set_cmd52_arg() - This function prepares cmd 52 read/write arg.
  * @rw: Read/write
@@ -574,7 +579,11 @@ static int rsi_sdio_load_data_master_write(struct rsi_hw *adapter,
 {
 	u32 num_blocks, offset, i;
 	u16 msb_address, lsb_address;
+<<<<<<< HEAD
 	u8 *temp_buf;
+=======
+	u8 temp_buf[block_size];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status;
 
 	num_blocks = instructions_sz / block_size;
@@ -583,15 +592,22 @@ static int rsi_sdio_load_data_master_write(struct rsi_hw *adapter,
 	rsi_dbg(INFO_ZONE, "ins_size: %d, num_blocks: %d\n",
 		instructions_sz, num_blocks);
 
+<<<<<<< HEAD
 	temp_buf = kmalloc(block_size, GFP_KERNEL);
 	if (!temp_buf)
 		return -ENOMEM;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Loading DM ms word in the sdio slave */
 	status = rsi_sdio_master_access_msword(adapter, msb_address);
 	if (status < 0) {
 		rsi_dbg(ERR_ZONE, "%s: Unable to set ms word reg\n", __func__);
+<<<<<<< HEAD
 		goto out_free;
+=======
+		return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (offset = 0, i = 0; i < num_blocks; i++, offset += block_size) {
@@ -603,7 +619,11 @@ static int rsi_sdio_load_data_master_write(struct rsi_hw *adapter,
 					 temp_buf, block_size);
 		if (status < 0) {
 			rsi_dbg(ERR_ZONE, "%s: failed to write\n", __func__);
+<<<<<<< HEAD
 			goto out_free;
+=======
+			return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		rsi_dbg(INFO_ZONE, "%s: loading block: %d\n", __func__, i);
 		base_address += block_size;
@@ -618,7 +638,11 @@ static int rsi_sdio_load_data_master_write(struct rsi_hw *adapter,
 				rsi_dbg(ERR_ZONE,
 					"%s: Unable to set ms word reg\n",
 					__func__);
+<<<<<<< HEAD
 				goto out_free;
+=======
+				return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
@@ -634,16 +658,24 @@ static int rsi_sdio_load_data_master_write(struct rsi_hw *adapter,
 					 temp_buf,
 					 instructions_sz % block_size);
 		if (status < 0)
+<<<<<<< HEAD
 			goto out_free;
+=======
+			return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rsi_dbg(INFO_ZONE,
 			"Written Last Block in Address 0x%x Successfully\n",
 			offset | RSI_SD_REQUEST_MASTER);
 	}
+<<<<<<< HEAD
 
 	status = 0;
 out_free:
 	kfree(temp_buf);
 	return status;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define FLASH_SIZE_ADDR                 0x04000016
@@ -658,6 +690,11 @@ static int rsi_sdio_master_reg_read(struct rsi_hw *adapter, u32 addr,
 	if (!data)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	data = PTR_ALIGN(data, 8);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ms_addr = (addr >> 16);
 	status = rsi_sdio_master_access_msword(adapter, ms_addr);
 	if (status < 0) {
@@ -720,6 +757,11 @@ static int rsi_sdio_master_reg_write(struct rsi_hw *adapter,
 	if (!data_aligned)
 		return -ENOMEM;
 
+<<<<<<< HEAD
+=======
+	data_aligned = PTR_ALIGN(data_aligned, 8);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (size == 2) {
 		*data_aligned = ((data << 16) | (data & 0xFFFF));
 	} else if (size == 1) {
@@ -775,8 +817,11 @@ static int rsi_sdio_host_intf_write_pkt(struct rsi_hw *adapter,
 	int status;
 
 	queueno = ((pkt[1] >> 4) & 0xf);
+<<<<<<< HEAD
 	if (queueno == RSI_BT_MGMT_Q || queueno == RSI_BT_DATA_Q)
 		queueno = RSI_BT_Q;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	num_blocks = len / block_size;
 
@@ -894,6 +939,7 @@ fail:
 	return status;
 }
 
+<<<<<<< HEAD
 static int rsi_sdio_reinit_device(struct rsi_hw *adapter)
 {
 	struct rsi_91x_sdiodev *sdev = adapter->rsi_dev;
@@ -920,6 +966,8 @@ static int rsi_sdio_reinit_device(struct rsi_hw *adapter)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct rsi_host_intf_ops sdio_host_intf_ops = {
 	.write_pkt		= rsi_sdio_host_intf_write_pkt,
 	.read_pkt		= rsi_sdio_host_intf_read_pkt,
@@ -929,7 +977,10 @@ static struct rsi_host_intf_ops sdio_host_intf_ops = {
 	.master_reg_read	= rsi_sdio_master_reg_read,
 	.master_reg_write	= rsi_sdio_master_reg_write,
 	.load_data_master_write	= rsi_sdio_load_data_master_write,
+<<<<<<< HEAD
 	.reinit_device          = rsi_sdio_reinit_device,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -945,6 +996,7 @@ static int rsi_probe(struct sdio_func *pfunction,
 		     const struct sdio_device_id *id)
 {
 	struct rsi_hw *adapter;
+<<<<<<< HEAD
 	struct rsi_91x_sdiodev *sdev;
 	int status;
 
@@ -955,6 +1007,16 @@ static int rsi_probe(struct sdio_func *pfunction,
 		rsi_dbg(ERR_ZONE, "%s: Failed to init os intf ops\n",
 			__func__);
 		return -EINVAL;
+=======
+
+	rsi_dbg(INIT_ZONE, "%s: Init function called\n", __func__);
+
+	adapter = rsi_91x_init();
+	if (!adapter) {
+		rsi_dbg(ERR_ZONE, "%s: Failed to init os intf ops\n",
+			__func__);
+		return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	adapter->rsi_host_intf = RSI_HOST_INTF_SDIO;
 	adapter->host_intf_ops = &sdio_host_intf_ops;
@@ -962,6 +1024,7 @@ static int rsi_probe(struct sdio_func *pfunction,
 	if (rsi_init_sdio_interface(adapter, pfunction)) {
 		rsi_dbg(ERR_ZONE, "%s: Failed to init sdio interface\n",
 			__func__);
+<<<<<<< HEAD
 		status = -EIO;
 		goto fail_free_adapter;
 	}
@@ -976,25 +1039,42 @@ static int rsi_probe(struct sdio_func *pfunction,
 	skb_queue_head_init(&sdev->rx_q.head);
 	sdev->rx_q.num_rx_pkts = 0;
 
+=======
+		goto fail;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdio_claim_host(pfunction);
 	if (sdio_claim_irq(pfunction, rsi_handle_interrupt)) {
 		rsi_dbg(ERR_ZONE, "%s: Failed to request IRQ\n", __func__);
 		sdio_release_host(pfunction);
+<<<<<<< HEAD
 		status = -EIO;
 		goto fail_claim_irq;
+=======
+		goto fail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	sdio_release_host(pfunction);
 	rsi_dbg(INIT_ZONE, "%s: Registered Interrupt handler\n", __func__);
 
 	if (rsi_hal_device_init(adapter)) {
 		rsi_dbg(ERR_ZONE, "%s: Failed in device init\n", __func__);
+<<<<<<< HEAD
 		status = -EINVAL;
 		goto fail_dev_init;
+=======
+		sdio_claim_host(pfunction);
+		sdio_release_irq(pfunction);
+		sdio_disable_func(pfunction);
+		sdio_release_host(pfunction);
+		goto fail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	rsi_dbg(INFO_ZONE, "===> RSI Device Init Done <===\n");
 
 	if (rsi_sdio_master_access_msword(adapter, MISC_CFG_BASE_ADDR)) {
 		rsi_dbg(ERR_ZONE, "%s: Unable to set ms word reg\n", __func__);
+<<<<<<< HEAD
 		status = -EIO;
 		goto fail_dev_init;
 	}
@@ -1017,6 +1097,16 @@ fail_free_adapter:
 	rsi_91x_deinit(adapter);
 	rsi_dbg(ERR_ZONE, "%s: Failed in probe...Exiting\n", __func__);
 	return status;
+=======
+		return -EIO;
+	}
+
+	return 0;
+fail:
+	rsi_91x_deinit(adapter);
+	rsi_dbg(ERR_ZONE, "%s: Failed in probe...Exiting\n", __func__);
+	return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ulp_read_write(struct rsi_hw *adapter, u16 addr, u32 data,
@@ -1119,8 +1209,11 @@ static void rsi_disconnect(struct sdio_func *pfunction)
 		return;
 
 	dev = (struct rsi_91x_sdiodev *)adapter->rsi_dev;
+<<<<<<< HEAD
 
 	rsi_kill_thread(&dev->rx_thread);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sdio_claim_host(pfunction);
 	sdio_release_irq(pfunction);
 	sdio_release_host(pfunction);
@@ -1144,6 +1237,7 @@ static void rsi_disconnect(struct sdio_func *pfunction)
 }
 
 #ifdef CONFIG_PM
+<<<<<<< HEAD
 static int rsi_set_sdio_pm_caps(struct rsi_hw *adapter)
 {
 	struct rsi_91x_sdiodev *dev =
@@ -1269,10 +1363,17 @@ static int rsi_suspend(struct device *dev)
 	common->fsm_state = FSM_CARD_NOT_READY;
 
 	return 0;
+=======
+static int rsi_suspend(struct device *dev)
+{
+	/* Not yet implemented */
+	return -ENOSYS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int rsi_resume(struct device *dev)
 {
+<<<<<<< HEAD
 	struct sdio_func *pfunction = dev_to_sdio_func(dev);
 	struct rsi_hw *adapter = sdio_get_drvdata(pfunction);
 	struct rsi_common *common = adapter->priv;
@@ -1390,11 +1491,27 @@ static const struct dev_pm_ops rsi_pm_ops = {
 	.freeze = rsi_freeze,
 	.thaw = rsi_thaw,
 	.restore = rsi_restore,
+=======
+	/* Not yet implemented */
+	return -ENOSYS;
+}
+
+static const struct dev_pm_ops rsi_pm_ops = {
+	.suspend = rsi_suspend,
+	.resume = rsi_resume,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 #endif
 
 static const struct sdio_device_id rsi_dev_table[] =  {
+<<<<<<< HEAD
 	{ SDIO_DEVICE(RSI_SDIO_VID_9113, RSI_SDIO_PID_9113) },
+=======
+	{ SDIO_DEVICE(0x303, 0x100) },
+	{ SDIO_DEVICE(0x041B, 0x0301) },
+	{ SDIO_DEVICE(0x041B, 0x0201) },
+	{ SDIO_DEVICE(0x041B, 0x9330) },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* Blank */},
 };
 
@@ -1406,7 +1523,10 @@ static struct sdio_driver rsi_driver = {
 #ifdef CONFIG_PM
 	.drv = {
 		.pm = &rsi_pm_ops,
+<<<<<<< HEAD
 		.shutdown   = rsi_shutdown,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #endif
 };

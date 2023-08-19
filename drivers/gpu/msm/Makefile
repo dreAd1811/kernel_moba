@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0-only
 ccflags-y += -I$(src)
+=======
+ccflags-y := -Iinclude/linux
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 msm_kgsl_core-y = \
 	kgsl.o \
@@ -32,11 +36,22 @@ msm_adreno-y += \
 	adreno_coresight.o \
 	adreno_trace.o \
 	adreno_a3xx.o \
+<<<<<<< HEAD
 	adreno_a5xx.o \
 	adreno_a6xx.o \
 	adreno_a3xx_snapshot.o \
 	adreno_a5xx_snapshot.o \
 	adreno_a6xx_snapshot.o \
+=======
+	adreno_a4xx.o \
+	adreno_a5xx.o \
+	adreno_a6xx.o \
+	adreno_a3xx_snapshot.o \
+	adreno_a4xx_snapshot.o \
+	adreno_a5xx_snapshot.o \
+	adreno_a6xx_snapshot.o \
+	adreno_a4xx_preempt.o \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adreno_a5xx_preempt.o \
 	adreno_a6xx_preempt.o \
 	adreno_a6xx_gmu.o \

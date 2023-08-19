@@ -19,7 +19,10 @@
 #include <linux/spinlock.h>
 #include <linux/cpumask.h>
 #include <linux/mm.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/prom.h>
 #include <asm/io.h>
@@ -109,6 +112,7 @@ static void xive_irq_bitmap_free(int irq)
 	}
 }
 
+<<<<<<< HEAD
 
 /* Based on the similar routines in RTAS */
 static unsigned int plpar_busy_delay_time(long rc)
@@ -154,6 +158,8 @@ static long plpar_int_reset(unsigned long flags)
 	return rc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static long plpar_int_get_source_info(unsigned long flags,
 				      unsigned long lisn,
 				      unsigned long *src_flags,
@@ -164,10 +170,14 @@ static long plpar_int_get_source_info(unsigned long flags,
 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
 	long rc;
 
+<<<<<<< HEAD
 	do {
 		rc = plpar_hcall(H_INT_GET_SOURCE_INFO, retbuf, flags, lisn);
 	} while (plpar_busy_delay(rc));
 
+=======
+	rc = plpar_hcall(H_INT_GET_SOURCE_INFO, retbuf, flags, lisn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		pr_err("H_INT_GET_SOURCE_INFO lisn=%ld failed %ld\n", lisn, rc);
 		return rc;
@@ -200,11 +210,16 @@ static long plpar_int_set_source_config(unsigned long flags,
 		flags, lisn, target, prio, sw_irq);
 
 
+<<<<<<< HEAD
 	do {
 		rc = plpar_hcall_norets(H_INT_SET_SOURCE_CONFIG, flags, lisn,
 					target, prio, sw_irq);
 	} while (plpar_busy_delay(rc));
 
+=======
+	rc = plpar_hcall_norets(H_INT_SET_SOURCE_CONFIG, flags, lisn,
+				target, prio, sw_irq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		pr_err("H_INT_SET_SOURCE_CONFIG lisn=%ld target=%lx prio=%lx failed %ld\n",
 		       lisn, target, prio, rc);
@@ -223,11 +238,15 @@ static long plpar_int_get_queue_info(unsigned long flags,
 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
 	long rc;
 
+<<<<<<< HEAD
 	do {
 		rc = plpar_hcall(H_INT_GET_QUEUE_INFO, retbuf, flags, target,
 				 priority);
 	} while (plpar_busy_delay(rc));
 
+=======
+	rc = plpar_hcall(H_INT_GET_QUEUE_INFO, retbuf, flags, target, priority);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		pr_err("H_INT_GET_QUEUE_INFO cpu=%ld prio=%ld failed %ld\n",
 		       target, priority, rc);
@@ -256,11 +275,16 @@ static long plpar_int_set_queue_config(unsigned long flags,
 	pr_devel("H_INT_SET_QUEUE_CONFIG flags=%lx target=%lx priority=%lx qpage=%lx qsize=%lx\n",
 		flags,  target, priority, qpage, qsize);
 
+<<<<<<< HEAD
 	do {
 		rc = plpar_hcall_norets(H_INT_SET_QUEUE_CONFIG, flags, target,
 					priority, qpage, qsize);
 	} while (plpar_busy_delay(rc));
 
+=======
+	rc = plpar_hcall_norets(H_INT_SET_QUEUE_CONFIG, flags, target,
+				priority, qpage, qsize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		pr_err("H_INT_SET_QUEUE_CONFIG cpu=%ld prio=%ld qpage=%lx returned %ld\n",
 		       target, priority, qpage, rc);
@@ -274,10 +298,14 @@ static long plpar_int_sync(unsigned long flags, unsigned long lisn)
 {
 	long rc;
 
+<<<<<<< HEAD
 	do {
 		rc = plpar_hcall_norets(H_INT_SYNC, flags, lisn);
 	} while (plpar_busy_delay(rc));
 
+=======
+	rc = plpar_hcall_norets(H_INT_SYNC, flags, lisn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		pr_err("H_INT_SYNC lisn=%ld returned %ld\n", lisn, rc);
 		return  rc;
@@ -300,11 +328,15 @@ static long plpar_int_esb(unsigned long flags,
 	pr_devel("H_INT_ESB flags=%lx lisn=%lx offset=%lx in=%lx\n",
 		flags,  lisn, offset, in_data);
 
+<<<<<<< HEAD
 	do {
 		rc = plpar_hcall(H_INT_ESB, retbuf, flags, lisn, offset,
 				 in_data);
 	} while (plpar_busy_delay(rc));
 
+=======
+	rc = plpar_hcall(H_INT_ESB, retbuf, flags, lisn, offset, in_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		pr_err("H_INT_ESB lisn=%ld offset=%ld returned %ld\n",
 		       lisn, offset, rc);
@@ -359,20 +391,39 @@ static int xive_spapr_populate_irq_data(u32 hw_irq, struct xive_irq_data *data)
 	data->esb_shift = esb_shift;
 	data->trig_page = trig_page;
 
+<<<<<<< HEAD
+=======
+	data->hw_irq = hw_irq;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * No chip-id for the sPAPR backend. This has an impact how we
 	 * pick a target. See xive_pick_irq_target().
 	 */
 	data->src_chip = XIVE_INVALID_CHIP_ID;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * When the H_INT_ESB flag is set, the H_INT_ESB hcall should
+	 * be used for interrupt management. Skip the remapping of the
+	 * ESB pages which are not available.
+	 */
+	if (data->flags & XIVE_IRQ_FLAG_H_INT_ESB)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->eoi_mmio = ioremap(data->eoi_page, 1u << data->esb_shift);
 	if (!data->eoi_mmio) {
 		pr_err("Failed to map EOI page for irq 0x%x\n", hw_irq);
 		return -ENOMEM;
 	}
 
+<<<<<<< HEAD
 	data->hw_irq = hw_irq;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Full function page supports trigger */
 	if (flags & XIVE_SRC_TRIGGER) {
 		data->trig_mmio = data->eoi_mmio;
@@ -501,17 +552,33 @@ static int xive_spapr_get_ipi(unsigned int cpu, struct xive_cpu *xc)
 
 static void xive_spapr_put_ipi(unsigned int cpu, struct xive_cpu *xc)
 {
+<<<<<<< HEAD
 	if (!xc->hw_ipi)
 		return;
 
 	xive_irq_bitmap_free(xc->hw_ipi);
 	xc->hw_ipi = 0;
+=======
+	if (xc->hw_ipi == XIVE_BAD_IRQ)
+		return;
+
+	xive_irq_bitmap_free(xc->hw_ipi);
+	xc->hw_ipi = XIVE_BAD_IRQ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif /* CONFIG_SMP */
 
 static void xive_spapr_shutdown(void)
 {
+<<<<<<< HEAD
 	plpar_int_reset(0);
+=======
+	long rc;
+
+	rc = plpar_hcall_norets(H_INT_RESET, 0);
+	if (rc)
+		pr_err("H_INT_RESET failed %ld\n", rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

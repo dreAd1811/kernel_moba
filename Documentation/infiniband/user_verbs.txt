@@ -5,7 +5,11 @@ USERSPACE VERBS ACCESS
   described in chapter 11 of the InfiniBand Architecture Specification.
 
   To use the verbs, the libibverbs library, available from
+<<<<<<< HEAD
   https://github.com/linux-rdma/rdma-core, is required. libibverbs contains a
+=======
+  http://www.openfabrics.org/, is required.  libibverbs contains a
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   device-independent API for using the ib_uverbs interface.
   libibverbs also requires appropriate device-dependent kernel and
   userspace driver for your InfiniBand hardware.  For example, to use

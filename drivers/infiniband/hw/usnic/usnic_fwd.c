@@ -92,8 +92,13 @@ struct usnic_fwd_dev *usnic_fwd_dev_alloc(struct pci_dev *pdev)
 	ufdev->pdev = pdev;
 	ufdev->netdev = pci_get_drvdata(pdev);
 	spin_lock_init(&ufdev->lock);
+<<<<<<< HEAD
 	BUILD_BUG_ON(sizeof(ufdev->name) != sizeof(ufdev->netdev->name));
 	strcpy(ufdev->name, ufdev->netdev->name);
+=======
+	strncpy(ufdev->name, netdev_name(ufdev->netdev),
+			sizeof(ufdev->name) - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ufdev;
 }

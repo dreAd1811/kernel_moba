@@ -186,7 +186,11 @@ cx23885 cards list
 
    * - 43
      - Hauppauge ImpactVCB-e
+<<<<<<< HEAD
      - 0070:7133, 0070:7137
+=======
+     - 0070:7133
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
    * - 44
      - DViCO FusionHDTV DVB-T Dual Express2
@@ -243,6 +247,7 @@ cx23885 cards list
    * - 57
      - Hauppauge WinTV-QuadHD-ATSC
      - 0070:6a18, 0070:6b18
+<<<<<<< HEAD
 
    * - 58
      - Hauppauge WinTV-HVR-1265(161111)
@@ -259,3 +264,5 @@ cx23885 cards list
    * - 61
      - Hauppauge WinTV-QuadHD-ATSC(885)
      -
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

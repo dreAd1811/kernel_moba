@@ -22,14 +22,20 @@ static const struct nf_hook_ops ipvl_nfops[] = {
 		.hooknum  = NF_INET_LOCAL_IN,
 		.priority = INT_MAX,
 	},
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{
 		.hook     = ipvlan_nf_input,
 		.pf       = NFPROTO_IPV6,
 		.hooknum  = NF_INET_LOCAL_IN,
 		.priority = INT_MAX,
 	},
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct l3mdev_ops ipvl_l3mdev_ops = {
@@ -129,6 +135,19 @@ static int ipvlan_port_create(struct net_device *dev)
 	struct ipvl_port *port;
 	int err, idx;
 
+<<<<<<< HEAD
+=======
+	if (dev->type != ARPHRD_ETHER || dev->flags & IFF_LOOPBACK) {
+		netdev_err(dev, "Master is either lo or non-ether device\n");
+		return -EINVAL;
+	}
+
+	if (netdev_is_rx_handler_busy(dev)) {
+		netdev_err(dev, "Device is already in use.\n");
+		return -EBUSY;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	port = kzalloc(sizeof(struct ipvl_port), GFP_KERNEL);
 	if (!port)
 		return -ENOMEM;
@@ -149,6 +168,10 @@ static int ipvlan_port_create(struct net_device *dev)
 	if (err)
 		goto err;
 
+<<<<<<< HEAD
+=======
+	dev->priv_flags |= IFF_IPVLAN_MASTER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err:
@@ -161,6 +184,10 @@ static void ipvlan_port_destroy(struct net_device *dev)
 	struct ipvl_port *port = ipvlan_port_get_rtnl(dev);
 	struct sk_buff *skb;
 
+<<<<<<< HEAD
+=======
+	dev->priv_flags &= ~IFF_IPVLAN_MASTER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (port->mode == IPVLAN_MODE_L3S) {
 		dev->priv_flags &= ~IFF_L3MDEV_RX_HANDLER;
 		ipvlan_unregister_nf_hook(dev_net(dev));
@@ -189,14 +216,23 @@ static void ipvlan_port_destroy(struct net_device *dev)
 static int ipvlan_init(struct net_device *dev)
 {
 	struct ipvl_dev *ipvlan = netdev_priv(dev);
+<<<<<<< HEAD
 	struct net_device *phy_dev = ipvlan->phy_dev;
 	struct ipvl_port *port;
 	int err;
+=======
+	const struct net_device *phy_dev = ipvlan->phy_dev;
+	struct ipvl_port *port = ipvlan->port;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->state = (dev->state & ~IPVLAN_STATE_MASK) |
 		     (phy_dev->state & IPVLAN_STATE_MASK);
 	dev->features = phy_dev->features & IPVLAN_FEATURES;
+<<<<<<< HEAD
 	dev->features |= NETIF_F_LLTX | NETIF_F_VLAN_CHALLENGED;
+=======
+	dev->features |= NETIF_F_LLTX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->gso_max_size = phy_dev->gso_max_size;
 	dev->gso_max_segs = phy_dev->gso_max_segs;
 	dev->hard_header_len = phy_dev->hard_header_len;
@@ -207,6 +243,7 @@ static int ipvlan_init(struct net_device *dev)
 	if (!ipvlan->pcpu_stats)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	if (!netif_is_ipvlan_port(phy_dev)) {
 		err = ipvlan_port_create(phy_dev);
 		if (err < 0) {
@@ -216,18 +253,29 @@ static int ipvlan_init(struct net_device *dev)
 	}
 	port = ipvlan_port_get_rtnl(phy_dev);
 	port->count += 1;
+=======
+	port->count += 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void ipvlan_uninit(struct net_device *dev)
 {
 	struct ipvl_dev *ipvlan = netdev_priv(dev);
+<<<<<<< HEAD
 	struct net_device *phy_dev = ipvlan->phy_dev;
 	struct ipvl_port *port;
 
 	free_percpu(ipvlan->pcpu_stats);
 
 	port = ipvlan_port_get_rtnl(phy_dev);
+=======
+	struct ipvl_port *port = ipvlan->port;
+
+	free_percpu(ipvlan->pcpu_stats);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	port->count -= 1;
 	if (!port->count)
 		ipvlan_port_destroy(port->dev);
@@ -236,7 +284,10 @@ static void ipvlan_uninit(struct net_device *dev)
 static int ipvlan_open(struct net_device *dev)
 {
 	struct ipvl_dev *ipvlan = netdev_priv(dev);
+<<<<<<< HEAD
 	struct net_device *phy_dev = ipvlan->phy_dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ipvl_addr *addr;
 
 	if (ipvlan->port->mode == IPVLAN_MODE_L3 ||
@@ -245,12 +296,19 @@ static int ipvlan_open(struct net_device *dev)
 	else
 		dev->flags &= ~IFF_NOARP;
 
+<<<<<<< HEAD
 	rcu_read_lock();
 	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode)
 		ipvlan_ht_addr_add(ipvlan, addr);
 	rcu_read_unlock();
 
 	return dev_uc_add(phy_dev, phy_dev->dev_addr);
+=======
+	list_for_each_entry(addr, &ipvlan->addrs, anode)
+		ipvlan_ht_addr_add(ipvlan, addr);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ipvlan_stop(struct net_device *dev)
@@ -262,12 +320,17 @@ static int ipvlan_stop(struct net_device *dev)
 	dev_uc_unsync(phy_dev, dev);
 	dev_mc_unsync(phy_dev, dev);
 
+<<<<<<< HEAD
 	dev_uc_del(phy_dev, phy_dev->dev_addr);
 
 	rcu_read_lock();
 	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode)
 		ipvlan_ht_addr_del(addr);
 	rcu_read_unlock();
+=======
+	list_for_each_entry(addr, &ipvlan->addrs, anode)
+		ipvlan_ht_addr_del(addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -431,7 +494,11 @@ static int ipvlan_hard_header(struct sk_buff *skb, struct net_device *dev,
 	 * while the packets use the mac-addr on the physical device.
 	 */
 	return dev_hard_header(skb, phy_dev, type, daddr,
+<<<<<<< HEAD
 			       saddr ? : phy_dev->dev_addr, len);
+=======
+			       saddr ? : dev->dev_addr, len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct header_ops ipvlan_header_ops = {
@@ -441,12 +508,15 @@ static const struct header_ops ipvlan_header_ops = {
 	.cache_update	= eth_header_cache_update,
 };
 
+<<<<<<< HEAD
 static bool netif_is_ipvlan(const struct net_device *dev)
 {
 	/* both ipvlan and ipvtap devices use the same netdev_ops */
 	return dev->netdev_ops == &ipvlan_netdev_ops;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ipvlan_ethtool_get_link_ksettings(struct net_device *dev,
 					     struct ethtool_link_ksettings *cmd)
 {
@@ -502,6 +572,7 @@ static int ipvlan_nl_changelink(struct net_device *dev,
 
 		err = ipvlan_set_port_mode(port, nmode);
 	}
+<<<<<<< HEAD
 
 	if (!err && data[IFLA_IPVLAN_FLAGS]) {
 		u16 flags = nla_get_u16(data[IFLA_IPVLAN_FLAGS]);
@@ -517,6 +588,8 @@ static int ipvlan_nl_changelink(struct net_device *dev,
 			ipvlan_clear_vepa(port);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -524,22 +597,30 @@ static size_t ipvlan_nl_getsize(const struct net_device *dev)
 {
 	return (0
 		+ nla_total_size(2) /* IFLA_IPVLAN_MODE */
+<<<<<<< HEAD
 		+ nla_total_size(2) /* IFLA_IPVLAN_FLAGS */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		);
 }
 
 static int ipvlan_nl_validate(struct nlattr *tb[], struct nlattr *data[],
 			      struct netlink_ext_ack *extack)
 {
+<<<<<<< HEAD
 	if (!data)
 		return 0;
 
 	if (data[IFLA_IPVLAN_MODE]) {
+=======
+	if (data && data[IFLA_IPVLAN_MODE]) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u16 mode = nla_get_u16(data[IFLA_IPVLAN_MODE]);
 
 		if (mode < IPVLAN_MODE_L2 || mode >= IPVLAN_MODE_MAX)
 			return -EINVAL;
 	}
+<<<<<<< HEAD
 	if (data[IFLA_IPVLAN_FLAGS]) {
 		u16 flags = nla_get_u16(data[IFLA_IPVLAN_FLAGS]);
 
@@ -552,6 +633,8 @@ static int ipvlan_nl_validate(struct nlattr *tb[], struct nlattr *data[],
 			return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -568,8 +651,11 @@ static int ipvlan_nl_fillinfo(struct sk_buff *skb,
 	ret = -EMSGSIZE;
 	if (nla_put_u16(skb, IFLA_IPVLAN_MODE, port->mode))
 		goto err;
+<<<<<<< HEAD
 	if (nla_put_u16(skb, IFLA_IPVLAN_FLAGS, port->flags))
 		goto err;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -586,6 +672,10 @@ int ipvlan_link_new(struct net *src_net, struct net_device *dev,
 	struct net_device *phy_dev;
 	int err;
 	u16 mode = IPVLAN_MODE_L3;
+<<<<<<< HEAD
+=======
+	bool create = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tb[IFLA_LINK])
 		return -EINVAL;
@@ -601,6 +691,7 @@ int ipvlan_link_new(struct net *src_net, struct net_device *dev,
 		if (!ns_capable(dev_net(phy_dev)->user_ns, CAP_NET_ADMIN))
 			return -EPERM;
 	} else if (!netif_is_ipvlan_port(phy_dev)) {
+<<<<<<< HEAD
 		/* Exit early if the underlying link is invalid or busy */
 		if (phy_dev->type != ARPHRD_ETHER ||
 		    phy_dev->flags & IFF_LOOPBACK) {
@@ -617,10 +708,26 @@ int ipvlan_link_new(struct net *src_net, struct net_device *dev,
 
 	ipvlan->phy_dev = phy_dev;
 	ipvlan->dev = dev;
+=======
+		err = ipvlan_port_create(phy_dev);
+		if (err < 0)
+			return err;
+		create = true;
+	}
+
+	if (data && data[IFLA_IPVLAN_MODE])
+		mode = nla_get_u16(data[IFLA_IPVLAN_MODE]);
+
+	port = ipvlan_port_get_rtnl(phy_dev);
+	ipvlan->phy_dev = phy_dev;
+	ipvlan->dev = dev;
+	ipvlan->port = port;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ipvlan->sfeatures = IPVLAN_FEATURES;
 	if (!tb[IFLA_MTU])
 		ipvlan_adjust_mtu(ipvlan, phy_dev);
 	INIT_LIST_HEAD(&ipvlan->addrs);
+<<<<<<< HEAD
 	spin_lock_init(&ipvlan->addrs_lock);
 
 	/* TODO Probably put random address here to be presented to the
@@ -638,6 +745,8 @@ int ipvlan_link_new(struct net *src_net, struct net_device *dev,
 	/* ipvlan_init() would have created the port, if required */
 	port = ipvlan_port_get_rtnl(phy_dev);
 	ipvlan->port = port;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If the port-id base is at the MAX value, then wrap it around and
 	 * begin from 0x1 again. This may be due to a busy system where lots
@@ -657,6 +766,7 @@ int ipvlan_link_new(struct net *src_net, struct net_device *dev,
 		err = ida_simple_get(&port->ida, 0x1, port->dev_id_start,
 				     GFP_KERNEL);
 	if (err < 0)
+<<<<<<< HEAD
 		goto unregister_netdev;
 	dev->dev_id = err;
 
@@ -679,6 +789,33 @@ int ipvlan_link_new(struct net *src_net, struct net_device *dev,
 	err = ipvlan_set_port_mode(port, mode);
 	if (err)
 		goto unlink_netdev;
+=======
+		goto destroy_ipvlan_port;
+	dev->dev_id = err;
+	/* Increment id-base to the next slot for the future assignment */
+	port->dev_id_start = err + 1;
+
+	/* TODO Probably put random address here to be presented to the
+	 * world but keep using the physical-dev address for the outgoing
+	 * packets.
+	 */
+	memcpy(dev->dev_addr, phy_dev->dev_addr, ETH_ALEN);
+
+	dev->priv_flags |= IFF_IPVLAN_SLAVE;
+
+	err = register_netdevice(dev);
+	if (err < 0)
+		goto remove_ida;
+
+	err = netdev_upper_dev_link(phy_dev, dev);
+	if (err) {
+		goto unregister_netdev;
+	}
+	err = ipvlan_set_port_mode(port, mode);
+	if (err) {
+		goto unlink_netdev;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_add_tail_rcu(&ipvlan->pnode, &port->ipvlans);
 	netif_stacked_transfer_operstate(phy_dev, dev);
@@ -686,10 +823,20 @@ int ipvlan_link_new(struct net *src_net, struct net_device *dev,
 
 unlink_netdev:
 	netdev_upper_dev_unlink(phy_dev, dev);
+<<<<<<< HEAD
 remove_ida:
 	ida_simple_remove(&port->ida, dev->dev_id);
 unregister_netdev:
 	unregister_netdevice(dev);
+=======
+unregister_netdev:
+	unregister_netdevice(dev);
+remove_ida:
+	ida_simple_remove(&port->ida, dev->dev_id);
+destroy_ipvlan_port:
+	if (create)
+		ipvlan_port_destroy(phy_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 EXPORT_SYMBOL_GPL(ipvlan_link_new);
@@ -699,6 +846,7 @@ void ipvlan_link_delete(struct net_device *dev, struct list_head *head)
 	struct ipvl_dev *ipvlan = netdev_priv(dev);
 	struct ipvl_addr *addr, *next;
 
+<<<<<<< HEAD
 	spin_lock_bh(&ipvlan->addrs_lock);
 	list_for_each_entry_safe(addr, next, &ipvlan->addrs, anode) {
 		ipvlan_ht_addr_del(addr);
@@ -706,6 +854,13 @@ void ipvlan_link_delete(struct net_device *dev, struct list_head *head)
 		kfree_rcu(addr, rcu);
 	}
 	spin_unlock_bh(&ipvlan->addrs_lock);
+=======
+	list_for_each_entry_safe(addr, next, &ipvlan->addrs, anode) {
+		ipvlan_ht_addr_del(addr);
+		list_del(&addr->anode);
+		kfree_rcu(addr, rcu);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ida_simple_remove(&ipvlan->port->ida, dev->dev_id);
 	list_del_rcu(&ipvlan->pnode);
@@ -718,7 +873,10 @@ void ipvlan_link_setup(struct net_device *dev)
 {
 	ether_setup(dev);
 
+<<<<<<< HEAD
 	dev->max_mtu = ETH_MAX_MTU;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->priv_flags &= ~(IFF_XMIT_DST_RELEASE | IFF_TX_SKB_SHARING);
 	dev->priv_flags |= IFF_UNICAST_FLT | IFF_NO_QUEUE;
 	dev->netdev_ops = &ipvlan_netdev_ops;
@@ -731,7 +889,10 @@ EXPORT_SYMBOL_GPL(ipvlan_link_setup);
 static const struct nla_policy ipvlan_nl_policy[IFLA_IPVLAN_MAX + 1] =
 {
 	[IFLA_IPVLAN_MODE] = { .type = NLA_U16 },
+<<<<<<< HEAD
 	[IFLA_IPVLAN_FLAGS] = { .type = NLA_U16 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct rtnl_link_ops ipvlan_link_ops = {
@@ -797,7 +958,12 @@ static int ipvlan_device_event(struct notifier_block *unused,
 		if (dev->reg_state != NETREG_UNREGISTERING)
 			break;
 
+<<<<<<< HEAD
 		list_for_each_entry_safe(ipvlan, next, &port->ipvlans, pnode)
+=======
+		list_for_each_entry_safe(ipvlan, next, &port->ipvlans,
+					 pnode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ipvlan->dev->rtnl_link_ops->dellink(ipvlan->dev,
 							    &lst_kill);
 		unregister_netdevice_many(&lst_kill);
@@ -817,6 +983,7 @@ static int ipvlan_device_event(struct notifier_block *unused,
 			ipvlan_adjust_mtu(ipvlan, dev);
 		break;
 
+<<<<<<< HEAD
 	case NETDEV_CHANGEADDR:
 		list_for_each_entry(ipvlan, &port->ipvlans, pnode) {
 			ether_addr_copy(ipvlan->dev->dev_addr, dev->dev_addr);
@@ -824,6 +991,8 @@ static int ipvlan_device_event(struct notifier_block *unused,
 		}
 		break;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case NETDEV_PRE_TYPE_CHANGE:
 		/* Forbid underlying device to change its type. */
 		return NOTIFY_BAD;
@@ -831,7 +1000,10 @@ static int ipvlan_device_event(struct notifier_block *unused,
 	return NOTIFY_DONE;
 }
 
+<<<<<<< HEAD
 /* the caller must held the addrs lock */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int ipvlan_add_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
 {
 	struct ipvl_addr *addr;
@@ -841,6 +1013,7 @@ static int ipvlan_add_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
 		return -ENOMEM;
 
 	addr->master = ipvlan;
+<<<<<<< HEAD
 	if (!is_v6) {
 		memcpy(&addr->ip4addr, iaddr, sizeof(struct in_addr));
 		addr->atype = IPVL_IPV4;
@@ -852,6 +1025,16 @@ static int ipvlan_add_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
 	}
 
 	list_add_tail_rcu(&addr->anode, &ipvlan->addrs);
+=======
+	if (is_v6) {
+		memcpy(&addr->ip6addr, iaddr, sizeof(struct in6_addr));
+		addr->atype = IPVL_IPV6;
+	} else {
+		memcpy(&addr->ip4addr, iaddr, sizeof(struct in_addr));
+		addr->atype = IPVL_IPV4;
+	}
+	list_add_tail(&addr->anode, &ipvlan->addrs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* If the interface is not up, the address will be added to the hash
 	 * list by ipvlan_open.
@@ -866,6 +1049,7 @@ static void ipvlan_del_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
 {
 	struct ipvl_addr *addr;
 
+<<<<<<< HEAD
 	spin_lock_bh(&ipvlan->addrs_lock);
 	addr = ipvlan_find_addr(ipvlan, iaddr, is_v6);
 	if (!addr) {
@@ -906,6 +1090,29 @@ static int ipvlan_add_addr6(struct ipvl_dev *ipvlan, struct in6_addr *ip6_addr)
 		ret = ipvlan_add_addr(ipvlan, ip6_addr, true);
 	spin_unlock_bh(&ipvlan->addrs_lock);
 	return ret;
+=======
+	addr = ipvlan_find_addr(ipvlan, iaddr, is_v6);
+	if (!addr)
+		return;
+
+	ipvlan_ht_addr_del(addr);
+	list_del(&addr->anode);
+	kfree_rcu(addr, rcu);
+
+	return;
+}
+
+static int ipvlan_add_addr6(struct ipvl_dev *ipvlan, struct in6_addr *ip6_addr)
+{
+	if (ipvlan_addr_busy(ipvlan->port, ip6_addr, true)) {
+		netif_err(ipvlan, ifup, ipvlan->dev,
+			  "Failed to add IPv6=%pI6c addr for %s intf\n",
+			  ip6_addr, ipvlan->dev->name);
+		return -EINVAL;
+	}
+
+	return ipvlan_add_addr(ipvlan, ip6_addr, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ipvlan_del_addr6(struct ipvl_dev *ipvlan, struct in6_addr *ip6_addr)
@@ -920,7 +1127,18 @@ static int ipvlan_addr6_event(struct notifier_block *unused,
 	struct net_device *dev = (struct net_device *)if6->idev->dev;
 	struct ipvl_dev *ipvlan = netdev_priv(dev);
 
+<<<<<<< HEAD
 	if (!ipvlan_is_valid_dev(dev))
+=======
+	/* FIXME IPv6 autoconf calls us from bh without RTNL */
+	if (in_softirq())
+		return NOTIFY_DONE;
+
+	if (!netif_is_ipvlan(dev))
+		return NOTIFY_DONE;
+
+	if (!ipvlan || !ipvlan->port)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NOTIFY_DONE;
 
 	switch (event) {
@@ -944,21 +1162,38 @@ static int ipvlan_addr6_validator_event(struct notifier_block *unused,
 	struct net_device *dev = (struct net_device *)i6vi->i6vi_dev->dev;
 	struct ipvl_dev *ipvlan = netdev_priv(dev);
 
+<<<<<<< HEAD
 	if (!ipvlan_is_valid_dev(dev))
+=======
+	/* FIXME IPv6 autoconf calls us from bh without RTNL */
+	if (in_softirq())
+		return NOTIFY_DONE;
+
+	if (!netif_is_ipvlan(dev))
+		return NOTIFY_DONE;
+
+	if (!ipvlan || !ipvlan->port)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NOTIFY_DONE;
 
 	switch (event) {
 	case NETDEV_UP:
+<<<<<<< HEAD
 		if (ipvlan_addr_busy(ipvlan->port, &i6vi->i6vi_addr, true)) {
 			NL_SET_ERR_MSG(i6vi->extack,
 				       "Address already assigned to an ipvlan device");
 			return notifier_from_errno(-EADDRINUSE);
 		}
+=======
+		if (ipvlan_addr_busy(ipvlan->port, &i6vi->i6vi_addr, true))
+			return notifier_from_errno(-EADDRINUSE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
 	return NOTIFY_OK;
 }
+<<<<<<< HEAD
 #endif
 
 static int ipvlan_add_addr4(struct ipvl_dev *ipvlan, struct in_addr *ip4_addr)
@@ -974,6 +1209,19 @@ static int ipvlan_add_addr4(struct ipvl_dev *ipvlan, struct in_addr *ip4_addr)
 		ret = ipvlan_add_addr(ipvlan, ip4_addr, false);
 	spin_unlock_bh(&ipvlan->addrs_lock);
 	return ret;
+=======
+
+static int ipvlan_add_addr4(struct ipvl_dev *ipvlan, struct in_addr *ip4_addr)
+{
+	if (ipvlan_addr_busy(ipvlan->port, ip4_addr, false)) {
+		netif_err(ipvlan, ifup, ipvlan->dev,
+			  "Failed to add IPv4=%pI4 on %s intf.\n",
+			  ip4_addr, ipvlan->dev->name);
+		return -EINVAL;
+	}
+
+	return ipvlan_add_addr(ipvlan, ip4_addr, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void ipvlan_del_addr4(struct ipvl_dev *ipvlan, struct in_addr *ip4_addr)
@@ -989,7 +1237,14 @@ static int ipvlan_addr4_event(struct notifier_block *unused,
 	struct ipvl_dev *ipvlan = netdev_priv(dev);
 	struct in_addr ip4_addr;
 
+<<<<<<< HEAD
 	if (!ipvlan_is_valid_dev(dev))
+=======
+	if (!netif_is_ipvlan(dev))
+		return NOTIFY_DONE;
+
+	if (!ipvlan || !ipvlan->port)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NOTIFY_DONE;
 
 	switch (event) {
@@ -1015,16 +1270,28 @@ static int ipvlan_addr4_validator_event(struct notifier_block *unused,
 	struct net_device *dev = (struct net_device *)ivi->ivi_dev->dev;
 	struct ipvl_dev *ipvlan = netdev_priv(dev);
 
+<<<<<<< HEAD
 	if (!ipvlan_is_valid_dev(dev))
+=======
+	if (!netif_is_ipvlan(dev))
+		return NOTIFY_DONE;
+
+	if (!ipvlan || !ipvlan->port)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NOTIFY_DONE;
 
 	switch (event) {
 	case NETDEV_UP:
+<<<<<<< HEAD
 		if (ipvlan_addr_busy(ipvlan->port, &ivi->ivi_addr, false)) {
 			NL_SET_ERR_MSG(ivi->extack,
 				       "Address already assigned to an ipvlan device");
 			return notifier_from_errno(-EADDRINUSE);
 		}
+=======
+		if (ipvlan_addr_busy(ipvlan->port, &ivi->ivi_addr, false))
+			return notifier_from_errno(-EADDRINUSE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -1043,7 +1310,10 @@ static struct notifier_block ipvlan_notifier_block __read_mostly = {
 	.notifier_call = ipvlan_device_event,
 };
 
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct notifier_block ipvlan_addr6_notifier_block __read_mostly = {
 	.notifier_call = ipvlan_addr6_event,
 };
@@ -1051,7 +1321,10 @@ static struct notifier_block ipvlan_addr6_notifier_block __read_mostly = {
 static struct notifier_block ipvlan_addr6_vtor_notifier_block __read_mostly = {
 	.notifier_call = ipvlan_addr6_validator_event,
 };
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void ipvlan_ns_exit(struct net *net)
 {
@@ -1076,11 +1349,17 @@ static int __init ipvlan_init_module(void)
 
 	ipvlan_init_secret();
 	register_netdevice_notifier(&ipvlan_notifier_block);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 	register_inet6addr_notifier(&ipvlan_addr6_notifier_block);
 	register_inet6addr_validator_notifier(
 	    &ipvlan_addr6_vtor_notifier_block);
 #endif
+=======
+	register_inet6addr_notifier(&ipvlan_addr6_notifier_block);
+	register_inet6addr_validator_notifier(
+	    &ipvlan_addr6_vtor_notifier_block);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	register_inetaddr_notifier(&ipvlan_addr4_notifier_block);
 	register_inetaddr_validator_notifier(&ipvlan_addr4_vtor_notifier_block);
 
@@ -1099,11 +1378,17 @@ error:
 	unregister_inetaddr_notifier(&ipvlan_addr4_notifier_block);
 	unregister_inetaddr_validator_notifier(
 	    &ipvlan_addr4_vtor_notifier_block);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 	unregister_inet6addr_notifier(&ipvlan_addr6_notifier_block);
 	unregister_inet6addr_validator_notifier(
 	    &ipvlan_addr6_vtor_notifier_block);
 #endif
+=======
+	unregister_inet6addr_notifier(&ipvlan_addr6_notifier_block);
+	unregister_inet6addr_validator_notifier(
+	    &ipvlan_addr6_vtor_notifier_block);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unregister_netdevice_notifier(&ipvlan_notifier_block);
 	return err;
 }
@@ -1116,11 +1401,17 @@ static void __exit ipvlan_cleanup_module(void)
 	unregister_inetaddr_notifier(&ipvlan_addr4_notifier_block);
 	unregister_inetaddr_validator_notifier(
 	    &ipvlan_addr4_vtor_notifier_block);
+<<<<<<< HEAD
 #if IS_ENABLED(CONFIG_IPV6)
 	unregister_inet6addr_notifier(&ipvlan_addr6_notifier_block);
 	unregister_inet6addr_validator_notifier(
 	    &ipvlan_addr6_vtor_notifier_block);
 #endif
+=======
+	unregister_inet6addr_notifier(&ipvlan_addr6_notifier_block);
+	unregister_inet6addr_validator_notifier(
+	    &ipvlan_addr6_vtor_notifier_block);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 module_init(ipvlan_init_module);

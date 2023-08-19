@@ -152,8 +152,11 @@ struct tsi108_prv_data {
 	u32 msg_enable;			/* debug message level */
 	struct mii_if_info mii_if;
 	unsigned int init_media;
+<<<<<<< HEAD
 
 	struct platform_device *pdev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Structure for a device driver */
@@ -166,7 +169,11 @@ static struct platform_driver tsi_eth_driver = {
 	},
 };
 
+<<<<<<< HEAD
 static void tsi108_timed_checker(struct timer_list *t);
+=======
+static void tsi108_timed_checker(unsigned long dev_ptr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef DEBUG
 static void dump_eth_one(struct net_device *dev)
@@ -706,18 +713,30 @@ static int tsi108_send_packet(struct sk_buff * skb, struct net_device *dev)
 		data->txskbs[tx] = skb;
 
 		if (i == 0) {
+<<<<<<< HEAD
 			data->txring[tx].buf0 = dma_map_single(&data->pdev->dev,
 					skb->data, skb_headlen(skb),
 					DMA_TO_DEVICE);
+=======
+			data->txring[tx].buf0 = dma_map_single(NULL, skb->data,
+					skb_headlen(skb), DMA_TO_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->txring[tx].len = skb_headlen(skb);
 			misc |= TSI108_TX_SOF;
 		} else {
 			const skb_frag_t *frag = &skb_shinfo(skb)->frags[i - 1];
 
+<<<<<<< HEAD
 			data->txring[tx].buf0 =
 				skb_frag_dma_map(&data->pdev->dev, frag,
 						0, skb_frag_size(frag),
 						DMA_TO_DEVICE);
+=======
+			data->txring[tx].buf0 = skb_frag_dma_map(NULL, frag,
+								 0,
+								 skb_frag_size(frag),
+								 DMA_TO_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			data->txring[tx].len = skb_frag_size(frag);
 		}
 
@@ -812,9 +831,15 @@ static int tsi108_refill_rx(struct net_device *dev, int budget)
 		if (!skb)
 			break;
 
+<<<<<<< HEAD
 		data->rxring[rx].buf0 = dma_map_single(&data->pdev->dev,
 				skb->data, TSI108_RX_SKB_SIZE,
 				DMA_FROM_DEVICE);
+=======
+		data->rxring[rx].buf0 = dma_map_single(NULL, skb->data,
+							TSI108_RX_SKB_SIZE,
+							DMA_FROM_DEVICE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Sometimes the hardware sets blen to zero after packet
 		 * reception, even though the manual says that it's only ever
@@ -1312,6 +1337,7 @@ static int tsi108_open(struct net_device *dev)
 		       data->id, dev->irq, dev->name);
 	}
 
+<<<<<<< HEAD
 	data->rxring = dma_zalloc_coherent(&data->pdev->dev, rxring_size,
 			&data->rxdma, GFP_KERNEL);
 	if (!data->rxring)
@@ -1321,6 +1347,17 @@ static int tsi108_open(struct net_device *dev)
 			&data->txdma, GFP_KERNEL);
 	if (!data->txring) {
 		dma_free_coherent(&data->pdev->dev, rxring_size, data->rxring,
+=======
+	data->rxring = dma_zalloc_coherent(NULL, rxring_size, &data->rxdma,
+					   GFP_KERNEL);
+	if (!data->rxring)
+		return -ENOMEM;
+
+	data->txring = dma_zalloc_coherent(NULL, txring_size, &data->txdma,
+					   GFP_KERNEL);
+	if (!data->txring) {
+		pci_free_consistent(NULL, rxring_size, data->rxring,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    data->rxdma);
 		return -ENOMEM;
 	}
@@ -1374,7 +1411,11 @@ static int tsi108_open(struct net_device *dev)
 
 	napi_enable(&data->napi);
 
+<<<<<<< HEAD
 	timer_setup(&data->timer, tsi108_timed_checker, 0);
+=======
+	setup_timer(&data->timer, tsi108_timed_checker, (unsigned long)dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mod_timer(&data->timer, jiffies + 1);
 
 	tsi108_restart_rx(data, dev);
@@ -1432,10 +1473,17 @@ static int tsi108_close(struct net_device *dev)
 		dev_kfree_skb(skb);
 	}
 
+<<<<<<< HEAD
 	dma_free_coherent(&data->pdev->dev,
 			    TSI108_RXRING_LEN * sizeof(rx_desc),
 			    data->rxring, data->rxdma);
 	dma_free_coherent(&data->pdev->dev,
+=======
+	dma_free_coherent(0,
+			    TSI108_RXRING_LEN * sizeof(rx_desc),
+			    data->rxring, data->rxdma);
+	dma_free_coherent(0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    TSI108_TXRING_LEN * sizeof(tx_desc),
 			    data->txring, data->txdma);
 
@@ -1580,7 +1628,10 @@ tsi108_init_one(struct platform_device *pdev)
 	printk("tsi108_eth%d: probe...\n", pdev->id);
 	data = netdev_priv(dev);
 	data->dev = dev;
+<<<<<<< HEAD
 	data->pdev = pdev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pr_debug("tsi108_eth%d:regs:phyresgs:phy:irq_num=0x%x:0x%x:0x%x:0x%x\n",
 			pdev->id, einfo->regs, einfo->phyregs,
@@ -1671,10 +1722,17 @@ regs_fail:
  * Thus, we have to do it using a timer.
  */
 
+<<<<<<< HEAD
 static void tsi108_timed_checker(struct timer_list *t)
 {
 	struct tsi108_prv_data *data = from_timer(data, t, timer);
 	struct net_device *dev = data->dev;
+=======
+static void tsi108_timed_checker(unsigned long dev_ptr)
+{
+	struct net_device *dev = (struct net_device *)dev_ptr;
+	struct tsi108_prv_data *data = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tsi108_check_phy(dev);
 	tsi108_check_rxring(dev);

@@ -11,6 +11,10 @@
 
 #include <linux/mm.h>
 #include <asm/cputable.h>
+<<<<<<< HEAD
+=======
+#include <asm/cpu_has_feature.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * No cache flushing is required when address mappings are changed,
@@ -22,6 +26,7 @@
 #define flush_cache_range(vma, start, end)	do { } while (0)
 #define flush_cache_page(vma, vmaddr, pfn)	do { } while (0)
 #define flush_icache_page(vma, page)		do { } while (0)
+<<<<<<< HEAD
 #define flush_cache_vunmap(start, end)		do { } while (0)
 
 #ifdef CONFIG_PPC_BOOK3S_64
@@ -40,6 +45,11 @@ static inline void flush_cache_vmap(unsigned long start, unsigned long end)
 static inline void flush_cache_vmap(unsigned long start, unsigned long end) { }
 #endif
 
+=======
+#define flush_cache_vmap(start, end)		do { } while (0)
+#define flush_cache_vunmap(start, end)		do { } while (0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
 extern void flush_dcache_page(struct page *page);
 #define flush_dcache_mmap_lock(mapping)		do { } while (0)
@@ -113,6 +123,10 @@ static inline void invalidate_dcache_range(unsigned long start,
 #ifdef CONFIG_PPC64
 extern void flush_dcache_range(unsigned long start, unsigned long stop);
 extern void flush_inval_dcache_range(unsigned long start, unsigned long stop);
+<<<<<<< HEAD
+=======
+extern void flush_dcache_phys_range(unsigned long start, unsigned long stop);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 #define copy_to_user_page(vma, page, vaddr, dst, src, len) \

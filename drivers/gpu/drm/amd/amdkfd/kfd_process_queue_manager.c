@@ -63,6 +63,7 @@ static int find_available_queue_slot(struct process_queue_manager *pqm,
 	return 0;
 }
 
+<<<<<<< HEAD
 void kfd_process_dequeue_from_device(struct kfd_process_device *pdd)
 {
 	struct kfd_dev *dev = pdd->dev;
@@ -82,6 +83,8 @@ void kfd_process_dequeue_from_all_devices(struct kfd_process *p)
 		kfd_process_dequeue_from_device(pdd);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int pqm_init(struct process_queue_manager *pqm, struct kfd_process *p)
 {
 	INIT_LIST_HEAD(&pqm->queues);
@@ -97,6 +100,7 @@ int pqm_init(struct process_queue_manager *pqm, struct kfd_process *p)
 
 void pqm_uninit(struct process_queue_manager *pqm)
 {
+<<<<<<< HEAD
 	struct process_queue_node *pqn, *next;
 
 	list_for_each_entry_safe(pqn, next, &pqm->queues, process_queue_list) {
@@ -105,6 +109,23 @@ void pqm_uninit(struct process_queue_manager *pqm)
 		kfree(pqn);
 	}
 
+=======
+	int retval;
+	struct process_queue_node *pqn, *next;
+
+	list_for_each_entry_safe(pqn, next, &pqm->queues, process_queue_list) {
+		retval = pqm_destroy_queue(
+				pqm,
+				(pqn->q != NULL) ?
+					pqn->q->properties.queue_id :
+					pqn->kq->queue->properties.queue_id);
+
+		if (retval != 0) {
+			pr_err("failed to destroy queue\n");
+			return;
+		}
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(pqm->queue_slot_bitmap);
 	pqm->queue_slot_bitmap = NULL;
 }
@@ -119,6 +140,12 @@ static int create_cp_queue(struct process_queue_manager *pqm,
 	/* Doorbell initialized in user space*/
 	q_properties->doorbell_ptr = NULL;
 
+<<<<<<< HEAD
+=======
+	q_properties->doorbell_off =
+			kfd_queue_id_to_doorbell(dev, pqm->process, qid);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* let DQM handle it*/
 	q_properties->vmid = 0;
 	q_properties->queue_id = qid;
@@ -139,16 +166,32 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 			    struct kfd_dev *dev,
 			    struct file *f,
 			    struct queue_properties *properties,
+<<<<<<< HEAD
+=======
+			    unsigned int flags,
+			    enum kfd_queue_type type,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    unsigned int *qid)
 {
 	int retval;
 	struct kfd_process_device *pdd;
+<<<<<<< HEAD
 	struct queue *q;
 	struct process_queue_node *pqn;
 	struct kernel_queue *kq;
 	enum kfd_queue_type type = properties->type;
 	unsigned int max_queues = 127; /* HWS limit */
 
+=======
+	struct queue_properties q_properties;
+	struct queue *q;
+	struct process_queue_node *pqn;
+	struct kernel_queue *kq;
+	int num_queues = 0;
+	struct queue *cur;
+
+	memcpy(&q_properties, properties, sizeof(struct queue_properties));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	q = NULL;
 	kq = NULL;
 
@@ -164,19 +207,36 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 	 * If we are just about to create DIQ, the is_debug flag is not set yet
 	 * Hence we also check the type as well
 	 */
+<<<<<<< HEAD
 	if ((pdd->qpd.is_debug) || (type == KFD_QUEUE_TYPE_DIQ))
 		max_queues = dev->device_info->max_no_of_hqd/2;
 
 	if (pdd->qpd.queue_count >= max_queues)
 		return -ENOSPC;
+=======
+	if ((pdd->qpd.is_debug) ||
+		(type == KFD_QUEUE_TYPE_DIQ)) {
+		list_for_each_entry(cur, &pdd->qpd.queues_list, list)
+			num_queues++;
+		if (num_queues >= dev->device_info->max_no_of_hqd/2)
+			return -ENOSPC;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	retval = find_available_queue_slot(pqm, qid);
 	if (retval != 0)
 		return retval;
 
+<<<<<<< HEAD
 	if (list_empty(&pdd->qpd.queues_list) &&
 	    list_empty(&pdd->qpd.priv_queue_list))
 		dev->dqm->ops.register_process(dev->dqm, &pdd->qpd);
+=======
+	if (list_empty(&pqm->queues)) {
+		pdd->qpd.pqm = pqm;
+		dev->dqm->ops.register_process(dev->dqm, &pdd->qpd);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pqn = kzalloc(sizeof(*pqn), GFP_KERNEL);
 	if (!pqn) {
@@ -186,7 +246,12 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 
 	switch (type) {
 	case KFD_QUEUE_TYPE_SDMA:
+<<<<<<< HEAD
 		if (dev->dqm->queue_count >= get_num_sdma_queues(dev->dqm)) {
+=======
+		if (dev->dqm->queue_count >=
+			CIK_SDMA_QUEUES_PER_ENGINE * CIK_SDMA_ENGINE_NUM) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pr_err("Over-subscription is not allowed for SDMA.\n");
 			retval = -EPERM;
 			goto err_create_queue;
@@ -197,28 +262,49 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 			goto err_create_queue;
 		pqn->q = q;
 		pqn->kq = NULL;
+<<<<<<< HEAD
 		retval = dev->dqm->ops.create_queue(dev->dqm, q, &pdd->qpd);
+=======
+		retval = dev->dqm->ops.create_queue(dev->dqm, q, &pdd->qpd,
+						&q->properties.vmid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("DQM returned %d for create_queue\n", retval);
 		print_queue(q);
 		break;
 
 	case KFD_QUEUE_TYPE_COMPUTE:
 		/* check if there is over subscription */
+<<<<<<< HEAD
 		if ((dev->dqm->sched_policy ==
 		     KFD_SCHED_POLICY_HWS_NO_OVERSUBSCRIPTION) &&
 		((dev->dqm->processes_count >= dev->vm_info.vmid_num_kfd) ||
 		(dev->dqm->queue_count >= get_queues_num(dev->dqm)))) {
 			pr_debug("Over-subscription is not allowed when amdkfd.sched_policy == 1\n");
+=======
+		if ((sched_policy == KFD_SCHED_POLICY_HWS_NO_OVERSUBSCRIPTION) &&
+		((dev->dqm->processes_count >= VMID_PER_DEVICE) ||
+		(dev->dqm->queue_count >= get_queues_num(dev->dqm)))) {
+			pr_err("Over-subscription is not allowed in radeon_kfd.sched_policy == 1\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			retval = -EPERM;
 			goto err_create_queue;
 		}
 
+<<<<<<< HEAD
 		retval = create_cp_queue(pqm, dev, &q, properties, f, *qid);
+=======
+		retval = create_cp_queue(pqm, dev, &q, &q_properties, f, *qid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (retval != 0)
 			goto err_create_queue;
 		pqn->q = q;
 		pqn->kq = NULL;
+<<<<<<< HEAD
 		retval = dev->dqm->ops.create_queue(dev->dqm, q, &pdd->qpd);
+=======
+		retval = dev->dqm->ops.create_queue(dev->dqm, q, &pdd->qpd,
+						&q->properties.vmid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_debug("DQM returned %d for create_queue\n", retval);
 		print_queue(q);
 		break;
@@ -240,6 +326,7 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 	}
 
 	if (retval != 0) {
+<<<<<<< HEAD
 		pr_err("Pasid %d DQM create queue %d failed. ret %d\n",
 			pqm->process->pasid, type, retval);
 		goto err_create_queue;
@@ -254,13 +341,25 @@ int pqm_create_queue(struct process_queue_manager *pqm,
 			(q->properties.doorbell_off * sizeof(uint32_t)) &
 			(kfd_doorbell_process_slice(dev) - 1);
 
+=======
+		pr_err("DQM create queue failed\n");
+		goto err_create_queue;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pr_debug("PQM After DQM create queue\n");
 
 	list_add(&pqn->process_queue_list, &pqm->queues);
 
 	if (q) {
+<<<<<<< HEAD
 		pr_debug("PQM done creating queue\n");
 		print_queue_properties(&q->properties);
+=======
+		*properties = q->properties;
+		pr_debug("PQM done creating queue\n");
+		print_queue_properties(properties);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return retval;
@@ -270,8 +369,12 @@ err_create_queue:
 err_allocate_pqn:
 	/* check if queues list is empty unregister process from device */
 	clear_bit(*qid, pqm->queue_slot_bitmap);
+<<<<<<< HEAD
 	if (list_empty(&pdd->qpd.queues_list) &&
 	    list_empty(&pdd->qpd.priv_queue_list))
+=======
+	if (list_empty(&pqm->queues))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->dqm->ops.unregister_process(dev->dqm, &pdd->qpd);
 	return retval;
 }
@@ -318,6 +421,7 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
 	if (pqn->q) {
 		dqm = pqn->q->device->dqm;
 		retval = dqm->ops.destroy_queue(dqm, &pdd->qpd, pqn->q);
+<<<<<<< HEAD
 		if (retval) {
 			pr_err("Pasid %d destroy queue %d failed, ret %d\n",
 				pqm->process->pasid,
@@ -327,6 +431,11 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
 		}
 		kfree(pqn->q->properties.cu_mask);
 		pqn->q->properties.cu_mask = NULL;
+=======
+		if (retval != 0)
+			return retval;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		uninit_queue(pqn->q);
 	}
 
@@ -334,11 +443,17 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
 	kfree(pqn);
 	clear_bit(qid, pqm->queue_slot_bitmap);
 
+<<<<<<< HEAD
 	if (list_empty(&pdd->qpd.queues_list) &&
 	    list_empty(&pdd->qpd.priv_queue_list))
 		dqm->ops.unregister_process(dqm, &pdd->qpd);
 
 err_destroy_queue:
+=======
+	if (list_empty(&pqm->queues))
+		dqm->ops.unregister_process(dqm, &pdd->qpd);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return retval;
 }
 
@@ -367,6 +482,7 @@ int pqm_update_queue(struct process_queue_manager *pqm, unsigned int qid,
 	return 0;
 }
 
+<<<<<<< HEAD
 int pqm_set_cu_mask(struct process_queue_manager *pqm, unsigned int qid,
 			struct queue_properties *p)
 {
@@ -395,6 +511,8 @@ int pqm_set_cu_mask(struct process_queue_manager *pqm, unsigned int qid,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct kernel_queue *pqm_get_kernel_queue(
 					struct process_queue_manager *pqm,
 					unsigned int qid)
@@ -408,6 +526,7 @@ struct kernel_queue *pqm_get_kernel_queue(
 	return NULL;
 }
 
+<<<<<<< HEAD
 #if defined(CONFIG_DEBUG_FS)
 
 int pqm_debugfs_mqds(struct seq_file *m, void *data)
@@ -472,3 +591,6 @@ int pqm_debugfs_mqds(struct seq_file *m, void *data)
 }
 
 #endif
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -16,7 +16,10 @@
 #define PDC_ERROR		 -3	/* Call could not complete without an error */
 #define PDC_NE_MOD		 -5	/* Module not found		*/
 #define PDC_NE_CELL_MOD		 -7	/* Cell module not found	*/
+<<<<<<< HEAD
 #define PDC_NE_BOOTDEV		 -9	/* Cannot locate a console device or boot device */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PDC_INVALID_ARG		-10	/* Called with an invalid argument */
 #define PDC_BUS_POW_WARN	-12	/* Call could not complete in allowed power budget */
 #define PDC_NOT_NARROW		-17	/* Narrow mode not supported	*/
@@ -341,6 +344,12 @@
 
 #if !defined(__ASSEMBLY__)
 
+<<<<<<< HEAD
+=======
+#include <linux/types.h>
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* flags of the device_path */
 #define	PF_AUTOBOOT	0x80
 #define	PF_AUTOSEARCH	0x40
@@ -416,6 +425,7 @@ struct zeropage {
 	int	pad430[116];
 
 	/* [0x600] processor dependent */
+<<<<<<< HEAD
 	unsigned int pad600[1];
 	unsigned int proc_sti;		/* pointer to STI ROM */
 	unsigned int pad608[126];
@@ -665,6 +675,11 @@ struct pdc_hpmc_pim_20 { /* PDC_PIM */
 	unsigned long long responder_addr;
 	unsigned long long requestor_addr;
 	unsigned long long fr[32];
+=======
+	__u32	pad600[1];
+	__u32	proc_sti;		/* pointer to STI ROM */
+	__u32	pad608[126];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #endif /* !defined(__ASSEMBLY__) */

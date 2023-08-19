@@ -3513,7 +3513,10 @@ static void evergreen_gpu_init(struct radeon_device *rdev)
 		tmp = r6xx_remap_render_backend(rdev, tmp, rdev->config.evergreen.max_backends,
 						EVERGREEN_MAX_BACKENDS, disabled_rb_mask);
 	}
+<<<<<<< HEAD
 	rdev->config.evergreen.backend_map = tmp;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	WREG32(GB_BACKEND_MAP, tmp);
 
 	WREG32(CGTS_SYS_TCC_DISABLE, 0);

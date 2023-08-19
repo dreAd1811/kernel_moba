@@ -238,7 +238,11 @@
 .macro FAKE_RET_FROM_EXCPN
 	lr      r9, [status32]
 	bic     r9, r9, (STATUS_U_MASK|STATUS_DE_MASK|STATUS_AE_MASK)
+<<<<<<< HEAD
 	or      r9, r9, STATUS_IE_MASK
+=======
+	or      r9, r9, (STATUS_L_MASK|STATUS_IE_MASK)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kflag   r9
 .endm
 

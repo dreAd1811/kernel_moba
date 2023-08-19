@@ -931,7 +931,11 @@ static int open_file_eeprom(struct inode *inode, struct file *file)
 
 	/* Create buffer and read in eeprom */
 
+<<<<<<< HEAD
 	buf = vmalloc(array_size(eesize, 2));
+=======
+	buf = vmalloc(eesize * 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!buf) {
 		ret = -ENOMEM;
 		goto err;
@@ -1004,6 +1008,7 @@ ath5k_debug_init_device(struct ath5k_hw *ah)
 	if (!phydir)
 		return;
 
+<<<<<<< HEAD
 	debugfs_create_file("debug", 0600, phydir, ah, &fops_debug);
 	debugfs_create_file("registers", 0400, phydir, ah, &fops_registers);
 	debugfs_create_file("beacon", 0600, phydir, ah, &fops_beacon);
@@ -1015,6 +1020,34 @@ ath5k_debug_init_device(struct ath5k_hw *ah)
 	debugfs_create_file("ani", 0600, phydir, ah, &fops_ani);
 	debugfs_create_file("queue", 0600, phydir, ah, &fops_queue);
 	debugfs_create_bool("32khz_clock", 0600, phydir,
+=======
+	debugfs_create_file("debug", S_IWUSR | S_IRUSR, phydir, ah,
+			    &fops_debug);
+
+	debugfs_create_file("registers", S_IRUSR, phydir, ah, &fops_registers);
+
+	debugfs_create_file("beacon", S_IWUSR | S_IRUSR, phydir, ah,
+			    &fops_beacon);
+
+	debugfs_create_file("reset", S_IWUSR, phydir, ah, &fops_reset);
+
+	debugfs_create_file("antenna", S_IWUSR | S_IRUSR, phydir, ah,
+			    &fops_antenna);
+
+	debugfs_create_file("misc", S_IRUSR, phydir, ah, &fops_misc);
+
+	debugfs_create_file("eeprom", S_IRUSR, phydir, ah, &fops_eeprom);
+
+	debugfs_create_file("frameerrors", S_IWUSR | S_IRUSR, phydir, ah,
+			    &fops_frameerrors);
+
+	debugfs_create_file("ani", S_IWUSR | S_IRUSR, phydir, ah, &fops_ani);
+
+	debugfs_create_file("queue", S_IWUSR | S_IRUSR, phydir, ah,
+			    &fops_queue);
+
+	debugfs_create_bool("32khz_clock", S_IWUSR | S_IRUSR, phydir,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			    &ah->ah_use_32khz_clock);
 }
 

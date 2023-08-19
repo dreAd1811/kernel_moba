@@ -858,7 +858,11 @@ u16 b1dma_send_message(struct capi_ctr *ctrl, struct sk_buff *skb)
 
 /* ------------------------------------------------------------- */
 
+<<<<<<< HEAD
 int b1dma_proc_show(struct seq_file *m, void *v)
+=======
+static int b1dmactl_proc_show(struct seq_file *m, void *v)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct capi_ctr *ctrl = m->private;
 	avmctrl_info *cinfo = (avmctrl_info *)(ctrl->driverdata);
@@ -941,7 +945,24 @@ int b1dma_proc_show(struct seq_file *m, void *v)
 
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(b1dma_proc_show);
+=======
+
+static int b1dmactl_proc_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, b1dmactl_proc_show, PDE_DATA(inode));
+}
+
+const struct file_operations b1dmactl_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= b1dmactl_proc_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+EXPORT_SYMBOL(b1dmactl_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ------------------------------------------------------------- */
 

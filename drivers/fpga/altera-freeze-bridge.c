@@ -1,8 +1,26 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * FPGA Freeze Bridge Controller
  *
  *  Copyright (C) 2016 Altera Corporation. All rights reserved.
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include <linux/delay.h>
 #include <linux/io.h>
@@ -210,10 +228,15 @@ static int altera_freeze_br_probe(struct platform_device *pdev)
 	struct device_node *np = pdev->dev.of_node;
 	void __iomem *base_addr;
 	struct altera_freeze_br_data *priv;
+<<<<<<< HEAD
 	struct fpga_bridge *br;
 	struct resource *res;
 	u32 status, revision;
 	int ret;
+=======
+	struct resource *res;
+	u32 status, revision;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!np)
 		return -ENODEV;
@@ -245,6 +268,7 @@ static int altera_freeze_br_probe(struct platform_device *pdev)
 
 	priv->base_addr = base_addr;
 
+<<<<<<< HEAD
 	br = fpga_bridge_create(dev, FREEZE_BRIDGE_NAME,
 				&altera_freeze_br_br_ops, priv);
 	if (!br)
@@ -259,13 +283,21 @@ static int altera_freeze_br_probe(struct platform_device *pdev)
 	}
 
 	return 0;
+=======
+	return fpga_bridge_register(dev, FREEZE_BRIDGE_NAME,
+				    &altera_freeze_br_br_ops, priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int altera_freeze_br_remove(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct fpga_bridge *br = platform_get_drvdata(pdev);
 
 	fpga_bridge_unregister(br);
+=======
+	fpga_bridge_unregister(&pdev->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

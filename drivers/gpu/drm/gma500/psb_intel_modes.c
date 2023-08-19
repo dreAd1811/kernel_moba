@@ -66,7 +66,11 @@ int psb_intel_ddc_get_modes(struct drm_connector *connector,
 
 	edid = drm_get_edid(connector, adapter);
 	if (edid) {
+<<<<<<< HEAD
 		drm_connector_update_edid_property(connector, edid);
+=======
+		drm_mode_connector_update_edid_property(connector, edid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = drm_add_edid_modes(connector, edid);
 		kfree(edid);
 	}

@@ -69,6 +69,7 @@
 				cs-gpios = <&pioD 13 0>, <0>, <0>, <0>;
 			};
 
+<<<<<<< HEAD
 			tcb0: timer@f0010000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -81,6 +82,8 @@
 				};
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			macb0: ethernet@f0028000 {
 				phy-mode = "rgmii";
 				#address-cells = <1>;

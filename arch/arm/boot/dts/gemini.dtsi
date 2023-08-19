@@ -3,6 +3,11 @@
  * Device Tree file for Cortina systems Gemini SoC
  */
 
+<<<<<<< HEAD
+=======
+/include/ "skeleton.dtsi"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <dt-bindings/interrupt-controller/irq.h>
 #include <dt-bindings/clock/cortina,gemini-clock.h>
 #include <dt-bindings/reset/cortina,gemini-reset.h>
@@ -112,6 +117,7 @@
 					};
 				};
 				gmii_default_pins: pinctrl-gmii {
+<<<<<<< HEAD
 					/*
 					 * Only activate GMAC0 by default since
 					 * GMAC1 will overlap with 8 GPIO lines
@@ -122,6 +128,11 @@
 					mux {
 						function = "gmii";
 						groups = "gmii_gmac0_grp";
+=======
+					mux {
+						function = "gmii";
+						groups = "gmiigrp";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					};
 				};
 				pci_default_pins: pinctrl-pci {
@@ -147,12 +158,15 @@
 						groups = "idegrp";
 					};
 				};
+<<<<<<< HEAD
 				tvc_default_pins: pinctrl-tvc {
 					mux {
 						function = "tvc";
 						groups = "tvcgrp";
 					};
 				};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 
@@ -321,6 +335,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		ethernet@60000000 {
 			compatible = "cortina,gemini-ethernet";
 			reg = <0x60000000 0x4000>, /* Global registers, queue */
@@ -356,6 +371,8 @@
 			};
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ata@63000000 {
 			compatible = "cortina,gemini-pata", "faraday,ftide010";
 			reg = <0x63000000 0x1000>;
@@ -394,6 +411,7 @@
 			memcpy-bus-width = <32>;
 			#dma-cells = <2>;
 		};
+<<<<<<< HEAD
 
 		display-controller@6a000000 {
 			compatible = "cortina,gemini-tvc", "faraday,tve200";
@@ -409,5 +427,7 @@
 			#size-cells = <0>;
 			status = "disabled";
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+<<<<<<< HEAD
 #include <linux/bitmap.h>
 #include <linux/bottom_half.h>
 #include <linux/bug.h>
@@ -48,6 +49,22 @@
 #include <asm/sigcontext.h>
 #include <asm/sysreg.h>
 #include <asm/traps.h>
+=======
+#include <linux/bottom_half.h>
+#include <linux/cpu.h>
+#include <linux/cpu_pm.h>
+#include <linux/kernel.h>
+#include <linux/init.h>
+#include <linux/percpu.h>
+#include <linux/preempt.h>
+#include <linux/sched/signal.h>
+#include <linux/signal.h>
+
+#include <asm/fpsimd.h>
+#include <asm/cpufeature.h>
+#include <asm/cputype.h>
+#include <asm/simd.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define FPEXC_IOF	(1 << 0)
 #define FPEXC_DZF	(1 << 1)
@@ -57,8 +74,11 @@
 #define FPEXC_IDF	(1 << 7)
 
 /*
+<<<<<<< HEAD
  * (Note: in this discussion, statements about FPSIMD apply equally to SVE.)
  *
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * In order to reduce the number of times the FPSIMD state is needlessly saved
  * and restored, we need to keep track of two things:
  * (a) for each task, we need to remember which CPU was the last one to have
@@ -67,7 +87,11 @@
  *     been loaded into its FPSIMD registers most recently, or whether it has
  *     been used to perform kernel mode NEON in the meantime.
  *
+<<<<<<< HEAD
  * For (a), we add a fpsimd_cpu field to thread_struct, which gets updated to
+=======
+ * For (a), we add a 'cpu' field to struct fpsimd_state, which gets updated to
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * the id of the current CPU every time the state is loaded onto a CPU. For (b),
  * we add the per-cpu variable 'fpsimd_last_state' (below), which contains the
  * address of the userland FPSIMD state of the task that was loaded onto the CPU
@@ -76,7 +100,11 @@
  * With this in place, we no longer have to restore the next FPSIMD state right
  * when switching between tasks. Instead, we can defer this check to userland
  * resume, at which time we verify whether the CPU's fpsimd_last_state and the
+<<<<<<< HEAD
  * task's fpsimd_cpu are still mutually in sync. If this is the case, we
+=======
+ * task's fpsimd_state.cpu are still mutually in sync. If this is the case, we
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * can omit the FPSIMD restore.
  *
  * As an optimization, we use the thread_info flag TIF_FOREIGN_FPSTATE to
@@ -93,14 +121,22 @@
  * flag with local_bh_disable() unless softirqs are already masked.
  *
  * For a certain task, the sequence may look something like this:
+<<<<<<< HEAD
  * - the task gets scheduled in; if both the task's fpsimd_cpu field
+=======
+ * - the task gets scheduled in; if both the task's fpsimd_state.cpu field
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *   contains the id of the current CPU, and the CPU's fpsimd_last_state per-cpu
  *   variable points to the task's fpsimd_state, the TIF_FOREIGN_FPSTATE flag is
  *   cleared, otherwise it is set;
  *
  * - the task returns to userland; if TIF_FOREIGN_FPSTATE is set, the task's
  *   userland FPSIMD state is copied from memory to the registers, the task's
+<<<<<<< HEAD
  *   fpsimd_cpu field is set to the id of the current CPU, the current
+=======
+ *   fpsimd_state.cpu field is set to the id of the current CPU, the current
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *   CPU's fpsimd_last_state pointer is set to this task's fpsimd_state and the
  *   TIF_FOREIGN_FPSTATE flag is cleared;
  *
@@ -117,6 +153,7 @@
  *   returned from the 2nd syscall yet, TIF_FOREIGN_FPSTATE is still set so
  *   whatever is in the FPSIMD registers is not saved to memory, but discarded.
  */
+<<<<<<< HEAD
 struct fpsimd_last_state_struct {
 	struct user_fpsimd_state *st;
 };
@@ -827,11 +864,18 @@ asmlinkage void do_sve_acc(unsigned int esr, struct pt_regs *regs)
 
 	local_bh_enable();
 }
+=======
+static DEFINE_PER_CPU(struct fpsimd_state *, fpsimd_last_state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Trapped FP/ASIMD access.
  */
+<<<<<<< HEAD
 asmlinkage void do_fpsimd_acc(unsigned int esr, struct pt_regs *regs)
+=======
+void do_fpsimd_acc(unsigned int esr, struct pt_regs *regs)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* TODO: implement lazy context saving/restoring */
 	WARN_ON(1);
@@ -840,6 +884,7 @@ asmlinkage void do_fpsimd_acc(unsigned int esr, struct pt_regs *regs)
 /*
  * Raise a SIGFPE for the current process.
  */
+<<<<<<< HEAD
 asmlinkage void do_fpsimd_exc(unsigned int esr, struct pt_regs *regs)
 {
 	siginfo_t info;
@@ -859,6 +904,25 @@ asmlinkage void do_fpsimd_exc(unsigned int esr, struct pt_regs *regs)
 	}
 
 	clear_siginfo(&info);
+=======
+void do_fpsimd_exc(unsigned int esr, struct pt_regs *regs)
+{
+	siginfo_t info;
+	unsigned int si_code = 0;
+
+	if (esr & FPEXC_IOF)
+		si_code = FPE_FLTINV;
+	else if (esr & FPEXC_DZF)
+		si_code = FPE_FLTDIV;
+	else if (esr & FPEXC_OFF)
+		si_code = FPE_FLTOVF;
+	else if (esr & FPEXC_UFF)
+		si_code = FPE_FLTUND;
+	else if (esr & FPEXC_IXF)
+		si_code = FPE_FLTRES;
+
+	memset(&info, 0, sizeof(info));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	info.si_signo = SIGFPE;
 	info.si_code = si_code;
 	info.si_addr = (void __user *)instruction_pointer(regs);
@@ -868,6 +932,7 @@ asmlinkage void do_fpsimd_exc(unsigned int esr, struct pt_regs *regs)
 
 void fpsimd_thread_switch(struct task_struct *next)
 {
+<<<<<<< HEAD
 	bool wrong_task, wrong_cpu;
 
 	if (!system_supports_fpsimd())
@@ -887,17 +952,51 @@ void fpsimd_thread_switch(struct task_struct *next)
 
 	update_tsk_thread_flag(next, TIF_FOREIGN_FPSTATE,
 			       wrong_task || wrong_cpu);
+=======
+	if (!system_supports_fpsimd())
+		return;
+	/*
+	 * Save the current FPSIMD state to memory, but only if whatever is in
+	 * the registers is in fact the most recent userland FPSIMD state of
+	 * 'current'.
+	 */
+	if (current->mm && !test_thread_flag(TIF_FOREIGN_FPSTATE))
+		fpsimd_save_state(&current->thread.fpsimd_state);
+
+	if (next->mm) {
+		/*
+		 * If we are switching to a task whose most recent userland
+		 * FPSIMD state is already in the registers of *this* cpu,
+		 * we can skip loading the state from memory. Otherwise, set
+		 * the TIF_FOREIGN_FPSTATE flag so the state will be loaded
+		 * upon the next return to userland.
+		 */
+		struct fpsimd_state *st = &next->thread.fpsimd_state;
+
+		if (__this_cpu_read(fpsimd_last_state) == st
+		    && st->cpu == smp_processor_id())
+			clear_ti_thread_flag(task_thread_info(next),
+					     TIF_FOREIGN_FPSTATE);
+		else
+			set_ti_thread_flag(task_thread_info(next),
+					   TIF_FOREIGN_FPSTATE);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void fpsimd_flush_thread(void)
 {
+<<<<<<< HEAD
 	int vl, supported_vl;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!system_supports_fpsimd())
 		return;
 
 	local_bh_disable();
 
+<<<<<<< HEAD
 	memset(&current->thread.uw.fpsimd_state, 0,
 	       sizeof(current->thread.uw.fpsimd_state));
 	fpsimd_flush_task_state(current);
@@ -937,6 +1036,10 @@ void fpsimd_flush_thread(void)
 			current->thread.sve_vl_onexec = 0;
 	}
 
+=======
+	memset(&current->thread.fpsimd_state, 0, sizeof(struct fpsimd_state));
+	fpsimd_flush_task_state(current);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_thread_flag(TIF_FOREIGN_FPSTATE);
 
 	local_bh_enable();
@@ -952,11 +1055,19 @@ void fpsimd_preserve_current_state(void)
 		return;
 
 	local_bh_disable();
+<<<<<<< HEAD
 	fpsimd_save();
+=======
+
+	if (!test_thread_flag(TIF_FOREIGN_FPSTATE))
+		fpsimd_save_state(&current->thread.fpsimd_state);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local_bh_enable();
 }
 
 /*
+<<<<<<< HEAD
  * Like fpsimd_preserve_current_state(), but ensure that
  * current->thread.uw.fpsimd_state is updated so that it can be copied to
  * the signal frame.
@@ -1002,20 +1113,46 @@ void fpsimd_bind_state_to_cpu(struct user_fpsimd_state *st)
 }
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Load the userland FPSIMD state of 'current' from memory, but only if the
  * FPSIMD state already held in the registers is /not/ the most recent FPSIMD
  * state of 'current'
  */
 void fpsimd_restore_current_state(void)
 {
+<<<<<<< HEAD
 	if (!system_supports_fpsimd())
 		return;
+=======
+	/*
+	 * For the tasks that were created before we detected the absence of
+	 * FP/SIMD, the TIF_FOREIGN_FPSTATE could be set via fpsimd_thread_switch(),
+	 * e.g, init. This could be then inherited by the children processes.
+	 * If we later detect that the system doesn't support FP/SIMD,
+	 * we must clear the flag for  all the tasks to indicate that the
+	 * FPSTATE is clean (as we can't have one) to avoid looping for ever in
+	 * do_notify_resume().
+	 */
+	if (!system_supports_fpsimd()) {
+		clear_thread_flag(TIF_FOREIGN_FPSTATE);
+		return;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	local_bh_disable();
 
 	if (test_and_clear_thread_flag(TIF_FOREIGN_FPSTATE)) {
+<<<<<<< HEAD
 		task_fpsimd_load();
 		fpsimd_bind_task_to_cpu();
+=======
+		struct fpsimd_state *st = &current->thread.fpsimd_state;
+
+		fpsimd_load_state(st);
+		__this_cpu_write(fpsimd_last_state, st);
+		st->cpu = smp_processor_id();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	local_bh_enable();
@@ -1026,13 +1163,20 @@ void fpsimd_restore_current_state(void)
  * flag that indicates that the FPSIMD register contents are the most recent
  * FPSIMD state of 'current'
  */
+<<<<<<< HEAD
 void fpsimd_update_current_state(struct user_fpsimd_state const *state)
 {
 	if (!system_supports_fpsimd())
+=======
+void fpsimd_update_current_state(struct fpsimd_state *state)
+{
+	if (WARN_ON(!system_supports_fpsimd()))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	local_bh_disable();
 
+<<<<<<< HEAD
 	current->thread.uw.fpsimd_state = *state;
 	if (system_supports_sve() && test_thread_flag(TIF_SVE))
 		fpsimd_to_sve(current);
@@ -1041,6 +1185,15 @@ void fpsimd_update_current_state(struct user_fpsimd_state const *state)
 	fpsimd_bind_task_to_cpu();
 
 	clear_thread_flag(TIF_FOREIGN_FPSTATE);
+=======
+	fpsimd_load_state(state);
+	if (test_and_clear_thread_flag(TIF_FOREIGN_FPSTATE)) {
+		struct fpsimd_state *st = &current->thread.fpsimd_state;
+
+		__this_cpu_write(fpsimd_last_state, st);
+		st->cpu = smp_processor_id();
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	local_bh_enable();
 }
@@ -1050,6 +1203,7 @@ void fpsimd_update_current_state(struct user_fpsimd_state const *state)
  */
 void fpsimd_flush_task_state(struct task_struct *t)
 {
+<<<<<<< HEAD
 	t->thread.fpsimd_cpu = NR_CPUS;
 }
 
@@ -1057,6 +1211,9 @@ void fpsimd_flush_cpu_state(void)
 {
 	__this_cpu_write(fpsimd_last_state.st, NULL);
 	set_thread_flag(TIF_FOREIGN_FPSTATE);
+=======
+	t->thread.fpsimd_state.cpu = NR_CPUS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_KERNEL_MODE_NEON
@@ -1092,11 +1249,20 @@ void kernel_neon_begin(void)
 
 	__this_cpu_write(kernel_neon_busy, true);
 
+<<<<<<< HEAD
 	/* Save unsaved fpsimd state, if any: */
 	fpsimd_save();
 
 	/* Invalidate any task state remaining in the fpsimd regs: */
 	fpsimd_flush_cpu_state();
+=======
+	/* Save unsaved task fpsimd state, if any: */
+	if (current->mm && !test_and_set_thread_flag(TIF_FOREIGN_FPSTATE))
+		fpsimd_save_state(&current->thread.fpsimd_state);
+
+	/* Invalidate any task state remaining in the fpsimd regs: */
+	__this_cpu_write(fpsimd_last_state, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	preempt_disable();
 
@@ -1129,9 +1295,14 @@ EXPORT_SYMBOL(kernel_neon_end);
 
 #ifdef CONFIG_EFI
 
+<<<<<<< HEAD
 static DEFINE_PER_CPU(struct user_fpsimd_state, efi_fpsimd_state);
 static DEFINE_PER_CPU(bool, efi_fpsimd_state_used);
 static DEFINE_PER_CPU(bool, efi_sve_state_used);
+=======
+static DEFINE_PER_CPU(struct fpsimd_state, efi_fpsimd_state);
+static DEFINE_PER_CPU(bool, efi_fpsimd_state_used);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * EFI runtime services support functions
@@ -1157,6 +1328,7 @@ void __efi_fpsimd_begin(void)
 
 	WARN_ON(preemptible());
 
+<<<<<<< HEAD
 	if (may_use_simd()) {
 		kernel_neon_begin();
 	} else {
@@ -1175,6 +1347,12 @@ void __efi_fpsimd_begin(void)
 			fpsimd_save_state(this_cpu_ptr(&efi_fpsimd_state));
 		}
 
+=======
+	if (may_use_simd())
+		kernel_neon_begin();
+	else {
+		fpsimd_save_state(this_cpu_ptr(&efi_fpsimd_state));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__this_cpu_write(efi_fpsimd_state_used, true);
 	}
 }
@@ -1187,6 +1365,7 @@ void __efi_fpsimd_end(void)
 	if (!system_supports_fpsimd())
 		return;
 
+<<<<<<< HEAD
 	if (!__this_cpu_xchg(efi_fpsimd_state_used, false)) {
 		kernel_neon_end();
 	} else {
@@ -1203,6 +1382,12 @@ void __efi_fpsimd_end(void)
 			fpsimd_load_state(this_cpu_ptr(&efi_fpsimd_state));
 		}
 	}
+=======
+	if (__this_cpu_xchg(efi_fpsimd_state_used, false))
+		fpsimd_load_state(this_cpu_ptr(&efi_fpsimd_state));
+	else
+		kernel_neon_end();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #endif /* CONFIG_EFI */
@@ -1215,10 +1400,20 @@ static int fpsimd_cpu_pm_notifier(struct notifier_block *self,
 {
 	switch (cmd) {
 	case CPU_PM_ENTER:
+<<<<<<< HEAD
 		fpsimd_save();
 		fpsimd_flush_cpu_state();
 		break;
 	case CPU_PM_EXIT:
+=======
+		if (current->mm && !test_thread_flag(TIF_FOREIGN_FPSTATE))
+			fpsimd_save_state(&current->thread.fpsimd_state);
+		this_cpu_write(fpsimd_last_state, NULL);
+		break;
+	case CPU_PM_EXIT:
+		if (current->mm)
+			set_thread_flag(TIF_FOREIGN_FPSTATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case CPU_PM_ENTER_FAILED:
 	default:
@@ -1243,7 +1438,11 @@ static inline void fpsimd_pm_init(void) { }
 #ifdef CONFIG_HOTPLUG_CPU
 static int fpsimd_cpu_dead(unsigned int cpu)
 {
+<<<<<<< HEAD
 	per_cpu(fpsimd_last_state.st, cpu) = NULL;
+=======
+	per_cpu(fpsimd_last_state, cpu) = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1272,6 +1471,10 @@ static int __init fpsimd_init(void)
 	if (!(elf_hwcap & HWCAP_ASIMD))
 		pr_notice("Advanced SIMD is not implemented\n");
 
+<<<<<<< HEAD
 	return sve_sysctl_init();
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 core_initcall(fpsimd_init);

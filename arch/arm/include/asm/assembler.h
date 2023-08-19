@@ -21,11 +21,18 @@
 #endif
 
 #include <asm/ptrace.h>
+<<<<<<< HEAD
 #include <asm/domain.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/opcodes-virt.h>
 #include <asm/asm-offsets.h>
 #include <asm/page.h>
 #include <asm/thread_info.h>
+<<<<<<< HEAD
+=======
+#include <asm/uaccess-asm.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define IOMEM(x)	(x)
 
@@ -374,9 +381,15 @@ THUMB(	orr	\reg , \reg , #PSR_T_BIT	)
 	.macro	usraccoff, instr, reg, ptr, inc, off, cond, abort, t=TUSER()
 9999:
 	.if	\inc == 1
+<<<<<<< HEAD
 	\instr\cond\()b\()\t\().w \reg, [\ptr, #\off]
 	.elseif	\inc == 4
 	\instr\cond\()\t\().w \reg, [\ptr, #\off]
+=======
+	\instr\()b\t\cond\().w \reg, [\ptr, #\off]
+	.elseif	\inc == 4
+	\instr\t\cond\().w \reg, [\ptr, #\off]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.else
 	.error	"Unsupported inc macro argument"
 	.endif
@@ -415,9 +428,15 @@ THUMB(	orr	\reg , \reg , #PSR_T_BIT	)
 	.rept	\rept
 9999:
 	.if	\inc == 1
+<<<<<<< HEAD
 	\instr\cond\()b\()\t \reg, [\ptr], #\inc
 	.elseif	\inc == 4
 	\instr\cond\()\t \reg, [\ptr], #\inc
+=======
+	\instr\()b\t\cond \reg, [\ptr], #\inc
+	.elseif	\inc == 4
+	\instr\t\cond \reg, [\ptr], #\inc
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.else
 	.error	"Unsupported inc macro argument"
 	.endif
@@ -447,6 +466,7 @@ THUMB(	orr	\reg , \reg , #PSR_T_BIT	)
 	.size \name , . - \name
 	.endm
 
+<<<<<<< HEAD
 	.macro	csdb
 #ifdef CONFIG_THUMB2_KERNEL
 	.inst.w	0xf3af8014
@@ -520,6 +540,8 @@ THUMB(	orr	\reg , \reg , #PSR_T_BIT	)
 #endif
 	.endm
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.irp	c,,eq,ne,cs,cc,mi,pl,vs,vc,hi,ls,ge,lt,gt,le,hs,lo
 	.macro	ret\c, reg
 #if __LINUX_ARM_ARCH__ < 6

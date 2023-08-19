@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 # SPDX-License-Identifier: GPL-2.0
 #
 # Copyright 2008 Openmoko, Inc.
 # Copyright 2008 Simtec Electronics
+=======
+# arch/arm/mach-s3c64xx/Makefile
+#
+# Copyright 2008 Openmoko, Inc.
+# Copyright 2008 Simtec Electronics
+#
+# Licensed under GPLv2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ccflags-$(CONFIG_ARCH_MULTIPLATFORM) := -I$(srctree)/$(src)/include -I$(srctree)/arch/arm/plat-samsung/include
 asflags-$(CONFIG_ARCH_MULTIPLATFORM) := -I$(srctree)/$(src)/include -I$(srctree)/arch/arm/plat-samsung/include

@@ -32,10 +32,15 @@
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc.h>
 #include <drm/drm_crtc_helper.h>
+<<<<<<< HEAD
 #include <drm/drm_fb_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
 #include <drm/drm_gem_framebuffer_helper.h>
+=======
+#include <drm/drm_fb_cma_helper.h>
+#include <drm/drm_gem_cma_helper.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_panel.h>
 #include <drm/drm_plane_helper.h>
 #include <drm/drmP.h>
@@ -299,6 +304,10 @@ struct atmel_hlcdc_layer {
 struct atmel_hlcdc_plane {
 	struct drm_plane base;
 	struct atmel_hlcdc_layer layer;
+<<<<<<< HEAD
+=======
+	struct atmel_hlcdc_plane_properties *properties;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct atmel_hlcdc_plane *
@@ -345,6 +354,21 @@ struct atmel_hlcdc_dc_desc {
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * Atmel HLCDC Plane properties.
+ *
+ * This structure stores plane property definitions.
+ *
+ * @alpha: alpha blending (or transparency) property
+ * @rotation: rotation property
+ */
+struct atmel_hlcdc_plane_properties {
+	struct drm_property *alpha;
+};
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Atmel HLCDC Display Controller.
  *
  * @desc: HLCDC Display Controller description
@@ -362,6 +386,10 @@ struct atmel_hlcdc_dc {
 	const struct atmel_hlcdc_dc_desc *desc;
 	struct dma_pool *dscrpool;
 	struct atmel_hlcdc *hlcdc;
+<<<<<<< HEAD
+=======
+	struct drm_fbdev_cma *fbdev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_crtc *crtc;
 	struct atmel_hlcdc_layer *layers[ATMEL_HLCDC_MAX_LAYERS];
 	struct workqueue_struct *wq;

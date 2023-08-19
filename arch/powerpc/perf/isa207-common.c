@@ -59,7 +59,11 @@ static bool is_event_valid(u64 event)
 {
 	u64 valid_mask = EVENT_VALID_MASK;
 
+<<<<<<< HEAD
 	if (cpu_has_feature(CPU_FTR_ARCH_300))
+=======
+	if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		valid_mask = p9_EVENT_VALID_MASK;
 
 	return !(event & ~valid_mask);
@@ -86,6 +90,11 @@ static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
 	 * Incase of Power9:
 	 * Marked event: MMCRA[SDAR_MODE] will be set to 0b00 ('No Updates'),
 	 *               or if group already have any marked events.
+<<<<<<< HEAD
+=======
+	 * Non-Marked events (for DD1):
+	 *	MMCRA[SDAR_MODE] will be set to 0b01
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * For rest
 	 *	MMCRA[SDAR_MODE] will be set from event code.
 	 *      If sdar_mode from event is zero, default to 0b01. Hardware
@@ -94,7 +103,11 @@ static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
 	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
 		if (is_event_marked(event) || (*mmcra & MMCRA_SAMPLE_ENABLE))
 			*mmcra &= MMCRA_SDAR_MODE_NO_UPDATES;
+<<<<<<< HEAD
 		else if (p9_SDAR_MODE(event))
+=======
+		else if (!cpu_has_feature(CPU_FTR_POWER9_DD1) && p9_SDAR_MODE(event))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			*mmcra |=  p9_SDAR_MODE(event) << MMCRA_SDAR_MODE_SHIFT;
 		else
 			*mmcra |= MMCRA_SDAR_MODE_DCACHE;
@@ -104,7 +117,11 @@ static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
 
 static u64 thresh_cmp_val(u64 value)
 {
+<<<<<<< HEAD
 	if (cpu_has_feature(CPU_FTR_ARCH_300))
+=======
+	if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return value << p9_MMCRA_THR_CMP_SHIFT;
 
 	return value << MMCRA_THR_CMP_SHIFT;
@@ -112,7 +129,11 @@ static u64 thresh_cmp_val(u64 value)
 
 static unsigned long combine_from_event(u64 event)
 {
+<<<<<<< HEAD
 	if (cpu_has_feature(CPU_FTR_ARCH_300))
+=======
+	if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return p9_EVENT_COMBINE(event);
 
 	return EVENT_COMBINE(event);
@@ -120,7 +141,11 @@ static unsigned long combine_from_event(u64 event)
 
 static unsigned long combine_shift(unsigned long pmc)
 {
+<<<<<<< HEAD
 	if (cpu_has_feature(CPU_FTR_ARCH_300))
+=======
+	if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return p9_MMCR1_COMBINE_SHIFT(pmc);
 
 	return MMCR1_COMBINE_SHIFT(pmc);
@@ -148,6 +173,17 @@ static bool is_thresh_cmp_valid(u64 event)
 	return true;
 }
 
+<<<<<<< HEAD
+=======
+static unsigned int dc_ic_rld_quad_l1_sel(u64 event)
+{
+	unsigned int cache;
+
+	cache = (event >> EVENT_CACHE_SEL_SHIFT) & MMCR1_DC_IC_QUAL_MASK;
+	return cache;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline u64 isa207_find_source(u64 idx, u32 sub_idx)
 {
 	u64 ret = PERF_MEM_NA;
@@ -288,10 +324,17 @@ int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp)
 		 * have a cache selector of zero. The bank selector (bit 3) is
 		 * irrelevant, as long as the rest of the value is 0.
 		 */
+<<<<<<< HEAD
 		if (cache & 0x7)
 			return -1;
 
 	} else if (event & EVENT_IS_L1) {
+=======
+		if (!cpu_has_feature(CPU_FTR_ARCH_300) && (cache & 0x7))
+			return -1;
+
+	} else if (cpu_has_feature(CPU_FTR_ARCH_300) || (event & EVENT_IS_L1)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mask  |= CNST_L1_QUAL_MASK;
 		value |= CNST_L1_QUAL_VAL(cache);
 	}
@@ -394,11 +437,22 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
 		/* In continuous sampling mode, update SDAR on TLB miss */
 		mmcra_sdar_mode(event[i], &mmcra);
 
+<<<<<<< HEAD
 		if (event[i] & EVENT_IS_L1) {
 			cache = event[i] >> EVENT_CACHE_SEL_SHIFT;
 			mmcr1 |= (cache & 1) << MMCR1_IC_QUAL_SHIFT;
 			cache >>= 1;
 			mmcr1 |= (cache & 1) << MMCR1_DC_QUAL_SHIFT;
+=======
+		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
+			cache = dc_ic_rld_quad_l1_sel(event[i]);
+			mmcr1 |= (cache) << MMCR1_DC_IC_QUAL_SHIFT;
+		} else {
+			if (event[i] & EVENT_IS_L1) {
+				cache = dc_ic_rld_quad_l1_sel(event[i]);
+				mmcr1 |= (cache) << MMCR1_DC_IC_QUAL_SHIFT;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (is_event_marked(event[i])) {

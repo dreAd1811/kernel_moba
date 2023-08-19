@@ -234,7 +234,10 @@ struct& cdrom_device_ops\ \{ \hidewidth\cr
   &int& (* open)(struct\ cdrom_device_info *, int)\cr
   &void& (* release)(struct\ cdrom_device_info *);\cr 
   &int& (* drive_status)(struct\ cdrom_device_info *, int);\cr     
+<<<<<<< HEAD
   &unsigned\ int& (* check_events)(struct\ cdrom_device_info *, unsigned\ int, int);\cr
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   &int& (* media_changed)(struct\ cdrom_device_info *, int);\cr 
   &int& (* tray_move)(struct\ cdrom_device_info *, int);\cr
   &int& (* lock_door)(struct\ cdrom_device_info *, int);\cr
@@ -246,9 +249,16 @@ struct& cdrom_device_ops\ \{ \hidewidth\cr
   &int& (* reset)(struct\ cdrom_device_info *);\cr
   &int& (* audio_ioctl)(struct\ cdrom_device_info *, unsigned\ int, 
         void *{});\cr 
+<<<<<<< HEAD
 \noalign{\medskip}
   &const\ int& capability;& capability flags \cr
   &int& (* generic_packet)(struct\ cdrom_device_info *, struct\ packet_command *{});\cr
+=======
+  &int& (* dev_ioctl)(struct\ cdrom_device_info *, unsigned\ int, 
+        unsigned\ long);\cr
+\noalign{\medskip}
+  &const\ int& capability;& capability flags \cr
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 \};\cr
 }
 $$
@@ -274,15 +284,24 @@ $$
 \halign{$#$\ \hfil&$#$\ \hfil&\hbox to 10em{$#$\hss}&
   $/*$ \rm# $*/$\hfil\cr
 struct& cdrom_device_info\ \{ \hidewidth\cr
+<<<<<<< HEAD
   & const\ struct\ cdrom_device_ops *& ops;& device operations for this major\cr
   & struct\ list_head& list;& linked list of all device_info\cr
   & struct\ gendisk *& disk;& matching block layer disk\cr
   & void *&  handle;& driver-dependent data\cr
 \noalign{\medskip}
+=======
+  & struct\ cdrom_device_ops *& ops;& device operations for this major\cr
+  & struct\ cdrom_device_info *& next;& next device_info for this major\cr
+  & void *&  handle;& driver-dependent data\cr
+\noalign{\medskip}
+  & kdev_t&  dev;& device number (incorporates minor)\cr
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
   & int& mask;& mask of capability: disables them \cr
   & int& speed;& maximum speed for reading data \cr
   & int& capacity;& number of discs in a jukebox \cr
 \noalign{\medskip}
+<<<<<<< HEAD
   &unsigned\ int& options : 30;& options flags \cr
   &unsigned& mc_flags : 2;& media-change buffer flags \cr
   &unsigned\ int& vfs_events;& cached events for vfs path\cr
@@ -300,6 +319,12 @@ struct& cdrom_device_info\ \{ \hidewidth\cr
   & int& for_data;& unknown:TBD\cr
   & int\ (* exit)\ (struct\ cdrom_device_info *);&& unknown:TBD\cr
   & int& mrw_mode_page;& which MRW mode page is in use\cr
+=======
+  &int& options : 30;& options flags \cr
+  &unsigned& mc_flags : 2;& media-change buffer flags \cr
+  & int& use_count;& number of times device is opened\cr
+  & char& name[20];& name of the device type\cr
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 \}\cr
 }$$
 Using this $struct$, a linked list of the registered minor devices is
@@ -311,7 +336,13 @@ The $mask$ flags can be used to mask out some of the capabilities listed
 in $ops\to capability$, if a specific drive doesn't support a feature
 of the driver. The value $speed$ specifies the maximum head-rate of the
 drive, measured in units of normal audio speed (176\,kB/sec raw data or
+<<<<<<< HEAD
 150\,kB/sec file system data).  The parameters are declared $const$
+=======
+150\,kB/sec file system data). The value $n_discs$ should reflect the
+number of discs the drive can hold simultaneously, if it is designed
+as a juke-box, or otherwise~1. The parameters are declared $const$
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 because they describe properties of the drive, which don't change after
 registration.
 
@@ -1013,7 +1044,11 @@ taken over the torch in maintaining \cdromc\ and integrating much
 \cdrom-related code in the 2.1-kernel.  Thanks to Scott Snyder and
 Gerd Knorr, who were the first to implement this interface for SCSI
 and IDE-CD drivers and added many ideas for extension of the data
+<<<<<<< HEAD
 structures relative to kernel~2.0.  Further thanks to Heiko Ei{\ss}feldt,
+=======
+structures relative to kernel~2.0.  Further thanks to Heiko Ei{\sz}feldt,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Thomas Quinot, Jon Tombs, Ken Pizzini, Eberhard M\"onkeberg and Andrew
 Kroll, the \linux\ \cdrom\ device driver developers who were kind
 enough to give suggestions and criticisms during the writing. Finally

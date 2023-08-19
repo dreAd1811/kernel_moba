@@ -93,7 +93,11 @@ static void __init h8s2678_pll_clk_setup(struct device_node *node)
 
 	num_parents = of_clk_get_parent_count(node);
 	if (!num_parents) {
+<<<<<<< HEAD
 		pr_err("%s: no parent found\n", clk_name);
+=======
+		pr_err("%s: no parent found", clk_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -104,13 +108,21 @@ static void __init h8s2678_pll_clk_setup(struct device_node *node)
 
 	pll_clock->sckcr = of_iomap(node, 0);
 	if (pll_clock->sckcr == NULL) {
+<<<<<<< HEAD
 		pr_err("%s: failed to map divide register\n", clk_name);
+=======
+		pr_err("%s: failed to map divide register", clk_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free_clock;
 	}
 
 	pll_clock->pllcr = of_iomap(node, 1);
 	if (pll_clock->pllcr == NULL) {
+<<<<<<< HEAD
 		pr_err("%s: failed to map multiply register\n", clk_name);
+=======
+		pr_err("%s: failed to map multiply register", clk_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto unmap_sckcr;
 	}
 

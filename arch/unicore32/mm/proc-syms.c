@@ -20,3 +20,9 @@ EXPORT_SYMBOL(cpu_dcache_clean_area);
 EXPORT_SYMBOL(cpu_set_pte);
 
 EXPORT_SYMBOL(__cpuc_coherent_kern_range);
+<<<<<<< HEAD
+=======
+
+EXPORT_SYMBOL(__cpuc_dma_flush_range);
+EXPORT_SYMBOL(__cpuc_dma_clean_range);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

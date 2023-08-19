@@ -29,6 +29,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+<<<<<<< HEAD
+=======
+#include <linux/crash_dump.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/pci.h>
 #include <linux/version.h>
@@ -133,9 +137,12 @@ static int qede_probe(struct pci_dev *pdev, const struct pci_device_id *id);
 static void qede_remove(struct pci_dev *pdev);
 static void qede_shutdown(struct pci_dev *pdev);
 static void qede_link_update(void *dev, struct qed_link_output *link);
+<<<<<<< HEAD
 static void qede_get_eth_tlv_data(void *edev, void *data);
 static void qede_get_generic_tlv_data(void *edev,
 				      struct qed_generic_tlvs *data);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* The qede lock is used to protect driver state change and driver flows that
  * are not reentrant.
@@ -202,7 +209,11 @@ static int qede_sriov_configure(struct pci_dev *pdev, int num_vfs_param)
 
 	/* Enable/Disable Tx switching for PF */
 	if ((rc == num_vfs_param) && netif_running(edev->ndev) &&
+<<<<<<< HEAD
 	    !qed_info->b_inter_pf_switch && qed_info->tx_switching) {
+=======
+	    qed_info->mf_mode != QED_MF_NPAR && qed_info->tx_switching) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vport_params->vport_id = 0;
 		vport_params->update_tx_switching_flg = 1;
 		vport_params->tx_switching_flg = num_vfs_param ? 1 : 0;
@@ -231,8 +242,11 @@ static struct qed_eth_cb_ops qede_ll_ops = {
 		.arfs_filter_op = qede_arfs_filter_op,
 #endif
 		.link_update = qede_link_update,
+<<<<<<< HEAD
 		.get_generic_tlv_data = qede_get_generic_tlv_data,
 		.get_protocol_tlv_data = qede_get_eth_tlv_data,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	.force_mac = qede_force_mac,
 	.ports_update = qede_udp_ports_update,
@@ -293,7 +307,11 @@ int __init qede_init(void)
 	}
 
 	/* Must register notifier before pci ops, since we might miss
+<<<<<<< HEAD
 	 * interface rename after pci probe and netdev registration.
+=======
+	 * interface rename after pci probe and netdev registeration.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	ret = register_netdevice_notifier(&qede_netdev_notifier);
 	if (ret) {
@@ -347,7 +365,10 @@ void qede_fill_by_demand_stats(struct qede_dev *edev)
 	p_common->rx_bcast_pkts = stats.common.rx_bcast_pkts;
 	p_common->mftag_filter_discards = stats.common.mftag_filter_discards;
 	p_common->mac_filter_discards = stats.common.mac_filter_discards;
+<<<<<<< HEAD
 	p_common->gft_filter_drop = stats.common.gft_filter_drop;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	p_common->tx_ucast_bytes = stats.common.tx_ucast_bytes;
 	p_common->tx_mcast_bytes = stats.common.tx_mcast_bytes;
@@ -399,7 +420,10 @@ void qede_fill_by_demand_stats(struct qede_dev *edev)
 	p_common->brb_truncates = stats.common.brb_truncates;
 	p_common->brb_discards = stats.common.brb_discards;
 	p_common->tx_mac_ctrl_frames = stats.common.tx_mac_ctrl_frames;
+<<<<<<< HEAD
 	p_common->link_change_count = stats.common.link_change_count;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (QEDE_IS_BB(edev)) {
 		struct qede_stats_bb *p_bb = &edev->stats.bb;
@@ -536,6 +560,7 @@ static int qede_ioctl(struct net_device *dev, struct ifreq *ifr, int cmd)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int qede_setup_tc(struct net_device *ndev, u8 num_tc)
 {
 	struct qede_dev *edev = netdev_priv(ndev);
@@ -627,11 +652,16 @@ qede_setup_tc_offload(struct net_device *dev, enum tc_setup_type type,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct net_device_ops qede_netdev_ops = {
 	.ndo_open = qede_open,
 	.ndo_stop = qede_close,
 	.ndo_start_xmit = qede_start_xmit,
+<<<<<<< HEAD
 	.ndo_select_queue = qede_select_queue,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_set_rx_mode = qede_set_rx_mode,
 	.ndo_set_mac_address = qede_set_mac_addr,
 	.ndo_validate_addr = eth_validate_addr,
@@ -644,7 +674,10 @@ static const struct net_device_ops qede_netdev_ops = {
 #endif
 	.ndo_vlan_rx_add_vid = qede_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid = qede_vlan_rx_kill_vid,
+<<<<<<< HEAD
 	.ndo_fix_features = qede_fix_features,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_set_features = qede_set_features,
 	.ndo_get_stats64 = qede_get_stats64,
 #ifdef CONFIG_QED_SRIOV
@@ -656,25 +689,38 @@ static const struct net_device_ops qede_netdev_ops = {
 	.ndo_udp_tunnel_add = qede_udp_tunnel_add,
 	.ndo_udp_tunnel_del = qede_udp_tunnel_del,
 	.ndo_features_check = qede_features_check,
+<<<<<<< HEAD
 	.ndo_bpf = qede_xdp,
 #ifdef CONFIG_RFS_ACCEL
 	.ndo_rx_flow_steer = qede_rx_flow_steer,
 #endif
 	.ndo_setup_tc = qede_setup_tc_offload,
+=======
+	.ndo_xdp = qede_xdp,
+#ifdef CONFIG_RFS_ACCEL
+	.ndo_rx_flow_steer = qede_rx_flow_steer,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct net_device_ops qede_netdev_vf_ops = {
 	.ndo_open = qede_open,
 	.ndo_stop = qede_close,
 	.ndo_start_xmit = qede_start_xmit,
+<<<<<<< HEAD
 	.ndo_select_queue = qede_select_queue,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_set_rx_mode = qede_set_rx_mode,
 	.ndo_set_mac_address = qede_set_mac_addr,
 	.ndo_validate_addr = eth_validate_addr,
 	.ndo_change_mtu = qede_change_mtu,
 	.ndo_vlan_rx_add_vid = qede_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid = qede_vlan_rx_kill_vid,
+<<<<<<< HEAD
 	.ndo_fix_features = qede_fix_features,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_set_features = qede_set_features,
 	.ndo_get_stats64 = qede_get_stats64,
 	.ndo_udp_tunnel_add = qede_udp_tunnel_add,
@@ -686,20 +732,30 @@ static const struct net_device_ops qede_netdev_vf_xdp_ops = {
 	.ndo_open = qede_open,
 	.ndo_stop = qede_close,
 	.ndo_start_xmit = qede_start_xmit,
+<<<<<<< HEAD
 	.ndo_select_queue = qede_select_queue,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_set_rx_mode = qede_set_rx_mode,
 	.ndo_set_mac_address = qede_set_mac_addr,
 	.ndo_validate_addr = eth_validate_addr,
 	.ndo_change_mtu = qede_change_mtu,
 	.ndo_vlan_rx_add_vid = qede_vlan_rx_add_vid,
 	.ndo_vlan_rx_kill_vid = qede_vlan_rx_kill_vid,
+<<<<<<< HEAD
 	.ndo_fix_features = qede_fix_features,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ndo_set_features = qede_set_features,
 	.ndo_get_stats64 = qede_get_stats64,
 	.ndo_udp_tunnel_add = qede_udp_tunnel_add,
 	.ndo_udp_tunnel_del = qede_udp_tunnel_del,
 	.ndo_features_check = qede_features_check,
+<<<<<<< HEAD
 	.ndo_bpf = qede_xdp,
+=======
+	.ndo_xdp = qede_xdp,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* -------------------------------------------------------------------------
@@ -716,8 +772,12 @@ static struct qede_dev *qede_alloc_etherdev(struct qed_dev *cdev,
 	struct qede_dev *edev;
 
 	ndev = alloc_etherdev_mqs(sizeof(*edev),
+<<<<<<< HEAD
 				  info->num_queues * info->num_tc,
 				  info->num_queues);
+=======
+				  info->num_queues, info->num_queues);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ndev) {
 		pr_err("etherdev allocation failed\n");
 		return NULL;
@@ -730,8 +790,19 @@ static struct qede_dev *qede_alloc_etherdev(struct qed_dev *cdev,
 	edev->dp_module = dp_module;
 	edev->dp_level = dp_level;
 	edev->ops = qed_ops;
+<<<<<<< HEAD
 	edev->q_num_rx_buffers = NUM_RX_BDS_DEF;
 	edev->q_num_tx_buffers = NUM_TX_BDS_DEF;
+=======
+
+	if (is_kdump_kernel()) {
+		edev->q_num_rx_buffers = NUM_RX_BDS_KDUMP_MIN;
+		edev->q_num_tx_buffers = NUM_TX_BDS_KDUMP_MIN;
+	} else {
+		edev->q_num_rx_buffers = NUM_RX_BDS_DEF;
+		edev->q_num_tx_buffers = NUM_TX_BDS_DEF;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DP_INFO(edev, "Allocated netdev with %d tx queues and %d rx queues\n",
 		info->num_queues, info->num_queues);
@@ -782,9 +853,15 @@ static void qede_init_ndev(struct qede_dev *edev)
 	ndev->priv_flags |= IFF_UNICAST_FLT;
 
 	/* user-changeble features */
+<<<<<<< HEAD
 	hw_features = NETIF_F_GRO | NETIF_F_GRO_HW | NETIF_F_SG |
 		      NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM |
 		      NETIF_F_TSO | NETIF_F_TSO6 | NETIF_F_HW_TC;
+=======
+	hw_features = NETIF_F_GRO | NETIF_F_SG |
+		      NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM |
+		      NETIF_F_TSO | NETIF_F_TSO6;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!IS_VF(edev) && edev->dev_info.common.num_hwfns == 1)
 		hw_features |= NETIF_F_NTUPLE;
@@ -868,12 +945,15 @@ static void qede_free_fp_array(struct qede_dev *edev)
 			fp = &edev->fp_array[i];
 
 			kfree(fp->sb_info);
+<<<<<<< HEAD
 			/* Handle mem alloc failure case where qede_init_fp
 			 * didn't register xdp_rxq_info yet.
 			 * Implicit only (fp->type & QEDE_FASTPATH_RX)
 			 */
 			if (fp->rxq && xdp_rxq_info_is_reg(&fp->rxq->xdp_rxq))
 				xdp_rxq_info_unreg(&fp->rxq->xdp_rxq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(fp->rxq);
 			kfree(fp->xdp_tx);
 			kfree(fp->txq);
@@ -926,8 +1006,12 @@ static int qede_alloc_fp_array(struct qede_dev *edev)
 		}
 
 		if (fp->type & QEDE_FASTPATH_TX) {
+<<<<<<< HEAD
 			fp->txq = kcalloc(edev->dev_info.num_tc,
 					  sizeof(*fp->txq), GFP_KERNEL);
+=======
+			fp->txq = kzalloc(sizeof(*fp->txq), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!fp->txq)
 				goto err;
 		}
@@ -976,6 +1060,7 @@ static void qede_sp_task(struct work_struct *work)
 static void qede_update_pf_params(struct qed_dev *cdev)
 {
 	struct qed_pf_params pf_params;
+<<<<<<< HEAD
 	u16 num_cons;
 
 	/* 64 rx + 64 tx + 64 XDP */
@@ -985,6 +1070,12 @@ static void qede_update_pf_params(struct qed_dev *cdev)
 	num_cons = QED_MIN_L2_CONS;
 
 	pf_params.eth_pf_params.num_cons = (MAX_SB_PER_PF_MIMD - 1) * num_cons;
+=======
+
+	/* 64 rx + 64 tx + 64 XDP */
+	memset(&pf_params, 0, sizeof(struct qed_pf_params));
+	pf_params.eth_pf_params.num_cons = (MAX_SB_PER_PF_MIMD - 1) * 3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Same for VFs - make sure they'll have sufficient connections
 	 * to support XDP Tx queues.
@@ -1097,7 +1188,11 @@ static int __qede_probe(struct pci_dev *pdev, u32 dp_module, u8 dp_level,
 	if (rc)
 		goto err3;
 
+<<<<<<< HEAD
 	/* Prepare the lock prior to the registration of the netdev,
+=======
+	/* Prepare the lock prior to the registeration of the netdev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * as once it's registered we might reach flows requiring it
 	 * [it's even possible to reach a flow needing it directly
 	 * from there, although it's unlikely].
@@ -1170,21 +1265,49 @@ enum qede_remove_mode {
 static void __qede_remove(struct pci_dev *pdev, enum qede_remove_mode mode)
 {
 	struct net_device *ndev = pci_get_drvdata(pdev);
+<<<<<<< HEAD
 	struct qede_dev *edev = netdev_priv(ndev);
 	struct qed_dev *cdev = edev->cdev;
 
 	DP_INFO(edev, "Starting qede_remove\n");
 
 	qede_rdma_dev_remove(edev);
+=======
+	struct qede_dev *edev;
+	struct qed_dev *cdev;
+
+	if (!ndev) {
+		dev_info(&pdev->dev, "Device has already been removed\n");
+		return;
+	}
+
+	edev = netdev_priv(ndev);
+	cdev = edev->cdev;
+
+	DP_INFO(edev, "Starting qede_remove\n");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unregister_netdev(ndev);
 	cancel_delayed_work_sync(&edev->sp_task);
 
 	qede_ptp_disable(edev);
 
+<<<<<<< HEAD
+=======
+	qede_rdma_dev_remove(edev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	edev->ops->common->set_power_state(cdev, PCI_D0);
 
 	pci_set_drvdata(pdev, NULL);
 
+<<<<<<< HEAD
+=======
+	/* Release edev's reference to XDP's bpf if such exist */
+	if (edev->xdp_prog)
+		bpf_prog_put(edev->xdp_prog);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Use global ops since we've freed edev */
 	qed_ops->common->slowpath_stop(cdev);
 	if (system_state == SYSTEM_POWER_OFF)
@@ -1261,7 +1384,11 @@ static void qede_free_mem_sb(struct qede_dev *edev, struct qed_sb_info *sb_info,
 static int qede_alloc_mem_sb(struct qede_dev *edev,
 			     struct qed_sb_info *sb_info, u16 sb_id)
 {
+<<<<<<< HEAD
 	struct status_block_e4 *sb_virt;
+=======
+	struct status_block *sb_virt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_addr_t sb_phys;
 	int rc;
 
@@ -1305,8 +1432,35 @@ static void qede_free_rx_buffers(struct qede_dev *edev,
 	}
 }
 
+<<<<<<< HEAD
 static void qede_free_mem_rxq(struct qede_dev *edev, struct qede_rx_queue *rxq)
 {
+=======
+static void qede_free_sge_mem(struct qede_dev *edev, struct qede_rx_queue *rxq)
+{
+	int i;
+
+	if (edev->gro_disable)
+		return;
+
+	for (i = 0; i < ETH_TPA_MAX_AGGS_NUM; i++) {
+		struct qede_agg_info *tpa_info = &rxq->tpa_info[i];
+		struct sw_rx_data *replace_buf = &tpa_info->buffer;
+
+		if (replace_buf->data) {
+			dma_unmap_page(&edev->pdev->dev,
+				       replace_buf->mapping,
+				       PAGE_SIZE, DMA_FROM_DEVICE);
+			__free_page(replace_buf->data);
+		}
+	}
+}
+
+static void qede_free_mem_rxq(struct qede_dev *edev, struct qede_rx_queue *rxq)
+{
+	qede_free_sge_mem(edev, rxq);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Free rx buffers */
 	qede_free_rx_buffers(edev, rxq);
 
@@ -1318,6 +1472,7 @@ static void qede_free_mem_rxq(struct qede_dev *edev, struct qede_rx_queue *rxq)
 	edev->ops->common->chain_free(edev->cdev, &rxq->rx_comp_ring);
 }
 
+<<<<<<< HEAD
 static void qede_set_tpa_param(struct qede_rx_queue *rxq)
 {
 	int i;
@@ -1327,6 +1482,55 @@ static void qede_set_tpa_param(struct qede_rx_queue *rxq)
 
 		tpa_info->state = QEDE_AGG_STATE_NONE;
 	}
+=======
+static int qede_alloc_sge_mem(struct qede_dev *edev, struct qede_rx_queue *rxq)
+{
+	dma_addr_t mapping;
+	int i;
+
+	/* Don't perform FW aggregations in case of XDP */
+	if (edev->xdp_prog)
+		edev->gro_disable = 1;
+
+	if (edev->gro_disable)
+		return 0;
+
+	if (edev->ndev->mtu > PAGE_SIZE) {
+		edev->gro_disable = 1;
+		return 0;
+	}
+
+	for (i = 0; i < ETH_TPA_MAX_AGGS_NUM; i++) {
+		struct qede_agg_info *tpa_info = &rxq->tpa_info[i];
+		struct sw_rx_data *replace_buf = &tpa_info->buffer;
+
+		replace_buf->data = alloc_pages(GFP_ATOMIC, 0);
+		if (unlikely(!replace_buf->data)) {
+			DP_NOTICE(edev,
+				  "Failed to allocate TPA skb pool [replacement buffer]\n");
+			goto err;
+		}
+
+		mapping = dma_map_page(&edev->pdev->dev, replace_buf->data, 0,
+				       PAGE_SIZE, DMA_FROM_DEVICE);
+		if (unlikely(dma_mapping_error(&edev->pdev->dev, mapping))) {
+			DP_NOTICE(edev,
+				  "Failed to map TPA replacement buffer\n");
+			goto err;
+		}
+
+		replace_buf->mapping = mapping;
+		tpa_info->buffer.page_offset = 0;
+		tpa_info->buffer_mapping = mapping;
+		tpa_info->state = QEDE_AGG_STATE_NONE;
+	}
+
+	return 0;
+err:
+	qede_free_sge_mem(edev, rxq);
+	edev->gro_disable = 1;
+	return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* This function allocates all memory needed per Rx queue */
@@ -1337,6 +1541,7 @@ static int qede_alloc_mem_rxq(struct qede_dev *edev, struct qede_rx_queue *rxq)
 	rxq->num_rx_buffers = edev->q_num_rx_buffers;
 
 	rxq->rx_buf_size = NET_IP_ALIGN + ETH_OVERHEAD + edev->ndev->mtu;
+<<<<<<< HEAD
 
 	rxq->rx_headroom = edev->xdp_prog ? XDP_PACKET_HEADROOM : NET_SKB_PAD;
 	size = rxq->rx_headroom +
@@ -1355,6 +1560,21 @@ static int qede_alloc_mem_rxq(struct qede_dev *edev, struct qede_rx_queue *rxq)
 	} else {
 		rxq->rx_buf_seg_size = PAGE_SIZE;
 	}
+=======
+	rxq->rx_headroom = edev->xdp_prog ? XDP_PACKET_HEADROOM : 0;
+
+	/* Make sure that the headroom and  payload fit in a single page */
+	if (rxq->rx_buf_size + rxq->rx_headroom > PAGE_SIZE)
+		rxq->rx_buf_size = PAGE_SIZE - rxq->rx_headroom;
+
+	/* Segment size to spilt a page in multiple equal parts,
+	 * unless XDP is used in which case we'd use the entire page.
+	 */
+	if (!edev->xdp_prog)
+		rxq->rx_buf_seg_size = roundup_pow_of_two(rxq->rx_buf_size);
+	else
+		rxq->rx_buf_seg_size = PAGE_SIZE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Allocate the parallel driver ring for Rx buffers */
 	size = sizeof(*rxq->sw_rx_ring) * RX_RING_SIZE;
@@ -1398,8 +1618,12 @@ static int qede_alloc_mem_rxq(struct qede_dev *edev, struct qede_rx_queue *rxq)
 		}
 	}
 
+<<<<<<< HEAD
 	if (!edev->gro_disable)
 		qede_set_tpa_param(rxq);
+=======
+	rc = qede_alloc_sge_mem(edev, rxq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	return rc;
 }
@@ -1465,12 +1689,17 @@ static void qede_free_mem_fp(struct qede_dev *edev, struct qede_fastpath *fp)
 	if (fp->type & QEDE_FASTPATH_XDP)
 		qede_free_mem_txq(edev, fp->xdp_tx);
 
+<<<<<<< HEAD
 	if (fp->type & QEDE_FASTPATH_TX) {
 		int cos;
 
 		for_each_cos_in_txq(edev, cos)
 			qede_free_mem_txq(edev, &fp->txq[cos]);
 	}
+=======
+	if (fp->type & QEDE_FASTPATH_TX)
+		qede_free_mem_txq(edev, fp->txq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* This function allocates all memory needed for a single fp (i.e. an entity
@@ -1497,6 +1726,7 @@ static int qede_alloc_mem_fp(struct qede_dev *edev, struct qede_fastpath *fp)
 	}
 
 	if (fp->type & QEDE_FASTPATH_TX) {
+<<<<<<< HEAD
 		int cos;
 
 		for_each_cos_in_txq(edev, cos) {
@@ -1504,6 +1734,11 @@ static int qede_alloc_mem_fp(struct qede_dev *edev, struct qede_fastpath *fp)
 			if (rc)
 				goto out;
 		}
+=======
+		rc = qede_alloc_mem_txq(edev, fp->txq);
+		if (rc)
+			goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 out:
@@ -1569,6 +1804,7 @@ static void qede_init_fp(struct qede_dev *edev)
 			else
 				fp->rxq->data_direction = DMA_FROM_DEVICE;
 			fp->rxq->dev = &edev->pdev->dev;
+<<<<<<< HEAD
 
 			/* Driver have no error path from here */
 			WARN_ON(xdp_rxq_info_reg(&fp->rxq->xdp_rxq, edev->ndev,
@@ -1593,22 +1829,39 @@ static void qede_init_fp(struct qede_dev *edev)
 			}
 
 			txq_index++;
+=======
+		}
+
+		if (fp->type & QEDE_FASTPATH_TX) {
+			fp->txq->index = txq_index++;
+			if (edev->dev_info.is_legacy)
+				fp->txq->is_legacy = 1;
+			fp->txq->dev = &edev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		snprintf(fp->name, sizeof(fp->name), "%s-fp-%d",
 			 edev->ndev->name, queue_id);
 	}
 
+<<<<<<< HEAD
 	edev->gro_disable = !(edev->ndev->features & NETIF_F_GRO_HW);
+=======
+	edev->gro_disable = !(edev->ndev->features & NETIF_F_GRO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int qede_set_real_num_queues(struct qede_dev *edev)
 {
 	int rc = 0;
 
+<<<<<<< HEAD
 	rc = netif_set_real_num_tx_queues(edev->ndev,
 					  QEDE_TSS_COUNT(edev) *
 					  edev->dev_info.num_tc);
+=======
+	rc = netif_set_real_num_tx_queues(edev->ndev, QEDE_TSS_COUNT(edev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc) {
 		DP_NOTICE(edev, "Failed to set real number of Tx queues\n");
 		return rc;
@@ -1810,6 +2063,7 @@ static int qede_stop_queues(struct qede_dev *edev)
 		fp = &edev->fp_array[i];
 
 		if (fp->type & QEDE_FASTPATH_TX) {
+<<<<<<< HEAD
 			int cos;
 
 			for_each_cos_in_txq(edev, cos) {
@@ -1817,6 +2071,11 @@ static int qede_stop_queues(struct qede_dev *edev)
 				if (rc)
 					return rc;
 			}
+=======
+			rc = qede_drain_txq(edev, fp->txq, true);
+			if (rc)
+				return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (fp->type & QEDE_FASTPATH_XDP) {
@@ -1832,6 +2091,7 @@ static int qede_stop_queues(struct qede_dev *edev)
 
 		/* Stop the Tx Queue(s) */
 		if (fp->type & QEDE_FASTPATH_TX) {
+<<<<<<< HEAD
 			int cos;
 
 			for_each_cos_in_txq(edev, cos) {
@@ -1839,6 +2099,11 @@ static int qede_stop_queues(struct qede_dev *edev)
 				if (rc)
 					return rc;
 			}
+=======
+			rc = qede_stop_txq(edev, fp->txq, i);
+			if (rc)
+				return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* Stop the Rx Queue */
@@ -1891,7 +2156,10 @@ static int qede_start_txq(struct qede_dev *edev,
 
 	params.p_sb = fp->sb_info;
 	params.sb_idx = sb_idx;
+<<<<<<< HEAD
 	params.tc = txq->cos;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = edev->ops->q_tx_start(edev->cdev, rss_id, &params, phys_table,
 				   page_cnt, &ret_params);
@@ -2011,6 +2279,7 @@ static int qede_start_queues(struct qede_dev *edev, bool clear_stats)
 		}
 
 		if (fp->type & QEDE_FASTPATH_TX) {
+<<<<<<< HEAD
 			int cos;
 
 			for_each_cos_in_txq(edev, cos) {
@@ -2019,6 +2288,11 @@ static int qede_start_queues(struct qede_dev *edev, bool clear_stats)
 				if (rc)
 					goto out;
 			}
+=======
+			rc = qede_start_txq(edev, fp, fp->txq, i, TX_PI(0));
+			if (rc)
+				goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -2027,7 +2301,11 @@ static int qede_start_queues(struct qede_dev *edev, bool clear_stats)
 	vport_update_params->update_vport_active_flg = 1;
 	vport_update_params->vport_active_flg = 1;
 
+<<<<<<< HEAD
 	if ((qed_info->b_inter_pf_switch || pci_num_vf(edev->pdev)) &&
+=======
+	if ((qed_info->mf_mode == QED_MF_NPAR || pci_num_vf(edev->pdev)) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    qed_info->tx_switching) {
 		vport_update_params->update_tx_switching_flg = 1;
 		vport_update_params->tx_switching_flg = 1;
@@ -2112,7 +2390,10 @@ static int qede_load(struct qede_dev *edev, enum qede_load_mode mode,
 		     bool is_locked)
 {
 	struct qed_link_params link_params;
+<<<<<<< HEAD
 	u8 num_tc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	DP_INFO(edev, "Starting qede load\n");
@@ -2159,10 +2440,13 @@ static int qede_load(struct qede_dev *edev, enum qede_load_mode mode,
 		goto err4;
 	DP_INFO(edev, "Start VPORT, RXQ and TXQ succeeded\n");
 
+<<<<<<< HEAD
 	num_tc = netdev_get_num_tc(edev->ndev);
 	num_tc = num_tc ? num_tc : edev->dev_info.num_tc;
 	qede_setup_tc(edev->ndev, num_tc);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Program un-configured VLANs */
 	qede_configure_vlan_filters(edev);
 
@@ -2282,6 +2566,7 @@ static void qede_link_update(void *dev, struct qed_link_output *link)
 		}
 	}
 }
+<<<<<<< HEAD
 
 static bool qede_is_txq_full(struct qede_dev *edev, struct qede_tx_queue *txq)
 {
@@ -2380,3 +2665,5 @@ static void qede_get_eth_tlv_data(void *dev, void *data)
 	etlv->num_txqs_full_set = true;
 	etlv->num_rxqs_full_set = true;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

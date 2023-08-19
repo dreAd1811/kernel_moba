@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  *  S390 version
  *    Copyright IBM Corp. 1999, 2012
@@ -56,12 +59,19 @@
 #include <asm/mmu_context.h>
 #include <asm/cpcmd.h>
 #include <asm/lowcore.h>
+<<<<<<< HEAD
 #include <asm/nmi.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/irq.h>
 #include <asm/page.h>
 #include <asm/ptrace.h>
 #include <asm/sections.h>
 #include <asm/ebcdic.h>
+<<<<<<< HEAD
+=======
+#include <asm/kvm_virtio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/diag.h>
 #include <asm/os_info.h>
 #include <asm/sclp.h>
@@ -221,8 +231,11 @@ static void __init conmode_default(void)
 		SET_CONSOLE_SCLP;
 #endif
 	}
+<<<<<<< HEAD
 	if (IS_ENABLED(CONFIG_VT) && IS_ENABLED(CONFIG_DUMMY_CONSOLE))
 		conswitchp = &dummy_con;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #ifdef CONFIG_CRASH_DUMP
@@ -343,8 +356,21 @@ static void __init setup_lowcore_dat_off(void)
 	       sizeof(lc->stfle_fac_list));
 	memcpy(lc->alt_stfle_fac_list, S390_lowcore.alt_stfle_fac_list,
 	       sizeof(lc->alt_stfle_fac_list));
+<<<<<<< HEAD
 	nmi_alloc_boot_cpu(lc);
 	vdso_alloc_boot_cpu(lc);
+=======
+	if (MACHINE_HAS_VX || MACHINE_HAS_GS) {
+		unsigned long bits, size;
+
+		bits = MACHINE_HAS_GS ? 11 : 10;
+		size = 1UL << bits;
+		lc->mcesad = (__u64) memblock_virt_alloc(size, size);
+		if (MACHINE_HAS_GS)
+			lc->mcesad |= bits;
+	}
+	lc->vdso_per_cpu_data = (unsigned long) &lc->paste[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lc->sync_enter_timer = S390_lowcore.sync_enter_timer;
 	lc->async_enter_timer = S390_lowcore.async_enter_timer;
 	lc->exit_timer = S390_lowcore.exit_timer;
@@ -376,8 +402,11 @@ static void __init setup_lowcore_dat_off(void)
 
 #ifdef CONFIG_SMP
 	lc->spinlock_lockval = arch_spin_lockval(0);
+<<<<<<< HEAD
 	lc->spinlock_index = 0;
 	arch_spin_lock_setup(0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	lc->br_r1_trampoline = 0x07f1;	/* br %r1 */
 
@@ -422,12 +451,21 @@ static void __init setup_resources(void)
 	struct memblock_region *reg;
 	int j;
 
+<<<<<<< HEAD
 	code_resource.start = (unsigned long) _text;
 	code_resource.end = (unsigned long) _etext - 1;
 	data_resource.start = (unsigned long) _etext;
 	data_resource.end = (unsigned long) _edata - 1;
 	bss_resource.start = (unsigned long) __bss_start;
 	bss_resource.end = (unsigned long) __bss_stop - 1;
+=======
+	code_resource.start = (unsigned long) &_text;
+	code_resource.end = (unsigned long) &_etext - 1;
+	data_resource.start = (unsigned long) &_etext;
+	data_resource.end = (unsigned long) &_edata - 1;
+	bss_resource.start = (unsigned long) &__bss_start;
+	bss_resource.end = (unsigned long) &__bss_stop - 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_memblock(memory, reg) {
 		res = memblock_virt_alloc(sizeof(*res), 8);
@@ -676,17 +714,29 @@ static void __init check_initrd(void)
  */
 static void __init reserve_kernel(void)
 {
+<<<<<<< HEAD
 	unsigned long start_pfn = PFN_UP(__pa(_end));
+=======
+	unsigned long start_pfn = PFN_UP(__pa(&_end));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_DMA_API_DEBUG
 	/*
 	 * DMA_API_DEBUG code stumbles over addresses from the
+<<<<<<< HEAD
 	 * range [PARMAREA_END, _stext]. Mark the memory as reserved
+=======
+	 * range [_ehead, _stext]. Mark the memory as reserved
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * so it is not used for CONFIG_DMA_API_DEBUG=y.
 	 */
 	memblock_reserve(0, PFN_PHYS(start_pfn));
 #else
+<<<<<<< HEAD
 	memblock_reserve(0, PARMAREA_END);
+=======
+	memblock_reserve(0, (unsigned long)_ehead);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memblock_reserve((unsigned long)_stext, PFN_PHYS(start_pfn)
 			 - (unsigned long)_stext);
 #endif
@@ -773,7 +823,11 @@ static int __init setup_hwcaps(void)
 	/*
 	 * Transactional execution support HWCAP_S390_TE is bit 10.
 	 */
+<<<<<<< HEAD
 	if (MACHINE_HAS_TE)
+=======
+	if (test_facility(50) && test_facility(73))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		elf_hwcap |= HWCAP_S390_TE;
 
 	/*
@@ -828,7 +882,10 @@ static int __init setup_hwcaps(void)
 		strcpy(elf_platform, "z13");
 		break;
 	case 0x3906:
+<<<<<<< HEAD
 	case 0x3907:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		strcpy(elf_platform, "z14");
 		break;
 	}
@@ -900,9 +957,15 @@ void __init setup_arch(char **cmdline_p)
 
 	/* Is init_mm really needed? */
 	init_mm.start_code = PAGE_OFFSET;
+<<<<<<< HEAD
 	init_mm.end_code = (unsigned long) _etext;
 	init_mm.end_data = (unsigned long) _edata;
 	init_mm.brk = (unsigned long) _end;
+=======
+	init_mm.end_code = (unsigned long) &_etext;
+	init_mm.end_data = (unsigned long) &_edata;
+	init_mm.brk = (unsigned long) &_end;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (IS_ENABLED(CONFIG_EXPOLINE_AUTO))
 		nospec_auto_detect();

@@ -90,9 +90,15 @@ isdnloop_bchan_send(isdnloop_card *card, int ch)
  *   data = pointer to card struct, set by kernel timer.data
  */
 static void
+<<<<<<< HEAD
 isdnloop_pollbchan(struct timer_list *t)
 {
 	isdnloop_card *card = from_timer(card, t, rb_timer);
+=======
+isdnloop_pollbchan(unsigned long data)
+{
+	isdnloop_card *card = (isdnloop_card *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	if (card->flags & ISDNLOOP_FLAGS_B1ACTIVE)
@@ -305,9 +311,15 @@ isdnloop_putmsg(isdnloop_card *card, unsigned char c)
  *   data = pointer to card struct
  */
 static void
+<<<<<<< HEAD
 isdnloop_polldchan(struct timer_list *t)
 {
 	isdnloop_card *card = from_timer(card, t, st_timer);
+=======
+isdnloop_polldchan(unsigned long data)
+{
+	isdnloop_card *card = (isdnloop_card *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct sk_buff *skb;
 	int avail;
 	int left;
@@ -373,6 +385,11 @@ isdnloop_polldchan(struct timer_list *t)
 			card->flags |= ISDNLOOP_FLAGS_RBTIMER;
 			spin_lock_irqsave(&card->isdnloop_lock, flags);
 			del_timer(&card->rb_timer);
+<<<<<<< HEAD
+=======
+			card->rb_timer.function = isdnloop_pollbchan;
+			card->rb_timer.data = (unsigned long) card;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			card->rb_timer.expires = jiffies + ISDNLOOP_TIMER_BCREAD;
 			add_timer(&card->rb_timer);
 			spin_unlock_irqrestore(&card->isdnloop_lock, flags);
@@ -586,10 +603,16 @@ isdnloop_atimeout(isdnloop_card *card, int ch)
  * Wrapper for isdnloop_atimeout().
  */
 static void
+<<<<<<< HEAD
 isdnloop_atimeout0(struct timer_list *t)
 {
 	isdnloop_card *card = from_timer(card, t, c_timer[0]);
 
+=======
+isdnloop_atimeout0(unsigned long data)
+{
+	isdnloop_card *card = (isdnloop_card *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isdnloop_atimeout(card, 0);
 }
 
@@ -597,10 +620,16 @@ isdnloop_atimeout0(struct timer_list *t)
  * Wrapper for isdnloop_atimeout().
  */
 static void
+<<<<<<< HEAD
 isdnloop_atimeout1(struct timer_list *t)
 {
 	isdnloop_card *card = from_timer(card, t, c_timer[1]);
 
+=======
+isdnloop_atimeout1(unsigned long data)
+{
+	isdnloop_card *card = (isdnloop_card *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	isdnloop_atimeout(card, 1);
 }
 
@@ -617,9 +646,19 @@ isdnloop_start_ctimer(isdnloop_card *card, int ch)
 	unsigned long flags;
 
 	spin_lock_irqsave(&card->isdnloop_lock, flags);
+<<<<<<< HEAD
 	timer_setup(&card->c_timer[ch], ch ? isdnloop_atimeout1
 					   : isdnloop_atimeout0, 0);
 	card->c_timer[ch].expires = jiffies + ISDNLOOP_TIMER_ALERTWAIT;
+=======
+	init_timer(&card->c_timer[ch]);
+	card->c_timer[ch].expires = jiffies + ISDNLOOP_TIMER_ALERTWAIT;
+	if (ch)
+		card->c_timer[ch].function = isdnloop_atimeout1;
+	else
+		card->c_timer[ch].function = isdnloop_atimeout0;
+	card->c_timer[ch].data = (unsigned long) card;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&card->c_timer[ch]);
 	spin_unlock_irqrestore(&card->isdnloop_lock, flags);
 }
@@ -1109,9 +1148,16 @@ isdnloop_start(isdnloop_card *card, isdnloop_sdef *sdefp)
 		       sdef.ptype);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 	timer_setup(&card->rb_timer, isdnloop_pollbchan, 0);
 	timer_setup(&card->st_timer, isdnloop_polldchan, 0);
 	card->st_timer.expires = jiffies + ISDNLOOP_TIMER_DCREAD;
+=======
+	init_timer(&card->st_timer);
+	card->st_timer.expires = jiffies + ISDNLOOP_TIMER_DCREAD;
+	card->st_timer.function = isdnloop_polldchan;
+	card->st_timer.data = (unsigned long) card;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&card->st_timer);
 	card->flags |= ISDNLOOP_FLAGS_RUNNING;
 	spin_unlock_irqrestore(&card->isdnloop_lock, flags);

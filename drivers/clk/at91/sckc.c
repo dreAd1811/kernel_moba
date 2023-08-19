@@ -74,7 +74,14 @@ static int clk_slow_osc_prepare(struct clk_hw *hw)
 
 	writel(tmp | AT91_SCKC_OSC32EN, sckcr);
 
+<<<<<<< HEAD
 	usleep_range(osc->startup_usec, osc->startup_usec + 1);
+=======
+	if (system_state < SYSTEM_RUNNING)
+		udelay(osc->startup_usec);
+	else
+		usleep_range(osc->startup_usec, osc->startup_usec + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -197,7 +204,14 @@ static int clk_slow_rc_osc_prepare(struct clk_hw *hw)
 
 	writel(readl(sckcr) | AT91_SCKC_RCEN, sckcr);
 
+<<<<<<< HEAD
 	usleep_range(osc->startup_usec, osc->startup_usec + 1);
+=======
+	if (system_state < SYSTEM_RUNNING)
+		udelay(osc->startup_usec);
+	else
+		usleep_range(osc->startup_usec, osc->startup_usec + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -310,7 +324,14 @@ static int clk_sam9x5_slow_set_parent(struct clk_hw *hw, u8 index)
 
 	writel(tmp, sckcr);
 
+<<<<<<< HEAD
 	usleep_range(SLOWCK_SW_TIME_USEC, SLOWCK_SW_TIME_USEC + 1);
+=======
+	if (system_state < SYSTEM_RUNNING)
+		udelay(SLOWCK_SW_TIME_USEC);
+	else
+		usleep_range(SLOWCK_SW_TIME_USEC, SLOWCK_SW_TIME_USEC + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -443,7 +464,14 @@ static int clk_sama5d4_slow_osc_prepare(struct clk_hw *hw)
 		return 0;
 	}
 
+<<<<<<< HEAD
 	usleep_range(osc->startup_usec, osc->startup_usec + 1);
+=======
+	if (system_state < SYSTEM_RUNNING)
+		udelay(osc->startup_usec);
+	else
+		usleep_range(osc->startup_usec, osc->startup_usec + 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	osc->prepared = true;
 
 	return 0;

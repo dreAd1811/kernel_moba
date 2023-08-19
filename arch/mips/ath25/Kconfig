@@ -12,7 +12,10 @@ config SOC_AR2315
 config PCI_AR2315
 	bool "Atheros AR2315 PCI controller support"
 	depends on SOC_AR2315
+<<<<<<< HEAD
 	select ARCH_HAS_PHYS_TO_DMA
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select HW_HAS_PCI
 	select PCI
 	default y

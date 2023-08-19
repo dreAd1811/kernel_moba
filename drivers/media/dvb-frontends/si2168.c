@@ -82,6 +82,7 @@ err_mutex_unlock:
 	return ret;
 }
 
+<<<<<<< HEAD
 static int si2168_ts_bus_ctrl(struct dvb_frontend *fe, int acquire)
 {
 	struct i2c_client *client = fe->demodulator_priv;
@@ -106,6 +107,8 @@ static int si2168_ts_bus_ctrl(struct dvb_frontend *fe, int acquire)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int si2168_read_status(struct dvb_frontend *fe, enum fe_status *status)
 {
 	struct i2c_client *client = fe->demodulator_priv;
@@ -363,8 +366,11 @@ static int si2168_set_frontend(struct dvb_frontend *fe)
 
 	memcpy(cmd.args, "\x14\x00\x0a\x10\x00\x00", 6);
 	cmd.args[4] = delivery_system | bandwidth;
+<<<<<<< HEAD
 	if (dev->spectral_inversion)
 		cmd.args[5] |= 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmd.wlen = 6;
 	cmd.rlen = 4;
 	ret = si2168_cmd_execute(client, &cmd);
@@ -429,11 +435,14 @@ static int si2168_set_frontend(struct dvb_frontend *fe)
 
 	dev->delivery_system = c->delivery_system;
 
+<<<<<<< HEAD
 	/* enable ts bus */
 	ret = si2168_ts_bus_ctrl(fe, 1);
 	if (ret)
 		goto err;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 err:
 	dev_dbg(&client->dev, "failed=%d\n", ret);
@@ -572,7 +581,17 @@ static int si2168_init(struct dvb_frontend *fe)
 		 dev->version >> 8 & 0xff, dev->version >> 0 & 0xff);
 
 	/* set ts mode */
+<<<<<<< HEAD
 	ret = si2168_ts_bus_ctrl(fe, 1);
+=======
+	memcpy(cmd.args, "\x14\x00\x01\x10\x10\x00", 6);
+	cmd.args[4] |= dev->ts_mode;
+	if (dev->ts_clock_gapped)
+		cmd.args[4] |= 0x40;
+	cmd.wlen = 6;
+	cmd.rlen = 4;
+	ret = si2168_cmd_execute(client, &cmd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err;
 
@@ -609,12 +628,16 @@ static int si2168_sleep(struct dvb_frontend *fe)
 
 	dev->active = false;
 
+<<<<<<< HEAD
 	/* tri-state data bus */
 	ret = si2168_ts_bus_ctrl(fe, 0);
 	if (ret)
 		goto err;
 
 	/* Firmware later than B 4.0-11 loses warm state during sleep */
+=======
+	/* Firmware B 4.0-11 or later loses warm state during sleep */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dev->version > ('B' << 24 | 4 << 16 | 0 << 8 | 11 << 0))
 		dev->warm = false;
 
@@ -729,6 +752,10 @@ static int si2168_probe(struct i2c_client *client,
 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
 	if (!dev) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
+=======
+		dev_err(&client->dev, "kzalloc() failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err;
 	}
 
@@ -806,7 +833,10 @@ static int si2168_probe(struct i2c_client *client,
 	dev->ts_mode = config->ts_mode;
 	dev->ts_clock_inv = config->ts_clock_inv;
 	dev->ts_clock_gapped = config->ts_clock_gapped;
+<<<<<<< HEAD
 	dev->spectral_inversion = config->spectral_inversion;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_info(&client->dev, "Silicon Labs Si2168-%c%d%d successfully identified\n",
 		 dev->version >> 24 & 0xff, dev->version >> 16 & 0xff,
@@ -819,7 +849,11 @@ static int si2168_probe(struct i2c_client *client,
 err_kfree:
 	kfree(dev);
 err:
+<<<<<<< HEAD
 	dev_warn(&client->dev, "probe failed = %d\n", ret);
+=======
+	dev_dbg(&client->dev, "failed=%d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 

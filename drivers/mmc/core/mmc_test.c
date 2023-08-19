@@ -101,7 +101,11 @@ struct mmc_test_transfer_result {
 	struct list_head link;
 	unsigned int count;
 	unsigned int sectors;
+<<<<<<< HEAD
 	struct timespec64 ts;
+=======
+	struct timespec ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int rate;
 	unsigned int iops;
 };
@@ -171,6 +175,14 @@ struct mmc_test_multiple_rw {
 	enum mmc_test_prep_media prepare;
 };
 
+<<<<<<< HEAD
+=======
+struct mmc_test_async_req {
+	struct mmc_async_req areq;
+	struct mmc_test_card *test;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*******************************************************************/
 /*  General helper functions                                       */
 /*******************************************************************/
@@ -510,11 +522,22 @@ static int mmc_test_map_sg_max_scatter(struct mmc_test_mem *mem,
 /*
  * Calculate transfer rate in bytes per second.
  */
+<<<<<<< HEAD
 static unsigned int mmc_test_rate(uint64_t bytes, struct timespec64 *ts)
 {
 	uint64_t ns;
 
 	ns = timespec64_to_ns(ts);
+=======
+static unsigned int mmc_test_rate(uint64_t bytes, struct timespec *ts)
+{
+	uint64_t ns;
+
+	ns = ts->tv_sec;
+	ns *= 1000000000;
+	ns += ts->tv_nsec;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bytes *= 1000000000;
 
 	while (ns > UINT_MAX) {
@@ -534,7 +557,11 @@ static unsigned int mmc_test_rate(uint64_t bytes, struct timespec64 *ts)
  * Save transfer results for future usage
  */
 static void mmc_test_save_transfer_result(struct mmc_test_card *test,
+<<<<<<< HEAD
 	unsigned int count, unsigned int sectors, struct timespec64 ts,
+=======
+	unsigned int count, unsigned int sectors, struct timespec ts,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int rate, unsigned int iops)
 {
 	struct mmc_test_transfer_result *tr;
@@ -559,21 +586,38 @@ static void mmc_test_save_transfer_result(struct mmc_test_card *test,
  * Print the transfer rate.
  */
 static void mmc_test_print_rate(struct mmc_test_card *test, uint64_t bytes,
+<<<<<<< HEAD
 				struct timespec64 *ts1, struct timespec64 *ts2)
 {
 	unsigned int rate, iops, sectors = bytes >> 9;
 	struct timespec64 ts;
 
 	ts = timespec64_sub(*ts2, *ts1);
+=======
+				struct timespec *ts1, struct timespec *ts2)
+{
+	unsigned int rate, iops, sectors = bytes >> 9;
+	struct timespec ts;
+
+	ts = timespec_sub(*ts2, *ts1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rate = mmc_test_rate(bytes, &ts);
 	iops = mmc_test_rate(100, &ts); /* I/O ops per sec x 100 */
 
+<<<<<<< HEAD
 	pr_info("%s: Transfer of %u sectors (%u%s KiB) took %llu.%09u "
 			 "seconds (%u kB/s, %u KiB/s, %u.%02u IOPS)\n",
 			 mmc_hostname(test->card->host), sectors, sectors >> 1,
 			 (sectors & 1 ? ".5" : ""), (u64)ts.tv_sec,
 			 (u32)ts.tv_nsec, rate / 1000, rate / 1024,
+=======
+	pr_info("%s: Transfer of %u sectors (%u%s KiB) took %lu.%09lu "
+			 "seconds (%u kB/s, %u KiB/s, %u.%02u IOPS)\n",
+			 mmc_hostname(test->card->host), sectors, sectors >> 1,
+			 (sectors & 1 ? ".5" : ""), (unsigned long)ts.tv_sec,
+			 (unsigned long)ts.tv_nsec, rate / 1000, rate / 1024,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 iops / 100, iops % 100);
 
 	mmc_test_save_transfer_result(test, 1, sectors, ts, rate, iops);
@@ -583,6 +627,7 @@ static void mmc_test_print_rate(struct mmc_test_card *test, uint64_t bytes,
  * Print the average transfer rate.
  */
 static void mmc_test_print_avg_rate(struct mmc_test_card *test, uint64_t bytes,
+<<<<<<< HEAD
 				    unsigned int count, struct timespec64 *ts1,
 				    struct timespec64 *ts2)
 {
@@ -591,16 +636,34 @@ static void mmc_test_print_avg_rate(struct mmc_test_card *test, uint64_t bytes,
 	struct timespec64 ts;
 
 	ts = timespec64_sub(*ts2, *ts1);
+=======
+				    unsigned int count, struct timespec *ts1,
+				    struct timespec *ts2)
+{
+	unsigned int rate, iops, sectors = bytes >> 9;
+	uint64_t tot = bytes * count;
+	struct timespec ts;
+
+	ts = timespec_sub(*ts2, *ts1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rate = mmc_test_rate(tot, &ts);
 	iops = mmc_test_rate(count * 100, &ts); /* I/O ops per sec x 100 */
 
 	pr_info("%s: Transfer of %u x %u sectors (%u x %u%s KiB) took "
+<<<<<<< HEAD
 			 "%llu.%09u seconds (%u kB/s, %u KiB/s, "
 			 "%u.%02u IOPS, sg_len %d)\n",
 			 mmc_hostname(test->card->host), count, sectors, count,
 			 sectors >> 1, (sectors & 1 ? ".5" : ""),
 			 (u64)ts.tv_sec, (u32)ts.tv_nsec,
+=======
+			 "%lu.%09lu seconds (%u kB/s, %u KiB/s, "
+			 "%u.%02u IOPS, sg_len %d)\n",
+			 mmc_hostname(test->card->host), count, sectors, count,
+			 sectors >> 1, (sectors & 1 ? ".5" : ""),
+			 (unsigned long)ts.tv_sec, (unsigned long)ts.tv_nsec,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 rate / 1000, rate / 1024, iops / 100, iops % 100,
 			 test->area.sg_len);
 
@@ -733,6 +796,33 @@ static int mmc_test_check_result(struct mmc_test_card *test,
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static enum mmc_blk_status mmc_test_check_result_async(struct mmc_card *card,
+				       struct mmc_async_req *areq)
+{
+	struct mmc_test_async_req *test_async =
+		container_of(areq, struct mmc_test_async_req, areq);
+	int ret;
+
+	mmc_test_wait_busy(test_async->test);
+
+	/*
+	 * FIXME: this would earlier just casts a regular error code,
+	 * either of the kernel type -ERRORCODE or the local test framework
+	 * RESULT_* errorcode, into an enum mmc_blk_status and return as
+	 * result check. Instead, convert it to some reasonable type by just
+	 * returning either MMC_BLK_SUCCESS or MMC_BLK_CMD_ERR.
+	 * If possible, a reasonable error code should be returned.
+	 */
+	ret = mmc_test_check_result(test_async->test, areq->mrq);
+	if (ret)
+		return MMC_BLK_CMD_ERR;
+
+	return MMC_BLK_SUCCESS;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Checks that a "short transfer" behaved as expected
  */
@@ -799,6 +889,7 @@ static struct mmc_test_req *mmc_test_req_alloc(void)
 	return rq;
 }
 
+<<<<<<< HEAD
 static void mmc_test_wait_done(struct mmc_request *mrq)
 {
 	complete(&mrq->completion);
@@ -838,6 +929,8 @@ static int mmc_test_start_areq(struct mmc_test_card *test,
 
 	return err;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int mmc_test_nonblock_transfer(struct mmc_test_card *test,
 				      struct scatterlist *sg, unsigned sg_len,
@@ -845,10 +938,24 @@ static int mmc_test_nonblock_transfer(struct mmc_test_card *test,
 				      unsigned blksz, int write, int count)
 {
 	struct mmc_test_req *rq1, *rq2;
+<<<<<<< HEAD
 	struct mmc_request *mrq, *prev_mrq;
 	int i;
 	int ret = RESULT_OK;
 
+=======
+	struct mmc_test_async_req test_areq[2];
+	struct mmc_async_req *done_areq;
+	struct mmc_async_req *cur_areq = &test_areq[0].areq;
+	struct mmc_async_req *other_areq = &test_areq[1].areq;
+	enum mmc_blk_status status;
+	int i;
+	int ret = RESULT_OK;
+
+	test_areq[0].test = test;
+	test_areq[1].test = test;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rq1 = mmc_test_req_alloc();
 	rq2 = mmc_test_req_alloc();
 	if (!rq1 || !rq2) {
@@ -856,6 +963,7 @@ static int mmc_test_nonblock_transfer(struct mmc_test_card *test,
 		goto err;
 	}
 
+<<<<<<< HEAD
 	mrq = &rq1->mrq;
 	prev_mrq = NULL;
 
@@ -875,6 +983,35 @@ static int mmc_test_nonblock_transfer(struct mmc_test_card *test,
 	}
 
 	ret = mmc_test_start_areq(test, NULL, prev_mrq);
+=======
+	cur_areq->mrq = &rq1->mrq;
+	cur_areq->err_check = mmc_test_check_result_async;
+	other_areq->mrq = &rq2->mrq;
+	other_areq->err_check = mmc_test_check_result_async;
+
+	for (i = 0; i < count; i++) {
+		mmc_test_prepare_mrq(test, cur_areq->mrq, sg, sg_len, dev_addr,
+				     blocks, blksz, write);
+		done_areq = mmc_start_areq(test->card->host, cur_areq, &status);
+
+		if (status != MMC_BLK_SUCCESS || (!done_areq && i > 0)) {
+			ret = RESULT_FAIL;
+			goto err;
+		}
+
+		if (done_areq)
+			mmc_test_req_reset(container_of(done_areq->mrq,
+						struct mmc_test_req, mrq));
+
+		swap(cur_areq, other_areq);
+		dev_addr += blocks;
+	}
+
+	done_areq = mmc_start_areq(test->card->host, NULL, &status);
+	if (status != MMC_BLK_SUCCESS)
+		ret = RESULT_FAIL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err:
 	kfree(rq1);
 	kfree(rq2);
@@ -1441,7 +1578,11 @@ static int mmc_test_area_io_seq(struct mmc_test_card *test, unsigned long sz,
 				int max_scatter, int timed, int count,
 				bool nonblock, int min_sg_len)
 {
+<<<<<<< HEAD
 	struct timespec64 ts1, ts2;
+=======
+	struct timespec ts1, ts2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0;
 	int i;
 	struct mmc_test_area *t = &test->area;
@@ -1467,7 +1608,11 @@ static int mmc_test_area_io_seq(struct mmc_test_card *test, unsigned long sz,
 		return ret;
 
 	if (timed)
+<<<<<<< HEAD
 		ktime_get_ts64(&ts1);
+=======
+		getnstimeofday(&ts1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (nonblock)
 		ret = mmc_test_nonblock_transfer(test, t->sg, t->sg_len,
 				 dev_addr, t->blocks, 512, write, count);
@@ -1481,7 +1626,11 @@ static int mmc_test_area_io_seq(struct mmc_test_card *test, unsigned long sz,
 		return ret;
 
 	if (timed)
+<<<<<<< HEAD
 		ktime_get_ts64(&ts2);
+=======
+		getnstimeofday(&ts2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (timed)
 		mmc_test_print_avg_rate(test, sz, count, &ts1, &ts2);
@@ -1739,7 +1888,11 @@ static int mmc_test_profile_trim_perf(struct mmc_test_card *test)
 	struct mmc_test_area *t = &test->area;
 	unsigned long sz;
 	unsigned int dev_addr;
+<<<<<<< HEAD
 	struct timespec64 ts1, ts2;
+=======
+	struct timespec ts1, ts2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!mmc_can_trim(test->card))
@@ -1750,6 +1903,7 @@ static int mmc_test_profile_trim_perf(struct mmc_test_card *test)
 
 	for (sz = 512; sz < t->max_sz; sz <<= 1) {
 		dev_addr = t->dev_addr + (sz >> 9);
+<<<<<<< HEAD
 		ktime_get_ts64(&ts1);
 		ret = mmc_erase(test->card, dev_addr, sz >> 9, MMC_TRIM_ARG);
 		if (ret)
@@ -1763,6 +1917,21 @@ static int mmc_test_profile_trim_perf(struct mmc_test_card *test)
 	if (ret)
 		return ret;
 	ktime_get_ts64(&ts2);
+=======
+		getnstimeofday(&ts1);
+		ret = mmc_erase(test->card, dev_addr, sz >> 9, MMC_TRIM_ARG);
+		if (ret)
+			return ret;
+		getnstimeofday(&ts2);
+		mmc_test_print_rate(test, sz, &ts1, &ts2);
+	}
+	dev_addr = t->dev_addr;
+	getnstimeofday(&ts1);
+	ret = mmc_erase(test->card, dev_addr, sz >> 9, MMC_TRIM_ARG);
+	if (ret)
+		return ret;
+	getnstimeofday(&ts2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_test_print_rate(test, sz, &ts1, &ts2);
 	return 0;
 }
@@ -1771,19 +1940,31 @@ static int mmc_test_seq_read_perf(struct mmc_test_card *test, unsigned long sz)
 {
 	struct mmc_test_area *t = &test->area;
 	unsigned int dev_addr, i, cnt;
+<<<<<<< HEAD
 	struct timespec64 ts1, ts2;
+=======
+	struct timespec ts1, ts2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	cnt = t->max_sz / sz;
 	dev_addr = t->dev_addr;
+<<<<<<< HEAD
 	ktime_get_ts64(&ts1);
+=======
+	getnstimeofday(&ts1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < cnt; i++) {
 		ret = mmc_test_area_io(test, sz, dev_addr, 0, 0, 0);
 		if (ret)
 			return ret;
 		dev_addr += (sz >> 9);
 	}
+<<<<<<< HEAD
 	ktime_get_ts64(&ts2);
+=======
+	getnstimeofday(&ts2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_test_print_avg_rate(test, sz, cnt, &ts1, &ts2);
 	return 0;
 }
@@ -1810,7 +1991,11 @@ static int mmc_test_seq_write_perf(struct mmc_test_card *test, unsigned long sz)
 {
 	struct mmc_test_area *t = &test->area;
 	unsigned int dev_addr, i, cnt;
+<<<<<<< HEAD
 	struct timespec64 ts1, ts2;
+=======
+	struct timespec ts1, ts2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = mmc_test_area_erase(test);
@@ -1818,14 +2003,22 @@ static int mmc_test_seq_write_perf(struct mmc_test_card *test, unsigned long sz)
 		return ret;
 	cnt = t->max_sz / sz;
 	dev_addr = t->dev_addr;
+<<<<<<< HEAD
 	ktime_get_ts64(&ts1);
+=======
+	getnstimeofday(&ts1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < cnt; i++) {
 		ret = mmc_test_area_io(test, sz, dev_addr, 1, 0, 0);
 		if (ret)
 			return ret;
 		dev_addr += (sz >> 9);
 	}
+<<<<<<< HEAD
 	ktime_get_ts64(&ts2);
+=======
+	getnstimeofday(&ts2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_test_print_avg_rate(test, sz, cnt, &ts1, &ts2);
 	return 0;
 }
@@ -1856,7 +2049,11 @@ static int mmc_test_profile_seq_trim_perf(struct mmc_test_card *test)
 	struct mmc_test_area *t = &test->area;
 	unsigned long sz;
 	unsigned int dev_addr, i, cnt;
+<<<<<<< HEAD
 	struct timespec64 ts1, ts2;
+=======
+	struct timespec ts1, ts2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (!mmc_can_trim(test->card))
@@ -1874,7 +2071,11 @@ static int mmc_test_profile_seq_trim_perf(struct mmc_test_card *test)
 			return ret;
 		cnt = t->max_sz / sz;
 		dev_addr = t->dev_addr;
+<<<<<<< HEAD
 		ktime_get_ts64(&ts1);
+=======
+		getnstimeofday(&ts1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < cnt; i++) {
 			ret = mmc_erase(test->card, dev_addr, sz >> 9,
 					MMC_TRIM_ARG);
@@ -1882,7 +2083,11 @@ static int mmc_test_profile_seq_trim_perf(struct mmc_test_card *test)
 				return ret;
 			dev_addr += (sz >> 9);
 		}
+<<<<<<< HEAD
 		ktime_get_ts64(&ts2);
+=======
+		getnstimeofday(&ts2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mmc_test_print_avg_rate(test, sz, cnt, &ts1, &ts2);
 	}
 	return 0;
@@ -1904,7 +2109,11 @@ static int mmc_test_rnd_perf(struct mmc_test_card *test, int write, int print,
 {
 	unsigned int dev_addr, cnt, rnd_addr, range1, range2, last_ea = 0, ea;
 	unsigned int ssz;
+<<<<<<< HEAD
 	struct timespec64 ts1, ts2, ts;
+=======
+	struct timespec ts1, ts2, ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ssz = sz >> 9;
@@ -1913,10 +2122,17 @@ static int mmc_test_rnd_perf(struct mmc_test_card *test, int write, int print,
 	range1 = rnd_addr / test->card->pref_erase;
 	range2 = range1 / ssz;
 
+<<<<<<< HEAD
 	ktime_get_ts64(&ts1);
 	for (cnt = 0; cnt < UINT_MAX; cnt++) {
 		ktime_get_ts64(&ts2);
 		ts = timespec64_sub(ts2, ts1);
+=======
+	getnstimeofday(&ts1);
+	for (cnt = 0; cnt < UINT_MAX; cnt++) {
+		getnstimeofday(&ts2);
+		ts = timespec_sub(ts2, ts1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ts.tv_sec >= 10)
 			break;
 		ea = mmc_test_rnd_num(range1);
@@ -1990,7 +2206,11 @@ static int mmc_test_seq_perf(struct mmc_test_card *test, int write,
 {
 	struct mmc_test_area *t = &test->area;
 	unsigned int dev_addr, i, cnt, sz, ssz;
+<<<<<<< HEAD
 	struct timespec64 ts1, ts2;
+=======
+	struct timespec ts1, ts2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	sz = t->max_tfr;
@@ -2017,7 +2237,11 @@ static int mmc_test_seq_perf(struct mmc_test_card *test, int write,
 	cnt = tot_sz / sz;
 	dev_addr &= 0xffff0000; /* Round to 64MiB boundary */
 
+<<<<<<< HEAD
 	ktime_get_ts64(&ts1);
+=======
+	getnstimeofday(&ts1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < cnt; i++) {
 		ret = mmc_test_area_io(test, sz, dev_addr, write,
 				       max_scatter, 0);
@@ -2025,7 +2249,11 @@ static int mmc_test_seq_perf(struct mmc_test_card *test, int write,
 			return ret;
 		dev_addr += ssz;
 	}
+<<<<<<< HEAD
 	ktime_get_ts64(&ts2);
+=======
+	getnstimeofday(&ts2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mmc_test_print_avg_rate(test, sz, cnt, &ts1, &ts2);
 
@@ -2355,9 +2583,17 @@ static int mmc_test_ongoing_transfer(struct mmc_test_card *test,
 	struct mmc_test_req *rq = mmc_test_req_alloc();
 	struct mmc_host *host = test->card->host;
 	struct mmc_test_area *t = &test->area;
+<<<<<<< HEAD
 	struct mmc_request *mrq;
 	unsigned long timeout;
 	bool expired = false;
+=======
+	struct mmc_test_async_req test_areq = { .test = test };
+	struct mmc_request *mrq;
+	unsigned long timeout;
+	bool expired = false;
+	enum mmc_blk_status blkstat = MMC_BLK_SUCCESS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = 0, cmd_ret;
 	u32 status = 0;
 	int count = 0;
@@ -2370,6 +2606,12 @@ static int mmc_test_ongoing_transfer(struct mmc_test_card *test,
 		mrq->sbc = &rq->sbc;
 	mrq->cap_cmd_during_tfr = true;
 
+<<<<<<< HEAD
+=======
+	test_areq.areq.mrq = mrq;
+	test_areq.areq.err_check = mmc_test_check_result_async;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc_test_prepare_mrq(test, mrq, t->sg, t->sg_len, dev_addr, t->blocks,
 			     512, write);
 
@@ -2382,9 +2624,17 @@ static int mmc_test_ongoing_transfer(struct mmc_test_card *test,
 
 	/* Start ongoing data request */
 	if (use_areq) {
+<<<<<<< HEAD
 		ret = mmc_test_start_areq(test, mrq, NULL);
 		if (ret)
 			goto out_free;
+=======
+		mmc_start_areq(host, &test_areq.areq, &blkstat);
+		if (blkstat != MMC_BLK_SUCCESS) {
+			ret = RESULT_FAIL;
+			goto out_free;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mmc_wait_for_req(host, mrq);
 	}
@@ -2418,7 +2668,13 @@ static int mmc_test_ongoing_transfer(struct mmc_test_card *test,
 
 	/* Wait for data request to complete */
 	if (use_areq) {
+<<<<<<< HEAD
 		ret = mmc_test_start_areq(test, NULL, mrq);
+=======
+		mmc_start_areq(host, NULL, &blkstat);
+		if (blkstat != MMC_BLK_SUCCESS)
+			ret = RESULT_FAIL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		mmc_wait_for_req_done(test->card->host, mrq);
 	}
@@ -3056,9 +3312,16 @@ static int mtf_test_show(struct seq_file *sf, void *data)
 		seq_printf(sf, "Test %d: %d\n", gr->testcase + 1, gr->result);
 
 		list_for_each_entry(tr, &gr->tr_lst, link) {
+<<<<<<< HEAD
 			seq_printf(sf, "%u %d %llu.%09u %u %u.%02u\n",
 				tr->count, tr->sectors,
 				(u64)tr->ts.tv_sec, (u32)tr->ts.tv_nsec,
+=======
+			seq_printf(sf, "%u %d %lu.%09lu %u %u.%02u\n",
+				tr->count, tr->sectors,
+				(unsigned long)tr->ts.tv_sec,
+				(unsigned long)tr->ts.tv_nsec,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				tr->rate, tr->iops / 100, tr->iops % 100);
 		}
 	}

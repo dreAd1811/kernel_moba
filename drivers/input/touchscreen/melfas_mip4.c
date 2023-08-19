@@ -1433,6 +1433,16 @@ static const struct attribute_group mip4_attr_group = {
 	.attrs = mip4_attrs,
 };
 
+<<<<<<< HEAD
+=======
+static void mip4_sysfs_remove(void *_data)
+{
+	struct mip4_ts *ts = _data;
+
+	sysfs_remove_group(&ts->client->dev.kobj, &mip4_attr_group);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mip4_probe(struct i2c_client *client, const struct i2c_device_id *id)
 {
 	struct mip4_ts *ts;
@@ -1528,13 +1538,28 @@ static int mip4_probe(struct i2c_client *client, const struct i2c_device_id *id)
 		return error;
 	}
 
+<<<<<<< HEAD
 	error = devm_device_add_group(&client->dev, &mip4_attr_group);
+=======
+	error = sysfs_create_group(&client->dev.kobj, &mip4_attr_group);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (error) {
 		dev_err(&client->dev,
 			"Failed to create sysfs attribute group: %d\n", error);
 		return error;
 	}
 
+<<<<<<< HEAD
+=======
+	error = devm_add_action(&client->dev, mip4_sysfs_remove, ts);
+	if (error) {
+		mip4_sysfs_remove(ts);
+		dev_err(&client->dev,
+			"Failed to install sysfs remoce action: %d\n", error);
+		return error;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1611,5 +1636,9 @@ static struct i2c_driver mip4_driver = {
 module_i2c_driver(mip4_driver);
 
 MODULE_DESCRIPTION("MELFAS MIP4 Touchscreen");
+<<<<<<< HEAD
+=======
+MODULE_VERSION("2016.10.31");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_AUTHOR("Sangwon Jee <jeesw@melfas.com>");
 MODULE_LICENSE("GPL");

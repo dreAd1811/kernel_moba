@@ -1,6 +1,9 @@
 /*
  * Copyright (C) 2013-2015 Freescale Semiconductor, Inc.
+<<<<<<< HEAD
  * Copyright 2017-2018 NXP.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * The code contained herein is licensed under the GNU General Public
  * License. You may obtain a copy of the GNU General Public License
@@ -117,7 +120,10 @@ void __init imx_init_revision_from_anatop(void)
 	unsigned int revision;
 	u32 digprog;
 	u16 offset = ANADIG_DIGPROG;
+<<<<<<< HEAD
 	u8 major_part, minor_part;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	np = of_find_compatible_node(NULL, NULL, "fsl,imx6q-anatop");
 	anatop_base = of_iomap(np, 0);
@@ -129,6 +135,7 @@ void __init imx_init_revision_from_anatop(void)
 	digprog = readl_relaxed(anatop_base + offset);
 	iounmap(anatop_base);
 
+<<<<<<< HEAD
 	/*
 	 * On i.MX7D digprog value match linux version format, so
 	 * it needn't map again and we can use register value directly.
@@ -148,6 +155,47 @@ void __init imx_init_revision_from_anatop(void)
 		major_part = (digprog >> 8) & 0xf;
 		minor_part = digprog & 0xf;
 		revision = ((major_part + 1) << 4) | minor_part;
+=======
+	switch (digprog & 0xff) {
+	case 0:
+		/*
+		 * For i.MX6QP, most of the code for i.MX6Q can be resued,
+		 * so internally, we identify it as i.MX6Q Rev 2.0
+		 */
+		if (digprog >> 8 & 0x01)
+			revision = IMX_CHIP_REVISION_2_0;
+		else
+			revision = IMX_CHIP_REVISION_1_0;
+		break;
+	case 1:
+		revision = IMX_CHIP_REVISION_1_1;
+		break;
+	case 2:
+		revision = IMX_CHIP_REVISION_1_2;
+		break;
+	case 3:
+		revision = IMX_CHIP_REVISION_1_3;
+		break;
+	case 4:
+		revision = IMX_CHIP_REVISION_1_4;
+		break;
+	case 5:
+		/*
+		 * i.MX6DQ TO1.5 is defined as Rev 1.3 in Data Sheet, marked
+		 * as 'D' in Part Number last character.
+		 */
+		revision = IMX_CHIP_REVISION_1_5;
+		break;
+	default:
+		/*
+		 * Fail back to return raw register value instead of 0xff.
+		 * It will be easy to know version information in SOC if it
+		 * can't be recognized by known version. And some chip's (i.MX7D)
+		 * digprog value match linux version format, so it needn't map
+		 * again and we can use register value directly.
+		 */
+		revision = digprog & 0xff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mxc_set_cpu_type(digprog >> 16 & 0xff);

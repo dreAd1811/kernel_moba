@@ -35,7 +35,11 @@ struct cx18_api_info {
 	u32 cmd;
 	u8 flags;		/* Flags, see above */
 	u8 rpu;			/* Processing unit */
+<<<<<<< HEAD
 	const char *name;	/* The name of the command */
+=======
+	const char *name; 	/* The name of the command */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define API_ENTRY(rpu, x, f) { (x), (f), (rpu), #x }
@@ -43,9 +47,15 @@ struct cx18_api_info {
 static const struct cx18_api_info api_info[] = {
 	/* MPEG encoder API */
 	API_ENTRY(CPU, CX18_CPU_SET_CHANNEL_TYPE,		0),
+<<<<<<< HEAD
 	API_ENTRY(CPU, CX18_EPU_DEBUG,				0),
 	API_ENTRY(CPU, CX18_CREATE_TASK,			0),
 	API_ENTRY(CPU, CX18_DESTROY_TASK,			0),
+=======
+	API_ENTRY(CPU, CX18_EPU_DEBUG, 				0),
+	API_ENTRY(CPU, CX18_CREATE_TASK, 			0),
+	API_ENTRY(CPU, CX18_DESTROY_TASK, 			0),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	API_ENTRY(CPU, CX18_CPU_CAPTURE_START,                  API_SLOW),
 	API_ENTRY(CPU, CX18_CPU_CAPTURE_STOP,                   API_SLOW),
 	API_ENTRY(CPU, CX18_CPU_CAPTURE_PAUSE,                  0),

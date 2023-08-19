@@ -22,6 +22,7 @@
  * Authors: Ben Skeggs
  */
 #include "channv50.h"
+<<<<<<< HEAD
 
 int
 gf119_disp_curs_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
@@ -30,3 +31,18 @@ gf119_disp_curs_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 	return nv50_disp_curs_new_(&gf119_disp_pioc_func, disp, 13, 13,
 				   oclass, argv, argc, pobject);
 }
+=======
+#include "rootnv50.h"
+
+#include <nvif/class.h>
+
+const struct nv50_disp_pioc_oclass
+gf119_disp_curs_oclass = {
+	.base.oclass = GF110_DISP_CURSOR,
+	.base.minver = 0,
+	.base.maxver = 0,
+	.ctor = nv50_disp_curs_new,
+	.func = &gf119_disp_pioc_func,
+	.chid = { 13, 13 },
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

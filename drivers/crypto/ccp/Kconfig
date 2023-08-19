@@ -1,6 +1,9 @@
 config CRYPTO_DEV_CCP_DD
 	tristate "Secure Processor device driver"
+<<<<<<< HEAD
 	depends on CPU_SUP_AMD || ARM64
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default m
 	help
 	  Provides AMD Secure Processor device driver.
@@ -9,10 +12,16 @@ config CRYPTO_DEV_CCP_DD
 config CRYPTO_DEV_SP_CCP
 	bool "Cryptographic Coprocessor device"
 	default y
+<<<<<<< HEAD
 	depends on CRYPTO_DEV_CCP_DD
 	select HW_RANDOM
 	select DMA_ENGINE
 	select DMADEVICES
+=======
+	depends on CRYPTO_DEV_CCP_DD && DMADEVICES
+	select HW_RANDOM
+	select DMA_ENGINE
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select CRYPTO_SHA1
 	select CRYPTO_SHA256
 	help
@@ -33,6 +42,7 @@ config CRYPTO_DEV_CCP_CRYPTO
 	  Support for using the cryptographic API with the AMD Cryptographic
 	  Coprocessor. This module supports offload of SHA and AES algorithms.
 	  If you choose 'M' here, this module will be called ccp_crypto.
+<<<<<<< HEAD
 
 config CRYPTO_DEV_SP_PSP
 	bool "Platform Security Processor (PSP) device"
@@ -44,3 +54,5 @@ config CRYPTO_DEV_SP_PSP
 	 management commands in Secure Encrypted Virtualization (SEV) mode,
 	 along with software-based Trusted Execution Environment (TEE) to
 	 enable third-party trusted applications.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

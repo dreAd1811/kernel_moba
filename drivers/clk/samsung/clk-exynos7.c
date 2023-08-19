@@ -140,7 +140,11 @@ static const struct samsung_div_clock topc_div_clks[] __initconst = {
 };
 
 static const struct samsung_pll_rate_table pll1460x_24mhz_tbl[] __initconst = {
+<<<<<<< HEAD
 	PLL_36XX_RATE(24 * MHZ, 491519897, 20, 1, 0, 31457),
+=======
+	PLL_36XX_RATE(491519897, 20, 1, 0, 31457),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 

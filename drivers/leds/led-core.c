@@ -45,9 +45,15 @@ static int __led_set_brightness_blocking(struct led_classdev *led_cdev,
 	return led_cdev->brightness_set_blocking(led_cdev, value);
 }
 
+<<<<<<< HEAD
 static void led_timer_function(struct timer_list *t)
 {
 	struct led_classdev *led_cdev = from_timer(led_cdev, t, blink_timer);
+=======
+static void led_timer_function(unsigned long data)
+{
+	struct led_classdev *led_cdev = (void *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long brightness;
 	unsigned long delay;
 
@@ -178,7 +184,12 @@ void led_init_core(struct led_classdev *led_cdev)
 {
 	INIT_WORK(&led_cdev->set_brightness_work, set_brightness_delayed);
 
+<<<<<<< HEAD
 	timer_setup(&led_cdev->blink_timer, led_timer_function, 0);
+=======
+	setup_timer(&led_cdev->blink_timer, led_timer_function,
+		    (unsigned long)led_cdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(led_init_core);
 

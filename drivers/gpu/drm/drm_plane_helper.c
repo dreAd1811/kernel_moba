@@ -100,12 +100,110 @@ static int get_connectors_for_crtc(struct drm_crtc *crtc,
 }
 
 /**
+<<<<<<< HEAD
+=======
+ * drm_plane_helper_check_state() - Check plane state for validity
+ * @state: plane state to check
+ * @clip: integer clipping coordinates
+ * @min_scale: minimum @src:@dest scaling factor in 16.16 fixed point
+ * @max_scale: maximum @src:@dest scaling factor in 16.16 fixed point
+ * @can_position: is it legal to position the plane such that it
+ *                doesn't cover the entire crtc?  This will generally
+ *                only be false for primary planes.
+ * @can_update_disabled: can the plane be updated while the crtc
+ *                       is disabled?
+ *
+ * Checks that a desired plane update is valid, and updates various
+ * bits of derived state (clipped coordinates etc.). Drivers that provide
+ * their own plane handling rather than helper-provided implementations may
+ * still wish to call this function to avoid duplication of error checking
+ * code.
+ *
+ * RETURNS:
+ * Zero if update appears valid, error code on failure
+ */
+int drm_plane_helper_check_state(struct drm_plane_state *state,
+				 const struct drm_rect *clip,
+				 int min_scale,
+				 int max_scale,
+				 bool can_position,
+				 bool can_update_disabled)
+{
+	struct drm_crtc *crtc = state->crtc;
+	struct drm_framebuffer *fb = state->fb;
+	struct drm_rect *src = &state->src;
+	struct drm_rect *dst = &state->dst;
+	unsigned int rotation = state->rotation;
+	int hscale, vscale;
+
+	*src = drm_plane_state_src(state);
+	*dst = drm_plane_state_dest(state);
+
+	if (!fb) {
+		state->visible = false;
+		return 0;
+	}
+
+	/* crtc should only be NULL when disabling (i.e., !fb) */
+	if (WARN_ON(!crtc)) {
+		state->visible = false;
+		return 0;
+	}
+
+	if (!crtc->enabled && !can_update_disabled) {
+		DRM_DEBUG_KMS("Cannot update plane of a disabled CRTC.\n");
+		return -EINVAL;
+	}
+
+	drm_rect_rotate(src, fb->width << 16, fb->height << 16, rotation);
+
+	/* Check scaling */
+	hscale = drm_rect_calc_hscale(src, dst, min_scale, max_scale);
+	vscale = drm_rect_calc_vscale(src, dst, min_scale, max_scale);
+	if (hscale < 0 || vscale < 0) {
+		DRM_DEBUG_KMS("Invalid scaling of plane\n");
+		drm_rect_debug_print("src: ", &state->src, true);
+		drm_rect_debug_print("dst: ", &state->dst, false);
+		return -ERANGE;
+	}
+
+	state->visible = drm_rect_clip_scaled(src, dst, clip, hscale, vscale);
+
+	drm_rect_rotate_inv(src, fb->width << 16, fb->height << 16, rotation);
+
+	if (!state->visible)
+		/*
+		 * Plane isn't visible; some drivers can handle this
+		 * so we just return success here.  Drivers that can't
+		 * (including those that use the primary plane helper's
+		 * update function) will return an error from their
+		 * update_plane handler.
+		 */
+		return 0;
+
+	if (!can_position && !drm_rect_equals(dst, clip)) {
+		DRM_DEBUG_KMS("Plane must cover entire CRTC\n");
+		drm_rect_debug_print("dst: ", dst, false);
+		drm_rect_debug_print("clip: ", clip, false);
+		return -EINVAL;
+	}
+
+	return 0;
+}
+EXPORT_SYMBOL(drm_plane_helper_check_state);
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * drm_plane_helper_check_update() - Check plane update for validity
  * @plane: plane object to update
  * @crtc: owning CRTC of owning plane
  * @fb: framebuffer to flip onto plane
  * @src: source coordinates in 16.16 fixed point
  * @dst: integer destination coordinates
+<<<<<<< HEAD
+=======
+ * @clip: integer clipping coordinates
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @rotation: plane rotation
  * @min_scale: minimum @src:@dest scaling factor in 16.16 fixed point
  * @max_scale: maximum @src:@dest scaling factor in 16.16 fixed point
@@ -130,6 +228,10 @@ int drm_plane_helper_check_update(struct drm_plane *plane,
 				  struct drm_framebuffer *fb,
 				  struct drm_rect *src,
 				  struct drm_rect *dst,
+<<<<<<< HEAD
+=======
+				  const struct drm_rect *clip,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  unsigned int rotation,
 				  int min_scale,
 				  int max_scale,
@@ -137,7 +239,11 @@ int drm_plane_helper_check_update(struct drm_plane *plane,
 				  bool can_update_disabled,
 				  bool *visible)
 {
+<<<<<<< HEAD
 	struct drm_plane_state plane_state = {
+=======
+	struct drm_plane_state state = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.plane = plane,
 		.crtc = crtc,
 		.fb = fb,
@@ -152,6 +258,7 @@ int drm_plane_helper_check_update(struct drm_plane *plane,
 		.rotation = rotation,
 		.visible = *visible,
 	};
+<<<<<<< HEAD
 	struct drm_crtc_state crtc_state = {
 		.crtc = crtc,
 		.enable = crtc->enabled,
@@ -169,6 +276,20 @@ int drm_plane_helper_check_update(struct drm_plane *plane,
 	*src = plane_state.src;
 	*dst = plane_state.dst;
 	*visible = plane_state.visible;
+=======
+	int ret;
+
+	ret = drm_plane_helper_check_state(&state, clip,
+					   min_scale, max_scale,
+					   can_position,
+					   can_update_disabled);
+	if (ret)
+		return ret;
+
+	*src = state.src;
+	*dst = state.dst;
+	*visible = state.visible;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -238,12 +359,23 @@ int drm_primary_helper_update(struct drm_plane *plane, struct drm_crtc *crtc,
 		.x2 = crtc_x + crtc_w,
 		.y2 = crtc_y + crtc_h,
 	};
+<<<<<<< HEAD
+=======
+	const struct drm_rect clip = {
+		.x2 = crtc->mode.hdisplay,
+		.y2 = crtc->mode.vdisplay,
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_connector **connector_list;
 	int num_connectors, ret;
 	bool visible;
 
 	ret = drm_plane_helper_check_update(plane, crtc, fb,
+<<<<<<< HEAD
 					    &src, &dest,
+=======
+					    &src, &dest, &clip,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    DRM_MODE_ROTATE_0,
 					    DRM_PLANE_HELPER_NO_SCALING,
 					    DRM_PLANE_HELPER_NO_SCALING,
@@ -262,7 +394,11 @@ int drm_primary_helper_update(struct drm_plane *plane, struct drm_crtc *crtc,
 	/* Find current connectors for CRTC */
 	num_connectors = get_connectors_for_crtc(crtc, NULL, 0);
 	BUG_ON(num_connectors == 0);
+<<<<<<< HEAD
 	connector_list = kcalloc(num_connectors, sizeof(*connector_list),
+=======
+	connector_list = kzalloc(num_connectors * sizeof(*connector_list),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 	if (!connector_list)
 		return -ENOMEM;
@@ -440,7 +576,10 @@ out:
  * @src_y: y offset of @fb for panning
  * @src_w: width of source rectangle in @fb
  * @src_h: height of source rectangle in @fb
+<<<<<<< HEAD
  * @ctx: lock acquire context, not used here
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Provides a default plane update handler using the atomic plane update
  * functions. It is fully left to the driver to check plane constraints and
@@ -456,8 +595,12 @@ int drm_plane_helper_update(struct drm_plane *plane, struct drm_crtc *crtc,
 			    int crtc_x, int crtc_y,
 			    unsigned int crtc_w, unsigned int crtc_h,
 			    uint32_t src_x, uint32_t src_y,
+<<<<<<< HEAD
 			    uint32_t src_w, uint32_t src_h,
 			    struct drm_modeset_acquire_ctx *ctx)
+=======
+			    uint32_t src_w, uint32_t src_h)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_plane_state *plane_state;
 
@@ -491,7 +634,10 @@ EXPORT_SYMBOL(drm_plane_helper_update);
 /**
  * drm_plane_helper_disable() - Transitional helper for plane disable
  * @plane: plane to disable
+<<<<<<< HEAD
  * @ctx: lock acquire context, not used here
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Provides a default plane disable handler using the atomic plane update
  * functions. It is fully left to the driver to check plane constraints and
@@ -502,11 +648,17 @@ EXPORT_SYMBOL(drm_plane_helper_update);
  * RETURNS:
  * Zero on success, error code on failure
  */
+<<<<<<< HEAD
 int drm_plane_helper_disable(struct drm_plane *plane,
 			     struct drm_modeset_acquire_ctx *ctx)
 {
 	struct drm_plane_state *plane_state;
 	struct drm_framebuffer *old_fb;
+=======
+int drm_plane_helper_disable(struct drm_plane *plane)
+{
+	struct drm_plane_state *plane_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* crtc helpers love to call disable functions for already disabled hw
 	 * functions. So cope with that. */
@@ -526,9 +678,15 @@ int drm_plane_helper_disable(struct drm_plane *plane,
 	plane_state->plane = plane;
 
 	plane_state->crtc = NULL;
+<<<<<<< HEAD
 	old_fb = plane_state->fb;
 	drm_atomic_set_fb_for_plane(plane_state, NULL);
 
 	return drm_plane_helper_commit(plane, plane_state, old_fb);
+=======
+	drm_atomic_set_fb_for_plane(plane_state, NULL);
+
+	return drm_plane_helper_commit(plane, plane_state, plane->fb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(drm_plane_helper_disable);

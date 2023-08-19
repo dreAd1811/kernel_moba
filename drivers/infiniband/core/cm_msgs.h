@@ -44,6 +44,16 @@
 
 #define IB_CM_CLASS_VERSION	2 /* IB specification 1.2 */
 
+<<<<<<< HEAD
+=======
+enum cm_msg_sequence {
+	CM_MSG_SEQUENCE_REQ,
+	CM_MSG_SEQUENCE_LAP,
+	CM_MSG_SEQUENCE_DREQ,
+	CM_MSG_SEQUENCE_SIDR
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct cm_req_msg {
 	struct ib_mad_hdr hdr;
 

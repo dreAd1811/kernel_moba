@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
@@ -17,6 +18,39 @@
 #include "adreno_pm4types.h"
 #include "adreno_trace.h"
 #include "kgsl_trace.h"
+=======
+/* Copyright (c) 2014-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+#include <linux/firmware.h>
+#include <soc/qcom/subsystem_restart.h>
+#include <soc/qcom/scm.h>
+#include <linux/pm_opp.h>
+#include <linux/clk/qcom.h>
+
+#include "adreno.h"
+#include "a5xx_reg.h"
+#include "adreno_a5xx.h"
+#include "adreno_cp_parser.h"
+#include "adreno_trace.h"
+#include "adreno_pm4types.h"
+#include "adreno_perfcounter.h"
+#include "adreno_ringbuffer.h"
+#include "kgsl_sharedmem.h"
+#include "kgsl_log.h"
+#include "kgsl.h"
+#include "kgsl_trace.h"
+#include "adreno_a5xx_packets.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int critical_packet_constructed;
 
@@ -27,10 +61,38 @@ static struct kgsl_memdesc crit_pkts_refbuf1;
 static struct kgsl_memdesc crit_pkts_refbuf2;
 static struct kgsl_memdesc crit_pkts_refbuf3;
 
+<<<<<<< HEAD
 static void a5xx_irq_storm_worker(struct work_struct *work);
 static int _read_fw2_block_header(struct kgsl_device *device,
 		uint32_t *header, uint32_t remain,
 		uint32_t id, uint32_t major, uint32_t minor);
+=======
+static const struct adreno_vbif_data a530_vbif[] = {
+	{A5XX_VBIF_ROUND_ROBIN_QOS_ARB, 0x00000003},
+	{0, 0},
+};
+
+static const struct adreno_vbif_data a540_vbif[] = {
+	{A5XX_VBIF_ROUND_ROBIN_QOS_ARB, 0x00000003},
+	{A5XX_VBIF_GATE_OFF_WRREQ_EN, 0x00000009},
+	{0, 0},
+};
+
+static const struct adreno_vbif_platform a5xx_vbif_platforms[] = {
+	{ adreno_is_a540, a540_vbif },
+	{ adreno_is_a530, a530_vbif },
+	{ adreno_is_a512, a540_vbif },
+	{ adreno_is_a510, a530_vbif },
+	{ adreno_is_a508, a530_vbif },
+	{ adreno_is_a504, a530_vbif },
+	{ adreno_is_a505, a530_vbif },
+	{ adreno_is_a506, a530_vbif },
+};
+
+static void a5xx_irq_storm_worker(struct work_struct *work);
+static int _read_fw2_block_header(uint32_t *header, uint32_t remain,
+	uint32_t id, uint32_t major, uint32_t minor);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void a5xx_gpmu_reset(struct work_struct *work);
 static int a5xx_gpmu_init(struct adreno_device *adreno_dev);
 
@@ -95,6 +157,10 @@ static const struct {
 } a5xx_efuse_funcs[] = {
 	{ adreno_is_a530, a530_efuse_leakage },
 	{ adreno_is_a530, a530_efuse_speed_bin },
+<<<<<<< HEAD
+=======
+	{ adreno_is_a504, a530_efuse_speed_bin },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ adreno_is_a505, a530_efuse_speed_bin },
 	{ adreno_is_a512, a530_efuse_speed_bin },
 	{ adreno_is_a508, a530_efuse_speed_bin },
@@ -117,9 +183,16 @@ static void a5xx_check_features(struct adreno_device *adreno_dev)
 
 static void a5xx_platform_setup(struct adreno_device *adreno_dev)
 {
+<<<<<<< HEAD
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
 
 	if (adreno_is_a505_or_a506(adreno_dev) || adreno_is_a508(adreno_dev)) {
+=======
+	uint64_t addr;
+	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
+
+	if (adreno_is_a504_to_a506(adreno_dev) || adreno_is_a508(adreno_dev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		gpudev->snapshot_data->sect_sizes->cp_meq = 32;
 		gpudev->snapshot_data->sect_sizes->cp_merciu = 1024;
 		gpudev->snapshot_data->sect_sizes->roq = 256;
@@ -140,14 +213,26 @@ static void a5xx_platform_setup(struct adreno_device *adreno_dev)
 		gpudev->snapshot_data->sect_sizes->cp_merciu = 1024;
 	}
 
+<<<<<<< HEAD
 	set_bit(ADRENO_LM_CTRL, &adreno_dev->pwrctrl_flag);
+=======
+	/* Calculate SP local and private mem addresses */
+	addr = ALIGN(ADRENO_UCHE_GMEM_BASE + adreno_dev->gmem_size, SZ_64K);
+	adreno_dev->sp_local_gpuaddr = addr;
+	adreno_dev->sp_pvt_gpuaddr = addr + SZ_64K;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Setup defaults that might get changed by the fuse bits */
 	adreno_dev->lm_leakage = A530_DEFAULT_LEAKAGE;
 	adreno_dev->speed_bin = 0;
 
+<<<<<<< HEAD
 	/* Set the GPU busy counter to use for frequency scaling */
 	adreno_dev->perfctr_pwr_lo = A5XX_RBBM_PERFCTR_RBBM_0_LO;
+=======
+	if (ADRENO_FEATURE(adreno_dev, ADRENO_SPTP_PC))
+		set_bit(ADRENO_SPTP_PC_CTRL, &adreno_dev->pwrctrl_flag);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check efuse bits for various capabilties */
 	a5xx_check_features(adreno_dev);
@@ -259,6 +344,7 @@ static int a5xx_critical_packet_construct(struct adreno_device *adreno_dev)
 
 static void a5xx_init(struct adreno_device *adreno_dev)
 {
+<<<<<<< HEAD
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 
 	of_property_read_u32(device->pdev->dev.of_node,
@@ -271,6 +357,8 @@ static void a5xx_init(struct adreno_device *adreno_dev)
 			clamp_t(unsigned int, adreno_dev->highest_bank_bit,
 				13, 16);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ADRENO_FEATURE(adreno_dev, ADRENO_GPMU))
 		INIT_WORK(&adreno_dev->gpmu_work, a5xx_gpmu_reset);
 
@@ -293,6 +381,7 @@ static void a5xx_remove(struct adreno_device *adreno_dev)
 		a5xx_critical_packet_destroy(adreno_dev);
 }
 
+<<<<<<< HEAD
 const static struct {
 	u32 reg;
 	u32 base;
@@ -336,10 +425,24 @@ static void a5xx_protect_init(struct adreno_device *adreno_dev)
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	u32 reg;
 	int i;
+=======
+/**
+ * a5xx_protect_init() - Initializes register protection on a5xx
+ * @device: Pointer to the device structure
+ * Performs register writes to enable protected access to sensitive
+ * registers
+ */
+static void a5xx_protect_init(struct adreno_device *adreno_dev)
+{
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+	int index = 0;
+	struct kgsl_protected_registers *iommu_regs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* enable access protection to privileged registers */
 	kgsl_regwrite(device, A5XX_CP_PROTECT_CNTL, 0x00000007);
 
+<<<<<<< HEAD
 	for (i = 0; i < ARRAY_SIZE(a5xx_protected_blocks); i++) {
 		reg = a5xx_protected_blocks[i].reg;
 
@@ -356,6 +459,44 @@ static void a5xx_protect_init(struct adreno_device *adreno_dev)
 		_setprotectreg(device, reg + 1, 0x40000, ilog2(0x20000));
 	else
 		_setprotectreg(device, reg + 1, 0x40000, ilog2(0x10000));
+=======
+	/* RBBM registers */
+	adreno_set_protected_registers(adreno_dev, &index, 0x4, 2);
+	adreno_set_protected_registers(adreno_dev, &index, 0x8, 3);
+	adreno_set_protected_registers(adreno_dev, &index, 0x10, 4);
+	adreno_set_protected_registers(adreno_dev, &index, 0x20, 5);
+	adreno_set_protected_registers(adreno_dev, &index, 0x40, 6);
+	adreno_set_protected_registers(adreno_dev, &index, 0x80, 6);
+
+	/* Content protection registers */
+	adreno_set_protected_registers(adreno_dev, &index,
+		   A5XX_RBBM_SECVID_TSB_TRUSTED_BASE_LO, 4);
+	adreno_set_protected_registers(adreno_dev, &index,
+		   A5XX_RBBM_SECVID_TRUST_CNTL, 1);
+
+	/* CP registers */
+	adreno_set_protected_registers(adreno_dev, &index, 0x800, 6);
+	adreno_set_protected_registers(adreno_dev, &index, 0x840, 3);
+	adreno_set_protected_registers(adreno_dev, &index, 0x880, 5);
+	adreno_set_protected_registers(adreno_dev, &index, 0x0AA0, 0);
+
+	/* RB registers */
+	adreno_set_protected_registers(adreno_dev, &index, 0xCC0, 0);
+	adreno_set_protected_registers(adreno_dev, &index, 0xCF0, 1);
+
+	/* VPC registers */
+	adreno_set_protected_registers(adreno_dev, &index, 0xE68, 3);
+	adreno_set_protected_registers(adreno_dev, &index, 0xE70, 4);
+
+	/* UCHE registers */
+	adreno_set_protected_registers(adreno_dev, &index, 0xE80, ilog2(16));
+
+	/* SMMU registers */
+	iommu_regs = kgsl_mmu_get_prot_regs(&device->mmu);
+	if (iommu_regs)
+		adreno_set_protected_registers(adreno_dev, &index,
+				iommu_regs->base, ilog2(iommu_regs->range));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -471,14 +612,22 @@ static int a5xx_regulator_enable(struct adreno_device *adreno_dev)
 	udelay(3);
 	ret = _poll_gdsc_status(adreno_dev, A5XX_GPMU_RBCCU_PWR_CLK_STATUS, 1);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "RBCCU GDSC enable failed\n");
+=======
+		KGSL_PWR_ERR(device, "RBCCU GDSC enable failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	kgsl_regwrite(device, A5XX_GPMU_SP_POWER_CNTL, 0x778000);
 	ret = _poll_gdsc_status(adreno_dev, A5XX_GPMU_SP_PWR_CLK_STATUS, 1);
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "SPTP GDSC enable failed\n");
+=======
+		KGSL_PWR_ERR(device, "SPTP GDSC enable failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -523,28 +672,47 @@ static void a5xx_regulator_disable(struct adreno_device *adreno_dev)
 		udelay(3);
 		if (_poll_gdsc_status(adreno_dev,
 					A5XX_GPMU_SP_PWR_CLK_STATUS, 0))
+<<<<<<< HEAD
 			dev_warn(device->dev, "SPTP GDSC disable failed\n");
+=======
+			KGSL_PWR_WARN(device, "SPTP GDSC disable failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		kgsl_regwrite(device, A5XX_GPMU_RBCCU_POWER_CNTL, 0x778001);
 		if (_poll_gdsc_status(adreno_dev,
 					A5XX_GPMU_RBCCU_PWR_CLK_STATUS, 0))
+<<<<<<< HEAD
 			dev_warn(device->dev, "RBCCU GDSC disable failed\n");
+=======
+			KGSL_PWR_WARN(device, "RBCCU GDSC disable failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else if (test_bit(ADRENO_DEVICE_GPMU_INITIALIZED,
 			&adreno_dev->priv)) {
 		/* GPMU firmware is supposed to turn off SPTP & RAC GDSCs. */
 		kgsl_regread(device, A5XX_GPMU_SP_PWR_CLK_STATUS, &reg);
 		if (reg & BIT(20))
+<<<<<<< HEAD
 			dev_warn(device->dev, "SPTP GDSC is not disabled\n");
 		kgsl_regread(device, A5XX_GPMU_RBCCU_PWR_CLK_STATUS, &reg);
 		if (reg & BIT(20))
 			dev_warn(device->dev, "RBCCU GDSC is not disabled\n");
+=======
+			KGSL_PWR_WARN(device, "SPTP GDSC is not disabled\n");
+		kgsl_regread(device, A5XX_GPMU_RBCCU_PWR_CLK_STATUS, &reg);
+		if (reg & BIT(20))
+			KGSL_PWR_WARN(device, "RBCCU GDSC is not disabled\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * GPMU firmware is supposed to set GMEM to non-retention.
 		 * Bit 14 is the memory core force on bit.
 		 */
 		kgsl_regread(device, A5XX_GPMU_RBCCU_CLOCK_CNTL, &reg);
 		if (reg & BIT(14))
+<<<<<<< HEAD
 			dev_warn(device->dev, "GMEM is forced on\n");
+=======
+			KGSL_PWR_WARN(device, "GMEM is forced on\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (adreno_is_a530(adreno_dev)) {
@@ -606,7 +774,12 @@ static int _gpmu_create_load_cmds(struct adreno_device *adreno_dev,
 	start = cmds;
 
 	/* Turn CP protection OFF */
+<<<<<<< HEAD
 	cmds += cp_protected_mode(adreno_dev, cmds, 0);
+=======
+	*cmds++ = cp_type7_packet(CP_SET_PROTECTED_MODE, 1);
+	*cmds++ = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Prebuild the cmd stream to send to the GPU to load
@@ -630,7 +803,12 @@ static int _gpmu_create_load_cmds(struct adreno_device *adreno_dev,
 	}
 
 	/* Turn CP protection ON */
+<<<<<<< HEAD
 	cmds += cp_protected_mode(adreno_dev, cmds, 1);
+=======
+	*cmds++ = cp_type7_packet(CP_SET_PROTECTED_MODE, 1);
+	*cmds++ = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adreno_dev->gpmu_cmds_size = (size_t) (cmds - start);
 
@@ -647,22 +825,32 @@ static int _load_gpmu_firmware(struct adreno_device *adreno_dev)
 	uint32_t *data;
 	const struct firmware *fw = NULL;
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+<<<<<<< HEAD
 	const struct adreno_a5xx_core *a5xx_core = to_a5xx_core(adreno_dev);
 	uint32_t *cmds, cmd_size;
 	int ret =  -EINVAL;
 	u32 gmu_major = 1;
+=======
+	const struct adreno_gpu_core *gpucore = adreno_dev->gpucore;
+	uint32_t *cmds, cmd_size;
+	int ret =  -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ADRENO_FEATURE(adreno_dev, ADRENO_GPMU))
 		return 0;
 
+<<<<<<< HEAD
 	/* a530 used GMU major 1 and A540 used GMU major 3 */
 	if (adreno_is_a540(adreno_dev))
 		gmu_major = 3;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* gpmu fw already saved and verified so do nothing new */
 	if (adreno_dev->gpmu_cmds_size != 0)
 		return 0;
 
+<<<<<<< HEAD
 	if (a5xx_core->gpmufw_name == NULL)
 		return 0;
 
@@ -670,6 +858,15 @@ static int _load_gpmu_firmware(struct adreno_device *adreno_dev)
 	if (ret || fw == NULL) {
 		dev_err(device->dev, "request_firmware (%s) failed: %d\n",
 				a5xx_core->gpmufw_name, ret);
+=======
+	if (gpucore->gpmufw_name == NULL)
+		return 0;
+
+	ret = request_firmware(&fw, gpucore->gpmufw_name, device->dev);
+	if (ret || fw == NULL) {
+		KGSL_CORE_ERR("request_firmware (%s) failed: %d\n",
+				gpucore->gpmufw_name, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -680,8 +877,16 @@ static int _load_gpmu_firmware(struct adreno_device *adreno_dev)
 
 	if (data[1] != GPMU_FIRMWARE_ID)
 		goto err;
+<<<<<<< HEAD
 	ret = _read_fw2_block_header(device, &data[2],
 		data[0] - 2, GPMU_FIRMWARE_ID, gmu_major, 0);
+=======
+	ret = _read_fw2_block_header(&data[2],
+		data[0] - 2,
+		GPMU_FIRMWARE_ID,
+		adreno_dev->gpucore->gpmu_major,
+		adreno_dev->gpucore->gpmu_minor);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err;
 
@@ -693,7 +898,11 @@ static int _load_gpmu_firmware(struct adreno_device *adreno_dev)
 	cmd_size = data[0] - data[2] - 2;
 
 	if (cmd_size > GPMU_INST_RAM_SIZE) {
+<<<<<<< HEAD
 		dev_err(device->dev,
+=======
+		KGSL_CORE_ERR(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"GPMU firmware block size is larger than RAM size\n");
 		goto err;
 	}
@@ -770,8 +979,12 @@ static int a5xx_gpmu_start(struct adreno_device *adreno_dev)
 	} while ((reg != 0xBABEFACE) && retry--);
 
 	if (reg != 0xBABEFACE) {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"GPMU firmware initialization timed out\n");
+=======
+		KGSL_CORE_ERR("GPMU firmware initialization timed out\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ETIMEDOUT;
 	}
 
@@ -779,7 +992,11 @@ static int a5xx_gpmu_start(struct adreno_device *adreno_dev)
 		kgsl_regread(device, A5XX_GPMU_GENERAL_1, &reg);
 
 		if (reg) {
+<<<<<<< HEAD
 			dev_err(device->dev,
+=======
+			KGSL_CORE_ERR(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"GPMU firmware initialization failed: %d\n",
 				reg);
 			return -EIO;
@@ -803,27 +1020,428 @@ static int a5xx_gpmu_start(struct adreno_device *adreno_dev)
 	return ret;
 }
 
+<<<<<<< HEAD
 void a5xx_hwcg_set(struct adreno_device *adreno_dev, bool on)
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	const struct adreno_a5xx_core *a5xx_core = to_a5xx_core(adreno_dev);
 	int i;
+=======
+struct kgsl_hwcg_reg {
+	unsigned int off;
+	unsigned int val;
+};
+
+static const struct kgsl_hwcg_reg a50x_hwcg_regs[] = {
+	{A5XX_RBBM_CLOCK_CNTL_SP0, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL2_SP0, 0x02222220},
+	{A5XX_RBBM_CLOCK_HYST_SP0, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_DELAY_SP0, 0x00000080},
+	{A5XX_RBBM_CLOCK_CNTL_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP0, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST3_TP0, 0x00007777},
+	{A5XX_RBBM_CLOCK_DELAY_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP0, 0x00001111},
+	{A5XX_RBBM_CLOCK_CNTL2_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL4_UCHE, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_HYST_UCHE, 0x00FFFFF4},
+	{A5XX_RBBM_CLOCK_DELAY_UCHE, 0x00000002},
+	{A5XX_RBBM_CLOCK_CNTL_RB0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB0, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL_CCU0, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_RAC, 0x05522222},
+	{A5XX_RBBM_CLOCK_CNTL2_RAC, 0x00505555},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU0, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RAC, 0x07444044},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_0, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RAC, 0x00010011},
+	{A5XX_RBBM_CLOCK_CNTL_TSE_RAS_RBBM, 0x04222222},
+	{A5XX_RBBM_CLOCK_MODE_GPC, 0x02222222},
+	{A5XX_RBBM_CLOCK_MODE_VFD, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TSE_RAS_RBBM, 0x00000000},
+	{A5XX_RBBM_CLOCK_HYST_GPC, 0x04104004},
+	{A5XX_RBBM_CLOCK_HYST_VFD, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_HLSQ, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_TSE_RAS_RBBM, 0x00004000},
+	{A5XX_RBBM_CLOCK_DELAY_GPC, 0x00000200},
+	{A5XX_RBBM_CLOCK_DELAY_VFD, 0x00002222}
+};
+
+static const struct kgsl_hwcg_reg a510_hwcg_regs[] = {
+	{A5XX_RBBM_CLOCK_CNTL_SP0, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL_SP1, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL2_SP0, 0x02222220},
+	{A5XX_RBBM_CLOCK_CNTL2_SP1, 0x02222220},
+	{A5XX_RBBM_CLOCK_HYST_SP0, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_HYST_SP1, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_DELAY_SP0, 0x00000080},
+	{A5XX_RBBM_CLOCK_DELAY_SP1, 0x00000080},
+	{A5XX_RBBM_CLOCK_CNTL_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_TP1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP0, 0x00002222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP1, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST_TP1, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP1, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST3_TP0, 0x00007777},
+	{A5XX_RBBM_CLOCK_HYST3_TP1, 0x00007777},
+	{A5XX_RBBM_CLOCK_DELAY_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY_TP1, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP1, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP0, 0x00001111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP1, 0x00001111},
+	{A5XX_RBBM_CLOCK_CNTL_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL4_UCHE, 0x00222222},
+	{A5XX_RBBM_CLOCK_HYST_UCHE, 0x00444444},
+	{A5XX_RBBM_CLOCK_DELAY_UCHE, 0x00000002},
+	{A5XX_RBBM_CLOCK_CNTL_RB0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_RB1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB0, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB1, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL_CCU0, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_CCU1, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_RAC, 0x05522222},
+	{A5XX_RBBM_CLOCK_CNTL2_RAC, 0x00505555},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU0, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU1, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RAC, 0x07444044},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_0, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_1, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RAC, 0x00010011},
+	{A5XX_RBBM_CLOCK_CNTL_TSE_RAS_RBBM, 0x04222222},
+	{A5XX_RBBM_CLOCK_MODE_GPC, 0x02222222},
+	{A5XX_RBBM_CLOCK_MODE_VFD, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TSE_RAS_RBBM, 0x00000000},
+	{A5XX_RBBM_CLOCK_HYST_GPC, 0x04104004},
+	{A5XX_RBBM_CLOCK_HYST_VFD, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_HLSQ, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_TSE_RAS_RBBM, 0x00004000},
+	{A5XX_RBBM_CLOCK_DELAY_GPC, 0x00000200},
+	{A5XX_RBBM_CLOCK_DELAY_VFD, 0x00002222}
+};
+
+static const struct kgsl_hwcg_reg a530_hwcg_regs[] = {
+	{A5XX_RBBM_CLOCK_CNTL_SP0, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL_SP1, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL_SP2, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL_SP3, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL2_SP0, 0x02222220},
+	{A5XX_RBBM_CLOCK_CNTL2_SP1, 0x02222220},
+	{A5XX_RBBM_CLOCK_CNTL2_SP2, 0x02222220},
+	{A5XX_RBBM_CLOCK_CNTL2_SP3, 0x02222220},
+	{A5XX_RBBM_CLOCK_HYST_SP0, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_HYST_SP1, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_HYST_SP2, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_HYST_SP3, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_DELAY_SP0, 0x00000080},
+	{A5XX_RBBM_CLOCK_DELAY_SP1, 0x00000080},
+	{A5XX_RBBM_CLOCK_DELAY_SP2, 0x00000080},
+	{A5XX_RBBM_CLOCK_DELAY_SP3, 0x00000080},
+	{A5XX_RBBM_CLOCK_CNTL_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_TP1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_TP2, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_TP3, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP2, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP3, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP0, 0x00002222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP1, 0x00002222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP2, 0x00002222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP3, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST_TP1, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST_TP2, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST_TP3, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP1, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP2, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP3, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST3_TP0, 0x00007777},
+	{A5XX_RBBM_CLOCK_HYST3_TP1, 0x00007777},
+	{A5XX_RBBM_CLOCK_HYST3_TP2, 0x00007777},
+	{A5XX_RBBM_CLOCK_HYST3_TP3, 0x00007777},
+	{A5XX_RBBM_CLOCK_DELAY_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY_TP1, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY_TP2, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY_TP3, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP1, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP2, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP3, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP0, 0x00001111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP1, 0x00001111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP2, 0x00001111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP3, 0x00001111},
+	{A5XX_RBBM_CLOCK_CNTL_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL4_UCHE, 0x00222222},
+	{A5XX_RBBM_CLOCK_HYST_UCHE, 0x00444444},
+	{A5XX_RBBM_CLOCK_DELAY_UCHE, 0x00000002},
+	{A5XX_RBBM_CLOCK_CNTL_RB0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_RB1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_RB2, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_RB3, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB0, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB1, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB2, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB3, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL_CCU0, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_CCU1, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_CCU2, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_CCU3, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_RAC, 0x05522222},
+	{A5XX_RBBM_CLOCK_CNTL2_RAC, 0x00505555},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU0, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU1, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU2, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU3, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RAC, 0x07444044},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_0, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_1, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_2, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_3, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RAC, 0x00010011},
+	{A5XX_RBBM_CLOCK_CNTL_TSE_RAS_RBBM, 0x04222222},
+	{A5XX_RBBM_CLOCK_MODE_GPC, 0x02222222},
+	{A5XX_RBBM_CLOCK_MODE_VFD, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TSE_RAS_RBBM, 0x00000000},
+	{A5XX_RBBM_CLOCK_HYST_GPC, 0x04104004},
+	{A5XX_RBBM_CLOCK_HYST_VFD, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_HLSQ, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_TSE_RAS_RBBM, 0x00004000},
+	{A5XX_RBBM_CLOCK_DELAY_GPC, 0x00000200},
+	{A5XX_RBBM_CLOCK_DELAY_VFD, 0x00002222}
+};
+
+
+static const struct kgsl_hwcg_reg a540_hwcg_regs[] = {
+	{A5XX_RBBM_CLOCK_CNTL_SP0, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL_SP1, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL_SP2, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL_SP3, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL2_SP0, 0x02222220},
+	{A5XX_RBBM_CLOCK_CNTL2_SP1, 0x02222220},
+	{A5XX_RBBM_CLOCK_CNTL2_SP2, 0x02222220},
+	{A5XX_RBBM_CLOCK_CNTL2_SP3, 0x02222220},
+	{A5XX_RBBM_CLOCK_HYST_SP0, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_HYST_SP1, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_HYST_SP2, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_HYST_SP3, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_DELAY_SP0, 0x00000080},
+	{A5XX_RBBM_CLOCK_DELAY_SP1, 0x00000080},
+	{A5XX_RBBM_CLOCK_DELAY_SP2, 0x00000080},
+	{A5XX_RBBM_CLOCK_DELAY_SP3, 0x00000080},
+	{A5XX_RBBM_CLOCK_CNTL_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_TP1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_TP2, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_TP3, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP2, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP3, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP0, 0x00002222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP1, 0x00002222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP2, 0x00002222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP3, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST_TP1, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST_TP2, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST_TP3, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP1, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP2, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP3, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST3_TP0, 0x00007777},
+	{A5XX_RBBM_CLOCK_HYST3_TP1, 0x00007777},
+	{A5XX_RBBM_CLOCK_HYST3_TP2, 0x00007777},
+	{A5XX_RBBM_CLOCK_HYST3_TP3, 0x00007777},
+	{A5XX_RBBM_CLOCK_DELAY_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY_TP1, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY_TP2, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY_TP3, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP1, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP2, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP3, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP0, 0x00001111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP1, 0x00001111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP2, 0x00001111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP3, 0x00001111},
+	{A5XX_RBBM_CLOCK_CNTL_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL4_UCHE, 0x00222222},
+	{A5XX_RBBM_CLOCK_HYST_UCHE, 0x00444444},
+	{A5XX_RBBM_CLOCK_DELAY_UCHE, 0x00000002},
+	{A5XX_RBBM_CLOCK_CNTL_RB0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_RB1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_RB2, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_RB3, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB0, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB1, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB2, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB3, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL_CCU0, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_CCU1, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_CCU2, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_CCU3, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_RAC, 0x05522222},
+	{A5XX_RBBM_CLOCK_CNTL2_RAC, 0x00505555},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU0, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU1, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU2, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU3, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RAC, 0x07444044},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_0, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_1, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_2, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_3, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RAC, 0x00010011},
+	{A5XX_RBBM_CLOCK_CNTL_TSE_RAS_RBBM, 0x04222222},
+	{A5XX_RBBM_CLOCK_MODE_GPC, 0x02222222},
+	{A5XX_RBBM_CLOCK_MODE_VFD, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TSE_RAS_RBBM, 0x00000000},
+	{A5XX_RBBM_CLOCK_HYST_GPC, 0x04104004},
+	{A5XX_RBBM_CLOCK_HYST_VFD, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_HLSQ, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_TSE_RAS_RBBM, 0x00004000},
+	{A5XX_RBBM_CLOCK_DELAY_GPC, 0x00000200},
+	{A5XX_RBBM_CLOCK_DELAY_VFD, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_GPMU, 0x00000222},
+	{A5XX_RBBM_CLOCK_DELAY_GPMU, 0x00000770},
+	{A5XX_RBBM_CLOCK_HYST_GPMU, 0x00000004}
+};
+
+static const struct kgsl_hwcg_reg a512_hwcg_regs[] = {
+	{A5XX_RBBM_CLOCK_CNTL_SP0, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL_SP1, 0x02222222},
+	{A5XX_RBBM_CLOCK_CNTL2_SP0, 0x02222220},
+	{A5XX_RBBM_CLOCK_CNTL2_SP1, 0x02222220},
+	{A5XX_RBBM_CLOCK_HYST_SP0, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_HYST_SP1, 0x0000F3CF},
+	{A5XX_RBBM_CLOCK_DELAY_SP0, 0x00000080},
+	{A5XX_RBBM_CLOCK_DELAY_SP1, 0x00000080},
+	{A5XX_RBBM_CLOCK_CNTL_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_TP1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_TP1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP0, 0x00002222},
+	{A5XX_RBBM_CLOCK_CNTL3_TP1, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST_TP1, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP0, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST2_TP1, 0x77777777},
+	{A5XX_RBBM_CLOCK_HYST3_TP0, 0x00007777},
+	{A5XX_RBBM_CLOCK_HYST3_TP1, 0x00007777},
+	{A5XX_RBBM_CLOCK_DELAY_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY_TP1, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP0, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY2_TP1, 0x11111111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP0, 0x00001111},
+	{A5XX_RBBM_CLOCK_DELAY3_TP1, 0x00001111},
+	{A5XX_RBBM_CLOCK_CNTL_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL3_UCHE, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL4_UCHE, 0x00222222},
+	{A5XX_RBBM_CLOCK_HYST_UCHE, 0x00444444},
+	{A5XX_RBBM_CLOCK_DELAY_UCHE, 0x00000002},
+	{A5XX_RBBM_CLOCK_CNTL_RB0, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL_RB1, 0x22222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB0, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL2_RB1, 0x00222222},
+	{A5XX_RBBM_CLOCK_CNTL_CCU0, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_CCU1, 0x00022220},
+	{A5XX_RBBM_CLOCK_CNTL_RAC, 0x05522222},
+	{A5XX_RBBM_CLOCK_CNTL2_RAC, 0x00505555},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU0, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RB_CCU1, 0x04040404},
+	{A5XX_RBBM_CLOCK_HYST_RAC, 0x07444044},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_0, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RB_CCU_L1_1, 0x00000002},
+	{A5XX_RBBM_CLOCK_DELAY_RAC, 0x00010011},
+	{A5XX_RBBM_CLOCK_CNTL_TSE_RAS_RBBM, 0x04222222},
+	{A5XX_RBBM_CLOCK_MODE_GPC, 0x02222222},
+	{A5XX_RBBM_CLOCK_MODE_VFD, 0x00002222},
+	{A5XX_RBBM_CLOCK_HYST_TSE_RAS_RBBM, 0x00000000},
+	{A5XX_RBBM_CLOCK_HYST_GPC, 0x04104004},
+	{A5XX_RBBM_CLOCK_HYST_VFD, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_HLSQ, 0x00000000},
+	{A5XX_RBBM_CLOCK_DELAY_TSE_RAS_RBBM, 0x00004000},
+	{A5XX_RBBM_CLOCK_DELAY_GPC, 0x00000200},
+	{A5XX_RBBM_CLOCK_DELAY_VFD, 0x00002222},
+};
+
+static const struct {
+	int (*devfunc)(struct adreno_device *adreno_dev);
+	const struct kgsl_hwcg_reg *regs;
+	unsigned int count;
+} a5xx_hwcg_registers[] = {
+	{ adreno_is_a540, a540_hwcg_regs, ARRAY_SIZE(a540_hwcg_regs) },
+	{ adreno_is_a530, a530_hwcg_regs, ARRAY_SIZE(a530_hwcg_regs) },
+	{ adreno_is_a512, a512_hwcg_regs, ARRAY_SIZE(a512_hwcg_regs) },
+	{ adreno_is_a510, a510_hwcg_regs, ARRAY_SIZE(a510_hwcg_regs) },
+	{ adreno_is_a504, a50x_hwcg_regs, ARRAY_SIZE(a50x_hwcg_regs) },
+	{ adreno_is_a505, a50x_hwcg_regs, ARRAY_SIZE(a50x_hwcg_regs) },
+	{ adreno_is_a506, a50x_hwcg_regs, ARRAY_SIZE(a50x_hwcg_regs) },
+	{ adreno_is_a508, a50x_hwcg_regs, ARRAY_SIZE(a50x_hwcg_regs) },
+};
+
+void a5xx_hwcg_set(struct adreno_device *adreno_dev, bool on)
+{
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+	const struct kgsl_hwcg_reg *regs;
+	int i, j;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!test_bit(ADRENO_HWCG_CTRL, &adreno_dev->pwrctrl_flag))
 		return;
 
+<<<<<<< HEAD
 	for (i = 0; i < a5xx_core->hwcg_count; i++)
 		kgsl_regwrite(device, a5xx_core->hwcg[i].offset,
 			on ? a5xx_core->hwcg[i].value : 0);
+=======
+	for (i = 0; i < ARRAY_SIZE(a5xx_hwcg_registers); i++) {
+		if (a5xx_hwcg_registers[i].devfunc(adreno_dev))
+			break;
+	}
+
+	if (i == ARRAY_SIZE(a5xx_hwcg_registers))
+		return;
+
+	regs = a5xx_hwcg_registers[i].regs;
+
+	for (j = 0; j < a5xx_hwcg_registers[i].count; j++)
+		kgsl_regwrite(device, regs[j].off, on ? regs[j].val : 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* enable top level HWCG */
 	kgsl_regwrite(device, A5XX_RBBM_CLOCK_CNTL, on ? 0xAAA8AA00 : 0);
 	kgsl_regwrite(device, A5XX_RBBM_ISDB_CNT, on ? 0x00000182 : 0x00000180);
 }
 
+<<<<<<< HEAD
 static int _read_fw2_block_header(struct kgsl_device *device,
 		uint32_t *header, uint32_t remain,
 		uint32_t id, uint32_t major, uint32_t minor)
+=======
+static int _read_fw2_block_header(uint32_t *header, uint32_t remain,
+			uint32_t id, uint32_t major, uint32_t minor)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	uint32_t header_size;
 	int i = 1;
@@ -849,7 +1467,11 @@ static int _read_fw2_block_header(struct kgsl_device *device,
 		case HEADER_MAJOR:
 			if ((major > header[i + 1]) &&
 				header[i + 1]) {
+<<<<<<< HEAD
 				dev_err(device->dev,
+=======
+				KGSL_CORE_ERR(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"GPMU major version mis-match %d, %d\n",
 					major, header[i + 1]);
 				return -EINVAL;
@@ -857,7 +1479,11 @@ static int _read_fw2_block_header(struct kgsl_device *device,
 			break;
 		case HEADER_MINOR:
 			if (minor > header[i + 1])
+<<<<<<< HEAD
 				dev_err(device->dev,
+=======
+				KGSL_CORE_ERR(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"GPMU minor version mis-match %d %d\n",
 					minor, header[i + 1]);
 			break;
@@ -865,7 +1491,11 @@ static int _read_fw2_block_header(struct kgsl_device *device,
 		case HEADER_TIME:
 			break;
 		default:
+<<<<<<< HEAD
 			dev_err(device->dev, "GPMU unknown header ID %d\n",
+=======
+			KGSL_CORE_ERR("GPMU unknown header ID %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					header[i]);
 		}
 	}
@@ -897,11 +1527,15 @@ static int _read_fw2_block_header(struct kgsl_device *device,
 static void _load_regfile(struct adreno_device *adreno_dev)
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+<<<<<<< HEAD
 	const struct adreno_a5xx_core *a5xx_core = to_a5xx_core(adreno_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct firmware *fw;
 	uint64_t block_size = 0, block_total = 0;
 	uint32_t fw_size, *block;
 	int ret = -EINVAL;
+<<<<<<< HEAD
 	u32 lm_major = 1;
 
 	if (!a5xx_core->regfw_name)
@@ -918,6 +1552,20 @@ static void _load_regfile(struct adreno_device *adreno_dev)
 	if (adreno_is_a530v2(adreno_dev))
 		lm_major = 3;
 
+=======
+
+	if (!adreno_dev->gpucore->regfw_name)
+		return;
+
+	ret = request_firmware(&fw, adreno_dev->gpucore->regfw_name,
+			device->dev);
+	if (ret) {
+		KGSL_PWR_ERR(device, "request firmware failed %d, %s\n",
+				ret, adreno_dev->gpucore->regfw_name);
+		return;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fw_size = fw->size / sizeof(uint32_t);
 	/* Min valid file of size 6, see file description */
 	if (fw_size < 6)
@@ -934,9 +1582,17 @@ static void _load_regfile(struct adreno_device *adreno_dev)
 
 		/* For now ignore blocks other than the LM sequence */
 		if (block[4] == LM_SEQUENCE_ID) {
+<<<<<<< HEAD
 			ret = _read_fw2_block_header(device, &block[2],
 				block_size - 2, GPMU_SEQUENCE_ID,
 				lm_major, 0);
+=======
+			ret = _read_fw2_block_header(&block[2],
+				block_size - 2,
+				GPMU_SEQUENCE_ID,
+				adreno_dev->gpucore->lm_major,
+				adreno_dev->gpucore->lm_minor);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret)
 				goto err;
 
@@ -955,9 +1611,15 @@ static void _load_regfile(struct adreno_device *adreno_dev)
 
 err:
 	release_firmware(fw);
+<<<<<<< HEAD
 	dev_err(device->dev,
 		     "Register file failed to load sz=%d bsz=%llu header=%d\n",
 		     fw_size, block_size, ret);
+=======
+	KGSL_PWR_ERR(device,
+		"Register file failed to load sz=%d bsz=%llu header=%d\n",
+		fw_size, block_size, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int _execute_reg_sequence(struct adreno_device *adreno_dev,
@@ -997,13 +1659,20 @@ static uint32_t _write_voltage_table(struct adreno_device *adreno_dev,
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct kgsl_pwrctrl *pwr = &device->pwrctrl;
+<<<<<<< HEAD
 	const struct adreno_a5xx_core *a5xx_core = to_a5xx_core(adreno_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	struct dev_pm_opp *opp;
 	int levels = pwr->num_pwrlevels - 1;
 	unsigned int mvolt = 0;
 
+<<<<<<< HEAD
 	kgsl_regwrite(device, addr++, a5xx_core->max_power);
+=======
+	kgsl_regwrite(device, addr++, adreno_dev->gpucore->max_power);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_regwrite(device, addr++, levels);
 
 	/* Write voltage in mV and frequency in MHz */
@@ -1043,7 +1712,10 @@ static void a530_lm_init(struct adreno_device *adreno_dev)
 {
 	uint32_t length;
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+<<<<<<< HEAD
 	const struct adreno_a5xx_core *a5xx_core = to_a5xx_core(adreno_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!ADRENO_FEATURE(adreno_dev, ADRENO_LM) ||
 		!test_bit(ADRENO_LM_CTRL, &adreno_dev->pwrctrl_flag))
@@ -1058,12 +1730,21 @@ static void a530_lm_init(struct adreno_device *adreno_dev)
 				adreno_dev->lm_size)) {
 		/* If the sequence is invalid, it's not getting better */
 		adreno_dev->lm_sequence = NULL;
+<<<<<<< HEAD
 		dev_warn(device->dev,
+=======
+		KGSL_PWR_WARN(device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"Invalid LM sequence\n");
 		return;
 	}
 
+<<<<<<< HEAD
 	kgsl_regwrite(device, A5XX_GPMU_TEMP_SENSOR_ID, a5xx_core->gpmu_tsens);
+=======
+	kgsl_regwrite(device, A5XX_GPMU_TEMP_SENSOR_ID,
+			adreno_dev->gpucore->gpmu_tsens);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_regwrite(device, A5XX_GPMU_DELTA_TEMP_THRESHOLD, 0x1);
 	kgsl_regwrite(device, A5XX_GPMU_TEMP_SENSOR_CONFIG, 0x1);
 
@@ -1137,7 +1818,11 @@ static void a540_lm_init(struct adreno_device *adreno_dev)
 		kgsl_regread(device, A5XX_GPMU_TEMP_SENSOR_CONFIG, &r);
 
 		if ((r & GPMU_ISENSE_STATUS) == GPMU_ISENSE_END_POINT_CAL_ERR) {
+<<<<<<< HEAD
 			dev_err(device->dev,
+=======
+			KGSL_CORE_ERR(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"GPMU: ISENSE end point calibration failure\n");
 			agc_lm_config |= AGC_LM_CONFIG_ENABLE_ERROR;
 		}
@@ -1209,7 +1894,18 @@ static void a5xx_pwrlevel_change_settings(struct adreno_device *adreno_dev,
 {
 	int on = 0;
 
+<<<<<<< HEAD
 	/* On pre A540 HW only call through if LMx is supported and enabled */
+=======
+	/*
+	 * On pre A540 HW only call through if PPD or LMx
+	 * is supported and enabled
+	 */
+	if (ADRENO_FEATURE(adreno_dev, ADRENO_PPD) &&
+		test_bit(ADRENO_PPD_CTRL, &adreno_dev->pwrctrl_flag))
+		on = ADRENO_PPD;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ADRENO_FEATURE(adreno_dev, ADRENO_LM) &&
 		test_bit(ADRENO_LM_CTRL, &adreno_dev->pwrctrl_flag))
 		on = ADRENO_LM;
@@ -1223,6 +1919,7 @@ static void a5xx_pwrlevel_change_settings(struct adreno_device *adreno_dev,
 	if (!on)
 		return;
 
+<<<<<<< HEAD
 	if (!post) {
 		if (gpmu_set_level(adreno_dev, (0x80000010 | postlevel)))
 			dev_err(KGSL_DEVICE(adreno_dev)->dev,
@@ -1230,6 +1927,15 @@ static void a5xx_pwrlevel_change_settings(struct adreno_device *adreno_dev,
 	} else {
 		if (gpmu_set_level(adreno_dev, (0x80000000 | postlevel)))
 			dev_err(KGSL_DEVICE(adreno_dev)->dev,
+=======
+	if (post == 0) {
+		if (gpmu_set_level(adreno_dev, (0x80000010 | postlevel)))
+			KGSL_CORE_ERR(
+				"GPMU pre powerlevel did not stabilize\n");
+	} else {
+		if (gpmu_set_level(adreno_dev, (0x80000000 | postlevel)))
+			KGSL_CORE_ERR(
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"GPMU post powerlevel did not stabilize\n");
 	}
 }
@@ -1270,6 +1976,27 @@ static void a5xx_count_throttles(struct adreno_device *adreno_dev,
 		adreno_dev->lm_threshold_cross = adj;
 }
 
+<<<<<<< HEAD
+=======
+static int a5xx_enable_pwr_counters(struct adreno_device *adreno_dev,
+		unsigned int counter)
+{
+	/*
+	 * On 5XX we have to emulate the PWR counters which are physically
+	 * missing. Program countable 6 on RBBM_PERFCTR_RBBM_0 as a substitute
+	 * for PWR:1. Don't emulate PWR:0 as nobody uses it and we don't want
+	 * to take away too many of the generic RBBM counters.
+	 */
+
+	if (counter == 0)
+		return -EINVAL;
+
+	kgsl_regwrite(KGSL_DEVICE(adreno_dev), A5XX_RBBM_PERFCTR_RBBM_SEL_0, 6);
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* FW driven idle 10% throttle */
 #define IDLE_10PCT 0
 /* number of cycles when clock is throttled by 50% (CRC) */
@@ -1416,7 +2143,10 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
+<<<<<<< HEAD
 	const struct adreno_a5xx_core *a5xx_core = to_a5xx_core(adreno_dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int bit;
 	int ret;
 
@@ -1434,16 +2164,24 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 
 	_setup_throttling_counters(adreno_dev);
 
+<<<<<<< HEAD
 	/* Set up VBIF registers from the GPU core definition */
 	adreno_reglist_write(adreno_dev, a5xx_core->vbif,
 		a5xx_core->vbif_count);
+=======
+	adreno_vbif_start(adreno_dev, a5xx_vbif_platforms,
+			ARRAY_SIZE(a5xx_vbif_platforms));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Make all blocks contribute to the GPU BUSY perf counter */
 	kgsl_regwrite(device, A5XX_RBBM_PERFCTR_GPU_BUSY_MASKED, 0xFFFFFFFF);
 
+<<<<<<< HEAD
 	/* Program RBBM counter 0 to report GPU busy for frequency scaling */
 	kgsl_regwrite(device, A5XX_RBBM_PERFCTR_RBBM_SEL_0, 6);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Enable the RBBM error reporting bits.  This lets us get
 	 * useful information on failure
@@ -1476,6 +2214,7 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 	}
 
 	/*
+<<<<<<< HEAD
 	 * Turn on hang detection. This spews a lot of useful information
 	 * into the RBBM registers on a hang.
 	 */
@@ -1487,6 +2226,23 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 	 */
 	kgsl_regwrite(device, A5XX_RBBM_INTERFACE_HANG_INT_CNTL,
 				  (1 << 30) | 0x3FFFF);
+=======
+	 * Turn on hang detection for a530 v2 and beyond. This spews a
+	 * lot of useful information into the RBBM registers on a hang.
+	 */
+	if (!adreno_is_a530v1(adreno_dev)) {
+
+		set_bit(ADRENO_DEVICE_HANG_INTR, &adreno_dev->priv);
+		gpudev->irq->mask |= (1 << A5XX_INT_MISC_HANG_DETECT);
+		/*
+		 * Set hang detection threshold to 4 million cycles
+		 * (0x3FFFF*16)
+		 */
+		kgsl_regwrite(device, A5XX_RBBM_INTERFACE_HANG_INT_CNTL,
+					  (1 << 30) | 0x3FFFF);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Turn on performance counters */
 	kgsl_regwrite(device, A5XX_RBBM_PERFCTR_CNTL, 0x01);
@@ -1508,18 +2264,30 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 
 	/* Program the GMEM VA range for the UCHE path */
 	kgsl_regwrite(device, A5XX_UCHE_GMEM_RANGE_MIN_LO,
+<<<<<<< HEAD
 			adreno_dev->gpucore->gmem_base);
 	kgsl_regwrite(device, A5XX_UCHE_GMEM_RANGE_MIN_HI, 0x0);
 	kgsl_regwrite(device, A5XX_UCHE_GMEM_RANGE_MAX_LO,
 			adreno_dev->gpucore->gmem_base +
 			adreno_dev->gpucore->gmem_size - 1);
+=======
+				ADRENO_UCHE_GMEM_BASE);
+	kgsl_regwrite(device, A5XX_UCHE_GMEM_RANGE_MIN_HI, 0x0);
+	kgsl_regwrite(device, A5XX_UCHE_GMEM_RANGE_MAX_LO,
+				ADRENO_UCHE_GMEM_BASE +
+				adreno_dev->gmem_size - 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kgsl_regwrite(device, A5XX_UCHE_GMEM_RANGE_MAX_HI, 0x0);
 
 	/*
 	 * Below CP registers are 0x0 by default, program init
 	 * values based on a5xx flavor.
 	 */
+<<<<<<< HEAD
 	if (adreno_is_a505_or_a506(adreno_dev) || adreno_is_a508(adreno_dev)) {
+=======
+	if (adreno_is_a504_to_a506(adreno_dev) || adreno_is_a508(adreno_dev)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kgsl_regwrite(device, A5XX_CP_MEQ_THRESHOLDS, 0x20);
 		kgsl_regwrite(device, A5XX_CP_MERCIU_SIZE, 0x400);
 		kgsl_regwrite(device, A5XX_CP_ROQ_THRESHOLDS_2, 0x40000030);
@@ -1545,7 +2313,11 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 	 * vtxFifo and primFifo thresholds default values
 	 * are different.
 	 */
+<<<<<<< HEAD
 	if (adreno_is_a505_or_a506(adreno_dev) || adreno_is_a508(adreno_dev))
+=======
+	if (adreno_is_a504_to_a506(adreno_dev) || adreno_is_a508(adreno_dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kgsl_regwrite(device, A5XX_PC_DBG_ECO_CNTL,
 						(0x100 << 11 | 0x100 << 22));
 	else if (adreno_is_a510(adreno_dev) || adreno_is_a512(adreno_dev))
@@ -1555,6 +2327,22 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 		kgsl_regwrite(device, A5XX_PC_DBG_ECO_CNTL,
 						(0x400 << 11 | 0x300 << 22));
 
+<<<<<<< HEAD
+=======
+	/*
+	 * A5x USP LDST non valid pixel wrongly update read combine offset
+	 * In A5xx we added optimization for read combine. There could be cases
+	 * on a530 v1 there is no valid pixel but the active masks is not
+	 * cleared and the offset can be wrongly updated if the invalid address
+	 * can be combined. The wrongly latched value will make the returning
+	 * data got shifted at wrong offset. workaround this issue by disabling
+	 * LD combine, bit[25] of SP_DBG_ECO_CNTL (sp chicken bit[17]) need to
+	 * be set to 1, default is 0(enable)
+	 */
+	if (adreno_is_a530v1(adreno_dev))
+		kgsl_regrmw(device, A5XX_SP_DBG_ECO_CNTL, 0, (1 << 25));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ADRENO_QUIRK(adreno_dev, ADRENO_QUIRK_TWO_PASS_USE_WFI)) {
 		/*
 		 * Set TWOPASSUSEWFI in A5XX_PC_DBG_ECO_CNTL for
@@ -1603,14 +2391,20 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 			kgsl_regwrite(device, A5XX_RBBM_CLOCK_CNTL, 0x0);
 			kgsl_regwrite(device, A5XX_RBBM_ISDB_CNT, 0x0);
 		} else
+<<<<<<< HEAD
 			dev_err(device->dev,
 				"Active count failed while turning on ISDB\n");
+=======
+			KGSL_CORE_ERR(
+				"Active count failed while turning on ISDB.");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/* if not in ISDB mode enable ME/PFP split notification */
 		kgsl_regwrite(device, A5XX_RBBM_AHB_CNTL1, 0xA6FFFFFF);
 	}
 
 	kgsl_regwrite(device, A5XX_RBBM_AHB_CNTL2, 0x0000003F);
+<<<<<<< HEAD
 	bit = adreno_dev->highest_bank_bit ?
 		(adreno_dev->highest_bank_bit - 13) & 0x03 : 0;
 
@@ -1626,6 +2420,31 @@ static void a5xx_start(struct adreno_device *adreno_dev)
 	kgsl_regwrite(device, A5XX_RB_MODE_CNTL, bit << 1);
 	if (adreno_is_a540(adreno_dev) || adreno_is_a512(adreno_dev))
 		kgsl_regwrite(device, A5XX_UCHE_DBG_ECO_CNTL_2, bit);
+=======
+
+	if (!of_property_read_u32(device->pdev->dev.of_node,
+		"qcom,highest-bank-bit", &bit)) {
+		if (bit >= 13 && bit <= 16) {
+			bit = (bit - 13) & 0x03;
+
+			/*
+			 * Program the highest DDR bank bit that was passed in
+			 * from the DT in a handful of registers. Some of these
+			 * registers will also be written by the UMD, but we
+			 * want to program them in case we happen to use the
+			 * UCHE before the UMD does
+			 */
+
+			kgsl_regwrite(device, A5XX_TPL1_MODE_CNTL, bit << 7);
+			kgsl_regwrite(device, A5XX_RB_MODE_CNTL, bit << 1);
+			if (adreno_is_a540(adreno_dev) ||
+				adreno_is_a512(adreno_dev))
+				kgsl_regwrite(device, A5XX_UCHE_DBG_ECO_CNTL_2,
+					bit);
+		}
+
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Disable All flat shading optimization */
 	kgsl_regrmw(device, A5XX_VPC_DBG_ECO_CNTL, 0, 0x1 << 10);
@@ -1657,7 +2476,12 @@ static int _preemption_init(
 	uint64_t gpuaddr = rb->preemption_desc.gpuaddr;
 
 	/* Turn CP protection OFF */
+<<<<<<< HEAD
 	cmds += cp_protected_mode(adreno_dev, cmds, 0);
+=======
+	*cmds++ = cp_type7_packet(CP_SET_PROTECTED_MODE, 1);
+	*cmds++ = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * CP during context switch will save context switch info to
 	 * a5xx_cp_preemption_record pointed by CONTEXT_SWITCH_SAVE_ADDR
@@ -1668,7 +2492,12 @@ static int _preemption_init(
 	*cmds++ = upper_32_bits(gpuaddr);
 
 	/* Turn CP protection ON */
+<<<<<<< HEAD
 	cmds += cp_protected_mode(adreno_dev, cmds, 1);
+=======
+	*cmds++ = cp_type7_packet(CP_SET_PROTECTED_MODE, 1);
+	*cmds++ = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*cmds++ = cp_type7_packet(CP_PREEMPT_ENABLE_GLOBAL, 1);
 	*cmds++ = 0;
@@ -1703,8 +2532,12 @@ static int a5xx_post_start(struct adreno_device *adreno_dev)
 	if (IS_ERR(cmds)) {
 		struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 
+<<<<<<< HEAD
 		dev_err(device->dev,
 			     "error allocating preemtion init cmds\n");
+=======
+		KGSL_DRV_ERR(device, "error allocating preemtion init cmds");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(cmds);
 	}
 	start = cmds;
@@ -1718,12 +2551,24 @@ static int a5xx_post_start(struct adreno_device *adreno_dev)
 		*cmds++ = 0xF;
 	}
 
+<<<<<<< HEAD
 	if (adreno_is_preemption_enabled(adreno_dev))
 		cmds += _preemption_init(adreno_dev, rb, cmds, NULL);
 
 	rb->_wptr = rb->_wptr - (42 - (cmds - start));
 
 	ret = adreno_ringbuffer_submit_spin(rb, NULL, 2000);
+=======
+	if (adreno_is_preemption_enabled(adreno_dev)) {
+		cmds += _preemption_init(adreno_dev, rb, cmds, NULL);
+		rb->_wptr = rb->_wptr - (42 - (cmds - start));
+		ret = adreno_ringbuffer_submit_spin_nosync(rb, NULL, 2000);
+	} else {
+		rb->_wptr = rb->_wptr - (42 - (cmds - start));
+		ret = adreno_ringbuffer_submit_spin(rb, NULL, 2000);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		adreno_spin_idle_debug(adreno_dev,
 				"hw initialization failed to idle\n");
@@ -1756,12 +2601,20 @@ static int a5xx_gpmu_init(struct adreno_device *adreno_dev)
  */
 static int a5xx_microcode_load(struct adreno_device *adreno_dev)
 {
+<<<<<<< HEAD
 	void *ptr;
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct adreno_firmware *pm4_fw = ADRENO_FW(adreno_dev, ADRENO_FW_PM4);
 	struct adreno_firmware *pfp_fw = ADRENO_FW(adreno_dev, ADRENO_FW_PFP);
 	const struct adreno_a5xx_core *a5xx_core = to_a5xx_core(adreno_dev);
 	uint64_t gpuaddr;
+=======
+	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
+	struct adreno_firmware *pm4_fw = ADRENO_FW(adreno_dev, ADRENO_FW_PM4);
+	struct adreno_firmware *pfp_fw = ADRENO_FW(adreno_dev, ADRENO_FW_PFP);
+	uint64_t gpuaddr;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	gpuaddr = pm4_fw->memdesc.gpuaddr;
 	kgsl_regwrite(device, A5XX_CP_PM4_INSTR_BASE_LO,
@@ -1787,9 +2640,14 @@ static int a5xx_microcode_load(struct adreno_device *adreno_dev)
 	 * appropriate register,
 	 * skip if retention is supported for the CPZ register
 	 */
+<<<<<<< HEAD
 	if (adreno_dev->zap_loaded && !(ADRENO_FEATURE(adreno_dev,
 		ADRENO_CPZ_RETENTION))) {
 		int ret;
+=======
+	if (adreno_dev->zap_handle_ptr && !(ADRENO_FEATURE(adreno_dev,
+		ADRENO_CPZ_RETENTION))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct scm_desc desc = {0};
 
 		desc.args[0] = 0;
@@ -1798,14 +2656,19 @@ static int a5xx_microcode_load(struct adreno_device *adreno_dev)
 
 		ret = scm_call2(SCM_SIP_FNID(SCM_SVC_BOOT, 0xA), &desc);
 		if (ret) {
+<<<<<<< HEAD
 			dev_err(device->dev,
 				"SCM resume call failed with error %d\n", ret);
+=======
+			pr_err("SCM resume call failed with error %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 
 	}
 
 	/* Load the zap shader firmware through PIL if its available */
+<<<<<<< HEAD
 	if (a5xx_core->zap_name && !adreno_dev->zap_loaded) {
 		ptr = subsystem_get(a5xx_core->zap_name);
 
@@ -1816,6 +2679,29 @@ static int a5xx_microcode_load(struct adreno_device *adreno_dev)
 	}
 
 	return 0;
+=======
+	if (adreno_dev->gpucore->zap_name && !adreno_dev->zap_handle_ptr) {
+		adreno_dev->zap_handle_ptr =
+				subsystem_get(adreno_dev->gpucore->zap_name);
+
+		/* Return error if the zap shader cannot be loaded */
+		if (IS_ERR_OR_NULL(adreno_dev->zap_handle_ptr)) {
+			ret = (adreno_dev->zap_handle_ptr == NULL) ?
+				-ENODEV : PTR_ERR(adreno_dev->zap_handle_ptr);
+			adreno_dev->zap_handle_ptr = NULL;
+		}
+	}
+
+	return ret;
+}
+
+static void a5xx_zap_shader_unload(struct adreno_device *adreno_dev)
+{
+	if (!IS_ERR_OR_NULL(adreno_dev->zap_handle_ptr)) {
+		subsystem_put(adreno_dev->zap_handle_ptr);
+		adreno_dev->zap_handle_ptr = NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int _me_init_ucode_workarounds(struct adreno_device *adreno_dev)
@@ -1823,6 +2709,10 @@ static int _me_init_ucode_workarounds(struct adreno_device *adreno_dev)
 	switch (ADRENO_GPUREV(adreno_dev)) {
 	case ADRENO_REV_A510:
 		return 0x00000001; /* Ucode workaround for token end syncs */
+<<<<<<< HEAD
+=======
+	case ADRENO_REV_A504:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case ADRENO_REV_A505:
 	case ADRENO_REV_A506:
 	case ADRENO_REV_A530:
@@ -1832,6 +2722,17 @@ static int _me_init_ucode_workarounds(struct adreno_device *adreno_dev)
 		 * WFI after every 2D Mode 3 draw.
 		 */
 		return 0x0000000B;
+<<<<<<< HEAD
+=======
+	case ADRENO_REV_A540:
+		/*
+		 * WFI after every direct-render 3D mode draw and
+		 * WFI after every 2D Mode 3 draw. This is needed
+		 * only on a540v1.
+		 */
+		if (adreno_is_a540v1(adreno_dev))
+			return 0x0000000A;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return 0x00000000; /* No ucode workarounds enabled */
 	}
@@ -1872,8 +2773,23 @@ static void _set_ordinals(struct adreno_device *adreno_dev,
 	/* Enabled ordinal mask */
 	*cmds++ = CP_INIT_MASK;
 
+<<<<<<< HEAD
 	if (CP_INIT_MASK & CP_INIT_MAX_CONTEXT)
 		*cmds++ = 0x00000003;
+=======
+	if (CP_INIT_MASK & CP_INIT_MAX_CONTEXT) {
+		/*
+		 * Multiple HW ctxs are unreliable on a530v1,
+		 * use single hw context.
+		 * Use multiple contexts if bit set, otherwise serialize:
+		 *      3D (bit 0) 2D (bit 1)
+		 */
+		if (adreno_is_a530v1(adreno_dev))
+			*cmds++ = 0x00000000;
+		else
+			*cmds++ = 0x00000003;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (CP_INIT_MASK & CP_INIT_ERROR_DETECTION_CONTROL)
 		*cmds++ = 0x20000000;
@@ -1959,8 +2875,15 @@ static int a5xx_send_me_init(struct adreno_device *adreno_dev,
 /*
  * a5xx_rb_start() - Start the ringbuffer
  * @adreno_dev: Pointer to adreno device
+<<<<<<< HEAD
  */
 static int a5xx_rb_start(struct adreno_device *adreno_dev)
+=======
+ * @start_type: Warm or cold start
+ */
+static int a5xx_rb_start(struct adreno_device *adreno_dev,
+			 unsigned int start_type)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct adreno_ringbuffer *rb = ADRENO_CURRENT_RINGBUFFER(adreno_dev);
 	struct kgsl_device *device = &adreno_dev->dev;
@@ -2019,7 +2942,11 @@ static int _load_firmware(struct kgsl_device *device, const char *fwfile,
 	ret = request_firmware(&fw, fwfile, device->dev);
 
 	if (ret) {
+<<<<<<< HEAD
 		dev_err(device->dev, "request_firmware(%s) failed: %d\n",
+=======
+		KGSL_DRV_ERR(device, "request_firmware(%s) failed: %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				fwfile, ret);
 		return ret;
 	}
@@ -2032,7 +2959,11 @@ static int _load_firmware(struct kgsl_device *device, const char *fwfile,
 
 	memcpy(firmware->memdesc.hostptr, &fw->data[4], fw->size - 4);
 	firmware->size = (fw->size - 4) / sizeof(uint32_t);
+<<<<<<< HEAD
 	firmware->version = *(unsigned int *)&fw->data[4];
+=======
+	firmware->version = adreno_get_ucode_version((u32 *)fw->data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	release_firmware(fw);
@@ -2049,18 +2980,29 @@ static int a5xx_microcode_read(struct adreno_device *adreno_dev)
 	int ret;
 	struct adreno_firmware *pm4_fw = ADRENO_FW(adreno_dev, ADRENO_FW_PM4);
 	struct adreno_firmware *pfp_fw = ADRENO_FW(adreno_dev, ADRENO_FW_PFP);
+<<<<<<< HEAD
 	const struct adreno_a5xx_core *a5xx_core = to_a5xx_core(adreno_dev);
 
 	if (pm4_fw->memdesc.hostptr == NULL) {
 		ret = _load_firmware(KGSL_DEVICE(adreno_dev),
 				 a5xx_core->pm4fw_name, pm4_fw);
+=======
+
+	if (pm4_fw->memdesc.hostptr == NULL) {
+		ret = _load_firmware(KGSL_DEVICE(adreno_dev),
+				 adreno_dev->gpucore->pm4fw_name, pm4_fw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
 
 	if (pfp_fw->memdesc.hostptr == NULL) {
 		ret = _load_firmware(KGSL_DEVICE(adreno_dev),
+<<<<<<< HEAD
 				 a5xx_core->pfpfw_name, pfp_fw);
+=======
+				 adreno_dev->gpucore->pfpfw_name, pfp_fw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -2093,11 +3035,19 @@ static struct adreno_perfcount_register a5xx_perfcounters_cp[] = {
 		A5XX_RBBM_PERFCTR_CP_7_HI, 7, A5XX_CP_PERFCTR_CP_SEL_7 },
 };
 
+<<<<<<< HEAD
 static struct adreno_perfcount_register a5xx_perfcounters_rbbm[] = {
 	/*
 	 * A5XX_RBBM_PERFCTR_RBBM_0 is used for frequency scaling and omitted
 	 * from the poool of available counters
 	 */
+=======
+/*
+ * Note that PERFCTR_RBBM_0 is missing - it is used to emulate the PWR counters.
+ * See below.
+ */
+static struct adreno_perfcount_register a5xx_perfcounters_rbbm[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ KGSL_PERFCOUNTER_NOT_USED, 0, 0, A5XX_RBBM_PERFCTR_RBBM_1_LO,
 		A5XX_RBBM_PERFCTR_RBBM_1_HI, 9, A5XX_RBBM_PERFCTR_RBBM_SEL_1 },
 	{ KGSL_PERFCOUNTER_NOT_USED, 0, 0, A5XX_RBBM_PERFCTR_RBBM_2_LO,
@@ -2346,6 +3296,25 @@ static struct adreno_perfcount_register a5xx_perfcounters_alwayson[] = {
 		A5XX_RBBM_ALWAYSON_COUNTER_HI, -1 },
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * 5XX targets don't really have physical PERFCTR_PWR registers - we emulate
+ * them using similar performance counters from the RBBM block. The difference
+ * between using this group and the RBBM group is that the RBBM counters are
+ * reloaded after a power collapse which is not how the PWR counters behaved on
+ * legacy hardware. In order to limit the disruption on the rest of the system
+ * we go out of our way to ensure backwards compatibility. Since RBBM counters
+ * are in short supply, we don't emulate PWR:0 which nobody uses - mark it as
+ * broken.
+ */
+static struct adreno_perfcount_register a5xx_perfcounters_pwr[] = {
+	{ KGSL_PERFCOUNTER_BROKEN, 0, 0, 0, 0, -1, 0 },
+	{ KGSL_PERFCOUNTER_NOT_USED, 0, 0, A5XX_RBBM_PERFCTR_RBBM_0_LO,
+		A5XX_RBBM_PERFCTR_RBBM_0_HI, -1, 0},
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct adreno_perfcount_register a5xx_pwrcounters_sp[] = {
 	{ KGSL_PERFCOUNTER_NOT_USED, 0, 0, A5XX_SP_POWER_COUNTER_0_LO,
 		A5XX_SP_POWER_COUNTER_0_HI, -1, A5XX_SP_POWERCTR_SP_SEL_0 },
@@ -2465,6 +3434,11 @@ static struct adreno_perfcount_group a5xx_perfcounter_groups
 	A5XX_PERFCOUNTER_GROUP(SP, sp),
 	A5XX_PERFCOUNTER_GROUP(RB, rb),
 	A5XX_PERFCOUNTER_GROUP(VSC, vsc),
+<<<<<<< HEAD
+=======
+	A5XX_PERFCOUNTER_GROUP_FLAGS(PWR, pwr,
+		ADRENO_PERFCOUNTER_GROUP_FIXED),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	A5XX_PERFCOUNTER_GROUP(VBIF, vbif),
 	A5XX_PERFCOUNTER_GROUP_FLAGS(VBIF_PWR, vbif_pwr,
 		ADRENO_PERFCOUNTER_GROUP_FIXED),
@@ -2498,6 +3472,10 @@ static unsigned int a5xx_int_bits[ADRENO_INT_BITS_MAX] = {
 
 /* Register offset defines for A5XX, in order of enum adreno_regs */
 static unsigned int a5xx_register_offsets[ADRENO_REG_REGISTER_MAX] = {
+<<<<<<< HEAD
+=======
+	ADRENO_REG_DEFINE(ADRENO_REG_CP_WFI_PEND_CTR, A5XX_CP_WFI_PEND_CTR),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ADRENO_REG_DEFINE(ADRENO_REG_CP_RB_BASE, A5XX_CP_RB_BASE),
 	ADRENO_REG_DEFINE(ADRENO_REG_CP_RB_BASE_HI, A5XX_CP_RB_BASE_HI),
 	ADRENO_REG_DEFINE(ADRENO_REG_CP_RB_RPTR_ADDR_LO,
@@ -2612,6 +3590,7 @@ static void a5xx_cp_hw_err_callback(struct adreno_device *adreno_dev, int bit)
 		kgsl_regread(device, A5XX_CP_PFP_STAT_DATA, &val);
 		kgsl_regread(device, A5XX_CP_PFP_STAT_DATA, &val);
 
+<<<<<<< HEAD
 		dev_crit_ratelimited(device->dev,
 					"ringbuffer opcode error | possible opcode=0x%8.8X\n",
 					val);
@@ -2622,21 +3601,44 @@ static void a5xx_cp_hw_err_callback(struct adreno_device *adreno_dev, int bit)
 	if (status1 & BIT(A5XX_CP_HW_FAULT_ERROR)) {
 		kgsl_regread(device, A5XX_CP_HW_FAULT, &status2);
 		dev_crit_ratelimited(device->dev,
+=======
+		KGSL_DRV_CRIT_RATELIMIT(device,
+			"ringbuffer opcode error | possible opcode=0x%8.8X\n",
+			val);
+	}
+	if (status1 & BIT(A5XX_CP_RESERVED_BIT_ERROR))
+		KGSL_DRV_CRIT_RATELIMIT(device,
+					"ringbuffer reserved bit error interrupt\n");
+	if (status1 & BIT(A5XX_CP_HW_FAULT_ERROR)) {
+		kgsl_regread(device, A5XX_CP_HW_FAULT, &status2);
+		KGSL_DRV_CRIT_RATELIMIT(device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"CP | Ringbuffer HW fault | status=%x\n",
 					status2);
 	}
 	if (status1 & BIT(A5XX_CP_DMA_ERROR))
+<<<<<<< HEAD
 		dev_crit_ratelimited(device->dev, "CP | DMA error\n");
 	if (status1 & BIT(A5XX_CP_REGISTER_PROTECTION_ERROR)) {
 		kgsl_regread(device, A5XX_CP_PROTECT_STATUS, &status2);
 		dev_crit_ratelimited(device->dev,
+=======
+		KGSL_DRV_CRIT_RATELIMIT(device, "CP | DMA error\n");
+	if (status1 & BIT(A5XX_CP_REGISTER_PROTECTION_ERROR)) {
+		kgsl_regread(device, A5XX_CP_PROTECT_STATUS, &status2);
+		KGSL_DRV_CRIT_RATELIMIT(device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"CP | Protected mode error| %s | addr=%x | status=%x\n",
 					status2 & (1 << 24) ? "WRITE" : "READ",
 					(status2 & 0xFFFFF) >> 2, status2);
 	}
 	if (status1 & BIT(A5XX_CP_AHB_ERROR)) {
 		kgsl_regread(device, A5XX_CP_AHB_FAULT, &status2);
+<<<<<<< HEAD
 		dev_crit_ratelimited(device->dev,
+=======
+		KGSL_DRV_CRIT_RATELIMIT(device,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					"ringbuffer AHB error interrupt | status=%x\n",
 					status2);
 	}
@@ -2655,18 +3657,27 @@ static void a5xx_err_callback(struct adreno_device *adreno_dev, int bit)
 		 * Return the word address of the erroring register so that it
 		 * matches the register specification
 		 */
+<<<<<<< HEAD
 		dev_crit_ratelimited(device->dev,
 					"RBBM | AHB bus error | %s | addr=%x | ports=%x:%x\n",
 					reg & (1 << 28) ? "WRITE" : "READ",
 					(reg & 0xFFFFF) >> 2,
 					(reg >> 20) & 0x3,
 					(reg >> 24) & 0xF);
+=======
+		KGSL_DRV_CRIT_RATELIMIT(device,
+			"RBBM | AHB bus error | %s | addr=%x | ports=%x:%x\n",
+			reg & (1 << 28) ? "WRITE" : "READ",
+			(reg & 0xFFFFF) >> 2, (reg >> 20) & 0x3,
+			(reg >> 24) & 0xF);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Clear the error */
 		kgsl_regwrite(device, A5XX_RBBM_AHB_CMD, (1 << 4));
 		break;
 	}
 	case A5XX_INT_RBBM_TRANSFER_TIMEOUT:
+<<<<<<< HEAD
 		dev_crit_ratelimited(device->dev,
 					"RBBM: AHB transfer timeout\n");
 		break;
@@ -2707,6 +3718,41 @@ static void a5xx_err_callback(struct adreno_device *adreno_dev, int bit)
 	default:
 		dev_crit_ratelimited(device->dev, "Unknown interrupt %d\n",
 					bit);
+=======
+		KGSL_DRV_CRIT_RATELIMIT(device, "RBBM: AHB transfer timeout\n");
+		break;
+	case A5XX_INT_RBBM_ME_MS_TIMEOUT:
+		kgsl_regread(device, A5XX_RBBM_AHB_ME_SPLIT_STATUS, &reg);
+		KGSL_DRV_CRIT_RATELIMIT(device,
+			"RBBM | ME master split timeout | status=%x\n", reg);
+		break;
+	case A5XX_INT_RBBM_PFP_MS_TIMEOUT:
+		kgsl_regread(device, A5XX_RBBM_AHB_PFP_SPLIT_STATUS, &reg);
+		KGSL_DRV_CRIT_RATELIMIT(device,
+			"RBBM | PFP master split timeout | status=%x\n", reg);
+		break;
+	case A5XX_INT_RBBM_ETS_MS_TIMEOUT:
+		KGSL_DRV_CRIT_RATELIMIT(device,
+			"RBBM: ME master split timeout\n");
+		break;
+	case A5XX_INT_RBBM_ATB_ASYNC_OVERFLOW:
+		KGSL_DRV_CRIT_RATELIMIT(device, "RBBM: ATB ASYNC overflow\n");
+		break;
+	case A5XX_INT_RBBM_ATB_BUS_OVERFLOW:
+		KGSL_DRV_CRIT_RATELIMIT(device, "RBBM: ATB bus overflow\n");
+		break;
+	case A5XX_INT_UCHE_OOB_ACCESS:
+		KGSL_DRV_CRIT_RATELIMIT(device, "UCHE: Out of bounds access\n");
+		break;
+	case A5XX_INT_UCHE_TRAP_INTR:
+		KGSL_DRV_CRIT_RATELIMIT(device, "UCHE: Trap interrupt\n");
+		break;
+	case A5XX_INT_GPMU_VOLTAGE_DROOP:
+		KGSL_DRV_CRIT_RATELIMIT(device, "GPMU: Voltage droop\n");
+		break;
+	default:
+		KGSL_DRV_CRIT_RATELIMIT(device, "Unknown interrupt %d\n", bit);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2734,7 +3780,11 @@ static void a5xx_irq_storm_worker(struct work_struct *work)
 			gpudev->irq->mask);
 	clear_bit(ADRENO_DEVICE_CACHE_FLUSH_TS_SUSPENDED, &adreno_dev->priv);
 
+<<<<<<< HEAD
 	dev_warn(device->dev, "Re-enabled A5XX_INT_CP_CACHE_FLUSH_TS\n");
+=======
+	KGSL_DRV_WARN(device, "Re-enabled A5XX_INT_CP_CACHE_FLUSH_TS");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&device->mutex);
 
 	/* Reschedule just to make sure everything retires */
@@ -2809,9 +3859,15 @@ static void a5xx_gpmu_int_callback(struct adreno_device *adreno_dev, int bit)
 	kgsl_regread(device, A5XX_GPMU_RBBM_INTR_INFO, &reg);
 
 	if (reg & (~VALID_GPMU_IRQ)) {
+<<<<<<< HEAD
 		dev_crit_ratelimited(device->dev,
 					"GPMU: Unknown IRQ mask 0x%08lx in 0x%08x\n",
 					reg & (~VALID_GPMU_IRQ), reg);
+=======
+		KGSL_DRV_CRIT_RATELIMIT(device,
+			"GPMU: Unknown IRQ mask 0x%08lx in 0x%08x\n",
+				reg & (~VALID_GPMU_IRQ), reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < 32; i++)
@@ -2831,20 +3887,35 @@ static void a5xx_gpmu_int_callback(struct adreno_device *adreno_dev, int bit)
 		case BIT(ISENS_ERR_INTR):
 		case BIT(ISENS_IDLE_ERR_INTR):
 		case BIT(ISENS_PWR_ON_ERR_INTR):
+<<<<<<< HEAD
 			dev_crit_ratelimited(device->dev,
 						"GPMU: interrupt %s(%08lx)\n",
 						gpmu_int_msg[i],
 						BIT(i));
+=======
+			KGSL_DRV_CRIT_RATELIMIT(device,
+				"GPMU: interrupt %s(%08lx)\n",
+				gpmu_int_msg[i],
+				BIT(i));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 	}
 }
 
 /*
+<<<<<<< HEAD
  * a5x_gpc_err_int_callback() - Isr for GPC error interrupts
  * @adreno_dev: Pointer to device
  * @bit: Interrupt bit
  */
 void a5x_gpc_err_int_callback(struct adreno_device *adreno_dev, int bit)
+=======
+ * a5xx_gpc_err_int_callback() - Isr for GPC error interrupts
+ * @adreno_dev: Pointer to device
+ * @bit: Interrupt bit
+ */
+static void a5xx_gpc_err_int_callback(struct adreno_device *adreno_dev, int bit)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 
@@ -2854,7 +3925,11 @@ void a5x_gpc_err_int_callback(struct adreno_device *adreno_dev, int bit)
 	 * with help of register dump.
 	 */
 
+<<<<<<< HEAD
 	dev_crit(device->dev, "RBBM: GPC error\n");
+=======
+	KGSL_DRV_CRIT_RATELIMIT(device, "RBBM: GPC error\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adreno_irqctrl(adreno_dev, 0);
 
 	/* Trigger a fault in the dispatcher - this will effect a restart */
@@ -2892,7 +3967,11 @@ static struct adreno_irq_funcs a5xx_irq_funcs[32] = {
 	ADRENO_IRQ_CALLBACK(a5xx_err_callback),
 	/* 6 - RBBM_ATB_ASYNC_OVERFLOW */
 	ADRENO_IRQ_CALLBACK(a5xx_err_callback),
+<<<<<<< HEAD
 	ADRENO_IRQ_CALLBACK(a5x_gpc_err_int_callback), /* 7 - GPC_ERR */
+=======
+	ADRENO_IRQ_CALLBACK(a5xx_gpc_err_int_callback), /* 7 - GPC_ERR */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ADRENO_IRQ_CALLBACK(a5xx_preempt_callback),/* 8 - CP_SW */
 	ADRENO_IRQ_CALLBACK(a5xx_cp_hw_err_callback), /* 9 - CP_HW_ERROR */
 	/* 10 - CP_CCU_FLUSH_DEPTH_TS */
@@ -3138,6 +4217,11 @@ static struct adreno_coresight a5xx_coresight = {
 	.registers = a5xx_coresight_registers,
 	.count = ARRAY_SIZE(a5xx_coresight_registers),
 	.groups = a5xx_coresight_groups,
+<<<<<<< HEAD
+=======
+	.read = kgsl_regread,
+	.write = kgsl_regwrite,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct adreno_gpudev adreno_a5xx_gpudev = {
@@ -3165,6 +4249,10 @@ struct adreno_gpudev adreno_a5xx_gpudev = {
 	.pwrlevel_change_settings = a5xx_pwrlevel_change_settings,
 	.read_throttling_counters = a5xx_read_throttling_counters,
 	.count_throttles = a5xx_count_throttles,
+<<<<<<< HEAD
+=======
+	.enable_pwr_counters = a5xx_enable_pwr_counters,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.preemption_pre_ibsubmit = a5xx_preemption_pre_ibsubmit,
 	.preemption_yield_enable =
 				a5xx_preemption_yield_enable,
@@ -3175,4 +4263,9 @@ struct adreno_gpudev adreno_a5xx_gpudev = {
 	.preemption_schedule = a5xx_preemption_schedule,
 	.enable_64bit = a5xx_enable_64bit,
 	.clk_set_options = a5xx_clk_set_options,
+<<<<<<< HEAD
+=======
+	.snapshot_preemption = a5xx_snapshot_preemption,
+	.zap_shader_unload = a5xx_zap_shader_unload,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

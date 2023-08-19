@@ -20,6 +20,7 @@
 
 #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
 
+<<<<<<< HEAD
 #include <linux/cacheinfo.h>
 #include <linux/cpu.h>
 #include <linux/debugfs.h>
@@ -27,6 +28,12 @@
 #include <linux/sysfs.h>
 #include <linux/kernfs.h>
 #include <linux/seq_buf.h>
+=======
+#include <linux/cpu.h>
+#include <linux/fs.h>
+#include <linux/sysfs.h>
+#include <linux/kernfs.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/seq_file.h>
 #include <linux/sched/signal.h>
 #include <linux/sched/task.h>
@@ -54,6 +61,7 @@ static struct kernfs_node *kn_mongrp;
 /* Kernel fs node for "mon_data" directory under root */
 static struct kernfs_node *kn_mondata;
 
+<<<<<<< HEAD
 static struct seq_buf last_cmd_status;
 static char last_cmd_status_buf[512];
 
@@ -81,6 +89,8 @@ void rdt_last_cmd_printf(const char *fmt, ...)
 	va_end(ap);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Trivial allocator for CLOSIDs. Since h/w only supports a small number,
  * we can keep a bitmap of free CLOSIDs in a single integer.
@@ -97,12 +107,15 @@ void rdt_last_cmd_printf(const char *fmt, ...)
  *   limited as the number of resources grows.
  */
 static int closid_free_map;
+<<<<<<< HEAD
 static int closid_free_map_len;
 
 int closids_supported(void)
 {
 	return closid_free_map_len;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void closid_init(void)
 {
@@ -117,7 +130,10 @@ static void closid_init(void)
 
 	/* CLOSID 0 is always reserved for the default group */
 	closid_free_map &= ~1;
+<<<<<<< HEAD
 	closid_free_map_len = rdt_min_closid;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int closid_alloc(void)
@@ -132,11 +148,16 @@ static int closid_alloc(void)
 	return closid;
 }
 
+<<<<<<< HEAD
 void closid_free(int closid)
+=======
+static void closid_free(int closid)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	closid_free_map |= 1 << closid;
 }
 
+<<<<<<< HEAD
 /**
  * closid_allocated - test if provided closid is in use
  * @closid: closid to be tested
@@ -191,6 +212,8 @@ static const char *rdtgroup_mode_str(enum rdtgrp_mode mode)
 	return rdt_mode_str[mode];
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* set uid and gid of rdtgroup dirs and files to that of the creator */
 static int rdtgroup_kn_set_ugid(struct kernfs_node *kn)
 {
@@ -211,7 +234,10 @@ static int rdtgroup_add_file(struct kernfs_node *parent_kn, struct rftype *rft)
 	int ret;
 
 	kn = __kernfs_create_file(parent_kn, rft->name, rft->mode,
+<<<<<<< HEAD
 				  GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  0, rft->kf_ops, rft, NULL, NULL);
 	if (IS_ERR(kn))
 		return PTR_ERR(kn);
@@ -273,12 +299,17 @@ static int rdtgroup_cpus_show(struct kernfs_open_file *of,
 	rdtgrp = rdtgroup_kn_lock_live(of->kn);
 
 	if (rdtgrp) {
+<<<<<<< HEAD
 		if (rdtgrp->mode == RDT_MODE_PSEUDO_LOCKED)
 			seq_printf(s, is_cpu_list(of) ? "%*pbl\n" : "%*pb\n",
 				   cpumask_pr_args(&rdtgrp->plr->d->cpu_mask));
 		else
 			seq_printf(s, is_cpu_list(of) ? "%*pbl\n" : "%*pb\n",
 				   cpumask_pr_args(&rdtgrp->cpu_mask));
+=======
+		seq_printf(s, is_cpu_list(of) ? "%*pbl\n" : "%*pb\n",
+			   cpumask_pr_args(&rdtgrp->cpu_mask));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ret = -ENOENT;
 	}
@@ -334,10 +365,15 @@ static int cpus_mon_write(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
 
 	/* Check whether cpus belong to parent ctrl group */
 	cpumask_andnot(tmpmask, newmask, &prgrp->cpu_mask);
+<<<<<<< HEAD
 	if (cpumask_weight(tmpmask)) {
 		rdt_last_cmd_puts("can only add CPUs to mongroup that belong to parent\n");
 		return -EINVAL;
 	}
+=======
+	if (cpumask_weight(tmpmask))
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check whether cpus are dropped from this group */
 	cpumask_andnot(tmpmask, &rdtgrp->cpu_mask, newmask);
@@ -389,10 +425,15 @@ static int cpus_ctrl_write(struct rdtgroup *rdtgrp, cpumask_var_t newmask,
 	cpumask_andnot(tmpmask, &rdtgrp->cpu_mask, newmask);
 	if (cpumask_weight(tmpmask)) {
 		/* Can't drop from default group */
+<<<<<<< HEAD
 		if (rdtgrp == &rdtgroup_default) {
 			rdt_last_cmd_puts("Can't drop CPUs from default group\n");
 			return -EINVAL;
 		}
+=======
+		if (rdtgrp == &rdtgroup_default)
+			return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Give any dropped cpus to rdtgroup_default */
 		cpumask_or(&rdtgroup_default.cpu_mask,
@@ -457,6 +498,7 @@ static ssize_t rdtgroup_cpus_write(struct kernfs_open_file *of,
 	}
 
 	rdtgrp = rdtgroup_kn_lock_live(of->kn);
+<<<<<<< HEAD
 	rdt_last_cmd_clear();
 	if (!rdtgrp) {
 		ret = -ENOENT;
@@ -468,6 +510,10 @@ static ssize_t rdtgroup_cpus_write(struct kernfs_open_file *of,
 	    rdtgrp->mode == RDT_MODE_PSEUDO_LOCKSETUP) {
 		ret = -EINVAL;
 		rdt_last_cmd_puts("pseudo-locking in progress\n");
+=======
+	if (!rdtgrp) {
+		ret = -ENOENT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto unlock;
 	}
 
@@ -476,16 +522,24 @@ static ssize_t rdtgroup_cpus_write(struct kernfs_open_file *of,
 	else
 		ret = cpumask_parse(buf, newmask);
 
+<<<<<<< HEAD
 	if (ret) {
 		rdt_last_cmd_puts("bad cpu list/mask\n");
 		goto unlock;
 	}
+=======
+	if (ret)
+		goto unlock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* check that user didn't specify any offline cpus */
 	cpumask_andnot(tmpmask, newmask, cpu_online_mask);
 	if (cpumask_weight(tmpmask)) {
 		ret = -EINVAL;
+<<<<<<< HEAD
 		rdt_last_cmd_puts("can only assign online cpus\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto unlock;
 	}
 
@@ -564,7 +618,10 @@ static int __rdtgroup_move_task(struct task_struct *tsk,
 		 */
 		atomic_dec(&rdtgrp->waitcount);
 		kfree(callback);
+<<<<<<< HEAD
 		rdt_last_cmd_puts("task exited\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		/*
 		 * For ctrl_mon groups move both closid and rmid.
@@ -575,17 +632,25 @@ static int __rdtgroup_move_task(struct task_struct *tsk,
 			tsk->closid = rdtgrp->closid;
 			tsk->rmid = rdtgrp->mon.rmid;
 		} else if (rdtgrp->type == RDTMON_GROUP) {
+<<<<<<< HEAD
 			if (rdtgrp->mon.parent->closid == tsk->closid) {
 				tsk->rmid = rdtgrp->mon.rmid;
 			} else {
 				rdt_last_cmd_puts("Can't move task to different control group\n");
 				ret = -EINVAL;
 			}
+=======
+			if (rdtgrp->mon.parent->closid == tsk->closid)
+				tsk->rmid = rdtgrp->mon.rmid;
+			else
+				ret = -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return ret;
 }
 
+<<<<<<< HEAD
 /**
  * rdtgroup_tasks_assigned - Test if tasks have been assigned to resource group
  * @r: Resource group
@@ -612,6 +677,8 @@ int rdtgroup_tasks_assigned(struct rdtgroup *r)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rdtgroup_task_write_permission(struct task_struct *task,
 					  struct kernfs_open_file *of)
 {
@@ -625,10 +692,15 @@ static int rdtgroup_task_write_permission(struct task_struct *task,
 	 */
 	if (!uid_eq(cred->euid, GLOBAL_ROOT_UID) &&
 	    !uid_eq(cred->euid, tcred->uid) &&
+<<<<<<< HEAD
 	    !uid_eq(cred->euid, tcred->suid)) {
 		rdt_last_cmd_printf("No permission to move task %d\n", task->pid);
 		ret = -EPERM;
 	}
+=======
+	    !uid_eq(cred->euid, tcred->suid))
+		ret = -EPERM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	put_cred(tcred);
 	return ret;
@@ -645,7 +717,10 @@ static int rdtgroup_move_task(pid_t pid, struct rdtgroup *rdtgrp,
 		tsk = find_task_by_vpid(pid);
 		if (!tsk) {
 			rcu_read_unlock();
+<<<<<<< HEAD
 			rdt_last_cmd_printf("No task %d\n", pid);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return -ESRCH;
 		}
 	} else {
@@ -673,6 +748,7 @@ static ssize_t rdtgroup_tasks_write(struct kernfs_open_file *of,
 	if (kstrtoint(strstrip(buf), 0, &pid) || pid < 0)
 		return -EINVAL;
 	rdtgrp = rdtgroup_kn_lock_live(of->kn);
+<<<<<<< HEAD
 	if (!rdtgrp) {
 		rdtgroup_kn_unlock(of->kn);
 		return -ENOENT;
@@ -689,6 +765,14 @@ static ssize_t rdtgroup_tasks_write(struct kernfs_open_file *of,
 	ret = rdtgroup_move_task(pid, rdtgrp, of);
 
 unlock:
+=======
+
+	if (rdtgrp)
+		ret = rdtgroup_move_task(pid, rdtgrp, of);
+	else
+		ret = -ENOENT;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rdtgroup_kn_unlock(of->kn);
 
 	return ret ?: nbytes;
@@ -723,6 +807,7 @@ static int rdtgroup_tasks_show(struct kernfs_open_file *of,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int rdt_last_cmd_status_show(struct kernfs_open_file *of,
 				    struct seq_file *seq, void *v)
 {
@@ -738,6 +823,8 @@ static int rdt_last_cmd_status_show(struct kernfs_open_file *of,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rdt_num_closids_show(struct kernfs_open_file *of,
 				struct seq_file *seq, void *v)
 {
@@ -774,6 +861,7 @@ static int rdt_shareable_bits_show(struct kernfs_open_file *of,
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * rdt_bit_usage_show - Display current usage of resources
  *
@@ -866,6 +954,8 @@ static int rdt_bit_usage_show(struct kernfs_open_file *of,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rdt_min_bw_show(struct kernfs_open_file *of,
 			     struct seq_file *seq, void *v)
 {
@@ -944,6 +1034,7 @@ static ssize_t max_threshold_occ_write(struct kernfs_open_file *of,
 	return nbytes;
 }
 
+<<<<<<< HEAD
 /*
  * rdtgroup_mode_show - Display mode of this resource group
  */
@@ -1237,6 +1328,11 @@ static struct rftype res_common_files[] = {
 		.fflags		= RF_TOP_INFO,
 	},
 	{
+=======
+/* rdtgroup information files for one cache resource. */
+static struct rftype res_common_files[] = {
+	{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name		= "num_closids",
 		.mode		= 0444,
 		.kf_ops		= &rdtgroup_kf_single_ops,
@@ -1279,6 +1375,7 @@ static struct rftype res_common_files[] = {
 		.fflags		= RF_CTRL_INFO | RFTYPE_RES_CACHE,
 	},
 	{
+<<<<<<< HEAD
 		.name		= "bit_usage",
 		.mode		= 0444,
 		.kf_ops		= &rdtgroup_kf_single_ops,
@@ -1286,6 +1383,8 @@ static struct rftype res_common_files[] = {
 		.fflags		= RF_CTRL_INFO | RFTYPE_RES_CACHE,
 	},
 	{
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name		= "min_bandwidth",
 		.mode		= 0444,
 		.kf_ops		= &rdtgroup_kf_single_ops,
@@ -1347,6 +1446,7 @@ static struct rftype res_common_files[] = {
 		.seq_show	= rdtgroup_schemata_show,
 		.fflags		= RF_CTRL_BASE,
 	},
+<<<<<<< HEAD
 	{
 		.name		= "mode",
 		.mode		= 0644,
@@ -1363,6 +1463,8 @@ static struct rftype res_common_files[] = {
 		.fflags		= RF_CTRL_BASE,
 	},
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int rdtgroup_add_files(struct kernfs_node *kn, unsigned long fflags)
@@ -1393,6 +1495,7 @@ error:
 	return ret;
 }
 
+<<<<<<< HEAD
 /**
  * rdtgroup_kn_mode_restrict - Restrict user access to named resctrl file
  * @r: The resource group with which the file is associated.
@@ -1490,6 +1593,8 @@ int rdtgroup_kn_mode_restore(struct rdtgroup *r, const char *name,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rdtgroup_mkdir_info_resdir(struct rdt_resource *r, char *name,
 				      unsigned long fflags)
 {
@@ -1526,10 +1631,13 @@ static int rdtgroup_create_info_dir(struct kernfs_node *parent_kn)
 		return PTR_ERR(kn_info);
 	kernfs_get(kn_info);
 
+<<<<<<< HEAD
 	ret = rdtgroup_add_files(kn_info, RF_TOP_INFO);
 	if (ret)
 		goto out_destroy;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for_each_alloc_enabled_rdt_resource(r) {
 		fflags =  r->fflags | RF_CTRL_INFO;
 		ret = rdtgroup_mkdir_info_resdir(r, r->name, fflags);
@@ -1612,11 +1720,14 @@ static void l2_qos_cfg_update(void *arg)
 	wrmsrl(IA32_L2_QOS_CFG, *enable ? L2_QOS_CDP_ENABLE : 0ULL);
 }
 
+<<<<<<< HEAD
 static inline bool is_mba_linear(void)
 {
 	return rdt_resources_all[RDT_RESOURCE_MBA].membw.delay_linear;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int set_cache_qos_cfg(int level, bool enable)
 {
 	void (*update)(void *arg);
@@ -1653,6 +1764,7 @@ static int set_cache_qos_cfg(int level, bool enable)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
  * Enable or disable the MBA software controller
  * which helps user specify bandwidth in MBps.
@@ -1675,6 +1787,8 @@ static int set_mba_sc(bool mba_sc)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cdp_enable(int level, int data_type, int code_type)
 {
 	struct rdt_resource *r_ldata = &rdt_resources_all[data_type];
@@ -1757,10 +1871,13 @@ static int parse_rdtgroupfs_options(char *data)
 			ret = cdpl2_enable();
 			if (ret)
 				goto out;
+<<<<<<< HEAD
 		} else if (!strcmp(token, "mba_MBps")) {
 			ret = set_mba_sc(true);
 			if (ret)
 				goto out;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			ret = -EINVAL;
 			goto out;
@@ -1831,9 +1948,12 @@ void rdtgroup_kn_unlock(struct kernfs_node *kn)
 
 	if (atomic_dec_and_test(&rdtgrp->waitcount) &&
 	    (rdtgrp->flags & RDT_DELETED)) {
+<<<<<<< HEAD
 		if (rdtgrp->mode == RDT_MODE_PSEUDO_LOCKSETUP ||
 		    rdtgrp->mode == RDT_MODE_PSEUDO_LOCKED)
 			rdtgroup_pseudo_lock_remove(rdtgrp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kernfs_unbreak_active_protection(kn);
 		kernfs_put(rdtgrp->kn);
 		kfree(rdtgrp);
@@ -1881,7 +2001,11 @@ static struct dentry *rdt_mount(struct file_system_type *fs_type,
 
 	if (rdt_mon_capable) {
 		ret = mongroup_create_dir(rdtgroup_default.kn,
+<<<<<<< HEAD
 					  NULL, "mon_groups",
+=======
+					  &rdtgroup_default, "mon_groups",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  &kn_mongrp);
 		if (ret) {
 			dentry = ERR_PTR(ret);
@@ -1899,6 +2023,7 @@ static struct dentry *rdt_mount(struct file_system_type *fs_type,
 		rdtgroup_default.mon.mon_data_kn = kn_mondata;
 	}
 
+<<<<<<< HEAD
 	ret = rdt_pseudo_lock_init();
 	if (ret) {
 		dentry = ERR_PTR(ret);
@@ -1909,6 +2034,12 @@ static struct dentry *rdt_mount(struct file_system_type *fs_type,
 			      RDTGROUP_SUPER_MAGIC, NULL);
 	if (IS_ERR(dentry))
 		goto out_psl;
+=======
+	dentry = kernfs_mount(fs_type, flags, rdt_root,
+			      RDTGROUP_SUPER_MAGIC, NULL);
+	if (IS_ERR(dentry))
+		goto out_mondata;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (rdt_alloc_capable)
 		static_branch_enable_cpuslocked(&rdt_alloc_enable_key);
@@ -1926,8 +2057,11 @@ static struct dentry *rdt_mount(struct file_system_type *fs_type,
 
 	goto out;
 
+<<<<<<< HEAD
 out_psl:
 	rdt_pseudo_lock_release();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out_mondata:
 	if (rdt_mon_capable)
 		kernfs_remove(kn_mondata);
@@ -1939,7 +2073,10 @@ out_info:
 out_cdp:
 	cdp_disable_all();
 out:
+<<<<<<< HEAD
 	rdt_last_cmd_clear();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&rdtgroup_mutex);
 	cpus_read_unlock();
 
@@ -2043,7 +2180,15 @@ static void free_all_child_rdtgrp(struct rdtgroup *rdtgrp)
 	list_for_each_entry_safe(sentry, stmp, head, mon.crdtgrp_list) {
 		free_rmid(sentry->mon.rmid);
 		list_del(&sentry->mon.crdtgrp_list);
+<<<<<<< HEAD
 		kfree(sentry);
+=======
+
+		if (atomic_read(&sentry->waitcount) != 0)
+			sentry->flags = RDT_DELETED;
+		else
+			kfree(sentry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -2065,10 +2210,13 @@ static void rmdir_all_sub(void)
 		if (rdtgrp == &rdtgroup_default)
 			continue;
 
+<<<<<<< HEAD
 		if (rdtgrp->mode == RDT_MODE_PSEUDO_LOCKSETUP ||
 		    rdtgrp->mode == RDT_MODE_PSEUDO_LOCKED)
 			rdtgroup_pseudo_lock_remove(rdtgrp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Give any CPUs back to the default group. We cannot copy
 		 * cpu_online_mask because a CPU might have executed the
@@ -2081,7 +2229,15 @@ static void rmdir_all_sub(void)
 
 		kernfs_remove(rdtgrp->kn);
 		list_del(&rdtgrp->rdtgroup_list);
+<<<<<<< HEAD
 		kfree(rdtgrp);
+=======
+
+		if (atomic_read(&rdtgrp->waitcount) != 0)
+			rdtgrp->flags = RDT_DELETED;
+		else
+			kfree(rdtgrp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/* Notify online CPUs to update per cpu storage and PQR_ASSOC MSR */
 	update_closid_rmid(cpu_online_mask, &rdtgroup_default);
@@ -2098,15 +2254,21 @@ static void rdt_kill_sb(struct super_block *sb)
 	cpus_read_lock();
 	mutex_lock(&rdtgroup_mutex);
 
+<<<<<<< HEAD
 	set_mba_sc(false);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*Put everything back to default values. */
 	for_each_alloc_enabled_rdt_resource(r)
 		reset_all_ctrls(r);
 	cdp_disable_all();
 	rmdir_all_sub();
+<<<<<<< HEAD
 	rdt_pseudo_lock_release();
 	rdtgroup_default.mode = RDT_MODE_SHAREABLE;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	static_branch_disable_cpuslocked(&rdt_alloc_enable_key);
 	static_branch_disable_cpuslocked(&rdt_mon_enable_key);
 	static_branch_disable_cpuslocked(&rdt_enable_key);
@@ -2127,8 +2289,12 @@ static int mon_addfile(struct kernfs_node *parent_kn, const char *name,
 	struct kernfs_node *kn;
 	int ret = 0;
 
+<<<<<<< HEAD
 	kn = __kernfs_create_file(parent_kn, name, 0444,
 				  GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, 0,
+=======
+	kn = __kernfs_create_file(parent_kn, name, 0444, 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  &kf_mondata_ops, priv, NULL, NULL);
 	if (IS_ERR(kn))
 		return PTR_ERR(kn);
@@ -2283,7 +2449,11 @@ static int mkdir_mondata_all(struct kernfs_node *parent_kn,
 	/*
 	 * Create the mon_data directory first.
 	 */
+<<<<<<< HEAD
 	ret = mongroup_create_dir(parent_kn, NULL, "mon_data", &kn);
+=======
+	ret = mongroup_create_dir(parent_kn, prgrp, "mon_data", &kn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -2307,6 +2477,7 @@ out_destroy:
 	return ret;
 }
 
+<<<<<<< HEAD
 /**
  * cbm_ensure_valid - Enforce validity on provided CBM
  * @_val:	Candidate CBM
@@ -2426,6 +2597,8 @@ static int rdtgroup_init_alloc(struct rdtgroup *rdtgrp)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
 			     struct kernfs_node *prgrp_kn,
 			     const char *name, umode_t mode,
@@ -2436,6 +2609,7 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
 	uint files = 0;
 	int ret;
 
+<<<<<<< HEAD
 	prdtgrp = rdtgroup_kn_lock_live(prgrp_kn);
 	rdt_last_cmd_clear();
 	if (!prdtgrp) {
@@ -2449,6 +2623,11 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
 	     prdtgrp->mode == RDT_MODE_PSEUDO_LOCKED)) {
 		ret = -EINVAL;
 		rdt_last_cmd_puts("pseudo-locking in progress\n");
+=======
+	prdtgrp = rdtgroup_kn_lock_live(parent_kn);
+	if (!prdtgrp) {
+		ret = -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_unlock;
 	}
 
@@ -2456,7 +2635,10 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
 	rdtgrp = kzalloc(sizeof(*rdtgrp), GFP_KERNEL);
 	if (!rdtgrp) {
 		ret = -ENOSPC;
+<<<<<<< HEAD
 		rdt_last_cmd_puts("kernel out of memory\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_unlock;
 	}
 	*r = rdtgrp;
@@ -2468,7 +2650,10 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
 	kn = kernfs_create_dir(parent_kn, name, mode, rdtgrp);
 	if (IS_ERR(kn)) {
 		ret = PTR_ERR(kn);
+<<<<<<< HEAD
 		rdt_last_cmd_puts("kernfs create error\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out_free_rgrp;
 	}
 	rdtgrp->kn = kn;
@@ -2482,6 +2667,7 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
 	kernfs_get(kn);
 
 	ret = rdtgroup_kn_set_ugid(kn);
+<<<<<<< HEAD
 	if (ret) {
 		rdt_last_cmd_puts("kernfs perm error\n");
 		goto out_destroy;
@@ -2507,11 +2693,35 @@ static int mkdir_rdt_prepare(struct kernfs_node *parent_kn,
 			rdt_last_cmd_puts("kernfs subdir error\n");
 			goto out_idfree;
 		}
+=======
+	if (ret)
+		goto out_destroy;
+
+	files = RFTYPE_BASE | RFTYPE_CTRL;
+	files = RFTYPE_BASE | BIT(RF_CTRLSHIFT + rtype);
+	ret = rdtgroup_add_files(kn, files);
+	if (ret)
+		goto out_destroy;
+
+	if (rdt_mon_capable) {
+		ret = alloc_rmid();
+		if (ret < 0)
+			goto out_destroy;
+		rdtgrp->mon.rmid = ret;
+
+		ret = mkdir_mondata_all(kn, rdtgrp, &rdtgrp->mon.mon_data_kn);
+		if (ret)
+			goto out_idfree;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	kernfs_activate(kn);
 
 	/*
+<<<<<<< HEAD
 	 * The caller unlocks the prgrp_kn upon success.
+=======
+	 * The caller unlocks the parent_kn upon success.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	return 0;
 
@@ -2522,7 +2732,11 @@ out_destroy:
 out_free_rgrp:
 	kfree(rdtgrp);
 out_unlock:
+<<<<<<< HEAD
 	rdtgroup_kn_unlock(prgrp_kn);
+=======
+	rdtgroup_kn_unlock(parent_kn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2560,7 +2774,11 @@ static int rdtgroup_mkdir_mon(struct kernfs_node *parent_kn,
 	 */
 	list_add_tail(&rdtgrp->mon.crdtgrp_list, &prgrp->mon.crdtgrp_list);
 
+<<<<<<< HEAD
 	rdtgroup_kn_unlock(prgrp_kn);
+=======
+	rdtgroup_kn_unlock(parent_kn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -2584,18 +2802,26 @@ static int rdtgroup_mkdir_ctrl_mon(struct kernfs_node *parent_kn,
 
 	kn = rdtgrp->kn;
 	ret = closid_alloc();
+<<<<<<< HEAD
 	if (ret < 0) {
 		rdt_last_cmd_puts("out of CLOSIDs\n");
 		goto out_common_fail;
 	}
+=======
+	if (ret < 0)
+		goto out_common_fail;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	closid = ret;
 	ret = 0;
 
 	rdtgrp->closid = closid;
+<<<<<<< HEAD
 	ret = rdtgroup_init_alloc(rdtgrp);
 	if (ret < 0)
 		goto out_id_free;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_add(&rdtgrp->rdtgroup_list, &rdt_all_groups);
 
 	if (rdt_mon_capable) {
@@ -2603,15 +2829,22 @@ static int rdtgroup_mkdir_ctrl_mon(struct kernfs_node *parent_kn,
 		 * Create an empty mon_groups directory to hold the subset
 		 * of tasks and cpus to monitor.
 		 */
+<<<<<<< HEAD
 		ret = mongroup_create_dir(kn, NULL, "mon_groups", NULL);
 		if (ret) {
 			rdt_last_cmd_puts("kernfs subdir error\n");
 			goto out_del_list;
 		}
+=======
+		ret = mongroup_create_dir(kn, rdtgrp, "mon_groups", NULL);
+		if (ret)
+			goto out_id_free;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	goto out_unlock;
 
+<<<<<<< HEAD
 out_del_list:
 	list_del(&rdtgrp->rdtgroup_list);
 out_id_free:
@@ -2623,6 +2856,31 @@ out_unlock:
 	return ret;
 }
 
+=======
+out_id_free:
+	closid_free(closid);
+	list_del(&rdtgrp->rdtgroup_list);
+out_common_fail:
+	mkdir_rdt_prepare_clean(rdtgrp);
+out_unlock:
+	rdtgroup_kn_unlock(parent_kn);
+	return ret;
+}
+
+/* Restore the qos cfg state when a domain comes online */
+void rdt_domain_reconfigure_cdp(struct rdt_resource *r)
+{
+	if (!r->alloc_capable)
+		return;
+
+	if (r == &rdt_resources_all[RDT_RESOURCE_L2DATA])
+		l2_qos_cfg_update(&r->alloc_enabled);
+
+	if (r == &rdt_resources_all[RDT_RESOURCE_L3DATA])
+		l3_qos_cfg_update(&r->alloc_enabled);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We allow creating mon groups only with in a directory called "mon_groups"
  * which is present in every ctrl_mon group. Check if this is a valid
@@ -2702,6 +2960,7 @@ static int rdtgroup_rmdir_mon(struct kernfs_node *kn, struct rdtgroup *rdtgrp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int rdtgroup_ctrl_remove(struct kernfs_node *kn,
 				struct rdtgroup *rdtgrp)
 {
@@ -2717,6 +2976,8 @@ static int rdtgroup_ctrl_remove(struct kernfs_node *kn,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rdtgroup_rmdir_ctrl(struct kernfs_node *kn, struct rdtgroup *rdtgrp,
 			       cpumask_var_t tmpmask)
 {
@@ -2742,16 +3003,35 @@ static int rdtgroup_rmdir_ctrl(struct kernfs_node *kn, struct rdtgroup *rdtgrp,
 	cpumask_or(tmpmask, tmpmask, &rdtgrp->cpu_mask);
 	update_closid_rmid(tmpmask, NULL);
 
+<<<<<<< HEAD
 	closid_free(rdtgrp->closid);
 	free_rmid(rdtgrp->mon.rmid);
 
+=======
+	rdtgrp->flags = RDT_DELETED;
+	closid_free(rdtgrp->closid);
+	free_rmid(rdtgrp->mon.rmid);
+
+	list_del(&rdtgrp->rdtgroup_list);
+
+	/*
+	 * one extra hold on this, will drop when we kfree(rdtgrp)
+	 * in rdtgroup_kn_unlock()
+	 */
+	kernfs_get(kn);
+	kernfs_remove(rdtgrp->kn);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Free all the child monitor group rmids.
 	 */
 	free_all_child_rdtgrp(rdtgrp);
 
+<<<<<<< HEAD
 	rdtgroup_ctrl_remove(kn, rdtgrp);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2778,6 +3058,7 @@ static int rdtgroup_rmdir(struct kernfs_node *kn)
 	 * If the rdtgroup is a mon group and parent directory
 	 * is a valid "mon_groups" directory, remove the mon group.
 	 */
+<<<<<<< HEAD
 	if (rdtgrp->type == RDTCTRL_GROUP && parent_kn == rdtgroup_default.kn) {
 		if (rdtgrp->mode == RDT_MODE_PSEUDO_LOCKSETUP ||
 		    rdtgrp->mode == RDT_MODE_PSEUDO_LOCKED) {
@@ -2791,6 +3072,16 @@ static int rdtgroup_rmdir(struct kernfs_node *kn)
 	} else {
 		ret = -EPERM;
 	}
+=======
+	if (rdtgrp->type == RDTCTRL_GROUP && parent_kn == rdtgroup_default.kn &&
+	    rdtgrp != &rdtgroup_default)
+		ret = rdtgroup_rmdir_ctrl(kn, rdtgrp, tmpmask);
+	else if (rdtgrp->type == RDTMON_GROUP &&
+		 is_mon_groups(parent_kn, kn->name))
+		ret = rdtgroup_rmdir_mon(kn, rdtgrp, tmpmask);
+	else
+		ret = -EPERM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	rdtgroup_kn_unlock(kn);
@@ -2802,6 +3093,7 @@ static int rdtgroup_show_options(struct seq_file *seq, struct kernfs_root *kf)
 {
 	if (rdt_resources_all[RDT_RESOURCE_L3DATA].alloc_enabled)
 		seq_puts(seq, ",cdp");
+<<<<<<< HEAD
 
 	if (rdt_resources_all[RDT_RESOURCE_L2DATA].alloc_enabled)
 		seq_puts(seq, ",cdpl2");
@@ -2809,6 +3101,8 @@ static int rdtgroup_show_options(struct seq_file *seq, struct kernfs_root *kf)
 	if (is_mba_sc(&rdt_resources_all[RDT_RESOURCE_MBA]))
 		seq_puts(seq, ",mba_MBps");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -2823,8 +3117,12 @@ static int __init rdtgroup_setup_root(void)
 	int ret;
 
 	rdt_root = kernfs_create_root(&rdtgroup_kf_syscall_ops,
+<<<<<<< HEAD
 				      KERNFS_ROOT_CREATE_DEACTIVATED |
 				      KERNFS_ROOT_EXTRA_OPEN_PERM_CHECK,
+=======
+				      KERNFS_ROOT_CREATE_DEACTIVATED,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      &rdtgroup_default);
 	if (IS_ERR(rdt_root))
 		return PTR_ERR(rdt_root);
@@ -2865,9 +3163,12 @@ int __init rdtgroup_init(void)
 {
 	int ret = 0;
 
+<<<<<<< HEAD
 	seq_buf_init(&last_cmd_status, last_cmd_status_buf,
 		     sizeof(last_cmd_status_buf));
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = rdtgroup_setup_root();
 	if (ret)
 		return ret;
@@ -2880,6 +3181,7 @@ int __init rdtgroup_init(void)
 	if (ret)
 		goto cleanup_mountpoint;
 
+<<<<<<< HEAD
 	/*
 	 * Adding the resctrl debugfs directory here may not be ideal since
 	 * it would let the resctrl debugfs directory appear on the debugfs
@@ -2903,6 +3205,8 @@ int __init rdtgroup_init(void)
 	 */
 	debugfs_resctrl = debugfs_create_dir("resctrl", NULL);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 cleanup_mountpoint:
@@ -2912,6 +3216,7 @@ cleanup_root:
 
 	return ret;
 }
+<<<<<<< HEAD
 
 void __exit rdtgroup_exit(void)
 {
@@ -2920,3 +3225,5 @@ void __exit rdtgroup_exit(void)
 	sysfs_remove_mount_point(fs_kobj, "resctrl");
 	kernfs_destroy_root(rdt_root);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

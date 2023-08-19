@@ -75,6 +75,7 @@
 	ldr	w\tmpnr, [\state, #16 * 2 + 4]
 	fpsimd_restore_fpcr x\tmpnr, \state
 .endm
+<<<<<<< HEAD
 
 /* Sanity-check macros to help avoid encoding garbage instructions */
 
@@ -225,3 +226,5 @@
 		ldr		w\nxtmp, [\xpfpsr, #4]
 		msr		fpcr, x\nxtmp
 .endm
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

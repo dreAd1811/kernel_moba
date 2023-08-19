@@ -11,12 +11,18 @@
 #include "blk-mq.h"
 #include "blk.h"
 
+<<<<<<< HEAD
+=======
+#define BLK_RQ_STAT_BATCH	64
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct blk_queue_stats {
 	struct list_head callbacks;
 	spinlock_t lock;
 	bool enable_accounting;
 };
 
+<<<<<<< HEAD
 void blk_rq_stat_init(struct blk_rq_stat *stat)
 {
 	stat->min = -1ULL;
@@ -27,12 +33,45 @@ void blk_rq_stat_init(struct blk_rq_stat *stat)
 /* src is a per-cpu stat, mean isn't initialized */
 void blk_rq_stat_sum(struct blk_rq_stat *dst, struct blk_rq_stat *src)
 {
+=======
+static void blk_stat_init(struct blk_rq_stat *stat)
+{
+	stat->min = -1ULL;
+	stat->max = stat->nr_samples = stat->mean = 0;
+	stat->batch = stat->nr_batch = 0;
+}
+
+static void blk_stat_flush_batch(struct blk_rq_stat *stat)
+{
+	const s32 nr_batch = READ_ONCE(stat->nr_batch);
+	const s32 nr_samples = READ_ONCE(stat->nr_samples);
+
+	if (!nr_batch)
+		return;
+	if (!nr_samples)
+		stat->mean = div64_s64(stat->batch, nr_batch);
+	else {
+		stat->mean = div64_s64((stat->mean * nr_samples) +
+					stat->batch,
+					nr_batch + nr_samples);
+	}
+
+	stat->nr_samples += nr_batch;
+	stat->nr_batch = stat->batch = 0;
+}
+
+static void blk_stat_sum(struct blk_rq_stat *dst, struct blk_rq_stat *src)
+{
+	blk_stat_flush_batch(src);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!src->nr_samples)
 		return;
 
 	dst->min = min(dst->min, src->min);
 	dst->max = max(dst->max, src->max);
 
+<<<<<<< HEAD
 	dst->mean = div_u64(src->batch + dst->mean * dst->nr_samples,
 				dst->nr_samples + src->nr_samples);
 
@@ -48,14 +87,50 @@ void blk_rq_stat_add(struct blk_rq_stat *stat, u64 value)
 }
 
 void blk_stat_add(struct request *rq, u64 now)
+=======
+	if (!dst->nr_samples)
+		dst->mean = src->mean;
+	else {
+		dst->mean = div64_s64((src->mean * src->nr_samples) +
+					(dst->mean * dst->nr_samples),
+					dst->nr_samples + src->nr_samples);
+	}
+	dst->nr_samples += src->nr_samples;
+}
+
+static void __blk_stat_add(struct blk_rq_stat *stat, u64 value)
+{
+	stat->min = min(stat->min, value);
+	stat->max = max(stat->max, value);
+
+	if (stat->batch + value < stat->batch ||
+	    stat->nr_batch + 1 == BLK_RQ_STAT_BATCH)
+		blk_stat_flush_batch(stat);
+
+	stat->batch += value;
+	stat->nr_batch++;
+}
+
+void blk_stat_add(struct request *rq)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct request_queue *q = rq->q;
 	struct blk_stat_callback *cb;
 	struct blk_rq_stat *stat;
 	int bucket;
+<<<<<<< HEAD
 	u64 value;
 
 	value = (now >= rq->io_start_time_ns) ? now - rq->io_start_time_ns : 0;
+=======
+	s64 now, value;
+
+	now = __blk_stat_time(ktime_to_ns(ktime_get()));
+	if (now < blk_stat_time(&rq->issue_stat))
+		return;
+
+	value = now - blk_stat_time(&rq->issue_stat);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	blk_throtl_stat_add(rq, value);
 
@@ -69,28 +144,47 @@ void blk_stat_add(struct request *rq, u64 now)
 			continue;
 
 		stat = &get_cpu_ptr(cb->cpu_stat)[bucket];
+<<<<<<< HEAD
 		blk_rq_stat_add(stat, value);
+=======
+		__blk_stat_add(stat, value);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		put_cpu_ptr(cb->cpu_stat);
 	}
 	rcu_read_unlock();
 }
 
+<<<<<<< HEAD
 static void blk_stat_timer_fn(struct timer_list *t)
 {
 	struct blk_stat_callback *cb = from_timer(cb, t, timer);
+=======
+static void blk_stat_timer_fn(unsigned long data)
+{
+	struct blk_stat_callback *cb = (void *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int bucket;
 	int cpu;
 
 	for (bucket = 0; bucket < cb->buckets; bucket++)
+<<<<<<< HEAD
 		blk_rq_stat_init(&cb->stat[bucket]);
+=======
+		blk_stat_init(&cb->stat[bucket]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for_each_online_cpu(cpu) {
 		struct blk_rq_stat *cpu_stat;
 
 		cpu_stat = per_cpu_ptr(cb->cpu_stat, cpu);
 		for (bucket = 0; bucket < cb->buckets; bucket++) {
+<<<<<<< HEAD
 			blk_rq_stat_sum(&cb->stat[bucket], &cpu_stat[bucket]);
 			blk_rq_stat_init(&cpu_stat[bucket]);
+=======
+			blk_stat_sum(&cb->stat[bucket], &cpu_stat[bucket]);
+			blk_stat_init(&cpu_stat[bucket]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -126,7 +220,11 @@ blk_stat_alloc_callback(void (*timer_fn)(struct blk_stat_callback *),
 	cb->bucket_fn = bucket_fn;
 	cb->data = data;
 	cb->buckets = buckets;
+<<<<<<< HEAD
 	timer_setup(&cb->timer, blk_stat_timer_fn, 0);
+=======
+	setup_timer(&cb->timer, blk_stat_timer_fn, (unsigned long)cb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return cb;
 }
@@ -143,12 +241,20 @@ void blk_stat_add_callback(struct request_queue *q,
 
 		cpu_stat = per_cpu_ptr(cb->cpu_stat, cpu);
 		for (bucket = 0; bucket < cb->buckets; bucket++)
+<<<<<<< HEAD
 			blk_rq_stat_init(&cpu_stat[bucket]);
+=======
+			blk_stat_init(&cpu_stat[bucket]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	spin_lock(&q->stats->lock);
 	list_add_tail_rcu(&cb->list, &q->stats->callbacks);
+<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_STATS, q);
+=======
+	set_bit(QUEUE_FLAG_STATS, &q->queue_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&q->stats->lock);
 }
 EXPORT_SYMBOL_GPL(blk_stat_add_callback);
@@ -159,7 +265,11 @@ void blk_stat_remove_callback(struct request_queue *q,
 	spin_lock(&q->stats->lock);
 	list_del_rcu(&cb->list);
 	if (list_empty(&q->stats->callbacks) && !q->stats->enable_accounting)
+<<<<<<< HEAD
 		blk_queue_flag_clear(QUEUE_FLAG_STATS, q);
+=======
+		clear_bit(QUEUE_FLAG_STATS, &q->queue_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&q->stats->lock);
 
 	del_timer_sync(&cb->timer);
@@ -187,7 +297,11 @@ void blk_stat_enable_accounting(struct request_queue *q)
 {
 	spin_lock(&q->stats->lock);
 	q->stats->enable_accounting = true;
+<<<<<<< HEAD
 	blk_queue_flag_set(QUEUE_FLAG_STATS, q);
+=======
+	set_bit(QUEUE_FLAG_STATS, &q->queue_flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_unlock(&q->stats->lock);
 }
 

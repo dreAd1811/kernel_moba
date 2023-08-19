@@ -502,6 +502,13 @@ in your dentry operations instead.
 	store it as cookie.
 --
 [mandatory]
+<<<<<<< HEAD
+=======
+	__fd_install() & fd_install() can now sleep. Callers should not
+	hold a spinlock	or other resources that do not allow a schedule.
+--
+[mandatory]
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	any symlink that might use page_follow_link_light/page_put_link() must
 	have inode_nohighmem(inode) called before anything might start playing with
 	its pagecache.  No highmem pages should end up in the pagecache of such
@@ -604,6 +611,7 @@ in your dentry operations instead.
 	supporting any statx-specific features may ignore the new arguments.
 --
 [mandatory]
+<<<<<<< HEAD
 	->atomic_open() calling conventions have changed.  Gone is int *opened,
 	along with FILE_OPENED/FILE_CREATED.  In place of those we have
 	FMODE_OPENED/FMODE_CREATED, set in file->f_mode.  Additionally, return
@@ -627,3 +635,10 @@ in your dentry operations instead.
 	DCACHE_RCUACCESS is gone; having an RCU delay on dentry freeing is the
 	default.  DCACHE_NORCU opts out, and only d_alloc_pseudo() has any
 	business doing so.
+=======
+
+	[should've been added in 2016] stale comment in finish_open()
+	nonwithstanding, failure exits in ->atomic_open() instances should
+	*NOT* fput() the file, no matter what.  Everything is handled by the
+	caller.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

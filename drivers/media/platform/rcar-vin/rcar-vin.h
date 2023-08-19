@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0+ */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Driver for Renesas R-Car VIN
  *
@@ -8,13 +11,24 @@
  * Copyright (C) 2008 Magnus Damm
  *
  * Based on the soc-camera rcar_vin driver
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute  it and/or modify it
+ * under  the terms of  the GNU General  Public License as published by the
+ * Free Software Foundation;  either version 2 of the  License, or (at your
+ * option) any later version.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __RCAR_VIN__
 #define __RCAR_VIN__
 
+<<<<<<< HEAD
 #include <linux/kref.h>
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <media/v4l2-async.h>
 #include <media/v4l2-ctrls.h>
 #include <media/v4l2-dev.h>
@@ -27,6 +41,7 @@
 /* Address alignment mask for HW buffers */
 #define HW_BUFFER_MASK 0x7f
 
+<<<<<<< HEAD
 /* Max number on VIN instances that can be in a system */
 #define RCAR_VIN_NUM 8
 
@@ -45,22 +60,51 @@ enum rvin_csi_id {
 	RVIN_CSI40,
 	RVIN_CSI41,
 	RVIN_CSI_MAX,
+=======
+enum chip_id {
+	RCAR_H1,
+	RCAR_M1,
+	RCAR_GEN2,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
  * STOPPED  - No operation in progress
+<<<<<<< HEAD
  * STARTING - Capture starting up
  * RUNNING  - Operation in progress have buffers
+=======
+ * RUNNING  - Operation in progress have buffers
+ * STALLED  - No operation in progress have no buffers
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * STOPPING - Stopping operation
  */
 enum rvin_dma_state {
 	STOPPED = 0,
+<<<<<<< HEAD
 	STARTING,
 	RUNNING,
+=======
+	RUNNING,
+	STALLED,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	STOPPING,
 };
 
 /**
+<<<<<<< HEAD
+=======
+ * struct rvin_source_fmt - Source information
+ * @width:	Width from source
+ * @height:	Height from source
+ */
+struct rvin_source_fmt {
+	u32 width;
+	u32 height;
+};
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct rvin_video_format - Data format stored in memory
  * @fourcc:	Pixelformat
  * @bpp:	Bytes per pixel
@@ -71,6 +115,7 @@ struct rvin_video_format {
 };
 
 /**
+<<<<<<< HEAD
  * struct rvin_parallel_entity - Parallel video input endpoint descriptor
  * @asd:	sub-device descriptor for async framework
  * @subdev:	subdevice matched using async framework
@@ -86,12 +131,29 @@ struct rvin_parallel_entity {
 
 	enum v4l2_mbus_type mbus_type;
 	unsigned int mbus_flags;
+=======
+ * struct rvin_graph_entity - Video endpoint from async framework
+ * @asd:	sub-device descriptor for async framework
+ * @subdev:	subdevice matched using async framework
+ * @code:	Media bus format from source
+ * @mbus_cfg:	Media bus format from DT
+ * @source_pad:	source pad of remote subdevice
+ * @sink_pad:	sink pad of remote subdevice
+ */
+struct rvin_graph_entity {
+	struct v4l2_async_subdev asd;
+	struct v4l2_subdev *subdev;
+
+	u32 code;
+	struct v4l2_mbus_config mbus_cfg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned int source_pad;
 	unsigned int sink_pad;
 };
 
 /**
+<<<<<<< HEAD
  * struct rvin_group_route - describes a route from a channel of a
  *	CSI-2 receiver to a VIN
  *
@@ -145,11 +207,18 @@ struct rvin_info {
  * @dev:		(OF) device
  * @base:		device I/O register space remapped to virtual memory
  * @info:		info about VIN instance
+=======
+ * struct rvin_dev - Renesas VIN device structure
+ * @dev:		(OF) device
+ * @base:		device I/O register space remapped to virtual memory
+ * @chip:		type of VIN chip
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * @vdev:		V4L2 video device associated with VIN
  * @v4l2_dev:		V4L2 device
  * @ctrl_handler:	V4L2 control handler
  * @notifier:		V4L2 asynchronous subdevs notifier
+<<<<<<< HEAD
  *
  * @parallel:		parallel input subdevice descriptor
  *
@@ -172,22 +241,46 @@ struct rvin_info {
  * @is_csi:		flag to mark the VIN as using a CSI-2 subdevice
  *
  * @mbus_code:		media bus format code
+=======
+ * @digital:		entity in the DT for local digital subdevice
+ *
+ * @lock:		protects @queue
+ * @queue:		vb2 buffers queue
+ *
+ * @qlock:		protects @queue_buf, @buf_list, @continuous, @sequence
+ *			@state
+ * @queue_buf:		Keeps track of buffers given to HW slot
+ * @buf_list:		list of queued buffers
+ * @continuous:		tracks if active operation is continuous or single mode
+ * @sequence:		V4L2 buffers sequence number
+ * @state:		keeps track of operation state
+ *
+ * @source:		active format from the video source
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @format:		active V4L2 pixel format
  *
  * @crop:		active cropping
  * @compose:		active composing
+<<<<<<< HEAD
  * @source:		active size of the video source
  * @std:		active video standard of the video source
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct rvin_dev {
 	struct device *dev;
 	void __iomem *base;
+<<<<<<< HEAD
 	const struct rvin_info *info;
+=======
+	enum chip_id chip;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct video_device vdev;
 	struct v4l2_device v4l2_dev;
 	struct v4l2_ctrl_handler ctrl_handler;
 	struct v4l2_async_notifier notifier;
+<<<<<<< HEAD
 
 	struct rvin_parallel_entity *parallel;
 
@@ -199,25 +292,45 @@ struct rvin_dev {
 	struct vb2_queue queue;
 	void *scratch;
 	dma_addr_t scratch_phys;
+=======
+	struct rvin_graph_entity digital;
+
+	struct mutex lock;
+	struct vb2_queue queue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spinlock_t qlock;
 	struct vb2_v4l2_buffer *queue_buf[HW_BUFFER_NUM];
 	struct list_head buf_list;
+<<<<<<< HEAD
 	unsigned int sequence;
 	enum rvin_dma_state state;
 
 	bool is_csi;
 
 	u32 mbus_code;
+=======
+	bool continuous;
+	unsigned int sequence;
+	enum rvin_dma_state state;
+
+	struct rvin_source_fmt source;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct v4l2_pix_format format;
 
 	struct v4l2_rect crop;
 	struct v4l2_rect compose;
+<<<<<<< HEAD
 	struct v4l2_rect source;
 	v4l2_std_id std;
 };
 
 #define vin_to_source(vin)		((vin)->parallel->subdev)
+=======
+};
+
+#define vin_to_source(vin)		vin->digital.subdev
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* Debug */
 #define vin_dbg(d, fmt, arg...)		dev_dbg(d->dev, fmt, ##arg)
@@ -225,6 +338,7 @@ struct rvin_dev {
 #define vin_warn(d, fmt, arg...)	dev_warn(d->dev, fmt, ##arg)
 #define vin_err(d, fmt, arg...)		dev_err(d->dev, fmt, ##arg)
 
+<<<<<<< HEAD
 /**
  * struct rvin_group - VIN CSI2 group information
  * @refcount:		number of VIN instances using the group
@@ -259,12 +373,26 @@ void rvin_dma_unregister(struct rvin_dev *vin);
 
 int rvin_v4l2_register(struct rvin_dev *vin);
 void rvin_v4l2_unregister(struct rvin_dev *vin);
+=======
+int rvin_dma_probe(struct rvin_dev *vin, int irq);
+void rvin_dma_remove(struct rvin_dev *vin);
+
+int rvin_v4l2_probe(struct rvin_dev *vin);
+void rvin_v4l2_remove(struct rvin_dev *vin);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 const struct rvin_video_format *rvin_format_from_pixel(u32 pixelformat);
 
 /* Cropping, composing and scaling */
+<<<<<<< HEAD
 void rvin_crop_scale_comp(struct rvin_dev *vin);
 
 int rvin_set_channel_routing(struct rvin_dev *vin, u8 chsel);
 
+=======
+void rvin_scale_try(struct rvin_dev *vin, struct v4l2_pix_format *pix,
+		    u32 width, u32 height);
+void rvin_crop_scale_comp(struct rvin_dev *vin);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

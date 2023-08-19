@@ -54,7 +54,11 @@
 	model = "Armadeus APF6 Quad / Dual Module on APF6Dev Board";
 	compatible = "armadeus,imx6q-apf6dev", "armadeus,imx6q-apf6", "fsl,imx6q";
 
+<<<<<<< HEAD
 	memory@10000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x10000000 0x40000000>;
 	};
 };

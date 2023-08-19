@@ -330,7 +330,11 @@ static int ov7660_set_gain(struct gspca_dev *gspca_dev, __s32 val)
 	u8 i2c_data = val;
 	struct sd *sd = (struct sd *) gspca_dev;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Setting gain to %d\n", val);
+=======
+	PDEBUG(D_CONF, "Setting gain to %d", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_write_sensor(sd, OV7660_GAIN, &i2c_data, 1);
 	return err;
@@ -343,7 +347,11 @@ static int ov7660_set_auto_white_balance(struct gspca_dev *gspca_dev,
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set auto white balance to %d\n", val);
+=======
+	PDEBUG(D_CONF, "Set auto white balance to %d", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_read_sensor(sd, OV7660_COM8, &i2c_data, 1);
 	if (err < 0)
@@ -361,7 +369,11 @@ static int ov7660_set_auto_gain(struct gspca_dev *gspca_dev, __s32 val)
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set auto gain control to %d\n", val);
+=======
+	PDEBUG(D_CONF, "Set auto gain control to %d", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_read_sensor(sd, OV7660_COM8, &i2c_data, 1);
 	if (err < 0)
@@ -379,7 +391,11 @@ static int ov7660_set_auto_exposure(struct gspca_dev *gspca_dev,
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set auto exposure control to %d\n", val);
+=======
+	PDEBUG(D_CONF, "Set auto exposure control to %d", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = m5602_read_sensor(sd, OV7660_COM8, &i2c_data, 1);
 	if (err < 0)
@@ -397,8 +413,12 @@ static int ov7660_set_hvflip(struct gspca_dev *gspca_dev)
 	u8 i2c_data;
 	struct sd *sd = (struct sd *) gspca_dev;
 
+<<<<<<< HEAD
 	gspca_dbg(gspca_dev, D_CONF, "Set hvflip to %d, %d\n",
 		  sd->hflip->val, sd->vflip->val);
+=======
+	PDEBUG(D_CONF, "Set hvflip to %d, %d", sd->hflip->val, sd->vflip->val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i2c_data = (sd->hflip->val << 5) | (sd->vflip->val << 4);
 

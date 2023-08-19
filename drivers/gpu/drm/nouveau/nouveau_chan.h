@@ -17,9 +17,14 @@ struct nouveau_channel {
 
 	struct {
 		struct nouveau_bo *buffer;
+<<<<<<< HEAD
 		struct nouveau_vma *vma;
 		struct nvif_object ctxdma;
 		u64 addr;
+=======
+		struct nvkm_vma vma;
+		struct nvif_object ctxdma;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} push;
 
 	/* TODO: this will be reworked in the near future */
@@ -45,7 +50,10 @@ struct nouveau_channel {
 	atomic_t killed;
 };
 
+<<<<<<< HEAD
 int nouveau_channels_init(struct nouveau_drm *);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int  nouveau_channel_new(struct nouveau_drm *, struct nvif_device *,
 			 u32 arg0, u32 arg1, struct nouveau_channel **);

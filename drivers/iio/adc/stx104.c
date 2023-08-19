@@ -172,6 +172,10 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info stx104_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = stx104_read_raw,
 	.write_raw = stx104_write_raw
 };
@@ -233,6 +237,7 @@ static int stx104_gpio_get(struct gpio_chip *chip, unsigned int offset)
 	return !!(inb(stx104gpio->base) & BIT(offset));
 }
 
+<<<<<<< HEAD
 static int stx104_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
 	unsigned long *bits)
 {
@@ -243,6 +248,8 @@ static int stx104_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void stx104_gpio_set(struct gpio_chip *chip, unsigned int offset,
 	int value)
 {
@@ -352,7 +359,10 @@ static int stx104_probe(struct device *dev, unsigned int id)
 	stx104gpio->chip.direction_input = stx104_gpio_direction_input;
 	stx104gpio->chip.direction_output = stx104_gpio_direction_output;
 	stx104gpio->chip.get = stx104_gpio_get;
+<<<<<<< HEAD
 	stx104gpio->chip.get_multiple = stx104_gpio_get_multiple;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	stx104gpio->chip.set = stx104_gpio_set;
 	stx104gpio->chip.set_multiple = stx104_gpio_set_multiple;
 	stx104gpio->base = base[id] + 3;

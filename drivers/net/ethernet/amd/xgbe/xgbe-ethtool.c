@@ -626,6 +626,7 @@ static int xgbe_get_ts_info(struct net_device *netdev,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int xgbe_get_module_info(struct net_device *netdev,
 				struct ethtool_modinfo *modinfo)
 {
@@ -837,6 +838,8 @@ out:
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ethtool_ops xgbe_ethtool_ops = {
 	.get_drvinfo = xgbe_get_drvinfo,
 	.get_msglevel = xgbe_get_msglevel,
@@ -857,12 +860,15 @@ static const struct ethtool_ops xgbe_ethtool_ops = {
 	.get_ts_info = xgbe_get_ts_info,
 	.get_link_ksettings = xgbe_get_link_ksettings,
 	.set_link_ksettings = xgbe_set_link_ksettings,
+<<<<<<< HEAD
 	.get_module_info = xgbe_get_module_info,
 	.get_module_eeprom = xgbe_get_module_eeprom,
 	.get_ringparam = xgbe_get_ringparam,
 	.set_ringparam = xgbe_set_ringparam,
 	.get_channels = xgbe_get_channels,
 	.set_channels = xgbe_set_channels,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct ethtool_ops *xgbe_get_ethtool_ops(void)

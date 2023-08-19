@@ -108,7 +108,10 @@ int __ide_wait_stat(ide_drive_t *drive, u8 good, u8 bad,
 	ide_hwif_t *hwif = drive->hwif;
 	const struct ide_tp_ops *tp_ops = hwif->tp_ops;
 	unsigned long flags;
+<<<<<<< HEAD
 	bool irqs_threaded = force_irqthreads;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 	u8 stat;
 
@@ -116,10 +119,15 @@ int __ide_wait_stat(ide_drive_t *drive, u8 good, u8 bad,
 	stat = tp_ops->read_status(hwif);
 
 	if (stat & ATA_BUSY) {
+<<<<<<< HEAD
 		if (!irqs_threaded) {
 			local_save_flags(flags);
 			local_irq_enable_in_hardirq();
 		}
+=======
+		local_save_flags(flags);
+		local_irq_enable_in_hardirq();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		timeout += jiffies;
 		while ((stat = tp_ops->read_status(hwif)) & ATA_BUSY) {
 			if (time_after(jiffies, timeout)) {
@@ -132,14 +140,22 @@ int __ide_wait_stat(ide_drive_t *drive, u8 good, u8 bad,
 				if ((stat & ATA_BUSY) == 0)
 					break;
 
+<<<<<<< HEAD
 				if (!irqs_threaded)
 					local_irq_restore(flags);
+=======
+				local_irq_restore(flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				*rstat = stat;
 				return -EBUSY;
 			}
 		}
+<<<<<<< HEAD
 		if (!irqs_threaded)
 			local_irq_restore(flags);
+=======
+		local_irq_restore(flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	/*
 	 * Allow status to settle, then read it again.

@@ -58,7 +58,11 @@ static void hns_roce_ib_cq_event(struct hns_roce_cq *hr_cq,
 	if (event_type != HNS_ROCE_EVENT_TYPE_CQ_ID_INVALID &&
 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_ACCESS_ERROR &&
 	    event_type != HNS_ROCE_EVENT_TYPE_CQ_OVERFLOW) {
+<<<<<<< HEAD
 		dev_err(hr_dev->dev,
+=======
+		dev_err(&hr_dev->pdev->dev,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"hns_roce_ib: Unexpected event type 0x%x on CQ %06lx\n",
 			event_type, hr_cq->cqn);
 		return;
@@ -85,6 +89,7 @@ static int hns_roce_cq_alloc(struct hns_roce_dev *hr_dev, int nent,
 			     struct hns_roce_uar *hr_uar,
 			     struct hns_roce_cq *hr_cq, int vector)
 {
+<<<<<<< HEAD
 	struct hns_roce_cmd_mailbox *mailbox;
 	struct hns_roce_hem_table *mtt_table;
 	struct hns_roce_cq_table *cq_table;
@@ -92,16 +97,28 @@ static int hns_roce_cq_alloc(struct hns_roce_dev *hr_dev, int nent,
 	dma_addr_t dma_handle;
 	u64 *mtts;
 	int ret;
+=======
+	struct hns_roce_cmd_mailbox *mailbox = NULL;
+	struct hns_roce_cq_table *cq_table = NULL;
+	struct device *dev = &hr_dev->pdev->dev;
+	dma_addr_t dma_handle;
+	u64 *mtts = NULL;
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cq_table = &hr_dev->cq_table;
 
 	/* Get the physical address of cq buf */
+<<<<<<< HEAD
 	if (hns_roce_check_whether_mhop(hr_dev, HEM_TYPE_CQE))
 		mtt_table = &hr_dev->mr_table.mtt_cqe_table;
 	else
 		mtt_table = &hr_dev->mr_table.mtt_table;
 
 	mtts = hns_roce_table_find(hr_dev, mtt_table,
+=======
+	mtts = hns_roce_table_find(&hr_dev->mr_table.mtt_table,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   hr_mtt->first_seg, &dma_handle);
 	if (!mtts) {
 		dev_err(dev, "CQ alloc.Failed to find cq buf addr.\n");
@@ -156,7 +173,10 @@ static int hns_roce_cq_alloc(struct hns_roce_dev *hr_dev, int nent,
 	}
 
 	hr_cq->cons_index = 0;
+<<<<<<< HEAD
 	hr_cq->arm_sn = 1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hr_cq->uar = hr_uar;
 
 	atomic_set(&hr_cq->refcount, 1);
@@ -189,7 +209,11 @@ static int hns_roce_hw2sw_cq(struct hns_roce_dev *dev,
 void hns_roce_free_cq(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
 {
 	struct hns_roce_cq_table *cq_table = &hr_dev->cq_table;
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = hns_roce_hw2sw_cq(hr_dev, NULL, hr_cq->cqn);
@@ -212,7 +236,10 @@ void hns_roce_free_cq(struct hns_roce_dev *hr_dev, struct hns_roce_cq *hr_cq)
 	hns_roce_table_put(hr_dev, &cq_table->table, hr_cq->cqn);
 	hns_roce_bitmap_free(&cq_table->bitmap, hr_cq->cqn, BITMAP_NO_RR);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_free_cq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int hns_roce_ib_get_cq_umem(struct hns_roce_dev *hr_dev,
 				   struct ib_ucontext *context,
@@ -220,14 +247,18 @@ static int hns_roce_ib_get_cq_umem(struct hns_roce_dev *hr_dev,
 				   struct ib_umem **umem, u64 buf_addr, int cqe)
 {
 	int ret;
+<<<<<<< HEAD
 	u32 page_shift;
 	u32 npages;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*umem = ib_umem_get(context, buf_addr, cqe * hr_dev->caps.cq_entry_sz,
 			    IB_ACCESS_LOCAL_WRITE, 1);
 	if (IS_ERR(*umem))
 		return PTR_ERR(*umem);
 
+<<<<<<< HEAD
 	if (hns_roce_check_whether_mhop(hr_dev, HEM_TYPE_CQE))
 		buf->hr_mtt.mtt_type = MTT_TYPE_CQE;
 	else
@@ -245,6 +276,10 @@ static int hns_roce_ib_get_cq_umem(struct hns_roce_dev *hr_dev,
 				(*umem)->page_shift,
 				&buf->hr_mtt);
 	}
+=======
+	ret = hns_roce_mtt_init(hr_dev, ib_umem_page_count(*umem),
+				(*umem)->page_shift, &buf->hr_mtt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		goto err_buf;
 
@@ -266,6 +301,7 @@ static int hns_roce_ib_alloc_cq_buf(struct hns_roce_dev *hr_dev,
 				    struct hns_roce_cq_buf *buf, u32 nent)
 {
 	int ret;
+<<<<<<< HEAD
 	u32 page_shift = PAGE_SHIFT + hr_dev->caps.cqe_buf_pg_sz;
 
 	ret = hns_roce_buf_alloc(hr_dev, nent * hr_dev->caps.cq_entry_sz,
@@ -279,6 +315,14 @@ static int hns_roce_ib_alloc_cq_buf(struct hns_roce_dev *hr_dev,
 	else
 		buf->hr_mtt.mtt_type = MTT_TYPE_WQE;
 
+=======
+
+	ret = hns_roce_buf_alloc(hr_dev, nent * hr_dev->caps.cq_entry_sz,
+				 PAGE_SIZE * 2, &buf->hr_buf);
+	if (ret)
+		goto out;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = hns_roce_mtt_init(hr_dev, buf->hr_buf.npages,
 				buf->hr_buf.page_shift, &buf->hr_mtt);
 	if (ret)
@@ -313,14 +357,23 @@ struct ib_cq *hns_roce_ib_create_cq(struct ib_device *ib_dev,
 				    struct ib_udata *udata)
 {
 	struct hns_roce_dev *hr_dev = to_hr_dev(ib_dev);
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
 	struct hns_roce_ib_create_cq ucmd;
 	struct hns_roce_ib_create_cq_resp resp = {};
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+	struct hns_roce_ib_create_cq ucmd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hns_roce_cq *hr_cq = NULL;
 	struct hns_roce_uar *uar = NULL;
 	int vector = attr->comp_vector;
 	int cq_entries = attr->cqe;
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cq_entries < 1 || cq_entries > hr_dev->caps.max_cqes) {
 		dev_err(dev, "Creat CQ failed. entries=%d, max=%d\n",
@@ -328,12 +381,22 @@ struct ib_cq *hns_roce_ib_create_cq(struct ib_device *ib_dev,
 		return ERR_PTR(-EINVAL);
 	}
 
+<<<<<<< HEAD
 	hr_cq = kzalloc(sizeof(*hr_cq), GFP_KERNEL);
 	if (!hr_cq)
 		return ERR_PTR(-ENOMEM);
 
 	if (hr_dev->caps.min_cqes)
 		cq_entries = max(cq_entries, hr_dev->caps.min_cqes);
+=======
+	hr_cq = kmalloc(sizeof(*hr_cq), GFP_KERNEL);
+	if (!hr_cq)
+		return ERR_PTR(-ENOMEM);
+
+	/* In v1 engine, parameter verification */
+	if (cq_entries < HNS_ROCE_MIN_CQE_NUM)
+		cq_entries = HNS_ROCE_MIN_CQE_NUM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cq_entries = roundup_pow_of_two((unsigned int)cq_entries);
 	hr_cq->ib_cq.cqe = cq_entries - 1;
@@ -355,6 +418,7 @@ struct ib_cq *hns_roce_ib_create_cq(struct ib_device *ib_dev,
 			goto err_cq;
 		}
 
+<<<<<<< HEAD
 		if ((hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RECORD_DB) &&
 		    (udata->outlen >= sizeof(resp))) {
 			ret = hns_roce_db_map_user(to_hr_ucontext(context),
@@ -380,17 +444,31 @@ struct ib_cq *hns_roce_ib_create_cq(struct ib_device *ib_dev,
 			hr_cq->db_en = 1;
 		}
 
+=======
+		/* Get user space parameters */
+		uar = &to_hr_ucontext(context)->uar;
+	} else {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Init mmt table and write buff address to mtt table */
 		ret = hns_roce_ib_alloc_cq_buf(hr_dev, &hr_cq->hr_buf,
 					       cq_entries);
 		if (ret) {
 			dev_err(dev, "Failed to alloc_cq_buf.\n");
+<<<<<<< HEAD
 			goto err_db;
 		}
 
 		uar = &hr_dev->priv_uar;
 		hr_cq->cq_db_l = hr_dev->reg_base + hr_dev->odb_offset +
 				DB_REG_OFFSET * uar->index;
+=======
+			goto err_cq;
+		}
+
+		uar = &hr_dev->priv_uar;
+		hr_cq->cq_db_l = hr_dev->reg_base + ROCEE_DB_OTHERS_L_0_REG +
+				 0x1000 * uar->index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Allocate cq index, fill cq_context */
@@ -398,7 +476,11 @@ struct ib_cq *hns_roce_ib_create_cq(struct ib_device *ib_dev,
 				hr_cq, vector);
 	if (ret) {
 		dev_err(dev, "Creat CQ .Failed to cq_alloc.\n");
+<<<<<<< HEAD
 		goto err_dbmap;
+=======
+		goto err_mtt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -407,7 +489,11 @@ struct ib_cq *hns_roce_ib_create_cq(struct ib_device *ib_dev,
 	 * problems if tptr is set to zero here, so we initialze it in user
 	 * space.
 	 */
+<<<<<<< HEAD
 	if (!context && hr_cq->tptr_addr)
+=======
+	if (!context)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*hr_cq->tptr_addr = 0;
 
 	/* Get created cq handler and carry out event */
@@ -416,10 +502,17 @@ struct ib_cq *hns_roce_ib_create_cq(struct ib_device *ib_dev,
 	hr_cq->cq_depth = cq_entries;
 
 	if (context) {
+<<<<<<< HEAD
 		resp.cqn = hr_cq->cqn;
 		ret = ib_copy_to_udata(udata, &resp, sizeof(resp));
 		if (ret)
 			goto err_cqc;
+=======
+		if (ib_copy_to_udata(udata, &hr_cq->cqn, sizeof(u64))) {
+			ret = -EFAULT;
+			goto err_cqc;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return &hr_cq->ib_cq;
@@ -427,12 +520,15 @@ struct ib_cq *hns_roce_ib_create_cq(struct ib_device *ib_dev,
 err_cqc:
 	hns_roce_free_cq(hr_dev, hr_cq);
 
+<<<<<<< HEAD
 err_dbmap:
 	if (context && (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RECORD_DB) &&
 	    (udata->outlen >= sizeof(resp)))
 		hns_roce_db_unmap_user(to_hr_ucontext(context),
 				       &hr_cq->db);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_mtt:
 	hns_roce_mtt_cleanup(hr_dev, &hr_cq->hr_buf.hr_mtt);
 	if (context)
@@ -441,15 +537,21 @@ err_mtt:
 		hns_roce_ib_free_cq_buf(hr_dev, &hr_cq->hr_buf,
 					hr_cq->ib_cq.cqe);
 
+<<<<<<< HEAD
 err_db:
 	if (!context && (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RECORD_DB))
 		hns_roce_free_db(hr_dev, &hr_cq->db);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_cq:
 	kfree(hr_cq);
 	return ERR_PTR(ret);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_ib_create_cq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int hns_roce_ib_destroy_cq(struct ib_cq *ib_cq)
 {
@@ -463,6 +565,7 @@ int hns_roce_ib_destroy_cq(struct ib_cq *ib_cq)
 		hns_roce_free_cq(hr_dev, hr_cq);
 		hns_roce_mtt_cleanup(hr_dev, &hr_cq->hr_buf.hr_mtt);
 
+<<<<<<< HEAD
 		if (ib_cq->uobject) {
 			ib_umem_release(hr_cq->umem);
 
@@ -477,17 +580,32 @@ int hns_roce_ib_destroy_cq(struct ib_cq *ib_cq)
 			if (hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_RECORD_DB)
 				hns_roce_free_db(hr_dev, &hr_cq->db);
 		}
+=======
+		if (ib_cq->uobject)
+			ib_umem_release(hr_cq->umem);
+		else
+			/* Free the buff of stored cq */
+			hns_roce_ib_free_cq_buf(hr_dev, &hr_cq->hr_buf,
+						ib_cq->cqe);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		kfree(hr_cq);
 	}
 
 	return ret;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_ib_destroy_cq);
 
 void hns_roce_cq_completion(struct hns_roce_dev *hr_dev, u32 cqn)
 {
 	struct device *dev = hr_dev->dev;
+=======
+
+void hns_roce_cq_completion(struct hns_roce_dev *hr_dev, u32 cqn)
+{
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hns_roce_cq *cq;
 
 	cq = radix_tree_lookup(&hr_dev->cq_table.tree,
@@ -497,15 +615,24 @@ void hns_roce_cq_completion(struct hns_roce_dev *hr_dev, u32 cqn)
 		return;
 	}
 
+<<<<<<< HEAD
 	++cq->arm_sn;
 	cq->comp(cq);
 }
 EXPORT_SYMBOL_GPL(hns_roce_cq_completion);
+=======
+	cq->comp(cq);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
 {
 	struct hns_roce_cq_table *cq_table = &hr_dev->cq_table;
+<<<<<<< HEAD
 	struct device *dev = hr_dev->dev;
+=======
+	struct device *dev = &hr_dev->pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hns_roce_cq *cq;
 
 	cq = radix_tree_lookup(&cq_table->tree,
@@ -523,7 +650,10 @@ void hns_roce_cq_event(struct hns_roce_dev *hr_dev, u32 cqn, int event_type)
 	if (atomic_dec_and_test(&cq->refcount))
 		complete(&cq->free);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(hns_roce_cq_event);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int hns_roce_init_cq_table(struct hns_roce_dev *hr_dev)
 {

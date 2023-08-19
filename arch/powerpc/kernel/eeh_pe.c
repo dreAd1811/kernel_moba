@@ -142,7 +142,12 @@ struct eeh_pe *eeh_phb_pe_get(struct pci_controller *phb)
  * The function is used to retrieve the next PE in the
  * hierarchy PE tree.
  */
+<<<<<<< HEAD
 struct eeh_pe *eeh_pe_next(struct eeh_pe *pe, struct eeh_pe *root)
+=======
+static struct eeh_pe *eeh_pe_next(struct eeh_pe *pe,
+				  struct eeh_pe *root)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct list_head *next = pe->child_list.next;
 
@@ -172,12 +177,20 @@ struct eeh_pe *eeh_pe_next(struct eeh_pe *pe, struct eeh_pe *root)
  * to be traversed.
  */
 void *eeh_pe_traverse(struct eeh_pe *root,
+<<<<<<< HEAD
 		      eeh_pe_traverse_func fn, void *flag)
+=======
+		      eeh_traverse_func fn, void *flag)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct eeh_pe *pe;
 	void *ret;
 
+<<<<<<< HEAD
 	eeh_for_each_pe(root, pe) {
+=======
+	for (pe = root; pe; pe = eeh_pe_next(pe, root)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = fn(pe, flag);
 		if (ret) return ret;
 	}
@@ -195,7 +208,11 @@ void *eeh_pe_traverse(struct eeh_pe *root,
  * PE and its child PEs.
  */
 void *eeh_pe_dev_traverse(struct eeh_pe *root,
+<<<<<<< HEAD
 			  eeh_edev_traverse_func fn, void *flag)
+=======
+		eeh_traverse_func fn, void *flag)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct eeh_pe *pe;
 	struct eeh_dev *edev, *tmp;
@@ -208,7 +225,11 @@ void *eeh_pe_dev_traverse(struct eeh_pe *root,
 	}
 
 	/* Traverse root PE */
+<<<<<<< HEAD
 	eeh_for_each_pe(root, pe) {
+=======
+	for (pe = root; pe; pe = eeh_pe_next(pe, root)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		eeh_pe_for_each_dev(pe, edev, tmp) {
 			ret = fn(edev, flag);
 			if (ret)
@@ -234,8 +255,14 @@ struct eeh_pe_get_flag {
 	int config_addr;
 };
 
+<<<<<<< HEAD
 static void *__eeh_pe_get(struct eeh_pe *pe, void *flag)
 {
+=======
+static void *__eeh_pe_get(void *data, void *flag)
+{
+	struct eeh_pe *pe = (struct eeh_pe *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct eeh_pe_get_flag *tmp = (struct eeh_pe_get_flag *) flag;
 
 	/* Unexpected PHB PE */
@@ -379,7 +406,11 @@ int eeh_add_to_parent_pe(struct eeh_dev *edev)
 		while (parent) {
 			if (!(parent->type & EEH_PE_INVALID))
 				break;
+<<<<<<< HEAD
 			parent->type &= ~(EEH_PE_INVALID | EEH_PE_KEEP);
+=======
+			parent->type &= ~EEH_PE_INVALID;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			parent = parent->parent;
 		}
 
@@ -524,16 +555,27 @@ int eeh_rmv_from_parent_pe(struct eeh_dev *edev)
  */
 void eeh_pe_update_time_stamp(struct eeh_pe *pe)
 {
+<<<<<<< HEAD
 	time64_t tstamp;
+=======
+	struct timeval tstamp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pe) return;
 
 	if (pe->freeze_count <= 0) {
 		pe->freeze_count = 0;
+<<<<<<< HEAD
 		pe->tstamp = ktime_get_seconds();
 	} else {
 		tstamp = ktime_get_seconds();
 		if (tstamp - pe->tstamp > 3600) {
+=======
+		do_gettimeofday(&pe->tstamp);
+	} else {
+		do_gettimeofday(&tstamp);
+		if (tstamp.tv_sec - pe->tstamp.tv_sec > 3600) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pe->tstamp = tstamp;
 			pe->freeze_count = 0;
 		}
@@ -549,8 +591,14 @@ void eeh_pe_update_time_stamp(struct eeh_pe *pe)
  * PE. Also, the associated PCI devices will be put into IO frozen
  * state as well.
  */
+<<<<<<< HEAD
 static void *__eeh_pe_state_mark(struct eeh_pe *pe, void *flag)
 {
+=======
+static void *__eeh_pe_state_mark(void *data, void *flag)
+{
+	struct eeh_pe *pe = (struct eeh_pe *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int state = *((int *)flag);
 	struct eeh_dev *edev, *tmp;
 	struct pci_dev *pdev;
@@ -592,8 +640,14 @@ void eeh_pe_state_mark(struct eeh_pe *pe, int state)
 }
 EXPORT_SYMBOL_GPL(eeh_pe_state_mark);
 
+<<<<<<< HEAD
 static void *__eeh_pe_dev_mode_mark(struct eeh_dev *edev, void *flag)
 {
+=======
+static void *__eeh_pe_dev_mode_mark(void *data, void *flag)
+{
+	struct eeh_dev *edev = data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int mode = *((int *)flag);
 
 	edev->mode |= mode;
@@ -621,8 +675,14 @@ void eeh_pe_dev_mode_mark(struct eeh_pe *pe, int mode)
  * given PE. Besides, we also clear the check count of the PE
  * as well.
  */
+<<<<<<< HEAD
 static void *__eeh_pe_state_clear(struct eeh_pe *pe, void *flag)
 {
+=======
+static void *__eeh_pe_state_clear(void *data, void *flag)
+{
+	struct eeh_pe *pe = (struct eeh_pe *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int state = *((int *)flag);
 	struct eeh_dev *edev, *tmp;
 	struct pci_dev *pdev;
@@ -853,8 +913,14 @@ static void eeh_restore_device_bars(struct eeh_dev *edev)
  * the expansion ROM base address, the latency timer, and etc.
  * from the saved values in the device node.
  */
+<<<<<<< HEAD
 static void *eeh_restore_one_device_bars(struct eeh_dev *edev, void *flag)
 {
+=======
+static void *eeh_restore_one_device_bars(void *data, void *flag)
+{
+	struct eeh_dev *edev = (struct eeh_dev *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pci_dn *pdn = eeh_dev_to_pdn(edev);
 
 	/* Do special restore for bridges */

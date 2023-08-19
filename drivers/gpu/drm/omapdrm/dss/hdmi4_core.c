@@ -1,6 +1,12 @@
 /*
+<<<<<<< HEAD
  * HDMI TI81xx, TI38xx, TI OMAP4 etc IP driver Library
  *
+=======
+ * ti_hdmi_4xxx_ip.c
+ *
+ * HDMI TI81xx, TI38xx, TI OMAP4 etc IP driver Library
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2010-2011 Texas Instruments Incorporated - http://www.ti.com/
  * Authors: Yong Zhi
  *	Mythri pk <mythripk@ti.com>
@@ -207,9 +213,15 @@ static void hdmi_core_init(struct hdmi_core_video_config *video_cfg)
 	video_cfg->tclk_sel_clkmult = HDMI_FPLL10IDCK;
 }
 
+<<<<<<< HEAD
 void hdmi4_core_powerdown_disable(struct hdmi_core_data *core)
 {
 	DSSDBG("Enter hdmi4_core_powerdown_disable\n");
+=======
+static void hdmi_core_powerdown_disable(struct hdmi_core_data *core)
+{
+	DSSDBG("Enter hdmi_core_powerdown_disable\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	REG_FLD_MOD(core->base, HDMI_CORE_SYS_SYS_CTRL1, 0x1, 0, 0);
 }
 
@@ -334,6 +346,12 @@ void hdmi4_configure(struct hdmi_core_data *core,
 	 */
 	hdmi_core_swreset_assert(core);
 
+<<<<<<< HEAD
+=======
+	/* power down off */
+	hdmi_core_powerdown_disable(core);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	v_core_cfg.pkt_mode = HDMI_PACKETMODE24BITPERPIXEL;
 	v_core_cfg.hdmi_dvi = cfg->hdmi_dvi_mode;
 

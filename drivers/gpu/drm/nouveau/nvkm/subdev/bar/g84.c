@@ -44,6 +44,7 @@ g84_bar_func = {
 	.dtor = nv50_bar_dtor,
 	.oneinit = nv50_bar_oneinit,
 	.init = nv50_bar_init,
+<<<<<<< HEAD
 	.bar1.init = nv50_bar_bar1_init,
 	.bar1.fini = nv50_bar_bar1_fini,
 	.bar1.wait = nv50_bar_bar1_wait,
@@ -52,6 +53,10 @@ g84_bar_func = {
 	.bar2.fini = nv50_bar_bar2_fini,
 	.bar2.wait = nv50_bar_bar1_wait,
 	.bar2.vmm = nv50_bar_bar2_vmm,
+=======
+	.kmap = nv50_bar_kmap,
+	.umap = nv50_bar_umap,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.flush = g84_bar_flush,
 };
 

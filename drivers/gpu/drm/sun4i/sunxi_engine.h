@@ -12,6 +12,7 @@
 
 struct drm_plane;
 struct drm_device;
+<<<<<<< HEAD
 struct drm_crtc_state;
 
 struct sunxi_engine;
@@ -112,6 +113,18 @@ struct sunxi_engine_ops {
 	 * This function is optional.
 	 */
 	void (*vblank_quirk)(struct sunxi_engine *engine);
+=======
+
+struct sunxi_engine;
+
+struct sunxi_engine_ops {
+	void (*commit)(struct sunxi_engine *engine);
+	struct drm_plane **(*layers_init)(struct drm_device *drm,
+					  struct sunxi_engine *engine);
+
+	void (*apply_color_correction)(struct sunxi_engine *engine);
+	void (*disable_color_correction)(struct sunxi_engine *engine);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**

@@ -322,6 +322,11 @@ struct clk *rockchip_clk_register_cpuclk(const char *name,
 					     sizeof(*rates) * nrates,
 					     GFP_KERNEL);
 		if (!cpuclk->rate_table) {
+<<<<<<< HEAD
+=======
+			pr_err("%s: could not allocate memory for cpuclk rates\n",
+			       __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ret = -ENOMEM;
 			goto unregister_notifier;
 		}

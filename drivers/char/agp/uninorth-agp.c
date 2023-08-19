@@ -402,9 +402,13 @@ static int uninorth_create_gatt_table(struct agp_bridge_data *bridge)
 	if (table == NULL)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	uninorth_priv.pages_arr = kmalloc_array(1 << page_order,
 						sizeof(struct page *),
 						GFP_KERNEL);
+=======
+	uninorth_priv.pages_arr = kmalloc((1 << page_order) * sizeof(struct page*), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (uninorth_priv.pages_arr == NULL)
 		goto enomem;
 

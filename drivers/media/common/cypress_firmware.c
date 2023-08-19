@@ -74,9 +74,17 @@ int cypress_load_firmware(struct usb_device *udev,
 	struct hexline *hx;
 	int ret, pos = 0;
 
+<<<<<<< HEAD
 	hx = kmalloc(sizeof(*hx), GFP_KERNEL);
 	if (!hx)
 		return -ENOMEM;
+=======
+	hx = kmalloc(sizeof(struct hexline), GFP_KERNEL);
+	if (!hx) {
+		dev_err(&udev->dev, "%s: kmalloc() failed\n", KBUILD_MODNAME);
+		return -ENOMEM;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* stop the CPU */
 	hx->data[0] = 1;

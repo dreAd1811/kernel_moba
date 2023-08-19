@@ -159,7 +159,11 @@ static int dht11_decode(struct dht11 *dht11, int offset)
 	}
 
 	dht11->timestamp = ktime_get_boot_ns();
+<<<<<<< HEAD
 	if (hum_int < 4) {  /* DHT22: 100000 = (3*256+232)*100 */
+=======
+	if (hum_int < 20) {  /* DHT22 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dht11->temperature = (((temp_int & 0x7f) << 8) + temp_dec) *
 					((temp_int & 0x80) ? -100 : 100);
 		dht11->humidity = ((hum_int << 8) + hum_dec) * 100;
@@ -284,6 +288,10 @@ err:
 }
 
 static const struct iio_info dht11_iio_info = {
+<<<<<<< HEAD
+=======
+	.driver_module		= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw		= dht11_read_raw,
 };
 

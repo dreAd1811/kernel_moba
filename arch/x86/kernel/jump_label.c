@@ -16,6 +16,11 @@
 #include <asm/alternative.h>
 #include <asm/text-patching.h>
 
+<<<<<<< HEAD
+=======
+#ifdef HAVE_JUMP_LABEL
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 union jump_code_union {
 	char code[JUMP_LABEL_NOP_SIZE];
 	struct {
@@ -35,18 +40,28 @@ static void bug_at(unsigned char *ip, int line)
 	BUG();
 }
 
+<<<<<<< HEAD
 static void __ref __jump_label_transform(struct jump_entry *entry,
 					 enum jump_label_type type,
 					 void *(*poker)(void *, const void *, size_t),
 					 int init)
+=======
+static void __jump_label_transform(struct jump_entry *entry,
+				   enum jump_label_type type,
+				   void *(*poker)(void *, const void *, size_t),
+				   int init)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	union jump_code_union code;
 	const unsigned char default_nop[] = { STATIC_KEY_INIT_NOP };
 	const unsigned char *ideal_nop = ideal_nops[NOP_ATOMIC5];
 
+<<<<<<< HEAD
 	if (early_boot_irqs_disabled)
 		poker = text_poke_early;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (type == JUMP_LABEL_JMP) {
 		if (init) {
 			/*
@@ -140,3 +155,8 @@ __init_or_module void arch_jump_label_transform_static(struct jump_entry *entry,
 	if (jlstate == JL_STATE_UPDATE)
 		__jump_label_transform(entry, type, text_poke_early, 1);
 }
+<<<<<<< HEAD
+=======
+
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

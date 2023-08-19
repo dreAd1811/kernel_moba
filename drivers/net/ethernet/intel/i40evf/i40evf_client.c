@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
+<<<<<<< HEAD
 /* Copyright(c) 2013 - 2018 Intel Corporation. */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/list.h>
 #include <linux/errno.h>
 
@@ -28,6 +31,7 @@ static struct i40e_ops i40evf_lan_ops = {
 };
 
 /**
+<<<<<<< HEAD
  * i40evf_client_get_params - retrieve relevant client parameters
  * @vsi: VSI with parameters
  * @params: client param struct
@@ -48,6 +52,8 @@ void i40evf_client_get_params(struct i40e_vsi *vsi, struct i40e_params *params)
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * i40evf_notify_client_message - call the client message receive callback
  * @vsi: the VSI associated with this client
  * @msg: message buffer
@@ -88,6 +94,13 @@ void i40evf_notify_client_l2_params(struct i40e_vsi *vsi)
 		return;
 
 	cinst = vsi->back->cinst;
+<<<<<<< HEAD
+=======
+	memset(&params, 0, sizeof(params));
+	params.mtu = vsi->netdev->mtu;
+	params.link_up = vsi->back->link_up;
+	params.qos.prio_qos[0].qs_handle = vsi->qs_handle;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!cinst || !cinst->client || !cinst->client->ops ||
 	    !cinst->client->ops->l2_param_change) {
@@ -95,8 +108,11 @@ void i40evf_notify_client_l2_params(struct i40e_vsi *vsi)
 			"Cannot locate client instance l2_param_change function\n");
 		return;
 	}
+<<<<<<< HEAD
 	i40evf_client_get_params(vsi, &params);
 	cinst->lan_info.params = params;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cinst->client->ops->l2_param_change(&cinst->lan_info, cinst->client,
 					    &params);
 }
@@ -178,6 +194,10 @@ void i40evf_notify_client_close(struct i40e_vsi *vsi, bool reset)
 /**
  * i40evf_client_add_instance - add a client instance to the instance list
  * @adapter: pointer to the board struct
+<<<<<<< HEAD
+=======
+ * @client: pointer to a client struct in the client list.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Returns cinst ptr on success, NULL on failure
  **/
@@ -185,9 +205,15 @@ static struct i40e_client_instance *
 i40evf_client_add_instance(struct i40evf_adapter *adapter)
 {
 	struct i40e_client_instance *cinst = NULL;
+<<<<<<< HEAD
 	struct i40e_vsi *vsi = &adapter->vsi;
 	struct netdev_hw_addr *mac = NULL;
 	struct i40e_params params;
+=======
+	struct netdev_hw_addr *mac = NULL;
+	struct i40e_vsi *vsi = &adapter->vsi;
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!vf_registered_client)
 		goto out;
@@ -211,14 +237,26 @@ i40evf_client_add_instance(struct i40evf_adapter *adapter)
 	cinst->lan_info.version.major = I40EVF_CLIENT_VERSION_MAJOR;
 	cinst->lan_info.version.minor = I40EVF_CLIENT_VERSION_MINOR;
 	cinst->lan_info.version.build = I40EVF_CLIENT_VERSION_BUILD;
+<<<<<<< HEAD
 	i40evf_client_get_params(vsi, &params);
 	cinst->lan_info.params = params;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_bit(__I40E_CLIENT_INSTANCE_NONE, &cinst->state);
 
 	cinst->lan_info.msix_count = adapter->num_iwarp_msix;
 	cinst->lan_info.msix_entries =
 			&adapter->msix_entries[adapter->iwarp_base_vector];
 
+<<<<<<< HEAD
+=======
+	for (i = 0; i < I40E_MAX_USER_PRIORITY; i++) {
+		cinst->lan_info.params.qos.prio_qos[i].tc = 0;
+		cinst->lan_info.params.qos.prio_qos[i].qs_handle =
+								vsi->qs_handle;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mac = list_first_entry(&cinst->lan_info.netdev->dev_addrs.list,
 			       struct netdev_hw_addr, list);
 	if (mac)
@@ -235,6 +273,10 @@ out:
 /**
  * i40evf_client_del_instance - removes a client instance from the list
  * @adapter: pointer to the board struct
+<<<<<<< HEAD
+=======
+ * @client: pointer to the client struct
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  **/
 static
@@ -438,7 +480,11 @@ static u32 i40evf_client_virtchnl_send(struct i40e_info *ldev,
  * i40evf_client_setup_qvlist - send a message to the PF to setup iwarp qv map
  * @ldev: pointer to L2 context.
  * @client: Client pointer.
+<<<<<<< HEAD
  * @qvlist_info: queue and vector list
+=======
+ * @qv_info: queue and vector list
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Return 0 on success or < 0 on error
  **/

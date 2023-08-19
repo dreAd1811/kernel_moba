@@ -63,11 +63,15 @@ static void intel_spi_pci_remove(struct pci_dev *pdev)
 }
 
 static const struct pci_device_id intel_spi_pci_ids[] = {
+<<<<<<< HEAD
 	{ PCI_VDEVICE(INTEL, 0x18e0), (unsigned long)&bxt_info },
 	{ PCI_VDEVICE(INTEL, 0x19e0), (unsigned long)&bxt_info },
 	{ PCI_VDEVICE(INTEL, 0x34a4), (unsigned long)&bxt_info },
 	{ PCI_VDEVICE(INTEL, 0xa1a4), (unsigned long)&bxt_info },
 	{ PCI_VDEVICE(INTEL, 0xa224), (unsigned long)&bxt_info },
+=======
+	{ PCI_VDEVICE(INTEL, 0x19e0), (unsigned long)&bxt_info },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ },
 };
 MODULE_DEVICE_TABLE(pci, intel_spi_pci_ids);

@@ -14,8 +14,11 @@ menuconfig ARC_PLAT_AXS10X
 	select MIGHT_HAVE_PCI
 	select GENERIC_IRQ_CHIP
 	select GPIOLIB
+<<<<<<< HEAD
 	select AXS101 if ISA_ARCOMPACT
 	select AXS103 if ISA_ARCV2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Support for the ARC AXS10x Software Development Platforms.
 

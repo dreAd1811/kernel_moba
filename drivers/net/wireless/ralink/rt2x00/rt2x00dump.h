@@ -106,7 +106,11 @@ enum rt2x00_dump_type {
  */
 struct rt2x00dump_hdr {
 	__le32 version;
+<<<<<<< HEAD
 #define DUMP_HEADER_VERSION	3
+=======
+#define DUMP_HEADER_VERSION	2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__le32 header_length;
 	__le32 desc_length;

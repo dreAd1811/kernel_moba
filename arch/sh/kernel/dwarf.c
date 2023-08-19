@@ -599,7 +599,11 @@ struct dwarf_frame *dwarf_unwind_stack(unsigned long pc,
 	 * time this function makes its first function call.
 	 */
 	if (!pc || !prev)
+<<<<<<< HEAD
 		pc = _THIS_IP_;
+=======
+		pc = (unsigned long)current_text_addr();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_FUNCTION_GRAPH_TRACER
 	/*

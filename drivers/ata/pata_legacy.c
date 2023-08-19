@@ -246,12 +246,20 @@ static const struct ata_port_operations legacy_base_port_ops = {
 
 static struct ata_port_operations simple_port_ops = {
 	.inherits	= &legacy_base_port_ops,
+<<<<<<< HEAD
 	.sff_data_xfer	= ata_sff_data_xfer32,
+=======
+	.sff_data_xfer	= ata_sff_data_xfer_noirq,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct ata_port_operations legacy_port_ops = {
 	.inherits	= &legacy_base_port_ops,
+<<<<<<< HEAD
 	.sff_data_xfer	= ata_sff_data_xfer32,
+=======
+	.sff_data_xfer	= ata_sff_data_xfer_noirq,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.set_mode	= legacy_set_mode,
 };
 
@@ -341,7 +349,11 @@ static unsigned int pdc_data_xfer_vlb(struct ata_queued_cmd *qc,
 		}
 		local_irq_restore(flags);
 	} else
+<<<<<<< HEAD
 		buflen = ata_sff_data_xfer32(qc, buf, buflen, rw);
+=======
+		buflen = ata_sff_data_xfer_noirq(qc, buf, buflen, rw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return buflen;
 }

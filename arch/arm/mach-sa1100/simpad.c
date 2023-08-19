@@ -4,7 +4,10 @@
  */
 
 #include <linux/module.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/init.h>
 #include <linux/kernel.h>
 #include <linux/tty.h>
@@ -18,7 +21,10 @@
 #include <linux/mtd/partitions.h>
 #include <linux/io.h>
 #include <linux/gpio/driver.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <mach/hardware.h>
 #include <asm/setup.h>
@@ -37,7 +43,11 @@
 #include <linux/input.h>
 #include <linux/gpio_keys.h>
 #include <linux/leds.h>
+<<<<<<< HEAD
 #include <linux/platform_data/i2c-gpio.h>
+=======
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "generic.h"
 
@@ -326,6 +336,7 @@ static struct platform_device simpad_gpio_leds = {
 /*
  * i2c
  */
+<<<<<<< HEAD
 static struct gpiod_lookup_table simpad_i2c_gpiod_table = {
 	.dev_id = "i2c-gpio.0",
 	.table = {
@@ -337,6 +348,11 @@ static struct gpiod_lookup_table simpad_i2c_gpiod_table = {
 };
 
 static struct i2c_gpio_platform_data simpad_i2c_data = {
+=======
+static struct i2c_gpio_platform_data simpad_i2c_data = {
+	.sda_pin = GPIO_GPIO21,
+	.scl_pin = GPIO_GPIO25,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.udelay = 10,
 	.timeout = HZ,
 };
@@ -365,6 +381,7 @@ static struct platform_device *devices[] __initdata = {
 	&simpad_i2c,
 };
 
+<<<<<<< HEAD
 /* Compact Flash */
 static struct gpiod_lookup_table simpad_cf_gpio_table = {
 	.dev_id = "sa11x0-pcmcia",
@@ -374,6 +391,8 @@ static struct gpiod_lookup_table simpad_cf_gpio_table = {
 		{ },
 	},
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 static int __init simpad_init(void)
@@ -395,13 +414,19 @@ static int __init simpad_init(void)
 
 	pm_power_off = simpad_power_off;
 
+<<<<<<< HEAD
 	sa11x0_register_pcmcia(-1, &simpad_cf_gpio_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sa11x0_ppc_configure_mcp();
 	sa11x0_register_mtd(&simpad_flash_data, simpad_flash_resources,
 			      ARRAY_SIZE(simpad_flash_resources));
 	sa11x0_register_mcp(&simpad_mcp_data);
 
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&simpad_i2c_gpiod_table);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = platform_add_devices(devices, ARRAY_SIZE(devices));
 	if(ret)
 		printk(KERN_WARNING "simpad: Unable to register mq200 framebuffer device");

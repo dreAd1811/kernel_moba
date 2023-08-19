@@ -44,11 +44,16 @@
 #include "execlist.h"
 #include "scheduler.h"
 #include "sched_policy.h"
+<<<<<<< HEAD
 #include "mmio_context.h"
 #include "cmd_parser.h"
 #include "fb_decoder.h"
 #include "dmabuf.h"
 #include "page_track.h"
+=======
+#include "render.h"
+#include "cmd_parser.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define GVT_MAX_VGPU 8
 
@@ -99,8 +104,15 @@ struct intel_vgpu_fence {
 struct intel_vgpu_mmio {
 	void *vreg;
 	void *sreg;
+<<<<<<< HEAD
 };
 
+=======
+	bool disable_warn_untrack;
+};
+
+#define INTEL_GVT_MAX_CFG_SPACE_SZ 256
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define INTEL_GVT_MAX_BAR_NUM 4
 
 struct intel_vgpu_pci_bar {
@@ -109,7 +121,11 @@ struct intel_vgpu_pci_bar {
 };
 
 struct intel_vgpu_cfg_space {
+<<<<<<< HEAD
 	unsigned char virtual_cfg_space[PCI_CFG_SPACE_EXP_SIZE];
+=======
+	unsigned char virtual_cfg_space[INTEL_GVT_MAX_CFG_SPACE_SZ];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct intel_vgpu_pci_bar bar[INTEL_GVT_MAX_BAR_NUM];
 };
 
@@ -124,16 +140,30 @@ struct intel_vgpu_irq {
 };
 
 struct intel_vgpu_opregion {
+<<<<<<< HEAD
 	bool mapped;
 	void *va;
 	u32 gfn[INTEL_GVT_OPREGION_PAGES];
+=======
+	void *va;
+	u32 gfn[INTEL_GVT_OPREGION_PAGES];
+	struct page *pages[INTEL_GVT_OPREGION_PAGES];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define vgpu_opregion(vgpu) (&(vgpu->opregion))
 
+<<<<<<< HEAD
 struct intel_vgpu_display {
 	struct intel_vgpu_i2c_edid i2c_edid;
 	struct intel_vgpu_port ports[I915_MAX_PORTS];
+=======
+#define INTEL_GVT_MAX_PORT 5
+
+struct intel_vgpu_display {
+	struct intel_vgpu_i2c_edid i2c_edid;
+	struct intel_vgpu_port ports[INTEL_GVT_MAX_PORT];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct intel_vgpu_sbi sbi;
 };
 
@@ -141,6 +171,7 @@ struct vgpu_sched_ctl {
 	int weight;
 };
 
+<<<<<<< HEAD
 enum {
 	INTEL_VGPU_EXECLIST_SUBMISSION = 1,
 	INTEL_VGPU_GUC_SUBMISSION,
@@ -171,17 +202,24 @@ struct intel_vgpu_submission {
 struct intel_vgpu {
 	struct intel_gvt *gvt;
 	struct mutex vgpu_lock;
+=======
+struct intel_vgpu {
+	struct intel_gvt *gvt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int id;
 	unsigned long handle; /* vGPU handle used by hypervisor MPT modules */
 	bool active;
 	bool pv_notified;
 	bool failsafe;
 	unsigned int resetting_eng;
+<<<<<<< HEAD
 
 	/* Both sched_data and sched_ctl can be seen a part of the global gvt
 	 * scheduler structure. So below 2 vgpu data are protected
 	 * by sched_lock, not vgpu_lock.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void *sched_data;
 	struct vgpu_sched_ctl sched_ctl;
 
@@ -193,11 +231,21 @@ struct intel_vgpu {
 	struct intel_vgpu_gtt gtt;
 	struct intel_vgpu_opregion opregion;
 	struct intel_vgpu_display display;
+<<<<<<< HEAD
 	struct intel_vgpu_submission submission;
 	struct radix_tree_root page_track_tree;
 	u32 hws_pga[I915_NUM_ENGINES];
 
 	struct dentry *debugfs;
+=======
+	struct intel_vgpu_execlist execlist[I915_NUM_ENGINES];
+	struct list_head workload_q_head[I915_NUM_ENGINES];
+	struct kmem_cache *workloads;
+	atomic_t running_workload_num;
+	DECLARE_BITMAP(tlb_handle_pending, I915_NUM_ENGINES);
+	struct i915_gem_context *shadow_ctx;
+	DECLARE_BITMAP(shadow_ctx_desc_updated, I915_NUM_ENGINES);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if IS_ENABLED(CONFIG_DRM_I915_GVT_KVMGT)
 	struct {
@@ -206,6 +254,7 @@ struct intel_vgpu {
 		int num_regions;
 		struct eventfd_ctx *intx_trigger;
 		struct eventfd_ctx *msi_trigger;
+<<<<<<< HEAD
 
 		/*
 		 * Two caches are used to avoid mapping duplicated pages (eg.
@@ -216,11 +265,16 @@ struct intel_vgpu {
 		unsigned long nr_cache_entries;
 		struct mutex cache_lock;
 
+=======
+		struct rb_root cache;
+		struct mutex cache_lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct notifier_block iommu_notifier;
 		struct notifier_block group_notifier;
 		struct kvm *kvm;
 		struct work_struct release_work;
 		atomic_t released;
+<<<<<<< HEAD
 		struct vfio_device *vfio_device;
 	} vdev;
 #endif
@@ -238,6 +292,12 @@ struct intel_vgpu {
 #define vgpu_is_vm_unhealthy(ret_val) \
 	(((ret_val) == -EBADRQC) || ((ret_val) == -EFAULT))
 
+=======
+	} vdev;
+#endif
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct intel_gvt_gm {
 	unsigned long vgpu_allocated_low_gm_size;
 	unsigned long vgpu_allocated_high_gm_size;
@@ -274,14 +334,21 @@ struct intel_gvt_mmio {
 #define F_CMD_ACCESSED	(1 << 5)
 /* This reg could be accessed by unaligned address */
 #define F_UNALIGN	(1 << 6)
+<<<<<<< HEAD
 /* This reg is saved/restored in context */
 #define F_IN_CTX	(1 << 7)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct gvt_mmio_block *mmio_block;
 	unsigned int num_mmio_block;
 
 	DECLARE_HASHTABLE(mmio_info_table, INTEL_GVT_MMIO_HASH_BITS);
+<<<<<<< HEAD
 	unsigned long num_tracked_mmio;
+=======
+	unsigned int num_tracked_mmio;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct intel_gvt_firmware {
@@ -290,6 +357,14 @@ struct intel_gvt_firmware {
 	bool firmware_loaded;
 };
 
+<<<<<<< HEAD
+=======
+struct intel_gvt_opregion {
+	void *opregion_va;
+	u32 opregion_pa;
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define NR_MAX_INTEL_VGPU_TYPES 20
 struct intel_vgpu_type {
 	char name[16];
@@ -302,6 +377,7 @@ struct intel_vgpu_type {
 };
 
 struct intel_gvt {
+<<<<<<< HEAD
 	/* GVT scope lock, protect GVT itself, and all resource currently
 	 * not yet protected by special locks(vgpu and scheduler lock).
 	 */
@@ -309,6 +385,9 @@ struct intel_gvt {
 	/* scheduler scope lock, protect gvt and vgpu schedule related data */
 	struct mutex sched_lock;
 
+=======
+	struct mutex lock;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_i915_private *dev_priv;
 	struct idr vgpu_idr;	/* vGPU IDR pool */
 
@@ -319,6 +398,10 @@ struct intel_gvt {
 	struct intel_gvt_firmware firmware;
 	struct intel_gvt_irq irq;
 	struct intel_gvt_gtt gtt;
+<<<<<<< HEAD
+=======
+	struct intel_gvt_opregion opregion;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct intel_gvt_workload_scheduler scheduler;
 	struct notifier_block shadow_ctx_notifier_block[I915_NUM_ENGINES];
 	DECLARE_HASHTABLE(cmd_table, GVT_CMD_HASH_BITS);
@@ -328,6 +411,7 @@ struct intel_gvt {
 
 	struct task_struct *service_thread;
 	wait_queue_head_t service_thread_wq;
+<<<<<<< HEAD
 
 	/* service_request is always used in bit operation, we should always
 	 * use it with atomic bit ops so that no need to use gvt big lock.
@@ -340,6 +424,9 @@ struct intel_gvt {
 	} engine_mmio_list;
 
 	struct dentry *debugfs_root;
+=======
+	unsigned long service_request;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline struct intel_gvt *to_gvt(struct drm_i915_private *i915)
@@ -377,11 +464,19 @@ int intel_gvt_load_firmware(struct intel_gvt *gvt);
 
 /* Aperture/GM space definitions for GVT device */
 #define gvt_aperture_sz(gvt)	  (gvt->dev_priv->ggtt.mappable_end)
+<<<<<<< HEAD
 #define gvt_aperture_pa_base(gvt) (gvt->dev_priv->ggtt.gmadr.start)
 
 #define gvt_ggtt_gm_sz(gvt)	  (gvt->dev_priv->ggtt.vm.total)
 #define gvt_ggtt_sz(gvt) \
 	((gvt->dev_priv->ggtt.vm.total >> PAGE_SHIFT) << 3)
+=======
+#define gvt_aperture_pa_base(gvt) (gvt->dev_priv->ggtt.mappable_base)
+
+#define gvt_ggtt_gm_sz(gvt)	  (gvt->dev_priv->ggtt.base.total)
+#define gvt_ggtt_sz(gvt) \
+	((gvt->dev_priv->ggtt.base.total >> PAGE_SHIFT) << 3)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define gvt_hidden_sz(gvt)	  (gvt_ggtt_gm_sz(gvt) - gvt_aperture_sz(gvt))
 
 #define gvt_aperture_gmadr_base(gvt) (0)
@@ -439,6 +534,7 @@ void intel_vgpu_free_resource(struct intel_vgpu *vgpu);
 void intel_vgpu_write_fence(struct intel_vgpu *vgpu,
 	u32 fence, u64 value);
 
+<<<<<<< HEAD
 /* Macros for easily accessing vGPU virtual/shadow register.
    Explicitly seperate use for typed MMIO reg or real offset.*/
 #define vgpu_vreg_t(vgpu, reg) \
@@ -453,6 +549,25 @@ void intel_vgpu_write_fence(struct intel_vgpu *vgpu,
 	(*(u32 *)(vgpu->mmio.sreg + i915_mmio_reg_offset(reg)))
 #define vgpu_sreg(vgpu, offset) \
 	(*(u32 *)(vgpu->mmio.sreg + (offset)))
+=======
+/* Macros for easily accessing vGPU virtual/shadow register */
+#define vgpu_vreg(vgpu, reg) \
+	(*(u32 *)(vgpu->mmio.vreg + INTEL_GVT_MMIO_OFFSET(reg)))
+#define vgpu_vreg8(vgpu, reg) \
+	(*(u8 *)(vgpu->mmio.vreg + INTEL_GVT_MMIO_OFFSET(reg)))
+#define vgpu_vreg16(vgpu, reg) \
+	(*(u16 *)(vgpu->mmio.vreg + INTEL_GVT_MMIO_OFFSET(reg)))
+#define vgpu_vreg64(vgpu, reg) \
+	(*(u64 *)(vgpu->mmio.vreg + INTEL_GVT_MMIO_OFFSET(reg)))
+#define vgpu_sreg(vgpu, reg) \
+	(*(u32 *)(vgpu->mmio.sreg + INTEL_GVT_MMIO_OFFSET(reg)))
+#define vgpu_sreg8(vgpu, reg) \
+	(*(u8 *)(vgpu->mmio.sreg + INTEL_GVT_MMIO_OFFSET(reg)))
+#define vgpu_sreg16(vgpu, reg) \
+	(*(u16 *)(vgpu->mmio.sreg + INTEL_GVT_MMIO_OFFSET(reg)))
+#define vgpu_sreg64(vgpu, reg) \
+	(*(u64 *)(vgpu->mmio.sreg + INTEL_GVT_MMIO_OFFSET(reg)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define for_each_active_vgpu(gvt, vgpu, id) \
 	idr_for_each_entry((&(gvt)->vgpu_idr), (vgpu), (id)) \
@@ -486,7 +601,10 @@ void intel_gvt_destroy_idle_vgpu(struct intel_vgpu *vgpu);
 struct intel_vgpu *intel_gvt_create_vgpu(struct intel_gvt *gvt,
 					 struct intel_vgpu_type *type);
 void intel_gvt_destroy_vgpu(struct intel_vgpu *vgpu);
+<<<<<<< HEAD
 void intel_gvt_release_vgpu(struct intel_vgpu *vgpu);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void intel_gvt_reset_vgpu_locked(struct intel_vgpu *vgpu, bool dmlr,
 				 unsigned int engine_mask);
 void intel_gvt_reset_vgpu(struct intel_vgpu *vgpu);
@@ -536,6 +654,7 @@ int intel_vgpu_emulate_cfg_read(struct intel_vgpu *vgpu, unsigned int offset,
 int intel_vgpu_emulate_cfg_write(struct intel_vgpu *vgpu, unsigned int offset,
 		void *p_data, unsigned int bytes);
 
+<<<<<<< HEAD
 static inline u64 intel_vgpu_get_bar_gpa(struct intel_vgpu *vgpu, int bar)
 {
 	/* We are 64bit bar. */
@@ -546,12 +665,22 @@ static inline u64 intel_vgpu_get_bar_gpa(struct intel_vgpu *vgpu, int bar)
 void intel_vgpu_clean_opregion(struct intel_vgpu *vgpu);
 int intel_vgpu_init_opregion(struct intel_vgpu *vgpu);
 int intel_vgpu_opregion_base_write_handler(struct intel_vgpu *vgpu, u32 gpa);
+=======
+void intel_gvt_clean_opregion(struct intel_gvt *gvt);
+int intel_gvt_init_opregion(struct intel_gvt *gvt);
+
+void intel_vgpu_clean_opregion(struct intel_vgpu *vgpu);
+int intel_vgpu_init_opregion(struct intel_vgpu *vgpu, u32 gpa);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int intel_vgpu_emulate_opregion_request(struct intel_vgpu *vgpu, u32 swsci);
 void populate_pvinfo_page(struct intel_vgpu *vgpu);
 
 int intel_gvt_scan_and_shadow_workload(struct intel_vgpu_workload *workload);
+<<<<<<< HEAD
 void enter_failsafe_mode(struct intel_vgpu *vgpu, int reason);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct intel_gvt_ops {
 	int (*emulate_cfg_read)(struct intel_vgpu *, unsigned int, void *,
@@ -564,6 +693,7 @@ struct intel_gvt_ops {
 				unsigned int);
 	struct intel_vgpu *(*vgpu_create)(struct intel_gvt *,
 				struct intel_vgpu_type *);
+<<<<<<< HEAD
 	void (*vgpu_destroy)(struct intel_vgpu *vgpu);
 	void (*vgpu_release)(struct intel_vgpu *vgpu);
 	void (*vgpu_reset)(struct intel_vgpu *);
@@ -577,13 +707,22 @@ struct intel_gvt_ops {
 	int (*vgpu_get_dmabuf)(struct intel_vgpu *vgpu, unsigned int);
 	int (*write_protect_handler)(struct intel_vgpu *, u64, void *,
 				     unsigned int);
+=======
+	void (*vgpu_destroy)(struct intel_vgpu *);
+	void (*vgpu_reset)(struct intel_vgpu *);
+	void (*vgpu_activate)(struct intel_vgpu *);
+	void (*vgpu_deactivate)(struct intel_vgpu *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
 enum {
 	GVT_FAILSAFE_UNSUPPORTED_GUEST,
 	GVT_FAILSAFE_INSUFFICIENT_RESOURCE,
+<<<<<<< HEAD
 	GVT_FAILSAFE_GUEST_ERR,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline void mmio_hw_access_pre(struct drm_i915_private *dev_priv)
@@ -659,6 +798,7 @@ static inline bool intel_gvt_mmio_has_mode_mask(
 	return gvt->mmio.mmio_attribute[offset >> 2] & F_MODE_MASK;
 }
 
+<<<<<<< HEAD
 /**
  * intel_gvt_mmio_is_in_ctx - check if a MMIO has in-ctx mask
  * @gvt: a GVT device
@@ -692,6 +832,8 @@ int intel_gvt_debugfs_init(struct intel_gvt *gvt);
 void intel_gvt_debugfs_clean(struct intel_gvt *gvt);
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "trace.h"
 #include "mpt.h"
 

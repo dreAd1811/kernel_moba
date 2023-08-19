@@ -108,6 +108,7 @@ static const struct iio_chan_spec axp288_adc_channels[] = {
 	},
 };
 
+<<<<<<< HEAD
 /* for consumer drivers */
 static struct iio_map axp288_adc_default_maps[] = {
 	IIO_MAP("TS_PIN", "axp288-batt", "axp288-batt-temp"),
@@ -116,6 +117,24 @@ static struct iio_map axp288_adc_default_maps[] = {
 	IIO_MAP("BATT_CHG_I", "axp288-chrg", "axp288-chrg-curr"),
 	IIO_MAP("BATT_DISCHRG_I", "axp288-chrg", "axp288-chrg-d-curr"),
 	IIO_MAP("BATT_V", "axp288-batt", "axp288-batt-volt"),
+=======
+#define AXP288_ADC_MAP(_adc_channel_label, _consumer_dev_name,	\
+		_consumer_channel)				\
+	{							\
+		.adc_channel_label = _adc_channel_label,	\
+		.consumer_dev_name = _consumer_dev_name,	\
+		.consumer_channel = _consumer_channel,		\
+	}
+
+/* for consumer drivers */
+static struct iio_map axp288_adc_default_maps[] = {
+	AXP288_ADC_MAP("TS_PIN", "axp288-batt", "axp288-batt-temp"),
+	AXP288_ADC_MAP("PMIC_TEMP", "axp288-pmic", "axp288-pmic-temp"),
+	AXP288_ADC_MAP("GPADC", "axp288-gpadc", "axp288-system-temp"),
+	AXP288_ADC_MAP("BATT_CHG_I", "axp288-chrg", "axp288-chrg-curr"),
+	AXP288_ADC_MAP("BATT_DISCHRG_I", "axp288-chrg", "axp288-chrg-d-curr"),
+	AXP288_ADC_MAP("BATT_V", "axp288-batt", "axp288-batt-volt"),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 
@@ -251,6 +270,10 @@ static int axp288_adc_initialize(struct axp288_adc_info *info)
 
 static const struct iio_info axp288_adc_iio_info = {
 	.read_raw = &axp288_adc_read_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int axp288_adc_probe(struct platform_device *pdev)

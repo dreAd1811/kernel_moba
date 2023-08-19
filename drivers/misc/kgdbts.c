@@ -400,6 +400,7 @@ static void skip_back_repeat_test(char *arg)
 	int go_back = simple_strtol(arg, NULL, 10);
 
 	repeat_test--;
+<<<<<<< HEAD
 	if (repeat_test <= 0) {
 		ts.idx++;
 	} else {
@@ -408,6 +409,12 @@ static void skip_back_repeat_test(char *arg)
 
 		ts.idx -= go_back;
 	}
+=======
+	if (repeat_test <= 0)
+		ts.idx++;
+	else
+		ts.idx -= go_back;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fill_get_buf(ts.tst[ts.idx].get);
 }
 
@@ -985,6 +992,15 @@ static void kgdbts_run_tests(void)
 	int nmi_sleep = 0;
 	int i;
 
+<<<<<<< HEAD
+=======
+	verbose = 0;
+	if (strstr(config, "V1"))
+		verbose = 1;
+	if (strstr(config, "V2"))
+		verbose = 2;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ptr = strchr(config, 'F');
 	if (ptr)
 		fork_test = simple_strtol(ptr + 1, NULL, 10);
@@ -1068,6 +1084,7 @@ static int kgdbts_option_setup(char *opt)
 		return -ENOSPC;
 	}
 	strcpy(config, opt);
+<<<<<<< HEAD
 
 	verbose = 0;
 	if (strstr(config, "V1"))
@@ -1075,6 +1092,8 @@ static int kgdbts_option_setup(char *opt)
 	if (strstr(config, "V2"))
 		verbose = 2;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1086,9 +1105,12 @@ static int configure_kgdbts(void)
 
 	if (!strlen(config) || isspace(config[0]))
 		goto noconfig;
+<<<<<<< HEAD
 	err = kgdbts_option_setup(config);
 	if (err)
 		goto noconfig;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	final_ack = 0;
 	run_plant_and_detach_test(1);

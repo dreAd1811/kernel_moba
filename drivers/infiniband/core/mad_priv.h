@@ -89,6 +89,10 @@ struct ib_rmpp_segment {
 };
 
 struct ib_mad_agent_private {
+<<<<<<< HEAD
+=======
+	struct list_head agent_list;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ib_mad_agent agent;
 	struct ib_mad_reg_req *reg_req;
 	struct ib_mad_qp_info *qp_info;
@@ -104,10 +108,14 @@ struct ib_mad_agent_private {
 	struct list_head rmpp_list;
 
 	atomic_t refcount;
+<<<<<<< HEAD
 	union {
 		struct completion comp;
 		struct rcu_head rcu;
 	};
+=======
+	struct completion comp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct ib_mad_snoop_private {
@@ -205,6 +213,10 @@ struct ib_mad_port_private {
 
 	spinlock_t reg_lock;
 	struct ib_mad_mgmt_version_table version[MAX_MGMT_VERSION];
+<<<<<<< HEAD
+=======
+	struct list_head agent_list;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct workqueue_struct *wq;
 	struct ib_mad_qp_info qp_info[IB_MAD_QPS_CORE];
 };

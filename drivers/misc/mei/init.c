@@ -310,9 +310,12 @@ void mei_stop(struct mei_device *dev)
 {
 	dev_dbg(dev->dev, "stopping the device.\n");
 
+<<<<<<< HEAD
 	mutex_lock(&dev->device_lock);
 	dev->dev_state = MEI_DEV_POWER_DOWN;
 	mutex_unlock(&dev->device_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mei_cl_bus_remove_devices(dev);
 
 	mei_cancel_work(dev);
@@ -322,6 +325,10 @@ void mei_stop(struct mei_device *dev)
 
 	mutex_lock(&dev->device_lock);
 
+<<<<<<< HEAD
+=======
+	dev->dev_state = MEI_DEV_POWER_DOWN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mei_reset(dev);
 	/* move device to disabled state unconditionally */
 	dev->dev_state = MEI_DEV_DISABLED;
@@ -383,7 +390,10 @@ void mei_device_init(struct mei_device *dev,
 	INIT_LIST_HEAD(&dev->write_waiting_list);
 	INIT_LIST_HEAD(&dev->ctrl_wr_list);
 	INIT_LIST_HEAD(&dev->ctrl_rd_list);
+<<<<<<< HEAD
 	dev->tx_queue_limit = MEI_TX_QUEUE_LIMIT_DEFAULT;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_DELAYED_WORK(&dev->timer_work, mei_timer);
 	INIT_WORK(&dev->reset_work, mei_reset_work);

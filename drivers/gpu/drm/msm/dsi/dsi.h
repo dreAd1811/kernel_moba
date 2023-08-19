@@ -36,7 +36,10 @@ enum msm_dsi_phy_type {
 	MSM_DSI_PHY_20NM,
 	MSM_DSI_PHY_28NM_8960,
 	MSM_DSI_PHY_14NM,
+<<<<<<< HEAD
 	MSM_DSI_PHY_10NM,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MSM_DSI_PHY_MAX
 };
 
@@ -100,7 +103,10 @@ bool msm_dsi_manager_cmd_xfer_trigger(int id, u32 dma_base, u32 len);
 void msm_dsi_manager_attach_dsi_device(int id, u32 device_flags);
 int msm_dsi_manager_register(struct msm_dsi *msm_dsi);
 void msm_dsi_manager_unregister(struct msm_dsi *msm_dsi);
+<<<<<<< HEAD
 bool msm_dsi_manager_validate_current_config(u8 id);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* msm dsi */
 static inline bool msm_dsi_device_connected(struct msm_dsi *msm_dsi)
@@ -150,7 +156,10 @@ static inline int msm_dsi_pll_set_usecase(struct msm_dsi_pll *pll,
 #endif
 
 /* dsi host */
+<<<<<<< HEAD
 struct msm_dsi_host;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int msm_dsi_host_xfer_prepare(struct mipi_dsi_host *host,
 					const struct mipi_dsi_msg *msg);
 void msm_dsi_host_xfer_restore(struct mipi_dsi_host *host,
@@ -164,8 +173,12 @@ void msm_dsi_host_cmd_xfer_commit(struct mipi_dsi_host *host,
 int msm_dsi_host_enable(struct mipi_dsi_host *host);
 int msm_dsi_host_disable(struct mipi_dsi_host *host);
 int msm_dsi_host_power_on(struct mipi_dsi_host *host,
+<<<<<<< HEAD
 			struct msm_dsi_phy_shared_timings *phy_shared_timings,
 			bool is_dual_dsi);
+=======
+			struct msm_dsi_phy_shared_timings *phy_shared_timings);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int msm_dsi_host_power_off(struct mipi_dsi_host *host);
 int msm_dsi_host_set_display_mode(struct mipi_dsi_host *host,
 					struct drm_display_mode *mode);
@@ -178,14 +191,19 @@ int msm_dsi_host_set_src_pll(struct mipi_dsi_host *host,
 			struct msm_dsi_pll *src_pll);
 void msm_dsi_host_reset_phy(struct mipi_dsi_host *host);
 void msm_dsi_host_get_phy_clk_req(struct mipi_dsi_host *host,
+<<<<<<< HEAD
 	struct msm_dsi_phy_clk_request *clk_req,
 	bool is_dual_dsi);
+=======
+	struct msm_dsi_phy_clk_request *clk_req);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void msm_dsi_host_destroy(struct mipi_dsi_host *host);
 int msm_dsi_host_modeset_init(struct mipi_dsi_host *host,
 					struct drm_device *dev);
 int msm_dsi_host_init(struct msm_dsi *msm_dsi);
 int msm_dsi_runtime_suspend(struct device *dev);
 int msm_dsi_runtime_resume(struct device *dev);
+<<<<<<< HEAD
 int dsi_link_clk_enable_6g(struct msm_dsi_host *msm_host);
 int dsi_link_clk_enable_v2(struct msm_dsi_host *msm_host);
 void dsi_link_clk_disable_6g(struct msm_dsi_host *msm_host);
@@ -201,6 +219,8 @@ int dsi_clk_init_v2(struct msm_dsi_host *msm_host);
 int dsi_clk_init_6g_v2(struct msm_dsi_host *msm_host);
 int dsi_calc_clk_rate_v2(struct msm_dsi_host *msm_host, bool is_dual_dsi);
 int dsi_calc_clk_rate_6g(struct msm_dsi_host *msm_host, bool is_dual_dsi);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* dsi phy */
 struct msm_dsi_phy;

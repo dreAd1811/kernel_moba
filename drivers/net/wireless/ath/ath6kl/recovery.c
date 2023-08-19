@@ -60,9 +60,15 @@ void ath6kl_recovery_hb_event(struct ath6kl *ar, u32 cookie)
 		ar->fw_recovery.hb_pending = false;
 }
 
+<<<<<<< HEAD
 static void ath6kl_recovery_hb_timer(struct timer_list *t)
 {
 	struct ath6kl *ar = from_timer(ar, t, fw_recovery.hb_timer);
+=======
+static void ath6kl_recovery_hb_timer(unsigned long data)
+{
+	struct ath6kl *ar = (struct ath6kl *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (test_bit(RECOVERY_CLEANUP, &ar->flag) ||
@@ -104,8 +110,14 @@ void ath6kl_recovery_init(struct ath6kl *ar)
 	recovery->seq_num = 0;
 	recovery->hb_misscnt = 0;
 	ar->fw_recovery.hb_pending = false;
+<<<<<<< HEAD
 	timer_setup(&ar->fw_recovery.hb_timer, ath6kl_recovery_hb_timer,
 		    TIMER_DEFERRABLE);
+=======
+	ar->fw_recovery.hb_timer.function = ath6kl_recovery_hb_timer;
+	ar->fw_recovery.hb_timer.data = (unsigned long) ar;
+	init_timer_deferrable(&ar->fw_recovery.hb_timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ar->fw_recovery.hb_poll)
 		mod_timer(&ar->fw_recovery.hb_timer, jiffies +

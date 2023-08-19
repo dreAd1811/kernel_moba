@@ -52,7 +52,11 @@
 /* partition_info gives details on the logical partitions that the split the
  * single flash device into. If the size if zero we use up to the end of the
  * device. */
+<<<<<<< HEAD
 static const struct mtd_partition partition_info[] = {
+=======
+static struct mtd_partition partition_info[]={
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
     {
 	    .name = "NetSc520 boot kernel",
 	    .offset = 0,

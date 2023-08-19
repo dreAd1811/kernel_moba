@@ -32,7 +32,11 @@
 #define ARM64_HAS_VIRT_HOST_EXTN		11
 #define ARM64_WORKAROUND_CAVIUM_27456		12
 #define ARM64_HAS_32BIT_EL0			13
+<<<<<<< HEAD
 #define ARM64_HARDEN_EL2_VECTORS		14
+=======
+#define ARM64_HYP_OFFSET_LOW			14
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ARM64_MISMATCHED_CACHE_LINE_SIZE	15
 #define ARM64_HAS_NO_FPSIMD			16
 #define ARM64_WORKAROUND_REPEAT_TLBI		17
@@ -40,6 +44,7 @@
 #define ARM64_WORKAROUND_858921			19
 #define ARM64_WORKAROUND_CAVIUM_30115		20
 #define ARM64_HAS_DCPOP				21
+<<<<<<< HEAD
 #define ARM64_SVE				22
 #define ARM64_UNMAP_KERNEL_AT_EL0		23
 #define ARM64_HARDEN_BRANCH_PREDICTOR		24
@@ -56,5 +61,16 @@
 #define ARM64_WORKAROUND_1188873		35
 #define ARM64_WORKAROUND_1542418		36
 #define ARM64_NCAPS				37
+=======
+#define ARM64_UNMAP_KERNEL_AT_EL0		23
+#define ARM64_HARDEN_BRANCH_PREDICTOR		24
+#define ARM64_SSBD				25
+#define ARM64_MISMATCHED_CACHE_TYPE		26
+#define ARM64_SSBS				27
+#define ARM64_HW_DBM				28
+#define ARM64_WORKAROUND_1188873		29
+
+#define ARM64_NCAPS				30
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __ASM_CPUCAPS_H */

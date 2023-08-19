@@ -140,6 +140,7 @@ static u32 hv_copyto_ringbuffer(
 	return start_write_offset;
 }
 
+<<<<<<< HEAD
 /*
  *
  * hv_get_ringbuffer_availbytes()
@@ -163,6 +164,8 @@ hv_get_ringbuffer_availbytes(const struct hv_ring_buffer_info *rbi,
 	*read = dsize - *write;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Get various debug metrics for the specified ring buffer. */
 int hv_ringbuffer_get_debuginfo(const struct hv_ring_buffer_info *ring_info,
 				struct hv_ring_buffer_debug_info *debug_info)
@@ -201,7 +204,11 @@ int hv_ringbuffer_init(struct hv_ring_buffer_info *ring_info,
 	 * First page holds struct hv_ring_buffer, do wraparound mapping for
 	 * the rest.
 	 */
+<<<<<<< HEAD
 	pages_wraparound = kcalloc(page_cnt * 2 - 1, sizeof(struct page *),
+=======
+	pages_wraparound = kzalloc(sizeof(struct page *) * (page_cnt * 2 - 1),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				   GFP_KERNEL);
 	if (!pages_wraparound)
 		return -ENOMEM;
@@ -226,8 +233,11 @@ int hv_ringbuffer_init(struct hv_ring_buffer_info *ring_info,
 	ring_info->ring_buffer->feature_bits.value = 1;
 
 	ring_info->ring_size = page_cnt << PAGE_SHIFT;
+<<<<<<< HEAD
 	ring_info->ring_size_div10_reciprocal =
 		reciprocal_value(ring_info->ring_size / 10);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ring_info->ring_datasize = ring_info->ring_size -
 		sizeof(struct hv_ring_buffer);
 
@@ -430,6 +440,7 @@ static u32 hv_pkt_iter_bytes_read(const struct hv_ring_buffer_info *rbi,
 }
 
 /*
+<<<<<<< HEAD
  * Update host ring buffer after iterating over packets. If the host has
  * stopped queuing new entries because it found the ring buffer full, and
  * sufficient space is being freed up, signal the host. But be careful to
@@ -448,6 +459,9 @@ static u32 hv_pkt_iter_bytes_read(const struct hv_ring_buffer_info *rbi,
  * interrupt_mask is used only on the guest->host ring buffer when
  * sending requests to the host. The host does not use it on the host->
  * guest ring buffer to indicate whether it should be signaled.
+=======
+ * Update host ring buffer after iterating over packets.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void hv_pkt_iter_close(struct vmbus_channel *channel)
 {
@@ -463,30 +477,45 @@ void hv_pkt_iter_close(struct vmbus_channel *channel)
 	start_read_index = rbi->ring_buffer->read_index;
 	rbi->ring_buffer->read_index = rbi->priv_read_index;
 
+<<<<<<< HEAD
 	/*
 	 * Older versions of Hyper-V (before WS2102 and Win8) do not
 	 * implement pending_send_sz and simply poll if the host->guest
 	 * ring buffer is full.  No signaling is needed or expected.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rbi->ring_buffer->feature_bits.feat_pending_send_sz)
 		return;
 
 	/*
 	 * Issue a full memory barrier before making the signaling decision.
+<<<<<<< HEAD
 	 * If reading pending_send_sz were to be reordered and happen
 	 * before we commit the new read_index, a race could occur.  If the
 	 * host were to set the pending_send_sz after we have sampled
 	 * pending_send_sz, and the ring buffer blocks before we commit the
+=======
+	 * Here is the reason for having this barrier:
+	 * If the reading of the pend_sz (in this function)
+	 * were to be reordered and read before we commit the new read
+	 * index (in the calling function)  we could
+	 * have a problem. If the host were to set the pending_sz after we
+	 * have sampled pending_sz and go to sleep before we commit the
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * read index, we could miss sending the interrupt. Issue a full
 	 * memory barrier to address this.
 	 */
 	virt_mb();
 
+<<<<<<< HEAD
 	/*
 	 * If the pending_send_sz is zero, then the ring buffer is not
 	 * blocked and there is no need to signal.  This is far by the
 	 * most common case, so exit quickly for best performance.
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pending_sz = READ_ONCE(rbi->ring_buffer->pending_send_sz);
 	if (!pending_sz)
 		return;
@@ -500,6 +529,7 @@ void hv_pkt_iter_close(struct vmbus_channel *channel)
 	bytes_read = hv_pkt_iter_bytes_read(rbi, start_read_index);
 
 	/*
+<<<<<<< HEAD
 	 * We want to signal the host only if we're transitioning
 	 * from a "not enough free space" state to a "enough free
 	 * space" state.  For example, it's possible that this function
@@ -526,6 +556,16 @@ void hv_pkt_iter_close(struct vmbus_channel *channel)
 	 * Similarly, if the new state is "not enough space", then
 	 * there's no need to signal.
 	 */
+=======
+	 * If there was space before we began iteration,
+	 * then host was not blocked.
+	 */
+
+	if (curr_write_sz - bytes_read > pending_sz)
+		return;
+
+	/* If pending write will not fit, don't give false hope. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (curr_write_sz <= pending_sz)
 		return;
 

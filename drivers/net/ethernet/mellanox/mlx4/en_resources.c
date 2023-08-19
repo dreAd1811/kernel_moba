@@ -53,7 +53,11 @@ void mlx4_en_fill_qp_context(struct mlx4_en_priv *priv, int size, int stride,
 	if (is_tx) {
 		context->sq_size_stride = ilog2(size) << 3 | (ilog2(stride) - 4);
 		if (mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_PORT_REMAP)
+<<<<<<< HEAD
 			context->params2 |= cpu_to_be32(MLX4_QP_BIT_FPP);
+=======
+			context->params2 |= MLX4_QP_BIT_FPP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	} else {
 		context->sq_size_stride = ilog2(TXBB_SIZE) - 4;

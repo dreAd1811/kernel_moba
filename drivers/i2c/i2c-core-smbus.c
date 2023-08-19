@@ -17,8 +17,11 @@
 #include <linux/device.h>
 #include <linux/err.h>
 #include <linux/i2c.h>
+<<<<<<< HEAD
 #include <linux/i2c-smbus.h>
 #include <linux/slab.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CREATE_TRACE_POINTS
 #include <trace/events/smbus.h>
@@ -292,6 +295,7 @@ s32 i2c_smbus_write_i2c_block_data(const struct i2c_client *client, u8 command,
 }
 EXPORT_SYMBOL(i2c_smbus_write_i2c_block_data);
 
+<<<<<<< HEAD
 static void i2c_smbus_try_get_dmabuf(struct i2c_msg *msg, u8 init_val)
 {
 	bool is_read = msg->flags & I2C_M_RD;
@@ -312,17 +316,28 @@ static void i2c_smbus_try_get_dmabuf(struct i2c_msg *msg, u8 init_val)
  * Simulate a SMBus command using the I2C protocol.
  * No checking of parameters is done!
  */
+=======
+/* Simulate a SMBus command using the i2c protocol
+   No checking of parameters is done!  */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 				   unsigned short flags,
 				   char read_write, u8 command, int size,
 				   union i2c_smbus_data *data)
 {
+<<<<<<< HEAD
 	/*
 	 * So we need to generate a series of msgs. In the case of writing, we
 	 * need to use only one message; when reading, we need two. We
 	 * initialize most things with sane defaults, to keep the code below
 	 * somewhat simpler.
 	 */
+=======
+	/* So we need to generate a series of msgs. In the case of writing, we
+	  need to use only one message; when reading, we need two. We initialize
+	  most things with sane defaults, to keep the code below somewhat
+	  simpler. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char msgbuf0[I2C_SMBUS_BLOCK_MAX+3];
 	unsigned char msgbuf1[I2C_SMBUS_BLOCK_MAX+2];
 	int num = read_write == I2C_SMBUS_READ ? 2 : 1;
@@ -389,7 +404,10 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 			msg[1].flags |= I2C_M_RECV_LEN;
 			msg[1].len = 1; /* block length will be added by
 					   the underlying bus driver */
+<<<<<<< HEAD
 			i2c_smbus_try_get_dmabuf(&msg[1], 0);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			msg[0].len = data->block[0] + 2;
 			if (msg[0].len > I2C_SMBUS_BLOCK_MAX + 2) {
@@ -398,10 +416,15 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 					data->block[0]);
 				return -EINVAL;
 			}
+<<<<<<< HEAD
 
 			i2c_smbus_try_get_dmabuf(&msg[0], command);
 			for (i = 1; i < msg[0].len; i++)
 				msg[0].buf[i] = data->block[i - 1];
+=======
+			for (i = 1; i < msg[0].len; i++)
+				msgbuf0[i] = data->block[i-1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	case I2C_SMBUS_BLOCK_PROC_CALL:
@@ -413,6 +436,7 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 				data->block[0]);
 			return -EINVAL;
 		}
+<<<<<<< HEAD
 
 		msg[0].len = data->block[0] + 2;
 		i2c_smbus_try_get_dmabuf(&msg[0], command);
@@ -423,6 +447,14 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 		msg[1].len = 1; /* block length will be added by
 				   the underlying bus driver */
 		i2c_smbus_try_get_dmabuf(&msg[1], 0);
+=======
+		msg[0].len = data->block[0] + 2;
+		for (i = 1; i < msg[0].len; i++)
+			msgbuf0[i] = data->block[i-1];
+		msg[1].flags |= I2C_M_RECV_LEN;
+		msg[1].len = 1; /* block length will be added by
+				   the underlying bus driver */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case I2C_SMBUS_I2C_BLOCK_DATA:
 		if (data->block[0] > I2C_SMBUS_BLOCK_MAX) {
@@ -434,6 +466,7 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 
 		if (read_write == I2C_SMBUS_READ) {
 			msg[1].len = data->block[0];
+<<<<<<< HEAD
 			i2c_smbus_try_get_dmabuf(&msg[1], 0);
 		} else {
 			msg[0].len = data->block[0] + 1;
@@ -441,6 +474,12 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 			i2c_smbus_try_get_dmabuf(&msg[0], command);
 			for (i = 1; i <= data->block[0]; i++)
 				msg[0].buf[i] = data->block[i];
+=======
+		} else {
+			msg[0].len = data->block[0] + 1;
+			for (i = 1; i <= data->block[0]; i++)
+				msgbuf0[i] = data->block[i];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		break;
 	default:
@@ -463,6 +502,7 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 			msg[num-1].len++;
 	}
 
+<<<<<<< HEAD
 	status = __i2c_transfer(adapter, msg, num);
 	if (status < 0)
 		goto cleanup;
@@ -471,12 +511,21 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 		goto cleanup;
 	}
 	status = 0;
+=======
+	status = i2c_transfer(adapter, msg, num);
+	if (status < 0)
+		return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Check PEC if last message is a read */
 	if (i && (msg[num-1].flags & I2C_M_RD)) {
 		status = i2c_smbus_check_pec(partial_pec, &msg[num-1]);
 		if (status < 0)
+<<<<<<< HEAD
 			goto cleanup;
+=======
+			return status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (read_write == I2C_SMBUS_READ)
@@ -493,6 +542,7 @@ static s32 i2c_smbus_xfer_emulated(struct i2c_adapter *adapter, u16 addr,
 			break;
 		case I2C_SMBUS_I2C_BLOCK_DATA:
 			for (i = 0; i < data->block[0]; i++)
+<<<<<<< HEAD
 				data->block[i + 1] = msg[1].buf[i];
 			break;
 		case I2C_SMBUS_BLOCK_DATA:
@@ -509,6 +559,17 @@ cleanup:
 		kfree(msg[1].buf);
 
 	return status;
+=======
+				data->block[i+1] = msgbuf1[i];
+			break;
+		case I2C_SMBUS_BLOCK_DATA:
+		case I2C_SMBUS_BLOCK_PROC_CALL:
+			for (i = 0; i < msgbuf1[0] + 1; i++)
+				data->block[i] = msgbuf1[i];
+			break;
+		}
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -524,6 +585,7 @@ cleanup:
  * This executes an SMBus protocol operation, and returns a negative
  * errno code else zero on success.
  */
+<<<<<<< HEAD
 s32 i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 		   unsigned short flags, char read_write,
 		   u8 command, int protocol, union i2c_smbus_data *data)
@@ -542,6 +604,11 @@ EXPORT_SYMBOL(i2c_smbus_xfer);
 s32 __i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 		     unsigned short flags, char read_write,
 		     u8 command, int protocol, union i2c_smbus_data *data)
+=======
+s32 i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr, unsigned short flags,
+		   char read_write, u8 command, int protocol,
+		   union i2c_smbus_data *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long orig_jiffies;
 	int try;
@@ -558,6 +625,11 @@ s32 __i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 	flags &= I2C_M_TEN | I2C_CLIENT_PEC | I2C_CLIENT_SCCB;
 
 	if (adapter->algo->smbus_xfer) {
+<<<<<<< HEAD
+=======
+		i2c_lock_bus(adapter, I2C_LOCK_SEGMENT);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Retry automatically on arbitration loss */
 		orig_jiffies = jiffies;
 		for (res = 0, try = 0; try <= adapter->retries; try++) {
@@ -570,6 +642,10 @@ s32 __i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
 				       orig_jiffies + adapter->timeout))
 				break;
 		}
+<<<<<<< HEAD
+=======
+		i2c_unlock_bus(adapter, I2C_LOCK_SEGMENT);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (res != -EOPNOTSUPP || !adapter->algo->master_xfer)
 			goto trace;
@@ -591,7 +667,11 @@ trace:
 
 	return res;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(__i2c_smbus_xfer);
+=======
+EXPORT_SYMBOL(i2c_smbus_xfer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * i2c_smbus_read_i2c_block_data_or_emulated - read block or emulate
@@ -649,6 +729,7 @@ s32 i2c_smbus_read_i2c_block_data_or_emulated(const struct i2c_client *client,
 	return i;
 }
 EXPORT_SYMBOL(i2c_smbus_read_i2c_block_data_or_emulated);
+<<<<<<< HEAD
 
 /**
  * i2c_setup_smbus_alert - Setup SMBus alert support
@@ -703,3 +784,5 @@ int of_i2c_setup_smbus_alert(struct i2c_adapter *adapter)
 }
 EXPORT_SYMBOL_GPL(of_i2c_setup_smbus_alert);
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

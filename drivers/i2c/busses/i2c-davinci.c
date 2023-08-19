@@ -33,10 +33,16 @@
 #include <linux/io.h>
 #include <linux/slab.h>
 #include <linux/cpufreq.h>
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
 #include <linux/of_device.h>
 #include <linux/platform_data/i2c-davinci.h>
 #include <linux/pm_runtime.h>
+=======
+#include <linux/gpio.h>
+#include <linux/of_device.h>
+#include <linux/platform_data/i2c-davinci.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* ----- global defines ----------------------------------------------- */
 
@@ -123,9 +129,12 @@
 /* set the SDA GPIO low */
 #define DAVINCI_I2C_DCLR_PDCLR1	BIT(1)
 
+<<<<<<< HEAD
 /* timeout for pm runtime autosuspend */
 #define DAVINCI_I2C_PM_TIMEOUT	1000	/* ms */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct davinci_i2c_dev {
 	struct device           *dev;
 	void __iomem		*base;
@@ -139,6 +148,10 @@ struct davinci_i2c_dev {
 	u8			terminate;
 	struct i2c_adapter	adapter;
 #ifdef CONFIG_CPU_FREQ
+<<<<<<< HEAD
+=======
+	struct completion	xfr_complete;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct notifier_block	freq_transition;
 #endif
 	struct davinci_i2c_platform_data *pdata;
@@ -297,7 +310,11 @@ static int i2c_davinci_init(struct davinci_i2c_dev *dev)
 }
 
 /*
+<<<<<<< HEAD
  * This routine does i2c bus recovery by using i2c_generic_scl_recovery
+=======
+ * This routine does i2c bus recovery by using i2c_generic_gpio_recovery
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * which is provided by I2C Bus recovery infrastructure.
  */
 static void davinci_i2c_prepare_recovery(struct i2c_adapter *adap)
@@ -319,7 +336,11 @@ static void davinci_i2c_unprepare_recovery(struct i2c_adapter *adap)
 }
 
 static struct i2c_bus_recovery_info davinci_i2c_gpio_recovery_info = {
+<<<<<<< HEAD
 	.recover_bus = i2c_generic_scl_recovery,
+=======
+	.recover_bus = i2c_generic_gpio_recovery,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.prepare_recovery = davinci_i2c_prepare_recovery,
 	.unprepare_recovery = davinci_i2c_unprepare_recovery,
 };
@@ -507,7 +528,11 @@ i2c_davinci_xfer_msg(struct i2c_adapter *adap, struct i2c_msg *msg, int stop)
 		/* This should be 0 if all bytes were transferred
 		 * or dev->cmd_err denotes an error.
 		 */
+<<<<<<< HEAD
 		dev_err(dev->dev, "abnormal termination buf_len=%zu\n",
+=======
+		dev_err(dev->dev, "abnormal termination buf_len=%i\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			dev->buf_len);
 		dev->terminate = 1;
 		wmb();
@@ -548,6 +573,7 @@ i2c_davinci_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 
 	dev_dbg(dev->dev, "%s: msgs: %d\n", __func__, num);
 
+<<<<<<< HEAD
 	ret = pm_runtime_get_sync(dev->dev);
 	if (ret < 0) {
 		dev_err(dev->dev, "Failed to runtime_get device: %d\n", ret);
@@ -559,6 +585,12 @@ i2c_davinci_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 	if (ret < 0) {
 		dev_warn(dev->dev, "timeout waiting for bus ready\n");
 		goto out;
+=======
+	ret = i2c_davinci_wait_bus_not_busy(dev);
+	if (ret < 0) {
+		dev_warn(dev->dev, "timeout waiting for bus ready\n");
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < num; i++) {
@@ -566,6 +598,7 @@ i2c_davinci_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[], int num)
 		dev_dbg(dev->dev, "%s [%d/%d] ret: %d\n", __func__, i + 1, num,
 			ret);
 		if (ret < 0)
+<<<<<<< HEAD
 			goto out;
 	}
 
@@ -576,6 +609,16 @@ out:
 	pm_runtime_put_autosuspend(dev->dev);
 
 	return ret;
+=======
+			return ret;
+	}
+
+#ifdef CONFIG_CPU_FREQ
+	complete(&dev->xfr_complete);
+#endif
+
+	return num;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 i2c_davinci_func(struct i2c_adapter *adap)
@@ -615,9 +658,12 @@ static irqreturn_t i2c_davinci_isr(int this_irq, void *dev_id)
 	int count = 0;
 	u16 w;
 
+<<<<<<< HEAD
 	if (pm_runtime_suspended(dev->dev))
 		return IRQ_NONE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while ((stat = davinci_i2c_read_reg(dev, DAVINCI_I2C_IVR_REG))) {
 		dev_dbg(dev->dev, "%s: stat=0x%x\n", __func__, stat);
 		if (count++ == 100) {
@@ -717,15 +763,23 @@ static int i2c_davinci_cpufreq_transition(struct notifier_block *nb,
 	struct davinci_i2c_dev *dev;
 
 	dev = container_of(nb, struct davinci_i2c_dev, freq_transition);
+<<<<<<< HEAD
 
 	i2c_lock_bus(&dev->adapter, I2C_LOCK_ROOT_ADAPTER);
 	if (val == CPUFREQ_PRECHANGE) {
+=======
+	if (val == CPUFREQ_PRECHANGE) {
+		wait_for_completion(&dev->xfr_complete);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		davinci_i2c_reset_ctrl(dev, 0);
 	} else if (val == CPUFREQ_POSTCHANGE) {
 		i2c_davinci_calc_clk_dividers(dev);
 		davinci_i2c_reset_ctrl(dev, 1);
 	}
+<<<<<<< HEAD
 	i2c_unlock_bus(&dev->adapter, I2C_LOCK_ROOT_ADAPTER);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -771,7 +825,10 @@ static int davinci_i2c_probe(struct platform_device *pdev)
 	struct davinci_i2c_dev *dev;
 	struct i2c_adapter *adap;
 	struct resource *mem;
+<<<<<<< HEAD
 	struct i2c_bus_recovery_info *rinfo;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int r, irq;
 
 	irq = platform_get_irq(pdev, 0);
@@ -792,7 +849,13 @@ static int davinci_i2c_probe(struct platform_device *pdev)
 	}
 
 	init_completion(&dev->cmd_complete);
+<<<<<<< HEAD
 
+=======
+#ifdef CONFIG_CPU_FREQ
+	init_completion(&dev->xfr_complete);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->dev = &pdev->dev;
 	dev->irq = irq;
 	dev->pdata = dev_get_platdata(&pdev->dev);
@@ -822,10 +885,15 @@ static int davinci_i2c_probe(struct platform_device *pdev)
 	dev->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(dev->clk))
 		return PTR_ERR(dev->clk);
+<<<<<<< HEAD
+=======
+	clk_prepare_enable(dev->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	dev->base = devm_ioremap_resource(&pdev->dev, mem);
 	if (IS_ERR(dev->base)) {
+<<<<<<< HEAD
 		return PTR_ERR(dev->base);
 	}
 
@@ -840,6 +908,10 @@ static int davinci_i2c_probe(struct platform_device *pdev)
 		dev_err(dev->dev, "failed to runtime_get device: %d\n", r);
 		pm_runtime_put_noidle(dev->dev);
 		return r;
+=======
+		r = PTR_ERR(dev->base);
+		goto err_unuse_clocks;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	i2c_davinci_init(dev);
@@ -869,6 +941,7 @@ static int davinci_i2c_probe(struct platform_device *pdev)
 
 	if (dev->pdata->has_pfunc)
 		adap->bus_recovery_info = &davinci_i2c_scl_recovery_info;
+<<<<<<< HEAD
 	else if (dev->pdata->gpio_recovery) {
 		rinfo =  &davinci_i2c_gpio_recovery_info;
 		adap->bus_recovery_info = rinfo;
@@ -883,6 +956,12 @@ static int davinci_i2c_probe(struct platform_device *pdev)
 			r = PTR_ERR(rinfo->sda_gpiod);
 			goto err_unuse_clocks;
 		}
+=======
+	else if (dev->pdata->scl_pin) {
+		adap->bus_recovery_info = &davinci_i2c_gpio_recovery_info;
+		adap->bus_recovery_info->scl_gpio = dev->pdata->scl_pin;
+		adap->bus_recovery_info->sda_gpio = dev->pdata->sda_pin;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	adap->nr = pdev->id;
@@ -890,6 +969,7 @@ static int davinci_i2c_probe(struct platform_device *pdev)
 	if (r)
 		goto err_unuse_clocks;
 
+<<<<<<< HEAD
 	pm_runtime_mark_last_busy(dev->dev);
 	pm_runtime_put_autosuspend(dev->dev);
 
@@ -900,18 +980,29 @@ err_unuse_clocks:
 	pm_runtime_put_sync(dev->dev);
 	pm_runtime_disable(dev->dev);
 
+=======
+	return 0;
+
+err_unuse_clocks:
+	clk_disable_unprepare(dev->clk);
+	dev->clk = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return r;
 }
 
 static int davinci_i2c_remove(struct platform_device *pdev)
 {
 	struct davinci_i2c_dev *dev = platform_get_drvdata(pdev);
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i2c_davinci_cpufreq_deregister(dev);
 
 	i2c_del_adapter(&dev->adapter);
 
+<<<<<<< HEAD
 	ret = pm_runtime_get_sync(&pdev->dev);
 	if (ret < 0) {
 		pm_runtime_put_noidle(&pdev->dev);
@@ -924,6 +1015,13 @@ static int davinci_i2c_remove(struct platform_device *pdev)
 	pm_runtime_put_sync(dev->dev);
 	pm_runtime_disable(dev->dev);
 
+=======
+	clk_disable_unprepare(dev->clk);
+	dev->clk = NULL;
+
+	davinci_i2c_write_reg(dev, DAVINCI_I2C_MDR_REG, 0);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -934,6 +1032,10 @@ static int davinci_i2c_suspend(struct device *dev)
 
 	/* put I2C into reset */
 	davinci_i2c_reset_ctrl(i2c_dev, 0);
+<<<<<<< HEAD
+=======
+	clk_disable_unprepare(i2c_dev->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -942,6 +1044,10 @@ static int davinci_i2c_resume(struct device *dev)
 {
 	struct davinci_i2c_dev *i2c_dev = dev_get_drvdata(dev);
 
+<<<<<<< HEAD
+=======
+	clk_prepare_enable(i2c_dev->clk);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* take I2C out of reset */
 	davinci_i2c_reset_ctrl(i2c_dev, 1);
 
@@ -951,8 +1057,11 @@ static int davinci_i2c_resume(struct device *dev)
 static const struct dev_pm_ops davinci_i2c_pm = {
 	.suspend        = davinci_i2c_suspend,
 	.resume         = davinci_i2c_resume,
+<<<<<<< HEAD
 	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
 				      pm_runtime_force_resume)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define davinci_i2c_pm_ops (&davinci_i2c_pm)

@@ -23,6 +23,10 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+<<<<<<< HEAD
+=======
+#include <linux/pci.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/virtio.h>
 #include <linux/virtio_config.h>
 #include <drm/drmP.h>
@@ -44,6 +48,11 @@ static void virtio_gpu_config_changed_work_func(struct work_struct *work)
 	virtio_cread(vgdev->vdev, struct virtio_gpu_config,
 		     events_read, &events_read);
 	if (events_read & VIRTIO_GPU_EVENT_DISPLAY) {
+<<<<<<< HEAD
+=======
+		if (vgdev->has_edid)
+			virtio_gpu_cmd_get_edids(vgdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		virtio_gpu_cmd_get_display_info(vgdev);
 		drm_helper_hpd_irq_event(vgdev->ddev);
 		events_clear |= VIRTIO_GPU_EVENT_DISPLAY;
@@ -125,7 +134,11 @@ static void virtio_gpu_get_capsets(struct virtio_gpu_device *vgdev,
 	vgdev->num_capsets = num_capsets;
 }
 
+<<<<<<< HEAD
 int virtio_gpu_driver_load(struct drm_device *dev, unsigned long flags)
+=======
+int virtio_gpu_init(struct drm_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static vq_callback_t *callbacks[] = {
 		virtio_gpu_ctrl_ack, virtio_gpu_cursor_ack
@@ -155,6 +168,11 @@ int virtio_gpu_driver_load(struct drm_device *dev, unsigned long flags)
 	idr_init(&vgdev->ctx_id_idr);
 	spin_lock_init(&vgdev->resource_idr_lock);
 	idr_init(&vgdev->resource_idr);
+<<<<<<< HEAD
+=======
+	spin_lock_init(&vgdev->request_idr_lock);
+	idr_init(&vgdev->request_idr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_waitqueue_head(&vgdev->resp_wq);
 	virtio_gpu_init_vq(&vgdev->ctrlq, virtio_gpu_dequeue_ctrl_func);
 	virtio_gpu_init_vq(&vgdev->cursorq, virtio_gpu_dequeue_cursor_func);
@@ -174,6 +192,39 @@ int virtio_gpu_driver_load(struct drm_device *dev, unsigned long flags)
 #else
 	DRM_INFO("virgl 3d acceleration not supported by guest\n");
 #endif
+<<<<<<< HEAD
+=======
+	if (virtio_has_feature(vgdev->vdev, VIRTIO_GPU_F_EDID)) {
+		vgdev->has_edid = true;
+		DRM_INFO("EDID support available.\n");
+	}
+
+	if (virtio_has_feature(vgdev->vdev, VIRTIO_GPU_F_RESOURCE_BLOB)) {
+		vgdev->cbar = 4;
+		vgdev->caddr = pci_resource_start(dev->pdev, vgdev->cbar);
+		vgdev->csize = pci_resource_len(dev->pdev, vgdev->cbar);
+		ret = pci_request_region(
+			dev->pdev,
+			vgdev->cbar,
+			"virtio-gpu-coherent");
+		if (ret != 0) {
+			DRM_WARN("Cannot request coherent memory bar\n");
+		} else {
+			DRM_INFO("coherent host resources enabled\n");
+			DRM_INFO(
+				"using %s bar %d, at 0x%lx, size %ld MB\n",
+				dev_name(&dev->pdev->dev),
+				vgdev->cbar,
+				vgdev->caddr,
+				vgdev->csize >> 20);
+			vgdev->has_host_visible = true;
+		}
+
+		vgdev->has_resource_blob = true;
+		DRM_INFO("resource_v2: %u, host visible %u\n",
+			  vgdev->has_resource_blob, vgdev->has_host_visible);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = virtio_find_vqs(vgdev->vdev, 2, vqs, callbacks, names, NULL);
 	if (ret) {
@@ -210,15 +261,24 @@ int virtio_gpu_driver_load(struct drm_device *dev, unsigned long flags)
 		     num_capsets, &num_capsets);
 	DRM_INFO("number of cap sets: %d\n", num_capsets);
 
+<<<<<<< HEAD
 	ret = virtio_gpu_modeset_init(vgdev);
 	if (ret)
 		goto err_modeset;
+=======
+	virtio_gpu_modeset_init(vgdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	virtio_device_ready(vgdev->vdev);
 	vgdev->vqs_ready = true;
 
 	if (num_capsets)
 		virtio_gpu_get_capsets(vgdev, num_capsets);
+<<<<<<< HEAD
+=======
+	if (vgdev->has_edid)
+		virtio_gpu_cmd_get_edids(vgdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	virtio_gpu_cmd_get_display_info(vgdev);
 	wait_event_timeout(vgdev->resp_wq, !vgdev->display_info_pending,
 			   5 * HZ);
@@ -227,7 +287,10 @@ int virtio_gpu_driver_load(struct drm_device *dev, unsigned long flags)
 
 	return 0;
 
+<<<<<<< HEAD
 err_modeset:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_scanouts:
 	virtio_gpu_ttm_fini(vgdev);
 err_ttm:
@@ -249,7 +312,11 @@ static void virtio_gpu_cleanup_cap_cache(struct virtio_gpu_device *vgdev)
 	}
 }
 
+<<<<<<< HEAD
 void virtio_gpu_driver_unload(struct drm_device *dev)
+=======
+void virtio_gpu_deinit(struct drm_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct virtio_gpu_device *vgdev = dev->dev_private;
 
@@ -257,6 +324,10 @@ void virtio_gpu_driver_unload(struct drm_device *dev)
 	flush_work(&vgdev->ctrlq.dequeue_work);
 	flush_work(&vgdev->cursorq.dequeue_work);
 	flush_work(&vgdev->config_changed_work);
+<<<<<<< HEAD
+=======
+	vgdev->vdev->config->reset(vgdev->vdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vgdev->vdev->config->del_vqs(vgdev->vdev);
 
 	virtio_gpu_modeset_fini(vgdev);
@@ -285,6 +356,13 @@ int virtio_gpu_driver_open(struct drm_device *dev, struct drm_file *file)
 
 	get_task_comm(dbgname, current);
 	virtio_gpu_context_create(vgdev, strlen(dbgname), dbgname, &id);
+<<<<<<< HEAD
+=======
+	if (id < 0) {
+		kfree(vfpriv);
+		return id;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vfpriv->ctx_id = id;
 	file->driver_priv = vfpriv;

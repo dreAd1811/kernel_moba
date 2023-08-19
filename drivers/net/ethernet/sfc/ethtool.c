@@ -720,7 +720,11 @@ static int efx_ethtool_set_pauseparam(struct net_device *net_dev,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	if ((wanted_fc & EFX_FC_AUTO) && !efx->link_advertising[0]) {
+=======
+	if ((wanted_fc & EFX_FC_AUTO) && !efx->link_advertising) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netif_dbg(efx, drv, efx->net_dev,
 			  "Autonegotiation is disabled\n");
 		rc = -EINVAL;
@@ -732,10 +736,17 @@ static int efx_ethtool_set_pauseparam(struct net_device *net_dev,
 	    (wanted_fc & EFX_FC_TX) && !(efx->wanted_fc & EFX_FC_TX))
 		efx->type->prepare_enable_fc_tx(efx);
 
+<<<<<<< HEAD
 	old_adv = efx->link_advertising[0];
 	old_fc = efx->wanted_fc;
 	efx_link_set_wanted_fc(efx, wanted_fc);
 	if (efx->link_advertising[0] != old_adv ||
+=======
+	old_adv = efx->link_advertising;
+	old_fc = efx->wanted_fc;
+	efx_link_set_wanted_fc(efx, wanted_fc);
+	if (efx->link_advertising != old_adv ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    (efx->wanted_fc ^ old_fc) & EFX_FC_AUTO) {
 		rc = efx->phy_op->reconfigure(efx);
 		if (rc) {
@@ -808,8 +819,12 @@ static inline void ip6_fill_mask(__be32 *mask)
 }
 
 static int efx_ethtool_get_class_rule(struct efx_nic *efx,
+<<<<<<< HEAD
 				      struct ethtool_rx_flow_spec *rule,
 				      u32 *rss_context)
+=======
+				      struct ethtool_rx_flow_spec *rule)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ethtool_tcpip4_spec *ip_entry = &rule->h_u.tcp_ip4_spec;
 	struct ethtool_tcpip4_spec *ip_mask = &rule->m_u.tcp_ip4_spec;
@@ -965,11 +980,14 @@ static int efx_ethtool_get_class_rule(struct efx_nic *efx,
 		rule->m_ext.vlan_tci = htons(0xfff);
 	}
 
+<<<<<<< HEAD
 	if (spec.flags & EFX_FILTER_FLAG_RX_RSS) {
 		rule->flow_type |= FLOW_RSS;
 		*rss_context = spec.rss_context;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -978,8 +996,11 @@ efx_ethtool_get_rxnfc(struct net_device *net_dev,
 		      struct ethtool_rxnfc *info, u32 *rule_locs)
 {
 	struct efx_nic *efx = netdev_priv(net_dev);
+<<<<<<< HEAD
 	u32 rss_context = 0;
 	s32 rc = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (info->cmd) {
 	case ETHTOOL_GRXRINGS:
@@ -987,6 +1008,7 @@ efx_ethtool_get_rxnfc(struct net_device *net_dev,
 		return 0;
 
 	case ETHTOOL_GRXFH: {
+<<<<<<< HEAD
 		struct efx_rss_context *ctx = &efx->rss_context;
 
 		mutex_lock(&efx->rss_lock);
@@ -1003,6 +1025,14 @@ efx_ethtool_get_rxnfc(struct net_device *net_dev,
 		switch (info->flow_type & ~FLOW_RSS) {
 		case UDP_V4_FLOW:
 			if (ctx->rx_hash_udp_4tuple)
+=======
+		info->data = 0;
+		if (!efx->rss_active) /* No RSS */
+			return 0;
+		switch (info->flow_type) {
+		case UDP_V4_FLOW:
+			if (efx->rx_hash_udp_4tuple)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* fall through */
 		case TCP_V4_FLOW:
 				info->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
@@ -1013,7 +1043,11 @@ efx_ethtool_get_rxnfc(struct net_device *net_dev,
 			info->data |= RXH_IP_SRC | RXH_IP_DST;
 			break;
 		case UDP_V6_FLOW:
+<<<<<<< HEAD
 			if (ctx->rx_hash_udp_4tuple)
+=======
+			if (efx->rx_hash_udp_4tuple)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				/* fall through */
 		case TCP_V6_FLOW:
 				info->data |= RXH_L4_B_0_1 | RXH_L4_B_2_3;
@@ -1026,9 +1060,13 @@ efx_ethtool_get_rxnfc(struct net_device *net_dev,
 		default:
 			break;
 		}
+<<<<<<< HEAD
 out_unlock:
 		mutex_unlock(&efx->rss_lock);
 		return rc;
+=======
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	case ETHTOOL_GRXCLSRLCNT:
@@ -1043,6 +1081,7 @@ out_unlock:
 	case ETHTOOL_GRXCLSRULE:
 		if (efx_filter_get_rx_id_limit(efx) == 0)
 			return -EOPNOTSUPP;
+<<<<<<< HEAD
 		rc = efx_ethtool_get_class_rule(efx, &info->fs, &rss_context);
 		if (rc < 0)
 			return rc;
@@ -1051,6 +1090,12 @@ out_unlock:
 		return 0;
 
 	case ETHTOOL_GRXCLSRLALL:
+=======
+		return efx_ethtool_get_class_rule(efx, &info->fs);
+
+	case ETHTOOL_GRXCLSRLALL: {
+		s32 rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		info->data = efx_filter_get_rx_id_limit(efx);
 		if (info->data == 0)
 			return -EOPNOTSUPP;
@@ -1060,6 +1105,10 @@ out_unlock:
 			return rc;
 		info->rule_cnt = rc;
 		return 0;
+<<<<<<< HEAD
+=======
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	default:
 		return -EOPNOTSUPP;
@@ -1077,8 +1126,12 @@ static inline bool ip6_mask_is_empty(__be32 mask[4])
 }
 
 static int efx_ethtool_set_class_rule(struct efx_nic *efx,
+<<<<<<< HEAD
 				      struct ethtool_rx_flow_spec *rule,
 				      u32 rss_context)
+=======
+				      struct ethtool_rx_flow_spec *rule)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ethtool_tcpip4_spec *ip_entry = &rule->h_u.tcp_ip4_spec;
 	struct ethtool_tcpip4_spec *ip_mask = &rule->m_u.tcp_ip4_spec;
@@ -1088,10 +1141,15 @@ static int efx_ethtool_set_class_rule(struct efx_nic *efx,
 	struct ethtool_tcpip6_spec *ip6_mask = &rule->m_u.tcp_ip6_spec;
 	struct ethtool_usrip6_spec *uip6_entry = &rule->h_u.usr_ip6_spec;
 	struct ethtool_usrip6_spec *uip6_mask = &rule->m_u.usr_ip6_spec;
+<<<<<<< HEAD
 	u32 flow_type = rule->flow_type & ~(FLOW_EXT | FLOW_RSS);
 	struct ethhdr *mac_entry = &rule->h_u.ether_spec;
 	struct ethhdr *mac_mask = &rule->m_u.ether_spec;
 	enum efx_filter_flags flags = 0;
+=======
+	struct ethhdr *mac_entry = &rule->h_u.ether_spec;
+	struct ethhdr *mac_mask = &rule->m_u.ether_spec;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct efx_filter_spec spec;
 	int rc;
 
@@ -1110,6 +1168,7 @@ static int efx_ethtool_set_class_rule(struct efx_nic *efx,
 	     rule->m_ext.data[1]))
 		return -EINVAL;
 
+<<<<<<< HEAD
 	if (efx->rx_scatter)
 		flags |= EFX_FILTER_FLAG_RX_SCATTER;
 	if (rule->flow_type & FLOW_RSS)
@@ -1123,13 +1182,26 @@ static int efx_ethtool_set_class_rule(struct efx_nic *efx,
 		spec.rss_context = rss_context;
 
 	switch (flow_type) {
+=======
+	efx_filter_init_rx(&spec, EFX_FILTER_PRI_MANUAL,
+			   efx->rx_scatter ? EFX_FILTER_FLAG_RX_SCATTER : 0,
+			   (rule->ring_cookie == RX_CLS_FLOW_DISC) ?
+			   EFX_FILTER_RX_DMAQ_ID_DROP : rule->ring_cookie);
+
+	switch (rule->flow_type & ~FLOW_EXT) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case TCP_V4_FLOW:
 	case UDP_V4_FLOW:
 		spec.match_flags = (EFX_FILTER_MATCH_ETHER_TYPE |
 				    EFX_FILTER_MATCH_IP_PROTO);
 		spec.ether_type = htons(ETH_P_IP);
+<<<<<<< HEAD
 		spec.ip_proto = flow_type == TCP_V4_FLOW ? IPPROTO_TCP
 							 : IPPROTO_UDP;
+=======
+		spec.ip_proto = ((rule->flow_type & ~FLOW_EXT) == TCP_V4_FLOW ?
+				 IPPROTO_TCP : IPPROTO_UDP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ip_mask->ip4dst) {
 			if (ip_mask->ip4dst != IP4_ADDR_FULL_MASK)
 				return -EINVAL;
@@ -1163,8 +1235,13 @@ static int efx_ethtool_set_class_rule(struct efx_nic *efx,
 		spec.match_flags = (EFX_FILTER_MATCH_ETHER_TYPE |
 				    EFX_FILTER_MATCH_IP_PROTO);
 		spec.ether_type = htons(ETH_P_IPV6);
+<<<<<<< HEAD
 		spec.ip_proto = flow_type == TCP_V6_FLOW ? IPPROTO_TCP
 							 : IPPROTO_UDP;
+=======
+		spec.ip_proto = ((rule->flow_type & ~FLOW_EXT) == TCP_V6_FLOW ?
+				 IPPROTO_TCP : IPPROTO_UDP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ip6_mask_is_empty(ip6_mask->ip6dst)) {
 			if (!ip6_mask_is_full(ip6_mask->ip6dst))
 				return -EINVAL;
@@ -1298,8 +1375,12 @@ static int efx_ethtool_set_rxnfc(struct net_device *net_dev,
 
 	switch (info->cmd) {
 	case ETHTOOL_SRXCLSRLINS:
+<<<<<<< HEAD
 		return efx_ethtool_set_class_rule(efx, &info->fs,
 						  info->rss_context);
+=======
+		return efx_ethtool_set_class_rule(efx, &info->fs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	case ETHTOOL_SRXCLSRLDEL:
 		return efx_filter_remove_id_safe(efx, EFX_FILTER_PRI_MANUAL,
@@ -1314,9 +1395,13 @@ static u32 efx_ethtool_get_rxfh_indir_size(struct net_device *net_dev)
 {
 	struct efx_nic *efx = netdev_priv(net_dev);
 
+<<<<<<< HEAD
 	if (efx->n_rx_channels == 1)
 		return 0;
 	return ARRAY_SIZE(efx->rss_context.rx_indir_table);
+=======
+	return (efx->n_rx_channels == 1) ? 0 : ARRAY_SIZE(efx->rx_indir_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 efx_ethtool_get_rxfh_key_size(struct net_device *net_dev)
@@ -1339,11 +1424,17 @@ static int efx_ethtool_get_rxfh(struct net_device *net_dev, u32 *indir, u8 *key,
 	if (hfunc)
 		*hfunc = ETH_RSS_HASH_TOP;
 	if (indir)
+<<<<<<< HEAD
 		memcpy(indir, efx->rss_context.rx_indir_table,
 		       sizeof(efx->rss_context.rx_indir_table));
 	if (key)
 		memcpy(key, efx->rss_context.rx_hash_key,
 		       efx->type->rx_hash_key_size);
+=======
+		memcpy(indir, efx->rx_indir_table, sizeof(efx->rx_indir_table));
+	if (key)
+		memcpy(key, efx->rx_hash_key, efx->type->rx_hash_key_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1359,13 +1450,20 @@ static int efx_ethtool_set_rxfh(struct net_device *net_dev, const u32 *indir,
 		return 0;
 
 	if (!key)
+<<<<<<< HEAD
 		key = efx->rss_context.rx_hash_key;
 	if (!indir)
 		indir = efx->rss_context.rx_indir_table;
+=======
+		key = efx->rx_hash_key;
+	if (!indir)
+		indir = efx->rx_indir_table;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return efx->type->rx_push_rss_config(efx, true, indir, key);
 }
 
+<<<<<<< HEAD
 static int efx_ethtool_get_rxfh_context(struct net_device *net_dev, u32 *indir,
 					u8 *key, u8 *hfunc, u32 rss_context)
 {
@@ -1462,6 +1560,8 @@ out_unlock:
 	return rc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int efx_ethtool_get_ts_info(struct net_device *net_dev,
 				   struct ethtool_ts_info *ts_info)
 {
@@ -1509,6 +1609,7 @@ static int efx_ethtool_get_module_info(struct net_device *net_dev,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int efx_ethtool_get_fecparam(struct net_device *net_dev,
 				    struct ethtool_fecparam *fecparam)
 {
@@ -1539,6 +1640,8 @@ static int efx_ethtool_set_fecparam(struct net_device *net_dev,
 	return rc;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct ethtool_ops efx_ethtool_ops = {
 	.get_drvinfo		= efx_ethtool_get_drvinfo,
 	.get_regs_len		= efx_ethtool_get_regs_len,
@@ -1567,13 +1670,19 @@ const struct ethtool_ops efx_ethtool_ops = {
 	.get_rxfh_key_size	= efx_ethtool_get_rxfh_key_size,
 	.get_rxfh		= efx_ethtool_get_rxfh,
 	.set_rxfh		= efx_ethtool_set_rxfh,
+<<<<<<< HEAD
 	.get_rxfh_context	= efx_ethtool_get_rxfh_context,
 	.set_rxfh_context	= efx_ethtool_set_rxfh_context,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.get_ts_info		= efx_ethtool_get_ts_info,
 	.get_module_info	= efx_ethtool_get_module_info,
 	.get_module_eeprom	= efx_ethtool_get_module_eeprom,
 	.get_link_ksettings	= efx_ethtool_get_link_ksettings,
 	.set_link_ksettings	= efx_ethtool_set_link_ksettings,
+<<<<<<< HEAD
 	.get_fecparam		= efx_ethtool_get_fecparam,
 	.set_fecparam		= efx_ethtool_set_fecparam,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

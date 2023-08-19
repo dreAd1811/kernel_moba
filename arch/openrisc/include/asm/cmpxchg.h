@@ -1,21 +1,29 @@
 /*
+<<<<<<< HEAD
  * 1,2 and 4 byte cmpxchg and xchg implementations for OpenRISC.
  *
  * Copyright (C) 2014 Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
  * Copyright (C) 2017 Stafford Horne <shorne@gmail.com>
+=======
+ * Copyright (C) 2014 Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This file is licensed under the terms of the GNU General Public License
  * version 2.  This program is licensed "as is" without any warranty of any
  * kind, whether express or implied.
+<<<<<<< HEAD
  *
  * Note:
  * The portable implementations of 1 and 2 byte xchg and cmpxchg using a 4
  * byte cmpxchg is sourced heavily from the sh and mips implementations.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __ASM_OPENRISC_CMPXCHG_H
 #define __ASM_OPENRISC_CMPXCHG_H
 
+<<<<<<< HEAD
 #include  <linux/bits.h>
 #include  <linux/compiler.h>
 #include  <linux/types.h>
@@ -25,6 +33,26 @@
 static inline unsigned long cmpxchg_u32(volatile void *ptr,
 		unsigned long old, unsigned long new)
 {
+=======
+#include  <linux/types.h>
+
+/*
+ * This function doesn't exist, so you'll get a linker error
+ * if something tries to do an invalid cmpxchg().
+ */
+extern void __cmpxchg_called_with_bad_pointer(void);
+
+#define __HAVE_ARCH_CMPXCHG 1
+
+static inline unsigned long
+__cmpxchg(volatile void *ptr, unsigned long old, unsigned long new, int size)
+{
+	if (size != 4) {
+		__cmpxchg_called_with_bad_pointer();
+		return old;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__asm__ __volatile__(
 		"1:	l.lwa %0, 0(%1)		\n"
 		"	l.sfeq %0, %2		\n"
@@ -41,6 +69,7 @@ static inline unsigned long cmpxchg_u32(volatile void *ptr,
 	return old;
 }
 
+<<<<<<< HEAD
 static inline unsigned long xchg_u32(volatile void *ptr,
 		unsigned long val)
 {
@@ -132,6 +161,8 @@ static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define cmpxchg(ptr, o, n)						\
 	({								\
 		(__typeof__(*(ptr))) __cmpxchg((ptr),			\
@@ -144,6 +175,7 @@ static inline unsigned long __cmpxchg(volatile void *ptr, unsigned long old,
  * This function doesn't exist, so you'll get a linker error if
  * something tries to do an invalidly-sized xchg().
  */
+<<<<<<< HEAD
 extern unsigned long __xchg_called_with_bad_pointer(void)
 	__compiletime_error("Bad argument size for xchg");
 
@@ -159,12 +191,39 @@ static inline unsigned long __xchg(volatile void *ptr, unsigned long with,
 	default:
 		return __xchg_called_with_bad_pointer();
 	}
+=======
+extern void __xchg_called_with_bad_pointer(void);
+
+static inline unsigned long __xchg(unsigned long val, volatile void *ptr,
+				   int size)
+{
+	if (size != 4) {
+		__xchg_called_with_bad_pointer();
+		return val;
+	}
+
+	__asm__ __volatile__(
+		"1:	l.lwa %0, 0(%1)		\n"
+		"	l.swa 0(%1), %2		\n"
+		"	l.bnf 1b		\n"
+		"	 l.nop			\n"
+		: "=&r"(val)
+		: "r"(ptr), "r"(val)
+		: "cc", "memory");
+
+	return val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define xchg(ptr, with) 						\
 	({								\
+<<<<<<< HEAD
 		(__typeof__(*(ptr))) __xchg((ptr),			\
 					    (unsigned long)(with),	\
+=======
+		(__typeof__(*(ptr))) __xchg((unsigned long)(with),	\
+					    (ptr),			\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					    sizeof(*(ptr)));		\
 	})
 

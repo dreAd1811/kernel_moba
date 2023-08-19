@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2017-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _A6XX_REG_H
@@ -58,7 +72,10 @@
 #define A6XX_CP_SQE_INSTR_BASE_LO        0x830
 #define A6XX_CP_SQE_INSTR_BASE_HI        0x831
 #define A6XX_CP_MISC_CNTL                0x840
+<<<<<<< HEAD
 #define A6XX_CP_APRIV_CNTL               0X844
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A6XX_CP_ROQ_THRESHOLDS_1         0x8C1
 #define A6XX_CP_ROQ_THRESHOLDS_2         0x8C2
 #define A6XX_CP_MEM_POOL_SIZE            0x8C3
@@ -393,7 +410,11 @@
 #define A6XX_RBBM_PERFCTR_GPU_BUSY_MASKED        0x50B
 
 #define A6XX_RBBM_ISDB_CNT                       0x533
+<<<<<<< HEAD
 #define A6XX_RBBM_NC_MODE_CNTL                   0X534
+=======
+#define A6XX_RBBM_NC_MODE_CNTL                   0x534
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define A6XX_RBBM_SECVID_TRUST_CNTL              0xF400
 #define A6XX_RBBM_SECVID_TSB_TRUSTED_BASE_LO     0xF800
@@ -528,6 +549,33 @@
 #define A6XX_RBBM_CLOCK_DELAY_HLSQ       0x0011c
 #define A6XX_RBBM_CLOCK_HYST_HLSQ        0x0011d
 
+<<<<<<< HEAD
+=======
+/* ISDB SP0 and SP1 registers */
+#define A6XX_SP0_ISDB_ISDB_EN                           0xf40001
+#define A6XX_SP0_ISDB_ISDB_BRKPT_CFG                    0xf40005
+#define A6XX_SP0_ISDB_ISDB_SHADER_ID_CFG                0xf40006
+#define A6XX_SP0_ISDB_ISDB_WAVE_ID_CFG                  0xf40007
+#define A6XX_SP0_ISDB_ISDB_SAC_CFG                      0xf40024
+#define A6XX_SP0_ISDB_ISDB_SAC_ADDR_0                   0xf40020
+#define A6XX_SP0_ISDB_ISDB_SAC_ADDR_1                   0xf40021
+#define A6XX_SP0_ISDB_ISDB_SAC_MASK_0                   0xf40022
+#define A6XX_SP0_ISDB_ISDB_SAC_MASK_1                   0xf40023
+#define A6XX_HLSQ_ISDB_ISDB_HLSQ_ISDB_CL_WGID_CTRL      0xf44000
+#define A6XX_HLSQ_ISDB_ISDB_HLSQ_ISDB_CL_WGID_X         0xf44001
+#define A6XX_HLSQ_ISDB_ISDB_HLSQ_ISDB_CL_WGID_Y         0xf44002
+#define A6XX_HLSQ_ISDB_ISDB_HLSQ_ISDB_CL_WGID_Z         0xf44003
+#define A6XX_SP1_ISDB_ISDB_EN                           0xf40401
+#define A6XX_SP1_ISDB_ISDB_SAC_CFG                      0xf40424
+#define A6XX_SP1_ISDB_ISDB_SAC_ADDR_0                   0xf40420
+#define A6XX_SP1_ISDB_ISDB_SAC_ADDR_1                   0xf40421
+#define A6XX_SP1_ISDB_ISDB_SAC_MASK_0                   0xf40422
+#define A6XX_SP1_ISDB_ISDB_SAC_MASK_1                   0xf40423
+#define A6XX_SP1_ISDB_ISDB_SHADER_ID_CFG                0xf40406
+#define A6XX_SP1_ISDB_ISDB_WAVE_ID_CFG                  0xf40407
+#define A6XX_SP1_ISDB_ISDB_BRKPT_CFG                    0xf40405
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* DBGC_CFG registers */
 #define A6XX_DBGC_CFG_DBGBUS_SEL_A                  0x600
 #define A6XX_DBGC_CFG_DBGBUS_SEL_B                  0x601
@@ -752,11 +800,14 @@
 /* TP registers */
 #define A6XX_TPL1_ADDR_MODE_CNTL            0xB601
 #define A6XX_TPL1_NC_MODE_CNTL              0xB604
+<<<<<<< HEAD
 #define A6XX_TPL1_BICUBIC_WEIGHTS_TABLE_0   0xB608
 #define A6XX_TPL1_BICUBIC_WEIGHTS_TABLE_1   0xB609
 #define A6XX_TPL1_BICUBIC_WEIGHTS_TABLE_2   0xB60A
 #define A6XX_TPL1_BICUBIC_WEIGHTS_TABLE_3   0xB60B
 #define A6XX_TPL1_BICUBIC_WEIGHTS_TABLE_4   0xB60C
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A6XX_TPL1_PERFCTR_TP_SEL_0          0xB610
 #define A6XX_TPL1_PERFCTR_TP_SEL_1          0xB611
 #define A6XX_TPL1_PERFCTR_TP_SEL_2          0xB612
@@ -834,7 +885,10 @@
 
 #define A6XX_GBIF_PERF_PWR_CNT_EN         0x3cc0
 #define A6XX_GBIF_PERF_CNT_SEL            0x3cc2
+<<<<<<< HEAD
 #define A6XX_GBIF_PERF_PWR_CNT_SEL        0x3cc3
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A6XX_GBIF_PERF_CNT_LOW0           0x3cc4
 #define A6XX_GBIF_PERF_CNT_LOW1           0x3cc5
 #define A6XX_GBIF_PERF_CNT_LOW2           0x3cc6
@@ -946,7 +1000,10 @@
 #define A6XX_GMU_CM3_SYSRESET			0x1F800
 #define A6XX_GMU_CM3_BOOT_CONFIG		0x1F801
 #define A6XX_GMU_CX_GMU_WFI_CONFIG		0x1F802
+<<<<<<< HEAD
 #define A6XX_GMU_CX_GMU_WDOG_CTRL		0x1F813
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A6XX_GMU_CM3_FW_BUSY			0x1F81A
 #define A6XX_GMU_CM3_FW_INIT_RESULT		0x1F81C
 #define A6XX_GMU_CM3_CFG			0x1F82D
@@ -976,7 +1033,10 @@
 #define A6XX_GMU_RPMH_HYST_CTRL			0x1F8E9
 #define A6XX_GPU_GMU_CX_GMU_RPMH_POWER_STATE    0x1F8EC
 #define A6XX_GPU_GMU_CX_GMU_PWR_COL_CP_MSG      0x1F900
+<<<<<<< HEAD
 #define A6XX_GPU_GMU_CX_GMU_PWR_COL_CP_RESP     0x1F901
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A6XX_GMU_BOOT_KMD_LM_HANDSHAKE		0x1F9F0
 #define A6XX_GMU_LLM_GLM_SLEEP_CTRL		0x1F957
 #define A6XX_GMU_LLM_GLM_SLEEP_STATUS		0x1F958
@@ -1020,8 +1080,11 @@
 /* LM registers */
 #define A6XX_GPU_GMU_CX_GMU_PWR_THRESHOLD       0x1F94D
 
+<<<<<<< HEAD
 /* FAL10 veto register */
 #define A6XX_GPU_GMU_CX_GMU_CX_FAL_INTF         0x1F8F0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define A6XX_GMU_AO_INTERRUPT_EN		0x23B03
 #define A6XX_GMU_AO_HOST_INTERRUPT_CLR		0x23B04
@@ -1035,7 +1098,10 @@
 #define A6XX_GPU_GMU_AO_GPU_CX_BUSY_MASK	0x23B0E
 #define A6XX_GMU_AO_AHB_FENCE_CTRL		0x23B10
 #define A6XX_GMU_AHB_FENCE_STATUS		0x23B13
+<<<<<<< HEAD
 #define A6XX_GMU_AHB_FENCE_STATUS_CLR           0x23B14
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A6XX_GMU_RBBM_INT_UNMASKED_STATUS	0x23B15
 #define A6XX_GMU_AO_SPARE_CNTL			0x23B16
 
@@ -1045,6 +1111,10 @@
 #define A6XX_GMU_AO_RGMU_GLM_HW_CRC_DISABLE	0x23B82
 
 /* GMU RSC control registers */
+<<<<<<< HEAD
+=======
+#define A6XX_GPU_RSCC_RSC_STATUS0_DRV0		0x23404
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define A6XX_GMU_RSCC_CONTROL_REQ		0x23B07
 #define A6XX_GMU_RSCC_CONTROL_ACK		0x23B08
 
@@ -1058,6 +1128,7 @@
 #define A6XX_GPU_CC_CX_GDSCR                   0x2441B
 
 /* GPU RSC sequencer registers */
+<<<<<<< HEAD
 #define A6XX_GPU_RSCC_RSC_STATUS0_DRV0			0x00004
 #define A6XX_RSCC_PDC_SEQ_START_ADDR			0x00008
 #define A6XX_RSCC_PDC_MATCH_VALUE_LO			0x00009
@@ -1076,6 +1147,25 @@
 #define A6XX_RSCC_TCS1_DRV0_STATUS                      0x003EE
 #define A6XX_RSCC_TCS2_DRV0_STATUS                      0x00496
 #define A6XX_RSCC_TCS3_DRV0_STATUS                      0x0053E
+=======
+#define	A6XX_RSCC_PDC_SEQ_START_ADDR			0x23408
+#define A6XX_RSCC_PDC_MATCH_VALUE_LO			0x23409
+#define A6XX_RSCC_PDC_MATCH_VALUE_HI			0x2340A
+#define A6XX_RSCC_PDC_SLAVE_ID_DRV0			0x2340B
+#define A6XX_RSCC_HIDDEN_TCS_CMD0_ADDR			0x2340D
+#define A6XX_RSCC_HIDDEN_TCS_CMD0_DATA			0x2340E
+#define A6XX_RSCC_TIMESTAMP_UNIT0_TIMESTAMP_L_DRV0	0x23482
+#define A6XX_RSCC_TIMESTAMP_UNIT0_TIMESTAMP_H_DRV0	0x23483
+#define A6XX_RSCC_TIMESTAMP_UNIT1_EN_DRV0		0x23489
+#define A6XX_RSCC_TIMESTAMP_UNIT1_OUTPUT_DRV0		0x2348C
+#define A6XX_RSCC_OVERRIDE_START_ADDR			0x23500
+#define A6XX_RSCC_SEQ_BUSY_DRV0				0x23501
+#define A6XX_RSCC_SEQ_MEM_0_DRV0			0x23580
+#define A6XX_RSCC_TCS0_DRV0_STATUS			0x23746
+#define A6XX_RSCC_TCS1_DRV0_STATUS                      0x237EE
+#define A6XX_RSCC_TCS2_DRV0_STATUS                      0x23896
+#define A6XX_RSCC_TCS3_DRV0_STATUS                      0x2393E
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* GPU PDC sequencer registers in AOSS.RPMh domain */
 #define PDC_GPU_ENABLE_PDC			0x1140
@@ -1112,6 +1202,7 @@
  */
 #define PDC_GPU_SEQ_MEM_0			0x0
 
+<<<<<<< HEAD
 /*
  * Legacy RSCC register range was a part of the GMU register space
  * now we are using a separate section for RSCC regsiters. Add the
@@ -1119,6 +1210,8 @@
  */
 #define RSCC_OFFSET_LEGACY			0x23400
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* RGMU(PCC) registers in A6X_GMU_CX_0_NON_CONTEXT_DEC domain */
 #define A6XX_RGMU_CX_INTR_GEN_EN		0x1F80F
 #define A6XX_RGMU_CX_RGMU_TIMER0		0x1F834

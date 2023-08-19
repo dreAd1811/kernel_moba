@@ -157,20 +157,32 @@ void btext_map(void)
 
 	/* By default, we are no longer mapped */
 	boot_text_mapped = 0;
+<<<<<<< HEAD
 	if (!dispDeviceBase)
+=======
+	if (dispDeviceBase == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	base = ((unsigned long) dispDeviceBase) & 0xFFFFF000UL;
 	offset = ((unsigned long) dispDeviceBase) - base;
 	size = dispDeviceRowBytes * dispDeviceRect[3] + offset
 		+ dispDeviceRect[0];
 	vbase = __ioremap(base, size, pgprot_val(pgprot_noncached_wc(__pgprot(0))));
+<<<<<<< HEAD
 	if (!vbase)
+=======
+	if (vbase == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	logicalDisplayBase = vbase + offset;
 	boot_text_mapped = 1;
 }
 
+<<<<<<< HEAD
 static int btext_initialize(struct device_node *np)
+=======
+int btext_initialize(struct device_node *np)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int width, height, depth, pitch;
 	unsigned long address = 0;
@@ -270,7 +282,11 @@ static unsigned char * calc_base(int x, int y)
 	unsigned char *base;
 
 	base = logicalDisplayBase;
+<<<<<<< HEAD
 	if (!base)
+=======
+	if (base == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		base = dispDeviceBase;
 	base += (x + dispDeviceRect[0]) * (dispDeviceDepth >> 3);
 	base += (y + dispDeviceRect[1]) * dispDeviceRowBytes;
@@ -281,7 +297,11 @@ static unsigned char * calc_base(int x, int y)
 void btext_update_display(unsigned long phys, int width, int height,
 			  int depth, int pitch)
 {
+<<<<<<< HEAD
 	if (!dispDeviceBase)
+=======
+	if (dispDeviceBase == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	/* check it's the same frame buffer (within 256MB) */

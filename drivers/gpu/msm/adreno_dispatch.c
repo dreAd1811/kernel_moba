@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
@@ -8,6 +9,33 @@
 #include "adreno.h"
 #include "adreno_trace.h"
 #include "kgsl_gmu_core.h"
+=======
+/* Copyright (c) 2013-2020, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+
+#include <linux/wait.h>
+#include <linux/delay.h>
+#include <linux/sched.h>
+#include <linux/jiffies.h>
+#include <linux/err.h>
+
+#include "kgsl.h"
+#include "kgsl_sharedmem.h"
+#include "adreno.h"
+#include "adreno_ringbuffer.h"
+#include "adreno_trace.h"
+#include "kgsl_sharedmem.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRAWQUEUE_NEXT(_i, _s) (((_i) + 1) % (_s))
 
@@ -214,7 +242,11 @@ static int fault_detect_read_compare(struct adreno_device *adreno_dev)
 		return 1;
 
 	/* Check to see if the device is idle - if so report no hang */
+<<<<<<< HEAD
 	if (_isidle(adreno_dev))
+=======
+	if (_isidle(adreno_dev) == true)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = 1;
 
 	for (i = 0; i < adreno_ft_regs_num; i++) {
@@ -616,9 +648,15 @@ static int sendcmd(struct adreno_device *adreno_dev,
 		 */
 
 		if (ret != -ENOENT && ret != -ENOSPC && ret != -EPROTO)
+<<<<<<< HEAD
 			dev_err(device->dev,
 				     "Unable to submit command to the ringbuffer %d\n",
 				     ret);
+=======
+			KGSL_DRV_ERR(device,
+				"Unable to submit command to the ringbuffer %d\n",
+				ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -975,7 +1013,11 @@ static void adreno_dispatcher_issuecmds(struct adreno_device *adreno_dev)
 
 	spin_lock(&device->submit_lock);
 	/* If state transition to SLUMBER, schedule the work for later */
+<<<<<<< HEAD
 	if (device->slumber) {
+=======
+	if (device->slumber == true) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock(&device->submit_lock);
 		goto done;
 	}
@@ -1148,8 +1190,14 @@ static inline int _verify_cmdobj(struct kgsl_device_private *dev_priv,
 			struct kgsl_drawobj_cmd *cmdobj = CMDOBJ(drawobj[i]);
 
 			list_for_each_entry(ib, &cmdobj->cmdlist, node)
+<<<<<<< HEAD
 				if (!_verify_ib(dev_priv,
 					&ADRENO_CONTEXT(context)->base, ib))
+=======
+				if (_verify_ib(dev_priv,
+					&ADRENO_CONTEXT(context)->base, ib)
+					== false)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					return -EINVAL;
 			/*
 			 * Clear the wake on touch bit to indicate an IB has
@@ -1670,7 +1718,11 @@ static inline const char *_kgsl_context_comm(struct kgsl_context *context)
 #define pr_fault(_d, _c, fmt, args...) \
 		dev_err((_d)->dev, "%s[%d]: " fmt, \
 		_kgsl_context_comm((_c)->context), \
+<<<<<<< HEAD
 		(_c)->context->proc_priv->pid, ##args)
+=======
+		pid_nr((_c)->context->proc_priv->pid), ##args)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 static void adreno_fault_header(struct kgsl_device *device,
@@ -1681,12 +1733,25 @@ static void adreno_fault_header(struct kgsl_device *device,
 	struct kgsl_drawobj *drawobj = DRAWOBJ(cmdobj);
 	struct adreno_context *drawctxt =
 			drawobj ? ADRENO_CONTEXT(drawobj->context) : NULL;
+<<<<<<< HEAD
 	unsigned int status, rptr, wptr, ib1sz, ib2sz;
 	uint64_t ib1base, ib2base;
 	bool gx_on = gmu_core_dev_gx_is_on(device);
 	int id = (rb != NULL) ? rb->id : -1;
 	const char *type = fault & ADRENO_GMU_FAULT ? "gmu" : "gpu";
 
+=======
+	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
+	unsigned int status, rptr, wptr, ib1sz, ib2sz;
+	uint64_t ib1base, ib2base;
+	bool gx_on = true;
+	int id = (rb != NULL) ? rb->id : -1;
+	const char *type = fault & ADRENO_GMU_FAULT ? "gmu" : "gpu";
+
+	if (GMU_DEV_OP_VALID(gmu_dev_ops, gx_is_on))
+		gx_on = gmu_dev_ops->gx_is_on(adreno_dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!gx_on) {
 		if (drawobj != NULL)
 			pr_fault(device, drawobj,
@@ -1732,13 +1797,24 @@ static void adreno_fault_header(struct kgsl_device *device,
 				"%s fault rb %d rb sw r/w %4.4x/%4.4x\n",
 				type, rb->id, rptr, rb->wptr);
 	} else {
+<<<<<<< HEAD
 		dev_err(device->dev,
 			"RB[%d] : %s fault status %8.8X rb %4.4x/%4.4x ib1 %16.16llX/%4.4x ib2 %16.16llX/%4.4x\n",
+=======
+		int id = (rb != NULL) ? rb->id : -1;
+
+		dev_err(device->dev,
+			"RB[%d]: %s fault status %8.8X rb %4.4x/%4.4x ib1 %16.16llX/%4.4x ib2 %16.16llX/%4.4x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			id, type, status, rptr, wptr, ib1base, ib1sz, ib2base,
 			ib2sz);
 		if (rb != NULL)
 			dev_err(device->dev,
+<<<<<<< HEAD
 				"RB[%d] : %s fault rb sw r/w %4.4x/%4.4x\n",
+=======
+				"RB[%d] %s fault rb sw r/w %4.4x/%4.4x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rb->id, type, rptr, rb->wptr);
 	}
 }
@@ -2083,6 +2159,10 @@ static int dispatcher_do_fault(struct adreno_device *adreno_dev)
 	struct kgsl_device *device = KGSL_DEVICE(adreno_dev);
 	struct adreno_gpudev *gpudev = ADRENO_GPU_DEVICE(adreno_dev);
 	struct adreno_dispatcher *dispatcher = &adreno_dev->dispatcher;
+<<<<<<< HEAD
+=======
+	struct gmu_dev_ops *gmu_dev_ops = GMU_DEVICE_OPS(device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct adreno_dispatcher_drawqueue *dispatch_q = NULL, *dispatch_q_temp;
 	struct adreno_ringbuffer *rb;
 	struct adreno_ringbuffer *hung_rb = NULL;
@@ -2092,7 +2172,11 @@ static int dispatcher_do_fault(struct adreno_device *adreno_dev)
 	int ret, i;
 	int fault;
 	int halt;
+<<<<<<< HEAD
 	bool gx_on, smmu_stalled = false;
+=======
+	bool gx_on = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	fault = atomic_xchg(&dispatcher->fault, 0);
 	if (fault == 0)
@@ -2115,7 +2199,11 @@ static int dispatcher_do_fault(struct adreno_device *adreno_dev)
 	}
 
 	/* Mask all GMU interrupts */
+<<<<<<< HEAD
 	if (gmu_core_isenabled(device)) {
+=======
+	if (gmu_core_gpmu_isenabled(device)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adreno_write_gmureg(adreno_dev,
 			ADRENO_REG_GMU_AO_HOST_INTERRUPT_MASK,
 			0xFFFFFFFF);
@@ -2124,7 +2212,12 @@ static int dispatcher_do_fault(struct adreno_device *adreno_dev)
 			0xFFFFFFFF);
 	}
 
+<<<<<<< HEAD
 	gx_on = gmu_core_dev_gx_is_on(device);
+=======
+	if (GMU_DEV_OP_VALID(gmu_dev_ops, gx_is_on))
+		gx_on = gmu_dev_ops->gx_is_on(adreno_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 	/*
@@ -2133,6 +2226,7 @@ static int dispatcher_do_fault(struct adreno_device *adreno_dev)
 	 * proceed if the fault handler has already run in the IRQ thread,
 	 * else return early to give the fault handler a chance to run.
 	 */
+<<<<<<< HEAD
 	if (gx_on) {
 		unsigned int val;
 
@@ -2147,6 +2241,18 @@ static int dispatcher_do_fault(struct adreno_device *adreno_dev)
 		mutex_unlock(&device->mutex);
 		dev_err(device->dev, "SMMU is stalled without a pagefault\n");
 		return -EBUSY;
+=======
+	if (!(fault & ADRENO_IOMMU_PAGE_FAULT) &&
+		(adreno_is_a5xx(adreno_dev) || adreno_is_a6xx(adreno_dev)) &&
+		gx_on) {
+		unsigned int val;
+
+		adreno_readreg(adreno_dev, ADRENO_REG_RBBM_STATUS3, &val);
+		if (val & BIT(24)) {
+			mutex_unlock(&device->mutex);
+			return 0;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Turn off all the timers */
@@ -2201,18 +2307,23 @@ static int dispatcher_do_fault(struct adreno_device *adreno_dev)
 		adreno_readreg64(adreno_dev, ADRENO_REG_CP_IB1_BASE,
 			ADRENO_REG_CP_IB1_BASE_HI, &base);
 
+<<<<<<< HEAD
 	if (!test_bit(KGSL_FT_PAGEFAULT_GPUHALT_ENABLE,
 		&adreno_dev->ft_pf_policy) && adreno_dev->cooperative_reset)
 		gmu_core_dev_cooperative_reset(device);
 
 	if (!(fault & ADRENO_GMU_FAULT_SKIP_SNAPSHOT))
 		do_header_and_snapshot(device, fault, hung_rb, cmdobj);
+=======
+	do_header_and_snapshot(device, fault, hung_rb, cmdobj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Turn off the KEEPALIVE vote from the ISR for hard fault */
 	if (gpudev->gpu_keepalive && fault & ADRENO_HARD_FAULT)
 		gpudev->gpu_keepalive(adreno_dev, false);
 
 	/* Terminate the stalled transaction and resume the IOMMU */
+<<<<<<< HEAD
 	if (fault & ADRENO_IOMMU_PAGE_FAULT) {
 		/*
 		 * This needs to be triggered only if GBIF is supported, GMU is
@@ -2227,6 +2338,10 @@ static int dispatcher_do_fault(struct adreno_device *adreno_dev)
 		else
 			kgsl_mmu_pagefault_resume(&device->mmu);
 	}
+=======
+	if (fault & ADRENO_IOMMU_PAGE_FAULT)
+		kgsl_mmu_pagefault_resume(&device->mmu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Reset the dispatcher queue */
 	dispatcher->inflight = 0;
@@ -2422,12 +2537,15 @@ static void _adreno_dispatch_check_timeout(struct adreno_device *adreno_dev,
 		drawobj->context->id, drawobj->timestamp);
 
 	adreno_set_gpu_fault(adreno_dev, ADRENO_TIMEOUT_FAULT);
+<<<<<<< HEAD
 
 	/*
 	 * This makes sure dispatcher doesn't run endlessly in cases where
 	 * we couldn't run recovery
 	 */
 	drawqueue->expires = jiffies + msecs_to_jiffies(adreno_drawobj_timeout);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int adreno_dispatch_process_drawqueue(struct adreno_device *adreno_dev,
@@ -2595,12 +2713,19 @@ void adreno_dispatcher_queue_context(struct kgsl_device *device,
  * subsequent calls then the GPU may have faulted
  */
 
+<<<<<<< HEAD
 static void adreno_dispatcher_fault_timer(struct timer_list *t)
 {
 	struct adreno_dispatcher *dispatcher = from_timer(dispatcher,
 							t, fault_timer);
 	struct adreno_device *adreno_dev = container_of(dispatcher,
 					struct adreno_device, dispatcher);
+=======
+static void adreno_dispatcher_fault_timer(unsigned long data)
+{
+	struct adreno_device *adreno_dev = (struct adreno_device *) data;
+	struct adreno_dispatcher *dispatcher = &adreno_dev->dispatcher;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Leave if the user decided to turn off fast hang detection */
 	if (!adreno_soft_fault_detect(adreno_dev))
@@ -2629,11 +2754,17 @@ static void adreno_dispatcher_fault_timer(struct timer_list *t)
  * This is called when the timer expires - it either means the GPU is hung or
  * the IB is taking too long to execute
  */
+<<<<<<< HEAD
 static void adreno_dispatcher_timer(struct timer_list *t)
 {
 	struct adreno_dispatcher *dispatcher = from_timer(dispatcher, t, timer);
 	struct adreno_device *adreno_dev = container_of(dispatcher,
 					struct adreno_device, dispatcher);
+=======
+static void adreno_dispatcher_timer(unsigned long data)
+{
+	struct adreno_device *adreno_dev = (struct adreno_device *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adreno_dispatcher_schedule(KGSL_DEVICE(adreno_dev));
 }
@@ -2713,10 +2844,17 @@ void adreno_dispatcher_close(struct adreno_device *adreno_dev)
 
 struct dispatcher_attribute {
 	struct attribute attr;
+<<<<<<< HEAD
 	ssize_t (*show)(struct adreno_dispatcher *dispatcher,
 			struct dispatcher_attribute *attr, char *buf);
 	ssize_t (*store)(struct adreno_dispatcher *dispatcher,
 			struct dispatcher_attribute *attr, const char *buf,
+=======
+	ssize_t (*show)(struct adreno_dispatcher *,
+			struct dispatcher_attribute *, char *);
+	ssize_t (*store)(struct adreno_dispatcher *,
+			struct dispatcher_attribute *, const char *buf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			size_t count);
 	unsigned int max;
 	unsigned int *value;
@@ -2757,7 +2895,11 @@ static ssize_t _show_uint(struct adreno_dispatcher *dispatcher,
 		struct dispatcher_attribute *attr,
 		char *buf)
 {
+<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%u\n",
+=======
+	return snprintf(buf, PAGE_SIZE, "%u\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		*((unsigned int *) attr->value));
 }
 
@@ -2852,9 +2994,17 @@ int adreno_dispatcher_init(struct adreno_device *adreno_dev)
 
 	mutex_init(&dispatcher->mutex);
 
+<<<<<<< HEAD
 	timer_setup(&dispatcher->timer, adreno_dispatcher_timer, 0);
 
 	timer_setup(&dispatcher->fault_timer, adreno_dispatcher_fault_timer, 0);
+=======
+	setup_timer(&dispatcher->timer, adreno_dispatcher_timer,
+		(unsigned long) adreno_dev);
+
+	setup_timer(&dispatcher->fault_timer, adreno_dispatcher_fault_timer,
+		(unsigned long) adreno_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	kthread_init_work(&dispatcher->work, adreno_dispatcher_work);
 
@@ -2921,9 +3071,15 @@ int adreno_dispatcher_idle(struct adreno_device *adreno_dev)
 			msecs_to_jiffies(ADRENO_IDLE_TIMEOUT));
 	if (ret == 0) {
 		ret = -ETIMEDOUT;
+<<<<<<< HEAD
 		WARN(1, "Dispatcher halt timeout\n");
 	} else if (ret < 0) {
 		dev_err(device->dev, "Dispatcher halt failed %d\n", ret);
+=======
+		WARN(1, "Dispatcher halt timeout ");
+	} else if (ret < 0) {
+		KGSL_DRV_ERR(device, "Dispatcher halt failed %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		ret = 0;
 	}

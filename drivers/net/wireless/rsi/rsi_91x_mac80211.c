@@ -17,7 +17,10 @@
 #include <linux/etherdevice.h>
 #include "rsi_debugfs.h"
 #include "rsi_mgmt.h"
+<<<<<<< HEAD
 #include "rsi_sdio.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "rsi_common.h"
 #include "rsi_ps.h"
 
@@ -140,6 +143,7 @@ static const u32 rsi_max_ap_stas[16] = {
 	4,	/* 14 - AP + BT Dual */
 };
 
+<<<<<<< HEAD
 static const struct ieee80211_iface_limit rsi_iface_limits[] = {
 	{
 		.max = 1,
@@ -166,6 +170,8 @@ static const struct ieee80211_iface_combination rsi_iface_combinations[] = {
 	},
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * rsi_is_cipher_wep() -  This function determines if the cipher is WEP or not.
  * @common: Pointer to the driver private structure.
@@ -188,27 +194,47 @@ bool rsi_is_cipher_wep(struct rsi_common *common)
  * @adapter: Pointer to the adapter structure.
  * @band: Operating band to be set.
  *
+<<<<<<< HEAD
  * Return: int - 0 on success, negative error on failure.
  */
 static int rsi_register_rates_channels(struct rsi_hw *adapter, int band)
+=======
+ * Return: None.
+ */
+static void rsi_register_rates_channels(struct rsi_hw *adapter, int band)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct ieee80211_supported_band *sbands = &adapter->sbands[band];
 	void *channels = NULL;
 
 	if (band == NL80211_BAND_2GHZ) {
+<<<<<<< HEAD
 		channels = kmemdup(rsi_2ghz_channels, sizeof(rsi_2ghz_channels),
 				   GFP_KERNEL);
 		if (!channels)
 			return -ENOMEM;
+=======
+		channels = kmalloc(sizeof(rsi_2ghz_channels), GFP_KERNEL);
+		memcpy(channels,
+		       rsi_2ghz_channels,
+		       sizeof(rsi_2ghz_channels));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sbands->band = NL80211_BAND_2GHZ;
 		sbands->n_channels = ARRAY_SIZE(rsi_2ghz_channels);
 		sbands->bitrates = rsi_rates;
 		sbands->n_bitrates = ARRAY_SIZE(rsi_rates);
 	} else {
+<<<<<<< HEAD
 		channels = kmemdup(rsi_5ghz_channels, sizeof(rsi_5ghz_channels),
 				   GFP_KERNEL);
 		if (!channels)
 			return -ENOMEM;
+=======
+		channels = kmalloc(sizeof(rsi_5ghz_channels), GFP_KERNEL);
+		memcpy(channels,
+		       rsi_5ghz_channels,
+		       sizeof(rsi_5ghz_channels));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sbands->band = NL80211_BAND_5GHZ;
 		sbands->n_channels = ARRAY_SIZE(rsi_5ghz_channels);
 		sbands->bitrates = &rsi_rates[4];
@@ -227,7 +253,10 @@ static int rsi_register_rates_channels(struct rsi_hw *adapter, int band)
 	sbands->ht_cap.mcs.rx_mask[0] = 0xff;
 	sbands->ht_cap.mcs.tx_params = IEEE80211_HT_MCS_TX_DEFINED;
 	/* sbands->ht_cap.mcs.rx_highest = 0x82; */
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -328,11 +357,14 @@ static int rsi_mac80211_start(struct ieee80211_hw *hw)
 
 	rsi_dbg(ERR_ZONE, "===> Interface UP <===\n");
 	mutex_lock(&common->mutex);
+<<<<<<< HEAD
 	if (common->hibernate_resume) {
 		common->reinit_hw = true;
 		adapter->host_intf_ops->reinit_device(adapter);
 		wait_for_completion(&adapter->priv->wlan_init_completion);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	common->iface_down = false;
 	wiphy_rfkill_start_polling(hw->wiphy);
 	rsi_send_rx_filter_frame(common, 0);
@@ -363,6 +395,7 @@ static void rsi_mac80211_stop(struct ieee80211_hw *hw)
 	mutex_unlock(&common->mutex);
 }
 
+<<<<<<< HEAD
 static int rsi_map_intf_mode(enum nl80211_iftype vif_type)
 {
 	switch (vif_type) {
@@ -381,6 +414,8 @@ static int rsi_map_intf_mode(enum nl80211_iftype vif_type)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * rsi_mac80211_add_interface() - This function is called when a netdevice
  *				  attached to the hardware is enabled.
@@ -394,14 +429,20 @@ static int rsi_mac80211_add_interface(struct ieee80211_hw *hw,
 {
 	struct rsi_hw *adapter = hw->priv;
 	struct rsi_common *common = adapter->priv;
+<<<<<<< HEAD
 	struct vif_priv *vif_info = (struct vif_priv *)vif->drv_priv;
 	enum opmode intf_mode;
 	enum vap_status vap_status;
 	int vap_idx = -1, i;
+=======
+	enum opmode intf_mode;
+	int ret = -EOPNOTSUPP;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vif->driver_flags |= IEEE80211_VIF_SUPPORTS_UAPSD;
 	mutex_lock(&common->mutex);
 
+<<<<<<< HEAD
 	intf_mode = rsi_map_intf_mode(vif->type);
 	if (intf_mode == RSI_OPMODE_UNSUPPORTED) {
 		rsi_dbg(ERR_ZONE,
@@ -442,15 +483,56 @@ static int rsi_mac80211_add_interface(struct ieee80211_hw *hw,
 
 	if ((vif->type == NL80211_IFTYPE_AP) ||
 	    (vif->type == NL80211_IFTYPE_P2P_GO)) {
+=======
+	if (adapter->sc_nvifs > 1) {
+		mutex_unlock(&common->mutex);
+		return -EOPNOTSUPP;
+	}
+
+	switch (vif->type) {
+	case NL80211_IFTYPE_STATION:
+		rsi_dbg(INFO_ZONE, "Station Mode");
+		intf_mode = STA_OPMODE;
+		break;
+	case NL80211_IFTYPE_AP:
+		rsi_dbg(INFO_ZONE, "AP Mode");
+		intf_mode = AP_OPMODE;
+		break;
+	default:
+		rsi_dbg(ERR_ZONE,
+			"%s: Interface type %d not supported\n", __func__,
+			vif->type);
+		goto out;
+	}
+
+	adapter->vifs[adapter->sc_nvifs++] = vif;
+	ret = rsi_set_vap_capabilities(common, intf_mode, common->mac_addr,
+				       0, VAP_ADD);
+	if (ret) {
+		rsi_dbg(ERR_ZONE, "Failed to set VAP capabilities\n");
+		goto out;
+	}
+
+	if (vif->type == NL80211_IFTYPE_AP) {
+		int i;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rsi_send_rx_filter_frame(common, DISALLOW_BEACONS);
 		common->min_rate = RSI_RATE_AUTO;
 		for (i = 0; i < common->max_stations; i++)
 			common->stations[i].sta = NULL;
 	}
 
+<<<<<<< HEAD
 	mutex_unlock(&common->mutex);
 
 	return 0;
+=======
+out:
+	mutex_unlock(&common->mutex);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -467,7 +549,10 @@ static void rsi_mac80211_remove_interface(struct ieee80211_hw *hw,
 	struct rsi_hw *adapter = hw->priv;
 	struct rsi_common *common = adapter->priv;
 	enum opmode opmode;
+<<<<<<< HEAD
 	int i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rsi_dbg(INFO_ZONE, "Remove Interface Called\n");
 
@@ -478,6 +563,7 @@ static void rsi_mac80211_remove_interface(struct ieee80211_hw *hw,
 		return;
 	}
 
+<<<<<<< HEAD
 	opmode = rsi_map_intf_mode(vif->type);
 	if (opmode == RSI_OPMODE_UNSUPPORTED) {
 		rsi_dbg(ERR_ZONE, "Opmode error : %d\n", opmode);
@@ -494,6 +580,25 @@ static void rsi_mac80211_remove_interface(struct ieee80211_hw *hw,
 			adapter->vifs[i] = NULL;
 		}
 	}
+=======
+	switch (vif->type) {
+	case NL80211_IFTYPE_STATION:
+		opmode = STA_OPMODE;
+		break;
+	case NL80211_IFTYPE_AP:
+		opmode = AP_OPMODE;
+		break;
+	default:
+		mutex_unlock(&common->mutex);
+		return;
+	}
+	rsi_set_vap_capabilities(common, opmode, vif->addr,
+				 0, VAP_DELETE);
+	adapter->sc_nvifs--;
+
+	if (!memcmp(adapter->vifs[0], vif, sizeof(struct ieee80211_vif)))
+		adapter->vifs[0] = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&common->mutex);
 }
 
@@ -512,16 +617,21 @@ static int rsi_channel_change(struct ieee80211_hw *hw)
 	int status = -EOPNOTSUPP;
 	struct ieee80211_channel *curchan = hw->conf.chandef.chan;
 	u16 channel = curchan->hw_value;
+<<<<<<< HEAD
 	struct ieee80211_vif *vif;
 	struct ieee80211_bss_conf *bss;
 	bool assoc = false;
 	int i;
+=======
+	struct ieee80211_bss_conf *bss = &adapter->vifs[0]->bss_conf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rsi_dbg(INFO_ZONE,
 		"%s: Set channel: %d MHz type: %d channel_no %d\n",
 		__func__, curchan->center_freq,
 		curchan->flags, channel);
 
+<<<<<<< HEAD
 	for (i = 0; i < RSI_MAX_VIFS; i++) {
 		vif = adapter->vifs[i];
 		if (!vif)
@@ -537,12 +647,18 @@ static int rsi_channel_change(struct ieee80211_hw *hw)
 	if (assoc) {
 		if (!common->hw_data_qs_blocked &&
 		    (rsi_get_connected_channel(vif) != channel)) {
+=======
+	if (bss->assoc) {
+		if (!common->hw_data_qs_blocked &&
+		    (rsi_get_connected_channel(adapter) != channel)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rsi_dbg(INFO_ZONE, "blk data q %d\n", channel);
 			if (!rsi_send_block_unblock_frame(common, true))
 				common->hw_data_qs_blocked = true;
 		}
 	}
 
+<<<<<<< HEAD
 	status = rsi_band_check(common, curchan);
 	if (!status)
 		status = rsi_set_channel(adapter->priv, curchan);
@@ -550,6 +666,21 @@ static int rsi_channel_change(struct ieee80211_hw *hw)
 	if (assoc) {
 		if (common->hw_data_qs_blocked &&
 		    (rsi_get_connected_channel(vif) == channel)) {
+=======
+	status = rsi_band_check(common);
+	if (!status)
+		status = rsi_set_channel(adapter->priv, curchan);
+
+	if (bss->assoc) {
+		if (common->hw_data_qs_blocked &&
+		    (rsi_get_connected_channel(adapter) == channel)) {
+			rsi_dbg(INFO_ZONE, "unblk data q %d\n", channel);
+			if (!rsi_send_block_unblock_frame(common, false))
+				common->hw_data_qs_blocked = false;
+		}
+	} else {
+		if (common->hw_data_qs_blocked) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rsi_dbg(INFO_ZONE, "unblk data q %d\n", channel);
 			if (!rsi_send_block_unblock_frame(common, false))
 				common->hw_data_qs_blocked = false;
@@ -601,6 +732,10 @@ static int rsi_mac80211_config(struct ieee80211_hw *hw,
 {
 	struct rsi_hw *adapter = hw->priv;
 	struct rsi_common *common = adapter->priv;
+<<<<<<< HEAD
+=======
+	struct ieee80211_vif *vif = adapter->vifs[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ieee80211_conf *conf = &hw->conf;
 	int status = -EOPNOTSUPP;
 
@@ -616,6 +751,7 @@ static int rsi_mac80211_config(struct ieee80211_hw *hw,
 	}
 
 	/* Power save parameters */
+<<<<<<< HEAD
 	if (changed & IEEE80211_CONF_CHANGE_PS) {
 		struct ieee80211_vif *vif, *sta_vif = NULL;
 		unsigned long flags;
@@ -644,6 +780,18 @@ static int rsi_mac80211_config(struct ieee80211_hw *hw,
 				rsi_disable_ps(adapter, sta_vif);
 			spin_unlock_irqrestore(&adapter->ps_lock, flags);
 		}
+=======
+	if ((changed & IEEE80211_CONF_CHANGE_PS) &&
+	    (vif->type == NL80211_IFTYPE_STATION)) {
+		unsigned long flags;
+
+		spin_lock_irqsave(&adapter->ps_lock, flags);
+		if (conf->flags & IEEE80211_CONF_PS)
+			rsi_enable_ps(adapter);
+		else
+			rsi_disable_ps(adapter);
+		spin_unlock_irqrestore(&adapter->ps_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* RTS threshold */
@@ -667,6 +815,7 @@ static int rsi_mac80211_config(struct ieee80211_hw *hw,
  *
  * Return: Current connected AP's channel number is returned.
  */
+<<<<<<< HEAD
 u16 rsi_get_connected_channel(struct ieee80211_vif *vif)
 {
 	struct ieee80211_bss_conf *bss;
@@ -703,6 +852,18 @@ static void rsi_switch_channel(struct rsi_hw *adapter,
 	rsi_band_check(common, channel);
 	rsi_set_channel(common, channel);
 	rsi_dbg(INFO_ZONE, "Switched to channel - %d\n", channel->hw_value);
+=======
+u16 rsi_get_connected_channel(struct rsi_hw *adapter)
+{
+	struct ieee80211_vif *vif = adapter->vifs[0];
+	if (vif) {
+		struct ieee80211_bss_conf *bss = &vif->bss_conf;
+		struct ieee80211_channel *channel = bss->chandef.chan;
+		return channel->hw_value;
+	}
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -739,13 +900,21 @@ static void rsi_mac80211_bss_info_changed(struct ieee80211_hw *hw,
 			rsi_send_rx_filter_frame(common, rx_filter_word);
 		}
 		rsi_inform_bss_status(common,
+<<<<<<< HEAD
 				      RSI_OPMODE_STA,
+=======
+				      STA_OPMODE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      bss_conf->assoc,
 				      bss_conf->bssid,
 				      bss_conf->qos,
 				      bss_conf->aid,
+<<<<<<< HEAD
 				      NULL, 0,
 				      bss_conf->assoc_capability, vif);
+=======
+				      NULL, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		adapter->ps_info.dtim_interval_duration = bss->dtim_period;
 		adapter->ps_info.listen_interval = conf->listen_interval;
 
@@ -753,7 +922,11 @@ static void rsi_mac80211_bss_info_changed(struct ieee80211_hw *hw,
 	if (bss->assoc) {
 		if (common->uapsd_bitmap) {
 			rsi_dbg(INFO_ZONE, "Configuring UAPSD\n");
+<<<<<<< HEAD
 			rsi_conf_uapsd(adapter, vif);
+=======
+			rsi_conf_uapsd(adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		common->uapsd_bitmap = 0;
@@ -770,8 +943,12 @@ static void rsi_mac80211_bss_info_changed(struct ieee80211_hw *hw,
 	}
 
 	if ((changed & BSS_CHANGED_BEACON_ENABLED) &&
+<<<<<<< HEAD
 	    ((vif->type == NL80211_IFTYPE_AP) ||
 	     (vif->type == NL80211_IFTYPE_P2P_GO))) {
+=======
+	    (vif->type == NL80211_IFTYPE_AP)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bss->enable_beacon) {
 			rsi_dbg(INFO_ZONE, "===> BEACON ENABLED <===\n");
 			common->beacon_enabled = 1;
@@ -890,8 +1067,12 @@ static int rsi_hal_key_config(struct ieee80211_hw *hw,
 	rsi_dbg(ERR_ZONE, "%s: Cipher 0x%x key_type: %d key_len: %d\n",
 		__func__, key->cipher, key_type, key->keylen);
 
+<<<<<<< HEAD
 	if ((vif->type == NL80211_IFTYPE_AP) ||
 	    (vif->type == NL80211_IFTYPE_P2P_GO)) {
+=======
+	if (vif->type == NL80211_IFTYPE_AP) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (sta) {
 			rsta = rsi_find_sta(adapter->priv, sta->addr);
 			if (rsta)
@@ -907,13 +1088,18 @@ static int rsi_hal_key_config(struct ieee80211_hw *hw,
 						  RSI_PAIRWISE_KEY,
 						  key->keyidx,
 						  key->cipher,
+<<<<<<< HEAD
 						  sta_id,
 						  vif);
+=======
+						  sta_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (status)
 				return status;
 		}
 	}
 
+<<<<<<< HEAD
 	status = rsi_hal_load_key(adapter->priv,
 				  key->key,
 				  key->keylen,
@@ -933,6 +1119,15 @@ static int rsi_hal_key_config(struct ieee80211_hw *hw,
 	}
 
 	return 0;
+=======
+	return rsi_hal_load_key(adapter->priv,
+				key->key,
+				key->keylen,
+				key_type,
+				key->keyidx,
+				key->cipher,
+				sta_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -1031,8 +1226,12 @@ static int rsi_mac80211_ampdu_action(struct ieee80211_hw *hw,
 	if (ssn != NULL)
 		seq_no = *ssn;
 
+<<<<<<< HEAD
 	if ((vif->type == NL80211_IFTYPE_AP) ||
 	    (vif->type == NL80211_IFTYPE_P2P_GO)) {
+=======
+	if (vif->type == NL80211_IFTYPE_AP) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rsta = rsi_find_sta(common, sta->addr);
 		if (!rsta) {
 			rsi_dbg(ERR_ZONE, "No station mapped\n");
@@ -1066,11 +1265,17 @@ static int rsi_mac80211_ampdu_action(struct ieee80211_hw *hw,
 		break;
 
 	case IEEE80211_AMPDU_TX_START:
+<<<<<<< HEAD
 		if ((vif->type == NL80211_IFTYPE_STATION) ||
 		    (vif->type == NL80211_IFTYPE_P2P_CLIENT))
 			common->vif_info[ii].seq_start = seq_no;
 		else if ((vif->type == NL80211_IFTYPE_AP) ||
 			 (vif->type == NL80211_IFTYPE_P2P_GO))
+=======
+		if (vif->type == NL80211_IFTYPE_STATION)
+			common->vif_info[ii].seq_start = seq_no;
+		else if (vif->type == NL80211_IFTYPE_AP)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			rsta->seq_start[tid] = seq_no;
 		ieee80211_start_tx_ba_cb_irqsafe(vif, sta->addr, tid);
 		status = 0;
@@ -1090,11 +1295,17 @@ static int rsi_mac80211_ampdu_action(struct ieee80211_hw *hw,
 		break;
 
 	case IEEE80211_AMPDU_TX_OPERATIONAL:
+<<<<<<< HEAD
 		if ((vif->type == NL80211_IFTYPE_STATION) ||
 		    (vif->type == NL80211_IFTYPE_P2P_CLIENT))
 			seq_start = common->vif_info[ii].seq_start;
 		else if ((vif->type == NL80211_IFTYPE_AP) ||
 			 (vif->type == NL80211_IFTYPE_P2P_GO))
+=======
+		if (vif->type == NL80211_IFTYPE_STATION)
+			seq_start = common->vif_info[ii].seq_start;
+		else if (vif->type == NL80211_IFTYPE_AP)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			seq_start = rsta->seq_start[tid];
 		status = rsi_send_aggregation_params_frame(common,
 							   tid,
@@ -1105,7 +1316,11 @@ static int rsi_mac80211_ampdu_action(struct ieee80211_hw *hw,
 		break;
 
 	default:
+<<<<<<< HEAD
 		rsi_dbg(ERR_ZONE, "%s: Unknown AMPDU action\n", __func__);
+=======
+		rsi_dbg(ERR_ZONE, "%s: Uknown AMPDU action\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -1173,9 +1388,15 @@ static int rsi_mac80211_set_rate_mask(struct ieee80211_hw *hw,
  */
 static void rsi_perform_cqm(struct rsi_common *common,
 			    u8 *bssid,
+<<<<<<< HEAD
 			    s8 rssi,
 			    struct ieee80211_vif *vif)
 {
+=======
+			    s8 rssi)
+{
+	struct rsi_hw *adapter = common->priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s8 last_event = common->cqm_info.last_cqm_event_rssi;
 	int thold = common->cqm_info.rssi_thold;
 	u32 hyst = common->cqm_info.rssi_hyst;
@@ -1191,7 +1412,11 @@ static void rsi_perform_cqm(struct rsi_common *common,
 
 	common->cqm_info.last_cqm_event_rssi = rssi;
 	rsi_dbg(INFO_ZONE, "CQM: Notifying event: %d\n", event);
+<<<<<<< HEAD
 	ieee80211_cqm_rssi_notify(vif, event, rssi, GFP_KERNEL);
+=======
+	ieee80211_cqm_rssi_notify(adapter->vifs[0], event, rssi, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return;
 }
@@ -1211,9 +1436,13 @@ static void rsi_fill_rx_status(struct ieee80211_hw *hw,
 			       struct rsi_common *common,
 			       struct ieee80211_rx_status *rxs)
 {
+<<<<<<< HEAD
 	struct rsi_hw *adapter = common->priv;
 	struct ieee80211_vif *vif;
 	struct ieee80211_bss_conf *bss = NULL;
+=======
+	struct ieee80211_bss_conf *bss = &common->priv->vifs[0]->bss_conf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
 	struct skb_info *rx_params = (struct skb_info *)info->driver_data;
 	struct ieee80211_hdr *hdr;
@@ -1221,7 +1450,10 @@ static void rsi_fill_rx_status(struct ieee80211_hw *hw,
 	u8 hdrlen = 0;
 	u8 channel = rx_params->channel;
 	s32 freq;
+<<<<<<< HEAD
 	int i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	hdr = ((struct ieee80211_hdr *)(skb->data));
 	hdrlen = ieee80211_hdrlen(hdr->frame_control);
@@ -1250,6 +1482,7 @@ static void rsi_fill_rx_status(struct ieee80211_hw *hw,
 		rxs->flag |= RX_FLAG_IV_STRIPPED;
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < RSI_MAX_VIFS; i++) {
 		vif = adapter->vifs[i];
 		if (!vif)
@@ -1265,6 +1498,12 @@ static void rsi_fill_rx_status(struct ieee80211_hw *hw,
 	if (bss->assoc && !(memcmp(bss->bssid, hdr->addr2, ETH_ALEN))) {
 		if (ieee80211_is_beacon(hdr->frame_control))
 			rsi_perform_cqm(common, hdr->addr2, rxs->signal, vif);
+=======
+	/* CQM only for connected AP beacons, the RSSI is a weighted avg */
+	if (bss->assoc && !(memcmp(bss->bssid, hdr->addr2, ETH_ALEN))) {
+		if (ieee80211_is_beacon(hdr->frame_control))
+			rsi_perform_cqm(common, hdr->addr2, rxs->signal);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return;
@@ -1358,8 +1597,12 @@ static int rsi_mac80211_sta_add(struct ieee80211_hw *hw,
 
 	mutex_lock(&common->mutex);
 
+<<<<<<< HEAD
 	if ((vif->type == NL80211_IFTYPE_AP) ||
 	    (vif->type == NL80211_IFTYPE_P2P_GO)) {
+=======
+	if (vif->type == NL80211_IFTYPE_AP) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u8 cnt;
 		int sta_idx = -1;
 		int free_index = -1;
@@ -1408,9 +1651,14 @@ static int rsi_mac80211_sta_add(struct ieee80211_hw *hw,
 
 			/* Send peer notify to device */
 			rsi_dbg(INFO_ZONE, "Indicate bss status to device\n");
+<<<<<<< HEAD
 			rsi_inform_bss_status(common, RSI_OPMODE_AP, 1,
 					      sta->addr, sta->wme, sta->aid,
 					      sta, sta_idx, 0, vif);
+=======
+			rsi_inform_bss_status(common, AP_OPMODE, 1, sta->addr,
+					      sta->wme, sta->aid, sta, sta_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (common->key) {
 				struct ieee80211_key_conf *key = common->key;
@@ -1423,16 +1671,24 @@ static int rsi_mac80211_sta_add(struct ieee80211_hw *hw,
 							 RSI_PAIRWISE_KEY,
 							 key->keyidx,
 							 key->cipher,
+<<<<<<< HEAD
 							 sta_idx,
 							 vif);
+=======
+							 sta_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 
 			common->num_stations++;
 		}
 	}
 
+<<<<<<< HEAD
 	if ((vif->type == NL80211_IFTYPE_STATION) ||
 	    (vif->type == NL80211_IFTYPE_P2P_CLIENT)) {
+=======
+	if (vif->type == NL80211_IFTYPE_STATION) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		rsi_set_min_rate(hw, sta, common);
 		if (sta->ht_cap.ht_supported) {
 			common->vif_info[0].is_ht = true;
@@ -1473,8 +1729,12 @@ static int rsi_mac80211_sta_remove(struct ieee80211_hw *hw,
 
 	mutex_lock(&common->mutex);
 
+<<<<<<< HEAD
 	if ((vif->type == NL80211_IFTYPE_AP) ||
 	    (vif->type == NL80211_IFTYPE_P2P_GO)) {
+=======
+	if (vif->type == NL80211_IFTYPE_AP) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u8 sta_idx, cnt;
 
 		/* Send peer notify to device */
@@ -1485,10 +1745,16 @@ static int rsi_mac80211_sta_remove(struct ieee80211_hw *hw,
 			if (!rsta->sta)
 				continue;
 			if (!memcmp(rsta->sta->addr, sta->addr, ETH_ALEN)) {
+<<<<<<< HEAD
 				rsi_inform_bss_status(common, RSI_OPMODE_AP, 0,
 						      sta->addr, sta->wme,
 						      sta->aid, sta, sta_idx,
 						      0, vif);
+=======
+				rsi_inform_bss_status(common, AP_OPMODE, 0,
+						      sta->addr, sta->wme,
+						      sta->aid, sta, sta_idx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rsta->sta = NULL;
 				rsta->sta_id = -1;
 				for (cnt = 0; cnt < IEEE80211_NUM_TIDS; cnt++)
@@ -1502,8 +1768,12 @@ static int rsi_mac80211_sta_remove(struct ieee80211_hw *hw,
 			rsi_dbg(ERR_ZONE, "%s: No station found\n", __func__);
 	}
 
+<<<<<<< HEAD
 	if ((vif->type == NL80211_IFTYPE_STATION) ||
 	    (vif->type == NL80211_IFTYPE_P2P_CLIENT)) {
+=======
+	if (vif->type == NL80211_IFTYPE_STATION) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Resetting all the fields to default values */
 		memcpy((u8 *)bss->bssid, (u8 *)sta->addr, ETH_ALEN);
 		bss->qos = sta->wme;
@@ -1663,6 +1933,7 @@ static void rsi_mac80211_rfkill_poll(struct ieee80211_hw *hw)
 	mutex_unlock(&common->mutex);
 }
 
+<<<<<<< HEAD
 static void rsi_resume_conn_channel(struct rsi_common *common)
 {
 	struct rsi_hw *adapter = common->priv;
@@ -1893,6 +2164,8 @@ static int rsi_mac80211_resume(struct ieee80211_hw *hw)
 
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct ieee80211_ops mac80211_ops = {
 	.tx = rsi_mac80211_tx,
 	.start = rsi_mac80211_start,
@@ -1912,12 +2185,15 @@ static const struct ieee80211_ops mac80211_ops = {
 	.set_antenna = rsi_mac80211_set_antenna,
 	.get_antenna = rsi_mac80211_get_antenna,
 	.rfkill_poll = rsi_mac80211_rfkill_poll,
+<<<<<<< HEAD
 	.remain_on_channel = rsi_mac80211_roc,
 	.cancel_remain_on_channel = rsi_mac80211_cancel_roc,
 #ifdef CONFIG_PM
 	.suspend = rsi_mac80211_suspend,
 	.resume  = rsi_mac80211_resume,
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -1963,19 +2239,29 @@ int rsi_mac80211_attach(struct rsi_common *common)
 	hw->uapsd_queues = RSI_IEEE80211_UAPSD_QUEUES;
 	hw->uapsd_max_sp_len = IEEE80211_WMM_IE_STA_QOSINFO_SP_ALL;
 
+<<<<<<< HEAD
 	hw->max_tx_aggregation_subframes = RSI_MAX_TX_AGGR_FRMS;
 	hw->max_rx_aggregation_subframes = RSI_MAX_RX_AGGR_FRMS;
+=======
+	hw->max_tx_aggregation_subframes = 6;
+	rsi_register_rates_channels(adapter, NL80211_BAND_2GHZ);
+	rsi_register_rates_channels(adapter, NL80211_BAND_5GHZ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw->rate_control_algorithm = "AARF";
 
 	SET_IEEE80211_PERM_ADDR(hw, common->mac_addr);
 	ether_addr_copy(hw->wiphy->addr_mask, addr_mask);
 
 	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
+<<<<<<< HEAD
 				 BIT(NL80211_IFTYPE_AP) |
 				 BIT(NL80211_IFTYPE_P2P_DEVICE) |
 				 BIT(NL80211_IFTYPE_P2P_CLIENT) |
 				 BIT(NL80211_IFTYPE_P2P_GO);
 
+=======
+				 BIT(NL80211_IFTYPE_AP);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wiphy->signal_type = CFG80211_SIGNAL_TYPE_MBM;
 	wiphy->retry_short = RETRY_SHORT;
 	wiphy->retry_long  = RETRY_LONG;
@@ -1985,6 +2271,7 @@ int rsi_mac80211_attach(struct rsi_common *common)
 
 	wiphy->available_antennas_rx = 1;
 	wiphy->available_antennas_tx = 1;
+<<<<<<< HEAD
 
 	status = rsi_register_rates_channels(adapter, NL80211_BAND_2GHZ);
 	if (status)
@@ -1999,6 +2286,12 @@ int rsi_mac80211_attach(struct rsi_common *common)
 		wiphy->bands[NL80211_BAND_5GHZ] =
 			&adapter->sbands[NL80211_BAND_5GHZ];
 	}
+=======
+	wiphy->bands[NL80211_BAND_2GHZ] =
+		&adapter->sbands[NL80211_BAND_2GHZ];
+	wiphy->bands[NL80211_BAND_5GHZ] =
+		&adapter->sbands[NL80211_BAND_5GHZ];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* AP Parameters */
 	wiphy->max_ap_assoc_sta = rsi_max_ap_stas[common->oper_mode - 1];
@@ -2010,6 +2303,7 @@ int rsi_mac80211_attach(struct rsi_common *common)
 	wiphy->features |= NL80211_FEATURE_INACTIVITY_TIMER;
 	wiphy->reg_notifier = rsi_reg_notify;
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM
 	wiphy->wowlan = &rsi_wowlan_support;
 #endif
@@ -2027,6 +2321,10 @@ int rsi_mac80211_attach(struct rsi_common *common)
 	if (common->coex_mode > 1)
 		wiphy->flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
 
+=======
+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = ieee80211_register_hw(hw);
 	if (status)
 		return status;

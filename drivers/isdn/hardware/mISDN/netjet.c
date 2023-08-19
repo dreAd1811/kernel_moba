@@ -1084,7 +1084,11 @@ nj_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	card = kzalloc(sizeof(struct tiger_hw), GFP_KERNEL);
+=======
+	card = kzalloc(sizeof(struct tiger_hw), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!card) {
 		pr_info("No kmem for Netjet\n");
 		return err;

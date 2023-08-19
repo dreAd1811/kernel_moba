@@ -24,6 +24,7 @@
 
 	ahb {
 		apb {
+<<<<<<< HEAD
 			tcb0: timer@f8008000 {
 				timer@0 {
 					compatible = "atmel,tcb-timer";
@@ -36,6 +37,8 @@
 				};
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			pinctrl@fffff400 {
 				1wire_cm {
 					pinctrl_1wire_cm: 1wire_cm-0 {
@@ -100,7 +103,11 @@
 
 						rootfs@800000 {
 							label = "rootfs";
+<<<<<<< HEAD
 							reg = <0x800000 0x1f800000>;
+=======
+							reg = <0x800000 0x0f800000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						};
 					};
 				};

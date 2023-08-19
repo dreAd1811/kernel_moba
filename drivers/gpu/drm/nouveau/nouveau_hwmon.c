@@ -69,8 +69,13 @@ nouveau_hwmon_set_temp1_auto_point1_temp(struct device *d,
 	struct nvkm_therm *therm = nvxx_therm(&drm->client.device);
 	long value;
 
+<<<<<<< HEAD
 	if (kstrtol(buf, 10, &value))
 		return -EINVAL;
+=======
+	if (kstrtol(buf, 10, &value) == -EINVAL)
+		return count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	therm->attr_set(therm, NVKM_THERM_ATTR_THRS_FAN_BOOST,
 			value / 1000);
@@ -102,8 +107,13 @@ nouveau_hwmon_set_temp1_auto_point1_temp_hyst(struct device *d,
 	struct nvkm_therm *therm = nvxx_therm(&drm->client.device);
 	long value;
 
+<<<<<<< HEAD
 	if (kstrtol(buf, 10, &value))
 		return -EINVAL;
+=======
+	if (kstrtol(buf, 10, &value) == -EINVAL)
+		return count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	therm->attr_set(therm, NVKM_THERM_ATTR_THRS_FAN_BOOST_HYST,
 			value / 1000);
@@ -156,7 +166,11 @@ nouveau_hwmon_set_pwm1_min(struct device *d, struct device_attribute *a,
 	long value;
 	int ret;
 
+<<<<<<< HEAD
 	if (kstrtol(buf, 10, &value))
+=======
+	if (kstrtol(buf, 10, &value) == -EINVAL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	ret = therm->attr_set(therm, NVKM_THERM_ATTR_FAN_MIN_DUTY, value);
@@ -179,7 +193,11 @@ nouveau_hwmon_set_pwm1_max(struct device *d, struct device_attribute *a,
 	long value;
 	int ret;
 
+<<<<<<< HEAD
 	if (kstrtol(buf, 10, &value))
+=======
+	if (kstrtol(buf, 10, &value) == -EINVAL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	ret = therm->attr_set(therm, NVKM_THERM_ATTR_FAN_MAX_DUTY, value);
@@ -327,7 +345,11 @@ nouveau_temp_is_visible(const void *data, u32 attr, int channel)
 	struct nouveau_drm *drm = nouveau_drm((struct drm_device *)data);
 	struct nvkm_therm *therm = nvxx_therm(&drm->client.device);
 
+<<<<<<< HEAD
 	if (!therm || !therm->attr_get || nvkm_therm_temp_get(therm) < 0)
+=======
+	if (therm && therm->attr_get && nvkm_therm_temp_get(therm) < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	switch (attr) {
@@ -351,8 +373,13 @@ nouveau_pwm_is_visible(const void *data, u32 attr, int channel)
 	struct nouveau_drm *drm = nouveau_drm((struct drm_device *)data);
 	struct nvkm_therm *therm = nvxx_therm(&drm->client.device);
 
+<<<<<<< HEAD
 	if (!therm || !therm->attr_get || !therm->fan_get ||
 	    therm->fan_get(therm) < 0)
+=======
+	if (therm && therm->attr_get && therm->fan_get &&
+				therm->fan_get(therm) < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	switch (attr) {
@@ -707,20 +734,27 @@ nouveau_hwmon_init(struct drm_device *dev)
 {
 #if defined(CONFIG_HWMON) || (defined(MODULE) && defined(CONFIG_HWMON_MODULE))
 	struct nouveau_drm *drm = nouveau_drm(dev);
+<<<<<<< HEAD
 	struct nvkm_iccsense *iccsense = nvxx_iccsense(&drm->client.device);
 	struct nvkm_therm *therm = nvxx_therm(&drm->client.device);
 	struct nvkm_volt *volt = nvxx_volt(&drm->client.device);
+=======
+	struct nvkm_therm *therm = nvxx_therm(&drm->client.device);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const struct attribute_group *special_groups[N_ATTR_GROUPS];
 	struct nouveau_hwmon *hwmon;
 	struct device *hwmon_dev;
 	int ret = 0;
 	int i = 0;
 
+<<<<<<< HEAD
 	if (!iccsense && !therm && !volt) {
 		NV_DEBUG(drm, "Skipping hwmon registration\n");
 		return 0;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hwmon = drm->hwmon = kzalloc(sizeof(*hwmon), GFP_KERNEL);
 	if (!hwmon)
 		return -ENOMEM;
@@ -756,9 +790,12 @@ nouveau_hwmon_fini(struct drm_device *dev)
 #if defined(CONFIG_HWMON) || (defined(MODULE) && defined(CONFIG_HWMON_MODULE))
 	struct nouveau_hwmon *hwmon = nouveau_hwmon(dev);
 
+<<<<<<< HEAD
 	if (!hwmon)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hwmon->hwmon)
 		hwmon_device_unregister(hwmon->hwmon);
 

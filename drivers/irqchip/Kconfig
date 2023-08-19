@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 menu "IRQ chip support"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config IRQCHIP
 	def_bool y
 	depends on OF_IRQ
@@ -8,7 +11,11 @@ config ARM_GIC
 	bool
 	select IRQ_DOMAIN
 	select IRQ_DOMAIN_HIERARCHY
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select GENERIC_IRQ_EFFECTIVE_AFF_MASK
 
 config ARM_GIC_PM
@@ -34,7 +41,11 @@ config GIC_NON_BANKED
 config ARM_GIC_V3
 	bool
 	select IRQ_DOMAIN
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select IRQ_DOMAIN_HIERARCHY
 	select PARTITION_PERCPU
 	select QCOM_SHOW_RESUME_IRQ
@@ -42,6 +53,7 @@ config ARM_GIC_V3
 
 config ARM_GIC_V3_ITS
 	bool
+<<<<<<< HEAD
 	select GENERIC_MSI_IRQ_DOMAIN
 	default ARM_GIC_V3
 
@@ -57,6 +69,10 @@ config ARM_GIC_V3_ITS_FSL_MC
 	depends on ARM_GIC_V3_ITS
 	depends on FSL_MC_BUS
 	default ARM_GIC_V3_ITS
+=======
+	depends on PCI
+	depends on PCI_MSI
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config ARM_GIC_V3_ACL
 	bool "GICv3 Access control"
@@ -76,7 +92,11 @@ config ARM_NVIC
 config ARM_VIC
 	bool
 	select IRQ_DOMAIN
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config ARM_VIC_NR
 	int
@@ -103,14 +123,22 @@ config ATMEL_AIC_IRQ
 	bool
 	select GENERIC_IRQ_CHIP
 	select IRQ_DOMAIN
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select SPARSE_IRQ
 
 config ATMEL_AIC5_IRQ
 	bool
 	select GENERIC_IRQ_CHIP
 	select IRQ_DOMAIN
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select SPARSE_IRQ
 
 config I8259
@@ -157,7 +185,11 @@ config DW_APB_ICTL
 config FARADAY_FTINTC010
 	bool
 	select IRQ_DOMAIN
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select SPARSE_IRQ
 
 config HISILICON_IRQ_MBIGEN
@@ -182,6 +214,7 @@ config CLPS711X_IRQCHIP
 	bool
 	depends on ARCH_CLPS711X
 	select IRQ_DOMAIN
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
 	select SPARSE_IRQ
 	default y
@@ -189,6 +222,12 @@ config CLPS711X_IRQCHIP
 config OMPIC
 	bool
 
+=======
+	select MULTI_IRQ_HANDLER
+	select SPARSE_IRQ
+	default y
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config OR1K_PIC
 	bool
 	select IRQ_DOMAIN
@@ -201,7 +240,11 @@ config OMAP_IRQCHIP
 config ORION_IRQCHIP
 	bool
 	select IRQ_DOMAIN
+<<<<<<< HEAD
 	select GENERIC_IRQ_MULTI_HANDLER
+=======
+	select MULTI_IRQ_HANDLER
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config PIC32_EVIC
 	bool
@@ -312,11 +355,14 @@ config IRQ_MXS
 	select IRQ_DOMAIN
 	select STMP_DEVICE
 
+<<<<<<< HEAD
 config MSCC_OCELOT_IRQ
 	bool
 	select IRQ_DOMAIN
 	select GENERIC_IRQ_CHIP
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MVEBU_GICP
 	bool
 
@@ -347,7 +393,10 @@ config EZNPS_GIC
 config STM32_EXTI
 	bool
 	select IRQ_DOMAIN
+<<<<<<< HEAD
 	select GENERIC_IRQ_CHIP
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config QCOM_IRQ_COMBINER
 	bool "QCOM IRQ combiner support"
@@ -366,6 +415,7 @@ config IRQ_UNIPHIER_AIDET
 	help
 	  Support for the UniPhier AIDET (ARM Interrupt Detector).
 
+<<<<<<< HEAD
 config MESON_IRQ_GPIO
        bool "Meson GPIO Interrupt Multiplexer"
        depends on ARCH_MESON
@@ -415,3 +465,6 @@ config SIFIVE_PLIC
 	   interrupt sources are subordinate to the PLIC.
 
 	   If you don't know what to do here, say Y.
+=======
+source "drivers/irqchip/qcom/Kconfig"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

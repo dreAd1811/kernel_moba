@@ -1,12 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "juno-clocks.dtsi"
+<<<<<<< HEAD
 #include "juno-motherboard.dtsi"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	/*
 	 *  Devices shared by all Juno boards
 	 */
+<<<<<<< HEAD
 	dma-ranges = <0 0 0 0 0x100 0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	memtimer: timer@2a810000 {
 		compatible = "arm,armv7-timer-mem";
@@ -69,6 +75,7 @@
 		interrupt-controller;
 		interrupts = <GIC_PPI 9 (GIC_CPU_MASK_SIMPLE(6) | IRQ_TYPE_LEVEL_HIGH)>;
 		ranges = <0 0 0 0x2c1c0000 0 0x40000>;
+<<<<<<< HEAD
 
 		v2m_0: v2m@0 {
 			compatible = "arm,gic-v2m-frame";
@@ -92,6 +99,12 @@
 			compatible = "arm,gic-v2m-frame";
 			msi-controller;
 			reg = <0 0x30000 0 0x10000>;
+=======
+		v2m_0: v2m@0 {
+			compatible = "arm,gic-v2m-frame";
+			msi-controller;
+			reg = <0 0 0 0x1000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 	};
 
@@ -573,14 +586,22 @@
 			thermal-sensors = <&scpi_sensors0 3>;
 		};
 
+<<<<<<< HEAD
 		big_cluster_thermal_zone: big-cluster {
+=======
+		big_cluster_thermal_zone: big_cluster {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			polling-delay = <1000>;
 			polling-delay-passive = <100>;
 			thermal-sensors = <&scpi_sensors0 21>;
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		little_cluster_thermal_zone: little-cluster {
+=======
+		little_cluster_thermal_zone: little_cluster {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			polling-delay = <1000>;
 			polling-delay-passive = <100>;
 			thermal-sensors = <&scpi_sensors0 22>;
@@ -678,7 +699,11 @@
 		clock-names = "pxlclk";
 
 		port {
+<<<<<<< HEAD
 			hdlcd1_output: endpoint {
+=======
+			hdlcd1_output: hdlcd1-endpoint {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				remote-endpoint = <&tda998x_1_input>;
 			};
 		};
@@ -693,7 +718,11 @@
 		clock-names = "pxlclk";
 
 		port {
+<<<<<<< HEAD
 			hdlcd0_output: endpoint {
+=======
+			hdlcd0_output: hdlcd0-endpoint {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				remote-endpoint = <&tda998x_0_input>;
 			};
 		};
@@ -721,7 +750,11 @@
 			compatible = "nxp,tda998x";
 			reg = <0x70>;
 			port {
+<<<<<<< HEAD
 				tda998x_0_input: endpoint {
+=======
+				tda998x_0_input: tda998x-0-endpoint {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					remote-endpoint = <&hdlcd0_output>;
 				};
 			};
@@ -731,7 +764,11 @@
 			compatible = "nxp,tda998x";
 			reg = <0x71>;
 			port {
+<<<<<<< HEAD
 				tda998x_1_input: endpoint {
+=======
+				tda998x_1_input: tda998x-1-endpoint {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					remote-endpoint = <&hdlcd1_output>;
 				};
 			};
@@ -796,6 +833,11 @@
 				<0 0 10 &gic 0 0 0 167 IRQ_TYPE_LEVEL_HIGH>,
 				<0 0 11 &gic 0 0 0 168 IRQ_TYPE_LEVEL_HIGH>,
 				<0 0 12 &gic 0 0 0 169 IRQ_TYPE_LEVEL_HIGH>;
+<<<<<<< HEAD
+=======
+
+		/include/ "juno-motherboard.dtsi"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	site2: tlx@60000000 {

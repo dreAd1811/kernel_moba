@@ -1,8 +1,27 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * cec-adap.c - HDMI Consumer Electronics Control framework - CEC adapter
  *
  * Copyright 2016 Cisco Systems, Inc. and/or its affiliates. All rights reserved.
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you may redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; version 2 of the License.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/errno.h>
@@ -62,6 +81,7 @@ static unsigned int cec_log_addr2dev(const struct cec_adapter *adap, u8 log_addr
 	return adap->log_addrs.primary_device_type[i < 0 ? 0 : i];
 }
 
+<<<<<<< HEAD
 u16 cec_get_edid_phys_addr(const u8 *edid, unsigned int size,
 			   unsigned int *offset)
 {
@@ -75,6 +95,8 @@ u16 cec_get_edid_phys_addr(const u8 *edid, unsigned int size,
 }
 EXPORT_SYMBOL_GPL(cec_get_edid_phys_addr);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Queue a new event for this filehandle. If ts == 0, then set it
  * to the current time.
@@ -86,8 +108,13 @@ EXPORT_SYMBOL_GPL(cec_get_edid_phys_addr);
 void cec_queue_event_fh(struct cec_fh *fh,
 			const struct cec_event *new_ev, u64 ts)
 {
+<<<<<<< HEAD
 	static const u16 max_events[CEC_NUM_EVENTS] = {
 		1, 1, 800, 800, 8, 8, 8, 8
+=======
+	static const u8 max_events[CEC_NUM_EVENTS] = {
+		1, 1, 64, 64,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	struct cec_event_entry *entry;
 	unsigned int ev_idx = new_ev->event - 1;
@@ -155,13 +182,20 @@ static void cec_queue_event(struct cec_adapter *adap,
 }
 
 /* Notify userspace that the CEC pin changed state at the given time. */
+<<<<<<< HEAD
 void cec_queue_pin_cec_event(struct cec_adapter *adap, bool is_high,
 			     bool dropped_events, ktime_t ts)
+=======
+void cec_queue_pin_cec_event(struct cec_adapter *adap, bool is_high, ktime_t ts)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct cec_event ev = {
 		.event = is_high ? CEC_EVENT_PIN_CEC_HIGH :
 				   CEC_EVENT_PIN_CEC_LOW,
+<<<<<<< HEAD
 		.flags = dropped_events ? CEC_EVENT_FL_DROPPED_EVENTS : 0,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	struct cec_fh *fh;
 
@@ -173,6 +207,7 @@ void cec_queue_pin_cec_event(struct cec_adapter *adap, bool is_high,
 }
 EXPORT_SYMBOL_GPL(cec_queue_pin_cec_event);
 
+<<<<<<< HEAD
 /* Notify userspace that the HPD pin changed state at the given time. */
 void cec_queue_pin_hpd_event(struct cec_adapter *adap, bool is_high, ktime_t ts)
 {
@@ -205,6 +240,8 @@ void cec_queue_pin_5v_event(struct cec_adapter *adap, bool is_high, ktime_t ts)
 }
 EXPORT_SYMBOL_GPL(cec_queue_pin_5v_event);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Queue a new message for this filehandle.
  *
@@ -354,7 +391,11 @@ static void cec_data_completed(struct cec_data *data)
  *
  * This function is called with adap->lock held.
  */
+<<<<<<< HEAD
 static void cec_data_cancel(struct cec_data *data, u8 tx_status)
+=======
+static void cec_data_cancel(struct cec_data *data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * It's either the current transmit, or it is a pending
@@ -365,6 +406,7 @@ static void cec_data_cancel(struct cec_data *data, u8 tx_status)
 	} else {
 		list_del_init(&data->list);
 		if (!(data->msg.tx_status & CEC_TX_STATUS_OK))
+<<<<<<< HEAD
 			data->adap->transmit_queue_sz--;
 	}
 
@@ -379,6 +421,18 @@ static void cec_data_cancel(struct cec_data *data, u8 tx_status)
 		data->attempts = 0;
 	}
 
+=======
+			if (!WARN_ON(!data->adap->transmit_queue_sz))
+				data->adap->transmit_queue_sz--;
+	}
+
+	/* Mark it as an error */
+	data->msg.tx_ts = ktime_get_ns();
+	data->msg.tx_status |= CEC_TX_STATUS_ERROR |
+			       CEC_TX_STATUS_MAX_RETRIES;
+	data->msg.tx_error_cnt++;
+	data->attempts = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Queue transmitted message for monitoring purposes */
 	cec_queue_msg_monitor(data->adap, &data->msg, 1);
 
@@ -401,15 +455,26 @@ static void cec_flush(struct cec_adapter *adap)
 	while (!list_empty(&adap->transmit_queue)) {
 		data = list_first_entry(&adap->transmit_queue,
 					struct cec_data, list);
+<<<<<<< HEAD
 		cec_data_cancel(data, CEC_TX_STATUS_ABORTED);
 	}
 	if (adap->transmitting)
 		cec_data_cancel(adap->transmitting, CEC_TX_STATUS_ABORTED);
+=======
+		cec_data_cancel(data);
+	}
+	if (adap->transmitting)
+		cec_data_cancel(adap->transmitting);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Cancel the pending timeout work. */
 	list_for_each_entry_safe(data, n, &adap->wait_queue, list) {
 		if (cancel_delayed_work(&data->work))
+<<<<<<< HEAD
 			cec_data_cancel(data, CEC_TX_STATUS_OK);
+=======
+			cec_data_cancel(data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If cancel_delayed_work returned false, then
 		 * the cec_wait_timeout function is running,
@@ -417,6 +482,17 @@ static void cec_flush(struct cec_adapter *adap)
 		 * need to do anything special in that case.
 		 */
 	}
+<<<<<<< HEAD
+=======
+	/*
+	 * If something went wrong and this counter isn't what it should
+	 * be, then this will reset it back to 0. Warn if it is not 0,
+	 * since it indicates a bug, either in this framework or in a
+	 * CEC driver.
+	 */
+	if (WARN_ON(adap->transmit_queue_sz))
+		adap->transmit_queue_sz = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -455,7 +531,11 @@ int cec_thread_func(void *_adap)
 				(adap->needs_hpd &&
 				 (!adap->is_configured && !adap->is_configuring)) ||
 				kthread_should_stop() ||
+<<<<<<< HEAD
 				(!adap->transmit_in_progress &&
+=======
+				(!adap->transmitting &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 !list_empty(&adap->transmit_queue)),
 				msecs_to_jiffies(CEC_XFER_TIMEOUT_MS));
 			timeout = err == 0;
@@ -463,7 +543,11 @@ int cec_thread_func(void *_adap)
 			/* Otherwise we just wait for something to happen. */
 			wait_event_interruptible(adap->kthread_waitq,
 				kthread_should_stop() ||
+<<<<<<< HEAD
 				(!adap->transmit_in_progress &&
+=======
+				(!adap->transmitting &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 !list_empty(&adap->transmit_queue)));
 		}
 
@@ -485,6 +569,7 @@ int cec_thread_func(void *_adap)
 			 * so much traffic on the bus that the adapter was
 			 * unable to transmit for CEC_XFER_TIMEOUT_MS (2.1s).
 			 */
+<<<<<<< HEAD
 			pr_warn("cec-%s: message %*ph timed out\n", adap->name,
 				adap->transmitting->msg.len,
 				adap->transmitting->msg.msg);
@@ -493,6 +578,14 @@ int cec_thread_func(void *_adap)
 			/* Just give up on this. */
 			cec_data_cancel(adap->transmitting,
 					CEC_TX_STATUS_TIMEOUT);
+=======
+			dprintk(1, "%s: message %*ph timed out\n", __func__,
+				adap->transmitting->msg.len,
+				adap->transmitting->msg.msg);
+			adap->tx_timeouts++;
+			/* Just give up on this. */
+			cec_data_cancel(adap->transmitting);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto unlock;
 		}
 
@@ -500,14 +593,23 @@ int cec_thread_func(void *_adap)
 		 * If we are still transmitting, or there is nothing new to
 		 * transmit, then just continue waiting.
 		 */
+<<<<<<< HEAD
 		if (adap->transmit_in_progress || list_empty(&adap->transmit_queue))
+=======
+		if (adap->transmitting || list_empty(&adap->transmit_queue))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			goto unlock;
 
 		/* Get a new message to transmit */
 		data = list_first_entry(&adap->transmit_queue,
 					struct cec_data, list);
 		list_del_init(&data->list);
+<<<<<<< HEAD
 		adap->transmit_queue_sz--;
+=======
+		if (!WARN_ON(!data->adap->transmit_queue_sz))
+			adap->transmit_queue_sz--;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Make this the current transmitting message */
 		adap->transmitting = data;
@@ -527,11 +629,17 @@ int cec_thread_func(void *_adap)
 		if (data->attempts) {
 			/* should be >= 3 data bit periods for a retry */
 			signal_free_time = CEC_SIGNAL_FREE_TIME_RETRY;
+<<<<<<< HEAD
 		} else if (adap->last_initiator !=
 			   cec_msg_initiator(&data->msg)) {
 			/* should be >= 5 data bit periods for new initiator */
 			signal_free_time = CEC_SIGNAL_FREE_TIME_NEW_INITIATOR;
 			adap->last_initiator = cec_msg_initiator(&data->msg);
+=======
+		} else if (data->new_initiator) {
+			/* should be >= 5 data bit periods for new initiator */
+			signal_free_time = CEC_SIGNAL_FREE_TIME_NEW_INITIATOR;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} else {
 			/*
 			 * should be >= 7 data bit periods for sending another
@@ -545,9 +653,13 @@ int cec_thread_func(void *_adap)
 		/* Tell the adapter to transmit, cancel on error */
 		if (adap->ops->adap_transmit(adap, data->attempts,
 					     signal_free_time, &data->msg))
+<<<<<<< HEAD
 			cec_data_cancel(data, CEC_TX_STATUS_ABORTED);
 		else
 			adap->transmit_in_progress = true;
+=======
+			cec_data_cancel(data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 unlock:
 		mutex_unlock(&adap->lock);
@@ -570,7 +682,11 @@ void cec_transmit_done_ts(struct cec_adapter *adap, u8 status,
 	unsigned int attempts_made = arb_lost_cnt + nack_cnt +
 				     low_drive_cnt + error_cnt;
 
+<<<<<<< HEAD
 	dprintk(2, "%s: status 0x%02x\n", __func__, status);
+=======
+	dprintk(2, "%s: status %02x\n", __func__, status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (attempts_made < 1)
 		attempts_made = 1;
 
@@ -578,6 +694,7 @@ void cec_transmit_done_ts(struct cec_adapter *adap, u8 status,
 	data = adap->transmitting;
 	if (!data) {
 		/*
+<<<<<<< HEAD
 		 * This might happen if a transmit was issued and the cable is
 		 * unplugged while the transmit is ongoing. Ignore this
 		 * transmit in that case.
@@ -589,6 +706,16 @@ void cec_transmit_done_ts(struct cec_adapter *adap, u8 status,
 		goto wake_thread;
 	}
 	adap->transmit_in_progress = false;
+=======
+		 * This can happen if a transmit was issued and the cable is
+		 * unplugged while the transmit is ongoing. Ignore this
+		 * transmit in that case.
+		 */
+		dprintk(1, "%s was called without an ongoing transmit!\n",
+			__func__);
+		goto unlock;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msg = &data->msg;
 
@@ -654,6 +781,10 @@ wake_thread:
 	 * for transmitting or to retry the current message.
 	 */
 	wake_up_interruptible(&adap->kthread_waitq);
+<<<<<<< HEAD
+=======
+unlock:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&adap->lock);
 }
 EXPORT_SYMBOL_GPL(cec_transmit_done_ts);
@@ -720,6 +851,12 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 			struct cec_fh *fh, bool block)
 {
 	struct cec_data *data;
+<<<<<<< HEAD
+=======
+	u8 last_initiator = 0xff;
+	unsigned int timeout;
+	int res = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msg->rx_ts = 0;
 	msg->tx_ts = 0;
@@ -740,16 +877,20 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 	else
 		msg->flags = 0;
 
+<<<<<<< HEAD
 	if (msg->len > 1 && msg->msg[1] == CEC_MSG_CDC_MESSAGE) {
 		msg->msg[2] = adap->phys_addr >> 8;
 		msg->msg[3] = adap->phys_addr & 0xff;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Sanity checks */
 	if (msg->len == 0 || msg->len > CEC_MAX_MSG_SIZE) {
 		dprintk(1, "%s: invalid length %d\n", __func__, msg->len);
 		return -EINVAL;
 	}
+<<<<<<< HEAD
 
 	memset(msg->msg + msg->len, 0, sizeof(msg->msg) - msg->len);
 
@@ -765,6 +906,13 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 		dprintk(1, "%s: can't reply to poll msg\n", __func__);
 		return -EINVAL;
 	}
+=======
+	if (msg->timeout && msg->len == 1) {
+		dprintk(1, "%s: can't reply for poll msg\n", __func__);
+		return -EINVAL;
+	}
+	memset(msg->msg + msg->len, 0, sizeof(msg->msg) - msg->len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (msg->len == 1) {
 		if (cec_msg_destination(msg) == 0xf) {
 			dprintk(1, "%s: invalid poll message\n", __func__);
@@ -824,11 +972,47 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 	if (!msg->sequence)
 		msg->sequence = ++adap->sequence;
 
+<<<<<<< HEAD
+=======
+	if (msg->len > 1 && msg->msg[1] == CEC_MSG_CDC_MESSAGE) {
+		msg->msg[2] = adap->phys_addr >> 8;
+		msg->msg[3] = adap->phys_addr & 0xff;
+	}
+
+	if (msg->timeout)
+		dprintk(2, "%s: %*ph (wait for 0x%02x%s)\n",
+			__func__, msg->len, msg->msg, msg->reply,
+			!block ? ", nb" : "");
+	else
+		dprintk(2, "%s: %*ph%s\n",
+			__func__, msg->len, msg->msg, !block ? " (nb)" : "");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->msg = *msg;
 	data->fh = fh;
 	data->adap = adap;
 	data->blocking = block;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Determine if this message follows a message from the same
+	 * initiator. Needed to determine the free signal time later on.
+	 */
+	if (msg->len > 1) {
+		if (!(list_empty(&adap->transmit_queue))) {
+			const struct cec_data *last;
+
+			last = list_last_entry(&adap->transmit_queue,
+					       const struct cec_data, list);
+			last_initiator = cec_msg_initiator(&last->msg);
+		} else if (adap->transmitting) {
+			last_initiator =
+				cec_msg_initiator(&adap->transmitting->msg);
+		}
+	}
+	data->new_initiator = last_initiator != cec_msg_initiator(msg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	init_completion(&data->c);
 	INIT_DELAYED_WORK(&data->work, cec_wait_timeout);
 
@@ -845,6 +1029,7 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 		return 0;
 
 	/*
+<<<<<<< HEAD
 	 * Release the lock and wait, retake the lock afterwards.
 	 */
 	mutex_unlock(&adap->lock);
@@ -861,6 +1046,49 @@ int cec_transmit_msg_fh(struct cec_adapter *adap, struct cec_msg *msg,
 	*msg = data->msg;
 	kfree(data);
 	return 0;
+=======
+	 * If we don't get a completion before this time something is really
+	 * wrong and we time out.
+	 */
+	timeout = CEC_XFER_TIMEOUT_MS;
+	/* Add the requested timeout if we have to wait for a reply as well */
+	if (msg->timeout)
+		timeout += msg->timeout;
+
+	/*
+	 * Release the lock and wait, retake the lock afterwards.
+	 */
+	mutex_unlock(&adap->lock);
+	res = wait_for_completion_killable_timeout(&data->c,
+						   msecs_to_jiffies(timeout));
+	mutex_lock(&adap->lock);
+
+	if (data->completed) {
+		/* The transmit completed (possibly with an error) */
+		*msg = data->msg;
+		kfree(data);
+		return 0;
+	}
+	/*
+	 * The wait for completion timed out or was interrupted, so mark this
+	 * as non-blocking and disconnect from the filehandle since it is
+	 * still 'in flight'. When it finally completes it will just drop the
+	 * result silently.
+	 */
+	data->blocking = false;
+	if (data->fh)
+		list_del(&data->xfer_list);
+	data->fh = NULL;
+
+	if (res == 0) { /* timed out */
+		/* Check if the reply or the transmit failed */
+		if (msg->timeout && (msg->tx_status & CEC_TX_STATUS_OK))
+			msg->rx_status = CEC_RX_STATUS_TIMEOUT;
+		else
+			msg->tx_status = CEC_TX_STATUS_MAX_RETRIES;
+	}
+	return res > 0 ? 0 : res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Helper function to be used by drivers and this framework. */
@@ -1018,8 +1246,11 @@ void cec_received_msg_ts(struct cec_adapter *adap,
 	mutex_lock(&adap->lock);
 	dprintk(2, "%s: %*ph\n", __func__, msg->len, msg->msg);
 
+<<<<<<< HEAD
 	adap->last_initiator = 0xff;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check if this message was for us (directed or broadcast). */
 	if (!cec_msg_is_broadcast(msg))
 		valid_la = cec_has_log_addr(adap, msg_dest);
@@ -1038,11 +1269,19 @@ void cec_received_msg_ts(struct cec_adapter *adap,
 			valid_la = false;
 		else if (!cec_msg_is_broadcast(msg) && !(dir_fl & DIRECTED))
 			valid_la = false;
+<<<<<<< HEAD
 		else if (cec_msg_is_broadcast(msg) && !(dir_fl & BCAST1_4))
 			valid_la = false;
 		else if (cec_msg_is_broadcast(msg) &&
 			 adap->log_addrs.cec_version >= CEC_OP_CEC_VERSION_2_0 &&
 			 !(dir_fl & BCAST2_0))
+=======
+		else if (cec_msg_is_broadcast(msg) && !(dir_fl & BCAST))
+			valid_la = false;
+		else if (cec_msg_is_broadcast(msg) &&
+			 adap->log_addrs.cec_version < CEC_OP_CEC_VERSION_2_0 &&
+			 !(dir_fl & BCAST1_4))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			valid_la = false;
 	}
 	if (valid_la && min_len) {
@@ -1185,8 +1424,11 @@ static int cec_config_log_addr(struct cec_adapter *adap,
 {
 	struct cec_log_addrs *las = &adap->log_addrs;
 	struct cec_msg msg = { };
+<<<<<<< HEAD
 	const unsigned int max_retries = 2;
 	unsigned int i;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (cec_has_log_addr(adap, log_addr))
@@ -1195,6 +1437,7 @@ static int cec_config_log_addr(struct cec_adapter *adap,
 	/* Send poll message */
 	msg.len = 1;
 	msg.msg[0] = (log_addr << 4) | log_addr;
+<<<<<<< HEAD
 
 	for (i = 0; i < max_retries; i++) {
 		err = cec_transmit_msg_fh(adap, &msg, NULL, true);
@@ -1233,6 +1476,21 @@ static int cec_config_log_addr(struct cec_adapter *adap,
 	 * good idea to try and claim this logical address.
 	 */
 	if (i == max_retries)
+=======
+	err = cec_transmit_msg_fh(adap, &msg, NULL, true);
+
+	/*
+	 * While trying to poll the physical address was reset
+	 * and the adapter was unconfigured, so bail out.
+	 */
+	if (!adap->is_configuring)
+		return -EINTR;
+
+	if (err)
+		return err;
+
+	if (msg.tx_status & CEC_TX_STATUS_OK)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	/*
@@ -1437,6 +1695,16 @@ configured:
 			las->log_addr[i],
 			cec_phys_addr_exp(adap->phys_addr));
 		cec_transmit_msg_fh(adap, &msg, NULL, false);
+<<<<<<< HEAD
+=======
+
+		/* Report Vendor ID */
+		if (adap->log_addrs.vendor_id != CEC_VENDOR_ID_NONE) {
+			cec_msg_device_vendor_id(&msg,
+						 adap->log_addrs.vendor_id);
+			cec_transmit_msg_fh(adap, &msg, NULL, false);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	adap->kthread_config = NULL;
 	complete(&adap->config_completion);
@@ -1501,20 +1769,28 @@ void __cec_s_phys_addr(struct cec_adapter *adap, u16 phys_addr, bool block)
 		if (adap->monitor_all_cnt)
 			WARN_ON(call_op(adap, adap_monitor_all_enable, false));
 		mutex_lock(&adap->devnode.lock);
+<<<<<<< HEAD
 		if (adap->needs_hpd || list_empty(&adap->devnode.fhs)) {
 			WARN_ON(adap->ops->adap_enable(adap, false));
 			adap->transmit_in_progress = false;
 			wake_up_interruptible(&adap->kthread_waitq);
 		}
+=======
+		if (adap->needs_hpd || list_empty(&adap->devnode.fhs))
+			WARN_ON(adap->ops->adap_enable(adap, false));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_unlock(&adap->devnode.lock);
 		if (phys_addr == CEC_PHYS_ADDR_INVALID)
 			return;
 	}
 
 	mutex_lock(&adap->devnode.lock);
+<<<<<<< HEAD
 	adap->last_initiator = 0xff;
 	adap->transmit_in_progress = false;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((adap->needs_hpd || list_empty(&adap->devnode.fhs)) &&
 	    adap->ops->adap_enable(adap, true)) {
 		mutex_unlock(&adap->devnode.lock);
@@ -1647,6 +1923,13 @@ int __cec_s_log_addrs(struct cec_adapter *adap,
 		unsigned j;
 
 		log_addrs->log_addr[i] = CEC_LOG_ADDR_INVALID;
+<<<<<<< HEAD
+=======
+		if (log_addrs->log_addr_type[i] > CEC_LOG_ADDR_TYPE_UNREGISTERED) {
+			dprintk(1, "unknown logical address type\n");
+			return -EINVAL;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (type_mask & (1 << log_addrs->log_addr_type[i])) {
 			dprintk(1, "duplicate logical address type\n");
 			return -EINVAL;
@@ -1667,10 +1950,13 @@ int __cec_s_log_addrs(struct cec_adapter *adap,
 			dprintk(1, "invalid primary device type\n");
 			return -EINVAL;
 		}
+<<<<<<< HEAD
 		if (log_addrs->log_addr_type[i] > CEC_LOG_ADDR_TYPE_UNREGISTERED) {
 			dprintk(1, "unknown logical address type\n");
 			return -EINVAL;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (j = 0; j < feature_sz; j++) {
 			if ((features[j] & 0x80) == 0) {
 				if (op_is_dev_features)
@@ -1812,6 +2098,12 @@ static int cec_receive_notify(struct cec_adapter *adap, struct cec_msg *msg,
 	int la_idx = cec_log_addr2idx(adap, dest_laddr);
 	bool from_unregistered = init_laddr == 0xf;
 	struct cec_msg tx_cec_msg = { };
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MEDIA_CEC_RC
+	int scancode;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dprintk(2, "%s: %*ph\n", __func__, msg->len, msg->msg);
 
@@ -1907,11 +2199,17 @@ static int cec_receive_notify(struct cec_adapter *adap, struct cec_msg *msg,
 		 */
 		case 0x60:
 			if (msg->len == 2)
+<<<<<<< HEAD
 				rc_keydown(adap->rc, RC_PROTO_CEC,
 					   msg->msg[2], 0);
 			else
 				rc_keydown(adap->rc, RC_PROTO_CEC,
 					   msg->msg[2] << 8 | msg->msg[3], 0);
+=======
+				scancode = msg->msg[2];
+			else
+				scancode = msg->msg[2] << 8 | msg->msg[3];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		/*
 		 * Other function messages that are not handled.
@@ -1924,11 +2222,62 @@ static int cec_receive_notify(struct cec_adapter *adap, struct cec_msg *msg,
 		 */
 		case 0x56: case 0x57:
 		case 0x67: case 0x68: case 0x69: case 0x6a:
+<<<<<<< HEAD
 			break;
 		default:
 			rc_keydown(adap->rc, RC_PROTO_CEC, msg->msg[2], 0);
 			break;
 		}
+=======
+			scancode = -1;
+			break;
+		default:
+			scancode = msg->msg[2];
+			break;
+		}
+
+		/* Was repeating, but keypress timed out */
+		if (adap->rc_repeating && !adap->rc->keypressed) {
+			adap->rc_repeating = false;
+			adap->rc_last_scancode = -1;
+		}
+		/* Different keypress from last time, ends repeat mode */
+		if (adap->rc_last_scancode != scancode) {
+			rc_keyup(adap->rc);
+			adap->rc_repeating = false;
+		}
+		/* We can't handle this scancode */
+		if (scancode < 0) {
+			adap->rc_last_scancode = scancode;
+			break;
+		}
+
+		/* Send key press */
+		rc_keydown(adap->rc, RC_PROTO_CEC, scancode, 0);
+
+		/* When in repeating mode, we're done */
+		if (adap->rc_repeating)
+			break;
+
+		/*
+		 * We are not repeating, but the new scancode is
+		 * the same as the last one, and this second key press is
+		 * within 550 ms (the 'Follower Safety Timeout') from the
+		 * previous key press, so we now enable the repeating mode.
+		 */
+		if (adap->rc_last_scancode == scancode &&
+		    msg->rx_ts - adap->rc_last_keypress < 550 * NSEC_PER_MSEC) {
+			adap->rc_repeating = true;
+			break;
+		}
+		/*
+		 * Not in repeating mode, so avoid triggering repeat mode
+		 * by calling keyup.
+		 */
+		rc_keyup(adap->rc);
+		adap->rc_last_scancode = scancode;
+		adap->rc_last_keypress = msg->rx_ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		break;
 
@@ -1938,6 +2287,11 @@ static int cec_receive_notify(struct cec_adapter *adap, struct cec_msg *msg,
 			break;
 #ifdef CONFIG_MEDIA_CEC_RC
 		rc_keyup(adap->rc);
+<<<<<<< HEAD
+=======
+		adap->rc_repeating = false;
+		adap->rc_last_scancode = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		break;
 
@@ -2031,6 +2385,7 @@ void cec_monitor_all_cnt_dec(struct cec_adapter *adap)
 		WARN_ON(call_op(adap, adap_monitor_all_enable, 0));
 }
 
+<<<<<<< HEAD
 /*
  * Helper functions to keep track of the 'monitor pin' use count.
  *
@@ -2054,6 +2409,8 @@ void cec_monitor_pin_cnt_dec(struct cec_adapter *adap)
 		WARN_ON(call_op(adap, adap_monitor_pin_enable, 0));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DEBUG_FS
 /*
  * Log the current state of the CEC adapter.

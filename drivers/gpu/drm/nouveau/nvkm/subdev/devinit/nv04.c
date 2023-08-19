@@ -119,11 +119,19 @@ powerctrl_1_shift(int chip_version, int reg)
 
 	switch (reg) {
 	case 0x680520:
+<<<<<<< HEAD
 		shift += 4; /* fall through */
 	case 0x680508:
 		shift += 4; /* fall through */
 	case 0x680504:
 		shift += 4; /* fall through */
+=======
+		shift += 4;
+	case 0x680508:
+		shift += 4;
+	case 0x680504:
+		shift += 4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 0x680500:
 		shift += 4;
 	}
@@ -245,11 +253,19 @@ setPLL_double_highregs(struct nvkm_devinit *init, u32 reg1,
 
 		switch (reg1) {
 		case 0x680504:
+<<<<<<< HEAD
 			shift_c040 += 2; /* fall through */
 		case 0x680500:
 			shift_c040 += 2; /* fall through */
 		case 0x680520:
 			shift_c040 += 2; /* fall through */
+=======
+			shift_c040 += 2;
+		case 0x680500:
+			shift_c040 += 2;
+		case 0x680520:
+			shift_c040 += 2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case 0x680508:
 			shift_c040 += 2;
 		}

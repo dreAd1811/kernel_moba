@@ -120,6 +120,10 @@ static const struct iio_info tsys02d_info = {
 	.read_raw = tsys02d_read_raw,
 	.write_raw = tsys02d_write_raw,
 	.attrs = &tsys02d_attribute_group,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int tsys02d_probe(struct i2c_client *client,

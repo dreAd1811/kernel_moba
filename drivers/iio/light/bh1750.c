@@ -62,9 +62,15 @@ struct bh1750_chip_info {
 
 	u16 int_time_low_mask;
 	u16 int_time_high_mask;
+<<<<<<< HEAD
 }
 
 static const bh1750_chip_info_tbl[] = {
+=======
+};
+
+static const struct bh1750_chip_info bh1750_chip_info_tbl[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[BH1710] = { 140, 1022, 300, 400,  250000000, 2, 0x001F, 0x03E0 },
 	[BH1721] = { 140, 1020, 300, 400,  250000000, 2, 0x0010, 0x03E0 },
 	[BH1750] = { 31,  254,  69,  1740, 57500000,  1, 0x001F, 0x00E0 },
@@ -217,6 +223,10 @@ static const struct attribute_group bh1750_attribute_group = {
 };
 
 static const struct iio_info bh1750_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.attrs = &bh1750_attribute_group,
 	.read_raw = bh1750_read_raw,
 	.write_raw = bh1750_write_raw,

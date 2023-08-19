@@ -14,11 +14,17 @@
 #include <drm/bridge/mhl.h>
 #include <drm/drm_crtc.h>
 #include <drm/drm_edid.h>
+<<<<<<< HEAD
 #include <drm/drm_encoder.h>
 
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/extcon.h>
+=======
+
+#include <linux/clk.h>
+#include <linux/delay.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/gpio/consumer.h>
 #include <linux/i2c.h>
 #include <linux/interrupt.h>
@@ -27,21 +33,32 @@
 #include <linux/list.h>
 #include <linux/module.h>
 #include <linux/mutex.h>
+<<<<<<< HEAD
 #include <linux/of_graph.h>
 #include <linux/regulator/consumer.h>
 #include <linux/slab.h>
 
 #include <media/rc-core.h>
 
+=======
+#include <linux/regulator/consumer.h>
+#include <linux/slab.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "sil-sii8620.h"
 
 #define SII8620_BURST_BUF_LEN 288
 #define VAL_RX_HDMI_CTRL2_DEFVAL VAL_RX_HDMI_CTRL2_IDLE_CNT(3)
+<<<<<<< HEAD
 
 #define MHL1_MAX_PCLK 75000
 #define MHL1_MAX_PCLK_PP_MODE 150000
 #define MHL3_MAX_PCLK 200000
 #define MHL3_MAX_PCLK_PP_MODE 300000
+=======
+#define MHL1_MAX_LCLK 225000
+#define MHL3_MAX_LCLK 600000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum sii8620_mode {
 	CM_DISCONNECTED,
@@ -66,14 +83,23 @@ enum sii8620_mt_state {
 struct sii8620 {
 	struct drm_bridge bridge;
 	struct device *dev;
+<<<<<<< HEAD
 	struct rc_dev *rc_dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct clk *clk_xtal;
 	struct gpio_desc *gpio_reset;
 	struct gpio_desc *gpio_int;
 	struct regulator_bulk_data supplies[2];
 	struct mutex lock; /* context lock, protects fields below */
 	int error;
+<<<<<<< HEAD
 	unsigned int use_packed_pixel:1;
+=======
+	int pixel_clock;
+	unsigned int use_packed_pixel:1;
+	int video_code;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	enum sii8620_mode mode;
 	enum sii8620_sink_type sink_type;
 	u8 cbus_status;
@@ -81,6 +107,7 @@ struct sii8620 {
 	u8 xstat[MHL_XDS_SIZE];
 	u8 devcap[MHL_DCAP_SIZE];
 	u8 xdevcap[MHL_XDC_SIZE];
+<<<<<<< HEAD
 	bool feature_complete;
 	bool devcap_read;
 	bool sink_detected;
@@ -91,6 +118,12 @@ struct sii8620 {
 	struct notifier_block extcon_nb;
 	struct work_struct extcon_wq;
 	int cable_state;
+=======
+	u8 avif[HDMI_INFOFRAME_SIZE(AVI)];
+	struct edid *edid;
+	unsigned int gen2_write_burst:1;
+	enum sii8620_mt_state mt_state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head mt_queue;
 	struct {
 		int r_size;
@@ -444,6 +477,7 @@ static void sii8620_mt_rap(struct sii8620 *ctx, u8 code)
 	sii8620_mt_msc_msg(ctx, MHL_MSC_MSG_RAP, code);
 }
 
+<<<<<<< HEAD
 static void sii8620_mt_rcpk(struct sii8620 *ctx, u8 code)
 {
 	sii8620_mt_msc_msg(ctx, MHL_MSC_MSG_RCPK, code);
@@ -454,6 +488,8 @@ static void sii8620_mt_rcpe(struct sii8620 *ctx, u8 code)
 	sii8620_mt_msc_msg(ctx, MHL_MSC_MSG_RCPE, code);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sii8620_mt_read_devcap_send(struct sii8620 *ctx,
 					struct sii8620_mt_msg *msg)
 {
@@ -480,7 +516,11 @@ static void sii8620_update_array(u8 *dst, u8 *src, int count)
 	}
 }
 
+<<<<<<< HEAD
 static void sii8620_identify_sink(struct sii8620 *ctx)
+=======
+static void sii8620_sink_detected(struct sii8620 *ctx, int ret)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	static const char * const sink_str[] = {
 		[SINK_NONE] = "NONE",
@@ -491,7 +531,11 @@ static void sii8620_identify_sink(struct sii8620 *ctx)
 	char sink_name[20];
 	struct device *dev = ctx->dev;
 
+<<<<<<< HEAD
 	if (!ctx->sink_detected || !ctx->devcap_read)
+=======
+	if (ret < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	sii8620_fetch_edid(ctx);
@@ -500,7 +544,10 @@ static void sii8620_identify_sink(struct sii8620 *ctx)
 		sii8620_mhl_disconnected(ctx);
 		return;
 	}
+<<<<<<< HEAD
 	sii8620_set_upstream_edid(ctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (drm_detect_hdmi_monitor(ctx->edid))
 		ctx->sink_type = SINK_HDMI;
@@ -513,6 +560,56 @@ static void sii8620_identify_sink(struct sii8620 *ctx)
 		 sink_str[ctx->sink_type], sink_name);
 }
 
+<<<<<<< HEAD
+=======
+static void sii8620_hsic_init(struct sii8620 *ctx)
+{
+	if (!sii8620_is_mhl3(ctx))
+		return;
+
+	sii8620_write(ctx, REG_FCGC,
+		BIT_FCGC_HSIC_HOSTMODE | BIT_FCGC_HSIC_ENABLE);
+	sii8620_setbits(ctx, REG_HRXCTRL3,
+		BIT_HRXCTRL3_HRX_STAY_RESET | BIT_HRXCTRL3_STATUS_EN, ~0);
+	sii8620_setbits(ctx, REG_TTXNUMB, MSK_TTXNUMB_TTX_NUMBPS, 4);
+	sii8620_setbits(ctx, REG_TRXCTRL, BIT_TRXCTRL_TRX_FROM_SE_COC, ~0);
+	sii8620_setbits(ctx, REG_HTXCTRL, BIT_HTXCTRL_HTX_DRVCONN1, 0);
+	sii8620_setbits(ctx, REG_KEEPER, MSK_KEEPER_MODE, VAL_KEEPER_MODE_HOST);
+	sii8620_write_seq_static(ctx,
+		REG_TDMLLCTL, 0,
+		REG_UTSRST, BIT_UTSRST_HRX_SRST | BIT_UTSRST_HTX_SRST |
+			BIT_UTSRST_KEEPER_SRST | BIT_UTSRST_FC_SRST,
+		REG_UTSRST, BIT_UTSRST_HRX_SRST | BIT_UTSRST_HTX_SRST,
+		REG_HRXINTL, 0xff,
+		REG_HRXINTH, 0xff,
+		REG_TTXINTL, 0xff,
+		REG_TTXINTH, 0xff,
+		REG_TRXINTL, 0xff,
+		REG_TRXINTH, 0xff,
+		REG_HTXINTL, 0xff,
+		REG_HTXINTH, 0xff,
+		REG_FCINTR0, 0xff,
+		REG_FCINTR1, 0xff,
+		REG_FCINTR2, 0xff,
+		REG_FCINTR3, 0xff,
+		REG_FCINTR4, 0xff,
+		REG_FCINTR5, 0xff,
+		REG_FCINTR6, 0xff,
+		REG_FCINTR7, 0xff
+	);
+}
+
+static void sii8620_edid_read(struct sii8620 *ctx, int ret)
+{
+	if (ret < 0)
+		return;
+
+	sii8620_set_upstream_edid(ctx);
+	sii8620_hsic_init(ctx);
+	sii8620_enable_hpd(ctx);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sii8620_mr_devcap(struct sii8620 *ctx)
 {
 	u8 dcap[MHL_DCAP_SIZE];
@@ -528,8 +625,11 @@ static void sii8620_mr_devcap(struct sii8620 *ctx)
 		 dcap[MHL_DCAP_ADOPTER_ID_H], dcap[MHL_DCAP_ADOPTER_ID_L],
 		 dcap[MHL_DCAP_DEVICE_ID_H], dcap[MHL_DCAP_DEVICE_ID_L]);
 	sii8620_update_array(ctx->devcap, dcap, MHL_DCAP_SIZE);
+<<<<<<< HEAD
 	ctx->devcap_read = true;
 	sii8620_identify_sink(ctx);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sii8620_mr_xdevcap(struct sii8620 *ctx)
@@ -940,6 +1040,7 @@ static int sii8620_hw_on(struct sii8620 *ctx)
 	ret = regulator_bulk_enable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
 	if (ret)
 		return ret;
+<<<<<<< HEAD
 
 	usleep_range(10000, 20000);
 	ret = clk_prepare_enable(ctx->clk_xtal);
@@ -951,6 +1052,10 @@ static int sii8620_hw_on(struct sii8620 *ctx)
 	msleep(100);
 
 	return 0;
+=======
+	usleep_range(10000, 20000);
+	return clk_prepare_enable(ctx->clk_xtal);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int sii8620_hw_off(struct sii8620 *ctx)
@@ -960,6 +1065,20 @@ static int sii8620_hw_off(struct sii8620 *ctx)
 	return regulator_bulk_disable(ARRAY_SIZE(ctx->supplies), ctx->supplies);
 }
 
+<<<<<<< HEAD
+=======
+static void sii8620_hw_reset(struct sii8620 *ctx)
+{
+	usleep_range(10000, 20000);
+	gpiod_set_value(ctx->gpio_reset, 0);
+	usleep_range(5000, 20000);
+	gpiod_set_value(ctx->gpio_reset, 1);
+	usleep_range(10000, 20000);
+	gpiod_set_value(ctx->gpio_reset, 0);
+	msleep(300);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sii8620_cbus_reset(struct sii8620 *ctx)
 {
 	sii8620_write(ctx, REG_PWD_SRST, BIT_PWD_SRST_CBUS_RST
@@ -1095,14 +1214,19 @@ static ssize_t mhl3_infoframe_pack(struct mhl3_infoframe *frame,
 	return frm_len;
 }
 
+<<<<<<< HEAD
 static void sii8620_set_infoframes(struct sii8620 *ctx,
 				   struct drm_display_mode *mode)
+=======
+static void sii8620_set_infoframes(struct sii8620 *ctx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mhl3_infoframe mhl_frm;
 	union hdmi_infoframe frm;
 	u8 buf[31];
 	int ret;
 
+<<<<<<< HEAD
 	ret = drm_hdmi_avi_infoframe_from_display_mode(&frm.avi,
 						       mode,
 						       true);
@@ -1117,6 +1241,13 @@ static void sii8620_set_infoframes(struct sii8620 *ctx,
 	if (!sii8620_is_mhl3(ctx) || !ctx->use_packed_pixel) {
 		sii8620_write(ctx, REG_TPI_SC,
 			BIT_TPI_SC_TPI_OUTPUT_MODE_0_HDMI);
+=======
+	if (!sii8620_is_mhl3(ctx) || !ctx->use_packed_pixel) {
+		sii8620_write(ctx, REG_TPI_SC,
+			BIT_TPI_SC_TPI_OUTPUT_MODE_0_HDMI);
+		sii8620_write_buf(ctx, REG_TPI_AVI_CHSUM, ctx->avif + 3,
+			ARRAY_SIZE(ctx->avif) - 3);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sii8620_write(ctx, REG_PKT_FILTER_0,
 			BIT_PKT_FILTER_0_DROP_CEA_GAMUT_PKT |
 			BIT_PKT_FILTER_0_DROP_MPEG_PKT |
@@ -1125,6 +1256,19 @@ static void sii8620_set_infoframes(struct sii8620 *ctx,
 		return;
 	}
 
+<<<<<<< HEAD
+=======
+	ret = hdmi_avi_infoframe_init(&frm.avi);
+	frm.avi.colorspace = HDMI_COLORSPACE_YUV422;
+	frm.avi.active_aspect = HDMI_ACTIVE_ASPECT_PICTURE;
+	frm.avi.picture_aspect = HDMI_PICTURE_ASPECT_16_9;
+	frm.avi.colorimetry = HDMI_COLORIMETRY_ITU_709;
+	frm.avi.video_code = ctx->video_code;
+	if (!ret)
+		ret = hdmi_avi_infoframe_pack(&frm.avi, buf, ARRAY_SIZE(buf));
+	if (ret > 0)
+		sii8620_write_buf(ctx, REG_TPI_AVI_CHSUM, buf + 3, ret - 3);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sii8620_write(ctx, REG_PKT_FILTER_0,
 		BIT_PKT_FILTER_0_DROP_CEA_GAMUT_PKT |
 		BIT_PKT_FILTER_0_DROP_MPEG_PKT |
@@ -1142,6 +1286,7 @@ static void sii8620_set_infoframes(struct sii8620 *ctx,
 	sii8620_write_buf(ctx, REG_TPI_INFO_B0, buf, ret);
 }
 
+<<<<<<< HEAD
 static void sii8620_start_video(struct sii8620 *ctx)
 {
 	struct drm_display_mode *mode =
@@ -1157,6 +1302,10 @@ static void sii8620_start_video(struct sii8620 *ctx)
 		return;
 	}
 
+=======
+static void sii8620_start_hdmi(struct sii8620 *ctx)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sii8620_write_seq_static(ctx,
 		REG_RX_HDMI_CTRL2, VAL_RX_HDMI_CTRL2_DEFVAL
 			| BIT_RX_HDMI_CTRL2_USE_AV_MUTE,
@@ -1165,6 +1314,7 @@ static void sii8620_start_video(struct sii8620 *ctx)
 	sii8620_set_format(ctx);
 
 	if (!sii8620_is_mhl3(ctx)) {
+<<<<<<< HEAD
 		u8 link_mode = MHL_DST_LM_PATH_ENABLED;
 
 		if (ctx->use_packed_pixel)
@@ -1173,6 +1323,10 @@ static void sii8620_start_video(struct sii8620 *ctx)
 			link_mode |= MHL_DST_LM_CLK_MODE_NORMAL;
 
 		sii8620_mt_write_stat(ctx, MHL_DST_REG(LINK_MODE), link_mode);
+=======
+		sii8620_mt_write_stat(ctx, MHL_DST_REG(LINK_MODE),
+			MHL_DST_LM_CLK_MODE_NORMAL | MHL_DST_LM_PATH_ENABLED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sii8620_set_auto_zone(ctx);
 	} else {
 		static const struct {
@@ -1189,7 +1343,11 @@ static void sii8620_start_video(struct sii8620 *ctx)
 			  MHL_XDS_LINK_RATE_6_0_GBPS, 0x40 },
 		};
 		u8 p0_ctrl = BIT_M3_P0CTRL_MHL3_P0_PORT_EN;
+<<<<<<< HEAD
 		int clk = mode->clock * (ctx->use_packed_pixel ? 2 : 3);
+=======
+		int clk = ctx->pixel_clock * (ctx->use_packed_pixel ? 2 : 3);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		int i;
 
 		for (i = 0; i < ARRAY_SIZE(clk_spec) - 1; ++i)
@@ -1218,7 +1376,26 @@ static void sii8620_start_video(struct sii8620 *ctx)
 			clk_spec[i].link_rate);
 	}
 
+<<<<<<< HEAD
 	sii8620_set_infoframes(ctx, mode);
+=======
+	sii8620_set_infoframes(ctx);
+}
+
+static void sii8620_start_video(struct sii8620 *ctx)
+{
+	if (!sii8620_is_mhl3(ctx))
+		sii8620_stop_video(ctx);
+
+	switch (ctx->sink_type) {
+	case SINK_HDMI:
+		sii8620_start_hdmi(ctx);
+		break;
+	case SINK_DVI:
+	default:
+		break;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sii8620_disable_hpd(struct sii8620 *ctx)
@@ -1510,6 +1687,7 @@ static void sii8620_set_mode(struct sii8620 *ctx, enum sii8620_mode mode)
 	);
 }
 
+<<<<<<< HEAD
 static void sii8620_hpd_unplugged(struct sii8620 *ctx)
 {
 	sii8620_disable_hpd(ctx);
@@ -1520,6 +1698,8 @@ static void sii8620_hpd_unplugged(struct sii8620 *ctx)
 	ctx->edid = NULL;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sii8620_disconnect(struct sii8620 *ctx)
 {
 	sii8620_disable_gen2_write_burst(ctx);
@@ -1547,7 +1727,11 @@ static void sii8620_disconnect(struct sii8620 *ctx)
 		REG_MHL_DP_CTL6, 0x2A,
 		REG_MHL_DP_CTL7, 0x03
 	);
+<<<<<<< HEAD
 	sii8620_hpd_unplugged(ctx);
+=======
+	sii8620_disable_hpd(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sii8620_write_seq_static(ctx,
 		REG_M3_CTRL, VAL_M3_CTRL_MHL3_VALUE,
 		REG_MHL_COC_CTL1, 0x07,
@@ -1595,8 +1779,15 @@ static void sii8620_disconnect(struct sii8620 *ctx)
 	memset(ctx->xstat, 0, sizeof(ctx->xstat));
 	memset(ctx->devcap, 0, sizeof(ctx->devcap));
 	memset(ctx->xdevcap, 0, sizeof(ctx->xdevcap));
+<<<<<<< HEAD
 	ctx->devcap_read = false;
 	ctx->cbus_status = 0;
+=======
+	ctx->cbus_status = 0;
+	ctx->sink_type = SINK_NONE;
+	kfree(ctx->edid);
+	ctx->edid = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sii8620_mt_cleanup(ctx);
 }
 
@@ -1683,6 +1874,7 @@ static void sii8620_status_dcap_ready(struct sii8620 *ctx)
 
 static void sii8620_status_changed_path(struct sii8620 *ctx)
 {
+<<<<<<< HEAD
 	u8 link_mode;
 
 	if (ctx->use_packed_pixel)
@@ -1695,6 +1887,19 @@ static void sii8620_status_changed_path(struct sii8620 *ctx)
 
 	sii8620_mt_write_stat(ctx, MHL_DST_REG(LINK_MODE),
 			      link_mode);
+=======
+	if (ctx->stat[MHL_DST_LINK_MODE] & MHL_DST_LM_PATH_ENABLED) {
+		sii8620_mt_write_stat(ctx, MHL_DST_REG(LINK_MODE),
+				      MHL_DST_LM_CLK_MODE_NORMAL
+				      | MHL_DST_LM_PATH_ENABLED);
+		if (!sii8620_is_mhl3(ctx))
+			sii8620_mt_read_devcap(ctx, false);
+		sii8620_mt_set_cont(ctx, sii8620_sink_detected);
+	} else {
+		sii8620_mt_write_stat(ctx, MHL_DST_REG(LINK_MODE),
+				      MHL_DST_LM_CLK_MODE_NORMAL);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void sii8620_msc_mr_write_stat(struct sii8620 *ctx)
@@ -1707,6 +1912,7 @@ static void sii8620_msc_mr_write_stat(struct sii8620 *ctx)
 	sii8620_update_array(ctx->stat, st, MHL_DST_SIZE);
 	sii8620_update_array(ctx->xstat, xst, MHL_XDS_SIZE);
 
+<<<<<<< HEAD
 	if (ctx->stat[MHL_DST_CONNECTED_RDY] & st[MHL_DST_CONNECTED_RDY] &
 	    MHL_DST_CONN_DCAP_RDY) {
 		sii8620_status_dcap_ready(ctx);
@@ -1715,6 +1921,11 @@ static void sii8620_msc_mr_write_stat(struct sii8620 *ctx)
 			sii8620_mt_read_devcap(ctx, false);
 	}
 
+=======
+	if (ctx->stat[MHL_DST_CONNECTED_RDY] & MHL_DST_CONN_DCAP_RDY)
+		sii8620_status_dcap_ready(ctx);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (st[MHL_DST_LINK_MODE] & MHL_DST_LM_PATH_ENABLED)
 		sii8620_status_changed_path(ctx);
 }
@@ -1757,6 +1968,7 @@ static void sii8620_send_features(struct sii8620 *ctx)
 	sii8620_write_buf(ctx, REG_MDT_XMIT_WRITE_PORT, buf, ARRAY_SIZE(buf));
 }
 
+<<<<<<< HEAD
 static bool sii8620_rcp_consume(struct sii8620 *ctx, u8 scancode)
 {
 	bool pressed = !(scancode & MHL_RCP_KEY_RELEASED_MASK);
@@ -1776,6 +1988,8 @@ static bool sii8620_rcp_consume(struct sii8620 *ctx, u8 scancode)
 	return true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sii8620_msc_mr_set_int(struct sii8620 *ctx)
 {
 	u8 ints[MHL_INT_SIZE];
@@ -1798,11 +2012,16 @@ static void sii8620_msc_mr_set_int(struct sii8620 *ctx)
 	}
 	if (ints[MHL_INT_RCHANGE] & MHL_INT_RC_FEAT_REQ)
 		sii8620_send_features(ctx);
+<<<<<<< HEAD
 	if (ints[MHL_INT_RCHANGE] & MHL_INT_RC_FEAT_COMPLETE) {
 		ctx->feature_complete = true;
 		if (ctx->edid)
 			sii8620_enable_hpd(ctx);
 	}
+=======
+	if (ints[MHL_INT_RCHANGE] & MHL_INT_RC_FEAT_COMPLETE)
+		sii8620_edid_read(ctx, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct sii8620_mt_msg *sii8620_msc_msg_first(struct sii8620 *ctx)
@@ -1830,13 +2049,23 @@ static void sii8620_msc_mt_done(struct sii8620 *ctx)
 
 static void sii8620_msc_mr_msc_msg(struct sii8620 *ctx)
 {
+<<<<<<< HEAD
 	struct sii8620_mt_msg *msg;
 	u8 buf[2];
 
+=======
+	struct sii8620_mt_msg *msg = sii8620_msc_msg_first(ctx);
+	u8 buf[2];
+
+	if (!msg)
+		return;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	sii8620_read_buf(ctx, REG_MSC_MR_MSC_MSG_RCVD_1ST_DATA, buf, 2);
 
 	switch (buf[0]) {
 	case MHL_MSC_MSG_RAPK:
+<<<<<<< HEAD
 		msg = sii8620_msc_msg_first(ctx);
 		if (!msg)
 			return;
@@ -1849,6 +2078,11 @@ static void sii8620_msc_mr_msc_msg(struct sii8620 *ctx)
 					MHL_RCPE_STATUS_INEFFECTIVE_KEY_CODE);
 		sii8620_mt_rcpk(ctx, buf[1]);
 		break;
+=======
+		msg->ret = buf[1];
+		ctx->mt_state = MT_STATE_DONE;
+		break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		dev_err(ctx->dev, "%s message type %d,%d not supported",
 			__func__, buf[0], buf[1]);
@@ -1877,6 +2111,7 @@ static void sii8620_irq_msc(struct sii8620 *ctx)
 	if (stat & BIT_CBUS_MSC_MR_WRITE_STAT)
 		sii8620_msc_mr_write_stat(ctx);
 
+<<<<<<< HEAD
 	if (stat & BIT_CBUS_HPD_CHG) {
 		if (ctx->cbus_status & BIT_CBUS_STATUS_CBUS_HPD) {
 			ctx->sink_detected = true;
@@ -1886,6 +2121,8 @@ static void sii8620_irq_msc(struct sii8620 *ctx)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (stat & BIT_CBUS_MSC_MR_SET_INT)
 		sii8620_msc_mr_set_int(ctx);
 
@@ -1933,6 +2170,17 @@ static void sii8620_irq_edid(struct sii8620 *ctx)
 		ctx->mt_state = MT_STATE_DONE;
 }
 
+<<<<<<< HEAD
+=======
+static void sii8620_scdt_high(struct sii8620 *ctx)
+{
+	sii8620_write_seq_static(ctx,
+		REG_INTR8_MASK, BIT_CEA_NEW_AVI | BIT_CEA_NEW_VSI,
+		REG_TPI_SC, BIT_TPI_SC_TPI_OUTPUT_MODE_0_HDMI,
+	);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sii8620_irq_scdt(struct sii8620 *ctx)
 {
 	u8 stat = sii8620_readb(ctx, REG_INTR5);
@@ -1941,12 +2189,54 @@ static void sii8620_irq_scdt(struct sii8620 *ctx)
 		u8 cstat = sii8620_readb(ctx, REG_TMDS_CSTAT_P3);
 
 		if (cstat & BIT_TMDS_CSTAT_P3_SCDT)
+<<<<<<< HEAD
 			sii8620_start_video(ctx);
+=======
+			sii8620_scdt_high(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	sii8620_write(ctx, REG_INTR5, stat);
 }
 
+<<<<<<< HEAD
+=======
+static void sii8620_new_vsi(struct sii8620 *ctx)
+{
+	u8 vsif[11];
+
+	sii8620_write(ctx, REG_RX_HDMI_CTRL2,
+		      VAL_RX_HDMI_CTRL2_DEFVAL |
+		      BIT_RX_HDMI_CTRL2_VSI_MON_SEL_VSI);
+	sii8620_read_buf(ctx, REG_RX_HDMI_MON_PKT_HEADER1, vsif,
+			 ARRAY_SIZE(vsif));
+}
+
+static void sii8620_new_avi(struct sii8620 *ctx)
+{
+	sii8620_write(ctx, REG_RX_HDMI_CTRL2, VAL_RX_HDMI_CTRL2_DEFVAL);
+	sii8620_read_buf(ctx, REG_RX_HDMI_MON_PKT_HEADER1, ctx->avif,
+			 ARRAY_SIZE(ctx->avif));
+}
+
+static void sii8620_irq_infr(struct sii8620 *ctx)
+{
+	u8 stat = sii8620_readb(ctx, REG_INTR8)
+		& (BIT_CEA_NEW_VSI | BIT_CEA_NEW_AVI);
+
+	sii8620_write(ctx, REG_INTR8, stat);
+
+	if (stat & BIT_CEA_NEW_VSI)
+		sii8620_new_vsi(ctx);
+
+	if (stat & BIT_CEA_NEW_AVI)
+		sii8620_new_avi(ctx);
+
+	if (stat & (BIT_CEA_NEW_VSI | BIT_CEA_NEW_AVI))
+		sii8620_start_video(ctx);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sii8620_got_xdevcap(struct sii8620 *ctx, int ret)
 {
 	if (ret < 0)
@@ -1997,11 +2287,19 @@ static void sii8620_irq_ddc(struct sii8620 *ctx)
 
 	if (stat & BIT_DDC_CMD_DONE) {
 		sii8620_write(ctx, REG_INTR3_MASK, 0);
+<<<<<<< HEAD
 		if (sii8620_is_mhl3(ctx) && !ctx->feature_complete)
 			sii8620_mt_set_int(ctx, MHL_INT_REG(RCHANGE),
 					   MHL_INT_RC_FEAT_REQ);
 		else
 			sii8620_enable_hpd(ctx);
+=======
+		if (sii8620_is_mhl3(ctx))
+			sii8620_mt_set_int(ctx, MHL_INT_REG(RCHANGE),
+					   MHL_INT_RC_FEAT_REQ);
+		else
+			sii8620_edid_read(ctx, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	sii8620_write(ctx, REG_INTR3, stat);
 }
@@ -2028,6 +2326,10 @@ static irqreturn_t sii8620_irq_thread(int irq, void *data)
 		{ BIT_FAST_INTR_STAT_EDID, sii8620_irq_edid },
 		{ BIT_FAST_INTR_STAT_DDC, sii8620_irq_ddc },
 		{ BIT_FAST_INTR_STAT_SCDT, sii8620_irq_scdt },
+<<<<<<< HEAD
+=======
+		{ BIT_FAST_INTR_STAT_INFR, sii8620_irq_infr },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 	struct sii8620 *ctx = data;
 	u8 stats[LEN_FAST_INTR_STAT];
@@ -2065,6 +2367,10 @@ static void sii8620_cable_in(struct sii8620 *ctx)
 		dev_err(dev, "Error powering on, %d.\n", ret);
 		return;
 	}
+<<<<<<< HEAD
+=======
+	sii8620_hw_reset(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	sii8620_read_buf(ctx, REG_VND_IDL, ver, ARRAY_SIZE(ver));
 	ret = sii8620_clear_error(ctx);
@@ -2098,6 +2404,7 @@ static void sii8620_cable_in(struct sii8620 *ctx)
 	enable_irq(to_i2c_client(ctx->dev)->irq);
 }
 
+<<<<<<< HEAD
 static void sii8620_init_rcp_input_dev(struct sii8620 *ctx)
 {
 	struct rc_dev *rc_dev;
@@ -2199,11 +2506,14 @@ static int sii8620_extcon_init(struct sii8620 *ctx)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline struct sii8620 *bridge_to_sii8620(struct drm_bridge *bridge)
 {
 	return container_of(bridge, struct sii8620, bridge);
 }
 
+<<<<<<< HEAD
 static int sii8620_attach(struct drm_bridge *bridge)
 {
 	struct sii8620 *ctx = bridge_to_sii8620(bridge);
@@ -2259,11 +2569,14 @@ static enum drm_mode_status sii8620_mode_valid(struct drm_bridge *bridge,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool sii8620_mode_fixup(struct drm_bridge *bridge,
 			       const struct drm_display_mode *mode,
 			       struct drm_display_mode *adjusted_mode)
 {
 	struct sii8620 *ctx = bridge_to_sii8620(bridge);
+<<<<<<< HEAD
 
 	mutex_lock(&ctx->lock);
 
@@ -2279,6 +2592,48 @@ static const struct drm_bridge_funcs sii8620_bridge_funcs = {
 	.detach = sii8620_detach,
 	.mode_fixup = sii8620_mode_fixup,
 	.mode_valid = sii8620_mode_valid,
+=======
+	int max_lclk;
+	bool ret = true;
+
+	mutex_lock(&ctx->lock);
+
+	max_lclk = sii8620_is_mhl3(ctx) ? MHL3_MAX_LCLK : MHL1_MAX_LCLK;
+	if (max_lclk > 3 * adjusted_mode->clock) {
+		ctx->use_packed_pixel = 0;
+		goto end;
+	}
+	if ((ctx->devcap[MHL_DCAP_VID_LINK_MODE] & MHL_DCAP_VID_LINK_PPIXEL) &&
+	    max_lclk > 2 * adjusted_mode->clock) {
+		ctx->use_packed_pixel = 1;
+		goto end;
+	}
+	ret = false;
+end:
+	if (ret) {
+		u8 vic = drm_match_cea_mode(adjusted_mode);
+
+		if (!vic) {
+			union hdmi_infoframe frm;
+			u8 mhl_vic[] = { 0, 95, 94, 93, 98 };
+
+			drm_hdmi_vendor_infoframe_from_display_mode(
+				&frm.vendor.hdmi, adjusted_mode);
+			vic = frm.vendor.hdmi.vic;
+			if (vic >= ARRAY_SIZE(mhl_vic))
+				vic = 0;
+			vic = mhl_vic[vic];
+		}
+		ctx->video_code = vic;
+		ctx->pixel_clock = adjusted_mode->clock;
+	}
+	mutex_unlock(&ctx->lock);
+	return ret;
+}
+
+static const struct drm_bridge_funcs sii8620_bridge_funcs = {
+	.mode_fixup = sii8620_mode_fixup,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int sii8620_probe(struct i2c_client *client,
@@ -2328,20 +2683,27 @@ static int sii8620_probe(struct i2c_client *client,
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	ret = sii8620_extcon_init(ctx);
 	if (ret < 0) {
 		dev_err(ctx->dev, "failed to initialize EXTCON\n");
 		return ret;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	i2c_set_clientdata(client, ctx);
 
 	ctx->bridge.funcs = &sii8620_bridge_funcs;
 	ctx->bridge.of_node = dev->of_node;
 	drm_bridge_add(&ctx->bridge);
 
+<<<<<<< HEAD
 	if (!ctx->extcon)
 		sii8620_cable_in(ctx);
+=======
+	sii8620_cable_in(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2350,6 +2712,7 @@ static int sii8620_remove(struct i2c_client *client)
 {
 	struct sii8620 *ctx = i2c_get_clientdata(client);
 
+<<<<<<< HEAD
 	if (ctx->extcon) {
 		extcon_unregister_notifier(ctx->extcon, EXTCON_DISP_MHL,
 					   &ctx->extcon_nb);
@@ -2360,6 +2723,11 @@ static int sii8620_remove(struct i2c_client *client)
 		sii8620_cable_out(ctx);
 	}
 	drm_bridge_remove(&ctx->bridge);
+=======
+	disable_irq(to_i2c_client(ctx->dev)->irq);
+	drm_bridge_remove(&ctx->bridge);
+	sii8620_hw_off(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

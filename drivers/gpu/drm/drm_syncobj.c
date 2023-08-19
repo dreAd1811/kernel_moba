@@ -29,9 +29,15 @@
 /**
  * DOC: Overview
  *
+<<<<<<< HEAD
  * DRM synchronisation objects (syncobj, see struct &drm_syncobj) are
  * persistent objects that contain an optional fence. The fence can be updated
  * with a new fence, or be NULL.
+=======
+ * DRM synchronisation objects (syncobj) are a persistent objects,
+ * that contain an optional fence. The fence can be updated with a new
+ * fence, or be NULL.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * syncobj's can be waited upon, where it will wait for the underlying
  * fence.
@@ -61,8 +67,12 @@
  * @file_private: drm file private pointer
  * @handle: sync object handle to lookup.
  *
+<<<<<<< HEAD
  * Returns a reference to the syncobj pointed to by handle or NULL. The
  * reference must be released by calling drm_syncobj_put().
+=======
+ * Returns a reference to the syncobj pointed to by handle or NULL.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct drm_syncobj *drm_syncobj_find(struct drm_file *file_private,
 				     u32 handle)
@@ -109,8 +119,12 @@ static int drm_syncobj_fence_get_or_add_callback(struct drm_syncobj *syncobj,
 	 * callback when a fence has already been set.
 	 */
 	if (syncobj->fence) {
+<<<<<<< HEAD
 		*fence = dma_fence_get(rcu_dereference_protected(syncobj->fence,
 								 lockdep_is_held(&syncobj->lock)));
+=======
+		*fence = dma_fence_get(syncobj->fence);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = 1;
 	} else {
 		*fence = NULL;
@@ -172,9 +186,14 @@ void drm_syncobj_replace_fence(struct drm_syncobj *syncobj,
 
 	spin_lock(&syncobj->lock);
 
+<<<<<<< HEAD
 	old_fence = rcu_dereference_protected(syncobj->fence,
 					      lockdep_is_held(&syncobj->lock));
 	rcu_assign_pointer(syncobj->fence, fence);
+=======
+	old_fence = syncobj->fence;
+	syncobj->fence = fence;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (fence != old_fence) {
 		list_for_each_entry_safe(cur, tmp, &syncobj->cb_list, node) {
@@ -209,6 +228,10 @@ static const struct dma_fence_ops drm_syncobj_null_fence_ops = {
 	.get_driver_name = drm_syncobj_null_fence_get_name,
 	.get_timeline_name = drm_syncobj_null_fence_get_name,
 	.enable_signaling = drm_syncobj_null_fence_enable_signaling,
+<<<<<<< HEAD
+=======
+	.wait = dma_fence_default_wait,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.release = NULL,
 };
 
@@ -231,6 +254,7 @@ static int drm_syncobj_assign_null_handle(struct drm_syncobj *syncobj)
 	return 0;
 }
 
+<<<<<<< HEAD
 /**
  * drm_syncobj_find_fence - lookup and reference the fence in a sync object
  * @file_private: drm file private pointer
@@ -244,6 +268,8 @@ static int drm_syncobj_assign_null_handle(struct drm_syncobj *syncobj)
  * contains a reference to the fence, which must be released by calling
  * dma_fence_put().
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int drm_syncobj_find_fence(struct drm_file *file_private,
 			   u32 handle,
 			   struct dma_fence **fence)
@@ -279,6 +305,7 @@ void drm_syncobj_free(struct kref *kref)
 }
 EXPORT_SYMBOL(drm_syncobj_free);
 
+<<<<<<< HEAD
 /**
  * drm_syncobj_create - create a new syncobj
  * @out_syncobj: returned syncobj
@@ -293,6 +320,10 @@ EXPORT_SYMBOL(drm_syncobj_free);
  */
 int drm_syncobj_create(struct drm_syncobj **out_syncobj, uint32_t flags,
 		       struct dma_fence *fence)
+=======
+static int drm_syncobj_create(struct drm_file *file_private,
+			      u32 *handle, uint32_t flags)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct drm_syncobj *syncobj;
@@ -313,6 +344,7 @@ int drm_syncobj_create(struct drm_syncobj **out_syncobj, uint32_t flags,
 		}
 	}
 
+<<<<<<< HEAD
 	if (fence)
 		drm_syncobj_replace_fence(syncobj, fence);
 
@@ -340,6 +372,8 @@ int drm_syncobj_get_handle(struct drm_file *file_private,
 	/* take a reference to put in the idr */
 	drm_syncobj_get(syncobj);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	idr_preload(GFP_KERNEL);
 	spin_lock(&file_private->syncobj_table_lock);
 	ret = idr_alloc(&file_private->syncobj_idr, syncobj, 1, 0, GFP_NOWAIT);
@@ -355,6 +389,7 @@ int drm_syncobj_get_handle(struct drm_file *file_private,
 	*handle = ret;
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(drm_syncobj_get_handle);
 
 static int drm_syncobj_create_as_handle(struct drm_file *file_private,
@@ -371,6 +406,8 @@ static int drm_syncobj_create_as_handle(struct drm_file *file_private,
 	drm_syncobj_put(syncobj);
 	return ret;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int drm_syncobj_destroy(struct drm_file *file_private,
 			       u32 handle)
@@ -400,6 +437,7 @@ static const struct file_operations drm_syncobj_file_fops = {
 	.release = drm_syncobj_file_release,
 };
 
+<<<<<<< HEAD
 /**
  * drm_syncobj_get_fd - get a file descriptor from a syncobj
  * @syncobj: Sync object to export
@@ -417,12 +455,33 @@ int drm_syncobj_get_fd(struct drm_syncobj *syncobj, int *p_fd)
 	fd = get_unused_fd_flags(O_CLOEXEC);
 	if (fd < 0)
 		return fd;
+=======
+static int drm_syncobj_handle_to_fd(struct drm_file *file_private,
+				    u32 handle, int *p_fd)
+{
+	struct drm_syncobj *syncobj = drm_syncobj_find(file_private, handle);
+	struct file *file;
+	int fd;
+
+	if (!syncobj)
+		return -EINVAL;
+
+	fd = get_unused_fd_flags(O_CLOEXEC);
+	if (fd < 0) {
+		drm_syncobj_put(syncobj);
+		return fd;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	file = anon_inode_getfile("syncobj_file",
 				  &drm_syncobj_file_fops,
 				  syncobj, 0);
 	if (IS_ERR(file)) {
 		put_unused_fd(fd);
+<<<<<<< HEAD
+=======
+		drm_syncobj_put(syncobj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(file);
 	}
 
@@ -432,6 +491,7 @@ int drm_syncobj_get_fd(struct drm_syncobj *syncobj, int *p_fd)
 	*p_fd = fd;
 	return 0;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL(drm_syncobj_get_fd);
 
 static int drm_syncobj_handle_to_fd(struct drm_file *file_private,
@@ -447,6 +507,8 @@ static int drm_syncobj_handle_to_fd(struct drm_file *file_private,
 	drm_syncobj_put(syncobj);
 	return ret;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int drm_syncobj_fd_to_handle(struct drm_file *file_private,
 				    int fd, u32 *handle)
@@ -484,8 +546,13 @@ static int drm_syncobj_fd_to_handle(struct drm_file *file_private,
 	return ret;
 }
 
+<<<<<<< HEAD
 static int drm_syncobj_import_sync_file_fence(struct drm_file *file_private,
 					      int fd, int handle)
+=======
+int drm_syncobj_import_sync_file_fence(struct drm_file *file_private,
+				       int fd, int handle)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct dma_fence *fence = sync_file_get_fence(fd);
 	struct drm_syncobj *syncobj;
@@ -505,8 +572,13 @@ static int drm_syncobj_import_sync_file_fence(struct drm_file *file_private,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int drm_syncobj_export_sync_file(struct drm_file *file_private,
 					int handle, int *p_fd)
+=======
+int drm_syncobj_export_sync_file(struct drm_file *file_private,
+				 int handle, int *p_fd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 	struct dma_fence *fence;
@@ -547,7 +619,11 @@ err_put_fd:
 void
 drm_syncobj_open(struct drm_file *file_private)
 {
+<<<<<<< HEAD
 	idr_init_base(&file_private->syncobj_idr, 1);
+=======
+	idr_init(&file_private->syncobj_idr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_init(&file_private->syncobj_table_lock);
 }
 
@@ -589,8 +665,13 @@ drm_syncobj_create_ioctl(struct drm_device *dev, void *data,
 	if (args->flags & ~DRM_SYNCOBJ_CREATE_SIGNALED)
 		return -EINVAL;
 
+<<<<<<< HEAD
 	return drm_syncobj_create_as_handle(file_private,
 					    &args->handle, args->flags);
+=======
+	return drm_syncobj_create(file_private,
+				  &args->handle, args->flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int
@@ -680,8 +761,12 @@ static void syncobj_wait_syncobj_func(struct drm_syncobj *syncobj,
 		container_of(cb, struct syncobj_wait_entry, syncobj_cb);
 
 	/* This happens inside the syncobj lock */
+<<<<<<< HEAD
 	wait->fence = dma_fence_get(rcu_dereference_protected(syncobj->fence,
 							      lockdep_is_held(&syncobj->lock)));
+=======
+	wait->fence = dma_fence_get(syncobj->fence);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	wake_up_process(wait->task);
 }
 
@@ -870,8 +955,12 @@ static int drm_syncobj_array_wait(struct drm_device *dev,
 }
 
 static int drm_syncobj_array_find(struct drm_file *file_private,
+<<<<<<< HEAD
 				  void __user *user_handles,
 				  uint32_t count_handles,
+=======
+				  void *user_handles, uint32_t count_handles,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				  struct drm_syncobj ***syncobjs_out)
 {
 	uint32_t i, *handles;

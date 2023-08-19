@@ -732,11 +732,19 @@ static inline unsigned int atmci_convert_chksize(struct atmel_mci *host,
 		return 0;
 }
 
+<<<<<<< HEAD
 static void atmci_timeout_timer(struct timer_list *t)
 {
 	struct atmel_mci *host;
 
 	host = from_timer(host, t, timer);
+=======
+static void atmci_timeout_timer(unsigned long data)
+{
+	struct atmel_mci *host;
+
+	host = (struct atmel_mci *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_dbg(&host->pdev->dev, "software timeout\n");
 
@@ -1661,9 +1669,15 @@ static void atmci_command_complete(struct atmel_mci *host,
 		cmd->error = 0;
 }
 
+<<<<<<< HEAD
 static void atmci_detect_change(struct timer_list *t)
 {
 	struct atmel_mci_slot	*slot = from_timer(slot, t, detect_timer);
+=======
+static void atmci_detect_change(unsigned long data)
+{
+	struct atmel_mci_slot	*slot = (struct atmel_mci_slot *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool			present;
 	bool			present_old;
 
@@ -1968,6 +1982,10 @@ unlock:
 static void atmci_read_data_pio(struct atmel_mci *host)
 {
 	struct scatterlist	*sg = host->sg;
+<<<<<<< HEAD
+=======
+	void			*buf = sg_virt(sg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int		offset = host->pio_offset;
 	struct mmc_data		*data = host->data;
 	u32			value;
@@ -1977,7 +1995,11 @@ static void atmci_read_data_pio(struct atmel_mci *host)
 	do {
 		value = atmci_readl(host, ATMCI_RDR);
 		if (likely(offset + 4 <= sg->length)) {
+<<<<<<< HEAD
 			sg_pcopy_from_buffer(sg, 1, &value, sizeof(u32), offset);
+=======
+			put_unaligned(value, (u32 *)(buf + offset));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			offset += 4;
 			nbytes += 4;
@@ -1990,11 +2012,19 @@ static void atmci_read_data_pio(struct atmel_mci *host)
 					goto done;
 
 				offset = 0;
+<<<<<<< HEAD
 			}
 		} else {
 			unsigned int remaining = sg->length - offset;
 
 			sg_pcopy_from_buffer(sg, 1, &value, remaining, offset);
+=======
+				buf = sg_virt(sg);
+			}
+		} else {
+			unsigned int remaining = sg->length - offset;
+			memcpy(buf + offset, &value, remaining);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nbytes += remaining;
 
 			flush_dcache_page(sg_page(sg));
@@ -2004,8 +2034,13 @@ static void atmci_read_data_pio(struct atmel_mci *host)
 				goto done;
 
 			offset = 4 - remaining;
+<<<<<<< HEAD
 			sg_pcopy_from_buffer(sg, 1, (u8 *)&value + remaining,
 					offset, 0);
+=======
+			buf = sg_virt(sg);
+			memcpy(buf, (u8 *)&value + remaining, offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nbytes += offset;
 		}
 
@@ -2035,6 +2070,10 @@ done:
 static void atmci_write_data_pio(struct atmel_mci *host)
 {
 	struct scatterlist	*sg = host->sg;
+<<<<<<< HEAD
+=======
+	void			*buf = sg_virt(sg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int		offset = host->pio_offset;
 	struct mmc_data		*data = host->data;
 	u32			value;
@@ -2043,7 +2082,11 @@ static void atmci_write_data_pio(struct atmel_mci *host)
 
 	do {
 		if (likely(offset + 4 <= sg->length)) {
+<<<<<<< HEAD
 			sg_pcopy_to_buffer(sg, 1, &value, sizeof(u32), offset);
+=======
+			value = get_unaligned((u32 *)(buf + offset));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atmci_writel(host, ATMCI_TDR, value);
 
 			offset += 4;
@@ -2055,12 +2098,20 @@ static void atmci_write_data_pio(struct atmel_mci *host)
 					goto done;
 
 				offset = 0;
+<<<<<<< HEAD
+=======
+				buf = sg_virt(sg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		} else {
 			unsigned int remaining = sg->length - offset;
 
 			value = 0;
+<<<<<<< HEAD
 			sg_pcopy_to_buffer(sg, 1, &value, remaining, offset);
+=======
+			memcpy(&value, buf + offset, remaining);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			nbytes += remaining;
 
 			host->sg = sg = sg_next(sg);
@@ -2071,8 +2122,13 @@ static void atmci_write_data_pio(struct atmel_mci *host)
 			}
 
 			offset = 4 - remaining;
+<<<<<<< HEAD
 			sg_pcopy_to_buffer(sg, 1, (u8 *)&value + remaining,
 					offset, 0);
+=======
+			buf = sg_virt(sg);
+			memcpy((u8 *)&value + remaining, buf, offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			atmci_writel(host, ATMCI_TDR, value);
 			nbytes += offset;
 		}
@@ -2347,7 +2403,12 @@ static int atmci_init_slot(struct atmel_mci *host,
 	if (gpio_is_valid(slot->detect_pin)) {
 		int ret;
 
+<<<<<<< HEAD
 		timer_setup(&slot->detect_timer, atmci_detect_change, 0);
+=======
+		setup_timer(&slot->detect_timer, atmci_detect_change,
+				(unsigned long)slot);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		ret = request_irq(gpio_to_irq(slot->detect_pin),
 				atmci_detect_interrupt,
@@ -2560,7 +2621,11 @@ static int atmci_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, host);
 
+<<<<<<< HEAD
 	timer_setup(&host->timer, atmci_timeout_timer, 0);
+=======
+	setup_timer(&host->timer, atmci_timeout_timer, (unsigned long)host);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pm_runtime_get_noresume(&pdev->dev);
 	pm_runtime_set_active(&pdev->dev);

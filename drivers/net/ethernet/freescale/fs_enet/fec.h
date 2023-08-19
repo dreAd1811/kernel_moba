@@ -2,6 +2,12 @@
 #ifndef FS_ENET_FEC_H
 #define FS_ENET_FEC_H
 
+<<<<<<< HEAD
+=======
+/* CRC polynomium used by the FEC for the multicast group filtering */
+#define FEC_CRC_POLY   0x04C11DB7
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define FEC_MAX_MULTICAST_ADDRS	64
 
 /* Interrupt events/masks.

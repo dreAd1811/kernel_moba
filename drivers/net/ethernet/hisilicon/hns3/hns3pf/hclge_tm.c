@@ -1,5 +1,16 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 // Copyright (c) 2016-2017 Hisilicon Limited.
+=======
+/*
+ * Copyright (c) 2016~2017 Hisilicon Limited.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/etherdevice.h>
 
@@ -17,11 +28,16 @@ enum hclge_shaper_level {
 	HCLGE_SHAPER_LVL_PF	= 1,
 };
 
+<<<<<<< HEAD
 #define HCLGE_TM_PFC_PKT_GET_CMD_NUM	3
 #define HCLGE_TM_PFC_NUM_GET_PER_CMD	3
 
 #define HCLGE_SHAPER_BS_U_DEF	5
 #define HCLGE_SHAPER_BS_S_DEF	20
+=======
+#define HCLGE_SHAPER_BS_U_DEF	1
+#define HCLGE_SHAPER_BS_S_DEF	4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define HCLGE_ETHER_MAX_RATE	100000
 
@@ -110,6 +126,7 @@ static int hclge_shaper_para_calc(u32 ir, u8 shaper_level,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int hclge_pfc_stats_get(struct hclge_dev *hdev,
 			       enum hclge_opcode_type opcode, u64 *stats)
 {
@@ -158,6 +175,9 @@ int hclge_pfc_tx_stats_get(struct hclge_dev *hdev, u64 *stats)
 }
 
 int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx)
+=======
+static int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hclge_desc desc;
 
@@ -169,6 +189,7 @@ int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx)
 	return hclge_cmd_send(&hdev->hw, &desc, 1);
 }
 
+<<<<<<< HEAD
 static int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
 				  u8 pfc_bitmap)
 {
@@ -223,6 +244,8 @@ int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr)
 					 trans_time);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hclge_fill_pri_array(struct hclge_dev *hdev, u8 *pri, u8 pri_id)
 {
 	u8 tc;
@@ -298,7 +321,11 @@ static int hclge_tm_qs_to_pri_map_cfg(struct hclge_dev *hdev,
 }
 
 static int hclge_tm_q_to_qs_map_cfg(struct hclge_dev *hdev,
+<<<<<<< HEAD
 				    u8 q_id, u16 qs_id)
+=======
+				    u16 q_id, u16 qs_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hclge_nq_to_qs_link_cmd *map;
 	struct hclge_desc desc;
@@ -368,7 +395,10 @@ static int hclge_tm_pg_shapping_cfg(struct hclge_dev *hdev,
 	struct hclge_pg_shapping_cmd *shap_cfg_cmd;
 	enum hclge_opcode_type opcode;
 	struct hclge_desc desc;
+<<<<<<< HEAD
 	u32 shapping_para = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	opcode = bucket ? HCLGE_OPC_TM_PG_P_SHAPPING :
 		HCLGE_OPC_TM_PG_C_SHAPPING;
@@ -378,6 +408,7 @@ static int hclge_tm_pg_shapping_cfg(struct hclge_dev *hdev,
 
 	shap_cfg_cmd->pg_id = pg_id;
 
+<<<<<<< HEAD
 	hclge_tm_set_field(shapping_para, IR_B, ir_b);
 	hclge_tm_set_field(shapping_para, IR_U, ir_u);
 	hclge_tm_set_field(shapping_para, IR_S, ir_s);
@@ -413,6 +444,13 @@ static int hclge_tm_port_shaper_cfg(struct hclge_dev *hdev)
 	hclge_tm_set_field(shapping_para, BS_S, HCLGE_SHAPER_BS_S_DEF);
 
 	shap_cfg_cmd->port_shapping_para = cpu_to_le32(shapping_para);
+=======
+	hclge_tm_set_field(shap_cfg_cmd->pg_shapping_para, IR_B, ir_b);
+	hclge_tm_set_field(shap_cfg_cmd->pg_shapping_para, IR_U, ir_u);
+	hclge_tm_set_field(shap_cfg_cmd->pg_shapping_para, IR_S, ir_s);
+	hclge_tm_set_field(shap_cfg_cmd->pg_shapping_para, BS_B, bs_b);
+	hclge_tm_set_field(shap_cfg_cmd->pg_shapping_para, BS_S, bs_s);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return hclge_cmd_send(&hdev->hw, &desc, 1);
 }
@@ -425,7 +463,10 @@ static int hclge_tm_pri_shapping_cfg(struct hclge_dev *hdev,
 	struct hclge_pri_shapping_cmd *shap_cfg_cmd;
 	enum hclge_opcode_type opcode;
 	struct hclge_desc desc;
+<<<<<<< HEAD
 	u32 shapping_para = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	opcode = bucket ? HCLGE_OPC_TM_PRI_P_SHAPPING :
 		HCLGE_OPC_TM_PRI_C_SHAPPING;
@@ -436,6 +477,7 @@ static int hclge_tm_pri_shapping_cfg(struct hclge_dev *hdev,
 
 	shap_cfg_cmd->pri_id = pri_id;
 
+<<<<<<< HEAD
 	hclge_tm_set_field(shapping_para, IR_B, ir_b);
 	hclge_tm_set_field(shapping_para, IR_U, ir_u);
 	hclge_tm_set_field(shapping_para, IR_S, ir_s);
@@ -443,6 +485,13 @@ static int hclge_tm_pri_shapping_cfg(struct hclge_dev *hdev,
 	hclge_tm_set_field(shapping_para, BS_S, bs_s);
 
 	shap_cfg_cmd->pri_shapping_para = cpu_to_le32(shapping_para);
+=======
+	hclge_tm_set_field(shap_cfg_cmd->pri_shapping_para, IR_B, ir_b);
+	hclge_tm_set_field(shap_cfg_cmd->pri_shapping_para, IR_U, ir_u);
+	hclge_tm_set_field(shap_cfg_cmd->pri_shapping_para, IR_S, ir_s);
+	hclge_tm_set_field(shap_cfg_cmd->pri_shapping_para, BS_B, bs_b);
+	hclge_tm_set_field(shap_cfg_cmd->pri_shapping_para, BS_S, bs_s);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return hclge_cmd_send(&hdev->hw, &desc, 1);
 }
@@ -479,13 +528,21 @@ static int hclge_tm_pri_schd_mode_cfg(struct hclge_dev *hdev, u8 pri_id)
 	return hclge_cmd_send(&hdev->hw, &desc, 1);
 }
 
+<<<<<<< HEAD
 static int hclge_tm_qs_schd_mode_cfg(struct hclge_dev *hdev, u16 qs_id, u8 mode)
+=======
+static int hclge_tm_qs_schd_mode_cfg(struct hclge_dev *hdev, u16 qs_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hclge_desc desc;
 
 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_TM_QS_SCH_MODE_CFG, false);
 
+<<<<<<< HEAD
 	if (mode == HCLGE_SCH_MODE_DWRR)
+=======
+	if (hdev->tm_info.tc_info[qs_id].tc_sch_mode == HCLGE_SCH_MODE_DWRR)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		desc.data[1] = cpu_to_le32(HCLGE_TM_TX_SCHD_DWRR_MSK);
 	else
 		desc.data[1] = 0;
@@ -495,8 +552,12 @@ static int hclge_tm_qs_schd_mode_cfg(struct hclge_dev *hdev, u16 qs_id, u8 mode)
 	return hclge_cmd_send(&hdev->hw, &desc, 1);
 }
 
+<<<<<<< HEAD
 static int hclge_tm_qs_bp_cfg(struct hclge_dev *hdev, u8 tc, u8 grp_id,
 			      u32 bit_map)
+=======
+static int hclge_tm_qs_bp_cfg(struct hclge_dev *hdev, u8 tc)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hclge_bp_to_qs_map_cmd *bp_to_qs_map_cmd;
 	struct hclge_desc desc;
@@ -507,8 +568,14 @@ static int hclge_tm_qs_bp_cfg(struct hclge_dev *hdev, u8 tc, u8 grp_id,
 	bp_to_qs_map_cmd = (struct hclge_bp_to_qs_map_cmd *)desc.data;
 
 	bp_to_qs_map_cmd->tc_id = tc;
+<<<<<<< HEAD
 	bp_to_qs_map_cmd->qs_group_id = grp_id;
 	bp_to_qs_map_cmd->qs_bit_map = cpu_to_le32(bit_map);
+=======
+
+	/* Qset and tc is one by one mapping */
+	bp_to_qs_map_cmd->qs_bit_map = cpu_to_le32(1 << tc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return hclge_cmd_send(&hdev->hw, &desc, 1);
 }
@@ -519,6 +586,10 @@ static void hclge_tm_vport_tc_info_update(struct hclge_vport *vport)
 	struct hclge_dev *hdev = vport->back;
 	u8 i;
 
+<<<<<<< HEAD
+=======
+	kinfo = &vport->nic.kinfo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vport->bw_limit = hdev->tm_info.pg_info[0].bw_limit;
 	kinfo->num_tc =
 		min_t(u16, kinfo->num_tqps, hdev->tm_info.num_tc);
@@ -576,11 +647,15 @@ static void hclge_tm_tc_info_init(struct hclge_dev *hdev)
 		hdev->tm_info.prio_tc[i] =
 			(i >= hdev->tm_info.num_tc) ? 0 : i;
 
+<<<<<<< HEAD
 	/* DCB is enabled if we have more than 1 TC */
 	if (hdev->tm_info.num_tc > 1)
 		hdev->flag |= HCLGE_FLAG_DCB_ENABLE;
 	else
 		hdev->flag &= ~HCLGE_FLAG_DCB_ENABLE;
+=======
+	hdev->flag &= ~HCLGE_FLAG_DCB_ENABLE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
@@ -606,6 +681,7 @@ static void hclge_tm_pg_info_init(struct hclge_dev *hdev)
 	}
 }
 
+<<<<<<< HEAD
 static void hclge_pfc_info_init(struct hclge_dev *hdev)
 {
 	if (!(hdev->flag & HCLGE_FLAG_DCB_ENABLE)) {
@@ -624,6 +700,8 @@ static void hclge_pfc_info_init(struct hclge_dev *hdev)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hclge_tm_schd_info_init(struct hclge_dev *hdev)
 {
 	if ((hdev->tx_sch_mode != HCLGE_FLAG_TC_BASE_SCH_MODE) &&
@@ -636,7 +714,12 @@ static int hclge_tm_schd_info_init(struct hclge_dev *hdev)
 
 	hclge_tm_vport_info_update(hdev);
 
+<<<<<<< HEAD
 	hclge_pfc_info_init(hdev);
+=======
+	hdev->tm_info.fc_mode = HCLGE_FC_NONE;
+	hdev->fc_mode_last_time = hdev->tm_info.fc_mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -749,6 +832,7 @@ static int hclge_tm_pri_q_qs_cfg(struct hclge_dev *hdev)
 {
 	struct hclge_vport *vport = hdev->vport;
 	int ret;
+<<<<<<< HEAD
 	u32 i, k;
 
 	if (hdev->tx_sch_mode == HCLGE_FLAG_TC_BASE_SCH_MODE) {
@@ -761,6 +845,19 @@ static int hclge_tm_pri_q_qs_cfg(struct hclge_dev *hdev)
 					return ret;
 			}
 	} else if (hdev->tx_sch_mode == HCLGE_FLAG_VNET_BASE_SCH_MODE) {
+=======
+	u32 i;
+
+	if (hdev->tx_sch_mode == HCLGE_FLAG_TC_BASE_SCH_MODE) {
+		/* Cfg qs -> pri mapping, one by one mapping */
+		for (i = 0; i < hdev->tm_info.num_tc; i++) {
+			ret = hclge_tm_qs_to_pri_map_cfg(hdev, i, i);
+			if (ret)
+				return ret;
+		}
+	} else if (hdev->tx_sch_mode == HCLGE_FLAG_VNET_BASE_SCH_MODE) {
+		int k;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Cfg qs -> pri mapping,  qs = tc, pri = vf, 8 qs -> 1 pri */
 		for (k = 0; k < hdev->num_alloc_vport; k++)
 			for (i = 0; i < HNAE3_MAX_TC; i++) {
@@ -850,11 +947,19 @@ static int hclge_tm_pri_vnet_base_shaper_qs_cfg(struct hclge_vport *vport)
 {
 	struct hnae3_knic_private_info *kinfo = &vport->nic.kinfo;
 	struct hclge_dev *hdev = vport->back;
+<<<<<<< HEAD
+=======
+	struct hnae3_tc_info *v_tc_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 ir_u, ir_b, ir_s;
 	u32 i;
 	int ret;
 
 	for (i = 0; i < kinfo->num_tc; i++) {
+<<<<<<< HEAD
+=======
+		v_tc_info = &kinfo->tc_info[i];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = hclge_shaper_para_calc(
 					hdev->tm_info.tc_info[i].bw_limit,
 					HCLGE_SHAPER_LVL_QSET,
@@ -907,11 +1012,18 @@ static int hclge_tm_pri_shaper_cfg(struct hclge_dev *hdev)
 
 static int hclge_tm_pri_tc_base_dwrr_cfg(struct hclge_dev *hdev)
 {
+<<<<<<< HEAD
 	struct hclge_vport *vport = hdev->vport;
 	struct hclge_pg_info *pg_info;
 	u8 dwrr;
 	int ret;
 	u32 i, k;
+=======
+	struct hclge_pg_info *pg_info;
+	u8 dwrr;
+	int ret;
+	u32 i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < hdev->tm_info.num_tc; i++) {
 		pg_info =
@@ -922,6 +1034,7 @@ static int hclge_tm_pri_tc_base_dwrr_cfg(struct hclge_dev *hdev)
 		if (ret)
 			return ret;
 
+<<<<<<< HEAD
 		for (k = 0; k < hdev->num_alloc_vport; k++) {
 			ret = hclge_tm_qs_weight_cfg(
 				hdev, vport[k].qs_offset + i,
@@ -929,6 +1042,11 @@ static int hclge_tm_pri_tc_base_dwrr_cfg(struct hclge_dev *hdev)
 			if (ret)
 				return ret;
 		}
+=======
+		ret = hclge_tm_qs_weight_cfg(hdev, i, dwrr);
+		if (ret)
+			return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -992,6 +1110,7 @@ static int hclge_tm_pri_dwrr_cfg(struct hclge_dev *hdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 int hclge_tm_map_cfg(struct hclge_dev *hdev)
 {
 	int ret;
@@ -1000,6 +1119,12 @@ int hclge_tm_map_cfg(struct hclge_dev *hdev)
 	if (ret)
 		return ret;
 
+=======
+static int hclge_tm_map_cfg(struct hclge_dev *hdev)
+{
+	int ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = hclge_tm_pg_to_pri_map(hdev);
 	if (ret)
 		return ret;
@@ -1011,10 +1136,13 @@ static int hclge_tm_shaper_cfg(struct hclge_dev *hdev)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = hclge_tm_port_shaper_cfg(hdev);
 	if (ret)
 		return ret;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = hclge_tm_pg_shaper_cfg(hdev);
 	if (ret)
 		return ret;
@@ -1066,10 +1194,14 @@ static int hclge_tm_schd_mode_vnet_base_cfg(struct hclge_vport *vport)
 		return ret;
 
 	for (i = 0; i < kinfo->num_tc; i++) {
+<<<<<<< HEAD
 		u8 sch_mode = hdev->tm_info.tc_info[i].tc_sch_mode;
 
 		ret = hclge_tm_qs_schd_mode_cfg(hdev, vport->qs_offset + i,
 						sch_mode);
+=======
+		ret = hclge_tm_qs_schd_mode_cfg(hdev, vport->qs_offset + i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
@@ -1081,7 +1213,11 @@ static int hclge_tm_lvl34_schd_mode_cfg(struct hclge_dev *hdev)
 {
 	struct hclge_vport *vport = hdev->vport;
 	int ret;
+<<<<<<< HEAD
 	u8 i, k;
+=======
+	u8 i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (hdev->tx_sch_mode == HCLGE_FLAG_TC_BASE_SCH_MODE) {
 		for (i = 0; i < hdev->tm_info.num_tc; i++) {
@@ -1089,6 +1225,7 @@ static int hclge_tm_lvl34_schd_mode_cfg(struct hclge_dev *hdev)
 			if (ret)
 				return ret;
 
+<<<<<<< HEAD
 			for (k = 0; k < hdev->num_alloc_vport; k++) {
 				ret = hclge_tm_qs_schd_mode_cfg(
 					hdev, vport[k].qs_offset + i,
@@ -1096,6 +1233,11 @@ static int hclge_tm_lvl34_schd_mode_cfg(struct hclge_dev *hdev)
 				if (ret)
 					return ret;
 			}
+=======
+			ret = hclge_tm_qs_schd_mode_cfg(hdev, i);
+			if (ret)
+				return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	} else {
 		for (i = 0; i < hdev->num_alloc_vport; i++) {
@@ -1110,7 +1252,11 @@ static int hclge_tm_lvl34_schd_mode_cfg(struct hclge_dev *hdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 int hclge_tm_schd_mode_hw(struct hclge_dev *hdev)
+=======
+static int hclge_tm_schd_mode_hw(struct hclge_dev *hdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -1144,6 +1290,7 @@ static int hclge_tm_schd_setup_hw(struct hclge_dev *hdev)
 	return hclge_tm_schd_mode_hw(hdev);
 }
 
+<<<<<<< HEAD
 static int hclge_pause_param_setup_hw(struct hclge_dev *hdev)
 {
 	struct hclge_mac *mac = &hdev->hw.mac;
@@ -1255,10 +1402,29 @@ int hclge_pause_setup_hw(struct hclge_dev *hdev)
 
 	for (i = 0; i < hdev->tm_info.num_tc; i++) {
 		ret = hclge_bp_setup_hw(hdev, i);
+=======
+int hclge_pause_setup_hw(struct hclge_dev *hdev)
+{
+	bool en = hdev->tm_info.fc_mode != HCLGE_FC_PFC;
+	int ret;
+	u8 i;
+
+	ret = hclge_mac_pause_en_cfg(hdev, en, en);
+	if (ret)
+		return ret;
+
+	/* Only DCB-supported dev supports qset back pressure setting */
+	if (!hnae3_dev_dcb_supported(hdev))
+		return 0;
+
+	for (i = 0; i < hdev->tm_info.num_tc; i++) {
+		ret = hclge_tm_qs_bp_cfg(hdev, i);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -1298,6 +1464,9 @@ void hclge_tm_schd_info_update(struct hclge_dev *hdev, u8 num_tc)
 	hdev->hw_tc_map = bit_map;
 
 	hclge_tm_schd_info_init(hdev);
+=======
+	return hclge_up_to_tc_map(hdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int hclge_tm_init_hw(struct hclge_dev *hdev)
@@ -1321,6 +1490,7 @@ int hclge_tm_init_hw(struct hclge_dev *hdev)
 
 int hclge_tm_schd_init(struct hclge_dev *hdev)
 {
+<<<<<<< HEAD
 	int ret;
 
 	/* fc_mode is HCLGE_FC_FULL on reset */
@@ -1328,6 +1498,10 @@ int hclge_tm_schd_init(struct hclge_dev *hdev)
 	hdev->fc_mode_last_time = hdev->tm_info.fc_mode;
 
 	ret = hclge_tm_schd_info_init(hdev);
+=======
+	int ret = hclge_tm_schd_info_init(hdev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 

@@ -75,6 +75,7 @@ gp100_mc_intr_mask(struct nvkm_mc *base, u32 mask, u32 intr)
 	spin_unlock_irqrestore(&mc->lock, flags);
 }
 
+<<<<<<< HEAD
 const struct nvkm_mc_map
 gp100_mc_intr[] = {
 	{ 0x04000000, NVKM_ENGINE_DISP },
@@ -97,6 +98,12 @@ static const struct nvkm_mc_func
 gp100_mc = {
 	.init = nv50_mc_init,
 	.intr = gp100_mc_intr,
+=======
+static const struct nvkm_mc_func
+gp100_mc = {
+	.init = nv50_mc_init,
+	.intr = gk104_mc_intr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.intr_unarm = gp100_mc_intr_unarm,
 	.intr_rearm = gp100_mc_intr_rearm,
 	.intr_mask = gp100_mc_intr_mask,

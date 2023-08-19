@@ -50,7 +50,10 @@
 #include <linux/init_ohci1394_dma.h>
 #include <linux/kvm_para.h>
 #include <linux/dma-contiguous.h>
+<<<<<<< HEAD
 #include <xen/xen.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/errno.h>
 #include <linux/kernel.h>
@@ -115,6 +118,10 @@
 #include <asm/alternative.h>
 #include <asm/prom.h>
 #include <asm/microcode.h>
+<<<<<<< HEAD
+=======
+#include <asm/mmu_context.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kaslr.h>
 #include <asm/unwind.h>
 
@@ -136,6 +143,21 @@ RESERVE_BRK(dmi_alloc, 65536);
 static __initdata unsigned long _brk_start = (unsigned long)__brk_base;
 unsigned long _brk_end = (unsigned long)__brk_base;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_X86_64
+int default_cpu_present_to_apicid(int mps_cpu)
+{
+	return __default_cpu_present_to_apicid(mps_cpu);
+}
+
+int default_check_phys_apicid_present(int phys_apicid)
+{
+	return __default_check_phys_apicid_present(phys_apicid);
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct boot_params boot_params;
 
 /*
@@ -190,7 +212,13 @@ struct ist_info ist_info;
 #endif
 
 #else
+<<<<<<< HEAD
 struct cpuinfo_x86 boot_cpu_data __read_mostly;
+=======
+struct cpuinfo_x86 boot_cpu_data __read_mostly = {
+	.x86_phys_bits = MAX_PHYSMEM_BITS,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(boot_cpu_data);
 #endif
 
@@ -535,11 +563,14 @@ static void __init reserve_crashkernel(void)
 		high = true;
 	}
 
+<<<<<<< HEAD
 	if (xen_pv_domain()) {
 		pr_info("Ignoring crashkernel for a Xen PV domain\n");
 		return;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* 0 means: find the address automatically */
 	if (crash_base <= 0) {
 		/*
@@ -805,6 +836,29 @@ dump_kernel_offset(struct notifier_block *self, unsigned long v, void *p)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static void __init simple_udelay_calibration(void)
+{
+	unsigned int tsc_khz, cpu_khz;
+	unsigned long lpj;
+
+	if (!boot_cpu_has(X86_FEATURE_TSC))
+		return;
+
+	cpu_khz = x86_platform.calibrate_cpu();
+	tsc_khz = x86_platform.calibrate_tsc();
+
+	tsc_khz = tsc_khz ? : cpu_khz;
+	if (!tsc_khz)
+		return;
+
+	lpj = tsc_khz * 1000;
+	do_div(lpj, HZ);
+	loops_per_jiffy = lpj;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Determine if we were loaded by an EFI loader.  If so, then we have also been
  * passed the efi memmap, systab, etc., so we should use these data structures
@@ -861,7 +915,10 @@ void __init setup_arch(char **cmdline_p)
 	__flush_tlb_all();
 #else
 	printk(KERN_INFO "Command line: %s\n", boot_command_line);
+<<<<<<< HEAD
 	boot_cpu_data.x86_phys_bits = MAX_PHYSMEM_BITS;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	/*
@@ -872,8 +929,11 @@ void __init setup_arch(char **cmdline_p)
 
 	idt_setup_early_traps();
 	early_cpu_init();
+<<<<<<< HEAD
 	arch_init_ideal_nops();
 	jump_label_init();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	early_ioremap_init();
 
 	setup_olpc_ofw_pgd();
@@ -999,6 +1059,14 @@ void __init setup_arch(char **cmdline_p)
 		setup_clear_cpu_cap(X86_FEATURE_APIC);
 	}
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PCI
+	if (pci_early_dump_regs)
+		early_dump_pci_devices();
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	e820__reserve_setup_data();
 	e820__finish_early_params();
 
@@ -1011,11 +1079,20 @@ void __init setup_arch(char **cmdline_p)
 
 	/*
 	 * VMware detection requires dmi to be available, so this
+<<<<<<< HEAD
 	 * needs to be done after dmi_scan_machine(), for the boot CPU.
 	 */
 	init_hypervisor_platform();
 
 	tsc_early_init();
+=======
+	 * needs to be done after dmi_scan_machine, for the BP.
+	 */
+	init_hypervisor_platform();
+
+	simple_udelay_calibration();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	x86_init.resources.probe_roms();
 
 	/* after parse_early_param, so could debug it */
@@ -1100,6 +1177,12 @@ void __init setup_arch(char **cmdline_p)
 	memblock_set_current_limit(ISA_END_ADDRESS);
 	e820__memblock_setup();
 
+<<<<<<< HEAD
+=======
+	if (!early_xdbc_setup_hardware())
+		early_xdbc_register_console();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	reserve_bios_regions();
 
 	if (efi_enabled(EFI_MEMMAP)) {
@@ -1201,8 +1284,14 @@ void __init setup_arch(char **cmdline_p)
 
 	memblock_find_dma_reserve();
 
+<<<<<<< HEAD
 	if (!early_xdbc_setup_hardware())
 		early_xdbc_register_console();
+=======
+#ifdef CONFIG_KVM_GUEST
+	kvmclock_init();
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	x86_init.paging.pagetable_init();
 
@@ -1248,7 +1337,11 @@ void __init setup_arch(char **cmdline_p)
 
 	io_apic_init_mappings();
 
+<<<<<<< HEAD
 	x86_init.hyper.guest_late_init();
+=======
+	kvm_guest_init();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	e820__reserve_resources();
 	e820__register_nosave_regions(max_pfn);
@@ -1271,6 +1364,11 @@ void __init setup_arch(char **cmdline_p)
 
 	mcheck_init();
 
+<<<<<<< HEAD
+=======
+	arch_init_ideal_nops();
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	register_refined_jiffies(CLOCK_TICK_RATE);
 
 #ifdef CONFIG_EFI
@@ -1309,3 +1407,14 @@ static int __init register_kernel_offset_dumper(void)
 	return 0;
 }
 __initcall(register_kernel_offset_dumper);
+<<<<<<< HEAD
+=======
+
+void arch_show_smap(struct seq_file *m, struct vm_area_struct *vma)
+{
+	if (!boot_cpu_has(X86_FEATURE_OSPKE))
+		return;
+
+	seq_printf(m, "ProtectionKey:  %8u\n", vma_pkey(vma));
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

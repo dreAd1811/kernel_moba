@@ -33,6 +33,91 @@
 #define LOWER_EL_AArch64_VECTOR		0x400
 #define LOWER_EL_AArch32_VECTOR		0x600
 
+<<<<<<< HEAD
+=======
+/*
+ * Table taken from ARMv8 ARM DDI0487B-B, table G1-10.
+ */
+static const u8 return_offsets[8][2] = {
+	[0] = { 0, 0 },		/* Reset, unused */
+	[1] = { 4, 2 },		/* Undefined */
+	[2] = { 0, 0 },		/* SVC, unused */
+	[3] = { 4, 4 },		/* Prefetch abort */
+	[4] = { 8, 8 },		/* Data abort */
+	[5] = { 0, 0 },		/* HVC, unused */
+	[6] = { 4, 4 },		/* IRQ, unused */
+	[7] = { 4, 4 },		/* FIQ, unused */
+};
+
+static void prepare_fault32(struct kvm_vcpu *vcpu, u32 mode, u32 vect_offset)
+{
+	unsigned long cpsr;
+	unsigned long new_spsr_value = *vcpu_cpsr(vcpu);
+	bool is_thumb = (new_spsr_value & COMPAT_PSR_T_BIT);
+	u32 return_offset = return_offsets[vect_offset >> 2][is_thumb];
+	u32 sctlr = vcpu_cp15(vcpu, c1_SCTLR);
+
+	cpsr = mode | COMPAT_PSR_I_BIT;
+
+	if (sctlr & (1 << 30))
+		cpsr |= COMPAT_PSR_T_BIT;
+	if (sctlr & (1 << 25))
+		cpsr |= COMPAT_PSR_E_BIT;
+
+	*vcpu_cpsr(vcpu) = cpsr;
+
+	/* Note: These now point to the banked copies */
+	*vcpu_spsr(vcpu) = new_spsr_value;
+	*vcpu_reg32(vcpu, 14) = *vcpu_pc(vcpu) + return_offset;
+
+	/* Branch to exception vector */
+	if (sctlr & (1 << 13))
+		vect_offset += 0xffff0000;
+	else /* always have security exceptions */
+		vect_offset += vcpu_cp15(vcpu, c12_VBAR);
+
+	*vcpu_pc(vcpu) = vect_offset;
+}
+
+static void inject_undef32(struct kvm_vcpu *vcpu)
+{
+	prepare_fault32(vcpu, COMPAT_PSR_MODE_UND, 4);
+}
+
+/*
+ * Modelled after TakeDataAbortException() and TakePrefetchAbortException
+ * pseudocode.
+ */
+static void inject_abt32(struct kvm_vcpu *vcpu, bool is_pabt,
+			 unsigned long addr)
+{
+	u32 vect_offset;
+	u32 *far, *fsr;
+	bool is_lpae;
+
+	if (is_pabt) {
+		vect_offset = 12;
+		far = &vcpu_cp15(vcpu, c6_IFAR);
+		fsr = &vcpu_cp15(vcpu, c5_IFSR);
+	} else { /* !iabt */
+		vect_offset = 16;
+		far = &vcpu_cp15(vcpu, c6_DFAR);
+		fsr = &vcpu_cp15(vcpu, c5_DFSR);
+	}
+
+	prepare_fault32(vcpu, COMPAT_PSR_MODE_ABT | COMPAT_PSR_A_BIT, vect_offset);
+
+	*far = addr;
+
+	/* Give the guest an IMPLEMENTATION DEFINED exception */
+	is_lpae = (vcpu_cp15(vcpu, c2_TTBCR) >> 31);
+	if (is_lpae)
+		*fsr = 1 << 9 | 0x34;
+	else
+		*fsr = 0x14;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum exception_type {
 	except_type_sync	= 0,
 	except_type_irq		= 0x80,
@@ -58,7 +143,11 @@ static u64 get_except_vector(struct kvm_vcpu *vcpu, enum exception_type type)
 		exc_offset = LOWER_EL_AArch32_VECTOR;
 	}
 
+<<<<<<< HEAD
 	return vcpu_read_sys_reg(vcpu, VBAR_EL1) + exc_offset + type;
+=======
+	return vcpu_sys_reg(vcpu, VBAR_EL1) + exc_offset + type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned long addr)
@@ -67,6 +156,7 @@ static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned long addr
 	bool is_aarch32 = vcpu_mode_is_32bit(vcpu);
 	u32 esr = 0;
 
+<<<<<<< HEAD
 	vcpu_write_elr_el1(vcpu, *vcpu_pc(vcpu));
 	*vcpu_pc(vcpu) = get_except_vector(vcpu, except_type_sync);
 
@@ -74,6 +164,15 @@ static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned long addr
 	vcpu_write_spsr(vcpu, cpsr);
 
 	vcpu_write_sys_reg(vcpu, addr, FAR_EL1);
+=======
+	*vcpu_elr_el1(vcpu) = *vcpu_pc(vcpu);
+	*vcpu_pc(vcpu) = get_except_vector(vcpu, except_type_sync);
+
+	*vcpu_cpsr(vcpu) = PSTATE_FAULT_BITS_64;
+	*vcpu_spsr(vcpu) = cpsr;
+
+	vcpu_sys_reg(vcpu, FAR_EL1) = addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Build an {i,d}abort, depending on the level and the
@@ -94,7 +193,11 @@ static void inject_abt64(struct kvm_vcpu *vcpu, bool is_iabt, unsigned long addr
 	if (!is_iabt)
 		esr |= ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT;
 
+<<<<<<< HEAD
 	vcpu_write_sys_reg(vcpu, esr | ESR_ELx_FSC_EXTABT, ESR_EL1);
+=======
+	vcpu_sys_reg(vcpu, ESR_EL1) = esr | ESR_ELx_FSC_EXTABT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void inject_undef64(struct kvm_vcpu *vcpu)
@@ -102,11 +205,19 @@ static void inject_undef64(struct kvm_vcpu *vcpu)
 	unsigned long cpsr = *vcpu_cpsr(vcpu);
 	u32 esr = (ESR_ELx_EC_UNKNOWN << ESR_ELx_EC_SHIFT);
 
+<<<<<<< HEAD
 	vcpu_write_elr_el1(vcpu, *vcpu_pc(vcpu));
 	*vcpu_pc(vcpu) = get_except_vector(vcpu, except_type_sync);
 
 	*vcpu_cpsr(vcpu) = PSTATE_FAULT_BITS_64;
 	vcpu_write_spsr(vcpu, cpsr);
+=======
+	*vcpu_elr_el1(vcpu) = *vcpu_pc(vcpu);
+	*vcpu_pc(vcpu) = get_except_vector(vcpu, except_type_sync);
+
+	*vcpu_cpsr(vcpu) = PSTATE_FAULT_BITS_64;
+	*vcpu_spsr(vcpu) = cpsr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Build an unknown exception, depending on the instruction
@@ -115,7 +226,11 @@ static void inject_undef64(struct kvm_vcpu *vcpu)
 	if (kvm_vcpu_trap_il_is32bit(vcpu))
 		esr |= ESR_ELx_IL;
 
+<<<<<<< HEAD
 	vcpu_write_sys_reg(vcpu, esr, ESR_EL1);
+=======
+	vcpu_sys_reg(vcpu, ESR_EL1) = esr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -128,8 +243,13 @@ static void inject_undef64(struct kvm_vcpu *vcpu)
  */
 void kvm_inject_dabt(struct kvm_vcpu *vcpu, unsigned long addr)
 {
+<<<<<<< HEAD
 	if (vcpu_el1_is_32bit(vcpu))
 		kvm_inject_dabt32(vcpu, addr);
+=======
+	if (!(vcpu->arch.hcr_el2 & HCR_RW))
+		inject_abt32(vcpu, false, addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		inject_abt64(vcpu, false, addr);
 }
@@ -144,8 +264,13 @@ void kvm_inject_dabt(struct kvm_vcpu *vcpu, unsigned long addr)
  */
 void kvm_inject_pabt(struct kvm_vcpu *vcpu, unsigned long addr)
 {
+<<<<<<< HEAD
 	if (vcpu_el1_is_32bit(vcpu))
 		kvm_inject_pabt32(vcpu, addr);
+=======
+	if (!(vcpu->arch.hcr_el2 & HCR_RW))
+		inject_abt32(vcpu, true, addr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		inject_abt64(vcpu, true, addr);
 }
@@ -158,24 +283,33 @@ void kvm_inject_pabt(struct kvm_vcpu *vcpu, unsigned long addr)
  */
 void kvm_inject_undefined(struct kvm_vcpu *vcpu)
 {
+<<<<<<< HEAD
 	if (vcpu_el1_is_32bit(vcpu))
 		kvm_inject_undef32(vcpu);
+=======
+	if (!(vcpu->arch.hcr_el2 & HCR_RW))
+		inject_undef32(vcpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		inject_undef64(vcpu);
 }
 
+<<<<<<< HEAD
 void kvm_set_sei_esr(struct kvm_vcpu *vcpu, u64 esr)
 {
 	vcpu_set_vsesr(vcpu, esr & ESR_ELx_ISS_MASK);
 	*vcpu_hcr(vcpu) |= HCR_VSE;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * kvm_inject_vabt - inject an async abort / SError into the guest
  * @vcpu: The VCPU to receive the exception
  *
  * It is assumed that this code is called from the VCPU thread and that the
  * VCPU therefore is not currently executing guest code.
+<<<<<<< HEAD
  *
  * Systems with the RAS Extensions specify an imp-def ESR (ISV/IDS = 1) with
  * the remaining ISS all-zeros so that this error is not interpreted as an
@@ -185,4 +319,10 @@ void kvm_set_sei_esr(struct kvm_vcpu *vcpu, u64 esr)
 void kvm_inject_vabt(struct kvm_vcpu *vcpu)
 {
 	kvm_set_sei_esr(vcpu, ESR_ELx_ISV);
+=======
+ */
+void kvm_inject_vabt(struct kvm_vcpu *vcpu)
+{
+	vcpu_set_hcr(vcpu, vcpu_get_hcr(vcpu) | HCR_VSE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

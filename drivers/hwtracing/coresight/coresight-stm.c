@@ -1,9 +1,25 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Copyright (c) 2015-2020, The Linux Foundation. All rights reserved.
  *
  * Description: CoreSight System Trace Macrocell driver
  *
+=======
+/* Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
+ *
+ * Description: CoreSight System Trace Macrocell driver
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Initial implementation by Pratik Patel
  * (C) 2014-2015 Pratik Patel <pratikp@codeaurora.org>
  *
@@ -72,6 +88,12 @@
 /* Reserve the first 10 channels for kernel usage */
 #define STM_CHANNEL_OFFSET		0
 
+<<<<<<< HEAD
+=======
+#define APPS_NIDEN_SHIFT			17
+#define APPS_DBGEN_SHIFT			16
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int boot_nr_channel;
 
 /*
@@ -357,6 +379,12 @@ static ssize_t notrace stm_generic_packet(struct stm_data *stm_data,
 	if (!(drvdata && local_read(&drvdata->mode)))
 		return -EACCES;
 
+<<<<<<< HEAD
+=======
+	if (!drvdata->master_enable)
+		return -EPERM;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (channel >= drvdata->numsp)
 		return -EINVAL;
 
@@ -550,7 +578,11 @@ static ssize_t traceid_show(struct device *dev,
 	struct stm_drvdata *drvdata = dev_get_drvdata(dev->parent);
 
 	val = drvdata->traceid;
+<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%#lx\n", val);
+=======
+	return sprintf(buf, "%#lx\n", val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static ssize_t traceid_store(struct device *dev,
@@ -772,6 +804,20 @@ static void stm_init_generic_data(struct stm_drvdata *drvdata)
 	drvdata->stm.set_options = stm_generic_set_options;
 }
 
+<<<<<<< HEAD
+=======
+static bool is_apps_debug_disabled(struct stm_drvdata *drvdata)
+{
+	u32 val;
+
+	val = readl_relaxed(drvdata->debug_status_chs.base);
+
+	val &= BIT(APPS_NIDEN_SHIFT);
+
+	return val == 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int stm_probe(struct amba_device *adev, const struct amba_id *id)
 {
 	int ret;
@@ -782,6 +828,10 @@ static int stm_probe(struct amba_device *adev, const struct amba_id *id)
 	struct stm_drvdata *drvdata;
 	struct resource *res = &adev->res;
 	struct resource ch_res;
+<<<<<<< HEAD
+=======
+	struct resource debug_ch_res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	size_t res_size, bitmap_size;
 	struct coresight_desc desc = { 0 };
 	struct device_node *np = adev->dev.of_node;
@@ -820,6 +870,25 @@ static int stm_probe(struct amba_device *adev, const struct amba_id *id)
 		return PTR_ERR(base);
 	drvdata->chs.base = base;
 
+<<<<<<< HEAD
+=======
+	ret = stm_get_resource_byname(np, "stm-debug-status", &debug_ch_res);
+	/*
+	 * By default, master enable is true, means not controlled
+	 * by debug status register
+	 */
+	if (!ret) {
+		drvdata->debug_status_chs.phys = debug_ch_res.start;
+		base = devm_ioremap_resource(dev, &debug_ch_res);
+		if (!IS_ERR(base)) {
+			drvdata->debug_status_chs.base = base;
+			drvdata->master_enable =
+				!is_apps_debug_disabled(drvdata);
+		}
+	} else
+		drvdata->master_enable = true;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	drvdata->write_bytes = stm_fundamental_data_size(drvdata);
 
 	if (boot_nr_channel) {
@@ -868,7 +937,12 @@ static int stm_probe(struct amba_device *adev, const struct amba_id *id)
 
 	pm_runtime_put(&adev->dev);
 
+<<<<<<< HEAD
 	dev_info(dev, "%s initialized\n", (char *)id->data);
+=======
+	dev_info(dev, "%s initialized with master %s\n", (char *)id->data,
+		       drvdata->master_enable ? "Enabled" : "Disabled");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 stm_unregister:
@@ -904,6 +978,7 @@ static const struct dev_pm_ops stm_dev_pm_ops = {
 
 static const struct amba_id stm_ids[] = {
 	{
+<<<<<<< HEAD
 		.id     = 0x000bb962,
 		.mask   = 0x000fffff,
 		.data	= "STM32",
@@ -911,6 +986,15 @@ static const struct amba_id stm_ids[] = {
 	{
 		.id	= 0x000bb963,
 		.mask	= 0x000fffff,
+=======
+		.id     = 0x0003b962,
+		.mask   = 0x0003ffff,
+		.data	= "STM32",
+	},
+	{
+		.id	= 0x0003b963,
+		.mask	= 0x0003ffff,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.data	= "STM500",
 	},
 	{ 0, 0},

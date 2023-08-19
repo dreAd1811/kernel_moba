@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #
 # Copyright 2017 Advanced Micro Devices, Inc.
 #
@@ -19,23 +20,35 @@
 # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 #
+=======
+# SPDX-License-Identifier: GPL-2.0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #
 # Makefile for the drm device driver.  This driver provides support for the
 # Direct Rendering Infrastructure (DRI) in XFree86 4.1.0 and higher.
 
 FULL_AMD_PATH=$(src)/..
+<<<<<<< HEAD
 DISPLAY_FOLDER_NAME=display
 FULL_AMD_DISPLAY_PATH = $(FULL_AMD_PATH)/$(DISPLAY_FOLDER_NAME)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ccflags-y := -I$(FULL_AMD_PATH)/include/asic_reg \
 	-I$(FULL_AMD_PATH)/include \
 	-I$(FULL_AMD_PATH)/amdgpu \
+<<<<<<< HEAD
 	-I$(FULL_AMD_PATH)/powerplay/inc \
 	-I$(FULL_AMD_PATH)/acp/include \
 	-I$(FULL_AMD_DISPLAY_PATH) \
 	-I$(FULL_AMD_DISPLAY_PATH)/include \
 	-I$(FULL_AMD_DISPLAY_PATH)/dc \
 	-I$(FULL_AMD_DISPLAY_PATH)/amdgpu_dm
+=======
+	-I$(FULL_AMD_PATH)/scheduler \
+	-I$(FULL_AMD_PATH)/powerplay/inc \
+	-I$(FULL_AMD_PATH)/acp/include
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 amdgpu-y := amdgpu_drv.o
 
@@ -51,16 +64,26 @@ amdgpu-y += amdgpu_device.o amdgpu_kms.o \
 	amdgpu_prime.o amdgpu_vm.o amdgpu_ib.o amdgpu_pll.o \
 	amdgpu_ucode.o amdgpu_bo_list.o amdgpu_ctx.o amdgpu_sync.o \
 	amdgpu_gtt_mgr.o amdgpu_vram_mgr.o amdgpu_virt.o amdgpu_atomfirmware.o \
+<<<<<<< HEAD
 	amdgpu_queue_mgr.o amdgpu_vf_error.o amdgpu_sched.o amdgpu_debugfs.o \
 	amdgpu_ids.o
 
 # add asic specific block
 amdgpu-$(CONFIG_DRM_AMDGPU_CIK)+= cik.o cik_ih.o kv_smc.o kv_dpm.o \
 	ci_smc.o ci_dpm.o dce_v8_0.o gfx_v7_0.o cik_sdma.o uvd_v4_2.o vce_v2_0.o
+=======
+	amdgpu_queue_mgr.o amdgpu_vf_error.o
+
+# add asic specific block
+amdgpu-$(CONFIG_DRM_AMDGPU_CIK)+= cik.o cik_ih.o kv_smc.o kv_dpm.o \
+	ci_smc.o ci_dpm.o dce_v8_0.o gfx_v7_0.o cik_sdma.o uvd_v4_2.o vce_v2_0.o \
+	amdgpu_amdkfd_gfx_v7.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 amdgpu-$(CONFIG_DRM_AMDGPU_SI)+= si.o gmc_v6_0.o gfx_v6_0.o si_ih.o si_dma.o dce_v6_0.o si_dpm.o si_smc.o
 
 amdgpu-y += \
+<<<<<<< HEAD
 	vi.o mxgpu_vi.o nbio_v6_1.o soc15.o emu_soc.o mxgpu_ai.o nbio_v7_0.o vega10_reg_init.o \
 	vega20_reg_init.o
 
@@ -68,6 +91,9 @@ amdgpu-y += \
 amdgpu-y += \
 	df_v1_7.o \
 	df_v3_6.o
+=======
+	vi.o mxgpu_vi.o nbio_v6_1.o soc15.o mxgpu_ai.o nbio_v7_0.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # add GMC block
 amdgpu-y += \
@@ -92,7 +118,12 @@ amdgpu-y += \
 
 # add SMC block
 amdgpu-y += \
+<<<<<<< HEAD
 	amdgpu_dpm.o
+=======
+	amdgpu_dpm.o \
+	amdgpu_powerplay.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # add DCE block
 amdgpu-y += \
@@ -131,6 +162,7 @@ amdgpu-y += \
 	vcn_v1_0.o
 
 # add amdkfd interfaces
+<<<<<<< HEAD
 amdgpu-y += amdgpu_amdkfd.o
 
 ifneq ($(CONFIG_HSA_AMD),)
@@ -145,12 +177,24 @@ amdgpu-y += amdgpu_amdkfd_gfx_v7.o
 endif
 
 endif
+=======
+amdgpu-y += \
+	 amdgpu_amdkfd.o \
+	 amdgpu_amdkfd_gfx_v8.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # add cgs
 amdgpu-y += amdgpu_cgs.o
 
 # GPU scheduler
+<<<<<<< HEAD
 amdgpu-y += amdgpu_job.o
+=======
+amdgpu-y += \
+	../scheduler/gpu_scheduler.o \
+	../scheduler/sched_fence.o \
+	amdgpu_job.o
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 # ACP componet
 ifneq ($(CONFIG_DRM_AMD_ACP),)
@@ -171,6 +215,7 @@ include $(FULL_AMD_PATH)/powerplay/Makefile
 
 amdgpu-y += $(AMD_POWERPLAY_FILES)
 
+<<<<<<< HEAD
 ifneq ($(CONFIG_DRM_AMD_DC),)
 
 RELATIVE_AMD_DISPLAY_PATH = ../$(DISPLAY_FOLDER_NAME)
@@ -181,3 +226,8 @@ amdgpu-y += $(AMD_DISPLAY_FILES)
 endif
 
 obj-$(CONFIG_DRM_AMDGPU)+= amdgpu.o
+=======
+obj-$(CONFIG_DRM_AMDGPU)+= amdgpu.o
+
+CFLAGS_amdgpu_trace_points.o := -I$(src)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

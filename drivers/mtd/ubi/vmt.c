@@ -174,9 +174,12 @@ int ubi_create_volume(struct ubi_device *ubi, struct ubi_mkvol_req *req)
 	vol->dev.class = &ubi_class;
 	vol->dev.groups = volume_dev_groups;
 
+<<<<<<< HEAD
 	if (req->flags & UBI_VOL_SKIP_CRC_CHECK_FLG)
 		vol->skip_check = 1;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&ubi->volumes_lock);
 	if (vol_id == UBI_VOL_NUM_AUTO) {
 		/* Find unused volume ID */
@@ -302,10 +305,13 @@ int ubi_create_volume(struct ubi_device *ubi, struct ubi_mkvol_req *req)
 		vtbl_rec.vol_type = UBI_VID_DYNAMIC;
 	else
 		vtbl_rec.vol_type = UBI_VID_STATIC;
+<<<<<<< HEAD
 
 	if (vol->skip_check)
 		vtbl_rec.flags |= UBI_VTBL_SKIP_CRC_CHECK_FLG;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memcpy(vtbl_rec.name, vol->name, vol->name_len);
 
 	err = ubi_change_vtbl_record(ubi, vol_id, &vtbl_rec);
@@ -740,11 +746,14 @@ static int self_check_volume(struct ubi_device *ubi, int vol_id)
 			ubi_err(ubi, "bad used_bytes");
 			goto fail;
 		}
+<<<<<<< HEAD
 
 		if (vol->skip_check) {
 			ubi_err(ubi, "bad skip_check");
 			goto fail;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		if (vol->used_ebs < 0 || vol->used_ebs > vol->reserved_pebs) {
 			ubi_err(ubi, "bad used_ebs");

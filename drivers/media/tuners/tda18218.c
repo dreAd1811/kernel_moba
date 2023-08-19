@@ -269,11 +269,19 @@ static void tda18218_release(struct dvb_frontend *fe)
 
 static const struct dvb_tuner_ops tda18218_tuner_ops = {
 	.info = {
+<<<<<<< HEAD
 		.name              = "NXP TDA18218",
 
 		.frequency_min_hz  = 174 * MHz,
 		.frequency_max_hz  = 864 * MHz,
 		.frequency_step_hz =   1 * kHz,
+=======
+		.name           = "NXP TDA18218",
+
+		.frequency_min  = 174000000,
+		.frequency_max  = 864000000,
+		.frequency_step =      1000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.release       = tda18218_release,

@@ -1,8 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Copyright 2010 Ben Dooks <ben-linux <at> fluff.org>
 //
 // Helper for platform data setting
+=======
+/* linux/arch/arm/plat-samsung/platformdata.c
+ *
+ * Copyright 2010 Ben Dooks <ben-linux <at> fluff.org>
+ *
+ * Helper for platform data setting
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/kernel.h>
 #include <linux/slab.h>
@@ -24,8 +37,15 @@ void __init *s3c_set_platdata(void *pd, size_t pdsize,
 	}
 
 	npd = kmemdup(pd, pdsize, GFP_KERNEL);
+<<<<<<< HEAD
 	if (!npd)
 		return NULL;
+=======
+	if (!npd) {
+		printk(KERN_ERR "%s: cannot clone platform data\n", pdev->name);
+		return NULL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdev->dev.platform_data = npd;
 	return npd;

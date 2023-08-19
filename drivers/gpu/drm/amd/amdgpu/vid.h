@@ -27,8 +27,11 @@
 #define SDMA1_REGISTER_OFFSET                             0x200 /* not a register */
 #define SDMA_MAX_INSTANCE 2
 
+<<<<<<< HEAD
 #define KFD_VI_SDMA_QUEUE_OFFSET                      0x80 /* not a register */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* crtc instance offsets */
 #define CRTC0_REGISTER_OFFSET                 (0x1b9c - 0x1b9c)
 #define CRTC1_REGISTER_OFFSET                 (0x1d9c - 0x1b9c)
@@ -467,6 +470,7 @@
 #define VCE_CMD_UPDATE_PTB      0x00000107
 #define VCE_CMD_FLUSH_TLB       0x00000108
 
+<<<<<<< HEAD
 /* HEVC ENC */
 #define HEVC_ENC_CMD_NO_OP         0x00000000
 #define HEVC_ENC_CMD_END           0x00000001
@@ -477,6 +481,8 @@
 #define HEVC_ENC_CMD_UPDATE_PTB    0x00000107
 #define HEVC_ENC_CMD_FLUSH_TLB     0x00000108
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* mmPA_SC_RASTER_CONFIG mask */
 #define RB_MAP_PKR0(x)				((x) << 0)
 #define RB_MAP_PKR0_MASK			(0x3 << 0)

@@ -119,7 +119,14 @@ struct ib_mr *pvrdma_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	union pvrdma_cmd_resp rsp;
 	struct pvrdma_cmd_create_mr *cmd = &req.create_mr;
 	struct pvrdma_cmd_create_mr_resp *resp = &rsp.create_mr_resp;
+<<<<<<< HEAD
 	int ret;
+=======
+	int nchunks;
+	int ret;
+	int entry;
+	struct scatterlist *sg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (length == 0 || length > dev->dsr->caps.max_mr_size) {
 		dev_warn(&dev->pdev->dev, "invalid mem region length\n");
@@ -134,9 +141,19 @@ struct ib_mr *pvrdma_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 		return ERR_CAST(umem);
 	}
 
+<<<<<<< HEAD
 	if (umem->npages < 0 || umem->npages > PVRDMA_PAGE_DIR_MAX_PAGES) {
 		dev_warn(&dev->pdev->dev, "overflow %d pages in mem region\n",
 			 umem->npages);
+=======
+	nchunks = 0;
+	for_each_sg(umem->sg_head.sgl, sg, umem->nmap, entry)
+		nchunks += sg_dma_len(sg) >> PAGE_SHIFT;
+
+	if (nchunks < 0 || nchunks > PVRDMA_PAGE_DIR_MAX_PAGES) {
+		dev_warn(&dev->pdev->dev, "overflow %d pages in mem region\n",
+			 nchunks);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 		goto err_umem;
 	}
@@ -151,7 +168,11 @@ struct ib_mr *pvrdma_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	mr->mmr.size = length;
 	mr->umem = umem;
 
+<<<<<<< HEAD
 	ret = pvrdma_page_dir_init(dev, &mr->pdir, umem->npages, false);
+=======
+	ret = pvrdma_page_dir_init(dev, &mr->pdir, nchunks, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_warn(&dev->pdev->dev,
 			 "could not allocate page directory\n");
@@ -168,7 +189,11 @@ struct ib_mr *pvrdma_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	cmd->length = length;
 	cmd->pd_handle = to_vpd(pd)->pd_handle;
 	cmd->access_flags = access_flags;
+<<<<<<< HEAD
 	cmd->nchunks = umem->npages;
+=======
+	cmd->nchunks = nchunks;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cmd->pdir_dma = mr->pdir.dir_dma;
 
 	ret = pvrdma_cmd_post(dev, &req, &rsp, PVRDMA_CMD_CREATE_MR_RESP);

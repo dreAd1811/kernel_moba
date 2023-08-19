@@ -22,7 +22,11 @@
 #include <asm/div64.h>
 #include <linux/firmware.h>
 
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "lgs8gxx.h"
 #include "lgs8gxx_priv.h"
@@ -985,9 +989,15 @@ static const struct dvb_frontend_ops lgs8gxx_ops = {
 	.delsys = { SYS_DTMB },
 	.info = {
 		.name = "Legend Silicon LGS8913/LGS8GXX DMB-TH",
+<<<<<<< HEAD
 		.frequency_min_hz = 474 * MHz,
 		.frequency_max_hz = 858 * MHz,
 		.frequency_stepsize_hz = 10 * kHz,
+=======
+		.frequency_min = 474000000,
+		.frequency_max = 858000000,
+		.frequency_stepsize = 10000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.caps =
 			FE_CAN_FEC_AUTO |
 			FE_CAN_QAM_AUTO |

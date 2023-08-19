@@ -574,6 +574,7 @@ static inline int rt_save_fpu_state(struct ucontext __user *uc, struct pt_regs *
 
 #endif /* CONFIG_FPU */
 
+<<<<<<< HEAD
 static inline void siginfo_build_tests(void)
 {
 	/*
@@ -635,6 +636,8 @@ static inline void siginfo_build_tests(void)
 	/* any new si_fields should be added here */
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mangle_kernel_stack(struct pt_regs *regs, int formatvec,
 			       void __user *fp)
 {
@@ -696,8 +699,11 @@ restore_sigcontext(struct pt_regs *regs, struct sigcontext __user *usc, void __u
 	struct sigcontext context;
 	int err = 0;
 
+<<<<<<< HEAD
 	siginfo_build_tests();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Always make any pending restarted system calls return -EINTR */
 	current->restart_block.fn = do_no_restart_syscall;
 

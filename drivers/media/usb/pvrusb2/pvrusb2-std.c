@@ -361,7 +361,11 @@ struct v4l2_standard *pvr2_std_create_enum(unsigned int *countptr,
 		   std_cnt);
 	if (!std_cnt) return NULL; // paranoia
 
+<<<<<<< HEAD
 	stddefs = kcalloc(std_cnt, sizeof(struct v4l2_standard),
+=======
+	stddefs = kzalloc(sizeof(struct v4l2_standard) * std_cnt,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			  GFP_KERNEL);
 	if (!stddefs)
 		return NULL;

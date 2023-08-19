@@ -19,6 +19,10 @@
 	} while (0)
 
 extern pte_t *pkmap_page_table;
+<<<<<<< HEAD
+=======
+extern pte_t *fixmap_page_table;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void *kmap_high(struct page *page);
 extern void kunmap_high(struct page *page);

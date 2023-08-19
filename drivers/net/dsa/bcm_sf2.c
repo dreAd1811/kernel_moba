@@ -14,9 +14,15 @@
 #include <linux/netdevice.h>
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
 #include <linux/phy.h>
 #include <linux/phy_fixed.h>
 #include <linux/phylink.h>
+=======
+#include <linux/of.h>
+#include <linux/phy.h>
+#include <linux/phy_fixed.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/mii.h>
 #include <linux/of.h>
 #include <linux/of_irq.h>
@@ -35,28 +41,102 @@
 #include "b53/b53_priv.h"
 #include "b53/b53_regs.h"
 
+<<<<<<< HEAD
+=======
+static enum dsa_tag_protocol bcm_sf2_sw_get_tag_protocol(struct dsa_switch *ds)
+{
+	return DSA_TAG_PROTO_BRCM;
+}
+
+static void bcm_sf2_imp_vlan_setup(struct dsa_switch *ds, int cpu_port)
+{
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	unsigned int i;
+	u32 reg;
+
+	/* Enable the IMP Port to be in the same VLAN as the other ports
+	 * on a per-port basis such that we only have Port i and IMP in
+	 * the same VLAN.
+	 */
+	for (i = 0; i < priv->hw_params.num_ports; i++) {
+		if (!((1 << i) & ds->enabled_port_mask))
+			continue;
+
+		reg = core_readl(priv, CORE_PORT_VLAN_CTL_PORT(i));
+		reg |= (1 << cpu_port);
+		core_writel(priv, reg, CORE_PORT_VLAN_CTL_PORT(i));
+	}
+}
+
+static void bcm_sf2_brcm_hdr_setup(struct bcm_sf2_priv *priv, int port)
+{
+	u32 reg, val;
+
+	/* Resolve which bit controls the Broadcom tag */
+	switch (port) {
+	case 8:
+		val = BRCM_HDR_EN_P8;
+		break;
+	case 7:
+		val = BRCM_HDR_EN_P7;
+		break;
+	case 5:
+		val = BRCM_HDR_EN_P5;
+		break;
+	default:
+		val = 0;
+		break;
+	}
+
+	/* Enable Broadcom tags for IMP port */
+	reg = core_readl(priv, CORE_BRCM_HDR_CTRL);
+	reg |= val;
+	core_writel(priv, reg, CORE_BRCM_HDR_CTRL);
+
+	/* Enable reception Broadcom tag for CPU TX (switch RX) to
+	 * allow us to tag outgoing frames
+	 */
+	reg = core_readl(priv, CORE_BRCM_HDR_RX_DIS);
+	reg &= ~(1 << port);
+	core_writel(priv, reg, CORE_BRCM_HDR_RX_DIS);
+
+	/* Enable transmission of Broadcom tags from the switch (CPU RX) to
+	 * allow delivering frames to the per-port net_devices
+	 */
+	reg = core_readl(priv, CORE_BRCM_HDR_TX_DIS);
+	reg &= ~(1 << port);
+	core_writel(priv, reg, CORE_BRCM_HDR_TX_DIS);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void bcm_sf2_imp_setup(struct dsa_switch *ds, int port)
 {
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
 	unsigned int i;
 	u32 reg, offset;
 
+<<<<<<< HEAD
 	if (priv->type == BCM7445_DEVICE_ID)
 		offset = CORE_STS_OVERRIDE_IMP;
 	else
 		offset = CORE_STS_OVERRIDE_IMP2;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable the port memories */
 	reg = core_readl(priv, CORE_MEM_PSM_VDD_CTRL);
 	reg &= ~P_TXQ_PSM_VDD(port);
 	core_writel(priv, reg, CORE_MEM_PSM_VDD_CTRL);
 
+<<<<<<< HEAD
 	/* Enable Broadcast, Multicast, Unicast forwarding to IMP port */
 	reg = core_readl(priv, CORE_IMP_CTL);
 	reg |= (RX_BCST_EN | RX_MCST_EN | RX_UCST_EN);
 	reg &= ~(RX_DIS | TX_DIS);
 	core_writel(priv, reg, CORE_IMP_CTL);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Enable forwarding */
 	core_writel(priv, SW_FWDG_EN, CORE_SWMODE);
 
@@ -73,12 +153,52 @@ static void bcm_sf2_imp_setup(struct dsa_switch *ds, int port)
 		reg |= i << (PRT_TO_QID_SHIFT * i);
 	core_writel(priv, reg, CORE_PORT_TC2_QOS_MAP_PORT(port));
 
+<<<<<<< HEAD
 	b53_brcm_hdr_setup(ds, port);
 
 	/* Force link status for IMP port */
 	reg = core_readl(priv, offset);
 	reg |= (MII_SW_OR | LINK_STS);
 	core_writel(priv, reg, offset);
+=======
+	bcm_sf2_brcm_hdr_setup(priv, port);
+
+	if (port == 8) {
+		if (priv->type == BCM7445_DEVICE_ID)
+			offset = CORE_STS_OVERRIDE_IMP;
+		else
+			offset = CORE_STS_OVERRIDE_IMP2;
+
+		/* Force link status for IMP port */
+		reg = core_readl(priv, offset);
+		reg |= (MII_SW_OR | LINK_STS);
+		reg &= ~GMII_SPEED_UP_2G;
+		core_writel(priv, reg, offset);
+
+		/* Enable Broadcast, Multicast, Unicast forwarding to IMP port */
+		reg = core_readl(priv, CORE_IMP_CTL);
+		reg |= (RX_BCST_EN | RX_MCST_EN | RX_UCST_EN);
+		reg &= ~(RX_DIS | TX_DIS);
+		core_writel(priv, reg, CORE_IMP_CTL);
+	} else {
+		reg = core_readl(priv, CORE_G_PCTL_PORT(port));
+		reg &= ~(RX_DIS | TX_DIS);
+		core_writel(priv, reg, CORE_G_PCTL_PORT(port));
+	}
+}
+
+static void bcm_sf2_eee_enable_set(struct dsa_switch *ds, int port, bool enable)
+{
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	u32 reg;
+
+	reg = core_readl(priv, CORE_EEE_EN_CTRL);
+	if (enable)
+		reg |= 1 << port;
+	else
+		reg &= ~(1 << port);
+	core_writel(priv, reg, CORE_EEE_EN_CTRL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bcm_sf2_gphy_enable_set(struct dsa_switch *ds, bool enable)
@@ -158,6 +278,10 @@ static int bcm_sf2_port_setup(struct dsa_switch *ds, int port,
 			      struct phy_device *phy)
 {
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+<<<<<<< HEAD
+=======
+	s8 cpu_port = ds->dst->cpu_dp->index;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 	u32 reg;
 
@@ -166,6 +290,7 @@ static int bcm_sf2_port_setup(struct dsa_switch *ds, int port,
 	reg &= ~P_TXQ_PSM_VDD(port);
 	core_writel(priv, reg, CORE_MEM_PSM_VDD_CTRL);
 
+<<<<<<< HEAD
 	/* Enable learning */
 	reg = core_readl(priv, CORE_DIS_LEARN);
 	reg &= ~BIT(port);
@@ -174,6 +299,11 @@ static int bcm_sf2_port_setup(struct dsa_switch *ds, int port,
 	/* Enable Broadcom tags for that port if requested */
 	if (priv->brcm_tag_mask & BIT(port))
 		b53_brcm_hdr_setup(ds, port);
+=======
+	/* Enable Broadcom tags for that port if requested */
+	if (priv->brcm_tag_mask & BIT(port))
+		bcm_sf2_brcm_hdr_setup(priv, port);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Configure Traffic Class to QoS mapping, allow each priority to map
 	 * to a different queue number
@@ -183,6 +313,12 @@ static int bcm_sf2_port_setup(struct dsa_switch *ds, int port,
 		reg |= i << (PRT_TO_QID_SHIFT * i);
 	core_writel(priv, reg, CORE_PORT_TC2_QOS_MAP_PORT(port));
 
+<<<<<<< HEAD
+=======
+	/* Clear the Rx and Tx disable bits and set to no spanning tree */
+	core_writel(priv, 0, CORE_G_PCTL_PORT(port));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Re-enable the GPHY and re-apply workarounds */
 	if (priv->int_phy_mask & 1 << port && priv->hw_params.num_gphy == 1) {
 		bcm_sf2_gphy_enable_set(ds, true);
@@ -205,6 +341,7 @@ static int bcm_sf2_port_setup(struct dsa_switch *ds, int port,
 	if (port == priv->moca_port)
 		bcm_sf2_port_intr_enable(priv, port);
 
+<<<<<<< HEAD
 	/* Set per-queue pause threshold to 32 */
 	core_writel(priv, 32, CORE_TXQ_THD_PAUSE_QN_PORT(port));
 
@@ -219,12 +356,32 @@ static int bcm_sf2_port_setup(struct dsa_switch *ds, int port,
 	}
 
 	return b53_enable_port(ds, port, phy);
+=======
+	/* Set this port, and only this one to be in the default VLAN,
+	 * if member of a bridge, restore its membership prior to
+	 * bringing down this port.
+	 */
+	reg = core_readl(priv, CORE_PORT_VLAN_CTL_PORT(port));
+	reg &= ~PORT_VLAN_CTRL_MASK;
+	reg |= (1 << port);
+	reg |= priv->dev->ports[port].vlan_ctl_mask;
+	core_writel(priv, reg, CORE_PORT_VLAN_CTL_PORT(port));
+
+	bcm_sf2_imp_vlan_setup(ds, cpu_port);
+
+	/* If EEE was enabled, restore it */
+	if (priv->port_sts[port].eee.eee_enabled)
+		bcm_sf2_eee_enable_set(ds, port, true);
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bcm_sf2_port_disable(struct dsa_switch *ds, int port,
 				 struct phy_device *phy)
 {
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+<<<<<<< HEAD
 	u32 reg;
 
 	/* Disable learning while in WoL mode */
@@ -234,6 +391,12 @@ static void bcm_sf2_port_disable(struct dsa_switch *ds, int port,
 		core_writel(priv, reg, CORE_DIS_LEARN);
 		return;
 	}
+=======
+	u32 off, reg;
+
+	if (priv->wol_ports_mask & (1 << port))
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (port == priv->moca_port)
 		bcm_sf2_port_intr_disable(priv, port);
@@ -241,7 +404,18 @@ static void bcm_sf2_port_disable(struct dsa_switch *ds, int port,
 	if (priv->int_phy_mask & 1 << port && priv->hw_params.num_gphy == 1)
 		bcm_sf2_gphy_enable_set(ds, false);
 
+<<<<<<< HEAD
 	b53_disable_port(ds, port, phy);
+=======
+	if (dsa_is_cpu_port(ds, port))
+		off = CORE_IMP_CTL;
+	else
+		off = CORE_G_PCTL_PORT(port);
+
+	reg = core_readl(priv, off);
+	reg |= RX_DIS | TX_DIS;
+	core_writel(priv, reg, off);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Power down the port memory */
 	reg = core_readl(priv, CORE_MEM_PSM_VDD_CTRL);
@@ -249,6 +423,50 @@ static void bcm_sf2_port_disable(struct dsa_switch *ds, int port,
 	core_writel(priv, reg, CORE_MEM_PSM_VDD_CTRL);
 }
 
+<<<<<<< HEAD
+=======
+/* Returns 0 if EEE was not enabled, or 1 otherwise
+ */
+static int bcm_sf2_eee_init(struct dsa_switch *ds, int port,
+			    struct phy_device *phy)
+{
+	int ret;
+
+	ret = phy_init_eee(phy, 0);
+	if (ret)
+		return 0;
+
+	bcm_sf2_eee_enable_set(ds, port, true);
+
+	return 1;
+}
+
+static int bcm_sf2_sw_get_mac_eee(struct dsa_switch *ds, int port,
+				  struct ethtool_eee *e)
+{
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	struct ethtool_eee *p = &priv->port_sts[port].eee;
+	u32 reg;
+
+	reg = core_readl(priv, CORE_EEE_LPI_INDICATE);
+	e->eee_enabled = p->eee_enabled;
+	e->eee_active = !!(reg & (1 << port));
+
+	return 0;
+}
+
+static int bcm_sf2_sw_set_mac_eee(struct dsa_switch *ds, int port,
+				  struct ethtool_eee *e)
+{
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	struct ethtool_eee *p = &priv->port_sts[port].eee;
+
+	p->eee_enabled = e->eee_enabled;
+	bcm_sf2_eee_enable_set(ds, port, e->eee_enabled);
+
+	return 0;
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int bcm_sf2_sw_indir_rw(struct bcm_sf2_priv *priv, int op, int addr,
 			       int regnum, u16 val)
@@ -303,17 +521,28 @@ static int bcm_sf2_sw_mdio_write(struct mii_bus *bus, int addr, int regnum,
 	 * send them to our master MDIO bus controller
 	 */
 	if (addr == BRCM_PSEUDO_PHY_ADDR && priv->indir_phy_mask & BIT(addr))
+<<<<<<< HEAD
 		bcm_sf2_sw_indir_rw(priv, 0, addr, regnum, val);
 	else
 		mdiobus_write_nested(priv->master_mii_bus, addr, regnum, val);
 
 	return 0;
+=======
+		return bcm_sf2_sw_indir_rw(priv, 0, addr, regnum, val);
+	else
+		return mdiobus_write_nested(priv->master_mii_bus, addr,
+				regnum, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static irqreturn_t bcm_sf2_switch_0_isr(int irq, void *dev_id)
 {
+<<<<<<< HEAD
 	struct dsa_switch *ds = dev_id;
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+=======
+	struct bcm_sf2_priv *priv = dev_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->irq0_stat = intrl2_0_readl(priv, INTRL2_CPU_STATUS) &
 				~priv->irq0_mask;
@@ -324,13 +553,18 @@ static irqreturn_t bcm_sf2_switch_0_isr(int irq, void *dev_id)
 
 static irqreturn_t bcm_sf2_switch_1_isr(int irq, void *dev_id)
 {
+<<<<<<< HEAD
 	struct dsa_switch *ds = dev_id;
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+=======
+	struct bcm_sf2_priv *priv = dev_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->irq1_stat = intrl2_1_readl(priv, INTRL2_CPU_STATUS) &
 				~priv->irq1_mask;
 	intrl2_1_writel(priv, priv->irq1_stat, INTRL2_CPU_CLEAR);
 
+<<<<<<< HEAD
 	if (priv->irq1_stat & P_LINK_UP_IRQ(P7_IRQ_OFF)) {
 		priv->port_sts[7].link = true;
 		dsa_port_phylink_mac_change(ds, 7, true);
@@ -339,6 +573,12 @@ static irqreturn_t bcm_sf2_switch_1_isr(int irq, void *dev_id)
 		priv->port_sts[7].link = false;
 		dsa_port_phylink_mac_change(ds, 7, false);
 	}
+=======
+	if (priv->irq1_stat & P_LINK_UP_IRQ(P7_IRQ_OFF))
+		priv->port_sts[7].link = 1;
+	if (priv->irq1_stat & P_LINK_DOWN_IRQ(P7_IRQ_OFF))
+		priv->port_sts[7].link = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return IRQ_HANDLED;
 }
@@ -455,8 +695,17 @@ static int bcm_sf2_mdio_register(struct dsa_switch *ds)
 	priv->slave_mii_bus->parent = ds->dev->parent;
 	priv->slave_mii_bus->phy_mask = ~priv->indir_phy_mask;
 
+<<<<<<< HEAD
 	err = of_mdiobus_register(priv->slave_mii_bus, dn);
 	if (err && dn)
+=======
+	if (dn)
+		err = of_mdiobus_register(priv->slave_mii_bus, dn);
+	else
+		err = mdiobus_register(priv->slave_mii_bus);
+
+	if (err)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		of_node_put(dn);
 
 	return err;
@@ -481,6 +730,7 @@ static u32 bcm_sf2_sw_get_phy_flags(struct dsa_switch *ds, int port)
 	return priv->hw_params.gphy_rev;
 }
 
+<<<<<<< HEAD
 static void bcm_sf2_sw_validate(struct dsa_switch *ds, int port,
 				unsigned long *supported,
 				struct phylink_link_state *state)
@@ -531,6 +781,15 @@ static void bcm_sf2_sw_mac_config(struct dsa_switch *ds, int port,
 {
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
 	u32 id_mode_dis = 0, port_mode;
+=======
+static void bcm_sf2_sw_adjust_link(struct dsa_switch *ds, int port,
+				   struct phy_device *phydev)
+{
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	struct ethtool_eee *p = &priv->port_sts[port].eee;
+	u32 id_mode_dis = 0, port_mode;
+	const char *str = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 reg, offset;
 
 	if (priv->type == BCM7445_DEVICE_ID)
@@ -538,6 +797,7 @@ static void bcm_sf2_sw_mac_config(struct dsa_switch *ds, int port,
 	else
 		offset = CORE_STS_OVERRIDE_GMIIP2_PORT(port);
 
+<<<<<<< HEAD
 	switch (state->interface) {
 	case PHY_INTERFACE_MODE_RGMII:
 		id_mode_dis = 1;
@@ -558,28 +818,80 @@ static void bcm_sf2_sw_mac_config(struct dsa_switch *ds, int port,
 
 	/* Clear id_mode_dis bit, and the existing port mode, let
 	 * RGMII_MODE_EN bet set by mac_link_{up,down}
+=======
+	switch (phydev->interface) {
+	case PHY_INTERFACE_MODE_RGMII:
+		str = "RGMII (no delay)";
+		id_mode_dis = 1;
+	case PHY_INTERFACE_MODE_RGMII_TXID:
+		if (!str)
+			str = "RGMII (TX delay)";
+		port_mode = EXT_GPHY;
+		break;
+	case PHY_INTERFACE_MODE_MII:
+		str = "MII";
+		port_mode = EXT_EPHY;
+		break;
+	case PHY_INTERFACE_MODE_REVMII:
+		str = "Reverse MII";
+		port_mode = EXT_REVMII;
+		break;
+	default:
+		/* All other PHYs: internal and MoCA */
+		goto force_link;
+	}
+
+	/* If the link is down, just disable the interface to conserve power */
+	if (!phydev->link) {
+		reg = reg_readl(priv, REG_RGMII_CNTRL_P(port));
+		reg &= ~RGMII_MODE_EN;
+		reg_writel(priv, reg, REG_RGMII_CNTRL_P(port));
+		goto force_link;
+	}
+
+	/* Clear id_mode_dis bit, and the existing port mode, but
+	 * make sure we enable the RGMII block for data to pass
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	reg = reg_readl(priv, REG_RGMII_CNTRL_P(port));
 	reg &= ~ID_MODE_DIS;
 	reg &= ~(PORT_MODE_MASK << PORT_MODE_SHIFT);
 	reg &= ~(RX_PAUSE_EN | TX_PAUSE_EN);
 
+<<<<<<< HEAD
 	reg |= port_mode;
 	if (id_mode_dis)
 		reg |= ID_MODE_DIS;
 
 	if (state->pause & MLO_PAUSE_TXRX_MASK) {
 		if (state->pause & MLO_PAUSE_TX)
+=======
+	reg |= port_mode | RGMII_MODE_EN;
+	if (id_mode_dis)
+		reg |= ID_MODE_DIS;
+
+	if (phydev->pause) {
+		if (phydev->asym_pause)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg |= TX_PAUSE_EN;
 		reg |= RX_PAUSE_EN;
 	}
 
 	reg_writel(priv, reg, REG_RGMII_CNTRL_P(port));
 
+<<<<<<< HEAD
 force_link:
 	/* Force link settings detected from the PHY */
 	reg = SW_OVERRIDE;
 	switch (state->speed) {
+=======
+	pr_info("Port %d configured for %s\n", port, str);
+
+force_link:
+	/* Force link settings detected from the PHY */
+	reg = SW_OVERRIDE;
+	switch (phydev->speed) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case SPEED_1000:
 		reg |= SPDSTS_1000 << SPEED_SHIFT;
 		break;
@@ -588,6 +900,7 @@ force_link:
 		break;
 	}
 
+<<<<<<< HEAD
 	if (state->link)
 		reg |= LINK_STS;
 	if (state->duplex == DUPLEX_FULL)
@@ -643,6 +956,35 @@ static void bcm_sf2_sw_fixed_state(struct dsa_switch *ds, int port,
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
 
 	status->link = false;
+=======
+	if (phydev->link)
+		reg |= LINK_STS;
+	if (phydev->duplex == DUPLEX_FULL)
+		reg |= DUPLX_MODE;
+
+	core_writel(priv, reg, offset);
+
+	if (!phydev->is_pseudo_fixed_link)
+		p->eee_enabled = bcm_sf2_eee_init(ds, port, phydev);
+}
+
+static void bcm_sf2_sw_fixed_link_update(struct dsa_switch *ds, int port,
+					 struct fixed_phy_status *status)
+{
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	u32 duplex, pause, offset;
+	u32 reg;
+
+	if (priv->type == BCM7445_DEVICE_ID)
+		offset = CORE_STS_OVERRIDE_GMIIP_PORT(port);
+	else
+		offset = CORE_STS_OVERRIDE_GMIIP2_PORT(port);
+
+	duplex = core_readl(priv, CORE_DUPSTS);
+	pause = core_readl(priv, CORE_PAUSESTS);
+
+	status->link = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* MoCA port is special as we do not get link status from CORE_LNKSTS,
 	 * which means that we need to force the link at the port override
@@ -660,6 +1002,7 @@ static void bcm_sf2_sw_fixed_state(struct dsa_switch *ds, int port,
 		 * state machine and make it go in PHY_FORCING state instead.
 		 */
 		if (!status->link)
+<<<<<<< HEAD
 			netif_carrier_off(ds->ports[port].slave);
 		status->duplex = DUPLEX_FULL;
 	} else {
@@ -679,6 +1022,31 @@ static void bcm_sf2_enable_acb(struct dsa_switch *ds)
 	reg &= ~(ACB_FLUSH_MASK << ACB_FLUSH_SHIFT);
 	reg |= ACB_EN | ACB_ALGORITHM;
 	acb_writel(priv, reg, ACB_CONTROL);
+=======
+			netif_carrier_off(ds->ports[port].netdev);
+		status->duplex = 1;
+	} else {
+		status->link = 1;
+		status->duplex = !!(duplex & (1 << port));
+	}
+
+	reg = core_readl(priv, offset);
+	reg |= SW_OVERRIDE;
+	if (status->link)
+		reg |= LINK_STS;
+	else
+		reg &= ~LINK_STS;
+	core_writel(priv, reg, offset);
+
+	if ((pause & (1 << port)) &&
+	    (pause & (1 << (port + PAUSESTS_TX_PAUSE_SHIFT)))) {
+		status->asym_pause = 1;
+		status->pause = 1;
+	}
+
+	if (pause & (1 << port))
+		status->pause = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int bcm_sf2_sw_suspend(struct dsa_switch *ds)
@@ -692,8 +1060,14 @@ static int bcm_sf2_sw_suspend(struct dsa_switch *ds)
 	 * port, the other ones have already been disabled during
 	 * bcm_sf2_sw_setup
 	 */
+<<<<<<< HEAD
 	for (port = 0; port < ds->num_ports; port++) {
 		if (dsa_is_user_port(ds, port) || dsa_is_cpu_port(ds, port))
+=======
+	for (port = 0; port < DSA_MAX_PORTS; port++) {
+		if ((1 << port) & ds->enabled_port_mask ||
+		    dsa_is_cpu_port(ds, port))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bcm_sf2_port_disable(ds, port, NULL);
 	}
 
@@ -722,6 +1096,7 @@ static int bcm_sf2_sw_resume(struct dsa_switch *ds)
 static void bcm_sf2_sw_get_wol(struct dsa_switch *ds, int port,
 			       struct ethtool_wolinfo *wol)
 {
+<<<<<<< HEAD
 	struct net_device *p = ds->ports[port].cpu_dp->master;
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
 	struct ethtool_wolinfo pwol = { };
@@ -729,6 +1104,14 @@ static void bcm_sf2_sw_get_wol(struct dsa_switch *ds, int port,
 	/* Get the parent device WoL settings */
 	if (p->ethtool_ops->get_wol)
 		p->ethtool_ops->get_wol(p, &pwol);
+=======
+	struct net_device *p = ds->dst->cpu_dp->netdev;
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	struct ethtool_wolinfo pwol;
+
+	/* Get the parent device WoL settings */
+	p->ethtool_ops->get_wol(p, &pwol);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Advertise the parent device supported settings */
 	wol->supported = pwol.supported;
@@ -746,6 +1129,7 @@ static void bcm_sf2_sw_get_wol(struct dsa_switch *ds, int port,
 static int bcm_sf2_sw_set_wol(struct dsa_switch *ds, int port,
 			      struct ethtool_wolinfo *wol)
 {
+<<<<<<< HEAD
 	struct net_device *p = ds->ports[port].cpu_dp->master;
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
 	s8 cpu_port = ds->ports[port].cpu_dp->index;
@@ -753,6 +1137,14 @@ static int bcm_sf2_sw_set_wol(struct dsa_switch *ds, int port,
 
 	if (p->ethtool_ops->get_wol)
 		p->ethtool_ops->get_wol(p, &pwol);
+=======
+	struct net_device *p = ds->dst->cpu_dp->netdev;
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	s8 cpu_port = ds->dst->cpu_dp->index;
+	struct ethtool_wolinfo pwol;
+
+	p->ethtool_ops->get_wol(p, &pwol);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (wol->wolopts & ~pwol.supported)
 		return -EINVAL;
 
@@ -773,6 +1165,48 @@ static int bcm_sf2_sw_set_wol(struct dsa_switch *ds, int port,
 	return p->ethtool_ops->set_wol(p, wol);
 }
 
+<<<<<<< HEAD
+=======
+static int bcm_sf2_vlan_op_wait(struct bcm_sf2_priv *priv)
+{
+	unsigned int timeout = 10;
+	u32 reg;
+
+	do {
+		reg = core_readl(priv, CORE_ARLA_VTBL_RWCTRL);
+		if (!(reg & ARLA_VTBL_STDN))
+			return 0;
+
+		usleep_range(1000, 2000);
+	} while (timeout--);
+
+	return -ETIMEDOUT;
+}
+
+static int bcm_sf2_vlan_op(struct bcm_sf2_priv *priv, u8 op)
+{
+	core_writel(priv, ARLA_VTBL_STDN | op, CORE_ARLA_VTBL_RWCTRL);
+
+	return bcm_sf2_vlan_op_wait(priv);
+}
+
+static void bcm_sf2_sw_configure_vlan(struct dsa_switch *ds)
+{
+	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
+	unsigned int port;
+
+	/* Clear all VLANs */
+	bcm_sf2_vlan_op(priv, ARLA_VTBL_CMD_CLEAR);
+
+	for (port = 0; port < priv->hw_params.num_ports; port++) {
+		if (!((1 << port) & ds->enabled_port_mask))
+			continue;
+
+		core_writel(priv, 1, CORE_DEFAULT_1Q_TAG_P(port));
+	}
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bcm_sf2_sw_setup(struct dsa_switch *ds)
 {
 	struct bcm_sf2_priv *priv = bcm_sf2_to_priv(ds);
@@ -781,7 +1215,11 @@ static int bcm_sf2_sw_setup(struct dsa_switch *ds)
 	/* Enable all valid ports and disable those unused */
 	for (port = 0; port < priv->hw_params.num_ports; port++) {
 		/* IMP port receives special treatment */
+<<<<<<< HEAD
 		if (dsa_is_user_port(ds, port))
+=======
+		if ((1 << port) & ds->enabled_port_mask)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bcm_sf2_port_setup(ds, port, NULL);
 		else if (dsa_is_cpu_port(ds, port))
 			bcm_sf2_imp_setup(ds, port);
@@ -789,8 +1227,12 @@ static int bcm_sf2_sw_setup(struct dsa_switch *ds)
 			bcm_sf2_port_disable(ds, port, NULL);
 	}
 
+<<<<<<< HEAD
 	b53_configure_vlan(ds);
 	bcm_sf2_enable_acb(ds);
+=======
+	bcm_sf2_sw_configure_vlan(ds);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -895,11 +1337,16 @@ static const struct b53_io_ops bcm_sf2_io_ops = {
 };
 
 static const struct dsa_switch_ops bcm_sf2_ops = {
+<<<<<<< HEAD
 	.get_tag_protocol	= b53_get_tag_protocol,
+=======
+	.get_tag_protocol	= bcm_sf2_sw_get_tag_protocol,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.setup			= bcm_sf2_sw_setup,
 	.get_strings		= b53_get_strings,
 	.get_ethtool_stats	= b53_get_ethtool_stats,
 	.get_sset_count		= b53_get_sset_count,
+<<<<<<< HEAD
 	.get_ethtool_phy_stats	= b53_get_ethtool_phy_stats,
 	.get_phy_flags		= bcm_sf2_sw_get_phy_flags,
 	.phylink_validate	= bcm_sf2_sw_validate,
@@ -907,14 +1354,24 @@ static const struct dsa_switch_ops bcm_sf2_ops = {
 	.phylink_mac_link_down	= bcm_sf2_sw_mac_link_down,
 	.phylink_mac_link_up	= bcm_sf2_sw_mac_link_up,
 	.phylink_fixed_state	= bcm_sf2_sw_fixed_state,
+=======
+	.get_phy_flags		= bcm_sf2_sw_get_phy_flags,
+	.adjust_link		= bcm_sf2_sw_adjust_link,
+	.fixed_link_update	= bcm_sf2_sw_fixed_link_update,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.suspend		= bcm_sf2_sw_suspend,
 	.resume			= bcm_sf2_sw_resume,
 	.get_wol		= bcm_sf2_sw_get_wol,
 	.set_wol		= bcm_sf2_sw_set_wol,
 	.port_enable		= bcm_sf2_port_setup,
 	.port_disable		= bcm_sf2_port_disable,
+<<<<<<< HEAD
 	.get_mac_eee		= b53_get_mac_eee,
 	.set_mac_eee		= b53_set_mac_eee,
+=======
+	.get_mac_eee		= bcm_sf2_sw_get_mac_eee,
+	.set_mac_eee		= bcm_sf2_sw_set_mac_eee,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.port_bridge_join	= b53_br_join,
 	.port_bridge_leave	= b53_br_leave,
 	.port_stp_state_set	= b53_br_set_stp_state,
@@ -993,9 +1450,12 @@ static const struct of_device_id bcm_sf2_of_match[] = {
 	{ .compatible = "brcm,bcm7278-switch-v4.0",
 	  .data = &bcm_sf2_7278_data
 	},
+<<<<<<< HEAD
 	{ .compatible = "brcm,bcm7278-switch-v4.8",
 	  .data = &bcm_sf2_7278_data
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(of, bcm_sf2_of_match);
@@ -1008,6 +1468,10 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
 	const struct bcm_sf2_of_data *data;
 	struct b53_platform_data *pdata;
 	struct dsa_switch_ops *ops;
+<<<<<<< HEAD
+=======
+	struct device_node *ports;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bcm_sf2_priv *priv;
 	struct b53_device *dev;
 	struct dsa_switch *ds;
@@ -1069,9 +1533,20 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
 	 * permanently used
 	 */
 	set_bit(0, priv->cfp.used);
+<<<<<<< HEAD
 	set_bit(0, priv->cfp.unique);
 
 	bcm_sf2_identify_ports(priv, dn->child);
+=======
+
+	/* Balance of_node_put() done by of_find_node_by_name() */
+	of_node_get(dn);
+	ports = of_find_node_by_name(dn, "ports");
+	if (ports) {
+		bcm_sf2_identify_ports(priv, ports);
+		of_node_put(ports);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv->irq0 = irq_of_parse_and_map(dn, 0);
 	priv->irq1 = irq_of_parse_and_map(dn, 1);
@@ -1093,12 +1568,22 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	bcm_sf2_gphy_enable_set(priv->dev->ds, true);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = bcm_sf2_mdio_register(ds);
 	if (ret) {
 		pr_err("failed to register MDIO bus\n");
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	bcm_sf2_gphy_enable_set(priv->dev->ds, false);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = bcm_sf2_cfp_rst(priv);
 	if (ret) {
 		pr_err("failed to reset CFP\n");
@@ -1109,14 +1594,22 @@ static int bcm_sf2_sw_probe(struct platform_device *pdev)
 	bcm_sf2_intr_disable(priv);
 
 	ret = devm_request_irq(&pdev->dev, priv->irq0, bcm_sf2_switch_0_isr, 0,
+<<<<<<< HEAD
 			       "switch_0", ds);
+=======
+			       "switch_0", priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("failed to request switch_0 IRQ\n");
 		goto out_mdio;
 	}
 
 	ret = devm_request_irq(&pdev->dev, priv->irq1, bcm_sf2_switch_1_isr, 0,
+<<<<<<< HEAD
 			       "switch_1", ds);
+=======
+			       "switch_1", priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0) {
 		pr_err("failed to request switch_1 IRQ\n");
 		goto out_mdio;

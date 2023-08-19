@@ -798,8 +798,13 @@ static int zx_dma_probe(struct platform_device *op)
 		return -ENOMEM;
 
 	/* init phy channel */
+<<<<<<< HEAD
 	d->phy = devm_kcalloc(&op->dev,
 		d->dma_channels, sizeof(struct zx_dma_phy), GFP_KERNEL);
+=======
+	d->phy = devm_kzalloc(&op->dev,
+		d->dma_channels * sizeof(struct zx_dma_phy), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d->phy)
 		return -ENOMEM;
 
@@ -834,8 +839,13 @@ static int zx_dma_probe(struct platform_device *op)
 	d->slave.residue_granularity = DMA_RESIDUE_GRANULARITY_SEGMENT;
 
 	/* init virtual channel */
+<<<<<<< HEAD
 	d->chans = devm_kcalloc(&op->dev,
 		d->dma_requests, sizeof(struct zx_dma_chan), GFP_KERNEL);
+=======
+	d->chans = devm_kzalloc(&op->dev,
+		d->dma_requests * sizeof(struct zx_dma_chan), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!d->chans)
 		return -ENOMEM;
 

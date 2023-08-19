@@ -18,7 +18,11 @@
 #include <linux/serial.h>
 #include <linux/tty.h>
 #include <linux/serial_8250.h>
+<<<<<<< HEAD
 #include <linux/gpio/machine.h>
+=======
+#include <linux/i2c-gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/types.h>
 #include <asm/setup.h>
 #include <asm/memory.h>
@@ -50,6 +54,7 @@ static struct platform_device avila_flash = {
 	.resource	= &avila_flash_resource,
 };
 
+<<<<<<< HEAD
 static struct gpiod_lookup_table avila_i2c_gpiod_table = {
 	.dev_id		= "i2c-gpio.0",
 	.table		= {
@@ -58,13 +63,22 @@ static struct gpiod_lookup_table avila_i2c_gpiod_table = {
 		GPIO_LOOKUP_IDX("IXP4XX_GPIO_CHIP", AVILA_SCL_PIN,
 				NULL, 1, GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
 	},
+=======
+static struct i2c_gpio_platform_data avila_i2c_gpio_data = {
+	.sda_pin	= AVILA_SDA_PIN,
+	.scl_pin	= AVILA_SCL_PIN,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct platform_device avila_i2c_gpio = {
 	.name		= "i2c-gpio",
 	.id		= 0,
 	.dev	 = {
+<<<<<<< HEAD
 		.platform_data	= NULL,
+=======
+		.platform_data	= &avila_i2c_gpio_data,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -153,8 +167,11 @@ static void __init avila_init(void)
 	avila_flash_resource.end =
 		IXP4XX_EXP_BUS_BASE(0) + ixp4xx_exp_bus_size - 1;
 
+<<<<<<< HEAD
 	gpiod_add_lookup_table(&avila_i2c_gpiod_table);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	platform_add_devices(avila_devices, ARRAY_SIZE(avila_devices));
 
 	avila_pata_resources[0].start = IXP4XX_EXP_BUS_BASE(1);

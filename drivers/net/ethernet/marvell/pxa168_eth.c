@@ -362,9 +362,15 @@ static void rxq_refill(struct net_device *dev)
 	}
 }
 
+<<<<<<< HEAD
 static inline void rxq_refill_timer_wrapper(struct timer_list *t)
 {
 	struct pxa168_eth_private *pep = from_timer(pep, t, timeout);
+=======
+static inline void rxq_refill_timer_wrapper(unsigned long data)
+{
+	struct pxa168_eth_private *pep = (void *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	napi_schedule(&pep->napi);
 }
 
@@ -1362,6 +1368,7 @@ static int pxa168_eth_do_ioctl(struct net_device *dev, struct ifreq *ifr,
 	return -EOPNOTSUPP;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_NET_POLL_CONTROLLER
 static void pxa168_eth_netpoll(struct net_device *dev)
 {
@@ -1371,6 +1378,8 @@ static void pxa168_eth_netpoll(struct net_device *dev)
 }
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void pxa168_get_drvinfo(struct net_device *dev,
 			       struct ethtool_drvinfo *info)
 {
@@ -1399,9 +1408,12 @@ static const struct net_device_ops pxa168_eth_netdev_ops = {
 	.ndo_do_ioctl		= pxa168_eth_do_ioctl,
 	.ndo_change_mtu		= pxa168_eth_change_mtu,
 	.ndo_tx_timeout		= pxa168_eth_tx_timeout,
+<<<<<<< HEAD
 #ifdef CONFIG_NET_POLL_CONTROLLER
 	.ndo_poll_controller    = pxa168_eth_netpoll,
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int pxa168_eth_probe(struct platform_device *pdev)
@@ -1508,7 +1520,13 @@ static int pxa168_eth_probe(struct platform_device *pdev)
 	netif_napi_add(dev, &pep->napi, pxa168_rx_poll, pep->rx_ring_size);
 
 	memset(&pep->timeout, 0, sizeof(struct timer_list));
+<<<<<<< HEAD
 	timer_setup(&pep->timeout, rxq_refill_timer_wrapper, 0);
+=======
+	init_timer(&pep->timeout);
+	pep->timeout.function = rxq_refill_timer_wrapper;
+	pep->timeout.data = (unsigned long)pep;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pep->smi_bus = mdiobus_alloc();
 	if (!pep->smi_bus) {

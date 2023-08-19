@@ -27,6 +27,7 @@
 
 #include <asm/cpuinfo.h>
 
+<<<<<<< HEAD
 /* Test the timer ticks to count, used in sync routine */
 inline void openrisc_timer_set(unsigned long count)
 {
@@ -35,6 +36,10 @@ inline void openrisc_timer_set(unsigned long count)
 
 /* Set the timer to trigger in delta cycles */
 inline void openrisc_timer_set_next(unsigned long delta)
+=======
+static int openrisc_timer_set_next_event(unsigned long delta,
+					 struct clock_event_device *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 c;
 
@@ -50,12 +55,16 @@ inline void openrisc_timer_set_next(unsigned long delta)
 	 * Keep timer in continuous mode always.
 	 */
 	mtspr(SPR_TTMR, SPR_TTMR_CR | SPR_TTMR_IE | c);
+<<<<<<< HEAD
 }
 
 static int openrisc_timer_set_next_event(unsigned long delta,
 					 struct clock_event_device *dev)
 {
 	openrisc_timer_set_next(delta);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -64,6 +73,7 @@ static int openrisc_timer_set_next_event(unsigned long delta,
  * timers) we cannot enable the PERIODIC feature.  The tick timer can run using
  * one-shot events, so no problem.
  */
+<<<<<<< HEAD
 DEFINE_PER_CPU(struct clock_event_device, clockevent_openrisc_timer);
 
 void openrisc_clockevent_init(void)
@@ -90,6 +100,15 @@ void openrisc_clockevent_init(void)
 					100, 0x0fffffff);
 
 }
+=======
+
+static struct clock_event_device clockevent_openrisc_timer = {
+	.name = "openrisc_timer_clockevent",
+	.features = CLOCK_EVT_FEAT_ONESHOT,
+	.rating = 300,
+	.set_next_event = openrisc_timer_set_next_event,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void timer_ack(void)
 {
@@ -113,9 +132,13 @@ static inline void timer_ack(void)
 irqreturn_t __irq_entry timer_interrupt(struct pt_regs *regs)
 {
 	struct pt_regs *old_regs = set_irq_regs(regs);
+<<<<<<< HEAD
 	unsigned int cpu = smp_processor_id();
 	struct clock_event_device *evt =
 		&per_cpu(clockevent_openrisc_timer, cpu);
+=======
+	struct clock_event_device *evt = &clockevent_openrisc_timer;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	timer_ack();
 
@@ -131,12 +154,30 @@ irqreturn_t __irq_entry timer_interrupt(struct pt_regs *regs)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
+=======
+static __init void openrisc_clockevent_init(void)
+{
+	clockevent_openrisc_timer.cpumask = cpumask_of(0);
+
+	/* We only have 28 bits */
+	clockevents_config_and_register(&clockevent_openrisc_timer,
+					cpuinfo.clock_frequency,
+					100, 0x0fffffff);
+
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * Clocksource: Based on OpenRISC timer/counter
  *
  * This sets up the OpenRISC Tick Timer as a clock source.  The tick timer
  * is 32 bits wide and runs at the CPU clock frequency.
  */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u64 openrisc_timer_read(struct clocksource *cs)
 {
 	return (u64) mfspr(SPR_TTCR);
@@ -152,9 +193,13 @@ static struct clocksource openrisc_timer = {
 
 static int __init openrisc_timer_init(void)
 {
+<<<<<<< HEAD
 	struct cpuinfo_or1k *cpuinfo = &cpuinfo_or1k[smp_processor_id()];
 
 	if (clocksource_register_hz(&openrisc_timer, cpuinfo->clock_frequency))
+=======
+	if (clocksource_register_hz(&openrisc_timer, cpuinfo.clock_frequency))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		panic("failed to register clocksource");
 
 	/* Enable the incrementer: 'continuous' mode with interrupt disabled */

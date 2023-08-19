@@ -1,9 +1,26 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Texas Instruments' Message Manager Driver
  *
  * Copyright (C) 2015-2017 Texas Instruments Incorporated - http://www.ti.com/
  *	Nishanth Menon
+=======
+/*
+ * Texas Instruments' Message Manager Driver
+ *
+ * Copyright (C) 2015-2016 Texas Instruments Incorporated - http://www.ti.com/
+ *	Nishanth Menon
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed "as is" WITHOUT ANY WARRANTY of any
+ * kind, whether express or implied; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "%s: " fmt, __func__
@@ -25,6 +42,7 @@
 #define Q_STATE_OFFSET(queue)			((queue) * 0x4)
 #define Q_STATE_ENTRY_COUNT_MASK		(0xFFF000)
 
+<<<<<<< HEAD
 #define SPROXY_THREAD_OFFSET(tid) (0x1000 * (tid))
 #define SPROXY_THREAD_DATA_OFFSET(tid, reg) \
 	(SPROXY_THREAD_OFFSET(tid) + ((reg) * 0x4) + 0x4)
@@ -36,6 +54,8 @@
 #define SPROXY_THREAD_CTRL_OFFSET(tid) (0x1000 + SPROXY_THREAD_OFFSET(tid))
 #define SPROXY_THREAD_CTRL_DIR_MASK (0x1 << 31)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct ti_msgmgr_valid_queue_desc - SoC valid queues meant for this processor
  * @queue_id:	Queue Number for this path
@@ -53,6 +73,7 @@ struct ti_msgmgr_valid_queue_desc {
  * @queue_count:	Number of Queues
  * @max_message_size:	Message size in bytes
  * @max_messages:	Number of messages
+<<<<<<< HEAD
  * @data_first_reg:	First data register for proxy data region
  * @data_last_reg:	Last data register for proxy data region
  * @status_cnt_mask:	Mask for getting the status value
@@ -65,6 +86,16 @@ struct ti_msgmgr_valid_queue_desc {
  * @ctrl_region_name:	Name of the proxy control region
  * @num_valid_queues:	Number of valid queues
  * @is_sproxy:		Is this an Secure Proxy instance?
+=======
+ * @q_slices:		Number of queue engines
+ * @q_proxies:		Number of queue proxies per page
+ * @data_first_reg:	First data register for proxy data region
+ * @data_last_reg:	Last data register for proxy data region
+ * @tx_polled:		Do I need to use polled mechanism for tx
+ * @tx_poll_timeout_ms: Timeout in ms if polled
+ * @valid_queues:	List of Valid queues that the processor can access
+ * @num_valid_queues:	Number of valid queues
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This structure is used in of match data to describe how integration
  * for a specific compatible SoC is done.
@@ -73,6 +104,7 @@ struct ti_msgmgr_desc {
 	u8 queue_count;
 	u8 max_message_size;
 	u8 max_messages;
+<<<<<<< HEAD
 	u8 data_first_reg;
 	u8 data_last_reg;
 	u32 status_cnt_mask;
@@ -85,6 +117,16 @@ struct ti_msgmgr_desc {
 	const char *ctrl_region_name;
 	int num_valid_queues;
 	bool is_sproxy;
+=======
+	u8 q_slices;
+	u8 q_proxies;
+	u8 data_first_reg;
+	u8 data_last_reg;
+	bool tx_polled;
+	int tx_poll_timeout_ms;
+	const struct ti_msgmgr_valid_queue_desc *valid_queues;
+	int num_valid_queues;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -97,7 +139,10 @@ struct ti_msgmgr_desc {
  * @queue_buff_start: First register of Data Buffer
  * @queue_buff_end: Last (or confirmation) register of Data buffer
  * @queue_state: Queue status register
+<<<<<<< HEAD
  * @queue_ctrl: Queue Control register
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @chan:	Mailbox channel
  * @rx_buff:	Receive buffer pointer allocated at probe, max_message_size
  */
@@ -110,7 +155,10 @@ struct ti_queue_inst {
 	void __iomem *queue_buff_start;
 	void __iomem *queue_buff_end;
 	void __iomem *queue_state;
+<<<<<<< HEAD
 	void __iomem *queue_ctrl;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mbox_chan *chan;
 	u32 *rx_buff;
 };
@@ -121,7 +169,10 @@ struct ti_queue_inst {
  * @desc:	Description of the SoC integration
  * @queue_proxy_region:	Queue proxy region where queue buffers are located
  * @queue_state_debug_region:	Queue status register regions
+<<<<<<< HEAD
  * @queue_ctrl_region:	Queue Control register regions
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @num_valid_queues:	Number of valid queues defined for the processor
  *		Note: other queues are probably reserved for other processors
  *		in the SoC.
@@ -134,7 +185,10 @@ struct ti_msgmgr_inst {
 	const struct ti_msgmgr_desc *desc;
 	void __iomem *queue_proxy_region;
 	void __iomem *queue_state_debug_region;
+<<<<<<< HEAD
 	void __iomem *queue_ctrl_region;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 num_valid_queues;
 	struct ti_queue_inst *qinsts;
 	struct mbox_controller mbox;
@@ -143,29 +197,44 @@ struct ti_msgmgr_inst {
 
 /**
  * ti_msgmgr_queue_get_num_messages() - Get the number of pending messages
+<<<<<<< HEAD
  * @d:		Description of message manager
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @qinst:	Queue instance for which we check the number of pending messages
  *
  * Return: number of messages pending in the queue (0 == no pending messages)
  */
+<<<<<<< HEAD
 static inline int
 ti_msgmgr_queue_get_num_messages(const struct ti_msgmgr_desc *d,
 				 struct ti_queue_inst *qinst)
 {
 	u32 val;
 	u32 status_cnt_mask = d->status_cnt_mask;
+=======
+static inline int ti_msgmgr_queue_get_num_messages(struct ti_queue_inst *qinst)
+{
+	u32 val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We cannot use relaxed operation here - update may happen
 	 * real-time.
 	 */
+<<<<<<< HEAD
 	val = readl(qinst->queue_state) & status_cnt_mask;
 	val >>= __ffs(status_cnt_mask);
+=======
+	val = readl(qinst->queue_state) & Q_STATE_ENTRY_COUNT_MASK;
+	val >>= __ffs(Q_STATE_ENTRY_COUNT_MASK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return val;
 }
 
 /**
+<<<<<<< HEAD
  * ti_msgmgr_queue_is_error() - Check to see if there is queue error
  * @d:		Description of message manager
  * @qinst:	Queue instance for which we check the number of pending messages
@@ -191,6 +260,8 @@ static inline bool ti_msgmgr_queue_is_error(const struct ti_msgmgr_desc *d,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * ti_msgmgr_queue_rx_interrupt() - Interrupt handler for receive Queue
  * @irq:	Interrupt number
  * @p:		Channel Pointer
@@ -223,6 +294,7 @@ static irqreturn_t ti_msgmgr_queue_rx_interrupt(int irq, void *p)
 		return IRQ_NONE;
 	}
 
+<<<<<<< HEAD
 	desc = inst->desc;
 	if (ti_msgmgr_queue_is_error(desc, qinst)) {
 		dev_err(dev, "Error on Rx channel %s\n", qinst->name);
@@ -231,6 +303,10 @@ static irqreturn_t ti_msgmgr_queue_rx_interrupt(int irq, void *p)
 
 	/* Do I actually have messages to read? */
 	msg_count = ti_msgmgr_queue_get_num_messages(desc, qinst);
+=======
+	/* Do I actually have messages to read? */
+	msg_count = ti_msgmgr_queue_get_num_messages(qinst);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!msg_count) {
 		/* Shared IRQ? */
 		dev_dbg(dev, "Spurious event - 0 pending data!\n");
@@ -243,6 +319,10 @@ static irqreturn_t ti_msgmgr_queue_rx_interrupt(int irq, void *p)
 	 * of how many bytes I should be reading. Let the client figure this
 	 * out.. I just read the full message and pass it on..
 	 */
+<<<<<<< HEAD
+=======
+	desc = inst->desc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	message.len = desc->max_message_size;
 	message.buf = (u8 *)qinst->rx_buff;
 
@@ -285,20 +365,27 @@ static irqreturn_t ti_msgmgr_queue_rx_interrupt(int irq, void *p)
 static bool ti_msgmgr_queue_peek_data(struct mbox_chan *chan)
 {
 	struct ti_queue_inst *qinst = chan->con_priv;
+<<<<<<< HEAD
 	struct device *dev = chan->mbox->dev;
 	struct ti_msgmgr_inst *inst = dev_get_drvdata(dev);
 	const struct ti_msgmgr_desc *desc = inst->desc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int msg_count;
 
 	if (qinst->is_tx)
 		return false;
 
+<<<<<<< HEAD
 	if (ti_msgmgr_queue_is_error(desc, qinst)) {
 		dev_err(dev, "Error on channel %s\n", qinst->name);
 		return false;
 	}
 
 	msg_count = ti_msgmgr_queue_get_num_messages(desc, qinst);
+=======
+	msg_count = ti_msgmgr_queue_get_num_messages(qinst);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return msg_count ? true : false;
 }
@@ -312,14 +399,18 @@ static bool ti_msgmgr_queue_peek_data(struct mbox_chan *chan)
 static bool ti_msgmgr_last_tx_done(struct mbox_chan *chan)
 {
 	struct ti_queue_inst *qinst = chan->con_priv;
+<<<<<<< HEAD
 	struct device *dev = chan->mbox->dev;
 	struct ti_msgmgr_inst *inst = dev_get_drvdata(dev);
 	const struct ti_msgmgr_desc *desc = inst->desc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int msg_count;
 
 	if (!qinst->is_tx)
 		return false;
 
+<<<<<<< HEAD
 	if (ti_msgmgr_queue_is_error(desc, qinst)) {
 		dev_err(dev, "Error on channel %s\n", qinst->name);
 		return false;
@@ -331,6 +422,9 @@ static bool ti_msgmgr_last_tx_done(struct mbox_chan *chan)
 		/* In secure proxy, msg_count indicates how many we can send */
 		return msg_count ? true : false;
 	}
+=======
+	msg_count = ti_msgmgr_queue_get_num_messages(qinst);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* if we have any messages pending.. */
 	return msg_count ? false : true;
@@ -360,6 +454,7 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
 	}
 	desc = inst->desc;
 
+<<<<<<< HEAD
 	if (ti_msgmgr_queue_is_error(desc, qinst)) {
 		dev_err(dev, "Error on channel %s\n", qinst->name);
 		return false;
@@ -367,6 +462,10 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
 
 	if (desc->max_message_size < message->len) {
 		dev_err(dev, "Queue %s message length %zu > max %d\n",
+=======
+	if (desc->max_message_size < message->len) {
+		dev_err(dev, "Queue %s message length %d > max %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			qinst->name, message->len, desc->max_message_size);
 		return -EINVAL;
 	}
@@ -398,6 +497,7 @@ static int ti_msgmgr_send_data(struct mbox_chan *chan, void *data)
 }
 
 /**
+<<<<<<< HEAD
  *  ti_msgmgr_queue_rx_irq_req() - RX IRQ request
  *  @dev:	device pointer
  *  @d:		descriptor for ti_msgmgr
@@ -445,6 +545,8 @@ static int ti_msgmgr_queue_rx_irq_req(struct device *dev,
 }
 
 /**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * ti_msgmgr_queue_startup() - Startup queue
  * @chan:	Channel pointer
  *
@@ -452,6 +554,7 @@ static int ti_msgmgr_queue_rx_irq_req(struct device *dev,
  */
 static int ti_msgmgr_queue_startup(struct mbox_chan *chan)
 {
+<<<<<<< HEAD
 	struct device *dev = chan->mbox->dev;
 	struct ti_msgmgr_inst *inst = dev_get_drvdata(dev);
 	struct ti_queue_inst *qinst = chan->con_priv;
@@ -485,6 +588,21 @@ static int ti_msgmgr_queue_startup(struct mbox_chan *chan)
 		ret = ti_msgmgr_queue_rx_irq_req(dev, d, qinst, chan);
 		if (ret) {
 			kfree(qinst->rx_buff);
+=======
+	struct ti_queue_inst *qinst = chan->con_priv;
+	struct device *dev = chan->mbox->dev;
+	int ret;
+
+	if (!qinst->is_tx) {
+		/*
+		 * With the expectation that the IRQ might be shared in SoC
+		 */
+		ret = request_irq(qinst->irq, ti_msgmgr_queue_rx_interrupt,
+				  IRQF_SHARED, qinst->name, chan);
+		if (ret) {
+			dev_err(dev, "Unable to get IRQ %d on %s(res=%d)\n",
+				qinst->irq, qinst->name, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}
@@ -500,10 +618,15 @@ static void ti_msgmgr_queue_shutdown(struct mbox_chan *chan)
 {
 	struct ti_queue_inst *qinst = chan->con_priv;
 
+<<<<<<< HEAD
 	if (!qinst->is_tx) {
 		free_irq(qinst->irq, chan);
 		kfree(qinst->rx_buff);
 	}
+=======
+	if (!qinst->is_tx)
+		free_irq(qinst->irq, chan);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -520,13 +643,18 @@ static struct mbox_chan *ti_msgmgr_of_xlate(struct mbox_controller *mbox,
 	struct ti_msgmgr_inst *inst;
 	int req_qid, req_pid;
 	struct ti_queue_inst *qinst;
+<<<<<<< HEAD
 	const struct ti_msgmgr_desc *d;
 	int i, ncells;
+=======
+	int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	inst = container_of(mbox, struct ti_msgmgr_inst, mbox);
 	if (WARN_ON(!inst))
 		return ERR_PTR(-EINVAL);
 
+<<<<<<< HEAD
 	d = inst->desc;
 
 	if (d->is_sproxy)
@@ -552,6 +680,16 @@ static struct mbox_chan *ti_msgmgr_of_xlate(struct mbox_controller *mbox,
 		qinst = &inst->qinsts[req_pid];
 		return qinst->chan;
 	}
+=======
+	/* #mbox-cells is 2 */
+	if (p->args_count != 2) {
+		dev_err(inst->dev, "Invalid arguments in dt[%d] instead of 2\n",
+			p->args_count);
+		return ERR_PTR(-EINVAL);
+	}
+	req_qid = p->args[0];
+	req_pid = p->args[1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (qinst = inst->qinsts, i = 0; i < inst->num_valid_queues;
 	     i++, qinst++) {
@@ -559,7 +697,10 @@ static struct mbox_chan *ti_msgmgr_of_xlate(struct mbox_controller *mbox,
 			return qinst->chan;
 	}
 
+<<<<<<< HEAD
 err:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_err(inst->dev, "Queue ID %d, Proxy ID %d is wrong on %s\n",
 		req_qid, req_pid, p->np->name);
 	return ERR_PTR(-ENOENT);
@@ -586,8 +727,11 @@ static int ti_msgmgr_queue_setup(int idx, struct device *dev,
 				 struct ti_queue_inst *qinst,
 				 struct mbox_chan *chan)
 {
+<<<<<<< HEAD
 	char *dir;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	qinst->proxy_id = qd->proxy_id;
 	qinst->queue_id = qd->queue_id;
 
@@ -597,6 +741,7 @@ static int ti_msgmgr_queue_setup(int idx, struct device *dev,
 		return -ERANGE;
 	}
 
+<<<<<<< HEAD
 	if (d->is_sproxy) {
 		qinst->queue_buff_start = inst->queue_proxy_region +
 		    SPROXY_THREAD_DATA_OFFSET(qinst->proxy_id,
@@ -634,6 +779,42 @@ static int ti_msgmgr_queue_setup(int idx, struct device *dev,
 	/* Setup an error value for IRQ - Lazy allocation */
 	qinst->irq = -EINVAL;
 
+=======
+	qinst->is_tx = qd->is_tx;
+	snprintf(qinst->name, sizeof(qinst->name), "%s %s_%03d_%03d",
+		 dev_name(dev), qinst->is_tx ? "tx" : "rx", qinst->queue_id,
+		 qinst->proxy_id);
+
+	if (!qinst->is_tx) {
+		char of_rx_irq_name[7];
+
+		snprintf(of_rx_irq_name, sizeof(of_rx_irq_name),
+			 "rx_%03d", qinst->queue_id);
+
+		qinst->irq = of_irq_get_byname(np, of_rx_irq_name);
+		if (qinst->irq < 0) {
+			dev_crit(dev,
+				 "[%d]QID %d PID %d:No IRQ[%s]: %d\n",
+				 idx, qinst->queue_id, qinst->proxy_id,
+				 of_rx_irq_name, qinst->irq);
+			return qinst->irq;
+		}
+		/* Allocate usage buffer for rx */
+		qinst->rx_buff = devm_kzalloc(dev,
+					      d->max_message_size, GFP_KERNEL);
+		if (!qinst->rx_buff)
+			return -ENOMEM;
+	}
+
+	qinst->queue_buff_start = inst->queue_proxy_region +
+	    Q_DATA_OFFSET(qinst->proxy_id, qinst->queue_id, d->data_first_reg);
+	qinst->queue_buff_end = inst->queue_proxy_region +
+	    Q_DATA_OFFSET(qinst->proxy_id, qinst->queue_id, d->data_last_reg);
+	qinst->queue_state = inst->queue_state_debug_region +
+	    Q_STATE_OFFSET(qinst->queue_id);
+	qinst->chan = chan;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chan->con_priv = qinst;
 
 	dev_dbg(dev, "[%d] qidx=%d pidx=%d irq=%d q_s=%p q_e = %p\n",
@@ -670,6 +851,7 @@ static const struct ti_msgmgr_desc k2g_desc = {
 	.queue_count = 64,
 	.max_message_size = 64,
 	.max_messages = 128,
+<<<<<<< HEAD
 	.data_region_name = "queue_proxy_region",
 	.status_region_name = "queue_state_debug_region",
 	.data_first_reg = 16,
@@ -693,14 +875,28 @@ static const struct ti_msgmgr_desc am654_desc = {
 	.status_cnt_mask = SPROXY_THREAD_STATUS_COUNT_MASK,
 	.tx_polled = false,
 	.is_sproxy = true,
+=======
+	.q_slices = 1,
+	.q_proxies = 1,
+	.data_first_reg = 16,
+	.data_last_reg = 31,
+	.tx_polled = false,
+	.valid_queues = k2g_valid_queues,
+	.num_valid_queues = ARRAY_SIZE(k2g_valid_queues),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id ti_msgmgr_of_match[] = {
 	{.compatible = "ti,k2g-message-manager", .data = &k2g_desc},
+<<<<<<< HEAD
 	{.compatible = "ti,am654-secure-proxy", .data = &am654_desc},
 	{ /* Sentinel */ }
 };
 
+=======
+	{ /* Sentinel */ }
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_DEVICE_TABLE(of, ti_msgmgr_of_match);
 
 static int ti_msgmgr_probe(struct platform_device *pdev)
@@ -740,17 +936,26 @@ static int ti_msgmgr_probe(struct platform_device *pdev)
 	inst->desc = desc;
 
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+<<<<<<< HEAD
 					   desc->data_region_name);
+=======
+					   "queue_proxy_region");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inst->queue_proxy_region = devm_ioremap_resource(dev, res);
 	if (IS_ERR(inst->queue_proxy_region))
 		return PTR_ERR(inst->queue_proxy_region);
 
 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+<<<<<<< HEAD
 					   desc->status_region_name);
+=======
+					   "queue_state_debug_region");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	inst->queue_state_debug_region = devm_ioremap_resource(dev, res);
 	if (IS_ERR(inst->queue_state_debug_region))
 		return PTR_ERR(inst->queue_state_debug_region);
 
+<<<<<<< HEAD
 	if (desc->is_sproxy) {
 		res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
 						   desc->ctrl_region_name);
@@ -759,6 +964,8 @@ static int ti_msgmgr_probe(struct platform_device *pdev)
 			return PTR_ERR(inst->queue_ctrl_region);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_dbg(dev, "proxy region=%p, queue_state=%p\n",
 		inst->queue_proxy_region, inst->queue_state_debug_region);
 
@@ -770,16 +977,25 @@ static int ti_msgmgr_probe(struct platform_device *pdev)
 	}
 	inst->num_valid_queues = queue_count;
 
+<<<<<<< HEAD
 	qinst = devm_kcalloc(dev, queue_count, sizeof(*qinst), GFP_KERNEL);
+=======
+	qinst = devm_kzalloc(dev, sizeof(*qinst) * queue_count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!qinst)
 		return -ENOMEM;
 	inst->qinsts = qinst;
 
+<<<<<<< HEAD
 	chans = devm_kcalloc(dev, queue_count, sizeof(*chans), GFP_KERNEL);
+=======
+	chans = devm_kzalloc(dev, sizeof(*chans) * queue_count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!chans)
 		return -ENOMEM;
 	inst->chans = chans;
 
+<<<<<<< HEAD
 	if (desc->is_sproxy) {
 		struct ti_msgmgr_valid_queue_desc sproxy_desc;
 
@@ -803,6 +1019,14 @@ static int ti_msgmgr_probe(struct platform_device *pdev)
 			if (ret)
 				return ret;
 		}
+=======
+	for (i = 0, queue_desc = desc->valid_queues;
+	     i < queue_count; i++, qinst++, chans++, queue_desc++) {
+		ret = ti_msgmgr_queue_setup(i, dev, np, inst,
+					    desc, queue_desc, qinst, chans);
+		if (ret)
+			return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	mbox = &inst->mbox;

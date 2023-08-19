@@ -878,10 +878,13 @@
 #define RK3036_HWC_LUT_ADDR		0x800
 /* rk3036 register definition end */
 
+<<<<<<< HEAD
 /* rk3126 register definition */
 #define RK3126_WIN1_MST			0x4c
 #define RK3126_WIN1_DSP_INFO		0x50
 #define RK3126_WIN1_DSP_ST		0x54
 /* rk3126 register definition end */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _ROCKCHIP_VOP_REG_H */

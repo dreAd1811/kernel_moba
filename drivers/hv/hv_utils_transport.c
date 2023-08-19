@@ -104,7 +104,11 @@ static ssize_t hvt_op_write(struct file *file, const char __user *buf,
 	return ret ? ret : count;
 }
 
+<<<<<<< HEAD
 static __poll_t hvt_op_poll(struct file *file, poll_table *wait)
+=======
+static unsigned int hvt_op_poll(struct file *file, poll_table *wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hvutil_transport *hvt;
 
@@ -113,10 +117,17 @@ static __poll_t hvt_op_poll(struct file *file, poll_table *wait)
 	poll_wait(file, &hvt->outmsg_q, wait);
 
 	if (hvt->mode == HVUTIL_TRANSPORT_DESTROY)
+<<<<<<< HEAD
 		return EPOLLERR | EPOLLHUP;
 
 	if (hvt->outmsg_len > 0)
 		return EPOLLIN | EPOLLRDNORM;
+=======
+		return POLLERR | POLLHUP;
+
+	if (hvt->outmsg_len > 0)
+		return POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

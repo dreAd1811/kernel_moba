@@ -246,6 +246,7 @@ Description:    read only
                 Returns 1 if the psl timebase register is synchronized
                 with the core timebase register, 0 otherwise.
 Users:          https://github.com/ibm-capi/libcxl
+<<<<<<< HEAD
 
 What:           /sys/class/cxl/<card>/tunneled_ops_supported
 Date:           May 2018
@@ -254,3 +255,5 @@ Description:    read only
                 Returns 1 if tunneled operations are supported in capi mode,
                 0 otherwise.
 Users:          https://github.com/ibm-capi/libcxl
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

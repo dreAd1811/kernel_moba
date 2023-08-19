@@ -2,10 +2,15 @@
 #ifndef __NVKM_SW_CHAN_H__
 #define __NVKM_SW_CHAN_H__
 #define nvkm_sw_chan(p) container_of((p), struct nvkm_sw_chan, object)
+<<<<<<< HEAD
 #include <core/object.h>
 #include <core/event.h>
 
 #include "priv.h"
+=======
+#include "priv.h"
+#include <core/event.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct nvkm_sw_chan {
 	const struct nvkm_sw_chan_func *func;

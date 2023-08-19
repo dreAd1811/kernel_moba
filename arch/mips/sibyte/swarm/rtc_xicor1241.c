@@ -109,13 +109,21 @@ static int xicor_write(uint8_t addr, int b)
 	}
 }
 
+<<<<<<< HEAD
 int xicor_set_time(time64_t t)
+=======
+int xicor_set_time(unsigned long t)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtc_time tm;
 	int tmp;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	rtc_time64_to_tm(t, &tm);
+=======
+	rtc_time_to_tm(t, &tm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tm.tm_year += 1900;
 
 	spin_lock_irqsave(&rtc_lock, flags);
@@ -168,7 +176,11 @@ int xicor_set_time(time64_t t)
 	return 0;
 }
 
+<<<<<<< HEAD
 time64_t xicor_get_time(void)
+=======
+unsigned long xicor_get_time(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int year, mon, day, hour, min, sec, y2k;
 	unsigned long flags;
@@ -201,7 +213,11 @@ time64_t xicor_get_time(void)
 
 	year += (y2k * 100);
 
+<<<<<<< HEAD
 	return mktime64(year, mon, day, hour, min, sec);
+=======
+	return mktime(year, mon, day, hour, min, sec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int xicor_probe(void)

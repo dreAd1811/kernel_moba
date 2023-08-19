@@ -50,7 +50,11 @@
 	model = "CompuLab CM-FX6";
 	compatible = "compulab,cm-fx6", "fsl,imx6q";
 
+<<<<<<< HEAD
 	memory@10000000 {
+=======
+	memory {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x10000000 0x80000000>;
 	};
 
@@ -77,7 +81,12 @@
 		regulator-name = "regulator-pcie-power-on-gpio";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
+<<<<<<< HEAD
 		gpio = <&gpio2 24 GPIO_ACTIVE_LOW>;
+=======
+		gpio = <&gpio2 24 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	reg_usb_h1_vbus: usb_h1_vbus {
@@ -187,6 +196,7 @@
 	>;
 };
 
+<<<<<<< HEAD
 &cpu1 {
 	/*
 	 * Although the imx6q fuse indicates that 1.2GHz operation is possible,
@@ -253,6 +263,8 @@
 	>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ecspi1 {
 	cs-gpios = <&gpio2 30 GPIO_ACTIVE_HIGH>, <&gpio3 19 GPIO_ACTIVE_HIGH>;
 	pinctrl-names = "default";
@@ -427,7 +439,11 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_pcie>;
 	reset-gpio = <&gpio1 26 GPIO_ACTIVE_LOW>;
+<<<<<<< HEAD
 	vpcie-supply = <&reg_pcie_power_on_gpio>;
+=======
+	vdd-supply = <&reg_pcie_power_on_gpio>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "okay";
 };
 

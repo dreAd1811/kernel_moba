@@ -11,11 +11,14 @@ ccflags-vdso := \
 	$(filter -m%-float,$(KBUILD_CFLAGS)) \
 	$(filter -mno-loongson-%,$(KBUILD_CFLAGS)) \
 	-D__VDSO__
+<<<<<<< HEAD
 
 ifeq ($(cc-name),clang)
 ccflags-vdso += $(filter --target=%,$(KBUILD_CFLAGS))
 endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 cflags-vdso := $(ccflags-vdso) \
 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
 	-O2 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
@@ -46,7 +49,10 @@ endif
 # VDSO linker flags.
 VDSO_LDFLAGS := \
 	-Wl,-Bsymbolic -Wl,--no-undefined -Wl,-soname=linux-vdso.so.1 \
+<<<<<<< HEAD
 	$(addprefix -Wl$(comma),$(filter -E%,$(KBUILD_CFLAGS))) \
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	-nostdlib -shared \
 	$(call cc-ldoption, -Wl$(comma)--hash-style=sysv) \
 	$(call cc-ldoption, -Wl$(comma)--build-id)

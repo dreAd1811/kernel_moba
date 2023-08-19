@@ -43,15 +43,24 @@
 	__raw_writel((__force u32)cpu_to_le32(value), (addr))
 
 #define roce_get_field(origin, mask, shift) \
+<<<<<<< HEAD
 	(((le32_to_cpu(origin)) & (mask)) >> (shift))
+=======
+	(((origin) & (mask)) >> (shift))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define roce_get_bit(origin, shift) \
 	roce_get_field((origin), (1ul << (shift)), (shift))
 
 #define roce_set_field(origin, mask, shift, val) \
 	do { \
+<<<<<<< HEAD
 		(origin) &= ~cpu_to_le32(mask); \
 		(origin) |= cpu_to_le32(((u32)(val) << (shift)) & (mask)); \
+=======
+		(origin) &= (~(mask)); \
+		(origin) |= (((u32)(val) << (shift)) & (mask)); \
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (0)
 
 #define roce_set_bit(origin, shift, val) \
@@ -341,7 +350,10 @@
 #define ROCEE_BT_CMD_L_REG			0x200
 
 #define ROCEE_MB1_REG				0x210
+<<<<<<< HEAD
 #define ROCEE_MB6_REG				0x224
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ROCEE_DB_SQ_L_0_REG			0x230
 #define ROCEE_DB_OTHERS_L_0_REG			0x238
 #define ROCEE_QP1C_CFG0_0_REG			0x270
@@ -363,6 +375,7 @@
 #define ROCEE_ECC_UCERR_ALM0_REG		0xB34
 #define ROCEE_ECC_CERR_ALM0_REG			0xB40
 
+<<<<<<< HEAD
 /* V2 ROCEE REG */
 #define ROCEE_TX_CMQ_BASEADDR_L_REG		0x07000
 #define ROCEE_TX_CMQ_BASEADDR_H_REG		0x07004
@@ -387,4 +400,6 @@
 #define ROCEE_VF_ABN_INT_EN_REG			0x13008
 #define ROCEE_VF_EVENT_INT_EN_REG		0x1300c
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _HNS_ROCE_COMMON_H */

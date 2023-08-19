@@ -19,7 +19,10 @@
  */
 #include <linux/acpi.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/mm.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/property.h>
@@ -27,9 +30,13 @@
 #include <linux/string.h>
 #include <linux/types.h>
 
+<<<<<<< HEAD
 #include <media/v4l2-async.h>
 #include <media/v4l2-fwnode.h>
 #include <media/v4l2-subdev.h>
+=======
+#include <media/v4l2-fwnode.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum v4l2_fwnode_bus_type {
 	V4L2_FWNODE_BUS_TYPE_GUESS = 0,
@@ -154,10 +161,13 @@ static void v4l2_fwnode_endpoint_parse_parallel_bus(
 		flags |= v ? V4L2_MBUS_VIDEO_SOG_ACTIVE_HIGH :
 			V4L2_MBUS_VIDEO_SOG_ACTIVE_LOW;
 
+<<<<<<< HEAD
 	if (!fwnode_property_read_u32(fwnode, "data-enable-active", &v))
 		flags |= v ? V4L2_MBUS_DATA_ENABLE_HIGH :
 			V4L2_MBUS_DATA_ENABLE_LOW;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bus->flags = flags;
 
 }
@@ -188,6 +198,28 @@ v4l2_fwnode_endpoint_parse_csi1_bus(struct fwnode_handle *fwnode,
 		vep->bus_type = V4L2_MBUS_CSI1;
 }
 
+<<<<<<< HEAD
+=======
+/**
+ * v4l2_fwnode_endpoint_parse() - parse all fwnode node properties
+ * @fwnode: pointer to the endpoint's fwnode handle
+ * @vep: pointer to the V4L2 fwnode data structure
+ *
+ * All properties are optional. If none are found, we don't set any flags. This
+ * means the port has a static configuration and no properties have to be
+ * specified explicitly. If any properties that identify the bus as parallel
+ * are found and slave-mode isn't set, we set V4L2_MBUS_MASTER. Similarly, if
+ * we recognise the bus as serial CSI-2 and clock-noncontinuous isn't set, we
+ * set the V4L2_MBUS_CSI2_CONTINUOUS_CLOCK flag. The caller should hold a
+ * reference to @fwnode.
+ *
+ * NOTE: This function does not parse properties the size of which is variable
+ * without a low fixed limit. Please use v4l2_fwnode_endpoint_alloc_parse() in
+ * new drivers instead.
+ *
+ * Return: 0 on success or a negative error code on failure.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int v4l2_fwnode_endpoint_parse(struct fwnode_handle *fwnode,
 			       struct v4l2_fwnode_endpoint *vep)
 {
@@ -227,6 +259,17 @@ int v4l2_fwnode_endpoint_parse(struct fwnode_handle *fwnode,
 }
 EXPORT_SYMBOL_GPL(v4l2_fwnode_endpoint_parse);
 
+<<<<<<< HEAD
+=======
+/*
+ * v4l2_fwnode_endpoint_free() - free the V4L2 fwnode acquired by
+ * v4l2_fwnode_endpoint_alloc_parse()
+ * @vep - the V4L2 fwnode the resources of which are to be released
+ *
+ * It is safe to call this function with NULL argument or on a V4L2 fwnode the
+ * parsing of which failed.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void v4l2_fwnode_endpoint_free(struct v4l2_fwnode_endpoint *vep)
 {
 	if (IS_ERR_OR_NULL(vep))
@@ -237,6 +280,32 @@ void v4l2_fwnode_endpoint_free(struct v4l2_fwnode_endpoint *vep)
 }
 EXPORT_SYMBOL_GPL(v4l2_fwnode_endpoint_free);
 
+<<<<<<< HEAD
+=======
+/**
+ * v4l2_fwnode_endpoint_alloc_parse() - parse all fwnode node properties
+ * @fwnode: pointer to the endpoint's fwnode handle
+ *
+ * All properties are optional. If none are found, we don't set any flags. This
+ * means the port has a static configuration and no properties have to be
+ * specified explicitly. If any properties that identify the bus as parallel
+ * are found and slave-mode isn't set, we set V4L2_MBUS_MASTER. Similarly, if
+ * we recognise the bus as serial CSI-2 and clock-noncontinuous isn't set, we
+ * set the V4L2_MBUS_CSI2_CONTINUOUS_CLOCK flag. The caller should hold a
+ * reference to @fwnode.
+ *
+ * v4l2_fwnode_endpoint_alloc_parse() has two important differences to
+ * v4l2_fwnode_endpoint_parse():
+ *
+ * 1. It also parses variable size data.
+ *
+ * 2. The memory it has allocated to store the variable size data must be freed
+ *    using v4l2_fwnode_endpoint_free() when no longer needed.
+ *
+ * Return: Pointer to v4l2_fwnode_endpoint if successful, on an error pointer
+ * on error.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct v4l2_fwnode_endpoint *v4l2_fwnode_endpoint_alloc_parse(
 	struct fwnode_handle *fwnode)
 {
@@ -279,6 +348,27 @@ out_err:
 }
 EXPORT_SYMBOL_GPL(v4l2_fwnode_endpoint_alloc_parse);
 
+<<<<<<< HEAD
+=======
+/**
+ * v4l2_fwnode_endpoint_parse_link() - parse a link between two endpoints
+ * @__fwnode: pointer to the endpoint's fwnode at the local end of the link
+ * @link: pointer to the V4L2 fwnode link data structure
+ *
+ * Fill the link structure with the local and remote nodes and port numbers.
+ * The local_node and remote_node fields are set to point to the local and
+ * remote port's parent nodes respectively (the port parent node being the
+ * parent node of the port node if that node isn't a 'ports' node, or the
+ * grand-parent node of the port node otherwise).
+ *
+ * A reference is taken to both the local and remote nodes, the caller must use
+ * v4l2_fwnode_endpoint_put_link() to drop the references when done with the
+ * link.
+ *
+ * Return: 0 on success, or -ENOLINK if the remote endpoint fwnode can't be
+ * found.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int v4l2_fwnode_parse_link(struct fwnode_handle *__fwnode,
 			   struct v4l2_fwnode_link *link)
 {
@@ -313,6 +403,16 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *__fwnode,
 }
 EXPORT_SYMBOL_GPL(v4l2_fwnode_parse_link);
 
+<<<<<<< HEAD
+=======
+/**
+ * v4l2_fwnode_put_link() - drop references to nodes in a link
+ * @link: pointer to the V4L2 fwnode link data structure
+ *
+ * Drop references to the local and remote nodes in the link. This function
+ * must be called on every link parsed with v4l2_fwnode_parse_link().
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void v4l2_fwnode_put_link(struct v4l2_fwnode_link *link)
 {
 	fwnode_handle_put(link->local_node);
@@ -320,6 +420,7 @@ void v4l2_fwnode_put_link(struct v4l2_fwnode_link *link)
 }
 EXPORT_SYMBOL_GPL(v4l2_fwnode_put_link);
 
+<<<<<<< HEAD
 static int v4l2_async_notifier_realloc(struct v4l2_async_notifier *notifier,
 				       unsigned int max_subdevs)
 {
@@ -952,6 +1053,8 @@ out_cleanup:
 }
 EXPORT_SYMBOL_GPL(v4l2_async_register_subdev_sensor_common);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Sakari Ailus <sakari.ailus@linux.intel.com>");
 MODULE_AUTHOR("Sylwester Nawrocki <s.nawrocki@samsung.com>");

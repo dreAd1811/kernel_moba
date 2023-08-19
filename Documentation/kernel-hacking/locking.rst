@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 .. _kernel_hacking_lock:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ===========================
 Unreliable Guide To Locking
 ===========================
@@ -179,7 +182,11 @@ perfect world).
 
 Note that you can also use :c:func:`spin_lock_irq()` or
 :c:func:`spin_lock_irqsave()` here, which stop hardware interrupts
+<<<<<<< HEAD
 as well: see `Hard IRQ Context <#hard-irq-context>`__.
+=======
+as well: see `Hard IRQ Context <#hardirq-context>`__.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 This works perfectly for UP as well: the spin lock vanishes, and this
 macro simply becomes :c:func:`local_bh_disable()`
@@ -230,7 +237,11 @@ The Same Softirq
 ~~~~~~~~~~~~~~~~
 
 The same softirq can run on the other CPUs: you can use a per-CPU array
+<<<<<<< HEAD
 (see `Per-CPU Data <#per-cpu-data>`__) for better performance. If you're
+=======
+(see `Per-CPU Data <#per-cpu>`__) for better performance. If you're
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 going so far as to use a softirq, you probably care about scalable
 performance enough to justify the extra complexity.
 

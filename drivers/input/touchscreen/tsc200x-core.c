@@ -202,9 +202,15 @@ out:
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static void tsc200x_penup_timer(struct timer_list *t)
 {
 	struct tsc200x *ts = from_timer(ts, t, penup_timer);
+=======
+static void tsc200x_penup_timer(unsigned long data)
+{
+	struct tsc200x *ts = (struct tsc200x *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	spin_lock_irqsave(&ts->lock, flags);
@@ -506,7 +512,11 @@ int tsc200x_probe(struct device *dev, int irq, const struct input_id *tsc_id,
 	mutex_init(&ts->mutex);
 
 	spin_lock_init(&ts->lock);
+<<<<<<< HEAD
 	timer_setup(&ts->penup_timer, tsc200x_penup_timer, 0);
+=======
+	setup_timer(&ts->penup_timer, tsc200x_penup_timer, (unsigned long)ts);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_DELAYED_WORK(&ts->esd_work, tsc200x_esd_work);
 

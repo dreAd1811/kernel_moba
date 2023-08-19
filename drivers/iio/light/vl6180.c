@@ -24,7 +24,10 @@
 #include <linux/err.h>
 #include <linux/of.h>
 #include <linux/delay.h>
+<<<<<<< HEAD
 #include <linux/util_macros.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/iio/iio.h>
 #include <linux/iio/sysfs.h>
@@ -87,8 +90,11 @@
 struct vl6180_data {
 	struct i2c_client *client;
 	struct mutex lock;
+<<<<<<< HEAD
 	unsigned int als_gain_milli;
 	unsigned int als_it_ms;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum { VL6180_ALS, VL6180_RANGE, VL6180_PROX };
@@ -278,6 +284,7 @@ static const struct iio_chan_spec vl6180_channels[] = {
 };
 
 /*
+<<<<<<< HEAD
  * Available Ambient Light Sensor gain settings, 1/1000th, and
  * corresponding setting for the VL6180_ALS_GAIN register
  */
@@ -289,6 +296,21 @@ static const u8 vl6180_als_gain_tab_bits[8] = {
 	VL6180_ALS_GAIN_1_67, VL6180_ALS_GAIN_2_5,
 	VL6180_ALS_GAIN_5,    VL6180_ALS_GAIN_10,
 	VL6180_ALS_GAIN_20,   VL6180_ALS_GAIN_40
+=======
+ * Columns 3 & 4 represent the same value in decimal and hex notations.
+ * Kept in order to avoid the datatype conversion while reading the
+ * hardware_gain.
+ */
+static const int vl6180_als_gain[8][4] = {
+	{ 1,	0,	70,	VL6180_ALS_GAIN_1 },
+	{ 1,    250000, 69,	VL6180_ALS_GAIN_1_25 },
+	{ 1,    670000, 68,	VL6180_ALS_GAIN_1_67 },
+	{ 2,    500000, 67,	VL6180_ALS_GAIN_2_5 },
+	{ 5,    0,      66,	VL6180_ALS_GAIN_5 },
+	{ 10,   0,      65,	VL6180_ALS_GAIN_10 },
+	{ 20,   0,      64,	VL6180_ALS_GAIN_20 },
+	{ 40,   0,      71,	VL6180_ALS_GAIN_40 }
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int vl6180_read_raw(struct iio_dev *indio_dev,
@@ -296,7 +318,11 @@ static int vl6180_read_raw(struct iio_dev *indio_dev,
 				int *val, int *val2, long mask)
 {
 	struct vl6180_data *data = iio_priv(indio_dev);
+<<<<<<< HEAD
 	int ret;
+=======
+	int ret, i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
@@ -307,6 +333,7 @@ static int vl6180_read_raw(struct iio_dev *indio_dev,
 
 		return IIO_VAL_INT;
 	case IIO_CHAN_INFO_INT_TIME:
+<<<<<<< HEAD
 		*val = data->als_it_ms;
 		*val2 = 1000;
 
@@ -321,6 +348,21 @@ static int vl6180_read_raw(struct iio_dev *indio_dev,
 
 			return IIO_VAL_FRACTIONAL;
 
+=======
+		ret = vl6180_read_word(data->client, VL6180_ALS_IT);
+		if (ret < 0)
+			return ret;
+		*val = 0; /* 1 count = 1ms (0 = 1ms) */
+		*val2 = (ret + 1) * 1000; /* convert to seconds */
+
+		return IIO_VAL_INT_PLUS_MICRO;
+	case IIO_CHAN_INFO_SCALE:
+		switch (chan->type) {
+		case IIO_LIGHT:
+			*val = 0; /* one ALS count is 0.32 Lux */
+			*val2 = 320000;
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		case IIO_DISTANCE:
 			*val = 0; /* sensor reports mm, scale to meter */
 			*val2 = 1000;
@@ -331,11 +373,25 @@ static int vl6180_read_raw(struct iio_dev *indio_dev,
 
 		return IIO_VAL_INT_PLUS_MICRO;
 	case IIO_CHAN_INFO_HARDWAREGAIN:
+<<<<<<< HEAD
 		*val = data->als_gain_milli;
 		*val2 = 1000;
 
 		return IIO_VAL_FRACTIONAL;
 
+=======
+		ret = vl6180_read_byte(data->client, VL6180_ALS_GAIN);
+		if (ret < 0)
+			return -EINVAL;
+		for (i = 0; i < ARRAY_SIZE(vl6180_als_gain); i++) {
+			if (ret == vl6180_als_gain[i][2]) {
+				*val = vl6180_als_gain[i][0];
+				*val2 = vl6180_als_gain[i][1];
+			}
+		}
+
+		return IIO_VAL_INT_PLUS_MICRO;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -361,6 +417,7 @@ static int vl6180_hold(struct vl6180_data *data, bool hold)
 
 static int vl6180_set_als_gain(struct vl6180_data *data, int val, int val2)
 {
+<<<<<<< HEAD
 	int i, ret, gain;
 
 	if (val < 1 || val > 40)
@@ -397,17 +454,48 @@ static int vl6180_set_it(struct vl6180_data *data, int val, int val2)
 	it_ms = (val2 + 500) / 1000; /* round to ms */
 	if (val != 0 || it_ms < 1 || it_ms > 512)
 		return -EINVAL;
+=======
+	int i, ret;
+
+	for (i = 0; i < ARRAY_SIZE(vl6180_als_gain); i++) {
+		if (val == vl6180_als_gain[i][0] &&
+			val2 == vl6180_als_gain[i][1]) {
+			mutex_lock(&data->lock);
+			ret = vl6180_hold(data, true);
+			if (ret < 0)
+				goto fail;
+			ret = vl6180_write_byte(data->client, VL6180_ALS_GAIN,
+				vl6180_als_gain[i][3]);
+fail:
+			vl6180_hold(data, false);
+			mutex_unlock(&data->lock);
+			return ret;
+		}
+	}
+
+	return -EINVAL;
+}
+
+static int vl6180_set_it(struct vl6180_data *data, int val2)
+{
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&data->lock);
 	ret = vl6180_hold(data, true);
 	if (ret < 0)
 		goto fail;
+<<<<<<< HEAD
 
 	ret = vl6180_write_word(data->client, VL6180_ALS_IT, it_ms - 1);
 
 	if (ret >= 0)
 		data->als_it_ms = it_ms;
 
+=======
+	ret = vl6180_write_word(data->client, VL6180_ALS_IT,
+		(val2 - 500) / 1000); /* write value in ms */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 fail:
 	vl6180_hold(data, false);
 	mutex_unlock(&data->lock);
@@ -423,8 +511,15 @@ static int vl6180_write_raw(struct iio_dev *indio_dev,
 
 	switch (mask) {
 	case IIO_CHAN_INFO_INT_TIME:
+<<<<<<< HEAD
 		return vl6180_set_it(data, val, val2);
 
+=======
+		if (val != 0 || val2 < 500 || val2 >= 512500)
+			return -EINVAL;
+
+		return vl6180_set_it(data, val2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case IIO_CHAN_INFO_HARDWAREGAIN:
 		if (chan->type != IIO_LIGHT)
 			return -EINVAL;
@@ -439,6 +534,10 @@ static const struct iio_info vl6180_info = {
 	.read_raw = vl6180_read_raw,
 	.write_raw = vl6180_write_raw,
 	.attrs = &vl6180_attribute_group,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int vl6180_init(struct vl6180_data *data)
@@ -477,13 +576,19 @@ static int vl6180_init(struct vl6180_data *data)
 		return ret;
 
 	/* ALS integration time: 100ms */
+<<<<<<< HEAD
 	data->als_it_ms = 100;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = vl6180_write_word(client, VL6180_ALS_IT, VL6180_ALS_IT_100);
 	if (ret < 0)
 		return ret;
 
 	/* ALS gain: 1 */
+<<<<<<< HEAD
 	data->als_gain_milli = 1000;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = vl6180_write_byte(client, VL6180_ALS_GAIN, VL6180_ALS_GAIN_1);
 	if (ret < 0)
 		return ret;

@@ -116,5 +116,9 @@ void rtl_fill_dummy(u8 *pfwbuf, u32 *pfwlen);
 void rtl_fw_page_write(struct ieee80211_hw *hw, u32 page, const u8 *buffer,
 		       u32 size);
 void rtl_fw_block_write(struct ieee80211_hw *hw, const u8 *buffer, u32 size);
+<<<<<<< HEAD
 void rtl_efuse_ops_init(struct ieee80211_hw *hw);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

@@ -402,6 +402,10 @@ static const struct attribute_group max44000_attribute_group = {
 };
 
 static const struct iio_info max44000_info = {
+<<<<<<< HEAD
+=======
+	.driver_module		= THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw		= max44000_read_raw,
 	.write_raw		= max44000_write_raw,
 	.write_raw_get_fmt	= max44000_write_raw_get_fmt,

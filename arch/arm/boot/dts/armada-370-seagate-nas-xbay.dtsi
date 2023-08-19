@@ -1,10 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Device Tree common file for the Seagate NAS 2 and 4-bay (Armada 370 SoC).
  *
  * Copyright (C) 2015 Seagate
  *
  * Author: Vincent Donnefort <vdonnefort@gmail.com>
+<<<<<<< HEAD
+=======
+ *
+ * This file is licensed under the terms of the GNU General Public
+ * License version 2.  This program is licensed "as is" without any
+ * warranty of any kind, whether express or implied.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 /*
@@ -66,6 +76,36 @@
 					interrupts = <110>;
 				};
 			};
+<<<<<<< HEAD
+=======
+
+			nand@d0000 {
+				status = "okay";
+				num-cs = <1>;
+				marvell,nand-keep-config;
+				marvell,nand-enable-arbiter;
+				nand-on-flash-bbt;
+				nand-ecc-strength = <4>;
+				nand-ecc-step-size = <512>;
+
+				partition@0 {
+					label = "u-boot";
+					reg = <0x0 0x300000>;
+				};
+				partition@300000 {
+					label = "device-tree";
+					reg = <0x300000 0x20000>;
+				};
+				partition@320000 {
+					label = "linux";
+					reg = <0x320000 0x2000000>;
+				};
+				partition@2320000 {
+					label = "rootfs";
+					reg = <0x2320000 0xdce0000>;
+				};
+			};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		};
 
 	};
@@ -200,6 +240,7 @@
 		marvell,function = "gpio";
 	};
 };
+<<<<<<< HEAD
 
 &nand_controller {
 	status = "okay";
@@ -237,3 +278,5 @@
 		};
 	};
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

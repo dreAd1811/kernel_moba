@@ -47,11 +47,14 @@ enum flash_op {
 	FLASH_OP_ERASE,
 };
 
+<<<<<<< HEAD
 /*
  * Don't return -ERESTARTSYS if we can't get a token, the MTD core
  * might have split up the call from userspace and called into the
  * driver more than once, we'll already have done some amount of work.
  */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int powernv_flash_async_op(struct mtd_info *mtd, enum flash_op op,
 		loff_t offset, size_t len, size_t *retlen, u_char *buf)
 {
@@ -68,8 +71,12 @@ static int powernv_flash_async_op(struct mtd_info *mtd, enum flash_op op,
 	if (token < 0) {
 		if (token != -ERESTARTSYS)
 			dev_err(dev, "Failed to get an async token\n");
+<<<<<<< HEAD
 		else
 			token = -EINTR;
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return token;
 	}
 
@@ -84,11 +91,21 @@ static int powernv_flash_async_op(struct mtd_info *mtd, enum flash_op op,
 		rc = opal_flash_erase(info->id, offset, len, token);
 		break;
 	default:
+<<<<<<< HEAD
 		WARN_ON_ONCE(1);
+=======
+		BUG_ON(1);
+	}
+
+	if (rc != OPAL_ASYNC_COMPLETION) {
+		dev_err(dev, "opal_flash_async_op(op=%d) failed (rc %d)\n",
+				op, rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		opal_async_release_token(token);
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	if (rc == OPAL_ASYNC_COMPLETION) {
 		rc = opal_async_wait_response_interruptible(token, &msg);
 		if (rc) {
@@ -131,6 +148,24 @@ static int powernv_flash_async_op(struct mtd_info *mtd, enum flash_op op,
 	rc = opal_error_code(rc);
 out:
 	opal_async_release_token(token);
+=======
+	rc = opal_async_wait_response(token, &msg);
+	opal_async_release_token(token);
+	if (rc) {
+		dev_err(dev, "opal async wait failed (rc %d)\n", rc);
+		return -EIO;
+	}
+
+	rc = opal_get_async_rc(msg);
+	if (rc == OPAL_SUCCESS) {
+		rc = 0;
+		if (retlen)
+			*retlen = len;
+	} else {
+		rc = -EIO;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -175,11 +210,27 @@ static int powernv_flash_erase(struct mtd_info *mtd, struct erase_info *erase)
 {
 	int rc;
 
+<<<<<<< HEAD
 	rc =  powernv_flash_async_op(mtd, FLASH_OP_ERASE, erase->addr,
 			erase->len, NULL, NULL);
 	if (rc)
 		erase->fail_addr = erase->addr;
 
+=======
+	erase->state = MTD_ERASING;
+
+	/* todo: register our own notifier to do a true async implementation */
+	rc =  powernv_flash_async_op(mtd, FLASH_OP_ERASE, erase->addr,
+			erase->len, NULL, NULL);
+
+	if (rc) {
+		erase->fail_addr = erase->addr;
+		erase->state = MTD_ERASE_FAILED;
+	} else {
+		erase->state = MTD_ERASE_DONE;
+	}
+	mtd_erase_callback(erase);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -223,7 +274,10 @@ static int powernv_flash_set_driver_info(struct device *dev,
 	mtd->_read = powernv_flash_read;
 	mtd->_write = powernv_flash_write;
 	mtd->dev.parent = dev;
+<<<<<<< HEAD
 	mtd_set_of_node(mtd, dev->of_node);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -240,20 +294,35 @@ static int powernv_flash_probe(struct platform_device *pdev)
 	int ret;
 
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
+<<<<<<< HEAD
 	if (!data)
 		return -ENOMEM;
 
+=======
+	if (!data) {
+		ret = -ENOMEM;
+		goto out;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->mtd.priv = data;
 
 	ret = of_property_read_u32(dev->of_node, "ibm,opal-id", &(data->id));
 	if (ret) {
 		dev_err(dev, "no device property 'ibm,opal-id'\n");
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = powernv_flash_set_driver_info(dev, &data->mtd);
 	if (ret)
+<<<<<<< HEAD
 		return ret;
+=======
+		goto out;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_set_drvdata(dev, data);
 
@@ -262,7 +331,14 @@ static int powernv_flash_probe(struct platform_device *pdev)
 	 * with an ffs partition at the start, it should prove easier for users
 	 * to deal with partitions or not as they see fit
 	 */
+<<<<<<< HEAD
 	return mtd_device_register(&data->mtd, NULL, 0);
+=======
+	ret = mtd_device_register(&data->mtd, NULL, 0);
+
+out:
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**

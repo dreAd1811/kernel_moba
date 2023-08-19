@@ -45,6 +45,7 @@ descriptor ``fd`` into the buffer starting at ``buf``.  If ``count`` is zero,
 is greater than ``SSIZE_MAX``, the result is unspecified.
 
 The exact format of the data depends on what :ref:`lirc_modes` a driver
+<<<<<<< HEAD
 uses. Use :ref:`lirc_get_features` to get the supported mode, and use
 :ref:`lirc_set_rec_mode` set the current active mode.
 
@@ -59,6 +60,15 @@ protocol used for transmission, and ``scancode`` to the decoded scancode,
 and the ``keycode`` set to the keycode or ``KEY_RESERVED``.
 
 
+=======
+uses. Use :ref:`lirc_get_features` to get the supported mode.
+
+The generally preferred mode for receive is
+:ref:`LIRC_MODE_MODE2 <lirc-mode-mode2>`,
+in which packets containing an int value describing an IR signal are
+read from the chardev.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Return Value
 ============
 

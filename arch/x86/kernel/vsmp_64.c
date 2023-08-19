@@ -26,6 +26,12 @@
 
 #define TOPOLOGY_REGISTER_OFFSET 0x10
 
+<<<<<<< HEAD
+=======
+/* Flag below is initialized once during vSMP PCI initialization. */
+static int irq_routing_comply = 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined CONFIG_PCI && defined CONFIG_PARAVIRT
 /*
  * Interrupt control on vSMPowered systems:
@@ -102,6 +108,12 @@ static void __init set_vsmp_pv_ops(void)
 	if (cap & ctl & BIT(8)) {
 		ctl &= ~BIT(8);
 
+<<<<<<< HEAD
+=======
+		/* Interrupt routing set to ignore */
+		irq_routing_comply = 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PROC_FS
 		/* Don't let users change irq affinity via procfs */
 		no_irq_affinity = 1;
@@ -205,10 +217,29 @@ static int apicid_phys_pkg_id(int initial_apic_id, int index_msb)
 	return hard_smp_processor_id() >> index_msb;
 }
 
+<<<<<<< HEAD
+=======
+/*
+ * In vSMP, all cpus should be capable of handling interrupts, regardless of
+ * the APIC used.
+ */
+static void fill_vector_allocation_domain(int cpu, struct cpumask *retmask,
+					  const struct cpumask *mask)
+{
+	cpumask_setall(retmask);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void vsmp_apic_post_init(void)
 {
 	/* need to update phys_pkg_id */
 	apic->phys_pkg_id = apicid_phys_pkg_id;
+<<<<<<< HEAD
+=======
+
+	if (!irq_routing_comply)
+		apic->vector_allocation_domain = fill_vector_allocation_domain;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init vsmp_init(void)

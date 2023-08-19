@@ -19,8 +19,11 @@ enum st_press_type {
 	LPS25H,
 	LPS331AP,
 	LPS22HB,
+<<<<<<< HEAD
 	LPS33HW,
 	LPS35HW,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ST_PRESS_MAX,
 };
 
@@ -28,8 +31,11 @@ enum st_press_type {
 #define LPS25H_PRESS_DEV_NAME		"lps25h"
 #define LPS331AP_PRESS_DEV_NAME		"lps331ap"
 #define LPS22HB_PRESS_DEV_NAME		"lps22hb"
+<<<<<<< HEAD
 #define LPS33HW_PRESS_DEV_NAME		"lps33hw"
 #define LPS35HW_PRESS_DEV_NAME		"lps35hw"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct st_sensors_platform_data - default press platform data

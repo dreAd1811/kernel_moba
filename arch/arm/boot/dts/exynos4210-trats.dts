@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Samsung's Exynos4210 based Trats board device tree source
  *
@@ -7,7 +10,15 @@
  *
  * Device tree source file for Samsung's Trats board which is based on
  * Samsung's Exynos4210 SoC.
+<<<<<<< HEAD
  */
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+*/
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "exynos4210.dtsi"
@@ -148,12 +159,52 @@
 		};
 	};
 
+<<<<<<< HEAD
 };
 
 &camera {
 	pinctrl-names = "default";
 	pinctrl-0 = <>;
 	status = "okay";
+=======
+	camera {
+		pinctrl-names = "default";
+		pinctrl-0 = <>;
+		status = "okay";
+
+		fimc_0: fimc@11800000 {
+			status = "okay";
+			assigned-clocks = <&clock CLK_MOUT_FIMC0>,
+					<&clock CLK_SCLK_FIMC0>;
+			assigned-clock-parents = <&clock CLK_SCLK_MPLL>;
+			assigned-clock-rates = <0>, <160000000>;
+		};
+
+		fimc_1: fimc@11810000 {
+			status = "okay";
+			assigned-clocks = <&clock CLK_MOUT_FIMC1>,
+					<&clock CLK_SCLK_FIMC1>;
+			assigned-clock-parents = <&clock CLK_SCLK_MPLL>;
+			assigned-clock-rates = <0>, <160000000>;
+		};
+
+		fimc_2: fimc@11820000 {
+			status = "okay";
+			assigned-clocks = <&clock CLK_MOUT_FIMC2>,
+					<&clock CLK_SCLK_FIMC2>;
+			assigned-clock-parents = <&clock CLK_SCLK_MPLL>;
+			assigned-clock-rates = <0>, <160000000>;
+		};
+
+		fimc_3: fimc@11830000 {
+			status = "okay";
+			assigned-clocks = <&clock CLK_MOUT_FIMC3>,
+					<&clock CLK_SCLK_FIMC3>;
+			assigned-clock-parents = <&clock CLK_SCLK_MPLL>;
+			assigned-clock-rates = <0>, <160000000>;
+		};
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &cpu0 {
@@ -203,6 +254,7 @@
 	vbus-supply = <&safe1_sreg>;
 };
 
+<<<<<<< HEAD
 &fimc_0 {
 	status = "okay";
 	assigned-clocks = <&clock CLK_MOUT_FIMC0>,
@@ -235,6 +287,8 @@
 	assigned-clock-rates = <0>, <160000000>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &fimd {
 	status = "okay";
 };
@@ -259,8 +313,13 @@
 		reg = <0x48>;
 		interrupt-parent = <&gpx0>;
 		interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
+<<<<<<< HEAD
 		touchscreen-size-x = <720>;
 		touchscreen-size-y = <1280>;
+=======
+		x-size = <720>;
+		y-size = <1280>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		avdd-supply = <&tsp_reg>;
 		vdd-supply = <&tsp_reg>;
 	};
@@ -276,7 +335,10 @@
 
 	max8997_pmic@66 {
 		compatible = "maxim,max8997-pmic";
+<<<<<<< HEAD
 		interrupts-extended = <&gpx0 7 0>, <&gpx2 3 0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		reg = <0x66>;
 		interrupt-parent = <&gpx0>;

@@ -430,9 +430,15 @@ static int dw_mipi_dsi_phy_init(struct dw_mipi_dsi *dsi)
 
 	testdin = max_mbps_to_testdin(dsi->lane_mbps);
 	if (testdin < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev,
 			      "failed to get testdin for %dmbps lane clock\n",
 			      dsi->lane_mbps);
+=======
+		dev_err(dsi->dev,
+			"failed to get testdin for %dmbps lane clock\n",
+			dsi->lane_mbps);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return testdin;
 	}
 
@@ -443,7 +449,11 @@ static int dw_mipi_dsi_phy_init(struct dw_mipi_dsi *dsi)
 
 	ret = clk_prepare_enable(dsi->phy_cfg_clk);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "Failed to enable phy_cfg_clk\n");
+=======
+		dev_err(dsi->dev, "Failed to enable phy_cfg_clk\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -501,7 +511,11 @@ static int dw_mipi_dsi_phy_init(struct dw_mipi_dsi *dsi)
 	ret = readl_poll_timeout(dsi->base + DSI_PHY_STATUS,
 				 val, val & LOCK, 1000, PHY_STATUS_TIMEOUT_US);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "failed to wait for phy lock state\n");
+=======
+		dev_err(dsi->dev, "failed to wait for phy lock state\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto phy_init_end;
 	}
 
@@ -509,8 +523,13 @@ static int dw_mipi_dsi_phy_init(struct dw_mipi_dsi *dsi)
 				 val, val & STOP_STATE_CLK_LANE, 1000,
 				 PHY_STATUS_TIMEOUT_US);
 	if (ret < 0)
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev,
 			      "failed to wait for phy clk lane stop state\n");
+=======
+		dev_err(dsi->dev,
+			"failed to wait for phy clk lane stop state\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 phy_init_end:
 	clk_disable_unprepare(dsi->phy_cfg_clk);
@@ -529,9 +548,14 @@ static int dw_mipi_dsi_get_lane_bps(struct dw_mipi_dsi *dsi,
 
 	bpp = mipi_dsi_pixel_format_to_bpp(dsi->format);
 	if (bpp < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev,
 			      "failed to get bpp for pixel format %d\n",
 			      dsi->format);
+=======
+		dev_err(dsi->dev, "failed to get bpp for pixel format %d\n",
+			dsi->format);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return bpp;
 	}
 
@@ -542,8 +566,12 @@ static int dw_mipi_dsi_get_lane_bps(struct dw_mipi_dsi *dsi,
 		if (tmp < max_mbps)
 			target_mbps = tmp;
 		else
+<<<<<<< HEAD
 			DRM_DEV_ERROR(dsi->dev,
 				      "DPHY clock frequency is out of range\n");
+=======
+			dev_err(dsi->dev, "DPHY clock frequency is out of range\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	pllref = DIV_ROUND_UP(clk_get_rate(dsi->pllref_clk), USEC_PER_SEC);
@@ -584,9 +612,14 @@ static int dw_mipi_dsi_host_attach(struct mipi_dsi_host *host,
 	struct dw_mipi_dsi *dsi = host_to_dsi(host);
 
 	if (device->lanes > dsi->pdata->max_data_lanes) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev,
 			      "the number of data lanes(%u) is too many\n",
 			      device->lanes);
+=======
+		dev_err(dsi->dev, "the number of data lanes(%u) is too many\n",
+			device->lanes);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -595,7 +628,11 @@ static int dw_mipi_dsi_host_attach(struct mipi_dsi_host *host,
 	dsi->format = device->format;
 	dsi->mode_flags = device->mode_flags;
 	dsi->panel = of_drm_find_panel(device->dev.of_node);
+<<<<<<< HEAD
 	if (!IS_ERR(dsi->panel))
+=======
+	if (dsi->panel)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return drm_panel_attach(dsi->panel, &dsi->connector);
 
 	return -EINVAL;
@@ -635,8 +672,12 @@ static int dw_mipi_dsi_gen_pkt_hdr_write(struct dw_mipi_dsi *dsi, u32 hdr_val)
 				 val, !(val & GEN_CMD_FULL), 1000,
 				 CMD_PKT_STATUS_TIMEOUT_US);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev,
 			      "failed to get available command FIFO\n");
+=======
+		dev_err(dsi->dev, "failed to get available command FIFO\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -647,7 +688,11 @@ static int dw_mipi_dsi_gen_pkt_hdr_write(struct dw_mipi_dsi *dsi, u32 hdr_val)
 				 val, (val & mask) == mask,
 				 1000, CMD_PKT_STATUS_TIMEOUT_US);
 	if (ret < 0) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "failed to write command FIFO\n");
+=======
+		dev_err(dsi->dev, "failed to write command FIFO\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -667,9 +712,14 @@ static int dw_mipi_dsi_dcs_short_write(struct dw_mipi_dsi *dsi,
 		data |= tx_buf[1] << 8;
 
 	if (msg->tx_len > 2) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev,
 			      "too long tx buf length %zu for short write\n",
 			      msg->tx_len);
+=======
+		dev_err(dsi->dev, "too long tx buf length %zu for short write\n",
+			msg->tx_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -687,9 +737,14 @@ static int dw_mipi_dsi_dcs_long_write(struct dw_mipi_dsi *dsi,
 	u32 val;
 
 	if (msg->tx_len < 3) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev,
 			      "wrong tx buf length %zu for long write\n",
 			      msg->tx_len);
+=======
+		dev_err(dsi->dev, "wrong tx buf length %zu for long write\n",
+			msg->tx_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -710,8 +765,13 @@ static int dw_mipi_dsi_dcs_long_write(struct dw_mipi_dsi *dsi,
 					 val, !(val & GEN_PLD_W_FULL), 1000,
 					 CMD_PKT_STATUS_TIMEOUT_US);
 		if (ret < 0) {
+<<<<<<< HEAD
 			DRM_DEV_ERROR(dsi->dev,
 				      "failed to get available write payload FIFO\n");
+=======
+			dev_err(dsi->dev,
+				"failed to get available write payload FIFO\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}
@@ -737,8 +797,13 @@ static ssize_t dw_mipi_dsi_host_transfer(struct mipi_dsi_host *host,
 		ret = dw_mipi_dsi_dcs_long_write(dsi, msg);
 		break;
 	default:
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "unsupported message type 0x%02x\n",
 			      msg->type);
+=======
+		dev_err(dsi->dev, "unsupported message type 0x%02x\n",
+			msg->type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -EINVAL;
 	}
 
@@ -941,7 +1006,11 @@ static void dw_mipi_dsi_encoder_disable(struct drm_encoder *encoder)
 		return;
 
 	if (clk_prepare_enable(dsi->pclk)) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "Failed to enable pclk\n");
+=======
+		dev_err(dsi->dev, "%s: Failed to enable pclk\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -973,7 +1042,11 @@ static void dw_mipi_dsi_encoder_enable(struct drm_encoder *encoder)
 		return;
 
 	if (clk_prepare_enable(dsi->pclk)) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "Failed to enable pclk\n");
+=======
+		dev_err(dsi->dev, "%s: Failed to enable pclk\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -997,7 +1070,11 @@ static void dw_mipi_dsi_encoder_enable(struct drm_encoder *encoder)
 	 */
 	ret = clk_prepare_enable(dsi->grf_clk);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "Failed to enable grf_clk: %d\n", ret);
+=======
+		dev_err(dsi->dev, "Failed to enable grf_clk: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	}
 
@@ -1010,7 +1087,11 @@ static void dw_mipi_dsi_encoder_enable(struct drm_encoder *encoder)
 
 	dw_mipi_dsi_set_mode(dsi, DW_MIPI_DSI_CMD_MODE);
 	if (drm_panel_prepare(dsi->panel))
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "failed to prepare panel\n");
+=======
+		dev_err(dsi->dev, "failed to prepare panel\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dw_mipi_dsi_set_mode(dsi, DW_MIPI_DSI_VID_MODE);
 	drm_panel_enable(dsi->panel);
@@ -1023,8 +1104,12 @@ static void dw_mipi_dsi_encoder_enable(struct drm_encoder *encoder)
 		val = pdata->dsi0_en_bit << 16;
 
 	regmap_write(dsi->grf_regmap, pdata->grf_switch_reg, val);
+<<<<<<< HEAD
 	DRM_DEV_DEBUG(dsi->dev,
 		      "vop %s output to dsi0\n", (mux) ? "LIT" : "BIG");
+=======
+	dev_dbg(dsi->dev, "vop %s output to dsi0\n", (mux) ? "LIT" : "BIG");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi->dpms_mode = DRM_MODE_DPMS_ON;
 
 	clk_disable_unprepare(dsi->grf_clk);
@@ -1118,7 +1203,11 @@ static int dw_mipi_dsi_register(struct drm_device *drm,
 	ret = drm_encoder_init(drm, &dsi->encoder, &dw_mipi_dsi_encoder_funcs,
 			       DRM_MODE_ENCODER_DSI, NULL);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "Failed to initialize encoder with drm\n");
+=======
+		dev_err(dev, "Failed to initialize encoder with drm\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -1129,7 +1218,11 @@ static int dw_mipi_dsi_register(struct drm_device *drm,
 			   &dw_mipi_dsi_atomic_connector_funcs,
 			   DRM_MODE_CONNECTOR_DSI);
 
+<<<<<<< HEAD
 	drm_connector_attach_encoder(connector, encoder);
+=======
+	drm_mode_connector_attach_encoder(connector, encoder);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1140,7 +1233,11 @@ static int rockchip_mipi_parse_dt(struct dw_mipi_dsi *dsi)
 
 	dsi->grf_regmap = syscon_regmap_lookup_by_phandle(np, "rockchip,grf");
 	if (IS_ERR(dsi->grf_regmap)) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dsi->dev, "Unable to get rockchip,grf\n");
+=======
+		dev_err(dsi->dev, "Unable to get rockchip,grf\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return PTR_ERR(dsi->grf_regmap);
 	}
 
@@ -1202,6 +1299,12 @@ static int dw_mipi_dsi_bind(struct device *dev, struct device *master,
 		return ret;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+<<<<<<< HEAD
+=======
+	if (!res)
+		return -ENODEV;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi->base = devm_ioremap_resource(dev, res);
 	if (IS_ERR(dsi->base))
 		return PTR_ERR(dsi->base);
@@ -1209,15 +1312,23 @@ static int dw_mipi_dsi_bind(struct device *dev, struct device *master,
 	dsi->pllref_clk = devm_clk_get(dev, "ref");
 	if (IS_ERR(dsi->pllref_clk)) {
 		ret = PTR_ERR(dsi->pllref_clk);
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev,
 			      "Unable to get pll reference clock: %d\n", ret);
+=======
+		dev_err(dev, "Unable to get pll reference clock: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	dsi->pclk = devm_clk_get(dev, "pclk");
 	if (IS_ERR(dsi->pclk)) {
 		ret = PTR_ERR(dsi->pclk);
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "Unable to get pclk: %d\n", ret);
+=======
+		dev_err(dev, "Unable to get pclk: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -1231,8 +1342,12 @@ static int dw_mipi_dsi_bind(struct device *dev, struct device *master,
 		if (ret == -ENOENT) {
 			apb_rst = NULL;
 		} else {
+<<<<<<< HEAD
 			DRM_DEV_ERROR(dev,
 				      "Unable to get reset control: %d\n", ret);
+=======
+			dev_err(dev, "Unable to get reset control: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}
@@ -1240,7 +1355,11 @@ static int dw_mipi_dsi_bind(struct device *dev, struct device *master,
 	if (apb_rst) {
 		ret = clk_prepare_enable(dsi->pclk);
 		if (ret) {
+<<<<<<< HEAD
 			DRM_DEV_ERROR(dev, "Failed to enable pclk\n");
+=======
+			dev_err(dev, "%s: Failed to enable pclk\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 
@@ -1255,8 +1374,12 @@ static int dw_mipi_dsi_bind(struct device *dev, struct device *master,
 		dsi->phy_cfg_clk = devm_clk_get(dev, "phy_cfg");
 		if (IS_ERR(dsi->phy_cfg_clk)) {
 			ret = PTR_ERR(dsi->phy_cfg_clk);
+<<<<<<< HEAD
 			DRM_DEV_ERROR(dev,
 				      "Unable to get phy_cfg_clk: %d\n", ret);
+=======
+			dev_err(dev, "Unable to get phy_cfg_clk: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}
@@ -1265,20 +1388,32 @@ static int dw_mipi_dsi_bind(struct device *dev, struct device *master,
 		dsi->grf_clk = devm_clk_get(dev, "grf");
 		if (IS_ERR(dsi->grf_clk)) {
 			ret = PTR_ERR(dsi->grf_clk);
+<<<<<<< HEAD
 			DRM_DEV_ERROR(dev, "Unable to get grf_clk: %d\n", ret);
+=======
+			dev_err(dev, "Unable to get grf_clk: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return ret;
 		}
 	}
 
 	ret = clk_prepare_enable(dsi->pllref_clk);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "Failed to enable pllref_clk\n");
+=======
+		dev_err(dev, "%s: Failed to enable pllref_clk\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
 	ret = dw_mipi_dsi_register(drm, dsi);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "Failed to register mipi_dsi: %d\n", ret);
+=======
+		dev_err(dev, "Failed to register mipi_dsi: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_pllref;
 	}
 
@@ -1286,7 +1421,11 @@ static int dw_mipi_dsi_bind(struct device *dev, struct device *master,
 	dsi->dsi_host.dev = dev;
 	ret = mipi_dsi_host_register(&dsi->dsi_host);
 	if (ret) {
+<<<<<<< HEAD
 		DRM_DEV_ERROR(dev, "Failed to register MIPI host: %d\n", ret);
+=======
+		dev_err(dev, "Failed to register MIPI host: %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto err_cleanup;
 	}
 
@@ -1302,8 +1441,13 @@ static int dw_mipi_dsi_bind(struct device *dev, struct device *master,
 err_mipi_dsi_host:
 	mipi_dsi_host_unregister(&dsi->dsi_host);
 err_cleanup:
+<<<<<<< HEAD
 	dsi->connector.funcs->destroy(&dsi->connector);
 	dsi->encoder.funcs->destroy(&dsi->encoder);
+=======
+	drm_encoder_cleanup(&dsi->encoder);
+	drm_connector_cleanup(&dsi->connector);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_pllref:
 	clk_disable_unprepare(dsi->pllref_clk);
 	return ret;
@@ -1316,10 +1460,13 @@ static void dw_mipi_dsi_unbind(struct device *dev, struct device *master,
 
 	mipi_dsi_host_unregister(&dsi->dsi_host);
 	pm_runtime_disable(dev);
+<<<<<<< HEAD
 
 	dsi->connector.funcs->destroy(&dsi->connector);
 	dsi->encoder.funcs->destroy(&dsi->encoder);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_disable_unprepare(dsi->pllref_clk);
 }
 

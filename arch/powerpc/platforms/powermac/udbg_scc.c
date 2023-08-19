@@ -73,7 +73,11 @@ void udbg_scc_init(int force_scc)
 	struct device_node *stdout = NULL, *escc = NULL, *macio = NULL;
 	struct device_node *ch, *ch_def = NULL, *ch_a = NULL;
 	const char *path;
+<<<<<<< HEAD
 	int i;
+=======
+	int i, x;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	escc = of_find_node_by_name(NULL, "escc");
 	if (escc == NULL)
@@ -120,7 +124,11 @@ void udbg_scc_init(int force_scc)
 	mb();
 
 	for (i = 20000; i != 0; --i)
+<<<<<<< HEAD
 		in_8(sccc);
+=======
+		x = in_8(sccc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	out_8(sccc, 0x09);		/* reset A or B side */
 	out_8(sccc, 0xc0);
 

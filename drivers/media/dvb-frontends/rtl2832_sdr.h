@@ -27,17 +27,32 @@
 
 #include <linux/i2c.h>
 #include <media/v4l2-subdev.h>
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct rtl2832_sdr_platform_data - Platform data for the rtl2832_sdr driver
  * @clk: Clock frequency (4000000, 16000000, 25000000, 28800000).
  * @tuner: Used tuner model.
+<<<<<<< HEAD
  * @regmap: pointer to &struct regmap.
+=======
+ * @i2c_client: rtl2832 demod driver I2C client.
+ * @bulk_read: rtl2832 driver private I/O interface.
+ * @bulk_write: rtl2832 driver private I/O interface.
+ * @update_bits: rtl2832 driver private I/O interface.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @dvb_frontend: rtl2832 DVB frontend.
  * @v4l2_subdev: Tuner v4l2 controls.
  * @dvb_usb_device: DVB USB interface for USB streaming.
  */
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct rtl2832_sdr_platform_data {
 	u32 clk;
 	/*

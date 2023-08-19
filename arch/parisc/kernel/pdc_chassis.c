@@ -266,6 +266,21 @@ static int pdc_chassis_warn_show(struct seq_file *m, void *v)
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static int pdc_chassis_warn_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, pdc_chassis_warn_show, NULL);
+}
+
+static const struct file_operations pdc_chassis_warn_fops = {
+	.open		= pdc_chassis_warn_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int __init pdc_chassis_create_procfs(void)
 {
 	unsigned long test;
@@ -280,7 +295,11 @@ static int __init pdc_chassis_create_procfs(void)
 
 	printk(KERN_INFO "Enabling PDC chassis warnings support v%s\n",
 			PDC_CHASSIS_VER);
+<<<<<<< HEAD
 	proc_create_single("chassis", 0400, NULL, pdc_chassis_warn_show);
+=======
+	proc_create("chassis", 0400, NULL, &pdc_chassis_warn_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

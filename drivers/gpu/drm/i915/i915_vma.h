@@ -26,15 +26,23 @@
 #define __I915_VMA_H__
 
 #include <linux/io-mapping.h>
+<<<<<<< HEAD
 #include <linux/rbtree.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <drm/drm_mm.h>
 
 #include "i915_gem_gtt.h"
 #include "i915_gem_fence_reg.h"
 #include "i915_gem_object.h"
+<<<<<<< HEAD
 
 #include "i915_request.h"
+=======
+#include "i915_gem_request.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum i915_cache_level;
 
@@ -50,15 +58,23 @@ struct i915_vma {
 	struct drm_mm_node node;
 	struct drm_i915_gem_object *obj;
 	struct i915_address_space *vm;
+<<<<<<< HEAD
 	const struct i915_vma_ops *ops;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_i915_fence_reg *fence;
 	struct reservation_object *resv; /** Alias of obj->resv */
 	struct sg_table *pages;
 	void __iomem *iomap;
+<<<<<<< HEAD
 	void *private; /* owned by creator */
 	u64 size;
 	u64 display_alignment;
 	struct i915_page_sizes page_sizes;
+=======
+	u64 size;
+	u64 display_alignment;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	u32 fence_size;
 	u32 fence_alignment;
@@ -69,7 +85,11 @@ struct i915_vma {
 	 * that exist in the ctx->handle_vmas LUT for this vma.
 	 */
 	unsigned int open_count;
+<<<<<<< HEAD
 	unsigned long flags;
+=======
+	unsigned int flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/**
 	 * How many users have pinned this object in GTT space. The following
 	 * users can each hold at most one reference: pwrite/pread, execbuffer
@@ -91,6 +111,7 @@ struct i915_vma {
 #define I915_VMA_GGTT		BIT(8)
 #define I915_VMA_CAN_FENCE	BIT(9)
 #define I915_VMA_CLOSED		BIT(10)
+<<<<<<< HEAD
 #define I915_VMA_USERFAULT_BIT	11
 #define I915_VMA_USERFAULT	BIT(I915_VMA_USERFAULT_BIT)
 #define I915_VMA_GGTT_WRITE	BIT(12)
@@ -98,6 +119,11 @@ struct i915_vma {
 	unsigned int active_count;
 	struct rb_root active;
 	struct i915_gem_active last_active;
+=======
+
+	unsigned int active;
+	struct i915_gem_active last_read[I915_NUM_ENGINES];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_gem_active last_fence;
 
 	/**
@@ -123,8 +149,11 @@ struct i915_vma {
 	/** This vma's place in the eviction list */
 	struct list_head evict_link;
 
+<<<<<<< HEAD
 	struct list_head closed_link;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/**
 	 * Used for performing relocations during execbuffer insertion.
 	 */
@@ -140,6 +169,7 @@ i915_vma_instance(struct drm_i915_gem_object *obj,
 
 void i915_vma_unpin_and_release(struct i915_vma **p_vma);
 
+<<<<<<< HEAD
 static inline bool i915_vma_is_active(struct i915_vma *vma)
 {
 	return vma->active_count;
@@ -149,11 +179,14 @@ int __must_check i915_vma_move_to_active(struct i915_vma *vma,
 					 struct i915_request *rq,
 					 unsigned int flags);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool i915_vma_is_ggtt(const struct i915_vma *vma)
 {
 	return vma->flags & I915_VMA_GGTT;
 }
 
+<<<<<<< HEAD
 static inline bool i915_vma_has_ggtt_write(const struct i915_vma *vma)
 {
 	return vma->flags & I915_VMA_GGTT_WRITE;
@@ -172,6 +205,8 @@ static inline void i915_vma_unset_ggtt_write(struct i915_vma *vma)
 
 void i915_vma_flush_writes(struct i915_vma *vma);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline bool i915_vma_is_map_and_fenceable(const struct i915_vma *vma)
 {
 	return vma->flags & I915_VMA_CAN_FENCE;
@@ -182,6 +217,7 @@ static inline bool i915_vma_is_closed(const struct i915_vma *vma)
 	return vma->flags & I915_VMA_CLOSED;
 }
 
+<<<<<<< HEAD
 static inline bool i915_vma_set_userfault(struct i915_vma *vma)
 {
 	GEM_BUG_ON(!i915_vma_is_map_and_fenceable(vma));
@@ -196,6 +232,34 @@ static inline void i915_vma_unset_userfault(struct i915_vma *vma)
 static inline bool i915_vma_has_userfault(const struct i915_vma *vma)
 {
 	return test_bit(I915_VMA_USERFAULT_BIT, &vma->flags);
+=======
+static inline unsigned int i915_vma_get_active(const struct i915_vma *vma)
+{
+	return vma->active;
+}
+
+static inline bool i915_vma_is_active(const struct i915_vma *vma)
+{
+	return i915_vma_get_active(vma);
+}
+
+static inline void i915_vma_set_active(struct i915_vma *vma,
+				       unsigned int engine)
+{
+	vma->active |= BIT(engine);
+}
+
+static inline void i915_vma_clear_active(struct i915_vma *vma,
+					 unsigned int engine)
+{
+	vma->active &= ~BIT(engine);
+}
+
+static inline bool i915_vma_has_active_engine(const struct i915_vma *vma,
+					      unsigned int engine)
+{
+	return vma->active & BIT(engine);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static inline u32 i915_ggtt_offset(const struct i915_vma *vma)
@@ -268,12 +332,18 @@ bool i915_gem_valid_gtt_space(struct i915_vma *vma, unsigned long cache_level);
 bool i915_vma_misplaced(const struct i915_vma *vma,
 			u64 size, u64 alignment, u64 flags);
 void __i915_vma_set_map_and_fenceable(struct i915_vma *vma);
+<<<<<<< HEAD
 void i915_vma_revoke_mmap(struct i915_vma *vma);
 int __must_check i915_vma_unbind(struct i915_vma *vma);
 void i915_vma_unlink_ctx(struct i915_vma *vma);
 void i915_vma_close(struct i915_vma *vma);
 void i915_vma_reopen(struct i915_vma *vma);
 void i915_vma_destroy(struct i915_vma *vma);
+=======
+int __must_check i915_vma_unbind(struct i915_vma *vma);
+void i915_vma_unlink_ctx(struct i915_vma *vma);
+void i915_vma_close(struct i915_vma *vma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int __i915_vma_do_pin(struct i915_vma *vma,
 		      u64 size, u64 alignment, u64 flags);
@@ -324,12 +394,15 @@ static inline void i915_vma_unpin(struct i915_vma *vma)
 	__i915_vma_unpin(vma);
 }
 
+<<<<<<< HEAD
 static inline bool i915_vma_is_bound(const struct i915_vma *vma,
 				     unsigned int where)
 {
 	return vma->flags & where;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * i915_vma_pin_iomap - calls ioremap_wc to map the GGTT VMA via the aperture
  * @vma: VMA to iomap
@@ -355,7 +428,16 @@ void __iomem *i915_vma_pin_iomap(struct i915_vma *vma);
  * Callers must hold the struct_mutex. This function is only valid to be
  * called on a VMA previously iomapped by the caller with i915_vma_pin_iomap().
  */
+<<<<<<< HEAD
 void i915_vma_unpin_iomap(struct i915_vma *vma);
+=======
+static inline void i915_vma_unpin_iomap(struct i915_vma *vma)
+{
+	lockdep_assert_held(&vma->obj->base.dev->struct_mutex);
+	GEM_BUG_ON(vma->iomap == NULL);
+	i915_vma_unpin(vma);
+}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline struct page *i915_vma_first_page(struct i915_vma *vma)
 {
@@ -378,6 +460,7 @@ static inline struct page *i915_vma_first_page(struct i915_vma *vma)
  *
  * True if the vma has a fence, false otherwise.
  */
+<<<<<<< HEAD
 int i915_vma_pin_fence(struct i915_vma *vma);
 int __must_check i915_vma_put_fence(struct i915_vma *vma);
 
@@ -385,6 +468,17 @@ static inline void __i915_vma_unpin_fence(struct i915_vma *vma)
 {
 	GEM_BUG_ON(vma->fence->pin_count <= 0);
 	vma->fence->pin_count--;
+=======
+static inline bool
+i915_vma_pin_fence(struct i915_vma *vma)
+{
+	lockdep_assert_held(&vma->obj->base.dev->struct_mutex);
+	if (vma->fence) {
+		vma->fence->pin_count++;
+		return true;
+	} else
+		return false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -398,6 +492,7 @@ static inline void __i915_vma_unpin_fence(struct i915_vma *vma)
 static inline void
 i915_vma_unpin_fence(struct i915_vma *vma)
 {
+<<<<<<< HEAD
 	/* lockdep_assert_held(&vma->vm->i915->drm.struct_mutex); */
 	if (vma->fence)
 		__i915_vma_unpin_fence(vma);
@@ -421,3 +516,14 @@ void i915_vma_parked(struct drm_i915_private *i915);
 		for_each_until(!i915_vma_is_ggtt(V))
 
 #endif
+=======
+	lockdep_assert_held(&vma->obj->base.dev->struct_mutex);
+	if (vma->fence) {
+		GEM_BUG_ON(vma->fence->pin_count <= 0);
+		vma->fence->pin_count--;
+	}
+}
+
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

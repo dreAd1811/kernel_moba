@@ -16,7 +16,10 @@
 #include <net/tc_act/tc_skbedit.h>
 #include <net/tc_act/tc_mirred.h>
 #include <net/tc_act/tc_vlan.h>
+<<<<<<< HEAD
 #include <net/tc_act/tc_tunnel_key.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "bnxt_hsi.h"
 #include "bnxt.h"
@@ -24,6 +27,7 @@
 #include "bnxt_tc.h"
 #include "bnxt_vfr.h"
 
+<<<<<<< HEAD
 #define BNXT_FID_INVALID			0xffff
 #define VLAN_TCI(vid, prio)	((vid) | ((prio) << VLAN_PRIO_SHIFT))
 
@@ -36,6 +40,13 @@
 #define is_vid_exactmatch(vlan_tci_mask)	\
 	((ntohs(vlan_tci_mask) & VLAN_VID_MASK) == VLAN_VID_MASK)
 
+=======
+#ifdef CONFIG_BNXT_FLOWER_OFFLOAD
+
+#define BNXT_FID_INVALID			0xffff
+#define VLAN_TCI(vid, prio)	((vid) | ((prio) << VLAN_PRIO_SHIFT))
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Return the dst fid of the func for flow forwarding
  * For PFs: src_fid is the fid of the PF
  * For VF-reps: src_fid the fid of the VF
@@ -52,7 +63,11 @@ static u16 bnxt_flow_get_dst_fid(struct bnxt *pf_bp, struct net_device *dev)
 	}
 
 	/* Is dev a VF-rep? */
+<<<<<<< HEAD
 	if (bnxt_dev_is_vf_rep(dev))
+=======
+	if (dev != pf_bp->dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return bnxt_vf_rep_get_fid(dev);
 
 	bp = netdev_priv(dev);
@@ -63,14 +78,35 @@ static int bnxt_tc_parse_redir(struct bnxt *bp,
 			       struct bnxt_tc_actions *actions,
 			       const struct tc_action *tc_act)
 {
+<<<<<<< HEAD
 	struct net_device *dev = tcf_mirred_dev(tc_act);
 
 	if (!dev) {
 		netdev_info(bp->dev, "no dev in mirred action");
+=======
+	int ifindex = tcf_mirred_ifindex(tc_act);
+	struct net_device *dev;
+	u16 dst_fid;
+
+	dev = __dev_get_by_index(dev_net(bp->dev), ifindex);
+	if (!dev) {
+		netdev_info(bp->dev, "no dev for ifindex=%d", ifindex);
+		return -EINVAL;
+	}
+
+	/* find the FID from dev */
+	dst_fid = bnxt_flow_get_dst_fid(bp, dev);
+	if (dst_fid == BNXT_FID_INVALID) {
+		netdev_info(bp->dev, "can't get fid for ifindex=%d", ifindex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
 	actions->flags |= BNXT_TC_ACTION_FLAG_FWD;
+<<<<<<< HEAD
+=======
+	actions->dst_fid = dst_fid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	actions->dst_dev = dev;
 	return 0;
 }
@@ -94,6 +130,7 @@ static int bnxt_tc_parse_vlan(struct bnxt *bp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int bnxt_tc_parse_tunnel_set(struct bnxt *bp,
 				    struct bnxt_tc_actions *actions,
 				    const struct tc_action *tc_act)
@@ -111,19 +148,31 @@ static int bnxt_tc_parse_tunnel_set(struct bnxt *bp,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bnxt_tc_parse_actions(struct bnxt *bp,
 				 struct bnxt_tc_actions *actions,
 				 struct tcf_exts *tc_exts)
 {
 	const struct tc_action *tc_act;
+<<<<<<< HEAD
 	int i, rc;
+=======
+	LIST_HEAD(tc_actions);
+	int rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!tcf_exts_has_actions(tc_exts)) {
 		netdev_info(bp->dev, "no actions");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	tcf_exts_for_each_action(i, tc_act, tc_exts) {
+=======
+	tcf_exts_to_list(tc_exts, &tc_actions);
+	list_for_each_entry(tc_act, &tc_actions, list) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Drop action */
 		if (is_tcf_gact_shot(tc_act)) {
 			actions->flags |= BNXT_TC_ACTION_FLAG_DROP;
@@ -145,6 +194,7 @@ static int bnxt_tc_parse_actions(struct bnxt *bp,
 				return rc;
 			continue;
 		}
+<<<<<<< HEAD
 
 		/* Tunnel encap */
 		if (is_tcf_tunnel_set(tc_act)) {
@@ -172,6 +222,8 @@ static int bnxt_tc_parse_actions(struct bnxt *bp,
 			if (actions->dst_fid == BNXT_FID_INVALID)
 				return -EINVAL;
 		}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -301,6 +353,7 @@ static int bnxt_tc_parse_flow(struct bnxt *bp,
 		flow->l4_mask.icmp.code = mask->code;
 	}
 
+<<<<<<< HEAD
 	if (dissector_uses_key(dissector, FLOW_DISSECTOR_KEY_ENC_CONTROL)) {
 		struct flow_dissector_key_control *key =
 			GET_KEY(tc_flow_cmd, FLOW_DISSECTOR_KEY_ENC_CONTROL);
@@ -349,6 +402,8 @@ static int bnxt_tc_parse_flow(struct bnxt *bp,
 		flow->tun_mask.tp_src = mask->src;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return bnxt_tc_parse_actions(bp, &flow->actions, tc_flow_cmd->exts);
 }
 
@@ -364,9 +419,12 @@ static int bnxt_hwrm_cfa_flow_free(struct bnxt *bp, __le16 flow_handle)
 	if (rc)
 		netdev_info(bp->dev, "Error: %s: flow_handle=0x%x rc=%d",
 			    __func__, flow_handle, rc);
+<<<<<<< HEAD
 
 	if (rc)
 		rc = -EIO;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -392,6 +450,7 @@ static bool is_wildcard(void *mask, int len)
 	return true;
 }
 
+<<<<<<< HEAD
 static bool is_exactmatch(void *mask, int len)
 {
 	const u8 *p = mask;
@@ -434,6 +493,10 @@ static bool bits_set(void *key, int len)
 static int bnxt_hwrm_cfa_flow_alloc(struct bnxt *bp, struct bnxt_tc_flow *flow,
 				    __le16 ref_flow_handle,
 				    __le32 tunnel_handle, __le16 *flow_handle)
+=======
+static int bnxt_hwrm_cfa_flow_alloc(struct bnxt *bp, struct bnxt_tc_flow *flow,
+				    __le16 ref_flow_handle, __le16 *flow_handle)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hwrm_cfa_flow_alloc_output *resp = bp->hwrm_cmd_resp_addr;
 	struct bnxt_tc_actions *actions = &flow->actions;
@@ -447,6 +510,7 @@ static int bnxt_hwrm_cfa_flow_alloc(struct bnxt *bp, struct bnxt_tc_flow *flow,
 
 	req.src_fid = cpu_to_le16(flow->src_fid);
 	req.ref_flow_handle = ref_flow_handle;
+<<<<<<< HEAD
 
 	if (actions->flags & BNXT_TC_ACTION_FLAG_TUNNEL_DECAP ||
 	    actions->flags & BNXT_TC_ACTION_FLAG_TUNNEL_ENCAP) {
@@ -455,6 +519,8 @@ static int bnxt_hwrm_cfa_flow_alloc(struct bnxt *bp, struct bnxt_tc_flow *flow,
 		action_flags |= CFA_FLOW_ALLOC_REQ_ACTION_FLAGS_TUNNEL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req.ethertype = flow->l2_key.ether_type;
 	req.ip_proto = flow->l4_key.ip_proto;
 
@@ -541,6 +607,7 @@ static int bnxt_hwrm_cfa_flow_alloc(struct bnxt *bp, struct bnxt_tc_flow *flow,
 	req.action_flags = cpu_to_le16(action_flags);
 
 	mutex_lock(&bp->hwrm_cmd_lock);
+<<<<<<< HEAD
 	rc = _hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
 	if (!rc)
 		*flow_handle = resp->flow_handle;
@@ -708,6 +775,90 @@ static int hwrm_cfa_encap_record_free(struct bnxt *bp,
 
 	if (rc)
 		rc = -EIO;
+=======
+
+	rc = _hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
+	if (!rc)
+		*flow_handle = resp->flow_handle;
+
+	mutex_unlock(&bp->hwrm_cmd_lock);
+
+	return rc;
+}
+
+/* Add val to accum while handling a possible wraparound
+ * of val. Eventhough val is of type u64, its actual width
+ * is denoted by mask and will wrap-around beyond that width.
+ */
+static void accumulate_val(u64 *accum, u64 val, u64 mask)
+{
+#define low_bits(x, mask)		((x) & (mask))
+#define high_bits(x, mask)		((x) & ~(mask))
+	bool wrapped = val < low_bits(*accum, mask);
+
+	*accum = high_bits(*accum, mask) + val;
+	if (wrapped)
+		*accum += (mask + 1);
+}
+
+/* The HW counters' width is much less than 64bits.
+ * Handle possible wrap-around while updating the stat counters
+ */
+static void bnxt_flow_stats_fix_wraparound(struct bnxt_tc_info *tc_info,
+					   struct bnxt_tc_flow_stats *stats,
+					   struct bnxt_tc_flow_stats *hw_stats)
+{
+	accumulate_val(&stats->bytes, hw_stats->bytes, tc_info->bytes_mask);
+	accumulate_val(&stats->packets, hw_stats->packets,
+		       tc_info->packets_mask);
+}
+
+/* Fix possible wraparound of the stats queried from HW, calculate
+ * the delta from prev_stats, and also update the prev_stats.
+ * The HW flow stats are fetched under the hwrm_cmd_lock mutex.
+ * This routine is best called while under the mutex so that the
+ * stats processing happens atomically.
+ */
+static void bnxt_flow_stats_calc(struct bnxt_tc_info *tc_info,
+				 struct bnxt_tc_flow *flow,
+				 struct bnxt_tc_flow_stats *stats)
+{
+	struct bnxt_tc_flow_stats *acc_stats, *prev_stats;
+
+	acc_stats = &flow->stats;
+	bnxt_flow_stats_fix_wraparound(tc_info, acc_stats, stats);
+
+	prev_stats = &flow->prev_stats;
+	stats->bytes = acc_stats->bytes - prev_stats->bytes;
+	stats->packets = acc_stats->packets - prev_stats->packets;
+	*prev_stats = *acc_stats;
+}
+
+static int bnxt_hwrm_cfa_flow_stats_get(struct bnxt *bp,
+					__le16 flow_handle,
+					struct bnxt_tc_flow *flow,
+					struct bnxt_tc_flow_stats *stats)
+{
+	struct hwrm_cfa_flow_stats_output *resp = bp->hwrm_cmd_resp_addr;
+	struct hwrm_cfa_flow_stats_input req = { 0 };
+	int rc;
+
+	bnxt_hwrm_cmd_hdr_init(bp, &req, HWRM_CFA_FLOW_STATS, -1, -1);
+	req.num_flows = cpu_to_le16(1);
+	req.flow_handle_0 = flow_handle;
+
+	mutex_lock(&bp->hwrm_cmd_lock);
+	rc = _hwrm_send_message(bp, &req, sizeof(req), HWRM_CMD_TIMEOUT);
+	if (!rc) {
+		stats->packets = le64_to_cpu(resp->packet_0);
+		stats->bytes = le64_to_cpu(resp->byte_0);
+		bnxt_flow_stats_calc(&bp->tc_info, flow, stats);
+	} else {
+		netdev_info(bp->dev, "error rc=%d", rc);
+	}
+
+	mutex_unlock(&bp->hwrm_cmd_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -715,7 +866,11 @@ static int bnxt_tc_put_l2_node(struct bnxt *bp,
 			       struct bnxt_tc_flow_node *flow_node)
 {
 	struct bnxt_tc_l2_node *l2_node = flow_node->l2_node;
+<<<<<<< HEAD
 	struct bnxt_tc_info *tc_info = bp->tc_info;
+=======
+	struct bnxt_tc_info *tc_info = &bp->tc_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	/* remove flow_node from the L2 shared flow list */
@@ -752,7 +907,11 @@ bnxt_tc_get_l2_node(struct bnxt *bp, struct rhashtable *l2_table,
 		rc = rhashtable_insert_fast(l2_table, &l2_node->node,
 					    ht_params);
 		if (rc) {
+<<<<<<< HEAD
 			kfree_rcu(l2_node, rcu);
+=======
+			kfree(l2_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			netdev_err(bp->dev,
 				   "Error: %s: rhashtable_insert_fast: %d",
 				   __func__, rc);
@@ -771,7 +930,11 @@ bnxt_tc_get_ref_flow_handle(struct bnxt *bp, struct bnxt_tc_flow *flow,
 			    struct bnxt_tc_flow_node *flow_node,
 			    __le16 *ref_flow_handle)
 {
+<<<<<<< HEAD
 	struct bnxt_tc_info *tc_info = bp->tc_info;
+=======
+	struct bnxt_tc_info *tc_info = &bp->tc_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bnxt_tc_flow_node *ref_flow_node;
 	struct bnxt_tc_l2_node *l2_node;
 
@@ -818,6 +981,7 @@ static bool bnxt_tc_can_offload(struct bnxt *bp, struct bnxt_tc_flow *flow)
 		return false;
 	}
 
+<<<<<<< HEAD
 	/* Currently source/dest MAC cannot be partial wildcard  */
 	if (bits_set(&flow->l2_key.smac, sizeof(flow->l2_key.smac)) &&
 	    !is_exactmatch(flow->l2_mask.smac, sizeof(flow->l2_mask.smac))) {
@@ -1236,6 +1400,15 @@ static int __bnxt_tc_del_flow(struct bnxt *bp,
 			      struct bnxt_tc_flow_node *flow_node)
 {
 	struct bnxt_tc_info *tc_info = bp->tc_info;
+=======
+	return true;
+}
+
+static int __bnxt_tc_del_flow(struct bnxt *bp,
+			      struct bnxt_tc_flow_node *flow_node)
+{
+	struct bnxt_tc_info *tc_info = &bp->tc_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	/* send HWRM cmd to free the flow-id */
@@ -1243,9 +1416,12 @@ static int __bnxt_tc_del_flow(struct bnxt *bp,
 
 	mutex_lock(&tc_info->lock);
 
+<<<<<<< HEAD
 	/* release references to any tunnel encap/decap nodes */
 	bnxt_tc_put_tunnel_handle(bp, &flow_node->flow, flow_node);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* release reference to l2 node */
 	bnxt_tc_put_l2_node(bp, flow_node);
 
@@ -1261,6 +1437,7 @@ static int __bnxt_tc_del_flow(struct bnxt *bp,
 	return 0;
 }
 
+<<<<<<< HEAD
 static void bnxt_tc_set_src_fid(struct bnxt *bp, struct bnxt_tc_flow *flow,
 				u16 src_fid)
 {
@@ -1270,6 +1447,8 @@ static void bnxt_tc_set_src_fid(struct bnxt *bp, struct bnxt_tc_flow *flow,
 		flow->src_fid = src_fid;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Add a new flow or replace an existing flow.
  * Notes on locking:
  * There are essentially two critical sections here.
@@ -1287,9 +1466,14 @@ static int bnxt_tc_add_flow(struct bnxt *bp, u16 src_fid,
 			    struct tc_cls_flower_offload *tc_flow_cmd)
 {
 	struct bnxt_tc_flow_node *new_node, *old_node;
+<<<<<<< HEAD
 	struct bnxt_tc_info *tc_info = bp->tc_info;
 	struct bnxt_tc_flow *flow;
 	__le32 tunnel_handle = 0;
+=======
+	struct bnxt_tc_info *tc_info = &bp->tc_info;
+	struct bnxt_tc_flow *flow;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 ref_flow_handle;
 	int rc;
 
@@ -1305,8 +1489,12 @@ static int bnxt_tc_add_flow(struct bnxt *bp, u16 src_fid,
 	rc = bnxt_tc_parse_flow(bp, tc_flow_cmd, flow);
 	if (rc)
 		goto free_node;
+<<<<<<< HEAD
 
 	bnxt_tc_set_src_fid(bp, flow, src_fid);
+=======
+	flow->src_fid = src_fid;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!bnxt_tc_can_offload(bp, flow)) {
 		rc = -ENOSPC;
@@ -1328,6 +1516,7 @@ static int bnxt_tc_add_flow(struct bnxt *bp, u16 src_fid,
 	if (rc)
 		goto unlock;
 
+<<<<<<< HEAD
 	/* If the flow involves tunnel encap/decap, get tunnel_handle */
 	rc = bnxt_tc_get_tunnel_handle(bp, flow, new_node, &tunnel_handle);
 	if (rc)
@@ -1341,6 +1530,14 @@ static int bnxt_tc_add_flow(struct bnxt *bp, u16 src_fid,
 
 	flow->lastused = jiffies;
 	spin_lock_init(&flow->stats_lock);
+=======
+	/* send HWRM cmd to alloc the flow */
+	rc = bnxt_hwrm_cfa_flow_alloc(bp, flow, ref_flow_handle,
+				      &new_node->flow_handle);
+	if (rc)
+		goto put_l2;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* add new flow to flow-table */
 	rc = rhashtable_insert_fast(&tc_info->flow_table, &new_node->node,
 				    tc_info->flow_ht_params);
@@ -1352,14 +1549,21 @@ static int bnxt_tc_add_flow(struct bnxt *bp, u16 src_fid,
 
 hwrm_flow_free:
 	bnxt_hwrm_cfa_flow_free(bp, new_node->flow_handle);
+<<<<<<< HEAD
 put_tunnel:
 	bnxt_tc_put_tunnel_handle(bp, flow, new_node);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 put_l2:
 	bnxt_tc_put_l2_node(bp, new_node);
 unlock:
 	mutex_unlock(&tc_info->lock);
 free_node:
+<<<<<<< HEAD
 	kfree_rcu(new_node, rcu);
+=======
+	kfree(new_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 done:
 	netdev_err(bp->dev, "Error: %s: cookie=0x%lx error=%d",
 		   __func__, tc_flow_cmd->cookie, rc);
@@ -1369,14 +1573,26 @@ done:
 static int bnxt_tc_del_flow(struct bnxt *bp,
 			    struct tc_cls_flower_offload *tc_flow_cmd)
 {
+<<<<<<< HEAD
 	struct bnxt_tc_info *tc_info = bp->tc_info;
+=======
+	struct bnxt_tc_info *tc_info = &bp->tc_info;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct bnxt_tc_flow_node *flow_node;
 
 	flow_node = rhashtable_lookup_fast(&tc_info->flow_table,
 					   &tc_flow_cmd->cookie,
 					   tc_info->flow_ht_params);
+<<<<<<< HEAD
 	if (!flow_node)
 		return -EINVAL;
+=======
+	if (!flow_node) {
+		netdev_info(bp->dev, "ERROR: no flow_node for cookie %lx",
+			    tc_flow_cmd->cookie);
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return __bnxt_tc_del_flow(bp, flow_node);
 }
@@ -1384,15 +1600,23 @@ static int bnxt_tc_del_flow(struct bnxt *bp,
 static int bnxt_tc_get_flow_stats(struct bnxt *bp,
 				  struct tc_cls_flower_offload *tc_flow_cmd)
 {
+<<<<<<< HEAD
 	struct bnxt_tc_flow_stats stats, *curr_stats, *prev_stats;
 	struct bnxt_tc_info *tc_info = bp->tc_info;
 	struct bnxt_tc_flow_node *flow_node;
 	struct bnxt_tc_flow *flow;
 	unsigned long lastused;
+=======
+	struct bnxt_tc_info *tc_info = &bp->tc_info;
+	struct bnxt_tc_flow_node *flow_node;
+	struct bnxt_tc_flow_stats stats;
+	int rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flow_node = rhashtable_lookup_fast(&tc_info->flow_table,
 					   &tc_flow_cmd->cookie,
 					   tc_info->flow_ht_params);
+<<<<<<< HEAD
 	if (!flow_node)
 		return -1;
 
@@ -1584,6 +1808,46 @@ int bnxt_tc_setup_flower(struct bnxt *bp, u16 src_fid,
 	default:
 		return -EOPNOTSUPP;
 	}
+=======
+	if (!flow_node) {
+		netdev_info(bp->dev, "Error: no flow_node for cookie %lx",
+			    tc_flow_cmd->cookie);
+		return -1;
+	}
+
+	rc = bnxt_hwrm_cfa_flow_stats_get(bp, flow_node->flow_handle,
+					  &flow_node->flow, &stats);
+	if (rc)
+		return rc;
+
+	tcf_exts_stats_update(tc_flow_cmd->exts, stats.bytes, stats.packets, 0);
+	return 0;
+}
+
+int bnxt_tc_setup_flower(struct bnxt *bp, u16 src_fid,
+			 struct tc_cls_flower_offload *cls_flower)
+{
+	int rc = 0;
+
+	if (!is_classid_clsact_ingress(cls_flower->common.classid) ||
+	    cls_flower->common.chain_index)
+		return -EOPNOTSUPP;
+
+	switch (cls_flower->command) {
+	case TC_CLSFLOWER_REPLACE:
+		rc = bnxt_tc_add_flow(bp, src_fid, cls_flower);
+		break;
+
+	case TC_CLSFLOWER_DESTROY:
+		rc = bnxt_tc_del_flow(bp, cls_flower);
+		break;
+
+	case TC_CLSFLOWER_STATS:
+		rc = bnxt_tc_get_flow_stats(bp, cls_flower);
+		break;
+	}
+	return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct rhashtable_params bnxt_tc_flow_ht_params = {
@@ -1600,6 +1864,7 @@ static const struct rhashtable_params bnxt_tc_l2_ht_params = {
 	.automatic_shrinking = true
 };
 
+<<<<<<< HEAD
 static const struct rhashtable_params bnxt_tc_decap_l2_ht_params = {
 	.head_offset = offsetof(struct bnxt_tc_l2_node, node),
 	.key_offset = offsetof(struct bnxt_tc_l2_node, key),
@@ -1614,23 +1879,35 @@ static const struct rhashtable_params bnxt_tc_tunnel_ht_params = {
 	.automatic_shrinking = true
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* convert counter width in bits to a mask */
 #define mask(width)		((u64)~0 >> (64 - (width)))
 
 int bnxt_init_tc(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	struct bnxt_tc_info *tc_info;
 	int rc;
 
 	if (bp->hwrm_spec_code < 0x10803) {
+=======
+	struct bnxt_tc_info *tc_info = &bp->tc_info;
+	int rc;
+
+	if (bp->hwrm_spec_code < 0x10800) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_warn(bp->dev,
 			    "Firmware does not support TC flower offload.\n");
 		return -ENOTSUPP;
 	}
+<<<<<<< HEAD
 
 	tc_info = kzalloc(sizeof(*tc_info), GFP_KERNEL);
 	if (!tc_info)
 		return -ENOMEM;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_init(&tc_info->lock);
 
 	/* Counter widths are programmed by FW */
@@ -1640,13 +1917,18 @@ int bnxt_init_tc(struct bnxt *bp)
 	tc_info->flow_ht_params = bnxt_tc_flow_ht_params;
 	rc = rhashtable_init(&tc_info->flow_table, &tc_info->flow_ht_params);
 	if (rc)
+<<<<<<< HEAD
 		goto free_tc_info;
+=======
+		return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tc_info->l2_ht_params = bnxt_tc_l2_ht_params;
 	rc = rhashtable_init(&tc_info->l2_table, &tc_info->l2_ht_params);
 	if (rc)
 		goto destroy_flow_table;
 
+<<<<<<< HEAD
 	tc_info->decap_l2_ht_params = bnxt_tc_decap_l2_ht_params;
 	rc = rhashtable_init(&tc_info->decap_l2_table,
 			     &tc_info->decap_l2_ht_params);
@@ -1681,21 +1963,43 @@ destroy_flow_table:
 	rhashtable_destroy(&tc_info->flow_table);
 free_tc_info:
 	kfree(tc_info);
+=======
+	tc_info->enabled = true;
+	bp->dev->hw_features |= NETIF_F_HW_TC;
+	bp->dev->features |= NETIF_F_HW_TC;
+	return 0;
+
+destroy_flow_table:
+	rhashtable_destroy(&tc_info->flow_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
 void bnxt_shutdown_tc(struct bnxt *bp)
 {
+<<<<<<< HEAD
 	struct bnxt_tc_info *tc_info = bp->tc_info;
 
 	if (!bnxt_tc_flower_enabled(bp))
+=======
+	struct bnxt_tc_info *tc_info = &bp->tc_info;
+
+	if (!tc_info->enabled)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	rhashtable_destroy(&tc_info->flow_table);
 	rhashtable_destroy(&tc_info->l2_table);
+<<<<<<< HEAD
 	rhashtable_destroy(&tc_info->decap_l2_table);
 	rhashtable_destroy(&tc_info->decap_table);
 	rhashtable_destroy(&tc_info->encap_table);
 	kfree(tc_info);
 	bp->tc_info = NULL;
 }
+=======
+}
+
+#else
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

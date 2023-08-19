@@ -769,7 +769,11 @@ int initialize_cx231xx(struct cx231xx *dev)
 			break;
 		default:
 			dev_err(dev->dev,
+<<<<<<< HEAD
 				"bad scenario!!!!!\nconfig_info=%x\n",
+=======
+				"bad senario!!!!!\nconfig_info=%x\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				config_info & SELFPOWER_MASK);
 			return -ENODEV;
 		}

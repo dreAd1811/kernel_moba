@@ -32,7 +32,11 @@ nv25_fb_tile_comp(struct nvkm_fb *fb, int i, u32 size, u32 flags,
 {
 	u32 tiles = DIV_ROUND_UP(size, 0x40);
 	u32 tags  = round_up(tiles / fb->ram->parts, 0x40);
+<<<<<<< HEAD
 	if (!nvkm_mm_head(&fb->tags, 0, 1, tags, tags, 1, &tile->tag)) {
+=======
+	if (!nvkm_mm_head(&fb->ram->tags, 0, 1, tags, tags, 1, &tile->tag)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!(flags & 2)) tile->zcomp = 0x00100000; /* Z16 */
 		else              tile->zcomp = 0x00200000; /* Z24S8 */
 		tile->zcomp |= tile->tag->offset;
@@ -44,13 +48,20 @@ nv25_fb_tile_comp(struct nvkm_fb *fb, int i, u32 size, u32 flags,
 
 static const struct nvkm_fb_func
 nv25_fb = {
+<<<<<<< HEAD
 	.tags = nv20_fb_tags,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.tile.regions = 8,
 	.tile.init = nv20_fb_tile_init,
 	.tile.comp = nv25_fb_tile_comp,
 	.tile.fini = nv20_fb_tile_fini,
 	.tile.prog = nv20_fb_tile_prog,
 	.ram_new = nv20_ram_new,
+<<<<<<< HEAD
+=======
+	.memtype_valid = nv04_fb_memtype_valid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int

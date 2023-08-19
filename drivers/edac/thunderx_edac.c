@@ -408,14 +408,22 @@ static ssize_t thunderx_lmc_inject_ecc_write(struct file *file,
 					     size_t count, loff_t *ppos)
 {
 	struct thunderx_lmc *lmc = file->private_data;
+<<<<<<< HEAD
 	unsigned int cline_size = cache_line_size();
 	u8 *tmp;
+=======
+
+	unsigned int cline_size = cache_line_size();
+
+	u8 tmp[cline_size];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void __iomem *addr;
 	unsigned int offs, timeout = 100000;
 
 	atomic_set(&lmc->ecc_int, 0);
 
 	lmc->mem = alloc_pages_node(lmc->node, GFP_KERNEL, 0);
+<<<<<<< HEAD
 	if (!lmc->mem)
 		return -ENOMEM;
 
@@ -425,12 +433,22 @@ static ssize_t thunderx_lmc_inject_ecc_write(struct file *file,
 		return -ENOMEM;
 	}
 
+=======
+
+	if (!lmc->mem)
+		return -ENOMEM;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	addr = page_address(lmc->mem);
 
 	while (!atomic_read(&lmc->ecc_int) && timeout--) {
 		stop_machine(inject_ecc_fn, lmc, NULL);
 
+<<<<<<< HEAD
 		for (offs = 0; offs < PAGE_SIZE; offs += cline_size) {
+=======
+		for (offs = 0; offs < PAGE_SIZE; offs += sizeof(tmp)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Do a load from the previously rigged location
 			 * This should generate an error interrupt.
@@ -440,7 +458,10 @@ static ssize_t thunderx_lmc_inject_ecc_write(struct file *file,
 		}
 	}
 
+<<<<<<< HEAD
 	kfree(tmp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__free_pages(lmc->mem, 0);
 
 	return count;
@@ -643,6 +664,30 @@ err_free:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM
+static int thunderx_lmc_suspend(struct pci_dev *pdev, pm_message_t state)
+{
+	pci_save_state(pdev);
+	pci_disable_device(pdev);
+
+	pci_set_power_state(pdev, pci_choose_state(pdev, state));
+
+	return 0;
+}
+
+static int thunderx_lmc_resume(struct pci_dev *pdev)
+{
+	pci_set_power_state(pdev, PCI_D0);
+	pci_enable_wake(pdev, PCI_D0, 0);
+	pci_restore_state(pdev);
+
+	return 0;
+}
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct pci_device_id thunderx_lmc_pci_tbl[] = {
 	{ PCI_DEVICE(PCI_VENDOR_ID_CAVIUM, PCI_DEVICE_ID_THUNDER_LMC) },
 	{ 0, },
@@ -817,6 +862,13 @@ static struct pci_driver thunderx_lmc_driver = {
 	.name     = "thunderx_lmc_edac",
 	.probe    = thunderx_lmc_probe,
 	.remove   = thunderx_lmc_remove,
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_PM
+	.suspend  = thunderx_lmc_suspend,
+	.resume   = thunderx_lmc_resume,
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id_table = thunderx_lmc_pci_tbl,
 };
 
@@ -1884,7 +1936,11 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
 	default:
 		dev_err(&l2c->pdev->dev, "Unsupported device: %04x\n",
 			l2c->pdev->device);
+<<<<<<< HEAD
 		return IRQ_NONE;
+=======
+		goto err_free;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	while (CIRC_CNT(l2c->ring_head, l2c->ring_tail,
@@ -1906,7 +1962,11 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
 		l2c->ring_tail++;
 	}
 
+<<<<<<< HEAD
 	return IRQ_HANDLED;
+=======
+	ret = IRQ_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 err_free:
 	kfree(other);

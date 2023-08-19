@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: BSD-3-Clause OR GPL-2.0
 /* Copyright (c) 2017-2018 Mellanox Technologies. All rights reserved */
 
@@ -121,6 +122,76 @@ bool mlxsw_sp_l3addr_is_zero(union mlxsw_sp_l3addr addr)
 	union mlxsw_sp_l3addr naddr = {0};
 
 	return !memcmp(&addr, &naddr, sizeof(naddr));
+=======
+/*
+ * drivers/net/ethernet/mellanox/mlxsw/spectrum_ipip.c
+ * Copyright (c) 2017 Mellanox Technologies. All rights reserved.
+ * Copyright (c) 2017 Petr Machata <petrm@mellanox.com>
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the names of the copyright holders nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * Alternatively, this software may be distributed under the terms of the
+ * GNU General Public License ("GPL") version 2 as published by the Free
+ * Software Foundation.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include <net/ip_tunnels.h>
+
+#include "spectrum_ipip.h"
+
+static bool
+mlxsw_sp_ipip_netdev_has_ikey(const struct net_device *ol_dev)
+{
+	struct ip_tunnel *tun = netdev_priv(ol_dev);
+
+	return !!(tun->parms.i_flags & TUNNEL_KEY);
+}
+
+static bool
+mlxsw_sp_ipip_netdev_has_okey(const struct net_device *ol_dev)
+{
+	struct ip_tunnel *tun = netdev_priv(ol_dev);
+
+	return !!(tun->parms.o_flags & TUNNEL_KEY);
+}
+
+static u32 mlxsw_sp_ipip_netdev_ikey(const struct net_device *ol_dev)
+{
+	struct ip_tunnel *tun = netdev_priv(ol_dev);
+
+	return mlxsw_sp_ipip_netdev_has_ikey(ol_dev) ?
+		be32_to_cpu(tun->parms.i_key) : 0;
+}
+
+static u32 mlxsw_sp_ipip_netdev_okey(const struct net_device *ol_dev)
+{
+	struct ip_tunnel *tun = netdev_priv(ol_dev);
+
+	return mlxsw_sp_ipip_netdev_has_okey(ol_dev) ?
+		be32_to_cpu(tun->parms.o_key) : 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int
@@ -144,6 +215,7 @@ mlxsw_sp_ipip_fib_entry_op_gre4_rtdp(struct mlxsw_sp *mlxsw_sp,
 				     u32 tunnel_index,
 				     struct mlxsw_sp_ipip_entry *ipip_entry)
 {
+<<<<<<< HEAD
 	u16 rif_index = mlxsw_sp_ipip_lb_rif_index(ipip_entry->ol_lb);
 	char rtdp_pl[MLXSW_REG_RTDP_LEN];
 	struct ip_tunnel_parm parms;
@@ -155,6 +227,14 @@ mlxsw_sp_ipip_fib_entry_op_gre4_rtdp(struct mlxsw_sp *mlxsw_sp,
 	parms = mlxsw_sp_ipip_netdev_parms4(ipip_entry->ol_dev);
 	has_ikey = mlxsw_sp_ipip_parms4_has_ikey(parms);
 	ikey = mlxsw_sp_ipip_parms4_ikey(parms);
+=======
+	bool has_ikey = mlxsw_sp_ipip_netdev_has_ikey(ipip_entry->ol_dev);
+	u16 rif_index = mlxsw_sp_ipip_lb_rif_index(ipip_entry->ol_lb);
+	u32 ikey = mlxsw_sp_ipip_netdev_ikey(ipip_entry->ol_dev);
+	char rtdp_pl[MLXSW_REG_RTDP_LEN];
+	unsigned int type_check;
+	u32 daddr4;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mlxsw_reg_rtdp_pack(rtdp_pl, MLXSW_REG_RTDP_TYPE_IPIP, tunnel_index);
 
@@ -216,14 +296,23 @@ static bool mlxsw_sp_ipip_tunnel_complete(enum mlxsw_sp_l3proto proto,
 {
 	union mlxsw_sp_l3addr saddr = mlxsw_sp_ipip_netdev_saddr(proto, ol_dev);
 	union mlxsw_sp_l3addr daddr = mlxsw_sp_ipip_netdev_daddr(proto, ol_dev);
+<<<<<<< HEAD
+=======
+	union mlxsw_sp_l3addr naddr = {0};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Tunnels with unset local or remote address are valid in Linux and
 	 * used for lightweight tunnels (LWT) and Non-Broadcast Multi-Access
 	 * (NBMA) tunnels. In principle these can be offloaded, but the driver
 	 * currently doesn't support this. So punt.
 	 */
+<<<<<<< HEAD
 	return !mlxsw_sp_l3addr_is_zero(saddr) &&
 	       !mlxsw_sp_l3addr_is_zero(daddr);
+=======
+	return memcmp(&saddr, &naddr, sizeof(naddr)) &&
+	       memcmp(&daddr, &naddr, sizeof(naddr));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool mlxsw_sp_ipip_can_offload_gre4(const struct mlxsw_sp *mlxsw_sp,
@@ -245,21 +334,32 @@ static struct mlxsw_sp_rif_ipip_lb_config
 mlxsw_sp_ipip_ol_loopback_config_gre4(struct mlxsw_sp *mlxsw_sp,
 				      const struct net_device *ol_dev)
 {
+<<<<<<< HEAD
 	struct ip_tunnel_parm parms = mlxsw_sp_ipip_netdev_parms4(ol_dev);
 	enum mlxsw_reg_ritr_loopback_ipip_type lb_ipipt;
 
 	lb_ipipt = mlxsw_sp_ipip_parms4_has_okey(parms) ?
+=======
+	enum mlxsw_reg_ritr_loopback_ipip_type lb_ipipt;
+
+	lb_ipipt = mlxsw_sp_ipip_netdev_has_okey(ol_dev) ?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		MLXSW_REG_RITR_LOOPBACK_IPIP_TYPE_IP_IN_GRE_KEY_IN_IP :
 		MLXSW_REG_RITR_LOOPBACK_IPIP_TYPE_IP_IN_GRE_IN_IP;
 	return (struct mlxsw_sp_rif_ipip_lb_config){
 		.lb_ipipt = lb_ipipt,
+<<<<<<< HEAD
 		.okey = mlxsw_sp_ipip_parms4_okey(parms),
+=======
+		.okey = mlxsw_sp_ipip_netdev_okey(ol_dev),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ul_protocol = MLXSW_SP_L3_PROTO_IPV4,
 		.saddr = mlxsw_sp_ipip_netdev_saddr(MLXSW_SP_L3_PROTO_IPV4,
 						    ol_dev),
 	};
 }
 
+<<<<<<< HEAD
 static int
 mlxsw_sp_ipip_ol_netdev_change_gre4(struct mlxsw_sp *mlxsw_sp,
 				    struct mlxsw_sp_ipip_entry *ipip_entry,
@@ -323,6 +423,8 @@ mlxsw_sp_ipip_ol_netdev_change_gre4(struct mlxsw_sp *mlxsw_sp,
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct mlxsw_sp_ipip_ops mlxsw_sp_ipip_gre4_ops = {
 	.dev_type = ARPHRD_IPGRE,
 	.ul_proto = MLXSW_SP_L3_PROTO_IPV4,
@@ -330,7 +432,10 @@ static const struct mlxsw_sp_ipip_ops mlxsw_sp_ipip_gre4_ops = {
 	.fib_entry_op = mlxsw_sp_ipip_fib_entry_op_gre4,
 	.can_offload = mlxsw_sp_ipip_can_offload_gre4,
 	.ol_loopback_config = mlxsw_sp_ipip_ol_loopback_config_gre4,
+<<<<<<< HEAD
 	.ol_netdev_change = mlxsw_sp_ipip_ol_netdev_change_gre4,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 const struct mlxsw_sp_ipip_ops *mlxsw_sp_ipip_ops_arr[] = {

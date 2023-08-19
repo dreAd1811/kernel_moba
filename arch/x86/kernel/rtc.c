@@ -39,6 +39,7 @@ EXPORT_SYMBOL(rtc_lock);
  * jump to the next second precisely 500 ms later. Check the Motorola
  * MC146818A or Dallas DS12887 data sheet for details.
  */
+<<<<<<< HEAD
 int mach_set_rtc_mmss(const struct timespec64 *now)
 {
 	unsigned long long nowtime = now->tv_sec;
@@ -46,6 +47,15 @@ int mach_set_rtc_mmss(const struct timespec64 *now)
 	int retval = 0;
 
 	rtc_time64_to_tm(nowtime, &tm);
+=======
+int mach_set_rtc_mmss(const struct timespec *now)
+{
+	unsigned long nowtime = now->tv_sec;
+	struct rtc_time tm;
+	int retval = 0;
+
+	rtc_time_to_tm(nowtime, &tm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rtc_valid_tm(&tm)) {
 		retval = mc146818_set_time(&tm);
 		if (retval)
@@ -53,14 +63,22 @@ int mach_set_rtc_mmss(const struct timespec64 *now)
 			       __func__, retval);
 	} else {
 		printk(KERN_ERR
+<<<<<<< HEAD
 		       "%s: Invalid RTC value: write of %llx to RTC failed\n",
+=======
+		       "%s: Invalid RTC value: write of %lx to RTC failed\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__, nowtime);
 		retval = -EINVAL;
 	}
 	return retval;
 }
 
+<<<<<<< HEAD
 void mach_get_cmos_time(struct timespec64 *now)
+=======
+void mach_get_cmos_time(struct timespec *now)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned int status, year, mon, day, hour, min, sec, century = 0;
 	unsigned long flags;
@@ -118,7 +136,11 @@ void mach_get_cmos_time(struct timespec64 *now)
 	} else
 		year += CMOS_YEARS_OFFS;
 
+<<<<<<< HEAD
 	now->tv_sec = mktime64(year, mon, day, hour, min, sec);
+=======
+	now->tv_sec = mktime(year, mon, day, hour, min, sec);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	now->tv_nsec = 0;
 }
 
@@ -145,13 +167,21 @@ void rtc_cmos_write(unsigned char val, unsigned char addr)
 }
 EXPORT_SYMBOL(rtc_cmos_write);
 
+<<<<<<< HEAD
 int update_persistent_clock64(struct timespec64 now)
+=======
+int update_persistent_clock(struct timespec now)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return x86_platform.set_wallclock(&now);
 }
 
 /* not static: needed by APM */
+<<<<<<< HEAD
 void read_persistent_clock64(struct timespec64 *ts)
+=======
+void read_persistent_clock(struct timespec *ts)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	x86_platform.get_wallclock(ts);
 }

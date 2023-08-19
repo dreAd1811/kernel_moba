@@ -279,7 +279,11 @@ static int smssdio_probe(struct sdio_func *func,
 		goto free;
 	}
 
+<<<<<<< HEAD
 	ret = smscore_register_device(&params, &smsdev->coredev, GFP_DMA, NULL);
+=======
+	ret = smscore_register_device(&params, &smsdev->coredev, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto free;
 

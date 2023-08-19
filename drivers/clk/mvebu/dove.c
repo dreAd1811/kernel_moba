@@ -190,10 +190,22 @@ static void __init dove_clk_init(struct device_node *np)
 
 	mvebu_coreclk_setup(np, &dove_coreclks);
 
+<<<<<<< HEAD
 	if (ddnp)
 		dove_divider_clk_init(ddnp);
 
 	if (cgnp)
 		mvebu_clk_gating_setup(cgnp, dove_gating_desc);
+=======
+	if (ddnp) {
+		dove_divider_clk_init(ddnp);
+		of_node_put(ddnp);
+	}
+
+	if (cgnp) {
+		mvebu_clk_gating_setup(cgnp, dove_gating_desc);
+		of_node_put(cgnp);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(dove_clk, "marvell,dove-core-clock", dove_clk_init);

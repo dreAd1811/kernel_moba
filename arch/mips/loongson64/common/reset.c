@@ -59,12 +59,16 @@ static void loongson_poweroff(void)
 {
 #ifndef CONFIG_LEFI_FIRMWARE_INTERFACE
 	mach_prepare_shutdown();
+<<<<<<< HEAD
 
 	/*
 	 * It needs a wait loop here, but mips/kernel/reset.c already calls
 	 * a generic delay loop, machine_hang(), so simply return.
 	 */
 	return;
+=======
+	unreachable();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 	void (*fw_poweroff)(void) = (void *)loongson_sysconf.poweroff_addr;
 

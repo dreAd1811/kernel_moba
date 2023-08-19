@@ -34,7 +34,10 @@
 #include <linux/crash_dump.h>
 #include <linux/kobject.h>
 #include <linux/sysfs.h>
+<<<<<<< HEAD
 #include <linux/slab.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/debugfs.h>
 #include <asm/page.h>
@@ -344,6 +347,7 @@ static unsigned long get_fadump_area_size(void)
 	return size;
 }
 
+<<<<<<< HEAD
 static void __init fadump_reserve_crash_area(unsigned long base,
 					     unsigned long size)
 {
@@ -364,6 +368,8 @@ static void __init fadump_reserve_crash_area(unsigned long base,
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int __init fadump_reserve_mem(void)
 {
 	unsigned long base, size, memory_boundary;
@@ -409,6 +415,7 @@ int __init fadump_reserve_mem(void)
 		memory_boundary = memblock_end_of_DRAM();
 
 	if (fw_dump.dump_active) {
+<<<<<<< HEAD
 		pr_info("Firmware-assisted dump is active.\n");
 
 #ifdef CONFIG_HUGETLB_PAGE
@@ -419,6 +426,9 @@ int __init fadump_reserve_mem(void)
 		 */
 		hugetlb_disabled = true;
 #endif
+=======
+		printk(KERN_INFO "Firmware-assisted dump is active.\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * If last boot has crashed then reserve all the memory
 		 * above boot_memory_size so that we don't touch it until
@@ -427,7 +437,15 @@ int __init fadump_reserve_mem(void)
 		 */
 		base = fw_dump.boot_memory_size;
 		size = memory_boundary - base;
+<<<<<<< HEAD
 		fadump_reserve_crash_area(base, size);
+=======
+		memblock_reserve(base, size);
+		printk(KERN_INFO "Reserved %ldMB of memory at %ldMB "
+				"for saving crash dump\n",
+				(unsigned long)(size >> 20),
+				(unsigned long)(base >> 20));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		fw_dump.fadumphdr_addr =
 				be64_to_cpu(fdm_active->rmr_region.destination_address) +
@@ -915,6 +933,7 @@ static int allocate_crash_memory_ranges(void)
 static inline int fadump_add_crash_memory(unsigned long long base,
 					  unsigned long long end)
 {
+<<<<<<< HEAD
 	u64  start, size;
 	bool is_adjacent = false;
 
@@ -950,6 +969,24 @@ static inline int fadump_add_crash_memory(unsigned long long base,
 	crash_memory_ranges[crash_mem_ranges - 1].size = (end - start);
 	pr_debug("crash_memory_range[%d] [%#016llx-%#016llx], %#llx bytes\n",
 		(crash_mem_ranges - 1), start, end - 1, (end - start));
+=======
+	if (base == end)
+		return 0;
+
+	if (crash_mem_ranges == max_crash_mem_ranges) {
+		int ret;
+
+		ret = allocate_crash_memory_ranges();
+		if (ret)
+			return ret;
+	}
+
+	pr_debug("crash_memory_range[%d] [%#016llx-%#016llx], %#llx bytes\n",
+		crash_mem_ranges, base, end - 1, (end - base));
+	crash_memory_ranges[crash_mem_ranges].base = base;
+	crash_memory_ranges[crash_mem_ranges].size = end - base;
+	crash_mem_ranges++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1025,7 +1062,10 @@ static int fadump_setup_crash_memory_ranges(void)
 
 	pr_debug("Setup crash memory ranges.\n");
 	crash_mem_ranges = 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * add the first memory chunk (RMA_START through boot_memory_size) as
 	 * a separate memory chunk. The reason is, at the time crash firmware
@@ -1388,6 +1428,7 @@ static ssize_t fadump_release_memory_store(struct kobject *kobj,
 					struct kobj_attribute *attr,
 					const char *buf, size_t count)
 {
+<<<<<<< HEAD
 	int input = -1;
 
 	if (!fw_dump.dump_active)
@@ -1397,6 +1438,12 @@ static ssize_t fadump_release_memory_store(struct kobject *kobj,
 		return -EINVAL;
 
 	if (input == 1) {
+=======
+	if (!fw_dump.dump_active)
+		return -EPERM;
+
+	if (buf[0] == '1') {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Take away the '/proc/vmcore'. We are releasing the dump
 		 * memory, hence it will not be valid anymore.
@@ -1430,11 +1477,15 @@ static ssize_t fadump_register_store(struct kobject *kobj,
 					const char *buf, size_t count)
 {
 	int ret = 0;
+<<<<<<< HEAD
 	int input = -1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!fw_dump.fadump_enabled || fdm_active)
 		return -EPERM;
 
+<<<<<<< HEAD
 	if (kstrtoint(buf, 0, &input))
 		return -EINVAL;
 
@@ -1442,13 +1493,23 @@ static ssize_t fadump_register_store(struct kobject *kobj,
 
 	switch (input) {
 	case 0:
+=======
+	mutex_lock(&fadump_mutex);
+
+	switch (buf[0]) {
+	case '0':
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fw_dump.dump_registered == 0) {
 			goto unlock_out;
 		}
 		/* Un-register Firmware-assisted dump */
 		fadump_unregister_dump(&fdm);
 		break;
+<<<<<<< HEAD
 	case 1:
+=======
+	case '1':
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (fw_dump.dump_registered == 1) {
 			ret = -EEXIST;
 			goto unlock_out;

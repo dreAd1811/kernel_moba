@@ -36,6 +36,11 @@ static int throtl_quantum = 32;
  */
 #define LATENCY_FILTERED_HD (1000L) /* 1ms */
 
+<<<<<<< HEAD
+=======
+#define SKIP_LATENCY (((u64)1) << BLK_STAT_RES_SHIFT)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct blkcg_policy blkcg_policy_throtl;
 
 /* A workqueue to queue throttle related work */
@@ -214,16 +219,26 @@ struct throtl_data
 
 	unsigned int scale;
 
+<<<<<<< HEAD
 	struct latency_bucket tmp_buckets[2][LATENCY_BUCKET_SIZE];
 	struct avg_latency_bucket avg_buckets[2][LATENCY_BUCKET_SIZE];
 	struct latency_bucket __percpu *latency_buckets[2];
+=======
+	struct latency_bucket tmp_buckets[LATENCY_BUCKET_SIZE];
+	struct avg_latency_bucket avg_buckets[LATENCY_BUCKET_SIZE];
+	struct latency_bucket __percpu *latency_buckets;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long last_calculate_time;
 	unsigned long filtered_latency;
 
 	bool track_bio_latency;
 };
 
+<<<<<<< HEAD
 static void throtl_pending_timer_fn(struct timer_list *t);
+=======
+static void throtl_pending_timer_fn(unsigned long arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline struct throtl_grp *pd_to_tg(struct blkg_policy_data *pd)
 {
@@ -476,7 +491,12 @@ static void throtl_service_queue_init(struct throtl_service_queue *sq)
 	INIT_LIST_HEAD(&sq->queued[0]);
 	INIT_LIST_HEAD(&sq->queued[1]);
 	sq->pending_tree = RB_ROOT;
+<<<<<<< HEAD
 	timer_setup(&sq->pending_timer, throtl_pending_timer_fn, 0);
+=======
+	setup_timer(&sq->pending_timer, throtl_pending_timer_fn,
+		    (unsigned long)sq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct blkg_policy_data *throtl_pd_alloc(gfp_t gfp, int node)
@@ -579,10 +599,15 @@ static void blk_throtl_update_limit_valid(struct throtl_data *td)
 		struct throtl_grp *tg = blkg_to_tg(blkg);
 
 		if (tg->bps[READ][LIMIT_LOW] || tg->bps[WRITE][LIMIT_LOW] ||
+<<<<<<< HEAD
 		    tg->iops[READ][LIMIT_LOW] || tg->iops[WRITE][LIMIT_LOW]) {
 			low_valid = true;
 			break;
 		}
+=======
+		    tg->iops[READ][LIMIT_LOW] || tg->iops[WRITE][LIMIT_LOW])
+			low_valid = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	rcu_read_unlock();
 
@@ -821,7 +846,11 @@ static bool throtl_slice_used(struct throtl_grp *tg, bool rw)
 	if (time_in_range(jiffies, tg->slice_start[rw], tg->slice_end[rw]))
 		return false;
 
+<<<<<<< HEAD
 	return true;
+=======
+	return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Trim the used slices and adjust slice start accordingly */
@@ -892,10 +921,20 @@ static bool tg_with_in_iops_limit(struct throtl_grp *tg, struct bio *bio,
 	unsigned long jiffy_elapsed, jiffy_wait, jiffy_elapsed_rnd;
 	u64 tmp;
 
+<<<<<<< HEAD
 	jiffy_elapsed = jiffies - tg->slice_start[rw];
 
 	/* Round up to the next throttle slice, wait time must be nonzero */
 	jiffy_elapsed_rnd = roundup(jiffy_elapsed + 1, tg->td->throtl_slice);
+=======
+	jiffy_elapsed = jiffy_elapsed_rnd = jiffies - tg->slice_start[rw];
+
+	/* Slice has just started. Consider one slice interval */
+	if (!jiffy_elapsed)
+		jiffy_elapsed_rnd = tg->td->throtl_slice;
+
+	jiffy_elapsed_rnd = roundup(jiffy_elapsed_rnd, tg->td->throtl_slice);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * jiffy_elapsed_rnd should not be a big value as minimum iops can be
@@ -919,11 +958,24 @@ static bool tg_with_in_iops_limit(struct throtl_grp *tg, struct bio *bio,
 	}
 
 	/* Calc approx time to dispatch */
+<<<<<<< HEAD
 	jiffy_wait = jiffy_elapsed_rnd - jiffy_elapsed;
 
 	if (wait)
 		*wait = jiffy_wait;
 	return false;
+=======
+	jiffy_wait = ((tg->io_disp[rw] + 1) * HZ) / tg_iops_limit(tg, rw) + 1;
+
+	if (jiffy_wait > jiffy_elapsed)
+		jiffy_wait = jiffy_wait - jiffy_elapsed;
+	else
+		jiffy_wait = 1;
+
+	if (wait)
+		*wait = jiffy_wait;
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool tg_with_in_bps_limit(struct throtl_grp *tg, struct bio *bio,
@@ -966,7 +1018,11 @@ static bool tg_with_in_bps_limit(struct throtl_grp *tg, struct bio *bio,
 	jiffy_wait = jiffy_wait + (jiffy_elapsed_rnd - jiffy_elapsed);
 	if (wait)
 		*wait = jiffy_wait;
+<<<<<<< HEAD
 	return false;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -1016,7 +1072,11 @@ static bool tg_may_dispatch(struct throtl_grp *tg, struct bio *bio,
 	    tg_with_in_iops_limit(tg, bio, &iops_wait)) {
 		if (wait)
 			*wait = 0;
+<<<<<<< HEAD
 		return true;
+=======
+		return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	max_wait = max(bps_wait, iops_wait);
@@ -1027,7 +1087,11 @@ static bool tg_may_dispatch(struct throtl_grp *tg, struct bio *bio,
 	if (time_before(tg->slice_end[rw], jiffies + max_wait))
 		throtl_extend_slice(tg, rw, jiffies + max_wait);
 
+<<<<<<< HEAD
 	return false;
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void throtl_charge_bio(struct throtl_grp *tg, struct bio *bio)
@@ -1201,7 +1265,11 @@ static int throtl_select_dispatch(struct throtl_service_queue *parent_sq)
 
 	while (1) {
 		struct throtl_grp *tg = throtl_rb_first(parent_sq);
+<<<<<<< HEAD
 		struct throtl_service_queue *sq;
+=======
+		struct throtl_service_queue *sq = &tg->service_queue;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (!tg)
 			break;
@@ -1213,7 +1281,10 @@ static int throtl_select_dispatch(struct throtl_service_queue *parent_sq)
 
 		nr_disp += throtl_dispatch_tg(tg);
 
+<<<<<<< HEAD
 		sq = &tg->service_queue;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (sq->nr_queued[0] || sq->nr_queued[1])
 			tg_update_disptime(tg);
 
@@ -1241,9 +1312,15 @@ static bool throtl_can_upgrade(struct throtl_data *td,
  * the top-level service_tree is reached, throtl_data->dispatch_work is
  * kicked so that the ready bio's are issued.
  */
+<<<<<<< HEAD
 static void throtl_pending_timer_fn(struct timer_list *t)
 {
 	struct throtl_service_queue *sq = from_timer(sq, t, pending_timer);
+=======
+static void throtl_pending_timer_fn(unsigned long arg)
+{
+	struct throtl_service_queue *sq = (void *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct throtl_grp *tg = sq_to_tg(sq);
 	struct throtl_data *td = sq_to_td(sq);
 	struct request_queue *q = td->queue;
@@ -1504,20 +1581,26 @@ static struct cftype throtl_legacy_files[] = {
 		.seq_show = blkg_print_stat_bytes,
 	},
 	{
+<<<<<<< HEAD
 		.name = "throttle.io_service_bytes_recursive",
 		.private = (unsigned long)&blkcg_policy_throtl,
 		.seq_show = blkg_print_stat_bytes_recursive,
 	},
 	{
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.name = "throttle.io_serviced",
 		.private = (unsigned long)&blkcg_policy_throtl,
 		.seq_show = blkg_print_stat_ios,
 	},
+<<<<<<< HEAD
 	{
 		.name = "throttle.io_serviced_recursive",
 		.private = (unsigned long)&blkcg_policy_throtl,
 		.seq_show = blkg_print_stat_ios_recursive,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }	/* terminate */
 };
 
@@ -2043,10 +2126,17 @@ static void blk_throtl_update_idletime(struct throtl_grp *tg)
 #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
 static void throtl_update_latency_buckets(struct throtl_data *td)
 {
+<<<<<<< HEAD
 	struct avg_latency_bucket avg_latency[2][LATENCY_BUCKET_SIZE];
 	int i, cpu, rw;
 	unsigned long last_latency[2] = { 0 };
 	unsigned long latency[2];
+=======
+	struct avg_latency_bucket avg_latency[LATENCY_BUCKET_SIZE];
+	int i, cpu;
+	unsigned long last_latency = 0;
+	unsigned long latency;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!blk_queue_nonrot(td->queue))
 		return;
@@ -2055,6 +2145,7 @@ static void throtl_update_latency_buckets(struct throtl_data *td)
 	td->last_calculate_time = jiffies;
 
 	memset(avg_latency, 0, sizeof(avg_latency));
+<<<<<<< HEAD
 	for (rw = READ; rw <= WRITE; rw++) {
 		for (i = 0; i < LATENCY_BUCKET_SIZE; i++) {
 			struct latency_bucket *tmp = &td->tmp_buckets[rw][i];
@@ -2106,16 +2197,67 @@ static void throtl_update_latency_buckets(struct throtl_data *td)
 			td->avg_buckets[rw][i].valid = true;
 			last_latency[rw] = td->avg_buckets[rw][i].latency;
 		}
+=======
+	for (i = 0; i < LATENCY_BUCKET_SIZE; i++) {
+		struct latency_bucket *tmp = &td->tmp_buckets[i];
+
+		for_each_possible_cpu(cpu) {
+			struct latency_bucket *bucket;
+
+			/* this isn't race free, but ok in practice */
+			bucket = per_cpu_ptr(td->latency_buckets, cpu);
+			tmp->total_latency += bucket[i].total_latency;
+			tmp->samples += bucket[i].samples;
+			bucket[i].total_latency = 0;
+			bucket[i].samples = 0;
+		}
+
+		if (tmp->samples >= 32) {
+			int samples = tmp->samples;
+
+			latency = tmp->total_latency;
+
+			tmp->total_latency = 0;
+			tmp->samples = 0;
+			latency /= samples;
+			if (latency == 0)
+				continue;
+			avg_latency[i].latency = latency;
+		}
+	}
+
+	for (i = 0; i < LATENCY_BUCKET_SIZE; i++) {
+		if (!avg_latency[i].latency) {
+			if (td->avg_buckets[i].latency < last_latency)
+				td->avg_buckets[i].latency = last_latency;
+			continue;
+		}
+
+		if (!td->avg_buckets[i].valid)
+			latency = avg_latency[i].latency;
+		else
+			latency = (td->avg_buckets[i].latency * 7 +
+				avg_latency[i].latency) >> 3;
+
+		td->avg_buckets[i].latency = max(latency, last_latency);
+		td->avg_buckets[i].valid = true;
+		last_latency = td->avg_buckets[i].latency;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < LATENCY_BUCKET_SIZE; i++)
 		throtl_log(&td->service_queue,
+<<<<<<< HEAD
 			"Latency bucket %d: read latency=%ld, read valid=%d, "
 			"write latency=%ld, write valid=%d", i,
 			td->avg_buckets[READ][i].latency,
 			td->avg_buckets[READ][i].valid,
 			td->avg_buckets[WRITE][i].latency,
 			td->avg_buckets[WRITE][i].valid);
+=======
+			"Latency bucket %d: latency=%ld, valid=%d", i,
+			td->avg_buckets[i].latency, td->avg_buckets[i].valid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #else
 static inline void throtl_update_latency_buckets(struct throtl_data *td)
@@ -2126,10 +2268,16 @@ static inline void throtl_update_latency_buckets(struct throtl_data *td)
 static void blk_throtl_assoc_bio(struct throtl_grp *tg, struct bio *bio)
 {
 #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
+<<<<<<< HEAD
 	/* fallback to root_blkg if we fail to get a blkg ref */
 	if (bio->bi_css && (bio_associate_blkg(bio, tg_to_blkg(tg)) == -ENODEV))
 		bio_associate_blkg(bio, bio->bi_disk->queue->root_blkg);
 	bio_issue_init(&bio->bi_issue, bio_sectors(bio));
+=======
+	if (bio->bi_css)
+		bio->bi_cg_private = tg;
+	blk_stat_set_issue(&bio->bi_issue_stat, bio_sectors(bio));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 }
 
@@ -2241,7 +2389,11 @@ out:
 
 #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
 	if (throttled || !td->track_bio_latency)
+<<<<<<< HEAD
 		bio->bi_issue.value |= BIO_ISSUE_THROTL_SKIP_LATENCY;
+=======
+		bio->bi_issue_stat.stat |= SKIP_LATENCY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	return throttled;
 }
@@ -2253,17 +2405,28 @@ static void throtl_track_latency(struct throtl_data *td, sector_t size,
 	struct latency_bucket *latency;
 	int index;
 
+<<<<<<< HEAD
 	if (!td || td->limit_index != LIMIT_LOW ||
 	    !(op == REQ_OP_READ || op == REQ_OP_WRITE) ||
+=======
+	if (!td || td->limit_index != LIMIT_LOW || op != REQ_OP_READ ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !blk_queue_nonrot(td->queue))
 		return;
 
 	index = request_bucket_index(size);
 
+<<<<<<< HEAD
 	latency = get_cpu_ptr(td->latency_buckets[op]);
 	latency[index].total_latency += time;
 	latency[index].samples++;
 	put_cpu_ptr(td->latency_buckets[op]);
+=======
+	latency = get_cpu_ptr(td->latency_buckets);
+	latency[index].total_latency += time;
+	latency[index].samples++;
+	put_cpu_ptr(td->latency_buckets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void blk_throtl_stat_add(struct request *rq, u64 time_ns)
@@ -2271,44 +2434,77 @@ void blk_throtl_stat_add(struct request *rq, u64 time_ns)
 	struct request_queue *q = rq->q;
 	struct throtl_data *td = q->td;
 
+<<<<<<< HEAD
 	throtl_track_latency(td, rq->throtl_size, req_op(rq), time_ns >> 10);
+=======
+	throtl_track_latency(td, blk_stat_size(&rq->issue_stat),
+		req_op(rq), time_ns >> 10);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void blk_throtl_bio_endio(struct bio *bio)
 {
+<<<<<<< HEAD
 	struct blkcg_gq *blkg;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct throtl_grp *tg;
 	u64 finish_time_ns;
 	unsigned long finish_time;
 	unsigned long start_time;
 	unsigned long lat;
+<<<<<<< HEAD
 	int rw = bio_data_dir(bio);
 
 	blkg = bio->bi_blkg;
 	if (!blkg)
 		return;
 	tg = blkg_to_tg(blkg);
+=======
+
+	tg = bio->bi_cg_private;
+	if (!tg)
+		return;
+	bio->bi_cg_private = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	finish_time_ns = ktime_get_ns();
 	tg->last_finish_time = finish_time_ns >> 10;
 
+<<<<<<< HEAD
 	start_time = bio_issue_time(&bio->bi_issue) >> 10;
 	finish_time = __bio_issue_time(finish_time_ns) >> 10;
+=======
+	start_time = blk_stat_time(&bio->bi_issue_stat) >> 10;
+	finish_time = __blk_stat_time(finish_time_ns) >> 10;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!start_time || finish_time <= start_time)
 		return;
 
 	lat = finish_time - start_time;
 	/* this is only for bio based driver */
+<<<<<<< HEAD
 	if (!(bio->bi_issue.value & BIO_ISSUE_THROTL_SKIP_LATENCY))
 		throtl_track_latency(tg->td, bio_issue_size(&bio->bi_issue),
 				     bio_op(bio), lat);
+=======
+	if (!(bio->bi_issue_stat.stat & SKIP_LATENCY))
+		throtl_track_latency(tg->td, blk_stat_size(&bio->bi_issue_stat),
+			bio_op(bio), lat);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (tg->latency_target && lat >= tg->td->filtered_latency) {
 		int bucket;
 		unsigned int threshold;
 
+<<<<<<< HEAD
 		bucket = request_bucket_index(bio_issue_size(&bio->bi_issue));
 		threshold = tg->td->avg_buckets[rw][bucket].latency +
+=======
+		bucket = request_bucket_index(
+			blk_stat_size(&bio->bi_issue_stat));
+		threshold = tg->td->avg_buckets[bucket].latency +
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tg->latency_target;
 		if (lat > threshold)
 			tg->bad_bio_cnt++;
@@ -2399,6 +2595,7 @@ int blk_throtl_init(struct request_queue *q)
 	td = kzalloc_node(sizeof(*td), GFP_KERNEL, q->node);
 	if (!td)
 		return -ENOMEM;
+<<<<<<< HEAD
 	td->latency_buckets[READ] = __alloc_percpu(sizeof(struct latency_bucket) *
 		LATENCY_BUCKET_SIZE, __alignof__(u64));
 	if (!td->latency_buckets[READ]) {
@@ -2409,6 +2606,11 @@ int blk_throtl_init(struct request_queue *q)
 		LATENCY_BUCKET_SIZE, __alignof__(u64));
 	if (!td->latency_buckets[WRITE]) {
 		free_percpu(td->latency_buckets[READ]);
+=======
+	td->latency_buckets = __alloc_percpu(sizeof(struct latency_bucket) *
+		LATENCY_BUCKET_SIZE, __alignof__(u64));
+	if (!td->latency_buckets) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(td);
 		return -ENOMEM;
 	}
@@ -2427,8 +2629,12 @@ int blk_throtl_init(struct request_queue *q)
 	/* activate policy */
 	ret = blkcg_activate_policy(q, &blkcg_policy_throtl);
 	if (ret) {
+<<<<<<< HEAD
 		free_percpu(td->latency_buckets[READ]);
 		free_percpu(td->latency_buckets[WRITE]);
+=======
+		free_percpu(td->latency_buckets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(td);
 	}
 	return ret;
@@ -2439,8 +2645,12 @@ void blk_throtl_exit(struct request_queue *q)
 	BUG_ON(!q->td);
 	throtl_shutdown_wq(q);
 	blkcg_deactivate_policy(q, &blkcg_policy_throtl);
+<<<<<<< HEAD
 	free_percpu(q->td->latency_buckets[READ]);
 	free_percpu(q->td->latency_buckets[WRITE]);
+=======
+	free_percpu(q->td->latency_buckets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(q->td);
 }
 
@@ -2458,17 +2668,26 @@ void blk_throtl_register_queue(struct request_queue *q)
 	} else {
 		td->throtl_slice = DFL_THROTL_SLICE_HD;
 		td->filtered_latency = LATENCY_FILTERED_HD;
+<<<<<<< HEAD
 		for (i = 0; i < LATENCY_BUCKET_SIZE; i++) {
 			td->avg_buckets[READ][i].latency = DFL_HD_BASELINE_LATENCY;
 			td->avg_buckets[WRITE][i].latency = DFL_HD_BASELINE_LATENCY;
 		}
+=======
+		for (i = 0; i < LATENCY_BUCKET_SIZE; i++)
+			td->avg_buckets[i].latency = DFL_HD_BASELINE_LATENCY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 #ifndef CONFIG_BLK_DEV_THROTTLING_LOW
 	/* if no low limit, use previous default */
 	td->throtl_slice = DFL_THROTL_SLICE_HD;
 #endif
 
+<<<<<<< HEAD
 	td->track_bio_latency = !queue_is_rq_based(q);
+=======
+	td->track_bio_latency = !q->mq_ops && !q->request_fn;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!td->track_bio_latency)
 		blk_stat_enable_accounting(q);
 }

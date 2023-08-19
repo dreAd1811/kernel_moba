@@ -62,8 +62,13 @@ struct oct_iq_stats {
 	u64 tx_tot_bytes;/**< Total count of bytes sento to network. */
 	u64 tx_gso;  /* count of tso */
 	u64 tx_vxlan; /* tunnel */
+<<<<<<< HEAD
 	u64 tx_dmamap_fail; /* Number of times dma mapping failed */
 	u64 tx_restart; /* Number of times this queue restarted */
+=======
+	u64 tx_dmamap_fail;
+	u64 tx_restart;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define OCT_IQ_STATS_SIZE   (sizeof(struct oct_iq_stats))
@@ -82,6 +87,7 @@ struct octeon_instr_queue {
 	/** A spinlock to protect while posting on the ring.  */
 	spinlock_t post_lock;
 
+<<<<<<< HEAD
 	/** This flag indicates if the queue can be used for soft commands.
 	 *  If this flag is set, post_lock must be acquired before posting
 	 *  a command to the queue.
@@ -94,6 +100,12 @@ struct octeon_instr_queue {
 
 	u32 pkt_in_done;
 
+=======
+	u32 pkt_in_done;
+
+	u32 pkts_processed;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/** A spinlock to protect access to the input ring.*/
 	spinlock_t iq_flush_running_lock;
 
@@ -353,9 +365,12 @@ int octeon_delete_instr_queue(struct octeon_device *octeon_dev, u32 iq_no);
 
 int lio_wait_for_instr_fetch(struct octeon_device *oct);
 
+<<<<<<< HEAD
 void
 octeon_ring_doorbell_locked(struct octeon_device *oct, u32 iq_no);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int
 octeon_register_reqtype_free_fn(struct octeon_device *oct, int reqtype,
 				void (*fn)(void *));

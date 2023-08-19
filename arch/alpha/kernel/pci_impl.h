@@ -158,8 +158,21 @@ struct pci_iommu_arena
 #endif
 
 #ifdef ALPHA_RESTORE_SRM_SETUP
+<<<<<<< HEAD
 extern void pci_restore_srm_config(void);
 #else
+=======
+/* Store PCI device configuration left by SRM here. */
+struct pdev_srm_saved_conf
+{
+	struct pdev_srm_saved_conf *next;
+	struct pci_dev *dev;
+};
+
+extern void pci_restore_srm_config(void);
+#else
+#define pdev_save_srm_config(dev)	do {} while (0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define pci_restore_srm_config()	do {} while (0)
 #endif
 

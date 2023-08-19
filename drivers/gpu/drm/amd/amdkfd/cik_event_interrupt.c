@@ -25,6 +25,7 @@
 #include "cik_int.h"
 
 static bool cik_event_interrupt_isr(struct kfd_dev *dev,
+<<<<<<< HEAD
 					const uint32_t *ih_ring_entry,
 					uint32_t *patched_ihre,
 					bool *patched_flag)
@@ -78,21 +79,45 @@ static bool cik_event_interrupt_isr(struct kfd_dev *dev,
 		ihre->source_id == CIK_INTSRC_CP_BAD_OPCODE ||
 		ihre->source_id == CIK_INTSRC_GFX_PAGE_INV_FAULT ||
 		ihre->source_id == CIK_INTSRC_GFX_MEM_PROT_FAULT;
+=======
+					const uint32_t *ih_ring_entry)
+{
+	unsigned int pasid;
+	const struct cik_ih_ring_entry *ihre =
+			(const struct cik_ih_ring_entry *)ih_ring_entry;
+
+	pasid = (ihre->ring_id & 0xffff0000) >> 16;
+
+	/* Do not process in ISR, just request it to be forwarded to WQ. */
+	return (pasid != 0) &&
+		(ihre->source_id == CIK_INTSRC_CP_END_OF_PIPE ||
+		ihre->source_id == CIK_INTSRC_SQ_INTERRUPT_MSG ||
+		ihre->source_id == CIK_INTSRC_CP_BAD_OPCODE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cik_event_interrupt_wq(struct kfd_dev *dev,
 					const uint32_t *ih_ring_entry)
 {
+<<<<<<< HEAD
 	const struct cik_ih_ring_entry *ihre =
 			(const struct cik_ih_ring_entry *)ih_ring_entry;
 	uint32_t context_id = ihre->data & 0xfffffff;
 	unsigned int vmid  = (ihre->ring_id & 0x0000ff00) >> 8;
 	unsigned int pasid = (ihre->ring_id & 0xffff0000) >> 16;
+=======
+	unsigned int pasid;
+	const struct cik_ih_ring_entry *ihre =
+			(const struct cik_ih_ring_entry *)ih_ring_entry;
+
+	pasid = (ihre->ring_id & 0xffff0000) >> 16;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (pasid == 0)
 		return;
 
 	if (ihre->source_id == CIK_INTSRC_CP_END_OF_PIPE)
+<<<<<<< HEAD
 		kfd_signal_event_interrupt(pasid, context_id, 28);
 	else if (ihre->source_id == CIK_INTSRC_SDMA_TRAP)
 		kfd_signal_event_interrupt(pasid, context_id, 28);
@@ -116,6 +141,13 @@ static void cik_event_interrupt_wq(struct kfd_dev *dev,
 		else
 			kfd_signal_vm_fault_event(dev, pasid, NULL);
 	}
+=======
+		kfd_signal_event_interrupt(pasid, 0, 0);
+	else if (ihre->source_id == CIK_INTSRC_SQ_INTERRUPT_MSG)
+		kfd_signal_event_interrupt(pasid, ihre->data & 0xFF, 8);
+	else if (ihre->source_id == CIK_INTSRC_CP_BAD_OPCODE)
+		kfd_signal_hw_exception_event(pasid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 const struct kfd_event_interrupt_class event_interrupt_class_cik = {

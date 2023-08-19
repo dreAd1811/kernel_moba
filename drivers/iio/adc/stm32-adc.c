@@ -1,9 +1,29 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * This file is part of STM32 ADC driver
  *
  * Copyright (C) 2016, STMicroelectronics - All Rights Reserved
  * Author: Fabrice Gasnier <fabrice.gasnier@st.com>.
+<<<<<<< HEAD
+=======
+ *
+ * License type: GPLv2
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License version 2 as published by
+ * the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -33,8 +53,11 @@
 /* BOOST bit must be set on STM32H7 when ADC clock is above 20MHz */
 #define STM32H7_BOOST_CLKRATE		20000000UL
 
+<<<<<<< HEAD
 #define STM32_ADC_CH_MAX		20	/* max number of channels */
 #define STM32_ADC_CH_SZ			10	/* max channel name size */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define STM32_ADC_MAX_SQ		16	/* SQ1..SQ16 */
 #define STM32_ADC_MAX_SMP		7	/* SMPx range is [0..7] */
 #define STM32_ADC_TIMEOUT_US		100000
@@ -141,7 +164,10 @@ struct stm32_adc;
  * @adc_info:		per instance input channels definitions
  * @trigs:		external trigger sources
  * @clk_required:	clock is required
+<<<<<<< HEAD
  * @has_vregready:	vregready status flag presence
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @selfcalib:		optional routine for self-calibration
  * @prepare:		optional prepare routine (power-up, enable)
  * @start_conv:		routine to start conversions
@@ -154,7 +180,10 @@ struct stm32_adc_cfg {
 	const struct stm32_adc_info	*adc_info;
 	struct stm32_adc_trig_info	*trigs;
 	bool clk_required;
+<<<<<<< HEAD
 	bool has_vregready;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*selfcalib)(struct stm32_adc *);
 	int (*prepare)(struct stm32_adc *);
 	void (*start_conv)(struct stm32_adc *, bool dma);
@@ -181,11 +210,17 @@ struct stm32_adc_cfg {
  * @rx_buf:		dma rx buffer cpu address
  * @rx_dma_buf:		dma rx buffer bus address
  * @rx_buf_sz:		dma rx buffer size
+<<<<<<< HEAD
  * @difsel		bitmask to set single-ended/differential channel
  * @pcsel		bitmask to preselect channels on some devices
  * @smpr_val:		sampling time settings (e.g. smpr1 / smpr2)
  * @cal:		optional calibration data on some devices
  * @chan_name:		channel name array
+=======
+ * @pcsel		bitmask to preselect channels on some devices
+ * @smpr_val:		sampling time settings (e.g. smpr1 / smpr2)
+ * @cal:		optional calibration data on some devices
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct stm32_adc {
 	struct stm32_adc_common	*common;
@@ -204,6 +239,7 @@ struct stm32_adc {
 	u8			*rx_buf;
 	dma_addr_t		rx_dma_buf;
 	unsigned int		rx_buf_sz;
+<<<<<<< HEAD
 	u32			difsel;
 	u32			pcsel;
 	u32			smpr_val[2];
@@ -214,27 +250,88 @@ struct stm32_adc {
 struct stm32_adc_diff_channel {
 	u32 vinp;
 	u32 vinn;
+=======
+	u32			pcsel;
+	u32			smpr_val[2];
+	struct stm32_adc_calib	cal;
+};
+
+/**
+ * struct stm32_adc_chan_spec - specification of stm32 adc channel
+ * @type:	IIO channel type
+ * @channel:	channel number (single ended)
+ * @name:	channel name (single ended)
+ */
+struct stm32_adc_chan_spec {
+	enum iio_chan_type	type;
+	int			channel;
+	const char		*name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
  * struct stm32_adc_info - stm32 ADC, per instance config data
+<<<<<<< HEAD
+=======
+ * @channels:		Reference to stm32 channels spec
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @max_channels:	Number of channels
  * @resolutions:	available resolutions
  * @num_res:		number of available resolutions
  */
 struct stm32_adc_info {
+<<<<<<< HEAD
+=======
+	const struct stm32_adc_chan_spec *channels;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int max_channels;
 	const unsigned int *resolutions;
 	const unsigned int num_res;
 };
 
+<<<<<<< HEAD
+=======
+/*
+ * Input definitions common for all instances:
+ * stm32f4 can have up to 16 channels
+ * stm32h7 can have up to 20 channels
+ */
+static const struct stm32_adc_chan_spec stm32_adc_channels[] = {
+	{ IIO_VOLTAGE, 0, "in0" },
+	{ IIO_VOLTAGE, 1, "in1" },
+	{ IIO_VOLTAGE, 2, "in2" },
+	{ IIO_VOLTAGE, 3, "in3" },
+	{ IIO_VOLTAGE, 4, "in4" },
+	{ IIO_VOLTAGE, 5, "in5" },
+	{ IIO_VOLTAGE, 6, "in6" },
+	{ IIO_VOLTAGE, 7, "in7" },
+	{ IIO_VOLTAGE, 8, "in8" },
+	{ IIO_VOLTAGE, 9, "in9" },
+	{ IIO_VOLTAGE, 10, "in10" },
+	{ IIO_VOLTAGE, 11, "in11" },
+	{ IIO_VOLTAGE, 12, "in12" },
+	{ IIO_VOLTAGE, 13, "in13" },
+	{ IIO_VOLTAGE, 14, "in14" },
+	{ IIO_VOLTAGE, 15, "in15" },
+	{ IIO_VOLTAGE, 16, "in16" },
+	{ IIO_VOLTAGE, 17, "in17" },
+	{ IIO_VOLTAGE, 18, "in18" },
+	{ IIO_VOLTAGE, 19, "in19" },
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const unsigned int stm32f4_adc_resolutions[] = {
 	/* sorted values so the index matches RES[1:0] in STM32F4_ADC_CR1 */
 	12, 10, 8, 6,
 };
 
+<<<<<<< HEAD
 /* stm32f4 can have up to 16 channels */
 static const struct stm32_adc_info stm32f4_adc_info = {
+=======
+static const struct stm32_adc_info stm32f4_adc_info = {
+	.channels = stm32_adc_channels,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.max_channels = 16,
 	.resolutions = stm32f4_adc_resolutions,
 	.num_res = ARRAY_SIZE(stm32f4_adc_resolutions),
@@ -245,9 +342,15 @@ static const unsigned int stm32h7_adc_resolutions[] = {
 	16, 14, 12, 10, 8,
 };
 
+<<<<<<< HEAD
 /* stm32h7 can have up to 20 channels */
 static const struct stm32_adc_info stm32h7_adc_info = {
 	.max_channels = STM32_ADC_CH_MAX,
+=======
+static const struct stm32_adc_info stm32h7_adc_info = {
+	.channels = stm32_adc_channels,
+	.max_channels = 20,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.resolutions = stm32h7_adc_resolutions,
 	.num_res = ARRAY_SIZE(stm32h7_adc_resolutions),
 };
@@ -382,7 +485,10 @@ static struct stm32_adc_trig_info stm32h7_adc_trigs[] = {
 	{ TIM2_TRGO, STM32_EXT11 },
 	{ TIM4_TRGO, STM32_EXT12 },
 	{ TIM6_TRGO, STM32_EXT13 },
+<<<<<<< HEAD
 	{ TIM15_TRGO, STM32_EXT14 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ TIM3_CH4, STM32_EXT15 },
 	{ LPTIM1_OUT, STM32_EXT18 },
 	{ LPTIM2_OUT, STM32_EXT19 },
@@ -589,12 +695,17 @@ static void stm32h7_adc_stop_conv(struct stm32_adc *adc)
 	stm32_adc_clr_bits(adc, STM32H7_ADC_CFGR, STM32H7_DMNGT_MASK);
 }
 
+<<<<<<< HEAD
 static int stm32h7_adc_exit_pwr_down(struct stm32_adc *adc)
 {
 	struct iio_dev *indio_dev = iio_priv_to_dev(adc);
 	int ret;
 	u32 val;
 
+=======
+static void stm32h7_adc_exit_pwr_down(struct stm32_adc *adc)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Exit deep power down, then enable ADC voltage regulator */
 	stm32_adc_clr_bits(adc, STM32H7_ADC_CR, STM32H7_DEEPPWD);
 	stm32_adc_set_bits(adc, STM32H7_ADC_CR, STM32H7_ADVREGEN);
@@ -603,6 +714,7 @@ static int stm32h7_adc_exit_pwr_down(struct stm32_adc *adc)
 		stm32_adc_set_bits(adc, STM32H7_ADC_CR, STM32H7_BOOST);
 
 	/* Wait for startup time */
+<<<<<<< HEAD
 	if (!adc->cfg->has_vregready) {
 		usleep_range(10, 20);
 		return 0;
@@ -617,6 +729,9 @@ static int stm32h7_adc_exit_pwr_down(struct stm32_adc *adc)
 	}
 
 	return ret;
+=======
+	usleep_range(10, 20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void stm32h7_adc_enter_pwr_down(struct stm32_adc *adc)
@@ -799,9 +914,13 @@ static int stm32h7_adc_selfcalib(struct stm32_adc *adc)
 	int ret;
 	u32 val;
 
+<<<<<<< HEAD
 	ret = stm32h7_adc_exit_pwr_down(adc);
 	if (ret)
 		return ret;
+=======
+	stm32h7_adc_exit_pwr_down(adc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Select calibration mode:
@@ -854,22 +973,32 @@ pwr_dwn:
  * stm32h7_adc_prepare() - Leave power down mode to enable ADC.
  * @adc: stm32 adc instance
  * Leave power down mode.
+<<<<<<< HEAD
  * Configure channels as single ended or differential before enabling ADC.
  * Enable ADC.
  * Restore calibration data.
  * Pre-select channels that may be used in PCSEL (required by input MUX / IO):
  * - Only one input is selected for single ended (e.g. 'vinp')
  * - Two inputs are selected for differential channels (e.g. 'vinp' & 'vinn')
+=======
+ * Enable ADC.
+ * Restore calibration data.
+ * Pre-select channels that may be used in PCSEL (required by input MUX / IO).
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 static int stm32h7_adc_prepare(struct stm32_adc *adc)
 {
 	int ret;
 
+<<<<<<< HEAD
 	ret = stm32h7_adc_exit_pwr_down(adc);
 	if (ret)
 		return ret;
 
 	stm32_adc_writel(adc, STM32H7_ADC_DIFSEL, adc->difsel);
+=======
+	stm32h7_adc_exit_pwr_down(adc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = stm32h7_adc_enable(adc);
 	if (ret)
@@ -1141,6 +1270,7 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
 		return ret;
 
 	case IIO_CHAN_INFO_SCALE:
+<<<<<<< HEAD
 		if (chan->differential) {
 			*val = adc->common->vref_mv * 2;
 			*val2 = chan->scan_type.realbits;
@@ -1158,6 +1288,12 @@ static int stm32_adc_read_raw(struct iio_dev *indio_dev,
 			*val = 0;
 		return IIO_VAL_INT;
 
+=======
+		*val = adc->common->vref_mv;
+		*val2 = chan->scan_type.realbits;
+		return IIO_VAL_FRACTIONAL_LOG2;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -1278,6 +1414,10 @@ static const struct iio_info stm32_adc_iio_info = {
 	.update_scan_mode = stm32_adc_update_scan_mode,
 	.debugfs_reg_access = stm32_adc_debugfs_reg_access,
 	.of_xlate = stm32_adc_of_xlate,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static unsigned int stm32_adc_dma_residue(struct stm32_adc *adc)
@@ -1308,8 +1448,35 @@ static unsigned int stm32_adc_dma_residue(struct stm32_adc *adc)
 static void stm32_adc_dma_buffer_done(void *data)
 {
 	struct iio_dev *indio_dev = data;
+<<<<<<< HEAD
 
 	iio_trigger_poll_chained(indio_dev->trig);
+=======
+	struct stm32_adc *adc = iio_priv(indio_dev);
+	int residue = stm32_adc_dma_residue(adc);
+
+	/*
+	 * In DMA mode the trigger services of IIO are not used
+	 * (e.g. no call to iio_trigger_poll).
+	 * Calling irq handler associated to the hardware trigger is not
+	 * relevant as the conversions have already been done. Data
+	 * transfers are performed directly in DMA callback instead.
+	 * This implementation avoids to call trigger irq handler that
+	 * may sleep, in an atomic context (DMA irq handler context).
+	 */
+	dev_dbg(&indio_dev->dev, "%s bufi=%d\n", __func__, adc->bufi);
+
+	while (residue >= indio_dev->scan_bytes) {
+		u16 *buffer = (u16 *)&adc->rx_buf[adc->bufi];
+
+		iio_push_to_buffers(indio_dev, buffer);
+
+		residue -= indio_dev->scan_bytes;
+		adc->bufi += indio_dev->scan_bytes;
+		if (adc->bufi >= adc->rx_buf_sz)
+			adc->bufi = 0;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int stm32_adc_dma_start(struct iio_dev *indio_dev)
@@ -1340,7 +1507,11 @@ static int stm32_adc_dma_start(struct iio_dev *indio_dev)
 	cookie = dmaengine_submit(desc);
 	ret = dma_submit_error(cookie);
 	if (ret) {
+<<<<<<< HEAD
 		dmaengine_terminate_all(adc->dma_chan);
+=======
+		dmaengine_terminate_sync(adc->dma_chan);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -1413,7 +1584,11 @@ static int stm32_adc_buffer_predisable(struct iio_dev *indio_dev)
 		dev_err(&indio_dev->dev, "predisable failed\n");
 
 	if (adc->dma_chan)
+<<<<<<< HEAD
 		dmaengine_terminate_all(adc->dma_chan);
+=======
+		dmaengine_terminate_sync(adc->dma_chan);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (stm32_adc_set_trig(indio_dev, NULL))
 		dev_err(&indio_dev->dev, "Can't clear trigger\n");
@@ -1520,6 +1695,7 @@ static void stm32_adc_smpr_init(struct stm32_adc *adc, int channel, u32 smp_ns)
 }
 
 static void stm32_adc_chan_init_one(struct iio_dev *indio_dev,
+<<<<<<< HEAD
 				    struct iio_chan_spec *chan, u32 vinp,
 				    u32 vinn, int scan_index, bool differential)
 {
@@ -1541,11 +1717,27 @@ static void stm32_adc_chan_init_one(struct iio_dev *indio_dev,
 	chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
 	chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |
 					 BIT(IIO_CHAN_INFO_OFFSET);
+=======
+				    struct iio_chan_spec *chan,
+				    const struct stm32_adc_chan_spec *channel,
+				    int scan_index, u32 smp)
+{
+	struct stm32_adc *adc = iio_priv(indio_dev);
+
+	chan->type = channel->type;
+	chan->channel = channel->channel;
+	chan->datasheet_name = channel->name;
+	chan->scan_index = scan_index;
+	chan->indexed = 1;
+	chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+	chan->info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chan->scan_type.sign = 'u';
 	chan->scan_type.realbits = adc->cfg->adc_info->resolutions[adc->res];
 	chan->scan_type.storagebits = 16;
 	chan->ext_info = stm32_adc_ext_info;
 
+<<<<<<< HEAD
 	/* pre-build selected channels mask */
 	adc->pcsel |= BIT(chan->channel);
 	if (differential) {
@@ -1554,6 +1746,13 @@ static void stm32_adc_chan_init_one(struct iio_dev *indio_dev,
 		/* Also add negative input to pre-selected channels */
 		adc->pcsel |= BIT(chan->channel2);
 	}
+=======
+	/* Prepare sampling time settings */
+	stm32_adc_smpr_init(adc, chan->channel, smp);
+
+	/* pre-build selected channels mask */
+	adc->pcsel |= BIT(chan->channel);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
@@ -1561,6 +1760,7 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
 	struct device_node *node = indio_dev->dev.of_node;
 	struct stm32_adc *adc = iio_priv(indio_dev);
 	const struct stm32_adc_info *adc_info = adc->cfg->adc_info;
+<<<<<<< HEAD
 	struct stm32_adc_diff_channel diff[STM32_ADC_CH_MAX];
 	struct property *prop;
 	const __be32 *cur;
@@ -1595,6 +1795,19 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
 	if (!num_channels) {
 		dev_err(&indio_dev->dev, "No channels configured\n");
 		return -ENODATA;
+=======
+	struct property *prop;
+	const __be32 *cur;
+	struct iio_chan_spec *channels;
+	int scan_index = 0, num_channels, ret;
+	u32 val, smp = 0;
+
+	num_channels = of_property_count_u32_elems(node, "st,adc-channels");
+	if (num_channels < 0 ||
+	    num_channels > adc_info->max_channels) {
+		dev_err(&indio_dev->dev, "Bad st,adc-channels?\n");
+		return num_channels < 0 ? num_channels : -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Optional sample time is provided either for each, or all channels */
@@ -1615,6 +1828,7 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
 			return -EINVAL;
 		}
 
+<<<<<<< HEAD
 		/* Channel can't be configured both as single-ended & diff */
 		for (i = 0; i < num_diff; i++) {
 			if (val == diff[i].vinp) {
@@ -1642,6 +1856,8 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
 	}
 
 	for (i = 0; i < scan_index; i++) {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * Using of_property_read_u32_index(), smp value will only be
 		 * modified if valid u32 value can be decoded. This allows to
@@ -1649,9 +1865,18 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
 		 * value per channel.
 		 */
 		of_property_read_u32_index(node, "st,min-sample-time-nsecs",
+<<<<<<< HEAD
 					   i, &smp);
 		/* Prepare sampling time settings */
 		stm32_adc_smpr_init(adc, channels[i].channel, smp);
+=======
+					   scan_index, &smp);
+
+		stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
+					&adc_info->channels[val],
+					scan_index, smp);
+		scan_index++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	indio_dev->num_channels = scan_index;
@@ -1660,15 +1885,37 @@ static int stm32_adc_chan_of_init(struct iio_dev *indio_dev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int stm32_adc_dma_request(struct iio_dev *indio_dev)
+=======
+static int stm32_adc_dma_request(struct device *dev, struct iio_dev *indio_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct stm32_adc *adc = iio_priv(indio_dev);
 	struct dma_slave_config config;
 	int ret;
 
+<<<<<<< HEAD
 	adc->dma_chan = dma_request_slave_channel(&indio_dev->dev, "rx");
 	if (!adc->dma_chan)
 		return 0;
+=======
+	adc->dma_chan = dma_request_chan(dev, "rx");
+	if (IS_ERR(adc->dma_chan)) {
+		ret = PTR_ERR(adc->dma_chan);
+		if (ret != -ENODEV) {
+			if (ret != -EPROBE_DEFER)
+				dev_err(dev,
+					"DMA channel request failed with %d\n",
+					ret);
+			return ret;
+		}
+
+		/* DMA is optional: fall back to IRQ mode */
+		adc->dma_chan = NULL;
+		return 0;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adc->rx_buf = dma_alloc_coherent(adc->dma_chan->device->dev,
 					 STM32_DMA_BUFFER_SIZE,
@@ -1703,6 +1950,10 @@ static int stm32_adc_probe(struct platform_device *pdev)
 {
 	struct iio_dev *indio_dev;
 	struct device *dev = &pdev->dev;
+<<<<<<< HEAD
+=======
+	irqreturn_t (*handler)(int irq, void *p) = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct stm32_adc *adc;
 	int ret;
 
@@ -1781,6 +2032,7 @@ static int stm32_adc_probe(struct platform_device *pdev)
 	if (ret < 0)
 		goto err_clk_disable;
 
+<<<<<<< HEAD
 	ret = stm32_adc_dma_request(indio_dev);
 	if (ret < 0)
 		goto err_clk_disable;
@@ -1788,6 +2040,17 @@ static int stm32_adc_probe(struct platform_device *pdev)
 	ret = iio_triggered_buffer_setup(indio_dev,
 					 &iio_pollfunc_store_time,
 					 &stm32_adc_trigger_handler,
+=======
+	ret = stm32_adc_dma_request(dev, indio_dev);
+	if (ret < 0)
+		goto err_clk_disable;
+
+	if (!adc->dma_chan)
+		handler = &stm32_adc_trigger_handler;
+
+	ret = iio_triggered_buffer_setup(indio_dev,
+					 &iio_pollfunc_store_time, handler,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					 &stm32_adc_buffer_setup_ops);
 	if (ret) {
 		dev_err(&pdev->dev, "buffer setup failed\n");
@@ -1860,6 +2123,7 @@ static const struct stm32_adc_cfg stm32h7_adc_cfg = {
 	.smp_cycles = stm32h7_adc_smp_cycles,
 };
 
+<<<<<<< HEAD
 static const struct stm32_adc_cfg stm32mp1_adc_cfg = {
 	.regs = &stm32h7_adc_regspec,
 	.adc_info = &stm32h7_adc_info,
@@ -1877,6 +2141,11 @@ static const struct of_device_id stm32_adc_of_match[] = {
 	{ .compatible = "st,stm32f4-adc", .data = (void *)&stm32f4_adc_cfg },
 	{ .compatible = "st,stm32h7-adc", .data = (void *)&stm32h7_adc_cfg },
 	{ .compatible = "st,stm32mp1-adc", .data = (void *)&stm32mp1_adc_cfg },
+=======
+static const struct of_device_id stm32_adc_of_match[] = {
+	{ .compatible = "st,stm32f4-adc", .data = (void *)&stm32f4_adc_cfg },
+	{ .compatible = "st,stm32h7-adc", .data = (void *)&stm32h7_adc_cfg },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, stm32_adc_of_match);

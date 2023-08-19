@@ -419,10 +419,16 @@ int enclosure_remove_device(struct enclosure_device *edev, struct device *dev)
 		cdev = &edev->component[i];
 		if (cdev->dev == dev) {
 			enclosure_remove_links(cdev);
+<<<<<<< HEAD
 			device_del(&cdev->cdev);
 			put_device(dev);
 			cdev->dev = NULL;
 			return device_add(&cdev->cdev);
+=======
+			put_device(dev);
+			cdev->dev = NULL;
+			return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 	return -ENODEV;
@@ -468,7 +474,11 @@ static struct class enclosure_class = {
 	.dev_groups		= enclosure_class_groups,
 };
 
+<<<<<<< HEAD
 static const char *const enclosure_status[] = {
+=======
+static const char *const enclosure_status [] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[ENCLOSURE_STATUS_UNSUPPORTED] = "unsupported",
 	[ENCLOSURE_STATUS_OK] = "OK",
 	[ENCLOSURE_STATUS_CRITICAL] = "critical",
@@ -480,7 +490,11 @@ static const char *const enclosure_status[] = {
 	[ENCLOSURE_STATUS_MAX] = NULL,
 };
 
+<<<<<<< HEAD
 static const char *const enclosure_type[] = {
+=======
+static const char *const enclosure_type [] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[ENCLOSURE_COMPONENT_DEVICE] = "device",
 	[ENCLOSURE_COMPONENT_ARRAY_DEVICE] = "array device",
 };
@@ -680,7 +694,17 @@ ATTRIBUTE_GROUPS(enclosure_component);
 
 static int __init enclosure_init(void)
 {
+<<<<<<< HEAD
 	return class_register(&enclosure_class);
+=======
+	int err;
+
+	err = class_register(&enclosure_class);
+	if (err)
+		return err;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __exit enclosure_exit(void)

@@ -21,6 +21,7 @@
  *
  * Authors: Ben Skeggs
  */
+<<<<<<< HEAD
 #include "channv50.h"
 
 int
@@ -30,3 +31,20 @@ gp102_disp_ovly_new(const struct nvkm_oclass *oclass, void *argv, u32 argc,
 	return nv50_disp_ovly_new_(&gp102_disp_dmac_func, &gk104_disp_ovly_mthd,
 				   disp, 5, oclass, argv, argc, pobject);
 }
+=======
+#include "dmacnv50.h"
+#include "rootnv50.h"
+
+#include <nvif/class.h>
+
+const struct nv50_disp_dmac_oclass
+gp102_disp_ovly_oclass = {
+	.base.oclass = GK104_DISP_OVERLAY_CONTROL_DMA,
+	.base.minver = 0,
+	.base.maxver = 0,
+	.ctor = nv50_disp_ovly_new,
+	.func = &gp102_disp_dmac_func,
+	.mthd = &gk104_disp_ovly_chan_mthd,
+	.chid = 5,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

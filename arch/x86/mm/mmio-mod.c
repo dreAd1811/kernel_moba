@@ -29,6 +29,10 @@
 #include <linux/slab.h>
 #include <linux/uaccess.h>
 #include <linux/io.h>
+<<<<<<< HEAD
+=======
+#include <linux/kallsyms.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/pgtable.h>
 #include <linux/mmiotrace.h>
 #include <asm/e820/api.h> /* for ISA_START_ADDRESS */
@@ -122,8 +126,13 @@ static void die_kmmio_nesting_error(struct pt_regs *regs, unsigned long addr)
 	pr_emerg("unexpected fault for address: 0x%08lx, last fault for address: 0x%08lx\n",
 		 addr, my_reason->addr);
 	print_pte(addr);
+<<<<<<< HEAD
 	pr_emerg("faulting IP is at %pS\n", (void *)regs->ip);
 	pr_emerg("last faulting IP was at %pS\n", (void *)my_reason->ip);
+=======
+	print_symbol(KERN_EMERG "faulting IP is at %s\n", regs->ip);
+	print_symbol(KERN_EMERG "last faulting IP was at %s\n", my_reason->ip);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef __i386__
 	pr_emerg("eax: %08lx   ebx: %08lx   ecx: %08lx   edx: %08lx\n",
 		 regs->ax, regs->bx, regs->cx, regs->dx);
@@ -384,7 +393,11 @@ static void enter_uniprocessor(void)
 	int cpu;
 	int err;
 
+<<<<<<< HEAD
 	if (downed_cpus == NULL &&
+=======
+	if (!cpumask_available(downed_cpus) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    !alloc_cpumask_var(&downed_cpus, GFP_KERNEL)) {
 		pr_notice("Failed to allocate mask\n");
 		goto out;
@@ -414,7 +427,11 @@ static void leave_uniprocessor(void)
 	int cpu;
 	int err;
 
+<<<<<<< HEAD
 	if (downed_cpus == NULL || cpumask_weight(downed_cpus) == 0)
+=======
+	if (!cpumask_available(downed_cpus) || cpumask_weight(downed_cpus) == 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 	pr_notice("Re-enabling CPUs...\n");
 	for_each_cpu(cpu, downed_cpus) {

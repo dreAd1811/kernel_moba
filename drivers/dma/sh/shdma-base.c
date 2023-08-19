@@ -1045,9 +1045,14 @@ EXPORT_SYMBOL(shdma_cleanup);
 
 static int __init shdma_enter(void)
 {
+<<<<<<< HEAD
 	shdma_slave_used = kcalloc(DIV_ROUND_UP(slave_num, BITS_PER_LONG),
 				   sizeof(long),
 				   GFP_KERNEL);
+=======
+	shdma_slave_used = kzalloc(DIV_ROUND_UP(slave_num, BITS_PER_LONG) *
+				    sizeof(long), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!shdma_slave_used)
 		return -ENOMEM;
 	return 0;

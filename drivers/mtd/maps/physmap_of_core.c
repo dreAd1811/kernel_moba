@@ -20,7 +20,10 @@
 #include <linux/mtd/map.h>
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/concat.h>
+<<<<<<< HEAD
 #include <linux/mtd/cfi_endian.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of.h>
 #include <linux/of_address.h>
 #include <linux/of_platform.h>
@@ -31,7 +34,10 @@
 struct of_flash_list {
 	struct mtd_info *mtd;
 	struct map_info map;
+<<<<<<< HEAD
 	struct resource *res;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct of_flash {
@@ -56,6 +62,7 @@ static int of_flash_remove(struct platform_device *dev)
 			mtd_concat_destroy(info->cmtd);
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < info->list_size; i++) {
 		if (info->list[i].mtd)
 			map_destroy(info->list[i].mtd);
@@ -68,6 +75,12 @@ static int of_flash_remove(struct platform_device *dev)
 			kfree(info->list[i].res);
 		}
 	}
+=======
+	for (i = 0; i < info->list_size; i++)
+		if (info->list[i].mtd)
+			map_destroy(info->list[i].mtd);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -124,7 +137,11 @@ static const char * const *of_get_probes(struct device_node *dp)
 	if (count < 0)
 		return part_probe_types_def;
 
+<<<<<<< HEAD
 	res = kcalloc(count + 1, sizeof(*res), GFP_KERNEL);
+=======
+	res = kzalloc((count + 1) * sizeof(*res), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!res)
 		return NULL;
 
@@ -197,7 +214,11 @@ static int of_flash_probe(struct platform_device *dev)
 
 	dev_set_drvdata(&dev->dev, info);
 
+<<<<<<< HEAD
 	mtd_list = kcalloc(count, sizeof(*mtd_list), GFP_KERNEL);
+=======
+	mtd_list = kzalloc(sizeof(*mtd_list) * count, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mtd_list)
 		goto err_flash_remove;
 
@@ -215,10 +236,18 @@ static int of_flash_probe(struct platform_device *dev)
 
 		err = -EBUSY;
 		res_size = resource_size(&res);
+<<<<<<< HEAD
 		info->list[i].res = request_mem_region(res.start, res_size,
 						       dev_name(&dev->dev));
 		if (!info->list[i].res)
 			goto err_out;
+=======
+		info->list[i].map.virt = devm_ioremap_resource(&dev->dev, &res);
+		if (IS_ERR(info->list[i].map.virt)) {
+			err = PTR_ERR(info->list[i].map.virt);
+			goto err_out;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		err = -ENXIO;
 		width = of_get_property(dp, "bank-width", NULL);
@@ -234,11 +263,14 @@ static int of_flash_probe(struct platform_device *dev)
 		info->list[i].map.bankwidth = be32_to_cpup(width);
 		info->list[i].map.device_node = dp;
 
+<<<<<<< HEAD
 		if (of_property_read_bool(dp, "big-endian"))
 			info->list[i].map.swap = CFI_BIG_ENDIAN;
 		else if (of_property_read_bool(dp, "little-endian"))
 			info->list[i].map.swap = CFI_LITTLE_ENDIAN;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = of_flash_probe_gemini(dev, dp, &info->list[i].map);
 		if (err)
 			goto err_out;
@@ -246,6 +278,7 @@ static int of_flash_probe(struct platform_device *dev)
 		if (err)
 			goto err_out;
 
+<<<<<<< HEAD
 		err = -ENOMEM;
 		info->list[i].map.virt = ioremap(info->list[i].map.phys,
 						 info->list[i].map.size);
@@ -255,6 +288,8 @@ static int of_flash_probe(struct platform_device *dev)
 			goto err_out;
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		simple_map_init(&info->list[i].map);
 
 		/*

@@ -18,6 +18,7 @@
 
 #include "pblk.h"
 
+<<<<<<< HEAD
 static int pblk_map_page_data(struct pblk *pblk, unsigned int sentry,
 			      struct ppa_addr *ppa_list,
 			      unsigned long *lun_bitmap,
@@ -28,10 +29,23 @@ static int pblk_map_page_data(struct pblk *pblk, unsigned int sentry,
 	struct pblk_emeta *emeta;
 	struct pblk_w_ctx *w_ctx;
 	__le64 *lba_list;
+=======
+static void pblk_map_page_data(struct pblk *pblk, unsigned int sentry,
+			       struct ppa_addr *ppa_list,
+			       unsigned long *lun_bitmap,
+			       struct pblk_sec_meta *meta_list,
+			       unsigned int valid_secs)
+{
+	struct pblk_line *line = pblk_line_get_data(pblk);
+	struct pblk_emeta *emeta = line->emeta;
+	struct pblk_w_ctx *w_ctx;
+	__le64 *lba_list = emeta_to_lbas(pblk, emeta->buf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u64 paddr;
 	int nr_secs = pblk->min_write_pgs;
 	int i;
 
+<<<<<<< HEAD
 	if (pblk_line_is_full(line)) {
 		struct pblk_line *prev_line = line;
 
@@ -53,6 +67,11 @@ static int pblk_map_page_data(struct pblk *pblk, unsigned int sentry,
 	for (i = 0; i < nr_secs; i++, paddr++) {
 		__le64 addr_empty = cpu_to_le64(ADDR_EMPTY);
 
+=======
+	paddr = pblk_alloc_page(pblk, line, nr_secs);
+
+	for (i = 0; i < nr_secs; i++, paddr++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* ppa to be sent to the device */
 		ppa_list[i] = addr_to_gen_ppa(pblk, paddr, line->id);
 
@@ -69,18 +88,36 @@ static int pblk_map_page_data(struct pblk *pblk, unsigned int sentry,
 			w_ctx->ppa = ppa_list[i];
 			meta_list[i].lba = cpu_to_le64(w_ctx->lba);
 			lba_list[paddr] = cpu_to_le64(w_ctx->lba);
+<<<<<<< HEAD
 			if (lba_list[paddr] != addr_empty)
 				line->nr_valid_lbas++;
 			else
 				atomic64_inc(&pblk->pad_wa);
 		} else {
+=======
+			line->nr_valid_lbas++;
+		} else {
+			__le64 addr_empty = cpu_to_le64(ADDR_EMPTY);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			lba_list[paddr] = meta_list[i].lba = addr_empty;
 			__pblk_map_invalidate(pblk, line, paddr);
 		}
 	}
 
+<<<<<<< HEAD
 	pblk_down_rq(pblk, ppa_list, nr_secs, lun_bitmap);
 	return 0;
+=======
+	if (pblk_line_is_full(line)) {
+		struct pblk_line *prev_line = line;
+
+		pblk_line_replace_data(pblk);
+		pblk_line_close_meta(pblk, prev_line);
+	}
+
+	pblk_down_rq(pblk, ppa_list, nr_secs, lun_bitmap);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void pblk_map_rq(struct pblk *pblk, struct nvm_rq *rqd, unsigned int sentry,
@@ -94,12 +131,17 @@ void pblk_map_rq(struct pblk *pblk, struct nvm_rq *rqd, unsigned int sentry,
 
 	for (i = off; i < rqd->nr_ppas; i += min) {
 		map_secs = (i + min > valid_secs) ? (valid_secs % min) : min;
+<<<<<<< HEAD
 		if (pblk_map_page_data(pblk, sentry + i, &rqd->ppa_list[i],
 					lun_bitmap, &meta_list[i], map_secs)) {
 			bio_put(rqd->bio);
 			pblk_free_rqd(pblk, rqd, PBLK_WRITE);
 			pblk_pipeline_stop(pblk);
 		}
+=======
+		pblk_map_page_data(pblk, sentry + i, &rqd->ppa_list[i],
+					lun_bitmap, &meta_list[i], map_secs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -119,12 +161,17 @@ void pblk_map_erase_rq(struct pblk *pblk, struct nvm_rq *rqd,
 
 	for (i = 0; i < rqd->nr_ppas; i += min) {
 		map_secs = (i + min > valid_secs) ? (valid_secs % min) : min;
+<<<<<<< HEAD
 		if (pblk_map_page_data(pblk, sentry + i, &rqd->ppa_list[i],
 					lun_bitmap, &meta_list[i], map_secs)) {
 			bio_put(rqd->bio);
 			pblk_free_rqd(pblk, rqd, PBLK_WRITE);
 			pblk_pipeline_stop(pblk);
 		}
+=======
+		pblk_map_page_data(pblk, sentry + i, &rqd->ppa_list[i],
+					lun_bitmap, &meta_list[i], map_secs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		erase_lun = pblk_ppa_to_pos(geo, rqd->ppa_list[i]);
 
@@ -142,7 +189,11 @@ void pblk_map_erase_rq(struct pblk *pblk, struct nvm_rq *rqd,
 			atomic_dec(&e_line->left_eblks);
 
 			*erase_ppa = rqd->ppa_list[i];
+<<<<<<< HEAD
 			erase_ppa->a.blk = e_line->id;
+=======
+			erase_ppa->g.blk = e_line->id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			spin_unlock(&e_line->lock);
 
@@ -163,7 +214,11 @@ void pblk_map_erase_rq(struct pblk *pblk, struct nvm_rq *rqd,
 		return;
 
 	/* Erase blocks that are bad in this line but might not be in next */
+<<<<<<< HEAD
 	if (unlikely(pblk_ppa_empty(*erase_ppa)) &&
+=======
+	if (unlikely(ppa_empty(*erase_ppa)) &&
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			bitmap_weight(d_line->blk_bitmap, lm->blk_per_line)) {
 		int bit = -1;
 
@@ -183,6 +238,10 @@ retry:
 		set_bit(bit, e_line->erase_bitmap);
 		atomic_dec(&e_line->left_eblks);
 		*erase_ppa = pblk->luns[bit].bppa; /* set ch and lun */
+<<<<<<< HEAD
 		erase_ppa->a.blk = e_line->id;
+=======
+		erase_ppa->g.blk = e_line->id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }

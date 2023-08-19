@@ -122,7 +122,11 @@ static void __init sunxi_usb_clk_setup(struct device_node *node,
 	if (!clk_data)
 		return;
 
+<<<<<<< HEAD
 	clk_data->clks = kcalloc(qty + 1, sizeof(struct clk *), GFP_KERNEL);
+=======
+	clk_data->clks = kzalloc((qty+1) * sizeof(struct clk *), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!clk_data->clks) {
 		kfree(clk_data);
 		return;

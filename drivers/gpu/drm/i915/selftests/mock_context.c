@@ -30,7 +30,10 @@ mock_context(struct drm_i915_private *i915,
 	     const char *name)
 {
 	struct i915_gem_context *ctx;
+<<<<<<< HEAD
 	unsigned int n;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
@@ -44,12 +47,15 @@ mock_context(struct drm_i915_private *i915,
 	INIT_RADIX_TREE(&ctx->handles_vma, GFP_KERNEL);
 	INIT_LIST_HEAD(&ctx->handles_list);
 
+<<<<<<< HEAD
 	for (n = 0; n < ARRAY_SIZE(ctx->__engine); n++) {
 		struct intel_context *ce = &ctx->__engine[n];
 
 		ce->gem_context = ctx;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ida_simple_get(&i915->contexts.hw_ida,
 			     0, MAX_CONTEXT_HW_ID, GFP_KERNEL);
 	if (ret < 0)
@@ -80,7 +86,15 @@ err_put:
 
 void mock_context_close(struct i915_gem_context *ctx)
 {
+<<<<<<< HEAD
 	context_close(ctx);
+=======
+	i915_gem_context_set_closed(ctx);
+
+	i915_ppgtt_close(&ctx->ppgtt->base);
+
+	i915_gem_context_put(ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mock_init_contexts(struct drm_i915_private *i915)
@@ -99,6 +113,7 @@ live_context(struct drm_i915_private *i915, struct drm_file *file)
 
 	return i915_gem_create_context(i915, file->driver_priv);
 }
+<<<<<<< HEAD
 
 struct i915_gem_context *
 kernel_context(struct drm_i915_private *i915)
@@ -110,3 +125,5 @@ void kernel_context_close(struct i915_gem_context *ctx)
 {
 	context_close(ctx);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

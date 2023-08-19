@@ -13,18 +13,29 @@
 #include <linux/clk.h>
 #include <linux/delay.h>
 #include <linux/err.h>
+<<<<<<< HEAD
 #include <linux/gpio/consumer.h>
+=======
+#include <linux/gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/interrupt.h>
 #include <linux/mfd/core.h>
 #include <linux/module.h>
 #include <linux/of.h>
 #include <linux/of_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/of_gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/pm_runtime.h>
 #include <linux/regmap.h>
 #include <linux/regulator/consumer.h>
 #include <linux/regulator/machine.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/ktime.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/platform_device.h>
 
 #include <linux/mfd/arizona/core.h>
@@ -52,8 +63,15 @@ int arizona_clk32k_enable(struct arizona *arizona)
 			if (ret != 0)
 				goto err_ref;
 			ret = clk_prepare_enable(arizona->mclk[ARIZONA_MCLK1]);
+<<<<<<< HEAD
 			if (ret != 0)
 				goto err_pm;
+=======
+			if (ret != 0) {
+				pm_runtime_put_sync(arizona->dev);
+				goto err_ref;
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case ARIZONA_32KZ_MCLK2:
 			ret = clk_prepare_enable(arizona->mclk[ARIZONA_MCLK2]);
@@ -67,8 +85,11 @@ int arizona_clk32k_enable(struct arizona *arizona)
 					 ARIZONA_CLK_32K_ENA);
 	}
 
+<<<<<<< HEAD
 err_pm:
 	pm_runtime_put_sync(arizona->dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_ref:
 	if (ret != 0)
 		arizona->clk32k_ref--;
@@ -237,6 +258,7 @@ static irqreturn_t arizona_overclocked(int irq, void *data)
 
 #define ARIZONA_REG_POLL_DELAY_US 7500
 
+<<<<<<< HEAD
 static inline bool arizona_poll_reg_delay(ktime_t timeout)
 {
 	if (ktime_compare(ktime_get(), timeout) > 0)
@@ -247,10 +269,13 @@ static inline bool arizona_poll_reg_delay(ktime_t timeout)
 	return true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int arizona_poll_reg(struct arizona *arizona,
 			    int timeout_ms, unsigned int reg,
 			    unsigned int mask, unsigned int target)
 {
+<<<<<<< HEAD
 	ktime_t timeout = ktime_add_us(ktime_get(), timeout_ms * USEC_PER_MSEC);
 	unsigned int val = 0;
 	int ret;
@@ -270,6 +295,20 @@ static int arizona_poll_reg(struct arizona *arizona,
 
 	dev_err(arizona->dev, "Polling reg 0x%x timed out: %x\n", reg, val);
 	return -ETIMEDOUT;
+=======
+	unsigned int val = 0;
+	int ret;
+
+	ret = regmap_read_poll_timeout(arizona->regmap,
+				       reg, val, ((val & mask) == target),
+				       ARIZONA_REG_POLL_DELAY_US,
+				       timeout_ms * 1000);
+	if (ret)
+		dev_err(arizona->dev, "Polling reg 0x%x timed out: %x\n",
+			reg, val);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int arizona_wait_for_boot(struct arizona *arizona)
@@ -296,7 +335,11 @@ static int arizona_wait_for_boot(struct arizona *arizona)
 static inline void arizona_enable_reset(struct arizona *arizona)
 {
 	if (arizona->pdata.reset)
+<<<<<<< HEAD
 		gpiod_set_raw_value_cansleep(arizona->pdata.reset, 0);
+=======
+		gpio_set_value_cansleep(arizona->pdata.reset, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void arizona_disable_reset(struct arizona *arizona)
@@ -312,7 +355,11 @@ static void arizona_disable_reset(struct arizona *arizona)
 			break;
 		}
 
+<<<<<<< HEAD
 		gpiod_set_raw_value_cansleep(arizona->pdata.reset, 1);
+=======
+		gpio_set_value_cansleep(arizona->pdata.reset, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		usleep_range(1000, 5000);
 	}
 }
@@ -814,6 +861,7 @@ EXPORT_SYMBOL_GPL(arizona_of_get_type);
 static int arizona_of_get_core_pdata(struct arizona *arizona)
 {
 	struct arizona_pdata *pdata = &arizona->pdata;
+<<<<<<< HEAD
 	int ret, i;
 
 	/* Handle old non-standard DT binding */
@@ -837,6 +885,23 @@ static int arizona_of_get_core_pdata(struct arizona *arizona)
 				ret);
 
 		pdata->reset = NULL;
+=======
+	struct property *prop;
+	const __be32 *cur;
+	u32 val;
+	u32 pdm_val[ARIZONA_MAX_PDM_SPK];
+	int ret, i;
+	int count = 0;
+
+	pdata->reset = of_get_named_gpio(arizona->dev->of_node, "wlf,reset", 0);
+	if (pdata->reset == -EPROBE_DEFER) {
+		return pdata->reset;
+	} else if (pdata->reset < 0) {
+		dev_err(arizona->dev, "Reset GPIO missing/malformed: %d\n",
+			pdata->reset);
+
+		pdata->reset = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ret = of_property_read_u32_array(arizona->dev->of_node,
@@ -861,6 +926,67 @@ static int arizona_of_get_core_pdata(struct arizona *arizona)
 			ret);
 	}
 
+<<<<<<< HEAD
+=======
+	of_property_for_each_u32(arizona->dev->of_node, "wlf,inmode", prop,
+				 cur, val) {
+		if (count == ARRAY_SIZE(pdata->inmode))
+			break;
+
+		pdata->inmode[count] = val;
+		count++;
+	}
+
+	count = 0;
+	of_property_for_each_u32(arizona->dev->of_node, "wlf,dmic-ref", prop,
+				 cur, val) {
+		if (count == ARRAY_SIZE(pdata->dmic_ref))
+			break;
+
+		pdata->dmic_ref[count] = val;
+		count++;
+	}
+
+	count = 0;
+	of_property_for_each_u32(arizona->dev->of_node, "wlf,out-mono", prop,
+				 cur, val) {
+		if (count == ARRAY_SIZE(pdata->out_mono))
+			break;
+
+		pdata->out_mono[count] = !!val;
+		count++;
+	}
+
+	count = 0;
+	of_property_for_each_u32(arizona->dev->of_node,
+				 "wlf,max-channels-clocked",
+				 prop, cur, val) {
+		if (count == ARRAY_SIZE(pdata->max_channels_clocked))
+			break;
+
+		pdata->max_channels_clocked[count] = val;
+		count++;
+	}
+
+	ret = of_property_read_u32_array(arizona->dev->of_node,
+					 "wlf,spk-fmt",
+					 pdm_val,
+					 ARRAY_SIZE(pdm_val));
+
+	if (ret >= 0)
+		for (count = 0; count < ARRAY_SIZE(pdata->spk_fmt); ++count)
+			pdata->spk_fmt[count] = pdm_val[count];
+
+	ret = of_property_read_u32_array(arizona->dev->of_node,
+					 "wlf,spk-mute",
+					 pdm_val,
+					 ARRAY_SIZE(pdm_val));
+
+	if (ret >= 0)
+		for (count = 0; count < ARRAY_SIZE(pdata->spk_mute); ++count)
+			pdata->spk_mute[count] = pdm_val[count];
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -993,7 +1119,11 @@ int arizona_dev_init(struct arizona *arizona)
 	const char * const mclk_name[] = { "mclk1", "mclk2" };
 	struct device *dev = arizona->dev;
 	const char *type_name = NULL;
+<<<<<<< HEAD
 	unsigned int reg, val;
+=======
+	unsigned int reg, val, mask;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*apply_patch)(struct arizona *) = NULL;
 	const struct mfd_cell *subdevs = NULL;
 	int n_subdevs = 0, ret, i;
@@ -1080,6 +1210,7 @@ int arizona_dev_init(struct arizona *arizona)
 		goto err_early;
 	}
 
+<<<<<<< HEAD
 	if (!arizona->pdata.reset) {
 		/* Start out with /RESET low to put the chip into reset */
 		arizona->pdata.reset = devm_gpiod_get(arizona->dev, "reset",
@@ -1093,6 +1224,16 @@ int arizona_dev_init(struct arizona *arizona)
 				"Reset GPIO missing/malformed: %d\n", ret);
 
 			arizona->pdata.reset = NULL;
+=======
+	if (arizona->pdata.reset) {
+		/* Start out with /RESET low to put the chip into reset */
+		ret = devm_gpio_request_one(arizona->dev, arizona->pdata.reset,
+					    GPIOF_DIR_OUT | GPIOF_INIT_LOW,
+					    "arizona /RESET");
+		if (ret != 0) {
+			dev_err(dev, "Failed to request /RESET: %d\n", ret);
+			goto err_dcvdd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1401,6 +1542,76 @@ int arizona_dev_init(struct arizona *arizona)
 				   ARIZONA_MICB1_RATE, val);
 	}
 
+<<<<<<< HEAD
+=======
+	for (i = 0; i < ARIZONA_MAX_INPUT; i++) {
+		/* Default for both is 0 so noop with defaults */
+		val = arizona->pdata.dmic_ref[i]
+			<< ARIZONA_IN1_DMIC_SUP_SHIFT;
+		if (arizona->pdata.inmode[i] & ARIZONA_INMODE_DMIC)
+			val |= 1 << ARIZONA_IN1_MODE_SHIFT;
+
+		switch (arizona->type) {
+		case WM8998:
+		case WM1814:
+			regmap_update_bits(arizona->regmap,
+				ARIZONA_ADC_DIGITAL_VOLUME_1L + (i * 8),
+				ARIZONA_IN1L_SRC_SE_MASK,
+				(arizona->pdata.inmode[i] & ARIZONA_INMODE_SE)
+					<< ARIZONA_IN1L_SRC_SE_SHIFT);
+
+			regmap_update_bits(arizona->regmap,
+				ARIZONA_ADC_DIGITAL_VOLUME_1R + (i * 8),
+				ARIZONA_IN1R_SRC_SE_MASK,
+				(arizona->pdata.inmode[i] & ARIZONA_INMODE_SE)
+					<< ARIZONA_IN1R_SRC_SE_SHIFT);
+
+			mask = ARIZONA_IN1_DMIC_SUP_MASK |
+				ARIZONA_IN1_MODE_MASK;
+			break;
+		default:
+			if (arizona->pdata.inmode[i] & ARIZONA_INMODE_SE)
+				val |= 1 << ARIZONA_IN1_SINGLE_ENDED_SHIFT;
+
+			mask = ARIZONA_IN1_DMIC_SUP_MASK |
+				ARIZONA_IN1_MODE_MASK |
+				ARIZONA_IN1_SINGLE_ENDED_MASK;
+			break;
+		}
+
+		regmap_update_bits(arizona->regmap,
+				   ARIZONA_IN1L_CONTROL + (i * 8),
+				   mask, val);
+	}
+
+	for (i = 0; i < ARIZONA_MAX_OUTPUT; i++) {
+		/* Default is 0 so noop with defaults */
+		if (arizona->pdata.out_mono[i])
+			val = ARIZONA_OUT1_MONO;
+		else
+			val = 0;
+
+		regmap_update_bits(arizona->regmap,
+				   ARIZONA_OUTPUT_PATH_CONFIG_1L + (i * 8),
+				   ARIZONA_OUT1_MONO, val);
+	}
+
+	for (i = 0; i < ARIZONA_MAX_PDM_SPK; i++) {
+		if (arizona->pdata.spk_mute[i])
+			regmap_update_bits(arizona->regmap,
+					   ARIZONA_PDM_SPK1_CTRL_1 + (i * 2),
+					   ARIZONA_SPK1_MUTE_ENDIAN_MASK |
+					   ARIZONA_SPK1_MUTE_SEQ1_MASK,
+					   arizona->pdata.spk_mute[i]);
+
+		if (arizona->pdata.spk_fmt[i])
+			regmap_update_bits(arizona->regmap,
+					   ARIZONA_PDM_SPK1_CTRL_2 + (i * 2),
+					   ARIZONA_SPK1_FMT_MASK,
+					   arizona->pdata.spk_fmt[i]);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pm_runtime_set_active(arizona->dev);
 	pm_runtime_enable(arizona->dev);
 

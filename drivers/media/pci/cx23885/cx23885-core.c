@@ -23,7 +23,10 @@
 #include <linux/moduleparam.h>
 #include <linux/kmod.h>
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/pci.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/interrupt.h>
 #include <linux/delay.h>
@@ -42,6 +45,7 @@ MODULE_AUTHOR("Steven Toth <stoth@linuxtv.org>");
 MODULE_LICENSE("GPL");
 MODULE_VERSION(CX23885_VERSION);
 
+<<<<<<< HEAD
 /*
  * Some platforms have been found to require periodic resetting of the DMA
  * engine. Ryzen and XEON platforms are known to be affected. The symptom
@@ -54,6 +58,8 @@ static unsigned int dma_reset_workaround = 1;
 module_param(dma_reset_workaround, int, 0644);
 MODULE_PARM_DESC(dma_reset_workaround, "periodic RiSC dma engine reset; 0-force disable, 1-driver detect (default), 2-force enable");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static unsigned int debug;
 module_param(debug, int, 0644);
 MODULE_PARM_DESC(debug, "enable debug messages");
@@ -435,6 +441,7 @@ static void cx23885_wakeup(struct cx23885_tsport *port,
 			   struct cx23885_dmaqueue *q, u32 count)
 {
 	struct cx23885_buffer *buf;
+<<<<<<< HEAD
 	int count_delta;
 	int max_buf_done = 5; /* service maximum five buffers */
 
@@ -459,6 +466,21 @@ static void cx23885_wakeup(struct cx23885_tsport *port,
 		/* count register is 16 bits so apply modulo appropriately */
 		count_delta = ((int)count - (int)(q->count % 65536));
 	} while ((count_delta > 0) && (max_buf_done > 0));
+=======
+
+	if (list_empty(&q->active))
+		return;
+	buf = list_entry(q->active.next,
+			 struct cx23885_buffer, queue);
+
+	buf->vb.vb2_buf.timestamp = ktime_get_ns();
+	buf->vb.sequence = q->count++;
+	dprintk(1, "[%p/%d] wakeup reg=%d buf=%d\n", buf,
+		buf->vb.vb2_buf.index,
+		count, q->count);
+	list_del(&buf->queue);
+	vb2_buffer_done(&buf->vb.vb2_buf, VB2_BUF_STATE_DONE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int cx23885_sram_channel_setup(struct cx23885_dev *dev,
@@ -614,6 +636,7 @@ static void cx23885_risc_disasm(struct cx23885_tsport *port,
 	}
 }
 
+<<<<<<< HEAD
 static void cx23885_clear_bridge_error(struct cx23885_dev *dev)
 {
 	uint32_t reg1_val, reg2_val;
@@ -638,6 +661,8 @@ static void cx23885_clear_bridge_error(struct cx23885_dev *dev)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cx23885_shutdown(struct cx23885_dev *dev)
 {
 	/* disable RISC controller */
@@ -683,9 +708,13 @@ static void cx23885_reset(struct cx23885_dev *dev)
 	cx_write(CLK_DELAY, cx_read(CLK_DELAY) & 0x80000000);
 	cx_write(PAD_CTRL, 0x00500300);
 
+<<<<<<< HEAD
 	/* clear dma in progress */
 	cx23885_clear_bridge_error(dev);
 	msleep(100);
+=======
+	mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cx23885_sram_channel_setup(dev, &dev->sram_channels[SRAM_CH01],
 		720*4, 0);
@@ -701,11 +730,14 @@ static void cx23885_reset(struct cx23885_dev *dev)
 	cx23885_sram_channel_setup(dev, &dev->sram_channels[SRAM_CH09], 128, 0);
 
 	cx23885_gpio_setup(dev);
+<<<<<<< HEAD
 
 	cx23885_irq_get_mask(dev);
 
 	/* clear dma in progress */
 	cx23885_clear_bridge_error(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -720,8 +752,11 @@ static int cx23885_pci_quirks(struct cx23885_dev *dev)
 	if (dev->bridge == CX23885_BRIDGE_885)
 		cx_clear(RDR_TLCTL0, 1 << 4);
 
+<<<<<<< HEAD
 	/* clear dma in progress */
 	cx23885_clear_bridge_error(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -896,10 +931,17 @@ static int cx23885_dev_setup(struct cx23885_dev *dev)
 
 	/* Configure the internal memory */
 	if (dev->pci->device == 0x8880) {
+<<<<<<< HEAD
 		/* Could be 887 or 888, assume an 888 default */
 		dev->bridge = CX23885_BRIDGE_888;
 		/* Apply a sensible clock frequency for the PCIe bridge */
 		dev->clk_freq = 50000000;
+=======
+		/* Could be 887 or 888, assume a default */
+		dev->bridge = CX23885_BRIDGE_887;
+		/* Apply a sensible clock frequency for the PCIe bridge */
+		dev->clk_freq = 25000000;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev->sram_channels = cx23887_sram_channels;
 	} else
 	if (dev->pci->device == 0x8852) {
@@ -926,6 +968,7 @@ static int cx23885_dev_setup(struct cx23885_dev *dev)
 		cx23885_card_list(dev);
 	}
 
+<<<<<<< HEAD
 	if (dev->pci->device == 0x8852) {
 		/* no DIF on cx23885, so no analog tuner support possible */
 		if (dev->board == CX23885_BOARD_HAUPPAUGE_QUADHD_ATSC)
@@ -934,6 +977,8 @@ static int cx23885_dev_setup(struct cx23885_dev *dev)
 			dev->board = CX23885_BOARD_HAUPPAUGE_QUADHD_DVB_885;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* If the user specific a clk freq override, apply it */
 	if (cx23885_boards[dev->board].clk_freq > 0)
 		dev->clk_freq = cx23885_boards[dev->board].clk_freq;
@@ -1040,7 +1085,11 @@ static int cx23885_dev_setup(struct cx23885_dev *dev)
 	cx23885_i2c_register(&dev->i2c_bus[1]);
 	cx23885_i2c_register(&dev->i2c_bus[2]);
 	cx23885_card_setup(dev);
+<<<<<<< HEAD
 	call_all(dev, tuner, standby);
+=======
+	call_all(dev, core, s_power, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cx23885_ir_init(dev);
 
 	if (dev->board == CX23885_BOARD_VIEWCAST_460E) {
@@ -1386,6 +1435,7 @@ static void cx23885_tsport_reg_dump(struct cx23885_tsport *port)
 		port->reg_ts_clk_en, cx_read(port->reg_ts_clk_en));
 	dprintk(1, "%s() ts_int_msk(0x%08X)     0x%08x\n", __func__,
 		port->reg_ts_int_msk, cx_read(port->reg_ts_int_msk));
+<<<<<<< HEAD
 	dprintk(1, "%s() ts_int_status(0x%08X)  0x%08x\n", __func__,
 		port->reg_ts_int_stat, cx_read(port->reg_ts_int_stat));
 	dprintk(1, "%s() PCI_INT_STAT           0x%08X\n", __func__,
@@ -1398,6 +1448,8 @@ static void cx23885_tsport_reg_dump(struct cx23885_tsport *port)
 		cx_read(VID_C_INT_MSTAT));
 	dprintk(1, "%s() VID_C_INT_SSTAT        0x%08X\n", __func__,
 		cx_read(VID_C_INT_SSTAT));
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 int cx23885_start_dma(struct cx23885_tsport *port,
@@ -1410,9 +1462,12 @@ int cx23885_start_dma(struct cx23885_tsport *port,
 	dprintk(1, "%s() w: %d, h: %d, f: %d\n", __func__,
 		dev->width, dev->height, dev->field);
 
+<<<<<<< HEAD
 	/* clear dma in progress */
 	cx23885_clear_bridge_error(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Stop the fifo and risc engine for this port */
 	cx_clear(port->reg_dma_ctl, port->dma_ctl_val);
 
@@ -1482,6 +1537,7 @@ int cx23885_start_dma(struct cx23885_tsport *port,
 		reg = reg | 0xa;
 		cx_write(PAD_CTRL, reg);
 
+<<<<<<< HEAD
 		/* Sets MOE_CLK_DIS to disable MoE clock */
 		/* sets MCLK_DLY_SEL/BCLK_DLY_SEL to 1 buffer delay each */
 		cx_write(CLK_DELAY, cx_read(CLK_DELAY) | 0x80000011);
@@ -1491,6 +1547,10 @@ int cx23885_start_dma(struct cx23885_tsport *port,
 		 * GPIO1_ALT_SEL: VIP_656_DATA[0]
 		 * GPIO0_ALT_SEL: VIP_656_CLK
 		 */
+=======
+		/* FIXME and these two registers should be documented. */
+		cx_write(CLK_DELAY, cx_read(CLK_DELAY) | 0x80000011);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		cx_write(ALT_PIN_OUT_SEL, 0x10100045);
 	}
 
@@ -1500,6 +1560,7 @@ int cx23885_start_dma(struct cx23885_tsport *port,
 	case CX23885_BRIDGE_888:
 		/* enable irqs */
 		dprintk(1, "%s() enabling TS int's and DMA\n", __func__);
+<<<<<<< HEAD
 		/* clear dma in progress */
 		cx23885_clear_bridge_error(dev);
 		cx_set(port->reg_ts_int_msk,  port->ts_int_msk_val);
@@ -1512,14 +1573,23 @@ int cx23885_start_dma(struct cx23885_tsport *port,
 
 		/* clear dma in progress */
 		cx23885_clear_bridge_error(dev);
+=======
+		cx_set(port->reg_ts_int_msk,  port->ts_int_msk_val);
+		cx_set(port->reg_dma_ctl, port->dma_ctl_val);
+		cx23885_irq_add(dev, port->pci_irqmask);
+		cx23885_irq_enable_all(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		BUG();
 	}
 
 	cx_set(DEV_CNTRL2, (1<<5)); /* Enable RISC controller */
+<<<<<<< HEAD
 	/* clear dma in progress */
 	cx23885_clear_bridge_error(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cx23885_boards[dev->board].portb == CX23885_MPEG_ENCODER)
 		cx23885_av_clk(dev, 1);
@@ -1527,11 +1597,14 @@ int cx23885_start_dma(struct cx23885_tsport *port,
 	if (debug > 4)
 		cx23885_tsport_reg_dump(port);
 
+<<<<<<< HEAD
 	cx23885_irq_get_mask(dev);
 
 	/* clear dma in progress */
 	cx23885_clear_bridge_error(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1539,15 +1612,19 @@ static int cx23885_stop_dma(struct cx23885_tsport *port)
 {
 	struct cx23885_dev *dev = port->dev;
 	u32 reg;
+<<<<<<< HEAD
 	int delay = 0;
 	uint32_t reg1_val;
 	uint32_t reg2_val;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dprintk(1, "%s()\n", __func__);
 
 	/* Stop interrupts and DMA */
 	cx_clear(port->reg_ts_int_msk, port->ts_int_msk_val);
 	cx_clear(port->reg_dma_ctl, port->dma_ctl_val);
+<<<<<<< HEAD
 	/* just in case wait for any dma to complete before allowing dealloc */
 	mdelay(20);
 	for (delay = 0; delay < 100; delay++) {
@@ -1561,6 +1638,11 @@ static int cx23885_stop_dma(struct cx23885_tsport *port)
 		delay, reg1_val, reg2_val);
 
 	if (cx23885_boards[dev->board].portb == CX23885_MPEG_ENCODER) {
+=======
+
+	if (cx23885_boards[dev->board].portb == CX23885_MPEG_ENCODER) {
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = cx_read(PAD_CTRL);
 
 		/* Set TS1_OE */
@@ -1571,6 +1653,10 @@ static int cx23885_stop_dma(struct cx23885_tsport *port)
 		cx_write(PAD_CTRL, reg);
 		cx_write(port->reg_src_sel, 0);
 		cx_write(port->reg_gen_ctrl, 8);
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (cx23885_boards[dev->board].portb == CX23885_MPEG_ENCODER)
@@ -1799,12 +1885,15 @@ static irqreturn_t cx23885_irq(int irq, void *dev_id)
 
 	pci_status = cx_read(PCI_INT_STAT);
 	pci_mask = cx23885_irq_get_mask(dev);
+<<<<<<< HEAD
 	if ((pci_status & pci_mask) == 0) {
 		dprintk(7, "pci_status: 0x%08x  pci_mask: 0x%08x\n",
 			pci_status, pci_mask);
 		goto out;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vida_status = cx_read(VID_A_INT_STAT);
 	vida_mask = cx_read(VID_A_INT_MSK);
 	audint_status = cx_read(AUDIO_INT_INT_STAT);
@@ -1814,9 +1903,13 @@ static irqreturn_t cx23885_irq(int irq, void *dev_id)
 	ts2_status = cx_read(VID_C_INT_STAT);
 	ts2_mask = cx_read(VID_C_INT_MSK);
 
+<<<<<<< HEAD
 	if (((pci_status & pci_mask) == 0) &&
 		((ts2_status & ts2_mask) == 0) &&
 		((ts1_status & ts1_mask) == 0))
+=======
+	if ((pci_status == 0) && (ts2_status == 0) && (ts1_status == 0))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 
 	vida_count = cx_read(VID_A_GPCNT);
@@ -1943,7 +2036,11 @@ static irqreturn_t cx23885_irq(int irq, void *dev_id)
 	}
 
 	if (handled)
+<<<<<<< HEAD
 		cx_write(PCI_INT_STAT, pci_status & pci_mask);
+=======
+		cx_write(PCI_INT_STAT, pci_status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	return IRQ_RETVAL(handled);
 }
@@ -2076,6 +2173,7 @@ void cx23885_gpio_enable(struct cx23885_dev *dev, u32 mask, int asoutput)
 	/* TODO: 23-19 */
 }
 
+<<<<<<< HEAD
 static struct {
 	int vendor, dev;
 } const broken_dev_id[] = {
@@ -2107,6 +2205,8 @@ static bool cx23885_does_need_dma_reset(void)
 	return false;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cx23885_initdev(struct pci_dev *pci_dev,
 			   const struct pci_device_id *pci_id)
 {
@@ -2118,8 +2218,11 @@ static int cx23885_initdev(struct pci_dev *pci_dev,
 	if (NULL == dev)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	dev->need_dma_reset = cx23885_does_need_dma_reset();
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = v4l2_device_register(&pci_dev->dev, &dev->v4l2_dev);
 	if (err < 0)
 		goto fail_free;

@@ -239,7 +239,11 @@ static void *page_align_ptr(void *ptr)
 static void *diag204_alloc_vbuf(int pages)
 {
 	/* The buffer has to be page aligned! */
+<<<<<<< HEAD
 	diag204_buf_vmalloc = vmalloc(array_size(PAGE_SIZE, (pages + 1)));
+=======
+	diag204_buf_vmalloc = vmalloc(PAGE_SIZE * (pages + 1));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!diag204_buf_vmalloc)
 		return ERR_PTR(-ENOMEM);
 	diag204_buf = page_align_ptr(diag204_buf_vmalloc);
@@ -497,7 +501,11 @@ static int hypfs_create_cpu_files(struct dentry *cpus_dir, void *cpu_info)
 	}
 	diag224_idx2name(cpu_info__ctidx(diag204_info_type, cpu_info), buffer);
 	rc = hypfs_create_str(cpu_dir, "type", buffer);
+<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(rc);
+=======
+	return PTR_RET(rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void *hypfs_create_lpar_files(struct dentry *systems_dir, void *part_hdr)
@@ -544,7 +552,11 @@ static int hypfs_create_phys_cpu_files(struct dentry *cpus_dir, void *cpu_info)
 		return PTR_ERR(rc);
 	diag224_idx2name(phys_cpu__ctidx(diag204_info_type, cpu_info), buffer);
 	rc = hypfs_create_str(cpu_dir, "type", buffer);
+<<<<<<< HEAD
 	return PTR_ERR_OR_ZERO(rc);
+=======
+	return PTR_RET(rc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void *hypfs_create_phys_files(struct dentry *parent_dir, void *phys_hdr)

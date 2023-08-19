@@ -47,9 +47,14 @@ EXPORT_SYMBOL_GPL(vpif_lock);
 void __iomem *vpif_base;
 EXPORT_SYMBOL_GPL(vpif_base);
 
+<<<<<<< HEAD
 /*
  * vpif_ch_params: video standard configuration parameters for vpif
  *
+=======
+/**
+ * vpif_ch_params: video standard configuration parameters for vpif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * The table must include all presets from supported subdevices.
  */
 const struct vpif_channel_config_params vpif_ch_params[] = {

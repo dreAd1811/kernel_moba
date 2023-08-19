@@ -31,13 +31,21 @@ extern const struct cpu_operations cpu_psci_ops;
 
 const struct cpu_operations *cpu_ops[NR_CPUS] __ro_after_init;
 
+<<<<<<< HEAD
 static const struct cpu_operations *const dt_supported_cpu_ops[] __initconst = {
+=======
+static const struct cpu_operations *dt_supported_cpu_ops[] __initconst = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&smp_spin_table_ops,
 	&cpu_psci_ops,
 	NULL,
 };
 
+<<<<<<< HEAD
 static const struct cpu_operations *const acpi_supported_cpu_ops[] __initconst = {
+=======
+static const struct cpu_operations *acpi_supported_cpu_ops[] __initconst = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_ARM64_ACPI_PARKING_PROTOCOL
 	&acpi_parking_protocol_ops,
 #endif
@@ -47,7 +55,11 @@ static const struct cpu_operations *const acpi_supported_cpu_ops[] __initconst =
 
 static const struct cpu_operations * __init cpu_get_ops(const char *name)
 {
+<<<<<<< HEAD
 	const struct cpu_operations *const *ops;
+=======
+	const struct cpu_operations **ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ops = acpi_disabled ? dt_supported_cpu_ops : acpi_supported_cpu_ops;
 
@@ -81,7 +93,11 @@ static const char *__init cpu_read_enable_method(int cpu)
 			 * when spin-table is used for secondaries).
 			 * Don't warn spuriously.
 			 */
+<<<<<<< HEAD
 			if (cpu != 0)
+=======
+			if (cpu != logical_bootcpu_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				pr_err("%pOF: missing enable-method property\n",
 					dn);
 		}

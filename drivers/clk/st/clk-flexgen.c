@@ -373,6 +373,10 @@ static void __init st_of_flexgen_setup(struct device_node *np)
 			break;
 		}
 
+<<<<<<< HEAD
+=======
+		flex_flags &= ~CLK_IS_CRITICAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		of_clk_detect_critical(np, i, &flex_flags);
 
 		/*

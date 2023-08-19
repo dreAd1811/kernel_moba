@@ -59,7 +59,10 @@ struct h264_fb {
  * @read_idx  : read index
  * @write_idx : write index
  * @count     : buffer count in list
+<<<<<<< HEAD
  * @reserved  : for 8 bytes alignment
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct h264_ring_fb_list {
 	struct h264_fb fb_list[H264_MAX_FB_NUM];

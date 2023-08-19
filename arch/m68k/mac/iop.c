@@ -273,10 +273,17 @@ void __init iop_init(void)
 	int i;
 
 	if (iop_scc_present) {
+<<<<<<< HEAD
 		pr_debug("SCC IOP detected at %p\n", iop_base[IOP_NUM_SCC]);
 	}
 	if (iop_ism_present) {
 		pr_debug("ISM IOP detected at %p\n", iop_base[IOP_NUM_ISM]);
+=======
+		pr_info("IOP: detected SCC IOP at %p\n", iop_base[IOP_NUM_SCC]);
+	}
+	if (iop_ism_present) {
+		pr_info("IOP: detected ISM IOP at %p\n", iop_base[IOP_NUM_ISM]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iop_start(iop_base[IOP_NUM_ISM]);
 		iop_alive(iop_base[IOP_NUM_ISM]); /* clears the alive flag */
 	}
@@ -598,6 +605,7 @@ irqreturn_t iop_ism_irq(int irq, void *dev_id)
 	}
 	return IRQ_HANDLED;
 }
+<<<<<<< HEAD
 
 void iop_ism_irq_poll(uint iop_num)
 {
@@ -607,3 +615,5 @@ void iop_ism_irq_poll(uint iop_num)
 	iop_ism_irq(0, (void *)iop_num);
 	local_irq_restore(flags);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

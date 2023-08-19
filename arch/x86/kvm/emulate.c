@@ -30,7 +30,10 @@
 #include "x86.h"
 #include "tss.h"
 #include "mmu.h"
+<<<<<<< HEAD
 #include "pmu.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Operand types
@@ -456,7 +459,11 @@ FOP_END;
 
 /*
  * XXX: inoutclob user must know where the argument is being expanded.
+<<<<<<< HEAD
  *      Relying on CONFIG_CC_HAS_ASM_GOTO would allow us to remove _fault.
+=======
+ *      Relying on CC_HAVE_ASM_GOTO would allow us to remove _fault.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #define asm_safe(insn, inoutclob...) \
 ({ \
@@ -1061,6 +1068,10 @@ static void fetch_register_operand(struct operand *op)
 
 static void read_sse_reg(struct x86_emulate_ctxt *ctxt, sse128_t *data, int reg)
 {
+<<<<<<< HEAD
+=======
+	ctxt->ops->get_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (reg) {
 	case 0: asm("movdqa %%xmm0, %0" : "=m"(*data)); break;
 	case 1: asm("movdqa %%xmm1, %0" : "=m"(*data)); break;
@@ -1082,11 +1093,19 @@ static void read_sse_reg(struct x86_emulate_ctxt *ctxt, sse128_t *data, int reg)
 #endif
 	default: BUG();
 	}
+<<<<<<< HEAD
+=======
+	ctxt->ops->put_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void write_sse_reg(struct x86_emulate_ctxt *ctxt, sse128_t *data,
 			  int reg)
 {
+<<<<<<< HEAD
+=======
+	ctxt->ops->get_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (reg) {
 	case 0: asm("movdqa %0, %%xmm0" : : "m"(*data)); break;
 	case 1: asm("movdqa %0, %%xmm1" : : "m"(*data)); break;
@@ -1108,10 +1127,18 @@ static void write_sse_reg(struct x86_emulate_ctxt *ctxt, sse128_t *data,
 #endif
 	default: BUG();
 	}
+<<<<<<< HEAD
+=======
+	ctxt->ops->put_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void read_mmx_reg(struct x86_emulate_ctxt *ctxt, u64 *data, int reg)
 {
+<<<<<<< HEAD
+=======
+	ctxt->ops->get_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (reg) {
 	case 0: asm("movq %%mm0, %0" : "=m"(*data)); break;
 	case 1: asm("movq %%mm1, %0" : "=m"(*data)); break;
@@ -1123,10 +1150,18 @@ static void read_mmx_reg(struct x86_emulate_ctxt *ctxt, u64 *data, int reg)
 	case 7: asm("movq %%mm7, %0" : "=m"(*data)); break;
 	default: BUG();
 	}
+<<<<<<< HEAD
+=======
+	ctxt->ops->put_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void write_mmx_reg(struct x86_emulate_ctxt *ctxt, u64 *data, int reg)
 {
+<<<<<<< HEAD
+=======
+	ctxt->ops->get_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (reg) {
 	case 0: asm("movq %0, %%mm0" : : "m"(*data)); break;
 	case 1: asm("movq %0, %%mm1" : : "m"(*data)); break;
@@ -1138,6 +1173,10 @@ static void write_mmx_reg(struct x86_emulate_ctxt *ctxt, u64 *data, int reg)
 	case 7: asm("movq %0, %%mm7" : : "m"(*data)); break;
 	default: BUG();
 	}
+<<<<<<< HEAD
+=======
+	ctxt->ops->put_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int em_fninit(struct x86_emulate_ctxt *ctxt)
@@ -1145,7 +1184,13 @@ static int em_fninit(struct x86_emulate_ctxt *ctxt)
 	if (ctxt->ops->get_cr(ctxt, 0) & (X86_CR0_TS | X86_CR0_EM))
 		return emulate_nm(ctxt);
 
+<<<<<<< HEAD
 	asm volatile("fninit");
+=======
+	ctxt->ops->get_fpu(ctxt);
+	asm volatile("fninit");
+	ctxt->ops->put_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return X86EMUL_CONTINUE;
 }
 
@@ -1156,7 +1201,13 @@ static int em_fnstcw(struct x86_emulate_ctxt *ctxt)
 	if (ctxt->ops->get_cr(ctxt, 0) & (X86_CR0_TS | X86_CR0_EM))
 		return emulate_nm(ctxt);
 
+<<<<<<< HEAD
 	asm volatile("fnstcw %0": "+m"(fcw));
+=======
+	ctxt->ops->get_fpu(ctxt);
+	asm volatile("fnstcw %0": "+m"(fcw));
+	ctxt->ops->put_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctxt->dst.val = fcw;
 
@@ -1170,7 +1221,13 @@ static int em_fnstsw(struct x86_emulate_ctxt *ctxt)
 	if (ctxt->ops->get_cr(ctxt, 0) & (X86_CR0_TS | X86_CR0_EM))
 		return emulate_nm(ctxt);
 
+<<<<<<< HEAD
 	asm volatile("fnstsw %0": "+m"(fsw));
+=======
+	ctxt->ops->get_fpu(ctxt);
+	asm volatile("fnstsw %0": "+m"(fsw));
+	ctxt->ops->put_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctxt->dst.val = fsw;
 
@@ -2331,16 +2388,22 @@ static int em_lseg(struct x86_emulate_ctxt *ctxt)
 
 static int emulator_has_longmode(struct x86_emulate_ctxt *ctxt)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_X86_64
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 eax, ebx, ecx, edx;
 
 	eax = 0x80000001;
 	ecx = 0;
 	ctxt->ops->get_cpuid(ctxt, &eax, &ebx, &ecx, &edx, false);
 	return edx & bit(X86_FEATURE_LM);
+<<<<<<< HEAD
 #else
 	return false;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define GET_SMSTATE(type, smbase, offset)				  \
@@ -2385,7 +2448,10 @@ static int rsm_load_seg_32(struct x86_emulate_ctxt *ctxt, u64 smbase, int n)
 	return X86EMUL_CONTINUE;
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_64
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rsm_load_seg_64(struct x86_emulate_ctxt *ctxt, u64 smbase, int n)
 {
 	struct desc_struct desc;
@@ -2404,7 +2470,10 @@ static int rsm_load_seg_64(struct x86_emulate_ctxt *ctxt, u64 smbase, int n)
 	ctxt->ops->set_segment(ctxt, selector, &desc, base3, n);
 	return X86EMUL_CONTINUE;
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int rsm_enter_protected_mode(struct x86_emulate_ctxt *ctxt,
 				    u64 cr0, u64 cr3, u64 cr4)
@@ -2505,7 +2574,10 @@ static int rsm_load_state_32(struct x86_emulate_ctxt *ctxt, u64 smbase)
 	return rsm_enter_protected_mode(ctxt, cr0, cr3, cr4);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_64
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int rsm_load_state_64(struct x86_emulate_ctxt *ctxt, u64 smbase)
 {
 	struct desc_struct desc;
@@ -2567,7 +2639,10 @@ static int rsm_load_state_64(struct x86_emulate_ctxt *ctxt, u64 smbase)
 
 	return X86EMUL_CONTINUE;
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int em_rsm(struct x86_emulate_ctxt *ctxt)
 {
@@ -2615,6 +2690,7 @@ static int em_rsm(struct x86_emulate_ctxt *ctxt)
 	}
 
 	smbase = ctxt->ops->get_smbase(ctxt);
+<<<<<<< HEAD
 
 	/*
 	 * Give pre_leave_smm() a chance to make ISA-specific changes to the
@@ -2629,6 +2705,11 @@ static int em_rsm(struct x86_emulate_ctxt *ctxt)
 		ret = rsm_load_state_64(ctxt, smbase + 0x8000);
 	else
 #endif
+=======
+	if (emulator_has_longmode(ctxt))
+		ret = rsm_load_state_64(ctxt, smbase + 0x8000);
+	else
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = rsm_load_state_32(ctxt, smbase + 0x8000);
 
 	if (ret != X86EMUL_CONTINUE) {
@@ -2908,9 +2989,12 @@ static bool emulator_bad_iopl(struct x86_emulate_ctxt *ctxt)
 	return ctxt->ops->cpl(ctxt) > iopl;
 }
 
+<<<<<<< HEAD
 #define VMWARE_PORT_VMPORT	(0x5658)
 #define VMWARE_PORT_VMRPC	(0x5659)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static bool emulator_io_port_access_allowed(struct x86_emulate_ctxt *ctxt,
 					    u16 port, u16 len)
 {
@@ -2922,6 +3006,7 @@ static bool emulator_io_port_access_allowed(struct x86_emulate_ctxt *ctxt,
 	unsigned mask = (1 << len) - 1;
 	unsigned long base;
 
+<<<<<<< HEAD
 	/*
 	 * VMware allows access to these ports even if denied
 	 * by TSS I/O permission bitmap. Mimic behavior.
@@ -2930,6 +3015,8 @@ static bool emulator_io_port_access_allowed(struct x86_emulate_ctxt *ctxt,
 	    ((port == VMWARE_PORT_VMPORT) || (port == VMWARE_PORT_VMRPC)))
 		return true;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ops->get_segment(ctxt, &tr, &tr_seg, &base3, VCPU_SREG_TR);
 	if (!tr_seg.p)
 		return false;
@@ -3685,6 +3772,7 @@ static int em_rdmsr(struct x86_emulate_ctxt *ctxt)
 	return X86EMUL_CONTINUE;
 }
 
+<<<<<<< HEAD
 static int em_store_sreg(struct x86_emulate_ctxt *ctxt, int segment)
 {
 	if (segment > VCPU_SREG_GS &&
@@ -3698,12 +3786,21 @@ static int em_store_sreg(struct x86_emulate_ctxt *ctxt, int segment)
 	return X86EMUL_CONTINUE;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int em_mov_rm_sreg(struct x86_emulate_ctxt *ctxt)
 {
 	if (ctxt->modrm_reg > VCPU_SREG_GS)
 		return emulate_ud(ctxt);
 
+<<<<<<< HEAD
 	return em_store_sreg(ctxt, ctxt->modrm_reg);
+=======
+	ctxt->dst.val = get_segment_selector(ctxt, ctxt->modrm_reg);
+	if (ctxt->dst.bytes == 4 && ctxt->dst.type == OP_MEM)
+		ctxt->dst.bytes = 2;
+	return X86EMUL_CONTINUE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int em_mov_sreg_rm(struct x86_emulate_ctxt *ctxt)
@@ -3721,11 +3818,14 @@ static int em_mov_sreg_rm(struct x86_emulate_ctxt *ctxt)
 	return load_segment_descriptor(ctxt, sel, ctxt->modrm_reg);
 }
 
+<<<<<<< HEAD
 static int em_sldt(struct x86_emulate_ctxt *ctxt)
 {
 	return em_store_sreg(ctxt, VCPU_SREG_LDTR);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int em_lldt(struct x86_emulate_ctxt *ctxt)
 {
 	u16 sel = ctxt->src.val;
@@ -3735,11 +3835,14 @@ static int em_lldt(struct x86_emulate_ctxt *ctxt)
 	return load_segment_descriptor(ctxt, sel, VCPU_SREG_LDTR);
 }
 
+<<<<<<< HEAD
 static int em_str(struct x86_emulate_ctxt *ctxt)
 {
 	return em_store_sreg(ctxt, VCPU_SREG_TR);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int em_ltr(struct x86_emulate_ctxt *ctxt)
 {
 	u16 sel = ctxt->src.val;
@@ -3792,10 +3895,13 @@ static int emulate_store_desc_ptr(struct x86_emulate_ctxt *ctxt,
 {
 	struct desc_ptr desc_ptr;
 
+<<<<<<< HEAD
 	if ((ctxt->ops->get_cr(ctxt, 4) & X86_CR4_UMIP) &&
 	    ctxt->ops->cpl(ctxt) > 0)
 		return emulate_gp(ctxt, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ctxt->mode == X86EMUL_MODE_PROT64)
 		ctxt->op_bytes = 8;
 	get(ctxt, &desc_ptr);
@@ -3855,10 +3961,13 @@ static int em_lidt(struct x86_emulate_ctxt *ctxt)
 
 static int em_smsw(struct x86_emulate_ctxt *ctxt)
 {
+<<<<<<< HEAD
 	if ((ctxt->ops->get_cr(ctxt, 4) & X86_CR4_UMIP) &&
 	    ctxt->ops->cpl(ctxt) > 0)
 		return emulate_gp(ctxt, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ctxt->dst.type == OP_MEM)
 		ctxt->dst.bytes = 2;
 	ctxt->dst.val = ctxt->ops->get_cr(ctxt, 0);
@@ -4067,8 +4176,17 @@ static int em_fxsave(struct x86_emulate_ctxt *ctxt)
 	if (rc != X86EMUL_CONTINUE)
 		return rc;
 
+<<<<<<< HEAD
 	rc = asm_safe("fxsave %[fx]", , [fx] "+m"(fx_state));
 
+=======
+	ctxt->ops->get_fpu(ctxt);
+
+	rc = asm_safe("fxsave %[fx]", , [fx] "+m"(fx_state));
+
+	ctxt->ops->put_fpu(ctxt);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (rc != X86EMUL_CONTINUE)
 		return rc;
 
@@ -4111,6 +4229,11 @@ static int em_fxrstor(struct x86_emulate_ctxt *ctxt)
 	if (rc != X86EMUL_CONTINUE)
 		return rc;
 
+<<<<<<< HEAD
+=======
+	ctxt->ops->get_fpu(ctxt);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (size < __fxstate_size(16)) {
 		rc = fxregs_fixup(&fx_state, size);
 		if (rc != X86EMUL_CONTINUE)
@@ -4126,6 +4249,11 @@ static int em_fxrstor(struct x86_emulate_ctxt *ctxt)
 		rc = asm_safe("fxrstor %[fx]", : [fx] "m"(fx_state));
 
 out:
+<<<<<<< HEAD
+=======
+	ctxt->ops->put_fpu(ctxt);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return rc;
 }
 
@@ -4202,7 +4330,11 @@ static int check_cr_write(struct x86_emulate_ctxt *ctxt)
 				maxphyaddr = 36;
 			rsvd = rsvd_bits(maxphyaddr, 63);
 			if (ctxt->ops->get_cr(ctxt, 4) & X86_CR4_PCIDE)
+<<<<<<< HEAD
 				rsvd &= ~X86_CR3_PCID_NOFLUSH;
+=======
+				rsvd &= ~CR3_PCID_INVD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		if (new_val & rsvd)
@@ -4307,6 +4439,7 @@ static int check_rdpmc(struct x86_emulate_ctxt *ctxt)
 	u64 cr4 = ctxt->ops->get_cr(ctxt, 4);
 	u64 rcx = reg_read(ctxt, VCPU_REGS_RCX);
 
+<<<<<<< HEAD
 	/*
 	 * VMware allows access to these Pseduo-PMCs even when read via RDPMC
 	 * in Ring3 when CR4.PCE=0.
@@ -4314,6 +4447,8 @@ static int check_rdpmc(struct x86_emulate_ctxt *ctxt)
 	if (enable_vmware_backdoor && is_vmware_backdoor_pmc(rcx))
 		return X86EMUL_CONTINUE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if ((!(cr4 & X86_CR4_PCE) && ctxt->ops->cpl(ctxt)) ||
 	    ctxt->ops->check_pmc(ctxt, rcx))
 		return emulate_gp(ctxt, 0);
@@ -4453,8 +4588,13 @@ static const struct opcode group5[] = {
 };
 
 static const struct opcode group6[] = {
+<<<<<<< HEAD
 	II(Prot | DstMem,	   em_sldt, sldt),
 	II(Prot | DstMem,	   em_str, str),
+=======
+	DI(Prot | DstMem,	sldt),
+	DI(Prot | DstMem,	str),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	II(Prot | Priv | SrcMem16, em_lldt, lldt),
 	II(Prot | Priv | SrcMem16, em_ltr, ltr),
 	N, N, N, N,
@@ -4530,10 +4670,13 @@ static const struct gprefix pfx_0f_2b = {
 	ID(0, &instr_dual_0f_2b), ID(0, &instr_dual_0f_2b), N, N,
 };
 
+<<<<<<< HEAD
 static const struct gprefix pfx_0f_10_0f_11 = {
 	I(Unaligned, em_mov), I(Unaligned, em_mov), N, N,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct gprefix pfx_0f_28_0f_29 = {
 	I(Aligned, em_mov), I(Aligned, em_mov), N, N,
 };
@@ -4745,9 +4888,13 @@ static const struct opcode twobyte_table[256] = {
 	DI(ImplicitOps | Priv, invd), DI(ImplicitOps | Priv, wbinvd), N, N,
 	N, D(ImplicitOps | ModRM | SrcMem | NoAccess), N, N,
 	/* 0x10 - 0x1F */
+<<<<<<< HEAD
 	GP(ModRM | DstReg | SrcMem | Mov | Sse, &pfx_0f_10_0f_11),
 	GP(ModRM | DstMem | SrcReg | Mov | Sse, &pfx_0f_10_0f_11),
 	N, N, N, N, N, N,
+=======
+	N, N, N, N, N, N, N, N,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	D(ImplicitOps | ModRM | SrcMem | NoAccess),
 	N, N, N, N, N, N, D(ImplicitOps | ModRM | SrcMem | NoAccess),
 	/* 0x20 - 0x2F */
@@ -5112,6 +5259,10 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len)
 	ctxt->fetch.ptr = ctxt->fetch.data;
 	ctxt->fetch.end = ctxt->fetch.data + insn_len;
 	ctxt->opcode_len = 1;
+<<<<<<< HEAD
+=======
+	ctxt->intercept = x86_intercept_none;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (insn_len > 0)
 		memcpy(ctxt->fetch.data, insn, insn_len);
 	else {
@@ -5164,6 +5315,7 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len)
 				ctxt->ad_bytes = def_ad_bytes ^ 6;
 			break;
 		case 0x26:	/* ES override */
+<<<<<<< HEAD
 		case 0x2e:	/* CS override */
 		case 0x36:	/* SS override */
 		case 0x3e:	/* DS override */
@@ -5174,6 +5326,30 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len)
 		case 0x65:	/* GS override */
 			has_seg_override = true;
 			ctxt->seg_override = ctxt->b & 7;
+=======
+			has_seg_override = true;
+			ctxt->seg_override = VCPU_SREG_ES;
+			break;
+		case 0x2e:	/* CS override */
+			has_seg_override = true;
+			ctxt->seg_override = VCPU_SREG_CS;
+			break;
+		case 0x36:	/* SS override */
+			has_seg_override = true;
+			ctxt->seg_override = VCPU_SREG_SS;
+			break;
+		case 0x3e:	/* DS override */
+			has_seg_override = true;
+			ctxt->seg_override = VCPU_SREG_DS;
+			break;
+		case 0x64:	/* FS override */
+			has_seg_override = true;
+			ctxt->seg_override = VCPU_SREG_FS;
+			break;
+		case 0x65:	/* GS override */
+			has_seg_override = true;
+			ctxt->seg_override = VCPU_SREG_GS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case 0x40 ... 0x4f: /* REX */
 			if (mode != X86EMUL_MODE_PROT64)
@@ -5257,10 +5433,22 @@ done_prefixes:
 			}
 			break;
 		case Escape:
+<<<<<<< HEAD
 			if (ctxt->modrm > 0xbf)
 				opcode = opcode.u.esc->high[ctxt->modrm - 0xc0];
 			else
 				opcode = opcode.u.esc->op[(ctxt->modrm >> 3) & 7];
+=======
+			if (ctxt->modrm > 0xbf) {
+				size_t size = ARRAY_SIZE(opcode.u.esc->high);
+				u32 index = array_index_nospec(
+					ctxt->modrm - 0xc0, size);
+
+				opcode = opcode.u.esc->high[index];
+			} else {
+				opcode = opcode.u.esc->op[(ctxt->modrm >> 3) & 7];
+			}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case InstrDual:
 			if ((ctxt->modrm >> 6) == 3)
@@ -5402,7 +5590,13 @@ static int flush_pending_x87_faults(struct x86_emulate_ctxt *ctxt)
 {
 	int rc;
 
+<<<<<<< HEAD
 	rc = asm_safe("fwait");
+=======
+	ctxt->ops->get_fpu(ctxt);
+	rc = asm_safe("fwait");
+	ctxt->ops->put_fpu(ctxt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (unlikely(rc != X86EMUL_CONTINUE))
 		return emulate_exception(ctxt, MF_VECTOR, 0, false);

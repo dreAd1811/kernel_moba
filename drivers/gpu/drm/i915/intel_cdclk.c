@@ -316,7 +316,10 @@ static void pnv_get_cdclk(struct drm_i915_private *dev_priv,
 		break;
 	default:
 		DRM_ERROR("Unknown pnv display core clock 0x%04x\n", gcfgc);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case GC_DISPLAY_CLOCK_133_MHZ_PNV:
 		cdclk_state->cdclk = 133333;
 		break;
@@ -418,26 +421,45 @@ static void hsw_get_cdclk(struct drm_i915_private *dev_priv,
 		cdclk_state->cdclk = 540000;
 }
 
+<<<<<<< HEAD
 static int vlv_calc_cdclk(struct drm_i915_private *dev_priv, int min_cdclk)
 {
 	int freq_320 = (dev_priv->hpll_freq <<  1) % 320000 != 0 ?
 		333333 : 320000;
+=======
+static int vlv_calc_cdclk(struct drm_i915_private *dev_priv,
+			  int max_pixclk)
+{
+	int freq_320 = (dev_priv->hpll_freq <<  1) % 320000 != 0 ?
+		333333 : 320000;
+	int limit = IS_CHERRYVIEW(dev_priv) ? 95 : 90;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * We seem to get an unstable or solid color picture at 200MHz.
 	 * Not sure what's wrong. For now use 200MHz only when all pipes
 	 * are off.
 	 */
+<<<<<<< HEAD
 	if (IS_VALLEYVIEW(dev_priv) && min_cdclk > freq_320)
 		return 400000;
 	else if (min_cdclk > 266667)
 		return freq_320;
 	else if (min_cdclk > 0)
+=======
+	if (!IS_CHERRYVIEW(dev_priv) &&
+	    max_pixclk > freq_320*limit/100)
+		return 400000;
+	else if (max_pixclk > 266667*limit/100)
+		return freq_320;
+	else if (max_pixclk > 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 266667;
 	else
 		return 200000;
 }
 
+<<<<<<< HEAD
 static u8 vlv_calc_voltage_level(struct drm_i915_private *dev_priv, int cdclk)
 {
 	if (IS_VALLEYVIEW(dev_priv)) {
@@ -462,10 +484,16 @@ static void vlv_get_cdclk(struct drm_i915_private *dev_priv,
 {
 	u32 val;
 
+=======
+static void vlv_get_cdclk(struct drm_i915_private *dev_priv,
+			  struct intel_cdclk_state *cdclk_state)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cdclk_state->vco = vlv_get_hpll_vco(dev_priv);
 	cdclk_state->cdclk = vlv_get_cck_clock(dev_priv, "cdclk",
 					       CCK_DISPLAY_CLOCK_CONTROL,
 					       cdclk_state->vco);
+<<<<<<< HEAD
 
 	mutex_lock(&dev_priv->pcu_lock);
 	val = vlv_punit_read(dev_priv, PUNIT_REG_DSPFREQ);
@@ -477,6 +505,8 @@ static void vlv_get_cdclk(struct drm_i915_private *dev_priv,
 	else
 		cdclk_state->voltage_level = (val & DSPFREQGUAR_MASK_CHV) >>
 			DSPFREQGUAR_SHIFT_CHV;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vlv_program_pfi_credits(struct drm_i915_private *dev_priv)
@@ -519,6 +549,7 @@ static void vlv_set_cdclk(struct drm_i915_private *dev_priv,
 			  const struct intel_cdclk_state *cdclk_state)
 {
 	int cdclk = cdclk_state->cdclk;
+<<<<<<< HEAD
 	u32 val, cmd = cdclk_state->voltage_level;
 
 	switch (cdclk) {
@@ -532,6 +563,9 @@ static void vlv_set_cdclk(struct drm_i915_private *dev_priv,
 		MISSING_CASE(cdclk);
 		return;
 	}
+=======
+	u32 val, cmd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* There are cases where we can end up here with power domains
 	 * off and a CDCLK frequency other than the minimum, like when
@@ -541,7 +575,18 @@ static void vlv_set_cdclk(struct drm_i915_private *dev_priv,
 	 */
 	intel_display_power_get(dev_priv, POWER_DOMAIN_PIPE_A);
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	if (cdclk >= 320000) /* jump to highest voltage for 400MHz too */
+		cmd = 2;
+	else if (cdclk == 266667)
+		cmd = 1;
+	else
+		cmd = 0;
+
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = vlv_punit_read(dev_priv, PUNIT_REG_DSPFREQ);
 	val &= ~DSPFREQGUAR_MASK;
 	val |= (cmd << DSPFREQGUAR_SHIFT);
@@ -551,7 +596,11 @@ static void vlv_set_cdclk(struct drm_i915_private *dev_priv,
 		     50)) {
 		DRM_ERROR("timed out waiting for CDclk change\n");
 	}
+<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev_priv->sb_lock);
 
@@ -600,7 +649,11 @@ static void chv_set_cdclk(struct drm_i915_private *dev_priv,
 			  const struct intel_cdclk_state *cdclk_state)
 {
 	int cdclk = cdclk_state->cdclk;
+<<<<<<< HEAD
 	u32 val, cmd = cdclk_state->voltage_level;
+=======
+	u32 val, cmd;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (cdclk) {
 	case 333333:
@@ -621,7 +674,18 @@ static void chv_set_cdclk(struct drm_i915_private *dev_priv,
 	 */
 	intel_display_power_get(dev_priv, POWER_DOMAIN_PIPE_A);
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	/*
+	 * Specs are full of misinformation, but testing on actual
+	 * hardware has shown that we just need to write the desired
+	 * CCK divider into the Punit register.
+	 */
+	cmd = DIV_ROUND_CLOSEST(dev_priv->hpll_freq << 1, cdclk) - 1;
+
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	val = vlv_punit_read(dev_priv, PUNIT_REG_DSPFREQ);
 	val &= ~DSPFREQGUAR_MASK_CHV;
 	val |= (cmd << DSPFREQGUAR_SHIFT_CHV);
@@ -631,7 +695,11 @@ static void chv_set_cdclk(struct drm_i915_private *dev_priv,
 		     50)) {
 		DRM_ERROR("timed out waiting for CDclk change\n");
 	}
+<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_update_cdclk(dev_priv);
 
@@ -640,6 +708,7 @@ static void chv_set_cdclk(struct drm_i915_private *dev_priv,
 	intel_display_power_put(dev_priv, POWER_DOMAIN_PIPE_A);
 }
 
+<<<<<<< HEAD
 static int bdw_calc_cdclk(int min_cdclk)
 {
 	if (min_cdclk > 540000)
@@ -647,11 +716,21 @@ static int bdw_calc_cdclk(int min_cdclk)
 	else if (min_cdclk > 450000)
 		return 540000;
 	else if (min_cdclk > 337500)
+=======
+static int bdw_calc_cdclk(int max_pixclk)
+{
+	if (max_pixclk > 540000)
+		return 675000;
+	else if (max_pixclk > 450000)
+		return 540000;
+	else if (max_pixclk > 337500)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 450000;
 	else
 		return 337500;
 }
 
+<<<<<<< HEAD
 static u8 bdw_calc_voltage_level(int cdclk)
 {
 	switch (cdclk) {
@@ -667,6 +746,8 @@ static u8 bdw_calc_voltage_level(int cdclk)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void bdw_get_cdclk(struct drm_i915_private *dev_priv,
 			  struct intel_cdclk_state *cdclk_state)
 {
@@ -685,6 +766,7 @@ static void bdw_get_cdclk(struct drm_i915_private *dev_priv,
 		cdclk_state->cdclk = 337500;
 	else
 		cdclk_state->cdclk = 675000;
+<<<<<<< HEAD
 
 	/*
 	 * Can't read this out :( Let's assume it's
@@ -692,13 +774,19 @@ static void bdw_get_cdclk(struct drm_i915_private *dev_priv,
 	 */
 	cdclk_state->voltage_level =
 		bdw_calc_voltage_level(cdclk_state->cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bdw_set_cdclk(struct drm_i915_private *dev_priv,
 			  const struct intel_cdclk_state *cdclk_state)
 {
 	int cdclk = cdclk_state->cdclk;
+<<<<<<< HEAD
 	uint32_t val;
+=======
+	uint32_t val, data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	if (WARN((I915_READ(LCPLL_CTL) &
@@ -709,10 +797,17 @@ static void bdw_set_cdclk(struct drm_i915_private *dev_priv,
 		 "trying to change cdclk frequency with cdclk not enabled\n"))
 		return;
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
 	ret = sandybridge_pcode_write(dev_priv,
 				      BDW_PCODE_DISPLAY_FREQ_CHANGE_REQ, 0x0);
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+	ret = sandybridge_pcode_write(dev_priv,
+				      BDW_PCODE_DISPLAY_FREQ_CHANGE_REQ, 0x0);
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("failed to inform pcode about cdclk change\n");
 		return;
@@ -722,18 +817,24 @@ static void bdw_set_cdclk(struct drm_i915_private *dev_priv,
 	val |= LCPLL_CD_SOURCE_FCLK;
 	I915_WRITE(LCPLL_CTL, val);
 
+<<<<<<< HEAD
 	/*
 	 * According to the spec, it should be enough to poll for this 1 us.
 	 * However, extensive testing shows that this can take longer.
 	 */
 	if (wait_for_us(I915_READ(LCPLL_CTL) &
 			LCPLL_CD_SOURCE_FCLK_DONE, 100))
+=======
+	if (wait_for_us(I915_READ(LCPLL_CTL) &
+			LCPLL_CD_SOURCE_FCLK_DONE, 1))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_ERROR("Switching to FCLK failed\n");
 
 	val = I915_READ(LCPLL_CTL);
 	val &= ~LCPLL_CLK_FREQ_MASK;
 
 	switch (cdclk) {
+<<<<<<< HEAD
 	default:
 		MISSING_CASE(cdclk);
 		/* fall through */
@@ -749,6 +850,27 @@ static void bdw_set_cdclk(struct drm_i915_private *dev_priv,
 	case 675000:
 		val |= LCPLL_CLK_FREQ_675_BDW;
 		break;
+=======
+	case 450000:
+		val |= LCPLL_CLK_FREQ_450;
+		data = 0;
+		break;
+	case 540000:
+		val |= LCPLL_CLK_FREQ_54O_BDW;
+		data = 1;
+		break;
+	case 337500:
+		val |= LCPLL_CLK_FREQ_337_5_BDW;
+		data = 2;
+		break;
+	case 675000:
+		val |= LCPLL_CLK_FREQ_675_BDW;
+		data = 3;
+		break;
+	default:
+		WARN(1, "invalid cdclk frequency\n");
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	I915_WRITE(LCPLL_CTL, val);
@@ -761,14 +883,21 @@ static void bdw_set_cdclk(struct drm_i915_private *dev_priv,
 			LCPLL_CD_SOURCE_FCLK_DONE) == 0, 1))
 		DRM_ERROR("Switching back to LCPLL failed\n");
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
 	sandybridge_pcode_write(dev_priv, HSW_PCODE_DE_WRITE_FREQ_REQ,
 				cdclk_state->voltage_level);
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+	sandybridge_pcode_write(dev_priv, HSW_PCODE_DE_WRITE_FREQ_REQ, data);
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	I915_WRITE(CDCLK_FREQ, DIV_ROUND_CLOSEST(cdclk, 1000) - 1);
 
 	intel_update_cdclk(dev_priv);
+<<<<<<< HEAD
 }
 
 static int skl_calc_cdclk(int min_cdclk, int vco)
@@ -779,21 +908,46 @@ static int skl_calc_cdclk(int min_cdclk, int vco)
 		else if (min_cdclk > 432000)
 			return 540000;
 		else if (min_cdclk > 308571)
+=======
+
+	WARN(cdclk != dev_priv->cdclk.hw.cdclk,
+	     "cdclk requested %d kHz but got %d kHz\n",
+	     cdclk, dev_priv->cdclk.hw.cdclk);
+}
+
+static int skl_calc_cdclk(int max_pixclk, int vco)
+{
+	if (vco == 8640000) {
+		if (max_pixclk > 540000)
+			return 617143;
+		else if (max_pixclk > 432000)
+			return 540000;
+		else if (max_pixclk > 308571)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 432000;
 		else
 			return 308571;
 	} else {
+<<<<<<< HEAD
 		if (min_cdclk > 540000)
 			return 675000;
 		else if (min_cdclk > 450000)
 			return 540000;
 		else if (min_cdclk > 337500)
+=======
+		if (max_pixclk > 540000)
+			return 675000;
+		else if (max_pixclk > 450000)
+			return 540000;
+		else if (max_pixclk > 337500)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return 450000;
 		else
 			return 337500;
 	}
 }
 
+<<<<<<< HEAD
 static u8 skl_calc_voltage_level(int cdclk)
 {
 	switch (cdclk) {
@@ -812,6 +966,8 @@ static u8 skl_calc_voltage_level(int cdclk)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void skl_dpll0_update(struct drm_i915_private *dev_priv,
 			     struct intel_cdclk_state *cdclk_state)
 {
@@ -859,10 +1015,17 @@ static void skl_get_cdclk(struct drm_i915_private *dev_priv,
 
 	skl_dpll0_update(dev_priv, cdclk_state);
 
+<<<<<<< HEAD
 	cdclk_state->cdclk = cdclk_state->bypass = cdclk_state->ref;
 
 	if (cdclk_state->vco == 0)
 		goto out;
+=======
+	cdclk_state->cdclk = cdclk_state->ref;
+
+	if (cdclk_state->vco == 0)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cdctl = I915_READ(CDCLK_CTL);
 
@@ -903,6 +1066,7 @@ static void skl_get_cdclk(struct drm_i915_private *dev_priv,
 			break;
 		}
 	}
+<<<<<<< HEAD
 
  out:
 	/*
@@ -911,6 +1075,8 @@ static void skl_get_cdclk(struct drm_i915_private *dev_priv,
 	 */
 	cdclk_state->voltage_level =
 		skl_calc_voltage_level(cdclk_state->cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* convert from kHz to .1 fixpoint MHz with -1MHz offset */
@@ -989,6 +1155,7 @@ static void skl_set_cdclk(struct drm_i915_private *dev_priv,
 {
 	int cdclk = cdclk_state->cdclk;
 	int vco = cdclk_state->vco;
+<<<<<<< HEAD
 	u32 freq_select, cdclk_ctl;
 	int ret;
 
@@ -1003,11 +1170,23 @@ static void skl_set_cdclk(struct drm_i915_private *dev_priv,
 	WARN_ON_ONCE(IS_SKYLAKE(dev_priv) && vco == 8640000);
 
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	u32 freq_select, pcu_ack, cdclk_ctl;
+	int ret;
+
+	WARN_ON((cdclk == 24000) != (vco == 0));
+
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = skl_pcode_request(dev_priv, SKL_PCODE_CDCLK_CONTROL,
 				SKL_CDCLK_PREPARE_FOR_CHANGE,
 				SKL_CDCLK_READY_FOR_CHANGE,
 				SKL_CDCLK_READY_FOR_CHANGE, 3);
+<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("Failed to inform PCU about cdclk change (%d)\n",
 			  ret);
@@ -1016,6 +1195,7 @@ static void skl_set_cdclk(struct drm_i915_private *dev_priv,
 
 	/* Choose frequency for this cdclk */
 	switch (cdclk) {
+<<<<<<< HEAD
 	default:
 		WARN_ON(cdclk != dev_priv->cdclk.hw.bypass);
 		WARN_ON(vco != 0);
@@ -1030,10 +1210,30 @@ static void skl_set_cdclk(struct drm_i915_private *dev_priv,
 		break;
 	case 540000:
 		freq_select = CDCLK_FREQ_540;
+=======
+	case 450000:
+	case 432000:
+		freq_select = CDCLK_FREQ_450_432;
+		pcu_ack = 1;
+		break;
+	case 540000:
+		freq_select = CDCLK_FREQ_540;
+		pcu_ack = 2;
+		break;
+	case 308571:
+	case 337500:
+	default:
+		freq_select = CDCLK_FREQ_337_308;
+		pcu_ack = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case 617143:
 	case 675000:
 		freq_select = CDCLK_FREQ_675_617;
+<<<<<<< HEAD
+=======
+		pcu_ack = 3;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -1071,10 +1271,16 @@ static void skl_set_cdclk(struct drm_i915_private *dev_priv,
 	POSTING_READ(CDCLK_CTL);
 
 	/* inform PCU of the change */
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
 	sandybridge_pcode_write(dev_priv, SKL_PCODE_CDCLK_CONTROL,
 				cdclk_state->voltage_level);
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+	sandybridge_pcode_write(dev_priv, SKL_PCODE_CDCLK_CONTROL, pcu_ack);
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	intel_update_cdclk(dev_priv);
 }
@@ -1092,11 +1298,17 @@ static void skl_sanitize_cdclk(struct drm_i915_private *dev_priv)
 		goto sanitize;
 
 	intel_update_cdclk(dev_priv);
+<<<<<<< HEAD
 	intel_dump_cdclk_state(&dev_priv->cdclk.hw, "Current CDCLK");
 
 	/* Is PLL enabled and locked ? */
 	if (dev_priv->cdclk.hw.vco == 0 ||
 	    dev_priv->cdclk.hw.cdclk == dev_priv->cdclk.hw.bypass)
+=======
+	/* Is PLL enabled and locked ? */
+	if (dev_priv->cdclk.hw.vco == 0 ||
+	    dev_priv->cdclk.hw.cdclk == dev_priv->cdclk.hw.ref)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto sanitize;
 
 	/* DPLL okay; verify the cdclock
@@ -1154,7 +1366,10 @@ void skl_init_cdclk(struct drm_i915_private *dev_priv)
 	if (cdclk_state.vco == 0)
 		cdclk_state.vco = 8100000;
 	cdclk_state.cdclk = skl_calc_cdclk(0, cdclk_state.vco);
+<<<<<<< HEAD
 	cdclk_state.voltage_level = skl_calc_voltage_level(cdclk_state.cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skl_set_cdclk(dev_priv, &cdclk_state);
 }
@@ -1170,13 +1385,19 @@ void skl_uninit_cdclk(struct drm_i915_private *dev_priv)
 {
 	struct intel_cdclk_state cdclk_state = dev_priv->cdclk.hw;
 
+<<<<<<< HEAD
 	cdclk_state.cdclk = cdclk_state.bypass;
 	cdclk_state.vco = 0;
 	cdclk_state.voltage_level = skl_calc_voltage_level(cdclk_state.cdclk);
+=======
+	cdclk_state.cdclk = cdclk_state.ref;
+	cdclk_state.vco = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skl_set_cdclk(dev_priv, &cdclk_state);
 }
 
+<<<<<<< HEAD
 static int bxt_calc_cdclk(int min_cdclk)
 {
 	if (min_cdclk > 576000)
@@ -1186,37 +1407,72 @@ static int bxt_calc_cdclk(int min_cdclk)
 	else if (min_cdclk > 288000)
 		return 384000;
 	else if (min_cdclk > 144000)
+=======
+static int bxt_calc_cdclk(int max_pixclk)
+{
+	if (max_pixclk > 576000)
+		return 624000;
+	else if (max_pixclk > 384000)
+		return 576000;
+	else if (max_pixclk > 288000)
+		return 384000;
+	else if (max_pixclk > 144000)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 288000;
 	else
 		return 144000;
 }
 
+<<<<<<< HEAD
 static int glk_calc_cdclk(int min_cdclk)
 {
 	if (min_cdclk > 158400)
 		return 316800;
 	else if (min_cdclk > 79200)
+=======
+static int glk_calc_cdclk(int max_pixclk)
+{
+	/*
+	 * FIXME: Avoid using a pixel clock that is more than 99% of the cdclk
+	 * as a temporary workaround. Use a higher cdclk instead. (Note that
+	 * intel_compute_max_dotclk() limits the max pixel clock to 99% of max
+	 * cdclk.)
+	 */
+	if (max_pixclk > DIV_ROUND_UP(2 * 158400 * 99, 100))
+		return 316800;
+	else if (max_pixclk > DIV_ROUND_UP(2 * 79200 * 99, 100))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 158400;
 	else
 		return 79200;
 }
 
+<<<<<<< HEAD
 static u8 bxt_calc_voltage_level(int cdclk)
 {
 	return DIV_ROUND_UP(cdclk, 25000);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int bxt_de_pll_vco(struct drm_i915_private *dev_priv, int cdclk)
 {
 	int ratio;
 
+<<<<<<< HEAD
 	if (cdclk == dev_priv->cdclk.hw.bypass)
+=======
+	if (cdclk == dev_priv->cdclk.hw.ref)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	switch (cdclk) {
 	default:
 		MISSING_CASE(cdclk);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 144000:
 	case 288000:
 	case 384000:
@@ -1235,13 +1491,20 @@ static int glk_de_pll_vco(struct drm_i915_private *dev_priv, int cdclk)
 {
 	int ratio;
 
+<<<<<<< HEAD
 	if (cdclk == dev_priv->cdclk.hw.bypass)
+=======
+	if (cdclk == dev_priv->cdclk.hw.ref)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	switch (cdclk) {
 	default:
 		MISSING_CASE(cdclk);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case  79200:
 	case 158400:
 	case 316800:
@@ -1279,10 +1542,17 @@ static void bxt_get_cdclk(struct drm_i915_private *dev_priv,
 
 	bxt_de_pll_update(dev_priv, cdclk_state);
 
+<<<<<<< HEAD
 	cdclk_state->cdclk = cdclk_state->bypass = cdclk_state->ref;
 
 	if (cdclk_state->vco == 0)
 		goto out;
+=======
+	cdclk_state->cdclk = cdclk_state->ref;
+
+	if (cdclk_state->vco == 0)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	divider = I915_READ(CDCLK_CTL) & BXT_CDCLK_CD2X_DIV_SEL_MASK;
 
@@ -1306,6 +1576,7 @@ static void bxt_get_cdclk(struct drm_i915_private *dev_priv,
 	}
 
 	cdclk_state->cdclk = DIV_ROUND_CLOSEST(cdclk_state->vco, div);
+<<<<<<< HEAD
 
  out:
 	/*
@@ -1314,6 +1585,8 @@ static void bxt_get_cdclk(struct drm_i915_private *dev_priv,
 	 */
 	cdclk_state->voltage_level =
 		bxt_calc_voltage_level(cdclk_state->cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void bxt_de_pll_disable(struct drm_i915_private *dev_priv)
@@ -1362,17 +1635,26 @@ static void bxt_set_cdclk(struct drm_i915_private *dev_priv,
 
 	/* cdclk = vco / 2 / div{1,1.5,2,4} */
 	switch (DIV_ROUND_CLOSEST(vco, cdclk)) {
+<<<<<<< HEAD
 	default:
 		WARN_ON(cdclk != dev_priv->cdclk.hw.bypass);
 		WARN_ON(vco != 0);
 		/* fall through */
 	case 2:
 		divider = BXT_CDCLK_CD2X_DIV_SEL_1;
+=======
+	case 8:
+		divider = BXT_CDCLK_CD2X_DIV_SEL_4;
+		break;
+	case 4:
+		divider = BXT_CDCLK_CD2X_DIV_SEL_2;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case 3:
 		WARN(IS_GEMINILAKE(dev_priv), "Unsupported divider\n");
 		divider = BXT_CDCLK_CD2X_DIV_SEL_1_5;
 		break;
+<<<<<<< HEAD
 	case 4:
 		divider = BXT_CDCLK_CD2X_DIV_SEL_2;
 		break;
@@ -1381,16 +1663,37 @@ static void bxt_set_cdclk(struct drm_i915_private *dev_priv,
 		break;
 	}
 
+=======
+	case 2:
+		divider = BXT_CDCLK_CD2X_DIV_SEL_1;
+		break;
+	default:
+		WARN_ON(cdclk != dev_priv->cdclk.hw.ref);
+		WARN_ON(vco != 0);
+
+		divider = BXT_CDCLK_CD2X_DIV_SEL_1;
+		break;
+	}
+
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Inform power controller of upcoming frequency change. BSpec
 	 * requires us to wait up to 150usec, but that leads to timeouts;
 	 * the 2ms used here is based on experiment.
 	 */
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
 	ret = sandybridge_pcode_write_timeout(dev_priv,
 					      HSW_PCODE_DE_WRITE_FREQ_REQ,
 					      0x80000000, 150, 2);
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	ret = sandybridge_pcode_write_timeout(dev_priv,
+					      HSW_PCODE_DE_WRITE_FREQ_REQ,
+					      0x80000000, 2000);
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret) {
 		DRM_ERROR("PCode CDCLK freq change notify failed (err %d, freq %d)\n",
@@ -1419,7 +1722,11 @@ static void bxt_set_cdclk(struct drm_i915_private *dev_priv,
 		val |= BXT_CDCLK_SSA_PRECHARGE_ENABLE;
 	I915_WRITE(CDCLK_CTL, val);
 
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * The timeout isn't specified, the 2ms used here is based on
 	 * experiment.
@@ -1428,8 +1735,13 @@ static void bxt_set_cdclk(struct drm_i915_private *dev_priv,
 	 */
 	ret = sandybridge_pcode_write_timeout(dev_priv,
 					      HSW_PCODE_DE_WRITE_FREQ_REQ,
+<<<<<<< HEAD
 					      cdclk_state->voltage_level, 150, 2);
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+					      DIV_ROUND_UP(cdclk, 25000), 2000);
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret) {
 		DRM_ERROR("PCode CDCLK freq set failed, (err %d, freq %d)\n",
@@ -1445,10 +1757,16 @@ static void bxt_sanitize_cdclk(struct drm_i915_private *dev_priv)
 	u32 cdctl, expected;
 
 	intel_update_cdclk(dev_priv);
+<<<<<<< HEAD
 	intel_dump_cdclk_state(&dev_priv->cdclk.hw, "Current CDCLK");
 
 	if (dev_priv->cdclk.hw.vco == 0 ||
 	    dev_priv->cdclk.hw.cdclk == dev_priv->cdclk.hw.bypass)
+=======
+
+	if (dev_priv->cdclk.hw.vco == 0 ||
+	    dev_priv->cdclk.hw.cdclk == dev_priv->cdclk.hw.ref)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto sanitize;
 
 	/* DPLL okay; verify the cdclock
@@ -1521,7 +1839,10 @@ void bxt_init_cdclk(struct drm_i915_private *dev_priv)
 		cdclk_state.cdclk = bxt_calc_cdclk(0);
 		cdclk_state.vco = bxt_de_pll_vco(dev_priv, cdclk_state.cdclk);
 	}
+<<<<<<< HEAD
 	cdclk_state.voltage_level = bxt_calc_voltage_level(cdclk_state.cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bxt_set_cdclk(dev_priv, &cdclk_state);
 }
@@ -1537,23 +1858,37 @@ void bxt_uninit_cdclk(struct drm_i915_private *dev_priv)
 {
 	struct intel_cdclk_state cdclk_state = dev_priv->cdclk.hw;
 
+<<<<<<< HEAD
 	cdclk_state.cdclk = cdclk_state.bypass;
 	cdclk_state.vco = 0;
 	cdclk_state.voltage_level = bxt_calc_voltage_level(cdclk_state.cdclk);
+=======
+	cdclk_state.cdclk = cdclk_state.ref;
+	cdclk_state.vco = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	bxt_set_cdclk(dev_priv, &cdclk_state);
 }
 
+<<<<<<< HEAD
 static int cnl_calc_cdclk(int min_cdclk)
 {
 	if (min_cdclk > 336000)
 		return 528000;
 	else if (min_cdclk > 168000)
+=======
+static int cnl_calc_cdclk(int max_pixclk)
+{
+	if (max_pixclk > 336000)
+		return 528000;
+	else if (max_pixclk > 168000)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 336000;
 	else
 		return 168000;
 }
 
+<<<<<<< HEAD
 static u8 cnl_calc_voltage_level(int cdclk)
 {
 	switch (cdclk) {
@@ -1567,6 +1902,8 @@ static u8 cnl_calc_voltage_level(int cdclk)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cnl_cdclk_pll_update(struct drm_i915_private *dev_priv,
 				 struct intel_cdclk_state *cdclk_state)
 {
@@ -1597,10 +1934,17 @@ static void cnl_get_cdclk(struct drm_i915_private *dev_priv,
 
 	cnl_cdclk_pll_update(dev_priv, cdclk_state);
 
+<<<<<<< HEAD
 	cdclk_state->cdclk = cdclk_state->bypass = cdclk_state->ref;
 
 	if (cdclk_state->vco == 0)
 		goto out;
+=======
+	cdclk_state->cdclk = cdclk_state->ref;
+
+	if (cdclk_state->vco == 0)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	divider = I915_READ(CDCLK_CTL) & BXT_CDCLK_CD2X_DIV_SEL_MASK;
 
@@ -1617,6 +1961,7 @@ static void cnl_get_cdclk(struct drm_i915_private *dev_priv,
 	}
 
 	cdclk_state->cdclk = DIV_ROUND_CLOSEST(cdclk_state->vco, div);
+<<<<<<< HEAD
 
  out:
 	/*
@@ -1625,6 +1970,8 @@ static void cnl_get_cdclk(struct drm_i915_private *dev_priv,
 	 */
 	cdclk_state->voltage_level =
 		cnl_calc_voltage_level(cdclk_state->cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void cnl_cdclk_pll_disable(struct drm_i915_private *dev_priv)
@@ -1637,7 +1984,11 @@ static void cnl_cdclk_pll_disable(struct drm_i915_private *dev_priv)
 
 	/* Timeout 200us */
 	if (wait_for((I915_READ(BXT_DE_PLL_ENABLE) & BXT_DE_PLL_LOCK) == 0, 1))
+<<<<<<< HEAD
 		DRM_ERROR("timeout waiting for CDCLK PLL unlock\n");
+=======
+		DRM_ERROR("timout waiting for CDCLK PLL unlock\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_priv->cdclk.hw.vco = 0;
 }
@@ -1655,7 +2006,11 @@ static void cnl_cdclk_pll_enable(struct drm_i915_private *dev_priv, int vco)
 
 	/* Timeout 200us */
 	if (wait_for((I915_READ(BXT_DE_PLL_ENABLE) & BXT_DE_PLL_LOCK) != 0, 1))
+<<<<<<< HEAD
 		DRM_ERROR("timeout waiting for CDCLK PLL lock\n");
+=======
+		DRM_ERROR("timout waiting for CDCLK PLL lock\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev_priv->cdclk.hw.vco = vco;
 }
@@ -1665,15 +2020,26 @@ static void cnl_set_cdclk(struct drm_i915_private *dev_priv,
 {
 	int cdclk = cdclk_state->cdclk;
 	int vco = cdclk_state->vco;
+<<<<<<< HEAD
 	u32 val, divider;
 	int ret;
 
 	mutex_lock(&dev_priv->pcu_lock);
+=======
+	u32 val, divider, pcu_ack;
+	int ret;
+
+	mutex_lock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = skl_pcode_request(dev_priv, SKL_PCODE_CDCLK_CONTROL,
 				SKL_CDCLK_PREPARE_FOR_CHANGE,
 				SKL_CDCLK_READY_FOR_CHANGE,
 				SKL_CDCLK_READY_FOR_CHANGE, 3);
+<<<<<<< HEAD
 	mutex_unlock(&dev_priv->pcu_lock);
+=======
+	mutex_unlock(&dev_priv->rps.hw_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_ERROR("Failed to inform PCU about cdclk change (%d)\n",
 			  ret);
@@ -1682,6 +2048,7 @@ static void cnl_set_cdclk(struct drm_i915_private *dev_priv,
 
 	/* cdclk = vco / 2 / div{1,2} */
 	switch (DIV_ROUND_CLOSEST(vco, cdclk)) {
+<<<<<<< HEAD
 	default:
 		WARN_ON(cdclk != dev_priv->cdclk.hw.bypass);
 		WARN_ON(vco != 0);
@@ -1691,6 +2058,32 @@ static void cnl_set_cdclk(struct drm_i915_private *dev_priv,
 		break;
 	case 4:
 		divider = BXT_CDCLK_CD2X_DIV_SEL_2;
+=======
+	case 4:
+		divider = BXT_CDCLK_CD2X_DIV_SEL_2;
+		break;
+	case 2:
+		divider = BXT_CDCLK_CD2X_DIV_SEL_1;
+		break;
+	default:
+		WARN_ON(cdclk != dev_priv->cdclk.hw.ref);
+		WARN_ON(vco != 0);
+
+		divider = BXT_CDCLK_CD2X_DIV_SEL_1;
+		break;
+	}
+
+	switch (cdclk) {
+	case 528000:
+		pcu_ack = 2;
+		break;
+	case 336000:
+		pcu_ack = 1;
+		break;
+	case 168000:
+	default:
+		pcu_ack = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -1710,6 +2103,7 @@ static void cnl_set_cdclk(struct drm_i915_private *dev_priv,
 	I915_WRITE(CDCLK_CTL, val);
 
 	/* inform PCU of the change */
+<<<<<<< HEAD
 	mutex_lock(&dev_priv->pcu_lock);
 	sandybridge_pcode_write(dev_priv, SKL_PCODE_CDCLK_CONTROL,
 				cdclk_state->voltage_level);
@@ -1722,19 +2116,33 @@ static void cnl_set_cdclk(struct drm_i915_private *dev_priv,
 	 * Let's just assume everything is as expected.
 	 */
 	dev_priv->cdclk.hw.voltage_level = cdclk_state->voltage_level;
+=======
+	mutex_lock(&dev_priv->rps.hw_lock);
+	sandybridge_pcode_write(dev_priv, SKL_PCODE_CDCLK_CONTROL, pcu_ack);
+	mutex_unlock(&dev_priv->rps.hw_lock);
+
+	intel_update_cdclk(dev_priv);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cnl_cdclk_pll_vco(struct drm_i915_private *dev_priv, int cdclk)
 {
 	int ratio;
 
+<<<<<<< HEAD
 	if (cdclk == dev_priv->cdclk.hw.bypass)
+=======
+	if (cdclk == dev_priv->cdclk.hw.ref)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	switch (cdclk) {
 	default:
 		MISSING_CASE(cdclk);
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case 168000:
 	case 336000:
 		ratio = dev_priv->cdclk.hw.ref == 19200 ? 35 : 28;
@@ -1752,10 +2160,16 @@ static void cnl_sanitize_cdclk(struct drm_i915_private *dev_priv)
 	u32 cdctl, expected;
 
 	intel_update_cdclk(dev_priv);
+<<<<<<< HEAD
 	intel_dump_cdclk_state(&dev_priv->cdclk.hw, "Current CDCLK");
 
 	if (dev_priv->cdclk.hw.vco == 0 ||
 	    dev_priv->cdclk.hw.cdclk == dev_priv->cdclk.hw.bypass)
+=======
+
+	if (dev_priv->cdclk.hw.vco == 0 ||
+	    dev_priv->cdclk.hw.cdclk == dev_priv->cdclk.hw.ref)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto sanitize;
 
 	/* DPLL okay; verify the cdclock
@@ -1789,6 +2203,7 @@ sanitize:
 	dev_priv->cdclk.hw.vco = -1;
 }
 
+<<<<<<< HEAD
 static int icl_calc_cdclk(int min_cdclk, unsigned int ref)
 {
 	int ranges_24[] = { 312000, 552000, 648000 };
@@ -2021,6 +2436,8 @@ void icl_uninit_cdclk(struct drm_i915_private *dev_priv)
 	icl_set_cdclk(dev_priv, &cdclk_state);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * cnl_init_cdclk - Initialize CDCLK on CNL
  * @dev_priv: i915 device
@@ -2044,7 +2461,10 @@ void cnl_init_cdclk(struct drm_i915_private *dev_priv)
 
 	cdclk_state.cdclk = cnl_calc_cdclk(0);
 	cdclk_state.vco = cnl_cdclk_pll_vco(dev_priv, cdclk_state.cdclk);
+<<<<<<< HEAD
 	cdclk_state.voltage_level = cnl_calc_voltage_level(cdclk_state.cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cnl_set_cdclk(dev_priv, &cdclk_state);
 }
@@ -2060,19 +2480,29 @@ void cnl_uninit_cdclk(struct drm_i915_private *dev_priv)
 {
 	struct intel_cdclk_state cdclk_state = dev_priv->cdclk.hw;
 
+<<<<<<< HEAD
 	cdclk_state.cdclk = cdclk_state.bypass;
 	cdclk_state.vco = 0;
 	cdclk_state.voltage_level = cnl_calc_voltage_level(cdclk_state.cdclk);
+=======
+	cdclk_state.cdclk = cdclk_state.ref;
+	cdclk_state.vco = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cnl_set_cdclk(dev_priv, &cdclk_state);
 }
 
 /**
+<<<<<<< HEAD
  * intel_cdclk_needs_modeset - Determine if two CDCLK states require a modeset on all pipes
+=======
+ * intel_cdclk_state_compare - Determine if two CDCLK states differ
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @a: first CDCLK state
  * @b: second CDCLK state
  *
  * Returns:
+<<<<<<< HEAD
  * True if the CDCLK states require pipes to be off during reprogramming, false if not.
  */
 bool intel_cdclk_needs_modeset(const struct intel_cdclk_state *a,
@@ -2105,6 +2535,14 @@ void intel_dump_cdclk_state(const struct intel_cdclk_state *cdclk_state,
 			 context, cdclk_state->cdclk, cdclk_state->vco,
 			 cdclk_state->ref, cdclk_state->bypass,
 			 cdclk_state->voltage_level);
+=======
+ * True if the CDCLK states are identical, false if they differ.
+ */
+bool intel_cdclk_state_compare(const struct intel_cdclk_state *a,
+			       const struct intel_cdclk_state *b)
+{
+	return memcmp(a, b, sizeof(*a)) == 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -2118,12 +2556,17 @@ void intel_dump_cdclk_state(const struct intel_cdclk_state *cdclk_state,
 void intel_set_cdclk(struct drm_i915_private *dev_priv,
 		     const struct intel_cdclk_state *cdclk_state)
 {
+<<<<<<< HEAD
 	if (!intel_cdclk_changed(&dev_priv->cdclk.hw, cdclk_state))
+=======
+	if (intel_cdclk_state_compare(&dev_priv->cdclk.hw, cdclk_state))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return;
 
 	if (WARN_ON_ONCE(!dev_priv->display.set_cdclk))
 		return;
 
+<<<<<<< HEAD
 	intel_dump_cdclk_state(cdclk_state, "Changing CDCLK to");
 
 	dev_priv->display.set_cdclk(dev_priv, cdclk_state);
@@ -2171,16 +2614,40 @@ int intel_crtc_compute_min_cdclk(const struct intel_crtc_state *crtc_state)
 	/* pixel rate mustn't exceed 95% of cdclk with IPS on BDW */
 	if (IS_BROADWELL(dev_priv) && hsw_crtc_state_ips_capable(crtc_state))
 		min_cdclk = DIV_ROUND_UP(min_cdclk * 100, 95);
+=======
+	DRM_DEBUG_DRIVER("Changing CDCLK to %d kHz, VCO %d kHz, ref %d kHz\n",
+			 cdclk_state->cdclk, cdclk_state->vco,
+			 cdclk_state->ref);
+
+	dev_priv->display.set_cdclk(dev_priv, cdclk_state);
+}
+
+static int bdw_adjust_min_pipe_pixel_rate(struct intel_crtc_state *crtc_state,
+					  int pixel_rate)
+{
+	struct drm_i915_private *dev_priv =
+		to_i915(crtc_state->base.crtc->dev);
+
+	/* pixel rate mustn't exceed 95% of cdclk with IPS on BDW */
+	if (IS_BROADWELL(dev_priv) && crtc_state->ips_enabled)
+		pixel_rate = DIV_ROUND_UP(pixel_rate * 100, 95);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* BSpec says "Do not use DisplayPort with CDCLK less than 432 MHz,
 	 * audio enabled, port width x4, and link rate HBR2 (5.4 GHz), or else
 	 * there may be audio corruption or screen corruption." This cdclk
+<<<<<<< HEAD
 	 * restriction for GLK is 316.8 MHz.
+=======
+	 * restriction for GLK is 316.8 MHz and since GLK can output two
+	 * pixels per clock, the pixel rate becomes 2 * 316.8 MHz.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	if (intel_crtc_has_dp_encoder(crtc_state) &&
 	    crtc_state->has_audio &&
 	    crtc_state->port_clock >= 540000 &&
 	    crtc_state->lane_count == 4) {
+<<<<<<< HEAD
 		if (IS_CANNONLAKE(dev_priv) || IS_GEMINILAKE(dev_priv)) {
 			/* Display WA #1145: glk,cnl */
 			min_cdclk = max(316800, min_cdclk);
@@ -2298,11 +2765,75 @@ static u8 cnl_compute_min_voltage_level(struct intel_atomic_state *state)
 					min_voltage_level);
 
 	return min_voltage_level;
+=======
+		if (IS_CANNONLAKE(dev_priv))
+			pixel_rate = max(316800, pixel_rate);
+		else if (IS_GEMINILAKE(dev_priv))
+			pixel_rate = max(2 * 316800, pixel_rate);
+		else
+			pixel_rate = max(432000, pixel_rate);
+	}
+
+	/* According to BSpec, "The CD clock frequency must be at least twice
+	 * the frequency of the Azalia BCLK." and BCLK is 96 MHz by default.
+	 * The check for GLK has to be adjusted as the platform can output
+	 * two pixels per clock.
+	 */
+	if (crtc_state->has_audio && INTEL_GEN(dev_priv) >= 9) {
+		if (IS_GEMINILAKE(dev_priv))
+			pixel_rate = max(2 * 2 * 96000, pixel_rate);
+		else
+			pixel_rate = max(2 * 96000, pixel_rate);
+	}
+
+	return pixel_rate;
+}
+
+/* compute the max rate for new configuration */
+static int intel_max_pixel_rate(struct drm_atomic_state *state)
+{
+	struct intel_atomic_state *intel_state = to_intel_atomic_state(state);
+	struct drm_i915_private *dev_priv = to_i915(state->dev);
+	struct drm_crtc *crtc;
+	struct drm_crtc_state *cstate;
+	struct intel_crtc_state *crtc_state;
+	unsigned int max_pixel_rate = 0, i;
+	enum pipe pipe;
+
+	memcpy(intel_state->min_pixclk, dev_priv->min_pixclk,
+	       sizeof(intel_state->min_pixclk));
+
+	for_each_new_crtc_in_state(state, crtc, cstate, i) {
+		int pixel_rate;
+
+		crtc_state = to_intel_crtc_state(cstate);
+		if (!crtc_state->base.enable) {
+			intel_state->min_pixclk[i] = 0;
+			continue;
+		}
+
+		pixel_rate = crtc_state->pixel_rate;
+
+		if (IS_BROADWELL(dev_priv) || INTEL_GEN(dev_priv) >= 9)
+			pixel_rate =
+				bdw_adjust_min_pipe_pixel_rate(crtc_state,
+							       pixel_rate);
+
+		intel_state->min_pixclk[i] = pixel_rate;
+	}
+
+	for_each_pipe(dev_priv, pipe)
+		max_pixel_rate = max(intel_state->min_pixclk[pipe],
+				     max_pixel_rate);
+
+	return max_pixel_rate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int vlv_modeset_calc_cdclk(struct drm_atomic_state *state)
 {
 	struct drm_i915_private *dev_priv = to_i915(state->dev);
+<<<<<<< HEAD
 	struct intel_atomic_state *intel_state = to_intel_atomic_state(state);
 	int min_cdclk, cdclk;
 
@@ -2315,13 +2846,32 @@ static int vlv_modeset_calc_cdclk(struct drm_atomic_state *state)
 	intel_state->cdclk.logical.cdclk = cdclk;
 	intel_state->cdclk.logical.voltage_level =
 		vlv_calc_voltage_level(dev_priv, cdclk);
+=======
+	int max_pixclk = intel_max_pixel_rate(state);
+	struct intel_atomic_state *intel_state =
+		to_intel_atomic_state(state);
+	int cdclk;
+
+	cdclk = vlv_calc_cdclk(dev_priv, max_pixclk);
+
+	if (cdclk > dev_priv->max_cdclk_freq) {
+		DRM_DEBUG_KMS("requested cdclk (%d kHz) exceeds max (%d kHz)\n",
+			      cdclk, dev_priv->max_cdclk_freq);
+		return -EINVAL;
+	}
+
+	intel_state->cdclk.logical.cdclk = cdclk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_state->active_crtcs) {
 		cdclk = vlv_calc_cdclk(dev_priv, 0);
 
 		intel_state->cdclk.actual.cdclk = cdclk;
+<<<<<<< HEAD
 		intel_state->cdclk.actual.voltage_level =
 			vlv_calc_voltage_level(dev_priv, cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		intel_state->cdclk.actual =
 			intel_state->cdclk.logical;
@@ -2332,29 +2882,51 @@ static int vlv_modeset_calc_cdclk(struct drm_atomic_state *state)
 
 static int bdw_modeset_calc_cdclk(struct drm_atomic_state *state)
 {
+<<<<<<< HEAD
 	struct intel_atomic_state *intel_state = to_intel_atomic_state(state);
 	int min_cdclk, cdclk;
 
 	min_cdclk = intel_compute_min_cdclk(state);
 	if (min_cdclk < 0)
 		return min_cdclk;
+=======
+	struct drm_i915_private *dev_priv = to_i915(state->dev);
+	struct intel_atomic_state *intel_state = to_intel_atomic_state(state);
+	int max_pixclk = intel_max_pixel_rate(state);
+	int cdclk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * FIXME should also account for plane ratio
 	 * once 64bpp pixel formats are supported.
 	 */
+<<<<<<< HEAD
 	cdclk = bdw_calc_cdclk(min_cdclk);
 
 	intel_state->cdclk.logical.cdclk = cdclk;
 	intel_state->cdclk.logical.voltage_level =
 		bdw_calc_voltage_level(cdclk);
+=======
+	cdclk = bdw_calc_cdclk(max_pixclk);
+
+	if (cdclk > dev_priv->max_cdclk_freq) {
+		DRM_DEBUG_KMS("requested cdclk (%d kHz) exceeds max (%d kHz)\n",
+			      cdclk, dev_priv->max_cdclk_freq);
+		return -EINVAL;
+	}
+
+	intel_state->cdclk.logical.cdclk = cdclk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_state->active_crtcs) {
 		cdclk = bdw_calc_cdclk(0);
 
 		intel_state->cdclk.actual.cdclk = cdclk;
+<<<<<<< HEAD
 		intel_state->cdclk.actual.voltage_level =
 			bdw_calc_voltage_level(cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		intel_state->cdclk.actual =
 			intel_state->cdclk.logical;
@@ -2363,17 +2935,27 @@ static int bdw_modeset_calc_cdclk(struct drm_atomic_state *state)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int skl_dpll0_vco(struct intel_atomic_state *intel_state)
 {
 	struct drm_i915_private *dev_priv = to_i915(intel_state->base.dev);
 	struct intel_crtc *crtc;
 	struct intel_crtc_state *crtc_state;
 	int vco, i;
+=======
+static int skl_modeset_calc_cdclk(struct drm_atomic_state *state)
+{
+	struct intel_atomic_state *intel_state = to_intel_atomic_state(state);
+	struct drm_i915_private *dev_priv = to_i915(state->dev);
+	const int max_pixclk = intel_max_pixel_rate(state);
+	int cdclk, vco;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vco = intel_state->cdclk.logical.vco;
 	if (!vco)
 		vco = dev_priv->skl_preferred_vco_freq;
 
+<<<<<<< HEAD
 	for_each_new_intel_crtc_in_state(intel_state, crtc, crtc_state, i) {
 		if (!crtc_state->base.enable)
 			continue;
@@ -2410,24 +2992,42 @@ static int skl_modeset_calc_cdclk(struct drm_atomic_state *state)
 
 	vco = skl_dpll0_vco(intel_state);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * FIXME should also account for plane ratio
 	 * once 64bpp pixel formats are supported.
 	 */
+<<<<<<< HEAD
 	cdclk = skl_calc_cdclk(min_cdclk, vco);
 
 	intel_state->cdclk.logical.vco = vco;
 	intel_state->cdclk.logical.cdclk = cdclk;
 	intel_state->cdclk.logical.voltage_level =
 		skl_calc_voltage_level(cdclk);
+=======
+	cdclk = skl_calc_cdclk(max_pixclk, vco);
+
+	if (cdclk > dev_priv->max_cdclk_freq) {
+		DRM_DEBUG_KMS("requested cdclk (%d kHz) exceeds max (%d kHz)\n",
+			      cdclk, dev_priv->max_cdclk_freq);
+		return -EINVAL;
+	}
+
+	intel_state->cdclk.logical.vco = vco;
+	intel_state->cdclk.logical.cdclk = cdclk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_state->active_crtcs) {
 		cdclk = skl_calc_cdclk(0, vco);
 
 		intel_state->cdclk.actual.vco = vco;
 		intel_state->cdclk.actual.cdclk = cdclk;
+<<<<<<< HEAD
 		intel_state->cdclk.actual.voltage_level =
 			skl_calc_voltage_level(cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		intel_state->cdclk.actual =
 			intel_state->cdclk.logical;
@@ -2439,6 +3039,7 @@ static int skl_modeset_calc_cdclk(struct drm_atomic_state *state)
 static int bxt_modeset_calc_cdclk(struct drm_atomic_state *state)
 {
 	struct drm_i915_private *dev_priv = to_i915(state->dev);
+<<<<<<< HEAD
 	struct intel_atomic_state *intel_state = to_intel_atomic_state(state);
 	int min_cdclk, cdclk, vco;
 
@@ -2458,6 +3059,29 @@ static int bxt_modeset_calc_cdclk(struct drm_atomic_state *state)
 	intel_state->cdclk.logical.cdclk = cdclk;
 	intel_state->cdclk.logical.voltage_level =
 		bxt_calc_voltage_level(cdclk);
+=======
+	int max_pixclk = intel_max_pixel_rate(state);
+	struct intel_atomic_state *intel_state =
+		to_intel_atomic_state(state);
+	int cdclk, vco;
+
+	if (IS_GEMINILAKE(dev_priv)) {
+		cdclk = glk_calc_cdclk(max_pixclk);
+		vco = glk_de_pll_vco(dev_priv, cdclk);
+	} else {
+		cdclk = bxt_calc_cdclk(max_pixclk);
+		vco = bxt_de_pll_vco(dev_priv, cdclk);
+	}
+
+	if (cdclk > dev_priv->max_cdclk_freq) {
+		DRM_DEBUG_KMS("requested cdclk (%d kHz) exceeds max (%d kHz)\n",
+			      cdclk, dev_priv->max_cdclk_freq);
+		return -EINVAL;
+	}
+
+	intel_state->cdclk.logical.vco = vco;
+	intel_state->cdclk.logical.cdclk = cdclk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_state->active_crtcs) {
 		if (IS_GEMINILAKE(dev_priv)) {
@@ -2470,8 +3094,11 @@ static int bxt_modeset_calc_cdclk(struct drm_atomic_state *state)
 
 		intel_state->cdclk.actual.vco = vco;
 		intel_state->cdclk.actual.cdclk = cdclk;
+<<<<<<< HEAD
 		intel_state->cdclk.actual.voltage_level =
 			bxt_calc_voltage_level(cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		intel_state->cdclk.actual =
 			intel_state->cdclk.logical;
@@ -2483,6 +3110,7 @@ static int bxt_modeset_calc_cdclk(struct drm_atomic_state *state)
 static int cnl_modeset_calc_cdclk(struct drm_atomic_state *state)
 {
 	struct drm_i915_private *dev_priv = to_i915(state->dev);
+<<<<<<< HEAD
 	struct intel_atomic_state *intel_state = to_intel_atomic_state(state);
 	int min_cdclk, cdclk, vco;
 
@@ -2498,6 +3126,24 @@ static int cnl_modeset_calc_cdclk(struct drm_atomic_state *state)
 	intel_state->cdclk.logical.voltage_level =
 		max(cnl_calc_voltage_level(cdclk),
 		    cnl_compute_min_voltage_level(intel_state));
+=======
+	struct intel_atomic_state *intel_state =
+		to_intel_atomic_state(state);
+	int max_pixclk = intel_max_pixel_rate(state);
+	int cdclk, vco;
+
+	cdclk = cnl_calc_cdclk(max_pixclk);
+	vco = cnl_cdclk_pll_vco(dev_priv, cdclk);
+
+	if (cdclk > dev_priv->max_cdclk_freq) {
+		DRM_DEBUG_KMS("requested cdclk (%d kHz) exceeds max (%d kHz)\n",
+			      cdclk, dev_priv->max_cdclk_freq);
+		return -EINVAL;
+	}
+
+	intel_state->cdclk.logical.vco = vco;
+	intel_state->cdclk.logical.cdclk = cdclk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!intel_state->active_crtcs) {
 		cdclk = cnl_calc_cdclk(0);
@@ -2505,8 +3151,11 @@ static int cnl_modeset_calc_cdclk(struct drm_atomic_state *state)
 
 		intel_state->cdclk.actual.vco = vco;
 		intel_state->cdclk.actual.cdclk = cdclk;
+<<<<<<< HEAD
 		intel_state->cdclk.actual.voltage_level =
 			cnl_calc_voltage_level(cdclk);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		intel_state->cdclk.actual =
 			intel_state->cdclk.logical;
@@ -2515,6 +3164,7 @@ static int cnl_modeset_calc_cdclk(struct drm_atomic_state *state)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int icl_modeset_calc_cdclk(struct drm_atomic_state *state)
 {
 	struct drm_i915_private *dev_priv = to_i915(state->dev);
@@ -2550,10 +3200,13 @@ static int icl_modeset_calc_cdclk(struct drm_atomic_state *state)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int intel_compute_max_dotclk(struct drm_i915_private *dev_priv)
 {
 	int max_cdclk_freq = dev_priv->max_cdclk_freq;
 
+<<<<<<< HEAD
 	if (INTEL_GEN(dev_priv) >= 10)
 		return 2 * max_cdclk_freq;
 	else if (IS_GEMINILAKE(dev_priv))
@@ -2568,6 +3221,20 @@ static int intel_compute_max_dotclk(struct drm_i915_private *dev_priv)
 	else if (IS_CHERRYVIEW(dev_priv))
 		return max_cdclk_freq*95/100;
 	else if (INTEL_GEN(dev_priv) < 4)
+=======
+	if (IS_GEMINILAKE(dev_priv))
+		/*
+		 * FIXME: Limiting to 99% as a temporary workaround. See
+		 * glk_calc_cdclk() for details.
+		 */
+		return 2 * max_cdclk_freq * 99 / 100;
+	else if (INTEL_INFO(dev_priv)->gen >= 9 ||
+		 IS_HASWELL(dev_priv) || IS_BROADWELL(dev_priv))
+		return max_cdclk_freq;
+	else if (IS_CHERRYVIEW(dev_priv))
+		return max_cdclk_freq*95/100;
+	else if (INTEL_INFO(dev_priv)->gen < 4)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 2*max_cdclk_freq*90/100;
 	else
 		return max_cdclk_freq*90/100;
@@ -2583,12 +3250,16 @@ static int intel_compute_max_dotclk(struct drm_i915_private *dev_priv)
  */
 void intel_update_max_cdclk(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	if (IS_ICELAKE(dev_priv)) {
 		if (dev_priv->cdclk.hw.ref == 24000)
 			dev_priv->max_cdclk_freq = 648000;
 		else
 			dev_priv->max_cdclk_freq = 652800;
 	} else if (IS_CANNONLAKE(dev_priv)) {
+=======
+	if (IS_CANNONLAKE(dev_priv)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_priv->max_cdclk_freq = 528000;
 	} else if (IS_GEN9_BC(dev_priv)) {
 		u32 limit = I915_READ(SKL_DFSM) & SKL_DFSM_CDCLK_LIMIT_MASK;
@@ -2659,6 +3330,13 @@ void intel_update_cdclk(struct drm_i915_private *dev_priv)
 {
 	dev_priv->display.get_cdclk(dev_priv, &dev_priv->cdclk.hw);
 
+<<<<<<< HEAD
+=======
+	DRM_DEBUG_DRIVER("Current CD clock rate: %d kHz, VCO: %d kHz, ref: %d kHz\n",
+			 dev_priv->cdclk.hw.cdclk, dev_priv->cdclk.hw.vco,
+			 dev_priv->cdclk.hw.ref);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * 9:0 CMBUS [sic] CDCLK frequency (cdfreq):
 	 * Programmng [sic] note: bit[9:2] should be programmed to the number
@@ -2694,6 +3372,7 @@ static int cnp_rawclk(struct drm_i915_private *dev_priv)
 	return divider + fraction;
 }
 
+<<<<<<< HEAD
 static int icp_rawclk(struct drm_i915_private *dev_priv)
 {
 	u32 rawclk;
@@ -2718,6 +3397,8 @@ static int icp_rawclk(struct drm_i915_private *dev_priv)
 	return frequency;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int pch_rawclk(struct drm_i915_private *dev_priv)
 {
 	return (I915_READ(PCH_RAWCLK_FREQ) & RAWCLK_FREQ_MASK) * 1000;
@@ -2765,9 +3446,14 @@ static int g4x_hrawclk(struct drm_i915_private *dev_priv)
  */
 void intel_update_rawclk(struct drm_i915_private *dev_priv)
 {
+<<<<<<< HEAD
 	if (HAS_PCH_ICP(dev_priv))
 		dev_priv->rawclk_freq = icp_rawclk(dev_priv);
 	else if (HAS_PCH_CNP(dev_priv))
+=======
+
+	if (HAS_PCH_CNP(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_priv->rawclk_freq = cnp_rawclk(dev_priv);
 	else if (HAS_PCH_SPLIT(dev_priv))
 		dev_priv->rawclk_freq = pch_rawclk(dev_priv);
@@ -2812,6 +3498,7 @@ void intel_init_cdclk_hooks(struct drm_i915_private *dev_priv)
 		dev_priv->display.set_cdclk = cnl_set_cdclk;
 		dev_priv->display.modeset_calc_cdclk =
 			cnl_modeset_calc_cdclk;
+<<<<<<< HEAD
 	} else if (IS_ICELAKE(dev_priv)) {
 		dev_priv->display.set_cdclk = icl_set_cdclk;
 		dev_priv->display.modeset_calc_cdclk = icl_modeset_calc_cdclk;
@@ -2820,6 +3507,11 @@ void intel_init_cdclk_hooks(struct drm_i915_private *dev_priv)
 	if (IS_ICELAKE(dev_priv))
 		dev_priv->display.get_cdclk = icl_get_cdclk;
 	else if (IS_CANNONLAKE(dev_priv))
+=======
+	}
+
+	if (IS_CANNONLAKE(dev_priv))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_priv->display.get_cdclk = cnl_get_cdclk;
 	else if (IS_GEN9_BC(dev_priv))
 		dev_priv->display.get_cdclk = skl_get_cdclk;

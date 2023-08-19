@@ -45,7 +45,11 @@ Authors, in alphabetical order:
 
   - Subdev selections API.
 
+<<<<<<< HEAD
 - Carvalho Chehab, Mauro <mchehab+samsung@kernel.org>
+=======
+- Carvalho Chehab, Mauro <m.chehab@kernel.org>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
   - Documented libv4l, designed and added v4l2grab example, Remote Controller chapter.
 

@@ -62,9 +62,39 @@
 
 #define QXL_DEBUGFS_MAX_COMPONENTS		32
 
+<<<<<<< HEAD
 extern int qxl_num_crtc;
 extern int qxl_max_ioctls;
 
+=======
+extern int qxl_log_level;
+extern int qxl_num_crtc;
+extern int qxl_max_ioctls;
+
+enum {
+	QXL_INFO_LEVEL = 1,
+	QXL_DEBUG_LEVEL = 2,
+};
+
+#define QXL_INFO(qdev, fmt, ...) do { \
+		if (qxl_log_level >= QXL_INFO_LEVEL) {	\
+			qxl_io_log(qdev, fmt, __VA_ARGS__); \
+		}	\
+	} while (0)
+#define QXL_DEBUG(qdev, fmt, ...) do { \
+		if (qxl_log_level >= QXL_DEBUG_LEVEL) {	\
+			qxl_io_log(qdev, fmt, __VA_ARGS__); \
+		}	\
+	} while (0)
+#define QXL_INFO_ONCE(qdev, fmt, ...) do { \
+		static int done;		\
+		if (!done) {			\
+			done = 1;			\
+			QXL_INFO(qdev, fmt, __VA_ARGS__);	\
+		}						\
+	} while (0)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define DRM_FILE_OFFSET 0x100000000ULL
 #define DRM_FILE_PAGE_OFFSET (DRM_FILE_OFFSET >> PAGE_SHIFT)
 
@@ -167,7 +197,10 @@ struct qxl_release {
 
 	int id;
 	int type;
+<<<<<<< HEAD
 	struct qxl_bo *release_bo;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t release_offset;
 	uint32_t surface_release_id;
 	struct ww_acquire_ctx ticket;
@@ -299,6 +332,12 @@ struct qxl_device {
 	int monitors_config_height;
 };
 
+<<<<<<< HEAD
+=======
+/* forward declaration for QXL_INFO_IO */
+__printf(2,3) void qxl_io_log(struct qxl_device *qdev, const char *fmt, ...);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern const struct drm_ioctl_desc qxl_ioctls[];
 extern int qxl_max_ioctl;
 
@@ -329,7 +368,11 @@ int qxl_check_idle(struct qxl_ring *ring);
 static inline void *
 qxl_fb_virtual_address(struct qxl_device *qdev, unsigned long physical)
 {
+<<<<<<< HEAD
 	DRM_DEBUG_DRIVER("not implemented (%lu)\n", physical);
+=======
+	QXL_INFO(qdev, "not implemented (%lu)\n", physical);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 

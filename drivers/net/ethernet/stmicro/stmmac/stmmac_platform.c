@@ -93,6 +93,10 @@ static int dwmac1000_validate_ucast_entries(int ucast_entries)
 /**
  * stmmac_axi_setup - parse DT parameters for programming the AXI register
  * @pdev: platform device
+<<<<<<< HEAD
+=======
+ * @priv: driver private struct.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Description:
  * if required, from device-tree the AXI internal register can be tuned
  * by using platform parameters.
@@ -133,14 +137,22 @@ static struct stmmac_axi *stmmac_axi_setup(struct platform_device *pdev)
  * stmmac_mtl_setup - parse DT parameters for multiple queues configuration
  * @pdev: platform device
  */
+<<<<<<< HEAD
 static int stmmac_mtl_setup(struct platform_device *pdev,
 			    struct plat_stmmacenet_data *plat)
+=======
+static void stmmac_mtl_setup(struct platform_device *pdev,
+			     struct plat_stmmacenet_data *plat)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct device_node *q_node;
 	struct device_node *rx_node;
 	struct device_node *tx_node;
 	u8 queue = 0;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* For backwards-compatibility with device trees that don't have any
 	 * snps,mtl-rx-config or snps,mtl-tx-config properties, we fall back
@@ -158,12 +170,20 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
 
 	rx_node = of_parse_phandle(pdev->dev.of_node, "snps,mtl-rx-config", 0);
 	if (!rx_node)
+<<<<<<< HEAD
 		return ret;
+=======
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tx_node = of_parse_phandle(pdev->dev.of_node, "snps,mtl-tx-config", 0);
 	if (!tx_node) {
 		of_node_put(rx_node);
+<<<<<<< HEAD
 		return ret;
+=======
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* Processing RX queues common config */
@@ -219,11 +239,14 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
 
 		queue++;
 	}
+<<<<<<< HEAD
 	if (queue != plat->rx_queues_to_use) {
 		ret = -EINVAL;
 		dev_err(&pdev->dev, "Not all RX queues were configured\n");
 		goto out;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Processing TX queues common config */
 	if (of_property_read_u32(tx_node, "snps,tx-queues-to-use",
@@ -285,6 +308,7 @@ static int stmmac_mtl_setup(struct platform_device *pdev,
 
 		queue++;
 	}
+<<<<<<< HEAD
 	if (queue != plat->tx_queues_to_use) {
 		ret = -EINVAL;
 		dev_err(&pdev->dev, "Not all TX queues were configured\n");
@@ -297,6 +321,12 @@ out:
 	of_node_put(q_node);
 
 	return ret;
+=======
+
+	of_node_put(rx_node);
+	of_node_put(tx_node);
+	of_node_put(q_node);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -330,6 +360,13 @@ static int stmmac_dt_phy(struct plat_stmmacenet_data *plat,
 	bool mdio = true;
 	static const struct of_device_id need_mdio_ids[] = {
 		{ .compatible = "snps,dwc-qos-ethernet-4.10" },
+<<<<<<< HEAD
+=======
+		{ .compatible = "allwinner,sun8i-a83t-emac" },
+		{ .compatible = "allwinner,sun8i-h3-emac" },
+		{ .compatible = "allwinner,sun8i-v3s-emac" },
+		{ .compatible = "allwinner,sun50i-a64-emac" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{},
 	};
 
@@ -388,7 +425,10 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
 	struct device_node *np = pdev->dev.of_node;
 	struct plat_stmmacenet_data *plat;
 	struct stmmac_dma_cfg *dma_cfg;
+<<<<<<< HEAD
 	int rc;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	plat = devm_kzalloc(&pdev->dev, sizeof(*plat), GFP_KERNEL);
 	if (!plat)
@@ -401,6 +441,11 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
 	if (of_property_read_u32(np, "max-speed", &plat->max_speed))
 		plat->max_speed = -1;
 
+<<<<<<< HEAD
+=======
+	plat->crc_strip_en = of_property_read_bool(np, "snps,crc_strip");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	plat->bus_id = of_alias_get_id(np, "ethernet");
 	if (plat->bus_id < 0)
 		plat->bus_id = 0;
@@ -408,6 +453,12 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
 	/* Default to phy auto-detection */
 	plat->phy_addr = -1;
 
+<<<<<<< HEAD
+=======
+	/* Flag for mac2mac feature support*/
+	plat->mac2mac_en = of_property_read_bool(np, "mac2mac");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* "snps,phy-addr" is not a standard property. Mark it as deprecated
 	 * and warn of its use. Remove this when phy node support is added.
 	 */
@@ -415,9 +466,16 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
 		dev_warn(&pdev->dev, "snps,phy-addr property is deprecated\n");
 
 	/* To Configure PHY by using all device-tree supported properties */
+<<<<<<< HEAD
 	rc = stmmac_dt_phy(plat, np, &pdev->dev);
 	if (rc)
 		return ERR_PTR(rc);
+=======
+	if (!plat->mac2mac_en) {
+		if (stmmac_dt_phy(plat, np, &pdev->dev))
+			return ERR_PTR(-ENODEV);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	of_property_read_u32(np, "tx-fifo-depth", &plat->tx_fifo_size);
 
@@ -470,8 +528,12 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
 	}
 
 	if (of_device_is_compatible(np, "snps,dwmac-4.00") ||
+<<<<<<< HEAD
 	    of_device_is_compatible(np, "snps,dwmac-4.10a") ||
 	    of_device_is_compatible(np, "snps,dwmac-4.20a")) {
+=======
+	    of_device_is_compatible(np, "snps,dwmac-4.10a")) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		plat->has_gmac4 = 1;
 		plat->has_gmac = 0;
 		plat->pmt = 1;
@@ -485,12 +547,15 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
 		plat->force_sf_dma_mode = 1;
 	}
 
+<<<<<<< HEAD
 	if (of_device_is_compatible(np, "snps,dwxgmac")) {
 		plat->has_xgmac = 1;
 		plat->pmt = 1;
 		plat->tso_en = of_property_read_bool(np, "snps,tso");
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_cfg = devm_kzalloc(&pdev->dev, sizeof(*dma_cfg),
 			       GFP_KERNEL);
 	if (!dma_cfg) {
@@ -520,11 +585,15 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
 
 	plat->axi = stmmac_axi_setup(pdev);
 
+<<<<<<< HEAD
 	rc = stmmac_mtl_setup(pdev, plat);
 	if (rc) {
 		stmmac_remove_config_dt(pdev, plat);
 		return ERR_PTR(rc);
 	}
+=======
+	stmmac_mtl_setup(pdev, plat);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* clock setup */
 	plat->stmmac_clk = devm_clk_get(&pdev->dev,
@@ -555,6 +624,15 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
 		dev_dbg(&pdev->dev, "PTP rate %d\n", plat->clk_ptp_rate);
 	}
 
+<<<<<<< HEAD
+=======
+	of_property_read_u32(
+		np, "snps,ptp-ref-clk-rate", &plat->clk_ptp_rate);
+
+	of_property_read_u32(
+		np, "snps,ptp-req-clk-rate", &plat->clk_ptp_req_rate);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	plat->stmmac_rst = devm_reset_control_get(&pdev->dev,
 						  STMMAC_RESOURCE_NAME);
 	if (IS_ERR(plat->stmmac_rst)) {

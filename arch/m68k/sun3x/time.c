@@ -52,8 +52,13 @@ int sun3x_hwclk(int set, struct rtc_time *t)
 		h->hour = bin2bcd(t->tm_hour);
 		h->wday = bin2bcd(t->tm_wday);
 		h->mday = bin2bcd(t->tm_mday);
+<<<<<<< HEAD
 		h->month = bin2bcd(t->tm_mon + 1);
 		h->year = bin2bcd(t->tm_year % 100);
+=======
+		h->month = bin2bcd(t->tm_mon);
+		h->year = bin2bcd(t->tm_year);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		h->csr &= ~C_WRITE;
 	} else {
 		h->csr |= C_READ;
@@ -62,11 +67,17 @@ int sun3x_hwclk(int set, struct rtc_time *t)
 		t->tm_hour = bcd2bin(h->hour);
 		t->tm_wday = bcd2bin(h->wday);
 		t->tm_mday = bcd2bin(h->mday);
+<<<<<<< HEAD
 		t->tm_mon = bcd2bin(h->month) - 1;
 		t->tm_year = bcd2bin(h->year);
 		h->csr &= ~C_READ;
 		if (t->tm_year < 70)
 			t->tm_year += 100;
+=======
+		t->tm_mon = bcd2bin(h->month);
+		t->tm_year = bcd2bin(h->year);
+		h->csr &= ~C_READ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	local_irq_restore(flags);
@@ -80,6 +91,7 @@ u32 sun3x_gettimeoffset(void)
 }
 
 #if 0
+<<<<<<< HEAD
 static void sun3x_timer_tick(int irq, void *dev_id, struct pt_regs *regs)
 {
     void (*vector)(int, void *, struct pt_regs *) = dev_id;
@@ -89,6 +101,21 @@ static void sun3x_timer_tick(int irq, void *dev_id, struct pt_regs *regs)
     enable_irq(5);
 
     vector(irq, NULL, regs);
+=======
+static irqreturn_t sun3x_timer_tick(int irq, void *dev_id)
+{
+	irq_handler_t timer_routine = dev_id;
+	unsigned long flags;
+
+	local_irq_save(flags);
+	/* Clear the pending interrupt - pulse the enable line low */
+	disable_irq(5);
+	enable_irq(5);
+	timer_routine(0, NULL);
+	local_irq_restore(flags);
+
+	return IRQ_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #endif
 

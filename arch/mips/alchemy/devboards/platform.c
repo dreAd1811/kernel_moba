@@ -14,7 +14,10 @@
 #include <asm/bootinfo.h>
 #include <asm/idle.h>
 #include <asm/reboot.h>
+<<<<<<< HEAD
 #include <asm/setup.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/mach-au1x00/au1000.h>
 #include <asm/mach-db1x00/bcsr.h>
 
@@ -37,7 +40,11 @@ void __init prom_init(void)
 	add_memory_region(0, memsize, BOOT_MEM_RAM);
 }
 
+<<<<<<< HEAD
 void prom_putchar(char c)
+=======
+void prom_putchar(unsigned char c)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (alchemy_get_cputype() == ALCHEMY_CPU_AU1300)
 		alchemy_uart_putchar(AU1300_UART2_PHYS_ADDR, c);
@@ -104,7 +111,11 @@ int __init db1x_register_pcmcia_socket(phys_addr_t pcmcia_attr_start,
 	if (stschg_irq)
 		cnt++;
 
+<<<<<<< HEAD
 	sr = kcalloc(cnt, sizeof(struct resource), GFP_KERNEL);
+=======
+	sr = kzalloc(sizeof(struct resource) * cnt, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!sr)
 		return -ENOMEM;
 
@@ -179,7 +190,11 @@ int __init db1x_register_norflash(unsigned long size, int width,
 		return -EINVAL;
 
 	ret = -ENOMEM;
+<<<<<<< HEAD
 	parts = kcalloc(5, sizeof(struct mtd_partition), GFP_KERNEL);
+=======
+	parts = kzalloc(sizeof(struct mtd_partition) * 5, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!parts)
 		goto out;
 

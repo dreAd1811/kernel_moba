@@ -42,6 +42,12 @@
  */
 static struct cppc_cpudata **all_cpu_data;
 
+<<<<<<< HEAD
+=======
+/* Capture the max KHz from DMI */
+static u64 cppc_dmi_max_khz;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Callback function used to retrieve the max frequency from DMI */
 static void cppc_find_dmi_mhz(const struct dmi_header *dm, void *private)
 {
@@ -72,6 +78,7 @@ static u64 cppc_get_dmi_max_khz(void)
 	return (1000 * mhz);
 }
 
+<<<<<<< HEAD
 /*
  * If CPPC lowest_freq and nominal_freq registers are exposed then we can
  * use them to convert perf to freq and vice versa
@@ -130,6 +137,8 @@ static unsigned int cppc_cpufreq_khz_to_perf(struct cppc_cpudata *cpu,
 	return (u64)freq * mul / div;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int cppc_cpufreq_set_target(struct cpufreq_policy *policy,
 		unsigned int target_freq,
 		unsigned int relation)
@@ -141,7 +150,11 @@ static int cppc_cpufreq_set_target(struct cpufreq_policy *policy,
 
 	cpu = all_cpu_data[policy->cpu];
 
+<<<<<<< HEAD
 	desired_perf = cppc_cpufreq_khz_to_perf(cpu, target_freq);
+=======
+	desired_perf = (u64)target_freq * cpu->perf_caps.highest_perf / cppc_dmi_max_khz;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Return if it is exactly the same perf */
 	if (desired_perf == cpu->perf_ctrls.desired_perf)
 		return ret;
@@ -241,25 +254,43 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	/* Convert the lowest and nominal freq from MHz to KHz */
 	cpu->perf_caps.lowest_freq *= 1000;
 	cpu->perf_caps.nominal_freq *= 1000;
+=======
+	cppc_dmi_max_khz = cppc_get_dmi_max_khz();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set min to lowest nonlinear perf to avoid any efficiency penalty (see
 	 * Section 8.4.7.1.1.5 of ACPI 6.1 spec)
 	 */
+<<<<<<< HEAD
 	policy->min = cppc_cpufreq_perf_to_khz(cpu, cpu->perf_caps.lowest_nonlinear_perf);
 	policy->max = cppc_cpufreq_perf_to_khz(cpu, cpu->perf_caps.highest_perf);
+=======
+	policy->min = cpu->perf_caps.lowest_nonlinear_perf * cppc_dmi_max_khz /
+		cpu->perf_caps.highest_perf;
+	policy->max = cppc_dmi_max_khz;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set cpuinfo.min_freq to Lowest to make the full range of performance
 	 * available if userspace wants to use any perf between lowest & lowest
 	 * nonlinear perf
 	 */
+<<<<<<< HEAD
 	policy->cpuinfo.min_freq = cppc_cpufreq_perf_to_khz(cpu, cpu->perf_caps.lowest_perf);
 	policy->cpuinfo.max_freq = cppc_cpufreq_perf_to_khz(cpu, cpu->perf_caps.highest_perf);
 
+=======
+	policy->cpuinfo.min_freq = cpu->perf_caps.lowest_perf * cppc_dmi_max_khz /
+		cpu->perf_caps.highest_perf;
+	policy->cpuinfo.max_freq = cppc_dmi_max_khz;
+
+	policy->cpuinfo.transition_latency = cppc_get_transition_latency(cpu_num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	policy->transition_delay_us = cppc_cpufreq_get_transition_delay_us(cpu_num);
 	policy->shared_type = cpu->shared_type;
 
@@ -284,8 +315,12 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	cpu->cur_policy = policy;
 
 	/* Set policy->cur to max now. The governors will adjust later. */
+<<<<<<< HEAD
 	policy->cur = cppc_cpufreq_perf_to_khz(cpu,
 					cpu->perf_caps.highest_perf);
+=======
+	policy->cur = cppc_dmi_max_khz;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpu->perf_ctrls.desired_perf = cpu->perf_caps.highest_perf;
 
 	ret = cppc_set_perf(cpu_num, &cpu->perf_ctrls);
@@ -296,6 +331,7 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline u64 get_delta(u64 t1, u64 t0)
 {
 	if (t1 > t0 || t0 > ~(u32)0)
@@ -347,11 +383,16 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpunum)
 	return cppc_get_rate_from_fbctrs(cpu, fb_ctrs_t0, fb_ctrs_t1);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct cpufreq_driver cppc_cpufreq_driver = {
 	.flags = CPUFREQ_CONST_LOOPS,
 	.verify = cppc_verify_policy,
 	.target = cppc_cpufreq_set_target,
+<<<<<<< HEAD
 	.get = cppc_cpufreq_get_rate,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.init = cppc_cpufreq_cpu_init,
 	.stop_cpu = cppc_cpufreq_stop_cpu,
 	.name = "cppc_cpufreq",
@@ -365,8 +406,12 @@ static int __init cppc_cpufreq_init(void)
 	if (acpi_disabled)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	all_cpu_data = kcalloc(num_possible_cpus(), sizeof(void *),
 			       GFP_KERNEL);
+=======
+	all_cpu_data = kzalloc(sizeof(void *) * num_possible_cpus(), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!all_cpu_data)
 		return -ENOMEM;
 

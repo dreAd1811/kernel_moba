@@ -35,7 +35,10 @@
 #include <linux/slab.h>
 #include <linux/module.h>
 
+<<<<<<< HEAD
 #include <drm/drm_client.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_file.h>
 #include <drm/drmP.h>
 
@@ -46,7 +49,11 @@
 /* from BKL pushdown */
 DEFINE_MUTEX(drm_global_mutex);
 
+<<<<<<< HEAD
 #define MAX_DRM_OPEN_COUNT		20
+=======
+#define MAX_DRM_OPEN_COUNT		128
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * DOC: file operations
@@ -104,6 +111,7 @@ DEFINE_MUTEX(drm_global_mutex);
 
 static int drm_open_helper(struct file *filp, struct drm_minor *minor);
 
+<<<<<<< HEAD
 /**
  * drm_file_alloc - allocate file context
  * @minor: minor to allocate on
@@ -276,6 +284,8 @@ static void drm_close_helper(struct file *filp)
 	drm_file_free(file_priv);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int drm_setup(struct drm_device * dev)
 {
 	int ret;
@@ -337,10 +347,15 @@ int drm_open(struct inode *inode, struct file *filp)
 		goto err_undo;
 	if (need_setup) {
 		retcode = drm_setup(dev);
+<<<<<<< HEAD
 		if (retcode) {
 			drm_close_helper(filp);
 			goto err_undo;
 		}
+=======
+		if (retcode)
+			goto err_undo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	return 0;
 
@@ -389,6 +404,7 @@ static int drm_open_helper(struct file *filp, struct drm_minor *minor)
 
 	DRM_DEBUG("pid = %d, minor = %d\n", task_pid_nr(current), minor->index);
 
+<<<<<<< HEAD
 	priv = drm_file_alloc(minor);
 	if (IS_ERR(priv))
 		return PTR_ERR(priv);
@@ -400,10 +416,56 @@ static int drm_open_helper(struct file *filp, struct drm_minor *minor)
 			return ret;
 		}
 	}
+=======
+	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+	if (!priv)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	filp->private_data = priv;
 	filp->f_mode |= FMODE_UNSIGNED_OFFSET;
 	priv->filp = filp;
+<<<<<<< HEAD
+=======
+	priv->pid = get_pid(task_pid(current));
+	priv->minor = minor;
+
+	/* for compatibility root is always authenticated */
+	priv->authenticated = capable(CAP_SYS_ADMIN);
+	priv->lock_count = 0;
+
+	INIT_LIST_HEAD(&priv->lhead);
+	INIT_LIST_HEAD(&priv->fbs);
+	mutex_init(&priv->fbs_lock);
+	INIT_LIST_HEAD(&priv->blobs);
+	INIT_LIST_HEAD(&priv->pending_event_list);
+	INIT_LIST_HEAD(&priv->event_list);
+	init_waitqueue_head(&priv->event_wait);
+	priv->event_space = 4096; /* set aside 4k for event buffer */
+
+	mutex_init(&priv->event_read_lock);
+
+	if (drm_core_check_feature(dev, DRIVER_GEM))
+		drm_gem_open(dev, priv);
+
+	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
+		drm_syncobj_open(priv);
+
+	if (drm_core_check_feature(dev, DRIVER_PRIME))
+		drm_prime_init_file_private(&priv->prime);
+
+	if (dev->driver->open) {
+		ret = dev->driver->open(dev, priv);
+		if (ret < 0)
+			goto out_prime_destroy;
+	}
+
+	if (drm_is_primary_client(priv)) {
+		ret = drm_master_open(priv);
+		if (ret)
+			goto out_close;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&dev->filelist_mutex);
 	list_add(&priv->lhead, &dev->filelist);
@@ -430,6 +492,48 @@ static int drm_open_helper(struct file *filp, struct drm_minor *minor)
 #endif
 
 	return 0;
+<<<<<<< HEAD
+=======
+
+out_close:
+	if (dev->driver->postclose)
+		dev->driver->postclose(dev, priv);
+out_prime_destroy:
+	if (drm_core_check_feature(dev, DRIVER_PRIME))
+		drm_prime_destroy_file_private(&priv->prime);
+	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
+		drm_syncobj_release(priv);
+	if (drm_core_check_feature(dev, DRIVER_GEM))
+		drm_gem_release(dev, priv);
+	put_pid(priv->pid);
+	kfree(priv);
+	filp->private_data = NULL;
+	return ret;
+}
+
+static void drm_events_release(struct drm_file *file_priv)
+{
+	struct drm_device *dev = file_priv->minor->dev;
+	struct drm_pending_event *e, *et;
+	unsigned long flags;
+
+	spin_lock_irqsave(&dev->event_lock, flags);
+
+	/* Unlink pending events */
+	list_for_each_entry_safe(e, et, &file_priv->pending_event_list,
+				 pending_link) {
+		list_del(&e->pending_link);
+		e->file_priv = NULL;
+	}
+
+	/* Remove unconsumed events */
+	list_for_each_entry_safe(e, et, &file_priv->event_list, link) {
+		list_del(&e->link);
+		kfree(e);
+	}
+
+	spin_unlock_irqrestore(&dev->event_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void drm_legacy_dev_reinit(struct drm_device *dev)
@@ -466,8 +570,11 @@ void drm_lastclose(struct drm_device * dev)
 
 	if (drm_core_check_feature(dev, DRIVER_LEGACY))
 		drm_legacy_dev_reinit(dev);
+<<<<<<< HEAD
 
 	drm_client_dev_restore(dev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /**
@@ -494,11 +601,75 @@ int drm_release(struct inode *inode, struct file *filp)
 
 	DRM_DEBUG("open_count = %d\n", dev->open_count);
 
+<<<<<<< HEAD
 	drm_close_helper(filp);
 
 	if (!--dev->open_count)
 		drm_lastclose(dev);
 
+=======
+	mutex_lock(&dev->filelist_mutex);
+	list_del(&file_priv->lhead);
+	mutex_unlock(&dev->filelist_mutex);
+
+	if (drm_core_check_feature(dev, DRIVER_LEGACY) &&
+	    dev->driver->preclose)
+		dev->driver->preclose(dev, file_priv);
+
+	/* ========================================================
+	 * Begin inline drm_release
+	 */
+
+	DRM_DEBUG("pid = %d, device = 0x%lx, open_count = %d\n",
+		  task_pid_nr(current),
+		  (long)old_encode_dev(file_priv->minor->kdev->devt),
+		  dev->open_count);
+
+	if (drm_core_check_feature(dev, DRIVER_LEGACY))
+		drm_legacy_lock_release(dev, filp);
+
+	if (drm_core_check_feature(dev, DRIVER_HAVE_DMA))
+		drm_legacy_reclaim_buffers(dev, file_priv);
+
+	drm_events_release(file_priv);
+
+	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
+		drm_fb_release(file_priv);
+		drm_property_destroy_user_blobs(dev, file_priv);
+	}
+
+	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
+		drm_syncobj_release(file_priv);
+
+	if (drm_core_check_feature(dev, DRIVER_GEM))
+		drm_gem_release(dev, file_priv);
+
+	drm_legacy_ctxbitmap_flush(dev, file_priv);
+
+	if (drm_is_primary_client(file_priv))
+		drm_master_release(file_priv);
+
+	if (dev->driver->postclose)
+		dev->driver->postclose(dev, file_priv);
+
+	if (drm_core_check_feature(dev, DRIVER_PRIME))
+		drm_prime_destroy_file_private(&file_priv->prime);
+
+	WARN_ON(!list_empty(&file_priv->event_list));
+
+	put_pid(file_priv->pid);
+	kfree(file_priv);
+
+	/* ========================================================
+	 * End inline drm_release
+	 */
+
+	if (!--dev->open_count) {
+		drm_lastclose(dev);
+		if (drm_dev_is_unplugged(dev))
+			drm_put_dev(dev);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&drm_global_mutex);
 
 	drm_minor_release(minor);
@@ -620,15 +791,26 @@ EXPORT_SYMBOL(drm_read);
  *
  * Mask of POLL flags indicating the current status of the file.
  */
+<<<<<<< HEAD
 __poll_t drm_poll(struct file *filp, struct poll_table_struct *wait)
 {
 	struct drm_file *file_priv = filp->private_data;
 	__poll_t mask = 0;
+=======
+unsigned int drm_poll(struct file *filp, struct poll_table_struct *wait)
+{
+	struct drm_file *file_priv = filp->private_data;
+	unsigned int mask = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	poll_wait(filp, &file_priv->event_wait, wait);
 
 	if (!list_empty(&file_priv->event_list))
+<<<<<<< HEAD
 		mask |= EPOLLIN | EPOLLRDNORM;
+=======
+		mask |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return mask;
 }

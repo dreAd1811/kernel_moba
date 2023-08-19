@@ -21,6 +21,7 @@ Orangefs features include:
   * Stateless
 
 
+<<<<<<< HEAD
 MAILING LIST ARCHIVES
 =====================
 
@@ -31,6 +32,12 @@ MAILING LIST SUBMISSIONS
 ========================
 
 devel@lists.orangefs.org
+=======
+MAILING LIST
+============
+
+http://beowulf-underground.org/mailman/listinfo/pvfs2-users
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 DOCUMENTATION
@@ -48,6 +55,7 @@ Orangefs versions prior to 2.9.3 would not be compatible with the
 upstream version of the kernel client.
 
 
+<<<<<<< HEAD
 RUNNING ORANGEFS ON A SINGLE SERVER
 ===================================
 
@@ -101,6 +109,14 @@ built from source.
 You can omit --prefix if you don't care that things are sprinkled around
 in /usr/local.  As of version 2.9.6, OrangeFS uses Berkeley DB by
 default, we will probably be changing the default to LMDB soon.
+=======
+BUILDING THE USERSPACE FILESYSTEM ON A SINGLE SERVER
+====================================================
+
+You can omit --prefix if you don't care that things are sprinkled around in
+/usr/local. As of version 2.9.6, Orangefs uses Berkeley DB by default, we
+will probably be changing the default to lmdb soon.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 ./configure --prefix=/opt/ofs --with-db-backend=lmdb
 
@@ -108,6 +124,7 @@ make
 
 make install
 
+<<<<<<< HEAD
 Create an orangefs config file.
 
 /opt/ofs/bin/pvfs2-genconfig /etc/pvfs2.conf
@@ -171,6 +188,37 @@ SCRATCH_DEV=tcp://localhost:3334/scratch
 Then xfstests can be run
 
 ./check -pvfs2
+=======
+Create an orangefs config file:
+/opt/ofs/bin/pvfs2-genconfig /etc/pvfs2.conf
+
+  for "Enter hostnames", use the hostname, don't let it default to
+  localhost.
+
+create a pvfs2tab file in /etc:
+cat /etc/pvfs2tab
+tcp://myhostname:3334/orangefs /mymountpoint pvfs2 defaults,noauto 0 0
+
+create the mount point you specified in the tab file if needed:
+mkdir /mymountpoint
+
+bootstrap the server:
+/opt/ofs/sbin/pvfs2-server /etc/pvfs2.conf -f
+
+start the server:
+/opt/osf/sbin/pvfs2-server /etc/pvfs2.conf
+
+Now the server is running. At this point you might like to
+prove things are working with:
+
+/opt/osf/bin/pvfs2-ls /mymountpoint
+
+If stuff seems to be working, turn on the client core:
+/opt/osf/sbin/pvfs2-client -p /opt/osf/sbin/pvfs2-client-core
+
+Mount your filesystem.
+mount -t pvfs2 tcp://myhostname:3334/orangefs /mymountpoint
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 OPTIONS

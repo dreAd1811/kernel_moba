@@ -14,6 +14,10 @@
 #include <linux/init.h>
 #include <linux/irqchip.h>
 #include <linux/of_fdt.h>
+<<<<<<< HEAD
+=======
+#include <linux/of_platform.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <asm/bootinfo.h>
 #include <asm/fw/fw.h>
@@ -208,6 +212,21 @@ void __init arch_init_irq(void)
 	irqchip_init();
 }
 
+<<<<<<< HEAD
+=======
+static int __init publish_devices(void)
+{
+	if (!of_have_populated_dt())
+		panic("Device-tree not present");
+
+	if (of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL))
+		panic("Failed to populate DT");
+
+	return 0;
+}
+arch_initcall(publish_devices);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init prom_free_prom_memory(void)
 {
 }

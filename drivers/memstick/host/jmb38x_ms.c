@@ -59,7 +59,10 @@ struct jmb38x_ms_host {
 	unsigned int            block_pos;
 	unsigned long           timeout_jiffies;
 	struct timer_list       timer;
+<<<<<<< HEAD
 	struct memstick_host	*msh;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct memstick_request *req;
 	unsigned char           cmd_flags;
 	unsigned char           io_pos;
@@ -593,10 +596,17 @@ static irqreturn_t jmb38x_ms_isr(int irq, void *dev_id)
 	return IRQ_HANDLED;
 }
 
+<<<<<<< HEAD
 static void jmb38x_ms_abort(struct timer_list *t)
 {
 	struct jmb38x_ms_host *host = from_timer(host, t, timer);
 	struct memstick_host *msh = host->msh;
+=======
+static void jmb38x_ms_abort(unsigned long data)
+{
+	struct memstick_host *msh = (struct memstick_host *)data;
+	struct jmb38x_ms_host *host = memstick_priv(msh);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long flags;
 
 	dev_dbg(&host->chip->pdev->dev, "abort\n");
@@ -879,7 +889,10 @@ static struct memstick_host *jmb38x_ms_alloc_host(struct jmb38x_ms *jm, int cnt)
 		return NULL;
 
 	host = memstick_priv(msh);
+<<<<<<< HEAD
 	host->msh = msh;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	host->chip = jm;
 	host->addr = ioremap(pci_resource_start(jm->pdev, cnt),
 			     pci_resource_len(jm->pdev, cnt));
@@ -899,7 +912,11 @@ static struct memstick_host *jmb38x_ms_alloc_host(struct jmb38x_ms *jm, int cnt)
 
 	msh->caps = MEMSTICK_CAP_PAR4 | MEMSTICK_CAP_PAR8;
 
+<<<<<<< HEAD
 	timer_setup(&host->timer, jmb38x_ms_abort, 0);
+=======
+	setup_timer(&host->timer, jmb38x_ms_abort, (unsigned long)msh);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!request_irq(host->irq, jmb38x_ms_isr, IRQF_SHARED, host->host_id,
 			 msh))

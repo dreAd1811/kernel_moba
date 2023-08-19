@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 OR MIT */
 /**********************************************************
  * Copyright 1998-2015 VMware, Inc.
+=======
+/**********************************************************
+ * Copyright 1998-2015 VMware, Inc.  All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -64,15 +69,19 @@ typedef uint32 SVGAMobId;
 #define SVGA_MAX_BITS_PER_PIXEL         32
 #define SVGA_MAX_DEPTH                  24
 #define SVGA_MAX_DISPLAYS               10
+<<<<<<< HEAD
 #define SVGA_MAX_SCREEN_SIZE            8192
 #define SVGA_SCREEN_ROOT_LIMIT (SVGA_MAX_SCREEN_SIZE * SVGA_MAX_DISPLAYS)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * Legal values for the SVGA_REG_CURSOR_ON register in old-fashioned
  * cursor bypass mode. This is still supported, but no new guest
  * drivers should use it.
  */
+<<<<<<< HEAD
 #define SVGA_CURSOR_ON_HIDE            0x0
 #define SVGA_CURSOR_ON_SHOW            0x1
 
@@ -84,6 +93,12 @@ typedef uint32 SVGAMobId;
 
 /* Put the cursor back in the framebuffer so the user can see it */
 #define SVGA_CURSOR_ON_RESTORE_TO_FB   0x3
+=======
+#define SVGA_CURSOR_ON_HIDE            0x0   /* Must be 0 to maintain backward compatibility */
+#define SVGA_CURSOR_ON_SHOW            0x1   /* Must be 1 to maintain backward compatibility */
+#define SVGA_CURSOR_ON_REMOVE_FROM_FB  0x2   /* Remove the cursor from the framebuffer because we need to see what's under it */
+#define SVGA_CURSOR_ON_RESTORE_TO_FB   0x3   /* Put the cursor back in the framebuffer so the user can see it */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * The maximum framebuffer size that can traced for guests unless the
@@ -112,10 +127,14 @@ typedef uint32 SVGAMobId;
 #define SVGA_VERSION_0     0
 #define SVGA_ID_0          SVGA_MAKE_ID(SVGA_VERSION_0)
 
+<<<<<<< HEAD
 /*
  * "Invalid" value for all SVGA IDs.
  * (Version ID, screen object ID, surface ID...)
  */
+=======
+/* "Invalid" value for all SVGA IDs. (Version ID, screen object ID, surface ID...) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SVGA_ID_INVALID    0xFFFFFFFF
 
 /* Port offsets, relative to BAR0 */
@@ -168,7 +187,11 @@ enum {
    SVGA_REG_CONFIG_DONE = 20,         /* Set when memory area configured */
    SVGA_REG_SYNC = 21,                /* See "FIFO Synchronization Registers" */
    SVGA_REG_BUSY = 22,                /* See "FIFO Synchronization Registers" */
+<<<<<<< HEAD
    SVGA_REG_GUEST_ID = 23,            /* (Deprecated) */
+=======
+   SVGA_REG_GUEST_ID = 23,            /* Set guest OS identifier */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA_REG_CURSOR_ID = 24,           /* (Deprecated) */
    SVGA_REG_CURSOR_X = 25,            /* (Deprecated) */
    SVGA_REG_CURSOR_Y = 26,            /* (Deprecated) */
@@ -200,6 +223,7 @@ enum {
    SVGA_REG_MEMORY_SIZE = 47,       /* Total dedicated device memory excluding FIFO */
    SVGA_REG_COMMAND_LOW = 48,       /* Lower 32 bits and submits commands */
    SVGA_REG_COMMAND_HIGH = 49,      /* Upper 32 bits of command buffer PA */
+<<<<<<< HEAD
 
    /*
     * Max primary memory.
@@ -208,6 +232,9 @@ enum {
    SVGA_REG_MAX_PRIMARY_MEM = 50,
    SVGA_REG_MAX_PRIMARY_BOUNDING_BOX_MEM = 50,
 
+=======
+   SVGA_REG_MAX_PRIMARY_BOUNDING_BOX_MEM = 50,   /* Max primary memory */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    SVGA_REG_SUGGESTED_GBOBJECT_MEM_SIZE_KB = 51, /* Sugested limit on mob mem */
    SVGA_REG_DEV_CAP = 52,           /* Write dev cap index, read value */
    SVGA_REG_CMD_PREPEND_LOW = 53,
@@ -215,10 +242,14 @@ enum {
    SVGA_REG_SCREENTARGET_MAX_WIDTH = 55,
    SVGA_REG_SCREENTARGET_MAX_HEIGHT = 56,
    SVGA_REG_MOB_MAX_SIZE = 57,
+<<<<<<< HEAD
    SVGA_REG_BLANK_SCREEN_TARGETS = 58,
    SVGA_REG_CAP2 = 59,
    SVGA_REG_DEVEL_CAP = 60,
    SVGA_REG_TOP = 61,               /* Must be 1 more than the last register */
+=======
+   SVGA_REG_TOP = 58,               /* Must be 1 more than the last register */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
    SVGA_PALETTE_BASE = 1024,        /* Base of SVGA color map */
    /* Next 768 (== 256*3) registers exist for colormap */
@@ -396,6 +427,7 @@ SVGAGuestPtr;
  * PA, not biased by the offset.  When the command buffer is finished
  * the guest should not read the offset field as there is no guarantee
  * what it will set to.
+<<<<<<< HEAD
  *
  * When the SVGA_CAP_HP_CMD_QUEUE cap bit is set a new command queue
  * SVGA_CB_CONTEXT_1 is available.  Commands submitted to this queue
@@ -404,6 +436,8 @@ SVGAGuestPtr;
  * The SVGA device guarantees that any command buffers submitted to
  * SVGA_CB_CONTEXT_0 will be executed after any _already_ submitted
  * command buffers to SVGA_CB_CONTEXT_1.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define SVGA_CB_MAX_SIZE (512 * 1024)  /* 512 KB */
@@ -414,9 +448,13 @@ SVGAGuestPtr;
 typedef enum {
    SVGA_CB_CONTEXT_DEVICE = 0x3f,
    SVGA_CB_CONTEXT_0      = 0x0,
+<<<<<<< HEAD
    SVGA_CB_CONTEXT_1      = 0x1, /* Supported with SVGA_CAP_HP_CMD_QUEUE */
    SVGA_CB_CONTEXT_MAX    = 0x2,
    SVGA_CB_CONTEXT_HP_MAX = 0x2,
+=======
+   SVGA_CB_CONTEXT_MAX    = 0x1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } SVGACBContext;
 
 
@@ -473,6 +511,7 @@ typedef enum {
     * due to an error.  No IRQ is raised.
     */
    SVGA_CB_STATUS_SUBMISSION_ERROR = 6,
+<<<<<<< HEAD
 
    /*
     * Written by the host when the host finished a
@@ -485,6 +524,8 @@ typedef enum {
     * SVGA_CB_FLAG_NO_IRQ is not set.
     */
    SVGA_CB_STATUS_PARTIAL_COMPLETE = 7,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } SVGACBStatus;
 
 typedef enum {
@@ -497,8 +538,13 @@ typedef enum {
 typedef
 #include "vmware_pack_begin.h"
 struct {
+<<<<<<< HEAD
    volatile SVGACBStatus status; /* Modified by device. */
    volatile uint32 errorOffset;  /* Modified by device. */
+=======
+   volatile SVGACBStatus status;
+   volatile uint32 errorOffset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    uint64 id;
    SVGACBFlags flags;
    uint32 length;
@@ -509,9 +555,13 @@ struct {
          uint32 mobOffset;
       } mob;
    } ptr;
+<<<<<<< HEAD
    uint32 offset; /* Valid if CMD_BUFFERS_2 cap set, must be zero otherwise,
                    * modified by device.
                    */
+=======
+   uint32 offset; /* Valid if CMD_BUFFERS_2 cap set, must be zero otherwise */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    uint32 dxContext; /* Valid if DX_CONTEXT flag set, must be zero otherwise */
    uint32 mustBeZero[6];
 }
@@ -522,6 +572,7 @@ typedef enum {
    SVGA_DC_CMD_NOP                   = 0,
    SVGA_DC_CMD_START_STOP_CONTEXT    = 1,
    SVGA_DC_CMD_PREEMPT               = 2,
+<<<<<<< HEAD
    SVGA_DC_CMD_START_QUEUE           = 3, /* Requires SVGA_CAP_HP_CMD_QUEUE */
    SVGA_DC_CMD_ASYNC_STOP_QUEUE      = 4, /* Requires SVGA_CAP_HP_CMD_QUEUE */
    SVGA_DC_CMD_EMPTY_CONTEXT_QUEUE   = 5, /* Requires SVGA_CAP_HP_CMD_QUEUE */
@@ -535,13 +586,26 @@ typedef enum {
 typedef struct SVGADCCmdStartStop {
    uint32 enable;
    SVGACBContext context; /* Must be zero */
+=======
+   SVGA_DC_CMD_MAX                   = 3,
+   SVGA_DC_CMD_FORCE_UINT            = MAX_UINT32,
+} SVGADeviceContextCmdId;
+
+typedef struct {
+   uint32 enable;
+   SVGACBContext context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } SVGADCCmdStartStop;
 
 /*
  * SVGADCCmdPreempt --
  *
  * This command allows the guest to request that all command buffers
+<<<<<<< HEAD
  * on SVGA_CB_CONTEXT_0 be preempted that can be.  After execution
+=======
+ * on the specified context be preempted that can be.  After execution
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * of this command all command buffers that were preempted will
  * already have SVGA_CB_STATUS_PREEMPTED written into the status
  * field.  The device might still be processing a command buffer,
@@ -551,12 +615,18 @@ typedef struct SVGADCCmdStartStop {
  * command buffer header set to zero.
  */
 
+<<<<<<< HEAD
 typedef struct SVGADCCmdPreempt {
    SVGACBContext context; /* Must be zero */
+=======
+typedef struct {
+   SVGACBContext context;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    uint32 ignoreIDZero;
 } SVGADCCmdPreempt;
 
 /*
+<<<<<<< HEAD
  * Starts the requested command buffer processing queue.  Valid only
  * if the SVGA_CAP_HP_CMD_QUEUE cap is set.
  *
@@ -614,6 +684,8 @@ typedef struct SVGADCCmdEmptyQueue {
 
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * SVGAGMRImageFormat --
  *
  *    This is a packed representation of the source 2D image format
@@ -638,7 +710,11 @@ typedef struct SVGAGMRImageFormat {
       struct {
          uint32 bitsPerPixel : 8;
          uint32 colorDepth   : 8;
+<<<<<<< HEAD
          uint32 reserved     : 16;  /* Must be zero */
+=======
+	 uint32 reserved     : 16;  /* Must be zero */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
       };
 
       uint32 value;
@@ -774,6 +850,7 @@ SVGASignedPoint;
  * SVGA_CAP_GBOBJECTS --
  *    Enable guest-backed objects and surfaces.
  *
+<<<<<<< HEAD
  * SVGA_CAP_DX --
  *    Enable support for DX commands, and command buffers in a mob.
  *
@@ -804,6 +881,10 @@ SVGASignedPoint;
  *
  * SVGA_CAP_CAP2_REGISTER --
  *    If this cap is present, the SVGA_REG_CAP2 register is supported.
+=======
+ * SVGA_CAP_CMD_BUFFERS_3 --
+ *    Enable support for command buffers in a mob.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define SVGA_CAP_NONE               0x00000000
@@ -828,6 +909,7 @@ SVGASignedPoint;
 #define SVGA_CAP_CMD_BUFFERS_2      0x04000000
 #define SVGA_CAP_GBOBJECTS          0x08000000
 #define SVGA_CAP_DX                 0x10000000
+<<<<<<< HEAD
 #define SVGA_CAP_HP_CMD_QUEUE       0x20000000
 #define SVGA_CAP_NO_BB_RESTRICTION  0x40000000
 #define SVGA_CAP_CAP2_REGISTER      0x80000000
@@ -853,6 +935,10 @@ SVGASignedPoint;
 #define SVGA_CAP2_INTRA_SURFACE_COPY 0x00000002
 #define SVGA_CAP2_DX2                0x00000004
 #define SVGA_CAP2_RESERVED           0x80000000
+=======
+
+#define SVGA_CAP_CMD_RESERVED       0x80000000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 /*
@@ -874,8 +960,12 @@ typedef enum {
    SVGABackdoorCapDeviceCaps = 0,
    SVGABackdoorCapFifoCaps = 1,
    SVGABackdoorCap3dHWVersion = 2,
+<<<<<<< HEAD
    SVGABackdoorCapDeviceCaps2 = 3,
    SVGABackdoorCapMax = 4,
+=======
+   SVGABackdoorCapMax = 3,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } SVGABackdoorCapType;
 
 
@@ -2067,6 +2157,19 @@ SVGAFifoCmdRemapGMR2;
 
 #define SVGA_VRAM_SIZE_W2K          (64 * 1024 * 1024) /* 64 MB */
 
+<<<<<<< HEAD
+=======
+/*
+ * To simplify autoDetect display configuration, support a minimum of
+ * two 1920x1200 monitors, 32bpp, side-by-side, optionally rotated:
+ *   numDisplays = 2
+ *   maxWidth = numDisplay * 1920 = 3840
+ *   maxHeight = rotated width of single monitor = 1920
+ *   vramSize = maxWidth * maxHeight * 4 = 29491200
+ */
+#define SVGA_VRAM_SIZE_AUTODETECT   (32 * 1024 * 1024)
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if defined(VMX86_SERVER)
 #define SVGA_VRAM_SIZE               (4 * 1024 * 1024)
 #define SVGA_VRAM_SIZE_3D           (64 * 1024 * 1024)

@@ -655,8 +655,15 @@ static int sdhci_s3c_probe(struct platform_device *pdev)
 		goto err_req_regs;
 
 	ret = sdhci_add_host(host);
+<<<<<<< HEAD
 	if (ret)
 		goto err_req_regs;
+=======
+	if (ret) {
+		dev_err(dev, "sdhci_add_host() failed\n");
+		goto err_req_regs;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_PM
 	if (pdata->cd_type != S3C_SDHCI_CD_INTERNAL)
@@ -759,16 +766,35 @@ static const struct dev_pm_ops sdhci_s3c_pmops = {
 			   NULL)
 };
 
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_CPU_EXYNOS4210) || defined(CONFIG_SOC_EXYNOS4212)
+static struct sdhci_s3c_drv_data exynos4_sdhci_drv_data = {
+	.no_divider = true,
+};
+#define EXYNOS4_SDHCI_DRV_DATA ((kernel_ulong_t)&exynos4_sdhci_drv_data)
+#else
+#define EXYNOS4_SDHCI_DRV_DATA ((kernel_ulong_t)NULL)
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct platform_device_id sdhci_s3c_driver_ids[] = {
 	{
 		.name		= "s3c-sdhci",
 		.driver_data	= (kernel_ulong_t)NULL,
+<<<<<<< HEAD
+=======
+	}, {
+		.name		= "exynos4-sdhci",
+		.driver_data	= EXYNOS4_SDHCI_DRV_DATA,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{ }
 };
 MODULE_DEVICE_TABLE(platform, sdhci_s3c_driver_ids);
 
 #ifdef CONFIG_OF
+<<<<<<< HEAD
 static struct sdhci_s3c_drv_data exynos4_sdhci_drv_data = {
 	.no_divider = true,
 };
@@ -777,6 +803,12 @@ static const struct of_device_id sdhci_s3c_dt_match[] = {
 	{ .compatible = "samsung,s3c6410-sdhci", },
 	{ .compatible = "samsung,exynos4210-sdhci",
 		.data = &exynos4_sdhci_drv_data },
+=======
+static const struct of_device_id sdhci_s3c_dt_match[] = {
+	{ .compatible = "samsung,s3c6410-sdhci", },
+	{ .compatible = "samsung,exynos4210-sdhci",
+		.data = (void *)EXYNOS4_SDHCI_DRV_DATA },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{},
 };
 MODULE_DEVICE_TABLE(of, sdhci_s3c_dt_match);

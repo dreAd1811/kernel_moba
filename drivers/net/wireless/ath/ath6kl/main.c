@@ -272,7 +272,11 @@ int ath6kl_read_fwlogs(struct ath6kl *ar)
 {
 	struct ath6kl_dbglog_hdr debug_hdr;
 	struct ath6kl_dbglog_buf debug_buf;
+<<<<<<< HEAD
 	u32 address, length, firstbuf, debug_hdr_addr;
+=======
+	u32 address, length, dropped, firstbuf, debug_hdr_addr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret, loop;
 	u8 *buf;
 
@@ -303,6 +307,10 @@ int ath6kl_read_fwlogs(struct ath6kl *ar)
 	address = TARG_VTOP(ar->target_type,
 			    le32_to_cpu(debug_hdr.dbuf_addr));
 	firstbuf = address;
+<<<<<<< HEAD
+=======
+	dropped = le32_to_cpu(debug_hdr.dropped);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = ath6kl_diag_read(ar, address, &debug_buf, sizeof(debug_buf));
 	if (ret)
 		goto out;
@@ -425,7 +433,11 @@ void ath6kl_connect_ap_mode_sta(struct ath6kl_vif *vif, u16 aid, u8 *mac_addr,
 {
 	u8 *ies = NULL, *wpa_ie = NULL, *pos;
 	size_t ies_len = 0;
+<<<<<<< HEAD
 	struct station_info *sinfo;
+=======
+	struct station_info sinfo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ath6kl_dbg(ATH6KL_DBG_TRC, "new station %pM aid=%d\n", mac_addr, aid);
 
@@ -481,6 +493,7 @@ void ath6kl_connect_ap_mode_sta(struct ath6kl_vif *vif, u16 aid, u8 *mac_addr,
 			   keymgmt, ucipher, auth, apsd_info);
 
 	/* send event to application */
+<<<<<<< HEAD
 	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
 	if (!sinfo)
 		return;
@@ -500,6 +513,24 @@ void ath6kl_connect_ap_mode_sta(struct ath6kl_vif *vif, u16 aid, u8 *mac_addr,
 void disconnect_timer_handler(struct timer_list *t)
 {
 	struct ath6kl_vif *vif = from_timer(vif, t, disconnect_timer);
+=======
+	memset(&sinfo, 0, sizeof(sinfo));
+
+	/* TODO: sinfo.generation */
+
+	sinfo.assoc_req_ies = ies;
+	sinfo.assoc_req_ies_len = ies_len;
+
+	cfg80211_new_sta(vif->ndev, mac_addr, &sinfo, GFP_KERNEL);
+
+	netif_wake_queue(vif->ndev);
+}
+
+void disconnect_timer_handler(unsigned long ptr)
+{
+	struct net_device *dev = (struct net_device *)ptr;
+	struct ath6kl_vif *vif = netdev_priv(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ath6kl_init_profile_info(vif);
 	ath6kl_disconnect(vif);

@@ -84,11 +84,14 @@
 		mask = <0x1000>;
 	};
 
+<<<<<<< HEAD
 	tempsensor: iio-hwmon {
 		compatible = "iio-hwmon";
 		io-channels = <&adc0 16>, <&adc1 16>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	soc {
 		#address-cells = <1>;
 		#size-cells = <1>;
@@ -767,5 +770,13 @@
 				status = "disabled";
 			};
 		};
+<<<<<<< HEAD
+=======
+
+		iio-hwmon {
+			compatible = "iio-hwmon";
+			io-channels = <&adc0 16>, <&adc1 16>;
+		};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };

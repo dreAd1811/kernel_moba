@@ -6,7 +6,10 @@
  * GPL LICENSE SUMMARY
  *
  * Copyright(c) 2008 - 2014 Intel Corporation. All rights reserved.
+<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of version 2 of the GNU General Public License as
@@ -32,7 +35,10 @@
  * BSD LICENSE
  *
  * Copyright(c) 2005 - 2014 Intel Corporation. All rights reserved.
+<<<<<<< HEAD
  * Copyright(c) 2018 Intel Corporation
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -201,12 +207,21 @@ static int iwl_init_otp_access(struct iwl_trans *trans)
 	/* Enable 40MHz radio clock */
 	iwl_write32(trans, CSR_GP_CNTRL,
 		    iwl_read32(trans, CSR_GP_CNTRL) |
+<<<<<<< HEAD
 		    BIT(trans->cfg->csr->flag_init_done));
 
 	/* wait for clock to be ready */
 	ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
 			   BIT(trans->cfg->csr->flag_mac_clock_ready),
 			   BIT(trans->cfg->csr->flag_mac_clock_ready),
+=======
+		    CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
+
+	/* wait for clock to be ready */
+	ret = iwl_poll_bit(trans, CSR_GP_CNTRL,
+			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
+			   CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   25000);
 	if (ret < 0) {
 		IWL_ERR(trans, "Time out access OTP\n");

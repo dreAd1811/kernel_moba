@@ -65,7 +65,11 @@
 # define preempt_stop(clobbers)	DISABLE_INTERRUPTS(clobbers); TRACE_IRQS_OFF
 #else
 # define preempt_stop(clobbers)
+<<<<<<< HEAD
 # define resume_kernel		restore_all_kernel
+=======
+# define resume_kernel		restore_all
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 .macro TRACE_IRQS_IRET
@@ -77,8 +81,11 @@
 #endif
 .endm
 
+<<<<<<< HEAD
 #define PTI_SWITCH_MASK         (1 << PAGE_SHIFT)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * User gs save/restore
  *
@@ -156,6 +163,7 @@
 
 #endif /* CONFIG_X86_32_LAZY_GS */
 
+<<<<<<< HEAD
 /* Unconditionally switch to user cr3 */
 .macro SWITCH_TO_USER_CR3 scratch_reg:req
 	ALTERNATIVE "jmp .Lend_\@", "", X86_FEATURE_PTI
@@ -202,6 +210,9 @@
 .endm
 
 .macro SAVE_ALL pt_regs_ax=%eax switch_stacks=0
+=======
+.macro SAVE_ALL pt_regs_ax=%eax
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cld
 	PUSH_GS
 	pushl	%fs
@@ -220,6 +231,7 @@
 	movl	$(__KERNEL_PERCPU), %edx
 	movl	%edx, %fs
 	SET_KERNEL_GS %edx
+<<<<<<< HEAD
 
 	/* Switch to kernel stack if necessary */
 .if \switch_stacks > 0
@@ -243,6 +255,8 @@
 	SWITCH_TO_KERNEL_CR3 scratch_reg=\cr3_reg
 
 .Lend_\@:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .endm
 
 /*
@@ -291,6 +305,7 @@
 	POP_GS_EX
 .endm
 
+<<<<<<< HEAD
 .macro RESTORE_ALL_NMI cr3_reg:req pop=0
 	/*
 	 * Now switch the CR3 when PTI is enabled.
@@ -635,6 +650,8 @@
 
 .Lend_\@:
 .endm
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * %eax: prev task
  * %edx: next task
@@ -654,7 +671,11 @@ ENTRY(__switch_to_asm)
 	movl	%esp, TASK_threadsp(%eax)
 	movl	TASK_threadsp(%edx), %esp
 
+<<<<<<< HEAD
 #ifdef CONFIG_STACKPROTECTOR
+=======
+#ifdef CONFIG_CC_STACKPROTECTOR
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movl	TASK_stack_canary(%edx), %ebx
 	movl	%ebx, PER_CPU_VAR(stack_canary)+stack_canary_offset
 #endif
@@ -767,9 +788,15 @@ ENTRY(resume_kernel)
 	DISABLE_INTERRUPTS(CLBR_ANY)
 .Lneed_resched:
 	cmpl	$0, PER_CPU_VAR(__preempt_count)
+<<<<<<< HEAD
 	jnz	restore_all_kernel
 	testl	$X86_EFLAGS_IF, PT_EFLAGS(%esp)	# interrupts off (exception path) ?
 	jz	restore_all_kernel
+=======
+	jnz	restore_all
+	testl	$X86_EFLAGS_IF, PT_EFLAGS(%esp)	# interrupts off (exception path) ?
+	jz	restore_all
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	call	preempt_schedule_irq
 	jmp	.Lneed_resched
 END(resume_kernel)
@@ -828,6 +855,7 @@ ENTRY(xen_sysenter_target)
  * 0(%ebp) arg6
  */
 ENTRY(entry_SYSENTER_32)
+<<<<<<< HEAD
 	/*
 	 * On entry-stack with all userspace-regs live - save and
 	 * restore eflags and %eax to use it as scratch-reg for the cr3
@@ -843,6 +871,9 @@ ENTRY(entry_SYSENTER_32)
 	/* Stack empty again, switch to task stack */
 	movl	TSS_entry2task_stack(%esp), %esp
 
+=======
+	movl	TSS_sysenter_sp0(%esp), %esp
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .Lsysenter_past_esp:
 	pushl	$__USER_DS		/* pt_regs->ss */
 	pushl	%ebp			/* pt_regs->sp (stashed in bp) */
@@ -851,7 +882,11 @@ ENTRY(entry_SYSENTER_32)
 	pushl	$__USER_CS		/* pt_regs->cs */
 	pushl	$0			/* pt_regs->ip = 0 (placeholder) */
 	pushl	%eax			/* pt_regs->orig_ax */
+<<<<<<< HEAD
 	SAVE_ALL pt_regs_ax=$-ENOSYS	/* save rest, stack already switched */
+=======
+	SAVE_ALL pt_regs_ax=$-ENOSYS	/* save rest */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * SYSENTER doesn't filter flags, so we need to clear NT, AC
@@ -890,6 +925,7 @@ ENTRY(entry_SYSENTER_32)
 
 /* Opportunistic SYSEXIT */
 	TRACE_IRQS_ON			/* User mode traces as IRQs on. */
+<<<<<<< HEAD
 
 	/*
 	 * Setup entry stack - we keep the pointer in %eax and do the
@@ -907,32 +943,47 @@ ENTRY(entry_SYSENTER_32)
 	movl	%esi, 4(%eax)
 
 	/* Restore user registers and segments */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	movl	PT_EIP(%esp), %edx	/* pt_regs->ip */
 	movl	PT_OLDESP(%esp), %ecx	/* pt_regs->sp */
 1:	mov	PT_FS(%esp), %fs
 	PTGS_TO_GS
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	popl	%ebx			/* pt_regs->bx */
 	addl	$2*4, %esp		/* skip pt_regs->cx and pt_regs->dx */
 	popl	%esi			/* pt_regs->si */
 	popl	%edi			/* pt_regs->di */
 	popl	%ebp			/* pt_regs->bp */
+<<<<<<< HEAD
 
 	/* Switch to entry stack */
 	movl	%eax, %esp
 
 	/* Now ready to switch the cr3 */
 	SWITCH_TO_USER_CR3 scratch_reg=%eax
+=======
+	popl	%eax			/* pt_regs->ax */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Restore all flags except IF. (We restore IF separately because
 	 * STI gives a one-instruction window in which we won't be interrupted,
 	 * whereas POPF does not.)
 	 */
+<<<<<<< HEAD
 	btrl	$X86_EFLAGS_IF_BIT, (%esp)
 	BUG_IF_WRONG_CR3 no_user_check=1
 	popfl
 	popl	%eax
+=======
+	addl	$PT_EFLAGS-PT_DS, %esp	/* point esp at pt_regs->flags */
+	btr	$X86_EFLAGS_IF_BIT, (%esp)
+	popfl
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Return back to the vDSO, which will pop ecx and edx.
@@ -986,8 +1037,12 @@ ENDPROC(entry_SYSENTER_32)
 ENTRY(entry_INT80_32)
 	ASM_CLAC
 	pushl	%eax			/* pt_regs->orig_ax */
+<<<<<<< HEAD
 
 	SAVE_ALL pt_regs_ax=$-ENOSYS switch_stacks=1	/* save rest */
+=======
+	SAVE_ALL pt_regs_ax=$-ENOSYS	/* save rest */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * User mode is traced as though IRQs are on, and the interrupt gate
@@ -1001,6 +1056,7 @@ ENTRY(entry_INT80_32)
 
 restore_all:
 	TRACE_IRQS_IRET
+<<<<<<< HEAD
 	SWITCH_TO_ENTRY_STACK
 .Lrestore_all_notrace:
 	CHECK_AND_APPLY_ESPFIX
@@ -1027,10 +1083,34 @@ restore_all_kernel:
 	RESTORE_REGS 4
 	jmp	.Lirq_return
 
+=======
+.Lrestore_all_notrace:
+#ifdef CONFIG_X86_ESPFIX32
+	ALTERNATIVE	"jmp .Lrestore_nocheck", "", X86_BUG_ESPFIX
+
+	movl	PT_EFLAGS(%esp), %eax		# mix EFLAGS, SS and CS
+	/*
+	 * Warning: PT_OLDSS(%esp) contains the wrong/random values if we
+	 * are returning to the kernel.
+	 * See comments in process.c:copy_thread() for details.
+	 */
+	movb	PT_OLDSS(%esp), %ah
+	movb	PT_CS(%esp), %al
+	andl	$(X86_EFLAGS_VM | (SEGMENT_TI_MASK << 8) | SEGMENT_RPL_MASK), %eax
+	cmpl	$((SEGMENT_LDT << 8) | USER_RPL), %eax
+	je .Lldt_ss				# returning to user-space with LDT SS
+#endif
+.Lrestore_nocheck:
+	RESTORE_REGS 4				# skip orig_eax/error_code
+.Lirq_return:
+	INTERRUPT_RETURN
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 .section .fixup, "ax"
 ENTRY(iret_exc	)
 	pushl	$0				# no error code
 	pushl	$do_iret_error
+<<<<<<< HEAD
 
 #ifdef CONFIG_DEBUG_ENTRY
 	/*
@@ -1047,6 +1127,44 @@ ENTRY(iret_exc	)
 	jmp	common_exception
 .previous
 	_ASM_EXTABLE(.Lirq_return, iret_exc)
+=======
+	jmp	common_exception
+.previous
+	_ASM_EXTABLE(.Lirq_return, iret_exc)
+
+#ifdef CONFIG_X86_ESPFIX32
+.Lldt_ss:
+/*
+ * Setup and switch to ESPFIX stack
+ *
+ * We're returning to userspace with a 16 bit stack. The CPU will not
+ * restore the high word of ESP for us on executing iret... This is an
+ * "official" bug of all the x86-compatible CPUs, which we can work
+ * around to make dosemu and wine happy. We do this by preloading the
+ * high word of ESP with the high word of the userspace ESP while
+ * compensating for the offset by changing to the ESPFIX segment with
+ * a base address that matches for the difference.
+ */
+#define GDT_ESPFIX_SS PER_CPU_VAR(gdt_page) + (GDT_ENTRY_ESPFIX_SS * 8)
+	mov	%esp, %edx			/* load kernel esp */
+	mov	PT_OLDESP(%esp), %eax		/* load userspace esp */
+	mov	%dx, %ax			/* eax: new kernel esp */
+	sub	%eax, %edx			/* offset (low word is 0) */
+	shr	$16, %edx
+	mov	%dl, GDT_ESPFIX_SS + 4		/* bits 16..23 */
+	mov	%dh, GDT_ESPFIX_SS + 7		/* bits 24..31 */
+	pushl	$__ESPFIX_SS
+	pushl	%eax				/* new kernel esp */
+	/*
+	 * Disable interrupts, but do not irqtrace this section: we
+	 * will soon execute iret and the tracer was already set to
+	 * the irqstate after the IRET:
+	 */
+	DISABLE_INTERRUPTS(CLBR_ANY)
+	lss	(%esp), %esp			/* switch to espfix segment */
+	jmp	.Lrestore_nocheck
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENDPROC(entry_INT80_32)
 
 .macro FIXUP_ESPFIX_STACK
@@ -1098,6 +1216,7 @@ ENTRY(irq_entries_start)
     .endr
 END(irq_entries_start)
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_LOCAL_APIC
 	.align 8
 ENTRY(spurious_entries_start)
@@ -1122,6 +1241,8 @@ common_spurious:
 ENDPROC(common_spurious)
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * the CPU automatically disables interrupts when executing an IRQ vector,
  * so IRQ-flags tracing has to follow that:
@@ -1130,8 +1251,12 @@ ENDPROC(common_spurious)
 common_interrupt:
 	ASM_CLAC
 	addl	$-0x80, (%esp)			/* Adjust vector into the [-256, -1] range */
+<<<<<<< HEAD
 
 	SAVE_ALL switch_stacks=1
+=======
+	SAVE_ALL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ENCODE_FRAME_POINTER
 	TRACE_IRQS_OFF
 	movl	%esp, %eax
@@ -1139,6 +1264,7 @@ common_interrupt:
 	jmp	ret_from_intr
 ENDPROC(common_interrupt)
 
+<<<<<<< HEAD
 #define BUILD_INTERRUPT3(name, nr, fn)			\
 ENTRY(name)						\
 	ASM_CLAC;					\
@@ -1149,6 +1275,18 @@ ENTRY(name)						\
 	movl	%esp, %eax;				\
 	call	fn;					\
 	jmp	ret_from_intr;				\
+=======
+#define BUILD_INTERRUPT3(name, nr, fn)	\
+ENTRY(name)				\
+	ASM_CLAC;			\
+	pushl	$~(nr);			\
+	SAVE_ALL;			\
+	ENCODE_FRAME_POINTER;		\
+	TRACE_IRQS_OFF			\
+	movl	%esp, %eax;		\
+	call	fn;			\
+	jmp	ret_from_intr;		\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 ENDPROC(name)
 
 #define BUILD_INTERRUPT(name, nr)		\
@@ -1359,12 +1497,15 @@ BUILD_INTERRUPT3(xen_hvm_callback_vector, HYPERVISOR_CALLBACK_VECTOR,
 BUILD_INTERRUPT3(hyperv_callback_vector, HYPERVISOR_CALLBACK_VECTOR,
 		 hyperv_vector_handler)
 
+<<<<<<< HEAD
 BUILD_INTERRUPT3(hyperv_reenlightenment_vector, HYPERV_REENLIGHTENMENT_VECTOR,
 		 hyperv_reenlightenment_intr)
 
 BUILD_INTERRUPT3(hv_stimer0_callback_vector, HYPERV_STIMER0_VECTOR,
 		 hv_stimer0_vector_handler)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_HYPERV */
 
 ENTRY(page_fault)
@@ -1380,20 +1521,30 @@ common_exception:
 	pushl	%es
 	pushl	%ds
 	pushl	%eax
+<<<<<<< HEAD
 	movl	$(__USER_DS), %eax
 	movl	%eax, %ds
 	movl	%eax, %es
 	movl	$(__KERNEL_PERCPU), %eax
 	movl	%eax, %fs
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pushl	%ebp
 	pushl	%edi
 	pushl	%esi
 	pushl	%edx
 	pushl	%ecx
 	pushl	%ebx
+<<<<<<< HEAD
 	SWITCH_TO_KERNEL_STACK
 	ENCODE_FRAME_POINTER
 	cld
+=======
+	ENCODE_FRAME_POINTER
+	cld
+	movl	$(__KERNEL_PERCPU), %ecx
+	movl	%ecx, %fs
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	UNWIND_ESPFIX_STACK
 	GS_TO_REG %ecx
 	movl	PT_GS(%esp), %edi		# get the function address
@@ -1401,6 +1552,12 @@ common_exception:
 	movl	$-1, PT_ORIG_EAX(%esp)		# no syscall to restart
 	REG_TO_PTGS %ecx
 	SET_KERNEL_GS %ecx
+<<<<<<< HEAD
+=======
+	movl	$(__USER_DS), %ecx
+	movl	%ecx, %ds
+	movl	%ecx, %es
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	TRACE_IRQS_OFF
 	movl	%esp, %eax			# pt_regs pointer
 	CALL_NOSPEC %edi
@@ -1409,12 +1566,49 @@ END(common_exception)
 
 ENTRY(debug)
 	/*
+<<<<<<< HEAD
 	 * Entry from sysenter is now handled in common_exception
 	 */
 	ASM_CLAC
 	pushl	$-1				# mark this as an int
 	pushl	$do_debug
 	jmp	common_exception
+=======
+	 * #DB can happen at the first instruction of
+	 * entry_SYSENTER_32 or in Xen's SYSENTER prologue.  If this
+	 * happens, then we will be running on a very small stack.  We
+	 * need to detect this condition and switch to the thread
+	 * stack before calling any C code at all.
+	 *
+	 * If you edit this code, keep in mind that NMIs can happen in here.
+	 */
+	ASM_CLAC
+	pushl	$-1				# mark this as an int
+	SAVE_ALL
+	ENCODE_FRAME_POINTER
+	xorl	%edx, %edx			# error code 0
+	movl	%esp, %eax			# pt_regs pointer
+
+	/* Are we currently on the SYSENTER stack? */
+	movl	PER_CPU_VAR(cpu_entry_area), %ecx
+	addl	$CPU_ENTRY_AREA_entry_stack + SIZEOF_entry_stack, %ecx
+	subl	%eax, %ecx	/* ecx = (end of entry_stack) - esp */
+	cmpl	$SIZEOF_entry_stack, %ecx
+	jb	.Ldebug_from_sysenter_stack
+
+	TRACE_IRQS_OFF
+	call	do_debug
+	jmp	ret_from_exception
+
+.Ldebug_from_sysenter_stack:
+	/* We're on the SYSENTER stack.  Switch off. */
+	movl	%esp, %ebx
+	movl	PER_CPU_VAR(cpu_current_top_of_stack), %esp
+	TRACE_IRQS_OFF
+	call	do_debug
+	movl	%ebx, %esp
+	jmp	ret_from_exception
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 END(debug)
 
 /*
@@ -1426,7 +1620,10 @@ END(debug)
  */
 ENTRY(nmi)
 	ASM_CLAC
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_X86_ESPFIX32
 	pushl	%eax
 	movl	%ss, %eax
@@ -1436,7 +1633,11 @@ ENTRY(nmi)
 #endif
 
 	pushl	%eax				# pt_regs->orig_ax
+<<<<<<< HEAD
 	SAVE_ALL_NMI cr3_reg=%edi
+=======
+	SAVE_ALL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ENCODE_FRAME_POINTER
 	xorl	%edx, %edx			# zero error code
 	movl	%esp, %eax			# pt_regs pointer
@@ -1450,7 +1651,11 @@ ENTRY(nmi)
 
 	/* Not on SYSENTER stack. */
 	call	do_nmi
+<<<<<<< HEAD
 	jmp	.Lnmi_return
+=======
+	jmp	.Lrestore_all_notrace
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 .Lnmi_from_sysenter_stack:
 	/*
@@ -1461,11 +1666,15 @@ ENTRY(nmi)
 	movl	PER_CPU_VAR(cpu_current_top_of_stack), %esp
 	call	do_nmi
 	movl	%ebx, %esp
+<<<<<<< HEAD
 
 .Lnmi_return:
 	CHECK_AND_APPLY_ESPFIX
 	RESTORE_ALL_NMI cr3_reg=%edi pop=4
 	jmp	.Lirq_return
+=======
+	jmp	.Lrestore_all_notrace
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_X86_ESPFIX32
 .Lnmi_espfix_stack:
@@ -1480,12 +1689,20 @@ ENTRY(nmi)
 	pushl	16(%esp)
 	.endr
 	pushl	%eax
+<<<<<<< HEAD
 	SAVE_ALL_NMI cr3_reg=%edi
+=======
+	SAVE_ALL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ENCODE_FRAME_POINTER
 	FIXUP_ESPFIX_STACK			# %eax == %esp
 	xorl	%edx, %edx			# zero error code
 	call	do_nmi
+<<<<<<< HEAD
 	RESTORE_ALL_NMI cr3_reg=%edi
+=======
+	RESTORE_REGS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lss	12+4(%esp), %esp		# back to espfix stack
 	jmp	.Lirq_return
 #endif
@@ -1494,8 +1711,12 @@ END(nmi)
 ENTRY(int3)
 	ASM_CLAC
 	pushl	$-1				# mark this as an int
+<<<<<<< HEAD
 
 	SAVE_ALL switch_stacks=1
+=======
+	SAVE_ALL
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ENCODE_FRAME_POINTER
 	TRACE_IRQS_OFF
 	xorl	%edx, %edx			# zero error code
@@ -1505,6 +1726,10 @@ ENTRY(int3)
 END(int3)
 
 ENTRY(general_protection)
+<<<<<<< HEAD
+=======
+	ASM_CLAC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pushl	$do_general_protection
 	jmp	common_exception
 END(general_protection)

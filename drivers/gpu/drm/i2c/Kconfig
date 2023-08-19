@@ -22,14 +22,20 @@ config DRM_I2C_SIL164
 config DRM_I2C_NXP_TDA998X
 	tristate "NXP Semiconductors TDA998X HDMI encoder"
 	default m if DRM_TILCDC
+<<<<<<< HEAD
 	select CEC_CORE if CEC_NOTIFIER
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select SND_SOC_HDMI_CODEC if SND_SOC
 	help
 	  Support for NXP Semiconductors TDA998X HDMI encoders.
 
+<<<<<<< HEAD
 config DRM_I2C_NXP_TDA9950
 	tristate "NXP Semiconductors TDA9950/TDA998X HDMI CEC"
 	select CEC_NOTIFIER
 	select CEC_CORE
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 endmenu

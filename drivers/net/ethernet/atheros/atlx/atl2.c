@@ -1028,9 +1028,15 @@ static void atl2_tx_timeout(struct net_device *netdev)
  * atl2_watchdog - Timer Call-back
  * @data: pointer to netdev cast into an unsigned long
  */
+<<<<<<< HEAD
 static void atl2_watchdog(struct timer_list *t)
 {
 	struct atl2_adapter *adapter = from_timer(adapter, t, watchdog_timer);
+=======
+static void atl2_watchdog(unsigned long data)
+{
+	struct atl2_adapter *adapter = (struct atl2_adapter *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!test_bit(__ATL2_DOWN, &adapter->flags)) {
 		u32 drop_rxd, drop_rxs;
@@ -1053,10 +1059,16 @@ static void atl2_watchdog(struct timer_list *t)
  * atl2_phy_config - Timer Call-back
  * @data: pointer to netdev cast into an unsigned long
  */
+<<<<<<< HEAD
 static void atl2_phy_config(struct timer_list *t)
 {
 	struct atl2_adapter *adapter = from_timer(adapter, t,
 						  phy_config_timer);
+=======
+static void atl2_phy_config(unsigned long data)
+{
+	struct atl2_adapter *adapter = (struct atl2_adapter *) data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct atl2_hw *hw = &adapter->hw;
 	unsigned long flags;
 
@@ -1433,9 +1445,17 @@ static int atl2_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	atl2_check_options(adapter);
 
+<<<<<<< HEAD
 	timer_setup(&adapter->watchdog_timer, atl2_watchdog, 0);
 
 	timer_setup(&adapter->phy_config_timer, atl2_phy_config, 0);
+=======
+	setup_timer(&adapter->watchdog_timer, atl2_watchdog,
+		    (unsigned long)adapter);
+
+	setup_timer(&adapter->phy_config_timer, atl2_phy_config,
+		    (unsigned long)adapter);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_WORK(&adapter->reset_task, atl2_reset_task);
 	INIT_WORK(&adapter->link_chg_task, atl2_link_chg_task);
@@ -1939,8 +1959,13 @@ static int atl2_get_eeprom(struct net_device *netdev,
 	first_dword = eeprom->offset >> 2;
 	last_dword = (eeprom->offset + eeprom->len - 1) >> 2;
 
+<<<<<<< HEAD
 	eeprom_buff = kmalloc_array(last_dword - first_dword + 1, sizeof(u32),
 				    GFP_KERNEL);
+=======
+	eeprom_buff = kmalloc(sizeof(u32) * (last_dword - first_dword + 1),
+		GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!eeprom_buff)
 		return -ENOMEM;
 

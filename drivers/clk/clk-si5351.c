@@ -903,6 +903,7 @@ static int _si5351_clkout_set_disable_state(
 	return 0;
 }
 
+<<<<<<< HEAD
 static void _si5351_clkout_reset_pll(struct si5351_driver_data *drvdata, int num)
 {
 	u8 val = si5351_reg_read(drvdata, SI5351_CLK0_CTRL + num);
@@ -922,10 +923,13 @@ static void _si5351_clkout_reset_pll(struct si5351_driver_data *drvdata, int num
 		(val & SI5351_CLK_PLL_SELECT) ? 1 : 0);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int si5351_clkout_prepare(struct clk_hw *hw)
 {
 	struct si5351_hw_data *hwdata =
 		container_of(hw, struct si5351_hw_data, hw);
+<<<<<<< HEAD
 	struct si5351_platform_data *pdata =
 		hwdata->drvdata->client->dev.platform_data;
 
@@ -939,6 +943,11 @@ static int si5351_clkout_prepare(struct clk_hw *hw)
 	if (pdata->clkout[hwdata->num].pll_reset)
 		_si5351_clkout_reset_pll(hwdata->drvdata, hwdata->num);
 
+=======
+
+	si5351_set_bits(hwdata->drvdata, SI5351_CLK0_CTRL + hwdata->num,
+			SI5351_CLK_POWERDOWN, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	si5351_set_bits(hwdata->drvdata, SI5351_OUTPUT_ENABLE_CTRL,
 			(1 << hwdata->num), 0);
 	return 0;
@@ -1326,9 +1335,12 @@ static int si5351_dt_parse(struct i2c_client *client,
 
 		pdata->clkout[num].pll_master =
 			of_property_read_bool(child, "silabs,pll-master");
+<<<<<<< HEAD
 
 		pdata->clkout[num].pll_reset =
 			of_property_read_bool(child, "silabs,pll-reset");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	client->dev.platform_data = pdata;
 
@@ -1469,6 +1481,14 @@ static int si5351_i2c_probe(struct i2c_client *client,
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	if (!IS_ERR(drvdata->pxtal))
+		clk_prepare_enable(drvdata->pxtal);
+	if (!IS_ERR(drvdata->pclkin))
+		clk_prepare_enable(drvdata->pclkin);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* register xtal input clock gate */
 	memset(&init, 0, sizeof(init));
 	init.name = si5351_input_names[0];
@@ -1483,7 +1503,11 @@ static int si5351_i2c_probe(struct i2c_client *client,
 	ret = devm_clk_hw_register(&client->dev, &drvdata->xtal);
 	if (ret) {
 		dev_err(&client->dev, "unable to register %s\n", init.name);
+<<<<<<< HEAD
 		return ret;
+=======
+		goto err_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* register clkin input clock gate */
@@ -1501,7 +1525,11 @@ static int si5351_i2c_probe(struct i2c_client *client,
 		if (ret) {
 			dev_err(&client->dev, "unable to register %s\n",
 				init.name);
+<<<<<<< HEAD
 			return ret;
+=======
+			goto err_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1523,7 +1551,11 @@ static int si5351_i2c_probe(struct i2c_client *client,
 	ret = devm_clk_hw_register(&client->dev, &drvdata->pll[0].hw);
 	if (ret) {
 		dev_err(&client->dev, "unable to register %s\n", init.name);
+<<<<<<< HEAD
 		return ret;
+=======
+		goto err_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* register PLLB or VXCO (Si5351B) */
@@ -1547,7 +1579,11 @@ static int si5351_i2c_probe(struct i2c_client *client,
 	ret = devm_clk_hw_register(&client->dev, &drvdata->pll[1].hw);
 	if (ret) {
 		dev_err(&client->dev, "unable to register %s\n", init.name);
+<<<<<<< HEAD
 		return ret;
+=======
+		goto err_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* register clk multisync and clk out divider */
@@ -1566,7 +1602,11 @@ static int si5351_i2c_probe(struct i2c_client *client,
 
 	if (WARN_ON(!drvdata->msynth || !drvdata->clkout)) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		return ret;
+=======
+		goto err_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (n = 0; n < num_clocks; n++) {
@@ -1586,7 +1626,11 @@ static int si5351_i2c_probe(struct i2c_client *client,
 		if (ret) {
 			dev_err(&client->dev, "unable to register %s\n",
 				init.name);
+<<<<<<< HEAD
 			return ret;
+=======
+			goto err_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
@@ -1614,7 +1658,11 @@ static int si5351_i2c_probe(struct i2c_client *client,
 		if (ret) {
 			dev_err(&client->dev, "unable to register %s\n",
 				init.name);
+<<<<<<< HEAD
 			return ret;
+=======
+			goto err_clk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 
 		/* set initial clkout rate */
@@ -1633,6 +1681,7 @@ static int si5351_i2c_probe(struct i2c_client *client,
 				     drvdata);
 	if (ret) {
 		dev_err(&client->dev, "unable to add clk provider\n");
+<<<<<<< HEAD
 		return ret;
 	}
 
@@ -1644,6 +1693,19 @@ static int si5351_i2c_remove(struct i2c_client *client)
 	of_clk_del_provider(client->dev.of_node);
 
 	return 0;
+=======
+		goto err_clk;
+	}
+
+	return 0;
+
+err_clk:
+	if (!IS_ERR(drvdata->pxtal))
+		clk_disable_unprepare(drvdata->pxtal);
+	if (!IS_ERR(drvdata->pclkin))
+		clk_disable_unprepare(drvdata->pclkin);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct i2c_device_id si5351_i2c_ids[] = {
@@ -1661,7 +1723,10 @@ static struct i2c_driver si5351_driver = {
 		.of_match_table = of_match_ptr(si5351_dt_ids),
 	},
 	.probe = si5351_i2c_probe,
+<<<<<<< HEAD
 	.remove = si5351_i2c_remove,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.id_table = si5351_i2c_ids,
 };
 module_i2c_driver(si5351_driver);

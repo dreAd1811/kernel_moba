@@ -164,7 +164,11 @@ static s32 sch_access(struct i2c_adapter *adap, u16 addr,
 		 * run ~75 kHz instead which should do no harm.
 		 */
 		dev_notice(&sch_adapter.dev,
+<<<<<<< HEAD
 			"Clock divider uninitialized. Setting defaults\n");
+=======
+			"Clock divider unitialized. Setting defaults\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		outw(backbone_speed / (4 * 100), SMBHSTCLK);
 	}
 

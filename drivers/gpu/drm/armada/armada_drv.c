@@ -9,34 +9,92 @@
 #include <linux/component.h>
 #include <linux/module.h>
 #include <linux/of_graph.h>
+<<<<<<< HEAD
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_fb_helper.h>
+=======
+#include <drm/drmP.h>
+#include <drm/drm_crtc_helper.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_of.h>
 #include "armada_crtc.h"
 #include "armada_drm.h"
 #include "armada_gem.h"
+<<<<<<< HEAD
 #include "armada_fb.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "armada_hw.h"
 #include <drm/armada_drm.h>
 #include "armada_ioctlP.h"
 
+<<<<<<< HEAD
+=======
+static void armada_drm_unref_work(struct work_struct *work)
+{
+	struct armada_private *priv =
+		container_of(work, struct armada_private, fb_unref_work);
+	struct drm_framebuffer *fb;
+
+	while (kfifo_get(&priv->fb_unref, &fb))
+		drm_framebuffer_unreference(fb);
+}
+
+/* Must be called with dev->event_lock held */
+void __armada_drm_queue_unref_work(struct drm_device *dev,
+	struct drm_framebuffer *fb)
+{
+	struct armada_private *priv = dev->dev_private;
+
+	WARN_ON(!kfifo_put(&priv->fb_unref, fb));
+	schedule_work(&priv->fb_unref_work);
+}
+
+void armada_drm_queue_unref_work(struct drm_device *dev,
+	struct drm_framebuffer *fb)
+{
+	unsigned long flags;
+
+	spin_lock_irqsave(&dev->event_lock, flags);
+	__armada_drm_queue_unref_work(dev, fb);
+	spin_unlock_irqrestore(&dev->event_lock, flags);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct drm_ioctl_desc armada_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(ARMADA_GEM_CREATE, armada_gem_create_ioctl,0),
 	DRM_IOCTL_DEF_DRV(ARMADA_GEM_MMAP, armada_gem_mmap_ioctl, 0),
 	DRM_IOCTL_DEF_DRV(ARMADA_GEM_PWRITE, armada_gem_pwrite_ioctl, 0),
 };
 
+<<<<<<< HEAD
 DEFINE_DRM_GEM_FOPS(armada_drm_fops);
 
 static struct drm_driver armada_drm_driver = {
 	.lastclose		= drm_fb_helper_lastclose,
+=======
+static void armada_drm_lastclose(struct drm_device *dev)
+{
+	armada_fbdev_lastclose(dev);
+}
+
+DEFINE_DRM_GEM_FOPS(armada_drm_fops);
+
+static struct drm_driver armada_drm_driver = {
+	.lastclose		= armada_drm_lastclose,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gem_free_object_unlocked = armada_gem_free_object,
 	.prime_handle_to_fd	= drm_gem_prime_handle_to_fd,
 	.prime_fd_to_handle	= drm_gem_prime_fd_to_handle,
 	.gem_prime_export	= armada_gem_prime_export,
 	.gem_prime_import	= armada_gem_prime_import,
 	.dumb_create		= armada_gem_dumb_create,
+<<<<<<< HEAD
+=======
+	.dumb_map_offset	= armada_gem_dumb_map_offset,
+	.dumb_destroy		= armada_gem_dumb_destroy,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.gem_vm_ops		= &armada_gem_vm_ops,
 	.major			= 1,
 	.minor			= 0,
@@ -44,11 +102,16 @@ static struct drm_driver armada_drm_driver = {
 	.desc			= "Armada SoC DRM",
 	.date			= "20120730",
 	.driver_features	= DRIVER_GEM | DRIVER_MODESET |
+<<<<<<< HEAD
 				  DRIVER_PRIME | DRIVER_ATOMIC,
+=======
+				  DRIVER_PRIME,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.ioctls			= armada_ioctls,
 	.fops			= &armada_drm_fops,
 };
 
+<<<<<<< HEAD
 static const struct drm_mode_config_funcs armada_drm_mode_config_funcs = {
 	.fb_create		= armada_fb_create,
 	.output_poll_changed	= drm_fb_helper_output_poll_changed,
@@ -56,6 +119,8 @@ static const struct drm_mode_config_funcs armada_drm_mode_config_funcs = {
 	.atomic_commit		= drm_atomic_helper_commit,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int armada_drm_bind(struct device *dev)
 {
 	struct armada_private *priv;
@@ -88,7 +153,11 @@ static int armada_drm_bind(struct device *dev)
 
 	/*
 	 * The drm_device structure must be at the start of
+<<<<<<< HEAD
 	 * armada_private for drm_dev_put() to work correctly.
+=======
+	 * armada_private for drm_dev_unref() to work correctly.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	BUILD_BUG_ON(offsetof(struct armada_private, drm) != 0);
 
@@ -104,6 +173,12 @@ static int armada_drm_bind(struct device *dev)
 
 	dev_set_drvdata(dev, &priv->drm);
 
+<<<<<<< HEAD
+=======
+	INIT_WORK(&priv->fb_unref_work, armada_drm_unref_work);
+	INIT_KFIFO(priv->fb_unref);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Mode setting support */
 	drm_mode_config_init(&priv->drm);
 	priv->drm.mode_config.min_width = 320;
@@ -131,8 +206,11 @@ static int armada_drm_bind(struct device *dev)
 
 	priv->drm.irq_enabled = true;
 
+<<<<<<< HEAD
 	drm_mode_config_reset(&priv->drm);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = armada_fbdev_init(&priv->drm);
 	if (ret)
 		goto err_comp;
@@ -157,7 +235,12 @@ static int armada_drm_bind(struct device *dev)
  err_kms:
 	drm_mode_config_cleanup(&priv->drm);
 	drm_mm_takedown(&priv->linear);
+<<<<<<< HEAD
 	drm_dev_put(&priv->drm);
+=======
+	flush_work(&priv->fb_unref_work);
+	drm_dev_unref(&priv->drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -175,8 +258,14 @@ static void armada_drm_unbind(struct device *dev)
 
 	drm_mode_config_cleanup(&priv->drm);
 	drm_mm_takedown(&priv->linear);
+<<<<<<< HEAD
 
 	drm_dev_put(&priv->drm);
+=======
+	flush_work(&priv->fb_unref_work);
+
+	drm_dev_unref(&priv->drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int compare_of(struct device *dev, void *data)

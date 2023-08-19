@@ -65,6 +65,7 @@
 	};
 };
 
+<<<<<<< HEAD
 &clks {
 	assigned-clocks = <&clks IMX6QDL_CLK_LDB_DI0_SEL>,
 			  <&clks IMX6QDL_CLK_LDB_DI1_SEL>;
@@ -72,6 +73,8 @@
 				 <&clks IMX6QDL_CLK_PLL3_USB_OTG>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ldb {
 	status = "okay";
 
@@ -112,6 +115,7 @@
                 line-name = "PCA9539-P07";
         };
 };
+<<<<<<< HEAD
 
 &pci_root {
 	/* Intel Corporation I210 Gigabit Network Connection */
@@ -164,3 +168,5 @@
 		};
 	};
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

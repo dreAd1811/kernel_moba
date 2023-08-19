@@ -65,8 +65,13 @@
 #include "oss/oss_2_0_d.h"
 #include "oss/oss_2_0_sh_mask.h"
 
+<<<<<<< HEAD
 #include "amdgpu_dm.h"
 #include "amdgpu_amdkfd.h"
+=======
+#include "amdgpu_amdkfd.h"
+#include "amdgpu_powerplay.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "dce_virtual.h"
 
 /*
@@ -754,6 +759,7 @@ static void cik_init_golden_registers(struct amdgpu_device *adev)
 
 	switch (adev->asic_type) {
 	case CHIP_BONAIRE:
+<<<<<<< HEAD
 		amdgpu_device_program_register_sequence(adev,
 							bonaire_mgcg_cgcg_init,
 							ARRAY_SIZE(bonaire_mgcg_cgcg_init));
@@ -822,6 +828,76 @@ static void cik_init_golden_registers(struct amdgpu_device *adev)
 		amdgpu_device_program_register_sequence(adev,
 							hawaii_golden_spm_registers,
 							ARRAY_SIZE(hawaii_golden_spm_registers));
+=======
+		amdgpu_program_register_sequence(adev,
+						 bonaire_mgcg_cgcg_init,
+						 (const u32)ARRAY_SIZE(bonaire_mgcg_cgcg_init));
+		amdgpu_program_register_sequence(adev,
+						 bonaire_golden_registers,
+						 (const u32)ARRAY_SIZE(bonaire_golden_registers));
+		amdgpu_program_register_sequence(adev,
+						 bonaire_golden_common_registers,
+						 (const u32)ARRAY_SIZE(bonaire_golden_common_registers));
+		amdgpu_program_register_sequence(adev,
+						 bonaire_golden_spm_registers,
+						 (const u32)ARRAY_SIZE(bonaire_golden_spm_registers));
+		break;
+	case CHIP_KABINI:
+		amdgpu_program_register_sequence(adev,
+						 kalindi_mgcg_cgcg_init,
+						 (const u32)ARRAY_SIZE(kalindi_mgcg_cgcg_init));
+		amdgpu_program_register_sequence(adev,
+						 kalindi_golden_registers,
+						 (const u32)ARRAY_SIZE(kalindi_golden_registers));
+		amdgpu_program_register_sequence(adev,
+						 kalindi_golden_common_registers,
+						 (const u32)ARRAY_SIZE(kalindi_golden_common_registers));
+		amdgpu_program_register_sequence(adev,
+						 kalindi_golden_spm_registers,
+						 (const u32)ARRAY_SIZE(kalindi_golden_spm_registers));
+		break;
+	case CHIP_MULLINS:
+		amdgpu_program_register_sequence(adev,
+						 kalindi_mgcg_cgcg_init,
+						 (const u32)ARRAY_SIZE(kalindi_mgcg_cgcg_init));
+		amdgpu_program_register_sequence(adev,
+						 godavari_golden_registers,
+						 (const u32)ARRAY_SIZE(godavari_golden_registers));
+		amdgpu_program_register_sequence(adev,
+						 kalindi_golden_common_registers,
+						 (const u32)ARRAY_SIZE(kalindi_golden_common_registers));
+		amdgpu_program_register_sequence(adev,
+						 kalindi_golden_spm_registers,
+						 (const u32)ARRAY_SIZE(kalindi_golden_spm_registers));
+		break;
+	case CHIP_KAVERI:
+		amdgpu_program_register_sequence(adev,
+						 spectre_mgcg_cgcg_init,
+						 (const u32)ARRAY_SIZE(spectre_mgcg_cgcg_init));
+		amdgpu_program_register_sequence(adev,
+						 spectre_golden_registers,
+						 (const u32)ARRAY_SIZE(spectre_golden_registers));
+		amdgpu_program_register_sequence(adev,
+						 spectre_golden_common_registers,
+						 (const u32)ARRAY_SIZE(spectre_golden_common_registers));
+		amdgpu_program_register_sequence(adev,
+						 spectre_golden_spm_registers,
+						 (const u32)ARRAY_SIZE(spectre_golden_spm_registers));
+		break;
+	case CHIP_HAWAII:
+		amdgpu_program_register_sequence(adev,
+						 hawaii_mgcg_cgcg_init,
+						 (const u32)ARRAY_SIZE(hawaii_mgcg_cgcg_init));
+		amdgpu_program_register_sequence(adev,
+						 hawaii_golden_registers,
+						 (const u32)ARRAY_SIZE(hawaii_golden_registers));
+		amdgpu_program_register_sequence(adev,
+						 hawaii_golden_common_registers,
+						 (const u32)ARRAY_SIZE(hawaii_golden_common_registers));
+		amdgpu_program_register_sequence(adev,
+						 hawaii_golden_spm_registers,
+						 (const u32)ARRAY_SIZE(hawaii_golden_spm_registers));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		break;
@@ -1022,6 +1098,7 @@ static const struct amdgpu_allowed_register_entry cik_allowed_read_registers[] =
 	{mmPA_SC_RASTER_CONFIG_1, true},
 };
 
+<<<<<<< HEAD
 
 static uint32_t cik_get_register_value(struct amdgpu_device *adev,
 				       bool indexed, u32 se_num,
@@ -1117,6 +1194,24 @@ static uint32_t cik_get_register_value(struct amdgpu_device *adev,
 			return RREG32(reg_offset);
 		}
 	}
+=======
+static uint32_t cik_read_indexed_register(struct amdgpu_device *adev,
+					  u32 se_num, u32 sh_num,
+					  u32 reg_offset)
+{
+	uint32_t val;
+
+	mutex_lock(&adev->grbm_idx_mutex);
+	if (se_num != 0xffffffff || sh_num != 0xffffffff)
+		amdgpu_gfx_select_se_sh(adev, se_num, sh_num, 0xffffffff);
+
+	val = RREG32(reg_offset);
+
+	if (se_num != 0xffffffff || sh_num != 0xffffffff)
+		amdgpu_gfx_select_se_sh(adev, 0xffffffff, 0xffffffff, 0xffffffff);
+	mutex_unlock(&adev->grbm_idx_mutex);
+	return val;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cik_read_register(struct amdgpu_device *adev, u32 se_num,
@@ -1126,6 +1221,7 @@ static int cik_read_register(struct amdgpu_device *adev, u32 se_num,
 
 	*value = 0;
 	for (i = 0; i < ARRAY_SIZE(cik_allowed_read_registers); i++) {
+<<<<<<< HEAD
 		bool indexed = cik_allowed_read_registers[i].grbm_indexed;
 
 		if (reg_offset != cik_allowed_read_registers[i].reg_offset)
@@ -1133,6 +1229,15 @@ static int cik_read_register(struct amdgpu_device *adev, u32 se_num,
 
 		*value = cik_get_register_value(adev, indexed, se_num, sh_num,
 						reg_offset);
+=======
+		if (reg_offset != cik_allowed_read_registers[i].reg_offset)
+			continue;
+
+		*value = cik_allowed_read_registers[i].grbm_indexed ?
+			 cik_read_indexed_register(adev, se_num,
+						   sh_num, reg_offset) :
+			 RREG32(reg_offset);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 	}
 	return -EINVAL;
@@ -1245,7 +1350,11 @@ static int cik_gpu_pci_config_reset(struct amdgpu_device *adev)
 	/* disable BM */
 	pci_clear_master(adev->pdev);
 	/* reset */
+<<<<<<< HEAD
 	amdgpu_device_pci_config_reset(adev);
+=======
+	amdgpu_pci_config_reset(adev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	udelay(100);
 
@@ -1476,7 +1585,11 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
 				tmp |= PCIE_LC_CNTL4__LC_REDO_EQ_MASK;
 				WREG32_PCIE(ixPCIE_LC_CNTL4, tmp);
 
+<<<<<<< HEAD
 				msleep(100);
+=======
+				mdelay(100);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 				/* linkctl */
 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL, &tmp16);
@@ -1714,6 +1827,7 @@ static void cik_detect_hw_virtualization(struct amdgpu_device *adev)
 		adev->virt.caps |= AMDGPU_PASSTHROUGH_MODE;
 }
 
+<<<<<<< HEAD
 static void cik_flush_hdp(struct amdgpu_device *adev, struct amdgpu_ring *ring)
 {
 	if (!ring || !ring->funcs->emit_wreg) {
@@ -1741,6 +1855,8 @@ static bool cik_need_full_reset(struct amdgpu_device *adev)
 	return true;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct amdgpu_asic_funcs cik_asic_funcs =
 {
 	.read_disabled_bios = &cik_read_disabled_bios,
@@ -1752,9 +1868,12 @@ static const struct amdgpu_asic_funcs cik_asic_funcs =
 	.set_uvd_clocks = &cik_set_uvd_clocks,
 	.set_vce_clocks = &cik_set_vce_clocks,
 	.get_config_memsize = &cik_get_config_memsize,
+<<<<<<< HEAD
 	.flush_hdp = &cik_flush_hdp,
 	.invalidate_hdp = &cik_invalidate_hdp,
 	.need_full_reset = &cik_need_full_reset,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int cik_common_early_init(void *handle)
@@ -1893,6 +2012,13 @@ static int cik_common_early_init(void *handle)
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
+=======
+	adev->firmware.load_type = amdgpu_ucode_get_load_type(adev, amdgpu_fw_load_type);
+
+	amdgpu_get_pcie_info(adev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -1999,6 +2125,7 @@ int cik_set_ip_blocks(struct amdgpu_device *adev)
 
 	switch (adev->asic_type) {
 	case CHIP_BONAIRE:
+<<<<<<< HEAD
 		amdgpu_device_ip_block_add(adev, &cik_common_ip_block);
 		amdgpu_device_ip_block_add(adev, &gmc_v7_0_ip_block);
 		amdgpu_device_ip_block_add(adev, &cik_ih_ip_block);
@@ -2076,6 +2203,63 @@ int cik_set_ip_blocks(struct amdgpu_device *adev)
 		amdgpu_device_ip_block_add(adev, &cik_sdma_ip_block);
 		amdgpu_device_ip_block_add(adev, &uvd_v4_2_ip_block);
 		amdgpu_device_ip_block_add(adev, &vce_v2_0_ip_block);
+=======
+		amdgpu_ip_block_add(adev, &cik_common_ip_block);
+		amdgpu_ip_block_add(adev, &gmc_v7_0_ip_block);
+		amdgpu_ip_block_add(adev, &cik_ih_ip_block);
+		amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
+		if (adev->enable_virtual_display)
+			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
+		else
+			amdgpu_ip_block_add(adev, &dce_v8_2_ip_block);
+		amdgpu_ip_block_add(adev, &gfx_v7_2_ip_block);
+		amdgpu_ip_block_add(adev, &cik_sdma_ip_block);
+		amdgpu_ip_block_add(adev, &uvd_v4_2_ip_block);
+		amdgpu_ip_block_add(adev, &vce_v2_0_ip_block);
+		break;
+	case CHIP_HAWAII:
+		amdgpu_ip_block_add(adev, &cik_common_ip_block);
+		amdgpu_ip_block_add(adev, &gmc_v7_0_ip_block);
+		amdgpu_ip_block_add(adev, &cik_ih_ip_block);
+		amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
+		if (adev->enable_virtual_display)
+			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
+		else
+			amdgpu_ip_block_add(adev, &dce_v8_5_ip_block);
+		amdgpu_ip_block_add(adev, &gfx_v7_3_ip_block);
+		amdgpu_ip_block_add(adev, &cik_sdma_ip_block);
+		amdgpu_ip_block_add(adev, &uvd_v4_2_ip_block);
+		amdgpu_ip_block_add(adev, &vce_v2_0_ip_block);
+		break;
+	case CHIP_KAVERI:
+		amdgpu_ip_block_add(adev, &cik_common_ip_block);
+		amdgpu_ip_block_add(adev, &gmc_v7_0_ip_block);
+		amdgpu_ip_block_add(adev, &cik_ih_ip_block);
+		amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
+		if (adev->enable_virtual_display)
+			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
+		else
+			amdgpu_ip_block_add(adev, &dce_v8_1_ip_block);
+		amdgpu_ip_block_add(adev, &gfx_v7_1_ip_block);
+		amdgpu_ip_block_add(adev, &cik_sdma_ip_block);
+		amdgpu_ip_block_add(adev, &uvd_v4_2_ip_block);
+		amdgpu_ip_block_add(adev, &vce_v2_0_ip_block);
+		break;
+	case CHIP_KABINI:
+	case CHIP_MULLINS:
+		amdgpu_ip_block_add(adev, &cik_common_ip_block);
+		amdgpu_ip_block_add(adev, &gmc_v7_0_ip_block);
+		amdgpu_ip_block_add(adev, &cik_ih_ip_block);
+		amdgpu_ip_block_add(adev, &amdgpu_pp_ip_block);
+		if (adev->enable_virtual_display)
+			amdgpu_ip_block_add(adev, &dce_virtual_ip_block);
+		else
+			amdgpu_ip_block_add(adev, &dce_v8_3_ip_block);
+		amdgpu_ip_block_add(adev, &gfx_v7_2_ip_block);
+		amdgpu_ip_block_add(adev, &cik_sdma_ip_block);
+		amdgpu_ip_block_add(adev, &uvd_v4_2_ip_block);
+		amdgpu_ip_block_add(adev, &vce_v2_0_ip_block);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	default:
 		/* FIXME: not supported yet */

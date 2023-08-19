@@ -1,16 +1,32 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 /*
  * vsp1_dl.c  --  R-Car VSP1 Display List
+=======
+/*
+ * vsp1_dl.h  --  R-Car VSP1 Display List
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Copyright (C) 2015 Renesas Corporation
  *
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/device.h>
 #include <linux/dma-mapping.h>
 #include <linux/gfp.h>
+<<<<<<< HEAD
 #include <linux/refcount.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 #include <linux/workqueue.h>
 
@@ -22,6 +38,7 @@
 #define VSP1_DLH_INT_ENABLE		(1 << 1)
 #define VSP1_DLH_AUTO_START		(1 << 0)
 
+<<<<<<< HEAD
 #define VSP1_DLH_EXT_PRE_CMD_EXEC	(1 << 9)
 #define VSP1_DLH_EXT_POST_CMD_EXEC	(1 << 8)
 
@@ -29,12 +46,19 @@ struct vsp1_dl_header_list {
 	u32 num_bytes;
 	u32 addr;
 } __packed;
+=======
+struct vsp1_dl_header_list {
+	u32 num_bytes;
+	u32 addr;
+} __attribute__((__packed__));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct vsp1_dl_header {
 	u32 num_lists;
 	struct vsp1_dl_header_list lists[8];
 	u32 next_header;
 	u32 flags;
+<<<<<<< HEAD
 } __packed;
 
 /**
@@ -69,10 +93,14 @@ struct vsp1_dl_header_extended {
 	struct vsp1_dl_header header;
 	struct vsp1_dl_ext_header ext;
 } __packed;
+=======
+} __attribute__((__packed__));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct vsp1_dl_entry {
 	u32 addr;
 	u32 data;
+<<<<<<< HEAD
 } __packed;
 
 /**
@@ -88,17 +116,25 @@ struct vsp1_pre_ext_dl_body {
 	u32 address_set;
 	u32 reserved;
 } __packed;
+=======
+} __attribute__((__packed__));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct vsp1_dl_body - Display list body
  * @list: entry in the display list list of bodies
+<<<<<<< HEAD
  * @free: entry in the pool free body list
  * @refcnt: reference tracking for the body
  * @pool: pool to which this body belongs
+=======
+ * @vsp1: the VSP1 device
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @entries: array of entries
  * @dma: DMA address of the entries
  * @size: size of the DMA memory in bytes
  * @num_entries: number of stored entries
+<<<<<<< HEAD
  * @max_entries: number of entries available
  */
 struct vsp1_dl_body {
@@ -108,12 +144,19 @@ struct vsp1_dl_body {
 	refcount_t refcnt;
 
 	struct vsp1_dl_body_pool *pool;
+=======
+ */
+struct vsp1_dl_body {
+	struct list_head list;
+	struct vsp1_device *vsp1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct vsp1_dl_entry *entries;
 	dma_addr_t dma;
 	size_t size;
 
 	unsigned int num_entries;
+<<<<<<< HEAD
 	unsigned int max_entries;
 };
 
@@ -163,12 +206,15 @@ struct vsp1_dl_cmd_pool {
 	spinlock_t lock;
 
 	struct vsp1_device *vsp1;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
  * struct vsp1_dl_list - Display list
  * @list: entry in the display list manager lists
  * @dlm: the display list manager
+<<<<<<< HEAD
  * @header: display list header
  * @extension: extended display list header. NULL for normal lists
  * @dma: DMA address for the header
@@ -179,12 +225,20 @@ struct vsp1_dl_cmd_pool {
  * @has_chain: if true, indicates that there's a partition chain
  * @chain: entry in the display list partition chain
  * @internal: whether the display list is used for internal purpose
+=======
+ * @header: display list header, NULL for headerless lists
+ * @dma: DMA address for the header
+ * @body0: first display list body
+ * @fragments: list of extra display list bodies
+ * @chain: entry in the display list partition chain
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct vsp1_dl_list {
 	struct list_head list;
 	struct vsp1_dl_manager *dlm;
 
 	struct vsp1_dl_header *header;
+<<<<<<< HEAD
 	struct vsp1_dl_ext_header *extension;
 	dma_addr_t dma;
 
@@ -198,23 +252,53 @@ struct vsp1_dl_list {
 	struct list_head chain;
 
 	bool internal;
+=======
+	dma_addr_t dma;
+
+	struct vsp1_dl_body body0;
+	struct list_head fragments;
+
+	bool has_chain;
+	struct list_head chain;
+};
+
+enum vsp1_dl_mode {
+	VSP1_DL_MODE_HEADER,
+	VSP1_DL_MODE_HEADERLESS,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
  * struct vsp1_dl_manager - Display List manager
  * @index: index of the related WPF
+<<<<<<< HEAD
  * @singleshot: execute the display list in single-shot mode
  * @vsp1: the VSP1 device
  * @lock: protects the free, active, queued, and pending lists
+=======
+ * @mode: display list operation mode (header or headerless)
+ * @singleshot: execute the display list in single-shot mode
+ * @vsp1: the VSP1 device
+ * @lock: protects the free, active, queued, pending and gc_fragments lists
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @free: array of all free display lists
  * @active: list currently being processed (loaded) by hardware
  * @queued: list queued to the hardware (written to the DL registers)
  * @pending: list waiting to be queued to the hardware
+<<<<<<< HEAD
  * @pool: body pool for the display list bodies
  * @cmdpool: commands pool for extended display list
  */
 struct vsp1_dl_manager {
 	unsigned int index;
+=======
+ * @gc_work: fragments garbage collector work struct
+ * @gc_fragments: array of display list fragments waiting to be freed
+ */
+struct vsp1_dl_manager {
+	unsigned int index;
+	enum vsp1_dl_mode mode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool singleshot;
 	struct vsp1_device *vsp1;
 
@@ -224,14 +308,20 @@ struct vsp1_dl_manager {
 	struct vsp1_dl_list *queued;
 	struct vsp1_dl_list *pending;
 
+<<<<<<< HEAD
 	struct vsp1_dl_body_pool *pool;
 	struct vsp1_dl_cmd_pool *cmdpool;
+=======
+	struct work_struct gc_work;
+	struct list_head gc_fragments;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* -----------------------------------------------------------------------------
  * Display List Body Management
  */
 
+<<<<<<< HEAD
 /**
  * vsp1_dl_body_pool_create - Create a pool of bodies from a single allocation
  * @vsp1: The VSP1 device
@@ -341,10 +431,70 @@ struct vsp1_dl_body *vsp1_dl_body_get(struct vsp1_dl_body_pool *pool)
 
 	spin_unlock_irqrestore(&pool->lock, flags);
 
+=======
+/*
+ * Initialize a display list body object and allocate DMA memory for the body
+ * data. The display list body object is expected to have been initialized to
+ * 0 when allocated.
+ */
+static int vsp1_dl_body_init(struct vsp1_device *vsp1,
+			     struct vsp1_dl_body *dlb, unsigned int num_entries,
+			     size_t extra_size)
+{
+	size_t size = num_entries * sizeof(*dlb->entries) + extra_size;
+
+	dlb->vsp1 = vsp1;
+	dlb->size = size;
+
+	dlb->entries = dma_alloc_wc(vsp1->bus_master, dlb->size, &dlb->dma,
+				    GFP_KERNEL);
+	if (!dlb->entries)
+		return -ENOMEM;
+
+	return 0;
+}
+
+/*
+ * Cleanup a display list body and free allocated DMA memory allocated.
+ */
+static void vsp1_dl_body_cleanup(struct vsp1_dl_body *dlb)
+{
+	dma_free_wc(dlb->vsp1->bus_master, dlb->size, dlb->entries, dlb->dma);
+}
+
+/**
+ * vsp1_dl_fragment_alloc - Allocate a display list fragment
+ * @vsp1: The VSP1 device
+ * @num_entries: The maximum number of entries that the fragment can contain
+ *
+ * Allocate a display list fragment with enough memory to contain the requested
+ * number of entries.
+ *
+ * Return a pointer to a fragment on success or NULL if memory can't be
+ * allocated.
+ */
+struct vsp1_dl_body *vsp1_dl_fragment_alloc(struct vsp1_device *vsp1,
+					    unsigned int num_entries)
+{
+	struct vsp1_dl_body *dlb;
+	int ret;
+
+	dlb = kzalloc(sizeof(*dlb), GFP_KERNEL);
+	if (!dlb)
+		return NULL;
+
+	ret = vsp1_dl_body_init(vsp1, dlb, num_entries, 0);
+	if (ret < 0) {
+		kfree(dlb);
+		return NULL;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return dlb;
 }
 
 /**
+<<<<<<< HEAD
  * vsp1_dl_body_put - Return a body back to its pool
  * @dlb: The display list body
  *
@@ -383,12 +533,49 @@ void vsp1_dl_body_write(struct vsp1_dl_body *dlb, u32 reg, u32 data)
 		      "DLB size exceeded (max %u)", dlb->max_entries))
 		return;
 
+=======
+ * vsp1_dl_fragment_free - Free a display list fragment
+ * @dlb: The fragment
+ *
+ * Free the given display list fragment and the associated DMA memory.
+ *
+ * Fragments must only be freed explicitly if they are not added to a display
+ * list, as the display list will take ownership of them and free them
+ * otherwise. Manual free typically happens at cleanup time for fragments that
+ * have been allocated but not used.
+ *
+ * Passing a NULL pointer to this function is safe, in that case no operation
+ * will be performed.
+ */
+void vsp1_dl_fragment_free(struct vsp1_dl_body *dlb)
+{
+	if (!dlb)
+		return;
+
+	vsp1_dl_body_cleanup(dlb);
+	kfree(dlb);
+}
+
+/**
+ * vsp1_dl_fragment_write - Write a register to a display list fragment
+ * @dlb: The fragment
+ * @reg: The register address
+ * @data: The register value
+ *
+ * Write the given register and value to the display list fragment. The maximum
+ * number of entries that can be written in a fragment is specified when the
+ * fragment is allocated by vsp1_dl_fragment_alloc().
+ */
+void vsp1_dl_fragment_write(struct vsp1_dl_body *dlb, u32 reg, u32 data)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dlb->entries[dlb->num_entries].addr = reg;
 	dlb->entries[dlb->num_entries].data = data;
 	dlb->num_entries++;
 }
 
 /* -----------------------------------------------------------------------------
+<<<<<<< HEAD
  * Display List Extended Command Management
  */
 
@@ -540,28 +727,55 @@ struct vsp1_dl_ext_cmd *vsp1_dl_get_pre_cmd(struct vsp1_dl_list *dl)
 }
 
 /* ----------------------------------------------------------------------------
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Display List Transaction Management
  */
 
 static struct vsp1_dl_list *vsp1_dl_list_alloc(struct vsp1_dl_manager *dlm)
 {
 	struct vsp1_dl_list *dl;
+<<<<<<< HEAD
 	size_t header_offset;
+=======
+	size_t header_size;
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dl = kzalloc(sizeof(*dl), GFP_KERNEL);
 	if (!dl)
 		return NULL;
 
+<<<<<<< HEAD
 	INIT_LIST_HEAD(&dl->bodies);
 	dl->dlm = dlm;
 
 	/* Get a default body for our list. */
 	dl->body0 = vsp1_dl_body_get(dlm->pool);
 	if (!dl->body0) {
+=======
+	INIT_LIST_HEAD(&dl->fragments);
+	dl->dlm = dlm;
+
+	/*
+	 * Initialize the display list body and allocate DMA memory for the body
+	 * and the optional header. Both are allocated together to avoid memory
+	 * fragmentation, with the header located right after the body in
+	 * memory.
+	 */
+	header_size = dlm->mode == VSP1_DL_MODE_HEADER
+		    ? ALIGN(sizeof(struct vsp1_dl_header), 8)
+		    : 0;
+
+	ret = vsp1_dl_body_init(dlm->vsp1, &dl->body0, VSP1_DL_NUM_ENTRIES,
+				header_size);
+	if (ret < 0) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(dl);
 		return NULL;
 	}
 
+<<<<<<< HEAD
 	header_offset = dl->body0->max_entries * sizeof(*dl->body0->entries);
 
 	dl->header = ((void *)dl->body0->entries) + header_offset;
@@ -569,10 +783,23 @@ static struct vsp1_dl_list *vsp1_dl_list_alloc(struct vsp1_dl_manager *dlm)
 
 	memset(dl->header, 0, sizeof(*dl->header));
 	dl->header->lists[0].addr = dl->body0->dma;
+=======
+	if (dlm->mode == VSP1_DL_MODE_HEADER) {
+		size_t header_offset = VSP1_DL_NUM_ENTRIES
+				     * sizeof(*dl->body0.entries);
+
+		dl->header = ((void *)dl->body0.entries) + header_offset;
+		dl->dma = dl->body0.dma + header_offset;
+
+		memset(dl->header, 0, sizeof(*dl->header));
+		dl->header->lists[0].addr = dl->body0.dma;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return dl;
 }
 
+<<<<<<< HEAD
 static void vsp1_dl_list_bodies_put(struct vsp1_dl_list *dl)
 {
 	struct vsp1_dl_body *dlb, *tmp;
@@ -588,6 +815,12 @@ static void vsp1_dl_list_free(struct vsp1_dl_list *dl)
 	vsp1_dl_body_put(dl->body0);
 	vsp1_dl_list_bodies_put(dl);
 
+=======
+static void vsp1_dl_list_free(struct vsp1_dl_list *dl)
+{
+	vsp1_dl_body_cleanup(&dl->body0);
+	list_splice_init(&dl->fragments, &dl->dlm->gc_fragments);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(dl);
 }
 
@@ -625,7 +858,11 @@ struct vsp1_dl_list *vsp1_dl_list_get(struct vsp1_dl_manager *dlm)
 /* This function must be called with the display list manager lock held.*/
 static void __vsp1_dl_list_put(struct vsp1_dl_list *dl)
 {
+<<<<<<< HEAD
 	struct vsp1_dl_list *dl_next;
+=======
+	struct vsp1_dl_list *dl_child;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!dl)
 		return;
@@ -635,12 +872,18 @@ static void __vsp1_dl_list_put(struct vsp1_dl_list *dl)
 	 * hardware operation.
 	 */
 	if (dl->has_chain) {
+<<<<<<< HEAD
 		list_for_each_entry(dl_next, &dl->chain, chain)
 			__vsp1_dl_list_put(dl_next);
+=======
+		list_for_each_entry(dl_child, &dl->chain, chain)
+			__vsp1_dl_list_put(dl_child);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	dl->has_chain = false;
 
+<<<<<<< HEAD
 	vsp1_dl_list_bodies_put(dl);
 
 	vsp1_dl_ext_cmd_put(dl->pre_cmd);
@@ -654,6 +897,20 @@ static void __vsp1_dl_list_put(struct vsp1_dl_list *dl)
 	 * has at least one body, thus we reinitialise the entries list.
 	 */
 	dl->body0->num_entries = 0;
+=======
+	/*
+	 * We can't free fragments here as DMA memory can only be freed in
+	 * interruptible context. Move all fragments to the display list
+	 * manager's list of fragments to be freed, they will be
+	 * garbage-collected by the work queue.
+	 */
+	if (!list_empty(&dl->fragments)) {
+		list_splice_init(&dl->fragments, &dl->dlm->gc_fragments);
+		schedule_work(&dl->dlm->gc_work);
+	}
+
+	dl->body0.num_entries = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	list_add_tail(&dl->list, &dl->dlm->free);
 }
@@ -680,6 +937,7 @@ void vsp1_dl_list_put(struct vsp1_dl_list *dl)
 }
 
 /**
+<<<<<<< HEAD
  * vsp1_dl_list_get_body0 - Obtain the default body for the display list
  * @dl: The display list
  *
@@ -713,6 +971,45 @@ int vsp1_dl_list_add_body(struct vsp1_dl_list *dl, struct vsp1_dl_body *dlb)
 
 	list_add_tail(&dlb->list, &dl->bodies);
 
+=======
+ * vsp1_dl_list_write - Write a register to the display list
+ * @dl: The display list
+ * @reg: The register address
+ * @data: The register value
+ *
+ * Write the given register and value to the display list. Up to 256 registers
+ * can be written per display list.
+ */
+void vsp1_dl_list_write(struct vsp1_dl_list *dl, u32 reg, u32 data)
+{
+	vsp1_dl_fragment_write(&dl->body0, reg, data);
+}
+
+/**
+ * vsp1_dl_list_add_fragment - Add a fragment to the display list
+ * @dl: The display list
+ * @dlb: The fragment
+ *
+ * Add a display list body as a fragment to a display list. Registers contained
+ * in fragments are processed after registers contained in the main display
+ * list, in the order in which fragments are added.
+ *
+ * Adding a fragment to a display list passes ownership of the fragment to the
+ * list. The caller must not touch the fragment after this call, and must not
+ * free it explicitly with vsp1_dl_fragment_free().
+ *
+ * Fragments are only usable for display lists in header mode. Attempt to
+ * add a fragment to a header-less display list will return an error.
+ */
+int vsp1_dl_list_add_fragment(struct vsp1_dl_list *dl,
+			      struct vsp1_dl_body *dlb)
+{
+	/* Multi-body lists are only available in header mode. */
+	if (dl->dlm->mode != VSP1_DL_MODE_HEADER)
+		return -EINVAL;
+
+	list_add_tail(&dlb->list, &dl->fragments);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -729,15 +1026,29 @@ int vsp1_dl_list_add_body(struct vsp1_dl_list *dl, struct vsp1_dl_body *dlb)
  * Adding a display list to a chain passes ownership of the display list to
  * the head display list item. The chain is released when the head dl item is
  * put back with __vsp1_dl_list_put().
+<<<<<<< HEAD
+=======
+ *
+ * Chained display lists are only usable in header mode. Attempts to add a
+ * display list to a chain in header-less mode will return an error.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 int vsp1_dl_list_add_chain(struct vsp1_dl_list *head,
 			   struct vsp1_dl_list *dl)
 {
+<<<<<<< HEAD
+=======
+	/* Chained lists are only available in header mode. */
+	if (head->dlm->mode != VSP1_DL_MODE_HEADER)
+		return -EINVAL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	head->has_chain = true;
 	list_add_tail(&dl->chain, &head->chain);
 	return 0;
 }
 
+<<<<<<< HEAD
 static void vsp1_dl_ext_cmd_fill_header(struct vsp1_dl_ext_cmd *cmd)
 {
 	cmd->cmds[0].opcode = cmd->opcode;
@@ -746,6 +1057,8 @@ static void vsp1_dl_ext_cmd_fill_header(struct vsp1_dl_ext_cmd *cmd)
 	cmd->cmds[0].reserved = 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void vsp1_dl_list_fill_header(struct vsp1_dl_list *dl, bool is_last)
 {
 	struct vsp1_dl_manager *dlm = dl->dlm;
@@ -759,10 +1072,17 @@ static void vsp1_dl_list_fill_header(struct vsp1_dl_list *dl, bool is_last)
 	 * list was allocated.
 	 */
 
+<<<<<<< HEAD
 	hdr->num_bytes = dl->body0->num_entries
 		       * sizeof(*dl->header->lists);
 
 	list_for_each_entry(dlb, &dl->bodies, list) {
+=======
+	hdr->num_bytes = dl->body0.num_entries
+		       * sizeof(*dl->header->lists);
+
+	list_for_each_entry(dlb, &dl->fragments, list) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		num_lists++;
 		hdr++;
 
@@ -798,6 +1118,7 @@ static void vsp1_dl_list_fill_header(struct vsp1_dl_list *dl, bool is_last)
 		 */
 		dl->header->flags = VSP1_DLH_INT_ENABLE;
 	}
+<<<<<<< HEAD
 
 	if (!dl->extension)
 		return;
@@ -819,6 +1140,8 @@ static void vsp1_dl_list_fill_header(struct vsp1_dl_list *dl, bool is_last)
 
 		vsp1_dl_ext_cmd_fill_header(dl->post_cmd);
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool vsp1_dl_list_hw_update_pending(struct vsp1_dl_manager *dlm)
@@ -829,10 +1152,24 @@ static bool vsp1_dl_list_hw_update_pending(struct vsp1_dl_manager *dlm)
 		return false;
 
 	/*
+<<<<<<< HEAD
 	 * Check whether the VSP1 has taken the update. The hardware indicates
 	 * this by clearing the UPDHDR bit in the CMD register.
 	 */
 	return !!(vsp1_read(vsp1, VI6_CMD(dlm->index)) & VI6_CMD_UPDHDR);
+=======
+	 * Check whether the VSP1 has taken the update. In headerless mode the
+	 * hardware indicates this by clearing the UPD bit in the DL_BODY_SIZE
+	 * register, and in header mode by clearing the UPDHDR bit in the CMD
+	 * register.
+	 */
+	if (dlm->mode == VSP1_DL_MODE_HEADERLESS)
+		return !!(vsp1_read(vsp1, VI6_DL_BODY_SIZE)
+			  & VI6_DL_BODY_SIZE_UPD);
+	else
+		return !!(vsp1_read(vsp1, VI6_CMD(dlm->index))
+			  & VI6_CMD_UPDHDR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vsp1_dl_list_hw_enqueue(struct vsp1_dl_list *dl)
@@ -840,6 +1177,7 @@ static void vsp1_dl_list_hw_enqueue(struct vsp1_dl_list *dl)
 	struct vsp1_dl_manager *dlm = dl->dlm;
 	struct vsp1_device *vsp1 = dlm->vsp1;
 
+<<<<<<< HEAD
 	/*
 	 * Program the display list header address. If the hardware is idle
 	 * (single-shot mode or first frame in continuous mode) it will then be
@@ -848,6 +1186,28 @@ static void vsp1_dl_list_hw_enqueue(struct vsp1_dl_list *dl)
 	 * address.
 	 */
 	vsp1_write(vsp1, VI6_DL_HDR_ADDR(dlm->index), dl->dma);
+=======
+	if (dlm->mode == VSP1_DL_MODE_HEADERLESS) {
+		/*
+		 * In headerless mode, program the hardware directly with the
+		 * display list body address and size and set the UPD bit. The
+		 * bit will be cleared by the hardware when the display list
+		 * processing starts.
+		 */
+		vsp1_write(vsp1, VI6_DL_HDR_ADDR(0), dl->body0.dma);
+		vsp1_write(vsp1, VI6_DL_BODY_SIZE, VI6_DL_BODY_SIZE_UPD |
+			   (dl->body0.num_entries * sizeof(*dl->header->lists)));
+	} else {
+		/*
+		 * In header mode, program the display list header address. If
+		 * the hardware is idle (single-shot mode or first frame in
+		 * continuous mode) it will then be started independently. If
+		 * the hardware is operating, the VI6_DL_HDR_REF_ADDR register
+		 * will be updated with the display list address.
+		 */
+		vsp1_write(vsp1, VI6_DL_HDR_ADDR(dlm->index), dl->dma);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void vsp1_dl_list_commit_continuous(struct vsp1_dl_list *dl)
@@ -860,6 +1220,7 @@ static void vsp1_dl_list_commit_continuous(struct vsp1_dl_list *dl)
 	 * case we can't replace the queued list by the new one, as we could
 	 * race with the hardware. We thus mark the update as pending, it will
 	 * be queued up to the hardware by the frame end interrupt handler.
+<<<<<<< HEAD
 	 *
 	 * If a display list is already pending we simply drop it as the new
 	 * display list is assumed to contain a more recent configuration. It is
@@ -870,6 +1231,10 @@ static void vsp1_dl_list_commit_continuous(struct vsp1_dl_list *dl)
 	 */
 	if (vsp1_dl_list_hw_update_pending(dlm)) {
 		WARN_ON(dlm->pending && dlm->pending->internal);
+=======
+	 */
+	if (vsp1_dl_list_hw_update_pending(dlm)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__vsp1_dl_list_put(dlm->pending);
 		dlm->pending = dl;
 		return;
@@ -899,6 +1264,7 @@ static void vsp1_dl_list_commit_singleshot(struct vsp1_dl_list *dl)
 	dlm->active = dl;
 }
 
+<<<<<<< HEAD
 void vsp1_dl_list_commit(struct vsp1_dl_list *dl, bool internal)
 {
 	struct vsp1_dl_manager *dlm = dl->dlm;
@@ -916,6 +1282,25 @@ void vsp1_dl_list_commit(struct vsp1_dl_list *dl, bool internal)
 
 	dl->internal = internal;
 
+=======
+void vsp1_dl_list_commit(struct vsp1_dl_list *dl)
+{
+	struct vsp1_dl_manager *dlm = dl->dlm;
+	struct vsp1_dl_list *dl_child;
+	unsigned long flags;
+
+	if (dlm->mode == VSP1_DL_MODE_HEADER) {
+		/* Fill the header for the head and chained display lists. */
+		vsp1_dl_list_fill_header(dl, list_empty(&dl->chain));
+
+		list_for_each_entry(dl_child, &dl->chain, chain) {
+			bool last = list_is_last(&dl_child->chain, &dl->chain);
+
+			vsp1_dl_list_fill_header(dl_child, last);
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_irqsave(&dlm->lock, flags);
 
 	if (dlm->singleshot)
@@ -934,6 +1319,7 @@ void vsp1_dl_list_commit(struct vsp1_dl_list *dl, bool internal)
  * vsp1_dlm_irq_frame_end - Display list handler for the frame end interrupt
  * @dlm: the display list manager
  *
+<<<<<<< HEAD
  * Return a set of flags that indicates display list completion status.
  *
  * The VSP1_DL_FRAME_END_COMPLETED flag indicates that the previous display list
@@ -952,6 +1338,16 @@ unsigned int vsp1_dlm_irq_frame_end(struct vsp1_dl_manager *dlm)
 	struct vsp1_device *vsp1 = dlm->vsp1;
 	u32 status = vsp1_read(vsp1, VI6_STATUS);
 	unsigned int flags = 0;
+=======
+ * Return true if the previous display list has completed at frame end, or false
+ * if it has been delayed by one frame because the display list commit raced
+ * with the frame end interrupt. The function always returns true in header mode
+ * as display list processing is then not continuous and races never occur.
+ */
+bool vsp1_dlm_irq_frame_end(struct vsp1_dl_manager *dlm)
+{
+	bool completed = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_lock(&dlm->lock);
 
@@ -962,7 +1358,11 @@ unsigned int vsp1_dlm_irq_frame_end(struct vsp1_dl_manager *dlm)
 	if (dlm->singleshot) {
 		__vsp1_dl_list_put(dlm->active);
 		dlm->active = NULL;
+<<<<<<< HEAD
 		flags |= VSP1_DL_FRAME_END_COMPLETED;
+=======
+		completed = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto done;
 	}
 
@@ -976,6 +1376,7 @@ unsigned int vsp1_dlm_irq_frame_end(struct vsp1_dl_manager *dlm)
 		goto done;
 
 	/*
+<<<<<<< HEAD
 	 * Progressive streams report only TOP fields. If we have a BOTTOM
 	 * field, we are interlaced, and expect the frame to complete on the
 	 * next frame end interrupt.
@@ -984,10 +1385,13 @@ unsigned int vsp1_dlm_irq_frame_end(struct vsp1_dl_manager *dlm)
 		goto done;
 
 	/*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * The device starts processing the queued display list right after the
 	 * frame end interrupt. The display list thus becomes active.
 	 */
 	if (dlm->queued) {
+<<<<<<< HEAD
 		if (dlm->queued->internal)
 			flags |= VSP1_DL_FRAME_END_INTERNAL;
 		dlm->queued->internal = false;
@@ -996,6 +1400,12 @@ unsigned int vsp1_dlm_irq_frame_end(struct vsp1_dl_manager *dlm)
 		dlm->active = dlm->queued;
 		dlm->queued = NULL;
 		flags |= VSP1_DL_FRAME_END_COMPLETED;
+=======
+		__vsp1_dl_list_put(dlm->active);
+		dlm->active = dlm->queued;
+		dlm->queued = NULL;
+		completed = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -1012,12 +1422,17 @@ unsigned int vsp1_dlm_irq_frame_end(struct vsp1_dl_manager *dlm)
 done:
 	spin_unlock(&dlm->lock);
 
+<<<<<<< HEAD
 	return flags;
+=======
+	return completed;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Hardware Setup */
 void vsp1_dlm_setup(struct vsp1_device *vsp1)
 {
+<<<<<<< HEAD
 	unsigned int i;
 	u32 ctrl = (256 << VI6_DL_CTRL_AR_WAIT_SHIFT)
 		 | VI6_DL_CTRL_DC2 | VI6_DL_CTRL_DC1 | VI6_DL_CTRL_DC0
@@ -1029,6 +1444,18 @@ void vsp1_dlm_setup(struct vsp1_device *vsp1)
 		for (i = 0; i < vsp1->info->wpf_count; ++i)
 			vsp1_write(vsp1, VI6_DL_EXT_CTRL(i), ext_dl);
 	}
+=======
+	u32 ctrl = (256 << VI6_DL_CTRL_AR_WAIT_SHIFT)
+		 | VI6_DL_CTRL_DC2 | VI6_DL_CTRL_DC1 | VI6_DL_CTRL_DC0
+		 | VI6_DL_CTRL_DLE;
+
+	/*
+	 * The DRM pipeline operates with display lists in Continuous Frame
+	 * Mode, all other pipelines use manual start.
+	 */
+	if (vsp1->drm)
+		ctrl |= VI6_DL_CTRL_CFM0 | VI6_DL_CTRL_NH0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	vsp1_write(vsp1, VI6_DL_CTRL, ctrl);
 	vsp1_write(vsp1, VI6_DL_SWAP, VI6_DL_SWAP_LWS);
@@ -1051,9 +1478,44 @@ void vsp1_dlm_reset(struct vsp1_dl_manager *dlm)
 	dlm->pending = NULL;
 }
 
+<<<<<<< HEAD
 struct vsp1_dl_body *vsp1_dlm_dl_body_get(struct vsp1_dl_manager *dlm)
 {
 	return vsp1_dl_body_get(dlm->pool);
+=======
+/*
+ * Free all fragments awaiting to be garbage-collected.
+ *
+ * This function must be called without the display list manager lock held.
+ */
+static void vsp1_dlm_fragments_free(struct vsp1_dl_manager *dlm)
+{
+	unsigned long flags;
+
+	spin_lock_irqsave(&dlm->lock, flags);
+
+	while (!list_empty(&dlm->gc_fragments)) {
+		struct vsp1_dl_body *dlb;
+
+		dlb = list_first_entry(&dlm->gc_fragments, struct vsp1_dl_body,
+				       list);
+		list_del(&dlb->list);
+
+		spin_unlock_irqrestore(&dlm->lock, flags);
+		vsp1_dl_fragment_free(dlb);
+		spin_lock_irqsave(&dlm->lock, flags);
+	}
+
+	spin_unlock_irqrestore(&dlm->lock, flags);
+}
+
+static void vsp1_dlm_garbage_collect(struct work_struct *work)
+{
+	struct vsp1_dl_manager *dlm =
+		container_of(work, struct vsp1_dl_manager, gc_work);
+
+	vsp1_dlm_fragments_free(dlm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct vsp1_dl_manager *vsp1_dlm_create(struct vsp1_device *vsp1,
@@ -1061,7 +1523,10 @@ struct vsp1_dl_manager *vsp1_dlm_create(struct vsp1_device *vsp1,
 					unsigned int prealloc)
 {
 	struct vsp1_dl_manager *dlm;
+<<<<<<< HEAD
 	size_t header_size;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int i;
 
 	dlm = devm_kzalloc(vsp1->dev, sizeof(*dlm), GFP_KERNEL);
@@ -1069,11 +1534,17 @@ struct vsp1_dl_manager *vsp1_dlm_create(struct vsp1_device *vsp1,
 		return NULL;
 
 	dlm->index = index;
+<<<<<<< HEAD
+=======
+	dlm->mode = index == 0 && !vsp1->info->uapi
+		  ? VSP1_DL_MODE_HEADERLESS : VSP1_DL_MODE_HEADER;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dlm->singleshot = vsp1->info->uapi;
 	dlm->vsp1 = vsp1;
 
 	spin_lock_init(&dlm->lock);
 	INIT_LIST_HEAD(&dlm->free);
+<<<<<<< HEAD
 
 	/*
 	 * Initialize the display list body and allocate DMA memory for the body
@@ -1092,11 +1563,16 @@ struct vsp1_dl_manager *vsp1_dlm_create(struct vsp1_device *vsp1,
 					     VSP1_DL_NUM_ENTRIES, header_size);
 	if (!dlm->pool)
 		return NULL;
+=======
+	INIT_LIST_HEAD(&dlm->gc_fragments);
+	INIT_WORK(&dlm->gc_work, vsp1_dlm_garbage_collect);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < prealloc; ++i) {
 		struct vsp1_dl_list *dl;
 
 		dl = vsp1_dl_list_alloc(dlm);
+<<<<<<< HEAD
 		if (!dl) {
 			vsp1_dlm_destroy(dlm);
 			return NULL;
@@ -1106,10 +1582,15 @@ struct vsp1_dl_manager *vsp1_dlm_create(struct vsp1_device *vsp1,
 		if (vsp1_feature(vsp1, VSP1_HAS_EXT_DL))
 			dl->extension = (void *)dl->header
 				      + sizeof(*dl->header);
+=======
+		if (!dl)
+			return NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		list_add_tail(&dl->list, &dlm->free);
 	}
 
+<<<<<<< HEAD
 	if (vsp1_feature(vsp1, VSP1_HAS_EXT_DL)) {
 		dlm->cmdpool = vsp1_dl_cmd_pool_create(vsp1,
 					VSP1_EXTCMD_AUTOFLD, prealloc);
@@ -1119,6 +1600,8 @@ struct vsp1_dl_manager *vsp1_dlm_create(struct vsp1_device *vsp1,
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return dlm;
 }
 
@@ -1129,11 +1612,20 @@ void vsp1_dlm_destroy(struct vsp1_dl_manager *dlm)
 	if (!dlm)
 		return;
 
+<<<<<<< HEAD
+=======
+	cancel_work_sync(&dlm->gc_work);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry_safe(dl, next, &dlm->free, list) {
 		list_del(&dl->list);
 		vsp1_dl_list_free(dl);
 	}
 
+<<<<<<< HEAD
 	vsp1_dl_body_pool_destroy(dlm->pool);
 	vsp1_dl_ext_cmd_pool_destroy(dlm->cmdpool);
+=======
+	vsp1_dlm_fragments_free(dlm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

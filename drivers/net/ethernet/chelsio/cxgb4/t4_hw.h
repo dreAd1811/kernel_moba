@@ -38,6 +38,7 @@
 #include <linux/types.h>
 
 enum {
+<<<<<<< HEAD
 	NCHAN           = 4,    /* # of HW channels */
 	MAX_MTU         = 9600, /* max MAC MTU, excluding header + FCS */
 	EEPROMSIZE      = 17408,/* Serial EEPROM physical size */
@@ -54,6 +55,22 @@ enum {
 	MBOX_LEN        = 64,   /* mailbox size in bytes */
 	TRACE_LEN       = 112,  /* length of trace data and mask */
 	FILTER_OPT_LEN  = 36,   /* filter tuple width for optional components */
+=======
+	NCHAN          = 4,     /* # of HW channels */
+	MAX_MTU        = 9600,  /* max MAC MTU, excluding header + FCS */
+	EEPROMSIZE     = 17408, /* Serial EEPROM physical size */
+	EEPROMVSIZE    = 32768, /* Serial EEPROM virtual address space size */
+	EEPROMPFSIZE   = 1024,  /* EEPROM writable area size for PFn, n>0 */
+	RSS_NENTRIES   = 2048,  /* # of entries in RSS mapping table */
+	TCB_SIZE       = 128,   /* TCB size */
+	NMTUS          = 16,    /* size of MTU table */
+	NCCTRL_WIN     = 32,    /* # of congestion control windows */
+	PM_NSTATS      = 5,     /* # of PM stats */
+	T6_PM_NSTATS   = 7,     /* # of PM stats in T6 */
+	MBOX_LEN       = 64,    /* mailbox size in bytes */
+	TRACE_LEN      = 112,   /* length of trace data and mask */
+	FILTER_OPT_LEN = 36,    /* filter tuple width for optional components */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum {
@@ -69,6 +86,7 @@ enum {
 	ULPRX_LA_SIZE  = 512,   /* # of 256-bit words in ULP_RX LA */
 };
 
+<<<<<<< HEAD
 /* SGE context types */
 enum ctxt_type {
 	CTXT_EGRESS,
@@ -77,6 +95,8 @@ enum ctxt_type {
 	CTXT_CNM,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	SF_PAGE_SIZE = 256,           /* serial flash page size */
 	SF_SEC_SIZE = 64 * 1024,      /* serial flash sector size */
@@ -88,7 +108,10 @@ enum { MBOX_OWNER_NONE, MBOX_OWNER_FW, MBOX_OWNER_DRV };    /* mailbox owners */
 
 enum {
 	SGE_MAX_WR_LEN = 512,     /* max WR size in bytes */
+<<<<<<< HEAD
 	SGE_CTXT_SIZE = 24,       /* size of SGE context */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	SGE_NTIMERS = 6,          /* # of interrupt holdoff timer values */
 	SGE_NCOUNTERS = 4,        /* # of interrupt packet counter values */
 	SGE_MAX_IQ_SIZE = 65520,
@@ -287,6 +310,7 @@ enum {
 #define SGE_TIMESTAMP_V(x) ((__u64)(x) << SGE_TIMESTAMP_S)
 #define SGE_TIMESTAMP_G(x) (((__u64)(x) >> SGE_TIMESTAMP_S) & SGE_TIMESTAMP_M)
 
+<<<<<<< HEAD
 #define I2C_DEV_ADDR_A0		0xa0
 #define I2C_DEV_ADDR_A2		0xa2
 #define I2C_PAGE_SIZE		0x100
@@ -297,4 +321,6 @@ enum {
 #define SFF_REV_ADDR		0x1
 #define SFF_REV_LEN		0x1
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __T4_HW_H */

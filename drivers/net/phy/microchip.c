@@ -20,9 +20,12 @@
 #include <linux/ethtool.h>
 #include <linux/phy.h>
 #include <linux/microchipphy.h>
+<<<<<<< HEAD
 #include <linux/delay.h>
 #include <linux/of.h>
 #include <dt-bindings/net/microchip-lan78xx.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRIVER_AUTHOR	"WOOJUNG HUH <woojung.huh@microchip.com>"
 #define DRIVER_DESC	"Microchip LAN88XX PHY driver"
@@ -33,6 +36,7 @@ struct lan88xx_priv {
 	__u32	wolopts;
 };
 
+<<<<<<< HEAD
 static int lan88xx_read_page(struct phy_device *phydev)
 {
 	return __phy_read(phydev, LAN88XX_EXT_PAGE_ACCESS);
@@ -43,6 +47,8 @@ static int lan88xx_write_page(struct phy_device *phydev, int page)
 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lan88xx_phy_config_intr(struct phy_device *phydev)
 {
 	int rc;
@@ -79,6 +85,7 @@ static int lan88xx_suspend(struct phy_device *phydev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int lan88xx_TR_reg_set(struct phy_device *phydev, u16 regaddr,
 			      u32 data)
 {
@@ -223,12 +230,17 @@ static void lan88xx_config_TR_regs(struct phy_device *phydev)
 		pr_warn("Failed to Set Register[0x1686]\n");
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lan88xx_probe(struct phy_device *phydev)
 {
 	struct device *dev = &phydev->mdio.dev;
 	struct lan88xx_priv *priv;
+<<<<<<< HEAD
 	u32 led_modes[4];
 	int len;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
 	if (!priv)
@@ -236,6 +248,7 @@ static int lan88xx_probe(struct phy_device *phydev)
 
 	priv->wolopts = 0;
 
+<<<<<<< HEAD
 	len = of_property_read_variable_u32_array(dev->of_node,
 						  "microchip,led-modes",
 						  led_modes,
@@ -257,6 +270,8 @@ static int lan88xx_probe(struct phy_device *phydev)
 		return -EINVAL;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* these values can be used to identify internal PHY */
 	priv->chip_id = phy_read_mmd(phydev, 3, LAN88XX_MMD3_CHIP_ID);
 	priv->chip_rev = phy_read_mmd(phydev, 3, LAN88XX_MMD3_CHIP_REV);
@@ -312,6 +327,7 @@ static void lan88xx_set_mdix(struct phy_device *phydev)
 	phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, LAN88XX_EXT_PAGE_SPACE_0);
 }
 
+<<<<<<< HEAD
 static int lan88xx_config_init(struct phy_device *phydev)
 {
 	int val;
@@ -331,6 +347,8 @@ static int lan88xx_config_init(struct phy_device *phydev)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int lan88xx_config_aneg(struct phy_device *phydev)
 {
 	lan88xx_set_mdix(phydev);
@@ -350,8 +368,14 @@ static struct phy_driver microchip_phy_driver[] = {
 	.probe		= lan88xx_probe,
 	.remove		= lan88xx_remove,
 
+<<<<<<< HEAD
 	.config_init	= lan88xx_config_init,
 	.config_aneg	= lan88xx_config_aneg,
+=======
+	.config_init	= genphy_config_init,
+	.config_aneg	= lan88xx_config_aneg,
+	.read_status	= genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.ack_interrupt	= lan88xx_phy_ack_interrupt,
 	.config_intr	= lan88xx_phy_config_intr,
@@ -359,8 +383,11 @@ static struct phy_driver microchip_phy_driver[] = {
 	.suspend	= lan88xx_suspend,
 	.resume		= genphy_resume,
 	.set_wol	= lan88xx_set_wol,
+<<<<<<< HEAD
 	.read_page	= lan88xx_read_page,
 	.write_page	= lan88xx_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } };
 
 module_phy_driver(microchip_phy_driver);

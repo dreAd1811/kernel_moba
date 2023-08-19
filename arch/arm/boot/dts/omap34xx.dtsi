@@ -8,7 +8,10 @@
  * kind, whether express or implied.
  */
 
+<<<<<<< HEAD
 #include <dt-bindings/bus/ti-sysc.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <dt-bindings/media/omap3-isp.h>
 
 #include "omap3.dtsi"
@@ -62,6 +65,7 @@
 			compatible = "ti,omap34xx-bandgap";
 			#thermal-sensor-cells = <0>;
 		};
+<<<<<<< HEAD
 
 		target-module@480cb000 {
 			compatible = "ti,sysc-omap3430-sr", "ti,sysc";
@@ -100,6 +104,8 @@
 				interrupts = <18>;
 			};
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	thermal_zones: thermal-zones {

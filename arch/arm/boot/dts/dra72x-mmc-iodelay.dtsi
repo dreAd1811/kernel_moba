@@ -202,6 +202,7 @@
 			DRA7XX_CORE_IOPAD(0x3498, PIN_INPUT_PULLUP | MODE_SELECT | MUX_MODE1) /* gpmc_a22.mmc2_dat7 */
 		>;
 	};
+<<<<<<< HEAD
 
 	mmc4_pins_default: mmc4_pins_default {
 		pinctrl-single,pins = <
@@ -213,6 +214,8 @@
 			DRA7XX_CORE_IOPAD(0x37fc, PIN_INPUT_PULLUP | MUX_MODE3) /* uart2_rtsn.mmc4_dat3 */
 		>;
 	};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &dra7_iodelay_core {

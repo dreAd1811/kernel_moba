@@ -1,5 +1,16 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 // Copyright (c) 2016-2017 Hisilicon Limited.
+=======
+/*
+ * Copyright (c) 2016~2017 Hisilicon Limited.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/dma-mapping.h>
 #include <linux/slab.h>
@@ -12,7 +23,12 @@
 #include "hclge_main.h"
 
 #define hclge_is_csq(ring) ((ring)->flag & HCLGE_TYPE_CSQ)
+<<<<<<< HEAD
 
+=======
+#define hclge_ring_to_dma_dir(ring) (hclge_is_csq(ring) ? \
+	DMA_TO_DEVICE : DMA_FROM_DEVICE)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define cmq_ring_to_dev(ring)   (&(ring)->dev->pdev->dev)
 
 static int hclge_ring_space(struct hclge_cmq_ring *ring)
@@ -24,6 +40,7 @@ static int hclge_ring_space(struct hclge_cmq_ring *ring)
 	return ring->desc_num - used - 1;
 }
 
+<<<<<<< HEAD
 static int is_valid_csq_clean_head(struct hclge_cmq_ring *ring, int h)
 {
 	int u = ring->next_to_use;
@@ -35,21 +52,40 @@ static int is_valid_csq_clean_head(struct hclge_cmq_ring *ring, int h)
 	return u > c ? (h > c && h <= u) : (h > c || h <= u);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hclge_alloc_cmd_desc(struct hclge_cmq_ring *ring)
 {
 	int size  = ring->desc_num * sizeof(struct hclge_desc);
 
+<<<<<<< HEAD
 	ring->desc = dma_zalloc_coherent(cmq_ring_to_dev(ring),
 					 size, &ring->desc_dma_addr,
 					 GFP_KERNEL);
 	if (!ring->desc)
 		return -ENOMEM;
 
+=======
+	ring->desc = kzalloc(size, GFP_KERNEL);
+	if (!ring->desc)
+		return -ENOMEM;
+
+	ring->desc_dma_addr = dma_map_single(cmq_ring_to_dev(ring), ring->desc,
+					     size, DMA_BIDIRECTIONAL);
+	if (dma_mapping_error(cmq_ring_to_dev(ring), ring->desc_dma_addr)) {
+		ring->desc_dma_addr = 0;
+		kfree(ring->desc);
+		ring->desc = NULL;
+		return -ENOMEM;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void hclge_free_cmd_desc(struct hclge_cmq_ring *ring)
 {
+<<<<<<< HEAD
 	int size  = ring->desc_num * sizeof(struct hclge_desc);
 
 	if (ring->desc) {
@@ -60,13 +96,29 @@ static void hclge_free_cmd_desc(struct hclge_cmq_ring *ring)
 }
 
 static int hclge_alloc_cmd_queue(struct hclge_dev *hdev, int ring_type)
+=======
+	dma_unmap_single(cmq_ring_to_dev(ring), ring->desc_dma_addr,
+			 ring->desc_num * sizeof(ring->desc[0]),
+			 DMA_BIDIRECTIONAL);
+
+	ring->desc_dma_addr = 0;
+	kfree(ring->desc);
+	ring->desc = NULL;
+}
+
+static int hclge_init_cmd_queue(struct hclge_dev *hdev, int ring_type)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct hclge_hw *hw = &hdev->hw;
 	struct hclge_cmq_ring *ring =
 		(ring_type == HCLGE_TYPE_CSQ) ? &hw->cmq.csq : &hw->cmq.crq;
 	int ret;
 
+<<<<<<< HEAD
 	ring->ring_type = ring_type;
+=======
+	ring->flag = ring_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ring->dev = hdev;
 
 	ret = hclge_alloc_cmd_desc(ring);
@@ -76,6 +128,7 @@ static int hclge_alloc_cmd_queue(struct hclge_dev *hdev, int ring_type)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	return 0;
 }
 
@@ -86,6 +139,12 @@ void hclge_cmd_reuse_desc(struct hclge_desc *desc, bool is_read)
 		desc->flag |= cpu_to_le16(HCLGE_CMD_FLAG_WR);
 	else
 		desc->flag &= cpu_to_le16(~HCLGE_CMD_FLAG_WR);
+=======
+	ring->next_to_clean = 0;
+	ring->next_to_use = 0;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void hclge_cmd_setup_basic_desc(struct hclge_desc *desc,
@@ -97,6 +156,11 @@ void hclge_cmd_setup_basic_desc(struct hclge_desc *desc,
 
 	if (is_read)
 		desc->flag |= cpu_to_le16(HCLGE_CMD_FLAG_WR);
+<<<<<<< HEAD
+=======
+	else
+		desc->flag &= cpu_to_le16(~HCLGE_CMD_FLAG_WR);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hclge_cmd_config_regs(struct hclge_cmq_ring *ring)
@@ -105,6 +169,7 @@ static void hclge_cmd_config_regs(struct hclge_cmq_ring *ring)
 	struct hclge_dev *hdev = ring->dev;
 	struct hclge_hw *hw = &hdev->hw;
 
+<<<<<<< HEAD
 	if (ring->ring_type == HCLGE_TYPE_CSQ) {
 		hclge_write_dev(hw, HCLGE_NIC_CSQ_BASEADDR_L_REG,
 				lower_32_bits(dma));
@@ -125,6 +190,28 @@ static void hclge_cmd_config_regs(struct hclge_cmq_ring *ring)
 				HCLGE_NIC_CMQ_ENABLE);
 		hclge_write_dev(hw, HCLGE_NIC_CRQ_HEAD_REG, 0);
 		hclge_write_dev(hw, HCLGE_NIC_CRQ_TAIL_REG, 0);
+=======
+	if (ring->flag == HCLGE_TYPE_CSQ) {
+		hclge_write_dev(hw, HCLGE_NIC_CSQ_BASEADDR_L_REG,
+				(u32)dma);
+		hclge_write_dev(hw, HCLGE_NIC_CSQ_BASEADDR_H_REG,
+				(u32)((dma >> 31) >> 1));
+		hclge_write_dev(hw, HCLGE_NIC_CSQ_DEPTH_REG,
+				(ring->desc_num >> HCLGE_NIC_CMQ_DESC_NUM_S) |
+				HCLGE_NIC_CMQ_ENABLE);
+		hclge_write_dev(hw, HCLGE_NIC_CSQ_TAIL_REG, 0);
+		hclge_write_dev(hw, HCLGE_NIC_CSQ_HEAD_REG, 0);
+	} else {
+		hclge_write_dev(hw, HCLGE_NIC_CRQ_BASEADDR_L_REG,
+				(u32)dma);
+		hclge_write_dev(hw, HCLGE_NIC_CRQ_BASEADDR_H_REG,
+				(u32)((dma >> 31) >> 1));
+		hclge_write_dev(hw, HCLGE_NIC_CRQ_DEPTH_REG,
+				(ring->desc_num >> HCLGE_NIC_CMQ_DESC_NUM_S) |
+				HCLGE_NIC_CMQ_ENABLE);
+		hclge_write_dev(hw, HCLGE_NIC_CRQ_TAIL_REG, 0);
+		hclge_write_dev(hw, HCLGE_NIC_CRQ_HEAD_REG, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -136,6 +223,7 @@ static void hclge_cmd_init_regs(struct hclge_hw *hw)
 
 static int hclge_cmd_csq_clean(struct hclge_hw *hw)
 {
+<<<<<<< HEAD
 	struct hclge_dev *hdev = container_of(hw, struct hclge_dev, hw);
 	struct hclge_cmq_ring *csq = &hw->cmq.csq;
 	u32 head;
@@ -157,6 +245,27 @@ static int hclge_cmd_csq_clean(struct hclge_hw *hw)
 
 	clean = (head - csq->next_to_clean + csq->desc_num) % csq->desc_num;
 	csq->next_to_clean = head;
+=======
+	struct hclge_cmq_ring *csq = &hw->cmq.csq;
+	u16 ntc = csq->next_to_clean;
+	struct hclge_desc *desc;
+	int clean = 0;
+	u32 head;
+
+	desc = &csq->desc[ntc];
+	head = hclge_read_dev(hw, HCLGE_NIC_CSQ_HEAD_REG);
+
+	while (head != ntc) {
+		memset(desc, 0, sizeof(*desc));
+		ntc++;
+		if (ntc == csq->desc_num)
+			ntc = 0;
+		desc = &csq->desc[ntc];
+		clean++;
+	}
+	csq->next_to_clean = ntc;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return clean;
 }
 
@@ -168,11 +277,15 @@ static int hclge_cmd_csq_done(struct hclge_hw *hw)
 
 static bool hclge_is_special_opcode(u16 opcode)
 {
+<<<<<<< HEAD
 	/* these commands have several descriptors,
 	 * and use the first one to save opcode and return value
 	 */
 	u16 spec_opcode[3] = {HCLGE_OPC_STATS_64_BIT,
 		HCLGE_OPC_STATS_32_BIT, HCLGE_OPC_STATS_MAC};
+=======
+	u16 spec_opcode[3] = {0x0030, 0x0031, 0x0032};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	for (i = 0; i < ARRAY_SIZE(spec_opcode); i++) {
@@ -194,7 +307,11 @@ static bool hclge_is_special_opcode(u16 opcode)
  **/
 int hclge_cmd_send(struct hclge_hw *hw, struct hclge_desc *desc, int num)
 {
+<<<<<<< HEAD
 	struct hclge_dev *hdev = container_of(hw, struct hclge_dev, hw);
+=======
+	struct hclge_dev *hdev = (struct hclge_dev *)hw->back;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hclge_desc *desc_to_use;
 	bool complete = false;
 	u32 timeout = 0;
@@ -205,8 +322,12 @@ int hclge_cmd_send(struct hclge_hw *hw, struct hclge_desc *desc, int num)
 
 	spin_lock_bh(&hw->cmq.csq.lock);
 
+<<<<<<< HEAD
 	if (num > hclge_ring_space(&hw->cmq.csq) ||
 	    test_bit(HCLGE_STATE_CMD_DISABLE, &hdev->state)) {
+=======
+	if (num > hclge_ring_space(&hw->cmq.csq)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_bh(&hw->cmq.csq.lock);
 		return -EBUSY;
 	}
@@ -216,7 +337,11 @@ int hclge_cmd_send(struct hclge_hw *hw, struct hclge_desc *desc, int num)
 	 * which will be use for hardware to write back
 	 */
 	ntc = hw->cmq.csq.next_to_use;
+<<<<<<< HEAD
 	opcode = le16_to_cpu(desc[0].opcode);
+=======
+	opcode = desc[0].opcode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	while (handle < num) {
 		desc_to_use = &hw->cmq.csq.desc[hw->cmq.csq.next_to_use];
 		*desc_to_use = desc[handle];
@@ -233,25 +358,38 @@ int hclge_cmd_send(struct hclge_hw *hw, struct hclge_desc *desc, int num)
 	 * If the command is sync, wait for the firmware to write back,
 	 * if multi descriptors to be sent, use the first one to check
 	 */
+<<<<<<< HEAD
 	if (HCLGE_SEND_SYNC(le16_to_cpu(desc->flag))) {
 		do {
 			if (hclge_cmd_csq_done(hw)) {
 				complete = true;
 				break;
 			}
+=======
+	if (HCLGE_SEND_SYNC(desc->flag)) {
+		do {
+			if (hclge_cmd_csq_done(hw))
+				break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			udelay(1);
 			timeout++;
 		} while (timeout < hw->cmq.tx_timeout);
 	}
 
+<<<<<<< HEAD
 	if (!complete) {
 		retval = -EAGAIN;
 	} else {
+=======
+	if (hclge_cmd_csq_done(hw)) {
+		complete = true;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		handle = 0;
 		while (handle < num) {
 			/* Get the result of hardware write back */
 			desc_to_use = &hw->cmq.csq.desc[ntc];
 			desc[handle] = *desc_to_use;
+<<<<<<< HEAD
 
 			if (likely(!hclge_is_special_opcode(opcode)))
 				desc_ret = le16_to_cpu(desc[handle].retval);
@@ -263,6 +401,23 @@ int hclge_cmd_send(struct hclge_hw *hw, struct hclge_desc *desc, int num)
 			else
 				retval = -EIO;
 			hw->cmq.last_status = desc_ret;
+=======
+			pr_debug("Get cmd desc:\n");
+
+			if (likely(!hclge_is_special_opcode(opcode)))
+				desc_ret = desc[handle].retval;
+			else
+				desc_ret = desc[0].retval;
+
+			if ((enum hclge_cmd_return_status)desc_ret ==
+			    HCLGE_CMD_EXEC_SUCCESS)
+				retval = 0;
+			else if (desc_ret == HCLGE_CMD_NOT_SUPPORTED)
+				retval = -EOPNOTSUPP;
+			else
+				retval = -EIO;
+			hw->cmq.last_status = (enum hclge_cmd_status)desc_ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ntc++;
 			handle++;
 			if (ntc == hw->cmq.csq.desc_num)
@@ -270,6 +425,7 @@ int hclge_cmd_send(struct hclge_hw *hw, struct hclge_desc *desc, int num)
 		}
 	}
 
+<<<<<<< HEAD
 	/* Clean the command send queue */
 	handle = hclge_cmd_csq_clean(hw);
 	if (handle < 0)
@@ -277,21 +433,43 @@ int hclge_cmd_send(struct hclge_hw *hw, struct hclge_desc *desc, int num)
 	else if (handle != num)
 		dev_warn(&hdev->pdev->dev,
 			 "cleaned %d, need to clean %d\n", handle, num);
+=======
+	if (!complete)
+		retval = -EAGAIN;
+
+	/* Clean the command send queue */
+	handle = hclge_cmd_csq_clean(hw);
+	if (handle != num) {
+		dev_warn(&hdev->pdev->dev,
+			 "cleaned %d, need to clean %d\n", handle, num);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	spin_unlock_bh(&hw->cmq.csq.lock);
 
 	return retval;
 }
 
+<<<<<<< HEAD
 static enum hclge_cmd_status hclge_cmd_query_firmware_version(
 		struct hclge_hw *hw, u32 *version)
 {
 	struct hclge_query_version_cmd *resp;
+=======
+enum hclge_cmd_status hclge_cmd_query_firmware_version(struct hclge_hw *hw,
+						       u32 *version)
+{
+	struct hclge_query_version *resp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct hclge_desc desc;
 	int ret;
 
 	hclge_cmd_setup_basic_desc(&desc, HCLGE_OPC_QUERY_FW_VER, 1);
+<<<<<<< HEAD
 	resp = (struct hclge_query_version_cmd *)desc.data;
+=======
+	resp = (struct hclge_query_version *)desc.data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = hclge_cmd_send(hw, &desc, 1);
 	if (!ret)
@@ -300,6 +478,7 @@ static enum hclge_cmd_status hclge_cmd_query_firmware_version(
 	return ret;
 }
 
+<<<<<<< HEAD
 int hclge_cmd_queue_init(struct hclge_dev *hdev)
 {
 	int ret;
@@ -308,28 +487,51 @@ int hclge_cmd_queue_init(struct hclge_dev *hdev)
 	spin_lock_init(&hdev->hw.cmq.csq.lock);
 	spin_lock_init(&hdev->hw.cmq.crq.lock);
 
+=======
+int hclge_cmd_init(struct hclge_dev *hdev)
+{
+	u32 version;
+	int ret;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Setup the queue entries for use cmd queue */
 	hdev->hw.cmq.csq.desc_num = HCLGE_NIC_CMQ_DESC_NUM;
 	hdev->hw.cmq.crq.desc_num = HCLGE_NIC_CMQ_DESC_NUM;
 
+<<<<<<< HEAD
+=======
+	/* Setup the lock for command queue */
+	spin_lock_init(&hdev->hw.cmq.csq.lock);
+	spin_lock_init(&hdev->hw.cmq.crq.lock);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Setup Tx write back timeout */
 	hdev->hw.cmq.tx_timeout = HCLGE_CMDQ_TX_TIMEOUT;
 
 	/* Setup queue rings */
+<<<<<<< HEAD
 	ret = hclge_alloc_cmd_queue(hdev, HCLGE_TYPE_CSQ);
+=======
+	ret = hclge_init_cmd_queue(hdev, HCLGE_TYPE_CSQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(&hdev->pdev->dev,
 			"CSQ ring setup error %d\n", ret);
 		return ret;
 	}
 
+<<<<<<< HEAD
 	ret = hclge_alloc_cmd_queue(hdev, HCLGE_TYPE_CRQ);
+=======
+	ret = hclge_init_cmd_queue(hdev, HCLGE_TYPE_CRQ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		dev_err(&hdev->pdev->dev,
 			"CRQ ring setup error %d\n", ret);
 		goto err_csq;
 	}
 
+<<<<<<< HEAD
 	return 0;
 err_csq:
 	hclge_free_cmd_desc(&hdev->hw.cmq.csq);
@@ -354,6 +556,9 @@ int hclge_cmd_init(struct hclge_dev *hdev)
 
 	spin_unlock_bh(&hdev->hw.cmq.crq.lock);
 	spin_unlock_bh(&hdev->hw.cmq.csq.lock);
+=======
+	hclge_cmd_init_regs(&hdev->hw);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = hclge_cmd_query_firmware_version(&hdev->hw, &version);
 	if (ret) {
@@ -366,13 +571,25 @@ int hclge_cmd_init(struct hclge_dev *hdev)
 	dev_info(&hdev->pdev->dev, "The firmware version is %08x\n", version);
 
 	return 0;
+<<<<<<< HEAD
+=======
+err_csq:
+	hclge_free_cmd_desc(&hdev->hw.cmq.csq);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void hclge_destroy_queue(struct hclge_cmq_ring *ring)
 {
+<<<<<<< HEAD
 	spin_lock(&ring->lock);
 	hclge_free_cmd_desc(ring);
 	spin_unlock(&ring->lock);
+=======
+	spin_lock_bh(&ring->lock);
+	hclge_free_cmd_desc(ring);
+	spin_unlock_bh(&ring->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void hclge_destroy_cmd_queue(struct hclge_hw *hw)

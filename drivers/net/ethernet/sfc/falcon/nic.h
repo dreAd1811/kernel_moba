@@ -83,7 +83,11 @@ static inline struct ef4_tx_queue *ef4_tx_queue_partner(struct ef4_tx_queue *tx_
 static inline bool __ef4_nic_tx_is_empty(struct ef4_tx_queue *tx_queue,
 					 unsigned int write_count)
 {
+<<<<<<< HEAD
 	unsigned int empty_read_count = READ_ONCE(tx_queue->empty_read_count);
+=======
+	unsigned int empty_read_count = ACCESS_ONCE(tx_queue->empty_read_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (empty_read_count == 0)
 		return false;
@@ -267,7 +271,10 @@ enum {
 /**
  * struct falcon_nic_data - Falcon NIC state
  * @pci_dev2: Secondary function of Falcon A
+<<<<<<< HEAD
  * @efx: ef4_nic pointer
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @board: Board state and functions
  * @stats: Hardware statistics
  * @stats_disable_count: Nest count for disabling statistics fetches
@@ -281,7 +288,10 @@ enum {
  */
 struct falcon_nic_data {
 	struct pci_dev *pci_dev2;
+<<<<<<< HEAD
 	struct ef4_nic *efx;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct falcon_board board;
 	u64 stats[FALCON_STAT_COUNT];
 	unsigned int stats_disable_count;
@@ -466,11 +476,19 @@ irqreturn_t ef4_farch_fatal_interrupt(struct ef4_nic *efx);
 
 static inline int ef4_nic_event_test_irq_cpu(struct ef4_channel *channel)
 {
+<<<<<<< HEAD
 	return READ_ONCE(channel->event_test_cpu);
 }
 static inline int ef4_nic_irq_test_irq_cpu(struct ef4_nic *efx)
 {
 	return READ_ONCE(efx->last_irq_cpu);
+=======
+	return ACCESS_ONCE(channel->event_test_cpu);
+}
+static inline int ef4_nic_irq_test_irq_cpu(struct ef4_nic *efx)
+{
+	return ACCESS_ONCE(efx->last_irq_cpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Global Resources */

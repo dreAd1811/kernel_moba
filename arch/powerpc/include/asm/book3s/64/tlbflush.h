@@ -4,6 +4,7 @@
 
 #define MMU_NO_CONTEXT	~0UL
 
+<<<<<<< HEAD
 #include <linux/mm_types.h>
 #include <asm/book3s/64/tlbflush-hash.h>
 #include <asm/book3s/64/tlbflush-radix.h>
@@ -46,6 +47,12 @@ static inline void tlbiel_all_lpid(bool radix)
 }
 
 
+=======
+
+#include <asm/book3s/64/tlbflush-hash.h>
+#include <asm/book3s/64/tlbflush-radix.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
 static inline void flush_pmd_tlb_range(struct vm_area_struct *vma,
 				       unsigned long start, unsigned long end)
@@ -96,6 +103,7 @@ static inline void local_flush_tlb_page(struct vm_area_struct *vma,
 	return hash__local_flush_tlb_page(vma, vmaddr);
 }
 
+<<<<<<< HEAD
 static inline void local_flush_all_mm(struct mm_struct *mm)
 {
 	if (radix_enabled())
@@ -103,6 +111,8 @@ static inline void local_flush_all_mm(struct mm_struct *mm)
 	return hash__local_flush_all_mm(mm);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void tlb_flush(struct mmu_gather *tlb)
 {
 	if (radix_enabled())
@@ -125,6 +135,7 @@ static inline void flush_tlb_page(struct vm_area_struct *vma,
 		return radix__flush_tlb_page(vma, vmaddr);
 	return hash__flush_tlb_page(vma, vmaddr);
 }
+<<<<<<< HEAD
 
 static inline void flush_all_mm(struct mm_struct *mm)
 {
@@ -147,6 +158,12 @@ static inline void flush_tlb_fix_spurious_fault(struct vm_area_struct *vma,
 		flush_tlb_page(vma, address);
 }
 
+=======
+#else
+#define flush_tlb_mm(mm)		local_flush_tlb_mm(mm)
+#define flush_tlb_page(vma, addr)	local_flush_tlb_page(vma, addr)
+#endif /* CONFIG_SMP */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * flush the page walk cache for the address
  */

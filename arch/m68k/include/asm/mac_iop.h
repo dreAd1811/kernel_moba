@@ -159,7 +159,10 @@ extern void iop_complete_message(struct iop_msg *);
 extern void iop_upload_code(uint, __u8 *, uint, __u16);
 extern void iop_download_code(uint, __u8 *, uint, __u16);
 extern __u8 *iop_compare_code(uint, __u8 *, uint, __u16);
+<<<<<<< HEAD
 extern void iop_ism_irq_poll(uint);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern void iop_register_interrupts(void);
 

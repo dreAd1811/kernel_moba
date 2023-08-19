@@ -73,8 +73,11 @@ extern void kexec_smp_wait(void);	/* get and clear naca physid, wait for
 					  master to copy new code to 0 */
 extern int crashing_cpu;
 extern void crash_send_ipi(void (*crash_ipi_callback)(struct pt_regs *));
+<<<<<<< HEAD
 extern void crash_ipi_callback(struct pt_regs *);
 extern int crash_wake_offline;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct kimage;
 struct pt_regs;
@@ -95,7 +98,11 @@ static inline bool kdump_in_progress(void)
 }
 
 #ifdef CONFIG_KEXEC_FILE
+<<<<<<< HEAD
 extern const struct kexec_file_ops kexec_elf64_ops;
+=======
+extern struct kexec_file_ops kexec_elf64_ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifdef CONFIG_IMA_KEXEC
 #define ARCH_HAS_KIMAGE_ARCH
@@ -140,12 +147,15 @@ static inline bool kdump_in_progress(void)
 	return false;
 }
 
+<<<<<<< HEAD
 static inline void crash_ipi_callback(struct pt_regs *regs) { }
 
 static inline void crash_send_ipi(void (*crash_ipi_callback)(struct pt_regs *))
 {
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* CONFIG_KEXEC_CORE */
 #endif /* ! __ASSEMBLY__ */
 #endif /* __KERNEL__ */

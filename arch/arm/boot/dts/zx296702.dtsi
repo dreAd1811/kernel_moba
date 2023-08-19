@@ -38,7 +38,11 @@
 			reg = <0x00400000 0x1000>;
 		};
 
+<<<<<<< HEAD
 		intc: interrupt-controller@801000 {
+=======
+		intc: interrupt-controller@00801000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,cortex-a9-gic";
 			#interrupt-cells = <3>;
 			#address-cells = <1>;
@@ -48,7 +52,11 @@
 			      <0x00800100 0x100>;
 		};
 
+<<<<<<< HEAD
 		global_timer: timer@8000200 {
+=======
+		global_timer: timer@008000200 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,cortex-a9-global-timer";
 			reg = <0x00800200 0x20>;
 			interrupts = <GIC_PPI 11 IRQ_TYPE_LEVEL_HIGH>;
@@ -56,7 +64,11 @@
 			clocks = <&topclk ZX296702_A9_PERIPHCLK>;
 		};
 
+<<<<<<< HEAD
 		l2cc: l2-cache-controller@c00000 {
+=======
+		l2cc: l2-cache-controller@0x00c00000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "arm,pl310-cache";
 			reg = <0x00c00000 0x1000>;
 			cache-unified;
@@ -67,30 +79,50 @@
 			arm,double-linefill-incr = <0>;
 		};
 
+<<<<<<< HEAD
 		pcu: pcu@a0008000 {
+=======
+		pcu: pcu@0xa0008000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "zte,zx296702-pcu";
 			reg = <0xa0008000 0x1000>;
 		};
 
+<<<<<<< HEAD
 		topclk: topclk@9800000 {
+=======
+		topclk: topclk@0x09800000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "zte,zx296702-topcrm-clk";
 			reg = <0x09800000 0x1000>;
 			#clock-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		lsp1clk: lsp1clk@9400000 {
+=======
+		lsp1clk: lsp1clk@0x09400000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "zte,zx296702-lsp1crpm-clk";
 			reg = <0x09400000 0x1000>;
 			#clock-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		lsp0clk: lsp0clk@b000000 {
+=======
+		lsp0clk: lsp0clk@0x0b000000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "zte,zx296702-lsp0crpm-clk";
 			reg = <0x0b000000 0x1000>;
 			#clock-cells = <1>;
 		};
 
+<<<<<<< HEAD
 		uart0: serial@9405000 {
+=======
+		uart0: serial@0x09405000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "zte,zx296702-uart";
 			reg = <0x09405000 0x1000>;
 			interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
@@ -98,7 +130,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		uart1: serial@9406000 {
+=======
+		uart1: serial@0x09406000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "zte,zx296702-uart";
 			reg = <0x09406000 0x1000>;
 			interrupts = <GIC_SPI 38 IRQ_TYPE_LEVEL_HIGH>;
@@ -106,7 +142,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		mmc0: mmc@9408000 {
+=======
+		mmc0: mmc@0x09408000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dw-mshc";
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -119,7 +159,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		mmc1: mmc@b003000 {
+=======
+		mmc1: mmc@0x0b003000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "snps,dw-mshc";
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -132,7 +176,11 @@
 			status = "disabled";
 		};
 
+<<<<<<< HEAD
 		sysctrl: sysctrl@a0007000 {
+=======
+		sysctrl: sysctrl@0xa0007000 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			compatible = "zte,sysctrl", "syscon";
 			reg = <0xa0007000 0x1000>;
 		};

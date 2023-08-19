@@ -47,11 +47,14 @@
 	model = "Toradex Apalis iMX6Q/D Module";
 	compatible = "toradex,apalis_imx6q", "fsl,imx6q";
 
+<<<<<<< HEAD
 	/* Will be filled by the bootloader */
 	memory@10000000 {
 		reg = <0x10000000 0>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	backlight: backlight {
 		compatible = "pwm-backlight";
 		pinctrl-names = "default";
@@ -61,6 +64,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	reg_module_3v3: regulator-module-3v3 {
 		compatible = "regulator-fixed";
 		regulator-name = "+V3.3";
@@ -72,6 +76,27 @@
 	reg_module_3v3_audio: regulator-module-3v3-audio {
 		compatible = "regulator-fixed";
 		regulator-name = "+V3.3_AUDIO";
+=======
+	reg_1p8v: regulator-1p8v {
+		compatible = "regulator-fixed";
+		regulator-name = "1P8V";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		regulator-always-on;
+	};
+
+	reg_2p5v: regulator-2p5v {
+		compatible = "regulator-fixed";
+		regulator-name = "2P5V";
+		regulator-min-microvolt = <2500000>;
+		regulator-max-microvolt = <2500000>;
+		regulator-always-on;
+	};
+
+	reg_3p3v: regulator-3p3v {
+		compatible = "regulator-fixed";
+		regulator-name = "3P3V";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		regulator-always-on;
@@ -219,7 +244,11 @@
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
 
+<<<<<<< HEAD
 	pmic: pfuze100@8 {
+=======
+	pmic: pfuze100@08 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,pfuze100";
 		reg = <0x08>;
 
@@ -289,7 +318,11 @@
 
 			vgen4_reg: vgen4 {
 				regulator-min-microvolt = <1800000>;
+<<<<<<< HEAD
 				regulator-max-microvolt = <1800000>;
+=======
+				regulator-max-microvolt = <3300000>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				regulator-boot-on;
 				regulator-always-on;
 			};
@@ -310,6 +343,7 @@
 		};
 	};
 
+<<<<<<< HEAD
 	codec: sgtl5000@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
@@ -317,6 +351,14 @@
 		VDDA-supply = <&reg_module_3v3_audio>;
 		VDDIO-supply = <&reg_module_3v3>;
 		VDDD-supply = <&vgen4_reg>;
+=======
+	codec: sgtl5000@0a {
+		compatible = "fsl,sgtl5000";
+		reg = <0x0a>;
+		clocks = <&clks IMX6QDL_CLK_CKO>;
+		VDDA-supply = <&reg_2p5v>;
+		VDDIO-supply = <&reg_3p3v>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/* STMPE811 touch screen controller */
@@ -324,6 +366,11 @@
 		compatible = "st,stmpe811";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_touch_int>;
+<<<<<<< HEAD
+=======
+		#address-cells = <1>;
+		#size-cells = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x41>;
 		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
 		interrupt-parent = <&gpio4>;
@@ -334,6 +381,10 @@
 
 		stmpe_touchscreen {
 			compatible = "st,stmpe-ts";
+<<<<<<< HEAD
+=======
+			reg = <0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/* 3.25 MHz ADC clock speed */
 			st,adc-freq = <1>;
 			/* 8 sample average control */
@@ -448,10 +499,16 @@
 &usdhc1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc1_4bit &pinctrl_usdhc1_8bit>;
+<<<<<<< HEAD
 	vqmmc-supply = <&reg_module_3v3>;
 	bus-width = <8>;
 	disable-wp;
 	no-1-8-v;
+=======
+	vqmmc-supply = <&reg_3p3v>;
+	bus-width = <8>;
+	voltage-ranges = <3300 3300>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "disabled";
 };
 
@@ -459,10 +516,16 @@
 &usdhc2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc2>;
+<<<<<<< HEAD
 	vqmmc-supply = <&reg_module_3v3>;
 	bus-width = <4>;
 	disable-wp;
 	no-1-8-v;
+=======
+	vqmmc-supply = <&reg_3p3v>;
+	bus-width = <4>;
+	voltage-ranges = <3300 3300>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	status = "disabled";
 };
 
@@ -470,9 +533,15 @@
 &usdhc3 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usdhc3>;
+<<<<<<< HEAD
 	vqmmc-supply = <&reg_module_3v3>;
 	bus-width = <8>;
 	no-1-8-v;
+=======
+	vqmmc-supply = <&reg_3p3v>;
+	bus-width = <8>;
+	voltage-ranges = <3300 3300>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	non-removable;
 	status = "okay";
 };
@@ -947,4 +1016,41 @@
 			MX6QDL_PAD_SD3_RST__SD3_RESET  0x17059
 		>;
 	};
+<<<<<<< HEAD
+=======
+
+	pinctrl_usdhc3_100mhz: usdhc3100mhzgrp {
+		fsl,pins = <
+			MX6QDL_PAD_SD3_CMD__SD3_CMD    0x170b9
+			MX6QDL_PAD_SD3_CLK__SD3_CLK    0x100b9
+			MX6QDL_PAD_SD3_DAT0__SD3_DATA0 0x170b9
+			MX6QDL_PAD_SD3_DAT1__SD3_DATA1 0x170b9
+			MX6QDL_PAD_SD3_DAT2__SD3_DATA2 0x170b9
+			MX6QDL_PAD_SD3_DAT3__SD3_DATA3 0x170b9
+			MX6QDL_PAD_SD3_DAT4__SD3_DATA4 0x170b9
+			MX6QDL_PAD_SD3_DAT5__SD3_DATA5 0x170b9
+			MX6QDL_PAD_SD3_DAT6__SD3_DATA6 0x170b9
+			MX6QDL_PAD_SD3_DAT7__SD3_DATA7 0x170b9
+			/* eMMC reset */
+			MX6QDL_PAD_SD3_RST__SD3_RESET  0x170b9
+		>;
+	};
+
+	pinctrl_usdhc3_200mhz: usdhc3200mhzgrp {
+		fsl,pins = <
+			MX6QDL_PAD_SD3_CMD__SD3_CMD    0x170f9
+			MX6QDL_PAD_SD3_CLK__SD3_CLK    0x100f9
+			MX6QDL_PAD_SD3_DAT0__SD3_DATA0 0x170f9
+			MX6QDL_PAD_SD3_DAT1__SD3_DATA1 0x170f9
+			MX6QDL_PAD_SD3_DAT2__SD3_DATA2 0x170f9
+			MX6QDL_PAD_SD3_DAT3__SD3_DATA3 0x170f9
+			MX6QDL_PAD_SD3_DAT4__SD3_DATA4 0x170f9
+			MX6QDL_PAD_SD3_DAT5__SD3_DATA5 0x170f9
+			MX6QDL_PAD_SD3_DAT6__SD3_DATA6 0x170f9
+			MX6QDL_PAD_SD3_DAT7__SD3_DATA7 0x170f9
+			/* eMMC reset */
+			MX6QDL_PAD_SD3_RST__SD3_RESET  0x170f9
+		>;
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

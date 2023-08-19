@@ -40,9 +40,14 @@ int kvm_page_track_create_memslot(struct kvm_memory_slot *slot,
 	int  i;
 
 	for (i = 0; i < KVM_PAGE_TRACK_MAX; i++) {
+<<<<<<< HEAD
 		slot->arch.gfn_track[i] =
 			kvcalloc(npages, sizeof(*slot->arch.gfn_track[i]),
 				 GFP_KERNEL);
+=======
+		slot->arch.gfn_track[i] = kvzalloc(npages *
+					    sizeof(*slot->arch.gfn_track[i]), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!slot->arch.gfn_track[i])
 			goto track_free;
 	}
@@ -158,7 +163,11 @@ bool kvm_page_track_is_active(struct kvm_vcpu *vcpu, gfn_t gfn,
 		return false;
 
 	index = gfn_to_index(gfn, slot->base_gfn, PT_PAGE_TABLE_LEVEL);
+<<<<<<< HEAD
 	return !!READ_ONCE(slot->arch.gfn_track[mode][index]);
+=======
+	return !!ACCESS_ONCE(slot->arch.gfn_track[mode][index]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void kvm_page_track_cleanup(struct kvm *kvm)

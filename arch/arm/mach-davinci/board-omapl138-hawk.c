@@ -15,12 +15,16 @@
 #include <linux/interrupt.h>
 #include <linux/gpio.h>
 #include <linux/gpio/machine.h>
+<<<<<<< HEAD
 #include <linux/mtd/partitions.h>
 #include <linux/mtd/rawnand.h>
 #include <linux/platform_data/gpio-davinci.h>
 #include <linux/platform_data/mtd-davinci.h>
 #include <linux/platform_data/mtd-davinci-aemif.h>
 #include <linux/platform_data/ti-aemif.h>
+=======
+#include <linux/platform_data/gpio-davinci.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/regulator/machine.h>
 
 #include <asm/mach-types.h>
@@ -171,6 +175,7 @@ mmc_setup_mmcsd_fail:
 	gpiod_remove_lookup_table(&mmc_gpios_table);
 }
 
+<<<<<<< HEAD
 static struct mtd_partition omapl138_hawk_nandflash_partition[] = {
 	{
 		.name		= "u-boot env",
@@ -294,6 +299,8 @@ static int omapl138_hawk_register_aemif(void)
 	return platform_device_register(&omapl138_hawk_aemif_device);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t omapl138_hawk_usb_ocic_irq(int irq, void *dev_id);
 static da8xx_ocic_handler_t hawk_usb_ocic_handler;
 
@@ -364,9 +371,20 @@ static __init void omapl138_hawk_usb_init(void)
 		return;
 	}
 
+<<<<<<< HEAD
 	ret = da8xx_register_usb_phy_clocks();
 	if (ret)
 		pr_warn("%s: USB PHY CLK registration failed: %d\n",
+=======
+	ret = da8xx_register_usb20_phy_clk(false);
+	if (ret)
+		pr_warn("%s: USB 2.0 PHY CLK registration failed: %d\n",
+			__func__, ret);
+
+	ret = da8xx_register_usb11_phy_clk(false);
+	if (ret)
+		pr_warn("%s: USB 1.1 PHY CLK registration failed: %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			__func__, ret);
 
 	ret = da8xx_register_usb_phy();
@@ -408,7 +426,13 @@ static __init void omapl138_hawk_init(void)
 {
 	int ret;
 
+<<<<<<< HEAD
 	da850_register_clocks();
+=======
+	ret = da8xx_register_cfgchip();
+	if (ret)
+		pr_warn("%s: CFGCHIP registration failed: %d\n", __func__, ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = da850_register_gpio();
 	if (ret)
@@ -426,10 +450,13 @@ static __init void omapl138_hawk_init(void)
 
 	omapl138_hawk_usb_init();
 
+<<<<<<< HEAD
 	ret = omapl138_hawk_register_aemif();
 	if (ret)
 		pr_warn("%s: aemif registration failed: %d\n", __func__, ret);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ret = da8xx_register_watchdog();
 	if (ret)
 		pr_warn("%s: watchdog registration failed: %d\n",
@@ -463,9 +490,17 @@ MACHINE_START(OMAPL138_HAWKBOARD, "AM18x/OMAP-L138 Hawkboard")
 	.atag_offset	= 0x100,
 	.map_io		= omapl138_hawk_map_io,
 	.init_irq	= cp_intc_init,
+<<<<<<< HEAD
 	.init_time	= da850_init_time,
 	.init_machine	= omapl138_hawk_init,
 	.init_late	= davinci_init_late,
 	.dma_zone_size	= SZ_128M,
+=======
+	.init_time	= davinci_timer_init,
+	.init_machine	= omapl138_hawk_init,
+	.init_late	= davinci_init_late,
+	.dma_zone_size	= SZ_128M,
+	.restart	= da8xx_restart,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.reserve	= da8xx_rproc_reserve_cma,
 MACHINE_END

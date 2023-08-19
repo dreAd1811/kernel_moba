@@ -1,4 +1,15 @@
+<<<<<<< HEAD
 cflags-$(CONFIG_CPU_LOONGSON1)		+= -march=mips32 -Wa,--trap
 platform-$(CONFIG_MACH_LOONGSON32)	+= loongson32/
 cflags-$(CONFIG_MACH_LOONGSON32)	+= -I$(srctree)/arch/mips/include/asm/mach-loongson32
 load-$(CONFIG_CPU_LOONGSON1)		+= 0xffffffff80100000
+=======
+cflags-$(CONFIG_CPU_LOONGSON1)	+= \
+	$(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
+	-Wa,-mips32r2 -Wa,--trap
+
+platform-$(CONFIG_MACH_LOONGSON32)	+= loongson32/
+cflags-$(CONFIG_MACH_LOONGSON32)	+= -I$(srctree)/arch/mips/include/asm/mach-loongson32
+load-$(CONFIG_LOONGSON1_LS1B)		+= 0xffffffff80100000
+load-$(CONFIG_LOONGSON1_LS1C)		+= 0xffffffff80100000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

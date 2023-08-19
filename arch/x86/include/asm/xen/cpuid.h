@@ -74,6 +74,7 @@
 #define XEN_CPUID_FEAT1_MMU_PT_UPDATE_PRESERVE_AD  (1u<<0)
 
 /*
+<<<<<<< HEAD
  * Leaf 4 (0x40000x03)
  * Sub-leaf 0: EAX: bit 0: emulated tsc
  *                  bit 1: host tsc is known to be reliable
@@ -112,5 +113,23 @@
 #define XEN_CPUID_MACHINE_ADDRESS_WIDTH_MASK (0xffu << 0)
 
 #define XEN_CPUID_MAX_NUM_LEAVES 5
+=======
+ * Leaf 5 (0x40000x04)
+ * HVM-specific features
+ * EAX: Features
+ * EBX: vcpu id (iff EAX has XEN_HVM_CPUID_VCPU_ID_PRESENT flag)
+ */
+
+/* Virtualized APIC registers */
+#define XEN_HVM_CPUID_APIC_ACCESS_VIRT (1u << 0)
+/* Virtualized x2APIC accesses */
+#define XEN_HVM_CPUID_X2APIC_VIRT      (1u << 1)
+/* Memory mapped from other domains has valid IOMMU entries */
+#define XEN_HVM_CPUID_IOMMU_MAPPINGS   (1u << 2)
+/* vcpu id is present in EBX */
+#define XEN_HVM_CPUID_VCPU_ID_PRESENT  (1u << 3)
+
+#define XEN_CPUID_MAX_NUM_LEAVES 4
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __XEN_PUBLIC_ARCH_X86_CPUID_H__ */

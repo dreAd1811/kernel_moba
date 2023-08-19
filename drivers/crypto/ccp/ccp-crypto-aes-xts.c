@@ -102,7 +102,11 @@ static int ccp_aes_xts_setkey(struct crypto_ablkcipher *tfm, const u8 *key,
 	ctx->u.aes.key_len = key_len / 2;
 	sg_init_one(&ctx->u.aes.key_sg, ctx->u.aes.key, key_len);
 
+<<<<<<< HEAD
 	return crypto_sync_skcipher_setkey(ctx->u.aes.tfm_skcipher, key, key_len);
+=======
+	return crypto_skcipher_setkey(ctx->u.aes.tfm_skcipher, key, key_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ccp_aes_xts_crypt(struct ablkcipher_request *req,
@@ -151,13 +155,21 @@ static int ccp_aes_xts_crypt(struct ablkcipher_request *req,
 	    (ctx->u.aes.key_len != AES_KEYSIZE_256))
 		fallback = 1;
 	if (fallback) {
+<<<<<<< HEAD
 		SYNC_SKCIPHER_REQUEST_ON_STACK(subreq,
 					       ctx->u.aes.tfm_skcipher);
+=======
+		SKCIPHER_REQUEST_ON_STACK(subreq, ctx->u.aes.tfm_skcipher);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Use the fallback to process the request for any
 		 * unsupported unit sizes or key sizes
 		 */
+<<<<<<< HEAD
 		skcipher_request_set_sync_tfm(subreq, ctx->u.aes.tfm_skcipher);
+=======
+		skcipher_request_set_tfm(subreq, ctx->u.aes.tfm_skcipher);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		skcipher_request_set_callback(subreq, req->base.flags,
 					      NULL, NULL);
 		skcipher_request_set_crypt(subreq, req->src, req->dst,
@@ -204,12 +216,20 @@ static int ccp_aes_xts_decrypt(struct ablkcipher_request *req)
 static int ccp_aes_xts_cra_init(struct crypto_tfm *tfm)
 {
 	struct ccp_ctx *ctx = crypto_tfm_ctx(tfm);
+<<<<<<< HEAD
 	struct crypto_sync_skcipher *fallback_tfm;
+=======
+	struct crypto_skcipher *fallback_tfm;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ctx->complete = ccp_aes_xts_complete;
 	ctx->u.aes.key_len = 0;
 
+<<<<<<< HEAD
 	fallback_tfm = crypto_alloc_sync_skcipher("xts(aes)", 0,
+=======
+	fallback_tfm = crypto_alloc_skcipher("xts(aes)", 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					     CRYPTO_ALG_ASYNC |
 					     CRYPTO_ALG_NEED_FALLBACK);
 	if (IS_ERR(fallback_tfm)) {
@@ -227,7 +247,11 @@ static void ccp_aes_xts_cra_exit(struct crypto_tfm *tfm)
 {
 	struct ccp_ctx *ctx = crypto_tfm_ctx(tfm);
 
+<<<<<<< HEAD
 	crypto_free_sync_skcipher(ctx->u.aes.tfm_skcipher);
+=======
+	crypto_free_skcipher(ctx->u.aes.tfm_skcipher);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int ccp_register_aes_xts_alg(struct list_head *head,

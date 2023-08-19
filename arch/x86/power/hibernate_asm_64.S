@@ -137,7 +137,11 @@ ENTRY(restore_registers)
 	/* Saved in save_processor_state. */
 	lgdt	saved_context_gdt_desc(%rax)
 
+<<<<<<< HEAD
 	xorl	%eax, %eax
+=======
+	xorq	%rax, %rax
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* tell the hibernation core that we've just restored the memory */
 	movq	%rax, in_suspend(%rip)

@@ -83,9 +83,14 @@ static int sc520_freq_cpu_init(struct cpufreq_policy *policy)
 
 	/* cpuinfo and default policy values */
 	policy->cpuinfo.transition_latency = 1000000; /* 1ms */
+<<<<<<< HEAD
 	policy->freq_table = sc520_freq_table;
 
 	return 0;
+=======
+
+	return cpufreq_table_validate_and_show(policy, sc520_freq_table);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 

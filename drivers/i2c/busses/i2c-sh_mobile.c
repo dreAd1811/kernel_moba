@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * SuperH Mobile I2C Controller
  *
@@ -8,6 +11,18 @@
  *
  * Portions of the code based on out-of-tree driver i2c-sh7343.c
  * Copyright (c) 2006 Carlos Munoz <carlos@kenati.com>
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -32,21 +47,33 @@
 /* BUS:     S     A8     ACK   P(*)                                         */
 /* IRQ:       DTE   WAIT                                                    */
 /* ICIC:                                                                    */
+<<<<<<< HEAD
 /* ICCR: 0x94       0x90                                                    */
+=======
+/* ICCR: 0x94 0x90                                                          */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ICDR:      A8                                                            */
 /*                                                                          */
 /* 1 byte transmit                                                          */
 /* BUS:     S     A8     ACK   D8(1)   ACK   P(*)                           */
 /* IRQ:       DTE   WAIT         WAIT                                       */
 /* ICIC:      -DTE                                                          */
+<<<<<<< HEAD
 /* ICCR: 0x94                    0x90                                       */
+=======
+/* ICCR: 0x94       0x90                                                    */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ICDR:      A8    D8(1)                                                   */
 /*                                                                          */
 /* 2 byte transmit                                                          */
 /* BUS:     S     A8     ACK   D8(1)   ACK   D8(2)   ACK   P(*)             */
 /* IRQ:       DTE   WAIT         WAIT          WAIT                         */
 /* ICIC:      -DTE                                                          */
+<<<<<<< HEAD
 /* ICCR: 0x94                                  0x90                         */
+=======
+/* ICCR: 0x94                    0x90                                       */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* ICDR:      A8    D8(1)        D8(2)                                      */
 /*                                                                          */
 /* 3 bytes or more, +---------+ gets repeated                               */
@@ -105,6 +132,10 @@ enum sh_mobile_i2c_op {
 	OP_TX_FIRST,
 	OP_TX,
 	OP_TX_STOP,
+<<<<<<< HEAD
+=======
+	OP_TX_STOP_DATA,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	OP_TX_TO_RX,
 	OP_RX,
 	OP_RX_STOP,
@@ -136,12 +167,19 @@ struct sh_mobile_i2c_data {
 	struct dma_chan *dma_rx;
 	struct scatterlist sg;
 	enum dma_data_direction dma_direction;
+<<<<<<< HEAD
 	u8 *dma_buf;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct sh_mobile_dt_config {
 	int clks_per_count;
+<<<<<<< HEAD
 	int (*setup)(struct sh_mobile_i2c_data *pd);
+=======
+	void (*setup)(struct sh_mobile_i2c_data *pd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define IIC_FLAG_HAS_ICIC67	(1 << 0)
@@ -238,10 +276,43 @@ static u32 sh_mobile_i2c_icch(unsigned long count_khz, u32 tHIGH, u32 tf)
 	return (((count_khz * (tHIGH + tf)) + 5000) / 10000);
 }
 
+<<<<<<< HEAD
 static int sh_mobile_i2c_check_timing(struct sh_mobile_i2c_data *pd)
 {
 	u16 max_val = pd->flags & IIC_FLAG_HAS_ICIC67 ? 0x1ff : 0xff;
 
+=======
+static int sh_mobile_i2c_init(struct sh_mobile_i2c_data *pd)
+{
+	unsigned long i2c_clk_khz;
+	u32 tHIGH, tLOW, tf;
+	uint16_t max_val;
+
+	/* Get clock rate after clock is enabled */
+	clk_prepare_enable(pd->clk);
+	i2c_clk_khz = clk_get_rate(pd->clk) / 1000;
+	clk_disable_unprepare(pd->clk);
+	i2c_clk_khz /= pd->clks_per_count;
+
+	if (pd->bus_speed == STANDARD_MODE) {
+		tLOW	= 47;	/* tLOW = 4.7 us */
+		tHIGH	= 40;	/* tHD;STA = tHIGH = 4.0 us */
+		tf	= 3;	/* tf = 0.3 us */
+	} else if (pd->bus_speed == FAST_MODE) {
+		tLOW	= 13;	/* tLOW = 1.3 us */
+		tHIGH	= 6;	/* tHD;STA = tHIGH = 0.6 us */
+		tf	= 3;	/* tf = 0.3 us */
+	} else {
+		dev_err(pd->dev, "unrecognized bus speed %lu Hz\n",
+			pd->bus_speed);
+		return -EINVAL;
+	}
+
+	pd->iccl = sh_mobile_i2c_iccl(i2c_clk_khz, tLOW, tf);
+	pd->icch = sh_mobile_i2c_icch(i2c_clk_khz, tHIGH, tf);
+
+	max_val = pd->flags & IIC_FLAG_HAS_ICIC67 ? 0x1ff : 0xff;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (pd->iccl > max_val || pd->icch > max_val) {
 		dev_err(pd->dev, "timing values out of range: L/H=0x%x/0x%x\n",
 			pd->iccl, pd->icch);
@@ -264,6 +335,7 @@ static int sh_mobile_i2c_check_timing(struct sh_mobile_i2c_data *pd)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int sh_mobile_i2c_init(struct sh_mobile_i2c_data *pd)
 {
 	unsigned long i2c_clk_khz;
@@ -301,6 +373,37 @@ static int sh_mobile_i2c_v2_init(struct sh_mobile_i2c_data *pd)
 	pd->icch = DIV_ROUND_UP(clks_per_cycle * 4 / 9 - 5, pd->clks_per_count);
 
 	return sh_mobile_i2c_check_timing(pd);
+=======
+static void activate_ch(struct sh_mobile_i2c_data *pd)
+{
+	/* Wake up device and enable clock */
+	pm_runtime_get_sync(pd->dev);
+	clk_prepare_enable(pd->clk);
+
+	/* Enable channel and configure rx ack */
+	iic_set_clr(pd, ICCR, ICCR_ICE, 0);
+
+	/* Mask all interrupts */
+	iic_wr(pd, ICIC, 0);
+
+	/* Set the clock */
+	iic_wr(pd, ICCL, pd->iccl & 0xff);
+	iic_wr(pd, ICCH, pd->icch & 0xff);
+}
+
+static void deactivate_ch(struct sh_mobile_i2c_data *pd)
+{
+	/* Clear/disable interrupts */
+	iic_wr(pd, ICSR, 0);
+	iic_wr(pd, ICIC, 0);
+
+	/* Disable channel */
+	iic_set_clr(pd, ICCR, 0, ICCR_ICE);
+
+	/* Disable clock and mark device as idle */
+	clk_disable_unprepare(pd->clk);
+	pm_runtime_put_sync(pd->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static unsigned char i2c_op(struct sh_mobile_i2c_data *pd,
@@ -324,7 +427,14 @@ static unsigned char i2c_op(struct sh_mobile_i2c_data *pd,
 	case OP_TX: /* write data */
 		iic_wr(pd, ICDR, data);
 		break;
+<<<<<<< HEAD
 	case OP_TX_STOP: /* issue a stop (or rep_start) */
+=======
+	case OP_TX_STOP_DATA: /* write data and issue a stop afterwards */
+		iic_wr(pd, ICDR, data);
+		/* fallthrough */
+	case OP_TX_STOP: /* issue a stop */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		iic_wr(pd, ICCR, pd->send_stop ? ICCR_ICE | ICCR_TRS
 					       : ICCR_ICE | ICCR_TRS | ICCR_BBSY);
 		break;
@@ -358,6 +468,14 @@ static bool sh_mobile_i2c_is_first_byte(struct sh_mobile_i2c_data *pd)
 	return pd->pos == -1;
 }
 
+<<<<<<< HEAD
+=======
+static bool sh_mobile_i2c_is_last_byte(struct sh_mobile_i2c_data *pd)
+{
+	return pd->pos == pd->msg->len - 1;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sh_mobile_i2c_get_data(struct sh_mobile_i2c_data *pd,
 				   unsigned char *buf)
 {
@@ -375,12 +493,28 @@ static int sh_mobile_i2c_isr_tx(struct sh_mobile_i2c_data *pd)
 	unsigned char data;
 
 	if (pd->pos == pd->msg->len) {
+<<<<<<< HEAD
 		i2c_op(pd, OP_TX_STOP, 0);
+=======
+		/* Send stop if we haven't yet (DMA case) */
+		if (pd->send_stop && pd->stop_after_dma)
+			i2c_op(pd, OP_TX_STOP, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 	}
 
 	sh_mobile_i2c_get_data(pd, &data);
+<<<<<<< HEAD
 	i2c_op(pd, sh_mobile_i2c_is_first_byte(pd) ? OP_TX_FIRST : OP_TX, data);
+=======
+
+	if (sh_mobile_i2c_is_last_byte(pd))
+		i2c_op(pd, OP_TX_STOP_DATA, data);
+	else if (sh_mobile_i2c_is_first_byte(pd))
+		i2c_op(pd, OP_TX_FIRST, data);
+	else
+		i2c_op(pd, OP_TX, data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pd->pos++;
 	return 0;
@@ -422,9 +556,14 @@ static int sh_mobile_i2c_isr_rx(struct sh_mobile_i2c_data *pd)
 				break;
 			}
 			data = i2c_op(pd, OP_RX_STOP_DATA, 0);
+<<<<<<< HEAD
 		} else if (real_pos >= 0) {
 			data = i2c_op(pd, OP_RX, 0);
 		}
+=======
+		} else
+			data = i2c_op(pd, OP_RX, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (real_pos >= 0)
 			pd->msg->buf[real_pos] = data;
@@ -567,7 +706,11 @@ static void sh_mobile_i2c_xfer_dma(struct sh_mobile_i2c_data *pd)
 	if (IS_ERR(chan))
 		return;
 
+<<<<<<< HEAD
 	dma_addr = dma_map_single(chan->device->dev, pd->dma_buf, pd->msg->len, dir);
+=======
+	dma_addr = dma_map_single(chan->device->dev, pd->msg->buf, pd->msg->len, dir);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dma_mapping_error(chan->device->dev, dma_addr)) {
 		dev_dbg(pd->dev, "dma map failed, using PIO\n");
 		return;
@@ -600,6 +743,7 @@ static void sh_mobile_i2c_xfer_dma(struct sh_mobile_i2c_data *pd)
 	dma_async_issue_pending(chan);
 }
 
+<<<<<<< HEAD
 static void start_ch(struct sh_mobile_i2c_data *pd, struct i2c_msg *usr_msg,
 		     bool do_init)
 {
@@ -609,6 +753,22 @@ static void start_ch(struct sh_mobile_i2c_data *pd, struct i2c_msg *usr_msg,
 
 		/* Enable channel and configure rx ack */
 		iic_wr(pd, ICCR, ICCR_ICE | ICCR_SCP);
+=======
+static int start_ch(struct sh_mobile_i2c_data *pd, struct i2c_msg *usr_msg,
+		    bool do_init)
+{
+	if (usr_msg->len == 0 && (usr_msg->flags & I2C_M_RD)) {
+		dev_err(pd->dev, "Unsupported zero length i2c read\n");
+		return -EOPNOTSUPP;
+	}
+
+	if (do_init) {
+		/* Initialize channel registers */
+		iic_set_clr(pd, ICCR, 0, ICCR_ICE);
+
+		/* Enable channel and configure rx ack */
+		iic_set_clr(pd, ICCR, ICCR_ICE, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Set the clock */
 		iic_wr(pd, ICCL, pd->iccl & 0xff);
@@ -619,12 +779,20 @@ static void start_ch(struct sh_mobile_i2c_data *pd, struct i2c_msg *usr_msg,
 	pd->pos = -1;
 	pd->sr = 0;
 
+<<<<<<< HEAD
 	pd->dma_buf = i2c_get_dma_safe_msg_buf(pd->msg, 8);
 	if (pd->dma_buf)
+=======
+	if (pd->msg->len > 8)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		sh_mobile_i2c_xfer_dma(pd);
 
 	/* Enable all interrupts to begin with */
 	iic_wr(pd, ICIC, ICIC_DTEE | ICIC_WAITE | ICIC_ALE | ICIC_TACKE);
+<<<<<<< HEAD
+=======
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int poll_dte(struct sh_mobile_i2c_data *pd)
@@ -685,8 +853,12 @@ static int sh_mobile_i2c_xfer(struct i2c_adapter *adapter,
 	int i;
 	long timeout;
 
+<<<<<<< HEAD
 	/* Wake up device and enable clock */
 	pm_runtime_get_sync(pd->dev);
+=======
+	activate_ch(pd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Process all messages */
 	for (i = 0; i < num; i++) {
@@ -695,7 +867,13 @@ static int sh_mobile_i2c_xfer(struct i2c_adapter *adapter,
 		pd->send_stop = i == num - 1 || msg->flags & I2C_M_STOP;
 		pd->stop_after_dma = false;
 
+<<<<<<< HEAD
 		start_ch(pd, msg, do_start);
+=======
+		err = start_ch(pd, msg, do_start);
+		if (err)
+			break;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (do_start)
 			i2c_op(pd, OP_START, 0);
@@ -704,10 +882,13 @@ static int sh_mobile_i2c_xfer(struct i2c_adapter *adapter,
 		timeout = wait_event_timeout(pd->wait,
 				       pd->sr & (ICSR_TACK | SW_DONE),
 				       adapter->timeout);
+<<<<<<< HEAD
 
 		/* 'stop_after_dma' tells if DMA transfer was complete */
 		i2c_put_dma_safe_msg_buf(pd->dma_buf, pd->msg, pd->stop_after_dma);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!timeout) {
 			dev_err(pd->dev, "Transfer request timed out\n");
 			if (pd->dma_direction != DMA_NONE)
@@ -725,6 +906,7 @@ static int sh_mobile_i2c_xfer(struct i2c_adapter *adapter,
 			break;
 	}
 
+<<<<<<< HEAD
 	/* Disable channel */
 	iic_wr(pd, ICCR, ICCR_SCP);
 
@@ -732,6 +914,13 @@ static int sh_mobile_i2c_xfer(struct i2c_adapter *adapter,
 	pm_runtime_put_sync(pd->dev);
 
 	return err ?: num;
+=======
+	deactivate_ch(pd);
+
+	if (!err)
+		err = num;
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static u32 sh_mobile_i2c_func(struct i2c_adapter *adapter)
@@ -744,15 +933,22 @@ static const struct i2c_algorithm sh_mobile_i2c_algorithm = {
 	.master_xfer	= sh_mobile_i2c_xfer,
 };
 
+<<<<<<< HEAD
 static const struct i2c_adapter_quirks sh_mobile_i2c_quirks = {
 	.flags = I2C_AQ_NO_ZERO_LEN_READ,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * r8a7740 chip has lasting errata on I2C I/O pad reset.
  * this is work-around for it.
  */
+<<<<<<< HEAD
 static int sh_mobile_i2c_r8a7740_workaround(struct sh_mobile_i2c_data *pd)
+=======
+static void sh_mobile_i2c_r8a7740_workaround(struct sh_mobile_i2c_data *pd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	iic_set_clr(pd, ICCR, ICCR_ICE, 0);
 	iic_rd(pd, ICCR); /* dummy read */
@@ -773,23 +969,32 @@ static int sh_mobile_i2c_r8a7740_workaround(struct sh_mobile_i2c_data *pd)
 	udelay(10);
 	iic_wr(pd, ICCR, ICCR_TRS);
 	udelay(10);
+<<<<<<< HEAD
 
 	return sh_mobile_i2c_init(pd);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct sh_mobile_dt_config default_dt_config = {
 	.clks_per_count = 1,
+<<<<<<< HEAD
 	.setup = sh_mobile_i2c_init,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct sh_mobile_dt_config fast_clock_dt_config = {
 	.clks_per_count = 2,
+<<<<<<< HEAD
 	.setup = sh_mobile_i2c_init,
 };
 
 static const struct sh_mobile_dt_config v2_freq_calc_dt_config = {
 	.clks_per_count = 2,
 	.setup = sh_mobile_i2c_v2_init,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct sh_mobile_dt_config r8a7740_dt_config = {
@@ -800,8 +1005,12 @@ static const struct sh_mobile_dt_config r8a7740_dt_config = {
 static const struct of_device_id sh_mobile_i2c_dt_ids[] = {
 	{ .compatible = "renesas,iic-r8a73a4", .data = &fast_clock_dt_config },
 	{ .compatible = "renesas,iic-r8a7740", .data = &r8a7740_dt_config },
+<<<<<<< HEAD
 	{ .compatible = "renesas,iic-r8a774c0", .data = &fast_clock_dt_config },
 	{ .compatible = "renesas,iic-r8a7790", .data = &v2_freq_calc_dt_config },
+=======
+	{ .compatible = "renesas,iic-r8a7790", .data = &fast_clock_dt_config },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ .compatible = "renesas,iic-r8a7791", .data = &fast_clock_dt_config },
 	{ .compatible = "renesas,iic-r8a7792", .data = &fast_clock_dt_config },
 	{ .compatible = "renesas,iic-r8a7793", .data = &fast_clock_dt_config },
@@ -855,7 +1064,11 @@ static int sh_mobile_i2c_probe(struct platform_device *dev)
 	struct sh_mobile_i2c_data *pd;
 	struct i2c_adapter *adap;
 	struct resource *res;
+<<<<<<< HEAD
 	const struct sh_mobile_dt_config *config;
+=======
+	const struct of_device_id *match;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 	u32 bus_speed;
 
@@ -884,6 +1097,7 @@ static int sh_mobile_i2c_probe(struct platform_device *dev)
 		return PTR_ERR(pd->reg);
 
 	ret = of_property_read_u32(dev->dev.of_node, "clock-frequency", &bus_speed);
+<<<<<<< HEAD
 	pd->bus_speed = (ret || !bus_speed) ? STANDARD_MODE : bus_speed;
 	pd->clks_per_count = 1;
 
@@ -903,6 +1117,28 @@ static int sh_mobile_i2c_probe(struct platform_device *dev)
 	}
 
 	pm_runtime_put_sync(&dev->dev);
+=======
+	pd->bus_speed = ret ? STANDARD_MODE : bus_speed;
+	pd->clks_per_count = 1;
+
+	match = of_match_device(sh_mobile_i2c_dt_ids, &dev->dev);
+	if (match) {
+		const struct sh_mobile_dt_config *config = match->data;
+
+		pd->clks_per_count = config->clks_per_count;
+
+		if (config->setup)
+			config->setup(pd);
+	}
+
+	/* The IIC blocks on SH-Mobile ARM processors
+	 * come with two new bits in ICIC.
+	 */
+	if (resource_size(res) > 0x17)
+		pd->flags |= IIC_FLAG_HAS_ICIC67;
+
+	ret = sh_mobile_i2c_init(pd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
@@ -911,13 +1147,32 @@ static int sh_mobile_i2c_probe(struct platform_device *dev)
 	pd->dma_direction = DMA_NONE;
 	pd->dma_rx = pd->dma_tx = ERR_PTR(-EPROBE_DEFER);
 
+<<<<<<< HEAD
+=======
+	/* Enable Runtime PM for this device.
+	 *
+	 * Also tell the Runtime PM core to ignore children
+	 * for this device since it is valid for us to suspend
+	 * this I2C master driver even though the slave devices
+	 * on the I2C bus may not be suspended.
+	 *
+	 * The state of the I2C hardware bus is unaffected by
+	 * the Runtime PM state.
+	 */
+	pm_suspend_ignore_children(&dev->dev, true);
+	pm_runtime_enable(&dev->dev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* setup the private data */
 	adap = &pd->adap;
 	i2c_set_adapdata(adap, pd);
 
 	adap->owner = THIS_MODULE;
 	adap->algo = &sh_mobile_i2c_algorithm;
+<<<<<<< HEAD
 	adap->quirks = &sh_mobile_i2c_quirks;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adap->dev.parent = &dev->dev;
 	adap->retries = 5;
 	adap->nr = dev->id;

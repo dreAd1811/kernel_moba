@@ -95,7 +95,11 @@ static void __init s3c2410_clk_sleep_init(void) {}
 
 PNAME(fclk_p) = { "mpll", "div_slow" };
 
+<<<<<<< HEAD
 static struct samsung_mux_clock s3c2410_common_muxes[] __initdata = {
+=======
+struct samsung_mux_clock s3c2410_common_muxes[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MUX(FCLK, "fclk", fclk_p, CLKSLOW, 4, 1),
 };
 
@@ -111,12 +115,20 @@ static struct clk_div_table divslow_d[] = {
 	{ /* sentinel */ },
 };
 
+<<<<<<< HEAD
 static struct samsung_div_clock s3c2410_common_dividers[] __initdata = {
+=======
+struct samsung_div_clock s3c2410_common_dividers[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DIV_T(0, "div_slow", "xti", CLKSLOW, 0, 3, divslow_d),
 	DIV(PCLK, "pclk", "hclk", CLKDIVN, 0, 1),
 };
 
+<<<<<<< HEAD
 static struct samsung_gate_clock s3c2410_common_gates[] __initdata = {
+=======
+struct samsung_gate_clock s3c2410_common_gates[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GATE(PCLK_SPI, "spi", "pclk", CLKCON, 18, 0, 0),
 	GATE(PCLK_I2S, "i2s", "pclk", CLKCON, 17, 0, 0),
 	GATE(PCLK_I2C, "i2c", "pclk", CLKCON, 16, 0, 0),
@@ -135,7 +147,11 @@ static struct samsung_gate_clock s3c2410_common_gates[] __initdata = {
 };
 
 /* should be added _after_ the soc-specific clocks are created */
+<<<<<<< HEAD
 static struct samsung_clock_alias s3c2410_common_aliases[] __initdata = {
+=======
+struct samsung_clock_alias s3c2410_common_aliases[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ALIAS(PCLK_I2C, "s3c2410-i2c.0", "i2c"),
 	ALIAS(PCLK_ADC, NULL, "adc"),
 	ALIAS(PCLK_RTC, NULL, "rtc"),
@@ -162,6 +178,7 @@ static struct samsung_clock_alias s3c2410_common_aliases[] __initdata = {
 static struct samsung_pll_rate_table pll_s3c2410_12mhz_tbl[] __initdata = {
 	/* sorted in descending order */
 	/* 2410A extras */
+<<<<<<< HEAD
 	PLL_S3C2410_MPLL_RATE(12 * MHZ, 270000000, 127, 1, 1),
 	PLL_S3C2410_MPLL_RATE(12 * MHZ, 268000000, 126, 1, 1),
 	PLL_S3C2410_MPLL_RATE(12 * MHZ, 266000000, 125, 1, 1),
@@ -190,6 +207,36 @@ static struct samsung_pll_rate_table pll_s3c2410_12mhz_tbl[] __initdata = {
 	PLL_S3C2410_MPLL_RATE(12 * MHZ, 50700000, 161, 3, 3),
 	PLL_S3C2410_MPLL_RATE(12 * MHZ, 45000000, 82, 1, 3),
 	PLL_S3C2410_MPLL_RATE(12 * MHZ, 33750000, 82, 2, 3),
+=======
+	PLL_35XX_RATE(270000000, 127, 1, 1),
+	PLL_35XX_RATE(268000000, 126, 1, 1),
+	PLL_35XX_RATE(266000000, 125, 1, 1),
+	PLL_35XX_RATE(226000000, 105, 1, 1),
+	PLL_35XX_RATE(210000000, 132, 2, 1),
+	/* 2410 common */
+	PLL_35XX_RATE(202800000, 161, 3, 1),
+	PLL_35XX_RATE(192000000, 88, 1, 1),
+	PLL_35XX_RATE(186000000, 85, 1, 1),
+	PLL_35XX_RATE(180000000, 82, 1, 1),
+	PLL_35XX_RATE(170000000, 77, 1, 1),
+	PLL_35XX_RATE(158000000, 71, 1, 1),
+	PLL_35XX_RATE(152000000, 68, 1, 1),
+	PLL_35XX_RATE(147000000, 90, 2, 1),
+	PLL_35XX_RATE(135000000, 82, 2, 1),
+	PLL_35XX_RATE(124000000, 116, 1, 2),
+	PLL_35XX_RATE(118500000, 150, 2, 2),
+	PLL_35XX_RATE(113000000, 105, 1, 2),
+	PLL_35XX_RATE(101250000, 127, 2, 2),
+	PLL_35XX_RATE(90000000, 112, 2, 2),
+	PLL_35XX_RATE(84750000, 105, 2, 2),
+	PLL_35XX_RATE(79000000, 71, 1, 2),
+	PLL_35XX_RATE(67500000, 82, 2, 2),
+	PLL_35XX_RATE(56250000, 142, 2, 3),
+	PLL_35XX_RATE(48000000, 120, 2, 3),
+	PLL_35XX_RATE(50700000, 161, 3, 3),
+	PLL_35XX_RATE(45000000, 82, 1, 3),
+	PLL_35XX_RATE(33750000, 82, 2, 3),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ },
 };
 
@@ -200,11 +247,19 @@ static struct samsung_pll_clock s3c2410_plls[] __initdata = {
 						LOCKTIME, UPLLCON, NULL),
 };
 
+<<<<<<< HEAD
 static struct samsung_div_clock s3c2410_dividers[] __initdata = {
 	DIV(HCLK, "hclk", "mpll", CLKDIVN, 1, 1),
 };
 
 static struct samsung_fixed_factor_clock s3c2410_ffactor[] __initdata = {
+=======
+struct samsung_div_clock s3c2410_dividers[] __initdata = {
+	DIV(HCLK, "hclk", "mpll", CLKDIVN, 1, 1),
+};
+
+struct samsung_fixed_factor_clock s3c2410_ffactor[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * armclk is directly supplied by the fclk, without
 	 * switching possibility like on the s3c244x below.
@@ -215,7 +270,11 @@ static struct samsung_fixed_factor_clock s3c2410_ffactor[] __initdata = {
 	FFACTOR(UCLK, "uclk", "upll", 1, 1, 0),
 };
 
+<<<<<<< HEAD
 static struct samsung_clock_alias s3c2410_aliases[] __initdata = {
+=======
+struct samsung_clock_alias s3c2410_aliases[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ALIAS(PCLK_UART0, "s3c2410-uart.0", "uart"),
 	ALIAS(PCLK_UART1, "s3c2410-uart.1", "uart"),
 	ALIAS(PCLK_UART2, "s3c2410-uart.2", "uart"),
@@ -229,6 +288,7 @@ static struct samsung_clock_alias s3c2410_aliases[] __initdata = {
 
 static struct samsung_pll_rate_table pll_s3c244x_12mhz_tbl[] __initdata = {
 	/* sorted in descending order */
+<<<<<<< HEAD
 	PLL_S3C2440_MPLL_RATE(12 * MHZ, 400000000, 0x5c, 1, 1),
 	PLL_S3C2440_MPLL_RATE(12 * MHZ, 390000000, 0x7a, 2, 1),
 	PLL_S3C2440_MPLL_RATE(12 * MHZ, 380000000, 0x57, 1, 1),
@@ -256,6 +316,35 @@ static struct samsung_pll_rate_table pll_s3c244x_12mhz_tbl[] __initdata = {
 	PLL_S3C2440_MPLL_RATE(12 * MHZ, 90000000, 0x70, 2, 3),
 	PLL_S3C2440_MPLL_RATE(12 * MHZ, 80000000, 0x98, 4, 3),
 	PLL_S3C2440_MPLL_RATE(12 * MHZ, 75000000, 0x75, 3, 3),
+=======
+	PLL_35XX_RATE(400000000, 0x5c, 1, 1),
+	PLL_35XX_RATE(390000000, 0x7a, 2, 1),
+	PLL_35XX_RATE(380000000, 0x57, 1, 1),
+	PLL_35XX_RATE(370000000, 0xb1, 4, 1),
+	PLL_35XX_RATE(360000000, 0x70, 2, 1),
+	PLL_35XX_RATE(350000000, 0xa7, 4, 1),
+	PLL_35XX_RATE(340000000, 0x4d, 1, 1),
+	PLL_35XX_RATE(330000000, 0x66, 2, 1),
+	PLL_35XX_RATE(320000000, 0x98, 4, 1),
+	PLL_35XX_RATE(310000000, 0x93, 4, 1),
+	PLL_35XX_RATE(300000000, 0x75, 3, 1),
+	PLL_35XX_RATE(240000000, 0x70, 1, 2),
+	PLL_35XX_RATE(230000000, 0x6b, 1, 2),
+	PLL_35XX_RATE(220000000, 0x66, 1, 2),
+	PLL_35XX_RATE(210000000, 0x84, 2, 2),
+	PLL_35XX_RATE(200000000, 0x5c, 1, 2),
+	PLL_35XX_RATE(190000000, 0x57, 1, 2),
+	PLL_35XX_RATE(180000000, 0x70, 2, 2),
+	PLL_35XX_RATE(170000000, 0x4d, 1, 2),
+	PLL_35XX_RATE(160000000, 0x98, 4, 2),
+	PLL_35XX_RATE(150000000, 0x75, 3, 2),
+	PLL_35XX_RATE(120000000, 0x70, 1, 3),
+	PLL_35XX_RATE(110000000, 0x66, 1, 3),
+	PLL_35XX_RATE(100000000, 0x5c, 1, 3),
+	PLL_35XX_RATE(90000000, 0x70, 2, 3),
+	PLL_35XX_RATE(80000000, 0x98, 4, 3),
+	PLL_35XX_RATE(75000000, 0x75, 3, 3),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ /* sentinel */ },
 };
 
@@ -269,12 +358,20 @@ static struct samsung_pll_clock s3c244x_common_plls[] __initdata = {
 PNAME(hclk_p) = { "fclk", "div_hclk_2", "div_hclk_4", "div_hclk_3" };
 PNAME(armclk_p) = { "fclk", "hclk" };
 
+<<<<<<< HEAD
 static struct samsung_mux_clock s3c244x_common_muxes[] __initdata = {
+=======
+struct samsung_mux_clock s3c244x_common_muxes[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MUX(HCLK, "hclk", hclk_p, CLKDIVN, 1, 2),
 	MUX(ARMCLK, "armclk", armclk_p, CAMDIVN, 12, 1),
 };
 
+<<<<<<< HEAD
 static struct samsung_fixed_factor_clock s3c244x_common_ffactor[] __initdata = {
+=======
+struct samsung_fixed_factor_clock s3c244x_common_ffactor[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	FFACTOR(0, "div_hclk_2", "fclk", 1, 2, 0),
 	FFACTOR(0, "ff_cam", "div_cam", 2, 1, CLK_SET_RATE_PARENT),
 };
@@ -291,7 +388,11 @@ static struct clk_div_table div_hclk_3_d[] = {
 	{ /* sentinel */ },
 };
 
+<<<<<<< HEAD
 static struct samsung_div_clock s3c244x_common_dividers[] __initdata = {
+=======
+struct samsung_div_clock s3c244x_common_dividers[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DIV(UCLK, "uclk", "upll", CLKDIVN, 3, 1),
 	DIV(0, "div_hclk", "fclk", CLKDIVN, 1, 1),
 	DIV_T(0, "div_hclk_4", "fclk", CAMDIVN, 9, 1, div_hclk_4_d),
@@ -299,11 +400,19 @@ static struct samsung_div_clock s3c244x_common_dividers[] __initdata = {
 	DIV(0, "div_cam", "upll", CAMDIVN, 0, 3),
 };
 
+<<<<<<< HEAD
 static struct samsung_gate_clock s3c244x_common_gates[] __initdata = {
 	GATE(HCLK_CAM, "cam", "hclk", CLKCON, 19, 0, 0),
 };
 
 static struct samsung_clock_alias s3c244x_common_aliases[] __initdata = {
+=======
+struct samsung_gate_clock s3c244x_common_gates[] __initdata = {
+	GATE(HCLK_CAM, "cam", "hclk", CLKCON, 19, 0, 0),
+};
+
+struct samsung_clock_alias s3c244x_common_aliases[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ALIAS(PCLK_UART0, "s3c2440-uart.0", "uart"),
 	ALIAS(PCLK_UART1, "s3c2440-uart.1", "uart"),
 	ALIAS(PCLK_UART2, "s3c2440-uart.2", "uart"),
@@ -318,23 +427,39 @@ static struct samsung_clock_alias s3c244x_common_aliases[] __initdata = {
 
 PNAME(s3c2440_camif_p) = { "upll", "ff_cam" };
 
+<<<<<<< HEAD
 static struct samsung_mux_clock s3c2440_muxes[] __initdata = {
 	MUX(CAMIF, "camif", s3c2440_camif_p, CAMDIVN, 4, 1),
 };
 
 static struct samsung_gate_clock s3c2440_gates[] __initdata = {
+=======
+struct samsung_mux_clock s3c2440_muxes[] __initdata = {
+	MUX(CAMIF, "camif", s3c2440_camif_p, CAMDIVN, 4, 1),
+};
+
+struct samsung_gate_clock s3c2440_gates[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	GATE(PCLK_AC97, "ac97", "pclk", CLKCON, 20, 0, 0),
 };
 
 /* S3C2442 specific clocks */
 
+<<<<<<< HEAD
 static struct samsung_fixed_factor_clock s3c2442_ffactor[] __initdata = {
+=======
+struct samsung_fixed_factor_clock s3c2442_ffactor[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	FFACTOR(0, "upll_3", "upll", 1, 3, 0),
 };
 
 PNAME(s3c2442_camif_p) = { "upll", "ff_cam", "upll", "upll_3" };
 
+<<<<<<< HEAD
 static struct samsung_mux_clock s3c2442_muxes[] __initdata = {
+=======
+struct samsung_mux_clock s3c2442_muxes[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	MUX(CAMIF, "camif", s3c2442_camif_p, CAMDIVN, 4, 2),
 };
 
@@ -343,7 +468,11 @@ static struct samsung_mux_clock s3c2442_muxes[] __initdata = {
  * Only necessary until the devicetree-move is complete
  */
 #define XTI	1
+<<<<<<< HEAD
 static struct samsung_fixed_rate_clock s3c2410_common_frate_clks[] __initdata = {
+=======
+struct samsung_fixed_rate_clock s3c2410_common_frate_clks[] __initdata = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	FRATE(XTI, "xti", NULL, 0, 0),
 };
 
@@ -468,18 +597,30 @@ void __init s3c2410_common_clk_init(struct device_node *np, unsigned long xti_f,
 
 static void __init s3c2410_clk_init(struct device_node *np)
 {
+<<<<<<< HEAD
 	s3c2410_common_clk_init(np, 0, S3C2410, NULL);
+=======
+	s3c2410_common_clk_init(np, 0, S3C2410, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(s3c2410_clk, "samsung,s3c2410-clock", s3c2410_clk_init);
 
 static void __init s3c2440_clk_init(struct device_node *np)
 {
+<<<<<<< HEAD
 	s3c2410_common_clk_init(np, 0, S3C2440, NULL);
+=======
+	s3c2410_common_clk_init(np, 0, S3C2440, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(s3c2440_clk, "samsung,s3c2440-clock", s3c2440_clk_init);
 
 static void __init s3c2442_clk_init(struct device_node *np)
 {
+<<<<<<< HEAD
 	s3c2410_common_clk_init(np, 0, S3C2442, NULL);
+=======
+	s3c2410_common_clk_init(np, 0, S3C2442, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 CLK_OF_DECLARE(s3c2442_clk, "samsung,s3c2442-clock", s3c2442_clk_init);

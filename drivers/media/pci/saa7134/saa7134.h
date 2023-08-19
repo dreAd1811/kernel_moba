@@ -261,8 +261,13 @@ struct saa7134_card_ir {
 #define SAA7134_BOARD_SABRENT_TV_PCB05     115
 #define SAA7134_BOARD_10MOONSTVMASTER3     116
 #define SAA7134_BOARD_AVERMEDIA_SUPER_007  117
+<<<<<<< HEAD
 #define SAA7134_BOARD_BEHOLD_401	118
 #define SAA7134_BOARD_BEHOLD_403	119
+=======
+#define SAA7134_BOARD_BEHOLD_401  	118
+#define SAA7134_BOARD_BEHOLD_403  	119
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SAA7134_BOARD_BEHOLD_403FM	120
 #define SAA7134_BOARD_BEHOLD_405	121
 #define SAA7134_BOARD_BEHOLD_405FM	122
@@ -581,7 +586,11 @@ struct saa7134_dev {
 	/* config info */
 	unsigned int               board;
 	unsigned int               tuner_type;
+<<<<<<< HEAD
 	unsigned int		   radio_type;
+=======
+	unsigned int 		   radio_type;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char		   tuner_addr;
 	unsigned char		   radio_addr;
 
@@ -592,7 +601,11 @@ struct saa7134_dev {
 	struct i2c_adapter         i2c_adap;
 	struct i2c_client          i2c_client;
 	unsigned char              eedata[256];
+<<<<<<< HEAD
 	int			   has_rds;
+=======
+	int 			   has_rds;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* video overlay */
 	struct v4l2_framebuffer    ovbuf;
@@ -773,7 +786,11 @@ int saa7134_buffer_queue(struct saa7134_dev *dev, struct saa7134_dmaqueue *q,
 void saa7134_buffer_finish(struct saa7134_dev *dev, struct saa7134_dmaqueue *q,
 			   unsigned int state);
 void saa7134_buffer_next(struct saa7134_dev *dev, struct saa7134_dmaqueue *q);
+<<<<<<< HEAD
 void saa7134_buffer_timeout(struct timer_list *t);
+=======
+void saa7134_buffer_timeout(unsigned long data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void saa7134_stop_streaming(struct saa7134_dev *dev, struct saa7134_dmaqueue *q);
 
 int saa7134_set_dmabits(struct saa7134_dev *dev);
@@ -870,7 +887,11 @@ int saa7134_ts_stop(struct saa7134_dev *dev);
 /* ----------------------------------------------------------- */
 /* saa7134-vbi.c                                               */
 
+<<<<<<< HEAD
 extern const struct vb2_ops saa7134_vbi_qops;
+=======
+extern struct vb2_ops saa7134_vbi_qops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern struct video_device saa7134_vbi_template;
 
 int saa7134_vbi_init1(struct saa7134_dev *dev);

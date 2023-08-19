@@ -25,7 +25,10 @@
 #define OCTEON_VF_ACTIVE		0x1
 #define OCTEON_VF_FLR_REQUEST		0x2
 #define OCTEON_PF_CHANGED_VF_MACADDR	0x4
+<<<<<<< HEAD
 #define OCTEON_GET_VF_STATS		0x8
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*Macro for Read acknowldgement*/
 #define OCTEON_PFVFACK			0xffffffffffffffffULL
@@ -108,15 +111,21 @@ struct octeon_mbox {
 
 };
 
+<<<<<<< HEAD
 struct oct_vf_stats_ctx {
 	atomic_t status;
 	struct oct_vf_stats *stats;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int octeon_mbox_read(struct octeon_mbox *mbox);
 int octeon_mbox_write(struct octeon_device *oct,
 		      struct octeon_mbox_cmd *mbox_cmd);
 int octeon_mbox_process_message(struct octeon_mbox *mbox);
+<<<<<<< HEAD
 int octeon_mbox_cancel(struct octeon_device *oct, int q_no);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

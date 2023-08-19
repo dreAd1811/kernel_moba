@@ -293,18 +293,40 @@ static inline struct e4000_dev *e4000_subdev_to_dev(struct v4l2_subdev *sd)
 	return container_of(sd, struct e4000_dev, sd);
 }
 
+<<<<<<< HEAD
 static int e4000_standby(struct v4l2_subdev *sd)
 {
 	struct e4000_dev *dev = e4000_subdev_to_dev(sd);
 	int ret;
 
 	ret = e4000_sleep(dev);
+=======
+static int e4000_s_power(struct v4l2_subdev *sd, int on)
+{
+	struct e4000_dev *dev = e4000_subdev_to_dev(sd);
+	struct i2c_client *client = dev->client;
+	int ret;
+
+	dev_dbg(&client->dev, "on=%d\n", on);
+
+	if (on)
+		ret = e4000_init(dev);
+	else
+		ret = e4000_sleep(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		return ret;
 
 	return e4000_set_params(dev);
 }
 
+<<<<<<< HEAD
+=======
+static const struct v4l2_subdev_core_ops e4000_subdev_core_ops = {
+	.s_power                  = e4000_s_power,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int e4000_g_tuner(struct v4l2_subdev *sd, struct v4l2_tuner *v)
 {
 	struct e4000_dev *dev = e4000_subdev_to_dev(sd);
@@ -372,7 +394,10 @@ static int e4000_enum_freq_bands(struct v4l2_subdev *sd,
 }
 
 static const struct v4l2_subdev_tuner_ops e4000_subdev_tuner_ops = {
+<<<<<<< HEAD
 	.standby                  = e4000_standby,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.g_tuner                  = e4000_g_tuner,
 	.s_tuner                  = e4000_s_tuner,
 	.g_frequency              = e4000_g_frequency,
@@ -381,6 +406,10 @@ static const struct v4l2_subdev_tuner_ops e4000_subdev_tuner_ops = {
 };
 
 static const struct v4l2_subdev_ops e4000_subdev_ops = {
+<<<<<<< HEAD
+=======
+	.core                     = &e4000_subdev_core_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.tuner                    = &e4000_subdev_tuner_ops,
 };
 
@@ -610,9 +639,15 @@ static int e4000_dvb_get_if_frequency(struct dvb_frontend *fe, u32 *frequency)
 
 static const struct dvb_tuner_ops e4000_dvb_tuner_ops = {
 	.info = {
+<<<<<<< HEAD
 		.name              = "Elonics E4000",
 		.frequency_min_hz  = 174 * MHz,
 		.frequency_max_hz  = 862 * MHz,
+=======
+		.name           = "Elonics E4000",
+		.frequency_min  = 174000000,
+		.frequency_max  = 862000000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 
 	.init = e4000_dvb_init,

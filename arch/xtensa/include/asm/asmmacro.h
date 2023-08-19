@@ -150,6 +150,7 @@
 		__endl	\ar \as
 	.endm
 
+<<<<<<< HEAD
 /* Load or store instructions that may cause exceptions use the EX macro. */
 
 #define EX(handler)				\
@@ -190,5 +191,7 @@
 		ssa8l	\r
 #endif
 	.endm
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _XTENSA_ASMMACRO_H */

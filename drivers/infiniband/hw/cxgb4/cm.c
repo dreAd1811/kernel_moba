@@ -99,6 +99,13 @@ module_param(enable_tcp_window_scaling, int, 0644);
 MODULE_PARM_DESC(enable_tcp_window_scaling,
 		 "Enable tcp window scaling (default=1)");
 
+<<<<<<< HEAD
+=======
+int c4iw_debug;
+module_param(c4iw_debug, int, 0644);
+MODULE_PARM_DESC(c4iw_debug, "obsolete");
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int peer2peer = 1;
 module_param(peer2peer, int, 0644);
 MODULE_PARM_DESC(peer2peer, "Support peer2peer ULPs (default=1)");
@@ -140,7 +147,11 @@ static struct workqueue_struct *workq;
 static struct sk_buff_head rxq;
 
 static struct sk_buff *get_skb(struct sk_buff *skb, int len, gfp_t gfp);
+<<<<<<< HEAD
 static void ep_timeout(struct timer_list *t);
+=======
+static void ep_timeout(unsigned long arg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void connect_reply_upcall(struct c4iw_ep *ep, int status);
 static int sched(struct c4iw_dev *dev, struct sk_buff *skb);
 
@@ -176,7 +187,11 @@ static void ref_qp(struct c4iw_ep *ep)
 
 static void start_ep_timer(struct c4iw_ep *ep)
 {
+<<<<<<< HEAD
 	pr_debug("ep %p\n", ep);
+=======
+	pr_debug("%s ep %p\n", __func__, ep);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (timer_pending(&ep->timer)) {
 		pr_err("%s timer already started! ep %p\n",
 		       __func__, ep);
@@ -185,12 +200,21 @@ static void start_ep_timer(struct c4iw_ep *ep)
 	clear_bit(TIMEOUT, &ep->com.flags);
 	c4iw_get_ep(&ep->com);
 	ep->timer.expires = jiffies + ep_timeout_secs * HZ;
+<<<<<<< HEAD
+=======
+	ep->timer.data = (unsigned long)ep;
+	ep->timer.function = ep_timeout;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_timer(&ep->timer);
 }
 
 static int stop_ep_timer(struct c4iw_ep *ep)
 {
+<<<<<<< HEAD
 	pr_debug("ep %p stopping\n", ep);
+=======
+	pr_debug("%s ep %p stopping\n", __func__, ep);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	del_timer_sync(&ep->timer);
 	if (!test_and_set_bit(TIMEOUT, &ep->com.flags)) {
 		c4iw_put_ep(&ep->com);
@@ -206,7 +230,11 @@ static int c4iw_l2t_send(struct c4iw_rdev *rdev, struct sk_buff *skb,
 
 	if (c4iw_fatal_error(rdev)) {
 		kfree_skb(skb);
+<<<<<<< HEAD
 		pr_err("%s - device in error state - dropping\n", __func__);
+=======
+		pr_debug("%s - device in error state - dropping\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 	error = cxgb4_l2t_send(rdev->lldi.ports[0], skb, l2e);
@@ -223,7 +251,11 @@ int c4iw_ofld_send(struct c4iw_rdev *rdev, struct sk_buff *skb)
 
 	if (c4iw_fatal_error(rdev)) {
 		kfree_skb(skb);
+<<<<<<< HEAD
 		pr_err("%s - device in error state - dropping\n", __func__);
+=======
+		pr_debug("%s - device in error state - dropping\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 	error = cxgb4_ofld_send(rdev->lldi.ports[0], skb);
@@ -259,8 +291,13 @@ static void set_emss(struct c4iw_ep *ep, u16 opt)
 	if (ep->emss & 7)
 		pr_debug("Warning: misaligned mtu idx %u mss %u emss=%u\n",
 			 TCPOPT_MSS_G(opt), ep->mss, ep->emss);
+<<<<<<< HEAD
 	pr_debug("mss_idx %u mss %u emss=%u\n", TCPOPT_MSS_G(opt), ep->mss,
 		 ep->emss);
+=======
+	pr_debug("%s mss_idx %u mss %u emss=%u\n", __func__, TCPOPT_MSS_G(opt),
+		 ep->mss, ep->emss);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static enum c4iw_ep_state state_read(struct c4iw_ep_common *epc)
@@ -281,7 +318,11 @@ static void __state_set(struct c4iw_ep_common *epc, enum c4iw_ep_state new)
 static void state_set(struct c4iw_ep_common *epc, enum c4iw_ep_state new)
 {
 	mutex_lock(&epc->mutex);
+<<<<<<< HEAD
 	pr_debug("%s -> %s\n", states[epc->state], states[new]);
+=======
+	pr_debug("%s - %s -> %s\n", __func__, states[epc->state], states[new]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__state_set(epc, new);
 	mutex_unlock(&epc->mutex);
 	return;
@@ -312,6 +353,7 @@ static void *alloc_ep(int size, gfp_t gfp)
 
 	epc = kzalloc(size, gfp);
 	if (epc) {
+<<<<<<< HEAD
 		epc->wr_waitp = c4iw_alloc_wr_wait(gfp);
 		if (!epc->wr_waitp) {
 			kfree(epc);
@@ -324,6 +366,13 @@ static void *alloc_ep(int size, gfp_t gfp)
 	}
 	pr_debug("alloc ep %p\n", epc);
 out:
+=======
+		kref_init(&epc->kref);
+		mutex_init(&epc->mutex);
+		c4iw_init_wr_wait(&epc->wr_wait);
+	}
+	pr_debug("%s alloc ep %p\n", __func__, epc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return epc;
 }
 
@@ -385,7 +434,11 @@ void _c4iw_free_ep(struct kref *kref)
 	struct c4iw_ep *ep;
 
 	ep = container_of(kref, struct c4iw_ep, com.kref);
+<<<<<<< HEAD
 	pr_debug("ep %p state %s\n", ep, states[ep->com.state]);
+=======
+	pr_debug("%s ep %p state %s\n", __func__, ep, states[ep->com.state]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (test_bit(QP_REFERENCED, &ep->com.flags))
 		deref_qp(ep);
 	if (test_bit(RELEASE_RESOURCES, &ep->com.flags)) {
@@ -408,7 +461,10 @@ void _c4iw_free_ep(struct kref *kref)
 	}
 	if (!skb_queue_empty(&ep->com.ep_skb_list))
 		skb_queue_purge(&ep->com.ep_skb_list);
+<<<<<<< HEAD
 	c4iw_put_wr_wait(ep->com.wr_waitp);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kfree(ep);
 }
 
@@ -493,7 +549,10 @@ static int _put_ep_safe(struct c4iw_dev *dev, struct sk_buff *skb)
 
 	ep = *((struct c4iw_ep **)(skb->cb + 2 * sizeof(void *)));
 	release_ep_resources(ep);
+<<<<<<< HEAD
 	kfree_skb(skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -504,7 +563,10 @@ static int _put_pass_ep_safe(struct c4iw_dev *dev, struct sk_buff *skb)
 	ep = *((struct c4iw_ep **)(skb->cb + 2 * sizeof(void *)));
 	c4iw_put_ep(&ep->parent_ep->com);
 	release_ep_resources(ep);
+<<<<<<< HEAD
 	kfree_skb(skb);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
@@ -574,7 +636,11 @@ static void abort_arp_failure(void *handle, struct sk_buff *skb)
 	struct c4iw_rdev *rdev = &ep->com.dev->rdev;
 	struct cpl_abort_req *req = cplhdr(skb);
 
+<<<<<<< HEAD
 	pr_debug("rdev %p\n", rdev);
+=======
+	pr_debug("%s rdev %p\n", __func__, rdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	req->cmd = CPL_ABORT_NO_RST;
 	skb_get(skb);
 	ret = c4iw_ofld_send(rdev, skb);
@@ -589,14 +655,21 @@ static int send_flowc(struct c4iw_ep *ep)
 {
 	struct fw_flowc_wr *flowc;
 	struct sk_buff *skb = skb_dequeue(&ep->com.ep_skb_list);
+<<<<<<< HEAD
 	u16 vlan = ep->l2t->vlan;
 	int nparams;
 	int flowclen, flowclen16;
+=======
+	int i;
+	u16 vlan = ep->l2t->vlan;
+	int nparams;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (WARN_ON(!skb))
 		return -ENOMEM;
 
 	if (vlan == CPL_L2T_VLAN_NONE)
+<<<<<<< HEAD
 		nparams = 9;
 	else
 		nparams = 10;
@@ -612,6 +685,18 @@ static int send_flowc(struct c4iw_ep *ep)
 					   FW_FLOWC_WR_NPARAMS_V(nparams));
 	flowc->flowid_len16 = cpu_to_be32(FW_WR_LEN16_V(flowclen16) |
 					  FW_WR_FLOWID_V(ep->hwtid));
+=======
+		nparams = 8;
+	else
+		nparams = 9;
+
+	flowc = __skb_put(skb, FLOWC_LEN);
+
+	flowc->op_to_nparams = cpu_to_be32(FW_WR_OP_V(FW_FLOWC_WR) |
+					   FW_FLOWC_WR_NPARAMS_V(nparams));
+	flowc->flowid_len16 = cpu_to_be32(FW_WR_LEN16_V(DIV_ROUND_UP(FLOWC_LEN,
+					  16)) | FW_WR_FLOWID_V(ep->hwtid));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	flowc->mnemval[0].mnemonic = FW_FLOWC_MNEM_PFNVFN;
 	flowc->mnemval[0].val = cpu_to_be32(FW_PFVF_CMD_PFN_V
@@ -630,6 +715,7 @@ static int send_flowc(struct c4iw_ep *ep)
 	flowc->mnemval[6].val = cpu_to_be32(ep->snd_win);
 	flowc->mnemval[7].mnemonic = FW_FLOWC_MNEM_MSS;
 	flowc->mnemval[7].val = cpu_to_be32(ep->emss);
+<<<<<<< HEAD
 	flowc->mnemval[8].mnemonic = FW_FLOWC_MNEM_RCV_SCALE;
 	flowc->mnemval[8].val = cpu_to_be32(ep->snd_wscale);
 	if (nparams == 10) {
@@ -637,6 +723,23 @@ static int send_flowc(struct c4iw_ep *ep)
 		pri = (vlan & VLAN_PRIO_MASK) >> VLAN_PRIO_SHIFT;
 		flowc->mnemval[9].mnemonic = FW_FLOWC_MNEM_SCHEDCLASS;
 		flowc->mnemval[9].val = cpu_to_be32(pri);
+=======
+	if (nparams == 9) {
+		u16 pri;
+
+		pri = (vlan & VLAN_PRIO_MASK) >> VLAN_PRIO_SHIFT;
+		flowc->mnemval[8].mnemonic = FW_FLOWC_MNEM_SCHEDCLASS;
+		flowc->mnemval[8].val = cpu_to_be32(pri);
+	} else {
+		/* Pad WR to 16 byte boundary */
+		flowc->mnemval[8].mnemonic = 0;
+		flowc->mnemval[8].val = 0;
+	}
+	for (i = 0; i < 9; i++) {
+		flowc->mnemval[i].r4[0] = 0;
+		flowc->mnemval[i].r4[1] = 0;
+		flowc->mnemval[i].r4[2] = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	set_wr_txq(skb, CPL_PRIORITY_DATA, ep->txq_idx);
@@ -648,7 +751,11 @@ static int send_halfclose(struct c4iw_ep *ep)
 	struct sk_buff *skb = skb_dequeue(&ep->com.ep_skb_list);
 	u32 wrlen = roundup(sizeof(struct cpl_close_con_req), 16);
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (WARN_ON(!skb))
 		return -ENOMEM;
 
@@ -663,7 +770,11 @@ static int send_abort(struct c4iw_ep *ep)
 	u32 wrlen = roundup(sizeof(struct cpl_abort_req), 16);
 	struct sk_buff *req_skb = skb_dequeue(&ep->com.ep_skb_list);
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (WARN_ON(!req_skb))
 		return -ENOMEM;
 
@@ -726,7 +837,11 @@ static int send_connect(struct c4iw_ep *ep)
 			roundup(sizev4, 16) :
 			roundup(sizev6, 16);
 
+<<<<<<< HEAD
 	pr_debug("ep %p atid %u\n", ep, ep->atid);
+=======
+	pr_debug("%s ep %p atid %u\n", __func__, ep, ep->atid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb = get_skb(NULL, wrlen, GFP_KERNEL);
 	if (!skb) {
@@ -825,13 +940,21 @@ static int send_connect(struct c4iw_ep *ep)
 				t5req->params =
 					  cpu_to_be64(FILTER_TUPLE_V(params));
 				t5req->rsvd = cpu_to_be32(isn);
+<<<<<<< HEAD
 				pr_debug("snd_isn %u\n", t5req->rsvd);
+=======
+			pr_debug("%s snd_isn %u\n", __func__, t5req->rsvd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				t5req->opt2 = cpu_to_be32(opt2);
 			} else {
 				t6req->params =
 					  cpu_to_be64(FILTER_TUPLE_V(params));
 				t6req->rsvd = cpu_to_be32(isn);
+<<<<<<< HEAD
 				pr_debug("snd_isn %u\n", t6req->rsvd);
+=======
+			pr_debug("%s snd_isn %u\n", __func__, t6req->rsvd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				t6req->opt2 = cpu_to_be32(opt2);
 			}
 		}
@@ -878,13 +1001,21 @@ static int send_connect(struct c4iw_ep *ep)
 				t5req6->params =
 					    cpu_to_be64(FILTER_TUPLE_V(params));
 				t5req6->rsvd = cpu_to_be32(isn);
+<<<<<<< HEAD
 				pr_debug("snd_isn %u\n", t5req6->rsvd);
+=======
+			pr_debug("%s snd_isn %u\n", __func__, t5req6->rsvd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				t5req6->opt2 = cpu_to_be32(opt2);
 			} else {
 				t6req6->params =
 					    cpu_to_be64(FILTER_TUPLE_V(params));
 				t6req6->rsvd = cpu_to_be32(isn);
+<<<<<<< HEAD
 				pr_debug("snd_isn %u\n", t6req6->rsvd);
+=======
+			pr_debug("%s snd_isn %u\n", __func__, t6req6->rsvd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				t6req6->opt2 = cpu_to_be32(opt2);
 			}
 
@@ -908,8 +1039,15 @@ static int send_mpa_req(struct c4iw_ep *ep, struct sk_buff *skb,
 	struct mpa_message *mpa;
 	struct mpa_v2_conn_params mpa_v2_params;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u pd_len %d\n",
 		 ep, ep->hwtid, ep->plen);
+=======
+	pr_debug("%s ep %p tid %u pd_len %d\n",
+		 __func__, ep, ep->hwtid, ep->plen);
+
+	BUG_ON(skb_cloned(skb));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mpalen = sizeof(*mpa) + ep->plen;
 	if (mpa_rev_to_use == 2)
@@ -960,7 +1098,11 @@ static int send_mpa_req(struct c4iw_ep *ep, struct sk_buff *skb,
 	if (mpa_rev_to_use == 2) {
 		mpa->private_data_size = htons(ntohs(mpa->private_data_size) +
 					       sizeof (struct mpa_v2_conn_params));
+<<<<<<< HEAD
 		pr_debug("initiator ird %u ord %u\n", ep->ird,
+=======
+		pr_debug("%s initiator ird %u ord %u\n", __func__, ep->ird,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 ep->ord);
 		mpa_v2_params.ird = htons((u16)ep->ird);
 		mpa_v2_params.ord = htons((u16)ep->ord);
@@ -993,6 +1135,10 @@ static int send_mpa_req(struct c4iw_ep *ep, struct sk_buff *skb,
 	 */
 	skb_get(skb);
 	t4_set_arp_err_handler(skb, NULL, arp_failure_discard);
+<<<<<<< HEAD
+=======
+	BUG_ON(ep->mpa_skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ep->mpa_skb = skb;
 	ret = c4iw_l2t_send(&ep->com.dev->rdev, skb, ep->l2t);
 	if (ret)
@@ -1012,8 +1158,13 @@ static int send_mpa_reject(struct c4iw_ep *ep, const void *pdata, u8 plen)
 	struct sk_buff *skb;
 	struct mpa_v2_conn_params mpa_v2_params;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u pd_len %d\n",
 		 ep, ep->hwtid, ep->plen);
+=======
+	pr_debug("%s ep %p tid %u pd_len %d\n",
+		 __func__, ep, ep->hwtid, ep->plen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mpalen = sizeof(*mpa) + plen;
 	if (ep->mpa_attr.version == 2 && ep->mpa_attr.enhanced_rdma_conn)
@@ -1078,6 +1229,10 @@ static int send_mpa_reject(struct c4iw_ep *ep, const void *pdata, u8 plen)
 	skb_get(skb);
 	set_wr_txq(skb, CPL_PRIORITY_DATA, ep->txq_idx);
 	t4_set_arp_err_handler(skb, NULL, mpa_start_arp_failure);
+<<<<<<< HEAD
+=======
+	BUG_ON(ep->mpa_skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ep->mpa_skb = skb;
 	ep->snd_seq += mpalen;
 	return c4iw_l2t_send(&ep->com.dev->rdev, skb, ep->l2t);
@@ -1091,8 +1246,13 @@ static int send_mpa_reply(struct c4iw_ep *ep, const void *pdata, u8 plen)
 	struct sk_buff *skb;
 	struct mpa_v2_conn_params mpa_v2_params;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u pd_len %d\n",
 		 ep, ep->hwtid, ep->plen);
+=======
+	pr_debug("%s ep %p tid %u pd_len %d\n",
+		 __func__, ep, ep->hwtid, ep->plen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mpalen = sizeof(*mpa) + plen;
 	if (ep->mpa_attr.version == 2 && ep->mpa_attr.enhanced_rdma_conn)
@@ -1175,7 +1335,10 @@ static int act_establish(struct c4iw_dev *dev, struct sk_buff *skb)
 {
 	struct c4iw_ep *ep;
 	struct cpl_act_establish *req = cplhdr(skb);
+<<<<<<< HEAD
 	unsigned short tcp_opt = ntohs(req->tcp_opt);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int tid = GET_TID(req);
 	unsigned int atid = TID_TID_G(ntohl(req->tos_atid));
 	struct tid_info *t = dev->rdev.lldi.tids;
@@ -1183,7 +1346,11 @@ static int act_establish(struct c4iw_dev *dev, struct sk_buff *skb)
 
 	ep = lookup_atid(t, atid);
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u snd_isn %u rcv_isn %u\n", ep, tid,
+=======
+	pr_debug("%s ep %p tid %u snd_isn %u rcv_isn %u\n", __func__, ep, tid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 be32_to_cpu(req->snd_isn), be32_to_cpu(req->rcv_isn));
 
 	mutex_lock(&ep->com.mutex);
@@ -1196,9 +1363,14 @@ static int act_establish(struct c4iw_dev *dev, struct sk_buff *skb)
 
 	ep->snd_seq = be32_to_cpu(req->snd_isn);
 	ep->rcv_seq = be32_to_cpu(req->rcv_isn);
+<<<<<<< HEAD
 	ep->snd_wscale = TCPOPT_SND_WSCALE_G(tcp_opt);
 
 	set_emss(ep, tcp_opt);
+=======
+
+	set_emss(ep, ntohs(req->tcp_opt));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* dealloc the atid */
 	remove_handle(ep->com.dev, &ep->com.dev->atid_idr, atid);
@@ -1228,7 +1400,11 @@ static void close_complete_upcall(struct c4iw_ep *ep, int status)
 {
 	struct iw_cm_event event;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&event, 0, sizeof(event));
 	event.event = IW_CM_EVENT_CLOSE;
 	event.status = status;
@@ -1245,7 +1421,11 @@ static void peer_close_upcall(struct c4iw_ep *ep)
 {
 	struct iw_cm_event event;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&event, 0, sizeof(event));
 	event.event = IW_CM_EVENT_DISCONNECT;
 	if (ep->com.cm_id) {
@@ -1260,7 +1440,11 @@ static void peer_abort_upcall(struct c4iw_ep *ep)
 {
 	struct iw_cm_event event;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&event, 0, sizeof(event));
 	event.event = IW_CM_EVENT_CLOSE;
 	event.status = -ECONNRESET;
@@ -1277,8 +1461,13 @@ static void connect_reply_upcall(struct c4iw_ep *ep, int status)
 {
 	struct iw_cm_event event;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u status %d\n",
 		 ep, ep->hwtid, status);
+=======
+	pr_debug("%s ep %p tid %u status %d\n",
+		 __func__, ep, ep->hwtid, status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&event, 0, sizeof(event));
 	event.event = IW_CM_EVENT_CONNECT_REPLY;
 	event.status = status;
@@ -1307,7 +1496,11 @@ static void connect_reply_upcall(struct c4iw_ep *ep, int status)
 		}
 	}
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u status %d\n", ep,
+=======
+	pr_debug("%s ep %p tid %u status %d\n", __func__, ep,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep->hwtid, status);
 	set_bit(CONN_RPL_UPCALL, &ep->com.history);
 	ep->com.cm_id->event_handler(ep->com.cm_id, &event);
@@ -1321,7 +1514,11 @@ static int connect_request_upcall(struct c4iw_ep *ep)
 	struct iw_cm_event event;
 	int ret;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&event, 0, sizeof(event));
 	event.event = IW_CM_EVENT_CONNECT_REQUEST;
 	memcpy(&event.local_addr, &ep->com.local_addr,
@@ -1358,13 +1555,21 @@ static void established_upcall(struct c4iw_ep *ep)
 {
 	struct iw_cm_event event;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&event, 0, sizeof(event));
 	event.event = IW_CM_EVENT_ESTABLISHED;
 	event.ird = ep->ord;
 	event.ord = ep->ird;
 	if (ep->com.cm_id) {
+<<<<<<< HEAD
 		pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+		pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ep->com.cm_id->event_handler(ep->com.cm_id, &event);
 		set_bit(ESTAB_UPCALL, &ep->com.history);
 	}
@@ -1376,8 +1581,13 @@ static int update_rx_credits(struct c4iw_ep *ep, u32 credits)
 	u32 wrlen = roundup(sizeof(struct cpl_rx_data_ack), 16);
 	u32 credit_dack;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u credits %u\n",
 		 ep, ep->hwtid, credits);
+=======
+	pr_debug("%s ep %p tid %u credits %u\n",
+		 __func__, ep, ep->hwtid, credits);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb = get_skb(NULL, wrlen, GFP_KERNEL);
 	if (!skb) {
 		pr_err("update_rx_credits - cannot alloc skb!\n");
@@ -1428,7 +1638,11 @@ static int process_mpa_reply(struct c4iw_ep *ep, struct sk_buff *skb)
 	int err;
 	int disconnect = 0;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we get more than the supported amount of private data
@@ -1526,7 +1740,12 @@ static int process_mpa_reply(struct c4iw_ep *ep, struct sk_buff *skb)
 				MPA_V2_IRD_ORD_MASK;
 			resp_ord = ntohs(mpa_v2_params->ord) &
 				MPA_V2_IRD_ORD_MASK;
+<<<<<<< HEAD
 			pr_debug("responder ird %u ord %u ep ird %u ord %u\n",
+=======
+			pr_debug("%s responder ird %u ord %u ep ird %u ord %u\n",
+				 __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 resp_ird, resp_ord, ep->ird, ep->ord);
 
 			/*
@@ -1571,8 +1790,13 @@ static int process_mpa_reply(struct c4iw_ep *ep, struct sk_buff *skb)
 		if (peer2peer)
 			ep->mpa_attr.p2p_type = p2p_type;
 
+<<<<<<< HEAD
 	pr_debug("crc_enabled=%d, recv_marker_enabled=%d, xmit_marker_enabled=%d, version=%d p2p_type=%d local-p2p_type = %d\n",
 		 ep->mpa_attr.crc_enabled,
+=======
+	pr_debug("%s - crc_enabled=%d, recv_marker_enabled=%d, xmit_marker_enabled=%d, version=%d p2p_type=%d local-p2p_type = %d\n",
+		 __func__, ep->mpa_attr.crc_enabled,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep->mpa_attr.recv_marker_enabled,
 		 ep->mpa_attr.xmit_marker_enabled, ep->mpa_attr.version,
 		 ep->mpa_attr.p2p_type, p2p_type);
@@ -1668,7 +1892,11 @@ static int process_mpa_request(struct c4iw_ep *ep, struct sk_buff *skb)
 	struct mpa_v2_conn_params *mpa_v2_params;
 	u16 plen;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * If we get more than the supported amount of private data
@@ -1677,7 +1905,11 @@ static int process_mpa_request(struct c4iw_ep *ep, struct sk_buff *skb)
 	if (ep->mpa_pkt_len + skb->len > sizeof(ep->mpa_pkt))
 		goto err_stop_timer;
 
+<<<<<<< HEAD
 	pr_debug("enter (%s line %u)\n", __FILE__, __LINE__);
+=======
+	pr_debug("%s enter (%s line %u)\n", __func__, __FILE__, __LINE__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Copy the new data into our accumulation buffer.
@@ -1693,7 +1925,11 @@ static int process_mpa_request(struct c4iw_ep *ep, struct sk_buff *skb)
 	if (ep->mpa_pkt_len < sizeof(*mpa))
 		return 0;
 
+<<<<<<< HEAD
 	pr_debug("enter (%s line %u)\n", __FILE__, __LINE__);
+=======
+	pr_debug("%s enter (%s line %u)\n", __func__, __FILE__, __LINE__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mpa = (struct mpa_message *) ep->mpa_pkt;
 
 	/*
@@ -1756,8 +1992,13 @@ static int process_mpa_request(struct c4iw_ep *ep, struct sk_buff *skb)
 				MPA_V2_IRD_ORD_MASK;
 			ep->ord = min_t(u32, ep->ord,
 					cur_max_read_depth(ep->com.dev));
+<<<<<<< HEAD
 			pr_debug("initiator ird %u ord %u\n",
 				 ep->ird, ep->ord);
+=======
+			pr_debug("%s initiator ird %u ord %u\n",
+				 __func__, ep->ird, ep->ord);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ntohs(mpa_v2_params->ird) & MPA_V2_PEER2PEER_MODEL)
 				if (peer2peer) {
 					if (ntohs(mpa_v2_params->ord) &
@@ -1774,7 +2015,12 @@ static int process_mpa_request(struct c4iw_ep *ep, struct sk_buff *skb)
 		if (peer2peer)
 			ep->mpa_attr.p2p_type = p2p_type;
 
+<<<<<<< HEAD
 	pr_debug("crc_enabled=%d, recv_marker_enabled=%d, xmit_marker_enabled=%d, version=%d p2p_type=%d\n",
+=======
+	pr_debug("%s - crc_enabled=%d, recv_marker_enabled=%d, xmit_marker_enabled=%d, version=%d p2p_type=%d\n",
+		 __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep->mpa_attr.crc_enabled, ep->mpa_attr.recv_marker_enabled,
 		 ep->mpa_attr.xmit_marker_enabled, ep->mpa_attr.version,
 		 ep->mpa_attr.p2p_type);
@@ -1813,7 +2059,11 @@ static int rx_data(struct c4iw_dev *dev, struct sk_buff *skb)
 	ep = get_ep_from_tid(dev, tid);
 	if (!ep)
 		return 0;
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u dlen %u\n", ep, ep->hwtid, dlen);
+=======
+	pr_debug("%s ep %p tid %u dlen %u\n", __func__, ep, ep->hwtid, dlen);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb_pull(skb, sizeof(*hdr));
 	skb_trim(skb, dlen);
 	mutex_lock(&ep->com.mutex);
@@ -1833,6 +2083,10 @@ static int rx_data(struct c4iw_dev *dev, struct sk_buff *skb)
 		struct c4iw_qp_attributes attrs;
 
 		update_rx_credits(ep, dlen);
+<<<<<<< HEAD
+=======
+		BUG_ON(!ep->com.qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (status)
 			pr_err("%s Unexpected streaming data." \
 			       " qpid %u ep %p state %d tid %u status %d\n",
@@ -1854,6 +2108,7 @@ static int rx_data(struct c4iw_dev *dev, struct sk_buff *skb)
 	return 0;
 }
 
+<<<<<<< HEAD
 static void complete_cached_srq_buffers(struct c4iw_ep *ep,
 					__be32 srqidx_status)
 {
@@ -1881,6 +2136,12 @@ static int abort_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
 {
 	struct c4iw_ep *ep;
 	struct cpl_abort_rpl_rss6 *rpl = cplhdr(skb);
+=======
+static int abort_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
+{
+	struct c4iw_ep *ep;
+	struct cpl_abort_rpl_rss *rpl = cplhdr(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int release = 0;
 	unsigned int tid = GET_TID(rpl);
 
@@ -1889,6 +2150,7 @@ static int abort_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
 		pr_warn("Abort rpl to freed endpoint\n");
 		return 0;
 	}
+<<<<<<< HEAD
 
 	complete_cached_srq_buffers(ep, rpl->srqidx_status);
 
@@ -1897,6 +2159,13 @@ static int abort_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
 	switch (ep->com.state) {
 	case ABORTING:
 		c4iw_wake_up_noref(ep->com.wr_waitp, -ECONNRESET);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+	mutex_lock(&ep->com.mutex);
+	switch (ep->com.state) {
+	case ABORTING:
+		c4iw_wake_up(&ep->com.wr_wait, -ECONNRESET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		__state_set(&ep->com, DEAD);
 		release = 1;
 		break;
@@ -2018,8 +2287,13 @@ static void set_tcp_window(struct c4iw_ep *ep, struct port_info *pi)
 {
 	ep->snd_win = snd_win;
 	ep->rcv_win = rcv_win;
+<<<<<<< HEAD
 	pr_debug("snd_win %d rcv_win %d\n",
 		 ep->snd_win, ep->rcv_win);
+=======
+	pr_debug("%s snd_win %d rcv_win %d\n",
+		 __func__, ep->snd_win, ep->rcv_win);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define ACT_OPEN_RETRY_COUNT 2
@@ -2078,7 +2352,11 @@ static int import_ep(struct c4iw_ep *ep, int iptype, __u8 *peer_ip,
 	} else {
 		pdev = get_real_dev(n->dev);
 		ep->l2t = cxgb4_l2t_get(cdev->rdev.lldi.l2t,
+<<<<<<< HEAD
 					n, pdev, 0);
+=======
+					n, pdev, rt_tos2priority(tos));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!ep->l2t)
 			goto out;
 		ep->mtu = dst_mtu(dst);
@@ -2124,8 +2402,14 @@ static int c4iw_reconnect(struct c4iw_ep *ep)
 	int iptype;
 	__u8 *ra;
 
+<<<<<<< HEAD
 	pr_debug("qp %p cm_id %p\n", ep->com.qp, ep->com.cm_id);
 	c4iw_init_wr_wait(ep->com.wr_waitp);
+=======
+	pr_debug("%s qp %p cm_id %p\n", __func__, ep->com.qp, ep->com.cm_id);
+	init_timer(&ep->timer);
+	c4iw_init_wr_wait(&ep->com.wr_wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* When MPA revision is different on nodes, the node with MPA_rev=2
 	 * tries to reconnect with MPA_rev 1 for the same EP through
@@ -2133,7 +2417,11 @@ static int c4iw_reconnect(struct c4iw_ep *ep)
 	 * further connection establishment. As we are using the same EP pointer
 	 * for reconnect, few skbs are used during the previous c4iw_connect(),
 	 * which leaves the EP with inadequate skbs for further
+<<<<<<< HEAD
 	 * c4iw_reconnect(), Further causing a crash due to an empty
+=======
+	 * c4iw_reconnect(), Further causing an assert BUG_ON() due to empty
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 * skb_list() during peer_abort(). Allocate skbs which is already used.
 	 */
 	size = (CN_MAX_CON_BUF - skb_queue_len(&ep->com.ep_skb_list));
@@ -2168,7 +2456,12 @@ static int c4iw_reconnect(struct c4iw_ep *ep)
 					   laddr6->sin6_addr.s6_addr,
 					   raddr6->sin6_addr.s6_addr,
 					   laddr6->sin6_port,
+<<<<<<< HEAD
 					   raddr6->sin6_port, 0,
+=======
+					   raddr6->sin6_port,
+					   ep->com.cm_id->tos,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   raddr6->sin6_scope_id);
 		iptype = 6;
 		ra = (__u8 *)&raddr6->sin6_addr;
@@ -2186,8 +2479,13 @@ static int c4iw_reconnect(struct c4iw_ep *ep)
 		goto fail4;
 	}
 
+<<<<<<< HEAD
 	pr_debug("txq_idx %u tx_chan %u smac_idx %u rss_qid %u l2t_idx %u\n",
 		 ep->txq_idx, ep->tx_chan, ep->smac_idx, ep->rss_qid,
+=======
+	pr_debug("%s txq_idx %u tx_chan %u smac_idx %u rss_qid %u l2t_idx %u\n",
+		 __func__, ep->txq_idx, ep->tx_chan, ep->smac_idx, ep->rss_qid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep->l2t->idx);
 
 	state_set(&ep->com, CONNECTING);
@@ -2238,12 +2536,21 @@ static int act_open_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
 	la6 = (struct sockaddr_in6 *)&ep->com.local_addr;
 	ra6 = (struct sockaddr_in6 *)&ep->com.remote_addr;
 
+<<<<<<< HEAD
 	pr_debug("ep %p atid %u status %u errno %d\n", ep, atid,
 		 status, status2errno(status));
 
 	if (cxgb_is_neg_adv(status)) {
 		pr_debug("Connection problems for atid %u status %u (%s)\n",
 			 atid, status, neg_adv_str(status));
+=======
+	pr_debug("%s ep %p atid %u status %u errno %d\n", __func__, ep, atid,
+		 status, status2errno(status));
+
+	if (cxgb_is_neg_adv(status)) {
+		pr_debug("%s Connection problems for atid %u status %u (%s)\n",
+			 __func__, atid, status, neg_adv_str(status));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ep->stats.connect_neg_adv++;
 		mutex_lock(&dev->rdev.stats.lock);
 		dev->rdev.stats.neg_adv++;
@@ -2339,12 +2646,21 @@ static int pass_open_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
 	struct c4iw_listen_ep *ep = get_ep_from_stid(dev, stid);
 
 	if (!ep) {
+<<<<<<< HEAD
 		pr_warn("%s stid %d lookup failure!\n", __func__, stid);
 		goto out;
 	}
 	pr_debug("ep %p status %d error %d\n", ep,
 		 rpl->status, status2errno(rpl->status));
 	c4iw_wake_up_noref(ep->com.wr_waitp, status2errno(rpl->status));
+=======
+		pr_debug("%s stid %d lookup failure!\n", __func__, stid);
+		goto out;
+	}
+	pr_debug("%s ep %p status %d error %d\n", __func__, ep,
+		 rpl->status, status2errno(rpl->status));
+	c4iw_wake_up(&ep->com.wr_wait, status2errno(rpl->status));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c4iw_put_ep(&ep->com);
 out:
 	return 0;
@@ -2357,11 +2673,19 @@ static int close_listsrv_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
 	struct c4iw_listen_ep *ep = get_ep_from_stid(dev, stid);
 
 	if (!ep) {
+<<<<<<< HEAD
 		pr_warn("%s stid %d lookup failure!\n", __func__, stid);
 		goto out;
 	}
 	pr_debug("ep %p\n", ep);
 	c4iw_wake_up_noref(ep->com.wr_waitp, status2errno(rpl->status));
+=======
+		pr_debug("%s stid %d lookup failure!\n", __func__, stid);
+		goto out;
+	}
+	pr_debug("%s ep %p\n", __func__, ep);
+	c4iw_wake_up(&ep->com.wr_wait, status2errno(rpl->status));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c4iw_put_ep(&ep->com);
 out:
 	return 0;
@@ -2379,7 +2703,12 @@ static int accept_cr(struct c4iw_ep *ep, struct sk_buff *skb,
 	int win;
 	enum chip_type adapter_type = ep->com.dev->rdev.lldi.adapter_type;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+	BUG_ON(skb_cloned(skb));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	skb_get(skb);
 	rpl = cplhdr(skb);
@@ -2449,7 +2778,11 @@ static int accept_cr(struct c4iw_ep *ep, struct sk_buff *skb,
 		if (peer2peer)
 			isn += 4;
 		rpl5->iss = cpu_to_be32(isn);
+<<<<<<< HEAD
 		pr_debug("iss %u\n", be32_to_cpu(rpl5->iss));
+=======
+		pr_debug("%s iss %u\n", __func__, be32_to_cpu(rpl5->iss));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rpl->opt0 = cpu_to_be64(opt0);
@@ -2462,7 +2795,12 @@ static int accept_cr(struct c4iw_ep *ep, struct sk_buff *skb,
 
 static void reject_cr(struct c4iw_dev *dev, u32 hwtid, struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	pr_debug("c4iw_dev %p tid %u\n", dev, hwtid);
+=======
+	pr_debug("%s c4iw_dev %p tid %u\n", __func__, dev, hwtid);
+	BUG_ON(skb_cloned(skb));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	skb_trim(skb, sizeof(struct cpl_tid_release));
 	release_tid(&dev->rdev, hwtid, skb);
 	return;
@@ -2487,13 +2825,22 @@ static int pass_accept_req(struct c4iw_dev *dev, struct sk_buff *skb)
 
 	parent_ep = (struct c4iw_ep *)get_ep_from_stid(dev, stid);
 	if (!parent_ep) {
+<<<<<<< HEAD
 		pr_err("%s connect request on invalid stid %d\n",
 		       __func__, stid);
+=======
+		pr_debug("%s connect request on invalid stid %d\n",
+			 __func__, stid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto reject;
 	}
 
 	if (state_read(&parent_ep->com) != LISTEN) {
+<<<<<<< HEAD
 		pr_err("%s - listening ep not in LISTEN\n", __func__);
+=======
+		pr_debug("%s - listening ep not in LISTEN\n", __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto reject;
 	}
 
@@ -2502,16 +2849,26 @@ static int pass_accept_req(struct c4iw_dev *dev, struct sk_buff *skb)
 
 	/* Find output route */
 	if (iptype == 4)  {
+<<<<<<< HEAD
 		pr_debug("parent ep %p hwtid %u laddr %pI4 raddr %pI4 lport %d rport %d peer_mss %d\n"
 			 , parent_ep, hwtid,
+=======
+		pr_debug("%s parent ep %p hwtid %u laddr %pI4 raddr %pI4 lport %d rport %d peer_mss %d\n"
+			 , __func__, parent_ep, hwtid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 local_ip, peer_ip, ntohs(local_port),
 			 ntohs(peer_port), peer_mss);
 		dst = cxgb_find_route(&dev->rdev.lldi, get_real_dev,
 				      *(__be32 *)local_ip, *(__be32 *)peer_ip,
 				      local_port, peer_port, tos);
 	} else {
+<<<<<<< HEAD
 		pr_debug("parent ep %p hwtid %u laddr %pI6 raddr %pI6 lport %d rport %d peer_mss %d\n"
 			 , parent_ep, hwtid,
+=======
+		pr_debug("%s parent ep %p hwtid %u laddr %pI6 raddr %pI6 lport %d rport %d peer_mss %d\n"
+			 , __func__, parent_ep, hwtid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 local_ip, peer_ip, ntohs(local_port),
 			 ntohs(peer_port), peer_mss);
 		dst = cxgb_find_route6(&dev->rdev.lldi, get_real_dev,
@@ -2597,10 +2954,17 @@ static int pass_accept_req(struct c4iw_dev *dev, struct sk_buff *skb)
 	child_ep->dst = dst;
 	child_ep->hwtid = hwtid;
 
+<<<<<<< HEAD
 	pr_debug("tx_chan %u smac_idx %u rss_qid %u\n",
 		 child_ep->tx_chan, child_ep->smac_idx, child_ep->rss_qid);
 
 	timer_setup(&child_ep->timer, ep_timeout, 0);
+=======
+	pr_debug("%s tx_chan %u smac_idx %u rss_qid %u\n", __func__,
+		 child_ep->tx_chan, child_ep->smac_idx, child_ep->rss_qid);
+
+	init_timer(&child_ep->timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cxgb4_insert_tid(t, child_ep, hwtid,
 			 child_ep->com.local_addr.ss_family);
 	insert_ep_tid(child_ep);
@@ -2632,6 +2996,7 @@ static int pass_establish(struct c4iw_dev *dev, struct sk_buff *skb)
 	struct cpl_pass_establish *req = cplhdr(skb);
 	unsigned int tid = GET_TID(req);
 	int ret;
+<<<<<<< HEAD
 	u16 tcp_opt = ntohs(req->tcp_opt);
 
 	ep = get_ep_from_tid(dev, tid);
@@ -2643,6 +3008,18 @@ static int pass_establish(struct c4iw_dev *dev, struct sk_buff *skb)
 	pr_debug("ep %p hwtid %u tcp_opt 0x%02x\n", ep, tid, tcp_opt);
 
 	set_emss(ep, tcp_opt);
+=======
+
+	ep = get_ep_from_tid(dev, tid);
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+	ep->snd_seq = be32_to_cpu(req->snd_isn);
+	ep->rcv_seq = be32_to_cpu(req->rcv_isn);
+
+	pr_debug("%s ep %p hwtid %u tcp_opt 0x%02x\n", __func__, ep, tid,
+		 ntohs(req->tcp_opt));
+
+	set_emss(ep, ntohs(req->tcp_opt));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dst_confirm(ep->dst);
 	mutex_lock(&ep->com.mutex);
@@ -2672,7 +3049,11 @@ static int peer_close(struct c4iw_dev *dev, struct sk_buff *skb)
 	if (!ep)
 		return 0;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dst_confirm(ep->dst);
 
 	set_bit(PEER_CLOSE, &ep->com.history);
@@ -2695,12 +3076,20 @@ static int peer_close(struct c4iw_dev *dev, struct sk_buff *skb)
 		 */
 		__state_set(&ep->com, CLOSING);
 		pr_debug("waking up ep %p tid %u\n", ep, ep->hwtid);
+<<<<<<< HEAD
 		c4iw_wake_up_noref(ep->com.wr_waitp, -ECONNRESET);
+=======
+		c4iw_wake_up(&ep->com.wr_wait, -ECONNRESET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case MPA_REP_SENT:
 		__state_set(&ep->com, CLOSING);
 		pr_debug("waking up ep %p tid %u\n", ep, ep->hwtid);
+<<<<<<< HEAD
 		c4iw_wake_up_noref(ep->com.wr_waitp, -ECONNRESET);
+=======
+		c4iw_wake_up(&ep->com.wr_wait, -ECONNRESET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case FPDU_MODE:
 		start_ep_timer(ep);
@@ -2736,7 +3125,11 @@ static int peer_close(struct c4iw_dev *dev, struct sk_buff *skb)
 		disconnect = 0;
 		break;
 	default:
+<<<<<<< HEAD
 		WARN_ONCE(1, "Bad endpoint state %u\n", ep->com.state);
+=======
+		BUG_ON(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	mutex_unlock(&ep->com.mutex);
 	if (disconnect)
@@ -2749,36 +3142,54 @@ static int peer_close(struct c4iw_dev *dev, struct sk_buff *skb)
 
 static int peer_abort(struct c4iw_dev *dev, struct sk_buff *skb)
 {
+<<<<<<< HEAD
 	struct cpl_abort_req_rss6 *req = cplhdr(skb);
+=======
+	struct cpl_abort_req_rss *req = cplhdr(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct c4iw_ep *ep;
 	struct sk_buff *rpl_skb;
 	struct c4iw_qp_attributes attrs;
 	int ret;
 	int release = 0;
 	unsigned int tid = GET_TID(req);
+<<<<<<< HEAD
 	u8 status;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 len = roundup(sizeof(struct cpl_abort_rpl), 16);
 
 	ep = get_ep_from_tid(dev, tid);
 	if (!ep)
 		return 0;
 
+<<<<<<< HEAD
 	status = ABORT_RSS_STATUS_G(be32_to_cpu(req->srqidx_status));
 
 	if (cxgb_is_neg_adv(status)) {
 		pr_debug("Negative advice on abort- tid %u status %d (%s)\n",
 			 ep->hwtid, status, neg_adv_str(status));
+=======
+	if (cxgb_is_neg_adv(req->status)) {
+		pr_debug("%s Negative advice on abort- tid %u status %d (%s)\n",
+			 __func__, ep->hwtid, req->status,
+			 neg_adv_str(req->status));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ep->stats.abort_neg_adv++;
 		mutex_lock(&dev->rdev.stats.lock);
 		dev->rdev.stats.neg_adv++;
 		mutex_unlock(&dev->rdev.stats.lock);
 		goto deref_ep;
 	}
+<<<<<<< HEAD
 
 	complete_cached_srq_buffers(ep, req->srqidx_status);
 
 	pr_debug("ep %p tid %u state %u\n", ep, ep->hwtid,
+=======
+	pr_debug("%s ep %p tid %u state %u\n", __func__, ep, ep->hwtid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep->com.state);
 	set_bit(PEER_ABORT, &ep->com.history);
 
@@ -2788,7 +3199,11 @@ static int peer_abort(struct c4iw_dev *dev, struct sk_buff *skb)
 	 * MPA_REQ_SENT
 	 */
 	if (ep->com.state != MPA_REQ_SENT)
+<<<<<<< HEAD
 		c4iw_wake_up_noref(ep->com.wr_waitp, -ECONNRESET);
+=======
+		c4iw_wake_up(&ep->com.wr_wait, -ECONNRESET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&ep->com.mutex);
 	switch (ep->com.state) {
@@ -2811,8 +3226,13 @@ static int peer_abort(struct c4iw_dev *dev, struct sk_buff *skb)
 			 * do some housekeeping so as to re-initiate the
 			 * connection
 			 */
+<<<<<<< HEAD
 			pr_info("%s: mpa_rev=%d. Retrying with mpav1\n",
 				__func__, mpa_rev);
+=======
+			pr_debug("%s: mpa_rev=%d. Retrying with mpav1\n",
+				 __func__, mpa_rev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			ep->retry_with_mpa_v1 = 1;
 		}
 		break;
@@ -2838,11 +3258,19 @@ static int peer_abort(struct c4iw_dev *dev, struct sk_buff *skb)
 	case ABORTING:
 		break;
 	case DEAD:
+<<<<<<< HEAD
 		pr_warn("%s PEER_ABORT IN DEAD STATE!!!!\n", __func__);
 		mutex_unlock(&ep->com.mutex);
 		goto deref_ep;
 	default:
 		WARN_ONCE(1, "Bad endpoint state %u\n", ep->com.state);
+=======
+		pr_debug("%s PEER_ABORT IN DEAD STATE!!!!\n", __func__);
+		mutex_unlock(&ep->com.mutex);
+		goto deref_ep;
+	default:
+		BUG_ON(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	dst_confirm(ep->dst);
@@ -2903,7 +3331,11 @@ static int close_con_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
 	if (!ep)
 		return 0;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* The cm_id may be null if we failed to connect */
 	mutex_lock(&ep->com.mutex);
@@ -2929,7 +3361,11 @@ static int close_con_rpl(struct c4iw_dev *dev, struct sk_buff *skb)
 	case DEAD:
 		break;
 	default:
+<<<<<<< HEAD
 		WARN_ONCE(1, "Bad endpoint state %u\n", ep->com.state);
+=======
+		BUG_ON(1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 	mutex_unlock(&ep->com.mutex);
@@ -2947,6 +3383,7 @@ static int terminate(struct c4iw_dev *dev, struct sk_buff *skb)
 	struct c4iw_qp_attributes attrs;
 
 	ep = get_ep_from_tid(dev, tid);
+<<<<<<< HEAD
 
 	if (ep && ep->com.qp) {
 		pr_warn("TERM received tid %u qpid %u\n",
@@ -2957,6 +3394,22 @@ static int terminate(struct c4iw_dev *dev, struct sk_buff *skb)
 	} else
 		pr_warn("TERM received tid %u no ep/qp\n", tid);
 	c4iw_put_ep(&ep->com);
+=======
+	BUG_ON(!ep);
+
+	if (ep) {
+		if (ep->com.qp) {
+			pr_warn("TERM received tid %u qpid %u\n", tid,
+				ep->com.qp->wq.sq.qid);
+			attrs.next_state = C4IW_QP_STATE_TERMINATE;
+			c4iw_modify_qp(ep->com.qp->rhp, ep->com.qp,
+				       C4IW_QP_ATTR_NEXT_STATE, &attrs, 1);
+		}
+
+		c4iw_put_ep(&ep->com);
+	} else
+		pr_warn("TERM received tid %u no ep/qp\n", tid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -2977,19 +3430,33 @@ static int fw4_ack(struct c4iw_dev *dev, struct sk_buff *skb)
 	ep = get_ep_from_tid(dev, tid);
 	if (!ep)
 		return 0;
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u credits %u\n",
 		 ep, ep->hwtid, credits);
 	if (credits == 0) {
 		pr_debug("0 credit ack ep %p tid %u state %u\n",
 			 ep, ep->hwtid, state_read(&ep->com));
+=======
+	pr_debug("%s ep %p tid %u credits %u\n",
+		 __func__, ep, ep->hwtid, credits);
+	if (credits == 0) {
+		pr_debug("%s 0 credit ack ep %p tid %u state %u\n",
+			 __func__, ep, ep->hwtid, state_read(&ep->com));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto out;
 	}
 
 	dst_confirm(ep->dst);
 	if (ep->mpa_skb) {
+<<<<<<< HEAD
 		pr_debug("last streaming msg ack ep %p tid %u state %u initiator %u freeing skb\n",
 			 ep, ep->hwtid, state_read(&ep->com),
 			 ep->mpa_attr.initiator ? 1 : 0);
+=======
+		pr_debug("%s last streaming msg ack ep %p tid %u state %u initiator %u freeing skb\n",
+			 __func__, ep, ep->hwtid,
+			 state_read(&ep->com), ep->mpa_attr.initiator ? 1 : 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&ep->com.mutex);
 		kfree_skb(ep->mpa_skb);
 		ep->mpa_skb = NULL;
@@ -3007,7 +3474,11 @@ int c4iw_reject_cr(struct iw_cm_id *cm_id, const void *pdata, u8 pdata_len)
 	int abort;
 	struct c4iw_ep *ep = to_ep(cm_id);
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&ep->com.mutex);
 	if (ep->com.state != MPA_REQ_RCVD) {
@@ -3038,7 +3509,11 @@ int c4iw_accept_cr(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 	struct c4iw_qp *qp = get_qhp(h, conn_param->qpn);
 	int abort = 0;
 
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u\n", ep, ep->hwtid);
+=======
+	pr_debug("%s ep %p tid %u\n", __func__, ep, ep->hwtid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&ep->com.mutex);
 	if (ep->com.state != MPA_REQ_RCVD) {
@@ -3046,10 +3521,14 @@ int c4iw_accept_cr(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		goto err_out;
 	}
 
+<<<<<<< HEAD
 	if (!qp) {
 		err = -EINVAL;
 		goto err_out;
 	}
+=======
+	BUG_ON(!qp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	set_bit(ULP_ACCEPT, &ep->com.history);
 	if ((conn_param->ord > cur_max_read_depth(ep->com.dev)) ||
@@ -3094,7 +3573,11 @@ int c4iw_accept_cr(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 			ep->ird = 1;
 	}
 
+<<<<<<< HEAD
 	pr_debug("ird %d ord %d\n", ep->ird, ep->ord);
+=======
+	pr_debug("%s %d ird %d ord %d\n", __func__, __LINE__, ep->ird, ep->ord);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ep->com.cm_id = cm_id;
 	ref_cm_id(&ep->com);
@@ -3234,7 +3717,11 @@ int c4iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		goto fail1;
 	}
 
+<<<<<<< HEAD
 	timer_setup(&ep->timer, ep_timeout, 0);
+=======
+	init_timer(&ep->timer);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ep->plen = conn_param->private_data_len;
 	if (ep->plen)
 		memcpy(ep->mpa_pkt + sizeof(struct mpa_message),
@@ -3247,16 +3734,27 @@ int c4iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 
 	ep->com.cm_id = cm_id;
 	ref_cm_id(&ep->com);
+<<<<<<< HEAD
 	cm_id->provider_data = ep;
 	ep->com.dev = dev;
 	ep->com.qp = get_qhp(dev, conn_param->qpn);
 	if (!ep->com.qp) {
 		pr_warn("%s qpn 0x%x not found!\n", __func__, conn_param->qpn);
+=======
+	ep->com.dev = dev;
+	ep->com.qp = get_qhp(dev, conn_param->qpn);
+	if (!ep->com.qp) {
+		pr_debug("%s qpn 0x%x not found!\n", __func__, conn_param->qpn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = -EINVAL;
 		goto fail2;
 	}
 	ref_qp(ep);
+<<<<<<< HEAD
 	pr_debug("qpn 0x%x qp %p cm_id %p\n", conn_param->qpn,
+=======
+	pr_debug("%s qpn 0x%x qp %p cm_id %p\n", __func__, conn_param->qpn,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep->com.qp, cm_id);
 
 	/*
@@ -3294,8 +3792,13 @@ int c4iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		}
 
 		/* find a route */
+<<<<<<< HEAD
 		pr_debug("saddr %pI4 sport 0x%x raddr %pI4 rport 0x%x\n",
 			 &laddr->sin_addr, ntohs(laddr->sin_port),
+=======
+		pr_debug("%s saddr %pI4 sport 0x%x raddr %pI4 rport 0x%x\n",
+			 __func__, &laddr->sin_addr, ntohs(laddr->sin_port),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 ra, ntohs(raddr->sin_port));
 		ep->dst = cxgb_find_route(&dev->rdev.lldi, get_real_dev,
 					  laddr->sin_addr.s_addr,
@@ -3316,15 +3819,24 @@ int c4iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		}
 
 		/* find a route */
+<<<<<<< HEAD
 		pr_debug("saddr %pI6 sport 0x%x raddr %pI6 rport 0x%x\n",
 			 laddr6->sin6_addr.s6_addr,
+=======
+		pr_debug("%s saddr %pI6 sport 0x%x raddr %pI6 rport 0x%x\n",
+			 __func__, laddr6->sin6_addr.s6_addr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 ntohs(laddr6->sin6_port),
 			 raddr6->sin6_addr.s6_addr, ntohs(raddr6->sin6_port));
 		ep->dst = cxgb_find_route6(&dev->rdev.lldi, get_real_dev,
 					   laddr6->sin6_addr.s6_addr,
 					   raddr6->sin6_addr.s6_addr,
 					   laddr6->sin6_port,
+<<<<<<< HEAD
 					   raddr6->sin6_port, 0,
+=======
+					   raddr6->sin6_port, cm_id->tos,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					   raddr6->sin6_scope_id);
 	}
 	if (!ep->dst) {
@@ -3340,8 +3852,13 @@ int c4iw_connect(struct iw_cm_id *cm_id, struct iw_cm_conn_param *conn_param)
 		goto fail4;
 	}
 
+<<<<<<< HEAD
 	pr_debug("txq_idx %u tx_chan %u smac_idx %u rss_qid %u l2t_idx %u\n",
 		 ep->txq_idx, ep->tx_chan, ep->smac_idx, ep->rss_qid,
+=======
+	pr_debug("%s txq_idx %u tx_chan %u smac_idx %u rss_qid %u l2t_idx %u\n",
+		 __func__, ep->txq_idx, ep->tx_chan, ep->smac_idx, ep->rss_qid,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ep->l2t->idx);
 
 	state_set(&ep->com, CONNECTING);
@@ -3379,14 +3896,22 @@ static int create_server6(struct c4iw_dev *dev, struct c4iw_listen_ep *ep)
 		if (err)
 			return err;
 	}
+<<<<<<< HEAD
 	c4iw_init_wr_wait(ep->com.wr_waitp);
+=======
+	c4iw_init_wr_wait(&ep->com.wr_wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = cxgb4_create_server6(ep->com.dev->rdev.lldi.ports[0],
 				   ep->stid, &sin6->sin6_addr,
 				   sin6->sin6_port,
 				   ep->com.dev->rdev.lldi.rxq_ids[0]);
 	if (!err)
 		err = c4iw_wait_for_reply(&ep->com.dev->rdev,
+<<<<<<< HEAD
 					  ep->com.wr_waitp,
+=======
+					  &ep->com.wr_wait,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  0, 0, __func__);
 	else if (err > 0)
 		err = net_xmit_errno(err);
@@ -3422,13 +3947,21 @@ static int create_server4(struct c4iw_dev *dev, struct c4iw_listen_ep *ep)
 			}
 		} while (err == -EBUSY);
 	} else {
+<<<<<<< HEAD
 		c4iw_init_wr_wait(ep->com.wr_waitp);
+=======
+		c4iw_init_wr_wait(&ep->com.wr_wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = cxgb4_create_server(ep->com.dev->rdev.lldi.ports[0],
 				ep->stid, sin->sin_addr.s_addr, sin->sin_port,
 				0, ep->com.dev->rdev.lldi.rxq_ids[0]);
 		if (!err)
 			err = c4iw_wait_for_reply(&ep->com.dev->rdev,
+<<<<<<< HEAD
 						  ep->com.wr_waitp,
+=======
+						  &ep->com.wr_wait,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						  0, 0, __func__);
 		else if (err > 0)
 			err = net_xmit_errno(err);
@@ -3455,7 +3988,11 @@ int c4iw_create_listen(struct iw_cm_id *cm_id, int backlog)
 		goto fail1;
 	}
 	skb_queue_head_init(&ep->com.ep_skb_list);
+<<<<<<< HEAD
 	pr_debug("ep %p\n", ep);
+=======
+	pr_debug("%s ep %p\n", __func__, ep);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ep->com.cm_id = cm_id;
 	ref_cm_id(&ep->com);
 	ep->com.dev = dev;
@@ -3481,6 +4018,12 @@ int c4iw_create_listen(struct iw_cm_id *cm_id, int backlog)
 	}
 	insert_handle(dev, &dev->stid_idr, ep, ep->stid);
 
+<<<<<<< HEAD
+=======
+	memcpy(&ep->com.local_addr, &cm_id->m_local_addr,
+	       sizeof(ep->com.local_addr));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	state_set(&ep->com, LISTEN);
 	if (ep->com.local_addr.ss_family == AF_INET)
 		err = create_server4(dev, ep);
@@ -3506,7 +4049,11 @@ int c4iw_destroy_listen(struct iw_cm_id *cm_id)
 	int err;
 	struct c4iw_listen_ep *ep = to_listen_ep(cm_id);
 
+<<<<<<< HEAD
 	pr_debug("ep %p\n", ep);
+=======
+	pr_debug("%s ep %p\n", __func__, ep);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	might_sleep();
 	state_set(&ep->com, DEAD);
@@ -3517,13 +4064,21 @@ int c4iw_destroy_listen(struct iw_cm_id *cm_id)
 			ep->com.dev->rdev.lldi.rxq_ids[0], 0);
 	} else {
 		struct sockaddr_in6 *sin6;
+<<<<<<< HEAD
 		c4iw_init_wr_wait(ep->com.wr_waitp);
+=======
+		c4iw_init_wr_wait(&ep->com.wr_wait);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = cxgb4_remove_server(
 				ep->com.dev->rdev.lldi.ports[0], ep->stid,
 				ep->com.dev->rdev.lldi.rxq_ids[0], 0);
 		if (err)
 			goto done;
+<<<<<<< HEAD
 		err = c4iw_wait_for_reply(&ep->com.dev->rdev, ep->com.wr_waitp,
+=======
+		err = c4iw_wait_for_reply(&ep->com.dev->rdev, &ep->com.wr_wait,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					  0, 0, __func__);
 		sin6 = (struct sockaddr_in6 *)&ep->com.local_addr;
 		cxgb4_clip_release(ep->com.dev->rdev.lldi.ports[0],
@@ -3547,7 +4102,11 @@ int c4iw_ep_disconnect(struct c4iw_ep *ep, int abrupt, gfp_t gfp)
 
 	mutex_lock(&ep->com.mutex);
 
+<<<<<<< HEAD
 	pr_debug("ep %p state %s, abrupt %d\n", ep,
+=======
+	pr_debug("%s ep %p state %s, abrupt %d\n", __func__, ep,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 states[ep->com.state], abrupt);
 
 	/*
@@ -3601,11 +4160,19 @@ int c4iw_ep_disconnect(struct c4iw_ep *ep, int abrupt, gfp_t gfp)
 	case MORIBUND:
 	case ABORTING:
 	case DEAD:
+<<<<<<< HEAD
 		pr_debug("ignoring disconnect ep %p state %u\n",
 			 ep, ep->com.state);
 		break;
 	default:
 		WARN_ONCE(1, "Bad endpoint state %u\n", ep->com.state);
+=======
+		pr_debug("%s ignoring disconnect ep %p state %u\n",
+			 __func__, ep, ep->com.state);
+		break;
+	default:
+		BUG();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 
@@ -3663,7 +4230,10 @@ static void active_ofld_conn_reply(struct c4iw_dev *dev, struct sk_buff *skb,
 			send_fw_act_open_req(ep, atid);
 			return;
 		}
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case FW_EADDRINUSE:
 		set_bit(ACT_RETRY_INUSE, &ep->com.history);
 		if (ep->retry_count++ < ACT_OPEN_RETRY_COUNT) {
@@ -3704,8 +4274,14 @@ static void passive_ofld_conn_reply(struct c4iw_dev *dev, struct sk_buff *skb,
 	int ret;
 
 	rpl_skb = (struct sk_buff *)(unsigned long)req->cookie;
+<<<<<<< HEAD
 	if (req->retval) {
 		pr_err("%s passive open failure %d\n", __func__, req->retval);
+=======
+	BUG_ON(!rpl_skb);
+	if (req->retval) {
+		pr_debug("%s passive open failure %d\n", __func__, req->retval);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mutex_lock(&dev->rdev.stats.lock);
 		dev->rdev.stats.pas_ofld_conn_fails++;
 		mutex_unlock(&dev->rdev.stats.lock);
@@ -3901,6 +4477,10 @@ static int rx_pkt(struct c4iw_dev *dev, struct sk_buff *skb)
 	struct net_device *pdev;
 	u16 rss_qid, eth_hdr_len;
 	int step;
+<<<<<<< HEAD
+=======
+	u32 tx_chan;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct neighbour *neigh;
 
 	/* Drop all non-SYN packets */
@@ -3921,8 +4501,13 @@ static int rx_pkt(struct c4iw_dev *dev, struct sk_buff *skb)
 
 	lep = (struct c4iw_ep *)get_ep_from_stid(dev, stid);
 	if (!lep) {
+<<<<<<< HEAD
 		pr_warn("%s connect request on invalid stid %d\n",
 			__func__, stid);
+=======
+		pr_debug("%s connect request on invalid stid %d\n",
+			 __func__, stid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto reject;
 	}
 
@@ -3959,7 +4544,11 @@ static int rx_pkt(struct c4iw_dev *dev, struct sk_buff *skb)
 	skb_set_transport_header(skb, (void *)tcph - (void *)rss);
 	skb_get(skb);
 
+<<<<<<< HEAD
 	pr_debug("lip 0x%x lport %u pip 0x%x pport %u tos %d\n",
+=======
+	pr_debug("%s lip 0x%x lport %u pip 0x%x pport %u tos %d\n", __func__,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 ntohl(iph->daddr), ntohs(tcph->dest), ntohl(iph->saddr),
 		 ntohs(tcph->source), iph->tos);
 
@@ -3967,13 +4556,23 @@ static int rx_pkt(struct c4iw_dev *dev, struct sk_buff *skb)
 			      iph->daddr, iph->saddr, tcph->dest,
 			      tcph->source, iph->tos);
 	if (!dst) {
+<<<<<<< HEAD
 		pr_err("%s - failed to find dst entry!\n", __func__);
+=======
+		pr_err("%s - failed to find dst entry!\n",
+		       __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto reject;
 	}
 	neigh = dst_neigh_lookup_skb(dst, skb);
 
 	if (!neigh) {
+<<<<<<< HEAD
 		pr_err("%s - failed to allocate neigh!\n", __func__);
+=======
+		pr_err("%s - failed to allocate neigh!\n",
+		       __func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		goto free_dst;
 	}
 
@@ -3982,12 +4581,20 @@ static int rx_pkt(struct c4iw_dev *dev, struct sk_buff *skb)
 		e = cxgb4_l2t_get(dev->rdev.lldi.l2t, neigh,
 				    pdev, 0);
 		pi = (struct port_info *)netdev_priv(pdev);
+<<<<<<< HEAD
+=======
+		tx_chan = cxgb4_port_chan(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_put(pdev);
 	} else {
 		pdev = get_real_dev(neigh->dev);
 		e = cxgb4_l2t_get(dev->rdev.lldi.l2t, neigh,
 					pdev, 0);
 		pi = (struct port_info *)netdev_priv(pdev);
+<<<<<<< HEAD
+=======
+		tx_chan = cxgb4_port_chan(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	neigh_release(neigh);
 	if (!e) {
@@ -4054,7 +4661,12 @@ static void process_timeout(struct c4iw_ep *ep)
 	int abort = 1;
 
 	mutex_lock(&ep->com.mutex);
+<<<<<<< HEAD
 	pr_debug("ep %p tid %u state %d\n", ep, ep->hwtid, ep->com.state);
+=======
+	pr_debug("%s ep %p tid %u state %d\n", __func__, ep, ep->hwtid,
+		 ep->com.state);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	set_bit(TIMEDOUT, &ep->com.history);
 	switch (ep->com.state) {
 	case MPA_REQ_SENT:
@@ -4130,6 +4742,7 @@ static void process_work(struct work_struct *work)
 		dev = *((struct c4iw_dev **) (skb->cb + sizeof(void *)));
 		opcode = rpl->ot.opcode;
 
+<<<<<<< HEAD
 		if (opcode >= ARRAY_SIZE(work_handlers) ||
 		    !work_handlers[opcode]) {
 			pr_err("No handler for opcode 0x%x.\n", opcode);
@@ -4139,15 +4752,27 @@ static void process_work(struct work_struct *work)
 			if (!ret)
 				kfree_skb(skb);
 		}
+=======
+		BUG_ON(!work_handlers[opcode]);
+		ret = work_handlers[opcode](dev, skb);
+		if (!ret)
+			kfree_skb(skb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		process_timedout_eps();
 	}
 }
 
 static DECLARE_WORK(skb_work, process_work);
 
+<<<<<<< HEAD
 static void ep_timeout(struct timer_list *t)
 {
 	struct c4iw_ep *ep = from_timer(ep, t, timer);
+=======
+static void ep_timeout(unsigned long arg)
+{
+	struct c4iw_ep *ep = (struct c4iw_ep *)arg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int kickit = 0;
 
 	spin_lock(&timeout_lock);
@@ -4202,15 +4827,25 @@ static int fw6_msg(struct c4iw_dev *dev, struct sk_buff *skb)
 	struct c4iw_wr_wait *wr_waitp;
 	int ret;
 
+<<<<<<< HEAD
 	pr_debug("type %u\n", rpl->type);
+=======
+	pr_debug("%s type %u\n", __func__, rpl->type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (rpl->type) {
 	case FW6_TYPE_WR_RPL:
 		ret = (int)((be64_to_cpu(rpl->data[0]) >> 8) & 0xff);
 		wr_waitp = (struct c4iw_wr_wait *)(__force unsigned long) rpl->data[1];
+<<<<<<< HEAD
 		pr_debug("wr_waitp %p ret %u\n", wr_waitp, ret);
 		if (wr_waitp)
 			c4iw_wake_up_deref(wr_waitp, ret ? -ret : 0);
+=======
+		pr_debug("%s wr_waitp %p ret %u\n", __func__, wr_waitp, ret);
+		if (wr_waitp)
+			c4iw_wake_up(wr_waitp, ret ? -ret : 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree_skb(skb);
 		break;
 	case FW6_TYPE_CQE:
@@ -4240,6 +4875,7 @@ static int peer_abort_intr(struct c4iw_dev *dev, struct sk_buff *skb)
 		return 0;
 	}
 	if (cxgb_is_neg_adv(req->status)) {
+<<<<<<< HEAD
 		pr_debug("Negative advice on abort- tid %u status %d (%s)\n",
 			 ep->hwtid, req->status,
 			 neg_adv_str(req->status));
@@ -4248,6 +4884,17 @@ static int peer_abort_intr(struct c4iw_dev *dev, struct sk_buff *skb)
 	pr_debug("ep %p tid %u state %u\n", ep, ep->hwtid, ep->com.state);
 
 	c4iw_wake_up_noref(ep->com.wr_waitp, -ECONNRESET);
+=======
+		pr_debug("%s Negative advice on abort- tid %u status %d (%s)\n",
+			 __func__, ep->hwtid, req->status,
+			 neg_adv_str(req->status));
+		goto out;
+	}
+	pr_debug("%s ep %p tid %u state %u\n", __func__, ep, ep->hwtid,
+		 ep->com.state);
+
+	c4iw_wake_up(&ep->com.wr_wait, -ECONNRESET);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 out:
 	sched(dev, skb);
 	return 0;

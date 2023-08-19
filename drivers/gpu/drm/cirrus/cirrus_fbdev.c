@@ -22,14 +22,22 @@ static void cirrus_dirty_update(struct cirrus_fbdev *afbdev,
 	struct drm_gem_object *obj;
 	struct cirrus_bo *bo;
 	int src_offset, dst_offset;
+<<<<<<< HEAD
 	int bpp = afbdev->gfb->format->cpp[0];
+=======
+	int bpp = afbdev->gfb.base.format->cpp[0];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret = -EBUSY;
 	bool unmap = false;
 	bool store_for_later = false;
 	int x2, y2;
 	unsigned long flags;
 
+<<<<<<< HEAD
 	obj = afbdev->gfb->obj[0];
+=======
+	obj = afbdev->gfb.obj;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bo = gem_to_cirrus_bo(obj);
 
 	/*
@@ -82,7 +90,11 @@ static void cirrus_dirty_update(struct cirrus_fbdev *afbdev,
 	}
 	for (i = y; i < y + height; i++) {
 		/* assume equal stride for now */
+<<<<<<< HEAD
 		src_offset = dst_offset = i * afbdev->gfb->pitches[0] + (x * bpp);
+=======
+		src_offset = dst_offset = i * afbdev->gfb.base.pitches[0] + (x * bpp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		memcpy_toio(bo->kmap.virtual + src_offset, afbdev->sysram + src_offset, width * bpp);
 
 	}
@@ -192,6 +204,7 @@ static int cirrusfb_create(struct drm_fb_helper *helper,
 		return -ENOMEM;
 
 	info = drm_fb_helper_alloc_fbi(helper);
+<<<<<<< HEAD
 	if (IS_ERR(info)) {
 		ret = PTR_ERR(info);
 		goto err_vfree;
@@ -212,6 +225,25 @@ static int cirrusfb_create(struct drm_fb_helper *helper,
 	gfbdev->sysram = sysram;
 	gfbdev->size = size;
 	gfbdev->gfb = fb;
+=======
+	if (IS_ERR(info))
+		return PTR_ERR(info);
+
+	info->par = gfbdev;
+
+	ret = cirrus_framebuffer_init(cdev->dev, &gfbdev->gfb, &mode_cmd, gobj);
+	if (ret)
+		return ret;
+
+	gfbdev->sysram = sysram;
+	gfbdev->size = size;
+
+	fb = &gfbdev->gfb.base;
+	if (!fb) {
+		DRM_INFO("fb is NULL\n");
+		return -EINVAL;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* setup helper */
 	gfbdev->helper.fb = fb;
@@ -244,6 +276,7 @@ static int cirrusfb_create(struct drm_fb_helper *helper,
 	DRM_INFO("   pitch is %d\n", fb->pitches[0]);
 
 	return 0;
+<<<<<<< HEAD
 
 err_kfree:
 	kfree(fb);
@@ -252,11 +285,14 @@ err_drm_gem_object_put_unlocked:
 err_vfree:
 	vfree(sysram);
 	return ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int cirrus_fbdev_destroy(struct drm_device *dev,
 				struct cirrus_fbdev *gfbdev)
 {
+<<<<<<< HEAD
 	struct drm_framebuffer *gfb = gfbdev->gfb;
 
 	drm_fb_helper_unregister_fbi(&gfbdev->helper);
@@ -265,6 +301,21 @@ static int cirrus_fbdev_destroy(struct drm_device *dev,
 	drm_fb_helper_fini(&gfbdev->helper);
 	if (gfb)
 		drm_framebuffer_put(gfb);
+=======
+	struct cirrus_framebuffer *gfb = &gfbdev->gfb;
+
+	drm_fb_helper_unregister_fbi(&gfbdev->helper);
+
+	if (gfb->obj) {
+		drm_gem_object_put_unlocked(gfb->obj);
+		gfb->obj = NULL;
+	}
+
+	vfree(gfbdev->sysram);
+	drm_fb_helper_fini(&gfbdev->helper);
+	drm_framebuffer_unregister_private(&gfb->base);
+	drm_framebuffer_cleanup(&gfb->base);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }

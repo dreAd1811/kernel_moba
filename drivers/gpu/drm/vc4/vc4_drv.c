@@ -100,8 +100,11 @@ static int vc4_get_param_ioctl(struct drm_device *dev, void *data,
 	case DRM_VC4_PARAM_SUPPORTS_ETC1:
 	case DRM_VC4_PARAM_SUPPORTS_THREADED_FS:
 	case DRM_VC4_PARAM_SUPPORTS_FIXED_RCL_ORDER:
+<<<<<<< HEAD
 	case DRM_VC4_PARAM_SUPPORTS_MADVISE:
 	case DRM_VC4_PARAM_SUPPORTS_PERFMON:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		args->value = true;
 		break;
 	default:
@@ -112,6 +115,7 @@ static int vc4_get_param_ioctl(struct drm_device *dev, void *data,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int vc4_open(struct drm_device *dev, struct drm_file *file)
 {
 	struct vc4_file *vc4file;
@@ -139,6 +143,15 @@ static const struct vm_operations_struct vc4_vm_ops = {
 	.close = drm_gem_vm_close,
 };
 
+=======
+static void vc4_lastclose(struct drm_device *dev)
+{
+	struct vc4_dev *vc4 = to_vc4_dev(dev);
+
+	drm_fbdev_cma_restore_mode(vc4->fbdev);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const struct file_operations vc4_drm_fops = {
 	.owner = THIS_MODULE,
 	.open = drm_open,
@@ -164,10 +177,13 @@ static const struct drm_ioctl_desc vc4_drm_ioctls[] = {
 	DRM_IOCTL_DEF_DRV(VC4_SET_TILING, vc4_set_tiling_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(VC4_GET_TILING, vc4_get_tiling_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(VC4_LABEL_BO, vc4_label_bo_ioctl, DRM_RENDER_ALLOW),
+<<<<<<< HEAD
 	DRM_IOCTL_DEF_DRV(VC4_GEM_MADVISE, vc4_gem_madvise_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(VC4_PERFMON_CREATE, vc4_perfmon_create_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(VC4_PERFMON_DESTROY, vc4_perfmon_destroy_ioctl, DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(VC4_PERFMON_GET_VALUES, vc4_perfmon_get_values_ioctl, DRM_RENDER_ALLOW),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct drm_driver vc4_drm_driver = {
@@ -176,11 +192,16 @@ static struct drm_driver vc4_drm_driver = {
 			    DRIVER_GEM |
 			    DRIVER_HAVE_IRQ |
 			    DRIVER_RENDER |
+<<<<<<< HEAD
 			    DRIVER_PRIME |
 			    DRIVER_SYNCOBJ),
 	.lastclose = drm_fb_helper_lastclose,
 	.open = vc4_open,
 	.postclose = vc4_close,
+=======
+			    DRIVER_PRIME),
+	.lastclose = vc4_lastclose,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.irq_handler = vc4_irq,
 	.irq_preinstall = vc4_irq_preinstall,
 	.irq_postinstall = vc4_irq_postinstall,
@@ -195,7 +216,11 @@ static struct drm_driver vc4_drm_driver = {
 
 	.gem_create_object = vc4_create_object,
 	.gem_free_object_unlocked = vc4_free_object,
+<<<<<<< HEAD
 	.gem_vm_ops = &vc4_vm_ops,
+=======
+	.gem_vm_ops = &drm_gem_cma_vm_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.prime_handle_to_fd = drm_gem_prime_handle_to_fd,
 	.prime_fd_to_handle = drm_gem_prime_fd_to_handle,
@@ -288,7 +313,11 @@ static int vc4_drm_bind(struct device *dev)
 
 	ret = vc4_bo_cache_init(drm);
 	if (ret)
+<<<<<<< HEAD
 		goto dev_put;
+=======
+		goto dev_unref;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	drm_mode_config_init(drm);
 
@@ -313,18 +342,29 @@ unbind_all:
 gem_destroy:
 	vc4_gem_destroy(drm);
 	vc4_bo_cache_destroy(drm);
+<<<<<<< HEAD
 dev_put:
 	drm_dev_put(drm);
+=======
+dev_unref:
+	drm_dev_unref(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
 static void vc4_drm_unbind(struct device *dev)
 {
+<<<<<<< HEAD
 	struct drm_device *drm = dev_get_drvdata(dev);
+=======
+	struct platform_device *pdev = to_platform_device(dev);
+	struct drm_device *drm = platform_get_drvdata(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct vc4_dev *vc4 = to_vc4_dev(drm);
 
 	drm_dev_unregister(drm);
 
+<<<<<<< HEAD
 	drm_fb_cma_fbdev_fini(drm);
 
 	drm_mode_config_cleanup(drm);
@@ -332,6 +372,14 @@ static void vc4_drm_unbind(struct device *dev)
 	drm_atomic_private_obj_fini(&vc4->ctm_manager);
 
 	drm_dev_put(drm);
+=======
+	if (vc4->fbdev)
+		drm_fbdev_cma_fini(vc4->fbdev);
+
+	drm_mode_config_cleanup(drm);
+
+	drm_dev_unref(drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct component_master_ops vc4_drm_ops = {
@@ -344,7 +392,10 @@ static struct platform_driver *const component_drivers[] = {
 	&vc4_vec_driver,
 	&vc4_dpi_driver,
 	&vc4_dsi_driver,
+<<<<<<< HEAD
 	&vc4_txp_driver,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&vc4_hvs_driver,
 	&vc4_crtc_driver,
 	&vc4_v3d_driver,

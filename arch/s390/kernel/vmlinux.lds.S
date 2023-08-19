@@ -19,7 +19,11 @@
 
 OUTPUT_FORMAT("elf64-s390", "elf64-s390", "elf64-s390")
 OUTPUT_ARCH(s390:64-bit)
+<<<<<<< HEAD
 ENTRY(startup_continue)
+=======
+ENTRY(startup)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 jiffies = jiffies_64;
 
 PHDRS {
@@ -30,11 +34,24 @@ PHDRS {
 
 SECTIONS
 {
+<<<<<<< HEAD
 	. = 0x100000;
 	.text : {
 		_stext = .;		/* Start of text section */
 		_text = .;		/* Text and read-only data */
 		HEAD_TEXT
+=======
+	. = 0x00000000;
+	.text : {
+		/* Text and read-only data */
+		HEAD_TEXT
+		/*
+		 * E.g. perf doesn't like symbols starting at address zero,
+		 * therefore skip the initial PSW and channel program located
+		 * at address zero and let _text start at 0x200.
+		 */
+	_text = 0x200;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		TEXT_TEXT
 		SCHED_TEXT
 		CPUIDLE_TEXT
@@ -42,6 +59,7 @@ SECTIONS
 		KPROBES_TEXT
 		IRQENTRY_TEXT
 		SOFTIRQENTRY_TEXT
+<<<<<<< HEAD
 		*(.text.*_indirect_*)
 		*(.fixup)
 		*(.gnu.warning)
@@ -49,13 +67,31 @@ SECTIONS
 		_etext = .;		/* End of text section */
 	} :text = 0x0700
 
+=======
+		*(.fixup)
+		*(.gnu.warning)
+	} :text = 0x0700
+
+	. = ALIGN(PAGE_SIZE);
+	_etext = .;		/* End of text section */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NOTES :text :note
 
 	.dummy : { *(.dummy) } :data
 
 	RO_DATA_SECTION(PAGE_SIZE)
 
+<<<<<<< HEAD
 	. = ALIGN(PAGE_SIZE);
+=======
+#ifdef CONFIG_SHARED_KERNEL
+	. = ALIGN(0x100000);	/* VM shared segments are 1MB aligned */
+#endif
+
+	. = ALIGN(PAGE_SIZE);
+	_eshared = .;		/* End of shareable data */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	_sdata = .;		/* Start of data section */
 
 	. = ALIGN(PAGE_SIZE);
@@ -77,10 +113,17 @@ SECTIONS
 
 	. = ALIGN(PAGE_SIZE);
 	.init.text : AT(ADDR(.init.text) - LOAD_OFFSET) {
+<<<<<<< HEAD
 		_sinittext = .;
 		INIT_TEXT
 		. = ALIGN(PAGE_SIZE);
 		_einittext = .;
+=======
+		VMLINUX_SYMBOL(_sinittext) = . ;
+		INIT_TEXT
+		. = ALIGN(PAGE_SIZE);
+		VMLINUX_SYMBOL(_einittext) = . ;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/*
@@ -150,7 +193,10 @@ SECTIONS
 
 	/* Sections to be discarded */
 	DISCARDS
+<<<<<<< HEAD
 	/DISCARD/ : {
 		*(.eh_frame)
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -33,6 +33,7 @@
  *		- switched from bit structs to bit masks
  *		- header file cleaned and integrated
  * 2008-01-14	Tobias Lorenz <tobias.lorenz@gmx.net>
+<<<<<<< HEAD
  *		Version 1.0.2
  *		- hex values are now lower case
  *		- commented USB ID for ADS/Tech moved on todo list
@@ -45,6 +46,20 @@
  * 2008-01-16	Tobias Lorenz <tobias.lorenz@gmx.net>
  *		Version 1.0.3
  *		- code reordered to avoid function prototypes
+=======
+ * 		Version 1.0.2
+ * 		- hex values are now lower case
+ * 		- commented USB ID for ADS/Tech moved on todo list
+ * 		- blacklisted si470x in hid-quirks.c
+ * 		- rds buffer handling functions integrated into *_work, *_read
+ * 		- rds_command in si470x_poll exchanged against simple retval
+ * 		- check for firmware version 15
+ * 		- code order and prototypes still remain the same
+ * 		- spacing and bottom of band codes remain the same
+ * 2008-01-16	Tobias Lorenz <tobias.lorenz@gmx.net>
+ *		Version 1.0.3
+ * 		- code reordered to avoid function prototypes
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *		- switch/case defaults are now more user-friendly
  *		- unified comment style
  *		- applied all checkpatch.pl v1.12 suggestions
@@ -88,8 +103,13 @@
  *		- more safety checks, let si470x_get_freq return errno
  *		- vidioc behavior corrected according to v4l2 spec
  * 2008-10-20	Alexey Klimov <klimov.linux@gmail.com>
+<<<<<<< HEAD
  *		- add support for KWorld USB FM Radio FM700
  *		- blacklisted KWorld radio in hid-core.c and hid-ids.h
+=======
+ * 		- add support for KWorld USB FM Radio FM700
+ * 		- blacklisted KWorld radio in hid-core.c and hid-ids.h
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * 2008-12-03	Mark Lord <mlord@pobox.com>
  *		- add support for DealExtreme USB Radio
  * 2009-01-31	Bob Ross <pigiron@gmx.com>
@@ -110,6 +130,11 @@
 /* kernel includes */
 #include "radio-si470x.h"
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**************************************************************************
  * Module Parameters
  **************************************************************************/
@@ -193,7 +218,11 @@ static int si470x_set_band(struct si470x_device *radio, int band)
 	radio->band = band;
 	radio->registers[SYSCONFIG2] &= ~SYSCONFIG2_BAND;
 	radio->registers[SYSCONFIG2] |= radio->band << 6;
+<<<<<<< HEAD
 	return radio->set_register(radio, SYSCONFIG2);
+=======
+	return si470x_set_register(radio, SYSCONFIG2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -205,6 +234,7 @@ static int si470x_set_chan(struct si470x_device *radio, unsigned short chan)
 	unsigned long time_left;
 	bool timed_out = false;
 
+<<<<<<< HEAD
 	retval = radio->get_register(radio, POWERCFG);
 	if (retval)
 		return retval;
@@ -218,6 +248,12 @@ static int si470x_set_chan(struct si470x_device *radio, unsigned short chan)
 	radio->registers[CHANNEL] &= ~CHANNEL_CHAN;
 	radio->registers[CHANNEL] |= CHANNEL_TUNE | chan;
 	retval = radio->set_register(radio, CHANNEL);
+=======
+	/* start tuning */
+	radio->registers[CHANNEL] &= ~CHANNEL_CHAN;
+	radio->registers[CHANNEL] |= CHANNEL_TUNE | chan;
+	retval = si470x_set_register(radio, CHANNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval < 0)
 		goto done;
 
@@ -236,7 +272,11 @@ static int si470x_set_chan(struct si470x_device *radio, unsigned short chan)
 
 	/* stop tuning */
 	radio->registers[CHANNEL] &= ~CHANNEL_TUNE;
+<<<<<<< HEAD
 	retval = radio->set_register(radio, CHANNEL);
+=======
+	retval = si470x_set_register(radio, CHANNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	return retval;
@@ -270,7 +310,11 @@ static int si470x_get_freq(struct si470x_device *radio, unsigned int *freq)
 	int chan, retval;
 
 	/* read channel */
+<<<<<<< HEAD
 	retval = radio->get_register(radio, READCHAN);
+=======
+	retval = si470x_get_register(radio, READCHAN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chan = radio->registers[READCHAN] & READCHAN_READCHAN;
 
 	/* Frequency (MHz) = Spacing (kHz) x Channel + Bottom of Band (MHz) */
@@ -294,7 +338,10 @@ int si470x_set_freq(struct si470x_device *radio, unsigned int freq)
 
 	return si470x_set_chan(radio, chan);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(si470x_set_freq);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 /*
@@ -342,7 +389,11 @@ static int si470x_set_seek(struct si470x_device *radio,
 		radio->registers[POWERCFG] |= POWERCFG_SEEKUP;
 	else
 		radio->registers[POWERCFG] &= ~POWERCFG_SEEKUP;
+<<<<<<< HEAD
 	retval = radio->set_register(radio, POWERCFG);
+=======
+	retval = si470x_set_register(radio, POWERCFG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval < 0)
 		return retval;
 
@@ -361,7 +412,11 @@ static int si470x_set_seek(struct si470x_device *radio,
 
 	/* stop seeking */
 	radio->registers[POWERCFG] &= ~POWERCFG_SEEK;
+<<<<<<< HEAD
 	retval = radio->set_register(radio, POWERCFG);
+=======
+	retval = si470x_set_register(radio, POWERCFG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* try again, if timed out */
 	if (retval == 0 && timed_out)
@@ -380,11 +435,16 @@ int si470x_start(struct si470x_device *radio)
 	/* powercfg */
 	radio->registers[POWERCFG] =
 		POWERCFG_DMUTE | POWERCFG_ENABLE | POWERCFG_RDSM;
+<<<<<<< HEAD
 	retval = radio->set_register(radio, POWERCFG);
+=======
+	retval = si470x_set_register(radio, POWERCFG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval < 0)
 		goto done;
 
 	/* sysconfig 1 */
+<<<<<<< HEAD
 	radio->registers[SYSCONFIG1] |= SYSCONFIG1_RDSIEN | SYSCONFIG1_STCIEN |
 					SYSCONFIG1_RDS;
 	radio->registers[SYSCONFIG1] &= ~SYSCONFIG1_GPIO2;
@@ -392,6 +452,11 @@ int si470x_start(struct si470x_device *radio)
 	if (de)
 		radio->registers[SYSCONFIG1] |= SYSCONFIG1_DE;
 	retval = radio->set_register(radio, SYSCONFIG1);
+=======
+	radio->registers[SYSCONFIG1] =
+		(de << 11) & SYSCONFIG1_DE;		/* DE*/
+	retval = si470x_set_register(radio, SYSCONFIG1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval < 0)
 		goto done;
 
@@ -401,7 +466,11 @@ int si470x_start(struct si470x_device *radio)
 		((radio->band << 6) & SYSCONFIG2_BAND) |/* BAND */
 		((space << 4) & SYSCONFIG2_SPACE) |	/* SPACE */
 		15;					/* VOLUME (max) */
+<<<<<<< HEAD
 	retval = radio->set_register(radio, SYSCONFIG2);
+=======
+	retval = si470x_set_register(radio, SYSCONFIG2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval < 0)
 		goto done;
 
@@ -412,7 +481,10 @@ int si470x_start(struct si470x_device *radio)
 done:
 	return retval;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(si470x_start);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 /*
@@ -424,7 +496,11 @@ int si470x_stop(struct si470x_device *radio)
 
 	/* sysconfig 1 */
 	radio->registers[SYSCONFIG1] &= ~SYSCONFIG1_RDS;
+<<<<<<< HEAD
 	retval = radio->set_register(radio, SYSCONFIG1);
+=======
+	retval = si470x_set_register(radio, SYSCONFIG1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval < 0)
 		goto done;
 
@@ -432,12 +508,19 @@ int si470x_stop(struct si470x_device *radio)
 	radio->registers[POWERCFG] &= ~POWERCFG_DMUTE;
 	/* POWERCFG_ENABLE has to automatically go low */
 	radio->registers[POWERCFG] |= POWERCFG_ENABLE |	POWERCFG_DISABLE;
+<<<<<<< HEAD
 	retval = radio->set_register(radio, POWERCFG);
+=======
+	retval = si470x_set_register(radio, POWERCFG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 done:
 	return retval;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(si470x_stop);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 /*
@@ -449,7 +532,11 @@ static int si470x_rds_on(struct si470x_device *radio)
 
 	/* sysconfig 1 */
 	radio->registers[SYSCONFIG1] |= SYSCONFIG1_RDS;
+<<<<<<< HEAD
 	retval = radio->set_register(radio, SYSCONFIG1);
+=======
+	retval = si470x_set_register(radio, SYSCONFIG1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (retval < 0)
 		radio->registers[SYSCONFIG1] &= ~SYSCONFIG1_RDS;
 
@@ -521,6 +608,7 @@ done:
 /*
  * si470x_fops_poll - poll RDS data
  */
+<<<<<<< HEAD
 static __poll_t si470x_fops_poll(struct file *file,
 		struct poll_table_struct *pts)
 {
@@ -529,6 +617,16 @@ static __poll_t si470x_fops_poll(struct file *file,
 	__poll_t retval = v4l2_ctrl_poll(file, pts);
 
 	if (req_events & (EPOLLIN | EPOLLRDNORM)) {
+=======
+static unsigned int si470x_fops_poll(struct file *file,
+		struct poll_table_struct *pts)
+{
+	struct si470x_device *radio = video_drvdata(file);
+	unsigned long req_events = poll_requested_events(pts);
+	int retval = v4l2_ctrl_poll(file, pts);
+
+	if (req_events & (POLLIN | POLLRDNORM)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* switch on rds reception */
 		if ((radio->registers[SYSCONFIG1] & SYSCONFIG1_RDS) == 0)
 			si470x_rds_on(radio);
@@ -536,13 +634,18 @@ static __poll_t si470x_fops_poll(struct file *file,
 		poll_wait(file, &radio->read_queue, pts);
 
 		if (radio->rd_index != radio->wr_index)
+<<<<<<< HEAD
 			retval |= EPOLLIN | EPOLLRDNORM;
+=======
+			retval |= POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return retval;
 }
 
 
+<<<<<<< HEAD
 static int si470x_fops_open(struct file *file)
 {
 	struct si470x_device *radio = video_drvdata(file);
@@ -562,6 +665,8 @@ static int si470x_fops_release(struct file *file)
 }
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * si470x_fops - file operations interface
  */
@@ -590,13 +695,21 @@ static int si470x_s_ctrl(struct v4l2_ctrl *ctrl)
 	case V4L2_CID_AUDIO_VOLUME:
 		radio->registers[SYSCONFIG2] &= ~SYSCONFIG2_VOLUME;
 		radio->registers[SYSCONFIG2] |= ctrl->val;
+<<<<<<< HEAD
 		return radio->set_register(radio, SYSCONFIG2);
+=======
+		return si470x_set_register(radio, SYSCONFIG2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case V4L2_CID_AUDIO_MUTE:
 		if (ctrl->val)
 			radio->registers[POWERCFG] &= ~POWERCFG_DMUTE;
 		else
 			radio->registers[POWERCFG] |= POWERCFG_DMUTE;
+<<<<<<< HEAD
 		return radio->set_register(radio, POWERCFG);
+=======
+		return si470x_set_register(radio, POWERCFG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return -EINVAL;
 	}
@@ -616,7 +729,11 @@ static int si470x_vidioc_g_tuner(struct file *file, void *priv,
 		return -EINVAL;
 
 	if (!radio->status_rssi_auto_update) {
+<<<<<<< HEAD
 		retval = radio->get_register(radio, STATUSRSSI);
+=======
+		retval = si470x_get_register(radio, STATUSRSSI);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (retval < 0)
 			return retval;
 	}
@@ -685,7 +802,11 @@ static int si470x_vidioc_s_tuner(struct file *file, void *priv,
 		break;
 	}
 
+<<<<<<< HEAD
 	return radio->set_register(radio, POWERCFG);
+=======
+	return si470x_set_register(radio, POWERCFG);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -762,6 +883,7 @@ static int si470x_vidioc_enum_freq_bands(struct file *file, void *priv,
 const struct v4l2_ctrl_ops si470x_ctrl_ops = {
 	.s_ctrl = si470x_s_ctrl,
 };
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(si470x_ctrl_ops);
 
 static int si470x_vidioc_querycap(struct file *file, void *priv,
@@ -771,6 +893,8 @@ static int si470x_vidioc_querycap(struct file *file, void *priv,
 
 	return radio->vidioc_querycap(file, priv, capability);
 };
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * si470x_ioctl_ops - video device ioctl operations
@@ -791,12 +915,19 @@ static const struct v4l2_ioctl_ops si470x_ioctl_ops = {
 /*
  * si470x_viddev_template - video device interface
  */
+<<<<<<< HEAD
 const struct video_device si470x_viddev_template = {
+=======
+struct video_device si470x_viddev_template = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.fops			= &si470x_fops,
 	.name			= DRIVER_NAME,
 	.release		= video_device_release_empty,
 	.ioctl_ops		= &si470x_ioctl_ops,
 };
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(si470x_viddev_template);
 
 MODULE_LICENSE("GPL");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

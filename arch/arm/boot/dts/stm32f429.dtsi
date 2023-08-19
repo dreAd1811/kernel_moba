@@ -302,7 +302,11 @@
 			interrupt-parent = <&exti>;
 			interrupts = <17 1>;
 			interrupt-names = "alarm";
+<<<<<<< HEAD
 			st,syscfg = <&pwrcfg 0x00 0x100>;
+=======
+			st,syscfg = <&pwrcfg>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
@@ -310,12 +314,19 @@
 			compatible = "st,stm32-iwdg";
 			reg = <0x40003000 0x400>;
 			clocks = <&clk_lsi>;
+<<<<<<< HEAD
 			clock-names = "lsi";
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			status = "disabled";
 		};
 
 		usart2: serial@40004400 {
+<<<<<<< HEAD
 			compatible = "st,stm32-uart";
+=======
+			compatible = "st,stm32-usart", "st,stm32-uart";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x40004400 0x400>;
 			interrupts = <38>;
 			clocks = <&rcc 0 STM32F4_APB1_CLOCK(UART2)>;
@@ -323,7 +334,11 @@
 		};
 
 		usart3: serial@40004800 {
+<<<<<<< HEAD
 			compatible = "st,stm32-uart";
+=======
+			compatible = "st,stm32-usart", "st,stm32-uart";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x40004800 0x400>;
 			interrupts = <39>;
 			clocks = <&rcc 0 STM32F4_APB1_CLOCK(UART3)>;
@@ -387,7 +402,11 @@
 		};
 
 		usart7: serial@40007800 {
+<<<<<<< HEAD
 			compatible = "st,stm32-uart";
+=======
+			compatible = "st,stm32-usart", "st,stm32-uart";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x40007800 0x400>;
 			interrupts = <82>;
 			clocks = <&rcc 0 STM32F4_APB1_CLOCK(UART7)>;
@@ -395,7 +414,11 @@
 		};
 
 		usart8: serial@40007c00 {
+<<<<<<< HEAD
 			compatible = "st,stm32-uart";
+=======
+			compatible = "st,stm32-usart", "st,stm32-uart";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x40007c00 0x400>;
 			interrupts = <83>;
 			clocks = <&rcc 0 STM32F4_APB1_CLOCK(UART8)>;
@@ -445,7 +468,11 @@
 		};
 
 		usart1: serial@40011000 {
+<<<<<<< HEAD
 			compatible = "st,stm32-uart";
+=======
+			compatible = "st,stm32-usart", "st,stm32-uart";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x40011000 0x400>;
 			interrupts = <37>;
 			clocks = <&rcc 0 STM32F4_APB2_CLOCK(USART1)>;
@@ -456,7 +483,11 @@
 		};
 
 		usart6: serial@40011400 {
+<<<<<<< HEAD
 			compatible = "st,stm32-uart";
+=======
+			compatible = "st,stm32-usart", "st,stm32-uart";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			reg = <0x40011400 0x400>;
 			interrupts = <71>;
 			clocks = <&rcc 0 STM32F4_APB2_CLOCK(USART6)>;
@@ -512,6 +543,7 @@
 			};
 		};
 
+<<<<<<< HEAD
 		sdio: sdio@40012c00 {
 			compatible = "arm,pl180", "arm,primecell";
 			arm,primecell-periphid = <0x00880180>;
@@ -523,6 +555,8 @@
 			status = "disabled";
 		};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		syscfg: system-config@40013800 {
 			compatible = "syscon";
 			reg = <0x40013800 0x400>;

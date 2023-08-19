@@ -116,7 +116,10 @@ static inline struct vip_buffer *to_vip_buffer(struct vb2_v4l2_buffer *vb2)
  * @sequence: sequence number of acquired buffer
  * @active: current active buffer
  * @lock: used in videobuf2 callback
+<<<<<<< HEAD
  * @v4l_lock: serialize its video4linux ioctls
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @tcount: Number of top frames
  * @bcount: Number of bottom frames
  * @overflow: Number of FIFO overflows
@@ -146,7 +149,10 @@ struct sta2x11_vip {
 	unsigned int sequence;
 	struct vip_buffer *active; /* current active buffer */
 	spinlock_t lock; /* Used in videobuf2 callback */
+<<<<<<< HEAD
 	struct mutex v4l_lock;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Interrupt counters */
 	int tcount, bcount;
@@ -387,8 +393,11 @@ static const struct vb2_ops vip_video_qops = {
 	.buf_queue		= buffer_queue,
 	.start_streaming	= start_streaming,
 	.stop_streaming		= stop_streaming,
+<<<<<<< HEAD
 	.wait_prepare		= vb2_ops_wait_prepare,
 	.wait_finish		= vb2_ops_wait_finish,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 
@@ -408,7 +417,10 @@ static const struct v4l2_file_operations vip_fops = {
  * vidioc_querycap - return capabilities of device
  * @file: descriptor of device
  * @cap: contains return values
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * the capabilities of the device are returned
  *
@@ -434,7 +446,10 @@ static int vidioc_querycap(struct file *file, void *priv,
  * vidioc_s_std - set video standard
  * @file: descriptor of device
  * @std: contains standard to be set
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * the video standard is set
  *
@@ -472,7 +487,10 @@ static int vidioc_s_std(struct file *file, void *priv, v4l2_std_id std)
 /**
  * vidioc_g_std - get video standard
  * @file: descriptor of device
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @std: contains return values
  *
  * the current video standard is returned
@@ -490,7 +508,10 @@ static int vidioc_g_std(struct file *file, void *priv, v4l2_std_id *std)
 /**
  * vidioc_querystd - get possible video standards
  * @file: descriptor of device
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @std: contains return values
  *
  * all possible video standards are returned
@@ -520,7 +541,10 @@ static int vidioc_enum_input(struct file *file, void *priv,
 /**
  * vidioc_s_input - set input line
  * @file: descriptor of device
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @i: new input line number
  *
  * the current active input line is set
@@ -547,7 +571,10 @@ static int vidioc_s_input(struct file *file, void *priv, unsigned int i)
 /**
  * vidioc_g_input - return input line
  * @file: descriptor of device
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @i: returned input line number
  *
  * the current active input line is returned
@@ -564,8 +591,11 @@ static int vidioc_g_input(struct file *file, void *priv, unsigned int *i)
 
 /**
  * vidioc_enum_fmt_vid_cap - return video capture format
+<<<<<<< HEAD
  * @file: descriptor of device
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @f: returned format information
  *
  * returns name and format of video capture
@@ -589,7 +619,10 @@ static int vidioc_enum_fmt_vid_cap(struct file *file, void *priv,
 /**
  * vidioc_try_fmt_vid_cap - set video capture format
  * @file: descriptor of device
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @f: new format
  *
  * new video format is set which includes width and
@@ -652,7 +685,10 @@ static int vidioc_try_fmt_vid_cap(struct file *file, void *priv,
 /**
  * vidioc_s_fmt_vid_cap - set current video format parameters
  * @file: descriptor of device
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @f: returned format information
  *
  * set new capture format
@@ -720,7 +756,10 @@ static int vidioc_s_fmt_vid_cap(struct file *file, void *priv,
 /**
  * vidioc_g_fmt_vid_cap - get current video format parameters
  * @file: descriptor of device
+<<<<<<< HEAD
  * @priv: unused
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @f: contains format information
  *
  * returns current video format parameters
@@ -874,7 +913,10 @@ static int sta2x11_vip_init_buffer(struct sta2x11_vip *vip)
 	vip->vb_vidq.mem_ops = &vb2_dma_contig_memops;
 	vip->vb_vidq.timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
 	vip->vb_vidq.dev = &vip->pdev->dev;
+<<<<<<< HEAD
 	vip->vb_vidq.lock = &vip->v4l_lock;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = vb2_queue_init(&vip->vb_vidq);
 	if (err)
 		return err;
@@ -913,10 +955,17 @@ static int sta2x11_vip_init_controls(struct sta2x11_vip *vip)
 static int vip_gpio_reserve(struct device *dev, int pin, int dir,
 			    const char *name)
 {
+<<<<<<< HEAD
 	int ret = -ENODEV;
 
 	if (!gpio_is_valid(pin))
 		return ret;
+=======
+	int ret;
+
+	if (pin == -1)
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = gpio_request(pin, name);
 	if (ret) {
@@ -951,7 +1000,11 @@ static int vip_gpio_reserve(struct device *dev, int pin, int dir,
  */
 static void vip_gpio_release(struct device *dev, int pin, const char *name)
 {
+<<<<<<< HEAD
 	if (gpio_is_valid(pin)) {
+=======
+	if (pin != -1) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_dbg(dev, "releasing pin %d (%s)\n",	pin, name);
 		gpio_unexport(pin);
 		gpio_free(pin);
@@ -1008,6 +1061,7 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
 	if (ret)
 		goto disable;
 
+<<<<<<< HEAD
 	ret = vip_gpio_reserve(&pdev->dev, config->reset_pin, 0,
 			       config->reset_name);
 	if (ret) {
@@ -1026,6 +1080,27 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
 		/* Datasheet says 5ms between PWR and RST */
 		usleep_range(5000, 25000);
 		gpio_direction_output(config->reset_pin, 1);
+=======
+	if (config->reset_pin >= 0) {
+		ret = vip_gpio_reserve(&pdev->dev, config->reset_pin, 0,
+				       config->reset_name);
+		if (ret) {
+			vip_gpio_release(&pdev->dev, config->pwr_pin,
+					 config->pwr_name);
+			goto disable;
+		}
+	}
+	if (config->pwr_pin != -1) {
+		/* Datasheet says 5ms between PWR and RST */
+		usleep_range(5000, 25000);
+		ret = gpio_direction_output(config->pwr_pin, 1);
+	}
+
+	if (config->reset_pin != -1) {
+		/* Datasheet says 5ms between PWR and RST */
+		usleep_range(5000, 25000);
+		ret = gpio_direction_output(config->reset_pin, 1);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	usleep_range(5000, 25000);
 
@@ -1039,7 +1114,10 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
 	vip->std = V4L2_STD_PAL;
 	vip->format = formats_50[0];
 	vip->config = config;
+<<<<<<< HEAD
 	mutex_init(&vip->v4l_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = sta2x11_vip_init_controls(vip);
 	if (ret)
@@ -1086,7 +1164,10 @@ static int sta2x11_vip_init_one(struct pci_dev *pdev,
 	vip->video_dev = video_dev_template;
 	vip->video_dev.v4l2_dev = &vip->v4l2_dev;
 	vip->video_dev.queue = &vip->vb_vidq;
+<<<<<<< HEAD
 	vip->video_dev.lock = &vip->v4l_lock;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	video_set_drvdata(&vip->video_dev, vip);
 
 	ret = video_register_device(&vip->video_dev, VFL_TYPE_GRABBER, -1);

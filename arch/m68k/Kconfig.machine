@@ -266,12 +266,15 @@ config AMCORE
 	help
 	  Support for the Sysam AMCORE open-hardware generic board.
 
+<<<<<<< HEAD
 config STMARK2
         bool "Sysam stmark2 board support"
         depends on M5441x
         help
           Support for the Sysam stmark2 open-hardware generic board.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config FIREBEE
 	bool "FireBee board support"
 	depends on M547x

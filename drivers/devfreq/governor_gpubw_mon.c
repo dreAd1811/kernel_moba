@@ -1,12 +1,29 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
+=======
+/* Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/devfreq.h>
 #include <linux/module.h>
 #include <linux/msm_adreno_devfreq.h>
+<<<<<<< HEAD
 #include <linux/of_platform.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/slab.h>
 
 #include "devfreq_trace.h"
@@ -54,7 +71,11 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 					(df->profile),
 					struct msm_busmon_extended_profile,
 					profile);
+<<<<<<< HEAD
 	struct devfreq_dev_status *stats = &df->last_status;
+=======
+	struct devfreq_dev_status stats;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct xstats b;
 	int result;
 	int level = 0;
@@ -74,6 +95,7 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 	if (priv == NULL)
 		return 0;
 
+<<<<<<< HEAD
 	stats->private_data = &b;
 
 	result = devfreq_update_stats(df);
@@ -86,6 +108,20 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 	priv->bus.ram_wait += b.ram_wait;
 
 	level = devfreq_get_freq_level(df, stats->current_frequency);
+=======
+	stats.private_data = &b;
+
+	result = df->profile->get_dev_status(df->dev.parent, &stats);
+
+	*freq = stats.current_frequency;
+
+	priv->bus.total_time += stats.total_time;
+	priv->bus.gpu_time += stats.busy_time;
+	priv->bus.ram_time += b.ram_time;
+	priv->bus.ram_wait += b.ram_wait;
+
+	level = devfreq_get_freq_level(df, stats.current_frequency);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (priv->bus.total_time < LONG_FLOOR)
 		return result;
@@ -101,11 +137,18 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 
 	/*
 	 * If there's a new high watermark, update the cutoffs and send the
+<<<<<<< HEAD
 	 * FAST hint, provided that we are using a floating watermark.
 	 * Otherwise check the current value against the current
 	 * cutoffs.
 	 */
 	if (norm_max_cycles > priv->bus.max && priv->bus.floating) {
+=======
+	 * FAST hint.  Otherwise check the current value against the current
+	 * cutoffs.
+	 */
+	if (norm_max_cycles > priv->bus.max) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		_update_cutoff(priv, norm_max_cycles);
 		bus_profile->flag = DEVFREQ_FLAG_FAST_HINT;
 	} else {
@@ -209,6 +252,7 @@ static int devfreq_gpubw_event_handler(struct devfreq *devfreq,
 {
 	int result = 0;
 	unsigned long freq;
+<<<<<<< HEAD
 	struct device_node *node = devfreq->dev.parent->of_node;
 
 	/*
@@ -217,6 +261,8 @@ static int devfreq_gpubw_event_handler(struct devfreq *devfreq,
 	 */
 	if (!of_device_is_compatible(node, "qcom,kgsl-busmon"))
 		return -EINVAL;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&devfreq->lock);
 	freq = devfreq->previous_freq;

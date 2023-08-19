@@ -68,6 +68,7 @@ static void tda9840_write(struct v4l2_subdev *sd, u8 reg, u8 val)
 static int tda9840_status(struct v4l2_subdev *sd)
 {
 	struct i2c_client *client = v4l2_get_subdevdata(sd);
+<<<<<<< HEAD
 	int rc;
 	u8 byte;
 
@@ -77,6 +78,13 @@ static int tda9840_status(struct v4l2_subdev *sd)
 			"i2c_master_recv() failed\n");
 		if (rc < 0)
 			return rc;
+=======
+	u8 byte;
+
+	if (1 != i2c_master_recv(client, &byte, 1)) {
+		v4l2_dbg(1, debug, sd,
+			"i2c_master_recv() failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 

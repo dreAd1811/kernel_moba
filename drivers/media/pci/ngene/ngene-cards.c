@@ -23,8 +23,11 @@
  * http://www.gnu.org/copyleft/gpl.html
  */
 
+<<<<<<< HEAD
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/pci.h>
@@ -42,6 +45,7 @@
 #include "drxk.h"
 #include "drxd.h"
 #include "dvb-pll.h"
+<<<<<<< HEAD
 #include "stv0367.h"
 #include "stv0367_priv.h"
 #include "tda18212.h"
@@ -113,11 +117,15 @@ static int i2c_read_reg(struct i2c_adapter *adapter, u8 adr, u8 reg, u8 *val)
 {
 	return i2c_read_regs(adapter, adr, reg, val, 1);
 }
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /****************************************************************************/
 /* Demod/tuner attachment ***************************************************/
 /****************************************************************************/
 
+<<<<<<< HEAD
 static struct i2c_adapter *i2c_adapter_from_chan(struct ngene_channel *chan)
 {
 	/* tuner 1+2: i2c adapter #0, tuner 3+4: i2c adapter #1 */
@@ -131,15 +139,32 @@ static int tuner_attach_stv6110(struct ngene_channel *chan)
 {
 	struct device *pdev = &chan->dev->pci_dev->dev;
 	struct i2c_adapter *i2c = i2c_adapter_from_chan(chan);
+=======
+static int tuner_attach_stv6110(struct ngene_channel *chan)
+{
+	struct i2c_adapter *i2c;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct stv090x_config *feconf = (struct stv090x_config *)
 		chan->dev->card_info->fe_config[chan->number];
 	struct stv6110x_config *tunerconf = (struct stv6110x_config *)
 		chan->dev->card_info->tuner_config[chan->number];
 	const struct stv6110x_devctl *ctl;
 
+<<<<<<< HEAD
 	ctl = dvb_attach(stv6110x_attach, chan->fe, tunerconf, i2c);
 	if (ctl == NULL) {
 		dev_err(pdev, "No STV6110X found!\n");
+=======
+	/* tuner 1+2: i2c adapter #0, tuner 3+4: i2c adapter #1 */
+	if (chan->number < 2)
+		i2c = &chan->dev->channel[0].i2c_adapter;
+	else
+		i2c = &chan->dev->channel[1].i2c_adapter;
+
+	ctl = dvb_attach(stv6110x_attach, chan->fe, tunerconf, i2c);
+	if (ctl == NULL) {
+		printk(KERN_ERR	DEVICE_NAME ": No STV6110X found!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -158,6 +183,7 @@ static int tuner_attach_stv6110(struct ngene_channel *chan)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tuner_attach_stv6111(struct ngene_channel *chan)
 {
 	struct device *pdev = &chan->dev->pci_dev->dev;
@@ -175,6 +201,8 @@ static int tuner_attach_stv6111(struct ngene_channel *chan)
 	}
 	return 0;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int drxk_gate_ctrl(struct dvb_frontend *fe, int enable)
 {
@@ -193,23 +221,35 @@ static int drxk_gate_ctrl(struct dvb_frontend *fe, int enable)
 
 static int tuner_attach_tda18271(struct ngene_channel *chan)
 {
+<<<<<<< HEAD
 	struct device *pdev = &chan->dev->pci_dev->dev;
 	struct i2c_adapter *i2c = i2c_adapter_from_chan(chan);
 	struct dvb_frontend *fe;
 
+=======
+	struct i2c_adapter *i2c;
+	struct dvb_frontend *fe;
+
+	i2c = &chan->dev->channel[0].i2c_adapter;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (chan->fe->ops.i2c_gate_ctrl)
 		chan->fe->ops.i2c_gate_ctrl(chan->fe, 1);
 	fe = dvb_attach(tda18271c2dd_attach, chan->fe, i2c, 0x60);
 	if (chan->fe->ops.i2c_gate_ctrl)
 		chan->fe->ops.i2c_gate_ctrl(chan->fe, 0);
 	if (!fe) {
+<<<<<<< HEAD
 		dev_err(pdev, "No TDA18271 found!\n");
+=======
+		printk(KERN_ERR "No TDA18271 found!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static int tuner_tda18212_ping(struct ngene_channel *chan,
 			       struct i2c_adapter *i2c,
 			       unsigned short adr)
@@ -289,21 +329,48 @@ static int tuner_attach_probe(struct ngene_channel *chan)
 		return tuner_attach_stv6111(chan);
 	}
 
+=======
+static int tuner_attach_probe(struct ngene_channel *chan)
+{
+	if (chan->demod_type == 0)
+		return tuner_attach_stv6110(chan);
+	if (chan->demod_type == 1)
+		return tuner_attach_tda18271(chan);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return -EINVAL;
 }
 
 static int demod_attach_stv0900(struct ngene_channel *chan)
 {
+<<<<<<< HEAD
 	struct device *pdev = &chan->dev->pci_dev->dev;
 	struct i2c_adapter *i2c = i2c_adapter_from_chan(chan);
 	struct stv090x_config *feconf = (struct stv090x_config *)
 		chan->dev->card_info->fe_config[chan->number];
 
+=======
+	struct i2c_adapter *i2c;
+	struct stv090x_config *feconf = (struct stv090x_config *)
+		chan->dev->card_info->fe_config[chan->number];
+
+	/* tuner 1+2: i2c adapter #0, tuner 3+4: i2c adapter #1 */
+	/* Note: Both adapters share the same i2c bus, but the demod     */
+	/*       driver requires that each demod has its own i2c adapter */
+	if (chan->number < 2)
+		i2c = &chan->dev->channel[0].i2c_adapter;
+	else
+		i2c = &chan->dev->channel[1].i2c_adapter;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	chan->fe = dvb_attach(stv090x_attach, feconf, i2c,
 			(chan->number & 1) == 0 ? STV090x_DEMODULATOR_0
 						: STV090x_DEMODULATOR_1);
 	if (chan->fe == NULL) {
+<<<<<<< HEAD
 		dev_err(pdev, "No STV0900 found!\n");
+=======
+		printk(KERN_ERR	DEVICE_NAME ": No STV0900 found!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -313,7 +380,11 @@ static int demod_attach_stv0900(struct ngene_channel *chan)
 
 	if (!dvb_attach(lnbh24_attach, chan->fe, i2c, 0,
 			0, chan->dev->card_info->lnb[chan->number])) {
+<<<<<<< HEAD
 		dev_err(pdev, "No LNBH24 found!\n");
+=======
+		printk(KERN_ERR DEVICE_NAME ": No LNBH24 found!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dvb_frontend_detach(chan->fe);
 		chan->fe = NULL;
 		return -ENODEV;
@@ -322,6 +393,7 @@ static int demod_attach_stv0900(struct ngene_channel *chan)
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct stv0910_cfg stv0910_p = {
 	.adr      = 0x68,
 	.parallel = 1,
@@ -436,6 +508,8 @@ static int demod_attach_cxd28xx(struct ngene_channel *chan,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void cineS2_tuner_i2c_lock(struct dvb_frontend *fe, int lock)
 {
 	struct ngene_channel *chan = fe->analog_demod_priv;
@@ -446,6 +520,27 @@ static void cineS2_tuner_i2c_lock(struct dvb_frontend *fe, int lock)
 		up(&chan->dev->pll_mutex);
 }
 
+<<<<<<< HEAD
+=======
+static int i2c_read(struct i2c_adapter *adapter, u8 adr, u8 *val)
+{
+	struct i2c_msg msgs[1] = {{.addr = adr,  .flags = I2C_M_RD,
+				   .buf  = val,  .len   = 1 } };
+	return (i2c_transfer(adapter, msgs, 1) == 1) ? 0 : -1;
+}
+
+static int i2c_read_reg16(struct i2c_adapter *adapter, u8 adr,
+			  u16 reg, u8 *val)
+{
+	u8 msg[2] = {reg>>8, reg&0xff};
+	struct i2c_msg msgs[2] = {{.addr = adr, .flags = 0,
+				   .buf  = msg, .len   = 2},
+				  {.addr = adr, .flags = I2C_M_RD,
+				   .buf  = val, .len   = 1} };
+	return (i2c_transfer(adapter, msgs, 2) == 2) ? 0 : -1;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int port_has_stv0900(struct i2c_adapter *i2c, int port)
 {
 	u8 val;
@@ -463,6 +558,7 @@ static int port_has_drxk(struct i2c_adapter *i2c, int port)
 	return 1;
 }
 
+<<<<<<< HEAD
 static int port_has_stv0367(struct i2c_adapter *i2c)
 {
 	u8 val;
@@ -501,6 +597,11 @@ static int demod_attach_drxk(struct ngene_channel *chan,
 			     struct i2c_adapter *i2c)
 {
 	struct device *pdev = &chan->dev->pci_dev->dev;
+=======
+static int demod_attach_drxk(struct ngene_channel *chan,
+			     struct i2c_adapter *i2c)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drxk_config config;
 
 	memset(&config, 0, sizeof(config));
@@ -510,7 +611,11 @@ static int demod_attach_drxk(struct ngene_channel *chan,
 
 	chan->fe = dvb_attach(drxk_attach, &config, i2c);
 	if (!chan->fe) {
+<<<<<<< HEAD
 		dev_err(pdev, "No DRXK found!\n");
+=======
+		printk(KERN_ERR "No DRXK found!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 	chan->fe->sec_priv = chan;
@@ -519,6 +624,7 @@ static int demod_attach_drxk(struct ngene_channel *chan,
 	return 0;
 }
 
+<<<<<<< HEAD
 /****************************************************************************/
 /* XO2 related lists and functions ******************************************/
 /****************************************************************************/
@@ -666,6 +772,24 @@ static int cineS2_probe(struct ngene_channel *chan)
 		}
 	} else if (port_has_stv0900(i2c, chan->number)) {
 		chan->demod_type = DEMOD_TYPE_STV090X;
+=======
+static int cineS2_probe(struct ngene_channel *chan)
+{
+	struct i2c_adapter *i2c;
+	struct stv090x_config *fe_conf;
+	u8 buf[3];
+	struct i2c_msg i2c_msg = { .flags = 0, .buf = buf };
+	int rc;
+
+	/* tuner 1+2: i2c adapter #0, tuner 3+4: i2c adapter #1 */
+	if (chan->number < 2)
+		i2c = &chan->dev->channel[0].i2c_adapter;
+	else
+		i2c = &chan->dev->channel[1].i2c_adapter;
+
+	if (port_has_stv0900(i2c, chan->number)) {
+		chan->demod_type = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		fe_conf = chan->dev->card_info->fe_config[chan->number];
 		/* demod found, attach it */
 		rc = demod_attach_stv0900(chan);
@@ -690,6 +814,7 @@ static int cineS2_probe(struct ngene_channel *chan)
 		}
 		rc = i2c_transfer(i2c, &i2c_msg, 1);
 		if (rc != 1) {
+<<<<<<< HEAD
 			dev_err(pdev, "Could not setup DPNx\n");
 			return -EIO;
 		}
@@ -702,6 +827,16 @@ static int cineS2_probe(struct ngene_channel *chan)
 		demod_attach_stv0367(chan, i2c);
 	} else {
 		dev_info(pdev, "No demod found on chan %d\n", chan->number);
+=======
+			printk(KERN_ERR DEVICE_NAME ": could not setup DPNx\n");
+			return -EIO;
+		}
+	} else if (port_has_drxk(i2c, chan->number^2)) {
+		chan->demod_type = 1;
+		demod_attach_drxk(chan, i2c);
+	} else {
+		printk(KERN_ERR "No demod found on chan %d\n", chan->number);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 	return 0;
@@ -709,6 +844,10 @@ static int cineS2_probe(struct ngene_channel *chan)
 
 
 static struct lgdt330x_config aver_m780 = {
+<<<<<<< HEAD
+=======
+	.demod_address = 0xb2 >> 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.demod_chip    = LGDT3303,
 	.serial_mpeg   = 0x00, /* PARALLEL */
 	.clock_polarity_flip = 1,
@@ -723,12 +862,18 @@ static struct mt2131_config m780_tunerconfig = {
  */
 static int demod_attach_lg330x(struct ngene_channel *chan)
 {
+<<<<<<< HEAD
 	struct device *pdev = &chan->dev->pci_dev->dev;
 
 	chan->fe = dvb_attach(lgdt330x_attach, &aver_m780,
 			      0xb2 >> 1, &chan->i2c_adapter);
 	if (chan->fe == NULL) {
 		dev_err(pdev, "No LGDT330x found!\n");
+=======
+	chan->fe = dvb_attach(lgdt330x_attach, &aver_m780, &chan->i2c_adapter);
+	if (chan->fe == NULL) {
+		printk(KERN_ERR	DEVICE_NAME ": No LGDT330x found!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
@@ -740,7 +885,10 @@ static int demod_attach_lg330x(struct ngene_channel *chan)
 
 static int demod_attach_drxd(struct ngene_channel *chan)
 {
+<<<<<<< HEAD
 	struct device *pdev = &chan->dev->pci_dev->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drxd_config *feconf;
 
 	feconf = chan->dev->card_info->fe_config[chan->number];
@@ -748,7 +896,11 @@ static int demod_attach_drxd(struct ngene_channel *chan)
 	chan->fe = dvb_attach(drxd_attach, feconf, chan,
 			&chan->i2c_adapter, &chan->dev->pci_dev->dev);
 	if (!chan->fe) {
+<<<<<<< HEAD
 		dev_err(pdev, "No DRXD found!\n");
+=======
+		pr_err("No DRXD found!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 	return 0;
@@ -756,7 +908,10 @@ static int demod_attach_drxd(struct ngene_channel *chan)
 
 static int tuner_attach_dtt7520x(struct ngene_channel *chan)
 {
+<<<<<<< HEAD
 	struct device *pdev = &chan->dev->pci_dev->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drxd_config *feconf;
 
 	feconf = chan->dev->card_info->fe_config[chan->number];
@@ -764,7 +919,11 @@ static int tuner_attach_dtt7520x(struct ngene_channel *chan)
 	if (!dvb_attach(dvb_pll_attach, chan->fe, feconf->pll_address,
 			&chan->i2c_adapter,
 			feconf->pll_type)) {
+<<<<<<< HEAD
 		dev_err(pdev, "No pll(%d) found!\n", feconf->pll_type);
+=======
+		pr_err("No pll(%d) found!\n", feconf->pll_type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 	return 0;
@@ -800,13 +959,20 @@ static int tuner_attach_dtt7520x(struct ngene_channel *chan)
 static int i2c_write_eeprom(struct i2c_adapter *adapter,
 			    u8 adr, u16 reg, u8 data)
 {
+<<<<<<< HEAD
 	struct device *pdev = adapter->dev.parent;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 m[3] = {(reg >> 8), (reg & 0xff), data};
 	struct i2c_msg msg = {.addr = adr, .flags = 0, .buf = m,
 			      .len = sizeof(m)};
 
 	if (i2c_transfer(adapter, &msg, 1) != 1) {
+<<<<<<< HEAD
 		dev_err(pdev, "Error writing EEPROM!\n");
+=======
+		pr_err(DEVICE_NAME ": Error writing EEPROM!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 	return 0;
@@ -815,7 +981,10 @@ static int i2c_write_eeprom(struct i2c_adapter *adapter,
 static int i2c_read_eeprom(struct i2c_adapter *adapter,
 			   u8 adr, u16 reg, u8 *data, int len)
 {
+<<<<<<< HEAD
 	struct device *pdev = adapter->dev.parent;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 msg[2] = {(reg >> 8), (reg & 0xff)};
 	struct i2c_msg msgs[2] = {{.addr = adr, .flags = 0,
 				   .buf = msg, .len = 2 },
@@ -823,7 +992,11 @@ static int i2c_read_eeprom(struct i2c_adapter *adapter,
 				   .buf = data, .len = len} };
 
 	if (i2c_transfer(adapter, msgs, 2) != 2) {
+<<<<<<< HEAD
 		dev_err(pdev, "Error reading EEPROM\n");
+=======
+		pr_err(DEVICE_NAME ": Error reading EEPROM\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EIO;
 	}
 	return 0;
@@ -832,7 +1005,10 @@ static int i2c_read_eeprom(struct i2c_adapter *adapter,
 static int ReadEEProm(struct i2c_adapter *adapter,
 		      u16 Tag, u32 MaxLen, u8 *data, u32 *pLength)
 {
+<<<<<<< HEAD
 	struct device *pdev = adapter->dev.parent;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status = 0;
 	u16 Addr = MICNG_EE_START, Length, tag = 0;
 	u8  EETag[3];
@@ -848,8 +1024,14 @@ static int ReadEEProm(struct i2c_adapter *adapter,
 		Addr += sizeof(u16) + 1 + EETag[2];
 	}
 	if (Addr + sizeof(u16) + 1 + EETag[2] > MICNG_EE_END) {
+<<<<<<< HEAD
 		dev_err(pdev, "Reached EOEE @ Tag = %04x Length = %3d\n",
 			tag, EETag[2]);
+=======
+		pr_err(DEVICE_NAME
+		       ": Reached EOEE @ Tag = %04x Length = %3d\n",
+		       tag, EETag[2]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 	}
 	Length = EETag[2];
@@ -872,7 +1054,10 @@ static int ReadEEProm(struct i2c_adapter *adapter,
 static int WriteEEProm(struct i2c_adapter *adapter,
 		       u16 Tag, u32 Length, u8 *data)
 {
+<<<<<<< HEAD
 	struct device *pdev = adapter->dev.parent;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int status = 0;
 	u16 Addr = MICNG_EE_START;
 	u8 EETag[3];
@@ -890,8 +1075,14 @@ static int WriteEEProm(struct i2c_adapter *adapter,
 		Addr += sizeof(u16) + 1 + EETag[2];
 	}
 	if (Addr + sizeof(u16) + 1 + EETag[2] > MICNG_EE_END) {
+<<<<<<< HEAD
 		dev_err(pdev, "Reached EOEE @ Tag = %04x Length = %3d\n",
 			tag, EETag[2]);
+=======
+		pr_err(DEVICE_NAME
+		       ": Reached EOEE @ Tag = %04x Length = %3d\n",
+		       tag, EETag[2]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -1;
 	}
 
@@ -918,11 +1109,21 @@ static int WriteEEProm(struct i2c_adapter *adapter,
 			if (status)
 				break;
 			if (Tmp != data[i])
+<<<<<<< HEAD
 				dev_err(pdev, "eeprom write error\n");
 			retry -= 1;
 		}
 		if (status) {
 			dev_err(pdev, "Timeout polling eeprom\n");
+=======
+				pr_err(DEVICE_NAME
+				       "eeprom write error\n");
+			retry -= 1;
+		}
+		if (status) {
+			pr_err(DEVICE_NAME
+			       ": Timeout polling eeprom\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		}
 	}
@@ -961,20 +1162,33 @@ static int eeprom_write_ushort(struct i2c_adapter *adapter, u16 tag, u16 data)
 static s16 osc_deviation(void *priv, s16 deviation, int flag)
 {
 	struct ngene_channel *chan = priv;
+<<<<<<< HEAD
 	struct device *pdev = &chan->dev->pci_dev->dev;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i2c_adapter *adap = &chan->i2c_adapter;
 	u16 data = 0;
 
 	if (flag) {
 		data = (u16) deviation;
+<<<<<<< HEAD
 		dev_info(pdev, "write deviation %d\n",
 			 deviation);
+=======
+		pr_info(DEVICE_NAME ": write deviation %d\n",
+		       deviation);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		eeprom_write_ushort(adap, 0x1000 + chan->number, data);
 	} else {
 		if (eeprom_read_ushort(adap, 0x1000 + chan->number, &data))
 			data = 0;
+<<<<<<< HEAD
 		dev_info(pdev, "read deviation %d\n",
 			 (s16)data);
+=======
+		pr_info(DEVICE_NAME ": read deviation %d\n",
+		       (s16) data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return (s16) data;
@@ -1179,8 +1393,11 @@ static const struct ngene_info ngene_info_terratec = {
 /****************************************************************************/
 
 static const struct pci_device_id ngene_id_tbl[] = {
+<<<<<<< HEAD
 	NGENE_ID(0x18c3, 0xab04, ngene_info_cineS2),
 	NGENE_ID(0x18c3, 0xab05, ngene_info_cineS2v5),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	NGENE_ID(0x18c3, 0xabc3, ngene_info_cineS2),
 	NGENE_ID(0x18c3, 0xabc4, ngene_info_cineS2),
 	NGENE_ID(0x18c3, 0xdb01, ngene_info_satixS2),
@@ -1201,7 +1418,11 @@ MODULE_DEVICE_TABLE(pci, ngene_id_tbl);
 static pci_ers_result_t ngene_error_detected(struct pci_dev *dev,
 					     enum pci_channel_state state)
 {
+<<<<<<< HEAD
 	dev_err(&dev->dev, "PCI error\n");
+=======
+	printk(KERN_ERR DEVICE_NAME ": PCI error\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (state == pci_channel_io_perm_failure)
 		return PCI_ERS_RESULT_DISCONNECT;
 	if (state == pci_channel_io_frozen)
@@ -1211,13 +1432,21 @@ static pci_ers_result_t ngene_error_detected(struct pci_dev *dev,
 
 static pci_ers_result_t ngene_slot_reset(struct pci_dev *dev)
 {
+<<<<<<< HEAD
 	dev_info(&dev->dev, "slot reset\n");
+=======
+	printk(KERN_INFO DEVICE_NAME ": slot reset\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 
 static void ngene_resume(struct pci_dev *dev)
 {
+<<<<<<< HEAD
 	dev_info(&dev->dev, "resume\n");
+=======
+	printk(KERN_INFO DEVICE_NAME ": resume\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct pci_error_handlers ngene_errors = {
@@ -1237,9 +1466,14 @@ static struct pci_driver ngene_pci_driver = {
 
 static __init int module_init_ngene(void)
 {
+<<<<<<< HEAD
 	/* pr_*() since we don't have a device to use with dev_*() yet */
 	pr_info("nGene PCIE bridge driver, Copyright (C) 2005-2007 Micronas\n");
 
+=======
+	printk(KERN_INFO
+	       "nGene PCIE bridge driver, Copyright (C) 2005-2007 Micronas\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return pci_register_driver(&ngene_pci_driver);
 }
 

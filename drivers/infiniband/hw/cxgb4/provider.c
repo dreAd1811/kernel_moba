@@ -58,6 +58,44 @@ static int fastreg_support = 1;
 module_param(fastreg_support, int, 0644);
 MODULE_PARM_DESC(fastreg_support, "Advertise fastreg support (default=1)");
 
+<<<<<<< HEAD
+=======
+static struct ib_ah *c4iw_ah_create(struct ib_pd *pd,
+				    struct rdma_ah_attr *ah_attr,
+				    struct ib_udata *udata)
+
+{
+	return ERR_PTR(-ENOSYS);
+}
+
+static int c4iw_ah_destroy(struct ib_ah *ah)
+{
+	return -ENOSYS;
+}
+
+static int c4iw_multicast_attach(struct ib_qp *ibqp, union ib_gid *gid, u16 lid)
+{
+	return -ENOSYS;
+}
+
+static int c4iw_multicast_detach(struct ib_qp *ibqp, union ib_gid *gid, u16 lid)
+{
+	return -ENOSYS;
+}
+
+static int c4iw_process_mad(struct ib_device *ibdev, int mad_flags,
+			    u8 port_num, const struct ib_wc *in_wc,
+			    const struct ib_grh *in_grh,
+			    const struct ib_mad_hdr *in_mad,
+			    size_t in_mad_size,
+			    struct ib_mad_hdr *out_mad,
+			    size_t *out_mad_size,
+			    u16 *out_mad_pkey_index)
+{
+	return -ENOSYS;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void _c4iw_free_ucontext(struct kref *kref)
 {
 	struct c4iw_ucontext *ucontext;
@@ -67,7 +105,11 @@ void _c4iw_free_ucontext(struct kref *kref)
 	ucontext = container_of(kref, struct c4iw_ucontext, kref);
 	rhp = to_c4iw_dev(ucontext->ibucontext.device);
 
+<<<<<<< HEAD
 	pr_debug("ucontext %p\n", ucontext);
+=======
+	pr_debug("%s ucontext %p\n", __func__, ucontext);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry_safe(mm, tmp, &ucontext->mmaps, entry)
 		kfree(mm);
 	c4iw_release_dev_ucontext(&rhp->rdev, &ucontext->uctx);
@@ -78,7 +120,11 @@ static int c4iw_dealloc_ucontext(struct ib_ucontext *context)
 {
 	struct c4iw_ucontext *ucontext = to_c4iw_ucontext(context);
 
+<<<<<<< HEAD
 	pr_debug("context %p\n", context);
+=======
+	pr_debug("%s context %p\n", __func__, context);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c4iw_put_ucontext(ucontext);
 	return 0;
 }
@@ -92,7 +138,11 @@ static struct ib_ucontext *c4iw_alloc_ucontext(struct ib_device *ibdev,
 	int ret = 0;
 	struct c4iw_mm_entry *mm = NULL;
 
+<<<<<<< HEAD
 	pr_debug("ibdev %p\n", ibdev);
+=======
+	pr_debug("%s ibdev %p\n", __func__, ibdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	context = kzalloc(sizeof(*context), GFP_KERNEL);
 	if (!context) {
 		ret = -ENOMEM;
@@ -150,7 +200,11 @@ static int c4iw_mmap(struct ib_ucontext *context, struct vm_area_struct *vma)
 	struct c4iw_ucontext *ucontext;
 	u64 addr;
 
+<<<<<<< HEAD
 	pr_debug("pgoff 0x%lx key 0x%x len %d\n", vma->vm_pgoff,
+=======
+	pr_debug("%s pgoff 0x%lx key 0x%x len %d\n", __func__, vma->vm_pgoff,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 key, len);
 
 	if (vma->vm_start & (PAGE_SIZE-1))
@@ -216,7 +270,11 @@ static int c4iw_deallocate_pd(struct ib_pd *pd)
 
 	php = to_c4iw_pd(pd);
 	rhp = php->rhp;
+<<<<<<< HEAD
 	pr_debug("ibpd %p pdid 0x%x\n", pd, php->pdid);
+=======
+	pr_debug("%s ibpd %p pdid 0x%x\n", __func__, pd, php->pdid);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	c4iw_put_resource(&rhp->rdev.resource.pdid_table, php->pdid);
 	mutex_lock(&rhp->rdev.stats.lock);
 	rhp->rdev.stats.pd.cur--;
@@ -233,7 +291,11 @@ static struct ib_pd *c4iw_allocate_pd(struct ib_device *ibdev,
 	u32 pdid;
 	struct c4iw_dev *rhp;
 
+<<<<<<< HEAD
 	pr_debug("ibdev %p\n", ibdev);
+=======
+	pr_debug("%s ibdev %p\n", __func__, ibdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	rhp = (struct c4iw_dev *) ibdev;
 	pdid =  c4iw_get_resource(&rhp->rdev.resource.pdid_table);
 	if (!pdid)
@@ -246,9 +308,13 @@ static struct ib_pd *c4iw_allocate_pd(struct ib_device *ibdev,
 	php->pdid = pdid;
 	php->rhp = rhp;
 	if (context) {
+<<<<<<< HEAD
 		struct c4iw_alloc_pd_resp uresp = {.pdid = php->pdid};
 
 		if (ib_copy_to_udata(udata, &uresp, sizeof(uresp))) {
+=======
+		if (ib_copy_to_udata(udata, &php->pdid, sizeof(u32))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			c4iw_deallocate_pd(&php->ibpd);
 			return ERR_PTR(-EFAULT);
 		}
@@ -258,14 +324,22 @@ static struct ib_pd *c4iw_allocate_pd(struct ib_device *ibdev,
 	if (rhp->rdev.stats.pd.cur > rhp->rdev.stats.pd.max)
 		rhp->rdev.stats.pd.max = rhp->rdev.stats.pd.cur;
 	mutex_unlock(&rhp->rdev.stats.lock);
+<<<<<<< HEAD
 	pr_debug("pdid 0x%0x ptr 0x%p\n", pdid, php);
+=======
+	pr_debug("%s pdid 0x%0x ptr 0x%p\n", __func__, pdid, php);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return &php->ibpd;
 }
 
 static int c4iw_query_pkey(struct ib_device *ibdev, u8 port, u16 index,
 			   u16 *pkey)
 {
+<<<<<<< HEAD
 	pr_debug("ibdev %p\n", ibdev);
+=======
+	pr_debug("%s ibdev %p\n", __func__, ibdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*pkey = 0;
 	return 0;
 }
@@ -275,11 +349,18 @@ static int c4iw_query_gid(struct ib_device *ibdev, u8 port, int index,
 {
 	struct c4iw_dev *dev;
 
+<<<<<<< HEAD
 	pr_debug("ibdev %p, port %d, index %d, gid %p\n",
 		 ibdev, port, index, gid);
 	if (!port)
 		return -EINVAL;
 	dev = to_c4iw_dev(ibdev);
+=======
+	pr_debug("%s ibdev %p, port %d, index %d, gid %p\n",
+		 __func__, ibdev, port, index, gid);
+	dev = to_c4iw_dev(ibdev);
+	BUG_ON(port == 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&(gid->raw[0]), 0, sizeof(gid->raw));
 	memcpy(&(gid->raw[0]), dev->rdev.lldi.ports[port-1]->dev_addr, 6);
 	return 0;
@@ -291,7 +372,11 @@ static int c4iw_query_device(struct ib_device *ibdev, struct ib_device_attr *pro
 
 	struct c4iw_dev *dev;
 
+<<<<<<< HEAD
 	pr_debug("ibdev %p\n", ibdev);
+=======
+	pr_debug("%s ibdev %p\n", __func__, ibdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (uhw->inlen || uhw->outlen)
 		return -EINVAL;
@@ -307,12 +392,17 @@ static int c4iw_query_device(struct ib_device *ibdev, struct ib_device_attr *pro
 	props->vendor_part_id = (u32)dev->rdev.lldi.pdev->device;
 	props->max_mr_size = T4_MAX_MR_SIZE;
 	props->max_qp = dev->rdev.lldi.vr->qp.size / 2;
+<<<<<<< HEAD
 	props->max_srq = dev->rdev.lldi.vr->srq.size;
 	props->max_qp_wr = dev->rdev.hw_queue.t4_max_qp_depth;
 	props->max_srq_wr = dev->rdev.hw_queue.t4_max_qp_depth;
 	props->max_send_sge = min(T4_MAX_SEND_SGE, T4_MAX_WRITE_SGE);
 	props->max_recv_sge = T4_MAX_RECV_SGE;
 	props->max_srq_sge = T4_MAX_RECV_SGE;
+=======
+	props->max_qp_wr = dev->rdev.hw_queue.t4_max_qp_depth;
+	props->max_sge = T4_MAX_RECV_SGE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	props->max_sge_rd = 1;
 	props->max_res_rd_atom = dev->rdev.lldi.max_ird_adapter;
 	props->max_qp_rd_atom = min(dev->rdev.lldi.max_ordird_qp,
@@ -336,7 +426,11 @@ static int c4iw_query_port(struct ib_device *ibdev, u8 port,
 	struct net_device *netdev;
 	struct in_device *inetdev;
 
+<<<<<<< HEAD
 	pr_debug("ibdev %p\n", ibdev);
+=======
+	pr_debug("%s ibdev %p\n", __func__, ibdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev = to_c4iw_dev(ibdev);
 	netdev = dev->rdev.lldi.ports[port-1];
@@ -378,7 +472,11 @@ static ssize_t show_rev(struct device *dev, struct device_attribute *attr,
 {
 	struct c4iw_dev *c4iw_dev = container_of(dev, struct c4iw_dev,
 						 ibdev.dev);
+<<<<<<< HEAD
 	pr_debug("dev 0x%p\n", dev);
+=======
+	pr_debug("%s dev 0x%p\n", __func__, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%d\n",
 		       CHELSIO_CHIP_RELEASE(c4iw_dev->rdev.lldi.adapter_type));
 }
@@ -391,7 +489,11 @@ static ssize_t show_hca(struct device *dev, struct device_attribute *attr,
 	struct ethtool_drvinfo info;
 	struct net_device *lldev = c4iw_dev->rdev.lldi.ports[0];
 
+<<<<<<< HEAD
 	pr_debug("dev 0x%p\n", dev);
+=======
+	pr_debug("%s dev 0x%p\n", __func__, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lldev->ethtool_ops->get_drvinfo(lldev, &info);
 	return sprintf(buf, "%s\n", info.driver);
 }
@@ -401,7 +503,11 @@ static ssize_t show_board(struct device *dev, struct device_attribute *attr,
 {
 	struct c4iw_dev *c4iw_dev = container_of(dev, struct c4iw_dev,
 						 ibdev.dev);
+<<<<<<< HEAD
 	pr_debug("dev 0x%p\n", dev);
+=======
+	pr_debug("%s dev 0x%p\n", __func__, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return sprintf(buf, "%x.%x\n", c4iw_dev->rdev.lldi.pdev->vendor,
 		       c4iw_dev->rdev.lldi.pdev->device);
 }
@@ -493,7 +599,11 @@ static void get_dev_fw_str(struct ib_device *dev, char *str)
 {
 	struct c4iw_dev *c4iw_dev = container_of(dev, struct c4iw_dev,
 						 ibdev);
+<<<<<<< HEAD
 	pr_debug("dev 0x%p\n", dev);
+=======
+	pr_debug("%s dev 0x%p\n", __func__, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	snprintf(str, IB_FW_VERSION_NAME_MAX, "%u.%u.%u.%u",
 		 FW_HDR_FW_VER_MAJOR_G(c4iw_dev->rdev.lldi.fw_vers),
@@ -502,6 +612,7 @@ static void get_dev_fw_str(struct ib_device *dev, char *str)
 		 FW_HDR_FW_VER_BUILD_G(c4iw_dev->rdev.lldi.fw_vers));
 }
 
+<<<<<<< HEAD
 static struct net_device *get_netdev(struct ib_device *dev, u8 port)
 {
 	struct c4iw_dev *c4iw_dev = container_of(dev, struct c4iw_dev, ibdev);
@@ -535,6 +646,15 @@ void c4iw_register_device(struct work_struct *work)
 	struct c4iw_dev *dev = ctx->dev;
 
 	pr_debug("c4iw_dev %p\n", dev);
+=======
+int c4iw_register_device(struct c4iw_dev *dev)
+{
+	int ret;
+	int i;
+
+	pr_debug("%s c4iw_dev %p\n", __func__, dev);
+	BUG_ON(!dev->rdev.lldi.ports[0]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	strlcpy(dev->ibdev.name, "cxgb4_%d", IB_DEVICE_NAME_MAX);
 	memset(&dev->ibdev.node_guid, 0, sizeof(dev->ibdev.node_guid));
 	memcpy(&dev->ibdev.node_guid, dev->rdev.lldi.ports[0]->dev_addr, 6);
@@ -561,10 +681,14 @@ void c4iw_register_device(struct work_struct *work)
 	    (1ull << IB_USER_VERBS_CMD_POLL_CQ) |
 	    (1ull << IB_USER_VERBS_CMD_DESTROY_QP) |
 	    (1ull << IB_USER_VERBS_CMD_POST_SEND) |
+<<<<<<< HEAD
 	    (1ull << IB_USER_VERBS_CMD_POST_RECV) |
 	    (1ull << IB_USER_VERBS_CMD_CREATE_SRQ) |
 	    (1ull << IB_USER_VERBS_CMD_MODIFY_SRQ) |
 	    (1ull << IB_USER_VERBS_CMD_DESTROY_SRQ);
+=======
+	    (1ull << IB_USER_VERBS_CMD_POST_RECV);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->ibdev.node_type = RDMA_NODE_RNIC;
 	BUILD_BUG_ON(sizeof(C4IW_NODE_DESC) > IB_DEVICE_NODE_DESC_MAX);
 	memcpy(dev->ibdev.node_desc, C4IW_NODE_DESC, sizeof(C4IW_NODE_DESC));
@@ -580,15 +704,26 @@ void c4iw_register_device(struct work_struct *work)
 	dev->ibdev.mmap = c4iw_mmap;
 	dev->ibdev.alloc_pd = c4iw_allocate_pd;
 	dev->ibdev.dealloc_pd = c4iw_deallocate_pd;
+<<<<<<< HEAD
+=======
+	dev->ibdev.create_ah = c4iw_ah_create;
+	dev->ibdev.destroy_ah = c4iw_ah_destroy;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->ibdev.create_qp = c4iw_create_qp;
 	dev->ibdev.modify_qp = c4iw_ib_modify_qp;
 	dev->ibdev.query_qp = c4iw_ib_query_qp;
 	dev->ibdev.destroy_qp = c4iw_destroy_qp;
+<<<<<<< HEAD
 	dev->ibdev.create_srq = c4iw_create_srq;
 	dev->ibdev.modify_srq = c4iw_modify_srq;
 	dev->ibdev.destroy_srq = c4iw_destroy_srq;
 	dev->ibdev.create_cq = c4iw_create_cq;
 	dev->ibdev.destroy_cq = c4iw_destroy_cq;
+=======
+	dev->ibdev.create_cq = c4iw_create_cq;
+	dev->ibdev.destroy_cq = c4iw_destroy_cq;
+	dev->ibdev.resize_cq = c4iw_resize_cq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->ibdev.poll_cq = c4iw_poll_cq;
 	dev->ibdev.get_dma_mr = c4iw_get_dma_mr;
 	dev->ibdev.reg_user_mr = c4iw_reg_user_mr;
@@ -597,15 +732,25 @@ void c4iw_register_device(struct work_struct *work)
 	dev->ibdev.dealloc_mw = c4iw_dealloc_mw;
 	dev->ibdev.alloc_mr = c4iw_alloc_mr;
 	dev->ibdev.map_mr_sg = c4iw_map_mr_sg;
+<<<<<<< HEAD
 	dev->ibdev.req_notify_cq = c4iw_arm_cq;
 	dev->ibdev.post_send = c4iw_post_send;
 	dev->ibdev.post_recv = c4iw_post_receive;
 	dev->ibdev.post_srq_recv = c4iw_post_srq_recv;
+=======
+	dev->ibdev.attach_mcast = c4iw_multicast_attach;
+	dev->ibdev.detach_mcast = c4iw_multicast_detach;
+	dev->ibdev.process_mad = c4iw_process_mad;
+	dev->ibdev.req_notify_cq = c4iw_arm_cq;
+	dev->ibdev.post_send = c4iw_post_send;
+	dev->ibdev.post_recv = c4iw_post_receive;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev->ibdev.alloc_hw_stats = c4iw_alloc_stats;
 	dev->ibdev.get_hw_stats = c4iw_get_mib;
 	dev->ibdev.uverbs_abi_ver = C4IW_UVERBS_ABI_VERSION;
 	dev->ibdev.get_port_immutable = c4iw_port_immutable;
 	dev->ibdev.get_dev_fw_str = get_dev_fw_str;
+<<<<<<< HEAD
 	dev->ibdev.get_netdev = get_netdev;
 
 	dev->ibdev.iwcm = kmalloc(sizeof(struct iw_cm_verbs), GFP_KERNEL);
@@ -613,6 +758,12 @@ void c4iw_register_device(struct work_struct *work)
 		ret = -ENOMEM;
 		goto err_dealloc_ctx;
 	}
+=======
+
+	dev->ibdev.iwcm = kmalloc(sizeof(struct iw_cm_verbs), GFP_KERNEL);
+	if (!dev->ibdev.iwcm)
+		return -ENOMEM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dev->ibdev.iwcm->connect = c4iw_connect;
 	dev->ibdev.iwcm->accept = c4iw_accept_cr;
@@ -622,6 +773,7 @@ void c4iw_register_device(struct work_struct *work)
 	dev->ibdev.iwcm->add_ref = c4iw_qp_add_ref;
 	dev->ibdev.iwcm->rem_ref = c4iw_qp_rem_ref;
 	dev->ibdev.iwcm->get_qp = c4iw_get_qp;
+<<<<<<< HEAD
 	dev->ibdev.res.fill_res_entry = fill_res_entry;
 	memcpy(dev->ibdev.iwcm->ifname, dev->rdev.lldi.ports[0]->name,
 	       sizeof(dev->ibdev.iwcm->ifname));
@@ -630,11 +782,20 @@ void c4iw_register_device(struct work_struct *work)
 	ret = ib_register_device(&dev->ibdev, NULL);
 	if (ret)
 		goto err_kfree_iwcm;
+=======
+	memcpy(dev->ibdev.iwcm->ifname, dev->rdev.lldi.ports[0]->name,
+	       sizeof(dev->ibdev.iwcm->ifname));
+
+	ret = ib_register_device(&dev->ibdev, NULL);
+	if (ret)
+		goto bail1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(c4iw_class_attributes); ++i) {
 		ret = device_create_file(&dev->ibdev.dev,
 					 c4iw_class_attributes[i]);
 		if (ret)
+<<<<<<< HEAD
 			goto err_unregister_device;
 	}
 	return;
@@ -647,13 +808,27 @@ err_dealloc_ctx:
 	       pci_name(ctx->lldi.pdev), ret);
 	c4iw_dealloc(ctx);
 	return;
+=======
+			goto bail2;
+	}
+	return 0;
+bail2:
+	ib_unregister_device(&dev->ibdev);
+bail1:
+	kfree(dev->ibdev.iwcm);
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void c4iw_unregister_device(struct c4iw_dev *dev)
 {
 	int i;
 
+<<<<<<< HEAD
 	pr_debug("c4iw_dev %p\n", dev);
+=======
+	pr_debug("%s c4iw_dev %p\n", __func__, dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < ARRAY_SIZE(c4iw_class_attributes); ++i)
 		device_remove_file(&dev->ibdev.dev,
 				   c4iw_class_attributes[i]);

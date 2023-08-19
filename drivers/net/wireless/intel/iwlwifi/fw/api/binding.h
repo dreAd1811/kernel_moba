@@ -116,14 +116,22 @@ struct iwl_binding_cmd {
 #define IWL_MVM_MAX_QUOTA 128
 
 /**
+<<<<<<< HEAD
  * struct iwl_time_quota_data_v1 - configuration of time quota per binding
+=======
+ * struct iwl_time_quota_data - configuration of time quota per binding
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @id_and_color: ID and color of the relevant Binding,
  *	&enum iwl_ctxt_id_and_color
  * @quota: absolute time quota in TU. The scheduler will try to divide the
  *	remainig quota (after Time Events) according to this quota.
  * @max_duration: max uninterrupted context duration in TU
  */
+<<<<<<< HEAD
 struct iwl_time_quota_data_v1 {
+=======
+struct iwl_time_quota_data {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le32 id_and_color;
 	__le32 quota;
 	__le32 max_duration;
@@ -137,6 +145,7 @@ struct iwl_time_quota_data_v1 {
  *	essentially zero.
  *	On CDB the fourth one is a regular binding.
  */
+<<<<<<< HEAD
 struct iwl_time_quota_cmd_v1 {
 	struct iwl_time_quota_data_v1 quotas[MAX_BINDINGS];
 } __packed; /* TIME_QUOTA_ALLOCATION_CMD_API_S_VER_1 */
@@ -175,5 +184,10 @@ struct iwl_time_quota_data {
 struct iwl_time_quota_cmd {
 	struct iwl_time_quota_data quotas[MAX_BINDINGS];
 } __packed; /* TIME_QUOTA_ALLOCATION_CMD_API_S_VER_2 */
+=======
+struct iwl_time_quota_cmd {
+	struct iwl_time_quota_data quotas[MAX_BINDINGS];
+} __packed; /* TIME_QUOTA_ALLOCATION_CMD_API_S_VER_1 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __iwl_fw_api_binding_h__ */

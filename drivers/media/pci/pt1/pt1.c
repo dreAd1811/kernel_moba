@@ -4,7 +4,11 @@
  * Copyright (C) 2009 HIRANO Takahito <hiranotaka@zng.info>
  *
  * based on pt1dvr - http://pt1dvr.sourceforge.jp/
+<<<<<<< HEAD
  *	by Tomoaki Ishikawa <tomy@users.sourceforge.jp>
+=======
+ * 	by Tomoaki Ishikawa <tomy@users.sourceforge.jp>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,10 +22,14 @@
  */
 
 #include <linux/kernel.h>
+<<<<<<< HEAD
 #include <linux/sched.h>
 #include <linux/sched/signal.h>
 #include <linux/hrtimer.h>
 #include <linux/delay.h>
+=======
+#include <linux/sched/signal.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/vmalloc.h>
@@ -29,6 +37,7 @@
 #include <linux/kthread.h>
 #include <linux/freezer.h>
 #include <linux/ratelimit.h>
+<<<<<<< HEAD
 #include <linux/string.h>
 #include <linux/i2c.h>
 
@@ -41,6 +50,17 @@
 #include "tc90522.h"
 #include "qm1d1b0004.h"
 #include "dvb-pll.h"
+=======
+
+#include "dvbdev.h"
+#include "dvb_demux.h"
+#include "dmxdev.h"
+#include "dvb_net.h"
+#include "dvb_frontend.h"
+
+#include "va1j5jf8007t.h"
+#include "va1j5jf8007s.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define DRIVER_NAME "earth-pt1"
 
@@ -69,11 +89,14 @@ struct pt1_table {
 	struct pt1_buffer bufs[PT1_NR_BUFS];
 };
 
+<<<<<<< HEAD
 enum pt1_fe_clk {
 	PT1_FE_CLK_20MHZ,	/* PT1 */
 	PT1_FE_CLK_25MHZ,	/* PT2 */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define PT1_NR_ADAPS 4
 
 struct pt1_adapter;
@@ -92,8 +115,11 @@ struct pt1 {
 	struct mutex lock;
 	int power;
 	int reset;
+<<<<<<< HEAD
 
 	enum pt1_fe_clk fe_clk;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct pt1_adapter {
@@ -110,8 +136,11 @@ struct pt1_adapter {
 	int users;
 	struct dmxdev dmxdev;
 	struct dvb_frontend *fe;
+<<<<<<< HEAD
 	struct i2c_client *demod_i2c_client;
 	struct i2c_client *tuner_i2c_client;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*orig_set_voltage)(struct dvb_frontend *fe,
 				enum fe_sec_voltage voltage);
 	int (*orig_sleep)(struct dvb_frontend *fe);
@@ -121,6 +150,7 @@ struct pt1_adapter {
 	int sleep;
 };
 
+<<<<<<< HEAD
 union pt1_tuner_config {
 	struct qm1d1b0004_config qm1d1b0004;
 	struct dvb_pll_config tda6651;
@@ -260,6 +290,8 @@ static int config_demod(struct i2c_client *cl, enum pt1_fe_clk clk)
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void pt1_write_reg(struct pt1 *pt1, int reg, u32 data)
 {
 	writel(data, pt1->regs + reg * 4);
@@ -270,8 +302,13 @@ static u32 pt1_read_reg(struct pt1 *pt1, int reg)
 	return readl(pt1->regs + reg * 4);
 }
 
+<<<<<<< HEAD
 static unsigned int pt1_nr_tables = 8;
 module_param_named(nr_tables, pt1_nr_tables, uint, 0);
+=======
+static int pt1_nr_tables = 8;
+module_param_named(nr_tables, pt1_nr_tables, int, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void pt1_increment_table_count(struct pt1 *pt1)
 {
@@ -325,7 +362,11 @@ static int pt1_unlock(struct pt1 *pt1)
 	for (i = 0; i < 3; i++) {
 		if (pt1_read_reg(pt1, 0) & 0x80000000)
 			return 0;
+<<<<<<< HEAD
 		usleep_range(1000, 2000);
+=======
+		schedule_timeout_uninterruptible((HZ + 999) / 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	dev_err(&pt1->pdev->dev, "could not unlock\n");
 	return -EIO;
@@ -339,7 +380,11 @@ static int pt1_reset_pci(struct pt1 *pt1)
 	for (i = 0; i < 10; i++) {
 		if (pt1_read_reg(pt1, 0) & 0x00000001)
 			return 0;
+<<<<<<< HEAD
 		usleep_range(1000, 2000);
+=======
+		schedule_timeout_uninterruptible((HZ + 999) / 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	dev_err(&pt1->pdev->dev, "could not reset PCI\n");
 	return -EIO;
@@ -353,7 +398,11 @@ static int pt1_reset_ram(struct pt1 *pt1)
 	for (i = 0; i < 10; i++) {
 		if (pt1_read_reg(pt1, 0) & 0x00000002)
 			return 0;
+<<<<<<< HEAD
 		usleep_range(1000, 2000);
+=======
+		schedule_timeout_uninterruptible((HZ + 999) / 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	dev_err(&pt1->pdev->dev, "could not reset RAM\n");
 	return -EIO;
@@ -370,7 +419,11 @@ static int pt1_do_enable_ram(struct pt1 *pt1)
 			if ((pt1_read_reg(pt1, 0) & 0x00000004) != status)
 				return 0;
 		}
+<<<<<<< HEAD
 		usleep_range(1000, 2000);
+=======
+		schedule_timeout_uninterruptible((HZ + 999) / 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 	dev_err(&pt1->pdev->dev, "could not enable RAM\n");
 	return -EIO;
@@ -380,7 +433,11 @@ static int pt1_enable_ram(struct pt1 *pt1)
 {
 	int i, ret;
 	int phase;
+<<<<<<< HEAD
 	usleep_range(1000, 2000);
+=======
+	schedule_timeout_uninterruptible((HZ + 999) / 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phase = pt1->pdev->device == 0x211a ? 128 : 166;
 	for (i = 0; i < phase; i++) {
 		ret = pt1_do_enable_ram(pt1);
@@ -465,14 +522,18 @@ static int pt1_thread(void *data)
 {
 	struct pt1 *pt1;
 	struct pt1_buffer_page *page;
+<<<<<<< HEAD
 	bool was_frozen;
 
 #define PT1_FETCH_DELAY 10
 #define PT1_FETCH_DELAY_DELTA 2
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pt1 = data;
 	set_freezable();
 
+<<<<<<< HEAD
 	while (!kthread_freezable_should_stop(&was_frozen)) {
 		if (was_frozen) {
 			int i;
@@ -490,6 +551,14 @@ static int pt1_thread(void *data)
 			schedule_hrtimeout_range(&delay,
 					PT1_FETCH_DELAY_DELTA * NSEC_PER_MSEC,
 					HRTIMER_MODE_REL);
+=======
+	while (!kthread_should_stop()) {
+		try_to_freeze();
+
+		page = pt1->tables[pt1->table_index].bufs[pt1->buf_index].page;
+		if (!pt1_filter(pt1, page)) {
+			schedule_timeout_interruptible((HZ + 999) / 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 		}
 
@@ -612,20 +681,33 @@ static int pt1_init_tables(struct pt1 *pt1)
 	int i, ret;
 	u32 first_pfn, pfn;
 
+<<<<<<< HEAD
 	if (!pt1_nr_tables)
 		return 0;
 
 	tables = vmalloc(array_size(pt1_nr_tables, sizeof(struct pt1_table)));
+=======
+	tables = vmalloc(sizeof(struct pt1_table) * pt1_nr_tables);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (tables == NULL)
 		return -ENOMEM;
 
 	pt1_init_table_count(pt1);
 
 	i = 0;
+<<<<<<< HEAD
 	ret = pt1_init_table(pt1, &tables[0], &first_pfn);
 	if (ret)
 		goto err;
 	i++;
+=======
+	if (pt1_nr_tables) {
+		ret = pt1_init_table(pt1, &tables[0], &first_pfn);
+		if (ret)
+			goto err;
+		i++;
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (i < pt1_nr_tables) {
 		ret = pt1_init_table(pt1, &tables[i], &pfn);
@@ -725,7 +807,11 @@ pt1_update_power(struct pt1 *pt1)
 		adap = pt1->adaps[i];
 		switch (adap->voltage) {
 		case SEC_VOLTAGE_13: /* actually 11V */
+<<<<<<< HEAD
 			bits |= 1 << 2;
+=======
+			bits |= 1 << 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			break;
 		case SEC_VOLTAGE_18: /* actually 15V */
 			bits |= 1 << 1 | 1 << 2;
@@ -758,6 +844,7 @@ static int pt1_set_voltage(struct dvb_frontend *fe, enum fe_sec_voltage voltage)
 static int pt1_sleep(struct dvb_frontend *fe)
 {
 	struct pt1_adapter *adap;
+<<<<<<< HEAD
 	int ret;
 
 	adap = container_of(fe->dvb, struct pt1_adapter, adap);
@@ -769,22 +856,45 @@ static int pt1_sleep(struct dvb_frontend *fe)
 	adap->sleep = 1;
 	pt1_update_power(adap->pt1);
 	return ret;
+=======
+
+	adap = container_of(fe->dvb, struct pt1_adapter, adap);
+	adap->sleep = 1;
+	pt1_update_power(adap->pt1);
+
+	if (adap->orig_sleep)
+		return adap->orig_sleep(fe);
+	else
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pt1_wakeup(struct dvb_frontend *fe)
 {
 	struct pt1_adapter *adap;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	adap = container_of(fe->dvb, struct pt1_adapter, adap);
 	adap->sleep = 0;
 	pt1_update_power(adap->pt1);
+<<<<<<< HEAD
 	usleep_range(1000, 2000);
 
 	ret = config_demod(adap->demod_i2c_client, adap->pt1->fe_clk);
 	if (ret == 0 && adap->orig_init)
 		ret = adap->orig_init(fe);
 	return ret;
+=======
+	schedule_timeout_uninterruptible((HZ + 999) / 1000);
+
+	if (adap->orig_init)
+		return adap->orig_init(fe);
+	else
+		return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void pt1_free_adapter(struct pt1_adapter *adap)
@@ -907,8 +1017,11 @@ err:
 static void pt1_cleanup_frontend(struct pt1_adapter *adap)
 {
 	dvb_unregister_frontend(adap->fe);
+<<<<<<< HEAD
 	dvb_module_release(adap->tuner_i2c_client);
 	dvb_module_release(adap->demod_i2c_client);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int pt1_init_frontend(struct pt1_adapter *adap, struct dvb_frontend *fe)
@@ -937,6 +1050,7 @@ static void pt1_cleanup_frontends(struct pt1 *pt1)
 		pt1_cleanup_frontend(pt1->adaps[i]);
 }
 
+<<<<<<< HEAD
 static int pt1_init_frontends(struct pt1 *pt1)
 {
 	int i;
@@ -1001,6 +1115,114 @@ fe_unregister:
 		dvb_module_release(pt1->adaps[i]->tuner_i2c_client);
 		dvb_module_release(pt1->adaps[i]->demod_i2c_client);
 	}
+=======
+struct pt1_config {
+	struct va1j5jf8007s_config va1j5jf8007s_config;
+	struct va1j5jf8007t_config va1j5jf8007t_config;
+};
+
+static const struct pt1_config pt1_configs[2] = {
+	{
+		{
+			.demod_address = 0x1b,
+			.frequency = VA1J5JF8007S_20MHZ,
+		},
+		{
+			.demod_address = 0x1a,
+			.frequency = VA1J5JF8007T_20MHZ,
+		},
+	}, {
+		{
+			.demod_address = 0x19,
+			.frequency = VA1J5JF8007S_20MHZ,
+		},
+		{
+			.demod_address = 0x18,
+			.frequency = VA1J5JF8007T_20MHZ,
+		},
+	},
+};
+
+static const struct pt1_config pt2_configs[2] = {
+	{
+		{
+			.demod_address = 0x1b,
+			.frequency = VA1J5JF8007S_25MHZ,
+		},
+		{
+			.demod_address = 0x1a,
+			.frequency = VA1J5JF8007T_25MHZ,
+		},
+	}, {
+		{
+			.demod_address = 0x19,
+			.frequency = VA1J5JF8007S_25MHZ,
+		},
+		{
+			.demod_address = 0x18,
+			.frequency = VA1J5JF8007T_25MHZ,
+		},
+	},
+};
+
+static int pt1_init_frontends(struct pt1 *pt1)
+{
+	int i, j;
+	struct i2c_adapter *i2c_adap;
+	const struct pt1_config *configs, *config;
+	struct dvb_frontend *fe[4];
+	int ret;
+
+	i = 0;
+	j = 0;
+
+	i2c_adap = &pt1->i2c_adap;
+	configs = pt1->pdev->device == 0x211a ? pt1_configs : pt2_configs;
+	do {
+		config = &configs[i / 2];
+
+		fe[i] = va1j5jf8007s_attach(&config->va1j5jf8007s_config,
+					    i2c_adap);
+		if (!fe[i]) {
+			ret = -ENODEV; /* This does not sound nice... */
+			goto err;
+		}
+		i++;
+
+		fe[i] = va1j5jf8007t_attach(&config->va1j5jf8007t_config,
+					    i2c_adap);
+		if (!fe[i]) {
+			ret = -ENODEV;
+			goto err;
+		}
+		i++;
+
+		ret = va1j5jf8007s_prepare(fe[i - 2]);
+		if (ret < 0)
+			goto err;
+
+		ret = va1j5jf8007t_prepare(fe[i - 1]);
+		if (ret < 0)
+			goto err;
+
+	} while (i < 4);
+
+	do {
+		ret = pt1_init_frontend(pt1->adaps[j], fe[j]);
+		if (ret < 0)
+			goto err;
+	} while (++j < 4);
+
+	return 0;
+
+err:
+	while (i-- > j)
+		fe[i]->ops.release(fe[i]);
+
+	while (j--)
+		dvb_unregister_frontend(fe[j]);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1086,7 +1308,11 @@ static int pt1_i2c_end(struct pt1 *pt1, int addr)
 	do {
 		if (signal_pending(current))
 			return -EINTR;
+<<<<<<< HEAD
 		usleep_range(1000, 2000);
+=======
+		schedule_timeout_interruptible((HZ + 999) / 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} while (pt1_read_reg(pt1, 0) & 0x00000080);
 	return 0;
 }
@@ -1184,6 +1410,7 @@ static void pt1_i2c_init(struct pt1 *pt1)
 		pt1_i2c_emit(pt1, i, 0, 0, 1, 1, 0);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_PM_SLEEP
 
 static int pt1_suspend(struct device *dev)
@@ -1276,6 +1503,8 @@ resume_err:
 
 #endif /* CONFIG_PM_SLEEP */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void pt1_remove(struct pci_dev *pdev)
 {
 	struct pt1 *pt1;
@@ -1336,8 +1565,11 @@ static int pt1_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 	mutex_init(&pt1->lock);
 	pt1->pdev = pdev;
 	pt1->regs = regs;
+<<<<<<< HEAD
 	pt1->fe_clk = (pdev->device == 0x211a) ?
 				PT1_FE_CLK_20MHZ : PT1_FE_CLK_25MHZ;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pci_set_drvdata(pdev, pt1);
 
 	ret = pt1_init_adapters(pt1);
@@ -1389,11 +1621,19 @@ static int pt1_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
 
 	pt1->power = 1;
 	pt1_update_power(pt1);
+<<<<<<< HEAD
 	msleep(20);
 
 	pt1->reset = 0;
 	pt1_update_power(pt1);
 	usleep_range(1000, 2000);
+=======
+	schedule_timeout_uninterruptible((HZ + 49) / 50);
+
+	pt1->reset = 0;
+	pt1_update_power(pt1);
+	schedule_timeout_uninterruptible((HZ + 999) / 1000);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = pt1_init_frontends(pt1);
 	if (ret < 0)
@@ -1436,14 +1676,20 @@ static const struct pci_device_id pt1_id_table[] = {
 };
 MODULE_DEVICE_TABLE(pci, pt1_id_table);
 
+<<<<<<< HEAD
 static SIMPLE_DEV_PM_OPS(pt1_pm_ops, pt1_suspend, pt1_resume);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct pci_driver pt1_driver = {
 	.name		= DRIVER_NAME,
 	.probe		= pt1_probe,
 	.remove		= pt1_remove,
 	.id_table	= pt1_id_table,
+<<<<<<< HEAD
 	.driver.pm	= &pt1_pm_ops,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 module_pci_driver(pt1_driver);

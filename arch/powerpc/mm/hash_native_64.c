@@ -23,13 +23,20 @@
 #include <asm/mmu.h>
 #include <asm/mmu_context.h>
 #include <asm/pgtable.h>
+<<<<<<< HEAD
+=======
+#include <asm/tlbflush.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/trace.h>
 #include <asm/tlb.h>
 #include <asm/cputable.h>
 #include <asm/udbg.h>
 #include <asm/kexec.h>
 #include <asm/ppc-opcode.h>
+<<<<<<< HEAD
 #include <asm/feature-fixups.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <misc/cxl-base.h>
 
@@ -47,6 +54,7 @@
 
 DEFINE_RAW_SPINLOCK(native_tlbie_lock);
 
+<<<<<<< HEAD
 static inline void tlbiel_hash_set_isa206(unsigned int set, unsigned int is)
 {
 	unsigned long rb;
@@ -144,6 +152,8 @@ void hash__tlbiel_all(unsigned int action)
 		WARN(1, "%s called on pre-POWER7 CPU\n", __func__);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline unsigned long  ___tlbie(unsigned long vpn, int psize,
 						int apsize, int ssize)
 {
@@ -201,8 +211,35 @@ static inline unsigned long  ___tlbie(unsigned long vpn, int psize,
 	return va;
 }
 
+<<<<<<< HEAD
 static inline void fixup_tlbie(unsigned long vpn, int psize, int apsize, int ssize)
 {
+=======
+static inline void fixup_tlbie_vpn(unsigned long vpn, int psize,
+				   int apsize, int ssize)
+{
+	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
+		/* Radix flush for a hash guest */
+
+		unsigned long rb,rs,prs,r,ric;
+
+		rb = PPC_BIT(52); /* IS = 2 */
+		rs = 0;  /* lpid = 0 */
+		prs = 0; /* partition scoped */
+		r = 1;   /* radix format */
+		ric = 0; /* RIC_FLSUH_TLB */
+
+		/*
+		 * Need the extra ptesync to make sure we don't
+		 * re-order the tlbie
+		 */
+		asm volatile("ptesync": : :"memory");
+		asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+			     : : "r"(rb), "i"(r), "i"(prs),
+			       "i"(ric), "r"(rs) : "memory");
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
 		/* Need the extra ptesync to ensure we don't reorder tlbie*/
 		asm volatile("ptesync": : :"memory");
@@ -287,7 +324,11 @@ static inline void tlbie(unsigned long vpn, int psize, int apsize,
 		asm volatile("ptesync": : :"memory");
 	} else {
 		__tlbie(vpn, psize, apsize, ssize);
+<<<<<<< HEAD
 		fixup_tlbie(vpn, psize, apsize, ssize);
+=======
+		fixup_tlbie_vpn(vpn, psize, apsize, ssize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		asm volatile("eieio; tlbsync; ptesync": : :"memory");
 	}
 	if (lock_tlbie && !use_local)
@@ -423,7 +464,13 @@ static long native_hpte_updatepp(unsigned long slot, unsigned long newpp,
 	DBG_LOW("    update(vpn=%016lx, avpnv=%016lx, group=%lx, newpp=%lx)",
 		vpn, want_v & HPTE_V_AVPN, slot, newpp);
 
+<<<<<<< HEAD
 	hpte_v = hpte_get_old_v(hptep);
+=======
+	hpte_v = be64_to_cpu(hptep->v);
+	if (cpu_has_feature(CPU_FTR_ARCH_300))
+		hpte_v = hpte_new_to_old_v(hpte_v, be64_to_cpu(hptep->r));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We need to invalidate the TLB always because hpte_remove doesn't do
 	 * a tlb invalidate. If a hash bucket gets full, we "evict" a more/less
@@ -437,7 +484,13 @@ static long native_hpte_updatepp(unsigned long slot, unsigned long newpp,
 	} else {
 		native_lock_hpte(hptep);
 		/* recheck with locks held */
+<<<<<<< HEAD
 		hpte_v = hpte_get_old_v(hptep);
+=======
+		hpte_v = be64_to_cpu(hptep->v);
+		if (cpu_has_feature(CPU_FTR_ARCH_300))
+			hpte_v = hpte_new_to_old_v(hpte_v, be64_to_cpu(hptep->r));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(!HPTE_V_COMPARE(hpte_v, want_v) ||
 			     !(hpte_v & HPTE_V_VALID))) {
 			ret = -1;
@@ -477,9 +530,17 @@ static long native_hpte_find(unsigned long vpn, int psize, int ssize)
 	/* Bolted mappings are only ever in the primary group */
 	slot = (hash & htab_hash_mask) * HPTES_PER_GROUP;
 	for (i = 0; i < HPTES_PER_GROUP; i++) {
+<<<<<<< HEAD
 
 		hptep = htab_address + slot;
 		hpte_v = hpte_get_old_v(hptep);
+=======
+		hptep = htab_address + slot;
+		hpte_v = be64_to_cpu(hptep->v);
+		if (cpu_has_feature(CPU_FTR_ARCH_300))
+			hpte_v = hpte_new_to_old_v(hpte_v, be64_to_cpu(hptep->r));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (HPTE_V_COMPARE(hpte_v, want_v) && (hpte_v & HPTE_V_VALID))
 			/* HPTE matches */
 			return slot;
@@ -568,6 +629,7 @@ static void native_hpte_invalidate(unsigned long slot, unsigned long vpn,
 	DBG_LOW("    invalidate(vpn=%016lx, hash: %lx)\n", vpn, slot);
 
 	want_v = hpte_encode_avpn(vpn, bpsize, ssize);
+<<<<<<< HEAD
 	hpte_v = hpte_get_old_v(hptep);
 
 	if (HPTE_V_COMPARE(hpte_v, want_v) && (hpte_v & HPTE_V_VALID)) {
@@ -581,6 +643,13 @@ static void native_hpte_invalidate(unsigned long slot, unsigned long vpn,
 		else
 			native_unlock_hpte(hptep);
 	}
+=======
+	native_lock_hpte(hptep);
+	hpte_v = be64_to_cpu(hptep->v);
+	if (cpu_has_feature(CPU_FTR_ARCH_300))
+		hpte_v = hpte_new_to_old_v(hpte_v, be64_to_cpu(hptep->r));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We need to invalidate the TLB always because hpte_remove doesn't do
 	 * a tlb invalidate. If a hash bucket gets full, we "evict" a more/less
@@ -588,6 +657,16 @@ static void native_hpte_invalidate(unsigned long slot, unsigned long vpn,
 	 * (hpte_remove) because we assume the old translation is still
 	 * technically "valid".
 	 */
+<<<<<<< HEAD
+=======
+	if (!HPTE_V_COMPARE(hpte_v, want_v) || !(hpte_v & HPTE_V_VALID))
+		native_unlock_hpte(hptep);
+	else
+		/* Invalidate the hpte. NOTE: this also unlocks it */
+		hptep->v = 0;
+
+	/* Invalidate the TLB */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	tlbie(vpn, bpsize, apsize, ssize, local);
 
 	local_irq_restore(flags);
@@ -629,6 +708,7 @@ static void native_hugepage_invalidate(unsigned long vsid,
 
 		hptep = htab_address + slot;
 		want_v = hpte_encode_avpn(vpn, psize, ssize);
+<<<<<<< HEAD
 		hpte_v = hpte_get_old_v(hptep);
 
 		/* Even if we miss, we need to invalidate the TLB */
@@ -646,6 +726,19 @@ static void native_hugepage_invalidate(unsigned long vsid,
 			} else
 				native_unlock_hpte(hptep);
 		}
+=======
+		native_lock_hpte(hptep);
+		hpte_v = be64_to_cpu(hptep->v);
+		if (cpu_has_feature(CPU_FTR_ARCH_300))
+			hpte_v = hpte_new_to_old_v(hpte_v, be64_to_cpu(hptep->r));
+
+		/* Even if we miss, we need to invalidate the TLB */
+		if (!HPTE_V_COMPARE(hpte_v, want_v) || !(hpte_v & HPTE_V_VALID))
+			native_unlock_hpte(hptep);
+		else
+			/* Invalidate the hpte. NOTE: this also unlocks it */
+			hptep->v = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * We need to do tlb invalidate for all the address, tlbie
 		 * instruction compares entry_VA in tlb with the VA specified
@@ -813,6 +906,7 @@ static void native_flush_hash_range(unsigned long number, int local)
 			slot += hidx & _PTEIDX_GROUP_IX;
 			hptep = htab_address + slot;
 			want_v = hpte_encode_avpn(vpn, psize, ssize);
+<<<<<<< HEAD
 			hpte_v = hpte_get_old_v(hptep);
 
 			if (!HPTE_V_COMPARE(hpte_v, want_v) || !(hpte_v & HPTE_V_VALID))
@@ -826,6 +920,18 @@ static void native_flush_hash_range(unsigned long number, int local)
 			else
 				hptep->v = 0;
 
+=======
+			native_lock_hpte(hptep);
+			hpte_v = be64_to_cpu(hptep->v);
+			if (cpu_has_feature(CPU_FTR_ARCH_300))
+				hpte_v = hpte_new_to_old_v(hpte_v,
+						be64_to_cpu(hptep->r));
+			if (!HPTE_V_COMPARE(hpte_v, want_v) ||
+			    !(hpte_v & HPTE_V_VALID))
+				native_unlock_hpte(hptep);
+			else
+				hptep->v = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		} pte_iterate_hashed_end();
 	}
 
@@ -860,7 +966,11 @@ static void native_flush_hash_range(unsigned long number, int local)
 		/*
 		 * Just do one more with the last used values.
 		 */
+<<<<<<< HEAD
 		fixup_tlbie(vpn, psize, psize, ssize);
+=======
+		fixup_tlbie_vpn(vpn, psize, psize, ssize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		asm volatile("eieio; tlbsync; ptesync":::"memory");
 
 		if (lock_tlbie)
@@ -870,6 +980,21 @@ static void native_flush_hash_range(unsigned long number, int local)
 	local_irq_restore(flags);
 }
 
+<<<<<<< HEAD
+=======
+static int native_register_proc_table(unsigned long base, unsigned long page_size,
+				      unsigned long table_size)
+{
+	unsigned long patb1 = base << 25; /* VSID */
+
+	patb1 |= (page_size << 5);  /* sllp */
+	patb1 |= table_size;
+
+	partition_tb->patb1 = cpu_to_be64(patb1);
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init hpte_init_native(void)
 {
 	mmu_hash_ops.hpte_invalidate	= native_hpte_invalidate;
@@ -881,4 +1006,10 @@ void __init hpte_init_native(void)
 	mmu_hash_ops.hpte_clear_all	= native_hpte_clear;
 	mmu_hash_ops.flush_hash_range = native_flush_hash_range;
 	mmu_hash_ops.hugepage_invalidate   = native_hugepage_invalidate;
+<<<<<<< HEAD
+=======
+
+	if (cpu_has_feature(CPU_FTR_ARCH_300))
+		register_process_table = native_register_proc_table;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

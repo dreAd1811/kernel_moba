@@ -451,7 +451,11 @@ static inline void enable_ctr(u32 cpu, u32 ctr, u32 *pm07_cntrl)
  * This routine will alternate loading the virtual counters for
  * virtual CPUs
  */
+<<<<<<< HEAD
 static void cell_virtual_cntr(struct timer_list *unused)
+=======
+static void cell_virtual_cntr(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i, prev_hdw_thread, next_hdw_thread;
 	u32 cpu;
@@ -555,7 +559,13 @@ static void cell_virtual_cntr(struct timer_list *unused)
 
 static void start_virt_cntrs(void)
 {
+<<<<<<< HEAD
 	timer_setup(&timer_virt_cntr, cell_virtual_cntr, 0);
+=======
+	init_timer(&timer_virt_cntr);
+	timer_virt_cntr.function = cell_virtual_cntr;
+	timer_virt_cntr.data = 0UL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timer_virt_cntr.expires = jiffies + HZ / 10;
 	add_timer(&timer_virt_cntr);
 }
@@ -587,7 +597,11 @@ static int cell_reg_setup_spu_cycles(struct op_counter_config *ctr,
  * periodically based on kernel timer to switch which SPU is
  * being monitored in a round robbin fashion.
  */
+<<<<<<< HEAD
 static void spu_evnt_swap(struct timer_list *unused)
+=======
+static void spu_evnt_swap(unsigned long data)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int node;
 	int cur_phys_spu, nxt_phys_spu, cur_spu_evnt_phys_spu_indx;
@@ -677,7 +691,13 @@ static void spu_evnt_swap(struct timer_list *unused)
 
 static void start_spu_event_swap(void)
 {
+<<<<<<< HEAD
 	timer_setup(&timer_spu_event_swap, spu_evnt_swap, 0);
+=======
+	init_timer(&timer_spu_event_swap);
+	timer_spu_event_swap.function = spu_evnt_swap;
+	timer_spu_event_swap.data = 0UL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	timer_spu_event_swap.expires = jiffies + HZ / 25;
 	add_timer(&timer_spu_event_swap);
 }

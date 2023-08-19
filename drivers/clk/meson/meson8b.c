@@ -1,19 +1,45 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 /*
+=======
+/*
+ * AmLogic S802 (Meson8) / S805 (Meson8b) / S812 (Meson8m2) Clock Controller
+ * Driver
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (c) 2015 Endless Mobile, Inc.
  * Author: Carlo Caione <carlo@endlessm.com>
  *
  * Copyright (c) 2016 BayLibre, Inc.
  * Michael Turquette <mturquette@baylibre.com>
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
 #include <linux/clk-provider.h>
+<<<<<<< HEAD
 #include <linux/init.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_address.h>
 #include <linux/platform_device.h>
 #include <linux/reset-controller.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/regmap.h>
 
 #include "clkc.h"
@@ -21,6 +47,14 @@
 #include "clk-regmap.h"
 
 static DEFINE_SPINLOCK(meson_clk_lock);
+=======
+#include <linux/init.h>
+
+#include "clkc.h"
+#include "meson8b.h"
+
+static DEFINE_SPINLOCK(clk_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void __iomem *clk_base;
 
@@ -85,6 +119,23 @@ static const struct pll_rate_table sys_pll_rate_table[] = {
 	{ /* sentinel */ },
 };
 
+<<<<<<< HEAD
+=======
+static const struct clk_div_table cpu_div_table[] = {
+	{ .val = 1, .div = 1 },
+	{ .val = 2, .div = 2 },
+	{ .val = 3, .div = 3 },
+	{ .val = 2, .div = 4 },
+	{ .val = 3, .div = 6 },
+	{ .val = 4, .div = 8 },
+	{ .val = 5, .div = 10 },
+	{ .val = 6, .div = 12 },
+	{ .val = 7, .div = 14 },
+	{ .val = 8, .div = 16 },
+	{ /* sentinel */ },
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clk_fixed_rate meson8b_xtal = {
 	.fixed_rate = 24000000,
 	.hw.init = &(struct clk_init_data){
@@ -94,6 +145,7 @@ static struct clk_fixed_rate meson8b_xtal = {
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_regmap meson8b_fixed_pll = {
 	.data = &(struct meson_clk_pll_data){
 		.m = {
@@ -127,11 +179,31 @@ static struct clk_regmap meson8b_fixed_pll = {
 			.width   = 1,
 		},
 	},
+=======
+static struct meson_clk_pll meson8b_fixed_pll = {
+	.m = {
+		.reg_off = HHI_MPLL_CNTL,
+		.shift   = 0,
+		.width   = 9,
+	},
+	.n = {
+		.reg_off = HHI_MPLL_CNTL,
+		.shift   = 9,
+		.width   = 5,
+	},
+	.od = {
+		.reg_off = HHI_MPLL_CNTL,
+		.shift   = 16,
+		.width   = 2,
+	},
+	.lock = &clk_lock,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.hw.init = &(struct clk_init_data){
 		.name = "fixed_pll",
 		.ops = &meson_clk_pll_ro_ops,
 		.parent_names = (const char *[]){ "xtal" },
 		.num_parents = 1,
+<<<<<<< HEAD
 	},
 };
 
@@ -163,11 +235,35 @@ static struct clk_regmap meson8b_vid_pll = {
 			.width   = 1,
 		},
 	},
+=======
+		.flags = CLK_GET_RATE_NOCACHE,
+	},
+};
+
+static struct meson_clk_pll meson8b_vid_pll = {
+	.m = {
+		.reg_off = HHI_VID_PLL_CNTL,
+		.shift   = 0,
+		.width   = 9,
+	},
+	.n = {
+		.reg_off = HHI_VID_PLL_CNTL,
+		.shift   = 9,
+		.width   = 5,
+	},
+	.od = {
+		.reg_off = HHI_VID_PLL_CNTL,
+		.shift   = 16,
+		.width   = 2,
+	},
+	.lock = &clk_lock,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.hw.init = &(struct clk_init_data){
 		.name = "vid_pll",
 		.ops = &meson_clk_pll_ro_ops,
 		.parent_names = (const char *[]){ "xtal" },
 		.num_parents = 1,
+<<<<<<< HEAD
 	},
 };
 
@@ -213,12 +309,52 @@ static struct clk_fixed_factor meson8b_fclk_div2_div = {
 	.div = 2,
 	.hw.init = &(struct clk_init_data){
 		.name = "fclk_div2_div",
+=======
+		.flags = CLK_GET_RATE_NOCACHE,
+	},
+};
+
+static struct meson_clk_pll meson8b_sys_pll = {
+	.m = {
+		.reg_off = HHI_SYS_PLL_CNTL,
+		.shift   = 0,
+		.width   = 9,
+	},
+	.n = {
+		.reg_off = HHI_SYS_PLL_CNTL,
+		.shift   = 9,
+		.width   = 5,
+	},
+	.od = {
+		.reg_off = HHI_SYS_PLL_CNTL,
+		.shift   = 16,
+		.width   = 2,
+	},
+	.rate_table = sys_pll_rate_table,
+	.rate_count = ARRAY_SIZE(sys_pll_rate_table),
+	.lock = &clk_lock,
+	.hw.init = &(struct clk_init_data){
+		.name = "sys_pll",
+		.ops = &meson_clk_pll_ops,
+		.parent_names = (const char *[]){ "xtal" },
+		.num_parents = 1,
+		.flags = CLK_GET_RATE_NOCACHE,
+	},
+};
+
+static struct clk_fixed_factor meson8b_fclk_div2 = {
+	.mult = 1,
+	.div = 2,
+	.hw.init = &(struct clk_init_data){
+		.name = "fclk_div2",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ops = &clk_fixed_factor_ops,
 		.parent_names = (const char *[]){ "fixed_pll" },
 		.num_parents = 1,
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_regmap meson8b_fclk_div2 = {
 	.data = &(struct clk_regmap_gate_data){
 		.offset = HHI_MPLL_CNTL6,
@@ -244,12 +380,20 @@ static struct clk_fixed_factor meson8b_fclk_div3_div = {
 	.div = 3,
 	.hw.init = &(struct clk_init_data){
 		.name = "fclk_div3_div",
+=======
+static struct clk_fixed_factor meson8b_fclk_div3 = {
+	.mult = 1,
+	.div = 3,
+	.hw.init = &(struct clk_init_data){
+		.name = "fclk_div3",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ops = &clk_fixed_factor_ops,
 		.parent_names = (const char *[]){ "fixed_pll" },
 		.num_parents = 1,
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_regmap meson8b_fclk_div3 = {
 	.data = &(struct clk_regmap_gate_data){
 		.offset = HHI_MPLL_CNTL6,
@@ -268,12 +412,20 @@ static struct clk_fixed_factor meson8b_fclk_div4_div = {
 	.div = 4,
 	.hw.init = &(struct clk_init_data){
 		.name = "fclk_div4_div",
+=======
+static struct clk_fixed_factor meson8b_fclk_div4 = {
+	.mult = 1,
+	.div = 4,
+	.hw.init = &(struct clk_init_data){
+		.name = "fclk_div4",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ops = &clk_fixed_factor_ops,
 		.parent_names = (const char *[]){ "fixed_pll" },
 		.num_parents = 1,
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_regmap meson8b_fclk_div4 = {
 	.data = &(struct clk_regmap_gate_data){
 		.offset = HHI_MPLL_CNTL6,
@@ -292,12 +444,20 @@ static struct clk_fixed_factor meson8b_fclk_div5_div = {
 	.div = 5,
 	.hw.init = &(struct clk_init_data){
 		.name = "fclk_div5_div",
+=======
+static struct clk_fixed_factor meson8b_fclk_div5 = {
+	.mult = 1,
+	.div = 5,
+	.hw.init = &(struct clk_init_data){
+		.name = "fclk_div5",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ops = &clk_fixed_factor_ops,
 		.parent_names = (const char *[]){ "fixed_pll" },
 		.num_parents = 1,
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_regmap meson8b_fclk_div5 = {
 	.data = &(struct clk_regmap_gate_data){
 		.offset = HHI_MPLL_CNTL6,
@@ -316,12 +476,20 @@ static struct clk_fixed_factor meson8b_fclk_div7_div = {
 	.div = 7,
 	.hw.init = &(struct clk_init_data){
 		.name = "fclk_div7_div",
+=======
+static struct clk_fixed_factor meson8b_fclk_div7 = {
+	.mult = 1,
+	.div = 7,
+	.hw.init = &(struct clk_init_data){
+		.name = "fclk_div7",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ops = &clk_fixed_factor_ops,
 		.parent_names = (const char *[]){ "fixed_pll" },
 		.num_parents = 1,
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_regmap meson8b_fclk_div7 = {
 	.data = &(struct clk_regmap_gate_data){
 		.offset = HHI_MPLL_CNTL6,
@@ -344,11 +512,44 @@ static struct clk_regmap meson8b_mpll_prediv = {
 	.hw.init = &(struct clk_init_data){
 		.name = "mpll_prediv",
 		.ops = &clk_regmap_divider_ro_ops,
+=======
+static struct meson_clk_mpll meson8b_mpll0 = {
+	.sdm = {
+		.reg_off = HHI_MPLL_CNTL7,
+		.shift   = 0,
+		.width   = 14,
+	},
+	.sdm_en = {
+		.reg_off = HHI_MPLL_CNTL7,
+		.shift   = 15,
+		.width   = 1,
+	},
+	.n2 = {
+		.reg_off = HHI_MPLL_CNTL7,
+		.shift   = 16,
+		.width   = 9,
+	},
+	.en = {
+		.reg_off = HHI_MPLL_CNTL7,
+		.shift   = 14,
+		.width   = 1,
+	},
+	.ssen = {
+		.reg_off = HHI_MPLL_CNTL,
+		.shift   = 25,
+		.width   = 1,
+	},
+	.lock = &clk_lock,
+	.hw.init = &(struct clk_init_data){
+		.name = "mpll0",
+		.ops = &meson_clk_mpll_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.parent_names = (const char *[]){ "fixed_pll" },
 		.num_parents = 1,
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_regmap meson8b_mpll0_div = {
 	.data = &(struct meson_clk_mpll_data){
 		.sdm = {
@@ -459,10 +660,39 @@ static struct clk_regmap meson8b_mpll2_div = {
 		.name = "mpll2_div",
 		.ops = &meson_clk_mpll_ops,
 		.parent_names = (const char *[]){ "mpll_prediv" },
+=======
+static struct meson_clk_mpll meson8b_mpll1 = {
+	.sdm = {
+		.reg_off = HHI_MPLL_CNTL8,
+		.shift   = 0,
+		.width   = 14,
+	},
+	.sdm_en = {
+		.reg_off = HHI_MPLL_CNTL8,
+		.shift   = 15,
+		.width   = 1,
+	},
+	.n2 = {
+		.reg_off = HHI_MPLL_CNTL8,
+		.shift   = 16,
+		.width   = 9,
+	},
+	.en = {
+		.reg_off = HHI_MPLL_CNTL8,
+		.shift   = 14,
+		.width   = 1,
+	},
+	.lock = &clk_lock,
+	.hw.init = &(struct clk_init_data){
+		.name = "mpll1",
+		.ops = &meson_clk_mpll_ops,
+		.parent_names = (const char *[]){ "fixed_pll" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.num_parents = 1,
 	},
 };
 
+<<<<<<< HEAD
 static struct clk_regmap meson8b_mpll2 = {
 	.data = &(struct clk_regmap_gate_data){
 		.offset = HHI_MPLL_CNTL9,
@@ -474,10 +704,57 @@ static struct clk_regmap meson8b_mpll2 = {
 		.parent_names = (const char *[]){ "mpll2_div" },
 		.num_parents = 1,
 		.flags = CLK_SET_RATE_PARENT,
+=======
+static struct meson_clk_mpll meson8b_mpll2 = {
+	.sdm = {
+		.reg_off = HHI_MPLL_CNTL9,
+		.shift   = 0,
+		.width   = 14,
+	},
+	.sdm_en = {
+		.reg_off = HHI_MPLL_CNTL9,
+		.shift   = 15,
+		.width   = 1,
+	},
+	.n2 = {
+		.reg_off = HHI_MPLL_CNTL9,
+		.shift   = 16,
+		.width   = 9,
+	},
+	.en = {
+		.reg_off = HHI_MPLL_CNTL9,
+		.shift   = 14,
+		.width   = 1,
+	},
+	.lock = &clk_lock,
+	.hw.init = &(struct clk_init_data){
+		.name = "mpll2",
+		.ops = &meson_clk_mpll_ops,
+		.parent_names = (const char *[]){ "fixed_pll" },
+		.num_parents = 1,
+	},
+};
+
+/*
+ * FIXME cpu clocks and the legacy composite clocks (e.g. clk81) are both PLL
+ * post-dividers and should be modeled with their respective PLLs via the
+ * forthcoming coordinated clock rates feature
+ */
+static struct meson_clk_cpu meson8b_cpu_clk = {
+	.reg_off = HHI_SYS_CPU_CLK_CNTL1,
+	.div_table = cpu_div_table,
+	.clk_nb.notifier_call = meson_clk_cpu_notifier_cb,
+	.hw.init = &(struct clk_init_data){
+		.name = "cpu_clk",
+		.ops = &meson_clk_cpu_ops,
+		.parent_names = (const char *[]){ "sys_pll" },
+		.num_parents = 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
 static u32 mux_table_clk81[]	= { 6, 5, 7 };
+<<<<<<< HEAD
 static struct clk_regmap meson8b_mpeg_clk_sel = {
 	.data = &(struct clk_regmap_mux_data){
 		.offset = HHI_MPEG_CLK_CNTL,
@@ -488,6 +765,19 @@ static struct clk_regmap meson8b_mpeg_clk_sel = {
 	.hw.init = &(struct clk_init_data){
 		.name = "mpeg_clk_sel",
 		.ops = &clk_regmap_mux_ro_ops,
+=======
+
+struct clk_mux meson8b_mpeg_clk_sel = {
+	.reg = (void *)HHI_MPEG_CLK_CNTL,
+	.mask = 0x7,
+	.shift = 12,
+	.flags = CLK_MUX_READ_ONLY,
+	.table = mux_table_clk81,
+	.lock = &clk_lock,
+	.hw.init = &(struct clk_init_data){
+		.name = "mpeg_clk_sel",
+		.ops = &clk_mux_ro_ops,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/*
 		 * FIXME bits 14:12 selects from 8 possible parents:
 		 * xtal, 1'b0 (wtf), fclk_div7, mpll_clkout1, mpll_clkout2,
@@ -496,6 +786,7 @@ static struct clk_regmap meson8b_mpeg_clk_sel = {
 		.parent_names = (const char *[]){ "fclk_div3", "fclk_div4",
 			"fclk_div5" },
 		.num_parents = 3,
+<<<<<<< HEAD
 	},
 };
 
@@ -684,6 +975,36 @@ static struct clk_regmap meson8b_nand_clk_gate = {
 		.parent_names = (const char *[]){ "nand_clk_div" },
 		.num_parents = 1,
 		.flags = CLK_SET_RATE_PARENT,
+=======
+		.flags = (CLK_SET_RATE_NO_REPARENT | CLK_IGNORE_UNUSED),
+	},
+};
+
+struct clk_divider meson8b_mpeg_clk_div = {
+	.reg = (void *)HHI_MPEG_CLK_CNTL,
+	.shift = 0,
+	.width = 7,
+	.lock = &clk_lock,
+	.hw.init = &(struct clk_init_data){
+		.name = "mpeg_clk_div",
+		.ops = &clk_divider_ops,
+		.parent_names = (const char *[]){ "mpeg_clk_sel" },
+		.num_parents = 1,
+		.flags = (CLK_SET_RATE_PARENT | CLK_IGNORE_UNUSED),
+	},
+};
+
+struct clk_gate meson8b_clk81 = {
+	.reg = (void *)HHI_MPEG_CLK_CNTL,
+	.bit_idx = 7,
+	.lock = &clk_lock,
+	.hw.init = &(struct clk_init_data){
+		.name = "clk81",
+		.ops = &clk_gate_ops,
+		.parent_names = (const char *[]){ "mpeg_clk_div" },
+		.num_parents = 1,
+		.flags = (CLK_SET_RATE_PARENT | CLK_IS_CRITICAL),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -868,6 +1189,7 @@ static struct clk_hw_onecell_data meson8b_hw_onecell_data = {
 		[CLKID_MPLL0]		    = &meson8b_mpll0.hw,
 		[CLKID_MPLL1]		    = &meson8b_mpll1.hw,
 		[CLKID_MPLL2]		    = &meson8b_mpll2.hw,
+<<<<<<< HEAD
 		[CLKID_MPLL0_DIV]	    = &meson8b_mpll0_div.hw,
 		[CLKID_MPLL1_DIV]	    = &meson8b_mpll1_div.hw,
 		[CLKID_MPLL2_DIV]	    = &meson8b_mpll2_div.hw,
@@ -885,12 +1207,30 @@ static struct clk_hw_onecell_data meson8b_hw_onecell_data = {
 		[CLKID_NAND_SEL]	    = &meson8b_nand_clk_sel.hw,
 		[CLKID_NAND_DIV]	    = &meson8b_nand_clk_div.hw,
 		[CLKID_NAND_CLK]	    = &meson8b_nand_clk_gate.hw,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		[CLK_NR_CLKS]		    = NULL,
 	},
 	.num = CLK_NR_CLKS,
 };
 
+<<<<<<< HEAD
 static struct clk_regmap *const meson8b_clk_regmaps[] = {
+=======
+static struct meson_clk_pll *const meson8b_clk_plls[] = {
+	&meson8b_fixed_pll,
+	&meson8b_vid_pll,
+	&meson8b_sys_pll,
+};
+
+static struct meson_clk_mpll *const meson8b_clk_mplls[] = {
+	&meson8b_mpll0,
+	&meson8b_mpll1,
+	&meson8b_mpll2,
+};
+
+static struct clk_gate *const meson8b_clk_gates[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	&meson8b_clk81,
 	&meson8b_ddr,
 	&meson8b_dos,
@@ -969,6 +1309,7 @@ static struct clk_regmap *const meson8b_clk_regmaps[] = {
 	&meson8b_ao_ahb_sram,
 	&meson8b_ao_ahb_bus,
 	&meson8b_ao_iface,
+<<<<<<< HEAD
 	&meson8b_mpeg_clk_div,
 	&meson8b_mpeg_clk_sel,
 	&meson8b_mpll0,
@@ -993,6 +1334,16 @@ static struct clk_regmap *const meson8b_clk_regmaps[] = {
 	&meson8b_nand_clk_sel,
 	&meson8b_nand_clk_div,
 	&meson8b_nand_clk_gate,
+=======
+};
+
+static struct clk_mux *const meson8b_clk_muxes[] = {
+	&meson8b_mpeg_clk_sel,
+};
+
+static struct clk_divider *const meson8b_clk_dividers[] = {
+	&meson8b_mpeg_clk_div,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct meson8b_clk_reset_line {
@@ -1063,7 +1414,11 @@ static int meson8b_clk_reset_update(struct reset_controller_dev *rcdev,
 
 	reset = &meson8b_clk_reset_bits[id];
 
+<<<<<<< HEAD
 	spin_lock_irqsave(&meson_clk_lock, flags);
+=======
+	spin_lock_irqsave(&clk_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	val = readl(meson8b_clk_reset->base + reset->reg);
 	if (assert)
@@ -1072,7 +1427,11 @@ static int meson8b_clk_reset_update(struct reset_controller_dev *rcdev,
 		val &= ~BIT(reset->bit_idx);
 	writel(val, meson8b_clk_reset->base + reset->reg);
 
+<<<<<<< HEAD
 	spin_unlock_irqrestore(&meson_clk_lock, flags);
+=======
+	spin_unlock_irqrestore(&clk_lock, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -1094,6 +1453,7 @@ static const struct reset_control_ops meson8b_clk_reset_ops = {
 	.deassert = meson8b_clk_reset_deassert,
 };
 
+<<<<<<< HEAD
 static const struct regmap_config clkc_regmap_config = {
 	.reg_bits       = 32,
 	.val_bits       = 32,
@@ -1105,10 +1465,19 @@ static int meson8b_clkc_probe(struct platform_device *pdev)
 	int ret, i;
 	struct device *dev = &pdev->dev;
 	struct regmap *map;
+=======
+static int meson8b_clkc_probe(struct platform_device *pdev)
+{
+	int ret, clkid, i;
+	struct clk_hw *parent_hw;
+	struct clk *parent_clk;
+	struct device *dev = &pdev->dev;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!clk_base)
 		return -ENXIO;
 
+<<<<<<< HEAD
 	map = devm_regmap_init_mmio(dev, clk_base, &clkc_regmap_config);
 	if (IS_ERR(map))
 		return PTR_ERR(map);
@@ -1116,23 +1485,88 @@ static int meson8b_clkc_probe(struct platform_device *pdev)
 	/* Populate regmap for the regmap backed clocks */
 	for (i = 0; i < ARRAY_SIZE(meson8b_clk_regmaps); i++)
 		meson8b_clk_regmaps[i]->map = map;
+=======
+	/* Populate base address for PLLs */
+	for (i = 0; i < ARRAY_SIZE(meson8b_clk_plls); i++)
+		meson8b_clk_plls[i]->base = clk_base;
+
+	/* Populate base address for MPLLs */
+	for (i = 0; i < ARRAY_SIZE(meson8b_clk_mplls); i++)
+		meson8b_clk_mplls[i]->base = clk_base;
+
+	/* Populate the base address for CPU clk */
+	meson8b_cpu_clk.base = clk_base;
+
+	/* Populate base address for gates */
+	for (i = 0; i < ARRAY_SIZE(meson8b_clk_gates); i++)
+		meson8b_clk_gates[i]->reg = clk_base +
+			(u32)meson8b_clk_gates[i]->reg;
+
+	/* Populate base address for muxes */
+	for (i = 0; i < ARRAY_SIZE(meson8b_clk_muxes); i++)
+		meson8b_clk_muxes[i]->reg = clk_base +
+			(u32)meson8b_clk_muxes[i]->reg;
+
+	/* Populate base address for dividers */
+	for (i = 0; i < ARRAY_SIZE(meson8b_clk_dividers); i++)
+		meson8b_clk_dividers[i]->reg = clk_base +
+			(u32)meson8b_clk_dividers[i]->reg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * register all clks
 	 * CLKID_UNUSED = 0, so skip it and start with CLKID_XTAL = 1
 	 */
+<<<<<<< HEAD
 	for (i = CLKID_XTAL; i < CLK_NR_CLKS; i++) {
 		/* array might be sparse */
 		if (!meson8b_hw_onecell_data.hws[i])
 			continue;
 
 		ret = devm_clk_hw_register(dev, meson8b_hw_onecell_data.hws[i]);
+=======
+	for (clkid = CLKID_XTAL; clkid < CLK_NR_CLKS; clkid++) {
+		/* array might be sparse */
+		if (!meson8b_hw_onecell_data.hws[clkid])
+			continue;
+
+		/* FIXME convert to devm_clk_register */
+		ret = devm_clk_hw_register(dev, meson8b_hw_onecell_data.hws[clkid]);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	return devm_of_clk_add_hw_provider(dev, of_clk_hw_onecell_get,
 					   &meson8b_hw_onecell_data);
+=======
+	/*
+	 * Register CPU clk notifier
+	 *
+	 * FIXME this is wrong for a lot of reasons. First, the muxes should be
+	 * struct clk_hw objects. Second, we shouldn't program the muxes in
+	 * notifier handlers. The tricky programming sequence will be handled
+	 * by the forthcoming coordinated clock rates mechanism once that
+	 * feature is released.
+	 *
+	 * Furthermore, looking up the parent this way is terrible. At some
+	 * point we will stop allocating a default struct clk when registering
+	 * a new clk_hw, and this hack will no longer work. Releasing the ccr
+	 * feature before that time solves the problem :-)
+	 */
+	parent_hw = clk_hw_get_parent(&meson8b_cpu_clk.hw);
+	parent_clk = parent_hw->clk;
+	ret = clk_notifier_register(parent_clk, &meson8b_cpu_clk.clk_nb);
+	if (ret) {
+		pr_err("%s: failed to register clock notifier for cpu_clk\n",
+				__func__);
+		return ret;
+	}
+
+	return of_clk_add_hw_provider(dev->of_node, of_clk_hw_onecell_get,
+			&meson8b_hw_onecell_data);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct of_device_id meson8b_clkc_match_table[] = {

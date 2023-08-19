@@ -22,7 +22,10 @@
 #include <linux/module.h>
 #include <linux/cache.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <linux/syscalls.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/machvec.h>
 
 #include "proto.h"
@@ -198,6 +201,7 @@ pcibios_init(void)
 subsys_initcall(pcibios_init);
 
 #ifdef ALPHA_RESTORE_SRM_SETUP
+<<<<<<< HEAD
 /* Store PCI device configuration left by SRM here. */
 struct pdev_srm_saved_conf
 {
@@ -208,6 +212,11 @@ struct pdev_srm_saved_conf
 static struct pdev_srm_saved_conf *srm_saved_configs;
 
 static void pdev_save_srm_config(struct pci_dev *dev)
+=======
+static struct pdev_srm_saved_conf *srm_saved_configs;
+
+void pdev_save_srm_config(struct pci_dev *dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pdev_srm_saved_conf *tmp;
 	static int printed = 0;
@@ -247,8 +256,11 @@ pci_restore_srm_config(void)
 		pci_restore_state(tmp->dev);
 	}
 }
+<<<<<<< HEAD
 #else
 #define pdev_save_srm_config(dev)	do {} while (0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 void pcibios_fixup_bus(struct pci_bus *bus)
@@ -410,8 +422,13 @@ alloc_resource(void)
 /* Provide information on locations of various I/O regions in physical
    memory.  Do this on a per-card basis so that we choose the right hose.  */
 
+<<<<<<< HEAD
 SYSCALL_DEFINE3(pciconfig_iobase, long, which, unsigned long, bus,
 		unsigned long, dfn)
+=======
+asmlinkage long
+sys_pciconfig_iobase(long which, unsigned long bus, unsigned long dfn)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct pci_controller *hose;
 	struct pci_dev *dev;
@@ -426,7 +443,11 @@ SYSCALL_DEFINE3(pciconfig_iobase, long, which, unsigned long, bus,
 		if (bus == 0 && dfn == 0) {
 			hose = pci_isa_hose;
 		} else {
+<<<<<<< HEAD
 			dev = pci_get_domain_bus_and_slot(0, bus, dfn);
+=======
+			dev = pci_get_bus_and_slot(bus, dfn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (!dev)
 				return -ENODEV;
 			hose = dev->sysdata;

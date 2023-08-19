@@ -1012,7 +1012,11 @@ dummy_pstack(struct PStack *st, int pr, void *arg) {
 
 static int
 init_PStack(struct PStack **stp) {
+<<<<<<< HEAD
 	*stp = kmalloc(sizeof(struct PStack), GFP_KERNEL);
+=======
+	*stp = kmalloc(sizeof(struct PStack), GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!*stp)
 		return -ENOMEM;
 	(*stp)->next = NULL;
@@ -1369,7 +1373,10 @@ leased_l1l2(struct PStack *st, int pr, void *arg)
 	case (PH_ACTIVATE | INDICATION):
 	case (PH_ACTIVATE | CONFIRM):
 		event = EV_LEASED;
+<<<<<<< HEAD
 		/* fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case (PH_DEACTIVATE | INDICATION):
 	case (PH_DEACTIVATE | CONFIRM):
 		if (test_bit(FLG_TWO_DCHAN, &chanp->cs->HW_Flags))

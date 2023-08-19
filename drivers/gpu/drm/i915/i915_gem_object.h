@@ -33,7 +33,11 @@
 
 #include <drm/i915_drm.h>
 
+<<<<<<< HEAD
 #include "i915_request.h"
+=======
+#include "i915_gem_request.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "i915_selftest.h"
 
 struct drm_i915_gem_object;
@@ -53,9 +57,14 @@ struct i915_lut_handle {
 
 struct drm_i915_gem_object_ops {
 	unsigned int flags;
+<<<<<<< HEAD
 #define I915_GEM_OBJECT_HAS_STRUCT_PAGE	BIT(0)
 #define I915_GEM_OBJECT_IS_SHRINKABLE	BIT(1)
 #define I915_GEM_OBJECT_IS_PROXY	BIT(2)
+=======
+#define I915_GEM_OBJECT_HAS_STRUCT_PAGE BIT(0)
+#define I915_GEM_OBJECT_IS_SHRINKABLE   BIT(1)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Interface between the GEM object and its backing storage.
 	 * get_pages() is called once prior to the use of the associated set
@@ -70,7 +79,11 @@ struct drm_i915_gem_object_ops {
 	 * being released or under memory pressure (where we attempt to
 	 * reap pages for the shrinker).
 	 */
+<<<<<<< HEAD
 	int (*get_pages)(struct drm_i915_gem_object *);
+=======
+	struct sg_table *(*get_pages)(struct drm_i915_gem_object *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	void (*put_pages)(struct drm_i915_gem_object *, struct sg_table *);
 
 	int (*pwrite)(struct drm_i915_gem_object *,
@@ -115,6 +128,10 @@ struct drm_i915_gem_object {
 
 	/** Stolen memory for this object, instead of being backed by shmem. */
 	struct drm_mm_node *stolen;
+<<<<<<< HEAD
+=======
+	struct list_head global_link;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	union {
 		struct rcu_head rcu;
 		struct llist_node freed;
@@ -123,7 +140,10 @@ struct drm_i915_gem_object {
 	/**
 	 * Whether the object is currently in the GGTT mmap.
 	 */
+<<<<<<< HEAD
 	unsigned int userfault_count;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head userfault_link;
 
 	struct list_head batch_pool_link;
@@ -147,6 +167,7 @@ struct drm_i915_gem_object {
 #define I915_BO_CACHE_COHERENT_FOR_WRITE BIT(1)
 	unsigned int cache_dirty:1;
 
+<<<<<<< HEAD
 	/**
 	 * @read_domains: Read memory domains.
 	 *
@@ -162,6 +183,8 @@ struct drm_i915_gem_object {
 	 */
 	u16 write_domain;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	atomic_t frontbuffer_bits;
 	unsigned int frontbuffer_ggtt_origin; /* write once */
 	struct i915_gem_active frontbuffer_write;
@@ -175,8 +198,12 @@ struct drm_i915_gem_object {
 	/** Count of VMA actually bound by this object */
 	unsigned int bind_count;
 	unsigned int active_count;
+<<<<<<< HEAD
 	/** Count of how many global VMA are currently pinned for use by HW */
 	unsigned int pin_global;
+=======
+	unsigned int pin_display;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct {
 		struct mutex lock; /* protects the pages and their use */
@@ -185,6 +212,7 @@ struct drm_i915_gem_object {
 		struct sg_table *pages;
 		void *mapping;
 
+<<<<<<< HEAD
 		/* TODO: whack some of this into the error state */
 		struct i915_page_sizes {
 			/**
@@ -214,6 +242,8 @@ struct drm_i915_gem_object {
 
 		I915_SELFTEST_DECLARE(unsigned int page_mask);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct i915_gem_object_page_iter {
 			struct scatterlist *sg_pos;
 			unsigned int sg_idx; /* in pages, but 32bit eek! */
@@ -223,12 +253,15 @@ struct drm_i915_gem_object {
 		} get_page;
 
 		/**
+<<<<<<< HEAD
 		 * Element within i915->mm.unbound_list or i915->mm.bound_list,
 		 * locked by i915->mm.obj_lock.
 		 */
 		struct list_head link;
 
 		/**
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 * Advice: are the backing pages purgeable?
 		 */
 		unsigned int madv:2;
@@ -267,6 +300,10 @@ struct drm_i915_gem_object {
 	union {
 		struct i915_gem_userptr {
 			uintptr_t ptr;
+<<<<<<< HEAD
+=======
+			unsigned read_only :1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			struct i915_mm_struct *mm;
 			struct i915_mmu_object *mmu_object;
@@ -274,8 +311,11 @@ struct drm_i915_gem_object {
 		} userptr;
 
 		unsigned long scratch;
+<<<<<<< HEAD
 
 		void *gvt_info;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	/** for phys allocated objects */
@@ -335,17 +375,39 @@ __attribute__((nonnull))
 static inline struct drm_i915_gem_object *
 i915_gem_object_get(struct drm_i915_gem_object *obj)
 {
+<<<<<<< HEAD
 	drm_gem_object_get(&obj->base);
 	return obj;
 }
 
+=======
+	drm_gem_object_reference(&obj->base);
+	return obj;
+}
+
+__deprecated
+extern void drm_gem_object_reference(struct drm_gem_object *);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 __attribute__((nonnull))
 static inline void
 i915_gem_object_put(struct drm_i915_gem_object *obj)
 {
+<<<<<<< HEAD
 	__drm_gem_object_put(&obj->base);
 }
 
+=======
+	__drm_gem_object_unreference(&obj->base);
+}
+
+__deprecated
+extern void drm_gem_object_unreference(struct drm_gem_object *);
+
+__deprecated
+extern void drm_gem_object_unreference_unlocked(struct drm_gem_object *);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void i915_gem_object_lock(struct drm_i915_gem_object *obj)
 {
 	reservation_object_lock(obj->resv, NULL);
@@ -381,12 +443,15 @@ i915_gem_object_is_shrinkable(const struct drm_i915_gem_object *obj)
 }
 
 static inline bool
+<<<<<<< HEAD
 i915_gem_object_is_proxy(const struct drm_i915_gem_object *obj)
 {
 	return obj->ops->flags & I915_GEM_OBJECT_IS_PROXY;
 }
 
 static inline bool
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 i915_gem_object_is_active(const struct drm_i915_gem_object *obj)
 {
 	return obj->active_count;

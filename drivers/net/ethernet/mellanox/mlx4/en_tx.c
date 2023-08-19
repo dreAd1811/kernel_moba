@@ -414,8 +414,13 @@ bool mlx4_en_process_tx_cq(struct net_device *dev,
 
 	index = cons_index & size_mask;
 	cqe = mlx4_en_get_cqe(buf, index, priv->cqe_size) + factor;
+<<<<<<< HEAD
 	last_nr_txbb = READ_ONCE(ring->last_nr_txbb);
 	ring_cons = READ_ONCE(ring->cons);
+=======
+	last_nr_txbb = ACCESS_ONCE(ring->last_nr_txbb);
+	ring_cons = ACCESS_ONCE(ring->cons);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ring_index = ring_cons & size_mask;
 	stamp_index = ring_index;
 
@@ -479,8 +484,13 @@ bool mlx4_en_process_tx_cq(struct net_device *dev,
 	wmb();
 
 	/* we want to dirty this cache line once */
+<<<<<<< HEAD
 	WRITE_ONCE(ring->last_nr_txbb, last_nr_txbb);
 	WRITE_ONCE(ring->cons, ring_cons + txbbs_skipped);
+=======
+	ACCESS_ONCE(ring->last_nr_txbb) = last_nr_txbb;
+	ACCESS_ONCE(ring->cons) = ring_cons + txbbs_skipped;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (cq->type == TX_XDP)
 		return done < budget;
@@ -688,16 +698,26 @@ static void build_inline_wqe(struct mlx4_en_tx_desc *tx_desc,
 }
 
 u16 mlx4_en_select_queue(struct net_device *dev, struct sk_buff *skb,
+<<<<<<< HEAD
 			 struct net_device *sb_dev,
 			 select_queue_fallback_t fallback)
+=======
+			 void *accel_priv, select_queue_fallback_t fallback)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct mlx4_en_priv *priv = netdev_priv(dev);
 	u16 rings_p_up = priv->num_tx_rings_p_up;
 
 	if (netdev_get_num_tc(dev))
+<<<<<<< HEAD
 		return fallback(dev, skb, NULL);
 
 	return fallback(dev, skb, NULL) % rings_p_up;
+=======
+		return skb_tx_hash(dev, skb);
+
+	return fallback(dev, skb) % rings_p_up;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void mlx4_bf_copy(void __iomem *dst, const void *src,
@@ -719,7 +739,11 @@ void mlx4_en_xmit_doorbell(struct mlx4_en_tx_ring *ring)
 #else
 	iowrite32be(
 #endif
+<<<<<<< HEAD
 		  (__force u32)ring->doorbell_qpn,
+=======
+		  ring->doorbell_qpn,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		  ring->bf.uar->map + MLX4_SEND_DOORBELL);
 }
 
@@ -859,7 +883,11 @@ netdev_tx_t mlx4_en_xmit(struct sk_buff *skb, struct net_device *dev)
 		goto tx_drop;
 
 	/* fetch ring->cons far ahead before needing it to avoid stall */
+<<<<<<< HEAD
 	ring_cons = READ_ONCE(ring->cons);
+=======
+	ring_cons = ACCESS_ONCE(ring->cons);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	real_size = get_real_size(skb, shinfo, dev, &lso_header_size,
 				  &inline_ok, &fragptr);
@@ -1067,7 +1095,11 @@ netdev_tx_t mlx4_en_xmit(struct sk_buff *skb, struct net_device *dev)
 		 */
 		smp_rmb();
 
+<<<<<<< HEAD
 		ring_cons = READ_ONCE(ring->cons);
+=======
+		ring_cons = ACCESS_ONCE(ring->cons);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(!mlx4_en_is_tx_ring_full(ring))) {
 			netif_tx_wake_queue(ring->tx_queue);
 			ring->wake_queue++;
@@ -1086,6 +1118,7 @@ tx_drop:
 #define MLX4_EN_XDP_TX_REAL_SZ (((CTRL_SIZE + MLX4_EN_XDP_TX_NRTXBB * DS_SIZE) \
 				 / 16) & 0x3f)
 
+<<<<<<< HEAD
 void mlx4_en_init_tx_xdp_ring_descs(struct mlx4_en_priv *priv,
 				    struct mlx4_en_tx_ring *ring)
 {
@@ -1115,6 +1148,15 @@ netdev_tx_t mlx4_en_xmit_frame(struct mlx4_en_rx_ring *rx_ring,
 			       struct mlx4_en_priv *priv, unsigned int length,
 			       int tx_ind, bool *doorbell_pending)
 {
+=======
+netdev_tx_t mlx4_en_xmit_frame(struct mlx4_en_rx_ring *rx_ring,
+			       struct mlx4_en_rx_alloc *frame,
+			       struct net_device *dev, unsigned int length,
+			       int tx_ind, bool *doorbell_pending)
+{
+	struct mlx4_en_priv *priv = netdev_priv(dev);
+	union mlx4_wqe_qpn_vlan	qpn_vlan = {};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mlx4_en_tx_desc *tx_desc;
 	struct mlx4_en_tx_info *tx_info;
 	struct mlx4_wqe_data_seg *data;
@@ -1146,16 +1188,35 @@ netdev_tx_t mlx4_en_xmit_frame(struct mlx4_en_rx_ring *rx_ring,
 	tx_info->page = frame->page;
 	frame->page = NULL;
 	tx_info->map0_dma = dma;
+<<<<<<< HEAD
 	tx_info->nr_bytes = max_t(unsigned int, length, ETH_ZLEN);
+=======
+	tx_info->map0_byte_count = PAGE_SIZE;
+	tx_info->nr_txbb = MLX4_EN_XDP_TX_NRTXBB;
+	tx_info->nr_bytes = max_t(unsigned int, length, ETH_ZLEN);
+	tx_info->data_offset = offsetof(struct mlx4_en_tx_desc, data);
+	tx_info->ts_requested = 0;
+	tx_info->nr_maps = 1;
+	tx_info->linear = 1;
+	tx_info->inl = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dma_sync_single_range_for_device(priv->ddev, dma, frame->page_offset,
 					 length, PCI_DMA_TODEVICE);
 
 	data->addr = cpu_to_be64(dma + frame->page_offset);
+<<<<<<< HEAD
+=======
+	data->lkey = ring->mr_key;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dma_wmb();
 	data->byte_count = cpu_to_be32(length);
 
 	/* tx completion can avoid cache line miss for common cases */
+<<<<<<< HEAD
+=======
+	tx_desc->ctrl.srcrb_flags = priv->ctrl_flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	op_own = cpu_to_be32(MLX4_OPCODE_SEND) |
 		((ring->prod & ring->size) ?
@@ -1166,6 +1227,7 @@ netdev_tx_t mlx4_en_xmit_frame(struct mlx4_en_rx_ring *rx_ring,
 
 	ring->prod += MLX4_EN_XDP_TX_NRTXBB;
 
+<<<<<<< HEAD
 	/* Ensure new descriptor hits memory
 	 * before setting ownership of this descriptor to HW
 	 */
@@ -1173,6 +1235,12 @@ netdev_tx_t mlx4_en_xmit_frame(struct mlx4_en_rx_ring *rx_ring,
 	tx_desc->ctrl.owner_opcode = op_own;
 	ring->xmit_more++;
 
+=======
+	qpn_vlan.fence_size = MLX4_EN_XDP_TX_REAL_SZ;
+
+	mlx4_en_tx_write_desc(ring, tx_desc, qpn_vlan, TXBB_SIZE, 0,
+			      op_own, false, false);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	*doorbell_pending = true;
 
 	return NETDEV_TX_OK;

@@ -145,11 +145,14 @@ SECTIONS
 		*(.pause_3insn_patch)
 		__pause_3insn_patch_end = .;
 	}
+<<<<<<< HEAD
 	.sun_m7_1insn_patch : {
 		__sun_m7_1insn_patch = .;
 		*(.sun_m7_1insn_patch)
 		__sun_m7_1insn_patch_end = .;
 	}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.sun_m7_2insn_patch : {
 		__sun_m7_2insn_patch = .;
 		*(.sun_m7_2insn_patch)
@@ -172,12 +175,22 @@ SECTIONS
 	}
 	PERCPU_SECTION(SMP_CACHE_BYTES)
 
+<<<<<<< HEAD
 #ifdef CONFIG_JUMP_LABEL
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	. = ALIGN(PAGE_SIZE);
 	.exit.text : {
 		EXIT_TEXT
 	}
+<<<<<<< HEAD
 #endif
+=======
+
+	.exit.data : {
+		EXIT_DATA
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	. = ALIGN(PAGE_SIZE);
 	__init_end = .;

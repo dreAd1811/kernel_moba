@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
 //
 // Cryptographic API.
@@ -8,6 +9,20 @@
 // Copyright (c) 2017 Samsung Electronics Co., Ltd. All rights reserved.
 //
 // Hash part based on omap-sham.c driver.
+=======
+/*
+ * Cryptographic API.
+ *
+ * Support for Samsung S5PV210 HW acceleration.
+ *
+ * Copyright (C) 2011 NetUP Inc. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as published
+ * by the Free Software Foundation.
+ *
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <linux/clk.h>
 #include <linux/crypto.h>
@@ -28,6 +43,7 @@
 #include <crypto/algapi.h>
 #include <crypto/scatterwalk.h>
 
+<<<<<<< HEAD
 #include <crypto/hash.h>
 #include <crypto/md5.h>
 #include <crypto/sha.h>
@@ -134,6 +150,100 @@
 #define SSS_AES_BUSY			BIT(2)
 #define SSS_AES_INPUT_READY		BIT(1)
 #define SSS_AES_OUTPUT_READY		BIT(0)
+=======
+#define _SBF(s, v)                      ((v) << (s))
+
+/* Feed control registers */
+#define SSS_REG_FCINTSTAT               0x0000
+#define SSS_FCINTSTAT_BRDMAINT          BIT(3)
+#define SSS_FCINTSTAT_BTDMAINT          BIT(2)
+#define SSS_FCINTSTAT_HRDMAINT          BIT(1)
+#define SSS_FCINTSTAT_PKDMAINT          BIT(0)
+
+#define SSS_REG_FCINTENSET              0x0004
+#define SSS_FCINTENSET_BRDMAINTENSET    BIT(3)
+#define SSS_FCINTENSET_BTDMAINTENSET    BIT(2)
+#define SSS_FCINTENSET_HRDMAINTENSET    BIT(1)
+#define SSS_FCINTENSET_PKDMAINTENSET    BIT(0)
+
+#define SSS_REG_FCINTENCLR              0x0008
+#define SSS_FCINTENCLR_BRDMAINTENCLR    BIT(3)
+#define SSS_FCINTENCLR_BTDMAINTENCLR    BIT(2)
+#define SSS_FCINTENCLR_HRDMAINTENCLR    BIT(1)
+#define SSS_FCINTENCLR_PKDMAINTENCLR    BIT(0)
+
+#define SSS_REG_FCINTPEND               0x000C
+#define SSS_FCINTPEND_BRDMAINTP         BIT(3)
+#define SSS_FCINTPEND_BTDMAINTP         BIT(2)
+#define SSS_FCINTPEND_HRDMAINTP         BIT(1)
+#define SSS_FCINTPEND_PKDMAINTP         BIT(0)
+
+#define SSS_REG_FCFIFOSTAT              0x0010
+#define SSS_FCFIFOSTAT_BRFIFOFUL        BIT(7)
+#define SSS_FCFIFOSTAT_BRFIFOEMP        BIT(6)
+#define SSS_FCFIFOSTAT_BTFIFOFUL        BIT(5)
+#define SSS_FCFIFOSTAT_BTFIFOEMP        BIT(4)
+#define SSS_FCFIFOSTAT_HRFIFOFUL        BIT(3)
+#define SSS_FCFIFOSTAT_HRFIFOEMP        BIT(2)
+#define SSS_FCFIFOSTAT_PKFIFOFUL        BIT(1)
+#define SSS_FCFIFOSTAT_PKFIFOEMP        BIT(0)
+
+#define SSS_REG_FCFIFOCTRL              0x0014
+#define SSS_FCFIFOCTRL_DESSEL           BIT(2)
+#define SSS_HASHIN_INDEPENDENT          _SBF(0, 0x00)
+#define SSS_HASHIN_CIPHER_INPUT         _SBF(0, 0x01)
+#define SSS_HASHIN_CIPHER_OUTPUT        _SBF(0, 0x02)
+
+#define SSS_REG_FCBRDMAS                0x0020
+#define SSS_REG_FCBRDMAL                0x0024
+#define SSS_REG_FCBRDMAC                0x0028
+#define SSS_FCBRDMAC_BYTESWAP           BIT(1)
+#define SSS_FCBRDMAC_FLUSH              BIT(0)
+
+#define SSS_REG_FCBTDMAS                0x0030
+#define SSS_REG_FCBTDMAL                0x0034
+#define SSS_REG_FCBTDMAC                0x0038
+#define SSS_FCBTDMAC_BYTESWAP           BIT(1)
+#define SSS_FCBTDMAC_FLUSH              BIT(0)
+
+#define SSS_REG_FCHRDMAS                0x0040
+#define SSS_REG_FCHRDMAL                0x0044
+#define SSS_REG_FCHRDMAC                0x0048
+#define SSS_FCHRDMAC_BYTESWAP           BIT(1)
+#define SSS_FCHRDMAC_FLUSH              BIT(0)
+
+#define SSS_REG_FCPKDMAS                0x0050
+#define SSS_REG_FCPKDMAL                0x0054
+#define SSS_REG_FCPKDMAC                0x0058
+#define SSS_FCPKDMAC_BYTESWAP           BIT(3)
+#define SSS_FCPKDMAC_DESCEND            BIT(2)
+#define SSS_FCPKDMAC_TRANSMIT           BIT(1)
+#define SSS_FCPKDMAC_FLUSH              BIT(0)
+
+#define SSS_REG_FCPKDMAO                0x005C
+
+/* AES registers */
+#define SSS_REG_AES_CONTROL		0x00
+#define SSS_AES_BYTESWAP_DI             BIT(11)
+#define SSS_AES_BYTESWAP_DO             BIT(10)
+#define SSS_AES_BYTESWAP_IV             BIT(9)
+#define SSS_AES_BYTESWAP_CNT            BIT(8)
+#define SSS_AES_BYTESWAP_KEY            BIT(7)
+#define SSS_AES_KEY_CHANGE_MODE         BIT(6)
+#define SSS_AES_KEY_SIZE_128            _SBF(4, 0x00)
+#define SSS_AES_KEY_SIZE_192            _SBF(4, 0x01)
+#define SSS_AES_KEY_SIZE_256            _SBF(4, 0x02)
+#define SSS_AES_FIFO_MODE               BIT(3)
+#define SSS_AES_CHAIN_MODE_ECB          _SBF(1, 0x00)
+#define SSS_AES_CHAIN_MODE_CBC          _SBF(1, 0x01)
+#define SSS_AES_CHAIN_MODE_CTR          _SBF(1, 0x02)
+#define SSS_AES_MODE_DECRYPT            BIT(0)
+
+#define SSS_REG_AES_STATUS		0x04
+#define SSS_AES_BUSY                    BIT(2)
+#define SSS_AES_INPUT_READY             BIT(1)
+#define SSS_AES_OUTPUT_READY            BIT(0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SSS_REG_AES_IN_DATA(s)		(0x10 + (s << 2))
 #define SSS_REG_AES_OUT_DATA(s)		(0x20 + (s << 2))
@@ -141,15 +251,24 @@
 #define SSS_REG_AES_CNT_DATA(s)		(0x40 + (s << 2))
 #define SSS_REG_AES_KEY_DATA(s)		(0x80 + (s << 2))
 
+<<<<<<< HEAD
 #define SSS_REG(dev, reg)		((dev)->ioaddr + (SSS_REG_##reg))
 #define SSS_READ(dev, reg)		__raw_readl(SSS_REG(dev, reg))
 #define SSS_WRITE(dev, reg, val)	__raw_writel((val), SSS_REG(dev, reg))
 
 #define SSS_AES_REG(dev, reg)		((dev)->aes_ioaddr + SSS_REG_##reg)
+=======
+#define SSS_REG(dev, reg)               ((dev)->ioaddr + (SSS_REG_##reg))
+#define SSS_READ(dev, reg)              __raw_readl(SSS_REG(dev, reg))
+#define SSS_WRITE(dev, reg, val)        __raw_writel((val), SSS_REG(dev, reg))
+
+#define SSS_AES_REG(dev, reg)           ((dev)->aes_ioaddr + SSS_REG_##reg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define SSS_AES_WRITE(dev, reg, val)    __raw_writel((val), \
 						SSS_AES_REG(dev, reg))
 
 /* HW engine modes */
+<<<<<<< HEAD
 #define FLAGS_AES_DECRYPT		BIT(0)
 #define FLAGS_AES_MODE_MASK		_SBF(1, 0x03)
 #define FLAGS_AES_CBC			_SBF(1, 0x01)
@@ -227,11 +346,23 @@
 #define SSS_HASH_DMA_ALIGN_MASK	(SSS_HASH_DMA_LEN_ALIGN - 1)
 
 #define SSS_HASH_QUEUE_LENGTH	10
+=======
+#define FLAGS_AES_DECRYPT               BIT(0)
+#define FLAGS_AES_MODE_MASK             _SBF(1, 0x03)
+#define FLAGS_AES_CBC                   _SBF(1, 0x01)
+#define FLAGS_AES_CTR                   _SBF(1, 0x02)
+
+#define AES_KEY_LEN         16
+#define CRYPTO_QUEUE_LEN    1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /**
  * struct samsung_aes_variant - platform specific SSS driver data
  * @aes_offset: AES register offset from SSS module's base.
+<<<<<<< HEAD
  * @hash_offset: HASH register offset from SSS module's base.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * Specifies platform specific configuration of SSS module.
  * Note: A structure for driver specific platform data is used for future
@@ -239,7 +370,10 @@
  */
 struct samsung_aes_variant {
 	unsigned int			aes_offset;
+<<<<<<< HEAD
 	unsigned int			hash_offset;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct s5p_aes_reqctx {
@@ -279,6 +413,7 @@ struct s5p_aes_ctx {
  *		protects against concurrent access to these fields.
  * @lock:	Lock for protecting both access to device hardware registers
  *		and fields related to current request (including the busy field).
+<<<<<<< HEAD
  * @res:	Resources for hash.
  * @io_hash_base: Per-variant offset for HASH block IO memory.
  * @hash_lock:	Lock for protecting hash_req, hash_queue and hash_flags
@@ -292,6 +427,8 @@ struct s5p_aes_ctx {
  * @hash_sg_cnt: Counter for hash_sg_iter.
  *
  * @use_hash:	true if HASH algs enabled
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct s5p_aes_dev {
 	struct device			*dev;
@@ -312,6 +449,7 @@ struct s5p_aes_dev {
 	struct crypto_queue		queue;
 	bool				busy;
 	spinlock_t			lock;
+<<<<<<< HEAD
 
 	struct resource			*res;
 	void __iomem			*io_hash_base;
@@ -384,11 +522,22 @@ struct s5p_hash_ctx {
 static const struct samsung_aes_variant s5p_aes_data = {
 	.aes_offset	= 0x4000,
 	.hash_offset	= 0x6000,
+=======
+};
+
+static struct s5p_aes_dev *s5p_dev;
+
+static const struct samsung_aes_variant s5p_aes_data = {
+	.aes_offset	= 0x4000,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct samsung_aes_variant exynos_aes_data = {
 	.aes_offset	= 0x200,
+<<<<<<< HEAD
 	.hash_offset	= 0x400,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id s5p_sss_dt_match[] = {
@@ -404,14 +553,20 @@ static const struct of_device_id s5p_sss_dt_match[] = {
 };
 MODULE_DEVICE_TABLE(of, s5p_sss_dt_match);
 
+<<<<<<< HEAD
 static inline const struct samsung_aes_variant *find_s5p_sss_version
 				   (const struct platform_device *pdev)
+=======
+static inline struct samsung_aes_variant *find_s5p_sss_version
+				   (struct platform_device *pdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (IS_ENABLED(CONFIG_OF) && (pdev->dev.of_node)) {
 		const struct of_device_id *match;
 
 		match = of_match_node(s5p_sss_dt_match,
 					pdev->dev.of_node);
+<<<<<<< HEAD
 		return (const struct samsung_aes_variant *)match->data;
 	}
 	return (const struct samsung_aes_variant *)
@@ -422,13 +577,26 @@ static struct s5p_aes_dev *s5p_dev;
 
 static void s5p_set_dma_indata(struct s5p_aes_dev *dev,
 			       const struct scatterlist *sg)
+=======
+		return (struct samsung_aes_variant *)match->data;
+	}
+	return (struct samsung_aes_variant *)
+			platform_get_device_id(pdev)->driver_data;
+}
+
+static void s5p_set_dma_indata(struct s5p_aes_dev *dev, struct scatterlist *sg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	SSS_WRITE(dev, FCBRDMAS, sg_dma_address(sg));
 	SSS_WRITE(dev, FCBRDMAL, sg_dma_len(sg));
 }
 
+<<<<<<< HEAD
 static void s5p_set_dma_outdata(struct s5p_aes_dev *dev,
 				const struct scatterlist *sg)
+=======
+static void s5p_set_dma_outdata(struct s5p_aes_dev *dev, struct scatterlist *sg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	SSS_WRITE(dev, FCBTDMAS, sg_dma_address(sg));
 	SSS_WRITE(dev, FCBTDMAL, sg_dma_len(sg));
@@ -491,7 +659,11 @@ static void s5p_unset_indata(struct s5p_aes_dev *dev)
 }
 
 static int s5p_make_sg_cpy(struct s5p_aes_dev *dev, struct scatterlist *src,
+<<<<<<< HEAD
 			    struct scatterlist **dst)
+=======
+			   struct scatterlist **dst)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void *pages;
 	int len;
@@ -604,6 +776,7 @@ static int s5p_aes_rx(struct s5p_aes_dev *dev/*, bool *set_dma*/)
 	return ret;
 }
 
+<<<<<<< HEAD
 static inline u32 s5p_hash_read(struct s5p_aes_dev *dd, u32 offset)
 {
 	return __raw_readl(dd->io_hash_base + offset);
@@ -651,18 +824,26 @@ static int s5p_hash_rx(struct s5p_aes_dev *dev)
 	return 2;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static irqreturn_t s5p_aes_interrupt(int irq, void *dev_id)
 {
 	struct platform_device *pdev = dev_id;
 	struct s5p_aes_dev *dev = platform_get_drvdata(pdev);
 	int err_dma_tx = 0;
 	int err_dma_rx = 0;
+<<<<<<< HEAD
 	int err_dma_hx = 0;
 	bool tx_end = false;
 	bool hx_end = false;
 	unsigned long flags;
 	uint32_t status;
 	u32 st_bits;
+=======
+	bool tx_end = false;
+	unsigned long flags;
+	uint32_t status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	spin_lock_irqsave(&dev->lock, flags);
@@ -674,8 +855,11 @@ static irqreturn_t s5p_aes_interrupt(int irq, void *dev_id)
 	 *
 	 * If there is no more data in tx scatter list, call s5p_aes_complete()
 	 * and schedule new tasklet.
+<<<<<<< HEAD
 	 *
 	 * Handle hx interrupt. If there is still data map next entry.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	status = SSS_READ(dev, FCINTSTAT);
 	if (status & SSS_FCINTSTAT_BRDMAINT)
@@ -687,6 +871,7 @@ static irqreturn_t s5p_aes_interrupt(int irq, void *dev_id)
 		err_dma_tx = s5p_aes_tx(dev);
 	}
 
+<<<<<<< HEAD
 	if (status & SSS_FCINTSTAT_HRDMAINT)
 		err_dma_hx = s5p_hash_rx(dev);
 
@@ -710,6 +895,9 @@ static irqreturn_t s5p_aes_interrupt(int irq, void *dev_id)
 		/* when DONE or PART, do not handle HASH DMA */
 		err_dma_hx = 0;
 	}
+=======
+	SSS_WRITE(dev, FCINTPEND, status);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err_dma_rx < 0) {
 		err = err_dma_rx;
@@ -722,8 +910,11 @@ static irqreturn_t s5p_aes_interrupt(int irq, void *dev_id)
 
 	if (tx_end) {
 		s5p_sg_done(dev);
+<<<<<<< HEAD
 		if (err_dma_hx == 1)
 			s5p_set_dma_hashdata(dev, dev->hash_sg_iter);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_unlock_irqrestore(&dev->lock, flags);
 
@@ -741,17 +932,25 @@ static irqreturn_t s5p_aes_interrupt(int irq, void *dev_id)
 			s5p_set_dma_outdata(dev, dev->sg_dst);
 		if (err_dma_rx == 1)
 			s5p_set_dma_indata(dev, dev->sg_src);
+<<<<<<< HEAD
 		if (err_dma_hx == 1)
 			s5p_set_dma_hashdata(dev, dev->hash_sg_iter);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		spin_unlock_irqrestore(&dev->lock, flags);
 	}
 
+<<<<<<< HEAD
 	goto hash_irq_end;
+=======
+	return IRQ_HANDLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 error:
 	s5p_sg_done(dev);
 	dev->busy = false;
+<<<<<<< HEAD
 	if (err_dma_hx == 1)
 		s5p_set_dma_hashdata(dev, dev->hash_sg_iter);
 
@@ -1832,6 +2031,16 @@ static struct ahash_alg algs_sha1_md5_sha256[] = {
 static void s5p_set_aes(struct s5p_aes_dev *dev,
 			const uint8_t *key, const uint8_t *iv,
 			unsigned int keylen)
+=======
+	spin_unlock_irqrestore(&dev->lock, flags);
+	s5p_aes_complete(dev, err);
+
+	return IRQ_HANDLED;
+}
+
+static void s5p_set_aes(struct s5p_aes_dev *dev,
+			uint8_t *key, uint8_t *iv, unsigned int keylen)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	void __iomem *keystart;
 
@@ -1887,7 +2096,11 @@ static int s5p_set_indata_start(struct s5p_aes_dev *dev,
 }
 
 static int s5p_set_outdata_start(struct s5p_aes_dev *dev,
+<<<<<<< HEAD
 				struct ablkcipher_request *req)
+=======
+				 struct ablkcipher_request *req)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct scatterlist *sg;
 	int err;
@@ -2150,10 +2363,16 @@ static int s5p_aes_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	int i, j, err = -ENODEV;
+<<<<<<< HEAD
 	const struct samsung_aes_variant *variant;
 	struct s5p_aes_dev *pdata;
 	struct resource *res;
 	unsigned int hash_i;
+=======
+	struct samsung_aes_variant *variant;
+	struct s5p_aes_dev *pdata;
+	struct resource *res;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (s5p_dev)
 		return -EEXIST;
@@ -2162,6 +2381,7 @@ static int s5p_aes_probe(struct platform_device *pdev)
 	if (!pdata)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	variant = find_s5p_sss_version(pdev);
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 
@@ -2190,6 +2410,14 @@ static int s5p_aes_probe(struct platform_device *pdev)
 		if (IS_ERR(pdata->ioaddr))
 			return PTR_ERR(pdata->ioaddr);
 	}
+=======
+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+	pdata->ioaddr = devm_ioremap_resource(&pdev->dev, res);
+	if (IS_ERR(pdata->ioaddr))
+		return PTR_ERR(pdata->ioaddr);
+
+	variant = find_s5p_sss_version(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata->clk = devm_clk_get(dev, "secss");
 	if (IS_ERR(pdata->clk)) {
@@ -2204,10 +2432,15 @@ static int s5p_aes_probe(struct platform_device *pdev)
 	}
 
 	spin_lock_init(&pdata->lock);
+<<<<<<< HEAD
 	spin_lock_init(&pdata->hash_lock);
 
 	pdata->aes_ioaddr = pdata->ioaddr + variant->aes_offset;
 	pdata->io_hash_base = pdata->ioaddr + variant->hash_offset;
+=======
+
+	pdata->aes_ioaddr = pdata->ioaddr + variant->aes_offset;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pdata->irq_fc = platform_get_irq(pdev, 0);
 	if (pdata->irq_fc < 0) {
@@ -2237,6 +2470,7 @@ static int s5p_aes_probe(struct platform_device *pdev)
 			goto err_algs;
 	}
 
+<<<<<<< HEAD
 	if (pdata->use_hash) {
 		tasklet_init(&pdata->hash_tasklet, s5p_hash_tasklet_cb,
 			     (unsigned long)pdata);
@@ -2256,10 +2490,13 @@ static int s5p_aes_probe(struct platform_device *pdev)
 		}
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev_info(dev, "s5p-sss driver registered\n");
 
 	return 0;
 
+<<<<<<< HEAD
 err_hash:
 	for (j = hash_i - 1; j >= 0; j--)
 		crypto_unregister_ahash(&algs_sha1_md5_sha256[j]);
@@ -2271,6 +2508,10 @@ err_algs:
 	if (i < ARRAY_SIZE(algs))
 		dev_err(dev, "can't register '%s': %d\n", algs[i].cra_name,
 			err);
+=======
+err_algs:
+	dev_err(dev, "can't register '%s': %d\n", algs[i].cra_name, err);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (j = 0; j < i; j++)
 		crypto_unregister_alg(&algs[j]);
@@ -2297,6 +2538,7 @@ static int s5p_aes_remove(struct platform_device *pdev)
 		crypto_unregister_alg(&algs[i]);
 
 	tasklet_kill(&pdata->tasklet);
+<<<<<<< HEAD
 	if (pdata->use_hash) {
 		for (i = ARRAY_SIZE(algs_sha1_md5_sha256) - 1; i >= 0; i--)
 			crypto_unregister_ahash(&algs_sha1_md5_sha256[i]);
@@ -2307,6 +2549,11 @@ static int s5p_aes_remove(struct platform_device *pdev)
 	}
 
 	clk_disable_unprepare(pdata->clk);
+=======
+
+	clk_disable_unprepare(pdata->clk);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	s5p_dev = NULL;
 
 	return 0;
@@ -2326,4 +2573,7 @@ module_platform_driver(s5p_aes_crypto);
 MODULE_DESCRIPTION("S5PV210 AES hw acceleration support.");
 MODULE_LICENSE("GPL v2");
 MODULE_AUTHOR("Vladimir Zapolskiy <vzapolskiy@gmail.com>");
+<<<<<<< HEAD
 MODULE_AUTHOR("Kamil Konieczny <k.konieczny@partner.samsung.com>");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

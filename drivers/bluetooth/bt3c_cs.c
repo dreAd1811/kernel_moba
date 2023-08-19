@@ -355,7 +355,11 @@ static irqreturn_t bt3c_interrupt(int irq, void *dev_inst)
 		} else if ((stat & 0xff) != 0xff) {
 			if (stat & 0x0020) {
 				int status = bt3c_read(iobase, 0x7002) & 0x10;
+<<<<<<< HEAD
 				bt_dev_info(info->hdev, "Antenna %s",
+=======
+				BT_INFO("%s: Antenna %s", info->hdev->name,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							status ? "out" : "in");
 			}
 			if (stat & 0x0001)

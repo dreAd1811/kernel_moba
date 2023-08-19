@@ -26,7 +26,10 @@
 #include <linux/screen_info.h>
 #include <linux/time.h>
 
+<<<<<<< HEAD
 #include <asm/dma-coherence.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/fw/fw.h>
 #include <asm/mach-malta/malta-dtshim.h>
 #include <asm/mips-cps.h>
@@ -48,31 +51,51 @@ static struct resource standard_io_resources[] = {
 		.name = "dma1",
 		.start = 0x00,
 		.end = 0x1f,
+<<<<<<< HEAD
 		.flags = IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags = IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name = "timer",
 		.start = 0x40,
 		.end = 0x5f,
+<<<<<<< HEAD
 		.flags = IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags = IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name = "keyboard",
 		.start = 0x60,
 		.end = 0x6f,
+<<<<<<< HEAD
 		.flags = IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags = IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name = "dma page reg",
 		.start = 0x80,
 		.end = 0x8f,
+<<<<<<< HEAD
 		.flags = IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags = IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 	{
 		.name = "dma2",
 		.start = 0xc0,
 		.end = 0xdf,
+<<<<<<< HEAD
 		.flags = IORESOURCE_IO | IORESOURCE_BUSY
+=======
+		.flags = IORESOURCE_BUSY
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 
@@ -145,6 +168,15 @@ static int __init plat_enable_iocoherency(void)
 
 static void __init plat_setup_iocoherency(void)
 {
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DMA_NONCOHERENT
+	/*
+	 * Kernel has been configured with software coherency
+	 * but we might choose to turn it off and use hardware
+	 * coherency instead.
+	 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (plat_enable_iocoherency()) {
 		if (coherentio == IO_COHERENCE_DISABLED)
 			pr_info("Hardware DMA cache coherency disabled\n");
@@ -156,6 +188,13 @@ static void __init plat_setup_iocoherency(void)
 		else
 			pr_info("Software DMA cache coherency enabled\n");
 	}
+<<<<<<< HEAD
+=======
+#else
+	if (!plat_enable_iocoherency())
+		panic("Hardware DMA cache coherency not supported!");
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void __init pci_clock_check(void)
@@ -217,6 +256,32 @@ static void __init bonito_quirks_setup(void)
 		pr_info("Enabled Bonito debug mode\n");
 	} else
 		BONITO_BONGENCFG &= ~BONITO_BONGENCFG_DEBUGMODE;
+<<<<<<< HEAD
+=======
+
+#ifdef CONFIG_DMA_COHERENT
+	if (BONITO_PCICACHECTRL & BONITO_PCICACHECTRL_CPUCOH_PRES) {
+		BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_CPUCOH_EN;
+		pr_info("Enabled Bonito CPU coherency\n");
+
+		argptr = fw_getcmdline();
+		if (strstr(argptr, "iobcuncached")) {
+			BONITO_PCICACHECTRL &= ~BONITO_PCICACHECTRL_IOBCCOH_EN;
+			BONITO_PCIMEMBASECFG = BONITO_PCIMEMBASECFG &
+				~(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
+					BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
+			pr_info("Disabled Bonito IOBC coherency\n");
+		} else {
+			BONITO_PCICACHECTRL |= BONITO_PCICACHECTRL_IOBCCOH_EN;
+			BONITO_PCIMEMBASECFG |=
+				(BONITO_PCIMEMBASECFG_MEMBASE0_CACHED |
+					BONITO_PCIMEMBASECFG_MEMBASE1_CACHED);
+			pr_info("Enabled Bonito IOBC coherency\n");
+		}
+	} else
+		panic("Hardware DMA cache coherency not supported");
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init *plat_get_fdt(void)
@@ -247,6 +312,14 @@ void __init plat_mem_setup(void)
 	 */
 	enable_dma(4);
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_DMA_COHERENT
+	if (mips_revision_sconid != MIPS_REVISION_SCON_BONITO)
+		panic("Hardware DMA cache coherency not supported");
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (mips_revision_sconid == MIPS_REVISION_SCON_BONITO)
 		bonito_quirks_setup();
 

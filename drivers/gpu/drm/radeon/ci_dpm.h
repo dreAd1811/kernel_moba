@@ -330,6 +330,10 @@ int ci_program_jump_on_start(struct radeon_device *rdev);
 void ci_stop_smc_clock(struct radeon_device *rdev);
 void ci_start_smc_clock(struct radeon_device *rdev);
 bool ci_is_smc_running(struct radeon_device *rdev);
+<<<<<<< HEAD
+=======
+PPSMC_Result ci_send_msg_to_smc(struct radeon_device *rdev, PPSMC_Msg msg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 PPSMC_Result ci_wait_for_smc_inactive(struct radeon_device *rdev);
 int ci_load_smc_ucode(struct radeon_device *rdev, u32 limit);
 int ci_read_smc_sram_dword(struct radeon_device *rdev,

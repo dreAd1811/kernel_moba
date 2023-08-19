@@ -59,10 +59,17 @@ struct qed_pi_info {
 };
 
 struct qed_sb_sp_info {
+<<<<<<< HEAD
 	struct qed_sb_info sb_info;
 
 	/* per protocol index data */
 	struct qed_pi_info pi_info_arr[PIS_PER_SB_E4];
+=======
+	struct qed_sb_info	sb_info;
+
+	/* per protocol index data */
+	struct qed_pi_info	pi_info_arr[PIS_PER_SB];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum qed_attention_type {
@@ -82,7 +89,11 @@ struct aeu_invert_reg_bit {
 #define ATTENTION_LENGTH_SHIFT          (4)
 #define ATTENTION_LENGTH(flags)         (((flags) & ATTENTION_LENGTH_MASK) >> \
 					 ATTENTION_LENGTH_SHIFT)
+<<<<<<< HEAD
 #define ATTENTION_SINGLE                BIT(ATTENTION_LENGTH_SHIFT)
+=======
+#define ATTENTION_SINGLE                (1 << ATTENTION_LENGTH_SHIFT)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define ATTENTION_PAR                   (ATTENTION_SINGLE | ATTENTION_PARITY)
 #define ATTENTION_PAR_INT               ((2 << ATTENTION_LENGTH_SHIFT) | \
 					 ATTENTION_PARITY)
@@ -228,7 +239,11 @@ static int qed_grc_attn_cb(struct qed_hwfn *p_hwfn)
 		attn_master_to_str(GET_FIELD(tmp, QED_GRC_ATTENTION_MASTER)),
 		GET_FIELD(tmp2, QED_GRC_ATTENTION_PF),
 		(GET_FIELD(tmp2, QED_GRC_ATTENTION_PRIV) ==
+<<<<<<< HEAD
 		 QED_GRC_ATTENTION_PRIV_VF) ? "VF" : "(Irrelevant)",
+=======
+		 QED_GRC_ATTENTION_PRIV_VF) ? "VF" : "(Ireelevant)",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		GET_FIELD(tmp2, QED_GRC_ATTENTION_VF));
 
 out:
@@ -321,7 +336,11 @@ static int qed_pglub_rbc_attn_cb(struct qed_hwfn *p_hwfn)
 	tmp = qed_rd(p_hwfn, p_hwfn->p_dpc_ptt,
 		     PGLUE_B_REG_TX_ERR_WR_DETAILS_ICPL);
 	if (tmp & PGLUE_ATTENTION_ICPL_VALID)
+<<<<<<< HEAD
 		DP_INFO(p_hwfn, "ICPL error - %08x\n", tmp);
+=======
+		DP_INFO(p_hwfn, "ICPL eror - %08x\n", tmp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tmp = qed_rd(p_hwfn, p_hwfn->p_dpc_ptt,
 		     PGLUE_B_REG_MASTER_ZLR_ERR_DETAILS);
@@ -1315,7 +1334,11 @@ static void qed_int_cau_conf_pi(struct qed_hwfn *p_hwfn,
 	if (IS_VF(p_hwfn->cdev))
 		return;
 
+<<<<<<< HEAD
 	sb_offset = igu_sb_id * PIS_PER_SB_E4;
+=======
+	sb_offset = igu_sb_id * PIS_PER_SB;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	memset(&pi_entry, 0, sizeof(struct cau_pi_entry));
 
 	SET_FIELD(pi_entry.prod, CAU_PI_ENTRY_PI_TIMESET, timeset);

@@ -227,6 +227,7 @@ static inline void iwl_fw_cancel_dump(struct iwl_fw_runtime *fwrt)
 	cancel_delayed_work_sync(&fwrt->dump.wk);
 }
 
+<<<<<<< HEAD
 #ifdef CONFIG_IWLWIFI_DEBUGFS
 static inline void iwl_fw_cancel_timestamp(struct iwl_fw_runtime *fwrt)
 {
@@ -263,4 +264,6 @@ static inline void iwl_fw_resume_timestamp(struct iwl_fw_runtime *fwrt) {}
 
 #endif /* CONFIG_IWLWIFI_DEBUGFS */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif  /* __iwl_fw_dbg_h__ */

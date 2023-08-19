@@ -26,6 +26,10 @@
 #include <linux/sched.h>
 #include <linux/sched/stat.h>
 #include <linux/slab.h>
+<<<<<<< HEAD
+=======
+#include <linux/hardirq.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MCRYPTD_MAX_CPU_QLEN 100
 #define MCRYPTD_BATCH 9
@@ -367,7 +371,11 @@ static void mcryptd_hash_update(struct crypto_async_request *req_async, int err)
 		goto out;
 
 	rctx->out = req->result;
+<<<<<<< HEAD
 	err = crypto_ahash_update(&rctx->areq);
+=======
+	err = ahash_mcryptd_update(&rctx->areq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		req->base.complete = rctx->complete;
 		goto out;
@@ -394,7 +402,11 @@ static void mcryptd_hash_final(struct crypto_async_request *req_async, int err)
 		goto out;
 
 	rctx->out = req->result;
+<<<<<<< HEAD
 	err = crypto_ahash_final(&rctx->areq);
+=======
+	err = ahash_mcryptd_final(&rctx->areq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		req->base.complete = rctx->complete;
 		goto out;
@@ -420,7 +432,11 @@ static void mcryptd_hash_finup(struct crypto_async_request *req_async, int err)
 	if (unlikely(err == -EINPROGRESS))
 		goto out;
 	rctx->out = req->result;
+<<<<<<< HEAD
 	err = crypto_ahash_finup(&rctx->areq);
+=======
+	err = ahash_mcryptd_finup(&rctx->areq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (err) {
 		req->base.complete = rctx->complete;
@@ -455,7 +471,11 @@ static void mcryptd_hash_digest(struct crypto_async_request *req_async, int err)
 						rctx->complete, req_async);
 
 	rctx->out = req->result;
+<<<<<<< HEAD
 	err = crypto_ahash_init(desc) ?: crypto_ahash_finup(desc);
+=======
+	err = ahash_mcryptd_digest(desc);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	local_bh_disable();
@@ -612,6 +632,35 @@ struct mcryptd_ahash *mcryptd_alloc_ahash(const char *alg_name,
 }
 EXPORT_SYMBOL_GPL(mcryptd_alloc_ahash);
 
+<<<<<<< HEAD
+=======
+int ahash_mcryptd_digest(struct ahash_request *desc)
+{
+	return crypto_ahash_init(desc) ?: ahash_mcryptd_finup(desc);
+}
+
+int ahash_mcryptd_update(struct ahash_request *desc)
+{
+	/* alignment is to be done by multi-buffer crypto algorithm if needed */
+
+	return crypto_ahash_update(desc);
+}
+
+int ahash_mcryptd_finup(struct ahash_request *desc)
+{
+	/* alignment is to be done by multi-buffer crypto algorithm if needed */
+
+	return crypto_ahash_finup(desc);
+}
+
+int ahash_mcryptd_final(struct ahash_request *desc)
+{
+	/* alignment is to be done by multi-buffer crypto algorithm if needed */
+
+	return crypto_ahash_final(desc);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct crypto_ahash *mcryptd_ahash_child(struct mcryptd_ahash *tfm)
 {
 	struct mcryptd_hash_ctx *ctx = crypto_ahash_ctx(&tfm->base);

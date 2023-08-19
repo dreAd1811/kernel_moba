@@ -58,12 +58,15 @@ Intel GVT-g Host Support(vGPU device model)
 .. kernel-doc:: drivers/gpu/drm/i915/intel_gvt.c
    :internal:
 
+<<<<<<< HEAD
 Workarounds
 -----------
 
 .. kernel-doc:: drivers/gpu/drm/i915/intel_workarounds.c
    :doc: Hardware workarounds
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Display Hardware Handling
 =========================
 
@@ -255,6 +258,7 @@ Memory Management and Command Submission
 This sections covers all things related to the GEM implementation in the
 i915 driver.
 
+<<<<<<< HEAD
 Intel GPU Basics
 ----------------
 
@@ -352,6 +356,8 @@ objects, which has the goal to make space in gpu virtual address spaces.
 .. kernel-doc:: drivers/gpu/drm/i915/i915_gem_shrinker.c
    :internal:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Batchbuffer Parsing
 -------------------
 
@@ -370,12 +376,15 @@ Batchbuffer Pools
 .. kernel-doc:: drivers/gpu/drm/i915/i915_gem_batch_pool.c
    :internal:
 
+<<<<<<< HEAD
 User Batchbuffer Execution
 --------------------------
 
 .. kernel-doc:: drivers/gpu/drm/i915/i915_gem_execbuffer.c
    :doc: User command execution
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Logical Rings, Logical Ring Contexts and Execlists
 --------------------------------------------------
 
@@ -421,6 +430,7 @@ Object Tiling IOCTLs
 .. kernel-doc:: drivers/gpu/drm/i915/i915_gem_tiling.c
    :doc: buffer object tiling
 
+<<<<<<< HEAD
 WOPCM
 =====
 
@@ -429,6 +439,30 @@ WOPCM Layout
 
 .. kernel-doc:: drivers/gpu/drm/i915/intel_wopcm.c
    :doc: WOPCM Layout
+=======
+Buffer Object Eviction
+----------------------
+
+This section documents the interface functions for evicting buffer
+objects to make space available in the virtual gpu address spaces. Note
+that this is mostly orthogonal to shrinking buffer objects caches, which
+has the goal to make main memory (shared with the gpu through the
+unified memory architecture) available.
+
+.. kernel-doc:: drivers/gpu/drm/i915/i915_gem_evict.c
+   :internal:
+
+Buffer Object Memory Shrinking
+------------------------------
+
+This section documents the interface function for shrinking memory usage
+of buffer object caches. Shrinking is used to make main memory
+available. Note that this is mostly orthogonal to evicting buffer
+objects, which has the goal to make space in gpu virtual address spaces.
+
+.. kernel-doc:: drivers/gpu/drm/i915/i915_gem_shrinker.c
+   :internal:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 GuC
 ===
@@ -436,16 +470,30 @@ GuC
 GuC-specific firmware loader
 ----------------------------
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/gpu/drm/i915/intel_guc_fw.c
+=======
+.. kernel-doc:: drivers/gpu/drm/i915/intel_guc_loader.c
+   :doc: GuC-specific firmware loader
+
+.. kernel-doc:: drivers/gpu/drm/i915/intel_guc_loader.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :internal:
 
 GuC-based command submission
 ----------------------------
 
+<<<<<<< HEAD
 .. kernel-doc:: drivers/gpu/drm/i915/intel_guc_submission.c
    :doc: GuC-based command submission
 
 .. kernel-doc:: drivers/gpu/drm/i915/intel_guc_submission.c
+=======
+.. kernel-doc:: drivers/gpu/drm/i915/i915_guc_submission.c
+   :doc: GuC-based command submission
+
+.. kernel-doc:: drivers/gpu/drm/i915/i915_guc_submission.c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
    :internal:
 
 GuC Firmware Layout
@@ -454,12 +502,15 @@ GuC Firmware Layout
 .. kernel-doc:: drivers/gpu/drm/i915/intel_guc_fwif.h
    :doc: GuC Firmware Layout
 
+<<<<<<< HEAD
 GuC Address Space
 -----------------
 
 .. kernel-doc:: drivers/gpu/drm/i915/intel_guc.c
    :doc: GuC Address Space
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Tracing
 =======
 

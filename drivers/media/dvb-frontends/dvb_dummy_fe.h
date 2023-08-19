@@ -19,7 +19,11 @@
 #define DVB_DUMMY_FE_H
 
 #include <linux/dvb/frontend.h>
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #if IS_REACHABLE(CONFIG_DVB_DUMMY_FE)
 extern struct dvb_frontend* dvb_dummy_fe_ofdm_attach(void);

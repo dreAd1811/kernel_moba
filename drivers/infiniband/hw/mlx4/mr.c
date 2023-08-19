@@ -87,6 +87,7 @@ err_free:
 	return ERR_PTR(err);
 }
 
+<<<<<<< HEAD
 enum {
 	MLX4_MAX_MTT_SHIFT = 31
 };
@@ -179,10 +180,13 @@ static int mlx4_ib_umem_calc_block_mtt(u64 next_block_start,
 	return block_shift;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int mlx4_ib_umem_write_mtt(struct mlx4_ib_dev *dev, struct mlx4_mtt *mtt,
 			   struct ib_umem *umem)
 {
 	u64 *pages;
+<<<<<<< HEAD
 	u64 len = 0;
 	int err = 0;
 	u64 mtt_size;
@@ -192,11 +196,19 @@ int mlx4_ib_umem_write_mtt(struct mlx4_ib_dev *dev, struct mlx4_mtt *mtt,
 	int npages = 0;
 	struct scatterlist *sg;
 	int i;
+=======
+	int i, k, entry;
+	int n;
+	int len;
+	int err = 0;
+	struct scatterlist *sg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pages = (u64 *) __get_free_page(GFP_KERNEL);
 	if (!pages)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	mtt_shift = mtt->page_shift;
 	mtt_size = 1ULL << mtt_shift;
 
@@ -239,12 +251,39 @@ int mlx4_ib_umem_write_mtt(struct mlx4_ib_dev *dev, struct mlx4_mtt *mtt,
 
 	if (npages)
 		err = mlx4_write_mtt(dev->dev, mtt, start_index, npages, pages);
+=======
+	i = n = 0;
+
+	for_each_sg(umem->sg_head.sgl, sg, umem->nmap, entry) {
+		len = sg_dma_len(sg) >> mtt->page_shift;
+		for (k = 0; k < len; ++k) {
+			pages[i++] = sg_dma_address(sg) +
+				(k << umem->page_shift);
+			/*
+			 * Be friendly to mlx4_write_mtt() and
+			 * pass it chunks of appropriate size.
+			 */
+			if (i == PAGE_SIZE / sizeof (u64)) {
+				err = mlx4_write_mtt(dev->dev, mtt, n,
+						     i, pages);
+				if (err)
+					goto out;
+				n += i;
+				i = 0;
+			}
+		}
+	}
+
+	if (i)
+		err = mlx4_write_mtt(dev->dev, mtt, n, i, pages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	free_page((unsigned long) pages);
 	return err;
 }
 
+<<<<<<< HEAD
 /*
  * Calculate optimal mtt size based on contiguous pages.
  * Function will return also the number of pages that are not aligned to the
@@ -367,6 +406,8 @@ end:
 	return block_shift;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct ib_umem *mlx4_get_umem_mr(struct ib_ucontext *context, u64 start,
 					u64 length, u64 virt_addr,
 					int access_flags)
@@ -423,7 +464,11 @@ struct ib_mr *mlx4_ib_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 	}
 
 	n = ib_umem_page_count(mr->umem);
+<<<<<<< HEAD
 	shift = mlx4_ib_umem_calc_optimal_mtt_size(mr->umem, start, &n);
+=======
+	shift = mr->umem->page_shift;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = mlx4_mr_alloc(dev->dev, to_mpd(pd)->pdn, virt_addr, length,
 			    convert_access(access_flags), n, shift, &mr->mmr);
@@ -439,9 +484,12 @@ struct ib_mr *mlx4_ib_reg_user_mr(struct ib_pd *pd, u64 start, u64 length,
 		goto err_mr;
 
 	mr->ibmr.rkey = mr->ibmr.lkey = mr->mmr.key;
+<<<<<<< HEAD
 	mr->ibmr.length = length;
 	mr->ibmr.iova = virt_addr;
 	mr->ibmr.page_size = 1U << shift;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return &mr->ibmr;
 

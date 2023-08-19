@@ -238,7 +238,11 @@ int setup_isurf(struct IsdnCard *card)
 				cs->hw.isurf.reset = pnp_port_start(pnp_d, 0);
 				cs->hw.isurf.phymem = pnp_mem_start(pnp_d, 1);
 				cs->irq = pnp_irq(pnp_d, 0);
+<<<<<<< HEAD
 				if (cs->irq == -1 || !cs->hw.isurf.reset || !cs->hw.isurf.phymem) {
+=======
+				if (!cs->irq || !cs->hw.isurf.reset || !cs->hw.isurf.phymem) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					printk(KERN_ERR "ISurfPnP:some resources are missing %d/%x/%lx\n",
 					       cs->irq, cs->hw.isurf.reset, cs->hw.isurf.phymem);
 					pnp_disable_dev(pnp_d);

@@ -434,6 +434,10 @@ static void alternatives_smp_lock(const s32 *start, const s32 *end,
 {
 	const s32 *poff;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&text_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (poff = start; poff < end; poff++) {
 		u8 *ptr = (u8 *)poff + *poff;
 
@@ -443,6 +447,10 @@ static void alternatives_smp_lock(const s32 *start, const s32 *end,
 		if (*ptr == 0x3e)
 			text_poke(ptr, ((unsigned char []){0xf0}), 1);
 	}
+<<<<<<< HEAD
+=======
+	mutex_unlock(&text_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void alternatives_smp_unlock(const s32 *start, const s32 *end,
@@ -450,6 +458,10 @@ static void alternatives_smp_unlock(const s32 *start, const s32 *end,
 {
 	const s32 *poff;
 
+<<<<<<< HEAD
+=======
+	mutex_lock(&text_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (poff = start; poff < end; poff++) {
 		u8 *ptr = (u8 *)poff + *poff;
 
@@ -459,6 +471,10 @@ static void alternatives_smp_unlock(const s32 *start, const s32 *end,
 		if (*ptr == 0xf0)
 			text_poke(ptr, ((unsigned char []){0x3E}), 1);
 	}
+<<<<<<< HEAD
+=======
+	mutex_unlock(&text_mutex);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 struct smp_alt_module {
@@ -477,7 +493,12 @@ struct smp_alt_module {
 	struct list_head next;
 };
 static LIST_HEAD(smp_alt_modules);
+<<<<<<< HEAD
 static bool uniproc_patched = false;	/* protected by text_mutex */
+=======
+static DEFINE_MUTEX(smp_alt);
+static bool uniproc_patched = false;	/* protected by smp_alt */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void __init_or_module alternatives_smp_module_add(struct module *mod,
 						  char *name,
@@ -486,7 +507,11 @@ void __init_or_module alternatives_smp_module_add(struct module *mod,
 {
 	struct smp_alt_module *smp;
 
+<<<<<<< HEAD
 	mutex_lock(&text_mutex);
+=======
+	mutex_lock(&smp_alt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!uniproc_patched)
 		goto unlock;
 
@@ -513,14 +538,22 @@ void __init_or_module alternatives_smp_module_add(struct module *mod,
 smp_unlock:
 	alternatives_smp_unlock(locks, locks_end, text, text_end);
 unlock:
+<<<<<<< HEAD
 	mutex_unlock(&text_mutex);
+=======
+	mutex_unlock(&smp_alt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void __init_or_module alternatives_smp_module_del(struct module *mod)
 {
 	struct smp_alt_module *item;
 
+<<<<<<< HEAD
 	mutex_lock(&text_mutex);
+=======
+	mutex_lock(&smp_alt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(item, &smp_alt_modules, next) {
 		if (mod != item->mod)
 			continue;
@@ -528,7 +561,11 @@ void __init_or_module alternatives_smp_module_del(struct module *mod)
 		kfree(item);
 		break;
 	}
+<<<<<<< HEAD
 	mutex_unlock(&text_mutex);
+=======
+	mutex_unlock(&smp_alt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void alternatives_enable_smp(void)
@@ -538,7 +575,11 @@ void alternatives_enable_smp(void)
 	/* Why bother if there are no other CPUs? */
 	BUG_ON(num_possible_cpus() == 1);
 
+<<<<<<< HEAD
 	mutex_lock(&text_mutex);
+=======
+	mutex_lock(&smp_alt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (uniproc_patched) {
 		pr_info("switching to SMP code\n");
@@ -550,6 +591,7 @@ void alternatives_enable_smp(void)
 					      mod->text, mod->text_end);
 		uniproc_patched = false;
 	}
+<<<<<<< HEAD
 	mutex_unlock(&text_mutex);
 }
 
@@ -557,6 +599,12 @@ void alternatives_enable_smp(void)
  * Return 1 if the address range is reserved for SMP-alternatives.
  * Must hold text_mutex.
  */
+=======
+	mutex_unlock(&smp_alt);
+}
+
+/* Return 1 if the address range is reserved for smp-alternatives */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int alternatives_text_reserved(void *start, void *end)
 {
 	struct smp_alt_module *mod;
@@ -564,8 +612,11 @@ int alternatives_text_reserved(void *start, void *end)
 	u8 *text_start = start;
 	u8 *text_end = end;
 
+<<<<<<< HEAD
 	lockdep_assert_held(&text_mutex);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_for_each_entry(mod, &smp_alt_modules, next) {
 		if (mod->text > text_end || mod->text_end < text_start)
 			continue;
@@ -662,6 +713,7 @@ void __init alternative_instructions(void)
  * handlers seeing an inconsistent instruction while you patch.
  */
 void *__init_or_module text_poke_early(void *addr, const void *opcode,
+<<<<<<< HEAD
 				       size_t len)
 {
 	unsigned long flags;
@@ -685,6 +737,16 @@ void *__init_or_module text_poke_early(void *addr, const void *opcode,
 		 * that causes hangs on some VIA CPUs.
 		 */
 	}
+=======
+					      size_t len)
+{
+	unsigned long flags;
+	local_irq_save(flags);
+	memcpy(addr, opcode, len);
+	local_irq_restore(flags);
+	/* Could also do a CLFLUSH here to speed up CPU recovery; but
+	   that causes hangs on some VIA CPUs. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return addr;
 }
 
@@ -698,6 +760,11 @@ void *__init_or_module text_poke_early(void *addr, const void *opcode,
  * It means the size must be writable atomically and the address must be aligned
  * in a way that permits an atomic write. It also makes sure we fit on a single
  * page.
+<<<<<<< HEAD
+=======
+ *
+ * Note: Must be called under text_mutex.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void *text_poke(void *addr, const void *opcode, size_t len)
 {
@@ -706,6 +773,7 @@ void *text_poke(void *addr, const void *opcode, size_t len)
 	struct page *pages[2];
 	int i;
 
+<<<<<<< HEAD
 	/*
 	 * While boot memory allocator is runnig we cannot use struct
 	 * pages as they are not yet initialized.
@@ -714,6 +782,8 @@ void *text_poke(void *addr, const void *opcode, size_t len)
 
 	lockdep_assert_held(&text_mutex);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!core_kernel_text((unsigned long)addr)) {
 		pages[0] = vmalloc_to_page(addr);
 		pages[1] = vmalloc_to_page(addr + PAGE_SIZE);
@@ -796,6 +866,11 @@ int poke_int3_handler(struct pt_regs *regs)
  *	- replace the first byte (int3) by the first byte of
  *	  replacing opcode
  *	- sync cores
+<<<<<<< HEAD
+=======
+ *
+ * Note: must be called under text_mutex.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void *text_poke_bp(void *addr, const void *opcode, size_t len, void *handler)
 {
@@ -804,9 +879,12 @@ void *text_poke_bp(void *addr, const void *opcode, size_t len, void *handler)
 	bp_int3_handler = handler;
 	bp_int3_addr = (u8 *)addr + sizeof(int3);
 	bp_patching_in_progress = true;
+<<<<<<< HEAD
 
 	lockdep_assert_held(&text_mutex);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Corresponding read barrier in int3 notifier for making sure the
 	 * in_progress and handler are correctly ordered wrt. patching.

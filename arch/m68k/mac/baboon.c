@@ -18,6 +18,13 @@
 int baboon_present;
 static volatile struct baboon *baboon;
 
+<<<<<<< HEAD
+=======
+#if 0
+extern int macide_ack_intr(struct ata_channel *);
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Baboon initialization.
  */
@@ -33,16 +40,25 @@ void __init baboon_init(void)
 	baboon = (struct baboon *) BABOON_BASE;
 	baboon_present = 1;
 
+<<<<<<< HEAD
 	pr_debug("Baboon detected at %p\n", baboon);
 }
 
 /*
  * Baboon interrupt handler.
  * XXX how do you clear a pending IRQ? is it even necessary?
+=======
+	printk("Baboon detected at %p\n", baboon);
+}
+
+/*
+ * Baboon interrupt handler. This works a lot like a VIA.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 static void baboon_irq(struct irq_desc *desc)
 {
+<<<<<<< HEAD
 	short events, irq_bit;
 	int irq_num;
 
@@ -57,6 +73,30 @@ static void baboon_irq(struct irq_desc *desc)
 		++irq_num;
 		irq_bit <<= 1;
 	} while (events);
+=======
+	int irq_bit, irq_num;
+	unsigned char events;
+
+	events = baboon->mb_ifr & 0x07;
+	if (!events)
+		return;
+
+	irq_num = IRQ_BABOON_0;
+	irq_bit = 1;
+	do {
+	        if (events & irq_bit) {
+			baboon->mb_ifr &= ~irq_bit;
+			generic_handle_irq(irq_num);
+		}
+		irq_bit <<= 1;
+		irq_num++;
+	} while(events >= irq_bit);
+#if 0
+	if (baboon->mb_ifr & 0x02) macide_ack_intr(NULL);
+	/* for now we need to smash all interrupts */
+	baboon->mb_ifr &= ~events;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

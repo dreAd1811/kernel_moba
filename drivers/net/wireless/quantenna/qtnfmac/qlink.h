@@ -19,7 +19,11 @@
 
 #include <linux/ieee80211.h>
 
+<<<<<<< HEAD
 #define QLINK_PROTO_VER		11
+=======
+#define QLINK_PROTO_VER		5
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define QLINK_MACID_RSVD		0xFF
 #define QLINK_VIFID_RSVD		0xFF
@@ -61,6 +65,7 @@ struct qlink_msg_header {
 /* Generic definitions of data and information carried in QLINK messages
  */
 
+<<<<<<< HEAD
 /**
  * enum qlink_hw_capab - device capabilities.
  *
@@ -78,6 +83,16 @@ enum qlink_hw_capab {
 	QLINK_HW_CAPAB_DFS_OFFLOAD		= BIT(2),
 	QLINK_HW_CAPAB_SCAN_RANDOM_MAC_ADDR	= BIT(3),
 	QLINK_HW_CAPAB_PWR_MGMT			= BIT(4),
+=======
+enum qlink_hw_capab {
+	QLINK_HW_SUPPORTS_REG_UPDATE	= BIT(0),
+};
+
+enum qlink_phy_mode {
+	QLINK_PHYMODE_BGN	= BIT(0),
+	QLINK_PHYMODE_AN	= BIT(1),
+	QLINK_PHYMODE_AC	= BIT(2),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum qlink_iface_type {
@@ -117,6 +132,7 @@ enum qlink_sta_flags {
 };
 
 enum qlink_channel_width {
+<<<<<<< HEAD
 	QLINK_CHAN_WIDTH_5 = 0,
 	QLINK_CHAN_WIDTH_10,
 	QLINK_CHAN_WIDTH_20_NOHT,
@@ -202,6 +218,18 @@ struct qlink_sta_info_state {
 	__le32 value;
 } __packed;
 
+=======
+	QLINK_CHAN_WIDTH_5		= BIT(0),
+	QLINK_CHAN_WIDTH_10		= BIT(1),
+	QLINK_CHAN_WIDTH_20_NOHT	= BIT(2),
+	QLINK_CHAN_WIDTH_20		= BIT(3),
+	QLINK_CHAN_WIDTH_40		= BIT(4),
+	QLINK_CHAN_WIDTH_80		= BIT(5),
+	QLINK_CHAN_WIDTH_80P80		= BIT(6),
+	QLINK_CHAN_WIDTH_160		= BIT(7),
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* QLINK Command messages related definitions
  */
 
@@ -211,18 +239,29 @@ struct qlink_sta_info_state {
  * Commands are QLINK messages of type @QLINK_MSG_TYPE_CMD, sent by driver to
  * wireless network device for processing. Device is expected to send back a
  * reply message of type &QLINK_MSG_TYPE_CMDRSP, containing at least command
+<<<<<<< HEAD
  * execution status (one of &enum qlink_cmd_result). Reply message
  * may also contain data payload specific to the command type.
  *
  * @QLINK_CMD_BAND_INFO_GET: for the specified MAC and specified band, get
  *	the band's description including number of operational channels and
  *	info on each channel, HT/VHT capabilities, supported rates etc.
+=======
+ * execution status (one of &enum qlink_cmd_result) at least. Reply message
+ * may also contain data payload specific to the command type.
+ *
+ * @QLINK_CMD_CHANS_INFO_GET: for the specified MAC and specified band, get
+ *	number of operational channels and information on each of the channel.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *	This command is generic to a specified MAC, interface index must be set
  *	to QLINK_VIFID_RSVD in command header.
  * @QLINK_CMD_REG_NOTIFY: notify device about regulatory domain change. This
  *	command is supported only if device reports QLINK_HW_SUPPORTS_REG_UPDATE
  *	capability.
+<<<<<<< HEAD
  * @QLINK_CMD_START_CAC: start radar detection procedure on a specified channel.
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 enum qlink_cmd_type {
 	QLINK_CMD_FW_INIT		= 0x0001,
@@ -239,6 +278,7 @@ enum qlink_cmd_type {
 	QLINK_CMD_CHANGE_INTF		= 0x0017,
 	QLINK_CMD_UPDOWN_INTF		= 0x0018,
 	QLINK_CMD_REG_NOTIFY		= 0x0019,
+<<<<<<< HEAD
 	QLINK_CMD_BAND_INFO_GET		= 0x001A,
 	QLINK_CMD_CHAN_SWITCH		= 0x001B,
 	QLINK_CMD_CHAN_GET		= 0x001C,
@@ -246,6 +286,13 @@ enum qlink_cmd_type {
 	QLINK_CMD_START_AP		= 0x0021,
 	QLINK_CMD_STOP_AP		= 0x0022,
 	QLINK_CMD_SET_MAC_ACL		= 0x0023,
+=======
+	QLINK_CMD_CHANS_INFO_GET	= 0x001A,
+	QLINK_CMD_CHAN_SWITCH		= 0x001B,
+	QLINK_CMD_CONFIG_AP		= 0x0020,
+	QLINK_CMD_START_AP		= 0x0021,
+	QLINK_CMD_STOP_AP		= 0x0022,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	QLINK_CMD_GET_STA_INFO		= 0x0030,
 	QLINK_CMD_ADD_KEY		= 0x0040,
 	QLINK_CMD_DEL_KEY		= 0x0041,
@@ -257,8 +304,11 @@ enum qlink_cmd_type {
 	QLINK_CMD_CHAN_STATS		= 0x0054,
 	QLINK_CMD_CONNECT		= 0x0060,
 	QLINK_CMD_DISCONNECT		= 0x0061,
+<<<<<<< HEAD
 	QLINK_CMD_PM_SET		= 0x0062,
 	QLINK_CMD_WOWLAN_SET		= 0x0063,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -352,6 +402,24 @@ struct qlink_cmd_mgmt_frame_tx {
 } __packed;
 
 /**
+<<<<<<< HEAD
+=======
+ * struct qlink_cmd_mgmt_append_ie - data for QLINK_CMD_MGMT_SET_APPIE command
+ *
+ * @type: type of MGMT frame to appent requested IEs to, one of
+ *	&enum qlink_mgmt_frame_type.
+ * @flags: for future use.
+ * @ie_data: IEs data to append.
+ */
+struct qlink_cmd_mgmt_append_ie {
+	struct qlink_cmd chdr;
+	u8 type;
+	u8 flags;
+	u8 ie_data[0];
+} __packed;
+
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * struct qlink_cmd_get_sta_info - data for QLINK_CMD_GET_STA_INFO command
  *
  * @sta_addr: MAC address of the STA statistics is requested for.
@@ -422,14 +490,24 @@ struct qlink_cmd_set_def_mgmt_key {
 /**
  * struct qlink_cmd_change_sta - data for QLINK_CMD_CHANGE_STA command
  *
+<<<<<<< HEAD
  * @flag_update: STA flags to update
+=======
+ * @sta_flags_mask: STA flags mask, bitmap of &enum qlink_sta_flags
+ * @sta_flags_set: STA flags values, bitmap of &enum qlink_sta_flags
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @if_type: Mode of interface operation, one of &enum qlink_iface_type
  * @vlanid: VLAN ID to assign to specific STA
  * @sta_addr: address of the STA for which parameters are set.
  */
 struct qlink_cmd_change_sta {
 	struct qlink_cmd chdr;
+<<<<<<< HEAD
 	struct qlink_sta_info_state flag_update;
+=======
+	__le32 sta_flags_mask;
+	__le32 sta_flags_set;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 if_type;
 	__le16 vlanid;
 	u8 sta_addr[ETH_ALEN];
@@ -456,6 +534,7 @@ enum qlink_sta_connect_flags {
 /**
  * struct qlink_cmd_connect - data for QLINK_CMD_CONNECT command
  *
+<<<<<<< HEAD
  * @bssid: BSSID of the BSS to connect to.
  * @bssid_hint: recommended AP BSSID for initial connection to the BSS or
  *	00:00:00:00:00:00 if not specified.
@@ -469,10 +548,17 @@ enum qlink_sta_connect_flags {
  * @vht_capa_mask: The bits of vht_capa which are to be used.
  * @aen: authentication information.
  * @mfp: whether to use management frame protection.
+=======
+ * @flags: for future use.
+ * @freq: center frequence of a channel which should be used to connect.
+ * @bg_scan_period: period of background scan.
+ * @bssid: BSSID of the BSS to connect to.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @payload: variable portion of connection request.
  */
 struct qlink_cmd_connect {
 	struct qlink_cmd chdr;
+<<<<<<< HEAD
 	u8 bssid[ETH_ALEN];
 	u8 bssid_hint[ETH_ALEN];
 	u8 prev_bssid[ETH_ALEN];
@@ -486,6 +572,12 @@ struct qlink_cmd_connect {
 	u8 mfp;
 	u8 pbss;
 	u8 rsvd[2];
+=======
+	__le32 flags;
+	__le16 channel;
+	__le16 bg_scan_period;
+	u8 bssid[ETH_ALEN];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 payload[0];
 } __packed;
 
@@ -524,11 +616,19 @@ enum qlink_band {
 };
 
 /**
+<<<<<<< HEAD
  * struct qlink_cmd_band_info_get - data for QLINK_CMD_BAND_INFO_GET command
  *
  * @band: a PHY band for which information is queried, one of @enum qlink_band
  */
 struct qlink_cmd_band_info_get {
+=======
+ * struct qlink_cmd_chans_info_get - data for QLINK_CMD_CHANS_INFO_GET command
+ *
+ * @band: a PHY band for which channels info is needed, one of @enum qlink_band
+ */
+struct qlink_cmd_chans_info_get {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct qlink_cmd chdr;
 	u8 band;
 } __packed;
@@ -597,6 +697,7 @@ struct qlink_cmd_chan_switch {
 	u8 beacon_count;
 } __packed;
 
+<<<<<<< HEAD
 /**
  * enum qlink_hidden_ssid - values for %NL80211_ATTR_HIDDEN_SSID
  *
@@ -719,6 +820,8 @@ struct qlink_cmd_wowlan_set {
 	u8 data[0];
 } __packed;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* QLINK Command Responses messages related definitions
  */
 
@@ -728,8 +831,11 @@ enum qlink_cmd_result {
 	QLINK_CMD_RESULT_ENOTSUPP,
 	QLINK_CMD_RESULT_ENOTFOUND,
 	QLINK_CMD_RESULT_EALREADY,
+<<<<<<< HEAD
 	QLINK_CMD_RESULT_EADDRINUSE,
 	QLINK_CMD_RESULT_EADDRNOTAVAIL,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -766,9 +872,16 @@ struct qlink_resp {
  *	specified WMAC).
  * @num_tx_chain: Number of transmit chains used by WMAC.
  * @num_rx_chain: Number of receive chains used by WMAC.
+<<<<<<< HEAD
  * @vht_cap_mod_mask: mask specifying which VHT capabilities can be altered.
  * @ht_cap_mod_mask: mask specifying which HT capabilities can be altered.
  * @bands_cap: wireless bands WMAC can operate in, bitmap of &enum qlink_band.
+=======
+ * @vht_cap: VHT capabilities.
+ * @ht_cap: HT capabilities.
+ * @bands_cap: wireless bands WMAC can operate in, bitmap of &enum qlink_band.
+ * @phymode_cap: PHY modes WMAC can operate in, bitmap of &enum qlink_phy_mode.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @max_ap_assoc_sta: Maximum number of associations supported by WMAC.
  * @radar_detect_widths: bitmask of channels BW for which WMAC can detect radar.
  * @var_info: variable-length WMAC info data.
@@ -778,6 +891,7 @@ struct qlink_resp_get_mac_info {
 	u8 dev_mac[ETH_ALEN];
 	u8 num_tx_chain;
 	u8 num_rx_chain;
+<<<<<<< HEAD
 	struct ieee80211_vht_cap vht_cap_mod_mask;
 	struct ieee80211_ht_cap ht_cap_mod_mask;
 	__le16 max_ap_assoc_sta;
@@ -785,6 +899,14 @@ struct qlink_resp_get_mac_info {
 	__le32 max_acl_mac_addrs;
 	u8 bands_cap;
 	u8 rsvd[1];
+=======
+	struct ieee80211_vht_cap vht_cap;
+	struct ieee80211_ht_cap ht_cap;
+	u8 bands_cap;
+	u8 phymode_cap;
+	__le16 max_ap_assoc_sta;
+	__le16 radar_detect_widths;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 var_info[0];
 } __packed;
 
@@ -822,9 +944,12 @@ struct qlink_resp_get_hw_info {
 	struct qlink_resp rhdr;
 	__le32 fw_ver;
 	__le32 hw_capab;
+<<<<<<< HEAD
 	__le32 bld_tmstamp;
 	__le32 plat_id;
 	__le32 hw_ver;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__le16 ql_proto_ver;
 	u8 num_mac;
 	u8 mac_bitmap;
@@ -849,6 +974,7 @@ struct qlink_resp_manage_intf {
 	struct qlink_intf_info intf_info;
 } __packed;
 
+<<<<<<< HEAD
 enum qlink_sta_info_rate_flags {
 	QLINK_STA_INFO_RATE_FLAG_HT_MCS		= BIT(0),
 	QLINK_STA_INFO_RATE_FLAG_VHT_MCS	= BIT(1),
@@ -856,24 +982,35 @@ enum qlink_sta_info_rate_flags {
 	QLINK_STA_INFO_RATE_FLAG_60G		= BIT(3),
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct qlink_resp_get_sta_info - response for QLINK_CMD_GET_STA_INFO command
  *
  * Response data containing statistics for specified STA.
  *
+<<<<<<< HEAD
  * @filled: a bitmask of &enum qlink_sta_info, specifies which info in response
  *	is valid.
  * @sta_addr: MAC address of STA the response carries statistic for.
  * @info: variable statistics for specified STA.
+=======
+ * @sta_addr: MAC address of STA the response carries statistic for.
+ * @info: statistics for specified STA.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 struct qlink_resp_get_sta_info {
 	struct qlink_resp rhdr;
 	u8 sta_addr[ETH_ALEN];
+<<<<<<< HEAD
 	u8 rsvd[2];
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 info[0];
 } __packed;
 
 /**
+<<<<<<< HEAD
  * struct qlink_resp_band_info_get - response for QLINK_CMD_BAND_INFO_GET cmd
  *
  * @band: frequency band that the response describes, one of @enum qlink_band.
@@ -887,6 +1024,19 @@ struct qlink_resp_band_info_get {
 	u8 num_chans;
 	u8 num_bitrates;
 	u8 rsvd[1];
+=======
+ * struct qlink_resp_get_chan_info - response for QLINK_CMD_CHANS_INFO_GET cmd
+ *
+ * @band: frequency band to which channels belong to, one of @enum qlink_band.
+ * @num_chans: total number of channels info data contained in reply data.
+ * @info: variable-length channels info.
+ */
+struct qlink_resp_get_chan_info {
+	struct qlink_resp rhdr;
+	u8 band;
+	u8 num_chans;
+	u8 rsvd[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 info[0];
 } __packed;
 
@@ -910,6 +1060,7 @@ struct qlink_resp_get_chan_stats {
 	u8 info[0];
 } __packed;
 
+<<<<<<< HEAD
 /**
  * struct qlink_resp_channel_get - response for QLINK_CMD_CHAN_GET command
  *
@@ -920,6 +1071,8 @@ struct qlink_resp_channel_get {
 	struct qlink_chandef chan;
 } __packed;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* QLINK Events messages related definitions
  */
 
@@ -932,7 +1085,10 @@ enum qlink_event_type {
 	QLINK_EVENT_BSS_JOIN		= 0x0026,
 	QLINK_EVENT_BSS_LEAVE		= 0x0027,
 	QLINK_EVENT_FREQ_CHANGE		= 0x0028,
+<<<<<<< HEAD
 	QLINK_EVENT_RADAR		= 0x0029,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /**
@@ -1005,11 +1161,19 @@ struct qlink_event_bss_leave {
 /**
  * struct qlink_event_freq_change - data for QLINK_EVENT_FREQ_CHANGE event
  *
+<<<<<<< HEAD
  * @chan: new operating channel definition
  */
 struct qlink_event_freq_change {
 	struct qlink_event ehdr;
 	struct qlink_chandef chan;
+=======
+ * @freq: new operating frequency in MHz
+ */
+struct qlink_event_freq_change {
+	struct qlink_event ehdr;
+	__le32 freq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 enum qlink_rxmgmt_flags {
@@ -1020,19 +1184,38 @@ enum qlink_rxmgmt_flags {
  * struct qlink_event_rxmgmt - data for QLINK_EVENT_MGMT_RECEIVED event
  *
  * @freq: Frequency on which the frame was received in MHz.
+<<<<<<< HEAD
  * @flags: bitmap of &enum qlink_rxmgmt_flags.
  * @sig_dbm: signal strength in dBm.
+=======
+ * @sig_dbm: signal strength in dBm.
+ * @flags: bitmap of &enum qlink_rxmgmt_flags.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @frame_data: data of Rx'd frame itself.
  */
 struct qlink_event_rxmgmt {
 	struct qlink_event ehdr;
 	__le32 freq;
+<<<<<<< HEAD
 	__le32 flags;
 	s8 sig_dbm;
 	u8 rsvd[3];
 	u8 frame_data[0];
 } __packed;
 
+=======
+	__le32 sig_dbm;
+	__le32 flags;
+	u8 frame_data[0];
+} __packed;
+
+enum qlink_frame_type {
+	QLINK_BSS_FTYPE_UNKNOWN,
+	QLINK_BSS_FTYPE_BEACON,
+	QLINK_BSS_FTYPE_PRESP,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * struct qlink_event_scan_result - data for QLINK_EVENT_SCAN_RESULTS event
  *
@@ -1041,7 +1224,12 @@ struct qlink_event_rxmgmt {
  *	event was generated was discovered.
  * @capab: capabilities field.
  * @bintval: beacon interval announced by discovered BSS.
+<<<<<<< HEAD
  * @sig_dbm: signal strength in dBm.
+=======
+ * @signal: signal strength.
+ * @frame_type: frame type used to get scan result, see &enum qlink_frame_type.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @bssid: BSSID announced by discovered BSS.
  * @ssid_len: length of SSID announced by BSS.
  * @ssid: SSID announced by discovered BSS.
@@ -1053,11 +1241,19 @@ struct qlink_event_scan_result {
 	__le16 freq;
 	__le16 capab;
 	__le16 bintval;
+<<<<<<< HEAD
 	s8 sig_dbm;
 	u8 ssid_len;
 	u8 ssid[IEEE80211_MAX_SSID_LEN];
 	u8 bssid[ETH_ALEN];
 	u8 rsvd[2];
+=======
+	s8 signal;
+	u8 frame_type;
+	u8 bssid[ETH_ALEN];
+	u8 ssid_len;
+	u8 ssid[IEEE80211_MAX_SSID_LEN];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u8 payload[0];
 } __packed;
 
@@ -1083,6 +1279,7 @@ struct qlink_event_scan_complete {
 	__le32 flags;
 } __packed;
 
+<<<<<<< HEAD
 enum qlink_radar_event {
 	QLINK_RADAR_DETECTED,
 	QLINK_RADAR_CAC_FINISHED,
@@ -1119,20 +1316,33 @@ struct qlink_event_radar {
  * @QTN_TLV_ID_MAX_SCAN_SSIDS: maximum number of SSIDs the device can scan
  *	for in any given scan.
  */
+=======
+/* QLINK TLVs (Type-Length Values) definitions
+ */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum qlink_tlv_id {
 	QTN_TLV_ID_FRAG_THRESH		= 0x0201,
 	QTN_TLV_ID_RTS_THRESH		= 0x0202,
 	QTN_TLV_ID_SRETRY_LIMIT		= 0x0203,
 	QTN_TLV_ID_LRETRY_LIMIT		= 0x0204,
+<<<<<<< HEAD
 	QTN_TLV_ID_REG_RULE		= 0x0207,
 	QTN_TLV_ID_CHANNEL		= 0x020F,
 	QTN_TLV_ID_CHANDEF		= 0x0210,
 	QTN_TLV_ID_STA_STATS_MAP	= 0x0211,
 	QTN_TLV_ID_STA_STATS		= 0x0212,
+=======
+	QTN_TLV_ID_BCN_PERIOD		= 0x0205,
+	QTN_TLV_ID_DTIM			= 0x0206,
+	QTN_TLV_ID_REG_RULE		= 0x0207,
+	QTN_TLV_ID_CHANNEL		= 0x020F,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	QTN_TLV_ID_COVERAGE_CLASS	= 0x0213,
 	QTN_TLV_ID_IFACE_LIMIT		= 0x0214,
 	QTN_TLV_ID_NUM_IFACE_COMB	= 0x0215,
 	QTN_TLV_ID_CHANNEL_STATS	= 0x0216,
+<<<<<<< HEAD
 	QTN_TLV_ID_KEY			= 0x0302,
 	QTN_TLV_ID_SEQ			= 0x0303,
 	QTN_TLV_ID_IE_SET		= 0x0305,
@@ -1149,6 +1359,14 @@ enum qlink_tlv_id {
 	QTN_TLV_ID_MAX_SCAN_SSIDS	= 0x0409,
 	QTN_TLV_ID_WOWLAN_CAPAB		= 0x0410,
 	QTN_TLV_ID_WOWLAN_PATTERN	= 0x0411,
+=======
+	QTN_TLV_ID_STA_BASIC_COUNTERS	= 0x0300,
+	QTN_TLV_ID_STA_GENERIC_INFO	= 0x0301,
+	QTN_TLV_ID_KEY			= 0x0302,
+	QTN_TLV_ID_SEQ			= 0x0303,
+	QTN_TLV_ID_CRYPTO		= 0x0304,
+	QTN_TLV_ID_IE_SET		= 0x0305,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct qlink_tlv_hdr {
@@ -1157,24 +1375,94 @@ struct qlink_tlv_hdr {
 	u8 val[0];
 } __packed;
 
+<<<<<<< HEAD
 struct qlink_iface_comb_num {
 	__le32 iface_comb_num;
 } __packed;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct qlink_iface_limit {
 	__le16 max_num;
 	__le16 type;
 } __packed;
 
+<<<<<<< HEAD
 struct qlink_iface_limit_record {
 	__le16 max_interfaces;
 	u8 num_different_channels;
 	u8 n_limits;
 	struct qlink_iface_limit limits[0];
+=======
+struct qlink_iface_comb_num {
+	__le16 iface_comb_num;
+} __packed;
+
+struct qlink_sta_stat_basic_counters {
+	__le64 rx_bytes;
+	__le64 tx_bytes;
+	__le64 rx_beacons;
+	__le32 rx_packets;
+	__le32 tx_packets;
+	__le32 rx_dropped;
+	__le32 tx_failed;
+} __packed;
+
+enum qlink_sta_info_rate_flags {
+	QLINK_STA_INFO_RATE_FLAG_INVALID	= 0,
+	QLINK_STA_INFO_RATE_FLAG_HT_MCS		= BIT(0),
+	QLINK_STA_INFO_RATE_FLAG_VHT_MCS	= BIT(1),
+	QLINK_STA_INFO_RATE_FLAG_SHORT_GI	= BIT(2),
+	QLINK_STA_INFO_RATE_FLAG_60G		= BIT(3),
+};
+
+enum qlink_sta_info_rate_bw {
+	QLINK_STA_INFO_RATE_BW_5		= 0,
+	QLINK_STA_INFO_RATE_BW_10		= 1,
+	QLINK_STA_INFO_RATE_BW_20		= 2,
+	QLINK_STA_INFO_RATE_BW_40		= 3,
+	QLINK_STA_INFO_RATE_BW_80		= 4,
+	QLINK_STA_INFO_RATE_BW_160		= 5,
+};
+
+/**
+ * struct qlink_sta_info_rate - STA rate statistics
+ *
+ * @rate: data rate in Mbps.
+ * @flags: bitmap of &enum qlink_sta_flags.
+ * @mcs: 802.11-defined MCS index.
+ * nss: Number of Spatial Streams.
+ * @bw: bandwidth, one of &enum qlink_sta_info_rate_bw.
+ */
+struct qlink_sta_info_rate {
+	__le16 rate;
+	u8 flags;
+	u8 mcs;
+	u8 nss;
+	u8 bw;
+} __packed;
+
+struct qlink_sta_info_state {
+	__le32 mask;
+	__le32 value;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 #define QLINK_RSSI_OFFSET	120
 
+<<<<<<< HEAD
+=======
+struct qlink_sta_info_generic {
+	struct qlink_sta_info_state state;
+	__le32 connected_time;
+	__le32 inactive_time;
+	struct qlink_sta_info_rate rx_rate;
+	struct qlink_sta_info_rate tx_rate;
+	u8 rssi;
+	u8 rssi_avg;
+} __packed;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct qlink_tlv_frag_rts_thr {
 	struct qlink_tlv_hdr hdr;
 	__le16 thr;
@@ -1259,6 +1547,7 @@ enum qlink_dfs_state {
 	QLINK_DFS_AVAILABLE,
 };
 
+<<<<<<< HEAD
 /**
  * struct qlink_tlv_channel - data for QTN_TLV_ID_CHANNEL TLV
  *
@@ -1308,6 +1597,39 @@ struct qlink_tlv_ie_set {
 	u8 type;
 	u8 flags;
 	u8 ie_data[0];
+=======
+struct qlink_tlv_channel {
+	struct qlink_tlv_hdr hdr;
+	__le16 hw_value;
+	__le16 center_freq;
+	__le32 flags;
+	u8 band;
+	u8 max_antenna_gain;
+	u8 max_power;
+	u8 max_reg_power;
+	__le32 dfs_cac_ms;
+	u8 dfs_state;
+	u8 beacon_found;
+	u8 rsvd[2];
+} __packed;
+
+#define QLINK_MAX_NR_CIPHER_SUITES            5
+#define QLINK_MAX_NR_AKM_SUITES               2
+
+struct qlink_auth_encr {
+	__le32 wpa_versions;
+	__le32 cipher_group;
+	__le32 n_ciphers_pairwise;
+	__le32 ciphers_pairwise[QLINK_MAX_NR_CIPHER_SUITES];
+	__le32 n_akm_suites;
+	__le32 akm_suites[QLINK_MAX_NR_AKM_SUITES];
+	__le16 control_port_ethertype;
+	u8 auth_type;
+	u8 privacy;
+	u8 mfp;
+	u8 control_port;
+	u8 control_port_no_encrypt;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __packed;
 
 struct qlink_chan_stats {
@@ -1319,6 +1641,7 @@ struct qlink_chan_stats {
 	s8 chan_noise;
 } __packed;
 
+<<<<<<< HEAD
 /**
  * enum qlink_sta_info - station information bitmap
  *
@@ -1465,4 +1788,6 @@ struct qlink_wowlan_support {
 	__le32 pattern_min_len;
 } __packed;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _QTN_QLINK_H_ */

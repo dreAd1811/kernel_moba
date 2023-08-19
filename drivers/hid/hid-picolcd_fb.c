@@ -394,8 +394,12 @@ static int picolcd_set_par(struct fb_info *info)
 		return -EINVAL;
 
 	o_fb   = fbdata->bitmap;
+<<<<<<< HEAD
 	tmp_fb = kmalloc_array(PICOLCDFB_SIZE, info->var.bits_per_pixel,
 			       GFP_KERNEL);
+=======
+	tmp_fb = kmalloc(PICOLCDFB_SIZE*info->var.bits_per_pixel, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!tmp_fb)
 		return -ENOMEM;
 

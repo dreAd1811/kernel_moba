@@ -45,11 +45,19 @@
 #include <asm/apic.h>
 #include <asm/apicdef.h>
 #include <asm/hypervisor.h>
+<<<<<<< HEAD
 #include <asm/tlb.h>
 
 static int kvmapf = 1;
 
 static int __init parse_no_kvmapf(char *arg)
+=======
+#include <asm/kvm_guest.h>
+
+static int kvmapf = 1;
+
+static int parse_no_kvmapf(char *arg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
         kvmapf = 0;
         return 0;
@@ -58,7 +66,11 @@ static int __init parse_no_kvmapf(char *arg)
 early_param("no-kvmapf", parse_no_kvmapf);
 
 static int steal_acc = 1;
+<<<<<<< HEAD
 static int __init parse_no_stealacc(char *arg)
+=======
+static int parse_no_stealacc(char *arg)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
         steal_acc = 0;
         return 0;
@@ -66,8 +78,22 @@ static int __init parse_no_stealacc(char *arg)
 
 early_param("no-steal-acc", parse_no_stealacc);
 
+<<<<<<< HEAD
 static DEFINE_PER_CPU_DECRYPTED(struct kvm_vcpu_pv_apf_data, apf_reason) __aligned(64);
 static DEFINE_PER_CPU_DECRYPTED(struct kvm_steal_time, steal_time) __aligned(64);
+=======
+static int kvmclock_vsyscall = 1;
+static int parse_no_kvmclock_vsyscall(char *arg)
+{
+        kvmclock_vsyscall = 0;
+        return 0;
+}
+
+early_param("no-kvmclock-vsyscall", parse_no_kvmclock_vsyscall);
+
+static DEFINE_PER_CPU(struct kvm_vcpu_pv_apf_data, apf_reason) __aligned(64);
+static DEFINE_PER_CPU(struct kvm_steal_time, steal_time) __aligned(64);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int has_steal_clock = 0;
 
 /*
@@ -145,7 +171,11 @@ void kvm_async_pf_task_wait(u32 token, int interrupt_kernel)
 
 	for (;;) {
 		if (!n.halted)
+<<<<<<< HEAD
 			prepare_to_swait_exclusive(&n.wq, &wait, TASK_UNINTERRUPTIBLE);
+=======
+			prepare_to_swait(&n.wq, &wait, TASK_UNINTERRUPTIBLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (hlist_unhashed(&n.link))
 			break;
 
@@ -179,7 +209,11 @@ static void apf_task_wake_one(struct kvm_task_sleep_node *n)
 	if (n->halted)
 		smp_send_reschedule(n->cpu);
 	else if (swq_has_sleeper(&n->wq))
+<<<<<<< HEAD
 		swake_up_one(&n->wq);
+=======
+		swake_up(&n->wq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void apf_task_wake_all(void)
@@ -303,7 +337,11 @@ static void kvm_register_steal_time(void)
 		cpu, (unsigned long long) slow_virt_to_phys(st));
 }
 
+<<<<<<< HEAD
 static DEFINE_PER_CPU_DECRYPTED(unsigned long, kvm_apic_eoi) = KVM_PV_EOI_DISABLED;
+=======
+static DEFINE_PER_CPU(unsigned long, kvm_apic_eoi) = KVM_PV_EOI_DISABLED;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static notrace void kvm_guest_apic_eoi_write(u32 reg, u32 val)
 {
@@ -417,6 +455,7 @@ void kvm_disable_steal_time(void)
 	wrmsr(MSR_KVM_STEAL_TIME, 0, 0);
 }
 
+<<<<<<< HEAD
 static inline void __set_percpu_decrypted(void *ptr, unsigned long size)
 {
 	early_set_memory_decrypted((unsigned long) ptr, size);
@@ -555,6 +594,11 @@ static void __init kvm_smp_prepare_boot_cpu(void)
 	 */
 	sev_map_percpu_data();
 
+=======
+#ifdef CONFIG_SMP
+static void __init kvm_smp_prepare_boot_cpu(void)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvm_guest_cpu_init();
 	native_smp_prepare_boot_cpu();
 	kvm_spinlock_init();
@@ -591,6 +635,7 @@ static void __init kvm_apf_trap_init(void)
 	update_intr_gate(X86_TRAP_PF, async_page_fault);
 }
 
+<<<<<<< HEAD
 static DEFINE_PER_CPU(cpumask_var_t, __pv_tlb_mask);
 
 static void kvm_flush_tlb_others(const struct cpumask *cpumask,
@@ -620,6 +665,9 @@ static void kvm_flush_tlb_others(const struct cpumask *cpumask,
 }
 
 static void __init kvm_guest_init(void)
+=======
+void __init kvm_guest_init(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -638,6 +686,7 @@ static void __init kvm_guest_init(void)
 		pv_time_ops.steal_clock = kvm_steal_clock;
 	}
 
+<<<<<<< HEAD
 	if (kvm_para_has_feature(KVM_FEATURE_PV_TLB_FLUSH) &&
 	    !kvm_para_has_hint(KVM_HINTS_REALTIME) &&
 	    kvm_para_has_feature(KVM_FEATURE_STEAL_TIME)) {
@@ -650,12 +699,24 @@ static void __init kvm_guest_init(void)
 
 #ifdef CONFIG_SMP
 	smp_ops.smp_prepare_cpus = kvm_smp_prepare_cpus;
+=======
+	if (kvm_para_has_feature(KVM_FEATURE_PV_EOI))
+		apic_set_eoi_write(kvm_guest_apic_eoi_write);
+
+	if (kvmclock_vsyscall)
+		kvm_setup_vsyscall_timeinfo();
+
+#ifdef CONFIG_SMP
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	smp_ops.smp_prepare_boot_cpu = kvm_smp_prepare_boot_cpu;
 	if (cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "x86/kvm:online",
 				      kvm_cpu_online, kvm_cpu_down_prepare) < 0)
 		pr_err("kvm_guest: Failed to install cpu hotplug callbacks\n");
 #else
+<<<<<<< HEAD
 	sev_map_percpu_data();
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	kvm_guest_cpu_init();
 #endif
 
@@ -699,16 +760,20 @@ unsigned int kvm_arch_para_features(void)
 	return cpuid_eax(kvm_cpuid_base() | KVM_CPUID_FEATURES);
 }
 
+<<<<<<< HEAD
 unsigned int kvm_arch_para_hints(void)
 {
 	return cpuid_edx(kvm_cpuid_base() | KVM_CPUID_FEATURES);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static uint32_t __init kvm_detect(void)
 {
 	return kvm_cpuid_base();
 }
 
+<<<<<<< HEAD
 static void __init kvm_apic_init(void)
 {
 #if defined(CONFIG_SMP)
@@ -723,13 +788,19 @@ static void __init kvm_init_platform(void)
 	x86_platform.apic_post_init = kvm_apic_init;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const __initconst struct hypervisor_x86 x86_hyper_kvm = {
 	.name			= "KVM",
 	.detect			= kvm_detect,
 	.type			= X86_HYPER_KVM,
+<<<<<<< HEAD
 	.init.guest_late_init	= kvm_guest_init,
 	.init.x2apic_available	= kvm_para_available,
 	.init.init_platform	= kvm_init_platform,
+=======
+	.init.x2apic_available	= kvm_para_available,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static __init int activate_jump_labels(void)
@@ -744,6 +815,7 @@ static __init int activate_jump_labels(void)
 }
 arch_initcall(activate_jump_labels);
 
+<<<<<<< HEAD
 static __init int kvm_setup_pv_tlb_flush(void)
 {
 	int cpu;
@@ -762,6 +834,8 @@ static __init int kvm_setup_pv_tlb_flush(void)
 }
 arch_initcall(kvm_setup_pv_tlb_flush);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_PARAVIRT_SPINLOCKS
 
 /* Kick a cpu by its apicid. Used to wake up a halted vcpu */
@@ -807,7 +881,11 @@ __visible bool __kvm_vcpu_is_preempted(long cpu)
 {
 	struct kvm_steal_time *src = &per_cpu(steal_time, cpu);
 
+<<<<<<< HEAD
 	return !!(src->preempted & KVM_VCPU_PREEMPTED);
+=======
+	return !!src->preempted;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 PV_CALLEE_SAVE_REGS_THUNK(__kvm_vcpu_is_preempted);
 
@@ -846,6 +924,7 @@ void __init kvm_spinlock_init(void)
 	if (!kvm_para_has_feature(KVM_FEATURE_PV_UNHALT))
 		return;
 
+<<<<<<< HEAD
 	if (kvm_para_has_hint(KVM_HINTS_REALTIME))
 		return;
 
@@ -853,6 +932,8 @@ void __init kvm_spinlock_init(void)
 	if (num_possible_cpus() == 1)
 		return;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__pv_init_lock_hash();
 	pv_lock_ops.queued_spin_lock_slowpath = __pv_queued_spin_lock_slowpath;
 	pv_lock_ops.queued_spin_unlock = PV_CALLEE_SAVE(__pv_queued_spin_unlock);

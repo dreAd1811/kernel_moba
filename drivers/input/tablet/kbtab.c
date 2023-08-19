@@ -5,12 +5,30 @@
 #include <asm/unaligned.h>
 
 /*
+<<<<<<< HEAD
  * Pressure-threshold modules param code from Alex Perry <alex.perry@ieee.org>
  */
 
 MODULE_AUTHOR("Josh Myer <josh@joshisanerd.com>");
 MODULE_DESCRIPTION("USB KB Gear JamStudio Tablet driver");
 MODULE_LICENSE("GPL");
+=======
+ * Version Information
+ * v0.0.1 - Original, extremely basic version, 2.4.xx only
+ * v0.0.2 - Updated, works with 2.5.62 and 2.4.20;
+ *           - added pressure-threshold modules param code from
+ *              Alex Perry <alex.perry@ieee.org>
+ */
+
+#define DRIVER_VERSION "v0.0.2"
+#define DRIVER_AUTHOR "Josh Myer <josh@joshisanerd.com>"
+#define DRIVER_DESC "USB KB Gear JamStudio Tablet driver"
+#define DRIVER_LICENSE "GPL"
+
+MODULE_AUTHOR(DRIVER_AUTHOR);
+MODULE_DESCRIPTION(DRIVER_DESC);
+MODULE_LICENSE(DRIVER_LICENSE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define USB_VENDOR_ID_KBGEAR	0x084e
 

@@ -42,12 +42,19 @@ struct armada_private;
 
 struct armada_variant {
 	bool has_spu_adv_reg;
+<<<<<<< HEAD
+=======
+	uint32_t spu_adv_reg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*init)(struct armada_crtc *, struct device *);
 	int (*compute_clock)(struct armada_crtc *,
 			     const struct drm_display_mode *,
 			     uint32_t *);
+<<<<<<< HEAD
 	void (*disable)(struct armada_crtc *);
 	void (*enable)(struct armada_crtc *, const struct drm_display_mode *);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Variant ops */
@@ -55,10 +62,20 @@ extern const struct armada_variant armada510_ops;
 
 struct armada_private {
 	struct drm_device	drm;
+<<<<<<< HEAD
+=======
+	struct work_struct	fb_unref_work;
+	DECLARE_KFIFO(fb_unref, struct drm_framebuffer *, 8);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_fb_helper	*fbdev;
 	struct armada_crtc	*dcrtc[2];
 	struct drm_mm		linear; /* protected by linear_lock */
 	struct mutex		linear_lock;
+<<<<<<< HEAD
+=======
+	struct drm_property	*csc_yuv_prop;
+	struct drm_property	*csc_rgb_prop;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_property	*colorkey_prop;
 	struct drm_property	*colorkey_min_prop;
 	struct drm_property	*colorkey_max_prop;
@@ -73,7 +90,19 @@ struct armada_private {
 #endif
 };
 
+<<<<<<< HEAD
 int armada_fbdev_init(struct drm_device *);
+=======
+void __armada_drm_queue_unref_work(struct drm_device *,
+	struct drm_framebuffer *);
+void armada_drm_queue_unref_work(struct drm_device *,
+	struct drm_framebuffer *);
+
+extern const struct drm_mode_config_funcs armada_drm_mode_config_funcs;
+
+int armada_fbdev_init(struct drm_device *);
+void armada_fbdev_lastclose(struct drm_device *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void armada_fbdev_fini(struct drm_device *);
 
 int armada_overlay_plane_create(struct drm_device *, unsigned long);

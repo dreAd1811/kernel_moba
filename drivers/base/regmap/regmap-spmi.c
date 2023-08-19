@@ -83,7 +83,11 @@ static int regmap_spmi_base_write(void *context, const void *data,
 					     count - 1);
 }
 
+<<<<<<< HEAD
 static const struct regmap_bus regmap_spmi_base = {
+=======
+static struct regmap_bus regmap_spmi_base = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read				= regmap_spmi_base_read,
 	.write				= regmap_spmi_base_write,
 	.gather_write			= regmap_spmi_base_gather_write,
@@ -203,7 +207,11 @@ static int regmap_spmi_ext_write(void *context, const void *data,
 					    count - 2);
 }
 
+<<<<<<< HEAD
 static const struct regmap_bus regmap_spmi_ext = {
+=======
+static struct regmap_bus regmap_spmi_ext = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read				= regmap_spmi_ext_read,
 	.write				= regmap_spmi_ext_write,
 	.gather_write			= regmap_spmi_ext_gather_write,

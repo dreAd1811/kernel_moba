@@ -81,6 +81,10 @@ static int dmz_reclaim_align_wp(struct dmz_reclaim *zrc, struct dm_zone *zone,
 			    "Align zone %u wp %llu to %llu (wp+%u) blocks failed %d",
 			    dmz_id(zmd, zone), (unsigned long long)wp_block,
 			    (unsigned long long)block, nr_blocks, ret);
+<<<<<<< HEAD
+=======
+		dmz_check_bdev(zrc->dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ret;
 	}
 
@@ -164,8 +168,15 @@ static int dmz_reclaim_copy(struct dmz_reclaim *zrc,
 
 		/* Copy the valid region */
 		set_bit(DMZ_RECLAIM_KCOPY, &zrc->flags);
+<<<<<<< HEAD
 		dm_kcopyd_copy(zrc->kc, &src, 1, &dst, flags,
 			       dmz_reclaim_kcopy_end, zrc);
+=======
+		ret = dm_kcopyd_copy(zrc->kc, &src, 1, &dst, flags,
+				     dmz_reclaim_kcopy_end, zrc);
+		if (ret)
+			return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* Wait for copy to complete */
 		wait_on_bit_io(&zrc->flags, DMZ_RECLAIM_KCOPY,
@@ -347,8 +358,13 @@ static int dmz_do_reclaim(struct dmz_reclaim *zrc)
 
 	/* Get a data zone */
 	dzone = dmz_get_zone_for_reclaim(zmd);
+<<<<<<< HEAD
 	if (IS_ERR(dzone))
 		return PTR_ERR(dzone);
+=======
+	if (!dzone)
+		return -EBUSY;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	start = jiffies;
 
@@ -488,12 +504,16 @@ static void dmz_reclaim_work(struct work_struct *work)
 	ret = dmz_do_reclaim(zrc);
 	if (ret) {
 		dmz_dev_debug(zrc->dev, "Reclaim error %d\n", ret);
+<<<<<<< HEAD
 		if (ret == -EIO)
 			/*
 			 * LLD might be performing some error handling sequence
 			 * at the underlying device. To not interfere, do not
 			 * attempt to schedule the next reclaim run immediately.
 			 */
+=======
+		if (!dmz_check_bdev(zrc->dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return;
 	}
 

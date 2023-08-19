@@ -1,6 +1,20 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
+=======
+/*
+ * Copyright (c) 2015-2019, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #define pr_fmt(fmt) "mem_lat: " fmt
@@ -52,7 +66,11 @@ static ssize_t show_##name(struct device *dev,				\
 {									\
 	struct devfreq *df = to_devfreq(dev);				\
 	struct memlat_node *hw = df->data;				\
+<<<<<<< HEAD
 	return scnprintf(buf, PAGE_SIZE, "%u\n", hw->name);		\
+=======
+	return snprintf(buf, PAGE_SIZE, "%u\n", hw->name);		\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define store_attr(name, _min, _max) \
@@ -78,7 +96,11 @@ show_attr(__attr)			\
 store_attr(__attr, min, max)		\
 static DEVICE_ATTR(__attr, 0644, show_##__attr, store_##__attr)
 
+<<<<<<< HEAD
 static ssize_t freq_map_show(struct device *dev, struct device_attribute *attr,
+=======
+static ssize_t show_map(struct device *dev, struct device_attribute *attr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			char *buf)
 {
 	struct devfreq *df = to_devfreq(dev);
@@ -86,20 +108,35 @@ static ssize_t freq_map_show(struct device *dev, struct device_attribute *attr,
 	struct core_dev_map *map = n->hw->freq_map;
 	unsigned int cnt = 0;
 
+<<<<<<< HEAD
 	cnt += scnprintf(buf, PAGE_SIZE, "Core freq (MHz)\tDevice BW\n");
 
 	while (map->core_mhz && cnt < PAGE_SIZE) {
 		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "%15u\t%9u\n",
+=======
+	cnt += snprintf(buf, PAGE_SIZE, "Core freq (MHz)\tDevice BW\n");
+
+	while (map->core_mhz && cnt < PAGE_SIZE) {
+		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "%15u\t%9u\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				map->core_mhz, map->target_freq);
 		map++;
 	}
 	if (cnt < PAGE_SIZE)
+<<<<<<< HEAD
 		cnt += scnprintf(buf + cnt, PAGE_SIZE - cnt, "\n");
+=======
+		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return cnt;
 }
 
+<<<<<<< HEAD
 static DEVICE_ATTR_RO(freq_map);
+=======
+static DEVICE_ATTR(freq_map, 0444, show_map, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned long core_to_dev_freq(struct memlat_node *node,
 		unsigned long coref)
@@ -152,8 +189,12 @@ static int start_monitor(struct devfreq *df)
 		return ret;
 	}
 
+<<<<<<< HEAD
 	if (!hw->should_ignore_df_monitor)
 		devfreq_monitor_start(df);
+=======
+	devfreq_monitor_start(df);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	node->mon_started = true;
 
@@ -167,9 +208,13 @@ static void stop_monitor(struct devfreq *df)
 
 	node->mon_started = false;
 
+<<<<<<< HEAD
 	if (!hw->should_ignore_df_monitor)
 		devfreq_monitor_stop(df);
 
+=======
+	devfreq_monitor_stop(df);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	hw->stop_hwmon(hw);
 }
 
@@ -345,15 +390,22 @@ static struct attribute_group compute_dev_attr_group = {
 	.attrs = compute_dev_attr,
 };
 
+<<<<<<< HEAD
 #define MIN_MS	0U
+=======
+#define MIN_MS	10U
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MAX_MS	500U
 static int devfreq_memlat_ev_handler(struct devfreq *df,
 					unsigned int event, void *data)
 {
 	int ret;
 	unsigned int sample_ms;
+<<<<<<< HEAD
 	struct memlat_node *node;
 	struct memlat_hwmon *hw;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (event) {
 	case DEVFREQ_GOV_START:
@@ -401,6 +453,7 @@ static int devfreq_memlat_ev_handler(struct devfreq *df,
 		break;
 
 	case DEVFREQ_GOV_INTERVAL:
+<<<<<<< HEAD
 		node = df->data;
 		hw = node->hw;
 		sample_ms = *(unsigned int *)data;
@@ -410,6 +463,12 @@ static int devfreq_memlat_ev_handler(struct devfreq *df,
 			hw->request_update_ms(hw, sample_ms);
 		if (!hw->should_ignore_df_monitor)
 			devfreq_interval_update(df, &sample_ms);
+=======
+		sample_ms = *(unsigned int *)data;
+		sample_ms = max(MIN_MS, sample_ms);
+		sample_ms = min(MAX_MS, sample_ms);
+		devfreq_interval_update(df, &sample_ms);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	}
 

@@ -579,13 +579,26 @@ static u32 *parent_process(const char *clocks[],
 	 */
 	parent_names = kmalloc_array(parent_count, sizeof(*parent_names),
 			       GFP_KERNEL);
+<<<<<<< HEAD
 	if (!parent_names)
 		return ERR_PTR(-ENOMEM);
+=======
+	if (!parent_names) {
+		pr_err("%s: error allocating %u parent names\n", __func__,
+				parent_count);
+		return ERR_PTR(-ENOMEM);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* There is at least one parent, so allocate a selector array */
 	parent_sel = kmalloc_array(parent_count, sizeof(*parent_sel),
 				   GFP_KERNEL);
 	if (!parent_sel) {
+<<<<<<< HEAD
+=======
+		pr_err("%s: error allocating %u parent selectors\n", __func__,
+				parent_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(parent_names);
 
 		return ERR_PTR(-ENOMEM);

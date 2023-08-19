@@ -53,6 +53,7 @@
 #include "common.h"
 #include "sdma.h"
 
+<<<<<<< HEAD
 #define LINK_UP_DELAY  500  /* in microseconds */
 
 static void set_mgmt_allowed(struct hfi1_pportdata *ppd)
@@ -89,6 +90,8 @@ static void add_full_mgmt_pkey(struct hfi1_pportdata *ppd)
 	hfi1_event_pkey_change(ppd->dd, ppd->port);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * format_hwmsg - format a single hwerror message
  * @msg message buffer
@@ -138,6 +141,7 @@ static void signal_ib_event(struct hfi1_pportdata *ppd, enum ib_event_type ev)
 	ib_dispatch_event(&event);
 }
 
+<<<<<<< HEAD
 /**
  * handle_linkup_change - finish linkup/down state changes
  * @dd: valid device
@@ -148,6 +152,11 @@ static void signal_ib_event(struct hfi1_pportdata *ppd, enum ib_event_type ev)
  *
  * This is called outside an interrupt.
  *
+=======
+/*
+ * Handle a linkup or link down notification.
+ * This is called outside an interrupt.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 void handle_linkup_change(struct hfi1_devdata *dd, u32 linkup)
 {
@@ -194,6 +203,7 @@ void handle_linkup_change(struct hfi1_devdata *dd, u32 linkup)
 			    ppd->neighbor_guid, ppd->neighbor_type,
 			    ppd->neighbor_port_number);
 
+<<<<<<< HEAD
 		/* HW needs LINK_UP_DELAY to settle, give it that chance */
 		udelay(LINK_UP_DELAY);
 
@@ -206,6 +216,8 @@ void handle_linkup_change(struct hfi1_devdata *dd, u32 linkup)
 		if (ppd->mgmt_allowed)
 			add_full_mgmt_pkey(ppd);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* physical link went up */
 		ppd->linkup = 1;
 		ppd->offline_disabled_reason =

@@ -174,6 +174,10 @@ static SIMPLE_DEV_PM_OPS(m62332_pm_ops, m62332_suspend, m62332_resume);
 static const struct iio_info m62332_info = {
 	.read_raw = m62332_read_raw,
 	.write_raw = m62332_write_raw,
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 #define M62332_CHANNEL(chan) {					\

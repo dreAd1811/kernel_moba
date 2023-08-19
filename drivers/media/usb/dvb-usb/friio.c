@@ -8,7 +8,11 @@
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation, version 2.
  *
+<<<<<<< HEAD
  * see Documentation/media/dvb-drivers/dvb-usb.rst for more information
+=======
+ * see Documentation/dvb/README.dvb-usb for more information
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 #include "friio.h"
 
@@ -21,7 +25,11 @@ MODULE_PARM_DESC(debug,
 
 DVB_DEFINE_MOD_OPT_ADAPTER_NR(adapter_nr);
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Indirect I2C access to the PLL via FE.
  * whole I2C protocol data to the PLL is sent via the FE's I2C register.
  * This is done by a control msg to the FE with the I2C data accompanied, and

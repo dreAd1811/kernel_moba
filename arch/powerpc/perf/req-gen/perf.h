@@ -3,7 +3,10 @@
 #define LINUX_POWERPC_PERF_REQ_GEN_PERF_H_
 
 #include <linux/perf_event.h>
+<<<<<<< HEAD
 #include <linux/stringify.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef REQUEST_FILE
 #error "REQUEST_FILE must be defined before including"

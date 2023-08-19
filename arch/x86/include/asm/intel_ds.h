@@ -8,7 +8,10 @@
 
 /* The maximal number of PEBS events: */
 #define MAX_PEBS_EVENTS		8
+<<<<<<< HEAD
 #define MAX_FIXED_PEBS_EVENTS	3
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*
  * A debug store configuration.
@@ -24,7 +27,11 @@ struct debug_store {
 	u64	pebs_index;
 	u64	pebs_absolute_maximum;
 	u64	pebs_interrupt_threshold;
+<<<<<<< HEAD
 	u64	pebs_event_reset[MAX_PEBS_EVENTS + MAX_FIXED_PEBS_EVENTS];
+=======
+	u64	pebs_event_reset[MAX_PEBS_EVENTS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } __aligned(PAGE_SIZE);
 
 DECLARE_PER_CPU_PAGE_ALIGNED(struct debug_store, cpu_debug_store);

@@ -18,10 +18,15 @@
 #include <linux/ethtool.h>
 #include <linux/io.h>
 #include <net/dsa.h>
+<<<<<<< HEAD
 #include "stmmac.h"
 #include "stmmac_pcs.h"
 #include "dwmac4.h"
 #include "dwmac5.h"
+=======
+#include "stmmac_pcs.h"
+#include "dwmac4.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static void dwmac4_core_init(struct mac_device_info *hw,
 			     struct net_device *dev)
@@ -37,10 +42,20 @@ static void dwmac4_core_init(struct mac_device_info *hw,
 	if (mtu > 2000)
 		value |= GMAC_CONFIG_JE;
 
+<<<<<<< HEAD
 	if (hw->ps) {
 		value |= GMAC_CONFIG_TE;
 
 		value &= hw->link.speed_mask;
+=======
+	if (hw->crc_strip_en)
+		value |= GMAC_CONFIG_CRC;
+
+	if (hw->ps) {
+		value |= GMAC_CONFIG_TE;
+
+		value &= ~(hw->link.speed_mask);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		switch (hw->ps) {
 		case SPEED_1000:
 			value |= hw->link.speed1000;
@@ -56,9 +71,16 @@ static void dwmac4_core_init(struct mac_device_info *hw,
 
 	writel(value, ioaddr + GMAC_CONFIG);
 
+<<<<<<< HEAD
 	/* Enable GMAC interrupts */
 	value = GMAC_INT_DEFAULT_ENABLE;
 
+=======
+	/* Mask GMAC interrupts */
+	value = GMAC_INT_DEFAULT_MASK;
+	if (hw->pmt)
+		value |= GMAC_INT_PMT_EN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (hw->pcs)
 		value |= GMAC_PCS_IRQ_DEFAULT;
 
@@ -88,8 +110,11 @@ static void dwmac4_rx_queue_priority(struct mac_device_info *hw,
 	u32 value;
 
 	base_register = (queue < 4) ? GMAC_RXQ_CTRL2 : GMAC_RXQ_CTRL3;
+<<<<<<< HEAD
 	if (queue >= 4)
 		queue -= 4;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	value = readl(ioaddr + base_register);
 
@@ -107,8 +132,11 @@ static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
 	u32 value;
 
 	base_register = (queue < 4) ? GMAC_TXQ_PRTY_MAP0 : GMAC_TXQ_PRTY_MAP1;
+<<<<<<< HEAD
 	if (queue >= 4)
 		queue -= 4;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	value = readl(ioaddr + base_register);
 
@@ -119,7 +147,11 @@ static void dwmac4_tx_queue_priority(struct mac_device_info *hw,
 	writel(value, ioaddr + base_register);
 }
 
+<<<<<<< HEAD
 static void dwmac4_rx_queue_routing(struct mac_device_info *hw,
+=======
+static void dwmac4_tx_queue_routing(struct mac_device_info *hw,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    u8 packet, u32 queue)
 {
 	void __iomem *ioaddr = hw->pcsr;
@@ -196,6 +228,11 @@ static void dwmac4_prog_mtl_tx_algorithms(struct mac_device_info *hw,
 	default:
 		break;
 	}
+<<<<<<< HEAD
+=======
+
+	writel_relaxed(value, ioaddr + MTL_OPERATION_MODE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void dwmac4_set_mtl_tx_queue_weight(struct mac_device_info *hw,
@@ -443,7 +480,11 @@ static void dwmac4_set_filter(struct mac_device_info *hw,
 	}
 
 	/* Handle multiple unicast addresses */
+<<<<<<< HEAD
 	if (netdev_uc_count(dev) > GMAC_MAX_PERFECT_ADDRESSES) {
+=======
+	if (netdev_uc_count(dev) > hw->unicast_filter_entries) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Switch to promiscuous mode if more than 128 addrs
 		 * are required
 		 */
@@ -600,6 +641,7 @@ static int dwmac4_irq_status(struct mac_device_info *hw,
 		x->irq_receive_pmt_irq_n++;
 	}
 
+<<<<<<< HEAD
 	/* MAC tx/rx EEE LPI entry/exit interrupts */
 	if (intr_status & lpi_irq) {
 		/* Clear LPI interrupt by reading MAC_LPI_Control_Status */
@@ -619,6 +661,8 @@ static int dwmac4_irq_status(struct mac_device_info *hw,
 			x->irq_rx_path_exit_lpi_mode_n++;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dwmac_pcs_isr(ioaddr, GMAC_PCS_BASE, intr_status, x);
 	if (intr_status & PCS_RGSMIIIS_IRQ)
 		dwmac4_phystatus(ioaddr, x);
@@ -715,14 +759,25 @@ static void dwmac4_debug(void __iomem *ioaddr, struct stmmac_extra_stats *x,
 		x->mac_gmii_rx_proto_engine++;
 }
 
+<<<<<<< HEAD
 const struct stmmac_ops dwmac4_ops = {
 	.core_init = dwmac4_core_init,
 	.set_mac = stmmac_set_mac,
+=======
+static const struct stmmac_ops dwmac4_ops = {
+	.core_init = dwmac4_core_init,
+	.set_mac = stmmac_set_mac,
+	.set_vlan = stmmac_set_vlan_filter_rx_queue,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.rx_ipc = dwmac4_rx_ipc_enable,
 	.rx_queue_enable = dwmac4_rx_queue_enable,
 	.rx_queue_prio = dwmac4_rx_queue_priority,
 	.tx_queue_prio = dwmac4_tx_queue_priority,
+<<<<<<< HEAD
 	.rx_queue_routing = dwmac4_rx_queue_routing,
+=======
+	.rx_queue_routing = dwmac4_tx_queue_routing,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.prog_mtl_rx_algorithms = dwmac4_prog_mtl_rx_algorithms,
 	.prog_mtl_tx_algorithms = dwmac4_prog_mtl_tx_algorithms,
 	.set_mtl_tx_queue_weight = dwmac4_set_mtl_tx_queue_weight,
@@ -746,14 +801,25 @@ const struct stmmac_ops dwmac4_ops = {
 	.set_filter = dwmac4_set_filter,
 };
 
+<<<<<<< HEAD
 const struct stmmac_ops dwmac410_ops = {
 	.core_init = dwmac4_core_init,
 	.set_mac = stmmac_dwmac4_set_mac,
+=======
+static const struct stmmac_ops dwmac410_ops = {
+	.core_init = dwmac4_core_init,
+	.set_mac = stmmac_dwmac4_set_mac,
+	.set_vlan = stmmac_set_vlan_filter_rx_queue,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.rx_ipc = dwmac4_rx_ipc_enable,
 	.rx_queue_enable = dwmac4_rx_queue_enable,
 	.rx_queue_prio = dwmac4_rx_queue_priority,
 	.tx_queue_prio = dwmac4_tx_queue_priority,
+<<<<<<< HEAD
 	.rx_queue_routing = dwmac4_rx_queue_routing,
+=======
+	.rx_queue_routing = dwmac4_tx_queue_routing,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.prog_mtl_rx_algorithms = dwmac4_prog_mtl_rx_algorithms,
 	.prog_mtl_tx_algorithms = dwmac4_prog_mtl_tx_algorithms,
 	.set_mtl_tx_queue_weight = dwmac4_set_mtl_tx_queue_weight,
@@ -777,6 +843,7 @@ const struct stmmac_ops dwmac410_ops = {
 	.set_filter = dwmac4_set_filter,
 };
 
+<<<<<<< HEAD
 const struct stmmac_ops dwmac510_ops = {
 	.core_init = dwmac4_core_init,
 	.set_mac = stmmac_dwmac4_set_mac,
@@ -823,6 +890,21 @@ int dwmac4_setup(struct stmmac_priv *priv)
 	mac->pcsr = priv->ioaddr;
 	mac->multicast_filter_bins = priv->plat->multicast_filter_bins;
 	mac->unicast_filter_entries = priv->plat->unicast_filter_entries;
+=======
+struct mac_device_info *dwmac4_setup(void __iomem *ioaddr, int mcbins,
+				     int perfect_uc_entries, int *synopsys_id)
+{
+	struct mac_device_info *mac;
+	u32 hwid = readl(ioaddr + GMAC_VERSION);
+
+	mac = kzalloc(sizeof(const struct mac_device_info), GFP_KERNEL);
+	if (!mac)
+		return NULL;
+
+	mac->pcsr = ioaddr;
+	mac->multicast_filter_bins = mcbins;
+	mac->unicast_filter_entries = perfect_uc_entries;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mac->mcast_bits_log2 = 0;
 
 	if (mac->multicast_filter_bins)
@@ -842,5 +924,22 @@ int dwmac4_setup(struct stmmac_priv *priv)
 	mac->mii.clk_csr_shift = 8;
 	mac->mii.clk_csr_mask = GENMASK(11, 8);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	/* Get and dump the chip ID */
+	*synopsys_id = stmmac_get_synopsys_id(hwid);
+
+	if (*synopsys_id > DWMAC_CORE_4_00)
+		mac->dma = &dwmac410_dma_ops;
+	else
+		mac->dma = &dwmac4_dma_ops;
+
+	if (*synopsys_id >= DWMAC_CORE_4_00)
+		mac->mac = &dwmac410_ops;
+	else
+		mac->mac = &dwmac4_ops;
+
+	return mac;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

@@ -27,7 +27,10 @@
 #define __KVM_HAVE_GUEST_DEBUG
 #define __KVM_HAVE_IRQ_LINE
 #define __KVM_HAVE_READONLY_MEM
+<<<<<<< HEAD
 #define __KVM_HAVE_VCPU_EVENTS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KVM_COALESCED_MMIO_PAGE_OFFSET 1
 
@@ -92,7 +95,10 @@ struct kvm_regs {
 #define KVM_VGIC_V3_ADDR_TYPE_DIST	2
 #define KVM_VGIC_V3_ADDR_TYPE_REDIST	3
 #define KVM_VGIC_ITS_ADDR_TYPE		4
+<<<<<<< HEAD
 #define KVM_VGIC_V3_ADDR_TYPE_REDIST_REGION	5
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KVM_VGIC_V3_DIST_SIZE		SZ_64K
 #define KVM_VGIC_V3_REDIST_SIZE		(2 * SZ_64K)
@@ -126,6 +132,7 @@ struct kvm_sync_regs {
 struct kvm_arch_memory_slot {
 };
 
+<<<<<<< HEAD
 /* for KVM_GET/SET_VCPU_EVENTS */
 struct kvm_vcpu_events {
 	struct {
@@ -138,6 +145,8 @@ struct kvm_vcpu_events {
 	__u32 reserved[12];
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* If you need to interpret the index values, here is the key: */
 #define KVM_REG_ARM_COPROC_MASK		0x000000000FFF0000
 #define KVM_REG_ARM_COPROC_SHIFT	16
@@ -149,6 +158,7 @@ struct kvm_vcpu_events {
 #define KVM_REG_ARM_CRM_SHIFT		7
 #define KVM_REG_ARM_32_CRN_MASK		0x0000000000007800
 #define KVM_REG_ARM_32_CRN_SHIFT	11
+<<<<<<< HEAD
 /*
  * For KVM currently all guest registers are nonsecure, but we reserve a bit
  * in the encoding to distinguish secure from nonsecure for AArch32 system
@@ -158,6 +168,8 @@ struct kvm_vcpu_events {
  */
 #define KVM_REG_ARM_SECURE_MASK	0x0000000010000000
 #define KVM_REG_ARM_SECURE_SHIFT	28
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ARM_CP15_REG_SHIFT_MASK(x,n) \
 	(((x) << KVM_REG_ARM_ ## n ## _SHIFT) & KVM_REG_ARM_ ## n ## _MASK)
@@ -175,12 +187,15 @@ struct kvm_vcpu_events {
 	(__ARM_CP15_REG(op1, 0, crm, 0) | KVM_REG_SIZE_U64)
 #define ARM_CP15_REG64(...) __ARM_CP15_REG64(__VA_ARGS__)
 
+<<<<<<< HEAD
 /* PL1 Physical Timer Registers */
 #define KVM_REG_ARM_PTIMER_CTL		ARM_CP15_REG32(0, 14, 2, 1)
 #define KVM_REG_ARM_PTIMER_CNT		ARM_CP15_REG64(0, 14)
 #define KVM_REG_ARM_PTIMER_CVAL		ARM_CP15_REG64(2, 14)
 
 /* Virtual Timer Registers */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define KVM_REG_ARM_TIMER_CTL		ARM_CP15_REG32(0, 14, 3, 1)
 #define KVM_REG_ARM_TIMER_CNT		ARM_CP15_REG64(1, 14)
 #define KVM_REG_ARM_TIMER_CVAL		ARM_CP15_REG64(3, 14)
@@ -251,7 +266,10 @@ struct kvm_vcpu_events {
 #define   KVM_DEV_ARM_ITS_SAVE_TABLES		1
 #define   KVM_DEV_ARM_ITS_RESTORE_TABLES	2
 #define   KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES	3
+<<<<<<< HEAD
 #define   KVM_DEV_ARM_ITS_CTRL_RESET		4
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* KVM_IRQ_LINE irq field index values */
 #define KVM_ARM_IRQ_TYPE_SHIFT		24

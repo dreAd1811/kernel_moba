@@ -1,7 +1,21 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0+
 //
 // Copyright 2011 Freescale Semiconductor, Inc.
 // Copyright 2011 Linaro Ltd.
+=======
+/*
+ * Copyright 2011 Freescale Semiconductor, Inc.
+ * Copyright 2011 Linaro Ltd.
+ *
+ * The code contained herein is licensed under the GNU General Public
+ * License. You may obtain a copy of the GNU General Public License
+ * Version 2 or later at the following locations:
+ *
+ * http://www.opensource.org/licenses/gpl-license.html
+ * http://www.gnu.org/copyleft/gpl.html
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /dts-v1/;
 #include "imx51.dtsi"
@@ -14,6 +28,7 @@
 		stdout-path = &uart1;
 	};
 
+<<<<<<< HEAD
 	memory@90000000 {
 		reg = <0x90000000 0x20000000>;
 	};
@@ -56,6 +71,27 @@
 	};
 
 	display1: disp1 {
+=======
+	memory {
+		reg = <0x90000000 0x20000000>;
+	};
+
+	clocks {
+		ckih1 {
+			clock-frequency = <22579200>;
+		};
+
+		clk_26M: codec_clock {
+			compatible = "fixed-clock";
+			reg=<0>;
+			#clock-cells = <0>;
+			clock-frequency = <26000000>;
+			gpios = <&gpio4 26 GPIO_ACTIVE_LOW>;
+		};
+	};
+
+	display0: display@di0 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		interface-pix-fmt = "rgb24";
 		pinctrl-names = "default";
@@ -77,12 +113,20 @@
 
 		port {
 			display0_in: endpoint {
+<<<<<<< HEAD
 				remote-endpoint = <&ipu_di0_disp1>;
+=======
+				remote-endpoint = <&ipu_di0_disp0>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 	};
 
+<<<<<<< HEAD
 	display2: disp2 {
+=======
+	display1: display@di1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		compatible = "fsl,imx-parallel-display";
 		interface-pix-fmt = "rgb565";
 		pinctrl-names = "default";
@@ -109,7 +153,11 @@
 
 		port {
 			display1_in: endpoint {
+<<<<<<< HEAD
 				remote-endpoint = <&ipu_di1_disp2>;
+=======
+				remote-endpoint = <&ipu_di1_disp1>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			};
 		};
 	};
@@ -170,6 +218,7 @@
 		mux-ext-port = <3>;
 	};
 
+<<<<<<< HEAD
 	usbphy1: usbphy1 {
 		compatible = "usb-nop-xceiv";
 		pinctrl-names = "default";
@@ -179,6 +228,20 @@
 		reset-gpios = <&gpio2 5 GPIO_ACTIVE_LOW>;
 		vcc-supply = <&vusb_reg>;
 		#phy-cells = <0>;
+=======
+	usbphy {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "simple-bus";
+
+		usbh1phy: usbh1phy@0 {
+			compatible = "usb-nop-xceiv";
+			reg = <0>;
+			clocks = <&clks IMX5_CLK_DUMMY>;
+			clock-names = "main_clk";
+			reset-gpios = <&gpio2 5 GPIO_ACTIVE_LOW>;
+		};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -253,10 +316,13 @@
 				regulator-max-microvolt = <3150000>;
 			};
 
+<<<<<<< HEAD
 			vusb_reg: vusb {
 				regulator-boot-on;
 			};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			vusb2_reg: vusb2 {
 				regulator-min-microvolt = <2400000>;
 				regulator-max-microvolt = <2775000>;
@@ -354,21 +420,38 @@
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
 
+<<<<<<< HEAD
 	sgtl5000: codec@a {
 		compatible = "fsl,sgtl5000";
 		reg = <0x0a>;
 		#sound-dai-cells = <0>;
 		clocks = <&clk_audio>;
+=======
+	sgtl5000: codec@0a {
+		compatible = "fsl,sgtl5000";
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_clkcodec>;
+		reg = <0x0a>;
+		clocks = <&clk_26M>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		VDDA-supply = <&vdig_reg>;
 		VDDIO-supply = <&vvideo_reg>;
 	};
 };
 
+<<<<<<< HEAD
 &ipu_di0_disp1 {
 	remote-endpoint = <&display0_in>;
 };
 
 &ipu_di1_disp2 {
+=======
+&ipu_di0_disp0 {
+	remote-endpoint = <&display0_in>;
+};
+
+&ipu_di1_disp1 {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	remote-endpoint = <&display1_in>;
 };
 
@@ -396,10 +479,13 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &pmu {
 	secure-reg-access;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &ssi2 {
 	status = "okay";
 };
@@ -428,15 +514,22 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_usbh1>;
 	vbus-supply = <&reg_hub_reset>;
+<<<<<<< HEAD
 	fsl,usbphy = <&usbphy1>;
+=======
+	fsl,usbphy = <&usbh1phy>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	phy_type = "ulpi";
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &usbphy0 {
 	vcc-supply = <&vusb_reg>;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usbotg {
 	dr_mode = "otg";
 	disable-over-current;
@@ -455,6 +548,7 @@
 			>;
 		};
 
+<<<<<<< HEAD
 		pinctrl_clk26mhz_audio: clk26mhzaudiocgrp {
 			fsl,pins = <
 				MX51_PAD_CSPI1_RDY__GPIO4_26		0x85
@@ -470,6 +564,11 @@
 		pinctrl_clk26mhz_usb: clk26mhzusbgrp {
 			fsl,pins = <
 				MX51_PAD_EIM_D17__GPIO2_1		0x85
+=======
+		pinctrl_clkcodec: clkcodecgrp {
+			fsl,pins = <
+				MX51_PAD_CSPI1_RDY__GPIO4_26		0x80000000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			>;
 		};
 

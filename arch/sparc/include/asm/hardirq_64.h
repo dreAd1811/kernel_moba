@@ -10,9 +10,14 @@
 #include <asm/cpudata.h>
 
 #define __ARCH_IRQ_STAT
+<<<<<<< HEAD
 
 #define local_softirq_pending_ref \
 	__cpu_data.__softirq_pending
+=======
+#define local_softirq_pending() \
+	(local_cpu_data().__softirq_pending)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void ack_bad_irq(unsigned int irq);
 

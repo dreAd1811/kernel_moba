@@ -37,21 +37,49 @@
 #include "rxe_queue.h"
 
 int do_mmap_info(struct rxe_dev *rxe,
+<<<<<<< HEAD
 		 struct mminfo __user *outbuf,
+=======
+		 struct ib_udata *udata,
+		 bool is_req,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 struct ib_ucontext *context,
 		 struct rxe_queue_buf *buf,
 		 size_t buf_size,
 		 struct rxe_mmap_info **ip_p)
 {
 	int err;
+<<<<<<< HEAD
 	struct rxe_mmap_info *ip = NULL;
 
 	if (outbuf) {
+=======
+	u32 len, offset;
+	struct rxe_mmap_info *ip = NULL;
+
+	if (udata) {
+		if (is_req) {
+			len = udata->outlen - sizeof(struct mminfo);
+			offset = sizeof(struct mminfo);
+		} else {
+			len = udata->outlen;
+			offset = 0;
+		}
+
+		if (len < sizeof(ip->info))
+			goto err1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ip = rxe_create_mmap_info(rxe, buf_size, context, buf);
 		if (!ip)
 			goto err1;
 
+<<<<<<< HEAD
 		err = copy_to_user(outbuf, &ip->info, sizeof(ip->info));
+=======
+		err = copy_to_user(udata->outbuf + offset, &ip->info,
+				   sizeof(ip->info));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err)
 			goto err2;
 
@@ -157,7 +185,11 @@ int rxe_queue_resize(struct rxe_queue *q,
 		     unsigned int *num_elem_p,
 		     unsigned int elem_size,
 		     struct ib_ucontext *context,
+<<<<<<< HEAD
 		     struct mminfo __user *outbuf,
+=======
+		     struct ib_udata *udata,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		     spinlock_t *producer_lock,
 		     spinlock_t *consumer_lock)
 {
@@ -170,7 +202,11 @@ int rxe_queue_resize(struct rxe_queue *q,
 	if (!new_q)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	err = do_mmap_info(new_q->rxe, outbuf, context, new_q->buf,
+=======
+	err = do_mmap_info(new_q->rxe, udata, false, context, new_q->buf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   new_q->buf_size, &new_q->ip);
 	if (err) {
 		vfree(new_q->buf);

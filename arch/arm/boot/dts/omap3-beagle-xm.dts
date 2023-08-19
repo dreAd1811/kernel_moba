@@ -30,6 +30,7 @@
 		ethernet = &ethernet;
 	};
 
+<<<<<<< HEAD
 	/* fixed 26MHz oscillator */
 	hfclk_26m: oscillator {
 		#clock-cells = <0>;
@@ -37,6 +38,8 @@
 		clock-frequency = <26000000>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	leds {
 		compatible = "gpio-leds";
 
@@ -97,7 +100,10 @@
 		compatible = "usb-nop-xceiv";
 		reset-gpios = <&gpio5 19 GPIO_ACTIVE_LOW>; /* gpio_147 */
 		vcc-supply = <&hsusb2_power>;
+<<<<<<< HEAD
 		#phy-cells = <0>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	tfp410: encoder0 {
@@ -281,9 +287,12 @@
 		interrupts = <7>; /* SYS_NIRQ cascaded to intc */
 		interrupt-parent = <&intc>;
 
+<<<<<<< HEAD
 		clocks = <&hfclk_26m>;
 		clock-names = "fck";
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		twl_audio: audio {
 			compatible = "ti,twl4030-audio";
 			codec {

@@ -3,6 +3,10 @@
  *
  * Copyright (C) 2012-2016 Synaptics Incorporated. All rights reserved.
  *
+<<<<<<< HEAD
+=======
+ * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Copyright (C) 2012 Alexandra Chin <alexandra.chin@tw.synaptics.com>
  * Copyright (C) 2012 Scott Lin <scott.lin@tw.synaptics.com>
  *
@@ -42,6 +46,7 @@
 #include <linux/platform_device.h>
 #include <linux/input/synaptics_dsx.h>
 #include "synaptics_dsx_core.h"
+<<<<<<< HEAD
 
 #define SYN_I2C_RETRY_TIMES 10
 
@@ -51,6 +56,12 @@
 /*
 #define XFER_MSGS_LIMIT 8
 */
+=======
+#include "linux/moduleparam.h"
+
+#define SYN_I2C_RETRY_TIMES 10
+#define rd_msgs  1
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static unsigned char *wr_buf;
 
@@ -58,6 +69,11 @@ static struct synaptics_dsx_hw_interface hw_if;
 
 static struct platform_device *synaptics_dsx_i2c_device;
 
+<<<<<<< HEAD
+=======
+active_tp_setup(synaptics);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_OF
 static int parse_dt(struct device *dev, struct synaptics_dsx_board_data *bdata)
 {
@@ -178,6 +194,7 @@ static int parse_dt(struct device *dev, struct synaptics_dsx_board_data *bdata)
 		bdata->max_y_for_2d = -1;
 	}
 
+<<<<<<< HEAD
 	prop = of_find_property(np, "synaptics,swap-axes", NULL);
 	bdata->swap_axes = prop > 0 ? true : false;
 
@@ -186,6 +203,11 @@ static int parse_dt(struct device *dev, struct synaptics_dsx_board_data *bdata)
 
 	prop = of_find_property(np, "synaptics,y-flip", NULL);
 	bdata->y_flip = prop > 0 ? true : false;
+=======
+	bdata->swap_axes = of_property_read_bool(np, "synaptics,swap-axes");
+	bdata->x_flip = of_property_read_bool(np, "synaptics,x-flip");
+	bdata->y_flip = of_property_read_bool(np, "synaptics,y-flip");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	prop = of_find_property(np, "synaptics,ub-i2c-addr", NULL);
 	if (prop && prop->length) {
@@ -288,12 +310,20 @@ static void synaptics_rmi4_i2c_check_addr(struct synaptics_rmi4_data *rmi4_data,
 static int synaptics_rmi4_i2c_set_page(struct synaptics_rmi4_data *rmi4_data,
 		unsigned short addr)
 {
+<<<<<<< HEAD
 	int retval;
+=======
+	int retval = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char retry;
 	unsigned char buf[PAGE_SELECT_LEN];
 	unsigned char page;
 	struct i2c_client *i2c = to_i2c_client(rmi4_data->pdev->dev.parent);
+<<<<<<< HEAD
 	struct i2c_msg msg[1];
+=======
+	struct i2c_msg msg[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	msg[0].addr = hw_if.board_data->i2c_addr;
 	msg[0].flags = 0;
@@ -306,7 +336,11 @@ static int synaptics_rmi4_i2c_set_page(struct synaptics_rmi4_data *rmi4_data,
 
 	if (page != rmi4_data->current_page) {
 		for (retry = 0; retry < SYN_I2C_RETRY_TIMES; retry++) {
+<<<<<<< HEAD
 			if (i2c_transfer(i2c->adapter, msg, 1) == 1) {
+=======
+			if (i2c_transfer(i2c->adapter, &msg[0], 1) == 1) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				rmi4_data->current_page = page;
 				retval = PAGE_SELECT_LEN;
 				break;
@@ -314,7 +348,11 @@ static int synaptics_rmi4_i2c_set_page(struct synaptics_rmi4_data *rmi4_data,
 			dev_err(rmi4_data->pdev->dev.parent,
 					"%s: I2C retry %d\n",
 					__func__, retry + 1);
+<<<<<<< HEAD
 			msleep(100);
+=======
+			msleep(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (retry == SYN_I2C_RETRY_TIMES / 2) {
 				synaptics_rmi4_i2c_check_addr(rmi4_data, i2c);
@@ -331,6 +369,7 @@ static int synaptics_rmi4_i2c_set_page(struct synaptics_rmi4_data *rmi4_data,
 static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 		unsigned short addr, unsigned char *data, unsigned int length)
 {
+<<<<<<< HEAD
 	int retval;
 	unsigned char retry;
 	unsigned char buf;
@@ -340,6 +379,11 @@ static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 #else
 	unsigned int rd_msgs = 1;
 #endif
+=======
+	int retval = 0;
+	unsigned char retry;
+	unsigned char buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned char index = 0;
 	unsigned char xfer_msgs;
 	unsigned char remaining_msgs;
@@ -348,11 +392,15 @@ static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 	unsigned int remaining_length = length;
 	struct i2c_client *i2c = to_i2c_client(rmi4_data->pdev->dev.parent);
 	struct i2c_adapter *adap = i2c->adapter;
+<<<<<<< HEAD
 #ifdef I2C_BURST_LIMIT
 	struct i2c_msg msg[rd_msgs + 1];
 #else
 	struct i2c_msg msg[2];
 #endif
+=======
+	struct i2c_msg msg[rd_msgs + 1];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mutex_lock(&rmi4_data->rmi4_io_ctrl_mutex);
 
@@ -366,6 +414,7 @@ static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 	msg[0].flags = 0;
 	msg[0].len = 1;
 	msg[0].buf = &buf;
+<<<<<<< HEAD
 
 #ifdef I2C_BURST_LIMIT
 	for (ii = 0; ii < (rd_msgs - 1); ii++) {
@@ -378,6 +427,8 @@ static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 	}
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	msg[rd_msgs].addr = hw_if.board_data->i2c_addr;
 	msg[rd_msgs].flags = I2C_M_RD;
 	msg[rd_msgs].len = (unsigned short)remaining_length;
@@ -388,6 +439,7 @@ static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 	remaining_msgs = rd_msgs + 1;
 
 	while (remaining_msgs) {
+<<<<<<< HEAD
 #ifdef XFER_MSGS_LIMIT
 		if (remaining_msgs > XFER_MSGS_LIMIT)
 			xfer_msgs = XFER_MSGS_LIMIT;
@@ -396,6 +448,9 @@ static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 #else
 		xfer_msgs = remaining_msgs;
 #endif
+=======
+		xfer_msgs = remaining_msgs;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (retry = 0; retry < SYN_I2C_RETRY_TIMES; retry++) {
 			retval = i2c_transfer(adap, &msg[index], xfer_msgs);
 			if (retval == xfer_msgs)
@@ -404,16 +459,23 @@ static int synaptics_rmi4_i2c_read(struct synaptics_rmi4_data *rmi4_data,
 			dev_err(rmi4_data->pdev->dev.parent,
 					"%s: I2C retry %d\n",
 					__func__, retry + 1);
+<<<<<<< HEAD
 			msleep(100);
+=======
+			msleep(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			if (retry == SYN_I2C_RETRY_TIMES / 2) {
 				synaptics_rmi4_i2c_check_addr(rmi4_data, i2c);
 				i2c_addr = hw_if.board_data->i2c_addr;
 				msg[0].addr = i2c_addr;
+<<<<<<< HEAD
 #ifdef I2C_BURST_LIMIT
 				for (ii = 0; ii < (rd_msgs - 1); ii++)
 					msg[ii + 1].addr = i2c_addr;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				msg[rd_msgs].addr = i2c_addr;
 			}
 		}
@@ -444,6 +506,7 @@ static int synaptics_rmi4_i2c_write(struct synaptics_rmi4_data *rmi4_data,
 	int retval;
 	unsigned char retry;
 	struct i2c_client *i2c = to_i2c_client(rmi4_data->pdev->dev.parent);
+<<<<<<< HEAD
 	struct i2c_msg msg[1];
 
 	retval = synaptics_rmi4_i2c_alloc_buf(rmi4_data, length + 1);
@@ -451,6 +514,15 @@ static int synaptics_rmi4_i2c_write(struct synaptics_rmi4_data *rmi4_data,
 		return retval;
 
 	mutex_lock(&rmi4_data->rmi4_io_ctrl_mutex);
+=======
+	struct i2c_msg msg[2];
+
+	mutex_lock(&rmi4_data->rmi4_io_ctrl_mutex);
+
+	retval = synaptics_rmi4_i2c_alloc_buf(rmi4_data, length + 1);
+	if (retval < 0)
+		goto exit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	retval = synaptics_rmi4_i2c_set_page(rmi4_data, addr);
 	if (retval != PAGE_SELECT_LEN) {
@@ -473,14 +545,22 @@ static int synaptics_rmi4_i2c_write(struct synaptics_rmi4_data *rmi4_data,
 	}
 
 	for (retry = 0; retry < SYN_I2C_RETRY_TIMES; retry++) {
+<<<<<<< HEAD
 		if (i2c_transfer(i2c->adapter, msg, 1) == 1) {
+=======
+		if (i2c_transfer(i2c->adapter, &msg[0], 1) == 1) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			retval = length;
 			break;
 		}
 		dev_err(rmi4_data->pdev->dev.parent,
 				"%s: I2C retry %d\n",
 				__func__, retry + 1);
+<<<<<<< HEAD
 		msleep(100);
+=======
+		msleep(20);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if (retry == SYN_I2C_RETRY_TIMES / 2) {
 			synaptics_rmi4_i2c_check_addr(rmi4_data, i2c);
@@ -514,6 +594,7 @@ static void synaptics_rmi4_i2c_dev_release(struct device *dev)
 	return;
 }
 
+<<<<<<< HEAD
 static struct pinctrl *pinctrl;
 static struct pinctrl_state *pins_active;
 static struct pinctrl_state *pins_release;
@@ -637,10 +718,13 @@ static int check_default_tp(struct device_node *dt, const char *prop)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int synaptics_rmi4_i2c_probe(struct i2c_client *client,
 		const struct i2c_device_id *dev_id)
 {
 	int retval;
+<<<<<<< HEAD
 	struct device_node *dp = client->dev.of_node;
 
 	if (check_dt(dp)) {
@@ -652,6 +736,13 @@ static int synaptics_rmi4_i2c_probe(struct i2c_client *client,
 		return retval;
 	}
 
+=======
+	struct device_node *dt = client->dev.of_node;
+
+	if (synaptics_check_assigned_tp(dt, "compatible",
+		"qcom,i2c-touch-active") < 0)
+		goto err_dt_not_match;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!i2c_check_functionality(client->adapter,
 			I2C_FUNC_SMBUS_BYTE_DATA)) {
 		dev_err(&client->dev,
@@ -660,6 +751,7 @@ static int synaptics_rmi4_i2c_probe(struct i2c_client *client,
 		return -EIO;
 	}
 
+<<<<<<< HEAD
 	if (!i2c_check_functionality(client->adapter,
 			I2C_FUNC_SMBUS_BYTE_DATA)) {
 		dev_err(&client->dev,
@@ -668,6 +760,8 @@ static int synaptics_rmi4_i2c_probe(struct i2c_client *client,
 		return -EIO;
 	}
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	synaptics_dsx_i2c_device = kzalloc(
 			sizeof(struct platform_device),
 			GFP_KERNEL);
@@ -677,42 +771,64 @@ static int synaptics_rmi4_i2c_probe(struct i2c_client *client,
 				__func__);
 		return -ENOMEM;
 	}
+<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_OF
 	if (client->dev.of_node) {
 		hw_if.board_data = devm_kzalloc(&client->dev,
 				sizeof(struct synaptics_dsx_board_data),
 				GFP_KERNEL);
+<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!hw_if.board_data) {
 			dev_err(&client->dev,
 					"%s: Failed to allocate memory for board data\n",
 					__func__);
 			return -ENOMEM;
 		}
+<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
 		hw_if.board_data->cap_button_map = devm_kzalloc(&client->dev,
 				sizeof(struct synaptics_dsx_button_map),
 				GFP_KERNEL);
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
+=======
+		hw_if.board_data->cap_button_map = devm_kzalloc(&client->dev,
+				sizeof(struct synaptics_dsx_button_map),
+				GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!hw_if.board_data->cap_button_map) {
 			dev_err(&client->dev,
 					"%s: Failed to allocate memory for 0D button map\n",
 					__func__);
 			return -ENOMEM;
 		}
+<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
 		hw_if.board_data->vir_button_map = devm_kzalloc(&client->dev,
 				sizeof(struct synaptics_dsx_button_map),
 				GFP_KERNEL);
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
+=======
+		hw_if.board_data->vir_button_map = devm_kzalloc(&client->dev,
+				sizeof(struct synaptics_dsx_button_map),
+				GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!hw_if.board_data->vir_button_map) {
 			dev_err(&client->dev,
 					"%s: Failed to allocate memory for virtual button map\n",
 					__func__);
 			return -ENOMEM;
 		}
+<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		parse_dt(&client->dev, hw_if.board_data);
 	}
 #else
@@ -722,6 +838,7 @@ static int synaptics_rmi4_i2c_probe(struct i2c_client *client,
 	hw_if.bus_access = &bus_access;
 	hw_if.board_data->i2c_addr = client->addr;
 
+<<<<<<< HEAD
 	retval = syna_pinctrl_init(&client->dev);
 	if (0 == retval) {
 		syna_pinctrl_select_normal();
@@ -729,12 +846,15 @@ static int synaptics_rmi4_i2c_probe(struct i2c_client *client,
 		printk("[syna ] syna_pinctrl_init failed\n");
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	synaptics_dsx_i2c_device->name = PLATFORM_DRIVER_NAME;
 	synaptics_dsx_i2c_device->id = 0;
 	synaptics_dsx_i2c_device->num_resources = 0;
 	synaptics_dsx_i2c_device->dev.parent = &client->dev;
 	synaptics_dsx_i2c_device->dev.platform_data = &hw_if;
 	synaptics_dsx_i2c_device->dev.release = synaptics_rmi4_i2c_dev_release;
+<<<<<<< HEAD
 //printk("HQ add for probe line = %d fun = %s \n",__LINE__,__func__);
 	retval = platform_device_register(synaptics_dsx_i2c_device);
 	if (retval) {
@@ -743,10 +863,24 @@ static int synaptics_rmi4_i2c_probe(struct i2c_client *client,
 				"%s: Failed to register platform device\n",
 				__func__);
 		syna_pinctrl_select_release();  //gpio9 release
+=======
+
+	retval = platform_device_register(synaptics_dsx_i2c_device);
+	if (retval) {
+		dev_err(&client->dev,
+				"%s: Failed to register platform device\n",
+				__func__);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	}
 
 	return 0;
+<<<<<<< HEAD
+=======
+
+err_dt_not_match:
+	return -ENODEV;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int synaptics_rmi4_i2c_remove(struct i2c_client *client)
@@ -787,7 +921,10 @@ static struct i2c_driver synaptics_rmi4_i2c_driver = {
 
 int synaptics_rmi4_bus_init(void)
 {
+<<<<<<< HEAD
 	//printk("HQ add for syn init\n");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return i2c_add_driver(&synaptics_rmi4_i2c_driver);
 }
 EXPORT_SYMBOL(synaptics_rmi4_bus_init);

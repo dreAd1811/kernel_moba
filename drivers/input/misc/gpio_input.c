@@ -302,7 +302,11 @@ int gpio_event_input_func(struct gpio_event_input_devs *input_devs,
 				   input_devs->dev[0]->name,
 				   (input_devs->count > 1) ? "..." : "");
 
+<<<<<<< HEAD
 		ds->ws = wakeup_source_register(wlname);
+=======
+		ds->ws = wakeup_source_register(NULL, wlname);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(wlname);
 		if (!ds->ws) {
 			ret = -ENOMEM;

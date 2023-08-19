@@ -58,7 +58,11 @@ enum r600_hdmi_iec_status_bits {
 
 static struct r600_audio_pin r600_audio_status(struct radeon_device *rdev)
 {
+<<<<<<< HEAD
 	struct r600_audio_pin status = {};
+=======
+	struct r600_audio_pin status;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint32_t value;
 
 	value = RREG32(R600_AUDIO_RATE_BPS_CHANNEL);

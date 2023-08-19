@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * aQuantia Corporation Network Driver
  * Copyright (C) 2017 aQuantia Corporation. All rights reserved
@@ -5,13 +6,31 @@
  * This program is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU General Public License,
  * version 2, as published by the Free Software Foundation.
+=======
+/* SPDX-License-Identifier: GPL-2.0-only */
+/* Atlantic Network Driver
+ *
+ * Copyright (C) 2017 aQuantia Corporation
+ * Copyright (C) 2019-2020 Marvell International Ltd.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _ATL_DESC_H_
 #define _ATL_DESC_H_
 
+<<<<<<< HEAD
 #if defined(__LITTLE_ENDIAN_BITFIELD)
 struct atl_tx_ctx {
+=======
+#include <linux/kernel.h>
+
+#if defined(__LITTLE_ENDIAN_BITFIELD)
+struct __packed atl_tx_ctx {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long long :40; //0
 	unsigned tun_len:8;     //40
 	unsigned out_len:16;    //48
@@ -23,9 +42,15 @@ struct atl_tx_ctx {
 	unsigned l3_len:9;      //95
 	unsigned l4_len:8;      //104
 	unsigned mss_len:16;    //112
+<<<<<<< HEAD
 } __attribute__((packed));
 
 struct atl_tx_desc {
+=======
+};
+
+struct __packed atl_tx_desc {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long long daddr:64; //0
 	unsigned type:3;        //64
 	unsigned :1;            //67
@@ -37,7 +62,11 @@ struct atl_tx_desc {
 	unsigned ct_idx:1;      //108
 	unsigned ct_en:1;       //109
 	unsigned pay_len:18;    //110
+<<<<<<< HEAD
 } __attribute__((packed));
+=======
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ATL_DATA_PER_TXD 16384 // despite ->len being 16 bits
 
@@ -61,7 +90,11 @@ enum atl_tx_ctx_cmd {
 	ctx_cmd_tcp = 4,  // TCP / ~UDP
 };
 
+<<<<<<< HEAD
 struct atl_rx_desc {
+=======
+struct __packed atl_rx_desc {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint64_t daddr;      			//0
 	union {
 		struct {
@@ -70,9 +103,15 @@ struct atl_rx_desc {
 		};
 		uint64_t haddr;
 	};
+<<<<<<< HEAD
 } __attribute__((packed));
 
 struct atl_rx_desc_wb {
+=======
+};
+
+struct __packed atl_rx_desc_wb {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned rss_type:4;    //0
 	unsigned pkt_type:8;    //4
 	unsigned rdm_err:1;     //12
@@ -89,7 +128,20 @@ struct atl_rx_desc_wb {
 	unsigned pkt_len:16;    //80
 	unsigned next_desp:16;  //96
 	unsigned vlan_tag:16;   //112
+<<<<<<< HEAD
 } __attribute__((packed));
+=======
+};
+
+struct __packed atl_rx_desc_hwts_wb {
+	u32 sec_hw;
+	u32 ns;
+	u32 dd:1;
+	u32 rsvd:1;
+	u32 sec_lw0:30;
+	u32 sec_lw1;
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum atl_rx_stat {
 	atl_rx_stat_mac_err = 1,
@@ -131,6 +183,7 @@ enum atl_rx_pkt_type {
 #error XXX Fix bigendian bitfields
 #endif // defined(__LITTLE_ENDIAN_BITFIELD)
 
+<<<<<<< HEAD
 union atl_desc{
 	struct atl_rx_desc rx;
 	struct atl_rx_desc_wb wb;
@@ -138,6 +191,18 @@ union atl_desc{
 	struct atl_tx_desc tx;
 	uint8_t raw[16];
 }__attribute__((packed));
+=======
+union __packed atl_desc {
+	struct atl_rx_desc rx;
+	union {
+		struct atl_rx_desc_wb wb;
+		struct atl_rx_desc_hwts_wb hwts_wb;
+	};
+	struct atl_tx_ctx ctx;
+	struct atl_tx_desc tx;
+	uint8_t raw[16];
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 
 #endif

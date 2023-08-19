@@ -70,6 +70,7 @@ static void macio_adb_poll(void);
 static int macio_adb_reset_bus(void);
 
 struct adb_driver macio_adb_driver = {
+<<<<<<< HEAD
 	.name         = "MACIO",
 	.probe        = macio_probe,
 	.init         = macio_init,
@@ -77,6 +78,16 @@ struct adb_driver macio_adb_driver = {
 	.autopoll     = macio_adb_autopoll,
 	.poll         = macio_adb_poll,
 	.reset_bus    = macio_adb_reset_bus,
+=======
+	"MACIO",
+	macio_probe,
+	macio_init,
+	macio_send_request,
+	/*macio_write,*/
+	macio_adb_autopoll,
+	macio_adb_poll,
+	macio_adb_reset_bus
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 int macio_probe(void)

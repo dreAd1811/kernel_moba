@@ -16,7 +16,11 @@
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
 #include "gp8psk-fe.h"
+<<<<<<< HEAD
 #include <media/dvb_frontend.h>
+=======
+#include "dvb_frontend.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static int debug;
 module_param(debug, int, 0644);
@@ -355,9 +359,15 @@ static const struct dvb_frontend_ops gp8psk_fe_ops = {
 	.delsys = { SYS_DVBS },
 	.info = {
 		.name			= "Genpix DVB-S",
+<<<<<<< HEAD
 		.frequency_min_hz	=  800 * MHz,
 		.frequency_max_hz	= 2250 * MHz,
 		.frequency_stepsize_hz	=  100 * kHz,
+=======
+		.frequency_min		= 800000,
+		.frequency_max		= 2250000,
+		.frequency_stepsize	= 100,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.symbol_rate_min        = 1000000,
 		.symbol_rate_max        = 45000000,
 		.symbol_rate_tolerance  = 500,  /* ppm */

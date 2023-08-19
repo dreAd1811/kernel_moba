@@ -104,12 +104,17 @@ static void
 vc4_irq_finish_bin_job(struct drm_device *dev)
 {
 	struct vc4_dev *vc4 = to_vc4_dev(dev);
+<<<<<<< HEAD
 	struct vc4_exec_info *next, *exec = vc4_first_bin_job(vc4);
+=======
+	struct vc4_exec_info *exec = vc4_first_bin_job(vc4);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!exec)
 		return;
 
 	vc4_move_job_to_render(dev, exec);
+<<<<<<< HEAD
 	next = vc4_first_bin_job(vc4);
 
 	/* Only submit the next job in the bin list if it matches the perfmon
@@ -118,6 +123,9 @@ vc4_irq_finish_bin_job(struct drm_device *dev)
 	 */
 	if (next && next->perfmon == exec->perfmon)
 		vc4_submit_next_bin_job(dev);
+=======
+	vc4_submit_next_bin_job(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void
@@ -129,10 +137,13 @@ vc4_cancel_bin_job(struct drm_device *dev)
 	if (!exec)
 		return;
 
+<<<<<<< HEAD
 	/* Stop the perfmon so that the next bin job can be started. */
 	if (exec->perfmon)
 		vc4_perfmon_stop(vc4, exec->perfmon, false);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	list_move_tail(&exec->head, &vc4->bin_job_list);
 	vc4_submit_next_bin_job(dev);
 }
@@ -142,13 +153,17 @@ vc4_irq_finish_render_job(struct drm_device *dev)
 {
 	struct vc4_dev *vc4 = to_vc4_dev(dev);
 	struct vc4_exec_info *exec = vc4_first_render_job(vc4);
+<<<<<<< HEAD
 	struct vc4_exec_info *nextbin, *nextrender;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!exec)
 		return;
 
 	vc4->finished_seqno++;
 	list_move_tail(&exec->head, &vc4->job_done_list);
+<<<<<<< HEAD
 
 	nextbin = vc4_first_bin_job(vc4);
 	nextrender = vc4_first_render_job(vc4);
@@ -172,11 +187,17 @@ vc4_irq_finish_render_job(struct drm_device *dev)
 	else if (nextbin && nextbin->perfmon != exec->perfmon)
 		vc4_submit_next_bin_job(dev);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (exec->fence) {
 		dma_fence_signal_locked(exec->fence);
 		dma_fence_put(exec->fence);
 		exec->fence = NULL;
 	}
+<<<<<<< HEAD
+=======
+	vc4_submit_next_render_job(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	wake_up_all(&vc4->job_wait_queue);
 	schedule_work(&vc4->job_done_work);

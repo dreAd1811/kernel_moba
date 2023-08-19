@@ -14,8 +14,11 @@
  * GNU General Public License for more details.
  */
 
+<<<<<<< HEAD
 #include <asm/assembler.h>
 #include <asm/asm-offsets.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/unistd.h>
 
 /*
@@ -53,6 +56,7 @@ ARM_OK(	.arm	)
 	.thumb
 	.endm
 
+<<<<<<< HEAD
 	.macro arm_fdpic_slot n
 	.org	sigreturn_codes + 24 + 20 * (\n)
 ARM_OK(	.arm	)
@@ -64,6 +68,8 @@ ARM_OK(	.arm	)
 	.endm
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if __LINUX_ARM_ARCH__ <= 4
 	/*
 	 * Note we manually set minimally required arch that supports
@@ -103,6 +109,7 @@ ARM_OK(	swi	#(__NR_rt_sigreturn)|(__NR_OABI_SYSCALL_BASE)	)
 	movs	r7, #(__NR_rt_sigreturn - __NR_SYSCALL_BASE)
 	swi	#0
 
+<<<<<<< HEAD
 	/* ARM sigreturn restorer FDPIC bounce code snippet */
 	arm_fdpic_slot 0
 ARM_OK(	ldr	r3, [sp, #SIGFRAME_RC3_OFFSET] )
@@ -143,6 +150,15 @@ ARM_OK(	ret	r3 )
 	 * it is thumb case or not, so we need one additional padding
 	 * word after the last entry.
 	 */
+=======
+	/*
+	 * Note on addtional space: setup_return in signal.c
+	 * algorithm uses two words copy regardless whether
+	 * it is thumb case or not, so we need additional
+	 * word after real last entry.
+	 */
+	arm_slot 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.space	4
 
 	.size	sigreturn_codes, . - sigreturn_codes

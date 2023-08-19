@@ -159,7 +159,10 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	/* UT0 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uart0_pins: pinmux_uart0_pins {
 		pinctrl-single,pins = <
 			AM33XX_IOPAD(0x970, PIN_INPUT_PULLUP | MUX_MODE0)	/* (E15) uart0_rxd.uart0_rxd */
@@ -167,6 +170,7 @@
 		>;
 	};
 
+<<<<<<< HEAD
 	/* UT1 */
 	uart1_pins: pinmux_uart1_pins {
 		pinctrl-single,pins = <
@@ -198,6 +202,8 @@
 		>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mmc1_pins: pinmux_mmc1_pins {
 		pinctrl-single,pins = <
 			AM33XX_IOPAD(0x960, PIN_INPUT | MUX_MODE7)		/* (C15) spi0_cs1.gpio0[6] */
@@ -248,6 +254,7 @@
 	wl18xx_pins: pinmux_wl18xx_pins {
 		pinctrl-single,pins = <
 			AM33XX_IOPAD(0x92c, PIN_OUTPUT_PULLDOWN | MUX_MODE7)	/* (K18) gmii1_txclk.gpio3[9] - WL_EN */
+<<<<<<< HEAD
 			AM33XX_IOPAD(0x924, PIN_INPUT_PULLDOWN | MUX_MODE7)	/* (K16) gmii1_txd1.gpio0[21] - WL_IRQ */
 			AM33XX_IOPAD(0x930, PIN_OUTPUT_PULLUP | MUX_MODE7)	/* (L18) gmii1_rxclk.gpio3[10] - LS_BUF_EN */
 		>;
@@ -261,6 +268,12 @@
 			AM33XX_IOPAD(0x940, PIN_OUTPUT | MUX_MODE7)		/* (M16) gmii1_rxd0.gpio2[21] */
 		>;
 	};
+=======
+			AM33XX_IOPAD(0x944, PIN_INPUT_PULLDOWN | MUX_MODE7)	/* (H18) rmii1_refclk.gpio0[29] - WL_IRQ */
+			AM33XX_IOPAD(0x930, PIN_OUTPUT_PULLUP | MUX_MODE7)	/* (L18) gmii1_rxclk.gpio3[10] - LS_BUF_EN */
+		>;
+	};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 &uart0 {
@@ -270,6 +283,7 @@
 	status = "okay";
 };
 
+<<<<<<< HEAD
 &uart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart1_pins>;
@@ -298,6 +312,8 @@
 	status = "okay";
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &usb {
 	status = "okay";
 };
@@ -342,7 +358,11 @@
 	};
 
 	baseboard_eeprom: baseboard_eeprom@50 {
+<<<<<<< HEAD
 		compatible = "atmel,24c256";
+=======
+		compatible = "at,24c256";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		reg = <0x50>;
 
 		#address-cells = <1>;
@@ -364,7 +384,11 @@
 		compatible = "invensense,mpu9250";
 		reg = <0x68>;
 		interrupt-parent = <&gpio3>;
+<<<<<<< HEAD
 		interrupts = <21 IRQ_TYPE_EDGE_RISING>;
+=======
+		interrupts = <21 GPIO_ACTIVE_LOW>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		i2c-gate {
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -483,7 +507,11 @@
 		compatible = "ti,wl1835";
 		reg = <2>;
 		interrupt-parent = <&gpio0>;
+<<<<<<< HEAD
 		interrupts = <21 IRQ_TYPE_EDGE_RISING>;
+=======
+		interrupts = <29 IRQ_TYPE_EDGE_RISING>;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 };
 
@@ -515,6 +543,7 @@
 
 &rtc {
 	system-power-controller;
+<<<<<<< HEAD
 	clocks = <&clk_32768_ck>, <&l4_per_clkctrl AM3_CLKDIV32K_CLKCTRL 0>;
 	clock-names = "ext-clk", "int-clk";
 };
@@ -525,6 +554,12 @@
 	status = "okay";
 };
 
+=======
+	clocks = <&clk_32768_ck>, <&clkdiv32k_ick>;
+	clock-names = "ext-clk", "int-clk";
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 &gpio3 {
 	ls_buf_en {
 		gpio-hog;

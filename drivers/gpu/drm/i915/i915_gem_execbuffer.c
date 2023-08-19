@@ -58,7 +58,10 @@ enum {
 
 #define __EXEC_HAS_RELOC	BIT(31)
 #define __EXEC_VALIDATED	BIT(30)
+<<<<<<< HEAD
 #define __EXEC_INTERNAL_FLAGS	(~0u << 30)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define UPDATE			PIN_OFFSET_FIXED
 
 #define BATCH_OFFSET_BIAS (256*1024)
@@ -66,6 +69,7 @@ enum {
 #define __I915_EXEC_ILLEGAL_FLAGS \
 	(__I915_EXEC_UNKNOWN_FLAGS | I915_EXEC_CONSTANTS_MASK)
 
+<<<<<<< HEAD
 /* Catch emission of unexpected errors for CI! */
 #if IS_ENABLED(CONFIG_DRM_I915_DEBUG_GEM)
 #undef EINVAL
@@ -75,6 +79,8 @@ enum {
 })
 #endif
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * DOC: User command execution
  *
@@ -90,6 +96,7 @@ enum {
  * but this remains just a hint as the kernel may choose a new location for
  * any object in the future.
  *
+<<<<<<< HEAD
  * At the level of talking to the hardware, submitting a batchbuffer for the
  * GPU to execute is to add content to a buffer from which the HW
  * command streamer is reading.
@@ -119,6 +126,8 @@ enum {
  * 7. Inform the hardware of the additional commands added to the buffer
  *    (by updating the tail pointer).
  *
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Processing an execbuf ioctl is conceptually split up into a few phases.
  *
  * 1. Validation - Ensure all the pointers, handles and flags are valid.
@@ -238,7 +247,11 @@ struct i915_execbuffer {
 	struct i915_gem_context *ctx; /** context for building the request */
 	struct i915_address_space *vm; /** GTT and vma for the request */
 
+<<<<<<< HEAD
 	struct i915_request *request; /** our request to build */
+=======
+	struct drm_i915_gem_request *request; /** our request to build */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_vma *batch; /** identity of the batch obj/vma */
 
 	/** actual size of execobj[] as we may extend it for the cmdparser */
@@ -265,7 +278,11 @@ struct i915_execbuffer {
 		bool has_fence : 1;
 		bool needs_unfenced : 1;
 
+<<<<<<< HEAD
 		struct i915_request *rq;
+=======
+		struct drm_i915_gem_request *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		u32 *rq_cmd;
 		unsigned int rq_size;
 	} reloc_cache;
@@ -309,7 +326,13 @@ static inline u64 gen8_noncanonical_addr(u64 address)
 
 static inline bool eb_use_cmdparser(const struct i915_execbuffer *eb)
 {
+<<<<<<< HEAD
 	return intel_engine_needs_cmd_parser(eb->engine) && eb->batch_len;
+=======
+	return intel_engine_requires_cmd_parser(eb->engine) ||
+		(intel_engine_using_cmd_parser(eb->engine) &&
+		 eb->args->batch_len);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int eb_create(struct i915_execbuffer *eb)
@@ -409,12 +432,20 @@ eb_pin_vma(struct i915_execbuffer *eb,
 		return false;
 
 	if (unlikely(exec_flags & EXEC_OBJECT_NEEDS_FENCE)) {
+<<<<<<< HEAD
 		if (unlikely(i915_vma_pin_fence(vma))) {
+=======
+		if (unlikely(i915_vma_get_fence(vma))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			i915_vma_unpin(vma);
 			return false;
 		}
 
+<<<<<<< HEAD
 		if (vma->fence)
+=======
+		if (i915_vma_pin_fence(vma))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			exec_flags |= __EXEC_OBJECT_HAS_FENCE;
 	}
 
@@ -427,7 +458,11 @@ static inline void __eb_unreserve_vma(struct i915_vma *vma, unsigned int flags)
 	GEM_BUG_ON(!(flags & __EXEC_OBJECT_HAS_PIN));
 
 	if (unlikely(flags & __EXEC_OBJECT_HAS_FENCE))
+<<<<<<< HEAD
 		__i915_vma_unpin_fence(vma);
+=======
+		i915_vma_unpin_fence(vma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	__i915_vma_unpin(vma);
 }
@@ -458,7 +493,11 @@ eb_validate_vma(struct i915_execbuffer *eb,
 	 * any non-page-aligned or non-canonical addresses.
 	 */
 	if (unlikely(entry->flags & EXEC_OBJECT_PINNED &&
+<<<<<<< HEAD
 		     entry->offset != gen8_canonical_addr(entry->offset & I915_GTT_PAGE_MASK)))
+=======
+		     entry->offset != gen8_canonical_addr(entry->offset & PAGE_MASK)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 
 	/* pad_to_size was once a reserved field, so sanitize it */
@@ -498,9 +537,13 @@ eb_validate_vma(struct i915_execbuffer *eb,
 }
 
 static int
+<<<<<<< HEAD
 eb_add_vma(struct i915_execbuffer *eb,
 	   unsigned int i, unsigned batch_idx,
 	   struct i915_vma *vma)
+=======
+eb_add_vma(struct i915_execbuffer *eb, unsigned int i, struct i915_vma *vma)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_i915_gem_exec_object2 *entry = &eb->exec[i];
 	int err;
@@ -533,6 +576,7 @@ eb_add_vma(struct i915_execbuffer *eb,
 	eb->flags[i] = entry->flags;
 	vma->exec_flags = &eb->flags[i];
 
+<<<<<<< HEAD
 	/*
 	 * SNA is doing fancy tricks with compressing batch buffers, which leads
 	 * to negative relocation deltas. Usually that works out ok since the
@@ -552,6 +596,8 @@ eb_add_vma(struct i915_execbuffer *eb,
 		eb->batch = vma;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	err = 0;
 	if (eb_pin_vma(eb, entry, vma)) {
 		if (entry->offset != vma->node.start) {
@@ -628,13 +674,21 @@ static int eb_reserve_vma(const struct i915_execbuffer *eb,
 	}
 
 	if (unlikely(exec_flags & EXEC_OBJECT_NEEDS_FENCE)) {
+<<<<<<< HEAD
 		err = i915_vma_pin_fence(vma);
+=======
+		err = i915_vma_get_fence(vma);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (unlikely(err)) {
 			i915_vma_unpin(vma);
 			return err;
 		}
 
+<<<<<<< HEAD
 		if (vma->fence)
+=======
+		if (i915_vma_pin_fence(vma))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			exec_flags |= __EXEC_OBJECT_HAS_FENCE;
 	}
 
@@ -733,7 +787,11 @@ static int eb_select_context(struct i915_execbuffer *eb)
 		return -ENOENT;
 
 	eb->ctx = ctx;
+<<<<<<< HEAD
 	eb->vm = ctx->ppgtt ? &ctx->ppgtt->vm : &eb->i915->ggtt.vm;
+=======
+	eb->vm = ctx->ppgtt ? &ctx->ppgtt->base : &eb->i915->ggtt.base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	eb->context_flags = 0;
 	if (ctx->flags & CONTEXT_NO_ZEROMAP)
@@ -745,8 +803,13 @@ static int eb_select_context(struct i915_execbuffer *eb)
 static int eb_lookup_vmas(struct i915_execbuffer *eb)
 {
 	struct radix_tree_root *handles_vma = &eb->ctx->handles_vma;
+<<<<<<< HEAD
 	struct drm_i915_gem_object *obj;
 	unsigned int i, batch;
+=======
+	struct drm_i915_gem_object *uninitialized_var(obj);
+	unsigned int i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (unlikely(i915_gem_context_is_closed(eb->ctx)))
@@ -758,8 +821,11 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
 	INIT_LIST_HEAD(&eb->relocs);
 	INIT_LIST_HEAD(&eb->unbound);
 
+<<<<<<< HEAD
 	batch = eb_batch_index(eb);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0; i < eb->buffer_count; i++) {
 		u32 handle = eb->exec[i].handle;
 		struct i915_lut_handle *lut;
@@ -793,14 +859,19 @@ static int eb_lookup_vmas(struct i915_execbuffer *eb)
 			goto err_obj;
 		}
 
+<<<<<<< HEAD
 		/* transfer ref to ctx */
 		if (!vma->open_count++)
 			i915_vma_reopen(vma);
+=======
+		vma->open_count++;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		list_add(&lut->obj_link, &obj->lut_list);
 		list_add(&lut->ctx_link, &eb->ctx->handles_list);
 		lut->ctx = eb->ctx;
 		lut->handle = handle;
 
+<<<<<<< HEAD
 add_vma:
 		err = eb_add_vma(eb, i, batch, vma);
 		if (unlikely(err))
@@ -812,11 +883,49 @@ add_vma:
 			   eb_vma_misplaced(&eb->exec[i], vma, eb->flags[i]));
 	}
 
+=======
+		/* transfer ref to ctx */
+		obj = NULL;
+
+add_vma:
+		err = eb_add_vma(eb, i, vma);
+		if (unlikely(err))
+			goto err_obj;
+
+		GEM_BUG_ON(vma != eb->vma[i]);
+		GEM_BUG_ON(vma->exec_flags != &eb->flags[i]);
+	}
+
+	/* take note of the batch buffer before we might reorder the lists */
+	i = eb_batch_index(eb);
+	eb->batch = eb->vma[i];
+	GEM_BUG_ON(eb->batch->exec_flags != &eb->flags[i]);
+
+	/*
+	 * SNA is doing fancy tricks with compressing batch buffers, which leads
+	 * to negative relocation deltas. Usually that works out ok since the
+	 * relocate address is still positive, except when the batch is placed
+	 * very low in the GTT. Ensure this doesn't happen.
+	 *
+	 * Note that actual hangs have only been observed on gen7, but for
+	 * paranoia do it everywhere.
+	 */
+	if (!(eb->flags[i] & EXEC_OBJECT_PINNED))
+		eb->flags[i] |= __EXEC_OBJECT_NEEDS_BIAS;
+	if (eb->reloc_cache.has_fence)
+		eb->flags[i] |= EXEC_OBJECT_NEEDS_FENCE;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	eb->args->flags |= __EXEC_VALIDATED;
 	return eb_reserve(eb);
 
 err_obj:
+<<<<<<< HEAD
 	i915_gem_object_put(obj);
+=======
+	if (obj)
+		i915_gem_object_put(obj);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_vma:
 	eb->vma[i] = NULL;
 	return err;
@@ -931,7 +1040,11 @@ static void reloc_gpu_flush(struct reloc_cache *cache)
 	i915_gem_object_unpin_map(cache->rq->batch->obj);
 	i915_gem_chipset_flush(cache->rq->i915);
 
+<<<<<<< HEAD
 	i915_request_add(cache->rq);
+=======
+	__i915_add_request(cache->rq, true);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cache->rq = NULL;
 }
 
@@ -958,9 +1071,15 @@ static void reloc_cache_reset(struct reloc_cache *cache)
 		if (cache->node.allocated) {
 			struct i915_ggtt *ggtt = cache_to_ggtt(cache);
 
+<<<<<<< HEAD
 			ggtt->vm.clear_range(&ggtt->vm,
 					     cache->node.start,
 					     cache->node.size);
+=======
+			ggtt->base.clear_range(&ggtt->base,
+					       cache->node.start,
+					       cache->node.size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			drm_mm_remove_node(&cache->node);
 		} else {
 			i915_vma_unpin((struct i915_vma *)cache->node.mm);
@@ -1025,6 +1144,7 @@ static void *reloc_iomap(struct drm_i915_gem_object *obj,
 			return ERR_PTR(err);
 
 		vma = i915_gem_object_ggtt_pin(obj, NULL, 0, 0,
+<<<<<<< HEAD
 					       PIN_MAPPABLE |
 					       PIN_NONBLOCK |
 					       PIN_NONFAULT);
@@ -1032,6 +1152,13 @@ static void *reloc_iomap(struct drm_i915_gem_object *obj,
 			memset(&cache->node, 0, sizeof(cache->node));
 			err = drm_mm_insert_node_in_range
 				(&ggtt->vm.mm, &cache->node,
+=======
+					       PIN_MAPPABLE | PIN_NONBLOCK);
+		if (IS_ERR(vma)) {
+			memset(&cache->node, 0, sizeof(cache->node));
+			err = drm_mm_insert_node_in_range
+				(&ggtt->base.mm, &cache->node,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 PAGE_SIZE, 0, I915_COLOR_UNEVICTABLE,
 				 0, ggtt->mappable_end,
 				 DRM_MM_INSERT_LOW);
@@ -1052,14 +1179,24 @@ static void *reloc_iomap(struct drm_i915_gem_object *obj,
 	offset = cache->node.start;
 	if (cache->node.allocated) {
 		wmb();
+<<<<<<< HEAD
 		ggtt->vm.insert_page(&ggtt->vm,
 				     i915_gem_object_get_dma_address(obj, page),
 				     offset, I915_CACHE_NONE, 0);
+=======
+		ggtt->base.insert_page(&ggtt->base,
+				       i915_gem_object_get_dma_address(obj, page),
+				       offset, I915_CACHE_NONE, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		offset += page << PAGE_SHIFT;
 	}
 
+<<<<<<< HEAD
 	vaddr = (void __force *)io_mapping_map_atomic_wc(&ggtt->iomap,
+=======
+	vaddr = (void __force *)io_mapping_map_atomic_wc(&ggtt->mappable,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							 offset);
 	cache->page = page;
 	cache->vaddr = (unsigned long)vaddr;
@@ -1115,12 +1252,20 @@ static int __reloc_gpu_alloc(struct i915_execbuffer *eb,
 {
 	struct reloc_cache *cache = &eb->reloc_cache;
 	struct drm_i915_gem_object *obj;
+<<<<<<< HEAD
 	struct i915_request *rq;
+=======
+	struct drm_i915_gem_request *rq;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_vma *batch;
 	u32 *cmd;
 	int err;
 
+<<<<<<< HEAD
 	GEM_BUG_ON(vma->obj->write_domain & I915_GEM_DOMAIN_CPU);
+=======
+	GEM_BUG_ON(vma->obj->base.write_domain & I915_GEM_DOMAIN_CPU);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	obj = i915_gem_batch_pool_get(&eb->engine->batch_pool, PAGE_SIZE);
 	if (IS_ERR(obj))
@@ -1148,13 +1293,29 @@ static int __reloc_gpu_alloc(struct i915_execbuffer *eb,
 	if (err)
 		goto err_unmap;
 
+<<<<<<< HEAD
 	rq = i915_request_alloc(eb->engine, eb->ctx);
+=======
+	rq = i915_gem_request_alloc(eb->engine, eb->ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(rq)) {
 		err = PTR_ERR(rq);
 		goto err_unpin;
 	}
 
+<<<<<<< HEAD
 	err = i915_request_await_object(rq, vma->obj, true);
+=======
+	err = i915_gem_request_await_object(rq, vma->obj, true);
+	if (err)
+		goto err_request;
+
+	err = eb->engine->emit_flush(rq, EMIT_INVALIDATE);
+	if (err)
+		goto err_request;
+
+	err = i915_switch_context(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		goto err_request;
 
@@ -1165,6 +1326,7 @@ static int __reloc_gpu_alloc(struct i915_execbuffer *eb,
 		goto err_request;
 
 	GEM_BUG_ON(!reservation_object_test_signaled_rcu(batch->resv, true));
+<<<<<<< HEAD
 	err = i915_vma_move_to_active(batch, rq, 0);
 	if (err)
 		goto skip_request;
@@ -1175,6 +1337,20 @@ static int __reloc_gpu_alloc(struct i915_execbuffer *eb,
 
 	rq->batch = batch;
 	i915_vma_unpin(batch);
+=======
+	i915_vma_move_to_active(batch, rq, 0);
+	reservation_object_lock(batch->resv, NULL);
+	reservation_object_add_excl_fence(batch->resv, &rq->fence);
+	reservation_object_unlock(batch->resv);
+	i915_vma_unpin(batch);
+
+	i915_vma_move_to_active(vma, rq, EXEC_OBJECT_WRITE);
+	reservation_object_lock(vma->resv, NULL);
+	reservation_object_add_excl_fence(vma->resv, &rq->fence);
+	reservation_object_unlock(vma->resv);
+
+	rq->batch = batch;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	cache->rq = rq;
 	cache->rq_cmd = cmd;
@@ -1183,10 +1359,15 @@ static int __reloc_gpu_alloc(struct i915_execbuffer *eb,
 	/* Return with batch mapping (cmd) still pinned */
 	return 0;
 
+<<<<<<< HEAD
 skip_request:
 	i915_request_skip(rq, err);
 err_request:
 	i915_request_add(rq);
+=======
+err_request:
+	i915_add_request(rq);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_unpin:
 	i915_vma_unpin(batch);
 err_unmap:
@@ -1211,9 +1392,12 @@ static u32 *reloc_gpu(struct i915_execbuffer *eb,
 		if (eb_use_cmdparser(eb))
 			return ERR_PTR(-EWOULDBLOCK);
 
+<<<<<<< HEAD
 		if (!intel_engine_can_store_dword(eb->engine))
 			return ERR_PTR(-ENODEV);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = __reloc_gpu_alloc(eb, vma, len);
 		if (unlikely(err))
 			return ERR_PTR(err);
@@ -1238,7 +1422,13 @@ relocate_entry(struct i915_vma *vma,
 
 	if (!eb->reloc_cache.vaddr &&
 	    (DBG_FORCE_RELOC == FORCE_GPU_RELOC ||
+<<<<<<< HEAD
 	     !reservation_object_test_signaled_rcu(vma->resv, true))) {
+=======
+	     !reservation_object_test_signaled_rcu(vma->resv, true)) &&
+	    __intel_engine_can_store_dword(eb->reloc_cache.gen,
+					   eb->engine->class)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		const unsigned int gen = eb->reloc_cache.gen;
 		unsigned int len;
 		u32 *batch;
@@ -1602,7 +1792,13 @@ static int eb_copy_relocations(const struct i915_execbuffer *eb)
 		 * happened we would make the mistake of assuming that the
 		 * relocations were valid.
 		 */
+<<<<<<< HEAD
 		user_access_begin();
+=======
+		if (!user_access_begin(VERIFY_WRITE, urelocs, size))
+			goto end_user;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (copied = 0; copied < nreloc; copied++)
 			unsafe_put_user(-1,
 					&urelocs[copied].presumed_offset,
@@ -1630,7 +1826,11 @@ static int eb_prefault_relocations(const struct i915_execbuffer *eb)
 	const unsigned int count = eb->buffer_count;
 	unsigned int i;
 
+<<<<<<< HEAD
 	if (unlikely(i915_modparams.prefault_disable))
+=======
+	if (unlikely(i915.prefault_disable))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 0;
 
 	for (i = 0; i < count; i++) {
@@ -1771,6 +1971,28 @@ slow:
 	return eb_relocate_slow(eb);
 }
 
+<<<<<<< HEAD
+=======
+static void eb_export_fence(struct i915_vma *vma,
+			    struct drm_i915_gem_request *req,
+			    unsigned int flags)
+{
+	struct reservation_object *resv = vma->resv;
+
+	/*
+	 * Ignore errors from failing to allocate the new fence, we can't
+	 * handle an error right now. Worst case should be missed
+	 * synchronisation leading to rendering corruption.
+	 */
+	reservation_object_lock(resv, NULL);
+	if (flags & EXEC_OBJECT_WRITE)
+		reservation_object_add_excl_fence(resv, &req->fence);
+	else if (reservation_object_reserve_shared(resv) == 0)
+		reservation_object_add_shared_fence(resv, &req->fence);
+	reservation_object_unlock(resv);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int eb_move_to_gpu(struct i915_execbuffer *eb)
 {
 	const unsigned int count = eb->buffer_count;
@@ -1783,7 +2005,11 @@ static int eb_move_to_gpu(struct i915_execbuffer *eb)
 		struct drm_i915_gem_object *obj = vma->obj;
 
 		if (flags & EXEC_OBJECT_CAPTURE) {
+<<<<<<< HEAD
 			struct i915_capture_list *capture;
+=======
+			struct i915_gem_capture_list *capture;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			capture = kmalloc(sizeof(*capture), GFP_KERNEL);
 			if (unlikely(!capture))
@@ -1814,7 +2040,11 @@ static int eb_move_to_gpu(struct i915_execbuffer *eb)
 		if (flags & EXEC_OBJECT_ASYNC)
 			continue;
 
+<<<<<<< HEAD
 		err = i915_request_await_object
+=======
+		err = i915_gem_request_await_object
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			(eb->request, obj, flags & EXEC_OBJECT_WRITE);
 		if (err)
 			return err;
@@ -1824,11 +2054,16 @@ static int eb_move_to_gpu(struct i915_execbuffer *eb)
 		unsigned int flags = eb->flags[i];
 		struct i915_vma *vma = eb->vma[i];
 
+<<<<<<< HEAD
 		err = i915_vma_move_to_active(vma, eb->request, flags);
 		if (unlikely(err)) {
 			i915_request_skip(eb->request, err);
 			return err;
 		}
+=======
+		i915_vma_move_to_active(vma, eb->request, flags);
+		eb_export_fence(vma, eb->request, flags);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		__eb_unreserve_vma(vma, flags);
 		vma->exec_flags = NULL;
@@ -1841,7 +2076,12 @@ static int eb_move_to_gpu(struct i915_execbuffer *eb)
 	/* Unconditionally flush any chipset caches (for streaming writes). */
 	i915_gem_chipset_flush(eb->i915);
 
+<<<<<<< HEAD
 	return 0;
+=======
+	/* Unconditionally invalidate GPU caches and TLBs. */
+	return eb->engine->emit_flush(eb->request, EMIT_INVALIDATE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static bool i915_gem_check_execbuffer(struct drm_i915_gem_execbuffer2 *exec)
@@ -1868,17 +2108,68 @@ static bool i915_gem_check_execbuffer(struct drm_i915_gem_execbuffer2 *exec)
 	return true;
 }
 
+<<<<<<< HEAD
 static int i915_reset_gen7_sol_offsets(struct i915_request *rq)
+=======
+void i915_vma_move_to_active(struct i915_vma *vma,
+			     struct drm_i915_gem_request *req,
+			     unsigned int flags)
+{
+	struct drm_i915_gem_object *obj = vma->obj;
+	const unsigned int idx = req->engine->id;
+
+	lockdep_assert_held(&req->i915->drm.struct_mutex);
+	GEM_BUG_ON(!drm_mm_node_allocated(&vma->node));
+
+	/*
+	 * Add a reference if we're newly entering the active list.
+	 * The order in which we add operations to the retirement queue is
+	 * vital here: mark_active adds to the start of the callback list,
+	 * such that subsequent callbacks are called first. Therefore we
+	 * add the active reference first and queue for it to be dropped
+	 * *last*.
+	 */
+	if (!i915_vma_is_active(vma))
+		obj->active_count++;
+	i915_vma_set_active(vma, idx);
+	i915_gem_active_set(&vma->last_read[idx], req);
+	list_move_tail(&vma->vm_link, &vma->vm->active_list);
+
+	obj->base.write_domain = 0;
+	if (flags & EXEC_OBJECT_WRITE) {
+		obj->base.write_domain = I915_GEM_DOMAIN_RENDER;
+
+		if (intel_fb_obj_invalidate(obj, ORIGIN_CS))
+			i915_gem_active_set(&obj->frontbuffer_write, req);
+
+		obj->base.read_domains = 0;
+	}
+	obj->base.read_domains |= I915_GEM_GPU_DOMAINS;
+
+	if (flags & EXEC_OBJECT_NEEDS_FENCE)
+		i915_gem_active_set(&vma->last_fence, req);
+}
+
+static int i915_reset_gen7_sol_offsets(struct drm_i915_gem_request *req)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u32 *cs;
 	int i;
 
+<<<<<<< HEAD
 	if (!IS_GEN7(rq->i915) || rq->engine->id != RCS) {
+=======
+	if (!IS_GEN7(req->i915) || req->engine->id != RCS) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_DEBUG("sol reset is gen7/rcs only\n");
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	cs = intel_ring_begin(rq, 4 * 2 + 2);
+=======
+	cs = intel_ring_begin(req, 4 * 2 + 2);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(cs))
 		return PTR_ERR(cs);
 
@@ -1888,15 +2179,54 @@ static int i915_reset_gen7_sol_offsets(struct i915_request *rq)
 		*cs++ = 0;
 	}
 	*cs++ = MI_NOOP;
+<<<<<<< HEAD
 	intel_ring_advance(rq, cs);
+=======
+	intel_ring_advance(req, cs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static struct i915_vma *eb_parse(struct i915_execbuffer *eb, bool is_master)
 {
 	struct drm_i915_gem_object *shadow_batch_obj;
 	struct i915_vma *vma;
+=======
+static struct i915_vma *
+shadow_batch_pin(struct i915_execbuffer *eb, struct drm_i915_gem_object *obj)
+{
+	struct drm_i915_private *dev_priv = eb->i915;
+	struct i915_address_space *vm;
+	u64 flags;
+
+	/*
+	 * PPGTT backed shadow buffers must be mapped RO, to prevent
+	 * post-scan tampering
+	 */
+	if (CMDPARSER_USES_GGTT(dev_priv)) {
+		flags = PIN_GLOBAL;
+		vm = &dev_priv->ggtt.base;
+	} else if (eb->vm->has_read_only) {
+		flags = PIN_USER;
+		vm = eb->vm;
+		i915_gem_object_set_readonly(obj);
+	} else {
+		DRM_DEBUG("Cannot prevent post-scan tampering without RO capable vm\n");
+		return ERR_PTR(-EINVAL);
+	}
+
+	return i915_gem_object_pin(obj, vm, NULL, 0, 0, flags);
+}
+
+static struct i915_vma *eb_parse(struct i915_execbuffer *eb)
+{
+	struct drm_i915_gem_object *shadow_batch_obj;
+	struct i915_vma *vma;
+	u64 batch_start;
+	u64 shadow_batch_start;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	shadow_batch_obj = i915_gem_batch_pool_get(&eb->engine->batch_pool,
@@ -1904,6 +2234,7 @@ static struct i915_vma *eb_parse(struct i915_execbuffer *eb, bool is_master)
 	if (IS_ERR(shadow_batch_obj))
 		return ERR_CAST(shadow_batch_obj);
 
+<<<<<<< HEAD
 	err = intel_engine_cmd_parser(eb->engine,
 				      eb->batch->obj,
 				      shadow_batch_obj,
@@ -1922,11 +2253,58 @@ static struct i915_vma *eb_parse(struct i915_execbuffer *eb, bool is_master)
 	if (IS_ERR(vma))
 		goto out;
 
+=======
+	vma = shadow_batch_pin(eb, shadow_batch_obj);
+	if (IS_ERR(vma))
+		goto out;
+
+	batch_start = gen8_canonical_addr(eb->batch->node.start) +
+		      eb->batch_start_offset;
+
+	shadow_batch_start = gen8_canonical_addr(vma->node.start);
+
+	err = intel_engine_cmd_parser(eb->ctx,
+				      eb->engine,
+				      eb->batch->obj,
+				      batch_start,
+				      eb->batch_start_offset,
+				      eb->batch_len,
+				      shadow_batch_obj,
+				      shadow_batch_start);
+
+	if (err) {
+		i915_vma_unpin(vma);
+
+		/*
+		 * Unsafe GGTT-backed buffers can still be submitted safely
+		 * as non-secure.
+		 * For PPGTT backing however, we have no choice but to forcibly
+		 * reject unsafe buffers
+		 */
+		if (CMDPARSER_USES_GGTT(eb->i915) && (err == -EACCES))
+			/* Execute original buffer non-secure */
+			vma = NULL;
+		else
+			vma = ERR_PTR(err);
+
+		goto out;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	eb->vma[eb->buffer_count] = i915_vma_get(vma);
 	eb->flags[eb->buffer_count] =
 		__EXEC_OBJECT_HAS_PIN | __EXEC_OBJECT_HAS_REF;
 	vma->exec_flags = &eb->flags[eb->buffer_count];
 	eb->buffer_count++;
+<<<<<<< HEAD
+=======
+	eb->batch_start_offset = 0;
+	eb->batch = vma;
+	/* eb->batch_len unchanged */
+
+	if (CMDPARSER_USES_GGTT(eb->i915))
+		eb->batch_flags |= I915_DISPATCH_SECURE;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 out:
 	i915_gem_object_unpin_pages(shadow_batch_obj);
@@ -1934,10 +2312,17 @@ out:
 }
 
 static void
+<<<<<<< HEAD
 add_to_client(struct i915_request *rq, struct drm_file *file)
 {
 	rq->file_priv = file->driver_priv;
 	list_add_tail(&rq->client_link, &rq->file_priv->mm.request_list);
+=======
+add_to_client(struct drm_i915_gem_request *req, struct drm_file *file)
+{
+	req->file_priv = file->driver_priv;
+	list_add_tail(&req->client_link, &req->file_priv->mm.request_list);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int eb_submit(struct i915_execbuffer *eb)
@@ -1948,6 +2333,13 @@ static int eb_submit(struct i915_execbuffer *eb)
 	if (err)
 		return err;
 
+<<<<<<< HEAD
+=======
+	err = i915_switch_context(eb->request);
+	if (err)
+		return err;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (eb->args->flags & I915_EXEC_GEN7_SOL_RESET) {
 		err = i915_reset_gen7_sol_offsets(eb->request);
 		if (err)
@@ -1965,7 +2357,11 @@ static int eb_submit(struct i915_execbuffer *eb)
 	return 0;
 }
 
+<<<<<<< HEAD
 /*
+=======
+/**
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Find one BSD ring to dispatch the corresponding BSD command.
  * The engine index is returned.
  */
@@ -2053,15 +2449,23 @@ static struct drm_syncobj **
 get_fence_array(struct drm_i915_gem_execbuffer2 *args,
 		struct drm_file *file)
 {
+<<<<<<< HEAD
 	const unsigned long nfences = args->num_cliprects;
 	struct drm_i915_gem_exec_fence __user *user;
 	struct drm_syncobj **fences;
 	unsigned long n;
+=======
+	const unsigned int nfences = args->num_cliprects;
+	struct drm_i915_gem_exec_fence __user *user;
+	struct drm_syncobj **fences;
+	unsigned int n;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	if (!(args->flags & I915_EXEC_FENCE_ARRAY))
 		return NULL;
 
+<<<<<<< HEAD
 	/* Check multiplication overflow for access_ok() and kvmalloc_array() */
 	BUILD_BUG_ON(sizeof(size_t) > sizeof(unsigned long));
 	if (nfences > min_t(unsigned long,
@@ -2074,6 +2478,16 @@ get_fence_array(struct drm_i915_gem_execbuffer2 *args,
 		return ERR_PTR(-EFAULT);
 
 	fences = kvmalloc_array(nfences, sizeof(*fences),
+=======
+	if (nfences > SIZE_MAX / sizeof(*fences))
+		return ERR_PTR(-EINVAL);
+
+	user = u64_to_user_ptr(args->cliprects_ptr);
+	if (!access_ok(VERIFY_READ, user, nfences * 2 * sizeof(u32)))
+		return ERR_PTR(-EFAULT);
+
+	fences = kvmalloc_array(args->num_cliprects, sizeof(*fences),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				__GFP_NOWARN | GFP_KERNEL);
 	if (!fences)
 		return ERR_PTR(-ENOMEM);
@@ -2141,7 +2555,11 @@ await_fence_array(struct i915_execbuffer *eb,
 		if (!fence)
 			return -EINVAL;
 
+<<<<<<< HEAD
 		err = i915_request_await_dma_fence(eb->request, fence);
+=======
+		err = i915_gem_request_await_dma_fence(eb->request, fence);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dma_fence_put(fence);
 		if (err < 0)
 			return err;
@@ -2177,17 +2595,28 @@ i915_gem_do_execbuffer(struct drm_device *dev,
 		       struct drm_i915_gem_exec_object2 *exec,
 		       struct drm_syncobj **fences)
 {
+<<<<<<< HEAD
+=======
+	struct drm_i915_private *dev_priv = to_i915(dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct i915_execbuffer eb;
 	struct dma_fence *in_fence = NULL;
 	struct sync_file *out_fence = NULL;
 	int out_fence_fd = -1;
 	int err;
 
+<<<<<<< HEAD
 	BUILD_BUG_ON(__EXEC_INTERNAL_FLAGS & ~__I915_EXEC_ILLEGAL_FLAGS);
 	BUILD_BUG_ON(__EXEC_OBJECT_INTERNAL_FLAGS &
 		     ~__EXEC_OBJECT_UNKNOWN_FLAGS);
 
 	eb.i915 = to_i915(dev);
+=======
+	BUILD_BUG_ON(__EXEC_OBJECT_INTERNAL_FLAGS &
+		     ~__EXEC_OBJECT_UNKNOWN_FLAGS);
+
+	eb.i915 = dev_priv;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	eb.file = file;
 	eb.args = args;
 	if (DBG_FORCE_RELOC || !(args->flags & I915_EXEC_NO_RELOC))
@@ -2209,8 +2638,20 @@ i915_gem_do_execbuffer(struct drm_device *dev,
 
 	eb.batch_flags = 0;
 	if (args->flags & I915_EXEC_SECURE) {
+<<<<<<< HEAD
 		if (!drm_is_current_master(file) || !capable(CAP_SYS_ADMIN))
 		    return -EPERM;
+=======
+		if (INTEL_GEN(dev_priv) >= 11)
+			return -ENODEV;
+
+		/* Return -EPERM to trigger fallback code on old binaries. */
+		if (!HAS_SECURE_BATCHES(dev_priv))
+			return -EPERM;
+
+		if (!drm_is_current_master(file) || !capable(CAP_SYS_ADMIN))
+			return -EPERM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		eb.batch_flags |= I915_DISPATCH_SECURE;
 	}
@@ -2297,14 +2738,25 @@ i915_gem_do_execbuffer(struct drm_device *dev,
 		goto err_vma;
 	}
 
+<<<<<<< HEAD
 	if (eb_use_cmdparser(&eb)) {
 		struct i915_vma *vma;
 
 		vma = eb_parse(&eb, drm_is_current_master(file));
+=======
+	if (eb.batch_len == 0)
+		eb.batch_len = eb.batch->size - eb.batch_start_offset;
+
+	if (eb_use_cmdparser(&eb)) {
+		struct i915_vma *vma;
+
+		vma = eb_parse(&eb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (IS_ERR(vma)) {
 			err = PTR_ERR(vma);
 			goto err_vma;
 		}
+<<<<<<< HEAD
 
 		if (vma) {
 			/*
@@ -2325,6 +2777,10 @@ i915_gem_do_execbuffer(struct drm_device *dev,
 	if (eb.batch_len == 0)
 		eb.batch_len = eb.batch->size - eb.batch_start_offset;
 
+=======
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * snb/ivb/vlv conflate the "batch in ppgtt" bit with the "non-secure
 	 * batch" bit. Hence we need to pin secure batches into the global gtt.
@@ -2355,14 +2811,22 @@ i915_gem_do_execbuffer(struct drm_device *dev,
 	GEM_BUG_ON(eb.reloc_cache.rq);
 
 	/* Allocate a request for this batch buffer nice and early. */
+<<<<<<< HEAD
 	eb.request = i915_request_alloc(eb.engine, eb.ctx);
+=======
+	eb.request = i915_gem_request_alloc(eb.engine, eb.ctx);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(eb.request)) {
 		err = PTR_ERR(eb.request);
 		goto err_batch_unpin;
 	}
 
 	if (in_fence) {
+<<<<<<< HEAD
 		err = i915_request_await_dma_fence(eb.request, in_fence);
+=======
+		err = i915_gem_request_await_dma_fence(eb.request, in_fence);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0)
 			goto err_request;
 	}
@@ -2390,10 +2854,17 @@ i915_gem_do_execbuffer(struct drm_device *dev,
 	 */
 	eb.request->batch = eb.batch;
 
+<<<<<<< HEAD
 	trace_i915_request_queue(eb.request, eb.batch_flags);
 	err = eb_submit(&eb);
 err_request:
 	i915_request_add(eb.request);
+=======
+	trace_i915_gem_request_queue(eb.request, eb.batch_flags);
+	err = eb_submit(&eb);
+err_request:
+	__i915_add_request(eb.request, err == 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	add_to_client(eb.request, file);
 
 	if (fences)
@@ -2430,6 +2901,7 @@ err_in_fence:
 	return err;
 }
 
+<<<<<<< HEAD
 static size_t eb_element_size(void)
 {
 	return (sizeof(struct drm_i915_gem_exec_object2) +
@@ -2450,24 +2922,43 @@ static bool check_buffer_count(size_t count)
 	return !(count < 1 || count > INT_MAX || count > SIZE_MAX / sz - 1);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Legacy execbuffer just creates an exec2 list from the original exec object
  * list array and passes it to the real function.
  */
 int
+<<<<<<< HEAD
 i915_gem_execbuffer_ioctl(struct drm_device *dev, void *data,
 			  struct drm_file *file)
 {
+=======
+i915_gem_execbuffer(struct drm_device *dev, void *data,
+		    struct drm_file *file)
+{
+	const size_t sz = (sizeof(struct drm_i915_gem_exec_object2) +
+			   sizeof(struct i915_vma *) +
+			   sizeof(unsigned int));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_i915_gem_execbuffer *args = data;
 	struct drm_i915_gem_execbuffer2 exec2;
 	struct drm_i915_gem_exec_object *exec_list = NULL;
 	struct drm_i915_gem_exec_object2 *exec2_list = NULL;
+<<<<<<< HEAD
 	const size_t count = args->buffer_count;
 	unsigned int i;
 	int err;
 
 	if (!check_buffer_count(count)) {
 		DRM_DEBUG("execbuf2 with %zd buffers\n", count);
+=======
+	unsigned int i;
+	int err;
+
+	if (args->buffer_count < 1 || args->buffer_count > SIZE_MAX / sz - 1) {
+		DRM_DEBUG("execbuf2 with %d buffers\n", args->buffer_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -2486,9 +2977,15 @@ i915_gem_execbuffer_ioctl(struct drm_device *dev, void *data,
 		return -EINVAL;
 
 	/* Copy in the exec list from userland */
+<<<<<<< HEAD
 	exec_list = kvmalloc_array(count, sizeof(*exec_list),
 				   __GFP_NOWARN | GFP_KERNEL);
 	exec2_list = kvmalloc_array(count + 1, eb_element_size(),
+=======
+	exec_list = kvmalloc_array(args->buffer_count, sizeof(*exec_list),
+				   __GFP_NOWARN | GFP_KERNEL);
+	exec2_list = kvmalloc_array(args->buffer_count + 1, sz,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    __GFP_NOWARN | GFP_KERNEL);
 	if (exec_list == NULL || exec2_list == NULL) {
 		DRM_DEBUG("Failed to allocate exec list for %d buffers\n",
@@ -2499,7 +2996,11 @@ i915_gem_execbuffer_ioctl(struct drm_device *dev, void *data,
 	}
 	err = copy_from_user(exec_list,
 			     u64_to_user_ptr(args->buffers_ptr),
+<<<<<<< HEAD
 			     sizeof(*exec_list) * count);
+=======
+			     sizeof(*exec_list) * args->buffer_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		DRM_DEBUG("copy %d exec entries failed %d\n",
 			  args->buffer_count, err);
@@ -2546,17 +3047,31 @@ i915_gem_execbuffer_ioctl(struct drm_device *dev, void *data,
 }
 
 int
+<<<<<<< HEAD
 i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
 			   struct drm_file *file)
 {
+=======
+i915_gem_execbuffer2(struct drm_device *dev, void *data,
+		     struct drm_file *file)
+{
+	const size_t sz = (sizeof(struct drm_i915_gem_exec_object2) +
+			   sizeof(struct i915_vma *) +
+			   sizeof(unsigned int));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_i915_gem_execbuffer2 *args = data;
 	struct drm_i915_gem_exec_object2 *exec2_list;
 	struct drm_syncobj **fences = NULL;
 	const size_t count = args->buffer_count;
 	int err;
 
+<<<<<<< HEAD
 	if (!check_buffer_count(count)) {
 		DRM_DEBUG("execbuf2 with %zd buffers\n", count);
+=======
+	if (args->buffer_count < 1 || args->buffer_count > SIZE_MAX / sz - 1) {
+		DRM_DEBUG("execbuf2 with %d buffers\n", args->buffer_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	}
 
@@ -2564,17 +3079,30 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
 		return -EINVAL;
 
 	/* Allocate an extra slot for use by the command parser */
+<<<<<<< HEAD
 	exec2_list = kvmalloc_array(count + 1, eb_element_size(),
 				    __GFP_NOWARN | GFP_KERNEL);
 	if (exec2_list == NULL) {
 		DRM_DEBUG("Failed to allocate exec list for %zd buffers\n",
 			  count);
+=======
+	exec2_list = kvmalloc_array(args->buffer_count + 1, sz,
+				    __GFP_NOWARN | GFP_KERNEL);
+	if (exec2_list == NULL) {
+		DRM_DEBUG("Failed to allocate exec list for %d buffers\n",
+			  args->buffer_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 	if (copy_from_user(exec2_list,
 			   u64_to_user_ptr(args->buffers_ptr),
+<<<<<<< HEAD
 			   sizeof(*exec2_list) * count)) {
 		DRM_DEBUG("copy %zd exec entries failed\n", count);
+=======
+			   sizeof(*exec2_list) * args->buffer_count)) {
+		DRM_DEBUG("copy %d exec entries failed\n", args->buffer_count);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kvfree(exec2_list);
 		return -EFAULT;
 	}
@@ -2601,7 +3129,21 @@ i915_gem_execbuffer2_ioctl(struct drm_device *dev, void *data,
 		unsigned int i;
 
 		/* Copy the new buffer offsets back to the user's exec list. */
+<<<<<<< HEAD
 		user_access_begin();
+=======
+		/*
+		 * Note: count * sizeof(*user_exec_list) does not overflow,
+		 * because we checked 'count' in check_buffer_count().
+		 *
+		 * And this range already got effectively checked earlier
+		 * when we did the "copy_from_user()" above.
+		 */
+		if (!user_access_begin(VERIFY_WRITE, user_exec_list,
+				       count * sizeof(*user_exec_list)))
+			goto end_user;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		for (i = 0; i < args->buffer_count; i++) {
 			if (!(exec2_list[i].offset & UPDATE))
 				continue;

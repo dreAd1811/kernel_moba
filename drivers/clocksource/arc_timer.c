@@ -23,7 +23,10 @@
 #include <linux/cpu.h>
 #include <linux/of.h>
 #include <linux/of_irq.h>
+<<<<<<< HEAD
 #include <linux/sched_clock.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include <soc/arc/timers.h>
 #include <soc/arc/mcip.h>
@@ -62,6 +65,7 @@ static u64 arc_read_gfrc(struct clocksource *cs)
 	unsigned long flags;
 	u32 l, h;
 
+<<<<<<< HEAD
 	/*
 	 * From a programming model pov, there seems to be just one instance of
 	 * MCIP_CMD/MCIP_READBACK however micro-architecturally there's
@@ -76,6 +80,8 @@ static u64 arc_read_gfrc(struct clocksource *cs)
 	 * before access to GFRC instead of taking global MCIP spinlock
 	 * defined in arch/arc/kernel/mcip.c
 	 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local_irq_save(flags);
 
 	__mcip_cmd(CMD_GFRC_READ_LO, 0);
@@ -89,11 +95,14 @@ static u64 arc_read_gfrc(struct clocksource *cs)
 	return (((u64)h) << 32) | l;
 }
 
+<<<<<<< HEAD
 static notrace u64 arc_gfrc_clock_read(void)
 {
 	return arc_read_gfrc(NULL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clocksource arc_counter_gfrc = {
 	.name   = "ARConnect GFRC",
 	.rating = 400,
@@ -117,8 +126,11 @@ static int __init arc_cs_setup_gfrc(struct device_node *node)
 	if (ret)
 		return ret;
 
+<<<<<<< HEAD
 	sched_clock_register(arc_gfrc_clock_read, 64, arc_timer_freq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return clocksource_register_hz(&arc_counter_gfrc, arc_timer_freq);
 }
 TIMER_OF_DECLARE(arc_gfrc, "snps,archs-timer-gfrc", arc_cs_setup_gfrc);
@@ -147,11 +159,14 @@ static u64 arc_read_rtc(struct clocksource *cs)
 	return (((u64)h) << 32) | l;
 }
 
+<<<<<<< HEAD
 static notrace u64 arc_rtc_clock_read(void)
 {
 	return arc_read_rtc(NULL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clocksource arc_counter_rtc = {
 	.name   = "ARCv2 RTC",
 	.rating = 350,
@@ -183,8 +198,11 @@ static int __init arc_cs_setup_rtc(struct device_node *node)
 
 	write_aux_reg(AUX_RTC_CTRL, 1);
 
+<<<<<<< HEAD
 	sched_clock_register(arc_rtc_clock_read, 64, arc_timer_freq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return clocksource_register_hz(&arc_counter_rtc, arc_timer_freq);
 }
 TIMER_OF_DECLARE(arc_rtc, "snps,archs-timer-rtc", arc_cs_setup_rtc);
@@ -200,11 +218,14 @@ static u64 arc_read_timer1(struct clocksource *cs)
 	return (u64) read_aux_reg(ARC_REG_TIMER1_CNT);
 }
 
+<<<<<<< HEAD
 static notrace u64 arc_timer1_clock_read(void)
 {
 	return arc_read_timer1(NULL);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct clocksource arc_counter_timer1 = {
 	.name   = "ARC Timer1",
 	.rating = 300,
@@ -229,8 +250,11 @@ static int __init arc_cs_setup_timer1(struct device_node *node)
 	write_aux_reg(ARC_REG_TIMER1_CNT, 0);
 	write_aux_reg(ARC_REG_TIMER1_CTRL, TIMER_CTRL_NH);
 
+<<<<<<< HEAD
 	sched_clock_register(arc_timer1_clock_read, 32, arc_timer_freq);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return clocksource_register_hz(&arc_counter_timer1, arc_timer_freq);
 }
 
@@ -287,6 +311,7 @@ static irqreturn_t timer_irq_handler(int irq, void *dev_id)
 	int irq_reenable = clockevent_state_periodic(evt);
 
 	/*
+<<<<<<< HEAD
 	 * 1. ACK the interrupt
 	 *    - For ARC700, any write to CTRL reg ACKs it, so just rewrite
 	 *      Count when [N]ot [H]alted bit.
@@ -295,6 +320,11 @@ static irqreturn_t timer_irq_handler(int irq, void *dev_id)
 	 *      The write below can only update the other two bits, hence
 	 *      explicitly clears IP bit
 	 * 2. Re-arm interrupt if periodic by writing to IE bit [0]
+=======
+	 * Any write to CTRL reg ACks the interrupt, we rewrite the
+	 * Count when [N]ot [H]alted bit.
+	 * And re-arm it if perioid by [I]nterrupt [E]nable bit
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 */
 	write_aux_reg(ARC_REG_TIMER0_CTRL, irq_reenable | TIMER_CTRL_NH);
 

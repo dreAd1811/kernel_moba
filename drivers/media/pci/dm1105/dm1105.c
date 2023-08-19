@@ -27,12 +27,21 @@
 #include <linux/slab.h>
 #include <media/rc-core.h>
 
+<<<<<<< HEAD
 #include <media/demux.h>
 #include <media/dmxdev.h>
 #include <media/dvb_demux.h>
 #include <media/dvb_frontend.h>
 #include <media/dvb_net.h>
 #include <media/dvbdev.h>
+=======
+#include "demux.h"
+#include "dmxdev.h"
+#include "dvb_demux.h"
+#include "dvb_frontend.h"
+#include "dvb_net.h"
+#include "dvbdev.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "dvb-pll.h"
 
 #include "stv0299.h"
@@ -986,9 +995,12 @@ static int dm1105_probe(struct pci_dev *pdev,
 	int ret = -ENOMEM;
 	int i;
 
+<<<<<<< HEAD
 	if (dm1105_devcount >= ARRAY_SIZE(card))
 		return -ENODEV;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dev = kzalloc(sizeof(struct dm1105_dev), GFP_KERNEL);
 	if (!dev)
 		return -ENOMEM;

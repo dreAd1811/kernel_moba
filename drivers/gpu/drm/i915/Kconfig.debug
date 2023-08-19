@@ -18,16 +18,24 @@ config DRM_I915_WERROR
 config DRM_I915_DEBUG
         bool "Enable additional driver debugging"
         depends on DRM_I915
+<<<<<<< HEAD
         select DEBUG_FS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
         select PREEMPT_COUNT
         select I2C_CHARDEV
         select DRM_DP_AUX_CHARDEV
         select X86_MSR # used by igt/pm_rpm
         select DRM_VGEM # used by igt/prime_vgem (dmabuf interop checks)
         select DRM_DEBUG_MM if DRM=y
+<<<<<<< HEAD
         select STACKDEPOT if DRM=y # for DRM_DEBUG_MM
 	select DRM_DEBUG_SELFTEST
 	select SW_SYNC # signaling validation framework (igt/syncobj*)
+=======
+	select DRM_DEBUG_MM_SELFTEST
+	select SW_SYNC if DEBUG_FS=y # signaling validation framework (igt/syncobj*)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select DRM_I915_SW_FENCE_DEBUG_OBJECTS
 	select DRM_I915_SELFTEST
         default n
@@ -51,6 +59,7 @@ config DRM_I915_DEBUG_GEM
 
           If in doubt, say "N".
 
+<<<<<<< HEAD
 config DRM_I915_ERRLOG_GEM
 	bool "Insert extra logging (very verbose) for common GEM errors"
 	default n
@@ -77,6 +86,8 @@ config DRM_I915_TRACE_GEM
 
 	  If in doubt, say "N".
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DRM_I915_SW_FENCE_DEBUG_OBJECTS
         bool "Enable additional driver debugging for fence objects"
         depends on DRM_I915
@@ -102,6 +113,7 @@ config DRM_I915_SW_FENCE_CHECK_DAG
 
           If in doubt, say "N".
 
+<<<<<<< HEAD
 config DRM_I915_DEBUG_GUC
         bool "Enable additional driver debugging for GuC"
         depends on DRM_I915
@@ -114,6 +126,8 @@ config DRM_I915_DEBUG_GUC
 
           If in doubt, say "N".
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DRM_I915_SELFTEST
 	bool "Enable selftests upon driver load"
 	depends on DRM_I915
@@ -130,6 +144,7 @@ config DRM_I915_SELFTEST
 
 	  If in doubt, say "N".
 
+<<<<<<< HEAD
 config DRM_I915_SELFTEST_BROKEN
 	bool "Enable broken and dangerous selftests"
 	depends on DRM_I915_SELFTEST
@@ -144,6 +159,8 @@ config DRM_I915_SELFTEST_BROKEN
 
 	  If in doubt, say "N".
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config DRM_I915_LOW_LEVEL_TRACEPOINTS
         bool "Enable low level request tracing events"
         depends on DRM_I915

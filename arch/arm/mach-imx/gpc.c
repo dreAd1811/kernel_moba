@@ -20,7 +20,10 @@
 #include "common.h"
 #include "hardware.h"
 
+<<<<<<< HEAD
 #define GPC_CNTR		0x0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GPC_IMR1		0x008
 #define GPC_PGC_CPU_PDN		0x2a0
 #define GPC_PGC_CPU_PUPSCR	0x2a4
@@ -28,8 +31,11 @@
 #define GPC_PGC_SW2ISO_SHIFT	0x8
 #define GPC_PGC_SW_SHIFT	0x0
 
+<<<<<<< HEAD
 #define GPC_CNTR_L2_PGE_SHIFT	22
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define IMR_NUM			4
 #define GPC_MAX_IRQS		(IMR_NUM * 32)
 
@@ -54,6 +60,7 @@ void imx_gpc_set_arm_power_in_lpm(bool power_off)
 	writel_relaxed(power_off, gpc_base + GPC_PGC_CPU_PDN);
 }
 
+<<<<<<< HEAD
 void imx_gpc_set_l2_mem_power_in_lpm(bool power_off)
 {
 	u32 val;
@@ -65,6 +72,8 @@ void imx_gpc_set_l2_mem_power_in_lpm(bool power_off)
 	writel_relaxed(val, gpc_base + GPC_CNTR);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void imx_gpc_pre_suspend(bool arm_power_off)
 {
 	void __iomem *reg_imr1 = gpc_base + GPC_IMR1;

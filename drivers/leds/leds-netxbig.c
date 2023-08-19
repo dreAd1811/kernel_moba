@@ -335,7 +335,11 @@ static int gpio_ext_get_of_pdata(struct device *dev, struct device_node *np,
 		return ret;
 	}
 	num_addr = ret;
+<<<<<<< HEAD
 	addr = devm_kcalloc(dev, num_addr, sizeof(*addr), GFP_KERNEL);
+=======
+	addr = devm_kzalloc(dev, num_addr * sizeof(*addr), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!addr)
 		return -ENOMEM;
 
@@ -355,7 +359,11 @@ static int gpio_ext_get_of_pdata(struct device *dev, struct device_node *np,
 		return ret;
 	}
 	num_data = ret;
+<<<<<<< HEAD
 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
+=======
+	data = devm_kzalloc(dev, num_data * sizeof(*data), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!data)
 		return -ENOMEM;
 
@@ -415,7 +423,11 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 		if (ret % 3)
 			return -EINVAL;
 		num_timers = ret / 3;
+<<<<<<< HEAD
 		timers = devm_kcalloc(dev, num_timers, sizeof(*timers),
+=======
+		timers = devm_kzalloc(dev, num_timers * sizeof(*timers),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				      GFP_KERNEL);
 		if (!timers)
 			return -ENOMEM;
@@ -444,7 +456,11 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 		return -ENODEV;
 	}
 
+<<<<<<< HEAD
 	leds = devm_kcalloc(dev, num_leds, sizeof(*leds), GFP_KERNEL);
+=======
+	leds = devm_kzalloc(dev, num_leds * sizeof(*leds), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!leds)
 		return -ENOMEM;
 
@@ -470,8 +486,13 @@ static int netxbig_leds_get_of_pdata(struct device *dev,
 			goto err_node_put;
 
 		mode_val =
+<<<<<<< HEAD
 			devm_kcalloc(dev,
 				     NETXBIG_LED_MODE_NUM, sizeof(*mode_val),
+=======
+			devm_kzalloc(dev,
+				     NETXBIG_LED_MODE_NUM * sizeof(*mode_val),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				     GFP_KERNEL);
 		if (!mode_val) {
 			ret = -ENOMEM;
@@ -560,8 +581,13 @@ static int netxbig_led_probe(struct platform_device *pdev)
 			return ret;
 	}
 
+<<<<<<< HEAD
 	leds_data = devm_kcalloc(&pdev->dev,
 				 pdata->num_leds, sizeof(*leds_data),
+=======
+	leds_data = devm_kzalloc(&pdev->dev,
+				 pdata->num_leds * sizeof(*leds_data),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 GFP_KERNEL);
 	if (!leds_data)
 		return -ENOMEM;

@@ -271,9 +271,14 @@ static void prism2_info_scanresults(local_info_t *local, unsigned char *buf,
 	left -= 4;
 
 	new_count = left / sizeof(struct hfa384x_scan_result);
+<<<<<<< HEAD
 	results = kmalloc_array(new_count,
 				sizeof(struct hfa384x_hostscan_result),
 				GFP_ATOMIC);
+=======
+	results = kmalloc(new_count * sizeof(struct hfa384x_hostscan_result),
+			  GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (results == NULL)
 		return;
 

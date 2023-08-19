@@ -53,7 +53,11 @@ static DEFINE_SPINLOCK(sunis_lock);
     if (atomic_read(&stats->s) < 0) atomic_set(&stats->s,INT_MAX);
 
 
+<<<<<<< HEAD
 static void suni_hz(struct timer_list *timer)
+=======
+static void suni_hz(unsigned long from_timer)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct suni_priv *walk;
 	struct atm_dev *dev;
@@ -85,7 +89,11 @@ static void suni_hz(struct timer_list *timer)
 		    ((GET(TACP_TCC) & 0xff) << 8) |
 		    ((GET(TACP_TCCM) & 7) << 16));
 	}
+<<<<<<< HEAD
 	if (timer) mod_timer(&poll_timer,jiffies+HZ);
+=======
+	if (from_timer) mod_timer(&poll_timer,jiffies+HZ);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 
@@ -177,7 +185,11 @@ static int set_loopback(struct atm_dev *dev,int mode)
 		default:
 			return -EINVAL;
 	}
+<<<<<<< HEAD
 	dev->ops->phy_put(dev, control, reg);
+=======
+	 dev->ops->phy_put(dev, control, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	PRIV(dev)->loop_mode = mode;
 	return 0;
 }
@@ -322,11 +334,21 @@ static int suni_start(struct atm_dev *dev)
 		printk(KERN_WARNING "%s(itf %d): no signal\n",dev->type,
 		    dev->number);
 	PRIV(dev)->loop_mode = ATM_LM_NONE;
+<<<<<<< HEAD
 	suni_hz(NULL); /* clear SUNI counters */
 	(void) fetch_stats(dev,NULL,1); /* clear kernel counters */
 	if (first) {
 		timer_setup(&poll_timer, suni_hz, 0);
 		poll_timer.expires = jiffies+HZ;
+=======
+	suni_hz(0); /* clear SUNI counters */
+	(void) fetch_stats(dev,NULL,1); /* clear kernel counters */
+	if (first) {
+		init_timer(&poll_timer);
+		poll_timer.expires = jiffies+HZ;
+		poll_timer.function = suni_hz;
+		poll_timer.data = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if 0
 printk(KERN_DEBUG "[u] p=0x%lx,n=0x%lx\n",(unsigned long) poll_timer.list.prev,
     (unsigned long) poll_timer.list.next);

@@ -280,6 +280,7 @@ Interaction with the user of the RxRPC socket:
      nominated by a socket option.
 
 
+<<<<<<< HEAD
 Notes on sendmsg:
 
  (*) MSG_WAITALL can be set to tell sendmsg to ignore signals if the peer is
@@ -292,6 +293,8 @@ Notes on sendmsg:
      consumed.
 
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 Notes on recvmsg:
 
  (*) If there's a sequence of data messages belonging to a particular call on
@@ -794,9 +797,13 @@ The kernel interface functions are as follows:
 				struct key *key,
 				unsigned long user_call_ID,
 				s64 tx_total_len,
+<<<<<<< HEAD
 				gfp_t gfp,
 				rxrpc_notify_rx_t notify_rx,
 				bool upgrade);
+=======
+				gfp_t gfp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
      This allocates the infrastructure to make a new RxRPC call and assigns
      call and connection numbers.  The call will be made on the UDP port that
@@ -817,6 +824,7 @@ The kernel interface functions are as follows:
      allows the kernel to encrypt directly to the packet buffers, thereby
      saving a copy.  The value may not be less than -1.
 
+<<<<<<< HEAD
      notify_rx is a pointer to a function to be called when events such as
      incoming data packets or remote aborts happen.
 
@@ -824,6 +832,8 @@ The kernel interface functions are as follows:
      the server upgrade the service to a better one.  The resultant service ID
      is returned by rxrpc_kernel_recv_data().
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
      If this function is successful, an opaque reference to the RxRPC call is
      returned.  The caller now holds a reference on this and it must be
      properly ended.
@@ -871,8 +881,12 @@ The kernel interface functions are as follows:
 				   size_t size,
 				   size_t *_offset,
 				   bool want_more,
+<<<<<<< HEAD
 				   u32 *_abort,
 				   u16 *_service)
+=======
+				   u32 *_abort)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
       This is used to receive data from either the reply part of a client call
       or the request part of a service call.  buf and size specify how much
@@ -895,9 +909,12 @@ The kernel interface functions are as follows:
       If a remote ABORT is detected, the abort code received will be stored in
       *_abort and ECONNABORTED will be returned.
 
+<<<<<<< HEAD
       The service ID that the call ended up with is returned into *_service.
       This can be used to see if a call got a service upgrade.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  (*) Abort a call.
 
 	void rxrpc_kernel_abort_call(struct socket *sock,
@@ -1045,6 +1062,7 @@ The kernel interface functions are as follows:
 
      It returns 0 if the call was requeued and an error otherwise.
 
+<<<<<<< HEAD
  (*) Get call RTT.
 
 	u64 rxrpc_kernel_get_rtt(struct socket *sock, struct rxrpc_call *call);
@@ -1069,6 +1087,8 @@ The kernel interface functions are as follows:
 
      This function may transmit a PING ACK.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 =======================
 CONFIGURABLE PARAMETERS

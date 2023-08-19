@@ -8,7 +8,11 @@ RT-mutex implementation design
 
 This document tries to describe the design of the rtmutex.c implementation.
 It doesn't describe the reasons why rtmutex.c exists. For that please see
+<<<<<<< HEAD
 Documentation/locking/rt-mutex.txt.  Although this document does explain problems
+=======
+Documentation/rt-mutex.txt.  Although this document does explain problems
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 that happen without this code, but that is in the concept to understand
 what the code actually is doing.
 

@@ -2,6 +2,10 @@
 #ifndef _ARCH_POWERPC_UACCESS_H
 #define _ARCH_POWERPC_UACCESS_H
 
+<<<<<<< HEAD
+=======
+#include <asm/asm-compat.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/ppc_asm.h>
 #include <asm/processor.h>
 #include <asm/page.h>
@@ -29,6 +33,7 @@
 #endif
 
 #define get_ds()	(KERNEL_DS)
+<<<<<<< HEAD
 #define get_fs()	(current->thread.addr_limit)
 
 static inline void set_fs(mm_segment_t fs)
@@ -37,6 +42,10 @@ static inline void set_fs(mm_segment_t fs)
 	/* On user-mode return check addr_limit (fs) is correct */
 	set_thread_flag(TIF_FSCHECK);
 }
+=======
+#define get_fs()	(current->thread.fs)
+#define set_fs(val)	(current->thread.fs = (val))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define segment_eq(a, b)	((a).seg == (b).seg)
 
@@ -52,6 +61,7 @@ static inline void set_fs(mm_segment_t fs)
 
 #else
 
+<<<<<<< HEAD
 static inline int __access_ok(unsigned long addr, unsigned long size,
 			mm_segment_t seg)
 {
@@ -59,6 +69,11 @@ static inline int __access_ok(unsigned long addr, unsigned long size,
 		return 0;
 	return (size == 0 || size - 1 <= seg.seg - addr);
 }
+=======
+#define __access_ok(addr, size, segment)	\
+	(((addr) <= (segment).seg) &&		\
+	 (((size) == 0) || (((size) - 1) <= ((segment).seg - (addr)))))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif
 
@@ -183,6 +198,7 @@ do {								\
 
 extern long __get_user_bad(void);
 
+<<<<<<< HEAD
 /*
  * This does an atomic 128 byte aligned load from userspace.
  * Upto caller to do enable_kernel_vmx() before calling!
@@ -200,6 +216,8 @@ extern long __get_user_bad(void);
 		: "=r" (err)			\
 		: "b" (uaddr), "b" (kaddr), "i" (-EFAULT), "0" (err))
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define __get_user_asm(x, addr, err, op)		\
 	__asm__ __volatile__(				\
 		"1:	"op" %1,0(%2)	# get_user\n"	\
@@ -260,7 +278,11 @@ do {								\
 ({								\
 	long __gu_err;						\
 	__long_type(*(ptr)) __gu_val;				\
+<<<<<<< HEAD
 	const __typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
+=======
+	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__chk_user_ptr(ptr);					\
 	if (!is_kernel_addr((unsigned long)__gu_addr))		\
 		might_fault();					\
@@ -274,7 +296,11 @@ do {								\
 ({									\
 	long __gu_err = -EFAULT;					\
 	__long_type(*(ptr)) __gu_val = 0;				\
+<<<<<<< HEAD
 	const __typeof__(*(ptr)) __user *__gu_addr = (ptr);		\
+=======
+	__typeof__(*(ptr)) __user *__gu_addr = (ptr);		\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	might_fault();							\
 	if (access_ok(VERIFY_READ, __gu_addr, (size))) {		\
 		barrier_nospec();					\
@@ -288,7 +314,11 @@ do {								\
 ({								\
 	long __gu_err;						\
 	__long_type(*(ptr)) __gu_val;				\
+<<<<<<< HEAD
 	const __typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
+=======
+	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__chk_user_ptr(ptr);					\
 	barrier_nospec();					\
 	__get_user_size(__gu_val, __gu_addr, (size), __gu_err);	\
@@ -383,9 +413,12 @@ static inline unsigned long clear_user(void __user *addr, unsigned long size)
 extern long strncpy_from_user(char *dst, const char __user *src, long count);
 extern __must_check long strnlen_user(const char __user *str, long n);
 
+<<<<<<< HEAD
 extern long __copy_from_user_flushcache(void *dst, const void __user *src,
 		unsigned size);
 extern void memcpy_page_flushcache(char *to, struct page *page, size_t offset,
 			   size_t len);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif	/* _ARCH_POWERPC_UACCESS_H */

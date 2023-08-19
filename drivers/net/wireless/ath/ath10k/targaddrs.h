@@ -484,6 +484,13 @@ struct host_interest {
 #define QCA99X0_BOARD_DATA_SZ	  12288
 #define QCA99X0_BOARD_EXT_DATA_SZ 0
 
+<<<<<<< HEAD
+=======
+/* Dual band extended board data */
+#define QCA99X0_EXT_BOARD_DATA_SZ 2048
+#define EXT_BOARD_ADDRESS_OFFSET 0x3000
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define QCA4019_BOARD_DATA_SZ	  12064
 #define QCA4019_BOARD_EXT_DATA_SZ 0
 

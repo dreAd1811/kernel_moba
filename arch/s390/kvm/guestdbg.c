@@ -1,9 +1,19 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * kvm guest debug support
  *
  * Copyright IBM Corp. 2014
  *
+<<<<<<< HEAD
+=======
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License (version 2 only)
+ * as published by the Free Software Foundation.
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *    Author(s): David Hildenbrand <dahi@linux.vnet.ibm.com>
  */
 #include <linux/kvm_host.h>
@@ -153,7 +163,11 @@ void kvm_s390_patch_guest_per_regs(struct kvm_vcpu *vcpu)
 
 	if (guestdbg_sstep_enabled(vcpu)) {
 		/* disable timer (clock-comparator) interrupts */
+<<<<<<< HEAD
 		vcpu->arch.sie_block->gcr[0] &= ~CR0_CLOCK_COMPARATOR_SUBMASK;
+=======
+		vcpu->arch.sie_block->gcr[0] &= ~0x800ul;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vcpu->arch.sie_block->gcr[9] |= PER_EVENT_IFETCH;
 		vcpu->arch.sie_block->gcr[10] = 0;
 		vcpu->arch.sie_block->gcr[11] = -1UL;

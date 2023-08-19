@@ -56,7 +56,11 @@
 #define SILEAD_POINT_Y_MSB_OFF	0x01
 #define SILEAD_POINT_X_OFF	0x02
 #define SILEAD_POINT_X_MSB_OFF	0x03
+<<<<<<< HEAD
 #define SILEAD_EXTRA_DATA_MASK	0xF0
+=======
+#define SILEAD_TOUCH_ID_MASK	0xF0
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define SILEAD_CMD_SLEEP_MIN	10000
 #define SILEAD_CMD_SLEEP_MAX	20000
@@ -109,9 +113,12 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
 			    INPUT_MT_TRACK);
 
+<<<<<<< HEAD
 	if (device_property_read_bool(dev, "silead,home-button"))
 		input_set_capability(data->input, EV_KEY, KEY_LEFTMETA);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	data->input->name = SILEAD_TS_NAME;
 	data->input->phys = "input/ts";
 	data->input->id.bustype = BUS_I2C;
@@ -142,8 +149,12 @@ static void silead_ts_read_data(struct i2c_client *client)
 	struct input_dev *input = data->input;
 	struct device *dev = &client->dev;
 	u8 *bufp, buf[SILEAD_TS_DATA_LEN];
+<<<<<<< HEAD
 	int touch_nr, softbutton, error, i;
 	bool softbutton_pressed = false;
+=======
+	int touch_nr, error, i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	error = i2c_smbus_read_i2c_block_data(client, SILEAD_REG_DATA,
 					      SILEAD_TS_DATA_LEN, buf);
@@ -152,6 +163,7 @@ static void silead_ts_read_data(struct i2c_client *client)
 		return;
 	}
 
+<<<<<<< HEAD
 	if (buf[0] > data->max_fingers) {
 		dev_warn(dev, "More touches reported then supported %d > %d\n",
 			 buf[0], data->max_fingers);
@@ -186,6 +198,23 @@ static void silead_ts_read_data(struct i2c_client *client)
 			get_unaligned_le16(&bufp[SILEAD_POINT_X_OFF]) & 0xfff,
 			get_unaligned_le16(&bufp[SILEAD_POINT_Y_OFF]) & 0xfff);
 		touch_nr++;
+=======
+	touch_nr = buf[0];
+	if (touch_nr > data->max_fingers) {
+		dev_warn(dev, "More touches reported then supported %d > %d\n",
+			 touch_nr, data->max_fingers);
+		touch_nr = data->max_fingers;
+	}
+
+	bufp = buf + SILEAD_POINT_DATA_LEN;
+	for (i = 0; i < touch_nr; i++, bufp += SILEAD_POINT_DATA_LEN) {
+		/* Bits 4-7 are the touch id */
+		data->id[i] = (bufp[SILEAD_POINT_X_MSB_OFF] &
+			       SILEAD_TOUCH_ID_MASK) >> 4;
+		touchscreen_set_mt_pos(&data->pos[i], &data->prop,
+			get_unaligned_le16(&bufp[SILEAD_POINT_X_OFF]) & 0xfff,
+			get_unaligned_le16(&bufp[SILEAD_POINT_Y_OFF]) & 0xfff);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	input_mt_assign_slots(input, data->slots, data->pos, touch_nr, 0);
@@ -201,7 +230,10 @@ static void silead_ts_read_data(struct i2c_client *client)
 	}
 
 	input_mt_sync_frame(input);
+<<<<<<< HEAD
 	input_report_key(input, KEY_LEFTMETA, softbutton_pressed);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	input_sync(input);
 }
 
@@ -558,20 +590,45 @@ static int __maybe_unused silead_ts_suspend(struct device *dev)
 static int __maybe_unused silead_ts_resume(struct device *dev)
 {
 	struct i2c_client *client = to_i2c_client(dev);
+<<<<<<< HEAD
+=======
+	bool second_try = false;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int error, status;
 
 	silead_ts_set_power(client, SILEAD_POWER_ON);
 
+<<<<<<< HEAD
+=======
+ retry:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = silead_ts_reset(client);
 	if (error)
 		return error;
 
+<<<<<<< HEAD
+=======
+	if (second_try) {
+		error = silead_ts_load_fw(client);
+		if (error)
+			return error;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	error = silead_ts_startup(client);
 	if (error)
 		return error;
 
 	status = silead_ts_get_status(client);
 	if (status != SILEAD_STATUS_OK) {
+<<<<<<< HEAD
+=======
+		if (!second_try) {
+			second_try = true;
+			dev_dbg(dev, "Reloading firmware after unsuccessful resume\n");
+			goto retry;
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(dev, "Resume error, status: 0x%02x\n", status);
 		return -ENODEV;
 	}
@@ -602,9 +659,12 @@ static const struct acpi_device_id silead_ts_acpi_match[] = {
 	{ "GSL3675", 0 },
 	{ "GSL3692", 0 },
 	{ "MSSL1680", 0 },
+<<<<<<< HEAD
 	{ "MSSL0001", 0 },
 	{ "MSSL0002", 0 },
 	{ "MSSL0017", 0 },
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(acpi, silead_ts_acpi_match);

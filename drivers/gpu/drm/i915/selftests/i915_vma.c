@@ -35,7 +35,11 @@ static bool assert_vma(struct i915_vma *vma,
 {
 	bool ok = true;
 
+<<<<<<< HEAD
 	if (vma->vm != &ctx->ppgtt->vm) {
+=======
+	if (vma->vm != &ctx->ppgtt->base) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		pr_err("VMA created with wrong VM\n");
 		ok = false;
 	}
@@ -81,7 +85,11 @@ checked_vma_instance(struct drm_i915_gem_object *obj,
 	}
 
 	if (i915_vma_compare(vma, vm, view)) {
+<<<<<<< HEAD
 		pr_err("i915_vma_compare failed with create parameters!\n");
+=======
+		pr_err("i915_vma_compare failed with create parmaters!\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -110,7 +118,12 @@ static int create_vmas(struct drm_i915_private *i915,
 	list_for_each_entry(obj, objects, st_link) {
 		for (pinned = 0; pinned <= 1; pinned++) {
 			list_for_each_entry(ctx, contexts, link) {
+<<<<<<< HEAD
 				struct i915_address_space *vm = &ctx->ppgtt->vm;
+=======
+				struct i915_address_space *vm =
+					&ctx->ppgtt->base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				struct i915_vma *vma;
 				int err;
 
@@ -149,7 +162,11 @@ static int igt_vma_create(void *arg)
 	IGT_TIMEOUT(end_time);
 	LIST_HEAD(contexts);
 	LIST_HEAD(objects);
+<<<<<<< HEAD
 	int err = -ENOMEM;
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Exercise creating many vma amonst many objections, checking the
 	 * vma creation and lookup routines.
@@ -258,12 +275,21 @@ static int igt_vma_pin1(void *arg)
 		VALID(0, PIN_GLOBAL | PIN_OFFSET_BIAS | 8192),
 		VALID(0, PIN_GLOBAL | PIN_OFFSET_BIAS | (i915->ggtt.mappable_end - 4096)),
 		VALID(0, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_BIAS | (i915->ggtt.mappable_end - 4096)),
+<<<<<<< HEAD
 		VALID(0, PIN_GLOBAL | PIN_OFFSET_BIAS | (i915->ggtt.vm.total - 4096)),
 
 		VALID(0, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_FIXED | (i915->ggtt.mappable_end - 4096)),
 		INVALID(0, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_FIXED | i915->ggtt.mappable_end),
 		VALID(0, PIN_GLOBAL | PIN_OFFSET_FIXED | (i915->ggtt.vm.total - 4096)),
 		INVALID(0, PIN_GLOBAL | PIN_OFFSET_FIXED | i915->ggtt.vm.total),
+=======
+		VALID(0, PIN_GLOBAL | PIN_OFFSET_BIAS | (i915->ggtt.base.total - 4096)),
+
+		VALID(0, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_FIXED | (i915->ggtt.mappable_end - 4096)),
+		INVALID(0, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_FIXED | i915->ggtt.mappable_end),
+		VALID(0, PIN_GLOBAL | PIN_OFFSET_FIXED | (i915->ggtt.base.total - 4096)),
+		INVALID(0, PIN_GLOBAL | PIN_OFFSET_FIXED | i915->ggtt.base.total),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		INVALID(0, PIN_GLOBAL | PIN_OFFSET_FIXED | round_down(U64_MAX, PAGE_SIZE)),
 
 		VALID(4096, PIN_GLOBAL),
@@ -271,12 +297,21 @@ static int igt_vma_pin1(void *arg)
 		VALID(i915->ggtt.mappable_end - 4096, PIN_GLOBAL | PIN_MAPPABLE),
 		VALID(i915->ggtt.mappable_end, PIN_GLOBAL | PIN_MAPPABLE),
 		NOSPACE(i915->ggtt.mappable_end + 4096, PIN_GLOBAL | PIN_MAPPABLE),
+<<<<<<< HEAD
 		VALID(i915->ggtt.vm.total - 4096, PIN_GLOBAL),
 		VALID(i915->ggtt.vm.total, PIN_GLOBAL),
 		NOSPACE(i915->ggtt.vm.total + 4096, PIN_GLOBAL),
 		NOSPACE(round_down(U64_MAX, PAGE_SIZE), PIN_GLOBAL),
 		INVALID(8192, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_FIXED | (i915->ggtt.mappable_end - 4096)),
 		INVALID(8192, PIN_GLOBAL | PIN_OFFSET_FIXED | (i915->ggtt.vm.total - 4096)),
+=======
+		VALID(i915->ggtt.base.total - 4096, PIN_GLOBAL),
+		VALID(i915->ggtt.base.total, PIN_GLOBAL),
+		NOSPACE(i915->ggtt.base.total + 4096, PIN_GLOBAL),
+		NOSPACE(round_down(U64_MAX, PAGE_SIZE), PIN_GLOBAL),
+		INVALID(8192, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_FIXED | (i915->ggtt.mappable_end - 4096)),
+		INVALID(8192, PIN_GLOBAL | PIN_OFFSET_FIXED | (i915->ggtt.base.total - 4096)),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		INVALID(8192, PIN_GLOBAL | PIN_OFFSET_FIXED | (round_down(U64_MAX, PAGE_SIZE) - 4096)),
 
 		VALID(8192, PIN_GLOBAL | PIN_OFFSET_BIAS | (i915->ggtt.mappable_end - 4096)),
@@ -288,9 +323,15 @@ static int igt_vma_pin1(void *arg)
 		 * variable start, end and size.
 		 */
 		NOSPACE(0, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_BIAS | i915->ggtt.mappable_end),
+<<<<<<< HEAD
 		NOSPACE(0, PIN_GLOBAL | PIN_OFFSET_BIAS | i915->ggtt.vm.total),
 		NOSPACE(8192, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_BIAS | (i915->ggtt.mappable_end - 4096)),
 		NOSPACE(8192, PIN_GLOBAL | PIN_OFFSET_BIAS | (i915->ggtt.vm.total - 4096)),
+=======
+		NOSPACE(0, PIN_GLOBAL | PIN_OFFSET_BIAS | i915->ggtt.base.total),
+		NOSPACE(8192, PIN_GLOBAL | PIN_MAPPABLE | PIN_OFFSET_BIAS | (i915->ggtt.mappable_end - 4096)),
+		NOSPACE(8192, PIN_GLOBAL | PIN_OFFSET_BIAS | (i915->ggtt.base.total - 4096)),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 		{ },
 #undef NOSPACE
@@ -306,13 +347,21 @@ static int igt_vma_pin1(void *arg)
 	 * focusing on error handling of boundary conditions.
 	 */
 
+<<<<<<< HEAD
 	GEM_BUG_ON(!drm_mm_clean(&i915->ggtt.vm.mm));
+=======
+	GEM_BUG_ON(!drm_mm_clean(&i915->ggtt.base.mm));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	obj = i915_gem_object_create_internal(i915, PAGE_SIZE);
 	if (IS_ERR(obj))
 		return PTR_ERR(obj);
 
+<<<<<<< HEAD
 	vma = checked_vma_instance(obj, &i915->ggtt.vm, NULL);
+=======
+	vma = checked_vma_instance(obj, &i915->ggtt.base, NULL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (IS_ERR(vma))
 		goto out;
 
@@ -404,7 +453,11 @@ static unsigned int rotated_size(const struct intel_rotation_plane_info *a,
 static int igt_vma_rotate(void *arg)
 {
 	struct drm_i915_private *i915 = arg;
+<<<<<<< HEAD
 	struct i915_address_space *vm = &i915->ggtt.vm;
+=======
+	struct i915_address_space *vm = &i915->ggtt.base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct drm_i915_gem_object *obj;
 	const struct intel_rotation_plane_info planes[] = {
 		{ .width = 1, .height = 1, .stride = 1 },
@@ -603,7 +656,11 @@ static bool assert_pin(struct i915_vma *vma,
 static int igt_vma_partial(void *arg)
 {
 	struct drm_i915_private *i915 = arg;
+<<<<<<< HEAD
 	struct i915_address_space *vm = &i915->ggtt.vm;
+=======
+	struct i915_address_space *vm = &i915->ggtt.base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const unsigned int npages = 1021; /* prime! */
 	struct drm_i915_gem_object *obj;
 	const struct phase {
@@ -733,7 +790,11 @@ int i915_vma_mock_selftests(void)
 	err = i915_subtests(tests, i915);
 	mutex_unlock(&i915->drm.struct_mutex);
 
+<<<<<<< HEAD
 	drm_dev_put(&i915->drm);
+=======
+	drm_dev_unref(&i915->drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 

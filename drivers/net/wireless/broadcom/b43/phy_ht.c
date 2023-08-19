@@ -119,7 +119,11 @@ static void b43_radio_2059_rcal(struct b43_wldev *dev)
 /* Calibrate the internal RC oscillator? */
 static void b43_radio_2057_rccal(struct b43_wldev *dev)
 {
+<<<<<<< HEAD
 	static const u16 radio_values[3][2] = {
+=======
+	const u16 radio_values[3][2] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		{ 0x61, 0xE9 }, { 0x69, 0xD5 }, { 0x73, 0x99 },
 	};
 	int i;
@@ -154,7 +158,11 @@ static void b43_radio_2059_init_pre(struct b43_wldev *dev)
 
 static void b43_radio_2059_init(struct b43_wldev *dev)
 {
+<<<<<<< HEAD
 	static const u16 routing[] = { R2059_C1, R2059_C2, R2059_C3 };
+=======
+	const u16 routing[] = { R2059_C1, R2059_C2, R2059_C3 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	/* Prepare (reset?) radio */
@@ -263,7 +271,11 @@ static void b43_phy_ht_reset_cca(struct b43_wldev *dev)
 static void b43_phy_ht_zero_extg(struct b43_wldev *dev)
 {
 	u8 i, j;
+<<<<<<< HEAD
 	static const u16 base[] = { 0x40, 0x60, 0x80 };
+=======
+	u16 base[] = { 0x40, 0x60, 0x80 };
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	for (i = 0; i < ARRAY_SIZE(base); i++) {
 		for (j = 0; j < 4; j++)

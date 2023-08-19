@@ -3,10 +3,15 @@
 #include <dt-bindings/gpio/tegra186-gpio.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 #include <dt-bindings/mailbox/tegra186-hsp.h>
+<<<<<<< HEAD
 #include <dt-bindings/memory/tegra186-mc.h>
 #include <dt-bindings/power/tegra186-powergate.h>
 #include <dt-bindings/reset/tegra186-reset.h>
 #include <dt-bindings/thermal/tegra186-bpmp-thermal.h>
+=======
+#include <dt-bindings/power/tegra186-powergate.h>
+#include <dt-bindings/reset/tegra186-reset.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 / {
 	compatible = "nvidia,tegra186";
@@ -14,12 +19,15 @@
 	#address-cells = <2>;
 	#size-cells = <2>;
 
+<<<<<<< HEAD
 	misc@100000 {
 		compatible = "nvidia,tegra186-misc";
 		reg = <0x0 0x00100000 0x0 0xf000>,
 		      <0x0 0x0010f000 0x0 0x1000>;
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpio: gpio@2200000 {
 		compatible = "nvidia,tegra186-gpio";
 		reg-names = "security", "gpio";
@@ -68,12 +76,15 @@
 		snps,rxpbl = <8>;
 	};
 
+<<<<<<< HEAD
 	memory-controller@2c00000 {
 		compatible = "nvidia,tegra186-mc";
 		reg = <0x0 0x02c00000 0x0 0xb0000>;
 		status = "disabled";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uarta: serial@3100000 {
 		compatible = "nvidia,tegra186-uart", "nvidia,tegra20-uart";
 		reg = <0x0 0x03100000 0x0 0x40>;
@@ -272,6 +283,7 @@
 		status = "disabled";
 	};
 
+<<<<<<< HEAD
 	fuse@3820000 {
 		compatible = "nvidia,tegra186-efuse";
 		reg = <0x0 0x03820000 0x0 0x10000>;
@@ -279,6 +291,8 @@
 		clock-names = "fuse";
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gic: interrupt-controller@3881000 {
 		compatible = "arm,gic-400";
 		#interrupt-cells = <3>;
@@ -377,6 +391,7 @@
 		nvidia,bpmp = <&bpmp>;
 	};
 
+<<<<<<< HEAD
 	pcie@10003000 {
 		compatible = "nvidia,tegra186-pcie";
 		power-domains = <&bpmp TEGRA186_POWER_DOMAIN_PCX>;
@@ -818,6 +833,8 @@
 		};
 	};
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	gpu@17000000 {
 		compatible = "nvidia,gp10b";
 		reg = <0x0 0x17000000 0x0 0x1000000>,
@@ -906,7 +923,10 @@
 		shmem = <&cpu_bpmp_tx &cpu_bpmp_rx>;
 		#clock-cells = <1>;
 		#reset-cells = <1>;
+<<<<<<< HEAD
 		#power-domain-cells = <1>;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		bpmp_i2c: i2c {
 			compatible = "nvidia,tegra186-bpmp-i2c";
@@ -915,6 +935,7 @@
 			#size-cells = <0>;
 			status = "disabled";
 		};
+<<<<<<< HEAD
 
 		bpmp_thermal: thermal {
 			compatible = "nvidia,tegra186-bpmp-thermal";
@@ -1017,6 +1038,8 @@
 			cooling-maps {
 			};
 		};
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	};
 
 	timer {

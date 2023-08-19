@@ -34,9 +34,12 @@
 
 #include <linux/hyperv.h>
 
+<<<<<<< HEAD
 #define CREATE_TRACE_POINTS
 #include "hv_trace_balloon.h"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * We begin with definitions supporting the Dynamic Memory protocol
  * with the host.
@@ -579,6 +582,7 @@ static struct hv_dynmem_device dm_device;
 static void post_status(struct hv_dynmem_device *dm);
 
 #ifdef CONFIG_MEMORY_HOTPLUG
+<<<<<<< HEAD
 static inline bool has_pfn_is_backed(struct hv_hotadd_state *has,
 				     unsigned long pfn)
 {
@@ -633,11 +637,17 @@ static unsigned long hv_page_offline_check(unsigned long start_pfn,
 	return count;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int hv_memory_notifier(struct notifier_block *nb, unsigned long val,
 			      void *v)
 {
 	struct memory_notify *mem = (struct memory_notify *)v;
+<<<<<<< HEAD
 	unsigned long flags, pfn_count;
+=======
+	unsigned long flags;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	switch (val) {
 	case MEM_ONLINE:
@@ -650,6 +660,7 @@ static int hv_memory_notifier(struct notifier_block *nb, unsigned long val,
 
 	case MEM_OFFLINE:
 		spin_lock_irqsave(&dm_device.ha_lock, flags);
+<<<<<<< HEAD
 		pfn_count = hv_page_offline_check(mem->start_pfn,
 						  mem->nr_pages);
 		if (pfn_count <= dm_device.num_pages_onlined) {
@@ -663,6 +674,9 @@ static int hv_memory_notifier(struct notifier_block *nb, unsigned long val,
 			WARN_ON_ONCE(1);
 			dm_device.num_pages_onlined = 0;
 		}
+=======
+		dm_device.num_pages_onlined -= mem->nr_pages;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		spin_unlock_irqrestore(&dm_device.ha_lock, flags);
 		break;
 	case MEM_GOING_ONLINE:
@@ -681,9 +695,36 @@ static struct notifier_block hv_memory_nb = {
 /* Check if the particular page is backed and can be onlined and online it. */
 static void hv_page_online_one(struct hv_hotadd_state *has, struct page *pg)
 {
+<<<<<<< HEAD
 	if (!has_pfn_is_backed(has, page_to_pfn(pg)))
 		return;
 
+=======
+	unsigned long cur_start_pgp;
+	unsigned long cur_end_pgp;
+	struct hv_hotadd_gap *gap;
+
+	cur_start_pgp = (unsigned long)pfn_to_page(has->covered_start_pfn);
+	cur_end_pgp = (unsigned long)pfn_to_page(has->covered_end_pfn);
+
+	/* The page is not backed. */
+	if (((unsigned long)pg < cur_start_pgp) ||
+	    ((unsigned long)pg >= cur_end_pgp))
+		return;
+
+	/* Check for gaps. */
+	list_for_each_entry(gap, &has->gap_list, list) {
+		cur_start_pgp = (unsigned long)
+			pfn_to_page(gap->start_pfn);
+		cur_end_pgp = (unsigned long)
+			pfn_to_page(gap->end_pfn);
+		if (((unsigned long)pg >= cur_start_pgp) &&
+		    ((unsigned long)pg < cur_end_pgp)) {
+			return;
+		}
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* This frame is currently backed; online the page. */
 	__online_page_set_limits(pg);
 	__online_page_increment_counters(pg);
@@ -739,7 +780,11 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
 				(HA_CHUNK << PAGE_SHIFT));
 
 		if (ret) {
+<<<<<<< HEAD
 			pr_err("hot_add memory failed error is %d\n", ret);
+=======
+			pr_warn("hot_add memory failed error is %d\n", ret);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret == -EEXIST) {
 				/*
 				 * This error indicates that the error
@@ -774,6 +819,7 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
 static void hv_online_page(struct page *pg)
 {
 	struct hv_hotadd_state *has;
+<<<<<<< HEAD
 	unsigned long flags;
 	unsigned long pfn = page_to_pfn(pg);
 
@@ -781,6 +827,21 @@ static void hv_online_page(struct page *pg)
 	list_for_each_entry(has, &dm_device.ha_region_list, list) {
 		/* The page belongs to a different HAS. */
 		if ((pfn < has->start_pfn) || (pfn >= has->end_pfn))
+=======
+	unsigned long cur_start_pgp;
+	unsigned long cur_end_pgp;
+	unsigned long flags;
+
+	spin_lock_irqsave(&dm_device.ha_lock, flags);
+	list_for_each_entry(has, &dm_device.ha_region_list, list) {
+		cur_start_pgp = (unsigned long)
+			pfn_to_page(has->start_pfn);
+		cur_end_pgp = (unsigned long)pfn_to_page(has->end_pfn);
+
+		/* The page belongs to a different HAS. */
+		if (((unsigned long)pg < cur_start_pgp) ||
+		    ((unsigned long)pg >= cur_end_pgp))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			continue;
 
 		hv_page_online_one(has, pg);
@@ -1058,7 +1119,11 @@ static void hot_add_req(struct work_struct *dummy)
 		resp.result = 0;
 
 	if (!do_hot_add || (resp.page_count == 0))
+<<<<<<< HEAD
 		pr_err("Memory hot add failed\n");
+=======
+		pr_info("Memory hot add failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	dm->state = DM_INITIALIZED;
 	resp.hdr.trans_id = atomic_inc_return(&trans_id);
@@ -1085,7 +1150,11 @@ static void process_info(struct hv_dynmem_device *dm, struct dm_info_msg *msg)
 
 		break;
 	default:
+<<<<<<< HEAD
 		pr_warn("Received Unknown type: %d\n", info_hdr->type);
+=======
+		pr_info("Received Unknown type: %d\n", info_hdr->type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 }
 
@@ -1164,9 +1233,12 @@ static void post_status(struct hv_dynmem_device *dm)
 		 dm->num_pages_added - dm->num_pages_onlined : 0) +
 		compute_balloon_floor();
 
+<<<<<<< HEAD
 	trace_balloon_status(status.num_avail, status.num_committed,
 			     vm_memory_committed(), dm->num_pages_ballooned,
 			     dm->num_pages_added, dm->num_pages_onlined);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * If our transaction ID is no longer current, just don't
 	 * send the status. This can happen if we were interrupted
@@ -1215,10 +1287,14 @@ static unsigned int alloc_balloon_pages(struct hv_dynmem_device *dm,
 	unsigned int i = 0;
 	struct page *pg;
 
+<<<<<<< HEAD
 	if (num_pages < alloc_unit)
 		return 0;
 
 	for (i = 0; (i * alloc_unit) < num_pages; i++) {
+=======
+	for (i = 0; i < num_pages / alloc_unit; i++) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (bl_resp->hdr.size + sizeof(union dm_mem_page_range) >
 			PAGE_SIZE)
 			return i * alloc_unit;
@@ -1252,7 +1328,11 @@ static unsigned int alloc_balloon_pages(struct hv_dynmem_device *dm,
 
 	}
 
+<<<<<<< HEAD
 	return num_pages;
+=======
+	return i * alloc_unit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void balloon_up(struct work_struct *dummy)
@@ -1267,9 +1347,12 @@ static void balloon_up(struct work_struct *dummy)
 	long avail_pages;
 	unsigned long floor;
 
+<<<<<<< HEAD
 	/* The host balloons pages in 2M granularity. */
 	WARN_ON_ONCE(num_pages % PAGES_IN_2M != 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * We will attempt 2M allocations. However, if we fail to
 	 * allocate 2M chunks, we will go back to 4k allocations.
@@ -1279,14 +1362,21 @@ static void balloon_up(struct work_struct *dummy)
 	avail_pages = si_mem_available();
 	floor = compute_balloon_floor();
 
+<<<<<<< HEAD
 	/* Refuse to balloon below the floor, keep the 2M granularity. */
+=======
+	/* Refuse to balloon below the floor. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (avail_pages < num_pages || avail_pages - num_pages < floor) {
 		pr_warn("Balloon request will be partially fulfilled. %s\n",
 			avail_pages < num_pages ? "Not enough memory." :
 			"Balloon floor reached.");
 
 		num_pages = avail_pages > floor ? (avail_pages - floor) : 0;
+<<<<<<< HEAD
 		num_pages -= num_pages % PAGES_IN_2M;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	while (!done) {
@@ -1337,7 +1427,11 @@ static void balloon_up(struct work_struct *dummy)
 			/*
 			 * Free up the memory we allocatted.
 			 */
+<<<<<<< HEAD
 			pr_err("Balloon response failed\n");
+=======
+			pr_info("Balloon response failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			for (i = 0; i < bl_resp->range_count; i++)
 				free_balloon_pages(&dm_device,
@@ -1468,7 +1562,11 @@ static void cap_resp(struct hv_dynmem_device *dm,
 			struct dm_capabilities_resp_msg *cap_resp)
 {
 	if (!cap_resp->is_accepted) {
+<<<<<<< HEAD
 		pr_err("Capabilities not accepted by host\n");
+=======
+		pr_info("Capabilities not accepted by host\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dm->state = DM_INIT_ERROR;
 	}
 	complete(&dm->host_event);
@@ -1555,7 +1653,11 @@ static void balloon_onchannelcallback(void *context)
 			break;
 
 		default:
+<<<<<<< HEAD
 			pr_warn("Unhandled message: type: %d\n", dm_hdr->type);
+=======
+			pr_err("Unhandled message: type: %d\n", dm_hdr->type);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		}
 	}
@@ -1767,9 +1869,12 @@ static  struct hv_driver balloon_drv = {
 	.id_table = id_table,
 	.probe =  balloon_probe,
 	.remove =  balloon_remove,
+<<<<<<< HEAD
 	.driver = {
 		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 	},
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int __init init_balloon_drv(void)

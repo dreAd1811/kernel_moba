@@ -250,9 +250,15 @@ static ssize_t da9052_read_tsi(struct device *dev,
 	int channel = to_sensor_dev_attr(devattr)->index;
 	int ret;
 
+<<<<<<< HEAD
 	mutex_lock(&hwmon->hwmon_lock);
 	ret = __da9052_read_tsi(dev, channel);
 	mutex_unlock(&hwmon->hwmon_lock);
+=======
+	mutex_lock(&hwmon->da9052->auxadc_lock);
+	ret = __da9052_read_tsi(dev, channel);
+	mutex_unlock(&hwmon->da9052->auxadc_lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (ret < 0)
 		return ret;

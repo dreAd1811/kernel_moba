@@ -13,6 +13,11 @@ struct nouveau_fence {
 
 	struct list_head head;
 
+<<<<<<< HEAD
+=======
+	bool sysmem;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nouveau_channel __rcu *channel;
 	unsigned long timeout;
 };
@@ -23,6 +28,10 @@ void nouveau_fence_unref(struct nouveau_fence **);
 
 int  nouveau_fence_emit(struct nouveau_fence *, struct nouveau_channel *);
 bool nouveau_fence_done(struct nouveau_fence *);
+<<<<<<< HEAD
+=======
+void nouveau_fence_work(struct dma_fence *, void (*)(void *), void *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int  nouveau_fence_wait(struct nouveau_fence *, bool lazy, bool intr);
 int  nouveau_fence_sync(struct nouveau_bo *, struct nouveau_channel *, bool exclusive, bool intr);
 
@@ -55,6 +64,11 @@ struct nouveau_fence_priv {
 	int  (*context_new)(struct nouveau_channel *);
 	void (*context_del)(struct nouveau_channel *);
 
+<<<<<<< HEAD
+=======
+	u32 contexts;
+	u64 context_base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool uevent;
 };
 
@@ -86,12 +100,21 @@ int nouveau_flip_complete(struct nvif_notify *);
 
 struct nv84_fence_chan {
 	struct nouveau_fence_chan base;
+<<<<<<< HEAD
 	struct nouveau_vma *vma;
+=======
+	struct nvkm_vma vma;
+	struct nvkm_vma vma_gart;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct nv84_fence_priv {
 	struct nouveau_fence_priv base;
 	struct nouveau_bo *bo;
+<<<<<<< HEAD
+=======
+	struct nouveau_bo *bo_gart;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 *suspend;
 	struct mutex mutex;
 };

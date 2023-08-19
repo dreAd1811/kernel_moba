@@ -83,7 +83,11 @@
 #define MII_88E1121_PHY_MSCR_REG	21
 #define MII_88E1121_PHY_MSCR_RX_DELAY	BIT(5)
 #define MII_88E1121_PHY_MSCR_TX_DELAY	BIT(4)
+<<<<<<< HEAD
 #define MII_88E1121_PHY_MSCR_DELAY_MASK	(BIT(5) | BIT(4))
+=======
+#define MII_88E1121_PHY_MSCR_DELAY_MASK	(~(BIT(5) | BIT(4)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MII_88E1121_MISC_TEST				0x1a
 #define MII_88E1510_MISC_TEST_TEMP_THRESHOLD_MASK	0x1f00
@@ -96,6 +100,7 @@
 #define MII_88E1510_TEMP_SENSOR		0x1b
 #define MII_88E1510_TEMP_SENSOR_MASK	0xff
 
+<<<<<<< HEAD
 #define MII_88E6390_MISC_TEST		0x1b
 #define MII_88E6390_MISC_TEST_SAMPLE_1S		0
 #define MII_88E6390_MISC_TEST_SAMPLE_10MS	BIT(14)
@@ -107,6 +112,8 @@
 #define MII_88E6390_TEMP_SENSOR_MASK	0xff
 #define MII_88E6390_TEMP_SENSOR_SAMPLES 10
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define MII_88E1318S_PHY_MSCR1_REG	16
 #define MII_88E1318S_PHY_MSCR1_PAD_ODD	BIT(6)
 
@@ -130,9 +137,14 @@
 #define MII_88E1318S_PHY_WOL_CTRL_CLEAR_WOL_STATUS		BIT(12)
 #define MII_88E1318S_PHY_WOL_CTRL_MAGIC_PACKET_MATCH_ENABLE	BIT(14)
 
+<<<<<<< HEAD
 #define MII_PHY_LED_CTRL	        16
 #define MII_88E1121_PHY_LED_DEF		0x0030
 #define MII_88E1510_PHY_LED_DEF		0x1177
+=======
+#define MII_88E1121_PHY_LED_CTRL	16
+#define MII_88E1121_PHY_LED_DEF		0x0030
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MII_M1011_PHY_STATUS		0x11
 #define MII_M1011_PHY_STATUS_1000	0x8000
@@ -189,6 +201,7 @@ struct marvell_priv {
 	struct device *hwmon_dev;
 };
 
+<<<<<<< HEAD
 static int marvell_read_page(struct phy_device *phydev)
 {
 	return __phy_read(phydev, MII_MARVELL_PHY_PAGE);
@@ -197,6 +210,11 @@ static int marvell_read_page(struct phy_device *phydev)
 static int marvell_write_page(struct phy_device *phydev, int page)
 {
 	return __phy_write(phydev, MII_MARVELL_PHY_PAGE, page);
+=======
+static int marvell_get_page(struct phy_device *phydev)
+{
+	return phy_read(phydev, MII_MARVELL_PHY_PAGE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int marvell_set_page(struct phy_device *phydev, int page)
@@ -204,6 +222,22 @@ static int marvell_set_page(struct phy_device *phydev, int page)
 	return phy_write(phydev, MII_MARVELL_PHY_PAGE, page);
 }
 
+<<<<<<< HEAD
+=======
+static int marvell_get_set_page(struct phy_device *phydev, int page)
+{
+	int oldpage = marvell_get_page(phydev);
+
+	if (oldpage < 0)
+		return oldpage;
+
+	if (page != oldpage)
+		return marvell_set_page(phydev, page);
+
+	return 0;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int marvell_ack_interrupt(struct phy_device *phydev)
 {
 	int err;
@@ -403,7 +437,11 @@ static int m88e1111_config_aneg(struct phy_device *phydev)
 static int marvell_of_reg_init(struct phy_device *phydev)
 {
 	const __be32 *paddr;
+<<<<<<< HEAD
 	int len, i, saved_page, current_page, ret = 0;
+=======
+	int len, i, saved_page, current_page, ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!phydev->mdio.dev.of_node)
 		return 0;
@@ -413,11 +451,20 @@ static int marvell_of_reg_init(struct phy_device *phydev)
 	if (!paddr || len < (4 * sizeof(*paddr)))
 		return 0;
 
+<<<<<<< HEAD
 	saved_page = phy_save_page(phydev);
 	if (saved_page < 0)
 		goto err;
 	current_page = saved_page;
 
+=======
+	saved_page = marvell_get_page(phydev);
+	if (saved_page < 0)
+		return saved_page;
+	current_page = saved_page;
+
+	ret = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	len /= sizeof(*paddr);
 	for (i = 0; i < len - 3; i += 4) {
 		u16 page = be32_to_cpup(paddr + i);
@@ -428,14 +475,22 @@ static int marvell_of_reg_init(struct phy_device *phydev)
 
 		if (page != current_page) {
 			current_page = page;
+<<<<<<< HEAD
 			ret = marvell_write_page(phydev, page);
+=======
+			ret = marvell_set_page(phydev, page);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (ret < 0)
 				goto err;
 		}
 
 		val = 0;
 		if (mask) {
+<<<<<<< HEAD
 			val = __phy_read(phydev, reg);
+=======
+			val = phy_read(phydev, reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			if (val < 0) {
 				ret = val;
 				goto err;
@@ -444,12 +499,25 @@ static int marvell_of_reg_init(struct phy_device *phydev)
 		}
 		val |= val_bits;
 
+<<<<<<< HEAD
 		ret = __phy_write(phydev, reg, val);
+=======
+		ret = phy_write(phydev, reg, val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (ret < 0)
 			goto err;
 	}
 err:
+<<<<<<< HEAD
 	return phy_restore_page(phydev, saved_page, ret);
+=======
+	if (current_page != saved_page) {
+		i = marvell_set_page(phydev, saved_page);
+		if (ret == 0)
+			ret = i;
+	}
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 #else
 static int marvell_of_reg_init(struct phy_device *phydev)
@@ -460,6 +528,7 @@ static int marvell_of_reg_init(struct phy_device *phydev)
 
 static int m88e1121_config_aneg_rgmii_delays(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	int mscr;
 
 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID)
@@ -475,6 +544,36 @@ static int m88e1121_config_aneg_rgmii_delays(struct phy_device *phydev)
 	return phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
 				MII_88E1121_PHY_MSCR_REG,
 				MII_88E1121_PHY_MSCR_DELAY_MASK, mscr);
+=======
+	int err, oldpage, mscr;
+
+	oldpage = marvell_get_set_page(phydev, MII_MARVELL_MSCR_PAGE);
+	if (oldpage < 0)
+		return oldpage;
+
+	mscr = phy_read(phydev, MII_88E1121_PHY_MSCR_REG);
+	if (mscr < 0) {
+		err = mscr;
+		goto out;
+	}
+
+	mscr &= MII_88E1121_PHY_MSCR_DELAY_MASK;
+
+	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID)
+		mscr |= (MII_88E1121_PHY_MSCR_RX_DELAY |
+			 MII_88E1121_PHY_MSCR_TX_DELAY);
+	else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID)
+		mscr |= MII_88E1121_PHY_MSCR_RX_DELAY;
+	else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)
+		mscr |= MII_88E1121_PHY_MSCR_TX_DELAY;
+
+	err = phy_write(phydev, MII_88E1121_PHY_MSCR_REG, mscr);
+
+out:
+	marvell_set_page(phydev, oldpage);
+
+	return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1121_config_aneg(struct phy_device *phydev)
@@ -483,7 +582,11 @@ static int m88e1121_config_aneg(struct phy_device *phydev)
 
 	if (phy_interface_is_rgmii(phydev)) {
 		err = m88e1121_config_aneg_rgmii_delays(phydev);
+<<<<<<< HEAD
 		if (err < 0)
+=======
+		if (err)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return err;
 	}
 
@@ -500,11 +603,28 @@ static int m88e1121_config_aneg(struct phy_device *phydev)
 
 static int m88e1318_config_aneg(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	int err;
 
 	err = phy_modify_paged(phydev, MII_MARVELL_MSCR_PAGE,
 			       MII_88E1318S_PHY_MSCR1_REG,
 			       0, MII_88E1318S_PHY_MSCR1_PAD_ODD);
+=======
+	int err, oldpage, mscr;
+
+	oldpage = marvell_get_set_page(phydev, MII_MARVELL_MSCR_PAGE);
+	if (oldpage < 0)
+		return oldpage;
+
+	mscr = phy_read(phydev, MII_88E1318S_PHY_MSCR1_REG);
+	mscr |= MII_88E1318S_PHY_MSCR1_PAD_ODD;
+
+	err = phy_write(phydev, MII_88E1318S_PHY_MSCR1_REG, mscr);
+	if (err < 0)
+		return err;
+
+	err = marvell_set_page(phydev, oldpage);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err < 0)
 		return err;
 
@@ -613,10 +733,13 @@ static int m88e1510_config_aneg(struct phy_device *phydev)
 	if (err < 0)
 		goto error;
 
+<<<<<<< HEAD
 	/* Do not touch the fiber page if we're in copper->sgmii mode */
 	if (phydev->interface == PHY_INTERFACE_MODE_SGMII)
 		return 0;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Then the fiber link */
 	err = marvell_set_page(phydev, MII_MARVELL_FIBER_PAGE);
 	if (err < 0)
@@ -633,6 +756,7 @@ error:
 	return err;
 }
 
+<<<<<<< HEAD
 static void marvell_config_led(struct phy_device *phydev)
 {
 	u16 def_config;
@@ -667,6 +791,10 @@ static int marvell_config_init(struct phy_device *phydev)
 	/* Set defalut LED */
 	marvell_config_led(phydev);
 
+=======
+static int marvell_config_init(struct phy_device *phydev)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set registers from marvell,reg-init DT property */
 	return marvell_of_reg_init(phydev);
 }
@@ -679,7 +807,11 @@ static int m88e1116r_config_init(struct phy_device *phydev)
 	if (err < 0)
 		return err;
 
+<<<<<<< HEAD
 	msleep(500);
+=======
+	mdelay(500);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	err = marvell_set_page(phydev, MII_MARVELL_COPPER_PAGE);
 	if (err < 0)
@@ -708,6 +840,7 @@ static int m88e1116r_config_init(struct phy_device *phydev)
 
 static int m88e3016_config_init(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	int ret;
 
 	/* Enable Scrambler and Auto-Crossover */
@@ -716,6 +849,21 @@ static int m88e3016_config_init(struct phy_device *phydev)
 			 MII_88E3016_AUTO_MDIX_CROSSOVER);
 	if (ret < 0)
 		return ret;
+=======
+	int reg;
+
+	/* Enable Scrambler and Auto-Crossover */
+	reg = phy_read(phydev, MII_88E3016_PHY_SPEC_CTRL);
+	if (reg < 0)
+		return reg;
+
+	reg &= ~MII_88E3016_DISABLE_SCRAMBLER;
+	reg |= MII_88E3016_AUTO_MDIX_CROSSOVER;
+
+	reg = phy_write(phydev, MII_88E3016_PHY_SPEC_CTRL, reg);
+	if (reg < 0)
+		return reg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return marvell_config_init(phydev);
 }
@@ -724,6 +872,7 @@ static int m88e1111_config_init_hwcfg_mode(struct phy_device *phydev,
 					   u16 mode,
 					   int fibre_copper_auto)
 {
+<<<<<<< HEAD
 	if (fibre_copper_auto)
 		mode |= MII_M1111_HWCFG_FIBER_COPPER_AUTO;
 
@@ -732,10 +881,28 @@ static int m88e1111_config_init_hwcfg_mode(struct phy_device *phydev,
 			  MII_M1111_HWCFG_FIBER_COPPER_AUTO |
 			  MII_M1111_HWCFG_FIBER_COPPER_RES,
 			  mode);
+=======
+	int temp;
+
+	temp = phy_read(phydev, MII_M1111_PHY_EXT_SR);
+	if (temp < 0)
+		return temp;
+
+	temp &= ~(MII_M1111_HWCFG_MODE_MASK |
+		  MII_M1111_HWCFG_FIBER_COPPER_AUTO |
+		  MII_M1111_HWCFG_FIBER_COPPER_RES);
+	temp |= mode;
+
+	if (fibre_copper_auto)
+		temp |= MII_M1111_HWCFG_FIBER_COPPER_AUTO;
+
+	return phy_write(phydev, MII_M1111_PHY_EXT_SR, temp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1111_config_init_rgmii_delays(struct phy_device *phydev)
 {
+<<<<<<< HEAD
 	int delay;
 
 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
@@ -751,6 +918,25 @@ static int m88e1111_config_init_rgmii_delays(struct phy_device *phydev)
 	return phy_modify(phydev, MII_M1111_PHY_EXT_CR,
 			  MII_M1111_RGMII_RX_DELAY | MII_M1111_RGMII_TX_DELAY,
 			  delay);
+=======
+	int temp;
+
+	temp = phy_read(phydev, MII_M1111_PHY_EXT_CR);
+	if (temp < 0)
+		return temp;
+
+	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID) {
+		temp |= (MII_M1111_RGMII_RX_DELAY | MII_M1111_RGMII_TX_DELAY);
+	} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID) {
+		temp &= ~MII_M1111_RGMII_TX_DELAY;
+		temp |= MII_M1111_RGMII_RX_DELAY;
+	} else if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID) {
+		temp &= ~MII_M1111_RGMII_RX_DELAY;
+		temp |= MII_M1111_RGMII_TX_DELAY;
+	}
+
+	return phy_write(phydev, MII_M1111_PHY_EXT_CR, temp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1111_config_init_rgmii(struct phy_device *phydev)
@@ -796,7 +982,11 @@ static int m88e1111_config_init_rtbi(struct phy_device *phydev)
 	int err;
 
 	err = m88e1111_config_init_rgmii_delays(phydev);
+<<<<<<< HEAD
 	if (err < 0)
+=======
+	if (err)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return err;
 
 	err = m88e1111_config_init_hwcfg_mode(
@@ -823,7 +1013,11 @@ static int m88e1111_config_init(struct phy_device *phydev)
 
 	if (phy_interface_is_rgmii(phydev)) {
 		err = m88e1111_config_init_rgmii(phydev);
+<<<<<<< HEAD
 		if (err < 0)
+=======
+		if (err)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return err;
 	}
 
@@ -846,6 +1040,7 @@ static int m88e1111_config_init(struct phy_device *phydev)
 	return genphy_soft_reset(phydev);
 }
 
+<<<<<<< HEAD
 static int m88e1318_config_init(struct phy_device *phydev)
 {
 	if (phy_interrupt_is_valid(phydev)) {
@@ -859,12 +1054,35 @@ static int m88e1318_config_init(struct phy_device *phydev)
 			return err;
 	}
 
+=======
+static int m88e1121_config_init(struct phy_device *phydev)
+{
+	int err, oldpage;
+
+	oldpage = marvell_get_set_page(phydev, MII_MARVELL_LED_PAGE);
+	if (oldpage < 0)
+		return oldpage;
+
+	/* Default PHY LED config: LED[0] .. Link, LED[1] .. Activity */
+	err = phy_write(phydev, MII_88E1121_PHY_LED_CTRL,
+			MII_88E1121_PHY_LED_DEF);
+	if (err < 0)
+		return err;
+
+	marvell_set_page(phydev, oldpage);
+
+	/* Set marvell,reg-init configuration from device tree */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return marvell_config_init(phydev);
 }
 
 static int m88e1510_config_init(struct phy_device *phydev)
 {
 	int err;
+<<<<<<< HEAD
+=======
+	int temp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* SGMII-to-Copper mode initialization */
 	if (phydev->interface == PHY_INTERFACE_MODE_SGMII) {
@@ -874,15 +1092,27 @@ static int m88e1510_config_init(struct phy_device *phydev)
 			return err;
 
 		/* In reg 20, write MODE[2:0] = 0x1 (SGMII to Copper) */
+<<<<<<< HEAD
 		err = phy_modify(phydev, MII_88E1510_GEN_CTRL_REG_1,
 				 MII_88E1510_GEN_CTRL_REG_1_MODE_MASK,
 				 MII_88E1510_GEN_CTRL_REG_1_MODE_SGMII);
+=======
+		temp = phy_read(phydev, MII_88E1510_GEN_CTRL_REG_1);
+		temp &= ~MII_88E1510_GEN_CTRL_REG_1_MODE_MASK;
+		temp |= MII_88E1510_GEN_CTRL_REG_1_MODE_SGMII;
+		err = phy_write(phydev, MII_88E1510_GEN_CTRL_REG_1, temp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0)
 			return err;
 
 		/* PHY reset is necessary after changing MODE[2:0] */
+<<<<<<< HEAD
 		err = phy_modify(phydev, MII_88E1510_GEN_CTRL_REG_1, 0,
 				 MII_88E1510_GEN_CTRL_REG_1_RESET);
+=======
+		temp |= MII_88E1510_GEN_CTRL_REG_1_RESET;
+		err = phy_write(phydev, MII_88E1510_GEN_CTRL_REG_1, temp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0)
 			return err;
 
@@ -892,7 +1122,11 @@ static int m88e1510_config_init(struct phy_device *phydev)
 			return err;
 	}
 
+<<<<<<< HEAD
 	return m88e1318_config_init(phydev);
+=======
+	return m88e1121_config_init(phydev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1118_config_aneg(struct phy_device *phydev)
@@ -978,6 +1212,10 @@ static int m88e1149_config_init(struct phy_device *phydev)
 
 static int m88e1145_config_init_rgmii(struct phy_device *phydev)
 {
+<<<<<<< HEAD
+=======
+	int temp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int err;
 
 	err = m88e1111_config_init_rgmii_delays(phydev);
@@ -989,9 +1227,21 @@ static int m88e1145_config_init_rgmii(struct phy_device *phydev)
 		if (err < 0)
 			return err;
 
+<<<<<<< HEAD
 		err = phy_modify(phydev, 0x1e, 0x0fc0,
 				 2 << 9 | /* 36 ohm */
 				 2 << 6); /* 39 ohm */
+=======
+		temp = phy_read(phydev, 0x1e);
+		if (temp < 0)
+			return temp;
+
+		temp &= 0xf03f;
+		temp |= 2 << 9;	/* 36 ohm */
+		temp |= 2 << 6;	/* 39 ohm */
+
+		err = phy_write(phydev, 0x1e, temp);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (err < 0)
 			return err;
 
@@ -1051,6 +1301,7 @@ static int m88e1145_config_init(struct phy_device *phydev)
 	return 0;
 }
 
+<<<<<<< HEAD
 /* The VOD can be out of specification on link up. Poke an
  * undocumented register, in an undocumented page, with a magic value
  * to fix this.
@@ -1084,6 +1335,8 @@ static int m88e6390_config_aneg(struct phy_device *phydev)
 	return m88e1510_config_aneg(phydev);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * fiber_lpa_to_ethtool_lpa_t
  * @lpa: value of the MII_LPA register for fiber link
@@ -1400,6 +1653,7 @@ static int m88e1121_did_interrupt(struct phy_device *phydev)
 static void m88e1318_get_wol(struct phy_device *phydev,
 			     struct ethtool_wolinfo *wol)
 {
+<<<<<<< HEAD
 	int oldpage, ret = 0;
 
 	wol->supported = WAKE_MAGIC;
@@ -1415,11 +1669,26 @@ static void m88e1318_get_wol(struct phy_device *phydev,
 
 error:
 	phy_restore_page(phydev, oldpage, ret);
+=======
+	wol->supported = WAKE_MAGIC;
+	wol->wolopts = 0;
+
+	if (marvell_set_page(phydev, MII_MARVELL_WOL_PAGE) < 0)
+		return;
+
+	if (phy_read(phydev, MII_88E1318S_PHY_WOL_CTRL) &
+	    MII_88E1318S_PHY_WOL_CTRL_MAGIC_PACKET_MATCH_ENABLE)
+		wol->wolopts |= WAKE_MAGIC;
+
+	if (marvell_set_page(phydev, MII_MARVELL_COPPER_PAGE) < 0)
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1318_set_wol(struct phy_device *phydev,
 			    struct ethtool_wolinfo *wol)
 {
+<<<<<<< HEAD
 	int err = 0, oldpage;
 
 	oldpage = phy_save_page(phydev);
@@ -1431,6 +1700,17 @@ static int m88e1318_set_wol(struct phy_device *phydev,
 		err = marvell_write_page(phydev, MII_MARVELL_COPPER_PAGE);
 		if (err < 0)
 			goto error;
+=======
+	int err, oldpage, temp;
+
+	oldpage = marvell_get_page(phydev);
+
+	if (wol->wolopts & WAKE_MAGIC) {
+		/* Explicitly switch to page 0x00, just to be sure */
+		err = marvell_set_page(phydev, MII_MARVELL_COPPER_PAGE);
+		if (err < 0)
+			return err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		/* If WOL event happened once, the LED[2] interrupt pin
 		 * will not be cleared unless we reading the interrupt status
@@ -1439,6 +1719,7 @@ static int m88e1318_set_wol(struct phy_device *phydev,
 		 * before enabling it if !phy_interrupt_is_valid()
 		 */
 		if (!phy_interrupt_is_valid(phydev))
+<<<<<<< HEAD
 			__phy_read(phydev, MII_M1011_IEVENT);
 
 		/* Enable the WOL interrupt */
@@ -1501,6 +1782,77 @@ static int m88e1318_set_wol(struct phy_device *phydev,
 
 error:
 	return phy_restore_page(phydev, oldpage, err);
+=======
+			phy_read(phydev, MII_M1011_IEVENT);
+
+		/* Enable the WOL interrupt */
+		temp = phy_read(phydev, MII_88E1318S_PHY_CSIER);
+		temp |= MII_88E1318S_PHY_CSIER_WOL_EIE;
+		err = phy_write(phydev, MII_88E1318S_PHY_CSIER, temp);
+		if (err < 0)
+			return err;
+
+		err = marvell_set_page(phydev, MII_MARVELL_LED_PAGE);
+		if (err < 0)
+			return err;
+
+		/* Setup LED[2] as interrupt pin (active low) */
+		temp = phy_read(phydev, MII_88E1318S_PHY_LED_TCR);
+		temp &= ~MII_88E1318S_PHY_LED_TCR_FORCE_INT;
+		temp |= MII_88E1318S_PHY_LED_TCR_INTn_ENABLE;
+		temp |= MII_88E1318S_PHY_LED_TCR_INT_ACTIVE_LOW;
+		err = phy_write(phydev, MII_88E1318S_PHY_LED_TCR, temp);
+		if (err < 0)
+			return err;
+
+		err = marvell_set_page(phydev, MII_MARVELL_WOL_PAGE);
+		if (err < 0)
+			return err;
+
+		/* Store the device address for the magic packet */
+		err = phy_write(phydev, MII_88E1318S_PHY_MAGIC_PACKET_WORD2,
+				((phydev->attached_dev->dev_addr[5] << 8) |
+				 phydev->attached_dev->dev_addr[4]));
+		if (err < 0)
+			return err;
+		err = phy_write(phydev, MII_88E1318S_PHY_MAGIC_PACKET_WORD1,
+				((phydev->attached_dev->dev_addr[3] << 8) |
+				 phydev->attached_dev->dev_addr[2]));
+		if (err < 0)
+			return err;
+		err = phy_write(phydev, MII_88E1318S_PHY_MAGIC_PACKET_WORD0,
+				((phydev->attached_dev->dev_addr[1] << 8) |
+				 phydev->attached_dev->dev_addr[0]));
+		if (err < 0)
+			return err;
+
+		/* Clear WOL status and enable magic packet matching */
+		temp = phy_read(phydev, MII_88E1318S_PHY_WOL_CTRL);
+		temp |= MII_88E1318S_PHY_WOL_CTRL_CLEAR_WOL_STATUS;
+		temp |= MII_88E1318S_PHY_WOL_CTRL_MAGIC_PACKET_MATCH_ENABLE;
+		err = phy_write(phydev, MII_88E1318S_PHY_WOL_CTRL, temp);
+		if (err < 0)
+			return err;
+	} else {
+		err = marvell_set_page(phydev, MII_MARVELL_WOL_PAGE);
+		if (err < 0)
+			return err;
+
+		/* Clear WOL status and disable magic packet matching */
+		temp = phy_read(phydev, MII_88E1318S_PHY_WOL_CTRL);
+		temp |= MII_88E1318S_PHY_WOL_CTRL_CLEAR_WOL_STATUS;
+		temp &= ~MII_88E1318S_PHY_WOL_CTRL_MAGIC_PACKET_MATCH_ENABLE;
+		err = phy_write(phydev, MII_88E1318S_PHY_WOL_CTRL, temp);
+		if (err < 0)
+			return err;
+	}
+
+	err = marvell_set_page(phydev, oldpage);
+	if (err < 0)
+		return err;
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int marvell_get_sset_count(struct phy_device *phydev)
@@ -1517,27 +1869,56 @@ static void marvell_get_strings(struct phy_device *phydev, u8 *data)
 	int i;
 
 	for (i = 0; i < count; i++) {
+<<<<<<< HEAD
 		strlcpy(data + i * ETH_GSTRING_LEN,
 			marvell_hw_stats[i].string, ETH_GSTRING_LEN);
 	}
 }
 
+=======
+		memcpy(data + i * ETH_GSTRING_LEN,
+		       marvell_hw_stats[i].string, ETH_GSTRING_LEN);
+	}
+}
+
+#ifndef UINT64_MAX
+#define UINT64_MAX		(u64)(~((u64)0))
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static u64 marvell_get_stat(struct phy_device *phydev, int i)
 {
 	struct marvell_hw_stat stat = marvell_hw_stats[i];
 	struct marvell_priv *priv = phydev->priv;
+<<<<<<< HEAD
 	int val;
 	u64 ret;
 
 	val = phy_read_paged(phydev, stat.page, stat.reg);
 	if (val < 0) {
 		ret = U64_MAX;
+=======
+	int oldpage, val;
+	u64 ret;
+
+	oldpage = marvell_get_set_page(phydev, stat.page);
+	if (oldpage < 0)
+		return UINT64_MAX;
+
+	val = phy_read(phydev, stat.reg);
+	if (val < 0) {
+		ret = UINT64_MAX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		val = val & ((1 << stat.bits) - 1);
 		priv->stats[i] += val;
 		ret = priv->stats[i];
 	}
 
+<<<<<<< HEAD
+=======
+	marvell_set_page(phydev, oldpage);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -1555,11 +1936,16 @@ static void marvell_get_stats(struct phy_device *phydev,
 static int m88e1121_get_temp(struct phy_device *phydev, long *temp)
 {
 	int oldpage;
+<<<<<<< HEAD
 	int ret = 0;
+=======
+	int ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int val;
 
 	*temp = 0;
 
+<<<<<<< HEAD
 	oldpage = phy_select_page(phydev, MII_MARVELL_MISC_TEST_PAGE);
 	if (oldpage < 0)
 		goto error;
@@ -1571,28 +1957,61 @@ static int m88e1121_get_temp(struct phy_device *phydev, long *temp)
 
 	ret = __phy_write(phydev, MII_88E1121_MISC_TEST,
 			  ret | MII_88E1121_MISC_TEST_TEMP_SENSOR_EN);
+=======
+	mutex_lock(&phydev->lock);
+
+	oldpage = marvell_get_set_page(phydev, MII_MARVELL_MISC_TEST_PAGE);
+	if (oldpage < 0) {
+		mutex_unlock(&phydev->lock);
+		return oldpage;
+	}
+
+	/* Enable temperature sensor */
+	ret = phy_read(phydev, MII_88E1121_MISC_TEST);
+	if (ret < 0)
+		goto error;
+
+	ret = phy_write(phydev, MII_88E1121_MISC_TEST,
+			ret | MII_88E1121_MISC_TEST_TEMP_SENSOR_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
 	/* Wait for temperature to stabilize */
 	usleep_range(10000, 12000);
 
+<<<<<<< HEAD
 	val = __phy_read(phydev, MII_88E1121_MISC_TEST);
+=======
+	val = phy_read(phydev, MII_88E1121_MISC_TEST);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (val < 0) {
 		ret = val;
 		goto error;
 	}
 
 	/* Disable temperature sensor */
+<<<<<<< HEAD
 	ret = __phy_write(phydev, MII_88E1121_MISC_TEST,
 			  ret & ~MII_88E1121_MISC_TEST_TEMP_SENSOR_EN);
+=======
+	ret = phy_write(phydev, MII_88E1121_MISC_TEST,
+			ret & ~MII_88E1121_MISC_TEST_TEMP_SENSOR_EN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret < 0)
 		goto error;
 
 	*temp = ((val & MII_88E1121_MISC_TEST_TEMP_MASK) - 5) * 5000;
 
 error:
+<<<<<<< HEAD
 	return phy_restore_page(phydev, oldpage, ret);
+=======
+	marvell_set_page(phydev, oldpage);
+	mutex_unlock(&phydev->lock);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1121_hwmon_read(struct device *dev,
@@ -1666,10 +2085,15 @@ static const struct hwmon_chip_info m88e1121_hwmon_chip_info = {
 
 static int m88e1510_get_temp(struct phy_device *phydev, long *temp)
 {
+<<<<<<< HEAD
+=======
+	int oldpage;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	*temp = 0;
 
+<<<<<<< HEAD
 	ret = phy_read_paged(phydev, MII_MARVELL_MISC_TEST_PAGE,
 			     MII_88E1510_TEMP_SENSOR);
 	if (ret < 0)
@@ -1678,29 +2102,77 @@ static int m88e1510_get_temp(struct phy_device *phydev, long *temp)
 	*temp = ((ret & MII_88E1510_TEMP_SENSOR_MASK) - 25) * 1000;
 
 	return 0;
+=======
+	mutex_lock(&phydev->lock);
+
+	oldpage = marvell_get_set_page(phydev, MII_MARVELL_MISC_TEST_PAGE);
+	if (oldpage < 0) {
+		mutex_unlock(&phydev->lock);
+		return oldpage;
+	}
+
+	ret = phy_read(phydev, MII_88E1510_TEMP_SENSOR);
+	if (ret < 0)
+		goto error;
+
+	*temp = ((ret & MII_88E1510_TEMP_SENSOR_MASK) - 25) * 1000;
+
+error:
+	marvell_set_page(phydev, oldpage);
+	mutex_unlock(&phydev->lock);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1510_get_temp_critical(struct phy_device *phydev, long *temp)
 {
+<<<<<<< HEAD
+=======
+	int oldpage;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	*temp = 0;
 
+<<<<<<< HEAD
 	ret = phy_read_paged(phydev, MII_MARVELL_MISC_TEST_PAGE,
 			     MII_88E1121_MISC_TEST);
 	if (ret < 0)
 		return ret;
+=======
+	mutex_lock(&phydev->lock);
+
+	oldpage = marvell_get_set_page(phydev, MII_MARVELL_MISC_TEST_PAGE);
+	if (oldpage < 0) {
+		mutex_unlock(&phydev->lock);
+		return oldpage;
+	}
+
+	ret = phy_read(phydev, MII_88E1121_MISC_TEST);
+	if (ret < 0)
+		goto error;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	*temp = (((ret & MII_88E1510_MISC_TEST_TEMP_THRESHOLD_MASK) >>
 		  MII_88E1510_MISC_TEST_TEMP_THRESHOLD_SHIFT) * 5) - 25;
 	/* convert to mC */
 	*temp *= 1000;
 
+<<<<<<< HEAD
 	return 0;
+=======
+error:
+	marvell_set_page(phydev, oldpage);
+	mutex_unlock(&phydev->lock);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1510_set_temp_critical(struct phy_device *phydev, long temp)
 {
+<<<<<<< HEAD
 	temp = temp / 1000;
 	temp = clamp_val(DIV_ROUND_CLOSEST(temp, 5) + 5, 0, 0x1f);
 
@@ -1708,14 +2180,47 @@ static int m88e1510_set_temp_critical(struct phy_device *phydev, long temp)
 				MII_88E1121_MISC_TEST,
 				MII_88E1510_MISC_TEST_TEMP_THRESHOLD_MASK,
 				temp << MII_88E1510_MISC_TEST_TEMP_THRESHOLD_SHIFT);
+=======
+	int oldpage;
+	int ret;
+
+	mutex_lock(&phydev->lock);
+
+	oldpage = marvell_get_set_page(phydev, MII_MARVELL_MISC_TEST_PAGE);
+	if (oldpage < 0) {
+		mutex_unlock(&phydev->lock);
+		return oldpage;
+	}
+
+	ret = phy_read(phydev, MII_88E1121_MISC_TEST);
+	if (ret < 0)
+		goto error;
+
+	temp = temp / 1000;
+	temp = clamp_val(DIV_ROUND_CLOSEST(temp, 5) + 5, 0, 0x1f);
+	ret = phy_write(phydev, MII_88E1121_MISC_TEST,
+			(ret & ~MII_88E1510_MISC_TEST_TEMP_THRESHOLD_MASK) |
+			(temp << MII_88E1510_MISC_TEST_TEMP_THRESHOLD_SHIFT));
+
+error:
+	marvell_set_page(phydev, oldpage);
+	mutex_unlock(&phydev->lock);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1510_get_temp_alarm(struct phy_device *phydev, long *alarm)
 {
+<<<<<<< HEAD
+=======
+	int oldpage;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	*alarm = false;
 
+<<<<<<< HEAD
 	ret = phy_read_paged(phydev, MII_MARVELL_MISC_TEST_PAGE,
 			     MII_88E1121_MISC_TEST);
 	if (ret < 0)
@@ -1724,6 +2229,26 @@ static int m88e1510_get_temp_alarm(struct phy_device *phydev, long *alarm)
 	*alarm = !!(ret & MII_88E1510_MISC_TEST_TEMP_IRQ);
 
 	return 0;
+=======
+	mutex_lock(&phydev->lock);
+
+	oldpage = marvell_get_set_page(phydev, MII_MARVELL_MISC_TEST_PAGE);
+	if (oldpage < 0) {
+		mutex_unlock(&phydev->lock);
+		return oldpage;
+	}
+
+	ret = phy_read(phydev, MII_88E1121_MISC_TEST);
+	if (ret < 0)
+		goto error;
+	*alarm = !!(ret & MII_88E1510_MISC_TEST_TEMP_IRQ);
+
+error:
+	marvell_set_page(phydev, oldpage);
+	mutex_unlock(&phydev->lock);
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int m88e1510_hwmon_read(struct device *dev,
@@ -1812,6 +2337,7 @@ static const struct hwmon_chip_info m88e1510_hwmon_chip_info = {
 	.info = m88e1510_hwmon_info,
 };
 
+<<<<<<< HEAD
 static int m88e6390_get_temp(struct phy_device *phydev, long *temp)
 {
 	int sum = 0;
@@ -1929,6 +2455,8 @@ static const struct hwmon_chip_info m88e6390_hwmon_chip_info = {
 	.info = m88e6390_hwmon_info,
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int marvell_hwmon_name(struct phy_device *phydev)
 {
 	struct marvell_priv *priv = phydev->priv;
@@ -1975,11 +2503,14 @@ static int m88e1510_hwmon_probe(struct phy_device *phydev)
 {
 	return marvell_hwmon_probe(phydev, &m88e1510_hwmon_chip_info);
 }
+<<<<<<< HEAD
 
 static int m88e6390_hwmon_probe(struct phy_device *phydev)
 {
 	return marvell_hwmon_probe(phydev, &m88e6390_hwmon_chip_info);
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #else
 static int m88e1121_hwmon_probe(struct phy_device *phydev)
 {
@@ -1990,11 +2521,14 @@ static int m88e1510_hwmon_probe(struct phy_device *phydev)
 {
 	return 0;
 }
+<<<<<<< HEAD
 
 static int m88e6390_hwmon_probe(struct phy_device *phydev)
 {
 	return 0;
 }
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static int marvell_probe(struct phy_device *phydev)
@@ -2032,6 +2566,7 @@ static int m88e1510_probe(struct phy_device *phydev)
 	return m88e1510_hwmon_probe(phydev);
 }
 
+<<<<<<< HEAD
 static int m88e6390_probe(struct phy_device *phydev)
 {
 	int err;
@@ -2043,6 +2578,8 @@ static int m88e6390_probe(struct phy_device *phydev)
 	return m88e6390_hwmon_probe(phydev);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct phy_driver marvell_drivers[] = {
 	{
 		.phy_id = MARVELL_PHY_ID_88E1101,
@@ -2053,12 +2590,19 @@ static struct phy_driver marvell_drivers[] = {
 		.probe = marvell_probe,
 		.config_init = &marvell_config_init,
 		.config_aneg = &m88e1101_config_aneg,
+<<<<<<< HEAD
+=======
+		.read_status = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ack_interrupt = &marvell_ack_interrupt,
 		.config_intr = &marvell_config_intr,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2072,12 +2616,19 @@ static struct phy_driver marvell_drivers[] = {
 		.probe = marvell_probe,
 		.config_init = &m88e1111_config_init,
 		.config_aneg = &marvell_config_aneg,
+<<<<<<< HEAD
+=======
+		.read_status = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ack_interrupt = &marvell_ack_interrupt,
 		.config_intr = &marvell_config_intr,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2096,8 +2647,11 @@ static struct phy_driver marvell_drivers[] = {
 		.config_intr = &marvell_config_intr,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2111,12 +2665,19 @@ static struct phy_driver marvell_drivers[] = {
 		.probe = marvell_probe,
 		.config_init = &m88e1118_config_init,
 		.config_aneg = &m88e1118_config_aneg,
+<<<<<<< HEAD
+=======
+		.read_status = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ack_interrupt = &marvell_ack_interrupt,
 		.config_intr = &marvell_config_intr,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2128,7 +2689,11 @@ static struct phy_driver marvell_drivers[] = {
 		.features = PHY_GBIT_FEATURES,
 		.flags = PHY_HAS_INTERRUPT,
 		.probe = &m88e1121_probe,
+<<<<<<< HEAD
 		.config_init = &marvell_config_init,
+=======
+		.config_init = &m88e1121_config_init,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.config_aneg = &m88e1121_config_aneg,
 		.read_status = &marvell_read_status,
 		.ack_interrupt = &marvell_ack_interrupt,
@@ -2136,8 +2701,11 @@ static struct phy_driver marvell_drivers[] = {
 		.did_interrupt = &m88e1121_did_interrupt,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2149,7 +2717,11 @@ static struct phy_driver marvell_drivers[] = {
 		.features = PHY_GBIT_FEATURES,
 		.flags = PHY_HAS_INTERRUPT,
 		.probe = marvell_probe,
+<<<<<<< HEAD
 		.config_init = &m88e1318_config_init,
+=======
+		.config_init = &m88e1121_config_init,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.config_aneg = &m88e1318_config_aneg,
 		.read_status = &marvell_read_status,
 		.ack_interrupt = &marvell_ack_interrupt,
@@ -2159,8 +2731,11 @@ static struct phy_driver marvell_drivers[] = {
 		.set_wol = &m88e1318_set_wol,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2179,8 +2754,11 @@ static struct phy_driver marvell_drivers[] = {
 		.config_intr = &marvell_config_intr,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2194,12 +2772,19 @@ static struct phy_driver marvell_drivers[] = {
 		.probe = marvell_probe,
 		.config_init = &m88e1149_config_init,
 		.config_aneg = &m88e1118_config_aneg,
+<<<<<<< HEAD
+=======
+		.read_status = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ack_interrupt = &marvell_ack_interrupt,
 		.config_intr = &marvell_config_intr,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2213,12 +2798,19 @@ static struct phy_driver marvell_drivers[] = {
 		.probe = marvell_probe,
 		.config_init = &m88e1111_config_init,
 		.config_aneg = &marvell_config_aneg,
+<<<<<<< HEAD
+=======
+		.read_status = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ack_interrupt = &marvell_ack_interrupt,
 		.config_intr = &marvell_config_intr,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2231,12 +2823,20 @@ static struct phy_driver marvell_drivers[] = {
 		.flags = PHY_HAS_INTERRUPT,
 		.probe = marvell_probe,
 		.config_init = &m88e1116r_config_init,
+<<<<<<< HEAD
+=======
+		.config_aneg = &genphy_config_aneg,
+		.read_status = &genphy_read_status,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.ack_interrupt = &marvell_ack_interrupt,
 		.config_intr = &marvell_config_intr,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2258,8 +2858,11 @@ static struct phy_driver marvell_drivers[] = {
 		.set_wol = &m88e1318_set_wol,
 		.resume = &marvell_resume,
 		.suspend = &marvell_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2280,8 +2883,11 @@ static struct phy_driver marvell_drivers[] = {
 		.did_interrupt = &m88e1121_did_interrupt,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2301,8 +2907,11 @@ static struct phy_driver marvell_drivers[] = {
 		.did_interrupt = &m88e1121_did_interrupt,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2314,6 +2923,10 @@ static struct phy_driver marvell_drivers[] = {
 		.features = PHY_BASIC_FEATURES,
 		.flags = PHY_HAS_INTERRUPT,
 		.probe = marvell_probe,
+<<<<<<< HEAD
+=======
+		.config_aneg = &genphy_config_aneg,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.config_init = &m88e3016_config_init,
 		.aneg_done = &marvell_aneg_done,
 		.read_status = &marvell_read_status,
@@ -2322,8 +2935,11 @@ static struct phy_driver marvell_drivers[] = {
 		.did_interrupt = &m88e1121_did_interrupt,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,
@@ -2334,17 +2950,26 @@ static struct phy_driver marvell_drivers[] = {
 		.name = "Marvell 88E6390",
 		.features = PHY_GBIT_FEATURES,
 		.flags = PHY_HAS_INTERRUPT,
+<<<<<<< HEAD
 		.probe = m88e6390_probe,
 		.config_init = &marvell_config_init,
 		.config_aneg = &m88e6390_config_aneg,
+=======
+		.probe = m88e1510_probe,
+		.config_init = &marvell_config_init,
+		.config_aneg = &m88e1510_config_aneg,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.read_status = &marvell_read_status,
 		.ack_interrupt = &marvell_ack_interrupt,
 		.config_intr = &marvell_config_intr,
 		.did_interrupt = &m88e1121_did_interrupt,
 		.resume = &genphy_resume,
 		.suspend = &genphy_suspend,
+<<<<<<< HEAD
 		.read_page = marvell_read_page,
 		.write_page = marvell_write_page,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.get_sset_count = marvell_get_sset_count,
 		.get_strings = marvell_get_strings,
 		.get_stats = marvell_get_stats,

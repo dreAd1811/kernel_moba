@@ -367,10 +367,13 @@ static ssize_t vol_cdev_write(struct file *file, const char __user *buf,
 			return count;
 		}
 
+<<<<<<< HEAD
 		/*
 		 * We voluntarily do not take into account the skip_check flag
 		 * as we want to make sure what we wrote was correctly written.
 		 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		err = ubi_check_volume(ubi, vol->vol_id);
 		if (err < 0)
 			return err;
@@ -626,6 +629,7 @@ static int verify_mkvol_req(const struct ubi_device *ubi,
 	    req->vol_type != UBI_STATIC_VOLUME)
 		goto bad;
 
+<<<<<<< HEAD
 	if (req->flags & ~UBI_VOL_VALID_FLGS)
 		goto bad;
 
@@ -633,6 +637,8 @@ static int verify_mkvol_req(const struct ubi_device *ubi,
 	    req->vol_type != UBI_STATIC_VOLUME)
 		goto bad;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (req->alignment > ubi->leb_size)
 		goto bad;
 

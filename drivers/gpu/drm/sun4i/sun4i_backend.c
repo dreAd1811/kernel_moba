@@ -11,7 +11,10 @@
  */
 
 #include <drm/drmP.h>
+<<<<<<< HEAD
 #include <drm/drm_atomic.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <drm/drm_atomic_helper.h>
 #include <drm/drm_crtc.h>
 #include <drm/drm_crtc_helper.h>
@@ -21,12 +24,16 @@
 
 #include <linux/component.h>
 #include <linux/list.h>
+<<<<<<< HEAD
 #include <linux/of_device.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/of_graph.h>
 #include <linux/reset.h>
 
 #include "sun4i_backend.h"
 #include "sun4i_drv.h"
+<<<<<<< HEAD
 #include "sun4i_frontend.h"
 #include "sun4i_layer.h"
 #include "sunxi_engine.h"
@@ -36,12 +43,18 @@ struct sun4i_backend_quirks {
 	bool needs_output_muxing;
 };
 
+=======
+#include "sun4i_layer.h"
+#include "sunxi_engine.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static const u32 sunxi_rgb2yuv_coef[12] = {
 	0x00000107, 0x00000204, 0x00000064, 0x00000108,
 	0x00003f69, 0x00003ed6, 0x000001c1, 0x00000808,
 	0x000001c1, 0x00003e88, 0x00003fb8, 0x00000808
 };
 
+<<<<<<< HEAD
 /*
  * These coefficients are taken from the A33 BSP from Allwinner.
  *
@@ -86,6 +99,8 @@ static inline bool sun4i_backend_format_is_packed_yuv422(uint32_t format)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sun4i_backend_apply_color_correction(struct sunxi_engine *engine)
 {
 	int i;
@@ -136,8 +151,18 @@ void sun4i_backend_layer_enable(struct sun4i_backend *backend,
 			   SUN4I_BACKEND_MODCTL_LAY_EN(layer), val);
 }
 
+<<<<<<< HEAD
 static int sun4i_backend_drm_format_to_layer(u32 format, u32 *mode)
 {
+=======
+static int sun4i_backend_drm_format_to_layer(struct drm_plane *plane,
+					     u32 format, u32 *mode)
+{
+	if ((plane->type == DRM_PLANE_TYPE_PRIMARY) &&
+	    (format == DRM_FORMAT_ARGB8888))
+		format = DRM_FORMAT_XRGB8888;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	switch (format) {
 	case DRM_FORMAT_ARGB8888:
 		*mode = SUN4I_BACKEND_LAY_FBFMT_ARGB8888;
@@ -182,6 +207,10 @@ int sun4i_backend_update_layer_coord(struct sun4i_backend *backend,
 				     int layer, struct drm_plane *plane)
 {
 	struct drm_plane_state *state = plane->state;
+<<<<<<< HEAD
+=======
+	struct drm_framebuffer *fb = state->fb;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	DRM_DEBUG_DRIVER("Updating layer %d\n", layer);
 
@@ -193,6 +222,15 @@ int sun4i_backend_update_layer_coord(struct sun4i_backend *backend,
 						   state->crtc_h));
 	}
 
+<<<<<<< HEAD
+=======
+	/* Set the line width */
+	DRM_DEBUG_DRIVER("Layer line width: %d bits\n", fb->pitches[0] * 8);
+	regmap_write(backend->engine.regs,
+		     SUN4I_BACKEND_LAYLINEWIDTH_REG(layer),
+		     fb->pitches[0] * 8);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Set height and width */
 	DRM_DEBUG_DRIVER("Layer size W: %u H: %u\n",
 			 state->crtc_w, state->crtc_h);
@@ -210,6 +248,7 @@ int sun4i_backend_update_layer_coord(struct sun4i_backend *backend,
 	return 0;
 }
 
+<<<<<<< HEAD
 static int sun4i_backend_update_yuv_format(struct sun4i_backend *backend,
 					   int layer, struct drm_plane *plane)
 {
@@ -265,6 +304,8 @@ static int sun4i_backend_update_yuv_format(struct sun4i_backend *backend,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int sun4i_backend_update_layer_formats(struct sun4i_backend *backend,
 				       int layer, struct drm_plane *plane)
 {
@@ -274,10 +315,13 @@ int sun4i_backend_update_layer_formats(struct sun4i_backend *backend,
 	u32 val;
 	int ret;
 
+<<<<<<< HEAD
 	/* Clear the YUV mode */
 	regmap_update_bits(backend->engine.regs, SUN4I_BACKEND_ATTCTL_REG0(layer),
 			   SUN4I_BACKEND_ATTCTL_REG0_LAY_YUVEN, 0);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (plane->state->crtc)
 		interlaced = plane->state->crtc->state->adjusted_mode.flags
 			& DRM_MODE_FLAG_INTERLACE;
@@ -289,6 +333,7 @@ int sun4i_backend_update_layer_formats(struct sun4i_backend *backend,
 	DRM_DEBUG_DRIVER("Switching display backend interlaced mode %s\n",
 			 interlaced ? "on" : "off");
 
+<<<<<<< HEAD
 	val = SUN4I_BACKEND_ATTCTL_REG0_LAY_GLBALPHA(state->alpha >> 8);
 	if (state->alpha != DRM_BLEND_ALPHA_OPAQUE)
 		val |= SUN4I_BACKEND_ATTCTL_REG0_LAY_GLBALPHA_EN;
@@ -302,6 +347,10 @@ int sun4i_backend_update_layer_formats(struct sun4i_backend *backend,
 		return sun4i_backend_update_yuv_format(backend, layer, plane);
 
 	ret = sun4i_backend_drm_format_to_layer(fb->format->format, &val);
+=======
+	ret = sun4i_backend_drm_format_to_layer(plane, fb->format->format,
+						&val);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		DRM_DEBUG_DRIVER("Invalid format\n");
 		return ret;
@@ -314,6 +363,7 @@ int sun4i_backend_update_layer_formats(struct sun4i_backend *backend,
 	return 0;
 }
 
+<<<<<<< HEAD
 int sun4i_backend_update_layer_frontend(struct sun4i_backend *backend,
 					int layer, uint32_t fmt)
 {
@@ -353,11 +403,14 @@ static int sun4i_backend_update_yuv_buffer(struct sun4i_backend *backend,
 	return 0;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int sun4i_backend_update_layer_buffer(struct sun4i_backend *backend,
 				      int layer, struct drm_plane *plane)
 {
 	struct drm_plane_state *state = plane->state;
 	struct drm_framebuffer *fb = state->fb;
+<<<<<<< HEAD
 	u32 lo_paddr, hi_paddr;
 	dma_addr_t paddr;
 
@@ -381,6 +434,26 @@ int sun4i_backend_update_layer_buffer(struct sun4i_backend *backend,
 	if (fb->format->is_yuv)
 		return sun4i_backend_update_yuv_buffer(backend, fb, paddr);
 
+=======
+	struct drm_gem_cma_object *gem;
+	u32 lo_paddr, hi_paddr;
+	dma_addr_t paddr;
+	int bpp;
+
+	/* Get the physical address of the buffer in memory */
+	gem = drm_fb_cma_get_gem_obj(fb, 0);
+
+	DRM_DEBUG_DRIVER("Using GEM @ %pad\n", &gem->paddr);
+
+	/* Compute the start of the displayed memory */
+	bpp = fb->format->cpp[0];
+	paddr = gem->paddr + fb->offsets[0];
+	paddr += (state->src_x >> 16) * bpp;
+	paddr += (state->src_y >> 16) * fb->pitches[0];
+
+	DRM_DEBUG_DRIVER("Setting buffer address to %pad\n", &paddr);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Write the 32 lower bits of the address (in bits) */
 	lo_paddr = paddr << 3;
 	DRM_DEBUG_DRIVER("Setting address lower bits to 0x%x\n", lo_paddr);
@@ -398,6 +471,7 @@ int sun4i_backend_update_layer_buffer(struct sun4i_backend *backend,
 	return 0;
 }
 
+<<<<<<< HEAD
 int sun4i_backend_update_layer_zpos(struct sun4i_backend *backend, int layer,
 				    struct drm_plane *plane)
 {
@@ -618,6 +692,8 @@ static void sun4i_backend_vblank_quirk(struct sunxi_engine *engine)
 	spin_unlock(&backend->frontend_lock);
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sun4i_backend_init_sat(struct device *dev) {
 	struct sun4i_backend *backend = dev_get_drvdata(dev);
 	int ret;
@@ -702,6 +778,7 @@ static int sun4i_backend_of_get_id(struct device_node *node)
 	return ret;
 }
 
+<<<<<<< HEAD
 /* TODO: This needs to take multiple pipelines into account */
 static struct sun4i_frontend *sun4i_backend_find_frontend(struct sun4i_drv *drv,
 							  struct device_node *node)
@@ -735,11 +812,17 @@ static struct sun4i_frontend *sun4i_backend_find_frontend(struct sun4i_drv *drv,
 static const struct sunxi_engine_ops sun4i_backend_engine_ops = {
 	.atomic_begin			= sun4i_backend_atomic_begin,
 	.atomic_check			= sun4i_backend_atomic_check,
+=======
+static const struct sunxi_engine_ops sun4i_backend_engine_ops = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.commit				= sun4i_backend_commit,
 	.layers_init			= sun4i_layers_init,
 	.apply_color_correction		= sun4i_backend_apply_color_correction,
 	.disable_color_correction	= sun4i_backend_disable_color_correction,
+<<<<<<< HEAD
 	.vblank_quirk			= sun4i_backend_vblank_quirk,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static struct regmap_config sun4i_backend_regmap_config = {
@@ -756,7 +839,10 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
 	struct drm_device *drm = data;
 	struct sun4i_drv *drv = drm->dev_private;
 	struct sun4i_backend *backend;
+<<<<<<< HEAD
 	const struct sun4i_backend_quirks *quirks;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct resource *res;
 	void __iomem *regs;
 	int i, ret;
@@ -765,7 +851,10 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
 	if (!backend)
 		return -ENOMEM;
 	dev_set_drvdata(dev, backend);
+<<<<<<< HEAD
 	spin_lock_init(&backend->frontend_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	backend->engine.node = dev->of_node;
 	backend->engine.ops = &sun4i_backend_engine_ops;
@@ -773,15 +862,28 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
 	if (backend->engine.id < 0)
 		return backend->engine.id;
 
+<<<<<<< HEAD
 	backend->frontend = sun4i_backend_find_frontend(drv, dev->of_node);
 	if (IS_ERR(backend->frontend))
 		dev_warn(dev, "Couldn't find matching frontend, frontend features disabled\n");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	regs = devm_ioremap_resource(dev, res);
 	if (IS_ERR(regs))
 		return PTR_ERR(regs);
 
+<<<<<<< HEAD
+=======
+	backend->engine.regs = devm_regmap_init_mmio(dev, regs,
+						     &sun4i_backend_regmap_config);
+	if (IS_ERR(backend->engine.regs)) {
+		dev_err(dev, "Couldn't create the backend regmap\n");
+		return PTR_ERR(backend->engine.regs);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	backend->reset = devm_reset_control_get(dev, NULL);
 	if (IS_ERR(backend->reset)) {
 		dev_err(dev, "Couldn't get our reset line\n");
@@ -827,6 +929,7 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
 		}
 	}
 
+<<<<<<< HEAD
 	backend->engine.regs = devm_regmap_init_mmio(dev, regs,
 						     &sun4i_backend_regmap_config);
 	if (IS_ERR(backend->engine.regs)) {
@@ -844,6 +947,11 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
 	 *
 	 * Clear the registers here to have something predictable.
 	 */
+=======
+	list_add_tail(&backend->engine.list, &drv->engine_list);
+
+	/* Reset the registers */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	for (i = 0x800; i < 0x1000; i += 4)
 		regmap_write(backend->engine.regs, i, 0);
 
@@ -856,6 +964,7 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
 		     SUN4I_BACKEND_MODCTL_DEBE_EN |
 		     SUN4I_BACKEND_MODCTL_START_CTL);
 
+<<<<<<< HEAD
 	/* Set output selection if needed */
 	quirks = of_device_get_match_data(dev);
 	if (quirks->needs_output_muxing) {
@@ -877,6 +986,8 @@ static int sun4i_backend_bind(struct device *dev, struct device *master,
 				    : SUN4I_BACKEND_MODCTL_OUT_LCD0));
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 
 err_disable_ram_clk:
@@ -924,6 +1035,7 @@ static int sun4i_backend_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct sun4i_backend_quirks sun4i_backend_quirks = {
 	.needs_output_muxing = true,
 };
@@ -969,6 +1081,12 @@ static const struct of_device_id sun4i_backend_of_table[] = {
 		.compatible = "allwinner,sun9i-a80-display-backend",
 		.data = &sun9i_backend_quirks,
 	},
+=======
+static const struct of_device_id sun4i_backend_of_table[] = {
+	{ .compatible = "allwinner,sun5i-a13-display-backend" },
+	{ .compatible = "allwinner,sun6i-a31-display-backend" },
+	{ .compatible = "allwinner,sun8i-a33-display-backend" },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ }
 };
 MODULE_DEVICE_TABLE(of, sun4i_backend_of_table);

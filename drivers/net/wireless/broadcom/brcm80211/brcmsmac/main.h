@@ -563,6 +563,10 @@ struct brcms_c_info {
 
 	struct wiphy *wiphy;
 	struct scb pri_scb;
+<<<<<<< HEAD
+=======
+	struct ieee80211_vif *vif;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	struct sk_buff *beacon;
 	u16 beacon_tim_offset;

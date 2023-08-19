@@ -144,7 +144,12 @@ static void efm32_i2c_send_next_msg(struct efm32_i2c_ddata *ddata)
 	struct i2c_msg *cur_msg = &ddata->msgs[ddata->current_msg];
 
 	efm32_i2c_write32(ddata, REG_CMD, REG_CMD_START);
+<<<<<<< HEAD
 	efm32_i2c_write32(ddata, REG_TXDATA, i2c_8bit_addr_from_msg(cur_msg));
+=======
+	efm32_i2c_write32(ddata, REG_TXDATA, cur_msg->addr << 1 |
+			(cur_msg->flags & I2C_M_RD ? 1 : 0));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void efm32_i2c_send_next_byte(struct efm32_i2c_ddata *ddata)

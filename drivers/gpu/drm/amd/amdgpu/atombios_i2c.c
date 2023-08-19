@@ -65,6 +65,7 @@ static int amdgpu_atombios_i2c_process_i2c_ch(struct amdgpu_i2c_chan *chan,
 			args.ucRegIndex = buf[0];
 		if (num)
 			num--;
+<<<<<<< HEAD
 		if (num) {
 			if (buf) {
 				memcpy(&out, &buf[1], num);
@@ -74,6 +75,10 @@ static int amdgpu_atombios_i2c_process_i2c_ch(struct amdgpu_i2c_chan *chan,
 				goto done;
 			}
 		}
+=======
+		if (num)
+			memcpy(&out, &buf[1], num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		args.lpI2CDataOut = cpu_to_le16(out);
 	} else {
 		if (num > ATOM_MAX_HW_I2C_READ) {

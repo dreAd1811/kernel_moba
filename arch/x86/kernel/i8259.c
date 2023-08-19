@@ -115,7 +115,10 @@ static void make_8259A_irq(unsigned int irq)
 	io_apic_irqs &= ~(1<<irq);
 	irq_set_chip_and_handler(irq, &i8259A_chip, handle_level_irq);
 	enable_irq(irq);
+<<<<<<< HEAD
 	lapic_assign_legacy_vector(irq, true);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*

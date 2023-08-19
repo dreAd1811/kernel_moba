@@ -63,28 +63,47 @@ struct dm_region_hash {
 
 	/* hash table */
 	rwlock_t hash_lock;
+<<<<<<< HEAD
+=======
+	mempool_t *region_pool;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned mask;
 	unsigned nr_buckets;
 	unsigned prime;
 	unsigned shift;
 	struct list_head *buckets;
 
+<<<<<<< HEAD
 	/*
 	 * If there was a flush failure no regions can be marked clean.
 	 */
 	int flush_failure;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned max_recovery; /* Max # of regions to recover in parallel */
 
 	spinlock_t region_lock;
 	atomic_t recovery_in_flight;
+<<<<<<< HEAD
+=======
+	struct semaphore recovery_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head clean_regions;
 	struct list_head quiesced_regions;
 	struct list_head recovered_regions;
 	struct list_head failed_recovered_regions;
+<<<<<<< HEAD
 	struct semaphore recovery_count;
 
 	mempool_t region_pool;
+=======
+
+	/*
+	 * If there was a flush failure no regions can be marked clean.
+	 */
+	int flush_failure;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	void *context;
 	sector_t target_begin;
@@ -170,7 +189,10 @@ struct dm_region_hash *dm_region_hash_create(
 	struct dm_region_hash *rh;
 	unsigned nr_buckets, max_buckets;
 	size_t i;
+<<<<<<< HEAD
 	int ret;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Calculate a suitable number of buckets for our hash
@@ -203,7 +225,11 @@ struct dm_region_hash *dm_region_hash_create(
 	rh->shift = RH_HASH_SHIFT;
 	rh->prime = RH_HASH_MULT;
 
+<<<<<<< HEAD
 	rh->buckets = vmalloc(array_size(nr_buckets, sizeof(*rh->buckets)));
+=======
+	rh->buckets = vmalloc(nr_buckets * sizeof(*rh->buckets));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!rh->buckets) {
 		DMERR("unable to allocate region hash bucket memory");
 		kfree(rh);
@@ -222,9 +248,15 @@ struct dm_region_hash *dm_region_hash_create(
 	INIT_LIST_HEAD(&rh->failed_recovered_regions);
 	rh->flush_failure = 0;
 
+<<<<<<< HEAD
 	ret = mempool_init_kmalloc_pool(&rh->region_pool, MIN_REGIONS,
 					sizeof(struct dm_region));
 	if (ret) {
+=======
+	rh->region_pool = mempool_create_kmalloc_pool(MIN_REGIONS,
+						      sizeof(struct dm_region));
+	if (!rh->region_pool) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		vfree(rh->buckets);
 		kfree(rh);
 		rh = ERR_PTR(-ENOMEM);
@@ -244,14 +276,22 @@ void dm_region_hash_destroy(struct dm_region_hash *rh)
 		list_for_each_entry_safe(reg, nreg, rh->buckets + h,
 					 hash_list) {
 			BUG_ON(atomic_read(&reg->pending));
+<<<<<<< HEAD
 			mempool_free(reg, &rh->region_pool);
+=======
+			mempool_free(reg, rh->region_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 	}
 
 	if (rh->log)
 		dm_dirty_log_destroy(rh->log);
 
+<<<<<<< HEAD
 	mempool_exit(&rh->region_pool);
+=======
+	mempool_destroy(rh->region_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vfree(rh->buckets);
 	kfree(rh);
 }
@@ -289,7 +329,11 @@ static struct dm_region *__rh_alloc(struct dm_region_hash *rh, region_t region)
 {
 	struct dm_region *reg, *nreg;
 
+<<<<<<< HEAD
 	nreg = mempool_alloc(&rh->region_pool, GFP_ATOMIC);
+=======
+	nreg = mempool_alloc(rh->region_pool, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (unlikely(!nreg))
 		nreg = kmalloc(sizeof(*nreg), GFP_NOIO | __GFP_NOFAIL);
 
@@ -305,7 +349,11 @@ static struct dm_region *__rh_alloc(struct dm_region_hash *rh, region_t region)
 	reg = __rh_lookup(rh, region);
 	if (reg)
 		/* We lost the race. */
+<<<<<<< HEAD
 		mempool_free(nreg, &rh->region_pool);
+=======
+		mempool_free(nreg, rh->region_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else {
 		__rh_insert(rh, nreg);
 		if (nreg->state == DM_RH_CLEAN) {
@@ -483,17 +531,29 @@ void dm_rh_update_states(struct dm_region_hash *rh, int errors_handled)
 	list_for_each_entry_safe(reg, next, &recovered, list) {
 		rh->log->type->clear_region(rh->log, reg->key);
 		complete_resync_work(reg, 1);
+<<<<<<< HEAD
 		mempool_free(reg, &rh->region_pool);
+=======
+		mempool_free(reg, rh->region_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	list_for_each_entry_safe(reg, next, &failed_recovered, list) {
 		complete_resync_work(reg, errors_handled ? 0 : 1);
+<<<<<<< HEAD
 		mempool_free(reg, &rh->region_pool);
+=======
+		mempool_free(reg, rh->region_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	list_for_each_entry_safe(reg, next, &clean, list) {
 		rh->log->type->clear_region(rh->log, reg->key);
+<<<<<<< HEAD
 		mempool_free(reg, &rh->region_pool);
+=======
+		mempool_free(reg, rh->region_pool);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	rh->log->type->flush(rh->log);

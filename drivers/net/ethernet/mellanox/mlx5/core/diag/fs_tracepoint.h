@@ -136,10 +136,13 @@ TRACE_EVENT(mlx5_fs_del_fg,
 	{MLX5_FLOW_CONTEXT_ACTION_ENCAP,	 "ENCAP"},\
 	{MLX5_FLOW_CONTEXT_ACTION_DECAP,	 "DECAP"},\
 	{MLX5_FLOW_CONTEXT_ACTION_MOD_HDR,	 "MOD_HDR"},\
+<<<<<<< HEAD
 	{MLX5_FLOW_CONTEXT_ACTION_VLAN_PUSH,	 "VLAN_PUSH"},\
 	{MLX5_FLOW_CONTEXT_ACTION_VLAN_POP,	 "VLAN_POP"},\
 	{MLX5_FLOW_CONTEXT_ACTION_VLAN_PUSH_2,	 "VLAN_PUSH_2"},\
 	{MLX5_FLOW_CONTEXT_ACTION_VLAN_POP_2,	 "VLAN_POP_2"},\
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{MLX5_FLOW_CONTEXT_ACTION_FWD_NEXT_PRIO, "NEXT_PRIO"}
 
 TRACE_EVENT(mlx5_fs_set_fte,
@@ -167,9 +170,15 @@ TRACE_EVENT(mlx5_fs_set_fte,
 			   fs_get_obj(__entry->fg, fte->node.parent);
 			   __entry->group_index = __entry->fg->id;
 			   __entry->index = fte->index;
+<<<<<<< HEAD
 			   __entry->action = fte->action.action;
 			   __entry->mask_enable = __entry->fg->mask.match_criteria_enable;
 			   __entry->flow_tag = fte->action.flow_tag;
+=======
+			   __entry->action = fte->action;
+			   __entry->mask_enable = __entry->fg->mask.match_criteria_enable;
+			   __entry->flow_tag = fte->flow_tag;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   memcpy(__entry->mask_outer,
 				  MLX5_ADDR_OF(fte_match_param,
 					       &__entry->fg->mask.match_criteria,

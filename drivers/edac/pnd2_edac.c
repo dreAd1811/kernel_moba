@@ -45,8 +45,11 @@
 #include "edac_module.h"
 #include "pnd2_edac.h"
 
+<<<<<<< HEAD
 #define EDAC_MOD_STR		"pnd2_edac"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define APL_NUM_CHANNELS	4
 #define DNV_NUM_CHANNELS	2
 #define DNV_MAX_DIMMS		2 /* Max DIMMs per channel */
@@ -1362,7 +1365,11 @@ static int pnd2_register_mci(struct mem_ctl_info **ppmci)
 	pvt = mci->pvt_info;
 	memset(pvt, 0, sizeof(*pvt));
 
+<<<<<<< HEAD
 	mci->mod_name = EDAC_MOD_STR;
+=======
+	mci->mod_name = "pnd2_edac.c";
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mci->dev_name = ops->name;
 	mci->ctl_name = "Pondicherry2";
 
@@ -1554,15 +1561,21 @@ MODULE_DEVICE_TABLE(x86cpu, pnd2_cpuids);
 static int __init pnd2_init(void)
 {
 	const struct x86_cpu_id *id;
+<<<<<<< HEAD
 	const char *owner;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int rc;
 
 	edac_dbg(2, "\n");
 
+<<<<<<< HEAD
 	owner = edac_get_owner();
 	if (owner && strncmp(owner, EDAC_MOD_STR, sizeof(EDAC_MOD_STR)))
 		return -EBUSY;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	id = x86_match_cpu(pnd2_cpuids);
 	if (!id)
 		return -ENODEV;

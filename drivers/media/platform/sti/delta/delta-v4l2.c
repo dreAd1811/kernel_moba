@@ -1,9 +1,16 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) STMicroelectronics SA 2015
  * Authors: Hugues Fruchet <hugues.fruchet@st.com>
  *          Jean-Christophe Trotin <jean-christophe.trotin@st.com>
  *          for STMicroelectronics.
+<<<<<<< HEAD
+=======
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -339,6 +346,25 @@ static void register_decoders(struct delta_dev *delta)
 	}
 }
 
+<<<<<<< HEAD
+=======
+static void delta_lock(void *priv)
+{
+	struct delta_ctx *ctx = priv;
+	struct delta_dev *delta = ctx->dev;
+
+	mutex_lock(&delta->lock);
+}
+
+static void delta_unlock(void *priv)
+{
+	struct delta_ctx *ctx = priv;
+	struct delta_dev *delta = ctx->dev;
+
+	mutex_unlock(&delta->lock);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int delta_open_decoder(struct delta_ctx *ctx, u32 streamformat,
 			      u32 pixelformat, const struct delta_dec **pdec)
 {
@@ -1083,6 +1109,11 @@ static const struct v4l2_m2m_ops delta_m2m_ops = {
 	.device_run     = delta_device_run,
 	.job_ready	= delta_job_ready,
 	.job_abort      = delta_job_abort,
+<<<<<<< HEAD
+=======
+	.lock		= delta_lock,
+	.unlock		= delta_unlock,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*

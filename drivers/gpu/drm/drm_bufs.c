@@ -131,10 +131,17 @@ static int drm_map_handle(struct drm_device *dev, struct drm_hash_item *hash,
  * type.  Adds the map to the map list drm_device::maplist. Adds MTRR's where
  * applicable and if supported by the kernel.
  */
+<<<<<<< HEAD
 static int drm_addmap_core(struct drm_device *dev, resource_size_t offset,
 			   unsigned int size, enum drm_map_type type,
 			   enum drm_map_flags flags,
 			   struct drm_map_list **maplist)
+=======
+static int drm_addmap_core(struct drm_device * dev, resource_size_t offset,
+			   unsigned int size, enum drm_map_type type,
+			   enum drm_map_flags flags,
+			   struct drm_map_list ** maplist)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_local_map *map;
 	struct drm_map_list *list;
@@ -226,7 +233,11 @@ static int drm_addmap_core(struct drm_device *dev, resource_size_t offset,
 	case _DRM_SHM:
 		list = drm_find_matching_map(dev, map);
 		if (list != NULL) {
+<<<<<<< HEAD
 			if (list->map->size != map->size) {
+=======
+			if(list->map->size != map->size) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				DRM_DEBUG("Matching maps of type %d with "
 					  "mismatched sizes, (%ld vs %ld)\n",
 					  map->type, map->size, list->map->size);
@@ -363,7 +374,11 @@ static int drm_addmap_core(struct drm_device *dev, resource_size_t offset,
 	return 0;
 }
 
+<<<<<<< HEAD
 int drm_legacy_addmap(struct drm_device *dev, resource_size_t offset,
+=======
+int drm_legacy_addmap(struct drm_device * dev, resource_size_t offset,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      unsigned int size, enum drm_map_type type,
 		      enum drm_map_flags flags, struct drm_local_map **map_ptr)
 {
@@ -639,8 +654,13 @@ int drm_legacy_rmmap_ioctl(struct drm_device *dev, void *data,
  *
  * Frees any pages and buffers associated with the given entry.
  */
+<<<<<<< HEAD
 static void drm_cleanup_buf_error(struct drm_device *dev,
 				  struct drm_buf_entry *entry)
+=======
+static void drm_cleanup_buf_error(struct drm_device * dev,
+				  struct drm_buf_entry * entry)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int i;
 
@@ -1452,8 +1472,13 @@ int drm_legacy_freebufs(struct drm_device *dev, void *data,
 int __drm_legacy_mapbufs(struct drm_device *dev, void *data, int *p,
 			 void __user **v,
 			 int (*f)(void *, int, unsigned long,
+<<<<<<< HEAD
 				 struct drm_buf *),
 				 struct drm_file *file_priv)
+=======
+				  struct drm_buf *),
+		         struct drm_file *file_priv)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_device_dma *dma = dev->dma;
 	int retcode = 0;

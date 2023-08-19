@@ -81,7 +81,10 @@ config MMC_SDHCI_BIG_ENDIAN_32BIT_BYTE_SWAPPER
 config MMC_SDHCI_PCI
 	tristate "SDHCI support on PCI bus"
 	depends on MMC_SDHCI && PCI
+<<<<<<< HEAD
 	select MMC_CQHCI
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This selects the PCI Secure Digital Host Controller Interface.
 	  Most controllers found today are PCI devices.
@@ -120,8 +123,11 @@ config MMC_SDHCI_ACPI
 config MMC_SDHCI_PLTFM
 	tristate "SDHCI platform and OF driver helper"
 	depends on MMC_SDHCI
+<<<<<<< HEAD
 	select EXTCON
 	select EXTCON_GPIO
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This selects the common helper functions support for Secure Digital
 	  Host Controller Interface based platform and OF drivers.
@@ -135,7 +141,10 @@ config MMC_SDHCI_OF_ARASAN
 	depends on MMC_SDHCI_PLTFM
 	depends on OF
 	depends on COMMON_CLK
+<<<<<<< HEAD
 	select MMC_CQHCI
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This selects the Arasan Secure Digital Host Controller Interface
 	  (SDHCI). This hardware is found e.g. in Xilinx' Zynq SoC.
@@ -151,6 +160,7 @@ config MMC_SDHCI_OF_AT91
 	help
 	  This selects the Atmel SDMMC driver
 
+<<<<<<< HEAD
 config MMC_SDHCI_MSM_ICE
 	bool "Qualcomm Technologies, Inc Inline Crypto Engine for SDHCI core"
 	depends on MMC_SDHCI_MSM && CRYPTO_DEV_QCOM_ICE
@@ -162,6 +172,8 @@ config MMC_SDHCI_MSM_ICE
 	  Select this if you have ICE supported for SDHCI on QTI chipset.
 	  If unsure, say N.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMC_SDHCI_OF_ESDHC
 	tristate "SDHCI OF support for the Freescale eSDHC controller"
 	depends on MMC_SDHCI_PLTFM
@@ -189,6 +201,7 @@ config MMC_SDHCI_OF_HLWD
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
 config MMC_SDHCI_OF_DWCMSHC
 	tristate "SDHCI OF support for the Synopsys DWC MSHC"
 	depends on MMC_SDHCI_PLTFM
@@ -200,6 +213,8 @@ config MMC_SDHCI_OF_DWCMSHC
 	  If you have a controller with this interface, say Y or M here.
 	  If unsure, say N.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMC_SDHCI_CADENCE
 	tristate "SDHCI support for the Cadence SD/SDIO/eMMC controller"
 	depends on MMC_SDHCI_PLTFM
@@ -346,7 +361,11 @@ config MMC_SDHCI_BCM_KONA
 config MMC_SDHCI_F_SDH30
 	tristate "SDHCI support for Fujitsu Semiconductor F_SDH30"
 	depends on MMC_SDHCI_PLTFM
+<<<<<<< HEAD
 	depends on OF || ACPI
+=======
+	depends on OF
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This selects the Secure Digital Host Controller Interface (SDHCI)
 	  Needed by some Fujitsu SoC for MMC / SD / SDIO support.
@@ -369,15 +388,24 @@ config MMC_SDHCI_IPROC
 	  If unsure, say N.
 
 config MMC_MESON_GX
+<<<<<<< HEAD
 	tristate "Amlogic S905/GX*/AXG SD/MMC Host Controller support"
 	depends on ARCH_MESON && MMC
 	help
 	  This selects support for the Amlogic SD/MMC Host Controller
 	  found on the S905/GX*/AXG family of SoCs.  This controller is
+=======
+	tristate "Amlogic S905/GX* SD/MMC Host Controller support"
+	depends on ARCH_MESON && MMC
+	help
+	  This selects support for the Amlogic SD/MMC Host Controller
+	  found on the S905/GX* family of SoCs.  This controller is
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  MMC 5.1 compliant and supports SD, eMMC and SDIO interfaces.
 
 	  If you have a controller with this interface, say Y here.
 
+<<<<<<< HEAD
 config MMC_MESON_MX_SDIO
 	tristate "Amlogic Meson6/Meson8/Meson8b SD/MMC Host Controller support"
 	depends on ARCH_MESON || COMPILE_TEST
@@ -390,6 +418,8 @@ config MMC_MESON_MX_SDIO
 	  If you have a controller with this interface, say Y or M here.
 	  If unsure, say N.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMC_MOXART
 	tristate "MOXART SD/MMC Host Controller support"
 	depends on ARCH_MOXART && MMC
@@ -424,6 +454,10 @@ config MMC_OMAP
 
 config MMC_OMAP_HS
 	tristate "TI OMAP High Speed Multimedia Card Interface support"
+<<<<<<< HEAD
+=======
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
 	help
 	  This selects the TI OMAP High Speed Multimedia card Interface.
@@ -464,10 +498,16 @@ config MMC_ATMELMCI
 
 config MMC_SDHCI_MSM
 	tristate "Qualcomm Technologies, Inc. SDHCI Controller Support"
+<<<<<<< HEAD
 	depends on ARCH_QCOM || (ARM && COMPILE_TEST)
 	depends on MMC_SDHCI_PLTFM
 	select MMC_SDHCI_IO_ACCESSORS
 	select MMC_CQHCI
+=======
+	depends on ARCH_QCOM || ARCH_MSM || (ARM && COMPILE_TEST)
+	depends on MMC_SDHCI_PLTFM
+	select MMC_SDHCI_IO_ACCESSORS
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This selects the Secure Digital Host Controller Interface (SDHCI)
 	  support present in Qualcomm Technologies, Inc. SOCs. The controller
@@ -534,6 +574,10 @@ config MMC_DAVINCI
 
 config MMC_GOLDFISH
 	tristate "goldfish qemu Multimedia Card Interface support"
+<<<<<<< HEAD
+=======
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on GOLDFISH || COMPILE_TEST
 	help
 	  This selects the Goldfish Multimedia card Interface emulation
@@ -619,8 +663,16 @@ config MMC_TMIO
 
 config MMC_SDHI
 	tristate "Renesas SDHI SD/SDIO controller support"
+<<<<<<< HEAD
 	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
 	select MMC_TMIO_CORE
+=======
+	depends on SUPERH || ARM || ARM64
+	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
+	select MMC_TMIO_CORE
+	select MMC_SDHI_SYS_DMAC if (SUPERH || ARM)
+	select MMC_SDHI_INTERNAL_DMAC if ARM64
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This provides support for the SDHI SD/SDIO controller found in
 	  Renesas SuperH, ARM and ARM64 based SoCs
@@ -628,7 +680,10 @@ config MMC_SDHI
 config MMC_SDHI_SYS_DMAC
 	tristate "DMA for SDHI SD/SDIO controllers using SYS-DMAC"
 	depends on MMC_SDHI
+<<<<<<< HEAD
 	default MMC_SDHI if (SUPERH || ARM)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This provides DMA support for SDHI SD/SDIO controllers
 	  using SYS-DMAC via DMA Engine. This supports the controllers
@@ -638,7 +693,10 @@ config MMC_SDHI_INTERNAL_DMAC
 	tristate "DMA for SDHI SD/SDIO controllers using on-chip bus mastering"
 	depends on ARM64 || COMPILE_TEST
 	depends on MMC_SDHI
+<<<<<<< HEAD
 	default MMC_SDHI if ARM64
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This provides DMA support for SDHI SD/SDIO controllers
 	  using on-chip bus mastering. This supports the controllers
@@ -668,6 +726,28 @@ config MMC_VIA_SDMMC
 
 	  If unsure, say N.
 
+<<<<<<< HEAD
+=======
+config SDH_BFIN
+	tristate "Blackfin Secure Digital Host support"
+	depends on (BF54x && !BF544) || (BF51x && !BF512)
+	help
+	  If you say yes here you will get support for the Blackfin on-chip
+	  Secure Digital Host interface.  This includes support for MMC and
+	  SD cards.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called bfin_sdh.
+
+	  If unsure, say N.
+
+config SDH_BFIN_MISSING_CMD_PULLUP_WORKAROUND
+	bool "Blackfin EZkit Missing SDH_CMD Pull Up Resistor Workaround"
+	depends on SDH_BFIN
+	help
+	  If you say yes here SD-Cards may work on the EZkit.
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMC_CAVIUM_OCTEON
 	tristate "Cavium OCTEON SD/MMC Card Interface support"
 	depends on CAVIUM_OCTEON_SOC
@@ -681,7 +761,11 @@ config MMC_CAVIUM_OCTEON
 config MMC_CAVIUM_THUNDERX
 	tristate "Cavium ThunderX SD/MMC Card Interface support"
 	depends on PCI && 64BIT && (ARM64 || COMPILE_TEST)
+<<<<<<< HEAD
 	depends on GPIO_THUNDERX
+=======
+	depends on GPIOLIB
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on OF_ADDRESS
 	help
 	  This selects Cavium ThunderX SD/MMC Card Interface.
@@ -691,6 +775,10 @@ config MMC_CAVIUM_THUNDERX
 
 config MMC_DW
 	tristate "Synopsys DesignWare Memory Card Interface"
+<<<<<<< HEAD
+=======
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on ARC || ARM || ARM64 || MIPS || COMPILE_TEST
 	help
 	  This selects support for the Synopsys DesignWare Mobile Storage IP
@@ -711,6 +799,7 @@ config MMC_DW_PLTFM
 
 	  If unsure, say Y.
 
+<<<<<<< HEAD
 config MMC_DW_BLUEFIELD
 	tristate "BlueField specific extensions for Synopsys DW Memory Card Interface"
 	depends on MMC_DW
@@ -720,6 +809,8 @@ config MMC_DW_BLUEFIELD
 	  the Synopsys DesignWare Memory Card Interface driver. Select this
 	  option for platforms based on Mellanox BlueField SoC's.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMC_DW_EXYNOS
 	tristate "Exynos specific extensions for Synopsys DW Memory Card Interface"
 	depends on MMC_DW
@@ -729,6 +820,7 @@ config MMC_DW_EXYNOS
 	  Synopsys DesignWare Memory Card Interface driver. Select this option
 	  for platforms based on Exynos4 and Exynos5 SoC's.
 
+<<<<<<< HEAD
 config MMC_DW_HI3798CV200
 	tristate "Hi3798CV200 specific extensions for Synopsys DW Memory Card Interface"
 	depends on MMC_DW
@@ -738,6 +830,8 @@ config MMC_DW_HI3798CV200
 	  Synopsys DesignWare Memory Card Interface driver. Select this option
 	  for platforms based on HiSilicon Hi3798CV200 SoC.
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config MMC_DW_K3
 	tristate "K3 specific extensions for Synopsys DW Memory Card Interface"
 	depends on MMC_DW
@@ -778,6 +872,10 @@ config MMC_DW_ZX
 
 config MMC_SH_MMCIF
 	tristate "SuperH Internal MMCIF support"
+<<<<<<< HEAD
+=======
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on SUPERH || ARCH_RENESAS || COMPILE_TEST
 	help
 	  This selects the MMC Host Interface controller (MMCIF) found in various
@@ -785,12 +883,20 @@ config MMC_SH_MMCIF
 
 
 config MMC_JZ4740
+<<<<<<< HEAD
 	tristate "Ingenic JZ47xx SD/Multimedia Card Interface support"
 	depends on MACH_JZ4740 || MACH_JZ4780
 	help
 	  This selects support for the SD/MMC controller on Ingenic
 	  JZ4740, JZ4750, JZ4770 and JZ4780 SoCs.
 
+=======
+	tristate "JZ4740 SD/Multimedia Card Interface support"
+	depends on MACH_JZ4740
+	help
+	  This selects support for the SD/MMC controller on Ingenic JZ4740
+	  SoCs.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	  If you have a board based on such a SoC and with a SD/MMC slot,
 	  say Y or M here.
 
@@ -859,14 +965,22 @@ config MMC_USDHI6ROL0
 
 config MMC_REALTEK_PCI
 	tristate "Realtek PCI-E SD/MMC Card Interface Driver"
+<<<<<<< HEAD
 	depends on MISC_RTSX_PCI
+=======
+	depends on MFD_RTSX_PCI
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to include driver code to support SD/MMC card interface
 	  of Realtek PCI-E card reader
 
 config MMC_REALTEK_USB
 	tristate "Realtek USB SD/MMC Card Interface Driver"
+<<<<<<< HEAD
 	depends on MISC_RTSX_USB
+=======
+	depends on MFD_RTSX_USB
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Say Y here to include driver code to support SD/MMC card interface
 	  of Realtek RTS5129/39 series card reader
@@ -878,8 +992,13 @@ config MMC_SUNXI
 	  This selects support for the SD/MMC Host Controller on
 	  Allwinner sunxi SoCs.
 
+<<<<<<< HEAD
 config MMC_CQHCI
 	tristate "Command Queue Host Controller Interface support"
+=======
+config MMC_CQ_HCI
+	tristate "Command Queue Support"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	depends on HAS_DMA
 	help
 	  This selects the Command Queue Host Controller Interface (CQHCI)
@@ -894,10 +1013,18 @@ config MMC_CQHCI
 config MMC_TOSHIBA_PCI
 	tristate "Toshiba Type A SD/MMC Card Interface Driver"
 	depends on PCI
+<<<<<<< HEAD
+=======
+	help
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 config MMC_BCM2835
 	tristate "Broadcom BCM2835 SDHOST MMC Controller support"
 	depends on ARCH_BCM2835 || COMPILE_TEST
+<<<<<<< HEAD
+=======
+	depends on HAS_DMA
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  This selects the BCM2835 SDHOST MMC controller. If you have
 	  a BCM2835 platform with SD or MMC devices, say Y or M here.
@@ -946,6 +1073,7 @@ config MMC_SDHCI_XENON
 	  If you have a controller with this interface, say Y or M here.
 	  If unsure, say N.
 
+<<<<<<< HEAD
 config MMC_SDHCI_OMAP
 	tristate "TI SDHCI Controller Support"
 	depends on MMC_SDHCI_PLTFM && OF
@@ -957,3 +1085,27 @@ config MMC_SDHCI_OMAP
 	  If you have a controller with this interface, say Y or M here.
 
 	  If unsure, say N.
+=======
+config MMC_CQ_HCI_CRYPTO
+	bool "CQHCI Crypto Engine Support"
+	depends on MMC_CQ_HCI && BLK_INLINE_ENCRYPTION
+	help
+	  Enable Crypto Engine Support in CQHCI.
+	  Enabling this makes it possible for the kernel to use the crypto
+	  capabilities of the CQHCI device (if present) to perform crypto
+	  operations on data being transferred to/from the device.
+
+config MMC_CQ_HCI_CRYPTO_QTI
+	bool "Vendor specific CQHCI Crypto Engine Support"
+	depends on MMC_CQ_HCI_CRYPTO
+	help
+	 Enable Vendor Crypto Engine Support in CQHCI
+	 Enabling this allows kernel to use CQHCI crypto operations defined
+	 and implemented by QTI.
+
+config MMC_QTI_NONCMDQ_ICE
+	bool "Vendor support Legacy Inline Crypto Engine"
+	default n
+	help
+	Enable to allow use of Legacy Inline Crypto Engine i.e ICE < 3.0.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

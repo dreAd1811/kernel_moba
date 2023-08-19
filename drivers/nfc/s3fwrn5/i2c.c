@@ -276,7 +276,11 @@ static int s3fwrn5_i2c_remove(struct i2c_client *client)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct i2c_device_id s3fwrn5_i2c_id_table[] = {
+=======
+static struct i2c_device_id s3fwrn5_i2c_id_table[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{S3FWRN5_I2C_DRIVER_NAME, 0},
 	{}
 };

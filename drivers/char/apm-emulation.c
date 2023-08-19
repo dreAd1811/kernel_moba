@@ -236,12 +236,20 @@ static ssize_t apm_read(struct file *fp, char __user *buf, size_t count, loff_t 
 	return ret;
 }
 
+<<<<<<< HEAD
 static __poll_t apm_poll(struct file *fp, poll_table * wait)
+=======
+static unsigned int apm_poll(struct file *fp, poll_table * wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct apm_user *as = fp->private_data;
 
 	poll_wait(fp, &apm_waitqueue, wait);
+<<<<<<< HEAD
 	return queue_empty(&as->queue) ? 0 : EPOLLIN | EPOLLRDNORM;
+=======
+	return queue_empty(&as->queue) ? 0 : POLLIN | POLLRDNORM;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -461,6 +469,22 @@ static int proc_apm_show(struct seq_file *m, void *v)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+static int proc_apm_open(struct inode *inode, struct file *file)
+{
+	return single_open(file, proc_apm_show, NULL);
+}
+
+static const struct file_operations apm_proc_fops = {
+	.owner		= THIS_MODULE,
+	.open		= proc_apm_open,
+	.read		= seq_read,
+	.llseek		= seq_lseek,
+	.release	= single_release,
+};
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 static int kapmd(void *arg)
@@ -644,7 +668,11 @@ static int __init apm_init(void)
 	wake_up_process(kapmd_tsk);
 
 #ifdef CONFIG_PROC_FS
+<<<<<<< HEAD
 	proc_create_single("apm", 0, NULL, proc_apm_show);
+=======
+	proc_create("apm", 0, NULL, &apm_proc_fops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 	ret = misc_register(&apm_device);

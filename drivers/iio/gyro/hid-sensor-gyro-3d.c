@@ -116,7 +116,11 @@ static int gyro_3d_read_raw(struct iio_dev *indio_dev,
 	*val = 0;
 	*val2 = 0;
 	switch (mask) {
+<<<<<<< HEAD
 	case IIO_CHAN_INFO_RAW:
+=======
+	case 0:
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		hid_sensor_power_state(&gyro_state->common_attributes, true);
 		report_id = gyro_state->gyro[chan->scan_index].report_id;
 		min = gyro_state->gyro[chan->scan_index].logical_minimum;
@@ -189,6 +193,10 @@ static int gyro_3d_write_raw(struct iio_dev *indio_dev,
 }
 
 static const struct iio_info gyro_3d_info = {
+<<<<<<< HEAD
+=======
+	.driver_module = THIS_MODULE,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.read_raw = &gyro_3d_read_raw,
 	.write_raw = &gyro_3d_write_raw,
 };

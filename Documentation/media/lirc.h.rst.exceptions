@@ -28,6 +28,7 @@ ignore define LIRC_CAN_SEND_MASK
 ignore define LIRC_CAN_REC_MASK
 ignore define LIRC_CAN_SET_REC_DUTY_CYCLE
 
+<<<<<<< HEAD
 # Obsolete ioctls
 
 ignore ioctl LIRC_GET_LENGTH
@@ -59,6 +60,8 @@ ignore symbol RC_PROTO_XMP
 ignore symbol RC_PROTO_CEC
 ignore symbol RC_PROTO_IMON
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 # Undocumented macros
 
 ignore define PULSE_BIT
@@ -71,4 +74,7 @@ ignore define LIRC_VALUE_MASK
 ignore define LIRC_MODE2_MASK
 
 ignore define LIRC_MODE_RAW
+<<<<<<< HEAD
 ignore define LIRC_MODE_LIRCCODE
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

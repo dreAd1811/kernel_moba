@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Copyright (C) STMicroelectronics SA 2017
  *
  * Authors: Philippe Cornu <philippe.cornu@st.com>
  *          Yannick Fertre <yannick.fertre@st.com>
+<<<<<<< HEAD
+=======
+ *
+ * License terms:  GNU General Public License (GPL), version 2
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #include <linux/clk.h>
@@ -14,6 +22,7 @@
 #include <drm/bridge/dw_mipi_dsi.h>
 #include <video/mipi_display.h>
 
+<<<<<<< HEAD
 #define HWVER_130			0x31333000	/* IP version 1.30 */
 #define HWVER_131			0x31333100	/* IP version 1.31 */
 
@@ -22,6 +31,9 @@
 #define VERSION				GENMASK(31, 8)
 
 /* DSI wrapper registers & bit definitions */
+=======
+/* DSI wrapper register & bit definitions */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Note: registers are named as in the Reference Manual */
 #define DSI_WCFGR	0x0400		/* Wrapper ConFiGuration Reg */
 #define WCFGR_DSIM	BIT(0)		/* DSI Mode */
@@ -72,10 +84,13 @@ enum dsi_color {
 struct dw_mipi_dsi_stm {
 	void __iomem *base;
 	struct clk *pllref_clk;
+<<<<<<< HEAD
 	struct dw_mipi_dsi *dsi;
 	u32 hw_version;
 	int lane_min_kbps;
 	int lane_max_kbps;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static inline void dsi_write(struct dw_mipi_dsi_stm *dsi, u32 reg, u32 val)
@@ -123,6 +138,7 @@ static enum dsi_color dsi_color_from_mipi(enum mipi_dsi_pixel_format fmt)
 
 static int dsi_pll_get_clkout_khz(int clkin_khz, int idf, int ndiv, int odf)
 {
+<<<<<<< HEAD
 	int divisor = idf * odf;
 
 	/* prevent from division by 0 */
@@ -134,17 +150,35 @@ static int dsi_pll_get_clkout_khz(int clkin_khz, int idf, int ndiv, int odf)
 
 static int dsi_pll_get_params(struct dw_mipi_dsi_stm *dsi,
 			      int clkin_khz, int clkout_khz,
+=======
+	/* prevent from division by 0 */
+	if (idf * odf)
+		return DIV_ROUND_CLOSEST(clkin_khz * ndiv, idf * odf);
+
+	return 0;
+}
+
+static int dsi_pll_get_params(int clkin_khz, int clkout_khz,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			      int *idf, int *ndiv, int *odf)
 {
 	int i, o, n, n_min, n_max;
 	int fvco_min, fvco_max, delta, best_delta; /* all in khz */
 
 	/* Early checks preventing division by 0 & odd results */
+<<<<<<< HEAD
 	if (clkin_khz <= 0 || clkout_khz <= 0)
 		return -EINVAL;
 
 	fvco_min = dsi->lane_min_kbps * 2 * ODF_MAX;
 	fvco_max = dsi->lane_max_kbps * 2 * ODF_MIN;
+=======
+	if ((clkin_khz <= 0) || (clkout_khz <= 0))
+		return -EINVAL;
+
+	fvco_min = LANE_MIN_KBPS * 2 * ODF_MAX;
+	fvco_max = LANE_MAX_KBPS * 2 * ODF_MIN;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	best_delta = 1000000; /* big started value (1000000khz) */
 
@@ -166,7 +200,11 @@ static int dsi_pll_get_params(struct dw_mipi_dsi_stm *dsi,
 		for (o = ODF_MIN; o <= ODF_MAX; o *= 2) {
 			n = DIV_ROUND_CLOSEST(i * o * clkout_khz, clkin_khz);
 			/* Check ndiv according to vco range */
+<<<<<<< HEAD
 			if (n < n_min || n > n_max)
+=======
+			if ((n < n_min) || (n > n_max))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				continue;
 			/* Check if new delta is better & saves parameters */
 			delta = dsi_pll_get_clkout_khz(clkin_khz, i, n, o) -
@@ -224,6 +262,7 @@ dw_mipi_dsi_get_lane_mbps(void *priv_data, struct drm_display_mode *mode,
 	int ret, bpp;
 	u32 val;
 
+<<<<<<< HEAD
 	/* Update lane capabilities according to hw version */
 	dsi->hw_version = dsi_read(dsi, DSI_VERSION) & VERSION;
 	dsi->lane_min_kbps = LANE_MIN_KBPS;
@@ -233,6 +272,8 @@ dw_mipi_dsi_get_lane_mbps(void *priv_data, struct drm_display_mode *mode,
 		dsi->lane_max_kbps *= 2;
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	pll_in_khz = (unsigned int)(clk_get_rate(dsi->pllref_clk) / 1000);
 
 	/* Compute requested pll out */
@@ -240,12 +281,21 @@ dw_mipi_dsi_get_lane_mbps(void *priv_data, struct drm_display_mode *mode,
 	pll_out_khz = mode->clock * bpp / lanes;
 	/* Add 20% to pll out to be higher than pixel bw (burst mode only) */
 	pll_out_khz = (pll_out_khz * 12) / 10;
+<<<<<<< HEAD
 	if (pll_out_khz > dsi->lane_max_kbps) {
 		pll_out_khz = dsi->lane_max_kbps;
 		DRM_WARN("Warning max phy mbps is used\n");
 	}
 	if (pll_out_khz < dsi->lane_min_kbps) {
 		pll_out_khz = dsi->lane_min_kbps;
+=======
+	if (pll_out_khz > LANE_MAX_KBPS) {
+		pll_out_khz = LANE_MAX_KBPS;
+		DRM_WARN("Warning max phy mbps is used\n");
+	}
+	if (pll_out_khz < LANE_MIN_KBPS) {
+		pll_out_khz = LANE_MIN_KBPS;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		DRM_WARN("Warning min phy mbps is used\n");
 	}
 
@@ -253,8 +303,12 @@ dw_mipi_dsi_get_lane_mbps(void *priv_data, struct drm_display_mode *mode,
 	idf = 0;
 	ndiv = 0;
 	odf = 0;
+<<<<<<< HEAD
 	ret = dsi_pll_get_params(dsi, pll_in_khz, pll_out_khz,
 				 &idf, &ndiv, &odf);
+=======
+	ret = dsi_pll_get_params(pll_in_khz, pll_out_khz, &idf, &ndiv, &odf);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret)
 		DRM_WARN("Warning dsi_pll_get_params(): bad params\n");
 
@@ -312,6 +366,14 @@ static int dw_mipi_dsi_stm_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+<<<<<<< HEAD
+=======
+	if (!res) {
+		DRM_ERROR("Unable to get resource\n");
+		return -ENODEV;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	dsi->base = devm_ioremap_resource(dev, res);
 	if (IS_ERR(dsi->base)) {
 		DRM_ERROR("Unable to get dsi registers\n");
@@ -334,6 +396,7 @@ static int dw_mipi_dsi_stm_probe(struct platform_device *pdev)
 	dw_mipi_dsi_stm_plat_data.base = dsi->base;
 	dw_mipi_dsi_stm_plat_data.priv_data = dsi;
 
+<<<<<<< HEAD
 	platform_set_drvdata(pdev, dsi);
 
 	dsi->dsi = dw_mipi_dsi_probe(pdev, &dw_mipi_dsi_stm_plat_data);
@@ -344,14 +407,30 @@ static int dw_mipi_dsi_stm_probe(struct platform_device *pdev)
 	}
 
 	return 0;
+=======
+	ret = dw_mipi_dsi_probe(pdev, &dw_mipi_dsi_stm_plat_data);
+	if (ret) {
+		DRM_ERROR("Failed to initialize mipi dsi host\n");
+		clk_disable_unprepare(dsi->pllref_clk);
+	}
+
+	return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int dw_mipi_dsi_stm_remove(struct platform_device *pdev)
 {
+<<<<<<< HEAD
 	struct dw_mipi_dsi_stm *dsi = platform_get_drvdata(pdev);
 
 	clk_disable_unprepare(dsi->pllref_clk);
 	dw_mipi_dsi_remove(dsi->dsi);
+=======
+	struct dw_mipi_dsi_stm *dsi = dw_mipi_dsi_stm_plat_data.priv_data;
+
+	clk_disable_unprepare(dsi->pllref_clk);
+	dw_mipi_dsi_remove(pdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
@@ -361,7 +440,11 @@ static struct platform_driver dw_mipi_dsi_stm_driver = {
 	.remove		= dw_mipi_dsi_stm_remove,
 	.driver		= {
 		.of_match_table = dw_mipi_dsi_stm_dt_ids,
+<<<<<<< HEAD
 		.name	= "stm32-display-dsi",
+=======
+		.name	= "dw_mipi_dsi-stm",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	},
 };
 

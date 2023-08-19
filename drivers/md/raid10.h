@@ -2,6 +2,7 @@
 #ifndef _RAID10_H
 #define _RAID10_H
 
+<<<<<<< HEAD
 /* Note: raid10_info.rdev can be set to NULL asynchronously by
  * raid10_remove_disk.
  * There are three safe ways to access raid10_info.rdev.
@@ -15,6 +16,8 @@
  * been incremented, the pointer is put back in .rdev.
  */
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct raid10_info {
 	struct md_rdev	*rdev, *replacement;
 	sector_t	head_position;
@@ -93,21 +96,31 @@ struct r10conf {
 						   */
 	wait_queue_head_t	wait_barrier;
 
+<<<<<<< HEAD
 	mempool_t		r10bio_pool;
 	mempool_t		r10buf_pool;
 	struct page		*tmppage;
 	struct bio_set		bio_split;
+=======
+	mempool_t		*r10bio_pool;
+	mempool_t		*r10buf_pool;
+	struct page		*tmppage;
+	struct bio_set		*bio_split;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* When taking over an array from a different personality, we store
 	 * the new thread here until we fully activate the array.
 	 */
 	struct md_thread	*thread;
+<<<<<<< HEAD
 
 	/*
 	 * Keep track of cluster resync window to send to other nodes.
 	 */
 	sector_t		cluster_sync_low;
 	sector_t		cluster_sync_high;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /*

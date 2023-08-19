@@ -36,7 +36,11 @@ gt215_therm_fan_sense(struct nvkm_therm *therm)
 	return -ENODEV;
 }
 
+<<<<<<< HEAD
 void
+=======
+static void
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gt215_therm_init(struct nvkm_therm *therm)
 {
 	struct nvkm_device *device = therm->subdev.device;

@@ -262,7 +262,11 @@ When oom event notifier is registered, event will be delivered.
 2.6 Locking
 
    lock_page_cgroup()/unlock_page_cgroup() should not be called under
+<<<<<<< HEAD
    the i_pages lock.
+=======
+   mapping->tree_lock.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
    Other lock order is following:
    PG_locked.
@@ -524,9 +528,15 @@ Note:
 	Only anonymous and swap cache memory is listed as part of 'rss' stat.
 	This should not be confused with the true 'resident set size' or the
 	amount of physical memory used by the cgroup.
+<<<<<<< HEAD
 	'rss + mapped_file" will give you resident set size of cgroup.
 	(Note: file and shmem may be shared among other cgroups. In that case,
 	 mapped_file is accounted only when the memory cgroup is owner of page
+=======
+	'rss + file_mapped" will give you resident set size of cgroup.
+	(Note: file and shmem may be shared among other cgroups. In that case,
+	 file_mapped is accounted only when the memory cgroup is owner of page
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	 cache.)
 
 5.3 swappiness

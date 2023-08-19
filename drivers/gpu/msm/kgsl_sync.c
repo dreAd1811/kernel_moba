@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // SPDX-License-Identifier: GPL-2.0-only
 /*
  * Copyright (c) 2012-2019, The Linux Foundation. All rights reserved.
@@ -8,6 +9,29 @@
 #include <linux/sync_file.h>
 
 #include "kgsl_device.h"
+=======
+/* Copyright (c) 2012-2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ */
+
+#include <linux/err.h>
+#include <linux/file.h>
+#include <linux/sched.h>
+#include <linux/slab.h>
+#include <linux/uaccess.h>
+
+#include <asm/current.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include "kgsl_sync.h"
 
 static void kgsl_sync_timeline_signal(struct kgsl_sync_timeline *timeline,
@@ -30,6 +54,10 @@ static struct kgsl_sync_fence *kgsl_sync_fence_create(
 	kfence = kzalloc(sizeof(*kfence), GFP_KERNEL);
 	if (kfence == NULL) {
 		kgsl_sync_timeline_put(ktimeline);
+<<<<<<< HEAD
+=======
+		KGSL_DRV_ERR(context->device, "Couldn't allocate fence\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return NULL;
 	}
 
@@ -48,7 +76,11 @@ static struct kgsl_sync_fence *kgsl_sync_fence_create(
 
 	if (kfence->sync_file == NULL) {
 		kgsl_sync_timeline_put(ktimeline);
+<<<<<<< HEAD
 		dev_err(context->device->dev, "Create sync_file failed\n");
+=======
+		KGSL_DRV_ERR(context->device, "Create sync_file failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(kfence);
 		return NULL;
 	}
@@ -190,15 +222,26 @@ int kgsl_add_fence_event(struct kgsl_device *device,
 
 	kfence = kgsl_sync_fence_create(context, timestamp);
 	if (kfence == NULL) {
+<<<<<<< HEAD
+=======
+		KGSL_DRV_CRIT_RATELIMIT(device,
+					"kgsl_sync_fence_create failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto out;
 	}
 
 	priv.fence_fd = get_unused_fd_flags(0);
 	if (priv.fence_fd < 0) {
+<<<<<<< HEAD
 		dev_crit_ratelimited(device->dev,
 					"Unable to get a file descriptor: %d\n",
 					priv.fence_fd);
+=======
+		KGSL_DRV_CRIT_RATELIMIT(device,
+			"Unable to get a file descriptor: %d\n",
+			priv.fence_fd);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = priv.fence_fd;
 		goto out;
 	}
@@ -244,19 +287,42 @@ out:
 	return ret;
 }
 
+<<<<<<< HEAD
+=======
+static unsigned int kgsl_sync_fence_get_timestamp(
+					struct kgsl_sync_timeline *ktimeline,
+					enum kgsl_timestamp_type type)
+{
+	unsigned int ret = 0;
+
+	if (ktimeline->device == NULL)
+		return 0;
+
+	kgsl_readtimestamp(ktimeline->device, ktimeline->context, type, &ret);
+
+	return ret;
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void kgsl_sync_timeline_value_str(struct dma_fence *fence,
 					char *str, int size)
 {
 	struct kgsl_sync_fence *kfence = (struct kgsl_sync_fence *)fence;
 	struct kgsl_sync_timeline *ktimeline = kfence->parent;
 
+<<<<<<< HEAD
 	unsigned int timestamp_retired = 0;
 	unsigned int timestamp_queued = 0;
+=======
+	unsigned int timestamp_retired;
+	unsigned int timestamp_queued;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!kref_get_unless_zero(&ktimeline->kref))
 		return;
 
 	/*
+<<<<<<< HEAD
 	 * ktimeline->device might be NULL here but kgsl_readtimestamp()
 	 * will handle that correctly
 	 */
@@ -265,6 +331,18 @@ static void kgsl_sync_timeline_value_str(struct dma_fence *fence,
 
 	kgsl_readtimestamp(ktimeline->device, ktimeline->context,
 		KGSL_TIMESTAMP_QUEUED, &timestamp_queued);
+=======
+	 * This callback can be called before the device and spinlock are
+	 * initialized in struct kgsl_sync_timeline. kgsl_sync_get_timestamp()
+	 * will check if device is NULL and return 0. Queued and retired
+	 * timestamp of the context will be reported as 0, which is correct
+	 * because the context and timeline are just getting initialized.
+	 */
+	timestamp_retired = kgsl_sync_fence_get_timestamp(ktimeline,
+					KGSL_TIMESTAMP_RETIRED);
+	timestamp_queued = kgsl_sync_fence_get_timestamp(ktimeline,
+					KGSL_TIMESTAMP_QUEUED);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	snprintf(str, size, "%u queued:%u retired:%u",
 		ktimeline->last_timestamp,
@@ -298,10 +376,29 @@ int kgsl_sync_timeline_create(struct kgsl_context *context)
 {
 	struct kgsl_sync_timeline *ktimeline;
 
+<<<<<<< HEAD
+=======
+	/*
+	 * Generate a name which includes the thread name, thread id, process
+	 * name, process id, and context id. This makes it possible to
+	 * identify the context of a timeline in the sync dump.
+	 */
+	char ktimeline_name[sizeof(ktimeline->name)] = {};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Put context when timeline is released */
 	if (!_kgsl_context_get(context))
 		return -ENOENT;
 
+<<<<<<< HEAD
+=======
+	snprintf(ktimeline_name, sizeof(ktimeline_name),
+		"%s_%d-%.15s(%d)-%.15s(%d)",
+		context->device->name, context->id,
+		current->group_leader->comm, current->group_leader->pid,
+		current->comm, current->pid);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ktimeline = kzalloc(sizeof(*ktimeline), GFP_KERNEL);
 	if (ktimeline == NULL) {
 		kgsl_context_put(context);
@@ -309,12 +406,16 @@ int kgsl_sync_timeline_create(struct kgsl_context *context)
 	}
 
 	kref_init(&ktimeline->kref);
+<<<<<<< HEAD
 	snprintf(ktimeline->name, sizeof(ktimeline->name),
 		"%s_%d-%.15s(%d)-%.15s(%d)",
 		context->device->name, context->id,
 		current->group_leader->comm, current->group_leader->pid,
 		current->comm, current->pid);
 
+=======
+	strlcpy(ktimeline->name, ktimeline_name, KGSL_TIMELINE_NAME_LEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ktimeline->fence_context = dma_fence_context_alloc(1);
 	ktimeline->last_timestamp = 0;
 	INIT_LIST_HEAD(&ktimeline->child_list_head);
@@ -510,7 +611,11 @@ void kgsl_sync_fence_async_cancel(struct kgsl_sync_fence_cb *kcb)
 
 struct kgsl_syncsource {
 	struct kref refcount;
+<<<<<<< HEAD
 	char name[32];
+=======
+	char name[KGSL_TIMELINE_NAME_LEN];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int id;
 	struct kgsl_process_private *private;
 	struct list_head child_list_head;
@@ -533,6 +638,10 @@ long kgsl_ioctl_syncsource_create(struct kgsl_device_private *dev_priv,
 	int ret = -EINVAL;
 	int id = 0;
 	struct kgsl_process_private *private = dev_priv->process_priv;
+<<<<<<< HEAD
+=======
+	char name[KGSL_TIMELINE_NAME_LEN];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!kgsl_process_private_get(private))
 		return ret;
@@ -543,9 +652,17 @@ long kgsl_ioctl_syncsource_create(struct kgsl_device_private *dev_priv,
 		goto out;
 	}
 
+<<<<<<< HEAD
 	kref_init(&syncsource->refcount);
 	snprintf(syncsource->name, sizeof(syncsource->name),
 		"kgsl-syncsource-pid-%d", current->group_leader->pid);
+=======
+	snprintf(name, sizeof(name), "kgsl-syncsource-pid-%d",
+			current->group_leader->pid);
+
+	kref_init(&syncsource->refcount);
+	strlcpy(syncsource->name, name, KGSL_TIMELINE_NAME_LEN);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	syncsource->private = private;
 	INIT_LIST_HEAD(&syncsource->child_list_head);
 	spin_lock_init(&syncsource->lock);
@@ -688,8 +805,12 @@ long kgsl_ioctl_syncsource_create_fence(struct kgsl_device_private *dev_priv,
 	sync_file = sync_file_create(&sfence->fence);
 
 	if (sync_file == NULL) {
+<<<<<<< HEAD
 		dev_err(dev_priv->device->dev,
 			     "Create sync_file failed\n");
+=======
+		KGSL_DRV_ERR(dev_priv->device, "Create sync_file failed\n");
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = -ENOMEM;
 		goto out;
 	}

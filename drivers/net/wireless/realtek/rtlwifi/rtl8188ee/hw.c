@@ -99,7 +99,10 @@ static void _rtl88ee_return_beacon_queue_skb(struct ieee80211_hw *hw)
 
 		pci_unmap_single(rtlpci->pdev,
 				 rtlpriv->cfg->ops->get_desc(
+<<<<<<< HEAD
 				 hw,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 (u8 *)entry, true, HW_DESC_TXBUFF_ADDR),
 				 skb->len, PCI_DMA_TODEVICE);
 		kfree_skb(skb);
@@ -253,12 +256,18 @@ static void _rtl88ee_set_fw_ps_rf_off_low_power(struct ieee80211_hw *hw)
 	rpwm_val |= FW_PS_STATE_RF_OFF_LOW_PWR_88E;
 	_rtl88ee_set_fw_clock_off(hw, rpwm_val);
 }
+<<<<<<< HEAD
 
 void rtl88ee_fw_clk_off_timer_callback(struct timer_list *t)
 {
 	struct rtl_priv *rtlpriv = from_timer(rtlpriv, t,
 					      works.fw_clockoff_timer);
 	struct ieee80211_hw *hw = rtlpriv->hw;
+=======
+void rtl88ee_fw_clk_off_timer_callback(unsigned long data)
+{
+	struct ieee80211_hw *hw = (struct ieee80211_hw *)data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	_rtl88ee_set_fw_ps_rf_off_low_power(hw);
 }
@@ -1472,16 +1481,28 @@ void rtl88ee_card_disable(struct ieee80211_hw *hw)
 }
 
 void rtl88ee_interrupt_recognized(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 				  struct rtl_int *intvec)
+=======
+				  u32 *p_inta, u32 *p_intb)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
 
+<<<<<<< HEAD
 	intvec->inta = rtl_read_dword(rtlpriv, ISR) & rtlpci->irq_mask[0];
 	rtl_write_dword(rtlpriv, ISR, intvec->inta);
 
 	intvec->intb = rtl_read_dword(rtlpriv, REG_HISRE) & rtlpci->irq_mask[1];
 	rtl_write_dword(rtlpriv, REG_HISRE, intvec->intb);
+=======
+	*p_inta = rtl_read_dword(rtlpriv, ISR) & rtlpci->irq_mask[0];
+	rtl_write_dword(rtlpriv, ISR, *p_inta);
+
+	*p_intb = rtl_read_dword(rtlpriv, REG_HISRE) & rtlpci->irq_mask[1];
+	rtl_write_dword(rtlpriv, REG_HISRE, *p_intb);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 }
 
@@ -2080,7 +2101,11 @@ static void rtl88ee_update_hal_rate_table(struct ieee80211_hw *hw,
 }
 
 static void rtl88ee_update_hal_rate_mask(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 		struct ieee80211_sta *sta, u8 rssi_level, bool update_bw)
+=======
+		struct ieee80211_sta *sta, u8 rssi_level)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_phy *rtlphy = &(rtlpriv->phy);
@@ -2211,12 +2236,20 @@ static void rtl88ee_update_hal_rate_mask(struct ieee80211_hw *hw,
 }
 
 void rtl88ee_update_hal_rate_tbl(struct ieee80211_hw *hw,
+<<<<<<< HEAD
 		struct ieee80211_sta *sta, u8 rssi_level, bool update_bw)
+=======
+		struct ieee80211_sta *sta, u8 rssi_level)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 
 	if (rtlpriv->dm.useramask)
+<<<<<<< HEAD
 		rtl88ee_update_hal_rate_mask(hw, sta, rssi_level, update_bw);
+=======
+		rtl88ee_update_hal_rate_mask(hw, sta, rssi_level);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		rtl88ee_update_hal_rate_table(hw, sta);
 }
@@ -2239,7 +2272,11 @@ bool rtl88ee_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
 {
 	struct rtl_priv *rtlpriv = rtl_priv(hw);
 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+<<<<<<< HEAD
 	enum rf_pwrstate e_rfpowerstate_toset;
+=======
+	enum rf_pwrstate e_rfpowerstate_toset, cur_rfstate;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 u4tmp;
 	bool b_actuallyset = false;
 
@@ -2258,6 +2295,11 @@ bool rtl88ee_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
 		spin_unlock(&rtlpriv->locks.rf_ps_lock);
 	}
 
+<<<<<<< HEAD
+=======
+	cur_rfstate = ppsc->rfpwr_state;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u4tmp = rtl_read_dword(rtlpriv, REG_GPIO_OUTPUT);
 	e_rfpowerstate_toset = (u4tmp & BIT(31)) ? ERFON : ERFOFF;
 

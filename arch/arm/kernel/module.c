@@ -38,6 +38,10 @@
 #endif
 
 #ifdef CONFIG_MMU
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_MODULES_USE_VMALLOC
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void *module_alloc(unsigned long size)
 {
 	gfp_t gfp_mask = GFP_KERNEL;
@@ -56,6 +60,10 @@ void *module_alloc(unsigned long size)
 				GFP_KERNEL, PAGE_KERNEL_EXEC, 0, NUMA_NO_NODE,
 				__builtin_return_address(0));
 }
+<<<<<<< HEAD
+=======
+#endif /* CONFIG_MODULES_USE_VMALLOC */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 
 int

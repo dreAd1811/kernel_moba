@@ -31,6 +31,10 @@
 #include <linux/iommu.h>
 #include <linux/file.h>
 
+<<<<<<< HEAD
+=======
+#include <asm/tlbflush.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <asm/kvm_ppc.h>
 #include <asm/kvm_book3s.h>
 #include <asm/book3s/64/mmu-hash.h>
@@ -133,7 +137,10 @@ extern void kvm_spapr_tce_release_iommu_group(struct kvm *kvm,
 					continue;
 
 				kref_put(&stit->kref, kvm_spapr_tce_liobn_put);
+<<<<<<< HEAD
 				return;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			}
 		}
 	}
@@ -175,12 +182,23 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
 
 		if (!tbltmp)
 			continue;
+<<<<<<< HEAD
 		/* Make sure hardware table parameters are compatible */
 		if ((tbltmp->it_page_shift <= stt->page_shift) &&
 				(tbltmp->it_offset << tbltmp->it_page_shift ==
 				 stt->offset << stt->page_shift) &&
 				(tbltmp->it_size << tbltmp->it_page_shift >=
 				 stt->size << stt->page_shift)) {
+=======
+		/*
+		 * Make sure hardware table parameters are exactly the same;
+		 * this is used in the TCE handlers where boundary checks
+		 * use only the first attached table.
+		 */
+		if ((tbltmp->it_page_shift == stt->page_shift) &&
+				(tbltmp->it_offset == stt->offset) &&
+				(tbltmp->it_size == stt->size)) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			/*
 			 * Reference the table to avoid races with
 			 * add/remove DMA windows.
@@ -234,7 +252,11 @@ static void release_spapr_tce_table(struct rcu_head *head)
 	kfree(stt);
 }
 
+<<<<<<< HEAD
 static vm_fault_t kvm_spapr_tce_fault(struct vm_fault *vmf)
+=======
+static int kvm_spapr_tce_fault(struct vm_fault *vmf)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct kvmppc_spapr_tce_table *stt = vmf->vma->vm_file->private_data;
 	struct page *page;
@@ -295,6 +317,7 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
 {
 	struct kvmppc_spapr_tce_table *stt = NULL;
 	struct kvmppc_spapr_tce_table *siter;
+<<<<<<< HEAD
 	unsigned long npages, size = args->size;
 	int ret = -ENOMEM;
 	int i;
@@ -303,6 +326,16 @@ long kvm_vm_ioctl_create_spapr_tce(struct kvm *kvm,
 		(args->offset + args->size > (ULLONG_MAX >> args->page_shift)))
 		return -EINVAL;
 
+=======
+	unsigned long npages, size;
+	int ret = -ENOMEM;
+	int i;
+
+	if (!args->size)
+		return -EINVAL;
+
+	size = _ALIGN_UP(args->size, PAGE_SIZE >> 3);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	npages = kvmppc_tce_pages(size);
 	ret = kvmppc_account_memlimit(kvmppc_stt_pages(npages), true);
 	if (ret)
@@ -376,24 +409,40 @@ static long kvmppc_tce_iommu_mapped_dec(struct kvm *kvm,
 {
 	struct mm_iommu_table_group_mem_t *mem = NULL;
 	const unsigned long pgsize = 1ULL << tbl->it_page_shift;
+<<<<<<< HEAD
 	__be64 *pua = IOMMU_TABLE_USERSPACE_ENTRY(tbl, entry);
+=======
+	unsigned long *pua = IOMMU_TABLE_USERSPACE_ENTRY(tbl, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!pua)
 		/* it_userspace allocation might be delayed */
 		return H_TOO_HARD;
 
+<<<<<<< HEAD
 	mem = mm_iommu_lookup(kvm->mm, be64_to_cpu(*pua), pgsize);
+=======
+	mem = mm_iommu_lookup(kvm->mm, *pua, pgsize);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mem)
 		return H_TOO_HARD;
 
 	mm_iommu_mapped_dec(mem);
 
+<<<<<<< HEAD
 	*pua = cpu_to_be64(0);
+=======
+	*pua = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return H_SUCCESS;
 }
 
+<<<<<<< HEAD
 static long kvmppc_tce_iommu_do_unmap(struct kvm *kvm,
+=======
+static long kvmppc_tce_iommu_unmap(struct kvm *kvm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct iommu_table *tbl, unsigned long entry)
 {
 	enum dma_data_direction dir = DMA_NONE;
@@ -401,7 +450,11 @@ static long kvmppc_tce_iommu_do_unmap(struct kvm *kvm,
 	long ret;
 
 	if (WARN_ON_ONCE(iommu_tce_xchg(tbl, entry, &hpa, &dir)))
+<<<<<<< HEAD
 		return H_HARDWARE;
+=======
+		return H_TOO_HARD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (dir == DMA_NONE)
 		return H_SUCCESS;
@@ -413,6 +466,7 @@ static long kvmppc_tce_iommu_do_unmap(struct kvm *kvm,
 	return ret;
 }
 
+<<<<<<< HEAD
 static long kvmppc_tce_iommu_unmap(struct kvm *kvm,
 		struct kvmppc_spapr_tce_table *stt, struct iommu_table *tbl,
 		unsigned long entry)
@@ -431,12 +485,19 @@ static long kvmppc_tce_iommu_unmap(struct kvm *kvm,
 }
 
 long kvmppc_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
+=======
+long kvmppc_tce_iommu_map(struct kvm *kvm, struct iommu_table *tbl,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		unsigned long entry, unsigned long ua,
 		enum dma_data_direction dir)
 {
 	long ret;
+<<<<<<< HEAD
 	unsigned long hpa;
 	__be64 *pua = IOMMU_TABLE_USERSPACE_ENTRY(tbl, entry);
+=======
+	unsigned long hpa, *pua = IOMMU_TABLE_USERSPACE_ENTRY(tbl, entry);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct mm_iommu_table_group_mem_t *mem;
 
 	if (!pua)
@@ -449,25 +510,41 @@ long kvmppc_tce_iommu_do_map(struct kvm *kvm, struct iommu_table *tbl,
 		return H_TOO_HARD;
 
 	if (WARN_ON_ONCE(mm_iommu_ua_to_hpa(mem, ua, tbl->it_page_shift, &hpa)))
+<<<<<<< HEAD
 		return H_HARDWARE;
 
 	if (mm_iommu_mapped_inc(mem))
 		return H_CLOSED;
+=======
+		return H_TOO_HARD;
+
+	if (mm_iommu_mapped_inc(mem))
+		return H_TOO_HARD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = iommu_tce_xchg(tbl, entry, &hpa, &dir);
 	if (WARN_ON_ONCE(ret)) {
 		mm_iommu_mapped_dec(mem);
+<<<<<<< HEAD
 		return H_HARDWARE;
+=======
+		return H_TOO_HARD;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	if (dir != DMA_NONE)
 		kvmppc_tce_iommu_mapped_dec(kvm, tbl, entry);
 
+<<<<<<< HEAD
 	*pua = cpu_to_be64(ua);
+=======
+	*pua = ua;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 }
 
+<<<<<<< HEAD
 static long kvmppc_tce_iommu_map(struct kvm *kvm,
 		struct kvmppc_spapr_tce_table *stt, struct iommu_table *tbl,
 		unsigned long entry, unsigned long ua,
@@ -489,6 +566,8 @@ static long kvmppc_tce_iommu_map(struct kvm *kvm,
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 long kvmppc_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
 		      unsigned long ioba, unsigned long tce)
 {
@@ -527,10 +606,17 @@ long kvmppc_h_put_tce(struct kvm_vcpu *vcpu, unsigned long liobn,
 
 	list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
 		if (dir == DMA_NONE)
+<<<<<<< HEAD
 			ret = kvmppc_tce_iommu_unmap(vcpu->kvm, stt,
 					stit->tbl, entry);
 		else
 			ret = kvmppc_tce_iommu_map(vcpu->kvm, stt, stit->tbl,
+=======
+			ret = kvmppc_tce_iommu_unmap(vcpu->kvm,
+					stit->tbl, entry);
+		else
+			ret = kvmppc_tce_iommu_map(vcpu->kvm, stit->tbl,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					entry, ua, dir);
 
 		if (ret == H_SUCCESS)
@@ -608,7 +694,11 @@ long kvmppc_h_put_tce_indirect(struct kvm_vcpu *vcpu,
 		}
 
 		list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
+<<<<<<< HEAD
 			ret = kvmppc_tce_iommu_map(vcpu->kvm, stt,
+=======
+			ret = kvmppc_tce_iommu_map(vcpu->kvm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					stit->tbl, entry + i, ua,
 					iommu_tce_direction(tce));
 
@@ -653,10 +743,17 @@ long kvmppc_h_stuff_tce(struct kvm_vcpu *vcpu,
 		return H_PARAMETER;
 
 	list_for_each_entry_lockless(stit, &stt->iommu_tables, next) {
+<<<<<<< HEAD
 		unsigned long entry = ioba >> stt->page_shift;
 
 		for (i = 0; i < npages; ++i) {
 			ret = kvmppc_tce_iommu_unmap(vcpu->kvm, stt,
+=======
+		unsigned long entry = ioba >> stit->tbl->it_page_shift;
+
+		for (i = 0; i < npages; ++i) {
+			ret = kvmppc_tce_iommu_unmap(vcpu->kvm,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					stit->tbl, entry + i);
 
 			if (ret == H_SUCCESS)

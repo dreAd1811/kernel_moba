@@ -28,7 +28,10 @@
 #include "amdgpu_i2c.h"
 #include "amdgpu_dpm.h"
 #include "atom.h"
+<<<<<<< HEAD
 #include "amd_pcie.h"
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void amdgpu_dpm_print_class_info(u32 class, u32 class2)
 {
@@ -116,6 +119,7 @@ void amdgpu_dpm_print_ps_status(struct amdgpu_device *adev,
 	pr_cont("\n");
 }
 
+<<<<<<< HEAD
 void amdgpu_dpm_get_active_displays(struct amdgpu_device *adev)
 {
 	struct drm_device *ddev = adev->ddev;
@@ -136,6 +140,8 @@ void amdgpu_dpm_get_active_displays(struct amdgpu_device *adev)
 	}
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u32 amdgpu_dpm_get_vblank_time(struct amdgpu_device *adev)
 {
@@ -453,7 +459,11 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
 			ATOM_PPLIB_PhaseSheddingLimits_Record *entry;
 
 			adev->pm.dpm.dyn_state.phase_shedding_limits_table.entries =
+<<<<<<< HEAD
 				kcalloc(psl->ucNumEntries,
+=======
+				kzalloc(psl->ucNumEntries *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					sizeof(struct amdgpu_phase_shedding_limits_entry),
 					GFP_KERNEL);
 			if (!adev->pm.dpm.dyn_state.phase_shedding_limits_table.entries) {
@@ -937,11 +947,17 @@ enum amdgpu_pcie_gen amdgpu_get_pcie_gen_support(struct amdgpu_device *adev,
 	case AMDGPU_PCIE_GEN3:
 		return AMDGPU_PCIE_GEN3;
 	default:
+<<<<<<< HEAD
 		if ((sys_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3) &&
 		    (default_gen == AMDGPU_PCIE_GEN3))
 			return AMDGPU_PCIE_GEN3;
 		else if ((sys_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN2) &&
 			 (default_gen == AMDGPU_PCIE_GEN2))
+=======
+		if ((sys_mask & DRM_PCIE_SPEED_80) && (default_gen == AMDGPU_PCIE_GEN3))
+			return AMDGPU_PCIE_GEN3;
+		else if ((sys_mask & DRM_PCIE_SPEED_50) && (default_gen == AMDGPU_PCIE_GEN2))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			return AMDGPU_PCIE_GEN2;
 		else
 			return AMDGPU_PCIE_GEN1;
@@ -983,10 +999,15 @@ u8 amdgpu_encode_pci_lane_width(u32 lanes)
 }
 
 struct amd_vce_state*
+<<<<<<< HEAD
 amdgpu_get_vce_clock_state(void *handle, u32 idx)
 {
 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
 
+=======
+amdgpu_get_vce_clock_state(struct amdgpu_device *adev, unsigned idx)
+{
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (idx < adev->pm.dpm.num_of_vce_states)
 		return &adev->pm.dpm.vce_states[idx];
 

@@ -395,8 +395,11 @@ VMA Offset Manager
 .. kernel-doc:: drivers/gpu/drm/drm_vma_manager.c
    :export:
 
+<<<<<<< HEAD
 .. _prime_buffer_sharing:
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 PRIME Buffer Sharing
 ====================
 
@@ -498,6 +501,7 @@ DRM Sync Objects
 
 .. kernel-doc:: drivers/gpu/drm/drm_syncobj.c
    :export:
+<<<<<<< HEAD
 
 GPU Scheduler
 =============
@@ -516,3 +520,5 @@ Scheduler Function References
 
 .. kernel-doc:: drivers/gpu/drm/scheduler/gpu_scheduler.c
    :export:
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

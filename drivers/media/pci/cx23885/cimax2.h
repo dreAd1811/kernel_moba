@@ -21,7 +21,11 @@
 
 #ifndef CIMAX2_H
 #define CIMAX2_H
+<<<<<<< HEAD
 #include <media/dvb_ca_en50221.h>
+=======
+#include "dvb_ca_en50221.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 extern int netup_ci_read_attribute_mem(struct dvb_ca_en50221 *en50221,
 						int slot, int addr);

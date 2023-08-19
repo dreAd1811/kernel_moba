@@ -38,5 +38,9 @@ nv44_ram_new(struct nvkm_fb *fb, struct nvkm_ram **pram)
 	if (fb474 & 0x00000001)
 		type = NVKM_RAM_TYPE_DDR1;
 
+<<<<<<< HEAD
 	return nv40_ram_new_(fb, type, size, pram);
+=======
+	return nv40_ram_new_(fb, type, size, 0, pram);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

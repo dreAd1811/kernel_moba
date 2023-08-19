@@ -28,6 +28,33 @@
 
 #include "platform.h"
 
+<<<<<<< HEAD
+=======
+#define dump_tm(_a) _dump_tm(_a, __func__, __LINE__)
+static void _dump_tm(const struct rtc_time *tm, const char* func, int line)
+{
+	pr_debug("%s:%d tm_sec  %d\n", func, line, tm->tm_sec);
+	pr_debug("%s:%d tm_min  %d\n", func, line, tm->tm_min);
+	pr_debug("%s:%d tm_hour %d\n", func, line, tm->tm_hour);
+	pr_debug("%s:%d tm_mday %d\n", func, line, tm->tm_mday);
+	pr_debug("%s:%d tm_mon  %d\n", func, line, tm->tm_mon);
+	pr_debug("%s:%d tm_year %d\n", func, line, tm->tm_year);
+	pr_debug("%s:%d tm_wday %d\n", func, line, tm->tm_wday);
+}
+
+#define dump_time(_a) _dump_time(_a, __func__, __LINE__)
+static void __maybe_unused _dump_time(int time, const char *func,
+	int line)
+{
+	struct rtc_time tm;
+
+	to_tm(time, &tm);
+
+	pr_debug("%s:%d time    %d\n", func, line, time);
+	_dump_tm(&tm, func, line);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void __init ps3_calibrate_decr(void)
 {
 	int result;
@@ -52,7 +79,11 @@ static u64 read_rtc(void)
 	return rtc_val;
 }
 
+<<<<<<< HEAD
 time64_t __init ps3_get_boot_time(void)
+=======
+unsigned long __init ps3_get_boot_time(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return read_rtc() + ps3_os_area_get_rtc_diff();
 }

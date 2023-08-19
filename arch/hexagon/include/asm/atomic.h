@@ -105,7 +105,11 @@ static inline void atomic_##op(int i, atomic_t *v)			\
 		"1:	%0 = memw_locked(%1);\n"			\
 		"	%0 = "#op "(%0,%2);\n"				\
 		"	memw_locked(%1,P3)=%0;\n"			\
+<<<<<<< HEAD
 		"	if !P3 jump 1b;\n"				\
+=======
+		"	if (!P3) jump 1b;\n"				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "=&r" (output)					\
 		: "r" (&v->counter), "r" (i)				\
 		: "memory", "p3"					\
@@ -121,7 +125,11 @@ static inline int atomic_##op##_return(int i, atomic_t *v)		\
 		"1:	%0 = memw_locked(%1);\n"			\
 		"	%0 = "#op "(%0,%2);\n"				\
 		"	memw_locked(%1,P3)=%0;\n"			\
+<<<<<<< HEAD
 		"	if !P3 jump 1b;\n"				\
+=======
+		"	if (!P3) jump 1b;\n"				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "=&r" (output)					\
 		: "r" (&v->counter), "r" (i)				\
 		: "memory", "p3"					\
@@ -138,7 +146,11 @@ static inline int atomic_fetch_##op(int i, atomic_t *v)			\
 		"1:	%0 = memw_locked(%2);\n"			\
 		"	%1 = "#op "(%0,%3);\n"				\
 		"	memw_locked(%2,P3)=%1;\n"			\
+<<<<<<< HEAD
 		"	if !P3 jump 1b;\n"				\
+=======
+		"	if (!P3) jump 1b;\n"				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		: "=&r" (output), "=&r" (val)				\
 		: "r" (&v->counter), "r" (i)				\
 		: "memory", "p3"					\
@@ -164,7 +176,11 @@ ATOMIC_OPS(xor)
 #undef ATOMIC_OP
 
 /**
+<<<<<<< HEAD
  * atomic_fetch_add_unless - add unless the number is a given value
+=======
+ * __atomic_add_unless - add unless the number is a given value
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @v: pointer to value
  * @a: amount to add
  * @u: unless value is equal to u
@@ -173,7 +189,11 @@ ATOMIC_OPS(xor)
  *
  */
 
+<<<<<<< HEAD
 static inline int atomic_fetch_add_unless(atomic_t *v, int a, int u)
+=======
+static inline int __atomic_add_unless(atomic_t *v, int a, int u)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int __oldval;
 	register int tmp;
@@ -187,7 +207,11 @@ static inline int atomic_fetch_add_unless(atomic_t *v, int a, int u)
 		"	}"
 		"	memw_locked(%2, p3) = %1;"
 		"	{"
+<<<<<<< HEAD
 		"		if !p3 jump 1b;"
+=======
+		"		if (!p3) jump 1b;"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		"	}"
 		"2:"
 		: "=&r" (__oldval), "=&r" (tmp)
@@ -196,6 +220,22 @@ static inline int atomic_fetch_add_unless(atomic_t *v, int a, int u)
 	);
 	return __oldval;
 }
+<<<<<<< HEAD
 #define atomic_fetch_add_unless atomic_fetch_add_unless
+=======
+
+#define atomic_inc_not_zero(v) atomic_add_unless((v), 1, 0)
+
+#define atomic_inc(v) atomic_add(1, (v))
+#define atomic_dec(v) atomic_sub(1, (v))
+
+#define atomic_inc_and_test(v) (atomic_add_return(1, (v)) == 0)
+#define atomic_dec_and_test(v) (atomic_sub_return(1, (v)) == 0)
+#define atomic_sub_and_test(i, v) (atomic_sub_return(i, (v)) == 0)
+#define atomic_add_negative(i, v) (atomic_add_return(i, (v)) < 0)
+
+#define atomic_inc_return(v) (atomic_add_return(1, v))
+#define atomic_dec_return(v) (atomic_sub_return(1, v))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif

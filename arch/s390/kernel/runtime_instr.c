@@ -18,8 +18,11 @@
 #include <asm/cpu_mf.h>
 #include <asm/irq.h>
 
+<<<<<<< HEAD
 #include "entry.h"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* empty control block to disable RI by loading it */
 struct runtime_instr_cb runtime_instr_empty_cb;
 
@@ -52,6 +55,7 @@ static void disable_runtime_instr(void)
 
 static void init_runtime_instr_cb(struct runtime_instr_cb *cb)
 {
+<<<<<<< HEAD
 	cb->rla = 0xfff;
 	cb->s = 1;
 	cb->k = 1;
@@ -68,6 +72,18 @@ static void init_runtime_instr_cb(struct runtime_instr_cb *cb)
  * was checked in older kernels).
  */
 SYSCALL_DEFINE2(s390_runtime_instr, int, command, int, signum)
+=======
+	cb->buf_limit = 0xfff;
+	cb->pstate = 1;
+	cb->pstate_set_buf = 1;
+	cb->pstate_sample = 1;
+	cb->pstate_collect = 1;
+	cb->key = PAGE_DEFAULT_KEY;
+	cb->valid = 1;
+}
+
+SYSCALL_DEFINE1(s390_runtime_instr, int, command)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct runtime_instr_cb *cb;
 

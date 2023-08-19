@@ -1,10 +1,20 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * vsp1_regs.h  --  R-Car VSP1 Registers Definitions
  *
  * Copyright (C) 2013 Renesas Electronics Corporation
  *
  * Contact: Laurent Pinchart (laurent.pinchart@ideasonboard.com)
+<<<<<<< HEAD
+=======
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2
+ * as published by the Free Software Foundation.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef __VSP1_REGS_H__
@@ -28,7 +38,10 @@
 #define VI6_SRESET_SRTS(n)		(1 << (n))
 
 #define VI6_STATUS			0x0038
+<<<<<<< HEAD
 #define VI6_STATUS_FLD_STD(n)		(1 << ((n) + 28))
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VI6_STATUS_SYS_ACT(n)		(1 << ((n) + 8))
 
 #define VI6_WPF_IRQ_ENB(n)		(0x0048 + (n) * 12)
@@ -73,7 +86,11 @@
 #define VI6_DL_SWAP_WDS			(1 << 1)
 #define VI6_DL_SWAP_BTS			(1 << 0)
 
+<<<<<<< HEAD
 #define VI6_DL_EXT_CTRL(n)		(0x011c + (n) * 36)
+=======
+#define VI6_DL_EXT_CTRL			0x011c
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VI6_DL_EXT_CTRL_NWE		(1 << 16)
 #define VI6_DL_EXT_CTRL_POLINT_MASK	(0x3f << 8)
 #define VI6_DL_EXT_CTRL_POLINT_SHIFT	8
@@ -81,8 +98,11 @@
 #define VI6_DL_EXT_CTRL_EXPRI		(1 << 4)
 #define VI6_DL_EXT_CTRL_EXT		(1 << 0)
 
+<<<<<<< HEAD
 #define VI6_DL_EXT_AUTOFLD_INT		BIT(0)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VI6_DL_BODY_SIZE		0x0120
 #define VI6_DL_BODY_SIZE_UPD		(1 << 24)
 #define VI6_DL_BODY_SIZE_BS_MASK	(0x1ffff << 0)
@@ -225,7 +245,11 @@
 #define VI6_RPF_MULT_ALPHA_P_MMD_RATIO	(1 << 8)
 #define VI6_RPF_MULT_ALPHA_P_MMD_IMAGE	(2 << 8)
 #define VI6_RPF_MULT_ALPHA_P_MMD_BOTH	(3 << 8)
+<<<<<<< HEAD
 #define VI6_RPF_MULT_ALPHA_RATIO_MASK	(0xff << 0)
+=======
+#define VI6_RPF_MULT_ALPHA_RATIO_MASK	(0xff < 0)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VI6_RPF_MULT_ALPHA_RATIO_SHIFT	0
 
 /* -----------------------------------------------------------------------------
@@ -311,6 +335,7 @@
 #define VI6_WPF_WRBCK_CTRL_WBMD		(1 << 0)
 
 /* -----------------------------------------------------------------------------
+<<<<<<< HEAD
  * UIF Control Registers
  */
 
@@ -349,6 +374,8 @@
 #define VI6_UIF_DISCOM_DOCMSZYR		0x1c2c
 
 /* -----------------------------------------------------------------------------
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * DPR Control Registers
  */
 
@@ -380,10 +407,14 @@
 #define VI6_DPR_SMPPT_PT_MASK		(0x3f << 0)
 #define VI6_DPR_SMPPT_PT_SHIFT		0
 
+<<<<<<< HEAD
 #define VI6_DPR_UIF_ROUTE(n)		(0x2074 + (n) * 4)
 
 #define VI6_DPR_NODE_RPF(n)		(n)
 #define VI6_DPR_NODE_UIF(n)		(12 + (n))
+=======
+#define VI6_DPR_NODE_RPF(n)		(n)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VI6_DPR_NODE_SRU		16
 #define VI6_DPR_NODE_UDS(n)		(17 + (n))
 #define VI6_DPR_NODE_LUT		22
@@ -734,11 +765,14 @@
 #define VI6_LIF_CSBTH_LBTH_MASK		(0x7ff << 0)
 #define VI6_LIF_CSBTH_LBTH_SHIFT	0
 
+<<<<<<< HEAD
 #define VI6_LIF_LBA			0x3b0c
 #define VI6_LIF_LBA_LBA0		(1 << 31)
 #define VI6_LIF_LBA_LBA1_MASK		(0xfff << 16)
 #define VI6_LIF_LBA_LBA1_SHIFT		16
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* -----------------------------------------------------------------------------
  * Security Control Registers
  */
@@ -751,7 +785,10 @@
  */
 
 #define VI6_IP_VERSION			0x3f00
+<<<<<<< HEAD
 #define VI6_IP_VERSION_MASK		(0xffff << 0)
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define VI6_IP_VERSION_MODEL_MASK	(0xff << 8)
 #define VI6_IP_VERSION_MODEL_VSPS_H2	(0x09 << 8)
 #define VI6_IP_VERSION_MODEL_VSPR_H2	(0x0a << 8)

@@ -84,17 +84,24 @@ gf117_grctx_init_setup_0[] = {
 };
 
 static const struct gf100_gr_pack
+<<<<<<< HEAD
 gf117_grctx_pack_gpc_0[] = {
+=======
+gf117_grctx_pack_gpc[] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ gf100_grctx_init_gpc_unk_0 },
 	{ gf119_grctx_init_prop_0 },
 	{ gf119_grctx_init_gpc_unk_1 },
 	{ gf117_grctx_init_setup_0 },
 	{ gf100_grctx_init_zcull_0 },
+<<<<<<< HEAD
 	{}
 };
 
 const struct gf100_gr_pack
 gf117_grctx_pack_gpc_1[] = {
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	{ gf119_grctx_init_crstr_0 },
 	{ gf108_grctx_init_gpm_0 },
 	{ gf100_grctx_init_gcc_0 },
@@ -185,6 +192,7 @@ gf117_grctx_pack_ppc[] = {
  ******************************************************************************/
 
 void
+<<<<<<< HEAD
 gf117_grctx_generate_dist_skip_table(struct gf100_gr *gr)
 {
 	struct nvkm_device *device = gr->base.engine.subdev.device;
@@ -241,6 +249,8 @@ gf117_grctx_generate_rop_mapping(struct gf100_gr *gr)
 }
 
 void
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 gf117_grctx_generate_attrib(struct gf100_grctx *info)
 {
 	struct gf100_gr *gr = info->gr;
@@ -248,8 +258,14 @@ gf117_grctx_generate_attrib(struct gf100_grctx *info)
 	const u32  alpha = grctx->alpha_nr;
 	const u32   beta = grctx->attrib_nr;
 	const u32   size = 0x20 * (grctx->attrib_nr_max + grctx->alpha_nr_max);
+<<<<<<< HEAD
 	const int s = 12;
 	const int b = mmio_vram(info, size * gr->tpc_total, (1 << s), false);
+=======
+	const u32 access = NV_MEM_ACCESS_RW;
+	const int s = 12;
+	const int b = mmio_vram(info, size * gr->tpc_total, (1 << s), access);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	const int timeslice_mode = 1;
 	const int max_batches = 0xffff;
 	u32 bo = 0;
@@ -278,6 +294,7 @@ gf117_grctx_generate_attrib(struct gf100_grctx *info)
 	}
 }
 
+<<<<<<< HEAD
 const struct gf100_grctx_func
 gf117_grctx = {
 	.main  = gf100_grctx_generate_main,
@@ -285,6 +302,52 @@ gf117_grctx = {
 	.hub   = gf117_grctx_pack_hub,
 	.gpc_0 = gf117_grctx_pack_gpc_0,
 	.gpc_1 = gf117_grctx_pack_gpc_1,
+=======
+static void
+gf117_grctx_generate_main(struct gf100_gr *gr, struct gf100_grctx *info)
+{
+	struct nvkm_device *device = gr->base.engine.subdev.device;
+	const struct gf100_grctx_func *grctx = gr->func->grctx;
+	u32 idle_timeout;
+	int i;
+
+	nvkm_mc_unk260(device, 0);
+
+	gf100_gr_mmio(gr, grctx->hub);
+	gf100_gr_mmio(gr, grctx->gpc);
+	gf100_gr_mmio(gr, grctx->zcull);
+	gf100_gr_mmio(gr, grctx->tpc);
+	gf100_gr_mmio(gr, grctx->ppc);
+
+	idle_timeout = nvkm_mask(device, 0x404154, 0xffffffff, 0x00000000);
+
+	grctx->bundle(info);
+	grctx->pagepool(info);
+	grctx->attrib(info);
+	grctx->unkn(gr);
+
+	gf100_grctx_generate_tpcid(gr);
+	gf100_grctx_generate_r406028(gr);
+	gf100_grctx_generate_r4060a8(gr);
+	gk104_grctx_generate_r418bb8(gr);
+	gf100_grctx_generate_r406800(gr);
+
+	for (i = 0; i < 8; i++)
+		nvkm_wr32(device, 0x4064d0 + (i * 0x04), 0x00000000);
+
+	gf100_gr_icmd(gr, grctx->icmd);
+	nvkm_wr32(device, 0x404154, idle_timeout);
+	gf100_gr_mthd(gr, grctx->mthd);
+	nvkm_mc_unk260(device, 1);
+}
+
+const struct gf100_grctx_func
+gf117_grctx = {
+	.main  = gf117_grctx_generate_main,
+	.unkn  = gk104_grctx_generate_unkn,
+	.hub   = gf117_grctx_pack_hub,
+	.gpc   = gf117_grctx_pack_gpc,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	.zcull = gf100_grctx_pack_zcull,
 	.tpc   = gf117_grctx_pack_tpc,
 	.ppc   = gf117_grctx_pack_ppc,
@@ -299,6 +362,7 @@ gf117_grctx = {
 	.attrib_nr = 0x218,
 	.alpha_nr_max = 0x7ff,
 	.alpha_nr = 0x324,
+<<<<<<< HEAD
 	.sm_id = gf100_grctx_generate_sm_id,
 	.tpc_nr = gf100_grctx_generate_tpc_nr,
 	.r4060a8 = gf100_grctx_generate_r4060a8,
@@ -307,4 +371,6 @@ gf117_grctx = {
 	.max_ways_evict = gf100_grctx_generate_max_ways_evict,
 	.dist_skip_table = gf117_grctx_generate_dist_skip_table,
 	.r419cb8 = gf100_grctx_generate_r419cb8,
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };

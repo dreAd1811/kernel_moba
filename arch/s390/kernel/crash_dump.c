@@ -293,6 +293,7 @@ int remap_oldmem_pfn_range(struct vm_area_struct *vma, unsigned long from,
 						       prot);
 }
 
+<<<<<<< HEAD
 static const char *nt_name(Elf64_Word type)
 {
 	const char *name = "LINUX";
@@ -300,6 +301,19 @@ static const char *nt_name(Elf64_Word type)
 	if (type == NT_PRPSINFO || type == NT_PRSTATUS || type == NT_PRFPREG)
 		name = KEXEC_CORE_NOTE_NAME;
 	return name;
+=======
+/*
+ * Alloc memory and panic in case of ENOMEM
+ */
+static void *kzalloc_panic(int len)
+{
+	void *rc;
+
+	rc = kzalloc(len, GFP_KERNEL);
+	if (!rc)
+		panic("s390 kdump kzalloc (%d) failed", len);
+	return rc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -328,6 +342,7 @@ static void *nt_init_name(void *buf, Elf64_Word type, void *desc, int d_len,
 
 static inline void *nt_init(void *buf, Elf64_Word type, void *desc, int d_len)
 {
+<<<<<<< HEAD
 	return nt_init_name(buf, type, desc, d_len, nt_name(type));
 }
 
@@ -348,6 +363,13 @@ static size_t nt_size_name(int d_len, const char *name)
 static inline size_t nt_size(Elf64_Word type, int d_len)
 {
 	return nt_size_name(d_len, nt_name(type));
+=======
+	const char *note_name = "LINUX";
+
+	if (type == NT_PRPSINFO || type == NT_PRSTATUS || type == NT_PRFPREG)
+		note_name = KEXEC_CORE_NOTE_NAME;
+	return nt_init_name(buf, type, desc, d_len, note_name);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /*
@@ -386,6 +408,7 @@ static void *fill_cpu_elf_notes(void *ptr, int cpu, struct save_area *sa)
 }
 
 /*
+<<<<<<< HEAD
  * Calculate size of ELF notes per cpu
  */
 static size_t get_cpu_elf_notes_size(void)
@@ -409,6 +432,8 @@ static size_t get_cpu_elf_notes_size(void)
 }
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Initialize prpsinfo note (new kernel)
  */
 static void *nt_prpsinfo(void *ptr)
@@ -440,9 +465,13 @@ static void *get_vmcoreinfo_old(unsigned long *size)
 		return NULL;
 	if (strcmp(nt_name, VMCOREINFO_NOTE_NAME) != 0)
 		return NULL;
+<<<<<<< HEAD
 	vmcoreinfo = kzalloc(note.n_descsz, GFP_KERNEL);
 	if (!vmcoreinfo)
 		return NULL;
+=======
+	vmcoreinfo = kzalloc_panic(note.n_descsz);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (copy_oldmem_kernel(vmcoreinfo, addr + 24, note.n_descsz)) {
 		kfree(vmcoreinfo);
 		return NULL;
@@ -472,6 +501,7 @@ static void *nt_vmcoreinfo(void *ptr)
 	return ptr;
 }
 
+<<<<<<< HEAD
 static size_t nt_vmcoreinfo_size(void)
 {
 	const char *name = VMCOREINFO_NOTE_NAME;
@@ -490,6 +520,8 @@ static size_t nt_vmcoreinfo_size(void)
 	return nt_size_name(size, name);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Initialize final note (needed for /proc/vmcore code)
  */
@@ -600,6 +632,7 @@ static void *notes_init(Elf64_Phdr *phdr, void *ptr, u64 notes_offset)
 	return ptr;
 }
 
+<<<<<<< HEAD
 static size_t get_elfcorehdr_size(int mem_chunk_cnt)
 {
 	size_t size;
@@ -621,6 +654,8 @@ static size_t get_elfcorehdr_size(int mem_chunk_cnt)
 	return size;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Create ELF core header (new kernel)
  */
@@ -648,6 +683,7 @@ int elfcorehdr_alloc(unsigned long long *addr, unsigned long long *size)
 
 	mem_chunk_cnt = get_mem_chunk_cnt();
 
+<<<<<<< HEAD
 	alloc_size = get_elfcorehdr_size(mem_chunk_cnt);
 
 	hdr = kzalloc(alloc_size, GFP_KERNEL);
@@ -659,6 +695,11 @@ int elfcorehdr_alloc(unsigned long long *addr, unsigned long long *size)
 	if (!hdr)
 		panic("s390 kdump allocating elfcorehdr failed");
 
+=======
+	alloc_size = 0x1000 + get_cpu_cnt() * 0x4a0 +
+		mem_chunk_cnt * sizeof(Elf64_Phdr);
+	hdr = kzalloc_panic(alloc_size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Init elf header */
 	ptr = ehdr_init(hdr, mem_chunk_cnt);
 	/* Init program headers */

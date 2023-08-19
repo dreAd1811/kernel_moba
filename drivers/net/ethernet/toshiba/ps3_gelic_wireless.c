@@ -2320,9 +2320,14 @@ static struct net_device *gelic_wl_alloc(struct gelic_card *card)
 	pr_debug("%s: wl=%p port=%p\n", __func__, wl, port);
 
 	/* allocate scan list */
+<<<<<<< HEAD
 	wl->networks = kcalloc(GELIC_WL_BSS_MAX_ENT,
 			       sizeof(struct gelic_wl_scan_info),
 			       GFP_KERNEL);
+=======
+	wl->networks = kzalloc(sizeof(struct gelic_wl_scan_info) *
+			       GELIC_WL_BSS_MAX_ENT, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!wl->networks)
 		goto fail_bss;

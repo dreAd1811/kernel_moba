@@ -59,7 +59,11 @@ struct mpc_table {
 #define	MP_TRANSLATION		192
 
 #define CPU_ENABLED		1	/* Processor is available */
+<<<<<<< HEAD
 #define CPU_BOOTPROCESSOR	2	/* Processor is the boot CPU */
+=======
+#define CPU_BOOTPROCESSOR	2	/* Processor is the BP */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define CPU_STEPPING_MASK	0x000F
 #define CPU_MODEL_MASK		0x00F0
@@ -128,6 +132,7 @@ enum mp_irq_source_types {
 	mp_ExtINT = 3
 };
 
+<<<<<<< HEAD
 #define MP_IRQPOL_DEFAULT	0x0
 #define MP_IRQPOL_ACTIVE_HIGH	0x1
 #define MP_IRQPOL_RESERVED	0x2
@@ -139,6 +144,11 @@ enum mp_irq_source_types {
 #define MP_IRQTRIG_RESERVED	0x8
 #define MP_IRQTRIG_LEVEL	0xc
 #define MP_IRQTRIG_MASK		0xc
+=======
+#define MP_IRQDIR_DEFAULT	0
+#define MP_IRQDIR_HIGH		1
+#define MP_IRQDIR_LOW		3
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MP_APIC_ALL	0xFF
 

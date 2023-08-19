@@ -7,6 +7,7 @@
 #ifndef __ASSEMBLY__
 #define arch_mmap_check(addr,len,flags)	sparc_mmap_check(addr,len)
 int sparc_mmap_check(unsigned long addr, unsigned long len);
+<<<<<<< HEAD
 
 #ifdef CONFIG_SPARC64
 #include <asm/adi_64.h>
@@ -90,4 +91,7 @@ static inline int sparc_validate_prot(unsigned long prot, unsigned long addr)
 #endif /* CONFIG_SPARC64 */
 
 #endif /* __ASSEMBLY__ */
+=======
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __SPARC_MMAN_H__ */

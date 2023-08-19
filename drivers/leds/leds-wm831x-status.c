@@ -188,6 +188,7 @@ static ssize_t wm831x_status_src_store(struct device *dev,
 {
 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
 	struct wm831x_status *led = to_wm831x_status(led_cdev);
+<<<<<<< HEAD
 	int i;
 
 	i = sysfs_match_string(led_src_texts, buf);
@@ -196,6 +197,26 @@ static ssize_t wm831x_status_src_store(struct device *dev,
 		led->src = i;
 		mutex_unlock(&led->mutex);
 		wm831x_status_set(led);
+=======
+	char name[20];
+	int i;
+	size_t len;
+
+	name[sizeof(name) - 1] = '\0';
+	strncpy(name, buf, sizeof(name) - 1);
+	len = strlen(name);
+
+	if (len && name[len - 1] == '\n')
+		name[len - 1] = '\0';
+
+	for (i = 0; i < ARRAY_SIZE(led_src_texts); i++) {
+		if (!strcmp(name, led_src_texts[i])) {
+			mutex_lock(&led->mutex);
+			led->src = i;
+			mutex_unlock(&led->mutex);
+			wm831x_status_set(led);
+		}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return size;

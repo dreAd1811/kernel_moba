@@ -32,8 +32,13 @@
 #include <linux/device.h>
 #include <linux/netdevice.h>
 #include "en.h"
+<<<<<<< HEAD
 #include "en/port.h"
 #include "en/port_buffer.h"
+=======
+
+#define MLX5E_MAX_PRIORITY 8
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define MLX5E_100MB (100000)
 #define MLX5E_1GB   (1000000)
@@ -41,14 +46,18 @@
 #define MLX5E_CEE_STATE_UP    1
 #define MLX5E_CEE_STATE_DOWN  0
 
+<<<<<<< HEAD
 /* Max supported cable length is 1000 meters */
 #define MLX5E_MAX_CABLE_LENGTH 1000
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum {
 	MLX5E_VENDOR_TC_GROUP_NUM = 7,
 	MLX5E_LOWEST_PRIO_GROUP   = 0,
 };
 
+<<<<<<< HEAD
 #define MLX5_DSCP_SUPPORTED(mdev) (MLX5_CAP_GEN(mdev, qcam_reg)  && \
 				   MLX5_CAP_QCAM_REG(mdev, qpts) && \
 				   MLX5_CAP_QCAM_REG(mdev, qpdpm))
@@ -56,6 +65,8 @@ enum {
 static int mlx5e_set_trust_state(struct mlx5e_priv *priv, u8 trust_state);
 static int mlx5e_set_dscp2prio(struct mlx5e_priv *priv, u8 dscp, u8 prio);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* If dcbx mode is non-host set the dcbx mode to host.
  */
 static int mlx5e_dcbnl_set_dcbx_mode(struct mlx5e_priv *priv,
@@ -244,7 +255,11 @@ int mlx5e_dcbnl_ieee_setets_core(struct mlx5e_priv *priv, struct ieee_ets *ets)
 	u8 tc_tx_bw[IEEE_8021QAZ_MAX_TCS];
 	u8 tc_group[IEEE_8021QAZ_MAX_TCS];
 	int max_tc = mlx5_max_tc(mdev);
+<<<<<<< HEAD
 	int err, i;
+=======
+	int err;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mlx5e_build_tc_group(ets, tc_group, max_tc);
 	mlx5e_build_tc_tx_bw(ets, tc_tx_bw, tc_group, max_tc);
@@ -263,6 +278,7 @@ int mlx5e_dcbnl_ieee_setets_core(struct mlx5e_priv *priv, struct ieee_ets *ets)
 		return err;
 
 	memcpy(priv->dcbx.tc_tsa, ets->tc_tsa, sizeof(ets->tc_tsa));
+<<<<<<< HEAD
 
 	for (i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
 		mlx5e_dbg(HW, priv, "%s: prio_%d <=> tc_%d\n",
@@ -271,6 +287,8 @@ int mlx5e_dcbnl_ieee_setets_core(struct mlx5e_priv *priv, struct ieee_ets *ets)
 			  __func__, i, tc_tx_bw[i], tc_group[i]);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return err;
 }
 
@@ -343,9 +361,12 @@ static int mlx5e_dcbnl_ieee_getpfc(struct net_device *dev,
 		pfc->indications[i] = PPORT_PER_PRIO_GET(pstats, i, rx_pause);
 	}
 
+<<<<<<< HEAD
 	if (MLX5_BUFFER_SUPPORTED(mdev))
 		pfc->delay = priv->dcbx.cable_len;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mlx5_query_port_pfc(mdev, &pfc->pfc_en, NULL);
 }
 
@@ -354,6 +375,7 @@ static int mlx5e_dcbnl_ieee_setpfc(struct net_device *dev,
 {
 	struct mlx5e_priv *priv = netdev_priv(dev);
 	struct mlx5_core_dev *mdev = priv->mdev;
+<<<<<<< HEAD
 	u32 old_cable_len = priv->dcbx.cable_len;
 	struct ieee_pfc pfc_new;
 	u32 changed = 0;
@@ -393,6 +415,19 @@ static int mlx5e_dcbnl_ieee_setpfc(struct net_device *dev,
 			  "%s: PFC per priority bit mask: 0x%x\n",
 			  __func__, pfc->pfc_en);
 	}
+=======
+	u8 curr_pfc_en;
+	int ret;
+
+	mlx5_query_port_pfc(mdev, &curr_pfc_en, NULL);
+
+	if (pfc->pfc_en == curr_pfc_en)
+		return 0;
+
+	ret = mlx5_set_port_pfc(mdev, pfc->pfc_en, pfc->pfc_en);
+	mlx5_toggle_port_link(mdev);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return ret;
 }
 
@@ -436,6 +471,7 @@ static u8 mlx5e_dcbnl_setdcbx(struct net_device *dev, u8 mode)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int mlx5e_dcbnl_ieee_setapp(struct net_device *dev, struct dcb_app *app)
 {
 	struct mlx5e_priv *priv = netdev_priv(dev);
@@ -535,6 +571,8 @@ fw_err:
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int mlx5e_dcbnl_ieee_getmaxrate(struct net_device *netdev,
 				       struct ieee_maxrate *maxrate)
 {
@@ -600,11 +638,14 @@ static int mlx5e_dcbnl_ieee_setmaxrate(struct net_device *netdev,
 		}
 	}
 
+<<<<<<< HEAD
 	for (i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
 		mlx5e_dbg(HW, priv, "%s: tc_%d <=> max_bw %d Gbps\n",
 			  __func__, i, max_bw_value[i]);
 	}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mlx5_modify_port_ets_rate_limit(mdev, max_bw_value, max_bw_unit);
 }
 
@@ -630,10 +671,13 @@ static u8 mlx5e_dcbnl_setall(struct net_device *netdev)
 		ets.tc_rx_bw[i] = cee_cfg->pg_bw_pct[i];
 		ets.tc_tsa[i]   = IEEE_8021QAZ_TSA_ETS;
 		ets.prio_tc[i]  = cee_cfg->prio_to_pg_map[i];
+<<<<<<< HEAD
 		mlx5e_dbg(HW, priv,
 			  "%s: Priority group %d: tx_bw %d, rx_bw %d, prio_tc %d\n",
 			  __func__, i, ets.tc_tx_bw[i], ets.tc_rx_bw[i],
 			  ets.prio_tc[i]);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	err = mlx5e_dbcnl_validate_ets(netdev, &ets, true);
@@ -893,6 +937,7 @@ static void mlx5e_dcbnl_setpfcstate(struct net_device *netdev, u8 state)
 	cee_cfg->pfc_enable = state;
 }
 
+<<<<<<< HEAD
 static int mlx5e_dcbnl_getbuffer(struct net_device *dev,
 				 struct dcbnl_buffer *dcb_buffer)
 {
@@ -977,6 +1022,8 @@ static int mlx5e_dcbnl_setbuffer(struct net_device *dev,
 	return err;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 const struct dcbnl_rtnl_ops mlx5e_dcbnl_ops = {
 	.ieee_getets	= mlx5e_dcbnl_ieee_getets,
 	.ieee_setets	= mlx5e_dcbnl_ieee_setets,
@@ -984,12 +1031,17 @@ const struct dcbnl_rtnl_ops mlx5e_dcbnl_ops = {
 	.ieee_setmaxrate = mlx5e_dcbnl_ieee_setmaxrate,
 	.ieee_getpfc	= mlx5e_dcbnl_ieee_getpfc,
 	.ieee_setpfc	= mlx5e_dcbnl_ieee_setpfc,
+<<<<<<< HEAD
 	.ieee_setapp    = mlx5e_dcbnl_ieee_setapp,
 	.ieee_delapp    = mlx5e_dcbnl_ieee_delapp,
 	.getdcbx	= mlx5e_dcbnl_getdcbx,
 	.setdcbx	= mlx5e_dcbnl_setdcbx,
 	.dcbnl_getbuffer = mlx5e_dcbnl_getbuffer,
 	.dcbnl_setbuffer = mlx5e_dcbnl_setbuffer,
+=======
+	.getdcbx	= mlx5e_dcbnl_getdcbx,
+	.setdcbx	= mlx5e_dcbnl_setdcbx,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* CEE interfaces */
 	.setall         = mlx5e_dcbnl_setall,
@@ -1028,9 +1080,14 @@ static void mlx5e_dcbnl_query_dcbx_mode(struct mlx5e_priv *priv,
 
 static void mlx5e_ets_init(struct mlx5e_priv *priv)
 {
+<<<<<<< HEAD
 	struct ieee_ets ets;
 	int err;
 	int i;
+=======
+	int i;
+	struct ieee_ets ets;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!MLX5_CAP_GEN(priv->mdev, ets))
 		return;
@@ -1043,6 +1100,7 @@ static void mlx5e_ets_init(struct mlx5e_priv *priv)
 		ets.prio_tc[i] = i;
 	}
 
+<<<<<<< HEAD
 	if (ets.ets_cap > 1) {
 		/* tclass[prio=0]=1, tclass[prio=1]=0, tclass[prio=i]=i (for i>1) */
 		ets.prio_tc[0] = 1;
@@ -1180,14 +1238,24 @@ static int mlx5e_trust_initialize(struct mlx5e_priv *priv)
 		return err;
 
 	return 0;
+=======
+	/* tclass[prio=0]=1, tclass[prio=1]=0, tclass[prio=i]=i (for i>1) */
+	ets.prio_tc[0] = 1;
+	ets.prio_tc[1] = 0;
+
+	mlx5e_dcbnl_ieee_setets_core(priv, &ets);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void mlx5e_dcbnl_initialize(struct mlx5e_priv *priv)
 {
 	struct mlx5e_dcbx *dcbx = &priv->dcbx;
 
+<<<<<<< HEAD
 	mlx5e_trust_initialize(priv);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!MLX5_CAP_GEN(priv->mdev, qos))
 		return;
 
@@ -1199,8 +1267,11 @@ void mlx5e_dcbnl_initialize(struct mlx5e_priv *priv)
 	if (priv->dcbx.mode == MLX5E_DCBX_PARAM_VER_OPER_HOST)
 		priv->dcbx.cap |= DCB_CAP_DCBX_HOST;
 
+<<<<<<< HEAD
 	priv->dcbx.manual_buffer = false;
 	priv->dcbx.cable_len = MLX5E_DEFAULT_CABLE_LEN;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mlx5e_ets_init(priv);
 }

@@ -561,6 +561,12 @@ static int iic_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
 
 	DBG2("%d: iic_xfer, %d msg(s)\n", dev->idx, num);
 
+<<<<<<< HEAD
+=======
+	if (!num)
+		return 0;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* Check the sanity of the passed messages.
 	 * Uhh, generic i2c layer is more suitable place for such code...
 	 */

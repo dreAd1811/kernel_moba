@@ -62,6 +62,11 @@ struct sync_pt {
 	struct rb_node node;
 };
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_SW_SYNC
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 extern const struct file_operations sw_sync_debugfs_fops;
 
 void sync_timeline_debug_add(struct sync_timeline *obj);
@@ -70,4 +75,15 @@ void sync_file_debug_add(struct sync_file *fence);
 void sync_file_debug_remove(struct sync_file *fence);
 void sync_dump(void);
 
+<<<<<<< HEAD
+=======
+#else
+# define sync_timeline_debug_add(obj)
+# define sync_timeline_debug_remove(obj)
+# define sync_file_debug_add(fence)
+# define sync_file_debug_remove(fence)
+# define sync_dump()
+#endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* _LINUX_SYNC_H */

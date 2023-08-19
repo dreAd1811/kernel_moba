@@ -1,18 +1,37 @@
 /*
+<<<<<<< HEAD
  * SPDX-License-Identifier: GPL-2.0
  * Remote Controller core raw events header
  *
  * Copyright (C) 2010 by Mauro Carvalho Chehab
+=======
+ * Remote Controller core raw events header
+ *
+ * Copyright (C) 2010 by Mauro Carvalho Chehab
+ *
+ * This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation version 2 of the License.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  */
 
 #ifndef _RC_CORE_PRIV
 #define _RC_CORE_PRIV
 
+<<<<<<< HEAD
 #define	RC_DEV_MAX		256
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* Define the max number of pulse/space transitions to buffer */
 #define	MAX_IR_EVENT_SIZE	512
 
 #include <linux/slab.h>
+<<<<<<< HEAD
 #include <uapi/linux/bpf.h>
 #include <media/rc-core.h>
 
@@ -30,6 +49,10 @@ int rc_open(struct rc_dev *rdev);
  */
 void rc_close(struct rc_dev *rdev);
 
+=======
+#include <media/rc-core.h>
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct ir_raw_handler {
 	struct list_head list;
 
@@ -37,10 +60,15 @@ struct ir_raw_handler {
 	int (*decode)(struct rc_dev *dev, struct ir_raw_event event);
 	int (*encode)(enum rc_proto protocol, u32 scancode,
 		      struct ir_raw_event *events, unsigned int max);
+<<<<<<< HEAD
 	u32 carrier;
 	u32 min_timeout;
 
 	/* These two should only be used by the mce kbd decoder */
+=======
+
+	/* These two should only be used by the lirc decoder */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int (*raw_register)(struct rc_dev *dev);
 	int (*raw_unregister)(struct rc_dev *dev);
 };
@@ -52,18 +80,26 @@ struct ir_raw_event_ctrl {
 	DECLARE_KFIFO(kfifo, struct ir_raw_event, MAX_IR_EVENT_SIZE);
 	ktime_t				last_event;	/* when last event occurred */
 	struct rc_dev			*dev;		/* pointer to the parent rc_dev */
+<<<<<<< HEAD
 	/* handle delayed ir_raw_event_store_edge processing */
 	spinlock_t			edge_spinlock;
 	struct timer_list		edge_handle;
+=======
+	/* edge driver */
+	struct timer_list edge_handle;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* raw decoder state follows */
 	struct ir_raw_event prev_ev;
 	struct ir_raw_event this_ev;
+<<<<<<< HEAD
 
 #ifdef CONFIG_BPF_LIRC_MODE2
 	u32				bpf_sample;
 	struct bpf_prog_array __rcu	*progs;
 #endif
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct nec_dec {
 		int state;
 		unsigned count;
@@ -111,8 +147,11 @@ struct ir_raw_event_ctrl {
 	} sharp;
 	struct mce_kbd_dec {
 		struct input_dev *idev;
+<<<<<<< HEAD
 		/* locks key up timer */
 		spinlock_t keylock;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		struct timer_list rx_timeout;
 		char name[64];
 		char phys[64];
@@ -122,11 +161,26 @@ struct ir_raw_event_ctrl {
 		unsigned count;
 		unsigned wanted_bits;
 	} mce_kbd;
+<<<<<<< HEAD
+=======
+	struct lirc_codec {
+		struct rc_dev *dev;
+		struct lirc_driver *drv;
+		int carrier_low;
+
+		ktime_t gap_start;
+		u64 gap_duration;
+		bool gap;
+		bool send_timeout_reports;
+
+	} lirc;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct xmp_dec {
 		int state;
 		unsigned count;
 		u32 durations[16];
 	} xmp;
+<<<<<<< HEAD
 	struct imon_dec {
 		int state;
 		int count;
@@ -141,6 +195,10 @@ struct ir_raw_event_ctrl {
 /* Mutex for locking raw IR processing and handler change */
 extern struct mutex ir_raw_handler_lock;
 
+=======
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /* macros for IR decoders */
 static inline bool geq_margin(unsigned d1, unsigned d2, unsigned margin)
 {
@@ -175,7 +233,10 @@ static inline bool is_timing_event(struct ir_raw_event ev)
 #define TO_STR(is_pulse)		((is_pulse) ? "pulse" : "space")
 
 /* functions for IR encoders */
+<<<<<<< HEAD
 bool rc_validate_scancode(enum rc_proto proto, u32 scancode);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline void init_ir_raw_event_duration(struct ir_raw_event *ev,
 					      unsigned int pulse,
@@ -188,17 +249,28 @@ static inline void init_ir_raw_event_duration(struct ir_raw_event *ev,
 
 /**
  * struct ir_raw_timings_manchester - Manchester coding timings
+<<<<<<< HEAD
  * @leader_pulse:	duration of leader pulse (if any) 0 if continuing
  *			existing signal
  * @leader_space:	duration of leader space (if any)
+=======
+ * @leader:		duration of leader pulse (if any) 0 if continuing
+ *			existing signal (see @pulse_space_start)
+ * @pulse_space_start:	1 for starting with pulse (0 for starting with space)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * @clock:		duration of each pulse/space in ns
  * @invert:		if set clock logic is inverted
  *			(0 = space + pulse, 1 = pulse + space)
  * @trailer_space:	duration of trailer space in ns
  */
 struct ir_raw_timings_manchester {
+<<<<<<< HEAD
 	unsigned int leader_pulse;
 	unsigned int leader_space;
+=======
+	unsigned int leader;
+	unsigned int pulse_space_start:1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned int clock;
 	unsigned int invert:1;
 	unsigned int trailer_space;
@@ -290,6 +362,7 @@ void ir_raw_event_free(struct rc_dev *dev);
 void ir_raw_event_unregister(struct rc_dev *dev);
 int ir_raw_handler_register(struct ir_raw_handler *ir_raw_handler);
 void ir_raw_handler_unregister(struct ir_raw_handler *ir_raw_handler);
+<<<<<<< HEAD
 void ir_raw_load_modules(u64 *protocols);
 void ir_raw_init(void);
 
@@ -325,5 +398,15 @@ void lirc_bpf_run(struct rc_dev *dev, u32 sample);
 static inline void lirc_bpf_free(struct rc_dev *dev) { }
 static inline void lirc_bpf_run(struct rc_dev *dev, u32 sample) { }
 #endif
+=======
+void ir_raw_init(void);
+
+/*
+ * Decoder initialization code
+ *
+ * Those load logic are called during ir-core init, and automatically
+ * loads the compiled decoders for their usage with IR raw events
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* _RC_CORE_PRIV */

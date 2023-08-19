@@ -244,7 +244,11 @@ int fmc_device_register_n_gw(struct fmc_device **devs, int n,
 		if (!fmc->carrier_name || !fmc->carrier_data ||
 		    !fmc->device_id) {
 			dev_err(fmc->hwdev,
+<<<<<<< HEAD
 				"device nr %i: carrier name, "
+=======
+				"deivce nr %i: carrier name, "
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				"data or dev_id not set\n", i);
 			ret = -EINVAL;
 		}

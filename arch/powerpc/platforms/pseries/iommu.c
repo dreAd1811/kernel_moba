@@ -55,23 +55,41 @@
 
 static struct iommu_table_group *iommu_pseries_alloc_group(int node)
 {
+<<<<<<< HEAD
 	struct iommu_table_group *table_group;
 	struct iommu_table *tbl;
 	struct iommu_table_group_link *tgl;
+=======
+	struct iommu_table_group *table_group = NULL;
+	struct iommu_table *tbl = NULL;
+	struct iommu_table_group_link *tgl = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	table_group = kzalloc_node(sizeof(struct iommu_table_group), GFP_KERNEL,
 			   node);
 	if (!table_group)
+<<<<<<< HEAD
 		return NULL;
 
 	tbl = kzalloc_node(sizeof(struct iommu_table), GFP_KERNEL, node);
 	if (!tbl)
 		goto free_group;
+=======
+		goto fail_exit;
+
+	tbl = kzalloc_node(sizeof(struct iommu_table), GFP_KERNEL, node);
+	if (!tbl)
+		goto fail_exit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	tgl = kzalloc_node(sizeof(struct iommu_table_group_link), GFP_KERNEL,
 			node);
 	if (!tgl)
+<<<<<<< HEAD
 		goto free_table;
+=======
+		goto fail_exit;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	INIT_LIST_HEAD_RCU(&tbl->it_group_list);
 	kref_init(&tbl->it_kref);
@@ -82,10 +100,18 @@ static struct iommu_table_group *iommu_pseries_alloc_group(int node)
 
 	return table_group;
 
+<<<<<<< HEAD
 free_table:
 	kfree(tbl);
 free_group:
 	kfree(table_group);
+=======
+fail_exit:
+	kfree(tgl);
+	kfree(table_group);
+	kfree(tbl);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return NULL;
 }
 
@@ -167,10 +193,17 @@ static unsigned long tce_get_pseries(struct iommu_table *tbl, long index)
 	return be64_to_cpu(*tcep);
 }
 
+<<<<<<< HEAD
 static void tce_free_pSeriesLP(struct iommu_table*, long, long);
 static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
 
 static int tce_build_pSeriesLP(struct iommu_table *tbl, long tcenum,
+=======
+static void tce_free_pSeriesLP(unsigned long liobn, long, long);
+static void tce_freemulti_pSeriesLP(struct iommu_table*, long, long);
+
+static int tce_build_pSeriesLP(unsigned long liobn, long tcenum, long tceshift,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				long npages, unsigned long uaddr,
 				enum dma_data_direction direction,
 				unsigned long attrs)
@@ -181,25 +214,42 @@ static int tce_build_pSeriesLP(struct iommu_table *tbl, long tcenum,
 	int ret = 0;
 	long tcenum_start = tcenum, npages_start = npages;
 
+<<<<<<< HEAD
 	rpn = __pa(uaddr) >> TCE_SHIFT;
+=======
+	rpn = __pa(uaddr) >> tceshift;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	proto_tce = TCE_PCI_READ;
 	if (direction != DMA_TO_DEVICE)
 		proto_tce |= TCE_PCI_WRITE;
 
 	while (npages--) {
+<<<<<<< HEAD
 		tce = proto_tce | (rpn & TCE_RPN_MASK) << TCE_RPN_SHIFT;
 		rc = plpar_tce_put((u64)tbl->it_index, (u64)tcenum << 12, tce);
 
 		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
 			ret = (int)rc;
 			tce_free_pSeriesLP(tbl, tcenum_start,
+=======
+		tce = proto_tce | (rpn & TCE_RPN_MASK) << tceshift;
+		rc = plpar_tce_put((u64)liobn, (u64)tcenum << tceshift, tce);
+
+		if (unlikely(rc == H_NOT_ENOUGH_RESOURCES)) {
+			ret = (int)rc;
+			tce_free_pSeriesLP(liobn, tcenum_start,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			                   (npages_start - (npages + 1)));
 			break;
 		}
 
 		if (rc && printk_ratelimit()) {
 			printk("tce_build_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
+<<<<<<< HEAD
 			printk("\tindex   = 0x%llx\n", (u64)tbl->it_index);
+=======
+			printk("\tindex   = 0x%llx\n", (u64)liobn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			printk("\ttcenum  = 0x%llx\n", (u64)tcenum);
 			printk("\ttce val = 0x%llx\n", tce );
 			dump_stack();
@@ -228,7 +278,12 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
 	unsigned long flags;
 
 	if ((npages == 1) || !firmware_has_feature(FW_FEATURE_MULTITCE)) {
+<<<<<<< HEAD
 		return tce_build_pSeriesLP(tbl, tcenum, npages, uaddr,
+=======
+		return tce_build_pSeriesLP(tbl->it_index, tcenum,
+					   tbl->it_page_shift, npages, uaddr,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		                           direction, attrs);
 	}
 
@@ -244,8 +299,14 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
 		/* If allocation fails, fall back to the loop implementation */
 		if (!tcep) {
 			local_irq_restore(flags);
+<<<<<<< HEAD
 			return tce_build_pSeriesLP(tbl, tcenum, npages, uaddr,
 					    direction, attrs);
+=======
+			return tce_build_pSeriesLP(tbl->it_index, tcenum,
+					tbl->it_page_shift,
+					npages, uaddr, direction, attrs);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		}
 		__this_cpu_write(tce_page, tcep);
 	}
@@ -296,16 +357,28 @@ static int tce_buildmulti_pSeriesLP(struct iommu_table *tbl, long tcenum,
 	return ret;
 }
 
+<<<<<<< HEAD
 static void tce_free_pSeriesLP(struct iommu_table *tbl, long tcenum, long npages)
+=======
+static void tce_free_pSeriesLP(unsigned long liobn, long tcenum, long npages)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 rc;
 
 	while (npages--) {
+<<<<<<< HEAD
 		rc = plpar_tce_put((u64)tbl->it_index, (u64)tcenum << 12, 0);
 
 		if (rc && printk_ratelimit()) {
 			printk("tce_free_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
 			printk("\tindex   = 0x%llx\n", (u64)tbl->it_index);
+=======
+		rc = plpar_tce_put((u64)liobn, (u64)tcenum << 12, 0);
+
+		if (rc && printk_ratelimit()) {
+			printk("tce_free_pSeriesLP: plpar_tce_put failed. rc=%lld\n", rc);
+			printk("\tindex   = 0x%llx\n", (u64)liobn);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			printk("\ttcenum  = 0x%llx\n", (u64)tcenum);
 			dump_stack();
 		}
@@ -320,7 +393,11 @@ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long n
 	u64 rc;
 
 	if (!firmware_has_feature(FW_FEATURE_MULTITCE))
+<<<<<<< HEAD
 		return tce_free_pSeriesLP(tbl, tcenum, npages);
+=======
+		return tce_free_pSeriesLP(tbl->it_index, tcenum, npages);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	rc = plpar_tce_stuff((u64)tbl->it_index, (u64)tcenum << 12, 0, npages);
 
@@ -435,6 +512,22 @@ static int tce_setrange_multi_pSeriesLP(unsigned long start_pfn,
 	u64 rc = 0;
 	long l, limit;
 
+<<<<<<< HEAD
+=======
+	if (!firmware_has_feature(FW_FEATURE_MULTITCE)) {
+		unsigned long tceshift = be32_to_cpu(maprange->tce_shift);
+		unsigned long dmastart = (start_pfn << PAGE_SHIFT) +
+				be64_to_cpu(maprange->dma_base);
+		unsigned long tcenum = dmastart >> tceshift;
+		unsigned long npages = num_pfn << PAGE_SHIFT >> tceshift;
+		void *uaddr = __va(start_pfn << PAGE_SHIFT);
+
+		return tce_build_pSeriesLP(be32_to_cpu(maprange->liobn),
+				tcenum, tceshift, npages, (unsigned long) uaddr,
+				DMA_BIDIRECTIONAL, 0);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	local_irq_disable();	/* to protect tcep and the page behind it */
 	tcep = __this_cpu_read(tce_page);
 
@@ -816,15 +909,24 @@ static void remove_ddw(struct device_node *np, bool remove_prop)
 	ret = tce_clearrange_multi_pSeriesLP(0,
 		1ULL << (be32_to_cpu(dwp->window_shift) - PAGE_SHIFT), dwp);
 	if (ret)
+<<<<<<< HEAD
 		pr_warn("%pOF failed to clear tces in window.\n",
 			np);
+=======
+		pr_warning("%pOF failed to clear tces in window.\n",
+			 np);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	else
 		pr_debug("%pOF successfully cleared tces in window.\n",
 			 np);
 
 	ret = rtas_call(ddw_avail[2], 1, 1, NULL, liobn);
 	if (ret)
+<<<<<<< HEAD
 		pr_warn("%pOF: failed to remove direct window: rtas returned "
+=======
+		pr_warning("%pOF: failed to remove direct window: rtas returned "
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			"%d to ibm,remove-pe-dma-window(%x) %llx\n",
 			np, ret, ddw_avail[2], liobn);
 	else
@@ -836,7 +938,11 @@ delprop:
 	if (remove_prop)
 		ret = of_remove_property(np, win64);
 	if (ret)
+<<<<<<< HEAD
 		pr_warn("%pOF: failed to remove direct window property: %d\n",
+=======
+		pr_warning("%pOF: failed to remove direct window property: %d\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			np, ret);
 }
 
@@ -1231,7 +1337,11 @@ static int dma_set_mask_pSeriesLP(struct device *dev, u64 dma_mask)
 			if (dma_offset != 0) {
 				dev_info(dev, "Using 64-bit direct DMA at offset %llx\n", dma_offset);
 				set_dma_offset(dev, dma_offset);
+<<<<<<< HEAD
 				set_dma_ops(dev, &dma_nommu_ops);
+=======
+				set_dma_ops(dev, &dma_direct_ops);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				ddw_enabled = true;
 			}
 		}

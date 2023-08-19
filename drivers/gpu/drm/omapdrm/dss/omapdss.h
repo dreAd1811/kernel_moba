@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2016 Texas Instruments Incorporated - http://www.ti.com/
+=======
+ * Copyright (C) 2016 Texas Instruments
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -59,11 +63,15 @@
 #define DISPC_IRQ_ACBIAS_COUNT_STAT3	(1 << 29)
 #define DISPC_IRQ_FRAMEDONE3		(1 << 30)
 
+<<<<<<< HEAD
 struct dss_device;
 struct omap_drm_private;
 struct omap_dss_device;
 struct dispc_device;
 struct dss_device;
+=======
+struct omap_dss_device;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dss_lcd_mgr_config;
 struct snd_aes_iec958;
 struct snd_cea_861_aud_if;
@@ -163,6 +171,24 @@ enum omap_overlay_caps {
 	OMAP_DSS_OVL_CAP_REPLICATION = 1 << 5,
 };
 
+<<<<<<< HEAD
+=======
+enum omap_dss_clk_source {
+	OMAP_DSS_CLK_SRC_FCK = 0,		/* OMAP2/3: DSS1_ALWON_FCLK
+						 * OMAP4: DSS_FCLK */
+	OMAP_DSS_CLK_SRC_DSI_PLL_HSDIV_DISPC,	/* OMAP3: DSI1_PLL_FCLK
+						 * OMAP4: PLL1_CLK1 */
+	OMAP_DSS_CLK_SRC_DSI_PLL_HSDIV_DSI,	/* OMAP3: DSI2_PLL_FCLK
+						 * OMAP4: PLL1_CLK2 */
+	OMAP_DSS_CLK_SRC_DSI2_PLL_HSDIV_DISPC,	/* OMAP4: PLL2_CLK1 */
+	OMAP_DSS_CLK_SRC_DSI2_PLL_HSDIV_DSI,	/* OMAP4: PLL2_CLK2 */
+};
+
+enum omap_hdmi_flags {
+	OMAP_HDMI_SDA_SCL_EXTERNAL_PULLUP = 1 << 0,
+};
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 enum omap_dss_output_id {
 	OMAP_DSS_OUTPUT_DPI	= 1 << 0,
 	OMAP_DSS_OUTPUT_DBI	= 1 << 1,
@@ -187,8 +213,13 @@ enum omap_dss_dsi_trans_mode {
 struct omap_dss_dsi_videomode_timings {
 	unsigned long hsclk;
 
+<<<<<<< HEAD
 	unsigned int ndl;
 	unsigned int bitspp;
+=======
+	unsigned ndl;
+	unsigned bitspp;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* pixels */
 	u16 hact;
@@ -384,7 +415,10 @@ struct omapdss_hdmi_ops {
 			    struct videomode *vm);
 
 	int (*read_edid)(struct omap_dss_device *dssdev, u8 *buf, int len);
+<<<<<<< HEAD
 	void (*lost_hotplug)(struct omap_dss_device *dssdev);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	bool (*detect)(struct omap_dss_device *dssdev);
 
 	int (*register_hpd_cb)(struct omap_dss_device *dssdev,
@@ -552,8 +586,11 @@ struct omap_dss_driver {
 			    struct videomode *vm);
 	void (*get_timings)(struct omap_dss_device *dssdev,
 			    struct videomode *vm);
+<<<<<<< HEAD
 	void (*get_size)(struct omap_dss_device *dssdev,
 			 unsigned int *width, unsigned int *height);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	int (*set_wss)(struct omap_dss_device *dssdev, u32 wss);
 	u32 (*get_wss)(struct omap_dss_device *dssdev);
@@ -574,12 +611,19 @@ struct omap_dss_driver {
 		const struct hdmi_avi_infoframe *avi);
 };
 
+<<<<<<< HEAD
 struct dss_device *omapdss_get_dss(void);
 void omapdss_set_dss(struct dss_device *dss);
 static inline bool omapdss_is_initialized(void)
 {
 	return !!omapdss_get_dss();
 }
+=======
+bool omapdss_is_initialized(void);
+
+int omap_dss_register_driver(struct omap_dss_driver *);
+void omap_dss_unregister_driver(struct omap_dss_driver *);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int omapdss_register_display(struct omap_dss_device *dssdev);
 void omapdss_unregister_display(struct omap_dss_device *dssdev);
@@ -588,6 +632,12 @@ struct omap_dss_device *omap_dss_get_device(struct omap_dss_device *dssdev);
 void omap_dss_put_device(struct omap_dss_device *dssdev);
 #define for_each_dss_dev(d) while ((d = omap_dss_get_next_device(d)) != NULL)
 struct omap_dss_device *omap_dss_get_next_device(struct omap_dss_device *from);
+<<<<<<< HEAD
+=======
+struct omap_dss_device *omap_dss_find_device(void *data,
+		int (*match)(struct omap_dss_device *dssdev, void *data));
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 int omap_dss_get_num_overlay_managers(void);
 
@@ -603,6 +653,12 @@ int omapdss_output_unset_device(struct omap_dss_device *out);
 
 struct omap_dss_device *omapdss_find_output_from_display(struct omap_dss_device *dssdev);
 
+<<<<<<< HEAD
+=======
+void omapdss_default_get_timings(struct omap_dss_device *dssdev,
+				 struct videomode *vm);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 typedef void (*omap_dispc_isr_t) (void *arg, u32 mask);
 int omap_dispc_register_isr(omap_dispc_isr_t isr, void *arg, u32 mask);
 int omap_dispc_unregister_isr(omap_dispc_isr_t isr, void *arg, u32 mask);
@@ -623,6 +679,7 @@ static inline bool omapdss_device_is_enabled(struct omap_dss_device *dssdev)
 struct omap_dss_device *
 omapdss_of_find_source_for_first_ep(struct device_node *node);
 
+<<<<<<< HEAD
 struct device_node *dss_of_port_get_parent_device(struct device_node *port);
 u32 dss_of_port_get_port_number(struct device_node *port);
 
@@ -683,11 +740,55 @@ void dss_mgr_start_update(struct omap_dss_device *dssdev);
 int dss_mgr_register_framedone_handler(struct omap_dss_device *dssdev,
 		void (*handler)(void *), void *data);
 void dss_mgr_unregister_framedone_handler(struct omap_dss_device *dssdev,
+=======
+void omapdss_set_is_initialized(bool set);
+
+struct device_node *dss_of_port_get_parent_device(struct device_node *port);
+u32 dss_of_port_get_port_number(struct device_node *port);
+
+struct dss_mgr_ops {
+	int (*connect)(enum omap_channel channel,
+		struct omap_dss_device *dst);
+	void (*disconnect)(enum omap_channel channel,
+		struct omap_dss_device *dst);
+
+	void (*start_update)(enum omap_channel channel);
+	int (*enable)(enum omap_channel channel);
+	void (*disable)(enum omap_channel channel);
+	void (*set_timings)(enum omap_channel channel,
+			const struct videomode *vm);
+	void (*set_lcd_config)(enum omap_channel channel,
+			const struct dss_lcd_mgr_config *config);
+	int (*register_framedone_handler)(enum omap_channel channel,
+			void (*handler)(void *), void *data);
+	void (*unregister_framedone_handler)(enum omap_channel channel,
+			void (*handler)(void *), void *data);
+};
+
+int dss_install_mgr_ops(const struct dss_mgr_ops *mgr_ops);
+void dss_uninstall_mgr_ops(void);
+
+int dss_mgr_connect(enum omap_channel channel,
+		struct omap_dss_device *dst);
+void dss_mgr_disconnect(enum omap_channel channel,
+		struct omap_dss_device *dst);
+void dss_mgr_set_timings(enum omap_channel channel,
+		const struct videomode *vm);
+void dss_mgr_set_lcd_config(enum omap_channel channel,
+		const struct dss_lcd_mgr_config *config);
+int dss_mgr_enable(enum omap_channel channel);
+void dss_mgr_disable(enum omap_channel channel);
+void dss_mgr_start_update(enum omap_channel channel);
+int dss_mgr_register_framedone_handler(enum omap_channel channel,
+		void (*handler)(void *), void *data);
+void dss_mgr_unregister_framedone_handler(enum omap_channel channel,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		void (*handler)(void *), void *data);
 
 /* dispc ops */
 
 struct dispc_ops {
+<<<<<<< HEAD
 	u32 (*read_irqstatus)(struct dispc_device *dispc);
 	void (*clear_irqstatus)(struct dispc_device *dispc, u32 mask);
 	void (*write_irqenable)(struct dispc_device *dispc, u32 mask);
@@ -756,6 +857,51 @@ struct dispc_ops {
 
 struct dispc_device *dispc_get_dispc(struct dss_device *dss);
 const struct dispc_ops *dispc_get_ops(struct dss_device *dss);
+=======
+	u32 (*read_irqstatus)(void);
+	void (*clear_irqstatus)(u32 mask);
+	void (*write_irqenable)(u32 mask);
+
+	int (*request_irq)(irq_handler_t handler, void *dev_id);
+	void (*free_irq)(void *dev_id);
+
+	int (*runtime_get)(void);
+	void (*runtime_put)(void);
+
+	int (*get_num_ovls)(void);
+	int (*get_num_mgrs)(void);
+
+	void (*mgr_enable)(enum omap_channel channel, bool enable);
+	bool (*mgr_is_enabled)(enum omap_channel channel);
+	u32 (*mgr_get_vsync_irq)(enum omap_channel channel);
+	u32 (*mgr_get_framedone_irq)(enum omap_channel channel);
+	u32 (*mgr_get_sync_lost_irq)(enum omap_channel channel);
+	bool (*mgr_go_busy)(enum omap_channel channel);
+	void (*mgr_go)(enum omap_channel channel);
+	void (*mgr_set_lcd_config)(enum omap_channel channel,
+			const struct dss_lcd_mgr_config *config);
+	void (*mgr_set_timings)(enum omap_channel channel,
+			const struct videomode *vm);
+	void (*mgr_setup)(enum omap_channel channel,
+			const struct omap_overlay_manager_info *info);
+	enum omap_dss_output_id (*mgr_get_supported_outputs)(enum omap_channel channel);
+	u32 (*mgr_gamma_size)(enum omap_channel channel);
+	void (*mgr_set_gamma)(enum omap_channel channel,
+		const struct drm_color_lut *lut,
+		unsigned int length);
+
+	int (*ovl_enable)(enum omap_plane_id plane, bool enable);
+	int (*ovl_setup)(enum omap_plane_id plane,
+			 const struct omap_overlay_info *oi,
+			const struct videomode *vm, bool mem_to_mem,
+			enum omap_channel channel);
+
+	const u32 *(*ovl_get_color_modes)(enum omap_plane_id plane);
+};
+
+void dispc_set_ops(const struct dispc_ops *o);
+const struct dispc_ops *dispc_get_ops(void);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 bool omapdss_component_is_display(struct device_node *node);
 bool omapdss_component_is_output(struct device_node *node);

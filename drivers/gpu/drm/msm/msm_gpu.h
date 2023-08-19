@@ -27,14 +27,21 @@
 
 struct msm_gem_submit;
 struct msm_gpu_perfcntr;
+<<<<<<< HEAD
 struct msm_gpu_state;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct msm_gpu_config {
 	const char *ioname;
 	const char *irqname;
 	uint64_t va_start;
 	uint64_t va_end;
+<<<<<<< HEAD
 	unsigned int nr_rings;
+=======
+	unsigned int ringsz;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* So far, with hardware that I've seen to date, we can have:
@@ -58,6 +65,7 @@ struct msm_gpu_funcs {
 	int (*pm_resume)(struct msm_gpu *gpu);
 	void (*submit)(struct msm_gpu *gpu, struct msm_gem_submit *submit,
 			struct msm_file_private *ctx);
+<<<<<<< HEAD
 	void (*flush)(struct msm_gpu *gpu, struct msm_ringbuffer *ring);
 	irqreturn_t (*irq)(struct msm_gpu *irq);
 	struct msm_ringbuffer *(*active_ring)(struct msm_gpu *gpu);
@@ -73,6 +81,17 @@ struct msm_gpu_funcs {
 	int (*gpu_busy)(struct msm_gpu *gpu, uint64_t *value);
 	struct msm_gpu_state *(*gpu_state_get)(struct msm_gpu *gpu);
 	int (*gpu_state_put)(struct msm_gpu_state *state);
+=======
+	void (*flush)(struct msm_gpu *gpu);
+	irqreturn_t (*irq)(struct msm_gpu *irq);
+	uint32_t (*last_fence)(struct msm_gpu *gpu);
+	void (*recover)(struct msm_gpu *gpu);
+	void (*destroy)(struct msm_gpu *gpu);
+#ifdef CONFIG_DEBUG_FS
+	/* show GPU status in debugfs: */
+	void (*show)(struct msm_gpu *gpu, struct seq_file *m);
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct msm_gpu {
@@ -93,12 +112,24 @@ struct msm_gpu {
 	const struct msm_gpu_perfcntr *perfcntrs;
 	uint32_t num_perfcntrs;
 
+<<<<<<< HEAD
 	struct msm_ringbuffer *rb[MSM_GPU_MAX_RINGS];
 	int nr_rings;
+=======
+	/* ringbuffer: */
+	struct msm_ringbuffer *rb;
+	uint64_t rb_iova;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* list of GEM active objects: */
 	struct list_head active_list;
 
+<<<<<<< HEAD
+=======
+	/* fencing: */
+	struct msm_fence_context *fctx;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* does gpu need hw_init? */
 	bool needs_hw_init;
 
@@ -112,10 +143,22 @@ struct msm_gpu {
 
 	/* Power Control: */
 	struct regulator *gpu_reg, *gpu_cx;
+<<<<<<< HEAD
 	struct clk_bulk_data *grp_clks;
 	int nr_clocks;
 	struct clk *ebi1_clk, *core_clk, *rbbmtimer_clk;
 	uint32_t fast_rate;
+=======
+	struct clk **grp_clks;
+	int nr_clocks;
+	struct clk *ebi1_clk, *core_clk, *rbbmtimer_clk;
+	uint32_t fast_rate, bus_freq;
+
+#ifdef DOWNSTREAM_CONFIG_MSM_BUS_SCALING
+	struct msm_bus_scale_pdata *bus_scale_table;
+	uint32_t bsc;
+#endif
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/* Hang and Inactivity Detection:
 	 */
@@ -124,6 +167,7 @@ struct msm_gpu {
 #define DRM_MSM_HANGCHECK_PERIOD 500 /* in ms */
 #define DRM_MSM_HANGCHECK_JIFFIES msecs_to_jiffies(DRM_MSM_HANGCHECK_PERIOD)
 	struct timer_list hangcheck_timer;
+<<<<<<< HEAD
 	struct work_struct recover_work;
 
 	struct drm_gem_object *memptrs_bo;
@@ -157,6 +201,17 @@ static inline bool msm_gpu_active(struct msm_gpu *gpu)
 	}
 
 	return false;
+=======
+	uint32_t hangcheck_fence;
+	struct work_struct recover_work;
+
+	struct list_head submit_list;
+};
+
+static inline bool msm_gpu_active(struct msm_gpu *gpu)
+{
+	return gpu->fctx->last_fence > gpu->funcs->last_fence(gpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* Perf-Counters:
@@ -172,6 +227,7 @@ struct msm_gpu_perfcntr {
 	const char *name;
 };
 
+<<<<<<< HEAD
 struct msm_gpu_submitqueue {
 	int id;
 	u32 flags;
@@ -213,6 +269,8 @@ struct msm_gpu_state {
 	struct msm_gpu_state_bo *bos;
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static inline void gpu_write(struct msm_gpu *gpu, u32 reg, u32 data)
 {
 	msm_writel(data, gpu->mmio + (reg << 2));
@@ -286,6 +344,7 @@ struct msm_gpu *adreno_load_gpu(struct drm_device *dev);
 void __init adreno_register(void);
 void __exit adreno_unregister(void);
 
+<<<<<<< HEAD
 static inline void msm_submitqueue_put(struct msm_gpu_submitqueue *queue)
 {
 	if (queue)
@@ -320,4 +379,6 @@ static inline void msm_gpu_crashstate_put(struct msm_gpu *gpu)
 	mutex_unlock(&gpu->dev->struct_mutex);
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif /* __MSM_GPU_H__ */

@@ -34,4 +34,21 @@
 
 #include <soc/tegra/fuse.h>
 #include <soc/tegra/pmc.h>
+<<<<<<< HEAD
+=======
+
+#ifndef ioread32_native
+#ifdef __BIG_ENDIAN
+#define ioread16_native ioread16be
+#define iowrite16_native iowrite16be
+#define ioread32_native  ioread32be
+#define iowrite32_native iowrite32be
+#else /* def __BIG_ENDIAN */
+#define ioread16_native ioread16
+#define iowrite16_native iowrite16
+#define ioread32_native  ioread32
+#define iowrite32_native iowrite32
+#endif /* def __BIG_ENDIAN else */
+#endif /* !ioread32_native */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

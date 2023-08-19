@@ -1,10 +1,18 @@
 /*
  * DMM IOMMU driver support functions for TI OMAP processors.
  *
+<<<<<<< HEAD
  * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
  * Author: Rob Clark <rob@ti.com>
  *         Andy Gross <andy.gross@ti.com>
  *
+=======
+ * Author: Rob Clark <rob@ti.com>
+ *         Andy Gross <andy.gross@ti.com>
+ *
+ * Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+ *
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation version 2.
@@ -58,11 +66,19 @@ static DEFINE_SPINLOCK(list_lock);
 	}
 
 static const struct {
+<<<<<<< HEAD
 	u32 x_shft;	/* unused X-bits (as part of bpp) */
 	u32 y_shft;	/* unused Y-bits (as part of bpp) */
 	u32 cpp;		/* bytes/chars per pixel */
 	u32 slot_w;	/* width of each slot (in pixels) */
 	u32 slot_h;	/* height of each slot (in pixels) */
+=======
+	uint32_t x_shft;	/* unused X-bits (as part of bpp) */
+	uint32_t y_shft;	/* unused Y-bits (as part of bpp) */
+	uint32_t cpp;		/* bytes/chars per pixel */
+	uint32_t slot_w;	/* width of each slot (in pixels) */
+	uint32_t slot_h;	/* height of each slot (in pixels) */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 } geom[TILFMT_NFORMATS] = {
 	[TILFMT_8BIT]  = GEOM(0, 0, 1),
 	[TILFMT_16BIT] = GEOM(0, 1, 2),
@@ -72,7 +88,11 @@ static const struct {
 
 
 /* lookup table for registers w/ per-engine instances */
+<<<<<<< HEAD
 static const u32 reg[][4] = {
+=======
+static const uint32_t reg[][4] = {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	[PAT_STATUS] = {DMM_PAT_STATUS__0, DMM_PAT_STATUS__1,
 			DMM_PAT_STATUS__2, DMM_PAT_STATUS__3},
 	[PAT_DESCR]  = {DMM_PAT_DESCR__0, DMM_PAT_DESCR__1,
@@ -111,31 +131,48 @@ static void *alloc_dma(struct dmm_txn *txn, size_t sz, dma_addr_t *pa)
 }
 
 /* check status and spin until wait_mask comes true */
+<<<<<<< HEAD
 static int wait_status(struct refill_engine *engine, u32 wait_mask)
 {
 	struct dmm *dmm = engine->dmm;
 	u32 r = 0, err, i;
+=======
+static int wait_status(struct refill_engine *engine, uint32_t wait_mask)
+{
+	struct dmm *dmm = engine->dmm;
+	uint32_t r = 0, err, i;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	i = DMM_FIXED_RETRY_COUNT;
 	while (true) {
 		r = dmm_read(dmm, reg[PAT_STATUS][engine->id]);
 		err = r & DMM_PATSTATUS_ERR;
+<<<<<<< HEAD
 		if (err) {
 			dev_err(dmm->dev,
 				"%s: error (engine%d). PAT_STATUS: 0x%08x\n",
 				__func__, engine->id, r);
 			return -EFAULT;
 		}
+=======
+		if (err)
+			return -EFAULT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		if ((r & wait_mask) == wait_mask)
 			break;
 
+<<<<<<< HEAD
 		if (--i == 0) {
 			dev_err(dmm->dev,
 				"%s: timeout (engine%d). PAT_STATUS: 0x%08x\n",
 				__func__, engine->id, r);
 			return -ETIMEDOUT;
 		}
+=======
+		if (--i == 0)
+			return -ETIMEDOUT;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		udelay(1);
 	}
@@ -158,18 +195,25 @@ static void release_engine(struct refill_engine *engine)
 static irqreturn_t omap_dmm_irq_handler(int irq, void *arg)
 {
 	struct dmm *dmm = arg;
+<<<<<<< HEAD
 	u32 status = dmm_read(dmm, DMM_PAT_IRQSTATUS);
+=======
+	uint32_t status = dmm_read(dmm, DMM_PAT_IRQSTATUS);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i;
 
 	/* ack IRQ */
 	dmm_write(dmm, status, DMM_PAT_IRQSTATUS);
 
 	for (i = 0; i < dmm->num_engines; i++) {
+<<<<<<< HEAD
 		if (status & DMM_IRQSTAT_ERR_MASK)
 			dev_err(dmm->dev,
 				"irq error(engine%d): IRQSTAT 0x%02x\n",
 				i, status & 0xff);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (status & DMM_IRQSTAT_LST) {
 			if (dmm->engines[i].async)
 				release_engine(&dmm->engines[i]);
@@ -226,10 +270,17 @@ static struct dmm_txn *dmm_txn_init(struct dmm *dmm, struct tcm *tcm)
  * corresponding slot is cleared (ie. dummy_pa is programmed)
  */
 static void dmm_txn_append(struct dmm_txn *txn, struct pat_area *area,
+<<<<<<< HEAD
 		struct page **pages, u32 npages, u32 roll)
 {
 	dma_addr_t pat_pa = 0, data_pa = 0;
 	u32 *data;
+=======
+		struct page **pages, uint32_t npages, uint32_t roll)
+{
+	dma_addr_t pat_pa = 0, data_pa = 0;
+	uint32_t *data;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct pat *pat;
 	struct refill_engine *engine = txn->engine_handle;
 	int columns = (1 + area->x1 - area->x0);
@@ -239,7 +290,11 @@ static void dmm_txn_append(struct dmm_txn *txn, struct pat_area *area,
 	pat = alloc_dma(txn, sizeof(*pat), &pat_pa);
 
 	if (txn->last_pat)
+<<<<<<< HEAD
 		txn->last_pat->next_pa = (u32)pat_pa;
+=======
+		txn->last_pat->next_pa = (uint32_t)pat_pa;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	pat->area = *area;
 
@@ -341,7 +396,11 @@ cleanup:
  * DMM programming
  */
 static int fill(struct tcm_area *area, struct page **pages,
+<<<<<<< HEAD
 		u32 npages, u32 roll, bool wait)
+=======
+		uint32_t npages, uint32_t roll, bool wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret = 0;
 	struct tcm_area slice, area_s;
@@ -389,7 +448,11 @@ static int fill(struct tcm_area *area, struct page **pages,
 /* note: slots for which pages[i] == NULL are filled w/ dummy page
  */
 int tiler_pin(struct tiler_block *block, struct page **pages,
+<<<<<<< HEAD
 		u32 npages, u32 roll, bool wait)
+=======
+		uint32_t npages, uint32_t roll, bool wait)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	int ret;
 
@@ -409,8 +472,13 @@ int tiler_unpin(struct tiler_block *block)
 /*
  * Reserve/release
  */
+<<<<<<< HEAD
 struct tiler_block *tiler_reserve_2d(enum tiler_fmt fmt, u16 w,
 		u16 h, u16 align)
+=======
+struct tiler_block *tiler_reserve_2d(enum tiler_fmt fmt, uint16_t w,
+		uint16_t h, uint16_t align)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tiler_block *block;
 	u32 min_align = 128;
@@ -557,8 +625,13 @@ dma_addr_t tiler_ssptr(struct tiler_block *block)
 			block->area.p0.y * geom[block->fmt].slot_h);
 }
 
+<<<<<<< HEAD
 dma_addr_t tiler_tsptr(struct tiler_block *block, u32 orient,
 		u32 x, u32 y)
+=======
+dma_addr_t tiler_tsptr(struct tiler_block *block, uint32_t orient,
+		uint32_t x, uint32_t y)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct tcm_pt *p = &block->area.p0;
 	BUG_ON(!validfmt(block->fmt));
@@ -568,14 +641,22 @@ dma_addr_t tiler_tsptr(struct tiler_block *block, u32 orient,
 			(p->y * geom[block->fmt].slot_h) + y);
 }
 
+<<<<<<< HEAD
 void tiler_align(enum tiler_fmt fmt, u16 *w, u16 *h)
+=======
+void tiler_align(enum tiler_fmt fmt, uint16_t *w, uint16_t *h)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	BUG_ON(!validfmt(fmt));
 	*w = round_up(*w, geom[fmt].slot_w);
 	*h = round_up(*h, geom[fmt].slot_h);
 }
 
+<<<<<<< HEAD
 u32 tiler_stride(enum tiler_fmt fmt, u32 orient)
+=======
+uint32_t tiler_stride(enum tiler_fmt fmt, uint32_t orient)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	BUG_ON(!validfmt(fmt));
 
@@ -585,19 +666,31 @@ u32 tiler_stride(enum tiler_fmt fmt, u32 orient)
 		return 1 << (CONT_WIDTH_BITS + geom[fmt].y_shft);
 }
 
+<<<<<<< HEAD
 size_t tiler_size(enum tiler_fmt fmt, u16 w, u16 h)
+=======
+size_t tiler_size(enum tiler_fmt fmt, uint16_t w, uint16_t h)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	tiler_align(fmt, &w, &h);
 	return geom[fmt].cpp * w * h;
 }
 
+<<<<<<< HEAD
 size_t tiler_vsize(enum tiler_fmt fmt, u16 w, u16 h)
+=======
+size_t tiler_vsize(enum tiler_fmt fmt, uint16_t w, uint16_t h)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	BUG_ON(!validfmt(fmt));
 	return round_up(geom[fmt].cpp * w, PAGE_SIZE) * h;
 }
 
+<<<<<<< HEAD
 u32 tiler_get_cpu_cache_flags(void)
+=======
+uint32_t tiler_get_cpu_cache_flags(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	return omap_dmm->plat_data->cpu_cache_flags;
 }
@@ -951,8 +1044,13 @@ int tiler_map_show(struct seq_file *s, void *arg)
 	h_adj = omap_dmm->container_height / ydiv;
 	w_adj = omap_dmm->container_width / xdiv;
 
+<<<<<<< HEAD
 	map = kmalloc_array(h_adj, sizeof(*map), GFP_KERNEL);
 	global_map = kmalloc_array(w_adj + 1, h_adj, GFP_KERNEL);
+=======
+	map = kmalloc(h_adj * sizeof(*map), GFP_KERNEL);
+	global_map = kmalloc((w_adj + 1) * h_adj, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!map || !global_map)
 		goto error;

@@ -33,7 +33,10 @@ enum {
 	DE_GRAPHICS2 = BIT(2), /* used only in DP500 */
 	DE_VIDEO2 = BIT(3),
 	DE_SMART = BIT(4),
+<<<<<<< HEAD
 	SE_MEMWRITE = BIT(5),
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct malidp_format_id {
@@ -53,15 +56,22 @@ struct malidp_format_id {
 struct malidp_irq_map {
 	u32 irq_mask;		/* mask of IRQs that can be enabled in the block */
 	u32 vsync_irq;		/* IRQ bit used for signaling during VSYNC */
+<<<<<<< HEAD
 	u32 err_mask;		/* mask of bits that represent errors */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct malidp_layer {
 	u16 id;			/* layer ID */
 	u16 base;		/* address offset for the register bank */
 	u16 ptr;		/* address offset for the pointer register */
+<<<<<<< HEAD
 	u16 stride_offset;	/* offset to the first stride register. */
 	s16 yuv2rgb_offset;	/* offset to the YUV->RGB matrix entries */
+=======
+	u16 stride_offset;	/* Offset to the first stride register. */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 enum malidp_scaling_coeff_set {
@@ -123,6 +133,7 @@ struct malidp_hw_regmap {
 /* Unlike DP550/650, DP500 has 3 stride registers in its video layer. */
 #define MALIDP_DEVICE_LV_HAS_3_STRIDES	BIT(0)
 
+<<<<<<< HEAD
 struct malidp_hw_device;
 
 /*
@@ -131,6 +142,20 @@ struct malidp_hw_device;
  */
 struct malidp_hw {
 	const struct malidp_hw_regmap map;
+=======
+struct malidp_hw_device {
+	const struct malidp_hw_regmap map;
+	void __iomem *regs;
+
+	/* APB clock */
+	struct clk *pclk;
+	/* AXI clock */
+	struct clk *aclk;
+	/* main clock for display core */
+	struct clk *mclk;
+	/* pixel clock for display core */
+	struct clk *pxlclk;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Validate the driver instance against the hardware bits
@@ -153,6 +178,7 @@ struct malidp_hw {
 	bool (*in_config_mode)(struct malidp_hw_device *hwdev);
 
 	/*
+<<<<<<< HEAD
 	 * Set/clear configuration valid flag for hardware parameters that can
 	 * be changed outside the configuration mode to the given value.
 	 * Hardware will use the new settings when config valid is set,
@@ -160,6 +186,14 @@ struct malidp_hw {
 	 * any new values for those parameters if config valid flag is cleared
 	 */
 	void (*set_config_valid)(struct malidp_hw_device *hwdev, u8 value);
+=======
+	 * Set configuration valid flag for hardware parameters that can
+	 * be changed outside the configuration mode. Hardware will use
+	 * the new settings when config valid is set after the end of the
+	 * current buffer scanout
+	 */
+	void (*set_config_valid)(struct malidp_hw_device *hwdev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	/*
 	 * Set a new mode in hardware. Requires the hardware to be in
@@ -180,6 +214,7 @@ struct malidp_hw {
 	long (*se_calc_mclk)(struct malidp_hw_device *hwdev,
 			     struct malidp_se_config *se_config,
 			     struct videomode *vm);
+<<<<<<< HEAD
 	/*
 	 * Enable writing to memory the content of the next frame
 	 * @param hwdev - malidp_hw_device structure containing the HW description
@@ -200,6 +235,19 @@ struct malidp_hw {
 	void (*disable_memwrite)(struct malidp_hw_device *hwdev);
 
 	u8 features;
+=======
+
+	u8 features;
+
+	u8 min_line_size;
+	u16 max_line_size;
+
+	/* track the device PM state */
+	bool pm_suspended;
+
+	/* size of memory used for rotating layers, up to two banks available */
+	u32 rotation_memory[2];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 /* Supported variants of the hardware */
@@ -211,6 +259,7 @@ enum {
 	MALIDP_MAX_DEVICES
 };
 
+<<<<<<< HEAD
 extern const struct malidp_hw malidp_device[MALIDP_MAX_DEVICES];
 
 /*
@@ -242,6 +291,9 @@ struct malidp_hw_device {
 	/* size of memory used for rotating layers, up to two banks available */
 	u32 rotation_memory[2];
 };
+=======
+extern const struct malidp_hw_device malidp_device[MALIDP_MAX_DEVICES];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static inline u32 malidp_hw_read(struct malidp_hw_device *hwdev, u32 reg)
 {
@@ -279,9 +331,15 @@ static inline u32 malidp_get_block_base(struct malidp_hw_device *hwdev,
 {
 	switch (block) {
 	case MALIDP_SE_BLOCK:
+<<<<<<< HEAD
 		return hwdev->hw->map.se_base;
 	case MALIDP_DC_BLOCK:
 		return hwdev->hw->map.dc_base;
+=======
+		return hwdev->map.se_base;
+	case MALIDP_DC_BLOCK:
+		return hwdev->map.dc_base;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	return 0;
@@ -304,15 +362,22 @@ static inline void malidp_hw_enable_irq(struct malidp_hw_device *hwdev,
 }
 
 int malidp_de_irq_init(struct drm_device *drm, int irq);
+<<<<<<< HEAD
 void malidp_se_irq_hw_init(struct malidp_hw_device *hwdev);
 void malidp_de_irq_hw_init(struct malidp_hw_device *hwdev);
 void malidp_de_irq_fini(struct malidp_hw_device *hwdev);
 int malidp_se_irq_init(struct drm_device *drm, int irq);
 void malidp_se_irq_fini(struct malidp_hw_device *hwdev);
+=======
+void malidp_de_irq_fini(struct drm_device *drm);
+int malidp_se_irq_init(struct drm_device *drm, int irq);
+void malidp_se_irq_fini(struct drm_device *drm);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 u8 malidp_hw_get_format_id(const struct malidp_hw_regmap *map,
 			   u8 layer_id, u32 format);
 
+<<<<<<< HEAD
 static inline u8 malidp_hw_get_pitch_align(struct malidp_hw_device *hwdev, bool rotated)
 {
 	/*
@@ -323,6 +388,12 @@ static inline u8 malidp_hw_get_pitch_align(struct malidp_hw_device *hwdev, bool 
 		return 8;
 	else
 		return hwdev->hw->map.bus_align_bytes << (rotated ? 2 : 0);
+=======
+static inline bool malidp_hw_pitch_valid(struct malidp_hw_device *hwdev,
+					 unsigned int pitch)
+{
+	return !(pitch & (hwdev->map.bus_align_bytes - 1));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 /* U16.16 */
@@ -355,8 +426,13 @@ static inline void malidp_se_set_enh_coeffs(struct malidp_hw_device *hwdev)
 	};
 	u32 val = MALIDP_SE_SET_ENH_LIMIT_LOW(MALIDP_SE_ENH_LOW_LEVEL) |
 		  MALIDP_SE_SET_ENH_LIMIT_HIGH(MALIDP_SE_ENH_HIGH_LEVEL);
+<<<<<<< HEAD
 	u32 image_enh = hwdev->hw->map.se_base +
 			((hwdev->hw->map.features & MALIDP_REGMAP_HAS_CLEARIRQ) ?
+=======
+	u32 image_enh = hwdev->map.se_base +
+			((hwdev->map.features & MALIDP_REGMAP_HAS_CLEARIRQ) ?
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			 0x10 : 0xC) + MALIDP_SE_IMAGE_ENH;
 	u32 enh_coeffs = image_enh + MALIDP_SE_ENH_COEFF0;
 	int i;

@@ -1,5 +1,30 @@
+<<<<<<< HEAD
 /* SPDX-License-Identifier: GPL-2.0 */
 /* Copyright(c) 2007 - 2018 Intel Corporation. */
+=======
+/* Intel(R) Gigabit Ethernet Linux driver
+ * Copyright(c) 2007-2014 Intel Corporation.
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms and conditions of the GNU General Public License,
+ * version 2, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see <http://www.gnu.org/licenses/>.
+ *
+ * The full GNU General Public License is included in this distribution in
+ * the file called "COPYING".
+ *
+ * Contact Information:
+ * e1000-devel Mailing List <e1000-devel@lists.sourceforge.net>
+ * Intel Corporation, 5200 N.E. Elam Young Parkway, Hillsboro, OR 97124-6497
+ */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #ifndef _E1000_DEFINES_H_
 #define _E1000_DEFINES_H_
@@ -335,6 +360,7 @@
 #define E1000_RXPBS_CFG_TS_EN           0x80000000
 
 #define I210_RXPBSIZE_DEFAULT		0x000000A2 /* RXPBSIZE default */
+<<<<<<< HEAD
 #define I210_RXPBSIZE_MASK		0x0000003F
 #define I210_RXPBSIZE_PB_32KB		0x00000020
 #define I210_TXPBSIZE_DEFAULT		0x04000014 /* TXPBSIZE default */
@@ -347,6 +373,9 @@
 #define I210_DTXMXPKTSZ_DEFAULT		0x00000098
 
 #define I210_SR_QUEUES_NUM		2
+=======
+#define I210_TXPBSIZE_DEFAULT		0x04000014 /* TXPBSIZE default */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* SerDes Control */
 #define E1000_SCTL_DISABLE_SERDES_LOOPBACK 0x0400
@@ -472,8 +501,11 @@
  * manageability enabled, allowing us room for 15 multicast addresses.
  */
 #define E1000_RAH_AV  0x80000000        /* Receive descriptor valid */
+<<<<<<< HEAD
 #define E1000_RAH_ASEL_SRC_ADDR 0x00010000
 #define E1000_RAH_QSEL_ENABLE 0x10000000
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define E1000_RAL_MAC_ADDR_LEN 4
 #define E1000_RAH_MAC_ADDR_LEN 2
 #define E1000_RAH_POOL_MASK 0x03FC0000
@@ -1046,6 +1078,7 @@
 #define E1000_VLAPQF_P_VALID(_n)	(0x1 << (3 + (_n) * 4))
 #define E1000_VLAPQF_QUEUE_MASK	0x03
 
+<<<<<<< HEAD
 /* TX Qav Control fields */
 #define E1000_TQAVCTRL_XMIT_MODE	BIT(0)
 #define E1000_TQAVCTRL_DATAFETCHARB	BIT(4)
@@ -1074,4 +1107,6 @@
 /* Transmit Descriptor Control fields */
 #define E1000_TXDCTL_PRIORITY		BIT(27)
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

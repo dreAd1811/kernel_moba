@@ -67,7 +67,11 @@
 #define AUX_NATIVE_REPLY_NAK    (0x1 << 4)
 #define AUX_NATIVE_REPLY_DEFER  (0x2 << 4)
 
+<<<<<<< HEAD
 #define AUX_BURST_SIZE          20
+=======
+#define AUX_BURST_SIZE          16
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /* DPCD addresses */
 #define DPCD_REV			0x000
@@ -179,6 +183,9 @@ int intel_vgpu_init_display(struct intel_vgpu *vgpu, u64 resolution);
 void intel_vgpu_reset_display(struct intel_vgpu *vgpu);
 void intel_vgpu_clean_display(struct intel_vgpu *vgpu);
 
+<<<<<<< HEAD
 int pipe_is_enabled(struct intel_vgpu *vgpu, int pipe);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif

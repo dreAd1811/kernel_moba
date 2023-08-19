@@ -82,6 +82,7 @@ static u8 cor[MAXDEV] = {[0 ... (MAXDEV - 1)] = 0xff};
 static u8 bcr[MAXDEV] = {[0 ... (MAXDEV - 1)] = 0xff};
 static int indirect[MAXDEV] = {[0 ... (MAXDEV - 1)] = -1};
 
+<<<<<<< HEAD
 module_param_hw_array(port, ulong, ioport, NULL, 0444);
 MODULE_PARM_DESC(port, "I/O port number");
 
@@ -105,6 +106,31 @@ module_param_array(cor, byte, NULL, 0444);
 MODULE_PARM_DESC(cor, "Clockout register (default=0x00)");
 
 module_param_array(bcr, byte, NULL, 0444);
+=======
+module_param_hw_array(port, ulong, ioport, NULL, S_IRUGO);
+MODULE_PARM_DESC(port, "I/O port number");
+
+module_param_hw_array(mem, ulong, iomem, NULL, S_IRUGO);
+MODULE_PARM_DESC(mem, "I/O memory address");
+
+module_param_hw_array(indirect, int, ioport, NULL, S_IRUGO);
+MODULE_PARM_DESC(indirect, "Indirect access via address and data port");
+
+module_param_hw_array(irq, int, irq, NULL, S_IRUGO);
+MODULE_PARM_DESC(irq, "IRQ number");
+
+module_param_array(clk, int, NULL, S_IRUGO);
+MODULE_PARM_DESC(clk, "External oscillator clock frequency "
+		 "(default=16000000 [16 MHz])");
+
+module_param_array(cir, byte, NULL, S_IRUGO);
+MODULE_PARM_DESC(cir, "CPU interface register (default=0x40 [DSC])");
+
+module_param_array(cor, byte, NULL, S_IRUGO);
+MODULE_PARM_DESC(cor, "Clockout register (default=0x00)");
+
+module_param_array(bcr, byte, NULL, S_IRUGO);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 MODULE_PARM_DESC(bcr, "Bus configuration register (default=0x40 [CBY])");
 
 #define CC770_IOSIZE          0x20

@@ -254,9 +254,12 @@ static __init int fakelb_init_module(void)
 {
 	ieee802154fake_dev = platform_device_register_simple(
 			     "ieee802154fakelb", -1, NULL, 0);
+<<<<<<< HEAD
 
 	pr_warn("fakelb driver is marked as deprecated, please use mac802154_hwsim!\n");
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return platform_driver_register(&ieee802154fake_driver);
 }
 

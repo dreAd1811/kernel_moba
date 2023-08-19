@@ -21,21 +21,33 @@ unsigned long shm_align_mask = PAGE_SIZE - 1;	/* Sane caches */
 EXPORT_SYMBOL(shm_align_mask);
 
 /* gap between mmap and stack */
+<<<<<<< HEAD
 #define MIN_GAP		(128*1024*1024UL)
 #define MAX_GAP		((TASK_SIZE)/6*5)
 #define STACK_RND_MASK	(0x7ff >> (PAGE_SHIFT - 12))
 
 static int mmap_is_legacy(struct rlimit *rlim_stack)
+=======
+#define MIN_GAP (128*1024*1024UL)
+#define MAX_GAP ((TASK_SIZE)/6*5)
+
+static int mmap_is_legacy(void)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (current->personality & ADDR_COMPAT_LAYOUT)
 		return 1;
 
+<<<<<<< HEAD
 	if (rlim_stack->rlim_cur == RLIM_INFINITY)
+=======
+	if (rlimit(RLIMIT_STACK) == RLIM_INFINITY)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return 1;
 
 	return sysctl_legacy_va_layout;
 }
 
+<<<<<<< HEAD
 static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
 {
 	unsigned long gap = rlim_stack->rlim_cur;
@@ -48,6 +60,11 @@ static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
 	/* Values close to RLIM_INFINITY can overflow. */
 	if (gap + pad > gap)
 		gap += pad;
+=======
+static unsigned long mmap_base(unsigned long rnd)
+{
+	unsigned long gap = rlimit(RLIMIT_STACK);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (gap < MIN_GAP)
 		gap = MIN_GAP;
@@ -168,18 +185,30 @@ unsigned long arch_mmap_rnd(void)
 	return rnd << PAGE_SHIFT;
 }
 
+<<<<<<< HEAD
 void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
+=======
+void arch_pick_mmap_layout(struct mm_struct *mm)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	unsigned long random_factor = 0UL;
 
 	if (current->flags & PF_RANDOMIZE)
 		random_factor = arch_mmap_rnd();
 
+<<<<<<< HEAD
 	if (mmap_is_legacy(rlim_stack)) {
 		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
 		mm->get_unmapped_area = arch_get_unmapped_area;
 	} else {
 		mm->mmap_base = mmap_base(random_factor, rlim_stack);
+=======
+	if (mmap_is_legacy()) {
+		mm->mmap_base = TASK_UNMAPPED_BASE + random_factor;
+		mm->get_unmapped_area = arch_get_unmapped_area;
+	} else {
+		mm->mmap_base = mmap_base(random_factor);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mm->get_unmapped_area = arch_get_unmapped_area_topdown;
 	}
 }

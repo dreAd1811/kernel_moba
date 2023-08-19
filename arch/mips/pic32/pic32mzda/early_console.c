@@ -13,7 +13,10 @@
  */
 #include <asm/mach-pic32/pic32.h>
 #include <asm/fw/fw.h>
+<<<<<<< HEAD
 #include <asm/setup.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #include "pic32mzda.h"
 #include "early_pin.h"
@@ -158,7 +161,11 @@ void __init fw_init_early_console(char port)
 	setup_early_console(port, baud);
 }
 
+<<<<<<< HEAD
 void prom_putchar(char c)
+=======
+int prom_putchar(char c)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (console_port >= 0) {
 		while (__raw_readl(
@@ -167,4 +174,9 @@ void prom_putchar(char c)
 
 		__raw_writel(c, uart_base + U_TXR(console_port));
 	}
+<<<<<<< HEAD
+=======
+
+	return 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

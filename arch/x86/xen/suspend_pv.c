@@ -27,9 +27,14 @@ void xen_pv_pre_suspend(void)
 void xen_pv_post_suspend(int suspend_cancelled)
 {
 	xen_build_mfn_list_list();
+<<<<<<< HEAD
 	set_fixmap(FIX_PARAVIRT_BOOTMAP, xen_start_info->shared_info);
 	HYPERVISOR_shared_info = (void *)fix_to_virt(FIX_PARAVIRT_BOOTMAP);
 	xen_setup_mfn_list_list();
+=======
+
+	xen_setup_shared_info();
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (suspend_cancelled) {
 		xen_start_info->store_mfn =

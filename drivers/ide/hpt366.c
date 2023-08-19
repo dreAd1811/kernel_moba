@@ -574,14 +574,21 @@ static u8 hpt3xx_udma_filter(ide_drive_t *drive)
 		if (!HPT370_ALLOW_ATA100_5 ||
 		    check_in_drive_list(drive, bad_ata100_5))
 			return ATA_UDMA4;
+<<<<<<< HEAD
 		/* else: fall through */
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	case HPT372 :
 	case HPT372A:
 	case HPT372N:
 	case HPT374 :
 		if (ata_id_is_sata(drive->id))
 			mask &= ~0x0e;
+<<<<<<< HEAD
 		/* fall through */
+=======
+		/* Fall thru */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return mask;
 	}
@@ -601,7 +608,11 @@ static u8 hpt3xx_mdma_filter(ide_drive_t *drive)
 	case HPT374 :
 		if (ata_id_is_sata(drive->id))
 			return 0x00;
+<<<<<<< HEAD
 		/* else: fall through */
+=======
+		/* Fall thru */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	default:
 		return 0x07;
 	}
@@ -1456,7 +1467,11 @@ static int hpt366_init_one(struct pci_dev *dev, const struct pci_device_id *id)
 	if (info == &hpt36x || info == &hpt374)
 		dev2 = pci_get_slot(dev->bus, dev->devfn + 1);
 
+<<<<<<< HEAD
 	dyn_info = kcalloc(dev2 ? 2 : 1, sizeof(*dyn_info), GFP_KERNEL);
+=======
+	dyn_info = kzalloc(sizeof(*dyn_info) * (dev2 ? 2 : 1), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (dyn_info == NULL) {
 		printk(KERN_ERR "%s %s: out of memory!\n",
 			d.name, pci_name(dev));

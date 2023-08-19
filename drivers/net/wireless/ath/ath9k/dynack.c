@@ -300,9 +300,15 @@ void ath_dynack_node_init(struct ath_hw *ah, struct ath_node *an)
 
 	an->ackto = ackto;
 
+<<<<<<< HEAD
 	spin_lock(&da->qlock);
 	list_add_tail(&an->list, &da->nodes);
 	spin_unlock(&da->qlock);
+=======
+	spin_lock_bh(&da->qlock);
+	list_add_tail(&an->list, &da->nodes);
+	spin_unlock_bh(&da->qlock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ath_dynack_node_init);
 
@@ -316,9 +322,15 @@ void ath_dynack_node_deinit(struct ath_hw *ah, struct ath_node *an)
 {
 	struct ath_dynack *da = &ah->dynack;
 
+<<<<<<< HEAD
 	spin_lock(&da->qlock);
 	list_del(&an->list);
 	spin_unlock(&da->qlock);
+=======
+	spin_lock_bh(&da->qlock);
+	list_del(&an->list);
+	spin_unlock_bh(&da->qlock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL(ath_dynack_node_deinit);
 

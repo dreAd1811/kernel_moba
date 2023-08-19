@@ -7,16 +7,26 @@
 #include <linux/mm_types.h>
 #include <linux/scatterlist.h>
 #include <linux/dma-debug.h>
+<<<<<<< HEAD
 #include <linux/dma-mapping-fast.h>
 #include <linux/kref.h>
+=======
+#include <linux/kref.h>
+#include <linux/dma-mapping-fast.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define ARM_MAPPING_ERROR		(~(dma_addr_t)0x0)
 
 struct dma_iommu_mapping {
 	/* iommu specific data */
 	struct iommu_domain	*domain;
+<<<<<<< HEAD
 	const struct dma_map_ops *ops;
 
+=======
+	bool			init;
+	const struct dma_map_ops *ops;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	unsigned long		**bitmaps;	/* array of bitmaps */
 	unsigned int		nr_bitmaps;	/* nr of elements in array */
 	unsigned int		extensions;
@@ -26,8 +36,17 @@ struct dma_iommu_mapping {
 
 	spinlock_t		lock;
 	struct kref		kref;
+<<<<<<< HEAD
 };
 
+=======
+
+	struct dma_fast_smmu_mapping *fast;
+};
+
+#ifdef CONFIG_ARM_DMA_USE_IOMMU
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 struct dma_iommu_mapping *
 arm_iommu_create_mapping(struct bus_type *bus, dma_addr_t base, u64 size);
 
@@ -37,6 +56,33 @@ int arm_iommu_attach_device(struct device *dev,
 					struct dma_iommu_mapping *mapping);
 void arm_iommu_detach_device(struct device *dev);
 
+<<<<<<< HEAD
+=======
+#else  /* !CONFIG_ARM_DMA_USE_IOMMU */
+
+static inline struct dma_iommu_mapping *
+arm_iommu_create_mapping(struct bus_type *bus, dma_addr_t base, u64 size)
+{
+	return NULL;
+}
+
+static inline void arm_iommu_release_mapping(struct dma_iommu_mapping *mapping)
+{
+}
+
+static inline int arm_iommu_attach_device(struct device *dev,
+					struct dma_iommu_mapping *mapping)
+{
+	return -ENODEV;
+}
+
+static inline void arm_iommu_detach_device(struct device *dev)
+{
+}
+
+#endif  /* CONFIG_ARM_DMA_USE_IOMMU */
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int arm_dma_supported(struct device *dev, u64 mask);
 
 #endif /* __KERNEL__ */

@@ -392,6 +392,7 @@ static int ath10k_sdio_mbox_rx_process_packet(struct ath10k *ar,
 	struct ath10k_htc_hdr *htc_hdr = (struct ath10k_htc_hdr *)skb->data;
 	bool trailer_present = htc_hdr->flags & ATH10K_HTC_FLAG_TRAILER_PRESENT;
 	enum ath10k_htc_ep_id eid;
+<<<<<<< HEAD
 	u16 payload_len;
 	u8 *trailer;
 	int ret;
@@ -402,6 +403,13 @@ static int ath10k_sdio_mbox_rx_process_packet(struct ath10k *ar,
 	if (trailer_present) {
 		trailer = skb->data + sizeof(*htc_hdr) +
 			  payload_len - htc_hdr->trailer_len;
+=======
+	u8 *trailer;
+	int ret;
+
+	if (trailer_present) {
+		trailer = skb->data + skb->len - htc_hdr->trailer_len;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		eid = pipe_id_to_eid(htc_hdr->eid);
 
@@ -510,11 +518,19 @@ static int ath10k_sdio_mbox_alloc_pkt_bundle(struct ath10k *ar,
 
 	*bndl_cnt = FIELD_GET(ATH10K_HTC_FLAG_BUNDLE_MASK, htc_hdr->flags);
 
+<<<<<<< HEAD
 	if (*bndl_cnt > HTC_HOST_MAX_MSG_PER_RX_BUNDLE) {
 		ath10k_warn(ar,
 			    "HTC bundle length %u exceeds maximum %u\n",
 			    le16_to_cpu(htc_hdr->len),
 			    HTC_HOST_MAX_MSG_PER_RX_BUNDLE);
+=======
+	if (*bndl_cnt > HTC_HOST_MAX_MSG_PER_BUNDLE) {
+		ath10k_warn(ar,
+			    "HTC bundle length %u exceeds maximum %u\n",
+			    le16_to_cpu(htc_hdr->len),
+			    HTC_HOST_MAX_MSG_PER_BUNDLE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 	}
 
@@ -605,9 +621,12 @@ static int ath10k_sdio_mbox_rx_alloc(struct ath10k *ar,
 		 * ATH10K_HTC_FLAG_BUNDLE_MASK flag set, all bundled
 		 * packet skb's have been allocated in the previous step.
 		 */
+<<<<<<< HEAD
 		if (htc_hdr->flags & ATH10K_HTC_FLAGS_RECV_1MORE_BLOCK)
 			full_len += ATH10K_HIF_MBOX_BLOCK_SIZE;
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		ret = ath10k_sdio_mbox_alloc_rx_pkt(&ar_sdio->rx_pkts[i],
 						    act_len,
 						    full_len,
@@ -638,13 +657,40 @@ static int ath10k_sdio_mbox_rx_packet(struct ath10k *ar,
 {
 	struct ath10k_sdio *ar_sdio = ath10k_sdio_priv(ar);
 	struct sk_buff *skb = pkt->skb;
+<<<<<<< HEAD
+=======
+	struct ath10k_htc_hdr *htc_hdr;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret;
 
 	ret = ath10k_sdio_readsb(ar, ar_sdio->mbox_info.htc_addr,
 				 skb->data, pkt->alloc_len);
+<<<<<<< HEAD
 	pkt->status = ret;
 	if (!ret)
 		skb_put(skb, pkt->act_len);
+=======
+	if (ret)
+		goto out;
+
+	/* Update actual length. The original length may be incorrect,
+	 * as the FW will bundle multiple packets as long as their sizes
+	 * fit within the same aligned length (pkt->alloc_len).
+	 */
+	htc_hdr = (struct ath10k_htc_hdr *)skb->data;
+	pkt->act_len = le16_to_cpu(htc_hdr->len) + sizeof(*htc_hdr);
+	if (pkt->act_len > pkt->alloc_len) {
+		ath10k_warn(ar, "rx packet too large (%zu > %zu)\n",
+			    pkt->act_len, pkt->alloc_len);
+		ret = -EMSGSIZE;
+		goto out;
+	}
+
+	skb_put(skb, pkt->act_len);
+
+out:
+	pkt->status = ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return ret;
 }
@@ -1945,7 +1991,12 @@ static int ath10k_sdio_probe(struct sdio_func *func,
 	struct ath10k_sdio *ar_sdio;
 	struct ath10k *ar;
 	enum ath10k_hw_rev hw_rev;
+<<<<<<< HEAD
 	u32 chip_id, dev_id_base;
+=======
+	u32 dev_id_base;
+	struct ath10k_bus_params bus_params;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int ret, i;
 
 	/* Assumption: All SDIO based chipsets (so far) are QCA6174 based.
@@ -1971,14 +2022,20 @@ static int ath10k_sdio_probe(struct sdio_func *func,
 	ar_sdio = ath10k_sdio_priv(ar);
 
 	ar_sdio->irq_data.irq_proc_reg =
+<<<<<<< HEAD
 		devm_kzalloc(ar->dev, sizeof(struct ath10k_sdio_irq_proc_regs),
 			     GFP_KERNEL);
+=======
+		kzalloc(sizeof(struct ath10k_sdio_irq_proc_regs),
+			GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!ar_sdio->irq_data.irq_proc_reg) {
 		ret = -ENOMEM;
 		goto err_core_destroy;
 	}
 
 	ar_sdio->irq_data.irq_en_reg =
+<<<<<<< HEAD
 		devm_kzalloc(ar->dev, sizeof(struct ath10k_sdio_irq_enable_regs),
 			     GFP_KERNEL);
 	if (!ar_sdio->irq_data.irq_en_reg) {
@@ -1990,6 +2047,19 @@ static int ath10k_sdio_probe(struct sdio_func *func,
 	if (!ar_sdio->bmi_buf) {
 		ret = -ENOMEM;
 		goto err_core_destroy;
+=======
+		kzalloc(sizeof(struct ath10k_sdio_irq_enable_regs),
+			GFP_KERNEL);
+	if (!ar_sdio->irq_data.irq_en_reg) {
+		ret = -ENOMEM;
+		goto err_free_proc_reg;
+	}
+
+	ar_sdio->bmi_buf = kzalloc(BMI_MAX_CMDBUF_SIZE, GFP_KERNEL);
+	if (!ar_sdio->bmi_buf) {
+		ret = -ENOMEM;
+		goto err_free_en_reg;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ar_sdio->func = func;
@@ -2009,7 +2079,11 @@ static int ath10k_sdio_probe(struct sdio_func *func,
 	ar_sdio->workqueue = create_singlethread_workqueue("ath10k_sdio_wq");
 	if (!ar_sdio->workqueue) {
 		ret = -ENOMEM;
+<<<<<<< HEAD
 		goto err_core_destroy;
+=======
+		goto err_free_bmi_buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	for (i = 0; i < ATH10K_SDIO_BUS_REQUEST_MAX_NUM; i++)
@@ -2025,7 +2099,11 @@ static int ath10k_sdio_probe(struct sdio_func *func,
 		ret = -ENODEV;
 		ath10k_err(ar, "unsupported device id %u (0x%x)\n",
 			   dev_id_base, id->device);
+<<<<<<< HEAD
 		goto err_free_wq;
+=======
+		goto err_free_bmi_buf;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	ar->id.vendor = id->vendor;
@@ -2039,9 +2117,16 @@ static int ath10k_sdio_probe(struct sdio_func *func,
 		goto err_free_wq;
 	}
 
+<<<<<<< HEAD
 	/* TODO: don't know yet how to get chip_id with SDIO */
 	chip_id = 0;
 	ret = ath10k_core_register(ar, chip_id);
+=======
+	bus_params.dev_type = ATH10K_DEV_TYPE_HL;
+	/* TODO: don't know yet how to get chip_id with SDIO */
+	bus_params.chip_id = 0;
+	ret = ath10k_core_register(ar, &bus_params);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (ret) {
 		ath10k_err(ar, "failed to register driver core: %d\n", ret);
 		goto err_free_wq;
@@ -2054,6 +2139,15 @@ static int ath10k_sdio_probe(struct sdio_func *func,
 
 err_free_wq:
 	destroy_workqueue(ar_sdio->workqueue);
+<<<<<<< HEAD
+=======
+err_free_bmi_buf:
+	kfree(ar_sdio->bmi_buf);
+err_free_en_reg:
+	kfree(ar_sdio->irq_data.irq_en_reg);
+err_free_proc_reg:
+	kfree(ar_sdio->irq_data.irq_proc_reg);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 err_core_destroy:
 	ath10k_core_destroy(ar);
 

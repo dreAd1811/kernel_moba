@@ -490,7 +490,11 @@ static int bfusb_send_frame(struct hci_dev *hdev, struct sk_buff *skb)
 	count = skb->len;
 
 	/* Max HCI frame size seems to be 1511 + 1 */
+<<<<<<< HEAD
 	nskb = bt_skb_alloc(count + 32, GFP_KERNEL);
+=======
+	nskb = bt_skb_alloc(count + 32, GFP_ATOMIC);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!nskb) {
 		BT_ERR("Can't allocate memory for new packet");
 		return -ENOMEM;

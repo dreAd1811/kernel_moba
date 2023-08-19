@@ -1,6 +1,9 @@
 config HYPERV_NET
 	tristate "Microsoft Hyper-V virtual network driver"
 	depends on HYPERV
+<<<<<<< HEAD
 	select UCS2_STRING
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	help
 	  Select this option to enable the Hyper-V virtual network driver.

@@ -25,7 +25,11 @@
 
 #include <linux/types.h>
 #include <linux/list.h>
+<<<<<<< HEAD
 #include "kfd_crat.h"
+=======
+#include "kfd_priv.h"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #define KFD_TOPOLOGY_PUBLIC_NAME_SIZE 128
 
@@ -39,6 +43,7 @@
 #define HSA_CAP_WATCH_POINTS_SUPPORTED		0x00000080
 #define HSA_CAP_WATCH_POINTS_TOTALBITS_MASK	0x00000f00
 #define HSA_CAP_WATCH_POINTS_TOTALBITS_SHIFT	8
+<<<<<<< HEAD
 #define HSA_CAP_DOORBELL_TYPE_TOTALBITS_MASK	0x00003000
 #define HSA_CAP_DOORBELL_TYPE_TOTALBITS_SHIFT	12
 #define HSA_CAP_RESERVED			0xffffc000
@@ -47,6 +52,10 @@
 #define HSA_CAP_DOORBELL_TYPE_1_0		0x1
 #define HSA_CAP_DOORBELL_TYPE_2_0		0x2
 #define HSA_CAP_AQL_QUEUE_DOUBLE_MAP		0x00004000
+=======
+#define HSA_CAP_RESERVED			0xfffff000
+#define HSA_CAP_DOORBELL_PACKET_TYPE		0x00001000
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 struct kfd_node_properties {
 	uint32_t cpu_cores_count;
@@ -72,7 +81,10 @@ struct kfd_node_properties {
 	uint32_t location_id;
 	uint32_t max_engine_clk_fcompute;
 	uint32_t max_engine_clk_ccompute;
+<<<<<<< HEAD
 	int32_t  drm_render_minor;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	uint16_t marketing_name[KFD_TOPOLOGY_PUBLIC_NAME_SIZE];
 };
 
@@ -98,6 +110,11 @@ struct kfd_mem_properties {
 	struct attribute	attr;
 };
 
+<<<<<<< HEAD
+=======
+#define KFD_TOPOLOGY_CPU_SIBLINGS 256
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define HSA_CACHE_TYPE_DATA		0x00000001
 #define HSA_CACHE_TYPE_INSTRUCTION	0x00000002
 #define HSA_CACHE_TYPE_CPU		0x00000004
@@ -114,7 +131,11 @@ struct kfd_cache_properties {
 	uint32_t		cache_assoc;
 	uint32_t		cache_latency;
 	uint32_t		cache_type;
+<<<<<<< HEAD
 	uint8_t			sibling_map[CRAT_SIBLINGMAP_SIZE];
+=======
+	uint8_t			sibling_map[KFD_TOPOLOGY_CPU_SIBLINGS];
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kobject		*kobj;
 	struct attribute	attr;
 };
@@ -137,6 +158,7 @@ struct kfd_iolink_properties {
 	struct attribute	attr;
 };
 
+<<<<<<< HEAD
 struct kfd_perf_properties {
 	struct list_head	list;
 	char			block_name[16];
@@ -149,17 +171,28 @@ struct kfd_topology_device {
 	uint32_t			gpu_id;
 	uint32_t			proximity_domain;
 	struct kfd_node_properties	node_props;
+=======
+struct kfd_topology_device {
+	struct list_head		list;
+	uint32_t			gpu_id;
+	struct kfd_node_properties	node_props;
+	uint32_t			mem_bank_count;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct list_head		mem_props;
 	uint32_t			cache_count;
 	struct list_head		cache_props;
 	uint32_t			io_link_count;
 	struct list_head		io_link_props;
+<<<<<<< HEAD
 	struct list_head		perf_props;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct kfd_dev			*gpu;
 	struct kobject			*kobj_node;
 	struct kobject			*kobj_mem;
 	struct kobject			*kobj_cache;
 	struct kobject			*kobj_iolink;
+<<<<<<< HEAD
 	struct kobject			*kobj_perf;
 	struct attribute		attr_gpuid;
 	struct attribute		attr_name;
@@ -167,6 +200,11 @@ struct kfd_topology_device {
 	uint8_t				oem_id[CRAT_OEMID_LENGTH];
 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
 	uint32_t			oem_revision;
+=======
+	struct attribute		attr_gpuid;
+	struct attribute		attr_name;
+	struct attribute		attr_props;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 struct kfd_system_properties {
@@ -181,8 +219,12 @@ struct kfd_system_properties {
 	struct attribute	attr_props;
 };
 
+<<<<<<< HEAD
 struct kfd_topology_device *kfd_create_topology_device(
 		struct list_head *device_list);
 void kfd_release_topology_device_list(struct list_head *device_list);
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 #endif /* __KFD_TOPOLOGY_H__ */

@@ -70,6 +70,10 @@ int drm_agp_info(struct drm_device *dev, struct drm_agp_info *info)
 
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(drm_agp_info);
 
 int drm_agp_info_ioctl(struct drm_device *dev, void *data,
@@ -94,18 +98,30 @@ int drm_agp_info_ioctl(struct drm_device *dev, void *data,
  * Verifies the AGP device hasn't been acquired before and calls
  * \c agp_backend_acquire.
  */
+<<<<<<< HEAD
 int drm_agp_acquire(struct drm_device *dev)
+=======
+int drm_agp_acquire(struct drm_device * dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!dev->agp)
 		return -ENODEV;
 	if (dev->agp->acquired)
 		return -EBUSY;
+<<<<<<< HEAD
 	dev->agp->bridge = agp_backend_acquire(dev->pdev);
 	if (!dev->agp->bridge)
+=======
+	if (!(dev->agp->bridge = agp_backend_acquire(dev->pdev)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENODEV;
 	dev->agp->acquired = 1;
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(drm_agp_acquire);
 
 /**
@@ -134,7 +150,11 @@ int drm_agp_acquire_ioctl(struct drm_device *dev, void *data,
  *
  * Verifies the AGP device has been acquired and calls \c agp_backend_release.
  */
+<<<<<<< HEAD
 int drm_agp_release(struct drm_device *dev)
+=======
+int drm_agp_release(struct drm_device * dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!dev->agp || !dev->agp->acquired)
 		return -EINVAL;
@@ -160,7 +180,11 @@ int drm_agp_release_ioctl(struct drm_device *dev, void *data,
  * Verifies the AGP device has been acquired but not enabled, and calls
  * \c agp_enable.
  */
+<<<<<<< HEAD
 int drm_agp_enable(struct drm_device *dev, struct drm_agp_mode mode)
+=======
+int drm_agp_enable(struct drm_device * dev, struct drm_agp_mode mode)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	if (!dev->agp || !dev->agp->acquired)
 		return -EINVAL;
@@ -170,6 +194,10 @@ int drm_agp_enable(struct drm_device *dev, struct drm_agp_mode mode)
 	dev->agp->enabled = 1;
 	return 0;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 EXPORT_SYMBOL(drm_agp_enable);
 
 int drm_agp_enable_ioctl(struct drm_device *dev, void *data,
@@ -201,14 +229,22 @@ int drm_agp_alloc(struct drm_device *dev, struct drm_agp_buffer *request)
 
 	if (!dev->agp || !dev->agp->acquired)
 		return -EINVAL;
+<<<<<<< HEAD
 	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
 	if (!entry)
+=======
+	if (!(entry = kzalloc(sizeof(*entry), GFP_KERNEL)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -ENOMEM;
 
 	pages = (request->size + PAGE_SIZE - 1) / PAGE_SIZE;
 	type = (u32) request->type;
+<<<<<<< HEAD
 	memory = agp_allocate_memory(dev->agp->bridge, pages, type);
 	if (!memory) {
+=======
+	if (!(memory = agp_allocate_memory(dev->agp->bridge, pages, type))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		kfree(entry);
 		return -ENOMEM;
 	}
@@ -244,8 +280,13 @@ int drm_agp_alloc_ioctl(struct drm_device *dev, void *data,
  *
  * Walks through drm_agp_head::memory until finding a matching handle.
  */
+<<<<<<< HEAD
 static struct drm_agp_mem *drm_agp_lookup_entry(struct drm_device *dev,
 						unsigned long handle)
+=======
+static struct drm_agp_mem *drm_agp_lookup_entry(struct drm_device * dev,
+					   unsigned long handle)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct drm_agp_mem *entry;
 
@@ -275,8 +316,14 @@ int drm_agp_unbind(struct drm_device *dev, struct drm_agp_binding *request)
 
 	if (!dev->agp || !dev->agp->acquired)
 		return -EINVAL;
+<<<<<<< HEAD
 	entry = drm_agp_lookup_entry(dev, request->handle);
 	if (!entry || !entry->bound)
+=======
+	if (!(entry = drm_agp_lookup_entry(dev, request->handle)))
+		return -EINVAL;
+	if (!entry->bound)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	ret = drm_unbind_agp(entry->memory);
 	if (ret == 0)
@@ -315,12 +362,21 @@ int drm_agp_bind(struct drm_device *dev, struct drm_agp_binding *request)
 
 	if (!dev->agp || !dev->agp->acquired)
 		return -EINVAL;
+<<<<<<< HEAD
 	entry = drm_agp_lookup_entry(dev, request->handle);
 	if (!entry || entry->bound)
 		return -EINVAL;
 	page = (request->offset + PAGE_SIZE - 1) / PAGE_SIZE;
 	retcode = drm_bind_agp(entry->memory, page);
 	if (retcode)
+=======
+	if (!(entry = drm_agp_lookup_entry(dev, request->handle)))
+		return -EINVAL;
+	if (entry->bound)
+		return -EINVAL;
+	page = (request->offset + PAGE_SIZE - 1) / PAGE_SIZE;
+	if ((retcode = drm_bind_agp(entry->memory, page)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return retcode;
 	entry->bound = dev->agp->base + (page << PAGE_SHIFT);
 	DRM_DEBUG("base = 0x%lx entry->bound = 0x%lx\n",
@@ -358,8 +414,12 @@ int drm_agp_free(struct drm_device *dev, struct drm_agp_buffer *request)
 
 	if (!dev->agp || !dev->agp->acquired)
 		return -EINVAL;
+<<<<<<< HEAD
 	entry = drm_agp_lookup_entry(dev, request->handle);
 	if (!entry)
+=======
+	if (!(entry = drm_agp_lookup_entry(dev, request->handle)))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		return -EINVAL;
 	if (entry->bound)
 		drm_unbind_agp(entry->memory);
@@ -373,6 +433,10 @@ int drm_agp_free(struct drm_device *dev, struct drm_agp_buffer *request)
 EXPORT_SYMBOL(drm_agp_free);
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 int drm_agp_free_ioctl(struct drm_device *dev, void *data,
 		       struct drm_file *file_priv)
 {
@@ -397,6 +461,7 @@ struct drm_agp_head *drm_agp_init(struct drm_device *dev)
 {
 	struct drm_agp_head *head = NULL;
 
+<<<<<<< HEAD
 	head = kzalloc(sizeof(*head), GFP_KERNEL);
 	if (!head)
 		return NULL;
@@ -404,6 +469,13 @@ struct drm_agp_head *drm_agp_init(struct drm_device *dev)
 	if (!head->bridge) {
 		head->bridge = agp_backend_acquire(dev->pdev);
 		if (!head->bridge) {
+=======
+	if (!(head = kzalloc(sizeof(*head), GFP_KERNEL)))
+		return NULL;
+	head->bridge = agp_find_bridge(dev->pdev);
+	if (!head->bridge) {
+		if (!(head->bridge = agp_backend_acquire(dev->pdev))) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			kfree(head);
 			return NULL;
 		}

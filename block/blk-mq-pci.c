@@ -17,13 +17,19 @@
 #include <linux/pci.h>
 #include <linux/module.h>
 
+<<<<<<< HEAD
 #include "blk-mq.h"
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /**
  * blk_mq_pci_map_queues - provide a default queue mapping for PCI device
  * @set:	tagset to provide the mapping for
  * @pdev:	PCI device associated with @set.
+<<<<<<< HEAD
  * @offset:	Offset to use for the pci irq vector
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  *
  * This function assumes the PCI device @pdev has at least as many available
  * interrupt vectors as @set has queues.  It will then query the vector
@@ -31,14 +37,22 @@
  * that maps a queue to the CPUs that have irq affinity for the corresponding
  * vector.
  */
+<<<<<<< HEAD
 int blk_mq_pci_map_queues(struct blk_mq_tag_set *set, struct pci_dev *pdev,
 			    int offset)
+=======
+int blk_mq_pci_map_queues(struct blk_mq_tag_set *set, struct pci_dev *pdev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	const struct cpumask *mask;
 	unsigned int queue, cpu;
 
 	for (queue = 0; queue < set->nr_hw_queues; queue++) {
+<<<<<<< HEAD
 		mask = pci_irq_get_affinity(pdev, queue + offset);
+=======
+		mask = pci_irq_get_affinity(pdev, queue);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		if (!mask)
 			goto fallback;
 
@@ -50,7 +64,12 @@ int blk_mq_pci_map_queues(struct blk_mq_tag_set *set, struct pci_dev *pdev,
 
 fallback:
 	WARN_ON_ONCE(set->nr_hw_queues > 1);
+<<<<<<< HEAD
 	blk_mq_clear_mq_map(set);
+=======
+	for_each_possible_cpu(cpu)
+		set->mq_map[cpu] = 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return 0;
 }
 EXPORT_SYMBOL_GPL(blk_mq_pci_map_queues);

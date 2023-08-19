@@ -473,11 +473,19 @@ static int mthca_init_icm(struct mthca_dev *mdev,
 		goto err_unmap_eqp;
 	}
 
+<<<<<<< HEAD
 	mdev->cq_table.table = mthca_alloc_icm_table(mdev, init_hca->cqc_base,
 						     dev_lim->cqc_entry_sz,
 						     mdev->limits.num_cqs,
 						     mdev->limits.reserved_cqs,
 						     0, 0);
+=======
+       mdev->cq_table.table = mthca_alloc_icm_table(mdev, init_hca->cqc_base,
+						    dev_lim->cqc_entry_sz,
+						    mdev->limits.num_cqs,
+						    mdev->limits.reserved_cqs,
+						    0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!mdev->cq_table.table) {
 		mthca_err(mdev, "Failed to map CQ context memory, aborting.\n");
 		err = -ENOMEM;
@@ -986,7 +994,12 @@ static int __mthca_init_one(struct pci_dev *pdev, int hca_type)
 		goto err_free_dev;
 	}
 
+<<<<<<< HEAD
 	if (mthca_cmd_init(mdev)) {
+=======
+	err = mthca_cmd_init(mdev);
+	if (err) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		mthca_err(mdev, "Failed to init command interface, aborting.\n");
 		goto err_free_dev;
 	}

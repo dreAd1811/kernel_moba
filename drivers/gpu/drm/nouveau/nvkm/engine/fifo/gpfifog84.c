@@ -45,10 +45,17 @@ g84_fifo_gpfifo_new(struct nvkm_fifo *base, const struct nvkm_oclass *oclass,
 
 	nvif_ioctl(parent, "create channel gpfifo size %d\n", size);
 	if (!(ret = nvif_unpack(ret, &data, &size, args->v0, 0, 0, false))) {
+<<<<<<< HEAD
 		nvif_ioctl(parent, "create channel gpfifo vers %d vmm %llx "
 				   "pushbuf %llx ioffset %016llx "
 				   "ilength %08x\n",
 			   args->v0.version, args->v0.vmm, args->v0.pushbuf,
+=======
+		nvif_ioctl(parent, "create channel gpfifo vers %d vm %llx "
+				   "pushbuf %llx ioffset %016llx "
+				   "ilength %08x\n",
+			   args->v0.version, args->v0.vm, args->v0.pushbuf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   args->v0.ioffset, args->v0.ilength);
 		if (!args->v0.pushbuf)
 			return -EINVAL;
@@ -59,7 +66,11 @@ g84_fifo_gpfifo_new(struct nvkm_fifo *base, const struct nvkm_oclass *oclass,
 		return -ENOMEM;
 	*pobject = &chan->base.object;
 
+<<<<<<< HEAD
 	ret = g84_fifo_chan_ctor(fifo, args->v0.vmm, args->v0.pushbuf,
+=======
+	ret = g84_fifo_chan_ctor(fifo, args->v0.vm, args->v0.pushbuf,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				 oclass, chan);
 	if (ret)
 		return ret;

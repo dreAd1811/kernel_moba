@@ -69,7 +69,11 @@ BEGIN {
 
 	lprefix1_expr = "\\((66|!F3)\\)"
 	lprefix2_expr = "\\(F3\\)"
+<<<<<<< HEAD
 	lprefix3_expr = "\\((F2|!F3|66\\&F2)\\)"
+=======
+	lprefix3_expr = "\\((F2|!F3|66&F2)\\)"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	lprefix_expr = "\\((66|F2|F3)\\)"
 	max_lprefix = 4
 
@@ -257,7 +261,11 @@ function convert_operands(count,opnd,       i,j,imm,mod)
 	return add_flags(imm, mod)
 }
 
+<<<<<<< HEAD
 /^[0-9a-f]+\:/ {
+=======
+/^[0-9a-f]+:/ {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (NR == 1)
 		next
 	# get index

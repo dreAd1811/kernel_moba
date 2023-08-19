@@ -127,7 +127,10 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 	struct amdgpu_vm *vm;
 	uint64_t fence_ctx;
 	uint32_t status = 0, alloc_size;
+<<<<<<< HEAD
 	unsigned fence_flags = 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	unsigned i;
 	int r = 0;
@@ -139,8 +142,12 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 	/* ring tests don't use a job */
 	if (job) {
 		vm = job->vm;
+<<<<<<< HEAD
 		fence_ctx = job->base.s_fence ?
 			job->base.s_fence->scheduled.context : 0;
+=======
+		fence_ctx = job->fence_ctx;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		vm = NULL;
 		fence_ctx = 0;
@@ -151,7 +158,11 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 		return -EINVAL;
 	}
 
+<<<<<<< HEAD
 	if (vm && !job->vmid) {
+=======
+	if (vm && !job->vm_id) {
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		dev_err(adev->dev, "VM IB without ID\n");
 		return -EINVAL;
 	}
@@ -165,10 +176,15 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 		return r;
 	}
 
+<<<<<<< HEAD
 	need_ctx_switch = ring->current_ctx != fence_ctx;
 	if (ring->funcs->emit_pipeline_sync && job &&
 	    ((tmp = amdgpu_sync_get_fence(&job->sched_sync, NULL)) ||
 	     (amdgpu_sriov_vf(adev) && need_ctx_switch) ||
+=======
+	if (ring->funcs->emit_pipeline_sync && job &&
+	    ((tmp = amdgpu_sync_get_fence(&job->sched_sync)) ||
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	     amdgpu_vm_need_pipeline_sync(ring, job))) {
 		need_pipe_sync = true;
 		dma_fence_put(tmp);
@@ -185,6 +201,7 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 		}
 	}
 
+<<<<<<< HEAD
 	if (job && ring->funcs->init_cond_exec)
 		patch_offset = amdgpu_ring_init_cond_exec(ring);
 
@@ -199,6 +216,20 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 	}
 
 	skip_preamble = ring->current_ctx == fence_ctx;
+=======
+	if (ring->funcs->init_cond_exec)
+		patch_offset = amdgpu_ring_init_cond_exec(ring);
+
+	if (ring->funcs->emit_hdp_flush
+#ifdef CONFIG_X86_64
+	    && !(adev->flags & AMD_IS_APU)
+#endif
+	   )
+		amdgpu_ring_emit_hdp_flush(ring);
+
+	skip_preamble = ring->current_ctx == fence_ctx;
+	need_ctx_switch = ring->current_ctx != fence_ctx;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (job && ring->funcs->emit_cntxcntl) {
 		if (need_ctx_switch)
 			status |= AMDGPU_HAVE_CTX_SWITCH;
@@ -217,7 +248,11 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 			!amdgpu_sriov_vf(adev)) /* for SRIOV preemption, Preamble CE ib must be inserted anyway */
 			continue;
 
+<<<<<<< HEAD
 		amdgpu_ring_emit_ib(ring, ib, job ? job->vmid : 0,
+=======
+		amdgpu_ring_emit_ib(ring, ib, job ? job->vm_id : 0,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 				    need_ctx_switch);
 		need_ctx_switch = false;
 	}
@@ -225,6 +260,7 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 	if (ring->funcs->emit_tmz)
 		amdgpu_ring_emit_tmz(ring, false);
 
+<<<<<<< HEAD
 #ifdef CONFIG_X86_64
 	if (!(adev->flags & AMD_IS_APU))
 #endif
@@ -244,6 +280,21 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 		dev_err(adev->dev, "failed to emit fence (%d)\n", r);
 		if (job && job->vmid)
 			amdgpu_vmid_reset(adev, ring->funcs->vmhub, job->vmid);
+=======
+	if (ring->funcs->emit_hdp_invalidate
+#ifdef CONFIG_X86_64
+	    && !(adev->flags & AMD_IS_APU)
+#endif
+	   )
+		amdgpu_ring_emit_hdp_invalidate(ring);
+
+	r = amdgpu_fence_emit(ring, f);
+	if (r) {
+		dev_err(adev->dev, "failed to emit fence (%d)\n", r);
+		if (job && job->vm_id)
+			amdgpu_vm_reset_id(adev, ring->funcs->vmhub,
+					   job->vm_id);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		amdgpu_ring_undo(ring);
 		return r;
 	}
@@ -251,6 +302,15 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned num_ibs,
 	if (ring->funcs->insert_end)
 		ring->funcs->insert_end(ring);
 
+<<<<<<< HEAD
+=======
+	/* wrap the last IB with fence */
+	if (job && job->uf_addr) {
+		amdgpu_ring_emit_fence(ring, job->uf_addr, job->uf_sequence,
+				       AMDGPU_FENCE_FLAG_64BIT);
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (patch_offset != ~0 && ring->funcs->patch_cond_exec)
 		amdgpu_ring_patch_cond_exec(ring, patch_offset);
 
@@ -285,6 +345,14 @@ int amdgpu_ib_pool_init(struct amdgpu_device *adev)
 		return r;
 	}
 
+<<<<<<< HEAD
+=======
+	r = amdgpu_sa_bo_manager_start(adev, &adev->ring_tmp_bo);
+	if (r) {
+		return r;
+	}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	adev->ib_pool_ready = true;
 	if (amdgpu_debugfs_sa_init(adev)) {
 		dev_err(adev->dev, "failed to register debugfs file for SA\n");
@@ -303,6 +371,10 @@ int amdgpu_ib_pool_init(struct amdgpu_device *adev)
 void amdgpu_ib_pool_fini(struct amdgpu_device *adev)
 {
 	if (adev->ib_pool_ready) {
+<<<<<<< HEAD
+=======
+		amdgpu_sa_bo_manager_suspend(adev, &adev->ring_tmp_bo);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		amdgpu_sa_bo_manager_fini(adev, &adev->ring_tmp_bo);
 		adev->ib_pool_ready = false;
 	}
@@ -355,8 +427,12 @@ int amdgpu_ib_ring_tests(struct amdgpu_device *adev)
 			ring->funcs->type == AMDGPU_RING_TYPE_VCE ||
 			ring->funcs->type == AMDGPU_RING_TYPE_UVD_ENC ||
 			ring->funcs->type == AMDGPU_RING_TYPE_VCN_DEC ||
+<<<<<<< HEAD
 			ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC ||
 			ring->funcs->type == AMDGPU_RING_TYPE_VCN_JPEG)
+=======
+			ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			tmo = tmo_mm;
 		else
 			tmo = tmo_gfx;

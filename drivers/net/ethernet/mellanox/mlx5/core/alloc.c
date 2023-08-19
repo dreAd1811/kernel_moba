@@ -71,13 +71,18 @@ static void *mlx5_dma_zalloc_coherent_node(struct mlx5_core_dev *dev,
 }
 
 int mlx5_buf_alloc_node(struct mlx5_core_dev *dev, int size,
+<<<<<<< HEAD
 			struct mlx5_frag_buf *buf, int node)
+=======
+			struct mlx5_buf *buf, int node)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	dma_addr_t t;
 
 	buf->size = size;
 	buf->npages       = 1;
 	buf->page_shift   = (u8)get_order(size) + PAGE_SHIFT;
+<<<<<<< HEAD
 
 	buf->frags = kzalloc(sizeof(*buf->frags), GFP_KERNEL);
 	if (!buf->frags)
@@ -89,6 +94,14 @@ int mlx5_buf_alloc_node(struct mlx5_core_dev *dev, int size,
 		goto err_out;
 
 	buf->frags->map = t;
+=======
+	buf->direct.buf   = mlx5_dma_zalloc_coherent_node(dev, size,
+							  &t, node);
+	if (!buf->direct.buf)
+		return -ENOMEM;
+
+	buf->direct.map = t;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	while (t & ((1 << buf->page_shift) - 1)) {
 		--buf->page_shift;
@@ -96,6 +109,7 @@ int mlx5_buf_alloc_node(struct mlx5_core_dev *dev, int size,
 	}
 
 	return 0;
+<<<<<<< HEAD
 err_out:
 	kfree(buf->frags);
 	return -ENOMEM;
@@ -114,6 +128,20 @@ void mlx5_buf_free(struct mlx5_core_dev *dev, struct mlx5_frag_buf *buf)
 			  buf->frags->map);
 
 	kfree(buf->frags);
+=======
+}
+
+int mlx5_buf_alloc(struct mlx5_core_dev *dev, int size, struct mlx5_buf *buf)
+{
+	return mlx5_buf_alloc_node(dev, size, buf, dev->priv.numa_node);
+}
+EXPORT_SYMBOL_GPL(mlx5_buf_alloc);
+
+void mlx5_buf_free(struct mlx5_core_dev *dev, struct mlx5_buf *buf)
+{
+	dma_free_coherent(&dev->pdev->dev, buf->size, buf->direct.buf,
+			  buf->direct.map);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 EXPORT_SYMBOL_GPL(mlx5_buf_free);
 
@@ -123,7 +151,11 @@ int mlx5_frag_buf_alloc_node(struct mlx5_core_dev *dev, int size,
 	int i;
 
 	buf->size = size;
+<<<<<<< HEAD
 	buf->npages = DIV_ROUND_UP(size, PAGE_SIZE);
+=======
+	buf->npages = 1 << get_order(size);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	buf->page_shift = PAGE_SHIFT;
 	buf->frags = kcalloc(buf->npages, sizeof(struct mlx5_buf_list),
 			     GFP_KERNEL);
@@ -158,7 +190,10 @@ err_free_buf:
 err_out:
 	return -ENOMEM;
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mlx5_frag_buf_alloc_node);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void mlx5_frag_buf_free(struct mlx5_core_dev *dev, struct mlx5_frag_buf *buf)
 {
@@ -174,7 +209,10 @@ void mlx5_frag_buf_free(struct mlx5_core_dev *dev, struct mlx5_frag_buf *buf)
 	}
 	kfree(buf->frags);
 }
+<<<<<<< HEAD
 EXPORT_SYMBOL_GPL(mlx5_frag_buf_free);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 static struct mlx5_db_pgdir *mlx5_alloc_db_pgdir(struct mlx5_core_dev *dev,
 						 int node)
@@ -288,13 +326,21 @@ void mlx5_db_free(struct mlx5_core_dev *dev, struct mlx5_db *db)
 }
 EXPORT_SYMBOL_GPL(mlx5_db_free);
 
+<<<<<<< HEAD
 void mlx5_fill_page_array(struct mlx5_frag_buf *buf, __be64 *pas)
+=======
+void mlx5_fill_page_array(struct mlx5_buf *buf, __be64 *pas)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	u64 addr;
 	int i;
 
 	for (i = 0; i < buf->npages; i++) {
+<<<<<<< HEAD
 		addr = buf->frags->map + (i << buf->page_shift);
+=======
+		addr = buf->direct.map + (i << buf->page_shift);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 		pas[i] = cpu_to_be64(addr);
 	}

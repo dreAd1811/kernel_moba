@@ -538,8 +538,13 @@ static int lp5562_probe(struct i2c_client *client,
 	if (!chip)
 		return -ENOMEM;
 
+<<<<<<< HEAD
 	led = devm_kcalloc(&client->dev,
 			pdata->num_channels, sizeof(*led), GFP_KERNEL);
+=======
+	led = devm_kzalloc(&client->dev,
+			sizeof(*led) * pdata->num_channels, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!led)
 		return -ENOMEM;
 

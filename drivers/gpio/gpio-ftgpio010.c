@@ -14,20 +14,31 @@
 #include <linux/io.h>
 #include <linux/interrupt.h>
 #include <linux/platform_device.h>
+<<<<<<< HEAD
+=======
+#include <linux/of_gpio.h>
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <linux/bitops.h>
 
 /* GPIO registers definition */
 #define GPIO_DATA_OUT		0x00
 #define GPIO_DATA_IN		0x04
 #define GPIO_DIR		0x08
+<<<<<<< HEAD
 #define GPIO_BYPASS_IN		0x0C
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GPIO_DATA_SET		0x10
 #define GPIO_DATA_CLR		0x14
 #define GPIO_PULL_EN		0x18
 #define GPIO_PULL_TYPE		0x1C
 #define GPIO_INT_EN		0x20
+<<<<<<< HEAD
 #define GPIO_INT_STAT_RAW	0x24
 #define GPIO_INT_STAT_MASKED	0x28
+=======
+#define GPIO_INT_STAT		0x24
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #define GPIO_INT_MASK		0x2C
 #define GPIO_INT_CLR		0x30
 #define GPIO_INT_TYPE		0x34
@@ -148,10 +159,17 @@ static void ftgpio_gpio_irq_handler(struct irq_desc *desc)
 
 	chained_irq_enter(irqchip, desc);
 
+<<<<<<< HEAD
 	stat = readl(g->base + GPIO_INT_STAT_RAW);
 	if (stat)
 		for_each_set_bit(offset, &stat, gc->ngpio)
 			generic_handle_irq(irq_find_mapping(gc->irq.domain,
+=======
+	stat = readl(g->base + GPIO_INT_STAT);
+	if (stat)
+		for_each_set_bit(offset, &stat, gc->ngpio)
+			generic_handle_irq(irq_find_mapping(gc->irqdomain,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 							    offset));
 
 	chained_irq_exit(irqchip, desc);
@@ -177,8 +195,13 @@ static int ftgpio_gpio_probe(struct platform_device *pdev)
 		return PTR_ERR(g->base);
 
 	irq = platform_get_irq(pdev, 0);
+<<<<<<< HEAD
 	if (irq <= 0)
 		return irq ? irq : -EINVAL;
+=======
+	if (!irq)
+		return -EINVAL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = bgpio_init(&g->gc, dev, 4,
 			 g->base + GPIO_DATA_IN,

@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2015-2018 - ARM Ltd
+=======
+ * Copyright (C) 2015 - ARM Ltd
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * Author: Marc Zyngier <marc.zyngier@arm.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -24,7 +28,10 @@
 #include <asm/kvm_arm.h>
 #include <asm/kvm_asm.h>
 #include <asm/kvm_mmu.h>
+<<<<<<< HEAD
 #include <asm/mmu.h>
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	.text
 	.pushsection	.hyp.text, "ax"
@@ -56,6 +63,10 @@ ENTRY(__vhe_hyp_call)
 ENDPROC(__vhe_hyp_call)
 
 el1_sync:				// Guest trapped into EL2
+<<<<<<< HEAD
+=======
+	stp	x0, x1, [sp, #-16]!
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mrs	x0, esr_el2
 	lsr	x0, x0, #ESR_ELx_EC_SHIFT
@@ -149,22 +160,55 @@ wa_epilogue:
 
 el1_trap:
 	get_vcpu_ptr	x1, x0
+<<<<<<< HEAD
+=======
+
+	mrs		x0, esr_el2
+	lsr		x0, x0, #ESR_ELx_EC_SHIFT
+	/*
+	 * x0: ESR_EC
+	 * x1: vcpu pointer
+	 */
+
+	/*
+	 * We trap the first access to the FP/SIMD to save the host context
+	 * and restore the guest context lazily.
+	 * If FP/SIMD is not implemented, handle the trap and inject an
+	 * undefined instruction exception to the guest.
+	 */
+alternative_if_not ARM64_HAS_NO_FPSIMD
+	cmp	x0, #ESR_ELx_EC_FP_ASIMD
+	b.eq	__fpsimd_guest_restore
+alternative_else_nop_endif
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mov	x0, #ARM_EXCEPTION_TRAP
 	b	__guest_exit
 
 el1_irq:
+<<<<<<< HEAD
+=======
+	stp     x0, x1, [sp, #-16]!
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	get_vcpu_ptr	x1, x0
 	mov	x0, #ARM_EXCEPTION_IRQ
 	b	__guest_exit
 
 el1_error:
+<<<<<<< HEAD
+=======
+	stp     x0, x1, [sp, #-16]!
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	get_vcpu_ptr	x1, x0
 	mov	x0, #ARM_EXCEPTION_EL1_SERROR
 	b	__guest_exit
 
 el2_error:
+<<<<<<< HEAD
 	ldp	x0, x1, [sp], #16
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * Only two possibilities:
 	 * 1) Either we come from the exit path, having just unmasked
@@ -215,12 +259,18 @@ ENDPROC(\label)
 	invalid_vector	el2h_sync_invalid
 	invalid_vector	el2h_irq_invalid
 	invalid_vector	el2h_fiq_invalid
+<<<<<<< HEAD
+=======
+	invalid_vector	el1_sync_invalid
+	invalid_vector	el1_irq_invalid
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	invalid_vector	el1_fiq_invalid
 
 	.ltorg
 
 	.align 11
 
+<<<<<<< HEAD
 .macro valid_vect target
 	.align 7
 	stp	x0, x1, [sp, #-16]!
@@ -316,3 +366,26 @@ ENTRY(__smccc_workaround_1_smc_start)
 	add	sp, sp, #(8 * 4)
 ENTRY(__smccc_workaround_1_smc_end)
 #endif
+=======
+ENTRY(__kvm_hyp_vector)
+	ventry	el2t_sync_invalid		// Synchronous EL2t
+	ventry	el2t_irq_invalid		// IRQ EL2t
+	ventry	el2t_fiq_invalid		// FIQ EL2t
+	ventry	el2t_error_invalid		// Error EL2t
+
+	ventry	el2h_sync_invalid		// Synchronous EL2h
+	ventry	el2h_irq_invalid		// IRQ EL2h
+	ventry	el2h_fiq_invalid		// FIQ EL2h
+	ventry	el2_error			// Error EL2h
+
+	ventry	el1_sync			// Synchronous 64-bit EL1
+	ventry	el1_irq				// IRQ 64-bit EL1
+	ventry	el1_fiq_invalid			// FIQ 64-bit EL1
+	ventry	el1_error			// Error 64-bit EL1
+
+	ventry	el1_sync			// Synchronous 32-bit EL1
+	ventry	el1_irq				// IRQ 32-bit EL1
+	ventry	el1_fiq_invalid			// FIQ 32-bit EL1
+	ventry	el1_error			// Error 32-bit EL1
+ENDPROC(__kvm_hyp_vector)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

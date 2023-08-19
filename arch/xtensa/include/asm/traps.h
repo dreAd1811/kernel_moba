@@ -13,6 +13,7 @@
 #include <asm/ptrace.h>
 
 /*
+<<<<<<< HEAD
  * Per-CPU exception handling data structure.
  * EXCSAVE1 points to it.
  */
@@ -36,12 +37,15 @@ struct exc_table {
 };
 
 /*
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
  * handler must be either of the following:
  *  void (*)(struct pt_regs *regs);
  *  void (*)(struct pt_regs *regs, unsigned long exccause);
  */
 extern void * __init trap_set_handler(int cause, void *handler);
 extern void do_unhandled(struct pt_regs *regs, unsigned long exccause);
+<<<<<<< HEAD
 void fast_second_level_miss(void);
 
 /* Initialize minimal exc_table structure sufficient for basic paging */
@@ -54,6 +58,8 @@ static inline void __init early_trap_init(void)
 	__asm__ __volatile__("wsr  %0, excsave1\n" : : "a" (&exc_table));
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 void secondary_trap_init(void);
 
 static inline void spill_registers(void)

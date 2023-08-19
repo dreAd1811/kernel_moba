@@ -913,9 +913,16 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
 	struct cpuidle_state *state = &drv->states[index];
 	unsigned long eax = flg2MWAIT(state->flags);
 	unsigned int cstate;
+<<<<<<< HEAD
 	bool uninitialized_var(tick);
 	int cpu = smp_processor_id();
 
+=======
+	int cpu = smp_processor_id();
+
+	cstate = (((eax) >> MWAIT_SUBSTATE_SIZE) & MWAIT_CSTATE_MASK) + 1;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/*
 	 * leave_mm() to avoid costly and often unnecessary wakeups
 	 * for flushing the user TLB's associated with the active mm.
@@ -923,6 +930,7 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
 	if (state->flags & CPUIDLE_FLAG_TLB_FLUSHED)
 		leave_mm(cpu);
 
+<<<<<<< HEAD
 	if (!static_cpu_has(X86_FEATURE_ARAT)) {
 		cstate = (((eax) >> MWAIT_SUBSTATE_SIZE) &
 				MWAIT_CSTATE_MASK) + 1;
@@ -936,6 +944,14 @@ static __cpuidle int intel_idle(struct cpuidle_device *dev,
 	mwait_idle_with_hints(eax, ecx);
 
 	if (!static_cpu_has(X86_FEATURE_ARAT) && tick)
+=======
+	if (!(lapic_timer_reliable_states & (1 << (cstate))))
+		tick_broadcast_enter();
+
+	mwait_idle_with_hints(eax, ecx);
+
+	if (!(lapic_timer_reliable_states & (1 << (cstate))))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		tick_broadcast_exit();
 
 	return index;

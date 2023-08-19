@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: GPL-2.0
 config NIOS2
 	def_bool y
+<<<<<<< HEAD
 	select ARCH_HAS_SYNC_DMA_FOR_CPU
 	select ARCH_HAS_SYNC_DMA_FOR_DEVICE
 	select ARCH_NO_SWAP
 	select DMA_NONCOHERENT_OPS
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	select TIMER_OF
 	select GENERIC_ATOMIC64
 	select GENERIC_CLOCKEVENTS
@@ -42,16 +45,37 @@ config HAS_DMA
 config FPU
 	def_bool n
 
+<<<<<<< HEAD
+=======
+config SWAP
+	def_bool n
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config RWSEM_GENERIC_SPINLOCK
 	def_bool y
 
 config TRACE_IRQFLAGS_SUPPORT
 	def_bool n
 
+<<<<<<< HEAD
 menu "Kernel features"
 
 source "kernel/Kconfig.hz"
 
+=======
+source "init/Kconfig"
+
+menu "Kernel features"
+
+source "kernel/Kconfig.preempt"
+
+source "kernel/Kconfig.freezer"
+
+source "kernel/Kconfig.hz"
+
+source "mm/Kconfig"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 config FORCE_MAX_ZONEORDER
 	int "Maximum zone order"
 	range 9 20
@@ -145,6 +169,10 @@ menu "Advanced setup"
 
 config ADVANCED_OPTIONS
 	bool "Prompt for advanced kernel configuration options"
+<<<<<<< HEAD
+=======
+	help
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 comment "Default settings for advanced configuration options are used"
 	depends on !ADVANCED_OPTIONS
@@ -188,3 +216,26 @@ config NIOS2_IO_REGION_BASE
 	default "0xe0000000"
 
 endmenu
+<<<<<<< HEAD
+=======
+
+menu "Executable file formats"
+
+source "fs/Kconfig.binfmt"
+
+endmenu
+
+source "net/Kconfig"
+
+source "drivers/Kconfig"
+
+source "fs/Kconfig"
+
+source "arch/nios2/Kconfig.debug"
+
+source "security/Kconfig"
+
+source "crypto/Kconfig"
+
+source "lib/Kconfig"
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * Copyright 2017 Advanced Micro Devices, Inc.
  *
@@ -21,6 +22,9 @@
  *
  */
 
+=======
+/* SPDX-License-Identifier: GPL-2.0 */
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #if !defined(_AMDGPU_TRACE_H) || defined(TRACE_HEADER_MULTI_READ)
 #define _AMDGPU_TRACE_H_
 
@@ -37,6 +41,65 @@
 #define AMDGPU_JOB_GET_TIMELINE_NAME(job) \
 	 job->base.s_fence->finished.ops->get_timeline_name(&job->base.s_fence->finished)
 
+<<<<<<< HEAD
+=======
+TRACE_EVENT(amdgpu_ttm_tt_populate,
+	    TP_PROTO(struct amdgpu_device *adev, uint64_t dma_address, uint64_t phys_address),
+	    TP_ARGS(adev, dma_address, phys_address),
+	    TP_STRUCT__entry(
+				__field(uint16_t, domain)
+				__field(uint8_t, bus)
+				__field(uint8_t, slot)
+				__field(uint8_t, func)
+				__field(uint64_t, dma)
+				__field(uint64_t, phys)
+			    ),
+	    TP_fast_assign(
+			   __entry->domain = pci_domain_nr(adev->pdev->bus);
+			   __entry->bus = adev->pdev->bus->number;
+			   __entry->slot = PCI_SLOT(adev->pdev->devfn);
+			   __entry->func = PCI_FUNC(adev->pdev->devfn);
+			   __entry->dma = dma_address;
+			   __entry->phys = phys_address;
+			   ),
+	    TP_printk("%04x:%02x:%02x.%x: 0x%llx => 0x%llx",
+		      (unsigned)__entry->domain,
+		      (unsigned)__entry->bus,
+		      (unsigned)__entry->slot,
+		      (unsigned)__entry->func,
+		      (unsigned long long)__entry->dma,
+		      (unsigned long long)__entry->phys)
+);
+
+TRACE_EVENT(amdgpu_ttm_tt_unpopulate,
+	    TP_PROTO(struct amdgpu_device *adev, uint64_t dma_address, uint64_t phys_address),
+	    TP_ARGS(adev, dma_address, phys_address),
+	    TP_STRUCT__entry(
+				__field(uint16_t, domain)
+				__field(uint8_t, bus)
+				__field(uint8_t, slot)
+				__field(uint8_t, func)
+				__field(uint64_t, dma)
+				__field(uint64_t, phys)
+			    ),
+	    TP_fast_assign(
+			   __entry->domain = pci_domain_nr(adev->pdev->bus);
+			   __entry->bus = adev->pdev->bus->number;
+			   __entry->slot = PCI_SLOT(adev->pdev->devfn);
+			   __entry->func = PCI_FUNC(adev->pdev->devfn);
+			   __entry->dma = dma_address;
+			   __entry->phys = phys_address;
+			   ),
+	    TP_printk("%04x:%02x:%02x.%x: 0x%llx => 0x%llx",
+		      (unsigned)__entry->domain,
+		      (unsigned)__entry->bus,
+		      (unsigned)__entry->slot,
+		      (unsigned)__entry->func,
+		      (unsigned long long)__entry->dma,
+		      (unsigned long long)__entry->phys)
+);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 TRACE_EVENT(amdgpu_mm_rreg,
 	    TP_PROTO(unsigned did, uint32_t reg, uint32_t value),
 	    TP_ARGS(did, reg, value),
@@ -82,31 +145,54 @@ TRACE_EVENT(amdgpu_iv,
 			     __field(unsigned, client_id)
 			     __field(unsigned, src_id)
 			     __field(unsigned, ring_id)
+<<<<<<< HEAD
 			     __field(unsigned, vmid)
 			     __field(unsigned, vmid_src)
 			     __field(uint64_t, timestamp)
 			     __field(unsigned, timestamp_src)
 			     __field(unsigned, pasid)
+=======
+			     __field(unsigned, vm_id)
+			     __field(unsigned, vm_id_src)
+			     __field(uint64_t, timestamp)
+			     __field(unsigned, timestamp_src)
+			     __field(unsigned, pas_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     __array(unsigned, src_data, 4)
 			    ),
 	    TP_fast_assign(
 			   __entry->client_id = iv->client_id;
 			   __entry->src_id = iv->src_id;
 			   __entry->ring_id = iv->ring_id;
+<<<<<<< HEAD
 			   __entry->vmid = iv->vmid;
 			   __entry->vmid_src = iv->vmid_src;
 			   __entry->timestamp = iv->timestamp;
 			   __entry->timestamp_src = iv->timestamp_src;
 			   __entry->pasid = iv->pasid;
+=======
+			   __entry->vm_id = iv->vm_id;
+			   __entry->vm_id_src = iv->vm_id_src;
+			   __entry->timestamp = iv->timestamp;
+			   __entry->timestamp_src = iv->timestamp_src;
+			   __entry->pas_id = iv->pas_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   __entry->src_data[0] = iv->src_data[0];
 			   __entry->src_data[1] = iv->src_data[1];
 			   __entry->src_data[2] = iv->src_data[2];
 			   __entry->src_data[3] = iv->src_data[3];
 			   ),
+<<<<<<< HEAD
 	    TP_printk("client_id:%u src_id:%u ring:%u vmid:%u timestamp: %llu pasid:%u src_data: %08x %08x %08x %08x\n",
 		      __entry->client_id, __entry->src_id,
 		      __entry->ring_id, __entry->vmid,
 		      __entry->timestamp, __entry->pasid,
+=======
+	    TP_printk("client_id:%u src_id:%u ring:%u vm_id:%u timestamp: %llu pas_id:%u src_data: %08x %08x %08x %08x\n",
+		      __entry->client_id, __entry->src_id,
+		      __entry->ring_id, __entry->vm_id,
+		      __entry->timestamp, __entry->pas_id,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      __entry->src_data[0], __entry->src_data[1],
 		      __entry->src_data[2], __entry->src_data[3])
 );
@@ -150,10 +236,17 @@ TRACE_EVENT(amdgpu_cs,
 
 	    TP_fast_assign(
 			   __entry->bo_list = p->bo_list;
+<<<<<<< HEAD
 			   __entry->ring = p->ring->idx;
 			   __entry->dw = p->job->ibs[i].length_dw;
 			   __entry->fences = amdgpu_fence_count_emitted(
 				p->ring);
+=======
+			   __entry->ring = p->job->ring->idx;
+			   __entry->dw = p->job->ibs[i].length_dw;
+			   __entry->fences = amdgpu_fence_count_emitted(
+				p->job->ring);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   ),
 	    TP_printk("bo_list=%p, ring=%u, dw=%u, fences=%u",
 		      __entry->bo_list, __entry->ring, __entry->dw,
@@ -178,7 +271,11 @@ TRACE_EVENT(amdgpu_cs_ioctl,
 			   __assign_str(timeline, AMDGPU_JOB_GET_TIMELINE_NAME(job))
 			   __entry->context = job->base.s_fence->finished.context;
 			   __entry->seqno = job->base.s_fence->finished.seqno;
+<<<<<<< HEAD
 			   __entry->ring_name = to_amdgpu_ring(job->base.sched)->name;
+=======
+			   __entry->ring_name = job->ring->name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   __entry->num_ibs = job->num_ibs;
 			   ),
 	    TP_printk("sched_job=%llu, timeline=%s, context=%u, seqno=%u, ring_name=%s, num_ibs=%u",
@@ -203,7 +300,11 @@ TRACE_EVENT(amdgpu_sched_run_job,
 			   __assign_str(timeline, AMDGPU_JOB_GET_TIMELINE_NAME(job))
 			   __entry->context = job->base.s_fence->finished.context;
 			   __entry->seqno = job->base.s_fence->finished.seqno;
+<<<<<<< HEAD
 			   __entry->ring_name = to_amdgpu_ring(job->base.sched)->name;
+=======
+			   __entry->ring_name = job->ring->name;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   __entry->num_ibs = job->num_ibs;
 			   ),
 	    TP_printk("sched_job=%llu, timeline=%s, context=%u, seqno=%u, ring_name=%s, num_ibs=%u",
@@ -217,24 +318,41 @@ TRACE_EVENT(amdgpu_vm_grab_id,
 		     struct amdgpu_job *job),
 	    TP_ARGS(vm, ring, job),
 	    TP_STRUCT__entry(
+<<<<<<< HEAD
 			     __field(u32, pasid)
 			     __field(u32, ring)
 			     __field(u32, vmid)
+=======
+			     __field(struct amdgpu_vm *, vm)
+			     __field(u32, ring)
+			     __field(u32, vm_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     __field(u32, vm_hub)
 			     __field(u64, pd_addr)
 			     __field(u32, needs_flush)
 			     ),
 
 	    TP_fast_assign(
+<<<<<<< HEAD
 			   __entry->pasid = vm->pasid;
 			   __entry->ring = ring->idx;
 			   __entry->vmid = job->vmid;
+=======
+			   __entry->vm = vm;
+			   __entry->ring = ring->idx;
+			   __entry->vm_id = job->vm_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   __entry->vm_hub = ring->funcs->vmhub,
 			   __entry->pd_addr = job->vm_pd_addr;
 			   __entry->needs_flush = job->vm_needs_flush;
 			   ),
+<<<<<<< HEAD
 	    TP_printk("pasid=%d, ring=%u, id=%u, hub=%u, pd_addr=%010Lx needs_flush=%u",
 		      __entry->pasid, __entry->ring, __entry->vmid,
+=======
+	    TP_printk("vm=%p, ring=%u, id=%u, hub=%u, pd_addr=%010Lx needs_flush=%u",
+		      __entry->vm, __entry->ring, __entry->vm_id,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		      __entry->vm_hub, __entry->pd_addr, __entry->needs_flush)
 );
 
@@ -275,7 +393,11 @@ TRACE_EVENT(amdgpu_vm_bo_unmap,
 			     ),
 
 	    TP_fast_assign(
+<<<<<<< HEAD
 			   __entry->bo = bo_va ? bo_va->base.bo : NULL;
+=======
+			   __entry->bo = bo_va->base.bo;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   __entry->start = mapping->start;
 			   __entry->last = mapping->last;
 			   __entry->offset = mapping->offset;
@@ -314,11 +436,14 @@ DEFINE_EVENT(amdgpu_vm_mapping, amdgpu_vm_bo_mapping,
 	    TP_ARGS(mapping)
 );
 
+<<<<<<< HEAD
 DEFINE_EVENT(amdgpu_vm_mapping, amdgpu_vm_bo_cs,
 	    TP_PROTO(struct amdgpu_bo_va_mapping *mapping),
 	    TP_ARGS(mapping)
 );
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 TRACE_EVENT(amdgpu_vm_set_ptes,
 	    TP_PROTO(uint64_t pe, uint64_t addr, unsigned count,
 		     uint32_t incr, uint64_t flags),
@@ -362,23 +487,37 @@ TRACE_EVENT(amdgpu_vm_copy_ptes,
 );
 
 TRACE_EVENT(amdgpu_vm_flush,
+<<<<<<< HEAD
 	    TP_PROTO(struct amdgpu_ring *ring, unsigned vmid,
 		     uint64_t pd_addr),
 	    TP_ARGS(ring, vmid, pd_addr),
 	    TP_STRUCT__entry(
 			     __field(u32, ring)
 			     __field(u32, vmid)
+=======
+	    TP_PROTO(struct amdgpu_ring *ring, unsigned vm_id,
+		     uint64_t pd_addr),
+	    TP_ARGS(ring, vm_id, pd_addr),
+	    TP_STRUCT__entry(
+			     __field(u32, ring)
+			     __field(u32, vm_id)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			     __field(u32, vm_hub)
 			     __field(u64, pd_addr)
 			     ),
 
 	    TP_fast_assign(
 			   __entry->ring = ring->idx;
+<<<<<<< HEAD
 			   __entry->vmid = vmid;
+=======
+			   __entry->vm_id = vm_id;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   __entry->vm_hub = ring->funcs->vmhub;
 			   __entry->pd_addr = pd_addr;
 			   ),
 	    TP_printk("ring=%u, id=%u, hub=%u, pd_addr=%010Lx",
+<<<<<<< HEAD
 		      __entry->ring, __entry->vmid,
 		      __entry->vm_hub,__entry->pd_addr)
 );
@@ -405,6 +544,12 @@ DEFINE_EVENT(amdgpu_pasid, amdgpu_pasid_freed,
 	    TP_ARGS(pasid)
 );
 
+=======
+		      __entry->ring, __entry->vm_id,
+		      __entry->vm_hub,__entry->pd_addr)
+);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 TRACE_EVENT(amdgpu_bo_list_set,
 	    TP_PROTO(struct amdgpu_bo_list *list, struct amdgpu_bo *bo),
 	    TP_ARGS(list, bo),
@@ -441,7 +586,11 @@ TRACE_EVENT(amdgpu_cs_bo_status,
 			__entry->total_bo, __entry->total_size)
 );
 
+<<<<<<< HEAD
 TRACE_EVENT(amdgpu_bo_move,
+=======
+TRACE_EVENT(amdgpu_ttm_bo_move,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	    TP_PROTO(struct amdgpu_bo* bo, uint32_t new_placement, uint32_t old_placement),
 	    TP_ARGS(bo, new_placement, old_placement),
 	    TP_STRUCT__entry(
@@ -467,5 +616,9 @@ TRACE_EVENT(amdgpu_bo_move,
 
 /* This part must be outside protection */
 #undef TRACE_INCLUDE_PATH
+<<<<<<< HEAD
 #define TRACE_INCLUDE_PATH ../../drivers/gpu/drm/amd/amdgpu
+=======
+#define TRACE_INCLUDE_PATH .
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #include <trace/define_trace.h>

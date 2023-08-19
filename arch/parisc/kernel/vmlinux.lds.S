@@ -100,9 +100,13 @@ SECTIONS
 	. = ALIGN(16);
 	/* Linkage tables */
 	.opd : {
+<<<<<<< HEAD
 		__start_opd = .;
 		*(.opd)
 		__end_opd = .;
+=======
+		*(.opd)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} PROVIDE (__gp = .);
 	.plt : {
 		*(.plt)

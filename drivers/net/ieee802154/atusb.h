@@ -50,6 +50,7 @@ enum atusb_requests {
 	ATUSB_EUI64_READ,
 };
 
+<<<<<<< HEAD
 enum {
 	ATUSB_HW_TYPE_100813,	/* 2010-08-13 */
 	ATUSB_HW_TYPE_101216,	/* 2010-12-16 */
@@ -58,6 +59,8 @@ enum {
 	ATUSB_HW_TYPE_HULUSB,	/* Busware HUL USB dongle with at86rf212 */
 };
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 /*
  * Direction	bRequest		wValue		wIndex	wLength
  *

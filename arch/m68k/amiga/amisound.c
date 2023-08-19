@@ -65,8 +65,13 @@ void __init amiga_init_sound(void)
 #endif
 }
 
+<<<<<<< HEAD
 static void nosound(struct timer_list *unused);
 static DEFINE_TIMER(sound_timer, nosound);
+=======
+static void nosound( unsigned long ignored );
+static DEFINE_TIMER(sound_timer, nosound, 0, 0);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void amiga_mksound( unsigned int hz, unsigned int ticks )
 {
@@ -107,7 +112,11 @@ void amiga_mksound( unsigned int hz, unsigned int ticks )
 }
 
 
+<<<<<<< HEAD
 static void nosound(struct timer_list *unused)
+=======
+static void nosound( unsigned long ignored )
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/* turn off DMA for audio channel 2 */
 	custom.dmacon = DMAF_AUD2;

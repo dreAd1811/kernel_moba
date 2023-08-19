@@ -107,6 +107,10 @@ void foo(void)
 	/* These would be unneccessary if we ran asm files
 	 * through the preprocessor.
 	 */
+<<<<<<< HEAD
+=======
+	DEFINE(KTHREAD_SIZE, THREAD_SIZE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	DEFINE(KTHREAD_SHIFT, THREAD_SHIFT);
 	DEFINE(KTHREAD_START_SP, THREAD_START_SP);
 	DEFINE(ENOSYS_, ENOSYS);

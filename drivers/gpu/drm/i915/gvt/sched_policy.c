@@ -47,6 +47,7 @@ static bool vgpu_has_pending_workload(struct intel_vgpu *vgpu)
 	return false;
 }
 
+<<<<<<< HEAD
 /* We give 2 seconds higher prio for vGPU during start */
 #define GVT_SCHED_VGPU_PRI_TIME  2
 
@@ -57,6 +58,14 @@ struct vgpu_sched_data {
 	bool pri_sched;
 	ktime_t pri_time;
 	ktime_t sched_in_time;
+=======
+struct vgpu_sched_data {
+	struct list_head lru_list;
+	struct intel_vgpu *vgpu;
+
+	ktime_t sched_in_time;
+	ktime_t sched_out_time;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	ktime_t sched_time;
 	ktime_t left_ts;
 	ktime_t allocated_ts;
@@ -69,6 +78,7 @@ struct gvt_sched_data {
 	struct hrtimer timer;
 	unsigned long period;
 	struct list_head lru_runq_head;
+<<<<<<< HEAD
 	ktime_t expire_time;
 };
 
@@ -85,6 +95,19 @@ static void vgpu_update_timeslice(struct intel_vgpu *vgpu, ktime_t cur_time)
 	vgpu_data->sched_time = ktime_add(vgpu_data->sched_time, delta_ts);
 	vgpu_data->left_ts = ktime_sub(vgpu_data->left_ts, delta_ts);
 	vgpu_data->sched_in_time = cur_time;
+=======
+};
+
+static void vgpu_update_timeslice(struct intel_vgpu *pre_vgpu)
+{
+	ktime_t delta_ts;
+	struct vgpu_sched_data *vgpu_data = pre_vgpu->sched_data;
+
+	delta_ts = vgpu_data->sched_out_time - vgpu_data->sched_in_time;
+
+	vgpu_data->sched_time += delta_ts;
+	vgpu_data->left_ts -= delta_ts;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 #define GVT_TS_BALANCE_PERIOD_MS 100
@@ -111,8 +134,14 @@ static void gvt_balance_timeslice(struct gvt_sched_data *sched_data)
 
 		list_for_each(pos, &sched_data->lru_runq_head) {
 			vgpu_data = container_of(pos, struct vgpu_sched_data, lru_list);
+<<<<<<< HEAD
 			fair_timeslice = ktime_divns(ms_to_ktime(GVT_TS_BALANCE_PERIOD_MS),
 						     total_weight) * vgpu_data->sched_ctl.weight;
+=======
+			fair_timeslice = ms_to_ktime(GVT_TS_BALANCE_PERIOD_MS) *
+						vgpu_data->sched_ctl.weight /
+						total_weight;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 			vgpu_data->allocated_ts = fair_timeslice;
 			vgpu_data->left_ts = vgpu_data->allocated_ts;
@@ -158,7 +187,15 @@ static void try_to_schedule_next_vgpu(struct intel_gvt *gvt)
 	}
 
 	cur_time = ktime_get();
+<<<<<<< HEAD
 	vgpu_update_timeslice(scheduler->current_vgpu, cur_time);
+=======
+	if (scheduler->current_vgpu) {
+		vgpu_data = scheduler->current_vgpu->sched_data;
+		vgpu_data->sched_out_time = cur_time;
+		vgpu_update_timeslice(scheduler->current_vgpu);
+	}
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	vgpu_data = scheduler->next_vgpu->sched_data;
 	vgpu_data->sched_in_time = cur_time;
 
@@ -187,6 +224,7 @@ static struct intel_vgpu *find_busy_vgpu(struct gvt_sched_data *sched_data)
 		if (!vgpu_has_pending_workload(vgpu_data->vgpu))
 			continue;
 
+<<<<<<< HEAD
 		if (vgpu_data->pri_sched) {
 			if (ktime_before(ktime_get(), vgpu_data->pri_time)) {
 				vgpu = vgpu_data->vgpu;
@@ -195,6 +233,8 @@ static struct intel_vgpu *find_busy_vgpu(struct gvt_sched_data *sched_data)
 				vgpu_data->pri_sched = false;
 		}
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		/* Return the vGPU only if it has time slice left */
 		if (vgpu_data->left_ts > 0) {
 			vgpu = vgpu_data->vgpu;
@@ -214,7 +254,10 @@ static void tbs_sched_func(struct gvt_sched_data *sched_data)
 	struct intel_gvt_workload_scheduler *scheduler = &gvt->scheduler;
 	struct vgpu_sched_data *vgpu_data;
 	struct intel_vgpu *vgpu = NULL;
+<<<<<<< HEAD
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	/* no active vgpu or has already had a target */
 	if (list_empty(&sched_data->lru_runq_head) || scheduler->next_vgpu)
 		goto out;
@@ -222,6 +265,7 @@ static void tbs_sched_func(struct gvt_sched_data *sched_data)
 	vgpu = find_busy_vgpu(sched_data);
 	if (vgpu) {
 		scheduler->next_vgpu = vgpu;
+<<<<<<< HEAD
 		vgpu_data = vgpu->sched_data;
 		if (!vgpu_data->pri_sched) {
 			/* Move the last used vGPU to the tail of lru_list */
@@ -229,6 +273,14 @@ static void tbs_sched_func(struct gvt_sched_data *sched_data)
 			list_add_tail(&vgpu_data->lru_list,
 				      &sched_data->lru_runq_head);
 		}
+=======
+
+		/* Move the last used vGPU to the tail of lru_list */
+		vgpu_data = vgpu->sched_data;
+		list_del_init(&vgpu_data->lru_list);
+		list_add_tail(&vgpu_data->lru_list,
+				&sched_data->lru_runq_head);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else {
 		scheduler->next_vgpu = gvt->idle_vgpu;
 	}
@@ -240,6 +292,7 @@ out:
 void intel_gvt_schedule(struct intel_gvt *gvt)
 {
 	struct gvt_sched_data *sched_data = gvt->scheduler.sched_data;
+<<<<<<< HEAD
 	ktime_t cur_time;
 
 	mutex_lock(&gvt->sched_lock);
@@ -259,6 +312,22 @@ void intel_gvt_schedule(struct intel_gvt *gvt)
 	tbs_sched_func(sched_data);
 
 	mutex_unlock(&gvt->sched_lock);
+=======
+	static uint64_t timer_check;
+
+	mutex_lock(&gvt->lock);
+
+	if (test_and_clear_bit(INTEL_GVT_REQUEST_SCHED,
+				(void *)&gvt->service_request)) {
+		if (!(timer_check++ % GVT_TS_BALANCE_PERIOD_MS))
+			gvt_balance_timeslice(sched_data);
+	}
+	clear_bit(INTEL_GVT_REQUEST_EVENT_SCHED, (void *)&gvt->service_request);
+
+	tbs_sched_func(sched_data);
+
+	mutex_unlock(&gvt->lock);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static enum hrtimer_restart tbs_timer_fn(struct hrtimer *timer_data)
@@ -327,6 +396,7 @@ static int tbs_sched_init_vgpu(struct intel_vgpu *vgpu)
 
 static void tbs_sched_clean_vgpu(struct intel_vgpu *vgpu)
 {
+<<<<<<< HEAD
 	struct intel_gvt *gvt = vgpu->gvt;
 	struct gvt_sched_data *sched_data = gvt->scheduler.sched_data;
 
@@ -336,28 +406,42 @@ static void tbs_sched_clean_vgpu(struct intel_vgpu *vgpu)
 	/* this vgpu id has been removed */
 	if (idr_is_empty(&gvt->vgpu_idr))
 		hrtimer_cancel(&sched_data->timer);
+=======
+	kfree(vgpu->sched_data);
+	vgpu->sched_data = NULL;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tbs_sched_start_schedule(struct intel_vgpu *vgpu)
 {
 	struct gvt_sched_data *sched_data = vgpu->gvt->scheduler.sched_data;
 	struct vgpu_sched_data *vgpu_data = vgpu->sched_data;
+<<<<<<< HEAD
 	ktime_t now;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!list_empty(&vgpu_data->lru_list))
 		return;
 
+<<<<<<< HEAD
 	now = ktime_get();
 	vgpu_data->pri_time = ktime_add(now,
 					ktime_set(GVT_SCHED_VGPU_PRI_TIME, 0));
 	vgpu_data->pri_sched = true;
 
 	list_add(&vgpu_data->lru_list, &sched_data->lru_runq_head);
+=======
+	list_add_tail(&vgpu_data->lru_list, &sched_data->lru_runq_head);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	if (!hrtimer_active(&sched_data->timer))
 		hrtimer_start(&sched_data->timer, ktime_add_ns(ktime_get(),
 			sched_data->period), HRTIMER_MODE_ABS);
+<<<<<<< HEAD
 	vgpu_data->active = true;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void tbs_sched_stop_schedule(struct intel_vgpu *vgpu)
@@ -365,7 +449,10 @@ static void tbs_sched_stop_schedule(struct intel_vgpu *vgpu)
 	struct vgpu_sched_data *vgpu_data = vgpu->sched_data;
 
 	list_del_init(&vgpu_data->lru_list);
+<<<<<<< HEAD
 	vgpu_data->active = false;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static struct intel_gvt_sched_policy_ops tbs_schedule_ops = {
@@ -379,6 +466,7 @@ static struct intel_gvt_sched_policy_ops tbs_schedule_ops = {
 
 int intel_gvt_init_sched_policy(struct intel_gvt *gvt)
 {
+<<<<<<< HEAD
 	int ret;
 
 	mutex_lock(&gvt->sched_lock);
@@ -387,10 +475,16 @@ int intel_gvt_init_sched_policy(struct intel_gvt *gvt)
 	mutex_unlock(&gvt->sched_lock);
 
 	return ret;
+=======
+	gvt->scheduler.sched_ops = &tbs_schedule_ops;
+
+	return gvt->scheduler.sched_ops->init(gvt);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_gvt_clean_sched_policy(struct intel_gvt *gvt)
 {
+<<<<<<< HEAD
 	mutex_lock(&gvt->sched_lock);
 	gvt->scheduler.sched_ops->clean(gvt);
 	mutex_unlock(&gvt->sched_lock);
@@ -412,17 +506,30 @@ int intel_vgpu_init_sched_policy(struct intel_vgpu *vgpu)
 	mutex_unlock(&vgpu->gvt->sched_lock);
 
 	return ret;
+=======
+	gvt->scheduler.sched_ops->clean(gvt);
+}
+
+int intel_vgpu_init_sched_policy(struct intel_vgpu *vgpu)
+{
+	return vgpu->gvt->scheduler.sched_ops->init_vgpu(vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_vgpu_clean_sched_policy(struct intel_vgpu *vgpu)
 {
+<<<<<<< HEAD
 	mutex_lock(&vgpu->gvt->sched_lock);
 	vgpu->gvt->scheduler.sched_ops->clean_vgpu(vgpu);
 	mutex_unlock(&vgpu->gvt->sched_lock);
+=======
+	vgpu->gvt->scheduler.sched_ops->clean_vgpu(vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_vgpu_start_schedule(struct intel_vgpu *vgpu)
 {
+<<<<<<< HEAD
 	struct vgpu_sched_data *vgpu_data = vgpu->sched_data;
 
 	mutex_lock(&vgpu->gvt->sched_lock);
@@ -438,6 +545,11 @@ void intel_gvt_kick_schedule(struct intel_gvt *gvt)
 	mutex_lock(&gvt->sched_lock);
 	intel_gvt_request_service(gvt, INTEL_GVT_REQUEST_EVENT_SCHED);
 	mutex_unlock(&gvt->sched_lock);
+=======
+	gvt_dbg_core("vgpu%d: start schedule\n", vgpu->id);
+
+	vgpu->gvt->scheduler.sched_ops->start_schedule(vgpu);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 void intel_vgpu_stop_schedule(struct intel_vgpu *vgpu)
@@ -445,6 +557,7 @@ void intel_vgpu_stop_schedule(struct intel_vgpu *vgpu)
 	struct intel_gvt_workload_scheduler *scheduler =
 		&vgpu->gvt->scheduler;
 	int ring_id;
+<<<<<<< HEAD
 	struct vgpu_sched_data *vgpu_data = vgpu->sched_data;
 	struct drm_i915_private *dev_priv = vgpu->gvt->dev_priv;
 
@@ -454,6 +567,11 @@ void intel_vgpu_stop_schedule(struct intel_vgpu *vgpu)
 	gvt_dbg_core("vgpu%d: stop schedule\n", vgpu->id);
 
 	mutex_lock(&vgpu->gvt->sched_lock);
+=======
+
+	gvt_dbg_core("vgpu%d: stop schedule\n", vgpu->id);
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	scheduler->sched_ops->stop_schedule(vgpu);
 
 	if (scheduler->next_vgpu == vgpu)
@@ -465,7 +583,10 @@ void intel_vgpu_stop_schedule(struct intel_vgpu *vgpu)
 		scheduler->current_vgpu = NULL;
 	}
 
+<<<<<<< HEAD
 	intel_runtime_pm_get(dev_priv);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock_bh(&scheduler->mmio_context_lock);
 	for (ring_id = 0; ring_id < I915_NUM_ENGINES; ring_id++) {
 		if (scheduler->engine_owner[ring_id] == vgpu) {
@@ -474,6 +595,9 @@ void intel_vgpu_stop_schedule(struct intel_vgpu *vgpu)
 		}
 	}
 	spin_unlock_bh(&scheduler->mmio_context_lock);
+<<<<<<< HEAD
 	intel_runtime_pm_put(dev_priv);
 	mutex_unlock(&vgpu->gvt->sched_lock);
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }

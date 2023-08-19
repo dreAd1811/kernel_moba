@@ -130,13 +130,21 @@ static int xgene_gpio_sb_to_irq(struct gpio_chip *gc, u32 gpio)
 			(gpio > HWIRQ_TO_GPIO(priv, priv->nirq)))
 		return -ENXIO;
 
+<<<<<<< HEAD
 	fwspec.fwnode = gc->parent->fwnode;
+=======
+	if (gc->parent->of_node)
+		fwspec.fwnode = of_node_to_fwnode(gc->parent->of_node);
+	else
+		fwspec.fwnode = gc->parent->fwnode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	fwspec.param_count = 2;
 	fwspec.param[0] = GPIO_TO_HWIRQ(priv, gpio);
 	fwspec.param[1] = IRQ_TYPE_NONE;
 	return irq_create_fwspec_mapping(&fwspec);
 }
 
+<<<<<<< HEAD
 static int xgene_gpio_sb_domain_activate(struct irq_domain *d,
 					 struct irq_data *irq_data,
 					 bool reserve)
@@ -151,11 +159,27 @@ static int xgene_gpio_sb_domain_activate(struct irq_domain *d,
 		"Unable to configure XGene GPIO standby pin %d as IRQ\n",
 				gpio);
 		return ret;
+=======
+static void xgene_gpio_sb_domain_activate(struct irq_domain *d,
+		struct irq_data *irq_data)
+{
+	struct xgene_gpio_sb *priv = d->host_data;
+	u32 gpio = HWIRQ_TO_GPIO(priv, irq_data->hwirq);
+
+	if (gpiochip_lock_as_irq(&priv->gc, gpio)) {
+		dev_err(priv->gc.parent,
+		"Unable to configure XGene GPIO standby pin %d as IRQ\n",
+				gpio);
+		return;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	xgene_gpio_set_bit(&priv->gc, priv->regs + MPA_GPIO_SEL_LO,
 			gpio * 2, 1);
+<<<<<<< HEAD
 	return 0;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static void xgene_gpio_sb_domain_deactivate(struct irq_domain *d,
@@ -232,6 +256,10 @@ static int xgene_gpio_sb_probe(struct platform_device *pdev)
 	struct resource *res;
 	void __iomem *regs;
 	struct irq_domain *parent_domain = NULL;
+<<<<<<< HEAD
+=======
+	struct fwnode_handle *fwnode;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	u32 val32;
 
 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
@@ -285,13 +313,27 @@ static int xgene_gpio_sb_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, priv);
 
+<<<<<<< HEAD
 	priv->irq_domain = irq_domain_create_hierarchy(parent_domain,
 					0, priv->nirq, pdev->dev.fwnode,
+=======
+	if (pdev->dev.of_node)
+		fwnode = of_node_to_fwnode(pdev->dev.of_node);
+	else
+		fwnode = pdev->dev.fwnode;
+
+	priv->irq_domain = irq_domain_create_hierarchy(parent_domain,
+					0, priv->nirq, fwnode,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 					&xgene_gpio_sb_domain_ops, priv);
 	if (!priv->irq_domain)
 		return -ENODEV;
 
+<<<<<<< HEAD
 	priv->gc.irq.domain = priv->irq_domain;
+=======
+	priv->gc.irqdomain = priv->irq_domain;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	ret = devm_gpiochip_add_data(&pdev->dev, &priv->gc, priv);
 	if (ret) {

@@ -41,6 +41,14 @@
 
 #define team_port_exists(dev) (dev->priv_flags & IFF_TEAM_PORT)
 
+<<<<<<< HEAD
+=======
+static struct team_port *team_port_get_rcu(const struct net_device *dev)
+{
+	return rcu_dereference(dev->rx_handler_data);
+}
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static struct team_port *team_port_get_rtnl(const struct net_device *dev)
 {
 	struct team_port *port = rtnl_dereference(dev->rx_handler_data);
@@ -264,7 +272,11 @@ static int __team_options_register(struct team *team,
 	struct team_option **dst_opts;
 	int err;
 
+<<<<<<< HEAD
 	dst_opts = kcalloc(option_count, sizeof(struct team_option *),
+=======
+	dst_opts = kzalloc(sizeof(struct team_option *) * option_count,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			   GFP_KERNEL);
 	if (!dst_opts)
 		return -ENOMEM;
@@ -475,6 +487,12 @@ static const struct team_mode *team_mode_get(const char *kind)
 	struct team_mode_item *mitem;
 	const struct team_mode *mode = NULL;
 
+<<<<<<< HEAD
+=======
+	if (!try_module_get(THIS_MODULE))
+		return NULL;
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	spin_lock(&mode_list_lock);
 	mitem = __find_mode(kind);
 	if (!mitem) {
@@ -490,6 +508,10 @@ static const struct team_mode *team_mode_get(const char *kind)
 	}
 
 	spin_unlock(&mode_list_lock);
+<<<<<<< HEAD
+=======
+	module_put(THIS_MODULE);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	return mode;
 }
 
@@ -775,8 +797,12 @@ static int team_queue_override_init(struct team *team)
 
 	if (!queue_cnt)
 		return 0;
+<<<<<<< HEAD
 	listarr = kmalloc_array(queue_cnt, sizeof(struct list_head),
 				GFP_KERNEL);
+=======
+	listarr = kmalloc(sizeof(struct list_head) * queue_cnt, GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!listarr)
 		return -ENOMEM;
 	team->qom_lists = listarr;
@@ -1012,8 +1038,12 @@ static void __team_compute_features(struct team *team)
 	team->dev->vlan_features = vlan_features;
 	team->dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL |
 				     NETIF_F_HW_VLAN_CTAG_TX |
+<<<<<<< HEAD
 				     NETIF_F_HW_VLAN_STAG_TX |
 				     NETIF_F_GSO_UDP_L4;
+=======
+				     NETIF_F_HW_VLAN_STAG_TX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	team->dev->hard_header_len = max_hard_header_len;
 
 	team->dev->priv_flags &= ~IFF_XMIT_DST_RELEASE;
@@ -1108,16 +1138,25 @@ static void team_port_disable_netpoll(struct team_port *port)
 }
 #endif
 
+<<<<<<< HEAD
 static int team_upper_dev_link(struct team *team, struct team_port *port,
 			       struct netlink_ext_ack *extack)
+=======
+static int team_upper_dev_link(struct team *team, struct team_port *port)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct netdev_lag_upper_info lag_upper_info;
 	int err;
 
 	lag_upper_info.tx_type = team->mode->lag_tx_type;
+<<<<<<< HEAD
 	lag_upper_info.hash_type = NETDEV_LAG_HASH_UNKNOWN;
 	err = netdev_master_upper_dev_link(port->dev, team->dev, NULL,
 					   &lag_upper_info, extack);
+=======
+	err = netdev_master_upper_dev_link(port->dev, team->dev, NULL,
+					   &lag_upper_info);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err)
 		return err;
 	port->dev->priv_flags |= IFF_TEAM_PORT;
@@ -1134,8 +1173,12 @@ static void __team_port_change_port_added(struct team_port *port, bool linkup);
 static int team_dev_type_check_change(struct net_device *dev,
 				      struct net_device *port_dev);
 
+<<<<<<< HEAD
 static int team_port_add(struct team *team, struct net_device *port_dev,
 			 struct netlink_ext_ack *extack)
+=======
+static int team_port_add(struct team *team, struct net_device *port_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct net_device *dev = team->dev;
 	struct team_port *port;
@@ -1143,27 +1186,39 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
 	int err;
 
 	if (port_dev->flags & IFF_LOOPBACK) {
+<<<<<<< HEAD
 		NL_SET_ERR_MSG(extack, "Loopback device can't be added as a team port");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_err(dev, "Device %s is loopback device. Loopback devices can't be added as a team port\n",
 			   portname);
 		return -EINVAL;
 	}
 
 	if (team_port_exists(port_dev)) {
+<<<<<<< HEAD
 		NL_SET_ERR_MSG(extack, "Device is already a port of a team device");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_err(dev, "Device %s is already a port "
 				"of a team device\n", portname);
 		return -EBUSY;
 	}
 
 	if (dev == port_dev) {
+<<<<<<< HEAD
 		NL_SET_ERR_MSG(extack, "Cannot enslave team device to itself");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_err(dev, "Cannot enslave team device to itself\n");
 		return -EINVAL;
 	}
 
 	if (netdev_has_upper_dev(dev, port_dev)) {
+<<<<<<< HEAD
 		NL_SET_ERR_MSG(extack, "Device is already an upper device of the team interface");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_err(dev, "Device %s is already an upper device of the team interface\n",
 			   portname);
 		return -EBUSY;
@@ -1171,7 +1226,10 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
 
 	if (port_dev->features & NETIF_F_VLAN_CHALLENGED &&
 	    vlan_uses_dev(dev)) {
+<<<<<<< HEAD
 		NL_SET_ERR_MSG(extack, "Device is VLAN challenged and team device has VLAN set up");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_err(dev, "Device %s is VLAN challenged and team device has VLAN set up\n",
 			   portname);
 		return -EPERM;
@@ -1182,7 +1240,10 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
 		return err;
 
 	if (port_dev->flags & IFF_UP) {
+<<<<<<< HEAD
 		NL_SET_ERR_MSG(extack, "Device is up. Set it down before adding it as a team port");
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		netdev_err(dev, "Device %s is up. Set it down before adding it as a team port\n",
 			   portname);
 		return -EBUSY;
@@ -1245,7 +1306,11 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
 		goto err_handler_register;
 	}
 
+<<<<<<< HEAD
 	err = team_upper_dev_link(team, port, extack);
+=======
+	err = team_upper_dev_link(team, port);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (err) {
 		netdev_err(dev, "Device %s failed to set upper link\n",
 			   portname);
@@ -1285,7 +1350,11 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
 	list_add_tail_rcu(&port->list, &team->port_list);
 	team_port_enable(team, port);
 	__team_compute_features(team);
+<<<<<<< HEAD
 	__team_port_change_port_added(port, !!netif_oper_up(port_dev));
+=======
+	__team_port_change_port_added(port, !!netif_carrier_ok(port_dev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	__team_options_change_check(team);
 
 	netdev_info(dev, "Port device %s added\n", portname);
@@ -1730,8 +1799,12 @@ static netdev_tx_t team_xmit(struct sk_buff *skb, struct net_device *dev)
 }
 
 static u16 team_select_queue(struct net_device *dev, struct sk_buff *skb,
+<<<<<<< HEAD
 			     struct net_device *sb_dev,
 			     select_queue_fallback_t fallback)
+=======
+			     void *accel_priv, select_queue_fallback_t fallback)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	/*
 	 * This helper function exists to help dev_pick_tx get the correct
@@ -1962,14 +2035,22 @@ static int team_netpoll_setup(struct net_device *dev,
 }
 #endif
 
+<<<<<<< HEAD
 static int team_add_slave(struct net_device *dev, struct net_device *port_dev,
 			  struct netlink_ext_ack *extack)
+=======
+static int team_add_slave(struct net_device *dev, struct net_device *port_dev)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 {
 	struct team *team = netdev_priv(dev);
 	int err;
 
 	mutex_lock(&team->lock);
+<<<<<<< HEAD
 	err = team_port_add(team, port_dev, extack);
+=======
+	err = team_port_add(team, port_dev);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	mutex_unlock(&team->lock);
 
 	if (!err)
@@ -2144,9 +2225,15 @@ static void team_setup(struct net_device *dev)
 			   NETIF_F_HW_VLAN_CTAG_RX |
 			   NETIF_F_HW_VLAN_CTAG_FILTER;
 
+<<<<<<< HEAD
 	dev->hw_features |= NETIF_F_GSO_ENCAP_ALL | NETIF_F_GSO_UDP_L4;
 	dev->features |= dev->hw_features;
 	dev->features |= NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_STAG_TX;
+=======
+	dev->hw_features |= NETIF_F_GSO_ENCAP_ALL;
+	dev->features |= dev->hw_features;
+	dev->features |= NETIF_F_HW_VLAN_CTAG_TX;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static int team_newlink(struct net *src_net, struct net_device *dev,
@@ -2215,6 +2302,11 @@ team_nl_option_policy[TEAM_ATTR_OPTION_MAX + 1] = {
 	[TEAM_ATTR_OPTION_CHANGED]		= { .type = NLA_FLAG },
 	[TEAM_ATTR_OPTION_TYPE]			= { .type = NLA_U8 },
 	[TEAM_ATTR_OPTION_DATA]			= { .type = NLA_BINARY },
+<<<<<<< HEAD
+=======
+	[TEAM_ATTR_OPTION_PORT_IFINDEX]		= { .type = NLA_U32 },
+	[TEAM_ATTR_OPTION_ARRAY_INDEX]		= { .type = NLA_U32 },
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static int team_nl_cmd_noop(struct sk_buff *skb, struct genl_info *info)
@@ -2452,6 +2544,10 @@ send_done:
 nla_put_failure:
 	err = -EMSGSIZE;
 errout:
+<<<<<<< HEAD
+=======
+	genlmsg_cancel(skb, hdr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nlmsg_free(skb);
 	return err;
 }
@@ -2739,6 +2835,10 @@ send_done:
 nla_put_failure:
 	err = -EMSGSIZE;
 errout:
+<<<<<<< HEAD
+=======
+	genlmsg_cancel(skb, hdr);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	nlmsg_free(skb);
 	return err;
 }
@@ -2953,7 +3053,11 @@ static int team_device_event(struct notifier_block *unused,
 
 	switch (event) {
 	case NETDEV_UP:
+<<<<<<< HEAD
 		if (netif_oper_up(dev))
+=======
+		if (netif_carrier_ok(dev))
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 			team_port_change_check(port, true);
 		break;
 	case NETDEV_DOWN:
@@ -2962,7 +3066,11 @@ static int team_device_event(struct notifier_block *unused,
 	case NETDEV_CHANGE:
 		if (netif_running(port->dev))
 			team_port_change_check(port,
+<<<<<<< HEAD
 					       !!netif_oper_up(port->dev));
+=======
+					       !!netif_carrier_ok(port->dev));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		break;
 	case NETDEV_UNREGISTER:
 		team_del_slave(port->team->dev, dev);

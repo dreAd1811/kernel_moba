@@ -180,7 +180,11 @@ static int pwm_fan_of_get_cooling_data(struct device *dev,
 	}
 
 	num = ret;
+<<<<<<< HEAD
 	ctx->pwm_fan_cooling_levels = devm_kcalloc(dev, num, sizeof(u32),
+=======
+	ctx->pwm_fan_cooling_levels = devm_kzalloc(dev, num * sizeof(u32),
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 						   GFP_KERNEL);
 	if (!ctx->pwm_fan_cooling_levels)
 		return -ENOMEM;
@@ -221,8 +225,17 @@ static int pwm_fan_probe(struct platform_device *pdev)
 
 	ctx->pwm = devm_of_pwm_get(&pdev->dev, pdev->dev.of_node, NULL);
 	if (IS_ERR(ctx->pwm)) {
+<<<<<<< HEAD
 		dev_err(&pdev->dev, "Could not get PWM\n");
 		return PTR_ERR(ctx->pwm);
+=======
+		ret = PTR_ERR(ctx->pwm);
+
+		if (ret != -EPROBE_DEFER)
+			dev_err(&pdev->dev, "Could not get PWM: %d\n", ret);
+
+		return ret;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	platform_set_drvdata(pdev, ctx);

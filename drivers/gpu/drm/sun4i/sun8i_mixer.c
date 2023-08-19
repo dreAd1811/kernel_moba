@@ -21,6 +21,7 @@
 
 #include <linux/component.h>
 #include <linux/dma-mapping.h>
+<<<<<<< HEAD
 #include <linux/of_device.h>
 #include <linux/of_graph.h>
 #include <linux/reset.h>
@@ -261,6 +262,16 @@ const struct de2_fmt_info *sun8i_mixer_format_info(u32 format)
 	return NULL;
 }
 
+=======
+#include <linux/reset.h>
+#include <linux/of_device.h>
+
+#include "sun4i_drv.h"
+#include "sun8i_mixer.h"
+#include "sun8i_layer.h"
+#include "sunxi_engine.h"
+
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static void sun8i_mixer_commit(struct sunxi_engine *engine)
 {
 	DRM_DEBUG_DRIVER("Committing changes\n");
@@ -269,6 +280,7 @@ static void sun8i_mixer_commit(struct sunxi_engine *engine)
 		     SUN8I_MIXER_GLOBAL_DBUFF_ENABLE);
 }
 
+<<<<<<< HEAD
 static struct drm_plane **sun8i_layers_init(struct drm_device *drm,
 					    struct sunxi_engine *engine)
 {
@@ -309,6 +321,195 @@ static struct drm_plane **sun8i_layers_init(struct drm_device *drm,
 	};
 
 	return planes;
+=======
+void sun8i_mixer_layer_enable(struct sun8i_mixer *mixer,
+				int layer, bool enable)
+{
+	u32 val;
+	/* Currently the first UI channel is used */
+	int chan = mixer->cfg->vi_num;
+
+	DRM_DEBUG_DRIVER("Enabling layer %d in channel %d\n", layer, chan);
+
+	if (enable)
+		val = SUN8I_MIXER_CHAN_UI_LAYER_ATTR_EN;
+	else
+		val = 0;
+
+	regmap_update_bits(mixer->engine.regs,
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR(chan, layer),
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR_EN, val);
+
+	/* Set the alpha configuration */
+	regmap_update_bits(mixer->engine.regs,
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR(chan, layer),
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR_ALPHA_MODE_MASK,
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR_ALPHA_MODE_DEF);
+	regmap_update_bits(mixer->engine.regs,
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR(chan, layer),
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR_ALPHA_MASK,
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR_ALPHA_DEF);
+}
+
+static int sun8i_mixer_drm_format_to_layer(struct drm_plane *plane,
+					     u32 format, u32 *mode)
+{
+	switch (format) {
+	case DRM_FORMAT_ARGB8888:
+		*mode = SUN8I_MIXER_CHAN_UI_LAYER_ATTR_FBFMT_ARGB8888;
+		break;
+
+	case DRM_FORMAT_XRGB8888:
+		*mode = SUN8I_MIXER_CHAN_UI_LAYER_ATTR_FBFMT_XRGB8888;
+		break;
+
+	case DRM_FORMAT_RGB888:
+		*mode = SUN8I_MIXER_CHAN_UI_LAYER_ATTR_FBFMT_RGB888;
+		break;
+
+	default:
+		return -EINVAL;
+	}
+
+	return 0;
+}
+
+int sun8i_mixer_update_layer_coord(struct sun8i_mixer *mixer,
+				     int layer, struct drm_plane *plane)
+{
+	struct drm_plane_state *state = plane->state;
+	struct drm_framebuffer *fb = state->fb;
+	/* Currently the first UI channel is used */
+	int chan = mixer->cfg->vi_num;
+
+	DRM_DEBUG_DRIVER("Updating layer %d\n", layer);
+
+	if (plane->type == DRM_PLANE_TYPE_PRIMARY) {
+		DRM_DEBUG_DRIVER("Primary layer, updating global size W: %u H: %u\n",
+				 state->crtc_w, state->crtc_h);
+		regmap_write(mixer->engine.regs, SUN8I_MIXER_GLOBAL_SIZE,
+			     SUN8I_MIXER_SIZE(state->crtc_w,
+					      state->crtc_h));
+		DRM_DEBUG_DRIVER("Updating blender size\n");
+		regmap_write(mixer->engine.regs,
+			     SUN8I_MIXER_BLEND_ATTR_INSIZE(0),
+			     SUN8I_MIXER_SIZE(state->crtc_w,
+					      state->crtc_h));
+		regmap_write(mixer->engine.regs, SUN8I_MIXER_BLEND_OUTSIZE,
+			     SUN8I_MIXER_SIZE(state->crtc_w,
+					      state->crtc_h));
+		DRM_DEBUG_DRIVER("Updating channel size\n");
+		regmap_write(mixer->engine.regs,
+			     SUN8I_MIXER_CHAN_UI_OVL_SIZE(chan),
+			     SUN8I_MIXER_SIZE(state->crtc_w,
+					      state->crtc_h));
+	}
+
+	/* Set the line width */
+	DRM_DEBUG_DRIVER("Layer line width: %d bytes\n", fb->pitches[0]);
+	regmap_write(mixer->engine.regs,
+		     SUN8I_MIXER_CHAN_UI_LAYER_PITCH(chan, layer),
+		     fb->pitches[0]);
+
+	/* Set height and width */
+	DRM_DEBUG_DRIVER("Layer size W: %u H: %u\n",
+			 state->crtc_w, state->crtc_h);
+	regmap_write(mixer->engine.regs,
+		     SUN8I_MIXER_CHAN_UI_LAYER_SIZE(chan, layer),
+		     SUN8I_MIXER_SIZE(state->crtc_w, state->crtc_h));
+
+	/* Set base coordinates */
+	DRM_DEBUG_DRIVER("Layer coordinates X: %d Y: %d\n",
+			 state->crtc_x, state->crtc_y);
+	regmap_write(mixer->engine.regs,
+		     SUN8I_MIXER_CHAN_UI_LAYER_COORD(chan, layer),
+		     SUN8I_MIXER_COORD(state->crtc_x, state->crtc_y));
+
+	return 0;
+}
+
+int sun8i_mixer_update_layer_formats(struct sun8i_mixer *mixer,
+				       int layer, struct drm_plane *plane)
+{
+	struct drm_plane_state *state = plane->state;
+	struct drm_framebuffer *fb = state->fb;
+	bool interlaced = false;
+	u32 val;
+	/* Currently the first UI channel is used */
+	int chan = mixer->cfg->vi_num;
+	int ret;
+
+	if (plane->state->crtc)
+		interlaced = plane->state->crtc->state->adjusted_mode.flags
+			& DRM_MODE_FLAG_INTERLACE;
+
+	regmap_update_bits(mixer->engine.regs, SUN8I_MIXER_BLEND_OUTCTL,
+			   SUN8I_MIXER_BLEND_OUTCTL_INTERLACED,
+			   interlaced ?
+			   SUN8I_MIXER_BLEND_OUTCTL_INTERLACED : 0);
+
+	DRM_DEBUG_DRIVER("Switching display mixer interlaced mode %s\n",
+			 interlaced ? "on" : "off");
+
+	ret = sun8i_mixer_drm_format_to_layer(plane, fb->format->format,
+						&val);
+	if (ret) {
+		DRM_DEBUG_DRIVER("Invalid format\n");
+		return ret;
+	}
+
+	regmap_update_bits(mixer->engine.regs,
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR(chan, layer),
+			   SUN8I_MIXER_CHAN_UI_LAYER_ATTR_FBFMT_MASK, val);
+
+	return 0;
+}
+
+int sun8i_mixer_update_layer_buffer(struct sun8i_mixer *mixer,
+				      int layer, struct drm_plane *plane)
+{
+	struct drm_plane_state *state = plane->state;
+	struct drm_framebuffer *fb = state->fb;
+	struct drm_gem_cma_object *gem;
+	dma_addr_t paddr;
+	/* Currently the first UI channel is used */
+	int chan = mixer->cfg->vi_num;
+	int bpp;
+
+	/* Get the physical address of the buffer in memory */
+	gem = drm_fb_cma_get_gem_obj(fb, 0);
+
+	DRM_DEBUG_DRIVER("Using GEM @ %pad\n", &gem->paddr);
+
+	/* Compute the start of the displayed memory */
+	bpp = fb->format->cpp[0];
+	paddr = gem->paddr + fb->offsets[0];
+
+	/* Fixup framebuffer address for src coordinates */
+	paddr += (state->src_x >> 16) * bpp;
+	paddr += (state->src_y >> 16) * fb->pitches[0];
+
+	/*
+	 * The hardware cannot correctly deal with negative crtc
+	 * coordinates, the display is cropped to the requested size,
+	 * but the display content is not moved.
+	 * Manually move the display content by fixup the framebuffer
+	 * address when crtc_x or crtc_y is negative, like what we
+	 * have did for src_x and src_y.
+	 */
+	if (state->crtc_x < 0)
+		paddr += -state->crtc_x * bpp;
+	if (state->crtc_y < 0)
+		paddr += -state->crtc_y * fb->pitches[0];
+
+	DRM_DEBUG_DRIVER("Setting buffer address to %pad\n", &paddr);
+
+	regmap_write(mixer->engine.regs,
+		     SUN8I_MIXER_CHAN_UI_LAYER_TOP_LADDR(chan, layer),
+		     lower_32_bits(paddr));
+
+	return 0;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 }
 
 static const struct sunxi_engine_ops sun8i_engine_ops = {
@@ -323,6 +524,7 @@ static struct regmap_config sun8i_mixer_regmap_config = {
 	.max_register	= 0xbfffc, /* guessed */
 };
 
+<<<<<<< HEAD
 static int sun8i_mixer_of_get_id(struct device_node *node)
 {
 	struct device_node *port, *ep;
@@ -359,6 +561,8 @@ static int sun8i_mixer_of_get_id(struct device_node *node)
 	return ret;
 }
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 static int sun8i_mixer_bind(struct device *dev, struct device *master,
 			      void *data)
 {
@@ -368,7 +572,10 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 	struct sun8i_mixer *mixer;
 	struct resource *res;
 	void __iomem *regs;
+<<<<<<< HEAD
 	int plane_cnt;
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	int i, ret;
 
 	/*
@@ -390,6 +597,7 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 	dev_set_drvdata(dev, mixer);
 	mixer->engine.ops = &sun8i_engine_ops;
 	mixer->engine.node = dev->of_node;
+<<<<<<< HEAD
 
 	/*
 	 * While this function can fail, we shouldn't do anything
@@ -400,6 +608,10 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 	 * id is needed, it will fail during id matching anyway.
 	 */
 	mixer->engine.id = sun8i_mixer_of_get_id(dev->of_node);
+=======
+	/* The ID of the mixer currently doesn't matter */
+	mixer->engine.id = -1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	mixer->cfg = of_device_get_match_data(dev);
 	if (!mixer->cfg)
@@ -443,6 +655,7 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 		ret = PTR_ERR(mixer->mod_clk);
 		goto err_disable_bus_clk;
 	}
+<<<<<<< HEAD
 
 	/*
 	 * It seems that we need to enforce that rate for whatever
@@ -452,6 +665,8 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 	if (mixer->cfg->mod_rate)
 		clk_set_rate(mixer->mod_clk, mixer->cfg->mod_rate);
 
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	clk_prepare_enable(mixer->mod_clk);
 
 	list_add_tail(&mixer->engine.list, &drv->engine_list);
@@ -464,6 +679,7 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 	regmap_write(mixer->engine.regs, SUN8I_MIXER_GLOBAL_CTL,
 		     SUN8I_MIXER_GLOBAL_CTL_RT_EN);
 
+<<<<<<< HEAD
 	/* Set background color to black */
 	regmap_write(mixer->engine.regs, SUN8I_MIXER_BLEND_BKCOLOR,
 		     SUN8I_MIXER_BLEND_COLOR_BLACK);
@@ -484,6 +700,29 @@ static int sun8i_mixer_bind(struct device *dev, struct device *master,
 
 	regmap_update_bits(mixer->engine.regs, SUN8I_MIXER_BLEND_PIPE_CTL,
 			   SUN8I_MIXER_BLEND_PIPE_CTL_EN_MSK, 0);
+=======
+	/* Initialize blender */
+	regmap_write(mixer->engine.regs, SUN8I_MIXER_BLEND_FCOLOR_CTL,
+		     SUN8I_MIXER_BLEND_FCOLOR_CTL_DEF);
+	regmap_write(mixer->engine.regs, SUN8I_MIXER_BLEND_PREMULTIPLY,
+		     SUN8I_MIXER_BLEND_PREMULTIPLY_DEF);
+	regmap_write(mixer->engine.regs, SUN8I_MIXER_BLEND_BKCOLOR,
+		     SUN8I_MIXER_BLEND_BKCOLOR_DEF);
+	regmap_write(mixer->engine.regs, SUN8I_MIXER_BLEND_MODE(0),
+		     SUN8I_MIXER_BLEND_MODE_DEF);
+	regmap_write(mixer->engine.regs, SUN8I_MIXER_BLEND_CK_CTL,
+		     SUN8I_MIXER_BLEND_CK_CTL_DEF);
+
+	regmap_write(mixer->engine.regs,
+		     SUN8I_MIXER_BLEND_ATTR_FCOLOR(0),
+		     SUN8I_MIXER_BLEND_ATTR_FCOLOR_DEF);
+
+	/* Select the first UI channel */
+	DRM_DEBUG_DRIVER("Selecting channel %d (first UI channel)\n",
+			 mixer->cfg->vi_num);
+	regmap_write(mixer->engine.regs, SUN8I_MIXER_BLEND_ROUTE,
+		     mixer->cfg->vi_num);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 	return 0;
 
@@ -523,6 +762,7 @@ static int sun8i_mixer_remove(struct platform_device *pdev)
 	return 0;
 }
 
+<<<<<<< HEAD
 static const struct sun8i_mixer_cfg sun8i_a83t_mixer0_cfg = {
 	.ccsc		= 0,
 	.scaler_mask	= 0xf,
@@ -551,10 +791,16 @@ static const struct sun8i_mixer_cfg sun8i_v3s_mixer_cfg = {
 	.scaler_mask = 0x3,
 	.ccsc = 0,
 	.mod_rate = 150000000,
+=======
+static const struct sun8i_mixer_cfg sun8i_v3s_mixer_cfg = {
+	.vi_num = 2,
+	.ui_num = 1,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 };
 
 static const struct of_device_id sun8i_mixer_of_table[] = {
 	{
+<<<<<<< HEAD
 		.compatible = "allwinner,sun8i-a83t-de2-mixer-0",
 		.data = &sun8i_a83t_mixer0_cfg,
 	},
@@ -567,6 +813,8 @@ static const struct of_device_id sun8i_mixer_of_table[] = {
 		.data = &sun8i_h3_mixer0_cfg,
 	},
 	{
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		.compatible = "allwinner,sun8i-v3s-de2-mixer",
 		.data = &sun8i_v3s_mixer_cfg,
 	},

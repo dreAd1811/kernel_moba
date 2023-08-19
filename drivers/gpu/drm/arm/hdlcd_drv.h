@@ -9,8 +9,15 @@
 struct hdlcd_drm_private {
 	void __iomem			*mmio;
 	struct clk			*clk;
+<<<<<<< HEAD
 	struct drm_crtc			crtc;
 	struct drm_plane		*plane;
+=======
+	struct drm_fbdev_cma		*fbdev;
+	struct drm_crtc			crtc;
+	struct drm_plane		*plane;
+	struct drm_atomic_state		*state;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #ifdef CONFIG_DEBUG_FS
 	atomic_t buffer_underrun_count;
 	atomic_t bus_error_count;

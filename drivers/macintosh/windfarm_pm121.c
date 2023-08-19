@@ -246,8 +246,12 @@ enum {
 static struct wf_control *controls[N_CONTROLS] = {};
 
 /* Set to kick the control loop into life */
+<<<<<<< HEAD
 static int pm121_all_controls_ok, pm121_all_sensors_ok;
 static bool pm121_started;
+=======
+static int pm121_all_controls_ok, pm121_all_sensors_ok, pm121_started;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 enum {
 	FAILURE_FAN		= 1 << 0,
@@ -710,7 +714,11 @@ static void pm121_create_cpu_fans(void)
 	wf_cpu_pid_init(&pm121_cpu_state->pid, &pid_param);
 
 	pr_debug("pm121: CPU Fan control initialized.\n");
+<<<<<<< HEAD
 	pr_debug("       ttarget=%d.%03d, tmax=%d.%03d, min=%d RPM, max=%d RPM,\n",
+=======
+	pr_debug("       ttarged=%d.%03d, tmax=%d.%03d, min=%d RPM, max=%d RPM,\n",
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		 FIX32TOPRINT(pid_param.ttarget), FIX32TOPRINT(pid_param.tmax),
 		 pid_param.min, pid_param.max);
 
@@ -807,7 +815,11 @@ static void pm121_tick(void)
 			pm121_create_sys_fans(i);
 
 		pm121_create_cpu_fans();
+<<<<<<< HEAD
 		pm121_started = true;
+=======
+		pm121_started = 1;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	}
 
 	/* skipping ticks */

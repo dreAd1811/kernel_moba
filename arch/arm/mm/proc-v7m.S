@@ -135,7 +135,10 @@ __v7m_setup_cont:
 	dsb
 	mov	r6, lr			@ save LR
 	ldr	sp, =init_thread_union + THREAD_START_SP
+<<<<<<< HEAD
 	stmia	sp, {r0-r3, r12}
+=======
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	cpsie	i
 	svc	#0
 1:	cpsid	i

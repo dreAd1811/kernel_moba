@@ -69,8 +69,13 @@ vma_map_add(struct vma_to_fileoffset_map *map, unsigned int vma,
 	    unsigned int size, unsigned int offset, unsigned int guard_ptr,
 	    unsigned int guard_val)
 {
+<<<<<<< HEAD
 	struct vma_to_fileoffset_map *new = kzalloc(sizeof(*new), GFP_KERNEL);
 
+=======
+	struct vma_to_fileoffset_map *new =
+		kzalloc(sizeof(struct vma_to_fileoffset_map), GFP_KERNEL);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	if (!new) {
 		printk(KERN_ERR "SPU_PROF: %s, line %d: malloc failed\n",
 		       __func__, __LINE__);

@@ -93,6 +93,10 @@ sys_rt_sigreturn(struct pt_regs *regs, int in_syscall)
 	unsigned long usp = (regs->gr[30] & ~(0x01UL));
 	unsigned long sigframe_size = PARISC_RT_SIGFRAME_SIZE;
 #ifdef CONFIG_64BIT
+<<<<<<< HEAD
+=======
+	compat_sigset_t compat_set;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	struct compat_rt_sigframe __user * compat_frame;
 	
 	if (is_compat_task())
@@ -113,8 +117,14 @@ sys_rt_sigreturn(struct pt_regs *regs, int in_syscall)
 	
 	if (is_compat_task()) {
 		DBG(2,"sys_rt_sigreturn: ELF32 process.\n");
+<<<<<<< HEAD
 		if (get_compat_sigset(&set, &compat_frame->uc.uc_sigmask))
 			goto give_sigsegv;
+=======
+		if (__copy_from_user(&compat_set, &compat_frame->uc.uc_sigmask, sizeof(compat_set)))
+			goto give_sigsegv;
+		sigset_32to64(&set,&compat_set);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 #endif
 	{
@@ -236,6 +246,10 @@ setup_rt_frame(struct ksignal *ksig, sigset_t *set, struct pt_regs *regs,
 	int err = 0;
 #ifdef CONFIG_64BIT
 	struct compat_rt_sigframe __user * compat_frame;
+<<<<<<< HEAD
+=======
+	compat_sigset_t compat_set;
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 #endif
 	
 	usp = (regs->gr[30] & ~(0x01UL));
@@ -258,8 +272,13 @@ setup_rt_frame(struct ksignal *ksig, sigset_t *set, struct pt_regs *regs,
 		DBG(1,"setup_rt_frame: frame->uc.uc_mcontext = 0x%p\n", &compat_frame->uc.uc_mcontext);
 		err |= setup_sigcontext32(&compat_frame->uc.uc_mcontext, 
 					&compat_frame->regs, regs, in_syscall);
+<<<<<<< HEAD
 		err |= put_compat_sigset(&compat_frame->uc.uc_sigmask, set,
 					 sizeof(compat_sigset_t));
+=======
+		sigset_64to32(&compat_set,set);
+		err |= __copy_to_user(&compat_frame->uc.uc_sigmask, &compat_set, sizeof(compat_set));
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 	} else
 #endif
 	{	

@@ -31,7 +31,11 @@ static ssize_t ath5k_attr_store_##name(struct device *dev,		\
 	set(ah, val);						\
 	return count;							\
 }									\
+<<<<<<< HEAD
 static DEVICE_ATTR(name, 0644,						\
+=======
+static DEVICE_ATTR(name, S_IRUGO | S_IWUSR,				\
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   ath5k_attr_show_##name, ath5k_attr_store_##name)
 
 #define SIMPLE_SHOW(name, get)						\
@@ -43,7 +47,11 @@ static ssize_t ath5k_attr_show_##name(struct device *dev,		\
 	struct ath5k_hw *ah = hw->priv;				\
 	return snprintf(buf, PAGE_SIZE, "%d\n", get);			\
 }									\
+<<<<<<< HEAD
 static DEVICE_ATTR(name, 0444, ath5k_attr_show_##name, NULL)
+=======
+static DEVICE_ATTR(name, S_IRUGO, ath5k_attr_show_##name, NULL)
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 /*** ANI ***/
 
@@ -66,7 +74,11 @@ static ssize_t ath5k_attr_show_noise_immunity_level_max(struct device *dev,
 {
 	return snprintf(buf, PAGE_SIZE, "%d\n", ATH5K_ANI_MAX_NOISE_IMM_LVL);
 }
+<<<<<<< HEAD
 static DEVICE_ATTR(noise_immunity_level_max, 0444,
+=======
+static DEVICE_ATTR(noise_immunity_level_max, S_IRUGO,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   ath5k_attr_show_noise_immunity_level_max, NULL);
 
 static ssize_t ath5k_attr_show_firstep_level_max(struct device *dev,
@@ -75,7 +87,11 @@ static ssize_t ath5k_attr_show_firstep_level_max(struct device *dev,
 {
 	return snprintf(buf, PAGE_SIZE, "%d\n", ATH5K_ANI_MAX_FIRSTEP_LVL);
 }
+<<<<<<< HEAD
 static DEVICE_ATTR(firstep_level_max, 0444,
+=======
+static DEVICE_ATTR(firstep_level_max, S_IRUGO,
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 		   ath5k_attr_show_firstep_level_max, NULL);
 
 static struct attribute *ath5k_sysfs_entries_ani[] = {

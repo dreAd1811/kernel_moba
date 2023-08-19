@@ -120,6 +120,11 @@ void disable_debug_monitors(enum dbg_active_el el);
 
 void user_rewind_single_step(struct task_struct *task);
 void user_fastforward_single_step(struct task_struct *task);
+<<<<<<< HEAD
+=======
+void user_regs_reset_single_step(struct user_pt_regs *regs,
+				 struct task_struct *task);
+>>>>>>> dbca343aea69 (Add 'techpack/audio/' from commit '45d866e7b4650a52c1ef0a5ade30fc194929ea2e')
 
 void kernel_enable_single_step(struct pt_regs *regs);
 void kernel_disable_single_step(void);
